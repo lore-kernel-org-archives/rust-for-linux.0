@@ -1,68 +1,68 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F3417BB30;
-	Thu, 26 Sep 2024 10:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8036917BB30
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 10:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727346863; cv=none; b=kJiakibk/ReniBeaxDSZaJfGGe5mN6un8012JbGztdOZDyagooLDy0WqGLaZ5D2cqAQeow9Y2EEVzk25UUGR0+KTocjj5i/o8tcyFbf43Q8PXXnvnxFx2W/z4Zt7o+evo7/fv/m0TqnADRSArxJI1EscQ0c/Z/mDbdCvpYB8AGc=
+	t=1727346932; cv=none; b=iUEdzoFo7q/vh838PER5x+TlW65zpr+7NvcdBJQCTHBavKWv1InqpFqBJ108IKJIf9JR+UpwE53qFwl6wTaiBYCjN8TwrXsWzguNVI00uSGyy8z+WkWvVJUGgSiG16ojEysjoHih7911LB1eNCXYHTWk2uSafokAnU8HX91/TVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727346863; c=relaxed/simple;
-	bh=FvK9bOmpHob78lnfVZY4lnbnpriICJ+yitRchRcmfOA=;
+	s=arc-20240116; t=1727346932; c=relaxed/simple;
+	bh=DQRtPPfHDTPkf+uykLyxQkqqMXbOre+Rf1fHvFHNX+s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EznpRl34HGKvPEvOHMPsJTfb4jTjW1P9A9LRAW5E4Zy29YN8raQESgUizfqaxbqu/ZTyaCC8iIwrJf572elI25IJNfmB5pznScdmg8FhcFtZarssVUfxKYE4SbbJkB0WCY9AeUflvwoXtmPnmD6zOztux34lek48VQdyejp65oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RGtFvE7S; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=kj3xOdbYs64YhSTPOzQGQIwZri0181wcCLB1ByuuRPPLd6UPAFr4+HpwS9+mepTHNtToMCvXwHaNo2t1xRzVo+zYuwdMQypGzOqYgcfs8qntgMZlxEg3qDYYtfOoeoQMSlO2PeV0pjFSR/yjpY3f7ZTUUZbCFsUf0K9iH8TkaNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hKOIyfO1; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RGtFvE7S"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-718e65590easo70851b3a.3;
-        Thu, 26 Sep 2024 03:34:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hKOIyfO1"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-374c180d123so489563f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 03:35:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727346861; x=1727951661; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727346929; x=1727951729; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FvK9bOmpHob78lnfVZY4lnbnpriICJ+yitRchRcmfOA=;
-        b=RGtFvE7SfwGJaWQlTmpE/YZgGgvT5soaKCgjkg1mWSAUEUtv8uh2VV7bmBlc49pYyu
-         YHHANqHexk22iDQNlZh5lyMnoEmCnwfZvYvQ+df8uB8ikKZ1faX2vLn+qumqyLzLyc8L
-         j8WyiAQBDK+9H4VCURlY7gcMpd+B/Z/ZcaHA41BTwYAQ5/HIXqKwSQ7kvNmAlqpqgIke
-         ayQ22UdhLb4qnNMKE3bxREMpKJ+pRenbfA0UKjjDpkmfmny27nqIjaB3p1fR7hn7TPSH
-         Ud7ez4CW1TSQxSKAkzp3MParG0OT3W1cinLfwJydVz/yaupoojkATKy7Pxki38/TWYWv
-         vPYA==
+        bh=DQRtPPfHDTPkf+uykLyxQkqqMXbOre+Rf1fHvFHNX+s=;
+        b=hKOIyfO1wXqleegQX2qcUSZ2MeolHAdj6XRBlCReSs7JyDpz8UrJIiMrdhRrd5cS4B
+         t7CVlBoQ5tHukWlSg2YPFNkJ7xb/s7Hg/HP/ggTjt5SnugZTUtHHsglAw2dTe/97nhYu
+         5xHkUXr9BMTUWxgJe5wmiYWRKTfa1enaB+mVwgRCwqqBr3j8izWAWDOBHYMV/JQA0hNm
+         Sd+QgPwF//kpGyqE+rzQJCv/+cEDmJwHgLqpMoVf6qdG7cCQyGELkLPN6zd3xZHJAi7e
+         PKnXU6SQ8uZM0LTZARJJknmfIDtoULqe4wo60Jcj7WCIHIyiee1+VwoD7Xsdj/UTKDnp
+         1A3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727346861; x=1727951661;
+        d=1e100.net; s=20230601; t=1727346929; x=1727951729;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FvK9bOmpHob78lnfVZY4lnbnpriICJ+yitRchRcmfOA=;
-        b=oNFAyQnxOyfS5zKfbGFMbu+CNVRW4D96YFQXBtVyAlG7eA4z1oap3JAs1fgOGsKFu1
-         WHJVrDMxEVAIgL8OJcQQCg4zWrlZvwGBZ5rJxI1QdkwCaCws2ejCFjXxZJQurwg1H4Ii
-         6NrggUxwnM5pXabzZl9yks/JeqG8T+9/c6jxLE2wSks+InQoIQbGDq3x3Lj3fZvJhImI
-         jCOxgI4KMll3+BIgasnaOGe8bppICvX03x/8XrkZ7luWsuUft9kYyPQWCtZmiW+BPxDm
-         yZep/J9K/M/nBiWWcRn4H5aJK+KPHEwQlqCINSUmXXlqL1mtnmcZC/yy48MMnnRAwVQs
-         VbOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUkMMYM+sDx31rN/f1SLHVfvrg/O4BOAeh3MVo46dSfqgKCO1ej7Pq0wXQ9++VaIBY9cReI9RCKCncCybsgNW0=@vger.kernel.org, AJvYcCVwtiG+1THUVx1yO6tIi9r+mfxrML7VVEDG3POMj064qoW9rZOP+09MnJJvtzfz/lYE2Uu+4V1R3zLJJJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi9cmn5cX/l2X5Qoz5FFzPcpsZwIPvOjpTmTQWx6kv8gRQ5J19
-	syMWsdxTSvMF02uC2WjlKo6lU/nATKn8yR4C1My6AntC/kcPCK8FMzhwj6uTHMOZxxDvoHzeYMS
-	kPS4gWBlx20rbzNjIdLG9TtFJ3ZI=
-X-Google-Smtp-Source: AGHT+IFYST7+3bz848eQMnGBwxKA6843dw8fjWPNfnAQ7+K8F2PTQLVQOR9ByqppG/f1A5mi3kwJcf61gyy/DZtuy8Y=
-X-Received: by 2002:a05:6a20:1595:b0:1cf:3be6:9f89 with SMTP id
- adf61e73a8af0-1d4bed207ecmr4315211637.0.1727346861317; Thu, 26 Sep 2024
- 03:34:21 -0700 (PDT)
+        bh=DQRtPPfHDTPkf+uykLyxQkqqMXbOre+Rf1fHvFHNX+s=;
+        b=Mx7Zetx3RIlZ3nza6+oj18KeHf5OLbeevog34u2fT38ELYsaVLWC5Byq09RH7dK8xR
+         xQd1qpmd0GlZW29jrYDYCe9QrMcfxxi54iWwTv4GHGEgxhDIGoDH2ECAuR/J5GXazBJw
+         DrbZ7FWGR749nXTsqO5M1OqkecCkNJsixl/uWr4FRUVVjryMg/k704oHfD/CHuh+k851
+         DGGv5YHSYHjXAHZdCWeMz+y3UIts6a0XaZeai1VTELVO1eFEdE5tmshDt2aXOWLMoHkP
+         MifJRhvOsqED2TVq8yFxEzEGyW5Yl5wFgCQpMIMnhfMMDVkCKUdhi6Vtjzj9InlaYjyQ
+         Zldg==
+X-Forwarded-Encrypted: i=1; AJvYcCXi/R7SKc40ekTREEdQ+3rTg5LvLSqoj0AhGKBiILTjg1QoTbNoVGtJkj8AMvhMCpylNmQVWdA06h9e5DSwAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTaXfDx549M2U+OH4C2upJiqs+EbCVImBfrELAxjqmsqNm/tAp
+	vLaU4w6p0wMGbUrgC+89ELNsH5aabQehayaTh7GSAdi69MtbhFqjQEo8RL/nqmzUWhTT0mUzuLP
+	gIM+3650iBB5zyYf1SrHWvAOcKheYpk3joMR3
+X-Google-Smtp-Source: AGHT+IHXXeTT3uinw2wy5kXyeKfp1sqH22V93yXFOXjeGHyt9M0+KGc1cUhIdgFdG+pE67gOlvtDfEIEZCePatr0c9Q=
+X-Received: by 2002:a5d:5d86:0:b0:37c:c5ba:b8cd with SMTP id
+ ffacd0b85a97d-37cc5bab97emr3227843f8f.41.1727346928397; Thu, 26 Sep 2024
+ 03:35:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926093849.1192264-1-aliceryhl@google.com>
-In-Reply-To: <20240926093849.1192264-1-aliceryhl@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Sep 2024 12:34:08 +0200
-Message-ID: <CANiq72mGsevNqECufBo6EP8cxFd=vwcXDpVdsgts-Ve0+mPkrg@mail.gmail.com>
+References: <20240926093849.1192264-1-aliceryhl@google.com> <CANiq72mGsevNqECufBo6EP8cxFd=vwcXDpVdsgts-Ve0+mPkrg@mail.gmail.com>
+In-Reply-To: <CANiq72mGsevNqECufBo6EP8cxFd=vwcXDpVdsgts-Ve0+mPkrg@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 26 Sep 2024 12:35:15 +0200
+Message-ID: <CAH5fLgif4X5pwSeky17M3J_9Si1HZtXjLAH7J2e=V36Wm7B7xQ@mail.gmail.com>
 Subject: Re: [PATCH] rust: KASAN+RETHUNK requires rustc 1.83.0
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: ojeda@kernel.org, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
 	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
 	bp@alien8.de, dave.hansen@linux.intel.com, gary@garyguo.net, hpa@zytor.com, 
@@ -73,26 +73,34 @@ Cc: ojeda@kernel.org, a.hindborg@samsung.com, alex.gaynor@gmail.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 11:39=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Thu, Sep 26, 2024 at 12:34=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> This is caused by the -Zfunction-return=3Dthunk-extern flag in rustc not
-> properly informing LLVM about the mitigation, which means that the KASAN
+> On Thu, Sep 26, 2024 at 11:39=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > This is caused by the -Zfunction-return=3Dthunk-extern flag in rustc no=
+t
+> > properly informing LLVM about the mitigation, which means that the KASA=
+N
+>
+> "...not informing LLVM about the mitigation at the module level (it
+> does so at the function level only currently, which covers most cases,
+> but both are required)" or similar?
 
-"...not informing LLVM about the mitigation at the module level (it
-does so at the function level only currently, which covers most cases,
-but both are required)" or similar?
+That phrasing SGTM.
 
-> This is being fixed for rustc 1.83.0, so update Kconfig to reject this
-> configuration on older compilers.
+> > This is being fixed for rustc 1.83.0, so update Kconfig to reject this
+> > configuration on older compilers.
+>
+> Yeah, let's go with 1.83.0 as we said -- we can modify it if needed
+> later on. I think the PR is fairly straightforward so it should
+> probably land in that version unless there is an unknown unknown.
+>
+> Thanks Alice, looks good to me.
+>
+> I will take this one soon.
 
-Yeah, let's go with 1.83.0 as we said -- we can modify it if needed
-later on. I think the PR is fairly straightforward so it should
-probably land in that version unless there is an unknown unknown.
+Thanks!
 
-Thanks Alice, looks good to me.
-
-I will take this one soon.
-
-Cheers,
-Miguel
+Alice
