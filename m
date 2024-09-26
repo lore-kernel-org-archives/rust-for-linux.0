@@ -1,154 +1,153 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C134819BBC;
-	Thu, 26 Sep 2024 13:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC353B7A8;
+	Thu, 26 Sep 2024 13:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727357085; cv=none; b=lYO+SniutfgEMA9aB9ApNnuCwFAaz9ZxFv2VvFwm9pYqYVnhvvVh+klcCB37MBPYr79ZWbV90SVOr6aBXmFZSTQighsTJKcvUOxu6azILJZBNvcGCxgBqSfwPidjGVBD6qJCWM9GyH3zhJWTuKmFEAMwLYaTjPynikwF80et6R8=
+	t=1727357922; cv=none; b=WCQQi4vbwCkxQDml/CRvbeQDevm6pzMmgT8GZOr8FtNxmS4QoTRACLUN8ABTytP+SI/n91zc4zDvMyOCHunldtQdzoegVou12BwJv9jFH9HHg03FtbeEGrc6rMr9wO3QA3Px6cOLB0P2qSy2beFv8GAckQ/uvjjiI8sYPkzAL2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727357085; c=relaxed/simple;
-	bh=Ev17E6HPXrIHJ7KiVzlg4fQjIPKFzPlo86lB1LBlExk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mpIKSBcgOXypr6NN+4u+0GCBQDjcuhyVZfHaJLeSLEm2o/LsXKiHB+ejTnxjkvxiFJjj27txx7DCyA0ij6BBln5xoyMP6IgKHBjkUUw8EuAXvzLsUYHo6pYTE297KjVv4ZMoM3t5bKq+prnfrTdo7qRJUTKIvRKBbHUsp2wp1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cg1USL/m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727357922; c=relaxed/simple;
+	bh=OPIQS2t62p13UwMnk1FiF+unfRr5Zwe9MubLOeGiJyM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SWI4Ov3/hPpmp4ekefjXgITt1acMdx2JHaai2YW3K++Jlnhk++5i0P+tQeLR5cckoEm+Y8I8qPrbkPzhS/p3c9jXKyw8/v7oh6LfGDbNLRoKKEc5idpk11WTZtEEigmpwQj72fMED3moCd6l+C2DMO5b5F5TLYKA1fRV81s9rYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFpkbNET; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cg1USL/m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F14C4CEC5;
-	Thu, 26 Sep 2024 13:24:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFpkbNET"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D596EC4CECE;
+	Thu, 26 Sep 2024 13:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727357085;
-	bh=Ev17E6HPXrIHJ7KiVzlg4fQjIPKFzPlo86lB1LBlExk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cg1USL/mXifPqA4Z1NOvsq+zHXfVpI2bTeRIDkUWo2bABYniXHcmWIUt9ViZCHysJ
-	 DxFBnIXXo9OuWcRNmcSlp7YGQFemv2X5g3k72HpE9i8uKNXAzmRthE9eeu3JAhHX//
-	 aOPtGZ7vxPtoTgC5sxiXml54vy8MuMx/6SPPqUYM2kupjT+7ta1NcsaXdbtZOQ/sW+
-	 TkW/tB7jhX2Q1mCWVL4c9I4P7tvMGcwz6VlVK1B/oyGxAaP8oMgkIoLMmd3/xkZP9Q
-	 2jPmsE0J+pkjLrMx/4/+AVP77eBj4d/p10+60+wQpPGZDRXD8F/x0W1/ZAKy8NGOcn
-	 aMGI/5y2gYzHQ==
-Date: Thu, 26 Sep 2024 15:24:26 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
-Message-ID: <ZvVgimoQPoL1trmJ@cassiopeiae>
-References: <20240911225449.152928-1-dakr@kernel.org>
- <20240911225449.152928-5-dakr@kernel.org>
- <15f42ddd-b011-4136-b2e4-bc266fab25b6@proton.me>
+	s=k20201202; t=1727357921;
+	bh=OPIQS2t62p13UwMnk1FiF+unfRr5Zwe9MubLOeGiJyM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tFpkbNET0czPRtMPovfI/tw3gSCaREnEFLqAxcDb3uZoTaN1MUsL6oFQbeAJWaXFI
+	 CeZWZV2EQC3jkUVUyeFkJ+3vTNfdldDlcwSemGpaMMeK9dMpCn+eo3NwP7qHalae2l
+	 VkYErS8T+eLlgBYIpVtrHU2I5PcdP6mhLc1DUl1KUsQKtRR5hqOVwbYWqQHd51bOSc
+	 0RXX9eQm9K7Euav9Ek8BEAPCErl0m7IiVuV8uXmMnTrDNFw9GHP2lFmVOsqkL2L43u
+	 cjWMgiSR1KtLVxjFC81BklSOZDD2JwvftlNBn0/eOD6Pyn0J+4KRnR0e//rfp7F508
+	 d7FbSWxfvv7MQ==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2f75aaaade6so11868661fa.1;
+        Thu, 26 Sep 2024 06:38:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUXGse6vbc6FpYz4lgSlKDQJ3qHeN8YH1qg4ceNUpAOgf2a3chMjIK0ENodL3waku7Y6v9btiPZYwo=@vger.kernel.org, AJvYcCVHSf69uGrWCz6BRS1+JmcB0WwHMJusjUz5DzJz6OyyNCwKaGdkiV6aC7dllcXHLJDaeF58Iu+R6pkWfkE5@vger.kernel.org, AJvYcCVTuIuwxeKYKbgD/ed5IBfUTO7U1Ejx7RhUMhftttnafsBMVSpnvTc9K/Q5OeTJhgPJkdtAzjFih+qoU3yY@vger.kernel.org, AJvYcCVtRQGxusNOZWYtaUh1loOVtMx1E0c7HHDguIWYo9ealgtYxuWTRpJmBSWUo7f5zHlNPOM1Gw8mgXFiZ8mY@vger.kernel.org, AJvYcCWnzRX1k3MUWDUeu7WRrtNXnuRWLBPxMs1hH9mzwU5NkneQMn6dD/qskBYd2ZFzC5TMylmYyoNk3rnPXw==@vger.kernel.org, AJvYcCWwRwkLEtUjeqDHvxaVwTFatpqwvjxPRnP0dO3vppSWiwK189Ows6GwGumhRSpTmyH4CWEalcL0gdCD@vger.kernel.org, AJvYcCX2LMIhQ6EVmnkECm5H1xOqA26099cMKqZHDLb3snQOaHAII2I5pbbgC2ScvY2UAJCHWL9K3nvrFknz1qONp+CPMw==@vger.kernel.org, AJvYcCXc6rBX4B7tDEFX89zlzTTdnMaKavPMzO6FCLF0Fp51dWzHpePLktp9KpDsTPBEb2azHKHXUxYL49arAuSU2bQ=@vger.kernel.org, AJvYcCXgB42XCutcroFoVKxqmQ3xVd06k4oIAcHRUvkIUAQRtVdVKECbH9h9M9zw29dh6Av1J9g=@vger.kernel.org, AJvYcCXvi5cxeCUvrafei1UmrndmyryPFc3Yjd/XjPlDWE8wKBKBqfauz/iR5f6TXTsiAmqgA/04JIOBiM57@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywss9HWQbBVgJHtvIqk1Wu4DkB/i43GOJbJ7pSBIffBAxWqmqfp
+	RPSo3fNJedto7dlLNTrd34VBZVBaW6YphvSAysX7nCs1Y6E5lZVzu/a9j9jwmABqE2Bgu0nLqyB
+	6em3OiiG3xXVqSuX9z1jAxXZ5Yl4=
+X-Google-Smtp-Source: AGHT+IGDysp0zVaI/G56jPcUmenrli6iDQ7ZCklZUQ9W3MAWEI6d8p2NALI8I7dIlWV2Pg4Oztsl5Tqp++gl5gafuuo=
+X-Received: by 2002:a2e:4a0a:0:b0:2ef:1784:a20 with SMTP id
+ 38308e7fff4ca-2f91ca68786mr32564001fa.38.1727357920170; Thu, 26 Sep 2024
+ 06:38:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <15f42ddd-b011-4136-b2e4-bc266fab25b6@proton.me>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-57-ardb+git@google.com> <4eca972d-a462-4cc5-9238-5d63485e1af4@oracle.com>
+In-Reply-To: <4eca972d-a462-4cc5-9238-5d63485e1af4@oracle.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 26 Sep 2024 15:38:27 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEOFDwoYrLH9f-d46HRPMw7HjWRQGNdMu5_D_Ny3UtPxg@mail.gmail.com>
+Message-ID: <CAMj1kXEOFDwoYrLH9f-d46HRPMw7HjWRQGNdMu5_D_Ny3UtPxg@mail.gmail.com>
+Subject: Re: [RFC PATCH 27/28] x86/kernel: Switch to PIE linking for the core kernel
+To: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 26, 2024 at 01:00:58PM +0000, Benno Lossin wrote:
-> On 12.09.24 00:52, Danilo Krummrich wrote:
-> > +/// # Invariants
-> > +///
-> > +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
-> > +struct ReallocFunc(
-> > +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut core::ffi::c_void,
-> > +);
-> > +
-> > +impl ReallocFunc {
-> > +    // INVARIANT: `krealloc` satisfies the type invariants.
-> > +    const KREALLOC: Self = Self(bindings::krealloc);
-> > +
-> > +    /// # Safety
-> > +    ///
-> > +    /// This method has the same safety requirements as [`Allocator::realloc`].
-> > +    ///
-> > +    /// # Guarantees
-> > +    ///
-> > +    /// This method has the same guarantees as `Allocator::realloc`. Additionally
-> > +    /// - it accepts any pointer to a valid memory allocation allocated by this function.
-> > +    /// - memory allocated by this function remains valid until it is passed to this function.
-> > +    unsafe fn call(
-> > +        &self,
-> > +        ptr: Option<NonNull<u8>>,
-> > +        layout: Layout,
-> > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError> {
-> > +        let size = aligned_size(layout);
-> > +        let ptr = match ptr {
-> > +            Some(ptr) => ptr.as_ptr(),
-> > +            None => ptr::null(),
-> > +        };
-> > +
-> > +        // SAFETY:
-> > +        // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and thus only requires that
-> > +        //   `ptr` is NULL or valid.
-> > +        // - `ptr` is either NULL or valid by the safety requirements of this function.
-> > +        //
-> > +        // GUARANTEE:
-> > +        // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc`.
-> > +        // - Those functions provide the guarantees of this function.
-> > +        let raw_ptr = unsafe {
-> > +            // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
-> > +            self.0(ptr.cast(), size, flags.0).cast()
-> > +        };
-> > +
-> > +        let ptr = if size == 0 {
-> > +            NonNull::dangling()
-> > +        } else {
-> > +            NonNull::new(raw_ptr).ok_or(AllocError)?
-> > +        };
-> > +
-> > +        Ok(NonNull::slice_from_raw_parts(ptr, size))
-> > +    }
-> > +}
-> 
-> I remember asking you to split this into a different commit. I think you
-> argued that it would be better to keep it in the same commit when
-> bisecting. I don't think that applies in this case, are there any other
-> disadvantages?
+On Wed, 25 Sept 2024 at 22:25, Vegard Nossum <vegard.nossum@oracle.com> wrote:
+>
+>
+> On 25/09/2024 17:01, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> >
+> > Build the kernel as a Position Independent Executable (PIE). This
+> > results in more efficient relocation processing for the virtual
+> > displacement of the kernel (for KASLR). More importantly, it instructs
+> > the linker to generate what is actually needed (a program that can be
+> > moved around in memory before execution), which is better than having to
+> > rely on the linker to create a position dependent binary that happens to
+> > tolerate being moved around after poking it in exactly the right manner.
+> >
+> > Note that this means that all codegen should be compatible with PIE,
+> > including Rust objects, so this needs to switch to the small code model
+> > with the PIE relocation model as well.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >   arch/x86/Kconfig                        |  2 +-
+> >   arch/x86/Makefile                       | 11 +++++++----
+> >   arch/x86/boot/compressed/misc.c         |  2 ++
+> >   arch/x86/kernel/vmlinux.lds.S           |  5 +++++
+> >   drivers/firmware/efi/libstub/x86-stub.c |  2 ++
+> >   5 files changed, 17 insertions(+), 5 deletions(-)
+> >
+...
+>
+> This patch causes a build failure here (on 64-bit):
+>
+>    LD      .tmp_vmlinux2
+>    NM      .tmp_vmlinux2.syms
+>    KSYMS   .tmp_vmlinux2.kallsyms.S
+>    AS      .tmp_vmlinux2.kallsyms.o
+>    LD      vmlinux
+>    BTFIDS  vmlinux
+> WARN: resolve_btfids: unresolved symbol bpf_lsm_key_free
+> FAILED elf_update(WRITE): invalid section entry size
+> make[5]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 255
+> make[5]: *** Deleting file 'vmlinux'
+> make[4]: *** [Makefile:1153: vmlinux] Error 2
+> make[3]: *** [debian/rules:74: build-arch] Error 2
+> dpkg-buildpackage: error: make -f debian/rules binary subprocess
+> returned exit status 2
+> make[2]: *** [scripts/Makefile.package:121: bindeb-pkg] Error 2
+> make[1]: *** [/home/opc/linux-mainline-worktree2/Makefile:1544:
+> bindeb-pkg] Error 2
+> make: *** [Makefile:224: __sub-make] Error 2
+>
+> The parent commit builds fine. With V=1:
+>
+> + ldflags='-m elf_x86_64 -z noexecstack --pie -z text -z
+> call-nop=suffix-nop -z max-page-size=0x200000 --build-id=sha1
+> --orphan-handling=warn --script=./arch/x86/kernel/vmlinux.lds
+> -Map=vmlinux.map'
+> + ld -m elf_x86_64 -z noexecstack --pie -z text -z call-nop=suffix-nop
+> -z max-page-size=0x200000 --build-id=sha1 --orphan-handling=warn
+> --script=./arch/x86/kernel/vmlinux.lds -Map=vmlinux.map -o vmlinux
+> --whole-archive vmlinux.a .vmlinux.export.o init/version-timestamp.o
+> --no-whole-archive --start-group --end-group .tmp_vmlinux2.kallsyms.o
+> .tmp_vmlinux1.btf.o
+> + is_enabled CONFIG_DEBUG_INFO_BTF
+> + grep -q '^CONFIG_DEBUG_INFO_BTF=y' include/config/auto.conf
+> + info BTFIDS vmlinux
+> + printf '  %-7s %s\n' BTFIDS vmlinux
+>    BTFIDS  vmlinux
+> + ./tools/bpf/resolve_btfids/resolve_btfids vmlinux
+> WARN: resolve_btfids: unresolved symbol bpf_lsm_key_free
+> FAILED elf_update(WRITE): invalid section entry size
+>
+> I can send the full config off-list if necessary, but looks like it
+> might be enough to set CONFIG_DEBUG_INFO_BTF=y.
+>
 
-I don't really like the intermediate `#[expect(dead_code)]`, plus it's
-additional work you didn't really give me a motivation for, i.e. you did not
-mention what would be the advantage.
+Thanks for the report. Turns out that adding the GOT to .rodata bumps
+the section's sh_entsize to 8, and libelf complains if the section
+size is not a multiple of the entry size.
 
-But sure, I will change it for the next version.
-
-> 
-> ---
-> Cheers,
-> Benno
-> 
-> > +
-> > +// SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees that
-> > +// - memory remains valid until it is explicitly freed,
-> > +// - passing a pointer to a valid memory allocation is OK,
-> > +// - `realloc` satisfies the guarantees, since `ReallocFunc::call` has the same.
-> > +unsafe impl Allocator for Kmalloc {
-> > +    #[inline]
-> > +    unsafe fn realloc(
-> > +        ptr: Option<NonNull<u8>>,
-> > +        layout: Layout,
-> > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError> {
-> > +        // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
-> > +        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
-> > +    }
-> > +}
-> 
-> 
-> > +
-> >  unsafe impl GlobalAlloc for Kmalloc {
-> >      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> >          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
-> > --
-> > 2.46.0
-> > 
-> 
+I'll include a fix in the next revision.
