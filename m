@@ -1,133 +1,137 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2EF9474;
-	Thu, 26 Sep 2024 12:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243C51714BD;
+	Thu, 26 Sep 2024 12:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727352995; cv=none; b=uMiN/me48OYhwMTzTUDPPnekuRYWR5uvGtc3KXFuWzBnfGcjeEAoO+cVlhKvMs2j2kAZRAkCqNuyzHhTM0EzHBHKaw8Nqlu8eHpST0DOpUbntArbykWvWWlq9AvRmsak6yPLSsNR+Ly45aw8Xxk3QKgOfabwfLe7QrFP6Mbfhog=
+	t=1727353364; cv=none; b=X2x0wFuHtx6g0UvHm7Z+qrtMmrNSBoemSJA06jXuWp5Ps0zIpis/Bnyj6qKrbMn0k0wSy2CDRK3wOyHehomxiG228zvc0MnhC+JQae7vPJ7keanzWE3Wo7AhvPPQH5H2jc1h0FODCdQaE7uYx8sWbHk7C6xPPx7eiFGZv51HXkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727352995; c=relaxed/simple;
-	bh=6jDdywGd8sGLg0g+8ifYmBt7GKJcmc0mmZs+1uU2AaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kldAGTVzcGT+eTi+2jFV9Yi82gw3jOIvvKBYYQscXtAbo79P48DnyqLnf6U+r1L81irTn33mjBKFab3oyzml/0rJ112aPOE9Kv58BRHHgmFKiMdEmS80h5KE+hmOz6l7Fm8o0GnUC6i7Mgou82VUMO6vWz2dRw+PG+riQDDMvRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kcm8FqVf; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kcm8FqVf"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2059112f0a7so7047405ad.3;
-        Thu, 26 Sep 2024 05:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727352993; x=1727957793; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RFWRrrc/OB59rTuGIRSZF3RT/9LOUXYC3YSwE4RjXKQ=;
-        b=kcm8FqVfU6xhejk0fu7kJcTiRRk0zpPuQ62095E5NfjvfrT9+aC8w65Y/p4BdJkPXp
-         kiVT+WE7LXlqEDU20LFd1fNlWArdkzfruAiqwapa4c3Uwrh/5EWYI9y4781U0gwCpa4e
-         cEEeF9F/b87pbEwUt8DjdBNAu+tm6xUOQIdFZO1Dug4swYT1uWTnkccysu867Pb1442E
-         PBWNCNVh8wgqe9TEoleVbRzM6ydqIFRbc6cH+QpUa77mYWgf33+dI99oRl3Gf69qpXxz
-         xuuejHfwdyKjgaFOcYJ5IWNHbcYgPkfclKbxa3/hwEpO2DPJPdrwU5D6D1VquID65UgT
-         sknA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727352993; x=1727957793;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RFWRrrc/OB59rTuGIRSZF3RT/9LOUXYC3YSwE4RjXKQ=;
-        b=WjhTX1GeEifHyDkRIzYJ0PS6+51RJcIqke20H69QIbrGfCAze4VQPtDwH4OhkfxWRT
-         NZjLdRnbVYh4pt+5sQPhCdDZ5MDS0S30Ma1hFqPTWcdn0zkPELVXvPl72/lGrG9OwpLW
-         Ornk8keSJJ48Xy/x29vPqgglnn9DiXnA3aSH2/WWzg9XHD+EiUK+i3Rg7j/jeJl8eAdS
-         CfFtFILyd2gjKD3z1j/ZgmKTC2S2lTw0iy6fAeJQNRjkAOUfH4WYZ9kDY0Q4ZZDo1FLO
-         jqg0XDxSgF4D4DhMISgg5o8JoxwCvCTD5fCeZHg+Q8PwgTPNfCtBuhJYfsNr+ieE25PD
-         vLKw==
-X-Gm-Message-State: AOJu0YycN36oqqAX7tFMzVUk+Bn2gx6XSeyYgnDb6ZQFEjUap2cCUlYY
-	35Rr3dh97ieSI+c7JohDIJSUaQBpTOzawOacSPuMDhMiB1M0gcDGJ5S2LXKU
-X-Google-Smtp-Source: AGHT+IHyCVxo4uRC7+KQrVZwA38pdP8q+YT+SnlvhP6nlgn5ij9mjJRzqH+5BytSE/yLkRG3f8576g==
-X-Received: by 2002:a17:903:2bce:b0:205:5427:2231 with SMTP id d9443c01a7336-20afc5e1120mr81235105ad.47.1727352992831;
-        Thu, 26 Sep 2024 05:16:32 -0700 (PDT)
-Received: from localhost.localdomain (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af1722177sm37722765ad.94.2024.09.26.05.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Sep 2024 05:16:32 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: netdev@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch,
-	tmgross@umich.edu,
-	aliceryhl@google.com,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH net v3] net: phy: qt2025: Fix warning: unused import DeviceId
-Date: Thu, 26 Sep 2024 12:14:03 +0000
-Message-ID: <20240926121404.242092-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1727353364; c=relaxed/simple;
+	bh=YZzBmMO9bp4raxlf9pje1ASVpTpnjxF5iuLUpm5tYIs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EFvy+uSn2o5+9a/ns7gWs0pZgHDB1ilrJzK1/bjVKFxMjDdeNNvUghvh1iyV6DTzBT9OWD0WY7oEyrsmoSzEIJNR0/cqRarqFWXv3EEeBHywzlUqExdWtMTUz/Loxdj5ydjUFrt7QHkqUhjsvrFkAb/fgFHKaqeXi5LnmnhskDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4XDt5q71Kdz9sSL;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id SeWZDw47vw6L; Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XDt5q5zDDz9sRy;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B71BE8B76E;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id cW2IzJlvTqAb; Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 63CB08B763;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Message-ID: <b31c74c1-0c19-4bc4-b1af-db817977748d@csgroup.eu>
+Date: Thu, 26 Sep 2024 14:22:39 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
+To: Matthew Maurer <mmaurer@google.com>, masahiroy@kernel.org,
+ ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net,
+ mcgrof@kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>,
+ Naveen N Rao <naveen@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st,
+ j@jannau.net, asahi@lists.linux.dev, linux-modules@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
+ <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org
+References: <20240925233854.90072-1-mmaurer@google.com>
+ <20240925233854.90072-15-mmaurer@google.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20240925233854.90072-15-mmaurer@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Fix the following warning when the driver is compiled as built-in:
 
-      warning: unused import: `DeviceId`
-      --> drivers/net/phy/qt2025.rs:18:5
-      |
-   18 |     DeviceId, Driver,
-      |     ^^^^^^^^
-      |
-      = note: `#[warn(unused_imports)]` on by default
 
-device_table in module_phy_driver macro is defined only when the
-driver is built as a module. Use phy::DeviceId in the macro instead of
-importing `DeviceId` since `phy` is always used.
+Le 26/09/2024 à 01:38, Matthew Maurer a écrit :
+> Adds a new format for MODVERSIONS which stores each field in a separate
+> ELF section. This initially adds support for variable length names, but
+> could later be used to add additional fields to MODVERSIONS in a
+> backwards compatible way if needed. Any new fields will be ignored by
+> old user tooling, unlike the current format where user tooling cannot
+> tolerate adjustments to the format (for example making the name field
+> longer).
+> 
+> Since PPC munges its version records to strip leading dots, we reproduce
+> the munging for the new format. Other architectures do not appear to
+> have architecture-specific usage of this information.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+>   arch/powerpc/kernel/module_64.c | 23 ++++++++-
+>   kernel/module/internal.h        | 11 ++++
+>   kernel/module/main.c            | 92 ++++++++++++++++++++++++++++++---
+>   kernel/module/version.c         | 45 ++++++++++++++++
+>   4 files changed, 161 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+> index e9bab599d0c2..4e7b156dd8b2 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -355,6 +355,23 @@ static void dedotify_versions(struct modversion_info *vers,
+>   		}
+>   }
+>   
+> +static void dedotify_ext_version_names(char *str_seq, unsigned long size)
+> +{
+> +	unsigned long out = 0;
+> +	unsigned long in;
+> +	char last = '\0';
+> +
+> +	for (in = 0; in < size; in++) {
+> +		/* Skip one leading dot */
+> +		if (last == '\0' && str_seq[in] == '.')
+> +			in++;
+> +		last = str_seq[in];
+> +		str_seq[out++] = last;
+> +	}
 
-Fixes: fd3eaad826da ("net: phy: add Applied Micro QT2025 PHY driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202409190717.i135rfVo-lkp@intel.com/
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v3:
- - add Fixes tag
-v2:
- - fix the commit log
- - add Alice and Trevor's Reviewed-by
----
- drivers/net/phy/qt2025.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Why do you need a loop here ?
 
-diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-index 28d8981f410b..1ab065798175 100644
---- a/drivers/net/phy/qt2025.rs
-+++ b/drivers/net/phy/qt2025.rs
-@@ -15,7 +15,7 @@
- use kernel::net::phy::{
-     self,
-     reg::{Mmd, C45},
--    DeviceId, Driver,
-+    Driver,
- };
- use kernel::prelude::*;
- use kernel::sizes::{SZ_16K, SZ_8K};
-@@ -23,7 +23,7 @@
- kernel::module_phy_driver! {
-     drivers: [PhyQT2025],
-     device_table: [
--        DeviceId::new_with_driver::<PhyQT2025>(),
-+        phy::DeviceId::new_with_driver::<PhyQT2025>(),
-     ],
-     name: "qt2025_phy",
-     author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
+Can't you just do something like:
 
-base-commit: 72ef07554c5dcabb0053a147c4fd221a8e39bcfd
--- 
-2.34.1
+	if (str_seq[0] == '.')
+		memmove(str_seq, str_seq + 1, size);
 
+
+> +	/* Zero the trailing portion of the names table for robustness */
+> +	memset(&str_seq[out], 0, size - out);
+
+This seems unneeded.
+
+> +}
+> +
+>   /*
+>    * Undefined symbols which refer to .funcname, hack to funcname. Make .TOC.
+>    * seem to be defined (value set later).
+
+
+
+Christophe
