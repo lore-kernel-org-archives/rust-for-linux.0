@@ -1,106 +1,130 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8036917BB30
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 10:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064741AED2C
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 10:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727346932; cv=none; b=iUEdzoFo7q/vh838PER5x+TlW65zpr+7NvcdBJQCTHBavKWv1InqpFqBJ108IKJIf9JR+UpwE53qFwl6wTaiBYCjN8TwrXsWzguNVI00uSGyy8z+WkWvVJUGgSiG16ojEysjoHih7911LB1eNCXYHTWk2uSafokAnU8HX91/TVQ=
+	t=1727347135; cv=none; b=UDsZWxb+4eT7UwIlGsAznDlckU+hVv4yQ+9VcuPVGnfhs/Jd7Sgwdl1vodVx6UCWBlot/bgptAblfUj6/EL5CN7+TlInVc1H2PU2SbMgvutsQo7E7eJcj3iC66fxp/Rgn8v8CyvcjkUJFTmDhu3zWlXhHA+6gVxFlGIAOMz6VlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727346932; c=relaxed/simple;
-	bh=DQRtPPfHDTPkf+uykLyxQkqqMXbOre+Rf1fHvFHNX+s=;
+	s=arc-20240116; t=1727347135; c=relaxed/simple;
+	bh=8r1pcZkfw/tFfZR6si2jJmP1lsdT9fdbbtCLXQYgb+Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kj3xOdbYs64YhSTPOzQGQIwZri0181wcCLB1ByuuRPPLd6UPAFr4+HpwS9+mepTHNtToMCvXwHaNo2t1xRzVo+zYuwdMQypGzOqYgcfs8qntgMZlxEg3qDYYtfOoeoQMSlO2PeV0pjFSR/yjpY3f7ZTUUZbCFsUf0K9iH8TkaNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hKOIyfO1; arc=none smtp.client-ip=209.85.221.52
+	 To:Cc:Content-Type; b=jEnDcMyQ6E0j1VuSIRq34OZxgAjG9XdNeh0n1z7Ok9w46SqF4ssIke1dBfLamJAGALWWgbMqYGHToyG+xF2fWRGfiCqooDYprSS97U95oUxXP05lThmb1wzqhn4ueGNHm0fOmVXhgaSlcai3mmj6+raGmcVOIaJqNzm3cU+dAAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I06fjO7L; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hKOIyfO1"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-374c180d123so489563f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 03:35:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I06fjO7L"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-374bd059b12so434059f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 03:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727346929; x=1727951729; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727347131; x=1727951931; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DQRtPPfHDTPkf+uykLyxQkqqMXbOre+Rf1fHvFHNX+s=;
-        b=hKOIyfO1wXqleegQX2qcUSZ2MeolHAdj6XRBlCReSs7JyDpz8UrJIiMrdhRrd5cS4B
-         t7CVlBoQ5tHukWlSg2YPFNkJ7xb/s7Hg/HP/ggTjt5SnugZTUtHHsglAw2dTe/97nhYu
-         5xHkUXr9BMTUWxgJe5wmiYWRKTfa1enaB+mVwgRCwqqBr3j8izWAWDOBHYMV/JQA0hNm
-         Sd+QgPwF//kpGyqE+rzQJCv/+cEDmJwHgLqpMoVf6qdG7cCQyGELkLPN6zd3xZHJAi7e
-         PKnXU6SQ8uZM0LTZARJJknmfIDtoULqe4wo60Jcj7WCIHIyiee1+VwoD7Xsdj/UTKDnp
-         1A3g==
+        bh=dsEcz1fbSNxPzlZJA2pt/9oZVDJuGBFj7OVbuqkmeN0=;
+        b=I06fjO7LaKok3OIAYCTlgHRfm8QtC/FzLlACcjjGolR76AATX8bnk7s2B9q91pD0Sw
+         INimwp/+vULcEBGor6PHdzSbzRlhAcoMNZFH8iAolvCwUndbyXXauxCwcMXXPERw0C07
+         cOvtdthGT/GdA8ehMpHGbbh2WGQf6EQMN1HBvTKW/newkK6iCVHRxcYFPULxVNUK1KMk
+         y6qiRalTbqGv+v/ap6EE+Q69U92zUGk4iuuwAy/6Ias9CuaXuRSkKkt+7gzLSwp/3pXN
+         Z5rGBZs20J6NY4ln5XfzaWkJPs+2CSDas0vXnBWh8NWCNZN2aFJl6rZ7tMORfUMYmRkX
+         ZH6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727346929; x=1727951729;
+        d=1e100.net; s=20230601; t=1727347131; x=1727951931;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DQRtPPfHDTPkf+uykLyxQkqqMXbOre+Rf1fHvFHNX+s=;
-        b=Mx7Zetx3RIlZ3nza6+oj18KeHf5OLbeevog34u2fT38ELYsaVLWC5Byq09RH7dK8xR
-         xQd1qpmd0GlZW29jrYDYCe9QrMcfxxi54iWwTv4GHGEgxhDIGoDH2ECAuR/J5GXazBJw
-         DrbZ7FWGR749nXTsqO5M1OqkecCkNJsixl/uWr4FRUVVjryMg/k704oHfD/CHuh+k851
-         DGGv5YHSYHjXAHZdCWeMz+y3UIts6a0XaZeai1VTELVO1eFEdE5tmshDt2aXOWLMoHkP
-         MifJRhvOsqED2TVq8yFxEzEGyW5Yl5wFgCQpMIMnhfMMDVkCKUdhi6Vtjzj9InlaYjyQ
-         Zldg==
-X-Forwarded-Encrypted: i=1; AJvYcCXi/R7SKc40ekTREEdQ+3rTg5LvLSqoj0AhGKBiILTjg1QoTbNoVGtJkj8AMvhMCpylNmQVWdA06h9e5DSwAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTaXfDx549M2U+OH4C2upJiqs+EbCVImBfrELAxjqmsqNm/tAp
-	vLaU4w6p0wMGbUrgC+89ELNsH5aabQehayaTh7GSAdi69MtbhFqjQEo8RL/nqmzUWhTT0mUzuLP
-	gIM+3650iBB5zyYf1SrHWvAOcKheYpk3joMR3
-X-Google-Smtp-Source: AGHT+IHXXeTT3uinw2wy5kXyeKfp1sqH22V93yXFOXjeGHyt9M0+KGc1cUhIdgFdG+pE67gOlvtDfEIEZCePatr0c9Q=
-X-Received: by 2002:a5d:5d86:0:b0:37c:c5ba:b8cd with SMTP id
- ffacd0b85a97d-37cc5bab97emr3227843f8f.41.1727346928397; Thu, 26 Sep 2024
- 03:35:28 -0700 (PDT)
+        bh=dsEcz1fbSNxPzlZJA2pt/9oZVDJuGBFj7OVbuqkmeN0=;
+        b=gWtAlijbfbijuGKvhtkU3nVToWs4tKLLDF16kzX9HLEZfNKUfxKv0xrF59/IQ42+V+
+         e4WrbEPH7zRkn6ahF0E7Ju6csDOEoJuR4ibrVxsMOKJVhpnheILWdtj5DA/ovBdJhJQV
+         fPvPO2j//C6qNoSyiDCwikOg4FgmzEhRadoTlKKX72hMjiIgs4m73e/2XyJ4W14FWVmP
+         OjxS6a13jCICodm3AuwhsXJN6HFown/axP4SgjNwDJ8ANoXCQEGQvNJwXNifHGH2OJxn
+         76rVLSmTMb3O0B2+Ygyb8Qg7UYrd5V/vvpf4tAj2YkaJoBB01eQdDOBZZ2L2gOD6+gB4
+         CTEg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBGmf/ZMyAKNoT2vHeEUEDFtoC5z3t8r2OMjos4lMiEIH3kYxB/Fepsip0q0YytRHZhXoYWkwghBhP0KhU7w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx64r4QS2kYizKl6u0pzEAB0efoRXByXYvdo8bwhbfRD2Fz3arV
+	B1E1qcORnfQwilo/7/0SNc21QqWw/un27kXUAfFN1e03AZWzNiNMod41ugULxAM5xCp5I3JJ3rL
+	IYsZFlsD+sQ/iJcuqH9vgnvTArJ5uKC40fHb+
+X-Google-Smtp-Source: AGHT+IG5GKlP6TVqHse15LFnIap0YvbFb8l1DzbrYAO+qzwI5i5VHGfbIunMaThYXrhbKoz3QqKt8XmqA8AbgALoDCU=
+X-Received: by 2002:a5d:4e0c:0:b0:374:ba83:8d73 with SMTP id
+ ffacd0b85a97d-37cc245b82fmr3076607f8f.8.1727347131137; Thu, 26 Sep 2024
+ 03:38:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926093849.1192264-1-aliceryhl@google.com> <CANiq72mGsevNqECufBo6EP8cxFd=vwcXDpVdsgts-Ve0+mPkrg@mail.gmail.com>
-In-Reply-To: <CANiq72mGsevNqECufBo6EP8cxFd=vwcXDpVdsgts-Ve0+mPkrg@mail.gmail.com>
+References: <20240925-cfi-norm-kasan-fix-v1-1-0328985cdf33@google.com> <20240926000053.GA3188344@google.com>
+In-Reply-To: <20240926000053.GA3188344@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 26 Sep 2024 12:35:15 +0200
-Message-ID: <CAH5fLgif4X5pwSeky17M3J_9Si1HZtXjLAH7J2e=V36Wm7B7xQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: KASAN+RETHUNK requires rustc 1.83.0
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ojeda@kernel.org, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, gary@garyguo.net, hpa@zytor.com, 
-	jpoimboe@kernel.org, linux-kernel@vger.kernel.org, masahiroy@kernel.org, 
-	mingo@redhat.com, nathan@kernel.org, nicolas@fjasle.eu, 
-	patches@lists.linux.dev, peterz@infradead.org, rust-for-linux@vger.kernel.org, 
-	tglx@linutronix.de, x86@kernel.org
+Date: Thu, 26 Sep 2024 12:38:38 +0200
+Message-ID: <CAH5fLgjoQvxFj5S1s_fUsfSho9QRCV5acHsQxpZdvEztpaxqCw@mail.gmail.com>
+Subject: Re: [PATCH] cfi: encode cfi normalized integers + kasan/gcov bug in Kconfig
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Gatlin Newhouse <gatlin.newhouse@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-kbuild@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 12:34=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Sep 26, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
 >
-> On Thu, Sep 26, 2024 at 11:39=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
+> Hi Alice,
+>
+> On Wed, Sep 25, 2024 at 08:10:18AM +0000, Alice Ryhl wrote:
+> > An alternative solution is to inspect a binary created by clang or rust=
+c
+> > to see whether the faulty CFI tags are in the binary. This would be a
+> > precise check, but it would involve hard-coding the *hashed* version of
+> > the CFI tag. This is because there's no way to get clang or rustc to
+> > output the unhased version of the CFI tag. Relying on the precise
+> > hashing algorithm using by CFI seems too fragile, so I have not pursued
+> > this option.
+>
+> I suppose there would be no need to hardcode hashes in the test,
+> it's enough to verify that the hashes for the compiler-emitted
+> functions change when integer normalization is enabled. Still, I
+> agree that this doesn't sound worth it in this case.
+
+Future compilers could change it so that the same hash works in both
+cases. After all, the signatures in question have no integers in them.
+
+> > diff --git a/arch/Kconfig b/arch/Kconfig
+> > index ee58df8b1080..b8066bf43153 100644
+> > --- a/arch/Kconfig
+> > +++ b/arch/Kconfig
+> > @@ -829,7 +829,7 @@ config CFI_CLANG
+> >  config CFI_ICALL_NORMALIZE_INTEGERS
+> >       bool "Normalize CFI tags for integers"
+> >       depends on CFI_CLANG
+> > -     depends on $(cc-option,-fsanitize=3Dkcfi -fsanitize-cfi-icall-exp=
+erimental-normalize-integers)
+> > +     depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+> >       help
+> >         This option normalizes the CFI tags for integer types so that a=
+ll
+> >         integer types of the same size and signedness receive the same =
+CFI
+> > @@ -842,6 +842,22 @@ config CFI_ICALL_NORMALIZE_INTEGERS
 > >
-> > This is caused by the -Zfunction-return=3Dthunk-extern flag in rustc no=
-t
-> > properly informing LLVM about the mitigation, which means that the KASA=
-N
+> >         This option is necessary for using CFI with Rust. If unsure, sa=
+y N.
+> >
+> > +config HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+> > +     def_bool !GCOV_KERNEL && !KASAN
+> > +     depends on CFI_CLANG
+> > +     depends on $(cc-option,-fsanitize=3Dkcfi -fsanitize-cfi-icall-exp=
+erimental-normalize-integers)
 >
-> "...not informing LLVM about the mitigation at the module level (it
-> does so at the function level only currently, which covers most cases,
-> but both are required)" or similar?
+> This looks reasonable to me. Thanks for the fix!
+>
+> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
-That phrasing SGTM.
-
-> > This is being fixed for rustc 1.83.0, so update Kconfig to reject this
-> > configuration on older compilers.
->
-> Yeah, let's go with 1.83.0 as we said -- we can modify it if needed
-> later on. I think the PR is fairly straightforward so it should
-> probably land in that version unless there is an unknown unknown.
->
-> Thanks Alice, looks good to me.
->
-> I will take this one soon.
-
-Thanks!
+Thanks for taking a look!
 
 Alice
