@@ -1,137 +1,80 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243C51714BD;
-	Thu, 26 Sep 2024 12:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116AF2AF09;
+	Thu, 26 Sep 2024 12:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727353364; cv=none; b=X2x0wFuHtx6g0UvHm7Z+qrtMmrNSBoemSJA06jXuWp5Ps0zIpis/Bnyj6qKrbMn0k0wSy2CDRK3wOyHehomxiG228zvc0MnhC+JQae7vPJ7keanzWE3Wo7AhvPPQH5H2jc1h0FODCdQaE7uYx8sWbHk7C6xPPx7eiFGZv51HXkE=
+	t=1727354907; cv=none; b=ib6OcRF3HpPfdDhMUjreCB1J/03LRUuW4id4L55XH5zPjTUFsmQ0nkFbhAH6b76ZBNPjiks+rj5O9g114pd6C2r8uUUwfH1y65dBqw+cg6OkDQnY074MHlg801Cm+u+bu6rOSyW9PicjbvXLS8xDGWGqFWOfksH+bOvSrrKKeJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727353364; c=relaxed/simple;
-	bh=YZzBmMO9bp4raxlf9pje1ASVpTpnjxF5iuLUpm5tYIs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EFvy+uSn2o5+9a/ns7gWs0pZgHDB1ilrJzK1/bjVKFxMjDdeNNvUghvh1iyV6DTzBT9OWD0WY7oEyrsmoSzEIJNR0/cqRarqFWXv3EEeBHywzlUqExdWtMTUz/Loxdj5ydjUFrt7QHkqUhjsvrFkAb/fgFHKaqeXi5LnmnhskDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XDt5q71Kdz9sSL;
-	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id SeWZDw47vw6L; Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XDt5q5zDDz9sRy;
-	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B71BE8B76E;
-	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id cW2IzJlvTqAb; Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 63CB08B763;
-	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
-Message-ID: <b31c74c1-0c19-4bc4-b1af-db817977748d@csgroup.eu>
-Date: Thu, 26 Sep 2024 14:22:39 +0200
+	s=arc-20240116; t=1727354907; c=relaxed/simple;
+	bh=Q2WaV/ktXw0NaQlCEEeZFSLduawrmmDUflwBXTLMRgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hRlfD5TIbjxnuAkk4j7MsJ9AGoY5NLJZb+7RChTZznTa2rdDhAa2+pPdBESP5h+JFWwFY9PHrVT2s8ylh+khk6e3W4MfmsD6FGInkzh3BI2ePxCBcYPC42lKDKKI5AeRUpphuXigsUYgvHrxE1gqHe4pkgVmuAKYdtY+S7MYAjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ur3tT3uT; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ur3tT3uT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB324C4CEC5;
+	Thu, 26 Sep 2024 12:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727354905;
+	bh=Q2WaV/ktXw0NaQlCEEeZFSLduawrmmDUflwBXTLMRgE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ur3tT3uTVz9w5MYzg3nrIMO0exEzJul60D79yuwieRkNiXthj5t6QwIvkAu6hwHZY
+	 W838wDJGeDSLGIoQwTm0P7xzNjghfG/NbjALK7OjDQ/7Ax7cap1Icgcyv0H42kFic8
+	 ZHAWsEydDSlAVSPM5RZDYqQrWD5Fcl69JNJKRIsaeF55cLhhmA3TKs2VVtOrymM7jk
+	 nNA5yCCTHEqdgv9W58piLSKkEnG87WC2WFgXIN1ekPFodRM8nWAO5/xh+a1ecEZFho
+	 hBjIuTikYSqPdjLW6PID8A2ynH3+Ex+xMNY0iBnFoQc9/Eut6ykkF0mGW2V+3Qf8+v
+	 pt+uKmtExh4Hg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] rust: kernel: sort Rust modules
+Date: Thu, 26 Sep 2024 14:47:51 +0200
+Message-ID: <20240926124751.345471-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
-To: Matthew Maurer <mmaurer@google.com>, masahiroy@kernel.org,
- ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net,
- mcgrof@kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
- Alex Gaynor <alex.gaynor@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>,
- Naveen N Rao <naveen@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st,
- j@jannau.net, asahi@lists.linux.dev, linux-modules@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>,
- Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
- <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org
-References: <20240925233854.90072-1-mmaurer@google.com>
- <20240925233854.90072-15-mmaurer@google.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20240925233854.90072-15-mmaurer@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+Rust modules are intended to be sorted, thus do so.
 
+This makes `rustfmtcheck` to pass again.
 
-Le 26/09/2024 à 01:38, Matthew Maurer a écrit :
-> Adds a new format for MODVERSIONS which stores each field in a separate
-> ELF section. This initially adds support for variable length names, but
-> could later be used to add additional fields to MODVERSIONS in a
-> backwards compatible way if needed. Any new fields will be ignored by
-> old user tooling, unlike the current format where user tooling cannot
-> tolerate adjustments to the format (for example making the name field
-> longer).
-> 
-> Since PPC munges its version records to strip leading dots, we reproduce
-> the munging for the new format. Other architectures do not appear to
-> have architecture-specific usage of this information.
-> 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->   arch/powerpc/kernel/module_64.c | 23 ++++++++-
->   kernel/module/internal.h        | 11 ++++
->   kernel/module/main.c            | 92 ++++++++++++++++++++++++++++++---
->   kernel/module/version.c         | 45 ++++++++++++++++
->   4 files changed, 161 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> index e9bab599d0c2..4e7b156dd8b2 100644
-> --- a/arch/powerpc/kernel/module_64.c
-> +++ b/arch/powerpc/kernel/module_64.c
-> @@ -355,6 +355,23 @@ static void dedotify_versions(struct modversion_info *vers,
->   		}
->   }
->   
-> +static void dedotify_ext_version_names(char *str_seq, unsigned long size)
-> +{
-> +	unsigned long out = 0;
-> +	unsigned long in;
-> +	char last = '\0';
-> +
-> +	for (in = 0; in < size; in++) {
-> +		/* Skip one leading dot */
-> +		if (last == '\0' && str_seq[in] == '.')
-> +			in++;
-> +		last = str_seq[in];
-> +		str_seq[out++] = last;
-> +	}
+Fixes: 570172569238 ("Merge tag 'rust-6.12' of https://github.com/Rust-for-Linux/linux")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/lib.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Why do you need a loop here ?
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 22a3bfa5a9e9..b5f4b3ce6b48 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -44,8 +44,8 @@
+ pub mod page;
+ pub mod prelude;
+ pub mod print;
+-pub mod sizes;
+ pub mod rbtree;
++pub mod sizes;
+ mod static_assert;
+ #[doc(hidden)]
+ pub mod std_vendor;
 
-Can't you just do something like:
+base-commit: 11a299a7933e03c83818b431e6a1c53ad387423d
+-- 
+2.46.2
 
-	if (str_seq[0] == '.')
-		memmove(str_seq, str_seq + 1, size);
-
-
-> +	/* Zero the trailing portion of the names table for robustness */
-> +	memset(&str_seq[out], 0, size - out);
-
-This seems unneeded.
-
-> +}
-> +
->   /*
->    * Undefined symbols which refer to .funcname, hack to funcname. Make .TOC.
->    * seem to be defined (value set later).
-
-
-
-Christophe
