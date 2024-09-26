@@ -1,88 +1,74 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A841188CB2;
-	Thu, 26 Sep 2024 21:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F6218991A;
+	Thu, 26 Sep 2024 22:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727387845; cv=none; b=c3a0giP7CrTPCE/WHOTzbZJon7psvCe7Ma8l0Ur2MpRLB0jdQsLjM41KygToLobV0Phbmr0HgTg/rjKWAKsfMFicAVLbb145n0/7l08BxdtXqlWpaZsKGFpyEOdGqF2eZ+fZab/Mwp6uyi8REFBqyAQE0046A1mVSsntu/a+o34=
+	t=1727388512; cv=none; b=rezFAnykkIoA/lE4R7MMnMM0oPpV7MN9cl+jS4PVOyJRGMhClZQ/nqXqptvoCjGBjRQn5xstwkAuQKrPLkX4GlRLX6UoF0Onh5iIj/wWofM6uLV9Mnny9Hyac5zFxfGNllKPXIEBgun+n64lZvv35HFGKLAXGrhCrEoY9JwJBxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727387845; c=relaxed/simple;
-	bh=eEN/xSFzcED2rz79aaTmMseX/MDz8XwqNLr76/6nOiM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=orB+14K31Gx5vRaMlcCuDoUjI2XrhU6+qlB96JAFtADZL+Cw97laBXb9DN9tyMAg03+9L08jgWX8xibbefgWlTnE0V1Nf3A9TtNahsNJCTiBxBjI7sMJ+X8swshmroJQ2JRj7Ze5VNOD1VtKSDfs3QZDpihE/SOB2MMtG5f6kxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YCU3CTUA; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727388512; c=relaxed/simple;
+	bh=SEcyKZhUdqyvT/a0YMGjgny0uLX7fCadLutERnzCrDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mf+roGOKKMM37N8JK47oFc8+ZfiyAZBckxJMVAXzuamW7fhTz1cey/YAiC3GYPHMpLKEvMLGpe1W9wgkHv07QpfVK5tRjRM+dcud5ofgtRHN9q2jgx2UfsVJhA5SuW7sdp1kta5wLkntoB+YxwgQYXiKvjtKFB9wR/iqpXV6CwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=STgj/2H9; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YCU3CTUA"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2e0b02ed295so113904a91.2;
-        Thu, 26 Sep 2024 14:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727387843; x=1727992643; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eEN/xSFzcED2rz79aaTmMseX/MDz8XwqNLr76/6nOiM=;
-        b=YCU3CTUAoSLAGuSojA+yEoAfuX/Mb+h1aPlE7Cm2hzyOR9Eo3rQ1ugC080I/Qr0zZp
-         0T7PAV3AsgT2hx9movuKpjX5bFJ1eoqWA50q69sq6DqcgEVhzbbE+oPfROQv95ntltX7
-         mEVgdTC1uIV/Y15GBz3l3xSligVjePk8nQWbaPiINv/iOjXdOP2X1bww92IK6oRzdXUn
-         3xs2yQTTa0oOl5ttPisz3SlBLsC0bflATR+/bKFu1m7Y1fz5GvggG7+rmTAK05u2ZUGM
-         Bjq2lzs1VSEhUk4gPhym8L5ULtRCip3rI9JMapnGJhIUuvDYV9lJF6275/2XboPHn/zZ
-         sG1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727387843; x=1727992643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eEN/xSFzcED2rz79aaTmMseX/MDz8XwqNLr76/6nOiM=;
-        b=OQhoVLqk4Arv5sTyLe4QU8JL3Dtkq2l87spx2+8NS3HJI4coqQYCWtEDB944/RXc9x
-         NCzaGRVjYPWfqrbPjm/g3OmKVrm3iLgO307rWiLr9m8RciWzq+q3mdthvQpcZf9kCJqf
-         lTypduWcd8QAHosK77OHBnxwdMEygbEQM88CmfKtGWRi5mi8r1kLpuiTnPwdNwIJZmAv
-         uN5/eu8Pa8x+t9ULVZQ/uW4F5ekUSsW/dmC/0JC3rgR9z0tWNZWsU7k7b0jWmwe9aRrN
-         F/EdDWnHgnnWF5ur8l1TJh9iXTmaTzicEUl5db84ianzbGvzszEERnSwM1HFdc+blUtx
-         iSqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVT8+jpfkxdBgTTaSOa0n7OSOwUBdu4J0u36jetCUFgOE52x2LsnbbtctuBBqgERXRw0ojd3ONpjCHolV+dTJA=@vger.kernel.org, AJvYcCVV6TzH4jeBfX1sPp4JO9E3q0wOo/Z+JcQVsrqleRBpfSqb1JP4SSMNNTYfN8mL/hSgNL/d1eL4k09xbQI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6PsXhQF/iugttUMfXTAAdFODuyw3IEA37hhML/0M4GpOP1Ecy
-	Sa1GaEz2JkWU+kounveiePPy6W0tGrk8I5BqwEGOqabxSL13LukYyVmS1oEaqmqD4S1qx2rNP82
-	l/LcBqpwINHmyMpCjjJZQ4X7fRks=
-X-Google-Smtp-Source: AGHT+IHpO/1BWz17vURNySF2gUTZTjYnPxNW7MaMKBqIsMmLma82UqLz0MNk8I1C0jgMwINzCj+JsQLX5zpaS0kqHpU=
-X-Received: by 2002:a17:90a:ba97:b0:2e0:7adb:6380 with SMTP id
- 98e67ed59e1d1-2e0b8ee512bmr536169a91.9.1727387843256; Thu, 26 Sep 2024
- 14:57:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="STgj/2H9"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iSRgFKCG9F0JO0YOzBUN908kFzxuI0PQwnx9+5kbiSw=; b=STgj/2H920gV0pTP7QbaJhpcMF
+	NQfUOGnmBqKc2pHmYDkLNdKk9pFuF6Q0thBOWoxSoNrl0lGcTQDn83BEUI1AcK8DdicAaUULVG5zO
+	O9SKrFeK88XCW+mD1+OsEGkbzf9W7os/85XgLDVIEpgdf45RZNdLJ1MMrL8jqs+LBN2KCK5eTDlVR
+	UR2DfGlT9pqCEoC+zTOrJiEXPhXXlEYZTaa9HumBiI4BaYsTV8Vwp5rzyLY6Nww2cM/0+5v/Gy/bS
+	wH3xEqWer0N2VNKT5uXD5z0Xi+cBKUwf5SVDSp+TsGKAg899qiYZNvjCcD1eq9OekTZ54VyYNuPIQ
+	mb7v66qQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1stwer-0000000FnUw-1JsK;
+	Thu, 26 Sep 2024 22:08:21 +0000
+Date: Thu, 26 Sep 2024 23:08:21 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: file: add f_pos and set_f_pos
+Message-ID: <20240926220821.GP3550746@ZenIV>
+References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
+ <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925205244.873020-2-benno.lossin@proton.me>
- <202409270303.kUIAmOmY-lkp@intel.com> <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me>
-In-Reply-To: <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Sep 2024 23:57:11 +0200
-Message-ID: <CANiq72kh7UdXjVNyxmsmSy58=W7=9Pqqys2zqHxfnLNKJXJHEA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	Greg KH <greg@kroah.com>, Simona Vetter <simona.vetter@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Thu, Sep 26, 2024 at 11:40=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> I can reproduce this error locally in a Rust project, but am unable to
-> do so on play.rust-lang.org. That seems very strange to me, anyone else
-> on 1.83 or 1.82 can confirm? AFAIK, it was stabilized in 1.82, see [1].
+On Thu, Sep 26, 2024 at 02:58:56PM +0000, Alice Ryhl wrote:
+> Add accessors for the file position. Most of the time, you should not
+> use these methods directly, and you should instead use a guard for the
+> file position to prove that you hold the fpos lock. However, under
+> limited circumstances, files are allowed to choose a different locking
+> strategy for their file position. These accessors can be used to handle
+> that case.
+> 
+> For now, these accessors are the only way to access the file position
+> within the llseek and read_iter callbacks.
 
-Can you try in Compiler Explorer? That allows you to select more versions e=
-tc.
+You really should not do that within ->read_iter().  If your method
+does that, it has the wrong signature.
 
-Cheers,
-Miguel
+If nothing else, it should be usable for preadv(2), so what file position
+are you talking about?
