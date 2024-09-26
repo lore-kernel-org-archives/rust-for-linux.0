@@ -1,55 +1,55 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A5315350B
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 14:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB5114B959
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 14:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727362781; cv=none; b=eRVLGQF6iPjtbO4gB9FMMG7gdwAwJOPd8WRgUk6en5Ag4eZgXeD+a3AL9pp2hyHkg4U38PWJCAgEzhRIdome04fIsOspehogDrsCaA4EjHvEoClNJOopDDfGvXyyR6noWlPj1YiK29lwzvkkNVPfVyTNGSordpa5akJBHnOf3Sc=
+	t=1727362782; cv=none; b=r08z6XjnO1dL3r+8kF1Y3iaddIiCfI1aO7H7uuYMulqz5gtvT/UmDDXrzgiuSpsUQ4KZB/OdyAIA1j7cq9ry8xMlNRwIjehq1IiH2rsauAJomMskJ94SHQ4rA4cAO0b17lRoAzoVLvTXsFkMlQSahmCgD0b892vbssGz5grzUw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727362781; c=relaxed/simple;
-	bh=OmA5Fpc8q+VVliuvZsHkzpnnFxIk9+56osMv6UGZYI0=;
+	s=arc-20240116; t=1727362782; c=relaxed/simple;
+	bh=Eg4ozalPfp9Dq+G3RNTBq09+vqD1HxtxrCxKQ7R9a6k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=G8VTKoZiv1Y8Q2PHQV3FWznjjee0IXNflR9tuyfRQ5K8AgOJKbjmKnlZz6vfs14tPXDu4B08Wji4dvtxUnwipb2SN+IZOMmooxG1HnBxUSMBplf0qxUh3g9Ozlt6jD6cVxhit6PkUfY5u3DTGfPdoxF9Z12c7NlxIxHCtSfiv6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nZjU4xIK; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=rSAi+Z+BbQCSeDxe1uUjWmroMOOFnSkZXk62nQRnyCv3VE+Mxg+smQXiU1UprTm1trhocSygWi1iPfqOxPqoz3GJCZIsvGJIVTmvt5WgrKt9rjqLprMlqc8yrkR08PXmI8jDgu8kioCsJaiBYqxefeadOuYncA4B6+8SaRho4Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OEXTgxq4; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nZjU4xIK"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-378ab5b74e1so442240f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 07:59:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OEXTgxq4"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6de0b23f4c5so14481447b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 07:59:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727362778; x=1727967578; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727362780; x=1727967580; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4ovaENvdzEIgnWtdOGCa2HlqqG1g+BvQV/UUS4KByA=;
-        b=nZjU4xIKWg0tgbOhlJ6GAlAcuFAtzpDKS0BOn3hDhh+B4VJ0BlKmYuP/APEyPtOE55
-         8H0UCr3n5kO66mHXX9rUB13T38mXhWAvY9saRHoc1rx1OLYrevR+pa89bvh0zwRAzWkX
-         EcrhVDJf33/FHgViIDmG70zjNih8aFuwJaMUCKEIkBZF0tOyNecTbUCj3+nMAHBBe47v
-         7ZQQ+8G5ArH/Om3+rkhdeMNhF+s99MRX5WPdbPDDd1gbsKHe6Ua49grDYgE/KoDcr3XR
-         TsCO14QLTyjb2xb46z/wYZCyJ23jIAKC+x9gaGq6r62ENX/bM+fNm4DQK/m+4lt3JDbB
-         jJWQ==
+        bh=NeV1KHW77gl2ixtTigXOOKfMDho4UiCgTf2SV63cy/Q=;
+        b=OEXTgxq4sKMvvAy67Dh8YjizLVbOJ5k1gUFzDMBwx5RpDYP1FqjJaWKv36U5shCBUv
+         3JiETjDfPDsFX16kB6kUOUD4xdxOXHnyXyXMk/3friP6Ufr3QC1+idjlyqRaJit6UV2W
+         jsaBfF0L+wfZcUuHRBe7M35hGgUAeqpnvTdW8A4tG7eSpfn+hvIn7AMTwPjS6gTVdzEO
+         qi8pybyfCUeS7KWd1Iw2X+CEV6l/pJlvxIzsmc5+qKxBgibG3x14H6vmYTcb0+2+Bhxk
+         MyNKd04/gVhxGvY7xggMbANzGtHwbVhqu1uTgDHUIz3Nzlw8QeqVA411lrkwAGJG15mu
+         Q4pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727362778; x=1727967578;
+        d=1e100.net; s=20230601; t=1727362780; x=1727967580;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4ovaENvdzEIgnWtdOGCa2HlqqG1g+BvQV/UUS4KByA=;
-        b=RIItLiER/e1w5Kx63b0dJtNrVVi6wufvbMLpWUZc7njTUxxH1jpcKz/7CQ+Kw6o57k
-         iT3X4+6JmT2tZ1qkwr3As3uYLEQv1/CDiJk0WEy09ueuTRfhGBR7un5pEafLba7oJ+Fj
-         wtHOOcN3mjPBs2DKh0x4DV78MT5i/rFdE0J+3GmH3Crn48p63klvV78rmx1kk3pyl9fj
-         ZYSpPV0f0QOTxdWWFwQrFCorp5QELjOjYdwkTSZsPiOjiqYm8qV07/7yCOih0r+hs5yX
-         EOeMUJlcwaQY2E8zNWUrJ5DfJ1AWkT/MTMjB5b/2cR/oTQQ4CT3r8D/C+CYfmtcRGfTm
-         8ZxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfbQyE6XMIfI7ADdT2lCr1NriLq5eNi6ZXFUl3YoBtThisPyNjytPBAlzNt9VHrhQdg1yU00uLl2z0OgF85g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOm3++3Y4RQdHpFoYF2Fa7HNxMVz+b3qty68d+YHXztjElvsnR
-	mpMMdW3kOsdKJWwE7z9Nbqu0XcPYAZ04/Q+A2/xPHNwd2qmkYS+PybwkCHNDmL5NzEfUnmmdHl8
-	RefBuTfbCTAZV+Q==
-X-Google-Smtp-Source: AGHT+IFKEbPPWgHrvBx3h62gH1uccNY84xCIpV8wPvnZRiFspAmH/JXjTSZnsxXOxNukoaeaW6QiOQdx2PwCrf0=
+        bh=NeV1KHW77gl2ixtTigXOOKfMDho4UiCgTf2SV63cy/Q=;
+        b=cQ+Bq3mqq0nr5OPPfCBAJREQu6udzBbg0CpRvcCBRAVU2Rnl5wQ9LxXwioEuP6QJ2t
+         72ccWy27pNpBZ+R4aIN/uyYMC878uji2mEDbvmup47mhy05cOYr87etJUkkx2dlGFmL1
+         g1Uey4lfx66yoLrhVyCa/bMPQOpLtg8cyQOFc4MiJSg/hX3n5P5TvtopMlhIMcAv4pKx
+         7vgVQfyqm9n/Y7faGvsHZPT0vlvR2ny/PIebh1qcyTZtmFGYgU6wnQlstXjdqE3LQ24d
+         Z3Dzr4pwy1ZvGEtzn9stie20Nkj0FSlyTsrShYeM0mxMMysR4KBushxGr9J92Q8Q2PUX
+         1BsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXBL8TH1MKl+g8kQtE6HEYIumdPlwQRybJUhsvtuXsp5c+3M8BiGWtWvBWtGp+SB9hcWeZXuEEVnIHxaoPpfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTBEwBgNx63ryu5gEM/n58O13GYv8/QTLISoN6777kTDaUC1yK
+	CbeHDYe/MgKLV69iJC4BE9DeafmS0TkNt/QcxTc3ILoqmtZg5nBJ5SaR+WgoauSzQH5nQN+HQuO
+	X4YjNme2pH54JHw==
+X-Google-Smtp-Source: AGHT+IFXzXcQGkkg6miI4lRR5aDTs+z8nxuijS5MIlaFFi6hc9IleFgTZI1r0Pf/fM7aCAkUF4CI+a3V4yd3vaM=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a5d:5d86:0:b0:37c:cd08:ae77 with SMTP id
- ffacd0b85a97d-37ccd08aea5mr2171f8f.5.1727362777240; Thu, 26 Sep 2024 07:59:37
- -0700 (PDT)
-Date: Thu, 26 Sep 2024 14:58:55 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:3405:b0:6d9:d865:46c7 with SMTP
+ id 00721157ae682-6e22eddb5d4mr290447b3.2.1727362780176; Thu, 26 Sep 2024
+ 07:59:40 -0700 (PDT)
+Date: Thu, 26 Sep 2024 14:58:56 +0000
 In-Reply-To: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1611; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=OmA5Fpc8q+VVliuvZsHkzpnnFxIk9+56osMv6UGZYI0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm9XbSQkqismR95jHztyc9oFt0R1RyL0v4MQoMg
- Ybr2gj5HH+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZvV20gAKCRAEWL7uWMY5
- RgiQEACG+ngJ8Ks/GRo9WYo2LpeGTNA9gO//nSEXxJjeP0yNTMg8B4A2Z6/QTljOib63lFektQK
- 2dbJJzREq8Tw0n/wcsY00gwTbJbKLNq2fo1nRvqSEjGS1jOXUuGIfSGcrly6WcVRb40JvWmG0q/
- 5TpqUYdL255WyX2jVzfXX0IStAImQ02hJilPi+UawWPgyCup76PcZpVbaAFKjaeIICGuIZbE/U4
- axpSi2VgGnWUG0HdPz2/xbcMsPdkUCMaDSmLCpjraZkGtvkVchET0tV3eGfwaxAoHFvv8J2n3VT
- /AEk+jAYH8eYHetyof6y/VOZl5JoJV/uj8rJ7b/gQfs+c0M9WgxZuyFVmMm5spt4WDdInsSALVq
- 0FnKPgICKpjMeFWbQorKiQj24xDms0TEOlMWnWMILMeapra2XAxcqeIggXkXFvSb8n6Kf3Qt3ph
- Ohpo/UAoZOLymhitGXvvlqAa5JLnYto4hkzaJ9SdTDM7z8hes/a36e2L/wHM6pyZTtoGHH431nx
- jq4RUgtjOR0A5oEFRCYLTVNswpeeF55Uq5hyIHkfiFJsM7uAnuiXxl980kOhVYik7IdpCbrgRC6
- 3bcwCCwsx329WRLELYhYoURZbtvLENW3mTgqj5PWMq62MLzwUY6T4hOsg79nFyKH3yR8uuYpQWR rQqS160OiCK7K3Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1648; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Eg4ozalPfp9Dq+G3RNTBq09+vqD1HxtxrCxKQ7R9a6k=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm9XbTowpCdvo26oRjUrDd2SCJfZSsqtQXyf1e6
+ aNmADjn0mqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZvV20wAKCRAEWL7uWMY5
+ RrmiEACSG2C7yeB3qHx86arzRAzmg9UQ6670GsCB4hPpsLd5PJPnl8TwUULgOTX7eXcKEhOPuUp
+ uThZFejvJD+T3SSZMsh9OwbIZEkBbGm/HOO6MCaEjmK+v4+d1Mn8NRT2rfwifU2juxsubMRN5H8
+ RBhCu+w9oPkFw9RRw5PKE9KQdO8h+zuOSf90pXOYDVHQ6jiwM3tdtrS7gjhD44eq0wwCVTzaVBL
+ cS7c9owyotQ7SqY87HJQA5cp85DO+0ann56qTE+2PXZVc/SaQDuMdzwmKypdbBBHfbACD4ICP9L
+ uuCq75U8+DlZr9Dx1xCatEybfz8Q2TWQBrflphbJtMs0NhHL1cWoYwDBXNgiWd8WBORQIeLZHdb
+ wnVGRgbOAu2+OIt2FXjjmyMEse63ZGVyoYFOqm8oHQL1Dg0/sNw9cK1XCOn1iaJpyCcud9F67dV
+ uMRCacwi/HN/Rs4CqTfSLamBTppC1MWSvkaXnDpY5jI5yNNiWpXrg1etF+AcPDg9Syh/czy+Aoq
+ x0cP0IlNTyTn0dLbJybbXPUtVgMUOlNd0jj/B/sFlEPymXHCT0YdkBzPeDhFdTRXfrf8S0uZLO7
+ 9A2JGCx3J0lAysqYfW36wJhlrZwLpi6jSzGXuiyPWmpofby1KBRRuR4DngYqVXhfsYrJdewTB4E ArpTcxpmLl4b9JA==
 X-Mailer: b4 0.13.0
-Message-ID: <20240926-b4-miscdevice-v1-1-7349c2b2837a@google.com>
-Subject: [PATCH 1/3] rust: types: add Opaque::try_ffi_init
+Message-ID: <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
+Subject: [PATCH 2/3] rust: file: add f_pos and set_f_pos
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -86,41 +86,52 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This will be used by the miscdevice abstractions, as the C function
-`misc_register` is fallible.
+Add accessors for the file position. Most of the time, you should not
+use these methods directly, and you should instead use a guard for the
+file position to prove that you hold the fpos lock. However, under
+limited circumstances, files are allowed to choose a different locking
+strategy for their file position. These accessors can be used to handle
+that case.
+
+For now, these accessors are the only way to access the file position
+within the llseek and read_iter callbacks.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/types.rs | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ rust/kernel/fs/file.rs | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 3238ffaab031..dd9c606c515c 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl PinInit<Self> {
-         }
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index e03dbe14d62a..c896a3b1d182 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -333,6 +333,26 @@ pub fn flags(&self) -> u32 {
+         // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+         unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
      }
- 
-+    /// Creates a fallible pin-initializer from the given initializer closure.
++
++    /// Read the file position.
 +    ///
-+    /// The returned initializer calls the given closure with the pointer to the inner `T` of this
-+    /// `Opaque`. Since this memory is uninitialized, the closure is not allowed to read from it.
++    /// # Safety
 +    ///
-+    /// This function is safe, because the `T` inside of an `Opaque` is allowed to be
-+    /// uninitialized. Additionally, access to the inner `T` requires `unsafe`, so the caller needs
-+    /// to verify at that point that the inner value is valid.
-+    pub fn try_ffi_init<E>(
-+        init_func: impl FnOnce(*mut T) -> Result<(), E>,
-+    ) -> impl PinInit<Self, E> {
-+        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `init_func` to not fully
-+        // initialize the `T`.
-+        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_func(Self::raw_get(slot))) }
++    /// You must hold the fpos lock or otherwise ensure that no data race will happen.
++    #[inline]
++    pub unsafe fn f_pos(&self) -> i64 {
++        unsafe { (*self.as_ptr()).f_pos }
 +    }
 +
-     /// Returns a raw pointer to the opaque data.
-     pub const fn get(&self) -> *mut T {
-         UnsafeCell::get(&self.value).cast::<T>()
++    /// Set the file position.
++    ///
++    /// # Safety
++    ///
++    /// You must hold the fpos lock or otherwise ensure that no data race will happen.
++    #[inline]
++    pub unsafe fn set_f_pos(&self, value: i64) {
++        unsafe { (*self.as_ptr()).f_pos = value };
++    }
+ }
+ 
+ impl File {
 
 -- 
 2.46.0.792.g87dc391469-goog
