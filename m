@@ -1,109 +1,100 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C0A18800D;
-	Thu, 26 Sep 2024 21:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CC418870F;
+	Thu, 26 Sep 2024 21:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727385560; cv=none; b=RyNAc/7qadINu9qzmzk1phxVM7Qe9KUXjtQ69lJhHdrCax49pONdRFCyzV90dhw7qlPcgoa8alro+6M7BVR7IbLiKAHL7TJUwG1vb/Gcqw9W7pWMKLFxO8cdfD2Ed8qMflKY1cQFSlgfO1lRiUQFVqUlbOTpAdG4svNKQKJ2aMY=
+	t=1727386525; cv=none; b=goQJBRrRmkqgtyjkuhqlNcfmLj145m638QfMynP66R43xq6hJqSxjzhA8mNlnbjBMWTuMILU4IVk3/QPtjSrXfnqFiq2HMebgSRVsQUs3mGhHBrNS4jgvbvo/xy4oBf2W2O2Td1+LceQFE4HnFVUeN2lwoBYmSqXToaT/Dy9xvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727385560; c=relaxed/simple;
-	bh=kDsArXBf6a8j6EERJV+eipbquN7VuWFS+lqT9h5+qQc=;
+	s=arc-20240116; t=1727386525; c=relaxed/simple;
+	bh=1/AF0ye1aEDqbRIMOiqu2UP5rEYyIqLBgduhnkT/Gq8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MeAx7yQqx957TF/5Fm9dLD5pe2NtdTWDYrisVDfoRdsVRxe4LzTo5e/mbIr3Zo3G6moSpGkG0hT8EKRKCFZq3Om3GLvWERzgNc51Rq48sKex8Vqc2eHDt4IvNhIbvZbsLtk14FGtWdsfXtH/kBRJTJSMq/sSaNy0I7XxOaI3yAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/YUC4PG; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=HBJfh/5Z7VEQxAgZ34fM/Fcum9KV9uRA4YIPjdwVhv1SKHj5FlBKtaFrY9UklpOXb6tj9a24Ppj0UNskaOvLs1phEpW4M0T3GA05X3E3GzoES+ZHys+EPON/W5TX4FRw1SnZ4EYkHV1ZwW9wX5nfulw3klh0rZgUbhtG3nAQFJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ntYvYQ3V; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/YUC4PG"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2e0b467da03so88824a91.2;
-        Thu, 26 Sep 2024 14:19:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ntYvYQ3V"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e0b467da03so91493a91.2;
+        Thu, 26 Sep 2024 14:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727385558; x=1727990358; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727386523; x=1727991323; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZT6vThl0w6DW/3vNhpd4p3yZrCiKGVkkePEpwNafr6M=;
-        b=S/YUC4PG1A38zAn+zUB0pOfsmCj+QE2mE1rtpLBl9kOoIVTztXWSm7WzwH0fJHaOYF
-         Wl8sdUlMBK5wQ62w6It33G8L4RMKtr3SnxC85SJohPljm8W8Ur4+5JixgmRXo3QIKNJB
-         Rf2eHqLdfaSLp0LNPs7G7LPgXmbw+/genWzK+mJKSQZbVq52nMW9TUdfx1v08ltbWZ+j
-         wkXCDDH7aydB0JOkb78rbx6Nm/tHXoHu/LqnDafBgTBjEoBuUT5kZPDicmFBIUmk5+n6
-         U4UPAxSP90mfg6Vjh9jLvCaMfQCrlTSQUWKfd90DUhLaYC3LeFhHED/aDpCG3dJ1hR+r
-         FzXQ==
+        bh=YN3ZIl0AHdW2Pc3ccHhFRbQ1ihSm5IEdT9WChsNSY6k=;
+        b=ntYvYQ3VzjrPQRjO0RTjOTbXP7/4NP5rjwPgNkr9vH/XeTJuyjkJQ6j8P1Q5+uxnST
+         F3wPdxptRRuXH4IYlyP+1oLBMPEpsloYKCpFimcgj0k4lN/GD1KdZTGRrH/xAwUoC1V3
+         rJPs6Qhurc32eEX7Nw6W0yg9ypx4H8Kn2SL2FF0rDnTsbAewQk6cqpJ0OzCNZ9fG7s2K
+         jkChH3VAIV2ScpQ7p6vD/ekIMTj99jeg/1W8R/4uC1LACZ3XKgZEkEjh99yXfdBqpnAL
+         uIKAImU9QAzLmdcHL1trZc/BPKjgl7Z0W/ek20wLJnfUeFDbJ/kOre9Cpwh2jgN/OLHt
+         egVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727385558; x=1727990358;
+        d=1e100.net; s=20230601; t=1727386523; x=1727991323;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZT6vThl0w6DW/3vNhpd4p3yZrCiKGVkkePEpwNafr6M=;
-        b=bUxvIGxAhv5MtkPkRKulDIANhNEA/6lcA37Anbj/aHGP3H3WEML5AcliRWdy4SKu77
-         y5S0zbnaj033DAFXrwDVchnoOmuUknd4aSCfzOF6EWhVET5sMA0dwlHi2fmZm2GaPsRt
-         OIzaA+cDSIZ+dxbC+Yn830bGRizqC+3wkVbNqLNjV2+g8CrQkBvC5dH+H5P88pXZW4Yk
-         /HUSiHGKQ1AMt9xlUuI+oj4gxQ0V5TOX4eiOWgXC/rLvqk22gHul51TUBgkLYnFI9P11
-         1JjyPqlhmD8anV0M3z4UsJapBsSEVbPxnA3AogkFUmUpSwruTA26a3P3pIhO8ncUVhKm
-         DTWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVeUOrxRiNxk+uW+JcEchGJwHVGux5/U4yZj5C2J6zzwNwoeEifqcToMyl+5LlynL+nxc078ZOFb1QV6/Q=@vger.kernel.org, AJvYcCVw3FukN4nvsKfpoOzb/161VO9CHKoCvVuX/7bzKUcipvrehddHjjrx0t6kbxAN7/GAHTZxw0D7HXfHLaiEblQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz22vdpV+SRRomtfKkrWk5XTjRZ7cOT8PykA3SUdtzyO1g4V1jr
-	8g8LnQQligySQEUw2ktpJseY6SzeVQkB3ZrNPnzMq4RpE8nJzcB1k2e29Phn3wKQyYPMiuwMIfl
-	GOeZSrk4hle7yAV9FUwcpnqJgxy4=
-X-Google-Smtp-Source: AGHT+IE4+BdZ3LfDobLEZiEw+lXACKHY9OjSMU9qsH6bL5zXt19ZyY2VBI87QSoBXPl6FJAr1a79Q74C+/jwv3zPANU=
-X-Received: by 2002:a05:6a20:6a20:b0:1cf:672e:cf08 with SMTP id
- adf61e73a8af0-1d4fa78e967mr800601637.8.1727385558266; Thu, 26 Sep 2024
- 14:19:18 -0700 (PDT)
+        bh=YN3ZIl0AHdW2Pc3ccHhFRbQ1ihSm5IEdT9WChsNSY6k=;
+        b=nnmJKkgcACozVDSpFBzUMkQb5Y3qgChkkOHFmpcaO+WyoEmG2yQ/DJaaT+0E6OKhbL
+         4edl7pBfS0KSuCN4J17TXsxaCijX0wFOl1McewxcYnkjHlppDaDtIlmk7BeLqo9spMzd
+         GvQfWJWmckzL3ysFqmQAywMzd6OfMCvStz6XrMLPgqsx9qF7zAWvuUCxyMl7I4LO5asF
+         tY2iqMCX1KyOtyQXSAx70zzQ3QgQ3QFPJnt3mvVfTYp7DTTgIKuR5JjAdUGM1vIhG5rn
+         wAdcVhSIglqIO2ATJ+gekoA6j5ux3+Xp6qrTXWyeWX5Hr9kk6/60rCGS1ehKqpiZANFI
+         G0JA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDJ8RvVdvqtHN3lX1txbKSEmzjS+sQLqz6QZbKSBcpkEsBUAeUwf4nTqbN03vw4GXyiD9iQZArXil9IuPBiXw=@vger.kernel.org, AJvYcCUh1EnD+hD2C3vzqWv60QHnERNsPDZPvtTXZIO5sRiraXir9igXESaPEYdxkZd9i9XAYroDQMEZrC9cLvE6@vger.kernel.org, AJvYcCUidN0lHrF9iOqSPJ8IctwwAfwAs07OQfJTDdO/ZULHyFNBpvg0hyVrQCV6KMoggxOswxI=@vger.kernel.org, AJvYcCV5D5TsQSXjcHuycgk/6XXYltPQlUyoOj0RhDcW5nuV2PC/tj/Q2JUE4o2CUQJvBvD97N7k7sFVZCk9WEHGDPyghQ==@vger.kernel.org, AJvYcCVOLC6+65mOqcNjHRp1+tV/XssjpTX8h+9F4YBiY8/h9aWXzBKFdg2eK7772upIEAdFSiQJEmnzVgkk6g==@vger.kernel.org, AJvYcCVsqpEA1X34JgSSy+zWUs7+fSAIlED2wx+FoF0zXBxfBa0ReVabMdfI1p7J84be8lizTJ6y/uqbQToD@vger.kernel.org, AJvYcCVyOHlVKllui6A90Q42IfKbLrvLtdZnjC+4kVdVZSOG4aRB5tquRkPsdIouUdZ5cjLcKniIJa85fW8=@vger.kernel.org, AJvYcCWIeHXSn79E1pba2uaZgabrN6egSq3hKQJvvQyqA0ncZ3poR1endScJFmYMlQD9tOmBDQRNsnt7bGe0@vger.kernel.org, AJvYcCXTmNdlSb1QBFTlgk2/mbOW9A2NT3p8kXvs3x58YZP4/N+DnfQhUq/gJiG6xW7mj8KHqe8jHlQq55VTo3hn@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCTZ3zsxEiGOsdmhyvylg0pTMM/FgSGOmCyMfxDfM9CSVwTjhW
+	AAPO1FdxgZ+AUbsMCKMSJLJBPk64IXPEa9Zxwq805/7NayLOfWOsl5gSodJeflPB/OilgtRCS/O
+	Gj38jwHBTYzU7aYb/AVVUkzDXAIw=
+X-Google-Smtp-Source: AGHT+IFP+qclc+DwNk0VcbiLZGtyseD1sfEmeyqBVla3e/ZDfuly9waYm3g7wRqfrKuy03nGqriwsOXLp8FvWSa4ibk=
+X-Received: by 2002:a17:90b:3698:b0:2db:60b:eee with SMTP id
+ 98e67ed59e1d1-2e0b8ed348emr498104a91.9.1727386523117; Thu, 26 Sep 2024
+ 14:35:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926093849.1192264-1-aliceryhl@google.com>
-In-Reply-To: <20240926093849.1192264-1-aliceryhl@google.com>
+References: <20240925150059.3955569-30-ardb+git@google.com> <20240925150059.3955569-32-ardb+git@google.com>
+In-Reply-To: <20240925150059.3955569-32-ardb+git@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Sep 2024 23:19:06 +0200
-Message-ID: <CANiq72k9ihcNNRkiGW4us1F_cQuotRFA9_8iJuCMUJnEjbKzrw@mail.gmail.com>
-Subject: Re: [PATCH] rust: KASAN+RETHUNK requires rustc 1.83.0
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: ojeda@kernel.org, a.hindborg@samsung.com, alex.gaynor@gmail.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, gary@garyguo.net, hpa@zytor.com, 
-	jpoimboe@kernel.org, linux-kernel@vger.kernel.org, masahiroy@kernel.org, 
-	mingo@redhat.com, nathan@kernel.org, nicolas@fjasle.eu, 
-	patches@lists.linux.dev, peterz@infradead.org, rust-for-linux@vger.kernel.org, 
-	tglx@linutronix.de, x86@kernel.org
+Date: Thu, 26 Sep 2024 23:35:10 +0200
+Message-ID: <CANiq72=z6A=50QO3V0S3Kgx6XQT93GxbB_LN6PFAQCmNgy370A@mail.gmail.com>
+Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 11:39=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Wed, Sep 25, 2024 at 5:10=E2=80=AFPM Ard Biesheuvel <ardb+git@google.com=
+> wrote:
 >
-> When enabling both KASAN and RETHUNK, objtool emits the following
-> warnings:
->
->     rust/core.o: warning: objtool: asan.module_ctor+0x13: 'naked' return =
-found in MITIGATION_RETHUNK build
->     rust/core.o: warning: objtool: asan.module_dtor+0x13: 'naked' return =
-found in MITIGATION_RETHUNK build
->
-> This is caused by the -Zfunction-return=3Dthunk-extern flag in rustc not
-> properly informing LLVM about the mitigation, which means that the KASAN
-> functions asan.module_ctor and asan.module_dtor are generated without
-> the rethunk mitigation.
->
-> The other mitigations that we enabled for Rust (SLS, RETPOLINE) do not
-> have the same bug, as they're being applied through the target-feature
-> functionality instead.
->
-> This is being fixed for rustc 1.83.0, so update Kconfig to reject this
-> configuration on older compilers.
->
-> Link: https://github.com/rust-lang/rust/pull/130824
-> Fixes: d7868550d573 ("x86/rust: support MITIGATION_RETHUNK")
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://lore.kernel.org/all/CANiq72myZL4_poCMuNFevtpYYc0V0embjSuK=
-b7y=3DC+m3vVA_8g@mail.gmail.com/
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>  Documentation/admin-guide/README.rst | 2 +-
+>  Documentation/process/changes.rst    | 2 +-
 
-Applied to `rust-fixes` -- thanks!
+This should update scripts/min-tool-version.sh too. With that:
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+As Arnd says, the cleanups can be done afterwards.
 
 Cheers,
 Miguel
