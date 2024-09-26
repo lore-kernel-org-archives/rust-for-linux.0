@@ -1,147 +1,154 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D55156CA
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 13:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C134819BBC;
+	Thu, 26 Sep 2024 13:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727357030; cv=none; b=JIKjRCztX9SsnEa4ONCc86vADP2tH7uEF27T33TZuhea4bDQgQOmEznVromEq+xTFoQCaL2/Tg7WqBHEMQxxd3CBay9vSZDJfXjkv9Gp9CJkqn7yI9N2rSCtGv4A/v+2INItgglFrTzAF+FEKlQmMER7XnpIz9p9U5qBF73K3zk=
+	t=1727357085; cv=none; b=lYO+SniutfgEMA9aB9ApNnuCwFAaz9ZxFv2VvFwm9pYqYVnhvvVh+klcCB37MBPYr79ZWbV90SVOr6aBXmFZSTQighsTJKcvUOxu6azILJZBNvcGCxgBqSfwPidjGVBD6qJCWM9GyH3zhJWTuKmFEAMwLYaTjPynikwF80et6R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727357030; c=relaxed/simple;
-	bh=OCn1dTyhnGPT5aF53r21mHi2JRcXPsAcCX+1vopBdXA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bmE5IcRluFxLkSfeY3v4qyXHiZuFvHtsGY0CD6MA+4YJHy74eQykKo6YrRpgfrKdr7hvwjvc7mmZqFXjRAq7fVu6iewItMWJ3nzPTnEvxurBz/veq0aCA/aJrDU6HLXGYxig0XED7U/Pj2wNa8qKlZHpa2C8kSk9/vjUC/c+AK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UN616mV9; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1727357085; c=relaxed/simple;
+	bh=Ev17E6HPXrIHJ7KiVzlg4fQjIPKFzPlo86lB1LBlExk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mpIKSBcgOXypr6NN+4u+0GCBQDjcuhyVZfHaJLeSLEm2o/LsXKiHB+ejTnxjkvxiFJjj27txx7DCyA0ij6BBln5xoyMP6IgKHBjkUUw8EuAXvzLsUYHo6pYTE297KjVv4ZMoM3t5bKq+prnfrTdo7qRJUTKIvRKBbHUsp2wp1Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cg1USL/m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UN616mV9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1727357025; x=1727616225;
-	bh=b2AdEwZAwPPn/bQlFLfOgNyL9LMv1IU2cwYbMyiznM0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=UN616mV9EHLs1CQBf5swLLETNgp4zuShZZ4Qw0sRysxv0hPWSjUfKJJ/3sobP5IOZ
-	 92qvOt8eCPBiiX9DwySAdWBThv7wI1Rin7yhQmqhM9vISo/g1Gfa96PzGYHW5FxYo9
-	 NkMBHQd87979d86XJd0A0qH6e78kn6fMgHP8X3eM1Dkf2snCpwgwHci87zdp0qkP7Q
-	 cQnCaUqia2fSTVqlhT0Y3QkDUkIXpdUiwuibFWaK3XetS3rhW+3j7bOPD6s89FP0nC
-	 0KM39NnstKwGaBTwWdDag5Bxl+3sNIQlDF+F0vcemBM3oZYyA7hR9QMSsLZV4ZkXEm
-	 Do8xKJF2xKq3Q==
-Date: Thu, 26 Sep 2024 13:23:37 +0000
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 09/26] rust: alloc: implement kernel `Box`
-Message-ID: <49531204-b320-4652-90d5-d070a67260d2@proton.me>
-In-Reply-To: <20240911225449.152928-10-dakr@kernel.org>
-References: <20240911225449.152928-1-dakr@kernel.org> <20240911225449.152928-10-dakr@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 7a78d9617d9c55fc053ae27092fce77109763177
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cg1USL/m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F14C4CEC5;
+	Thu, 26 Sep 2024 13:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727357085;
+	bh=Ev17E6HPXrIHJ7KiVzlg4fQjIPKFzPlo86lB1LBlExk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cg1USL/mXifPqA4Z1NOvsq+zHXfVpI2bTeRIDkUWo2bABYniXHcmWIUt9ViZCHysJ
+	 DxFBnIXXo9OuWcRNmcSlp7YGQFemv2X5g3k72HpE9i8uKNXAzmRthE9eeu3JAhHX//
+	 aOPtGZ7vxPtoTgC5sxiXml54vy8MuMx/6SPPqUYM2kupjT+7ta1NcsaXdbtZOQ/sW+
+	 TkW/tB7jhX2Q1mCWVL4c9I4P7tvMGcwz6VlVK1B/oyGxAaP8oMgkIoLMmd3/xkZP9Q
+	 2jPmsE0J+pkjLrMx/4/+AVP77eBj4d/p10+60+wQpPGZDRXD8F/x0W1/ZAKy8NGOcn
+	 aMGI/5y2gYzHQ==
+Date: Thu, 26 Sep 2024 15:24:26 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <ZvVgimoQPoL1trmJ@cassiopeiae>
+References: <20240911225449.152928-1-dakr@kernel.org>
+ <20240911225449.152928-5-dakr@kernel.org>
+ <15f42ddd-b011-4136-b2e4-bc266fab25b6@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <15f42ddd-b011-4136-b2e4-bc266fab25b6@proton.me>
 
-On 12.09.24 00:52, Danilo Krummrich wrote:
-> `Box` provides the simplest way to allocate memory for a generic type
-> with one of the kernel's allocators, e.g. `Kmalloc`, `Vmalloc` or
-> `KVmalloc`.
->=20
-> In contrast to Rust's `Box` type, the kernel `Box` type considers the
-> kernel's GFP flags for all appropriate functions, always reports
-> allocation failures through `Result<_, AllocError>` and remains
-> independent from unstable features.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Thu, Sep 26, 2024 at 01:00:58PM +0000, Benno Lossin wrote:
+> On 12.09.24 00:52, Danilo Krummrich wrote:
+> > +/// # Invariants
+> > +///
+> > +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
+> > +struct ReallocFunc(
+> > +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut core::ffi::c_void,
+> > +);
+> > +
+> > +impl ReallocFunc {
+> > +    // INVARIANT: `krealloc` satisfies the type invariants.
+> > +    const KREALLOC: Self = Self(bindings::krealloc);
+> > +
+> > +    /// # Safety
+> > +    ///
+> > +    /// This method has the same safety requirements as [`Allocator::realloc`].
+> > +    ///
+> > +    /// # Guarantees
+> > +    ///
+> > +    /// This method has the same guarantees as `Allocator::realloc`. Additionally
+> > +    /// - it accepts any pointer to a valid memory allocation allocated by this function.
+> > +    /// - memory allocated by this function remains valid until it is passed to this function.
+> > +    unsafe fn call(
+> > +        &self,
+> > +        ptr: Option<NonNull<u8>>,
+> > +        layout: Layout,
+> > +        flags: Flags,
+> > +    ) -> Result<NonNull<[u8]>, AllocError> {
+> > +        let size = aligned_size(layout);
+> > +        let ptr = match ptr {
+> > +            Some(ptr) => ptr.as_ptr(),
+> > +            None => ptr::null(),
+> > +        };
+> > +
+> > +        // SAFETY:
+> > +        // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and thus only requires that
+> > +        //   `ptr` is NULL or valid.
+> > +        // - `ptr` is either NULL or valid by the safety requirements of this function.
+> > +        //
+> > +        // GUARANTEE:
+> > +        // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc`.
+> > +        // - Those functions provide the guarantees of this function.
+> > +        let raw_ptr = unsafe {
+> > +            // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
+> > +            self.0(ptr.cast(), size, flags.0).cast()
+> > +        };
+> > +
+> > +        let ptr = if size == 0 {
+> > +            NonNull::dangling()
+> > +        } else {
+> > +            NonNull::new(raw_ptr).ok_or(AllocError)?
+> > +        };
+> > +
+> > +        Ok(NonNull::slice_from_raw_parts(ptr, size))
+> > +    }
+> > +}
+> 
+> I remember asking you to split this into a different commit. I think you
+> argued that it would be better to keep it in the same commit when
+> bisecting. I don't think that applies in this case, are there any other
+> disadvantages?
+
+I don't really like the intermediate `#[expect(dead_code)]`, plus it's
+additional work you didn't really give me a motivation for, i.e. you did not
+mention what would be the advantage.
+
+But sure, I will change it for the next version.
+
+> 
 > ---
->  rust/kernel/alloc.rs      |   6 +
->  rust/kernel/alloc/kbox.rs | 465 ++++++++++++++++++++++++++++++++++++++
->  rust/kernel/prelude.rs    |   2 +-
->  3 files changed, 472 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/alloc/kbox.rs
-
-I have two nits below. I think the safety documentation can be improved
-later, when we have decided on a better approach (I have to to spend a
-significant amount of time coming up with a suggestion and even then I
-am not satisfied with it). So
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
----
-Cheers,
-Benno
-
-> +impl<T, A> Box<T, A>
-> +where
-> +    T: ?Sized,
-> +    A: Allocator,
-> +{
-> +    /// Creates a new `Box<T, A>` from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For non-ZSTs, `raw` must point at an allocation allocated with `=
-A`that is sufficiently
-
-Missing space after "with `A`".
-
-> +    /// aligned for and holds a valid `T`. The caller passes ownership o=
-f the allocation to the
-> +    /// `Box`.
-> +    ///
-> +    /// For ZSTs, `raw` must be a dangling, well aligned pointer.
-> +    #[inline]
-> +    pub const unsafe fn from_raw(raw: *mut T) -> Self {
-> +        // INVARIANT: Validity of `raw` is guaranteed by the safety prec=
-onditions of this function.
-> +        // SAFETY: By the safety preconditions of this function, `raw` i=
-s not a NULL pointer.
-> +        Self(unsafe { NonNull::new_unchecked(raw) }, PhantomData::<A>)
-> +    }
-> +
-> +    /// Consumes the `Box<T, A>` and returns a raw pointer.
-> +    ///
-> +    /// This will not run the destructor of `T` and for non-ZSTs the all=
-ocation will stay alive
-> +    /// indefinitely. Use [`Box::from_raw`] to recover the [`Box`], drop=
- the value and free the
-> +    /// allocation, if any.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let x =3D KBox::new(24, GFP_KERNEL)?;
-> +    /// let ptr =3D KBox::into_raw(x);
-> +    /// let x =3D unsafe { KBox::from_raw(ptr) };
-> +    ///
-> +    /// assert_eq!(*x, 24);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn into_raw(b: Self) -> *mut T {
-> +        let b =3D ManuallyDrop::new(b);
-> +
-> +        b.0.as_ptr()
-
-Why not a single line `ManuallyDrop::new().0.as_ptr()`?
-
-> +    }
-> +
-> +    /// Consumes and leaks the `Box<T, A>` and returns a mutable referen=
-ce.
-> +    ///
-> +    /// See [Box::into_raw] for more details.
-> +    #[inline]
-> +    pub fn leak<'a>(b: Self) -> &'a mut T {
-> +        // SAFETY: `Box::into_raw` always returns a properly aligned and=
- dereferenceable pointer
-> +        // which points to an initialized instance of `T`.
-> +        unsafe { &mut *Box::into_raw(b) }
-> +    }
-> +}
-
+> Cheers,
+> Benno
+> 
+> > +
+> > +// SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees that
+> > +// - memory remains valid until it is explicitly freed,
+> > +// - passing a pointer to a valid memory allocation is OK,
+> > +// - `realloc` satisfies the guarantees, since `ReallocFunc::call` has the same.
+> > +unsafe impl Allocator for Kmalloc {
+> > +    #[inline]
+> > +    unsafe fn realloc(
+> > +        ptr: Option<NonNull<u8>>,
+> > +        layout: Layout,
+> > +        flags: Flags,
+> > +    ) -> Result<NonNull<[u8]>, AllocError> {
+> > +        // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
+> > +        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
+> > +    }
+> > +}
+> 
+> 
+> > +
+> >  unsafe impl GlobalAlloc for Kmalloc {
+> >      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> >          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
+> > --
+> > 2.46.0
+> > 
+> 
