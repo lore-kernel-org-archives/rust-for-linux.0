@@ -1,141 +1,121 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00861A3BCF
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 23:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC13F510
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 00:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727307765; cv=none; b=VCxVHbb/1KnqxAEuCXhbBnDK+z44ZkZjlLBEc6t0vvM0JGgvuOS8uJuLhwFmXwAHWn/43SqIrXlXduMFkJPRALCVCfLzKH5HjTCJhfW65f+NzBHNB+087JNzLGmFBqTLNrdVTzMgQ9icYapf/dDWLOY7NCmp2D269FF/xfsIUxc=
+	t=1727308859; cv=none; b=aeMbXnpgwAgsfMfVEpLddV+mfZSczXuryjElDA/TymqGacJOjQgJASXCf5wZzoFyAjNePUFp4Lo1LZiJ32bfMQg69ouVGnBHS6SwzscHku7SiOcb4jmELVC0/j6yfsIdGJ39zyjuF0vgYbmXuJhwcOv3sd9hPixfWdikK78AnYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727307765; c=relaxed/simple;
-	bh=cwCCg7cjlmVJH30GDf9Cwg6fhR2bbuS17MaqIuOSV0s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lHLBnq3J7sc6UQ/o1FWVaQa/jBOkS/nsKj+XoigniCmrZw+gU+vGG5S8j0HTZPyE7RRsO93s+25IK4zAFSNoUp8ccpEGL9YZirKbFgQY+0Nqep7FvQSsr6RSJv4n91/iONj0KAJLX0i94flvW/9VjHX3Rxl+Bh7KPFRnzMPbsUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E2DB/sBO; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1727308859; c=relaxed/simple;
+	bh=BRlZIBO2y/xAVIRFSMfbTOWt4y/TMHCA4wppJ2Xy5Xw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UpYZO6OA6bKP08HCSY9v4iY4Aij5KBK77ki049rhBDK4WbxuKgk4++JnXGHF4rQlZGDfRb+gzCf3UIrFhMU9Wa6h27vRor+A4fYZVD8tZTeZ/NWxbzr9BKQZ4g5KuYkwcBft8fJ9oi0HYlXqfxYvAvXC1zxyQcg+RY+sM4ycaNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=faHDMdSv; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E2DB/sBO"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c2460e885dso9907a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 16:42:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="faHDMdSv"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2077b48cb09so82455ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 17:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727307762; x=1727912562; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ek54duFW07igKvK9AQGJRlqEiTdehADtLtBpPhw2agE=;
-        b=E2DB/sBOLvarg2yLjBPzCZclNsJO7hUZ6G7JWzC4pwy0KSxVSEd4lwuegmPYuVSQE4
-         prcHVOg7GAh69d/EyX0HEVwPNO7OoxLLT1XW9/QLTBTpHNoaawRjhV6Izc8NyK6G7J8g
-         yWT+LFnEPZTweXSqF0Az63SGuO4uGNkcw9+B+7ZDCh1lPcuAEmiGtGkKT7vA+yauVohF
-         3I/GitalJG7xgdUdG+J/pJVjqu/LMTaS6qysbWg7BKBSXex1Mmr8VhbGOaHL7P8+MlDu
-         17kRZ9XoPDATpxO0EUSiqUqOlSRZ5lMf95dG/4z3py4hD1ZCDkd3CV/2P3UQBIVojm1S
-         /P1g==
+        d=google.com; s=20230601; t=1727308857; x=1727913657; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cPuMIPtkFUqqXprChJbKt7gTP4JuGanqczP3oBY5vrw=;
+        b=faHDMdSvbX8rqqyfay0OhfYhvUMXi193BkGEo8FEYdNM94AleaUsNar64tqQSmjWS2
+         iwq4kI93R+4iTc8cb3XKyEEw1WwosTeeImZFvIQZB8nL7OJ7gfoY4L+l6RVG/cZ3DqM1
+         IidRJMKuV9P5w2/NvZSLMIKil6wURI30fezkXjOrDKcslJUQbzOBHyTWWo0JlZjmvAN2
+         XLK4jJU/nSgjvTs6al8UHiKTJjQUWsbMj0RVfCyxtzfydeCzhNwJwtsGqhQNz/CfTAGJ
+         rZN9Jt2Yurxr6pfLezelNVYaXeQgLhAGXbvQzFf3W3IZPHLUBoFwcE4W1d80ZASOG3Gg
+         92HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727307762; x=1727912562;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ek54duFW07igKvK9AQGJRlqEiTdehADtLtBpPhw2agE=;
-        b=amz7G0veynBF8wethkROCPq+kAoJXwr9RN3JpPZ/MkOM9NkbpOjl5D3SUjl6yxKveq
-         DgPI1XR6TKzGbmAmEDQaXBTxeNZPF6fdAvyTYCIWcQN34oJs/vUOe6lcZxQ1Y5TZzZ3W
-         wNVb497UvuSYSoLk6bboo+JwBdrsD/Yv/EgOlaYKtN6w/g+Gg4WtilFSC5IAQRJjjwe3
-         BOKPsB4OUyMUuU22ndLkehqdCfnGmyGMY6GeF7590hAw4Xbfg+/8ZJ8ruF9VN/eO/iPi
-         p0eyeH8w/rhpk+dBj3SDruPht+VM4G8AaHkv7hXSQuHcjdQxt56bYVZggKnwTruj3rdK
-         mVMw==
-X-Forwarded-Encrypted: i=1; AJvYcCU26dntBKhMLGG0XtLRXPh06QgKrFHcqFa26Kje8XejE+rryZfEp8h48B60o6MLwg0JWdiZH9Jpa3wvo5mqDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl1tFTesANupDAjFfybUML5dVyFm7x5FKN1gXwMRjMaWJ6kMX5
-	K8Ijv2jt86V2hR+Lfh4LVhyfCEmwjd7qot5AyvBksyb30pCaxKST2HENFz/0bkp6Hcn5br7mEWi
-	Xc2pUq6hkORg41NYfxFMQuXAgDc9NyK/uFRQ+
-X-Google-Smtp-Source: AGHT+IEQLkFnBxCVmc+hBCfJCN9xgnB4wVQcVoqAWlHhf+GqjN1sdjtOkK/z88OGPV3GGtu/6kc0Wj3d2hT0sVNu66g=
-X-Received: by 2002:a05:6402:524d:b0:5c2:5251:ba5c with SMTP id
- 4fb4d7f45d1cf-5c8783c7d8fmr251259a12.0.1727307761901; Wed, 25 Sep 2024
- 16:42:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727308857; x=1727913657;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cPuMIPtkFUqqXprChJbKt7gTP4JuGanqczP3oBY5vrw=;
+        b=V8y4RtRGo9I/LYYHs62eX/xu4Hvc8/1qVy1Hksww81Hnwylp1cUaVvK6hOtDKW5wpb
+         EpAQhKFGUgYcwqTZTX+R/TFx1piYoz4jbh47PDtd3nbCwW/aa4Ixmppl52PJXO1UZG2n
+         xpe/jPgId44XA+ccia81bBkxjY+hoNVo3bRPti8sKuR05DfYEnPFmLgGFyJp28F8a8xi
+         ozc2I2SL/tzc9uGbISzLRGLvBEXNGTcjr81CUAq1fRuwqA8iv821bJJB2uywacD22OBc
+         ypPdtnwOSuPgQ4Xvaf0+vp8aRxtXPnzERYu2uPVa3OiOsgozkolTC+9mOqSFv899rV1V
+         Lw4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVYbFioj12DTlsQzgLrtezLiY6ovoyrBXGQz9qLl8yiak2djTPxITp6potV8pPxfF62AWP53N90lm4OhRpWjg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvwkBKWiHjpRHHPi5bMT7SY004Jufco+/t7hTRO1ltBNVzSbBL
+	KWOgsMOaJsc83pazJeQknJguA5UDj5yhfvIoZRsu2ZgcZ5wTW0ejgbb2+Sv4Xw==
+X-Google-Smtp-Source: AGHT+IFhjnkWy3FRA/CwSvG5CGnMdRcwTo96YK+0WkkTkGo3zIVuPlKKZn2oyrmo/1I+PT8z7lwKjA==
+X-Received: by 2002:a17:902:d506:b0:20b:b52:3f7c with SMTP id d9443c01a7336-20b1b47470emr1341395ad.18.1727308856775;
+        Wed, 25 Sep 2024 17:00:56 -0700 (PDT)
+Received: from google.com (164.135.233.35.bc.googleusercontent.com. [35.233.135.164])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af17e1806sm28912165ad.166.2024.09.25.17.00.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Sep 2024 17:00:56 -0700 (PDT)
+Date: Thu, 26 Sep 2024 00:00:53 +0000
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Gatlin Newhouse <gatlin.newhouse@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>
+Subject: Re: [PATCH] cfi: encode cfi normalized integers + kasan/gcov bug in
+ Kconfig
+Message-ID: <20240926000053.GA3188344@google.com>
+References: <20240925-cfi-norm-kasan-fix-v1-1-0328985cdf33@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240924212024.540574-1-mmaurer@google.com> <20240924212024.540574-15-mmaurer@google.com>
- <20240925230000.GA3176650@google.com>
-In-Reply-To: <20240925230000.GA3176650@google.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 25 Sep 2024 16:42:30 -0700
-Message-ID: <CAGSQo00OqOJ+s3xULXvojXMSCR8y-TQOHAwWqpS2VDxWaDxxQA@mail.gmail.com>
-Subject: Re: [PATCH v4 14/16] modules: Support extended MODVERSIONS info
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
-	gary@garyguo.net, mcgrof@kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>, 
-	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
-	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
-	linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925-cfi-norm-kasan-fix-v1-1-0328985cdf33@google.com>
 
-Thanks for the catch. I've sent up v5 to include that fix. I've also
-added a changelog and made sure the patches make it to linux-modules@
-as Daniel suggested.
+Hi Alice,
 
+On Wed, Sep 25, 2024 at 08:10:18AM +0000, Alice Ryhl wrote:
+> An alternative solution is to inspect a binary created by clang or rustc
+> to see whether the faulty CFI tags are in the binary. This would be a
+> precise check, but it would involve hard-coding the *hashed* version of
+> the CFI tag. This is because there's no way to get clang or rustc to
+> output the unhased version of the CFI tag. Relying on the precise
+> hashing algorithm using by CFI seems too fragile, so I have not pursued
+> this option.
 
-On Wed, Sep 25, 2024 at 4:00=E2=80=AFPM Sami Tolvanen <samitolvanen@google.=
-com> wrote:
->
-> Hi Matt,
->
-> On Tue, Sep 24, 2024 at 09:19:56PM +0000, Matthew Maurer wrote:
-> > +static void dedotify_ext_version_names(char *str_seq, unsigned long si=
-ze)
-> > +{
-> > +     unsigned long out =3D 0;
-> > +     unsigned long in;
-> > +     char last =3D '\0';
-> > +
-> > +     for (in =3D 0; in < size; in++) {
-> > +             if (last =3D=3D '\0')
-> > +                     /* Skip one leading dot */
-> > +                     if (str_seq[in] =3D=3D '.')
-> > +                             in++;
->
-> Thanks for addressing Michael's comment, this looks correct to me.
->
-> Nit: might be cleaner in a single if statement though:
->
->         /* Skip one leading dot */
->         if (last =3D=3D '\0' && str_seq[in] =3D=3D '.')
->                 in++;
->
-> > +void modversion_ext_start(const struct load_info *info,
-> > +                       struct modversion_info_ext *start)
-> > +{
-> > +     unsigned int crc_idx =3D info->index.vers_ext_crc;
-> > +     unsigned int name_idx =3D info->index.vers_ext_name;
-> > +     Elf_Shdr *sechdrs =3D info->sechdrs;
-> > +
-> > +     /*
-> > +      * Both of these fields are needed for this to be useful
-> > +      * Any future fields should be initialized to NULL if absent.
-> > +      */
-> > +     if ((crc_idx =3D=3D 0) || (name_idx =3D=3D 0))
-> > +             start->remaining =3D 0;
-> > +
-> > +     start->crc =3D (const s32 *)sechdrs[crc_idx].sh_addr;
-> > +     start->name =3D (const char *)sechdrs[name_idx].sh_addr;
-> > +     start->remaining =3D sechdrs[crc_idx].sh_size / sizeof(*start->cr=
-c);
-> > +}
->
-> This looks unchanged from v3, so I think my comment from there
-> still applies:
->
-> https://lore.kernel.org/lkml/CABCJKufJK0WO92wnW09VTLqZk0ODxhuKQG=3DHbKE-v=
-a0urJU1Vg@mail.gmail.com/
->
-> Sami
+I suppose there would be no need to hardcode hashes in the test,
+it's enough to verify that the hashes for the compiler-emitted
+functions change when integer normalization is enabled. Still, I
+agree that this doesn't sound worth it in this case.
+
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index ee58df8b1080..b8066bf43153 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -829,7 +829,7 @@ config CFI_CLANG
+>  config CFI_ICALL_NORMALIZE_INTEGERS
+>  	bool "Normalize CFI tags for integers"
+>  	depends on CFI_CLANG
+> -	depends on $(cc-option,-fsanitize=kcfi -fsanitize-cfi-icall-experimental-normalize-integers)
+> +	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+>  	help
+>  	  This option normalizes the CFI tags for integer types so that all
+>  	  integer types of the same size and signedness receive the same CFI
+> @@ -842,6 +842,22 @@ config CFI_ICALL_NORMALIZE_INTEGERS
+>  
+>  	  This option is necessary for using CFI with Rust. If unsure, say N.
+>  
+> +config HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+> +	def_bool !GCOV_KERNEL && !KASAN
+> +	depends on CFI_CLANG
+> +	depends on $(cc-option,-fsanitize=kcfi -fsanitize-cfi-icall-experimental-normalize-integers)
+
+This looks reasonable to me. Thanks for the fix!
+
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+
+Sami
