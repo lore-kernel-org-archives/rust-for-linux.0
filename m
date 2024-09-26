@@ -1,101 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF50A4D8C8;
-	Thu, 26 Sep 2024 15:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10765145B2E;
+	Thu, 26 Sep 2024 15:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727365005; cv=none; b=qeSP387rb2PV8XW4cw4uwv8iZrT1KUKEsFt2SgEKK/flaPuDTeADpKrdwlL0K+YGkk2zn7CfkCbzXq39syGA3Lq6pCFetKkia+hpinJXmuS+gKJEb2V+/CZxwW0Nmlpvr8oy5HqvI2W0A2g0Sv0eVo820pJxBab2MKcAHjN4QeY=
+	t=1727365234; cv=none; b=dagFvGqrFOHc0HO7QLHZb9wKjVAopy6L/mcZJXVFVj2ta9nETx6d/2zcHlR7lg4FF4lVckPOX+DbpZIBJ/PbxmjSscpcuc+7Trg8uIET/QkQucknkGSH6ZUcxBlqmECp14/kQugJyHA+IOJfcGOObPb72cnAalyFAnoLevG7QkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727365005; c=relaxed/simple;
-	bh=MnHn5Un5GctlEYw8FQfVsnDO6azbNmYGLMtZ416WHA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdZpeZR8te6KtTJX7MrHu5srBAWGaM65vqooga+55vHk4H1MeezNSG8DZq38iYKSdRSQbSGPLvrETVlDBvp9BqhGlpOvuhoyxP9/qa1zygL6faBsdfkhE0CH7pQOgexfFTmt0Hl9t9c4VOOKMrn0ZArQrzBvDu8o6HBppmLY57Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBOdu2mQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727365234; c=relaxed/simple;
+	bh=eBWvVfsKE4lYCkR9jWhTHTt0x1qkASzl46mhvR//R7U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uLmEMsnfp+8y8YpS6DJwSyAunoylZtqtVpyDLsiA/93g87B61uKG+gs3kl6qb3tQgz/fksk95kjHrMTL7utE1wPzs3W0DRwhhIwuOLUkaBNKzuM2b55Kx4ZRX7p5UCTW/O/iaYbvc10BfJaaOV3ICP23nDmZ2SfuHkh42jkw6zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VPJ0Ggc7; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBOdu2mQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17978C4CEC5;
-	Thu, 26 Sep 2024 15:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727365004;
-	bh=MnHn5Un5GctlEYw8FQfVsnDO6azbNmYGLMtZ416WHA8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qBOdu2mQaW34VK0viO1CHr5mi7XaLWDsdmQj2Llx95tsJec3C1IqknVDGCsoK+fqA
-	 E+EQUeVouFnJ3ljflOzTf85FnnQEFOMTwc15jRFIJ481Mj33Sr32CVpQutCjg9zDve
-	 i6huG2wAlwqAeupmGmUnTbsdkq8YKSIV0AB3e+og=
-Date: Thu, 26 Sep 2024 17:36:41 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Miscdevices in Rust
-Message-ID: <2024092657-snorkel-unmovable-7a6a@gregkh>
-References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
- <2024092647-subgroup-aqueduct-ec24@gregkh>
- <CAH5fLgh8DE8cPC+-HPz6vshCwToA2QyGqngj77N9x16cAUfpiQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VPJ0Ggc7"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7c3d415f85eso79958a12.0;
+        Thu, 26 Sep 2024 08:40:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727365232; x=1727970032; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eBWvVfsKE4lYCkR9jWhTHTt0x1qkASzl46mhvR//R7U=;
+        b=VPJ0Ggc7+EjzItIjoFx9C0Am305nY8vagkZYwGfXZwTMIvTX/eGHwyONAf6KSbd4+T
+         yrqOXLPlm1rURrO27B5tIOjAw9wX+Jup1zs7tXYFFqcsTPmujUg4M18AtwAgrKRzMHR+
+         806hQtPjJWL3DGwrPdRzPaFCOeF0tE9eLT8owRa5xPkrpq0HBc6RxKFkxOWbm9+yWBOK
+         NfiJFfpCfZurlQLKnsUPSGhaUFFK+9tv2l+Wek2l3gGNxGebKuqwD1397IMqt8iWxjWv
+         TXImJCgfPfCRHaom12GD2SGayHfcmLh7W9+iaJSa2RDBmvHxQEySk8hiFmipd5PHvBmJ
+         AMmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727365232; x=1727970032;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eBWvVfsKE4lYCkR9jWhTHTt0x1qkASzl46mhvR//R7U=;
+        b=U9wWkObAlfqGHN01oiuVBZlrBx7y9cJjknNV9hx9nKItCLo8GmIFcOPT8264RoBSLS
+         6vVRuTRT/sWQjPsJDzU8W+7+NgLKAZXo3L08aj8pPrDkMMXTF1Qfc53ROYE68JzXzHQB
+         iAY9AoXfM9XOJey7c5CWQvK2Uxk5linESSkN/DwCYwUAlsvqzBo8UueS9otH7CTEcvkb
+         3NdfF/+2RWz3vX/B07T9KT+VJG/8HbkH1syUpwSMccMOrb8XJLz3oi7zvugUAx1qYDxd
+         IVCk7/uBGhk7dDknqR8YoELRB/Qtyk0+LFxetIWHkRDYWAB1GHsNBBaJOlhoZk/Itcsu
+         OcEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDmxjUVGxUJJbhYq+YRPIKNOiu1zTYAKVs9T+3EkkJp/Rq3/Q0gsbR7cRssA2vJCjHk4eR1GRqUexbsUU=@vger.kernel.org, AJvYcCWnv/Qitb1J9CQXh1Kz4594Qu5jqifRhHR9oQvyS/8PZedMsSMANqPgpqIkLwVXHhitWgBEe0VBRKu8L+2z4ao=@vger.kernel.org, AJvYcCXZb8qmFRhKHie2IIibg9zrgmYiot/E3FK1fqvFkIx+hrHhVaHdG+BCjTo+Bs2Qd5I5Brjea2vj@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsclbfKVA8demyp/sy+3L11LILBRjjq3E/H/Ool7A0aFrWWK2z
+	RT8AgZfDdiYGNb+SSfQ96sjoixUcYen4MM1HnBybW0GaMx6Vum9t/semENe2Tx5la5vYT95XE28
+	uHYy1V9f255TNwwPy6VxAmPGkQt4T7ft33BQINA==
+X-Google-Smtp-Source: AGHT+IG0/1g5eMwIe2YWirZf4Ac8fdSnvrNHQArrRR/tnb9tehSWeiCfeqtWgbf9mBS9CWxs1mPUyKjyQDvqh0yUQKk=
+X-Received: by 2002:a05:6a00:891:b0:70b:705f:dda7 with SMTP id
+ d2e1a72fcca58-71b26059671mr157176b3a.4.1727365232203; Thu, 26 Sep 2024
+ 08:40:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgh8DE8cPC+-HPz6vshCwToA2QyGqngj77N9x16cAUfpiQ@mail.gmail.com>
+References: <20240917000848.720765-1-jmontleo@redhat.com> <20240917000848.720765-2-jmontleo@redhat.com>
+ <334EBB3A-6ABF-4FBF-89D2-DF3A6DCCCEA2@kernel.org> <20240917142950.48d800ac@eugeo>
+ <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org>
+In-Reply-To: <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Sep 2024 17:40:19 +0200
+Message-ID: <CANiq72=KdF2zrcHJEH+YGv9Mn6szsHrZpEWb_y2QkFzButm3Ag@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
+To: Conor Dooley <conor@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 05:20:15PM +0200, Alice Ryhl wrote:
-> On Thu, Sep 26, 2024 at 5:05 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Sep 26, 2024 at 02:58:54PM +0000, Alice Ryhl wrote:
-> > > A misc device is generally the best place to start with your first Rust
-> > > driver, so having abstractions for miscdevice in Rust will be important
-> > > for our ability to teach Rust to kernel developers.
-> > >
-> > > I intend to add a sample driver using these abstractions, and I also
-> > > intend to use it in Rust Binder to handle the case where binderfs is
-> > > turned off.
-> > >
-> > > I know that the patchset is still a bit rough. It could use some work on
-> > > the file position aspect. But I'm sending this out now to get feedback
-> > > on the overall approach.
-> >
-> > Very cool!
-> >
-> > > This patchset depends on files [1] and vma [2].
-> > >
-> > > Link: https://lore.kernel.org/all/20240915-alice-file-v10-0-88484f7a3dcf@google.com/ [1]
-> > > Link: https://lore.kernel.org/all/20240806-vma-v5-1-04018f05de2b@google.com/ [2]
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >
-> > Does it really need all of those dependencies?  I know your development
-> > stack is deep here, but maybe I can unwind a bit of the file stuff to
-> > get this in for the next merge window (6.13-rc1) if those two aren't
-> > going to be planned for there.
-> 
-> Ah, maybe not. The dependency on files is necessary to allow the file
-> to look at its own fields, e.g. whether O_NONBLOCK is set or what the
-> file position is. But we can take that out for now and add it once
-> both miscdevice and file have landed. I'm hoping that file will land
-> for 6.13, but untangling them allows both to land in 6.13.
-> 
-> As for vma, it's needed for mmap, but if I take out the ability to
-> define an mmap operation, I don't need it. We can always add back mmap
-> once both miscdevice and vma have landed.
+On Tue, Sep 17, 2024 at 5:26=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> Yes, but unfortunately I already knew how it worked. It's not flags I am =
+worried about, it is extensions.
+> Even using a libclang that doesn't match clang could be a problem, but we=
+ can at least declare that unsupported.
+> Not digging it out on an airport bus, but we discussed the lack of GCC su=
+pport on the original patch adding riscv, and decided against it.
 
-Yes, let's drop the mmap interface for now, and probably the seek stuff
-too as most "normal" misc devices do not mess with them at all.
+Do you mean you would prefer to avoid supporting the mixed GCC-Clang
+builds? If so, do you mean you would prefer to not pick the patch,
+i.e. avoid supporting this at all? (If so, then perhaps it would be a
+good idea to add a comment there and perhaps a note to
+https://docs.kernel.org/rust/arch-support.html).
 
-If that makes the dependencies simpler, that would be great.
+Otherwise, please let me know if I am misunderstanding -- thanks!
 
-thanks,
-
-greg k-h
+Cheers,
+Miguel
