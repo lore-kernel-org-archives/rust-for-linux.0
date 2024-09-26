@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FEC36B0D
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 13:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76080219FC
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 13:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727355715; cv=none; b=b+ckWv3kAjwRbnmgs/BsMFwMwEKfpl0xkEJdcfawJarp7VntKwiD8vfzEBDSug4rr5PHFArGFtwW3Z5vpotMt40fwhVhXKZXRgpAfYhmufLs+oOij7Z989Jn0QUmycA2kV8r4p2V/hSmmW5leWS/jK31fm8ouU8zSaz/Gutkg+o=
+	t=1727356012; cv=none; b=XKw4OIV4IBoXsgcfKNDFnmxiIfKN+9Bl6EDBFrd4E7A6LAmSl+0cRKOOA5lQFI7JZNydDazb/Ei2by2SQmiXXnMSXtkcCTpM7hPwXgW3idOdonUCtN46O5oWQ2ox2RU3klBg6sPMWkWEJERUUycjUnIuR2eBsNj9SaPPsrGCCWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727355715; c=relaxed/simple;
-	bh=OXHeZK2qk4v7prSpNji70gCfJgp96GTUw3/beMdUJ20=;
+	s=arc-20240116; t=1727356012; c=relaxed/simple;
+	bh=N9AOY60Re6sbl4gS2L3klLeSnQWKAhByELnw8dkv7C4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dykhwzv2ghJyV0kEjnxx61lX4Wz15YkX2nE/E+0YNymzwKZ4KeclEWCkxloJPoUeRKLgoVC3oaN7YSFjaiWbyG6ijo5PnGopvEJDxpupLbkpY9RldksI/hGjEjQyhBx2gsAlc+chEH96bsftT7MG+1ACPOPXpvLwggK3u9Ldrps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MdcN3bxi; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=Zlb92xs7xrmjkkMD5U/qftYyiwj73GgMeBfrJSZWk2Us3yCnkPpuo01LcsPmxuYiFo7NSSdDq5/HLcAw/OB/sFbou6thAth/mRgPFJsh3ztrjMTz60+AbGZ6gm7RAUt5/ldmRBsi1axTm34aUcKrDDL/ZchCHbEwBbV5z455dbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VJlAu/Gz; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MdcN3bxi"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VJlAu/Gz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1727355708; x=1727614908;
-	bh=Ni2tbyqOCaidLloef4UUNDZ9jQLw7Tbtr+Fe40Nyt9k=;
+	s=protonmail; t=1727356003; x=1727615203;
+	bh=TL5z/1gzdLLW9Ubrhup3pugN8+Yh9hBL8znGvXpjJ/8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MdcN3bxiKQV7IztkVwYihHWencm5ejs4fWLMev+sd7mX7LfYTwhlD78H11Is5Afhz
-	 CeKOrzVJvjWw2zpqvI5W6iVP86OEs3G/6lLY0WBA08cIkz6TrbF+vvntC37QUmP4GM
-	 eKy15/vDU3dWjSPKS97LCXlK3IsYyQaiah/Xpe3qDpdZUSf43cFB8Umdw4VIXXX181
-	 erMvU5pjZj60BbM1mT4WmUWUZfBr6iuO89TJ3YJcDg9dUaRnAccVbFWjdpTXqiZB8G
-	 XDWyPXmnciV1GKk9nW9MNxr2LDkStAx+140qg0o5BsPtdtJjdAVycy/WHQ/ncTSqCR
-	 ZWY5cdcLl/g2w==
-Date: Thu, 26 Sep 2024 13:00:58 +0000
+	b=VJlAu/GzOA09oJngt1hksEiHM7bg5mjTj85IXHCu44O+enPFwxtLzbWnVn0xJqD4f
+	 b255IdKyr2VefkJK2UYSvUeGBt1mr/AmCWemP6iyGLrMqxNNWzhCrrnfwhGuAvexfe
+	 aYAp47Rs8Pty+6I9M1Vpb8Km31ZYhCo2T9hWDZpReIQEn1DAaZgNAYwCrgybp0wcMA
+	 vDGfNqyjJIHJLaqG3K+h4KlhtiC6z8SEbM74EHnq5/k697zR1UYhIrUSSRl7OJX41V
+	 KlEI1eumTukC/COp9exn/3q1SPDKZSsoyFNZ8U3+FRLthembeoyhX7l25aVW6z1Cz+
+	 y/abihXNbXiyQ==
+Date: Thu, 26 Sep 2024 13:06:37 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
-Message-ID: <15f42ddd-b011-4136-b2e4-bc266fab25b6@proton.me>
-In-Reply-To: <20240911225449.152928-5-dakr@kernel.org>
-References: <20240911225449.152928-1-dakr@kernel.org> <20240911225449.152928-5-dakr@kernel.org>
+Subject: Re: [PATCH v7 06/26] rust: alloc: implement `Vmalloc` allocator
+Message-ID: <406a5fb9-090d-4b51-bef2-e5db51d5147a@proton.me>
+In-Reply-To: <20240911225449.152928-7-dakr@kernel.org>
+References: <20240911225449.152928-1-dakr@kernel.org> <20240911225449.152928-7-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f5651060dc2251b4113e5c3c4cb39c1e915fcbd3
+X-Pm-Message-ID: 08d4c668d6729e5542ba087e8f47a9f6284c5add
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,105 +48,25 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 12.09.24 00:52, Danilo Krummrich wrote:
-> +/// # Invariants
-> +///
-> +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
-> +struct ReallocFunc(
-> +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut c=
-ore::ffi::c_void,
-> +);
-> +
-> +impl ReallocFunc {
-> +    // INVARIANT: `krealloc` satisfies the type invariants.
-> +    const KREALLOC: Self =3D Self(bindings::krealloc);
-> +
-> +    /// # Safety
-> +    ///
-> +    /// This method has the same safety requirements as [`Allocator::rea=
-lloc`].
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// This method has the same guarantees as `Allocator::realloc`. Add=
-itionally
-> +    /// - it accepts any pointer to a valid memory allocation allocated =
-by this function.
-> +    /// - memory allocated by this function remains valid until it is pa=
-ssed to this function.
-> +    unsafe fn call(
-> +        &self,
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> +        let size =3D aligned_size(layout);
-> +        let ptr =3D match ptr {
-> +            Some(ptr) =3D> ptr.as_ptr(),
-> +            None =3D> ptr::null(),
-> +        };
-> +
-> +        // SAFETY:
-> +        // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and =
-thus only requires that
-> +        //   `ptr` is NULL or valid.
-> +        // - `ptr` is either NULL or valid by the safety requirements of=
- this function.
-> +        //
-> +        // GUARANTEE:
-> +        // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc`.
-> +        // - Those functions provide the guarantees of this function.
-> +        let raw_ptr =3D unsafe {
-> +            // If `size =3D=3D 0` and `ptr !=3D NULL` the memory behind =
-the pointer is freed.
-> +            self.0(ptr.cast(), size, flags.0).cast()
-> +        };
-> +
-> +        let ptr =3D if size =3D=3D 0 {
-> +            NonNull::dangling()
-> +        } else {
-> +            NonNull::new(raw_ptr).ok_or(AllocError)?
-> +        };
-> +
-> +        Ok(NonNull::slice_from_raw_parts(ptr, size))
-> +    }
-> +}
+> Implement `Allocator` for `Vmalloc`, the kernel's virtually contiguous
+> allocator, typically used for larger objects, (much) larger than page
+> size.
+>=20
+> All memory allocations made with `Vmalloc` end up in `vrealloc()`.
+>=20
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/helpers/helpers.c              |  1 +
+>  rust/helpers/vmalloc.c              |  9 ++++++++
+>  rust/kernel/alloc/allocator.rs      | 36 +++++++++++++++++++++++++++++
+>  rust/kernel/alloc/allocator_test.rs |  1 +
+>  4 files changed, 47 insertions(+)
+>  create mode 100644 rust/helpers/vmalloc.c
 
-I remember asking you to split this into a different commit. I think you
-argued that it would be better to keep it in the same commit when
-bisecting. I don't think that applies in this case, are there any other
-disadvantages?
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
-
-> +
-> +// SAFETY: `realloc` delegates to `ReallocFunc::call`, which guarantees =
-that
-> +// - memory remains valid until it is explicitly freed,
-> +// - passing a pointer to a valid memory allocation is OK,
-> +// - `realloc` satisfies the guarantees, since `ReallocFunc::call` has t=
-he same.
-> +unsafe impl Allocator for Kmalloc {
-> +    #[inline]
-> +    unsafe fn realloc(
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> +        // SAFETY: `ReallocFunc::call` has the same safety requirements =
-as `Allocator::realloc`.
-> +        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
-> +    }
-> +}
-
-
-> +
->  unsafe impl GlobalAlloc for Kmalloc {
->      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
->          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
- size by the function safety
-> --
-> 2.46.0
->=20
 
