@@ -1,55 +1,55 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5294188CA8;
-	Thu, 26 Sep 2024 21:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A841188CB2;
+	Thu, 26 Sep 2024 21:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727387783; cv=none; b=nTzn0zed8y3rxxFD+6rbl+NOiKTLv3f6wkNJNsjes8ReUoKRN98pH1REVMQj1YhK+NjjwZfH7CNzShZn9IphWVg2XHckEs/wWmTf1RvrmrmOJTstAZw8e2BteFwI9UJh+AXpgowFOtCx5Ujhdlf7eiMbAJxGEF/jinpseVJRsEM=
+	t=1727387845; cv=none; b=c3a0giP7CrTPCE/WHOTzbZJon7psvCe7Ma8l0Ur2MpRLB0jdQsLjM41KygToLobV0Phbmr0HgTg/rjKWAKsfMFicAVLbb145n0/7l08BxdtXqlWpaZsKGFpyEOdGqF2eZ+fZab/Mwp6uyi8REFBqyAQE0046A1mVSsntu/a+o34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727387783; c=relaxed/simple;
-	bh=ezFoP7R2uJ0sajdZSA/6raNM26HoWOTGBTP99jykClI=;
+	s=arc-20240116; t=1727387845; c=relaxed/simple;
+	bh=eEN/xSFzcED2rz79aaTmMseX/MDz8XwqNLr76/6nOiM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BgX7JXBUARJjbNupxPAX+idhZPPNBzA+OPzeWyNEDC7Az1NCGGUpOlgXdwRArBwsLPeccGIBXpVOf54/g+9wipyTIYKMmN5Or+oevI582N4eDROSoM24z+MwRAfgsHGZD0u0XkfAdUYj7SeSntNNqEAiC2fBkoYd05jOSToFCiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OITaR/9Y; arc=none smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=orB+14K31Gx5vRaMlcCuDoUjI2XrhU6+qlB96JAFtADZL+Cw97laBXb9DN9tyMAg03+9L08jgWX8xibbefgWlTnE0V1Nf3A9TtNahsNJCTiBxBjI7sMJ+X8swshmroJQ2JRj7Ze5VNOD1VtKSDfs3QZDpihE/SOB2MMtG5f6kxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YCU3CTUA; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OITaR/9Y"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e0b467da03so94379a91.2;
-        Thu, 26 Sep 2024 14:56:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YCU3CTUA"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2e0b02ed295so113904a91.2;
+        Thu, 26 Sep 2024 14:57:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727387781; x=1727992581; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727387843; x=1727992643; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ezFoP7R2uJ0sajdZSA/6raNM26HoWOTGBTP99jykClI=;
-        b=OITaR/9YAJWOToKPUqosB0J/lD6Vj2aeCdWCrzGkoi81SLygseTmsWeG/0j+ue9iNf
-         bPzmKunrcH+gVWXp0awBmvKXebyVXmH1FgZ7LNR6dnPYxmnuUqNq8wS9L4WwVha+uGsl
-         uyHu/PM89kqq4pdsqWUbH/Xuvtww7syaSxiJshJJdwa8Nznlrx3KCoayfR2CNvsIlv09
-         DSkoye4FeBVDFVJJkHaDtaAl2qgR1obIcMNfd1MJQbbJRKIli9sFY48TAX6VDegTx+BQ
-         BMXzi1lMgmBei/oJXiFfSg6e2bt/aKizqXdn2uWKyAp/UyMWz+D3sE8xKn6leZiA1NzU
-         YuGA==
+        bh=eEN/xSFzcED2rz79aaTmMseX/MDz8XwqNLr76/6nOiM=;
+        b=YCU3CTUAoSLAGuSojA+yEoAfuX/Mb+h1aPlE7Cm2hzyOR9Eo3rQ1ugC080I/Qr0zZp
+         0T7PAV3AsgT2hx9movuKpjX5bFJ1eoqWA50q69sq6DqcgEVhzbbE+oPfROQv95ntltX7
+         mEVgdTC1uIV/Y15GBz3l3xSligVjePk8nQWbaPiINv/iOjXdOP2X1bww92IK6oRzdXUn
+         3xs2yQTTa0oOl5ttPisz3SlBLsC0bflATR+/bKFu1m7Y1fz5GvggG7+rmTAK05u2ZUGM
+         Bjq2lzs1VSEhUk4gPhym8L5ULtRCip3rI9JMapnGJhIUuvDYV9lJF6275/2XboPHn/zZ
+         sG1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727387781; x=1727992581;
+        d=1e100.net; s=20230601; t=1727387843; x=1727992643;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ezFoP7R2uJ0sajdZSA/6raNM26HoWOTGBTP99jykClI=;
-        b=KC0Ep1nhjjnaAl6Ea3LMqi3WUDw18P/cvHJJgGKkl0Bh37P85l0wO8DDrQeFtdT2YS
-         vR6RxSJih4NI67tirDQydUwxFK+qp8sgEQbNsEMxyHaEEfeKBwfBd81W0QAyjIwgAEa4
-         e52wymfRO1NwW24rk4lAjEh/iDD56WDithPMT9z8SSSLpDuigMs2rJecJ6c94x9KHMR4
-         VQw6OgIqfRZ9S//JJkyMOiVjDqRzTFjocos2gKENOA2sy7c2A6xMoaKM46MPe20Rz594
-         gGpot52IpPTT5OirlJmbPpEopboNX8wIKdXxt/GqBXMXPifVsUjNhQ0/yOloWmlnw9Dk
-         7yjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUq5zn/YvwoR5H0/VE/WKzUD4eshdT3MPs+YrJks5ML+Qx8z8J8wNOBaNF6illzq2WygO7iXsAc0Dj2+JFP7Fc=@vger.kernel.org, AJvYcCWHagl1lmWYsPF8zqlZiJpZqwocyXpHpn34nvjp2oHbfG8RfKsXCvz8xa8X7KUcWgQIk/V4jayxdhJQIUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnFoWonrQxFUX8W+5jh7S4bw/0YbUHQTebyTOa8atfKYUiV3Os
-	xtl7oOMwUgKHqXK6C65Au2Zw2xyUAVnF46OxSbzencAZCRkDAftgDOYLh/sE1v3/V3RYu8CN9e/
-	zgNbOxDAP7mndKXv8TNyTD9PkGn4=
-X-Google-Smtp-Source: AGHT+IHsmcvC46PFz028lt0ZLIxr1vgttBNAU5FX0Km4jEuOfHa6nXZGlkeqfS4I94ENr/SIPuehLkJubOHtVpdax8o=
-X-Received: by 2002:a17:90a:e392:b0:2e0:a931:cb16 with SMTP id
- 98e67ed59e1d1-2e0b863229dmr560137a91.2.1727387781203; Thu, 26 Sep 2024
- 14:56:21 -0700 (PDT)
+        bh=eEN/xSFzcED2rz79aaTmMseX/MDz8XwqNLr76/6nOiM=;
+        b=OQhoVLqk4Arv5sTyLe4QU8JL3Dtkq2l87spx2+8NS3HJI4coqQYCWtEDB944/RXc9x
+         NCzaGRVjYPWfqrbPjm/g3OmKVrm3iLgO307rWiLr9m8RciWzq+q3mdthvQpcZf9kCJqf
+         lTypduWcd8QAHosK77OHBnxwdMEygbEQM88CmfKtGWRi5mi8r1kLpuiTnPwdNwIJZmAv
+         uN5/eu8Pa8x+t9ULVZQ/uW4F5ekUSsW/dmC/0JC3rgR9z0tWNZWsU7k7b0jWmwe9aRrN
+         F/EdDWnHgnnWF5ur8l1TJh9iXTmaTzicEUl5db84ianzbGvzszEERnSwM1HFdc+blUtx
+         iSqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVT8+jpfkxdBgTTaSOa0n7OSOwUBdu4J0u36jetCUFgOE52x2LsnbbtctuBBqgERXRw0ojd3ONpjCHolV+dTJA=@vger.kernel.org, AJvYcCVV6TzH4jeBfX1sPp4JO9E3q0wOo/Z+JcQVsrqleRBpfSqb1JP4SSMNNTYfN8mL/hSgNL/d1eL4k09xbQI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6PsXhQF/iugttUMfXTAAdFODuyw3IEA37hhML/0M4GpOP1Ecy
+	Sa1GaEz2JkWU+kounveiePPy6W0tGrk8I5BqwEGOqabxSL13LukYyVmS1oEaqmqD4S1qx2rNP82
+	l/LcBqpwINHmyMpCjjJZQ4X7fRks=
+X-Google-Smtp-Source: AGHT+IHpO/1BWz17vURNySF2gUTZTjYnPxNW7MaMKBqIsMmLma82UqLz0MNk8I1C0jgMwINzCj+JsQLX5zpaS0kqHpU=
+X-Received: by 2002:a17:90a:ba97:b0:2e0:7adb:6380 with SMTP id
+ 98e67ed59e1d1-2e0b8ee512bmr536169a91.9.1727387843256; Thu, 26 Sep 2024
+ 14:57:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,8 +60,8 @@ References: <20240925205244.873020-2-benno.lossin@proton.me>
  <202409270303.kUIAmOmY-lkp@intel.com> <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me>
 In-Reply-To: <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Sep 2024 23:56:08 +0200
-Message-ID: <CANiq72kXGNyLg0Ooo3Ne=KmZWBnSO9HE2tcfP=gf+WGFqnjDEg@mail.gmail.com>
+Date: Thu, 26 Sep 2024 23:57:11 +0200
+Message-ID: <CANiq72kh7UdXjVNyxmsmSy58=W7=9Pqqys2zqHxfnLNKJXJHEA@mail.gmail.com>
 Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -77,24 +77,12 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Sep 26, 2024 at 11:40=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
 me> wrote:
 >
-> I would like to use `#[cfg("rust version <=3D 1.82")]`, but I don't know
-> how to do that. Do we already have support for checking the version in a
-> cfg? The alternative would be `#[allow(unreachable_patterns)]`, but I
-> would like to avoid that.
+> I can reproduce this error locally in a Rust project, but am unable to
+> do so on play.rust-lang.org. That seems very strange to me, anyone else
+> on 1.83 or 1.82 can confirm? AFAIK, it was stabilized in 1.82, see [1].
 
-We can do it, but it requires adding a Kconfig symbol, sadly, since
-`cfg` does not support numerical comparisons there.
-
-See commit 93dc3be19450 ("docs: rust: include other expressions in
-conditional compilation section") where I explained it.
-
-So depending on how often we think we will hit this, we may want to
-pay the "cost" of the extra Kconfig symbol. Otherwise, we can just
-`allow` it as you say.
-
-(There are discussions in Rust about `cfg(version(...))`, but that is
-for the future -- I have some links at
-https://github.com/Rust-for-Linux/linux/issues/354)
+Can you try in Compiler Explorer? That allows you to select more versions e=
+tc.
 
 Cheers,
 Miguel
