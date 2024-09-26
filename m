@@ -1,98 +1,119 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10765145B2E;
-	Thu, 26 Sep 2024 15:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62972158205;
+	Thu, 26 Sep 2024 15:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727365234; cv=none; b=dagFvGqrFOHc0HO7QLHZb9wKjVAopy6L/mcZJXVFVj2ta9nETx6d/2zcHlR7lg4FF4lVckPOX+DbpZIBJ/PbxmjSscpcuc+7Trg8uIET/QkQucknkGSH6ZUcxBlqmECp14/kQugJyHA+IOJfcGOObPb72cnAalyFAnoLevG7QkI=
+	t=1727366188; cv=none; b=XY+nyjzqMmTJyGnMGgKM1wMW8gQvmsTNw7DZrAbju3U4JxtsryEYckBWlp07AqDDEmIJygzYW+94IZIlp/Hqcgy5t0H79UDFGGWjr2vj5LH2K2SYhff4zDrMeaGJuYBJNcQOBWrnx53nWW+Z3endU/FwH6B9YHWXDjZCwq12KV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727365234; c=relaxed/simple;
-	bh=eBWvVfsKE4lYCkR9jWhTHTt0x1qkASzl46mhvR//R7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uLmEMsnfp+8y8YpS6DJwSyAunoylZtqtVpyDLsiA/93g87B61uKG+gs3kl6qb3tQgz/fksk95kjHrMTL7utE1wPzs3W0DRwhhIwuOLUkaBNKzuM2b55Kx4ZRX7p5UCTW/O/iaYbvc10BfJaaOV3ICP23nDmZ2SfuHkh42jkw6zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VPJ0Ggc7; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727366188; c=relaxed/simple;
+	bh=1/qI2GP3Axi5UcQBFFO7yyGh9Go/5y6RvSagLxELw7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oaiLocp00jXY2PDpk3WMG8LehDo45Um30mROG1gKgT7VAUlrTuMB4wTBYPzpss82VI78RN/Mf839CtnxxeWWsRVKLVhm6HtK/8rxSC+9g5Qu/r1KbJZl/dXhMCCj1L9j5TtchVDNVulKc5NZ62ecKmLfllupLSLZT/wS5ROMo7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FU+oDtiT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VPJ0Ggc7"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7c3d415f85eso79958a12.0;
-        Thu, 26 Sep 2024 08:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727365232; x=1727970032; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eBWvVfsKE4lYCkR9jWhTHTt0x1qkASzl46mhvR//R7U=;
-        b=VPJ0Ggc7+EjzItIjoFx9C0Am305nY8vagkZYwGfXZwTMIvTX/eGHwyONAf6KSbd4+T
-         yrqOXLPlm1rURrO27B5tIOjAw9wX+Jup1zs7tXYFFqcsTPmujUg4M18AtwAgrKRzMHR+
-         806hQtPjJWL3DGwrPdRzPaFCOeF0tE9eLT8owRa5xPkrpq0HBc6RxKFkxOWbm9+yWBOK
-         NfiJFfpCfZurlQLKnsUPSGhaUFFK+9tv2l+Wek2l3gGNxGebKuqwD1397IMqt8iWxjWv
-         TXImJCgfPfCRHaom12GD2SGayHfcmLh7W9+iaJSa2RDBmvHxQEySk8hiFmipd5PHvBmJ
-         AMmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727365232; x=1727970032;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eBWvVfsKE4lYCkR9jWhTHTt0x1qkASzl46mhvR//R7U=;
-        b=U9wWkObAlfqGHN01oiuVBZlrBx7y9cJjknNV9hx9nKItCLo8GmIFcOPT8264RoBSLS
-         6vVRuTRT/sWQjPsJDzU8W+7+NgLKAZXo3L08aj8pPrDkMMXTF1Qfc53ROYE68JzXzHQB
-         iAY9AoXfM9XOJey7c5CWQvK2Uxk5linESSkN/DwCYwUAlsvqzBo8UueS9otH7CTEcvkb
-         3NdfF/+2RWz3vX/B07T9KT+VJG/8HbkH1syUpwSMccMOrb8XJLz3oi7zvugUAx1qYDxd
-         IVCk7/uBGhk7dDknqR8YoELRB/Qtyk0+LFxetIWHkRDYWAB1GHsNBBaJOlhoZk/Itcsu
-         OcEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVDmxjUVGxUJJbhYq+YRPIKNOiu1zTYAKVs9T+3EkkJp/Rq3/Q0gsbR7cRssA2vJCjHk4eR1GRqUexbsUU=@vger.kernel.org, AJvYcCWnv/Qitb1J9CQXh1Kz4594Qu5jqifRhHR9oQvyS/8PZedMsSMANqPgpqIkLwVXHhitWgBEe0VBRKu8L+2z4ao=@vger.kernel.org, AJvYcCXZb8qmFRhKHie2IIibg9zrgmYiot/E3FK1fqvFkIx+hrHhVaHdG+BCjTo+Bs2Qd5I5Brjea2vj@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsclbfKVA8demyp/sy+3L11LILBRjjq3E/H/Ool7A0aFrWWK2z
-	RT8AgZfDdiYGNb+SSfQ96sjoixUcYen4MM1HnBybW0GaMx6Vum9t/semENe2Tx5la5vYT95XE28
-	uHYy1V9f255TNwwPy6VxAmPGkQt4T7ft33BQINA==
-X-Google-Smtp-Source: AGHT+IG0/1g5eMwIe2YWirZf4Ac8fdSnvrNHQArrRR/tnb9tehSWeiCfeqtWgbf9mBS9CWxs1mPUyKjyQDvqh0yUQKk=
-X-Received: by 2002:a05:6a00:891:b0:70b:705f:dda7 with SMTP id
- d2e1a72fcca58-71b26059671mr157176b3a.4.1727365232203; Thu, 26 Sep 2024
- 08:40:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FU+oDtiT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF65C4CEC5;
+	Thu, 26 Sep 2024 15:56:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727366187;
+	bh=1/qI2GP3Axi5UcQBFFO7yyGh9Go/5y6RvSagLxELw7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FU+oDtiT5Xcl/Iai3/8xWtZT7hPf9kRCjbT1q1NyX6z8NCljCQXow4AXGtuYmSlC+
+	 AzmA96KBDfIGUsL2DhJkznlHWk+kLOYjzE5ZKagM4kbBZZDUcMDZN+aCjAVWjifoUi
+	 ud94FqvxI/WXzT/7jaPN9whX0uaCYcpWIaMXRNAJN/0gZyJRYvk/8EFRkwCAto3jM6
+	 /ldlX4vGj3/GcKzejRPsQJus+lCjaJxUTeTr3qvb0dB+n2nR/b91T6MfK9rtbtZ2Ap
+	 qt26/lxcP30MKT8O/AwM851eNGKMEQiQxUva5E9qei+t/7w/cJ8WdUjWlO+c3ajx+r
+	 Hxzq5XfQUHFew==
+Date: Thu, 26 Sep 2024 16:56:21 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Jason Montleon <jmontleo@redhat.com>,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com,
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
+	justinstitt@google.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
+Message-ID: <20240926-plated-guts-e84b822c40cc@spud>
+References: <20240917000848.720765-1-jmontleo@redhat.com>
+ <20240917000848.720765-2-jmontleo@redhat.com>
+ <334EBB3A-6ABF-4FBF-89D2-DF3A6DCCCEA2@kernel.org>
+ <20240917142950.48d800ac@eugeo>
+ <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org>
+ <CANiq72=KdF2zrcHJEH+YGv9Mn6szsHrZpEWb_y2QkFzButm3Ag@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240917000848.720765-1-jmontleo@redhat.com> <20240917000848.720765-2-jmontleo@redhat.com>
- <334EBB3A-6ABF-4FBF-89D2-DF3A6DCCCEA2@kernel.org> <20240917142950.48d800ac@eugeo>
- <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org>
-In-Reply-To: <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Sep 2024 17:40:19 +0200
-Message-ID: <CANiq72=KdF2zrcHJEH+YGv9Mn6szsHrZpEWb_y2QkFzButm3Ag@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
-To: Conor Dooley <conor@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
-	justinstitt@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="nmXfaJxXZ5jvnxoJ"
+Content-Disposition: inline
+In-Reply-To: <CANiq72=KdF2zrcHJEH+YGv9Mn6szsHrZpEWb_y2QkFzButm3Ag@mail.gmail.com>
+
+
+--nmXfaJxXZ5jvnxoJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 17, 2024 at 5:26=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> Yes, but unfortunately I already knew how it worked. It's not flags I am =
-worried about, it is extensions.
-> Even using a libclang that doesn't match clang could be a problem, but we=
- can at least declare that unsupported.
-> Not digging it out on an airport bus, but we discussed the lack of GCC su=
-pport on the original patch adding riscv, and decided against it.
+On Thu, Sep 26, 2024 at 05:40:19PM +0200, Miguel Ojeda wrote:
+> On Tue, Sep 17, 2024 at 5:26=E2=80=AFPM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > Yes, but unfortunately I already knew how it worked. It's not flags I a=
+m worried about, it is extensions.
+> > Even using a libclang that doesn't match clang could be a problem, but =
+we can at least declare that unsupported.
+> > Not digging it out on an airport bus, but we discussed the lack of GCC =
+support on the original patch adding riscv, and decided against it.
+>=20
+> Do you mean you would prefer to avoid supporting the mixed GCC-Clang
+> builds?
 
-Do you mean you would prefer to avoid supporting the mixed GCC-Clang
-builds? If so, do you mean you would prefer to not pick the patch,
-i.e. avoid supporting this at all? (If so, then perhaps it would be a
-good idea to add a comment there and perhaps a note to
-https://docs.kernel.org/rust/arch-support.html).
+Mixed builds are allowed on the c side, since we can figure out what the
+versions of each tool are. If there's a way to detect the version of
+libclang in use by the rust side, then I would be okay with mixed gcc +
+rustc builds.
 
-Otherwise, please let me know if I am misunderstanding -- thanks!
+> If so, do you mean you would prefer to not pick the patch,
+> i.e. avoid supporting this at all?
+
+Yes, I would rather this was not applied at all. My plan was to send a
+patch making HAVE_RUST depend on CC_IS_CLANG, but just ain't got around
+to it yet, partly cos I was kinda hoping to mention this to you guys at
+LPC last week, but I never got the chance to talk to any rust people (or
+go to any rust talks either!).
+
+> (If so, then perhaps it would be a
+> good idea to add a comment there and perhaps a note to
+> https://docs.kernel.org/rust/arch-support.html).
+
+Sure, I can add a comment there.=20
+
+> Otherwise, please let me know if I am misunderstanding -- thanks!
+
+In sorta related news, is there a plan for config "options" that will
+allow us to detect gcc-rs or the gcc rust backend?
 
 Cheers,
-Miguel
+Conor.
+
+--nmXfaJxXZ5jvnxoJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZvWEJQAKCRB4tDGHoIJi
+0oYrAPwMntj0z02QObS+IYmEmboJI6SyEUkngNBmw9pJE4dx/AD/aIavZrcUYEKA
+wsXoLTaDPQ2Dv+rm0e1ziNyB8Bg2nA4=
+=wItZ
+-----END PGP SIGNATURE-----
+
+--nmXfaJxXZ5jvnxoJ--
