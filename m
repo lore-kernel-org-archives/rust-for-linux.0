@@ -1,98 +1,127 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB9C22318;
-	Thu, 26 Sep 2024 08:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC081A38E6
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 09:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727340527; cv=none; b=Vc7oe0FUDWSf8bxKs6eNTRhGdj+l6OVRcC90UdCfrGxZfaIclGfdpPM4i7mhmy3p3qgBdOeWRnQLz/cX7SNcAz7acTScpelWhTibo1WDeghAcC2HqJn92dWvIMefjSZCaNWVgnR+XQfYkx3PLHOoRvoB0qsVFXkVknC+8sj3uzE=
+	t=1727343544; cv=none; b=GKJDsklWF2kCePdzXa71LEowmePBUtxIus5tNX4/Dl2KfLlXmBfYm+EtJmWJDGLwPyIBq9Yoo+Pq06UCuKbax9ydifhp06CDNALLz+Vv1eE9W/9K/hHwQY921adDIxvnODTobhnPMt+PeBXeiv2paYSfEHQ5boVnwS0r9gvpRpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727340527; c=relaxed/simple;
-	bh=DCQ2pc7FZkSIz/C9VVBl6Bnm3uHB7Myprvos+/WrPwY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hn3rocqVKLml9aF69pHGeEaovgzqXrr3a9RAG15QZlCu0PKScMaj8Tz0TK7IOrsFGmb5YPH6YHPqpgOf6RMZpo/x6nzx4nyeAkC47dlzUA2gpTYLqw164quTbLs4t5Q8WGD2w8h3sOmyOEmT9Xb4QiLMTYA7A6RGKxmzoONLo7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vHPIi/v1; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1727343544; c=relaxed/simple;
+	bh=44hQx7AWS11P7gR6JRYZM6ZBLNvn/Mupzf7ndbZKPl0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sCdBpkrG4bMvo1g2ZBzMJCMB/EpqijlwAB6wp23mDGBkBK9T/ndU7V4ctSdI9fsG0/gQ/uNk4wTSi88cxo3aSJSxpQtSmPEgEsmY/tyNR9Ywsocmyv+GBDLrUtEi4SmFqwoevNG0xq/TAuaJIDK2CwSwRKpWeghacrX3oW51eS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DNDwJOTT; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vHPIi/v1"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1727340516; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=vql8xWm4ugnb2a4wcV5wGjvZCN0btIoVoInfiJaEEYI=;
-	b=vHPIi/v1fAJX+fRvuqucuw0BGnyOp8n77cbxersp/WObTzYPhVXIe9Xtrq/HRzlM9Fm2T6oZI/xAY6C8u4hZ/XwzXMvw2XiVxFSdg3M3Kwm4ZttvV+CM9lL4OWpsPFhgBYqiJvtRn5oMgTyRukEsiah3ylPnZTGXzcMA9LBTp5s=
-Received: from 30.221.129.247(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WFmi89h_1727340514)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Sep 2024 16:48:35 +0800
-Message-ID: <4c4e92bf-663f-4acf-a812-782536bf34d4@linux.alibaba.com>
-Date: Thu, 26 Sep 2024 16:48:33 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DNDwJOTT"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e21d0bfba7so15569827b3.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Sep 2024 02:39:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727343542; x=1727948342; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ycHQDAR/krWFA5kAhgmXvoNx6Yn5beF8hwbiGL9F7lk=;
+        b=DNDwJOTT1pue19yJUKDo/TO66aqv9ZvnFTe1LetpFDJ4LS3jo9hWAA9mq/EkRQfEPP
+         nEzYqlntc4eVDvPNes25vEU77uqdeVBXKzkTrCrISJEEpAWJCyOLoTyzAOsn62I5IN4e
+         a2Ui03ELTuVJ+spCI2zq8KaJD1QxxQW7FFfKFHujMuMUoEMmBcXZikfIegFMthF65XEh
+         uEJPUK4IyhQ+lFlJyWJ08btkDY3w+xRyNkyDnsTIoS1F6dobNkt0QqSzqMMFDFX6zWgL
+         QpcaRx0V6D9AgL4ypK3WI5ftCAFzP/niTltJVQJlNm+C/pW7xK8xUMX5+0o7pDejw/Yr
+         GCeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727343542; x=1727948342;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ycHQDAR/krWFA5kAhgmXvoNx6Yn5beF8hwbiGL9F7lk=;
+        b=Ld4eBhZwZEaTsqu3u9ePEJPgxSEB5U4VMApiObAGO4W9SebngSkoG065ayArkteQdY
+         4T6bDZlm+2LVshDxSbQGH9eaxYLjoLWRGeu0GNOIPzfLqnLYYiNX2oSKBLNJDR1vVdMF
+         FR60Oa1aq7PT3qgzqLiVXKP1brZno00CT7Ha6DSTL13Q9ZxKzgMQRQexhtkw7GgEza5f
+         oA5mnPquSBMcoHCTm7wEeKKzyHmqGhRK/Y7F8C9iFxAYnJsppIDaLqe/htCI2oSbDhRn
+         AAVKoPXluze9JOqHipnhQJl6nIxSoBMWympdlT/n7YbA1Wg0ObQLFr77LvTeKOTe1o2H
+         5zWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUv/4n+Sx6N019wBvPx3EA2V4sVxGyW7rb4kaeagqBMD6XOVU/lfxRqU6L/XPLeVyyrtQkttNOlHdh2f+EF0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKCg+iuofU66/hDdOyEoIKqCeE1y2b5VGmK551lDRweij0Dsxd
+	P9vCLXPB+syfDw5GKQl1//c6oYt3kTRVD2jt6MHxFWLY97Y6jXp8HpdqeAwpxp40uKGYEGPi5xP
+	W7Lbqb0n6TjUoLw==
+X-Google-Smtp-Source: AGHT+IGI4hqzrkhhJCbBX+0u1jgbq7QHbvPabBeCXkjShlZKlKGw2LZ89Vl5DG9ttbS7pImuenmlt1hsPJbX6tk=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:64c3:b0:6dd:d138:d823 with SMTP
+ id 00721157ae682-6e21da1b6c6mr159737b3.8.1727343541682; Thu, 26 Sep 2024
+ 02:39:01 -0700 (PDT)
+Date: Thu, 26 Sep 2024 09:38:49 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
-To: Ariel Miculas <amiculas@cisco.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Al Viro <viro@zeniv.linux.org.uk>, Gary Guo <gary@garyguo.net>,
- linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org
-References: <20240916210111.502e7d6d.gary@garyguo.net>
- <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
- <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
- <9bbbac63-c05f-4f7b-91c2-141a93783cd3@linux.alibaba.com>
- <239b5d1d-64a7-4620-9075-dc645d2bab74@proton.me>
- <20240925154831.6fe4ig4dny2h7lpw@amiculas-l-PF3FCGJH>
- <80cd0899-f14c-42f4-a0aa-3b8fa3717443@linux.alibaba.com>
- <20240925214518.fvig2n6cop3sliqy@amiculas-l-PF3FCGJH>
- <be7a42b2-ae52-4d51-9b0c-ed0304db3bdf@linux.alibaba.com>
- <0ca4a948-589a-4e2c-9269-827efb3fb9ef@linux.alibaba.com>
- <20240926081007.6amk4xfuo6l4jhsc@amiculas-l-PF3FCGJH>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240926081007.6amk4xfuo6l4jhsc@amiculas-l-PF3FCGJH>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1650; i=aliceryhl@google.com;
+ h=from:subject; bh=44hQx7AWS11P7gR6JRYZM6ZBLNvn/Mupzf7ndbZKPl0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm9StxLN2fyMJC8RkoiaRnVJ3U0C1IVmyAN7TNW
+ HhO0NvF9rGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZvUrcQAKCRAEWL7uWMY5
+ RhpeD/9glYj/FpR0nzvYFBXYuU8aJNGdb7wa6fsW2XhjYMVw9JdRch0Ucrshe8mTuWl5JJ7QmvU
+ kaf/bPzLi2tkyHOvmSGX7qbqdlMAFwe+93OU9HZ0Fi9S0yfmS3utVQbRBOiQfgNjmVXbhSuR9qE
+ fa2v7n23faAumTsZG0KlwdvqHxNOm2Q/PUkCU8lEbD3RqAFhaoTDbKeqVfnvQahg/2mXNkT1ECu
+ vOdKuIkeNgP270KhzqSSr4KtQ8U7Mn9ISW7BLcfQutbvmaUQsg3BpJiV1+HiQqasKpwgT15Bnx3
+ dx0QePxcwA5jyn/9chocy7livqXv36Dt/iH3WK4wxV6rDrvJGBdBN7ZO3ymDXj8Ry8YRzjWh3Ro
+ s//K/tsXgYnME+NLId5qNta9o+0U3jqhRTT9DMC1UJxWLsYrfgjKQVHqcU8pBdrlatsrWDv2jj9
+ W9ak11xGM86HfxH/Arfb/s5CK+x0tthRhHSM8d+pGFtx4T4w/sPfRXiiokUlD3nYWeiGKjgOybI
+ dsLsmHd+rijr1dnkMCytT2EcmLw9z5RRUgcyOXku9IIbL6kOubLjb8yLbyTYHTnPXvotk6p+DAf
+ ipYapLHDDxI9mqQm6Ha3X9wjm9lR6bwpHLQ2nnvLF3Wr3TZiHI/uxz3dpkd7RDz5h2VFummtUv6 E8TD6vt692NwG3g==
+X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
+Message-ID: <20240926093849.1192264-1-aliceryhl@google.com>
+Subject: [PATCH] rust: KASAN+RETHUNK requires rustc 1.83.0
+From: Alice Ryhl <aliceryhl@google.com>
+To: ojeda@kernel.org
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, gary@garyguo.net, hpa@zytor.com, 
+	jpoimboe@kernel.org, linux-kernel@vger.kernel.org, masahiroy@kernel.org, 
+	mingo@redhat.com, nathan@kernel.org, nicolas@fjasle.eu, 
+	patches@lists.linux.dev, peterz@infradead.org, rust-for-linux@vger.kernel.org, 
+	tglx@linutronix.de, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+When enabling both KASAN and RETHUNK, objtool emits the following
+warnings:
 
+    rust/core.o: warning: objtool: asan.module_ctor+0x13: 'naked' return found in MITIGATION_RETHUNK build
+    rust/core.o: warning: objtool: asan.module_dtor+0x13: 'naked' return found in MITIGATION_RETHUNK build
 
-On 2024/9/26 16:10, Ariel Miculas via Linux-erofs wrote:
-> On 24/09/26 09:04, Gao Xiang wrote:
->>
->>
->> On 2024/9/26 08:40, Gao Xiang wrote:
->>>
->>>
->>> On 2024/9/26 05:45, Ariel Miculas wrote:
->>
->> ...
->>
->>>>
->>>> I honestly don't see how it would look good if they're not using the
->>>> existing filesystem abstractions. And I'm not convinced that Rust in the
->>>> kernel would be useful in any way without the many subsystem
->>>> abstractions which were implemented by the Rust for Linux team for the
->>>> past few years.
->>>
->>> So let's see the next version.
->>
->> Some more words, regardless of in-tree "fs/xfs/libxfs",
->> you also claimed "Another goal is to share the same code between user
->> space and kernel space in order to provide one secure implementation."
->> for example in [1].
->>
->> I wonder Rust kernel VFS abstraction is forcely used in your userspace
->> implementation, or (somewhat) your argument is still broken here.
-> 
-> Of course the implementations cannot be identical, but there is a lot of
-> shared code between the user space and kernel space PuzzleFS
-> implementations. The user space implementation uses the fuser [1] crate
-If you know what you're doing, you may know what Yiyang is doing
-here, he will just form a Rust EROFS core logic and upstream later.
+This is caused by the -Zfunction-return=thunk-extern flag in rustc not
+properly informing LLVM about the mitigation, which means that the KASAN
+functions asan.module_ctor and asan.module_dtor are generated without
+the rethunk mitigation.
 
-Thanks,
-Gao Xiang
+The other mitigations that we enabled for Rust (SLS, RETPOLINE) do not
+have the same bug, as they're being applied through the target-feature
+functionality instead.
+
+This is being fixed for rustc 1.83.0, so update Kconfig to reject this
+configuration on older compilers.
+
+Link: https://github.com/rust-lang/rust/pull/130824
+Fixes: d7868550d573 ("x86/rust: support MITIGATION_RETHUNK")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/all/CANiq72myZL4_poCMuNFevtpYYc0V0embjSuKb7y=C+m3vVA_8g@mail.gmail.com/
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index fa734a144589..9a2bcba426c5 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1950,6 +1950,7 @@ config RUST
+ 	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
+ 	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
+ 	depends on !KASAN_SW_TAGS
++	depends on !(MITIGATION_RETHUNK && KASAN) || RUSTC_VERSION >= 108300
+ 	help
+ 	  Enables Rust support in the kernel.
+ 
+-- 
+2.46.0.792.g87dc391469-goog
 
