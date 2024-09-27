@@ -1,106 +1,98 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9979618784A;
-	Fri, 27 Sep 2024 09:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F77618A93C
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 09:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727427607; cv=none; b=XsmDLUa0m69IJrZEpmTeRC7HbWBNy9aJsw5lq7/XrHYICc696D72UEyig+FQuUgKWCBCDnni6ucEpPtgL8T+85C+ZurSvJxqmdoni3cs2iJxeRJV5nre5mqVazg8wXN9bb43bfFBYTh+DJxCcnxLMloFh6BGaEFPaB6wJgw2+gM=
+	t=1727428016; cv=none; b=a448HOTte9hh/ETfc/KUlSl6n84R/L2Iat6Yh4gx8yxvFoxK02C3sDUtSOoctyCFdfD68wAS4jfgzXE7viw7Gva89x/SxCPMphQBiC0GVhbabjPTJMaAQ0mwYq/DEz6wUvaXmHZ41BOU8IxUn+gJzmWx3DZExPArhCof7Fqs40I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727427607; c=relaxed/simple;
-	bh=NCPx3oyoIORdORbeMUU52vP2IIzunctq8Og5kXekV4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8GGtyw5tUJpp1DtVFnUbtXOLNQ8jMDBXWJzEBRpOewXnNreQzt1fxVqurDHpEtZ5ylZ1ITVju9GXhVejq1TWjWP+CCtEpttgjw/Wcud6FY4xEnBqQJi+jLbS+zfLjE6aQOxBnGdycqTd5hDJPft7TPTut+GpAwRFZ4PPY8PtmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=SLJgvnan; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1727428016; c=relaxed/simple;
+	bh=XJi4lkPN6suJ6SAQVTKbY8dUP1e7mUKYZhisWbQCV2o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jM7arWvyHZOOZeTfuwaynO8dFFAsjoi9ZGbhn6IkaerDZBCjjP/WPcw3jGaoQKHt2A89fWSbJbEmn2LRCK7WJIz46duqcKTgkv3YRGxR4j54eF/bdYe5rI5zHqAWql6Plnd5Xzo1pBZ6kfihjTEypJ2qvMZ6c9q1OGjeDBfCjVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bKVPAOaQ; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="SLJgvnan"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1727427601; bh=XDsaYEQJSqlM/dsX+Q8V0Fi1KLK/ALVyoM+CJIpv0AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SLJgvnanfwRxOijicIZH9MJ7/5JoOTmBpGBWhOh4jB8p+vwA062qQCc08+OhewMr1
-	 gBtciZy9mgCHPJ9pA5P2NLYP5J0dsT5e0nIruxf2hQe1S+oU2BwiEh6eCU8mKgolRF
-	 YgfMprLlgOXL3rCTJO0Kgpqqh4T7rsKTzi9Puaq4=
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: types: add Opaque::try_ffi_init
-Date: Fri, 27 Sep 2024 11:00:00 +0200
-Message-ID: <583DE983-D767-4941-AAA7-D56D0E3C2782@kloenk.dev>
-In-Reply-To: <20240926-b4-miscdevice-v1-1-7349c2b2837a@google.com>
-References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
- <20240926-b4-miscdevice-v1-1-7349c2b2837a@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bKVPAOaQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=yj54tm3ptfco7bqyilauajek4y.protonmail; t=1727428012; x=1727687212;
+	bh=Y/ZMKfKxXxmed7Y4nQfgv37JqGP7l9vxlakQNi8YpsM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bKVPAOaQ20srGUp6b38HUwM2Nlzq2jdqUDf+eRI+1rOBGIVUpHr3X7BwbhrXMaNvQ
+	 nXr96s0CpRM11Q+SkRpdwVtp788NMwzKSeVudfLIUbY14oraKkzy0HwaVBGMSpUmjI
+	 yIWYgwF8YDLcGj/Lx1v3wWumunsiKXeJw/Z6A4bF5hYpXjXhFkswn8mSC0XkaaJVbb
+	 eQJ9+gq8b6d0dxooo++z/VhIZ6t4w0HM4d5NPwtM5aRUhJ2IMqsZ6fl+lUMCE7hC+a
+	 J042WZeIO6lyUI3ME9z6uYcN7CiN9HBtq0XLAF/BhUwdiqP/ARWsOeVLlOebfQwEUp
+	 EVNul4+43d7Gg==
+Date: Fri, 27 Sep 2024 09:06:45 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, Greg KH <greg@kroah.com>, Simona Vetter <simona.vetter@ffwll.ch>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
+Message-ID: <00ca48e4-1b4a-496d-a06b-3c12a9ef2d14@proton.me>
+In-Reply-To: <CANiq72=-bV_=TUoH6gLnPwTcxROBqyrCpOpbumki_S+po1TPhQ@mail.gmail.com>
+References: <20240925205244.873020-2-benno.lossin@proton.me> <202409270303.kUIAmOmY-lkp@intel.com> <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me> <CANiq72kXGNyLg0Ooo3Ne=KmZWBnSO9HE2tcfP=gf+WGFqnjDEg@mail.gmail.com> <1aa088b1-ca4d-4a97-b25c-96a18f62a79c@proton.me> <CANiq72=-bV_=TUoH6gLnPwTcxROBqyrCpOpbumki_S+po1TPhQ@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d03cb3c88484f51dc99e6d9272da316b79dd1db5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
+On 27.09.24 10:39, Miguel Ojeda wrote:
+> On Fri, Sep 27, 2024 at 12:15=E2=80=AFAM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> Personally, I would prefer adding a symbol. Since if we allow it, then
+>> it might take a long time until the code is removed once we increase the
+>> minimum version.
+>>
+>> It would be best, if it produces an error when we raise the minimum
+>> version beyond the one represented by the symbol. Is that already the
+>> case?
+>=20
+> No -- that is a nice idea that I guess could be implemented in Kconfig
+> somewhere (i.e. when checking conditions). However, one of the common
+> things to do when upgrading the minimum is to review/clean the
+> `*_VERSION` uses anyway (and they may occur outside Kconfig files
+> too), and also sometimes one wants to upgrade a minimum without doing
+> the cleanups immediately (e.g. the recently proposed GCC 8.1 upgrade).
+>=20
+>> Gave it a try and I also can't reproduce the error there...
+>=20
+> Hmm... I think CE uses the Rust-provided binaries (and I guess the
+> playground too). Do you have a link ("Share" in CE)?
 
+Here you go: https://godbolt.org/z/qE8E9M56c
 
-On 26 Sep 2024, at 16:58, Alice Ryhl wrote:
+The error that I get locally:
 
-> This will be used by the miscdevice abstractions, as the C function
-> `misc_register` is fallible.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+    error: unreachable pattern
+     --> src/main.rs:8:9
+      |
+    8 |         Err(e) =3D> match e {},
+      |         ^^^^^^ matches no values because `Infallible` is uninhabite=
+d
+      |
+      =3D note: to learn more about uninhabited types, see https://doc.rust=
+-lang.org/nomicon/exotic-sizes.html#empty-types
+    note: the lint level is defined here
+     --> src/main.rs:1:9
+      |
+    1 | #![deny(unreachable_patterns)]
+      |         ^^^^^^^^^^^^^^^^^^^^
+   =20
+    error: could not compile `rust` (bin "rust") due to 1 previous error
 
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
+---
+Cheers,
+Benno
 
-
->  rust/kernel/types.rs | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 3238ffaab031..dd9c606c515c 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) ->=
- impl PinInit<Self> {
->          }
->      }
->
-> +    /// Creates a fallible pin-initializer from the given initializer =
-closure.
-> +    ///
-> +    /// The returned initializer calls the given closure with the poin=
-ter to the inner `T` of this
-> +    /// `Opaque`. Since this memory is uninitialized, the closure is n=
-ot allowed to read from it.
-> +    ///
-> +    /// This function is safe, because the `T` inside of an `Opaque` i=
-s allowed to be
-> +    /// uninitialized. Additionally, access to the inner `T` requires =
-`unsafe`, so the caller needs
-> +    /// to verify at that point that the inner value is valid.
-> +    pub fn try_ffi_init<E>(
-> +        init_func: impl FnOnce(*mut T) -> Result<(), E>,
-> +    ) -> impl PinInit<Self, E> {
-> +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `in=
-it_func` to not fully
-> +        // initialize the `T`.
-> +        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_=
-func(Self::raw_get(slot))) }
-> +    }
-> +
->      /// Returns a raw pointer to the opaque data.
->      pub const fn get(&self) -> *mut T {
->          UnsafeCell::get(&self.value).cast::<T>()
->
-> -- =
-
-> 2.46.0.792.g87dc391469-goog
