@@ -1,117 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960961A0BEB;
-	Thu, 26 Sep 2024 23:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437322AE84;
+	Fri, 27 Sep 2024 02:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727395075; cv=none; b=cKtm8njc9zG/yZQdaXbJoKrZwWJxzVNlwej7rOJGRhjfGyIrtmw4iMkei34NwlXXaznuwfktSSw1DMJXD1xIuba3/AiKrgt5IyxBNIl7dZPavUICNtfyqCiCVf9Wgpvp0Q/2UOivTDtXGa5LJzBMgqFEZDYQc8P/u4WqPoIyx2s=
+	t=1727403494; cv=none; b=cZ5G7nLIqV216INBjpE86FFbonqnIge2Kcgnlp34yZph8K9MRel+LqSJ0514/xQAPoreMGGts68LooPEBJ+L6n8K0hvPvKQkWHVRIwbTod6zqwSr1ovc1cjFMati9sxt4aeCfL5ysqCtN4RioeIdy30g807+6epvILmLKjQlyig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727395075; c=relaxed/simple;
-	bh=MziFS2olNob6SKEOSye5xeUa8x2Ru9zW+Bw+Q0Ibvxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Papui7m+phoJ6Hhhh/pNFjntmssSUPZZhPqVZf4FmQyCOWo2Jl07yfQq8nCX8AkcfYk3BcjgCPVMuWZM/CUGeRTV+lISqbIo4GE1cQtdS1HlsFaI9zLuILyx/tAsEykHBP2KPRQVH0VOtJdhZ4xecsqa9fhMnlX035G17CLa4jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AehBvmsT; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1727403494; c=relaxed/simple;
+	bh=Q8XmPJ4iAfsRaKmreIHD8vW7v2ivqKMnyBTMhAdDPfA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Uj4+XHTm4bsYT72bAD9oftFkLvOnwRGaIQkBv0ypRle5vRzdVP46KEiSt6iJ1ggl8JI7jPRaoJIDHrmihBcRMabOUX30EWfaRE5z2Y/UskL8eD6x6LEmu3VR68vCuDarjLpwo2psfGkHK96Q55gHR87M76Jchkvrtdn2Y3IX0Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Ow5/E/yV; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AehBvmsT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727395074; x=1758931074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MziFS2olNob6SKEOSye5xeUa8x2Ru9zW+Bw+Q0Ibvxs=;
-  b=AehBvmsTT7y5AaZQkPdHpdkWJ5bpltrdjBtWXOMHMmsM23LPQvCLeb+U
-   mMaQQK14FeV0D0sjCMs84H7ZOuCdQjDbarhsIehK0gv+caBZHN2H5GllF
-   Kociu1U4oT2dJI5vUdGi0OghpcFT73QwjrkB3OC53daXLG5/0+LTL3vXT
-   /27NMbrHdB8FdCE2vw+6RQoEFeMUbU02zj6OPnq3i9NT6ciiiJMrBaYbn
-   HhUsxSlyO65JkxntC7YKylhC3GAKQyQYC1Vok9mGxu2qkw6loyBkK7Jcx
-   rTpst8pn88KBT+melBUMIncSaPXfgd+CMn3LukhLapqf047SXb9nffgnq
-   Q==;
-X-CSE-ConnectionGUID: pbwsOnfSQOW3ZMH3HyilqA==
-X-CSE-MsgGUID: wsJKvU5PSQOJeJk5tE8s4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="49057524"
-X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
-   d="scan'208";a="49057524"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 16:57:53 -0700
-X-CSE-ConnectionGUID: JX2snRnHQR6FGfk0ZnLrIQ==
-X-CSE-MsgGUID: VuRW/SDuQcaCk130p9fogg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
-   d="scan'208";a="71930803"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 26 Sep 2024 16:57:49 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1styMk-000LJN-2b;
-	Thu, 26 Sep 2024 23:57:46 +0000
-Date: Fri, 27 Sep 2024 07:56:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Greg KH <greg@kroah.com>, Simona Vetter <simona.vetter@ffwll.ch>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rust: switch uaccess to untrusted data API
-Message-ID: <202409270711.g9QhxwTf-lkp@intel.com>
-References: <20240925205244.873020-3-benno.lossin@proton.me>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Ow5/E/yV"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1727403489; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/r/tjBNR+IWRjvp0HptBoGnx5lgEQTTKVUb3akceKm8=;
+	b=Ow5/E/yVKmhtIML0B8j1g1GcM0yBq5hqnUT1JSsGDf5eiLNarO6qjvxXnYNMXsPoPc5Rrq3KqCC1QkC8d5xdqNiAok/s/ncj5DbqvjSzsmaNY2Cfy7dEn4+K2Cyn+vS+G3fqYWUBfaGG7aOgf/Mxf3hog9+5oEt35rpda4WCOsE=
+Received: from 30.244.152.118(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WFokCVX_1727403487)
+          by smtp.aliyun-inc.com;
+          Fri, 27 Sep 2024 10:18:08 +0800
+Message-ID: <7739346c-b98e-4359-b0d2-44cd73ae55f0@linux.alibaba.com>
+Date: Fri, 27 Sep 2024 10:18:06 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240925205244.873020-3-benno.lossin@proton.me>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
+To: Ariel Miculas <amiculas@cisco.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Gary Guo <gary@garyguo.net>,
+ linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org
+References: <80cd0899-f14c-42f4-a0aa-3b8fa3717443@linux.alibaba.com>
+ <20240925214518.fvig2n6cop3sliqy@amiculas-l-PF3FCGJH>
+ <be7a42b2-ae52-4d51-9b0c-ed0304db3bdf@linux.alibaba.com>
+ <0ca4a948-589a-4e2c-9269-827efb3fb9ef@linux.alibaba.com>
+ <20240926081007.6amk4xfuo6l4jhsc@amiculas-l-PF3FCGJH>
+ <54bf7cc6-a62a-44e9-9ff0-ca2e334d364f@linux.alibaba.com>
+ <20240926095140.fej2mys5dee4aar2@amiculas-l-PF3FCGJH>
+ <5f5e006b-d13b-45a5-835d-57a64d450a1a@linux.alibaba.com>
+ <20240926110151.52cuuidfpjtgwnjd@amiculas-l-PF3FCGJH>
+ <ec17a30e-c63a-4615-8784-69aef2bb2bae@linux.alibaba.com>
+ <20240926124959.n7i33p4fonp2op27@amiculas-l-PF3FCGJH>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <20240926124959.n7i33p4fonp2op27@amiculas-l-PF3FCGJH>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Benno,
 
-kernel test robot noticed the following build errors:
 
-[auto build test ERROR on a2f11547052001bd448ccec81dd1e68409078fbb]
+On 2024/9/26 20:50, Ariel Miculas wrote:
+> On 24/09/26 07:23, Gao Xiang wrote:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Benno-Lossin/rust-add-untrusted-data-abstraction/20240926-045445
-base:   a2f11547052001bd448ccec81dd1e68409078fbb
-patch link:    https://lore.kernel.org/r/20240925205244.873020-3-benno.lossin%40proton.me
-patch subject: [PATCH v2 2/2] rust: switch uaccess to untrusted data API
-config: x86_64-buildonly-randconfig-002-20240927 (https://download.01.org/0day-ci/archive/20240927/202409270711.g9QhxwTf-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240927/202409270711.g9QhxwTf-lkp@intel.com/reproduce)
+...
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409270711.g9QhxwTf-lkp@intel.com/
+>>>
+>>> It might be a fair comparison, but that's not how container images are
+>>> distributed. You're trying to argue that I should just use EROFS and I'm
+>>
+>> First, OCI layer is just distributed like what I said.
+>>
+>> For example, I could introduce some common blobs to keep
+>> chunks as chunk dictionary.   And then the each image
+>> will be just some index, and all data will be
+>> deduplicated.  That is also what Nydus works.
+> 
+> I don't really follow what Nydus does. Here [1] it says they're using
+> fixed size chunks of 1 MB. Where is the CDC step exactly?
 
-All errors (new ones prefixed by >>):
+Dragonfly Nydus uses fixed-size chunks of 1MiB by default with
+limited external blobs as chunk dictionaries.  And ComposeFS
+uses per-file blobs.
 
->> error[E0658]: use of unstable library feature 'slice_ptr_len'
-   --> rust/kernel/uaccess.rs:214:27
-   |
-   214 |             let len = ptr.len();
-   |                           ^^^
-   |
-   = note: see issue #71146 <https://github.com/rust-lang/rust/issues/71146> for more information
-   = help: add `#![feature(slice_ptr_len)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
---
->> error[E0658]: use of unstable library feature 'slice_ptr_len'
-   --> rust/kernel/uaccess.rs:339:28
-   |
-   339 |         let len = data_ptr.len();
-   |                            ^^^
-   |
-   = note: see issue #71146 <https://github.com/rust-lang/rust/issues/71146> for more information
-   = help: add `#![feature(slice_ptr_len)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+Currently, Both are all EROFS users using different EROFS
+features.  EROFS itself supports fixed-size chunks (unencoded),
+variable-sized extents (encoded, CDC optional) and limited
+external blobs.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Honestly, for your testload (10 versions of ubuntu:jammy), I
+don't think CDC made a significant difference in the final
+result compared to per-file blobs likewise.  Because most of
+the files in these images are identical, I think there are
+only binary differences due to CVE fixes or similar issues.
+Maybe delta compression could do more help, but I never try
+this.  So as I asked in [1], does ComposeFS already meet your
+requirement?
+
+Again, EROFS could keep every different extent (or each chunk,
+whatever) as a seperate file with minor update, it's a trivial
+stuff for some userspace archive system, but IMO it's
+controversal for an in-tree kernel filesystem.
+
+[1] https://github.com/project-machine/puzzlefs/issues/114#issuecomment-2369971291
+
+Thanks,
+Gao Xiang
