@@ -1,90 +1,135 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBE3189506
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 08:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3892018991B
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 08:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727424238; cv=none; b=pRGXfwaOd5SITn7WRPiBY4WU72oJyJe1RGONVPWsTZXQwDl6bXui4usJWRjBRbxrMG1N6Q0dSRinbL7xIl2vXLYOBhAC+veJFGCqnfuB5tzuOmZ000eGpKi+4SVMYUAmwwcx30XglZFNHHUM1LZhEdon1PcgIX4YXri2x4Xnb+I=
+	t=1727425512; cv=none; b=SxE0BZZjUAbE9TqaKP3s593KixSshr0XgXkOaDPf9Hmv+hIpLLQnEsQd0O0rNgqqvLZzVQ7uOTX9M6y7IFNKYnMa/y/g3DcOfHGgBntseQ/ity1itJd3FvUr4uNQ0V+KsfGFv4EPs2VI8mE1KpBSrVNN9bFAXMce2oHV7ztOOt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727424238; c=relaxed/simple;
-	bh=fFbAPqbDu9yWueoZi9gudChMyPvYM+Znoed0XRnAt+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YAl/TLcObNxdq1RvqsFjg0mrn4Cl6NgW6oCrQSYMHe9DZ27ApICwJ6aOJVYoTDei1Kvpk4yBwz+u/FZhgayu0tTCFOkmU11amLQlVQoZzU61QFjiS9OX4eKozjRtOTveO95YWaDPUTHt0bhbT69jPuyaqDAmOvj9fQ2fXLdgCaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G94Bgcmj; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1727425512; c=relaxed/simple;
+	bh=kfMECvOvu6eqzc9JWxO75XObKjU1fzkt2sI/1ZBQXc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4sqJxAoLwHd8VtTDxlGFrqesgyPBvppJYBw9DxiRcOQfLiY4XRFHLr3dMxqVWMF5sh1MnMdsUKA04AX0I4rtPwY21CvGRDzmt1hqk2tArqSmDqwTLtYcp3nr1HfA2+yGWU+NcvT5kefTLy2+pyoZrhV31fhwVG+J7rSu0a0/Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ffu79p32; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G94Bgcmj"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42ca6ba750eso11741295e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 01:03:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ffu79p32"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7a99fdf2e1aso209501285a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 01:25:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727424235; x=1728029035; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fFbAPqbDu9yWueoZi9gudChMyPvYM+Znoed0XRnAt+w=;
-        b=G94Bgcmjam/RhJa4TLAaQ925JcClMz8Uinz9BjVY/GW+/cKILC2FA/T0HNN7K9zLa3
-         MWbd0dvl13fz7tVGyKaBcju/yMowATiDK/wMlZGFdjCprc3WYTgueGb44HpN7pmqxpdd
-         jUjG7SVHQjuCF4xiPYHLzXl6Iqqy3N5fc33utzWKOhwLfokJeUSOjVQArmMX8xaVz6yS
-         tMThiUWffvpiL7PE/OPD/ypWGqaMHzq2Ac+x+Q8/ga/UTFkO2GbFh+M9Ja8YomyatEyd
-         iVe6rWY0MrhrDIRv9f9GL5svzabsq+/GjgLkzdvdPKImWjIazG59p+71S8MmdEe7vraT
-         /DXg==
+        d=gmail.com; s=20230601; t=1727425510; x=1728030310; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=sSw+l8n0kkiQlR6h3xqaBNbPAZ0Rhg8gMej9QNK3Rxk=;
+        b=Ffu79p324xddxbMsa0wlZgVv77SO7DRkuU9h8p/YT3Kumbnv+joQoZDgkrO8Z3RDm9
+         jrBGGyrV7BdTKs+uAh+9Sc3MwxFOasdYAbiRFFS58woTJqvzWWVdukdIHDJP8XgYgWMW
+         y6O0dN0WTkNgQj8BhU+u9xnhnRsYNgLEpq30y/DtiC5dXcO89wLIEesPPsrCxVt5NT2i
+         IBuGCkFGrmOA9QuRDU8KepQoW2kYOvZjHmgAzvgO4HcOfs4iAn3AAvpr/klu0l6P3a91
+         X85O32qnoy8gAWdGL5Pw5bHtJb9XwSeD4s4npGjNdRqBnJYq4/wJsmG9XWMuwzAM3+2q
+         SU9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727424235; x=1728029035;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fFbAPqbDu9yWueoZi9gudChMyPvYM+Znoed0XRnAt+w=;
-        b=hdloZ3tTuMObUD07deToNbfRjj9M656rX3vpH10XAtPoiAOGzYWB0/8hqAqE/GM5tc
-         HRS2CkdUo/gQ2KcxZV2v6arzwKquQ2Us6P6gnff+QhPkk35nqXq5mZ5D46JX103hxbNI
-         GPNl8lStkwxYqz9/MBCyh4mZZ96/qPuVjZaT2rFyQCdZBk7TrxwkhwhoXxb17aGLnXbx
-         O1rTuk3+Ht8Rzt+ZwsaMNBNUXFl7qzGjLFsWsK+p51YkKWDRy3sPDOMatyT/b38W0A0B
-         WAjEQuox7oI9bp2cYsFWkgmH0LQZSLvaVy8WYeA98yaRuBK/8U3o6UXFbXsgQG+P2uXD
-         lLXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ4sfJ+MwIB0mRaf18lLSDMdtUl1lui9rV/+t0GHRSf+hfG3CzD6sRjI9zNvgJuO6wC2vw6NXHeYGzXYOB1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgLw/+HLoGkCVGn+ROu5qxmLSRahHFxtxD6tIy9RQ7l7PvAIz/
-	rqanEK0IDxaVItQeMgdzl2pn9WxlwRqCfk1TudNDxTIvqynNxXOfzLYhbZU6o8gBFYo2OMdBTlu
-	yLhy/XrzFPLZbCyLleqCB7vei88FaanC+/UUh
-X-Google-Smtp-Source: AGHT+IHET5IE8YvG/BHxcblgKNz1/OcBsQr/praxbc8pTIV5MlIIOZ1RR7QTJ6imuIV407Ew9bFoRvkf4XE+pQo57O4=
-X-Received: by 2002:a05:600c:3542:b0:42c:bd4d:e8d6 with SMTP id
- 5b1f17b1804b1-42f57f5d908mr13572015e9.3.1727424234867; Fri, 27 Sep 2024
- 01:03:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727425510; x=1728030310;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sSw+l8n0kkiQlR6h3xqaBNbPAZ0Rhg8gMej9QNK3Rxk=;
+        b=MXcp6g6X9jhlmSewuZKWb75FRAKhmdhz3wNsg+x6Ihom3Fr1qF6fSa/UgarfVuYXoD
+         f+cADKYhvQFRWO5yl0hgT7ejIc3fcrv61HfBDM1Aw2u0y2LQd+EGwUCb10nn8eqi9wc5
+         V3WfTasjvgrd5VZlnty7W8EqIMBFXDUmyWai537vf4ORr4zKT9ZH16a962LLa9cq95Ww
+         qAsw3GbXsfremZWtyGPdQ6AZ8U+uWzWCfBGo0Ew56n187w2CPYvLTqFyWOxjIJxyo5bm
+         5ryvLzYDqpmAxQvFwbUC1nH4C8+nqaZZrVJtnrXfB6eZVjB8HK+T8CyylTfAB3JxLIeL
+         1WCA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/c47Plz6rdwj1MI3LWFIKuMRoEMk2IMBNII/+nRauUzpGbXgV9WHJooCr3eRi+CjsTdFjsd+oyXqI2X0CbQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQVfB4rSOhI6ykZLmXb6jmFLtMXJF3qp0WS4hd5AtDAY18LE2H
+	plldAlPXTIQynoD3TNWe2XzShhpnNKGrsHpknguVoxGoD7Ca30rh
+X-Google-Smtp-Source: AGHT+IEdXJl+PEuMsIjH1X0VZlLE4JPlbLLolGKJQUg86trnbGRb/k5rPHOYEPPR4j6tLZAcdIfUFQ==
+X-Received: by 2002:a05:620a:19a3:b0:7ac:b04e:34c6 with SMTP id af79cd13be357-7ae378c2d79mr397463685a.50.1727425510010;
+        Fri, 27 Sep 2024 01:25:10 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae3782cd54sm64049885a.94.2024.09.27.01.25.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Sep 2024 01:25:09 -0700 (PDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 909FA1200043;
+	Fri, 27 Sep 2024 04:25:08 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Fri, 27 Sep 2024 04:25:08 -0400
+X-ME-Sender: <xms:5Gv2ZipB_nEdJRzhAWhb_E3WV7O0CuoQIuHHhdZxYQqMrQu8GWNjkQ>
+    <xme:5Gv2ZgqXe746N_MZdoE0wZsWmVpM7vSJ0uRqZLXgiRCn79S5L0s6542AzW_S4XpCZ
+    pMO8RZiuQsXKMdthA>
+X-ME-Received: <xmr:5Gv2ZnOj6gSeRTLFqzxm7hbsHrLXTqeLeKt98DBt2hlOTxNcPM8aRrBdNsFgNg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddtledgtdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepjefhieekkeffjeeggeeuvefftdegfeduteel
+    geejledvffetiefhleefhedvgeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepfhgvlhhiphgv
+    pghlihhfvgeslhhivhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohep
+    sggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepfihilhhlse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:5Gv2Zh5WqJNMHZ8xR_ynMkrWMmOImrbsyjhOmHdHG7GoNj69skyMqA>
+    <xmx:5Gv2Zh5j97-JV1S6UKE3Y8ribuUd4dbJv6Lx63WY5u-tptdRX6X3kA>
+    <xmx:5Gv2ZhjE8OMyvlg4JyBD1iS-9zhO_zgysjNNWvIda9SV-bAOerTwHA>
+    <xmx:5Gv2Zr6fbmYwaXZCzdcslzq5gUL_ProRBOQho-8sPvYoGC-MX9pIfg>
+    <xmx:5Gv2ZsKEdxBV8hG_QPSfDylKIh7t4kNwG-xVr9G9Pbg-IHZkgpsQRBP9>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 27 Sep 2024 04:25:08 -0400 (EDT)
+Date: Fri, 27 Sep 2024 01:24:20 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Filipe Xavier <felipe_life@live.com>, ojeda@kernel.org,
+	gary@garyguo.net, benno.lossin@proton.me, will@kernel.org,
+	longman@redhat.com, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] rust: add trylock method support for lock backend
+Message-ID: <ZvZrtDAaqq-XHqGy@boqun-archlinux>
+References: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
+ <CAH5fLgjLLvaT2n9seJRp5WFTHG9kNG1wEWAi5FUWzR172tf4cw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
-In-Reply-To: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 27 Sep 2024 10:03:43 +0200
-Message-ID: <CAH5fLgjLLvaT2n9seJRp5WFTHG9kNG1wEWAi5FUWzR172tf4cw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: add trylock method support for lock backend
-To: Filipe Xavier <felipe_life@live.com>
-Cc: ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
-	benno.lossin@proton.me, will@kernel.org, longman@redhat.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgjLLvaT2n9seJRp5WFTHG9kNG1wEWAi5FUWzR172tf4cw@mail.gmail.com>
 
-On Thu, Sep 26, 2024 at 10:50=E2=80=AFPM Filipe Xavier <felipe_life@live.co=
-m> wrote:
->
-> Add a non-blocking trylock method to lock backend interface, mutex
-> and spinlock implementations. It includes a C helper for spin_trylock.
-> Rust Binder will use this method together with the new shrinker abstracti=
-ons
-> to avoid deadlocks in the memory shrinker.
->
-> Link: https://lore.kernel.org/all/20240912-shrinker-v1-1-18b7f1253553@goo=
-gle.com
-> Signed-off-by: Filipe Xavier <felipe_life@live.com>
+On Fri, Sep 27, 2024 at 10:03:43AM +0200, Alice Ryhl wrote:
+> On Thu, Sep 26, 2024 at 10:50 PM Filipe Xavier <felipe_life@live.com> wrote:
+> >
+> > Add a non-blocking trylock method to lock backend interface, mutex
+> > and spinlock implementations. It includes a C helper for spin_trylock.
+> > Rust Binder will use this method together with the new shrinker abstractions
+> > to avoid deadlocks in the memory shrinker.
+> >
+> > Link: https://lore.kernel.org/all/20240912-shrinker-v1-1-18b7f1253553@google.com
+> > Signed-off-by: Filipe Xavier <felipe_life@live.com>
+> 
+> I guess there is the question of whether it should be called trylock
+> or try_lock. One matches the kernel, the other matches the Rust
+> standard library.
+> 
 
-I guess there is the question of whether it should be called trylock
-or try_lock. One matches the kernel, the other matches the Rust
-standard library.
+I prefer try_lock, not because it matches the Rust standard library, but
+because it matches with other try-like APIs.
 
-Either way:
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Regards,
+Boqun
+
+> Either way:
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
