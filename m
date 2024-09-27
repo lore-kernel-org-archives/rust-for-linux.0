@@ -1,121 +1,107 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC995142621;
-	Fri, 27 Sep 2024 16:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0913CA81;
+	Fri, 27 Sep 2024 16:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727454144; cv=none; b=VzxlLmgElqTwORlXStcA69cPuMGtwaPmcdfCP2M0l7xWnXenFBsq5lBXZetdtGG8NdfrR3gDPWB4CsJNlekuBknKsJUcpyC2u0+Edn/TPKduJ5IqZhUk2S8sunIIVm5h5mb5mOGzhiHBBNetfzq6NZ2/p0Fveemn0szMvKeJUaA=
+	t=1727455477; cv=none; b=l9w0TfNo/g76YL9WFbuSBW60pCokdphUR+SN7HW96q+NtvJg11sMRqIJfbgTmdTewLJ+5SBTgdWmn+3CL2mAnBy6xgT64fhRseFOPLdJu4l6rndTDLzuDkuDQNZY1FY3KV10VmP5HWbXN1njuHxh43gKuVc5zjnOUCG1mYmFZ/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727454144; c=relaxed/simple;
-	bh=MwxSYUQfpQZ8Dt7MR3StqGkeSe7twZkuP4tcbwLCnKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QeS2eFB1r9OQ9O31gn7wzBt5Xi2JttLHUzr5ubeIDu/BPHYye3+igHHZcNvdfc9hxwbzc4gLRZL3z3PoOwjuoqlzd/qvJ65L9lJhDFtqlfoxO0kLG2797z+uFTxKOApkJE0/yEMiMgBwYPsEQDyNDaW33sjsxxOmklGKfv6PosM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8EDBA14BF;
-	Fri, 27 Sep 2024 09:22:44 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B650E3F6A8;
-	Fri, 27 Sep 2024 09:22:08 -0700 (PDT)
-Date: Fri, 27 Sep 2024 17:22:03 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Keith Packard <keithp@keithp.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
-Message-ID: <ZvbbqzrfkgjM1VZ3@J2N7QTR9R3>
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-32-ardb+git@google.com>
+	s=arc-20240116; t=1727455477; c=relaxed/simple;
+	bh=dQlFYnZiLmmXrBCgZzrupIxNDB3rrb6r/SvpSrkLrrw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=naQuTWZhTNQ8KuzhtWhPXCnwaBdQas7KzhWjELCf2ktFEvkuHMF0A8H13yUqEPq+3MFeXaARFosCX3cnKOaFpzwQbJwx9emYHcOfCyr6/CA93fbvgUmTpbkRUj+2oeg2JY0YKEyw30dAoml3l+qYMX76NTPUTECCFGYYpqyxk/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNiKJ1Dh; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNiKJ1Dh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA2FC4AF09;
+	Fri, 27 Sep 2024 16:44:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727455476;
+	bh=dQlFYnZiLmmXrBCgZzrupIxNDB3rrb6r/SvpSrkLrrw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PNiKJ1Dh1lIaqqfPDUI1BfZeOtovL5QXkzD+neM56zMqHMofwc2imOpDk/3w2yeox
+	 d+Ii2v/Lh/hrwod7VzfwH862w4pARrjvSrCMaSjAHrF0wPNIEsZbEzkuffmkKIz1mW
+	 aiS5/zK0rKFteEXSftZddm6afBY5A23ibunXvyZvOYJdqSvpG1Xbsa0q7y6cdCR8Zc
+	 hh+3TOFZrU3PhUHYJyt/d9EW/kyGY/4qCc1095A6Jaomb7gskJpo8Fo4I88JFYSUM5
+	 /Itzsn5n7xvyMjbpsXr91WESoOb8aI9GoB/n2zyL9ktpXMyBnguO7jfgtdd51mAa4Z
+	 T+5bQkZlRulLg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] rust: kunit: use C-string literals to clean warning
+Date: Fri, 27 Sep 2024 18:44:14 +0200
+Message-ID: <20240927164414.560906-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240925150059.3955569-32-ardb+git@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 25, 2024 at 05:01:02PM +0200, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
-> 
-> Bump the minimum GCC version to 8.1 to gain unconditional support for
-> referring to the per-task stack cookie using a symbol rather than
-> relying on the fixed offset of 40 bytes from %GS, which requires
-> elaborate hacks to support.
-> 
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> ---
->  Documentation/admin-guide/README.rst | 2 +-
->  Documentation/process/changes.rst    | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+Starting with upstream Rust commit a5e3a3f9b6bd ("move
+`manual_c_str_literals` to complexity"), to be released in Rust 1.83.0
+[1], Clippy now warns on `manual_c_str_literals` by default, e.g.:
 
-I'd like this for arm64 and others too (for unconditional support for
--fpatchable-function-entry), so FWIW:
+    error: manually constructing a nul-terminated string
+      --> rust/kernel/kunit.rs:21:13
+       |
+    21 |             b"\x013%pA\0".as_ptr() as _,
+       |             ^^^^^^^^^^^^^ help: use a `c""` literal: `c"\x013%pA"`
+       |
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#manual_c_str_literals
+       = note: `-D clippy::manual-c-str-literals` implied by `-D warnings`
+       = help: to override `-D warnings` add `#[allow(clippy::manual_c_str_literals)]`
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+Apply the suggestion to clean up the warnings.
 
-I think you'll want to update scripts/min-tool-version.sh too; judging
-by the diff in the cover letter that's not handled elsehere in the
-series.
+Link: https://github.com/rust-lang/rust-clippy/pull/13263 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+The cast could also be cleaned up, but that is already done in Gary's
+FFI series, so I didn't include another patch.
 
-Mark.
+C-string literals are available since Rust 1.77.0, which is higher than
+our minimum version, but LTS kernels do not have Rust 1.77.0. But
+perhaps for these is not a big deal, and we could also enable
+`feature(c_str_literals)` instead.
 
-> 
-> diff --git a/Documentation/admin-guide/README.rst b/Documentation/admin-guide/README.rst
-> index f2bebff6a733..3dda41923ed6 100644
-> --- a/Documentation/admin-guide/README.rst
-> +++ b/Documentation/admin-guide/README.rst
-> @@ -259,7 +259,7 @@ Configuring the kernel
->  Compiling the kernel
->  --------------------
->  
-> - - Make sure you have at least gcc 5.1 available.
-> + - Make sure you have at least gcc 8.1 available.
->     For more information, refer to :ref:`Documentation/process/changes.rst <changes>`.
->  
->   - Do a ``make`` to create a compressed kernel image. It is also possible to do
-> diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-> index 00f1ed7c59c3..59b7d3d8a577 100644
-> --- a/Documentation/process/changes.rst
-> +++ b/Documentation/process/changes.rst
-> @@ -29,7 +29,7 @@ you probably needn't concern yourself with pcmciautils.
->  ====================== ===============  ========================================
->          Program        Minimal version       Command to check the version
->  ====================== ===============  ========================================
-> -GNU C                  5.1              gcc --version
-> +GNU C                  8.1              gcc --version
->  Clang/LLVM (optional)  13.0.1           clang --version
->  Rust (optional)        1.78.0           rustc --version
->  bindgen (optional)     0.65.1           bindgen --version
-> -- 
-> 2.46.0.792.g87dc391469-goog
-> 
-> 
+ rust/kernel/kunit.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 0ba77276ae7e..824da0e9738a 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -18,7 +18,7 @@ pub fn err(args: fmt::Arguments<'_>) {
+     #[cfg(CONFIG_PRINTK)]
+     unsafe {
+         bindings::_printk(
+-            b"\x013%pA\0".as_ptr() as _,
++            c"\x013%pA".as_ptr() as _,
+             &args as *const _ as *const c_void,
+         );
+     }
+@@ -34,7 +34,7 @@ pub fn info(args: fmt::Arguments<'_>) {
+     #[cfg(CONFIG_PRINTK)]
+     unsafe {
+         bindings::_printk(
+-            b"\x016%pA\0".as_ptr() as _,
++            c"\x016%pA".as_ptr() as _,
+             &args as *const _ as *const c_void,
+         );
+     }
+
+base-commit: 570172569238c66a482ec3eb5d766cc9cf255f69
+--
+2.46.2
