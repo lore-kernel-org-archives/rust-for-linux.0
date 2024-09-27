@@ -1,98 +1,169 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F77618A93C
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 09:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D13157490
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 09:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727428016; cv=none; b=a448HOTte9hh/ETfc/KUlSl6n84R/L2Iat6Yh4gx8yxvFoxK02C3sDUtSOoctyCFdfD68wAS4jfgzXE7viw7Gva89x/SxCPMphQBiC0GVhbabjPTJMaAQ0mwYq/DEz6wUvaXmHZ41BOU8IxUn+gJzmWx3DZExPArhCof7Fqs40I=
+	t=1727428048; cv=none; b=Y1jPR2tl7xRMZKsdO/N7/hgD75VRQd4v/Cs58PyNDQbCGnNtk9qQj3KcWjHyBTq/YBzxd9nhfmhQqB0bdKDYHTHM9nCpZPIQtGLjDNjMguRugnuekIJcw+X0bpgj1djPRer4gGK65UPbnySLAvLYcJrBiQlzcHjV4BjMfb14tkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727428016; c=relaxed/simple;
-	bh=XJi4lkPN6suJ6SAQVTKbY8dUP1e7mUKYZhisWbQCV2o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jM7arWvyHZOOZeTfuwaynO8dFFAsjoi9ZGbhn6IkaerDZBCjjP/WPcw3jGaoQKHt2A89fWSbJbEmn2LRCK7WJIz46duqcKTgkv3YRGxR4j54eF/bdYe5rI5zHqAWql6Plnd5Xzo1pBZ6kfihjTEypJ2qvMZ6c9q1OGjeDBfCjVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bKVPAOaQ; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1727428048; c=relaxed/simple;
+	bh=KKXhNxOc2IWQQ9/QmPpG49Ogvpi+0dxE+FD5WpybLvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BsZEGz7GiHXdg2cC0dFuzAT/WvxgerZbFHF9m9u49E0CBddjdM9EiM2PshFyOcINf3yje336eib8+EGHBtAlENZwRrj0RJlWlSK1fWD2fAV424TvqwNQesQDq6kPS5FoeIhuKjf4w9q084IPvpvj/gJMesXJeEnZATmstLUGD9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=O8ei7zAF; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bKVPAOaQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=yj54tm3ptfco7bqyilauajek4y.protonmail; t=1727428012; x=1727687212;
-	bh=Y/ZMKfKxXxmed7Y4nQfgv37JqGP7l9vxlakQNi8YpsM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=bKVPAOaQ20srGUp6b38HUwM2Nlzq2jdqUDf+eRI+1rOBGIVUpHr3X7BwbhrXMaNvQ
-	 nXr96s0CpRM11Q+SkRpdwVtp788NMwzKSeVudfLIUbY14oraKkzy0HwaVBGMSpUmjI
-	 yIWYgwF8YDLcGj/Lx1v3wWumunsiKXeJw/Z6A4bF5hYpXjXhFkswn8mSC0XkaaJVbb
-	 eQJ9+gq8b6d0dxooo++z/VhIZ6t4w0HM4d5NPwtM5aRUhJ2IMqsZ6fl+lUMCE7hC+a
-	 J042WZeIO6lyUI3ME9z6uYcN7CiN9HBtq0XLAF/BhUwdiqP/ARWsOeVLlOebfQwEUp
-	 EVNul4+43d7Gg==
-Date: Fri, 27 Sep 2024 09:06:45 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, Greg KH <greg@kroah.com>, Simona Vetter <simona.vetter@ffwll.ch>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
-Message-ID: <00ca48e4-1b4a-496d-a06b-3c12a9ef2d14@proton.me>
-In-Reply-To: <CANiq72=-bV_=TUoH6gLnPwTcxROBqyrCpOpbumki_S+po1TPhQ@mail.gmail.com>
-References: <20240925205244.873020-2-benno.lossin@proton.me> <202409270303.kUIAmOmY-lkp@intel.com> <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me> <CANiq72kXGNyLg0Ooo3Ne=KmZWBnSO9HE2tcfP=gf+WGFqnjDEg@mail.gmail.com> <1aa088b1-ca4d-4a97-b25c-96a18f62a79c@proton.me> <CANiq72=-bV_=TUoH6gLnPwTcxROBqyrCpOpbumki_S+po1TPhQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d03cb3c88484f51dc99e6d9272da316b79dd1db5
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="O8ei7zAF"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1727428043; bh=quDcP/FuoGkJOoo99uV0/cYWwCwVL61x7FIZIuS5NUE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=O8ei7zAFUhyTXnum7GFi9B2XJptyU82CdRQh3gHAhJ0PGF2vgs8Rsz9eUqsyNVcJx
+	 GXZbRx3/MSkuAPj9z819a5w8ZITQ/BjSUfYSTbAOl7ydA+OPBpNI1f7EmDXEGx2iW+
+	 rSzNeeqL38UudRrlzu4R9vXJAxGEbGbanWzzYjZY=
+To: Filipe Xavier <felipe_life@live.com>
+Cc: aliceryhl@google.com, ojeda@kernel.org, boqun.feng@gmail.com,
+ gary@garyguo.net, benno.lossin@proton.me, will@kernel.org,
+ longman@redhat.com, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] rust: add trylock method support for lock backend
+Date: Fri, 27 Sep 2024 11:07:22 +0200
+Message-ID: <E3215FBF-CA50-44A1-92A1-DC65E94AA0EE@kloenk.dev>
+In-Reply-To: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
+References: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On 27.09.24 10:39, Miguel Ojeda wrote:
-> On Fri, Sep 27, 2024 at 12:15=E2=80=AFAM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>
->> Personally, I would prefer adding a symbol. Since if we allow it, then
->> it might take a long time until the code is removed once we increase the
->> minimum version.
->>
->> It would be best, if it produces an error when we raise the minimum
->> version beyond the one represented by the symbol. Is that already the
->> case?
->=20
-> No -- that is a nice idea that I guess could be implemented in Kconfig
-> somewhere (i.e. when checking conditions). However, one of the common
-> things to do when upgrading the minimum is to review/clean the
-> `*_VERSION` uses anyway (and they may occur outside Kconfig files
-> too), and also sometimes one wants to upgrade a minimum without doing
-> the cleanups immediately (e.g. the recently proposed GCC 8.1 upgrade).
->=20
->> Gave it a try and I also can't reproduce the error there...
->=20
-> Hmm... I think CE uses the Rust-provided binaries (and I guess the
-> playground too). Do you have a link ("Share" in CE)?
 
-Here you go: https://godbolt.org/z/qE8E9M56c
 
-The error that I get locally:
+On 26 Sep 2024, at 22:50, Filipe Xavier wrote:
 
-    error: unreachable pattern
-     --> src/main.rs:8:9
-      |
-    8 |         Err(e) =3D> match e {},
-      |         ^^^^^^ matches no values because `Infallible` is uninhabite=
-d
-      |
-      =3D note: to learn more about uninhabited types, see https://doc.rust=
--lang.org/nomicon/exotic-sizes.html#empty-types
-    note: the lint level is defined here
-     --> src/main.rs:1:9
-      |
-    1 | #![deny(unreachable_patterns)]
-      |         ^^^^^^^^^^^^^^^^^^^^
-   =20
-    error: could not compile `rust` (bin "rust") due to 1 previous error
+> Add a non-blocking trylock method to lock backend interface, mutex
+> and spinlock implementations. It includes a C helper for spin_trylock.
+> Rust Binder will use this method together with the new shrinker abstrac=
+tions
+> to avoid deadlocks in the memory shrinker.
+>
+> Link: https://lore.kernel.org/all/20240912-shrinker-v1-1-18b7f1253553@g=
+oogle.com
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
 
----
-Cheers,
-Benno
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
+> ---
+>  rust/helpers/spinlock.c           |  5 +++++
+>  rust/kernel/sync/lock.rs          | 16 ++++++++++++++++
+>  rust/kernel/sync/lock/mutex.rs    | 11 +++++++++++
+>  rust/kernel/sync/lock/spinlock.rs | 11 +++++++++++
+>  4 files changed, 43 insertions(+)
+>
+> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> index acc1376b833c..775ed4d549ae 100644
+> --- a/rust/helpers/spinlock.c
+> +++ b/rust/helpers/spinlock.c
+> @@ -22,3 +22,8 @@ void rust_helper_spin_unlock(spinlock_t *lock)
+>  {
+>  	spin_unlock(lock);
+>  }
+> +
+> +int rust_helper_spin_trylock(spinlock_t *lock)
+> +{
+> +	return spin_trylock(lock);
+> +}
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index f6c34ca4d819..f4e51a5a1f23 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -58,6 +58,13 @@ unsafe fn init(
+>      #[must_use]
+>      unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState;
+>
+> +    /// Tries to acquire the lock.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that [`Backend::init`] has been previously=
+ called.
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardSta=
+te>;
+> +
+>      /// Releases the lock, giving up its ownership.
+>      ///
+>      /// # Safety
+> @@ -128,6 +135,15 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+>          // SAFETY: The lock was just acquired.
+>          unsafe { Guard::new(self, state) }
+>      }
+> +
+> +    /// Tries to acquire the lock.
+> +    ///
+> +    /// Returns a guard that can be used to access the data protected =
+by the lock if successful.
+> +    pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+> +        // SAFETY: The constructor of the type calls `init`, so the ex=
+istence of the object proves
+> +        // that `init` was called.
+> +        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(=
+self, state)) }
+> +    }
+>  }
+>
+>  /// A lock guard.
+> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mut=
+ex.rs
+> index 30632070ee67..c4f3b6cbfe48 100644
+> --- a/rust/kernel/sync/lock/mutex.rs
+> +++ b/rust/kernel/sync/lock/mutex.rs
+> @@ -115,4 +115,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_sta=
+te: &Self::GuardState) {
+>          // caller is the owner of the mutex.
+>          unsafe { bindings::mutex_unlock(ptr) };
+>      }
+> +
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardSta=
+te> {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and ini=
+tialized before use.
+> +        let result =3D unsafe { bindings::mutex_trylock(ptr) };
+> +
+> +        if result !=3D 0 {
+> +            Some(())
+> +        } else {
+> +            None
+> +        }
+> +    }
+>  }
+> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/=
+spinlock.rs
+> index ea5c5bc1ce12..c900ae23db76 100644
+> --- a/rust/kernel/sync/lock/spinlock.rs
+> +++ b/rust/kernel/sync/lock/spinlock.rs
+> @@ -114,4 +114,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_sta=
+te: &Self::GuardState) {
+>          // caller is the owner of the spinlock.
+>          unsafe { bindings::spin_unlock(ptr) }
+>      }
+> +
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardSta=
+te> {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and ini=
+tialized before use.
+> +        let result =3D unsafe { bindings::spin_trylock(ptr) };
+> +
+> +        if result !=3D 0 {
+> +            Some(())
+> +        } else {
+> +            None
+> +        }
+> +    }
+>  }
+> -- =
+
+> 2.46.0
