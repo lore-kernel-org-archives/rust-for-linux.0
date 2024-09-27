@@ -1,102 +1,62 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390A2188A13;
-	Fri, 27 Sep 2024 08:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE3B189B85
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 08:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727426398; cv=none; b=EFsE8DbFAmCiciEYLPqZ61bvAGjsOWII5kNdAULeuYW7NONm06gRvYB6FETrVApHzF32/iVaGdak2ospj6JTLabXDUIkfk06x4QogXtGsRCa+Vk88T2/PWNUIIUYqMyBO6wdLsnX0ivbS/eDb/Tc3/ZfNsgPYmqSPfOaylibS6A=
+	t=1727426563; cv=none; b=FqB6fGSYckzh1XEz5VKBluNLV9YaeNo3L+V77obfbtrPfO6rQM8fifF97xdoVzWOZ373cdGped0PIc4k/ZQORatqS/BUMvDd5KhowY1mh8v8V/f0rQuOKBA/sy8hwYy48+j9NnWJYjNuYQv0FjK0eOpeAjXxGwFIQ8zNMoQsSug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727426398; c=relaxed/simple;
-	bh=hYbImJ4Ev4jx5aCpniSYpcjeYjZwxXIkcu27iki++i4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d4ztGs1o319s331eYtyIEMFb2vlKXYj0HUb5oUCI5i9nRkUiOHtuw4BLxh2boOrc0EibIvB9TTad77tPq4ZS0QlhULOzuVcsFLAXWriN6Bm8RgHMz/JkAdagYYy+o9F/cXEuDcgX2O444Hcrvcmt61ixPsIznLmwfIBuCwyV2tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMVCl9Zi; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727426563; c=relaxed/simple;
+	bh=yZwke2t37xHdY+02gwJ96p2eHQGvRgaUIv7a679NMw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CNxRt2MWa+e28Pg/NM05XSR1ZGE1dNNkueWARRUtB61wM1J9F6HYn0lJTEILW4bprxCtMzs/Vo+IQ4sD+ZPzDlPT2ooSHOL4nhaJXgKBI/KsbwsU657OD7UPcnjwBKXWEVJEOPCN0cGhnC9yzyEH3Y3/XmKXCCa0UyjFIm51UQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=E8SOA95S; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMVCl9Zi"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2da516e6940so377594a91.3;
-        Fri, 27 Sep 2024 01:39:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727426396; x=1728031196; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hYbImJ4Ev4jx5aCpniSYpcjeYjZwxXIkcu27iki++i4=;
-        b=GMVCl9ZiAdnGVF/eO+0cz7vMi4vvpKUisj1kCay/i9sfQ/kFQPygSgPRNuDr9ZvjYg
-         kbL4ZfUW0PDIlHPq4A4KcGBhiAY5shM89I/GvSB8ZiroY1ugM1fJ8ji589KgBujdpjU4
-         NThlJrpULbHIqYlbxBwWOyUkB+30Lw17a5Vq8Pa8qvwvC3D+mcgKVnGmsmaFpKFzvmyJ
-         mxrtNujDDzYUUFtvPBg4fiWYkT8GrAFO5UQvKep8QuoeKtXxi+nQRq5vt72etj13Es6B
-         1ogx0ZuBulffIhAn7W7VS+G/kaq33gB7Nk+zJRG4u6zGUKWvcJ/7bltcZea1t2S25ujO
-         VpMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727426396; x=1728031196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hYbImJ4Ev4jx5aCpniSYpcjeYjZwxXIkcu27iki++i4=;
-        b=HRzPdVPVxqx+p7fDN9lZYNelJr3AeXV5hkEtnL541Jmii+12IxDm5Sh+tWFFNjdLXB
-         CX4ujQKAXVet11whdtyR8GaCS0i5u05nyy7kU5o0RMeBFXFDh9ofjp8cQU3OMEhwJDEm
-         tNn/FuJljm3gHn4hHf2+3GUhaZkuxpmOQIPW1f6vB28210c6RxXItFwOYFFAF8koYdKH
-         cRMj5X24xp1Trpnyj2PtezqRLe+Mbyai9nz8HoZatDuzXjje1gzcp0934BYbwmj1o/+6
-         uMx3tuBeNp45eEdWhBrufDlJ5v+Dk+bJHfs167LANIgtmaGX6EoZ7/oVhzQfapoql/qW
-         vDeg==
-X-Forwarded-Encrypted: i=1; AJvYcCU42oydU+FsFdFMy7PyJHcb9sA+8/2y+wwA3Gxgi4MsE47iYoOvk1Z6n54kuGv0uqsa6FKi7AjmfLgjvahY5Ho=@vger.kernel.org, AJvYcCXkSqNIE1jOmxY82NbYIofeUuGcUt7kIP6DZ3GEElw9p9LlAjK4lW2CF3KjGyQT1KRUz7Vn4CfoKTcNtR0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy31aN4OLPjevferUKNyAmwVgb/FlZH9uFiFLFzh13aiwhxcTnQ
-	9Hj0tREMLG5SNTkTFWksLHAnrdStvQ5ajl6mnxrPogXwqMKWbvgZdCm1h/t3NyIj7c5IcsjeHxu
-	aqfAO9hHtn80zR8VFRzBmd7oD1kM=
-X-Google-Smtp-Source: AGHT+IH9QurLB9HGk/Herxmqe5pGQY/6ke+XUcdq9kiZsDiH58lNraRrvoW/7EyVrCJ92UxX4BV4JrXtWgxtGKVARq0=
-X-Received: by 2002:a17:90a:ff0e:b0:2e0:9147:7dc1 with SMTP id
- 98e67ed59e1d1-2e0b8ebebdemr1237952a91.6.1727426396447; Fri, 27 Sep 2024
- 01:39:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="E8SOA95S"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1727426549; bh=yZwke2t37xHdY+02gwJ96p2eHQGvRgaUIv7a679NMw8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=E8SOA95SC0hpmoyPFosn69Lq/KpZXWU6qryndQ5OcblfZWMXmRUteRvO9eITJNZCW
+	 7Ug2Y/IDSxTDAb2ZKhhreXnt4EgBVpUqkVIJH3iaMOIiKZL7/zJffw6BWjbe69jmeB
+	 5sgd0vh/GONpjHiBDQQ+PSlRV+NZ1hnnS+CTonV0=
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Nell Shamrell-Harrington <nells@linux.microsoft.com>
+Subject: Re: [PATCH] rust: types: extend `Opaque` documentation
+Date: Fri, 27 Sep 2024 10:42:28 +0200
+Message-ID: <184D5CF5-7734-4A48-94F8-0419667AD5CC@kloenk.dev>
+In-Reply-To: <20240926050015.3216641-1-dirk.behme@de.bosch.com>
+References: <20240926050015.3216641-1-dirk.behme@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925205244.873020-2-benno.lossin@proton.me>
- <202409270303.kUIAmOmY-lkp@intel.com> <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me>
- <CANiq72kXGNyLg0Ooo3Ne=KmZWBnSO9HE2tcfP=gf+WGFqnjDEg@mail.gmail.com> <1aa088b1-ca4d-4a97-b25c-96a18f62a79c@proton.me>
-In-Reply-To: <1aa088b1-ca4d-4a97-b25c-96a18f62a79c@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 27 Sep 2024 10:39:43 +0200
-Message-ID: <CANiq72=-bV_=TUoH6gLnPwTcxROBqyrCpOpbumki_S+po1TPhQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	Greg KH <greg@kroah.com>, Simona Vetter <simona.vetter@ffwll.ch>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 27, 2024 at 12:15=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+
+
+On 26 Sep 2024, at 7:00, Dirk Behme wrote:
+
+> Update the `Opaque` documentation and add an example as proposed by
+> Miguel Ojeda in [1]. The documentation update is mainly taken from
+> Benno Lossin's description [2].
 >
-> Personally, I would prefer adding a symbol. Since if we allow it, then
-> it might take a long time until the code is removed once we increase the
-> minimum version.
->
-> It would be best, if it produces an error when we raise the minimum
-> version beyond the one represented by the symbol. Is that already the
-> case?
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Cc: Benno Lossin <benno.lossin@proton.me>
+> Cc: Nell Shamrell-Harrington <nells@linux.microsoft.com>
+> Link :https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/t=
+opic/What.20to.20work.20on.20next.3F/near/467478085 [1]
+> Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/t=
+opic/What.20to.20work.20on.20next.3F/near/470498289 [2]
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> ---
 
-No -- that is a nice idea that I guess could be implemented in Kconfig
-somewhere (i.e. when checking conditions). However, one of the common
-things to do when upgrading the minimum is to review/clean the
-`*_VERSION` uses anyway (and they may occur outside Kconfig files
-too), and also sometimes one wants to upgrade a minimum without doing
-the cleanups immediately (e.g. the recently proposed GCC 8.1 upgrade).
-
-> Gave it a try and I also can't reproduce the error there...
-
-Hmm... I think CE uses the Rust-provided binaries (and I guess the
-playground too). Do you have a link ("Share" in CE)?
-
-Cheers,
-Miguel
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
