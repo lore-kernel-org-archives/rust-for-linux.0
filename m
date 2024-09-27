@@ -1,169 +1,122 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D13157490
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 09:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F241BA29B;
+	Fri, 27 Sep 2024 09:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727428048; cv=none; b=Y1jPR2tl7xRMZKsdO/N7/hgD75VRQd4v/Cs58PyNDQbCGnNtk9qQj3KcWjHyBTq/YBzxd9nhfmhQqB0bdKDYHTHM9nCpZPIQtGLjDNjMguRugnuekIJcw+X0bpgj1djPRer4gGK65UPbnySLAvLYcJrBiQlzcHjV4BjMfb14tkM=
+	t=1727429335; cv=none; b=LqcxbijW7aADSVD+RG4W0Oc44xmBqkJcquXpImkFlYiD81qBn2mppNu1qHLHEhejBYZ4pvDf1+uL2WdQ8ouUaCmIGuPovfg3EBzQuMf+Fex97+0s4TQ6ZXLs/EHANRLZSMXY8/qPgb76CZ9bEqssFbiMyefq5ow5KwiLOLboWD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727428048; c=relaxed/simple;
-	bh=KKXhNxOc2IWQQ9/QmPpG49Ogvpi+0dxE+FD5WpybLvs=;
+	s=arc-20240116; t=1727429335; c=relaxed/simple;
+	bh=sKt8/7JHzE8MsBKuh6blTXHEQ9ZK2ZOA5ITusQ2b34A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BsZEGz7GiHXdg2cC0dFuzAT/WvxgerZbFHF9m9u49E0CBddjdM9EiM2PshFyOcINf3yje336eib8+EGHBtAlENZwRrj0RJlWlSK1fWD2fAV424TvqwNQesQDq6kPS5FoeIhuKjf4w9q084IPvpvj/gJMesXJeEnZATmstLUGD9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=O8ei7zAF; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	 MIME-Version:Content-Type; b=kVS3DS75ifYnI9cB8npw1JHUeNLKK4kcIcJ0FesSkX/rNvN39ZabT+YJYZQ3BRDVXO2qNZYw5terSqfvkxvb+TnfyVyxZ04mzHK7phWYh+qevXII1E53m9AWWj2czoOc5tz2nOBEN4NZ+9QP6BykDR2o7Tc5VTLQPtlcBhpyD3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIERjt0I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="O8ei7zAF"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1727428043; bh=quDcP/FuoGkJOoo99uV0/cYWwCwVL61x7FIZIuS5NUE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O8ei7zAFUhyTXnum7GFi9B2XJptyU82CdRQh3gHAhJ0PGF2vgs8Rsz9eUqsyNVcJx
-	 GXZbRx3/MSkuAPj9z819a5w8ZITQ/BjSUfYSTbAOl7ydA+OPBpNI1f7EmDXEGx2iW+
-	 rSzNeeqL38UudRrlzu4R9vXJAxGEbGbanWzzYjZY=
-To: Filipe Xavier <felipe_life@live.com>
-Cc: aliceryhl@google.com, ojeda@kernel.org, boqun.feng@gmail.com,
- gary@garyguo.net, benno.lossin@proton.me, will@kernel.org,
- longman@redhat.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] rust: add trylock method support for lock backend
-Date: Fri, 27 Sep 2024 11:07:22 +0200
-Message-ID: <E3215FBF-CA50-44A1-92A1-DC65E94AA0EE@kloenk.dev>
-In-Reply-To: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
-References: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIERjt0I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840D9C4CECF;
+	Fri, 27 Sep 2024 09:28:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727429335;
+	bh=sKt8/7JHzE8MsBKuh6blTXHEQ9ZK2ZOA5ITusQ2b34A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XIERjt0IDuxY6m4h5IPyGGlGQabYhSaYp/Hc+uC04n6GPcJhF0ld9iaV/yY7Nw3Lc
+	 rIVREsf4iV6yxmfFbtF0ELn46T5RQ5vjqiSSQflhm2UM2e8Jkx4WlJleOUeHVAH07F
+	 xqzEyzpECi8dDMudQ3+kez//lTcFAypUvgWlPcUDdc1dZrQPp+3T66GoNedNRmAR+2
+	 LZONBILhvibMfeTs11NwlHKGZUrrtkPWne3uAIMRhst/Eyr4Q9nqmIoWPR4Pt527o3
+	 qnhiroQziVj/CJik1a7wx9AKYqneZyvAz2Wqi4QRUCuBeFGBaajgJYojcitTaFW9aP
+	 nwTxTo/0sIRTg==
+From: Christian Brauner <brauner@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Kees Cook <kees@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH v10 0/8] File abstractions needed by Rust Binder
+Date: Fri, 27 Sep 2024 11:28:42 +0200
+Message-ID: <20240927-kicken-minigolf-de3ebd20f6ec@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1936; i=brauner@kernel.org; h=from:subject:message-id; bh=sKt8/7JHzE8MsBKuh6blTXHEQ9ZK2ZOA5ITusQ2b34A=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaR9qzq19sr6j49iFAK1mwN7HfOd7oiJNPh/WTRnLcM/r 1CZC6dfdpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkTTjD/+oP0xMuXPkqaj+T OXRDe2qA9Swrhvm81vP9K/kNLn+8vZ6R4crmW8vk/6TL+9T9LGrdd/7Dot2K79nM8tfv518h+i8 8hhkA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
+On Sun, 15 Sep 2024 14:31:26 +0000, Alice Ryhl wrote:
+> This patchset contains the file abstractions needed by the Rust
+> implementation of the Binder driver.
+> 
+> Please see the Rust Binder RFC for usage examples:
+> https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
+> 
+> Users of "rust: types: add `NotThreadSafe`":
+> 	[PATCH 5/9] rust: file: add `FileDescriptorReservation`
+> 
+> [...]
 
+Applied to the vfs.rust.file.v6.13 branch of the vfs/vfs.git tree.
+Patches in the vfs.rust.file.v6.13 branch should appear in linux-next soon.
 
-On 26 Sep 2024, at 22:50, Filipe Xavier wrote:
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-> Add a non-blocking trylock method to lock backend interface, mutex
-> and spinlock implementations. It includes a C helper for spin_trylock.
-> Rust Binder will use this method together with the new shrinker abstrac=
-tions
-> to avoid deadlocks in the memory shrinker.
->
-> Link: https://lore.kernel.org/all/20240912-shrinker-v1-1-18b7f1253553@g=
-oogle.com
-> Signed-off-by: Filipe Xavier <felipe_life@live.com>
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-> ---
->  rust/helpers/spinlock.c           |  5 +++++
->  rust/kernel/sync/lock.rs          | 16 ++++++++++++++++
->  rust/kernel/sync/lock/mutex.rs    | 11 +++++++++++
->  rust/kernel/sync/lock/spinlock.rs | 11 +++++++++++
->  4 files changed, 43 insertions(+)
->
-> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> index acc1376b833c..775ed4d549ae 100644
-> --- a/rust/helpers/spinlock.c
-> +++ b/rust/helpers/spinlock.c
-> @@ -22,3 +22,8 @@ void rust_helper_spin_unlock(spinlock_t *lock)
->  {
->  	spin_unlock(lock);
->  }
-> +
-> +int rust_helper_spin_trylock(spinlock_t *lock)
-> +{
-> +	return spin_trylock(lock);
-> +}
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f6c34ca4d819..f4e51a5a1f23 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -58,6 +58,13 @@ unsafe fn init(
->      #[must_use]
->      unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState;
->
-> +    /// Tries to acquire the lock.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that [`Backend::init`] has been previously=
- called.
-> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardSta=
-te>;
-> +
->      /// Releases the lock, giving up its ownership.
->      ///
->      /// # Safety
-> @@ -128,6 +135,15 @@ pub fn lock(&self) -> Guard<'_, T, B> {
->          // SAFETY: The lock was just acquired.
->          unsafe { Guard::new(self, state) }
->      }
-> +
-> +    /// Tries to acquire the lock.
-> +    ///
-> +    /// Returns a guard that can be used to access the data protected =
-by the lock if successful.
-> +    pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-> +        // SAFETY: The constructor of the type calls `init`, so the ex=
-istence of the object proves
-> +        // that `init` was called.
-> +        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(=
-self, state)) }
-> +    }
->  }
->
->  /// A lock guard.
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mut=
-ex.rs
-> index 30632070ee67..c4f3b6cbfe48 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -115,4 +115,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_sta=
-te: &Self::GuardState) {
->          // caller is the owner of the mutex.
->          unsafe { bindings::mutex_unlock(ptr) };
->      }
-> +
-> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardSta=
-te> {
-> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and ini=
-tialized before use.
-> +        let result =3D unsafe { bindings::mutex_trylock(ptr) };
-> +
-> +        if result !=3D 0 {
-> +            Some(())
-> +        } else {
-> +            None
-> +        }
-> +    }
->  }
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/=
-spinlock.rs
-> index ea5c5bc1ce12..c900ae23db76 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -114,4 +114,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_sta=
-te: &Self::GuardState) {
->          // caller is the owner of the spinlock.
->          unsafe { bindings::spin_unlock(ptr) }
->      }
-> +
-> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardSta=
-te> {
-> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and ini=
-tialized before use.
-> +        let result =3D unsafe { bindings::spin_trylock(ptr) };
-> +
-> +        if result !=3D 0 {
-> +            Some(())
-> +        } else {
-> +            None
-> +        }
-> +    }
->  }
-> -- =
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.rust.file.v6.13
 
-> 2.46.0
+[1/8] rust: types: add `NotThreadSafe`
+      https://git.kernel.org/vfs/vfs/c/cf9139a8a2ff
+[2/8] rust: task: add `Task::current_raw`
+      https://git.kernel.org/vfs/vfs/c/16c7a0430f3a
+[3/8] rust: file: add Rust abstraction for `struct file`
+      https://git.kernel.org/vfs/vfs/c/d403edaaee09
+[4/8] rust: cred: add Rust abstraction for `struct cred`
+      https://git.kernel.org/vfs/vfs/c/fa4912bed836
+[5/8] rust: security: add abstraction for secctx
+      https://git.kernel.org/vfs/vfs/c/34f391deba6d
+[6/8] rust: file: add `FileDescriptorReservation`
+      https://git.kernel.org/vfs/vfs/c/054e1b6a797e
+[7/8] rust: file: add `Kuid` wrapper
+      https://git.kernel.org/vfs/vfs/c/a78b176bfdc2
+[8/8] rust: file: add abstraction for `poll_table`
+      https://git.kernel.org/vfs/vfs/c/e0cdb09b7100
