@@ -1,100 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2346B13A896;
-	Fri, 27 Sep 2024 07:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBE3189506
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 08:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727422329; cv=none; b=MVNQZUIw18mbEuTMzQl1sZGtRJEZ++cQgU0mZ9W0dWXdkngbJrHzpsQCZLbsMIMxw9BouAiMsX01xyKk2AT5zz3zLGtXuBkyE53B51JiPOqpQsFD4Gy07wTPRMFC7CQRFkeX1LucnQ3SAlEf/exS448ZlvlihCn86meMY7YbpDY=
+	t=1727424238; cv=none; b=pRGXfwaOd5SITn7WRPiBY4WU72oJyJe1RGONVPWsTZXQwDl6bXui4usJWRjBRbxrMG1N6Q0dSRinbL7xIl2vXLYOBhAC+veJFGCqnfuB5tzuOmZ000eGpKi+4SVMYUAmwwcx30XglZFNHHUM1LZhEdon1PcgIX4YXri2x4Xnb+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727422329; c=relaxed/simple;
-	bh=VO0jVLoDWIAK3ENg+3fmzfUDmQQTlwwKV08HSlrz9P4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DUzbXlJ8U4uI9AGKd1WC062nV0PELt+/sc7cP/ZG+4ku2/xRBHOsapbpr6SjHWp5kYCOtGgHFrKnfbg3Wf/k3wSXmkfZBJhsUDpcK0jyO/T9gPQ7CX1P/P0p6twQyydHBWmN5ZFVgipNTXndMSjloPgLLOTJJIt6CP5qBfAtbjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xje0hg07; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727424238; c=relaxed/simple;
+	bh=fFbAPqbDu9yWueoZi9gudChMyPvYM+Znoed0XRnAt+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YAl/TLcObNxdq1RvqsFjg0mrn4Cl6NgW6oCrQSYMHe9DZ27ApICwJ6aOJVYoTDei1Kvpk4yBwz+u/FZhgayu0tTCFOkmU11amLQlVQoZzU61QFjiS9OX4eKozjRtOTveO95YWaDPUTHt0bhbT69jPuyaqDAmOvj9fQ2fXLdgCaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G94Bgcmj; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xje0hg07"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DA3C4CEC7;
-	Fri, 27 Sep 2024 07:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727422328;
-	bh=VO0jVLoDWIAK3ENg+3fmzfUDmQQTlwwKV08HSlrz9P4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xje0hg076Ht8OtjxwQuVoFw6hWHJEoCeMD6qMtYgseGKGtsWtj66RdFBaf7bw1lNm
-	 mruzww+wWAeIViffNRiPOeo5Kj1XhU/M3qD1KQBU/cD8PM8u08G8W0il7RL1I40rhq
-	 32NPqNRjRWjnQvGUSrlcWf+Y6zVjKdi77P8PhfOCxqbrazEokZ2iudhETSBFMs03CL
-	 0Q0enAQm32WC0Y/C6q0nc6Bat9xIKiUUEUUpMZPyjjkywsmc2oLkZjjFKt6EHUIwie
-	 uQvRQwNDUBeNV+wEVRUYzBFV8IVTkJ0liLqSLbld6+CkslBN+hkrIpWnk+bM2GDL6i
-	 QMSR/hjF1tgbw==
-Date: Fri, 27 Sep 2024 09:32:02 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: file: add f_pos and set_f_pos
-Message-ID: <20240927-ergaben-abdrehen-a02a861abaf5@brauner>
-References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
- <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G94Bgcmj"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42ca6ba750eso11741295e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Sep 2024 01:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727424235; x=1728029035; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fFbAPqbDu9yWueoZi9gudChMyPvYM+Znoed0XRnAt+w=;
+        b=G94Bgcmjam/RhJa4TLAaQ925JcClMz8Uinz9BjVY/GW+/cKILC2FA/T0HNN7K9zLa3
+         MWbd0dvl13fz7tVGyKaBcju/yMowATiDK/wMlZGFdjCprc3WYTgueGb44HpN7pmqxpdd
+         jUjG7SVHQjuCF4xiPYHLzXl6Iqqy3N5fc33utzWKOhwLfokJeUSOjVQArmMX8xaVz6yS
+         tMThiUWffvpiL7PE/OPD/ypWGqaMHzq2Ac+x+Q8/ga/UTFkO2GbFh+M9Ja8YomyatEyd
+         iVe6rWY0MrhrDIRv9f9GL5svzabsq+/GjgLkzdvdPKImWjIazG59p+71S8MmdEe7vraT
+         /DXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727424235; x=1728029035;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fFbAPqbDu9yWueoZi9gudChMyPvYM+Znoed0XRnAt+w=;
+        b=hdloZ3tTuMObUD07deToNbfRjj9M656rX3vpH10XAtPoiAOGzYWB0/8hqAqE/GM5tc
+         HRS2CkdUo/gQ2KcxZV2v6arzwKquQ2Us6P6gnff+QhPkk35nqXq5mZ5D46JX103hxbNI
+         GPNl8lStkwxYqz9/MBCyh4mZZ96/qPuVjZaT2rFyQCdZBk7TrxwkhwhoXxb17aGLnXbx
+         O1rTuk3+Ht8Rzt+ZwsaMNBNUXFl7qzGjLFsWsK+p51YkKWDRy3sPDOMatyT/b38W0A0B
+         WAjEQuox7oI9bp2cYsFWkgmH0LQZSLvaVy8WYeA98yaRuBK/8U3o6UXFbXsgQG+P2uXD
+         lLXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZ4sfJ+MwIB0mRaf18lLSDMdtUl1lui9rV/+t0GHRSf+hfG3CzD6sRjI9zNvgJuO6wC2vw6NXHeYGzXYOB1A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgLw/+HLoGkCVGn+ROu5qxmLSRahHFxtxD6tIy9RQ7l7PvAIz/
+	rqanEK0IDxaVItQeMgdzl2pn9WxlwRqCfk1TudNDxTIvqynNxXOfzLYhbZU6o8gBFYo2OMdBTlu
+	yLhy/XrzFPLZbCyLleqCB7vei88FaanC+/UUh
+X-Google-Smtp-Source: AGHT+IHET5IE8YvG/BHxcblgKNz1/OcBsQr/praxbc8pTIV5MlIIOZ1RR7QTJ6imuIV407Ew9bFoRvkf4XE+pQo57O4=
+X-Received: by 2002:a05:600c:3542:b0:42c:bd4d:e8d6 with SMTP id
+ 5b1f17b1804b1-42f57f5d908mr13572015e9.3.1727424234867; Fri, 27 Sep 2024
+ 01:03:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
+References: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
+In-Reply-To: <BL0PR02MB4914579914884B5D7473B3D6E96A2@BL0PR02MB4914.namprd02.prod.outlook.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 27 Sep 2024 10:03:43 +0200
+Message-ID: <CAH5fLgjLLvaT2n9seJRp5WFTHG9kNG1wEWAi5FUWzR172tf4cw@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: add trylock method support for lock backend
+To: Filipe Xavier <felipe_life@live.com>
+Cc: ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	benno.lossin@proton.me, will@kernel.org, longman@redhat.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 02:58:56PM GMT, Alice Ryhl wrote:
-> Add accessors for the file position. Most of the time, you should not
-> use these methods directly, and you should instead use a guard for the
-> file position to prove that you hold the fpos lock. However, under
-> limited circumstances, files are allowed to choose a different locking
-> strategy for their file position. These accessors can be used to handle
-> that case.
-> 
-> For now, these accessors are the only way to access the file position
-> within the llseek and read_iter callbacks.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/fs/file.rs | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-> index e03dbe14d62a..c896a3b1d182 100644
-> --- a/rust/kernel/fs/file.rs
-> +++ b/rust/kernel/fs/file.rs
-> @@ -333,6 +333,26 @@ pub fn flags(&self) -> u32 {
->          // FIXME(read_once): Replace with `read_once` when available on the Rust side.
->          unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
->      }
-> +
-> +    /// Read the file position.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// You must hold the fpos lock or otherwise ensure that no data race will happen.
-> +    #[inline]
-> +    pub unsafe fn f_pos(&self) -> i64 {
-> +        unsafe { (*self.as_ptr()).f_pos }
-> +    }
-> +
-> +    /// Set the file position.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// You must hold the fpos lock or otherwise ensure that no data race will happen.
-> +    #[inline]
-> +    pub unsafe fn set_f_pos(&self, value: i64) {
-> +        unsafe { (*self.as_ptr()).f_pos = value };
-> +    }
+On Thu, Sep 26, 2024 at 10:50=E2=80=AFPM Filipe Xavier <felipe_life@live.co=
+m> wrote:
+>
+> Add a non-blocking trylock method to lock backend interface, mutex
+> and spinlock implementations. It includes a C helper for spin_trylock.
+> Rust Binder will use this method together with the new shrinker abstracti=
+ons
+> to avoid deadlocks in the memory shrinker.
+>
+> Link: https://lore.kernel.org/all/20240912-shrinker-v1-1-18b7f1253553@goo=
+gle.com
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
 
-I don't think we want to expose f_pos with its weird locking rule
-through rust wrappers. Ideally, it's completely opaque to the callers
-and not accessed directly at all.
+I guess there is the question of whether it should be called trylock
+or try_lock. One matches the kernel, the other matches the Rust
+standard library.
+
+Either way:
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
