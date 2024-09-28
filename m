@@ -1,48 +1,48 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020135.outbound.protection.outlook.com [52.101.195.135])
+Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2131.outbound.protection.outlook.com [40.107.121.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9601CAA6;
-	Sat, 28 Sep 2024 19:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195D71420B0;
+	Sat, 28 Sep 2024 19:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.121.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727551223; cv=fail; b=VUwkcPTG/VS5dsgpoW5jxwf8TlwZg2HVvA4q8w9iFWM+rO2XZV1m/8flSYWaZW3y2wNLfw4U/zH8Kb8uZd0lf5t1aZDx+p8AgpZrQixLcpr5TvGkCpfOroG7+e09FAF6bGfH7ezUwjgZXSXIzBvehMHRRU293FKc3rlKUeg7v2E=
+	t=1727551661; cv=fail; b=GFcJ1qL8QLE3vuvOgkBGZpYEDFOwo69VkxbNoS8V3yRzo6HBh/I/R+7ZwuVcsWHr+aMF6RdpbsuV6w1AtQ/AI8/cWSwGZyRKoafoyw+uCPd8Nd08rtmDuHslKuFJe6DNEmPBGr9tbihwUbl1QovyJZyzBJp4tbYMa96nmE0ptbA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727551223; c=relaxed/simple;
-	bh=0XcqIrprdg0DCS7qaS0dfLY4hZHwVe5tMOtv5JtfoTs=;
+	s=arc-20240116; t=1727551661; c=relaxed/simple;
+	bh=clJULMSImQgHzZHTY2cUi/P9YT3bsPs8xOv6UKLrpkw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dDr/TnQh3a1srpcNiqCILbYwNdPujU4/a8NkavKeiBo/zowhm0KsjuXUB4IFLqVOlD+KwbdwL+ILs0/d+exvFqexTfApM1yLY2DJx5A8CVDX2S8ttBNFLJtMlUAa/bMXNMapwT/V111hArBOV/4ZxkIqXDpJ1LyDgPgCC8KGcKY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=d8rWhPIp; arc=fail smtp.client-ip=52.101.195.135
+	 Content-Type:MIME-Version; b=d0jsIJmevzYqWvugiQu4WI5GaXVLT7DY7OcHd/wNo6m071wHv2mrcOR9cgNyITrojhgoCFDdCnFgWsHq/lImJFcaqVmIdrir49nYrAHPXLZOXi4btOChKxxl7jT3EKqdS0IRkrmOxuUE5Q91hHM0twbLOc4W8RCc7E22qR8poGE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=AvcaeJyd; arc=fail smtp.client-ip=40.107.121.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="d8rWhPIp"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="AvcaeJyd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TFF23XyF0RINPQStCFDSWVReiwoZmJ7xUQ/f9QBUAryO81b1e+c9WYwrsW9s+YSllInZNH+Upm9RAmYuhebcCQm4pMj78XI0PqqFBvk0ywMpFq78dw8n0voiYJ1LDwHDDhsienlI+2iwmXy7zuJV1LQ1OLcBZQKisC0s5fTQznfgFNmvvS1Kq1uqhIib9Y4UHWZjDM/zSsx1KJLmhiDgcCUJJdSqaH/7sLQeOTLcaobDuZCzdeoeN+H6qBNc43YpuaDkLdQYDILd2Y0O5IX8MgFRejCaGacb3ZfM9AqB6H6GHTDYWGs1kBTAs8dzkqS+mCn9Xfy4GX/B2lAmUR6J+g==
+ b=YbfZTAq4p5TVtcGzRpWDvGKPx2HsPJMKXPVcYYFqsTzSQYIFG1eZgXKtvONIESUKsE8LZV8uDtycVhvxetBDDsqdODqSbs1wT44JBSlIFUnwnj4DjucipjpNVm4y9VuKZq1AmnQDkY2HaRY7hG7ygcRXeJO0QW4hr+2NEixR9ZKoLmlIdZTTK4JgjplibWLIQ9Ouzxv1malI+oxzdzs+3QyXQ8OQixA3RiFDyQwRmx2Uhs5w+S0pQYRAt9b2z2PDHFNiRvpi8AZ77+1mp3X4vkV214H0bsSKa0XB4D6jIVi/ga8clELk56lsugox8BqWM4aoFDkE84V75BbwscZYNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vZ78gI7cH605JnTpkCekm3GIPDjow78+HYqfOLV2ULk=;
- b=i4VNIqeozFV63t9P1slXiby3AkaVru8zZegoHKopzExUQblgfbSQfpBdEGlqWfpfBGN4+hRJK3LmZYL0QqTWr5SdOBgdmvKnDY9VjO04TaUtB8Hs137VAQGfHe/QsvFP7bxZ88Fjm0g8911rlqzD8aGpO3QWGZoG4SOxG1vO0wZm/pGykVXxUMzR4LzJTwMqdCuf3ZEnRZOavDtWiLbVSZxcUPRd2PWxWnuCrzyqr/LFmg27x2xD4UXSl/X+AiwiJHNv38slQTJeXVHpZrrL8cQ3wSJAq7LQ7cKeyl+/uUGQDVRjc3MwyPVBbk40KMngL49Q8qsZ2S4QTcivM48KvA==
+ bh=ZgMlTgXJ9W9PBd/IRjKXfOWYPSG1j4twmY9i9fZlnZ4=;
+ b=m7Cw6pVVHjAJD4GjfWbTIw9IkhuVtZt5f7Q/xwkHVU09SutCy7xCr+6Fr7f3kN95x9OIv4fh3Pp8eC1asD8tbDy1a7Te5+uwQnjJjc674FnibDw4h8LUyXUIxwt0Cj/k+KClQufAVo0prlIRBO78m/xMhUZHMSEbTN4Kex1TmAciiMYgd0+KHhUZ9Bwvy/L0HITyvX0GbVnE9iYT9Z8nA56aR/jlXToAYMcU32HTyljlQquN/Hnkbr19UvuMLausp/FRPo9mEJgjaNnpV36qo3thpzgMJSJxndWzdqXuvYFvMy2zc9AOwUXJe+nVvN/IH2kurYEAbh2wNsyHetxC4g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vZ78gI7cH605JnTpkCekm3GIPDjow78+HYqfOLV2ULk=;
- b=d8rWhPIp+eoLEf1F90DWblFhssCMTIxwzowrIMzjWg+4gLY32e2GOTF2kyh7WvuU84pM+0HUOG/Kj3HK29ogms6LPppNoUjEnXW0pn3LlAfYpmOjNUWw42k7j6KB8F/YJxSpidzdVUJGXg7yV55GYK9TZckrPgyCU1oOmbraSNQ=
+ bh=ZgMlTgXJ9W9PBd/IRjKXfOWYPSG1j4twmY9i9fZlnZ4=;
+ b=AvcaeJyd5bZSY0xWAZnlT6FzPTiG1aLBJ3jhLkHaG2i62wn9ucWlYi6UlCQCnvMiMflx3wGZgbKZ9Qo3MnzRC/fYmcRZKFzj8jtU9IamUMWqrPSEDiGSx+ibYAaJ6vJ56vYrjuAm8dmy8xLG6Y6wF9jZ7BtmPM2Q1FClPb+nTAE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB6614.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2fd::13) with
+ by CWLP265MB6484.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1db::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.25; Sat, 28 Sep
- 2024 19:20:17 +0000
+ 2024 19:27:36 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.8005.024; Sat, 28 Sep 2024
- 19:20:17 +0000
-Date: Sat, 28 Sep 2024 20:20:15 +0100
+ 19:27:36 +0000
+Date: Sat, 28 Sep 2024 20:27:34 +0100
 From: Gary Guo <gary@garyguo.net>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -53,17 +53,17 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
  zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
  ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 14/26] rust: alloc: implement `IntoIterator` for
- `Vec`
-Message-ID: <20240928202015.7a8c0bb9.gary@garyguo.net>
-In-Reply-To: <20240911225449.152928-15-dakr@kernel.org>
+Subject: Re: [PATCH v7 15/26] rust: alloc: implement `collect` for
+ `IntoIter`
+Message-ID: <20240928202734.4b518854.gary@garyguo.net>
+In-Reply-To: <20240911225449.152928-16-dakr@kernel.org>
 References: <20240911225449.152928-1-dakr@kernel.org>
-	<20240911225449.152928-15-dakr@kernel.org>
+	<20240911225449.152928-16-dakr@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0201.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::8) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0167.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:312::12) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -72,194 +72,135 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6614:EE_
-X-MS-Office365-Filtering-Correlation-Id: fec68c60-9ccb-428f-43c4-08dcdff295fe
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6484:EE_
+X-MS-Office365-Filtering-Correlation-Id: cdeaef72-26a5-43e0-0be3-08dcdff39be3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016;
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bq7QbGJMOQ+opZp8SLEWAQ43y4fli4/cyPKO/tufUqm4ThcmY7Bhwa27+jd0?=
- =?us-ascii?Q?mWDLO8WMimm3vVd22N2eck52uAyLboyLE2R6zgcrD/nbgIXNthgV1mstpzUd?=
- =?us-ascii?Q?Nensv8YTowiaOFN+FKkDaNAHC5qIP5ZxxXwT+RDzNwEhh9XDWTfn7sjvY9DR?=
- =?us-ascii?Q?FKuOSXZgMhhBGq/0OJlLeWxjSvosKErnUclJp4icKD4EZHfLwjIojiQC0XLD?=
- =?us-ascii?Q?2P4iQQjBvi35DGQmwOa00c0KDqM8HrjllKyMgqbsa1fLCSNPkbu0hyNuMVsT?=
- =?us-ascii?Q?JA3GgTZYD8rHaesR2dykl8zsbYTU5Sa8MuVrmg3NwyNxSTP8V0aQGM4rVFgH?=
- =?us-ascii?Q?Rn6j/llxiMfwnVwqElW/udK2G/KiTvk/HL66gnzJ+/6NijNQDQmYoVhDqTUb?=
- =?us-ascii?Q?oFWoMGuTFwMk/XPeihCjEjIK4r4sQLsyDphqkzF9HtIgLLICL7yXwQ62AVBP?=
- =?us-ascii?Q?Qd7A/uuWS6JiE2Or+o2jfBAxFtyMeq0uJsrkhlibVCuiO+w/iQFZzF9LN3gG?=
- =?us-ascii?Q?XcyMWZmCDmZkpQDUIw7rlnAzhsoJWmUBAoeFjdOFBN6w1tbr3tCZoqNfs0tn?=
- =?us-ascii?Q?1a3VkPE5i5pNa+PIDgXrN3iGNz4vZdCeZfKsfkB5hbKfRtGQLlFMXlv1RXgj?=
- =?us-ascii?Q?f7Rjj7UmYiRMvO1wDVJrh5V/l6JWXgzIquLvgedylqnXhJTmUQlnoP2D9SDn?=
- =?us-ascii?Q?PmtW5W4Wb4Hl5m20gUL5qnc3e7Fnvq7+rfkyI5W1I9yQLWgpmJkGcxBZga0G?=
- =?us-ascii?Q?eyZ1yTxKI0A7M53V7Z9ETRXfuMtbgZ+gYyuUv92ef3rcGlWNgVoRt6SBQSH4?=
- =?us-ascii?Q?b/j5B3c9mqDDABfbgMDKsgSwnpLDhO4vJFqInrQ5ERhgaqbr//uRGe0DsNL7?=
- =?us-ascii?Q?L9/IusW/rDfjkeg5NMYuXLUKmOLW7yqrvC0MOaSFAIYUFJ9f6Lxgdd+Oa8xf?=
- =?us-ascii?Q?lw3awncdqCHLy+SgK1ZK1SPwtnwStF04M/G4d0dMjbtfTPy+5WsBDpVvVWKA?=
- =?us-ascii?Q?agS9i8WxbDXeHZM8o2s0RRyjy8YxoTelPuVwTPJ9+M7UvIRWljBKO3fxzFcF?=
- =?us-ascii?Q?Z7eREd8Swb1lt15Nd429ypC2ru/NpPKbK6V6b6K8BXbNAaQYRCgUwPJ6yMHO?=
- =?us-ascii?Q?w7Brd+BfSjLr6EBh8zD+Ic9nVCh7UYF/HZdKLBbkROMHJnC72e2aNcvhtvbm?=
- =?us-ascii?Q?fzfsYO9cCP/Wdev3IxzKq7giRb3jMkhzvoAuQxUquiLzok0ae+Lkblz1AtTH?=
- =?us-ascii?Q?CE4+H5rnC9Vf3Jw396ekBW5NBMsE4sdGkDSaY8b49A=3D=3D?=
+	=?us-ascii?Q?6O4GWAWfNeLjr4YA8tKxOwFcobSMwNI+vUGf3Zp0oBSb1spvgaofnQWjrfFA?=
+ =?us-ascii?Q?riI9YG/G35FP88qiCyjNurEB7tNkVe+Q5KRJv8Mn5yQB9OmXYkH3AwWkHQ7X?=
+ =?us-ascii?Q?tbWaQ6MIpnTrmyBVQdU7myrJa2+8SlcgzHvzoIH+F+FQqxH8OgxpRBTXiU7q?=
+ =?us-ascii?Q?DeNkEdL2H4oBIAoYEUd5YUM2SRtRdDzm36yC7HKYjrlQ+ROuJ7Gjg+D0P5YC?=
+ =?us-ascii?Q?qtaZ/hwqc0oyyCAxWbBeW8BDf+NIaNTOB2Lv9zWWiLjYzV8FnyE4jW539TP5?=
+ =?us-ascii?Q?YC+Z1Ig9IPi9h+zq7NHgN+0npgBEXjeL+fbBriylUbhAdtB+4Q1Asu16Ny3I?=
+ =?us-ascii?Q?gJ+EXzKOgFbf71kqrmc8Hg3R5EAO3mkYvg3kBl66NqiKQ30xmCzb0x6UME5Q?=
+ =?us-ascii?Q?z7dRb8z8VGx3kC4VxitOzjYIxSsP20Qpd3ABdk5ZOKi7g8w4zRFzovyBhZA6?=
+ =?us-ascii?Q?Grhm+UljWWwxbgsbDcNtewpDJ+Wc31XX2IFY4YCQ9ZksuA+kmv/LfeEEOGXi?=
+ =?us-ascii?Q?BNpQ/iAdYK3aS3S5ekiYwltypx+Xt2L5PnRybunKRjBRf3tclpqowsj+wSnC?=
+ =?us-ascii?Q?xnnjhyjIPQ442PtvJh21djKsGGsoMV2LzKVeVqj8bsI9NBtUewX0fUQc5kzO?=
+ =?us-ascii?Q?ae4oiNwSUWHaL80ZnYFDO7tyCEnlJh+n13UfpCEN5paJfQRZj19NE2ceNp0W?=
+ =?us-ascii?Q?XTmbuYPVM3JDE/39IYhm2OG0uvO2iuH31KBvlfMpCUFJQeZGnLvogGazaFyI?=
+ =?us-ascii?Q?WFuDGcxySs2pIUYkHfL5JyFnLqjv7XjxP/TdFLUxV1bACRdroMK6V5JCiX9S?=
+ =?us-ascii?Q?sHnoYjLebvOajH1iT2q6YHGsLDaX4uSNW8b5GO/ssbsVEQoYefcJMrfCvWbG?=
+ =?us-ascii?Q?wWsKJrgWEBRVvT1UKYcoWrXTzVbnTo8VvWgf1nQLWJromizLCwVW/Jvd9Ofo?=
+ =?us-ascii?Q?6GYQdejykIMaxOwZ9de8f0OuUZazugi/lEANDl6pG9th+8v0k1hmUdxdKT2a?=
+ =?us-ascii?Q?Yyg5Pco6Ix1BDm29GK71mPgorAQ3BHhwbnxu/j9gZeOBmR4M8Qo3sMo+S0hY?=
+ =?us-ascii?Q?8X1uk5+QUX+2dBlCEVIPEDSUUdVYldlsH0p6Ti/9bwLRQsgqPMUosEuFAVQH?=
+ =?us-ascii?Q?eAE6cdmuqjyMzz9Nz7FKeBcNh78xunmXTeeYlWk/P+7CTQm8MqCgyFI5YTmV?=
+ =?us-ascii?Q?SQ4DOzEm/g/3VU3nWl0Eq65K4NvF9OUMWCpYNd/gVdLpfUSIOPEJYH41Ow77?=
+ =?us-ascii?Q?Pu8NgGNNkWfWVO9kyfEwQawj3NVnyRcuoEFiFp+N2u/cevr56Sbb1ZcFwVCq?=
+ =?us-ascii?Q?fCQq78fFq/qPJksV4MQWzM3vfyltXJQl+8llLL23Qzwn5w=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?imZy4bfyIplMeMoibAy+UchdiVVqDzdPTEm3RG8zprOI8Vv6vNx6CynDaFPq?=
- =?us-ascii?Q?1SbzFabOEbTJUACje49FFb0bEDrkJ86kMtkjaGsiYe5qY7oVf+FtySH1PE8V?=
- =?us-ascii?Q?08TA+BfvEcx1BlMdiTcQxND8uabge6gPGbIgtTr/YIR1gop9DWTM4oz4fagd?=
- =?us-ascii?Q?4E8tlvtHdUp6SmAahIqpR06uYZSEHldOAstlL6j8Rl8CyJxwkBAAqP4EYj/M?=
- =?us-ascii?Q?Y016jdJ/gFtLzFhHWPmIRfjvFkhwD68N8+NcsYDwrtnFBmY/C/QrF3yjsHC7?=
- =?us-ascii?Q?UWQXkWkhrlenCrNe4ZbYlI8Ar1M5uRPc95+huzl4xlCHIl6U45nccNqV90A/?=
- =?us-ascii?Q?2zbP9s3KLSQu/VV+rUXeZA6e5wBI/96ntWh3urLZd7c+UprYAe2BuIjxTyVC?=
- =?us-ascii?Q?h0ohzzu7RpYlj6WlVk6/FHe+5mraPoSPrFUmPLgJ7A3328LD7Tj8rIZKHCy9?=
- =?us-ascii?Q?I4qtNjXOOBKEylKX5G59Ei5rglZH2R/KOMf5Px9yBmmJVCffNTU0E1u6ClkT?=
- =?us-ascii?Q?Mr0Xb2dxzD8f+YeBDq9nYz+dlgVsw4lnbCVa97DxmHXT36Vmrsri5at/SfB4?=
- =?us-ascii?Q?sZXDz58RxS1+n7VP3jkq5Ahd9qXpakza/M2KtoqGokVPRk2Og9bC5lOD9zkE?=
- =?us-ascii?Q?rion398siWYJIEMcOR53m2v2D7iONdWS4zB9z3KsgKcNF7J12uFsYnKdtCVD?=
- =?us-ascii?Q?/3LNryoQzW8y17zTzV4ydUhleSIxnDH20xRwBTfOLS5WQDp5KkK6141nea8B?=
- =?us-ascii?Q?OTtRPxOazr725lsVY2AUvK6vDjqXkg6d85dclYSzpH7n6uYSzLCf00m/eTFH?=
- =?us-ascii?Q?UIRdGpZ9hEcCoIaZBhKa1pJiy9YXk0M/h10+zgVnAYBNdJ/VAEiH21+4yK0C?=
- =?us-ascii?Q?tfjWrXcPWtRpdrImOxCRPxvaqsJF0mrNsCc1Lh/k+xp37K4eGeJwMOe48pls?=
- =?us-ascii?Q?Ifi6qPQ07uPfnAzPl83puKMxVHrCq8AikML7VvuJQzaP3Ii15RhY/NkgXCBs?=
- =?us-ascii?Q?gYMRNVwRa5KmXjBazzndUVaHW+YTJwQDky2Kb3U/k10814ZSq97qNL4VEhJH?=
- =?us-ascii?Q?G/3rXqbdlo6B+DNodKUb3LfKcgN++z9DNac5yoLFcX0p7u8I96YKWjNf2JkA?=
- =?us-ascii?Q?t7+fChKCiPjmLu34Gk42mMimy8J1RBETIGljl/J1c+1wxKAQRdYxRa1j7xoX?=
- =?us-ascii?Q?2ZAnOVwDmT8nJluqHd64Gh1fFIoLW3hT+yHin7k6PvQ+/CTgMJNwmvTq/gd3?=
- =?us-ascii?Q?NoV3mQMKDhaUYiuTlkDXfAmFWO0yBOyNSDuevuSc0lziZ6s04bnhYIZbXGn4?=
- =?us-ascii?Q?ZflH37o0XdiDzvPNK7lSS36YEFykUDLCR68q9lCJ4tNmlrPBK+Q3mu3n3Zsf?=
- =?us-ascii?Q?uWilhLzr5OjjqF8lmcdjOiCVgqs+UIzlFcosHkmN3d32+NxjApqTBrf+Eaw4?=
- =?us-ascii?Q?15KoVhZYq1lHAby4f+DB4IRiWdN+0MFx539caYA2X8mOhl50RqOPRF8KG41H?=
- =?us-ascii?Q?/X1THI6UkB4fnga4RobN9xr7wLFfCFKTsfi/zG/KeGG79sdDzSUsDME6FA5O?=
- =?us-ascii?Q?BCgPlKkbVnL+nj4odLr/dLX7TnAv1U1mKL+rVh9Y?=
+	=?us-ascii?Q?7ZZY4DNZJZl7Sealvvhz3DSB5S7PRpcWMBjNOTT289AJPm6rJiXbodTcRWXF?=
+ =?us-ascii?Q?iAzRr4jhmwQxJRg6ADNus+Ppzbp3cdWQG1cvOFA3clI4rVrEIQ/+DMEewjUd?=
+ =?us-ascii?Q?l05K/yux/9miKxpQn2KVSgvOEMZ7NnyC4qeOm4xqaIwrhFjaYuSAdkeKuee+?=
+ =?us-ascii?Q?DAE8zzdus1NZNOuTcSI07Z7Qtyv0G7qa3tBjdHrJaMDvCBmZFNAB7kBmDwgG?=
+ =?us-ascii?Q?/ZHcNmOqgpPvFzFpjsWtudG/Y89CE8Bz+EpYqROmjLipL4BUNz7EKlIJPVw+?=
+ =?us-ascii?Q?4YRsOGWSSDfHsbuzL7HD/Za2SGq0lwzXUOhLANNLAGJkTe0ofziGk0k/wWTu?=
+ =?us-ascii?Q?W9P3Sh0qpJQ7YnKWxdr9JOiZ4bF9BlcEeNYFRWqKCvD5sdvnRF1KZ7N03xSy?=
+ =?us-ascii?Q?z04Zmt+h5x+WRKQ1utockTx6lnm9e5E8NkSQ8DpvsKuQYNPQI6YsLmH2tfdL?=
+ =?us-ascii?Q?qExrr+pHap8t6om8T1NGkWw6wZ38vCfXKZM7YS0ZVhZXMshU+cXz5K4/cmVg?=
+ =?us-ascii?Q?TJqhGO8rxJIDioddKb8U5IvqUYdgXrTEL7ZAbIog/+iX7J62ozrlsmlg2ji7?=
+ =?us-ascii?Q?b+wb1i70fwCiF7vLZy7OFZOovIHvnw06tfOXfgKhY1Pjtnxa26lrw9uG5Us6?=
+ =?us-ascii?Q?N0fxr29UNjqxZg7M3qPr5hPWUfad/rAqK0RTUSrpQ/3hw02mWKrQiu3HKYtX?=
+ =?us-ascii?Q?A0AvWz0BDHYfRnJllvFGElKyrgaG0slD/M30Z0A9ikXkjgKK9OmSGq9+z78Z?=
+ =?us-ascii?Q?htUXhbqenCX4mkzmcfWyitJf/IIJLiJ7NF0c28mmgknMdQB708ZXaprP+uOT?=
+ =?us-ascii?Q?2fuSlG8n+i/uJ5f0iudFWmZElYCNJloUmiFysM1eHC9fWDR7rC2UGpdtXX19?=
+ =?us-ascii?Q?HlM4RRe0tbwBS72wnxZyMGNTdZk20JbKEVsOg2d1HlI09sj4LXVQlA5yU/rK?=
+ =?us-ascii?Q?fGF/9gO+HOkmndhzHAZUbqsgcuG7M+zMsO+c6NBoG59gnMvkPCYRK7ls+fcX?=
+ =?us-ascii?Q?POeB0EPXHdZyiozfuRDiLrWn18ux65eQTEAcc0ckhITQWwiWy89s7QP/V+wk?=
+ =?us-ascii?Q?zeI7fwaKN6rlPwuS1sRE86EThJ3kBkW+SjVAlmfnDezLBrhk8s/Pwvzg7k2M?=
+ =?us-ascii?Q?2ZwQ9OyQ8xC4P2rR9dItJlYdzGptvEO8oammoQYlroreknLrt51nPyl5wRnx?=
+ =?us-ascii?Q?EAC1rL/Z9w2CR5dUHk4W0jrWk1YdGuzZwI/FPaWKJtQnXVC35w//aEQjiHoi?=
+ =?us-ascii?Q?sLYO/+D7fZN7tZ5t6ljE/9Mtvuy+M0KAdNuKvDUiG9Uvhv4dHoPRajynpqq9?=
+ =?us-ascii?Q?5Kw171mca0eQ0Lg1nueKP9o49rsaeLh+R0n+oCzStaHIzZFk0TuIAAS+rekW?=
+ =?us-ascii?Q?ZzE/B6SyF8K0K+TtDtfEjq+BbTY4G+/mASQXe/hwWwR9q/+v+izJKXru4vlL?=
+ =?us-ascii?Q?lY/BmnKkSVkuA7srX2P0Eye9FcV1gi+iMHbEAmGgskb/ZDvhjFZTKmvNzRCP?=
+ =?us-ascii?Q?GPzfZgF6p9hENAnn/+bWxY10MAoVp4m423WTEEWPRN9d7tKVksc4eBhEsywM?=
+ =?us-ascii?Q?UuyomEthQGA8+NsTTAvZQtMzh1i4amIMPMDCUtCF?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: fec68c60-9ccb-428f-43c4-08dcdff295fe
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdeaef72-26a5-43e0-0be3-08dcdff39be3
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2024 19:20:17.6008
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2024 19:27:36.6473
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1SjhAxEfQwTKInRZhCm+ktoZZM5AbKEkOdH6cC6/WEcsi9Y6QVejzY/XcsMxvcnqOGyk3SjotjflZOqhfutMpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6614
+X-MS-Exchange-CrossTenant-UserPrincipalName: 90lMiRK5Wb4DbHsrt+tMfdycYTmh/fAW54+Rq4deSO3Mqg1fcN+Qkt6ZWyoWNqKQyi6bvjUKwDGxOcyoDeuCTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6484
 
-On Thu, 12 Sep 2024 00:52:50 +0200
+On Thu, 12 Sep 2024 00:52:51 +0200
 Danilo Krummrich <dakr@kernel.org> wrote:
 
-> Implement `IntoIterator` for `Vec`, `Vec`'s `IntoIter` type, as well as
-> `Iterator` for `IntoIter`.
+> Currently, we can't implement `FromIterator`. There are a couple of
+> issues with this trait in the kernel, namely:
 > 
-> `Vec::into_iter` disassembles the `Vec` into its raw parts; additionally,
-> `IntoIter` keeps track of a separate pointer, which is incremented
-> correspondingsly as the iterator advances, while the length, or the count
-> of elements, is decremented.
+>   - Rust's specialization feature is unstable. This prevents us to
+>     optimze for the special case where `I::IntoIter` equals `Vec`'s
+>     `IntoIter` type.
+>   - We also can't use `I::IntoIter`'s type ID either to work around this,
+>     since `FromIterator` doesn't require this type to be `'static`.
+>   - `FromIterator::from_iter` does return `Self` instead of
+>     `Result<Self, AllocError>`, hence we can't properly handle allocation
+>     failures.
+>   - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
+>     additional allocation flags.
 > 
-> This also means that `IntoIter` takes the ownership of the backing
-> buffer and is responsible to drop the remaining elements and free the
-> backing buffer, if it's dropped.
+> Instead, provide `IntoIter::collect`, such that we can at least convert
+> `IntoIter` into a `Vec` again.
 > 
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-A small nit below, with it fixed:
+A question is how useful is this? The way this can be used seems
+fairly limited: you `into_iter`, consume a few elements, and the
+`collect()`?
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+It feels whatever user this serves, it would make more sense for them
+to use a `VecDeque` and just `pop_front()`.
+
+Also, inline comments below.
 
 > ---
->  rust/kernel/alloc.rs      |   1 +
->  rust/kernel/alloc/kvec.rs | 181 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 182 insertions(+)
+>  rust/kernel/alloc/kvec.rs | 86 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 86 insertions(+)
 > 
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 4fb983b63d46..e8fbae2adadb 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -19,6 +19,7 @@
->  pub use self::kbox::KVBox;
->  pub use self::kbox::VBox;
->  
-> +pub use self::kvec::IntoIter;
->  pub use self::kvec::KVVec;
->  pub use self::kvec::KVec;
->  pub use self::kvec::VVec;
 > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 631a44e19f35..e91761c5c52d 100644
+> index e91761c5c52d..686e969463f8 100644
 > --- a/rust/kernel/alloc/kvec.rs
 > +++ b/rust/kernel/alloc/kvec.rs
-> @@ -14,6 +14,7 @@
->      ops::DerefMut,
->      ops::Index,
->      ops::IndexMut,
-> +    ptr,
->      ptr::NonNull,
->      slice,
->      slice::SliceIndex,
-> @@ -636,3 +637,183 @@ fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] }
->  impl_slice_eq! { [A: Allocator] [T], Vec<U, A> }
->  impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, [U; N] }
->  impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, &[U; N] }
+> @@ -690,6 +690,92 @@ impl<T, A> IntoIter<T, A>
+>      fn as_raw_mut_slice(&mut self) -> *mut [T] {
+>          ptr::slice_from_raw_parts_mut(self.ptr, self.len)
+>      }
 > +
-> +impl<'a, T, A> IntoIterator for &'a Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item = &'a T;
-> +    type IntoIter = slice::Iter<'a, T>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter()
+> +    fn into_raw_parts(self) -> (*mut T, NonNull<T>, usize, usize) {
+> +        let me = ManuallyDrop::new(self);
+> +        let ptr = me.ptr;
+> +        let buf = me.buf;
+> +        let len = me.len;
+> +        let cap = me.cap;
+> +        (ptr, buf, len, cap)
 > +    }
-> +}
 > +
-> +impl<'a, T, A: Allocator> IntoIterator for &'a mut Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item = &'a mut T;
-> +    type IntoIter = slice::IterMut<'a, T>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter_mut()
-> +    }
-> +}
-> +
-> +/// An [`Iterator`] implementation for [`Vec`] that moves elements out of a vector.
-> +///
-> +/// This structure is created by the [`Vec::into_iter`] method on [`Vec`] (provided by the
-> +/// [`IntoIterator`] trait).
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let v = kernel::kvec![0, 1, 2]?;
-> +/// let iter = v.into_iter();
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +pub struct IntoIter<T, A: Allocator> {
-> +    ptr: *mut T,
-> +    buf: NonNull<T>,
-> +    len: usize,
-> +    cap: usize,
-> +    _p: PhantomData<A>,
-> +}
-> +
-> +impl<T, A> IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    fn as_raw_mut_slice(&mut self) -> *mut [T] {
-> +        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
-> +    }
-> +}
-> +
-> +impl<T, A> Iterator for IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item = T;
-> +
+> +    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIter`.
+> +    ///
 > +    /// # Examples
 > +    ///
 > +    /// ```
@@ -267,121 +208,85 @@ Reviewed-by: Gary Guo <gary@garyguo.net>
 > +    /// let mut it = v.into_iter();
 > +    ///
 > +    /// assert_eq!(it.next(), Some(1));
-> +    /// assert_eq!(it.next(), Some(2));
-> +    /// assert_eq!(it.next(), Some(3));
-> +    /// assert_eq!(it.next(), None);
+> +    ///
+> +    /// let v = it.collect(GFP_KERNEL);
+> +    /// assert_eq!(v, [2, 3]);
 > +    ///
 > +    /// # Ok::<(), Error>(())
 > +    /// ```
-> +    fn next(&mut self) -> Option<T> {
-> +        if self.len == 0 {
-> +            return None;
+> +    /// # Implementation Details
+> +    ///
+> +    /// Currently, we can't implement `FromIterator`. There are a couple of issues with this trait
+> +    /// in the kernel, namely:
+> +    ///
+> +    /// - Rust's specialization feature is unstable. This prevents us to optimze for the special
+> +    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
+> +    /// - We also can't use `I::IntoIter`'s type ID either to work around this, since `FromIterator`
+> +    ///   doesn't require this type to be `'static`.
+> +    /// - `FromIterator::from_iter` does return `Self` instead of `Result<Self, AllocError>`, hence
+> +    ///   we can't properly handle allocation failures.
+> +    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle additional allocation
+> +    ///   flags.
+> +    ///
+> +    /// Instead, provide `IntoIter::collect`, such that we can at least convert a `IntoIter` into a
+> +    /// `Vec` again.
+> +    ///
+> +    /// Note that `IntoIter::collect` doesn't require `Flags`, since it re-uses the existing backing
+> +    /// buffer. However, this backing buffer may be shrunk to the actual count of elements.
+> +    pub fn collect(self, flags: Flags) -> Vec<T, A> {
+> +        let (mut ptr, buf, len, mut cap) = self.into_raw_parts();
+> +        let has_advanced = ptr != buf.as_ptr();
+> +
+> +        if has_advanced {
+> +            // Copy the contents we have advanced to at the beginning of the buffer.
+> +            //
+> +            // SAFETY:
+> +            // - `ptr` is valid for reads of `len * size_of::<T>()` bytes,
+> +            // - `buf.as_ptr()` is valid for writes of `len * size_of::<T>()` bytes,
+> +            // - `ptr` and `buf.as_ptr()` are not be subject to aliasing restrictions relative to
+> +            //   each other,
+> +            // - both `ptr` and `buf.ptr()` are properly aligned.
+> +            unsafe { ptr::copy(ptr, buf.as_ptr(), len) };
+> +            ptr = buf.as_ptr();
 > +        }
 > +
-> +        let current = self.ptr;
-> +
-> +        // SAFETY: We can't overflow; decreasing `self.len` by one every time we advance `self.ptr`
-> +        // by one guarantees that.
-> +        unsafe { self.ptr = self.ptr.add(1) };
-> +
-> +        self.len -= 1;
-> +
-> +        // SAFETY: `current` is guaranteed to point at a valid element within the buffer.
-> +        Some(unsafe { current.read() })
-> +    }
-> +
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v: KVec<u32> = kernel::kvec![1, 2, 3]?;
-> +    /// let mut iter = v.into_iter();
-> +    /// let size = iter.size_hint().0;
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 1);
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 2);
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 3);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    fn size_hint(&self) -> (usize, Option<usize>) {
-> +        (self.len, Some(self.len))
-> +    }
-> +}
-> +
-> +impl<T, A> Drop for IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    fn drop(&mut self) {
-> +        // SAFETY: The pointer in `self.0` is guaranteed to be valid by the type invariant.
-> +        unsafe { ptr::drop_in_place(self.as_raw_mut_slice()) };
+> +        // This can never fail, `len` is guaranteed to be smaller than `cap`.
+> +        let layout = core::alloc::Layout::array::<T>(len).unwrap();
 
-`as_raw_mut_slice` is only used once? It's better to construct the raw
-pointer directly so there's no need to refer to some other place when
-reviewing unsafe code.
+nit: could be `unwrap_unchecked()`. Although feel free to leave it to
+avoid an additional unsafe.
 
 > +
-> +        // If `cap == 0` we never allocated any memory in the first place.
-> +        if self.cap != 0 {
-> +            // SAFETY: `self.buf` was previously allocated with `A`.
-> +            unsafe { A::free(self.buf.cast()) };
-> +        }
+> +        // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
+> +        // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
+> +        // it as it is.
+> +        ptr = match unsafe { A::realloc(Some(buf.cast()), layout, flags) } {
+> +            // If we fail to shrink, which likely can't even happen, continue with the existing
+> +            // buffer.
+> +            Err(_) => ptr,
+> +            Ok(ptr) => {
+> +                cap = len;
+> +                ptr.as_ptr().cast()
+> +            }
+> +        };
+
+This should be moved to `Vec::shrink_to_fit`. And then this function
+can just `Vec::from_raw_parts(...)` and then `vec.shrink_to_fit`.
+
+But my question would be why this function needs to shrink in the first
+place.
+
+> +
+> +        // SAFETY: If the iterator has been advanced, the advanced elements have been copied to
+> +        // the beginning of the buffer and `len` has been adjusted accordingly.
+> +        //
+> +        // - `ptr` is guaranteed to point to the start of the backing buffer.
+> +        // - `cap` is either the original capacity or, after shrinking the buffer, equal to `len`.
+> +        // - `alloc` is guaranteed to be unchanged since `into_iter` has been called on the original
+> +        //   `Vec`.
+> +        unsafe { Vec::from_raw_parts(ptr, len, cap) }
 > +    }
-> +}
-> +
-> +impl<T, A> IntoIterator for Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item = T;
-> +    type IntoIter = IntoIter<T, A>;
-> +
-> +    /// Consumes the `Vec<T, A>` and creates an `Iterator`, which moves each value out of the
-> +    /// vector (from start to end).
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v = kernel::kvec![1, 2]?;
-> +    /// let mut v_iter = v.into_iter();
-> +    ///
-> +    /// let first_element: Option<u32> = v_iter.next();
-> +    ///
-> +    /// assert_eq!(first_element, Some(1));
-> +    /// assert_eq!(v_iter.next(), Some(2));
-> +    /// assert_eq!(v_iter.next(), None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    ///
-> +    /// ```
-> +    /// let v = kernel::kvec![];
-> +    /// let mut v_iter = v.into_iter();
-> +    ///
-> +    /// let first_element: Option<u32> = v_iter.next();
-> +    ///
-> +    /// assert_eq!(first_element, None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    #[inline]
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        let (ptr, len, cap) = self.into_raw_parts();
-> +
-> +        IntoIter {
-> +            ptr,
-> +            // SAFETY: `ptr` is either a dangling pointer or a pointer to a valid memory
-> +            // allocation, allocated with `A`.
-> +            buf: unsafe { NonNull::new_unchecked(ptr) },
-> +            len,
-> +            cap,
-> +            _p: PhantomData::<A>,
-> +        }
-> +    }
-> +}
+>  }
+>  
+>  impl<T, A> Iterator for IntoIter<T, A>
 
