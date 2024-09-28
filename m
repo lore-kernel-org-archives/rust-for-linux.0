@@ -1,120 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C21A800;
-	Sat, 28 Sep 2024 06:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911581E52D;
+	Sat, 28 Sep 2024 12:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727506242; cv=none; b=L2v7yV7dXxdYx03wHsMMbnWMpCphG9LuzaLUok+DdbC/z2eABzXnj4Lp1vk/r9J3/yrY4tvOd2bw6XYz3iS4WctnseiPgwhxHhUGkd4/Md/n+DJyEEwVAZDXJaogG2vaKDNuTY3w5iptHX1j+vhP649U5t3JbJQJd+iHzdWhoG8=
+	t=1727527417; cv=none; b=VriMT3jXoFhqyXyXzt1L2IbiClLM6NPb4IM3v4qCubzN6rsA3RoRQKpROpOpcbwYYnWtn33r7wiDsf0OB7HCFDTOHb4UMfPoYscFivXbYCrli7Li8MLF9Qo8V2YcQEItLzv+HeAi45ZYdlQwagnFmEx4DhM55H3X7aBGApkBwXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727506242; c=relaxed/simple;
-	bh=QH+t3MerDvmzRG9sFgWzJ77drNpMYqtI1XrfxZrhfdE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HzwuGnBji14C5ma0MrBH2ap2TA8BOlSknxbhokJuWJaGelidfljYa+mzpsv6VCR+PVU4cooufiR93KKh8T5mlBg9J+agELEr3OqxEzYu8Hu0zmykbKn74ICrD2xxfLygQN3WjIwbqBBLrN9/QFcSpdi9SXg2D+ujz7r+q6b2p/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C54qUm3m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727527417; c=relaxed/simple;
+	bh=tAmNwQrFqOnGLWoMuKORR3I292iyiJ/rRwbQKe4bVow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AGea1Mbcl2wTufA0hRxtpt3GoUL8rDcRXU+VDv9reuSEyL4is3FNFP34gkYcTVNZqUlkclYg+PPLLbLsuphf7XfDf5BDqf1r0NnFa/YEDZzRhZFha8nhhVcTXmjVFhNR32NMSZR2vEjqVV6OkuZcSTkHYDicB5uvC0U8eiU3Lxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBuolGPM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C54qUm3m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1965DC4CECE;
-	Sat, 28 Sep 2024 06:50:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBuolGPM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B278C4CEC3;
+	Sat, 28 Sep 2024 12:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727506242;
-	bh=QH+t3MerDvmzRG9sFgWzJ77drNpMYqtI1XrfxZrhfdE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=C54qUm3m/aDnZl834J/2oJNu57OB3jvn/HwaMmwJ0YYYAj9mVaKGHWqxoCL2CrlWM
-	 XlBd8TiSCDZ8/Bylh5wOlQgCY36eKUtISwEJJPjRTazWfXPT1K8sqNZzE9i3pZ+qV9
-	 OZytqDFQ1monWfG8rNFQ3psIHxI8mMpDmwWLhSZ4YV+k/TUMw1v0puZnaIiHZQ4Ksu
-	 aBN+rD0fxp7kCVdVDF18KASkfc+wibKCw53Liwyq3O/fb7hR48fiE7s6QLjm7iZQfC
-	 md30uiJvghTecU/ev0dIB/TVODnx66RYhX+SEFN6EedUjXHrObS9J6U18jKdD4rIBc
-	 IAhkxTp8zEQGQ==
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fac49b17ebso142081fa.0;
-        Fri, 27 Sep 2024 23:50:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU0o0C+tb2W17f5Ky8AafGd8SjkHZQ+rqGVHqKubokTWl7clsbj+RwDMtZ7ND12JnpjMPlxin8xqh+N3Y79qA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw8NbrAlBT/UwSX7T5t2lJfyO6KAPzHrEHGSrwTn6khryfBL7z
-	Hqr08QA7XN120gid6UA9zhBknJVgO0bWBYSjd3++aF7BzPGG0PkEV9B4+dk3d1+g6KQWNUD1MFy
-	ExuMJIglgrCdSFnSLDeL0Q0qzMMY=
-X-Google-Smtp-Source: AGHT+IEqwnWCLVXEtWkbCpAIZlYYF51Xp5KoGIX4UzbwFFf7LVvcN3x7ZoySdwlJuaa4FJhpiilvPkNk491jcPrfpXU=
-X-Received: by 2002:a2e:b88b:0:b0:2f7:7f76:994b with SMTP id
- 38308e7fff4ca-2f9d3e6bee1mr33536181fa.24.1727506240671; Fri, 27 Sep 2024
- 23:50:40 -0700 (PDT)
+	s=k20201202; t=1727527417;
+	bh=tAmNwQrFqOnGLWoMuKORR3I292iyiJ/rRwbQKe4bVow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kBuolGPMW47cT/Yn85jsdRWnYfmrzPAW5OTz2y/1t1pNa6mEczXjbUqYNxrcpXut0
+	 RHPFA5Vrigx34oDjPV6X8hBZ2dKYe78s4o9MXkC/X45XVFgdQ/IG4S8qrQlXrl0cIn
+	 wF8IuqQvfv0ZcGesyfwp6yVL3ZRNMKYsc7RdqDdfBKC+1PX/x01dJPbXWC9e2vTYeS
+	 /66A09Gjb+zT0sAfTRFyeYK3Faoi9HnYowTQiv/o9mZ2WbRd5/q3JrzY5VAV66cwLi
+	 ieDPNYIc/xRuolVDoDeGTdrdH7eugb35mdOhfPH5n4FOLSyUcE1iiF8lSVwUgaTurC
+	 CWzRipSylxPnw==
+Date: Sat, 28 Sep 2024 14:43:29 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 13/26] rust: alloc: implement kernel `Vec` type
+Message-ID: <Zvf58aEqGEamm7s8@pollux>
+References: <20240911225449.152928-1-dakr@kernel.org>
+ <20240911225449.152928-14-dakr@kernel.org>
+ <1a06b767-ca02-41ec-840a-47e73f7876d8@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240917141725.466514-1-masahiroy@kernel.org>
-In-Reply-To: <20240917141725.466514-1-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 28 Sep 2024 15:50:04 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASDcpk3k+SKZ61dPW_D=pqfekEcnu2c+00MynpomE2RNw@mail.gmail.com>
-Message-ID: <CAK7LNASDcpk3k+SKZ61dPW_D=pqfekEcnu2c+00MynpomE2RNw@mail.gmail.com>
-Subject: Re: [PATCH 00/23] kbuild: support building external modules in a
- separate build directory
-To: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Cc: linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1a06b767-ca02-41ec-840a-47e73f7876d8@proton.me>
 
-On Tue, Sep 17, 2024 at 11:17=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.=
-org> wrote:
->
->
-> There has been a long-standing request to support building external
-> modules in a separate build directory.
->
-> The first half is cleanups of documents and Makefiles.
->
-> The last part adds KBUILD_EXTMOD_OUTPUT (MO=3D).
-> This is too big changes, and too late for the current MW.
-> (I did not test kselftest at all.)
-> I hope people test this and may uncover some issues.
->
->
->
-> Masahiro Yamada (23):
->   kbuild: doc: update the description about Kbuild/Makefile split
->   kbuild: doc: remove description about grepping CONFIG options
->   kbuild: doc: remove outdated description of the limitation on -I usage
->   kbuild: doc: remove the description about shipped files
->   kbuild: doc: describe the -C option precisely for external module
->     builds
->   kbuild: doc: replace "gcc" in external module description
->   kbuild: remove unnecessary prune of rust/alloc for rustfmt
->   kbuild: simplify find command for rustfmt
->   speakup: use SPKDIR=3D$(src) to specify the source directory
->   kbuild: refactor the check for missing config files
->   kbuild: check the presence of include/generated/rustc_cfg
->   scripts/nsdeps: use VPATH as src_prefix
->   kbuild: replace two $(abs_objtree) with $(CURDIR) in top Makefile
->   kbuild: add $(objtree)/ prefix to some in-kernel build artifacts
->   kbuild: rename abs_objtree to abs_output
->   kbuild: use 'output' variable to create the output directory
->   kbuild: build external modules in their directory
->   kbuild: remove extmod_prefix, MODORDER, MODULES_NSDEPS variables
->   kbuild: support building external modules in a separate build
->     directory
->   kbuild: support -fmacro-prefix-map for external modules
->   kbuild: use absolute path in the generated wrapper Makefile
->   kbuild: make wrapper Makefile more convenient for external modules
->   kbuild: allow to start building external module in any directory
+On Thu, Sep 26, 2024 at 01:47:04PM +0000, Benno Lossin wrote:
+> On 12.09.24 00:52, Danilo Krummrich wrote:
+> > +    /// Appends an element to the back of the [`Vec`] instance.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let mut v = KVec::new();
+> > +    /// v.push(1, GFP_KERNEL)?;
+> > +    /// assert_eq!(&v, &[1]);
+> > +    ///
+> > +    /// v.push(2, GFP_KERNEL)?;
+> > +    /// assert_eq!(&v, &[1, 2]);
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+> > +        Vec::reserve(self, 1, flags)?;
+> > +
+> > +        // SAFETY:
+> > +        // - `self.len` is smaller than `self.capacity` and hence, the resulting pointer is
+> > +        //   guaranteed to be part of the same allocated object.
+> > +        // - `self.len` can not overflow `isize`.
+> > +        let ptr = unsafe { self.as_mut_ptr().add(self.len) };
+> > +
+> > +        // SAFETY:
+> > +        // - `ptr` is properly aligned and valid for writes.
+> > +        unsafe { core::ptr::write(ptr, v) };
+> 
+> Why not use `self.spare_capacity_mut()[0].write(v);`?
 
+Before v7 I did exactly that, but in v6 you suggested to use the raw pointer
+instead to avoid the bounds check.
 
+> 
+> If you want to avoid the bounds check, you can do
+> 
+>     let first = self.spare_capacity_mut().first();
+>     // SAFETY: the call to `Vec::reserve` above ensures that `spare_capacity_mut()` is non-empty.
+>     unsafe { first.unwrap_unchecked() }.write(v);
 
-I CC'ed rust ML because Ack for the following patches are appreciated.
-
-
-[07/23] kbuild: remove unnecessary prune of rust/alloc for rustfmt
-[08/23] kbuild: simplify find command for rustfmt
-[11/23] kbuild: check the presence of include/generated/rustc_cfg
-
-
-
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+`first` does a similar check to create the `Option<&T>`, right?. I'd rather keep
+the raw pointer access as suggested in v6.
