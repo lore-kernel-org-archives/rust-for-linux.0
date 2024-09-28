@@ -1,101 +1,120 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8469D1C2423;
-	Fri, 27 Sep 2024 19:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C21A800;
+	Sat, 28 Sep 2024 06:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727465899; cv=none; b=Xogfm9LVjFIm77r9wnCaPYKbIVZ63ySXX1dWzDxqVNl85EoC7WZfs6wnI9z05onE5nf737bu85gNLOvKQ5P9rB7y63yNUiwVN7OZtP9/opXdxEtTbUjFOihwbWOPqKDoGNSEsPfegopskTxK7RzLxZrhZ6oO797XUIB17irh6ik=
+	t=1727506242; cv=none; b=L2v7yV7dXxdYx03wHsMMbnWMpCphG9LuzaLUok+DdbC/z2eABzXnj4Lp1vk/r9J3/yrY4tvOd2bw6XYz3iS4WctnseiPgwhxHhUGkd4/Md/n+DJyEEwVAZDXJaogG2vaKDNuTY3w5iptHX1j+vhP649U5t3JbJQJd+iHzdWhoG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727465899; c=relaxed/simple;
-	bh=CxQBOMsATly929QQSMQ/jP51+X4IBzG9suHWt186Pdg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UTZ1jYJATqxk7pie4L1dk3rF/bjUNB12hKVfQC9KquOSpTNovsvRxxAIibS07JjUlhMnABrQVUdA8tK9G7bCLLjdfwKn8o5zi8NqixLy+7shi2efHmZYdyd+shFd8bxvMbo3xQbAiIgArF45d+Hu55tcdv0fudmBfFhVIcfWHQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=tf9nekx0; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1727506242; c=relaxed/simple;
+	bh=QH+t3MerDvmzRG9sFgWzJ77drNpMYqtI1XrfxZrhfdE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HzwuGnBji14C5ma0MrBH2ap2TA8BOlSknxbhokJuWJaGelidfljYa+mzpsv6VCR+PVU4cooufiR93KKh8T5mlBg9J+agELEr3OqxEzYu8Hu0zmykbKn74ICrD2xxfLygQN3WjIwbqBBLrN9/QFcSpdi9SXg2D+ujz7r+q6b2p/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C54qUm3m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="tf9nekx0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NXSCHIRP+95oD988ODIFXfHC/wOJhCYIutUrPYPipXM=; b=tf9nekx02vfwZyhH3wzXalGviV
-	kjIZNSNqdCDEkCXsnjP0uSNXUJysMgmta+wTyvrip5va/5/UOBfmZQCUCxJpGrBKNv+dtoH3M6P+6
-	kH1+sKT1ZvODlxoSHSgxujBWxi5Ez2wf1/B8ZZIfni5lVQpf2tbGRxniADjo4YoEInD2QQ1C7p0hv
-	wc4lxU/U7C9wih75+exLEWu3fDwMZokClccmU683lE8oNZjlIBSi0UsdznwXFK8nSUK76j20FjK5H
-	oT3bZOIDBTE2yDTqLZPwF1KpqNksK72kfTB57sqpeImo79wney1JdkYZ1UdO5djXFA+NnL3FBO649
-	3WMN2YIg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1suGn3-0000000G3O9-2vXk;
-	Fri, 27 Sep 2024 19:38:09 +0000
-Date: Fri, 27 Sep 2024 20:38:09 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: file: add f_pos and set_f_pos
-Message-ID: <20240927193809.GV3550746@ZenIV>
-References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
- <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
- <20240926220821.GP3550746@ZenIV>
- <20240926224733.GQ3550746@ZenIV>
- <CAH5fLgick=nmDFd1w5zLSw9tVXMe-u2vk3sBbG-HZsPEUtYLVw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C54qUm3m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1965DC4CECE;
+	Sat, 28 Sep 2024 06:50:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727506242;
+	bh=QH+t3MerDvmzRG9sFgWzJ77drNpMYqtI1XrfxZrhfdE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=C54qUm3m/aDnZl834J/2oJNu57OB3jvn/HwaMmwJ0YYYAj9mVaKGHWqxoCL2CrlWM
+	 XlBd8TiSCDZ8/Bylh5wOlQgCY36eKUtISwEJJPjRTazWfXPT1K8sqNZzE9i3pZ+qV9
+	 OZytqDFQ1monWfG8rNFQ3psIHxI8mMpDmwWLhSZ4YV+k/TUMw1v0puZnaIiHZQ4Ksu
+	 aBN+rD0fxp7kCVdVDF18KASkfc+wibKCw53Liwyq3O/fb7hR48fiE7s6QLjm7iZQfC
+	 md30uiJvghTecU/ev0dIB/TVODnx66RYhX+SEFN6EedUjXHrObS9J6U18jKdD4rIBc
+	 IAhkxTp8zEQGQ==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fac49b17ebso142081fa.0;
+        Fri, 27 Sep 2024 23:50:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU0o0C+tb2W17f5Ky8AafGd8SjkHZQ+rqGVHqKubokTWl7clsbj+RwDMtZ7ND12JnpjMPlxin8xqh+N3Y79qA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw8NbrAlBT/UwSX7T5t2lJfyO6KAPzHrEHGSrwTn6khryfBL7z
+	Hqr08QA7XN120gid6UA9zhBknJVgO0bWBYSjd3++aF7BzPGG0PkEV9B4+dk3d1+g6KQWNUD1MFy
+	ExuMJIglgrCdSFnSLDeL0Q0qzMMY=
+X-Google-Smtp-Source: AGHT+IEqwnWCLVXEtWkbCpAIZlYYF51Xp5KoGIX4UzbwFFf7LVvcN3x7ZoySdwlJuaa4FJhpiilvPkNk491jcPrfpXU=
+X-Received: by 2002:a2e:b88b:0:b0:2f7:7f76:994b with SMTP id
+ 38308e7fff4ca-2f9d3e6bee1mr33536181fa.24.1727506240671; Fri, 27 Sep 2024
+ 23:50:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgick=nmDFd1w5zLSw9tVXMe-u2vk3sBbG-HZsPEUtYLVw@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+References: <20240917141725.466514-1-masahiroy@kernel.org>
+In-Reply-To: <20240917141725.466514-1-masahiroy@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 28 Sep 2024 15:50:04 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASDcpk3k+SKZ61dPW_D=pqfekEcnu2c+00MynpomE2RNw@mail.gmail.com>
+Message-ID: <CAK7LNASDcpk3k+SKZ61dPW_D=pqfekEcnu2c+00MynpomE2RNw@mail.gmail.com>
+Subject: Re: [PATCH 00/23] kbuild: support building external modules in a
+ separate build directory
+To: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 27, 2024 at 08:56:50AM +0200, Alice Ryhl wrote:
+On Tue, Sep 17, 2024 at 11:17=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.=
+org> wrote:
+>
+>
+> There has been a long-standing request to support building external
+> modules in a separate build directory.
+>
+> The first half is cleanups of documents and Makefiles.
+>
+> The last part adds KBUILD_EXTMOD_OUTPUT (MO=3D).
+> This is too big changes, and too late for the current MW.
+> (I did not test kselftest at all.)
+> I hope people test this and may uncover some issues.
+>
+>
+>
+> Masahiro Yamada (23):
+>   kbuild: doc: update the description about Kbuild/Makefile split
+>   kbuild: doc: remove description about grepping CONFIG options
+>   kbuild: doc: remove outdated description of the limitation on -I usage
+>   kbuild: doc: remove the description about shipped files
+>   kbuild: doc: describe the -C option precisely for external module
+>     builds
+>   kbuild: doc: replace "gcc" in external module description
+>   kbuild: remove unnecessary prune of rust/alloc for rustfmt
+>   kbuild: simplify find command for rustfmt
+>   speakup: use SPKDIR=3D$(src) to specify the source directory
+>   kbuild: refactor the check for missing config files
+>   kbuild: check the presence of include/generated/rustc_cfg
+>   scripts/nsdeps: use VPATH as src_prefix
+>   kbuild: replace two $(abs_objtree) with $(CURDIR) in top Makefile
+>   kbuild: add $(objtree)/ prefix to some in-kernel build artifacts
+>   kbuild: rename abs_objtree to abs_output
+>   kbuild: use 'output' variable to create the output directory
+>   kbuild: build external modules in their directory
+>   kbuild: remove extmod_prefix, MODORDER, MODULES_NSDEPS variables
+>   kbuild: support building external modules in a separate build
+>     directory
+>   kbuild: support -fmacro-prefix-map for external modules
+>   kbuild: use absolute path in the generated wrapper Makefile
+>   kbuild: make wrapper Makefile more convenient for external modules
+>   kbuild: allow to start building external module in any directory
 
-> Okay, interesting. I did not know about all of these llseek helpers.
-> I'm definitely happy to make the Rust API force users to do the right
-> thing if we can.
-> 
-> It sounds like we basically have a few different seeking behaviors
-> that the driver can choose between, and we want to force the user to
-> use one of them?
 
-Depends...  Basically, SEEK_HOLE/SEEK_DATA is seriously fs-specific
-(unsurprisingly), and pretty much everything wants the usual relation
-between SEEK_SET and SEEK_CUR (<SEEK_CUR,n> is the same as <SEEK_SET,
-current position + n>).  SEEK_END availability varies - the simplest
-variant is <SEEK_END, n> == <SEEK_SET, size + n>, but there are
-cases that genuinely have nothing resembling end-relative seek
-(e.g. anything seq_file-related).
 
-It's not so much available instances as available helpers; details of
-semantics may seriously vary by the driver.
+I CC'ed rust ML because Ack for the following patches are appreciated.
 
-Note that once upon a time ->f_pos had been exposed to ->read() et.al.;
-caused recurring bugs, until we switched to "sample ->f_pos before calling
-->read(), pass the reference to local copy into the method, then put
-what's the method left behind in there back into ->f_pos".
 
-Something similar might be a good idea for ->llseek().  Locking is
-an unpleasant problem, unfortunately.  lseek() is not a terribly hot
-codepath, but read() and write() are.  For a while we used to do exclusion
-on per-struct file basis for _all_ read/write/lseek; see 797964253d35
-"file: reinstate f_pos locking optimization for regular files" for the
-point where it eroded.
+[07/23] kbuild: remove unnecessary prune of rust/alloc for rustfmt
+[08/23] kbuild: simplify find command for rustfmt
+[11/23] kbuild: check the presence of include/generated/rustc_cfg
 
-FWIW, I suspect that unconditionally taking ->f_pos_mutex for llseek(2)
-would solve most of the problems - for one thing, with guaranteed
-per-struct-file serialization of vfs_llseek() we could handle SEEK_CUR
-right there, so that ->llseek() instances would never see it; for another,
-we just might be able to pull the same 'pass a reference to local variable
-and let it be handled there' trick for ->llseek().  That would require
-an audit of locking in the instances, though...
+
+
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
