@@ -1,123 +1,213 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021120.outbound.protection.outlook.com [52.101.95.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A122C187FF4;
-	Sat, 28 Sep 2024 13:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727530883; cv=none; b=mGNCDUcDJQOi31t4sUEa6CCl7Zp+QYyxZ+ihqZ3jhhwBalaUrJJOJv6CYqp3yajxL81zEiba7SHZXuOFASv88ovXM3ulUQ2ph4RXqSNlpyX9m3meFocaEvwfbxR9D67XG+46zSjIdI4tiJVMxalx8Kk3+yZEgt30e+DbkFarqOk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727530883; c=relaxed/simple;
-	bh=orpQEHYHyBoCCUjzbaUktQopXRvr5Ek6mitfHI0agMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tV750czipMfwqyxI75cqmgBddBjWfznr0tE1Bvm/1Fb1gmutKMsOLkDSKMxUj5Qs5itjros78zMXWGSpnHbPG0ZjYbeX0TSkFwUOqV0/5QIwEXKR9E/mil4mLiWWMDWPz9cOfXyBAidGZA6KqcS4z9DeFt5/oqqPCa+Ft8WJwKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lyaRxQfR; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E881CF9A;
+	Sat, 28 Sep 2024 18:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.120
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727548599; cv=fail; b=uBrQST+qNOBESPOKsFnDIyiLkJPF3oHSnh2oI9Fh9M0Pz+oFg/0g6krWXHxWv3dG8ZXHXVB/W00XcupC8qlHUbKj0HiBbQhDnqXgGZWbxAXmEus2xu2KxwkcUsp5VMlE9B2x1+iMGJn5+tkEvKwGEDJSCbIkLtDHq8rvVIhNEsw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727548599; c=relaxed/simple;
+	bh=Hf1DW27HdGf+tHiEsZmJ548OnfhYjCd2PksZxBcUw84=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fYure0jB9f7525ULqOJtxVZtmaa49JqPlYv8h0EhSyi+GfhhDZM49M454LOX8bT/KCcq4sUYHTZogmCdHFhYwRT6fH66kPgu27BpRj8BJAWaaEa9vOKpXISszLlQzs+X2e54HPQCNs/vdN7hnMi8rK4GZ1MD8s9QyhOV50T3Lrs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=0QxONjMw; arc=fail smtp.client-ip=52.101.95.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyaRxQfR"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539885dd4bcso1707618e87.0;
-        Sat, 28 Sep 2024 06:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727530879; x=1728135679; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iNmBSpA2BmR/JT9QNG5130+zMmw0zS2R0933ikB5pGY=;
-        b=lyaRxQfR6pDvFtPh03QSIMr42veT9U6yGFpmRrP2MqX05526bN+lCWEpN4RksEXhL1
-         PyIKlP1CUMimgQ4B3Bu4d2uyXb2TFIEkoTrGo31BUqnTpBubkJkw85hKAGiaz7mzW/fA
-         E5cL7sHVDLP//aPpeMtUrTKdjCApIq9atVmqx413w1pu6vcVoS3BOQShVvsqiwxunwyr
-         KfZIvN+kSXjdFqwDqyMRoHxKTMPXFnVmtn+bWMKl/eyV0cYoFIYTf/gLOuDFq1s2I346
-         rK+A4iPQBSwBHtHKaLhU/hXB/y3DymiiboXLbNIFiF3m1nOYbAU1Fjyu/RDepQqdkfe1
-         f5tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727530879; x=1728135679;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iNmBSpA2BmR/JT9QNG5130+zMmw0zS2R0933ikB5pGY=;
-        b=qv+bxZ61UZX5FJbxPnWH/E89lb6JClLFkHCnCybA6m4c40uk/NdEuUvfP3X6P2ZM7T
-         kQDRKBgHicqUFf1AkuU3u7Pvqvc9mPmbBf+aOV7wp1DSO3VHwWScNQEZNZN/r0yr2/U+
-         TdmuFk2yZB1Wj9rISExG9f1h4+6qC3nB8+WFmIH1xLHmjVomyUfJ1h3rK4xE4pQc1qWC
-         ixa9Z2cy1QQkALUq51KmywtK+fVTgpETWH4s3XG+OS+lNKbJ4BbU6i8+02sfG9bLdSPS
-         ZqjDbrfGQQilsK9HpcBTkJkdNAVzV2jHgMg0iPHrz3uMzM+4WQEdp+PAuNtRDA5VHnHD
-         gvVg==
-X-Forwarded-Encrypted: i=1; AJvYcCU5Qv90kM8IomWDDyyJcoh5pkluZydfD7eGC46sjT1E8ggpn2PBWnIiP8H564rs2966O5a6qwd6z9dnTO6CJNYLkw==@vger.kernel.org, AJvYcCUUvMQ7ieLv3ItQbpk029ELJzVtz1GHhFKbePsVDvZJRe40wYq9kWFsTyywoSxDeAmViTTEB7wAhhRN/Ypk@vger.kernel.org, AJvYcCV7QMX6j5hd7MCsjdDPxRzYgoV96eHt9/wcqgJfRFTdXDHOBPFQuhI7OSYEexVjmiWzJwEDWqdMSjYmdWXHIOM=@vger.kernel.org, AJvYcCVbLMpQQq0VrWrMmtY3EyavYc86XFtL+SjBOkn1h2EaBF5fmTDRETBg7PPVwx8+6DkSBngli8buW4EDeRT/@vger.kernel.org, AJvYcCVcOUk2z2+u5YMEXT28utuV4AercTvvvUoEhOFoyEux3VVPSsMeZaDUF7v+gCR+eP6VbLo=@vger.kernel.org, AJvYcCW6TONWCmlUtfcd585Zlhu7RkQMs+4g84q9Q9PNx7jnf4ytG92XBczqpY6Vu+BiGP1lrkRtDRmDmKVH@vger.kernel.org, AJvYcCXD6FE9bEQoupm0uzweMZ/FMx9Dqu3EFRbdgwMsKNUjhe2MnKbSK7fCtJCmyP61/mTatJr29EGl6Z8=@vger.kernel.org, AJvYcCXW3wJthV5+gSOj1UYTR3ZnD09rlBis3FvdpwGFNMzfrcX50vkKtc0QCkXMX9zqn61Mpq4ZUKqIjdb41A==@vger.kernel.org, AJvYcCXXt9c5hfXjZgQHacqSgG+kJrMTmKKi1p6/YViKVDImvTOJ859XS6oGvJOnTxtNSvJdaGPtZKx5GHjS@vger.kernel.org, AJvYcCXcNyM/0euV3FTAD3HeNmnvlADhPSmhNZSKMYQEkH1k02/LvGYntmcxXahuEQkssflYG29R3O6FITC9hzTV@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzQEn6O5hmABLlJpJ4aLSs6mBId9uRGGXF7cHMxjt/n1WeGqtk
-	IN8sl3idKTj2+tS2AMqqWNtY3mO+VryadkAw+0FU1ptax2m1Pxhj2ofBEDUkpZDD7azBWQI9eyH
-	xRPheeLAXzrdb6hS45kj/+zOwtA==
-X-Google-Smtp-Source: AGHT+IHmvDJivNH43Y01ucMKJYFoc8AFcX6hzmgU+8XoeSSFhpvEaQoSvahoajb/ht++NQ+MH1stDT2FsmHiW/GwHn4=
-X-Received: by 2002:a05:6512:3f07:b0:536:54df:bffa with SMTP id
- 2adb3069b0e04-5389fc7fefemr3962432e87.45.1727530879148; Sat, 28 Sep 2024
- 06:41:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="0QxONjMw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JyDe7za/+XVVPHAE26AHgBXf/umjog3UxSRV2K3B3hJo0PAyzgy5p3UeCICwXr5HVJUMH8zwn9Ddgfp4rcSSzdy6/jWevr3a/66lUTJh50id3/DK4NT5n65rWPzs4KmfddtFFxm9PwH24ykXGoNgxss4/bXr0OIr22/Wdg2H5YN2h7APxC6HkCfdFYL9OcUYOblj884S+dqsm2jDbKfjKJ3ThrMtlBT00TpIrgDTBAXOp43PoVBOtkdyJ3dfGYX5SP+D1nv0N+7xqbKBHDhv9aJix7/bxTfc5x/HJfd1x76cY5WcrXPDthG0UVrXH7y9U81lXef5V81bRVNrVEjqpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P9g67crxE/PG6HoEiYw5jCbZYbhy74dIQ6DeicACCBE=;
+ b=ChsGoVT1sJ0vh/O83PP78o2Hl/BLL0uJ2lhSW52cD2J5JYeimn2Iz1zgi8oISZWD0tnZSzFFdWnT0uNsXZpMmvldEqnhW/hbUK8ZNpcxatZ6lVeTyHREj67pjCXVmsgZhwWmMSf0+zhwqxDuvDkKDKyOyqMRGSnX2rlwZ/Sd5GNz3JOG9RpSF9IGRwSxVOfsZQKACMWWh1K2GhFyQfoV/jGLclP42JtH/SUqNJDhV6vyIAXEIBCPuHqFPs1y0t0SwceK+STbBYbO3RhRA6/9zfffCfV9TVHzRxGGFJCS0EbgB0JYPysSt3rVBj64ImWJd5rwZiVujsWfErwka8n2eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P9g67crxE/PG6HoEiYw5jCbZYbhy74dIQ6DeicACCBE=;
+ b=0QxONjMwwlEuTA+l4VOJRgR+xsUYrpTRMDn2lPKT7hYFnl4A5Zz4Rq9MLcl1RLVFU9XnqtiGhpsjkYsX6SWx8ZmF/Jrvkryn2xcRXTQ7O0QoZfwf/v9UEYImhGqQjvy5Mc2i+OT0Dlxt9eIMqdZ4QamhihPUXGADbPu2Lge9lBc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LNXP265MB2506.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:134::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.24; Sat, 28 Sep
+ 2024 18:36:34 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.8005.024; Sat, 28 Sep 2024
+ 18:36:33 +0000
+Date: Sat, 28 Sep 2024 19:36:32 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev
+Subject: Re: [PATCH] rust: kunit: use C-string literals to clean warning
+Message-ID: <20240928193632.063d62a6.gary@garyguo.net>
+In-Reply-To: <20240927164414.560906-1-ojeda@kernel.org>
+References: <20240927164414.560906-1-ojeda@kernel.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0150.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c7::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-35-ardb+git@google.com> <CAFULd4ZNwfPZO-yDjrtT2ANV509HeeYgR80b9AFachaVW5zqrg@mail.gmail.com>
-In-Reply-To: <CAFULd4ZNwfPZO-yDjrtT2ANV509HeeYgR80b9AFachaVW5zqrg@mail.gmail.com>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Sat, 28 Sep 2024 09:41:07 -0400
-Message-ID: <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com>
-Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
-To: Uros Bizjak <ubizjak@gmail.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LNXP265MB2506:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a73e1a1-e5a8-4ae6-b661-08dcdfec7a46
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?C8zIi03iLBZ4KDt1xUQbI7l3P0fPYmYFV1pOig5tr+Kctpr1iv7huUoOLUJv?=
+ =?us-ascii?Q?fGrBWSIY+DhTUNG1sOz5OBkww0DBRPQVs5KlY+DqF+IEPMnrP9WK2w3HCAiO?=
+ =?us-ascii?Q?VpfzsUxR4R/3b3PqwpgvSfPnfjnVG58J5Vw9Ze+TjfXVD11B/QszQxe4Lipw?=
+ =?us-ascii?Q?n9/8EHYMHDo4kWYJNyOKLElAofkYs4bwu76+lAiFuozE/sHYSyJwVd77wX/7?=
+ =?us-ascii?Q?LNE0c5rZ5N1mLwGsRmoaQx5gtq8b0p2lNuCTCSUh64+ckrGNbei2+SNJ928j?=
+ =?us-ascii?Q?qKAabiyFBWjIbmXtemyVZYTZT81d5jjGel7AMHQF98PbPBUz7MRG6I0h+caT?=
+ =?us-ascii?Q?nVf9GaaVjkMIHlH8DXITs5AmeJQC7IgmLLKyGGhZ8KADj3ekThDbby8dCVJd?=
+ =?us-ascii?Q?q/nEdjUDpOxfbFpZj5yhGTJkvjUfK9QWFdzKBIFNLC1ZrltwrQapwr19E3mS?=
+ =?us-ascii?Q?ScXz4QJ18cA0csIObw54WTn7EOj2JtMmRX7thLarDxikCQdN3CuYyfccnJle?=
+ =?us-ascii?Q?e+hx9Dodm1hdNUY6z4whTm5b1pHjFm+hkskmCC5Kv7xCtaPyaEHTCa4+5vKA?=
+ =?us-ascii?Q?L6PsvpMlhn5U1GfqUmG4bc1GW3csg0FjbE4S8XC+lPZ8RRMTre39O5tpnfgM?=
+ =?us-ascii?Q?ihmWsWPPGu/+WjAlW8aYD+iUrYYK7rL6y6CH4kv0wHHEdwn9lZHOZJbaw0Q6?=
+ =?us-ascii?Q?uFBYM4fGwUnfInbaHrshj3LGAkC1iaBMKTH/xFWnmmR2hlW0s+IAGKR2TqRh?=
+ =?us-ascii?Q?furT9NqX1MrD4GSHte3saxZN58ittgr7Qkx4HJUpY3OzoC2Gj2sp4758KCmA?=
+ =?us-ascii?Q?MN4mHp6ZIJd8zVEebUZ8h4pidPSRaUMRKxgHlGtNkR+12RstwYWlKyqZIXxi?=
+ =?us-ascii?Q?Q/YKv+OJmrh8v+9WGCoLuYmwgUhuBCLwX5UIj1FwT8UKE0deFdct3TYZaDEG?=
+ =?us-ascii?Q?RHS13EnagdjOoI+yNEMDJd4QVn+0uRFP90f1xClaIHCW8l7+1rs3Edy3AQA+?=
+ =?us-ascii?Q?fyQpo1SDHgpsXB5jPZqY9xtNV8HCo885DsmXSsOdNVvNI2wPP8CaB7GblnYo?=
+ =?us-ascii?Q?3ip+lc98LUUOqymjsAVGtRchYzVHK2sYhCFH/M3qPzpXAnzH0DL7oDKVWrYN?=
+ =?us-ascii?Q?//Ii0dwoi4IXwv3XXoEspfLtCTVZWYR4HNlFnVUPiShMuZ/JoW3HAd+CHxz+?=
+ =?us-ascii?Q?AGjvupvZcpJ6yzt03xygXjDU02xZTbbTl7kP+RwlEhldpEq/PbV6jQP2LGU?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?o4UuShTGywDSuYj7iv6oU3FDxoydaOE9oOT8LwiMFhlH1DHWrLbQNUAnvfEq?=
+ =?us-ascii?Q?HGMdF9J7MGZZKxkyIRLeWzIXOFY7S+gzNZBBhP4Arov9qdTD1623n3Wb8ARj?=
+ =?us-ascii?Q?iDEvIqk0oN13VtfsR5EGMWjvx9FGxiS8JkpTIzEgeB30gYp6YOgsN0KGaFIK?=
+ =?us-ascii?Q?dTKPThBbC87l9pKCal+heNWfN/4bDl/pwk9I1vbzA/nBlCvOfwlyT0M9NdSR?=
+ =?us-ascii?Q?pzSfpNB3O8aZwnb6jPghnPis7ZyekcnGwP7guEMWu7gOYpNJfMsijc1pu9cb?=
+ =?us-ascii?Q?C+QxwpamYRGKd4iThtxS8wIRtwcU3iSwPyLw6h858ahU+gff6qF2urrYoSXG?=
+ =?us-ascii?Q?M2GIkWrKitG32SlvygqU0Nbozf4a+4liWPk+A6K+GrceVA4y1YDwXqhoc3Gl?=
+ =?us-ascii?Q?syzb9W3qqEVjXlBiKzq6VoPGMhKH6NntSA90F436tdSDHbTJ0S0IwS53zSTt?=
+ =?us-ascii?Q?V4BAYyo4y05N+4LsYsrHDtP0pPiz+/jOvNwekC9AHr6xVyje77LhPUnxM+6A?=
+ =?us-ascii?Q?SpdFaXH1rTP5kJ0jyXogoAT1bOQpcnzqDcdXpGjpJZk21aqfYEl56u4x8pJT?=
+ =?us-ascii?Q?VWd/9cpQgWTm2+srnFwCI2six6zj1UZfGxtHe6Ix0MbjqkfP3zMo6YsJSwF3?=
+ =?us-ascii?Q?kdVJK+1CEOpW9689UqDaXyzKXo6p5cBLjK4oLtzXMj1gyol+e/Sm93UeCLGn?=
+ =?us-ascii?Q?oJfFDVBzRyVJbBwfJRjvyRoya2bFHKn/GVlj+f90K1CRFSryFSOF7YC9xRmv?=
+ =?us-ascii?Q?/pXpyGhWAf7yPscjKa/jrdP5PG7OwL0Ch5CpygfPYVXdT9mxIolBaCTuI7ob?=
+ =?us-ascii?Q?eAM8Vzu0x08MOb/Qela/YMGgvj6iJtbkaSJXGd2zPlAGDVySvZLW3MsyLQSD?=
+ =?us-ascii?Q?u2chnLEkV/Qt1skikGmOR+wqPAigSZFXinC+XunUYiDVmIbCytvOCHAJ9X/a?=
+ =?us-ascii?Q?Cl4fAECF07vKt+6ftAxKxo74rRXLt5OYX8vhInBZ/kEVkt9PW7GgbUrT2Hx0?=
+ =?us-ascii?Q?tAk6wTjdnvYM9IfFzKJhBMEuybLPl1J8e0UBcZU9Mxv+kw5AvLn3ekAIjvlk?=
+ =?us-ascii?Q?oAsvG+S5uAPYTEUjf6EYmRJX4iht6JuCG2VONF/sko+H5Oi95y2BAzy9aNna?=
+ =?us-ascii?Q?MqQNg+wu2w5Tq4/77+ZQ0AJuJbOgRc5XPNjLdgY3gdYpRUg2Jiy15ymwQAlK?=
+ =?us-ascii?Q?5acKHKCggG+jXVuKBlvd8UciABSUU1QSn/CTXzKXzf941MHBf8qF+iKqTgyy?=
+ =?us-ascii?Q?EPi4Q4DGQwQU3UZNN64pkIdqDgtDif9F6nEAiShrHmKj5NjBRy+0IKOKOZ37?=
+ =?us-ascii?Q?OC3xx9FZcQpDh70TiJDS8klQE/+hZh/iUsNd2mVIsIKGjcrFu6+GngNYIZMw?=
+ =?us-ascii?Q?d5NHk5jOQbKL5OnR2KfhzC591y9iPIR35j9Em9s+JuRsBsdea5vPC7da9DJ5?=
+ =?us-ascii?Q?gfp4R0WsX3kcl34FrCBzls+dsicB5Syy9em/znDFVLFOJzhzm4D52QR2dLOf?=
+ =?us-ascii?Q?smo8rnfUX7EospIJhByLAbeFXe/zbJaS4mVFn8yJy0vGXDrl+dWmSHdhnBQ0?=
+ =?us-ascii?Q?l3JtB6Orq7SOg16LnJMTXVL48cefxhGCEiNBi4R3?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a73e1a1-e5a8-4ae6-b661-08dcdfec7a46
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2024 18:36:33.8035
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K1r+KYdpBw0pQ+E/QwoLK6hM3IYoadSxmxV9c1ME6ygAx6MvRIUMpYeA29TY6Rxexb+7V4pjAaPhtl0b0OyETA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LNXP265MB2506
 
-On Wed, Sep 25, 2024 at 2:33=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com> wro=
-te:
->
-> On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@google.c=
-om> wrote:
-> >
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Specify the guard symbol for the stack cookie explicitly, rather than
-> > positioning it exactly 40 bytes into the per-CPU area. Doing so removes
-> > the need for the per-CPU region to be absolute rather than relative to
-> > the placement of the per-CPU template region in the kernel image, and
-> > this allows the special handling for absolute per-CPU symbols to be
-> > removed entirely.
-> >
-> > This is a worthwhile cleanup in itself, but it is also a prerequisite
-> > for PIE codegen and PIE linking, which can replace our bespoke and
-> > rather clunky runtime relocation handling.
->
-> I would like to point out a series that converted the stack protector
-> guard symbol to a normal percpu variable [1], so there was no need to
-> assume anything about the location of the guard symbol.
->
-> [1] "[PATCH v4 00/16] x86-64: Stack protector and percpu improvements"
-> https://lore.kernel.org/lkml/20240322165233.71698-1-brgerst@gmail.com/
->
-> Uros.
+On Fri, 27 Sep 2024 18:44:14 +0200
+Miguel Ojeda <ojeda@kernel.org> wrote:
 
-I plan on resubmitting that series sometime after the 6.12 merge
-window closes.  As I recall from the last version, it was decided to
-wait until after the next LTS release to raise the minimum GCC version
-to 8.1 and avoid the need to be compatible with the old stack
-protector layout.
+> Starting with upstream Rust commit a5e3a3f9b6bd ("move
+> `manual_c_str_literals` to complexity"), to be released in Rust 1.83.0
+> [1], Clippy now warns on `manual_c_str_literals` by default, e.g.:
+> 
+>     error: manually constructing a nul-terminated string
+>       --> rust/kernel/kunit.rs:21:13  
+>        |
+>     21 |             b"\x013%pA\0".as_ptr() as _,
+>        |             ^^^^^^^^^^^^^ help: use a `c""` literal: `c"\x013%pA"`
+>        |
+>        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#manual_c_str_literals
+>        = note: `-D clippy::manual-c-str-literals` implied by `-D warnings`
+>        = help: to override `-D warnings` add `#[allow(clippy::manual_c_str_literals)]`
+> 
+> Apply the suggestion to clean up the warnings.
+> 
+> Link: https://github.com/rust-lang/rust-clippy/pull/13263 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> The cast could also be cleaned up, but that is already done in Gary's
+> FFI series, so I didn't include another patch.
 
-Brian Gerst
+Note that the cast actually need to be re-introduced instead of
+cleaned-up -- `c"".as_ptr()` returns `core::ffi::c_char` which might be
+signed, while after my series `*const u8` is expected by `printf`.
+
+An alternative is to use `c_str!(...).as_char_ptr()` which will
+guarantee the type is what we expected.
+
+Best,
+Gary
+
+> 
+> C-string literals are available since Rust 1.77.0, which is higher than
+> our minimum version, but LTS kernels do not have Rust 1.77.0. But
+> perhaps for these is not a big deal, and we could also enable
+> `feature(c_str_literals)` instead.
+> 
+>  rust/kernel/kunit.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index 0ba77276ae7e..824da0e9738a 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -18,7 +18,7 @@ pub fn err(args: fmt::Arguments<'_>) {
+>      #[cfg(CONFIG_PRINTK)]
+>      unsafe {
+>          bindings::_printk(
+> -            b"\x013%pA\0".as_ptr() as _,
+> +            c"\x013%pA".as_ptr() as _,
+>              &args as *const _ as *const c_void,
+>          );
+>      }
+> @@ -34,7 +34,7 @@ pub fn info(args: fmt::Arguments<'_>) {
+>      #[cfg(CONFIG_PRINTK)]
+>      unsafe {
+>          bindings::_printk(
+> -            b"\x016%pA\0".as_ptr() as _,
+> +            c"\x016%pA".as_ptr() as _,
+>              &args as *const _ as *const c_void,
+>          );
+>      }
+> 
+> base-commit: 570172569238c66a482ec3eb5d766cc9cf255f69
+> --
+> 2.46.2
+
