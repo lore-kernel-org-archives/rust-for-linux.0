@@ -1,73 +1,73 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C67175D32;
-	Sun, 29 Sep 2024 23:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEFF2570;
+	Mon, 30 Sep 2024 00:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727654005; cv=none; b=py98qHgkwY+dzVNuncXiD4vLlJaWXINL3L9egRp/YOHZ9jZkyvIxTzMSAHi4TfLdXhZtn1QKwTQpa7rg35fMFEVvSUPAecBueekT+vyPd6IUZIR6Pno+Xd+qfzG6oTRISpassuVxxgNQFSWAG3E+6S6hsZbgd7on1L8j6Mh7DGg=
+	t=1727654415; cv=none; b=bxD4albXN2Y+bGiWWyYbeq+GnaanzA0gB06x5vFHjTmVsg6+J7+yAMua5NEzaceKoQ/hJywftGhksClRZ7ULck576FYGK9w25boY5XDq1IAULhnnTv0jHlEvolsW3yCWcalPG5oLqSpXVx+IYxAoom8XRM27hY9E3JWGPbRSnbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727654005; c=relaxed/simple;
-	bh=UKRlj9fNkq2HxhGyfdf1m2RQP/aQuJaaWnuFF5+Td60=;
+	s=arc-20240116; t=1727654415; c=relaxed/simple;
+	bh=SayAUjz0AZGapHPt8EslXsgQdiUNTUnB/xz4c7hxnX4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SNd6X4fxkCK49/ue0fSCVeFdVlTq2C8z1EOhDpJgW/Qh7AWcPov3zGdjOVMDtxER4B/ZZgnHOkXbX0kyoKWveX54bllkgE0pN1Aq5ui74dZ9Jpp0Xg6OIOpERR3cUMAh4/jc5J19pzI1CCwLMY6+AdcBABEb/MbLvkIMO26oMNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZVn3EfQB; arc=none smtp.client-ip=209.85.222.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=OAa0sKjeTbyY5S0gR0lNqx9PSLvyYSvqW/oX0X/XvWfKtQUyJAPUglF6kZKKcFIJo/Q2q9LELARWpgdrnsUK4KYH3ytDueswnvRtIeWdwCqFXEBCdy5UuPGfDHoav+hvwjK9qyXE4qW0+a42JOgdghbUR4CWQGBFfp3Hl8LVZk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kBzETnlr; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZVn3EfQB"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a9aec89347so246366885a.0;
-        Sun, 29 Sep 2024 16:53:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBzETnlr"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6cb37b34a87so27500866d6.0;
+        Sun, 29 Sep 2024 17:00:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727654003; x=1728258803; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727654412; x=1728259212; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VAEKMLkD22MSDvK7Vrvcg2LidGBpc3vFN2oLL4LAdJQ=;
-        b=ZVn3EfQB2APhY4OUJp1ZejTd1I+lNI78F0ausuwhlGPnbSMAnxMFO/8do3+si5vd5D
-         oa9yUwjqE19k83toDbGC6ZaQnl3E2Kwwoeot1WZgYE3GuPtC7zZI/8F+UIq3V9LAXrbn
-         b7rP3AdpuuxEHKRSSV5ynptqljfTk5OKjJrU2uoYc/KVc6p+QEwq2w9eKbiO7cF/deBN
-         gWKBl9LbXEPUPvLEkhdOirF8hv2KIXqp8lnQKi04SRYHefAgwx6PpmE+glpxuwsPzerJ
-         vE9izHc3ukRG5Icn5drc+J5KWd6savJaMc8PQUOj3wy2zi2liXb1t6kbLrpF0NQHNbKi
-         3HSQ==
+        bh=L3pqwaqCamqZTcEWfoxM9HlB2CO53QZZVZtUQFwo/Ag=;
+        b=kBzETnlrSDIGCXV+hbDwxVx6p3pNMpxu36dJuHjYS8KmnkX2Q0df28+TocVZN1t5Ug
+         SdSQ3f5D5EcLl5JmIazt3KtR+VDaS6PdSQmniGEaxJx+QN3Y0MvrUBw0nmPQJdpOtOrC
+         kc03brGO7QhF514SEjy66WK0e6fYxxDW4GaT03m0RY79CgNkSBLghh6s4l4YSslgyPi2
+         lWuK2fy+GeJ6scYzLIBbuTc8VNL8m15RoiDa1Vt4dFlHIyWP441CcNt41GWESdRaCipw
+         htfqb7/BmO/AXSp82nso6WX3KSuDstRy4ZF5gxHu66WxulUkkZ2UI8ppD+MzSRwfkIn2
+         yptA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727654003; x=1728258803;
+        d=1e100.net; s=20230601; t=1727654412; x=1728259212;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VAEKMLkD22MSDvK7Vrvcg2LidGBpc3vFN2oLL4LAdJQ=;
-        b=ayWWvBQhPB2L/JaOyJ9v3MDwIH95ot8oamic/z6aRfZgMCf6S0iPVqQoRiyfRsXa7t
-         sS4+B6ppm7VNqaYQZ0hcDxSXPtVU/571dKaOSx9QxgskbXLCrUWYax5o2v/ESoUTl9M5
-         /ye9DtdJJhSoONq3zIpJE6M+1NT+ho0X7JzGA2un/aZymFt2jspMxpxtFRsaB78pFy+H
-         GShMIEwTEOBW7FOpm9M0GUE/IkTC4rUE0XaHm/7BhAiBeYxRumz0ZgX3a647X2EJ5b8o
-         DP+qd35cRKewtoDvREEK9EzFxo0FgU1Qphps+J2KLZfxfh0jYC6XuI/zK2f/PcqglS2R
-         ALyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUncC3RmoY5y8UUFr0FaasBnKtLsFTFwijAq6F/B2MYI9CQskTxoDEIWY8PrJnWrKEYNTo6Edv2NFAZKZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8VbUeVZd4Hdr3vsWrq3UiMCDa72aAVjNn4Ra0yxBBdh+ThINU
-	o0OGOjdFRK6FgtBEDTnY2kTkj0r45VccVMH3/GmI+EQqbhrzxmhT
-X-Google-Smtp-Source: AGHT+IE3AlFTSmZRFXETlWkeqIHSyvDsuJb3Kq4JEYxwxzjbdjN5s8fx6qUx+YeHVOEnwXSWsnHhrw==
-X-Received: by 2002:a05:620a:1917:b0:7ac:b89f:5308 with SMTP id af79cd13be357-7ae37824642mr1928490985a.7.1727654003115;
-        Sun, 29 Sep 2024 16:53:23 -0700 (PDT)
+        bh=L3pqwaqCamqZTcEWfoxM9HlB2CO53QZZVZtUQFwo/Ag=;
+        b=AZY0XF1Qgk1De/L3KgSroD02q4N5FPc+REjvDgxyq/VAcs23z/3LbpaMG89vuaoisw
+         MDzk6fUVZed6q8T6f4xRta+9qZO63BK2+31aBGICHgtS6qhC1yjrhMrU9w/kTzOwxUWe
+         8zxaZ7kI96JNl25KrX/cshDqURE9VCIn59WFk7qwIIUODM5B8nOZAcVbf6HQPCQphZDA
+         +U9M9zk1HUsIXo+hjFhqHpR7nwDhHDMft8GShlqorIQdOpLXf/r4nhu818SS0DJXERyz
+         /FcEQM8X4JtKofj+QNEQ5nxRixdbwLbk/DuIHz132/poHKthMuanCH8sdWE545sfBDg9
+         xo+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXV8vviGTXlGnbsjpjWJlXMrbqjjmEvGgDoL1SURXdMpoJn2y9kNr6piGTW/Qvg+/xtHNxx1fScjDpM9eU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTyRCn4Z9uy67zzzlmOJWRddwzor8KUG1HRUpYT+aRzEzCy8WV
+	a6ppMpvIJlwAee8PdnyGPovHGuUdnoYYYCbDkyC+KzpiBiP5ZNgm
+X-Google-Smtp-Source: AGHT+IFbyMceHVS2H7Xnb4T6G/v+fNR+lhz3/DKUzD4IwqrCckByIlKy3Ji8+H+aIcJSdJUR7zJK4Q==
+X-Received: by 2002:a0c:f6cd:0:b0:6cb:3b9b:1673 with SMTP id 6a1803df08f44-6cb3b9b1732mr135392326d6.49.1727654412220;
+        Sun, 29 Sep 2024 17:00:12 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae3782c6c0sm362741185a.88.2024.09.29.16.53.22
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b6905efsm35388916d6.138.2024.09.29.17.00.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 16:53:22 -0700 (PDT)
+        Sun, 29 Sep 2024 17:00:11 -0700 (PDT)
 Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E574A1200043;
-	Sun, 29 Sep 2024 19:53:21 -0400 (EDT)
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2797C1200043;
+	Sun, 29 Sep 2024 20:00:11 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Sun, 29 Sep 2024 19:53:21 -0400
-X-ME-Sender: <xms:cej5ZvyqnVwSdn4p53Wu1BKxMAPBpOw2znJ-hHxqbQZbXfkZWwfRlA>
-    <xme:cej5ZnRRBocWrguTDHnN1PaMopBhBUKT3ZG2zSdKgldszpDKEr9tCDVaZAAjlK-5W
-    X4jz6MIMuOQJZMorg>
-X-ME-Received: <xmr:cej5ZpU-L9F2vhdY3bnZxtzqtk0ISz5oF8VCLl9nVxSFZeRkrbnbItH1_XKRsw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddugedgvdekucetufdoteggodetrfdotf
+  by phl-compute-01.internal (MEProxy); Sun, 29 Sep 2024 20:00:11 -0400
+X-ME-Sender: <xms:C-r5ZgiJ_-RdOcQf16h8wR96i_PDqxrt9br1S7SSKRpSMjJe9Ce2Hw>
+    <xme:C-r5ZpCkQKG2G5fT64yf_0nWJkXVS_StRYs1l4Zx1bNTRFiTik0bII9fJ7f1AWVTt
+    jKdU_YMWMXoks6Buw>
+X-ME-Received: <xmr:C-r5ZoHJf0gQd5vMBt6nRoLR8ShJCEm3AeBdPkht5LP0JyAIqTfR1xZ6nQrWJg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddugedgfedtucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvden
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
     ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeeitdefvefhteeklefgtefhgeelkeefffelvdev
-    hfehueektdevhfettddvteevvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
     epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
     thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
     grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdefpdhmohgu
@@ -79,15 +79,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddugedgvdekucetufdoteggod
     hlohhnghhmrghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehpvghtvghriiesihhn
     fhhrrgguvggrugdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrd
     guvg
-X-ME-Proxy: <xmx:cej5Zpjvlq-MCaulvwYoq37yPPccNBLYNOH_uvfJu_G2dRoRzZ0ukg>
-    <xmx:cej5ZhBY6kowMHkOfr3OM7-GCtv35AHjHJc6Bm9jUFbEB0YJorkOSg>
-    <xmx:cej5ZiJ7jADF4Oamk7bwxgyIQ1xhyH87mB3lzP5_fK8nVd4qd-tmRQ>
-    <xmx:cej5ZgCLZuQ4doivcV5hoJXcT8t_gXvINqtJNe5fRFFcjVdVAqonYg>
-    <xmx:cej5Ztz7O42o7yztqtm92lzGzBua3R2od1K4JrH2zulrnsxlH927bIif>
+X-ME-Proxy: <xmx:C-r5ZhQeQpNvvNWh9tZLhYkCZoLoY14Agjrj4Bd-zXbOQMBtLL02aQ>
+    <xmx:C-r5ZtyK4GiQ9-yCVIPL6dtWk1zT-A589XqiQO1pTaKmkh3BDrUW1g>
+    <xmx:C-r5Zv5jE7BBuRzxt2qC3KqATTyPr_Nv1MeUOuUHKLRYrsWTQ36rjw>
+    <xmx:C-r5ZqxY3UhIcRpjnByrv7mPxEfO16Vs-em_ttjuPKM0RQatDnYFnA>
+    <xmx:C-r5ZhgWKtPA6CcO1UQhUj5PzO8-P54PcKS6xNxS38ESfHzw6IFM3N-k>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 29 Sep 2024 19:53:21 -0400 (EDT)
-Date: Sun, 29 Sep 2024 16:52:25 -0700
+ 29 Sep 2024 20:00:10 -0400 (EDT)
+Date: Sun, 29 Sep 2024 16:59:14 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Lyude Paul <lyude@redhat.com>
 Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
@@ -105,10 +105,10 @@ Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
 	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v6 2/3] rust: sync: Introduce lock::Backend::Context
-Message-ID: <ZvnoOaOQudoVyBjF@boqun-archlinux>
+Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
+Message-ID: <Zvnp0v-x1JZxnjmN@boqun-archlinux>
 References: <20240916213025.477225-1-lyude@redhat.com>
- <20240916213025.477225-3-lyude@redhat.com>
+ <20240916213025.477225-4-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -117,117 +117,171 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240916213025.477225-3-lyude@redhat.com>
+In-Reply-To: <20240916213025.477225-4-lyude@redhat.com>
 
-On Mon, Sep 16, 2024 at 05:28:05PM -0400, Lyude Paul wrote:
-> Now that we've introduced an `IrqDisabled` token for marking contexts in
-> which IRQs are disabled, we need a way to be able to pass it to locks that
-> require that IRQs are disabled. In order to continue using the
-> `lock::Backend` type instead of inventing our own thing, we accomplish this
-> by adding the associated Context type, along with a `lock_with()` function
-> that can accept a Context when acquiring a lock. To allow current users of
-> context-less locks to keep using the normal `lock()` method, we take an
-> example from Wedson Almeida Filho's work and add a `where T<'a>: Default`
-> bound to `lock()` so that it can only be called on lock types where the
-> context is simply a placeholder value, then re-implement it through the new
-> `lock_with()` function.
+On Mon, Sep 16, 2024 at 05:28:06PM -0400, Lyude Paul wrote:
+> A variant of SpinLock that is expected to be used in noirq contexts, and
+> thus requires that the user provide an kernel::irq::IrqDisabled to prove
+> they are in such a context upon lock acquisition. This is the rust
+> equivalent of spin_lock_irqsave()/spin_lock_irqrestore().
 > 
-
-Given that Backend::Context and "lock() where Context: Default" are
-basically Benno's idea, I think it's fair to have a Suggested-by tag
-here.
-
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Reviewed-by: Gary Guo <gary@garyguo.net>
-> 
 
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
 Regards,
 Boqun
 
-> ---
-> 
-> V3:
-> * Use explicit lifetimes in lock_with() to ensure self and _context have
->   the same lifetime (Benno)
-> * Use () for locks that don't need a Context instead of PhantomData (Benno)
-> V4:
-> * Fix typo (Dirk)
 > 
 > ---
->  rust/kernel/sync/lock.rs          | 17 +++++++++++++++--
->  rust/kernel/sync/lock/mutex.rs    |  1 +
->  rust/kernel/sync/lock/spinlock.rs |  1 +
->  3 files changed, 17 insertions(+), 2 deletions(-)
 > 
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index d6e9bab114b87..cc39a3dc3f20b 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -43,6 +43,9 @@ pub unsafe trait Backend {
->      /// [`unlock`]: Backend::unlock
->      type GuardState;
+> V2:
+> * s/IrqSpinLock/SpinLockIrq/
+> * Implement `lock::Backend` now that we have `Context`
+> * Add missing periods
+> * Make sure rustdoc examples compile correctly
+> * Add documentation suggestions
+> 
+> ---
+>  rust/kernel/sync.rs               |   2 +-
+>  rust/kernel/sync/lock/spinlock.rs | 104 ++++++++++++++++++++++++++++++
+>  2 files changed, 105 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 0ab20975a3b5d..b028ee325f2a6 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -15,7 +15,7 @@
+>  pub use arc::{Arc, ArcBorrow, UniqueArc};
+>  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+>  pub use lock::mutex::{new_mutex, Mutex};
+> -pub use lock::spinlock::{new_spinlock, SpinLock};
+> +pub use lock::spinlock::{new_spinlock, new_spinlock_irq, SpinLock, SpinLockIrq};
+>  pub use locked_by::LockedBy;
 >  
-> +    /// The context which must be provided to acquire the lock.
-> +    type Context<'a>;
-> +
->      /// Initialises the lock.
->      ///
->      /// # Safety
-> @@ -125,14 +128,24 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
->  }
->  
->  impl<T: ?Sized, B: Backend> Lock<T, B> {
-> -    /// Acquires the lock and gives the caller access to the data protected by it.
-> -    pub fn lock(&self) -> Guard<'_, T, B> {
-> +    /// Acquires the lock with the given context and gives the caller access to the data protected
-> +    /// by it.
-> +    pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a, T, B> {
->          // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
->          // that `init` was called.
->          let state = unsafe { B::lock(self.state.get()) };
->          // SAFETY: The lock was just acquired.
->          unsafe { Guard::new(self, state) }
->      }
-> +
-> +    /// Acquires the lock and gives the caller access to the data protected by it.
-> +    #[inline]
-> +    pub fn lock<'a>(&'a self) -> Guard<'a, T, B>
-> +    where
-> +        B::Context<'a>: Default,
-> +    {
-> +        self.lock_with(B::Context::default())
-> +    }
->  }
->  
->  /// A lock guard.
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-> index 30632070ee670..7c2c239944931 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -93,6 +93,7 @@ macro_rules! new_mutex {
->  unsafe impl super::Backend for MutexBackend {
->      type State = bindings::mutex;
->      type GuardState = ();
-> +    type Context<'a> = ();
->  
->      unsafe fn init(
->          ptr: *mut Self::State,
+>  /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
 > diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index ea5c5bc1ce12e..97d85a5576615 100644
+> index 97d85a5576615..47c71d779062a 100644
 > --- a/rust/kernel/sync/lock/spinlock.rs
 > +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -92,6 +92,7 @@ macro_rules! new_spinlock {
->  unsafe impl super::Backend for SpinLockBackend {
->      type State = bindings::spinlock_t;
->      type GuardState = ();
-> +    type Context<'a> = ();
+> @@ -3,6 +3,7 @@
+>  //! A kernel spinlock.
+>  //!
+>  //! This module allows Rust code to use the kernel's `spinlock_t`.
+> +use kernel::irq::*;
 >  
->      unsafe fn init(
->          ptr: *mut Self::State,
+>  /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+>  ///
+> @@ -116,3 +117,106 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+>          unsafe { bindings::spin_unlock(ptr) }
+>      }
+>  }
+> +
+> +/// Creates a [`SpinLockIrq`] initialiser with the given name and a newly-created lock class.
+> +///
+> +/// It uses the name if one is given, otherwise it generates one based on the file name and line
+> +/// number.
+> +#[macro_export]
+> +macro_rules! new_spinlock_irq {
+> +    ($inner:expr $(, $name:literal)? $(,)?) => {
+> +        $crate::sync::SpinLockIrq::new(
+> +            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
+> +    };
+> +}
+> +pub use new_spinlock_irq;
+> +
+> +/// A spinlock that may be acquired when interrupts are disabled.
+> +///
+> +/// A version of [`SpinLock`] that can only be used in contexts where interrupts for the local CPU
+> +/// are disabled. It requires that the user acquiring the lock provide proof that interrupts are
+> +/// disabled through [`IrqDisabled`].
+> +///
+> +/// For more info, see [`SpinLock`].
+> +///
+> +/// # Examples
+> +///
+> +/// The following example shows how to declare, allocate initialise and access a struct (`Example`)
+> +/// that contains an inner struct (`Inner`) that is protected by a spinlock.
+> +///
+> +/// ```
+> +/// use kernel::{
+> +///     sync::{new_spinlock_irq, SpinLockIrq},
+> +///     irq::{with_irqs_disabled, IrqDisabled}
+> +/// };
+> +///
+> +/// struct Inner {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// #[pin_data]
+> +/// struct Example {
+> +///     c: u32,
+> +///     #[pin]
+> +///     d: SpinLockIrq<Inner>,
+> +/// }
+> +///
+> +/// impl Example {
+> +///     fn new() -> impl PinInit<Self> {
+> +///         pin_init!(Self {
+> +///             c: 10,
+> +///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
+> +///         })
+> +///     }
+> +/// }
+> +///
+> +/// // Accessing an `Example` from a function that can only be called in no-irq contexts
+> +/// fn noirq_work(e: &Example, irq: IrqDisabled<'_>) {
+> +///     assert_eq!(e.c, 10);
+> +///     assert_eq!(e.d.lock_with(irq).a, 20);
+> +/// }
+> +///
+> +/// // Allocate a boxed `Example`
+> +/// let e = Box::pin_init(Example::new(), GFP_KERNEL)?;
+> +///
+> +/// // Accessing an `Example` from a context where IRQs may not be disabled already.
+> +/// let b = with_irqs_disabled(|irq| {
+> +///     noirq_work(&e, irq);
+> +///     e.d.lock_with(irq).b
+> +/// });
+> +/// assert_eq!(b, 30);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
+> +
+> +/// A kernel `spinlock_t` lock backend that is acquired in no-irq contexts.
+> +pub struct SpinLockIrqBackend;
+> +
+> +unsafe impl super::Backend for SpinLockIrqBackend {
+> +    type State = bindings::spinlock_t;
+> +    type GuardState = ();
+> +    type Context<'a> = IrqDisabled<'a>;
+> +
+> +    unsafe fn init(
+> +        ptr: *mut Self::State,
+> +        name: *const core::ffi::c_char,
+> +        key: *mut bindings::lock_class_key,
+> +    ) {
+> +        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
+> +        // `key` are valid for read indefinitely.
+> +        unsafe { bindings::__spin_lock_init(ptr, name, key) }
+> +    }
+> +
+> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+> +        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+> +        // memory, and that it has been initialised before.
+> +        unsafe { bindings::spin_lock(ptr) }
+> +    }
+> +
+> +    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+> +        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
+> +        // caller is the owner of the spinlock.
+> +        unsafe { bindings::spin_unlock(ptr) }
+> +    }
+> +}
 > -- 
 > 2.46.0
 > 
