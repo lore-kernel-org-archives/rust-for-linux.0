@@ -1,67 +1,67 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F362C1A2
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 04:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92951E49F
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 04:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727584435; cv=none; b=lfCwQrUSpqFQw27WVIaMsGehlfYn5XZx7C5X0BfLo4s2SbLuzpH658If+hTBJzsVGKwxeSjuuQlFp3G2bOrC9bFfgt4QRV+cSATE6obVQI6ZyVWgnbdDe50Nf5ju9Bti8C8IZnhdTqDoiWXjip07FfnYXdY3YM3xb1GM1YVLlN8=
+	t=1727584528; cv=none; b=OjONcyKUEUK9tJEDSbX1STr56H0FdDkHJf88mPg4Ipt6YfufoVheJIFbsFdSNJ6RNyGhg+jLi5MHHs045Z2sywn6CRxWchACKFrg0qRmqGsJ02q7u1e6Q2P5hdZdLvDW07PxXcdJ3fgBSG8z6o9bZL0Dxtb/4p5q4nOfX6wRGv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727584435; c=relaxed/simple;
-	bh=ACdDOapy307eX83VoYT35p6yFmufcMowrIriJWNRkuU=;
+	s=arc-20240116; t=1727584528; c=relaxed/simple;
+	bh=iq8nYlJnTvsBXaVdMJD5ZEW9MPx3F7bxAs2/3KJBB/o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cQGSQitnuDjlTcZ4Esd38IPpWhhckkRNEjuGAtXLv6vya8GcabsgoDs19VWNt1uV/m2kXU5acaPHafw2+NfYGrlmscqfZYvmIsBOdJZp62SDPYeSFHavvSs9RfxyQ4VyJFQV4tIzNHudP28CT9N3/4zNbocbfWy4f6CLnQ42Y5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=E0cyAM3N; arc=none smtp.client-ip=209.85.128.176
+	 To:Cc:Content-Type; b=OIeN+87VaOUoI+RLho8JETLOc/Tc9u9xo3pz1A0jdCGfIpoUidNXs6TIEPZ9GGrlpKqqFPT0uBigesje5VjtOISGhWY3BVp/KS3nQ1+PY/i40DzYExgp5aHtt4BmNEuicTF5u9qCv6abLwMhNOIpx2IdAn2PzO8i5mj5KWVemY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=VI2NIJnM; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="E0cyAM3N"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6dbc5db8a31so25568537b3.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 21:33:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="VI2NIJnM"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6db20e22c85so29508967b3.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 21:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1727584416; x=1728189216; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1727584525; x=1728189325; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=crMih/hO2yN7TpUZlSd9hsKUsXMFO0eCIYsluTrMHvg=;
-        b=E0cyAM3NXXktHCSD1nR+BTwNwE0AvjqnlK7+FsrorYhlGwusZVz6+ixxGAfy88mxxL
-         kwttfTL8YwD0gbUZzAq5xiLRPqRO3+nIcPYTUxRhk+cwQzpsXn6K9rSP1J5mIer4wu9w
-         kQsLNYJyKnWtlPArE4mgEvW4s6OL/T59egbaKedCj5btPudITQmMuBrJE+rOae9s8uJX
-         6Qxxn7ykjRQvONmQD/vcslnujIxjF75IdQScNW51vSdXTqkJZlc+toB0O/+KkHT7XIGp
-         DAgTYp5zqN0WB4HgIexCNHaI4n8MC+JBafyV5RmhynMFcAZqyp3oQ4HqWgy2U3aBHqP8
-         RulQ==
+        bh=iq8nYlJnTvsBXaVdMJD5ZEW9MPx3F7bxAs2/3KJBB/o=;
+        b=VI2NIJnM6ZcaAnoh5hAEAIdS0eqB+9XJg9futIWBBWUTBI1aSjD+DIo3Boei9vGK1B
+         lS98gm7Ni4+xFqIqzssnXZQHwllcyHjKH2FxkxmkA4xSy6LFz2a9YfXXXqhynL55fasZ
+         kjz5yKqIt+t/S94AnhqFoMOilX9HXGrQShnAq2yvlcxFNr0h+d4hrCKUJGv25DxZBTEA
+         WWqZSMIOGY06ibmzA4/HdWh/kwiKyTpNIyuh4hW7nEibDSwlwgsSMpGxtDwrsJjANRRq
+         TtZXdFPydUocAr1KX6RlhUZTXAGAu1Dwx3gHiVmy3UB4xluyz1MEc2CChSfIZJDDyuH1
+         vCVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727584416; x=1728189216;
+        d=1e100.net; s=20230601; t=1727584525; x=1728189325;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=crMih/hO2yN7TpUZlSd9hsKUsXMFO0eCIYsluTrMHvg=;
-        b=R4x4iI3KT0SEZ7IxxSNEi16afHk8Y951NYWNFlmjuijQ6lc1NKDMZ+dMJdGH8zq8Ka
-         8K5zvQ7w/C+N/etp5jn38w+KJpat8WbVRfS+Ji9+lHWd62oH4Xy1Fgr6hAThK9M1/+uQ
-         Su2WWxaaZpFGMQ1VYKzACwyPdyHnJOaA8exLk93vx9cZyaYn2u5opDTaN/eQ+JJGQpJA
-         tw9mEpCzqvnRxgPgKCKW9OWlscb/dJkyGz42Vbc6CYunKD6HU9oyb54PxYgeiJuB85ak
-         QYZeKMwV3tS+W4eH6M7UqRFmbkQSHsWS1oLHHd96D+VN2fIsCSCbGr7ZTD7xaapViP3n
-         tMjg==
-X-Forwarded-Encrypted: i=1; AJvYcCWytQLuveuW4hOdQ+SAxDDYFx4V1ePftaStLuYVhR7B3ll1Kj0ZyXiR/7C7u0TO9lCBoo8p4YO7fl9Lh9Og+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhknDrJzjU4i4jMFEK0KmNd4XVzG956j66964XKRSKCTpbG0IS
-	AuQC9WL43AyW99+Isdz45rRJ0uPKX/ygKpa60Jv7zQj0MqLOFfABE1LMVmpfsg/Ez18oAExWOIC
-	a1SXAgdXwsU5pYfqFJ99FF0LECOzGKc5WPrtRvQ==
-X-Google-Smtp-Source: AGHT+IFTzOwIWznLgsvN4UDZ43A97KAtmUIMJ7FDriGjQqSZbDChpH70YRjNmpxoRB1v+fFdhx7P3G/OtX/gEQL2QBw=
-X-Received: by 2002:a05:690c:c07:b0:6d6:afe9:d818 with SMTP id
- 00721157ae682-6e22eda1e00mr78513967b3.6.1727584416245; Sat, 28 Sep 2024
- 21:33:36 -0700 (PDT)
+        bh=iq8nYlJnTvsBXaVdMJD5ZEW9MPx3F7bxAs2/3KJBB/o=;
+        b=mgmjpXt8/1bh8zmpat8lrXsp0i31MVrlAsOsRki9kyaG8SDp+4W7zo7WKlJs5xlDlj
+         iT1t1GrFd9THBBOqabU+AO7h3VjU/nrYry0hzrKdpoKGIUORYo681pltpPO5BUQ3uhYL
+         T1/MDUZgfr9s2+x1382yCNLt4We2KaKQBf3xc4xQvgeihJssykLrsxuv4WxceQo2ASoc
+         jqyYp8VQBCD16crhyRukiouiiGlPhL+rvhVOoLOqNpbcFx7zRCDbhUo6CJbr/I1VwTUn
+         Kxqw+/BJTY5yJcGk4wdlcXi80ApH2sEwfVv+MraAZiyPrBSlKWV3ZrhmE8bnjOM9HEA5
+         i8UQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlez3RKKuaWnz2JHp3pCf/46BG5vw4V82p5WDFR/RDJ/Uj71NNZF0EsOGfDn4flFu79GZYp7fotLeg8oJfSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKD7ehFS0uBEdiyQT9SmW2nNWzpAwF4wpLSh4a4z+qr6yd/dJn
+	EBZvLz0Bi6U0HGaczcirjcHiRV/9qIJik9F7Dj/VL89sDYxOmSKBlVZSRGJGvv2LSwRCpBk4arj
+	NJtoXEH6gkyJ5V3JgZOhZOUtenPLOedaMtjMOYg==
+X-Google-Smtp-Source: AGHT+IFTy978tTVEtvPzHwUu9f9ON7IF/qpS/26+6FLmZ3cp8HWcWTa+ibDUFZepM7iaF+ljOiiv7aClfsJOk7PuJM4=
+X-Received: by 2002:a05:690c:4285:b0:6ac:ce34:9726 with SMTP id
+ 00721157ae682-6e247584d12mr50393967b3.18.1727584524823; Sat, 28 Sep 2024
+ 21:35:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-5-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-5-ojeda@kernel.org>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-6-ojeda@kernel.org>
+In-Reply-To: <20240904204347.168520-6-ojeda@kernel.org>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 29 Sep 2024 00:33:25 -0400
-Message-ID: <CALNs47udN4_Gr2KHDapwWAmY=ixoJN+-9apAShVT7qFcKdK23Q@mail.gmail.com>
-Subject: Re: [PATCH 04/19] rust: enable `clippy::undocumented_unsafe_blocks` lint
+Date: Sun, 29 Sep 2024 00:35:14 -0400
+Message-ID: <CALNs47s9t=bFbcLOuwkMZ8XV1S_hF1igdfLKG4RLCwAsivG+ag@mail.gmail.com>
+Subject: Re: [PATCH 05/19] rust: enable `clippy::unnecessary_safety_comment` lint
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -75,57 +75,17 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Sep 4, 2024 at 4:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
 e:
 >
-> Checking that we are not missing any `// SAFETY` comments in our `unsafe`
-> blocks is something we have wanted to do for a long time, as well as
-> cleaning up the remaining cases that were not documented [1].
+> In Rust 1.67.0, Clippy added the `unnecessary_safety_comment` lint [1],
+> which is the "inverse" of `undocumented_unsafe_blocks`: it finds places
+> where safe code has a `// SAFETY` comment attached.
 >
-> Back when Rust for Linux started, this was something that could have
-> been done via a script, like Rust's `tidy`. Soon after, in Rust 1.58.0,
-> Clippy implemented the `undocumented_unsafe_blocks` lint [2].
+> The lint currently finds 3 places where we had such mistakes, thus it
+> seems already quite useful.
 >
-> Even though the lint has a few false positives, e.g. in some cases where
-> attributes appear between the comment and the `unsafe` block [3], there
-> are workarounds and the lint seems quite usable already.
+> Thus clean those and enable it.
 >
-> Thus enable the lint now.
->
-> We still have a few cases to clean up, so just allow those for the moment
-> by writing a `TODO` comment -- some of those may be good candidates for
-> new contributors.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/351 [1]
-> Link: https://rust-lang.github.io/rust-clippy/master/#/undocumented_unsaf=
-e_blocks [2]
-> Link: https://github.com/rust-lang/rust-clippy/issues/13189 [3]
+> Link: https://rust-lang.github.io/rust-clippy/master/index.html#/unnecess=
+ary_safety_comment [1]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-> @@ -277,6 +279,8 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<=
-*mut T> {
->      if unsafe { bindings::IS_ERR(const_ptr) } {
->          // SAFETY: The FFI function does not deref the pointer.
->          let err =3D unsafe { bindings::PTR_ERR(const_ptr) };
-> +
-> +        #[allow(clippy::unnecessary_cast)]
->          // CAST: If `IS_ERR()` returns `true`,
->          // then `PTR_ERR()` is guaranteed to return a
->          // negative value greater-or-equal to `-bindings::MAX_ERRNO`,
-> @@ -286,7 +290,6 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<=
-*mut T> {
->          //
->          // SAFETY: `IS_ERR()` ensures `err` is a
->          // negative value greater-or-equal to `-bindings::MAX_ERRNO`.
-> -        #[allow(clippy::unnecessary_cast)]
->          return Err(unsafe { Error::from_errno_unchecked(err as core::ffi=
-::c_int) });
->      }
-
-There are a couple places where the attributes move like this - did
-this come from an older clippy version? clippy used to warn about this
-but accepts it by default since [1]. (Still works of course, I just
-think it looks nicer to have the attributes next to their statements).
-
-Either way:
-
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
-
-[1]: https://github.com/rust-lang/rust-clippy/pull/11170
