@@ -1,67 +1,67 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40663CF6A
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 04:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1FA3EA76
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 04:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727585789; cv=none; b=X4nUeUzr2oCvRqJe+GANtDaz3keHLgtM9itI0AgBcJnb5+e2lT5FRAp2AXZA8t8JLYDauDLZS8GnD7nlnc3D8a9bI4MfTX6yYfZr/asvsDFyZaJsQGgqEsEQbKxAwMKIhrPKtA0l8c27hWFfY3QTtvq3iqHf/dROKYTwJkF8Fuc=
+	t=1727585853; cv=none; b=fBPjJyp1t8v0hV6iTE9sm8MLV017C9xLg7MAz1g7hF4bTPUP98pl6MW0jy9AS4LWkH/dVG+/x4Jksd3IGSIDhPG0bszrsko1L5XY5mfN8hC4ceZBy2nBbVS+moLTTZwqQ++32sic3yOuezMUeAGoBBtq5qkloW7CYiWdwkgEZgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727585789; c=relaxed/simple;
-	bh=YkNxXWjpqjYtCMtoRe3WVpFUJbFDdsQaD/T/kG7nl/4=;
+	s=arc-20240116; t=1727585853; c=relaxed/simple;
+	bh=8JAXnDgwC0E96DmvB7UMxZsYbUOAqQTVFvH/v4Cfgew=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZGWj8T1JSXyx9PJi7lIo5ziXVpvGxwmSd4hdDj0Hap77lgYeqxy0yMj07QPcd19YfIoszI6vQrWCFkcsPm7t0GHYbnFZdx3cbqFszxdpSEn/ei8jqeg/t8soGcpu1YJTXrEpfjN1DQoV8D2bK90KfcXg/9l44QAL33asYCUkffg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=IZIZtvJt; arc=none smtp.client-ip=209.85.219.177
+	 To:Cc:Content-Type; b=Q9oL3PyEkA+yRzFxs0sX942S6ZdBbXkEPHq2EruMWEDIwEvrCPBRj+CW/WGRe2qIti9Veyh2KxQ78YtbNCuwqQjSZKAJYx1qdan2EdPQShA8vOEzK/8zERLwYKWT2o8Awmtz0CADn0OEQT40QAv0AP6uyEcLo383GdUyf7mrYfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=Gx+vr5EN; arc=none smtp.client-ip=209.85.128.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="IZIZtvJt"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e26114a1b16so510788276.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 21:56:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Gx+vr5EN"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6dfff346a83so27507167b3.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 21:57:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1727585786; x=1728190586; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1727585850; x=1728190650; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YOYsLISsVfhDxhjLXV7hyv9Fxzlka9wAvMifvGXxyVI=;
-        b=IZIZtvJt5tdFYez4u3trirCWSR8hZ2I2Dk5YMu/sI4Q6bgxADpye8dbvLlbXBnGJkx
-         5pGU/OMCgE29MMKJtisdos7Hd5BhwD6R9AYbW/7ldH7yxB26D5ilmeddBXx8LNoykutl
-         tpzigfPioTOaRnWfJzx4d0q921QnmwB8AexENP2ib8GgnrVKr43K10HDqGOU2AgRUFO6
-         iQoMBB2eDvYG8ksUlstLCUxilO2k2sQvowtbokGJP6lK44t3oVnjwvwYKarCt+dU7IRr
-         u5Ztsw5puNebDfPyFOBBQIJYUpPOhz6bh+XiYF9+R6UMlc8BBaDTyZ6NmA/2kKRRTbFZ
-         Irqg==
+        bh=8JAXnDgwC0E96DmvB7UMxZsYbUOAqQTVFvH/v4Cfgew=;
+        b=Gx+vr5ENXz2emDavv6lAJy7zE3503VhNh0ai5NNt5qehbsYutnQAs8TG5P5x8z732g
+         5Z5SVxz7KTK47tblddBtFwevMEc2gkRTwLnrF0KQVCAG5Nf17PmsAzlQrKEWmZmq59LA
+         PV7XRwUK5CeYwrLorE8o7MCLDBUdTUmLCOXJUeR17JjvVg+Pl4ggIzb8PDGmRZCYBIz3
+         0HqoGo32EsT/iLCaxHcRyQA28U4hpe1NpFdQgIZyYix3I+D7jEk+aegmbjfplceAr87P
+         iQSTeQEqUYYKa0rnhEeIKkyzv5hbDsGvK4Gcg73g543fivFsoj0p1sbGmr2aKq28YsCr
+         xxjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727585786; x=1728190586;
+        d=1e100.net; s=20230601; t=1727585850; x=1728190650;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YOYsLISsVfhDxhjLXV7hyv9Fxzlka9wAvMifvGXxyVI=;
-        b=Pt5G8la8KIsv2cY5NB+YwxrFq7hShZ/6cXN316w5lDCtCLTLzqQazzordFY2VjhTpo
-         y5CXOzFxL85UXOz7swd9RYkH+38kPvRTKaweSKY+s/OmPgBfFi40XjCMXA8r+HJO+7tt
-         BmFyPMRQuuAK4lzf8sE/Eg8k9hUO3c+xCg3PmdCwK9A5pwHoJS9yZWIfQYO4XsLOwnGt
-         dbuGx5VU3QI9uNliX2MYqNRou1wFimjvp4Fu5H+etCpz27NTCHgZnCYGM6h4kuiym5k3
-         GJ0qzZszpJWf8eWlcN+DsgWuel9A+Edfd4TdaLK6pCysFWvb9Uau8PS/1r0JBZ+738H0
-         N/zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvwi2GvFYEMX11iKb58XfaLIY6j01qtuSob0TpcqWOvh3dhp607e/gHCoMX6/uI11j3xHJLbDGHUdVZJJBXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwB6Ru7Q9DeHym3B0Dh0SP8Pph7B4JnHdSEV5rDJYEHBSiE59Px
-	GqPgW94mFTvwhLD81IrB2lScGGzc8SekoOI5k3IIamJI8k3JHGxIQxcFdvWtSoZ6zxJo7XTBT8M
-	yhqHhTKAHvcg2N5XSeLA49ztF4LtvbOS2sBQPtg==
-X-Google-Smtp-Source: AGHT+IES+mS3dwA7x3mj4/IZRVIw+FMcwmqXUyBn9jFMyuY82OeecDI+pqzm14EDy7gj7TkzRp0qLVGuvnyig5ATprI=
-X-Received: by 2002:a05:690c:2b92:b0:6e2:1bba:ed4c with SMTP id
- 00721157ae682-6e2475470bdmr36609157b3.17.1727585785734; Sat, 28 Sep 2024
- 21:56:25 -0700 (PDT)
+        bh=8JAXnDgwC0E96DmvB7UMxZsYbUOAqQTVFvH/v4Cfgew=;
+        b=E5uGSyuN24NBlu8SgLb6q6168RKgaWGCFT9R0WqN3EsByhEC9VPzWc+PSwoF/dB9pX
+         pQCHjz68Z6hqC06Ew8NmxDLB2MMiiMfi+FIBAdg2cdIDzIuv5FH9ER7e0jmR4UlJyZEe
+         BhiKqQHjYQak/3Xf74HuccJOEmxkjbew3TJ8rX/dPolEY4006RZExNJxUDs9cZMaCcP9
+         fisxZZkFuqWi62Y3FHO0h9BQ/Hb+LikmN1Tj+Ct8PksWdMSb+zwp45SErIezKYJtIsKX
+         3YbNUVFmWKmO8ZuFXHRDXu8DBPNMJJHYG3v2g0RkdqrwD/sAa1xy+TL4IaAMiXvlLcV0
+         XqmA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1VqNUZeZyzKkizMORoR7tqFEOmriux3JLlm7xXMBXxJiaae3GsfGw150Buc35oEEmzg0rofdmWMVK0iJ/tg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMQG3rjukI7deZ/gyGt4ZhzXwM1MdGasWksZILZo9qw2mnyLdw
+	NwzVEW+eM9uLq2Gd1WAjkFCG3eKShu3jj6PYalibb9VUTGoAdtN+nO2/hTRZqfkPT69Cccti9WK
+	3KFX4JhORmLg4WZsfWsX3II+s466oJWAbKos0ww==
+X-Google-Smtp-Source: AGHT+IE++v8Td22nI2Q3soyTzNnP0Aq5WWr6h1etnmJLmPLRDEcrld8EaVYYkChWaSBJSUid1U0hDsRreiPYOsW/qIg=
+X-Received: by 2002:a05:690c:6788:b0:6d6:7c9a:bf58 with SMTP id
+ 00721157ae682-6e2475e6741mr63957807b3.28.1727585850530; Sat, 28 Sep 2024
+ 21:57:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-15-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-15-ojeda@kernel.org>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-16-ojeda@kernel.org>
+In-Reply-To: <20240904204347.168520-16-ojeda@kernel.org>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 29 Sep 2024 00:56:15 -0400
-Message-ID: <CALNs47u+vEO5+v7dS3Zm2QbeOQfp9OdNv_y7G5c_AxqxjppFHg@mail.gmail.com>
-Subject: Re: [PATCH 14/19] rust: provide proper code documentation titles
+Date: Sun, 29 Sep 2024 00:57:19 -0400
+Message-ID: <CALNs47uSN723+vO9d+sTry7XRDZf1BS_pyA1iu57Yk4M0rtk0w@mail.gmail.com>
+Subject: Re: [PATCH 15/19] rust: enable Clippy's `check-private-items`
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -75,63 +75,23 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Sep 4, 2024 at 4:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
 e:
 >
-> Rust 1.82.0's Clippy is introducing [1][2] a new warn-by-default lint,
-> `too_long_first_doc_paragraph` [3], which is intended to catch titles
-> of code documentation items that are too long (likely because no title
-> was provided and the item documentation starts with a paragraph).
+> In Rust 1.76.0, Clippy added the `check-private-items` lint configuration
+> option. When turned on (the default is off), it makes several lints
+> check private items as well.
 >
-> This lint does not currently trigger anywhere, but it does detect a coupl=
-e
-> cases we had in private cases if checking for private items gets enabled
-> (which we will do in the next commit):
-
-I think some words got flipped around, should this say something like
-"...a couple private cases we had in case checking..."?
-
->     error: first doc comment paragraph is too long
->       --> rust/kernel/init/__internal.rs:18:1
->        |
->     18 | / /// This is the module-internal type implementing `PinInit` an=
-d `Init`. It is unsafe to create this
->     19 | | /// type, since the closure needs to fulfill the same safety r=
-equirement as the
->     20 | | /// `__pinned_init`/`__init` functions.
->        | |_
->        |
->        =3D help: for further information visit https://rust-lang.github.i=
-o/rust-clippy/master/index.html#too_long_first_doc_paragraph
->        =3D note: `-D clippy::too-long-first-doc-paragraph` implied by `-D=
- warnings`
->        =3D help: to override `-D warnings` add `#[allow(clippy::too_long_=
-first_doc_paragraph)]`
+> In our case, it affects two lints we have enabled [1]:
+> `missing_safety_doc` and `unnecessary_safety_doc`.
 >
->     error: first doc comment paragraph is too long
->      --> rust/kernel/sync/arc/std_vendor.rs:3:1
->       |
->     3 | / //! The contents of this file come from the Rust standard libra=
-ry, hosted in
->     4 | | //! the <https://github.com/rust-lang/rust> repository, license=
-d under
->     5 | | //! "Apache-2.0 OR MIT" and adapted for kernel use. For copyrig=
-ht details,
->     6 | | //! see <https://github.com/rust-lang/rust/blob/master/COPYRIGH=
-T>.
->       | |_
->       |
->       =3D help: for further information visit https://rust-lang.github.io=
-/rust-clippy/master/index.html#too_long_first_doc_paragraph
+> It also seems to affect the new `too_long_first_doc_paragraph` lint [2],
+> even though the documentation does not mention it.
 >
-> Thus clean the two instances we hit and enable the lint.
+> Thus allow the few instances remaining we currently hit and enable
+> the lint.
 >
-> In addition, since we have a second `std_vendor.rs` file with a similar
-> header, do the same there too (even if that one does not trigger the lint=
-,
-> because it is `doc(hidden)`).
->
-> Link: https://github.com/rust-lang/rust/pull/129531 [1]
-> Link: https://github.com/rust-lang/rust-clippy/pull/12993 [2]
+> Link: https://doc.rust-lang.org/nightly/clippy/lint_configuration.html#ch=
+eck-private-items [1]
 > Link: https://rust-lang.github.io/rust-clippy/master/index.html#/too_long=
-_first_doc_paragraph [3]
+_first_doc_paragraph [2]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
