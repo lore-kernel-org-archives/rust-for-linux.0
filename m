@@ -1,89 +1,84 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BE48F6D
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 21:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA2F1DFF0
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 21:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727643790; cv=none; b=L3iz2zhCQxhLA3g552nPPQQdF6dc1TtmQraBx0OerICile0R4XuakttSn/Ax9/Dhm+6lPn3VKDKP3eZxpK4Hl7g3YnUMCdnepVfPS9snmj5JkQw+NSAyF7ULEKxGgKbGaB9cLkCLeK5g13T76/NgsmJhsDgJouLLbHTLa2Ejcyg=
+	t=1727645921; cv=none; b=GVXpenEpilPZPBEkTmcc03vZA3mr/m691D63hggn4htqVzuMLoTEmICCJ3YVcWQ/f4N2RgfdQTxImJpUlkJtpHjf77Lz9wuRfTgSD9Mw/aRFTQ6fF77bMIyxsYWU3MBT1q63hgK6aGTf89V0ismLWd8HE107Jh/5BW/JhGvol6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727643790; c=relaxed/simple;
-	bh=0TXbBf1Imx3Td6KYXZyFDLk3bd9iodrCA/B/FjBVlh8=;
+	s=arc-20240116; t=1727645921; c=relaxed/simple;
+	bh=ZNY9VyfDM9tqtA90xwrR2HvYJHZ8XZv734O9gqNA8mk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mp8W1I1Q/uQoUuw5g6fmHTkbMVhR8BESHaf2ZdxoNCka635mLA7BUnLwBXmWMWrJ6CD4W1hlY1Tx4UJWmpjsuohE2KOXZ88qUevCKgwMziPKauGJbZ3dAqxxtkpzEm+mb+t98Cx9mQO8vG/0qWKt1mFkh7+sajpl5ZxoHsiavb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=epL8BVEk; arc=none smtp.client-ip=209.85.128.172
+	 To:Cc:Content-Type; b=mjxnd3X8bG5q/loeT+DbPOTvhyx1DEDdskXpQPvCdzYEtGey+/mYP/LQlTA0dqdraRm28NVNlQnX+OR5xXqgCXueWZcOnlFED+ZaqoMxsw2EgaskW/HS3kztQ+dLf/3ZM5B9o+dE4WAqczRC1ER0Gfj8LEN2wGp5dJ/IaM+3s4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=PeczMUKU; arc=none smtp.client-ip=209.85.128.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="epL8BVEk"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6e2326896cbso24067907b3.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 14:03:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="PeczMUKU"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6e23aa29408so29021397b3.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 14:38:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1727643788; x=1728248588; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1727645919; x=1728250719; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0TXbBf1Imx3Td6KYXZyFDLk3bd9iodrCA/B/FjBVlh8=;
-        b=epL8BVEk1w8590kbMgQNWkbVwaHExf7C+VKoFck3zi2kqhYG+jLHehqlNCvmW9EOyb
-         Bn0ZwQKT8Tu9pYy/kP/cQM/ItuCX7Z86/LkunLIe6EtK76UqrwuZf3sndqxeg69k61SA
-         PTda4+b5S73BUJ855KqpHRoOPEPdDY5jeW4fGpa/PYVXL+kBwPYK3mMhtv9Z5QAMrQCn
-         Y1iNWpmkCtpAbvj544FAuiaH5Zgzigw8Ci4IZacRyNan3Kgrt42ufcm1NXrBCCyxN1VL
-         tNovLt7j4B3SihftevpZqTW57Zp9JCkq6mm/d6vO1kOSZPx9LUxNXj0jjeBIea+7ZJ9N
-         50Zg==
+        bh=ZNY9VyfDM9tqtA90xwrR2HvYJHZ8XZv734O9gqNA8mk=;
+        b=PeczMUKUZyGqm37d+2hfAyeGrB1BtibiJcEE+uGJ2GuZ4c6gIRyDDESN/cokOHgwwC
+         u+zizlHZNemtyBnjxrSTM5gRkUOMivDvjgzT6uJiUqHBkjzz6KaKPK2Qdn1wFlX8Mujl
+         EJkSTWXRcnYS2SsOe/UUXrxTiRQbpDTrocSO84SF5V6BJ/2/Y5aXvA3VNMDF7u/6ISTr
+         v547zeS8otpGJztXfkWMcjaZPWe8r6HLzafG8PKSZwyc2lnuntdGGAn16F3pV1os8EYc
+         +h7LZk2YBvzdNzJgEWR2clIicJVMwKzBk8vlqmlGl1pxaSr8/k+tK1BMBPp9DrGyzCTV
+         eTCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727643788; x=1728248588;
+        d=1e100.net; s=20230601; t=1727645919; x=1728250719;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0TXbBf1Imx3Td6KYXZyFDLk3bd9iodrCA/B/FjBVlh8=;
-        b=CjFCeGR/0R89AZRUePiphQTpx7XCRpYGSh2tnjnRmhRgsyyymDqiVLjImolxhn0Sqp
-         r9AumfKYXgkHlub7EI6Guucu81uzilbsWuY0WnESyq7kym2MxLY4BUnou19VzY7FMxUY
-         psnL9IsV4AjMK109gCefC8W2GlVQDE6Vvu5gN6trQEIWEhjl4jIx0ccpB0FqMv2qHc0t
-         54SLAXwQ04k7Pz4mZaXejVVHH6QkqApxZUkn1LdANe6xIJ23ikCgMYLSnF2QNlinK64B
-         TVBABa9Wcyz6zgEFvfemO2fBtDIgTSJ2j5jeECGyyZcVSi/JhvjK5jKYdMFm4ISgxTz9
-         52gA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUKEFgJTJU2iriw5Hk7UFwUzwR+OnFtfXGfGNxJm/zpz3bT/HnI/c/i/1DYWQCPXpD5/rUk2PQyu5kaYa7IA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQg0R7nzDrqmgg5gVShwB7aaquBMJA6XXvEM2Gme7t1JwKBXwq
-	AovRB78qmynZhakXsj/ycZ0/2TtUpzVpaHpKiYDHr6D7y5t0hIiBFChYZe2oOoL/QS6Pa35Ul3H
-	43yZFAh9BO/Ry4uLMLJcZHtdXZ1RWJa4FWfdlVA==
-X-Google-Smtp-Source: AGHT+IFMGkBzz/SyirbbBicEQiCEDdlE69dd7HQlE0bRpTLL7qi430Yjizc9GEL10Kma/D0byBjMuTTe379MPpH4iqQ=
-X-Received: by 2002:a05:690c:6381:b0:6db:a7d3:6410 with SMTP id
- 00721157ae682-6e2501b1b7cmr66633147b3.44.1727643787839; Sun, 29 Sep 2024
- 14:03:07 -0700 (PDT)
+        bh=ZNY9VyfDM9tqtA90xwrR2HvYJHZ8XZv734O9gqNA8mk=;
+        b=ssF5OVrBkFsyVMUJu86DkBcsZX0buwvZB8hR+VGQqBAYl/TYZD1RCs+eL9txsnuOYb
+         LtLn5TTDSVpec+FBkuLyMeoVUWQl5yGlixGz9/apN1iloqJTkyFOu0ZLEzi6HatUBNuq
+         7rKXtVZcOtSwkkMuHvjHowMT45hYkOoBCATisYc6Pf1FtkGvphEMj8pCvmOk0WLKbpAv
+         OcFhf+W++eGYfkBDJOpSGF/X6pgaWP/v3VZ+klouDYqsUPmpTjDyme59Gzr6NPzYWa70
+         HVOZPR7oMls1TugVj4d36zG70ii75MnBOHZXYQmjcOF3hZtFoXJNZa+W+gP32ZyMix+H
+         SRHA==
+X-Forwarded-Encrypted: i=1; AJvYcCVM68G6XI/vTZQnBp79ieMdnfcd/TA9MZOvBk1Ipxp+p/2xOh+JnTEfOSSjE9W3I/ZJEqcF5M7m0ucd0yxyIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNr0faxS2KH4/woxsqtTmDT//JT2QT1XsXiTCypMOVqXdr5IMj
+	2e3hZP9Ee3Mr7+Vul++92AC7+arzgyZhpRbZbOLr3PBqVR+2pLWzSXpXFOs53jf8lft2S4bCYMt
+	aYAlAZj3wmk2UqYKXqjJ5jdUJotpKlMSQmsVl0Q==
+X-Google-Smtp-Source: AGHT+IE+itK6MB0ZFmcjaz39EOyDbuNYm2rO49VdiYLG7uciGvFfjCMrV44OlHc+8UYdxJ+Af2ZKwF8W3CE1I2PLRVw=
+X-Received: by 2002:a05:690c:4b92:b0:64b:b7e:3313 with SMTP id
+ 00721157ae682-6e245331712mr80972767b3.13.1727645918737; Sun, 29 Sep 2024
+ 14:38:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913213041.395655-1-gary@garyguo.net> <20240913213041.395655-3-gary@garyguo.net>
-In-Reply-To: <20240913213041.395655-3-gary@garyguo.net>
+References: <20240918212052.8790-1-nells@linux.microsoft.com>
+In-Reply-To: <20240918212052.8790-1-nells@linux.microsoft.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 29 Sep 2024 17:02:57 -0400
-Message-ID: <CALNs47t9xTymmFnwhUDkHypb-ftK+ukDrcGe_80mKyv6cr6StQ@mail.gmail.com>
-Subject: Re: [PATCH 2/5] rust: map `__kernel_size_t` and friends also to usize/isize
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Finn Behrens <me@kloenk.dev>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Sun, 29 Sep 2024 17:38:28 -0400
+Message-ID: <CALNs47tAL3yCXuHAOtp12VascnmFbE384VwnupyWtHB9vc3+3Q@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: types: Add examples for the `Either` type
+To: Nell Shamrell-Harrington <nells@linux.microsoft.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	linux@obei.io, kernel@valentinobst.de, kent.overstreet@gmail.com, 
+	matthew.d.roper@intel.com, kartikprajapati987@gmail.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 5:32=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Wed, Sep 18, 2024 at 5:21=E2=80=AFPM Nell Shamrell-Harrington
+<nells@linux.microsoft.com> wrote:
 >
-> Currently bindgen has special logic to recognise `size_t` and `ssize_t`
-> and map them to Rust `usize` and `isize`. Similarly, `ptrdiff_t` is
-> mapped to `isize`.
+> Add examples for the `Either` type
 >
-> However this falls short for `__kernel_size_t`, `__kernel_ssize_t` and
-> `__kernel_ptrdiff_t`. To ensure that they are mapped to usize/isize
-> rather than 32/64 integers depending on platform, blocklist them in
-> bindgen parameters and manually provide their definition.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Nell Shamrell-Harrington <nells@linux.microsoft.com>
+> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
