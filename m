@@ -1,156 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D07417C;
-	Sun, 29 Sep 2024 15:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727623051; cv=none; b=p67C1m7u7liA1IfG01/MKWjkcqE4tz4fQpt3Y5XyeEN33gmJj/fiaZ6NqBbq1Jq0rJth7wQqXqmJZHzuHrgpIfZcwei1Am/SY5iO+a1dzIbNu5uabfRr4MdvFCM5Gvxv8UvBioJcWbbTImbYT6mUbKiZrVq6BsDVxtnVyQeGTlA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727623051; c=relaxed/simple;
-	bh=eQylGUNRxchABfJswjanp/s+IOJknU6kiHFdLqGmXTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MiNMcreYu2zPIAGqT4EREjdXyi8YIvTgdXTLzG84eMur+rF6X1jENEl1EPXpFBjbb4FuqfY45XeDXJ3yIC2hawjyrJmBGkIl10YyWgGehQXD8IqwQqRxRF21pZFgktFnEc3Te1LLntl3mH01525+OYuu9JSkhY1sbgn72/ZleQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itBWcsI5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1A314287;
+	Sun, 29 Sep 2024 15:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727624165; cv=pass; b=XWXNzdWnEq1N+x7EXmM4ilR3CH3E4zY2aBhej1kYL6Zow0CUhObr0ulVn/nLRgsozXsB1oQ7wsWFUrhSjilICKEl1MIkleythkhU8pcD71g5RLr437F259gtixyijDszFoulurgd3vKAzILbw5r6C89ateGLIw9iuk63zsg8O0U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727624165; c=relaxed/simple;
+	bh=KKAjp3bMyq2nzRJpAuAW+teOZNaNGrgqCdevrix1rDc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=FOYM/SBUAy+60k97acdfjM9HsFPW/OBE0eW5q4UEcIF2k04V41dC5iVz9+eTKKAsulddCUjfSLHzuk2TkX5uE121Dt/npGfkpmTO9lBMP6kB5uVm1DgJG8va6PNTANSZ1nOq43A4rdEOcfLNUbg6q/aXiyCmb6Mka3NOTagUbxA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MqK4WKCz; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itBWcsI5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C03C4CEC5;
-	Sun, 29 Sep 2024 15:17:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727623050;
-	bh=eQylGUNRxchABfJswjanp/s+IOJknU6kiHFdLqGmXTI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=itBWcsI5uSxHOMUI+hnyql50fUWWO1cwMCySRGDRJW3pELQFcx2w0m51e83B+aYe3
-	 x0e8Mnov2bCUzmpT7mdROBFZ3Z6j9hWUfj5IyBlI0Wln+W08YWPYW68OcsM3+LcpOg
-	 8YuZAMwZz05dAIjJUtk85hqL5B/G7+Fj4lMzzRtfe8JyMI7LEdI3Pi+DTgzOpWOJbp
-	 5+3gOPe5Wk7u5v7EHEuo0INXe2epKLS70bBPE4+1xRavjo79tnDRkglBDoJkzF6hVS
-	 lKOTbaEhfL0h6avtYuXOO7wgfUZ8ScSK5b2/Y7wNEL+UTW6SjBCUvP4qJdMfIf/8xp
-	 dZ0Pc71VP8XHA==
-Date: Sun, 29 Sep 2024 17:17:23 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, akpm@linux-foundation.org,
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com, lina@asahilina.net,
-	mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
-	lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 25/26] kbuild: rust: remove the `alloc` crate and
- `GlobalAlloc`
-Message-ID: <Zvlvg0pBkhmukh0N@pollux>
-References: <20240911225449.152928-1-dakr@kernel.org>
- <20240911225449.152928-26-dakr@kernel.org>
- <20240928204357.3a28dada.gary@garyguo.net>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MqK4WKCz"
+ARC-Seal: i=1; a=rsa-sha256; t=1727624128; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dkxPUfYIux4U5bxnPX0bq90205qwFEwHXhxG70+5lDODtO46XJ3zOD0CLKvyTUp8i3qtqVkqcyjHYvV/ZBuyiX6E4d4USay14CJctFFN9y2kcld41WoDXYP/v3G0AZantTWi8q78Zv2sf25ZMOEQulQziJXa8dhm+OCJss9zEwY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1727624128; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KKAjp3bMyq2nzRJpAuAW+teOZNaNGrgqCdevrix1rDc=; 
+	b=I4LfIq/aitg2AUQbx1HF4RjDx6cHYYudrObeFvTTsQVzP4feNlG+IjDsG85JfMc91CugfbQMRTEVZWg7kFWCmm76L24xT+sM+wE8UF8pD6Jqw2OLdRufjYUx49rD4C7iVk6iJIP8OrRnJEWETkwrEvA7nbA/+Gbgj6RCTtQVRaw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1727624128;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=KKAjp3bMyq2nzRJpAuAW+teOZNaNGrgqCdevrix1rDc=;
+	b=MqK4WKCziw/o8FJvjKBf/oBxg1pfyBv6wikN3bYKs7zUVtc1LBXCUwK7K39noHKq
+	WOGtNKdM3E0rgHkF+vIFikq1SC55CY0Dl80jRv4fIRFZ8b3vl4IGAKTl7OGe8FY+GBD
+	Wb1/Au5KXVA0027ezg/e7uCPnbko4j05toMvrkKg=
+Received: by mx.zohomail.com with SMTPS id 1727624126111466.10034298979076;
+	Sun, 29 Sep 2024 08:35:26 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240928204357.3a28dada.gary@garyguo.net>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH 1/2] device: rust: change the name function
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAM_RzfavjM9VPJhTi1czOSC0BFOc3FUHRMdzFrU9fJE+WJMKbw@mail.gmail.com>
+Date: Sun, 29 Sep 2024 12:35:09 -0300
+Cc: rafael@kernel.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,
+ aliceryhl@google.com,
+ mcgrof@kernel.org,
+ russ.weight@linux.dev,
+ dakr@redhat.com,
+ a.hindborg@kernel.org,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <32476CD7-74D6-4575-9D93-2FBCD5AE3E10@collabora.com>
+References: <CAM_RzfavjM9VPJhTi1czOSC0BFOc3FUHRMdzFrU9fJE+WJMKbw@mail.gmail.com>
+To: =?utf-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-ZohoMailClient: External
 
-On Sat, Sep 28, 2024 at 08:43:57PM +0100, Gary Guo wrote:
-> On Thu, 12 Sep 2024 00:53:01 +0200
-> Danilo Krummrich <dakr@kernel.org> wrote:
-> 
-> > Now that we have our own `Allocator`, `Box` and `Vec` types we can remove
-> > Rust's `alloc` crate and the `new_uninit` unstable feature.
-> > 
-> > Also remove `Kmalloc`'s `GlobalAlloc` implementation -- we can't remove
-> > this in a separate patch, since the `alloc` crate requires a
-> > `#[global_allocator]` to set, that implements `GlobalAlloc`.
-> > 
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  rust/Makefile                     | 43 +++++----------------
-> >  rust/exports.c                    |  1 -
-> >  rust/kernel/alloc/allocator.rs    | 63 +------------------------------
-> >  scripts/Makefile.build            |  7 +---
-> >  scripts/generate_rust_analyzer.py | 11 +-----
-> >  5 files changed, 15 insertions(+), 110 deletions(-)
-> > 
-> > diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> > index 72b1232b1f7d..529ec5972e55 100644
-> > --- a/scripts/Makefile.build
-> > +++ b/scripts/Makefile.build
-> > @@ -262,18 +262,13 @@ $(obj)/%.lst: $(obj)/%.c FORCE
-> >  
-> >  # Compile Rust sources (.rs)
-> >  # ---------------------------------------------------------------------------
-> > -
-> > -rust_allowed_features := new_uninit
-> > -
-> 
-> Would it make sense to throw in a soon-to-be-stable (or
-> already-stable-but-beyond-min-rust-version) feature here to not have to
-> remove the build system support for unstable feature directly?
+Hi Guilherme, welcome to the community!
 
-It's only about those two lines, right? I can only remove the `new_uninit` and
-leave `rust_allowed_features :=` and leave...
+The commit message needs some work IMHO. In particular, links may become =
+stale,
+so please do not link to anything.
 
-> 
-> For example, I know that const_refs_to_static might be added here
-> soon-ish.
-> 
-> >  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
-> >  # current working directory, which may be not accessible in the out-of-tree
-> >  # modules case.
-> >  rust_common_cmd = \
-> >  	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
-> > -	-Zallow-features=$(rust_allowed_features) \
+It=E2=80=99s also written in first person and in a verbose way, which is =
+not good.
+Just describe what you did and why the change was necessary succinctly.
 
-...this line, I guess?
+You can find some more tips at
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html
 
-> 
-> I think this actually allow all features instead of allowing none.
-> 
-> >  	-Zcrate-attr=no_std \
-> > -	-Zcrate-attr='feature($(rust_allowed_features))' \
-> > -	-Zunstable-options --extern force:alloc --extern kernel \
-> > +	-Zunstable-options --extern kernel \
-> >  	--crate-type rlib -L $(objtree)/rust/ \
-> >  	--crate-name $(basename $(notdir $@)) \
-> >  	--sysroot=/dev/null \
-> > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> > index d2bc63cde8c6..09e1d166d8d2 100755
-> > --- a/scripts/generate_rust_analyzer.py
-> > +++ b/scripts/generate_rust_analyzer.py
-> > @@ -64,13 +64,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-> >          [],
-> >      )
-> >  
-> > -    append_crate(
-> > -        "alloc",
-> > -        sysroot_src / "alloc" / "src" / "lib.rs",
-> > -        ["core", "compiler_builtins"],
-> > -        cfg=crates_cfgs.get("alloc", []),
-> > -    )
-> > -
-> >      append_crate(
-> >          "macros",
-> >          srctree / "rust" / "macros" / "lib.rs",
-> > @@ -96,7 +89,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-> >      append_crate(
-> >          "kernel",
-> >          srctree / "rust" / "kernel" / "lib.rs",
-> > -        ["core", "alloc", "macros", "build_error", "bindings"],
-> > +        ["core", "macros", "build_error", "bindings"],
-> >          cfg=cfg,
-> >      )
-> >      crates[-1]["source"] = {
-> > @@ -133,7 +126,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-> >              append_crate(
-> >                  name,
-> >                  path,
-> > -                ["core", "alloc", "kernel"],
-> > +                ["core", "kernel"],
-> >                  cfg=cfg,
-> >              )
-> >  
-> 
+Lastly, I can=E2=80=99t see a diff anywhere. Make sure everything you =
+send can
+actually be applied and *at least* compile-check your changes. =
+Submitting
+patches that do not apply and/or do not compile can make people lose =
+interest.
+
+Send a v2 with the fixes above and we can start to actually discuss your =
+code.
+
+BR
+
+=E2=80=94 Daniel=
