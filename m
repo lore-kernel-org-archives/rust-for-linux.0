@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F38F6D;
-	Sun, 29 Sep 2024 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414E51465B8;
+	Sun, 29 Sep 2024 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727621549; cv=none; b=uComKv/kahejMjrXnp0NKG8WbG0Eb6KSLxNU2l4R3S+On/+yqTIS1hSTxdkVOeEpxRwBEburb4J39U7ChDE1MEWAPMAucggDJ34sEuFjGBr3bGb6mf8iFou2lYtuL2Vk9bsOCA4CITsHVJRm2t1umAiY+Jr57jA4oZXC3k5RWg8=
+	t=1727622747; cv=none; b=LCdPyI6qP4D0gbamOCO+tSGT8ZJHJz0GgKF5mTLH/9/w9VtXQciYnviUWijNxG/iWl7D0MGG1eXDQ2LRiHQTxJ+OZPw+iND+5la7GzVmIFRrWWBh2lgvyQzHna3Vv1ClmTDY+e9k/iti1LAXyU0CxeLuJ2q43ziG+wMggrkMMgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727621549; c=relaxed/simple;
-	bh=KCzOpXBaRXTqzAhkCrLfiC9LHlzekTchiyskk2fq0FU=;
+	s=arc-20240116; t=1727622747; c=relaxed/simple;
+	bh=8iK+wLu+DSCR1nDTiqALV97qNsthNxMyDvf/+B2qlKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WnIcveJpb4q47pTsx80PM/t+H9kXIL+Z0hARh0kbH1PeV1ldg4exgILxvigll65iST/aE9364+OnADIendyJf51gTkDoXzljG80xEcQPLejVDn7oQt2OJH5+Hh4OaeRDeGBac03EsVyhbPeSrLFtFfGHZpC2G1p76P8p6WvuwCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQdwPrhL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=iiBM/We1fEfaEKN8eG16suvLHGD8EQmYGLSxq/URZ65iXRgKfkzs43jjNrkGVk2SKZsMjjOKMjgfNnaXSBKMpG9zZjQPJ2kQvVuN+uid/FkEj8qpL3oyRdT6MNXoXzNJATuSkDNQyiXD8fsOu2oKD9FPet4EBWKTJV8l9YKtkUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcUtCgTO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQdwPrhL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E881C4CEC5;
-	Sun, 29 Sep 2024 14:52:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcUtCgTO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF25BC4CEC5;
+	Sun, 29 Sep 2024 15:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727621549;
-	bh=KCzOpXBaRXTqzAhkCrLfiC9LHlzekTchiyskk2fq0FU=;
+	s=k20201202; t=1727622746;
+	bh=8iK+wLu+DSCR1nDTiqALV97qNsthNxMyDvf/+B2qlKs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JQdwPrhLu3Mh8AlZYHEjdJFOe8Bi5q3qapODOo690Hb8/wjgQhe1Gx8WILJ9ikULa
-	 yMgf49TyiRSk5r2bjvzzNZ4DRL5PnxIrAba9IDO4SxmdrIk5Q+p4Eauqxj3lHG7PIo
-	 BT4JT+0ZV52FAiTdLKMeUTTC3dzfalNObRi5IaDVyFdPOztazsB5NeI+MN+C7BKqoK
-	 PiNBBu5Mm06+IQIEyWnZdHCFSvBsz/w2C0X/vFlMwxLsDZFOgkq2/gNvmCQNFt3avW
-	 gP4ynf9a1qZ7FV4bmh9Gw9JZOKT9cAbY/jT7graoOSbDtgQ2p314lbyFwpw6LD6TDu
-	 3ia4MLo5HoTtw==
-Date: Sun, 29 Sep 2024 16:52:21 +0200
+	b=YcUtCgTO72dzAyuttuqQtWi9zdBJAWcr3eRvd60dIoNA6FCOtAMXPnlkEb1+lhou1
+	 Qq0KSxOJy330zrUcZmKiAwyzEZJMb2kDfwCA35JL14xzgtTiXhFxRsApVHQ9dd7Qr/
+	 y264RiKnpKrGjCUlSpmqsGPWj6dse15GQ11ybg8DZVVV/LqnXfBTa8/TEbdAqYxFQk
+	 DxmY02iHZmQ2X0BE0s1Qnsy6dC89umYmEA5Z8G8OVzx5ghctwyLQloAiTfvxcYjRmu
+	 D7Rw6DsRtOYaaLwSorgAdEcxlHX94/pwrxXyf8ZmhWP1YM3A1E62xth2wPFbPv9SAP
+	 3Akn0LafpJ2ZA==
+Date: Sun, 29 Sep 2024 17:12:19 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Gary Guo <gary@garyguo.net>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -39,11 +39,11 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
 	lyude@redhat.com, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v7 10/26] rust: treewide: switch to our kernel `Box` type
-Message-ID: <ZvlppcutUjuRChPK@pollux>
+Subject: Re: [PATCH v7 15/26] rust: alloc: implement `collect` for `IntoIter`
+Message-ID: <ZvluU69LMB6nuD6r@pollux>
 References: <20240911225449.152928-1-dakr@kernel.org>
- <20240911225449.152928-11-dakr@kernel.org>
- <20240928195913.5b2c04d8.gary@garyguo.net>
+ <20240911225449.152928-16-dakr@kernel.org>
+ <20240928202734.4b518854.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,48 +52,174 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240928195913.5b2c04d8.gary@garyguo.net>
+In-Reply-To: <20240928202734.4b518854.gary@garyguo.net>
 
-On Sat, Sep 28, 2024 at 07:59:13PM +0100, Gary Guo wrote:
-> On Thu, 12 Sep 2024 00:52:46 +0200
+On Sat, Sep 28, 2024 at 08:27:34PM +0100, Gary Guo wrote:
+> On Thu, 12 Sep 2024 00:52:51 +0200
 > Danilo Krummrich <dakr@kernel.org> wrote:
 > 
-> > Now that we got the kernel `Box` type in place, convert all existing
-> > `Box` users to make use of it.
+> > Currently, we can't implement `FromIterator`. There are a couple of
+> > issues with this trait in the kernel, namely:
+> > 
+> >   - Rust's specialization feature is unstable. This prevents us to
+> >     optimze for the special case where `I::IntoIter` equals `Vec`'s
+> >     `IntoIter` type.
+> >   - We also can't use `I::IntoIter`'s type ID either to work around this,
+> >     since `FromIterator` doesn't require this type to be `'static`.
+> >   - `FromIterator::from_iter` does return `Self` instead of
+> >     `Result<Self, AllocError>`, hence we can't properly handle allocation
+> >     failures.
+> >   - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
+> >     additional allocation flags.
+> > 
+> > Instead, provide `IntoIter::collect`, such that we can at least convert
+> > `IntoIter` into a `Vec` again.
 > > 
 > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> 
-> Have you considered defaulting the `A` in `Box` to `Kmalloc`? This
-> would avoid doing a lot of tree-wide changes.
-> 
-> If you have a reason against it (I'm pretty sure you have), then
-> probably you should put it in the commit message.
+> A question is how useful is this? The way this can be used seems
+> fairly limited: you `into_iter`, consume a few elements, and the
+> `collect()`?
 
-Yes, I want people to be forced to make an explicit decision about the allocator
-backend they choose, because this has relevant implications.
+Well, it allows us to convert back to a `Vec`, which we otherwise can't until we
+implement our own `FromIterator` trait.
 
-For instance, it's likely to be unexpected to people coming from userspace Rust,
-that (with the default of `Kmalloc`) `Box` allocations larger than
-`KMALLOC_MAX_SIZE` would just fail.
+Also note that we want to have this specialization of `collect` for performance
+reasons anyways. The Rust stdlib uses specialization traits (which aren't yet
+stable) for this optimization.
 
 > 
-> Best,
-> Gary
+> It feels whatever user this serves, it would make more sense for them
+> to use a `VecDeque` and just `pop_front()`.
+
+We don't have `VecDeque` (yet).
+
+> 
+> Also, inline comments below.
 > 
 > > ---
-> >  drivers/block/rnull.rs            |  4 +--
-> >  rust/kernel/init.rs               | 51 ++++++++++++++++---------------
-> >  rust/kernel/init/__internal.rs    |  2 +-
-> >  rust/kernel/rbtree.rs             | 49 ++++++++++++++++-------------
-> >  rust/kernel/sync/arc.rs           | 17 +++++------
-> >  rust/kernel/sync/condvar.rs       |  4 +--
-> >  rust/kernel/sync/lock/mutex.rs    |  2 +-
-> >  rust/kernel/sync/lock/spinlock.rs |  2 +-
-> >  rust/kernel/workqueue.rs          | 20 ++++++------
-> >  rust/macros/lib.rs                |  6 ++--
-> >  10 files changed, 81 insertions(+), 76 deletions(-)
+> >  rust/kernel/alloc/kvec.rs | 86 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 86 insertions(+)
+> > 
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index e91761c5c52d..686e969463f8 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -690,6 +690,92 @@ impl<T, A> IntoIter<T, A>
+> >      fn as_raw_mut_slice(&mut self) -> *mut [T] {
+> >          ptr::slice_from_raw_parts_mut(self.ptr, self.len)
+> >      }
+> > +
+> > +    fn into_raw_parts(self) -> (*mut T, NonNull<T>, usize, usize) {
+> > +        let me = ManuallyDrop::new(self);
+> > +        let ptr = me.ptr;
+> > +        let buf = me.buf;
+> > +        let len = me.len;
+> > +        let cap = me.cap;
+> > +        (ptr, buf, len, cap)
+> > +    }
+> > +
+> > +    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIter`.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let v = kernel::kvec![1, 2, 3]?;
+> > +    /// let mut it = v.into_iter();
+> > +    ///
+> > +    /// assert_eq!(it.next(), Some(1));
+> > +    ///
+> > +    /// let v = it.collect(GFP_KERNEL);
+> > +    /// assert_eq!(v, [2, 3]);
+> > +    ///
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    /// # Implementation Details
+> > +    ///
+> > +    /// Currently, we can't implement `FromIterator`. There are a couple of issues with this trait
+> > +    /// in the kernel, namely:
+> > +    ///
+> > +    /// - Rust's specialization feature is unstable. This prevents us to optimze for the special
+> > +    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
+> > +    /// - We also can't use `I::IntoIter`'s type ID either to work around this, since `FromIterator`
+> > +    ///   doesn't require this type to be `'static`.
+> > +    /// - `FromIterator::from_iter` does return `Self` instead of `Result<Self, AllocError>`, hence
+> > +    ///   we can't properly handle allocation failures.
+> > +    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle additional allocation
+> > +    ///   flags.
+> > +    ///
+> > +    /// Instead, provide `IntoIter::collect`, such that we can at least convert a `IntoIter` into a
+> > +    /// `Vec` again.
+> > +    ///
+> > +    /// Note that `IntoIter::collect` doesn't require `Flags`, since it re-uses the existing backing
+> > +    /// buffer. However, this backing buffer may be shrunk to the actual count of elements.
+> > +    pub fn collect(self, flags: Flags) -> Vec<T, A> {
+> > +        let (mut ptr, buf, len, mut cap) = self.into_raw_parts();
+> > +        let has_advanced = ptr != buf.as_ptr();
+> > +
+> > +        if has_advanced {
+> > +            // Copy the contents we have advanced to at the beginning of the buffer.
+> > +            //
+> > +            // SAFETY:
+> > +            // - `ptr` is valid for reads of `len * size_of::<T>()` bytes,
+> > +            // - `buf.as_ptr()` is valid for writes of `len * size_of::<T>()` bytes,
+> > +            // - `ptr` and `buf.as_ptr()` are not be subject to aliasing restrictions relative to
+> > +            //   each other,
+> > +            // - both `ptr` and `buf.ptr()` are properly aligned.
+> > +            unsafe { ptr::copy(ptr, buf.as_ptr(), len) };
+> > +            ptr = buf.as_ptr();
+> > +        }
+> > +
+> > +        // This can never fail, `len` is guaranteed to be smaller than `cap`.
+> > +        let layout = core::alloc::Layout::array::<T>(len).unwrap();
+> 
+> nit: could be `unwrap_unchecked()`. Although feel free to leave it to
+> avoid an additional unsafe.
+
+This will be replaced with `ArrayLayout` anyways.
+
+> 
+> > +
+> > +        // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
+> > +        // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
+> > +        // it as it is.
+> > +        ptr = match unsafe { A::realloc(Some(buf.cast()), layout, flags) } {
+> > +            // If we fail to shrink, which likely can't even happen, continue with the existing
+> > +            // buffer.
+> > +            Err(_) => ptr,
+> > +            Ok(ptr) => {
+> > +                cap = len;
+> > +                ptr.as_ptr().cast()
+> > +            }
+> > +        };
+> 
+> This should be moved to `Vec::shrink_to_fit`. And then this function
+> can just `Vec::from_raw_parts(...)` and then `vec.shrink_to_fit`.
+
+I'll put it on my list for a follow up patch, I really think we should focus on
+landing the series now.
+
+> 
+> But my question would be why this function needs to shrink in the first
+> place.
+
+It's meant as an optimization for `Iterator::collect` in the mid / long term. A
+user expects that the resulting allocation isn't larger than actually needed for
+`Iterator::collect`.
+
+> 
+> > +
+> > +        // SAFETY: If the iterator has been advanced, the advanced elements have been copied to
+> > +        // the beginning of the buffer and `len` has been adjusted accordingly.
+> > +        //
+> > +        // - `ptr` is guaranteed to point to the start of the backing buffer.
+> > +        // - `cap` is either the original capacity or, after shrinking the buffer, equal to `len`.
+> > +        // - `alloc` is guaranteed to be unchanged since `into_iter` has been called on the original
+> > +        //   `Vec`.
+> > +        unsafe { Vec::from_raw_parts(ptr, len, cap) }
+> > +    }
+> >  }
+> >  
+> >  impl<T, A> Iterator for IntoIter<T, A>
 > 
