@@ -1,66 +1,66 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660A21F95A
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 20:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8502D7E0E8
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 20:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727642203; cv=none; b=DwK0BA7oX8qEUCL/SNHPSjhJZACIpkCqTmKlltMKRCEQiO9rK6vb8IuBjLL5miLYgFDYgVLnbTPXBsVlxwOFsZ8AXpiIHmoQPDTtbOlqhYm0R1rL7ruErUEkWLPBULTJW0yLmLgSCY8jV1SW/7YRQmjssNfBb+3ijufFhMwQnRc=
+	t=1727642437; cv=none; b=J9WOI8+2x4oxxAoPbxT3a9E2mquGw6HH5b3kdPlRJ9Mx4ZyJLF8MT94T67jIdgOmU5SREQbm3ya75ZqOLHj0qAoxgdcWba33dgPiINOmD3CRYkZSAl6v0ojEmdb+4saRmPmEZjyokhfdnyH5jzulqEY+HcIlUNa+l5teCvYiTNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727642203; c=relaxed/simple;
-	bh=yJvKHFVaWy+U/hapM0yQzvNmizf07/FN1eL92Wgn+Sg=;
+	s=arc-20240116; t=1727642437; c=relaxed/simple;
+	bh=aLmB8kUQ/0mwee+snvJ2Gt7/D/AU2dDh3YEUEAPAtDk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X4L96CfFXQBtbSe97cqIkzaCkv4G22nI9juEZLF/Ar0o5KsHqx74EY+iQMHP/dEkoKWsONzPJ0LaTwruxWy8Q+3cniSdLyW0XeDoSh8bNlWosM0/5vB2IAef3ZCuBTDU08V+D7zXPBrhjvtB6OjYT6MPXxSiZDB1w2JEE2wGud4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=RJf3Iif9; arc=none smtp.client-ip=209.85.128.174
+	 To:Cc:Content-Type; b=YcIbIJP+xCy2B7Y8xcAEDVaA04Pqcv+Aj2NhM6t6I9q7BXsXOQ2ETPaooz3qHUuEmeYuyKuXEwibXNNV+ZsDitp0v+i8yEtVrpRILFOfS+VX/FVRXfKZdRn3DMEjXK9aEnlYrlIEIB5BTWDMWzxwqm3pG/BDlGJqiNJsqRrFaJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=BJo2outH; arc=none smtp.client-ip=209.85.219.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="RJf3Iif9"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6c3f1939d12so30094677b3.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 13:36:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="BJo2outH"
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e26114a1b16so794599276.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 13:40:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1727642200; x=1728247000; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1727642434; x=1728247234; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OVnHMnmiF+13daBSttLD+aIXUDJcxVgtv3MA41ELUOQ=;
-        b=RJf3Iif9Spw6qAqkijtvucZ77XCj0wBbyMDahCjzLCafo5+WX+2IwfmbMcQn2Vif3C
-         4CLXqc57GWQ3BZausJoOs9yA/euW10Qr4s5EpWQkSzJtHsgp5K4+P/bOGWx7/17OSZVA
-         n4oL/rw+qapRXH0JTi14mPU+nZ8L3yAeQ+GwNMIkNxgyulYV0AMQ2Z//+kPANVl/RLba
-         Vqbb8CkJ71cKvgFp9oHyVWr7K+vn8LxolOFP0msLdEl12Rqa02lc0d09NU138oC9OUyf
-         CLJCSO9W4Nm8xSk1UGc8ecgqOcO5hZONpbflr+WBatCp4cinw5K0uPFB9XVZj5JRFpiz
-         u9kw==
+        bh=aLmB8kUQ/0mwee+snvJ2Gt7/D/AU2dDh3YEUEAPAtDk=;
+        b=BJo2outHLAin0gaMb1p2eluS9Ew7bQhoW4vOLoyYBMCLo6Hu0IvNW8xJPK7jhdyJaX
+         LkX5P7KsST7/rhkqRKoFmpQ4IeAixlrMg0wLPlveVvBIb4ytPRaViFFwvdH9wDwkY+Yw
+         TWMMQmY6GUU3Wzh+MxNaRFw69GbcZLdx/9IrTPIS4NuHi9HD1fXT7wHHRMKZkpKOMCax
+         cjPwVQafkGgli09XPLFoSkSEDVduPASrz6WJd/ZHEAmB2FUNmJoqvq5bT6aXCqn+QMQD
+         yC2xm3NbnfeK8rcECFfg2ADrxHveoAfVFXkjvPISFSdW3mumGyGyZeOTYS+pz6P5ht6a
+         PqEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727642200; x=1728247000;
+        d=1e100.net; s=20230601; t=1727642434; x=1728247234;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OVnHMnmiF+13daBSttLD+aIXUDJcxVgtv3MA41ELUOQ=;
-        b=mBGjxRqf/J4sCcOAg7h41UTEeEpE2BwljV6VIzE+7doH9bdoQfmc1h0H7uYD2C9Ygn
-         yWAZFe+31esFrg8IwR7LI9xaDPAk7ct1G0fn0lu4I8FULZvROO1ajv/xdHW4MiTKvmmG
-         IweYC8u+55k8aNLQdgzqpM+JtkEoQcsQUQ+5GegygkJbitc5A7qpDRfEqJtuYm0T2LBh
-         XkZ4yOCkHYPXMJgTm+ARNgKfMS0hO8VRsJMXfW2Jc1WqVaYeyvJYetiXPMolaWMTr7KL
-         Ix4I3HwsTz2vvWvMQjsn7suTV7KlXIuog+OdZNNjfZG4rylCRHDP1T1j7CENQS1gUG6u
-         GDfA==
-X-Gm-Message-State: AOJu0YyNZjNKeyXHmLsLvBpz7Mqo6uz8qO3cUcX54m5vPJ2IVotpKyca
-	IF7WbROMQYwNrIeLzfVfLs/7SxCNWwzntEejNg/OC+EK3qi19TGe6oqEeYA+PvLeiulLZeKx8V+
-	Hej1LSAoCLAGsOQBkb6/tJUE+CAuAGh2aKfw49w==
-X-Google-Smtp-Source: AGHT+IETCze3KtAe+nbUVqoRMjK6sAQNLok2M1rHft7+nawFMwPHyIKRFgxqTTpRzDf2ozXAHljC8Nhw9SfgrzI5dTA=
-X-Received: by 2002:a05:690c:2905:b0:6e2:1062:9b90 with SMTP id
- 00721157ae682-6e247619bd8mr54586977b3.44.1727642200296; Sun, 29 Sep 2024
- 13:36:40 -0700 (PDT)
+        bh=aLmB8kUQ/0mwee+snvJ2Gt7/D/AU2dDh3YEUEAPAtDk=;
+        b=w5Hnp9DrBdV2cW6oty6Q2l6Z9yvUqVYOwFy6NN+eABCk5owttm1e+by73XMRU0CkuT
+         piImi4FPlPZd3UT8z8dcMGyoQFfzpCvPmBG3x36uYfWEXjGcUWJ5/lZEi+6m15b/L+TO
+         olVTgZ8Fio6bpatqlg2aLzTd13HCcSSxjt7krf+DgHd9qb0sDqxm9YJi6OyVHOfXCLQM
+         oddM1wL3xA/y82YNJCkS0SkiNaqDXHURBrXgfvVPZvd11RC6NbNVvvJL7d22g2DHRMRi
+         JjRJ6ezwjjScivuom8zTzIDTU4Zv/ImnJDso1KBv4HDmTj7RB1gui+zE8apiC6P2VLX+
+         4F+Q==
+X-Gm-Message-State: AOJu0YyjTTPqygyfH38kLRTrGDn3BpZzV5vLXv3zL4jsvoCQNk5TnE77
+	Oi8CkTC5xto2XeHLYXtWfmrOdjvs7Myu1RoyGJYxcYlFDQw5efleU8RNdYRpZm+MmP9Ova7eXSM
+	2HmZGLNYg0pplN9NKeb8KC/rAhzuAA+WvavBQgw==
+X-Google-Smtp-Source: AGHT+IHXgnOJWhWQWPPcXU0pDuV2DzvwB1YJEpBfK4T/FITdvjyiG4ySFAn53tpyU9ETmKPITIcbl2LgTNOK+ohVS2Y=
+X-Received: by 2002:a05:6902:100b:b0:e25:ce5f:42cc with SMTP id
+ 3f1490d57ef6-e2604b51542mr8531712276.32.1727642434508; Sun, 29 Sep 2024
+ 13:40:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240916213025.477225-1-lyude@redhat.com> <20240916213025.477225-2-lyude@redhat.com>
-In-Reply-To: <20240916213025.477225-2-lyude@redhat.com>
+References: <20240916213025.477225-1-lyude@redhat.com> <20240916213025.477225-3-lyude@redhat.com>
+In-Reply-To: <20240916213025.477225-3-lyude@redhat.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 29 Sep 2024 16:36:29 -0400
-Message-ID: <CALNs47u56oVYxwNq+POgOu0m141gwG-mEoRBH8hzevj6Ve-Vag@mail.gmail.com>
-Subject: Re: [PATCH v6 1/3] rust: Introduce irq module
+Date: Sun, 29 Sep 2024 16:40:23 -0400
+Message-ID: <CALNs47sSonJNyK+uJC3Kpqv3o_S+y3WfgYGXqec0Mg27nQ1y5g@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] rust: sync: Introduce lock::Backend::Context
 To: Lyude Paul <lyude@redhat.com>
 Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, 
 	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
@@ -70,53 +70,33 @@ Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, airlied@
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Valentin Obst <kernel@valentinobst.de>
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Mon, Sep 16, 2024 at 5:31=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
 :
 >
-> This introduces a module for dealing with interrupt-disabled contexts,
-> including the ability to enable and disable interrupts
-> (with_irqs_disabled()) - along with the ability to annotate functions as
-> expecting that IRQs are already disabled on the local CPU.
+> Now that we've introduced an `IrqDisabled` token for marking contexts in
+> which IRQs are disabled, we need a way to be able to pass it to locks tha=
+t
+> require that IRQs are disabled. In order to continue using the
+> `lock::Backend` type instead of inventing our own thing, we accomplish th=
+is
+> by adding the associated Context type, along with a `lock_with()` functio=
+n
+> that can accept a Context when acquiring a lock. To allow current users o=
+f
+> context-less locks to keep using the normal `lock()` method, we take an
+> example from Wedson Almeida Filho's work and add a `where T<'a>: Default`
+> bound to `lock()` so that it can only be called on lock types where the
+> context is simply a placeholder value, then re-implement it through the n=
+ew
+> `lock_with()` function.
 >
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Reviewed-by: Gary Guo <gary@garyguo.net>
-
-> +impl IrqDisabled<'_> {
-> +    /// Create a new [`IrqDisabled`] token in an interrupt disabled cont=
-ext.
-> +    ///
-> +    /// This creates an [`IrqDisabled`] token, which can be passed to fu=
-nctions that must be run
-> +    /// without interrupts. If debug assertions are enabled, this functi=
-on will assert that
-> +    /// interrupts are disabled upon creation. Otherwise, it has no size=
- or cost at runtime.
-> +    ///
-> +    /// # Panics
-> +    ///
-> +    /// If debug assertions are enabled, this function will panic if int=
-errupts are not disabled
-> +    /// upon creation.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// This function must only be called in contexts where it is alread=
-y known that interrupts have
-> +    /// been disabled for the current CPU, and the user is making a prom=
-ise that they will remain
-> +    /// disabled at least until this [`IrqDisabled`] is dropped.
-> +    pub unsafe fn new() -> Self {
-
-It could be worth mentioning that you probably won't be calling this
-function directly if you need an IrqDisabled, linking to
-with_irqs_disabled instead.
-
-Either way this looks great!
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
