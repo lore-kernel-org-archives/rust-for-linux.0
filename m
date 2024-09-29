@@ -1,87 +1,127 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100D7433A4
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 05:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ED2566A;
+	Sun, 29 Sep 2024 11:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727586667; cv=none; b=OeMXTVfEPdFlLWCRX5RCSEpnXNRv+aCXRNPhQ0pCFDit2jrBXo8eVR50jlbLaftHGZBfgExwKJwqCEUIBE8eaQ1SLhYJT0XUL1BWfRLeQOq4QfLXf5Q9arPCgfhVoO6Dz8LeqcqJApHvWpJF3bpVVaiJ0J/nTve2pjoeaJ7zlhw=
+	t=1727608539; cv=none; b=McTjS4OAba4vq5krkDO0jGNNWUWF+eq8ZvrBrNtT5QJ+xlaxRL9m5x3ToYYkIFm2pUduMB1kEb1gy8vTbKn0haiwlKbDpDRwo2lu1CcprmiguM2vXSOIB5CzG9rZyJxhW/11LdGMBAM68wh5+4+gcVKcrLIIBj2JOb68xTPQIOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727586667; c=relaxed/simple;
-	bh=RuRZYVvei28eDcQ036NK5OQHIXSS5Y8RpN9am0sKM4c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HpJGx2rPvah+MLCG3u3OutNR3UJ+qTK0eGWPd0zpW8klx2puFNUCgksdTr4kZLatm7sutNO6CZoQmIHH31NaM0w1KTZu/TzVn8MWcmO40MOD6JbURmMgC6Wind1CCfX+BdZKTy+Og1F/9KAYg58pWkmna/DIDXFKAcL10bveevk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=GHsHKypO; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1727608539; c=relaxed/simple;
+	bh=DgrRPPlafnmB2qsdkk/HDLH5QeHR5NK6i4zLkW9bPvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eRa5eZzpQk3NmCBITscMhI1IhcZvY7FdLldi9gSQx/iNC0eq/WOvAhUpLyaUjwxzLiO3rLQdP1KFc1OkKUITAa+qulRd8cxza+W7LasZgZEVuNVgX7BIXdBMsgV1UFmWiN7EOm1WIj8AP/LhdnuHLtv9+WPDXI9dyqtFc/p9p5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipiEoNiu; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="GHsHKypO"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6ddfdeed0c9so26736387b3.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 22:11:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipiEoNiu"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2057835395aso37764225ad.3;
+        Sun, 29 Sep 2024 04:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1727586665; x=1728191465; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RuRZYVvei28eDcQ036NK5OQHIXSS5Y8RpN9am0sKM4c=;
-        b=GHsHKypOzHZ4bYmcxf3vuQbYwLqT19xD/oYNIZDOcf+BzFZF2/zMNczUgXiFzAVkZr
-         xUO+cXYbyBdN9zTQuuPy777zjGb2cTgzw6qkN2hATZBorRQtkw2Gm2681rymWU+23HOL
-         NQtllUjCR6LAybPlFJYGkcUjdDQmKKhtYgjZJajL7hgVzfqZLl5p0kaWsqqV1f2+fvJ5
-         Bmvd8RIEKg4cZsMpU5adABfDsFh9DAV2uOucmgfdY9X8/wKloG0fOsQI3UllhHBTTrBP
-         VO5oTf3C/ZHmGqAUbWVmfHpMIXtCErI3YbMD7t3Ad5LQlrPnDkr2/L3ujzzW3VbhijiI
-         YoLw==
+        d=gmail.com; s=20230601; t=1727608537; x=1728213337; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9gpg2ZDt70ZWqdKwXPQNweurZkvJMHHsrsVb/deHCRw=;
+        b=ipiEoNiuQboejXdtFXC/o4jL6IS7RbkjuhbFtsjmdQIGJjACzJDbIvePl+B1nb9Wva
+         OFf+AKtXP+TAG8hB8EdeRGOxaqETOpyPZ/Y7asYsckOMFORuogfz4EpJsjn+QiffLMQU
+         Gw3ZPpgvZbqRCSFMlJmlqLDtP2HbXWjSRyy8zAJqaZAP6pRewZTLs3spt8Li6TXHP/Jk
+         jwALkq9ADRhFJyd2/9q2JboNN037rVJROp+Sef7SVG6vz5manCZALd922WSgP4iam+F/
+         XFihOtIIcvmf09J/40KwFtOR08WpTochfgiNqR1DJwfnlN9SLLsinft07ocRIEIvo0Wo
+         XR4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727586665; x=1728191465;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RuRZYVvei28eDcQ036NK5OQHIXSS5Y8RpN9am0sKM4c=;
-        b=Pa7sqzS+/SjRs6v11Mzme+IIDEZAPwf45SOE7pMJc4RcjBXa/ekNJNE0xOkXx8XGQz
-         OPgL9bevZ+55Sc8L7SqxX2MayaVwRXbidKjT6gQbuuJJ/NabZTPi4fNtHkJw6bhet1CQ
-         viE/lH9cN1uSSFTlrp/DcWvt30n0rB7Wp048MgIOOpY6d5e8j3ImH+CsEy2cCCw+hPFt
-         jZGyQOuqv3JuJcSsBw1PBAx/pJKSvZ4Nn7S4oF+6w2hCl8vVI4jx02Z04YE176FS8BVl
-         WBj5xzBVD7A01+zysLv8LNqN67mzkMXk97Q+D8pGixqtDaFX3xSuTkWee5QPugeMPPkr
-         NVXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXSDG1rylpciyWsgBFxEcnJNb3TF516W0tMv47L5G9YSAaV0P6+/BIuFN5RvHFAxHiYgchKozwAdfD744pxPw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq9hR/WzGBU3Eleh2SsZtx9L3RbYjiG3NMorXavd8O275evbLQ
-	oyJhq7miEhFbxMSL2+VpUnINUjw8RQOyXFlLnG6muyQ2yGp9oNwo/pByKTkJHhqsmAoTKGTF549
-	j6wZDtejf0rCEmjkA/L07R8/OyBh0Ws61mT1Isw==
-X-Google-Smtp-Source: AGHT+IEbuPLIS0r0UAYXOL55sJ7MsrTfAySS4mECInBKGc5OhJ5B2QgDR/M498wdGIiCmNjzbtv73pF/ogEFQj1XJkw=
-X-Received: by 2002:a05:690c:26c5:b0:6b4:e3ca:3a76 with SMTP id
- 00721157ae682-6e247571063mr46680857b3.19.1727586665054; Sat, 28 Sep 2024
- 22:11:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727608537; x=1728213337;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9gpg2ZDt70ZWqdKwXPQNweurZkvJMHHsrsVb/deHCRw=;
+        b=eMNQgfNy49WcwamdacQpXMkiWlsHw4jCcIvSa+T76t/9sG6Vcr+20GKJU5vz6tiwNX
+         wA9R76DXtxoUoec+4MmWmakA2MHBsNtqqY8crA+Il0fdwt3fkPD5sYLWEPEEK7pHR4vi
+         ZzClEKJnvZ59nYzasnRVTD78gvzj4pSzEVZB16Buu21DMFJGq0PXV9j6XKdCtGTbh+E8
+         3uO7fK0Wj2h++970JauPvtADXHPRLdxt4Lx+zWp0RDSLatLAqDiitSJgr5Vfcn+IwF/d
+         SlNK2NPxXlFh6Eeg9W8axRuJoMFBl3P12c+UvunTYC812UzOuX2gVsxUvdCMQL662oYG
+         yLoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7Apqtlf9I2si36Lzmu8GX8VOB9rhp/RCeS/8vgad/aYrM3ZYvvLwviQyphqFThX8rQc1AkmNuVZcATHs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSRuEUjLHOprklDrd/W3SxSRJcENBSbAm2stXHuUSghSlPISyY
+	+1649+Wfussdalz3i7HRA68rvOnQwNwNCwmI8Qp6u/ve64iWC6SgZ1s8CRRoKLuv+w==
+X-Google-Smtp-Source: AGHT+IEkNbbcGJsyfF4mOcZ0PHb3hq3P4cr+YJFm+61tuVgx+PrASPFMNB7V7yliM5JTkWeiz+ptSg==
+X-Received: by 2002:a17:902:d484:b0:207:5d33:a1b8 with SMTP id d9443c01a7336-20b37b79d4bmr130838145ad.38.1727608537154;
+        Sun, 29 Sep 2024 04:15:37 -0700 (PDT)
+Received: from Hridesh-ArchLinux.am.students.amrita.edu ([2401:4900:6875:87f:e24c:5aa8:9689:9176])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e63cbasm37978685ad.282.2024.09.29.04.15.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 29 Sep 2024 04:15:36 -0700 (PDT)
+From: Hridesh MG <hridesh699@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Hridesh MG <hridesh699@gmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matt Gilbride <mattgilbride@google.com>
+Subject: [PATCH v3 1/2 RESEND] rust: kernel: clean up empty `///` lines
+Date: Sun, 29 Sep 2024 16:45:23 +0530
+Message-ID: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-19-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-19-ojeda@kernel.org>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 29 Sep 2024 01:10:54 -0400
-Message-ID: <CALNs47vPzH7CSjRh=jW0xNTh9=oajUs4SAkTE2OHLd5M2e065A@mail.gmail.com>
-Subject: Re: [PATCH 18/19] Documentation: rust: discuss `#[expect(...)]` in
- the guidelines
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 4, 2024 at 4:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> Discuss `#[expect(...)]` in the Lints sections of the coding guidelines
-> document, which is an upcoming feature in Rust 1.81.0, and explain that
-> it is generally to be preferred over `allow` unless there is a reason
-> not to use it (e.g. conditional compilation being involved).
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Remove unnecessary empty `///` lines in the rust docs.
 
-Would it be good to mention that a reason can be specified with
-`reason =3D "..."`? I don't think we use this anywhere yet.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1109
+Signed-off-by: Hridesh MG <hridesh699@gmail.com>
+---
+Changelog:
+v1->v2
+- Fixed typo in commit title and description
+- Removed backslashes in kernel::block::mq::Request
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240909161749.147076-1-hridesh699@gmail.com/
+
+v2->v3
+- Fixed From: tag in patch header
+- Link to v2: https://lore.kernel.org/rust-for-linux/aa1b4059dfac001945745db02b6f6d9db2e5d1cb.1726072795.git.hridesh699@gmail.com/
+---
+ rust/kernel/block/mq/request.rs | 1 -
+ rust/kernel/rbtree.rs           | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index a0e22827f3f4..313334b1bf18 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -30,7 +30,6 @@
+ /// D) Request is owned by driver with more than one `ARef` in existence
+ ///    (refcount > 2)
+ ///
+-///
+ /// We need to track A and B to ensure we fail tag to request conversions for
+ /// requests that are not owned by the driver.
+ ///
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index 25eb36fd1cdc..006f6e03aba5 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -1031,7 +1031,6 @@ fn next(&mut self) -> Option<Self::Item> {
+ 
+ /// A memory reservation for a red-black tree node.
+ ///
+-///
+ /// It contains the memory needed to hold a node that can be inserted into a red-black tree. One
+ /// can be obtained by directly allocating it ([`RBTreeNodeReservation::new`]).
+ pub struct RBTreeNodeReservation<K, V> {
+-- 
+2.46.1
+
