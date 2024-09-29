@@ -1,115 +1,99 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916A2166F3D;
-	Sun, 29 Sep 2024 13:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F38F6D;
+	Sun, 29 Sep 2024 14:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727617166; cv=none; b=Lt9LZiUtudmsGs1wCKfvhDeMIeXzWtMOcwGBDBuSGc6UnNHw3/Jnpq9YiB2Pi7+MY0ur1XAtLTYY2Q6533nQLjXJ3k69EibFW9EKJbszvqSQ/wvcctb2tHfEQ49WYUXeHnExWux1jKpyl5tkG7cypM4awvBkJG7kCjY3X7bqJKg=
+	t=1727621549; cv=none; b=uComKv/kahejMjrXnp0NKG8WbG0Eb6KSLxNU2l4R3S+On/+yqTIS1hSTxdkVOeEpxRwBEburb4J39U7ChDE1MEWAPMAucggDJ34sEuFjGBr3bGb6mf8iFou2lYtuL2Vk9bsOCA4CITsHVJRm2t1umAiY+Jr57jA4oZXC3k5RWg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727617166; c=relaxed/simple;
-	bh=uaSO7ckDMtFc4pXP6YriPegXGMuWJMzvuEi5DJM/9xg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=oXXxfShH80zlK0ep5+cbkCPk1a4A58OF6WbmqY4z4EBG6w+hiLWSgnX8c6rq67gtRtTU8nVrAxvA8lOM6hMEoFO3qKAGWPtVpsrQicB0AJoF5nD2azyZ+DKRxwOOY2hCg57S0o6H+9kpC2x+6yzOwpqMNx/l5MXtTit1ebOVk1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/M37Bsd; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727621549; c=relaxed/simple;
+	bh=KCzOpXBaRXTqzAhkCrLfiC9LHlzekTchiyskk2fq0FU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WnIcveJpb4q47pTsx80PM/t+H9kXIL+Z0hARh0kbH1PeV1ldg4exgILxvigll65iST/aE9364+OnADIendyJf51gTkDoXzljG80xEcQPLejVDn7oQt2OJH5+Hh4OaeRDeGBac03EsVyhbPeSrLFtFfGHZpC2G1p76P8p6WvuwCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQdwPrhL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/M37Bsd"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4585e25f42bso37578671cf.2;
-        Sun, 29 Sep 2024 06:39:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727617163; x=1728221963; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p7++xq5p4wh9ASglxW3dSL3G5J/U3R+n79SJr6cjhqI=;
-        b=Z/M37Bsd6ibclVD3R76fYsNlfpfjzCpXhWbxfnrsie0k4rcguN5qoRkXWXPFjJmrOv
-         80USbvNWmpZYFeqMip8PyeWbkvHKH2mfVYuRCvfq+V/stspjTLjSnLnm84HiUN7Ahylz
-         fQE3chu7lXaIQfm7aawlAImIjijGipwz7r+7XWbdjDuqsLmJhxNGtFNdCQhxB4kg9kmr
-         QocSSufaB1v6gkH9IpRJftKboBUBLOix1Yn1+1Hva5RU5jcDXiwu0Qj9FoG71RXVSe83
-         WITUPd2d8ily5IXbdwUuB90lkEjdIMrNYMPiERkwdVV3OHKPpWt3GKAUbnIzsoA/k/QI
-         4+8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727617163; x=1728221963;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p7++xq5p4wh9ASglxW3dSL3G5J/U3R+n79SJr6cjhqI=;
-        b=d+xQP3b/2RDTUN9Iq3VeiPfDbJ74Jp8yDFGds2cdsRIDU/VhopXgZt0Zyk/+zS1ikA
-         EgKzEzrdWn8oVInM/TCuAA5wjIYKfdwUGrOwgblufAxnxAEDrZEh2yNWuJL8/3h6xSC8
-         h7/k5ENfhWM84rciNyEjnywBykyPYQWwUFgNYuY7/ZNRGugH+TZu7Wra3GM2qoMKwNdF
-         VmQAoIMHlhhq6FnlEwPRQY/Hle0fDMrcWTYBUMXTYgSLAeN6kCu3hJSfakqyZ67qRl6i
-         cGCtSDlhjjFrRcLwZ+32Wn/mjGKynP5XT0uZ6cpQgM5pDDJiyHNZ1KpG1d/nERb5rOAX
-         tojQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWqxs8a+5HvW8GiYEeim3B0iyXLOxMQpJ+Wadkk7Nc2J2KSOGrXifJK/m6wptY/jNoWwjM+8PcRVzQ2a5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkJk3sTxNjg5P6zIZDsAuOA8Mnwc8M1rH7xo2J517Bx+DkDx9X
-	xyUdemZhy/w18TKfwRigWrQTVZidUdI07EFyznamE+msO8cUBlYWuR0p2eCU0WYRoEcZCinscgs
-	/Mn7tfnQ+OJ+gYVCyzgGgYGGrHMU=
-X-Google-Smtp-Source: AGHT+IFEfxKze9Slz0WhXyjFl1wqB05CgCt2uTtdWiRilZmu+NEwmt+rRZHtM1SON8q99zI0JxWQIjZBkhsWh8eiCao=
-X-Received: by 2002:a05:622a:18a2:b0:458:2523:c060 with SMTP id
- d75a77b69052e-45c9f230216mr158254861cf.29.1727617163495; Sun, 29 Sep 2024
- 06:39:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQdwPrhL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E881C4CEC5;
+	Sun, 29 Sep 2024 14:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727621549;
+	bh=KCzOpXBaRXTqzAhkCrLfiC9LHlzekTchiyskk2fq0FU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JQdwPrhLu3Mh8AlZYHEjdJFOe8Bi5q3qapODOo690Hb8/wjgQhe1Gx8WILJ9ikULa
+	 yMgf49TyiRSk5r2bjvzzNZ4DRL5PnxIrAba9IDO4SxmdrIk5Q+p4Eauqxj3lHG7PIo
+	 BT4JT+0ZV52FAiTdLKMeUTTC3dzfalNObRi5IaDVyFdPOztazsB5NeI+MN+C7BKqoK
+	 PiNBBu5Mm06+IQIEyWnZdHCFSvBsz/w2C0X/vFlMwxLsDZFOgkq2/gNvmCQNFt3avW
+	 gP4ynf9a1qZ7FV4bmh9Gw9JZOKT9cAbY/jT7graoOSbDtgQ2p314lbyFwpw6LD6TDu
+	 3ia4MLo5HoTtw==
+Date: Sun, 29 Sep 2024 16:52:21 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, akpm@linux-foundation.org,
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+	boris.brezillon@collabora.com, lina@asahilina.net,
+	mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 10/26] rust: treewide: switch to our kernel `Box` type
+Message-ID: <ZvlppcutUjuRChPK@pollux>
+References: <20240911225449.152928-1-dakr@kernel.org>
+ <20240911225449.152928-11-dakr@kernel.org>
+ <20240928195913.5b2c04d8.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Date: Sun, 29 Sep 2024 10:38:47 -0300
-Message-ID: <CAM_RzfbQK5fzqXQN89JCEzD1Bz5ZtQdAz3xD0yaYFx_GC7Pm0Q@mail.gmail.com>
-Subject: [PATCH 2/2] device: rust: change the name function
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com, 
-	mcgrof@kernel.org, russ.weight@linux.dev, dakr@redhat.com, 
-	a.hindborg@kernel.org
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240928195913.5b2c04d8.gary@garyguo.net>
 
-This function increments the refcount by this command
-"bindings::get_device(prt)"
-This can be confused because the function Arc::from_raw() from
-standard library, doesn't
-increment the refcount.
-Then, this function "Device::from_raw()" will be renamed for don't
-make confusion
-in the future.
+On Sat, Sep 28, 2024 at 07:59:13PM +0100, Gary Guo wrote:
+> On Thu, 12 Sep 2024 00:52:46 +0200
+> Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> > Now that we got the kernel `Box` type in place, convert all existing
+> > `Box` users to make use of it.
+> > 
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> 
+> Have you considered defaulting the `A` in `Box` to `Kmalloc`? This
+> would avoid doing a lot of tree-wide changes.
+> 
+> If you have a reason against it (I'm pretty sure you have), then
+> probably you should put it in the commit message.
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- rust/kernel/device.rs   | 2 +-
- rust/kernel/firmware.rs | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Yes, I want people to be forced to make an explicit decision about the allocator
+backend they choose, because this has relevant implications.
 
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 851018eef885..ecffaff041e0 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -51,7 +51,7 @@ impl Device {
-     ///
-     /// It must also be ensured that `bindings::device::release` can
-be called from any thread.
-     /// While not officially documented, this should be the case for
-any `struct device`.
--    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-+    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
-         // SAFETY: By the safety requirements, ptr is valid.
-         // Initially increase the reference count by one to
-compensate for the final decrement once
-         // this newly created `ARef<Device>` instance is dropped.
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index dee5b4b18aec..13a374a5cdb7 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
- ///
- /// # fn no_run() -> Result<(), Error> {
- /// # // SAFETY: *NOT* safe, just for the example to get an
-`ARef<Device>` instance
--/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-+/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
- ///
- /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
- /// let blob = fw.data();
--- 
-2.46.1
+For instance, it's likely to be unexpected to people coming from userspace Rust,
+that (with the default of `Kmalloc`) `Box` allocations larger than
+`KMALLOC_MAX_SIZE` would just fail.
+
+> 
+> Best,
+> Gary
+> 
+> > ---
+> >  drivers/block/rnull.rs            |  4 +--
+> >  rust/kernel/init.rs               | 51 ++++++++++++++++---------------
+> >  rust/kernel/init/__internal.rs    |  2 +-
+> >  rust/kernel/rbtree.rs             | 49 ++++++++++++++++-------------
+> >  rust/kernel/sync/arc.rs           | 17 +++++------
+> >  rust/kernel/sync/condvar.rs       |  4 +--
+> >  rust/kernel/sync/lock/mutex.rs    |  2 +-
+> >  rust/kernel/sync/lock/spinlock.rs |  2 +-
+> >  rust/kernel/workqueue.rs          | 20 ++++++------
+> >  rust/macros/lib.rs                |  6 ++--
+> >  10 files changed, 81 insertions(+), 76 deletions(-)
+> 
