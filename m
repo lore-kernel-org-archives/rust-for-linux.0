@@ -1,67 +1,67 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281C033985
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 04:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF0718641
+	for <rust-for-linux@vger.kernel.org>; Sun, 29 Sep 2024 04:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727584836; cv=none; b=fvByhcXqyYKhOEMUpHMJD0OPVAPVklNs7dfmRTYYS2kcANuse/tVnr1etBm226hcrny+2dxIs99XaDfF3AgS/sTQL4iOVaPfgX2eWNs6u063O+/+gUimSTc+NennWOpqWqAfYD79N21TMdgYGCoF1Dm9PyAAg984CphISmn+Rgc=
+	t=1727584874; cv=none; b=rmLmuF5+so9Wd/UUbNBQkcjjKzCAlYHqPlmKQ+3po+DyXBZl5Vvf6M3uOfNnnYW1ZvNvVDeKHRqWAGsbniJYOBLIWGoHIRYCF9vt3BC6Dj4NrUImtniREPZdfqLCd4N7PZ8hIVM7kfJUEt5BDJrDwYi8mcy/fiUkP1LS0xO9sZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727584836; c=relaxed/simple;
-	bh=gEGnP0STUu3Lpzltu3JSxCW2N1DRULTC36U1Qhm75Lg=;
+	s=arc-20240116; t=1727584874; c=relaxed/simple;
+	bh=SMUGHU1tlAHroUFUxOTLiqDZd4Tf7fOdjUDfe7xlMgs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=czos33x7fWp62+OrDySclarzqDODwAnz8Hjbx3+OHGb2a6enHrUe8ewRVEeVqtdNYvYquAxdzxXBce4Sgv8rZPMFQM8KdQfUQt2FwYmksv1FAF4ZhOXbEwAyTt3BaxozhtLau8gxEHjJrJPhViVw7vyYOIgxiaO140GWpS4UcTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=O6kx7enY; arc=none smtp.client-ip=209.85.219.180
+	 To:Cc:Content-Type; b=CcQOdhYiZT+D4kaxP94mxyhAKlrcPQfXxtqKQo3a0r/YE+6+MaSe4ApWKMHEy7LZ5a4oH2mAKIUq8E8BxtkIQiYKIWD3CBTf2KhvZxst1eTFwZ3Y7+h5s/d91bwYghyRvE6rCMDGMQSCzsPG2cLhooJ9GxZb8QlON67NaA6Pp8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=caL3mMxU; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="O6kx7enY"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e24985919c8so3348427276.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 21:40:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="caL3mMxU"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6e22cb0b19aso28628567b3.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 28 Sep 2024 21:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1727584833; x=1728189633; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1727584871; x=1728189671; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VV2YxyLVgm/A21lFnrbUS0xzE5yvl49iPMLTKyEnGNo=;
-        b=O6kx7enYpPalJffa9dWJOiyO/4Tvcq4h44mWqv8vKPn0SsCmb4iZF5X96f4S9BmCem
-         bw8TLoG1a5/xOQjp/yHVYI9ZXL9i919TzXQrn3JJy06ge47igQYKT1CNy1b7BoZRf+lV
-         7eAxgH4whMmqbZpQxCgqjZP/UVbErPrhfc6LSupOS4oMiLZVfs0wgGfkbkyLItg8UQ4u
-         mvfna2k6XmEWhEY8+rCg4JpcqkEvdf+SKCviN8L7wl0RGPYeRjzmav1IGaG7JEBGloPx
-         Nc46Wie8IsHqdU0rlWEk2yYXQu1pMOT1AUn+QVoq5rGgc7HbeObiLNhFIRiZEmasWyda
-         06hA==
+        bh=SMUGHU1tlAHroUFUxOTLiqDZd4Tf7fOdjUDfe7xlMgs=;
+        b=caL3mMxUwBYIaSCJAvDW5sMooFKThCuGPaYzOuNj4S/GfpfJ5hqwuFTQ9MnwYcWuBB
+         El8XGyT0vfkAGduZ27qC+12F/J+Zkqf/C+zWiamasOA1WvbB9o9BBy8EurkdY4PZvxrZ
+         RkDNmsqAO6lbLcp5na4Mlx5lKtiOVR9k6whMpAQCuLjYZLomjwtrO0zsNGFijNH1hPa3
+         x+yoTFwOuETTAMU67flY4d1bdYutxb5NK3DesAUgNy9+qI3DV/qyhoSTmdQcPU8Yj9GB
+         LFXZTNPCsw7JTR12kpnBU4qrhmmVOgihUjeATZdwbJ86KETATnA/Ca6VefXmx5hTr4ZQ
+         mRtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727584833; x=1728189633;
+        d=1e100.net; s=20230601; t=1727584871; x=1728189671;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VV2YxyLVgm/A21lFnrbUS0xzE5yvl49iPMLTKyEnGNo=;
-        b=Rgr6h/idI3Wg7g/PjRV0sT4bjtejthlhUfidcz+HE8ogN0zgjvFljnAuBgwCljdf+7
-         EPJFxD06tDZgXSFivVDi+lqGYOsxkmySphNLXjjAtA0+VSr9pBPGXmLbCF9w7a9vXbmy
-         NVCMpjj1iW317Qx4cDUmTLlXOwDyNRgLq+rRNHHl8BAf9EHp9lcbDy7q4C4GLcwbTcRO
-         zj9B8xjtBDs/aOqVh4f+OmvzeGN4/W991Tt0kO2GY+FPnPKL/LlBd/uW2NlSN1MKSVaj
-         dRJMIeozvCwcDs2iff5XselZKmcD2F6FrrrjYnWyepXyk0UoNMNNjBpCHV2rI5e5jieo
-         +1qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOaxZjpv7ZMBY5a2NRCXQM2HH3NZvx7vfrmOlVDT2ibUb8y2UcedCFjk3vyyvKZbEyAjtE5M/QjSp9Qx7gQg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4+pFsPuKqmNmAcYJP+XGsVQSWZDp/yJXD8DmTOhJqXJp64HYb
-	Isdf0F/3Xwn++GW6S2m7QVglRzJ73eFinUHAnLp/tAbd5LtWxlQEaArNOaJzNQy2BHiBiILRqEg
-	I9vgKA2hfNPpyrM81/tMEuqcHk1pibvRH9VVNgg==
-X-Google-Smtp-Source: AGHT+IE4B4r6X5b8t4Dk7RmIMj8MQORtpJ9++eFIxvMdYYJl/soJ9aCmoTuPzU+LqekFU43oyGbJtCB5UAMgPSvpC74=
-X-Received: by 2002:a05:6902:2493:b0:e25:d0c9:b0c6 with SMTP id
- 3f1490d57ef6-e2604b5f2bemr5869513276.11.1727584833057; Sat, 28 Sep 2024
- 21:40:33 -0700 (PDT)
+        bh=SMUGHU1tlAHroUFUxOTLiqDZd4Tf7fOdjUDfe7xlMgs=;
+        b=FURuUs9bXTTrkT8dsitim91rldJRGjCLJf0+4RZfInROKYwbhgp+oyqP6ElRH39OdM
+         1uJmY3iC+Zhp75D4CB4fohQHqYTIgF4/5MmHsOZ717oVI3OzTCm+ODymzCDPMkY/dDAK
+         hQsLTPrD1nxuwKjUOoCjmDxEo1KHZ81Pwj9gNHFjbeUtfh0rUoWTlWoCJBUqyLfZ7Kb8
+         64eF70sdnGgwtp9nkql15ENqZwvGVLVj/1p2M8PIxvEm5pU/bL06UpC0yEEJsUkIFtwo
+         ASuqb8cgx5WB5urwuGTaL/KZsgBciF1eUGnX+vC7h0r9GvN3ELiZx9CaYo56z8e4FWmp
+         bQwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxigoPneA7FjbPyHyHDL58ac6eXtkLao0NWCMg0cANng9NFHcO+47z/YnLq45jVoVp2wFgp1yPqNrO67KU2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQngR+h/E2qfn6gYte2V/INuZeAGpLOMv9PTBWkCdh2/JvswCr
+	MXTqXpJ40ehLM2lpKBYRg6nE9Y9LbNdLecDMQqAbbR48NjYoaHlg78RB3U6yTj/JoSuv5KvAWAJ
+	gGD4/JMFYle/9Ju7hsadFqkJ4LzJ8zVLFWGuU4w==
+X-Google-Smtp-Source: AGHT+IG8c/QIBgXtt/wcc0S3Qo6phz3DG44MEpR9Z8fgUtflC0qMPw0T/Tm/a2T5GSPU1vgnITgG5tJX/MgDJSwzvC4=
+X-Received: by 2002:a05:690c:60c7:b0:6e2:1570:2d3d with SMTP id
+ 00721157ae682-6e2473b69d0mr63444167b3.0.1727584871504; Sat, 28 Sep 2024
+ 21:41:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-9-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-9-ojeda@kernel.org>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-10-ojeda@kernel.org>
+In-Reply-To: <20240904204347.168520-10-ojeda@kernel.org>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 29 Sep 2024 00:40:22 -0400
-Message-ID: <CALNs47uC43vixDMt935BB-fuDJEKFE-SPFmSQp4Nt3v+O9wfbQ@mail.gmail.com>
-Subject: Re: [PATCH 08/19] rust: enable `rustdoc::unescaped_backticks` lint
+Date: Sun, 29 Sep 2024 00:41:00 -0400
+Message-ID: <CALNs47sVrMT8n0zmpOsxymkDvE+==s2MXAv+P3oGYmY81cib2w@mail.gmail.com>
+Subject: Re: [PATCH 09/19] rust: init: remove unneeded `#[allow(clippy::disallowed_names)]`
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -75,32 +75,11 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Sep 4, 2024 at 4:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
 e:
 >
-> In Rust 1.71.0, `rustdoc` added the `unescaped_backticks` lint, which
-> detects what are typically typos in Markdown formatting regarding inline
-> code [1], e.g. from the Rust standard library:
+> These few cases, unlike others in the same file, did not need the `allow`=
+.
 >
->     /// ... to `deref`/`deref_mut`` must ...
+> Thus clean them up.
 >
->     /// ... use [`from_mut`]`. Specifically, ...
->
-> It does not seem to have almost any false positives, from the experience
-> of enabling it in the Rust standard library [2], which will be checked
-> starting with Rust 1.82.0. The maintainers also confirmed it is ready
-> to be used.
->
-> Thus enable it.
->
-> Link: https://doc.rust-lang.org/rustdoc/lints.html#unescaped_backticks [1=
-]
-> Link: https://github.com/rust-lang/rust/pull/128307 [2]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
-
-> +# Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` s=
-hould
-> +# not be needed -- see https://github.com/rust-lang/rust/pull/128307.
-> +rustdoc-core: private skip_flags =3D -Wrustdoc::unescaped_backticks
-
-Maybe we should use something like FIXME(msrv) so things like this are
-easy to find?
