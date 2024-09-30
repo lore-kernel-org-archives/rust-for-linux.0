@@ -1,84 +1,90 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF3815C15E
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 07:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B327417B4FC;
+	Mon, 30 Sep 2024 08:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727683006; cv=none; b=kYQ6WwbMI72PlZArJJmeqyjlSyaUhZfcDPaXBke4CcCWNb4Yv0ZLA/4liOjz5N9RpD4vKg4W3eDB1DKbFEnMKB19d8ghUBtNi4fVzHJ75mLTi8noeXqy6ikMSznRW7aai18a5Lqy22PS7dWRLk/fOPuR9mUrhYsBJEaYHqpUL/0=
+	t=1727686168; cv=none; b=tO950X/6dKbDdFjA2dJOEGJ/jnuSUBwhfk3zJJlTtamlcu/grCZaX8rh1iX+F72juV75CKznJCgmKdPDz96fgXxVdCHoce4UiyyBpIETddzy8+aVjdhbN6cReAaK3xEfVbGT+GDerLRGeV3WTTptQi80my3MuZrgIuzHw2TWo9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727683006; c=relaxed/simple;
-	bh=opIQ+15UPIlBq6oK2ZBUTlibM3yyXEGkuISr1NYeRDM=;
+	s=arc-20240116; t=1727686168; c=relaxed/simple;
+	bh=lqTiyXirW32QfOM0FkJASZM8KV41WbXnidi5f4JRW4w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lDXH2jgTJnCCml4Zpq7cZZ3TDcVCbV/WoJ9hoHCRm5tMgzl1NIISWG3pWNQdZFMK+ElktU2s0XU4Cu6qZ1D8ft+/qMr0jG2P2PoStJcNHLF6hUCJggJHBWNVKMSts7put3vrY5m3c02ctQkEX8T1tLl8uoN7wx4aehygHYxT7+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nrDY5IMh; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=uTHNt0vmBngawjBDlQmnePk8FhzUJUG6HWDvfgm9TxeSA8q9yhbhX02xUE9l9cyRU253eZmxtM5ZXilVNDeRYKR0BwKsBSeCIQd9hTjbwoKLOyM5t5+8k+ySgK4yLdiWHXux8Gy2cyvK7DAqP4D4zdNtv1w9LkDMH//cLsVp4Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2xOjVht; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nrDY5IMh"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42e5e758093so31995425e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 00:56:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2xOjVht"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e0ad414718so804247a91.2;
+        Mon, 30 Sep 2024 01:49:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727683003; x=1728287803; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727686166; x=1728290966; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=opIQ+15UPIlBq6oK2ZBUTlibM3yyXEGkuISr1NYeRDM=;
-        b=nrDY5IMhRl9eMFCP23ybdONr1wqPlqySshnAc2109Qjgzu6K7nj1IWTRvqr6p5KVUb
-         qeJNg1eem1/eX+2WAVkDTBk5Mn8iwxB6/6dco2eyKtC/K8MBGy7H+5aKm5MTLIrHP4Am
-         gWF6R+eBnDOnPBf8MMvrNmERS7ezcIy1L5T3M91Ou3sbi8clZkwqBynJOGqrEJCQrHp8
-         VlO6eqjCuQdBYOjeWMGGWdDeyAn/xY+4SPCcFIvqX23EJqYU2nE5gfP94tHuFNbB2eqm
-         PRz8Tx9xmvuXNa1/c+EKLGw5tTJ8sILRNexVIuMFdKuhfHna7fntFOr17ZtUubx97FTj
-         kq4A==
+        bh=lqTiyXirW32QfOM0FkJASZM8KV41WbXnidi5f4JRW4w=;
+        b=C2xOjVhtkDNUTbp+PGhHWfsDvI59hNXPncTAH/V9ODcIN269zMD4zd4SWHRZnlMyU1
+         Emh+o38hjUBAFxE9jEnKC+KBiGeEoBjN+7Ydg2pT0N3OG65/h9QHaXkvcqG/cYK91yVv
+         aXrumN7Eg2Zn6Bx2S4Fv+pGPzt+IroN6+b8+m6sK5yuqh4SR1xdciCOgtaH2GPWHpM6q
+         t7nwhsaVnR7rsqiWmvXxNnwfSQFdTNdrz/dEgD+zFxovzWTqmHarL4e2ql/hu8P4fukM
+         ZUTgnjR27WfnHICk3b8BCA1+MaRNKRj+iBbN6aOol/Ci0LH3ec8E/3Qttus4ohGM483l
+         BhMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727683003; x=1728287803;
+        d=1e100.net; s=20230601; t=1727686166; x=1728290966;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=opIQ+15UPIlBq6oK2ZBUTlibM3yyXEGkuISr1NYeRDM=;
-        b=dsczrC48YTIlMd9Ir9+mYlCuBVCw3X3PufklZpxND+0E4v2Ue5lHYNL+oGO/7PomYX
-         th7uDd7mxaP8Pycsr47twlrwSBXyD7iPAHlD/pTZeDNEgx4CvmkyUwzJVpEVRJJNBRy5
-         9fhnRMgWrg13bLgn74EM0LRXcuKd+jX/h8yz2gz+UVrXYine6RDfQl8jmi5w9U6CmNYB
-         xEtGInYoHvTprM4wrYMUSJNcF63izIIHQJA3zoMz8QXve5EBwLAf1yvD1qhzs+bnfmj6
-         AYWLus4zkXAA82M5RWI1BoCjoLYbM+F9YsDkGTjeoaDamoy8NNFoC+UXGmGBnXG5rB0/
-         w+3A==
-X-Forwarded-Encrypted: i=1; AJvYcCXxX/aoZ6dAzTPd5LFtfWy/xkWnq/fM92wURpsGw5qzTe0XeTwnK9aKFOyJHxQ1Za988B8sUdWtcThQ5J+1sw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqTCNhLdlp9N1QPLxEn3EMUSt7nVGCsai09taeWnc2DXKcBoXu
-	wNu593z5aGFBO08h1ZsyBN+YLFd4Os0TNs6Nd4bm8IPKgO12mC/n6w2F2hPXSG118LY5r9SwUDz
-	EnM2J8BKqLZAxaKuiM+265/hdChpcKIQhDrep
-X-Google-Smtp-Source: AGHT+IGhGaW1zqKT8yn05vWWEP8GLZvyvXqiwd5BvKXnlWTUr88JEBapDb2DjS/xyOHesOaTzvQckUMnBcjk8WP2CBQ=
-X-Received: by 2002:adf:f582:0:b0:374:bb32:656c with SMTP id
- ffacd0b85a97d-37cd5b12572mr7051985f8f.39.1727683003348; Mon, 30 Sep 2024
- 00:56:43 -0700 (PDT)
+        bh=lqTiyXirW32QfOM0FkJASZM8KV41WbXnidi5f4JRW4w=;
+        b=VP1ptlOyEI+gv+dhFTxidhM/ndZs25IqZlS9Cx9DrBO5fWAlUSjyV3Qo8g5cLqxRk4
+         /nguPCzw9aBradW5gjKUMTK60pX5mBZ9qWNui+GKUWtEf9V7GFKr9pXW8yCeHEhiVYcC
+         5PeyiWtx1uyGY/W0h52UHHW1UvLsnhShVb6Ki8TCnUzTKhfqQ15tDrnIMAJwlTGDKW09
+         pG7N58+P2lIVjej6TYc/zOAn0VjggTChrf18+lYjg8QAleWUVTt7EbQeiTyPjRJZa65x
+         Pny5CmIDdUavsV07vCO23OHQCSlU2R7XCF41FtSFrDlTdLfc0CnJKykftckvPdVVFthW
+         UL1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXo/rNBVVtRDXiEW51hzTx0h3wWrHKNGNp8TT5TVlJmKHKJKqlfbO32uPkHCTmhvf+XiTI8WYsFNCsZNZg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSa/BOeht4GDrZSr0WeBrPhFFdq1h93FrWWHpLxjTPgxEok/su
+	xu3nXU1Xj07Co20caYTAnbPleu3hFJ6qQPBT0pPfS9A5vugmAuNtMIKSRA1dCjf9Tr8RMJ/Sq2m
+	5sb9Xlyj4ORK3l3H9gu6+EwzEj2s=
+X-Google-Smtp-Source: AGHT+IEQ1tdrQhsCvZI+arTKIhH29l9Gv8+v9ylxuggJaKyYGTRwbYu39EbSEyWqUiwQKvMqwVaUPKmwadNyJOzltA8=
+X-Received: by 2002:a05:6a20:a113:b0:1cf:2be2:6524 with SMTP id
+ adf61e73a8af0-1d509ba84f7mr5326919637.10.1727686166045; Mon, 30 Sep 2024
+ 01:49:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240918212052.8790-1-nells@linux.microsoft.com>
-In-Reply-To: <20240918212052.8790-1-nells@linux.microsoft.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 30 Sep 2024 09:56:31 +0200
-Message-ID: <CAH5fLggAVUDVXOm3foVnLwyp5=dZVckut87FdvURgXwgZQNYLw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: types: Add examples for the `Either` type
-To: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, tmgross@umich.edu, 
-	linux@obei.io, kernel@valentinobst.de, kent.overstreet@gmail.com, 
-	matthew.d.roper@intel.com, kartikprajapati987@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
+In-Reply-To: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 30 Sep 2024 10:49:12 +0200
+Message-ID: <CANiq72mrcMq7KKn5UiT2GuZPCeFMtr63tj9JTHnVLfzmYDgauQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2 RESEND] rust: kernel: clean up empty `///` lines
+To: Hridesh MG <hridesh699@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
+	Matt Gilbride <mattgilbride@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 18, 2024 at 11:21=E2=80=AFPM Nell Shamrell-Harrington
-<nells@linux.microsoft.com> wrote:
+On Sun, Sep 29, 2024 at 1:15=E2=80=AFPM Hridesh MG <hridesh699@gmail.com> w=
+rote:
 >
-> Add examples for the `Either` type
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Signed-off-by: Hridesh MG <hridesh699@gmail.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+The patch looks good, thanks!
+
+However, the kernel needs known identities to accept patches -- I know
+you added "MG" since the first version when I asked, but is that your
+full surname? i.e. it appears to be initials -- if they are not, then
+I apologize in advance.
+
+Cheers,
+Miguel
