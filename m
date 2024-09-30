@@ -1,123 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4315218E755;
-	Mon, 30 Sep 2024 13:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B05218E779;
+	Mon, 30 Sep 2024 13:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727702025; cv=none; b=CMOHmMYVk1jxhikbqiXHCtUE/6C3gbLqYsz0L9nLV39DdFFwU9WXNQ25P7f4wU2K+0zLPzd62swMxmH2mNAF7XlxIYo18+/crCmctctKmDkJtPiFAnMcvKRYgF4Jxz3THVY72BoA0B0qxBfpHtCWyNDlli3/Bbyg/485cISyLqI=
+	t=1727703691; cv=none; b=VAU6+WzA8aEj4wZpjJ7Y3Si0Y3xIKotj+/PvA6/QP73OEoMXmiArYRQzvpJmTPOid/yOL8iUdZi8iNuNY7XD/6CznEn87kevnnxXFLsyqUOXjLXig8GG1fQ+lmoQKy6SH1bf15n5i9b1pMijOOEGsLn8GkMUZSrYPCN0Grf3rhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727702025; c=relaxed/simple;
-	bh=wnhQmf6b9KijXUnLutsEx25F8v79k5sda79kxBSTxRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sM3zF+SmZTt2AQbUJ43QpYWfXneUg6kExTro/EjYrcGd80W/e3dzBB84tKDhEPu50K5Hb7GlYNVdkNZAENU4N/R3xIC9Hykfhbi1Z4TCsM2qzIcNt7HzEhTjomBT1qll9vycmpAQJjCVXZiRSya7OCVLkz7nyGb64LP4J5hHNUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2L+WaLC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727703691; c=relaxed/simple;
+	bh=M2qViDpasppWgOmVAPajz8rAxi9prqGpUdCk9L5cHMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MiL11ZxYHt9iZHRXumtitc5AbP2urYxJaLLYZQDfMRhn1fAB8vUPUhU1SIzuovEal/V40F2H/vFP9Ath3noQJJkPxiXY5+NgaPpao5VHgpsQlx/hQnIf4tHBwnIb5tmgVv7FE4DHjQPWyVt6jIiPvhwanvbE28kG9AA1v+aogaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gx2yNAQh; arc=none smtp.client-ip=209.85.166.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2L+WaLC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84702C4AF0B;
-	Mon, 30 Sep 2024 13:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727702024;
-	bh=wnhQmf6b9KijXUnLutsEx25F8v79k5sda79kxBSTxRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T2L+WaLCsNVCz/b++Y8phnIC2k/qXkmpvwPct75K3z1xzrVGGVzEVFHZrPL7PyL+G
-	 7Gatkyt/YGePfTDYw1AkPJ9B5NSoNqUDgLMEInjUyrq7S9u5q1u5mM+R8ppDhqDo2P
-	 DHCe5FB+dDcnHyxFBkH20jsrU72gAVMsCuG21+iNH1baSGqH1jfcA9C6FrI85qrDOQ
-	 N+1XSiPP0uZflhJ3Tq1/EC9uBmqqyzx8m+G80vE1MfrC2EybCb5yW9LPf9CAPd8A4Y
-	 MMFfA7X9yokP4xK4W4tO72T0nHH/1wh0pGWkYtde1aT9xj6vdAxuyJ57UVRWy1M2Sc
-	 MyzTJJ5xlfnEA==
-Date: Mon, 30 Sep 2024 15:13:38 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
-	dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] device: rust: change the name function
-Message-ID: <ZvqkAuxWZIMZshN_@pollux>
-References: <20240930123957.49181-1-trintaeoitogc@gmail.com>
- <20240930123957.49181-2-trintaeoitogc@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gx2yNAQh"
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-82cdc21b5d8so242162939f.3;
+        Mon, 30 Sep 2024 06:41:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727703689; x=1728308489; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UVt6XafWgMWCoTa19tQEGdIpDNZtiBMIFTEzYFLIRmY=;
+        b=gx2yNAQhF2VmLP1DKFFAaS5Wn+B48xGz2FOg7cIy0ocNWn7Ch6Yt3QdBm/U8UHy4c5
+         mPY4i3NjwgFgdx/SLhakWDJbhyo9O+A+Mp4HbC7aSCifDiVyysGQ1XhryLN6tuemHsK3
+         1YkWSzNCEflCxAOgX7mK+4hcmH81ueh68IC8hUrOt0A74ib7pgN13lUB9Kr9OzCStyz9
+         ntgSSPeupsnkktbNqCi/qYgOtuemmwo95lPfLsYqpo/H+G6yPlx66X15XomTA6vopgEm
+         wpD0brOA+sIf1InzzBz7YaJZtO4MCsvQxzqUR7qQoUj6NxXhIr98uWn3OimCVzOHzlNQ
+         LlYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727703689; x=1728308489;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UVt6XafWgMWCoTa19tQEGdIpDNZtiBMIFTEzYFLIRmY=;
+        b=sib7vEAWia9BBHGBvOr0me1zdB2m9kVK43oP0js9Jxh2/KJGkHuVrlNwxiMwhRtUXF
+         HL6XRz2evu6toDDGKyCpokgjYtH8imggy8iINbcSythr8Jtp6udaiDhfnLSAhBi2faYK
+         h0Y/s4rR5+V2stkKaqN/JKGlFfuzF9YoRu3Q10DC9QxpXrxNN05djKrrxIcpbNYSKt+5
+         Y0bbbiP41eacvRDumBFgm6Gi3RijQv/dYeuziccdjeAaDh6q6xsA8H5NnuWSwXMY0m4j
+         6yNGQQ5H/n7J/iNPTtV/lBsuogPwzIZC5ShIj22lt9zBndE0eOjrWEkR2L9To+P4lFkO
+         4uCQ==
+X-Gm-Message-State: AOJu0YyPCCSzLTaqxR8ZFf5SQ7Vn09dPZvtBoY2cMkuwwV9X44B3vEcY
+	nz544LMnLG2Z8Q1MEEx0wkiOwfyS0SmDJtDYOqtSn/oCOtEkQTBFQmkcbw==
+X-Google-Smtp-Source: AGHT+IHIMVIwbvg3zEa5ZaBNu4XUVEyL/ww7nafE1KzVNbaB1mLETOdqKEBkrga6QzcW7vmR7nQEDg==
+X-Received: by 2002:a05:6e02:1d84:b0:3a3:4164:eecd with SMTP id e9e14a558f8ab-3a34517abd7mr107364275ab.15.1727703689318;
+        Mon, 30 Sep 2024 06:41:29 -0700 (PDT)
+Received: from mew.. (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e6db2927c7sm6582308a12.1.2024.09.30.06.41.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 06:41:28 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	aliceryhl@google.com
+Subject: [PATCH net-next v1] rust: net::phy always define device_table in module_phy_driver macro
+Date: Mon, 30 Sep 2024 13:40:37 +0000
+Message-ID: <20240930134038.1309-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240930123957.49181-2-trintaeoitogc@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 30, 2024 at 09:39:56AM -0300, Guilherme Giacomo Simoes wrote:
-> This function increment the refcount by this command "bindings::get_device(prt)".
+device_table in module_phy_driver macro is defined only when the
+driver is built as a module. So a PHY driver imports phy::DeviceId
+module in the following way then hits `unused import` warning when
+it's compiled as built-in:
 
-'increments', 'bindings::get_device(ptr)'
+ use kernel::net::phy::DeviceId;
 
-I'd also say 'by a call to' instead of 'by this command'.
+ kernel::module_phy_driver! {
+     drivers: [PhyQT2025],
+     device_table: [
+        DeviceId::new_with_driver::<PhyQT2025>(),
+     ],
 
-> This can be confuse becuase, the function Arc::from_raw() from standard library, don't increment the refcount.
+Put device_table in a const. It's not included in the kernel image if
+unused (when the driver is compiled as built-in), and the compiler
+doesn't complain.
 
-Neither the stdlib one, nor the kernel one.
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/net/phy.rs | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-> Then, this function "Device::from_raw()" will be renamed for don't make confusing in the future.
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 910ce867480a..801907fba199 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -848,9 +848,7 @@ const fn as_int(&self) -> u32 {
+ ///     }
+ /// };
+ ///
+-/// #[cfg(MODULE)]
+-/// #[no_mangle]
+-/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = [
++/// const _DEVICE_TABLE: [::kernel::bindings::mdio_device_id; 2] = [
+ ///     ::kernel::bindings::mdio_device_id {
+ ///         phy_id: 0x00000001,
+ ///         phy_id_mask: 0xffffffff,
+@@ -860,6 +858,9 @@ const fn as_int(&self) -> u32 {
+ ///         phy_id_mask: 0,
+ ///     },
+ /// ];
++/// #[cfg(MODULE)]
++/// #[no_mangle]
++/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = _DEVICE_TABLE;
+ /// ```
+ #[macro_export]
+ macro_rules! module_phy_driver {
+@@ -871,9 +872,7 @@ macro_rules! module_phy_driver {
+ 
+     (@device_table [$($dev:expr),+]) => {
+         // SAFETY: C will not read off the end of this constant since the last element is zero.
+-        #[cfg(MODULE)]
+-        #[no_mangle]
+-        static __mod_mdio__phydev_device_table: [$crate::bindings::mdio_device_id;
++        const _DEVICE_TABLE: [$crate::bindings::mdio_device_id;
+             $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = [
+             $($dev.mdio_device_id()),+,
+             $crate::bindings::mdio_device_id {
+@@ -881,6 +880,11 @@ macro_rules! module_phy_driver {
+                 phy_id_mask: 0
+             }
+         ];
++
++        #[cfg(MODULE)]
++        #[no_mangle]
++        static __mod_mdio__phydev_device_table: [$crate::bindings::mdio_device_id;
++            $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = _DEVICE_TABLE;
+     };
+ 
+     (drivers: [$($driver:ident),+ $(,)?], device_table: [$($dev:expr),+ $(,)?], $($f:tt)*) => {
 
-Prefer the imperative, e.g. "Hence, rename `Device::from_raw` to avoid
-confusion with other `from_raw` semantics."
+base-commit: c824deb1a89755f70156b5cdaf569fca80698719
+-- 
+2.34.1
 
-> 
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-
-Please make sure to run ./scripts/checkpatch.pl before submitting patches.
-
-I see the following two warnings:
-
-WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
-#6:
-This function increment the refcount by this command "bindings::get_device(prt)".
-
-WARNING: 'becuase' may be misspelled - perhaps 'because'?
-#7:
-This can be confuse becuase, the function Arc::from_raw() from standard library, don't increment the refcount.
-
-Please also use a more descriptive commit summary, e.g.
-"rust: device: rename `Device::from_raw`".
-
-> ---
->  rust/kernel/device.rs   | 2 +-
->  rust/kernel/firmware.rs | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 851018eef885..ecffaff041e0 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -51,7 +51,7 @@ impl Device {
->      ///
->      /// It must also be ensured that `bindings::device::release` can be called from any thread.
->      /// While not officially documented, this should be the case for any `struct device`.
-> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
-
-As a follow-up, it probably makes sense to also change the function body to
-just: `unsafe { Self::as_ref(ptr) }.into()`.
-
->          // SAFETY: By the safety requirements, ptr is valid.
->          // Initially increase the reference count by one to compensate for the final decrement once
->          // this newly created `ARef<Device>` instance is dropped.
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index dee5b4b18aec..13a374a5cdb7 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
->  ///
->  /// # fn no_run() -> Result<(), Error> {
->  /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
-> -/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-> +/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
->  ///
->  /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
->  /// let blob = fw.data();
-> -- 
-> 2.46.2
-> 
