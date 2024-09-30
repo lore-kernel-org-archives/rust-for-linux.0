@@ -1,90 +1,109 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B327417B4FC;
-	Mon, 30 Sep 2024 08:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1447717B4FF;
+	Mon, 30 Sep 2024 09:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727686168; cv=none; b=tO950X/6dKbDdFjA2dJOEGJ/jnuSUBwhfk3zJJlTtamlcu/grCZaX8rh1iX+F72juV75CKznJCgmKdPDz96fgXxVdCHoce4UiyyBpIETddzy8+aVjdhbN6cReAaK3xEfVbGT+GDerLRGeV3WTTptQi80my3MuZrgIuzHw2TWo9o=
+	t=1727689008; cv=none; b=cn67wTdAgCisJZd+Ck0tdLMx63/9eYPEM3gWd6KB04hLASMDMbGKW8AOPttZRrNdIoNw0kGO+RitsnzYIj7m7xMlHJyul+CQxCcgSPktPaUjNmLCN4tCt9W8HXI9OvGj5DMXIoixRMMo1vbLkBn3nbu2Lt9Xshh6pN2CoMhLViY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727686168; c=relaxed/simple;
-	bh=lqTiyXirW32QfOM0FkJASZM8KV41WbXnidi5f4JRW4w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uTHNt0vmBngawjBDlQmnePk8FhzUJUG6HWDvfgm9TxeSA8q9yhbhX02xUE9l9cyRU253eZmxtM5ZXilVNDeRYKR0BwKsBSeCIQd9hTjbwoKLOyM5t5+8k+ySgK4yLdiWHXux8Gy2cyvK7DAqP4D4zdNtv1w9LkDMH//cLsVp4Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2xOjVht; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727689008; c=relaxed/simple;
+	bh=0l1QIaZpXfV94Reph5s6R6yN4fGgxSRIVkO1DwBfha8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DrVZlr0paxORXgzK4EhCUvk/fHOZrAXf5B5JxxfBVRHBKmgRja162z3gjKsGxCs414tH3PEiSad1OF985quKvo4l9/AeieGT/PXZTzeY8EeOsSvd3yKG5GNyYVYjx9TkWrwyl7YNFYmjy3gznuftBBsO1Mk1y6kBI+5MBKz6vag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TuOVTlXU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hcL3FtD+; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2xOjVht"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e0ad414718so804247a91.2;
-        Mon, 30 Sep 2024 01:49:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727686166; x=1728290966; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lqTiyXirW32QfOM0FkJASZM8KV41WbXnidi5f4JRW4w=;
-        b=C2xOjVhtkDNUTbp+PGhHWfsDvI59hNXPncTAH/V9ODcIN269zMD4zd4SWHRZnlMyU1
-         Emh+o38hjUBAFxE9jEnKC+KBiGeEoBjN+7Ydg2pT0N3OG65/h9QHaXkvcqG/cYK91yVv
-         aXrumN7Eg2Zn6Bx2S4Fv+pGPzt+IroN6+b8+m6sK5yuqh4SR1xdciCOgtaH2GPWHpM6q
-         t7nwhsaVnR7rsqiWmvXxNnwfSQFdTNdrz/dEgD+zFxovzWTqmHarL4e2ql/hu8P4fukM
-         ZUTgnjR27WfnHICk3b8BCA1+MaRNKRj+iBbN6aOol/Ci0LH3ec8E/3Qttus4ohGM483l
-         BhMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727686166; x=1728290966;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lqTiyXirW32QfOM0FkJASZM8KV41WbXnidi5f4JRW4w=;
-        b=VP1ptlOyEI+gv+dhFTxidhM/ndZs25IqZlS9Cx9DrBO5fWAlUSjyV3Qo8g5cLqxRk4
-         /nguPCzw9aBradW5gjKUMTK60pX5mBZ9qWNui+GKUWtEf9V7GFKr9pXW8yCeHEhiVYcC
-         5PeyiWtx1uyGY/W0h52UHHW1UvLsnhShVb6Ki8TCnUzTKhfqQ15tDrnIMAJwlTGDKW09
-         pG7N58+P2lIVjej6TYc/zOAn0VjggTChrf18+lYjg8QAleWUVTt7EbQeiTyPjRJZa65x
-         Pny5CmIDdUavsV07vCO23OHQCSlU2R7XCF41FtSFrDlTdLfc0CnJKykftckvPdVVFthW
-         UL1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXo/rNBVVtRDXiEW51hzTx0h3wWrHKNGNp8TT5TVlJmKHKJKqlfbO32uPkHCTmhvf+XiTI8WYsFNCsZNZg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSa/BOeht4GDrZSr0WeBrPhFFdq1h93FrWWHpLxjTPgxEok/su
-	xu3nXU1Xj07Co20caYTAnbPleu3hFJ6qQPBT0pPfS9A5vugmAuNtMIKSRA1dCjf9Tr8RMJ/Sq2m
-	5sb9Xlyj4ORK3l3H9gu6+EwzEj2s=
-X-Google-Smtp-Source: AGHT+IEQ1tdrQhsCvZI+arTKIhH29l9Gv8+v9ylxuggJaKyYGTRwbYu39EbSEyWqUiwQKvMqwVaUPKmwadNyJOzltA8=
-X-Received: by 2002:a05:6a20:a113:b0:1cf:2be2:6524 with SMTP id
- adf61e73a8af0-1d509ba84f7mr5326919637.10.1727686166045; Mon, 30 Sep 2024
- 01:49:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TuOVTlXU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hcL3FtD+"
+From: Anna-Maria Behnsen <anna-maria@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1727689005;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wqCx5BHAew2ihqzQT4FG3YqTOD3x5uITQ1bdx1BgNpM=;
+	b=TuOVTlXU9om9AdoPRhotdkPNSFt7xA+2nPIJHFMoDx89Km7qS9DWIBcmry0MM8aUOzpKza
+	xAHx7QMoqphBo+GdMVvz/WJy/+UdehVDujAnVs/ap/1/Zqw8cLyJrrIa6lQ5OFOaqiSM1K
+	n/maOYYHJtgPvW6qCdQIW2SxgZqMwJWYLJkXld31EIic5j5h96kyoIiJf6mnsmLlIUqF03
+	suzB4s7un10DNhmcit1y/v6+zpzKVGsTYBnxAnbO4BQQOPAS+uJNbd0eI+mMTRa7cFK48q
+	hXfKfVwg9pEZ2jqcQT0gMLksNzNF50oebeTQsQFu6+t8mTOr0ACq2oSdP+toEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1727689005;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wqCx5BHAew2ihqzQT4FG3YqTOD3x5uITQ1bdx1BgNpM=;
+	b=hcL3FtD+TWvdZCb7YeCqNR6DIyDenf0jgDp/dp1y3d+mRq96SjkyrWN8hLEMOOsxdYhj0z
+	612F8Y9skjdM20AA==
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Frederic
+ Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice
+ Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/14] hrtimer Rust API
+In-Reply-To: <20240917222739.1298275-1-a.hindborg@kernel.org>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+Date: Mon, 30 Sep 2024 11:36:44 +0200
+Message-ID: <877cat32kz.fsf@somnus>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
-In-Reply-To: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 30 Sep 2024 10:49:12 +0200
-Message-ID: <CANiq72mrcMq7KKn5UiT2GuZPCeFMtr63tj9JTHnVLfzmYDgauQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2 RESEND] rust: kernel: clean up empty `///` lines
-To: Hridesh MG <hridesh699@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
-	Matt Gilbride <mattgilbride@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, Sep 29, 2024 at 1:15=E2=80=AFPM Hridesh MG <hridesh699@gmail.com> w=
-rote:
+Hi Andreas,
+
+Andreas Hindborg <a.hindborg@kernel.org> writes:
+
+> Hi!
 >
-> Signed-off-by: Hridesh MG <hridesh699@gmail.com>
+> This series adds support for using the `hrtimer` subsystem from Rust code.
+>
+> I tried breaking up the code in some smaller patches, hopefully that will
+> ease the review process a bit.
+>
+> The major change in this series is the use of a handle to carry ownership
+> of the callback target. In v1, we used the armed timer to carry ownership
+> of the callback target. This caused issues when the live timer became the
+> last owner of the callback target, because the target would be dropped in
+> timer callback context. That is solved by using a handle instead.
+>
+> A request from Thomas on v1 was to add a more complete API. While I did add
+> more features, we are still missing some. In the interest of getting the
+> patches on list prior to LPC 2024, I am leaving out the following planned
+> features:
+>
+>  - hrtimer_sleeper, schedule_hrtimeout, hrtimer_nanosleep  and friends
+>  - introspection functions:
+>    - try_cancel
+>    - get_remaining
+>    - active
+>    - queued
+>    - callback_running
+>  - hrtimer_forward
+>  - access to timer callback target through timer handle
 
-The patch looks good, thanks!
+Regarding the API: I had a closer look at it after the discussion during
+LPC. It's possible to change the API (prevent setting the mode in start
+as well), but it is not as straight forward, as it originally seems to
+be. So this will take some time to be changed completely.
 
-However, the kernel needs known identities to accept patches -- I know
-you added "MG" since the first version when I asked, but is that your
-full surname? i.e. it appears to be initials -- if they are not, then
-I apologize in advance.
+But what we will do in short term is to create htimer_setup(). This will
+do the job of hrtimer_init() but expand it by the argument of the
+hrtimer function callback.
 
-Cheers,
-Miguel
+This is just an information update for you. So you can proceed right now
+with the current API and we keep you in the loop for further changes.
+
+Thanks,
+
+	Anna-Maria
+
