@@ -1,47 +1,47 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2086.outbound.protection.outlook.com [40.107.22.86])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2059.outbound.protection.outlook.com [40.107.20.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CE93209;
-	Mon, 30 Sep 2024 04:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.86
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0262F29;
+	Mon, 30 Sep 2024 04:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727669752; cv=fail; b=UJCeMYiJ4nNJSuis44xrSi74nKtAImOPFUh+FqgDuMawFkT7Gx8OMNWezcNgURxpVBxOUfu4BrSM0avPPRB2pdQFMjm9r9HoencpfWiawgF7u4H54z4KIQwExytb23u68XprvUCb4qsb0Y9QXEhBplFRjFmh/x85W1g6UrLF01I=
+	t=1727670832; cv=fail; b=P+2gbV6Bx78v6HDuZXfRnAGRmrk+mYbb1BZjT9npnxg6OB4DWlrj2ZgAHiUQwzDkcVc0EhW6FOK52EB1j99sBWOvreDIjOKaK1mQV8d9MqD/LJy03OacmGiAuP+b/4zPleN/nvr9qrgM1DS4Oq64fiV+yEtLx50z1K1sxNcmRXs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727669752; c=relaxed/simple;
-	bh=yCoDTUZK7qqvdwwzNJ4fqjhoktB3g9eSGM94PMBeXJM=;
+	s=arc-20240116; t=1727670832; c=relaxed/simple;
+	bh=pGARjIttRQ4ssYIsVlpZmhv6sFoN/3rqlRVIf98T+f0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hJCwr39tEWuu9qbLMP6EYLdeH7Vk7MXdVFACfGJRcq5GByPMQaHcSMW8rWmFy5a99AYjfdHQTqLQkSHKOtGNB0wJhU0gxYVB2qm87+GO9YYBwYAogHEIcznSenEeGipQP23NoLu2A1XivFLgk9zoIScAARR2QoidFkUc2s0vBho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=XvOajfvF; arc=fail smtp.client-ip=40.107.22.86
+	 In-Reply-To:Content-Type; b=GduyCCpbnhM46MNj0jp9JLrUp+EgqPKG79UovgYRtDC/+zuRKIGe2+WCmjtFzB8YZs7sKIVJhX2Pf+OHxtcDi1/xuoGPaDeDMQ0deWA6h4waWyC5FjkcQlFkRPuQ7eOVk1Z33JPOxQSAosjMYMkhmvSUwI9wW/Dp/3yXIDLbSAE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=iK3HsERi; arc=fail smtp.client-ip=40.107.20.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="XvOajfvF"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="iK3HsERi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lTr/BLXcJS3T388J6CPOopeKdkbt1qqPplYZdazp0bqf0WAdRbWwDXKGi3pVv/PT1nRTvwdRJ9LkHegpwdQ179JMbSfQUXjq8jZ/RopfB1yD16mGieOfKX5OpAgJg6/UOVP8wzrLsZtBx8MWFVDScxyVhiY2BnFWZbYQHFJDv/zlH+feQyFaNGAJ4QBC4UNtZ8KHpf2MMKIVUURe7otSv7ZBINmaSzvtq/93rwyltWPumv0HrYNg+pcM7pe9QtMNbPQ/n3nTYAscA3BDLCqiW+t4Z2Ydc2Vsgt9QM/1W8/4FvwCpK3J4ew6FeIavu4dKgabr04Qw5+kzire5mBmoCw==
+ b=W9ZDWVsH3CSlhnUfdhyTVI8G9g0oosVDQOrJKwyseImJBVhrmgmkbIl62CHmL2oxg5V5BbroQLVZxMsWzE1Dog5WfflZ27+UVoukiRGvfFRTf87DtLfJRrG9AkH3rZ8RzjZpCkTIx++5Vfta4nDgRfa+uaFW77tEq5VcRi2nuGxBJMfoA06jcR12BKxxyXzwWk3xHQIZjUvrV7qvxV3LvD3rsbEeYcmfu3AMjw8FLSbCvojm/1eMe6EvWNWN8KB0Z58DgkXL59j7zf74SPNpjBn2ZMJYjockk7+ROaO3OKZCg4lvYuzKj+tBmkLm9fRjnMak6dDZCVYKVCEZD1vxlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fsXvMZEWVGsnZLLLT8iN4CIFmX6U5G8dD0i+BBVmuFk=;
- b=ELubRfc0VjtchQWHTXNwVAKTlzzSORNgHNWQDvPEfuBqgQu/s05MAkOqCQ9iKDjFQop36d6M2bnMcKk9xgrxKh3SXT5wpTZSBxjtvyxIep1NLURJ3jKx7wcnM+/Lud+eBcLLqQ/g+SHy+94mIRbSv0X4g74YkFf0mfHPHhCTSrPv/I9OD3JMhDbaCduzgiJsY+NMsVSIlKYaTSw7OudJeHKjO+UDGXrMAD5qLX99P8lJJ/1kulesIwIq3T1LNC6s3rQ/kQZNCEFCA3PwR3BcScZx0z2JGFF22/J4NhCIXJwXq5tLRH96RIrgAwLnIN8odxEB/n2bFUr8AkzKPImfVg==
+ bh=WiboOI8shwLMD8kXEWzor1mh+6Lf6B8tkU849MFfyJU=;
+ b=Dn1gdEtlj3A/p4mgBd4XiIQRxpcgcnSEMVINOjI33hjbMB3lhtzQFWLB4qYQVoPg2oKc6+YdqBQ0i+Irpfx6kUHw9m0awaguCXhw4oJ3RW2zciuXWhk8ktWvi6ajcWNV9y6GrEWSgQJ+E11+kkSc25xUkSADz/ilWmNL2b26cRdZopW3kmKhy2jRCjVe9fqtJR3w/qgzuOONqnK6BGjwZAQLk3/krk0Y2gSjEcZsgz68NkYF5yoxAIiEggTNOr17/Os5mMS7iRi5ivDKSqJ3MIppJV3qDcRrDCwqippaIjPwr01+e2zmRg/bsSgCDO0PgGyocZIcFFOHTDC49AezWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
+ 139.15.153.205) smtp.rcpttodomain=collabora.com smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fsXvMZEWVGsnZLLLT8iN4CIFmX6U5G8dD0i+BBVmuFk=;
- b=XvOajfvFjdkjYKhzSZa5L5H4/LoG4e1bEsZKVKwTt0SMAynn9GWqMV9XVPvakav5mBdpg1P6oho7P+IjAg5f9w+NNrhPqx/m+QtbzR4Xjq5fUuSpZydmbRetnXKehUU0rtWG3NNE8A3U7wZO4RxJTWNqW0ObR4T/fkZ7jM5/XvEpJR8m0Ef2ukbX1fXwLCDt4fV8xI4hDMh2daa3UbsFXp5Q3NMVe23fHfPQKBFCIT2zpyO3yOipCX1BDKYl3eWk/8ZLAiTbiY7nRzJNldxa0iKDB6WGuqoPdS/E9mbZfBhgf915xH2HrOh+ANhD7PKyIldDe1qEo+g10WDCLrqHWA==
-Received: from AM5PR0101CA0023.eurprd01.prod.exchangelabs.com
- (2603:10a6:206:16::36) by DB9PR10MB6004.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:10:39f::15) with Microsoft SMTP Server (version=TLS1_2,
+ bh=WiboOI8shwLMD8kXEWzor1mh+6Lf6B8tkU849MFfyJU=;
+ b=iK3HsERi30Y/kdkd0P9Jt1ii7BytUbG094wmXlIzEZwBB1Twqii3dI2kQWiWcJfcL5tjrGsihktUqifA4p/MHgstjRxtjX/gdKjhrqMvwfNBPTjmx5JlhwQCCvJ5qPHacqzOO1eTwU8cJk1EGMPHgCbsaFrJoP9QgEUtTfVU14Vbt8CRGQe12oIqsPAHQrBh9xJHktr/Y1ThPvds/rvAuhAZCHH+jgpk8nG0l9nLfs4RPxg8paQv9x4ltZ+qTHkIkoqEpcJYemk/p2IbhFdjRwECv3qpwzST4oGa4RRQyqkVrMQnxaT3/yVH/VuItN1fi6HG0rp2KCIGwIQC7Bi2xQ==
+Received: from AS4P192CA0023.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5e1::9)
+ by AS8PR10MB6651.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:563::7) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26; Mon, 30 Sep
- 2024 04:15:44 +0000
-Received: from AM3PEPF0000A798.eurprd04.prod.outlook.com
- (2603:10a6:206:16:cafe::c8) by AM5PR0101CA0023.outlook.office365.com
- (2603:10a6:206:16::36) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 04:33:45 +0000
+Received: from AMS0EPF000001A7.eurprd05.prod.outlook.com
+ (2603:10a6:20b:5e1:cafe::55) by AS4P192CA0023.outlook.office365.com
+ (2603:10a6:20b:5e1::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26 via Frontend
- Transport; Mon, 30 Sep 2024 04:15:44 +0000
+ Transport; Mon, 30 Sep 2024 04:33:45 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
@@ -49,19 +49,19 @@ Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
  139.15.153.205 as permitted sender) receiver=protection.outlook.com;
  client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
 Received: from eop.bosch-org.com (139.15.153.205) by
- AM3PEPF0000A798.mail.protection.outlook.com (10.167.16.103) with Microsoft
+ AMS0EPF000001A7.mail.protection.outlook.com (10.167.16.234) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8026.11 via Frontend Transport; Mon, 30 Sep 2024 04:15:44 +0000
+ 15.20.7918.13 via Frontend Transport; Mon, 30 Sep 2024 04:33:45 +0000
 Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
  (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Sep
- 2024 06:15:44 +0200
+ 2024 06:33:39 +0200
 Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2000.de.bosch.com
  (10.139.217.201) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 30 Sep
- 2024 06:15:43 +0200
-Message-ID: <6d08a751-fbeb-4dd2-af78-32ae89704208@de.bosch.com>
-Date: Mon, 30 Sep 2024 06:15:32 +0200
+ 2024 06:33:39 +0200
+Message-ID: <51fe3ee3-0b81-418d-b05f-626dbcea4f57@de.bosch.com>
+Date: Mon, 30 Sep 2024 06:33:33 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,104 +69,97 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: re-order exports to fix rustfmt
-To: Tudor Gheorghiu <tudor.reda@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>
-CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20240930010931.64080-2-tudor.reda@gmail.com>
+Subject: Re: [PATCH 1/2] device: rust: change the name function
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+	=?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+CC: <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<benno.lossin@proton.me>, <aliceryhl@google.com>, <mcgrof@kernel.org>,
+	<russ.weight@linux.dev>, <dakr@redhat.com>, <a.hindborg@kernel.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	<rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <CAM_RzfavjM9VPJhTi1czOSC0BFOc3FUHRMdzFrU9fJE+WJMKbw@mail.gmail.com>
+ <32476CD7-74D6-4575-9D93-2FBCD5AE3E10@collabora.com>
 Content-Language: en-US
 From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20240930010931.64080-2-tudor.reda@gmail.com>
+In-Reply-To: <32476CD7-74D6-4575-9D93-2FBCD5AE3E10@collabora.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM3PEPF0000A798:EE_|DB9PR10MB6004:EE_
-X-MS-Office365-Filtering-Correlation-Id: 256f3b3d-7070-45d7-dc0e-08dce1068db7
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001A7:EE_|AS8PR10MB6651:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef1c4ac1-c992-4921-2a29-08dce1091248
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|376014|7416014|1800799024|921020;
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R05zTWhZK29QdkRVSDQxZ3lvVnJ6UlZxeDhsSDhKNTRFUjEwWmVib2xEbjF4?=
- =?utf-8?B?UDN3Y0xpRWZ2aFdvVjJzSWF0b1k3dHQrWGFNLzZ5ZnZtWTQ4bXNZOUh5Y243?=
- =?utf-8?B?Q0RDNFQrd0t2dVUxaE9JNXdkTlpqS05KT0NvaEl5d093RzBSTWJmN29yRUNM?=
- =?utf-8?B?SzdNTmdJclhEQm9weE01MmV2Mm83SWdTWThuK3Z3ZXoyUHp5WFVSdHduS2pG?=
- =?utf-8?B?MmQyYkJJRG4xbG52VGNwZmJMckpxbEhMVjB5M3RTS1BxV0tYcFprdEtpWktJ?=
- =?utf-8?B?SkpmS1NsU2VhZTMrNENHbEFsTEd0Ums2bDVjZ010SUNIaXhFM2EzSk10bnUx?=
- =?utf-8?B?ZlpKY0x1VlFLd1NxR0FEMjJSZ1hEZ0JtbFc0QzF2Q1pkSVdremRjb0RzcHdV?=
- =?utf-8?B?WmlZZU0xYTB1d1czRVhuY2lzN1dqZTQ1NW9MN2I4TWNTaTlXVVFYcG9uRGxv?=
- =?utf-8?B?d2hOZjY5bFlzVDhITFRtdytwbE1tRDBLQVJKci9DY3ExMWlSSlBXM21jcE5N?=
- =?utf-8?B?dWFuK1IvZzF1UVJXNitHV3JBdy9PdjhMUUNXRExadW9xam9oZjhjamFXSUMy?=
- =?utf-8?B?Z3dvUE9ZT1orQWhNZ1JCdlc3UE5LN1NabmhVdk1QdnY2U0YzMGI3c3JYdGwx?=
- =?utf-8?B?MS9BMXVraU1ZdFI1NFk2Skl1Y2FZY0VSSWlFUEQ2OUhnSk0wMXJPbGp0NHRq?=
- =?utf-8?B?U3hraWRieWtrVFF2bC83LzhtaUZnUVJ4ZFFLeS9oblBhSXhidVZNQ0p1bXVF?=
- =?utf-8?B?QnB4MDlpK0lzbWRXd0g4eDRxZUd4NHdoSzlWeGxoY0Jkd003cm1ZT1ZOYzRr?=
- =?utf-8?B?SFJHdThiSVNFUWRIMVk2cGNaTDVEdy9GakhnbmV3NzBtYW1KNkw3RDd5eElK?=
- =?utf-8?B?dXJqMURWdWRZbC9yOEVvZUIvQ3FqblFLWGdmTXU3QmI1cHZncXJhLyt6OGhq?=
- =?utf-8?B?d3YxMnF5VmkrWTd6NzJJYmJCRDQzc3VDdWVwNEJQOHpxaDNsK0xCclVYR0dP?=
- =?utf-8?B?YVZjMVZPQ1hUd0oxMWlsYlBqQmJpMXNpaC9pNEVsbXdKem9TYURYbkFGUHdt?=
- =?utf-8?B?d3krRzRvTGU2eGE2ZWxQMzkxWVJ5c3EvdU9YcGdjQXhUWE9uNXlHWFlldTNW?=
- =?utf-8?B?SlptK1JFZ2FVcEhrT2gvbmJtRUNYb29lY2ViNmd6eVRpTnRzTHR2ZFV1Mm9v?=
- =?utf-8?B?OEhZcExpb1B4NlNFSGFiby9QdGZXaWcyTzcrM3Z6MXA5RjN0ZmNDbHBOa2p4?=
- =?utf-8?B?V1drY0FKdTgzcFdjL2NxOXBLUVZlWSt0MzhEOVpLQmZ3azJRcHE0ZkFLTS9S?=
- =?utf-8?B?SGZ3dE5xMTd6VlQxSTNqT3hlQnNvWnorTENxMWVNMkxnanJlU1ZScmNhekhK?=
- =?utf-8?B?VElzVjRSQi9oZlFDME0zQ01lNU0vOVg4Yzdudm5mdEFVaEV2YVhqMitxakk3?=
- =?utf-8?B?ZFhVT3dHdEFOL1VsbVdHV3JQZkYySGdsRm5KL24yMURKMEdXcXNsaEhYdTlK?=
- =?utf-8?B?bWtLRE5COXFHOU55V1pVbDZJS20wek5TRGVkWjVCazY2akF6aTNaaGVLbEhB?=
- =?utf-8?B?ZFRldUlmeEJReVFGd3ZvWG5xUDczV2lMdmw3aDk0SFhkZzFQVlVMSnNhUFhq?=
- =?utf-8?B?bU4zODBPV3l3OWdqZjcvdm5tbmtQT0pCRTdKR2p0aUZhOWJ1SlFyOWlYZzdy?=
- =?utf-8?B?YVBIUk5YeU5wU3AzS3FJS2k3K3pjNVdIdnRaQzVoYzNSV1BMaUp6S2hpcTFJ?=
- =?utf-8?B?a25lZXFFUndhd2hkWEZGb0x0YTVMUytGU1p6UDE1d3FNb0dSZDRFT1V6Mm14?=
- =?utf-8?B?WlhDVGN1Qmx4eVJXSUR6aFlnTWdHUE4xTGVid0VTelJka0x0bSt4TXByNG5L?=
- =?utf-8?B?ZXdLRFhGczV6c2Z4ZFRQSE9oZzh4OEN2K3ZXbkl4ZWd1SGJHeW4rcWY2dGly?=
- =?utf-8?B?YkpvWG1OaXl3aitrY3J1SDJORGxKVEllRXAvSGxyODRmYi91K1lycjFUQXkv?=
- =?utf-8?B?QXMwOFo4VlJBPT0=?=
+	=?utf-8?B?WkFvbWhMaFc2bnpBdmFXUWprU1UrYlVtUlRlT3VOaVhhOFZNRXM1T2hjcWk1?=
+ =?utf-8?B?V3d3SEh6L281NXhDNzRzNERkVVh2ak9MYVI1a2VTQ284N0JFTldYYTlEMnIz?=
+ =?utf-8?B?cEhVVlJmZnc5SFphSkxxQlRSRExwZDFsNXdFTnIzZmozZEhnNXl3c1YyN0R5?=
+ =?utf-8?B?S0hFR0JuQ3ZoNXc0VFZjVHlIVGFveURrUmFQRUdOU0lPcUNTZFFxYlRaRzNn?=
+ =?utf-8?B?ZDlYVVNpUUVUS3dIVytVd2t4bUJlQlg5K09yN0lrNWZTSUxJbGRFWVN5WDI1?=
+ =?utf-8?B?K3VhdStvVWN5dThSTHpVTjVTV2RKV3dtdmNqbHIrZVhNQnZyQnZvdjJ1S1R4?=
+ =?utf-8?B?N0VDYWlwMG9HMUlXWUtlZzdNbHdVeEowNzY5Z3RBMjV5ZGN0aENrekpsWHZ5?=
+ =?utf-8?B?OEVUSnFnTDZJOFZGYjJyMk5pUlZDNFE5ZnBJTHpVMWlCQ3NCM210NFdIODYv?=
+ =?utf-8?B?NWZvR3Q5L2NSWUhiNnhDMmR4T1FhMkZIak9ZMHZSVFpZS3pyUHl5M1hSSmJo?=
+ =?utf-8?B?R3Z2QU5lR1VwS2Z6T0lDYWFkN2o1VHRwOFlJK3BmaXU5N1QrY3BqclA1bHlt?=
+ =?utf-8?B?QS9pVmw5MFUwbEVlYmtBU3BNb2R1ajc2cGYwbWxzenlQU2J5eXF3QkhoSFJZ?=
+ =?utf-8?B?b0dCcUF1L3RNYXpYV1BOc2FabUg2NDRtdC9EWTlyNWF6dTdkUkdHU211cTU0?=
+ =?utf-8?B?dnJXaXpiUjgycHBpVGphSGJaMFZvaXMrc3AvQ1RBZXlxU005NUhTZG9GejFo?=
+ =?utf-8?B?QVdkSy9halZUOXN2dDNITlBpTE96bGFkNmlqN01zQkdhRnJXZlBJRmJlcERK?=
+ =?utf-8?B?MmVpZEJIeG1SaHM2S3lJZzk2U2UxZCtqL0h5empGZU8zeWRYM0ZweVlRU2kz?=
+ =?utf-8?B?Z1phc09GUjkrRDFoS2lMUHNRSUtBcC9CVVZxdmFUZzMzM2xQc3Nxc3pJWGI0?=
+ =?utf-8?B?TVlDNTZkN0ExTk1HRXgzb2NSQ0RsTVNxbzg3Z1JvOGdKRVl3TVo0a1RCZWVm?=
+ =?utf-8?B?Q3J6ZWIrWHgvTmsxRkJsa3lVcW54WnVOTWpXSnJSUnFCeDlyK1RvVzJMcDRT?=
+ =?utf-8?B?U1h2Tmgwak5aYjhMd3piZTJVU1JFbHFYblJzTTdYOG05bS9adXZCanAvYzdq?=
+ =?utf-8?B?NUs1eGJJb0FKcFppZjhxWDNFZ1NsYkFXd3JWSnIzV2poWTMvTFNHSDRGOEVF?=
+ =?utf-8?B?K2V5SDM0RnVpaTNyL2ZrK2doSkxOc2o2ZVU4cEJjenRSbXJhRkVVbXBlazNN?=
+ =?utf-8?B?dlp5Z0pSRzlPTGtuWnlqazF1M0dkV2tIZ01Ndk5OK3oyMWt5Y3ZVMy9NYyti?=
+ =?utf-8?B?QkVMTURUK01RY2N2S1NySGFRcEJ0Nlg5WG5Fd1YvNE0rQTQxQTY3cGsxb2Jx?=
+ =?utf-8?B?M2d2aUJVQzJWNml2T1ZaM2Nqa0hGOWVPZ3l3MEdZenBrQ3VGek5vQVducHEv?=
+ =?utf-8?B?TmkyQ3UrUlNGa0VMQ3FIMENjV0xibkRuMWcrcHdUTnJnc0tzQ1hqNWJvbTMz?=
+ =?utf-8?B?aFNTT0c1T1pWRkNMWFRMeUxQTjdydkI4dDU2TGFBVkxJcUZhTEs5ZVFOOEhH?=
+ =?utf-8?B?Nkp5Ums5ckZQMjQ2YU5JdCtyaElxbTBkVFNlYmp5TEdUV3Y2OGpMa0c1OU5y?=
+ =?utf-8?B?Z1N2cVJKbGJjWG0yT0o3MWlQOExsZjVTSmFQcW9MT0dEQ2JGdkdJVGsrOFAv?=
+ =?utf-8?B?eUhJYnpzeGtmU1VuMlN6Vm0vOTlFdmNDZU83NGVaY3dTdkRlQ0JPMmloVUpV?=
+ =?utf-8?B?RUJ5c2NpdUhmcGdqR2lubjF5Q3RBazVtMGJnV3VEa1ZPL2p6Y0FyWEZtQ0RX?=
+ =?utf-8?B?TTU0amlsdG5mNlYzdUVHcmc3bDhUSVAyNFRwa3UwOUc0WjJPZEFaS2Y3U3Zx?=
+ =?utf-8?B?U2c3REtBL0FRWWI5Zm9tVXBvTFpOcndrNnFCV0xnTzU0a0lQQ2lhRGtDV29F?=
+ =?utf-8?Q?C0jY/aBu5rGPSvEAI+f6iEJdjSiNZORH?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(7416014)(1800799024)(921020);DIR:OUT;SFP:1101;
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 04:15:44.2833
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 04:33:45.6817
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 256f3b3d-7070-45d7-dc0e-08dce1068db7
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef1c4ac1-c992-4921-2a29-08dce1091248
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	AM3PEPF0000A798.eurprd04.prod.outlook.com
+	AMS0EPF000001A7.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB6004
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6651
 
-On 30.09.2024 03:09, Tudor Gheorghiu wrote:
-> In the recent rust-6.12 tag merge at 570172569238, the rbtree export was
-> added after the sizes export, thus breaking rustfmt's alphabetical
-> export ordering rules.
-> 
-> Signed-off-by: Tudor Gheorghiu <tudor.reda@gmail.com>
-> ---
->   rust/kernel/lib.rs | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 22a3bfa5a9e9..b5f4b3ce6b48 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -44,8 +44,8 @@
->   pub mod page;
->   pub mod prelude;
->   pub mod print;
-> -pub mod sizes;
->   pub mod rbtree;
-> +pub mod sizes;
->   mod static_assert;
->   #[doc(hidden)]
 
-I think we have that in rust-fixes already:
+On 29.09.2024 17:35, Daniel Almeida wrote:
+> links may become stale,
+> so please do not link to anything.
 
-https://github.com/Rust-for-Linux/linux/commit/ece207a83e464af710d641f29e32b7a144c48e79
+This sounds a little too general to me ;)
+
+I mean we link a lot, using the 'Link' tag even in patches.
+
+For example the mailing list archive has the 'permalink' button and 
+Zulip has the 'Copy link to message' button I think can be used.
+
+
+> Lastly, I can’t see a diff anywhere.
+
+Yes, I was confused by that, too. But I wonder if just the numbering is 
+wrong? I.e. if [PATCH 1/2] was intended to be the cover letter 0/1 and 
+the [PATCH 2/2] was intended to be the actual patch 1/1? Just a hint :)
+
+Best regards
 
 Dirk
-
