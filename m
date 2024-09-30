@@ -1,38 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B71F1CFA9;
-	Mon, 30 Sep 2024 15:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158CD1CFA9;
+	Mon, 30 Sep 2024 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727708650; cv=none; b=uQsB0AEaZBHqhXvT+ZfMKOR4sswlfm3nzFDtrEJ9N4pvX+u894z0YiElkHbl8aZIRdhWC8fhqoVZxjWgR4jz7izzf+vbFCBiD+j2a9nTx+HO8dxi8Nm0Q97SJ3eEjBEadM4aTr1+c7gwv5JeeP7i0we19NMZdhSvflraHQ4DvJs=
+	t=1727708745; cv=none; b=bwtU+Lv/fOmPDOhNI2KBmaBGW0qo6uC+svnuduLBc4krEYg2AhFMdZyp0jbsUDSjUVNQgthasmu+2Gm3Cjmjjbowqw6q6PlvX4G0oD0VPA18YhIiinkPdPnGL4/WOCp3s70BJYhqS939ixolSPyKhfmK9ck2/YH83leblwd3KPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727708650; c=relaxed/simple;
-	bh=t0cSI+9yRm+T1ZkW/MTQQt7I+Oxs89+5w6dCX15teMk=;
+	s=arc-20240116; t=1727708745; c=relaxed/simple;
+	bh=vzSQZVC3Ilt3otT8oX6+AWMh25CVjuVi+7bze+eCc7M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bNITeJHSxPsZdwibXcVRoukmdXTsgTqqhYTQoDnBBKXcYGqlluzV9EvTESaOw69PgU8Je9Xq9m030FHNn9MaziUGCirzpIyx3JA7SIE5BdfpUio/1DgEqhVR1E9dBsCdXUTvFEHk7StTs3ef+WNOX77hzznzoJm6PRIsM3JP82E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/3DjdTA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mFiIqXtGufhatk0bWu+7n4jk2ePv6UiwasQOgNKpH/yeG4vDjlR2/GdJMcYBmLyYjbdgUR8Ti7pzLHG4gzEjRTB+fF5OsRtZTefvCLhX1o6sOEeyw1lGJjsw9cfkC3ZponHbJ25TYHsfLpn36L8p3tUGss2n55t/TfHGt4aqBWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MsbuoRkQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/3DjdTA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48954C4CEC7;
-	Mon, 30 Sep 2024 15:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727708649;
-	bh=t0cSI+9yRm+T1ZkW/MTQQt7I+Oxs89+5w6dCX15teMk=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MsbuoRkQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A066C4CEC7;
+	Mon, 30 Sep 2024 15:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727708744;
+	bh=vzSQZVC3Ilt3otT8oX6+AWMh25CVjuVi+7bze+eCc7M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R/3DjdTAODgmEgYbeEeNyDIeXm/eF5bdwlMZ79qoJTqneDi2wP/2unMxkbowg0ohk
-	 0+lh3qPYlRK3obJQIsDfPjiuac8uZ6z8VSl+cwy0CBb72TKTbXWfyiZ1yC3pkKzvSj
-	 gwL4w3ILpMIFPQEib4fVQZJG67ZmjUkvvunl4Ano=
-Date: Mon, 30 Sep 2024 17:04:07 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	b=MsbuoRkQYxlbAc0v9Jej8DfbUQz/T1d8wE/0kakzDue/kbm0Ci1DE8L+ZzD++4fkh
+	 7Ft6i1VJV1Vn4qAC1Iiw3Ugi7rwmTfPb+K5yd/cva4spZAAJIwK4KnkZsuLiK2vyD/
+	 n+JCpcd/Pm7Woz+Y5bkcNNhOUjaVlDbrsaTMQN7EH//i7dKCCQeA01ESx10RRnI7jG
+	 8lXcyvvgBaZ93p6is70t4ZgdCEpH7tk/WJUUx6tDQ6B5iiNp40HYCqX+4w168SPtf3
+	 FGv+vylGL5WHZNIaiNqM0QwCEU/HmnSv86zHoS/XyquVFosn3mxF2GtpCFhHRNEf0d
+	 UAG4f5ToQVEPQ==
+Date: Mon, 30 Sep 2024 17:05:38 +0200
+From: Danilo Krummrich <dakr@kernel.org>
 To: Guilherme =?iso-8859-1?Q?Gi=E1como_Sim=F5es?= <trintaeoitogc@gmail.com>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org,
-	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org,
+Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
+	dakr@redhat.com, a.hindborg@kernel.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
-Message-ID: <2024093007-safari-lego-45ab@gregkh>
+Message-ID: <Zvq-QiQFc12FOjEW@pollux>
 References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
  <20240930144328.51098-2-trintaeoitogc@gmail.com>
  <2024093044-violator-voice-8d97@gregkh>
@@ -95,13 +99,12 @@ On Mon, Sep 30, 2024 at 11:57:25AM -0300, Guilherme Giácomo Simões wrote:
 > 
 > Yeah, I was think that only in 0/1 I should explain the changes ..
 > I'm was wrong.   I'll put the changelog in 1/1 too.
+> 
 
-Was it in the 0/1 email?  I didn't see it there either.
+It's fine to have the changelog in the cover letter. I don't know under which
+exact conditions Greg's bot triggers though. Normally,
 
-And for patches where there is only one commit, you almost never need a
-0/1 email, just put the needed information in the single patch you send
-out.
+For a single patch of this size and complexity a cover letter isn't needed
+though.
 
-thanks,
-
-greg k-h
+But don't worry, no need to resend. :)
