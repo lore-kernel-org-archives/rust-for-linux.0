@@ -1,118 +1,80 @@
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF29723D2;
-	Mon, 30 Sep 2024 14:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED784191473;
+	Mon, 30 Sep 2024 15:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727708284; cv=none; b=Q1365e6Z1718mOoS3rfXQjBX9ThKJNiiCb7vcmdBCIZeY5TzgVbpal2qBtmhOO0LifH/pcUzQrDYapdkRWJtKVZ3kwAJi0SRBslcxOxsFyyBiTIzsCXbT5CY6o1xKQrW7ReOzyR72d1gLkllGwi5yATsGvtJ99W6vei7uzV5rz0=
+	t=1727708481; cv=none; b=ZBXEPRkjZ/v83/bbZDan8+Qs8dK1LYi4LHhTWr3LCas74VFD0DTM/qA/CDmC9BHRHHnLmset+fFJ2zPz01ToeJgAgTjATeYgt0CYwTpWdFmyncKjKroLYwuJwczay1OvWqnoT4xDF2ZgBpAX50FUXZRjdJ0f6RYX5jOOidAZr3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727708284; c=relaxed/simple;
-	bh=ZYXFNKMpMJKZs/jopytSPFRtqO07ZKfYT/0NCDFBhYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FWBA4uZCVh8NbVji5wfRSEbDBDyomDYenPCZ8GI36M3zIUaKMcj6nXPh0T9RzmQvv7QmKywzECCzX1T4HKAZY6ASM2ARfr/hNGuu1qbJ4aneeynENbjv0vuwLmpDur4Sbcks/jHzJ4b12Rsaabg5EEh4RhbAxfmDaoRZSw41ywg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNu5bflg; arc=none smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727708481; c=relaxed/simple;
+	bh=7u3rXBL5wKMAnZxv41R56LBzZrdAt8JKmrS+unGkl7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NrSLmS+ScTfvOAguRxTodRAeBu5/SlSyRgGdunjUHgDB9Gmmw5SCwzJJSMEUGLcEyaPN/BxirhSY/hZ/VDmbGTMFVdKZG9PbeK5DrA4TT43BcxysDiGuliRb88SNLPAvuhr0dnKGurr9mTGJgznhz3bWABcesrj2VpEaXQAbmEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e46dFKHf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNu5bflg"
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-50abc034f6aso325026e0c.1;
-        Mon, 30 Sep 2024 07:58:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727708282; x=1728313082; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=C3STRu4cbHglj5Qo8K4nwrkA8bytC3Rp9dmwDT7SL+o=;
-        b=GNu5bflgLmUrizyg6AeOmpbt7wUHuZlGWaLh5nxfJtNUadC+yyyiXq+HNrCmkf6P5v
-         8jZsNiD/NIzIUmcWfyQY9H+sLYK/nQ+H24CAeu+z2jyHO6CSkzsGFIvGlOiAFmJpOdcl
-         440cUlknBAVL1li1AyoBV6ukB1+SkLzInQ0JjBlwIh8saB/uDEShhAxbvLEXO0tC9Kdi
-         XtZ+VlIRK8pbvDDqGvAXBI3WgWeLqKJ2rUlHsnUmtxNrI8M2sh4lFz4Oae9VoMmKYs2Z
-         mwisMWpF51u69mVL3zdjRSBh1DnIjGgW/1H/LJ82kVP+bErTzPX3UF9d3Hn2HuPmE2/T
-         2ZdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727708282; x=1728313082;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C3STRu4cbHglj5Qo8K4nwrkA8bytC3Rp9dmwDT7SL+o=;
-        b=ue7Sy7Nmhg6duzshvZorSKT9yA2hIiQb428CnVVW2TEGSHFNunw7diKjFcVh0HIJJu
-         pTaqRyP2o17KZmLuHeUfgVUON2mqPli00yAaeRxxBY40xdc0IDB0KRWAEorPuRNwqRVS
-         CwY3HjYDKKMevJNUZAKseJsSeQ4eOzd17i2iqvX8syl8wsUlFNhBJPzQ7I4Ld8qhLqZf
-         4wKl6Srqve8JgAKPP7d5O662TzxRoqZ10QXFngBPtB6GrYTqKC4xCDoDZacRZsLpQhet
-         SXTURVDdOY57Ofywv9FpWif4FClPyRrgRen/kq0Vcj52Te7WAMSOeuYfI22xsK1i//F6
-         +mGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBfIhSVGPw54rdF0ug48mCsdbMx/UBY26cl26LbGyxsOEH8FWK3TYer2I30/LOOq5k8Aj6hy3CQb9OelQ=@vger.kernel.org, AJvYcCUm9gpvgnOjjlInTR6zNmqqsTCojZvGKhmEFZBi/ROzYCERwvP+i3WJxzqjspjP0fCQ10id+I8VGSkmZoIhnO8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyci3GGcKuzCJ7yfC0pa7ld/pnndv2TOIMM3WsUHrpmVZGxx5Xe
-	kFskHsG6OQDs7e3mWVc+Jk8Z+0YMzU1FVSCNQLi68runiIfrzco68FIarh/43V+ZgGB03WT9Lhn
-	WH0rYl/ygLEvxC86n9BBSZ9+CZsM=
-X-Google-Smtp-Source: AGHT+IEZHb++QhjTvB8G6SSCOAKGzRDqfccgpUNoWOf+e4Kmpi2KzjIvbBFOp5BGQW5LrWjjN598noYQxSFVh+6rZk0=
-X-Received: by 2002:a05:6122:54f:b0:50a:c6f5:e672 with SMTP id
- 71dfb90a1353d-50ac6f5ecf9mr1698566e0c.13.1727708281673; Mon, 30 Sep 2024
- 07:58:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e46dFKHf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4AAC4CEC7;
+	Mon, 30 Sep 2024 15:01:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727708480;
+	bh=7u3rXBL5wKMAnZxv41R56LBzZrdAt8JKmrS+unGkl7Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e46dFKHfn4jf+zkL8DZMfETZKLzOCZhJkmpCD5NZc/BJQ61F/nuG9M1jzijQIU+BP
+	 mcHSVrcAueqWpfkz3hm3jyscaHOS/z7Aid/XdhCmGo8zgecTQB/xYaeALf8XOJIACj
+	 PW+n44/DokrmJYg9olDW5DIeIiqLs5oW8WoNvLGlGhiFBMGcS+hQkMaQuPjZlLybfI
+	 VlCgbYiJCPkJIigoc3NhG7356ozemLCgFqZhtzISudEuNpV7XGKyGODLMj2EyfueRl
+	 3t1hTAN+1t0suh2ApY7j6oPcFZ2MpJJip1jzUursEeS5alGJXNPVva5JvnyoEZa0My
+	 lTHMTQPNj7Ofg==
+Date: Mon, 30 Sep 2024 17:01:14 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Guilherme =?iso-8859-1?Q?Gi=E1como_Sim=F5es?= <trintaeoitogc@gmail.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
+	dakr@redhat.com, a.hindborg@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] device: rust: change the name function
+Message-ID: <Zvq9OqEu0yN1Ahgq@pollux>
+References: <20240930123957.49181-1-trintaeoitogc@gmail.com>
+ <20240930123957.49181-2-trintaeoitogc@gmail.com>
+ <ZvqkAuxWZIMZshN_@pollux>
+ <CAM_RzfYXWJ1ePZk7-DFR4P--F1pyzWg8bnC40mbLWaHpx_aNJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
- <20240930144328.51098-2-trintaeoitogc@gmail.com> <2024093044-violator-voice-8d97@gregkh>
-In-Reply-To: <2024093044-violator-voice-8d97@gregkh>
-From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Date: Mon, 30 Sep 2024 11:57:25 -0300
-Message-ID: <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org, 
-	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM_RzfYXWJ1ePZk7-DFR4P--F1pyzWg8bnC40mbLWaHpx_aNJA@mail.gmail.com>
 
-Greg KH <gregkh@linuxfoundation.org> writes:
->
-> On Mon, Sep 30, 2024 at 11:43:27AM -0300, Guilherme Giacomo Simoes wrote:
-> > This function increments the refcount by a call to
-> > "bindings::get_device(ptr)". This can be confused because, the function
-> > Arch::from_raw() from standard library, don't increments the refcount.
-> > Hence, rename "Device::from_raw()" to avoid confusion with other
-> > "from_raw" semantics.
+On Mon, Sep 30, 2024 at 10:52:27AM -0300, Guilherme Giácomo Simões wrote:
+> Danilo Krummrich <dakr@kernel.org> writes:
+> > > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> > > index 851018eef885..ecffaff041e0 100644
+> > > --- a/rust/kernel/device.rs
+> > > +++ b/rust/kernel/device.rs
+> > > @@ -51,7 +51,7 @@ impl Device {
+> > >      ///
+> > >      /// It must also be ensured that `bindings::device::release` can be called from any thread.
+> > >      /// While not officially documented, this should be the case for any `struct device`.
+> > > -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+> > > +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
 > >
-> > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> > ---
-> >  rust/kernel/device.rs   | 2 +-
-> >  rust/kernel/firmware.rs | 2 +-
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >
->
-> Hi,
->
-> This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-> a patch that has triggered this response.  He used to manually respond
-> to these common problems, but in order to save his sanity (he kept
-> writing the same thing over and over, yet to different people), I was
-> created.  Hopefully you will not take offence and will fix the problem
-> in your patch and resubmit it so that it can be accepted into the Linux
-> kernel tree.
->
-> You are receiving this message because of the following common error(s)
-> as indicated below:
->
-> - This looks like a new version of a previously submitted patch, but you
->   did not list below the --- line any changes from the previous version.
->   Please read the section entitled "The canonical patch format" in the
->   kernel file, Documentation/process/submitting-patches.rst for what
->   needs to be done here to properly describe this.
->
-> If you wish to discuss this problem further, or you have questions about
-> how to resolve this issue, please feel free to respond to this email and
-> Greg will reply once he has dug out from the pending patches received
-> from other developers.
->
-> thanks,
->
-> greg k-h's patch email bot
+> > As a follow-up, it probably makes sense to also change the function body to
+> > just: `unsafe { Self::as_ref(ptr) }.into()`.
+> 
+> But if we change the function body that is suggested for you, the
+> function will not have your own refcount. If I don't wrong, the
+> Device::as_ref() expects the caller to have its own reference counter.
+> And if we change the behavior of function, your name don't need to be
+> changed, because your behavior will be equal the from_raw() from
+> standard library.
 
-Yeah, I was think that only in 0/1 I should explain the changes ..
-I'm was wrong.   I'll put the changelog in 1/1 too.
+I think you missed the `into()` above. This will convert `&'a Device` into
+`ARef<Device>`, and also call `inc_ref` from the `AlwaysRefCounted` trait
+implemented for `Device`, and hence increase the reference count.
