@@ -1,110 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158CD1CFA9;
-	Mon, 30 Sep 2024 15:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E1A190052;
+	Mon, 30 Sep 2024 15:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727708745; cv=none; b=bwtU+Lv/fOmPDOhNI2KBmaBGW0qo6uC+svnuduLBc4krEYg2AhFMdZyp0jbsUDSjUVNQgthasmu+2Gm3Cjmjjbowqw6q6PlvX4G0oD0VPA18YhIiinkPdPnGL4/WOCp3s70BJYhqS939ixolSPyKhfmK9ck2/YH83leblwd3KPU=
+	t=1727709220; cv=none; b=Ag0N35Pfk+C3cZz5A3o1o1mdrtk5Hc80g5ctMeIc5wSwM3YimaIibZ/jKPiDXnwtoDrBVYKaU7ba8cCdyc44iDu+nmYA+mJuPEadnvQDY5rOjZBou3PKJD74VW+9+7CO/WylxHplRwa+K4b9cUpK2a43lMhLItNckVfsF9vNzSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727708745; c=relaxed/simple;
-	bh=vzSQZVC3Ilt3otT8oX6+AWMh25CVjuVi+7bze+eCc7M=;
+	s=arc-20240116; t=1727709220; c=relaxed/simple;
+	bh=hUL/J/sUjAaD7bSIXuLWquTa3cBrA2QI7TlPd5l+p2s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mFiIqXtGufhatk0bWu+7n4jk2ePv6UiwasQOgNKpH/yeG4vDjlR2/GdJMcYBmLyYjbdgUR8Ti7pzLHG4gzEjRTB+fF5OsRtZTefvCLhX1o6sOEeyw1lGJjsw9cfkC3ZponHbJ25TYHsfLpn36L8p3tUGss2n55t/TfHGt4aqBWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MsbuoRkQ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y81Ut3McxStKpEtGqOUo84BodSD88VVPIPDeayfiXthEHhYw7wtnxTUcyD5w+IzEj5D5HqVhtFu84Vx5MRRj1kngF65RVIHgpTJMS+rsJvOSu51c5snOEaIihHlWCGtEqC3DbOyWCWvT3MlCA17i+rmIlZIOYva73K1K8OzQi9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5DjZKa9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MsbuoRkQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A066C4CEC7;
-	Mon, 30 Sep 2024 15:05:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5DjZKa9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF23BC4CEC7;
+	Mon, 30 Sep 2024 15:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727708744;
-	bh=vzSQZVC3Ilt3otT8oX6+AWMh25CVjuVi+7bze+eCc7M=;
+	s=k20201202; t=1727709219;
+	bh=hUL/J/sUjAaD7bSIXuLWquTa3cBrA2QI7TlPd5l+p2s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MsbuoRkQYxlbAc0v9Jej8DfbUQz/T1d8wE/0kakzDue/kbm0Ci1DE8L+ZzD++4fkh
-	 7Ft6i1VJV1Vn4qAC1Iiw3Ugi7rwmTfPb+K5yd/cva4spZAAJIwK4KnkZsuLiK2vyD/
-	 n+JCpcd/Pm7Woz+Y5bkcNNhOUjaVlDbrsaTMQN7EH//i7dKCCQeA01ESx10RRnI7jG
-	 8lXcyvvgBaZ93p6is70t4ZgdCEpH7tk/WJUUx6tDQ6B5iiNp40HYCqX+4w168SPtf3
-	 FGv+vylGL5WHZNIaiNqM0QwCEU/HmnSv86zHoS/XyquVFosn3mxF2GtpCFhHRNEf0d
-	 UAG4f5ToQVEPQ==
-Date: Mon, 30 Sep 2024 17:05:38 +0200
+	b=S5DjZKa9QsYsA31FvZuG4C+3ccXslWjxy3kQtLP8dT0eJrzg/1fe3dBORPjr+m42A
+	 ZSegMPSK90baMK/CgFnRme59Wd8KL2YbI1xB19jNBEQ3h3Apoi+0nC2VU5qUJbg4Co
+	 7K8f97bp1jOs7bi2q1TyvzFUGnF5ulbbhYDwXDB0aRXbzSYOoppHtg271gs2zh7v5v
+	 vPBBAJ30Vk4pVQ7Sywt85uRN5l69deSOcQW7g7hBcWU+ESVr//iEFEY2qPNgcAlAIg
+	 6Z/6dsE+zP2EOO7BLSe5LyJ78jZCDgzclq9gyuMzNEA9MWCEPeFEx+V8CXWnV0lrSZ
+	 QzRbizZ4XhXXA==
+Date: Mon, 30 Sep 2024 17:13:34 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Guilherme =?iso-8859-1?Q?Gi=E1como_Sim=F5es?= <trintaeoitogc@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
 	dakr@redhat.com, a.hindborg@kernel.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
-Message-ID: <Zvq-QiQFc12FOjEW@pollux>
+Message-ID: <ZvrAHnN0D7KPlLDc@pollux>
 References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
  <20240930144328.51098-2-trintaeoitogc@gmail.com>
- <2024093044-violator-voice-8d97@gregkh>
- <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com>
+In-Reply-To: <20240930144328.51098-2-trintaeoitogc@gmail.com>
 
-On Mon, Sep 30, 2024 at 11:57:25AM -0300, Guilherme Giácomo Simões wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> >
-> > On Mon, Sep 30, 2024 at 11:43:27AM -0300, Guilherme Giacomo Simoes wrote:
-> > > This function increments the refcount by a call to
-> > > "bindings::get_device(ptr)". This can be confused because, the function
-> > > Arch::from_raw() from standard library, don't increments the refcount.
-> > > Hence, rename "Device::from_raw()" to avoid confusion with other
-> > > "from_raw" semantics.
-> > >
-> > > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> > > ---
-> > >  rust/kernel/device.rs   | 2 +-
-> > >  rust/kernel/firmware.rs | 2 +-
-> > >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > >
-> >
-> > Hi,
-> >
-> > This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-> > a patch that has triggered this response.  He used to manually respond
-> > to these common problems, but in order to save his sanity (he kept
-> > writing the same thing over and over, yet to different people), I was
-> > created.  Hopefully you will not take offence and will fix the problem
-> > in your patch and resubmit it so that it can be accepted into the Linux
-> > kernel tree.
-> >
-> > You are receiving this message because of the following common error(s)
-> > as indicated below:
-> >
-> > - This looks like a new version of a previously submitted patch, but you
-> >   did not list below the --- line any changes from the previous version.
-> >   Please read the section entitled "The canonical patch format" in the
-> >   kernel file, Documentation/process/submitting-patches.rst for what
-> >   needs to be done here to properly describe this.
-> >
-> > If you wish to discuss this problem further, or you have questions about
-> > how to resolve this issue, please feel free to respond to this email and
-> > Greg will reply once he has dug out from the pending patches received
-> > from other developers.
-> >
-> > thanks,
-> >
-> > greg k-h's patch email bot
+On Mon, Sep 30, 2024 at 11:43:27AM -0300, Guilherme Giacomo Simoes wrote:
+> This function increments the refcount by a call to
+> "bindings::get_device(ptr)". This can be confused because, the function
+> Arch::from_raw() from standard library, don't increments the refcount.
+
+`Arc::from_raw`
+
+Again the note, it's both the semantics used in the Rust stdlib and in the
+kernel.
+
+Let's wait for what Greg says, if he wants to fix the small typo when
+applying the patch.
+
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+> Hence, rename "Device::from_raw()" to avoid confusion with other
+> "from_raw" semantics.
 > 
-> Yeah, I was think that only in 0/1 I should explain the changes ..
-> I'm was wrong.   I'll put the changelog in 1/1 too.
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> ---
+>  rust/kernel/device.rs   | 2 +-
+>  rust/kernel/firmware.rs | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-
-It's fine to have the changelog in the cover letter. I don't know under which
-exact conditions Greg's bot triggers though. Normally,
-
-For a single patch of this size and complexity a cover letter isn't needed
-though.
-
-But don't worry, no need to resend. :)
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 851018eef885..ecffaff041e0 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -51,7 +51,7 @@ impl Device {
+>      ///
+>      /// It must also be ensured that `bindings::device::release` can be called from any thread.
+>      /// While not officially documented, this should be the case for any `struct device`.
+> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
+>          // SAFETY: By the safety requirements, ptr is valid.
+>          // Initially increase the reference count by one to compensate for the final decrement once
+>          // this newly created `ARef<Device>` instance is dropped.
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index dee5b4b18aec..13a374a5cdb7 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
+>  ///
+>  /// # fn no_run() -> Result<(), Error> {
+>  /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
+> -/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
+> +/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
+>  ///
+>  /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
+>  /// let blob = fw.data();
+> -- 
+> 2.46.2
+> 
