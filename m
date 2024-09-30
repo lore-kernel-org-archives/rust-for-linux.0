@@ -1,97 +1,185 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4F818E74C;
-	Mon, 30 Sep 2024 12:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7787718E352;
+	Mon, 30 Sep 2024 12:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727699453; cv=none; b=sOuzyyG49HD5IJvuFLFKbVP9pYSdspWFQQKehPFXdSGoT3tYfrUy7QGOMegQ8lznrpnEDBduyaMFUuykyXtKn6+miSZnK3Q0OtA3+txLPlk6ZIcwM4QFHj6OmpeAGsbv8iDubQA3YdzBBsFLF8z55G+4xsrRs4JlJz/flbiOHhg=
+	t=1727700013; cv=none; b=tR82K7RHfGSJ8V0qR8p5F8vdWIJcyEzK9cJbz1JUl50FRktDxsFA7u7Ce47xqJb8ShquCxCbJLyl27pOFse9Wg5sR7T/LvQMaVfti05aPBUyFDnWjPJxEWZGwr7wnR85/0VNJUH6OASDCqpJotpKN943oIE9N2xXuXiDX3RlTJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727699453; c=relaxed/simple;
-	bh=JHS1J2LCC4y1JvWfah/JnzV/iZbvXNQwG4RLNH7tV9s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mgZOWLd7qM33KsTmE+47Ugt6CyqgPOl52POvfBOep8neemdxRHvS19hmfDFXLnlHFCpBmMAf3sTRPvr6IR4Vn3tdIvBhEmXOOuJeizlo01tBXT+/2rj1zteEXsMQlsWF5mD2zB+bHgpNdXlMfb8qyFet7QTJ3kQ5mOgAnHpZ3BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lL7cVKCN; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1727700013; c=relaxed/simple;
+	bh=RM8k+Og1xucdZtM/tMyuY6EF1+OJMVFGQ4eUvYfdYiw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n7GAYXf3CpLU7PGs6ql8R74cewHvGhVhc5Gpqi3Z50BL8wJkGbWUP0gBnvO1mA544c+6kL6Ggkq1gtPKVK75LQC3N9goRNtrcQvXZE+FAmIKzOZx6dXi8EDzscIt9iL2Hcos0Co1vhkfDGJ272Kazb3qG/r1JJyThLE1vqu3Qp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SQasC57/; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lL7cVKCN"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7db238d07b3so3640481a12.2;
-        Mon, 30 Sep 2024 05:30:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SQasC57/"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20afdad26f5so55542105ad.1;
+        Mon, 30 Sep 2024 05:40:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727699452; x=1728304252; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JHS1J2LCC4y1JvWfah/JnzV/iZbvXNQwG4RLNH7tV9s=;
-        b=lL7cVKCN84+eGWaEtSjb8tKAXz6R4EtSyPktX+j4m41//++YrXQAXvYNov3gfCJ1cf
-         oRyXRiZT+MDpNwWx1g1oVDBTuR8efauvkUBS5U1hJEHOUI+mBz8SUI6vyNp2Ltpz52kj
-         RAYuORg6Z/LTmR4UJQzAHAuh+RCExbVFi8BHObgMHecHmLVZcD8CRClFChsJSAPZrMRa
-         1JNK1ebKR/5KofsPXIN/3IoUoX5jkaAgF6F47oAmaTsdv/pD4F9GVdosWOZ696t2fGah
-         57LptUv1BzpkWB2QaLonhW1ARThyneDFsVxO2G2/AyQQmzdEllU+edrEY53ykodjEYIV
-         Q0Sg==
+        d=gmail.com; s=20230601; t=1727700012; x=1728304812; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c55WIPHDfBnIwV8zTM0GRcHHG5bLf8AH4uB8OrirpjA=;
+        b=SQasC57/VEaMO1RaRS1N7zh0Z6zpPDL21R1Ape24oZGwtIOic4NXAqM8t/w5qv/CmJ
+         xYSaRpPbLnmDCCNMdPQllgXQXCphhQBacZ3lnbud+qsKDOUEDOnJV9GXraFHJhUXhFW2
+         3bxea9FCDfC+hekd+7yT9o9b7mxxVx0n/yiDNebLHydN39jpxMSs9QZZg0zVq7EG/WBx
+         rjtZBoC5z4XcB8Q7rEzY7mU48KepZA5IXD1aIXfsWACG3UEZUbNpu9ZbF9gDoJjjdQ8i
+         JFaKYtDEyg7BcctMgdTsTbiV4nXbIXYxGXt50z0JWEcYsSl4wtqjIn/pdeeWHSULXAxn
+         8ECw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727699452; x=1728304252;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JHS1J2LCC4y1JvWfah/JnzV/iZbvXNQwG4RLNH7tV9s=;
-        b=MJA4UElwCWRKigJSr6Tc/A5RMXaO/MjkEz+Q/z1UhchxGdpxZ/b/3g41z0pk/leBtU
-         JZv9bvI9zQfBjMb+8O8biVlVzFl5INlmetXKPj3k5GX1alFsbVFHsKKFWUsugU93jQX+
-         i7+/bw41OsqveEN1RTfSqE83uE/KzmLxnLSml2xzGpymfpwYzxxWu56HmqV2Qfqx66jZ
-         gEUR79GWGluhU9lF0R9LSR74vMi7l+dXfLkms3BktAooOl6SCY5YpJmzv7ihbCtoWUa8
-         7FRL6t/m3AtDRLbxHFnxLAvT2D+j8XcoG8qsB6f/1QNZctxqwiZ3GwhWNcAI0dIhBy2s
-         ARXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCpkI4/hMd6nRRIZv2QwSTTljEmCpiuk71svmjyAdxjVKtXYXwpHI9e0Zs9zQ783z6vWZf0T9uygjgjWC+@vger.kernel.org, AJvYcCVXQ6gtfhF/tBjeseGS+WMnGDUMF6C7yEcVIhNJJueNxhQQr/OPvDMt1+LG422m2wtBiMjxhiOFg5NTn/cECr8=@vger.kernel.org, AJvYcCVehKT/u43OgTR08t5jlq1yp3JVu5DrXebSPeFmAaJ7q3z3Hk2cvnj8NCPjU3mgwW8uLCcKnRDXatMXVq8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzH6tdDRegxRJNT6szjlO/gZJzfv0ZkNm/7YvzjHMdEHjUzlFfX
-	PR91hlxnEi4yHBm6lvCYgqghI0sDURPFiMc4HF5CyN/mhuXzrFuNQkKs9xTenpqy3fDtQ6W+xhM
-	DnZV1iYyefCr8poJxI/T0XxZt3CM=
-X-Google-Smtp-Source: AGHT+IHUatEutpRcdTkAANYnzh+h3ShdIBjwL9u2uMoKo5imHw2SUtanHSnopjgUdpJWKHsSxuP35P/ChAY2Ldo5lzw=
-X-Received: by 2002:a05:6a21:4d8a:b0:1cf:6ef0:c6b9 with SMTP id
- adf61e73a8af0-1d4fa78b402mr17640884637.32.1727699451515; Mon, 30 Sep 2024
- 05:30:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727700012; x=1728304812;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c55WIPHDfBnIwV8zTM0GRcHHG5bLf8AH4uB8OrirpjA=;
+        b=JoJXsgU7yG3gtEBnxBqnJ+YwvxkL08kcT7kPGex/1fVnbJJqd2FXRjaGPIARJzDoYv
+         eJrDcl3KSc2aU3gwbYddl7JpPKNKX+fTA9hMEUOfGna2RU3GLfscq8IGT5/O/IDOdik0
+         z3/EdLu5hWjhbHEcz2XVq7H8y05WOLnZ6n5v6uIDgsZe2Kx2WMFj42MI/k0SULfFKGNA
+         N6897Bokvagq3KYZNVtkBvHVSkWopzJY5oAMofgYG9JwsIvld0pmaKfbtjv4tAYHaWyt
+         jtr+l5swKbtN5zNOcwHMhGyjt47chl7XAwlmOOd2B2ux7UR7LR4B9e8rWHtG+2vw/7R+
+         7R5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVv+ku3kO8xmcjHBaoZH8B9L9Xg38N8g1GImKWO8HbXx0FZq2Ia8PjP+VkTauJT+MVwG+Csy5+hmF41/3U=@vger.kernel.org, AJvYcCXVJBsKOwwL57y3PwyotdUYrD8/UZpEz6y8827gELu09cQTwDMsLfAji+qHCWxID5vw0dfFY1UtGyFP6127kEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyW2Me03ID1CiX5hfhoyUp5VP3lrZtzaLls681Je9b8FohsuKbw
+	O5BJuXc8gIT0bryC+uv82rDCCPJUCJC/61S9qK07NFYnFIAKcKKa
+X-Google-Smtp-Source: AGHT+IHE/23YcZ/kvTHHj5dsasd+8FYaUZNwS9fCgosxZDYW8LkIAfVzP/C3qZJg2j3Er2FIM48goA==
+X-Received: by 2002:a17:902:f552:b0:20b:91f5:aae8 with SMTP id d9443c01a7336-20b91f5bc8bmr25740875ad.55.1727700011607;
+        Mon, 30 Sep 2024 05:40:11 -0700 (PDT)
+Received: from localhost.localdomain ([187.120.154.170])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e35ce7sm53377965ad.209.2024.09.30.05.40.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 05:40:11 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	dakr@redhat.com,
+	a.hindborg@kernel.org
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/1] device: rust: change the name function
+Date: Mon, 30 Sep 2024 09:39:55 -0300
+Message-ID: <20240930123957.49181-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
- <bf6544faba2b53ce901b2e031f3d944babcc7018.1727606659.git.hridesh699@gmail.com>
- <CALNs47vT=g2D7A_cDq_8F2xJRJTK-7KtQY4brFYfkopyCSjLTw@mail.gmail.com>
- <67il2JOf-dSurc3O-294W5k5mS-kf1FtFxKzXlxHHykGmIvIkfPel_pPe2LGX04HSnTg85LwEdU4Zz2VCrfXgIl5KVItUm5vPhbtkThc3BM=@proton.me>
- <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com> <CANiq72nKBz1myZi5guA5uPCwwtUvjfF80dOx5saHvjMU-g6mpw@mail.gmail.com>
-In-Reply-To: <CANiq72nKBz1myZi5guA5uPCwwtUvjfF80dOx5saHvjMU-g6mpw@mail.gmail.com>
-From: Hridesh MG <hridesh699@gmail.com>
-Date: Mon, 30 Sep 2024 18:00:14 +0530
-Message-ID: <CALiyAokoDKLdZD5j-zjfheyQEz6Zy1bGyGhRFp-NmoKRGYUMmw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2 RESEND] checkpatch: warn on empty rust doc comments
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Patrick Miller <paddymills@proton.me>, Trevor Gross <tmgross@umich.edu>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
-	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-newbie@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 30, 2024 at 4:14=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
-> The maintainers will usually figure it out (resolving the conflicts
-> when they apply them, applying them in the right order, etc.).
-> Otherwise, they can also ask for one of them to be resubmitted on top
-> of the other when it is too involved / subtle / large series.
->
-> If you are aware that you need a patch to be put on top of another,
-> then you can rebase it yourself of course. Just please make it clear
-> in the cover letter (or after the `---` part) what the patches apply
-> against.
->
-> Cheers,
-> Miguel
+Why did I make this change?
+This function "Device::from_raw()" increments the refcount by this command "bindings::get_device(prt)". This can be confused because the function Arc::from_raw() from the standard library, doesn't increment the refcount.
 
-That makes sense. Thank you for the clarification, Miguel.
+This discussion is in
+https://rust-for-linux.zulipchat.com/#narrow/stream/291566-Library/topic/Inconsistency.20of.20.60from_raw.60.2E
+
+The options can be:
+1) Rename the function for don't make confusing with the Arc::from_raw().
+2) Remove this function and use the unsafe { Device::as_ref(ptr) }.into() when I need the get pointer for the device.
+
+Proposed solution
+I like the first option. Because, how was will commented by Boqun Feng , when the people write the "unsafe { Device::as_ref(ptr) }.into()" again, again and again... inevitably anybody will create a help function for this.
+
+Then I think that we should rename this function for Device::get_from_raw() or maybe Device::get_device() and I like more of the second option because, this will be equal the get_device() function that already exists in .c code.
+
+
+How do I test this:
+I create this simple file in sample/rust/device.rs
+""""""""
+use kernel::device::Device;
+use kernel::prelude::*;
+use kernel::types::ARef;
+
+module! {
+    type: DeviceTest,
+    name: "device_test",
+    author: "Test device",
+    description: "A simple module for test device",
+    license: "GPL",
+}
+
+struct DeviceTest;
+
+impl kernel::Module for DeviceTest {
+    fn init(_module: &'static ThisModule) -> Result<Self> {
+        pr_info!("initial device test");
+        let device = create_and_get_device();
+        pr_info!("device created");
+
+        Ok(DeviceTest)
+    }
+}
+
+impl Drop for DeviceTest {
+    fn drop(&mut self) {
+        pr_info!("bye bye driver test");
+    }
+}
+
+fn create_and_get_device() -> ARef<Device> {
+    let device = unsafe { Device::get_device(core::ptr::null_mut()) };
+    device
+}
+""""""""
+
+I set this in Kconfig
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index b0f74a81c8f9..7779969e7dd6 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -37,4 +37,9 @@ config SAMPLE_RUST_HOSTPROGS
+
+          If unsure, say N.
+
++config SAMPLE_DEVICE_TEST
++       tristate "Device test"
++       help
++               This option is for device test
++
+ endif # SAMPLES_RUST
+
+
+and in Makefile
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 03086dabbea4..85a8b30100e7 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -2,5 +2,6 @@
+
+ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)              += rust_minimal.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)                        += rust_print.o
++obj-$(CONFIG_SAMPLE_DEVICE_TEST)                       += device.o
+
+ subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)         += hostprogs
+
+
+Then I enable this in menu config... compile the kernel e run this in a qemu:
+qemu-system-x86_64 -kernel bzImage -initrd initramfs.img -m 2G -machine q35 -device ich9-ahci,id=sata -drive id=disk,file=rootfs.img,if=none,format=raw -device ide-hd,drive=disk,bus=sata.0 -append "root=/dev/sda console=ttyS0" -nographic -monitor telnet:127.0.0.1:5555,server,nowai
+
+the expected print is showing
+[    2.786174] device_test: initial device test
+[    2.786541] device_test: device created
+
+
+Guilherme Giacomo Simoes (1):
+  device: rust: change the name function
+
+ rust/kernel/device.rs   | 2 +-
+ rust/kernel/firmware.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+2.46.2
+
