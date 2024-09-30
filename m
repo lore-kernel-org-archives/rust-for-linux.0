@@ -1,102 +1,202 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8C3190692;
-	Mon, 30 Sep 2024 14:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0E61922F9;
+	Mon, 30 Sep 2024 14:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727707037; cv=none; b=Xd7VuaeWmdnBvFGrAe1pFB/76hexiyNyHoEFtE7uB+45mDacw0rKjR50m1vqVSKnG1sw/RxyxdMa1yZYPNg48nYcffrJ96WqwFuUmKdKVKJZ6T4MVVMXGF3jnqg27EJo474OUP0G+r6ssQ2xM8NtngEDhsg/Liof7vnd8JHKxwE=
+	t=1727707428; cv=none; b=SMHoSIIBq7u43HD/YUaTYM1k0+QZoCwCj1f4+EPBYqiQcBGKi0AtcATKx5qEHwsYpmAjd2TXvPFyEqQk43pS4fFVcnkU31ZM5YKTzjvOLq6YDOAJPRHKnwalRmDynQWwyh+oYeAbo/qdXnIM6wUqGsD9HXLIIhyHPTiUYtMmLuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727707037; c=relaxed/simple;
-	bh=SxwHnpac1WPdo6ztECATlxiDX83RoFq5U6zGQTNqWTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U0VOScBCuIcBEHIMLyd6/4rItBKxV2zs9gdbfhM6pCZxgDWxVfX1AL61rkW9zRZTtoDuXPBJnZCBbL9R/YgINfHjtuGj0oyYES3n6WlGHWXzkfwnvf8tpRyxEkxwu88iPhsB1Cfv+fv1iaWHq4LaXOphu9o3RT3qj3QN3T/Ycnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mU+9UJgW; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1727707428; c=relaxed/simple;
+	bh=V5KYCCRcPcoweZzkEDcp1YM6DPJokOBCsNi1DC8e1jw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WOH6GLTOS4ErD9q7KQ8jxH4pE6IzDuNS/t+8Bw2jf7C6eWeKUrBhoBClNYvmUCTdQsbQU/WS/GXrBVXN1SFwgmj2rkgcnucIVf9jIndLRbcJ3AhEogC1RFGp1B6BbhcNwyqZw1p9+BUMDoGIVSSnrwse2sn/9awa7G+3vYPynZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WeiOn11S; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mU+9UJgW"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71829963767so332959b3a.1;
-        Mon, 30 Sep 2024 07:37:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WeiOn11S"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-207115e3056so38345375ad.2;
+        Mon, 30 Sep 2024 07:43:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727707035; x=1728311835; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aJ0acZVpTd95G4V1SXDnkyRnYouhvyLUEZ9mKtxGhDo=;
-        b=mU+9UJgWq6SXkzFznVADt3XMXstKW6tmPhg+6h0iP9NOTkznQkwaE+Gc2xo250MOu/
-         wDrC+OY/nqd6bPqcn0oP9Rs/xJXbn+1QtT3n4a76EBscIpI0RTc9mau1eaopXxk+EXw8
-         zc5/L6Bh1EuwbwNWUO+TMmZphcmC5DB54dkcKofOgfaWAGQAM5y7Z3V0djD4w4FKrTjd
-         q47xvgvC00WjR+D62Ip2dnGNaSiLTQOwWyqWF8TgTeP1yLjsxw54n22RMBZ6Mt6ndKjl
-         WZQYSkygbns9bql38Tmck+EUb/8L9dZbiKT3PylYjqHNl+XzYJS3WZWY1iw3hIWEoftV
-         9lxQ==
+        d=gmail.com; s=20230601; t=1727707426; x=1728312226; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iXlNw5h0RJKykTmyYsPmjNCcESsmoWRT0nX8xH3EQdc=;
+        b=WeiOn11SsqZRcXpxnjc6tKw1PvyWK8t5rHBWtTJOvUYbsUikqU5y2kXrFbhOYxzFCU
+         Taq8CV1pKG8EfHjFzhU4oo7YpxEN4753+hgetfXjiDFslFL75gnPgFzVDErrZIF2hnrl
+         mkFmRewBoy8lKqFD4yC4IXIS29CVso8N3zIZxVbIKW6gvzX3nwwdHaKbwP9QtCdcd0bC
+         GajJdqM1jOFp4u63vPnQv+2o89B1Qrw/NRjMkvZ/2ijio3DgQeutb8jUzCMegkHp/8hq
+         HWggT/4C6vqUn7KLBQnpQ8K6nE/KtGN1TxEVqSse9DPpzbJMwB11lwatqHVcIK3is/OB
+         Jc/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727707035; x=1728311835;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aJ0acZVpTd95G4V1SXDnkyRnYouhvyLUEZ9mKtxGhDo=;
-        b=Km+R1Ec6KDz/qlfJ1gPA5dgMUuJqmbYPjjDEhwURBswqir69zKkzwilFqUiHyyTVE1
-         lpsmJ+B3sGD5sWvbmftzHJp3rCR4nld1Yd8zWBeDetx2fpNj9ra5Htx6cKltyPHC0OY5
-         8MIf+Q1Z4Wye/fNaPBt1+h7l70y6QU6eC3+XP4gNGn6uUamYnP2RZ9NNpPBQhf6dioow
-         TdHg1AKXXkQpUykwHnG5KMAmq9g7g6ALUxtdCLKDU+MRYEAmFCLlq9eHI7MpZoSKeEGJ
-         Wei+2+rjNFT/jNB0phkB3So53aOiJ5pvS2LCPGq1JYeI2JG1vU88uCzBjqwMBhwCYpVC
-         lGmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVpUJDV1TNzGMSVsE9Tw5TFQzgLjn06xkI7zsquJfI/dqovDZWAqo+IdK8xql9HI950iE1iJ5h+/UqYAJ4=@vger.kernel.org, AJvYcCXbczmINwte2lNFnwXi8/vLK1hWwpguQp/DWmvSv/vaOA3S1yVpDP3INe6hMi/ME0CJF7pQtrHFeqiAxzem/tg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmFd+yQ+wDYECzUyORFzhL2Uc3NVPoYJ9owaKr4bh/c6grfZV4
-	Aq+Gk7W39r9+7BkJOYy7UOjY2xRN9KrsUhTKEuVzz9ulusG5k9QbS7tXCImETG2W4OztI+1AKqH
-	rqUWCxzx/bcDTkoPh9zoRf0pWW60=
-X-Google-Smtp-Source: AGHT+IHXBITCQHq31xGtqm/iqPg1757w3dsrvH3jMD3qu7FcvDv1u9hgLbXdLn+efRuEinvEtVHU2vpiQW1VL4+fOv8=
-X-Received: by 2002:a05:6a00:1990:b0:717:8b4e:98ad with SMTP id
- d2e1a72fcca58-71c6352f3demr5113469b3a.0.1727707035319; Mon, 30 Sep 2024
- 07:37:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727707426; x=1728312226;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iXlNw5h0RJKykTmyYsPmjNCcESsmoWRT0nX8xH3EQdc=;
+        b=qmFgm8X2VmKYGltDHyR5R8fp4neLhoqEhGPnYXvJ2mvg6qemACxVufl8e6N5jeKr7F
+         TcuK/V31eDJ7fasdmEEtixxt8BKircz89bNkX7s6fqp3O0nZ2Ii55f+bgQL/FvCT44Lb
+         J1w28tZ5FtlHFd2Sc7kY06B9Ns+Ygw/ZscsArySe3RHoZvDbbuHONAZo8omWBtBrR0HI
+         Dv6rwKsSPTdQOHeV8GIIbCNXFsCf45dyeuRLDAH37AT2LnfwG4+ebqltpzagIfoqyPt3
+         vCvecFR0IR5MNa1J9+R7wmBddEVKnCO4carboJNecLKlBlik+oUH8MqAWq3xq2L1IcGB
+         OtSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSd91hJXxF0dMEhcsDOLMgH/mQn9unXaUtVxUBsgQ+j4rkx0uKkzLkRriawcoxOmNGAQCs1ys7cupj83A=@vger.kernel.org, AJvYcCWql/ylEHNVBssxu1yOb7I8mLvXvxSExF7HekyC2LisMsawgJvb9hG0Ef4AnUVzskJkBKaUdb+uKTyCVkMzlHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBszUK7C1aJnGExbkcDCn+pLSEUMX0wO+ksxDDd5BmCETHoMbZ
+	Y/HBv/42aLhUyxJtQml+iQBsgColhD1Q1ffzLVdbWFAxPEwgdruI
+X-Google-Smtp-Source: AGHT+IGS1ybxXsoqy36LflxAz8iu2OPnV0ojb3/ucQhkDcaye7ou+jVOOvOluE7Djj1wKV6boNb85w==
+X-Received: by 2002:a17:903:8cc:b0:20b:5b16:b16b with SMTP id d9443c01a7336-20b5b16b29dmr114037995ad.36.1727707425609;
+        Mon, 30 Sep 2024 07:43:45 -0700 (PDT)
+Received: from localhost.localdomain ([187.120.154.170])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37d61db9sm54882005ad.26.2024.09.30.07.43.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 07:43:45 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	dakr@redhat.com,
+	a.hindborg@kernel.org
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/1] rust: device: rename "Device::from_raw()" 
+Date: Mon, 30 Sep 2024 11:43:26 -0300
+Message-ID: <20240930144328.51098-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240917141725.466514-1-masahiroy@kernel.org> <20240917141725.466514-12-masahiroy@kernel.org>
-In-Reply-To: <20240917141725.466514-12-masahiroy@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 30 Sep 2024 16:37:02 +0200
-Message-ID: <CANiq72nN6sAJfchmxg3GQgR2NqfnDzOTWzXYiMkhiEgcwpaJXw@mail.gmail.com>
-Subject: Re: [PATCH 11/23] kbuild: check the presence of include/generated/rustc_cfg
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 17, 2024 at 4:17=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> Since commit 2f7ab1267dc9 ("Kbuild: add Rust support"), Kconfig
-> generates include/generated/rustc_cfg, but its presence is not checked
-> in the top-level Makefile. It should be checked similarly to the C
-> header counterpart, include/generated/autoconf.h.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Why did I make this change?
+This function "Device::from_raw()" increments the refcount by this
+command "bindings::get_device(prt)". This can be confused because the
+function Arc::from_raw() from the standard library, doesn't increment
+the refcount.
 
-Sounds good to me:
+This discussion is in
+https://rust-for-linux.zulipchat.com/#narrow/stream/291566-Library/topic/Inconsistency.20of.20.60from_raw.60.2E
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+The options can be:
+1) Rename the function for don't make confusing with the
+Arc::from_raw().
+2) Remove this function and use the unsafe { Device::as_ref(ptr)
+}.into() when I need the get pointer for the device.
 
-I also tested that it indeed prints it if removed:
+Proposed solution
+I like the first option. Because, how was will commented by Boqun Feng ,
+when the people write the "unsafe { Device::as_ref(ptr) }.into()" again,
+again and again... inevitably anybody will create a help function for
+this.
 
-    ***
-    ***  ERROR: Kernel configuration is invalid. The following files
-are missing:
-    ***    - ....../linux/include/generated/rustc_cfg
-    ***  Run "make oldconfig && make prepare" on kernel source to fix it.
-    ***
+Then I think that we should rename this function for
+Device::get_from_raw() or maybe Device::get_device() and I like more of
+the second option because, this will be equal the get_device() function
+that already exists in .c code.
 
-which is nice! So:
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+How do I test this:
+I create this simple file in sample/rust/device.rs
+""""""""
+use kernel::device::Device;
+use kernel::prelude::*;
+use kernel::types::ARef;
 
-I guess this tag may apply to the previous patch too.
+module! {
+    type: DeviceTest,
+    name: "device_test",
+    author: "Test device",
+    description: "A simple module for test device",
+    license: "GPL",
+}
 
-Cheers,
-Miguel
+struct DeviceTest;
+
+impl kernel::Module for DeviceTest {
+    fn init(_module: &'static ThisModule) -> Result<Self> {
+        pr_info!("initial device test");
+        let device = create_and_get_device();
+        pr_info!("device created");
+
+        Ok(DeviceTest)
+    }
+}
+
+impl Drop for DeviceTest {
+    fn drop(&mut self) {
+        pr_info!("bye bye driver test");
+    }
+}
+
+fn create_and_get_device() -> ARef<Device> {
+    let device = unsafe { Device::get_device(core::ptr::null_mut()) };
+    device
+}
+""""""""
+
+I set this in Kconfig
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index b0f74a81c8f9..7779969e7dd6 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -37,4 +37,9 @@ config SAMPLE_RUST_HOSTPROGS
+
+          If unsure, say N.
+
++config SAMPLE_DEVICE_TEST
++       tristate "Device test"
++       help
++               This option is for device test
++
+ endif # SAMPLES_RUST
+
+
+and in Makefile
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 03086dabbea4..85a8b30100e7 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -2,5 +2,6 @@
+
+ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)              += rust_minimal.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)                        += rust_print.o
++obj-$(CONFIG_SAMPLE_DEVICE_TEST)                       += device.o
+
+ subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)         += hostprogs
+
+
+Then I enable this in menu config... compile the kernel e run this in a
+qemu:
+qemu-system-x86_64 -kernel bzImage -initrd initramfs.img -m 2G -machine
+q35 -device ich9-ahci,id=sata -drive
+id=disk,file=rootfs.img,if=none,format=raw -device
+ide-hd,drive=disk,bus=sata.0 -append "root=/dev/sda console=ttyS0"
+-nographic -monitor telnet:127.0.0.1:5555,server,nowai
+
+the expected print is showing
+[    2.786174] device_test: initial device test
+[    2.786541] device_test: device created
+
+
+Guilherme Giacomo Simoes (1):
+  rust: device: rename "Device::from_raw()"
+
+ rust/kernel/device.rs   | 2 +-
+ rust/kernel/firmware.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+
+Changes from v2:
+ - Refactored commit message style
