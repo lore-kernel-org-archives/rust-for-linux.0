@@ -1,54 +1,54 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7302319342A;
-	Mon, 30 Sep 2024 16:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4205B824A3;
+	Mon, 30 Sep 2024 16:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727714422; cv=none; b=b19K9B3Qny3bAbKqvA2l9fv/NCH08nemOpvrsI4j2+jQ7g+X+ITf7gNrGWD9z3bux+i00GUdW/eIP4CnrQqv6mUYmIylqxEfwDCeqOKo2atkc+G8jFVReZMRZZHLXnhMX4MukNFK3DPFd4pWcQjwAC+GhE36fFEBhmMmFXZZuOQ=
+	t=1727714740; cv=none; b=fzpD0UKxkUkqAAl52fY1tX/jaGfYo6lsLVKsomiFCFf2vGvvAorNwm6Ma9BlmSOhxmt4E0fZyuhAv7OGHYa2JORSR/NK7rbmw0Zzi1TzV9XhhtPGxjYjnSvVwjgUpgWIxjnsACSylpcmtlELYU7nqmagN1UUyWfkGozSypAUkbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727714422; c=relaxed/simple;
-	bh=UrGwORns5gnnZyGdSAE8132QzXkk3dNjhnwiGggVhaU=;
+	s=arc-20240116; t=1727714740; c=relaxed/simple;
+	bh=u1oMF3Vw6h9ZGmyJzapx+6eXhNhylQp8wZjT4qafY5Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lIUcQxscvGfo1lX0ye98FLh6rAHdCP2xoiiZQfzM5kPgNJbWUtSzoDisO2+B7yrC3tp62BWoMc2+kM7v9U2ucw4MrUk+VPWkPYEATSK/XPHWwLt/g/Fj2BoOEDC3ACzmvvc8oouf3OcqMZd47ZhEf/N9ggcPvssp6e9KSJUlaYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IBaQ7OLf; arc=none smtp.client-ip=209.85.160.169
+	 To:Cc:Content-Type; b=cwNB9fyJMQ+PAOB5kLRboOGA3IR4BuH5gwjYulGONIFV5dXGXFhcjB8rKkjrmzmxJ9ZH7tAfh7MKUXDbTDzsTpb/2KVfzCazVMAhwDQi/wbpZnj39frA9k7ED8D/Jh8t/+u2iEfKkAVfjgXBZdlBgfmFaA8a6pq/yhKL7N87qas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4NDUMe0; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IBaQ7OLf"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-45812fdcd0aso49606091cf.0;
-        Mon, 30 Sep 2024 09:40:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4NDUMe0"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7a9ab721058so484896285a.1;
+        Mon, 30 Sep 2024 09:45:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727714420; x=1728319220; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727714738; x=1728319538; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0zvel2rpoubHEtpZkC+XLFVe/88duPLHw+2mKVnKTJ4=;
-        b=IBaQ7OLfwO0zuagKdkWneXo8yZP0JoE/+zLTiq+c2xJv+/z5AeEEQ3jS7i7PM3XFEa
-         vFbjuT129zogrZL3GTk+5wZiAOXzP02TM3Tcsqdc5eKJlktFqQvp/HmPzykbdTNETz4f
-         jN1kLoy4wLIvzbTZ4EZKCBkNeOiSN4iAobFvnb8ds9jbqPzyasT20ITYcHXjwFeUR0Y4
-         9VTH7sJy2ODEdWbrRKXa8fJRcNnKuvyCUA/si8t9Antw4H4YVGqTQJgtWjnsvkZn02OF
-         HWytkqnwLlpJACcKpNjJrTzja6xLrnJfi6qDLhkbBytdCbq8KEFo9s6HxtQYmMP99OLj
-         xEsA==
+        bh=u1oMF3Vw6h9ZGmyJzapx+6eXhNhylQp8wZjT4qafY5Y=;
+        b=G4NDUMe0j39jG0VC138DLWnu76J9mTwKjvwJgkc8F9VtatxIJXJ+OKFPLeG4prZFwd
+         oqu8BLEwF6h3QAhsHYK8lsirTOXGZqYj5ff1LbfcMDoMV/ro5rCzbXqQf5adMbEm6lQw
+         YXegxWUdsZCGpZ8gW06rbDYJqTVDEcLbUFpsmNKZwqxa3oi3OfCL5IlT6p3Aggwo7I9G
+         QeczrNVZA+zitiCV0Cv6N3X9TYBl497Hn4P6Hwju63+RPOAueGZJhX9DrVyfd0Nq2BDh
+         a2XpGvVXL6NsJSPliliQjcNxdkZ6lRQYiEo6mfHvbmucgdWUl4RKUL9WcqWEKegsY7oL
+         L35w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727714420; x=1728319220;
+        d=1e100.net; s=20230601; t=1727714738; x=1728319538;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0zvel2rpoubHEtpZkC+XLFVe/88duPLHw+2mKVnKTJ4=;
-        b=q+V/g8d6QIg4CV2tnUf4svlDsCmO9dUC/nQNLSgOMbHJyqstCDR1lZSre6rTKlZVia
-         /9DKAZg8tu1p+gAx6lSZIeIq2UDPQHV2Sfn1cYO81HROdL6BfXqyoe4N+wnlID3H49Mi
-         fQHid8uogtEV+vWPlYfErM7GaQYXBSGAkXJrbmPQaokmrkPBFNaKDdte46GJxoYON8ot
-         83Cx5GVIBv2VylqQHZDV69+VhDzTplJ+hdMdhj6HTI3RCpJCB3rHoBCyKGGNkDt3JKfX
-         Xl3Fl4tKGKxIHaBxNmIP6dO/zqHJ1kXyHopMqejFztTzCi+c0j1fdnTcOaN0ZlR8YT6v
-         WEJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVR6kv7aYG07RB+CkadeAKtKYOscseLl8PQQSgJJ4P9HV0mdkJRZOyfYCZlovVCDTZp3uvIx67wd9PSkuA=@vger.kernel.org, AJvYcCW/HZ4Yqq/8eJJw2glvxogXxoYn8ogpNZqM361tDQUqzmg0y9VTZ2UuV4rlSrFP/eFFWXWOUSDFa+Wk/pT6Zjo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVtue5dqBed8icn+6gZ4rfj5o5KSE4CXmv/5rX13QMVFoM9FAz
-	AA5nmQE2THYeGHqrytqgG53slNmqDMHr8Cu2xBHT36ql8VUzKvBnbvHqeXe8knKsP5GTizV/PHY
-	CYBCX34RKtz6NmbjRgVC1ysxKLhM=
-X-Google-Smtp-Source: AGHT+IGQMbM++h3zu8cTyJPCZMsG3ZLxFf5wA0K+gkQjoDy9G3EMSlf2EtoNnBC+E0VJJ6gB/kMWAEIylXV+dt0EHts=
-X-Received: by 2002:a05:622a:1908:b0:458:29ea:b3ba with SMTP id
- d75a77b69052e-45d73a862c0mr3393351cf.15.1727714420269; Mon, 30 Sep 2024
- 09:40:20 -0700 (PDT)
+        bh=u1oMF3Vw6h9ZGmyJzapx+6eXhNhylQp8wZjT4qafY5Y=;
+        b=piLqxgB6I2KNsJmkTuyNXNo+JEBsx1OAhYUd4YJBn0WR/WoouylWcnEL/5pQjjNHMe
+         3qW1o5uPa5rRX09oorxlzlX+WZEs6cAxgZY8XPbOCnB9/merAC2tRS/xRRNO1girTkMM
+         67VrzRrZnDqqVWh18nESDh66JB/HtoXVuMbgicAGaZRiFz+c9mceAaHgei/KhFQRfcrG
+         zXI4sWRe+Ud5oTfyrlsqY69NJ01MF9r0r2oMzsYKpcpM8OnWy8eDeIlOR7iF1SGngz5m
+         t3zyCiui8bQVV9Terq8Y4HkfABwjGg2JMYzLSJkpw9xCGn//K+A+orggQQkBLbd5lcun
+         ZS7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVjHYBaPc23/pkiB0piGvauPvgo3IAQttNMfNqbXVN3TBENje/UrdXvQQw/fY3mCSv66Vxa7sRYIQQ3qBl8g6o=@vger.kernel.org, AJvYcCXMV011jOxR1HiSjnxcxZbs+y/jW8jMkm5K4z32cF0WGmLs55UWtRbjf9BIB48FYDeHwctYJNWHbLYrPNs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqYDrwyvJ6ukj3XpC3J8gYO2y/dZj3rbx2S97tE+w2duBV/b3R
+	BBkU25cyuTOsEcHaDL47swDCtCHk/tn3Cf3YkMIA0udHJUKtVEV6acx9aoWdkH2va+QFVEIQ9Nh
+	4BeYxR1EMQ/Z/bn9nPauwRbvGyTw=
+X-Google-Smtp-Source: AGHT+IGG1E0coYyjQS8ct4GPgSOxgQwszDKSJcQS80gN110hyaWCLMGkvm5bIhI1U95Fpa30oEDFqB0vKJJsIY4PWsc=
+X-Received: by 2002:a05:620a:199d:b0:7ac:e157:e281 with SMTP id
+ af79cd13be357-7ae5b85e0fdmr31942285a.32.1727714738073; Mon, 30 Sep 2024
+ 09:45:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,33 +57,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
  <20240930144328.51098-2-trintaeoitogc@gmail.com> <2024093044-violator-voice-8d97@gregkh>
- <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com> <2024093007-safari-lego-45ab@gregkh>
-In-Reply-To: <2024093007-safari-lego-45ab@gregkh>
+ <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com> <CAH5fLgjMGwBNYkOEbiSLzQ5+G0gTz+gbvsRSoRsRizAETLpLeQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgjMGwBNYkOEbiSLzQ5+G0gTz+gbvsRSoRsRizAETLpLeQ@mail.gmail.com>
 From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Date: Mon, 30 Sep 2024 13:39:44 -0300
-Message-ID: <CAM_RzfakS8=Qr=vThJcW-eX8izBs5Xdjo+p8=Ji7Nf=_ozv0Aw@mail.gmail.com>
+Date: Mon, 30 Sep 2024 13:45:02 -0300
+Message-ID: <CAM_RzfbaAQT5cPhx7aB+uqgKcsHq-fnv_Jt63_p9CJ96rs6J9g@mail.gmail.com>
 Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org, 
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, mcgrof@kernel.org, 
 	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> Was it in the 0/1 email?  I didn't see it there either.
+> You can use one of my patches as an example. E.g.:
+> https://lore.kernel.org/all/20240930-static-mutex-v4-1-c59555413127@google.com/
 >
-> And for patches where there is only one commit, you almost never need a
-> 0/1 email, just put the needed information in the single patch you send
-> out.
+> Here, the commit message itself has:
+> 1. Motivation for why we should add global lock support. (To replace a
+> hack I had to use in the Binder driver.)
+> 2. Explanation for why I implemented it in a certain way. (Why
+> separate initialization step?)
 >
-> thanks,
+> Then, below the --- line and not part of the commit message, I have:
+> 1. Information about which patches it depends on.
+> 2. A changelog and links to previous versions.
 >
-> greg k-h
+> Anything below the --- line will not be part of the commit history
+> when your change is merged. So you should think about what people
+> would want to see when they look at your patch in the commit history.
+> They care about why the change was made, and why it was implemented
+> that way. What other things need to be merged first are not relevant
+> to people who see the final version after it has been merged.
+>
+> Similarly, the changelog is important for reviewers so they can
+> compare with the previous version, but for people who just see the
+> final version, they don't care about which bugs you had in previous
+> versions of the patch. Of course, if you change the implementation
+> approach, then they might care about why you chose that approach over
+> some other approach, but that explanation should be in the commit
+> message (and the changelog should just say you changed the approach).
+>
+> Alice
 
-The 0/1 email is for explanation the motivations, attach a link for
-discussion or issue and too for explain how to test this.
+This really make sense. I will resend a v4 version of this patch,
+without 0/1.
 
-But if you think that is not necessary, I can send a v4 without 0/1
+Tanks for this Mrs. Ryhl.
