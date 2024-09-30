@@ -1,126 +1,88 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93ABF191F6A;
-	Mon, 30 Sep 2024 14:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF48418BBB0;
+	Mon, 30 Sep 2024 14:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727707442; cv=none; b=OYxrt5TwPmR/xns1zl9igJ9CV3Yzw5ioJ7eLUwNCSF6p9EtNfrttVwlpVGUspZmDJKVwjPJSE96aO0YKqX3JpZNEeaLQQfuRakBmg/TG8aC+Q9IscqafC6EFTX/7+s7A1pRBa80Ziom7JLq04QezXDkwivBGAMYdK2yx0zux26s=
+	t=1727707928; cv=none; b=HhNnCwKtBlwrN+BCyfZMH6dsgujpa76kP+CeDcLtuV4/BGmasj6WCCVhEj7/IsYNhyGQ/rfUp//Fi1XeVLJ03IqWtSPlsj2Zh0KpSOUwf+x6In+9uwAWb9q6zF8muZ14nHT48xd7gyl84JqoNmI2I79vKgxdSoie887Jpioxom8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727707442; c=relaxed/simple;
-	bh=/QLYFgpYpxV8dVvCdWVaX9SB/W2zEfe0klAPWcg6WVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJA+jx0h4MJgpQLWxYiWtaVWSJtv0opliM0ixIyD+H1CM2q54Id2mVwOj1W4n9ouhhbgCfGm+FWGoSOSOq8RhB4LCrVWlaverN/PWuCKCxGTjaXvOmATJ+yejdETeMzTDncnihZCslQkvv29uzUsgSGa7CQro6ljnMI6Btmt82k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqY9mBaQ; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727707928; c=relaxed/simple;
+	bh=zj6qkf2jJptAzjCgXAlSXsfQHb3M5Vn8XRoZeBYhWXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jxpWyFZKXmvesO7R+Efcgi4X/11PpIe9cqqbVc/wMq4F2CZKsDe3TSob6C/YTLW1/IUZvLOMI5ZITqFpT9ZytLW1bHVPybh4WYKL1Hu46+tQAHGyaMS7rvRMphRUMC9j/Ppd8QyMdKVRu266JEaBfJ9KO8zSDqdC2QseTZ7M220=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdcXtmHm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqY9mBaQ"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20ba733b904so1500975ad.1;
-        Mon, 30 Sep 2024 07:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727707439; x=1728312239; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s+zHgvx1zgHBYImWhaA0imn53+odTeInzAM4ju+3Aog=;
-        b=TqY9mBaQai1nQbGz8Psac3Ipe6ueKyE1nSYJd80/vmWGyC7c6R8N3pldiRQflWjm+a
-         13q4VwmmueWlD6SWncZPsLMv8XqaQBQcrVXOo3b8q7rwOPQdLxvo/qB0F2UHu7Fo4Iz6
-         MWPLgM2CmM5U1ugSX9g4nqAw36uhycKyehGcc1dAafnqRmMRXQe7h/tPccHR7Nh+DuCX
-         vlbB7oZsWcN1CrWEcst7o113pw65nYwq4fc8iSphLlYTkyFuKJsGy8uWDHRJrCigQDiN
-         0ZKKwFdUioUB0rUhfC1Ixvw2LNj2WDNV6T2Dg+8qnlHT9Bj5B/xZqevRU5I/N0wKlAp0
-         fxRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727707439; x=1728312239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s+zHgvx1zgHBYImWhaA0imn53+odTeInzAM4ju+3Aog=;
-        b=N82tHanuKV+Qx+vQaZQzfvyC+C6ASz8WrKzbm/yqufVP2uD/zoVHlyH+FsDEmvSFCK
-         3X5z1GLjKDvqyBEWLi/EuOT4fjjPDQSDESyphVjW+1FfBBQrp2xLQLcqa8Ud6avXWoOL
-         oyeONTO9Vzm0cZbJt4Yukyrt7un3bvMf5gGKEpzUbXHVPckoAJKwU2f9zxRs2bA+UZMk
-         /NebvyPrhva+c3yjSixmk4Hju9i8lMoU9NZ0gi9axiTH+A8GY25QThnRJi/U4zo1Br6v
-         aW7XMaz6n8WDAm2VCX248cPLumW92+adGK48kQR9pQNGaCSSa+q7ugm8w3N/4WDXXveM
-         WjkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX2jgYPoU00sFCboW5cgJNwot0YDA7+JMEJAiEe1bQ8Rl1xoklZrDC6HETlhRSlp2bG4/ahUK/0Fm4VGEmsyEc=@vger.kernel.org, AJvYcCXD4eqMiUr3niDoukoFcG76n+ni+VohYWdEIaQwt0wTYs3nBTE7g90Dv37Kf1uq2qo/Wq4NMVrgB/+CSZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzT4Fh6ROEMeGQXOgBgrB5vMdx8SC1ranuyWoB4ct0RNfqk7Dqs
-	sSdoz5ZazMQaZ5rnv+02LrzDwjCOBu99RqVPVnil2e3mbv3c38Sn
-X-Google-Smtp-Source: AGHT+IH6xE1azJtpDAam9DTMl8HLwL00nFSR/PZDAm7lCGCHpeMfCFfPvsmhYCUMCDEzp9kF3YQIFQ==
-X-Received: by 2002:a17:902:c405:b0:207:7eaa:d6bb with SMTP id d9443c01a7336-20b3776af5bmr178868275ad.29.1727707438756;
-        Mon, 30 Sep 2024 07:43:58 -0700 (PDT)
-Received: from localhost.localdomain ([187.120.154.170])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37d61db9sm54882005ad.26.2024.09.30.07.43.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 07:43:58 -0700 (PDT)
-From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	aliceryhl@google.com,
-	mcgrof@kernel.org,
-	russ.weight@linux.dev,
-	dakr@redhat.com,
-	a.hindborg@kernel.org
-Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
-Date: Mon, 30 Sep 2024 11:43:27 -0300
-Message-ID: <20240930144328.51098-2-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240930144328.51098-1-trintaeoitogc@gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdcXtmHm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECBBC4CEC7;
+	Mon, 30 Sep 2024 14:52:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727707927;
+	bh=zj6qkf2jJptAzjCgXAlSXsfQHb3M5Vn8XRoZeBYhWXs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NdcXtmHmZ16PtmjA0nrL9pSO57/+6/Ugirj+awgd2nlJYuGZ3JMk8f7dDkuhKt/hJ
+	 U3P8x5Ev3h29XqsQX5T6Xn4qeIvKx4reS89XhBQMPE6yjnhhfjmKDZgLUzJQd43EfX
+	 ouSxg9OQHknth9WAvPH/scida2cONEYIOQNudESU=
+Date: Mon, 30 Sep 2024 16:52:04 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org,
+	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
+Message-ID: <2024093044-violator-voice-8d97@gregkh>
 References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
+ <20240930144328.51098-2-trintaeoitogc@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240930144328.51098-2-trintaeoitogc@gmail.com>
 
-This function increments the refcount by a call to
-"bindings::get_device(ptr)". This can be confused because, the function
-Arch::from_raw() from standard library, don't increments the refcount.
-Hence, rename "Device::from_raw()" to avoid confusion with other
-"from_raw" semantics.
+On Mon, Sep 30, 2024 at 11:43:27AM -0300, Guilherme Giacomo Simoes wrote:
+> This function increments the refcount by a call to
+> "bindings::get_device(ptr)". This can be confused because, the function
+> Arch::from_raw() from standard library, don't increments the refcount.
+> Hence, rename "Device::from_raw()" to avoid confusion with other
+> "from_raw" semantics.
+> 
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> ---
+>  rust/kernel/device.rs   | 2 +-
+>  rust/kernel/firmware.rs | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
 
-Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
----
- rust/kernel/device.rs   | 2 +-
- rust/kernel/firmware.rs | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Hi,
 
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 851018eef885..ecffaff041e0 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -51,7 +51,7 @@ impl Device {
-     ///
-     /// It must also be ensured that `bindings::device::release` can be called from any thread.
-     /// While not officially documented, this should be the case for any `struct device`.
--    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-+    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
-         // SAFETY: By the safety requirements, ptr is valid.
-         // Initially increase the reference count by one to compensate for the final decrement once
-         // this newly created `ARef<Device>` instance is dropped.
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index dee5b4b18aec..13a374a5cdb7 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
- ///
- /// # fn no_run() -> Result<(), Error> {
- /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
--/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-+/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
- ///
- /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
- /// let blob = fw.data();
--- 
-2.46.2
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
