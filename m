@@ -1,98 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA49193070;
-	Mon, 30 Sep 2024 17:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE221940B2;
+	Mon, 30 Sep 2024 17:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727715774; cv=none; b=dQddNgnmrTG0Kz3L1BG7K1TrhtRi/3DGrDNfIRlWtrOhqqKsYRnkT27cGZx4VCOw/4fsv2DpOAEuYDNlZSurMh4wHLssT+x71A4mm5w3O1SWr2j9xzV82GvWoIQpdWxTjnbzWVAJdTBpihUaKeBv5H/xrRdCDVmm90KS760Kl4s=
+	t=1727717291; cv=none; b=IWqmMQP2U0ltd/4byw7vytrPfdtI7BjFn+wvoXrMbl0hvhuBE7YoK3ql7yXr+qxrBli4TUerI8AmaE0EKgUF3lkZVHf3uDp01cvCLZ4P+N6B/PdkAvvgD96i+YdKs/igjWrb/AIaNich86DDv98XkQQEH9gyyL7IODOJT1x0NJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727715774; c=relaxed/simple;
-	bh=5kWtAOosC6jFsT+N/2cVG76tIgdEXfNyyFg9yeuEykE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gXwf+4PELPf5mQ49y5aMLdxIRQNbik0QZop5JSiWYinsEIqLFQgAMXcFUdHeYANxmLtghX8pr9SGSHKb1hp7e2t2vIonSYRe5u6aaMDn3HZM9qRp9BiOGDozjKpwjm6t9wa2eRwlxOWstz6+Y6k3v5v0bZIfIwjEk5a8oEHP9Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQFxr4md; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727717291; c=relaxed/simple;
+	bh=y4BXX/3MgyDzqMoUXB/PqYpfXdVxol8FGHPAPGrXo0s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y/KPsLcjk4jntjcwyVdXdR7zr5QUZafcBvLSF+5ZSk/Gyx8Ocod9RHpjNnm0FokXLYhyFdQAuI3mzAHu9iZyBIKx/tbeYL47olsGLWJXKbO/EbOspeCJE81D1hVE7klOsq2zWg9vG1sgB6/Alda6aLBHqEtimeb2cIMhYsNSB9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gZitWeMR; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQFxr4md"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3796C4CEC7;
-	Mon, 30 Sep 2024 17:02:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727715774;
-	bh=5kWtAOosC6jFsT+N/2cVG76tIgdEXfNyyFg9yeuEykE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DQFxr4mdRrR/FOq2Leyt2ZpsZaLmxslczA0b2PPsSD7qxFkLEMxpOw7zDkjTOMPQ6
-	 J1Ezhe66ehzmtY8G7k6A13NlbK5f+S2tiOm/4Zgu6aWQ5vNRgd/zttFgd8KMTvWru1
-	 cSY8c4tvSPTwaGcIiJlQHi9CqTl1tcEhkU+2z1GNj5dIR3EjARCX10MRCP9choJSDn
-	 dRHq2KEyzd1VM3iFcE8kK7noT9WijNSKWiYUETTLv3tOxoXhLO4Zn0wXhFsT2lsSMb
-	 22RBFQBgSV5Ge1UPkYsV6IKjtjxvy27XgBX9thD2H4Vsfy0cuvCjTzjsVcWanKBqfL
-	 ReNpA9I5LV6kg==
-Date: Mon, 30 Sep 2024 19:02:48 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Guilherme =?iso-8859-1?Q?Gi=E1como_Sim=F5es?= <trintaeoitogc@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
-	dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] device: rust: change the name function
-Message-ID: <ZvrZuLrPy_5fAbC7@pollux>
-References: <20240930123957.49181-1-trintaeoitogc@gmail.com>
- <20240930123957.49181-2-trintaeoitogc@gmail.com>
- <ZvqkAuxWZIMZshN_@pollux>
- <CAM_RzfYXWJ1ePZk7-DFR4P--F1pyzWg8bnC40mbLWaHpx_aNJA@mail.gmail.com>
- <Zvq9OqEu0yN1Ahgq@pollux>
- <CAM_RzfZhMey0u75+M1-hcek6QutS6H9kctpChQ+6g3juSJy5Tg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gZitWeMR"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7db61fd92a1so204261a12.3;
+        Mon, 30 Sep 2024 10:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727717289; x=1728322089; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y4BXX/3MgyDzqMoUXB/PqYpfXdVxol8FGHPAPGrXo0s=;
+        b=gZitWeMRihGl49NYMAtjVwuPvfvpabulVNmmaSdIq2uSyCa7i+yXZQ8UCfqAxjrXsR
+         YIgO+0L2TP74VVYPyv6XFj5KqAmDuzuDvr7JmeIIGo/oGNp5eKANimgLUELOhC6+jIxm
+         4asfISfem6FoPTJkDD6BKc9fixH3tEuZAbb2f4fzSOb8fGfSVqXNSRfGBc3Sm3MuUA7m
+         DKMcs2U0w+evxZgeZeTwMEg8Koms1VgyTcam5yRNmJE3Vs/AZRjNmAGngItgR0VRFmyJ
+         1J44HU1iWJaC76+5CYL+++JUhtmuhXsMpUDGqeH4nJYcyJBYIzGa6sgxQHLhcrDMlJYZ
+         uFiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727717289; x=1728322089;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y4BXX/3MgyDzqMoUXB/PqYpfXdVxol8FGHPAPGrXo0s=;
+        b=M+msD5iFuTPE2OWA1gfa7rwg1/UWrXtridBe2I4ZQsCD8C/CECvDBnw+VJvRZBRxzQ
+         OsCFerdJuMuR3vAfedeHL3VOMmVshXwIuO97NLAkwjooCy1AGH/fBqJSBF3KdZ2o3Ix+
+         nvXYxnJUpIyb8HdA25PBpYTqkAznpVNML7uro3UJKVRB5FvKJpEh7obhwv6pJ+27+5xf
+         whLW5XoDwZU5Y3n9utBpQIrHB2+kQ7FUtXfK255ZJrxQ3nl1CAe/Kqo2YnKUg677QDBk
+         X5GBq4P9SX+rmGv4g2BXj8lK316RLgWU8vPBkLNYIs4oJJEPdkxtzUVjtKMz1j2rn4N9
+         TtrA==
+X-Forwarded-Encrypted: i=1; AJvYcCW46XQ6pfjlKnpTM8lRwpcCBpn7rNXWyZeJHRIJRh+UfyhdMKjkPxX9vanSOjdEncWkF0/jXBIsU3IY6Mk=@vger.kernel.org, AJvYcCWqu6PloY1H6SgxSdXWspfQAqmFIR/aex/C8ckE6+kfJJyJAn2l5cHNWbIBgIiD6fONRCUXoQiCUDlq4qiqTgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx6hhiIOj3iIYoVHRajFY1mGYFhxAZibHBUm298Q8JrE0fTpna
+	OlZa2UAKe33lucNx8pnSAPTSkxQ2JhUXcR0B2DnMrb7RWrXQF6nMYZQHCTnLSWGcP1UgaBHnjqe
+	BPQjmy5DQbI40Kc9pkIOcLhPIAD4=
+X-Google-Smtp-Source: AGHT+IH3VabIhyLMuBTP0YVRfxEJ5e/5dl7ZWztnHXEjPqs5yQwDhZ7Mvp0CJPXRg/kXTRsTG863uzeaF6KiqEjlS2M=
+X-Received: by 2002:a05:6a00:190e:b0:717:87c5:84b with SMTP id
+ d2e1a72fcca58-71c636144bdmr5543692b3a.1.1727717288794; Mon, 30 Sep 2024
+ 10:28:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM_RzfZhMey0u75+M1-hcek6QutS6H9kctpChQ+6g3juSJy5Tg@mail.gmail.com>
+References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
+ <20240930144328.51098-2-trintaeoitogc@gmail.com> <2024093044-violator-voice-8d97@gregkh>
+ <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com>
+ <2024093007-safari-lego-45ab@gregkh> <CAM_RzfakS8=Qr=vThJcW-eX8izBs5Xdjo+p8=Ji7Nf=_ozv0Aw@mail.gmail.com>
+In-Reply-To: <CAM_RzfakS8=Qr=vThJcW-eX8izBs5Xdjo+p8=Ji7Nf=_ozv0Aw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 30 Sep 2024 19:27:56 +0200
+Message-ID: <CANiq72=tuzfe__WJN3Apva7EFYA=PJcYDEFkRtu=VMyDdoL0ig@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
+To: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com, 
+	mcgrof@kernel.org, russ.weight@linux.dev, dakr@redhat.com, 
+	a.hindborg@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 30, 2024 at 01:53:20PM -0300, Guilherme Giácomo Simões wrote:
-> Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > On Mon, Sep 30, 2024 at 10:52:27AM -0300, Guilherme Giácomo Simões wrote:
-> > > Danilo Krummrich <dakr@kernel.org> writes:
-> > > > > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> > > > > index 851018eef885..ecffaff041e0 100644
-> > > > > --- a/rust/kernel/device.rs
-> > > > > +++ b/rust/kernel/device.rs
-> > > > > @@ -51,7 +51,7 @@ impl Device {
-> > > > >      ///
-> > > > >      /// It must also be ensured that `bindings::device::release` can be called from any thread.
-> > > > >      /// While not officially documented, this should be the case for any `struct device`.
-> > > > > -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> > > > > +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
-> > > >
-> > > > As a follow-up, it probably makes sense to also change the function body to
-> > > > just: `unsafe { Self::as_ref(ptr) }.into()`.
-> > >
-> > > But if we change the function body that is suggested for you, the
-> > > function will not have your own refcount. If I don't wrong, the
-> > > Device::as_ref() expects the caller to have its own reference counter.
-> > > And if we change the behavior of function, your name don't need to be
-> > > changed, because your behavior will be equal the from_raw() from
-> > > standard library.
-> >
-> > I think you missed the `into()` above. This will convert `&'a Device` into
-> > `ARef<Device>`, and also call `inc_ref` from the `AlwaysRefCounted` trait
-> > implemented for `Device`, and hence increase the reference count.
-> 
-> Okay, I understand now that the .into() call, also call `inc_ref` that I
-> was don't have knowing. This body change of the get_device() really make
-> sense, and I will send a v4 patch.
+On Mon, Sep 30, 2024 at 6:40=E2=80=AFPM Guilherme Gi=C3=A1como Sim=C3=B5es
+<trintaeoitogc@gmail.com> wrote:
+>
+> The 0/1 email is for explanation the motivations, attach a link for
+> discussion or issue and too for explain how to test this.
 
-No need to send a v4, please just send a separate patch for this.
+Yeah, that is fine. What Greg is saying is that, when it is a single
+patch, one can put that in the patch itself, below the `---` line. You
+can add explanations there for each patch, and when a patch series
+only has 1 patch, then you can use that space as the cover letter,
+thus avoiding a 0/1 email.
 
-> 
-> Thanks for this Mr. Krummrich.
-
-Danilo is just fine, we call people by their first name.
-
-> 
+Cheers,
+Miguel
