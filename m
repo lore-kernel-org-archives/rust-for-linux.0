@@ -1,102 +1,104 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845D1CFA9;
-	Mon, 30 Sep 2024 10:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F714D71E;
+	Mon, 30 Sep 2024 11:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727693062; cv=none; b=nT8UdEzopQ51N57y7PHZ90bTLqo88eIAetKRAu1xJo45ll4ha22VZx2jmr3Y2D6x8Q7VDLd9+xjHIBKVATDGsTWMSYF7hPJm8pEfAfs7Szn0oHtf64XZMrX+WptzHpWAVitcsTNTmeu0F4OFhanmQRUAr6KanUDvj93Xp4tEymc=
+	t=1727694932; cv=none; b=HMqrXYTJMEDba3K0xSPAq3ijL4UMAmrYyJx1wjPC+8D+zTZXnH7/vIABJiPgTaVT2t0Iej8NTKKVyOYTGmbV+rFWzM/IZ26fDRSTYEtbQcd+eo2KVxiiZ6UviGSGEiRmBfs4N+ovoRYibTb35vxvbI3CtjlIFh5y4AYUHNrnA4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727693062; c=relaxed/simple;
-	bh=iIJXuaoWS2dCefQqpt3EjOOTIrXnDZ8TgOEpxiksat4=;
+	s=arc-20240116; t=1727694932; c=relaxed/simple;
+	bh=nAllHEy37MQSZwQx3FS/KmYURYA3jo/U7B7bkMt71aA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WdmduJ/kRV9ajeXL1+1mvm2Kc3qqW8jntrZEtlPxvEkZJSQxEgXJ0CBpNRGbkNjRGk2GVU8bHP+hQJeKPZIBEIYfvUrRcdw01xwSscxVkX4T+/5kWTBB5lv4TF+qqGccYqjuWCyo2m1ICL0G58TEDRPg2CxA3zN75HnQr8SmxR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jxAOIwmu; arc=none smtp.client-ip=209.85.210.178
+	 To:Cc:Content-Type; b=jIXO5WJ6nOctbzTcd6UiM4ekjCNjrLzg6JzP9VyfOUxX1lE+liNkH56AxQLGGyOQNfxnEgEZ9hIxDBtRrXloVqPWyHlEdb+W/qzaEC984XQvYH8TZvjiGi592Jnf+kVPA45nDXBdPuyipoUL1OchwVhXpuLV1XudjbGGS66zDPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4u77dX3; arc=none smtp.client-ip=209.85.160.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jxAOIwmu"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-717880daae7so222066b3a.0;
-        Mon, 30 Sep 2024 03:44:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4u77dX3"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-45aeed46f5eso17301781cf.3;
+        Mon, 30 Sep 2024 04:15:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727693060; x=1728297860; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727694930; x=1728299730; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iIJXuaoWS2dCefQqpt3EjOOTIrXnDZ8TgOEpxiksat4=;
-        b=jxAOIwmuRT3usKWEIy5wSXJshxKJKS0ss1Uwp9d76VPJCdT7VsmFXfxkAglyw5ZTgA
-         nBjc/UguOw1R/WRdS8hzhbXVKuR/CbPcnB00eaSPTpCsQx/eyfnqNufZbGa0loY504j8
-         0KhD45RRe7Bn/xTbFWnqJa1FPRoVCc9kA0fhNonWpiCURV3tMDNdlJoawxZ/IK/UufrW
-         6TG78M7k/t7I0RlzPGSLqexwQbAI5fvlifNzGLbHl+h1hgOrrDETVePGBmLagXyvd8Nj
-         zfTB3BIVR7BposzO29xrow3+BT2d5ZySAzalZfkcMwiC9VRhCQqIwVjuZ3uMJtUF3Yk6
-         fjpg==
+        bh=nAllHEy37MQSZwQx3FS/KmYURYA3jo/U7B7bkMt71aA=;
+        b=c4u77dX3zbmKpJJtL6u0TcsH+/UNRGyWZ2lieL8wJH/JiWOTiNqzNFcS+d6ctW0pcB
+         yi3LSlo0xD7kIz9CRAQkkwiGxdF9feb93jtMBSnAh/X7x7OmZcfy8IowK1gxv/HZTuA+
+         oX83M4+/h3E9sz6kDDRHYnuCJdXyxPY11J6o207IdLI782savSkaafDTa5X58R/3rBsH
+         jFqu04hcXeIjAcsWolQQM3ahoc2NLxT2PnXA/0Z7DrEJbFpQvgZhRtvfr7Xj8PbRNvjG
+         nXmkXnT7ZE2BScM9+KFDcYfybHZnQEGVNY8h0rU83muy+X2Yx9tZ0iyFAKk+BIYHXg4f
+         Hkvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727693060; x=1728297860;
+        d=1e100.net; s=20230601; t=1727694930; x=1728299730;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iIJXuaoWS2dCefQqpt3EjOOTIrXnDZ8TgOEpxiksat4=;
-        b=BAGsbJg0lMk+nqd60V1qVQkPyDT9gu/q/Aeh/16v4VdgVtSt+UoM9tnEsqQFJBM3GW
-         yzyE5xITWMZOU6PuOOek0wPU8+Y+ATeViXlJDvskPrbVTXQwBLShlsF62igYL7Tlz4UI
-         PlYiinVGS5tqUXPzMOot9UwrcLryst07Q7AUTM13Fm6AFKmYPN4WAh2Fbf2dGISV/2ef
-         2kCpJxoen5F3qivXar9tqhg35j+iFryQHiF3YwhpJPx2MqqjwUbY7NfG2XYKjEeJvGao
-         yqCdRCP3yWJXFnExUiFC4mYMRRpGRKDhJ7SUWwpSVnYfmX2fyM1GW8ZUKeC09KIQfMI7
-         8VXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVzxkuc0/q1ihjrQHHgoIkHOgAkqaPXSSWWMgnEXC1akBZtsja2zlmEaPeIKeV1P3BMLgVBonvj5XKfy1VGmAw=@vger.kernel.org, AJvYcCWjodTBuRYmk1SG2LYjETVJGFz4ERab9NBBhYNB2rACpR0sNOrzY2bkBdayWUX7soGXoSYPxJmgnfTxyrxi@vger.kernel.org, AJvYcCXEp8tj9gv8Ch4N2qK8yvwN+trrJUvbcOcbmH+aBQT/IWub+RFHnFO8ELlTpllFxhDZYzbiySi7FhLGlpo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwawYYyRBacM1pTKzG17VszO7KKlWoTYGWtvt6A5aH8voRA0L2e
-	6bV0MoL7B9TqvFiuAueH0ohew8NIa/3NdyVfYLDhW5y63Sp1rkyok8Tukj2R7mG/sOc69ZblcRC
-	AgSYz9pvfBHoX+OBHVi6aaS3fTg0=
-X-Google-Smtp-Source: AGHT+IHdnqIBrpEVdt86IggSYvKBA5wsLTFvf9YYCZxuv8g2PGuDbmINu5ve0jT+N9rkVZeRX+RZ3EH6nrHnSuRD7jk=
-X-Received: by 2002:a05:6a00:3d50:b0:71b:64c:813f with SMTP id
- d2e1a72fcca58-71c636cebfdmr4725427b3a.6.1727693060569; Mon, 30 Sep 2024
- 03:44:20 -0700 (PDT)
+        bh=nAllHEy37MQSZwQx3FS/KmYURYA3jo/U7B7bkMt71aA=;
+        b=QcZfYq43XOVAx8WduWPkAFHd4lMpgZO/DGafbUsT9T2UrJiSD3vWAHaE45G3itxMh/
+         5qOGpKrPeiZYuCW/w+PCLW5odlq941Hc7pWccUFDlAeqs25AYy+t/j930AADTMVbpWdG
+         I4EmdlY4COQbTbjdSw1E7/DlKvsr/ZP62r7M7cv1b85J+DbNOREt/Zh6gipxwy9GovX0
+         f7QrUEKdzPJFciV85YIiC2PNaW551fbx8xxj/P0oExy79t4+V5COEbaDGbHLNEKD7xsf
+         OpwY+gSD05fifAd6mcXoH8oIAZfBSrGw97ydS2b6DLhKTR2aH6AnkcOs/IvK6Z1sROqF
+         znDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNvzl1nMz8RhxAakPORHEZr3N+M6UBGf8EN4HMoSTfjKfBXyaYtaFILb9pkpyxecGW4PUH2KpL48uRh1knPSc=@vger.kernel.org, AJvYcCXk5P1eQkNehdTfKujdjM4eZMnvF3ZJiyrS6Cp5Oym0rt8DGhJ/ChVxk8OUMvmfpA2IhHnPxPHbJyeOvtU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoRFwU0yj7ix8s7bnxA9bH2V+H2TAFXcwAy9ETwDJ5ALTobG5m
+	pez2EiKYBMPD/fBtSbgjtX06SUMoFGzaJJ9DL1uwnz6/TfNxUvQCF9Vwlr1t7tUkcz+ZQAhTP+6
+	irgkqUEdE96JW6ypLOzvpD+VKz+s=
+X-Google-Smtp-Source: AGHT+IE2f3oG/+wQiScu/8IpSiODNStabHKHwALVPaVqp0yP4HzudWt4fy0QryyGmZhPlXVT3K9BlDbh3E3Yy87Aw2U=
+X-Received: by 2002:ac8:7f8c:0:b0:458:5bb4:7751 with SMTP id
+ d75a77b69052e-45c9f1e7c03mr176108911cf.13.1727694929493; Mon, 30 Sep 2024
+ 04:15:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com>
- <bf6544faba2b53ce901b2e031f3d944babcc7018.1727606659.git.hridesh699@gmail.com>
- <CALNs47vT=g2D7A_cDq_8F2xJRJTK-7KtQY4brFYfkopyCSjLTw@mail.gmail.com>
- <67il2JOf-dSurc3O-294W5k5mS-kf1FtFxKzXlxHHykGmIvIkfPel_pPe2LGX04HSnTg85LwEdU4Zz2VCrfXgIl5KVItUm5vPhbtkThc3BM=@proton.me>
- <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com>
-In-Reply-To: <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 30 Sep 2024 12:44:07 +0200
-Message-ID: <CANiq72nKBz1myZi5guA5uPCwwtUvjfF80dOx5saHvjMU-g6mpw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2 RESEND] checkpatch: warn on empty rust doc comments
-To: Hridesh MG <hridesh699@gmail.com>
-Cc: Patrick Miller <paddymills@proton.me>, Trevor Gross <tmgross@umich.edu>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
-	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-newbie@vger.kernel.org
+References: <CAM_RzfavjM9VPJhTi1czOSC0BFOc3FUHRMdzFrU9fJE+WJMKbw@mail.gmail.com>
+ <32476CD7-74D6-4575-9D93-2FBCD5AE3E10@collabora.com> <51fe3ee3-0b81-418d-b05f-626dbcea4f57@de.bosch.com>
+In-Reply-To: <51fe3ee3-0b81-418d-b05f-626dbcea4f57@de.bosch.com>
+From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+Date: Mon, 30 Sep 2024 08:14:53 -0300
+Message-ID: <CAM_RzfZ0LVTBGpyMj5X1GTgdzhw=zx=E_zMSFNmNSks91jBMGw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] device: rust: change the name function
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com, 
+	mcgrof@kernel.org, russ.weight@linux.dev, dakr@redhat.com, 
+	a.hindborg@kernel.org, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 30, 2024 at 12:35=E2=80=AFPM Hridesh MG <hridesh699@gmail.com> =
-wrote:
+Dirk Behme <dirk.behme@de.bosch.com> writes:
 >
-> However, I was curious how conflicts like these are generally
-> resolved. For example, if there are two large patchsets which conflict
-> with each other, how does one ensure that they are compatible, and
-> even if they are, how do the maintainers ensure that they are applied
-> in the correct order?
+>
+> On 29.09.2024 17:35, Daniel Almeida wrote:
+> > links may become stale,
+> > so please do not link to anything.
+>
+> This sounds a little too general to me ;)
+>
+> I mean we link a lot, using the 'Link' tag even in patches.
+>
+> For example the mailing list archive has the 'permalink' button and
+> Zulip has the 'Copy link to message' button I think can be used.
+>
+>
+> > Lastly, I can=E2=80=99t see a diff anywhere.
+>
+> Yes, I was confused by that, too. But I wonder if just the numbering is
+> wrong? I.e. if [PATCH 1/2] was intended to be the cover letter 0/1 and
+> the [PATCH 2/2] was intended to be the actual patch 1/1? Just a hint :)
+>
+> Best regards
+>
+> Dirk
 
-The maintainers will usually figure it out (resolving the conflicts
-when they apply them, applying them in the right order, etc.).
-Otherwise, they can also ask for one of them to be resubmitted on top
-of the other when it is too involved / subtle / large series.
-
-If you are aware that you need a patch to be put on top of another,
-then you can rebase it yourself of course. Just please make it clear
-in the cover letter (or after the `---` part) what the patches apply
-against.
-
-Cheers,
-Miguel
+I can resend the patch with the message commit fixed and the correct numera=
+tion.
+Thanks for your comment in my patch.
