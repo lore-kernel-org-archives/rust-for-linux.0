@@ -1,104 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E1A190052;
-	Mon, 30 Sep 2024 15:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727CA194C8D
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 15:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727709220; cv=none; b=Ag0N35Pfk+C3cZz5A3o1o1mdrtk5Hc80g5ctMeIc5wSwM3YimaIibZ/jKPiDXnwtoDrBVYKaU7ba8cCdyc44iDu+nmYA+mJuPEadnvQDY5rOjZBou3PKJD74VW+9+7CO/WylxHplRwa+K4b9cUpK2a43lMhLItNckVfsF9vNzSc=
+	t=1727711727; cv=none; b=u4eZQuROp+gS8cdUBSftIRrK7q6pzI4QLptGuSjkNIm1olMxiR5d70+TcQTfCdoMTPuou2KYUUtCEQMzhRNDGZIrAPwa3vqG6AtYGyMdlBQLCC21DGlpfdUZ2SFctVq8rRTKXgRFGNQbtvmPVo6S1b/+LYli6XwD5YcAwgkqzX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727709220; c=relaxed/simple;
-	bh=hUL/J/sUjAaD7bSIXuLWquTa3cBrA2QI7TlPd5l+p2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y81Ut3McxStKpEtGqOUo84BodSD88VVPIPDeayfiXthEHhYw7wtnxTUcyD5w+IzEj5D5HqVhtFu84Vx5MRRj1kngF65RVIHgpTJMS+rsJvOSu51c5snOEaIihHlWCGtEqC3DbOyWCWvT3MlCA17i+rmIlZIOYva73K1K8OzQi9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5DjZKa9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727711727; c=relaxed/simple;
+	bh=XtVyC1hr0DtWNi4Nuac6rbXEXeymJVGjtZRrIAKO+mY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=snINo8rcDwpUlJHU2poQfyUzwDUwhuJ3rqU7hybwFKIjkF1aefgPH1e12XSQuKdQ1Tw8uQ4eVHEwyyhEFcJcFB8JE5qokcTEtoRtLF4Ws7HJBWllQN6++qShOglYNgMihlFosDTSsAPN2HQLroZwkhz01umHAGb3WuYhTCBhBbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DnWkkvkK; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5DjZKa9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF23BC4CEC7;
-	Mon, 30 Sep 2024 15:13:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727709219;
-	bh=hUL/J/sUjAaD7bSIXuLWquTa3cBrA2QI7TlPd5l+p2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S5DjZKa9QsYsA31FvZuG4C+3ccXslWjxy3kQtLP8dT0eJrzg/1fe3dBORPjr+m42A
-	 ZSegMPSK90baMK/CgFnRme59Wd8KL2YbI1xB19jNBEQ3h3Apoi+0nC2VU5qUJbg4Co
-	 7K8f97bp1jOs7bi2q1TyvzFUGnF5ulbbhYDwXDB0aRXbzSYOoppHtg271gs2zh7v5v
-	 vPBBAJ30Vk4pVQ7Sywt85uRN5l69deSOcQW7g7hBcWU+ESVr//iEFEY2qPNgcAlAIg
-	 6Z/6dsE+zP2EOO7BLSe5LyJ78jZCDgzclq9gyuMzNEA9MWCEPeFEx+V8CXWnV0lrSZ
-	 QzRbizZ4XhXXA==
-Date: Mon, 30 Sep 2024 17:13:34 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
-	dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
-Message-ID: <ZvrAHnN0D7KPlLDc@pollux>
-References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
- <20240930144328.51098-2-trintaeoitogc@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DnWkkvkK"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cae6bb895so41619375e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 08:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727711724; x=1728316524; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XNK1EtvrtSuJZNw3V4pGuR2ZltFiSb+JZRUloyhSBAM=;
+        b=DnWkkvkKeeF3KOdLGbhymraX5pB1qJIFb4ExFL70aVD0ycuWWnBcJxiU2NUDWZJqIz
+         pO5Qa7fADTKnMuktCVxHn/ashZPUJHoC2cr20SShiuS+AGKMttCMj43QvRf5O4td17hE
+         4Y6gYUbjTQegpR1HDAcWrwhIBDBU68fA36LYEhEaEmemRvrGoGbG3+JqYzwEdqlF2E37
+         0QvEDw6RwZs2nxe7Gbcaf64Aorr6efdGeKuBrHmzczVMYiBElJRNkGhzRZwjeyZV4YQw
+         mQhe08n3kMZtI315tzk635vMngKQPfVsewfh4Yn3wScFptJuWlrJZ0WOQeig2TJWOZzv
+         RXWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727711724; x=1728316524;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XNK1EtvrtSuJZNw3V4pGuR2ZltFiSb+JZRUloyhSBAM=;
+        b=KWrhJi4AlIf2DEkEwbxx58OJMUkhIXlEvgiR4/RLm2Y90n2X3ct8mmCS3L6NUiOc6q
+         r7ibGEjZvLtn4YW7es0b3G1xZtG6usALrXY4N8y711EqJcqtZbxvK8SaTCE2rAN4aCXY
+         BgUpDDgSCcU/+XfDkboM2mtzhaoQQPapqDBtwnsxi+gU3uuZZs80Y2mms2X0f+MBrDFI
+         HbLr+zGllmZvQ0jp4nrTZRcYB7NtjNbZfaUUtMosRP8wOhjfmcSmQqpsegs4+1B6jGP+
+         xXQiX6V83DLNSi5SL+p3Ezq6sfX4L+x+SaOkxHTUHdd45m4TbGpHiIMAPqjgCdVQO473
+         5a9A==
+X-Forwarded-Encrypted: i=1; AJvYcCV7x5G7Y/Qo6P09IpbEQ7Sdxy2usVt6Xbx0okWc3z32vrdQthYQLMC0s2NKYW7edfIbil8HePfhkeorTJrMQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzglX9/i66QrRH6QXPOj+pwDpABqWnryBXrwVXpFuO/3cHNpmH4
+	RrScWPN0TNcVcHyyCMF+mYGcusNQTrjwolnoijBd/asowWXnShI2mHdsxgqlAvZKWUO/yewHtod
+	HKclMP3sDbSEfgzS3tmuN/3IkL7rlywzTDNKT
+X-Google-Smtp-Source: AGHT+IFb7z0xdg6BY2AALOSh4J0RUQARy5JDY1gnkDZORwK5i5EF0tMyCsYhRRUNu3IzoyETf8svRp9h0k8sb7MnNRQ=
+X-Received: by 2002:a05:600c:3513:b0:42c:c4c8:7090 with SMTP id
+ 5b1f17b1804b1-42f584335d8mr91991565e9.9.1727711723399; Mon, 30 Sep 2024
+ 08:55:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240930144328.51098-2-trintaeoitogc@gmail.com>
+References: <20240930144328.51098-1-trintaeoitogc@gmail.com>
+ <20240930144328.51098-2-trintaeoitogc@gmail.com> <2024093044-violator-voice-8d97@gregkh>
+ <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com>
+In-Reply-To: <CAM_RzfbJ5qsHKfNxV1EzhYEDdCmXP0THH=g1MX1yHiRP=9tYFA@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 30 Sep 2024 17:55:10 +0200
+Message-ID: <CAH5fLgjMGwBNYkOEbiSLzQ5+G0gTz+gbvsRSoRsRizAETLpLeQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] rust: device: rename "Device::from_raw()"
+To: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, mcgrof@kernel.org, 
+	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 30, 2024 at 11:43:27AM -0300, Guilherme Giacomo Simoes wrote:
-> This function increments the refcount by a call to
-> "bindings::get_device(ptr)". This can be confused because, the function
-> Arch::from_raw() from standard library, don't increments the refcount.
+On Mon, Sep 30, 2024 at 4:58=E2=80=AFPM Guilherme Gi=C3=A1como Sim=C3=B5es
+<trintaeoitogc@gmail.com> wrote:
+>
+> Greg KH <gregkh@linuxfoundation.org> writes:
+> >
+> > On Mon, Sep 30, 2024 at 11:43:27AM -0300, Guilherme Giacomo Simoes wrot=
+e:
+> > > This function increments the refcount by a call to
+> > > "bindings::get_device(ptr)". This can be confused because, the functi=
+on
+> > > Arch::from_raw() from standard library, don't increments the refcount=
+.
+> > > Hence, rename "Device::from_raw()" to avoid confusion with other
+> > > "from_raw" semantics.
+> > >
+> > > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> > > ---
+> > >  rust/kernel/device.rs   | 2 +-
+> > >  rust/kernel/firmware.rs | 2 +-
+> > >  2 files changed, 2 insertions(+), 2 deletions(-)
+> > >
+> >
+> > Hi,
+> >
+> > This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent hi=
+m
+> > a patch that has triggered this response.  He used to manually respond
+> > to these common problems, but in order to save his sanity (he kept
+> > writing the same thing over and over, yet to different people), I was
+> > created.  Hopefully you will not take offence and will fix the problem
+> > in your patch and resubmit it so that it can be accepted into the Linux
+> > kernel tree.
+> >
+> > You are receiving this message because of the following common error(s)
+> > as indicated below:
+> >
+> > - This looks like a new version of a previously submitted patch, but yo=
+u
+> >   did not list below the --- line any changes from the previous version=
+.
+> >   Please read the section entitled "The canonical patch format" in the
+> >   kernel file, Documentation/process/submitting-patches.rst for what
+> >   needs to be done here to properly describe this.
+> >
+> > If you wish to discuss this problem further, or you have questions abou=
+t
+> > how to resolve this issue, please feel free to respond to this email an=
+d
+> > Greg will reply once he has dug out from the pending patches received
+> > from other developers.
+> >
+> > thanks,
+> >
+> > greg k-h's patch email bot
+>
+> Yeah, I was think that only in 0/1 I should explain the changes ..
+> I'm was wrong.   I'll put the changelog in 1/1 too.
 
-`Arc::from_raw`
+You can use one of my patches as an example. E.g.:
+https://lore.kernel.org/all/20240930-static-mutex-v4-1-c59555413127@google.=
+com/
 
-Again the note, it's both the semantics used in the Rust stdlib and in the
-kernel.
+Here, the commit message itself has:
+1. Motivation for why we should add global lock support. (To replace a
+hack I had to use in the Binder driver.)
+2. Explanation for why I implemented it in a certain way. (Why
+separate initialization step?)
 
-Let's wait for what Greg says, if he wants to fix the small typo when
-applying the patch.
+Then, below the --- line and not part of the commit message, I have:
+1. Information about which patches it depends on.
+2. A changelog and links to previous versions.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+Anything below the --- line will not be part of the commit history
+when your change is merged. So you should think about what people
+would want to see when they look at your patch in the commit history.
+They care about why the change was made, and why it was implemented
+that way. What other things need to be merged first are not relevant
+to people who see the final version after it has been merged.
 
-> Hence, rename "Device::from_raw()" to avoid confusion with other
-> "from_raw" semantics.
-> 
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  rust/kernel/device.rs   | 2 +-
->  rust/kernel/firmware.rs | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 851018eef885..ecffaff041e0 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -51,7 +51,7 @@ impl Device {
->      ///
->      /// It must also be ensured that `bindings::device::release` can be called from any thread.
->      /// While not officially documented, this should be the case for any `struct device`.
-> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
->          // SAFETY: By the safety requirements, ptr is valid.
->          // Initially increase the reference count by one to compensate for the final decrement once
->          // this newly created `ARef<Device>` instance is dropped.
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index dee5b4b18aec..13a374a5cdb7 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
->  ///
->  /// # fn no_run() -> Result<(), Error> {
->  /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
-> -/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-> +/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
->  ///
->  /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
->  /// let blob = fw.data();
-> -- 
-> 2.46.2
-> 
+Similarly, the changelog is important for reviewers so they can
+compare with the previous version, but for people who just see the
+final version, they don't care about which bugs you had in previous
+versions of the patch. Of course, if you change the implementation
+approach, then they might care about why you chose that approach over
+some other approach, but that explanation should be in the commit
+message (and the changelog should just say you changed the approach).
+
+Alice
