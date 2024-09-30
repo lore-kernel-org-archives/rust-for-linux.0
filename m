@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976721A2841
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 23:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B03A18C93A
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 23:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727739578; cv=none; b=sZrJ59KUX8Aq2DIM2vfJX34wK8YgbL8HymBKTrQQ2SH6Unt7pmKbKqdVRlMdOPNVR8HiTFEF5kOS6QMQvJWV0zM5222ccNUr8AMu+gxQhESr0Ecm+gLI6+3mlSn9hVru7WU1DRLJtgUeFxOovT+1lvGI79Lz4jbLOY7p6SUQUGQ=
+	t=1727739590; cv=none; b=bAg6lD7BlOVdKGqYb8blxb9qNK2iQxUmcXu8xH4KG9FGynObqQRj7lnT+JuS7rTZ0FGnuVOpJmgGLukb0FXnvNx8QYND3rB5+IWHoreJxr6O0jDKRsisiNLeLYGeMsaPTsrTCvZQSYGfiBgjDk2ItpgXaYYKlMq1asnii4aVUfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727739578; c=relaxed/simple;
-	bh=e/S2FECgTIuFJBMe60KsljWBZ/900VoXYuQsDe4xbJ4=;
+	s=arc-20240116; t=1727739590; c=relaxed/simple;
+	bh=dY2aaYMcIXAQKgv7ToUl/izH2dyscbvgkI6v4CKYfTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMm1CogzMxk2gNdkHMZEEHicVvXm9CFUbM0NHPUco/w7JDHwoChO5LBVs8G16E3s8iU+I01RAGeAsEvQGGUgefw5Q1+/kgSEwGJ/CFTaVTEXqm9aWCjF3LTUd+WifRn040pEWXrTdcPStRZtcR0Y1eNsDZ66cYZpu40qJXj0qTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M9KuBWV4; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=AIjhcX1AglkBgqjYHl9XfGrkg6DJAp7MPUURHy80qrQBUiWcacWAlSt5rai4sDyk6CYFc+Vq4bJ8tO0DNvvW0N7QKaYGkkfsGVyHlCKUhBIAj+BeZ3DnkPG9mzQ3VLj2wl+8h2ttQaXqlNx3gxn5pVYlHCUWUFRwcRfpoq8YD48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=huJZ+wm1; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M9KuBWV4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="huJZ+wm1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727739575;
+	s=mimecast20190719; t=1727739587;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l2ZqNS7fpaukLWUM4ISWNMCXuLZuLhXZJI56Y+VCkes=;
-	b=M9KuBWV49UlP8lvIc8uNAypxtp/xnzGH1k7ou99BfDPcDrWg+/mifQoDIKWuNlbq7HWcHY
-	M0cBufWsu5H5Kj7ghm70rdSuLXHwUL79TZP5wU1FZUtYeBpALNHAIxx+mMIzNBWf+f9Fxi
-	uwJsjTqCGCCuXYKnrjjX+vn5G+UCmN4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=RqJVQxO6y8ZjBezncHzbNZEVz53Yon6RGUEUFxdh8z0=;
+	b=huJZ+wm1SRV2n9YXtyBSao1VjZGO6xu+fldVq5/h/yV/uThIJ433iSKREJxOxt/qfuHqmz
+	ghyQ8XjEqxnYTe27P+ZnwA2sbh7R0A/wHULWUyd3AEY6iZWW4hyPPhSBusFxzHE1dc8jVU
+	vUev31RkVJnUii2Fj9rCA/rmzYfKtk0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-323-Nr2P90v3PYGPy62zTVK3og-1; Mon,
- 30 Sep 2024 19:39:32 -0400
-X-MC-Unique: Nr2P90v3PYGPy62zTVK3og-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-kU9cTNeWP_i06bB4I9LCDg-1; Mon,
+ 30 Sep 2024 19:39:43 -0400
+X-MC-Unique: kU9cTNeWP_i06bB4I9LCDg-1
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0E21B19626D4;
-	Mon, 30 Sep 2024 23:39:30 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 69712193EB0E;
+	Mon, 30 Sep 2024 23:39:41 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.32.36])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7C0EF3003DEC;
-	Mon, 30 Sep 2024 23:39:26 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 53C1E3003DEC;
+	Mon, 30 Sep 2024 23:39:38 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
@@ -62,9 +62,9 @@ Cc: Asahi Lina <lina@asahilina.net>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [WIP RFC v2 17/35] rust: drm/kms: Add RawCrtc and RawCrtcState
-Date: Mon, 30 Sep 2024 19:10:00 -0400
-Message-ID: <20240930233257.1189730-18-lyude@redhat.com>
+Subject: [WIP RFC v2 19/35] WIP: rust: drm/kms: Add OpaqueEncoder
+Date: Mon, 30 Sep 2024 19:10:02 -0400
+Message-ID: <20240930233257.1189730-20-lyude@redhat.com>
 In-Reply-To: <20240930233257.1189730-1-lyude@redhat.com>
 References: <20240930233257.1189730-1-lyude@redhat.com>
 Precedence: bulk
@@ -76,56 +76,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Same thing as RawConnector and RawConnectorState, just for CRTCs now.
+Same thing as OpaquePlane, but for encoders now.
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+
+---
+
+TODO:
+* Add upcast functions for this
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/drm/kms/crtc.rs | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ rust/kernel/drm/kms/encoder.rs | 55 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
-index 1a3c9c448afcc..246d15a15c14d 100644
---- a/rust/kernel/drm/kms/crtc.rs
-+++ b/rust/kernel/drm/kms/crtc.rs
-@@ -302,6 +302,25 @@ unsafe fn from_raw<'a>(ptr: *mut bindings::drm_crtc) -> &'a Self {
+diff --git a/rust/kernel/drm/kms/encoder.rs b/rust/kernel/drm/kms/encoder.rs
+index 3ae597093645e..71fae45d2d651 100644
+--- a/rust/kernel/drm/kms/encoder.rs
++++ b/rust/kernel/drm/kms/encoder.rs
+@@ -235,6 +235,61 @@ pub fn new<'a, 'b: 'a>(
      }
  }
  
-+/// Common methods available on any type which implements [`AsRawCrtc`].
++/// A [`struct drm_encoder`] without a known [`DriverEncoder`] implementation.
 +///
-+/// This is implemented internally by DRM, and provides many of the basic methods for working with
-+/// CRTCs.
-+pub trait RawCrtc: AsRawCrtc {
-+    /// Return the index of this CRTC.
-+    fn index(&self) -> u32 {
-+        // SAFETY: The index is initialized by the time we expose Crtc objects to users, and is
-+        // invariant throughout the lifetime of the Crtc
-+        unsafe { (*self.as_raw()).index }
++/// This is mainly for situations where our bindings can't infer the [`DriverEncoder`] implementation
++/// for a [`struct drm_encoder`] automatically. It is identical to [`Encoder`], except that it does not
++/// provide access to the driver's private data.
++///
++/// TODO: Add functions for upcasting.
++///
++/// # Invariants
++///
++/// Same as [`Encoder`].
++#[repr(transparent)]
++pub struct OpaqueEncoder<T: KmsDriver> {
++    encoder: Opaque<bindings::drm_encoder>,
++    _p: PhantomData<T>,
++}
++
++impl<T: KmsDriver> Sealed for OpaqueEncoder<T> {}
++
++// SAFETY: All of our encoder interfaces are thread-safe
++unsafe impl<T: KmsDriver> Send for OpaqueEncoder<T> {}
++
++// SAFETY: All of our encoder interfaces are thread-safe
++unsafe impl<T: KmsDriver> Sync for OpaqueEncoder<T> {}
++
++impl<T: KmsDriver> ModeObject for OpaqueEncoder<T> {
++    type Driver = T;
++
++    fn drm_dev(&self) -> &Device<Self::Driver> {
++        // SAFETY: DRM encoders exist for as long as the device does, so this pointer is always
++        // valid
++        unsafe { Device::borrow((*self.encoder.get()).dev) }
 +    }
 +
-+    /// Return the index of this DRM CRTC in the form of a bitmask.
-+    fn mask(&self) -> u32 {
-+        1 << self.index()
++    fn raw_mode_obj(&self) -> *mut bindings::drm_mode_object {
++        // SAFETY: We don't expose Encoder<T> to users before it's initialized, so `base` is always
++        // initialized
++        unsafe { addr_of_mut!((*self.encoder.get()).base) }
 +    }
 +}
-+impl<T: AsRawCrtc> RawCrtc for T {}
 +
- /// A [`struct drm_crtc`] without a known [`DriverCrtc`] implementation.
- ///
- /// This is mainly for situations where our bindings can't infer the [`DriverCrtc`] implementation
-@@ -447,8 +466,10 @@ pub trait AsRawCrtcState {
- 
- pub(super) use private::AsRawCrtcState as AsRawCrtcStatePrivate;
- 
--/// A trait for providing common methods which can be used on any type that can be used as an atomic
--/// CRTC state.
-+/// Common methods available on any type which implements [`AsRawCrtcState`].
-+///
-+/// This is implemented internally by DRM, and provides many of the basic methods for working with
-+/// the atomic state of [`Crtc`]s.
- pub trait RawCrtcState: AsRawCrtcState {
-     /// Return the CRTC that owns this state.
-     fn crtc(&self) -> &Self::Crtc {
++// SAFETY: Encoders do not have a refcount
++unsafe impl<T: KmsDriver> StaticModeObject for OpaqueEncoder<T> {}
++
++impl<T: KmsDriver> AsRawEncoder for OpaqueEncoder<T> {
++    fn as_raw(&self) -> *mut bindings::drm_encoder {
++        self.encoder.get()
++    }
++
++    unsafe fn from_raw<'a>(ptr: *mut bindings::drm_encoder) -> &'a Self {
++        // SAFETY: Our data layout is identical to `bindings::drm_encoder`
++        unsafe { &*ptr.cast() }
++    }
++}
++
+ unsafe extern "C" fn encoder_destroy_callback<T: DriverEncoder>(
+     encoder: *mut bindings::drm_encoder
+ ) {
 -- 
 2.46.1
 
