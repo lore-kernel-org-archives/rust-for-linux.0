@@ -1,103 +1,138 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93C8383;
-	Mon, 30 Sep 2024 01:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFD411CA9;
+	Mon, 30 Sep 2024 02:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727658676; cv=none; b=RqBddz4Qo3eaoRACbn/x+lDoO3Kq+23UG9O/LAmur8bPGGKRDvgXefJOCjbtMmQsyBATzqkWWxIaFOBdEzMi9Jk7Gqgn+UGS3lO7ckxzqX49HG0jDZvDMRwolAgIYGsajCTkA9IOeHmJrg0dNpp+TEuJOMSsGVivL/Rdrc01siI=
+	t=1727664112; cv=none; b=bMsKAJ2ABVoWu+zODHYGsKirTzYVWKDcggwuDxZJ2CFM84QlUpwd4Py9SKZdu/BeQcEx6bKDhMuP4qULEywprp7n74MkY9IS4BURTB6D1b4u2HPA6tI5mySlOWNjMWDYLHCSkyXc+NRh3VDiRLwCwcDLaKBcGa8HZEaP2Qc8bCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727658676; c=relaxed/simple;
-	bh=KCmptHGyLnCzPpQNXWEcq7JMgjBKFRG+QCCVWwICfSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vp625KGxuGahiw7qpiw9SnUr/dWfYJHJAHtFw8LxrQJyKO6qdjjOMLZbePAY00goT+libFeOu6H5EeYvoN4NiTUZGCeQ7YDri1K62/F4DjC5mAG+h4crM1ibtzPTniRjNvoMtQ/gL4iXAYo/gdCmoQr5iB3+N7ygRP8YnF5mAuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipWowmfK; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727664112; c=relaxed/simple;
+	bh=OMkaXU6oEvpew8BeISsKzQVAsiKgDnlX8Ng+6JS2jRo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tdshcITNNxQrY5vtazg/yOj+hsxL1ALW+DzOO23wC3AednouBG5YFcyU6h98c15mx/GjytAW/P9M/fO1Ml+Cgzer82916v7g0Xr7YSLYFlgZfhDSBs3ddtOQ2XMKQbtI45lMBuuyohw7HYHKqrOFreDeI3b/z3AGmOtycSL/7yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=RfuJC3qW; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipWowmfK"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c718bb04a3so4977219a12.3;
-        Sun, 29 Sep 2024 18:11:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727658673; x=1728263473; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BeYuF7N8M1F/C8P4GndUFn3y/clkOx7utFNr66Yhz+g=;
-        b=ipWowmfKPNYipVNlDevF7gOywNsqyrzV5AaJ/nfXEXgvD83I5qDYvwuszQNjI87dNp
-         6dvtMO5icqhZNSx5NeHC1jJbcUT1sa4kK7Fpmnee59jgmGzCuOvyDm3HaBM3O/RbtB+/
-         bEZ7YV3fT9zjMAh0xKMT1W+hlvj40sAHXM2mnYLMjiH/dw5qJM0V3bQVqrfCBCKjmTjr
-         Dp5EinpIfzWrpvVl85VOdM4QvmdtUbFu/v7wapOaG0xcDNsnucKQi3eCXMVaoA+TmwyA
-         3oTm8RtVpww0HTVsxq7KHLfNFU+mbUTwNRGhVeGzMTTi4IK0X7BIR62E4WwBO3MEjHKI
-         k8aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727658673; x=1728263473;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BeYuF7N8M1F/C8P4GndUFn3y/clkOx7utFNr66Yhz+g=;
-        b=jayWCzeQVZs4MeGeptxgw7FERN3YzV1TXjJO3xEwW7w0D0pPd9xFnRw4PXFpNs6sXk
-         zPgMRgcQwTK9B24M/uVlRk0pELo3xZ829eQoDgmVVwgntRiMlOD+hZ5sJHvuXNQr014O
-         di3KuVHFuVK/KeREzOuWK710aLaiQtVfb3zJcwFHwDrrZ5e1FSVDdodLBO7YR+jCQw2g
-         92ScjqNS6EmqD8I4Hxv9OliDO1wFkdBHW+3jely2JVrDFMtnUIbrE8uoJ0IUbWvOAucf
-         kS3DHL2GFWj7FLKSbYVG3vNDn04XKB4q9Ext9qz0xeY6Y9vXdqcSJ98D6J/hJh5pQY2F
-         IFqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfJFjW5sXsnLOLSTN3o5Fv33fJbrviwo6LgvOR6pZ4jvo6I1Pku0AZnabPxDQ1+Y0Trlr663LFIsAzQ70=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY45weyOUuWVc9MM8LrWvdQJdvcNmwG/7xoMJlKVoZ1XMyr4DX
-	FlPkbc9JcSNV3t4/nBBYGQvMm7ALjtD6eA9plREsx5kV33e17ZLh
-X-Google-Smtp-Source: AGHT+IFcbq0CXgyfkJAWl9hmlux6QUXtX5tuZuWXb/a3wj0evg151ROUunlppn1WUge0p4Bqxb6voQ==
-X-Received: by 2002:a05:6402:3813:b0:5c5:c0ef:282c with SMTP id 4fb4d7f45d1cf-5c8824d5f37mr10345997a12.11.1727658672785;
-        Sun, 29 Sep 2024 18:11:12 -0700 (PDT)
-Received: from localhost.localdomain ([79.115.63.238])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c88240a38asm3827414a12.22.2024.09.29.18.11.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 18:11:12 -0700 (PDT)
-From: Tudor Gheorghiu <tudor.reda@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tudor Gheorghiu <tudor.reda@gmail.com>
-Subject: [PATCH] rust: re-order exports to fix rustfmt
-Date: Mon, 30 Sep 2024 04:09:32 +0300
-Message-ID: <20240930010931.64080-2-tudor.reda@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="RfuJC3qW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1727664107; x=1727923307;
+	bh=OMkaXU6oEvpew8BeISsKzQVAsiKgDnlX8Ng+6JS2jRo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=RfuJC3qWWQtOrBRA/dk+3Z8PZ7QU2pyxNRxlODW74irsb9zAO3gneKKWc9inHJa+c
+	 XONFmCU7yV+WGG4THM/2pEl2OiyO05it3aSlCqu1e1lXEmaS40pMb1Mny9qMo/o3Ro
+	 8CGb7xYfuOJDwDXTV+JJha8GDlzVG8Cwsr0OhPt8bdECPerk44qfVH4UyGFVne1Aps
+	 +f8ru1kYEYmiNwUKZAjRXDugnVmnpaDNqoLEJDt51KeUBUDISS0HGgK7hAnh9hcMBL
+	 nxQKNt1/Sq+ltNPGmU3WUuATEUT6qSDEn8i0src2ae0n+7e8OqpICdeDj+KLZMKMKS
+	 /UK46jvBU6a2Q==
+Date: Mon, 30 Sep 2024 02:41:42 +0000
+To: Trevor Gross <tmgross@umich.edu>
+From: Patrick Miller <paddymills@proton.me>
+Cc: Hridesh MG <hridesh699@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v3 2/2 RESEND] checkpatch: warn on empty rust doc comments
+Message-ID: <67il2JOf-dSurc3O-294W5k5mS-kf1FtFxKzXlxHHykGmIvIkfPel_pPe2LGX04HSnTg85LwEdU4Zz2VCrfXgIl5KVItUm5vPhbtkThc3BM=@proton.me>
+In-Reply-To: <CALNs47vT=g2D7A_cDq_8F2xJRJTK-7KtQY4brFYfkopyCSjLTw@mail.gmail.com>
+References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com> <bf6544faba2b53ce901b2e031f3d944babcc7018.1727606659.git.hridesh699@gmail.com> <CALNs47vT=g2D7A_cDq_8F2xJRJTK-7KtQY4brFYfkopyCSjLTw@mail.gmail.com>
+Feedback-ID: 45271957:user:proton
+X-Pm-Message-ID: 6a2958af5e6234924f21848db5597bf6c7ed7c9e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------0f27110d2891e59ad77340885fda273389ec8ae54bb38c36f65c1fee007b9615"; charset=utf-8
 
-In the recent rust-6.12 tag merge at 570172569238, the rbtree export was
-added after the sizes export, thus breaking rustfmt's alphabetical
-export ordering rules.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------0f27110d2891e59ad77340885fda273389ec8ae54bb38c36f65c1fee007b9615
+Content-Type: multipart/mixed;boundary=---------------------78321cd4c36527eeab5ecdb9fa40f5a1
 
-Signed-off-by: Tudor Gheorghiu <tudor.reda@gmail.com>
----
- rust/kernel/lib.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-----------------------78321cd4c36527eeab5ecdb9fa40f5a1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;charset=utf-8
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 22a3bfa5a9e9..b5f4b3ce6b48 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -44,8 +44,8 @@
- pub mod page;
- pub mod prelude;
- pub mod print;
--pub mod sizes;
- pub mod rbtree;
-+pub mod sizes;
- mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
--- 
-2.43.0
+
+
+
+
+
+On Sunday, September 29th, 2024 at 6:15 PM, Trevor Gross <tmgross@umich.ed=
+u> wrote:
+
+> =
+
+
+> =
+
+
+> On Sun, Sep 29, 2024 at 7:16=E2=80=AFAM Hridesh MG hridesh699@gmail.com =
+wrote:
+> =
+
+
+> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> > index 39032224d504..c75bc3927bf6 100755
+> > --- a/scripts/checkpatch.pl
+> > +++ b/scripts/checkpatch.pl
+> > @@ -3884,6 +3884,13 @@ sub process {
+> > }
+> > }
+> > =
+
+
+> > +# check for consecutive empty /// lines in .rs files
+> > + if ($realfile =3D~ /\.rs$/ &&
+> > + $rawline =3D~ /^\+\s*\/\/\/$/ && $prevrawline =3D~ /^\+\s*\/\/\/$/) =
+{
+> > + WARN("RUST_DOC_EMPTY",
+> > + "avoid using consecutive empty rustdoc comments\n" . $herecurr);
+> > + }
+> > +
+> =
+
+
+> =
+
+
+> We got a request to add a rust-specific block in another patchset [1].
+> It would probably be good to coordinate here and have a patch adding
+> an empty block, to be used by both of these changes.
+> =
+
+
+> [1]: https://lore.kernel.org/rust-for-linux/a9112679-b251-4b98-b55e-e8aa=
+bf82ad46@proton.me/
+
+After the latest revision of my patch [1], I split the if statement so tha=
+t
+there is a parent check for rust files for future rust patch checks. So,
+this would perfectly fit within that block.
+
+Do you want me to add your code and credit you in my patch? =
+
+
+
+[1]: https://lore.kernel.org/rust-for-linux/20240914181618.837227-2-paddym=
+ills@proton.me/
+-----------------------78321cd4c36527eeab5ecdb9fa40f5a1--
+
+--------0f27110d2891e59ad77340885fda273389ec8ae54bb38c36f65c1fee007b9615
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wnUEARYKACcFgmb6D90JkJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
+nhEAAMJGAQD96K2c0pWDa2lJoXBkFXj4FTikZ07unMXeoVmkNdxayAD/eCvA
+EqK+JCgcrsPNXZAab2ICiDBLbEMvHX+Sl499OAg=
+=fP/8
+-----END PGP SIGNATURE-----
+
+
+--------0f27110d2891e59ad77340885fda273389ec8ae54bb38c36f65c1fee007b9615--
 
