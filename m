@@ -1,193 +1,243 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CF35339F;
-	Mon, 30 Sep 2024 23:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B92917332B
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Sep 2024 23:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727738599; cv=none; b=CV9zSg2ZHZUhXarxJ6dp/ycY4ceMg2qTZWS0E96xG3+m2bqIbqUkwJl3T/3vYacsYz7NIcT1TQ0PsdLGxaDahvWyJeqWCIYb8kN9Dobt64yBg/5Ai4iYZL/yZr8U4uK5GlUlyLW3EUU4yDU0+wbuq0lBViLNRtd/81MQUktRTMA=
+	t=1727739438; cv=none; b=Co1sxEOYggi1cY5l3iP+K33C/Ax61PYlbNAUn3QBkCx3bMAdpH8UyQF0CEyDd6kmbwcVDmedPrCZZGRwFITfzcbIPAxI8s037c8XNZ3rvCkwuLtt+zi4rolifWcK/SsxAk+BLGAsKe5HGdzc1Exi7dvu7Mdl24VOKJnREvRHhy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727738599; c=relaxed/simple;
-	bh=Vr89rIgJwhdKHBCHavWBPOdILEWOov+Fgj6ueA64TzU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rdiUanUo6IDrlIhBdadJfU/9lPUKPzfT1YxBfnpmOZVt4+1rzCBfbzDMh52jPymVsv5bsetZ9Ko3khFmR4+zh8BlT74IRD3CEWeET+akIEH9if+tfpjDAvyhYc5BcjG2UttHWfixD328sXaYUoAmy9oBSo1+hbhAKdHysHYRk9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATpgOP26; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727739438; c=relaxed/simple;
+	bh=Ge+NDEaDvd9Vfi1cgnNgTjrl4RpVgYoDC8aqw3uAkmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KhXnday+7kzvV3YDwsM8MxAauwxoCou4YPdXt7p9CBk3xp+gMULoQFohmsbEzl4xf+yewKQdwXC7Apy7JBjz4zSJ2AJhrZW7tGqfkCV6RUM+0HnuPjYWqCK9vWGCZJgmOHXp7YRtikN1atXY0bPeIDzmkx//oh7SJKa8n9DPqjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QHb/SIgy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATpgOP26"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4582fb3822eso37031491cf.1;
-        Mon, 30 Sep 2024 16:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727738596; x=1728343396; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8UVGSWITSIR95/PDO4OF2+68R+Stktvi6UpDwVl2BVg=;
-        b=ATpgOP26+UGCwnyLdeQKP8agBpc5IPv48Mhyg7Ihw6uIM/s8Tm4DurasQeGX2gePNN
-         B/jVwU7U2gYkb4Wp53oY/2Wa1AbQeZDK4heZCSfekx8f9+icJqrIfzQDjVfI8+rx67KP
-         hvRjYFB0i+1GaDMJpDHVI0P6iB2/eIBwSLI64V6GylDwulaiPhheR8YGJi6m65Amq0rc
-         Ztxy97+Ter0TsxaDiCXNZRF0so1FcYKpFOSvNjIFmMn7CMGGnd6hN5r3sS6KzhT1OyoE
-         fv/9PVsdmN5OReIKX7xpQBeCKCodvw6eYzmkTd9yFToyZ3J0ZTGVJ32QznUKbCZuuqHs
-         6afw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727738596; x=1728343396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8UVGSWITSIR95/PDO4OF2+68R+Stktvi6UpDwVl2BVg=;
-        b=ESFDqOQcW/L30DctHETMo8Q+WpXknok9mntF8qoiEAA6SN5p8GuaQUbwLce77z0vCR
-         dt9qyfYxRegrzGNoXA7odPzNKE1uoXECf/sZMoiAUZFM211j8LZYsykZAOl9O1ga6j5H
-         kDLgI2mbhH9Jll/eDrmbqWedFU3hNtq1ZlHu/rMMMjN6I2v2G4UkVUP5sl/IAzW7MyrJ
-         +Ts5YBYHXtrm/xt3aYmpSkW9zQ5oZ1OBB8Rdm7Xyz/hEq/VNnbJ/qnFlLQpIw7nzuH35
-         LAsgloC/Q10/DQLLyeLXdrgaeJHw831ZfykxOnOmuQAUq90nnqa9t6de+LUDvESHyBZo
-         rIKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVu0mVBXpSVtNvwEDOfwzjPEnYIK3+ppyyT7UqnCLTMi/oZPtMc5SY02BBs/3psU+2G9FsQDmhOgcI/r+A=@vger.kernel.org, AJvYcCX5qVGTIK2kPbU53glF/amviy+HMDa8OW3+gWL9NK4mA4XMiMy9j7NHNQ4WtjswBUEYUDvS9Pztjur1TsO8u9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj21Rc+1dAY91tQmKyt+yaxqsdwnAvS3LumCDFdn62bNNpQA/f
-	mGLbvJSVFlshL/Jw34RmTedqhbkzXChazGG2NzF34bjI705mz+J/
-X-Google-Smtp-Source: AGHT+IHLk9u/prpDcCx7RCUfwqcUYKVvZtDiVF2GMtDDfKQKb7imRlJ5dbjw38FVItxhO0xmmnnElQ==
-X-Received: by 2002:a05:622a:199a:b0:458:25ac:cf57 with SMTP id d75a77b69052e-45c9f245076mr196983981cf.33.1727738596150;
-        Mon, 30 Sep 2024 16:23:16 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45c9f2f6e2asm40242521cf.58.2024.09.30.16.23.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 16:23:15 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E63FE1200043;
-	Mon, 30 Sep 2024 19:23:14 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 30 Sep 2024 19:23:14 -0400
-X-ME-Sender: <xms:4jL7ZgilE5IRyq8QulXO85wJoEFob8Ozk_TRswCaRBRwl4p6gbt8Pw>
-    <xme:4jL7ZpCQ-DNrDS1_b12rVLU9148q1iXp15r6N2KSgXCFswGpjrSdWEENEsmSG--17
-    RajHnIS9hk7GRMqmA>
-X-ME-Received: <xmr:4jL7ZoFF145MdMbDiZsnWrtpPtHfiAbMRgnli8rUhETD9l1Q0Qbex5JFc6E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduiedgvdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvve
-    fukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegs
-    ohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhepjeetff
-    dtgfeuhefghfektddttdegtedvueekteeugefghfehffefueeludeifeevnecuffhomhgr
-    ihhnpeiiuhhlihhptghhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpe
-    epghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthhrihhnthgrvghoihhtohhgtgesgh
-    hmrghilhdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurght
-    ihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhg
-    rgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuoh
-    drnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtgho
-    mhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtph
-    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:4jL7ZhTq6W9Ja2mXgGHImV5N2Vx1VeoAYQwwCId3ffTrN1m19EUW5Q>
-    <xmx:4jL7Ztxmmi2-6V2cKJB4uK6WnpOY81LQt6D2QnkntOMAveiyRPWA_Q>
-    <xmx:4jL7Zv4P3j5dLv7B5gxISeTKgIpIcfreEAWREzKRFww8FKm26CfZsg>
-    <xmx:4jL7ZqyUsLtuDoYyYTzv5Py7ZFmAlsq8Eo1sDzdIKMyIbF-ulS1gyg>
-    <xmx:4jL7ZhiiAs-bHJvBoZzeHTrVJUvd4D8WxAb-QxcG_1YoXTOW5u9Cl93q>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Sep 2024 19:23:14 -0400 (EDT)
-Date: Mon, 30 Sep 2024 16:22:15 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org,
-	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: device: change the from_raw() function
-Message-ID: <Zvsypwsxi4hMAfOT@boqun-archlinux>
-References: <20240930194637.98260-1-trintaeoitogc@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QHb/SIgy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727739436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5py8CHDHdUI1arKUsbT6Fs+1klEClD8saXMsGJd6CQw=;
+	b=QHb/SIgy8pq9zW3H7U4AwfEXUqd0xUQTuM60UxPwd1/bHRN3SPsxOxtdIOdCdYbR1jDJE2
+	lEHrOD9gASIzkNBuWlJUMfOxx/NtZSaXt976kPzx4qIaqHcJeRSH/rC+cYXgcB0Ye1PuJd
+	e9AdChYmgZw1WIcpqa/iKJqgqcO9Kig=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-207-Bw0FwPucMzu3hcvzrY4UGQ-1; Mon,
+ 30 Sep 2024 19:37:12 -0400
+X-MC-Unique: Bw0FwPucMzu3hcvzrY4UGQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BE271193EB06;
+	Mon, 30 Sep 2024 23:37:09 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.32.36])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A8A853003DEC;
+	Mon, 30 Sep 2024 23:37:04 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Cc: Asahi Lina <lina@asahilina.net>,
+	Danilo Krummrich <dakr@kernel.org>,
+	mcanal@igalia.com,
+	airlied@redhat.com,
+	zhiw@nvidia.com,
+	cjia@nvidia.com,
+	jhubbard@nvidia.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [WIP RFC v2 00/35] Rust bindings for KMS + RVKMS
+Date: Mon, 30 Sep 2024 19:09:43 -0400
+Message-ID: <20240930233257.1189730-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240930194637.98260-1-trintaeoitogc@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 30, 2024 at 04:46:34PM -0300, Guilherme Giacomo Simoes wrote:
-> The function Device::from_raw() increments a refcount by a call to
-> bindings::get_device(ptr). This can be confused because usually
-> from_raw() functions don't increment a refcount.
-> Hence, rename Device::from_raw() to avoid confuion with other "from_raw"
-> semantics.
-> 
-> The new name of function should be "get_device" to be consistent with
-> the function get_device() already exist in .c files.
-> 
-> This function body also changed, because the `into()` will convert the
-> `&'a Device` into `ARef<Device>` and also call `inc_ref` from the
-> `AlwaysRefCounted` trait implemented for Device.
-> 
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Hi again! It's been a while since the last time I sent this, there's
+still a good bit of work to do here but I think there's more then enough
+to start reviewing the design I have so far :) - especially since I'll
+be presenting this work at XDC2024 this year.  This patch series
+introduces a WIP set of bindings for KMS drivers written in rust, based
+on top of the work of quite a number of people:
 
-This looks really good right now, thanks!
+* Garry Guo's #[unique] macro for #[vtable]
+  (used for getting consistent memory addresses for C vtables, which we
+  need for Opaque* object types)
+* Andreas Hindborg's hrtimer bindings
+  For vblank emulation in rvkms. Note: the version of the patch series
+  used here is slightly older then the one he last sent upstream, but
+  API wise it's more or less identical, with some additions I need to
+  upstream.
+* My IRQ bindings for rust + SpinlockIrq type
+* Misc. Lock additions from me that need to be cleaned up + upstreamed
+* Asahi Lina and María Canal's platform driver bindings + resource
+  management patches
+  I need to clean these up quite a bit and work on upstreaming these
+* Asahi Lina and Danilo Krummrich's DRM device bindings for rust
+* Asahi Lina's gem shmem bindings
+* Some misc. DRM fixes from me
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+All of these dependencies are either in the process of currently being
+upstreamed, or are planned by me to be upstreamed.
 
-> ---
+Since this is still a WIP, I've done my best to mark all of the patches
+where I think there's still work to be done - along with leaving TODOs
+in various comments, and in the commit descriptions for each WIP patch.
+Some general TODOs series-wide to keep in mind here:
 
-^^^ note that this is the '---' that Alice mentioned, next time you
-could put information that is helpful but you don't want to include in
-the commit log here.
+* I don't have code examples in the documentation yet, consider rvkms to
+  be that example for the time being
+* This compiles with a lot of warnings. I will hopefully have these
+  cleaned up soon, but didn't have the time to sort through all of them
+  since some of them are leftover from various dependencies we have
+* Most of the documentation has been typed up, but don't be surprised if
+  you find a few formatting issues (feel free to point them out though!)
+* I need to go through and add appropriate SPDX copyright notices
+* I need to make sure these compile independently. I think they should,
+  but it's been a while since I checked
+* I've left some currently unused bindings out, including:
+  * CRTC commit_data equivalents
+  * "Ephemeral data" - e.g. data in Crtc, Plane, and Connector objects
+    that is embedded within the main modeset objects themselves but can
+    only be accessed during an atomic commit.
+  * Misc. DRM helpers (currently just a drm_rect port to rust)
+* I still need to make the device registration in rvkms static,
+  currently we do device probing/creation in the legacy fashion.
 
-Regards,
-Boqun
+Because of the pretty substantial number of dependencies this patch
+series relies on, I currently have a tag for this on my freedesktop
+branch:
 
->  rust/kernel/device.rs   | 15 +++------------
->  rust/kernel/firmware.rs |  2 +-
->  2 files changed, 4 insertions(+), 13 deletions(-)
-> 
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 851018eef885..c8199ee079ef 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -51,18 +51,9 @@ impl Device {
->      ///
->      /// It must also be ensured that `bindings::device::release` can be called from any thread.
->      /// While not officially documented, this should be the case for any `struct device`.
-> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> -        // SAFETY: By the safety requirements, ptr is valid.
-> -        // Initially increase the reference count by one to compensate for the final decrement once
-> -        // this newly created `ARef<Device>` instance is dropped.
-> -        unsafe { bindings::get_device(ptr) };
-> -
-> -        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::device`.
-> -        let ptr = ptr.cast::<Self>();
-> -
-> -        // SAFETY: `ptr` is valid by the safety requirements of this function. By the above call to
-> -        // `bindings::get_device` we also own a reference to the underlying `struct device`.
-> -        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
-> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
-> +        // SAFETY: By the safety requirements ptr is valid
-> +        unsafe { Self::as_ref(ptr) }.into()
->      }
->  
->      /// Obtain the raw `struct device *`.
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index dee5b4b18aec..13a374a5cdb7 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
->  ///
->  /// # fn no_run() -> Result<(), Error> {
->  /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
-> -/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-> +/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
->  ///
->  /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
->  /// let blob = fw.data();
-> -- 
-> 
-> The motivation from this change was will discussion in:
-> https://rust-for-linux.zulipchat.com/#narrow/stream/291566-Library/topic/Inconsistency.20of.20.60from_raw.60.2E
-> 
-> I would like to thanks for Greg <gregkh@linuxfoundation.org>, Danilo
-> <dakr@kernel.org> and Alice <aliceryhl@google.com> for help me with this
-> patch.
-> 
-> 2.46.2
-> 
+https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-xdc2024-base
+
+Additionally, you can see the rest of the work I've done so far
+(including the patches I omitted for this series) here:
+
+https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-wip
+
+And finally, I do have these patches applied on a branch also available
+on my gitlab:
+
+https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-xdc2024
+
+And of course - since the last time I sent out these patches, I've split
+things up quite a bit to make it easier to go through.
+
+Cheers!
+
+Lyude Paul (35):
+  WIP: rust/drm: Add fourcc bindings
+  WIP: rust: drm: Add traits for registering KMS devices
+  rust: drm/kms/fbdev: Add FbdevShmem
+  rust: drm/kms: Introduce the main ModeConfigObject traits
+  rust: drm/kms: Add bindings for drm_connector
+  rust: drm/kms: Add drm_plane bindings
+  WIP: rust: drm/kms: Add drm_crtc bindings
+  rust: drm/kms: Add bindings for drm_encoder
+  WIP: rust: drm/kms: Add Connector.attach_encoder()
+  rust: drm/kms: Add DriverConnector::get_mode callback
+  rust: drm/kms: Add ConnectorGuard::add_modes_noedid()
+  rust: drm/kms: Add ConnectorGuard::set_preferred_mode
+  WIP: rust: drm/kms: Add OpaqueConnector and OpaqueConnectorState
+  WIP: rust: drm/kms: Add OpaqueCrtc and OpaqueCrtcState
+  WIP: rust: drm/kms: Add OpaquePlane and OpaquePlaneState
+  rust: drm/kms: Add RawConnector and RawConnectorState
+  rust: drm/kms: Add RawCrtc and RawCrtcState
+  rust: drm/kms: Add RawPlane and RawPlaneState
+  WIP: rust: drm/kms: Add OpaqueEncoder
+  WIP: rust: drm/kms: Add drm_atomic_state bindings
+  rust: drm/kms: Introduce DriverCrtc::atomic_check()
+  rust: drm/kms: Add DriverPlane::atomic_update()
+  rust: drm/kms: Add DriverPlane::atomic_check()
+  rust: drm/kms: Add RawCrtcState::active()
+  rust: drm/kms: Add RawPlaneState::crtc()
+  WIP: rust: drm/kms: Add RawPlaneState::atomic_helper_check()
+  rust: drm/kms: Add drm_framebuffer bindings
+  rust: drm/kms: Add RawPlane::framebuffer()
+  rust: drm/kms: Add DriverCrtc::atomic_begin() and atomic_flush()
+  rust: drm/kms: Add DriverCrtc::atomic_enable() and atomic_disable()
+  rust: drm: Add Device::event_lock()
+  rust: drm/kms: Add Device::num_crtcs()
+  WIP: rust: drm/kms: Add VblankSupport
+  WIP: rust: drm/kms: Add Kms::atomic_commit_tail
+  WIP: drm: Introduce RVKMS!
+
+ drivers/gpu/drm/Kconfig            |   2 +
+ drivers/gpu/drm/Makefile           |   1 +
+ drivers/gpu/drm/rvkms/Kconfig      |   3 +
+ drivers/gpu/drm/rvkms/Makefile     |   1 +
+ drivers/gpu/drm/rvkms/connector.rs |  53 ++
+ drivers/gpu/drm/rvkms/crtc.rs      | 253 ++++++++
+ drivers/gpu/drm/rvkms/encoder.rs   |  33 +
+ drivers/gpu/drm/rvkms/file.rs      |  22 +
+ drivers/gpu/drm/rvkms/gem.rs       |  30 +
+ drivers/gpu/drm/rvkms/output.rs    |  55 ++
+ drivers/gpu/drm/rvkms/plane.rs     |  81 +++
+ drivers/gpu/drm/rvkms/rvkms.rs     | 168 +++++
+ rust/bindings/bindings_helper.h    |  11 +
+ rust/helpers/drm/atomic.c          |  32 +
+ rust/helpers/drm/drm.c             |   5 +
+ rust/helpers/drm/vblank.c          |   8 +
+ rust/kernel/drm/device.rs          |  25 +-
+ rust/kernel/drm/drv.rs             |  45 +-
+ rust/kernel/drm/fourcc.rs          | 127 ++++
+ rust/kernel/drm/kms.rs             | 475 +++++++++++++++
+ rust/kernel/drm/kms/atomic.rs      | 774 +++++++++++++++++++++++
+ rust/kernel/drm/kms/connector.rs   | 831 +++++++++++++++++++++++++
+ rust/kernel/drm/kms/crtc.rs        | 944 +++++++++++++++++++++++++++++
+ rust/kernel/drm/kms/encoder.rs     | 303 +++++++++
+ rust/kernel/drm/kms/fbdev.rs       |  51 ++
+ rust/kernel/drm/kms/fbdev/shmem.rs |  33 +
+ rust/kernel/drm/kms/framebuffer.rs |  58 ++
+ rust/kernel/drm/kms/plane.rs       | 875 ++++++++++++++++++++++++++
+ rust/kernel/drm/kms/vblank.rs      | 454 ++++++++++++++
+ rust/kernel/drm/mod.rs             |   2 +
+ 30 files changed, 5747 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/gpu/drm/rvkms/Kconfig
+ create mode 100644 drivers/gpu/drm/rvkms/Makefile
+ create mode 100644 drivers/gpu/drm/rvkms/connector.rs
+ create mode 100644 drivers/gpu/drm/rvkms/crtc.rs
+ create mode 100644 drivers/gpu/drm/rvkms/encoder.rs
+ create mode 100644 drivers/gpu/drm/rvkms/file.rs
+ create mode 100644 drivers/gpu/drm/rvkms/gem.rs
+ create mode 100644 drivers/gpu/drm/rvkms/output.rs
+ create mode 100644 drivers/gpu/drm/rvkms/plane.rs
+ create mode 100644 drivers/gpu/drm/rvkms/rvkms.rs
+ create mode 100644 rust/helpers/drm/atomic.c
+ create mode 100644 rust/helpers/drm/vblank.c
+ create mode 100644 rust/kernel/drm/fourcc.rs
+ create mode 100644 rust/kernel/drm/kms.rs
+ create mode 100644 rust/kernel/drm/kms/atomic.rs
+ create mode 100644 rust/kernel/drm/kms/connector.rs
+ create mode 100644 rust/kernel/drm/kms/crtc.rs
+ create mode 100644 rust/kernel/drm/kms/encoder.rs
+ create mode 100644 rust/kernel/drm/kms/fbdev.rs
+ create mode 100644 rust/kernel/drm/kms/fbdev/shmem.rs
+ create mode 100644 rust/kernel/drm/kms/framebuffer.rs
+ create mode 100644 rust/kernel/drm/kms/plane.rs
+ create mode 100644 rust/kernel/drm/kms/vblank.rs
+
+-- 
+2.46.1
+
