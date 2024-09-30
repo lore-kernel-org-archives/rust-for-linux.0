@@ -1,104 +1,93 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F714D71E;
-	Mon, 30 Sep 2024 11:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A9C18DF75;
+	Mon, 30 Sep 2024 11:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727694932; cv=none; b=HMqrXYTJMEDba3K0xSPAq3ijL4UMAmrYyJx1wjPC+8D+zTZXnH7/vIABJiPgTaVT2t0Iej8NTKKVyOYTGmbV+rFWzM/IZ26fDRSTYEtbQcd+eo2KVxiiZ6UviGSGEiRmBfs4N+ovoRYibTb35vxvbI3CtjlIFh5y4AYUHNrnA4w=
+	t=1727696112; cv=none; b=CXICtfVZnkqfjid2QaNFw5SMCoZRxq1XfJTejdSkyvScMA2+rIpetkjevakdNgm3bxSi5+lmaR28vaI1eHVFCt+45PjQEZQGp50sYs391QnGUWU0TMUWCBqSc6FzqxoaX5X4NN11bmEei881PujNXbFFyd5DLmulc+XUwsglVgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727694932; c=relaxed/simple;
-	bh=nAllHEy37MQSZwQx3FS/KmYURYA3jo/U7B7bkMt71aA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jIXO5WJ6nOctbzTcd6UiM4ekjCNjrLzg6JzP9VyfOUxX1lE+liNkH56AxQLGGyOQNfxnEgEZ9hIxDBtRrXloVqPWyHlEdb+W/qzaEC984XQvYH8TZvjiGi592Jnf+kVPA45nDXBdPuyipoUL1OchwVhXpuLV1XudjbGGS66zDPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4u77dX3; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727696112; c=relaxed/simple;
+	bh=rIPG4KDeInmmdaR6xuNCMeu7HNr9U7NNoLao5HdKeTA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YQYC6JjXscLOP2nR3+y93RDjTo1JqjsowSKAytOQvJkzCBiZmb0o5SyheSk+DhAWQA5kiy8eiYOolJWzDpWv2qpkAzrLCweEO5qmxcZZIVBRJO3mcDGfxg4xwPF5GcsPy9WpkMD36Zo3sL2ugzO2ubBncYEnWibKJJxH0D/wJdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csmT0cyb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4u77dX3"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-45aeed46f5eso17301781cf.3;
-        Mon, 30 Sep 2024 04:15:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727694930; x=1728299730; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nAllHEy37MQSZwQx3FS/KmYURYA3jo/U7B7bkMt71aA=;
-        b=c4u77dX3zbmKpJJtL6u0TcsH+/UNRGyWZ2lieL8wJH/JiWOTiNqzNFcS+d6ctW0pcB
-         yi3LSlo0xD7kIz9CRAQkkwiGxdF9feb93jtMBSnAh/X7x7OmZcfy8IowK1gxv/HZTuA+
-         oX83M4+/h3E9sz6kDDRHYnuCJdXyxPY11J6o207IdLI782savSkaafDTa5X58R/3rBsH
-         jFqu04hcXeIjAcsWolQQM3ahoc2NLxT2PnXA/0Z7DrEJbFpQvgZhRtvfr7Xj8PbRNvjG
-         nXmkXnT7ZE2BScM9+KFDcYfybHZnQEGVNY8h0rU83muy+X2Yx9tZ0iyFAKk+BIYHXg4f
-         Hkvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727694930; x=1728299730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nAllHEy37MQSZwQx3FS/KmYURYA3jo/U7B7bkMt71aA=;
-        b=QcZfYq43XOVAx8WduWPkAFHd4lMpgZO/DGafbUsT9T2UrJiSD3vWAHaE45G3itxMh/
-         5qOGpKrPeiZYuCW/w+PCLW5odlq941Hc7pWccUFDlAeqs25AYy+t/j930AADTMVbpWdG
-         I4EmdlY4COQbTbjdSw1E7/DlKvsr/ZP62r7M7cv1b85J+DbNOREt/Zh6gipxwy9GovX0
-         f7QrUEKdzPJFciV85YIiC2PNaW551fbx8xxj/P0oExy79t4+V5COEbaDGbHLNEKD7xsf
-         OpwY+gSD05fifAd6mcXoH8oIAZfBSrGw97ydS2b6DLhKTR2aH6AnkcOs/IvK6Z1sROqF
-         znDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNvzl1nMz8RhxAakPORHEZr3N+M6UBGf8EN4HMoSTfjKfBXyaYtaFILb9pkpyxecGW4PUH2KpL48uRh1knPSc=@vger.kernel.org, AJvYcCXk5P1eQkNehdTfKujdjM4eZMnvF3ZJiyrS6Cp5Oym0rt8DGhJ/ChVxk8OUMvmfpA2IhHnPxPHbJyeOvtU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoRFwU0yj7ix8s7bnxA9bH2V+H2TAFXcwAy9ETwDJ5ALTobG5m
-	pez2EiKYBMPD/fBtSbgjtX06SUMoFGzaJJ9DL1uwnz6/TfNxUvQCF9Vwlr1t7tUkcz+ZQAhTP+6
-	irgkqUEdE96JW6ypLOzvpD+VKz+s=
-X-Google-Smtp-Source: AGHT+IE2f3oG/+wQiScu/8IpSiODNStabHKHwALVPaVqp0yP4HzudWt4fy0QryyGmZhPlXVT3K9BlDbh3E3Yy87Aw2U=
-X-Received: by 2002:ac8:7f8c:0:b0:458:5bb4:7751 with SMTP id
- d75a77b69052e-45c9f1e7c03mr176108911cf.13.1727694929493; Mon, 30 Sep 2024
- 04:15:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csmT0cyb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3EFC4CEC7;
+	Mon, 30 Sep 2024 11:35:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727696112;
+	bh=rIPG4KDeInmmdaR6xuNCMeu7HNr9U7NNoLao5HdKeTA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=csmT0cybmjo/2y3jZwoQZklihK9kqNg9MS0Lxqboq6hGu7fQvp3O9Y205tKcLnvEo
+	 X6zFjIbThmHvwe18+gtrFU/soYjdMuXK3d8ESyqV8uvI69HD0N+Ot/5wZDPP3Oa4Sc
+	 3J9lTaWbBC1tyh8aqbILLctHkgF9m038DIOVnvGU=
+Date: Mon, 30 Sep 2024 13:35:09 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Guilherme =?iso-8859-1?Q?Gi=E1como_Sim=F5es?= <trintaeoitogc@gmail.com>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org,
+	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] device: rust: change the name function
+Message-ID: <2024093044-emblaze-disrupt-d479@gregkh>
+References: <CAM_RzfbQK5fzqXQN89JCEzD1Bz5ZtQdAz3xD0yaYFx_GC7Pm0Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM_RzfavjM9VPJhTi1czOSC0BFOc3FUHRMdzFrU9fJE+WJMKbw@mail.gmail.com>
- <32476CD7-74D6-4575-9D93-2FBCD5AE3E10@collabora.com> <51fe3ee3-0b81-418d-b05f-626dbcea4f57@de.bosch.com>
-In-Reply-To: <51fe3ee3-0b81-418d-b05f-626dbcea4f57@de.bosch.com>
-From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Date: Mon, 30 Sep 2024 08:14:53 -0300
-Message-ID: <CAM_RzfZ0LVTBGpyMj5X1GTgdzhw=zx=E_zMSFNmNSks91jBMGw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] device: rust: change the name function
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com, 
-	mcgrof@kernel.org, russ.weight@linux.dev, dakr@redhat.com, 
-	a.hindborg@kernel.org, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM_RzfbQK5fzqXQN89JCEzD1Bz5ZtQdAz3xD0yaYFx_GC7Pm0Q@mail.gmail.com>
 
-Dirk Behme <dirk.behme@de.bosch.com> writes:
->
->
-> On 29.09.2024 17:35, Daniel Almeida wrote:
-> > links may become stale,
-> > so please do not link to anything.
->
-> This sounds a little too general to me ;)
->
-> I mean we link a lot, using the 'Link' tag even in patches.
->
-> For example the mailing list archive has the 'permalink' button and
-> Zulip has the 'Copy link to message' button I think can be used.
->
->
-> > Lastly, I can=E2=80=99t see a diff anywhere.
->
-> Yes, I was confused by that, too. But I wonder if just the numbering is
-> wrong? I.e. if [PATCH 1/2] was intended to be the cover letter 0/1 and
-> the [PATCH 2/2] was intended to be the actual patch 1/1? Just a hint :)
->
-> Best regards
->
-> Dirk
+On Sun, Sep 29, 2024 at 10:38:47AM -0300, Guilherme Giácomo Simões wrote:
+> This function increments the refcount by this command
+> "bindings::get_device(prt)"
+> This can be confused because the function Arc::from_raw() from
+> standard library, doesn't
+> increment the refcount.
+> Then, this function "Device::from_raw()" will be renamed for don't
+> make confusion
+> in the future.
 
-I can resend the patch with the message commit fixed and the correct numera=
-tion.
-Thanks for your comment in my patch.
+Please wrap the lines here properly so they show up in a sane way :)
+
+> 
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+> ---
+>  rust/kernel/device.rs   | 2 +-
+>  rust/kernel/firmware.rs | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 851018eef885..ecffaff041e0 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -51,7 +51,7 @@ impl Device {
+>      ///
+>      /// It must also be ensured that `bindings::device::release` can
+> be called from any thread.
+
+Your patch is line-wrapped and can not be applied :(
+
+Please read the email documentation in the kernel for how to use gmail
+to send patches out (hint, almost never do so, but you can use git
+send-email through it), that will help you in sending changes that can
+be applied.
+
+>      /// While not officially documented, this should be the case for
+> any `struct device`.
+> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
+
+With this change, nothing broke?  Does nothing call this code yet?  I
+thought the firmware interface did that, but I could be wrong...
+
+thanks,
+
+greg k-h
