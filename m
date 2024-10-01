@@ -1,116 +1,89 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F401F1C9B86
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 15:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA311373;
+	Tue,  1 Oct 2024 15:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727795585; cv=none; b=EZ1RrjjR6XOAfXZHAcObqMoMuO+NBHiHbNzBC+W5P4+AT9y8uvybkxRDV0HSxgdTxiRVsv1q9b3Y4551JaQTT2IjWub8V5OURkoKDTy3PrKgKsm9ekpJyH3koAgCxETOtF10uc5cOly3wtc/BEL6+LRw+zsEVyhZ6nnDJR3Umvo=
+	t=1727795950; cv=none; b=h1lvqJw2rq1jbRTnq0Pr0kw/xDkmwL0U8wEsZWh3JAp6sCH/H+bSwtAFGJXAhFRNe6ulXItUWV7KBc++ALRKpsCADI3+Nf52P4Qf/auq117cfPZOoGs12GH7wAsMzoXsYCfhyO3JVFSS2loDOoLAkz3zVI3hCNtXcmuizJpnD0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727795585; c=relaxed/simple;
-	bh=nYAgSONk63xOK7Bor3a7kozbxWLj4K+9v0t4icaPYyw=;
+	s=arc-20240116; t=1727795950; c=relaxed/simple;
+	bh=qi8yKQjrLWHCSWjOpRs4bR/ZSldJgDWgk6YEdhDY6s4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YWJX19WNn8C79I0bxto90busAmgq8Qnae1yrbU9n/m4duGUH6Mc2Oo0EH/Bz9px4FmFuY+m0xlQYLDlIsjBgXSbNq/EGA3j9eBf4BbjGCjIcmHHad+/VpBtViVR8HSNnFMZDOf1GSQH3OKybmFOwwbRGG8UkqjYg808Vt+7r+vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRBXUVIJ; arc=none smtp.client-ip=209.85.167.49
+	 To:Cc:Content-Type; b=T/ecpdJlJfovrcLTQ1BJvuYNCIn+sn/94ftqXpZ2O4tX4UXIRnqohyjeftWVl0aFagZWXxmtf6qHy/PRJEE4IEVpJzwFsgsBK6fQjORpHv9p2nyB7z/ppxcS20jDpvamZ8+sq+yvUpuuhCKMxwgv3kBxL7z+seTC1aoLzyuzb4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RyrlF6cq; arc=none smtp.client-ip=209.85.208.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRBXUVIJ"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5389ef4c28eso590788e87.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Oct 2024 08:13:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RyrlF6cq"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2f75d529b49so3013321fa.1;
+        Tue, 01 Oct 2024 08:19:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727795582; x=1728400382; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727795947; x=1728400747; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IXScHmn8P9S4rD5O2nRTRJ+gDdKSkJpoElX+zbZagUM=;
-        b=nRBXUVIJ9DOffSzxfsdti0kO6vd2bngK5FiNSrYOdHGca0BqLCCg5hSTzW66VIJUCc
-         QVJB9rFDlZdfTOv9b54Gw1mJXBQkywAvO6rek1Uc4p7p7XLahRf1ouQAl/h7/JBj/4qy
-         x23NvAZDHP0feUaHnEjy5KY+gwMcSo1sDx/Fqey17Ff/bZl+XD5g4MCGWWhOjrJw+TtB
-         UHwOO9e86jKVBenmysqlwuyE2XQTf3gdvx1rZjy4a4fBmvgSCWOEOihkjOPVucKGtzQ/
-         cwAqHosw+mg2zIAjfRyh74t8XCisMSJoWrIbOEiCC5yCFP/6gy8Vlua6iLC9CJrnkSvl
-         ZEJA==
+        bh=qi8yKQjrLWHCSWjOpRs4bR/ZSldJgDWgk6YEdhDY6s4=;
+        b=RyrlF6cqYlj5P7CFNk9JGp57Mt44heratlNttCRApoYOrrMV2bXDGY2PbAubOKH9Ua
+         oWyH/wivnLkTFDLwHS8f6ZJlxIqyCBxbkekpLnE0Zg9jI2gZuzyLoi2z+Xptgfeyl7dr
+         a0KPcv+XEaxQK0EVaWyZnN+pvlAdpffStReBKjG2WjfS3Ca3LPWPsjME7nzTN1hD0gLM
+         tEzgOGChm1pId8joTT5EmxsvhF27vnD2DuG8r9Diks2MoDToE7aKyPIYfMTB8TCA5Vmt
+         ESyQJLisvnI5ako+gds8wVsxqBXmI0a98G8BriS2Pu7OWJ1dBN5Fjf2tdThDC1uxu64f
+         A8dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727795582; x=1728400382;
+        d=1e100.net; s=20230601; t=1727795947; x=1728400747;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IXScHmn8P9S4rD5O2nRTRJ+gDdKSkJpoElX+zbZagUM=;
-        b=S2kFKbeoUWo+dxew2AvpUqAU5Cpr4yuPQ2qFsY2e7qVbMOFx5d2xA+URd71XDO3cbw
-         uksSZyVMkNQE40XJYLiXJ/+4EhqcdxUH6/2ikIFWKw1zs6W1JuRjTu2A3SkROyEdHrol
-         +T6LdqFVF1cWnyUl1UEwI7StlSNf/QXeReBjID/8VlXHZvN1IuCp7BHqVMAG3pxo3gWk
-         hV1/AS3PGEBIvBwzZtr5nc5hwfCSSXS9cFUvyFk2bG0kXq9jhXBg54mRfiVayJdrcVgg
-         hoKgUrDL4qapTHSbvyROebsQkzvuNm/eoekvInMcB70nAompZNQEJDWL3oSuatSDCPXD
-         mjow==
-X-Forwarded-Encrypted: i=1; AJvYcCV/KkBIRVpm0ZIOGGWmsWYlftr55ZPWdhIAEkm9gXrXor1N61j/4oiDfvfPe5Dymb3nTFKRpYRKNVnAmNdfGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIjqCKVcfhZUYK9vznZTM/wAxUI6lI4E06itjp9RyaqkAVmcz3
-	xBt24J0Rzq+Bs7PB/j7k5G7/K+rNfM5TFvopKDukBoocY+fEoup51LCabFyBfcyXX7LlTeSbTqF
-	3gPUohMsF3bV7qT01xcGDManPGV4=
-X-Google-Smtp-Source: AGHT+IGMhNBqjZ6ijgQcOXn6JFNmxnnktPEIZeD+nygAOPZgju/CctlYZ3G0XVoXICXF9IwanuhOiZqfY4Zocu+x87A=
-X-Received: by 2002:a05:651c:506:b0:2ee:e196:1486 with SMTP id
- 38308e7fff4ca-2fae1010f89mr288481fa.4.1727795581521; Tue, 01 Oct 2024
- 08:13:01 -0700 (PDT)
+        bh=qi8yKQjrLWHCSWjOpRs4bR/ZSldJgDWgk6YEdhDY6s4=;
+        b=HTqjsp7TUExOnyQdTgZwAh7k/NUOmvJRtm7JmGsJfY9N0G/+jhT3CSlPFDRtHHUCRU
+         0nn/FBujD0InTspeppRPj/aVmZaPTi7ZCXbBi+1QqF63FOWlB8Iwtyw9gyIDm34JPSnd
+         h/8BJJl+DtoW8yIBKEmvQx/OXk502n7PeR3bkXqqUdDLyXg0vmPh0lQR/f1J8c0xVzEd
+         IztMmqOMOfo4vFduRgwElLaZDvqhvsx/C7JavRw0dnXLeq1suzNij+wvyiuK3ggAE2cH
+         mR1iZ35LOTwpNuwbvp4Aa5tz4M4cFSrtwlvaNstcU9/+7CzABHcLLB5gk2Mg/egrC9In
+         m9Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCUl1lTLqko+4lUsKSlutc83XuOZAnZHwsIEvpqR3jYFUWY15+sHcQWg2V4WRAHm9p07xLs3FZ16ZchSqgJWAi4=@vger.kernel.org, AJvYcCV9Hn8haLr4So/gRIBJO6zdj4xb/tASWhAReE/v/y9+coy/GerGnMQubRhl14Iz+BBgUh0Rx6yDFg4qe0c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1bkq1hEeKCfoeqetHFdj6XFFOMg9rP8ONZR4LviEv4JuJd10d
+	Q/aES/3Vtmox1jh7oDMCV9eOJyyPxXsZ0iF2iLDLAhotazByrE6eb/wHP1fTwOusq3JauZY0+d8
+	/G198pUbI8+CyvxORlUfaPE6Vxvo=
+X-Google-Smtp-Source: AGHT+IHt+TuZfDewSpTYnzspHrDKyHlYwH7HsKkgbgr/yf/IpVhOkdGpUpV5QaZEfyPfW8LWCD7/L67Db9Tp6/Do6RU=
+X-Received: by 2002:a2e:b8c5:0:b0:2fa:d784:e11e with SMTP id
+ 38308e7fff4ca-2fae10a34c3mr207631fa.11.1727795946762; Tue, 01 Oct 2024
+ 08:19:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001-playlist-deceiving-16ece2f440f5@spud>
-In-Reply-To: <20241001-playlist-deceiving-16ece2f440f5@spud>
+References: <20240930233257.1189730-1-lyude@redhat.com> <20240930233257.1189730-2-lyude@redhat.com>
+ <87wmisuqcd.fsf@intel.com>
+In-Reply-To: <87wmisuqcd.fsf@intel.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Oct 2024 17:12:47 +0200
-Message-ID: <CANiq72nREvDcdMinXgkVtqtUT8k+vHap9EWzxCboensXokvLQQ@mail.gmail.com>
-Subject: Re: [PATCH v1] RISC-V: disallow gcc + rust builds
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-riscv@lists.infradead.org, Conor Dooley <conor.dooley@microchip.com>, 
-	Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, nathan@kernel.org, 
-	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Date: Tue, 1 Oct 2024 17:18:53 +0200
+Message-ID: <CANiq72n5bethTsoGvEEd4OM-J+7t6bsMN0Qvm-=cnqjMLyAcrQ@mail.gmail.com>
+Subject: Re: [WIP RFC v2 01/35] WIP: rust/drm: Add fourcc bindings
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, Asahi Lina <lina@asahilina.net>, 
+	Danilo Krummrich <dakr@kernel.org>, mcanal@igalia.com, airlied@redhat.com, zhiw@nvidia.com, 
+	cjia@nvidia.com, jhubbard@nvidia.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@redhat.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 1, 2024 at 1:28=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
+On Tue, Oct 1, 2024 at 11:26=E2=80=AFAM Jani Nikula <jani.nikula@linux.inte=
+l.com> wrote:
 >
-> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arc=
-h-support.rst
-> index 750ff371570a0..54be7ddf3e57a 100644
-> --- a/Documentation/rust/arch-support.rst
-> +++ b/Documentation/rust/arch-support.rst
-> @@ -17,7 +17,7 @@ Architecture   Level of support  Constraints
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->  ``arm64``      Maintained        Little Endian only.
->  ``loongarch``  Maintained        \-
-> -``riscv``      Maintained        ``riscv64`` only.
-> +``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
->  ``um``         Maintained        \-
->  ``x86``        Maintained        ``x86_64`` only.
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 22dc5ea4196ce..76843584960c2 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -177,7 +177,7 @@ config RISCV
->         select HAVE_REGS_AND_STACK_ACCESS_API
->         select HAVE_RETHOOK if !XIP_KERNEL
->         select HAVE_RSEQ
-> -       select HAVE_RUST if RUSTC_SUPPORTS_RISCV
-> +       select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
->         select HAVE_SAMPLE_FTRACE_DIRECT
->         select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
->         select HAVE_STACKPROTECTOR
+> regenerated? Should there be more granularity?
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Indeed, eventually this will need to be split, like we did for `helpers.c`.
 
 Cheers,
 Miguel
