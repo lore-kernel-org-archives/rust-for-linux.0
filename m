@@ -1,43 +1,43 @@
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA8D199FCD;
-	Tue,  1 Oct 2024 08:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040EA19AA68;
+	Tue,  1 Oct 2024 08:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727772020; cv=none; b=kU2ClZgMO2iWsv6ALVIKlakrOXxskaFahwuYHJFA3Ok2EGuKVpVp+3j/l1t4qt/Gdc+MLWnDehGz76RQs+yZQ93mOqIni4GnCW0C+kiQMCwuA83Zudi8aGsTmGVaPTX700NGDMME9R313Ptr72Bcq2A3Iu0YDWObSOyHrfY5reU=
+	t=1727772401; cv=none; b=CE6HyAtvnCcjzfznLgvjUd0e75nIcRkdhossBkbyt2ZXuFBlvEdu1DCZ5axwKjihdYkVu/ZhU7H1uvcFRJKAKFqUtE3wT1VKOuCfy6Emcxgi4vKI0jB4We5PdMl0dUp21E0OeVsp2DlmVqUNDsXiCwtZXxqLl5VEiYEbrS9UBEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727772020; c=relaxed/simple;
-	bh=PLh/58ZlaBgCmlMftYu7qkzfOBM+fQmdj2Uc322yocI=;
+	s=arc-20240116; t=1727772401; c=relaxed/simple;
+	bh=n3Y6ASDlkI3ZkY4nGFCWmpxPfiDDBWBr1yndf3YF4vc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W3MYo2FdaF8VLel5jbmy7aMIl0qhPvlc/DuDG/FDHK9CRucbc0yq1ulhs0Xvqa54SQojqTuPzfwVbC2Vo9d7mGfMviRiBcFGrxZfYXcGt9UoQfsr8lPInoNf/w1C0sOz+pAtnwvH9JXQ9YfijO10dYtlXkNXpeVxRQo1/ptXSQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=K8J+0qr6; arc=none smtp.client-ip=188.165.51.139
+	 MIME-Version:Content-Type; b=ihALtcx1pC9nBwUYzT5sn4NR9vw2D+Nsjg5lWbG0W29o4p2G+ZoQRD2f5zETWcrnf/aDPbO9TYG3GA0tV/D4y4pvLTA1/CxDlPFk3tQG5QoIaE8/Xn5QGQu8d89V1p7P4Ses9qeTDiF6O+zl7LrebpMAxRSUZW1ZXJsWpc9Y/ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nz9t751U; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="K8J+0qr6"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nz9t751U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=xnkze6t25vd55o2zobthg4llcy.protonmail; t=1727772001; x=1728031201;
-	bh=XbuCavRCbycWjRl0/qLs0aDNm7AdcxhaXd2r4Slp+hY=;
+	s=hs6v3onqz5emdo3dj25npgdpvy.protonmail; t=1727772397; x=1728031597;
+	bh=g1VQQYJsjsUnxadkJGJ8Fma6HLCkKyqxvROl+zkzNtA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=K8J+0qr6LuWYLZFjIuEZILPh1bmUIDuuSE/V5GqUE8Dy6Iz+vbT92jcqdgR4dcBZ4
-	 fis/lrxCkTvjikpfp/0QZyR5FfpnmYA6qD6oEmDrgGkOevTZby26SN7X1Gp26m9WH0
-	 5m6t51rCnAOqqhRN9m8AR3luguuhQD7r//ypyKq6tzdIDqonmHFAbmBLdHtXp28Kex
-	 ZLNH7tebDhTmVhjqqMxeXcXcWGDXgB9oiDhl/JiRNmchDOLig4ktySknsrJcb45w0z
-	 85AS31rD0MKGpQdAEmeBwiDn3rafK4HPoNMh/GsfMxP5P/qgwoA02nV7MRN0Erfflf
-	 2C8h2Gu+5f0qw==
-Date: Tue, 01 Oct 2024 08:39:57 +0000
-To: Dirk Behme <dirk.behme@de.bosch.com>, Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+	b=nz9t751Ub73yklIQj9ggK3GQji1z8rD84Iom4clLVB9MzLF8uye7YrAw4djPQN45f
+	 Vpvlrwv3U6aFq6M9xlyolavJB81u4FDiLf/k8LX2XLd842Vk4cR0GRgR5Shrs+I0tn
+	 0AK4aVG/aW8LIEwoAD7aRjyo/73dazax8+lFUvhnQg82uDkDCpfdgUgA69v7r24KYB
+	 P7tMkHhbEpG2MXo1NxL/WpCyMANzmAaZq03y2HhUOAoAL0cKPdzyChDM7OtDOfu7XW
+	 F8zEdsDGeUtirJxDHFz1iLz75ekwyUq9IjUhF/ABfcWzdNdDKRXqx3/zOrt+Lw79lt
+	 xMfVqgNXmsmwQ==
+Date: Tue, 01 Oct 2024 08:46:31 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/14] rust: sync: add `Arc::as_ptr`
-Message-ID: <1d699942-eba4-4cb9-8b97-ad747936a5a5@proton.me>
-In-Reply-To: <ad3e4f4c-883b-49a5-ba4b-562c13eee08e@de.bosch.com>
-References: <20240917222739.1298275-1-a.hindborg@kernel.org> <20240917222739.1298275-4-a.hindborg@kernel.org> <e7e42ff2-1543-48b3-9bd3-bdef5ce66348@proton.me> <ad3e4f4c-883b-49a5-ba4b-562c13eee08e@de.bosch.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: types: add Opaque::try_ffi_init
+Message-ID: <dca42b2e-f10f-45bc-bd79-ba86e78e3017@proton.me>
+In-Reply-To: <20241001-b4-miscdevice-v2-1-330d760041fa@google.com>
+References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com> <20241001-b4-miscdevice-v2-1-330d760041fa@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 38218592fffca59a5328dcfe84276b3ae07daf21
+X-Pm-Message-ID: 4eb89e6f0ebb8860c65afe539cb44d414a1f2a39
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,118 +47,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 01.10.24 06:56, Dirk Behme wrote:
-> On 19.09.2024 16:03, Benno Lossin wrote:
->> On 18.09.24 00:27, Andreas Hindborg wrote:
->>> Add a method to get a pointer to the data contained in an `Arc`.
->>>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>   rust/kernel/sync/arc.rs | 8 ++++++++
->>>   1 file changed, 8 insertions(+)
->>>
->>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->>> index 3673496c2363..a57ea3e2b44c 100644
->>> --- a/rust/kernel/sync/arc.rs
->>> +++ b/rust/kernel/sync/arc.rs
->>> @@ -258,6 +258,14 @@ pub fn into_raw(self) -> *const T {
->>>           unsafe { core::ptr::addr_of!((*ptr).data) }
->>>       }
->>>
->>> +    /// Return a raw pointer to the data in this arc.
->>> +    pub fn as_ptr(&self) -> *const T {
->>
->> I don't know if we have a convention for this, but shouldn't this be an
->> associated function? Because if `T` also has an `as_ptr` function, it
->> will be shadowed by this one.
+On 01.10.24 10:22, Alice Ryhl wrote:
+> This will be used by the miscdevice abstractions, as the C function
+> `misc_register` is fallible.
 >=20
-> Yes. In Fabien's out of tree regmap we have an as_ptr() for Regmap [1]
-> which operates on &Arc<Regmap> [2]. Once this patch is applied to arc.rs
-> the compilation fails as then Arc.as_ptr() is used, not the
-> Regmap.as_ptr() any more [3]. Switching this to something like [4] makes
-> the compiler happy.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Yeah then we should switch to that.
-
-> Thanks,
->=20
-> Dirk
->=20
-> P.S.: Just to learn something: For the unmodified, failing case: Is
-> there a rule when which as_ptr() will be used? Is there an order rule
-> for the shadowing? Any documentation link?
-
-Yes, there is a page about the method call expression in the reference:
-https://doc.rust-lang.org/reference/expressions/method-call-expr.html
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
 
-> [1]
-> https://github.com/Fabo/linux/blob/fparent/rust-ncv6336/rust/kernel/regma=
-p.rs#L71
+> ---
+>  rust/kernel/types.rs | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 >=20
-> [2]
-> https://github.com/Fabo/linux/blob/fparent/rust-ncv6336/rust/kernel/regul=
-ator/driver.rs#L418
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 9e7ca066355c..070d03152937 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> i=
+mpl PinInit<Self> {
+>          }
+>      }
 >=20
-> [3]
+> +    /// Creates a fallible pin-initializer from the given initializer cl=
+osure.
+> +    ///
+> +    /// The returned initializer calls the given closure with the pointe=
+r to the inner `T` of this
+> +    /// `Opaque`. Since this memory is uninitialized, the closure is not=
+ allowed to read from it.
+> +    ///
+> +    /// This function is safe, because the `T` inside of an `Opaque` is =
+allowed to be
+> +    /// uninitialized. Additionally, access to the inner `T` requires `u=
+nsafe`, so the caller needs
+> +    /// to verify at that point that the inner value is valid.
+> +    pub fn try_ffi_init<E>(
+> +        init_func: impl FnOnce(*mut T) -> Result<(), E>,
+> +    ) -> impl PinInit<Self, E> {
+> +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `init=
+_func` to not fully
+> +        // initialize the `T`.
+> +        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_fu=
+nc(Self::raw_get(slot))) }
+> +    }
+> +
+>      /// Returns a raw pointer to the opaque data.
+>      pub const fn get(&self) -> *mut T {
+>          UnsafeCell::get(&self.value).cast::<T>()
 >=20
-> error[E0308]: mismatched types
->     --> rust/kernel/regulator/driver.rs:420:33
->      |
-> 420 |             config.cfg.regmap =3D regmap.as_ptr();
->      |                                 ^^^^^^^^^^^^^^^ types differ in
-> mutability
->      |
->      =3D note: expected raw pointer `*mut bindings::regmap`
->                 found raw pointer `*const Regmap`
->=20
-> error: aborting due to 1 previous error
->=20
-> [4]
->=20
-> diff --git a/rust/kernel/hrtimer/arc.rs b/rust/kernel/hrtimer/arc.rs
-> index ff04b0b75bb39..7c39ab440e1c6 100644
-> --- a/rust/kernel/hrtimer/arc.rs
-> +++ b/rust/kernel/hrtimer/arc.rs
-> @@ -25,7 +25,7 @@ unsafe impl<U> TimerHandle for ArcTimerHandle<U>
->       U: HasTimer<U>,
->   {
->       fn cancel(&mut self) -> bool {
-> -        let self_ptr =3D self.inner.as_ptr();
-> +        let self_ptr =3D Arc::as_ptr(&self.inner);
->=20
->           // SAFETY: As we obtained `self_ptr` from a valid reference
-> above, it
->           // must point to a valid `U`.
-> @@ -57,7 +57,7 @@ impl<U> TimerPointer for Arc<U>
->       fn schedule(self, expires: Ktime) -> ArcTimerHandle<U> {
->           // SAFETY: Since we generate the pointer passed to `schedule`
-> from a
->           // valid reference, it is a valid pointer.
-> -        unsafe { U::schedule(self.as_ptr(), expires) };
-> +        unsafe { U::schedule(Arc::as_ptr(&self), expires) };
->=20
->           ArcTimerHandle { inner: self }
->       }
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 1466d9cd41652..0a314c2f4c5ea 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -259,8 +259,8 @@ pub fn into_raw(self) -> *const T {
->       }
->=20
->       /// Return a raw pointer to the data in this arc.
-> -    pub fn as_ptr(&self) -> *const T {
-> -        let ptr =3D self.ptr.as_ptr();
-> +    pub fn as_ptr(arc: &Self) -> *const T {
-> +        let ptr =3D arc.ptr.as_ptr();
->           // SAFETY: As we derive the pointer from a reference above,
-> the pointer
->           // must be valid.
->           unsafe { core::ptr::addr_of!((*ptr).data) }
->=20
+> --
+> 2.46.1.824.gd892dcdcdd-goog
 >=20
 
