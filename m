@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00F81CB327
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 16:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5E51C6F70;
+	Tue,  1 Oct 2024 16:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727798510; cv=none; b=YH52Ir9/WG4spOmxHcJyre9fS/sh0xVjW4xHpvAZxEQ9/hjlBflkXc42pyzVk2ui24Kwivs6nY7sITn0L4wOqUafEL8XSUzbmrso5An1IIKs+qJ6woOKyfvcUkBLI2GlrMxOtWtMfbIIknSPbCdK54fDwFIEZwK+9Pt6ORBBNl0=
+	t=1727798522; cv=none; b=on7Giq6LPTrKIka3WOhwJ4/VyeyXb5BEZ5yR0qUHUrCYUX3ix4EbKdHvxsBegTenJodEJNh1s1hiOW2oxWYra/i/ENsvZIMOHO+FxsGlbzuDv+fh4xZj6CjgNXiDJWhAbF0kJ8o+Mi4vZ5fvD+s1sCI/JzEKQ0xgsy4x9+/CyqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727798510; c=relaxed/simple;
-	bh=uJa5ldSKSn8A5jd3/z+52anM1vVnwwopqOCR9pv8o10=;
+	s=arc-20240116; t=1727798522; c=relaxed/simple;
+	bh=sMC8j4p63CdtfJ0sdGakdc12GQvRywEdcFw0FglUb+c=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YoyM0BsRmHAZW3SMWzuKQOFRW6OYrvDlQJnTocFne19ewjgB3Sk7fcDr/t77nIHXq8paft1hnrqHA3meSGLXrl37eLczIEXekoyTC/W4oKnuTJIzdQIyqXJ4rJG01FvjUP0O/rDXFlHLdb97vK30cwgMxZDwWblt1FGHzz3gM5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EGcKYLok; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=LJb46ooXCwKxsBTCdGLAKGNxl81z3HQUsviJUCISjPl53dHAwI+UL2bq4bJBX+9fSr83bOixwQTEf8P3fK6vI78jQG1lZqvQeeSr861oDBDrwNlRJILZj9CVjDy4Za2TojF32CmuDtq0pHX+79507GNyl+OZtYndQUXpKh3H8ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Qcommawu; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EGcKYLok"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Qcommawu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=ka4if5rcjngqlcyhpcjdrlxdfe.protonmail; t=1727798499; x=1728057699;
-	bh=JvbQ64Fa0JL4tjTIFclw+9klj6/6SNFZBM5WkEOqjcE=;
+	s=fgkfw2netrchxmkecz4hwysdly.protonmail; t=1727798516; x=1728057716;
+	bh=tfVaqKbb1vbxPwYQmbROEUl/ek8lFp6P9QuUbVmZCUI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=EGcKYLokrrrqukqw3XH29gp9kz9pFbkzjIb0Al7eLmIaj6AbsVQ5slQlhxlAChvKI
-	 tAzM4pOPa3sMKktyDnuMA0ubiMjOwMBwCKBzqRf6tBlnlfUlezFBvZzG1EBAVI04q9
-	 +fJURlGGISJwzESyQGxc6Mv0yIGgIacFh6ptM4SWaMnM+51U+T5D3zXxF5dSeGdb7o
-	 1sxnGWbTt6si64D24kYRsggur9wblQ+e55Yk4ucC/Abijd3J6gFtOiY33QAswgfXoy
-	 ZiyqG9EZhQ+z5cT5LVnr2Q7ZEo9mG/3kl3AxZApj0WErSk+ICRM1HKv5+vvxBtmyXJ
-	 cbNHfv53fn/cA==
-Date: Tue, 01 Oct 2024 16:01:32 +0000
+	b=QcommawugZPGq/slqtGWC1xzQViJw7s3DREHbcv0m6BHfcOwsOoGFx2RD39EPKclq
+	 GTmzBDC5J9H8kqqI2i/bOyUMD15h6U87OJD0cfKZTO+ApdDm4NnDrGJBlRNz9jfxmK
+	 xN2/ClWEfc2IG9P5ek0E23wmMkmZmSlaMexbbM+z8iA90R9C1prfcn1MBQpceNdF00
+	 mXQSsPkmtqUfFd4PBZJhQkutM6ZXga+fbVH78UwIjdrjVPAMvhA01MOl4X3P7Y0Wa0
+	 phh5iz+OFeb2KgtzoYJmSeKQoW580oT0+Ha/irz5KzfsdzHV/l64QrsAAXhiWYhwfb
+	 i6obKi1zkrp0w==
+Date: Tue, 01 Oct 2024 16:01:53 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 05/29] rust: alloc: make `allocator` module public
-Message-ID: <c1eccee8-755a-4305-bc7e-7d34670d04a5@proton.me>
-In-Reply-To: <20241001150008.183102-6-dakr@kernel.org>
-References: <20241001150008.183102-1-dakr@kernel.org> <20241001150008.183102-6-dakr@kernel.org>
+Subject: Re: [PATCH v8 06/29] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <28891e74-1658-4170-b144-fcf29c5ba449@proton.me>
+In-Reply-To: <20241001150008.183102-7-dakr@kernel.org>
+References: <20241001150008.183102-1-dakr@kernel.org> <20241001150008.183102-7-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d66eff84ffab00af75db2c45459f814c1981c5e6
+X-Pm-Message-ID: 734656b1957c36c516f169f8559ce7ae99391fdb
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,36 +48,22 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 01.10.24 16:59, Danilo Krummrich wrote:
-> Subsequent patches implement allocators such as `Kmalloc`, `Vmalloc`,
-> `KVmalloc`; we need them to be available outside of the kernel crate as
-> well.
+> Implement `Allocator` for `Kmalloc`, the kernel's default allocator,
+> typically used for objects smaller than page size.
+>=20
+> All memory allocations made with `Kmalloc` end up in `krealloc()`.
+>=20
+> It serves as allocator for the subsequently introduced types `KBox` and
+> `KVec`.
 >=20
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/alloc/allocator.rs | 31 ++++++++++++++++++++++++++++---
+>  1 file changed, 28 insertions(+), 3 deletions(-)
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
-
-> ---
->  rust/kernel/alloc.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index da49c5306431..91b2a26faf3d 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -4,7 +4,7 @@
->=20
->  #[cfg(not(test))]
->  #[cfg(not(testlib))]
-> -mod allocator;
-> +pub mod allocator;
->  pub mod box_ext;
->  pub mod vec_ext;
->=20
-> --
-> 2.46.1
->=20
 
