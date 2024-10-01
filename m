@@ -1,244 +1,440 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C736F1C6F73;
-	Tue,  1 Oct 2024 14:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B83B282F7;
+	Tue,  1 Oct 2024 14:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727793807; cv=none; b=CqqvCrxJ1n45zUpEegobj8AREfzAv2I5UVaexr4J7Hs+9c1hr/JvMBmvwAWe26Z/UKh3A6ToKLeY6pNWjWbypMl6ENGbFUqSuHQV6EdbaWbdeTByDei7GRiBUjF/+9Kp+2e4Mx+ielLlW2aeFWAlCDCO+Q2tJk7mOlMTnq7JfaE=
+	t=1727794464; cv=none; b=YliLI49OncPtztLoCWRF9L9ZgwpfBMyDZs78gxjabHK7AibHVR/3siaGKrnP8MTsX9px30o2tzwpw/c+xUBaNSKhhm9NuY0SWGKGrgD4pSCsLGCCCr6JS+iRvwdFuLtgPXyIktDo0lQ67gBoiAFlJpD8PNlJXiSDtJMP3VEG6E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727793807; c=relaxed/simple;
-	bh=We2gFdTkmXBbG4yJZ3+PeSOElzTCat11hqEXL05qy/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ITpOpAFU1hY+dryk92LYy0xCTzwcMF6bcImWCLji1hE85iWALFfb5E7Mc/DeI5B/+y8bdd38Qh7Qz9gGNH5ccY4VTeiq9HS4AaCw8sH/etvZgCXd06/vvpkdDeg/XeT5pIJFBRiuywcVbwvmX3SdXXcv8o8zwnypD02jEsXWQbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b/FcWL21; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727794464; c=relaxed/simple;
+	bh=CovR76pzEuiXDT8vz3dWYG1KGUKD0wP2/Pk10pCkca4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E1+ij+sRVq9Ok5x2hZTQ9q8n5iCGl8UV40gyweNWdmLq1fURKgyKAeyNFsgXyuy9JsGZ+W2XSlwZr6ZXirJJDTfWf7M24uNZCxKYGgBnDrzAhlRHmpJBa40K8+JMmYzZGq1PAr9j5BKJjpO2erXEkSH4i1T4GZvrHQTvyLxb/c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqW4daQO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b/FcWL21"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7a99de9beb2so349183485a.3;
-        Tue, 01 Oct 2024 07:43:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727793805; x=1728398605; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mru1A9do/vVb8Ae1r8czZpnZUz93o86nBvUQMdJ5VE8=;
-        b=b/FcWL21SruJa0OOKYFxdvkh1m9XXIDeOhQzpelOBTCrjl6ttlCJywSGjc4XTOMPHC
-         TpqGY6wE/NFrp+STE2iFq1hmDsE0AQBwvzyF0l947HwgiFqRRLEnSU6LofCl8j1ZffwV
-         DgaJ+QbNKZ2pUp1jneE1z9Y7z7FJdg+5STp6TUwxn8NWVYNjGZwNnje30H1xiqIMvX61
-         6Cc3Vxm/MGQoGtLIU1s+A4ksmyO5K9dZTMSm9pXT6dO1YUCF041xzCGI3C1ogy95z/Y2
-         nKegH4Kk9TfHT1XVe7ZhK5Ll1n/JyN6og2Xf2/AJ4DEot4Ls4tikK29Cazh+sGXTUqXa
-         q/7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727793805; x=1728398605;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mru1A9do/vVb8Ae1r8czZpnZUz93o86nBvUQMdJ5VE8=;
-        b=ZOWHtEpQpvbrmhdf0d9dum31U48GiUjJ5ltw5N8VcBNS0S+ujyDsNE51+UNWs0DdNY
-         rD502OHwqjAQ+a3v2FMDRyDZ8XjMEsp1y3UIsWJK9Jq1QpMgH4qyGvEomh+CyqI6o+Zd
-         pzwANGuod2O9IAoFaYkMksaJ8bckpcu04UuAn7de0xsiHyZloCUOHvphUD6i/iTyuXey
-         mO19DWBZFy7W6652iA+r1DPAcBIhqSeIj3tVCj2njU8kyp+d+3oLobTx1PhxHoUtfz0y
-         whliJcZYwOzgbx27gmHC/Rv9v/ViVzktCvnnJG3dJPBNqBeYj15HEcalG5s6Fo4Dag/Y
-         QHAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU74Yq/G39xOkodI2WhToKxU4RKVSPRL3FkOUZnPHz2KtFq52ZXLUYMuE1I4NnMENRm2ORgeagtwyl3tVw=@vger.kernel.org, AJvYcCVQJak7qqY4abDrtuzK7w8mRY8MI6uUk4u+I12gb1LVb41nezWAuTOAWValN099mjoSDaxjxZYVyjHiq2Qvzw8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws5FbfEmlxXTevkOeDDbfM+l6cBh8CNeMJsiE9h3XRH7GVQ6hn
-	e5v80vJh2Jdez+rZV4gffQ8j4cWDwDjeW1FRl5qfIl7/Lo23QTxL
-X-Google-Smtp-Source: AGHT+IGZvOYg0eN3Ign+A8pEWTV9V7eNpGD/Hoq9aULrRdAbW7yElbiDWJtXOpzYBg7qpyfNrhoQLw==
-X-Received: by 2002:a05:620a:4115:b0:7a7:f18a:e46f with SMTP id af79cd13be357-7ae378c2cb4mr2194069085a.43.1727793804528;
-        Tue, 01 Oct 2024 07:43:24 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae377d7530sm509459685a.49.2024.10.01.07.43.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 07:43:23 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 41D391200043;
-	Tue,  1 Oct 2024 10:43:23 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 01 Oct 2024 10:43:23 -0400
-X-ME-Sender: <xms:iwr8ZrAmsz8cr_E2moAtBqP4Ma3xDU3ClAHnrX51YdHiPHJSXXzHpg>
-    <xme:iwr8Zhi1P6aVzX3SfJULjMDAoJqpceDrlHxqDr029WC2cDj1WM4xbEnfwRjlZUtph
-    ei3Z8foQdEjvsNNQw>
-X-ME-Received: <xmr:iwr8ZmkDVL8A-bmvZFMzHIFlpUqbLXa7XqI4udcOJcvsF6Sw5cGLyeMcjnE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddujedgjeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
-    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epughirhhkrdgsvghhmhgvseguvgdrsghoshgthhdrtghomhdprhgtphhtthhopegrrdhh
-    ihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtgho
-    mhdprhgtphhtthhopegrnhhnrgdqmhgrrhhirgeslhhinhhuthhrohhnihigrdguvgdprh
-    gtphhtthhopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhg
-    lhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepghgrrhihsehgrghrhihguh
-    hordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgt
-    ohhm
-X-ME-Proxy: <xmx:iwr8Ztw1hWnZV_y37Wv9GgQqeazJYbAIBTrwFoi_5oK4FBJYv4tnKA>
-    <xmx:iwr8ZgRbL0c0PqmoUdnopCGajmTfRzx0kR9m44GMkzpwZWV3oD_LUw>
-    <xmx:iwr8Zgb1hbt8ZeUaQ0awHMQTWenBeB3oVgW7YIqkiMN33U-74WmOMQ>
-    <xmx:iwr8ZhRJUroBVhk-HBIlEkZ9hq7ri8FRrhf35xNhPX6H8BkBMbfDzQ>
-    <xmx:iwr8ZmDi0QFRSgcgeoBML9IeLwmtANowBIKXOd7RfEstw7MQXWt2bD98>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Oct 2024 10:43:22 -0400 (EDT)
-Date: Tue, 1 Oct 2024 07:42:22 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/14] hrtimer Rust API
-Message-ID: <ZvwKTinnLckZm8aQ@boqun-archlinux>
-References: <20240917222739.1298275-1-a.hindborg@kernel.org>
- <e644aec7-02b3-4faf-9a80-629055c5a27a@de.bosch.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqW4daQO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6015C4CEC6;
+	Tue,  1 Oct 2024 14:54:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727794464;
+	bh=CovR76pzEuiXDT8vz3dWYG1KGUKD0wP2/Pk10pCkca4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=cqW4daQOyxggKUTBhYwqhQhYdwQnUMWJeXRGzx+/YU5OyMpsBRd1S9joR2AUVvEU1
+	 XojuLZoj9yFgRuUGtMS+Xk341kFZKrA/g8tARPZnhzONEQ5rIIWo5rQoC0sKAZCYp3
+	 OYG4gdO7Ao2WLbSM5kHuP+acEoL+DvrVh1hkFAWgM5Cmbn0ghej/UfWNKILUJHgjZo
+	 5+XzyKktIRWcUJe+bZJknGR2GSShhscJ5+uBYU7GvfjnW/5GthRT0wCcQbZ6dB5ND8
+	 TtXkv0C8RXANDOVF362uq96RE+F0JjMtWT+CNuwYBtsU7VsLSjBZr9FXY7wr41ZaV6
+	 +NACYEuESB0lg==
+From: Christian Brauner <brauner@kernel.org>
+Date: Tue, 01 Oct 2024 16:54:04 +0200
+Subject: [PATCH v3] rust: add PidNamespace
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e644aec7-02b3-4faf-9a80-629055c5a27a@de.bosch.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241001-brauner-rust-pid_namespace-v3-1-dacf5203ba13@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAsN/GYC/4WOy2rDMBREfyVonWv0iGupq/xHCUGWr6NLXNlIi
+ mgI/vdYpnTb5cDMmfNiCSNhYp+HF4tYKNEctqCOB+a8DTcEGrbMJJcnwbmAPtpHwAjxkTIsNFy
+ D/ca0WIfQyp47I51WrWEbYIk40s8O/7psubcJ6z44X5FlTE2lNCNNWPueUp7jc3cpoq72W27kB
+ yyz8xkS5TyR86A7wbXotONGnX+VWP0o8m/3n26RIEB1aJ0ejMKuPd8xBpyaOd7YZV3XNzXgHTc
+ dAQAA
+X-Change-ID: 20241001-brauner-rust-pid_namespace-52b0c92c8359
+To: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, 
+ Bjoern Roy Baron <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Peter Zijlstra <peterz@infradead.org>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Arve Hjonnevag <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+ Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, 
+ Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+ Dan Williams <dan.j.williams@intel.com>, 
+ Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
+ Daniel Xu <dxu@dxuuu.xyz>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ Kees Cook <kees@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Christian Brauner <brauner@kernel.org>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16402; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=CovR76pzEuiXDT8vz3dWYG1KGUKD0wP2/Pk10pCkca4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT94ZVsmOjFffxLAAvfTG/uQ/V579JuCNn6LHPzu6Cfq
+ XSl2iGxo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCJtjQz/E+alTd3I7GNvVchS
+ 83dT5RXHaq1GwwtzEh6kPdIr/mSmwMiwzTcgjp9fXcsjdF/bijb2WaKXLmtNWy6VlJ+05RCrlCg
+ rAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-On Tue, Oct 01, 2024 at 02:37:46PM +0200, Dirk Behme wrote:
-> On 18.09.2024 00:27, Andreas Hindborg wrote:
-> > Hi!
-> > 
-> > This series adds support for using the `hrtimer` subsystem from Rust code.
-> > 
-> > I tried breaking up the code in some smaller patches, hopefully that will
-> > ease the review process a bit.
-> 
-> Just fyi, having all 14 patches applied I get [1] on the first (doctest)
-> Example from hrtimer.rs.
-> 
-> This is from lockdep:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/locking/lockdep.c#n4785
-> 
-> Having just a quick look I'm not sure what the root cause is. Maybe mutex in
-> interrupt context? Or a more subtle one?
+The lifetime of `PidNamespace` is bound to `Task` and `struct pid`.
 
-I think it's calling mutex inside an interrupt context as shown by the
-callstack:
+The `PidNamespace` of a `Task` doesn't ever change once the `Task` is
+alive. A `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE_NEWPID)`
+will not have an effect on the calling `Task`'s pid namespace. It will
+only effect the pid namespace of children created by the calling `Task`.
+This invariant guarantees that after having acquired a reference to a
+`Task`'s pid namespace it will remain unchanged.
 
-]  __mutex_lock+0xa0/0xa4
-] ...
-]  hrtimer_interrupt+0x1d4/0x2ac
+When a task has exited and been reaped `release_task()` will be called.
+This will set the `PidNamespace` of the task to `NULL`. So retrieving
+the `PidNamespace` of a task that is dead will return `NULL`. Note, that
+neither holding the RCU lock nor holding a referencing count to the
+`Task` will prevent `release_task()` being called.
 
-, it is because:
+In order to retrieve the `PidNamespace` of a `Task` the
+`task_active_pid_ns()` function can be used. There are two cases to
+consider:
 
-+//! struct ArcIntrusiveTimer {
-+//!     #[pin]
-+//!     timer: Timer<Self>,
-+//!     #[pin]
-+//!     flag: Mutex<bool>,
-+//!     #[pin]
-+//!     cond: CondVar,
-+//! }
+(1) retrieving the `PidNamespace` of the `current` task (2) retrieving
+the `PidNamespace` of a non-`current` task
 
-has a Mutex<bool>, which actually should be a SpinLockIrq [1]. Note that
-irq-off is needed for the lock, because otherwise we will hit a self
-deadlock due to interrupts:
+From system call context retrieving the `PidNamespace` for case (1) is
+always safe and requires neither RCU locking nor a reference count to be
+held. Retrieving the `PidNamespace` after `release_task()` for current
+will return `NULL` but no codepath like that is exposed to Rust.
 
-	spin_lock(&a);
-	> timer interrupt
-	  spin_lock(&a);
+Retrieving the `PidNamespace` from system call context for (2) requires
+RCU protection. Accessing `PidNamespace` outside of RCU protection
+requires a reference count that must've been acquired while holding the
+RCU lock. Note that accessing a non-`current` task means `NULL` can be
+returned as the non-`current` task could have already passed through
+`release_task()`.
 
-Also notice that the IrqDisabled<'_> token can be simply created by
-::new(), because irq contexts should guarantee interrupt disabled (i.e.
-we don't support nested interrupts*).
+To retrieve (1) the `current_pid_ns!()` macro should be used which
+ensure that the returned `PidNamespace` cannot outlive the calling
+scope. The associated `current_pid_ns()` function should not be called
+directly as it could be abused to created an unbounded lifetime for
+`PidNamespace`. The `current_pid_ns!()` macro allows Rust to handle the
+common case of accessing `current`'s `PidNamespace` without RCU
+protection and without having to acquire a reference count.
 
-[*]: I vaguely remember we still have some driver code for slow devices
-that will enable interrupts during an irq handler, but these are going
-to be gone, we shouldn't really care about this in Rust code.
+For (2) the `task_get_pid_ns()` method must be used. This will always
+acquire a reference on `PidNamespace` and will return an `Option` to
+force the caller to explicitly handle the case where `PidNamespace` is
+`None`, something that tends to be forgotten when doing the equivalent
+operation in `C`. Missing RCU primitives make it difficult to perform
+operations that are otherwise safe without holding a reference count as
+long as RCU protection is guaranteed. But it is not important currently.
+But we do want it in the future.
 
-Regards,
-Boqun
+Note for (2) the required RCU protection around calling
+`task_active_pid_ns()` synchronizes against putting the last reference
+of the associated `struct pid` of `task->thread_pid`. The `struct pid`
+stored in that field is used to retrieve the `PidNamespace` of the
+caller. When `release_task()` is called `task->thread_pid` will be
+`NULL`ed and `put_pid()` on said `struct pid` will be delayed in
+`free_pid()` via `call_rcu()` allowing everyone with an RCU protected
+access to the `struct pid` acquired from `task->thread_pid` to finish.
 
-[1]: https://lore.kernel.org/rust-for-linux/20240916213025.477225-1-lyude@redhat.com/
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+Changes in v3:
+- Use PidNamespace::from_ptr() in current_pid_ns().
+- Allow None aka NULL to be used with task_tgid_nr_ns().
+- Expand on SAFETY in PidNamespaceRef.
+- Link to v2: https://lore.kernel.org/r/20241001-brauner-rust-pid_namespace-v2-1-37eac8d93e75@kernel.org
+---
+ rust/helpers/helpers.c       |   1 +
+ rust/helpers/pid_namespace.c |  26 +++++++++
+ rust/kernel/lib.rs           |   1 +
+ rust/kernel/pid_namespace.rs |  68 ++++++++++++++++++++++++
+ rust/kernel/task.rs          | 122 ++++++++++++++++++++++++++++++++++++++++---
+ 5 files changed, 212 insertions(+), 6 deletions(-)
 
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 62022b18caf5ec17231fd0e7be1234592d1146e3..d553ad9361ce17950d505c3b372a568730020e2f 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -17,6 +17,7 @@
+ #include "kunit.c"
+ #include "mutex.c"
+ #include "page.c"
++#include "pid_namespace.c"
+ #include "rbtree.c"
+ #include "refcount.c"
+ #include "security.c"
+diff --git a/rust/helpers/pid_namespace.c b/rust/helpers/pid_namespace.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..f41482bdec9a7c4e84b81ec141027fbd65251230
+--- /dev/null
++++ b/rust/helpers/pid_namespace.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/pid_namespace.h>
++#include <linux/cleanup.h>
++
++struct pid_namespace *rust_helper_get_pid_ns(struct pid_namespace *ns)
++{
++	return get_pid_ns(ns);
++}
++
++void rust_helper_put_pid_ns(struct pid_namespace *ns)
++{
++	put_pid_ns(ns);
++}
++
++/* Get a reference on a task's pid namespace. */
++struct pid_namespace *rust_helper_task_get_pid_ns(struct task_struct *task)
++{
++	struct pid_namespace *pid_ns;
++
++	guard(rcu)();
++	pid_ns = task_active_pid_ns(task);
++	if (pid_ns)
++		get_pid_ns(pid_ns);
++	return pid_ns;
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ff7d88022c57ca232dc028066dfa062f3fc84d1c..0e78ec9d06e0199dfafc40988a2ae86cd5df949c 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -44,6 +44,7 @@
+ #[cfg(CONFIG_NET)]
+ pub mod net;
+ pub mod page;
++pub mod pid_namespace;
+ pub mod prelude;
+ pub mod print;
+ pub mod sizes;
+diff --git a/rust/kernel/pid_namespace.rs b/rust/kernel/pid_namespace.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..0e93808e4639b37dd77add5d79f64058dac7cb87
+--- /dev/null
++++ b/rust/kernel/pid_namespace.rs
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (c) 2024 Christian Brauner <brauner@kernel.org>
++
++//! Pid namespaces.
++//!
++//! C header: [`include/linux/pid_namespace.h`](srctree/include/linux/pid_namespace.h) and
++//! [`include/linux/pid.h`](srctree/include/linux/pid.h)
++
++use crate::{
++    bindings,
++    types::{AlwaysRefCounted, Opaque},
++};
++use core::ptr;
++
++/// Wraps the kernel's `struct pid_namespace`. Thread safe.
++///
++/// This structure represents the Rust abstraction for a C `struct pid_namespace`. This
++/// implementation abstracts the usage of an already existing C `struct pid_namespace` within Rust
++/// code that we get passed from the C side.
++#[repr(transparent)]
++pub struct PidNamespace {
++    inner: Opaque<bindings::pid_namespace>,
++}
++
++impl PidNamespace {
++    /// Returns a raw pointer to the inner C struct.
++    #[inline]
++    pub fn as_ptr(&self) -> *mut bindings::pid_namespace {
++        self.inner.get()
++    }
++
++    /// Creates a reference to a [`PidNamespace`] from a valid pointer.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
++    /// returned [`PidNamespace`] reference.
++    pub unsafe fn from_ptr<'a>(ptr: *const bindings::pid_namespace) -> &'a Self {
++        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
++        // `PidNamespace` type being transparent makes the cast ok.
++        unsafe { &*ptr.cast() }
++    }
++}
++
++// SAFETY: Instances of `PidNamespace` are always reference-counted.
++unsafe impl AlwaysRefCounted for PidNamespace {
++    #[inline]
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
++        unsafe { bindings::get_pid_ns(self.as_ptr()) };
++    }
++
++    #[inline]
++    unsafe fn dec_ref(obj: ptr::NonNull<PidNamespace>) {
++        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++        unsafe { bindings::put_pid_ns(obj.cast().as_ptr()) }
++    }
++}
++
++// SAFETY:
++// - `PidNamespace::dec_ref` can be called from any thread.
++// - It is okay to send ownership of `PidNamespace` across thread boundaries.
++unsafe impl Send for PidNamespace {}
++
++// SAFETY: It's OK to access `PidNamespace` through shared references from other threads because
++// we're either accessing properties that don't change or that are properly synchronised by C code.
++unsafe impl Sync for PidNamespace {}
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 1a36a9f193685393e7211793b6e6dd7576af8bfd..129097ed1e3a8070a8eb0d6a9e61be71791e524f 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -6,7 +6,8 @@
+ 
+ use crate::{
+     bindings,
+-    types::{NotThreadSafe, Opaque},
++    pid_namespace::PidNamespace,
++    types::{ARef, NotThreadSafe, Opaque},
+ };
+ use core::{
+     cmp::{Eq, PartialEq},
+@@ -36,6 +37,65 @@ macro_rules! current {
+     };
+ }
+ 
++/// Returns the currently running task's pid namespace.
++///
++/// The lifetime of `PidNamespace` is bound to `Task` and `struct pid`.
++///
++/// The `PidNamespace` of a `Task` doesn't ever change once the `Task` is alive. A
++/// `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE_NEWPID)` will not have an effect on the
++/// calling `Task`'s pid namespace. It will only effect the pid namespace of children created by
++/// the calling `Task`. This invariant guarantees that after having acquired a reference to a
++/// `Task`'s pid namespace it will remain unchanged.
++///
++/// When a task has exited and been reaped `release_task()` will be called. This will set the
++/// `PidNamespace` of the task to `NULL`. So retrieving the `PidNamespace` of a task that is dead
++/// will return `NULL`. Note, that neither holding the RCU lock nor holding a referencing count to
++/// the `Task` will prevent `release_task()` being called.
++///
++/// In order to retrieve the `PidNamespace` of a `Task` the `task_active_pid_ns()` function can be
++/// used. There are two cases to consider:
++///
++/// (1) retrieving the `PidNamespace` of the `current` task
++/// (2) retrieving the `PidNamespace` of a non-`current` task
++///
++/// From system call context retrieving the `PidNamespace` for case (1) is always safe and requires
++/// neither RCU locking nor a reference count to be held. Retrieving the `PidNamespace` after
++/// `release_task()` for current will return `NULL` but no codepath like that is exposed to Rust.
++///
++/// Retrieving the `PidNamespace` from system call context for (2) requires RCU protection.
++/// Accessing `PidNamespace` outside of RCU protection requires a reference count that must've been
++/// acquired while holding the RCU lock. Note that accessing a non-`current` task means `NULL` can
++/// be returned as the non-`current` task could have already passed through `release_task()`.
++///
++/// To retrieve (1) the `current_pid_ns!()` macro should be used which ensure that the returned
++/// `PidNamespace` cannot outlive the calling scope. The associated `current_pid_ns()` function
++/// should not be called directly as it could be abused to created an unbounded lifetime for
++/// `PidNamespace`. The `current_pid_ns!()` macro allows Rust to handle the common case of
++/// accessing `current`'s `PidNamespace` without RCU protection and without having to acquire a
++/// reference count.
++///
++/// For (2) the `task_get_pid_ns()` method must be used. This will always acquire a reference on
++/// `PidNamespace` and will return an `Option` to force the caller to explicitly handle the case
++/// where `PidNamespace` is `None`, something that tends to be forgotten when doing the equivalent
++/// operation in `C`. Missing RCU primitives make it difficult to perform operations that are
++/// otherwise safe without holding a reference count as long as RCU protection is guaranteed. But
++/// it is not important currently. But we do want it in the future.
++///
++/// Note for (2) the required RCU protection around calling `task_active_pid_ns()` synchronizes
++/// against putting the last reference of the associated `struct pid` of `task->thread_pid`.
++/// The `struct pid` stored in that field is used to retrieve the `PidNamespace` of the caller.
++/// When `release_task()` is called `task->thread_pid` will be `NULL`ed and `put_pid()` on said
++/// `struct pid` will be delayed in `free_pid()` via `call_rcu()` allowing everyone with an RCU
++/// protected access to the `struct pid` acquired from `task->thread_pid` to finish.
++#[macro_export]
++macro_rules! current_pid_ns {
++    () => {
++        // SAFETY: Deref + addr-of below create a temporary `PidNamespaceRef` that cannot outlive
++        // the caller.
++        unsafe { &*$crate::task::Task::current_pid_ns() }
++    };
++}
++
+ /// Wraps the kernel's `struct task_struct`.
+ ///
+ /// # Invariants
+@@ -145,6 +205,42 @@ fn deref(&self) -> &Self::Target {
+         }
+     }
+ 
++    /// Returns a PidNamespace reference for the currently executing task's/thread's pid namespace.
++    ///
++    /// This function can be used to create an unbounded lifetime by e.g., storing the returned
++    /// PidNamespace in a global variable which would be a bug. So the recommended way to get the
++    /// current task's/thread's pid namespace is to use the [`current_pid_ns`] macro because it is
++    /// safe.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that the returned object doesn't outlive the current task/thread.
++    pub unsafe fn current_pid_ns() -> impl Deref<Target = PidNamespace> {
++        struct PidNamespaceRef<'a> {
++            task: &'a PidNamespace,
++            _not_send: NotThreadSafe,
++        }
++
++        impl Deref for PidNamespaceRef<'_> {
++            type Target = PidNamespace;
++
++            fn deref(&self) -> &Self::Target {
++                self.task
++            }
++        }
++
++        let pidns = unsafe { bindings::task_active_pid_ns(Task::current_raw()) };
++        PidNamespaceRef {
++            // SAFETY: If the current thread is still running, the current task and its associated
++            // pid namespace are valid. `PidNamespaceRef` is not `Send`, so we know it cannot be
++            // transferred to another thread (where it could potentially outlive the current
++            // `Task`). The caller needs to ensure that the PidNamespaceRef doesn't outlive the
++            // current task/thread.
++            task: unsafe { &*PidNamespace::from_ptr(pidns) },
++            _not_send: NotThreadSafe,
++        }
++    }
++
+     /// Returns the group leader of the given task.
+     pub fn group_leader(&self) -> &Task {
+         // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
+@@ -182,11 +278,25 @@ pub fn signal_pending(&self) -> bool {
+         unsafe { bindings::signal_pending(self.0.get()) != 0 }
+     }
+ 
+-    /// Returns the given task's pid in the current pid namespace.
+-    pub fn pid_in_current_ns(&self) -> Pid {
+-        // SAFETY: We know that `self.0.get()` is valid by the type invariant, and passing a null
+-        // pointer as the namespace is correct for using the current namespace.
+-        unsafe { bindings::task_tgid_nr_ns(self.0.get(), ptr::null_mut()) }
++    /// Returns task's pid namespace with elevated reference count
++    pub fn task_get_pid_ns(&self) -> Option<ARef<PidNamespace>> {
++        let ptr = unsafe { bindings::task_get_pid_ns(self.0.get()) };
++        if ptr.is_null() {
++            None
++        } else {
++            // SAFETY: `ptr` is valid by the safety requirements of this function. And we own a
++            // reference count via `task_get_pid_ns()`.
++            // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::pid_namespace`.
++            Some(unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr.cast::<PidNamespace>())) })
++        }
++    }
++
++    /// Returns the given task's pid in the provided pid namespace.
++    pub fn task_tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
++        match pidns {
++            Some(pidns) => unsafe { bindings::task_tgid_nr_ns(self.0.get(), pidns.as_ptr()) },
++            None => unsafe { bindings::task_tgid_nr_ns(self.0.get(), ptr::null_mut()) },
++        }
+     }
+ 
+     /// Wakes up the task.
 
-> 
-> Best regards
-> 
-> Dirk
-> 
-> [1]
-> 
->     # rust_doctest_kernel_hrtimer_rs_0.location: rust/kernel/hrtimer.rs:10
-> rust_doctests_kernel: Timer called
-> 
-> =============================
-> [ BUG: Invalid wait context ]
-> 6.11.0-rc1-arm64 #28 Tainted: G                 N
-> -----------------------------
-> swapper/5/0 is trying to lock:
-> ffff0004409ab900 (rust/doctests_kernel_generated.rs:1238){+.+.}-{3:3}, at:
-> rust_helper_mutex_lock+0x10/0x18
-> other info that might help us debug this:
-> context-{2:2}
-> no locks held by swapper/5/0.
-> stack backtrace:
-> CPU: 5 UID: 0 PID: 0 Comm: swapper/5 Tainted: G N 6.11.0-rc1-arm64 #28
-> Tainted: [N]=TEST
-> Hardware name: ARM64 based board (DT)
-> Call trace:
->  $x.11+0x98/0xb4
->  show_stack+0x14/0x1c
->  $x.3+0x3c/0x94
->  dump_stack+0x14/0x1c
->  $x.205+0x538/0x594
->  $x.179+0xd0/0x18c
->  __mutex_lock+0xa0/0xa4
->  mutex_lock_nested+0x20/0x28
->  rust_helper_mutex_lock+0x10/0x18
-> 
-> _RNvXs_NvNvNvCslTRHJHclVGW_25doctests_kernel_generated32rust_doctest_kernel_hrtimer_rs_04main41__doctest_main_rust_kernel_hrtimer_rs_10_0NtB4_17ArcIntrusiveTimerNtNtCsclYTRz49wqv_6kernel7hrtimer13TimerCallback3run+0x5c/0xd0
-> 
-> _RNvXs1_NtNtCsclYTRz49wqv_6kernel7hrtimer3arcINtNtNtB9_4sync3arc3ArcNtNvNvNvCslTRHJHclVGW_25doctests_kernel_generated32rust_doctest_kernel_hrtimer_rs_04main41__doctest_main_rust_kernel_hrtimer_rs_10_017ArcIntrusiveTimerENtB7_16RawTimerCallback3runB1b_+0x20/0x2c
->  $x.90+0x64/0x70
->  hrtimer_interrupt+0x1d4/0x2ac
->  arch_timer_handler_phys+0x34/0x40
->  $x.62+0x50/0x54
->  generic_handle_domain_irq+0x28/0x40
->  $x.154+0x58/0x6c
->  $x.471+0x10/0x20
->  el1_interrupt+0x70/0x94
->  el1h_64_irq_handler+0x14/0x1c
->  el1h_64_irq+0x64/0x68
->  arch_local_irq_enable+0x4/0x8
->  cpuidle_enter+0x34/0x48
->  $x.37+0x58/0xe4
->  cpu_startup_entry+0x30/0x34
->  $x.2+0xf8/0x118
->  $x.13+0x0/0x4
-> rust_doctests_kernel: Timer called
-> rust_doctests_kernel: Timer called
-> rust_doctests_kernel: Timer called
-> rust_doctests_kernel: Timer called
-> rust_doctests_kernel: Counted to 5
->     ok 22 rust_doctest_kernel_hrtimer_rs_0
->     # rust_doctest_kernel_hrtimer_rs_1.location: rust/kernel/hrtimer.rs:137
-> rust_doctests_kernel: Hello from the future
-> rust_doctests_kernel: Flag raised
->     ok 23 rust_doctest_kernel_hrtimer_rs_1
->     # rust_doctest_kernel_hrtimer_rs_2.location: rust/kernel/hrtimer.rs:76
-> rust_doctests_kernel: Timer called
-> rust_doctests_kernel: Flag raised
->     ok 24 rust_doctest_kernel_hrtimer_rs_2
+---
+base-commit: e9980e40804730de33c1563d9ac74d5b51591ec0
+change-id: 20241001-brauner-rust-pid_namespace-52b0c92c8359
+
