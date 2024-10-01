@@ -1,89 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D191C1AB4;
-	Tue,  1 Oct 2024 12:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A023156C6A;
+	Tue,  1 Oct 2024 12:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727784623; cv=none; b=SWA2QlTT4+1bCQUQEqE0696RrALPe+s/8mO2aito+ZoAwFhRohGTJmMz/WxHjmA8te8KVsjiqHVQEdUyzelOiKqcqfpnk8bCohSdBnag0lzL+2i0ZaQ13off3Ii4jIz9dijUICvYOiw6EScYfPU1YViw4CiCiLpn5jnov2ELzws=
+	t=1727785905; cv=none; b=NbWcbr/aAuILps2hGQLYUsTQZrX0ihskhL62o+Z47Bb3I8Dja7MfEeIUhbpP1YqQKazQrbrqYVkpMWAkw4FrZ025Sbl3/0UQ+cmys2RB5F7AQYRvWHSs1/T7DpbeSE0I6+pGyGwwyi53yEsNW3ZezAALl2rvPxcRCe5wtLxQ92w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727784623; c=relaxed/simple;
-	bh=HmcRRz220kJ+f+KnRKNjQhGIjpYQL9xBPqXPO2yuDsY=;
+	s=arc-20240116; t=1727785905; c=relaxed/simple;
+	bh=/51c9MhiWej11bMjED/Rsmf6YhHHO3ghVNUbq20uTvo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ajv+M5VCnh/HLqTCPnfaDZzpYE7qQLtwTdvrKHavttqaNe3HrZTauhzBrxj9uNx9N5nqCBLD+IZj24NO/RZH+WkvdV0p1UUrlhgH3tX4sXGYp/4lbSj8sLbW1Q/Q9LJdW7ADTFpXsnKfOf6hcow9yP1PHR8DLjZFWHbpDzRVyBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFKu+XGJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pjXF6sy+dkaJBMpHqHwvjfPtxou6o6I5nLaPxx/Z5SmIKXlwBT/FwovkoNNCaFH+85C02S1X9UhKbsqI11w+jAe2SFo7vKoxt/trplGZne7MXvRgBRQVYWb326vK8PzlKXiAzN8NJMhZDJYOue+TCBt/SOWW0pCGcfpXLriMQCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MJdWj5h7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFKu+XGJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149E8C4CEC6;
-	Tue,  1 Oct 2024 12:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727784623;
-	bh=HmcRRz220kJ+f+KnRKNjQhGIjpYQL9xBPqXPO2yuDsY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eFKu+XGJIobiehsur0fjfddM04XKMWDZRNAZgIG9p4k+flZF58YiaZmb3FdHZVXwD
-	 BaryciJLafFn/HPa6iAHZQKMR7NahSkOs4gSeZhs7xQIsaWCeR+aLC7v3F8cPUCgpW
-	 BOyGfMf0XhMcYhvOo4LIceqsMe5GvP/M5UwVrKAc=
-Date: Tue, 1 Oct 2024 14:10:20 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Guilherme =?iso-8859-1?Q?Gi=E1como_Sim=F5es?= <trintaeoitogc@gmail.com>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org,
-	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: device: change the from_raw() function
-Message-ID: <2024100159-bagged-phrase-8d5a@gregkh>
-References: <20240930194637.98260-1-trintaeoitogc@gmail.com>
- <2024100107-stipend-lid-1beb@gregkh>
- <CAM_RzfYvBS_kNqw0d7z1CRf5XL2LWc0bNm3YCg2asPffi4fMZQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MJdWj5h7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sJxUfQiQyjfwCaDUOeV+iM6wEahc8rD83EY2RTnC5Xg=; b=MJdWj5h7dh/SV6Bj03cW1dyK4r
+	nzgKzuQb53J/WeqP1Fj2OYF3KyDXKhnMqyBOVy3TByQvwFJxHlsC6UjHTwGNP58g+BwLwR7xIJE46
+	e08Ylin7RA94Bja0F5BkWkEtcRS9OHoixZysMmx3zjsk0rdv2EZ3fvX2yoALQ9+urn/E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1svc2V-008j6u-Mo; Tue, 01 Oct 2024 14:31:39 +0200
+Date: Tue, 1 Oct 2024 14:31:39 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+Message-ID: <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+ <20241001112512.4861-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM_RzfYvBS_kNqw0d7z1CRf5XL2LWc0bNm3YCg2asPffi4fMZQ@mail.gmail.com>
+In-Reply-To: <20241001112512.4861-2-fujita.tomonori@gmail.com>
 
-On Tue, Oct 01, 2024 at 08:18:43AM -0300, Guilherme Giácomo Simões wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> >
-> > Hi,
-> >
-> > This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-> > a patch that has triggered this response.  He used to manually respond
-> > to these common problems, but in order to save his sanity (he kept
-> > writing the same thing over and over, yet to different people), I was
-> > created.  Hopefully you will not take offence and will fix the problem
-> > in your patch and resubmit it so that it can be accepted into the Linux
-> > kernel tree.
-> >
-> > You are receiving this message because of the following common error(s)
-> > as indicated below:
-> >
-> > - This looks like a new version of a previously submitted patch, but you
-> >   did not list below the --- line any changes from the previous version.
-> >   Please read the section entitled "The canonical patch format" in the
-> >   kernel file, Documentation/process/submitting-patches.rst for what
-> >   needs to be done here to properly describe this.
-> >
-> > If you wish to discuss this problem further, or you have questions about
-> > how to resolve this issue, please feel free to respond to this email and
-> > Greg will reply once he has dug out from the pending patches received
-> > from other developers.
-> >
-> > thanks,
-> >
-> > greg k-h's patch email bot
+On Tue, Oct 01, 2024 at 11:25:11AM +0000, FUJITA Tomonori wrote:
+> Add an abstraction for sleep functions in `include/linux/delay.h` for
+> dealing with hardware delays.
 > 
-> How I created a new patch, and not another version of previous patch, I really
-> don't incremental changes after --- line
+> The kernel supports several `sleep` functions for handles various
 
-You did make a new version of the previous patches, please document it
-as such.
+s/for/which
 
-thanks,
+> lengths of delay. This adds fsleep helper function, internally calls
+> an appropriate sleep function.
+> 
+> This is used by QT2025 PHY driver to wait until a PHY becomes ready.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/helpers/delay.c            |  8 ++++++++
+>  rust/helpers/helpers.c          |  1 +
+>  rust/kernel/delay.rs            | 18 ++++++++++++++++++
+>  rust/kernel/lib.rs              |  1 +
+>  5 files changed, 29 insertions(+)
+>  create mode 100644 rust/helpers/delay.c
+>  create mode 100644 rust/kernel/delay.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index ae82e9c941af..29a2f59294ba 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -10,6 +10,7 @@
+>  #include <linux/blk-mq.h>
+>  #include <linux/blk_types.h>
+>  #include <linux/blkdev.h>
+> +#include <linux/delay.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/firmware.h>
+> diff --git a/rust/helpers/delay.c b/rust/helpers/delay.c
+> new file mode 100644
+> index 000000000000..7ae64ad8141d
+> --- /dev/null
+> +++ b/rust/helpers/delay.c
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/delay.h>
+> +
+> +void rust_helper_fsleep(unsigned long usecs)
+> +{
+> +	fsleep(usecs);
+> +}
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 30f40149f3a9..279ea662ee3b 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -12,6 +12,7 @@
+>  #include "build_assert.c"
+>  #include "build_bug.c"
+>  #include "err.c"
+> +#include "delay.c"
+>  #include "kunit.c"
+>  #include "mutex.c"
+>  #include "page.c"
+> diff --git a/rust/kernel/delay.rs b/rust/kernel/delay.rs
+> new file mode 100644
+> index 000000000000..79f51a9608b5
+> --- /dev/null
+> +++ b/rust/kernel/delay.rs
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Delay and sleep routines.
+> +//!
+> +//! C headers: [`include/linux/delay.h`](srctree/include/linux/delay.h).
+> +
+> +use core::{ffi::c_ulong, time::Duration};
+> +
+> +/// Sleeps for a given duration.
+> +///
+> +/// Equivalent to the kernel's [`fsleep`] function, internally calls `udelay`,
+> +/// `usleep_range`, or `msleep`.
 
-greg k-h
+Is it possible to cross reference
+Documentation/timers/timers-howto.rst ?  fsleep() points to it, so it
+would e good if the Rust version also did.
+
+I would also document the units for the parameter. Is it picoseconds
+or centuries?
+
+	Andrew
