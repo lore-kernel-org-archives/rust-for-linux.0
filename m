@@ -1,88 +1,83 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4F61C7B73;
-	Tue,  1 Oct 2024 15:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00F81CB327
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 16:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727797983; cv=none; b=EkMQlEzu0hFVlLonTw7UzJqfX51XFEOlBrkIWM5EaAG2ZHunwlht2yWS734U89/WDgTkwXmvDeY7rke+rHiKu3n0QRs45fW33FeZRy7PIoSFg/JBpWqDmPD6jz0N+BiH1jyiy914Ek+xq7qkRVIBo9xxVkaNQvXs3Hfrv4kEMxg=
+	t=1727798510; cv=none; b=YH52Ir9/WG4spOmxHcJyre9fS/sh0xVjW4xHpvAZxEQ9/hjlBflkXc42pyzVk2ui24Kwivs6nY7sITn0L4wOqUafEL8XSUzbmrso5An1IIKs+qJ6woOKyfvcUkBLI2GlrMxOtWtMfbIIknSPbCdK54fDwFIEZwK+9Pt6ORBBNl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727797983; c=relaxed/simple;
-	bh=I1EN8WM6WlNYcwlYbJtuQMRVRuc6yhexbmYZ7lgHd3Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rTX440MSTLiSlCPT5mfDP1+lBe9T+9SmJjjEzI/AYKt+PJ7jbLEeOvuzwoyVMsKQHLDwoQlhGB3TjVv3jQgwc5ZmkIL3ZEawzTeW4LCqIF+I74Y1JEfwMqy39kzkbJWo7LSGRqD2PVFdiEUNuS/UGZWc065QlLCDonj8n6Ij/Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJW2JKHb; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727798510; c=relaxed/simple;
+	bh=uJa5ldSKSn8A5jd3/z+52anM1vVnwwopqOCR9pv8o10=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YoyM0BsRmHAZW3SMWzuKQOFRW6OYrvDlQJnTocFne19ewjgB3Sk7fcDr/t77nIHXq8paft1hnrqHA3meSGLXrl37eLczIEXekoyTC/W4oKnuTJIzdQIyqXJ4rJG01FvjUP0O/rDXFlHLdb97vK30cwgMxZDwWblt1FGHzz3gM5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EGcKYLok; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJW2JKHb"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71790698b22so810777b3a.1;
-        Tue, 01 Oct 2024 08:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727797981; x=1728402781; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I1EN8WM6WlNYcwlYbJtuQMRVRuc6yhexbmYZ7lgHd3Q=;
-        b=KJW2JKHbS2LAZkfSWiVv5MkdjqDb0rHB5c00MBH8v7GF7xlNzzRsFAM3i0ENNYNTAy
-         0tR0eO5AGKw4TrYlFEjEmEoQd4jpMUfxSb2CL1T4S8gXFAUZrEkMNbaEGoqtPJUTY9tW
-         DYhiXIMVMMEvqvWKlHDeD3E5jqGVpCFsILDFTx1DJVF23EGaIsrjMV0qzfc50YTc/4oM
-         J0shW1x4f8/vTqvWxqUxGEN8qJY2dbo8Q4GfE/MERw2odIEqW7X8THgFI2ceX98wvOkv
-         OzDK9vcjEPcNU27APf+fbXlMZuoMLzRqQhXdaWErOg9U7hflnLyQ4/+IqW48DjQTrUx1
-         dV5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727797981; x=1728402781;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I1EN8WM6WlNYcwlYbJtuQMRVRuc6yhexbmYZ7lgHd3Q=;
-        b=S/YtC0OZ96BRwwaElyZ5m6TBze7+kYMHyY+wzuoanH8HuEceRqfUKuNIZ7CZ4l4LnQ
-         lXY9xILItcGzT7yiyCdPfn9R1QwmKxZVRBfVsCUQjNB2jp+uFoD8WnqegtP6Wi6o4QOC
-         OHZ8VVMHandHZEIjUfNKU8bmEMOpEvJZylfjkP+cZhYB7H6s6FU/zdrGiZ9XfAMGy7Kn
-         QKDropGBJodqMiivQDusJ7vXn61Fw+gGZJT04G0MZKag+poRvixlnO8vk3l/2i+SvGsX
-         8w0xdt+n+so+gD15SprT9M+I5tJ7TI/soyBEEr1+0ubfRwMgjBfwbOIlKyGm8IovO8Yo
-         cbzA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7wU5ZNvJgprN4OmqnounaR0GKbS0qwQ7CltQMicIwVxmxw8RTfH6GvwP9APp4pPNxerGveKladdcreHvtXw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0Dggp2CkBdu0lPiJFVDgv4EPNIX08Ajdq6lHEn6jhOXeS6ek5
-	qDB04kO0GDIYx1sxVsQCr/ULYLRFKF6UxckvOvFcY7T53zxKU8dT9i7onMz0ciFZCiuK06Sxfvz
-	kpl2//kme3/ysJZdvujXKLdDUhgw=
-X-Google-Smtp-Source: AGHT+IGuVsu+bost0XG2Diz5M1G+dBUjtnnh6zWkPgIrncfRleLFDLGEITo3yTPzeleQVyk+EWXWXe6wcofXaEUhIfk=
-X-Received: by 2002:a05:6a00:138b:b0:714:2051:89ea with SMTP id
- d2e1a72fcca58-71dc5c43365mr102145b3a.1.1727797981013; Tue, 01 Oct 2024
- 08:53:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EGcKYLok"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=ka4if5rcjngqlcyhpcjdrlxdfe.protonmail; t=1727798499; x=1728057699;
+	bh=JvbQ64Fa0JL4tjTIFclw+9klj6/6SNFZBM5WkEOqjcE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=EGcKYLokrrrqukqw3XH29gp9kz9pFbkzjIb0Al7eLmIaj6AbsVQ5slQlhxlAChvKI
+	 tAzM4pOPa3sMKktyDnuMA0ubiMjOwMBwCKBzqRf6tBlnlfUlezFBvZzG1EBAVI04q9
+	 +fJURlGGISJwzESyQGxc6Mv0yIGgIacFh6ptM4SWaMnM+51U+T5D3zXxF5dSeGdb7o
+	 1sxnGWbTt6si64D24kYRsggur9wblQ+e55Yk4ucC/Abijd3J6gFtOiY33QAswgfXoy
+	 ZiyqG9EZhQ+z5cT5LVnr2Q7ZEo9mG/3kl3AxZApj0WErSk+ICRM1HKv5+vvxBtmyXJ
+	 cbNHfv53fn/cA==
+Date: Tue, 01 Oct 2024 16:01:32 +0000
+To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v8 05/29] rust: alloc: make `allocator` module public
+Message-ID: <c1eccee8-755a-4305-bc7e-7d34670d04a5@proton.me>
+In-Reply-To: <20241001150008.183102-6-dakr@kernel.org>
+References: <20241001150008.183102-1-dakr@kernel.org> <20241001150008.183102-6-dakr@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d66eff84ffab00af75db2c45459f814c1981c5e6
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926121404.242092-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20240926121404.242092-1-fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Oct 2024 17:52:48 +0200
-Message-ID: <CANiq72nLzigkeGRw+cuw3t2v827u0AW8DD3Kw_JECi3p_+UTqQ@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: phy: qt2025: Fix warning: unused import DeviceId
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	tmgross@umich.edu, aliceryhl@google.com, hkallweit1@gmail.com, 
-	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 2:16=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Fix the following warning when the driver is compiled as built-in:
+On 01.10.24 16:59, Danilo Krummrich wrote:
+> Subsequent patches implement allocators such as `Kmalloc`, `Vmalloc`,
+> `KVmalloc`; we need them to be available outside of the kernel crate as
+> well.
+>=20
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Do you mind if I pick this up so that we keep WERROR builds
-error-free? (I am sending a `rust-fixes` PR in a day or two to Linus).
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Or is netdev going to pick it soon? If so:
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
+---
 Cheers,
-Miguel
+Benno
+
+> ---
+>  rust/kernel/alloc.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index da49c5306431..91b2a26faf3d 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -4,7 +4,7 @@
+>=20
+>  #[cfg(not(test))]
+>  #[cfg(not(testlib))]
+> -mod allocator;
+> +pub mod allocator;
+>  pub mod box_ext;
+>  pub mod vec_ext;
+>=20
+> --
+> 2.46.1
+>=20
+
