@@ -1,94 +1,102 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC7118CC0B;
-	Tue,  1 Oct 2024 17:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCEE1C6F7B;
+	Tue,  1 Oct 2024 17:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727802486; cv=none; b=cQDsy7YkinLeycYdZgjMmm1c6ICwI1RHmHB/mBTUB3JaCcjDJjfIBZxpGEVJJ+bccyBBV/EeGmKcEnRUTcYv5Rt/NwE8BlAn+GzuuG8PLdXUHoQCk+r2PWnhrOX3PcwwX/E4juNEzByLMP5t54FPEPhpcHKQUPhPt2pCwtPBFEY=
+	t=1727802724; cv=none; b=qp+Vx/KriM99jRT53oyDqcfpM9jnXMmegD+VJdrJWlcWkDaZg+diixtQII24qcnWJ4BzIG6XzH1EoMRfaWP6tKw46HotfoUiqBEEIvXPd+3j6dAQKyuNVbyK3YVWDk6rSCxgu0uY7mssY/NKi4BE6L4jsUyyziEED8WLf13aQWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727802486; c=relaxed/simple;
-	bh=vwbp+UPz/hdu0MRIIMeSyF1qi+KBmELnI6g4Wa93d9Y=;
+	s=arc-20240116; t=1727802724; c=relaxed/simple;
+	bh=sC39jjPhAHkzIyKoYVlvv9pTOoSBbDLMVZDLzFNZwoo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jAobJWCYUyE7nZHntngL8MzHyGPDr/Qdwd2PPl8BY+VJeanroFvzjQiztGR9OuMVWrvnC/nCfYKOSj6yQ2AfjUWp3rCCU8hiPd1yLYY4vLLeAHXeugp4Hlfp5AybwrfKFulODOe75RNu7QquoUkGk0PyeAUaq9BKfTCWtesVJ2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X421+JXo; arc=none smtp.client-ip=209.85.210.170
+	 To:Cc:Content-Type; b=qrTclCmzEOFRlQdkzHaa828osUBfkZgnpUwU/Ctu7vD42G41thDcIYTzGre5swy57N+hbof2Kx3gXHyiYytx96/fhLYZvVlB0rD2uzR/eMu+HVClVFf77HRksw2BaTNzvsTav8T0Qf1JguAJNPJZ6gD/jCrswaTddNC4yrZ3xyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yko3GG+I; arc=none smtp.client-ip=209.85.208.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X421+JXo"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-71c6ea6d276so97518b3a.3;
-        Tue, 01 Oct 2024 10:08:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yko3GG+I"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fad48f6f9aso883541fa.2;
+        Tue, 01 Oct 2024 10:12:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727802485; x=1728407285; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727802721; x=1728407521; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vwbp+UPz/hdu0MRIIMeSyF1qi+KBmELnI6g4Wa93d9Y=;
-        b=X421+JXoZqR/yqzoij2AVMYNGnixGVAW2VkbD2TqgMzAKxY/YmN6LEW5siFnDW/Fcx
-         z0NnghgDG57rVzuo+OS/C4wwbHPyEbgURlWzSPWmUtq2F6gSxEpBztrUChbrrBuUrzMu
-         irybzNZX0otnxUz2ktWnwKLZN56CIVu4T+mXFT7LiNcNwdd66gbZM48CQbRrVp+omAvG
-         jiLWiXgXodmODoeDMchPhMjrGzfbrljgvcmfTSZ7KBHFXf25fE3biVtkMQLLdaM7ezFu
-         gc0IaMzjKIDhFQaXeCnNaQtTDh4VxQa9RcJgaLRFiXDKhCfbE3PJXLDT7SLO4A1Gc9sc
-         nJKQ==
+        bh=sC39jjPhAHkzIyKoYVlvv9pTOoSBbDLMVZDLzFNZwoo=;
+        b=Yko3GG+IqyIZ83+IpsdIgpuGT4EGGf1V9mCoctLzKxvtx0wKjHL6r9fZPxYaDxdbvS
+         qGHpy/E+09DlTu3Y9wAqlWaKJQDvwn79zwrPTX1sxjDqDAzQbyEE8S6/pxguvsRcSGUa
+         TvLDoR9hLt9FAvAlnczP3LgRrpB9w88ESUy+6974qWMTppCnxDpJvAJAvYsXlMssDCQD
+         80B9fvcEdkPXCGaA7enhn+cZDg5SSKc/YoSaEjd6dULcSS2jifHcRJSdXoH9xARMdeEM
+         tNX+fnYtGkXFgeSUUevnzlWim/ZmiX3G2YAYDAKi0ua7og2wiQI+9FIbg1C6gWNWsBDA
+         a3Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727802485; x=1728407285;
+        d=1e100.net; s=20230601; t=1727802721; x=1728407521;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vwbp+UPz/hdu0MRIIMeSyF1qi+KBmELnI6g4Wa93d9Y=;
-        b=TtH6MYb1Bt8DpQ00BxIN7vRdLUqww0ZW0XfCpYpIom4w0m8r4TCT/hE6gq9oPPbl8G
-         ic+P5kbEJHcs3Z9ugWZgZ4HOThdV9q1L2CnUH+A5jBSsSfZdEmPQ6nwFaRvI5EiFjFGE
-         bQTEGjhVF46ZI1JVrA7PGlgrvZa5rgj5NoTJXpdEF65ZsySNoAX/wC95Uq8wWkYH5SYo
-         7H/FM/b2tUMnKXAQHRN5+oeChrSNLoLalAGY/hK/GVdwmJ+05KEHheoUpgKe3H6Hs7fE
-         24Hrw4IB2yZUt2+qAD36pwzgdqAqHNoSbxdfkDx2r9w37qzxiQHmoraVuqRFqRUGS5XO
-         6oPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYsJ4I1xoG23L26IO4Z7tUzHK8Agufz1ggmewEKI7dMo9NXup4YYyxNBrKttndu5ENHWLag9Zzo7VCQyJC5Js=@vger.kernel.org, AJvYcCWk1wWZwBodf89iE7dEkbSZKOnV16pMJGsrKSUTcH+0Bm+Hrkh9DzEGNqxBKBP/U1wgVZaiPawC4NMhvTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycGrIL/CK04qSffyUZ1JtnAYdHneB6GPfJfGAhwSx333gUI54K
-	EfcS0QK8ndQSfiH+UZFJEgUfgN8U8zkpJvTR3sdUcx+bPik53UTtZRJsxPkpiVKRkmLRYwb5uWJ
-	kWUEASSRW87+KEKqw+4k7EZ5hHRw=
-X-Google-Smtp-Source: AGHT+IHXiDWrZCIYTtFJIHnFKlVdyYsAIHCO1/HxJUKXpCHOIjUjLzYXJy2WFf/Ckl1G/UBzfmYHkIFgZAMA36G3DXY=
-X-Received: by 2002:a05:6a00:2e9f:b0:710:51cd:ed43 with SMTP id
- d2e1a72fcca58-71dc5c49741mr260314b3a.1.1727802484673; Tue, 01 Oct 2024
- 10:08:04 -0700 (PDT)
+        bh=sC39jjPhAHkzIyKoYVlvv9pTOoSBbDLMVZDLzFNZwoo=;
+        b=Nh/PTHezRl40zQ3U6vmv8IMItbb2MSLXMqW1hy8AHJg75y98821bQ9NWAydMrJPTqz
+         9XtuluQqrXcbXaMnAM7vQSC+AGqjdyzrkgdjWVpa6dvzo5+KscU9THg0wDu2dDHHG425
+         DGgemHS44i049RIt00yitnILFvd+BT8Ze0ZiZdIQYHEd/j0/pVDhfTeXXWtIdHsfnlx9
+         cAOi/FYZY4EDRzJWgYGjI7p4EDsYOj1qJrnlPF4955n4kt0svxQ3xPDhnGSZ8hBMnedl
+         ik5y62DPmQewB3DBEasD63U3nTRKFHD5lVfcDzDxoaVVX9dzQi6zywCF/yoCDkHjG6/N
+         Ij1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUyaV+tXuRtDs4nsjbL5chHR2nfVAs5LfZ3uomZEwfUI8XluT3KSkyIM1jCumyM71WAUNrfGJILx8EKP6Q=@vger.kernel.org, AJvYcCXKAgKB5Xm8xdSO2x7brlBm4/judocRVz32dgjS50p5kY0+RK7rOaUn/ugMnsOx6cx9QFuJhf4OC1v+TrLwIvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykLhbjfvGfyGDOSkSQdMsMXmfesc2nT8xvY71iUl/10p9piVm1
+	msOE+hdnOsMOQ4DWohjBJL2eQTR9X4CLDwLtJpLShNE2CF4wXZNICVExR1FRScSy+Cafx2jdI/P
+	dvOMrWpNZY8ihO3UDRqWWSWknc98=
+X-Google-Smtp-Source: AGHT+IHKHRku2EkBhzAUSqu18scL+pCkpv1wbY1i5srIBY1ciu173sLzEq6cGISO9u9P0jB3frWmDXmFZMHcBbV3S2w=
+X-Received: by 2002:a05:651c:501:b0:2fa:c4b0:a0eb with SMTP id
+ 38308e7fff4ca-2fae1020a1fmr1101491fa.5.1727802720878; Tue, 01 Oct 2024
+ 10:12:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-17-ojeda@kernel.org>
- <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
- <CANiq72ktnMSfMfGEhN1kO0F+C5O_KsUY1y_eb7ZL+qzzSkg9bw@mail.gmail.com> <22A86237-4168-4D4A-8782-7A65AFAEC44C@gmail.com>
-In-Reply-To: <22A86237-4168-4D4A-8782-7A65AFAEC44C@gmail.com>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-19-ojeda@kernel.org>
+ <CALNs47vPzH7CSjRh=jW0xNTh9=oajUs4SAkTE2OHLd5M2e065A@mail.gmail.com>
+In-Reply-To: <CALNs47vPzH7CSjRh=jW0xNTh9=oajUs4SAkTE2OHLd5M2e065A@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Oct 2024 19:07:52 +0200
-Message-ID: <CANiq72=MKW-Kt50CsV1DNw3Dj45fXucFzhB0uyNJyNq04_QbfA@mail.gmail.com>
-Subject: Re: [PATCH 16/19] Documentation: rust: add coding guidelines on lints
-To: comex <comexk@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 1 Oct 2024 19:11:45 +0200
+Message-ID: <CANiq72k21-kke0XFNf0iQ5gpECjAtEPg00tm-JwpNjff34n5+g@mail.gmail.com>
+Subject: Re: [PATCH 18/19] Documentation: rust: discuss `#[expect(...)]` in
+ the guidelines
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 8, 2024 at 12:22=E2=80=AFAM comex <comexk@gmail.com> wrote:
+On Sun, Sep 29, 2024 at 7:11=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
 >
-> You can always hide the pragmas behind a macro:
->
-> https://gcc.godbolt.org/z/WTEaYWW8c
->
-> It=E2=80=99s not perfect, because warning names sometimes differ between =
-GCC and Clang, among other reasons.
+> Would it be good to mention that a reason can be specified with
+> `reason =3D "..."`? I don't think we use this anywhere yet.
 
-That could be an interesting option for some projects, but yeah, as
-you say, I think it is far from ideal. It breaks `clang-format`,
-wrapping functions/structs/... would look weird, and generally the
-syntax gets on the way of the "normal" code (so even for statements
-one would probably want to keep the start and end on their own lines).
+I mainly wanted to introduce things "slowly" :)
+
+But I would be happy if we consistently use `reason`, I think it is a
+good idea to document those, and perhaps we can get to the point where
+we go for `clippy::allow_attributes_without_reason` too.
+
+Relatedly, I also thought about `clippy::allow_attributes`, but due to
+conditional compilation and the other reasons mentioned in the docs
+added in the series, it is likely not something we can easily do.
+
+Another tangent: I find the `reason` syntax a bit too "busy". I think
+in some cases we may just want to write things as if they were "normal
+comments" (and multiline and so on). Highlighting in particular ways
+could help perhaps. It would have been nice to have something like `//
+ALLOW` on top of the attribute, similar to `// SAFETY`, and have the
+compiler understand that directly like Clippy nowadays does for `//
+SAFETY`, but I guess there are downsides.
 
 Cheers,
 Miguel
