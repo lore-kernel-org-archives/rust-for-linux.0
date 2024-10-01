@@ -1,127 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D511A3A80;
-	Tue,  1 Oct 2024 17:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B788C18CC0B;
+	Tue,  1 Oct 2024 17:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727802100; cv=none; b=PE8rIES66WO0LTWeu8IRwi3Y8E6fiYaXhp/8M5b4v5Gy3G8Z108l/w8JbRvfUtp+PeNLmPGQhJR35VW65zxb+X9SxVgqVMmqbgsDWZm+SCnA6ZLo6Grhovhj8UrZ7q3X1VdsjSUqpIrNdJyWTVHUpnD2nSTDE5ABf7ASs4A8/sA=
+	t=1727802408; cv=none; b=h1bAwhqMz6o60mD1Pv66/9hLDTAEqf3peP6ERzzhu6yp5kVhQ9529Ah2pNHhGMU3CQNBv7bw6NWfPUHdjjRTZHUd9HgI4PYK0cu8kZHS1MSen0Fi3QAq9TD1NwUVla3IfVhUk0ADl65kFOZx0c+w9ri4xNBR6oBTODkX5vbw0s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727802100; c=relaxed/simple;
-	bh=teSRd6Ope2DM1P70Vhor8hV4zEZunc3MBpZztCPf6/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SZ4UE6QEZsm/Uqjkf+tD/HbyG1TZJkMfsglKSxG+8IAjl9Uwnl+rilSGdpmTuzQYmLX6j+J5r9BzUMH0VKTzqxn+o6MwQ6fGBCSK6mN5ojgvNNcuwjKnJk0O4uLG50szPtrJ6oGPH2YZ6EFLgm8EFlgqkeQf8ZH24Ln5THxv9uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSPifnfK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727802408; c=relaxed/simple;
+	bh=zqeyiKv76fN5fAHsmzCvDIBitSehZK6Hf9ZCqFVtUbY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=llGu7qWH9JDvH72UIxBGEROeFnYY3jMdY1BPJ+OAKpb1I1mLPkyzFUvRftvkSjelTLCHfdiGd6BOy9jpUNTSHNv5NJWgUSE0WLxWPmf1bbv2E7NohWdM3dU0VND85ppJjUKBbOBOPmgr+YxIxG2qJmd5ViT6MgOUF+W0mbVOI2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bID9/bYx; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSPifnfK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3552C4CEC7;
-	Tue,  1 Oct 2024 17:01:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727802100;
-	bh=teSRd6Ope2DM1P70Vhor8hV4zEZunc3MBpZztCPf6/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eSPifnfKeiEM9VuZQsBfEGNVmWslyQGIsKySPeluxkX7A6zJ6oGrmibGVLIEhr9I8
-	 t2NQRTLMU5WIZHlXADkAm8RL3Q4oZIh8Xd8Ik/qa45wTO6NMZMliujIAJ5HaCv2Hhb
-	 qdQssS4RdQgTS+C57bSoHnQ2cVCvaDpCjNez3MeM=
-Date: Tue, 1 Oct 2024 19:01:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org,
-	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: device: change the from_raw() function
-Message-ID: <2024100150-panther-human-0a46@gregkh>
-References: <20241001164355.104918-1-trintaeoitogc@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bID9/bYx"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71790698b22so821760b3a.1;
+        Tue, 01 Oct 2024 10:06:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727802406; x=1728407206; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zqeyiKv76fN5fAHsmzCvDIBitSehZK6Hf9ZCqFVtUbY=;
+        b=bID9/bYxRqQa+KKOxLQ7d1z4nvsSGbGE9S8PTf7ptxpGyPs0p7Yi5HTMBaWdgS3lON
+         zxe7vZvoLRXx9ORYYjDLuWPnDuPcZ888luMJzTtGkf8JrCGqYW5wYSbtZOYQ2d/oPA4W
+         m1EzUKHSxX8Ry4JAk4Bm1ns+s56f7WuiR03owtgl8s5E5ChppiP/MylDmT+P67+WVVp9
+         sKbYNg8t+GQMoqnpZ83GtrOUd+27L3oQw+ShobpW43rdMG4QXjeXbCEVxPfUCJSgRn2D
+         tIIezMvV81qmHGqA6gI6Vycf9/9qUXb5nXigUfcpdyDINNeTvNGpHOsyC9f2lEq+vBfR
+         mQrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727802406; x=1728407206;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zqeyiKv76fN5fAHsmzCvDIBitSehZK6Hf9ZCqFVtUbY=;
+        b=sM8LEMYhauPMUjRTsTp8FbXIB4Z3qtu91vHVALkukKuNK01i/ZpcLo31nMObs3OxV5
+         Qu+hF/zwV1378tLk4Qub0HgKPjV7NPKH6MmqltoZAjxxY0VX55Fwe44KITr7B2tyGWO1
+         CJCwbyxsA6xt6Dr3BKJBhbEkVeIxt373cjejw0bsoV7Tms24AB2jXJvIi0sqJtI1wz5P
+         SGuy9mN1QudcjLLVchBvMPLzQU23NSsCXpo2T7bJNch0QJPbG3If+6B3nZ+CTH5251s6
+         3XHZFdr/imLk9VnMrnCBVE5Gt+T7wFuB/NRcQWmsm902Lx9iZcVHDJZW7LAHe6OF2B3D
+         v6OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCViosUDbDLs1JaqHA/V2a7xv+4moHEPTFI0DVk3pFei9K4QFND2N2UrBD72hLTLCk0W2YT/cnlxtJsyNGM=@vger.kernel.org, AJvYcCVuCoIGnPIxQSd4qwrGTH1vB58do0KPsOHpGwJHI2k6Ysp2GoEsviHSEURp4xvgPG6iHgTpouJ1TLCNB0P65eY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV+qgRlYEMMvjTeRLi+sI7r1lJ+KouyWhmPpvnS90yf4IM36Bv
+	yzPcNOK3ePUPQmbFai2FWaj+5tRaR40HzRtvnfJ/4gfOl6N7KonJcLQfXpWFSbWVumjBULhdgVT
+	6UWbLSX5i2RtgBfYjWAcPiTML/Ow=
+X-Google-Smtp-Source: AGHT+IGIQVO+FQ85WAIm/sMvZM2EtsMOkx2GGMHghXqo7HRV8k3Gp4cFH3MOrJUwZYsm/vyxfCqxmYqmzuVhTF6sEvs=
+X-Received: by 2002:a05:6a00:2d18:b0:718:e49f:246f with SMTP id
+ d2e1a72fcca58-71dc5d6f9aamr237915b3a.7.1727802405996; Tue, 01 Oct 2024
+ 10:06:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241001164355.104918-1-trintaeoitogc@gmail.com>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-9-ojeda@kernel.org>
+ <CALNs47uC43vixDMt935BB-fuDJEKFE-SPFmSQp4Nt3v+O9wfbQ@mail.gmail.com>
+In-Reply-To: <CALNs47uC43vixDMt935BB-fuDJEKFE-SPFmSQp4Nt3v+O9wfbQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 1 Oct 2024 19:06:33 +0200
+Message-ID: <CANiq72kiQnRS9YAehD8-0-ZVtZzdrGb+NJehhnAXQaJ2nU7skA@mail.gmail.com>
+Subject: Re: [PATCH 08/19] rust: enable `rustdoc::unescaped_backticks` lint
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 01, 2024 at 01:43:38PM -0300, Guilherme Giacomo Simoes wrote:
-> The function Device::from_raw() increments a refcount by a call to
-> bindings::get_device(ptr). This can be confused because usually
-> from_raw() functions don't increment a refcount.
-> Hence, rename Device::from_raw() to avoid confuion with other "from_raw"
-> semantics.
-> 
-> The new name of function should be "get_device" to be consistent with
-> the function get_device() already exist in .c files.
-> 
-> This function body also changed, because the `into()` will convert the
-> `&'a Device` into `ARef<Device>` and also call `inc_ref` from the
-> `AlwaysRefCounted` trait implemented for Device.
-> 
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  rust/kernel/device.rs   | 15 +++------------
->  rust/kernel/firmware.rs |  2 +-
->  2 files changed, 4 insertions(+), 13 deletions(-)
-> 
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 851018eef885..c8199ee079ef 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -51,18 +51,9 @@ impl Device {
->      ///
->      /// It must also be ensured that `bindings::device::release` can be called from any thread.
->      /// While not officially documented, this should be the case for any `struct device`.
-> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> -        // SAFETY: By the safety requirements, ptr is valid.
-> -        // Initially increase the reference count by one to compensate for the final decrement once
-> -        // this newly created `ARef<Device>` instance is dropped.
-> -        unsafe { bindings::get_device(ptr) };
-> -
-> -        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::device`.
-> -        let ptr = ptr.cast::<Self>();
-> -
-> -        // SAFETY: `ptr` is valid by the safety requirements of this function. By the above call to
-> -        // `bindings::get_device` we also own a reference to the underlying `struct device`.
-> -        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
-> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
-> +        // SAFETY: By the safety requirements ptr is valid
-> +        unsafe { Self::as_ref(ptr) }.into()
->      }
->  
->      /// Obtain the raw `struct device *`.
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index dee5b4b18aec..13a374a5cdb7 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
->  ///
->  /// # fn no_run() -> Result<(), Error> {
->  /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
-> -/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-> +/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
->  ///
->  /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
->  /// let blob = fw.data();
-> -- 
-> 
-> differences from v1:
-> - this version don't have 0/1 patch anymore.
-> - this version contains a refactor get_device() function
-> 
-> The motivation from this change was will discussion in:
-> https://rust-for-linux.zulipchat.com/#narrow/stream/291566-Library/topic/Inconsistency.20of.20.60from_raw.60.2E
-> 
-> I would like to thanks for Greg <gregkh@linuxfoundation.org>, Danilo
-> <dakr@kernel.org> and Alice <aliceryhl@google.com> for help me with this
-> patch.
+On Sun, Sep 29, 2024 at 6:40=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
+>
+> Maybe we should use something like FIXME(msrv) so things like this are
+> easy to find?
 
-This information goes below the _first_ --- line, not down here at the
-bottom of the patch.  The documentation should explain all of this, you
-did read that, right?  :)
+It would be nice to standardize on something. As long as the version
+number is there, I think it is OK even without a standard notation,
+since it will be easy to find while grepping for cleanups on the
+version upgrade.
 
-v3 please?
+Relatedly, Benno even proposed failing the build [1].
 
-thanks,
+[1] https://lore.kernel.org/rust-for-linux/CANiq72=3D-bV_=3DTUoH6gLnPwTcxRO=
+BqyrCpOpbumki_S+po1TPhQ@mail.gmail.com/
 
-greg k-h
+Cheers,
+Miguel
