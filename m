@@ -1,103 +1,109 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8334439B;
-	Tue,  1 Oct 2024 11:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5691BF325;
+	Tue,  1 Oct 2024 11:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727781561; cv=none; b=ODYlDOuqboQMUIpg8nfq4f9kI8xibdps5iaZ94PMiSvql+Cbw6AZ7/+7p2fB6bDKm7MvDDMAdjGsX3UzEub0P1QB/iFQOTsiVXU+zDLbv9Z6b0iG2UJOR0tUKAAgkUmrdOWlCDgqm65EDDRPEKdbKgyOU1UuRvnpuRpUGo5MF90=
+	t=1727782045; cv=none; b=Kwge3dMq5GduvKKzj8Kj8MB4s9r6+LXqRAMllXzZxNJMFEKIGXEtFx93vEJ+z1FngfwSvYcy9gxmuCibbkIvNK3S0VoWfbKP+FilPzZZCstwrgkDBkgNvoAFwQasDwP5qF0UOnwnolw4daF8drgQge4wdYzm3j/9UKnLlxAUxbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727781561; c=relaxed/simple;
-	bh=7gz+42kgK/bnSKCIOOtjqUw3T5MP6gnuAfi82O4lUYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nxl4TftD8onAKyGkirXEDgEAz2yDpgwqkEAtpHJZtrVwESGoHhlhcKb05NoLwdm9uNgXojQVS8txTB0CUyQHwz7nRCSvgToOzPVMb7VwvP8YliI2WEKlT8xwNHipnuIFSKnKVcwUN6MI4fRfK9RovHqqDhkeeFqvtVFx5OvmqY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f9WRznLm; arc=none smtp.client-ip=209.85.160.170
+	s=arc-20240116; t=1727782045; c=relaxed/simple;
+	bh=9NQ+0TZWjiquXsQOOr1sHMZpc9dpUk2gGrXi/p0eLtQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gPA8BwIHlE6xqBWti/ploNdL7Yj9JvyszvCNogzbkvFC6/cJeWt12avkAeoMao1WMIhDU5DpLlT5UYjjPgeYrERG0cPvBRp6ZsjIpFqvOPlLGL25rSVElmhtnmWgEYu6R/QeBjL17uCdZR52oxtio/FGWrU/1J3SaTTdMUNLOWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bdKWp1Ty; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f9WRznLm"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4583209a17dso55121821cf.1;
-        Tue, 01 Oct 2024 04:19:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bdKWp1Ty"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20b93887decso16012065ad.3;
+        Tue, 01 Oct 2024 04:27:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727781559; x=1728386359; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YzE8KTQJ74z16EqMO6/Jz5kTP2C8yUTaMCEw4TZ9Ym4=;
-        b=f9WRznLmS0xZrXlgR6gYZx95EufpR8zfuLf5H1ZxVqtPaIhFABH3V29LNebYpCzgh8
-         CaExBbUCCLVNwguxL210X4TSmFLGd/729Q+mlIsvNxFrOY+C3UiE8QoPdJnsPzBsrTAS
-         d1G/pNY+AEDK0F6dSsWJ62UpMXZtSnEjYX4r24TRZz1ydbUMXI1bsFNYrZN0G97Qko7z
-         34IDT3IPenUYs/2+6AV4UmObOm6hioV2aox6WmhRDLbM9OJmjFB0xOsMFI4ydbmEyJlD
-         Ra3Rmp5+qvJtzpUyQbFVQwJCwklp8yQQtwR4E9HWVifjIPGYMKxkdAYsk13O4IBqGA68
-         i+3w==
+        d=gmail.com; s=20230601; t=1727782043; x=1728386843; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CNaj6hMBwRPew2E8TSTXWkEgqsF9LJOIrV1CoqnoYBA=;
+        b=bdKWp1TyhZ4OP7Np4OkC+/p4eVlfAwpTpv8WVPQZVdun4j3ytUYjvKc8+AShosD3Zu
+         7G/r134ezbdtmCG9J9tsxrIYFlCG01Nk/NBiBJDxxvEjTMt/BFJAf6n+jy13XHSzGfFn
+         dP5uFy1lRyyYPSz7EQVfom0RRf1gLqGNSe8MSXJzsyfz3ul9IUdmQ3Y4Ry37IuT/qfGv
+         z0g6ieIdDKymwSaTHoMraw4+/jIRssXfitGbUlw/Z+cknRQ7x1asRJ6WAQTAZlVQpFX6
+         eDhr9J/NKJMVTR89yre+BQ8P7kFGhOFqEWbrUtcaGJjqb3h7N9GN1ShP9sYMKVpYhPU+
+         wBdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727781559; x=1728386359;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1727782043; x=1728386843;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YzE8KTQJ74z16EqMO6/Jz5kTP2C8yUTaMCEw4TZ9Ym4=;
-        b=G/Eh41EVhTD2GxTVyz+DTrmxlhzfan4EVPlAuNsE2FcJTrRA7FRLR3vg77kUUFp9QH
-         eXd4FIqFbJWJmOSWn6ZIUbFp1mx8wl6MtHA8c6vnkedtiJHVQIxHJmW/sAvmytW0TrDN
-         r6TWyYFh+4eAocKwS8dA218U73k4JEvJ9C8YnXNaGqeZ+ONADR15Ogvry6fOow/Ge9mg
-         PP0Fojd9kVJqAYcG9yF8btIIIbY1Lhhq/2fMPr2CDE0mDtDHEQmWP9qk/BEAWl3tSAIA
-         9vrCvZomp+KdGd7YBpSCGT1b66KQRaRPCDZrKlBo9Uy/8xp/7qKAwwbcFtiNSbmN7oE9
-         nkeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVe+gQmATi9lxfiiiMoqZoeA1jnJxoS6zl8447cOJPa3MSycsu3U3tcLPE6ytMquleoIoZxim184jPQBUI=@vger.kernel.org, AJvYcCXCi8k/xPUWU93ZbeZv1j1i1tfcxvb/XuXWoFUraY5/TkjMub+FJqbiDChaCp/75h6fUHTrDIyLsMxImtr6+GM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFrzWJMS6w5RzfpMhlR+abi0DBlr++Lr591zA17I5kfAXVqAxn
-	6WWz5yYRpXdTChTETr4//g0Ydjxj+1KtSV4OiDYz1VOsVB6/i1TA1HHqfHxszSUSCb57SmRCJoN
-	EkcQHm0X/jSYBrY4fJy8dfnjqvkI=
-X-Google-Smtp-Source: AGHT+IEDEcWLSGEOeEFdKeDbTaWfrnPZ4NIZgYCXUkJcA76aaiSnLmOWoKuJpkiW3T2aTnRBgP9GwGRm4n9Y/OqOrBs=
-X-Received: by 2002:a05:622a:341:b0:458:38cf:410e with SMTP id
- d75a77b69052e-45c9f20ab1dmr268190521cf.22.1727781559364; Tue, 01 Oct 2024
- 04:19:19 -0700 (PDT)
+        bh=CNaj6hMBwRPew2E8TSTXWkEgqsF9LJOIrV1CoqnoYBA=;
+        b=ZjZivlzwPsiJbZoD9PbZu9/cNbWp+shCiIAT5L0bWEj6Pu6ONroojhU7yR+lc3ZWt6
+         Yh7q+QxxZkIGUR+HALzfEWsuAhdhq8Ba8y72x8wpATh41nibXGNE2mBgwYjajXbxsLlN
+         i/THlqH0QztAXISmAcy2Cb3sLX7jZHlgBvJr7dldYHPwaXv0gwVTJycmwIVF0EgRxaxD
+         09MsOghOVnfo5zGP6lCRqmHN4M6KknunlFeICzuex/5aiHSFC20CX8y2t1MvBwdkGFJn
+         O4jzbHve/krjpHm89iKJzE2tIodfxeP0T2+MQqcxBoQNn1rpmtstMDNKDX0agh6oEDeH
+         ZfHg==
+X-Gm-Message-State: AOJu0Yx2crR4cUPx+QtBnMsnghRzAAu9Je10LcZQ7NPXx5xMwnORm+TX
+	g7CUggzV/zJ7gyRNpsXYXRYX6c+m6qAxgXEEx5QYKFVzNe5VapCT++OmvKHR
+X-Google-Smtp-Source: AGHT+IEPG+Md67DfNbLD6PrRqcsr9T6hA5w7O2SiAchPFUzCZBO8II2nlbi0ualF+/7vBwYsSfz1Cg==
+X-Received: by 2002:a17:903:228f:b0:206:a935:2f8 with SMTP id d9443c01a7336-20b367d00a7mr192716755ad.2.1727782042998;
+        Tue, 01 Oct 2024 04:27:22 -0700 (PDT)
+Received: from mew.. (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e51330sm67893655ad.254.2024.10.01.04.27.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2024 04:27:22 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com
+Subject: [PATCH net-next v1 0/2] add delay abstraction (sleep functions)
+Date: Tue,  1 Oct 2024 11:25:10 +0000
+Message-ID: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240930194637.98260-1-trintaeoitogc@gmail.com> <2024100107-stipend-lid-1beb@gregkh>
-In-Reply-To: <2024100107-stipend-lid-1beb@gregkh>
-From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Date: Tue, 1 Oct 2024 08:18:43 -0300
-Message-ID: <CAM_RzfYvBS_kNqw0d7z1CRf5XL2LWc0bNm3YCg2asPffi4fMZQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: device: change the from_raw() function
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org, 
-	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Greg KH <gregkh@linuxfoundation.org> writes:
->
-> Hi,
->
-> This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-> a patch that has triggered this response.  He used to manually respond
-> to these common problems, but in order to save his sanity (he kept
-> writing the same thing over and over, yet to different people), I was
-> created.  Hopefully you will not take offence and will fix the problem
-> in your patch and resubmit it so that it can be accepted into the Linux
-> kernel tree.
->
-> You are receiving this message because of the following common error(s)
-> as indicated below:
->
-> - This looks like a new version of a previously submitted patch, but you
->   did not list below the --- line any changes from the previous version.
->   Please read the section entitled "The canonical patch format" in the
->   kernel file, Documentation/process/submitting-patches.rst for what
->   needs to be done here to properly describe this.
->
-> If you wish to discuss this problem further, or you have questions about
-> how to resolve this issue, please feel free to respond to this email and
-> Greg will reply once he has dug out from the pending patches received
-> from other developers.
->
-> thanks,
->
-> greg k-h's patch email bot
+Add an abstraction for sleep functions in `include/linux/delay.h` for
+dealing with hardware delays. `delay.h` supports sleep and delay (busy
+wait). This adds support for sleep functions used by QT2025 PHY driver
+to sleep until a PHY becomes ready.
 
-How I created a new patch, and not another version of previous patch, I really
-don't incremental changes after --- line
+The old rust branch has the delay abstraction which supports msleep()
+with a helper function which rounds a `Duration` up to the nearest
+milliseconds.
+
+This adds fsleep() support instead of msleep(). fsleep() can handle
+various lengths of delay by internally calling an appropriate sleep
+function including msleep().
+
+
+FUJITA Tomonori (2):
+  rust: add delay abstraction
+  net: phy: qt2025: wait until PHY becomes ready
+
+ drivers/net/phy/qt2025.rs       | 11 +++++++++--
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/delay.c            |  8 ++++++++
+ rust/helpers/helpers.c          |  1 +
+ rust/kernel/delay.rs            | 18 ++++++++++++++++++
+ rust/kernel/lib.rs              |  1 +
+ 6 files changed, 38 insertions(+), 2 deletions(-)
+ create mode 100644 rust/helpers/delay.c
+ create mode 100644 rust/kernel/delay.rs
+
+
+base-commit: c824deb1a89755f70156b5cdaf569fca80698719
+-- 
+2.34.1
+
