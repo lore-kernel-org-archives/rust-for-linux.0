@@ -1,143 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4BF1C6F53;
-	Tue,  1 Oct 2024 14:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391701C6F5A
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 14:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727791878; cv=none; b=Y7RHFOA+7q6bXb+oFiCl6//Qj6N/C2a27FKhhZh1opo0pEc7czgW4Q5bADwhk0ls40w6jttNSPsaWRZto+GUUa9Q191/eefzE+lTImV4iqbaRX+W16YR5wKPAm+gMgNA6E5Uj8k/nz/Vv7/dOuQieqK5HIcvr5mL/WfkM1t3nmU=
+	t=1727791906; cv=none; b=eYupAfjhOBUc2RQqiNrSouHuRyK2Lyn2Nkgh53U0RprOodJRf90qzALPIFHATz2TETORNoXKprtLLXi9MXoWBJLf74kBDlm2WqecRnEPceCTqjiAzUvVrwkJOGuXNPgR84WV+3Wf9krmnQTNzeI4lIfWNmpfWfAk2yAbNwz5pWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727791878; c=relaxed/simple;
-	bh=XLnLMLvJXoviHxYWl7YAmckLFdggOgG+MZ4GrqQT5P4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s7kywNc97Flqe9j7LXgkyg06hbLCWo/LXNsM634uOsxLVdg4Cob6jcr0fmCNKAR1psLsnq7yGivFzESFfzTP0e0B/mu6u+3BlWSgHWU3GdmFWrx0MS62t6NKhQeuPLJtmxj9iaIODI3Orqz/zOgkJwkgrDuFpkPqc9j/cb3i45A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C885C4CEC6;
-	Tue,  1 Oct 2024 14:11:12 +0000 (UTC)
-Date: Tue, 1 Oct 2024 10:12:01 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard
- Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
- linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak
- <ubizjak@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
- <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton
- <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-arm-kernel@lists.infradead.org, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, Andrew Jones
- <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Conor
- Dooley <conor.dooley@microchip.com>, Samuel Holland
- <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao
- <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton
- <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- loongarch@lists.linux.dev
-Subject: Re: [PATCH v9 1/5] rust: add generic static_key_false
-Message-ID: <20241001101201.7a43726d@gandalf.local.home>
-In-Reply-To: <20241001-tracepoint-v9-1-1ad3b7d78acb@google.com>
-References: <20241001-tracepoint-v9-0-1ad3b7d78acb@google.com>
-	<20241001-tracepoint-v9-1-1ad3b7d78acb@google.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1727791906; c=relaxed/simple;
+	bh=VdlVC8iJpt4iKblG4aq8arzEwH4jK+WQJcBtAtuQ4nM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QkUO7jnwKuv9pD0HbgNPBuKpA1+KvbJbD1fToxIXmffKqjYAxG4mZR02Vga8pKQBC5QltxIxLbDTtlBGOCMsX20se+CMzlKMfji2awpyqpSbvmBBbUbwrWWXyjRyKbuXMwaglgPYdGxfqP4CQJhekAvN/ZxRzyPyxVLFZMEjToo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QNze8MPg; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QNze8MPg"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a8d446adf6eso59322266b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Oct 2024 07:11:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1727791901; x=1728396701; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wOjUVaBpjp8ksO44qoSMn8G1zrkoXgW5qFaOpNFpNPw=;
+        b=QNze8MPg0ydn8WmFUnGx4roCh8Hh9oZk+2F46NczeD5dbaio4q3ydr5ALbDKC8XEWw
+         Ak8TTKXfrW7hGTJ3Y9G3ytV6FER9D1nHYhPN/2+PEfKj1BqPO+AgWkUCvKxW4kCO/A5F
+         /E/FGv5s/m20G7gRE82AfnQ6jTMQZzoKi5/ngoUeLczD3dt7Cn9ZUSQu/gL1oYve8yCG
+         hlgpQAXwKU/kONcTY66hX40FnFtjd9v6L667fh03S1XeNNEHOsbWg2PiSeqaVOVPYdbv
+         S5myAZy23KkKqlXkZFMA7GCB3q05qHtwgXQzEvlpe1sOtxv8jBqwxt0zzEcdA2BlcZmo
+         m2Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727791901; x=1728396701;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wOjUVaBpjp8ksO44qoSMn8G1zrkoXgW5qFaOpNFpNPw=;
+        b=AzCBncdQmBKcLthzqzjmF2rNkPCFc3Ia/1ZNqwAq3h9xI/UK+0U8FeqQDt3Txs0UVg
+         pnLERKGuzfqod9OKOJ8E85/8/0lKusr9a6vi7VprMKSogrLD0PxlXfQkiTp96k23MRoj
+         EUXuoR9vwAiUkvqUlgo7jPiXvwJp4zgJ/H4JxcsOkNHgOY9BqvTTsC4cOjeFpxquIbI6
+         sFiQgXOfxqKauo/QNxIRhYks8L5G6k7khRSSP1IH0ggmpFbDvVy4R2aM0uPF1rlGqv0n
+         rjnJHjfqCln8nG295OPNo7NKdg75zO7UmN2Y8wHQ12kd3r8QstgJ+XiglBTD8ocuyy3U
+         U6rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWuYklX2CcVHOyZCJTB0pMc5hGiZJJnLNb1EkxN42jQck7h442pn2tX4R2X2J4cNBxhcZmUa8J6rbe/6bCyrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXKH6to4PKE+IUykVgzSU4u/GvzBXUIke4tKxwEBuvv032m/4S
+	RBtoRsz6KObykZHi++S2hFiejKeDL4nfY4iouhE+4jCctajPAwsHc4cxpiHH+9s=
+X-Google-Smtp-Source: AGHT+IFZe2WXQ1gN6enIFV3oFO5bE5V7+nXKC3Q4fwOM7pCdPvYuTE0iA4osOJNRHsOSK/gRq1zsrg==
+X-Received: by 2002:a17:907:1c17:b0:a86:95ff:f3a0 with SMTP id a640c23a62f3a-a93c48e8ecamr1799486366b.3.1727791901559;
+        Tue, 01 Oct 2024 07:11:41 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c297bb8fsm729191766b.176.2024.10.01.07.11.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 07:11:40 -0700 (PDT)
+Message-ID: <64221b94-b081-436d-9ad1-ceaa70a6a960@suse.com>
+Date: Tue, 1 Oct 2024 16:11:39 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/20] gendwarfksyms: Expand type modifiers and
+ typedefs
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>,
+ Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+ Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20240923181846.549877-22-samitolvanen@google.com>
+ <20240923181846.549877-29-samitolvanen@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20240923181846.549877-29-samitolvanen@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 01 Oct 2024 13:29:58 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> Add just enough support for static key so that we can use it from
-> tracepoints. Tracepoints rely on `static_key_false` even though it is
-> deprecated, so we add the same functionality to Rust.
+On 9/23/24 20:18, Sami Tolvanen wrote:
+> Add support for expanding DWARF type modifiers, such as pointers,
+> const values etc., and typedefs. These types all have DW_AT_type
+> attribute pointing to the underlying type, and thus produce similar
+> output.
 > 
-> This patch only provides a generic implementation without code patching
-> (matching the one used when CONFIG_JUMP_LABEL is disabled). Later
-> patches add support for inline asm implementations that use runtime
-> patching.
+> Also add linebreaks and indentation to debugging output to make it
+> more readable.
 > 
-> When CONFIG_JUMP_LABEL is unset, `static_key_count` is a static inline
-> function, so a Rust helper is defined for `static_key_count` in this
-> case. If Rust is compiled with LTO, this call should get inlined. The
-> helper can be eliminated once we have the necessary inline asm to make
-> atomic operations from Rust.
-> 
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/bindings/bindings_helper.h |  1 +
->  rust/helpers/helpers.c          |  1 +
->  rust/helpers/jump_label.c       | 15 +++++++++++++++
->  rust/kernel/jump_label.rs       | 29 +++++++++++++++++++++++++++++
->  rust/kernel/lib.rs              |  1 +
->  5 files changed, 47 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index ae82e9c941af..e0846e7e93e6 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -14,6 +14,7 @@
->  #include <linux/ethtool.h>
->  #include <linux/firmware.h>
->  #include <linux/jiffies.h>
-> +#include <linux/jump_label.h>
->  #include <linux/mdio.h>
->  #include <linux/phy.h>
->  #include <linux/refcount.h>
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 30f40149f3a9..17e1b60d178f 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -12,6 +12,7 @@
->  #include "build_assert.c"
->  #include "build_bug.c"
->  #include "err.c"
-> +#include "jump_label.c"
->  #include "kunit.c"
->  #include "mutex.c"
->  #include "page.c"
-> diff --git a/rust/helpers/jump_label.c b/rust/helpers/jump_label.c
-> new file mode 100644
-> index 000000000000..0e9ed15903f6
-> --- /dev/null
-> +++ b/rust/helpers/jump_label.c
-> @@ -0,0 +1,15 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright (C) 2024 Google LLC.
-> + */
-> +
-> +#include <linux/jump_label.h>
-> + 
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> [...]
 
-Nit, the above line has a spurious space.
+Looks ok to me, feel free to add:
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
 
--- Steve
-
-
-> +#ifndef CONFIG_JUMP_LABEL
-> +int rust_helper_static_key_count(struct static_key *key)
-> +{
-> +       return static_key_count(key);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_static_key_count);
-> +#endif
-> diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
-> new file mode 100644
+-- 
+Thanks,
+Petr
