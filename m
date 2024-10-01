@@ -1,48 +1,48 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2092.outbound.protection.outlook.com [40.107.122.92])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022107.outbound.protection.outlook.com [52.101.96.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F011CDA18;
-	Tue,  1 Oct 2024 18:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BDB1CB321;
+	Tue,  1 Oct 2024 18:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.107
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727807504; cv=fail; b=uR929rkeouJ9QHAAQ+/4pp1jEns1F3XK1kwCsUgGWUIsOoyjrXkTOqkkxCKdL6krcDXm0kGyDAFS10lT0G5WIWZacyGZ2uSntHRohJJFkmOmVHocVlaGB6NEUwjKK4WlX96pb80wqrHNgmSmIRfliUL1MV3Qir2RXbm0VkfOn5A=
+	t=1727807966; cv=fail; b=C9J3fFv0rxV/yB2E0NhNOAzWj6tOcu5ZZfUq142lfkOz88KyPDbeIxXgsTmm54UbkSbu1bgVxZW3cmxUdtnncBYu2vQ6HMToPpyDGXMhx4UOw4XuHDjhRW0YyL0bz/VGsd8gY3oEy0eKaGpDhSKXWN1z+JCPq6AjlyhMicqwC4g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727807504; c=relaxed/simple;
-	bh=dPf6fhy4DX9L3GgyjJRJSesBGYLMSTm7SFMP9S5WDP4=;
+	s=arc-20240116; t=1727807966; c=relaxed/simple;
+	bh=9G2WDFXyNA8jbs582c2F6OYPDsD38icd0vYUf0fvIfc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QEUHseejFdBA8q7Ihu0cwrN70VPw/KiNfmTiFQAa94CTtTaa2TjMyygXdc1KyWOoHRc8BTUhv+UooG6xRYUnSgqQ+u+2OV0TTROVZCKyuZoi+0Q72IwaFByFEU5h4zOf83Cd/P32hXTBxhqR72HsEv/+oP94aqBibnuYfWWE97U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=LBp6AJKf; arc=fail smtp.client-ip=40.107.122.92
+	 Content-Type:MIME-Version; b=qYqe9VWjS6MVSEZqPEmRqU68e/iDh+7PiywMMfcK3o9lYHyGfJoTtBo0TESCepBxmC1daQPbeVK6HA2zt/MyHZP4SMmswx2UFzc9Vwz3/Kv/0BFpNF0XxWlmNCactVKKfUtSh0D6FO9Ce/c8Tw26R2mNC+WsIhgA2yRdi422qXU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=TnRBCUGu; arc=fail smtp.client-ip=52.101.96.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="LBp6AJKf"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="TnRBCUGu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eKiF6zSp9lBjcRR1UuidhTnL2I3N/NSYfCH8aRYx9UmdBahA+VegXFKGszyn4Gbvci4nTdC3YWlSzdpumvODm1yhD8tOHXHDvGhsAzfVKOoGFLZwDmsvbzvy1/LJLw3aqy2S58CV+E44i0CMBUbzD0WXvPxSgMObB5QJUykl2kjJG8g27rWJCWN1cLT7WXvG3ygwBJ/AIJ9G4ntlhxj9jYoDpzT/YpUo6sM9iWmNLhyOT2/El1kYexHU2jD47R0WGmmAuKFtLH3Pd97fYDTHTqWm3FsosrMXYmuh5AK+GhaOLdj7mLTyu+4osrxsCUgrVXBY6KBe8uVDw+jDNcgw7Q==
+ b=wW0CET4DH1la4GWSApHvMwB4XvIk1FTUPgzL3RfxcdZUjQfhfss0yQuQjMVDfS3GTNS86xbxBkGvmyr5OPqEyiNaYNH8AXiQE7Kl/fv4lUcWELKqC48bD+e8vMX8xhmKMmuRdQaFXpempXg+6XWvRZQUglx3e8VjRGn7EqeuIg7pdgTFDeLWHF5X97I3YQ66m8ZZdsMh+CGSvuHAw3gE7ocdFw2vQPB+FsBCdQeP0FdhQQfaRhR1Hjz52iUidqPpl2VJabBF59x+r0jCkiHtAbYExY7XU7mz39KrSZs0tYS8on9VtJC5Y9lV/8Ybw5EUUtHSp8xv93T+o0aiWAHpbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zLJ0lvliVjO9N4P7uDnIqNVgUULTc9AneUEB/vu3Yko=;
- b=wnwkwhCSHA4JAn/YfyZpAsgBtf6igJitosC/C2Bzfg2fItTZA75UeLcCgCiga95gZpI35ddhjzFHC3xbpiEZpswQfvLRBpwj8fDJMOY2dioLMBMDe0do3siEGdRr7wKWOWMpVswSTA99anh7q5yUqXml4/M4sp6j4/iLNEPebd3IFAjscyuUY0YywgI+9BuV84Yh61mHYz1wdD6bqFMAjJjbsq8L04j7OIeGtR7uW7xR+A/xOjN0vDh6OO/JGLdGHJ4osyTHuAV/lRHguDjkT085AxvwxByICUM6MXkNTCJ3KO+4VG21WCKsIO8Na3780n+78U+uvA1Qwb5CXigqog==
+ bh=Vj8HgHvHSR8y/KgV6NT16AGATHyvzNDq0WVuW2q1Y7s=;
+ b=CEvQLGcmwOb5zlCbocsXBDnCtW4NBjmqy0vad/DNjmviuqxhhaCV/CWQkuHlbZDkHeRnkG1OO9JdoQ9tBj30xIoW8mXGHuxwvsrtxESS5JAWuYlsDO3C7gfE4UhuNeqjYk451bJvO4HwCy5VnEyuG+bwS1z1tOE9efGvotMYtVLNXu0E7Bxc0mRGaWnp/qEj/BcXmo6O5Kflr6GMYuGrhxZRoedLPlGhJjAamiGtxB8UOdAeO9WVYRp/8oV+dSqU2OdLG1rivcSEsmoRgT6NRXrCMLspUqjZeJ/uZ7RH25DPrcuGkUH43JG5iEkxLSnY8KSMMTf9D5/unsJA+7r00Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zLJ0lvliVjO9N4P7uDnIqNVgUULTc9AneUEB/vu3Yko=;
- b=LBp6AJKf3OzxVftCf5suOjQQ1mvzKkPrnEt+MorD+l32QySQJn3IWfEEjTCaUUj+SrcEOMLW8MI7auQ1hm8WuisUUJX90rEIy+3TX3yeryL9AQfklUpSl5aXgmykNXxYbW81pZXRBAAU9zycyb4wozyauyVGZeHqqQ31YdKfEL4=
+ bh=Vj8HgHvHSR8y/KgV6NT16AGATHyvzNDq0WVuW2q1Y7s=;
+ b=TnRBCUGu1cIv5yJmSt3QZ2xEjzGsOZposKxN76u+dTuqMkrPOclqnG5L1M6pk/3D/ddA9RxZuxJSRwJqjYjwe4HuHXfO5iw7fBRN7z5EiizfU24myRGly4KDPwKoTnvRwggJhn2/I767whLSzlMqE8Nz0aSeQaVH369Q5BSWLuU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO9P265MB7730.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3a2::8) with
+ by CWLP265MB6530.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1e6::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.15; Tue, 1 Oct
- 2024 18:31:39 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Tue, 1 Oct
+ 2024 18:39:20 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.8005.026; Tue, 1 Oct 2024
- 18:31:39 +0000
-Date: Tue, 1 Oct 2024 19:31:36 +0100
+ 18:39:20 +0000
+Date: Tue, 1 Oct 2024 19:39:18 +0100
 From: Gary Guo <gary@garyguo.net>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -53,16 +53,16 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
  zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
  ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 15/29] rust: alloc: introduce `ArrayLayout`
-Message-ID: <20241001193136.7db65bb4.gary@garyguo.net>
-In-Reply-To: <20241001150008.183102-16-dakr@kernel.org>
+Subject: Re: [PATCH v8 16/29] rust: alloc: implement kernel `Vec` type
+Message-ID: <20241001193918.7178fad1.gary@garyguo.net>
+In-Reply-To: <20241001150008.183102-17-dakr@kernel.org>
 References: <20241001150008.183102-1-dakr@kernel.org>
-	<20241001150008.183102-16-dakr@kernel.org>
+	<20241001150008.183102-17-dakr@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0035.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ae::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P302CA0025.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,216 +71,596 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO9P265MB7730:EE_
-X-MS-Office365-Filtering-Correlation-Id: ecfe4436-4b4b-4249-9c26-08dce24749f0
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6530:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d423bdf-4023-448f-227d-08dce2485d18
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003;
+	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gTERS1b00WL5ZRSR6B1aXZY0H2nPrrlGHxwpS941VApb0O4aNA7FiqnPa/xM?=
- =?us-ascii?Q?rsgjhCBLy1cGY6auz04SSpDyIUvs3VPOsx5zuTCsmHTiqsFv1aL4KaMdnw69?=
- =?us-ascii?Q?H+mrKuUaICiIP/a7fiCZhcBOmEdOS21zFRehOy4VFabGL0/V14lQac3/4B8f?=
- =?us-ascii?Q?iFW1YxmUBrav0z64qEmh/O4P/UL3Plm1A32S2rtJf4DqjGXbZHNASFJSojgU?=
- =?us-ascii?Q?SZ2ttCt26iq4lobZqCtpP4TPT2sxM+5xHNtCFoFnydjcd8Rp7Qe39LJElaSN?=
- =?us-ascii?Q?VGb9JOQuWHjIiueXnjRN0WZvX9EKqvzN0Cv5hfqcBhs3ar909gzR1TQ185X1?=
- =?us-ascii?Q?kK1OExP6QFbMBKKreCa/a9bR+25heU3jZIaRjtsV0sWW0t5aFMezqAtoykAE?=
- =?us-ascii?Q?oMJBByFJ2fhnSyzJkuiaalwRnj0o9ftQjXWGVXLLNtous3P7lBzYyWPabdo0?=
- =?us-ascii?Q?5UDPPx7YRqETQwXRuA+WOdCoxfa9qx3UwFwRAcxG3P1JhMBShjG77W+USonS?=
- =?us-ascii?Q?F3NomGspdRFpI5SFFBBdYpAjVWXy6lDBjwtGfazqBqnfGM4SVKcEKJpSzhl3?=
- =?us-ascii?Q?9iBH3waobRNOGtlBBVW2CKaTavKvhvka81+s31dqcOZ6ZYMOC2SYRO/M2Kb6?=
- =?us-ascii?Q?97yHOgZnDDR36sVkQtZ/UJYA+fqpzO+VgP0IBiJHDRwSzcgxIB4x7kUsS3ab?=
- =?us-ascii?Q?N5hLeMRsS5KmUTLCF9LFS6as7k+TjcifWtkOhaDFNnagNUEK6Nu/MGvSg3uM?=
- =?us-ascii?Q?Msvvqssvm+bNdtrjQ4Ax4icPxeD+XMcm93KQli10JRIjsYgyk7ypwxHYp/jR?=
- =?us-ascii?Q?2Tazj1mCNX603abVhoBGddFFfaiQuDDzzzzY+lkkJXr7W3BABmO+zC8EGRds?=
- =?us-ascii?Q?2LmP2WXPqbsKu3ScBbZySNz3QLFp8So7WgeN3uh21HCSuViMOZlHxfdCRS2a?=
- =?us-ascii?Q?+x5YHQREeFaTcaum1SlKPsOzr3I1u+KhnN5hUYvmxX5vUl4LVVSGoI3o4x/0?=
- =?us-ascii?Q?n8E7m9qCIKFWCYQJr/fWCmaRroQIJaGSmXa2RjQ3OTn6ZZJ5TO9FiahccLle?=
- =?us-ascii?Q?xv4Xb/f3l0IJ5ai2TF9t+EHEnWnMTOg5mVSmRmjvtLkujweSnu37lNHS09Z5?=
- =?us-ascii?Q?aGfL1dhAXE2uxAahhVtEkm31a3pT7MaUc7ZPBlxUYvPZkocmQLGPRAMRHuU5?=
- =?us-ascii?Q?Vi+hNxFAHs0Hw9Sw3H9CBGYiGbbRNCor3qzeHwoAQs09OpNVThNhP9kT2SaK?=
- =?us-ascii?Q?Gl7R78Z/HQDGff+EPGoDN+4F82JZCuOeuLlpqg9/Ag=3D=3D?=
+	=?us-ascii?Q?S9b1uAVrBMfNJGJ110xFc/lVWBzF+htmNl0UC1Wb3fP+ZZgDWcmDW64kLiYa?=
+ =?us-ascii?Q?yQsCyaVzvIPpD6lXmD9seyXLxAQaQmrlXio6167xGWHxcmOA7HnnbQecDgbh?=
+ =?us-ascii?Q?4lspTfeIvxbzo9vYSBFIUUAq3q9ni/BD+rEEBgbO8gpR/GZJbXcOltF4K0eU?=
+ =?us-ascii?Q?ihmggMcW1WCzdXU+zaK3XEo13kH7KcDvaKBdPHgV3kDNfM2PlyzQIe2avVop?=
+ =?us-ascii?Q?x0AQXfHO1L1A3zQUkBHuIOusHzGK6PTFDFSY5MrRVyP9J/UFZPgojqRmrbVH?=
+ =?us-ascii?Q?tFFUgTNXKBqCJJDY9o1Twm9vvoTqnZ+yP+zAwuP8eATfMKmENZiv+Zk9aNKC?=
+ =?us-ascii?Q?Hv+xSPJvCpcLjgAnZBuWn/Hj5GM18WeEzRSMR6XV2S73lSUnOuuHxb4ZQ8Ma?=
+ =?us-ascii?Q?9x4lwxEzYXNn7t4BqoZ9xxwGKYbhIRD4HyBpqyS4qjnnf6oCIigf4aS9YOmV?=
+ =?us-ascii?Q?N4kk2E6eVYO0g9ZUHOLQDGEnFftijcUjUTdPjUNVttWpMa25In38FuQBmWto?=
+ =?us-ascii?Q?pJzVWvW+JX+Taiay9buLQ18BhONSe6qR4WLoFv5w+TIz829INLnlmlAIM8bY?=
+ =?us-ascii?Q?hZuu81bdA2JMKOKkQ/TdZdHaG+ylgQUjHkevbvOSO31MRuq0rp1gpBHIpQPY?=
+ =?us-ascii?Q?tBX5wotc3mYF0CJijT44jHo8QmYGTfCHqWVoscySjJTQH+4ToKxU/ve/QM8x?=
+ =?us-ascii?Q?PY0fD0J2j5D7wTFjVQeqqwkmabmGLSfLBMpFRGKMXDoNIxJ2e6qa5xlRJYrK?=
+ =?us-ascii?Q?9OQzNgpOoQ8PvFElQa9Ez7olvv//VjBnaMDibjKu69HuPlg1H7p2f2oaInvk?=
+ =?us-ascii?Q?QYMHF6eH04NMXfu0a+ysw6SY79E2xgShqtfOVhWIxQBe5MWS/zFui5pkJWcX?=
+ =?us-ascii?Q?i8iMQXysnhSRKvGweXHyKqDCzwlZwiQmeXLTEi81LUgtDrK0UBTje9/OnmXh?=
+ =?us-ascii?Q?FP7pBx1OhBP/aH8dYy6Nx7MkZgZZyYHgGz/WhXvfbEj90mC0212z0I9OWAEi?=
+ =?us-ascii?Q?lATezqZKuviUQmCiBwZwkDw8IHE/j1tCiXWfOqhoVzPxvoFySjJMaZkUY8X4?=
+ =?us-ascii?Q?kZOHSbEDDAfrTEp5MHeorLySsJMXKgxE1Cgzd/oLSiLdhNtZ7e6W/k+eiHwV?=
+ =?us-ascii?Q?HxFeD5Gv7FNtwHfFoFUgUC3NpUbY6xeF2FFNNQdZkfSjPhbBDLEi3DVMexPE?=
+ =?us-ascii?Q?9yEWFmTBr5+aXVd6wXINmMQVCwbs6yhBWFS/G1juPXC/hKduYX4EmxZ6a8kS?=
+ =?us-ascii?Q?2qIimaz55bOGVYLvuNYk7aYXtTbPxoYrjC4jOTo0dg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U2SNEB8Wr0tEQMKFaV2DIabCug9qOVQGrNBQSm0u0nrifMwe9DDbZhyIRPlY?=
- =?us-ascii?Q?CvH4johSrkQH7VH5K48IHWcHvnB47u8Z7uj7qv6zk0QzhYHAI06w7hSJJ2JM?=
- =?us-ascii?Q?7QmeUlr8jMPrOWRshQK0fLTWlpsWBE/hcpesSqx61ksGZrLFxrTt7owh+NO6?=
- =?us-ascii?Q?VkQVjssrRqHGYWePSTX+HZHywm44lvj3TbV1xJ5FP3m/wVE6xUmBzP3XWOX9?=
- =?us-ascii?Q?EjGLdD+zWcYl/VP0ZWOYrANq0GbBF1RugqxZp+1TWupASTCaWdsdhpNfDkEq?=
- =?us-ascii?Q?x7Xk6/JqrOEWIT6xPpzI4r7QWJXyLtyxuhyKrv1Gc5zHbhlFLQ2DCUmYNpSP?=
- =?us-ascii?Q?Q//5CcnFM7ZVSZYGr3iy9Ms6B93f9noce2B+e1jwOem0NvJNpBgK3E83MPYH?=
- =?us-ascii?Q?5BezLAek36S+hqVh7I4bM8UGKFd7IaaVJ/x6nWVE7B/A6p41u4doCwl00Y1z?=
- =?us-ascii?Q?1aHDBjztRnYGrX5gA95XRcSNgfg9t+9H5dw/tj/K5NuXXZpUbzlevzVthfbO?=
- =?us-ascii?Q?6dTDUBxFWvU8M76qAKf37AdoucDaGY5Y/N/wzeGgZbPHxVL2tuF5NCxazJ6M?=
- =?us-ascii?Q?oqthl397aQWSSXe/LBycgf0xxyMbmEQkMbT+hKPVHj+NDr8PdlcQtcMj6yA7?=
- =?us-ascii?Q?fy4DxxsqnqVIWhXO3QyoCoHfk6PgW7yo/vXK/YKCIBJc13OCjUz20dXbMfk6?=
- =?us-ascii?Q?X9O7AA9saYrjM7eKia9MdIAfXz1MDZAftPDuzvXYGUdlCDTG0G2J1vb8qiPe?=
- =?us-ascii?Q?tITu6MfsKwB2q26ko3C6KoaSoiKVvmvue5qk37t6zffBH2ydWsV1YZ4LvtH1?=
- =?us-ascii?Q?lXT0xkTsTmKQll89uT81qNJP2/KhY5dPT/1Fr82mmlsnN+rzgpHtmNccMV5R?=
- =?us-ascii?Q?WkU+ktTQ7tzYO0JoFyVuuge3MvV4dxBw3cXQkJWlQyVAQmgBWhLAShdi+ycI?=
- =?us-ascii?Q?a0gpEEaNABAKgaVigqD36OYGC0vJRcWb7NbhTorgJv5AUQhYu6sopDusRt8s?=
- =?us-ascii?Q?ahTyJsJtDhTg4HUMBEJxuBx9wvy/zvYjM5QXvEjKxvcBvsrhl9/mGdYrU2cF?=
- =?us-ascii?Q?pwwgxONcisWn9R3oTVa5kjbeLXS1InSThO8Rho4r4JehSUxItotLBE7gwNB7?=
- =?us-ascii?Q?WEvLgb2LukLD6OjG/QfZcsDBU2K6XJ5HX37HYhToZgM4199xo24RhboSwMRy?=
- =?us-ascii?Q?RKueUeYpBnxnO4TRVbPHwi3mfSAjVn/HhvQGz2ySTdo8xaocYk0efmwM1+pl?=
- =?us-ascii?Q?VnBiITfZ7mejdLucgTIN9qauabsViOEtrLEtLyRwe/j3ZdPgqzf4pZ4+U0yv?=
- =?us-ascii?Q?1LU3wTgIl8t7Hf5Io+OFQxgtozHMewwglfUC2/k0S6zsyiLebAKHHfG0Qp+P?=
- =?us-ascii?Q?8tjCFZMNZTjB+SJXOD5xcP1sAX3k9vKaUYY8X/TEQna1dE0GYTkaLIMRTmwH?=
- =?us-ascii?Q?qlwIbO55GEzSsTRZ98RMovJAbxYT2hBwp2YobcEfW3SnUtszW9pbkczoA3xZ?=
- =?us-ascii?Q?XGolyVypmiuPEZHmUb0y47tyBt8x15N5eGM8V2QUr/EbUiLO6PvFGRR5ezLK?=
- =?us-ascii?Q?zJjpdTOdu86GHxIqC34ci2M4SCwGDqsyka5M+jLT?=
+	=?us-ascii?Q?2uzcvUDE0/us3sdpn7hW7oJPdlrAnmyRO9qqs7Rc2rQC0VQpwvSyJIVV8mWj?=
+ =?us-ascii?Q?Q5BCKzaPcLUS/kPR9xTeP1WulZde3wp3vEHH/4T5+QVd8ITVnKUD7laDUbAL?=
+ =?us-ascii?Q?OVOMAcbog1TirOQKFawyRQKsds99OpcEnIqFf81iUBR3W6COO/ICYQV2zUYB?=
+ =?us-ascii?Q?Ol/8q27c/ILuRILGZdBvDGGD5G+roHMWZWDz7qqnNq8ygALUxQQKiyGEC2jI?=
+ =?us-ascii?Q?qn9nIedyVNoHQpbeXty8AXXjkak+5r5kdeAPSYT0rAjYv4SB++bROcKshg7v?=
+ =?us-ascii?Q?XCrL1OgjhzIcu/TaO0u+kQAl4tH8OT8lWH9H6sOkEIRWu1W52Fgfsm9Eygp4?=
+ =?us-ascii?Q?5XFHDelWSRobuWpQf08D6+GaBF1hDcnuyUmqoGa7cwkVfLgq03Z5nDHw6uvy?=
+ =?us-ascii?Q?EhihzBXGmz8c48r6IL884c0lmVgw1zdyP/rFCB3i16HbN8o/VCUQ4tYKzm5R?=
+ =?us-ascii?Q?PfFk6QMpr03yCd2G9Y1SrHzIui7Ouf//dbangsoMJecdyPKThgRYTu5rV/Qa?=
+ =?us-ascii?Q?lfyaCZDbFyZe8XsULV7ZA9k6MIxFKFjh2rdRbvnkBL/8c/zwmKBps40Lolu+?=
+ =?us-ascii?Q?11Z90p05QWzGPLSjwEqBJ4+dXDKOOuBickY9jlQa6zqmyKKoUXdq+HntkvqK?=
+ =?us-ascii?Q?Nqox1LD6xR03jPkU7pNOIRPCqT+LSBq74ynxmm5utIsQOUINTZ+UiZHfNPy4?=
+ =?us-ascii?Q?58sDHyj0Q8z31aUpGUGU76yltdEW1mlg2BipkuJypaH+bq3Hkgi+vSaFLi8U?=
+ =?us-ascii?Q?emWP/xeo8NkNvVMIsrZmDejvMB6DCh/rWXBZxaoo3pxhIfcm/Onhuej1HT9N?=
+ =?us-ascii?Q?y/zpZgFI2NWtquWep+DH/R5JAjoeqrOT1ldBnpN/tZ8rsdHwBZteZacFm5hu?=
+ =?us-ascii?Q?mEn0DPrpJNHzhKHnDG+LpNq6NpUII7/3WLKeVOnLiLrcFzt4MVDSez9ErSbW?=
+ =?us-ascii?Q?6CuwYnca2DPuRVcU5Fc+vsC/IkeJK/bIdWWuatRi3HL4os3JrELaDpYtge8b?=
+ =?us-ascii?Q?2vxacSUiz0s5SFFVvUaW1cPijlCLO8LeanccnWZ/iMtrMWMPcrf5394CA6s6?=
+ =?us-ascii?Q?nQZTeSAK/wginFqtH0UHtn56PIG/sZwGcFjGym1JLpaCBDSGF07/QEoZE3O4?=
+ =?us-ascii?Q?yddO7H0cWrpnOfuy0HJlXuNlcjNjOJbYcA5hGDRMWQwD0uvvGgzIxRmJq3Gu?=
+ =?us-ascii?Q?7M5DhVtaz64n9wkAjS9gZsz/WasqcNdYJYpBS8bw7+ocGShE70RtYBSrHaDF?=
+ =?us-ascii?Q?FmTmcQDogvXORNkA+7QuMXCZSown+M6PUiFvwU26z5uMihYvAzzc06U9rYPW?=
+ =?us-ascii?Q?LFEE+jn0MfI4DsBaONuhizH6GarcGPL6bumSmUHCH7sq6RkDDqa5odOa9LDB?=
+ =?us-ascii?Q?7dKuI/y8tzwBgxDrbcufIBNHGnkaSP9ulicOiVLX5T1D0SH2qCqbUf8UP/l2?=
+ =?us-ascii?Q?13xqeGd9dT1xVQ3QdQtSsTRth3pDxjugdd6zyjStv8P2xfJ4wLabJkKAKI2+?=
+ =?us-ascii?Q?wAWidDTzFS0534fQQOWKLKi7TK/BpSDW6vsQEB11q6g9BiH/zHH67aoKh6bJ?=
+ =?us-ascii?Q?JnwujXBboFsggvaFEgnwBL6vJR0AE1x25AAy85Md?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ecfe4436-4b4b-4249-9c26-08dce24749f0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d423bdf-4023-448f-227d-08dce2485d18
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2024 18:31:39.1787
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2024 18:39:20.8681
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f5UcI5U4yPUwtoIE9z1MmsqGkU/2TQcOOBQ028tsbnX/ODZANEqi2T9lvrnWx2LBEJUbOrNPihIb4sZdVCPdhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO9P265MB7730
+X-MS-Exchange-CrossTenant-UserPrincipalName: b/CaikX+0R8fw36F8NMlGNeuwT6huBfm0JPi0A23+2wyGyVjmM7+OMuvrMfGkNGfeLbygxuPp0rLH1pA3XXV0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6530
 
-On Tue,  1 Oct 2024 16:59:50 +0200
+On Tue,  1 Oct 2024 16:59:51 +0200
 Danilo Krummrich <dakr@kernel.org> wrote:
 
-> From: Benno Lossin <benno.lossin@proton.me>
+> `Vec` provides a contiguous growable array type with contents allocated
+> with the kernel's allocators (e.g. `Kmalloc`, `Vmalloc` or `KVmalloc`).
 > 
-> When allocating memory for arrays using allocators, the `Layout::array`
-> function is typically used. It returns a result, since the given size
-> might be too big. However, `Vec` and its iterators store their allocated
-> capacity and thus they already did check that the size is not too big.
+> In contrast to Rust's stdlib `Vec` type, the kernel `Vec` type considers
+> the kernel's GFP flags for all appropriate functions, always reports
+> allocation failures through `Result<_, AllocError>` and remains
+> independent from unstable features.
 > 
-> The `ArrayLayout` type provides this exact behavior, as it can be
-> infallibly converted into a `Layout`. Instead of a `usize` capacity,
-> `Vec` and other similar array-storing types can use `ArrayLayout`
-> instead.
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+Thanks a lot for your work. I think this is much cleaner with the ZST
+handling offloaded to `Allocator` and overload checking offloaded to
+`ArrayLayout`.
+
+Some nits below, although I think we should apply this and then address
+the nits with follow up patches (some may also be good first issues).
+
+Therefore:
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
+Best,
+Gary
+
 > ---
->  rust/kernel/alloc.rs        |  1 +
->  rust/kernel/alloc/layout.rs | 91 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 92 insertions(+)
->  create mode 100644 rust/kernel/alloc/layout.rs
+>  rust/kernel/alloc.rs      |   6 +
+>  rust/kernel/alloc/kvec.rs | 637 ++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/prelude.rs    |   2 +-
+>  3 files changed, 644 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/kernel/alloc/kvec.rs
 > 
 > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index ebe58247504f..bf143a71d53d 100644
+> index bf143a71d53d..961070daf6db 100644
 > --- a/rust/kernel/alloc.rs
 > +++ b/rust/kernel/alloc.rs
 > @@ -5,6 +5,7 @@
 >  #[cfg(not(any(test, testlib)))]
 >  pub mod allocator;
 >  pub mod kbox;
-> +pub mod layout;
+> +pub mod kvec;
+>  pub mod layout;
 >  pub mod vec_ext;
 >  
->  #[cfg(any(test, testlib))]
-> diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
+> @@ -19,6 +20,11 @@
+>  pub use self::kbox::KVBox;
+>  pub use self::kbox::VBox;
+>  
+> +pub use self::kvec::KVVec;
+> +pub use self::kvec::KVec;
+> +pub use self::kvec::VVec;
+> +pub use self::kvec::Vec;
+> +
+>  /// Indicates an allocation error.
+>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+>  pub struct AllocError;
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
 > new file mode 100644
-> index 000000000000..a9c987aad8fb
+> index 000000000000..44aade0a653b
 > --- /dev/null
-> +++ b/rust/kernel/alloc/layout.rs
-> @@ -0,0 +1,91 @@
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -0,0 +1,637 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Memory layout.
-> +//!
-> +//! Custom layout types extending or improving [`Layout`].
+> +//! Implementation of [`Vec`].
 > +
-> +use core::{alloc::Layout, marker::PhantomData};
+> +use super::{
+> +    allocator::{KVmalloc, Kmalloc, Vmalloc},
+> +    layout::ArrayLayout,
+> +    AllocError, Allocator, Box, Flags,
+> +};
+> +use core::{
+> +    fmt,
+> +    marker::PhantomData,
+> +    mem::{ManuallyDrop, MaybeUninit},
+> +    ops::Deref,
+> +    ops::DerefMut,
+> +    ops::Index,
+> +    ops::IndexMut,
+> +    ptr,
+> +    ptr::NonNull,
+> +    slice,
+> +    slice::SliceIndex,
+> +};
 > +
-> +/// Error when constructing an [`ArrayLayout`].
-> +pub struct LayoutError;
+> +/// Create a [`KVec`] containing the arguments.
+
+This should mention that it allocates using `GFP_KERNEL`.
+
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let mut v = kernel::kvec![];
+> +/// v.push(1, GFP_KERNEL)?;
+> +/// assert_eq!(v, [1]);
+> +///
+> +/// let mut v = kernel::kvec![1; 3]?;
+> +/// v.push(4, GFP_KERNEL)?;
+> +/// assert_eq!(v, [1, 1, 1, 4]);
+> +///
+> +/// let mut v = kernel::kvec![1, 2, 3]?;
+> +/// v.push(4, GFP_KERNEL)?;
+> +/// assert_eq!(v, [1, 2, 3, 4]);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[macro_export]
+> +macro_rules! kvec {
+> +    () => (
+> +        $crate::alloc::KVec::new()
+> +    );
+> +    ($elem:expr; $n:expr) => (
+> +        $crate::alloc::KVec::from_elem($elem, $n, GFP_KERNEL)
+> +    );
+> +    ($($x:expr),+ $(,)?) => (
+> +        match $crate::alloc::KBox::new_uninit(GFP_KERNEL) {
+> +            Ok(b) => Ok($crate::alloc::KVec::from($crate::alloc::KBox::write(b, [$($x),+]))),
+> +            Err(e) => Err(e),
+> +        }
+> +    );
+> +}
 > +
-> +/// A layout for an array `[T; n]`.
+> +/// The kernel's [`Vec`] type.
+> +///
+> +/// A contiguous growable array type with contents allocated with the kernel's allocators (e.g.
+> +/// [`Kmalloc`], [`Vmalloc`] or [`KVmalloc`]), written `Vec<T, A>`.
+> +///
+> +/// For non-zero-sized values, a [`Vec`] will use the given allocator `A` for its allocation. For
+> +/// the most common allocators the type aliases [`KVec`], [`VVec`] and [`KVVec`] exist.
+> +///
+> +/// For zero-sized types the [`Vec`]'s pointer must be `dangling_mut::<T>`; no memory is allocated.
+> +///
+> +/// Generally, [`Vec`] consists of a pointer that represents the vector's backing buffer, the
+> +/// capacity of the vector (the number of elements that currently fit into the vector), it's length
+> +/// (the number of elements that are currently stored in the vector) and the `Allocator` type used
+> +/// to allocate (and free) the backing buffer.
+> +///
+> +/// A [`Vec`] can be deconstructed into and (re-)constructed from it's previously named raw parts
+> +/// and manually modified.
+> +///
+> +/// [`Vec`]'s backing buffer gets, if required, automatically increased (re-allocated) when elements
+> +/// are added to the vector.
 > +///
 > +/// # Invariants
 > +///
-> +/// - `len * size_of::<T>() <= isize::MAX`
-> +pub struct ArrayLayout<T> {
+> +/// - `self.ptr` is always properly aligned and either points to memory allocated with `A` or, for
+> +///   zero-sized types, is a dangling, well aligned pointer.
+> +///
+> +/// - `self.len` always represents the exact number of elements stored in the vector.
+> +///
+> +/// - `self.layout` represents the absolute number of elements that can be stored within the vector
+> +///   without re-allocation. However, it is legal for the backing buffer to be larger than `layout`.
+> +///
+> +/// - The `Allocator` type `A` of the vector is the exact same `Allocator` type the backing buffer
+> +///   was allocated with (and must be freed with).
+> +pub struct Vec<T, A: Allocator> {
+> +    ptr: NonNull<T>,
+> +    /// Represents the actual buffer size as `cap` times `size_of::<T>` bytes.
+> +    ///
+> +    /// Note: This isn't quite the same as `Self::capacity`, which in contrast returns the number of
+> +    /// elements we can still store without reallocating.
+> +    layout: ArrayLayout<T>,
 > +    len: usize,
-> +    _phantom: PhantomData<fn() -> T>,
+> +    _p: PhantomData<A>,
 > +}
 > +
-> +impl<T> Clone for ArrayLayout<T> {
-> +    fn clone(&self) -> Self {
-> +        *self
-> +    }
+> +/// Type alias for [`Vec`] with a [`Kmalloc`] allocator.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let mut v = KVec::new();
+> +/// v.push(1, GFP_KERNEL)?;
+> +/// assert_eq!(&v, &[1]);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type KVec<T> = Vec<T, Kmalloc>;
+> +
+> +/// Type alias for [`Vec`] with a [`Vmalloc`] allocator.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let mut v = VVec::new();
+> +/// v.push(1, GFP_KERNEL)?;
+> +/// assert_eq!(&v, &[1]);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type VVec<T> = Vec<T, Vmalloc>;
+> +
+> +/// Type alias for [`Vec`] with a [`KVmalloc`] allocator.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let mut v = KVVec::new();
+> +/// v.push(1, GFP_KERNEL)?;
+> +/// assert_eq!(&v, &[1]);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type KVVec<T> = Vec<T, KVmalloc>;
+> +
+> +// SAFETY: `Vec` is `Send` if `T` is `Send` because `Vec` owns its elements.
+> +unsafe impl<T, A> Send for Vec<T, A>
+> +where
+> +    T: Send,
+> +    A: Allocator,
+> +{
 > +}
-> +impl<T> Copy for ArrayLayout<T> {}
 > +
-> +const ISIZE_MAX: usize = isize::MAX as usize;
+> +// SAFETY: `Vec` is `Sync` if `T` is `Sync` because `Vec` owns its elements.
+> +unsafe impl<T, A> Sync for Vec<T, A>
+> +where
+> +    T: Sync,
+> +    A: Allocator,
+> +{
+> +}
 > +
-> +impl<T> ArrayLayout<T> {
-> +    /// Creates a new layout for `[T; 0]`.
-> +    pub const fn empty() -> Self {
-> +        // INVARIANT: `0 * size_of::<T>() <= isize::MAX`
-> +        Self {
-> +            len: 0,
-> +            _phantom: PhantomData,
+> +impl<T, A> Vec<T, A>
+> +where
+> +    A: Allocator,
+> +{
+> +    #[inline]
+> +    const fn is_zst() -> bool {
+> +        core::mem::size_of::<T>() == 0
+> +    }
+> +
+> +    /// Returns the number of elements that can be stored within the vector without allocating
+> +    /// additional memory.
+> +    pub fn capacity(&self) -> usize {
+> +        if const { Self::is_zst() } {
+> +            usize::MAX
+> +        } else {
+> +            self.layout.len()
 > +        }
 > +    }
 > +
-> +    /// Creates a new layout for `[T; len]`.
-> +    ///
-> +    /// # Errors
-> +    ///
-> +    /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
-> +    pub const fn new(len: usize) -> Result<Self, LayoutError> {
-> +        match len.checked_mul(size_of::<T>()) {
-> +            Some(len) if len <= ISIZE_MAX => {
-> +                // INVARIANT: we checked above that `len * size_of::<T>() <= isize::MAX`
-> +                Ok(Self {
-> +                    len,
-> +                    _phantom: PhantomData,
-> +                })
-> +            }
-> +            _ => Err(LayoutError),
-> +        }
-> +    }
-> +
-> +    /// Creates a new layout for `[T; len]`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `len` must be a value, for which `len * size_of::<T>() <= isize::MAX` is true.
-> +    pub unsafe fn new_unchecked(len: usize) -> Self {
-
-nit: this can also be const, although this can be added when need arise
-(or one may use `new(...).unwrap()` in const context, since it doesn't
-actually generate a call to `BUG`).
-
-> +        // INVARIANT: By the safety requirements of this function
-> +        // `len * size_of::<T>() <= isize::MAX`.
-> +        Self {
-> +            len,
-> +            _phantom: PhantomData,
-> +        }
-> +    }
-> +
-> +    /// Returns the number of array elements represented by this layout.
-> +    pub const fn len(&self) -> usize {
+> +    /// Returns the number of elements stored within the vector.
+> +    #[inline]
+> +    pub fn len(&self) -> usize {
 > +        self.len
 > +    }
 > +
-> +    /// Returns `true` when no array elements are represented by this layout.
-> +    pub const fn is_empty(&self) -> bool {
-> +        self.len == 0
+> +    /// Forcefully sets `self.len` to `new_len`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `new_len` must be less than or equal to [`Self::capacity`].
+> +    /// - If `new_len` is greater than `self.len`, all elements within the interval
+> +    ///   [`self.len`,`new_len`) must be initialized.
+> +    #[inline]
+> +    pub unsafe fn set_len(&mut self, new_len: usize) {
+> +        debug_assert!(new_len <= self.capacity());
+> +        self.len = new_len;
 > +    }
-> +}
 > +
-> +impl<T> From<ArrayLayout<T>> for Layout {
-> +    fn from(value: ArrayLayout<T>) -> Self {
-> +        let res = Layout::array::<T>(value.len);
-> +        // SAFETY: by the type invariant of `ArrayLayout` we have
-> +        // `len * size_of::<T>() <= isize::MAX` and thus the result must be `Ok`.
-> +        unsafe { res.unwrap_unchecked() }
+> +    /// Returns a slice of the entire vector.
+> +    #[inline]
+> +    pub fn as_slice(&self) -> &[T] {
+> +        self
+> +    }
+> +
+> +    /// Returns a mutable slice of the entire vector.
+> +    #[inline]
+> +    pub fn as_mut_slice(&mut self) -> &mut [T] {
+> +        self
+> +    }
+> +
+> +    /// Returns a mutable raw pointer to the vector's backing buffer, or, if `T` is a ZST, a
+> +    /// dangling raw pointer.
+> +    #[inline]
+> +    pub fn as_mut_ptr(&mut self) -> *mut T {
+> +        self.ptr.as_ptr()
+> +    }
+> +
+> +    /// Returns a raw pointer to the vector's backing buffer, or, if `T` is a ZST, a dangling raw
+> +    /// pointer.
+> +    #[inline]
+> +    pub fn as_ptr(&self) -> *const T {
+> +        self.ptr.as_ptr()
+> +    }
+> +
+> +    /// Returns `true` if the vector contains no elements, `false` otherwise.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = KVec::new();
+> +    /// assert!(v.is_empty());
+> +    ///
+> +    /// v.push(1, GFP_KERNEL);
+> +    /// assert!(!v.is_empty());
+> +    /// ```
+> +    #[inline]
+> +    pub fn is_empty(&self) -> bool {
+> +        self.len() == 0
+> +    }
+> +
+> +    /// Creates a new, empty Vec<T, A>.
+> +    ///
+> +    /// This method does not allocate by itself.
+> +    #[inline]
+> +    pub const fn new() -> Self {
+
+Missing // INVARIANT here.
+
+> +        Self {
+> +            ptr: NonNull::dangling(),
+> +            layout: ArrayLayout::empty(),
+> +            len: 0,
+> +            _p: PhantomData::<A>,
+> +        }
+> +    }
+> +
+> +    /// Returns a slice of `MaybeUninit<T>` for the remaining spare capacity of the vector.
+> +    pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+> +        // SAFETY:
+> +        // - `self.len` is smaller than `self.capacity` and hence, the resulting pointer is
+> +        //   guaranteed to be part of the same allocated object.
+> +        // - `self.len` can not overflow `isize`.
+> +        let ptr = unsafe { self.as_mut_ptr().add(self.len) } as *mut MaybeUninit<T>;
+> +
+> +        // SAFETY: The memory between `self.len` and `self.capacity` is guaranteed to be allocated
+> +        // and valid, but uninitialized.
+> +        unsafe { slice::from_raw_parts_mut(ptr, self.capacity() - self.len) }
+> +    }
+> +
+> +    /// Appends an element to the back of the [`Vec`] instance.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = KVec::new();
+> +    /// v.push(1, GFP_KERNEL)?;
+> +    /// assert_eq!(&v, &[1]);
+> +    ///
+> +    /// v.push(2, GFP_KERNEL)?;
+> +    /// assert_eq!(&v, &[1, 2]);
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+> +        self.reserve(1, flags)?;
+> +
+> +        // SAFETY:
+> +        // - `self.len` is smaller than `self.capacity` and hence, the resulting pointer is
+> +        //   guaranteed to be part of the same allocated object.
+> +        // - `self.len` can not overflow `isize`.
+> +        let ptr = unsafe { self.as_mut_ptr().add(self.len) };
+> +
+> +        // SAFETY:
+> +        // - `ptr` is properly aligned and valid for writes.
+> +        unsafe { core::ptr::write(ptr, v) };
+> +
+> +        // SAFETY: We just initialised the first spare entry, so it is safe to increase the length
+> +        // by 1. We also know that the new length is <= capacity because of the previous call to
+> +        // `reserve` above.
+> +        unsafe { self.set_len(self.len() + 1) };
+> +        Ok(())
+> +    }
+> +
+> +    /// Creates a new [`Vec`] instance with at least the given capacity.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let v = KVec::<u32>::with_capacity(20, GFP_KERNEL)?;
+> +    ///
+> +    /// assert!(v.capacity() >= 20);
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn with_capacity(capacity: usize, flags: Flags) -> Result<Self, AllocError> {
+> +        let mut v = Vec::new();
+> +
+> +        v.reserve(capacity, flags)?;
+> +
+> +        Ok(v)
+> +    }
+> +
+> +    /// Creates a Vec<T, A> from a pointer, a length and a capacity using the allocator `A`.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = kernel::kvec![1, 2, 3]?;
+> +    /// v.reserve(1, GFP_KERNEL)?;
+> +    ///
+> +    /// let (mut ptr, mut len, cap) = v.into_raw_parts();
+> +    ///
+> +    /// // SAFETY: We've just reserved memory for another element.
+> +    /// unsafe { ptr.add(len).write(4) };
+> +    /// len += 1;
+> +    ///
+> +    /// // SAFETY: We only wrote an additional element at the end of the `KVec`'s buffer and
+> +    /// // correspondingly increased the length of the `KVec` by one. Otherwise, we construct it
+> +    /// // from the exact same raw parts.
+> +    /// let v = unsafe { KVec::from_raw_parts(ptr, len, cap) };
+> +    ///
+> +    /// assert_eq!(v, [1, 2, 3, 4]);
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// If `T` is a ZST:
+> +    ///
+> +    /// - `ptr` must be a dangling, well aligned pointer.
+> +    ///
+> +    /// Otherwise:
+> +    ///
+> +    /// - `ptr` must have been allocated with the allocator `A`.
+> +    /// - `ptr` must satisfy or exceed the alignment requirements of `T`.
+> +    /// - `ptr` must point to memory with a size of at least `size_of::<T>() * capacity`.
+> +    ///    bytes.
+> +    /// - The allocated size in bytes must not be larger than `isize::MAX`.
+> +    /// - `length` must be less than or equal to `capacity`.
+> +    /// - The first `length` elements must be initialized values of type `T`.
+> +    ///
+> +    /// It is also valid to create an empty `Vec` passing a dangling pointer for `ptr` and zero for
+> +    /// `cap` and `len`.
+> +    pub unsafe fn from_raw_parts(ptr: *mut T, length: usize, capacity: usize) -> Self {
+> +        let layout = if Self::is_zst() {
+> +            ArrayLayout::empty()
+> +        } else {
+> +            // SAFETY: By the safety requirements of this function, `capacity * size_of::<T>()` is
+> +            // smaller than `isize::MAX`.
+> +            unsafe { ArrayLayout::new_unchecked(capacity) }
+> +        };
+
+Missing // INVARIANT here.
+
+> +
+> +        Self {
+> +            // SAFETY: By the safety requirements, `ptr` is either dangling or pointing to a valid
+> +            // memory allocation, allocated with `A`.
+> +            ptr: unsafe { NonNull::new_unchecked(ptr) },
+> +            layout,
+> +            len: length,
+> +            _p: PhantomData::<A>,
+> +        }
+> +    }
+> +
+> +    /// Consumes the `Vec<T, A>` and returns its raw components `pointer`, `length` and `capacity`.
+> +    ///
+> +    /// This will not run the destructor of the contained elements and for non-ZSTs the allocation
+> +    /// will stay alive indefinitely. Use [`Vec::from_raw_parts`] to recover the [`Vec`], drop the
+> +    /// elements and free the allocation, if any.
+> +    pub fn into_raw_parts(self) -> (*mut T, usize, usize) {
+> +        let mut me = ManuallyDrop::new(self);
+> +        let len = me.len();
+> +        let capacity = me.capacity();
+> +        let ptr = me.as_mut_ptr();
+> +        (ptr, len, capacity)
+> +    }
+> +
+> +    /// Ensures that the capacity exceeds the length by at least `additional`
+> +    /// elements.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = KVec::new();
+> +    /// v.push(1, GFP_KERNEL)?;
+> +    ///
+> +    /// v.reserve(10, GFP_KERNEL)?;
+> +    /// let cap = v.capacity();
+> +    /// assert!(cap >= 10);
+> +    ///
+> +    /// v.reserve(10, GFP_KERNEL)?;
+> +    /// let new_cap = v.capacity();
+> +    /// assert_eq!(new_cap, cap);
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocError> {
+> +        let len = self.len();
+> +        let cap = self.capacity();
+> +
+> +        if cap - len >= additional {
+> +            return Ok(());
+> +        }
+> +
+> +        if Self::is_zst() {
+> +            // The capacity is already `usize::MAX` for ZSTs, we can't go higher.
+> +            return Err(AllocError);
+> +        }
+> +
+> +        // We know that `cap <= isize::MAX` because of the type invariants of `Self`. So the
+> +        // multiplication by two won't overflow.
+> +        let new_cap = core::cmp::max(cap * 2, len.checked_add(additional).ok_or(AllocError)?);
+> +        let layout = ArrayLayout::new(new_cap).map_err(|_| AllocError)?;
+> +
+> +        // SAFETY:
+> +        // - `ptr` is valid because it's either `None` or comes from a previous call to
+> +        //   `A::realloc`.
+> +        // - `self.layout` matches the `ArrayLayout` of the preceeding allocation.
+> +        let ptr = unsafe {
+> +            A::realloc(
+> +                Some(self.ptr.cast()),
+> +                layout.into(),
+> +                self.layout.into(),
+> +                flags,
+> +            )?
+> +        };
+
+Missing // INVARIANT here.
+
+> +
+> +        self.ptr = ptr.cast();
+> +        self.layout = layout;
+> +
+> +        Ok(())
 > +    }
 > +}
 
