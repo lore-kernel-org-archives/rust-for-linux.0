@@ -1,101 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800781CBEA9;
-	Tue,  1 Oct 2024 15:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E209B1C5782;
+	Tue,  1 Oct 2024 15:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727794973; cv=none; b=Y2ml5nw5d3BR6r+I4CJ4Oj/2NSmlAXswHxrLYjwLBQTaD5zYxSmaq5M/MSazeMWMTq2DyISa+Odbx67L+oboG9YCWyuojNkxyPkahA7ToMXzaOSst7XsOOmdVoWl0FHs+vOdE5+TbpHrirW4O4eJFQ7sw+RQnEzv7CkHvpAIrt0=
+	t=1727795308; cv=none; b=Z/TuKzN+WMGiSbUR3V4nDNtvVGXY4qE2KW51mPC97+o6PzjUMeoTMweh9Adftl+s2Dk8Av2XcWfFMMmfj9OTEYAbvKy7T/MpE4tlFcUkvNVPtxzvbulj9MFCprrlduDLzSskZzNQMA1OZeMnBKtkfyFNKOKBD2srBUyWIuYDu5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727794973; c=relaxed/simple;
-	bh=5WhXHbdkvCvx2BiDbC2YGf2YH6m+QGC4hgOdP8LRL/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2fAx+UThKFCEyZ5djsoTQouSVOLisllzpYbHb+j35vYKm1R82Vgekw997MlTtEvC8Zb/YxYmN1o/G3EpCr17E4OveaGmwgVmVDgHNPSKrcM0VWEiFQODaNH83DfCBYZZKiX/Glo2IcZYi8wzvtYZoWEIqfxSH4enspoj+TO2ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRxFv1vq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727795308; c=relaxed/simple;
+	bh=lpMYwuYF4ckUJX2+wXsUeHwRiLsoHg86KlylTNrREng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Yc3x7vexHJTV4jJuFEMFik09A/eTtRX2BYmlUae8I4S5I211LWPSEw/f2d8QJ3imOo1df5bleQgJQIVyOPCG9x1EixHFB8Kgn4n+Kq0oFMG/QYx8g1HAJssrvYyA0/gsBRdSnNJje+DRhHwng8361+jNEQf3hNVavhMw5xK8jHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hrmgohbU; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRxFv1vq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31880C4CEC7;
-	Tue,  1 Oct 2024 15:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727794973;
-	bh=5WhXHbdkvCvx2BiDbC2YGf2YH6m+QGC4hgOdP8LRL/M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRxFv1vqGJmKwc0Q+OIGBKJ0n6aReQHI1G1uiAx7R6CXZwLUZPy2wVbtreTtE9euP
-	 s2dT/+RMLyEDr5f1mMvCLIXqOD5fTE9yPmQ3P+YyEvgU9LqT6BWom5bOCJuJVmkqaX
-	 deV3L9KHhHe2mCYzEJm78GcPT4+SA3tpuhSA4KkpNoVGTZDBm5oyHHBx0HeRZqxzHH
-	 w2SQ20rvlgK+0zjc/KLTAT+j87VPRmflRjp/DBZOvoiK9Ga7tBWLfBfjNYdfbOdezn
-	 HUI+FcZp70AWKd2rMAgloTnBYbFwNjA8SEywnUslSnmpMpb/B5ha2lDkirXXmrk6jZ
-	 0B9TDthI3f/Ww==
-From: Danilo Krummrich <dakr@kernel.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	akpm@linux-foundation.org
-Cc: daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com,
-	lina@asahilina.net,
-	mcanal@igalia.com,
-	zhiw@nvidia.com,
-	cjia@nvidia.com,
-	jhubbard@nvidia.com,
-	airlied@redhat.com,
-	ajanulgu@redhat.com,
-	lyude@redhat.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v8 29/29] MAINTAINERS: add entry for the Rust `alloc` module
-Date: Tue,  1 Oct 2024 17:00:04 +0200
-Message-ID: <20241001150008.183102-30-dakr@kernel.org>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20241001150008.183102-1-dakr@kernel.org>
-References: <20241001150008.183102-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hrmgohbU"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5398aeceb51so508941e87.0;
+        Tue, 01 Oct 2024 08:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727795305; x=1728400105; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9EyuiSc0bXtkb+5216IBjp5AP5vKc6ihFV2MzU9RPgM=;
+        b=hrmgohbUWMV5KlDSHUzDUZOPZhCCPMgKGNieKA4CS8YkSpsxqkIHCazysbOk3VoIz7
+         4oLWrxgSLSmmDNZyE9eXeGCJTWG5VF7vYlqetgN9QJVaqwqJUyIc++J8hIVOQ7qWcku/
+         RSAQZrFSPlbmra/f8LPlrl1HgC4cmIkRkMIrl6xnn2eJ+ul71MOo6usjY74rBslo+Y2d
+         eAnTy+FRwZdvHXSejhcEFdwBdWQFalT9DCsOU4CuQUH740kdhobMzyrEJM9ABXaMpYi5
+         Mi0FhvfKWnZBlCc2tIy9ifStAbGdO00yX3d0tBYqXUGRHPy/J6POsOlZm3Gtkwg1ILg2
+         tDNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727795305; x=1728400105;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9EyuiSc0bXtkb+5216IBjp5AP5vKc6ihFV2MzU9RPgM=;
+        b=EWLNrvkFuuFLt6Z91vAwDeh2L3HiejocHj4Lj0znUJjnskRKmll7OdZzb9B+XW9zWK
+         j3HTFzP+2lSFr/y/I6Zqw7Tpv7w2DfeWudr+Afr2mfbCi29/pH4Hrz9ZZaQwZUf/8We2
+         uW0tN8+MT8lJILd8Ey3hAz+a78G+3sc4ilea2fPbmamMXXmQmjO5qh6RO9aoJPjDYDQT
+         EW+4DxX9RE7DeTXDb+Qx3mIZIi5Kf5JF+zkkhosbF4rfNcmGuSddTxm2G76Jz4rCP/VK
+         gbIYrQ/xMuIhhPKNIWApBC6s5Q+TtQX4QGzrX1TdhLlYINFFcX/WqOJrBDdNcDFZDxoH
+         nY7g==
+X-Forwarded-Encrypted: i=1; AJvYcCW+33VUVXu9WjZk+0uW8T6RShrx0jTcT7bhK9TRE6O1g3sFLh/PGk09W4bi3ghy1MS1q0GYEf0=@vger.kernel.org, AJvYcCW/vtrzB6GM1q3/uN5Y48D2AmHJ6jmdUNU9w4z7ym9d3hlARZ2R0HAGqULcBnd9c0k1ZdSxtuz3ug7miAmz0T4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmfkVC3J1wZZEGdBbfOqA1BUt8BsR95LpFl3dJW4oUJEXYHWyR
+	9zwL+WwmOs8njx0rR9RrKMxdKLAM1OU+Avbtyhi/si0TsFZDZBkvjgQ2r0RJsP9AHMvtJ5OdLcY
+	vW+GIMQqckn+ghzVe+J3vMR1kvzU=
+X-Google-Smtp-Source: AGHT+IG343eghsQFfS0pE0H59wL9W/6Hh3fwyaDyGe910LdOZrZUadoj4OqvtmS3yBsiz2VTPtOmTEMqGWwPlNH5Zd0=
+X-Received: by 2002:a05:6512:3b89:b0:52f:cfba:403c with SMTP id
+ 2adb3069b0e04-5389fc3a056mr2294098e87.3.1727795304769; Tue, 01 Oct 2024
+ 08:08:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+ <20241001112512.4861-2-fujita.tomonori@gmail.com> <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+In-Reply-To: <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 1 Oct 2024 17:08:06 +0200
+Message-ID: <CANiq72kgw40T+taVCBh5Onr5giUF7xx+wPS0CqNMQh9Lf_YOrQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add maintainers entry for the Rust `alloc` module.
+On Tue, Oct 1, 2024 at 2:31=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Is it possible to cross reference
+> Documentation/timers/timers-howto.rst ?  fsleep() points to it, so it
+> would e good if the Rust version also did.
 
-Currently, this includes the `Allocator` API itself, `Allocator`
-implementations, such as `Kmalloc` or `Vmalloc`, as well as the kernel's
-implementation of the primary memory allocation data structures, `Box`
-and `Vec`.
+We currently use links like:
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+    //! Reference: <https://docs.kernel.org/core-api/rbtree.html>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c27f3190737f..3091ea621b5e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20225,6 +20225,13 @@ F:	scripts/*rust*
- F:	tools/testing/selftests/rust/
- K:	\b(?i:rust)\b
- 
-+RUST [ALLOC]
-+M:	Danilo Krummrich <dakr@kernel.org>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	rust/kernel/alloc.rs
-+F:	rust/kernel/alloc/
-+
- RXRPC SOCKETS (AF_RXRPC)
- M:	David Howells <dhowells@redhat.com>
- M:	Marc Dionne <marc.dionne@auristor.com>
--- 
-2.46.1
-
+Cheers,
+Miguel
