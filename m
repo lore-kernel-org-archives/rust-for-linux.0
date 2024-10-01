@@ -1,120 +1,103 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5C11BE870
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 10:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8334439B;
+	Tue,  1 Oct 2024 11:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727780284; cv=none; b=SylH23Rduw/OGOBzp5Hs+PsZird/DjSiFr4ts45XQb6ikiF71V09OFVT8vnklnqIYRDplyDZagqAx7QDiSIdJbI9Tfi0J6SAFhB1dtH3x8/kE08i7MLFqP5tk0pwZgwYYo4IYKgcehPt48B/BXHDoH+1pZcQuUIvsCb1t7JNxBA=
+	t=1727781561; cv=none; b=ODYlDOuqboQMUIpg8nfq4f9kI8xibdps5iaZ94PMiSvql+Cbw6AZ7/+7p2fB6bDKm7MvDDMAdjGsX3UzEub0P1QB/iFQOTsiVXU+zDLbv9Z6b0iG2UJOR0tUKAAgkUmrdOWlCDgqm65EDDRPEKdbKgyOU1UuRvnpuRpUGo5MF90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727780284; c=relaxed/simple;
-	bh=60EhXKAteHv2MPzzdgUAD7FikabFpPaPZwrLroTEnQg=;
+	s=arc-20240116; t=1727781561; c=relaxed/simple;
+	bh=7gz+42kgK/bnSKCIOOtjqUw3T5MP6gnuAfi82O4lUYA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lgOZihmKYWqS3RffREb7TvYgCXRDIr5KVRsL9E1drVJ4yPUr0MejqSlQd0hrkgCQBZHH+Tsrf3VOXasln1aHzPBx7h3WoeEFqbu3bxvMG/Xym2KHGLfAy/7DlifMkaqF+s92o72iKnlVeI9IOmg7b5TegJqeVhnCxRN1ROoCvlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=efNyB8Z+; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=nxl4TftD8onAKyGkirXEDgEAz2yDpgwqkEAtpHJZtrVwESGoHhlhcKb05NoLwdm9uNgXojQVS8txTB0CUyQHwz7nRCSvgToOzPVMb7VwvP8YliI2WEKlT8xwNHipnuIFSKnKVcwUN6MI4fRfK9RovHqqDhkeeFqvtVFx5OvmqY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f9WRznLm; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="efNyB8Z+"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37cca239886so3061404f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Oct 2024 03:58:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f9WRznLm"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4583209a17dso55121821cf.1;
+        Tue, 01 Oct 2024 04:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727780281; x=1728385081; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a1/SnEV7GpnCmA2f8SClpEwW0fcraNKH9MQf0vKkPjQ=;
-        b=efNyB8Z+AvCwCkWkdL4h24U/TWX5Xmp4VJ2RIHSU9QUZq10Id9xKOA+YeAxKOonZW3
-         N4rMc0/lYeVT6M95i6G5Yt1SfO3gBVE/ICwXCEkuhh0GmFyYLCNGTErEGPHWhr3Nkej4
-         sK5r1Q9W/6vRsdu9BUXDIXvweyGRDHbczIK96DFbtJyvDuNTU1fdqd0nChksFaqqqA37
-         0UgaQbZce0AD9LJX/4VZk1SYcJUgGAo5T9t7wFA8ijFvVvAfnJa5l/HknFFT5lzb5mZA
-         1d87CEOFJwW2P7GDILhzwWM1tS9tIksUCAQnSNM++s1mGlXcpxE9gb87k1qzreuE1zfo
-         kzJg==
+        d=gmail.com; s=20230601; t=1727781559; x=1728386359; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YzE8KTQJ74z16EqMO6/Jz5kTP2C8yUTaMCEw4TZ9Ym4=;
+        b=f9WRznLmS0xZrXlgR6gYZx95EufpR8zfuLf5H1ZxVqtPaIhFABH3V29LNebYpCzgh8
+         CaExBbUCCLVNwguxL210X4TSmFLGd/729Q+mlIsvNxFrOY+C3UiE8QoPdJnsPzBsrTAS
+         d1G/pNY+AEDK0F6dSsWJ62UpMXZtSnEjYX4r24TRZz1ydbUMXI1bsFNYrZN0G97Qko7z
+         34IDT3IPenUYs/2+6AV4UmObOm6hioV2aox6WmhRDLbM9OJmjFB0xOsMFI4ydbmEyJlD
+         Ra3Rmp5+qvJtzpUyQbFVQwJCwklp8yQQtwR4E9HWVifjIPGYMKxkdAYsk13O4IBqGA68
+         i+3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727780281; x=1728385081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a1/SnEV7GpnCmA2f8SClpEwW0fcraNKH9MQf0vKkPjQ=;
-        b=M/zmxAcui9e/cqH/w2n8SNi//oGsN4+sAwnB+LoKWWh6PB2MUE3GP6L2U0G5LSuyYB
-         WHTKAkN8Z4a3Gt5asEzkt408U3u+shpjeoIvW0B+Nl7eekD+wk5OrK/+/c+HxVXyfwBG
-         FiK3HA7t3HjEe7laKilP025k3O/fYqYhMCVZPSI0hn9yGnluKQtd/QpMKlzUZEmPM368
-         tqYyt1fCPBCJiZLCgFtmzb3GQsYwTKWryt9dk9nInRcIBpCPcEay86kWydKBuxJ5KR7Z
-         1q9xRZ3BtFDhYXXCzb0JJKDrih8dkZlEY99KTZMlvkdI4tGb8tDhft13ELuORLdQD/lt
-         22bg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTGVfCh57l8S2KTh5Bh+7QRApXU2JADMjHM9cFLCcfCq1gco6mvT5wu4zsMNusx0tw91y4McG0lxuPyFnEUA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQiKGXtyovp/VMVMOOZv8at+C0SIrW0jl0Y3JWeYZ76NUNfQwP
-	dNYBx2ryBC39sna4kk173s+K7VIRFfnuidaqO/TTYRGzXjl6U8VOr0rKDgB8i2cJP9oWbqyAPB+
-	r9gojw8cy54mO0tsfpLQIzhRYsuRSVaF1ZQRq
-X-Google-Smtp-Source: AGHT+IG/OuMrpizTXMK9ykXj5tQizpl0H0yQsEL9StHtl8bSdqhVYJ82YEbwzDkAtDBmCQuH6QaI4BhD+/admbTQT6g=
-X-Received: by 2002:a5d:4a92:0:b0:37c:d21a:3d61 with SMTP id
- ffacd0b85a97d-37cd5b319b6mr9097510f8f.39.1727780280536; Tue, 01 Oct 2024
- 03:58:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727781559; x=1728386359;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YzE8KTQJ74z16EqMO6/Jz5kTP2C8yUTaMCEw4TZ9Ym4=;
+        b=G/Eh41EVhTD2GxTVyz+DTrmxlhzfan4EVPlAuNsE2FcJTrRA7FRLR3vg77kUUFp9QH
+         eXd4FIqFbJWJmOSWn6ZIUbFp1mx8wl6MtHA8c6vnkedtiJHVQIxHJmW/sAvmytW0TrDN
+         r6TWyYFh+4eAocKwS8dA218U73k4JEvJ9C8YnXNaGqeZ+ONADR15Ogvry6fOow/Ge9mg
+         PP0Fojd9kVJqAYcG9yF8btIIIbY1Lhhq/2fMPr2CDE0mDtDHEQmWP9qk/BEAWl3tSAIA
+         9vrCvZomp+KdGd7YBpSCGT1b66KQRaRPCDZrKlBo9Uy/8xp/7qKAwwbcFtiNSbmN7oE9
+         nkeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVe+gQmATi9lxfiiiMoqZoeA1jnJxoS6zl8447cOJPa3MSycsu3U3tcLPE6ytMquleoIoZxim184jPQBUI=@vger.kernel.org, AJvYcCXCi8k/xPUWU93ZbeZv1j1i1tfcxvb/XuXWoFUraY5/TkjMub+FJqbiDChaCp/75h6fUHTrDIyLsMxImtr6+GM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFrzWJMS6w5RzfpMhlR+abi0DBlr++Lr591zA17I5kfAXVqAxn
+	6WWz5yYRpXdTChTETr4//g0Ydjxj+1KtSV4OiDYz1VOsVB6/i1TA1HHqfHxszSUSCb57SmRCJoN
+	EkcQHm0X/jSYBrY4fJy8dfnjqvkI=
+X-Google-Smtp-Source: AGHT+IEDEcWLSGEOeEFdKeDbTaWfrnPZ4NIZgYCXUkJcA76aaiSnLmOWoKuJpkiW3T2aTnRBgP9GwGRm4n9Y/OqOrBs=
+X-Received: by 2002:a05:622a:341:b0:458:38cf:410e with SMTP id
+ d75a77b69052e-45c9f20ab1dmr268190521cf.22.1727781559364; Tue, 01 Oct 2024
+ 04:19:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913210031.20802-1-aliceryhl@google.com> <CALNs47sMJzeZ0yEF9sc-VO_QEu4=jc3QBa1_fhnhX9gdETYaNA@mail.gmail.com>
-In-Reply-To: <CALNs47sMJzeZ0yEF9sc-VO_QEu4=jc3QBa1_fhnhX9gdETYaNA@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 1 Oct 2024 12:57:47 +0200
-Message-ID: <CAH5fLgi4YNsLHFoKw7UsGbmpEaqeG4o5yMQAodZ1KwfExAPL3w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: harden index manipulation using ownership
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Kees Cook <kees@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240930194637.98260-1-trintaeoitogc@gmail.com> <2024100107-stipend-lid-1beb@gregkh>
+In-Reply-To: <2024100107-stipend-lid-1beb@gregkh>
+From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+Date: Tue, 1 Oct 2024 08:18:43 -0300
+Message-ID: <CAM_RzfYvBS_kNqw0d7z1CRf5XL2LWc0bNm3YCg2asPffi4fMZQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: device: change the from_raw() function
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, aliceryhl@google.com, mcgrof@kernel.org, 
+	russ.weight@linux.dev, dakr@redhat.com, a.hindborg@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 30, 2024 at 1:16=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
-ote:
+Greg KH <gregkh@linuxfoundation.org> writes:
 >
-> On Fri, Sep 13, 2024 at 5:01=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
+> Hi,
 >
-> > +//! Utilities for working with ranges of indices.
-> > +
-> > +/// A range of indices.
-> > +///
-> > +/// This utility is useful for ensuring that no index in the range is =
-used more than once.
-> > +#[derive(Debug)]
-> > +pub struct Range {
-> > +    offset: usize,
-> > +    length: usize,
-> > +}
+> This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+> a patch that has triggered this response.  He used to manually respond
+> to these common problems, but in order to save his sanity (he kept
+> writing the same thing over and over, yet to different people), I was
+> created.  Hopefully you will not take offence and will fix the problem
+> in your patch and resubmit it so that it can be accepted into the Linux
+> kernel tree.
 >
-> Would a name like "DataRange" or "CheckedRange" be better here, to
-> avoid confusion with core::ops::Range?
-
-Probably a good idea. I've had collisions on those types.
-
-> > +    /// Use this range of indices.
-> > +    ///
-> > +    /// This destroys the `Range` object, so these indices cannot be u=
-sed again after this call.
-> > +    pub fn use_range(self) -> UsedRange {
+> You are receiving this message because of the following common error(s)
+> as indicated below:
 >
-> Maybe just `.use()`?
-
-Makes sense to me.
-
-> > +    /// Assert that this range is aligned properly.
-> > +    pub fn assert_aligned(&self, alignment: usize) -> Result<(), Range=
-Error> {
+> - This looks like a new version of a previously submitted patch, but you
+>   did not list below the --- line any changes from the previous version.
+>   Please read the section entitled "The canonical patch format" in the
+>   kernel file, Documentation/process/submitting-patches.rst for what
+>   needs to be done here to properly describe this.
 >
-> It would probably be good to warn that this alignment is relative to
-> the offset, i.e. if you split a range at an unaligned point then this
-> may not be useful.
+> If you wish to discuss this problem further, or you have questions about
+> how to resolve this issue, please feel free to respond to this email and
+> Greg will reply once he has dug out from the pending patches received
+> from other developers.
 >
-> This is a pretty cool API idea.
+> thanks,
+>
+> greg k-h's patch email bot
 
-Thanks!
-
-Alice
+How I created a new patch, and not another version of previous patch, I really
+don't incremental changes after --- line
