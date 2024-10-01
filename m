@@ -1,162 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208731C3F26;
-	Tue,  1 Oct 2024 13:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817DB1BFE02
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 13:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727789235; cv=none; b=ckttYjPPjlg9loeDFeM2AtYRXeS4yUmr3wnCBi/rY5p7T+KzriAE1ygffvDbsqWTx7BYSZYijIoo5JXekmXQ2GayQaKSBy1DNDBEXKZ/H1znK2R4qbsIq1onda4KHazPzU9sX7xNOANUW6M6jDANp1KCvnUTndsKC9BzSkhSrM8=
+	t=1727789434; cv=none; b=SAZO5oPIIujpLYPiky2/ZYPCl4m0NQAZkTKQXNl9IW3bmz7PjpQNiOxU79xDK9QAniXN8FM0ViPaTo1r+hRun1UV5ykcGjmzQ9imUG0PINsLKCXa7hPJSoSRqf0NUoOyn2bon59m1uszcF3D1/77Au1vgM7GJtMa8Z1qwszf4Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727789235; c=relaxed/simple;
-	bh=lo+LhlofpgXlCwI69zHLxSTcxLWDkf/fiIg3BNcDXv4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=PPSqM+7LZkGEmS8EwCm/zqhF4NQ/O4Ibkv38WepAPtHgi8wtv+WOOzQ9DKALe2KEz7HWGX0m63fIxqkz8iTzTyAQZqPDzob2M46/SJW5h8Q49numhidQfELSU8VJG2Dq9G78FcgFzL0A1QtAwHyRguV+JeRDhiYlGAFaf0LTiSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFS5gTba; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727789434; c=relaxed/simple;
+	bh=EuQfsGRSnFvQkOSYyYtL4wlXIaFohOp4AAuswzzTlBA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lMKOSkpo1A1B8UJhW/oF0SkCF743m4O/QUA2r+PT5Z96YlzNIIU2pgcFzlU7wND/f0YpFpRPbkdbrwp4s+Y2/+x2Q5xRlmuhWPvCqAFdVWoC0yixabX/S/VMnNG6+idIr0PTPYh8vLfKRr5ybDrcQwEQ/wnrZP7S8TTBqDaINTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YAgvNApl; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFS5gTba"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222F2C4CED1;
-	Tue,  1 Oct 2024 13:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727789234;
-	bh=lo+LhlofpgXlCwI69zHLxSTcxLWDkf/fiIg3BNcDXv4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=qFS5gTbaHhXSeyvgEFgpM2FFgO5HEgLCg4qaY9ONUZR0Z8R8lRy5UJ4/aFZO1qYM3
-	 w7IFJdmrsNnEnTsX/WdJ0qetntbOs4ZUL2oAKdi2Ed6+2G6XHRhYexKnXJzl7ABasH
-	 xE+24mCQe5vUTGVPf4RbIBcTSFW70hLD6wS20Y+1gOGsnl4T4dxvL7LYl1H545LAzk
-	 01Ajoh7rXzZYoG60cjGb5DwxQ6uUxFti4NCuH7vkpjrjKVx6NH8jjQfP3pjvDDAwkY
-	 A2pNRIRdV12sUTSzelVfMLrRsVHXzMmzCHH53OFwkYwtu7GoFntHG9lkS59cr2waIW
-	 ZcHqTZhXC17PQ==
-Message-ID: <829c9cf9-9e73-4167-94dc-ca5db3a37e6a@kernel.org>
-Date: Tue, 1 Oct 2024 15:27:07 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YAgvNApl"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-42cb89fbb8cso31569105e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Oct 2024 06:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727789430; x=1728394230; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UvkAI2ezVCV1+xfQf1VHdfrgir2ol5mq7bS+vL+s0sg=;
+        b=YAgvNAplBizxDHacSLKuxSXMcZTuTnDxbWhH3YB1wyCP36UZ2GO0zOygeb5CJ6uI18
+         aKGFTcQiQsI0mek06k6tpeFcVpGWFoNvijoAYJuLVC/rcYB19VHNmgZ+ZcO2muHKjGt6
+         zr1L98cYPHkH1FP33fegtYf4gJ/sPOnceGuLF/irXEb7zYzciy73Bp/V8FAA1uh85KHW
+         YE8OnWDxKjWZTx3a4qFvj50l96Rt4I7AzKMAwjUoSUKAazIRIsk9TSPBgCUJCf8pg7y1
+         bXFJRymoA2/3hPgZK5h85NuE6pZl6czGW+WovQaaLkmicBK0zriKHW+bEkFtdNVPefRo
+         9o/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727789430; x=1728394230;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UvkAI2ezVCV1+xfQf1VHdfrgir2ol5mq7bS+vL+s0sg=;
+        b=iQQYOFvZkiAFbkx2RlzcHq1Ob1cjtPqlE/xh7LmCj0B/7WhQ0YCGaexegA7NvNC2no
+         ghPrG+A5KhfaA4ztuQ+zw0BCBzCcw4i/s3aErubUqkdIVj+LWkgYsv4yuudC8XP/gEM1
+         zAzkmgN7vpAqtyftKko543XrfPrcrLtIMg9E8F5Fm9sd8tAXGcg1ps7X+JmAwL4iN6uA
+         aWPWly/euJjrBQiGk0yOGJQ6SlFjtCbw5lL6S12VBweGk66Q944bOu0RtTOCvY7G7IBZ
+         PUqzvHIInXAZO8F3/1ejjAMQ7LhbbLp0auYz3ywq86lZ39tlSxo7ImhXWsA5CKp3ngBd
+         jZ0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWnK5IcY/QdLHazOBS4SPFa+KO7QPkfuJ97WX3/jDCteFu4Io96uoYuG1XKXX+NPiqarGOABiLGKDNWp3uM1A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsjiRbxyPNyx9SEJ2ehkCDuXtasMQcZqc6ttnA3uk46Z4WkqjX
+	hbxz5Di0eRQhKCmZ5RiFy1FWjOEcq5N+S+gEXN4WErfcubet1qoPKZgQBeTTCZ0W/2TVFOMdxXn
+	cZjDJGDOPzmrqyQ==
+X-Google-Smtp-Source: AGHT+IHXgOjCejMhQoRo8D7+eGvecwut1OC+PilR/WsDs1KkVSfaAA4AaaW6IeXlhCa5WDmo9bJn4/3pPSEbNak=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a5d:688a:0:b0:374:959a:7811 with SMTP id
+ ffacd0b85a97d-37cd5ad1afamr9770f8f.7.1727789429265; Tue, 01 Oct 2024 06:30:29
+ -0700 (PDT)
+Date: Tue, 01 Oct 2024 13:29:57 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 25/26] kbuild: rust: remove the `alloc` crate and
- `GlobalAlloc`
-From: Danilo Krummrich <dakr@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- boqun.feng@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org,
- daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
- boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com,
- zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20240911225449.152928-1-dakr@kernel.org>
- <20240911225449.152928-26-dakr@kernel.org>
- <20240928204357.3a28dada.gary@garyguo.net> <Zvlvg0pBkhmukh0N@pollux>
-Content-Language: en-US
-In-Reply-To: <Zvlvg0pBkhmukh0N@pollux>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFX5+2YC/23Qy2rEIBgF4FcZXDfF31t0Vn2P0oWX34zQjkMSQ
+ suQd6/JpopdHuE7Hn2SBeeEC7lenmTGLS0p30swLxfib/Y+4ZBCyYRRJqiialhn6/GR030dOCB
+ IZyiKEUgBjxlj+j7L3j9KvqVlzfPP2b3BcfpvzQYDHZSUoNjoogT3NuU8feKrz1/k6NlYZYE2l
+ hUbLTobNDguZWd5ZRk0lhdrUAhEtMzp3ora6saKYrnkQTJujYfeyj+rKWusPDdbUEIYEXz/XlX b9l5VrGU8akojgDadHSsL7T+PxQZFjTOgnIbe6sqydrM+NlMvtTGoYuCN3ff9F+io0kZJAgAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5033; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=EuQfsGRSnFvQkOSYyYtL4wlXIaFohOp4AAuswzzTlBA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm+/lbWtDLiH1fvK8DtDguryGaG1fJxaVCNAZZe
+ kyF+GTyGpSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZvv5WwAKCRAEWL7uWMY5
+ RhfrD/40zsEgbUFlRGWVdUb4OVoayz7RTfDf+iIi7bmPlDW4nPKZ9CTqAC0MSderuFQ0wXfeZh0
+ BbkQztnF54R81W3P7pWOdOCshBGm8fTVXXViSw7q5D2Sp0ik5oep6wI28k6Ub1TyQVCyUeGYxQi
+ TuR1jsmeFr3NxQOamMFhvpYaeRS2oPBiOuXjtooA5a8ulJlkctNntTlblXVvZabngkX5iTJS/nM
+ gpOSeqo7q+eHdXMsbPmtRyRpdPPiDc1Jpunqq2Ub8kn2ZnU1cfsId9iCprtza4jnzlmufNdGnUb
+ 9J6b9JKE7IN+31IRaPqJRLGdfOHL6yy+2TgtuVbt+VpZ+wjJkn4r+AW2BiYkVBrA8QSQDxWHg7x
+ jCD4zuUrqI3sS/SiqRbqW9yvvrBf0lsWuStVMLrrVSfeyk2kOVvw9X5P1mhYpiIJEf/EuMFzKWX
+ btPq3cqAHATbL6+9ZqYqvqMMWsfMOtXWQLrltqLD3BATYZNq9k10URKyZJ94s2zX7guFtOUM8Xh
+ pvznqTX2ij3Oo23X8ZCYQzwNGIBeSTt601O4uGM8omHYDELeuKlJQ52/0KtFeB2z7Q7xwLZB/nV
+ 1F+mv7Nh0/m1B4iKcKdjRBLvGkWBaBoF8LqRf/IB0lzpzHDZ6gccgxe1Uh9UDRtorKwCTx/WxxV bSGOt4f2G1NwgRw==
+X-Mailer: b4 0.13.0
+Message-ID: <20241001-tracepoint-v9-0-1ad3b7d78acb@google.com>
+Subject: [PATCH v9 0/5] Tracepoints and static branch in Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>
+Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
+	linux-arm-kernel@lists.infradead.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev, 
+	Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 9/29/24 5:17 PM, Danilo Krummrich wrote:
-> On Sat, Sep 28, 2024 at 08:43:57PM +0100, Gary Guo wrote:
->> On Thu, 12 Sep 2024 00:53:01 +0200
->> Danilo Krummrich <dakr@kernel.org> wrote:
->>
->>> Now that we have our own `Allocator`, `Box` and `Vec` types we can remove
->>> Rust's `alloc` crate and the `new_uninit` unstable feature.
->>>
->>> Also remove `Kmalloc`'s `GlobalAlloc` implementation -- we can't remove
->>> this in a separate patch, since the `alloc` crate requires a
->>> `#[global_allocator]` to set, that implements `GlobalAlloc`.
->>>
->>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->>> ---
->>>   rust/Makefile                     | 43 +++++----------------
->>>   rust/exports.c                    |  1 -
->>>   rust/kernel/alloc/allocator.rs    | 63 +------------------------------
->>>   scripts/Makefile.build            |  7 +---
->>>   scripts/generate_rust_analyzer.py | 11 +-----
->>>   5 files changed, 15 insertions(+), 110 deletions(-)
->>>
->>> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
->>> index 72b1232b1f7d..529ec5972e55 100644
->>> --- a/scripts/Makefile.build
->>> +++ b/scripts/Makefile.build
->>> @@ -262,18 +262,13 @@ $(obj)/%.lst: $(obj)/%.c FORCE
->>>   
->>>   # Compile Rust sources (.rs)
->>>   # ---------------------------------------------------------------------------
->>> -
->>> -rust_allowed_features := new_uninit
->>> -
->>
->> Would it make sense to throw in a soon-to-be-stable (or
->> already-stable-but-beyond-min-rust-version) feature here to not have to
->> remove the build system support for unstable feature directly?
-> 
-> It's only about those two lines, right? I can only remove the `new_uninit` and
-> leave `rust_allowed_features :=` and leave...
-> 
->>
->> For example, I know that const_refs_to_static might be added here
->> soon-ish.
->>
->>>   # `--out-dir` is required to avoid temporaries being created by `rustc` in the
->>>   # current working directory, which may be not accessible in the out-of-tree
->>>   # modules case.
->>>   rust_common_cmd = \
->>>   	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
->>> -	-Zallow-features=$(rust_allowed_features) \
-> 
-> ...this line, I guess?
+An important part of a production ready Linux kernel driver is
+tracepoints. So to write production ready Linux kernel drivers in Rust,
+we must be able to call tracepoints from Rust code. This patch series
+adds support for calling tracepoints declared in C from Rust.
 
-Seems like I can't, it blows up with an empty feature list. I'll keep it as it 
-is for now. Shouldn't be a big deal to add it again, once needed.
+This series includes a patch that adds a user of tracepoits to the
+rust_print sample. Please see that sample for details on what is needed
+to use this feature in Rust code.
 
-> 
->>
->> I think this actually allow all features instead of allowing none.
->>
->>>   	-Zcrate-attr=no_std \
->>> -	-Zcrate-attr='feature($(rust_allowed_features))' \
->>> -	-Zunstable-options --extern force:alloc --extern kernel \
->>> +	-Zunstable-options --extern kernel \
->>>   	--crate-type rlib -L $(objtree)/rust/ \
->>>   	--crate-name $(basename $(notdir $@)) \
->>>   	--sysroot=/dev/null \
->>> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
->>> index d2bc63cde8c6..09e1d166d8d2 100755
->>> --- a/scripts/generate_rust_analyzer.py
->>> +++ b/scripts/generate_rust_analyzer.py
->>> @@ -64,13 +64,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
->>>           [],
->>>       )
->>>   
->>> -    append_crate(
->>> -        "alloc",
->>> -        sysroot_src / "alloc" / "src" / "lib.rs",
->>> -        ["core", "compiler_builtins"],
->>> -        cfg=crates_cfgs.get("alloc", []),
->>> -    )
->>> -
->>>       append_crate(
->>>           "macros",
->>>           srctree / "rust" / "macros" / "lib.rs",
->>> @@ -96,7 +89,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
->>>       append_crate(
->>>           "kernel",
->>>           srctree / "rust" / "kernel" / "lib.rs",
->>> -        ["core", "alloc", "macros", "build_error", "bindings"],
->>> +        ["core", "macros", "build_error", "bindings"],
->>>           cfg=cfg,
->>>       )
->>>       crates[-1]["source"] = {
->>> @@ -133,7 +126,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
->>>               append_crate(
->>>                   name,
->>>                   path,
->>> -                ["core", "alloc", "kernel"],
->>> +                ["core", "kernel"],
->>>                   cfg=cfg,
->>>               )
->>>   
->>
+This is intended for use in the Rust Binder driver, which was originally
+sent as an RFC [1]. The RFC did not include tracepoint support, but you
+can see how it will be used in Rust Binder at [2]. The author has
+verified that the tracepoint support works on Android devices.
+
+This implementation implements support for static keys in Rust so that
+the actual static branch happens in the Rust object file. However, the
+__DO_TRACE body remains in C code. See v1 for an implementation where
+__DO_TRACE is also implemented in Rust.
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Link: https://r.android.com/3119993 [2]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v9:
+- Rebase on v6.12-rc1.
+- Add some Reviewed-by tags from Boqun.
+- Link to v8: https://lore.kernel.org/r/20240822-tracepoint-v8-0-f0c5899e6fd3@google.com
+
+Changes in v8:
+- Use OBJTREE instead of SRCTREE for temporary asm file.
+- Adjust comments on `asm!` wrapper to be less confusing.
+- Include resolution of conflict with helpers splitting.
+- Link to v7: https://lore.kernel.org/r/20240816-tracepoint-v7-0-d609b916b819@google.com
+
+Changes in v7:
+- Fix spurious file included in first patch.
+- Fix issue with riscv asm.
+- Fix tags on fourth patch to match fifth patch.
+- Add Reviewed-by/Acked-by tags where appropriate.
+- Link to v6: https://lore.kernel.org/r/20240808-tracepoint-v6-0-a23f800f1189@google.com
+
+Changes in v6:
+- Add support for !CONFIG_JUMP_LABEL.
+- Add tracepoint to rust_print sample.
+- Deduplicate inline asm.
+- Require unsafe inside `declare_trace!`.
+- Fix bug on x86 due to use of intel syntax.
+- Link to v5: https://lore.kernel.org/r/20240802-tracepoint-v5-0-faa164494dcb@google.com
+
+Changes in v5:
+- Update first patch regarding inline asm duplication.
+- Add __rust_do_trace helper to support conditions.
+- Rename DEFINE_RUST_DO_TRACE_REAL to __DEFINE_RUST_DO_TRACE.
+- Get rid of glob-import in tracepoint macro.
+- Address safety requirements on tracepoints in docs.
+- Link to v4: https://lore.kernel.org/rust-for-linux/20240628-tracepoint-v4-0-353d523a9c15@google.com
+
+Changes in v4:
+- Move arch-specific code into rust/kernel/arch.
+- Restore DEFINE_RUST_DO_TRACE at end of define_trace.h
+- Link to v3: https://lore.kernel.org/r/20240621-tracepoint-v3-0-9e44eeea2b85@google.com
+
+Changes in v3:
+- Support for Rust static_key on loongarch64 and riscv64.
+- Avoid failing compilation on architectures that are missing Rust
+  static_key support when the archtectures does not actually use it.
+- Link to v2: https://lore.kernel.org/r/20240610-tracepoint-v2-0-faebad81b355@google.com
+
+Changes in v2:
+- Call into C code for __DO_TRACE.
+- Drop static_call patch, as it is no longer needed.
+- Link to v1: https://lore.kernel.org/r/20240606-tracepoint-v1-0-6551627bf51b@google.com
+
+---
+Alice Ryhl (5):
+      rust: add generic static_key_false
+      rust: add tracepoint support
+      rust: samples: add tracepoint to Rust sample
+      jump_label: adjust inline asm to be consistent
+      rust: add arch_static_branch
+
+ MAINTAINERS                             |  1 +
+ arch/arm/include/asm/jump_label.h       | 14 +++--
+ arch/arm64/include/asm/jump_label.h     | 20 +++++---
+ arch/loongarch/include/asm/jump_label.h | 16 +++---
+ arch/riscv/include/asm/jump_label.h     | 50 ++++++++++--------
+ arch/x86/include/asm/jump_label.h       | 38 ++++++--------
+ include/linux/tracepoint.h              | 22 +++++++-
+ include/trace/define_trace.h            | 12 +++++
+ include/trace/events/rust_sample.h      | 31 +++++++++++
+ rust/Makefile                           |  5 +-
+ rust/bindings/bindings_helper.h         |  3 ++
+ rust/helpers/helpers.c                  |  1 +
+ rust/helpers/jump_label.c               | 15 ++++++
+ rust/kernel/.gitignore                  |  3 ++
+ rust/kernel/arch_static_branch_asm.rs.S |  7 +++
+ rust/kernel/jump_label.rs               | 91 +++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                      | 37 ++++++++++++++
+ rust/kernel/tracepoint.rs               | 49 ++++++++++++++++++
+ samples/rust/Makefile                   |  3 +-
+ samples/rust/rust_print.rs              | 18 +++++++
+ samples/rust/rust_print_events.c        |  8 +++
+ scripts/Makefile.build                  |  9 +++-
+ 22 files changed, 386 insertions(+), 67 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20240606-tracepoint-31e15b90e471
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
