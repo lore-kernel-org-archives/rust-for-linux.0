@@ -1,114 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981DF1CCB41;
-	Tue,  1 Oct 2024 19:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393051CDFBE
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Oct 2024 20:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727810847; cv=none; b=n+2HF5JFGj8okPVY9d/NBCmGIbe4wqwBAsrz2CNQo9//hyY34UwIiCL+pcFKybc4ck8OInQLS/FyEGuLb7HXzPeWuqZFR9vNiVJ+NSgml8B36LAay4caHD21fXUqAmDBTnOzrcXUJvaUKGipLqFe8yUi/rKUugeNoI4lCe6SNy4=
+	t=1727812823; cv=none; b=a1uSWnwOihLUlapfv3WBvbGKQYXzsEMNO5KMehE2Fwfa3p8N/S7skZJOypOQpqADr/Cxu3HHisAcMadLqjyOXVhVNcitsxkgNOh54Yr0/5TaLcxh9smSPqDh+UGXTo/fTVMVjJOXW5B9ukn6VZxXYmXkEZkN6jIeUfqIqr5j8u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727810847; c=relaxed/simple;
-	bh=rnSA/NcPwgiGLvd5BCxGGNZTwr+1d1IAzw2KM2zG7Ic=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QcB7bg4lXtvlGl9CFDQrqYWq3yDdzolDrzXonHstfQMCcTrJlkq4UEoE8grVhqKsVtRt5tiaop1EjFTNFg9Z1tRLWFvDIY3LdHMCYZNAJgDOBOeF2mzQe+50J0k4OORmkrklQjG8+7KkY+dcKYalou8/dYQTzdq0Z9H/eW6T23c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwgIKIHK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727812823; c=relaxed/simple;
+	bh=VL0l4sPNS0mOMjxTEFTSAHFrJ4U5svO0/PuUWHPX07g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bewCy1h/H+C7MJkU621PlYnUEfTEUxBTmVxC9+YSZwC1+sGj61zUujYx3RM2KQ3olum3EtOX36ll/H+D37i7wH4B79cGuefhsuM4c7MT2rSAKslmmW2L2grT4ozDh3AOlq9TcZpINtgvwHZpWgLLx2TAO04lQnyLnyeOIrK1MWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CYpoLCwr; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwgIKIHK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A20C4CEC6;
-	Tue,  1 Oct 2024 19:27:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727810847;
-	bh=rnSA/NcPwgiGLvd5BCxGGNZTwr+1d1IAzw2KM2zG7Ic=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BwgIKIHKQ8gxnjk6yl03Fc57ZAwxs4tQG19jwmNWWTxQx/6X33+tJAQHASUbE3bB3
-	 dTAWiKzf6KJrCmfrkzm5XsIniZYRr79WWH/RMHfM8D7fhbxwb6McpFQdx+qxMvPGSY
-	 6Ur+HZBuryDNDBXt4wa7tcNUvVZrIS//nVz9AQdoAgvWTDmeH5Xt9lZXT+m6lCy2RR
-	 Y2EsVTgKQjUx+udH1OkFp01q486BP50GQFJlzKHq/dOwTdE2ZT0XGQC5DkghfiBVSS
-	 DIp64nx2d88V1L7h4PavVuiMK6HJ6GMihBHwuxlpapfedsp7/spq9O+UKMTXeSnqOC
-	 xALIDja8pMong==
-Date: Tue, 1 Oct 2024 20:27:21 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: linux-riscv@lists.infradead.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com,
-	paul.walmsley@sifive.com, palmer@dabbelt.com,
-	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v1] RISC-V: disallow gcc + rust builds
-Message-ID: <20241001-partition-family-e862797bad1e@spud>
-References: <20241001-playlist-deceiving-16ece2f440f5@spud>
- <20241001185525.GA29379@thelio-3990X>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CYpoLCwr"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4581cec6079so65881cf.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Oct 2024 13:00:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727812821; x=1728417621; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hlQiQmTz7qfWsv7PpI2QITFBokfWCFh4vX/E9hXbiOo=;
+        b=CYpoLCwrJfUcQKRV49GkjsVolNgB0K5lXP5Byuau9PDyP/niYmeWifZouNUuvABhKp
+         UcFgj8YcBoTilGNF8GE4sEljpTYJ0WRJWaPfrDDvsK88Tnwz4bj5KwUyvq6y9aGOno/U
+         FmX5Tp+HvcRErno0QtG03ZDe+g5eZe/cr/ULCtGIeBdS5QUgfA60brMQt7YMp8wttKyu
+         X3dDl2JMF9cCmbhS2o/3EqUcmXiHMK76EW6CZ1yAAfry9lR2zG6owUwUa3ks6wdBRVf7
+         a3o7SC1laoMZ7SG22Tj6az+vx9PKkjb/0VMOP3NmEwnfC+mLiVqMBGBZk4n6js/WBKa1
+         4U1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727812821; x=1728417621;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hlQiQmTz7qfWsv7PpI2QITFBokfWCFh4vX/E9hXbiOo=;
+        b=UN8dLanBdzHTcS3K5SD8k5xhELstT4/pHT76PUV9J3b/mA2od5ZRxTt4NBcIffiScG
+         TE4goSX+f78Vy4kADJHuOP7lYShFv2gkVdTnL8+EmgL47wxraVmxOfV1Jx85kzsgxRfZ
+         N7HVLYHujcK0IC1gOWT7549mK17OA2HnKTwJ1syfY9GuMYo+tdKyiO7JgUiT6U6L6eS5
+         BYC2+BkEXdcBI8ldDZbxQRNZdD4m8ykvjKLt9AELCvPw1yuCzvWokCk4UCJbEwe1HbvB
+         Z4XxpJQeFNbNs6l3qwBRmLe2lCG/4axDO0ixHwzQz3H+gVmhCMjrbQVwRq4dWib6Y3Zx
+         XvGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiYRGkkxH8C3gIRcoagKFZh4vPnIPBaOzXuyeTWeOIn28HlJRREp7xG19Ark+prSL/hW3NW00azXAy9uMUTQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe0exZpdS26033JjLrMxIaSbEWIOQ/l3CIEjDsGSPuvpF0aOGT
+	qFbosEeI53u0ImIxw4CzYBO4uxSe7aa4ZqdfSxvGxu0Nda/SxykCfdYV4tFlA+GS/juGthczaYo
+	rfH2aGivx8MFGfViAVHSuoJEWyFY5Oa2wrqFs
+X-Google-Smtp-Source: AGHT+IG5DNxtgJ83kOVslFoZp1Jab7wENr6j0mMJJ/eOFoYyywnCYznykoqwwy5SBfvCNFKR9FwGagz5mBemuN73jts=
+X-Received: by 2002:a05:622a:4e96:b0:444:ccc5:f4c0 with SMTP id
+ d75a77b69052e-45d82060a56mr551191cf.15.1727812820872; Tue, 01 Oct 2024
+ 13:00:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="TarOnJ84/zi/70vf"
-Content-Disposition: inline
-In-Reply-To: <20241001185525.GA29379@thelio-3990X>
-
-
---TarOnJ84/zi/70vf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240923181846.549877-22-samitolvanen@google.com>
+ <20240923181846.549877-25-samitolvanen@google.com> <03d36fac-a808-4794-a442-11fa6fa18ad8@suse.com>
+In-Reply-To: <03d36fac-a808-4794-a442-11fa6fa18ad8@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Tue, 1 Oct 2024 19:59:41 +0000
+Message-ID: <CABCJKuf-_B1bH3YbiUS6r1-k5VLMHmYYWuCMpoV3jP-G5uHtTQ@mail.gmail.com>
+Subject: Re: [PATCH v3 03/20] tools: Add gendwarfksyms
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 01, 2024 at 11:55:25AM -0700, Nathan Chancellor wrote:
-> On Tue, Oct 01, 2024 at 12:28:13PM +0100, Conor Dooley wrote:
-> > From: Conor Dooley <conor.dooley@microchip.com>
-> >=20
-> > During the discussion before supporting rust on riscv, it was decided
-> > not to support gcc yet, due to differences in extension handling
-> > compared to llvm (only the version of libclang matching the c compiler
-> > is supported). Recently Jason Montleon reported [1] that building with
-> > gcc caused build issues, due to unsupported arguments being passed to
-> > libclang. After some discussion between myself and Miguel, it is better
-> > to disable gcc + rust builds to match the original intent, and
-> > subsequently support it when an appropriate set of extensions can be
-> > deduced from the version of libclang.
-> >=20
-> > Closes: https://lore.kernel.org/all/20240917000848.720765-2-jmontleo@re=
-dhat.com/ [1]
-> > Link: https://lore.kernel.org/all/20240926-battering-revolt-6c6a7827413=
-e@spud/ [2]
-> > Fixes: 70a57b247251a ("RISC-V: enable building 64-bit kernels with rust=
- support")
-> > Reported-by: Jason Montleon <jmontleo@redhat.com>
-> > Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
->=20
-> Seems like a reasonable restriction to me.
->=20
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
->=20
-> I assume the difficulty is not in getting the libclang version itself
-> but actually mapping extensions to the versions and then deciding how to
-> make that available to the build system? Or is it more that a solution
-> is somewhat known but someone has to actually implement it? Sorry if
-> this has been talked about before.
+Hi Petr,
 
-It's mostly that someone has to take the time to go and do it. Miguel
-and I discussed getting the libclang version a bit in [2] and mapping
-the versions to extensions is no different (AFAIU) to mapping the
-versions to extensions for Clang, so the work in figuring that out is
-mostly done. It's a matter of going off and doing it, and testing the
-various mixed tool configurations and versions to make sure it works
-correctly.
+On Tue, Oct 1, 2024 at 2:04=E2=80=AFPM Petr Pavlu <petr.pavlu@suse.com> wro=
+te:
+>
+> On 9/23/24 20:18, Sami Tolvanen wrote:
+> > +             if (dwfl_getmodules(dwfl, &process_module, NULL, 0)) {
+> > +                     error("dwfl_getmodules failed for '%s'", argv[n])=
+;
+> > +                     return -1;
+> > +             }
+>
+> Nit: The four error() calls don't need to be followed by 'return -1;'
+> since the function now calls exit(1).
 
---TarOnJ84/zi/70vf
-Content-Type: application/pgp-signature; name="signature.asc"
+Good catch, I forgot to clean these up. I'll fix these.
 
------BEGIN PGP SIGNATURE-----
+> > +     for_each(name, get_symbol, &sym);
+> > +     return sym;
+> > +}
+>
+> Nit: The code inconsistently checks for a potential error from the
+> function for_each(). Looking at the whole series, the value is checked
+> using checkp() in functions symbol_set_crc(), symbol_set_ptr(),
+> symbol_set_die(), is_exported(), but not in symbol_get() and
+> elf_set_symbol_addr(). It would be good to unify this, or perhaps even
+> make for_each() return an unsigned int to indicate it never fails?
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZvxNGQAKCRB4tDGHoIJi
-0lE1AQDWWqq75fBmjONd1vkgn14O3Ry+Wd+YV+mwWrrx2ih/VwEA7vd7SwSL8noq
-/GLsbc3JYDiN4dXJvAyG4VB4ih0/oQk=
-=Yf0+
------END PGP SIGNATURE-----
+True, there's no need to use check() anymore here. I'll change the
+return value to unsigned int and clean up the error handling.
 
---TarOnJ84/zi/70vf--
+Sami
