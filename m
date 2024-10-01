@@ -1,179 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BE8199FCE;
-	Tue,  1 Oct 2024 21:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83ED1CCEE5;
+	Tue,  1 Oct 2024 22:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727819122; cv=none; b=BAGESUUKhj9Xq+Zd2Mft065Fc8DPWCJn28Z0wl3V98BXnvgcHricymtOLJlldiXT6CW5lQw3f9Sn5LiTQpokZ2jXYmoloYQDLSE3DNcD6udSR/EyFBP1k58NTDD5bb4J64GEc5W/CXkoDqF9yq4hjP4Z0AHoh3qAdt5BGpre9m4=
+	t=1727820755; cv=none; b=sKZ3Wmnf7WG9SsjWJauxz+YR39+3Zj4of+nu/+OebK9n++4VSPaADSnL/uI3rw7B+cP3aB5ds/55KlNq3PVcHsJcN0h8GXax/xScDfbLgMr/jU5axo7e2GQnEycB3u7aayVv2+NAOZZDVmiRo2TuuydsaLO9UoaqAauCRZDOPZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727819122; c=relaxed/simple;
-	bh=49VGG2UtIrsuNP/H3iwnZy3oCyTUraOyIY4zwSgN2XM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EtJXz7zc9XzgUCdsPSprQWmjxc26Eo0Jc/IKv3wFnVIcCAZPSI00yRGwQ+UZ6EmtRRip8BcntGsuFBF5BgdMO3Zma3fDyLx3kiRDqSUSTp740S6IYkHsXoMhuzcmfzC3lQbCQwM/3BFo3nfCY3iWAWKLXlqOVf0qJ+mCZfmsnxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B139AC4CEC6;
-	Tue,  1 Oct 2024 21:45:16 +0000 (UTC)
-Date: Tue, 1 Oct 2024 17:46:06 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Peter Zijlstra <peterz@infradead.org>, Jason Baron <jbaron@akamai.com>, Ard
- Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
- linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak
- <ubizjak@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
- <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton
- <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-arm-kernel@lists.infradead.org, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, Andrew Jones
- <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Conor
- Dooley <conor.dooley@microchip.com>, Samuel Holland
- <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao
- <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton
- <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- loongarch@lists.linux.dev
-Subject: Re: [PATCH v9 1/5] rust: add generic static_key_false
-Message-ID: <20241001174606.6f396dfd@gandalf.local.home>
-In-Reply-To: <20241001211543.qdjl4pyfhehxqfk7@treble>
-References: <20241001-tracepoint-v9-0-1ad3b7d78acb@google.com>
-	<20241001-tracepoint-v9-1-1ad3b7d78acb@google.com>
-	<20241001211543.qdjl4pyfhehxqfk7@treble>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1727820755; c=relaxed/simple;
+	bh=+Y4UDQ0SBLFXK+EKaoLuBpz9TvjY4PQlfPV4NBauuBw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dFYYDu5Fl15QB9eUHV7JhSHq63mnbZnbwjyCl4ZeikjwG/obacEanZbL1X5s88276ieHpdWChcmWm8jM/tBBqWiauDxW35T4/liFXFNFww9P7yCMo8SHOigIOJPklv9LHQAGKvEqdhFODWcC/BJ3gZI2ESP1pKNBmBq6g1R2ULg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TfyqjRJI; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TfyqjRJI"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-718e0421143so875275b3a.0;
+        Tue, 01 Oct 2024 15:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727820753; x=1728425553; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Frfh6hBj6DUTGEMrubT/n9jUTuny2AERvO+Dq7ZfqEA=;
+        b=TfyqjRJIXZBi4w3A8i6LelPObBJwzQhqhUJ825zj5XvOhEQGBFcVlm/+NLroZAfkFj
+         HwsKSvsX5bn6cEylZlHsHNEiMqD7Odg90yht3Fh3pfErCUeXxUdBoLds2qzOSjmO30/x
+         tg2zc/nxFmDFXiSxSCgKq4Q9eiWymIO9C8TYGLC5X4EbMXlQu3DRzstcvfy8cK/1GkKu
+         LUu7vimKTm6iSBVGPLrzufrgAxARvZj1D3TCdXiRe9ALzBS/zO45cItF6EC5JqElsdFH
+         Xo0oE9lgPXEzZAVFMYyMSc7VNO3tZmlGCe20Pjj8cJytDHobTPQJJOIyFUmyWAcKs5kQ
+         mmfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727820753; x=1728425553;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Frfh6hBj6DUTGEMrubT/n9jUTuny2AERvO+Dq7ZfqEA=;
+        b=jdgQjbSezM8UFcUgz9cnL/E4fp7vn2Qlkb4K4YeIrFF3bzL6/b7EWiXoVJ5+jxiYCn
+         DI5CwGO2cjTGq8mglqL/42MEozeW+7wVL7ILD8LMzHFzzAYPsp1oKG0NyLZCMYQVEre3
+         IrPo1lWtdxWo/6G5e1+Hz2qW8AK9UXzCsRPuyTKiNxVkMkRhnwa7kfLvuNaBAA2BRdE1
+         YBMITLSy1gOt/LcSs87nn2jD/do+9kvqNmbyUFP0IZO9PauZTCKZUk6vqC/lylfqSAtX
+         9n4Tyydq0e7IALXFth45LouLXVEicKe3lacw9EVDePGnwRSm22aaYHzIJpcsb4Wy27WX
+         fqWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDMth9HLen0mi64lkNriSU8pxEa2TxPJw3Wld+qrkEfjMtGhsS/Jhqn/bpEWaeKIH6s7i8gaN5xdegbIA=@vger.kernel.org, AJvYcCX0Kob7z/MGXvzBHKFlVqdgMSuq5L+t5bvqVwVeG6Awr4QWYO5hNyxANZwZ77lF2+uhrooduo9Qi7TpqNlkHqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yylts7fwOX0pVCG/K0aqT73EKPNb8Z3rdY+j42tCUcPmnFMU7hu
+	yDRyd529ufCC7ptqAXyfWLkJEsIcGMsIrxDWMClOweiiP9MyAPUfep+rlhKrlg8U3CPTAo2Xv3f
+	KWI670Ok9MDCAnjJUdrv0FqjJlwU=
+X-Google-Smtp-Source: AGHT+IHSa0R4OQIO3Y/6fLRRBq/Xo5ODccew70DFb/Dr7Z1Sg3pF8k4ffLa067F2mmhJkkeuuAW91uzXNwCGzvJB800=
+X-Received: by 2002:a05:6a00:23c9:b0:718:e49f:246e with SMTP id
+ d2e1a72fcca58-71dc5d5cce5mr771264b3a.6.1727820752956; Tue, 01 Oct 2024
+ 15:12:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240927164414.560906-1-ojeda@kernel.org>
+In-Reply-To: <20240927164414.560906-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 2 Oct 2024 00:12:20 +0200
+Message-ID: <CANiq72k7ttdioXrto8VRJL+q2F9EjuPxhOR9HgpwdM+ZySM_+g@mail.gmail.com>
+Subject: Re: [PATCH] rust: kunit: use C-string literals to clean warning
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 1 Oct 2024 14:15:43 -0700
-Josh Poimboeuf <jpoimboe@kernel.org> wrote:
+On Fri, Sep 27, 2024 at 6:44=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Starting with upstream Rust commit a5e3a3f9b6bd ("move
+> `manual_c_str_literals` to complexity"), to be released in Rust 1.83.0
+> [1], Clippy now warns on `manual_c_str_literals` by default, e.g.:
+>
+>     error: manually constructing a nul-terminated string
+>       --> rust/kernel/kunit.rs:21:13
+>        |
+>     21 |             b"\x013%pA\0".as_ptr() as _,
+>        |             ^^^^^^^^^^^^^ help: use a `c""` literal: `c"\x013%pA=
+"`
+>        |
+>        =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#manual_c_str_literals
+>        =3D note: `-D clippy::manual-c-str-literals` implied by `-D warnin=
+gs`
+>        =3D help: to override `-D warnings` add `#[allow(clippy::manual_c_=
+str_literals)]`
+>
+> Apply the suggestion to clean up the warnings.
+>
+> Link: https://github.com/rust-lang/rust-clippy/pull/13263 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-> On Tue, Oct 01, 2024 at 01:29:58PM +0000, Alice Ryhl wrote:
-> > Add just enough support for static key so that we can use it from
-> > tracepoints. Tracepoints rely on `static_key_false` even though it is
-> > deprecated, so we add the same functionality to Rust.  
-> 
-> Instead of extending the old deprecated static key interface into Rust,
-> can we just change tracepoints to use the new one?
+Applied to `rust-fixes` -- thanks everyone!
 
-Sure, care to send the patch properly, and I can add it to my queue.
-
--- Steve
-
-> 
-> /me makes a note to go convert the other users...
-> 
-> From: Josh Poimboeuf <jpoimboe@kernel.org>
-> Subject: [PATCH] tracepoints: Use new static branch API
-> 
-> The old static key API based on 'struct static_key' is deprecated.
-> Convert tracepoints to use the new API.
-> 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> ---
->  include/linux/tracepoint-defs.h | 4 ++--
->  include/linux/tracepoint.h      | 8 ++++----
->  kernel/tracepoint.c             | 4 ++--
->  3 files changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/linux/tracepoint-defs.h b/include/linux/tracepoint-defs.h
-> index 4dc4955f0fbf..60a6e8314d4c 100644
-> --- a/include/linux/tracepoint-defs.h
-> +++ b/include/linux/tracepoint-defs.h
-> @@ -31,7 +31,7 @@ struct tracepoint_func {
->  
->  struct tracepoint {
->  	const char *name;		/* Tracepoint name */
-> -	struct static_key key;
-> +	struct static_key_false key;
->  	struct static_call_key *static_call_key;
->  	void *static_call_tramp;
->  	void *iterator;
-> @@ -83,7 +83,7 @@ struct bpf_raw_event_map {
->  
->  #ifdef CONFIG_TRACEPOINTS
->  # define tracepoint_enabled(tp) \
-> -	static_key_false(&(__tracepoint_##tp).key)
-> +	static_branch_unlikely(&(__tracepoint_##tp).key)
->  #else
->  # define tracepoint_enabled(tracepoint) false
->  #endif
-> diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-> index 6be396bb4297..ab5162fc3e4a 100644
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -228,7 +228,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  #define __DECLARE_TRACE_RCU(name, proto, args, cond)			\
->  	static inline void trace_##name##_rcuidle(proto)		\
->  	{								\
-> -		if (static_key_false(&__tracepoint_##name.key))		\
-> +		if (static_branch_unlikely(&__tracepoint_##name.key))	\
->  			__DO_TRACE(name,				\
->  				TP_ARGS(args),				\
->  				TP_CONDITION(cond), 1);			\
-> @@ -254,7 +254,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  	extern struct tracepoint __tracepoint_##name;			\
->  	static inline void trace_##name(proto)				\
->  	{								\
-> -		if (static_key_false(&__tracepoint_##name.key))		\
-> +		if (static_branch_unlikely(&__tracepoint_##name.key))	\
->  			__DO_TRACE(name,				\
->  				TP_ARGS(args),				\
->  				TP_CONDITION(cond), 0);			\
-> @@ -291,7 +291,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  	static inline bool						\
->  	trace_##name##_enabled(void)					\
->  	{								\
-> -		return static_key_false(&__tracepoint_##name.key);	\
-> +		return static_branch_unlikely(&__tracepoint_##name.key);\
->  	}
->  
->  /*
-> @@ -308,7 +308,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  	struct tracepoint __tracepoint_##_name	__used			\
->  	__section("__tracepoints") = {					\
->  		.name = __tpstrtab_##_name,				\
-> -		.key = STATIC_KEY_INIT_FALSE,				\
-> +		.key = STATIC_KEY_FALSE_INIT,				\
->  		.static_call_key = &STATIC_CALL_KEY(tp_func_##_name),	\
->  		.static_call_tramp = STATIC_CALL_TRAMP_ADDR(tp_func_##_name), \
->  		.iterator = &__traceiter_##_name,			\
-> diff --git a/kernel/tracepoint.c b/kernel/tracepoint.c
-> index 8d1507dd0724..dc160cc0b616 100644
-> --- a/kernel/tracepoint.c
-> +++ b/kernel/tracepoint.c
-> @@ -358,7 +358,7 @@ static int tracepoint_add_func(struct tracepoint *tp,
->  		tracepoint_update_call(tp, tp_funcs);
->  		/* Both iterator and static call handle NULL tp->funcs */
->  		rcu_assign_pointer(tp->funcs, tp_funcs);
-> -		static_key_enable(&tp->key);
-> +		static_branch_enable(&tp->key);
->  		break;
->  	case TP_FUNC_2:		/* 1->2 */
->  		/* Set iterator static call */
-> @@ -414,7 +414,7 @@ static int tracepoint_remove_func(struct tracepoint *tp,
->  		if (tp->unregfunc && static_key_enabled(&tp->key))
->  			tp->unregfunc();
->  
-> -		static_key_disable(&tp->key);
-> +		static_branch_disable(&tp->key);
->  		/* Set iterator static call */
->  		tracepoint_update_call(tp, tp_funcs);
->  		/* Both iterator and static call handle NULL tp->funcs */
-
+Cheers,
+Miguel
