@@ -1,160 +1,129 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636F31D0499
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 13:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24CA1E52C;
+	Wed,  2 Oct 2024 13:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876209; cv=none; b=DalqGGaumFH2OQL0TXCnH3Fu5FEymGydPFp0guo4xnG2HBkIByT4o3o4gmCZwebM5uE/c8b+mJ8eQI17Go7Ebl/BYvMY9mwFRJ7evDlhjZQ0nT/4MDNCZyxMOV+2xjv5djI1Ai/WbJvJKVGWP3ESZC5/oUK7qXuWpqiYc9dcVsM=
+	t=1727877516; cv=none; b=XxXuS6lmZocpgoM/9uQl/Yoluc5uX4h6JOWfdIBtlj7bM3dehYKySxV1PhrJAgFuhdbdnsY+DgXsmZH430Lo/7l++wdAIxtL8hG3z3Hr4z1La6BRV6gnezRlEjaDzJ7913o0bSo/cBb2XMAF0FXyAgXqpa13ygmdZlOjLmpJfWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876209; c=relaxed/simple;
-	bh=l+47bXLYl4yy2e8lJa8E5g2vj1iZfXMGhncCb/6mWN0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YgKuSRkRD8sFjKc0Dy9Bbn8U05hekosu2a5f82YrfGKLfF+gPeXLVsZ4XNyfiUDEeQMCLVhdgw1FJCNJmNp/t1NDIqwsnuIiJ84NDgXSutQq6lCTBCrUNmNxwIsrH4IYzoekcPcwaDkVO8Ywa0TVM9bInuz7uh1GYsMaUjbEwEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KU4RhYHW; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1727877516; c=relaxed/simple;
+	bh=/UXfQLbEpKjaSF6OXS1imF5v7Ha5rnonCoD0u2Kgl6Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQ9HrDTl8DP4uJVcPoCGfjSdVaFZvgA3TGpsM6b+P9jGIuRSl7LNzrZXNuI/3cJs3mTvaqfBZyqKPxu2U6SzCb1qG84mjh4E3/FRV/04ebQ5SzJFeY2Sbjg0+4TJl9Nd4bNaDRHrvkGwlk9234yKKUQXc4bX+wLi5YHJE2OBXOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psncEfsd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KU4RhYHW"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37cea34cb57so2053753f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Oct 2024 06:36:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727876206; x=1728481006; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VeS6fGpb9kLNgYn5kD0zRdoYybzkuxoklL8QigoCJf4=;
-        b=KU4RhYHWHCC4g0fmTg1/Dkzg1VktvC5b5RTSzRKtiG7dZiru5SqfGV7nOAJt1lWJT+
-         hMteBAOof+GuPa8I61MpnKDNmUNQOFeaxmAgWKQNKbh7QYwoXy7ISjZ8yPzzV/4mNhtH
-         UkTldSLsxCNc2D5Hq3S2OG7Vz4efP/9z9YApBnh5OKQXRM3AokAfUgRBRjv1/sx6qqPT
-         OfnSBiKQKisve/LpUNHah4CVaYqRgoJQcUrTVv7G0Si0xagTN9rrjH0cBn6xGfJ85gCE
-         qM1hEe1A7ij8j3zuF949q7jvANczuZmPoYBs154wdvT5u6Gn6CeFMsP47XtgjSfv6EGT
-         rILA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727876206; x=1728481006;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VeS6fGpb9kLNgYn5kD0zRdoYybzkuxoklL8QigoCJf4=;
-        b=wIXWCYj9GnGoCHGE2hV9tni3Fl6d6mVPrIGFMX4CNlvlQPXuqsv5TUL+39QaaJgaD5
-         rPklthaWGP+3aLP6THz1Ct6YkTiDTNyQ0GwBmSB0tmfSeZCiqxoNjkFPbuEc79bWjrmD
-         KF65il4bdQ7EdsGgUuW5hDtfzcWWUsAJuafg2R7R6xk0uY7HLSXn5aPqDxFt3AITR4wO
-         nRTJuBggChS5KGhXblj5T00r8xisxvtrvUpkHnHI0I4oxYSq08u6bwyJArexxnFFajkz
-         UMcNQS3+/BZuo2TMM29fRBSvJSselAWpBj13mxkSb9CFWkfB+b3BKUhbmLXloTE55qVC
-         dfZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV52KgWbAVXwmeI9v2lDywUdhR87Gp+l0IWuY64EMPt/Z6NWWBkgUU6+Jcs7zeL4RK6Ye1CzhhvctugOIDQSA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQSrNxo3qlDPz16NK5egdszkTavS/exJ92iXTQRHbkEtEyZMZ2
-	WISPx2SqO47dS56gBZxkykmPBw50lufQt8ox3dKrFB2IJoBAFo59ZNmuBRKH6A17ysgYRCuhmPY
-	mLWonfaTghfz64FPptLj9XR1aRwP6wmneOq7g
-X-Google-Smtp-Source: AGHT+IET4bgd2O7fUBJAw3Zthwv1E6m/zgp1w3SGtluJLDimHbPGXWAml2WMM4ZBGLhDNaa9XYD2lzzWg16o6cLs8qM=
-X-Received: by 2002:adf:b186:0:b0:374:c581:9f4f with SMTP id
- ffacd0b85a97d-37cfba16a00mr2083256f8f.55.1727876205409; Wed, 02 Oct 2024
- 06:36:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psncEfsd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D4EC4CEC2;
+	Wed,  2 Oct 2024 13:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727877516;
+	bh=/UXfQLbEpKjaSF6OXS1imF5v7Ha5rnonCoD0u2Kgl6Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=psncEfsdP2bKWXOPokOvAFp48D4oK+45oNqooMAw3+cdUNscGoNuR+Dpka1ZIECPK
+	 mdcUUAMkKEyHCBdDrMfh+Gy3Bluk8qIk7Jf8SQV6wVBORRg/FOq4FOk4nSieOH81Th
+	 ZtrNnvOYgyzGN02TD/zR4tnH76QXTxbR+YslKQBzfyT+Zf8PZWJUtDFyyUFKJ+3RPV
+	 XXGYkZ1sMOgP6boBj4Iq21QkK92qU2CXcgT896UOWCnKbL1LlsCmITjQH3Duv67vBT
+	 mWYh+59vmhahjFVSNCs2U2boOuYlSA4nVyvQOaAdGLYatWYDt1fSjv7zjvAVGGT3Zu
+	 JpGWkzpbNs6pw==
+Date: Wed, 2 Oct 2024 15:58:29 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
+	dakr@redhat.com, a.hindborg@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: device: change the from_raw() function
+Message-ID: <Zv1RhZpQGkVBlLCU@pollux>
+References: <20241001205603.106278-1-trintaeoitogc@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
- <20241001-b4-miscdevice-v2-2-330d760041fa@google.com> <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
- <20241002-rabiat-ehren-8c3d1f5a133d@brauner>
-In-Reply-To: <20241002-rabiat-ehren-8c3d1f5a133d@brauner>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 2 Oct 2024 15:36:33 +0200
-Message-ID: <CAH5fLgjdpF7F03ORSKkb+r3+nGfrnA+q1GKw=KHCHASrkz1NPw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: miscdevice: add base miscdevice abstraction
-To: Christian Brauner <brauner@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241001205603.106278-1-trintaeoitogc@gmail.com>
 
-On Wed, Oct 2, 2024 at 3:24=E2=80=AFPM Christian Brauner <brauner@kernel.or=
-g> wrote:
->
-> On Wed, Oct 02, 2024 at 12:48:12PM GMT, Arnd Bergmann wrote:
-> > On Tue, Oct 1, 2024, at 08:22, Alice Ryhl wrote:
-> > > +#[cfg(CONFIG_COMPAT)]
-> > > +unsafe extern "C" fn fops_compat_ioctl<T: MiscDevice>(
-> > > +    file: *mut bindings::file,
-> > > +    cmd: c_uint,
-> > > +    arg: c_ulong,
-> > > +) -> c_long {
-> > > +    // SAFETY: The compat ioctl call of a file can access the privat=
-e
-> > > data.
-> > > +    let private =3D unsafe { (*file).private_data };
-> > > +    // SAFETY: Ioctl calls can borrow the private data of the file.
-> > > +    let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(priva=
-te)
-> > > };
-> > > +
-> > > +    match T::compat_ioctl(device, cmd as u32, arg as usize) {
-> > > +        Ok(ret) =3D> ret as c_long,
-> > > +        Err(err) =3D> err.to_errno() as c_long,
-> > > +    }
-> > > +}
-> >
-> > I think this works fine as a 1:1 mapping of the C API, so this
-> > is certainly something we can do. On the other hand, it would be
-> > nice to improve the interface in some way and make it better than
-> > the C version.
-> >
-> > The changes that I think would be straightforward and helpful are:
-> >
-> > - combine native and compat handlers and pass a flag argument
-> >   that the callback can check in case it has to do something
-> >   special for compat mode
-> >
-> > - pass the 'arg' value as both a __user pointer and a 'long'
-> >   value to avoid having to cast. This specifically simplifies
-> >   the compat version since that needs different types of
-> >   64-bit extension for incoming 32-bit values.
-> >
-> > On top of that, my ideal implementation would significantly
-> > simplify writing safe ioctl handlers by using the information
-> > encoded in the command word:
-> >
-> >  - copy the __user data into a kernel buffer for _IOW()
-> >    and back for _IOR() type commands, or both for _IOWR()
-> >  - check that the argument size matches the size of the
-> >    structure it gets assigned to
->
-> - Handle versioning by size for ioctl()s correctly so stuff like:
->
->         /* extensible ioctls */
->         switch (_IOC_NR(ioctl)) {
->         case _IOC_NR(NS_MNT_GET_INFO): {
->                 struct mnt_ns_info kinfo =3D {};
->                 struct mnt_ns_info __user *uinfo =3D (struct mnt_ns_info =
-__user *)arg;
->                 size_t usize =3D _IOC_SIZE(ioctl);
->
->                 if (ns->ops->type !=3D CLONE_NEWNS)
->                         return -EINVAL;
->
->                 if (!uinfo)
->                         return -EINVAL;
->
->                 if (usize < MNT_NS_INFO_SIZE_VER0)
->                         return -EINVAL;
->
->                 return copy_ns_info_to_user(to_mnt_ns(ns), uinfo, usize, =
-&kinfo);
->         }
->
-> This is not well-known and noone versions ioctl()s correctly and if they
-> do it's their own hand-rolled thing. Ideally, this would be a first
-> class concept with Rust bindings and versioning like this would be
-> universally enforced.
+On Tue, Oct 01, 2024 at 05:56:03PM -0300, Guilherme Giacomo Simoes wrote:
+> The function Device::from_raw() increments a refcount by a call to
+> bindings::get_device(ptr). This can be confused because usually
+> from_raw() functions don't increment a refcount.
+> Hence, rename Device::from_raw() to avoid confuion with other "from_raw"
+> semantics.
+> 
+> The new name of function should be "get_device" to be consistent with
+> the function get_device() already exist in .c files.
+> 
+> This function body also changed, because the `into()` will convert the
+> `&'a Device` into `ARef<Device>` and also call `inc_ref` from the
+> `AlwaysRefCounted` trait implemented for Device.
+> 
+> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 
-Could you point me at some more complete documentation or example of
-how to correctly do versioning?
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-Alice
+> ---
+> differences from v1 to v2:
+>  - remove the 0/1 patch
+>  - refactor get_device() function
+> 
+> differences from v2:
+> - fix the place of changelog.
+> 
+> The motivation from this change was will discussion in:
+> https://rust-for-linux.zulipchat.com/#narrow/stream/291566-Library/topic/Inconsistency.20of.20.60from_raw.60.2E
+> 
+> I would like to thanks for Greg <gregkh@linuxfoundation.org>, Danilo
+> <dakr@kernel.org> and Alice <aliceryhl@google.com> for help me with this
+> patch.
+> ---
+>  rust/kernel/device.rs   | 15 +++------------
+>  rust/kernel/firmware.rs |  2 +-
+>  2 files changed, 4 insertions(+), 13 deletions(-)
+> 
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 851018eef885..c8199ee079ef 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -51,18 +51,9 @@ impl Device {
+>      ///
+>      /// It must also be ensured that `bindings::device::release` can be called from any thread.
+>      /// While not officially documented, this should be the case for any `struct device`.
+> -    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+> -        // SAFETY: By the safety requirements, ptr is valid.
+> -        // Initially increase the reference count by one to compensate for the final decrement once
+> -        // this newly created `ARef<Device>` instance is dropped.
+> -        unsafe { bindings::get_device(ptr) };
+> -
+> -        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::device`.
+> -        let ptr = ptr.cast::<Self>();
+> -
+> -        // SAFETY: `ptr` is valid by the safety requirements of this function. By the above call to
+> -        // `bindings::get_device` we also own a reference to the underlying `struct device`.
+> -        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
+> +    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
+> +        // SAFETY: By the safety requirements ptr is valid
+> +        unsafe { Self::as_ref(ptr) }.into()
+>      }
+>  
+>      /// Obtain the raw `struct device *`.
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index dee5b4b18aec..13a374a5cdb7 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
+>  ///
+>  /// # fn no_run() -> Result<(), Error> {
+>  /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
+> -/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
+> +/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
+>  ///
+>  /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
+>  /// let blob = fw.data();
+> -- 
+> 2.46.2
+> 
