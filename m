@@ -1,179 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E94A1D1747;
-	Wed,  2 Oct 2024 15:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7536A23C9;
+	Wed,  2 Oct 2024 15:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727882769; cv=none; b=pxdDcpYNhQzaFrbfWWTdoAy5T2lzBk36UAcJylwYNZnzgz7oIZa7yGEWrRWsjEwQzjF52DDfE+54Ep3V2sLxCV8QzOStNvcLerPGyXrJQpH4arJcbCIpoevP+hCUt5ZXKrPR91XS8nhrlsR1O3NqvuUjcZs+ky9x/HauWjGL0E0=
+	t=1727883145; cv=none; b=TEw3ZZj0T1oSTJm2nJom2pW6qzq/IaRPYGsjoZNkU/rRuxR2+nWYgnvFQJE2Kh3MaAsPJQ5b0xxP4cJP/Qjz+J3Tto8Jq+/X0+KQeVUV4OeA+qQlx3CeJsyzLtl1QIVN6rJQJ//cCgEzO7kSexeqQzYviq0vFKuOrDQFjn2aFO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727882769; c=relaxed/simple;
-	bh=h4ubFnE46xeI8wN9+4BYkWAbARBnOtNFKXLTjQ3iYxs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N/0WAUaW4NJwGkxGX5009XaAeckcRtfkKx7gfzvlM4Gkocb9cmCxHF2L5lWCj2rn8N47J8Ez/zcF4zlL7sQk5DftsnBlzSLAPnXoBKB3bV6fVlicf+0qdaeNWh/SNlS5TqYjVvRDSPp01RUfzGD+aUF3fkVbuDTOpd9YXrdSw1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KFl7hH8b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727883145; c=relaxed/simple;
+	bh=dv8Jq3RMXP2neJCCNvhcBngd39WK1oFLDQVoovW1SyI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=tnZPGI6+QDm/jLIveHPgExYFmVXWytJwEY/1I6YPIhTF4GyH0NpLN1xwJdYufhy4cvZmLtk/dTVRKBATCUvj6CJmeDopd9WzXRLhiUVEj03kItQuWiy8r4C9wVfs4EvB74yvPo62caxtKSy1V71TSN0yB92W5jXhG/w3z4rg80Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HBKSdGqc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HpwEGpXe; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KFl7hH8b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E446C4CEDA;
-	Wed,  2 Oct 2024 15:26:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727882768;
-	bh=h4ubFnE46xeI8wN9+4BYkWAbARBnOtNFKXLTjQ3iYxs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KFl7hH8baEyBXLc9YdutCabBIIsebd7h0c09OkpKue3HyYk0dPbzyKEPIAYZw8EA0
-	 OSqK38e9b/ZQqENWs+TnswX2GzFQqN2nL0SRR4IVxtTfVUlSFGfffBS7Jg4BMNQIz8
-	 HMkEBAAndduR9nNbwqZIze+PTqfQzCMnCy8hpJdW/BS84scv9IwY4mniaBcqBDDZua
-	 ZBd9lUJThYLwrBMX2si1+483PfVcboCG4r+GJNcdiKhotGYBsctAy1Sareu7r1J5jh
-	 Wd6eNnpiy5IQorN76AsuNn8HDWHvuwIblRMKj84P4HPuwkx+3e6SIsEVpTzuDrCbzg
-	 6kBiHvv5uu5wg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fad15b3eeeso33591821fa.2;
-        Wed, 02 Oct 2024 08:26:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU922GEKNn6LZhgnjGS2QUeFmjo+wnFmMpy6eLQ9G1fz3j8xjPAdP4x+bgpZT5yNeZM2iOTOyrEr9RVWLOG+10PUA==@vger.kernel.org, AJvYcCU9kYaw7wsEzF4tsjQJLxFZNX25xxykStLPwqRBfhbVTHZNmKJWrxmuoRjTCmpm/SYJBL410TQPDCI=@vger.kernel.org, AJvYcCUB2rkMUyu2bNGeO8wBtIsMLvKa7lZydMJbMW4Bxxwrpvbko+jXVLVm2TFB0QhNmbJHDKztlSMs/CZ30cgq@vger.kernel.org, AJvYcCUZR7aY4XoONkPxt8Jcbz94wfoixa6beFi/SKdvhW7JfaTkMo+dA8QeVnzzRB5vcawoSZcsEB7cPdnK@vger.kernel.org, AJvYcCUsoQRScStowdXVQtBdYa3HvUL9e5/dG45q/I83H+AQW+ho8c2SudVrPnoxlEqbjKOzkRKnKqbYV+2wvw==@vger.kernel.org, AJvYcCUu9InXWCk13ff5Oj0NQcOKHn/6NTaWalcta+coZJmsqYAmPcPyeYAGEbtRQ29JyUuzbHLhyV7UKeL3FHlz@vger.kernel.org, AJvYcCVKr38Oz3ZFNutXiDquBZrOwm5m+8wRi5xnsOrR3kLvhzLszjawCfumBbNc4Hkj69L2ZIDl7sJh7y3w@vger.kernel.org, AJvYcCVaaUroALnYz6xKiYm88LhCZuu19l96wAufzFzsmH8wIIBp7TwOoNoO9e8g4ik/Djm/1/3TnAZWfUre3Xnp@vger.kernel.org, AJvYcCWMHAODt0YnDCyNxv3MmFkzwUecMJydYA4sVjLanfncSGmSDC4moqSDxZeT7+1o3gYbqfvm5u4FvRGKla64Vfk=@vger.kernel.org, AJvYcCWtQclJEh22PR9XC9EWOF4gjdoQ+uWRmSHmaZk6bVROo408of0WP2MKFvMJme9Xz6p/6zw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTwyEdmFi8ER46JM4uTfUuPkVftZSGfO7CrZlzB1Ow2LT9BTD/
-	fAjRiNVRf70MN79/xoOJN3u9o0V2lTeXhQaRKLB3vAKfNVN5zkxRRzHU94c0OhveBmDUZK8frAK
-	GxV187uqGsHmJFwQqHvVvZJw05Xg=
-X-Google-Smtp-Source: AGHT+IFjphesp/WsGS3U0PINOY0QAoUmw2aq4caedP0chVHCCyNa6a0rrCXQNZVU8wv2cCgEaQKnFwQhCH9Io7gBKbI=
-X-Received: by 2002:a05:651c:1502:b0:2fa:d84a:bd83 with SMTP id
- 38308e7fff4ca-2fae106e266mr23266981fa.24.1727882766692; Wed, 02 Oct 2024
- 08:26:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HBKSdGqc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HpwEGpXe"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id 767F413801E5;
+	Wed,  2 Oct 2024 11:32:22 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 02 Oct 2024 11:32:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1727883142;
+	 x=1727969542; bh=4v2KYEEwHpmE1Lr5xj6ZmVuQBMjcCa/z8GvIKBxSidA=; b=
+	HBKSdGqcirudqKvPgQPrOQ5IOudY5lwYtlAqs3w6DF/znILjMzgG0uo051/HOV4s
+	g7hXPLoSmtV6aiq8J5/HVoWTkqGf6tcdiIaTuEb9DCv2rGY6DY3LuSaBWgwMYYM9
+	T9h13qIJE7WLKrFYuDhics1nRmzze6RNYEfW385JveuuRCgJsbPwnRWRc35lor4a
+	WQOG4MCk1c0WLE4lDHja/9ExH+zACl4ZAjzuq9fS2ANBMn9JhYX+tmocFM59FOXy
+	GJ7l3Mj9Brk0JUnjy8Rm+Xq74gAlv4rLrP0PpqrbQaWwj38FicCpNwpVVg7WFZYg
+	gbUegv0XIjLXeJBXoIy/UQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727883142; x=
+	1727969542; bh=4v2KYEEwHpmE1Lr5xj6ZmVuQBMjcCa/z8GvIKBxSidA=; b=H
+	pwEGpXeI0in71Dw4X8F5A7D3d1A423RQ66mATPL/phLVgpPzphj+YF9xiLbZnI7g
+	kVAgRrFd3I0yfd6dL/vscuTa0X70HjHcLMNJ6d8dZYIgoKGb9Vq7Q1ARlyV8i7ZE
+	OIzwUsKxgd45tl1G8L5Acl5XqmZkbSu1vFVfFY4+ZmfbsFSVDHBltp9I019eaUR5
+	PkA3I9Br0AD1LCgPhJXG+gcVTQjM9XqRDsEuGFLpIRM9T/ckAMg0yjbtCJIHsBrg
+	8wc+Azi8o7UgXpoL1Ay/8Rl9m0zYaOtjGIJyoKr6UPV3TNHPwO9BzdUA9WzrABIq
+	X8IqNLhT6c15dE7566ysA==
+X-ME-Sender: <xms:hWf9ZonWyk3K4TGElhzuZPV2t8XzfFm9sShnVFFiO8GJCUVu9AS3SQ>
+    <xme:hWf9Zn2KXjjMZ2f3CAOOkLzEQ2JJhiuovSUstDT7bRUKAgpswRuJxhQ7BByBozvYu
+    bpwSYeQMKUwpNY5aqw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduledgkeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
+    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudeh
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnh
+    gvthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphht
+    thhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrrdhhih
+    hnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrrghunhgvrheskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghp
+    thhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepsg
+    hjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:hWf9ZmqdSflvrACVy31NGa4AowXp4IB0YreIhW1Qury23sCepzLA3w>
+    <xmx:hWf9ZkmuYJZ4CGwS9XRD6B3K1GWThUhHqVL6VPR-18n1eObRLAnYLg>
+    <xmx:hWf9Zm2PTxlbBAtMl1HLKVyDf_WLD_ykyIE4xSOofoPksABwdDcd3A>
+    <xmx:hWf9ZrubHoF9xT6XQjqScAMhxCpNWO9yB_p7jmknmPgoTVNyDEt1Tg>
+    <xmx:hmf9ZgMPCEpeZ55MvVCRxPrvzoq3qz-CWRJN6LRu3WeTDG7Gkylt-pxE>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 981EB2220071; Wed,  2 Oct 2024 11:32:21 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-55-ardb+git@google.com> <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
-In-Reply-To: <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 2 Oct 2024 17:25:54 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
-Message-ID: <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
-Subject: Re: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 02 Oct 2024 15:31:59 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <fc5cee69-e37a-4053-a425-f9191e58011a@app.fastmail.com>
+In-Reply-To: 
+ <CAH5fLgjjcwTZzN5+6yfku2J6SG1A8pNUKOkk1_JuyAcfNXa2BQ@mail.gmail.com>
+References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
+ <20241001-b4-miscdevice-v2-2-330d760041fa@google.com>
+ <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
+ <CAH5fLghmkkYWF8zNFci-B-BvG8LbFCDEZkZWgr54HvLos5nrqw@mail.gmail.com>
+ <50b1c868-3cab-4310-ba4f-2a0a24debaa9@app.fastmail.com>
+ <CAH5fLghypb6UHbwkPLjZCrFM39WPsO6BCOnfoV+sU01qkZfjAQ@mail.gmail.com>
+ <46c9172e-131a-4ba4-8945-aa53789b6bd6@app.fastmail.com>
+ <CAH5fLgjjcwTZzN5+6yfku2J6SG1A8pNUKOkk1_JuyAcfNXa2BQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: miscdevice: add base miscdevice abstraction
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Peter,
-
-Thanks for taking a look.
-
-On Tue, 1 Oct 2024 at 23:13, H. Peter Anvin <hpa@zytor.com> wrote:
+On Wed, Oct 2, 2024, at 14:23, Alice Ryhl wrote:
+> On Wed, Oct 2, 2024 at 3:59=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> w=
+rote:
+>>
+>> On Wed, Oct 2, 2024, at 13:31, Alice Ryhl wrote:
+>> > On Wed, Oct 2, 2024 at 3:25=E2=80=AFPM Arnd Bergmann <arnd@arndb.de=
+> wrote:
+>> >>
+>> You can also see the effects of the compat handlers there,
+>> e.g. VIDIOC_QUERYBUF has three possible sizes associated
+>> with it, depending on sizeof(long) and sizeof(time_t).
+>>
+>> There is a small optimization for buffers up to 128 bytes
+>> to avoid the dynamic allocation, and this is likely a good
+>> idea elsewhere as well.
 >
-> On 9/25/24 08:01, Ard Biesheuvel wrote:
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > As an intermediate step towards enabling PIE linking for the 64-bit x86
-> > kernel, enable PIE codegen for all objects that are linked into the
-> > kernel proper.
-> >
-> > This substantially reduces the number of relocations that need to be
-> > processed when booting a relocatable KASLR kernel.
-> >
+> Oh, my. That seems like a rather sophisticated ioctl handler.
 >
-> This really seems like going completely backwards to me.
+> Do we want all new ioctl handlers to work along those lines?
+
+It was intentionally an example to demonstrate the worst
+case one might hit, and I would hope that most drivers end
+up not having to worry about them.=20
+
+To clarify: the file I mentioned is itself a piece of
+infrastructure that is used to make the actual drivers
+simpler, in this case by having drivers just fill out
+a 'struct v4l2_ioctl_ops' with the command specific callbacks.
+
+This works because video_ioctl2() has a clearly defined set
+of commands that is shared by a large number of drivers.
+For a generic bit of infrastructure, we obviously wouldn't
+do anything that knows about specific commands, but the way
+the get_user/put_user part works based on the size can be
+quite similar.
+
+There is similar piece of infrastructure in
+drivers/gpu/drm/drm_ioctl.c, which is a bit simpler.
+
+>> It seems like it should be possible to validate the size of
+>> the argument against _IOC_SIZE(cmd) at compile time, but this
+>> is not currently done, right?
 >
-> You are imposing a more restrictive code model on the kernel, optimizing
-> for boot time in a way that will exert a permanent cost on the running
-> kernel.
->
+> No, right now that validation happens at runtime. The ioctl handler
+> tries to use the UserSliceReader to read a struct, which fails if the
+> struct is too large.
 
-Fair point about the boot time. This is not the only concern, though,
-and arguably the least important one.
+Ok.
 
-As I responded to Andi before, it is also about using a code model and
-relocation model that matches the reality of how the code is executed:
-- the early C code runs from the 1:1 mapping, and needs special hacks
-to accommodate this
-- KASLR runs the kernel from a different virtual address than the one
-we told the linker about
+> I wonder if we could go for something more comprehensive than the
+> super simple thing I just put together. I'm sure we can validate more
+> things at compile time.
 
-> There is a *huge* difference between the kernel and user space here:
->
-> KERNEL MEMORY IS PERMANENTLY ALLOCATED, AND IS NEVER SHARED.
->
 
-No need to shout.
 
-> Dirtying user pages requires them to be unshared and dirty, which is
-> undesirable. Kernel pages are *always* unshared and dirty.
->
-
-I guess you are referring to the use of a GOT? That is a valid
-concern, but it does not apply here. With hidden visibility and
-compiler command line options like -mdirect-access-extern, all emitted
-symbol references are direct. Disallowing text relocations could be
-trivially enabled with this series if desired, and actually helps
-avoid the tricky bugs we keep fixing in the early startup code that
-executes from the 1:1 mapping (the C code in .head.text)
-
-So it mostly comes down to minor differences in addressing modes, e.g.,
-
-  movq $sym, %reg
-
-actually uses more bytes than
-
-  leaq sym(%rip), %reg
-
-whereas
-
-  movq sym, %reg
-
-and
-
-  movq sym(%rip), %reg
-
-are the same length.
-
-OTOH, indexing a statically allocated global array like
-
-  movl array(,%reg1,4), %reg2
-
-will be converted into
-
-  leaq array(%rip), %reg2
-  movl (%reg2,%reg1,4), %reg2
-
-and is therefore less efficient in terms of code footprint. But in
-general, the x86_64 ISA and psABI are quite flexible in this regard,
-and extrapolating from past experiences with PIC code on i386 is not
-really justified here.
-
-As Andi also pointed out, what ultimately matters is the performance,
-as well as code size where it impacts performance, through the I-cache
-footprint. I'll do some testing before reposting, and maybe not bother
-if the impact is negative.
-
-> > It also brings us much closer to the ordinary PIE relocation model used
-> > for most of user space, which is therefore much better supported and
-> > less likely to create problems as we increase the range of compilers and
-> > linkers that need to be supported.
->
-> We have been resisting *for ages* making the kernel worse to accomodate
-> broken compilers. We don't "need" to support more compilers -- we need
-> the compilers to support us. We have working compilers; any new compiler
-> that wants to play should be expected to work correctly.
->
-
-We are in a much better place now than we were before in that regard,
-which is actually how this effort came about: instead of lying to the
-compiler, and maintaining our own pile of scripts and relocation
-tools, we can just do what other arches are doing in Linux, and let
-the toolchain do it for us.
+     Arnd
