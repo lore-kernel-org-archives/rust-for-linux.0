@@ -1,93 +1,162 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33191D0171;
-	Wed,  2 Oct 2024 12:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA548198E7F;
+	Wed,  2 Oct 2024 12:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727873192; cv=none; b=DI7TRVXptlng147cSu8fz75Qr7PJkgJTGWs+8WDi6z+Uq5y4o1TJ30x66ZCUI4N+XwTBwpAqyRYU9fSkJlw/MLeCXLNWu8rObqjjSHvKLS1GiQ7B9G5TLX7cEkSuQJAsdMorddqtnScqExPZ5PuagFu6xgcFk6gyN7Mw5KGz0LM=
+	t=1727873316; cv=none; b=l+IQCWGVA5hH1G7lS3/hRW2XQIqlLYX28hge0qFYdaObOCzmfA4VTka4pTFBrb9msWTUIAcqwFdkl3XFi9s5OY9ckNsf0HbjPslOjNYN5wb7IIxAoO8QYWVAtmykn2XjXzMBL033sb6JHSffLo+kfKw8GJGVX+LWTW1fgTzviic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727873192; c=relaxed/simple;
-	bh=Roy6r1isMRCWeTf9TfqHew2mdQkXytCpfcTylQk5YDU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EEIAzI7cINS/e6hmg5g7uQ/xPCc5RwdVru2NZphmTdfY+M81iVhF9IOnMdWN+ZduWx79TuBPGqp71VD8aMoUXQmLtQQgMm5iWSjMS1HGHl5P+ygldCVAfy/5sGFKIy8k8ufdIXzN6xtVZvERx9wY/OrsSWehrCp5i/0s7/D/BY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCTcO/+K; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727873316; c=relaxed/simple;
+	bh=nv/lsJscdkXumBmEHB7B0V3BILhKeMoO4w1QEWB+ipI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=FmBwtR/XeSaiRmyaYBnmAw7DtcaPmW4F+P7SRrrwYXgg7Da30ivyV7/SBk81HN9oBojIUgzHruAQwN9BLF1KWftJu9VlfW/jLGBkiNMKw3UYdTXRQVrVmNRwsjIMMtTBQ4NEosNjDbWZNXUWaeWsoelLkn+KO8pkA9yXP289nzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=pIezcUtD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=L9iXoc4J; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCTcO/+K"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71790698b22so960318b3a.1;
-        Wed, 02 Oct 2024 05:46:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727873190; x=1728477990; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Roy6r1isMRCWeTf9TfqHew2mdQkXytCpfcTylQk5YDU=;
-        b=GCTcO/+KKlXZix4W9nolwJ61jgvk2Y4o/87/RXfpejr9twA3iiVCOVob5FINjdsLVB
-         bysBlLUi0ulRH5vwIxlhVdDBlEXZh7YjQ2DOQd4I1KU7+nXBnxDeugznhm2e6+HLCmWj
-         LffUbimn991Ki3SoZ9xpF530+86rRWVbLKTIeDGTq0iozgdqSA9gaUuR39AqSMmYlQOV
-         1uHO7AT9jQPV7aodjfO4n+qw/aYfXXTsZWPRsxniB8Dd9ynoXPAk0CcowlaA56kF44KV
-         di5eyz7c6D7Sx/R26mNfFbQFewhlnUcw7Wl/iDKStHg/4BCFrbeqvIJ4wJaLoDDWldiW
-         3z/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727873190; x=1728477990;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Roy6r1isMRCWeTf9TfqHew2mdQkXytCpfcTylQk5YDU=;
-        b=ZQAzFuFouz23xqGibqkgObWQSRF2SUV1cB8x0CUFGRFARNLm/d/hiQNwUk1/qp7KkD
-         Ltmrxhqgn9d3Km3F9FduYUBrwCBrpwm2xYhhQiQMfdt9eUAmnbzPapdIj67J4Jtn3rQ0
-         TwSvXApeNHimUlhbOJfWyBIXn5ofb9t6ByMBrNBGGuDC1qEWEDpJWJ7okgqR9QnL74+s
-         7CW/Jz3iXhZmr9d8CLlim674BQI1iP1tf/cnXz+sc0NmscerArN4tD5c8VKJa4Gd8sm5
-         YsDbMF93k7zwO4IHauOscRSPPjgtcqykzvfkKnamlm8JS3YBz4PhGAgr+KZSuRyRdo6F
-         mwVg==
-X-Forwarded-Encrypted: i=1; AJvYcCUi2jl5vWY8YvbNhLUJUtTJzjrJn7yup3QuTC2PFBhYch1MJsKvDffvd/mReUxM1kgEnaAWgyOy31ue450=@vger.kernel.org, AJvYcCVxVaGnwpWpVwKmVFNrrKd0iwN0yf/W97qXHrlc0Tx5miE82VjQ6yKUqueMKj4cjursojM9U7SyrRY97iIB9y8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzctGERVpkUML9qLgS6Me2heMbI2S2IBoiubrGeuCDZ4Hg0lOai
-	xP4hW8rcyl2a/i7C7DD/ynp+oxGIVjzSeLtEyqMOa0ZccZe6MgTlrFx0fYMsOQSOetfEhRFzD7t
-	6VJ23VVfafIkGeRTmJ/vTsvRyJ8/Q76PcZxqvFQ==
-X-Google-Smtp-Source: AGHT+IF412yqKrrJsB7hRebwJD4+/B2g7Bcjpj9kmv8dZwzZXfk8zuxkg/0i5jqUwd2dABdyU5x9tNQ6n4ZtFkRVjbI=
-X-Received: by 2002:a05:6a00:23c9:b0:718:e49f:246e with SMTP id
- d2e1a72fcca58-71dc5d5cce5mr2071438b3a.6.1727873190039; Wed, 02 Oct 2024
- 05:46:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="pIezcUtD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="L9iXoc4J"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id D135711400F4;
+	Wed,  2 Oct 2024 08:48:33 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 02 Oct 2024 08:48:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1727873313;
+	 x=1727959713; bh=05cQwclux3S3pqYYfznkobdBnmxOoukYv72rEPNKpUk=; b=
+	pIezcUtDGDb7syYFoqR8SemGAu7qmkcxQwS2IB5bXeGbOuwkNyltG91BFCQ2Sdt3
+	+BK67HZ/RyRtwi/SlgTGbPCcrgdujg1aIiUtDIjVjkzYwl/JBuFN0HvK4rhRwNUf
+	+y6PfjhB8MjruJVbCbzQ7ev1oCZc+YmiW1sBEILg/HkCsb5acS+UzdW9tBgo1LjL
+	Kfe0ajjVzQrYPyUkM5xkd5GrGtvKDzfWU5DfxINEVCeY2O9fXHzq2wEFi4wy5ESM
+	0ghN0S6UqOJtj9UhJoLBBVQ2CLmurL6o3AuvAKXVuvrDGO3wARUAGu2/QRaERI+t
+	s8CzhpPttWZFX/3iq8NgRA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727873313; x=
+	1727959713; bh=05cQwclux3S3pqYYfznkobdBnmxOoukYv72rEPNKpUk=; b=L
+	9iXoc4J5A/qRF8qQGQtHojVPi8cOB+fAcpy1EYHr9Vm0PdAcQtIyxKCTsl7BF/2Y
+	bGlEenjFScn6J5Bx5ZfZ76SEecV0jIvPXxhLXDKLoCHE2iVKqjTf31w4oCVM4V9B
+	mxH8foQAaOYg2YMGHBfEv8/vHHyj3ylEB8yfExBfurDFt6utyd8a77zo286id6kf
+	oUYwS0Vv7OmJycTdlA4B9W+59X2/fXC44GefmSpA/1w8q62WtzSqUJFYY6ddccHI
+	XKgpr5AB2ywK0T0N+bt2s7wTYTe2R7CK1x5nwI8CtBH2UnD0Ledy9tVmTLO3HXAo
+	GmIowYf9iKpuWN5NCHXAA==
+X-ME-Sender: <xms:IEH9Zt9YKXGQd_bGU-GwK6YYKjuM0GyzDndXTJNvaRFOLOQsgg2dwA>
+    <xme:IEH9ZhtN_euGpFzPnabOiYARp4PDJ8eYsrtKt1psiX4np0aGzZVdj8EiXP6GAdzRd
+    jdY5sylL9Dj6Nt0W3o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduledgheefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudeh
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnh
+    gvthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphht
+    thhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrrdhhih
+    hnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrrghunhgvrheskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghp
+    thhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepsg
+    hjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:IEH9ZrBuZIQ95er61bn8Z_tmR0sMrCN6qpJdOn4b7RV7fmr_tjwgEA>
+    <xmx:IUH9ZhetWIm8WMT8ctgjZbZB2SgUnVsHW_gkaqWlPEdD7CSHjy85Gg>
+    <xmx:IUH9ZiMhvOWqV38spHscYOVacbVClK92xFHGXxw2jMy35WWMmuLzDQ>
+    <xmx:IUH9ZjkqCj6qddIYGuXH273u5nscdodyoGEJ0f8aYn1ljick2IeXmw>
+    <xmx:IUH9Zpk3DMc5xh0ViPpmB4WlFcZxGX38DDjEh6qgJ9kFb6nGhT4XkWjO>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id C91432220071; Wed,  2 Oct 2024 08:48:32 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241002022749.390836-1-paddymills@proton.me> <20241002022749.390836-2-paddymills@proton.me>
- <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com> <53f86af2-45b3-4bb8-b5de-54e3c6c70750@gmail.com>
-In-Reply-To: <53f86af2-45b3-4bb8-b5de-54e3c6c70750@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Oct 2024 14:46:17 +0200
-Message-ID: <CANiq72=R_otRFu1J5X9Pam7u7t_K3t9fWDjEp03H=mKKT62CcA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] checkpatch: warn on known non-plural rust doc
- headers and empty doc comments
-To: Hridesh Mg <hridesh699@gmail.com>
-Cc: Patrick Miller <paddymills@proton.me>, Andy Whitcroft <apw@canonical.com>, 
-	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Oct 2024 12:48:12 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Alice Ryhl" <aliceryhl@google.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
+In-Reply-To: <20241001-b4-miscdevice-v2-2-330d760041fa@google.com>
+References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
+ <20241001-b4-miscdevice-v2-2-330d760041fa@google.com>
+Subject: Re: [PATCH v2 2/2] rust: miscdevice: add base miscdevice abstraction
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 2, 2024 at 2:31=E2=80=AFPM Hridesh Mg <hridesh699@gmail.com> wr=
-ote:
->
-> In this case, I suppose it makes more sense to use the From: tag to signi=
-fy ownership than Co-developed-by since the latter is used when multiple pe=
-ople work on the same patch according to https://docs.kernel.org/process/su=
-bmitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+On Tue, Oct 1, 2024, at 08:22, Alice Ryhl wrote:
+> +#[cfg(CONFIG_COMPAT)]
+> +unsafe extern "C" fn fops_compat_ioctl<T: MiscDevice>(
+> +    file: *mut bindings::file,
+> +    cmd: c_uint,
+> +    arg: c_ulong,
+> +) -> c_long {
+> +    // SAFETY: The compat ioctl call of a file can access the private 
+> data.
+> +    let private = unsafe { (*file).private_data };
+> +    // SAFETY: Ioctl calls can borrow the private data of the file.
+> +    let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) 
+> };
+> +
+> +    match T::compat_ioctl(device, cmd as u32, arg as usize) {
+> +        Ok(ret) => ret as c_long,
+> +        Err(err) => err.to_errno() as c_long,
+> +    }
+> +}
 
-Definitely, that is what I meant by the attribution part. If Patrick
-carries your patch (applies it and sends it on your behalf), then Git
-will add it automatically.
+I think this works fine as a 1:1 mapping of the C API, so this
+is certainly something we can do. On the other hand, it would be
+nice to improve the interface in some way and make it better than
+the C version.
 
-Cheers,
-Miguel
+The changes that I think would be straightforward and helpful are:
+
+- combine native and compat handlers and pass a flag argument
+  that the callback can check in case it has to do something
+  special for compat mode
+
+- pass the 'arg' value as both a __user pointer and a 'long'
+  value to avoid having to cast. This specifically simplifies
+  the compat version since that needs different types of
+  64-bit extension for incoming 32-bit values.
+
+On top of that, my ideal implementation would significantly
+simplify writing safe ioctl handlers by using the information
+encoded in the command word:
+
+ - copy the __user data into a kernel buffer for _IOW()
+   and back for _IOR() type commands, or both for _IOWR()
+ - check that the argument size matches the size of the
+   structure it gets assigned to
+
+We have a couple of subsystems in the kernel that already
+do something like this, but they all do it differently.
+For newly written drivers in rust, we could try to do
+this well from the start and only offer a single reliable
+way to do it. For drivers implementing existing ioctl
+commands, an additional complication is that there are
+many command codes that encode incorrect size/direction
+data, or none at all.
+
+I don't know if there is a good way to do that last bit
+in rust, and even if there is, we may well decide to not
+do it at first in order to get something working.
+
+      Arnd
