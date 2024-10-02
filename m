@@ -1,113 +1,130 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8E615252D
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 20:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BEE2114;
+	Wed,  2 Oct 2024 20:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727899366; cv=none; b=Dc997YS30FfVuOU3OZTxG0NJ/yioPj3noAK1iZgUlqmRL7UXswcEYB2FjtR77aVYwv4AqeJLQ8jOJGXFCDtTUft0Khc2tIcLjY5ydSN1lNvulBiT5kfNWcOO02Dw0l3iCXs7q8U+D5RuY1jaAezcWxFvwbmN0/Ajle0egoEVXxM=
+	t=1727899445; cv=none; b=RGkWZhtyzq0rzZVc4qhP0IjYQg8JSFH84Pogufph0oixdBerUHwC9xDmOtXv+RGHIbGmZlzmn/e7zH52Ff+uGhrS+NFoxZgZ1njuxG5lI2TCg6DkRTgTSo/xjQTPihJisWkh5AVRM16VkTjahy6mPCsVAg+CP/6ffcap8pLLoWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727899366; c=relaxed/simple;
-	bh=QxE6XFKme+xoxU1Rszza7HxCxfUttwEhnIGpZd9XnTo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WPIK7E9zjgSUl6dheIqdWR/ClnF2Oj3GAYUocv4rpU7Ub07Nij66WznDEvoNtzbPAu046FopZDDSgKqkiLfSH59q4+U/q929t/FHVhWgP2OP0muYzZkqpBuqwP8JTV0rGQXpi+XCZnWFdTKCtTopIoNNhoCQwncN3A/HowyzGBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yQX3n/GI; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1727899445; c=relaxed/simple;
+	bh=gPXDQRsFYmCqVGQlQspyPpXZsyzaFvNanZpaovOryow=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AvA6+FwRRaxgMQVg0Sb27MgzZVAex9o651pHwGeaG4nl9lbH+LUqy3ObrHXBlm4TPtgTRprprAJGCMrwegVwPI+J3N16Y67cTxQ7/048sCGwmDHAWXCwJnpdx6qOCZsYuoLJSHkFA0XMmvdCzOV0dXHzB1HF1j8spsjAtgaq0Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sV3cC+Ax; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MacOPU7T; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yQX3n/GI"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37cd26c6dd1so191663f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Oct 2024 13:02:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727899363; x=1728504163; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QxE6XFKme+xoxU1Rszza7HxCxfUttwEhnIGpZd9XnTo=;
-        b=yQX3n/GIwXicZ6pkA13gZgbJ0Ql0sWbk/mzZYtNeolGBCpyGZ+Z2CpNtwSlvJjMJhZ
-         TKehQV0Z7Az8iii3YsY6y3xWjGCGd6zAn9xLgdkp3LzNOX3IKGptdfKBIMsAYgAMlDrs
-         lOuAPDJagX5gOSRpo/kXyRteVyxwNXmFRGtXLFZwZZxEmvd1cHjNo6pS31n9qA9OHTmt
-         2qoy5EMJC2J9+W0wZgMhb97EXoz8L6FjYD+mNy/jL8JkH9tqzc0WfRbrWIOSKCcvEnMa
-         qoH7g0lPcIQUDWNw6qjTHSVHudZqNWiRTLq2gW7DCtWQGqZ7PLU1dqCgTXy4yj2vjzMU
-         mYxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727899363; x=1728504163;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QxE6XFKme+xoxU1Rszza7HxCxfUttwEhnIGpZd9XnTo=;
-        b=f/sdkA2jsJRmeeOQZQbBIszw6AFXxwWsUy6GQcb9sGY0vkZHExEB1N0mOMA3o/xVNu
-         /ytP80fVhR+megBVP/fa5ZG16BrA1wgX+Cg4kGMkmkRhnbgwrQ4t/QckM2PyGthnsKxx
-         07e/qOy6xqAox6h4RHGNhN1fgaTiTksWX3wBKgeMNdbUQ/m1x1tN7P95LgL/uQFHNMqq
-         4vcTm8zos3sDEpJY6Ug5oDbpuXaU+TE3e6nv80Dimvf9DHjM36fZdhOpwGoO6EVZYs8Z
-         H9eqhQhtQSRz4Y+Cyz9JhnUQ73zE3AGwJuwnWPMNEScnVRjSAyPYZuQeUyQXcnAAoBYp
-         v+Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLojnV/zpxNdLqUhGbbbsBXQbDg2A+KEnHji90fRT+hgW+XR/Q2zsGgUhepiSZMzEYtJYC7yIRpi2BWxqM7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKnXXsR1pSO5ejF0kPpbEJxFllmJ2P4TNoSu0D0epGnvkE3mb1
-	Qurtsyv9i5tKuh++KhnyVioXsJEOI4ekO7jLOrKNPZFJRtY+S9gj+fK+EWkcjlUMDJDwtq0R3Ut
-	EvS2FMbXbJH/BI8zZHA8r0pBGy+h09sfq+kt5
-X-Google-Smtp-Source: AGHT+IFdAQHigHgRwqbBluWiPNLhOqlEtdJgsEEyQLh5TI1zvrczhPyhqF49gn7+lx+aW6IN0h4DED7pVuEkReeGskU=
-X-Received: by 2002:a5d:5d81:0:b0:37c:fbf8:fc4 with SMTP id
- ffacd0b85a97d-37cfbf8110amr3030581f8f.59.1727899362994; Wed, 02 Oct 2024
- 13:02:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sV3cC+Ax";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MacOPU7T"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1727899440;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nkfJtSduQOfmewmI3G2NKeIqKkPDh2egZh+vb/1fPwc=;
+	b=sV3cC+AxQawy+r6vxdzQm4+20ZV5HElgOTVSC6LcRgzdAfgeq4q7HvQTZJKppdfxFOLxRY
+	+a1ZeRibUF+t9T1ANCaZSFez1cmDwdRnUvSMbmwO0ndG+5trM/UgpkJAu3KCa5zggiwtoz
+	FL/EvD5ZRqNtTTSZtENCc1Ve4NBJumpGJpnsfAmfXPVqjP8yKcMBakvRxZk8swunWZXhGZ
+	2r56Fpmsm1bqzmqQD9YPeoet3fE4+AWMUpZ9j3PJ4IbFjr9XTNdSYF80VJSC/LE/pjJRw/
+	QG2Uo8OICUOdmFg+OEDjg/TT3IYG4Acs5xXTf5BK6BzwBnYHjRR1AbqUiqY2hg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1727899440;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nkfJtSduQOfmewmI3G2NKeIqKkPDh2egZh+vb/1fPwc=;
+	b=MacOPU7TuOQUMpRdYU4WMpxipoHxtr8womom1DJN1FRBS74WCIjmbRuYDeGgWN03tsLzn1
+	0Gz5Ddil2cd5LQDw==
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Andrew Lunn
+ <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
+ ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+ aliceryhl@google.com, Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+In-Reply-To: <CANiq72nCeGVFY_eZMhp44dqZGY1UXuEZFaJx-3OLCTk-eG=xng@mail.gmail.com>
+References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+ <20241001112512.4861-2-fujita.tomonori@gmail.com>
+ <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+ <20241002.113401.1308475311422708175.fujita.tomonori@gmail.com>
+ <e048a4cc-b4e9-4780-83b2-a39ede65f978@lunn.ch>
+ <CANiq72mX4nJNw2RbZd9U_FdbGmnNHav3wMPMJyLSRN=PULan8g@mail.gmail.com>
+ <3fc44d62-586f-4ed0-88ee-a561bef1fdaf@lunn.ch>
+ <CANiq72nCeGVFY_eZMhp44dqZGY1UXuEZFaJx-3OLCTk-eG=xng@mail.gmail.com>
+Date: Wed, 02 Oct 2024 22:04:00 +0200
+Message-ID: <878qv6w9u7.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240915132734.1653004-1-gary@garyguo.net>
-In-Reply-To: <20240915132734.1653004-1-gary@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 2 Oct 2024 22:02:30 +0200
-Message-ID: <CAH5fLgihaSVg+=D_BfMxnt8VBO-r5LB4akus7EMvAfOyNv45FQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: enable arbitrary_self_types and remove `Receiver`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Danilo Krummrich <dakr@redhat.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Alex Mantel <alexmantel93@mailbox.org>, Adrian Taylor <ade@hohum.me.uk>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 15, 2024 at 3:29=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Wed, Oct 02 2024 at 15:21, Miguel Ojeda wrote:
+> On Wed, Oct 2, 2024 at 2:51=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>> Maybe this is my background as a C programmer, with its sloppy type
+>> system, but i prefer to have this very clear, maybe redundantly
+>> stating it in words in addition to the signature.
 >
-> The term "receiver" means that a type can be used as the type of `self`,
-> and thus enables method call syntax `foo.bar()` instead of
-> `Foo::bar(foo)`. Stable Rust as of today (1.81) enables a limited
-> selection of types (primitives and types in std, e.g. `Box` and `Arc`)
-> to be used as receivers, while custom types cannot.
+> The second part of my message was about the signature point you made,
+> i.e. not about the units. So I am not sure if you are asking here to
+> re-state the types of parameters in every function's docs -- what do
+> you gain from that in common cases?
 >
-> We want the kernel `Arc` type to have the same functionality as the Rust
-> std `Arc`, so we use the `Receiver` trait (gated behind `receiver_trait`
-> unstable feature) to gain the functionality.
+> We also don't repeat every parameter in a bullet list inside the
+> documentation to explain each parameter, unless a parameter needs it
+> for a particular reason. In general, the stronger/stricter your
+> types/signatures are, and the better documented your types are, the
+> less "extra notes" in every function you need.
 >
-> The `arbitrary_self_types` RFC [1] (tracking issue [2]) is accepted and
-> it will allow all types that implement a new `Receiver` trait (different
-> from today's unstable trait) to be used as receivers. This trait will be
-> automatically implemented for all `Deref` types, which include our `Arc`
-> type, so we no longer have to opt-in to be used as receiver. To prepare
-> us for the change, remove the `Receiver` implementation and the
-> associated feature. To still allow `Arc` and others to be used as method
-> receivers, turn on `arbitrary_self_types` feature instead.
+> For instance, if you see `int` in a signature, then you very likely
+> need documentation to understand how the argument works because `int`
+> is way too general (e.g. it is likely it admits cases you are not
+> supposed to use). However, if you see `Duration`, then you already
+> know the answer to the units question.
 >
-> This feature gate is introduced in 1.23.0. It used to enable both
-> `Deref` types and raw pointer types to be used as receivers, but the
-> latter is now split into a different feature gate in Rust 1.83 nightly.
-> We do not need receivers on raw pointers so this change would not affect
-> us and usage of `arbitrary_self_types` feature would work for all Rust
-> versions that we support (>=3D1.78).
+> Thus, in a way, we are factoring out documentation to a single place,
+> thus making them simpler/easier/lighter -- so you can see it as a way
+> to scale writing docs! :)
 >
-> Cc: Adrian Taylor <ade@hohum.me.uk>
-> Link: https://github.com/rust-lang/rfcs/pull/3519 [1]
-> Link: https://github.com/rust-lang/rust/issues/44874 [2]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> That is also why carrying as much information in the signature also
+> helps with docs, and not just with having the compiler catch mistakes
+> for us.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I completely agree.
+
+'delay(Duration d)' does not need explanation for @d unless there is a
+restriction for the valid range of @d. @d is explained in the
+documentation of Duration.
+
+That's not any different in C, when the function argument is a pointer
+to a complex struct. Nobody would even think about explaining the struct
+members in the documentation of the function which has that struct
+pointer argument. No, you need to go to the struct declaration to figure
+it out.
+
+Redundant documentation is actually bad, because any changes to the type
+will inevitably lead to stale documentation at the usage site. The
+kernel is full of this.
+
+I havent's seen the actual patches as they were sent to netdev for
+whatever reason. There is a larger rework of delay.h going on:
+
+  https://lore.kernel.org/all/20240911-devel-anna-maria-b4-timers-flseep-v2=
+-0-b0d3f33ccfe0@linutronix.de/
+
+V3 will be coming early next week. So please look at V2 if you have any
+constraints vs. the rust implementation.
+
+Thanks,
+
+        tglx
+
+
