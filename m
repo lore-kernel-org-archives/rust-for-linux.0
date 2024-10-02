@@ -1,61 +1,61 @@
 Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7536A23C9;
-	Wed,  2 Oct 2024 15:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0861D0DDA;
+	Wed,  2 Oct 2024 15:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727883145; cv=none; b=TEw3ZZj0T1oSTJm2nJom2pW6qzq/IaRPYGsjoZNkU/rRuxR2+nWYgnvFQJE2Kh3MaAsPJQ5b0xxP4cJP/Qjz+J3Tto8Jq+/X0+KQeVUV4OeA+qQlx3CeJsyzLtl1QIVN6rJQJ//cCgEzO7kSexeqQzYviq0vFKuOrDQFjn2aFO4=
+	t=1727883937; cv=none; b=Ewbx+QTT1TQ4Kk6ElBqdvp4MarrTHAaAxrc1hG7FiVImaLTRHOxuYY1c6KP7KEv4gVFaySoe+MxanxSQb+NTLIemJMNkB+nevblWZkWMgrWIUhjvjfw3hIX472lfPrHzP8Ion7J+uNTmezOO9E6o0bsUayFoCtXK8bVTV1UOX8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727883145; c=relaxed/simple;
-	bh=dv8Jq3RMXP2neJCCNvhcBngd39WK1oFLDQVoovW1SyI=;
+	s=arc-20240116; t=1727883937; c=relaxed/simple;
+	bh=eNw4arMQ67mFk/jMxU41QXu7mkTh6QRJeAtFMw5V9fA=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=tnZPGI6+QDm/jLIveHPgExYFmVXWytJwEY/1I6YPIhTF4GyH0NpLN1xwJdYufhy4cvZmLtk/dTVRKBATCUvj6CJmeDopd9WzXRLhiUVEj03kItQuWiy8r4C9wVfs4EvB74yvPo62caxtKSy1V71TSN0yB92W5jXhG/w3z4rg80Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HBKSdGqc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HpwEGpXe; arc=none smtp.client-ip=103.168.172.147
+	 Subject:Content-Type; b=J5TRjMPZEHrw01zDXB3GsBVPz3V++idbQFrAlLjkRPBqxKo34ILS/C8kt4gX7IM4LQmzvtJFVIYUOuo6+TA86MUKzwteZhzqC7VuxUxB1NDoO1a9TX5p+xL1O5c0L6iUcPb/MI0znP93wDKnR6Yzy+S6wJJpnJePqY/mnEOucmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=TU3t05EV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=E5Q+YBcT; arc=none smtp.client-ip=103.168.172.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HBKSdGqc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HpwEGpXe"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="TU3t05EV";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="E5Q+YBcT"
 Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 767F413801E5;
-	Wed,  2 Oct 2024 11:32:22 -0400 (EDT)
+	by mailfout.phl.internal (Postfix) with ESMTP id 5939213801D4;
+	Wed,  2 Oct 2024 11:45:30 -0400 (EDT)
 Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 02 Oct 2024 11:32:22 -0400
+  by phl-compute-10.internal (MEProxy); Wed, 02 Oct 2024 11:45:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1727883142;
-	 x=1727969542; bh=4v2KYEEwHpmE1Lr5xj6ZmVuQBMjcCa/z8GvIKBxSidA=; b=
-	HBKSdGqcirudqKvPgQPrOQ5IOudY5lwYtlAqs3w6DF/znILjMzgG0uo051/HOV4s
-	g7hXPLoSmtV6aiq8J5/HVoWTkqGf6tcdiIaTuEb9DCv2rGY6DY3LuSaBWgwMYYM9
-	T9h13qIJE7WLKrFYuDhics1nRmzze6RNYEfW385JveuuRCgJsbPwnRWRc35lor4a
-	WQOG4MCk1c0WLE4lDHja/9ExH+zACl4ZAjzuq9fS2ANBMn9JhYX+tmocFM59FOXy
-	GJ7l3Mj9Brk0JUnjy8Rm+Xq74gAlv4rLrP0PpqrbQaWwj38FicCpNwpVVg7WFZYg
-	gbUegv0XIjLXeJBXoIy/UQ==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1727883930;
+	 x=1727970330; bh=oty9sIPBDyhv/ZrVcebfA4NP1nfbxqi9GsI5LvWrrbY=; b=
+	TU3t05EVvnf+3c0sOGvgfnxfzdU7aSj5aDYQ8lyymUzkbF1u0H28xAnzXyVimMqC
+	LFFVUXpQLq1qFq7ZuIaxYPr0hH1RLmMWCF4VegzeRud3I23Kw6e0qv8itsHk1NlJ
+	JQSvD1HeK0OXbQy0b5nbqpMGx9jXgK1iUyqFbihKrN+7m2tADmb5GgggAYcjqwps
+	pvbBlVM/XcHxmmeuxaDAugd0ig/wm7XsQ5/KM2NMVY2iAc4pDjcMz0fgrCSuZcQf
+	1dpUjBNN7FJacGQ/6QrW/IGjEf8Iqfpqd5m90OLaVliSFkD2jFn4AvwuyfSNHOhD
+	U2r1AB0zc39ROTeA8yib7w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727883142; x=
-	1727969542; bh=4v2KYEEwHpmE1Lr5xj6ZmVuQBMjcCa/z8GvIKBxSidA=; b=H
-	pwEGpXeI0in71Dw4X8F5A7D3d1A423RQ66mATPL/phLVgpPzphj+YF9xiLbZnI7g
-	kVAgRrFd3I0yfd6dL/vscuTa0X70HjHcLMNJ6d8dZYIgoKGb9Vq7Q1ARlyV8i7ZE
-	OIzwUsKxgd45tl1G8L5Acl5XqmZkbSu1vFVfFY4+ZmfbsFSVDHBltp9I019eaUR5
-	PkA3I9Br0AD1LCgPhJXG+gcVTQjM9XqRDsEuGFLpIRM9T/ckAMg0yjbtCJIHsBrg
-	8wc+Azi8o7UgXpoL1Ay/8Rl9m0zYaOtjGIJyoKr6UPV3TNHPwO9BzdUA9WzrABIq
-	X8IqNLhT6c15dE7566ysA==
-X-ME-Sender: <xms:hWf9ZonWyk3K4TGElhzuZPV2t8XzfFm9sShnVFFiO8GJCUVu9AS3SQ>
-    <xme:hWf9Zn2KXjjMZ2f3CAOOkLzEQ2JJhiuovSUstDT7bRUKAgpswRuJxhQ7BByBozvYu
-    bpwSYeQMKUwpNY5aqw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduledgkeeiucetufdoteggodetrfdotf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727883930; x=
+	1727970330; bh=oty9sIPBDyhv/ZrVcebfA4NP1nfbxqi9GsI5LvWrrbY=; b=E
+	5Q+YBcTJFwGrltbC587xsM4eizoIksjMfg0VYZF9YOC4UKOtwkXIu/Hb5+mrAexQ
+	1Ksfj/NQGrpnMylYRj5WG6ihKwXHBm+i+kH18nYwDWz95W+RCMGmJiZkDFNjkX7D
+	NP3y1Q/gvfXDcPQUNHblmjtDfiqQ4Op5td3XYrqxUe4IOoKzmzpkSWgib9EHnZd2
+	Cl+NbIRv2ncqw4Em48HotsxzAF9c7Mxl/XwiiTvSXET1NVU9yuPfr/CddxWcfHua
+	bcmTiAd9Rp/oCTna/2BLOdOfH/W8mPOEeLh1wJOeJ/X8ezLmXYgsdUFoVz1FWpmG
+	Oe/rcXGetx+ZFi+bdSAKQ==
+X-ME-Sender: <xms:mWr9ZozH4bN5v69rCWMkfKKW_V0DjkJW9o15vjST08rbfZZyZgGtCQ>
+    <xme:mWr9ZsTabxXJ5N7tM1CEcDeVMnBsB25XwCF0O5hzt-_Uh2ASpHtp3MF7R3-kgsSnh
+    jpbU9edCxjoipuBDyk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduledgkeelucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
     necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
-    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
     hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudeh
     pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnh
     gvthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphht
@@ -65,14 +65,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduledgkeeiucetufdoteggod
     hpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghp
     thhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepsg
     hjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:hWf9ZmqdSflvrACVy31NGa4AowXp4IB0YreIhW1Qury23sCepzLA3w>
-    <xmx:hWf9ZkmuYJZ4CGwS9XRD6B3K1GWThUhHqVL6VPR-18n1eObRLAnYLg>
-    <xmx:hWf9Zm2PTxlbBAtMl1HLKVyDf_WLD_ykyIE4xSOofoPksABwdDcd3A>
-    <xmx:hWf9ZrubHoF9xT6XQjqScAMhxCpNWO9yB_p7jmknmPgoTVNyDEt1Tg>
-    <xmx:hmf9ZgMPCEpeZ55MvVCRxPrvzoq3qz-CWRJN6LRu3WeTDG7Gkylt-pxE>
+X-ME-Proxy: <xmx:mWr9ZqWVPDt5RBEIqvvyVgEU6Ct8PJNcawEza60twQ07LV7vfAoMfA>
+    <xmx:mWr9ZmhhPfaehgEIV-twXgpg_3UV4TL1sGYGySNmgHr85kfc0G_g1A>
+    <xmx:mWr9ZqCtyTX1RNs6V4W0j0wEjlpIe5TEM7d3FO9NS2PkTEfeK3JhSg>
+    <xmx:mWr9ZnJJQ2lG2BKgYmMfWBVAYnvzFuTFxZ2yS577rfaUUdQfgE2N2Q>
+    <xmx:mmr9ZiZcEXn7tfIoHJkk7yhhspjTgTExumE1GtGCbN_YXXNP5lWYssLP>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 981EB2220071; Wed,  2 Oct 2024 11:32:21 -0400 (EDT)
+	id 9027B2220071; Wed,  2 Oct 2024 11:45:29 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -80,87 +80,63 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 02 Oct 2024 15:31:59 +0000
+Date: Wed, 02 Oct 2024 15:45:08 +0000
 From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Alice Ryhl" <aliceryhl@google.com>
+To: "Christian Brauner" <brauner@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>
 Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
  "Miguel Ojeda" <ojeda@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>,
  "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  "Benno Lossin" <benno.lossin@proton.me>,
  "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Trevor Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <fc5cee69-e37a-4053-a425-f9191e58011a@app.fastmail.com>
-In-Reply-To: 
- <CAH5fLgjjcwTZzN5+6yfku2J6SG1A8pNUKOkk1_JuyAcfNXa2BQ@mail.gmail.com>
+Message-Id: <10dca723-73e2-4757-8e94-22407f069a75@app.fastmail.com>
+In-Reply-To: <20241002-inbegriff-getadelt-9275ce925594@brauner>
 References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
  <20241001-b4-miscdevice-v2-2-330d760041fa@google.com>
  <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
- <CAH5fLghmkkYWF8zNFci-B-BvG8LbFCDEZkZWgr54HvLos5nrqw@mail.gmail.com>
- <50b1c868-3cab-4310-ba4f-2a0a24debaa9@app.fastmail.com>
- <CAH5fLghypb6UHbwkPLjZCrFM39WPsO6BCOnfoV+sU01qkZfjAQ@mail.gmail.com>
- <46c9172e-131a-4ba4-8945-aa53789b6bd6@app.fastmail.com>
- <CAH5fLgjjcwTZzN5+6yfku2J6SG1A8pNUKOkk1_JuyAcfNXa2BQ@mail.gmail.com>
+ <20241002-rabiat-ehren-8c3d1f5a133d@brauner>
+ <CAH5fLgjdpF7F03ORSKkb+r3+nGfrnA+q1GKw=KHCHASrkz1NPw@mail.gmail.com>
+ <20241002-inbegriff-getadelt-9275ce925594@brauner>
 Subject: Re: [PATCH v2 2/2] rust: miscdevice: add base miscdevice abstraction
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 2, 2024, at 14:23, Alice Ryhl wrote:
-> On Wed, Oct 2, 2024 at 3:59=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> w=
-rote:
->>
->> On Wed, Oct 2, 2024, at 13:31, Alice Ryhl wrote:
->> > On Wed, Oct 2, 2024 at 3:25=E2=80=AFPM Arnd Bergmann <arnd@arndb.de=
-> wrote:
->> >>
->> You can also see the effects of the compat handlers there,
->> e.g. VIDIOC_QUERYBUF has three possible sizes associated
->> with it, depending on sizeof(long) and sizeof(time_t).
->>
->> There is a small optimization for buffers up to 128 bytes
->> to avoid the dynamic allocation, and this is likely a good
->> idea elsewhere as well.
+On Wed, Oct 2, 2024, at 14:23, Christian Brauner wrote:
+
+> and then copy the stuff via copy_struct_from_user() or copy back out to
+> user via other means.
 >
-> Oh, my. That seems like a rather sophisticated ioctl handler.
->
-> Do we want all new ioctl handlers to work along those lines?
+> This way you can safely extend ioctl()s in a backward and forward
+> compatible manner and if we can enforce this for new drivers then I
+> think that's what we should do.
 
-It was intentionally an example to demonstrate the worst
-case one might hit, and I would hope that most drivers end
-up not having to worry about them.=20
+I don't see much value in building generic code for ioctl around
+this specific variant of extensibility. Extending ioctl commands
+by having a larger structure that results in a new cmd code
+constant is fine, but there is little difference between doing
+this with the same or a different 'nr' value. Most drivers just
+always use a new nr here, and I see no reason to discourage that.
 
-To clarify: the file I mentioned is itself a piece of
-infrastructure that is used to make the actual drivers
-simpler, in this case by having drivers just fill out
-a 'struct v4l2_ioctl_ops' with the command specific callbacks.
+There is actually a small risk in your example where it can
+break if you have the same size between native and compat
+variants of the same command, like
 
-This works because video_ioctl2() has a clearly defined set
-of commands that is shared by a large number of drivers.
-For a generic bit of infrastructure, we obviously wouldn't
-do anything that knows about specific commands, but the way
-the get_user/put_user part works based on the size can be
-quite similar.
+struct old {
+    long a;
+};
 
-There is similar piece of infrastructure in
-drivers/gpu/drm/drm_ioctl.c, which is a bit simpler.
+struct new {
+    long a;
+    int b;
+};
 
->> It seems like it should be possible to validate the size of
->> the argument against _IOC_SIZE(cmd) at compile time, but this
->> is not currently done, right?
->
-> No, right now that validation happens at runtime. The ioctl handler
-> tries to use the UserSliceReader to read a struct, which fails if the
-> struct is too large.
+Here, the 64-bit 'old' has the same size as the 32-bit 'new',
+so if we try to handle them in a shared native/compat ioctl
+function, this needs an extra in_conmpat_syscall() check that
+adds complexity and is easy to forget.
 
-Ok.
-
-> I wonder if we could go for something more comprehensive than the
-> super simple thing I just put together. I'm sure we can validate more
-> things at compile time.
-
-
-
-     Arnd
+    Arnd
