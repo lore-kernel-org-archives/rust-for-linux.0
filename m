@@ -1,81 +1,94 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8481D52B;
-	Wed,  2 Oct 2024 12:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA54194A73;
+	Wed,  2 Oct 2024 12:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727872272; cv=none; b=IscvoBi6q0KPpM14NobsaZXa0fomoiNPv/e8oxlag5wIDHJx2Ea6vlgtwprSWiMLDgzA0fUd9gXwkMiwTEpQtVyj/foYsWNKiIJN9j2KOQTtvdTxAc+mdSnXHxSc56JEikF37nv+Lwyp9V0Kujlyha0gAlJFBzzMgh6E8ztJAfU=
+	t=1727872312; cv=none; b=uIM+pxvs6GqFV+Dz1K1V23S++6aYhiAgtuElOgcX4q6LPqQpOup/NL3Ztv8AhpH1qb/gz8aoxsdAi32RcfhSTeWsVqWUWxLOBaSbmXZSRY/gqJV84AudUBWUCQOblzlSoVm0f8MIZt3o+h4gDgG1dMrA3oZ1/7SrNIo+q/Ue0JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727872272; c=relaxed/simple;
-	bh=y9wY8I/zjyHIOrRCdYUnf8u7lfoDOBcwF1CzuLB5r+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e7cQLKjU+SFr3ST3xLP9+yZmg87Sz66foz34vIygAphKzjoksi0frnYrf8MYroe5J8HbsnoISfdyg0VA1YE2XER/V1QwMY1PjMXr71wuw+6aIzDh+YToL3Dkgx6OSJ0ABIMFIHWboVqctnCludHvqKlTxaMcP/8vHlR6x6il2Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=57izO1BQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1727872312; c=relaxed/simple;
+	bh=0QpmFL8c2POpI5zdvk8ZfpecN6SLdNmWf8JIT34B2oE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=UVtt180hDZdwAEP0TObPXfqoWYeCJc6HNY27rLS9eAAD1Ajii+gohNuOmpYoY+8fALFkb/pMe6cTWAvusOYQGRNnsS2HE1LZWMmL9yRmwScZks7NguKEPy+iPCU1aq+tondC81FnfZad63j0zQ8s2aoCMZxuOE61Z0X/4gaEI9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PfykZejP; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="57izO1BQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dJpjuwwNU1sI8cy4/CDlp+ignGc/c/8eL5sgCTYQSEw=; b=57izO1BQ6Cd1ciJWZx/pMDfEgX
-	mCn9Q0ifRTWtVan6O9T1JoAYnR46L9snT1riKugZxcTrYBHH37sVMZ8CgCqAK9p0wBRcwEHaSFyKC
-	AjuVLFjFZz+bVeSLyXGZCD23F+ZgD5EhMbqcXZguWXoC55wC9Bjrt//hornI37hlfayA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1svyVX-008r1N-JH; Wed, 02 Oct 2024 14:31:07 +0200
-Date: Wed, 2 Oct 2024 14:31:07 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com
-Subject: Re: [PATCH net-next v1 2/2] net: phy: qt2025: wait until PHY becomes
- ready
-Message-ID: <ec7267b5-ae77-4c4a-94f8-aa933c87a9a2@lunn.ch>
-References: <20241001112512.4861-3-fujita.tomonori@gmail.com>
- <CAH5fLghAC76mZ0WQVg6U9rZxe6Nz0Y=2mgDNzVw9FzwpuXDb2Q@mail.gmail.com>
- <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
- <20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PfykZejP"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20b93887decso27654455ad.3;
+        Wed, 02 Oct 2024 05:31:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727872311; x=1728477111; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0QpmFL8c2POpI5zdvk8ZfpecN6SLdNmWf8JIT34B2oE=;
+        b=PfykZejPTEkN4cPNtTFLGxlzdb2g35xN4DTGegfHVDxIdR+FSM+YsRDK4VX/enHSTA
+         81YL8VQQ5IXIkVjuhNbemopyWiHr1/ckXv/05iPzF0jMGPpVlFI4mEtrVa59lH0G6OFP
+         On/tjHZgcH2UqU+o6NaoQyV3YtIh9uK8K7mh01mTb9EPK0UyOQB5t7NlT1AcoPC3qlaf
+         wU05/siEP7u42r851nzmTOOU7kZ1X8iYGryvlBgxTzlgS8SWCNCKDZRyx4mfATHg0Jw+
+         9PbbRgUX40UEnmJVjfl8HNp+n/+yChtXUnEnaQJomd6/LWewXjbP1SmdqDP651Wy1rhC
+         wO6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727872311; x=1728477111;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0QpmFL8c2POpI5zdvk8ZfpecN6SLdNmWf8JIT34B2oE=;
+        b=Poyc9mz9lix6P6kFGKn1B2XF1nVvYXP1C/QATzqZA25/8UAf+OskmCbYR0HsvLlpfZ
+         +4pt/vNRK7t+Vit1+fuYwOqT/Z2WamQxARIrBRd5TvBKCI6q/JjDMtjGxFI8LeNr2T1N
+         mLdRPZBEZHfOo7M/Eu8aZyQOV0avSwm+TOKf5XGbTPVGsaXzv47r8YQJQwEiWSXKO1EP
+         oApU8SAvz+nGRvjykNlfH7hEtaNOI1EdpV0julKOQ9lS1KbOVYUWA9aDsbc0yvlIusKE
+         Ws3I4m1OAcdZvc+1WY0aRA5YFeR4xy6PM3reszqs1RkHScifgL9kndYNMygKhKPRgfyc
+         d5Og==
+X-Forwarded-Encrypted: i=1; AJvYcCVhIT7kFhrMOwwo2jz6EHBcHsuLLe/ECS+UuhJgyn8sEOzZtuIKb2a2+4TmbH5HQw5mKrW81VZWyNrT+qM=@vger.kernel.org, AJvYcCWUFLJ2iHtkAEwPe0+WnSn/nOxQ5ynoBz1di/H3K+a9jTiMcf3hlQAi5GUCfQZnMYoyUoYkgmWtEua/XVwwETI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5jVermsdFMds8h9aLnWOwFXr/6L/+VlCL6Pqgb9LwxT3UYig1
+	HSuCIuCjTTLSRk93fm2crvYOmgCTsg1HWBSf7a6MjpOCkH0+wfbz
+X-Google-Smtp-Source: AGHT+IFuFfakisfvFTluNUVhCSm27HxT9PsUdm1fFTdu5haxn6wec4Y9tB/5+RhMwpurf19t0L9nGg==
+X-Received: by 2002:a17:903:1105:b0:20b:a576:1896 with SMTP id d9443c01a7336-20bc5a5dc02mr41922635ad.43.1727872310664;
+        Wed, 02 Oct 2024 05:31:50 -0700 (PDT)
+Received: from [127.0.0.1] ([106.200.85.156])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e357absm82741495ad.190.2024.10.02.05.31.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 05:31:50 -0700 (PDT)
+Date: Wed, 2 Oct 2024 18:01:32 +0530 (GMT+05:30)
+From: Hridesh Mg <hridesh699@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Patrick Miller <paddymills@proton.me>,
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Message-ID: <53f86af2-45b3-4bb8-b5de-54e3c6c70750@gmail.com>
+In-Reply-To: <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com>
+References: <20241002022749.390836-1-paddymills@proton.me> <20241002022749.390836-2-paddymills@proton.me> <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] checkpatch: warn on known non-plural rust doc
+ headers and empty doc comments
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Correlation-ID: <53f86af2-45b3-4bb8-b5de-54e3c6c70750@gmail.com>
 
-On Wed, Oct 02, 2024 at 10:13:39AM +0000, FUJITA Tomonori wrote:
-> On Tue, 1 Oct 2024 14:48:06 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
-> 
-> > I generally point developers at iopoll.h, because developers nearly
-> > always get this sort of polling for something to happen wrong. 
-> 
-> Ah, I had forgotten about iopoll.h. Make senses. I'll try implement an
-> equivalent in Rust.
+02-Oct-2024 5:26:15 pm Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>:
+> I would also include Hridesh's cleanup here too if we are doing
+> everything here. Something like:
+>
+> #1: clean A
+> #2: add check for A
+> #3: clean B
+> #4: add check for B
 
-There are some subtleties involved with PHYs, which is why we have our
-own wrapper around the macros in iopoll.h:
-
-https://elixir.bootlin.com/linux/v6.11.1/source/include/linux/phy.h#L1288
-
-Normally an IO operation cannot fail. But PHYs are different, a read
-could return -EOPNOTSUPP, -EIO, -ETIMEDOUT etc. That needs to be take
-into account and checked before evaluating the condition.
-
-So you might need to think about something similar for Rust. A generic
-read_poll_timeout() and a phy_read_poll_timeout() built on top of it.
-
-This is a worthwhile set of helpers to have, since the bugs in this
-are nothing to do with memory safety, but plain simple logic bugs,
-which Rust itself is unlikely to help with.
-
-	Andrew
+In this case, I suppose it makes more sense to use the From: tag to signify ownership than Co-developed-by since the latter is used when multiple people work on the same patch according to https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
