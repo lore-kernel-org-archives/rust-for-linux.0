@@ -1,43 +1,59 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD59413CFA6
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 19:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FF912CD88;
+	Wed,  2 Oct 2024 19:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727895893; cv=none; b=m1MpH5unDsF9v7lJx1E1cI75IWh1VO20DohrTgcibGfM4PEYEopdd2LcoXtNeG1JvQ/zPEHrRbdVkElJuRShEnfMz5UlQSizatJuvMh82vQxGbNRVhMKU+rjLp9zNd3Vxe57+eWmZ7CjUMnFBEB90d5xCB5Ns8fKWzgRS1oWG7E=
+	t=1727898048; cv=none; b=OaF5FN3IpIk3CiQuZtOQNBbz3ABjkHSqcSqHOh1kSf6WMkVSsSeRj97VL+BVJ7mQTGl0pRZmRlVlXGNzc8RRlG/K/+HXGR1lc3L6yHBpXa15IZTqDMkosvDvyeI18s56YLDWvUv5QW64IDuCYxgQw2sePxEmJNkLUrdKk3caTn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727895893; c=relaxed/simple;
-	bh=cjxMzazOMipcM1jz60XF22yUskV+jYMT+TfbytHMFL0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EyKM09KzLRvv3U1tO7WR5KSjmkvKVXSFevrEupg2yjl3aSviiqrPnD4WlpoAgejx1d1yuOVGOf3f590U1Gd3MkWruAC5ayTzyX6R5qOBtK6bZmSNsvHwMzK7iYDrt8e6HMdvcodYgr+jIde2DZveiRmnQPEAp8qHbeQosZf6Wak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Yx3mYK4t; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1727898048; c=relaxed/simple;
+	bh=LILyfyev/WklbWpVcaXNQXycUXDsHTF3JRuSQOIk+DM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LZZ9sJk2Kt/L0zMPkWTbrBm+ewBEwl7LRQmTEEJYbvUD8Er5/eumlKYS8h/waI7W3ZMeF971OPYebrO2ncR0sMrtKJCAYHtqzMRRmKTBuK9BFlCeV3yG6NFy/QLHYutm5wH1FwXVWl5WDLEC40j/hHj9NUHUx5Hr9Lc+WKmovGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xPKtvFVo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ev24RbBL; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Yx3mYK4t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1727895889; x=1728155089;
-	bh=9akIb4qnOADzLJh2oi1jZDxi/cwQ564uVPZn/qtrwfk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Yx3mYK4t7DSc4JRjFsOCtvopyfL9b56ZuDSYue7b2uOOFfEGwM9w2PSeIzxZ9i+0T
-	 WQHoNPirjdlnZqb9q2pYlTVrd0mQqtYs9SqfUsZosZsFT9eXFVo/6/v/1Uf57rx1Xr
-	 V9nmd5mI3FP3/ymbyF1LeO4r5O5GVc6ITj65XPRJso4udIwKaMn3rRdOD2CbjaYdID
-	 eXoefn8hKDviJhJVDoDHl6dinS8Kg334ApC4GAWFjZcRwHLRby8fzv21/oTOns4WZ9
-	 TvB8M0bMdjL5bPFnKuRcNLCBGtXkz9kAK7x3gHUpSFy3IbjIuNQ+Ddb/9pkryo2cOv
-	 vTXspNFZXSxRw==
-Date: Wed, 02 Oct 2024 19:04:42 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 16/29] rust: alloc: implement kernel `Vec` type
-Message-ID: <c7d82c56-9632-4987-aadf-7df861a490d9@proton.me>
-In-Reply-To: <Zv1kpqCihqrlCo6f@pollux>
-References: <20241001150008.183102-1-dakr@kernel.org> <20241001150008.183102-17-dakr@kernel.org> <977af809-71f5-4a5a-8006-a283f8a6fc25@proton.me> <Zv1kpqCihqrlCo6f@pollux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 528b097b375c393c59da8090d105ccdbc39165f4
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xPKtvFVo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ev24RbBL"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1727898045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4EhGotuDayjNZLZBOQ5uImVIDZz84kz1QRNGB91lT0Q=;
+	b=xPKtvFVoktK4YMdSk6d2HV4q3M/aSa9mDnoMsMkAd9zCf7mITj3aIm3opnDTf6WAWllspx
+	sY0wQIl/Q5c5pKJzrYTzea4/eZy8jsgimNQZrg69+xAbjdReI3MmSK+lDFHO81xvHzgHVY
+	nERrcfw6ZbJtHN9A91u2s3/cJUX/mqOELGfJ8cV0XjUwtk6ThCMtY0abzzOIib1loHmfG9
+	4N3z8jMag7X7YpJNJQSqJlzpqfUfpS4qeJMl/9NeFYpoLX7qUr+FF0gIi1ifvbhgfw+HnD
+	acxaIagAXQcNgoXC/ZHyKcDMz8gd+Dnx0LN061nBmS3D9V/37aE6hzsLnlceMw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1727898045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4EhGotuDayjNZLZBOQ5uImVIDZz84kz1QRNGB91lT0Q=;
+	b=ev24RbBLEsZg6NUCvyOpzhTcjVtGpdoAIBp1DD5S4KR+tJx4apG1i8Xf1goS32MhE87Sb4
+	wdgSmDLH6oF/0SAA==
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, andrew@lunn.ch, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
+ ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+In-Reply-To: <CANiq72kf+NrKA14RqA=4pnRhB-=nbUuxOWRg-EXA8oV1KUFWdg@mail.gmail.com>
+References: <CAH5fLgiB_3v6rVEWCNVVma=vPFAse-WvvCzHKrjHKTDBwjPz2Q@mail.gmail.com>
+ <20241002.135832.841519218420629933.fujita.tomonori@gmail.com>
+ <CAH5fLgj1y=h38pdnxFd-om5qWt0toN4n10CRUuHSPxwNY5MdQg@mail.gmail.com>
+ <20241002.144007.1148085658686203349.fujita.tomonori@gmail.com>
+ <CANiq72kf+NrKA14RqA=4pnRhB-=nbUuxOWRg-EXA8oV1KUFWdg@mail.gmail.com>
+Date: Wed, 02 Oct 2024 21:40:45 +0200
+Message-ID: <87bk02wawy.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,47 +63,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 02.10.24 17:20, Danilo Krummrich wrote:
-> On Wed, Oct 02, 2024 at 03:02:18PM +0000, Benno Lossin wrote:
->> On 01.10.24 16:59, Danilo Krummrich wrote:
->>> `Vec` provides a contiguous growable array type with contents allocated
->>> with the kernel's allocators (e.g. `Kmalloc`, `Vmalloc` or `KVmalloc`).
->>>
->>> In contrast to Rust's stdlib `Vec` type, the kernel `Vec` type consider=
-s
->>> the kernel's GFP flags for all appropriate functions, always reports
->>> allocation failures through `Result<_, AllocError>` and remains
->>> independent from unstable features.
->>>
->>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->>> ---
->>>  rust/kernel/alloc.rs      |   6 +
->>>  rust/kernel/alloc/kvec.rs | 637 ++++++++++++++++++++++++++++++++++++++
+On Wed, Oct 02 2024 at 16:52, Miguel Ojeda wrote:
+> On Wed, Oct 2, 2024 at 4:40=E2=80=AFPM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
 >>
->> Any reason against naming this `vec.rs`?
->=20
-> I think I didn't rename kvec.rs and kbox.rs because we'd need to escape "=
-box" in
-> various places, e.g. in rust/kernel/alloc.rs:
->=20
-> ```
-> pub mod r#box;
->=20
-> pub use self::r#box::Box;
-> pub use self::r#box::KBox;
-> pub use self::r#box::VBox;
-> pub use self::r#box::KVBox;
-> ```
+>> Sure. Some code use ktime_t to represent duration so using Ktime for
+>> the delay functions makes sense. I'll add some methods to Ktime and
+>> use it.
+>
+> We really should still use different types to represent points and
+> deltas, even if internally they happen to end up using/being the
+> "same" thing.
+>
+> If we start mixing those two up, then it will be harder to unravel later.
+>
+> I think Thomas also wanted to have two types, please see this thread:
+> https://lore.kernel.org/rust-for-linux/87h6vfnh0f.ffs@tglx/ (we also
+> discussed clocks).
 
-Yeah, that's why `std` uses `boxed.rs`.
+Correct. They are distinct.
 
-> And it's a kernel specific implementation, so kbox.rs and kvec.rs still m=
-akes
-> sense. :)
+Btw, why is this sent to netdev and not to LKML? delay is generic code
+and has nothing to do with networking.
 
-Fair.
+Thanks,
 
----
-Cheers,
-Benno
-
+        tglx
