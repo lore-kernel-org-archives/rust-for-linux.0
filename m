@@ -1,94 +1,106 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA54194A73;
-	Wed,  2 Oct 2024 12:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4AE1D52B;
+	Wed,  2 Oct 2024 12:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727872312; cv=none; b=uIM+pxvs6GqFV+Dz1K1V23S++6aYhiAgtuElOgcX4q6LPqQpOup/NL3Ztv8AhpH1qb/gz8aoxsdAi32RcfhSTeWsVqWUWxLOBaSbmXZSRY/gqJV84AudUBWUCQOblzlSoVm0f8MIZt3o+h4gDgG1dMrA3oZ1/7SrNIo+q/Ue0JI=
+	t=1727872571; cv=none; b=e02Rg9Kt35DShkJKaNJSvXYgYi2+wsHYBvmtihAoBSAQw/fzbj3E+ulM8f5iiidVpOQdiadHTS0OaJ6DdM1eTA21DxyJjIJPHAMbTQTWelLbuhu71scYSJyw3MhJ6DCXIz47pcAgJjVbZ/QcdLRhezAbtOYl7fkxHVvZDeL9jAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727872312; c=relaxed/simple;
-	bh=0QpmFL8c2POpI5zdvk8ZfpecN6SLdNmWf8JIT34B2oE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=UVtt180hDZdwAEP0TObPXfqoWYeCJc6HNY27rLS9eAAD1Ajii+gohNuOmpYoY+8fALFkb/pMe6cTWAvusOYQGRNnsS2HE1LZWMmL9yRmwScZks7NguKEPy+iPCU1aq+tondC81FnfZad63j0zQ8s2aoCMZxuOE61Z0X/4gaEI9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PfykZejP; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1727872571; c=relaxed/simple;
+	bh=Z3gOJwpnsfIwTozSH/9DLo2lyBS6+hSw8FwSpr4qe44=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZYRK55OuQU0pXAy2V48YksA1eWyQ6Qh/QKCoZC0aC/bBqjCE+5tQCNhwMpOhuw8XWmDTcb3IVm5Gwm6HB5D9EnJT51BHjHaPW8yhbRkd2qd+9oZroZGWf53Ka1xNJADWltI2dj+9n3XHHNfa1GD+cZQkDIZqXYb1qf8omVfltLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GWQC3t/Q; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PfykZejP"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20b93887decso27654455ad.3;
-        Wed, 02 Oct 2024 05:31:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GWQC3t/Q"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71927b62fa1so365737b3a.2;
+        Wed, 02 Oct 2024 05:36:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727872311; x=1728477111; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1727872570; x=1728477370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0QpmFL8c2POpI5zdvk8ZfpecN6SLdNmWf8JIT34B2oE=;
-        b=PfykZejPTEkN4cPNtTFLGxlzdb2g35xN4DTGegfHVDxIdR+FSM+YsRDK4VX/enHSTA
-         81YL8VQQ5IXIkVjuhNbemopyWiHr1/ckXv/05iPzF0jMGPpVlFI4mEtrVa59lH0G6OFP
-         On/tjHZgcH2UqU+o6NaoQyV3YtIh9uK8K7mh01mTb9EPK0UyOQB5t7NlT1AcoPC3qlaf
-         wU05/siEP7u42r851nzmTOOU7kZ1X8iYGryvlBgxTzlgS8SWCNCKDZRyx4mfATHg0Jw+
-         9PbbRgUX40UEnmJVjfl8HNp+n/+yChtXUnEnaQJomd6/LWewXjbP1SmdqDP651Wy1rhC
-         wO6A==
+        bh=Z3gOJwpnsfIwTozSH/9DLo2lyBS6+hSw8FwSpr4qe44=;
+        b=GWQC3t/Qk4hg/o36E8FIhsSIoxwmnTHmEleY4ZtNObDRQACIIQzJHohfKWi3v13rKI
+         tn4H85Y8t8MkLUku/DlGRb+wdCHfVzq8zyv811mMbpPqQllQNWhENkWr6sCJd7udhvQk
+         hVyapAYbVkXwkOnwEve1bVfSS3OmpXnGvrpKaomzRTblrx/33G9BHW3tfUaWnjZzJueH
+         hEVQ6Ldpqeou5sy4tJnh+C5LtUku0M/JpZNwEOaOzVpJCmCacpbqfyZeq2ZUO+wvQjeO
+         VTFm8iDUwpSiwInXfmpet6Bz3zSS64debbY1Tysz7WbGtaL2arSPhVnMiSA5dy+KxNk/
+         P+Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727872311; x=1728477111;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0QpmFL8c2POpI5zdvk8ZfpecN6SLdNmWf8JIT34B2oE=;
-        b=Poyc9mz9lix6P6kFGKn1B2XF1nVvYXP1C/QATzqZA25/8UAf+OskmCbYR0HsvLlpfZ
-         +4pt/vNRK7t+Vit1+fuYwOqT/Z2WamQxARIrBRd5TvBKCI6q/JjDMtjGxFI8LeNr2T1N
-         mLdRPZBEZHfOo7M/Eu8aZyQOV0avSwm+TOKf5XGbTPVGsaXzv47r8YQJQwEiWSXKO1EP
-         oApU8SAvz+nGRvjykNlfH7hEtaNOI1EdpV0julKOQ9lS1KbOVYUWA9aDsbc0yvlIusKE
-         Ws3I4m1OAcdZvc+1WY0aRA5YFeR4xy6PM3reszqs1RkHScifgL9kndYNMygKhKPRgfyc
-         d5Og==
-X-Forwarded-Encrypted: i=1; AJvYcCVhIT7kFhrMOwwo2jz6EHBcHsuLLe/ECS+UuhJgyn8sEOzZtuIKb2a2+4TmbH5HQw5mKrW81VZWyNrT+qM=@vger.kernel.org, AJvYcCWUFLJ2iHtkAEwPe0+WnSn/nOxQ5ynoBz1di/H3K+a9jTiMcf3hlQAi5GUCfQZnMYoyUoYkgmWtEua/XVwwETI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5jVermsdFMds8h9aLnWOwFXr/6L/+VlCL6Pqgb9LwxT3UYig1
-	HSuCIuCjTTLSRk93fm2crvYOmgCTsg1HWBSf7a6MjpOCkH0+wfbz
-X-Google-Smtp-Source: AGHT+IFuFfakisfvFTluNUVhCSm27HxT9PsUdm1fFTdu5haxn6wec4Y9tB/5+RhMwpurf19t0L9nGg==
-X-Received: by 2002:a17:903:1105:b0:20b:a576:1896 with SMTP id d9443c01a7336-20bc5a5dc02mr41922635ad.43.1727872310664;
-        Wed, 02 Oct 2024 05:31:50 -0700 (PDT)
-Received: from [127.0.0.1] ([106.200.85.156])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e357absm82741495ad.190.2024.10.02.05.31.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2024 05:31:50 -0700 (PDT)
-Date: Wed, 2 Oct 2024 18:01:32 +0530 (GMT+05:30)
-From: Hridesh Mg <hridesh699@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Patrick Miller <paddymills@proton.me>,
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Message-ID: <53f86af2-45b3-4bb8-b5de-54e3c6c70750@gmail.com>
-In-Reply-To: <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com>
-References: <20241002022749.390836-1-paddymills@proton.me> <20241002022749.390836-2-paddymills@proton.me> <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] checkpatch: warn on known non-plural rust doc
- headers and empty doc comments
+        d=1e100.net; s=20230601; t=1727872570; x=1728477370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z3gOJwpnsfIwTozSH/9DLo2lyBS6+hSw8FwSpr4qe44=;
+        b=QVBcnGaq/jVDltgZm5OcRRgJcYe/BeifRCVaIk3WecJ3Wnpv8FN/Ex4FbpxCL1/tgX
+         iuX9OhfBKNooJvi1AaX+sWeghDqWLy1htKy5HSQWDXRk7pl4/fNGeuMISu+AQtTzrTl0
+         SxmciNepQEdBxXDqEWlwAhvQhxOXo73zCU0ASy6e+JUPGvcA0unHNUCG9YzVlNtyRi29
+         ozBTp3yxvr/ITmAH8Oe+WHPsrsOj4wOd6gO3llePHJqEQPR9zqzrdfDU3UkWOCWUwCFX
+         5a9dkmeutZPkwnC75LcIjAmkb+YzNa1Lq75J7Wnhpgsa8KbjUauLfOR/S5UJUmkXt0yf
+         zp/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXDxeUU4P8bvBy7IyUg5Xni0ve8tvMDuvFjEzpO9pHWuSFYkP+syWIW1RC/wcuiot+xsFzfJaE=@vger.kernel.org, AJvYcCXnr+gvrl4t6qf2OfubcehhLmCkVapwjycDTeB6x9kpxOV8s4vx8y44J1iY92AowUMF+rtzH2p4vvJPUDoPBiY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPghWHsRyj1IcxftE7tmkkj50vqtY24itcQImRxcMnihGJTapm
+	KFPz8g1oug/igOsqReFRp5XKQ46MUTP2xJEdcfp7U4i5Qr7XctW4vZZXdAloxCebD3tzFCumQJ9
+	C+ykAWnVD5KrxZa/Y4GodMP4Qo6w=
+X-Google-Smtp-Source: AGHT+IHu0OUUfEI0FrAPyx8JB3sJ59gkEGncnLNbIwZ8y7aPfHG/CND12U1KF/IJ5VLqh7vBRw/OdqNFxqJhQTyqDeE=
+X-Received: by 2002:a05:6a00:2daa:b0:718:e49f:443e with SMTP id
+ d2e1a72fcca58-71dc5d90cdemr1961136b3a.7.1727872569901; Wed, 02 Oct 2024
+ 05:36:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Correlation-ID: <53f86af2-45b3-4bb8-b5de-54e3c6c70750@gmail.com>
+References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+ <20241001112512.4861-2-fujita.tomonori@gmail.com> <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+ <20241002.113401.1308475311422708175.fujita.tomonori@gmail.com> <e048a4cc-b4e9-4780-83b2-a39ede65f978@lunn.ch>
+In-Reply-To: <e048a4cc-b4e9-4780-83b2-a39ede65f978@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 2 Oct 2024 14:35:57 +0200
+Message-ID: <CANiq72mX4nJNw2RbZd9U_FdbGmnNHav3wMPMJyLSRN=PULan8g@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+To: Andrew Lunn <andrew@lunn.ch>, Thomas Gleixner <tglx@linutronix.de>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-02-Oct-2024 5:26:15 pm Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>:
-> I would also include Hridesh's cleanup here too if we are doing
-> everything here. Something like:
+On Wed, Oct 2, 2024 at 2:19=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> #1: clean A
-> #2: add check for A
-> #3: clean B
-> #4: add check for B
+> How well know is that? And is there a rust-for-linux wide preference
+> to use Duration for time? Are we going to get into a situation that
+> some abstractions use Duration, others seconds, some milliseconds,
+> etc, just like C code?
 
-In this case, I suppose it makes more sense to use the From: tag to signify ownership than Co-developed-by since the latter is used when multiple people work on the same patch according to https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+We have `Ktime` that wraps `ktime_t`.
+
+However, note that something like `Ktime` or `Duration` are types, not
+a typedef, i.e. it is not an integer where you may confuse the unit.
+
+So, for instance, the implementation here calls `as_micros()` to get
+the actual integer. And whoever constructs e.g. a `Duration` has
+several constructors to do so, not just the one that takes seconds and
+nanoseconds, e.g. there is also `from_millis()`.
+
+Perhaps we may end up needing different abstractions depending on what
+we need (Cc'ing Thomas), but we will almost certainly want to still
+use types like this, rather than plain integers or typedefs where
+units can be confused.
+
+> Anyway, i would still document the parameter is a Duration, since it
+> is different to how C fsleep() works.
+
+That is in the signature itself -- so taking into account what I
+mentioned above, does it make sense that seeing the type in the
+signature would be enough?
+
+Cheers,
+Miguel
