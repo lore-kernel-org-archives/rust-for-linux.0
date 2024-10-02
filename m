@@ -1,96 +1,132 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1061CEEAF;
-	Tue,  1 Oct 2024 22:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92771802;
+	Wed,  2 Oct 2024 02:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727823521; cv=none; b=GZmBmUHI/f14zFRVrI9I1s84GnJn2siY5k7WG7XZGRCdZWolVmDgpShHyWymTUUb6AS7WHNN7jlIhBjrEljn9oKI7hAn3THCiVtR9o0PyouG8fZ60yZFF/3KtnIoEk5OZmdbpQjkoS2J8Yr8/1TFzjHZMED2k1Db/5o/6AcLjo4=
+	t=1727835442; cv=none; b=BQrLZJ9nrWQZH0vVXAeD55EmKI4/kq5zpiut7zqVNYjIsSNeu9yOj3+xd0++xxT5ijKpIJ8lMHLXY66y9TJz940ClhSC3DAqHSYUOF93PsuNxh7DCw5PKir6vbGQKsDPb5Gck33KxmmiFVHKSbC+2+AbRp41rR/FvFwBUaY/Lwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727823521; c=relaxed/simple;
-	bh=GcCXpoXuLQ65zsvFzzvLaNncg0Knqr7CMFRJpjt6oO4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tv8C98bGiPRsHLL+UN1xhLZ9GV5ypwuZlTSgzuebRj02OcMVcbSGJ3RW30pZ77zk20K4lX6CVq2Y8IPaGBjRNywpGdBtqOuUCXdh3pz0MYai3XQBGCvjTw0pgwS5T3MgKCuyXKCbBVTLE+SkOTImM/zddL0XfFEEmUzTO/J6uvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AuDbzK6W; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727835442; c=relaxed/simple;
+	bh=2gjiiAewp7ifne2STDdDKuouTm98qn+k93uMQwvotGk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QjQOPEloUS9IHOQ1/ytn8X8mykF6g670f7DrrBTOv7YM1Y95lccbNQh3Y42MYBjWYT7p8HRu4qhxOOUXrNpe9MW4nISpf6u2hHh7v65h7P5q9xhoicYQbx50ZFrtPPAOwe4N/bN4oWpmWxQlr4SnSVmoAIciAD2n7cFqPPdcZbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KlYgkNSi; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AuDbzK6W"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e13718283bso430840a91.3;
-        Tue, 01 Oct 2024 15:58:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727823519; x=1728428319; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GcCXpoXuLQ65zsvFzzvLaNncg0Knqr7CMFRJpjt6oO4=;
-        b=AuDbzK6W8nz4tXxqG577q81G3PdZ963rItH4x2p8W0ZoqGWtZjal6J/HGrQs3UElo8
-         zZLVdy+LvmuOin4FSNmRqVuTlTdjwx9/YO+SDqPvuVtYpcleT3L3Ht/YtYBdrVOuYJHM
-         y566sB+u5ys3klHe0A5k/LlOffKDiwC0k4QRF1gt6gBilc2SpMwQ0LxpRwu37b/Wryw6
-         xoeu+mGZQprgC6TSIj05WqcpGhagdf7xG4p4VOPtRWP4zs9o1ok0OUFXfAVZ4rtu+Stz
-         SEUK2tEeTelxaNPV6Iy6cw0s6F1DDCvmy1gXJjuznbgy+3YIoZDWJEoRF3eV2Wo9ci+J
-         hZIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727823519; x=1728428319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GcCXpoXuLQ65zsvFzzvLaNncg0Knqr7CMFRJpjt6oO4=;
-        b=kgDXYVNTShWWUzqqAHaJUZXn134PWwqsMyWJlejZhpAwjWkcOGouRxppMTLHN6kRnI
-         UrKfuPlumpRy7Ijec4rLq+zeb4N2KRLDCyGEtjBAzbeQqxaoVCQ1hNPwjiLWBVE6VxPY
-         0LlKydgjvlUV/ivJIuJIJvvTc5gdC9Uv/lQoXhNJQfaE6A3ofOYE1spAvmRJuY+wMVvP
-         8zSuP4+kkn7nNiePTyyG/0hPARdJsgDj6y3EOltt/29vX3eR0WUwQhBIZYd6ngylK0x2
-         /DVfUi2YI/q1FjHX52CGgMqYB3ZTVUlMktCJzXzOT3NZq+nyTqMYYGXjWOJPJe5/q1Qy
-         y9Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCWW+BUnK9ASBZxzn8PnWhhZQy1/ULND0+nMBYS8lQd2kLdhS3eQJpwcnbXCps2d6NM5DAQdWh/fjJ3+4T3yJzo=@vger.kernel.org, AJvYcCXabIZfHPDxn6vraFpBOlml6djz9nCLJ/GNA8aYUiW9fbtdBQHGz28W7q+A0H6MXMxHliqPKVCG9JGDWBE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0kh+0CAzIbTs4UaXFJjNgs7Bre1dYV+mr9v3KQCx8a22HEVh+
-	yvPzXq8MFYR8x3OqxPF9ZMCi/MQYMGwLQcKfYvAK6X+ZhoxmNSiHDhXHQUNE1f0AgsI6wcTFOl/
-	LP47E2yCszgqcaxri2ADPHHXuJWs=
-X-Google-Smtp-Source: AGHT+IHpaFbsZOabANZ/CJzRes6xXXQciJO4D+GF2dnFUH6bN7daLXhvMWbeLXhJOcjuqRLGFQ7VvzUeXuMcEWXDeSI=
-X-Received: by 2002:a05:6a20:a129:b0:1cf:2be2:6525 with SMTP id
- adf61e73a8af0-1d5e2d25ea7mr965934637.11.1727823519000; Tue, 01 Oct 2024
- 15:58:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KlYgkNSi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1727835436; x=1728094636;
+	bh=ODUjzTitlDnZ7cX13Tfv6e9WF1sDadVWp4nHV0f82Rk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=KlYgkNSiWM0NLjnmhF7CUx7aMIK2tK6+SaDSKaZ/EItj3+1aCDU8JVWVJyWhy7s14
+	 QXIx5cgvMdixqe68C7NsUN0iWkOnb78JMeSTL9Nd/e0n9ygHb9ZRN16pRVLtrNKpGY
+	 lGSIUnX7raJQSnKpR9LJ6u1VczlxrZAm0ugtfoNkczLjqW1upDCeyoYvZ2Lt0cvezc
+	 IPJqhbqnrpqLA14Mpp6JmEEUFdraJpqsy3ZbffrNxdXa1k2VY7hW76vPQyCKkoIMXS
+	 5WqkrtzAP/gGSeteESb2uEh8zP+pPo6QAfM6e0eUlizwtrk60QoN77KfUnEThf0tus
+	 iUnpP7rf9ST+A==
+Date: Wed, 02 Oct 2024 02:17:08 +0000
+To: Hridesh MG <hridesh699@gmail.com>
+From: Patrick Miller <paddymills@proton.me>
+Cc: Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-newbie@vger.kernel.org
+Subject: Re: [PATCH v3 2/2 RESEND] checkpatch: warn on empty rust doc comments
+Message-ID: <t5SyWXgKghM_fSdMQNH3tTuqZKJck9qMTeUJUWzCWphs_cc7cocnj1gO5cCh0pzzVTCQbEBRqOsYC0om9JIOatBKU3AcoEyFwySAK6B1_Cw=@proton.me>
+In-Reply-To: <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com>
+References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com> <bf6544faba2b53ce901b2e031f3d944babcc7018.1727606659.git.hridesh699@gmail.com> <CALNs47vT=g2D7A_cDq_8F2xJRJTK-7KtQY4brFYfkopyCSjLTw@mail.gmail.com> <67il2JOf-dSurc3O-294W5k5mS-kf1FtFxKzXlxHHykGmIvIkfPel_pPe2LGX04HSnTg85LwEdU4Zz2VCrfXgIl5KVItUm5vPhbtkThc3BM=@proton.me> <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com>
+Feedback-ID: 45271957:user:proton
+X-Pm-Message-ID: 24652b6518865115bb25c5b18c0d58ebf6a8b891
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925140600.275429-1-ojeda@kernel.org>
-In-Reply-To: <20240925140600.275429-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Oct 2024 00:58:26 +0200
-Message-ID: <CANiq72mPN51iHAzEk-Bn59X+ZhzzsioLoVPD7nDJ3wbPpDa0Ug@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: quick-start: add Ubuntu
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Zixing Liu <zixing.liu@canonical.com>, William Grant <wgrant@ubuntu.com>, 
-	Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162"; charset=utf-8
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162
+Content-Type: multipart/mixed;boundary=---------------------808725a943ee40242c6bec3ccc1f694e
+
+-----------------------808725a943ee40242c6bec3ccc1f694e
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;charset=utf-8
 
-On Wed, Sep 25, 2024 at 4:06=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Ubuntu has changed their maintenance model for Rust toolchains and is
-> now providing recent Rust releases in their releases, including both
-> LTS and non-LTS (interim) releases.
->
-> Therefore, add instructions to the Quick Start guide for Ubuntu, like
-> it is done for the other distributions.
->
-> Link: https://packages.ubuntu.com/search?keywords=3Drustc-1
-> Link: https://packages.ubuntu.com/search?keywords=3Dbindgen-0
-> Cc: Zixing Liu <zixing.liu@canonical.com>
-> Cc: William Grant <wgrant@ubuntu.com>
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks everyone!
 
-Cheers,
-Miguel
+
+
+
+On Monday, September 30th, 2024 at 6:34 AM, Hridesh MG <hridesh699@gmail.c=
+om> wrote:
+
+> =
+
+
+> =
+
+
+> On Mon, Sep 30, 2024 at 8:11=E2=80=AFAM Patrick Miller paddymills@proton=
+.me wrote:
+> =
+
+
+> > After the latest revision of my patch 1, I split the if statement so t=
+hat
+> > there is a parent check for rust files for future rust patch checks. S=
+o,
+> > this would perfectly fit within that block.
+> > =
+
+
+> > Do you want me to add your code and credit you in my patch?
+> =
+
+
+> =
+
+
+> Please disregard my prior email, I had failed to CC everyone. Since
+> the change is small I'm okay with adding it as part of your patch,
+> please do add the Co-developed-by tag, thanks!
+> =
+
+
+> However, I was curious how conflicts like these are generally
+> resolved. For example, if there are two large patchsets which conflict
+> with each other, how does one ensure that they are compatible, and
+> even if they are, how do the maintainers ensure that they are applied
+> in the correct order?
+
+2 changes that I am making to your patch as I merge it with mine (I tested=
+ these)
+  - Added a @fix option. I ran into this with my patch and was requested t=
+o
+      add it by a checkpatch maintainer
+  - Revised your $prevrawline regex to check against existing blank lines =
+as
+      well as added blank lines (made the leading + optional). Otherwise I
+      think the checkpatch would not match against a blank doc comment lin=
+e
+      added after an existing blank doc line.
+-----------------------808725a943ee40242c6bec3ccc1f694e--
+
+--------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wnUEARYKACcFgmb8rRoJkJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
+nhEAAMF4AQCLWQUOtp5+mg3j/o0JBoheDulcy8I2mrzVF4W5OOon7wEAyCOW
+8Mi39DzrVpDEkeJEblr54UfE2ssXM7l+bTbw1g4=
+=Z2AR
+-----END PGP SIGNATURE-----
+
+
+--------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162--
+
