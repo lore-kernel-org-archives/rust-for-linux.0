@@ -1,55 +1,55 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4AE1D52B;
-	Wed,  2 Oct 2024 12:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442531CFEB7
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 12:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727872571; cv=none; b=e02Rg9Kt35DShkJKaNJSvXYgYi2+wsHYBvmtihAoBSAQw/fzbj3E+ulM8f5iiidVpOQdiadHTS0OaJ6DdM1eTA21DxyJjIJPHAMbTQTWelLbuhu71scYSJyw3MhJ6DCXIz47pcAgJjVbZ/QcdLRhezAbtOYl7fkxHVvZDeL9jAs=
+	t=1727872691; cv=none; b=Z43WnTgDsW0Ga/Nt4R5NWoxRMqoz/KoIwxamBGCyIRoSR6Lio9msbh4NzeEmBtViXXk7JbA6xB6cLqGeW/H9/S5mB1kTHQlAk9uLST0qjvVZdWxAO5xcoFYPrFj5yE+/Z7JV8XXQbmeoqb++Kk/eiqa5RvqtAt1kXHRr6WCjPdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727872571; c=relaxed/simple;
-	bh=Z3gOJwpnsfIwTozSH/9DLo2lyBS6+hSw8FwSpr4qe44=;
+	s=arc-20240116; t=1727872691; c=relaxed/simple;
+	bh=Pn3CYClBVb6o/pVhWHd25JnL1eOmV1/V8byX2TfEZhc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZYRK55OuQU0pXAy2V48YksA1eWyQ6Qh/QKCoZC0aC/bBqjCE+5tQCNhwMpOhuw8XWmDTcb3IVm5Gwm6HB5D9EnJT51BHjHaPW8yhbRkd2qd+9oZroZGWf53Ka1xNJADWltI2dj+9n3XHHNfa1GD+cZQkDIZqXYb1qf8omVfltLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GWQC3t/Q; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=DFir1rpzxK2WcFOMUOcztib2BQ94Tm483xGaBfG/BuIv+kmOS77h67ExkBKvqUDZa0M+JGXQS3iSwaD2JJXBsXr0lsaDLuSfyy9zFnpmzG9F6YswV9u08XbnKo1zMg222nNVdoPwDNYm9HQl2LF16xLtO+oepooV0u4G9HSH9fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GETJ04J0; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GWQC3t/Q"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71927b62fa1so365737b3a.2;
-        Wed, 02 Oct 2024 05:36:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GETJ04J0"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37cd3419937so3462258f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Oct 2024 05:38:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727872570; x=1728477370; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727872688; x=1728477488; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z3gOJwpnsfIwTozSH/9DLo2lyBS6+hSw8FwSpr4qe44=;
-        b=GWQC3t/Qk4hg/o36E8FIhsSIoxwmnTHmEleY4ZtNObDRQACIIQzJHohfKWi3v13rKI
-         tn4H85Y8t8MkLUku/DlGRb+wdCHfVzq8zyv811mMbpPqQllQNWhENkWr6sCJd7udhvQk
-         hVyapAYbVkXwkOnwEve1bVfSS3OmpXnGvrpKaomzRTblrx/33G9BHW3tfUaWnjZzJueH
-         hEVQ6Ldpqeou5sy4tJnh+C5LtUku0M/JpZNwEOaOzVpJCmCacpbqfyZeq2ZUO+wvQjeO
-         VTFm8iDUwpSiwInXfmpet6Bz3zSS64debbY1Tysz7WbGtaL2arSPhVnMiSA5dy+KxNk/
-         P+Ig==
+        bh=Pn3CYClBVb6o/pVhWHd25JnL1eOmV1/V8byX2TfEZhc=;
+        b=GETJ04J0B8f+DFCVSsbdafzWZ4lhE4QQjauNnnr4iGkC8cTTcwr3gasz4kHR09Ep2k
+         kBbDt3kBambgdyK/9h9LU20oGUPzXpRyXeGhWBWqj7gydh5vYiCUb3cZ7qERofVrjPWN
+         MC5+hRSlLkeRliokjYWwyRcWEKZsR8rF7WgkWISGlAo3pQgiYB4any48npFHjB8iNIwi
+         S/lhrARfXGxlBr3HitPEFJn/Yftk/UT4y5/UERAVV0a19F5+OAiU8IyK9h/jZ4R8iWQK
+         22uP589icZFQrgV9cMjj17R+wEFaDSyGnzzhLrfYudL/rsvuCkt+7LprUPtH8cqmDWZo
+         SU6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727872570; x=1728477370;
+        d=1e100.net; s=20230601; t=1727872688; x=1728477488;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Z3gOJwpnsfIwTozSH/9DLo2lyBS6+hSw8FwSpr4qe44=;
-        b=QVBcnGaq/jVDltgZm5OcRRgJcYe/BeifRCVaIk3WecJ3Wnpv8FN/Ex4FbpxCL1/tgX
-         iuX9OhfBKNooJvi1AaX+sWeghDqWLy1htKy5HSQWDXRk7pl4/fNGeuMISu+AQtTzrTl0
-         SxmciNepQEdBxXDqEWlwAhvQhxOXo73zCU0ASy6e+JUPGvcA0unHNUCG9YzVlNtyRi29
-         ozBTp3yxvr/ITmAH8Oe+WHPsrsOj4wOd6gO3llePHJqEQPR9zqzrdfDU3UkWOCWUwCFX
-         5a9dkmeutZPkwnC75LcIjAmkb+YzNa1Lq75J7Wnhpgsa8KbjUauLfOR/S5UJUmkXt0yf
-         zp/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXDxeUU4P8bvBy7IyUg5Xni0ve8tvMDuvFjEzpO9pHWuSFYkP+syWIW1RC/wcuiot+xsFzfJaE=@vger.kernel.org, AJvYcCXnr+gvrl4t6qf2OfubcehhLmCkVapwjycDTeB6x9kpxOV8s4vx8y44J1iY92AowUMF+rtzH2p4vvJPUDoPBiY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPghWHsRyj1IcxftE7tmkkj50vqtY24itcQImRxcMnihGJTapm
-	KFPz8g1oug/igOsqReFRp5XKQ46MUTP2xJEdcfp7U4i5Qr7XctW4vZZXdAloxCebD3tzFCumQJ9
-	C+ykAWnVD5KrxZa/Y4GodMP4Qo6w=
-X-Google-Smtp-Source: AGHT+IHu0OUUfEI0FrAPyx8JB3sJ59gkEGncnLNbIwZ8y7aPfHG/CND12U1KF/IJ5VLqh7vBRw/OdqNFxqJhQTyqDeE=
-X-Received: by 2002:a05:6a00:2daa:b0:718:e49f:443e with SMTP id
- d2e1a72fcca58-71dc5d90cdemr1961136b3a.7.1727872569901; Wed, 02 Oct 2024
- 05:36:09 -0700 (PDT)
+        bh=Pn3CYClBVb6o/pVhWHd25JnL1eOmV1/V8byX2TfEZhc=;
+        b=VYM+qnbjcdyv/bZ6x7eN8AIKBz+xQwtWEr4HI7wBbEaVC8XW9Lu7x2ryo9fHckEb2T
+         ClPrQi3DogTyOpTQml67FYlRTQAKB25ENYwqVM3QClDE4e/NwhQCmoYfVr8Ns8H9DSCB
+         i4y9IZeuJ2tTG9UxqNzN7q1zVH/QQGugMeAO9qDcw0H/MXofqHbi1qarNIvDejYloWaP
+         ezpasguRZHr5bTUVt4qqX625k572zidIXc/fO/dZQBRqU0b7yLDQdzwSJwr8h+WuHiIi
+         QYq7IWKh7flP9UFOhM0U8/5AXs9/NYEBu8LMr6GtkCovydjqklX+7s3QlYYDvyDKQx4p
+         ekzg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkqWiZktpmy+dL2GRmuRx0ZpascB5iN+4U7ynZUkIiJuZjwMf09E6AYvzdbFueM26NLLtmVDN76M9DBNgTUw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxG1vb2yBbCVtUPDsgF6WmOh0BzZDs9quHarAugwkbda2aGZhZQ
+	hZp/8kHgHJ+E7XWJdiBzqKw9vUCGGZGUMrRErMtjecoVj8Ng7CwPKgoUGKoSmbNDFIVe9HCz/OS
+	t1Ko3xgCnNtGPokJtP6NS9mVuR2qIuyhUmxs5
+X-Google-Smtp-Source: AGHT+IF+H2hRAM6EUPGr2ATFkhEUAoNpz/F+VzyQ3OYvngiPSdQ/zAPeiQgR+DhCsjBfZsD7w6WAeLJHH7yH6F057xM=
+X-Received: by 2002:a05:6000:2cb:b0:374:fa0a:773c with SMTP id
+ ffacd0b85a97d-37cfba0a409mr1911108f8f.47.1727872688302; Wed, 02 Oct 2024
+ 05:38:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,47 +60,35 @@ References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
  <20241001112512.4861-2-fujita.tomonori@gmail.com> <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
  <20241002.113401.1308475311422708175.fujita.tomonori@gmail.com> <e048a4cc-b4e9-4780-83b2-a39ede65f978@lunn.ch>
 In-Reply-To: <e048a4cc-b4e9-4780-83b2-a39ede65f978@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Oct 2024 14:35:57 +0200
-Message-ID: <CANiq72mX4nJNw2RbZd9U_FdbGmnNHav3wMPMJyLSRN=PULan8g@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 2 Oct 2024 14:37:55 +0200
+Message-ID: <CAH5fLgiB_3v6rVEWCNVVma=vPFAse-WvvCzHKrjHKTDBwjPz2Q@mail.gmail.com>
 Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
-To: Andrew Lunn <andrew@lunn.ch>, Thomas Gleixner <tglx@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
 Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
 	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Wed, Oct 2, 2024 at 2:19=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
+> > > I would also document the units for the parameter. Is it picoseconds
+> > > or centuries?
+> >
+> > Rust's Duration is created from seconds and nanoseconds.
+>
 > How well know is that? And is there a rust-for-linux wide preference
 > to use Duration for time? Are we going to get into a situation that
 > some abstractions use Duration, others seconds, some milliseconds,
 > etc, just like C code?
-
-We have `Ktime` that wraps `ktime_t`.
-
-However, note that something like `Ktime` or `Duration` are types, not
-a typedef, i.e. it is not an integer where you may confuse the unit.
-
-So, for instance, the implementation here calls `as_micros()` to get
-the actual integer. And whoever constructs e.g. a `Duration` has
-several constructors to do so, not just the one that takes seconds and
-nanoseconds, e.g. there is also `from_millis()`.
-
-Perhaps we may end up needing different abstractions depending on what
-we need (Cc'ing Thomas), but we will almost certainly want to still
-use types like this, rather than plain integers or typedefs where
-units can be confused.
-
+>
 > Anyway, i would still document the parameter is a Duration, since it
 > is different to how C fsleep() works.
 
-That is in the signature itself -- so taking into account what I
-mentioned above, does it make sense that seeing the type in the
-signature would be enough?
+I'm not necessarily convinced we want to use the Rust Duration type.
+Similar questions came up when I added the Ktime type. The Rust
+Duration type is rather large.
 
-Cheers,
-Miguel
+Alice
