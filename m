@@ -1,119 +1,142 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92771802;
-	Wed,  2 Oct 2024 02:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9D82F44
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 02:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727835442; cv=none; b=BQrLZJ9nrWQZH0vVXAeD55EmKI4/kq5zpiut7zqVNYjIsSNeu9yOj3+xd0++xxT5ijKpIJ8lMHLXY66y9TJz940ClhSC3DAqHSYUOF93PsuNxh7DCw5PKir6vbGQKsDPb5Gck33KxmmiFVHKSbC+2+AbRp41rR/FvFwBUaY/Lwg=
+	t=1727836136; cv=none; b=QZmFDr23tphQB+L2TrDcRCQj9qcUvcgz/0S7EP7Pn1VUZ4nPP5p/V1DHA8OqIjfYIx2UCnIhhlbvxq9kM9iaJS83WkbM4aDoDGkcmqjoBx018HKaMGSr2sx/VHloJ9voHn3v1NeTTajNM842UasNg8k3hj4bp8ehFHatYgyc6nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727835442; c=relaxed/simple;
-	bh=2gjiiAewp7ifne2STDdDKuouTm98qn+k93uMQwvotGk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QjQOPEloUS9IHOQ1/ytn8X8mykF6g670f7DrrBTOv7YM1Y95lccbNQh3Y42MYBjWYT7p8HRu4qhxOOUXrNpe9MW4nISpf6u2hHh7v65h7P5q9xhoicYQbx50ZFrtPPAOwe4N/bN4oWpmWxQlr4SnSVmoAIciAD2n7cFqPPdcZbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KlYgkNSi; arc=none smtp.client-ip=185.70.43.16
+	s=arc-20240116; t=1727836136; c=relaxed/simple;
+	bh=WZf5sN/WQKskdtb8AJdISQGWX3yMwPGgium2PUAU77g=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=mQt/skFMBhYCPXfKatuoS4JOEWym10eb7gNzvQ4z7bj4Y391ZtFQZzHc0ukKPbHg1xIb2u5trCUce8WW6ol/ot6sWC65uW8P/Gs2jN+yM4Z3eN7f5r65N0Nw4QFa6Tq6/PPsC48nHNbgNs3mcaWwLHHSln2W2j4U9JD0tof4VmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VnR6s7iz; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KlYgkNSi"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VnR6s7iz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1727835436; x=1728094636;
-	bh=ODUjzTitlDnZ7cX13Tfv6e9WF1sDadVWp4nHV0f82Rk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=KlYgkNSiWM0NLjnmhF7CUx7aMIK2tK6+SaDSKaZ/EItj3+1aCDU8JVWVJyWhy7s14
-	 QXIx5cgvMdixqe68C7NsUN0iWkOnb78JMeSTL9Nd/e0n9ygHb9ZRN16pRVLtrNKpGY
-	 lGSIUnX7raJQSnKpR9LJ6u1VczlxrZAm0ugtfoNkczLjqW1upDCeyoYvZ2Lt0cvezc
-	 IPJqhbqnrpqLA14Mpp6JmEEUFdraJpqsy3ZbffrNxdXa1k2VY7hW76vPQyCKkoIMXS
-	 5WqkrtzAP/gGSeteESb2uEh8zP+pPo6QAfM6e0eUlizwtrk60QoN77KfUnEThf0tus
-	 iUnpP7rf9ST+A==
-Date: Wed, 02 Oct 2024 02:17:08 +0000
-To: Hridesh MG <hridesh699@gmail.com>
+	s=protonmail; t=1727836132; x=1728095332;
+	bh=KBGWDqFgO70YMuq2MQkivUcqJyC4Hn0Tv20HjEnAjHU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=VnR6s7izLNZOMJh8LzBtNPNMJu+0WvAqrDbYYfNACbCK/FyojvaMBvt90JRGjmUTF
+	 tI7H40fJeXxDKvJcUdMWF6R8iyI3ZA++DzwfKiX3M0b4KvrqGjGJtz589wlO4nXl8W
+	 p3QxUmm7crg+6CN+1TBqSweoSXnZAJkX8n9iRlJK7vGX9UsS9EOlae3gfrIb3sgqsE
+	 2Jb+6AxRjQlWLb+dNti73VrpKfI8z35jEvN+Fsd2lzFDnL3vgmRgtb6M5j3lkFGrvk
+	 O4+u5SGXJ7gPjireX5szcV7gH/ZXMDGyGChSFncNRJ4/ZPx5/epatYyC6BaA2KIOAI
+	 6b8lQt0LuISdQ==
+Date: Wed, 02 Oct 2024 02:28:48 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 From: Patrick Miller <paddymills@proton.me>
-Cc: Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-newbie@vger.kernel.org
-Subject: Re: [PATCH v3 2/2 RESEND] checkpatch: warn on empty rust doc comments
-Message-ID: <t5SyWXgKghM_fSdMQNH3tTuqZKJck9qMTeUJUWzCWphs_cc7cocnj1gO5cCh0pzzVTCQbEBRqOsYC0om9JIOatBKU3AcoEyFwySAK6B1_Cw=@proton.me>
-In-Reply-To: <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com>
-References: <dbb63b5698aa507bbe3dec54b4458a3f151899d3.1727606659.git.hridesh699@gmail.com> <bf6544faba2b53ce901b2e031f3d944babcc7018.1727606659.git.hridesh699@gmail.com> <CALNs47vT=g2D7A_cDq_8F2xJRJTK-7KtQY4brFYfkopyCSjLTw@mail.gmail.com> <67il2JOf-dSurc3O-294W5k5mS-kf1FtFxKzXlxHHykGmIvIkfPel_pPe2LGX04HSnTg85LwEdU4Zz2VCrfXgIl5KVItUm5vPhbtkThc3BM=@proton.me> <CALiyAo=udy-P4ki1-_CAk7bHWfAjoioYEZ_ah+i6DJZ0MmmCQg@mail.gmail.com>
+Cc: Patrick Miller <paddymills@proton.me>
+Subject: [PATCH v5 1/2] docs: rust: make section names plural
+Message-ID: <20241002022749.390836-1-paddymills@proton.me>
 Feedback-ID: 45271957:user:proton
-X-Pm-Message-ID: 24652b6518865115bb25c5b18c0d58ebf6a8b891
+X-Pm-Message-ID: cc372f466e477aedaa985a1766d1317f7afc919e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162"; charset=utf-8
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------48448c36b2b2cb915c726d5e1c290852645cd300b290d3fdf1c45c0165a1ba7d"; charset=utf-8
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162
-Content-Type: multipart/mixed;boundary=---------------------808725a943ee40242c6bec3ccc1f694e
+--------48448c36b2b2cb915c726d5e1c290852645cd300b290d3fdf1c45c0165a1ba7d
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+From: Patrick Miller <paddymills@proton.me>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Patrick Miller <paddymills@proton.me>
+Subject: [PATCH v5 1/2] docs: rust: make section names plural
+Date: Tue,  1 Oct 2024 22:27:47 -0400
+Message-ID: <20241002022749.390836-1-paddymills@proton.me>
+X-Mailer: git-send-email 2.46.2
+MIME-Version: 1.0
 
------------------------808725a943ee40242c6bec3ccc1f694e
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;charset=utf-8
+Fixes existing rust documentation section headers to be use plural names.
+
+Signed-off-by: Patrick Miller <paddymills@proton.me>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1110
+---
+ rust/kernel/init.rs     | 2 +-
+ rust/kernel/list/arc.rs | 2 +-
+ rust/kernel/sync/arc.rs | 2 +-
+ rust/macros/lib.rs      | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index a17ac8762d8f..98889ddf9828 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -746,7 +746,7 @@ macro_rules! try_init {
+ /// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
+ /// structurally pinned.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// This will succeed:
+ /// ```
+diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
+index d801b9dc6291..611ce07cd290 100644
+--- a/rust/kernel/list/arc.rs
++++ b/rust/kernel/list/arc.rs
+@@ -4
+64,7 +464,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
+ 
+ /// A utility for tracking whether a [`ListArc`] exists using an atomic.
+ ///
+-/// # Invariant
++/// # Invariants
+ ///
+ /// If the boolean is `false`, then there is no [`ListArc`] for this value.
+ #[repr(transparent)]
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 3021f30fd822..3d3c100b0c0d 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -436,7 +436,7 @@ fn from(item: Pin<UniqueArc<T>>) -> Self {
+ /// There are no mutable references to the underlying [`Arc`], and it remains valid for the
+ /// lifetime of the [`ArcBorrow`] instance.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```
+ /// use kernel::sync::{Arc, ArcBorrow};
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index a626b1145e5c..3879e1162866 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -307,7 +307,7 @@ pub fn pinned_drop(args: TokenStream, in
+put: TokenStream) -> TokenStream {
+ /// literals (lifetimes and documentation strings are not supported). There is a difference in
+ /// supported modifiers as well.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```ignore
+ /// use kernel::macro::paste;
+-- 
+2.46.2
 
 
-
-
-
-
-On Monday, September 30th, 2024 at 6:34 AM, Hridesh MG <hridesh699@gmail.c=
-om> wrote:
-
-> =
-
-
-> =
-
-
-> On Mon, Sep 30, 2024 at 8:11=E2=80=AFAM Patrick Miller paddymills@proton=
-.me wrote:
-> =
-
-
-> > After the latest revision of my patch 1, I split the if statement so t=
-hat
-> > there is a parent check for rust files for future rust patch checks. S=
-o,
-> > this would perfectly fit within that block.
-> > =
-
-
-> > Do you want me to add your code and credit you in my patch?
-> =
-
-
-> =
-
-
-> Please disregard my prior email, I had failed to CC everyone. Since
-> the change is small I'm okay with adding it as part of your patch,
-> please do add the Co-developed-by tag, thanks!
-> =
-
-
-> However, I was curious how conflicts like these are generally
-> resolved. For example, if there are two large patchsets which conflict
-> with each other, how does one ensure that they are compatible, and
-> even if they are, how do the maintainers ensure that they are applied
-> in the correct order?
-
-2 changes that I am making to your patch as I merge it with mine (I tested=
- these)
-  - Added a @fix option. I ran into this with my patch and was requested t=
-o
-      add it by a checkpatch maintainer
-  - Revised your $prevrawline regex to check against existing blank lines =
-as
-      well as added blank lines (made the leading + optional). Otherwise I
-      think the checkpatch would not match against a blank doc comment lin=
-e
-      added after an existing blank doc line.
------------------------808725a943ee40242c6bec3ccc1f694e--
-
---------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162
+--------48448c36b2b2cb915c726d5e1c290852645cd300b290d3fdf1c45c0165a1ba7d
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
@@ -121,12 +144,12 @@ Content-Disposition: attachment; filename="signature.asc"
 -----BEGIN PGP SIGNATURE-----
 Version: ProtonMail
 
-wnUEARYKACcFgmb8rRoJkJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
-nhEAAMF4AQCLWQUOtp5+mg3j/o0JBoheDulcy8I2mrzVF4W5OOon7wEAyCOW
-8Mi39DzrVpDEkeJEblr54UfE2ssXM7l+bTbw1g4=
-=Z2AR
+wnUEARYIACcFAmb8r+AJEJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
+nhEAAA1HAQDi+7Cl9x54SDjA1dSCZ5/DMS3Rtu9UDXI7J0Mjhu0HeAD/d42T
+4/k/+HWQav5UaHndaWS9pJm5sY4IV1IQcPvIXwU=
+=fc/g
 -----END PGP SIGNATURE-----
 
 
---------6e9c0b4724622ca2873f2dc07faaadd38d4565d60e5b04cb49ae2ce015d54162--
+--------48448c36b2b2cb915c726d5e1c290852645cd300b290d3fdf1c45c0165a1ba7d--
 
