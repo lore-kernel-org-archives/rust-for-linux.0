@@ -1,86 +1,84 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19831E5006;
-	Wed,  2 Oct 2024 10:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484871E493F;
+	Wed,  2 Oct 2024 10:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727864036; cv=none; b=rPEpZvvcnL3NzHWVXrhTPZj7LclnVawaZOLZF9MvMmq4oQ8pc/wkNdRRJhjG3a/iNiBsOrhMBwv0beE3FxrbpoXz1FmvalCSYR3smcFJWSwxB1x/4EksySMO7O3n/2kHGsTU53bGGBwH4UXBhV6HFkDjBs/deBuFC1XYv8ktM/Q=
+	t=1727864082; cv=none; b=f3CcZ/45u1rFYp8mILvGA/FLP/Soo7gj73m8QtsTcBjyS1LdPwIACbfN86/cDmJYBRyOo7RWeji5J/5xQq2D514v3ZgS/z3i09i+tkecOyNfQpQw7lfe6z+FSn6OA8GiSmKolBIezpgH+nwK1eiqGET1LjX85P2ojZMfwRFB4R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727864036; c=relaxed/simple;
-	bh=M4uZu9021rjynKKxRMidjbaYQH46nr1NwvTOK/b2BGY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=n5USFBLY52ZTllosLC57M67jCnTrPE5G1XVOQAnGTeEu2Xj9ZAv3EZd6o/kqB9ybu5ZERkuUzwdfv+oYXgGxlBeMv/xU9mK+zwoNR/VBtxX/dwsOx8f8gmiMFF9MLRhn/UfHEEgPufkmZbQ3wCzMqBRGppJsY4Lemwr4b+IO5SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JHSz/GEV; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727864082; c=relaxed/simple;
+	bh=xPtbTLmwEY0tdPID7jhVlQ/pbxn+Qy6JsyG8jCuXdik=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FLwrxQR90zxWBXTRXArFaD3+T0ExsBfX745uWBhJ8e4Qnso23Xenht+BiC/vTEcuVlnKFU0TUJWLjVvIuTAYV1IqeoWYVkvh9TXmsNYLoLV80xH/e27RBHBZObdCYAxuez2VrdtO6IUt8qAuSPM6Wvxyk5RmIKuLbkIQVjMynZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=He6XG6D1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JHSz/GEV"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e0afd945d4so4294684a91.0;
-        Wed, 02 Oct 2024 03:13:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727864034; x=1728468834; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vFqbrfOiXdh2VkiSfYbXtCaDNcZt2F2tEGKAJtvElZ4=;
-        b=JHSz/GEV2/vtjGHHtf1xzpN+lXfXddfrcvduQy20/OH6uaOC5b4E0vhyKUhHwiVHtk
-         WRXQpoOo7I2GIZKLAertN97G4SbXVNHZUh6m6bRv37QaBmbghTYtFTh5nz3McqasLmZ4
-         VXCgYWFfioygi49hSEJ8MMmDB3ZVy5GsHMsR6xV8qINhwstxOF3hf7hcufSn/z/hRL9f
-         r4iXiT+rGu77Qw73BsG56ZmPNMoZlGS+E29Nv0/eJHRFBAS/O/FsgbTjwM7XStVxvFWy
-         I79YZp8IKT6dFvMW9jFBoibFJkM+IC3M+Wz/nlkH5Z6IIdxSd+ETdk8DpCP61lRh5TJz
-         COMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727864034; x=1728468834;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vFqbrfOiXdh2VkiSfYbXtCaDNcZt2F2tEGKAJtvElZ4=;
-        b=C9rJvoVlAAyjIsW5XJEkNUZs41xrABu28vTnEVoNrSU1XY8+YW0UfYUrvSjhhZLI3G
-         7pzl5kzyTCJh0+w3FKH44/15c5rS36m8kdKWA+jEqioeNO8ibDaJQHuxshzCf6ZkpEYC
-         lhZNd4pJ66zpW0GzqDB01a9jM2IzSf9M4JoLTLlbkh6WnQd079V0oz84qtZsB/gCiQFS
-         D5ChlzlPSnejRxbliBzU87oJpQGgmplRdvxaezxADHCxSG9c2G32UtcIgLImpzsGpWw2
-         9BectGS7BMKD/gdjMJVqAY7YYj/08noKddMNCtbaBtoMA08woz3c0rWHRcbsxxl7A8Ni
-         nNew==
-X-Forwarded-Encrypted: i=1; AJvYcCUYly6Ave6IqJWCEWmD+81Y/+x87VTR/tZ+7z/FIKUI07HqG86+ydhNWn+N50WvUzly4mgw6YeZinYoo2uHugo=@vger.kernel.org, AJvYcCVNOenOb2gYoq1LuvQYkjgX6ilYRq8k9g8cRYhldJQ70pF/c+f/L5wFQDW3WqYBBHnegt8yFlo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx++9hQnquV6kHwk8SCgOVcIzLu5FLd4mg5m2i3qCR8/uF98Pkp
-	RXVEfa9doF9XW24XPMh/H9M5IOhWr8/8J5ar0DaWro8GBNnSUmO3
-X-Google-Smtp-Source: AGHT+IEyy/laAs9sAK7C51OkAFOZH+2zCmZaMA/JA4zikLr+7kLrEqqsudugID0IrQs0FZqtjNbSTA==
-X-Received: by 2002:a17:90b:1a92:b0:2d8:f0b4:9acb with SMTP id 98e67ed59e1d1-2e184964970mr3154966a91.34.1727864034115;
-        Wed, 02 Oct 2024 03:13:54 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e18fa05087sm1172308a91.39.2024.10.02.03.13.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 03:13:53 -0700 (PDT)
-Date: Wed, 02 Oct 2024 10:13:39 +0000 (UTC)
-Message-Id: <20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: aliceryhl@google.com, fujita.tomonori@gmail.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com
-Subject: Re: [PATCH net-next v1 2/2] net: phy: qt2025: wait until PHY
- becomes ready
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
-References: <20241001112512.4861-3-fujita.tomonori@gmail.com>
-	<CAH5fLghAC76mZ0WQVg6U9rZxe6Nz0Y=2mgDNzVw9FzwpuXDb2Q@mail.gmail.com>
-	<c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="He6XG6D1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E535C4CEC5;
+	Wed,  2 Oct 2024 10:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727864081;
+	bh=xPtbTLmwEY0tdPID7jhVlQ/pbxn+Qy6JsyG8jCuXdik=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=He6XG6D1RRg0x6k9lqwKv70AsE67W+ycsfVAC0iO8bsY0cre5fSbzqzr99KwGdY+e
+	 Ru0zNLrd38YBZU4b1iqqEKEun4E18mxEFSUUcUc98y8Kw5DbmBEYWvzu7wLd1i95l9
+	 3+bcD4ujDW2bT7nYBM2u0WlM90LQxHu/uvGJ+IWeJDyyzHK7kMBS6919xq5DJjsNn+
+	 2GY2S71qTYfK90bZ4UOjvCh0P1bKgxoe+7Kp9o6rtUxmPuflP5ilIVBdrTZgmX6FR+
+	 dl4vZGDasze+xdoFGnhYnd0/5HouDhraJNkxgvJbr9uKQGqok2HcQA+QVyC542gLxo
+	 p7+g4VIXc8cjQ==
+Date: Wed, 2 Oct 2024 12:14:32 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Bjoern Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve Hjonnevag <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org, Kees Cook <kees@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v2] rust: add PidNamespace
+Message-ID: <20241002-dehnen-beklagen-f7f6ca460b5b@brauner>
+References: <20240926-pocht-sittlich-87108178c093@brauner>
+ <20241001-brauner-rust-pid_namespace-v2-1-37eac8d93e75@kernel.org>
+ <CAH5fLghaj+mjL63vw7DKCMg3NSaqU3qwd0byXKksG65mdOA2bA@mail.gmail.com>
+ <20241001-sowie-zufall-d1e1421ba00f@brauner>
+ <CANiq72nJbmhicsNqZHV9=j_imXPPZWxuHiqr=N4wTDxwGaMW5g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nJbmhicsNqZHV9=j_imXPPZWxuHiqr=N4wTDxwGaMW5g@mail.gmail.com>
 
-On Tue, 1 Oct 2024 14:48:06 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+On Tue, Oct 01, 2024 at 05:45:15PM GMT, Miguel Ojeda wrote:
+> On Tue, Oct 1, 2024 at 4:17 PM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > Ok. Why does it pass the build then? Seems like it should just fail the build.
+> 
+> It is part of `make rustfmt` / `make rustfmtcheck`.
+> 
+> I would be happy to make it part of the normal build if people agree
+> -- though it could be annoying in some cases, e.g. iterating small
+> changes while developing.
 
-> I generally point developers at iopoll.h, because developers nearly
-> always get this sort of polling for something to happen wrong. 
+You could consider adding a way to turn it off then instead of turning
+it on.
 
-Ah, I had forgotten about iopoll.h. Make senses. I'll try implement an
-equivalent in Rust.
+> 
+> If we do that, it would be nice if -next does it too, but I think
+> Stephen is already building Rust for x86_64 allmodconfig (Cc'd).
+
+Imho, since Rust enforces code formatting style I see no point in not
+immediately failing the build because of formatting issues.
