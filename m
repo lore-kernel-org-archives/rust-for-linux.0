@@ -1,66 +1,81 @@
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD321CF5C2;
-	Wed,  2 Oct 2024 12:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8481D52B;
+	Wed,  2 Oct 2024 12:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727872100; cv=none; b=qzTQ6Ia5oxxyoBW5AZ2CkisiFTQoJ6+IPBpDt0b7ckWFLaCV9X6mLAdo+CWsaOmO0qM3dquxquPckhp6R9JKZ5lF7JIWuGiWiTvrSiaarM+IHAltSd5xA8asp3dBpunkksF9bk09SmeM760sB363/Q8UtnWtF6CeN0qbJ92yEsM=
+	t=1727872272; cv=none; b=IscvoBi6q0KPpM14NobsaZXa0fomoiNPv/e8oxlag5wIDHJx2Ea6vlgtwprSWiMLDgzA0fUd9gXwkMiwTEpQtVyj/foYsWNKiIJN9j2KOQTtvdTxAc+mdSnXHxSc56JEikF37nv+Lwyp9V0Kujlyha0gAlJFBzzMgh6E8ztJAfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727872100; c=relaxed/simple;
-	bh=N4Xur+mLsQZL05de5iZX8IUrV/C8XCPjFOiMcsq41Z4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YYP3MZxfYJPWfXf8APbYCdKwmc7/eH+lG+WenN1WxPTJGMIVsla6lGtfh/kCnl0kAkJo+v+lwOfbtb+cZIcNF6Rqa4sa8L50lbgcn95m6zOD2pl0j3zbhTZ9SBpLlgB6rf57hw5WivtHllmMxFRo8xpc6ML9etWk9FpupOy/uy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D29E140379;
-	Wed,  2 Oct 2024 12:28:10 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf12.hostedemail.com (Postfix) with ESMTPA id 4148918;
-	Wed,  2 Oct 2024 12:28:05 +0000 (UTC)
-Message-ID: <9a8ed16ffc65d587ed2ff2d1e95bd61fdca5cc90.camel@perches.com>
-Subject: Re: [PATCH v5 2/2] checkpatch: warn on known non-plural rust doc
- headers and empty doc comments
-From: Joe Perches <joe@perches.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Patrick Miller
-	 <paddymills@proton.me>
-Cc: Andy Whitcroft <apw@canonical.com>, Dwaipayan Ray
- <dwaipayanray1@gmail.com>,  Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,  linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Hridesh MG <hridesh699@gmail.com>
-Date: Wed, 02 Oct 2024 05:28:04 -0700
-In-Reply-To: <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com>
-References: <20241002022749.390836-1-paddymills@proton.me>
-	 <20241002022749.390836-2-paddymills@proton.me>
-	 <CANiq72kEPEcqqJmLEtT7=Ku5mseHe6Js_jptVQHMzRwfUzFtMQ@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1727872272; c=relaxed/simple;
+	bh=y9wY8I/zjyHIOrRCdYUnf8u7lfoDOBcwF1CzuLB5r+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e7cQLKjU+SFr3ST3xLP9+yZmg87Sz66foz34vIygAphKzjoksi0frnYrf8MYroe5J8HbsnoISfdyg0VA1YE2XER/V1QwMY1PjMXr71wuw+6aIzDh+YToL3Dkgx6OSJ0ABIMFIHWboVqctnCludHvqKlTxaMcP/8vHlR6x6il2Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=57izO1BQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="57izO1BQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dJpjuwwNU1sI8cy4/CDlp+ignGc/c/8eL5sgCTYQSEw=; b=57izO1BQ6Cd1ciJWZx/pMDfEgX
+	mCn9Q0ifRTWtVan6O9T1JoAYnR46L9snT1riKugZxcTrYBHH37sVMZ8CgCqAK9p0wBRcwEHaSFyKC
+	AjuVLFjFZz+bVeSLyXGZCD23F+ZgD5EhMbqcXZguWXoC55wC9Bjrt//hornI37hlfayA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1svyVX-008r1N-JH; Wed, 02 Oct 2024 14:31:07 +0200
+Date: Wed, 2 Oct 2024 14:31:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com
+Subject: Re: [PATCH net-next v1 2/2] net: phy: qt2025: wait until PHY becomes
+ ready
+Message-ID: <ec7267b5-ae77-4c4a-94f8-aa933c87a9a2@lunn.ch>
+References: <20241001112512.4861-3-fujita.tomonori@gmail.com>
+ <CAH5fLghAC76mZ0WQVg6U9rZxe6Nz0Y=2mgDNzVw9FzwpuXDb2Q@mail.gmail.com>
+ <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
+ <20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 4148918
-X-Rspamd-Server: rspamout01
-X-Stat-Signature: f6acg6xz7wbmk5td9pdmnfysiunpognq
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX18UA09o7oar7CV6RrDKDbvwJwmY2y9qRUY=
-X-HE-Tag: 1727872085-985029
-X-HE-Meta: U2FsdGVkX1+2+m3I6dIDw6nL/ZDpvYqI6HxhouX0dcR57cjNRvBaj93CB4iwcdWeFbgW9ene5kJkbbus5vtUW5FeVneTSMTISvocWa5nF2+UQDArQBz3QWKA4HhfraeVqjJZCsK8f1AanqB/v5hQ6vxfxRXFRfzTqiSON355bTL+u2TqgmSFMUXVUYrtMtrMS/WyWgEx8K0uecXJdO7QWUGCeA5AuZy8orEWHcFALIpcC638cGEBHS1QHB8GM+ELxM+AgEe1a6awWuXjd8f2pmnbcJJBAXiJe0Vj6er4PUDfaHHWylZErIP4x7lcyLka
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
 
-On Wed, 2024-10-02 at 13:56 +0200, Miguel Ojeda wrote:
-> We already have other checks for Rust files that are shared with other
-> languages. Perhaps we can be slightly more clear with "checks for Rust
-> files (only)" or "Rust-only checks" or "checks that only apply to Rust
-> files"?
+On Wed, Oct 02, 2024 at 10:13:39AM +0000, FUJITA Tomonori wrote:
+> On Tue, 1 Oct 2024 14:48:06 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
+> 
+> > I generally point developers at iopoll.h, because developers nearly
+> > always get this sort of polling for something to happen wrong. 
+> 
+> Ah, I had forgotten about iopoll.h. Make senses. I'll try implement an
+> equivalent in Rust.
 
-I'll get this sorted in the next week or so
-and forwarded on.
+There are some subtleties involved with PHYs, which is why we have our
+own wrapper around the macros in iopoll.h:
+
+https://elixir.bootlin.com/linux/v6.11.1/source/include/linux/phy.h#L1288
+
+Normally an IO operation cannot fail. But PHYs are different, a read
+could return -EOPNOTSUPP, -EIO, -ETIMEDOUT etc. That needs to be take
+into account and checked before evaluating the condition.
+
+So you might need to think about something similar for Rust. A generic
+read_poll_timeout() and a phy_read_poll_timeout() built on top of it.
+
+This is a worthwhile set of helpers to have, since the bugs in this
+are nothing to do with memory safety, but plain simple logic bugs,
+which Rust itself is unlikely to help with.
+
+	Andrew
