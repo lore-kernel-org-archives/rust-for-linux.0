@@ -1,74 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276EA1D0DD9;
-	Wed,  2 Oct 2024 16:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD59413CFA6
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 19:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727885241; cv=none; b=OkKZMcil/lTEiEhviVTp4eEOV+UkCzetlg5gRf2luyXE9/tGzLTCL/Rio/EQCXR27X3fmCSYWOBEvCCmlQnSgDUEcnX4HtjEGZG80SsLVUGsoUQAFdIvg8pX7xCIS7LfMf8u3fMRmhO7wg1BumHb8swiW0LVAIDD39dJTmdCUNE=
+	t=1727895893; cv=none; b=m1MpH5unDsF9v7lJx1E1cI75IWh1VO20DohrTgcibGfM4PEYEopdd2LcoXtNeG1JvQ/zPEHrRbdVkElJuRShEnfMz5UlQSizatJuvMh82vQxGbNRVhMKU+rjLp9zNd3Vxe57+eWmZ7CjUMnFBEB90d5xCB5Ns8fKWzgRS1oWG7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727885241; c=relaxed/simple;
-	bh=xxoO6obPk6pPBO3Ma2SHz0w0v/xHJSERq29P05tDduk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FacCjZdtnkpgM08JhUFggwUMu9ljK8iOJ21GBvG65SGes4tWksr0MRx5cmOmDknZp5LWvuYoFkXQtAZgBgKctAlP7YRvEVw2YbzWkHlhH+2SjD+PRXJX3buUmKgRy83uEd5Tbwov7Ee8gp8ErdRNwFmAjIEDvb4qo8odLpqojHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVVaixFJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727895893; c=relaxed/simple;
+	bh=cjxMzazOMipcM1jz60XF22yUskV+jYMT+TfbytHMFL0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EyKM09KzLRvv3U1tO7WR5KSjmkvKVXSFevrEupg2yjl3aSviiqrPnD4WlpoAgejx1d1yuOVGOf3f590U1Gd3MkWruAC5ayTzyX6R5qOBtK6bZmSNsvHwMzK7iYDrt8e6HMdvcodYgr+jIde2DZveiRmnQPEAp8qHbeQosZf6Wak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Yx3mYK4t; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVVaixFJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D24AC4CEC2;
-	Wed,  2 Oct 2024 16:07:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727885240;
-	bh=xxoO6obPk6pPBO3Ma2SHz0w0v/xHJSERq29P05tDduk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XVVaixFJR+GG2EBbZrHxtXiV5fgDF9tDRytAfdujIPxnNyw4MztvMG+zET+vxRE8L
-	 39ogVZOM2RXhJP/qbQij3a3xV/7WyItdYvBhoQLcoyoc1yRsE1mZpzmrDAopdS6o/a
-	 pqAoUH4/a0D3ULJ5esmGyzxQWTkj9CP/93A4huQQ=
-Date: Wed, 2 Oct 2024 18:07:18 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Yx3mYK4t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1727895889; x=1728155089;
+	bh=9akIb4qnOADzLJh2oi1jZDxi/cwQ564uVPZn/qtrwfk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Yx3mYK4t7DSc4JRjFsOCtvopyfL9b56ZuDSYue7b2uOOFfEGwM9w2PSeIzxZ9i+0T
+	 WQHoNPirjdlnZqb9q2pYlTVrd0mQqtYs9SqfUsZosZsFT9eXFVo/6/v/1Uf57rx1Xr
+	 V9nmd5mI3FP3/ymbyF1LeO4r5O5GVc6ITj65XPRJso4udIwKaMn3rRdOD2CbjaYdID
+	 eXoefn8hKDviJhJVDoDHl6dinS8Kg334ApC4GAWFjZcRwHLRby8fzv21/oTOns4WZ9
+	 TvB8M0bMdjL5bPFnKuRcNLCBGtXkz9kAK7x3gHUpSFy3IbjIuNQ+Ddb/9pkryo2cOv
+	 vTXspNFZXSxRw==
+Date: Wed, 02 Oct 2024 19:04:42 +0000
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, rafael@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	aliceryhl@google.com, mcgrof@kernel.org, russ.weight@linux.dev,
-	dakr@redhat.com, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: device: change the from_raw() function
-Message-ID: <2024100240-wrangle-condiment-3f0c@gregkh>
-References: <20241001205603.106278-1-trintaeoitogc@gmail.com>
- <Zv1RhZpQGkVBlLCU@pollux>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v8 16/29] rust: alloc: implement kernel `Vec` type
+Message-ID: <c7d82c56-9632-4987-aadf-7df861a490d9@proton.me>
+In-Reply-To: <Zv1kpqCihqrlCo6f@pollux>
+References: <20241001150008.183102-1-dakr@kernel.org> <20241001150008.183102-17-dakr@kernel.org> <977af809-71f5-4a5a-8006-a283f8a6fc25@proton.me> <Zv1kpqCihqrlCo6f@pollux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 528b097b375c393c59da8090d105ccdbc39165f4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zv1RhZpQGkVBlLCU@pollux>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 02, 2024 at 03:58:29PM +0200, Danilo Krummrich wrote:
-> On Tue, Oct 01, 2024 at 05:56:03PM -0300, Guilherme Giacomo Simoes wrote:
-> > The function Device::from_raw() increments a refcount by a call to
-> > bindings::get_device(ptr). This can be confused because usually
-> > from_raw() functions don't increment a refcount.
-> > Hence, rename Device::from_raw() to avoid confuion with other "from_raw"
-> > semantics.
-> > 
-> > The new name of function should be "get_device" to be consistent with
-> > the function get_device() already exist in .c files.
-> > 
-> > This function body also changed, because the `into()` will convert the
-> > `&'a Device` into `ARef<Device>` and also call `inc_ref` from the
-> > `AlwaysRefCounted` trait implemented for Device.
-> > 
-> > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> 
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
+On 02.10.24 17:20, Danilo Krummrich wrote:
+> On Wed, Oct 02, 2024 at 03:02:18PM +0000, Benno Lossin wrote:
+>> On 01.10.24 16:59, Danilo Krummrich wrote:
+>>> `Vec` provides a contiguous growable array type with contents allocated
+>>> with the kernel's allocators (e.g. `Kmalloc`, `Vmalloc` or `KVmalloc`).
+>>>
+>>> In contrast to Rust's stdlib `Vec` type, the kernel `Vec` type consider=
+s
+>>> the kernel's GFP flags for all appropriate functions, always reports
+>>> allocation failures through `Result<_, AllocError>` and remains
+>>> independent from unstable features.
+>>>
+>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>>> ---
+>>>  rust/kernel/alloc.rs      |   6 +
+>>>  rust/kernel/alloc/kvec.rs | 637 ++++++++++++++++++++++++++++++++++++++
+>>
+>> Any reason against naming this `vec.rs`?
+>=20
+> I think I didn't rename kvec.rs and kbox.rs because we'd need to escape "=
+box" in
+> various places, e.g. in rust/kernel/alloc.rs:
+>=20
+> ```
+> pub mod r#box;
+>=20
+> pub use self::r#box::Box;
+> pub use self::r#box::KBox;
+> pub use self::r#box::VBox;
+> pub use self::r#box::KVBox;
+> ```
 
-Thanks for the review, and Guilherme, for all of the revisions.  I'll
-queue this up for this release soon so we don't get any code building on
-the old api.
+Yeah, that's why `std` uses `boxed.rs`.
 
-thanks,
+> And it's a kernel specific implementation, so kbox.rs and kvec.rs still m=
+akes
+> sense. :)
 
-greg k-h
+Fair.
+
+---
+Cheers,
+Benno
+
