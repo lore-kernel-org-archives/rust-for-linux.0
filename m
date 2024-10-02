@@ -1,175 +1,128 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2F31D0427
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Oct 2024 12:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E601D040E;
+	Wed,  2 Oct 2024 13:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727873907; cv=none; b=JuVBtzdzE3sJyMInNSNC2hgS+JYhBp4y/NvsAgrkVpwBQaHoq4n6ByYzUa4bB0hrFUP/La4VPxnRcCzaBEwSnJHrVM00A7NV+vMj2f2zRi2UR9VlXDCuXWKQuk56i2u2lEYhjTl9i7koH21q0uXcMDf9EQbEWkNoVs47EFmC6LE=
+	t=1727875277; cv=none; b=b1X+UN1ZOfVj5pJOMJBxQDv11r6XE/oU+BagFZioU/CnR2uFQvo/jMjIoShGNbGOaLHV/ALbdN8OIFNm8cKLtLKjSAAKOt6oajsSbt3ip/to9ZDH7dFr27UIBzT44UJAbbY1Qqy8J9JaeDkPhVJBDTOmTzLrPw+Pu2sfYaORBXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727873907; c=relaxed/simple;
-	bh=QUBuGnPlyg1Zpo5cSYdnCPifco/uAsbhZbLGKJuzkk4=;
+	s=arc-20240116; t=1727875277; c=relaxed/simple;
+	bh=MfAys8jyEU3r7Li7ovZWjUcUP7XOHGAnLrtxuGcCJGg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hi3HCOhzohTm6IbGBIr0oilkS5SCIrDLraJMYPSbFOlvls+hS4/SdgiF1qc+aQ1Kw4aawZJoNPzAbi75uO0/mbTrHBo9GrQAmI+PzA6u0mNB43SW1QZe5wIyVoXN9kAK69nszNMJoT8YGHU6p8tM4kNUKotwSdYOGK5bqTGBzPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BI28y/rj; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=dRK4nPZ6/A9wOgGsRI8j7qjnKWHO9zUAGwugivGlM92hY0ijLOtQFtsNCEVf4pSd3bj19Xs0ET0IknKbcBBcU7pjNAihQ2cq0M89/HMc1B52elkUybaS2mQTFNYP2G2ZaDHH4bLsdbxmEu8Rx5jadNIwiXBSYt5kdHnIiTbY9hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9IS6bIH; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BI28y/rj"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42cbc22e1c4so50156435e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Oct 2024 05:58:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9IS6bIH"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7191f1875d3so531796b3a.0;
+        Wed, 02 Oct 2024 06:21:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727873904; x=1728478704; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727875275; x=1728480075; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fuvhL0iJAmSISnqppky+Pu1GhPMGz/EzvYkIVz0BxzI=;
-        b=BI28y/rjGyvwNK/FW+6QYqLcvheOy40oWIxVlyuwOIFHP9jUuf/N0pcwFT0jz7cBDY
-         mSnAXeMB6vJPKns/3+t+e1EPW4AQiHUUjkdS84L3Hf/B9RIGnaVAaEEhPofTY0PprZip
-         zv+BwEolRsWvWtbmisELgaK6zgbMyHfb95j7nd2NmaPBovDCUFtTcI9j7ieNZpbEKdr8
-         /RSJ3UXrREywoVQz8XOEwPxndgmZsIxJxzHVuSsv6E2s6fE5Mvqx55QYcpnp56GCVJH9
-         F37PxCt2SKs3U7xc/hBlidc+dyAqnfw+BexTu/uelYnvdB6bDvn66wpl8P3h0CHtKhIR
-         7C8w==
+        bh=MfAys8jyEU3r7Li7ovZWjUcUP7XOHGAnLrtxuGcCJGg=;
+        b=X9IS6bIHeuVLaDeTGbckepeIt/1hqmws30ZA94e9TKR8AkZ0rkLCMcIMPsQQhe5BFi
+         WRiXd9K5SoGrLlH9gcdzSS5qyLikUnND4VOpgcmaEf3JlveVlWWKb1cd6oDIBkPTFmZx
+         Hh4VG4wAjZKhbQZBmPv5i5+Xx+ULMwn2mpGh02X6hxDYTczUeXiSEBLJo3m0IxaaIGQ5
+         2GSMhBQDw6PVnVea0hFC2l/oaDTB3h7GeAd1egeVoMYef8CcW1QfZpM2xMLNvjccksNx
+         9ljYfvGH0R2pH9nXrXKGMaKe0Fxy9y5/N8PMAWFdtx4XpGWE+3rMi7IUkBr4RHuCt6kq
+         7ixg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727873904; x=1728478704;
+        d=1e100.net; s=20230601; t=1727875275; x=1728480075;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fuvhL0iJAmSISnqppky+Pu1GhPMGz/EzvYkIVz0BxzI=;
-        b=dcvTGIKA46iOzaAjfmVzBi5t/Y3pPtFV9GSJtHk7VX89SDzXK0XJEGFP584d4X+fra
-         ZG+oNBj76rToQlGBqDD4ABbS0U6Y3/zOMZ1h2B37IU1UrngtqJx3deCHJ37gSzSqj0ib
-         9tO0AMr4o+rmSMItMLitdo22KDbAHPsUoh9R+lH/CHiGCEuGTZwFg/SHQ6uGpwZ/oM2e
-         NacVvqqmYxfvMvwP4WR6SNnXHXOhrlZiP+lHjpOT0XPqbAJcGOQ4CPlwm6MV1AocX2bH
-         68g/4RBeOu+knSWJs4C4s4SF/F97+bEE4NnxsxjskSeG/uLokVGKVf4tjpqWnykg9nN1
-         gUlg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnjvY6hRVmdRFvSRUqHcxv1zETNFuMkDHhfuOJqKixEELOC++nfIOrH6c6svlM4xiHhz8kS0sByTBYodvyiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoiA99yHUK36JJicAIKMxIOeyQY6MsmJFy5FCs/vjeW83NjW6x
-	yRw+HHEYo6oYIrBXgPextC8sKRCAXULwDKdomemxQS0S0UVpb1R7T89k9KGm/cM63Nzl1D6B4in
-	mPKCnzym2U2KuQ/mqbceDBE4e3XDETpzA8aU+
-X-Google-Smtp-Source: AGHT+IHHNpbvzD6JVLO0f6tehIAjS8/eh19SyhhFjt+iCRJaku04vJeilwH0IXR5Cw5Jlz9Nl44Ft6aab47N2vglH4g=
-X-Received: by 2002:a05:600c:35cf:b0:42d:a024:d6bb with SMTP id
- 5b1f17b1804b1-42f777c83b8mr19407115e9.20.1727873903611; Wed, 02 Oct 2024
- 05:58:23 -0700 (PDT)
+        bh=MfAys8jyEU3r7Li7ovZWjUcUP7XOHGAnLrtxuGcCJGg=;
+        b=SVgMP3QE3XEARMJ40Umxp3dJ++ToGbVyZWxE/0ailuCPcYCaeH6X7nPJekV2oQvLPc
+         7dSQ0XKb98nDhvOCtInUZzdSgVSqvaM9y/WvGOyaTW6cMaRTlkpWuars2pjBfiiY47Sb
+         8PFjzohrmqmChXt+VnZEW6aAeYYqxajSL9UaJcXwRN/ZQNTduqzvtnY6N1u4bDVEm0sa
+         reyTgwOYWe2XCBGLDQq6Sx3RTm4RqPulNF+c3TUTXD9LAgnld/vl12eGrCJJWQA+7Kcp
+         JHMMOXCgPXZrHWLkIs/rx+NpDuPrfnZ6S/z4xSX9hQ2Maqn3STe9c0uJPJ7+/4SoQSOn
+         rLdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUq9o/T/v1C75Pdz7P3AKyAiANUKcr2wttGenqOrCSeMEiyaqTi3y+WGdDe0GTdDWlDUGpiZaIOz6cHdpM42vU=@vger.kernel.org, AJvYcCXZlTIzaMwf3FQ6svAag8Mr5lV94G4u9n5PyquXKQ9kkPZJGyQGKYf11D1TiQa2+aM+dM40fTM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya6tSh+LbWRQQl3nUi86C6yMvgaDjA2CRwitPCKhjvdxvn24H0
+	CnqjOQ7ZtnbOf0z9Q/NMo/7Fda6Mvha5gR6xD2Ovk+E+7XP7OrrL/RtvyNH9U4+9qGO2+ESkveu
+	KygiTpHJhmuSfZGh0/z9AnXKT2gg=
+X-Google-Smtp-Source: AGHT+IE4GbRCgixbV8NJCBdaE2P9ElsNwzCWD9lYPe91JxAyWowpvZ6NHqaC/7v8ja2kykuW8m+vDA6hiIa5RLDDiXM=
+X-Received: by 2002:a05:6a00:1304:b0:70d:2c09:45ff with SMTP id
+ d2e1a72fcca58-71dc5d7ff02mr2162822b3a.4.1727875275501; Wed, 02 Oct 2024
+ 06:21:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
- <20241001-b4-miscdevice-v2-2-330d760041fa@google.com> <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
-In-Reply-To: <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 2 Oct 2024 14:58:11 +0200
-Message-ID: <CAH5fLghmkkYWF8zNFci-B-BvG8LbFCDEZkZWgr54HvLos5nrqw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: miscdevice: add base miscdevice abstraction
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+ <20241001112512.4861-2-fujita.tomonori@gmail.com> <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+ <20241002.113401.1308475311422708175.fujita.tomonori@gmail.com>
+ <e048a4cc-b4e9-4780-83b2-a39ede65f978@lunn.ch> <CANiq72mX4nJNw2RbZd9U_FdbGmnNHav3wMPMJyLSRN=PULan8g@mail.gmail.com>
+ <3fc44d62-586f-4ed0-88ee-a561bef1fdaf@lunn.ch>
+In-Reply-To: <3fc44d62-586f-4ed0-88ee-a561bef1fdaf@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 2 Oct 2024 15:21:02 +0200
+Message-ID: <CANiq72nCeGVFY_eZMhp44dqZGY1UXuEZFaJx-3OLCTk-eG=xng@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Thomas Gleixner <tglx@linutronix.de>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 2, 2024 at 2:48=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote:
+On Wed, Oct 2, 2024 at 2:51=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> On Tue, Oct 1, 2024, at 08:22, Alice Ryhl wrote:
-> > +#[cfg(CONFIG_COMPAT)]
-> > +unsafe extern "C" fn fops_compat_ioctl<T: MiscDevice>(
-> > +    file: *mut bindings::file,
-> > +    cmd: c_uint,
-> > +    arg: c_ulong,
-> > +) -> c_long {
-> > +    // SAFETY: The compat ioctl call of a file can access the private
-> > data.
-> > +    let private =3D unsafe { (*file).private_data };
-> > +    // SAFETY: Ioctl calls can borrow the private data of the file.
-> > +    let device =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(private=
-)
-> > };
-> > +
-> > +    match T::compat_ioctl(device, cmd as u32, arg as usize) {
-> > +        Ok(ret) =3D> ret as c_long,
-> > +        Err(err) =3D> err.to_errno() as c_long,
-> > +    }
-> > +}
->
-> I think this works fine as a 1:1 mapping of the C API, so this
-> is certainly something we can do. On the other hand, it would be
-> nice to improve the interface in some way and make it better than
-> the C version.
->
-> The changes that I think would be straightforward and helpful are:
->
-> - combine native and compat handlers and pass a flag argument
->   that the callback can check in case it has to do something
->   special for compat mode
->
-> - pass the 'arg' value as both a __user pointer and a 'long'
->   value to avoid having to cast. This specifically simplifies
->   the compat version since that needs different types of
->   64-bit extension for incoming 32-bit values.
->
-> On top of that, my ideal implementation would significantly
-> simplify writing safe ioctl handlers by using the information
-> encoded in the command word:
->
->  - copy the __user data into a kernel buffer for _IOW()
->    and back for _IOR() type commands, or both for _IOWR()
->  - check that the argument size matches the size of the
->    structure it gets assigned to
->
-> We have a couple of subsystems in the kernel that already
-> do something like this, but they all do it differently.
-> For newly written drivers in rust, we could try to do
-> this well from the start and only offer a single reliable
-> way to do it. For drivers implementing existing ioctl
-> commands, an additional complication is that there are
-> many command codes that encode incorrect size/direction
-> data, or none at all.
->
-> I don't know if there is a good way to do that last bit
-> in rust, and even if there is, we may well decide to not
-> do it at first in order to get something working.
+> Which is better, the Rust type system catching the error, or not
+> making the error in the first place because you read the documentation
+> and it pointed you in the right direction?
 
-A quick sketch.
+The former, because we don't want to duplicate documentation of every
+type in every function that uses a type. It does not scale, and it
+would be worse for the reader of the docs as soon as you become
+familiar with a given type.
 
-One option is to do something along these lines:
+Of course, there may be exceptions, but just using a type normally
+should not require explaining the type itself in every function.
 
-struct IoctlParams {
-    pub cmd: u32,
-    pub arg: usize,
-}
+Also note that in e.g. the rendered docs you can jump to another type
+with a single click on top of the name. In some editors, you may be
+able to e.g. hover it perhaps.
 
-impl IoctlParams {
-    fn user_slice(&self) -> IoctlUser {
-        let userslice =3D UserSlice::new(self.arg, _IOC_SIZE(self.cmd));
-        match _IOC_DIR(self.cmd) {
-            _IOC_READ =3D> IoctlParams::Read(userslice.reader()),
-            _IOC_WRITE =3D> IoctlParams::Write(userslice.writer()),
-            _IOC_READ|_IOC_WRITE =3D> IoctlParams::WriteRead(userslice),
-            _ =3D> unreachable!(),
-        }
-    }
-}
+> Maybe this is my background as a C programmer, with its sloppy type
+> system, but i prefer to have this very clear, maybe redundantly
+> stating it in words in addition to the signature.
 
-enum IoctlUser {
-    Read(UserSliceReader),
-    Write(UserSliceWriter),
-    WriteRead(UserSlice),
-}
+The second part of my message was about the signature point you made,
+i.e. not about the units. So I am not sure if you are asking here to
+re-state the types of parameters in every function's docs -- what do
+you gain from that in common cases?
 
-Then ioctl implementations can use a match statement like this:
+We also don't repeat every parameter in a bullet list inside the
+documentation to explain each parameter, unless a parameter needs it
+for a particular reason. In general, the stronger/stricter your
+types/signatures are, and the better documented your types are, the
+less "extra notes" in every function you need.
 
-match ioc_params.user_slice() {
-    IoctlUser::Read(slice) =3D> {},
-    IoctlUser::Write(slice) =3D> {},
-    IoctlUser::WriteRead(slice) =3D> {},
-}
+For instance, if you see `int` in a signature, then you very likely
+need documentation to understand how the argument works because `int`
+is way too general (e.g. it is likely it admits cases you are not
+supposed to use). However, if you see `Duration`, then you already
+know the answer to the units question.
 
-Where each branch of the match handles that case.
+Thus, in a way, we are factoring out documentation to a single place,
+thus making them simpler/easier/lighter -- so you can see it as a way
+to scale writing docs! :)
 
-Alice
+That is also why carrying as much information in the signature also
+helps with docs, and not just with having the compiler catch mistakes
+for us.
+
+I hope this gives some context on why we are approaching it like this.
+
+Cheers,
+Miguel
