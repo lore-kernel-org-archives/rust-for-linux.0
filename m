@@ -1,180 +1,221 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2071.outbound.protection.outlook.com [40.107.20.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB96AFC12;
-	Wed,  2 Oct 2024 02:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727836152; cv=none; b=a0z3YKg9QthfaZgxmBSVZ295/0jurKn88R1wFmB1/8F+9BRHHzf+6PAnUmgtVE1gi7b3cgiR5IR6wRCbfXUi9+GEbMKjVVrYkq3oi6uxGzTt1OC7LtoSR/4SsCoH6jOVxYEXLDwN3EjxJq7hub/INRP2q7ztKI5C+9y2X9JSbb8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727836152; c=relaxed/simple;
-	bh=a6muNuqouh2eDTeySEAd1onzVFurF8Em+siUXuwZKLE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rGFBtEItVstX50IejlYzDGBRH1qmQ7LNEdPRaD5rSAI0Uw+aW177OQhyuKlwbZOB4VOX6mDv/ofX3avUU8fuE6jnI9UWwjpbB1SQgv1Kqj4TOoH/u/OJJUMMOc9RYZwyPmYTCHYO/KFbBaPsKdxtvXt9ut26bk95WDiRPjN22ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KVchHNls; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5B61C2E;
+	Wed,  2 Oct 2024 04:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727844019; cv=fail; b=CnIpwSKt0ssAXfLBTPax6SbFWlCOiEKtNZ3bJcfd4x3IIWohXmRc4OPh9LkYY4l57Ii8WRfPIz/f/0/eb2s2Mol9otezOl23lFhGx65fRaSA3vNHhC0q3S2/SLoPWCzVbZtgIUFlBKguqcFFB3/04HqLGcQfuimYRpveKS63VFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727844019; c=relaxed/simple;
+	bh=nmC0L4Ni39y7qFCuFtTlgBzFMvvj43VCez3uzTC79zM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gFYnf5YDKvv+mU4OeM95sZ+PBzMIFVhQa8qM62GHJA3ufehcFP2KEC39gjT6+AB1YIOs8gUmShS25cpuCNnKcWqyw85SCU/c8e0p3YEx+Wkys9YnzD1DM8H0xvwvyu96Dr0/zHKFSrKLWo478i8CaCxMWuEkMCMkIFTeQyjUTH8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=E3tQFLFu; arc=fail smtp.client-ip=40.107.20.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KVchHNls"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1727836148; x=1728095348;
-	bh=ac1HgfNmCk4awHc+1fYEnNOrVJgHC0ESWRjedn6k/6Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=KVchHNls3XzmE1DotNEXkB7Y4XE6pwjnI1jLbRr2yZKUK50bqvuZkhg6vQ++FJyDn
-	 YSPMp3qhBfm9fW+HhJzbdlL8QczyVTeBK3qyWlBSaX9aW21Pd2aVsqxfRqwLo/yKh/
-	 uZ7qnD/ZxekBUhwq7/3O4LG4s8mdjqAgei0VEbMN1F6uIEGbkTgmAG3PtpY1/NTe9A
-	 4VopW1akE3pwPtJNoR4JmyzFYNfvMOOYMcjh3CTfrhQyfBco7YBnkvcQp5M94fopWs
-	 NpxmtT/ZoqPDF3xklMXRGNl3DCzSPsuGWM2vFXmgWDcp7idt93YgBtbzZWGtvG/j3Y
-	 vMXUvxMV/GSWQ==
-Date: Wed, 02 Oct 2024 02:29:03 +0000
-To: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-From: Patrick Miller <paddymills@proton.me>
-Cc: Patrick Miller <paddymills@proton.me>, Hridesh MG <hridesh699@gmail.com>
-Subject: [PATCH v5 2/2] checkpatch: warn on known non-plural rust doc headers and empty doc comments
-Message-ID: <20241002022749.390836-2-paddymills@proton.me>
-In-Reply-To: <20241002022749.390836-1-paddymills@proton.me>
-References: <20241002022749.390836-1-paddymills@proton.me>
-Feedback-ID: 45271957:user:proton
-X-Pm-Message-ID: 836639662c8165d02d175bd86197358680cc3c38
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="E3tQFLFu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M08PfxGsUZ2Ms9iGCfY8KXcL15kHhDOu3NPNq99I/9VBM/Tl4diF4oAPwY4vWkVDdIOMTKR+qSKqEgierTb5yJSKJIIVCIpMutESWIbG9tSuSbpfICoj/TtMXgFi2VlP4fdtbMxxKVEQfvj4WBv8GtwBrxUY8aA9a/QePtZFEvDyhd/SxIzDqt6IHx8MUvHMxFt2xeKRfKGpwUfOEj/ywU3TywP2XqGspPAOpP/AF4A/yhFZfauzOlfFG6Gz50zn7xnZOL7QgDcVU+H5xQpwmgATyhQcUL+ReP9qJ0tiKxw7USUNt54dVJn73Ojii0kDcOzgrz8H7dlhpTlE4Usabg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=obYiaakf6AdhISY5rnNwKZrkwp4QoIpfB3KuQdX7Yl8=;
+ b=w75m0X/6rqJm+h/QGkFUogH+mnjnnQlHrQ2VFLEyZdScbhvgBITvG/mYuu2giu7JYeYE/wmSJxe8MEtI9QbKoZIWYdXC/P0Eh6Lime2qJTqGfnwSR5b3x06fB1v5QK8E0zYJ3npVqg771j46qHNA1Js3++BjKOAIpL20z0NX2s3Bo0LM74mMgLPTHrDNLtAZaiuiBo1K4vMQZ8ZeOFPqnFuUYFq2RdnUTBfjOVN6TP9SHgEdEganZAm+C1do7gxYcWjhQd4xDZGQy9WLV2wEhHPFhAbpVTWGLUHcm7fal+4037mEMICstg0tLYXUqS14nkr9gh2GiNZvDDP65xGyMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=lunn.ch smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=obYiaakf6AdhISY5rnNwKZrkwp4QoIpfB3KuQdX7Yl8=;
+ b=E3tQFLFue5uVGKnTQHaP9uoANiYK6DtlYgqJ8yRdckMQTxp1hXM9l7eJiFXLyljeeMHYk5WjLnsOOqQd9ngampAUtt0ymmLn74r3XITwZdu21uXmA8Pv8CjTfoJlKpsYrZ6sLjgp3wPb06WHshGY25/ku2BEhK/DILHJNOG/q6FQtUxtRRzzrPWf1DJrpHo/g8iMTqV04tOUbA/qKbBYe324EFan+Hay9YsW8abT+uizWhXiwYCWRz28rmBdyIhjgJGC0gqOj8wL7II5OGdoMdd7aQpZGS2zHW73X2Eto6O6JUM5wdapfwjr2CU8C61Vo1dSK5luQSr5xCmtAuhc0Q==
+Received: from DUZP191CA0042.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4f8::6) by
+ AM0PR10MB3492.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:158::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8005.24; Wed, 2 Oct 2024 04:40:11 +0000
+Received: from DB3PEPF0000885B.eurprd02.prod.outlook.com
+ (2603:10a6:10:4f8:cafe::2e) by DUZP191CA0042.outlook.office365.com
+ (2603:10a6:10:4f8::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16 via Frontend
+ Transport; Wed, 2 Oct 2024 04:40:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB3PEPF0000885B.mail.protection.outlook.com (10.167.242.6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8026.11 via Frontend Transport; Wed, 2 Oct 2024 04:40:10 +0000
+Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 2 Oct
+ 2024 06:40:10 +0200
+Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2001.de.bosch.com
+ (10.139.217.200) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 2 Oct
+ 2024 06:40:09 +0200
+Message-ID: <76d6af29-f401-4031-94d9-f0dd33d44cad@de.bosch.com>
+Date: Wed, 2 Oct 2024 06:39:48 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------0c4394a6258ff74633d227f933c093d2dbde39163781e62af069d27088053794"; charset=utf-8
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------0c4394a6258ff74633d227f933c093d2dbde39163781e62af069d27088053794
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: iopoll abstraction (was: Re: [PATCH net-next v1 2/2] net: phy:
+ qt2025: wait until PHY becomes ready)
+To: Andrew Lunn <andrew@lunn.ch>, Alice Ryhl <aliceryhl@google.com>
+CC: FUJITA Tomonori <fujita.tomonori@gmail.com>, <netdev@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <hkallweit1@gmail.com>,
+	<tmgross@umich.edu>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+	<a.hindborg@samsung.com>
+References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
+ <20241001112512.4861-3-fujita.tomonori@gmail.com>
+ <CAH5fLghAC76mZ0WQVg6U9rZxe6Nz0Y=2mgDNzVw9FzwpuXDb2Q@mail.gmail.com>
+ <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-From: Patrick Miller <paddymills@proton.me>
-To: Andy Whitcroft <apw@canonical.com>,
-	Joe Perches <joe@perches.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Patrick Miller <paddymills@proton.me>,
-	Hridesh MG <hridesh699@gmail.com>
-Subject: [PATCH v5 2/2] checkpatch: warn on known non-plural rust doc headers and empty doc comments
-Date: Tue,  1 Oct 2024 22:27:48 -0400
-Message-ID: <20241002022749.390836-2-paddymills@proton.me>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002022749.390836-1-paddymills@proton.me>
-References: <20241002022749.390836-1-paddymills@proton.me>
-MIME-Version: 1.0
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885B:EE_|AM0PR10MB3492:EE_
+X-MS-Office365-Filtering-Correlation-Id: df46ab95-ab71-4912-34f6-08dce29c4c7d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YWQvdjVuclJicFlpL1ZKcnd5ZCtYVTl5aVFnellaTVBMQ1l1Uzc2SDAzbWFR?=
+ =?utf-8?B?LzZ2QjFwcGUwUDM0Z0k1RVJzU21IdHZQd1dWWmJ5SFlIenJwZmNsZHEvanR6?=
+ =?utf-8?B?QjRKV2F6R25RUmpBUmNCbDNuL3llUW5IeC9DZk8wci94ZVVBa2FISWV2TFcv?=
+ =?utf-8?B?dllKUVRsR3c0bXd1NEdFd2hxSUI3YjJwYnpBQ1JlVEU0QXYrWExPTXpMaWFH?=
+ =?utf-8?B?N1A4QUJIVTBlSGlZcU5sREVIKzRvcjlEKzhrdEIwT0V0KzdXMzJBcy9tck1N?=
+ =?utf-8?B?VVNUbS9KalAwUjdHejdIZkFhdEpucGpxbU5ldTVJSDNoQXhvRmlCYXllbXJQ?=
+ =?utf-8?B?cFdyNlZTS0NTK3RVOWxueGQxcTJxQTNQTEtnQ1NqSjduMXVUb3B1aytvcmxO?=
+ =?utf-8?B?cFdNY3dKRXo5RFVUOXFTRC9PWnAwRVJhTUl5YStqOGRVNi9xQStFZnZ3Mlpy?=
+ =?utf-8?B?ajE5TktQRlF1dUxaZnY1Q1BTL1lvUnlva1dQZkNFc2dmbm9kSjFmM1l4Q1Qz?=
+ =?utf-8?B?aC80SlVtSEJ4WWhJVUMrV095TytxaTFrdU02SlgxY25SK0ZUVXhEV0tDOVM1?=
+ =?utf-8?B?aFZ4eURyRVN4NWYvcmVlMGlaTEE2eXpscHNJbzNURHUyeUVzSkZqbDFQU1dz?=
+ =?utf-8?B?dW5Kd3dtYkV2aDlwTXYzYTFVR1o5dEZNdEJNZVZkZllOZXZHelJab3NISUpK?=
+ =?utf-8?B?amFLUlBKNnNNRUZ3UXp0bUlGUm0zTkxhNTljVGJzUmVPc2lhTjBNS2NuSWQ1?=
+ =?utf-8?B?c2hVbHgybE5VQjJtd3NoUklGTlVIblpKb2sxUlRDcnZhQVpyaXlka0hHYWdZ?=
+ =?utf-8?B?cDFqVERBanpRUVdiZ3luRktwc2hxMFBnVkNRSWwzRU9OT0JmeHk5dW9KeGlB?=
+ =?utf-8?B?dEhZRW9rT3VLMmh2TFhMWXVrVXNFMDVoQWM2a05OaFV2Um93Smczd1ZHUzB3?=
+ =?utf-8?B?SWFuZFVYQTdJWDIvT3hXb2RMZjJjK0FFSEduVjVkdUJIeVVRRFYwQ3E3Y1pM?=
+ =?utf-8?B?cENqK0EwQ1FkVUs3SktzRzdJT1FvQTJRNUluemcvN1ZRY0RUWFI3UUl2UVlQ?=
+ =?utf-8?B?WG1GRXpCbnRuaEFqNUw3dG1USmErdkJuQTJzUVNQY1NhQ2lQd1BWbjVWMnBk?=
+ =?utf-8?B?K0xrbTBPbmdFR0JyUEtpWTFpQTZ6ZHpuYnUwMXJqRTByTTRnTmVScUFJaGti?=
+ =?utf-8?B?ajJTSjR0R0FaditPT2R0ZzNKeHVqV0o0cUgwbnJsZkx5ZFlXdTl2YWI5dTNR?=
+ =?utf-8?B?dkI5N3JqekhJSmtkdXJWdEFvWHpmUG1YWkVSdDZjZ2R1a3FoNGFjS1RuZTdH?=
+ =?utf-8?B?YVZFb0xLOGk3dVh6TTEzc3FXZXgweUkrVXJ4S2hjWmIxTTZlNVdIUDQ4RHNh?=
+ =?utf-8?B?dm5NcFkvREZQTzk0clNOeWt3T2ZEQTFwcXUxM1FzYWJraTdwbmN0Nnp3Qkhx?=
+ =?utf-8?B?Nm1YaXY4ZzJJM0o0SkZ4WCtWV2dPVXQ0aTB2a1hsMTMxdXB6dW5DUXdSeGV5?=
+ =?utf-8?B?TW9IQVI2dmVCQXRmclFWT2grQ2NBVzltNFFqeDlNS09iZnBJQ2kweXcxSjk3?=
+ =?utf-8?B?WWE4bC9kQjNVZTBSc1h4S1VTcGQwSFRmZHJHYWhidWJxRFVvaG5DUnZXaEc5?=
+ =?utf-8?B?UW9kSHM0Vjc5dFpIZkN5Q24zdGFlSlR0V0NkSDJObVRjNTRBdFRWUFVTUjJD?=
+ =?utf-8?B?UDk3Tk83QWpTMmtkZEFmb1VWZnM0cjJkYVgweGVsUWRhaWhLNUtrNDJtN3Fo?=
+ =?utf-8?B?M1IyV2h3WFZzak1pTkIvNWhMRmFqYlZ0dHMrRGxiSDl2QnJzMzVQbm00SXdi?=
+ =?utf-8?B?cVNLM2pNVHd2M0t1YWpweUNLL2R3RUNydWJSUkV4cDh1eThmdUVSK1ZQWUow?=
+ =?utf-8?Q?jJNYoaWzmQrCS?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 04:40:10.4879
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: df46ab95-ab71-4912-34f6-08dce29c4c7d
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885B.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3492
 
-Adds a check for documentation in rust file. Warns if certain known
-documentation headers are not plural.
-
-The rust maintainers prefer document headers to be plural. This is to
-enforce consistency among the documentation as well as to protect against
-errors when additions are made. For example, if the header said "Example"
-because there was only 1 example, if a second example was added, making
-the header plural could easily be missed and the maintainers prefer to
-not have to remind people to fix their documentation.
-
-This revision also merges Hridesh MG's [1] patch to check for consecutive
-empty doc comments. This checks and warns against consecutive empty `///`
-lines in rust files.
-
-[1]: https://lore.kernel.org/rust-for-linux/CALiyAo=ZdFy0bR03NndODmE7vP_JRzxs52-z=iXKQbO_Z6rtYg@mail.gmail.com/T/#u
-
-Signed-off-by: Patrick Miller <paddymills@proton.me>
-Co-developed-by: Hridesh MG <hridesh699@gmail.com>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Suggested-by: Trevor 
-Gross <tmgross@umich.edu>
-Link: https://github.com/Rust-for-Linux/linux/issues/1110
-Link: https://github.com/Rust-for-Linux/linux/issues/1109
-
----
-v1: https://lore.kernel.org/rust-for-linux/2024090628-bankable-refusal-5f20@gregkh/T/#t
-v2: https://lore.kernel.org/rust-for-linux/92be0b48-cde9-4241-8ef9-7fe4d7c42466@proton.me/T/#t
-  - fixed whitespace that was formatted due to editor settings 
-v3: https://lore.kernel.org/rust-for-linux/da34f89c-f94c-43aa-946c-57fec3597974@proton.me/T/#t
-  - move && to previous line and remove whitespace in WARN per Joe Perches
-  - reformat following C coding style
-v4: https://lore.kernel.org/rust-for-linux/20240914181618.837227-2-paddymills@proton.me/
-  - add @fix option (credit: Joe Perches)
-  - add Error to list of checked section headers
-  - make check for rust file its own if statement because more rust
-      checks are planned
-v5:
-  - merged Hridesh MG's patch[2] to check against consecutive rustdoc comments
-  - revised Hridesh MG's
- patch to match against $prevrawline being new
-      or existing
-  - added fix to Hridesh MG's patch
-
-[2]: https://lore.kernel.org/rust-for-linux/CALiyAo=ZdFy0bR03NndODmE7vP_JRzxs52-z=iXKQbO_Z6rtYg@mail.gmail.com/T/#m5afd633dc96ba366bbfd3d168c43d3a2a53b9198
-
- scripts/checkpatch.pl | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 39032224d504..080b0eebde0a 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3900,6 +3900,26 @@ sub process {
- 			     "Avoid using '.L' prefixed local symbol names for denoting a range of code via 'SYM_*_START/END' annotations; see Documentation/core-api/asm-annotations.rst\n" . $herecurr);
- 		}
- 
-+# checks for rust files
-+		if ($realfile =~ /\.rs$/) {
-+# check that document section headers are plural in rust files
-+			if ($rawline =~ /^\+\s*\/\/\/\s+#+\s+(Example|Error|Guarantee|Invariant|Panic)\s*$/i) {
-+				if (WARN("RUST_DOC_HEADER",
-+				   
-      "Rust doc section names should be plural\n" . $herecurr) &&
-+				    $fix) {
-+					$fixed[$fixlinenr] = s/\b$1\b/ucfirst(lc($1))/e;
-+				}
-+			}
-+# check for consecutive empty doc comment lines
-+			if ($rawline =~ /^\+\s*\/\/\/$/ && $prevrawline =~ /^\+?\s*\/\/\/$/) {
-+				if (WARN("RUST_DOC_EMPTY",
-+				         "avoid using consecutive empty rustdoc comments\n" . $herecurr) &&
-+				    $fix) {
-+					fix_delete_line($fixlinenr, $rawline);
-+				}
-+			}
-+		}
-+
- # check we are in a valid source file C or perl if not then ignore this hunk
- 		next if ($realfile !~ /\.(h|c|pl|dtsi|dts)$/);
- 
--- 
-2.46.2
-
-
---------0c4394a6258ff74633d227f933c093d2dbde39163781e62af069d27088053794
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: ProtonMail
-
-wnUEARYIACcFAmb8r+4JEJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
-nhEAAP3nAP936BWOr5t4BC0jSvvjuhtD37zUq77XsWU0KcvYtIr9aQEA/tEP
-/bXcHcXJE9fHkCeh7OItQjelyV2jesBgngK8VAw=
-=2WSD
------END PGP SIGNATURE-----
+On 01.10.2024 14:48, Andrew Lunn wrote:
+> On Tue, Oct 01, 2024 at 01:36:41PM +0200, Alice Ryhl wrote:
+>> On Tue, Oct 1, 2024 at 1:27 PM FUJITA Tomonori
+>> <fujita.tomonori@gmail.com> wrote:
+>>>
+>>> Wait until a PHY becomes ready in the probe callback by using a sleep
+>>> function.
+>>>
+>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>> ---
+>>>   drivers/net/phy/qt2025.rs | 11 +++++++++--
+>>>   1 file changed, 9 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+>>> index 28d8981f410b..3a8ef9f73642 100644
+>>> --- a/drivers/net/phy/qt2025.rs
+>>> +++ b/drivers/net/phy/qt2025.rs
+>>> @@ -93,8 +93,15 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
+>>>           // The micro-controller will start running from SRAM.
+>>>           dev.write(C45::new(Mmd::PCS, 0xe854), 0x0040)?;
+>>>
+>>> -        // TODO: sleep here until the hw becomes ready.
+>>> -        Ok(())
+>>> +        // sleep here until the hw becomes ready.
+>>> +        for _ in 0..60 {
+>>> +            kernel::delay::sleep(core::time::Duration::from_millis(50));
+>>> +            let val = dev.read(C45::new(Mmd::PCS, 0xd7fd))?;
+>>> +            if val != 0x00 && val != 0x10 {
+>>> +                return Ok(());
+>>> +            }
+>>
+>> Why not place the sleep after this check? That way, we don't need to
+>> sleep if the check succeeds immediately.
+> 
+> Nice, you just made my point :-)
+> 
+> I generally point developers at iopoll.h, because developers nearly
+> always get this sort of polling for something to happen wrong.
+> 
+> The kernel sleep functions guarantee the minimum sleep time. They say
+> nothing about the maximum sleep time. You can ask it to sleep for 1ms,
+> and in reality, due to something stealing the CPU and not being RT
+> friendly, it actually sleeps for 10ms. This extra long sleep time
+> blows straight past your timeout, if you have a time based timeout.
+> What most developers do is after the sleep() returns they check to see
+> if the timeout has been reached and then exit with -ETIMEDOUT. They
+> don't check the state of the hardware, which given its had a long time
+> to do its thing, probably is now in a good state. But the function
+> returns -ETIMEDOUT.
+> 
+> There should always be a check of the hardware state after the sleep,
+> in order to determine ETIMEDOUT vs 0.
+> 
+> As i said, most C developers get this wrong. So i don't really see why
+> Rust developers also will not get this wrong. So i like to discourage
+> this sort of code, and have Rust implementations of iopoll.h.
 
 
---------0c4394a6258ff74633d227f933c093d2dbde39163781e62af069d27088053794--
+Do we talk about some simple Rust wrappers for the macros in iopoll.h? 
+E.g. something like [1]?
+
+Or are we talking about some more complex (safety) dependencies which 
+need some more complex abstraction handling?
+
+Best regards
+
+Dirk
+
+[1]
+
+int rust_helper_readb_poll_timeout(const volatile void * addr,
+                                   u64 val, u64 cond, u64 delay_us,
+                                   u64 timeout_us)
+{
+        return readb_poll_timeout(addr, val, cond, delay_us, timeout_us);
+}
+
+
 
