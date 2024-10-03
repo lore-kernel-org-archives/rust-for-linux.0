@@ -1,138 +1,88 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4460824BD;
-	Thu,  3 Oct 2024 22:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418B31AB52C;
+	Thu,  3 Oct 2024 22:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727993858; cv=none; b=t2tE4dCQIMkttYq3sZVjWOC6EV6RK1p4jkXeQvEWBKN8N56gbY9TijeK2OXCNVEn1co1uIQiD4HcaPMr8Gy3cmwfo6lFzS3fBH7RIa1vItGf5vhYvI34oA+yTqKBze57LBvwbDzWhcTM7ZvZyqYFOMzgqO9DiGMAg6Boexf4/9Q=
+	t=1727995803; cv=none; b=anCHdGu25Is62qm5LsU1mBzwJEjkgVDw1ETgFaaQ+pUjyi2vyLQNTGwlG9H9gdJ1l3eN53734SboibvPr2x4odYQ6WnRtVFJkGjs5M6eWdPVB8sf9aJSzR5D0K5hd81sIVL/8c/4G1Glcg1q7X9fxkz8im7QCgLe3jXHZioFaL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727993858; c=relaxed/simple;
-	bh=Ymh2tpS1JI2NHOim1p+BjzOidAveJc2fGryZHKnRDpE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZURI/IA423miIyhnCQakXpaMVZxlmnO/fqmE7Nrk5ZeD92ekoWLurrxYArtO3RFxDfc1FOuLcnsosKzkNr9rjDzvuUADNeetQTcDjpB57GHBzrCADvqarLuMUQY6qmbVTRRpt2168Vqs/8vlzClzNOYsleJcOjCHSf8vI8he5i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V97lcLm4; arc=none smtp.client-ip=209.85.208.170
+	s=arc-20240116; t=1727995803; c=relaxed/simple;
+	bh=KTAhubmF+XdYalroJyT4CW7w74UfrFqL7BD0IJFjemI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=diiDtP0RBgBqOSyosUMmeHZO0KvQRsJKENaeWSfgeQAmGb93RVjuxWSJ/XzIRGSUVDkr9hl+YiDTvkL8WPvtO8tLmR1MW6HFSEZP1OQm7HV9XLk1CV3OK6JmJGsPrn1dXY2ylHQWR5Mtxv7MtBnvxK3xKVm+B/Uq8lf7Xa7UXVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bUrYGu3M; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V97lcLm4"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f75c56f16aso16474491fa.0;
-        Thu, 03 Oct 2024 15:17:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bUrYGu3M"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-717839f9eb6so216124b3a.3;
+        Thu, 03 Oct 2024 15:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727993855; x=1728598655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lo03yBFFODZstMfsdWLSOlbjB57/RWRNzFo3/1cKqnQ=;
-        b=V97lcLm4l35g8Az8mujQLDGHO83/8/JlZgMm2r/Qc4tn16peyN3T7PgR0/PwYWl2no
-         r1x9g/SKX7Hu0xO3tDcZ/RSCIZ8YeAXEjiWd4lUPRvTP2dVBImFYWlrHdzqaAu6ila0w
-         AE8fJ5YWWIwJGIH/TnG+zxinnI4MUTX92UeyvPsyHUcR13veaCrUny9EhuwwO09zukNW
-         KZJQ+Bsmbz0KntHYGxRW62dHnzHEqdmx+PeOVsev4H0s82Rq0M84PIcql9K1Rvyoif/c
-         WO4QsMHvlgr6LwJ7jWfyFmnrPycn4lsCxyN1ehhYwdZTqny/NacGNQCuN/HeOyH4EziQ
-         kCxw==
+        d=gmail.com; s=20230601; t=1727995801; x=1728600601; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KTAhubmF+XdYalroJyT4CW7w74UfrFqL7BD0IJFjemI=;
+        b=bUrYGu3MtOtXBTxBsntfrKfP8zXQQDckHlKTz4CFYU7uur5g48UX4olhPNxMRc7hEF
+         3RnDciowOvk1SyUps46EaPjVLziCkXmgpG1rE+0JyzAmtmzZY2wFO1mBc4mrU7JC+yhz
+         sG63qOw6+fklroVdlnnvMM78sE8IhDCzd9ztfXzsgQ6Hd7HtHJ0sWngmqNYEsLRnTzVL
+         wG43wak0k/YkXfQhZIaTQ2w34hOhlPFdQtqJXqc7qrp7icS1yDMqDwvUE5wM/aN2Ccko
+         bjr3M/if3PaVQZZogZUgSJbK3egQogtWn/nlKd6wPIuRE4JjFi/Y4LMFct1AbmS0WK3P
+         7JwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727993855; x=1728598655;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lo03yBFFODZstMfsdWLSOlbjB57/RWRNzFo3/1cKqnQ=;
-        b=M6iRstHk7MIv6rxyAer6oq4I0Zbk8Kff0jp2JaDBL6ee49VAeIlF2ZF6c45mvgUL3T
-         8qI4TAplTgToekLc/e3txcBzDiN+8tnaivLtlNBjuyCstbbSJno+mjvZoQHHTHuP1Zbn
-         fkxGCdIii/hRvUYyI8ZQK5fowhqBtwg6RW8yAPPXmrM7XAJiys0dovJ9CMsnZJXQLEgP
-         pKFOLSQYAL8ilGHGszOTuQn4jozrXOOGNc0j167UVxSYqIT6SdOfKEyN5INZi58+wHUA
-         sIu84kPW4Jb+MttnejRQuNI95rpievKBl5TNDFd+FeJmDIUbTj/lrUiJ8df8dHY60G32
-         oGeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSK/o0/g7+aJYxVIU1AveHIWhpCRsFgBydAzEG08R+EaT6pP9PXf6TFKYzOUQYmcOuezoIc4UZ6jEGweA=@vger.kernel.org, AJvYcCWAFXYyUETz63CiIfs6CUNTYCop3R+C4Zr/eV5aHqtMOzuXYcAxg+g40mrzQNASFKNg/Lg79M5wfIyTJL6Uuy0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFOtopHUaCFa/YcBN1nCaJDrTJw5tbNAjcnJLiR+qWbjI1Jfjf
-	txIJ7Fph++HiOLyFy8i4mhxRNDaAKjZtCcSLEBgfvAkXiRjYjItN
-X-Google-Smtp-Source: AGHT+IG12SpHijBRGXnrLLIsP9edGAXbq0kxeeG2mPlpZc4fneT6+0Ohi0oAfNbIPRCboytuYOt7fw==
-X-Received: by 2002:a05:6512:12d1:b0:539:94df:38e9 with SMTP id 2adb3069b0e04-539ab88af26mr456917e87.31.1727993854565;
-        Thu, 03 Oct 2024 15:17:34 -0700 (PDT)
-Received: from mbp-deepak.lan (89-69-93-57.dynamic.chello.pl. [89.69.93.57])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9910473160sm137958966b.167.2024.10.03.15.17.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 15:17:33 -0700 (PDT)
-From: Deepak Thukral <iapain@gmail.com>
-To: 
-Cc: Deepak Thukral <iapain@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Nell Shamrell-Harrington <nells@linux.microsoft.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: update dbg macro outputs in docs
-Date: Fri,  4 Oct 2024 00:15:37 +0200
-Message-Id: <20241003221536.34826-1-iapain@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+        d=1e100.net; s=20230601; t=1727995801; x=1728600601;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KTAhubmF+XdYalroJyT4CW7w74UfrFqL7BD0IJFjemI=;
+        b=X++waYZQlNXuJZPF8DPNEnsoNj+YI3LgbjKljfsimuUEizIkJEWDZgBNLzc+y9d7aO
+         zcHjaBu0LPfUe0ov/PSKZAATGIdr3rGWUsCmyjbRkj0woWKPRleb6qBy6uPme51DC9m1
+         951ZvWqc0UKg7WfLOM8Wp3abwmJh4klvm+UrBIhqfoq9qPttgo/OqSkUs4skdUc9zvie
+         nbIo1jtJ9hYRr1pGejHNTZy/96JUF+fAgbZ5dJbh6SVULEZ8ZvXyHdtONeY7zuHZwK2b
+         UtBY3AEbJGSn1JgUiOhqKC4hy/gR3zWwCThHqy4F16NJvg+whQw7p8BUPtsCdTnk8OHg
+         py9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVYAm/ivvtMTOIJ1Oj07v3T2cdrjvLLvr8QyrXSnzO0OLQ5a9YmDKnc0I3lhfqIpAdmynnFCociaRVymTE5BNU=@vger.kernel.org, AJvYcCWaG5SF8uP8jLy1mFeHanRBdTeZrapUkWEIstI1u2FuOVff7s/Iheo+iS5nbItZYXEzxZsgs683PdK1KJU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi7E9mVLWKVdjQOjjB3m3lKDOceXuKj/p4TRngn2lbJo1AqxvB
+	dM56M/7fLnkIJ1LhXzJoh/OX/ekqLkA5pc3BsrXA+XgHSHjG3JXei3FzaXyDvLmF8aqirkic8xD
+	CEY7NeK40aEWOxhpRhuups9w7MhU=
+X-Google-Smtp-Source: AGHT+IGEnMEaMRwHJsgJjl9DJrCplq6rSG+i/uvTMJrsp8tHpy4xemqXsOMgZvfXeCPS8ha8JVUl4QKYIr7RCPFaYPQ=
+X-Received: by 2002:a05:6a00:464e:b0:70b:705f:8c5d with SMTP id
+ d2e1a72fcca58-71de2446c96mr403436b3a.4.1727995801451; Thu, 03 Oct 2024
+ 15:50:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240911225449.152928-1-dakr@kernel.org> <20240911225449.152928-26-dakr@kernel.org>
+ <20240928204357.3a28dada.gary@garyguo.net> <CANiq72nuZ41eDXkybGBbGRMgJzUOe1rRZioS-amJfH7UV-9cMQ@mail.gmail.com>
+ <fd889e4a-3da7-4ade-a0a4-c4fb1feb540f@kernel.org>
+In-Reply-To: <fd889e4a-3da7-4ade-a0a4-c4fb1feb540f@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 4 Oct 2024 00:49:48 +0200
+Message-ID: <CANiq72=9Y2eauk3LbJnnmM7N-iiN0ET-XwJ=uMJsWLyfWysQ4w@mail.gmail.com>
+Subject: Re: [PATCH v7 25/26] kbuild: rust: remove the `alloc` crate and `GlobalAlloc`
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	akpm@linux-foundation.org, daniel.almeida@collabora.com, 
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com, 
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, 
+	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, 
+	lyude@redhat.com, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Oct 3, 2024 at 11:54=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> So, I guess you'll just fix it up when applying the series?
 
-This patch updates outdated examples for `dbg!` macro.
+Sure, if there is no need for a new version, then no worries.
 
-Signed-off-by: Deepak Thukral <iapain@gmail.com>
----
- rust/kernel/std_vendor.rs | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
-index 67bf9d37d..464b2c4b5 100644
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -16,7 +16,7 @@
- /// let a = 2;
- /// # #[allow(clippy::dbg_macro)]
- /// let b = dbg!(a * 2) + 1;
--/// //      ^-- prints: [src/main.rs:2] a * 2 = 4
-+/// //      ^-- prints: [src/main.rs:2:9] a * 2 = 4
- /// assert_eq!(b, 5);
- /// ```
- ///
-@@ -65,7 +65,7 @@
- /// This prints to the kernel log:
- ///
- /// ```text,ignore
--/// [src/main.rs:4] n.checked_sub(4) = None
-+/// [src/main.rs:4:8] n.checked_sub(4) = None
- /// ```
- ///
- /// Naive factorial implementation:
-@@ -88,15 +88,15 @@
- /// This prints to the kernel log:
- ///
- /// ```text,ignore
--/// [src/main.rs:3] n <= 1 = false
--/// [src/main.rs:3] n <= 1 = false
--/// [src/main.rs:3] n <= 1 = false
--/// [src/main.rs:3] n <= 1 = true
--/// [src/main.rs:4] 1 = 1
--/// [src/main.rs:5] n * factorial(n - 1) = 2
--/// [src/main.rs:5] n * factorial(n - 1) = 6
--/// [src/main.rs:5] n * factorial(n - 1) = 24
--/// [src/main.rs:11] factorial(4) = 24
-+/// [src/main.rs:3:8] n <= 1 = false
-+/// [src/main.rs:3:8] n <= 1 = false
-+/// [src/main.rs:3:8] n <= 1 = false
-+/// [src/main.rs:3:8] n <= 1 = true
-+/// [src/main.rs:4:9] 1 = 1
-+/// [src/main.rs:5:9] n * factorial(n - 1) = 2
-+/// [src/main.rs:5:9] n * factorial(n - 1) = 6
-+/// [src/main.rs:5:9] n * factorial(n - 1) = 24
-+/// [src/main.rs:11:1] factorial(4) = 24
- /// ```
- ///
- /// The `dbg!(..)` macro moves the input:
--- 
-2.39.3
-
+Cheers,
+Miguel
