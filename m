@@ -1,112 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C292F11CA0;
-	Thu,  3 Oct 2024 00:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A61DDC1;
+	Thu,  3 Oct 2024 00:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727915273; cv=none; b=M+QY22iw8kuoaL9ffPKzS41bqzV/tBNGaemxR7XRWC3kxIwcuq4yy7yRT09o3u9weZl+P2LoQA2vEp+gWR8nGAkpg1w6+QXsGpa0oupr/s+poDdxiWLFcPFJ2RU/B7t31PVZBJwnqSvGleSwfV9hEVlZfOiGFRx0Ghbch47ECM0=
+	t=1727916628; cv=none; b=QwauqUmwB3/p0T5OZp1QAbrGyDWpLg1gdj9ZkQYWo3+60yL2CTohAnBeXXJTJTY3Y2++T5Zb0902fXiO6R7hO4fN7nwXxlUkK6iXHI+P8h2i/BC8Xfuw1JVlthJIc4MGS0xKeBl8t9XFDnJ145B9X5x02Vql1at9C6k5L2MTFI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727915273; c=relaxed/simple;
-	bh=4jOSy2S5vzvt4SXm1y8gfO76VgZUH7wm+QIBYnhH3Cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBhGe0JDoKKVYcJbhouViOQbGFLI9M+ZCw1Jpceox/P9jyy3OgfbMm2+cwqE53YWjKpyW+tVhTRp5vx/htixJnC/J7uA6hpiF548tNDdie4WGS5+D0pgGMgdmQwdQKOlpAGESvhkyiX9FbEQTXPVNEi6UNGxz4ysT5CdVltxzNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FWJEXH6p; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1727916628; c=relaxed/simple;
+	bh=7CS+8ruNi97vFkvQRg8+CFUgLlqCp4XIqZjTp/7vlu8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=unsXKa6XqDQvCZ/ZA9QwkOO1MXpNYpxNj+Zb3zmYGmARi4QiJ+BxdHpekZ4LhNc0lJMtdVw2t5chngL3qzEck8i50edS1gkfOPPlTommWvHiSaGEYwvcbBxeHe2DgGiEvQD7SDzLrVrSXdmFeWLOdLuMKZWvFIhdybxkg0CjrEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8pJzvlM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FWJEXH6p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727915272; x=1759451272;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4jOSy2S5vzvt4SXm1y8gfO76VgZUH7wm+QIBYnhH3Cg=;
-  b=FWJEXH6pFiMldM9nE3x3PMaexwnVe+ympLpzGwsqN0b+pHLt9742g+IU
-   lN9cGq0fAJ0vXqPqPLgzyVS4RbpfbDztc1I41bYotK+Gad4+LDpmeRfB1
-   ZZOWycPcOIxD9dkHF+PnsPn7o/dFbEqO/x5o2/LcRYXoxeTcJ1qqyXaRE
-   cXZjD37oNjaKiOtJVonRNRZktqEQ5nkXmcC0oz2ey3Cg1c8vqbas3U7DB
-   onsxZu71E8gu3DrOc410OeEfZ8Djlm9lbah+xVUL46e+5ZBPLJdAgVS4k
-   cTzPOZ4IkNwzwWA7tpl4VYJSgxANHiZLM6x1ftk4sqOiSB/Wtu8Eda+gE
-   w==;
-X-CSE-ConnectionGUID: Q2DkQMeiTayRxeeg8mB9PA==
-X-CSE-MsgGUID: G+lGHATQSqqjHrb8KLVI3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="30983717"
-X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
-   d="scan'208";a="30983717"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 17:27:51 -0700
-X-CSE-ConnectionGUID: dwjIvjloTeinYpM1Frs8nw==
-X-CSE-MsgGUID: xpDUIod3TPOk3JYCsRfp0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
-   d="scan'208";a="74293881"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 02 Oct 2024 17:27:45 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sw9h1-000Ujz-0l;
-	Thu, 03 Oct 2024 00:27:43 +0000
-Date: Thu, 3 Oct 2024 08:27:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com, lina@asahilina.net,
-	mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
-	lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v8 15/29] rust: alloc: introduce `ArrayLayout`
-Message-ID: <202410030724.cV9BEoNG-lkp@intel.com>
-References: <20241001150008.183102-16-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8pJzvlM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F413FC4CEC2;
+	Thu,  3 Oct 2024 00:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727916628;
+	bh=7CS+8ruNi97vFkvQRg8+CFUgLlqCp4XIqZjTp/7vlu8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=N8pJzvlMbEffslMXmdwH4UBrlAjJ3BP5iWVCyLu0BLdokUxRpif2Ik4o3tJJqmvAR
+	 FtzYXY61i8tYSlUHfKo8rQyUaQW3/AlYJ84AqWDK8KN4th2XUfRz8uCINelWP5Bo8L
+	 w6W6PEFa0/m8VPyn8PZQhUKvJyrQ3rNxcVBe/maeqKNCKKdJUGBHsz18fLbjZ8qpsa
+	 7WJ+tyOi/Tngc32QOa+Yr5/Uiid1+zZ/xkkgW0XAgKVW34z52TR3c3WSryPEJDb9Rx
+	 t7RBsv+8RVhgfd28CsOysFdABwWy/5w8E2E6Ax+CxWFBmfm+hhIUWIbLHG/7JjWS4W
+	 ELVFkywqKF5Gw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 718E9380DBD1;
+	Thu,  3 Oct 2024 00:50:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241001150008.183102-16-dakr@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: phy: qt2025: Fix warning: unused import DeviceId
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172791663128.1389757.14089095197291807474.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Oct 2024 00:50:31 +0000
+References: <20240926121404.242092-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20240926121404.242092-1-fujita.tomonori@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ tmgross@umich.edu, aliceryhl@google.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, lkp@intel.com
 
-Hi Danilo,
+Hello:
 
-kernel test robot noticed the following build errors:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
+On Thu, 26 Sep 2024 12:14:03 +0000 you wrote:
+> Fix the following warning when the driver is compiled as built-in:
+> 
+>       warning: unused import: `DeviceId`
+>       --> drivers/net/phy/qt2025.rs:18:5
+>       |
+>    18 |     DeviceId, Driver,
+>       |     ^^^^^^^^
+>       |
+>       = note: `#[warn(unused_imports)]` on by default
+> 
+> [...]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Danilo-Krummrich/rust-alloc-add-Allocator-trait/20241001-230558
-base:   9852d85ec9d492ebef56dc5f229416c925758edc
-patch link:    https://lore.kernel.org/r/20241001150008.183102-16-dakr%40kernel.org
-patch subject: [PATCH v8 15/29] rust: alloc: introduce `ArrayLayout`
-config: riscv-randconfig-001-20241002 (https://download.01.org/0day-ci/archive/20241003/202410030724.cV9BEoNG-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241003/202410030724.cV9BEoNG-lkp@intel.com/reproduce)
+Here is the summary with links:
+  - [net,v3] net: phy: qt2025: Fix warning: unused import DeviceId
+    https://git.kernel.org/netdev/net/c/fa7dfeae041c
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410030724.cV9BEoNG-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0425]: cannot find function `size_of` in this scope
-   --> rust/kernel/alloc/layout.rs:47:31
-   |
-   47 |         match len.checked_mul(size_of::<T>()) {
-   |                               ^^^^^^^ not found in this scope
-   |
-   help: consider importing this function
-   |
-   7  + use core::mem::size_of;
-   |
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
