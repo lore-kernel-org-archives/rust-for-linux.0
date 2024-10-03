@@ -1,223 +1,91 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51978194C89;
-	Thu,  3 Oct 2024 12:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6115B14D6ED;
+	Thu,  3 Oct 2024 13:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727959962; cv=none; b=Ku8Is8XvVRd66hHDOQMNJxQZ67OCjR5JOOPIld/iEfUsk2eMeDJ6OLBDVWBQmXAr+9KSduH0urRcym4O98pwnDGeNgbiWogP/TbDuEF2098Y8D0WoL6oRUPBa/KRrONEneREpNRg0s/+aSXLjXDgJPW03gpLebp/8Gm0fj4GkuI=
+	t=1727960595; cv=none; b=H1BFyRLF2MmxG9+9+9qInMme6lE2H6CHx+rAilNTiJMEnAR0XD+S5aA2b3NxHTMUA0/DOTvjLUGYlb5zGNWI+9/EGm7oi930/BdAe4eK+K2/AkaygRAu+to3I7jJJYoc7wUwaBVTKeNFTfeoGhchM8TipKEXF6aYXn0wV7+43ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727959962; c=relaxed/simple;
-	bh=khLVJd/khrbcyKvfeyjZKxNO2vMzh5KkYv65lpoHlhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NDqteB9z2LJM5K591W70/HLlHuAiJB0HL1VqiUtxjBoDckuVjah2W8iG4ca5ow/72HCdOxB7V+sWoZ8Gss7Z9GCcWvaUNGm5hSQ0Bz05aPwOIt8YYPlnbGSNaFZBN8tdk0257BgOPMXwPwvXszkYvHaPozhftk8W21p26P2EZpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FTrE65RJ; arc=none smtp.client-ip=209.85.219.54
+	s=arc-20240116; t=1727960595; c=relaxed/simple;
+	bh=0pjEEqKZB/jOjZ4/wQHEo+m3ps7ACgQNfifBOM3AuuM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZdUeAom/9s8EKk3Q2FWMu69OHsb9UPn54CjJ68nw55d7mOfShbdt4Kmf/dOdja6lKE/S/6IUkXWBNJrps/MJglJvVzyiy7cAnJgEZlLfQGyjEfZqcgNWOl/Kr8dC7nCZifaoaQGYRJTGKbSrncY28G7H9ItaySPrIxgY6S0/5Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LMYzaPNv; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FTrE65RJ"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6cb4c013b78so8133656d6.1;
-        Thu, 03 Oct 2024 05:52:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LMYzaPNv"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539899c1febso110355e87.2;
+        Thu, 03 Oct 2024 06:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727959960; x=1728564760; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1727960591; x=1728565391; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sN9S/YhRYTLZ2H8silYoJ8/74mtShWONNXIjmQBTqZc=;
-        b=FTrE65RJEbOvqeuwB6UC7udO50yiT4t19MANEIowgjHF45POFYc76IW4bLIwmQpYnu
-         ACNPq2qVLRGrj64j2x72+0NJlmXs+ATyYJuUuG7SyG3xGFdzvgIPby7rlfLqAiwQXSrx
-         4WzcNdoLyRJ6y0C/DGogKzOxNJlyFNTVI49ZOosJe9ejPVUP4cvyTOZfEJJ+O8Yn3/q8
-         ChD3XTfjYdyKgSJmk7pDH+rM1aPvGIeBmvZhKcf916gNERCPKnzWrTcryXL6IDFcuRaA
-         DmAGVQQuFzKBn7PSh5QHcoLUwHkGLFJSB/EjyHDxlshbv4IWX2wjCtGQ38XCgpLxsnrT
-         hocg==
+        bh=0pjEEqKZB/jOjZ4/wQHEo+m3ps7ACgQNfifBOM3AuuM=;
+        b=LMYzaPNvF4JWDIuOEvQOpXuGdDKIV7D7wQc7Vja7XWvJiaurCdgmG5WBcRek9vYjRB
+         vOrNTOSJHaJtKK/lex2I6IxI6T6NTfJo8WLJjPB8ln7hVXYctL6pHMi6yPfWZlMQgULO
+         XpsuAowdhK1cflu0EQ3qy48Wvl1j/Gkf8Kh4EJIXTTOJza0e6pG7hFn25b14oyQRCPYs
+         1c/tf8PyVH2jeDVPg87irSg0ocqaXmEnLv3Ny06qma81016ve32Mg0LeZM7PNDgiiMNB
+         soFYpHqy2voPI9KwizsC6VvCgWC/uA9W+k1/IjfJP2EJ37yph1ZfKQrriUhwkGL+o3in
+         V3Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727959960; x=1728564760;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1727960591; x=1728565391;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sN9S/YhRYTLZ2H8silYoJ8/74mtShWONNXIjmQBTqZc=;
-        b=TQGtiZiAPgyGyoVX7fbXlv6df1JMmLlnCPN9OUxQ+22Z8xQkwB1kCyAPmDEEL8Y1oy
-         dl9qn5IBRxdoS+FhyfdXzY4e7GHcswpPNLQvlFjuFq24oRaJ0aUQL4281D5IqkNffaIn
-         o1o9i2aC6rDotR+djrTvtho4Pjgvfi6/jqxymW4r/5Xs34K9YlHnbbcMo9ywzn/m8zEA
-         zuKWrcoQpa14mX/S5XZrce9CShhhDop2q13H4PbGYidy+JNJhyLK9DJymCkYHY0IEWdl
-         63j/aq5Xfym94HYP45XTPw9Aeg8OyI+R8WDzEhekH8k7Lvz6cIidvhapxdlq0c4mu1vy
-         UDHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVv43M1yGfDdkh6YedaP4wpZ4awPZoqnF5oUofg9SHmo1OSAK7UfRZTgF74f0+dHJ7zAe6f3bb2RprHhQ0=@vger.kernel.org, AJvYcCWbJJo1ZRbmaH8YcnZxz085H3xVSZXBdjlfneIkjEbsq70+JnRrY57ShMtSqi56rxbztFsUYCddb9deELA0Hfk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYKgqNOJ4Ymn37UFHQ2G9esTgDgIu9AAkDNnZUSE7UCIwOFHFb
-	+bpUw21/pYppHQiyFoe6BLpKcBSw1UctNcEiCWxHcOa4d5FIQadh
-X-Google-Smtp-Source: AGHT+IHRZabhu2MeY/IlSax4oabkiDy7Y/cgar7eg5004ZKQ82AFd4jrQU+9WPBQ6DPx8BVfBq43rg==
-X-Received: by 2002:a05:6214:3b8a:b0:6cb:7e7a:ae92 with SMTP id 6a1803df08f44-6cb81b98887mr93423186d6.45.1727959960117;
-        Thu, 03 Oct 2024 05:52:40 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb937d1a7asm6165586d6.99.2024.10.03.05.52.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 05:52:39 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C10EE1200043;
-	Thu,  3 Oct 2024 08:52:38 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 03 Oct 2024 08:52:38 -0400
-X-ME-Sender: <xms:lpP-ZlrP8NVIWEcEdm9xifVHvqYvH4X_QG6Gr6FBzTwIZIIkPmyhqA>
-    <xme:lpP-ZnpBwey1O0GVmRGiGcgS_noll847aDMMIfBB9yUsl3S3hfT2rPpEJ-7l7KmAV
-    jaHDmgvK3ru7Te7yQ>
-X-ME-Received: <xmr:lpP-ZiPV9I6XuiMZZUe-lg_m2iwnWH01ulvzqmk-9xCOEJB1BN917lnxISTRPA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvuddgheejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeffvdehfeejjeeliefgtdduuddtjeejveeuveeu
-    geefleefkeekuefgudeuhfefgeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhlfi
-    hnrdhnvghtpdhgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgr
-    rhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonh
-    grlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghnghep
-    pehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdefpd
-    hmohguvgepshhmthhpohhuthdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihig
-    rdguvgdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhope
-    hruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopegurghkrhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesrh
-    gvughhrghtrdgtohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhr
-    tghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrg
-    hnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggr
-    ugdrohhrgh
-X-ME-Proxy: <xmx:lpP-Zg6e4_Cx3ge9tPpd80lsKQSva1Pp-YCPZsOUAUm0ixmaBWROmA>
-    <xmx:lpP-Zk6kFiYQJV6jghUoNX6qkYIDkWHvQGVggA4dWUvFgpM3S6ohPA>
-    <xmx:lpP-ZoilECxcpgW9tymybJQK1J340sgp5ipFOftwS3wn4a83RBMG0g>
-    <xmx:lpP-Zm48zLMZyibNKr2E5Qrsi58SSt3vMxUdBaHM1fnUDmLmb30kxA>
-    <xmx:lpP-ZrJbWS6ro400DkTQ7xqOpIct63ZezZdsP0lwkxOf9zz2BL1K--4I>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Oct 2024 08:52:38 -0400 (EDT)
-Date: Thu, 3 Oct 2024 05:51:31 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	Benno Lossin <benno.lossin@proton.me>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
-Message-ID: <Zv6TU_p4WMELMj_G@boqun-archlinux>
-References: <20240916213025.477225-1-lyude@redhat.com>
- <20240916213025.477225-4-lyude@redhat.com>
- <8734lew7jn.ffs@tglx>
+        bh=0pjEEqKZB/jOjZ4/wQHEo+m3ps7ACgQNfifBOM3AuuM=;
+        b=q5v+MCcyLrd9MEo8ug7HvCnSU0JtZedS00VAPuYeD8pDibu2T4byEldF8NcU4eH9JS
+         WQYjan72y0b7algEr5luRp4NZPEq8EEI48O1Q0WSewEHTMAohYGqQTkvgl/793IG0jG7
+         vLQYi08JOjVjdmMG4SqVQZ+Ce7XwDQIdb83NWmOfgHxu8qjHfkpF+Kbnt/1vD+dttMSa
+         eU5CCTG8iblcjDk92t47kA8dlVXYkKAtzxWu8CazQ8uZt1jmNr7Xb025QDDSUfAu/T7n
+         lVTIYr+YP4SO/j8S7CuzWIIyvwnkQ1ujVaRc31JxT5sVIhfIzzigh3xh1URb/Zra/lqS
+         HR7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUo/d/KDYWqEBv0VtvETZE5niivlar7FxkUF/ssSGa3ODAvtdIwn+Se/eeUEl/mKA++9tkGx3Fxzhe2Ah4=@vger.kernel.org, AJvYcCXFnm8IWK2XWp+y/LPs4bqe5tczR9sBsS+hy/OXH7khwdLTkLesA+6tpc3pHaNa7nfyD6i/cx4W1woC/C3n3iI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhqX7As/fLuvH6k0vR7WpYInMdc8HBUdYkfeivDj0HnU5bjOvv
+	cfMk5YfUqY+xX/ZJDaBth8tdkJcjE/oRc+t7qc+Uv9ix4WGKVrGYhnk434toW7MtFXgTCoT6f8V
+	yOP37C94BUoFpKJbRVeyEsbT3NcToa1Dr/XA=
+X-Google-Smtp-Source: AGHT+IFD7y/g7S53GYq8SiQwnOk8qWSqXT05lzuITIkOIY2dV3j4VDuyIeBqThOBN0TfTDlNvXy/9tNoXVrAV/yNNmc=
+X-Received: by 2002:a05:6512:3c8c:b0:535:4d89:5b52 with SMTP id
+ 2adb3069b0e04-539a065f9ecmr1045863e87.1.1727960590956; Thu, 03 Oct 2024
+ 06:03:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8734lew7jn.ffs@tglx>
+References: <20240927164414.560906-1-ojeda@kernel.org> <20240928193632.063d62a6.gary@garyguo.net>
+In-Reply-To: <20240928193632.063d62a6.gary@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 3 Oct 2024 15:02:54 +0200
+Message-ID: <CANiq72kQ+E5-qQ9X8UdgcBN_P=7JYHo6Ft8rLNRwAXmxbMyeMA@mail.gmail.com>
+Subject: Re: [PATCH] rust: kunit: use C-string literals to clean warning
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 02, 2024 at 10:53:32PM +0200, Thomas Gleixner wrote:
-> On Mon, Sep 16 2024 at 17:28, Lyude Paul wrote:
-> > A variant of SpinLock that is expected to be used in noirq contexts, and
-> > thus requires that the user provide an kernel::irq::IrqDisabled to prove
-> > they are in such a context upon lock acquisition. This is the rust
-> > equivalent of spin_lock_irqsave()/spin_lock_irqrestore().
-> 
-> This fundamentally does not work with CONFIG_PREEMPT_RT. See:
-> 
->    https://www.kernel.org/doc/html/latest/locking/locktypes.html
-> 
-> for further information. TLDR:
-> 
-> On RT enabled kernels spin/rw_lock are substituted by sleeping locks. So
-> you _cannot_ disable interrupts before taking the lock on RT enabled
-> kernels. That will result in a 'might_sleep()' splat.
-> 
+On Sat, Sep 28, 2024 at 8:36=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> Note that the cast actually need to be re-introduced instead of
+> cleaned-up -- `c"".as_ptr()` returns `core::ffi::c_char` which might be
+> signed, while after my series `*const u8` is expected by `printf`.
 
-One thing I was missing when I suggested Lyude with the current API is
-that local_irq_save() disables interrupts even on RT. I was under the
-impression that local_irq_save() will only disable preemption per:
+Ah, right, in your series `bindgen` will point to the new one while
+the method will return the `core::ffi` one which might be still `i8`
+in some targets.
 
-	https://lwn.net/Articles/146861/
+It would be nice to get a way to modify the target for `u8`, i.e.
+`-Cunsigned-char` or a "target modifier" or similar.
 
-but seems it's not the case right now: we move the RT vs non-RT games
-and hardware interrupt disabling vs preemption/migration disabling to
-local_lock_*() I guess?
+Added an entry with some links in our `rustc` list at
+https://github.com/Rust-for-Linux/linux/issues/355.
 
-> There is a reason why the kernel has two distinct spinlock types:
-> 
->     raw_spinlock_t and spinlock_t
-> 
-> raw_spinlock_t is a real spinning lock independent of CONFIG_PREEMPT_RT,
-> spinlock_t is mapped to raw_spinlock_t on CONFIG_PREEMPT_RT=n and to a
-> rtmutex based implementation for CONFIG_PREEMPT_RT=y.
-> 
-> As a consequence spin_lock_irq() and spin_lock_irqsave() will _NOT_
-> disable interrupts on a CONFIG_PREEMPT_RT=y kernel.
-> 
-> The proposed rust abstraction is not suitable for that.
-> 
-> At this phase of rust integration there is no need to wrap
-> raw_spinlock_t, so you have two options to solve that:
-> 
->    1) Map Rust's SpinLockIrq() to spin_lock_irqsave() and
->       spin_unlock_irqrestore() which does the right thing
-> 
->    2) Play all the PREEMPT_RT games in the local irq disable abstraction
-> 
-> #1 is the right thing to do because no driver should rely on actually
-> disabling interrupts on the CPU. If there is a driver which does that,
-> then it's not compatible with RT and should use a local lock instead.
-> 
-> local locks aside of being RT compatible have the benefit that they give
-> scope to the protected region/data, while a plain local_irq_disable()
-> does not.
-> 
-> Don't even think about exposing this 'with_irq_disabled' interface
-> unless you are trying to move actual core code like the scheduler or low
-> level interrupt handling to rust.
-> 
-> Create explicit interrupt safe interfaces which map to the underlying
-> locking primitives instead.
-> 
-
-Then we should have a SpinLockIrq<T> type, and a function:
-
-	fn with_locked<U>(&self, cb: impl FnOnce(&mut T) -> U) -> U {
-	    <spin_lock_irqsave()>
-	    let ret = cb(...);
-	    <spin_lock_irqrestore()>
-	    ret
-	}
-
-FYI, the reason that we cannot have a SpinLockIrq::lock() return a guard
-that holds the irq state is because:
-
-	https://github.com/Rust-for-Linux/linux/issues/998
-
-namely:
-
-	// interrupts are enabled here.
-	let a = spin_lock_irq1.lock();
-	let b = spin_lock_irq2.lock();
-
-	drop(a); // releasing spin_lock_irq1 and restore the irq state.
-	// `b` exists with interrupts enabled, which breaks the
-	// invariants of b.
-
-(technically we can, but that requires a rework of how nested
-irq_save()s are handled, that's another can of worms)
-
-Regards,
-Boqun
-
-> Thanks,
-> 
->         tglx
-> 
-> 
+Cheers,
+Miguel
