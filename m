@@ -1,219 +1,98 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B149726AD4;
-	Thu,  3 Oct 2024 11:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DF917B50F;
+	Thu,  3 Oct 2024 12:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727956439; cv=none; b=fUl+4VEwkMdbjaW7E4tWysBAZrvhucMaNc2OEZ7Z1530n1USZu3eklZI+uui51i4szZhLCAV9umAm2xOIWzperAzoC4nJRIwgR6Aj0YyARM6OsNQFxLh11K4yO491cUKky/mnQ5QGqP3RDpRsUNclUCUDY1skqD9+0CKfW8qBXM=
+	t=1727958823; cv=none; b=OKtR2dNbNqK/v+c1XWkLQ9loJv97zDO/PPG6Ou+r9RLDPOZSuej4DnAQqRhHQgOiFF2GMdP7UGh/uZz0X6/5KLtxGy8g3UBFhBg9O/jdMaJBjF16IwWZCiWN/MCwnozuOF42KVcpdkj4D4taUvWooB9V+3cnsHBoZkKkFnmzQIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727956439; c=relaxed/simple;
-	bh=TGFkB0ZU1084qqYwIZPU+rqqdVN4fxP/5S7teQIuw9E=;
+	s=arc-20240116; t=1727958823; c=relaxed/simple;
+	bh=kWcAzz9FifPCsTODxJFXgL60C3ttKZAEXGAah7CRlKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FrBysT9D4jJRQpG6rJGPgKBDh4BD3KZqMcsAYfFiFC+o8UrmAbGuerj/78izpM0F+LVNyXEga67kRKAOiL5YB+BaewQlEab525kUqAHTaJKQP4gjaJhQ9sYO7dFYV3+L/dVqLzjAPCLm1JctYrvk0OprxH1pojIas2EaIcaK2TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ltZNEix7; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=S1tgvTsP84kQQCkfOJfeap5s9W4TN64lkRF4FhQYF0msOA7n3AF/G0cS++caVGFmUTuBcvzUPUqNx9gC0M/cPNBVhJhScI1QuAmAxVqHZYhLX+HmRfyhVlPtz8vQLtZs5gXGu0sSLsFddyK+ewA0V7cIUylrOtfyi+MFmaX2TVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=H9bdYY+q; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ltZNEix7"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7a9b3cd75e5so88911285a.0;
-        Thu, 03 Oct 2024 04:53:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727956436; x=1728561236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SBbY3/3NZlklc4+wp5IevCmEX3q1+eNI0S2tK1cSF+4=;
-        b=ltZNEix7D2dS+8NjkZfYuvGLs6dM7LNxBGSbo50nEThDHCABrOenSnJWX53oHsiodt
-         huMi9J1QHcVHZtdgZOVwa4eaiJNVZaniORjikgHzhrjmhe8uY8+Iob0lfbPJQtlCfxcg
-         OlLffdvJgkpsh9YC8sNFLknmJHMfdLQKzwo4PaP4cBbs6dgUcF6RFTOR08bYxPLWTnlc
-         vFYXCwtuA480auTw9Wn37FYeH/3ReQHK1mjKPc5zxo2T0Y1j9PD9LE2yb/+EazO0/GGC
-         m8B7l//15Dqhgch5A6mIL4FHRGiqHZMjTe0DS7IlC3W8JJnzIRhgpCnmR3oXzQ5At6kn
-         blCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727956436; x=1728561236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SBbY3/3NZlklc4+wp5IevCmEX3q1+eNI0S2tK1cSF+4=;
-        b=K7HRH9wHf+kitUWIJnQqEd/XLhkh1o6+1oe1xinL9ZptuMxE5OGoQAqzY9p2wwtZZv
-         9xiU+n3Ia+KQBN59UCUDDJIwP8QtXj1Ry2vXPXbo96NoSg5moegFMfYupfioq3oQk7br
-         veWM9CoW/GOGH/qbBt4q1eT3ub7ZycFhdwx790cK1ypTE++odCw6vxtSKtswy8wj6gfe
-         YP62XLWXEpr6+1upbLVe+89mxJdDZmCXe06Cm3I/YZ0MaOphBG9oXmW+qvhvtGj+MBYd
-         IZgK94nj8CXcCoEXxXKgk0tI5jhzH7N5NQ7aBJI9ZEUlFkkeIXFgyXZ68kiAZSFppPkb
-         dllQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMMSBOgnQCQzPm06SSIzYwKN6bMKXwErIf+eOhRHf4vFWSvhMaqgHAdDLz45nDmgyTm885esQ=@vger.kernel.org, AJvYcCVNH6NCJvRO7AIcrvNWS2fTThnmunWq/4l0CaTuCZVCP8kvul1OdcGff1PJom9eITZtM0wFBap+dbyQSX3bUp4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA3msn7VCkZa/Kt1E460GjyqkOn9kSxnY8oGrr2tg08+hFTLsS
-	Mme8djQkB9dZbkpEngAPlQcIvWpKM7Nx5ONbsu6tJicT7+vAWAKO
-X-Google-Smtp-Source: AGHT+IGX0ojD/sD7RWnSU8gUdjbCkDbb+mJzZ8qrpRDvD+bi+2CS1Fu4xPi+HoxmeC6YrsWKtCwyQw==
-X-Received: by 2002:a05:6214:5782:b0:6cb:45e3:11b0 with SMTP id 6a1803df08f44-6cb81cc5401mr109929536d6.47.1727956436443;
-        Thu, 03 Oct 2024 04:53:56 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb935a6fdfsm5831186d6.12.2024.10.03.04.53.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 04:53:55 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5EB361200068;
-	Thu,  3 Oct 2024 07:53:55 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 03 Oct 2024 07:53:55 -0400
-X-ME-Sender: <xms:04X-ZtoKwiCwJkbO__2QbKQtGjqnw7bY4uepMBo9sxa-alib08nZfA>
-    <xme:04X-ZvqWTJ2I_GPj3M0sH7oWntMM13mvErljCZx4L9le5bhHeF4Ec0bBJ9wG4NmeG
-    lWzv1AkvfIWPFrEKg>
-X-ME-Received: <xmr:04X-ZqM8GbvhlrdOXhc3fOJG5Zn9uzuRU91cmRRHESBMBvfdvje7_6v-6aSPnw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvuddggeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmh
-    grihhlrdgtohhmpdhrtghpthhtohepughirhhkrdgsvghhmhgvseguvgdrsghoshgthhdr
-    tghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopegrlh
-    hitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugi
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhkhgrlhhlfigvihhtudes
-    ghhmrghilhdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughupd
-    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:04X-Zo6vYNt76VafX9Cwy18bh97EuxXpEv82zjN_chjwwO9-gIIFUA>
-    <xmx:04X-Zs4XEH2jNOnzN55WOuCDzptXjNdzEAqQ3TEF-oOA6D6BEMa3-w>
-    <xmx:04X-ZgjTC8xSzFOQaYs5TUwVJzkXHdpkP-W0QHWZ2neu7KIk91e0LA>
-    <xmx:04X-Zu6bn24CwqbXo1Nl_GkdTaEcv8btf2IheoYRx3ujC9pPxx_sqw>
-    <xmx:04X-ZjIFJqy9PmBLzuTfv5J0t2ICMF7aUdTq4TXAb0g6WO-2qAijKdVl>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 3 Oct 2024 07:53:54 -0400 (EDT)
-Date: Thu, 3 Oct 2024 04:52:48 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: dirk.behme@de.bosch.com, andrew@lunn.ch, aliceryhl@google.com,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com
-Subject: Re: iopoll abstraction
-Message-ID: <Zv6FkGIMoh6PTdKY@boqun-archlinux>
-References: <CAH5fLghAC76mZ0WQVg6U9rZxe6Nz0Y=2mgDNzVw9FzwpuXDb2Q@mail.gmail.com>
- <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
- <76d6af29-f401-4031-94d9-f0dd33d44cad@de.bosch.com>
- <20241002.095636.680321517586867502.fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="H9bdYY+q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=Hy01CYDO7tj5pmHOFciG3w1mz3Rir/3ngTy4tz1ApTM=; b=H9
+	bdYY+qgFwMfKgrf3jzbO83WCrXVntfHWEHXfT3e6kKHyOuv2pvzA3u3vSz7TWPjx6YyKx/58APf01
+	fGf85JoZxcZ1QZ/Hp7lDMWmpjfLBnloROCwHE8kJf3Bv9UQlITB7YNex2WlnkUMCgayN2+J6GdHWE
+	7jFOpbdoZPARsXA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1swL1N-008wdk-Uw; Thu, 03 Oct 2024 14:33:29 +0200
+Date: Thu, 3 Oct 2024 14:33:29 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, tglx@linutronix.de,
+	aliceryhl@google.com, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com
+Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
+Message-ID: <1c393c9e-8efa-40d4-a95d-a418ae4a9fd7@lunn.ch>
+References: <20241002.144007.1148085658686203349.fujita.tomonori@gmail.com>
+ <CANiq72kf+NrKA14RqA=4pnRhB-=nbUuxOWRg-EXA8oV1KUFWdg@mail.gmail.com>
+ <87bk02wawy.ffs@tglx>
+ <20241003.012444.1141005464454659219.fujita.tomonori@gmail.com>
+ <CANiq72n5y7ruB1bgGquONWctPK=LBZUWugBAP_1QOSzvOY+amw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241002.095636.680321517586867502.fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72n5y7ruB1bgGquONWctPK=LBZUWugBAP_1QOSzvOY+amw@mail.gmail.com>
 
-On Wed, Oct 02, 2024 at 09:56:36AM +0000, FUJITA Tomonori wrote:
-> On Wed, 2 Oct 2024 06:39:48 +0200
-> Dirk Behme <dirk.behme@de.bosch.com> wrote:
+On Thu, Oct 03, 2024 at 12:50:51PM +0200, Miguel Ojeda wrote:
+> On Thu, Oct 3, 2024 at 3:24 AM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > Rust abstractions are typically merged with their users. I'm trying to
+> > push the delay abstractions with a fix for QT2025 PHY driver
+> > (drivers/net/phy/qt2025.rs), which uses delay.
 > 
-> >> I generally point developers at iopoll.h, because developers nearly
-> >> always get this sort of polling for something to happen wrong.
-> >> The kernel sleep functions guarantee the minimum sleep time. They say
-> >> nothing about the maximum sleep time. You can ask it to sleep for 1ms,
-> >> and in reality, due to something stealing the CPU and not being RT
-> >> friendly, it actually sleeps for 10ms. This extra long sleep time
-> >> blows straight past your timeout, if you have a time based timeout.
-> >> What most developers do is after the sleep() returns they check to see
-> >> if the timeout has been reached and then exit with -ETIMEDOUT. They
-> >> don't check the state of the hardware, which given its had a long time
-> >> to do its thing, probably is now in a good state. But the function
-> >> returns -ETIMEDOUT.
-> >> There should always be a check of the hardware state after the sleep,
-> >> in order to determine ETIMEDOUT vs 0.
-> >> As i said, most C developers get this wrong. So i don't really see why
-> >> Rust developers also will not get this wrong. So i like to discourage
-> >> this sort of code, and have Rust implementations of iopoll.h.
-> > 
-> > 
-> > Do we talk about some simple Rust wrappers for the macros in iopoll.h?
-> > E.g. something like [1]?
-> > 
-> > Or are we talking about some more complex (safety) dependencies which
-> > need some more complex abstraction handling?
+> To clarify, in case it helps: users indeed drive the need for
+> abstractions (i.e. we don't merge abstractions without an expected
+> user), and it can happen that they go together in the same patch
+> series for convenience, that is true.
 > 
-> (snip)
-> 
-> > int rust_helper_readb_poll_timeout(const volatile void * addr,
-> >                                   u64 val, u64 cond, u64 delay_us,
-> >                                   u64 timeout_us)
-> > {
-> >        return readb_poll_timeout(addr, val, cond, delay_us, timeout_us);
-> > }
-> 
-> I'm not sure a simple wrapper for iopoll.h works. We need to pass a
-> function. I'm testing a macro like the following (not added ktime
-> timeout yet):
+> However, I don't think I would say "typically", since most
+> abstractions went in on their own so far
 
-You could use closure as a parameter to avoid macro interface, something
-like:
+Looking at the kernel as a whole, i would say that is actually
+atypical. Rust is being somewhat special here. But it also seems to be
+agreed on that this is O.K.
 
-	fn read_poll_timeout<Op, Cond, T>(
-	    op: Op,
-	    cond: Cond,
-	    sleep: Delta,
-	    timeout: Delta,
-	) -> Result<T> where
-	    Op: Fn() -> T,
-	    cond: Fn() -> bool {
+> In other words, the "default" is that the abstractions go through
+> their tree, i.e. delay wouldn't go through netdev, unless the
+> maintainers are OK with that (e.g. perhaps because it is simpler in a
+> given case).
 
-	    let __timeout = kernel::Ktime::ktime_get() + timeout;
+In this case, the fdelay() binding should be simple enough that i
+think we can use the normal mechanism of merging it via netdev, so
+long as the other subsystem Maintainer gives an Acked-by: But we can
+also pull a stable branch into netdev if we need to.
 
-	    let val = loop {
-		let val = op();
-		if cond() {
-		    break Some(val);
-		}
-		kernel::delay::sleep(sleep);
+A Rust equivalent of iopoll.h is going to be a bit more interesting.
 
-		if __timeout.after(kernel::Ktime::ktime_get()) {
-		    break None;
-		}
-	    };
+./scripts/get_maintainer.pl -f include/linux/iopoll.h 
+linux-kernel@vger.kernel.org (open list)
 
-	    if cond() {
-		val
-	    } else {
-		Err(kernel::error::code::ETIMEDOUT)
-	    }
-	}
+i.e. it does not have a Maintainer!
 
-note that you don't need the args part, because `op` is a closure that
-can capature value, so for example, if in C code you need to call foo(a,
-b), with closure, you can do:
+Looking at the Acked-by:s i would keep Arnd Bergmann <arnd@arndb.de>
+in the loop.
 
-	<a and b are defined in the caller>
-	read_poll_timeout(|| { foo(a, b) }, ...);
-
-with above API.
-
-Regards,
-Boqun
-
-> 
-> macro_rules! read_poll_timeout {
->     ($op:expr, $val:expr, $cond:expr, $sleep:expr, $timeout:expr, $($args:expr),*) => {{
->         let _ = $val;
->         loop {
->             $val = $op($($args),*);
->             if $cond {
->                 break;
->             }
->             kernel::delay::sleep($sleep);
->         }
->         if $cond {
->             Ok(())
->         } else {
->             Err(kernel::error::code::ETIMEDOUT)
->         }
->     }};
-> }
-> 
+	Andrew
