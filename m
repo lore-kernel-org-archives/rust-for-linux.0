@@ -1,157 +1,114 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699912E7E;
-	Thu,  3 Oct 2024 02:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFE224EA;
+	Thu,  3 Oct 2024 05:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727921905; cv=none; b=dhRSS7oXLUJdyhYIE+kBttyZHdCfkxNOoKENCWytRtTYT9S7/6BxifgG2aeallGyZOtpcziGJ7SRc06fsaEezHcCB9id82aUMgjQsKHzvoDBz2Pv7UumureRN7bufAe0vXbSP3nl0B8/lHf/BKgbPH9mPW6Jfq8Aq3La3NSzCpk=
+	t=1727932059; cv=none; b=lZHEwOecJXZ/+3b4RoRbjfNc0tgoep/4z+sdA5TkCS3sxtrv0Jdnw76oG19ccKY64w2vb4H68kiyD7FRVcw09dYhwcDbqNYThKAI9toFYx2D4jfejy/RQqozoqZI3gPYzF4kvtkEXPnyMpeDr+ejFhcktKacDpzA0IUY1x4r11o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727921905; c=relaxed/simple;
-	bh=CUK9atPBZ9SD/8MLestVcLucWN7g0l+IbLbgyxPWUA8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=SkJSd3Kx4b7HhNSeKzZZEPk4QIdkqTnRH9y1QxCmIZLWMdOZx2lr7NygwwMdBaeMSHyiuDCuTI+7ssZ3R/HbsYaImSfDisg+4DkwTZx798ngfB6I2EPHTnEXCScnrluhz7UuFxZiLnzrpcVxf6ftc24doEa4NuOA97/ZMfsXQJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HWbdlHfc; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1727932059; c=relaxed/simple;
+	bh=9IoJU6jTEuoyGkTbeSfT2pwABITRvMWUogRgOn/0ukY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=MwatcvdzfV1tJx5GBlx+7k5deCZPD6IRcCZMVMDbRSPNBtiIPgyZBdsqa+SYelOtOQBSIow3P2FGB2NyOVwD42ILnHh44gGehLKzCqM6lg/pd6VGRS4bUnY422ExgK+YdKW9TI8qQE5WAC0WD/kWCcds4U2wJIa3H9a0dZ9+C28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GSbS/xn+; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWbdlHfc"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7a9a23fc16fso46462085a.2;
-        Wed, 02 Oct 2024 19:18:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GSbS/xn+"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20b6458ee37so5044695ad.1;
+        Wed, 02 Oct 2024 22:07:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727921903; x=1728526703; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:references:in-reply-to:message-id
-         :cc:to:from:date:mime-version:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n09nVZcwQ+PNnoJoopGc4HivfewvYeFL/thHnE/F+co=;
-        b=HWbdlHfc/mdnTmT5EQY4cKWxcO7CBktdXerGrnMJxQW6pLfjVhcv9ZSxASgD2rY7M/
-         8d2Z/DbfuHiOThyvvIzbGwEqsllMs5WQfKn3n5AKJB1rCmryL458/EWt3nSK63ZufQjP
-         dEFylF0ugp/dd/0bT3Nz4yeFH23K3vZwYjt1ZHw7LfedQiYSqk829M1awUxj7rozHUU2
-         QarDOC2JWSwpl3KVurXMomnVtJbozONZALfzWY572liScPIgFgPAGoJ6jDkRlZhZrvTe
-         cdJC1wxY5JSh4hSuzn6frgrMr4P9+kgKMqghlGeHyum8Pg7q7boSBt4cvC6Y9o93kRlQ
-         ahyA==
+        d=gmail.com; s=20230601; t=1727932057; x=1728536857; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7zMWuseD5uO8iPKDZb2vIk6waix6EUBSwtVjV6EXAl8=;
+        b=GSbS/xn+Sd9QRJniTjvlBBhBP3oFeIOViAtU+GnGmfXxAS4Xo74JkTvU7eWZttO6vw
+         2aN+5quYQSj9tWy/dImuo93p7Hz8w6Shw7hCvnD3xsHnfD0P6Y5IB3OZWHYbfd0yhltM
+         98PELw2oUX25KY32XsxH9q+aIeeD8Qov3w1u3Sow5pSxITcboYw+kxwNs3XHjnRG9OEC
+         HJkJO3rloc4/J6ZIkJqXg3hMIH3FCNi1MBe3Xo5TvAeePGjyON5FMDu3TRhuWnlQkw1l
+         I64qPkOYbGSsy2drhwuthaTkeux5b5Xqh89o2NqPxfKEMPpMdnEyqKZr+NrhfKRzVF2U
+         9LEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727921903; x=1728526703;
-        h=content-transfer-encoding:subject:references:in-reply-to:message-id
-         :cc:to:from:date:mime-version:feedback-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=n09nVZcwQ+PNnoJoopGc4HivfewvYeFL/thHnE/F+co=;
-        b=NMAk6rITBnvkvQqM/2q13+zz2CqZv63yJOIiJ8TxnOe6ejcU5zBd/Z7mUyBzHDJiXW
-         8CCXghK5j/7PSFNsruKwkQa1UP/oLj3djnoikn/bI8nCjhcyJWPfB5U/e+G3UcpFYTKi
-         HFdIwbvVtk6wp+hdKxnrHbbD2zITVOrmaWgbJLG7pxl3ZBPsnINGCWxto/DbTbWKK3DW
-         LmYm6SUwi7XUcvDuChEFameP6a5i42Z7NYzYhpPeli1qv3OnqM6mb5Jml0g1WjMWXz6Q
-         dM178NXZtmuVRLYfysofl6zS6ibXOiXymr2KxM8IwfMiYJrBgwkwwp4euDOws759stjr
-         tSzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVL957WXg5CPtvGq3L+2kDWOtD8PteFbemEKAW8DWL1iOcEDDdwu8HY8eBqNL7BphNS+TbwHUQSFQ7lcdw=@vger.kernel.org, AJvYcCVef8vIRtdjE9vysH0hYUkyp8wGsZJ9q/BRphTxhMjcR4eWY/ArLzu+woH4BH2X7VBO7jLk5vMJLeb8ufTmULI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLuHVS/10Gp7JK3f+W6JP+o1eAjyk9h1lxgACwgyuzvwma7QJX
-	TXk3rjdcoKGREamkkotsSx0yAwrdXJ66Jc6G7ZoWPOp1PQv1Xsir
-X-Google-Smtp-Source: AGHT+IFIrVOyYrPVZtxspAKkThpCJGrGlD58si/368nUuJ+EiR902vTNTwFoadriVZbNgqFKS6jsWQ==
-X-Received: by 2002:a05:620a:28c5:b0:7a9:b913:2b0b with SMTP id af79cd13be357-7ae626da8aemr664764685a.29.1727921903237;
-        Wed, 02 Oct 2024 19:18:23 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45d92f0262asm507981cf.80.2024.10.02.19.18.22
+        d=1e100.net; s=20230601; t=1727932057; x=1728536857;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7zMWuseD5uO8iPKDZb2vIk6waix6EUBSwtVjV6EXAl8=;
+        b=PYjmbFuh6L9LIbmEYBCY95DhUmR8TCDqzkX07Ov/JI5/lX95th6JQMsf3U3WWoMDzm
+         yDkwIs5efXMn9cE+lwL7YRikIj19QgluXBAU8zeS6vrTRexOEo6aBqMMDiZcKd9wxAYz
+         zDz07+ZgbRj7Fgyom5KkoDr3idLmpzczvA6PDLeClqy2BDYil1q6IS6P4CECOuOyMVbi
+         PnAhd+f9HKPbjOGEd4iXNA6r66Se/iwqWGT6cE+sKCpmAJBQgyojTXtZMQpiX/xkb1Md
+         1OqQjdmI6l5W23wyeLVZkJ2GFjJoNE0inWVz72hWOXkhUe/ORW7rA/+dQ6Jj14UFW/6C
+         lVCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHEGsaJAt7bEmxwxQFL1WTWCjwdLoo9wXBkx9zMQaq2FHCvsyf+piia69ydoVmPn4dpXc+e18=@vger.kernel.org, AJvYcCVhW1M9/zW4f3VU2zzTdmegkWSY+HbYKZwjECMXefjxAypVQxDKdUIXADzl5MCHJfLhkwe5kxqouGRCAvq/BUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6ZSBO7uDUdLnMVMeCjLkwyaV+2pAVci/BtlmU9wNRUCFYvD0P
+	3N72h9/bzBDQ00WQBUVcUy9r2rsNIAY7mX8hqn0NyqTNpSYeTFGp
+X-Google-Smtp-Source: AGHT+IFA+cBSks7/4z7FPlkjwighWdqBBI7nG2LYqL3AkuJdBb8QLkUpwJ6TH/P6xM3XkA316pxY7w==
+X-Received: by 2002:a17:902:db12:b0:20b:9998:e2f4 with SMTP id d9443c01a7336-20bc5a8ebecmr63520795ad.61.1727932056896;
+        Wed, 02 Oct 2024 22:07:36 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20beeadad4csm1819785ad.27.2024.10.02.22.07.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 19:18:22 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1029A120006E;
-	Wed,  2 Oct 2024 22:18:22 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-12.internal (MEProxy); Wed, 02 Oct 2024 22:18:22 -0400
-X-ME-Sender: <xms:7f79Zn2Xup6yUGZ_Fl1RQkEc7MzdnAw9mVJPYaTgzd6YwlFRQVY2Fg>
-    <xme:7f79ZmHqvo6SZxcsVDgJho0ihPQLbN3aZqONxqJVZEGFue8HrsP_94ute8mSnGpzc
-    8XmitjK2CcXCt6Zzw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvtddgheekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedfuehoqhhunhcuhfgvnhhgfdcuoegsohhquhhnrdhfvghnghesghhmrg
-    hilhdrtghomheqnecuggftrfgrthhtvghrnhepgeekgefggeeulefgudeftefflefhfefh
-    hffhgfduhefgueduuddtueejgfejhfdunecuffhomhgrihhnpehgihhthhhusgdrtghomh
-    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
-    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
-    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
-    rdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlhgvgidrghgr
-    hihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhrihhnthgrvghoihhtohhgtg
-    esghhmrghilhdrtghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdr
-    tghomhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmtghgrhhofhes
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:7f79Zn5JqXTYK5-3FdVxNXuV48BMG_6yJTS4lCxdrSdpOgyPumR00w>
-    <xmx:7f79Zs3qJg0kyy8r-wmkvWrtUjjUvgG2lkIzjjd_aMixQOvtnOGNUA>
-    <xmx:7f79ZqHrxQfnVtzbflqUiWDr1yDacZXVQdyaP_iUkxjftbJsPUYSew>
-    <xmx:7f79Zt-VSnjjt0lj4vbuX70rWkidFB6tpVvwwFZ84FV6QNfWMaMbAQ>
-    <xmx:7v79Znm7mTiZTA-w0umuImnGuyMpwDhCkDI3dFsfBTVHLdlp9JVQyOkP>
-Feedback-ID: iad51458e:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D6287B0006F; Wed,  2 Oct 2024 22:18:21 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+        Wed, 02 Oct 2024 22:07:36 -0700 (PDT)
+Date: Thu, 03 Oct 2024 05:07:22 +0000 (UTC)
+Message-Id: <20241003.050722.44816085254739536.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com
+Subject: Re: [PATCH net-next v1 2/2] net: phy: qt2025: wait until PHY
+ becomes ready
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ec7267b5-ae77-4c4a-94f8-aa933c87a9a2@lunn.ch>
+References: <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
+	<20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
+	<ec7267b5-ae77-4c4a-94f8-aa933c87a9a2@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Thu, 03 Oct 2024 10:18:01 +0800
-From: "Boqun Feng" <boqun.feng@gmail.com>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>, rafael@kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, "Gary Guo" <gary@garyguo.net>,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com,
- mcgrof@kernel.org, russ.weight@linux.dev, dakr@redhat.com,
- a.hindborg@kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <bb2f6786-b99e-424d-b54e-c56d9c7f1f81@app.fastmail.com>
-In-Reply-To: <2024100240-wrangle-condiment-3f0c@gregkh>
-References: <20241001205603.106278-1-trintaeoitogc@gmail.com>
- <Zv1RhZpQGkVBlLCU@pollux> <2024100240-wrangle-condiment-3f0c@gregkh>
-Subject: Re: [PATCH v3] rust: device: change the from_raw() function
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
+On Wed, 2 Oct 2024 14:31:07 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
+> There are some subtleties involved with PHYs, which is why we have our
+> own wrapper around the macros in iopoll.h:
+> 
+> https://elixir.bootlin.com/linux/v6.11.1/source/include/linux/phy.h#L1288
+> 
+> Normally an IO operation cannot fail. But PHYs are different, a read
+> could return -EOPNOTSUPP, -EIO, -ETIMEDOUT etc. That needs to be take
+> into account and checked before evaluating the condition.
 
-On Thu, Oct 3, 2024, at 12:07 AM, Greg KH wrote:
-> On Wed, Oct 02, 2024 at 03:58:29PM +0200, Danilo Krummrich wrote:
->> On Tue, Oct 01, 2024 at 05:56:03PM -0300, Guilherme Giacomo Simoes wrote:
->> > The function Device::from_raw() increments a refcount by a call to
->> > bindings::get_device(ptr). This can be confused because usually
->> > from_raw() functions don't increment a refcount.
->> > Hence, rename Device::from_raw() to avoid confuion with other "from_raw"
->> > semantics.
->> > 
->> > The new name of function should be "get_device" to be consistent with
->> > the function get_device() already exist in .c files.
->> > 
->> > This function body also changed, because the `into()` will convert the
->> > `&'a Device` into `ARef<Device>` and also call `inc_ref` from the
->> > `AlwaysRefCounted` trait implemented for Device.
->> > 
+Thanks, I didn't know this function. I think that a generic
+read_poll_timeout in Rust can handle such case.
 
-This work is because we have an issue, so this should really have a:
+#define read_poll_timeout(op, val, cond, sleep_us, timeout_us, \
+				sleep_before_read, args...) \
+({ \
+	u64 __timeout_us = (timeout_us); \
+	unsigned long __sleep_us = (sleep_us); \
+	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
+	might_sleep_if((__sleep_us) != 0); \
+	if (sleep_before_read && __sleep_us) \
+		usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
+	for (;;) { \
+		(val) = op(args); \
+		if (cond) \
+			break; \
 
-Closes: https://github.com/Rust-for-Linux/linux/issues/1088
+The reason why the C version cannot handle such case is that after
+call `op` function, read_poll_timeout macro can't know whether `val`
+is an error or not.
 
-tag.
-
-Greg, could you add this when you queue this?
-
-Guilherme, please add such a tag next time, so we can have things
-tracked. Thanks!
-
-Regards,
-Boqun
-
->> > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
->> 
->> Acked-by: Danilo Krummrich <dakr@kernel.org>
->
-> Thanks for the review, and Guilherme, for all of the revisions.  I'll
-> queue this up for this release soon so we don't get any code building on
-> the old api.
->
-> thanks,
->
-> greg k-h
+In Rust version, 'op' function can return Result type, explicitly
+tells success or an error. It can return an error before evaluating
+the condition.
