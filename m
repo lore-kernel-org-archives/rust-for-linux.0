@@ -1,125 +1,112 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68CA38B
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Oct 2024 00:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C292F11CA0;
+	Thu,  3 Oct 2024 00:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727914248; cv=none; b=eBLvoHiCL7b1eYyI6zrI2BWIXIeI6l77g/F7KamK+XSkbZMfu5HjnDKcEY75MOkLwICtHZs6t7MneVqHBymTLWFUdFnXKraNCNZAmTjTeX5c3CxhQ4AsP0UBjjAWjSq3nnQdZWYubkUhipBS7Ck5hedld37vYZFQvP4THi5eZ9o=
+	t=1727915273; cv=none; b=M+QY22iw8kuoaL9ffPKzS41bqzV/tBNGaemxR7XRWC3kxIwcuq4yy7yRT09o3u9weZl+P2LoQA2vEp+gWR8nGAkpg1w6+QXsGpa0oupr/s+poDdxiWLFcPFJ2RU/B7t31PVZBJwnqSvGleSwfV9hEVlZfOiGFRx0Ghbch47ECM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727914248; c=relaxed/simple;
-	bh=hrPHd1ydC4KXkjOIXPbC7/fCdEuSLDUfvBzApm+LS9I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fi3unOLmfdzuT0bD+dsdANh9/Yv4STc/Z5hGu3SlIHgq8E6pSeDClbDwwvB8q88d3E7KkcA85DHuyutLqxZ9ahmiRWv8ZtQVusJbdahNDJb75xoIxeRJWiFeIgLJisJilR/+QVKkUsnzhKeT5tYch8AKh+M5dkuW255eXEThOJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOQhLvLb; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727915273; c=relaxed/simple;
+	bh=4jOSy2S5vzvt4SXm1y8gfO76VgZUH7wm+QIBYnhH3Cg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BBhGe0JDoKKVYcJbhouViOQbGFLI9M+ZCw1Jpceox/P9jyy3OgfbMm2+cwqE53YWjKpyW+tVhTRp5vx/htixJnC/J7uA6hpiF548tNDdie4WGS5+D0pgGMgdmQwdQKOlpAGESvhkyiX9FbEQTXPVNEi6UNGxz4ysT5CdVltxzNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FWJEXH6p; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOQhLvLb"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7e9cbd25337so48030a12.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Oct 2024 17:10:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727914246; x=1728519046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TC6hIZRp94YKmONuxBRpz+eKoqkdCTm2ieWkGLHsQxE=;
-        b=SOQhLvLblB5Qw3CIeePdxpdL9ZEcZPMcFMsQm0UbLfr7N1A9DOlYRbZqSoHV1hpTvS
-         UoPAPIZzFAGNrKSMdkq6E0uqmWzqqF4/gfeDuKe+SP1HiXXlnsUqxGNj8VT/KUOkYVYu
-         vUf8vekor9jvSzdmFuVFQtJbnYutCALNxUslHOLaYV/ZiqPLGf2yMoQHyN/3N0LrtIqy
-         WkcilRKaf54goNUQ3K6xUTcLx4pj3fCz2gChokYLNXrzC0N5yuFboOPcV2CfpVY9mRNn
-         41HEdctz+Ym5aCFsZusMKo76XFjzebEtmKD4mfU/HYsIMWC/B09Syw44F5jcFRb1gvkU
-         oyrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727914246; x=1728519046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TC6hIZRp94YKmONuxBRpz+eKoqkdCTm2ieWkGLHsQxE=;
-        b=TfaHHNEg+EB3NQCxcyJ/oHzOn2/hAQ62O2++apcuUS+eBR2vt81vORzJ+AmIur+LH/
-         iZEEYoHaRbyg85BxqMtw5PW/Vfa9MAZ5mvByDLsgSlvSwOtKyOJO9MruAtwJWjYVR6iv
-         kdlqk43pdCnZSjcsrr2kKV0ZLaWhRdmjlDc7YCuRqGRO8UIcDadSktO/P79XMvPo5Qom
-         Ti1v/Ame1hBFKvYh2HrBk41IVryPtUwplHLIuLO5nKwLO4TH9eLghbxa1q9xV/pl7Fxo
-         9htGpVXGWSYpUMNTuzvNYDdmstgPIUXamBfHT8aSu0Yguf72YviXuQkKxCkrW17rI3ly
-         LUfg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6XYvg7bru96ePU2Cid7quVAUp+DLXNm7K32gGVO/ZHrRk7lKxMSf4N90Bm91P4OYWesPKil1bL1Kmwb/f8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrKljeePFvhWQBArLzafH8AMugh6liLpvg1wcR5HZxQ0o4mfId
-	WgFRPY3k6qCv/t7kYl1HXHFcmM+BP5xmQlBMjDFoR6GpfTeHUKKjgrW3eF6vBAzTbVFXQwaz7QP
-	wcMQ/aKGx7bMe3qDzDpB/seY6g1E=
-X-Google-Smtp-Source: AGHT+IE4nxwUmiL0QjFQ2eZzYVsgUvo8a4WBQbveDnTdxFJNwLhiZDQhsMQgzMI8tYs7+uu+hjUe6VyDs8OZixyyEnA=
-X-Received: by 2002:a05:6a20:394c:b0:1cf:4fc0:4ad4 with SMTP id
- adf61e73a8af0-1d5db177936mr3677980637.6.1727914246236; Wed, 02 Oct 2024
- 17:10:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FWJEXH6p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727915272; x=1759451272;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4jOSy2S5vzvt4SXm1y8gfO76VgZUH7wm+QIBYnhH3Cg=;
+  b=FWJEXH6pFiMldM9nE3x3PMaexwnVe+ympLpzGwsqN0b+pHLt9742g+IU
+   lN9cGq0fAJ0vXqPqPLgzyVS4RbpfbDztc1I41bYotK+Gad4+LDpmeRfB1
+   ZZOWycPcOIxD9dkHF+PnsPn7o/dFbEqO/x5o2/LcRYXoxeTcJ1qqyXaRE
+   cXZjD37oNjaKiOtJVonRNRZktqEQ5nkXmcC0oz2ey3Cg1c8vqbas3U7DB
+   onsxZu71E8gu3DrOc410OeEfZ8Djlm9lbah+xVUL46e+5ZBPLJdAgVS4k
+   cTzPOZ4IkNwzwWA7tpl4VYJSgxANHiZLM6x1ftk4sqOiSB/Wtu8Eda+gE
+   w==;
+X-CSE-ConnectionGUID: Q2DkQMeiTayRxeeg8mB9PA==
+X-CSE-MsgGUID: G+lGHATQSqqjHrb8KLVI3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="30983717"
+X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
+   d="scan'208";a="30983717"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 17:27:51 -0700
+X-CSE-ConnectionGUID: dwjIvjloTeinYpM1Frs8nw==
+X-CSE-MsgGUID: xpDUIod3TPOk3JYCsRfp0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; 
+   d="scan'208";a="74293881"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 02 Oct 2024 17:27:45 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sw9h1-000Ujz-0l;
+	Thu, 03 Oct 2024 00:27:43 +0000
+Date: Thu, 3 Oct 2024 08:27:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+	boris.brezillon@collabora.com, lina@asahilina.net,
+	mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v8 15/29] rust: alloc: introduce `ArrayLayout`
+Message-ID: <202410030724.cV9BEoNG-lkp@intel.com>
+References: <20241001150008.183102-16-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <BL0PR02MB49142BDF011175DADD6E79D0E9702@BL0PR02MB4914.namprd02.prod.outlook.com>
-In-Reply-To: <BL0PR02MB49142BDF011175DADD6E79D0E9702@BL0PR02MB4914.namprd02.prod.outlook.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 3 Oct 2024 02:10:33 +0200
-Message-ID: <CANiq72n+QR823Rk6XLYp=Zch=Pi8KiWPC48VBjbkFgVbe8UHhA@mail.gmail.com>
-Subject: Re: [PATCH] rust: optimize error type to use nonzero
-To: Felipe Alves <felipe_life@live.com>
-Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	"gary@garyguo.net" <gary@garyguo.net>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241001150008.183102-16-dakr@kernel.org>
 
-On Thu, Oct 3, 2024 at 1:52=E2=80=AFAM Felipe Alves <felipe_life@live.com> =
-wrote:
->
-> From 18d0c4b19e036572062fde15ab78c286f4840be4 Mon Sep 17 00:00:00 2001
-> From: Filipe Xavier <felipe_life@live.com>
-> Date: Wed, 2 Oct 2024 19:25:56 -0300
-> Subject: [PATCH] rust: optimize error type to use nonzero
+Hi Danilo,
 
-These lines should not be here.
+kernel test robot noticed the following build errors:
 
-> Optimize `Result<(), Error>` size by changing `Error` type to NonZero*
-> for niche optimization.
+[auto build test ERROR on 9852d85ec9d492ebef56dc5f229416c925758edc]
 
-Nit: newline between paragraphs.
+url:    https://github.com/intel-lab-lkp/linux/commits/Danilo-Krummrich/rust-alloc-add-Allocator-trait/20241001-230558
+base:   9852d85ec9d492ebef56dc5f229416c925758edc
+patch link:    https://lore.kernel.org/r/20241001150008.183102-16-dakr%40kernel.org
+patch subject: [PATCH v8 15/29] rust: alloc: introduce `ArrayLayout`
+config: riscv-randconfig-001-20241002 (https://download.01.org/0day-ci/archive/20241003/202410030724.cV9BEoNG-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241003/202410030724.cV9BEoNG-lkp@intel.com/reproduce)
 
-> This reduces the space used by the `Result` type, as the NonZero* type
-> enables the compiler to apply more efficient memory layout.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410030724.cV9BEoNG-lkp@intel.com/
 
-Giving an example of the concrete size reduction would be nice.
+All errors (new ones prefixed by >>):
 
-Also, for some reason, you don't use backticks for `NonZero*` but you
-do for the others.
+>> error[E0425]: cannot find function `size_of` in this scope
+   --> rust/kernel/alloc/layout.rs:47:31
+   |
+   47 |         match len.checked_mul(size_of::<T>()) {
+   |                               ^^^^^^^ not found in this scope
+   |
+   help: consider importing this function
+   |
+   7  + use core::mem::size_of;
+   |
 
-> -            pub const $err: super::Error =3D super::Error(-(crate::bindi=
-ngs::$err as i32));
-> +            pub const $err: super::Error =3D unsafe {
-> +                super::Error(core::num::NonZeroI32::new_unchecked(-(crat=
-e::bindings::$err as i32)))
-> +            };
-
-Missing `// SAFETY` comment.
-
->      /// Creates an [`Error`] from a kernel error code.
->      ///
-> +    /// # Safety
-> +    ///
-
-The function is still safe -- why was this added?
-
-> -    pub fn from_errno(errno: core::ffi::c_int) -> Error {
-> +    pub fn from_errno(errno: i32) -> Error {
-
-Why does the interface change?
-
-> -            bindings::ERR_PTR(self.0.into()) as *mut _
-> +            bindings::ERR_PTR(self.0.get() as i64) as *mut _
-
-Why is an explicit type used?
-
-Thanks!
-
-Cheers,
-Miguel
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
