@@ -1,116 +1,85 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8BC6F06A;
-	Thu,  3 Oct 2024 21:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9925213D8B4
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Oct 2024 21:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727992196; cv=none; b=YWNee4g2CCBzFL+WFALedLijCLr/bm0402KP9qlX9rp9Pcqz8hSVlSYibbgSS40uzuCZ6ydZ5KauXLzugdgBV1lKi6IAiZFrh9N8ui6f86pkZm1rOGehARQFUwaPU3dnY8Q3z9IykfUHyftCVaYiQcyMjx4CwBQMudbpA9PvCqM=
+	t=1727992211; cv=none; b=loi33cGhMR9fFk/26Y2EDBXSChb4lwYzV00nc2bFDkX55jsOn63JJF0H2x+7PvYzU9ULBjN8xPPFgeLSF728gyaFf9xpIH4+9hT7QBKVbmc/OQVMeQ6a2l5QQlkHY51O8F/Ns3MLC9g7P2wSlaxh/jKWROe6/VBgXebuVAzHz/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727992196; c=relaxed/simple;
-	bh=YWSWyBMvb2BqcQtPmYtbpV7rQQkcRKcqy5ijg1PX33o=;
+	s=arc-20240116; t=1727992211; c=relaxed/simple;
+	bh=OPhFlMRQbbrsCz9iK6UqOBenHyuXkRMragr1R07yKPk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LWcB7icUp4iFBktVIInQgy1bpSUqxXg2YOF+VbrgXyjNfmpPN2CvVV+SomxnmzBqQs6vCaVHqs9uLa+ACAjAHg8MKlYz4ivcdG8Olt2VseJ0IATobnhprGuL1k4nIC5YMkqnC9ss/4XnAMdW1X8q88tME6d61mlhz08D59jPoYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jN3Mz37u; arc=none smtp.client-ip=209.85.215.174
+	 To:Cc:Content-Type; b=nOH+g7BZpETObxB9d06McF5Yf8lTAcw05Ir9MVhaeimYlGzcLiLgX1PpGxh4bQeDek329iCPLli64gcdy8cZ08Mcr1xaeh8Koeo32pMpbJST1k9bM+aQZT8DV0f958ybz930haWVdEgtsSJ996Qc7rCwPc6S64v7rTtI0kGYbXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bRuogVVY; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jN3Mz37u"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7e9b2d75d92so205407a12.0;
-        Thu, 03 Oct 2024 14:49:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bRuogVVY"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7191f1875d3so240909b3a.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 03 Oct 2024 14:50:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727992195; x=1728596995; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727992210; x=1728597010; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YWSWyBMvb2BqcQtPmYtbpV7rQQkcRKcqy5ijg1PX33o=;
-        b=jN3Mz37u2wOqm7KvXRdlnPkFLF7nsRhcfqTdxCyo5nNbP8m66VGPkRhFhjyz8f/H2S
-         dHpqP3j9MbmDdzYTJHPHgYgIg0X3OBcr80Fh4kElnLM0EmEUpnENL6oCAFGgdIdRrpHh
-         fvSRHnAtoyifDHyYaTOuCyQyikU90IA5GKG8qiM37mTIoamhPIgxj3RnvI5DHu1+10IS
-         7KLkO1wDEi6Gfed/mMtKU9V1jW4I3ng/rR1+vAJerevII2dzUcxRTWCTmjIyXVrEdVCT
-         +7OvT574y+d5l2Q5+k86cScw6LLLQVSui9hjKw7sawi1DUvyuDPxoUHcD7pHBQBoirZA
-         wXcw==
+        bh=OPhFlMRQbbrsCz9iK6UqOBenHyuXkRMragr1R07yKPk=;
+        b=bRuogVVYIW2V4AVq/2GHf+o8tID0L22HGEJlTs9r0aCydlCAlYgPn7eEi0Gtx5FDvU
+         Y7Gkp9ymO9MJWrJQwzFgCTLP3+Eld3zrxPIWj6h64PoJpo7MXgOQFDb16Eameo8tPh1l
+         FHcAExU1ra+zEHAr0qFIrAdDD8Xukksk5ym/Eqei/3mtVgU8hVJ1ABk/nf2i9uluYJVU
+         OTDqnXfYknr0dMmkKL9/EHpjLLbFxRuZN88Vzap2TIT9wFwKpidFGeCtrzOI399LIz4s
+         xsffXqgaghARC8VwD8RW+mt4swKYVMtE9O4NoY6u+s79mLThpJw3IJkDhngfZwkx7pDx
+         /xfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727992195; x=1728596995;
+        d=1e100.net; s=20230601; t=1727992210; x=1728597010;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YWSWyBMvb2BqcQtPmYtbpV7rQQkcRKcqy5ijg1PX33o=;
-        b=XPFBxQgMIhLNF+Vnrx08p/7Ctlf/roBfbYjQJxdrWqJExxlYNqlM6CKBgfAbQLKtdN
-         GuS7ukCXR6IFxcIGkVPnmkcXrn0eTxJ0gU2ZILZDZY7VjP3Y97ErJNp/m/zObyJf1qUm
-         /+9j62B7PBlfhAgO3dBpiwtvGm5owtVNjWcLzFoexFTBiIVgSy0a0pILDLKZtB2mlwYr
-         dqr6e0nEgBhAiqFPSw8E9GLWRmQBWh6IO3C1gHcf3cZNAqeoE0tieFsxTfC7Q7/95TQn
-         E9B0l8Kg9Vn+AL58EHD9TAgympD7yXjNzDgZl6m1GJUmF2Ej9VPLVSn3cekWJdM56Rf7
-         HiIA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+hDBOEPjOP8hHWm76rkn/QqJYQ04dP72vBV+g/AmgH6cuA/Z+6qOtJLsfqxLPOnFxq7kyztwa16kZAgtnOxA=@vger.kernel.org, AJvYcCU+t2Gxt4DvG3KMPzkiUG+Oj13noKkKfMLzdguFjKP4QwzC2tNJTQJDVS9uF657yDpluUM44YDv0XmghLrf@vger.kernel.org, AJvYcCVKMzRP5lgM17iKMKIbcyh5MfqOHttQGy+pGg97Ur+psNodG2c+/V7xY1Jkku+rpsElRFuytV5lwZll7E4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ5CiSvT+qM3BB9JIARWIXmOEYzeuBJ3TKT+1mryDn68cDYByp
-	2ClYLVIuq/BRZuKPAcIeU2UN4wcA8SHOvOkTaW+5yCumHOGoTqi/eyqGhBqzJYVKWd32PPz4O1p
-	TQvAOBIVSFcbWRgCeYx6q+zAS9V8=
-X-Google-Smtp-Source: AGHT+IGyVrKTLv/6R4p9C4+lzDTKS+g4BKYcB6NEFd08fKt94IaBLorNVuAB40syGlRO/PPbVfEnCv0roeJaI2nbnEc=
-X-Received: by 2002:a05:6a00:3a28:b0:71b:64c:813f with SMTP id
- d2e1a72fcca58-71de2479d53mr321221b3a.6.1727992194577; Thu, 03 Oct 2024
- 14:49:54 -0700 (PDT)
+        bh=OPhFlMRQbbrsCz9iK6UqOBenHyuXkRMragr1R07yKPk=;
+        b=ipZidCQGuuirozv0jSb87/miD0xHkD04b1trESlvHcvl4opLAJa8E68SRfBx6jnYGE
+         cse5jdjUoo1kJ4qZhDshpS3ekmcJ6o14okn0LVsRrOU+d+X3qfttmXuk721CCvFkVaBx
+         EdyurYqiufgV5wSiEOoIRBnCnptddlvQtBvMGYu/quKXcSY833qfMsiXb0VvzlewDM8i
+         PZwe02Dl3vDtjfi5+2vugKj3WIcQxWz5LS7AZoXTBhoIbn9Hzrl6S/VdbpZX5F7XO4N2
+         fBO/R3dGfTmK+Wwt23kXGTYOUY57IN8IQvi+cc5scLfCoegWVk45V/7Q4BiSmRNWYy0O
+         EssQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUnGdYWVl7nYQPFuCWLFCIwzVcb62sWXkgXBCrRde0MWOZhfHmuQhSGyuI5yZHyujNsx1P5FW79cNuHK2J5lw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/FObhnkWY+2iHRUUdXmscIsNw9mELFoqd6RygQnGlp1ZvEajP
+	7rYG9N1lvgWT/lAtC4a4Xj1LEnwywzZ2SdEa3rrmIHhvJzPPRbt0nS/MmEvlz0j9fdkG7QJE8qB
+	HnSbzWJp4kHe9W+YZfWlfstXzas0=
+X-Google-Smtp-Source: AGHT+IGh7FyVVlr7NcgiqPAaJEowJUADQGaH2u35sg7+aHTXX5heM1w5Ecimpd3sfrgUL6L4Aom3zi/LWXLVYSzvOak=
+X-Received: by 2002:a05:6a00:2190:b0:717:6bb0:53e8 with SMTP id
+ d2e1a72fcca58-71de239ee55mr347325b3a.2.1727992209974; Thu, 03 Oct 2024
+ 14:50:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240915132734.1653004-1-gary@garyguo.net>
-In-Reply-To: <20240915132734.1653004-1-gary@garyguo.net>
+References: <DM4PR14MB7276E6948E67B3B23D8EA847E9652@DM4PR14MB7276.namprd14.prod.outlook.com>
+In-Reply-To: <DM4PR14MB7276E6948E67B3B23D8EA847E9652@DM4PR14MB7276.namprd14.prod.outlook.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 3 Oct 2024 23:49:41 +0200
-Message-ID: <CANiq72kkN2T4NeesDwsrVkk=JcDA-8iPHFys2Cg9M7MobzTEoA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: enable arbitrary_self_types and remove `Receiver`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Danilo Krummrich <dakr@redhat.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Valentin Obst <kernel@valentinobst.de>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Alex Mantel <alexmantel93@mailbox.org>, 
-	Adrian Taylor <ade@hohum.me.uk>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Date: Thu, 3 Oct 2024 23:49:57 +0200
+Message-ID: <CANiq72=uioPPu_q8Wjyn0pwXkBmXMcyR699fkwkeFhe2twDXuA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: error: make conversion functions public
+To: Filipe Xavier <felipe_life@live.com>
+Cc: aliceryhl@google.com, ojeda@kernel.org, boqun.feng@gmail.com, 
+	alex.gaynor@gmail.com, benno.lossin@proton.me, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 15, 2024 at 3:29=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Fri, Sep 13, 2024 at 12:20=E2=80=AFPM Filipe Xavier <felipe_life@live.co=
+m> wrote:
 >
-> The term "receiver" means that a type can be used as the type of `self`,
-> and thus enables method call syntax `foo.bar()` instead of
-> `Foo::bar(foo)`. Stable Rust as of today (1.81) enables a limited
-> selection of types (primitives and types in std, e.g. `Box` and `Arc`)
-> to be used as receivers, while custom types cannot.
+> Change visibility to public of functions in error.rs:
+> from_err_ptr, from_errno, from_result and to_ptr.
+> Additionally, remove dead_code annotations.
 >
-> We want the kernel `Arc` type to have the same functionality as the Rust
-> std `Arc`, so we use the `Receiver` trait (gated behind `receiver_trait`
-> unstable feature) to gain the functionality.
->
-> The `arbitrary_self_types` RFC [1] (tracking issue [2]) is accepted and
-> it will allow all types that implement a new `Receiver` trait (different
-> from today's unstable trait) to be used as receivers. This trait will be
-> automatically implemented for all `Deref` types, which include our `Arc`
-> type, so we no longer have to opt-in to be used as receiver. To prepare
-> us for the change, remove the `Receiver` implementation and the
-> associated feature. To still allow `Arc` and others to be used as method
-> receivers, turn on `arbitrary_self_types` feature instead.
->
-> This feature gate is introduced in 1.23.0. It used to enable both
-> `Deref` types and raw pointer types to be used as receivers, but the
-> latter is now split into a different feature gate in Rust 1.83 nightly.
-> We do not need receivers on raw pointers so this change would not affect
-> us and usage of `arbitrary_self_types` feature would work for all Rust
-> versions that we support (>=3D1.78).
->
-> Cc: Adrian Taylor <ade@hohum.me.uk>
-> Link: https://github.com/rust-lang/rfcs/pull/3519 [1]
-> Link: https://github.com/rust-lang/rust/issues/44874 [2]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1105
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
 
-Applied to `rust-next` -- thanks everyone!
+Applied to `rust-next` -- thanks!
 
 Cheers,
 Miguel
