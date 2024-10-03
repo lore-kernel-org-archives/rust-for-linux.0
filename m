@@ -1,72 +1,70 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418B31AB52C;
-	Thu,  3 Oct 2024 22:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8376F1AB52D;
+	Thu,  3 Oct 2024 23:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727995803; cv=none; b=anCHdGu25Is62qm5LsU1mBzwJEjkgVDw1ETgFaaQ+pUjyi2vyLQNTGwlG9H9gdJ1l3eN53734SboibvPr2x4odYQ6WnRtVFJkGjs5M6eWdPVB8sf9aJSzR5D0K5hd81sIVL/8c/4G1Glcg1q7X9fxkz8im7QCgLe3jXHZioFaL8=
+	t=1727996466; cv=none; b=Lc8/JLI7HUsCP4YxCQ7VaNFStm4Z8pjqhEzfYqWIe8vUbuSHuSF28mrv4FV+yDqh6clHw2SU1KoXtMA/NLo3guqxxiI87w6B3YJOixGgMLpLgXuPmOacwDULZNTHE2o0N6Pdja/LFGjgrEjfE9SMz4q1UDcUOArxXgBwYpL9iDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727995803; c=relaxed/simple;
-	bh=KTAhubmF+XdYalroJyT4CW7w74UfrFqL7BD0IJFjemI=;
+	s=arc-20240116; t=1727996466; c=relaxed/simple;
+	bh=MAlNjd2Gjx9vbLZCH67D2CWjR0mlhEINbnWtlORLSo8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=diiDtP0RBgBqOSyosUMmeHZO0KvQRsJKENaeWSfgeQAmGb93RVjuxWSJ/XzIRGSUVDkr9hl+YiDTvkL8WPvtO8tLmR1MW6HFSEZP1OQm7HV9XLk1CV3OK6JmJGsPrn1dXY2ylHQWR5Mtxv7MtBnvxK3xKVm+B/Uq8lf7Xa7UXVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bUrYGu3M; arc=none smtp.client-ip=209.85.210.175
+	 To:Cc:Content-Type; b=rfGWYFvQUqax59s71heASf6h6Z41CIvGngQ0FlKFVYRNAn5QapUg15uKXZcOri86eDklZhFXFwWF7UnKbjdTALqcbdJjytlwoMHqVXZ/yswh9og4FZ+V+APPDwpMlYNQwRRiQFDVGBBQiaA25l48DUSSC5F2DjtYtIx1cEfKzZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Esz+7/aV; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bUrYGu3M"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-717839f9eb6so216124b3a.3;
-        Thu, 03 Oct 2024 15:50:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Esz+7/aV"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-718e55bca81so250701b3a.2;
+        Thu, 03 Oct 2024 16:01:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727995801; x=1728600601; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727996464; x=1728601264; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KTAhubmF+XdYalroJyT4CW7w74UfrFqL7BD0IJFjemI=;
-        b=bUrYGu3MtOtXBTxBsntfrKfP8zXQQDckHlKTz4CFYU7uur5g48UX4olhPNxMRc7hEF
-         3RnDciowOvk1SyUps46EaPjVLziCkXmgpG1rE+0JyzAmtmzZY2wFO1mBc4mrU7JC+yhz
-         sG63qOw6+fklroVdlnnvMM78sE8IhDCzd9ztfXzsgQ6Hd7HtHJ0sWngmqNYEsLRnTzVL
-         wG43wak0k/YkXfQhZIaTQ2w34hOhlPFdQtqJXqc7qrp7icS1yDMqDwvUE5wM/aN2Ccko
-         bjr3M/if3PaVQZZogZUgSJbK3egQogtWn/nlKd6wPIuRE4JjFi/Y4LMFct1AbmS0WK3P
-         7JwA==
+        bh=JniPPMiNwOcATPoj22n62sJ6W0pTnc5eKePuj587BMI=;
+        b=Esz+7/aVunEIUDULIHmWZY8JhPGkPMj3tM+CX9QmfGGdfmiOXCC3fAZuOc5SvrOPuX
+         3wV+VftPfnX+m0T4QWvzSbAjVehX+XUF3w36/L1FhLyqD7ngGZGCzY0uC+EPGQQjKot0
+         zpuJeN62+OUTb+1XNhxI8/kBryeb8vW1Iucyk6idOPfC5Cc07faUZEP5LJl82teCyDTD
+         k5BY7sdGheKSVeb2YI3CUKoHxGmc+pDK/N+RJ3CTkdY2pwLsPpfDwgY8DjOojWKwxl4M
+         7v7tDCGzfZv96DWO2MrArPnFpcl2NVDO3TVPcCUGSqHOTSBQxI/EWM7rEotzhIJL8CBo
+         EgpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727995801; x=1728600601;
+        d=1e100.net; s=20230601; t=1727996464; x=1728601264;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KTAhubmF+XdYalroJyT4CW7w74UfrFqL7BD0IJFjemI=;
-        b=X++waYZQlNXuJZPF8DPNEnsoNj+YI3LgbjKljfsimuUEizIkJEWDZgBNLzc+y9d7aO
-         zcHjaBu0LPfUe0ov/PSKZAATGIdr3rGWUsCmyjbRkj0woWKPRleb6qBy6uPme51DC9m1
-         951ZvWqc0UKg7WfLOM8Wp3abwmJh4klvm+UrBIhqfoq9qPttgo/OqSkUs4skdUc9zvie
-         nbIo1jtJ9hYRr1pGejHNTZy/96JUF+fAgbZ5dJbh6SVULEZ8ZvXyHdtONeY7zuHZwK2b
-         UtBY3AEbJGSn1JgUiOhqKC4hy/gR3zWwCThHqy4F16NJvg+whQw7p8BUPtsCdTnk8OHg
-         py9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVYAm/ivvtMTOIJ1Oj07v3T2cdrjvLLvr8QyrXSnzO0OLQ5a9YmDKnc0I3lhfqIpAdmynnFCociaRVymTE5BNU=@vger.kernel.org, AJvYcCWaG5SF8uP8jLy1mFeHanRBdTeZrapUkWEIstI1u2FuOVff7s/Iheo+iS5nbItZYXEzxZsgs683PdK1KJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi7E9mVLWKVdjQOjjB3m3lKDOceXuKj/p4TRngn2lbJo1AqxvB
-	dM56M/7fLnkIJ1LhXzJoh/OX/ekqLkA5pc3BsrXA+XgHSHjG3JXei3FzaXyDvLmF8aqirkic8xD
-	CEY7NeK40aEWOxhpRhuups9w7MhU=
-X-Google-Smtp-Source: AGHT+IGEnMEaMRwHJsgJjl9DJrCplq6rSG+i/uvTMJrsp8tHpy4xemqXsOMgZvfXeCPS8ha8JVUl4QKYIr7RCPFaYPQ=
-X-Received: by 2002:a05:6a00:464e:b0:70b:705f:8c5d with SMTP id
- d2e1a72fcca58-71de2446c96mr403436b3a.4.1727995801451; Thu, 03 Oct 2024
- 15:50:01 -0700 (PDT)
+        bh=JniPPMiNwOcATPoj22n62sJ6W0pTnc5eKePuj587BMI=;
+        b=oYj24/eaZilRRs+bTEagYWDAABQ/GYzOYEjGnTa9rYLt1jsJBOiOn3yMO1X3FDrJmW
+         BQBrKPe/WXcigvQzNVVCN2M/tgR8dWngx0IGjFh2gaLlPuHRxjHATrjAYFgz04IqmGCb
+         vu3AsRqj75yHz3NCvPsOyDI2E0f0WnOONcbQFBdu15lFaF6N4JBUtyZp4EKsMZ7G/MJd
+         CA9azsOWZIgxQ40X391a0sLoBIj2X/2l5DcXdDhJdHjOTqKVlajb4XOORZSyY3lO2/Zp
+         5fxOAOFkbyCPGXW2uiySRadnNJTnDOrdlKLnFxIPzcTUTfqGs7DssgP7d8ds5v9d67I+
+         gjKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUb+t0The+PLMLQPjFN+XveqrRAgDvHOJInD7r9+WSyF7fCjnjsTsQr+ZDVklv4pgb0cLB5Gs+u75IvqJ0=@vger.kernel.org, AJvYcCVYxrHmymdNW73aH8XnwMEXauQ/kpSKfETXwWZBDcxHqUqiRpt50GZSkOErL+YiRPs64LxLara1HCDV1bECNZQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtz0Pl/eucw0GdSCYH/gLvSb+RoS2b6bfBIBpPyUAwaDayENXA
+	xx3UEOfyEnhYkdhKM/CyR4AxNrNSRaZ/lxIUA09tundJ1MhM99/5wQU5P8oo1pNavoQH16zHVYB
+	bXZca4gMvOU0Sr1FtVtwI1KejGlY=
+X-Google-Smtp-Source: AGHT+IF0VZFkojW8u1zXbUFjF1T8Ual4Q5svQy7ix890GXbrNEHO4yIiRHNuFfBZTx4iDG3p78zV10RJXaySpSAE2xA=
+X-Received: by 2002:a05:6a20:2452:b0:1cf:4fc0:4ad8 with SMTP id
+ adf61e73a8af0-1d6dfa46cb2mr654022637.6.1727996464455; Thu, 03 Oct 2024
+ 16:01:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240911225449.152928-1-dakr@kernel.org> <20240911225449.152928-26-dakr@kernel.org>
- <20240928204357.3a28dada.gary@garyguo.net> <CANiq72nuZ41eDXkybGBbGRMgJzUOe1rRZioS-amJfH7UV-9cMQ@mail.gmail.com>
- <fd889e4a-3da7-4ade-a0a4-c4fb1feb540f@kernel.org>
-In-Reply-To: <fd889e4a-3da7-4ade-a0a4-c4fb1feb540f@kernel.org>
+References: <20241001150008.183102-1-dakr@kernel.org> <20241001150008.183102-12-dakr@kernel.org>
+In-Reply-To: <20241001150008.183102-12-dakr@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 4 Oct 2024 00:49:48 +0200
-Message-ID: <CANiq72=9Y2eauk3LbJnnmM7N-iiN0ET-XwJ=uMJsWLyfWysQ4w@mail.gmail.com>
-Subject: Re: [PATCH v7 25/26] kbuild: rust: remove the `alloc` crate and `GlobalAlloc`
+Date: Fri, 4 Oct 2024 01:00:51 +0200
+Message-ID: <CANiq72nN7regVGe_FfONSKE5waG3L2xr-cdY8c0v8Y6xn297EQ@mail.gmail.com>
+Subject: Re: [PATCH v8 11/29] rust: alloc: implement kernel `Box`
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
 	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
 	akpm@linux-foundation.org, daniel.almeida@collabora.com, 
 	faith.ekstrand@collabora.com, boris.brezillon@collabora.com, 
@@ -77,12 +75,23 @@ Cc: Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 3, 2024 at 11:54=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Tue, Oct 1, 2024 at 5:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
-> So, I guess you'll just fix it up when applying the series?
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let x =3D KBox::new(24, GFP_KERNEL)?;
+> +    /// let ptr =3D KBox::into_raw(x);
+> +    /// let x =3D unsafe { KBox::from_raw(ptr) };
 
-Sure, if there is no need for a new version, then no worries.
+This is the only place that, after applying your series on top of the
+lints one (i.e. current `rust-next`), triggered a missing `// SAFETY`
+comment lint :)
+
+If there is no new version, what do you want me to write when I apply it?
+
+Thanks!
 
 Cheers,
 Miguel
