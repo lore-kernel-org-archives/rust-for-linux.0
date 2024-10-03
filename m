@@ -1,114 +1,97 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCFE224EA;
-	Thu,  3 Oct 2024 05:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B46126C04;
+	Thu,  3 Oct 2024 08:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727932059; cv=none; b=lZHEwOecJXZ/+3b4RoRbjfNc0tgoep/4z+sdA5TkCS3sxtrv0Jdnw76oG19ccKY64w2vb4H68kiyD7FRVcw09dYhwcDbqNYThKAI9toFYx2D4jfejy/RQqozoqZI3gPYzF4kvtkEXPnyMpeDr+ejFhcktKacDpzA0IUY1x4r11o=
+	t=1727942996; cv=none; b=LOWvg3nfFvG3uR50saAtoW+dTXI7G7IJ2ab9gVpJ+KD+OIwC947v8DvqUlL4fUKkwxSV/D8zaUYIDOaUiB0nAbMjcj0beo1A0sUNWgYz3HfiadCL1Xitbuv3xDmjaVwxl1E/a8BGtV+7A98+5/Lnfb1m5ZFbdRBbCKjSlnx/du8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727932059; c=relaxed/simple;
-	bh=9IoJU6jTEuoyGkTbeSfT2pwABITRvMWUogRgOn/0ukY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=MwatcvdzfV1tJx5GBlx+7k5deCZPD6IRcCZMVMDbRSPNBtiIPgyZBdsqa+SYelOtOQBSIow3P2FGB2NyOVwD42ILnHh44gGehLKzCqM6lg/pd6VGRS4bUnY422ExgK+YdKW9TI8qQE5WAC0WD/kWCcds4U2wJIa3H9a0dZ9+C28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GSbS/xn+; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727942996; c=relaxed/simple;
+	bh=qQeayOm0L0sSl/y1Csw+TfpLfgb2PW3yPbPgwLvTd0c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q8vtrQyToTfr1ICtsCVJQ8QXV7XKBvHyQBpD0Jqgji1IKmGiXXJ16xStwQAtX8rdsItKi2/VmTAplDcXaedxTGQVU0Yh0qzycPYMS+NrCq5/fL7nGJpAMwKCYGRMWgYQ4jtEIbQtf8K6Mf9rs1h1Ah4JY7untpja51S8qUWa1Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qMqR0r4c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GSbS/xn+"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20b6458ee37so5044695ad.1;
-        Wed, 02 Oct 2024 22:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727932057; x=1728536857; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7zMWuseD5uO8iPKDZb2vIk6waix6EUBSwtVjV6EXAl8=;
-        b=GSbS/xn+Sd9QRJniTjvlBBhBP3oFeIOViAtU+GnGmfXxAS4Xo74JkTvU7eWZttO6vw
-         2aN+5quYQSj9tWy/dImuo93p7Hz8w6Shw7hCvnD3xsHnfD0P6Y5IB3OZWHYbfd0yhltM
-         98PELw2oUX25KY32XsxH9q+aIeeD8Qov3w1u3Sow5pSxITcboYw+kxwNs3XHjnRG9OEC
-         HJkJO3rloc4/J6ZIkJqXg3hMIH3FCNi1MBe3Xo5TvAeePGjyON5FMDu3TRhuWnlQkw1l
-         I64qPkOYbGSsy2drhwuthaTkeux5b5Xqh89o2NqPxfKEMPpMdnEyqKZr+NrhfKRzVF2U
-         9LEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727932057; x=1728536857;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7zMWuseD5uO8iPKDZb2vIk6waix6EUBSwtVjV6EXAl8=;
-        b=PYjmbFuh6L9LIbmEYBCY95DhUmR8TCDqzkX07Ov/JI5/lX95th6JQMsf3U3WWoMDzm
-         yDkwIs5efXMn9cE+lwL7YRikIj19QgluXBAU8zeS6vrTRexOEo6aBqMMDiZcKd9wxAYz
-         zDz07+ZgbRj7Fgyom5KkoDr3idLmpzczvA6PDLeClqy2BDYil1q6IS6P4CECOuOyMVbi
-         PnAhd+f9HKPbjOGEd4iXNA6r66Se/iwqWGT6cE+sKCpmAJBQgyojTXtZMQpiX/xkb1Md
-         1OqQjdmI6l5W23wyeLVZkJ2GFjJoNE0inWVz72hWOXkhUe/ORW7rA/+dQ6Jj14UFW/6C
-         lVCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHEGsaJAt7bEmxwxQFL1WTWCjwdLoo9wXBkx9zMQaq2FHCvsyf+piia69ydoVmPn4dpXc+e18=@vger.kernel.org, AJvYcCVhW1M9/zW4f3VU2zzTdmegkWSY+HbYKZwjECMXefjxAypVQxDKdUIXADzl5MCHJfLhkwe5kxqouGRCAvq/BUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6ZSBO7uDUdLnMVMeCjLkwyaV+2pAVci/BtlmU9wNRUCFYvD0P
-	3N72h9/bzBDQ00WQBUVcUy9r2rsNIAY7mX8hqn0NyqTNpSYeTFGp
-X-Google-Smtp-Source: AGHT+IFA+cBSks7/4z7FPlkjwighWdqBBI7nG2LYqL3AkuJdBb8QLkUpwJ6TH/P6xM3XkA316pxY7w==
-X-Received: by 2002:a17:902:db12:b0:20b:9998:e2f4 with SMTP id d9443c01a7336-20bc5a8ebecmr63520795ad.61.1727932056896;
-        Wed, 02 Oct 2024 22:07:36 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20beeadad4csm1819785ad.27.2024.10.02.22.07.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 22:07:36 -0700 (PDT)
-Date: Thu, 03 Oct 2024 05:07:22 +0000 (UTC)
-Message-Id: <20241003.050722.44816085254739536.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com
-Subject: Re: [PATCH net-next v1 2/2] net: phy: qt2025: wait until PHY
- becomes ready
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ec7267b5-ae77-4c4a-94f8-aa933c87a9a2@lunn.ch>
-References: <c8ba40d3-0a18-4fb4-9ca3-d6cee6872712@lunn.ch>
-	<20241002.101339.524991396881946498.fujita.tomonori@gmail.com>
-	<ec7267b5-ae77-4c4a-94f8-aa933c87a9a2@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qMqR0r4c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC63BC4CECC;
+	Thu,  3 Oct 2024 08:09:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727942996;
+	bh=qQeayOm0L0sSl/y1Csw+TfpLfgb2PW3yPbPgwLvTd0c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qMqR0r4c535Qw1/zSFmD71mAE01tk4kDkUOo2n7zhWRb1dhvhhJpqI/NBxQKYxVG9
+	 zTRbnISP5rMsldDpTrUVXQTeqjiV7JnknYqTkOi9X0Lwaizj+Epm81HVhDwYcGIdBz
+	 OKhvjQ8Vkn1vHHQ+utTO2Xuy5CxgKgJgDNIpI9PSVBY08XqdUMhLGR6FelisZBEa+R
+	 gskufR6f7Uf062fx2OoaI02G7SiEOMNVzTK/dcU/E276lLxRm0YG2gn8155r7dmKpU
+	 4TasQvuacPMssc4iczt8UNr7FXAHDmIMPlGFUJqo0M+oW2a0XnvDu3qniNXMjkq458
+	 PONHRIQSexyxA==
+Date: Thu, 3 Oct 2024 10:09:50 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Alice Ryhl <aliceryhl@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: miscdevice: add base miscdevice abstraction
+Message-ID: <20241003-atempause-entrichten-2552bfddae99@brauner>
+References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
+ <20241001-b4-miscdevice-v2-2-330d760041fa@google.com>
+ <af1bf81f-ae37-48b9-87c0-acf39cf7eca7@app.fastmail.com>
+ <20241002-rabiat-ehren-8c3d1f5a133d@brauner>
+ <CAH5fLgjdpF7F03ORSKkb+r3+nGfrnA+q1GKw=KHCHASrkz1NPw@mail.gmail.com>
+ <20241002-inbegriff-getadelt-9275ce925594@brauner>
+ <10dca723-73e2-4757-8e94-22407f069a75@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <10dca723-73e2-4757-8e94-22407f069a75@app.fastmail.com>
 
-On Wed, 2 Oct 2024 14:31:07 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
-> There are some subtleties involved with PHYs, which is why we have our
-> own wrapper around the macros in iopoll.h:
+On Wed, Oct 02, 2024 at 03:45:08PM GMT, Arnd Bergmann wrote:
+> On Wed, Oct 2, 2024, at 14:23, Christian Brauner wrote:
 > 
-> https://elixir.bootlin.com/linux/v6.11.1/source/include/linux/phy.h#L1288
+> > and then copy the stuff via copy_struct_from_user() or copy back out to
+> > user via other means.
+> >
+> > This way you can safely extend ioctl()s in a backward and forward
+> > compatible manner and if we can enforce this for new drivers then I
+> > think that's what we should do.
 > 
-> Normally an IO operation cannot fail. But PHYs are different, a read
-> could return -EOPNOTSUPP, -EIO, -ETIMEDOUT etc. That needs to be take
-> into account and checked before evaluating the condition.
+> I don't see much value in building generic code for ioctl around
+> this specific variant of extensibility. Extending ioctl commands
+> by having a larger structure that results in a new cmd code
+> constant is fine, but there is little difference between doing
+> this with the same or a different 'nr' value. Most drivers just
+> always use a new nr here, and I see no reason to discourage that.
+> 
+> There is actually a small risk in your example where it can
+> break if you have the same size between native and compat
+> variants of the same command, like
+> 
+> struct old {
+>     long a;
+> };
+> 
+> struct new {
+>     long a;
+>     int b;
+> };
+> 
+> Here, the 64-bit 'old' has the same size as the 32-bit 'new',
+> so if we try to handle them in a shared native/compat ioctl
+> function, this needs an extra in_conmpat_syscall() check that
+> adds complexity and is easy to forget.
 
-Thanks, I didn't know this function. I think that a generic
-read_poll_timeout in Rust can handle such case.
-
-#define read_poll_timeout(op, val, cond, sleep_us, timeout_us, \
-				sleep_before_read, args...) \
-({ \
-	u64 __timeout_us = (timeout_us); \
-	unsigned long __sleep_us = (sleep_us); \
-	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-	might_sleep_if((__sleep_us) != 0); \
-	if (sleep_before_read && __sleep_us) \
-		usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-	for (;;) { \
-		(val) = op(args); \
-		if (cond) \
-			break; \
-
-The reason why the C version cannot handle such case is that after
-call `op` function, read_poll_timeout macro can't know whether `val`
-is an error or not.
-
-In Rust version, 'op' function can return Result type, explicitly
-tells success or an error. It can return an error before evaluating
-the condition.
+This presupposes that we will have Rust drivers - not C drivers - that
+define structs like it's 1990. You yourself and me included try to
+enforce that structs are correctly aligned and padded. So I see this as
+a non-argument. We wouldn't let this slide in new system calls so I
+don't see why we would in new ioctls.
