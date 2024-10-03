@@ -1,132 +1,76 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC321AAE36;
-	Thu,  3 Oct 2024 21:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A526F06A;
+	Thu,  3 Oct 2024 21:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727992324; cv=none; b=iPla34Yb6UjEbL8RehqGXpKTMKt9pXIvX+Uzbzeq/lWgYPetyIKIIDkBAgk2G7eUB5yD6ouc0oagu1HoYCyV3cJODqivYbhWojtbyYb1TY09pqMnv1ZQRgzqaSWuVDxJD2v9622hJcIDzCX2Sefmnqc4Fs7BAdUYB28agCGiphA=
+	t=1727992443; cv=none; b=A5fJ4/RKrNRhVPhnY/RfPETDxEMybyF8UVsITZGrKD5kkRo6RPLgF44M7KIXM7moOhOFclwob7HWpu9sbRKmYJ77Si8apDht4/gKHMLp0Rn3JcsB9X6dkrufCJMuTpZ/USo5G+Bjp54M2r5m7tDhvZBJxdQ270gqGF+wgpOJ4BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727992324; c=relaxed/simple;
-	bh=Qkgylb9eQTwPDhGkklvlART8vOuDVtTpvqJn4T8hEuc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OM55M2Rjo+kWEYwMsivxNVWTLUEYsm9Cb9PtdCdo7DMB/AmawhYTftweCRP1fJ0a/nUvEROmwrLflBymplP9G2DOV/84LabBrYne25yz7rM7RDbkFsQc1r4PF4dEU9OwhOm+bsIOjN+UIrIXjW4v1B4k/LQRS64wT/qGt/H/4QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MJ0Y38c7; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727992443; c=relaxed/simple;
+	bh=ykq4pspMFz3hLW6ybfM/6qwDf4lp289eI6rgXUV8oA8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ODS3RUCepg/bLoU1Yy2ZKOfxLpoVyI1NeNLlrqpa1tk/yQ3Fnyi+iO78uDTtw1p9RY/OBTbpdixyx6QUCHQgGdwGdNq32IIOJXipSmYblnmKEHfZ5USuPcCl8lplbb3R206DvFqrPOVZZneb3KXz/WJsC8sxZX4czD2MOlIGpnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RpUfdqsU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MJ0Y38c7"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-718ebb01fd2so224496b3a.2;
-        Thu, 03 Oct 2024 14:52:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727992322; x=1728597122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j1ocYpbXaC5mU/aFXMsvBK/itd7YFUGOalmomO/3cJs=;
-        b=MJ0Y38c7NFVps5VIsKS6ZwsyBzO3bLvP26PMANiNOmfo4RQ6c76w/kKe9HKuk9pb26
-         1W127+5iZSBxnWai3F5qVNKfFnTvmSvR+CWkRA2Thgvo4gv+tUxRtJc93N823Tyfe9uQ
-         BLxP7VIP3U656Rjd6EWIf6PElOrMBtxSuAqb48LUdcazA9kvih4WNF/c3uyoM51xtQZR
-         AMyrl4dVH9jMXuMhwZm8/O+7OmYsjNIZSjIyjafCGfg+LLwKXOP8WT23qzWy2c4c1OWO
-         thqBUX1QlQaIIVKkrfzxLKYGe/E4iBEVAQ269+oPLtgOX70q0FB7KosHzT8XMXp4+FhO
-         nmmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727992322; x=1728597122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j1ocYpbXaC5mU/aFXMsvBK/itd7YFUGOalmomO/3cJs=;
-        b=TgpFPzzRBinK5FL2u1C+52R+U/gyj4z4uoCpvDTTtEPQEfEJzXZwL8fbtEVaGqy+yX
-         lxeSW2hwXo8V5+Sn/Vw7GCjNXg4pfxE1VlucfSFNfq/aUerV4mNvIrw4ngIQhg5cWhYd
-         UHvlo0CA0rJyQUY1V4nFOoDp3KWHsf90Ccc34fqCzyjOs9caniDi16bnXgoxuWrzuB05
-         UhxQ8fzTsH2zFQmYDdejoysuY/65Tv+XuS2rmk5I/z+7T1SBjPXheLLObZVqRlSAhrqR
-         2mc9X94XMt1AQkooe7AODQhtFdKelGKhu/hHXVi+y5OazmyrZPinvD0CQkRu27CiNxrZ
-         zAwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFRNIXvjEdhO5Jo6WvukUU4PvOdHdoAv1R6Xs2W/Xr11Kt8khompj82axGL6fH7xrEX+X/cfCGBXETQk9tAvs=@vger.kernel.org, AJvYcCX/3sCIi4ie+rOySwJBUpPx6gMD1wxDDyzx8pRLQueiDBnDN/mEz65Z77llHtCO+fKYM2dDmlA6HzPni/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo53Y3GquYYQElRghu2lAhTeo4ZT1S/Za0KXdBJeEKCF7muwuk
-	QX9cGKo/7i3si8kjQi82MtlqZtJu7cZ3oAGcNt/13g0fyVDRN/hlJU1I4nrTt2S6dIe+KwKVHji
-	vVmGt5bwigD74EEoLArSI0yvEATkGRjEGYO/hRQ==
-X-Google-Smtp-Source: AGHT+IHTh3t5d79tqkJbOqxEb5kcbUgEmnwOVGF1GZDA1wqj2rKreT3LCSAdvi67msvAAPCh9G8GXqYnPiYwwYJIwPE=
-X-Received: by 2002:a05:6a00:464e:b0:70b:705f:8c5d with SMTP id
- d2e1a72fcca58-71de2446c96mr317654b3a.4.1727992321935; Thu, 03 Oct 2024
- 14:52:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RpUfdqsU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489BAC4CEC5;
+	Thu,  3 Oct 2024 21:53:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727992443;
+	bh=ykq4pspMFz3hLW6ybfM/6qwDf4lp289eI6rgXUV8oA8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RpUfdqsU4rFOLanFE8uBBCJGrmV6YtsN4moowfxLvox9GbA6fLzNcr2gtaq8P4LdJ
+	 PvNj4nPN4I9djxk8lQXOYUciAteE5gtIv1ZprEIrN/JVOmvKnLvK5tldcQT/WKbeQt
+	 eJnF/gHdP1lClPH51jGaSYOyQCXM9NjrT+dQxsBWqUpdxpl2mBi6W+5IS66WNY6KMZ
+	 xIarg6MYcqfOSNk8gSELvWgJbSi2fORZcksaLuNfcNRK3HfyCw0MnJSd6Juc3TXcZg
+	 nhMIlZOXciXyeTgnlYjB+kJPBz/TebADqWHSz7BkrQh8iDJ4PmnYQ+cc1QBFHIjVFc
+	 xLNXHj1NHuGnA==
+Message-ID: <fd889e4a-3da7-4ade-a0a4-c4fb1feb540f@kernel.org>
+Date: Thu, 3 Oct 2024 23:53:56 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 3 Oct 2024 23:51:50 +0200
-Message-ID: <CANiq72m36NBNaSLL2phtFPKL3CYdamSOzd-e2t3imP3nY9ed0Q@mail.gmail.com>
-Subject: Re: [PATCH 00/19] rust: lint improvements
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 25/26] kbuild: rust: remove the `alloc` crate and
+ `GlobalAlloc`
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com,
+ wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ akpm@linux-foundation.org, daniel.almeida@collabora.com,
+ faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+ lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
+ jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
+ lyude@redhat.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+References: <20240911225449.152928-1-dakr@kernel.org>
+ <20240911225449.152928-26-dakr@kernel.org>
+ <20240928204357.3a28dada.gary@garyguo.net>
+ <CANiq72nuZ41eDXkybGBbGRMgJzUOe1rRZioS-amJfH7UV-9cMQ@mail.gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CANiq72nuZ41eDXkybGBbGRMgJzUOe1rRZioS-amJfH7UV-9cMQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 4, 2024 at 10:44=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Hi all,
->
-> This is a series that contains a series of lint-related things:
->
->   - Cleanups and other improvements and fixes, including removing `allow`=
-s that
->     are not needed anymore for different reasons and a workaround for
->     `dbg_macro` detection.
->
->   - The enablement of some safety lints so that the toolchain enforces th=
-at we
->     write `// SAFETY` comments and `# Safety` sections properly.
->
->   - The addition of `.clippy.toml`, which allows us to take advantage of =
-a few
->     configuration options.
->
->   - Start using the new `#[expect(...)]` feature and add documentation on=
- it as
->     well as lints in general.
->
-> Overall, this should improve the quality of the code and documentation as=
- well
-> as reduce the time needed in reviews.
->
-> I want to mention Trevor's nice work on lints from a while ago [1]. I thi=
-nk we
-> should still do something like that: discuss which lints we would like to=
- have
-> one-by-one and start enabling them (and perhaps have a file like Trevor p=
-roposed
-> etc.).
->
-> For the moment, though, I am sending these, since we would like to have a=
-t least
-> the safety-related ones enabled soon [2]: now that more code and develope=
-rs
-> are joining, it sounds like a good time to start enforcing it -- it shoul=
-d make
-> new Rust kernel developers aware of the need of writing them, which has p=
-roven
-> to be a common request from reviewers.
->
-> If needed, the series can be applied partially or split, but most of it s=
-hould
-> be fairly uncontroversial.
->
-> Link: https://github.com/Rust-for-Linux/linux/pull/1025 [1]
-> Link: https://lore.kernel.org/rust-for-linux/CD29DF8F-7FF3-466F-9724-BC92=
-C14A68BD@collabora.com/ [2]
+On 10/3/24 11:41 PM, Miguel Ojeda wrote:
+> On Mon, Sep 30, 2024 at 9:11 PM Gary Guo <gary@garyguo.net> wrote:
+>>
+>> Would it make sense to throw in a soon-to-be-stable (or
+>> already-stable-but-beyond-min-rust-version) feature here to not have to
+>> remove the build system support for unstable feature directly?
+> 
+> Yeah, agreed -- we are going to have `lint_reasons` and
+> `arbitrary_self_types` before this series, so it should be fine.
 
-Applied to `rust-next` -- thanks everyone!
+So, I guess you'll just fix it up when applying the series?
 
-Cheers,
-Miguel
+> 
+> Cheers,
+> Miguel
+> 
+
