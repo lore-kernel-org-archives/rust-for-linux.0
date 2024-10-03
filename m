@@ -1,141 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8964414431B;
-	Thu,  3 Oct 2024 11:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87AE10E0;
+	Thu,  3 Oct 2024 11:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727954034; cv=none; b=RnTvpHk6QXcQiB6o8HEEdYp8nOUGzI3YA7ilzFIfB6XHeHjGlH52mUXXYc0xr8HH5ohBBM32wXftJYcoLJTqkYSOwB29SnKVn7+mJYhWBsY2ufYWKwDtfu0f3b3R081vXJt7iviSeHGBGmYRzzXSmWqwRzhAhvqSDH6qZyOxJK0=
+	t=1727955073; cv=none; b=gB6r1p7Z7fP1XiqHp1f4FSJHTCpnMfRMoqqheiSEYd45bvj6kGg/ElswuB3cbC7eF/gg3sGt5upoFeo9s1YXxiCUjUeFln/rBM/9ImoKVXF7VNp/SywBaDgWaLp1e0ccU6QkV+vFGTgluAGlUwSOJxQrmj+Vdn8eR8UlrqM+w7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727954034; c=relaxed/simple;
-	bh=ncshirJSuuxVYT6Rg4hMRMg6qTFNBzUzykD4N2BkVY8=;
+	s=arc-20240116; t=1727955073; c=relaxed/simple;
+	bh=gh7AiH1TZgK6DdBNLlxO2DI0t14/pxLdW+EFid71JnE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kPHSvaGKTWN8C0Nx37QsvMHDiJT6HLS64DtcWGxae2zf39VWSoA27me9CYpyUqVRwF4+8WeJMGg4N5tNvpBE+56XS0M66lBlX14WFwtEEYSRYswezlEZzDTamgqwcsSlUDI9I83gZnikxGS0BA6+RFEgARFxKs9gz5EtnPICyPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jo5b2EyM; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=X7LKqgF2BXKIbazpylr957JJDNzOiGi4Igg3Vkcg4PjRGc+Um9f49NyYnHkvEYebQJE1YYNif0iNCTD10HS9Toz9N6Co9pm3u9s0poYMUlhzfGM5uUU3DteZznwxKSCdA/8TIGpusNHig5vdvq8nc1z0k63dXpVabFgOHYzl4hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PjdGvVG7; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jo5b2EyM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02029C4CED4;
-	Thu,  3 Oct 2024 11:13:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727954034;
-	bh=ncshirJSuuxVYT6Rg4hMRMg6qTFNBzUzykD4N2BkVY8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Jo5b2EyMOS3uk9JDlHSQeU5R1aJyjAs0+fTPWkZCep6Wfe3FtEcKX92qY2mtaY2EK
-	 Ci8TPn6Ee42qRsmfrcj1l+x8zMsi6bvfBaExW2NU/fSlbTuDXDF1+X8cFBydkm8Y27
-	 lb+XzyBozg7zRqcDdBoznF0nnozWrNcR9tzS6b9UomNb4g91qxhdupQuTqUK4zEuA4
-	 z7g+nzwCR3g6dyxU7168Y4P6qlP/X9DMrNre/R3uCNKxAg+BkBWF+gHp9jrQW3cTIh
-	 xrWMcRuCjU0dRKRqqjEvI0IIIfAguu/05IPATBt+DaAJfq3OXiy9Jf7zCzIbXi+uOl
-	 853BOc6UvNv1A==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53995380bb3so1051099e87.1;
-        Thu, 03 Oct 2024 04:13:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUMZ83aPs6Y9Mc8/76A84iJla1AJCX9Et2K13+KujubLe2sgHbvnKgZl4NuiD05HVtyE8WoJyooTELHDKJc@vger.kernel.org, AJvYcCUol65TBElcH6VRPdOKTevF5/Lg0Bgvr04QoHuzeJ3vv0tXAom1N8dA6JhOhqxEsnpwFieSoEgOiaao@vger.kernel.org, AJvYcCV2cpTVxzMwed+BQGXixWf2l6Z1qOjOhdS+ZPRILONG3juJVUAa0l4Zf0jyUO+AN/tX3AubuqvbL+Ht2w==@vger.kernel.org, AJvYcCV7SHMXRybZNmiZtR6oeW3XlhWJ1sPvIu0OCAp6W/yr/M2Cr8GVxev0QSXYb8S9gB2bsNWEFlveQx67vqKTdRY1vw==@vger.kernel.org, AJvYcCVJycArIR3VPg10j8rte3NuVKrN4Dmbp658AY1jhRwXGJa6NxFlF4vgRLHCCLJxjzLUtOflFlJdVswb13Kq@vger.kernel.org, AJvYcCVKCH+27bj3KprvYndBy1OLWcz2gzFauQzBYu9karbRPFXS4JY+qZ4NI2zETiEcLm3JbJYurHJFJ5km@vger.kernel.org, AJvYcCVcx5OIiA5GHF2O32Qr+FTzWaMyGUhNjGDurLGNpEP0zFwdIVFyFcGZXSv+fycttd4RGuQJgTfOEOqmVPTc@vger.kernel.org, AJvYcCVvZrcqj31MD4y8rXNg+pz6HKBUIvYSj4JzJcBz5q6QkdO4qgoD/0iJh9oAg1i2BZougKDDXCgcp0ZWV9zi33E=@vger.kernel.org, AJvYcCWmGLvSpl1papB8MvSTPgS3BfainKQddGsUq0U3iaLkR/wjmAjqJFIMpmXpdpYTYMxfqmwnOXYCzns=@vger.kernel.org, AJvYcCXEL4X4VlMIXN6mutoyZsnTaiRR8MYaOjH0ixRxr5SsiEgXOfAD6OYUkpqwMxpR9paJcRc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYusTtmvHCpx+fbQj35DhxxIcDdBxZMUegSYe4vdI008LT62L9
-	POZO1ex2ELV2iUqAp2JCPWCr6iQo88kkk52Cdhf6Ls8/9HA/oIsCmBfOcw6nZCIp93wnszGav6m
-	/VNPGY8sBWRRCLFdtEFGdi7TAss8=
-X-Google-Smtp-Source: AGHT+IH0sWh3HiA/Y/FG77TM2NrCKaNhbA4eJ/qwHE/WqxSdpNeBFdDDl6WpEY+OacY7yD9godh5OoCJmImz57qPZ+Q=
-X-Received: by 2002:a05:6512:1241:b0:536:9ef0:d829 with SMTP id
- 2adb3069b0e04-539a07a1db9mr3832198e87.44.1727954032228; Thu, 03 Oct 2024
- 04:13:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PjdGvVG7"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4583083d019so5616341cf.3;
+        Thu, 03 Oct 2024 04:31:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727955071; x=1728559871; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=gh7AiH1TZgK6DdBNLlxO2DI0t14/pxLdW+EFid71JnE=;
+        b=PjdGvVG7aTKKcNajnzfm9HZsN+mkk8NdHC3f99P4TJ0tOKEFFXzorEI8U2Heupt391
+         IzHgr2mQ7b9j2fgjjMJSn6ykhlg3TmzHdiPWVJSahm41iBjAj9H3K+cRQ0kscRA9vAlg
+         7UWz6iAaf497iO+mxEA10NnyiBT2JuEBXimTx0USriFHm9GhPvb9KbcgjRnZGe6/fNLp
+         5AKEnF6Aohsa+Uz4DUKpCEKPROQv0Gn747gej3UNCugtIWeFKI02UykHocRdY3aXvvfF
+         KgNWL5EswZM4RqSRFLE//KJ9HrODQTME54AZRsb6GBZAU2R37SQ4AaFJiv5dWaD4miaH
+         k+ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727955071; x=1728559871;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gh7AiH1TZgK6DdBNLlxO2DI0t14/pxLdW+EFid71JnE=;
+        b=QWPt3fDYanfMAAdpqdGPfJm0bmzj+x6pXM5CbHIZ7yAHXCaWIRrMeo7e++ojHGAGm8
+         4XIeaCxNwoGRXTHGoMH8GKuHHmF1XnSJwbfhvG6WEpFwFEVEdtkARdfopLmuTI3pJZR7
+         zNcSZr8kpUUiIiAfGAH9+y8Mib21ZdJq1XjfPVivJ6WKgUMWw6yclJ9/utzgH28a5pwW
+         S0AQzcNb4Yxwt4mO/HSgktSZtYFfpwvU63H6I7h2EhOeBIRJQFznSeXLSRM5GITnaby7
+         q7NMS55sChtpyK/LWM52NcfcmFbROmHz9JO+m7nzwyO/bOR9qIlumibU+JilFcvbLTlG
+         NOMg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4q9vSXW3Ir8lGnxmy2/AmzHryAJFuDknd8mRKIbD60IeAsrJPCstMaKNdDL4ELbnu1Sev5C/UOUX2WNs=@vger.kernel.org, AJvYcCUGpkBwMIxztnLIgpDKEMyt5f5nGIOQ4UXUTQkn1cNiN0ug4DSojT+xzhPzkGPaSPPbznt2Z6sOAIepSxy6bEQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUluHDtjWjGVG8GG4PMnfThp5KzdqPkSyYSpMu4OMDi0WF7757
+	qQ7rwgO4uNa3E67pS4PuG3VVREbH958TTd8OhtYt6ufqdRISeQ15kMfTgCCuaXsekEVz1YwVqNo
+	lfYtBTvD0+h0P2yW+DzvsZ1nJ+oY=
+X-Google-Smtp-Source: AGHT+IErhTdnk3JMPmzlTQHvybxPEj2bg7gIsYFxYE7dZOm1Q538p5Jk4okebBFD6BnKJBRKXXc8JeW78tisymP7HFI=
+X-Received: by 2002:ac8:5d4f:0:b0:457:c74a:6384 with SMTP id
+ d75a77b69052e-45d804b528fmr94378741cf.20.1727955070562; Thu, 03 Oct 2024
+ 04:31:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-55-ardb+git@google.com> <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
- <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com> <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
-In-Reply-To: <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 3 Oct 2024 13:13:40 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
-Message-ID: <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
-Subject: Re: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
+References: <20241001205603.106278-1-trintaeoitogc@gmail.com>
+ <Zv1RhZpQGkVBlLCU@pollux> <2024100240-wrangle-condiment-3f0c@gregkh> <bb2f6786-b99e-424d-b54e-c56d9c7f1f81@app.fastmail.com>
+In-Reply-To: <bb2f6786-b99e-424d-b54e-c56d9c7f1f81@app.fastmail.com>
+From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
+Date: Thu, 3 Oct 2024 08:30:34 -0300
+Message-ID: <CAM_RzfY+HDuUwhhKDN5b56Ct9YbWp2BOV+i7Q9+bdBDWA6duBg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: device: change the from_raw() function
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, rafael@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, Gary Guo <gary@garyguo.net>, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com, 
+	mcgrof@kernel.org, russ.weight@linux.dev, dakr@redhat.com, 
+	a.hindborg@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 2 Oct 2024 at 22:02, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+Boqun Feng <boqun.feng@gmail.com> wrote:
+> This work is because we have an issue, so this should really have a:
 >
-> On Wed, 2 Oct 2024 at 08:31, Ard Biesheuvel <ardb@kernel.org> wrote:
-> >
-> > I guess you are referring to the use of a GOT? That is a valid
-> > concern, but it does not apply here. With hidden visibility and
-> > compiler command line options like -mdirect-access-extern, all emitted
-> > symbol references are direct.
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1088
 >
-> I absolutely hate GOT entries. We definitely shouldn't ever do
-> anything that causes them on x86-64.
+> tag.
 >
-> I'd much rather just do boot-time relocation, and I don't think the
-> "we run code at a different location than we told the linker" is an
-> arghument against it.
+> Greg, could you add this when you queue this?
 >
-> Please, let's make sure we never have any of the global offset table horror.
+> Guilherme, please add such a tag next time, so we can have things
+> tracked. Thanks!
 >
-> Yes, yes, you can't avoid them on other architectures.
+> Regards,
+> Boqun
 >
-
-GCC/binutils never needs them. GCC 13 and older will emit some
-horrible indirect fentry hook calls via the GOT, but those are NOPed
-out by objtool anyway, so that is easily fixable.
-
-Clang/LLD is slightly trickier, because Clang emits relaxable GOTPCREL
-relocations, but LLD doesn't update the relocations emitted via
---emit-relocs, so the relocs tool gets confused. This is one of the
-reasons I had for proposing to simply switch to PIE linking, and let
-the linker deal with all of that. Note that Clang may emit these even
-when not generating PIC/PIE code at all.
-
-So this is the reason I wanted to add support for GOTPCREL relocations
-in the relocs tool - it is really quite trivial to do, and makes our
-jobs slightly easier when dealing with these compiler quirks. The
-alternative would be to teach objtool how to relax 'movq
-foo@GOTPCREL(%rip)' into 'leaq foo(%rip)' - these are GOTPCREL
-relaxations described in the x86_64 psABI for ELF, which is why
-compilers are assuming more and more that emitting these is fine even
-without -fpic, given that the linker is supposed to elide them if
-possible.
-
-Note that there are 1 or 2 cases in the asm code where it is actually
-quite useful to refer to the address of foo as 'foo@GOTPCREL(%rip)' in
-instructions that take memory operands, but those individual cases are
-easily converted to something else if even having a GOT with just 2
-entries is a dealbreaker for you.
-
-> That said, doing changes like changing "mov $sym" to "lea sym(%rip)" I
-> feel are a complete no-brainer and should be done regardless of any
-> other code generation issues.
->
-
-Yes, this is the primary reason I ended up looking into this in the
-first place. Earlier this year, we ended up having to introduce
-RIP_REL_REF() to emit those RIP-relative references explicitly, in
-order to prevent the C code that is called via the early 1:1 mapping
-from exploding. The amount of C code called in that manner has been
-growing steadily over time with the introduction of 5-level paging and
-SEV-SNP and TDX support, which need to play all kinds of tricks before
-the normal kernel mappings are created.
-
-Compiling with -fpie and linking with --pie -z text produces an
-executable that is guaranteed to have only RIP-relative references in
-the .text segment, removing the need for RIP_REL_REF entirely (it
-already does nothing when __pic__ is #define'd).
+Understood. Next time I should add the closes tag.
