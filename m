@@ -1,76 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A526F06A;
-	Thu,  3 Oct 2024 21:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4460824BD;
+	Thu,  3 Oct 2024 22:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727992443; cv=none; b=A5fJ4/RKrNRhVPhnY/RfPETDxEMybyF8UVsITZGrKD5kkRo6RPLgF44M7KIXM7moOhOFclwob7HWpu9sbRKmYJ77Si8apDht4/gKHMLp0Rn3JcsB9X6dkrufCJMuTpZ/USo5G+Bjp54M2r5m7tDhvZBJxdQ270gqGF+wgpOJ4BI=
+	t=1727993858; cv=none; b=t2tE4dCQIMkttYq3sZVjWOC6EV6RK1p4jkXeQvEWBKN8N56gbY9TijeK2OXCNVEn1co1uIQiD4HcaPMr8Gy3cmwfo6lFzS3fBH7RIa1vItGf5vhYvI34oA+yTqKBze57LBvwbDzWhcTM7ZvZyqYFOMzgqO9DiGMAg6Boexf4/9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727992443; c=relaxed/simple;
-	bh=ykq4pspMFz3hLW6ybfM/6qwDf4lp289eI6rgXUV8oA8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ODS3RUCepg/bLoU1Yy2ZKOfxLpoVyI1NeNLlrqpa1tk/yQ3Fnyi+iO78uDTtw1p9RY/OBTbpdixyx6QUCHQgGdwGdNq32IIOJXipSmYblnmKEHfZ5USuPcCl8lplbb3R206DvFqrPOVZZneb3KXz/WJsC8sxZX4czD2MOlIGpnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RpUfdqsU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727993858; c=relaxed/simple;
+	bh=Ymh2tpS1JI2NHOim1p+BjzOidAveJc2fGryZHKnRDpE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZURI/IA423miIyhnCQakXpaMVZxlmnO/fqmE7Nrk5ZeD92ekoWLurrxYArtO3RFxDfc1FOuLcnsosKzkNr9rjDzvuUADNeetQTcDjpB57GHBzrCADvqarLuMUQY6qmbVTRRpt2168Vqs/8vlzClzNOYsleJcOjCHSf8vI8he5i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V97lcLm4; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RpUfdqsU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489BAC4CEC5;
-	Thu,  3 Oct 2024 21:53:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727992443;
-	bh=ykq4pspMFz3hLW6ybfM/6qwDf4lp289eI6rgXUV8oA8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RpUfdqsU4rFOLanFE8uBBCJGrmV6YtsN4moowfxLvox9GbA6fLzNcr2gtaq8P4LdJ
-	 PvNj4nPN4I9djxk8lQXOYUciAteE5gtIv1ZprEIrN/JVOmvKnLvK5tldcQT/WKbeQt
-	 eJnF/gHdP1lClPH51jGaSYOyQCXM9NjrT+dQxsBWqUpdxpl2mBi6W+5IS66WNY6KMZ
-	 xIarg6MYcqfOSNk8gSELvWgJbSi2fORZcksaLuNfcNRK3HfyCw0MnJSd6Juc3TXcZg
-	 nhMIlZOXciXyeTgnlYjB+kJPBz/TebADqWHSz7BkrQh8iDJ4PmnYQ+cc1QBFHIjVFc
-	 xLNXHj1NHuGnA==
-Message-ID: <fd889e4a-3da7-4ade-a0a4-c4fb1feb540f@kernel.org>
-Date: Thu, 3 Oct 2024 23:53:56 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V97lcLm4"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f75c56f16aso16474491fa.0;
+        Thu, 03 Oct 2024 15:17:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727993855; x=1728598655; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lo03yBFFODZstMfsdWLSOlbjB57/RWRNzFo3/1cKqnQ=;
+        b=V97lcLm4l35g8Az8mujQLDGHO83/8/JlZgMm2r/Qc4tn16peyN3T7PgR0/PwYWl2no
+         r1x9g/SKX7Hu0xO3tDcZ/RSCIZ8YeAXEjiWd4lUPRvTP2dVBImFYWlrHdzqaAu6ila0w
+         AE8fJ5YWWIwJGIH/TnG+zxinnI4MUTX92UeyvPsyHUcR13veaCrUny9EhuwwO09zukNW
+         KZJQ+Bsmbz0KntHYGxRW62dHnzHEqdmx+PeOVsev4H0s82Rq0M84PIcql9K1Rvyoif/c
+         WO4QsMHvlgr6LwJ7jWfyFmnrPycn4lsCxyN1ehhYwdZTqny/NacGNQCuN/HeOyH4EziQ
+         kCxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727993855; x=1728598655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lo03yBFFODZstMfsdWLSOlbjB57/RWRNzFo3/1cKqnQ=;
+        b=M6iRstHk7MIv6rxyAer6oq4I0Zbk8Kff0jp2JaDBL6ee49VAeIlF2ZF6c45mvgUL3T
+         8qI4TAplTgToekLc/e3txcBzDiN+8tnaivLtlNBjuyCstbbSJno+mjvZoQHHTHuP1Zbn
+         fkxGCdIii/hRvUYyI8ZQK5fowhqBtwg6RW8yAPPXmrM7XAJiys0dovJ9CMsnZJXQLEgP
+         pKFOLSQYAL8ilGHGszOTuQn4jozrXOOGNc0j167UVxSYqIT6SdOfKEyN5INZi58+wHUA
+         sIu84kPW4Jb+MttnejRQuNI95rpievKBl5TNDFd+FeJmDIUbTj/lrUiJ8df8dHY60G32
+         oGeg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSK/o0/g7+aJYxVIU1AveHIWhpCRsFgBydAzEG08R+EaT6pP9PXf6TFKYzOUQYmcOuezoIc4UZ6jEGweA=@vger.kernel.org, AJvYcCWAFXYyUETz63CiIfs6CUNTYCop3R+C4Zr/eV5aHqtMOzuXYcAxg+g40mrzQNASFKNg/Lg79M5wfIyTJL6Uuy0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFOtopHUaCFa/YcBN1nCaJDrTJw5tbNAjcnJLiR+qWbjI1Jfjf
+	txIJ7Fph++HiOLyFy8i4mhxRNDaAKjZtCcSLEBgfvAkXiRjYjItN
+X-Google-Smtp-Source: AGHT+IG12SpHijBRGXnrLLIsP9edGAXbq0kxeeG2mPlpZc4fneT6+0Ohi0oAfNbIPRCboytuYOt7fw==
+X-Received: by 2002:a05:6512:12d1:b0:539:94df:38e9 with SMTP id 2adb3069b0e04-539ab88af26mr456917e87.31.1727993854565;
+        Thu, 03 Oct 2024 15:17:34 -0700 (PDT)
+Received: from mbp-deepak.lan (89-69-93-57.dynamic.chello.pl. [89.69.93.57])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9910473160sm137958966b.167.2024.10.03.15.17.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Oct 2024 15:17:33 -0700 (PDT)
+From: Deepak Thukral <iapain@gmail.com>
+To: 
+Cc: Deepak Thukral <iapain@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Nell Shamrell-Harrington <nells@linux.microsoft.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: update dbg macro outputs in docs
+Date: Fri,  4 Oct 2024 00:15:37 +0200
+Message-Id: <20241003221536.34826-1-iapain@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 25/26] kbuild: rust: remove the `alloc` crate and
- `GlobalAlloc`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com,
- wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- akpm@linux-foundation.org, daniel.almeida@collabora.com,
- faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
- lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
- jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
- lyude@redhat.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20240911225449.152928-1-dakr@kernel.org>
- <20240911225449.152928-26-dakr@kernel.org>
- <20240928204357.3a28dada.gary@garyguo.net>
- <CANiq72nuZ41eDXkybGBbGRMgJzUOe1rRZioS-amJfH7UV-9cMQ@mail.gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CANiq72nuZ41eDXkybGBbGRMgJzUOe1rRZioS-amJfH7UV-9cMQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/3/24 11:41 PM, Miguel Ojeda wrote:
-> On Mon, Sep 30, 2024 at 9:11 PM Gary Guo <gary@garyguo.net> wrote:
->>
->> Would it make sense to throw in a soon-to-be-stable (or
->> already-stable-but-beyond-min-rust-version) feature here to not have to
->> remove the build system support for unstable feature directly?
-> 
-> Yeah, agreed -- we are going to have `lint_reasons` and
-> `arbitrary_self_types` before this series, so it should be fine.
+Hi,
 
-So, I guess you'll just fix it up when applying the series?
+This patch updates outdated examples for `dbg!` macro.
 
-> 
-> Cheers,
-> Miguel
-> 
+Signed-off-by: Deepak Thukral <iapain@gmail.com>
+---
+ rust/kernel/std_vendor.rs | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
+index 67bf9d37d..464b2c4b5 100644
+--- a/rust/kernel/std_vendor.rs
++++ b/rust/kernel/std_vendor.rs
+@@ -16,7 +16,7 @@
+ /// let a = 2;
+ /// # #[allow(clippy::dbg_macro)]
+ /// let b = dbg!(a * 2) + 1;
+-/// //      ^-- prints: [src/main.rs:2] a * 2 = 4
++/// //      ^-- prints: [src/main.rs:2:9] a * 2 = 4
+ /// assert_eq!(b, 5);
+ /// ```
+ ///
+@@ -65,7 +65,7 @@
+ /// This prints to the kernel log:
+ ///
+ /// ```text,ignore
+-/// [src/main.rs:4] n.checked_sub(4) = None
++/// [src/main.rs:4:8] n.checked_sub(4) = None
+ /// ```
+ ///
+ /// Naive factorial implementation:
+@@ -88,15 +88,15 @@
+ /// This prints to the kernel log:
+ ///
+ /// ```text,ignore
+-/// [src/main.rs:3] n <= 1 = false
+-/// [src/main.rs:3] n <= 1 = false
+-/// [src/main.rs:3] n <= 1 = false
+-/// [src/main.rs:3] n <= 1 = true
+-/// [src/main.rs:4] 1 = 1
+-/// [src/main.rs:5] n * factorial(n - 1) = 2
+-/// [src/main.rs:5] n * factorial(n - 1) = 6
+-/// [src/main.rs:5] n * factorial(n - 1) = 24
+-/// [src/main.rs:11] factorial(4) = 24
++/// [src/main.rs:3:8] n <= 1 = false
++/// [src/main.rs:3:8] n <= 1 = false
++/// [src/main.rs:3:8] n <= 1 = false
++/// [src/main.rs:3:8] n <= 1 = true
++/// [src/main.rs:4:9] 1 = 1
++/// [src/main.rs:5:9] n * factorial(n - 1) = 2
++/// [src/main.rs:5:9] n * factorial(n - 1) = 6
++/// [src/main.rs:5:9] n * factorial(n - 1) = 24
++/// [src/main.rs:11:1] factorial(4) = 24
+ /// ```
+ ///
+ /// The `dbg!(..)` macro moves the input:
+-- 
+2.39.3
 
