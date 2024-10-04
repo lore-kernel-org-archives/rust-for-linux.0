@@ -1,112 +1,133 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4644513A257;
-	Fri,  4 Oct 2024 09:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A3A146A72;
+	Fri,  4 Oct 2024 10:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728032427; cv=none; b=GhUl2HFlnYcGMtRwa3DHzsNmagay9YTL2FZRVnE9N6MGs0sW4u+hUHrc26MR05RanXaRfmQ9Aw8wZ+wWe4wh4R+EivHoD9UHvmAzfwLIflSmG0Q80r52v2ai7i8solazjBIDZZVl5qZN4jtZ9z255VORGOPIgMWBi7vF1CokZfg=
+	t=1728036114; cv=none; b=LVvx6h1A1Y7dnQnqjZIF+G5vg/Lzcd8juilIXmmjWPy80WEUd1c4VZKbj11i/OpmdJtIdFL2cCsrlMSXw8Vvi7WWc3+3jH8MGKB8/qEnPtI6+82C0MsPGUA4OE95YG3rvr4JD9vLBvlwBuPGgME0vjqI6Pzl7W8wNrjW3lM5zrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728032427; c=relaxed/simple;
-	bh=JWnxnBH/67sa2Eg50rmaQzoPoiXAmEKx92AhoGtH22k=;
+	s=arc-20240116; t=1728036114; c=relaxed/simple;
+	bh=nuE9Wx0dXnlPfKn5kpp9tKPB9VOjIJcG2joICPhGO2k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sp9SIAbPSJtUY63TOmsOfHxEg0meKGo14EPNyG92M58VChqG6N3e/YuCI08WcTW11P6scRW420urvVtj2WArA49fGbqVLv094NVOI36QEx1hO0SpCLrRyI8+wnvHAtYvz/27zBloWZeBXJ+TPsTA0wQiwqLTJDsC7T+Orv7ppEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sreq1pAj; arc=none smtp.client-ip=209.85.160.169
+	 To:Cc:Content-Type; b=dxuDaNkUWZeLGBipsBdeCkhm6Mej4WktzAc6c+HhnzgApFvpstkfBdjGFYWORpjLDzEffawWbJCZRYBNRWCv74pTI1h5Rqt+euN4zAwby+phc3yR/CLWG7Qtx70Afr6RhBKhxBQJWvruta4wuVkbmdtE/aorvMxTZU3ee0e7v84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UNjlsAZz; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sreq1pAj"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-45830ff5b70so13877541cf.1;
-        Fri, 04 Oct 2024 02:00:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UNjlsAZz"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2faccada15bso20055361fa.3;
+        Fri, 04 Oct 2024 03:01:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728032425; x=1728637225; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LSyBZcIG/Hlxsb/fNzByjsUQNuBYrRBNRwYFBJoo564=;
-        b=Sreq1pAjekHC+v8ESlwOD9eVH+Y539/Aoy/NjMzSMxFmhtU7YDRumQE5EBKQbbNQaW
-         JT+BNMqUJj3u3LdFpIGGNJR65UWXDc6LMkXxP3IW24A8YmMT9Q6ihaWFsKq1/OyyWCca
-         g2pETo8FE1+pT3Zlfiih4eKt3MWq7CbyFmy73pONpXmO54Ox0yhhDvOF2WFYY+7xZWok
-         QW54qF7Rvo0xw5eMwuQ1ioAi56KWrSD4OL1RqwxvRpql2zTt/dUGk5PW8PQSpGH88sPP
-         b5PRuVqkB9D5Q0K6tVlm7v3g6QBMv/hN9WcwaAph7mmCNcWuPezfON6040FtXz0yWa04
-         FfVA==
+        d=gmail.com; s=20230601; t=1728036111; x=1728640911; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cieeCIQbn3uKGp6ANoCcdjT0voB4iLaxe9sLqJZ6O1w=;
+        b=UNjlsAZz7sXdg9PcAuShFuTpjC5GIO3G7ZtoMn/gCYPFhFP6szeN6CMksFj2Mz7CX9
+         25E2h7rpMX8Yy7FK0nJlHpqOfNHH7OsiuX5yXdjLrS3BUNUDTsmagyFzmyayhb0/KvuM
+         bXHYcRlukQ3AwkuhIt2hoOKF+IwgXkmX0A73CKaCZ2sHUApI0UffEZuwngDk9UIBElEb
+         Z28/ABXaoxNiF0Pg8YwjQdTYrw4aEr/VmzBY47CwdQvVwvp5GEYM0H/TsPONY4+RZcSA
+         gKWMDhlSUAOt8oP72N2S0dQPs15n3DPYf59+4hc/TD7AWGtzQDgTVCkWio0vUxK5tZWj
+         t0Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728032425; x=1728637225;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LSyBZcIG/Hlxsb/fNzByjsUQNuBYrRBNRwYFBJoo564=;
-        b=Ker2nenPnmSsH7BWWmWRgi0P1I7OGP1VdUP3ufO0JbLqjmlKOjPtWM5LivTNZeKZ7x
-         3dll/V9X9Gy354uojzp9smBw5/bvrABG4ZtaPK61p6v8fyOZH4SLZqCWkRUF/7X7xZSW
-         GKcxsqz34m2fx2d/m/o92OP/T0Birskx2PO0m9yMmKkS4jN0zqyRXQXn24jAJDEkUcXU
-         UbSKgYjFDn3Irou4Xzo2Rb8/oD2lOphvi8Gbgn4CjCWJy1/o9gPE48AYNoW3wfFjoRst
-         GLW5iLD/DguFs21e/HQ+bm2IYX8GOQijFFsrEyYSruPkgq2S9qCrRrCuYrMtTIopznau
-         7utA==
-X-Forwarded-Encrypted: i=1; AJvYcCWEkuZyb3MoBYKwbiSC0JHPRAVHOfgvkA5n1B8w4biphL3j9x+bGUp2jv2e0VG+EaUCJrfHxJ8tIs/hYJF7eyk=@vger.kernel.org, AJvYcCXTj5cYsyxs+RV8Vy09GAzvYjnaJLVLzTZz2iD5VRkm5zLQ6GRluq+B9avvZNc3q72+EcGGNMU/h5qOwMQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlWcgVZ4IUerBpgbH5Txex0K1IlETSjCORrvxXuB6p+8J7pvMu
-	qQd7BTBqiZTksP6UtfHuApWU03c3M77JTjJYyZIEUdLzgbQT+zfB93EZYSHjwdVgdrByD9Gkxcj
-	rx2SxISd8yWWFBId4DtvqzYe+EMk=
-X-Google-Smtp-Source: AGHT+IGKWnSncZ5atA0WaZ9lOASPli3mVJPnhC+gZ5xn8qYkbquhc6dtbrDki6tiu8n8zqmmCDu65I6T8+PiHbqIPi0=
-X-Received: by 2002:a05:622a:4a06:b0:458:4ded:fe99 with SMTP id
- d75a77b69052e-45d9bae9820mr32463711cf.42.1728032425091; Fri, 04 Oct 2024
- 02:00:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728036111; x=1728640911;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cieeCIQbn3uKGp6ANoCcdjT0voB4iLaxe9sLqJZ6O1w=;
+        b=GDf7o7thQUd4t/9w7KIlh1KmxPFRcaD6uklICZwdEnHm3/yndanZx3Sw6CQDASJIqf
+         7Z/tWYi9XvQ1pPcPwdKsGePmpQMXPAJskAy0pIaO7QzY2jCvxS1lQDt9U3ZC6+Pgns35
+         zBjg+kEKzUnUvyzQprtsVQXayLLjdx8HBVQrf8aVDxAx7ZaXX4pgZdBC5eN19GeUNb9y
+         FicRdcNpsZnEJEUCXEZuJkQAWPM28TCJDktw3KxFzJYySBj7tBT8vquP+we/aoHNhnxz
+         Bwr2+gY8+thv6rmh5RTYzDp/FRWy6E1ULpVMMEvzzbd54K9cfIC4hfTCwNXa9+Ic4ox9
+         U/4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU84yheG384U6F9uEf227dUGedLNtPKxD4sgwOjafNm4coPN0Vay10n5gQR2dDuY02UR+4=@vger.kernel.org, AJvYcCU8MaO+7GOuKN1euj5QwNyqnAlWjxFkdgspotEa/YpNXFgneBOA8LxcBLa5JuLr7PUafSuw+2LftcL5evfc@vger.kernel.org, AJvYcCUqAT0d+M8dC+FDiTd8RL09YjbHdGtfjkGALZPRLcAi00ATgc4fG/Vsxz5ZVPRrkht6fzsOWLfeU+o=@vger.kernel.org, AJvYcCVYedjxx8giapV3RYq3wRyoRTRyTIK/WIi9aukN/dyXpxKlsR/fKgZUYDcAyl9lPvxLssjlQexNvHAJFCHIIkc=@vger.kernel.org, AJvYcCWOi9kaT7Qj8ZkFH74IawTmk3VlIHs2choKSxkvObE30vTwMvnp8rUKU96oCkQztuH5O+tRLB+hZ9YnGFt0@vger.kernel.org, AJvYcCWQ+cGSwMhisD7ZFcXR5KHuZeAz8DXcw5QHYvaxaozvNNQhoaTNio27cKMrPKjDqsp3TJLOnbybNbv0@vger.kernel.org, AJvYcCX5hZ5Sa0eVKmquPw9TYFXfnx1MkqK75toj5gz6jTR31v0LmacNgJePNN4j4Ga5OgukOW8XrbPOY/6euYKVuHc7EQ==@vger.kernel.org, AJvYcCXoInKUyj9p/A+snT8qzUOE+x0AOGHl07pMAmUBFhJdxABlIDAOZdLAf4Eq9eFjMN0FlOZsUJwJGJQI@vger.kernel.org, AJvYcCXpqKwrQdjWjD1Pij3zUecNM9k0oYVOsRU7bieE4++E+Yjw7GkQgkSTZzwstI21foPmU8hWSadWw1F0uw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8f8ucLTA9BwO78upx78NfYlu5K7z1qJt1N7ESvd8czW9KXuNd
+	TDOdMP7qL6FxQfSbBTtNH+P34Xsf/LD6fy65nBPt7yLsxcGhLSB4T72dIaRjHTGKEf6ftknGjaz
+	QLSBrX/ROQ2TLf5jYRsSc3atwJCo=
+X-Google-Smtp-Source: AGHT+IFNljN6dwZlkogrdacVOY8k+lgMnJISEE8yVKjz9PNhP8aN8ZuhCudCHYoRMsLr1EPgwfyfZf3qjEWBYLSi1O4=
+X-Received: by 2002:a2e:b889:0:b0:2ef:20ae:d113 with SMTP id
+ 38308e7fff4ca-2faf3d8a95emr9412991fa.40.1728036110938; Fri, 04 Oct 2024
+ 03:01:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241003221536.34826-1-iapain@gmail.com> <CANiq72k0c+QxWkxfZ5f2VvzYmaX4z9hQoYvbPtKfF3pwLq-E8Q@mail.gmail.com>
-In-Reply-To: <CANiq72k0c+QxWkxfZ5f2VvzYmaX4z9hQoYvbPtKfF3pwLq-E8Q@mail.gmail.com>
-From: Deepak <iapain@gmail.com>
-Date: Fri, 4 Oct 2024 11:00:13 +0200
-Message-ID: <CACD3TDPbBnZuvr0jJVtrgs_4AXXk1+HGZEH_uPp2iQVf+4Ff6A@mail.gmail.com>
-Subject: Re: [PATCH] rust: update dbg macro outputs in docs
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Nell Shamrell-Harrington <nells@linux.microsoft.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20240925150059.3955569-30-ardb+git@google.com> <20240925150059.3955569-35-ardb+git@google.com>
+In-Reply-To: <20240925150059.3955569-35-ardb+git@google.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Fri, 4 Oct 2024 12:01:39 +0200
+Message-ID: <CAFULd4an+aN4iJ7T0DdMQDOBWrTZPJ4Oyy9ULm6R29fLNQND9Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@google.com=
+> wrote:
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> Specify the guard symbol for the stack cookie explicitly, rather than
+> positioning it exactly 40 bytes into the per-CPU area. Doing so removes
+> the need for the per-CPU region to be absolute rather than relative to
+> the placement of the per-CPU template region in the kernel image, and
+> this allows the special handling for absolute per-CPU symbols to be
+> removed entirely.
+>
+> This is a worthwhile cleanup in itself, but it is also a prerequisite
+> for PIE codegen and PIE linking, which can replace our bespoke and
+> rather clunky runtime relocation handling.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/Makefile                     |  4 ++++
+>  arch/x86/include/asm/init.h           |  2 +-
+>  arch/x86/include/asm/processor.h      | 11 +++--------
+>  arch/x86/include/asm/stackprotector.h |  4 ----
+>  tools/perf/util/annotate.c            |  4 ++--
+>  5 files changed, 10 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 6b3fe6e2aadd..b78b7623a4a9 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -193,6 +193,10 @@ else
+>          KBUILD_RUSTFLAGS +=3D -Cno-redzone=3Dy
+>          KBUILD_RUSTFLAGS +=3D -Ccode-model=3Dkernel
+>
+> +        ifeq ($(CONFIG_STACKPROTECTOR),y)
+> +                KBUILD_CFLAGS +=3D -mstack-protector-guard-symbol=3Dfixe=
+d_percpu_data
 
-Thanks for the quick review. I will rework on this patch.
+Looking at:
 
->   - It should explain what the change is and why it is done --
-> currently it just says "outdated examples", without mentioning why
-> they are updated or what the change is.
+> +        * Since the irq_stack is the object at %gs:0, the bottom 8 bytes=
+ of
+> +        * the irq stack are reserved for the canary.
 
-Sorry for not being outward with my commit message and thanks for
-mentioning this. I will rework on that.
+Please note that %gs:0 can also be achieved with
+-mstack-protector-guard-offset=3D0
 
->   - Please read the notes in the GitHub issue to know what tags you
-> should add above the Signed-off-by one.
-
-I have clearly missed that. I will include this in next patch version
-
->   - Commit messages should not start with "Hi," (you can, however, add
-> that kind of text/message below the `---` line and it will not go into
-> the commit) and they should generally be written using the imperative
-> mood.
-
-Noted
-
->   - Did you copy the output from the standard library? Did you
-> double-check if our output looks like that (in terms of the column
-> number)? Mentioning this in the commit message is a good idea.
-
-Output wasn't copied from std lib, instead it was adjusted to reflect examples.
-
->   - The GitHub issue mentioned the column numbers, so this is good;
-> however, did you compare this file with the standard library one to
-> check if other changes/improvements could be imported?
-
-I did compare `std_vendor.rs` with std lib and I didn't observe any
-change in the code. As mentioned in the GH issue, only inconsistency
-which I did notice as well was the missing column number in outputs.
-
-Cheers,
-Deepak
+Uros.
