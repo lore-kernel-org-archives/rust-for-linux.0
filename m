@@ -1,87 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [194.63.252.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2F01B4F21;
-	Fri,  4 Oct 2024 18:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EEA1B4F21;
+	Fri,  4 Oct 2024 18:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.63.252.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728067893; cv=none; b=IGoRrxUODs9gaUmfeYQ9jFY4BLpJzR1+pAXEPDgVLxmU3ozVriGzr48tvPKpaGCo4X62ZOQDn5uPF9OhJXuuOPk1HSCw1FhYpTgBQ+uzL5FMKzkgSmhHJQPq/O+oGrfGRDdfwfT3g3M57rrH+a6oKh1gXEFht/O5xyeqa9/VVFM=
+	t=1728067915; cv=none; b=K4oLUY3w3qMISwBdgHzggAzdF7UAiROzxI8oWwcNz1ohwwKOrPLdv3WDnTWnWhOfx/PGwDIX66dX8LfhK48+smvI9TiBl+G+Bn87H8jxtOeO+h0AZF+g2mOBowocOcatdIfRxCoZYiqU5+cNXRc4NIudK5ETryQoxxEUnKJpgbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728067893; c=relaxed/simple;
-	bh=UuZy6A6LuFUhlQOeTvkyHBMAN4IBW/fb9Y4T/BE/DQE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RL5APu6GqPafDNcJh3/mHJwaaVhbJYe4wDC1HKKAKcgFQ3f7WsUfCNFj+uSiTMRrb1U9HdtNIw/6wAyP0FI/rHqpak1VGvHrwKjJoR0W4s9IebZLMRCzhtZ4MwcTo/az12JBgveEnU0Wxw0Q1l5Mq+tCnaUc4JS43kcmjtCgMPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6dqzA50; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728067915; c=relaxed/simple;
+	bh=pWuFZrwN4wtkilryw/UMy9cLsTNLyiM1dKKnNINkga0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hCYFq1w/HFHnfylmkj1EjN0yFItoHYMmtz0Sqzswwy64B5Hx25qkgcfDBbuZuhYOjnBqnhQgR6pYfSDlgqtFg6Q3fubwdnUEFQeBaG8RxlVmq5h5Egma8Jk/h6bZEU6RziDMQAP9Kr3SXlJg8GHl+GY2j40uldBfye++Nb7Glr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=fjasle.eu; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=pHPqcg5S; arc=none smtp.client-ip=194.63.252.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fjasle.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6dqzA50"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8470EC4CEC6;
-	Fri,  4 Oct 2024 18:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728067892;
-	bh=UuZy6A6LuFUhlQOeTvkyHBMAN4IBW/fb9Y4T/BE/DQE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=S6dqzA50OWy5mLDaFh/bCL7R2eDXUfEVbi89sYlvycWNhKa4alDc90XskYHLLrsjR
-	 o9OAgjxtKkznQ7tcA3QwaQhRbZMEsaoZJTOc6E0wPaJK90THQBZNhQScdeatioEKCR
-	 /7Hv72VXsOsIIA7oFNnZCgr/r9tky/0AUVjmHs+PPUffqGzHmEJ5HdNkNMUOqdGhKx
-	 6S0h9OFdhX1psPM5C9TNqFOIDwGP8qB0Fysj/rZcTKQxyIRb2/1pIGbphJGLSLeLE5
-	 L8GqFhoiUTFw1J74t/z6p2xvtQn09iReAqfd5D9/cGcTgq+NNI9tCIc9eY+xR80PdG
-	 izA2YfJHe4udQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
- <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Martin Rodriguez Reboredo"
- <yakoyoku@gmail.com>,  "Will Deacon" <will@kernel.org>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,  "Dirk
- Behme" <dirk.behme@de.bosch.com>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/3] rust: implement `kernel::sync::Refcount`
-In-Reply-To: <20241004155247.2210469-2-gary@garyguo.net> (Gary Guo's message
-	of "Fri, 04 Oct 2024 16:52:22 +0100")
-References: <20241004155247.2210469-1-gary@garyguo.net>
-	<pKZ-hxxNoouLWnfXzFGWvcgGgfjpEixPzJ--cZeEufWI9_MoG_mpToSPflheyUhYmZ4qTKLVypVLRuvX7rfyxg==@protonmail.internalid>
-	<20241004155247.2210469-2-gary@garyguo.net>
-Date: Fri, 04 Oct 2024 20:51:22 +0200
-Message-ID: <87cykfpuqd.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="pHPqcg5S"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fjasle.eu;
+	s=ds202307; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:
+	MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+QJWjJSXtNottcZdqX67V05rKODxR7ykGq3H14xUESc=; b=pHPqcg5S/RCjSaVyJgnDXzKNVQ
+	w3IlDkCcuHjavGSu/y90BWIaUwZI80S0uS39BULxJkGJZuSyJphiEv1UcnjYA9cSR0amvX4t5Oz5l
+	niNYzpees2PCyJFOo3jjp/9vbm1aga5Xo7CTuA8AzEGVhLb9twrLYgvgHR31RTp+koSiDdH/VL8LV
+	EQdyW0P3cEmk/sfj+sxxa+Inbyjra6lb8M6bZ9CTXQ1hX1z/1Q9j1Tp762M1lXS/UeUnOFIGdXLej
+	WA96GF8PF30nkL74XVyY+u/pWi+9u6MVEqCpe7NIPuKgU96KbFUkg8CfzaO5PbpP/pyTCBCzm6SOw
+	wFhlExdw==;
+Received: from [2001:9e8:9c9:1501:3235:adff:fed0:37e6] (port=55002 helo=lindesnes.fjasle.eu)
+	by smtp.domeneshop.no with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <nicolas@fjasle.eu>)
+	id 1swnOw-00Cmid-Dj;
+	Fri, 04 Oct 2024 20:51:42 +0200
+Date: Fri, 4 Oct 2024 20:51:38 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH 20/23] kbuild: support -fmacro-prefix-map for external
+ modules
+Message-ID: <20241004-xanthic-shrew-of-trust-0f9e1d@lindesnes>
+References: <20240917141725.466514-1-masahiroy@kernel.org>
+ <20240917141725.466514-21-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240917141725.466514-21-masahiroy@kernel.org>
 
-Hi Gary,
+On Tue, Sep 17, 2024 at 11:16:48PM +0900, Masahiro Yamada wrote:
+> This commit makes -fmacro-prefix-map work for external modules built in
+> a separate output directory. It improves the reproducibility of external
+> modules and provides the benefits described in commit a73619a845d5
+> ("kbuild: use -fmacro-prefix-map to make __FILE__ a relative path").
+> 
+> When VPATH is not defined (e.g., when the kernel or external module is
+> built in the source directory), this option is unnecessary.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  Makefile | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-[...]
-
-> diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
-> index f47afc148ec3..39649443426b 100644
-> --- a/rust/helpers/refcount.c
-> +++ b/rust/helpers/refcount.c
-> @@ -8,11 +8,26 @@ refcount_t rust_helper_REFCOUNT_INIT(int n)
->  	return (refcount_t)REFCOUNT_INIT(n);
->  }
->
-> +unsigned int rust_helper_refcount_read(refcount_t *r)
-> +{
-> +	return refcount_read(r);
-> +}
-
-+EXPORT_SYMBOL_GPL(rust_helper_refcount_read);
-
-> +
-> +void rust_helper_refcount_set(refcount_t *r, int n)
-> +{
-> +	refcount_set(r, n);
-> +}
-
-+EXPORT_SYMBOL_GPL(rust_helper_refcount_set);
-
-BR Andreas
-
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
