@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8301121B442;
-	Fri,  4 Oct 2024 18:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB81A1D9A6A;
+	Fri,  4 Oct 2024 18:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065175; cv=none; b=PiIweROVi0hBEGCvsfon+QJXkFEGy5OCOp6qlGBl7WtX2UWrX5fT9A5plfq83eRrCfslyd/ze+hL1RQIH6zO97IE7sgoF+Gj8s3xQB1sNrOQOffeFAgJHV0bqKRORjFZYbyzQzuqwGdfqp5gb+FrfO/dxCWA6RLnayRBePqfnlc=
+	t=1728066857; cv=none; b=LUUMgZZGZ47Jr1KxU08EP4pGqvJAmgGCBxBj/jLc7/CIxzz/jKhrabTl8g4roXzZiEknKK+StdbbR4gQ/c0UvVS2yI/iRXVaATXfDRLm60kX7QG/CN5RMClkzlDk8Pqs/vhGgrBRIgotNczefNZdv5oSB04v1oPu+RvJpWL9fvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065175; c=relaxed/simple;
-	bh=eg8t/p9jyZxuXcFEHcSrJ+NhN9xuZtBa59p6aAnVbJ0=;
+	s=arc-20240116; t=1728066857; c=relaxed/simple;
+	bh=fCALgWn+AAMKieHOm9t7rGua2lZHZP3fE30hTOXcTxw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UCfsZkk5pPeOVEt4CLFIOJbhzshhnCDj4XaJCvZY+ZQiGBVJtQVkIjRnTFhb+nFyDVOkR9E1G61+W7FUujbdhPbjp8wUCT2V8KBeN6h+4311QFsjL7V7mvjf2bivQ+LWhbDy4+hEF6Wh2Din9Y4bbyMoK389uMCjqsN3wy1R9tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jld9Qm7G; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=k4I0wLU5VnJ7AbLa3pxaY8Q2JU6nig/vVc32uHwmXkXvVtw+Jvhs4b7MmsYxo8Qrvn5wUjAE9zQy3LQVAwxa2p+LL/8SHSaoJn8nYQGQon2cdYA3amwUG+Wh9RwBUAP+GSaSnMz0Ml3xCEKzmVjPYrHOQsgTfTOpTfPTlTluqXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tm4yskSv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jld9Qm7G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D764C4CECD;
-	Fri,  4 Oct 2024 18:06:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tm4yskSv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92090C4CEC6;
+	Fri,  4 Oct 2024 18:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065175;
-	bh=eg8t/p9jyZxuXcFEHcSrJ+NhN9xuZtBa59p6aAnVbJ0=;
+	s=k20201202; t=1728066856;
+	bh=fCALgWn+AAMKieHOm9t7rGua2lZHZP3fE30hTOXcTxw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=jld9Qm7GbFVpPVdB9g2FAOiuoEnOtcON7KzZrvvrMoi3e2camgQ2joNLqpabu0KIC
-	 NKrOVmAJK0ibeA5cJlD51cHvKNuH1F9FPsyvRpLNeXwrSmmqsQc/i8jaUNil1HfZIl
-	 gJpenTgRQS09djXs8KhkfSvgXEIToD1YXrji1MM1FGmdb412qDCaOeJQvMRMsUL6Z8
-	 NkOlnzCIVca84bzd4JtvlQtWgunEx450koV4dYw1EJMerKvIheEPsUCFCYDKh5kY/1
-	 12+A/fZmjCDFTpme9eDhCwPQbAB+8rrpWm0tq3rbV8CgeTunIC4LRiZIw69B8PEeit
-	 Z+hbkJtlwa2xQ==
+	b=Tm4yskSvJwHIA5U46tAaUv15GE/tx//j+6tMKCakOUKpI7nKxZZ5ictVjYw1wOAeT
+	 nkK8F3ro1pkCoO0mWVX/I/GH5SnSQi/zI1pThq+YTwaiPkUqr9EQnN097q14opLmoY
+	 TVPJBlp5MQnovbEWcHtG3fkEaHJ066sv0nOmn0o/zJm2N6a6LzLmiyiVY8y8a72ygB
+	 kE2/Ks4JOSyCgteaQCaT7htUbpnWjFaz3Nu32OgX+EnGsbWrgJqtu0Ohc+z++NCZ0Z
+	 qmXeYJwObplzSQAOq+BCK2ca2X1Ol03C36PzweaR272u16MDWRruPkGDY6g2Q8m32m
+	 HxJQNyJaPl79Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Anna-Maria Behnsen" <anna-maria@linutronix.de>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Alex Gaynor" <alex.gaynor@gmail.com>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  <rust-for-linux@vger.kernel.org>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Jens Axboe" <axboe@kernel.dk>,  "Will Deacon" <will@kernel.org>,  "Peter
+ Zijlstra" <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,
+  <linux-block@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
   <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 00/14] hrtimer Rust API
-In-Reply-To: <877cat32kz.fsf@somnus> (Anna-Maria Behnsen's message of "Mon, 30
-	Sep 2024 11:36:44 +0200")
-References: <20240917222739.1298275-1-a.hindborg@kernel.org>
-	<gcOUTgcHudf9-BfIAB74z-RbgjWPvM2Q-kEsSc3omPKVCMyVKf5am5Z5juBE1Qgn6GbhGddhLOPFyIO8BSrevg==@protonmail.internalid>
-	<877cat32kz.fsf@somnus>
-Date: Fri, 04 Oct 2024 12:47:39 +0200
-Message-ID: <87plogp2k4.fsf@kernel.org>
+Subject: Re: [PATCH 3/3] rust: block: convert `block::mq` to use `Refcount`
+In-Reply-To: <20241004155247.2210469-4-gary@garyguo.net> (Gary Guo's message
+	of "Fri, 04 Oct 2024 16:52:24 +0100")
+References: <20241004155247.2210469-1-gary@garyguo.net>
+	<Ai8LlcjRkqtugtU8IFGU53QASgH_GnKT_H3nxOjxpBnGaTTgWFUKv8lsnSPM6qzWAhq7alWhj8U6wJcGiABcpw==@protonmail.internalid>
+	<20241004155247.2210469-4-gary@garyguo.net>
+Date: Fri, 04 Oct 2024 20:34:01 +0200
+Message-ID: <87h69rpvja.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,53 +52,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Anna-Maria Behnsen" <anna-maria@linutronix.de> writes:
+Hi Gary,
 
-> Hi Andreas,
->
-> Andreas Hindborg <a.hindborg@kernel.org> writes:
->
->> Hi!
->>
->> This series adds support for using the `hrtimer` subsystem from Rust code.
->>
->> I tried breaking up the code in some smaller patches, hopefully that will
->> ease the review process a bit.
->>
->> The major change in this series is the use of a handle to carry ownership
->> of the callback target. In v1, we used the armed timer to carry ownership
->> of the callback target. This caused issues when the live timer became the
->> last owner of the callback target, because the target would be dropped in
->> timer callback context. That is solved by using a handle instead.
->>
->> A request from Thomas on v1 was to add a more complete API. While I did add
->> more features, we are still missing some. In the interest of getting the
->> patches on list prior to LPC 2024, I am leaving out the following planned
->> features:
->>
->>  - hrtimer_sleeper, schedule_hrtimeout, hrtimer_nanosleep  and friends
->>  - introspection functions:
->>    - try_cancel
->>    - get_remaining
->>    - active
->>    - queued
->>    - callback_running
->>  - hrtimer_forward
->>  - access to timer callback target through timer handle
->
-> Regarding the API: I had a closer look at it after the discussion during
-> LPC. It's possible to change the API (prevent setting the mode in start
-> as well), but it is not as straight forward, as it originally seems to
-> be. So this will take some time to be changed completely.
->
-> But what we will do in short term is to create htimer_setup(). This will
-> do the job of hrtimer_init() but expand it by the argument of the
-> hrtimer function callback.
->
-> This is just an information update for you. So you can proceed right now
-> with the current API and we keep you in the loop for further changes.
+"Gary Guo" <gary@garyguo.net> writes:
 
-Thanks! I think we talked about something similar for v1 as well.
+[...]
+
+>  // SAFETY: All instances of `Request<T>` are reference counted. This
+>  // implementation of `AlwaysRefCounted` ensure that increments to the ref count
+>  // keeps the object alive in memory at least until a matching reference count
+>  // decrement is executed.
+>  unsafe impl<T: Operations> AlwaysRefCounted for Request<T> {
+>      fn inc_ref(&self) {
+> -        let refcount = &self.wrapper_ref().refcount();
+> -
+> -        #[cfg_attr(not(CONFIG_DEBUG_MISC), allow(unused_variables))]
+> -        let updated = atomic_relaxed_op_unless(refcount, |x| x + 1, 0);
+> -
+> -        #[cfg(CONFIG_DEBUG_MISC)]
+> -        if !updated {
+> -            panic!("Request refcount zero on clone")
+> -        }
+> +        self.wrapper_ref().refcount().inc();
+
+What happened to the debug code?
+
 
 BR Andreas
 
