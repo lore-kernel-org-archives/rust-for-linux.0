@@ -1,93 +1,102 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1690315C121;
-	Fri,  4 Oct 2024 12:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8089029422
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Oct 2024 12:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728043716; cv=none; b=iYzPPUeECVmmLsJ0l0IUtjBso9jMJx4nCMCYCdy+eqHq3N/eDJHxY61bsK21sP3FSd4sj/LSl1RRrSGlMtOlkUM0tFFyRBvMeUC+1S+p3YWe5JMPQNEqBxogH+EyPLzr5cxSBhdjUeqKQwRObQaqa4zpjS0WtCl6JtHhSi6P7Ck=
+	t=1728046688; cv=none; b=qzoKzD9ycwHZfipP1ZgbpruynKQpuegHxhSNOoo4UH4A98/+397e18ssJucrro1IaUmANIGLQ6374C4BjXgyH9d3jDBMfPO6/UCXe+4PBrLFfGa2vqp0pkJvBv9v/vAf3MkonVT+xu59JeXLzVRzAuNgMMMiAhyXI0Sl3U+rQ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728043716; c=relaxed/simple;
-	bh=JPed9/QJevwfntRlcIkPect3/WkrDR9pOyxYyQZkKgQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=r3aPf8IGXjZTZqYVcKVzzD52UloPRdVuGzjNYDbA1NHtcFgvx6xieSU1Wtn5R2sFFpv6oGeFGV6VzCa43sP2LjespfnhA5plcRVWsWJh6ngFzgrUDntgYIHqDXGZt3rumBsuIhZrnjUeEWDS65/eXm6WE9KO7ZTQT5VlwR2yP6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwVW/OSO; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1728046688; c=relaxed/simple;
+	bh=sxrBN8IzV6EkQI6lJSQc3duGIxEFQ90FH+6vKD6NWrM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fWq+Ssvj08xZs+CC+G5U5h6qmYN14+FDctZywk+Oxlk1zaCqZicWQhDUZuFgoB0wQlgJU5rkwWpSwlLKwyrb1h8gYm4vQdTq1K+VeZO05E6TWpqDiACQpY3vRn/6Iv6iFPYdgy/dmOgHVLHLABkA0QP0PK6gk3iLJznWYK8tM14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWlWOy0e; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwVW/OSO"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20b78ee6298so12688715ad.2;
-        Fri, 04 Oct 2024 05:08:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWlWOy0e"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7c3d415f85eso144895a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 04 Oct 2024 05:58:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728043714; x=1728648514; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p4uHfljjdM6prAXR1fYXZLisMASJ67uOgKvibzFyhcU=;
-        b=MwVW/OSOz57nwjNQrPP7Mid9xGDGVWDoH0lm4OKHQW/6srHMoHdJk+z4U7jjSZLsWg
-         7vLqvZ900RONcTy+x3R6PX/SapEUYIk9v77GnXRof8ws6bOGlf+TD2ASp7fBJ0uJe/uu
-         aNvxhReX56nRVlYaRGOk0YQzEZGElILo/MXiXn3TM940r7aOCepHE+SXFUzU6jOYl505
-         /zaYl01l3+TFHanfJpvkvH7OP7itEXK/fT/WxD0hgOWxM0diwZC8Dc+xYkebtwkCc5Rd
-         4sTGpLbILdMlubAlIWXEUaF0eVq1XXZEfiQLW/LZ9HGT9go8UXSywhNJtclcmXlXrN4b
-         VzkA==
+        d=gmail.com; s=20230601; t=1728046687; x=1728651487; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sxrBN8IzV6EkQI6lJSQc3duGIxEFQ90FH+6vKD6NWrM=;
+        b=PWlWOy0ewPZg/0h8To9dOX6F3H2o55KBu+AuYTYTzY5lmpWlOPTQkqSywlBAEWW2Bq
+         OSnLv+92UAmB8xmZG4my0tSWCiy9YxrtYQ9RiwBl7vwsB+cTG8MkC0NeGKPSxK9b5+Im
+         r93U/yzwY6GUlSdBs4EQX4GkNKQ+aQ/dn9cAmHf4k8UCEiZue4VJeGRDasCveOglW27+
+         bmn5xqnWScUB5aAviMzFnkxX0hpoHKjM/mi+6omGt2D0TGYKtyXu4Jbh+OcCj9ZXjrV0
+         EajSEidp4ZG5p0nbEGDNgW0nqhOK11UjGcVcalwdUtpzEShIJQPttCTsi+CAHNBqiXj5
+         1mQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728043714; x=1728648514;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=p4uHfljjdM6prAXR1fYXZLisMASJ67uOgKvibzFyhcU=;
-        b=YS9e2AuBVSW1QmlKPCBasBaMPYuphE4/Wq+GCIAyAhx5vjLVgRXOQtXOOt8JTDtYYy
-         UwoTLUrpaqQXyBdU0uRyFwfl8Lks7avtxVp9phNnmF7C4AgoiKv5QR7FejmfzLr0YOiM
-         Yt+Fgoq7mfsnJs3a7JpgROuZExaDfV/OhFMhHQZEXDgKqv5YxD5TEk7GB1T74Dz8zjRs
-         dj/6/VghkTDNZxDS6xAjUpcHnQmrX5qJOzMCr22erqbR7jHay29VWna/xwhc8BXCLC0K
-         L1l63P1HZvtuA+ZnsVk4G9gFLUbAFjBuUkk4TMMUbAYYSWixW/XG4M7Xd/v+zxAnc418
-         SJqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWEflk0lgPfhLc0rqDsYGeNQ66Zt0sE25Ar5jAJGUhrcxFT3RZ1H+z+nvuBAzovuwN9KyNtmejY9KaXekbJnfk=@vger.kernel.org, AJvYcCWTu3zX8hqbcreJl9J/FEUF7CU76Op00zfzy9hMKXhNy/Xi4Eh6A43b0MJpW5QJjInAdqCH0NU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8kK6p1ArCph25wptB/DShWZpCuJeRc2JT2Nd4MLU208vEo9Cs
-	oyMm9SjxxxC7fqjnyh1aqbGHoJ01xK9MVW7HyTqcLZWghauwDJFT
-X-Google-Smtp-Source: AGHT+IFSM38c/Z2OOdcMail1JBfLJF75MEi8Yd45SG/8JBtGN9H25DwWSYyYLy737kBpO8Je+KgYYg==
-X-Received: by 2002:a17:902:ecc9:b0:20b:4f95:9325 with SMTP id d9443c01a7336-20bfdfb4cdbmr40154915ad.17.1728043714009;
-        Fri, 04 Oct 2024 05:08:34 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20bef707035sm22821125ad.275.2024.10.04.05.08.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Oct 2024 05:08:33 -0700 (PDT)
-Date: Fri, 04 Oct 2024 21:08:19 +0900 (JST)
-Message-Id: <20241004.210819.1707532374343509254.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com
-Subject: Re: [PATCH net-next v1 1/2] rust: add delay abstraction
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
-References: <20241001112512.4861-1-fujita.tomonori@gmail.com>
-	<20241001112512.4861-2-fujita.tomonori@gmail.com>
-	<b47f8509-97c6-4513-8d22-fb4e43735213@lunn.ch>
+        d=1e100.net; s=20230601; t=1728046687; x=1728651487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sxrBN8IzV6EkQI6lJSQc3duGIxEFQ90FH+6vKD6NWrM=;
+        b=Bu5TAenW012mcq6cRA279tvmHMd+rhJUKYJ1JDZja7LIxx/hSPhOUDzBqd+RnVfFZe
+         J0y7hKJ9R1MXWPmiXZpBOYQ461746am4BnKBI1RvduCvig4zj7/AI2ePLtrHEWeJ7pPx
+         SP+qYg4nC5XHui2JOeVzkcSDyb2Rn7eHpDOoTeCPHomF/C3oqjZzPt22kzBiE01nxLHW
+         8bsqj/s48v1MK+zJncI9Nss27SfPbnWHq9KFkTWKLBwHNGTGAdqjZsWUDCEuI2MzgjQi
+         KmX2bxgQPbvom44ZlLFA+3lih2EM/jusA9NxqdTMMSWHgQ9d0gCDXq4EmdTuqPz96uqv
+         ZcMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUd7fWzsMxN4Hh4ICM1wRQ5rPz2jFaReK+ftA2iKqz4GSarBAfrVjEkOt3uB6ODeaMHU3Icec/YtA/fXB00Bw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNWF5zhDJQhZksPLi7mLqW84ZQMgGa83m7J5CPEtjGS55hKzqC
+	e3JxQEgPzByQbHn1Fia6HahI6y2yc8+E0NH9Wsv4uBf6VLt8foJwTH2DfV4+JmX08EDPe3K02zh
+	Fp9f6npWMfEcyfEI24I2uY8wTHoD3dAf0
+X-Google-Smtp-Source: AGHT+IHePgK94Dc/U8lIaBZC6VLCgERokZcdFg9aoYPLqtox61pHsTq9vYPYa8+Lhfxx/pH/2cndg0IhJub2islYh8A=
+X-Received: by 2002:a05:6a20:914f:b0:1cf:4e49:bc74 with SMTP id
+ adf61e73a8af0-1d6dfac48e8mr1914521637.9.1728046686771; Fri, 04 Oct 2024
+ 05:58:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <BL0PR02MB491443BD775D5D63635C3F4FE9712@BL0PR02MB4914.namprd02.prod.outlook.com>
+ <CANiq72mGJK==2YFnBFG06oPsrf8i3Wenx9zO9_WWWzvhRknh8w@mail.gmail.com> <BL0PR02MB491430823078BAD42FD56D13E9722@BL0PR02MB4914.namprd02.prod.outlook.com>
+In-Reply-To: <BL0PR02MB491430823078BAD42FD56D13E9722@BL0PR02MB4914.namprd02.prod.outlook.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 4 Oct 2024 14:57:54 +0200
+Message-ID: <CANiq72=fsQ+dXEGDvxtKO7jk1dEXD_Rv98du97GNDChYPTZ8yg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: optimize error type to use nonzero
+To: Filipe Xavier <felipe_life@live.com>
+Cc: "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 1 Oct 2024 14:31:39 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+On Fri, Oct 4, 2024 at 1:50=E2=80=AFPM Filipe Xavier <felipe_life@live.com>=
+ wrote:
+>
+> I'm sorry, actually it makes sense, I didn't know about the changelog,
+> i'll send it next time.
 
->> +/// Sleeps for a given duration.
->> +///
->> +/// Equivalent to the kernel's [`fsleep`] function, internally calls `udelay`,
->> +/// `usleep_range`, or `msleep`.
-> 
-> Is it possible to cross reference
-> Documentation/timers/timers-howto.rst ?  fsleep() points to it, so it
-> would e good if the Rust version also did.
+No worries at all! It is part of learning how things are usually done.
 
-Looks like the pointer to Documentation/timers/timers-howto.rst in
-fsleep will be removed soon.
+> About build_assert on macro, could assume that the C header file defines
+> these constants with non-zero values, but since the from_errno function
+> checks this, I thought it would be interesting to validate it too.
+> It makes sense?
 
-https://lore.kernel.org/all/20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de/
+Sorry, I am not exactly sure what you mean. If you need to trust the C
+header file, then the macro would be unsafe and its callers would need
+to explain that they indeed have to trust the C headers.
+
+Instead, if it is possible to have a safe `const` constructor, then we
+should just do that. Now, can `from_errno` be `const` to do so? If
+not, can we refactor things to make it so somehow (perhaps a new
+`const` private fallible constructor)?
+
+Answering these questions should guide you a bit on a solution --
+and the answers are typically what one would include in the commit
+message, i.e. explaining why you picked the solution (i.e. the design
+choices) you did.
+
+Thanks!
+
+Cheers,
+Miguel
