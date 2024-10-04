@@ -1,123 +1,250 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B0D15A856;
-	Fri,  4 Oct 2024 21:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8236A231CAD;
+	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728076028; cv=none; b=HX3tiEHE3g3E+iv4vFbwD56WbToiow0pXr+fdqncIB/p7KXy1hQvfmdDiQlCqG954E/lLntHKbJVlcXcB5ZZRnQFZJbgFSQP26DIgofB5qNdaE8t7PhqFXo15rPrtJHZ/A/RSGfGM/vCDH6qymExHz1Rg6oI0nTlvXhcpSBjIvs=
+	t=1728079320; cv=none; b=hWBCYqqf5UU2s/yByZ6rW5UQM/+ybQpM4YanHVLiPwvn+95ka7r4K1S0OO4Khavt0LT/iLqa6xp/Mv666KAA/FYGuAX9NDXZB+kslImri4jMKEYOKAwSadOY5aMK0K8AbmrR/COKI0Lx36UkYjDdBamnFcMwG3f9oKIVpIVgBns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728076028; c=relaxed/simple;
-	bh=35IOoHe/X7gnxDSJ+PKxFRsGFeTWY6fFlRdddCjRNEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tdtkxW6MbI+05i9d38gtjKiz5qeF6Gk04sACgPAQYTGrvyyozgy4S/lYhS6fr8KGi4SRfZ9/4Yg1t2iOdrD9item5bYAWKorJ775LgCjdUhOYnhxRfACoQ+ntz9I+KmnOdkS7fd6tBE5Q2LDEBf+1UzaC0XxeEdr7ZSPhkIsIr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=RHbE3DVW; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1728079320; c=relaxed/simple;
+	bh=MhJNA96GzFeBg9a6LYM830UHrSoHd405+L5yke1y9rE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Ds+VrmkwxwDSGc9icM8XMg6SyWteRkpvM2J6csOE7mr9ORS6rbBn7IS+sU4wCOPcWbcYE4zWAbvTbO0tWYNlm8wnvGDqBqZXNJYu9fEabOpbXJMUXPSTj230P2q1Hnulyjt4BIsp3yjSTMWFFb+uF+RHjc2tUh6fv3q1IieTci4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PClPP3oH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="RHbE3DVW"
-Received: from [172.27.3.244] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 494L65GU1102942
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 4 Oct 2024 14:06:05 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 494L65GU1102942
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024091601; t=1728075968;
-	bh=XsIxGCLuwc7oDprSmGh/r3HcUoLTGC5y0f+hwyxMfwo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RHbE3DVWEQje/BMw0MYaccvz1CZHwlX6EAgZGBVxHM2N6A8Bs+1jWvQpqHAmpUzya
-	 B92rCcmXrNdl6GfJQOI48PxiDK98iUmhievUBaOuzvKW3PAg7k45+MO2DgOhre9Bqd
-	 MrXnCq+SHnBPZaEqYPEh1ZZWpqzvtfcpjsowsK7ZSQpJE3n6P52zeuoQxt6YTsZKnI
-	 eOmpzoP5V4jl/5Ek7xSXJuKz/8Ygm8jcSxEYWiVLw5Mr50hkZ5MwtV2JsKhIo4+1yl
-	 R0hI44pjMEjCP35l4UByBpjxQS3xPtcQR5w0P8PyQOSjLhz1QZW4Zg4KVQGx8RJEXl
-	 n08E+BHxsQUWw==
-Message-ID: <5c7490bb-aa74-427b-849e-c28c343b7409@zytor.com>
-Date: Fri, 4 Oct 2024 14:06:05 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PClPP3oH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57C17C4CECE;
+	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728079320;
+	bh=MhJNA96GzFeBg9a6LYM830UHrSoHd405+L5yke1y9rE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=PClPP3oHEke17anFGzi/uawGZRH7vcpmnaeepa0cCP9UWc8gvpkN7MnjfAn4uVnXs
+	 Rx4bPvGxSjw+tyv1Om3XOubWIDI7f/aXdwfwCVbp1AdyTW80pPIRAwyPJFNkYrluid
+	 nNwMuf+nUQHaW4QaDSWKDfnr998qCUcrfuDM1gy8u0Q+z3tQ2woPMjPJtIlKq7K1YX
+	 bVC75lOs6l9173K8zE93DHFNTq0Vx2e8da/K+G1Ey49vrG9iGn5iAkI+YClXBnSiGd
+	 b17MxnBZO0xyI9QO1bNms6QQWVsvnq6fWnPcwviqr2DLDlrZ8/u4RitS5oBSPNQ3F1
+	 xGqrpiH4+pgGw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45BBDCF8862;
+	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
+From: Mitchell Levy via B4 Relay <devnull+levymitchell0.gmail.com@kernel.org>
+Date: Fri, 04 Oct 2024 15:01:38 -0700
+Subject: [PATCH 2/2] rust: lockdep: Use Pin for all LockClassKey usages
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
-To: Ard Biesheuvel <ardb@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
-        x86@kernel.org, Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@linux.com>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky
- <boris.ostrovsky@oracle.com>,
-        Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>,
-        Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
-        Keith Packard <keithp@keithp.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
-        linux-pm@vger.kernel.org, kvm@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-55-ardb+git@google.com>
- <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
- <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
- <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
- <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241004-rust-lockdep-v1-2-e9a5c45721fc@gmail.com>
+References: <20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com>
+In-Reply-To: <20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com>
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728079319; l=6324;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=egblrpL7foe9PRdbj/s3OB75zKKFl+jmHi9rcTsQviA=;
+ b=LdiL3W4op5Qu1coC1Ds9URaXOy062w9QiB15UUnMDuMQjAyH3+2kMrnlBzksDqKylGYFr18Ti
+ nqFq0B0wN48AlL1Atuu3qY0QTiQ/I3HHVbVixZD/5GBoVGQB8BqFDhS
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+X-Endpoint-Received: by B4 Relay for levymitchell0@gmail.com/20240719 with
+ auth_id=188
+X-Original-From: Mitchell Levy <levymitchell0@gmail.com>
+Reply-To: levymitchell0@gmail.com
 
-On 10/3/24 04:13, Ard Biesheuvel wrote:
-> 
->> That said, doing changes like changing "mov $sym" to "lea sym(%rip)" I
->> feel are a complete no-brainer and should be done regardless of any
->> other code generation issues.
-> 
-> Yes, this is the primary reason I ended up looking into this in the
-> first place. Earlier this year, we ended up having to introduce
-> RIP_REL_REF() to emit those RIP-relative references explicitly, in
-> order to prevent the C code that is called via the early 1:1 mapping
-> from exploding. The amount of C code called in that manner has been
-> growing steadily over time with the introduction of 5-level paging and
-> SEV-SNP and TDX support, which need to play all kinds of tricks before
-> the normal kernel mappings are created.
-> 
+From: Mitchell Levy <levymitchell0@gmail.com>
 
-movq $sym to leaq sym(%rip) which you said ought to be smaller (and in 
-reality appears to be the same size, 7 bytes) seems like a no-brainer 
-and can be treated as a code quality issue -- in other words, file bug 
-reports against gcc and clang.
+Reintroduce dynamically-allocated LockClassKeys such that they are
+automatically (de)registered. Require that all usages of LockClassKeys
+ensure that they are Pin'd.
 
-> Compiling with -fpie and linking with --pie -z text produces an
-> executable that is guaranteed to have only RIP-relative references in
-> the .text segment, removing the need for RIP_REL_REF entirely (it
-> already does nothing when __pic__ is #define'd).
+Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-1-nmi@metaspace.dk/
+Suggested-by: Benno Lossin <benno.lossin@proton.me>
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+---
+ rust/helpers/helpers.c      |  1 +
+ rust/helpers/sync.c         | 13 +++++++++++++
+ rust/kernel/sync.rs         | 30 +++++++++++++++++++++++++++---
+ rust/kernel/sync/condvar.rs | 11 +++++++----
+ rust/kernel/sync/lock.rs    |  4 ++--
+ rust/kernel/workqueue.rs    |  2 +-
+ 6 files changed, 51 insertions(+), 10 deletions(-)
 
-But -fpie has a considerable cost; specifically when we have indexed 
-references, as in that case the base pointer needs to be manifest in a 
-register, *and* it takes up a register slot in the EA, which may end 
-converting one instruction into three.
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 30f40149f3a9..2e8a2abfca33 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -20,6 +20,7 @@
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
++#include "sync.c"
+ #include "task.c"
+ #include "uaccess.c"
+ #include "wait.c"
+diff --git a/rust/helpers/sync.c b/rust/helpers/sync.c
+new file mode 100644
+index 000000000000..ff7e68b48810
+--- /dev/null
++++ b/rust/helpers/sync.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/lockdep.h>
++
++void rust_helper_lockdep_register_key(struct lock_class_key *k)
++{
++	lockdep_register_key(k);
++}
++
++void rust_helper_lockdep_unregister_key(struct lock_class_key *k)
++{
++	lockdep_unregister_key(k);
++}
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index d270db9b9894..3903573143b3 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -5,6 +5,8 @@
+ //! This module contains the kernel APIs related to synchronisation that have been ported or
+ //! wrapped for usage by Rust code in the kernel.
+ 
++use crate::pin_init;
++use crate::prelude::*;
+ use crate::types::Opaque;
+ 
+ mod arc;
+@@ -20,15 +22,35 @@
+ 
+ /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+ #[repr(transparent)]
+-pub struct LockClassKey(Opaque<bindings::lock_class_key>);
++#[pin_data(PinnedDrop)]
++pub struct LockClassKey {
++    #[pin]
++    inner: Opaque<bindings::lock_class_key>,
++}
+ 
+ // SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
+ // provides its own synchronization.
+ unsafe impl Sync for LockClassKey {}
+ 
+ impl LockClassKey {
++    /// Initializes a dynamically allocated lock class key. In the common case of using a
++    /// statically allocated lock class key, the static_lock_class! macro should be used instead.
++    pub fn new_dynamic() -> impl PinInit<Self> {
++        pin_init!(Self {
++            // SAFETY: lockdep_register_key expects an uninitialized block of memory
++            inner <- Opaque::ffi_init(|slot| unsafe { bindings::lockdep_register_key(slot) })
++        })
++    }
++
+     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+-        self.0.get()
++        self.inner.get()
++    }
++}
++
++#[pinned_drop]
++impl PinnedDrop for LockClassKey {
++    fn drop(self: Pin<&mut Self>) {
++        unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
+     }
+ }
+ 
+@@ -37,9 +59,11 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+ #[macro_export]
+ macro_rules! static_lock_class {
+     () => {{
++        // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
++        // lock_class_key
+         static CLASS: $crate::sync::LockClassKey =
+             unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+-        &CLASS
++        $crate::prelude::Pin::static_ref(&CLASS)
+     }};
+ }
+ 
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 2b306afbe56d..0469a9d81b7e 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -14,9 +14,12 @@
+     time::Jiffies,
+     types::Opaque,
+ };
+-use core::ffi::{c_int, c_long};
+-use core::marker::PhantomPinned;
+-use core::ptr;
++use core::{
++    ffi::{c_int, c_long},
++    marker::PhantomPinned,
++    pin::Pin,
++    ptr,
++};
+ use macros::pin_data;
+ 
+ /// Creates a [`CondVar`] initialiser with the given name and a newly-created lock class.
+@@ -102,7 +105,7 @@ unsafe impl Sync for CondVar {}
+ 
+ impl CondVar {
+     /// Constructs a new condvar initialiser.
+-    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
++    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
+         pin_init!(Self {
+             _pin: PhantomPinned,
+             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f6c34ca4d819..305c41321369 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -7,7 +7,7 @@
+ 
+ use super::LockClassKey;
+ use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+-use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
++use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned, pin::Pin};
+ use macros::pin_data;
+ 
+ pub mod mutex;
+@@ -106,7 +106,7 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
+ 
+ impl<T, B: Backend> Lock<T, B> {
+     /// Constructs a new lock initialiser.
+-    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
++    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
+         pin_init!(Self {
+             data: UnsafeCell::new(t),
+             _pin: PhantomPinned,
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 553a5cba2adc..1720a99f53be 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -367,7 +367,7 @@ impl<T: ?Sized, const ID: u64> Work<T, ID> {
+     /// Creates a new instance of [`Work`].
+     #[inline]
+     #[allow(clippy::new_ret_no_self)]
+-    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self>
++    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self>
+     where
+         T: WorkItem<ID>,
+     {
 
-Now, the "kernel" memory model is defined in the ABI document, but there 
-is nothing that prevents us from making updates to it if we need to; 
-e.g. the statement that movq $sym can be used is undesirable, of course.
+-- 
+2.34.1
 
-	-hpa
 
