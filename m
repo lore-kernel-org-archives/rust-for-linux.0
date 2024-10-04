@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03491DD89F;
-	Fri,  4 Oct 2024 18:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8301121B442;
+	Fri,  4 Oct 2024 18:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065172; cv=none; b=Dn9IjJdT88s4jxVHJUDREp+RGLKNo2rssY6wE/QtCzezmiKOVFDl2aLb89eig1ByG9ofTvGO/g+bOzp9SogNv8+TBvjaWIXBY6XqUXRheAPxBj+YOFDFShUeC+Dx5opgIC7jUYN7ChXcpV5snBV/p+FimE3xTlMkUdJQSF0JQvw=
+	t=1728065175; cv=none; b=PiIweROVi0hBEGCvsfon+QJXkFEGy5OCOp6qlGBl7WtX2UWrX5fT9A5plfq83eRrCfslyd/ze+hL1RQIH6zO97IE7sgoF+Gj8s3xQB1sNrOQOffeFAgJHV0bqKRORjFZYbyzQzuqwGdfqp5gb+FrfO/dxCWA6RLnayRBePqfnlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065172; c=relaxed/simple;
-	bh=aml15hsNTI2VDMkG4UyHqgiSZO6Gk9K57VCgD7nJmvA=;
+	s=arc-20240116; t=1728065175; c=relaxed/simple;
+	bh=eg8t/p9jyZxuXcFEHcSrJ+NhN9xuZtBa59p6aAnVbJ0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bn3vNiu65JE9J2+EcGYkk/NP2n4TndG1ThvtfsLMoc0Hp298uxcj3uzxBEWhntjAuE/g1NOifnTeL8u3ld/FLFiDC3wllJVgxelAHGUw+gEVD7sQG85GC/9JQvRf5IVADQwYNFGRhCWs9Xwab9QiF0aoXxb9qJit3k34y6CK9s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KXajJuBu; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=UCfsZkk5pPeOVEt4CLFIOJbhzshhnCDj4XaJCvZY+ZQiGBVJtQVkIjRnTFhb+nFyDVOkR9E1G61+W7FUujbdhPbjp8wUCT2V8KBeN6h+4311QFsjL7V7mvjf2bivQ+LWhbDy4+hEF6Wh2Din9Y4bbyMoK389uMCjqsN3wy1R9tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jld9Qm7G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KXajJuBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E151EC4CECC;
-	Fri,  4 Oct 2024 18:06:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jld9Qm7G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D764C4CECD;
+	Fri,  4 Oct 2024 18:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065171;
-	bh=aml15hsNTI2VDMkG4UyHqgiSZO6Gk9K57VCgD7nJmvA=;
+	s=k20201202; t=1728065175;
+	bh=eg8t/p9jyZxuXcFEHcSrJ+NhN9xuZtBa59p6aAnVbJ0=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KXajJuBuX2PqAcLq9QyLGzQlI8Byyg1i4FfYmRK/M2p2alCVQLijOUU8HjUe87FVF
-	 CY4GTCYycFO0hd8yTQPsVr1TIvtUwAMTirkRkcoijCneLg7x8K9oQkouVFdR3zLFdP
-	 DHWrbU6SJOS+2VeOUcDffDDVeARUdJWXgMwZZJP2CWx6xX4+U/2lv4k96qxoU8829P
-	 V05E5pzyLVgs1uhXuTXyDPVzqSlQPWJp5FPkQrI/8HfJN44qd1UjZ06MgZhlruyfPf
-	 0fuhaWIQ6gv7T1kEezI0dKYcWqc0Wh8j3GYNM5iBlf7pCsuVZRNUJP0W8xqyLSFY4v
-	 VVN9itcd5W8pQ==
+	b=jld9Qm7GbFVpPVdB9g2FAOiuoEnOtcON7KzZrvvrMoi3e2camgQ2joNLqpabu0KIC
+	 NKrOVmAJK0ibeA5cJlD51cHvKNuH1F9FPsyvRpLNeXwrSmmqsQc/i8jaUNil1HfZIl
+	 gJpenTgRQS09djXs8KhkfSvgXEIToD1YXrji1MM1FGmdb412qDCaOeJQvMRMsUL6Z8
+	 NkOlnzCIVca84bzd4JtvlQtWgunEx450koV4dYw1EJMerKvIheEPsUCFCYDKh5kY/1
+	 12+A/fZmjCDFTpme9eDhCwPQbAB+8rrpWm0tq3rbV8CgeTunIC4LRiZIw69B8PEeit
+	 Z+hbkJtlwa2xQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+To: "Anna-Maria Behnsen" <anna-maria@linutronix.de>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Jens Axboe" <axboe@kernel.dk>,  "Will Deacon" <will@kernel.org>,  "Peter
- Zijlstra" <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,
-  <linux-block@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  "Alice Ryhl" <aliceryhl@google.com>,  <rust-for-linux@vger.kernel.org>,
   <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: block: convert `block::mq` to use `Refcount`
-In-Reply-To: <20241004155247.2210469-4-gary@garyguo.net> (Gary Guo's message
-	of "Fri, 04 Oct 2024 16:52:24 +0100")
-References: <20241004155247.2210469-1-gary@garyguo.net>
-	<Ai8LlcjRkqtugtU8IFGU53QASgH_GnKT_H3nxOjxpBnGaTTgWFUKv8lsnSPM6qzWAhq7alWhj8U6wJcGiABcpw==@protonmail.internalid>
-	<20241004155247.2210469-4-gary@garyguo.net>
-Date: Fri, 04 Oct 2024 20:05:41 +0200
-Message-ID: <87ldz3pwui.fsf@kernel.org>
+Subject: Re: [PATCH v2 00/14] hrtimer Rust API
+In-Reply-To: <877cat32kz.fsf@somnus> (Anna-Maria Behnsen's message of "Mon, 30
+	Sep 2024 11:36:44 +0200")
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+	<gcOUTgcHudf9-BfIAB74z-RbgjWPvM2Q-kEsSc3omPKVCMyVKf5am5Z5juBE1Qgn6GbhGddhLOPFyIO8BSrevg==@protonmail.internalid>
+	<877cat32kz.fsf@somnus>
+Date: Fri, 04 Oct 2024 12:47:39 +0200
+Message-ID: <87plogp2k4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,25 +52,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Hi Gary,
+"Anna-Maria Behnsen" <anna-maria@linutronix.de> writes:
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> Currently there's a custom reference counting in `block::mq`, which uses
-> `AtomicU64` Rust atomics, and this type doesn't exist on some 32-bit
-> architectures. We cannot just change it to use 32-bit atomics, because
-> doing so will make it vulnerable to refcount overflow. So switch it to
-> use the kernel refcount `kernel::sync::Refcount` instead.
+> Hi Andreas,
 >
-> There is an operation needed by `block::mq`, atomically decreasing
-> refcount from 2 to 0, which is not available through refcount.h, so
-> I exposed `Refcount::as_atomic` which allows accessing the refcount
-> directly.
+> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>
+>> Hi!
+>>
+>> This series adds support for using the `hrtimer` subsystem from Rust code.
+>>
+>> I tried breaking up the code in some smaller patches, hopefully that will
+>> ease the review process a bit.
+>>
+>> The major change in this series is the use of a handle to carry ownership
+>> of the callback target. In v1, we used the armed timer to carry ownership
+>> of the callback target. This caused issues when the live timer became the
+>> last owner of the callback target, because the target would be dropped in
+>> timer callback context. That is solved by using a handle instead.
+>>
+>> A request from Thomas on v1 was to add a more complete API. While I did add
+>> more features, we are still missing some. In the interest of getting the
+>> patches on list prior to LPC 2024, I am leaving out the following planned
+>> features:
+>>
+>>  - hrtimer_sleeper, schedule_hrtimeout, hrtimer_nanosleep  and friends
+>>  - introspection functions:
+>>    - try_cancel
+>>    - get_remaining
+>>    - active
+>>    - queued
+>>    - callback_running
+>>  - hrtimer_forward
+>>  - access to timer callback target through timer handle
+>
+> Regarding the API: I had a closer look at it after the discussion during
+> LPC. It's possible to change the API (prevent setting the mode in start
+> as well), but it is not as straight forward, as it originally seems to
+> be. So this will take some time to be changed completely.
+>
+> But what we will do in short term is to create htimer_setup(). This will
+> do the job of hrtimer_init() but expand it by the argument of the
+> hrtimer function callback.
+>
+> This is just an information update for you. So you can proceed right now
+> with the current API and we keep you in the loop for further changes.
 
-I would rather wait with this patch until the helper LTO patches land
-upstream. Or at least let me run the benchmarks to see the effect of not
-inlining these refcount operations.
+Thanks! I think we talked about something similar for v1 as well.
 
-Best regards,
-Andreas
+BR Andreas
 
