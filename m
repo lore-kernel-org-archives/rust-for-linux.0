@@ -1,35 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FE51D14F8;
-	Fri,  4 Oct 2024 00:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9337C1849;
+	Fri,  4 Oct 2024 00:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728000033; cv=none; b=ArcwoggETFTDoIrrV+hcSYi2xxLif+ducC6xP67OjfzzFgwxsmCNdpfFfWW85ZV3BNr3UOywOi1QzOydL/aiPmgzppFnWWaWAm+GnV/Y7SnXPrLRDHZygu3/e0JlgU8jdz3UxpkaaJLTeIMWqHGinA+F5EkhZ84rfHqxbOA45jY=
+	t=1728000286; cv=none; b=FZSzr8YInlNVXiX0TAYt4xEtX7Bjsj1Iz+BjV+2iKitd4s8xc7xc8luaK85oe3mjsD42jIJ6XUOLCojQCs4cGDRkOgVEP+wL6Mni6V9BTUMbtkLqJEjYfTojtPd0tIcrUU1dyrEvwOp9f2NjVwu6545n6suo0P01chz7k2VwvZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728000033; c=relaxed/simple;
-	bh=ueSNRSxmD08W38+svDnH7878TJqa3DhuX9d0CrB7J6I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NnR0bhzJ4l/AhHmt9TvkaYt+ko1KMVDAe1575M5hEmjaS6JgWt9wA5mVU/Jukhds29zKCrueiPqgKk2g70Zjj++eB2iilCnzyVsr0FF3STcK6w9eNoKBKR5eAAUye4OM2jcj8kGyeu9RQiRTD2sxE8Z8YQULSu8utXcU5b8wMBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQdMQHDP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728000286; c=relaxed/simple;
+	bh=lhoaVc7qSnymcgP1B8/4MMCarOpcklf6p668zfKRuzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rgkYbSn8RL42fOvOwfUs+3M4Z+fPh1/i3MlJcX/TBJxboHrLr0n9eiXK5DpoEyKoMa2WHzVZJiXSFI3L/tpBB+Q/Oe14dtW+YjhJuaS+aEHee6i1W5I/VoQE46M50auMUoDxH/SxM6qUQEju2w0eJw/IZdB+DEUvJ1eA1Keh+l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7Jv1tZd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQdMQHDP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB7BC4CEC7;
-	Fri,  4 Oct 2024 00:00:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7Jv1tZd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38165C4CEC5;
+	Fri,  4 Oct 2024 00:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728000032;
-	bh=ueSNRSxmD08W38+svDnH7878TJqa3DhuX9d0CrB7J6I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=NQdMQHDPqIPEFIzFo/Dxv0hhK295NsBkpE/p8vqC6zZGgc2G4CzmPAgQ0JiuIMCa0
-	 cpwfk61BdZJA/GvnB+X905hhocnvrfBUXY3wC34UYCimpXQDia5caj2WVo1VUbo/Pb
-	 tEixVDgLODHhMlzdjZA/fUInqBsjrJTdFwh4i942FavPeqkqY3Z+1k2Dg+Jq/N2MWV
-	 9dDTh7fBzW+x/Rkhg70ydgwvCLx9vw4ZkMkp9EUsqZwkfwEFGHroNEtIbD1+6rgu0S
-	 J6JQWOsLSIw9eqs6pDT+Qj4lXN0N9mX4cUJuUF9XR4WuCqDPXDtvmNOj9Kz6FZqfWR
-	 zzA8jh81CJbGA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D933803263;
-	Fri,  4 Oct 2024 00:00:37 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1728000286;
+	bh=lhoaVc7qSnymcgP1B8/4MMCarOpcklf6p668zfKRuzQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=c7Jv1tZdZM/fnHdpzoFFCVRifsAK0UoqstaXwCyipWYiQ9uadjQY/WcOBB6o5fuMF
+	 8J7mD9s0jAXUe2kbK2VPV998nGZHwQxaQ+ncy3C+63icgHCU1owiAeUGFcekADCiug
+	 bWlOYyMRUbJk0lLlr/eFpwbYpN5uTmppZV4NoAh3sJhKLrbL+5cum9VQVJ5Z4Gjrod
+	 woUKLGoos7Efhtt7ZMGUooDDFIKNeK3QK0C+KzVAfp3BQc4L1jvBER7t8a1jkgW/G/
+	 BBnTHEN1rxsghfRnDg4UoQNhQYZ5WBRnvv9tcu8fqyCfPz5a2i03f8yRt8mAsKK3sI
+	 57SCuYYwPpAIw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.12
+Date: Fri,  4 Oct 2024 02:03:49 +0200
+Message-ID: <20241004000349.675431-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,40 +48,83 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v1] rust: net::phy always define device_table in
- module_phy_driver macro
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172800003600.2035955.3359914968807404214.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Oct 2024 00:00:36 +0000
-References: <20240930134038.1309-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20240930134038.1309-1-fujita.tomonori@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com
 
-Hello:
+Hi Linus,
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Please pull these fixes for Rust.
 
-On Mon, 30 Sep 2024 13:40:37 +0000 you wrote:
-> device_table in module_phy_driver macro is defined only when the
-> driver is built as a module. So a PHY driver imports phy::DeviceId
-> module in the following way then hits `unused import` warning when
-> it's compiled as built-in:
-> 
->  use kernel::net::phy::DeviceId;
-> 
-> [...]
+They have all been in linux-next for at least a couple rounds, and most
+for a week.
 
-Here is the summary with links:
-  - [net-next,v1] rust: net::phy always define device_table in module_phy_driver macro
-    https://git.kernel.org/netdev/net-next/c/3ed8d344e061
+You will probably notice a non-tag base -- I used the Rust merge because
+there was a trivial issue in the merge resolution so I added the fix on
+top of that one without waiting for v6.12-rc1. Please let me know if you
+prefer something else (e.g. I considered sending you that patch directly
+to you).
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+No conflicts expected.
 
+You also already merged a fix for a Rust driver (qt2025) via netdev.
 
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 570172569238c66a482ec3eb5d766cc9cf255f69:
+
+  Merge tag 'rust-6.12' of https://github.com/Rust-for-Linux/linux (2024-09-25 10:25:40 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.12
+
+for you to fetch changes up to 05cef2c4a421ca09ab9761a95e61423e59e5bfb1:
+
+  rust: kunit: use C-string literals to clean warning (2024-10-01 23:46:42 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.12
+
+Toolchain and infrastructure:
+
+ - Fix/improve a couple 'depends on' on the newly added CFI/KASAN
+   suppport to avoid build errors/warnings.
+
+ - Fix ARCH_SLAB_MINALIGN multiple definition error for RISC-V under
+   !CONFIG_MMU.
+
+ - Clean upcoming (Rust 1.83.0) Clippy warnings.
+
+'kernel' crate:
+
+ - 'sync' module: fix soundness issue by requiring 'T: Sync' for
+   'LockedBy::access'; and fix helpers build error under PREEMPT_RT.
+
+ - Fix trivial sorting issue ('rustfmtcheck') on the v6.12 Rust merge.
+
+----------------------------------------------------------------
+Alice Ryhl (3):
+      rust: sync: require `T: Sync` for `LockedBy::access`
+      rust: KASAN+RETHUNK requires rustc 1.83.0
+      cfi: encode cfi normalized integers + kasan/gcov bug in Kconfig
+
+Dirk Behme (1):
+      rust: mutex: fix __mutex_init() usage in case of PREEMPT_RT
+
+Gary Guo (1):
+      rust: fix `ARCH_SLAB_MINALIGN` multiple definition error
+
+Miguel Ojeda (3):
+      rust: kernel: sort Rust modules
+      rust: cfi: fix `patchable-function-entry` starting version
+      rust: kunit: use C-string literals to clean warning
+
+ arch/Kconfig                  | 18 +++++++++++++++++-
+ init/Kconfig                  |  5 +++--
+ rust/bindgen_parameters       |  5 +++++
+ rust/helpers/mutex.c          |  6 ++++++
+ rust/kernel/kunit.rs          |  4 ++--
+ rust/kernel/lib.rs            |  2 +-
+ rust/kernel/sync/locked_by.rs | 18 ++++++++++++++----
+ 7 files changed, 48 insertions(+), 10 deletions(-)
