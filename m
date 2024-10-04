@@ -1,102 +1,150 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8089029422
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Oct 2024 12:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FEF210193;
+	Fri,  4 Oct 2024 13:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728046688; cv=none; b=qzoKzD9ycwHZfipP1ZgbpruynKQpuegHxhSNOoo4UH4A98/+397e18ssJucrro1IaUmANIGLQ6374C4BjXgyH9d3jDBMfPO6/UCXe+4PBrLFfGa2vqp0pkJvBv9v/vAf3MkonVT+xu59JeXLzVRzAuNgMMMiAhyXI0Sl3U+rQ7s=
+	t=1728047339; cv=none; b=r12xdydWzB/ZYYH/kQImAwp4hk0Uk8Uh9o1Jc+SBESIEu4tLzwC/7k37+esuHIF5T7JKV7nUug2DgGMDf/5V/mPvUSOF2gsX+GQo97dV/vKDr4u7yv8xgyDaUqGEmPfxqabT2hfve8upvqwlAdR+AZIIy2cMS2BNxoyAwO3hBEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728046688; c=relaxed/simple;
-	bh=sxrBN8IzV6EkQI6lJSQc3duGIxEFQ90FH+6vKD6NWrM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fWq+Ssvj08xZs+CC+G5U5h6qmYN14+FDctZywk+Oxlk1zaCqZicWQhDUZuFgoB0wQlgJU5rkwWpSwlLKwyrb1h8gYm4vQdTq1K+VeZO05E6TWpqDiACQpY3vRn/6Iv6iFPYdgy/dmOgHVLHLABkA0QP0PK6gk3iLJznWYK8tM14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWlWOy0e; arc=none smtp.client-ip=209.85.215.174
+	s=arc-20240116; t=1728047339; c=relaxed/simple;
+	bh=jKeMftI0t24Y3FyOjhvfPzai/IDr3bRuUly9gQ/dVBw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YZN6Gz2mZyPBEHlMk0EqSqeyG5GqKud0DLVGXbMl8B/iOi4CHjQAm0RnnkAMWL9/6MHYpFiIfGYW1nMWy4nj0/fhhOPUEl2IQjid2Nzt4YSnIzdt757Kt4af4KYD0nTRHtFfL7VmI6eR4U+XWwwj+Arll5e7vQpCuAUmcgcp5v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ASL8XIJ8; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWlWOy0e"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7c3d415f85eso144895a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 04 Oct 2024 05:58:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ASL8XIJ8"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c5bca6603aso2566273a12.1;
+        Fri, 04 Oct 2024 06:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728046687; x=1728651487; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sxrBN8IzV6EkQI6lJSQc3duGIxEFQ90FH+6vKD6NWrM=;
-        b=PWlWOy0ewPZg/0h8To9dOX6F3H2o55KBu+AuYTYTzY5lmpWlOPTQkqSywlBAEWW2Bq
-         OSnLv+92UAmB8xmZG4my0tSWCiy9YxrtYQ9RiwBl7vwsB+cTG8MkC0NeGKPSxK9b5+Im
-         r93U/yzwY6GUlSdBs4EQX4GkNKQ+aQ/dn9cAmHf4k8UCEiZue4VJeGRDasCveOglW27+
-         bmn5xqnWScUB5aAviMzFnkxX0hpoHKjM/mi+6omGt2D0TGYKtyXu4Jbh+OcCj9ZXjrV0
-         EajSEidp4ZG5p0nbEGDNgW0nqhOK11UjGcVcalwdUtpzEShIJQPttCTsi+CAHNBqiXj5
-         1mQA==
+        d=gmail.com; s=20230601; t=1728047336; x=1728652136; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fPtXqlbK/VkxukpQETyuGIq0PzYdYHFs7b27gg7Hb1k=;
+        b=ASL8XIJ8uwPQFZ3sq3KjACsrW6R8LvhKgelnRWfbuhFVFXfGWGUwvXv0yyRq3QqWda
+         KW+7RGW2nImiIm0hQJnMKjK+hSLr/2X3nvH/o8f1W+8yroTfdColIAlLyBw4yOIc/80g
+         44l1ExpXjI0mTeqKspK51EM19PXBbeKPT28orFYjUrh+met1bYjqNiV/B3qZk01nO1C2
+         kOo5O0onk2q/Jo1tGpaJuwDe6NWciH46rhJ9nAent50Gy6SB4p2AWVyURylaId+54Soc
+         pwQsm49kuVLoseLKeXcfBYV6wbnrfMUIRt+hotNxsxfOilKCa1FBNEoj8jchX9GwTQaK
+         5AMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728046687; x=1728651487;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sxrBN8IzV6EkQI6lJSQc3duGIxEFQ90FH+6vKD6NWrM=;
-        b=Bu5TAenW012mcq6cRA279tvmHMd+rhJUKYJ1JDZja7LIxx/hSPhOUDzBqd+RnVfFZe
-         J0y7hKJ9R1MXWPmiXZpBOYQ461746am4BnKBI1RvduCvig4zj7/AI2ePLtrHEWeJ7pPx
-         SP+qYg4nC5XHui2JOeVzkcSDyb2Rn7eHpDOoTeCPHomF/C3oqjZzPt22kzBiE01nxLHW
-         8bsqj/s48v1MK+zJncI9Nss27SfPbnWHq9KFkTWKLBwHNGTGAdqjZsWUDCEuI2MzgjQi
-         KmX2bxgQPbvom44ZlLFA+3lih2EM/jusA9NxqdTMMSWHgQ9d0gCDXq4EmdTuqPz96uqv
-         ZcMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUd7fWzsMxN4Hh4ICM1wRQ5rPz2jFaReK+ftA2iKqz4GSarBAfrVjEkOt3uB6ODeaMHU3Icec/YtA/fXB00Bw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNWF5zhDJQhZksPLi7mLqW84ZQMgGa83m7J5CPEtjGS55hKzqC
-	e3JxQEgPzByQbHn1Fia6HahI6y2yc8+E0NH9Wsv4uBf6VLt8foJwTH2DfV4+JmX08EDPe3K02zh
-	Fp9f6npWMfEcyfEI24I2uY8wTHoD3dAf0
-X-Google-Smtp-Source: AGHT+IHePgK94Dc/U8lIaBZC6VLCgERokZcdFg9aoYPLqtox61pHsTq9vYPYa8+Lhfxx/pH/2cndg0IhJub2islYh8A=
-X-Received: by 2002:a05:6a20:914f:b0:1cf:4e49:bc74 with SMTP id
- adf61e73a8af0-1d6dfac48e8mr1914521637.9.1728046686771; Fri, 04 Oct 2024
- 05:58:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728047336; x=1728652136;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fPtXqlbK/VkxukpQETyuGIq0PzYdYHFs7b27gg7Hb1k=;
+        b=LVEum8goCroJ40jtezZWVCfu2mePJwoXfVaoYYe7o389TSUggNsE9QLVsmSsIKZSDC
+         2na/xtlDmApLgGjJJAZ5cEDrVpZ+8X30ORTxUdRY/nzUvu4IgJeWpxHWNKNsSZqkCTyw
+         oocq272skrHfd7BdtaFUMWxFMDPcj422NgUyB26NFr8Wo5ONmdut7w2kwHJP+mFSC5BE
+         /LVlHT6VRVYE06vJId7LqAw8m7cmmsLpzI/6FH/G7nfb2KgbQj/MGq6R20WE4FsXOE3T
+         /fLQZAccz6DUqQSeo5yS6UYTHKA7LHeunrMYXGE1bW9vQ9CP8OLTRINX1AggV6VJ5WwL
+         hGwg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIp68eijB4EH8s+13CBCAadlNDCZQELEFjaXeOQbzuQizAZNACXc4Y5uetNbL7btg8JuTeWpNcTUQ66R0=@vger.kernel.org, AJvYcCWcNOUG9AOGt37H7Mc3RC+tV0Pza9LY3ndERk37rzHx5yVk3zCwwjUFhrAy1Ljk6Ozd3g0x3BTZvg6Tc9fFclU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxssF1wS/0lcU+aql2wocXeH2Du3M9Ru+wNmJ2QGB/DSf/Sn8ec
+	EDQ3A5pnzv2revdQl/3fNmfCvOtaQwsh3R6DpalqnYUGqCmBOc8+
+X-Google-Smtp-Source: AGHT+IHI7D0jFQ+ERLu2vKRSh5+LJi5qG7FlTHM2oG7fSOODAKvyOJAebYJVzcz9cSCWPW4zbZPUng==
+X-Received: by 2002:a17:907:f7a2:b0:a8a:8c4c:3e2a with SMTP id a640c23a62f3a-a991bd40b99mr221430866b.23.1728047335959;
+        Fri, 04 Oct 2024 06:08:55 -0700 (PDT)
+Received: from mbp-deepak.lan (89-69-93-57.dynamic.chello.pl. [89.69.93.57])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99103b376csm222210166b.104.2024.10.04.06.08.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Oct 2024 06:08:55 -0700 (PDT)
+From: Deepak Thukral <iapain@gmail.com>
+To: 
+Cc: Deepak Thukral <iapain@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Filipe Xavier <felipe_life@live.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rust: std_vendor: update dbg macro from rust upstream
+Date: Fri,  4 Oct 2024 14:56:16 +0200
+Message-Id: <20241004125616.49886-1-iapain@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-145)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <BL0PR02MB491443BD775D5D63635C3F4FE9712@BL0PR02MB4914.namprd02.prod.outlook.com>
- <CANiq72mGJK==2YFnBFG06oPsrf8i3Wenx9zO9_WWWzvhRknh8w@mail.gmail.com> <BL0PR02MB491430823078BAD42FD56D13E9722@BL0PR02MB4914.namprd02.prod.outlook.com>
-In-Reply-To: <BL0PR02MB491430823078BAD42FD56D13E9722@BL0PR02MB4914.namprd02.prod.outlook.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 4 Oct 2024 14:57:54 +0200
-Message-ID: <CANiq72=fsQ+dXEGDvxtKO7jk1dEXD_Rv98du97GNDChYPTZ8yg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: optimize error type to use nonzero
-To: Filipe Xavier <felipe_life@live.com>
-Cc: "ojeda@kernel.org" <ojeda@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 4, 2024 at 1:50=E2=80=AFPM Filipe Xavier <felipe_life@live.com>=
- wrote:
->
-> I'm sorry, actually it makes sense, I didn't know about the changelog,
-> i'll send it next time.
+`dbg!` contain adapted code from rust upstream.
+Compare code with rust upstream and update missing column
+numbers in `dbg!` outputs. Column numbers are not copied
+but adjusted for examples in docstring.
 
-No worries at all! It is part of learning how things are usually done.
+Thus update the docstring only.
 
-> About build_assert on macro, could assume that the C header file defines
-> these constants with non-zero values, but since the from_errno function
-> checks this, I thought it would be interesting to validate it too.
-> It makes sense?
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1124
+Signed-off-by: Deepak Thukral <iapain@gmail.com>
+---
+Changelog:
+v1->v2
+- Adjusted line numbers which were affected by changes to macro.
+- Recompare `dbg!` macro with rust upstream. No other changes required.
+- Better commit message.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20241003221536.34826-1-iapain@gmail.com/
+---
+ rust/kernel/std_vendor.rs | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-Sorry, I am not exactly sure what you mean. If you need to trust the C
-header file, then the macro would be unsafe and its callers would need
-to explain that they indeed have to trust the C headers.
+diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
+index 8f27d447a..279bd3536 100644
+--- a/rust/kernel/std_vendor.rs
++++ b/rust/kernel/std_vendor.rs
+@@ -18,7 +18,7 @@
+ /// let a = 2;
+ /// # #[expect(clippy::disallowed_macros)]
+ /// let b = dbg!(a * 2) + 1;
+-/// //      ^-- prints: [src/main.rs:2] a * 2 = 4
++/// //      ^-- prints: [src/main.rs:3:9] a * 2 = 4
+ /// assert_eq!(b, 5);
+ /// ```
+ ///
+@@ -67,7 +67,7 @@
+ /// This prints to the kernel log:
+ ///
+ /// ```text,ignore
+-/// [src/main.rs:4] n.checked_sub(4) = None
++/// [src/main.rs:3:8] n.checked_sub(4) = None
+ /// ```
+ ///
+ /// Naive factorial implementation:
+@@ -88,15 +88,15 @@
+ /// This prints to the kernel log:
+ ///
+ /// ```text,ignore
+-/// [src/main.rs:3] n <= 1 = false
+-/// [src/main.rs:3] n <= 1 = false
+-/// [src/main.rs:3] n <= 1 = false
+-/// [src/main.rs:3] n <= 1 = true
+-/// [src/main.rs:4] 1 = 1
+-/// [src/main.rs:5] n * factorial(n - 1) = 2
+-/// [src/main.rs:5] n * factorial(n - 1) = 6
+-/// [src/main.rs:5] n * factorial(n - 1) = 24
+-/// [src/main.rs:11] factorial(4) = 24
++/// [src/main.rs:3:8] n <= 1 = false
++/// [src/main.rs:3:8] n <= 1 = false
++/// [src/main.rs:3:8] n <= 1 = false
++/// [src/main.rs:3:8] n <= 1 = true
++/// [src/main.rs:4:9] 1 = 1
++/// [src/main.rs:5:9] n * factorial(n - 1) = 2
++/// [src/main.rs:5:9] n * factorial(n - 1) = 6
++/// [src/main.rs:5:9] n * factorial(n - 1) = 24
++/// [src/main.rs:11:1] factorial(4) = 24
+ /// ```
+ ///
+ /// The `dbg!(..)` macro moves the input:
+-- 
+2.39.3
 
-Instead, if it is possible to have a safe `const` constructor, then we
-should just do that. Now, can `from_errno` be `const` to do so? If
-not, can we refactor things to make it so somehow (perhaps a new
-`const` private fallible constructor)?
-
-Answering these questions should guide you a bit on a solution --
-and the answers are typically what one would include in the commit
-message, i.e. explaining why you picked the solution (i.e. the design
-choices) you did.
-
-Thanks!
-
-Cheers,
-Miguel
