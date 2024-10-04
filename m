@@ -1,150 +1,132 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FEF210193;
-	Fri,  4 Oct 2024 13:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0FD33D5;
+	Fri,  4 Oct 2024 13:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728047339; cv=none; b=r12xdydWzB/ZYYH/kQImAwp4hk0Uk8Uh9o1Jc+SBESIEu4tLzwC/7k37+esuHIF5T7JKV7nUug2DgGMDf/5V/mPvUSOF2gsX+GQo97dV/vKDr4u7yv8xgyDaUqGEmPfxqabT2hfve8upvqwlAdR+AZIIy2cMS2BNxoyAwO3hBEc=
+	t=1728047737; cv=none; b=d9DT47shIa10mgdOzP7sht/xD87J/ufz2CffKYROPQt2ndY1t8yyk65uoxHtIchvcC14WQfGctnnhLrtWZ1jhcJ+/CI0nmW1n5RxnLHmlm5ZyHdfJ7vHcqyvLagyxdkNG4DLXA1/WsMZ7XiiWzpdVxE9uJ3tDnbThUp8OvbFKtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728047339; c=relaxed/simple;
-	bh=jKeMftI0t24Y3FyOjhvfPzai/IDr3bRuUly9gQ/dVBw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YZN6Gz2mZyPBEHlMk0EqSqeyG5GqKud0DLVGXbMl8B/iOi4CHjQAm0RnnkAMWL9/6MHYpFiIfGYW1nMWy4nj0/fhhOPUEl2IQjid2Nzt4YSnIzdt757Kt4af4KYD0nTRHtFfL7VmI6eR4U+XWwwj+Arll5e7vQpCuAUmcgcp5v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ASL8XIJ8; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728047737; c=relaxed/simple;
+	bh=1JZwYefyhSOCZB3CuZertgMGY1R4ZnxNXU0IyQGN6qM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FlgaPWhJ+EOxi1ZQc3ajSdI5kBpOAuwHU4/d0jOy2WK63DXND8085wBbMLqOEhRwllPAyrD60ssL8NqnMcMxSIRPtI390w+HDBYQdQvdhu99zZozOOPrNHB9bvHZvzBXnWMtkyVTASefFQ6kSJrzjqWiZWEr8c0DruvIhJ1f7mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kjjnc/L9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ASL8XIJ8"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c5bca6603aso2566273a12.1;
-        Fri, 04 Oct 2024 06:08:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728047336; x=1728652136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fPtXqlbK/VkxukpQETyuGIq0PzYdYHFs7b27gg7Hb1k=;
-        b=ASL8XIJ8uwPQFZ3sq3KjACsrW6R8LvhKgelnRWfbuhFVFXfGWGUwvXv0yyRq3QqWda
-         KW+7RGW2nImiIm0hQJnMKjK+hSLr/2X3nvH/o8f1W+8yroTfdColIAlLyBw4yOIc/80g
-         44l1ExpXjI0mTeqKspK51EM19PXBbeKPT28orFYjUrh+met1bYjqNiV/B3qZk01nO1C2
-         kOo5O0onk2q/Jo1tGpaJuwDe6NWciH46rhJ9nAent50Gy6SB4p2AWVyURylaId+54Soc
-         pwQsm49kuVLoseLKeXcfBYV6wbnrfMUIRt+hotNxsxfOilKCa1FBNEoj8jchX9GwTQaK
-         5AMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728047336; x=1728652136;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fPtXqlbK/VkxukpQETyuGIq0PzYdYHFs7b27gg7Hb1k=;
-        b=LVEum8goCroJ40jtezZWVCfu2mePJwoXfVaoYYe7o389TSUggNsE9QLVsmSsIKZSDC
-         2na/xtlDmApLgGjJJAZ5cEDrVpZ+8X30ORTxUdRY/nzUvu4IgJeWpxHWNKNsSZqkCTyw
-         oocq272skrHfd7BdtaFUMWxFMDPcj422NgUyB26NFr8Wo5ONmdut7w2kwHJP+mFSC5BE
-         /LVlHT6VRVYE06vJId7LqAw8m7cmmsLpzI/6FH/G7nfb2KgbQj/MGq6R20WE4FsXOE3T
-         /fLQZAccz6DUqQSeo5yS6UYTHKA7LHeunrMYXGE1bW9vQ9CP8OLTRINX1AggV6VJ5WwL
-         hGwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWIp68eijB4EH8s+13CBCAadlNDCZQELEFjaXeOQbzuQizAZNACXc4Y5uetNbL7btg8JuTeWpNcTUQ66R0=@vger.kernel.org, AJvYcCWcNOUG9AOGt37H7Mc3RC+tV0Pza9LY3ndERk37rzHx5yVk3zCwwjUFhrAy1Ljk6Ozd3g0x3BTZvg6Tc9fFclU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxssF1wS/0lcU+aql2wocXeH2Du3M9Ru+wNmJ2QGB/DSf/Sn8ec
-	EDQ3A5pnzv2revdQl/3fNmfCvOtaQwsh3R6DpalqnYUGqCmBOc8+
-X-Google-Smtp-Source: AGHT+IHI7D0jFQ+ERLu2vKRSh5+LJi5qG7FlTHM2oG7fSOODAKvyOJAebYJVzcz9cSCWPW4zbZPUng==
-X-Received: by 2002:a17:907:f7a2:b0:a8a:8c4c:3e2a with SMTP id a640c23a62f3a-a991bd40b99mr221430866b.23.1728047335959;
-        Fri, 04 Oct 2024 06:08:55 -0700 (PDT)
-Received: from mbp-deepak.lan (89-69-93-57.dynamic.chello.pl. [89.69.93.57])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99103b376csm222210166b.104.2024.10.04.06.08.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Oct 2024 06:08:55 -0700 (PDT)
-From: Deepak Thukral <iapain@gmail.com>
-To: 
-Cc: Deepak Thukral <iapain@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Filipe Xavier <felipe_life@live.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: std_vendor: update dbg macro from rust upstream
-Date: Fri,  4 Oct 2024 14:56:16 +0200
-Message-Id: <20241004125616.49886-1-iapain@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-145)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kjjnc/L9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8116C4CEC7;
+	Fri,  4 Oct 2024 13:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728047736;
+	bh=1JZwYefyhSOCZB3CuZertgMGY1R4ZnxNXU0IyQGN6qM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Kjjnc/L90TMtexTjGYxAYy1SQ1QLyKkvF/CbvX4DRZe3QZLNjgmA043In5Mn3i/rw
+	 6B5X+WF05mnRkF5MPsreCu1/RWhlYy0+kTzNNOgDa8rsLpPqegA7XxXK7Rhx0nUxa6
+	 IBkZJ2pdiTlc6pHGbh4RfTk0ZTnhtJZsbARiZlcRcR6BaSSw9ooGopO2oN7M88zaKP
+	 i9ZukewwH6dgft/J+7smkC7XLiCKWNYuCiKQdA/fHzzcPvpm6QIq/WKqZBvWKoD11P
+	 SHCZ55g+iyuo9/ex9afVt1+UpR3QIha2xI0NPLiyaKR+gtHkWFsHfMyaquC5SiCFd1
+	 mpOvPGs/3yVlw==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-539983beb19so2824507e87.3;
+        Fri, 04 Oct 2024 06:15:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+38R09j1hQxllWs0EaTrFh1t2MRF8v0dzcOegKbfaiS5alnA6Rjl00TvgfJBZhTuhQYhmcALOH+cVNDXP@vger.kernel.org, AJvYcCULDnRsmKZmGZZ98TwuF1ZH4+GH7Fr530imtFW9lxbETVqJVXZfU65rPPvDlmojIxNvhVcVdFKYkLvoQKojN1s=@vger.kernel.org, AJvYcCUVTF6W9Sbppy6KFSyHwLvooq67LPP5VL802W4CWiAe7IpDMTY6khkzpo7hGsWxMvwFstIz5DO0q5KIahrn@vger.kernel.org, AJvYcCV91q/sGry1hbxKADzHDs0ju/SACiuwk/yFnHXON8Sb0iW9D5RNGxPFtCuSBgKe3pXkmkRh4WRAhxiRcOjz@vger.kernel.org, AJvYcCVVVpSpkuylnUz66AK6tJcyw4LZB2j74FsXSFsP0DqiHVPWk5fLLwyai5rqa4y17bBqWT4cJHG5vKMj+jMXhkLiSg==@vger.kernel.org, AJvYcCWA2gfASVi9frLe93G6t17nR1yShVtHaTnLCkoVFhtMIjQ5GeUHLYmbOeTOkZumD6zxFAnLKKMrieJQ@vger.kernel.org, AJvYcCWFdmrYIxjlAVrycNuUVzUwiS2ehdmzsxQi5FyJdWnVQlacT2uPeomp2Rj39SXjQvFEJI54ElEmzJRZ@vger.kernel.org, AJvYcCWtd9b6skN2pLy2u9KwqX+NKHfaGn0v4Eo1OIzGas8ESpGURmF32XiV/9LlvVt1ROFCivAcoJZkyJU=@vger.kernel.org, AJvYcCXKOkcGvbcFlTu4Hf/DZIPOnRvbIM9GbnXAqdnXQ5I5efT3uUdsXrog/lxFo5cNHWM2sZtyCkhdBINWFA==@vger.kernel.org, AJvYcCXrnVncpaUXYrLcbTnyhKaiVGFWHwnAFNkCOaIqEWUE9xcl3y/O9QfJdzbzJLPzS8sXceg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI7+FGOM+QMg4bA9wtb9EgMm5mg3L7T78RlRBywebeG3xWaWEe
+	xwsBzJ8fB6aGyarypEtg6a+7SG31yiREjBfrIsOIqHnNPvJniclUQgEP7RblozXftN1YC0//0MZ
+	a5IzbyggY1NuLWKORTrUOKMOkzQ8=
+X-Google-Smtp-Source: AGHT+IEuHrt3V5yx40A/FQDIn91vq5WH5zeRnx8eS4s+O/De09fFFzzyl2W2oN2bUPJ3C1JSY+Ea24ADde6nXP4PqRA=
+X-Received: by 2002:a05:6512:3096:b0:539:a2e0:4e75 with SMTP id
+ 2adb3069b0e04-539ab8662d1mr1636973e87.14.1728047734917; Fri, 04 Oct 2024
+ 06:15:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-35-ardb+git@google.com> <CAFULd4ZNwfPZO-yDjrtT2ANV509HeeYgR80b9AFachaVW5zqrg@mail.gmail.com>
+ <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com>
+In-Reply-To: <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 4 Oct 2024 15:15:22 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
+Message-ID: <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
+To: Brian Gerst <brgerst@gmail.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-`dbg!` contain adapted code from rust upstream.
-Compare code with rust upstream and update missing column
-numbers in `dbg!` outputs. Column numbers are not copied
-but adjusted for examples in docstring.
+On Sat, 28 Sept 2024 at 15:41, Brian Gerst <brgerst@gmail.com> wrote:
+>
+> On Wed, Sep 25, 2024 at 2:33=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com> w=
+rote:
+> >
+> > On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@google=
+.com> wrote:
+> > >
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > >
+> > > Specify the guard symbol for the stack cookie explicitly, rather than
+> > > positioning it exactly 40 bytes into the per-CPU area. Doing so remov=
+es
+> > > the need for the per-CPU region to be absolute rather than relative t=
+o
+> > > the placement of the per-CPU template region in the kernel image, and
+> > > this allows the special handling for absolute per-CPU symbols to be
+> > > removed entirely.
+> > >
+> > > This is a worthwhile cleanup in itself, but it is also a prerequisite
+> > > for PIE codegen and PIE linking, which can replace our bespoke and
+> > > rather clunky runtime relocation handling.
+> >
+> > I would like to point out a series that converted the stack protector
+> > guard symbol to a normal percpu variable [1], so there was no need to
+> > assume anything about the location of the guard symbol.
+> >
+> > [1] "[PATCH v4 00/16] x86-64: Stack protector and percpu improvements"
+> > https://lore.kernel.org/lkml/20240322165233.71698-1-brgerst@gmail.com/
+> >
+> > Uros.
+>
+> I plan on resubmitting that series sometime after the 6.12 merge
+> window closes.  As I recall from the last version, it was decided to
+> wait until after the next LTS release to raise the minimum GCC version
+> to 8.1 and avoid the need to be compatible with the old stack
+> protector layout.
+>
 
-Thus update the docstring only.
+Hi Brian,
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1124
-Signed-off-by: Deepak Thukral <iapain@gmail.com>
----
-Changelog:
-v1->v2
-- Adjusted line numbers which were affected by changes to macro.
-- Recompare `dbg!` macro with rust upstream. No other changes required.
-- Better commit message.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20241003221536.34826-1-iapain@gmail.com/
----
- rust/kernel/std_vendor.rs | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+I'd be more than happy to compare notes on that - I wasn't aware of
+your intentions here, or I would have reached out before sending this
+RFC.
 
-diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
-index 8f27d447a..279bd3536 100644
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -18,7 +18,7 @@
- /// let a = 2;
- /// # #[expect(clippy::disallowed_macros)]
- /// let b = dbg!(a * 2) + 1;
--/// //      ^-- prints: [src/main.rs:2] a * 2 = 4
-+/// //      ^-- prints: [src/main.rs:3:9] a * 2 = 4
- /// assert_eq!(b, 5);
- /// ```
- ///
-@@ -67,7 +67,7 @@
- /// This prints to the kernel log:
- ///
- /// ```text,ignore
--/// [src/main.rs:4] n.checked_sub(4) = None
-+/// [src/main.rs:3:8] n.checked_sub(4) = None
- /// ```
- ///
- /// Naive factorial implementation:
-@@ -88,15 +88,15 @@
- /// This prints to the kernel log:
- ///
- /// ```text,ignore
--/// [src/main.rs:3] n <= 1 = false
--/// [src/main.rs:3] n <= 1 = false
--/// [src/main.rs:3] n <= 1 = false
--/// [src/main.rs:3] n <= 1 = true
--/// [src/main.rs:4] 1 = 1
--/// [src/main.rs:5] n * factorial(n - 1) = 2
--/// [src/main.rs:5] n * factorial(n - 1) = 6
--/// [src/main.rs:5] n * factorial(n - 1) = 24
--/// [src/main.rs:11] factorial(4) = 24
-+/// [src/main.rs:3:8] n <= 1 = false
-+/// [src/main.rs:3:8] n <= 1 = false
-+/// [src/main.rs:3:8] n <= 1 = false
-+/// [src/main.rs:3:8] n <= 1 = true
-+/// [src/main.rs:4:9] 1 = 1
-+/// [src/main.rs:5:9] n * factorial(n - 1) = 2
-+/// [src/main.rs:5:9] n * factorial(n - 1) = 6
-+/// [src/main.rs:5:9] n * factorial(n - 1) = 24
-+/// [src/main.rs:11:1] factorial(4) = 24
- /// ```
- ///
- /// The `dbg!(..)` macro moves the input:
--- 
-2.39.3
+There are two things that you would need to address for Clang support
+to work correctly:
+- the workaround I cc'ed you on the other day [0],
+- a workaround for the module loader so it tolerates the GOTPCRELX
+relocations that Clang emits [1]
 
+
+
+[0] https://lore.kernel.org/all/20241002092534.3163838-2-ardb+git@google.co=
+m/
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?=
+id=3Da18121aabbdd
