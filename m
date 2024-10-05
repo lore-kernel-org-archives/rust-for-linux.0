@@ -1,80 +1,124 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FD5BE6C;
-	Sat,  5 Oct 2024 20:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3416D10A18;
+	Sat,  5 Oct 2024 21:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728161752; cv=none; b=nqBPI3A5reF78Tks15QSqlLvqB/jIaBX0oPVtfdUxrpXDW4bf2U1Kw5Y+Mc3aZS/sEKqkU99AacIK+CkQqnEYvsQYSRb4zetlkKolf8hCk6gsGRMSx6L+spCj+eVs0OZmaVaHevspp9MVWhArd89XcTCem+qk8AWssa+4jl7nb0=
+	t=1728162611; cv=none; b=Y0c5l9Bn4FnqLVzYqqP+x/MdyV1FP7z3C8ZY7sEBOg2nZy1v+eUuQ/fX3ESJZVxcIZv2VXsd2kC9csXG/t/fySQcnk6CMrhxE3LfBYfgHgjrDEbxwhxFY5Sy2n/8ibTLF9RjTBjD5o0w4OS8FhKV3u4Erz/ACmvYhROiY920VGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728161752; c=relaxed/simple;
-	bh=6utrY484jT1HhShNDfxzcXFHvPJWtb4/PzSV8XDLo58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e9ZNHwD+xaUjLGWvGfQGUnQhDR7q6B9akBuE5NMWXfyv4fGFPGCvto8WVey224FTIe3Kvw2dK5QH+vLUCOExtsbHYm0ptc6+l/RFh24ogiCt9bpPACzTguJSGzlg0KmH8/6wnRbuwEn1oi/SQNqiGqX/K7CgMOAOb3TCOJ2JEQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQKHv9AC; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728162611; c=relaxed/simple;
+	bh=XNJ6j+NmfhQiOjzAkAYnWd6ZaNw4OuVy2Tk2vKusXHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KE/xKU1/Bt2sXp1VHx5td4eDQKpedgwnnaas3AAMBoL0RkZd1OcOdur0adN3qsn8W6ugTObw2UOTy8pJtlOmqCl8cQ2tFQlBaV6oGkMLYA6o4BC/MU2HgupVjldfvsq3qSmMnjqSOd+MThJoW078HeLnCQOxSrCcvvO0rfNrrqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IwNWICaP; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQKHv9AC"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4581e7f31eeso28131761cf.0;
-        Sat, 05 Oct 2024 13:55:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728161749; x=1728766549; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6utrY484jT1HhShNDfxzcXFHvPJWtb4/PzSV8XDLo58=;
-        b=NQKHv9ACuc5X6JHhhrKPEktgRgz6oob3jLG91qFHxqpiGFo0xjh8IK/ZxYGRwik+f6
-         OnHHACRSEVPeo9ZL//U08pGYZIjJRTcMydDvkr5/APc6XGomEFz/fY9UG+BeFmEoZ/tE
-         lxpdoLhR2jFg4rmZJ26/O7XDg78ltNIWUUO/0jnuLXxY/BJCuPKNf/ApYoqpp1JBYUeg
-         HvkwwSaSBAEeH2/dvmRcVkWllHjHAFHPwQ1IA36r4BOyL6nPAwL5ykTf1Sv7fhbcspTZ
-         V3cWMO116UvO2cxGj6GHUWDd+9/yGGM7HDqe2W+w1bo3apcpxnmCUdKMIZ7IMDLe4XEp
-         +exg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728161749; x=1728766549;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6utrY484jT1HhShNDfxzcXFHvPJWtb4/PzSV8XDLo58=;
-        b=ungnevvdk7nPUbvC+06t+HBJ80Ul1l4eynASAFxzArxDaKUN1dYt9ErI45SDgnpVxi
-         9pFahIHwtdmzBjVrZ7K32NmYfPlPySZFNgO2NxRlc6Bl609MHadp/3QZk6ZBObV8FOML
-         f4xBcnB91ZmK+wEFuhZsRxArERSUAlnGISjcH2/99aAdZQpyZjGPwv4oOPWw80SBDrCh
-         wkOmuWEZ2Vyjyqa0buVqpPQQ60H0phT7oCL5Vu8VGGl/u4FY/IY2d2YRIevrmIEi/TsJ
-         rJA0lfSEMTuF7/cOPS4eQoi6DfY2xzw/FiNw/5CtP8/2Sc4uHKEoxuZuL3rzCWtvVGDR
-         SXOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVim43vJXtvgJy7XDfMQzOD3GrAeMC0a0xVBy7/ZeI/R/u25sxaQpgxbb9NXvvN/ks+5nximpcIp+kzsdU=@vger.kernel.org, AJvYcCVqzxqDtttwE4wa/EOsg/prbnk7Dp89gO5vOZjbWbIkYybDWIiZu4mU+RozviksJKBw+hN51ZsgwzJQCpdNUrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2Zc7HaziiB+cUXbiGjdUPupzbtsVm7aQXkhj8HI2CftcFsMwE
-	hNakQx0SVWIXn5eKIEaQMV8KjAe7huSKktNjGXHh3+pxJz0BkOrhiZKI8BRQIv4i1BMjYTeiKr7
-	84eEdo5ISzbik7VyKoaGDtIhR2Y8=
-X-Google-Smtp-Source: AGHT+IFppASNq9uAL37Hg45IO1IoBp2bGpQ9b+s8exinmJh/RwintKAcBXYaOinlWnO/zOtLc9CLiuuxf6J3gXy5XmY=
-X-Received: by 2002:ac8:5991:0:b0:458:4d83:6e87 with SMTP id
- d75a77b69052e-45d9ba82bfcmr101258791cf.26.1728161749449; Sat, 05 Oct 2024
- 13:55:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IwNWICaP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=H6P87KlwUnyJtmGe5pYUTRscMy05gLwFR8H+OXIgxPE=; b=IwNWICaP+QO9NvNnf+PkL0GogY
+	rwTllAmqKgaUWWmF9HAzUB4GCXLCbgJVxyituuINywYY5hGfW1NUyAUs2o+kryug/yv1ASV6NvWJZ
+	juDUR2kPUXLGT07fEQ2mSG8D0d759RJteSbK5OYl9/D4XS9hLZFPlA3B13IDREMoxCA4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sxC28-0099YB-FM; Sat, 05 Oct 2024 23:09:48 +0200
+Date: Sat, 5 Oct 2024 23:09:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+	tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/6] rust: time: Introduce Delta type
+Message-ID: <7e6e0f84-1eef-4c7c-872a-3852a9a80034@lunn.ch>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+ <20241005122531.20298-3-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241003221536.34826-1-iapain@gmail.com> <CANiq72k0c+QxWkxfZ5f2VvzYmaX4z9hQoYvbPtKfF3pwLq-E8Q@mail.gmail.com>
- <CACD3TDPbBnZuvr0jJVtrgs_4AXXk1+HGZEH_uPp2iQVf+4Ff6A@mail.gmail.com> <CANiq72m-0or7w5Qdw5Ek9vf-w_ng5QOmeSW4u9HSMqj1iei-CA@mail.gmail.com>
-In-Reply-To: <CANiq72m-0or7w5Qdw5Ek9vf-w_ng5QOmeSW4u9HSMqj1iei-CA@mail.gmail.com>
-From: Deepak <iapain@gmail.com>
-Date: Sat, 5 Oct 2024 22:55:38 +0200
-Message-ID: <CACD3TDM7FS9_FXhajOBr7=dt0J9D=2Ejd9DEa_6TH=yYevAHCQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: update dbg macro outputs in docs
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Nell Shamrell-Harrington <nells@linux.microsoft.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241005122531.20298-3-fujita.tomonori@gmail.com>
 
-> No need to apologize -- it is all good. v2 looks fine :)
+On Sat, Oct 05, 2024 at 09:25:27PM +0900, FUJITA Tomonori wrote:
+> Introduce a type representing a span of time. Define our own type
+> because `core::time::Duration` is large and could panic during
+> creation.
+> 
+> We could use time::Ktime for time duration but timestamp and timedelta
+> are different so better to use a new type.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/time.rs | 64 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 64 insertions(+)
+> 
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index c40105941a2c..6c5a1c50c5f1 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -8,9 +8,15 @@
+>  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
+>  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
+>  
+> +/// The number of nanoseconds per microsecond.
+> +pub const NSEC_PER_USEC: i64 = bindings::NSEC_PER_USEC as i64;
+> +
+>  /// The number of nanoseconds per millisecond.
+>  pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
+>  
+> +/// The number of nanoseconds per second.
+> +pub const NSEC_PER_SEC: i64 = bindings::NSEC_PER_SEC as i64;
+> +
+>  /// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
+>  pub type Jiffies = core::ffi::c_ulong;
+>  
+> @@ -103,3 +109,61 @@ fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+>          }
+>      }
+>  }
+> +
+> +/// A span of time.
+> +#[derive(Copy, Clone)]
+> +pub struct Delta {
+> +    nanos: i64,
+> +}
+> +
+> +impl Delta {
+> +    /// Create a new `Delta` from a number of nanoseconds.
+> +    #[inline]
+> +    pub fn from_nanos(nanos: u16) -> Self {
+> +        Self {
+> +            nanos: nanos.into(),
+> +        }
+> +    }
 
-Thanks! Very kind of you :)
+Just throwing out an idea:
 
-Cheers,
-Deepak
+How about we clamp delay to ~1 year, with a pr_warn() if it needs to
+actually clamp. All the APIs take or return a u64.
+
+> +    /// Return the number of microseconds in the `Delta`.
+> +    #[inline]
+> +    pub fn as_micros(self) -> i64 {
+> +        self.nanos / NSEC_PER_USEC
+> +    }
+
+Another dumb rust question. How does the Rust compiler implement 64
+bit division on 32 bit systems? GCC with C calls out to a library to
+do it, and the kernel does not have that library. So you need to use
+the kernel div_u64() function.
+
+Did you compiler this code for a 32 bit system?
+
+	Andrew
