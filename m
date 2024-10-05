@@ -1,150 +1,130 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6A882D91
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Oct 2024 12:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E01F14884C;
+	Sat,  5 Oct 2024 12:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728130023; cv=none; b=pkn67uz+yi2PDxATTpmeCvyF+YpXqDqziKc0YAe4lODK1a2HdEBHzIHhxJIB/FiIAw5gHQ93M7kKrzJQCrRv/uWND6PDchmPS923DhsDFJFx27x9wQLnfZEOZwLwXuK8biADbzTqcxGMOjYOqPuKLlR8M5iOAwpl6pv07z5+uuw=
+	t=1728131179; cv=none; b=e3hLXT1nhKig9vPjN4408kM7HBqM3m2yaO6kC2tGFk19olNRXL2JhBr+8bWa41oc87RjuB4ZX3cuAZ4AJiISI64DS+0lHTQ1yhI8CjbffiKICeZqJSN8612EbZiL8nQyWptvNa5O8GbwdRJBMMkxDAeEjDxDk2MUKHS1+fpaCeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728130023; c=relaxed/simple;
-	bh=7Wv79x5E9AcwAGG/zQcK660mw1zBEwy03YrLbK9EGno=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ep3iDy4/u7LTA6zFT+2zSBq4ddI1DN/XCDGLjuar/B2Mk3CWiZGId6cp6TVd/XXe6f1R5DV12IxTJPPFlPx0SRZBjC7lznvFoHCyArtX9AQXmLbzZpZJZgvmXZIM/VEvhFIKXNQLaiN2SoIkIEjdQaTofS8t+Sc88+cvR/7Ir1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wTNBG1Xo; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728131179; c=relaxed/simple;
+	bh=AI88GXG1Ky7KLJg1RLwowYwwiDKqBzc7ni+NOn77VY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iMcMkA9lQCwodOVhCytv6Tzd4BQrQ7fDwuQKckuN1NprWAFju0rDHiIvi0ivFxpibmSUwec2XarivHd5euNN6Sykvm7OsvhlD5mZDqFGPCdK63YkaLZrORDGY+N0KEzMfjSE6NIvuv3BNMQXArZyU53Wrzh1BvvGZM1/Hal3gmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4wRYy7c; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wTNBG1Xo"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37ccf0c0376so1862210f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 05 Oct 2024 05:07:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4wRYy7c"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7e6cbf6cd1dso2029124a12.3;
+        Sat, 05 Oct 2024 05:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728130020; x=1728734820; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r98QtsF1/DiiG9GkQhRBoJ7Pv1Ng6Yq06tif7n6/E6c=;
-        b=wTNBG1Xo87ornraNFjtYgRvbmOqxtttc8T0nfmYoL5+Mqr03KOwzs3fxozdtMuv3wl
-         QxQrAXgKYr4Pw+B679wYglzgLnByO8kzqwsQt59f03BpK/SlahE2wT2MMGHFPFbeyoDE
-         +BER1SgGzmELUPMkWxabEliAR4/lNxj8TGMIB+lfnwRgIO9WUaJ0+VyMR3JsnH6UYj+w
-         0pGOI49FTeIl7pQ+MPJupRa2ViDEjHQn0ObLK1vc6vxQEZ3uFV+n23N+n+IlEUuzeo8n
-         3ksRsj5p+Gx8CQ4N01pSma6gWcOOiTDmfmr6tw+6qHbkCaQe/qpfv1YlfoxDyb1nyl1z
-         rjNg==
+        d=gmail.com; s=20230601; t=1728131175; x=1728735975; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bgG34/A+4YzDfDMw6C+N7buhN2H/pmUs0F1NK/affXo=;
+        b=G4wRYy7c5LOi7mIgrHfw28PZoAXW4fW++s1PWFz8bNOhQcLtJ+nFvEqK5br7zM25Bg
+         UMoyD3htqJWtLZHQuvDwTCCEwPCUTnS3hILuqsWZ8bg9LTAfk7rQQkXnuRvt24B690ic
+         ixVvAdGif/BMeMy8pVfKI/nGu9tSImVShSNTAbcpQslYmdxXSWh5pw3dA5OraozVWcDb
+         OMNIsor8oM0V//xcPQL5JEE822rCLKd77LAgu6im1vu55f4TN3tYjK2e5sL6CviAMSMW
+         3mjpjzgWLbpEEzXk5aK5B2MetGhJT92rNzSTvCv4dZUIPnmETT0Rg3e+xh7sWyKIRQPz
+         2avw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728130020; x=1728734820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r98QtsF1/DiiG9GkQhRBoJ7Pv1Ng6Yq06tif7n6/E6c=;
-        b=sw8Ftn/lDQ87pODzJh0j6GagU4itfXcG09pDIY53u16kGfHhiQDD/BEveXllXw5jtz
-         3JlAtJpINBcGjAyC60G+A1vF1tXlhME78jx4vFCturH1/Y2sCHjv4YLHiGil0RLl0Cma
-         YnBtUsY8wQ2tkTEKpqaDxhQCm5VUTo/VOyhRrb6kcxZBaIocpdtwvD/Uk8g+A+n5G1Kh
-         yrVcQ0Qt3kvwnzPEQd1YZgmUqMqDw322ojbPeTN3u/w6mxBmul6EH3+Qj7g0K65oN3oh
-         klKSblVSLxFqNDBgeIimQo3GTLiLWLauKHk0YNKEVGMJJl/DYZUlWS17cbQ53I3/PZvX
-         jCtA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdDzcuYcRgp+VBY9MP3mrpUJfOyjMlwHW8g2FcZbgp6k2AWYtOl8rI6M62cUD9hVNvsTW66LldZPaUJoIxYg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZMNyt3zY0lKsLEgdX5urTnKKyDTr74AdaSU/jRplkRjjav4yL
-	xuOedkEQJoEIZ44mVJGhAl32XtaVaHGTW+xjk+jTF0Siw5ZeCLbsmdD6nnYlzu2doWVWC0N+e9I
-	51pOyk+Ai/KYlvi09OWYifAMZzo6RyC3nU0Qh
-X-Google-Smtp-Source: AGHT+IFNEzOq1xF5WTsUzl1TKhhGpdlElRJhAaNe630/4pPwivHiEWJodDzT7cxT+SOXtwKnOzb/GYiiaI5QG0UIuzI=
-X-Received: by 2002:a5d:5245:0:b0:37c:d4e8:2c6a with SMTP id
- ffacd0b85a97d-37d0e8de992mr3782657f8f.51.1728130020147; Sat, 05 Oct 2024
- 05:07:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728131175; x=1728735975;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bgG34/A+4YzDfDMw6C+N7buhN2H/pmUs0F1NK/affXo=;
+        b=TgE/JiWzvZQjbNfzpdcfbaPAmK2HB5Xr2x/dqGd2J+vTiDJbToGiXUcv38lbCr/6eK
+         6TuE2hKWIeUOpE9TVSekxj+1/om3Lhe/7S/QVGFs5G2XTp18x828KLMCyqOESnG9wnmR
+         Jw4WljlZMHGIaRrAp5RdAYCAEpad+jhsNV9SyCDn1HZhps3wXXzOHILEd0YpWVc992ii
+         iHoBCEqKP5G483sUye/5Op7/ggOqLUiOnVQ2asB3eoT8wNFzmRepqCmgeCPSLxLuAihu
+         WHpxnC6ln8wijojwyShKa/ayl3yoqP3E10u7izqdIJwsvd32tPrLCq3y20ua9iQQnAQf
+         0XNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXU/rxwywCjVei9lUNAiFbr5DkGM/f1a0+UlRYyMyyxgRTPzhWmyRB/hrgOHi3m5wbIXWinL7eUTsn7BWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9RrulcEXWF09DTiGrRvIOQ54e9UUb3G2qbkodsBKz40p4L1O6
+	d1lB52IjcMiDkaG0+VUmgAeutmlLDk8hN6EGpytIlI4a9EctTFbUYwctJh3q
+X-Google-Smtp-Source: AGHT+IEUXGB996LMyK/77m6HUJmjzyHYUWZ59BgENzeV99/x2SzX3Ca+7Kn0GAOBIEW7Zi+H7IZaEQ==
+X-Received: by 2002:a05:6a21:4d8a:b0:1d0:3a32:c3f8 with SMTP id adf61e73a8af0-1d6dfabc77amr9210900637.39.1728131175200;
+        Sat, 05 Oct 2024 05:26:15 -0700 (PDT)
+Received: from mew.. (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0cd08besm1397878b3a.79.2024.10.05.05.26.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Oct 2024 05:26:14 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	arnd@arndb.de,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/6] rust: Add IO polling
+Date: Sat,  5 Oct 2024 21:25:25 +0900
+Message-ID: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004155247.2210469-1-gary@garyguo.net> <20241004155247.2210469-3-gary@garyguo.net>
-In-Reply-To: <20241004155247.2210469-3-gary@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 5 Oct 2024 14:06:48 +0200
-Message-ID: <CAH5fLggOEVxNQLfLxMg+0B2zEciaJ9Y7wkmrMoYXEcEQOg5HNQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: convert `Arc` to use `Refcount`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Alex Mantel <alexmantel93@mailbox.org>, 
-	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 4, 2024 at 5:53=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> With `Refcount` type created, `Arc` can use `Refcount` instead of
-> calling into FFI directly.
->
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+Add Rust version of read_poll_timeout (include/linux/iopoll.h), which
+polls periodically until a condition is met or a timeout is reached.
+By using the function, the 6th patch fixes QT2025 PHY driver to sleep
+until the hardware becomes ready.
 
-[...]
+As a result of the past discussion, this introduces a new type
+representing a span of time instead of using core::time::Duration or
+time::Ktime.
 
-> -            // SAFETY: We have exclusive access to the arc, so we can pe=
-rform unsynchronized
-> -            // accesses to the refcount.
-> -            unsafe { core::ptr::write(refcount, bindings::REFCOUNT_INIT(=
-1)) };
-> +            // We have exclusive access to the arc, so we can modify the=
- refcount at will.
-> +            refcount.set(1);
+Unlike the old rust branch, This adds a wrapper for fsleep() instead
+of msleep(). fsleep() automatically chooses the best sleep method
+based on a duration.
 
-Why are you changing this to an atomic write? We just took ownership,
-so we have exclusive access and can perform an unsynchronized write.
+v2:
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
 
->  impl<T: ?Sized> Drop for Arc<T> {
->      fn drop(&mut self) {
-> -        // SAFETY: By the type invariant, there is necessarily a referen=
-ce to the object. We cannot
-> -        // touch `refcount` after it's decremented to a non-zero value b=
-ecause another thread/CPU
-> -        // may concurrently decrement it to zero and free it. It is ok t=
-o have a raw pointer to
-> -        // freed/invalid memory as long as it is never dereferenced.
-> -        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.get();
-> -
->          // INVARIANT: If the refcount reaches zero, there are no other i=
-nstances of `Arc`, and
->          // this instance is being dropped, so the broken invariant is no=
-t observable.
-> -        // SAFETY: Also by the type invariant, we are allowed to decreme=
-nt the refcount.
-> -        let is_zero =3D unsafe { bindings::refcount_dec_and_test(refcoun=
-t) };
-> +        // SAFETY: By the type invariant, there is necessarily a referen=
-ce to the object.
-> +        // NOTE: we cannot touch `refcount` after it's decremented to a =
-non-zero value because
-> +        // another thread/CPU may concurrently decrement it to zero and =
-free it. However it is okay
-> +        // to have a transient reference to decrement the refcount, see
-> +        // https://github.com/rust-lang/rust/issues/55005.
-> +        let is_zero =3D unsafe { self.ptr.as_ref().refcount.dec_and_test=
-() };
 
-This code needs to make use of this guarantee for correctness:
+FUJITA Tomonori (6):
+  rust: time: Implement PartialEq and PartialOrd for Ktime
+  rust: time: Introduce Delta type
+  rust: time: Implement addition of Ktime and Delta
+  rust: time: add wrapper for fsleep function
+  rust: Add read_poll_timeout function
+  net: phy: qt2025: wait until PHY becomes ready
 
-For both `&T` without `UnsafeCell<_>` and `&mut T`, you must also not
-deallocate the data until the reference expires. As a special
-exception, given an `&T`, any part of it that is inside an
-`UnsafeCell<_>` may be deallocated during the lifetime of the
-reference, after the last time the reference is used (dereferenced or
-reborrowed). Since you cannot deallocate a part of what a reference
-points to, this means the memory an `&T` points to can be deallocated
-only if *every part of it* (including padding) is inside an
-`UnsafeCell`.
+ drivers/net/phy/qt2025.rs |  11 +++-
+ rust/helpers/helpers.c    |   2 +
+ rust/helpers/kernel.c     |  13 +++++
+ rust/helpers/time.c       |  19 +++++++
+ rust/kernel/error.rs      |   1 +
+ rust/kernel/io.rs         |   5 ++
+ rust/kernel/io/poll.rs    |  70 +++++++++++++++++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/time.rs       | 113 ++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 234 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/kernel.c
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/io.rs
+ create mode 100644 rust/kernel/io/poll.rs
 
-from https://doc.rust-lang.org/stable/std/cell/struct.UnsafeCell.html
 
-so when invoking `dec_and_test()` you can have a reference to the
-`Refcount`, but not necessarily to other parts of `ArcInner` like you
-do here.
+base-commit: d521db38f339709ccd23c5deb7663904e626c3a6
+-- 
+2.34.1
 
-Alice
