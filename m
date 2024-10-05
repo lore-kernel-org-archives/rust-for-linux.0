@@ -1,227 +1,150 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1207F14B95A
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Oct 2024 11:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6A882D91
+	for <rust-for-linux@vger.kernel.org>; Sat,  5 Oct 2024 12:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728129600; cv=none; b=GfKeo6ADX8FxBDZIvmn8W3VoDqWxK2SAvcANGgFrgRI7XqQjmNog5cTRurrK8A0lw7yFnrpmuyTLgZS25y7aQOg1xEdNH7pVEpv5FO/KxH8AWRQD20D/u+QCOp8FdQUKaIbHgJC6nHIlQsQAM5sCC++g+Y+1X1rFM0Smvfhrd0o=
+	t=1728130023; cv=none; b=pkn67uz+yi2PDxATTpmeCvyF+YpXqDqziKc0YAe4lODK1a2HdEBHzIHhxJIB/FiIAw5gHQ93M7kKrzJQCrRv/uWND6PDchmPS923DhsDFJFx27x9wQLnfZEOZwLwXuK8biADbzTqcxGMOjYOqPuKLlR8M5iOAwpl6pv07z5+uuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728129600; c=relaxed/simple;
-	bh=B9ie2ibbvUeA8qv7/cm4Mu4ucpj9+ZbfFtIGNqzy5lk=;
+	s=arc-20240116; t=1728130023; c=relaxed/simple;
+	bh=7Wv79x5E9AcwAGG/zQcK660mw1zBEwy03YrLbK9EGno=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NUyML+xULs3jRzNvbrs6nmMuOhCdBre95QYSIguAcukf0+d+6pqNpuoPrCEWfMx/R8GKRdc4XSRB1mSu+UczeDunjghx0IsDvO7H26QC5nPyXupSexo+8g7gx1PlSzbBlL1OjyPUCQmzIMtiboMeygufHVTOIPMnVN052SfyEoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZQoRkPvG; arc=none smtp.client-ip=209.85.221.50
+	 To:Cc:Content-Type; b=ep3iDy4/u7LTA6zFT+2zSBq4ddI1DN/XCDGLjuar/B2Mk3CWiZGId6cp6TVd/XXe6f1R5DV12IxTJPPFlPx0SRZBjC7lznvFoHCyArtX9AQXmLbzZpZJZgvmXZIM/VEvhFIKXNQLaiN2SoIkIEjdQaTofS8t+Sc88+cvR/7Ir1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wTNBG1Xo; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZQoRkPvG"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37ccc597b96so1886788f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 05 Oct 2024 04:59:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wTNBG1Xo"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37ccf0c0376so1862210f8f.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 05 Oct 2024 05:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728129597; x=1728734397; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728130020; x=1728734820; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VT4JN1wYGFSh5zRwCmPA1K5txyLYW2kiaQGQVe7qZpc=;
-        b=ZQoRkPvG8JYddDJBRt1qZ38fVwhdKC5m//WrmJu5ZOWPtAtLyjs4sxFS5kXawJ97q/
-         nzz/AWRjq5M0z39UXuMmMoRg7wAbxjkZJtsrcw5/TKhObIT2rRWrBAhBQCfhC6HpsqFb
-         id0afgsOdwJUt7IoUVYPRLy5DdvfZzpOVVWRQQqnKD9Hyzcixe5iOl/bQ42nWCSV8qA/
-         g4Z6RgF/M5XVuI+blhveRscLNBWMY7pcviPsZkKJqfmGofxQeq2tG39NeiFHnKjwtw9f
-         Fk8C7GnHKt+bp5haZo0+sRirrhzi4WgQzTOZu/Hz5MS+dLhdxC3ksz4LE0nRiYNzjY14
-         VzYw==
+        bh=r98QtsF1/DiiG9GkQhRBoJ7Pv1Ng6Yq06tif7n6/E6c=;
+        b=wTNBG1Xo87ornraNFjtYgRvbmOqxtttc8T0nfmYoL5+Mqr03KOwzs3fxozdtMuv3wl
+         QxQrAXgKYr4Pw+B679wYglzgLnByO8kzqwsQt59f03BpK/SlahE2wT2MMGHFPFbeyoDE
+         +BER1SgGzmELUPMkWxabEliAR4/lNxj8TGMIB+lfnwRgIO9WUaJ0+VyMR3JsnH6UYj+w
+         0pGOI49FTeIl7pQ+MPJupRa2ViDEjHQn0ObLK1vc6vxQEZ3uFV+n23N+n+IlEUuzeo8n
+         3ksRsj5p+Gx8CQ4N01pSma6gWcOOiTDmfmr6tw+6qHbkCaQe/qpfv1YlfoxDyb1nyl1z
+         rjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728129597; x=1728734397;
+        d=1e100.net; s=20230601; t=1728130020; x=1728734820;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VT4JN1wYGFSh5zRwCmPA1K5txyLYW2kiaQGQVe7qZpc=;
-        b=t0UPQGSsuxH+RU1QzjAFbudQwWZ3Y7ItGegPEEBVTalzS0PzC/k55oF590uFxE8B0f
-         4wFPGLF0AB0gVYKygS/xQtkpMZ+rYxwYi9aTtbuNkL72tb049u3xZQhnbCE4HRMXHzVo
-         eGFTQWuVIZI6XO01H1NjvUIdkW1IzGTU6nbjjj+SawnEwxU5do8wLpx87IDaHS23TQnE
-         ewvdNGCqxJpnRqfe+irzU9c6dALCeDU5DlAsSX1ageATFQHqQ821zrttPkdXTV+RQve1
-         PUTLS+qx8W5l8iL3ibI9ZQtlaTfEC6EZqHlGLCacDWRzxZeHQkHyr2rW7eA6tu4KeX+f
-         mDlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrjVHjh4SjFrSEumGDStQM0I13G2VzIA7bN5vxk9xv6F57t4//fkvr6gtvAdoVwIVBZq9PCi3du2WCAD7eDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxpk9Mg6jw6/pEXHQUZRBgmQCMkLb0lACgAQEMyTkvtPKvSF/MK
-	4tdxKuFUPF65ae9hXAFvYKp4CTPUIGPCby3WEoa2CUWcy4wc8uDQhVgpucBMtRMmAIVWX6lqJ2k
-	aqmpseXAYuJmHzYqQxqoScxrM8vavRQmME17g
-X-Google-Smtp-Source: AGHT+IG31cBDoRhFPWScbaQzOpQcmmZdOGEaWuSuXkGk1VAZd2FBlgLkb0o49Dh412K3nfiMQSovCDPdJDa1N7PAv9c=
-X-Received: by 2002:adf:fdd2:0:b0:37c:c5da:eaf7 with SMTP id
- ffacd0b85a97d-37d0e7a18dcmr4568091f8f.31.1728129597120; Sat, 05 Oct 2024
- 04:59:57 -0700 (PDT)
+        bh=r98QtsF1/DiiG9GkQhRBoJ7Pv1Ng6Yq06tif7n6/E6c=;
+        b=sw8Ftn/lDQ87pODzJh0j6GagU4itfXcG09pDIY53u16kGfHhiQDD/BEveXllXw5jtz
+         3JlAtJpINBcGjAyC60G+A1vF1tXlhME78jx4vFCturH1/Y2sCHjv4YLHiGil0RLl0Cma
+         YnBtUsY8wQ2tkTEKpqaDxhQCm5VUTo/VOyhRrb6kcxZBaIocpdtwvD/Uk8g+A+n5G1Kh
+         yrVcQ0Qt3kvwnzPEQd1YZgmUqMqDw322ojbPeTN3u/w6mxBmul6EH3+Qj7g0K65oN3oh
+         klKSblVSLxFqNDBgeIimQo3GTLiLWLauKHk0YNKEVGMJJl/DYZUlWS17cbQ53I3/PZvX
+         jCtA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdDzcuYcRgp+VBY9MP3mrpUJfOyjMlwHW8g2FcZbgp6k2AWYtOl8rI6M62cUD9hVNvsTW66LldZPaUJoIxYg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZMNyt3zY0lKsLEgdX5urTnKKyDTr74AdaSU/jRplkRjjav4yL
+	xuOedkEQJoEIZ44mVJGhAl32XtaVaHGTW+xjk+jTF0Siw5ZeCLbsmdD6nnYlzu2doWVWC0N+e9I
+	51pOyk+Ai/KYlvi09OWYifAMZzo6RyC3nU0Qh
+X-Google-Smtp-Source: AGHT+IFNEzOq1xF5WTsUzl1TKhhGpdlElRJhAaNe630/4pPwivHiEWJodDzT7cxT+SOXtwKnOzb/GYiiaI5QG0UIuzI=
+X-Received: by 2002:a5d:5245:0:b0:37c:d4e8:2c6a with SMTP id
+ ffacd0b85a97d-37d0e8de992mr3782657f8f.51.1728130020147; Sat, 05 Oct 2024
+ 05:07:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004155247.2210469-1-gary@garyguo.net> <20241004155247.2210469-4-gary@garyguo.net>
- <OKHi9uP1uJD59N2oYRk1OfsxsrGlqiupMsgcvrva9_IPnEI9wpoxmabHQo1EYen96ClDBRQyrJWxb7WJxiMiAA==@protonmail.internalid>
- <2024100507-percolate-kinship-fc9a@gregkh> <87zfniop6i.fsf@kernel.org>
-In-Reply-To: <87zfniop6i.fsf@kernel.org>
+References: <20241004155247.2210469-1-gary@garyguo.net> <20241004155247.2210469-3-gary@garyguo.net>
+In-Reply-To: <20241004155247.2210469-3-gary@garyguo.net>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 5 Oct 2024 13:59:44 +0200
-Message-ID: <CAH5fLghK1dtkF5bRpcRcu2SXZ6vgPoHGLRqW2=r0J3-2T3ALwQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: block: convert `block::mq` to use `Refcount`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Gary Guo <gary@garyguo.net>, 
-	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
+Date: Sat, 5 Oct 2024 14:06:48 +0200
+Message-ID: <CAH5fLggOEVxNQLfLxMg+0B2zEciaJ9Y7wkmrMoYXEcEQOg5HNQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: convert `Arc` to use `Refcount`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Alex Mantel <alexmantel93@mailbox.org>, 
 	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Mark Rutland <mark.rutland@arm.com>, linux-block@vger.kernel.org, 
+	Mark Rutland <mark.rutland@arm.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 5, 2024 at 11:49=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Fri, Oct 4, 2024 at 5:53=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Hi Greg,
+> With `Refcount` type created, `Arc` can use `Refcount` instead of
+> calling into FFI directly.
 >
-> "Greg KH" <gregkh@linuxfoundation.org> writes:
->
-> > On Fri, Oct 04, 2024 at 04:52:24PM +0100, Gary Guo wrote:
-> >> There is an operation needed by `block::mq`, atomically decreasing
-> >> refcount from 2 to 0, which is not available through refcount.h, so
-> >> I exposed `Refcount::as_atomic` which allows accessing the refcount
-> >> directly.
-> >
-> > That's scary, and of course feels wrong on many levels, but:
-> >
-> >
-> >> @@ -91,13 +95,17 @@ pub(crate) unsafe fn start_unchecked(this: &ARef<S=
-elf>) {
-> >>      /// C `struct request`. If the operation fails, `this` is returne=
-d in the
-> >>      /// `Err` variant.
-> >>      fn try_set_end(this: ARef<Self>) -> Result<*mut bindings::request=
-, ARef<Self>> {
-> >> -        // We can race with `TagSet::tag_to_rq`
-> >> -        if let Err(_old) =3D this.wrapper_ref().refcount().compare_ex=
-change(
-> >> -            2,
-> >> -            0,
-> >> -            Ordering::Relaxed,
-> >> -            Ordering::Relaxed,
-> >> -        ) {
-> >> +        // To hand back the ownership, we need the current refcount t=
-o be 2.
-> >> +        // Since we can race with `TagSet::tag_to_rq`, this needs to =
-atomically reduce
-> >> +        // refcount to 0. `Refcount` does not provide a way to do thi=
-s, so use the underlying
-> >> +        // atomics directly.
-> >> +        if this
-> >> +            .wrapper_ref()
-> >> +            .refcount()
-> >> +            .as_atomic()
-> >> +            .compare_exchange(2, 0, Ordering::Relaxed, Ordering::Rela=
-xed)
-> >> +            .is_err()
-> >
-> > Why not just call rust_helper_refcount_set()?  Or is the issue that you
-> > think you might not be 2 here?  And if you HAVE to be 2, why that magic
-> > value (i.e. why not just always be 1 and rely on normal
-> > increment/decrement?)
-> >
-> > I know some refcounts are odd in the kernel, but I don't see where the
-> > block layer is caring about 2 as a refcount anywhere, what am I missing=
-?
->
-> It is in the documentation, rendered version available here [1]. Let me
-> know if it is still unclear, then I guess we need to update the docs.
->
-> Also, my session from Recipes has a little bit of discussion regarding
-> this refcount and it's use [2].
->
-> Best regards,
-> Andreas
->
->
-> [1] https://rust.docs.kernel.org/kernel/block/mq/struct.Request.html#impl=
-ementation-details
-> [2] https://youtu.be/1LEvgkhU-t4?si=3DB1XnJhzCCNnUtRsI&t=3D1685
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-So it sounds like there is one refcount from the C side, and some
-number of references from the Rust side. The function checks whether
-there's only one Rust reference left, and if so, takes ownership of
-the value, correct?
+[...]
 
-In that case, the CAS should have an acquire ordering to synchronize
-with dropping the refcount 3->2 on another thread. Otherwise, you
-might have a data race with the operations that happened just before
-the 3->2 refcount drop.
+> -            // SAFETY: We have exclusive access to the arc, so we can pe=
+rform unsynchronized
+> -            // accesses to the refcount.
+> -            unsafe { core::ptr::write(refcount, bindings::REFCOUNT_INIT(=
+1)) };
+> +            // We have exclusive access to the arc, so we can modify the=
+ refcount at will.
+> +            refcount.set(1);
+
+Why are you changing this to an atomic write? We just took ownership,
+so we have exclusive access and can perform an unsynchronized write.
+
+>  impl<T: ?Sized> Drop for Arc<T> {
+>      fn drop(&mut self) {
+> -        // SAFETY: By the type invariant, there is necessarily a referen=
+ce to the object. We cannot
+> -        // touch `refcount` after it's decremented to a non-zero value b=
+ecause another thread/CPU
+> -        // may concurrently decrement it to zero and free it. It is ok t=
+o have a raw pointer to
+> -        // freed/invalid memory as long as it is never dereferenced.
+> -        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.get();
+> -
+>          // INVARIANT: If the refcount reaches zero, there are no other i=
+nstances of `Arc`, and
+>          // this instance is being dropped, so the broken invariant is no=
+t observable.
+> -        // SAFETY: Also by the type invariant, we are allowed to decreme=
+nt the refcount.
+> -        let is_zero =3D unsafe { bindings::refcount_dec_and_test(refcoun=
+t) };
+> +        // SAFETY: By the type invariant, there is necessarily a referen=
+ce to the object.
+> +        // NOTE: we cannot touch `refcount` after it's decremented to a =
+non-zero value because
+> +        // another thread/CPU may concurrently decrement it to zero and =
+free it. However it is okay
+> +        // to have a transient reference to decrement the refcount, see
+> +        // https://github.com/rust-lang/rust/issues/55005.
+> +        let is_zero =3D unsafe { self.ptr.as_ref().refcount.dec_and_test=
+() };
+
+This code needs to make use of this guarantee for correctness:
+
+For both `&T` without `UnsafeCell<_>` and `&mut T`, you must also not
+deallocate the data until the reference expires. As a special
+exception, given an `&T`, any part of it that is inside an
+`UnsafeCell<_>` may be deallocated during the lifetime of the
+reference, after the last time the reference is used (dereferenced or
+reborrowed). Since you cannot deallocate a part of what a reference
+points to, this means the memory an `&T` points to can be deallocated
+only if *every part of it* (including padding) is inside an
+`UnsafeCell`.
+
+from https://doc.rust-lang.org/stable/std/cell/struct.UnsafeCell.html
+
+so when invoking `dec_and_test()` you can have a reference to the
+`Refcount`, but not necessarily to other parts of `ArcInner` like you
+do here.
 
 Alice
-
-On Sat, Oct 5, 2024 at 11:49=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Hi Greg,
->
-> "Greg KH" <gregkh@linuxfoundation.org> writes:
->
-> > On Fri, Oct 04, 2024 at 04:52:24PM +0100, Gary Guo wrote:
-> >> There is an operation needed by `block::mq`, atomically decreasing
-> >> refcount from 2 to 0, which is not available through refcount.h, so
-> >> I exposed `Refcount::as_atomic` which allows accessing the refcount
-> >> directly.
-> >
-> > That's scary, and of course feels wrong on many levels, but:
-> >
-> >
-> >> @@ -91,13 +95,17 @@ pub(crate) unsafe fn start_unchecked(this: &ARef<S=
-elf>) {
-> >>      /// C `struct request`. If the operation fails, `this` is returne=
-d in the
-> >>      /// `Err` variant.
-> >>      fn try_set_end(this: ARef<Self>) -> Result<*mut bindings::request=
-, ARef<Self>> {
-> >> -        // We can race with `TagSet::tag_to_rq`
-> >> -        if let Err(_old) =3D this.wrapper_ref().refcount().compare_ex=
-change(
-> >> -            2,
-> >> -            0,
-> >> -            Ordering::Relaxed,
-> >> -            Ordering::Relaxed,
-> >> -        ) {
-> >> +        // To hand back the ownership, we need the current refcount t=
-o be 2.
-> >> +        // Since we can race with `TagSet::tag_to_rq`, this needs to =
-atomically reduce
-> >> +        // refcount to 0. `Refcount` does not provide a way to do thi=
-s, so use the underlying
-> >> +        // atomics directly.
-> >> +        if this
-> >> +            .wrapper_ref()
-> >> +            .refcount()
-> >> +            .as_atomic()
-> >> +            .compare_exchange(2, 0, Ordering::Relaxed, Ordering::Rela=
-xed)
-> >> +            .is_err()
-> >
-> > Why not just call rust_helper_refcount_set()?  Or is the issue that you
-> > think you might not be 2 here?  And if you HAVE to be 2, why that magic
-> > value (i.e. why not just always be 1 and rely on normal
-> > increment/decrement?)
-> >
-> > I know some refcounts are odd in the kernel, but I don't see where the
-> > block layer is caring about 2 as a refcount anywhere, what am I missing=
-?
->
-> It is in the documentation, rendered version available here [1]. Let me
-> know if it is still unclear, then I guess we need to update the docs.
->
-> Also, my session from Recipes has a little bit of discussion regarding
-> this refcount and it's use [2].
->
-> Best regards,
-> Andreas
->
->
-> [1] https://rust.docs.kernel.org/kernel/block/mq/struct.Request.html#impl=
-ementation-details
-> [2] https://youtu.be/1LEvgkhU-t4?si=3DB1XnJhzCCNnUtRsI&t=3D1685
->
