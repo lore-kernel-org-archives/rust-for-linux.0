@@ -1,71 +1,64 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020087.outbound.protection.outlook.com [52.101.196.87])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022092.outbound.protection.outlook.com [52.101.96.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6991165EEF;
-	Sat,  5 Oct 2024 22:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F5B38DFC
+	for <rust-for-linux@vger.kernel.org>; Sat,  5 Oct 2024 22:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728166255; cv=fail; b=A1O97Zu++zt38zbmk8h/0jQzsKuMGK9doXXetFYvBPuwymZr27X38T4OWy5xc/P2EyDYuT38plQ0a3khKWyiWM5rZ2OcMuZ6hMDgnmZUBTAHm3sFbulk05YMVMuWR2FTAWDaYJewifr2bjfYIL07oaZPp6FSMClK/ttF2djbPYI=
+	t=1728166927; cv=fail; b=UFft0ZMyGAT9xQwegP1WNUfDlljagk2Z4cPCxgCZi4wZyZj07a0lSdzktZIXGtLxRuaZDs+nUHF7UZP7mS8QkD2PO1+P+drSkUTlmlc5xDMSVk7V/pWXe5JJLRCfuLYDKI2YulT+Nc6pu4d16DZfgh/bIYO30j9Itrzji6a9Pl4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728166255; c=relaxed/simple;
-	bh=3IQr/IJDAqqavfLUwhu4WzleiOhuvwPVxFVKDFMMGvQ=;
+	s=arc-20240116; t=1728166927; c=relaxed/simple;
+	bh=+xcVU2yPlph+Gg8f9Xst3pJWN7Esmg8ExktD/NTPxQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dmz3aPbeDdvjnPLfdPGm4UneKjsDXYwuaZ5imlwPixDSjbyFmRPKoHqliGg2Mae3M08RN8X9en+wDmluF+OhvbuJI3DQXp5XcIhh3SIvEgFtD5zV2mJ17VA+MUAKH3EvCNDKrt/ttbc4Q5FuqLyRtkWi94WyW6gCMzylJBBZUUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=S4oq/kkd; arc=fail smtp.client-ip=52.101.196.87
+	 Content-Type:MIME-Version; b=TJOM7pK90uAW/FEDFFiXfHG5h5VmafFyjeVdGZK//HhQKifH1fpNSEYSrOQER+C/643vPe/OTwHaJwDuheIWXVn3v/O3Mq5UpdcTFLd2uOHuorVGboaFz0WsjTx2iouWsS7PSGRgvQoFv80w2LOw3BS4SjejOtpEezIHRkBtCrA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=teYkAsJt; arc=fail smtp.client-ip=52.101.96.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="S4oq/kkd"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="teYkAsJt"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JfVdPtRHj9MQ+10NM+ie+uMWYrQXSs9bDMsENWRUtDrZCBW9Z1Gvwya7W5xfWcjio+J2WnCyLsHuw4Dxq9FCyj0pXTJ665zMJGN0/iH7migTDAlfFGwhqT57ZAH3l9idm0p833nMrRQ8XraW2D+JAlQ4fXKhuR17WnHXtvh3O774T6uBT8AiwVilDUj5ocILVipNYm3r5E+Y+jko02R7opm91cJN7xpfh5eTd6prS+i7LKSCfV05g9zmuGZkA4LjDj6WBCeUXpQZcXf4obDrdmTYOTIZuCrAIpm53g5hCJU5jSWhgJ/oHyspZuea/8IXv/ql90dkS0iMxw4rdehJOg==
+ b=x/uwDe+cntBQOaA4hXjYvhdqaatJIv5yZqlPGdyBoYa3MJkmyjphBi0pL0gzGAdRiRd+xxvH+mlBn8OCBIGKeCCF9EKwhQYnif4wZssjzqDpSZyZJ5/xa1rP8rsijvejN7tsfKrE4YCuHr6HN4/tFvn2e3YVf5GCqxhLNfoiHZqFH0eVc56sszF5jR45MLRyI5U742ApyElvN7J0K+FybFYq3sz/IHWbNKn4rVDgsbUqfqOqWyooFse4tp9jDgu9BPhsyZ4ni7OkQAg3++7MObtYOmUqgwVafdSD+pMOtwd/jhX8bZwODxHP90qiw3SmNftJTe7sVyE+TyIL0wNg3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3IQr/IJDAqqavfLUwhu4WzleiOhuvwPVxFVKDFMMGvQ=;
- b=geH9lHbdFLUXFWCAeAaAE0H0FPdgyk5AloU5qpJ4SBEK6avPjo80AJkxixAf25HFej7A9UJm0921DzGRdTlw4FCoFcJhQ8e8yAuLTrSFQid49NE2tJQlvC2v1JRPjKb2RPZH/2Oc0oKYw4bnkRiAtv1sJEKKMgytF8SmG+pVelI3eU4ftX4FxK6c4gc1PHa7goEC7G4wIBYEEM0Gqi6n7B6tFDoxtOpGHPZVASIIy2O3MA0ZAId2ml+xHg80JF80Y29jvrQUHyVhZIFHfR+0UIz53uRIg8NVHJYpwdu+hrumqBwFpnQXkgZEI3r1HLZoobboZ5yNbE5TMGQHlq6HDQ==
+ bh=8NDSHskXbse0AU5aXDz+tP0oFFNpcxkdQJASke1f1P4=;
+ b=usBSMugFqc1nnmtLpE1fjbKfMH6CmS54qvcJxig0MrFR7cH9QlaFif0aOtPdoPmVs4yL4qnQG1I9j9uzKncYHluYo4ibSaDQIBU9lbjb1ZBzF3nEwSCAN5G3dmuMQiYYAy4wJmcI0YNhumYiS1lplDF4Q1XJgTBwru55zVyzC587Uk34QkqTE/HxUwYZ5+1GFTsnIwKUw3vVZoNezOpD2gDqM3E1Qbp6UmJlwvhP4lniMRalta39sgUaC8If5YXTGpBr1W2PFqcu2+yvEOcBxRuQsz7T2Rae3RTT77+QFEWQG2em4FjanLTuMig4bP1JKeo7aTjixzQySKa4zH9ouw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3IQr/IJDAqqavfLUwhu4WzleiOhuvwPVxFVKDFMMGvQ=;
- b=S4oq/kkdp7szFfPoIw+1I8T18qm9j9l9JaPTR9ljckJSPMSfNMMuZHv7C4S+6TGBGNr2bD3IRqUU3PROZsVffta3oxGxxHh+LTADj0SvMtMu5VSMv6IzuNsChjBbx7Om0dnsRrdmmNauX54e5oaElDEBnezANp9HtK5xEEDXYJI=
+ bh=8NDSHskXbse0AU5aXDz+tP0oFFNpcxkdQJASke1f1P4=;
+ b=teYkAsJtt3IYn9dU6rmBx1dLtn5ZJCLuMSsUH1LyEIP03tZud/fO871YqY05P4AqVHpteGiggdJlOLAKcfnJaqXda3B2FmJwgzTSHQQ+aehcUomfszYC2byXpjUJHcvUmHZNIZmfZ0fcv2Uf0+X8hxAIFa0Qk8bTbdV1y6a8/fk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO3P265MB2204.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:107::8) with
+ by LO6P265MB6874.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:326::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.20; Sat, 5 Oct
- 2024 22:10:50 +0000
+ 2024 22:22:00 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.8026.019; Sat, 5 Oct 2024
- 22:10:50 +0000
-Date: Sat, 5 Oct 2024 23:10:46 +0100
+ 22:22:00 +0000
+Date: Sat, 5 Oct 2024 23:21:55 +0100
 From: Gary Guo <gary@garyguo.net>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
- <justinstitt@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH 1/5] rust: fix size_t in bindgen prototypes of C
- builtins
-Message-ID: <20241005231046.5f575779.gary@garyguo.net>
-In-Reply-To: <CALNs47sgdi4PU8YXxozMm4=7aQ9RspJsKkKrYuT++9KiC8E-KQ@mail.gmail.com>
-References: <20240913213041.395655-1-gary@garyguo.net>
-	<20240913213041.395655-2-gary@garyguo.net>
-	<CALNs47sgdi4PU8YXxozMm4=7aQ9RspJsKkKrYuT++9KiC8E-KQ@mail.gmail.com>
+To: Filipe Xavier <felipe_life@live.com>
+Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com"
+ <aliceryhl@google.com>, Benno Lossin <benno.lossin@proton.me>,
+ "boqun.feng@gmail.com" <boqun.feng@gmail.com>, "alex.gaynor@gmail.com"
+ <alex.gaynor@gmail.com>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4] rust: optimize error type to use nonzero
+Message-ID: <20241005232155.0e8df070.gary@garyguo.net>
+In-Reply-To: <BL0PR02MB4914B9B088865CF237731207E9732@BL0PR02MB4914.namprd02.prod.outlook.com>
+References: <BL0PR02MB4914B9B088865CF237731207E9732@BL0PR02MB4914.namprd02.prod.outlook.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO4P265CA0156.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c7::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0087.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:190::20) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,120 +67,228 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB2204:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e542967-ab7e-4eff-c268-08dce58a924e
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6874:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3f15b9e-9430-46a5-0e63-08dce58c21a7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|10070799003|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SkluZ1lzcE9PRjgyRlV2YUFQRHJ5N3l6TTVYVVRoZDJGMHJ5OTl0TS9MSUNv?=
- =?utf-8?B?c3c5QjNaWDFRS3BFdzBueGJQa1dGM0hqVU81M2R1V3VmMnQ1N0tkaCs5NlVi?=
- =?utf-8?B?aWJ0SG5lSHYyZVE5R2FhUjMvOFFCV2NZZjR5UlRxSlU3RFVMM3pIWkNZZmQ3?=
- =?utf-8?B?YlMwYWJhZU5pVEV3RlpNcGd4L1drY2tBNmY3YWZnZmFac0NaVlRhaDJUTCtW?=
- =?utf-8?B?dFVPYngzUXNZQlplb3l2U2FEYmo4Mi9MUGE3OUhvTUtQU0I3cjgrQXZDQVZx?=
- =?utf-8?B?YVV6cGdZTnRBL1Y0MnNkazJpYzBmaWVQM2UwVUFacTFWVnhxTy9BK00rYmJC?=
- =?utf-8?B?a3l2TXk0ZjVOSDlFeUljdzc1UHBaVFJOajhpNTc0WWpWRlZiZ1dYSWxOYm82?=
- =?utf-8?B?NndMK2JhOWFBc3pUYWtSdnpBaUU4V0o0b2VXZVFiblZVV285MmwvVFFHWE0z?=
- =?utf-8?B?MXlhbVQvdFlPbzYvMFpXVUxCSXdVQ25DamJVRERpRU5QYmFZY1NUcHE0Q3Rt?=
- =?utf-8?B?OFp6VUJ3L3lZaUdobHpQUTZWOGlKNXZBb0RkZWV3aTdZNU5LVkUwR0hjengv?=
- =?utf-8?B?TW1tbGdyYlczVTBhckg3RlRzdnNMd25MOVV4dkVBMnVPSWpsa0crcCthWC95?=
- =?utf-8?B?WXhXZ0wxR2w1ZDNmVlZ3dDltNEVZaWJHWUpOSWV0elFic0FEOFRndnBLbFMr?=
- =?utf-8?B?ZVF1SitPSmU2YUtwL1ZHVUJHL3lRUlJuZ2lRT0xld1JuTGFIak1tZjJGUnVV?=
- =?utf-8?B?RGlNbk12N1kwa0RvMUxNdWhwYkFQNFVjaG1VNWs0Tm9iVWxEb3ZKZUlMLzdk?=
- =?utf-8?B?N1BJMXczQnlBRkhIR3NnTUtVVDVCWUNVQ2hUUTd2YVdpVHpybkwwVGpkRmZQ?=
- =?utf-8?B?N2hpaVJnOU1zVWYwY0ZGQkpHSU54QStmcS9LdEUyaUZvSTY2TmlqNUdzeDZj?=
- =?utf-8?B?QU95RnV4aCtsZWl4YVZXdGRpRFV6RnphaXM4WGFVTmt6d3ErUkFGK2xRTDBn?=
- =?utf-8?B?K01FRnNLR0xzMXE5ZVJ6bGN3V3dlYTlLbEh5V3ZsekNsS3VkMDNqV280SkhJ?=
- =?utf-8?B?U2FmZ05CNXl4YTM5TXhhTCtMKzFubC9wVkYvdkNqVXdUcmRTZnJJU3k3c2ZF?=
- =?utf-8?B?eGd3K2U1N2VVN3h4bkVBd0ZyV09YMmVTVnVlcFAvcDQxa1NTS1k5OG1IWG4x?=
- =?utf-8?B?MzlHTHVrbzYzUkxaS2lUWG1VSGJWSlNwOTFjNm9jdUQ2Z092MDNYK2I5cU93?=
- =?utf-8?B?LzRZMVFjNTQ0RTJ3VU9WS25zNW1lcWZaQnozbUFLblNQcHRqRy9XU2xlRnhJ?=
- =?utf-8?B?aFJoRHZoMlFGU2gxTTQ2RGNYdy9nMEwvUTF0VVo3R1VTOUZqdGVPOEhERUhk?=
- =?utf-8?B?bzIxdGNJeGhiRkEzaUNMaWNabll6amw3NTdHT2xVSWNWQUFPUFBVREhHdktr?=
- =?utf-8?B?dGwyNmRZOEg3SWVBK24zTi80SGNwSzlrUWlqMTJhSDc0TzZ6aC9ETCtkVzlH?=
- =?utf-8?B?d1BZV2ZiWWdmOWowVks0OStsd0pELzlSN09ETnh3d3NpVDh5aHdPME1NLzFt?=
- =?utf-8?B?UnFDR2NtV1F6UllTRnEzdkpLc3Zvbmk2RTRNcWdyYkR5YnluV0ZQOFl6QmF5?=
- =?utf-8?B?c1FGNkI3Rk04SjVnakc1dkYvZExIaUt5cVJpZWZKeVZERHB1bHRaSVA4dmU4?=
- =?utf-8?B?SDZYOW5LVjZidjdBQlJPdzhzUHBlZXZkc3J2Q3MxTGhGeVAvMzZrMkRRPT0=?=
+	=?us-ascii?Q?o4eylScAL4pIljBUvJ/X0tGpRjtXqOwqnycL4XPY5dS2HqSvbI1avudVSLDS?=
+ =?us-ascii?Q?3xuV7xWki3ea9Lo53Sn7jokF7YAfd1hGUj9p1o+QyG13O+YxooBOGG44pTIk?=
+ =?us-ascii?Q?psZ5dBF5ln2ZqVs1GMm7RZshuFnUI801Qmr8uPOevkkw7PZsV2NU1tK4ZZdv?=
+ =?us-ascii?Q?u5Xu7ZBLa4QRjCTxj28Vs6PU4EqXtvrt4ugQyKVEmDIQVkbSC6CFY2/XGwz+?=
+ =?us-ascii?Q?vyXm+LqSrK/0SJXyEu8Kx+3nXo35dnt2othc8lj3Ut8CtyFKKZ4mfMQSCvLl?=
+ =?us-ascii?Q?JhWSClZrDmaU15Pn6+tUAQbCRfLX6Lcyx3jwmMHV295ZmMzWWYe4Il4rknfo?=
+ =?us-ascii?Q?cklIBKbcHsOmTP6nM9QGGUPrTIVgp8+nrjF9jWcuKJETJ3pq/ISPKqQUItvD?=
+ =?us-ascii?Q?kc7bGJEGBAtFvv4Z0GVHo38SOWTZWWRF3CyPsKxpscKJ9TQPF/PCjk+xxM+/?=
+ =?us-ascii?Q?3yH5naq7Z/4Gq+bZqI4Jb2Y+7T5oxw/d2vVc+6jjmHekyTo8DqXr8nxr3cVL?=
+ =?us-ascii?Q?mxwCajvhrgTaTYprszdlaXkzlzovBIsJM4C9bPtpFu5j79fFkZrZySkZaSBl?=
+ =?us-ascii?Q?9NCjXTS/FX54kL7EvVJrYMlT0HRz8aA4FcI9XFlfrgKosXHv6LY/lEfelvC5?=
+ =?us-ascii?Q?RM/veNp+BqfT4xmpJzRWxnfILq9DbnzM1Y8OZFzyrddvx+R0OUC59W23RsCh?=
+ =?us-ascii?Q?LTwQMyhr9TPpmY1lYd8J7jL1ueP0YzEz6zdDKVoAYIzJhGXgkfANSIKmHno8?=
+ =?us-ascii?Q?uX5s/65ic8YNwB9UezfjGKeKA8rF9YJeavzAPgznKrkva/GgX0c+3URJbfQX?=
+ =?us-ascii?Q?ieuHyNvvY4iwySyfaF/WjNx2LPUNJz7pPseslRKqUiYF9LlozQbcY3eJ3VrL?=
+ =?us-ascii?Q?n9DK5YRKag22rE3KMT92VX+BABsyz63AZJTk+NHdaRP+MMn06PXsvDiWd8cn?=
+ =?us-ascii?Q?Cs1rFhAovGh+fkwj2DJHvOlJwtySCE8HY+NjVCtPuT8yo+VrJWmWRKQfoByY?=
+ =?us-ascii?Q?FOHEZYmzS0TwASVb/y7fdR+1crpLlqrm1ZH2iGKlTSO18ocYxfvPxEt/XDdx?=
+ =?us-ascii?Q?Icvy1AWgsaJsi6Zc1KRu24ZY8AQpoHNuKPCpbRSL4WiFcpHHWy+SzwV4yUp/?=
+ =?us-ascii?Q?lylLrgRWwJFTKI0DityapF4kDthe4p48nOjOuOtqsdc8eLiPiHXKrdyIjQkn?=
+ =?us-ascii?Q?JDTvCIxTcBdSRxHBhYKxLZ22zf1HnoeXdP19FJP8ROJk5o9QCitU8oj89LvF?=
+ =?us-ascii?Q?Jkbduq1JVkc2NaBs11cw/b6Hk+TAsJNkkoJCU4Iy5g=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(10070799003)(366016);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGpsWDRsdzNoUTFhNE9RdkNNb1EyTGk0Q3JhSXB5TTRZa0owNVZ1WXJVRHpG?=
- =?utf-8?B?OWdsQmJYSHR0akpFejRDRCt6TnVvMGl1TUFxbkoyMGhXUCsvUENmbkZFSHJw?=
- =?utf-8?B?bXZoaVZQQStaMkwwYld6NVFYOGhDRHR3cGlwZmdCYW5WdmpPaSs1azZFTklh?=
- =?utf-8?B?NS9pd2dFdXpFWXBkeHRjSWs3YjZNaHlOUTd4OVVlSkVEeXFRaGdzck1vWEYx?=
- =?utf-8?B?RDdEaFExMW1wbzR1eks2a2RCc3hpb0pqT0t6ZzFFQzQwekpVeERHZG1ITWFz?=
- =?utf-8?B?SDB1WVZ3R1NPVlZmaGNBeEJkSVRVYmR1L3NZQlNEWmtrR1pEVUlFdndyYlJi?=
- =?utf-8?B?Q09iUWNsc2M3eHhqUFBmUk1yNDVmQTZMbmVwd0ZSZytzNHp1UzVURzlzZXU3?=
- =?utf-8?B?amNpcEJDYWsvTVNweFl4enNyVWRlMjgybENnVTZCdVQ5RkVHSERwUHp1Q3FC?=
- =?utf-8?B?MlRvT3FGS3JRYWxqQWJTZUczZnIrMk5PVHNrdk4xaW85Kzl6OG5Fd2xFV0hF?=
- =?utf-8?B?bHgrY1hlQU5nTWIrOVRwR2tWaHljZ0dsdEE0NThVcWUwTmpHZWRPY3F0TVgy?=
- =?utf-8?B?eHJVN1MrSDJTTXRvcVJKOGRlQXV1YjBTdFhHN3JmSnpOWGRtQmFCaGp3azBV?=
- =?utf-8?B?cG9HMXYrOWt2b1NjZTJsbTljaU5ZVW93Z0NGUTU3QlpxTkJWa1V5WnEzUWlT?=
- =?utf-8?B?TmU3QXd1a2JLQzV1Qm9WQnA0Y2I5QzRyUC8xRkRCSk5HV1hUcCtJZ0RIeEJu?=
- =?utf-8?B?S3JCWVZPQUdGc2s5b2tvKytyWnM0ZVlkamtMZnVKOW9BQ3F2V21QTzcrOXJz?=
- =?utf-8?B?cVJ2ZHhQQS9SaVgwaFZJUDArY3JSdXoyT25BMFlVMzJQc2QrQUU4eEQvMzRM?=
- =?utf-8?B?bHUxcVkxVExLeGRkaU5CaHNYMlFqb2NERGEybG01ZHVaMXF1amM0K21sT0NE?=
- =?utf-8?B?QkFiWC9KZEc4bk8yUUJkS0hHbE1oVTFmOUtiZ1FQQkt5YU5RemcvRGZIM0h5?=
- =?utf-8?B?dFhvQ1AzamZHdTNJVFg1TmFoRHpSenJWbHMveXNDZ0dHaFlrdER5MVdnWGx1?=
- =?utf-8?B?dXFxMjdvdm81RkJyZnpKSGUzR1h4V3Zucit5WFZpbS9nTmFyNm40N2J6aGE3?=
- =?utf-8?B?RGFrRHE2bUhTMTE5TEJDbkxtc28veWpITGFSRlBhQ2ZUZXJ6VVJmbFl3K3Yx?=
- =?utf-8?B?ZjRoK3I1MnZzWWlvVjJHWk40eGVLVGlXMXJ3NWlnc0NoTlhlYzFLV3hRdnlI?=
- =?utf-8?B?Uy8yT0hWdEZRclVZZElPQTEwaG9xNEI3amk0dStuWVp1WTUyRGZNTTI3cHZ6?=
- =?utf-8?B?N0JCMm9vd2NZajRsYnBNdDlBSk1iaXV4anNQQ1IxbWZNNUZMU2xtd1VUQ3BO?=
- =?utf-8?B?R0FkVVU0SEdaM0pkWVNVRlRyY3pUeGVsMi9NWWNabFhES0sxNW43U3pjcGVZ?=
- =?utf-8?B?WFJWTURnazZNaE1Md2tlNDVaWnhNOXlGSXFTUzZFc2Q1RUhXTzBzWXZmaWtD?=
- =?utf-8?B?NXlOUHFYMkRxa29RVmN2bnhDZ2NpMUNQMFcxQW9QcTBqcHhnQ0F4ZmFqeWFv?=
- =?utf-8?B?cVBPVDZYQUU4c2ZmWTByTDdkeGZUSG5qRVB4VWVmTVJUeFZZK254OEtQSlBh?=
- =?utf-8?B?S0FmNWE1RENWN0N5V09nRUZYYStLSjB3VDh0dHNscDkwUFdkYmZsRW0vb0tz?=
- =?utf-8?B?NG5YNXpmY3BscFgxYXltNDhvcVVIYk9ibjh3ZTNmYVdWRFM5UThyOGxTUVJD?=
- =?utf-8?B?Z0h6WnZra0VXdmgxVUg1UUQrd05mNWNkS2RxeGF6TEN4WG1iZTlDQkNrMkpK?=
- =?utf-8?B?VWNTUE5FMy9EOHVUU3hweGdpOHhHRXFFRU00SW9ldFA0ZkxnYURJWHhBUVN1?=
- =?utf-8?B?VGpSOUZ5YVhQWUZ2ajBGNXBsZ08zMU9MQ0tOQjhnMEQ4cWwxRWE4ZnVvb1JY?=
- =?utf-8?B?cjVlaWE2SjFGSHl6Ritya0dSUzRVQVp3Z2t0SE1aTHBQVXQ5STIyS1FmTVZU?=
- =?utf-8?B?aTZUUndHd2lEQXFLRmJ2UUtOUmZ5Y1UyaG51UlkzWXF0VkFCVjVrM1RyUTVR?=
- =?utf-8?B?OHZWa0NQUkNaWUk4eWhtakc1UWZWSVJjMFlRZVQwZndDMTF6b3V5OGMrSzdB?=
- =?utf-8?B?YWFzU1AyaWpwSUlpZ09sTEZOb3lhMWlRMkFyRFBqWDkvaWpKQnhURHllWVpO?=
- =?utf-8?B?ckE9PQ==?=
+	=?us-ascii?Q?BnRO0dqRy4nIPkcszsZMM6Aw3FH+furBO60GY6gAac9VHELerq2/p+dBS91O?=
+ =?us-ascii?Q?FfaxITNVyKfcoyVKHHk7n9NLFMKnHCsApY0doupIzLOFCwdT4I2zuBfvDWVP?=
+ =?us-ascii?Q?Lbk/igYRcFKLfmbSZ6KZxLOMrhDPuvySSXo8IRxPnB/ynY/2ioOO3H+BpxAT?=
+ =?us-ascii?Q?CjjfU5ZV/f3QudYuTOUVxKxMyWtUrnp+n2ehVFOROVcKW5nYEQifCGjommTB?=
+ =?us-ascii?Q?uf7UPkKZIlImtXhpfI9jGd6WpU8+XdZuUon+u1kOTqL7e33sSHXfE4/X5YZ7?=
+ =?us-ascii?Q?fBrmOVzgUcgK1d8cDdYRYK+HarCyHsQsxmknMcl+2kQf/9DfFKHwBRRGwjH6?=
+ =?us-ascii?Q?BPSnvbwHvNd91waLPOHK72XfvlYYUzXdfkORHZYp+5J5nfb4f06kbFqIkbmt?=
+ =?us-ascii?Q?5bcFuLv5y2towFwlVt3YBIJnB3MROwQNOBiVBdoHX8jZFN/vk4epM3jJ3WZj?=
+ =?us-ascii?Q?r4nqgtbsOqexUXULeUuQ0ODwF9cxpt1o8MtLSsbo45g2KHV6Otj8euJ8kK5c?=
+ =?us-ascii?Q?uUqcjFbA+wMgop7VGnv5GllOKDu16q9FqA09NPrFw0iAwDKNFz8GacGGJCKK?=
+ =?us-ascii?Q?RMM3IcMgE3GQreHaP1BMMndA+TNS5PwCDgPYgo4u1YXza/CDGRMYMfKjA2xC?=
+ =?us-ascii?Q?35C1qQrSxo/ZF2OMs8f+OhD96GXOYoekRvasYEhNw1KAhqp//IzZc2crN/r4?=
+ =?us-ascii?Q?ZOHFd35bdttkNfIkpTfzmCPfizyxJJUGSSRca1OjK6TU4zUa0Hw0apnPIzMc?=
+ =?us-ascii?Q?DnbH84CgkB7YJeOYlpwj8rah9C91Zh8KI0k4IQ9QLTKGBuAHVlSjoj/uekA9?=
+ =?us-ascii?Q?pWxJIYbKqy0bmPt8q9ZeiQEr1M7YwoXidxZkeem5XcPhr3WpGUDayHSkNq4A?=
+ =?us-ascii?Q?Et7j6dHgStGccoqSbMOL3r8Hr0xHcm6RpuG7oqoKT5NeQL4CJhiPQOUIK54z?=
+ =?us-ascii?Q?5y+3ZnZ0NgfQR9Ot+2IPnq+0Z8Q25UK9PqkozO1ffYQgywgA6+DVRWfqmGo5?=
+ =?us-ascii?Q?XeQ929S/KhbEWXoYTKycXH/loty6JNLtYTzx381+YvCz/phfeKuB8KU7QdEb?=
+ =?us-ascii?Q?xCPdMgZDACb4kmlTFUY63zU9H3CETkrKMECMMcHt/JtlB/FwbBImzjdlU4FB?=
+ =?us-ascii?Q?syERM1ll3FlJjGkj7u27vDi2SrdY2h7JUnXqob+SZ+K/C4xuSN26UJwLR3mO?=
+ =?us-ascii?Q?UTmbuw6G7RkT67WszFKQPvM+t/2XTpWMIZVE3GnTcykxRVdt9f1iaiTKUikQ?=
+ =?us-ascii?Q?yDipKihFEfQkCYSpGSflbjKgZhU0B5ve4VvMryTE8QOApl1zQR7+fTfyRw4n?=
+ =?us-ascii?Q?hC/PyyuwPnP5B42OW1xZhrEppopQQvusGmXcjyGi42eVoA38N6pW8m7EJJT5?=
+ =?us-ascii?Q?QRq+49oSFakPl2D0papiRyBqpn0p/bH/dEHPKolsIk3rb/0p/8Vv6mMMzj/O?=
+ =?us-ascii?Q?M8V/lq8+z+iGLacG1xPpd9t60ghTGKf/TsFJjOMzsc3wUiwXgVcv5TvYRiz4?=
+ =?us-ascii?Q?6yaUscnSmA5GOyev+hRJp+bWSsfDtUvn9289OEs+PENb2OuvyeK8ho3GMR+B?=
+ =?us-ascii?Q?No/SP5B5ObCJ2gSvJib9eaKxYVXQ+K3+Ty/vJG3/FYQp57g+ZlwJqaBLKufe?=
+ =?us-ascii?Q?ig=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e542967-ab7e-4eff-c268-08dce58a924e
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3f15b9e-9430-46a5-0e63-08dce58c21a7
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2024 22:10:50.3676
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2024 22:22:00.4184
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dfzgvIGrRsuocCLGujfLoXBXJ4hIEjjBdRcX+QuR2vJJQOeCv/cBuYnzVMyPngKqHVOfHNic11jOmIhXcQ5Q+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB2204
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4KjpLMZ11sDyCzZei54EyykOguKxTnG1Xy5+1fgzQrelwt6+BDIZWogbijQ4b24BzG0OeeujEldsjw+/W7BwEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6874
 
-On Sun, 29 Sep 2024 17:00:29 -0400
-Trevor Gross <tmgross@umich.edu> wrote:
+On Sat, 5 Oct 2024 19:51:23 +0000
+Filipe Xavier <felipe_life@live.com> wrote:
 
-> On Fri, Sep 13, 2024 at 5:32=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
->=20
-> > -bindgen_c_flags_final =3D $(bindgen_c_flags_lto) -D__BINDGEN__
-> > +# `-fno-builtin` is passed to avoid bindgen from using clang builtin p=
-rototypes
-> > +# for functions like `memcpy` -- if this flag is not passed, bindgen-g=
-enerated
-> > +# prototypes use `c_ulong` or `c_uint` depending on architecture inste=
-ad of
-> > +# generating `usize`.
-> > +bindgen_c_flags_final =3D $(bindgen_c_flags_lto) -fno-builtin -D__BIND=
-GEN__ =20
->=20
-> I wonder how reliable this behavior is. Maybe bindgen could do a
-> better job controlling this, is there an open issue?
->=20
-> - Trevor
+> Optimize `Result<(), Error>` size by changing `Error` type to 
+> `NonZero*` for niche optimization.
+> 
+> This reduces the space used by the `Result` type, as the `NonZero*` 
+> type enables the compiler to apply more efficient memory layout.
+> For example, the `Result<(), Error>` changes size from 8 to 4 bytes.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/1120
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
 
-I didn't search for bindgen issues when made this change, but
-apparently this is indeed the suggested approach in
-https://github.com/rust-lang/rust-bindgen/issues/1770
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+It seems that we have interchangably use c_int with i32 all over the
+places in the code. Probably worth just replacing these `c_int` with
+i32, given that this always hold in the kernel, and our code already
+assumes so. No need to change this for this patch, given that this is
+about existing code (although you added one more instance).
 
 Best,
 Gary
+
+> ---
+> Changes in v4:
+> - Created const fn try_from_errno to use on macro.
+> - Adjusted macro declare_err to use try_from_errno and remain safe.
+> Link to v3: https://lore.kernel.org/rust-for-linux/BL0PR02MB491443BD775D5D63635C3F4FE9712@BL0PR02MB4914.namprd02.prod.outlook.com/
+> 
+> Changes in v3:
+> - Adjusted safety comment of function from_errno.
+> - Adjusted macro declare_err to check if error code is valid and 
+>   its safety comment fixed.
+> Link to v2: https://lore.kernel.org/rust-for-linux/BL0PR02MB49141A172569679932EBA20CE9712@BL0PR02MB4914.namprd02.prod.outlook.com/
+> 
+> Changes in v2:
+> - Adjusted on commit message.
+> - Added safety comment on macro.
+> - Reverted signature of function from_errno.
+> - Removed explicit type on function to_ptr.
+> Link to v1: https://lore.kernel.org/rust-for-linux/BL0PR02MB49142BDF011175DADD6E79D0E9702@BL0PR02MB4914.namprd02.prod.outlook.com/
+> 
+>  rust/kernel/error.rs | 38 +++++++++++++++++++++++++++++---------
+>  1 file changed, 29 insertions(+), 9 deletions(-)
+> 
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index d7965ded2973..36015ed7b258 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -9,6 +9,7 @@
+>  use alloc::alloc::LayoutError;
+>  
+>  use core::fmt;
+> +use core::num::NonZeroI32;
+>  use core::num::TryFromIntError;
+>  use core::str::Utf8Error;
+>  
+> @@ -20,7 +21,12 @@ macro_rules! declare_err {
+>              $(
+>              #[doc = $doc]
+>              )*
+> -            pub const $err: super::Error = super::Error(-(crate::bindings::$err as i32));
+> +            pub const $err: super::Error = {
+> +                match super::Error::try_from_errno(-(crate::bindings::$err as i32)) {
+> +                    Some(err) => err,
+> +                    None => panic!("Invalid errno in declare_err!"),
+> +                }
+> +            };
+>          };
+>      }
+>  
+> @@ -88,7 +94,7 @@ macro_rules! declare_err {
+>  ///
+>  /// The value is a valid `errno` (i.e. `>= -MAX_ERRNO && < 0`).
+>  #[derive(Clone, Copy, PartialEq, Eq)]
+> -pub struct Error(core::ffi::c_int);
+> +pub struct Error(NonZeroI32);
+>  
+>  impl Error {
+>      /// Creates an [`Error`] from a kernel error code.
+> @@ -107,7 +113,20 @@ pub fn from_errno(errno: core::ffi::c_int) -> Error {
+>  
+>          // INVARIANT: The check above ensures the type invariant
+>          // will hold.
+> -        Error(errno)
+> +        // SAFETY: `errno` is checked above to be in a valid range.
+> +        unsafe { Error::from_errno_unchecked(errno) }
+> +    }
+> +
+> +    /// Creates an [`Error`] from a kernel error code.
+> +    ///
+> +    /// Returns `None` if `errno` is out-of-range.
+> +    const fn try_from_errno(errno: core::ffi::c_int) -> Option<Error> {
+
+^ this was what I was referring. We take a c_int but then compare it
+with an i32.
+
+> +        if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
+> +            return None;
+> +        }
+> +
+> +        // SAFETY: `errno` is checked above to be in a valid range.
+> +        Some(unsafe { Error::from_errno_unchecked(errno) })
+>      }
+>  
+>      /// Creates an [`Error`] from a kernel error code.
+> @@ -115,21 +134,22 @@ pub fn from_errno(errno: core::ffi::c_int) -> Error {
+>      /// # Safety
+>      ///
+>      /// `errno` must be within error code range (i.e. `>= -MAX_ERRNO && < 0`).
+> -    unsafe fn from_errno_unchecked(errno: core::ffi::c_int) -> Error {
+> +    const unsafe fn from_errno_unchecked(errno: core::ffi::c_int) -> Error {
+>          // INVARIANT: The contract ensures the type invariant
+>          // will hold.
+> -        Error(errno)
+> +        // SAFETY: The caller guarantees `errno` is non-zero.
+> +        Error(unsafe { NonZeroI32::new_unchecked(errno) })
+>      }
+>  
+>      /// Returns the kernel error code.
+>      pub fn to_errno(self) -> core::ffi::c_int {
+> -        self.0
+> +        self.0.get()
+>      }
+>  
+>      #[cfg(CONFIG_BLOCK)]
+>      pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
+>          // SAFETY: `self.0` is a valid error due to its invariant.
+> -        unsafe { bindings::errno_to_blk_status(self.0) }
+> +        unsafe { bindings::errno_to_blk_status(self.0.get()) }
+>      }
+>  
+>      /// Returns the error encoded as a pointer.
+> @@ -137,7 +157,7 @@ pub fn to_ptr<T>(self) -> *mut T {
+>          #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
+>          // SAFETY: `self.0` is a valid error due to its invariant.
+>          unsafe {
+> -            bindings::ERR_PTR(self.0.into()) as *mut _
+> +            bindings::ERR_PTR(self.0.get().into()) as *mut _
+>          }
+>      }
+>  
+> @@ -145,7 +165,7 @@ pub fn to_ptr<T>(self) -> *mut T {
+>      #[cfg(not(testlib))]
+>      pub fn name(&self) -> Option<&'static CStr> {
+>          // SAFETY: Just an FFI call, there are no extra safety requirements.
+> -        let ptr = unsafe { bindings::errname(-self.0) };
+> +        let ptr = unsafe { bindings::errname(-self.0.get()) };
+>          if ptr.is_null() {
+>              None
+>          } else {
+
