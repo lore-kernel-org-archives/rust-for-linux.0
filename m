@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7736976036;
-	Sat,  5 Oct 2024 07:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2E7A95E;
+	Sat,  5 Oct 2024 07:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728114057; cv=none; b=dJkArpFnYTBWuckTexFi1wTNcUQGmJteec8Sc4cnUf9hpKN6azs7MlAczk5TK6NXCVrygYQv6O2uj/LjEVvUhZE4B6MQZbrxVdWKvuQuRFIE3eJSSQ4Fuo06aA2RwbmNLrIm67XUW4jMsJNH05Ga672dykR/KZ2IalkogSMinSQ=
+	t=1728114449; cv=none; b=jKUPtL3yyJM1phsqDhUTIqzgU/xE//HJ89Oh2++mFfA8PAcO4Ne/DWhp/J7ChpwZJiDG80eNzZMs9TXuG1JYj+TMzURAVFD57hmeNNHp/Tl/BR6sdRBBtlRUams9YPI2TpPCJGXM1UV0sr/ErYijGEpex8IwN6ooikxRIwWgM88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728114057; c=relaxed/simple;
-	bh=OOyGjemrI/6GNJZpq4lLbRxvulRXcPiW/aPQFXh7c6c=;
+	s=arc-20240116; t=1728114449; c=relaxed/simple;
+	bh=NE+U0XsqJwmk9/zbDIP/+qotFb3/e5RIM/DoXNIHs/A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jz62s6MXfb9OMZ+oVlfGq5tbkJjRNTDH7Z6yePyxQvguRPkw5KDckfh/uPzjLN9JIkxfbv4jmqegitrSZSWXO4yKiobzoEnqIygZD1KEshcovrXH9UVvi/hNSk0QEJOsQYfw24PlJE2fjBlLhAnNVKCx8skVgyajq23tyvwRJOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlowxjur; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UhbZM2e39gKRuDFF3ox80EDlK88YHXmxQsrADPgCAxRHYUeePptEUty/CMBFhp/yQ51tEzMhzdb9uXEcvAyy696MOpB2nZhaBp1nAm3GyGxtlQcOki9EW/wg2FTMbZl5n0negxgWKiA/z8pke+JRVYV2dILfsQ9qB4VJj+nIKcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr6rILnc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qlowxjur"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C35AC4CEC2;
-	Sat,  5 Oct 2024 07:40:56 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr6rILnc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7D2C4CEC2;
+	Sat,  5 Oct 2024 07:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728114057;
-	bh=OOyGjemrI/6GNJZpq4lLbRxvulRXcPiW/aPQFXh7c6c=;
+	s=korg; t=1728114449;
+	bh=NE+U0XsqJwmk9/zbDIP/+qotFb3/e5RIM/DoXNIHs/A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qlowxjur4uhb0Ziu2f6fUriGDF632pACf4ITMBKMLnIISnGNxb2SK1/KhUwWkIg2h
-	 YnVGpfhEUy1TjkQVW2LVNZ8lRVlZjqxME1fH09RCpmiR00SBN9QbViG7pR0+iBxj9j
-	 /UXq4+H0DmBrnBW7VxkoxUytRLXQo0DN8MiNbU/Q=
-Date: Sat, 5 Oct 2024 09:40:53 +0200
+	b=Rr6rILncCZvm0wTZfXXgFYDww657ANTyDYMrIt9jDf2CyxLMbn5szhzGH/91opOUQ
+	 pesFfvQ37ddvt0ty9GyqDjSNP78M19S+mJoHDJa9r5idcin+vJj7wwaUvM2RzDJxkd
+	 1tQ7byVpOHsQMkFkjAOZWkWZpSkTbYSo7jvz2ujw=
+Date: Sat, 5 Oct 2024 09:47:25 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Will Deacon <will@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Will Deacon <will@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: implement `kernel::sync::Refcount`
-Message-ID: <2024100505-aftermath-glue-7e61@gregkh>
+	Mark Rutland <mark.rutland@arm.com>, linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: block: convert `block::mq` to use `Refcount`
+Message-ID: <2024100507-percolate-kinship-fc9a@gregkh>
 References: <20241004155247.2210469-1-gary@garyguo.net>
- <20241004155247.2210469-2-gary@garyguo.net>
+ <20241004155247.2210469-4-gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,44 +48,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241004155247.2210469-2-gary@garyguo.net>
+In-Reply-To: <20241004155247.2210469-4-gary@garyguo.net>
 
-On Fri, Oct 04, 2024 at 04:52:22PM +0100, Gary Guo wrote:
-> This is a wrapping layer of `include/linux/refcount.h`. Currently only
-> the most basic operations (read/set/inc/dec/dec_and_test) are implemented,
-> additional methods can be implemented when they are needed.
-> 
-> Currently the kernel refcount has already been used in `Arc`, however it
-> calls into FFI directly.
-> 
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  rust/helpers/refcount.c      | 15 ++++++
->  rust/kernel/sync.rs          |  2 +
->  rust/kernel/sync/refcount.rs | 94 ++++++++++++++++++++++++++++++++++++
->  3 files changed, 111 insertions(+)
->  create mode 100644 rust/kernel/sync/refcount.rs
-> 
-> diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
-> index f47afc148ec3..39649443426b 100644
-> --- a/rust/helpers/refcount.c
-> +++ b/rust/helpers/refcount.c
-> @@ -8,11 +8,26 @@ refcount_t rust_helper_REFCOUNT_INIT(int n)
->  	return (refcount_t)REFCOUNT_INIT(n);
->  }
->  
-> +unsigned int rust_helper_refcount_read(refcount_t *r)
-> +{
-> +	return refcount_read(r);
-> +}
+On Fri, Oct 04, 2024 at 04:52:24PM +0100, Gary Guo wrote:
+> There is an operation needed by `block::mq`, atomically decreasing
+> refcount from 2 to 0, which is not available through refcount.h, so
+> I exposed `Refcount::as_atomic` which allows accessing the refcount
+> directly.
 
-Reading a refcount is almost always a wrong thing to do (it can change
-right after you read it), and I don't see any of the later patches in
-this series use this call, so can you just drop this?
+That's scary, and of course feels wrong on many levels, but:
+
+
+> @@ -91,13 +95,17 @@ pub(crate) unsafe fn start_unchecked(this: &ARef<Self>) {
+>      /// C `struct request`. If the operation fails, `this` is returned in the
+>      /// `Err` variant.
+>      fn try_set_end(this: ARef<Self>) -> Result<*mut bindings::request, ARef<Self>> {
+> -        // We can race with `TagSet::tag_to_rq`
+> -        if let Err(_old) = this.wrapper_ref().refcount().compare_exchange(
+> -            2,
+> -            0,
+> -            Ordering::Relaxed,
+> -            Ordering::Relaxed,
+> -        ) {
+> +        // To hand back the ownership, we need the current refcount to be 2.
+> +        // Since we can race with `TagSet::tag_to_rq`, this needs to atomically reduce
+> +        // refcount to 0. `Refcount` does not provide a way to do this, so use the underlying
+> +        // atomics directly.
+> +        if this
+> +            .wrapper_ref()
+> +            .refcount()
+> +            .as_atomic()
+> +            .compare_exchange(2, 0, Ordering::Relaxed, Ordering::Relaxed)
+> +            .is_err()
+
+Why not just call rust_helper_refcount_set()?  Or is the issue that you
+think you might not be 2 here?  And if you HAVE to be 2, why that magic
+value (i.e. why not just always be 1 and rely on normal
+increment/decrement?)
+
+I know some refcounts are odd in the kernel, but I don't see where the
+block layer is caring about 2 as a refcount anywhere, what am I missing?
 
 thanks,
 
