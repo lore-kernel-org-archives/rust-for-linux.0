@@ -1,112 +1,110 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15FA4C8C;
-	Sun,  6 Oct 2024 08:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32CC155C97
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Oct 2024 08:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728202004; cv=none; b=F0RcWYE4WpfjAZbqKYYSPcZguu4KWCQ7As+10KtGWGebvg36cN0FLuHaieD17QLXgQ6he9uo8s3YGzq41INtDrxk37T8DBrl3ZZJuu+8aMqqWSsOr+EhlfSWiXtOA9tkOv5f16fuPmfRyIseoQAajmrzESXmP4MFW/1RJ6hLEn0=
+	t=1728203019; cv=none; b=oNvPthJtOVMvF7YWBMhVwrlO9zxF5FdNs/cWp0zIII76rRxmJSgHfTs28ocwvoP7ppGkRB9F4fAXBQNbwxlOSjXovcHD+T9PtPZjn/YXBbc+4e9aeAd+bZTPmZxetqNsxJQSeCcJaId6FShZbp5vYuaawSBzjCOaXd+H1U1JoWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728202004; c=relaxed/simple;
-	bh=puHS7d7azwqNXLt828Ye1D2ZDeZMXjrh1xk6a66e+BY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=roNF5bDbsvuUWU10g48JuYfh+U9ITXISe9Wx/I3XdXJxserno76LiARLxwkHk1xHXSEXL9o3i9BB6/+dHmSdEHDjkrMdrSRxKUznvCMZgOQDWky9kd9/rsOWi7YCAnBz8WolHpcpa3nN4EMixDGsT59rPYHsNDP/jptAcAfoL+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ADQyojO1; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728203019; c=relaxed/simple;
+	bh=1Xy1QhvxqJyBYDbdVeeJAmtvv088lK6L3WAoA1iT/Jk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QE1PnjxwEsDikf7IMMnwaerz4KI5fjRBfdVP+OTXoLt04OTlNmfxSrfSkEmzEkI6hDMOUDekcr8IsJL4whHG+CR9EuiynsW4Qlrbd+ZE35cNoxnN89loF+35IY6m7lpLlDPH6ddZ72I8Te4EXsYYXu/hvmlc4DECSn+4zXgbrNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=IV7+8AHU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Bw2FELs1; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ADQyojO1"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fac60ab585so35853791fa.0;
-        Sun, 06 Oct 2024 01:06:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728202001; x=1728806801; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=puHS7d7azwqNXLt828Ye1D2ZDeZMXjrh1xk6a66e+BY=;
-        b=ADQyojO1oVFojpQ/OG07teh+doGSlmlCOI1svEsXZuCE4Pp3VxQ59FFZBFhXa9VncC
-         jbcCoTvmwV4jgS7xpikpA/Vo1es4yEwEJpZgHQ/YXxFwhcYCNbeEQNm7LIbM0BxNNc7g
-         S4Eve/4A1OefjTgzCmQUHDFMqiVjRHI0GSKQzBe5i+zvzsWj2MYydbKm3G0SZ285awrN
-         V0Fm88fhRq8KTL3vc8UydwbhWTw3PTSjOD+aD5Ceeq16kD+X0FCHD722t2XZpy+691Jt
-         l0AnEpr9Lu6QJNsBRJauh/i3MzLPhzXWzs3OQEp0m1vTM9E0t3+WLKwLt7VyklpDHNfW
-         FT0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728202001; x=1728806801;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=puHS7d7azwqNXLt828Ye1D2ZDeZMXjrh1xk6a66e+BY=;
-        b=IEoPEpSWp3B0Gem0y7RwFGyMQ3q/fe6rncF5S/MfFvwo4R3ELRQP9oEDt+ZpXyYAfa
-         t8L4u6hnXkoaD+BVAY/Cl718hC9Tic+GQJkhaTQh3VZ9YE62j5p3/Xdu8ZTUopiVVbZf
-         PtCgsaiZG8msFtoNqmU/FgEUwHpU6hS2ChFQGY55AR2O3y5kScblMLZqh0gyLwLC/OMy
-         8kwlaXOu9clqIH4d/8lfXojCq3efSYNMy6GVNbKNg4IoBq23oTZhXlJvrK70km/4GVYr
-         b56ROMfqN5g89p0lFkTsjfvgtZDVbsJ/badF/Ew/BGKhV/W+j0M0rUwIhotteLQwE3Dy
-         leLg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6QA2RL4oyszVN9UUX6y3Ue5LQnWVaixOmPWAweHnvqFathJsuW5eSWfRpHY21TjNfA0vSQ3TXizW2rzm1@vger.kernel.org, AJvYcCUKEH8ZY6Na8NvB4dqZRAZFf5u09HKTNhv8/rvJ67X17f/F/CM0fVVSfhbSD9ORzjNq5EU=@vger.kernel.org, AJvYcCUN77sKUAACC4XEoy6YJS+O4o3ZtmKjyyhUbe24EkocPgFyTVtnL/+PXlBfdnCTuFa8Yfl7B7sy5Mx7v86c+zGdvg==@vger.kernel.org, AJvYcCVPTjxdfLrBiEG2Z+npArJSd1y44Iu82Tf7icI/5VJQ9bboxI8rWRkZfT+bM2PQfjcZ0qrpDA8lY3QCGuKVE0c=@vger.kernel.org, AJvYcCVS41bQ6HlrLcWJlIitUx2U7oCRUqdRZrdc3mZykB+/nVZsKS5pVbJUOgPwId8FYv4kZZAd18nZits=@vger.kernel.org, AJvYcCVhV3TgrqqvwnBzq/QZXFgavknhBFfV4Dvm2JWLMZLahsuue+WoJsyn/dlmBLnHRhpICK0Qwu66A7RwYg==@vger.kernel.org, AJvYcCWD1mH5DohvmF0CxhD9LZ5E52s6txrWNsQNM6rvOOHc8NyUIjRhAzHwFy+19Lm8AnqULXu6QVKm4lbC@vger.kernel.org, AJvYcCX5X8CQWs+tFp2OREDCcerSsopvpSi1qEmC+U6+Nk8vZIxKbDlPjQ2DvDOvEl8zOKW1W2hP5aD/nmwmE/95@vger.kernel.org, AJvYcCXrM8oDH9wpZ425e7xtbvafmXMfM7mdL9C11mLw/SURft+KhmtgZZFE2K0TwOFFaV5ECT0kZKRbNqnL@vger.kernel.org, AJvYcCXw1ADMC3RR5jn61tFhVPv2lS9GQmJZgqTPZQxwSLPDM6Cx6Veocw7YY/cYmzRxearHkNhr9l31QJYm91Qb@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0slVW+OOMz0NUGHQeWBEvjPBkM/ILY/X/cimx72O0pEGmFE9E
-	ifjuDIQnJnMxiZNYxPOf4+hF7HF3KmI873g0Y/abzGV8G1Ipnc4lgPOHhN27h+i+oEJtiOLA3Sp
-	Ls4cnJPLdfuq35JT1xWP5qBe/6IY=
-X-Google-Smtp-Source: AGHT+IGS61n/I1TuC+MWyJZpRj63R+p8y0BprOkKwk0SOVREtUnFaMblR5HhGoJzVJpp1ktZzeiYw7JUqStdLpYUPwI=
-X-Received: by 2002:a2e:bc0e:0:b0:2fa:cc50:41b with SMTP id
- 38308e7fff4ca-2faf3c508ffmr41878031fa.5.1728202000783; Sun, 06 Oct 2024
- 01:06:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="IV7+8AHU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Bw2FELs1"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id A1DAA1380486;
+	Sun,  6 Oct 2024 04:23:36 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Sun, 06 Oct 2024 04:23:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+	:content-transfer-encoding:content-type:content-type:date:date
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1728203016;
+	 x=1728289416; bh=bmrn+a1UA3qzzDW8pHwFN1FXwe7Br1LQ52I7HiDlYCM=; b=
+	IV7+8AHUGLtlwuREi3grjE7+hM4gvUZmhQoJqYCi/acGTzHtZR17o370V81FOkn1
+	y4wj4t7mZ59DHoZwPGqB6s91kAgMNQzMv6DAqtSZNwFLeHWGqlOyqqidQ2CewP7p
+	jCA5j/dcbhQQ67cb3mfbET+wBHlGr5mr882n2p2BbkkWjI3CLEVnZQIO+vaeoO2Y
+	G0rocFdJb6Ciso394e08E4/ryMe88ecR7R0KjCOlywGxIGjisxK7/l2zftiQsmgk
+	G0xD8pZfdMKM36XqB+pxEfF3j0fNdwuubTAJyFTwohy1KOw+wrn47qPCl0IDLHmo
+	IUvM0NbCiixf1cZVpDRZgQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1728203016; x=
+	1728289416; bh=bmrn+a1UA3qzzDW8pHwFN1FXwe7Br1LQ52I7HiDlYCM=; b=B
+	w2FELs1sOFB6CAWXI2UHLTDXekMJfEVc+TkZtCUrERrlnEv28mNca8HCFonAeugx
+	4f7fJiE7WKk4XHCIGMt8jZ8PC4/oPiYeeHOVRZX18AdFNpEB/HHYR7Z2YEK+tsx3
+	jNe5OWTc/l7T05Fwvw7Ij3FC70ITigjfBbFFBunJ8WPn4f6xzc0CbjpIZ+EsNQZq
+	ZrSO7plaVSk3Z1Hj60k13yFinq1nXcchdGoTOUD8fvP0D63vw7pOdlzB5YnntZfF
+	m46lDbIYacfiFfdCw62/ZIYIqff6isa/Qm9/SpCViPp31mLqFY52PSDOKiRQK6zV
+	BlHMHVbJOwn4Fqifo5GIQ==
+X-ME-Sender: <xms:CEkCZwvYhz0DFxeaXklWrtl7dogIqjrHzOSonW7x4y6VgNXcplDpVA>
+    <xme:CEkCZ9f6CjtRFpe5CrIVYhGM6LUJpxaa3Zja0J-cw58mo1mVw_xFq4MhUDtdc5nSb
+    1dNFMQMSMFw5mdACg>
+X-ME-Received: <xmr:CEkCZ7xPnqh4vO5bI4K5UIgepynYOjTonbsSdukcMvlmMs3b2JoLsR2zfU-HrkX5SrFBCzkztn-ov8oAoUdB8ycZjp5LYhwi96eE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvjedgtdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdej
+    necuhfhrohhmpeetlhhitggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenuc
+    ggtffrrghtthgvrhhnpefhgefhleegffelgeffffevgedthfelteegfeevieehudeftdff
+    ffeludefhfegheenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrh
+    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrhihhhhlrdhi
+    ohdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfh
+    gvlhhiphgvpghlihhfvgeslhhivhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtoh
+    hmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghp
+    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghoqhhunhdrfh
+    gvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhm
+    rghilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrd
+    hkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:CEkCZzNHPtURaE5HXrDQj0GhgIvv1lLhFJ3oR-2KWRgpt7M2G3DdAg>
+    <xmx:CEkCZw_nw9iucpdifDXi17kO-Q-NSjh3vYdv4V-1QWsgeEVFIEFQ1A>
+    <xmx:CEkCZ7V3u9FKZU5K_ShC3y0R-8Yse6ilJiUqm2cS6RduwxR5Et5n1Q>
+    <xmx:CEkCZ5cn2H3bkoLstsS4xd2mSuPEbWxAyoYvroH9RmM5TUbh37FqgA>
+    <xmx:CEkCZ0SfsOUdq5jiVMXWbl_nTjIq8OlRnCG1oRjlL1pm0lICU6v1pytr>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 6 Oct 2024 04:23:34 -0400 (EDT)
+Message-ID: <ce9f4b14-3703-416b-b16e-1251abd9cb18@ryhl.io>
+Date: Sun, 6 Oct 2024 10:26:36 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-55-ardb+git@google.com> <99446363-152f-43a8-8b74-26f0d883a364@zytor.com>
- <CAMj1kXG7ZELM8D7Ft3H+dD5BHqENjY9eQ9kzsq2FzTgP5+2W3A@mail.gmail.com>
- <CAHk-=wj0HG2M1JgoN-zdCwFSW=N7j5iMB0RR90aftTS3oqwKTg@mail.gmail.com>
- <CAMj1kXEU5RU0i11zqD0433_LMMyNQH2gCoSkU7GeXmaRXGF1Yw@mail.gmail.com>
- <5c7490bb-aa74-427b-849e-c28c343b7409@zytor.com> <CAFULd4Yj9LfTnWFu=c1M7Eh44+XFk0ibwL57r5H7wZjvKZ8yaA@mail.gmail.com>
- <3bbb85ae-8ba5-4777-999f-d20705c386e7@zytor.com> <CAHk-=wgkgnyW2V4gQQTDAOKXGZH0fqN=hApz1LFAE3OC3fhhrQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wgkgnyW2V4gQQTDAOKXGZH0fqN=hApz1LFAE3OC3fhhrQ@mail.gmail.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Sun, 6 Oct 2024 10:06:33 +0200
-Message-ID: <CAFULd4ZZxrJvJ9gF5tC-m-tmcDMvVM3te4xc7vnbF_OFU0D2=A@mail.gmail.com>
-Subject: Re: [RFC PATCH 25/28] x86: Use PIE codegen for the core kernel
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] rust: optimize error type to use nonzero
+To: Filipe Xavier <felipe_life@live.com>, "ojeda@kernel.org"
+ <ojeda@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>,
+ Benno Lossin <benno.lossin@proton.me>, "gary@garyguo.net"
+ <gary@garyguo.net>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+ "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>
+Cc: "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+References: <BL0PR02MB4914B9B088865CF237731207E9732@BL0PR02MB4914.namprd02.prod.outlook.com>
+Content-Language: en-US, da
+From: Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <BL0PR02MB4914B9B088865CF237731207E9732@BL0PR02MB4914.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 6, 2024 at 2:00=E2=80=AFAM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Sat, 5 Oct 2024 at 16:37, H. Peter Anvin <hpa@zytor.com> wrote:
-> >
-> > Sadly, that is not correct; neither gcc nor clang uses lea:
->
-> Looking around, this may be intentional. At least according to Agner,
-> several cores do better at "mov immediate" compared to "lea".
->
-> Eg a RIP-relative LEA on Zen 2 gets a throughput of two per cycle, but
-> a "MOV r,i" gets four. That got fixed in Zen 3 and later, but
-> apparently Intel had similar issues (Ivy Bridge: 1 LEA per cycle, vs 3
-> "mov i,r". Haswell is 1:4).
-
-Yes, this is the case. I just missed your reply when replying to
-Peter's mail with a not so precise answer.
-
-Uros.
+On 10/5/24 9:51 PM, Filipe Xavier wrote:
+> Optimize `Result<(), Error>` size by changing `Error` type to
+> `NonZero*` for niche optimization.
+> 
+> This reduces the space used by the `Result` type, as the `NonZero*`
+> type enables the compiler to apply more efficient memory layout.
+> For example, the `Result<(), Error>` changes size from 8 to 4 bytes.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/1120
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
