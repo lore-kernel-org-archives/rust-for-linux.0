@@ -1,107 +1,158 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC7B4C74;
-	Sun,  6 Oct 2024 14:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D3A13A3ED;
+	Sun,  6 Oct 2024 17:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728225952; cv=none; b=cEtbmIIoEYyQ0JBpNVligunJkxDcb8ndXtu+O/paC58dWqhZCw2sKIS+YQKl1whkHMiaBdDifuFPcpGFK/m+NPqMC4LGqcf120pQ9RjjEQ8BfQs6dMLSqz/k/wugsEx6JjUGP+AZzchYbrZJ7SBd+4dBx1GcJxsK7/RfysBqPYE=
+	t=1728236217; cv=none; b=ct9X/oAexOppEDpxRuRzpo1r+e6FyAk1Qo+uSyrL1f3th9KmJh7WUSajG11coE7JPQO5f5YpLiWZ5ZoviXQVB2mbQnwPRPP7V5LV/90buLZ7+ZvVkBEIozRfrBQpHPAtmX7LRbqKBwTcqaDSDXQ74H/r+Y6aGJ5ClNmuMXnpkWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728225952; c=relaxed/simple;
-	bh=2ojKdSiJX3m0RwIsErwzLLaYE7C1YwdcVnXb9B2l6zk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DehH6ot+oPz2zLwxpL22KtsUAwvdoaeBtAf5BX1H/GxJ1J1amjqy4Zv0EqUDde5cVXbJlacyrPqkPr+rISUV2wtSo3SrX8c97LHxbzFA+Mu576u0YO/imshps9EBKVHosmW6LU3GoFhmPNf4yErOixfHUXsai85YcfGpIvN5WMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lATDtZJp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1728236217; c=relaxed/simple;
+	bh=Q1TMwAKeOIm2wcbXlht5uOX41hF/WJsY7Vcesi+KWKA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MZnhtNipzV5lYbslL3GuxFjehvDKCN66l/dMVV4DMQONj7Gx6Zdt0rlnjn9DL9D4TvAaMzqal7VBkPD/ZozBQNUJlBUSIexsR/WX15cwvDmdh5FcYijEEbbSCUg2CFxoWE3lb1lVo+16J5D4I1n6Cg0+Zk+DQM4KaJJoiz46INw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPVRYAuV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lATDtZJp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=FkIgVPdoA8VZ2rGYtdVu+cQAsveXdhu7De0J+IqMDOc=; b=lATDtZJpRC1kMy5qcpOIDKjvHt
-	YVgNiYnXKH6HURvj/Jpo6YhW/OAuD/kNPsH6MROZRIpumQEFZruvu+mqm6Oc6bkb+plDN/qm6rW8K
-	0IwcOqNiyHfAXBYNYboPW7Hb2Fo79TNLnXiFG0ZRQZyovDTKpYOBcNhsLXxJQUqb5JmQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sxSVd-009Bhe-1Z; Sun, 06 Oct 2024 16:45:21 +0200
-Date: Sun, 6 Oct 2024 16:45:21 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
-Message-ID: <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
- <20241005122531.20298-6-fujita.tomonori@gmail.com>
- <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
- <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPVRYAuV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC92AC4CECD;
+	Sun,  6 Oct 2024 17:36:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728236216;
+	bh=Q1TMwAKeOIm2wcbXlht5uOX41hF/WJsY7Vcesi+KWKA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LPVRYAuVY66osVWJT6a3gRoh3ZuF3VFdIAzL+JyKcxtNG38NoazFwZlutZivsF8eB
+	 f+R41ge+fUavVQVVu9pD+n5yXiCHNSNGX3EeWqk+evOvqcIOFEW5rEV72M0gBsRxRe
+	 XNSTzw3OyIqaZ8E/fQLbFDEpg8yAygNlQPTdX70Q/YTV/BulC0PzoisFyCDHYeh7Xq
+	 b4b5Qxa6f/yFqGfV+UXpIq8H1u6mPwOaSeTBPsEqgC0LjbXdhZJwI+1dQBqW5giGAa
+	 wm0MuHVNPTdZ2MsMz9iZ5i/+bc5FXWpyiQmv1bL2s//U5dzZQUsuiGOPRdY4yUMRJA
+	 qbb5Q0pTZbUhw==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fada911953so44876891fa.0;
+        Sun, 06 Oct 2024 10:36:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWDDh0VNUT1gpZPd3QgOnLRl1QHxZclkOPEj1zfenW0PGdSxw/Kt4PqKsdWc/zS3ujWTZLUJTHMx/tyu04=@vger.kernel.org, AJvYcCWysX2hcmItTjqrlp0KPQqfn5V1PtE3Fl0Xo2JNuX5QdDiYfW5VhW7d4zzdrYgb/iocAV2QwpSAij209SNpsQ==@vger.kernel.org, AJvYcCXB7c9E9t4kpaMMUKlXctQQhQtEndTt5Csu11iIA8kUManpvWNMvej0+3zUD4xX6T2hMx0dSBEEhw0j+DYD@vger.kernel.org, AJvYcCXNl4C0zJqZBPd7+nMJ5kZM9nG3S17Kl84Ekv/wRKwBB43/IueslKdXKdmTiEPDkEx6sCtWRzhVtRQctDaMYOs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwogZh8TBahsN851wN2g3XuYMDtm/mr8nXIDOkjX2I6n4X+9rbo
+	XmYNzP3bOmu5zWyBI9OIUgVlg/VxixAQSx2go1CPmVGJiTiQdW7TW63O4lXNqFS69CMyl6IGwfq
+	WCzTIGjLX7hHfB5M+vpyE8zBUYK4=
+X-Google-Smtp-Source: AGHT+IF7a5fnhO6HmzbvVN4wOBrDrBYZiDSOrKcFK0hTzDaUwPKEYM+adhmLfqDLPcU8Xu7YLExlWDIVyVXNXuekEHA=
+X-Received: by 2002:a05:6512:3c8a:b0:539:896e:46ce with SMTP id
+ 2adb3069b0e04-539ac17ebdcmr2881071e87.28.1728236215356; Sun, 06 Oct 2024
+ 10:36:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+References: <20240923181846.549877-22-samitolvanen@google.com> <20240923181846.549877-23-samitolvanen@google.com>
+In-Reply-To: <20240923181846.549877-23-samitolvanen@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 7 Oct 2024 02:36:19 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQzoJNQ21o3pmozo5c0rLq-ETaAqxSgbiU_gJu7U_mu8g@mail.gmail.com>
+Message-ID: <CAK7LNAQzoJNQ21o3pmozo5c0rLq-ETaAqxSgbiU_gJu7U_mu8g@mail.gmail.com>
+Subject: Re: [PATCH v3 01/20] scripts: import more list macros
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 05, 2024 at 03:22:23PM -0700, Boqun Feng wrote:
-> On Sat, Oct 05, 2024 at 08:32:01PM +0200, Andrew Lunn wrote:
-> > > might_sleep() is called via a wrapper so the __FILE__ and __LINE__
-> > > debug info with CONFIG_DEBUG_ATOMIC_SLEEP enabled isn't what we
-> > > expect; the wrapper instead of the caller.
-> > 
-> > So not very useful. All we know is that somewhere in Rust something is
-> > sleeping in atomic context. Is it possible to do better? Does __FILE__
-> > and __LINE__ exist in Rust?
-> > 
-> 
-> Sure, you can use: 
-> 
-> 	https://doc.rust-lang.org/core/macro.line.html
-
-So i guess might_sleep() needs turning into some sort of macro, calling
-__might_sleep(__FILE__, __LINE__); might_resched();
-
-> > > +    if sleep {
-> > > +        // SAFETY: FFI call.
-> > > +        unsafe { bindings::might_sleep() }
-> > > +    }
-> > 
-> > What is actually unsafe about might_sleep()? It is a void foo(void)
-> 
-> Every extern "C" function is by default unsafe, because C doesn't have
-> the concept of safe/unsafe. If you want to avoid unsafe, you could
-> introduce a Rust's might_sleep() which calls into
-> `bindings::might_sleep()`:
-> 
-> 	pub fn might_sleep() {
-> 	    // SAFETY: ??
-> 	    unsafe { bindings::might_sleep() }
-> 	}
-> 
-> however, if you call a might_sleep() in a preemption disabled context
-> when CONFIG_DEBUG_ATOMIC_SLEEP=n and PREEMPT=VOLUNTERY, it could means
-> an unexpected RCU quiescent state, which results an early RCU grace
-> period, and that may mean a use-after-free. So it's not that safe as you
-> may expected.
-
-If you call might_sleep() in a preemption disabled context you code is
-already unsafe, since that is the whole point of it, to find bugs
-where you use a sleeping function in atomic context. Depending on why
-you are in atomic context, it might appear to work, until it does not
-actually work, and bad things happen. So it is not might_sleep() which
-is unsafe, it is the Rust code calling it.
-
-	Andrew
+On Tue, Sep 24, 2024 at 3:19=E2=80=AFAM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
+>
+> Import list_is_first, list_is_last, list_replace, and list_replace_init.
+>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 
 
+This one was applied to linux-kbuild.
+Thanks.
 
+
+> ---
+>  scripts/include/list.h | 50 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>
+> diff --git a/scripts/include/list.h b/scripts/include/list.h
+> index fea1e2b79063..8bdcaadca709 100644
+> --- a/scripts/include/list.h
+> +++ b/scripts/include/list.h
+> @@ -127,6 +127,36 @@ static inline void list_del(struct list_head *entry)
+>         entry->prev =3D LIST_POISON2;
+>  }
+>
+> +/**
+> + * list_replace - replace old entry by new one
+> + * @old : the element to be replaced
+> + * @new : the new element to insert
+> + *
+> + * If @old was empty, it will be overwritten.
+> + */
+> +static inline void list_replace(struct list_head *old,
+> +                               struct list_head *new)
+> +{
+> +       new->next =3D old->next;
+> +       new->next->prev =3D new;
+> +       new->prev =3D old->prev;
+> +       new->prev->next =3D new;
+> +}
+> +
+> +/**
+> + * list_replace_init - replace old entry by new one and initialize the o=
+ld one
+> + * @old : the element to be replaced
+> + * @new : the new element to insert
+> + *
+> + * If @old was empty, it will be overwritten.
+> + */
+> +static inline void list_replace_init(struct list_head *old,
+> +                                    struct list_head *new)
+> +{
+> +       list_replace(old, new);
+> +       INIT_LIST_HEAD(old);
+> +}
+> +
+>  /**
+>   * list_move - delete from one list and add as another's head
+>   * @list: the entry to move
+> @@ -150,6 +180,26 @@ static inline void list_move_tail(struct list_head *=
+list,
+>         list_add_tail(list, head);
+>  }
+>
+> +/**
+> + * list_is_first -- tests whether @list is the first entry in list @head
+> + * @list: the entry to test
+> + * @head: the head of the list
+> + */
+> +static inline int list_is_first(const struct list_head *list, const stru=
+ct list_head *head)
+> +{
+> +       return list->prev =3D=3D head;
+> +}
+> +
+> +/**
+> + * list_is_last - tests whether @list is the last entry in list @head
+> + * @list: the entry to test
+> + * @head: the head of the list
+> + */
+> +static inline int list_is_last(const struct list_head *list, const struc=
+t list_head *head)
+> +{
+> +       return list->next =3D=3D head;
+> +}
+> +
+>  /**
+>   * list_is_head - tests whether @list is the list @head
+>   * @list: the entry to test
+> --
+> 2.46.0.792.g87dc391469-goog
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
