@@ -1,86 +1,106 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919952F2E;
-	Sun,  6 Oct 2024 10:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B306A1CD3F;
+	Sun,  6 Oct 2024 14:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728211513; cv=none; b=fRIpXCDKex74ySwBtoYBOy8hZXG+6Nc5o4fpqQrihUTYXIf/pb7KjRUnHsXE6o41i5AbzULGVVewuvm2Wet2dqJ5SmrdE5AXfMCQHtlgML2t4PXS0XDZNXkt/A9npf7gMiVkUAS1Lz+kch/eef8zK3Ud3TtCCDBjA67zWH9gUzg=
+	t=1728223426; cv=none; b=WIt+vANwycmUXmyODYUNQtlwgbHnIoItihh0ys83FY76FLI/m9AMZT5kDib/HmOYDFYN7st68CRiupjqhJRL+wED2kf06j8y9/36gv+JbhbNnPvl0t76zSI5ZInL28HcXdwBLjR9Oed1jMF9uPc1cg9qFOyk1/ubtXAQTXH7ic4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728211513; c=relaxed/simple;
-	bh=CPhsJDr1Y8WXIZybKLVZDghsipg79KfwwGX3fuXsAZA=;
+	s=arc-20240116; t=1728223426; c=relaxed/simple;
+	bh=prHIkG6lXZ+f0rbKF3HO/23UrfF983phPqFvJlj0WxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QT4wHCEK8z+ErniDwKwnXIG7VfcXftkVi6gNXzNW7ChIVu9HlVsblqQtu4NIUQQ9tW4hWL568aOBhlsedVExs9+1CzoV5bRRtHTh3tTfNDoe1W8OQlcQIEr59nlMzRfJ41NZy66g1yBScLf8xBcfHMvLjUIK7kLuFAo024vpZkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=dq8y0TQ0; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	 MIME-Version; b=L7NzInFjbFJ9bsyMUwyMl1oSpkEqghdX07S6Fo5J82g2mfaJxh9LiZokpXCulE4CNsomQPLv/ui8UC9pnTUNoH3/xK/sJMgZw8769OxDUZtXgXZQWTrMEuE3ru6ZSkTHTDirl9yhmI0vuTk0yAtI2BomCbYMLRszMImOa6QK41U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=timo.grautstueck@web.de header.b=vXepDVlw; arc=none smtp.client-ip=212.227.15.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="dq8y0TQ0"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1728211507; bh=x4bc5/MtmtxPmd8Avrd5pQhLXoVlTs3I+eKRvlangz4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dq8y0TQ0ZhAjglJ0eWWsvZNxDSR/1P1QD859vD9H/koF/h27qzKjqVTOQxwOcyQdA
-	 95dHY76TMK4X8K472BeYXJ6Hr4AIMDFaOwubKs1cl/1G9vUBCaDLoRZdHeXijXesLW
-	 7xRVsevhh+67sH64lKF3tGzE5tYQezeDyeQ11aYI=
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/6] rust: time: Implement addition of Ktime
- and Delta
-Date: Sun, 06 Oct 2024 12:45:06 +0200
-Message-ID: <A3581250-0876-42FC-9B3F-67F437CC16AC@kloenk.dev>
-In-Reply-To: <e540d2cd-2c47-4057-9000-8d403247abf6@lunn.ch>
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
- <20241005122531.20298-4-fujita.tomonori@gmail.com>
- <e540d2cd-2c47-4057-9000-8d403247abf6@lunn.ch>
+	dkim=pass (2048-bit key) header.d=web.de header.i=timo.grautstueck@web.de header.b="vXepDVlw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1728223409; x=1728828209; i=timo.grautstueck@web.de;
+	bh=RhobfjPRWKGv5pI2wAc+H65bQLf+Dqu1BevLF2wvBEA=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=vXepDVlwAUXZhOtdSoYF+EkVDFgHOGY+p2Hq3iB0LL0Mt2UvVKcFjFdp5h3Mf/bS
+	 4Q3XFBN0lOnEzUl6wPlxzDqrnbLyHETuMfk/oCfhdqRb8xTDZRRjpEXqxFX+wo18v
+	 jLqe2YcEDrrGMGGyLXjS1Cq0hI+KT6u5rX4Orc6rq1T6/H4UeLnVjgi+9TvcFbzzu
+	 f/70/cjhs2paaj4T+lFdHQG03cP2GfbZL0e919TenQmYmgyJCOf3vk6Ydjc68MRgs
+	 M6ff1GcQNDcGZvjd7sXKsR/0GSfUcyJlutgda/ejHqX1bQU0DGK8dKv3HloaKGwwe
+	 k2iRADrhYHdqHClfNA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from localhost.localdomain ([95.223.78.106]) by smtp.web.de
+ (mrweb005 [213.165.67.108]) with ESMTPSA (Nemesis) id
+ 1M76bb-1t4r2k1kEB-006z8z; Sun, 06 Oct 2024 16:03:29 +0200
+From: =?UTF-8?q?Timo=20Grautst=C3=BCck?= <timo.grautstueck@web.de>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	timo.grautstueck@web.de
+Subject: [PATCH v3] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
+Date: Sun,  6 Oct 2024 16:02:44 +0200
+Message-ID: <20241006140244.5509-1-timo.grautstueck@web.de>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <CANiq72na=RqV=vhKZr8iZMdvKZXxqX5r7bDgo84KnPWddc4Z1w@mail.gmail.com>
+References: <CANiq72na=RqV=vhKZr8iZMdvKZXxqX5r7bDgo84KnPWddc4Z1w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:d3+35liRFHS3uz7tGtX9X5gKRWzw8rryytmcivuFt/j/IDHguft
+ bvoLq1AZcAc833qAVsyZEmFBYLJXzzbfrgTOgT4aDSgaHZj4V9dXj9g2+Zui2QFpyO8dliZ
+ JBcBAjAh9z8ETMfaeGhs/QSlphHsGwObGJnhwx7gFHH/XbDmB1w1iDQxzHL9JNV75rKX6zJ
+ roIa6gCTBSPMc77IL47oQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:y56AicibXF8=;N3cX+M2dIWbmN5R2GucQKQRp9zH
+ iFCcw7119yecnfWnSMvypNwHrLyvCrH00USkY3ViaI6AQ2oUMctSRcL/2v0E1j0Jb3T2drZoO
+ 4VIzGUSNqunxpY1bR8HTNP+thvZnW3sJZ0Lh1QjOncU1V14NvgMdoTEESD9C7xqoZL+/gXs8p
+ lTC9hFKmN5CNF8M7ZKZtpYqW6FyihVN2wgHDEno4z9AX2B3dLoOhbeZiE1s6lXjs5DPHe8n1P
+ LqPIS2vmVtQQTmvNbX5TDgiquGtJeJ4MeUaLz2R8NR42aUiBPkSZ5fRM9aSwgFXDlm2MzOcQa
+ xZu8tJJQ7SyQkScMpp8J68WTo0IMOEoJLacuL8nqQ4wq2prLtqM5jkHT7sB3wtZw6yJIhRZNd
+ 5QA3P2oxIRxaLnKqkMwmfLNRGTyRB8f2/B8btSmViaY8RKxOUtCvz7Y9n9olqf7E+J6Qkwfmf
+ s06wWhh4LzX/s6NiGG0a/5Ew6Bs1c1PhLkWJTCwsWQxwJgcavTcfqdf0/pPWfyrQFyzp2zNmh
+ TvQ8WgUupiN9yEOZx6v41mSHjdb6lH5NVL/EmyGaauNgh34OfU1baFikrmXf6FL6JXvs8BEHM
+ OApqVxKA+jQ0EAi/Nx4Ps4gnI7ZwTbXzY6bCj6H8BRx0Av3+N0TdZFbQ2863R7mNhLeKZZotS
+ CrgiTKKQdAW7UUIEMUWwVp+Tpd052Sko/ExIIv3phHaOkHV9dtazDkyC0BoxdLCxH3r7VBSQ3
+ kH52jDbV1UHJ99R7PdROdf/rchRO2S+VYzr0fRHwF4+BcGgn2OltTsHuxJnBorXPcvUajnCgj
+ ymPuxmxF0iX+4ce7gSLGUShFAfyzHLjtI3eIAhVnvBqns=
 
+From: Timo Grautstueck <timo.grautstueck@web.de>
 
+Just a grammar fix in lib/Kconfig.debug, under the config option
+RUST_BUILD_ASSERT_ALLOW.
 
-On 5 Oct 2024, at 20:07, Andrew Lunn wrote:
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1006
+Fixes: ecaa6ddff2fd ("rust: add `build_error` crate")
+Signed-off-by: Timo Grautstueck <timo.grautstueck@web.de>
+=2D--
+ lib/Kconfig.debug | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On Sat, Oct 05, 2024 at 09:25:28PM +0900, FUJITA Tomonori wrote:
->> Implement Add<Delta> for Ktime to support the operation:
->>
->> Ktime =3D Ktime + Delta
->>
->> This is used to calculate the future time when the timeout will occur.=
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 7315f643817a..7312ae7c3cc5 100644
+=2D-- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -3060,7 +3060,7 @@ config RUST_BUILD_ASSERT_ALLOW
+ 	bool "Allow unoptimized build-time assertions"
+ 	depends on RUST
+ 	help
+-	  Controls how are `build_error!` and `build_assert!` handled during bui=
+ld.
++	  Controls how `build_error!` and `build_assert!` are handled during the=
+ build.
 
->
-> Since Delta can be negative, it could also be a passed time. For a
-> timeout, that does not make much sense.
->
+ 	  If calls to them exist in the binary, it may indicate a violated invar=
+iant
+ 	  or that the optimizer failed to verify the invariant during compilatio=
+n.
+=2D-
+2.44.0
 
-Are there more usecases than Delta? Would it make sense in that case to a=
-lso implement Sub as well?
-
-Thanks,
-Fiona
-
->> +impl core::ops::Add<Delta> for Ktime {
->> +    type Output =3D Ktime;
->> +
->> +    #[inline]
->> +    fn add(self, delta: Delta) -> Ktime {
->> +        // SAFETY: FFI call.
->> +        let t =3D unsafe { bindings::ktime_add_ns(self.inner, delta.a=
-s_nanos() as u64) };
->
-> So you are throwing away the sign bit. What does Rust in the kernel do
-> if it was a negative delta?
->
-> I think the types being used here need more consideration.
->
->     Andrew
