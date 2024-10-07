@@ -1,125 +1,119 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BAC1D2223;
-	Mon,  7 Oct 2024 13:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3071D460F
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 13:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728308912; cv=none; b=hf3ifbTYMVcAjdH+K4iPqkB/Dr/joFD69mpEMaZXJ6JH5yddf6T1xhXORrjlCA0K/sDf+G3nO2aVTI/XlVqp3f5n77Iw8Z6cIWMpD2D7gWKwUF7a6Vfg/tGfZPg42QYwrX+syHG2sPcc1KLXzZBHH03S6md41im1QMEIbfZTY4I=
+	t=1728309563; cv=none; b=p6vSb1IgXXM3tB5i1INgpl5CFDwKey3xkhT81juyf2jkUrsPoDqVfMYSx0jb4PbLZaC3HCbcu3K04JdxavGaMr7DeHm9A9aqpXqEpKFxgEQa6tvmaJnTDp6ba31yrcWBQW5XIWLSv91rRGEqMRP4DcjvpIiwSzc1dE2UD4VKjAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728308912; c=relaxed/simple;
-	bh=aNfKhpR+COGAnurrQ1qEerAhVLsQXkQtnBVsPQoSfMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pcozi52amN1dE7eVNGPYtfxd6i3SAb7DEZMq3EG+xmDeh+s1Q0oCT8KMYhyEZeqelzyiZf9TqAYCvOU02N8Z4Pzoy5/4eyRxMoQBGcwbrNjBBYGVd+FqI0aHyM11XmJDWyPgCkvNYEHwpwlrUUPYnKoqwzSh/Nef2439C0wiTMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=v7eN2z1T; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1728309563; c=relaxed/simple;
+	bh=xc/x30uf9iyb5xezbKYekNH++PSzPkxlm8mpT+Naf5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMdPrBlXnzSmRiJZ1R2IgUkau3r11SKqPqd2J3vNoTHqxWsHyt4OTFcJ9hrmD/EabkPRngfYyDxV6tPtLbARXwSF5SE8YMEmqsFQDMz30fRiomb/J73udawcnouTy8CMDk7rqKsry2CVsI4tjaPejOUacsvigP22DkHdobstPow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HN4vAl2g; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="v7eN2z1T"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=zbDRG+fwMPbFuvhcpRI9/YsPLmcflro4JIwDOxVyV7E=; b=v7eN2z1TVnKvaGtrEhYPpmvcqG
-	1vKz3QGMgAEt0Ox91HV2wx8QhJPUTklG3d6XyHc7A/IFc3aSxI+QcJABcvvwltGpZ+JpiR9V6V8Df
-	grGl2TlUGkTQkI6VWfqS5ejQxh64lRBc9HRqqwJbfCAFAXYJnzroYtwm+1CzuDVAdjQE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sxo5p-009GeI-5l; Mon, 07 Oct 2024 15:48:09 +0200
-Date: Mon, 7 Oct 2024 15:48:09 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
-Message-ID: <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch>
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
- <20241005122531.20298-6-fujita.tomonori@gmail.com>
- <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
- <ZwG8H7u3ddYH6gRx@boqun-archlinux>
- <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
- <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HN4vAl2g"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37ccebd7f0dso2982816f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 06:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728309560; x=1728914360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xc/x30uf9iyb5xezbKYekNH++PSzPkxlm8mpT+Naf5M=;
+        b=HN4vAl2g+LwuAJFMU+IXfMWdo5Im20EHErQ2uFXinS4Z/EJxbZyYkTU+ojlXXztFDi
+         LpXMkFdZXwRLpbQv1hTCCWOodCmk+ASEEasAG7D0IKIov9efxR3ZChlsG9eSz150OjjX
+         Lf12nL8wXDLKhKnpczBVdmA1a2uAA6PL9mLoAk7WKyxvYtVJ1lbJds95sgYYjxHgTVFW
+         /Y48FRknMfpfhQtfDTeHax2SvumuKW8UvPD5r6S/YKCzhml40tbv/dUBCIpBMAGBAiMa
+         VmSgToCfuIaQ8IWDGCCoVRjtSKG4TIWbb1KvrJ6vCYwNKnkv7sW4qi6vD4/pYhDrpI2o
+         KSsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728309560; x=1728914360;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xc/x30uf9iyb5xezbKYekNH++PSzPkxlm8mpT+Naf5M=;
+        b=SHOrveEBbKnj2hLpmGeQ+gkvg14k59cFy/AW49Kz1SIu5HFeq/tiBeEpfLmmTjQBJx
+         s344odflT54hI26fvarRYQf9Ei7Y7TDsXtIDfqetjXls1QynpImUDwJA0txNZkPRgSHD
+         TAjBFHVr11HzKgn0DnLzTE0LofrirXhDuPhkM+VmAeblT/CtQlG0hzo+Pp538QEqEBcD
+         XAPBGUu/6sMQoU3zPh5D0PFI62TYWx2/lvlu24me2UmYq7HTA8AIA2wJoj39bFBegFGG
+         MQDeXCORHFySs6zyDHysUEiStj3sIudtrc+o1Ju0flMQ7JSYXZf3IX8O8jSoVFXoCAVE
+         FSZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfERW6qmKLouRzvbhez78j3HLzbgFuCY/BjcbHr1N9b9FOb4MC60PKTPru3Md/liFohwruMJWuXLRZxAWU3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEgrzJhYz3WIe75XOaYarui8R06kJvfUWcAp+MczS7ILQ3Gk+0
+	WYmwgLyT2MhvjUceG2MsoFpb+9G727zVf3WlS2unpgkJARB7gQyrS0LzbBAWKbB1QoGE6dou4bl
+	Apyt5aFOPvROqn6DOQzKtjOYW2H9a5E0Ld0Qg
+X-Google-Smtp-Source: AGHT+IEt/ppds1p51xP37UM+hKVF1KH288oFeowg/BwHOg7VYcXokM6av1Qx8ie/tkzTdafDoXlV9Nm6Gj+c3Vp38l4=
+X-Received: by 2002:a5d:5e04:0:b0:37c:c5c4:627 with SMTP id
+ ffacd0b85a97d-37d1902b4a7mr4418321f8f.5.1728309560112; Mon, 07 Oct 2024
+ 06:59:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+ <20241005122531.20298-2-fujita.tomonori@gmail.com> <3D24A2BA-E6CC-4B82-95EF-DE341C7C665B@kloenk.dev>
+ <20241007.143707.787219256158321665.fujita.tomonori@gmail.com>
+ <CAH5fLgirPLNMXnqJBuGhpuoj+s32FAS=e3MGgpoeSbkfxxjjLQ@mail.gmail.com> <f31d6f3e-e53c-4ced-920a-976ac44235e9@lunn.ch>
+In-Reply-To: <f31d6f3e-e53c-4ced-920a-976ac44235e9@lunn.ch>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 7 Oct 2024 15:59:07 +0200
+Message-ID: <CAH5fLghaLTMFS18cdjY6ntQ8BE85APjG71F1MvEEhxG667HU4A@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/6] rust: time: Implement PartialEq and
+ PartialOrd for Ktime
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, finn@kloenk.dev, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 07, 2024 at 05:28:28AM -0700, Boqun Feng wrote:
-> On Sun, Oct 06, 2024 at 04:45:21PM +0200, Andrew Lunn wrote:
-> [...]
-> > > > > +    if sleep {
-> > > > > +        // SAFETY: FFI call.
-> > > > > +        unsafe { bindings::might_sleep() }
-> > > > > +    }
-> > > > 
-> > > > What is actually unsafe about might_sleep()? It is a void foo(void)
-> > > 
-> > > Every extern "C" function is by default unsafe, because C doesn't have
-> > > the concept of safe/unsafe. If you want to avoid unsafe, you could
-> > > introduce a Rust's might_sleep() which calls into
-> > > `bindings::might_sleep()`:
-> > > 
-> > > 	pub fn might_sleep() {
-> > > 	    // SAFETY: ??
-> > > 	    unsafe { bindings::might_sleep() }
-> > > 	}
-> > > 
-> > > however, if you call a might_sleep() in a preemption disabled context
-> > > when CONFIG_DEBUG_ATOMIC_SLEEP=n and PREEMPT=VOLUNTERY, it could means
-> > > an unexpected RCU quiescent state, which results an early RCU grace
-> > > period, and that may mean a use-after-free. So it's not that safe as you
-> > > may expected.
-> > 
-> > If you call might_sleep() in a preemption disabled context you code is
-> > already unsafe, since that is the whole point of it, to find bugs
-> 
-> Well, in Rust, the rule is: any type-checked (compiled successfully)
-> code that only calls safe Rust functions cannot be unsafe. So the fact
-> that calling might_sleep() in a preemption disabled context is unsafe
-> means that something has to be unsafe.
-> 
-> This eventually can turn into a "blaming game" in the design space: we
-> can either design the preemption disable function as unsafe or the
-> might_sleep() function as unsafe. But one of them has to be unsafe
-> function, otherwise we are breaking the safe code guarantee.
+On Mon, Oct 7, 2024 at 3:16=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Mon, Oct 07, 2024 at 10:41:23AM +0200, Alice Ryhl wrote:
+> > On Mon, Oct 7, 2024 at 7:37=E2=80=AFAM FUJITA Tomonori
+> > <fujita.tomonori@gmail.com> wrote:
+> > >
+> > > On Sun, 06 Oct 2024 12:28:59 +0200
+> > > Fiona Behrens <finn@kloenk.dev> wrote:
+> > >
+> > > >> Implement PartialEq and PartialOrd trait for Ktime by using C's
+> > > >> ktime_compare function so two Ktime instances can be compared to
+> > > >> determine whether a timeout is met or not.
+> > > >
+> > > > Why is this only PartialEq/PartialOrd? Could we either document why=
+ or implement Eq/Ord as well?
+> > >
+> > > Because what we need to do is comparing two Ktime instances so we
+> > > don't need them?
+> >
+> > When you implement PartialEq without Eq, you are telling the reader
+> > that this is a weird type such as floats where there exists values
+> > that are not equal to themselves. That's not the case here, so don't
+> > confuse the reader by leaving out `Eq`.
+>
+> This might be one of those areas where there needs to be a difference
+> between C and Rust in terms of kernel rules. For C, there would need
+> to be a user. Here you seem to be saying the type system needs it, for
+> the type to be meaningful, even if there is no user?
+>
+> Without Eq, would the compiler complain on an =3D=3D operation, saying it
+> is not a valid operation? Is there a clear difference between nobody
+> has implemented this yet, vs such an operation is impossible, such as
+> your float example?
 
-Just keep in mind, it could of been C which put you into atomic
-context before calling into Rust. An interrupt handler would be a good
-example, and i'm sure there are others.
+Think of it this way: I wrote an implementation of something that
+works in situations A and B, but I only use it in situation A. Must I
+write my program in a way to make it impossible to use it in situation
+B? That's how I see this case. Implementing Eq does not involve adding
+any new functions.
 
-> However, this is actually a special case: currently we want to use klint
-> [1] to detect all context mis-matches at compile time. So the above rule
-> extends for kernel: any type-checked *and klint-checked* code that only
-> calls safe Rust functions cannot be unsafe. I.e. we add additional
-> compile time checking for unsafe code. So if might_sleep() has the
-> proper klint annotation, and we actually enable klint for kernel code,
-> then we can make it safe (along with preemption disable functions being
-> safe).
-> 
-> > where you use a sleeping function in atomic context. Depending on why
-> > you are in atomic context, it might appear to work, until it does not
-> > actually work, and bad things happen. So it is not might_sleep() which
-> > is unsafe, it is the Rust code calling it.
-> 
-> The whole point of unsafe functions is that calling it may result into
-> unsafe code, so that's why all extern "C" functions are unsafe, so are
-> might_sleep() (without klint in the picture).
-
-There is a psychological part to this. might_sleep() is a good debug
-tool, which costs very little in normal builds, but finds logic bugs
-when enabled in debug builds. What we don't want is Rust developers
-not scattering it though their code because it adds unsafe code, and
-the aim is not to have any unsafe code.
-
-	Andrew
+Alice
