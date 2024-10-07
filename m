@@ -1,222 +1,154 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505081D1E60;
-	Mon,  7 Oct 2024 12:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDB11D26F1
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 12:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728302504; cv=none; b=tfUlydBW6TbUGrJAoO6y7uAL302g3u0wl+wsonYbdZPCNChdPj8N3Z7nRciixuCQpqJfzU4okeFTKqB+f5tLLkhg3B/OvQ1WG1nYQ6Ut734IGUmm98UqFa2omTICG0N//usuoZXQYehHfudgsMyPGwCJnpLjaDYkv7Q/6T0DNIo=
+	t=1728303859; cv=none; b=qAHkTWgeIpBpkt5auGYUN33okmoM2f891mzWcNMha0aXAU1WKlk3qxs044TGG2ekb6hSO26CTibMhnUxLk5u3cc5S665vDhS1Oam9gkdhwDLyCUvPhUsuDfBzXRveQIy3DUM2rSJSJtEv4rvOtF19ZJq7zggLea1WABroRv9Kas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728302504; c=relaxed/simple;
-	bh=H0VBqBFVjQSy9PoKrfKNbDDZaFrpotc3uN6aYrYSKIg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Zlr6dpSroIYe9MywZ4lCF+LJA58UHk920004lFz4xlc8O972cKq4tasKv6ArGEX1FeP2X1dOgpYXdKNRQ/VkmhIW8yxnnEHfk459wtet0wSockrSmvWtAXqiRVo+We0tGVmOZWY6n9ceeRSk9y2fw5T0W66kUp156wHLBqF2xoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=d9TOvwjT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QlXTTan5; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1728303859; c=relaxed/simple;
+	bh=t8H6KKTU1kUFSyofCbDB6hb4GjQoj/UNpvlIreQ4WHo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=svvPirOinidyT6DXu3apO4i15QA7G7QzN7Hf+VuC99vzYjVrrH1UgwZz7IXhrIHtoFQmE6zwGyiaEVNHPiLQGHLRVXDCdywnZU45l8t4492tAjCdX+k6HcJx6ppVDXXqbTEoKuhAAfyo7GIguE3gVQDqI1nltJTSlb8xO3o8nSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OOrKqUFV; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="d9TOvwjT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QlXTTan5"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728302500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C84Rwtjg5+pdqVVVY4IrSgUud1AUbu+ERhzKV8tIPGA=;
-	b=d9TOvwjTzFVgkQJhjxqzp3LoiQLCxc3wjyJTnpshel36c8HEsPQVDfMLQJSBGn7YG31mx1
-	WxRqxbZwVnZTZinWNxx/AhB7fsi0dRiRxGXVuYh/P6/zsThMPwiTjaE9aiWWfN+ZAePE79
-	dNZyi8zFV04UbcAcuCUroFtjBLHaLjAlRKEAvTbr01KvaoNoUUduJBPbqptowyjyeXnVOB
-	unXdP+RYIY4ZXpYxWJ/pealkj9KxQvtWNDv9E5IcYCOpVq3Ii/r4GbAbMviOFz85SsjCZr
-	EstL8KiR7fDQLv10gTxzzyfPiLmDqSHiBtM/pqAFqkFTtJJJMw4T3GMrO5bICg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728302500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C84Rwtjg5+pdqVVVY4IrSgUud1AUbu+ERhzKV8tIPGA=;
-	b=QlXTTan59lYEDkhnPw+7sO8fUASeoyEoZ71Fki4ZnOp0vl5WkyxhY6nUoV9T7XEhbjzAuT
-	u4XXl4ocQy5ovvDw==
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar
- <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long
- <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- linux-kernel@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>,
- Daniel
- Almeida <daniel.almeida@collabora.com>, Gary Guo <gary@garyguo.net>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo
- <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
-In-Reply-To: <0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
-References: <20240916213025.477225-1-lyude@redhat.com>
- <20240916213025.477225-4-lyude@redhat.com> <8734lew7jn.ffs@tglx>
- <0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
-Date: Mon, 07 Oct 2024 14:01:39 +0200
-Message-ID: <87a5fgunoc.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OOrKqUFV"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42f56ad2afaso58410385e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 05:24:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728303856; x=1728908656; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ku7dHoXpcBGzxmDwFlzy5O2yX7mMKyvUeFGB5ab/Z98=;
+        b=OOrKqUFVGN+til1KTL10MXwaAlvqfhdBAA8OaV/VrMm2yGAP2b+K+rBLws5vWOHClL
+         ysNc9YSd83jY9R+nvpyM16sgL51fZuB4lSgLcGPHKLKNljiOJqu+6eFiIZSM5lLYkNA8
+         ipzPteLU7kLOh6v+kFFqkcJ64PNn4JPqRzxjp7UdAJ/CZCgOAzDUZZQ/suNyknQIli93
+         9frkwkis11dzWOdgunlLuqd37ysfAm+XCAVrD+EGCemfJBxrZYeP0JmxuRdAyYaecUCm
+         oR6RbUoYasV6Nzd4Bf2OxK0wsMBc4FQ7X+Cl95JzEOByYKs4DCxhV2P1GLHkxLTfEQOP
+         kTNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728303856; x=1728908656;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ku7dHoXpcBGzxmDwFlzy5O2yX7mMKyvUeFGB5ab/Z98=;
+        b=owY3s42RjTbM4GcExpXLPgsT8FjX5B8lXIOCbPkDFYHyGWP3DLuGy+GYKceqjBt5WX
+         IYj3j+Htdb1O2Mn/q/o48NIPP/NlnP46I3kHZiBNQ0wsWEJZNFsNTurh0ybAbi9WlCVU
+         Ntsb7QikJudwOMjPS8afOY3FXxrTDe2SGtcbRVf5WL6BvFeaCuATG0wh6Lu6rWjYC1MW
+         42Bz8i+LHBY5XGArqy2RvPrpfmZAqo2TrNE2lhlsUKumkUtZvaUQ1htohD7md5Ur0dVe
+         ete7EMsAiqwDMZkcijIZuQc2MmQ+kgxHpzzfASOJM7MvKPFmRqKWxd6L4nf7a3dMgM9K
+         Yyfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhiafr+lNLQ0HZMHO8Ujx+rw0sVSIXpAuKQ5O+b3M4LADA0j9Ed+cJ/RJ8seVMGMJr0Pyzi13Z4F+ra4s4dQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAfYn7hXTWB8MoR3RSoipAKpHXR8KdcHLVQQ8g9H07LYYO6/7c
+	ecznh1c/OMHo1qfmIDeU8P5r5fmLyE3ZHEXGiOMI9ulGdMCSYuyQJov6CJitjvxrrN+YlZq2Hhn
+	GRV2wQfbzbjpdv1KuKC/WjicrdfyUwPQyq0wR
+X-Google-Smtp-Source: AGHT+IH8HYWMusOnnggysgcNaVoQpA7Kkf52UHiKBHrYYgnQi3e5Rs2SF/yP/clJCEOjCdyXWS+b5b1JKOiSHyD1iX0=
+X-Received: by 2002:a5d:61ca:0:b0:37c:fbf8:fc4 with SMTP id
+ ffacd0b85a97d-37d0eaea686mr9189645f8f.59.1728303856278; Mon, 07 Oct 2024
+ 05:24:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com> <20241005122531.20298-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20241005122531.20298-5-fujita.tomonori@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 7 Oct 2024 14:24:03 +0200
+Message-ID: <CAH5fLgjTifsDKrxZTUTo74HR34X1zusO_7h0ftWWH-iZR_NXNA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 4/6] rust: time: add wrapper for fsleep function
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
+	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 04 2024 at 14:48, Lyude Paul wrote:
-> On Wed, 2024-10-02 at 22:53 +0200, Thomas Gleixner wrote:
->> At this phase of rust integration there is no need to wrap
->> raw_spinlock_t, so you have two options to solve that:
->> 
->>    1) Map Rust's SpinLockIrq() to spin_lock_irqsave() and
->>       spin_unlock_irqrestore() which does the right thing
->> 
->>    2) Play all the PREEMPT_RT games in the local irq disable abstraction
+On Sat, Oct 5, 2024 at 2:26=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> I would very strongly rather #2. The problem with #1 is that one of the goals
-> with the way I designed this abstraction with was to make it so that we could
-> have lock guards that share the lifetime of the IrqDisabled token - which
-> means the compiler can stop you from holding the lock outside of an
-> IrqDisabled context. We have a powerful type system in rust, so IMO we should
-> use it.
+> Add a wrapper for fsleep, flexible sleep functions in
+> `include/linux/delay.h` which deals with hardware delays.
 >
-> I don't think this is as difficult to do as it seems either. One thing we
-> could do is have two different versions of the with_irqs_disabled functions:
+> The kernel supports several `sleep` functions to handle various
+> lengths of delay. This adds fsleep, automatically chooses the best
+> sleep method based on a duration.
 >
-> with_irqs_disabled_on_nort
-> with_irqs_disabled
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/helpers/time.c |  6 ++++++
+>  rust/kernel/time.rs | 16 ++++++++++++++++
+>  2 files changed, 22 insertions(+)
 >
-> And as well, have each respectively return a different token type:
+> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+> index 60dee69f4efc..0c85bb06af63 100644
+> --- a/rust/helpers/time.c
+> +++ b/rust/helpers/time.c
+> @@ -1,7 +1,13 @@
+>  // SPDX-License-Identifier: GPL-2.0
 >
-> IrqsDisabledNoRt -> Local interrupts are disabled on non-RT kernels
-> IrqsDisabled -> Local interrupts are disabled always
+> +#include <linux/delay.h>
+>  #include <linux/ktime.h>
 >
-> I think this actually is a nice solution, because it provides a number of
-> benefits:
+> +void rust_helper_fsleep(unsigned long usecs)
+> +{
+> +       fsleep(usecs);
+> +}
+> +
+>  ktime_t rust_helper_ktime_add_ns(const ktime_t kt, const u64 nsec)
+>  {
+>         return ktime_add_ns(kt, nsec);
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 3e00ad22ed89..5cca9c60f74a 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -5,9 +5,12 @@
+>  //! This module contains the kernel APIs related to time and timers that
+>  //! have been ported or wrapped for usage by Rust code in the kernel.
+>  //!
+> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
+>  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.=
+h).
+>  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
 >
->  * It makes it much more clear that interrupts won't always be disabled. I'll
->    be honest, I've been working on drivers for almost a decade in the upstream
->    kernel and as you can see I don't think any of us actually realized
->    interrupts being turned off here wasn't a given :P. I'm sure it's
->    documented, but when you've been working on this stuff for so long you
->    don't always default to going back to documentation for stuff like this.
->  * Having two different token types would prevent raw spinlocks from being
->    used in contexts where it's not guaranteed local IRQs would be disabled -
->    and vice versa.
-
-You really want to have two distinct lock types: spinlock and
-raw_spinlock. On a non-RT kernel spinlock maps to raw_spinlock, but
-that's an implementation detail.
-
->> #1 is the right thing to do because no driver should rely on actually
->> disabling interrupts on the CPU. If there is a driver which does that,
->> then it's not compatible with RT and should use a local lock instead.
+> +use core::ffi::c_ulong;
+> +
+>  /// The number of nanoseconds per microsecond.
+>  pub const NSEC_PER_USEC: i64 =3D bindings::NSEC_PER_USEC as i64;
 >
-> FWIW too - that seems reasonable. The reason I still see benefit in with
-> with_irqs_disabled_on_nort though is that this feels a bit closer to some of
-> the goals of the C API to me. We have spin_lock_irqsave and spin_lock, with
-> the intention that on non-RT kernels IRQs should only need to be disabled a
-> single time even if multiple spinlocks are acquired within the scope of a
-> single function. I'd like to ensure we can still do that on rust since it's
-> possible to do.
+> @@ -178,3 +181,16 @@ fn add(self, delta: Delta) -> Ktime {
+>          Ktime::from_raw(t)
+>      }
+>  }
+> +
+> +/// Sleeps for a given duration.
+> +///
+> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
+> +/// which automatically chooses the best sleep method based on a duratio=
+n.
+> +///
+> +/// `Delta` must be longer than one microsecond.
+> +///
+> +/// This function can only be used in a nonatomic context.
+> +pub fn fsleep(delta: Delta) {
+> +    // SAFETY: FFI call.
+> +    unsafe { bindings::fsleep(delta.as_micros() as c_ulong) }
+> +}
 
-Sure. That's not the problem. The problem is:
+This rounds down. Should this round it up to the nearest microsecond
+instead? It's generally said that fsleep should sleep for at least the
+provided duration, but that it may sleep for longer under some
+circumstances. By rounding up, you preserve that guarantee.
 
-      local_irq_save();
-      spin_lock();
+Also, the note about always sleeping for "at least" the duration may
+be a good fit for the docs here as well.
 
-instead of
-
-      spin_lock_irqsave();
-
-The latter allows RT kernels to substitute spin_lock_irqsave() with:
-
-      rt_spin_lock();
-
-which maps to a rtmutex variant and does neither disable interrupts nor
-preemption. It only disables migration to guarantee that the task stays
-on the CPU, which in turn is a prerequisite for protecting per CPU data
-with the lock.
-
-The former does not work on RT because then the rtmutex is acquired with
-interrupts disabled, which is a nono because the acquire can sleep.
-
-There is another problem with this split. The example in your spinlock
-patch is exactly what we don't want:
-
-> +/// // Accessing an `Example` from a context where IRQs may not be disabled already.
-> +/// let b = with_irqs_disabled(|irq| {
-> +///     noirq_work(&e, irq);
-> +///     e.d.lock_with(irq).b
-> +/// });
-
-Why? 
-
-This pattern is in 99% of the cases wrong to begin with independent of
-RT because noirq_work() can only be safe if it operates strictly on per
-CPU data. If it accesses any shared resource including hardware it's
-broken on SMP.
-
-Outside of a very narrow part of core code which uses raw spinlocks,
-there is absolutely zero reason for such a construct. We've educated
-driver writers to avoid this pattern and now Rust tries to reintroduce
-it.
-
-Please do not encourage people to do the wrong thing.
-
-I completely understand and agree with the goal of taking advantage of
-Rust's safety, but not for the price of misguiding people.
-
-So you want to make this work:
-
-   spin_lock_irqsave(A);
-   spin_lock(B);
-
-and let the compiler validate that the nested spin_lock() is invoked in
-a context which has interrupts disabled, right?
-
-To do that you split the spin_lock_irqsave() into
-
-   local_irq_save();     #1
-     spin_lock(A);       #2
-       spin_lock(B);     #3
-       spin_unlock(B);
-     spin_unlock(A);
-   local_irq_restore();
-
-That makes sense as it gives you three distinct guard contexts, but the
-outermost guard context (interrupt disable) is an illusion in most cases
-as it does not provide a guard for anything. It merely provides the
-prerequisite for locking lock A.
-
-The above example really should not end up in 3 guard contexts, but in
-two by combining #1 and #2 into one. In C this looks like:
-
-    scoped_guard(spinlock_irqsave)(&A) {
-        // Allows to operate on resources which are exclusively
-        // protected by A (DataA)
-        
-    	scoped_guard(spinlock)(&B) {
-           // Allows to operate on resources which are exclusively
-           // protected by B (DataB)
-        }
-    }
-
-Nesting B into lock A is required to keep some aspects of DataA and
-DataB consistent. But the other parts of DataB require only B to be
-held.
-
-For extended fun lock B is not necessarily required to be acquired with
-interrupts disabled. The fact that it nests into lock A does not make it
-mandatory.
-
-A lock is only required to be acquired with interrupts disabled if it
-can be taken in interrupt context. That's a per lock property.
-
-Thanks,
-
-        tglx
-
-
+Alice
