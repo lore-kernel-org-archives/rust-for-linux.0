@@ -1,156 +1,84 @@
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82EC1D14E3;
-	Mon,  7 Oct 2024 15:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559E51DC752
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 17:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728316508; cv=none; b=IPzMb4f3/xgXG8bn029dA3KMaBH46ZuufNU2mmRcZSSYGNmqVikfcjUfTfrTI2PNVSUOUdK3xxSnOrTE48SSOnLxajLUvLScsFPH3V+Ij2L0SvROizD5dgbjA17l2STlkpQIzscf18J/KDMrh2bkicbvdmJ9n3DYSUvnSfu2Z34=
+	t=1728321048; cv=none; b=BoXSFdgev7T+KpG+wH0GVbVCZ7MLSPPHIRXYCaIMnFNu6xfgGAXgHsJz5tyyS6REclyufYNGa62Sw5ZcweZyCG0NGdwR+2XPt0KM6V7/eCdW7ypWmsAd0NAlD+1T6dYLPEqB/5I9wbBQl7Pz2uINw/0Qrcezn3nFTPCA5k4b7bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728316508; c=relaxed/simple;
-	bh=01cY3E7WMjbmgRpn35G0Wsg5xsXMcmTXUoC9DpxF3DY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZ2STT3Y8V9Pnqev/gbModjdOFNF2CQIcusQJXSNc93UVvPqRa8wH1UCUrKTbKRaGMhA9qNX8Vqwstm+0KQKANrL40XvfXKeyR6AcCMEyNnWMXyoFQISESvx0LmgH3aks23TokEzfoN6GDc33N0mF/P7E2vzu2PvGZJhMaMhToU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=timo.grautstueck@web.de header.b=YuLSiBzB; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1728321048; c=relaxed/simple;
+	bh=h660+y+XJGilXuogbrsyWERxOVuiN4cmdXnB811wDs8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HfWsf6ya23tZaEoEhhpOuN7FZ3nE/CL8IrPBmjvdHAyDbwhemT7FhrbqjNwceMa80o/LM1eF11toCVopMVs/CXqgSQN3O0oXNtbi+lBwCQtdI2YXuhB4+k8Q2J12lq4lwdVPeMjjJDPyGHqEkpZVOo32IgTr6s57HMtppFoBAnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bd454C9M; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=timo.grautstueck@web.de header.b="YuLSiBzB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1728316496; x=1728921296; i=timo.grautstueck@web.de;
-	bh=tZyMhH5kp7QMFFRMcSTA1VhW+Z5ZM7Gk0Y6yV2wQRWY=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=YuLSiBzBM2oFmPTScD5Okvbju+TUytW4UMTeu5VGyxjkgzzDY7kno38LQhh4S/jY
-	 +JpKXU0ZT+J062EkbRE+A70LEkeUGeT+OP5eUt6PbbcpaDCtHZRAdt/bIim7HwOxT
-	 6cWq8Ks2AjwbnaqeQJrD/coXTS2/dKJv1tdCwoPDB/vfLc6MZfpuu2N8X1dqa4QM7
-	 Yg2sr4UQVBhza5a1oTh0nd/W6NfRQ5KYIBUOFBq8WDLj1rmBhhs4p+XbnSJlA5O2K
-	 ATsd5tn/1vi6jr1xL95W2cP0NFfxfHDTPximSYmH/suVlFlSvWWgMZBtMGhyolF2T
-	 I8eaewXyfkuu7fq/rQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from fedora ([95.223.78.106]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MzkST-1ttXE10Oxd-00xIwa; Mon, 07
- Oct 2024 17:54:56 +0200
-From: Timo Grautstueck <timo.grautstueck@web.de>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: miguel.ojeda.sandonis@gmail.com,
-	Timo Grautstueck <timo.grautstueck@web.de>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH] rust: types: 'real-life' example for Either
-Date: Mon,  7 Oct 2024 17:53:15 +0200
-Message-ID: <20241007155315.1145503-1-timo.grautstueck@web.de>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <CANiq72n25iBCJtDV=XD2q5AEg4Awh9hyeKM0YwbeE0pv0H2hLA@mail.gmail.com>
-References: <CANiq72n25iBCJtDV=XD2q5AEg4Awh9hyeKM0YwbeE0pv0H2hLA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bd454C9M"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7db3e962c2aso483929a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 10:10:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728321046; x=1728925846; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h660+y+XJGilXuogbrsyWERxOVuiN4cmdXnB811wDs8=;
+        b=Bd454C9M3QBYisdnYdHfiXeZ8ApdMf4M2+/Ldz1q4xMSVPDohUXxFfLBZLwLp3LncS
+         V/Ew8zLpXuwSFsnlL4WfSnM4iqu4Wq70X2CoouUxPbILp7kBvgcPZtEAecgI07uO3EB8
+         uTbIHCc89+6Ib13fUtZyCdiuR9uUQ/0MdDAb804z8DZ8k8ZsRo2EhL3HwAVpzaBEV/IB
+         UBjS53jsQ9QrU1C/jx2lm1wP4cVwgZ+70ctWFb7fQwznmr/BAuosDdRYuxEGBdgVSyK7
+         3jB1U6XQMZPgry3m2Xg1GutEuinct6mThTccq8Xn5jjJv89oXG30KjvrutuRFWeCQdtB
+         aR6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728321046; x=1728925846;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h660+y+XJGilXuogbrsyWERxOVuiN4cmdXnB811wDs8=;
+        b=sZZmt3v/wFn45oQ4ACIh20hkJA9ARJ2BrQ5EszTHQStII364m9OYTS+hJKvuG6EL4E
+         pg/cNdlCXYEcaMYnQkyXeM1BTnqgx6Sc5UTvxcwWPY+l/8QINNTyW8Lxh29/qInWSUEP
+         GAhGvEX1gx3zOhcqxHapgkTtxD00fSgis2koXaDD33q+HqFeowdYeBxBMzr7XMXwowhP
+         veFufk0sDW+Cyf9RryJ6qIt6eXRCyzez3YC6+NsC5z0eLrciSyYjECl2cbbfK8zKTn8X
+         lzCuT6dh8xbs7Mkzd9r21ju9J04QG3PrD09H8fbNue3lAEGe5+45EtJjukpxuF2HbIEb
+         A2fw==
+X-Gm-Message-State: AOJu0Ywi3EUqA3y7rQuk2VrJ5E3h7baJUC8CZy+wdfKxZSwJqt/mXrlz
+	spJdN+KYnrA+S02EFRmrsN0KidvP2fxF+TmxW8wxlhse3pgI+RWKUAe+WOhGYfrec4cjW7bvfvg
+	In2mJ9K21Xp3Pfi71QPjpHflV88BhPHhu
+X-Google-Smtp-Source: AGHT+IHRrYtuLS2lPI01PXNr8lBnhKRlSz50MnJCoKjidGB9sO0c8jL+r8IzNQP1S3MSP+5G5UuEvLWljBylJlaSgKo=
+X-Received: by 2002:a05:6a21:3399:b0:1cf:2be2:5e5b with SMTP id
+ adf61e73a8af0-1d6dfae33cdmr8618265637.11.1728321046508; Mon, 07 Oct 2024
+ 10:10:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240930141206.GA506883@thelio-3990X>
+In-Reply-To: <20240930141206.GA506883@thelio-3990X>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 7 Oct 2024 19:10:34 +0200
+Message-ID: <CANiq72=wsWyJiYy5NVFa0fLeztjFDP7h_2XJdDodi8A5rG8Azw@mail.gmail.com>
+Subject: Re: LLVM toolchains with Rust 1.81.0 uploaded to kernel.org
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XM1gdjh2IJlIEGEMQVk7SqSl570Wb1a/u96g4D37eLnYEYkzgD4
- +S64nV7TQGlAP7jm25p4Oy8DHERs3Yu7H27ArkEXCh1wjgRTmt1mSiQsNNwFzaQYS+Fo4AK
- uW0Tq6TKPXEkbe/MemnUj8AqupzptKAcZLNEWD6wXnVNgrUGX57KzsCASj7BfddxYjBSFGr
- JABtgnBJIfmUsgVy2sNsA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3b2WYKAoh+E=;QzZEVu1dRtxxy9qCU+6Z7BjSweg
- CBl0r0QbZuXv6nfalKgCsuDt7iLjQzGMt8q0b9bEH/HwW3eQqth2bKnuXtx1t1Wer7iIkwXaj
- 3kENZPh9i0ia6Z9931Dv7LX3LnYVjcCs00PQyP49/5Gbu3RamJVyNOdnEFVy2PmHnm4xHaT2l
- lMo/shT7gOOXT3q+35jRb0cfCfQMbyJFEATd0nLTeNWuOMKqcOmqEOjorSHVJ8Xcfi8leJJxl
- JY2+iC5R1yFdt0KcjGPbcVQPyYQYBT2ad3j1tMi7oVXdiFY2lJ9RXVYJG8XMkmrVt7V+6mjyO
- VqmsiihwMk2YBw1diDOiKO2wngBDb3DlSGoWCnTn+3gqc3dfMAHdyQsbxunQTt5cCEefZZf3z
- C4uX6SAHS9T0rV5F2IIhhprehRGJdaO7XfaMSEkH44N2Me85rHPfz9FCNIhHUxzl0mjGMWP3d
- F3c+/MKRXdMsAwarXGLD25qHtPoUGYsm4jDqDYiP4dKcCQ+QPXcNXLzPFj1c4f0siRoyqO0WY
- 70v0PcT4O9M3eMQoeFNlGspSfRU2lqFJ7xy/retE2Hg+LrrSmE6wsMsQzZHvZpULTsyhsDh5r
- rm4VY9cM0HebuGNGKcGNw5y0jeiKo8KBKfQ1s2U5fV0Qn36d/EMnfZFTE89qPt+kFDxkrcaHM
- zPkqCA0Zaug2gBuSyVU5JRTI4yKAAJ8I/xkIo8ZC5WLPADLcAOJauoq+q9NTHmPFntzI2PgJc
- ceZ4Du2YY6By55txsBSL8FVGki2AgomKehHslJDtZ7FxiImRch9LmWffPYsEr+g7iz4WNqCi+
- ImKO4ahgDEgl8/hPrmXySDlg==
 
-Added a 'real-life' example for the type `Either`. This example
-uses a work queue and extends the first example in `workqueue.rs`
-(commit ID: 15b286d) to demonstrate how to hold and distinguish
-between two different data types.
+Hi Nathan,
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1122
-Signed-off-by: Timo Grautstueck <timo.grautstueck@web.de>
-=2D--
- rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+On Mon, Sep 30, 2024 at 4:12=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> I have uploaded versions of my fast LLVM toolchains [1] that include
+> Rust 1.81.0 [2] now that mainline has started supporting the latest
+> version. If there are any issues, please let me know. I will bump these
+> to 1.82.0 when it is released.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 5ea9126c8c93..a56192141a0c 100644
-=2D-- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -322,6 +322,60 @@ pub const fn raw_get(this: *const Self) -> *mut T {
- /// let left_value: Either<i32, &str> =3D Either::Left(7);
- /// let right_value: Either<i32, &str> =3D Either::Right("right value");
- /// ```
-+///
-+/// The following example demonstrates how we can create a struct
-+/// that uses `Either` to hold either an integer or a string.
-+/// This struct will be scheduled on the workqueue, and when executed,
-+/// we will perform different actions depending on whether it holds
-+/// a `Left` value (integer) or a `Right` value (string).
-+///
-+/// ```
-+/// use kernel::prelude::*;
-+/// use kernel::sync::Arc;
-+/// use kernel::types::Either;
-+/// use kernel::workqueue::{self, new_work, Work, WorkItem};
-+///
-+/// #[pin_data]
-+/// struct WorkStruct {
-+///     value: Either<i32, &'static str>,
-+///     #[pin]
-+///     work: Work<WorkStruct>,
-+/// }
-+///
-+/// impl_has_work! {
-+///     impl HasWork<Self> for WorkStruct { self.work }
-+/// }
-+///
-+/// impl WorkStruct {
-+///     fn new(value: Either<i32, &'static str>) -> Result<Arc<Self>> {
-+///         Arc::pin_init(pin_init!(WorkStruct {
-+///             value,
-+///             work <- new_work!("WorkStruct::work"),
-+///         }), GFP_KERNEL)
-+///     }
-+/// }
-+///
-+/// impl WorkItem for WorkStruct {
-+///     type Pointer =3D Arc<WorkStruct>;
-+///
-+///     fn run(this: Arc<WorkStruct>) {
-+///         match &this.value {
-+///             Either::Left(left_value) =3D> {
-+///                 pr_info!("Left value: {}", left_value);
-+///                 pr_info!("Left value times two: {}", left_value << 1)=
-;
-+///             }
-+///             Either::Right(right_value) =3D> {
-+///                 pr_info!("Right value: {}", right_value);
-+///                 pr_info!("Length of right value: {}", right_value.len=
-());
-+///             }
-+///         }
-+///     }
-+/// }
-+///
-+/// fn enqueue_work(work_item: Arc<WorkStruct>) {
-+///     let _ =3D workqueue::system().enqueue(work_item);
-+/// }
-+/// ```
- pub enum Either<L, R> {
-     /// Constructs an instance of [`Either`] containing a value of type `=
-L`.
-     Left(L),
-=2D-
-2.46.2
+Thanks a lot for these, as usual!
 
+I confirm they work for me and I can QEMU-boot a kernel built with them.
+
+Cheers,
+Miguel
