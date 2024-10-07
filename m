@@ -1,184 +1,154 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF8118BC03;
-	Mon,  7 Oct 2024 12:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999151C1724
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 12:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728304190; cv=none; b=HjwKkOjZmYPKTnIm6pqxXMkrVnBUX8fb9mzZlNi1r0C/PzLLgEsVLzA9SMVw263T+mwnWMnV/KErgUjvJoLj8ZGMlFH13/LzN++GMEyhnkFRZJlNDbePv1WJo3qRGxjLeFzao07AEa0AhMQtVIn4xdsH0EDEnX81FVAlFf0/TGw=
+	t=1728304250; cv=none; b=n94AJ6uDvVaY2cpjzCFGfuLtpxaPN7kXcSJ3h4Ac1IWxPe+ywZJleMRG2fiiGKi+gyx3d8wJZK5mmW1NImHotECV6ZvF9SvYq+bnsvYMx3UvLIG/SUcFIknxMEWuXO+YDUxlxcsZjLmUwajVWwnUek1em2RbOK96v5fmVy3rIv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728304190; c=relaxed/simple;
-	bh=S0PmYZ88hEZrLiL/PiuJ/v9Q7mo3hEoRYd3HOJjCjwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GOzHeWLrwDAlzvnQkdVuK1V404xxjfznPRVYyVNs/WClG016EZEnHj7fW0uI4L4mUs6i+H2M62ZVSPpMHw2TIStv6vJvudTV2AhDy2LH+kb8TfiwAYa9clAr7zSKoIsYQewUVmgk6OMxse/tib4AIL/6Rh4wQk4wc7KH2nsHtBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZ0poWZ5; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728304250; c=relaxed/simple;
+	bh=tKw3Dv+ep5qgy/wCHKKBNbMDkWQxFHKiRzK1Yy/LhmY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BS60B+Fngx8fzqEHn4qnaczuPjgq+6SXnmfvBbQ9VTD8xC4vKwCFO4lsEixORlnHLT7ebA/OIi+zrfsKt00XCEdzUBwIATRluo06CjSgGn7Ab9JWvozsSja4WUM/JZs9HWtw5eYuDe6uRPh8/6JIK8kEj5Jqzb6ypS78UMOPrVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LKTlZf+g; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZ0poWZ5"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6cb2e5d0104so32241926d6.3;
-        Mon, 07 Oct 2024 05:29:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LKTlZf+g"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37cc84c12c2so2322186f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 05:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728304188; x=1728908988; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1728304247; x=1728909047; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XoM4lIRKq6wt6tvordN282TXwd9yd9Pg0kZvSLGS/L4=;
-        b=MZ0poWZ5d5nJ8DnSHDuTfwunvHD/Ot2zNoAxAEdurWdzMyk6xpK+k4/an6fWdPuQYh
-         eJMKckL7VNKBOljCCC4G46kD42ltFGoBtCP9Ngw7RrIisN7GfVhFvpjNTDHxPhyvQDSE
-         l13z991WtY3HlFr7LPIlRsQOG/EkFGpWnQlVSfx6CKLtUPFW52sNQCUdwEAyT7TLnZBD
-         qQKc/eWNLQcZiezlmZQAfue5w8/JvY+pj/0+TZQNvACk1IzHpqWSOYC8j58aAwPrnfA8
-         2BK8vCDlMr0Ox1pCRRvLaaglVCUPzrzjgLZaOYItEOuwQDotis8vzZrqOU5KOPaR7hyL
-         3yeg==
+        bh=Xcmrgt5t2c8dd5WZNO1q1kgJtgx+WDNB9aW9p8iaKAk=;
+        b=LKTlZf+goFWihB5wooFjO1+fyY+EUEvnNyNAwG8+DbZOzC0ByE5QxAxbFNirCsEjyQ
+         cgIcHtVfRvOG9bjfDAWfEVWrUlTIrAyF6brQzLSoAMMu+m7gpodrFsijjrY9Uf5OULG8
+         sDwmoVJpYJw96UVBAS2fwDaQtq2y4rprTmQmJhY6Xd/z7jxYripCSKKkZXRXdvwan5rs
+         bC98iRTQGvI0E5hEP2BsDfMQmrYsKxY0lH06RT8foVB8FiayDEr+Yd5UKo4QuTaXtQPu
+         xCUMt9K03wZUNOxNsJRw1vtDgb32EV+VuQVYtVePKIqBjpXrQn1tKXGsg2Rr6n8+IUsE
+         /kZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728304188; x=1728908988;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728304247; x=1728909047;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XoM4lIRKq6wt6tvordN282TXwd9yd9Pg0kZvSLGS/L4=;
-        b=uD5erVJH4AG9AxFioCGZNZBRJwHT6NskCqebl0GKqj+EraWaMNCaqxIRSYSEd8kdie
-         P46LKBT2g7qQxpzNt2AARQ0F4n/ixk0MAXdqhCYUtVeec5VuoIR1ZV7M2H41Ujutzyht
-         dOCASHzTQlZGYo3aUo8usEgoDc3SRXvlCN6lg9pGXNwC8JbxqzNTR49z097veaQWCdgJ
-         XT93Yhy2QB4PgEEPp2lSeqqyUo4dT+fij4YLq6CY880/9ssGsfaYwtZQIT7slYnxJlpD
-         5ext59OUfJ4wLIXpdIN1whsWwtHuH085BDUoiFqxfP1m+CF8fZlWHEVSImB0Er+tFpOj
-         WDUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXgCHRV8gZN9qlAuHa+kRjbLC5I+SV1rSRtmYghBxX3I0CzpN8MKqsM5YWXTuHViW/hvpJvwuUHwh6wzm0dhM=@vger.kernel.org, AJvYcCWfEuvXd04f9p3mPP7x63rlLfzm3v8AYtFrrzahAQW+X0F4UB0rOdUQSTmjZKpuxUzFpyGAIGWT@vger.kernel.org, AJvYcCXKxeBDKOrZDAW26V7jzf13sdTgKUVq+dGrhCWAdpdBrWy4lZhP+L7pyW/xoBQ3h5Dqtte9QbfOpcetazQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8Qa8YmGkxrhrJ/rrg+BhiFpFX62wqZMpJGxjYJC4gBzFke4Ko
-	y9KmAaG3I71paqiAi9MrIx50LUe3M8c2E4/xJD4fmU7IKuZubOkd
-X-Google-Smtp-Source: AGHT+IGEyeCqIjlSUSKGI4oWYd+KNlZgB0SFN8Z4gxmCPqUzAoWZwMhyG/fWX8kWZY3LWknsznciFQ==
-X-Received: by 2002:a05:6214:5684:b0:6cb:3b9b:1673 with SMTP id 6a1803df08f44-6cb9a4fbdd5mr176978746d6.49.1728304188014;
-        Mon, 07 Oct 2024 05:29:48 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cba46efeddsm25227246d6.71.2024.10.07.05.29.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 05:29:47 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CBF3E120006B;
-	Mon,  7 Oct 2024 08:29:46 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 07 Oct 2024 08:29:46 -0400
-X-ME-Sender: <xms:OtQDZyCv97xoN1FWH6QL8w2dK5iLh5iuZS8I8EVp8ViJx6PZ8Tov-g>
-    <xme:OtQDZ8hsQnanpkzGQcdV9to7iarQBkrGzTWXszY7oqP-J2cKx87_qAtWWwaKn0p1e
-    7raZFAGRARza2laUw>
-X-ME-Received: <xmr:OtQDZ1lZxLcebLFYxul1fFCnIxWareSXd3moacpuzTMH9ZkhdbsnhdtoqD92Ig>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvledghedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeeigeethfejvdfhudegtdevtefhleelffegteev
-    tdelgfeugefhhffhteegiefhheenucffohhmrghinheplhifnhdrnhgvthenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
-    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhe
-    dvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdp
-    nhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnh
-    gurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhi
-    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopeho
-    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:OtQDZwxtz3fxqqg9zam0wKbkTd52nmytCjdrRCXtIHG_aFQDmoAQ7g>
-    <xmx:OtQDZ3T6nYowzw0MAuXho6wIjZY1C8GacVyWYyZ8xXzkIPcLZsDndg>
-    <xmx:OtQDZ7Z3HvDpMPnE47YoCfmx3UGzaA7RsU8AANTb47l_jkskvhRpiQ>
-    <xmx:OtQDZwQO7D6aAYnO1IxRPH62lNc73hiDuBNxZ9xpwHQf1M0gxmDGIQ>
-    <xmx:OtQDZ5Bcekv_zvj5qcQ2luZ4a8Q5kNVioYZYrr83jZNS7EJzAWzPbKpV>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 7 Oct 2024 08:29:46 -0400 (EDT)
-Date: Mon, 7 Oct 2024 05:28:28 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
-Message-ID: <ZwPT7HZvG1aYONkQ@boqun-archlinux>
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
- <20241005122531.20298-6-fujita.tomonori@gmail.com>
- <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
- <ZwG8H7u3ddYH6gRx@boqun-archlinux>
- <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
+        bh=Xcmrgt5t2c8dd5WZNO1q1kgJtgx+WDNB9aW9p8iaKAk=;
+        b=gEhpGQxPUOxssikHMfupety6B8piDypgR8BXpHsKIGz6d3JcdR5TBlrp1ciwRkkKq4
+         gJkLW04yOnYCV31pYXx2xe/2+xnT35ubqofJZitKYgTXrE6MWZEHsJ5jJ1LK7y7v7Yf7
+         L197M0wpDOQTC7GBydF9IY1gw3no6zZwYDDfepDvAc+1qqDNSXBubIyFF/GjFCpfSDHo
+         fm93qEOa6tqjoIFIenXBnBDdYOL7Vu7VrKhhxHFpxu1MGXp4lpWAAwa9iqxsavTzrBS+
+         BTxw8oBBzGOlz/lO4anXitVt00A8YfJG2IrF+dQszbozF250okxkqgbNXxnAif8QQb8g
+         koSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXoGFNk2gVCufLOX+t63eRSSA0C1/KECcMNDjHaK1z1UHtgHPi46N91ZeYsVNFjwag4HF8JUARx/y5kO72dA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIJR5ehUoXDeY2Xa9TrcuXSk1B62UYB4ev9Z46xpt+ECLKTE2V
+	pXGWwtK/YGiSGCzh1y6xmkS570tmDvjMUjZfNFwcyTyQuTDuKVINmbRVFPfLSYqb5IY/qVzBxvg
+	rXoqw2fp+3OCix2NV0nn14XXrRcpWfA6zk7Gu
+X-Google-Smtp-Source: AGHT+IFBMpJdO483BxZZC9+G+ddezT0XaEDeEeegWB3jhbC1bsRQeuU2MWK1hqJE2xTnp+m2MW/1AAxNkifpUizxODc=
+X-Received: by 2002:a5d:6d4f:0:b0:371:8dbf:8c1b with SMTP id
+ ffacd0b85a97d-37d0e79149fmr5361273f8f.34.1728304246620; Mon, 07 Oct 2024
+ 05:30:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
+References: <20241004155247.2210469-1-gary@garyguo.net> <20241004155247.2210469-2-gary@garyguo.net>
+ <2024100505-aftermath-glue-7e61@gregkh> <20241005143106.1196fd3a.gary@garyguo.net>
+ <20241005152605.6d7d20e1.gary@garyguo.net>
+In-Reply-To: <20241005152605.6d7d20e1.gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 7 Oct 2024 14:30:34 +0200
+Message-ID: <CAH5fLgj6SPAM0KM2pF1v0gUCJA875VvWxddTCQXu7h+t1tDjfw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: implement `kernel::sync::Refcount`
+To: Gary Guo <gary@garyguo.net>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 06, 2024 at 04:45:21PM +0200, Andrew Lunn wrote:
-[...]
-> > > > +    if sleep {
-> > > > +        // SAFETY: FFI call.
-> > > > +        unsafe { bindings::might_sleep() }
-> > > > +    }
-> > > 
-> > > What is actually unsafe about might_sleep()? It is a void foo(void)
-> > 
-> > Every extern "C" function is by default unsafe, because C doesn't have
-> > the concept of safe/unsafe. If you want to avoid unsafe, you could
-> > introduce a Rust's might_sleep() which calls into
-> > `bindings::might_sleep()`:
-> > 
-> > 	pub fn might_sleep() {
-> > 	    // SAFETY: ??
-> > 	    unsafe { bindings::might_sleep() }
-> > 	}
-> > 
-> > however, if you call a might_sleep() in a preemption disabled context
-> > when CONFIG_DEBUG_ATOMIC_SLEEP=n and PREEMPT=VOLUNTERY, it could means
-> > an unexpected RCU quiescent state, which results an early RCU grace
-> > period, and that may mean a use-after-free. So it's not that safe as you
-> > may expected.
-> 
-> If you call might_sleep() in a preemption disabled context you code is
-> already unsafe, since that is the whole point of it, to find bugs
+On Sat, Oct 5, 2024 at 4:26=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Sat, 5 Oct 2024 14:31:06 +0100
+> Gary Guo <gary@garyguo.net> wrote:
+>
+> > On Sat, 5 Oct 2024 09:40:53 +0200
+> > Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > > On Fri, Oct 04, 2024 at 04:52:22PM +0100, Gary Guo wrote:
+> > > > This is a wrapping layer of `include/linux/refcount.h`. Currently o=
+nly
+> > > > the most basic operations (read/set/inc/dec/dec_and_test) are imple=
+mented,
+> > > > additional methods can be implemented when they are needed.
+> > > >
+> > > > Currently the kernel refcount has already been used in `Arc`, howev=
+er it
+> > > > calls into FFI directly.
+> > > >
+> > > > Cc: Will Deacon <will@kernel.org>
+> > > > Cc: Peter Zijlstra <peterz@infradead.org>
+> > > > Cc: Boqun Feng <boqun.feng@gmail.com>
+> > > > Cc: Mark Rutland <mark.rutland@arm.com>
+> > > > Signed-off-by: Gary Guo <gary@garyguo.net>
+> > > > ---
+> > > >  rust/helpers/refcount.c      | 15 ++++++
+> > > >  rust/kernel/sync.rs          |  2 +
+> > > >  rust/kernel/sync/refcount.rs | 94 ++++++++++++++++++++++++++++++++=
+++++
+> > > >  3 files changed, 111 insertions(+)
+> > > >  create mode 100644 rust/kernel/sync/refcount.rs
+> > > >
+> > > > diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
+> > > > index f47afc148ec3..39649443426b 100644
+> > > > --- a/rust/helpers/refcount.c
+> > > > +++ b/rust/helpers/refcount.c
+> > > > @@ -8,11 +8,26 @@ refcount_t rust_helper_REFCOUNT_INIT(int n)
+> > > >   return (refcount_t)REFCOUNT_INIT(n);
+> > > >  }
+> > > >
+> > > > +unsigned int rust_helper_refcount_read(refcount_t *r)
+> > > > +{
+> > > > + return refcount_read(r);
+> > > > +}
+> > >
+> > > Reading a refcount is almost always a wrong thing to do (it can chang=
+e
+> > > right after you read it), and I don't see any of the later patches in
+> > > this series use this call, so can you just drop this?
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> >
+> > I originally introduced this thinking I can replace Andreas's atomic
+> > 2->0 operation with a read + set, but ended up couldn't do it.
+> >
+> > The refcount read is still useful to determine if the current value is
+> > 1 -- in fact, `Arc::into_unique_or_drop` could use this rather than
+> > decrementing the refcount and then incrementing it again (just doing a
+> > refcount read would be much better codegen-wise than the current
+> > behaviour). I'll probably make this change in the next version of the
+> > series.
+>
+> Actually `into_unique_or_drop` can't use this because it needs to avoid
+> running destructor when it races with other threads. The semantics for
+> that function is better reflected with `refcount_dec_not_one`, which
+> I'll introduce in v2, and I'll drop `read` in v2.
 
-Well, in Rust, the rule is: any type-checked (compiled successfully)
-code that only calls safe Rust functions cannot be unsafe. So the fact
-that calling might_sleep() in a preemption disabled context is unsafe
-means that something has to be unsafe.
+Ah, I did not know that C had a refcount_dec_not_one. Yeah, that's
+exactly what into_unique_or_drop does.
 
-This eventually can turn into a "blaming game" in the design space: we
-can either design the preemption disable function as unsafe or the
-might_sleep() function as unsafe. But one of them has to be unsafe
-function, otherwise we are breaking the safe code guarantee.
+Though I don't know if the cmpxchg loop is really more efficient than
+just doing an infallible decrement like I do right now?
 
-However, this is actually a special case: currently we want to use klint
-[1] to detect all context mis-matches at compile time. So the above rule
-extends for kernel: any type-checked *and klint-checked* code that only
-calls safe Rust functions cannot be unsafe. I.e. we add additional
-compile time checking for unsafe code. So if might_sleep() has the
-proper klint annotation, and we actually enable klint for kernel code,
-then we can make it safe (along with preemption disable functions being
-safe).
-
-> where you use a sleeping function in atomic context. Depending on why
-> you are in atomic context, it might appear to work, until it does not
-> actually work, and bad things happen. So it is not might_sleep() which
-> is unsafe, it is the Rust code calling it.
-
-The whole point of unsafe functions is that calling it may result into
-unsafe code, so that's why all extern "C" functions are unsafe, so are
-might_sleep() (without klint in the picture).
-
-
-[1]: https://lwn.net/Articles/951550/
-
-Regards,
-Boqun
-
-> 
-> 	Andrew
-> 
-> 
-> 
-> 
+Alice
