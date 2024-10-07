@@ -1,89 +1,200 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7F61D31A0;
-	Mon,  7 Oct 2024 20:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F8917DFF7;
+	Mon,  7 Oct 2024 23:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728334743; cv=none; b=I2W7r1mhX2qyuu3e9cvs8kiU1RS6ovgR7XbBb9Vl2gPRStkWgO9WLcv9IxgOMke8mrjcjFM2PSDc3M3QH7QoftSAokt4JIOgscTthL2Q9gqgGuvK8BxdRuNj906gc8vivdlmhBdDmXwO2+QSY8Bchrg2qTWxaldhaUKKKr8aT80=
+	t=1728342848; cv=none; b=eKWdMHPR5gkgccGoGv7xZzx/pQ5/ZsTo8WTz/T4axMN4opn6G7nErKhsgOZ8nmffPE9reJouj6GmfoEgxVbKz4w8Kktkd39FxrNVBPztL9bGxki0RvBJt0BR7gyaCIEWFDRnjsqaScGllF4qrEhQZRZIcOe4xRVGzQVxd58sbqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728334743; c=relaxed/simple;
-	bh=aYpceaxphz5NFexoDZ6bB74LuCq7YN4zfI4G1PsZqmg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ttLfaEaWOU8qdAaKv1ni8jqqQBe+teNf8rKQW2j+9Z0KiSebzLAYNs2KqYgA/YTm26t0HuHxsHd+zC+nX7RqdWBrYnqEHO3Fmz3qMImLzyKUpLEnJ9YOYQ+Do05rv9p2kxPW02YTlQOShqETdVBzmZZNkFglO0bx1Ys1/9WFeHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lCoPbzws; arc=none smtp.client-ip=209.85.215.174
+	s=arc-20240116; t=1728342848; c=relaxed/simple;
+	bh=0AIF3ULaOZP5ywMFjAOjrAHSRlFKos1R1CPdoyvj3jk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eTGeEvCw8WDZuak4r0ye3bt8n3V+0EpUcpFdetuhtudBofBYBhvC9BgBrRdTmeT4GQ4VZ+ESKHfrozhIQEleNiwUw490M2H1/hv0kxmrH8UcClekfEG+M1T506d5lylrn0Pb2OsuEIsrXkfKIq2I/iBTevBfok52S/EqTMNo92c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bPh7CTTp; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lCoPbzws"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7e9f8714b9bso325944a12.3;
-        Mon, 07 Oct 2024 13:59:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bPh7CTTp"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7ae6f77f3a0so354090685a.1;
+        Mon, 07 Oct 2024 16:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728334742; x=1728939542; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1728342846; x=1728947646; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aYpceaxphz5NFexoDZ6bB74LuCq7YN4zfI4G1PsZqmg=;
-        b=lCoPbzwshUkn8P/yw5FSZhqM7OMsuyzlMpzDWy0JpAAsUEP275o1m5T8wX8uAfVf59
-         VxSaVg+rBOLyWiI9UI6/FVtyOi95O59ou/Bp8EWHe69+9O1nI1ad4KYwcgaq/SYiU9J5
-         eFnJRTMnPYCD2+GXA7hU7WNMkwEyu0w2kPlDBOncQrGaAFioRwxznQTLs8mTIOMczFhI
-         SntOgEOVQICnn2cOofsxGh05nAaUOTTluz/OEL1kontpElM9xKkZJIQsiltgPkfprl92
-         ejnXLuGWlv/JuOv8HMBmXd2B/CWOaHWcPasx5wGtTIq1uKHkSswWVCgg7wDR2V0FyBBd
-         JhaQ==
+        bh=BJVPy1ShKEKA/LRD1c1fr7tzzJ2Qr9H3SAkL7CrlS9Q=;
+        b=bPh7CTTpMJKRah3BYdEpI5l7jUVUfELtqxrDXtqFhEeZNr8O44ZwNPKbLasybGr2zD
+         xP/+X4x9RYo/Uo7uMF4CpRSj2aVl1T612fNHFQjFfkifaN9EE1/oW7qJXSlz8NkiC2ZY
+         /RSCl5+dempimIXsZdYXIziS5cooRZqCXFyELhpS4PfIaX3keewhU1xpqsOtDjVtxe51
+         csCHejjK6c03GXr394P1RUVz4/Kd1QTBIS+tdy2bGq51YutkRE39EJI4EGjh0qVB5krv
+         nrnt16IiLltpNRXAHDh2rKpHTQeRN/lHU9rknrWfNtmucEyv2vkNj21WC5cnhZgUAw5+
+         k4uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728334742; x=1728939542;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728342846; x=1728947646;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aYpceaxphz5NFexoDZ6bB74LuCq7YN4zfI4G1PsZqmg=;
-        b=CHwMimD9EGtQfENe2QUNzB//8KWEAE4w7kMaosdkdfrSxTch4z318xLELf8UGMndFT
-         yaPKdKACkhvlNtUmnE5hGCIJW1FaxEGXkR0qRCZ9eVqCENa8Fw+zaPeNVOnW5kZoR8ly
-         EbCeW87c3PHWMuDPzdvgJ8j6LdCuXmcR/grTWLFgQhuTwRqtE//xKo5vRLz8f4tZYOcJ
-         E38dhRTe3tN+d2lv9YNc1N8eRQgNRiPXaPI6wVL+Ar4QFQF0LQ5JcUy6GgISuSICFqcI
-         mh9qwwGgjvJdARnBMnLVgddvhCfE4SevM6VId66zhbZF7JlS0ji93JXszfMzD4YGU/jp
-         95MA==
-X-Forwarded-Encrypted: i=1; AJvYcCXc0Dw9z9n6SP0tGfTDvhSdUyEq/cADq+aP0y/zaEhOxgfrZWP30HaCdY4eJK5ST4dRwJ1fxKx1GpXDDd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVcSbJ1+VbLjfn89RSJoL/UnPeplJTrUPwV36LoaXJ2HXGVDTY
-	NXSC7qAnLBtoF7qcmVwyeLWY70L87fzkzRFfcgw21elYPwUFtxNzco7Z5BGFQVGTbLr5qWc7x6y
-	N8/IwUCcBI50rLMQc8Gsu9B+E2bU=
-X-Google-Smtp-Source: AGHT+IHcr4N3CX0ky3qtXM1hUYXV/VlBfgdmC4Hf4wYP4LImzm3LgHjPyWikAuqKB7vdvU3h32fyljmNuqwUTylnLtQ=
-X-Received: by 2002:a05:6a21:789b:b0:1cf:2be2:6524 with SMTP id
- adf61e73a8af0-1d6dfaea49bmr8358683637.10.1728334741912; Mon, 07 Oct 2024
- 13:59:01 -0700 (PDT)
+        bh=BJVPy1ShKEKA/LRD1c1fr7tzzJ2Qr9H3SAkL7CrlS9Q=;
+        b=XsEh3PnEAgcDkP+oOEceUo1GwOgfYtIf4vIflmTlfF/ixOJZiS4AATgTwLdBYJJNwJ
+         DSms6U4WDHn8V49dahu3+qNLp94VDMFMzztl9QOH/Rk4p47+B7x+45K2ao92vrrrlwwF
+         6P51rzQRP0G3GMDmCGMi7HvY/ZUmXtMRW4HvOD4pVUb8rtVH/XsCK+HHLokk6ZPTA4pl
+         OKUSeP5yb2nh4h2tySbArIS4A3U4VKrEMKNg1xSSwLhMGDVsMHwEW+zEFXi/890EidVk
+         EkzOswqKiEAZYfZu9/M8/YdF3OX0uvcxOyZ2SPHAUSEuQXZ5dHOOEelSq6H64ri60zby
+         eXrw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjUN4/8kVtAsNdUR6kXud1aUCBMB6FqHWWTLxkBZHH5BM/+gg0P1I3LpzSSxAyEx/PTFGoOuMUbwb+bZI+IEo=@vger.kernel.org, AJvYcCWkJNMf/pcxoz6PeenQSlAWJidBYz6LVGfjBAEUWCszvYY9UUX5+JGfCI9awYSYPImDmaliBeOi@vger.kernel.org, AJvYcCXyN2M004vGCODl85gtcUhKDj4asGt6ZqWAC34fDtg75k4iMm4LfdfHcwZ9rsM+EVVEVww0m2ikm9y/utg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI/Pm8hmhBOzSnbQWTHBCfl9LOHwf3IDpnJOCUueTlIFrMt58Z
+	yJEv80L+tYKsDaciJXUpm0NUkCOllbA37cDhkMqsbL8bJGkIoNC+
+X-Google-Smtp-Source: AGHT+IHmqyYpdfvoMjIamOL93vd5f2EVytwWntxMlitBH43vYlwBH2oFB2agTYHQuZWcaPE7L+4Pmw==
+X-Received: by 2002:a05:620a:19a2:b0:7a4:d685:caa9 with SMTP id af79cd13be357-7ae6f488699mr2106721685a.48.1728342845676;
+        Mon, 07 Oct 2024 16:14:05 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7afc59627eesm2096185a.53.2024.10.07.16.14.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2024 16:14:05 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7B3F51200071;
+	Mon,  7 Oct 2024 19:14:04 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 07 Oct 2024 19:14:04 -0400
+X-ME-Sender: <xms:PGsEZwLEzswepd5YIxHNRFlgeMh8KQMA-zHsCMQCXXskpWnfv650jQ>
+    <xme:PGsEZwJd8a1ISG7fYwtfAASnAhn66mnY7ni6AqMDM7tIJCCjzE5W5dXqj7CwhC6Ht
+    5I9Ysts-F74hVQQdA>
+X-ME-Received: <xmr:PGsEZwu-jFrC_aoDE90d8_gCUNC1FI7LgECIoI29PbPLoTR4bAYAylFOyl9afQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeftddgvddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
+    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtoheprghlihgtvghrhihhlhesghho
+    ohhglhgvrdgtohhmpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgt
+    phhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepohhjvggurg
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghi
+    lhdrtghomh
+X-ME-Proxy: <xmx:PGsEZ9Y4sgHSHIzPoUVddkhodcZLG_gEHwgDH4kUB4fSaXrRx-9dSQ>
+    <xmx:PGsEZ3Y7fg3ALo24zfV-XzZiMbCqt8SvIMTh8S3POz1_4d3ZtrB6fg>
+    <xmx:PGsEZ5Dx2c0U_hDglMHw2A7C8jNaNdFtNNsj7y02rF0HLsEMj5LiSg>
+    <xmx:PGsEZ9bLMHgvsiG1Za9h2dVJdFDnnt_2F0c0DyttSx0TNtXnzVhEqA>
+    <xmx:PGsEZ_ra4Ym8QIYONV-kFQEICIiTEhbgK-ogcEEZYT2xElpqzGhFvwnz>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Oct 2024 19:14:04 -0400 (EDT)
+Date: Mon, 7 Oct 2024 16:12:44 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, anna-maria@linutronix.de,
+	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
+Message-ID: <ZwRq7PzAPzCAIBVv@boqun-archlinux>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+ <20241005122531.20298-6-fujita.tomonori@gmail.com>
+ <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
+ <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+ <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
+ <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+ <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch>
+ <CAH5fLgjL9DA7+NFetJGDdi_yW=8YZCYYa_5Ps_bkhBTYwNCgMQ@mail.gmail.com>
+ <ZwPsdvzxQVsD7wHm@boqun-archlinux>
+ <5368483b-679a-4283-8ce2-f30064d07cad@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
-In-Reply-To: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 7 Oct 2024 22:58:49 +0200
-Message-ID: <CANiq72=XBTi7eGE31m4qTWivGbD-du0qgRGhb6ZUOH28p=K_0Q@mail.gmail.com>
-Subject: Re: rust: page: Add support for vmalloc_to_page
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, dakr@redhat.com, 
-	linux-kernel@vger.kernel.org, lyude@redhat.com, airlied@redhat.com, 
-	boqun.feng@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5368483b-679a-4283-8ce2-f30064d07cad@lunn.ch>
 
-On Mon, Oct 7, 2024 at 10:28=E2=80=AFPM Abdiel Janulgue
-<abdiel.janulgue@gmail.com> wrote:
->
-> base-commit: 673d1648244c3840043e09a784164b38c2e2efb9
+On Mon, Oct 07, 2024 at 07:13:40PM +0200, Andrew Lunn wrote:
+> > > pub fn might_sleep() {
+> > >     // SAFETY: Always safe to call.
+> > >     unsafe { bindings::might_sleep() };
+> > 
+> > It's not always safe to call, because might_sleep() has a
+> > might_resched() and in preempt=voluntary kernel, that's a
+> > cond_resched(), which may eventually call __schedule() and report a
+> > quiescent state of RCU. This could means an unexpected early grace
+> > period, and that means a potential use-afer-free.
+> 
+> How does C handle this?
+> 
+> I'm not an RCU person...
+> 
+> But if you have called might_sleep() you are about to do something
+> which could sleep. If it does sleep, the scheduler is going to be
+> called, the grace period has ended, and RCU is going to do its
+> thing. If that results in a use-after-free, your code is
+> broken. might_sleep makes no difference here, the code is still
+> broken, it just happens to light the fuse for the explosion a bit
+> earlier.
+> 
 
-Quick note: this is a `rust-next` commit, but this looks like it is
-meant to be on top of Danilo's `Allocator` series -- e.g. we don't
-have e.g. `VVec` there yet so it cannot build (but we will have that
-soon).
+Because of the might_resched() in might_sleep(), it will report the
+quiescent state of the current CPU, and RCU will pass a grace period if
+all CPUs have passed a quiescent state. So for example if someone writes
+the following:
 
-By the way, cover letters normally go with [PATCH 0/...]. Since you
-have the base commit, I guess you used `--cover-letter` but changed
-the title maybe?
+    <reader>			<updater>
+    rcu_read_lock();
+    p = rcu_dereference(gp);
+    might_sleep():
+      might_resched():
+				todo = gp;
+				rcu_assign_pointer(gp, NULL);
+				synchronize_rcu();
 
-Thanks!
+        rcu_all_qs(); // report a quiescent state inside RCU read-side
+	              // critical section, which may make a grace period
+		      // pass even there is an active RCU reader
 
-Cheers,
-Miguel
+				kfree(todo);
+
+    a = READ_ONCE(p->a); // UAF
+    rcu_read_unlock();
+
+We probably call the reader side code a "wrong annotation", however,
+it's still unsafe code because of the UAF. Also you seems to assume that
+might_sleep() is always attached to a sleepable function, which is not
+an invalid assumption, but we couldn't use it for reasoning the
+safe/unsafe property of Rust functions unless we can encode this in the
+type system. For Rust code, without klint rule, might_sleep() needs to
+be unsafe. So we have two options for might_sleep().
+
+* Since we rely on klint for atomic context detection, we can mark the
+  trivial wrapper (as what Alice presented in the other email) as safe,
+  but we need to begin to add klint annotation for that function, unless
+  Gary finds a smart way to auto-annotate functions.
+
+* Instead of might_sleep(), we provide the wrapper of __might_sleep(),
+  since it doesn't have might_resched() in it, it should be safe. And
+  all we care about here is the debugging rather than voluntary context
+  switch. (Besides I think preempt=volunatry is eventually going to be
+  gone because of PREEMPT_AUTO [1], if that happens I think the
+  might_resched() might be dropped entirely).
+
+Does this make sense?
+
+[1]: https://lore.kernel.org/lkml/20240528003521.979836-1-ankur.a.arora@oracle.com/
+
+Regards,
+Boqun
+
+> Or, i'm missing something, not being an RCU person.
+> 
+> 	Andrew
