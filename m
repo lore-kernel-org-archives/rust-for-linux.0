@@ -1,138 +1,184 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B4B1D7995
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 14:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD671D2F4B;
+	Mon,  7 Oct 2024 14:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728310622; cv=none; b=kPdBTDf0gwKRqLpBGT9oEN/IPvF3pzuT6eME5HEopFfoU3vLa01kJIoZbu5ZGZWMZX1UoVX6D9rWGSooigPmzI23IPmLgT/wN2l2AVM68z4R9gfV1tVrRzX/4mZa05BByBz1nR+xg3vHJAbYXHHFyVylRm6cZukK6CiW4RD1itk=
+	t=1728310878; cv=none; b=J0sCf9rDFKnXpjY0YslNMEKFhcFelmPVzwXN+SKhxr11JlC1hj/axTN+y+oOBhfdKR/bDbghfifzInhuXqTbNIMOkqMnuXDVWPHUmg9kPKfNrIHkepgWkSWpHcRUz7FNwFwczNHADxt4LUXvAZNpGwh64/FTf4zrl3xgSEK1Aoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728310622; c=relaxed/simple;
-	bh=376HqnvNhc5ZE0HBO6XE8aIeQfBue1EBUdnGFKgW028=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mvUXCh/gdxISXlJpsuJzssV2+P0qll+jWzcrKb+UX1d7YjgI+W0HhjHzdfQwQNlV2DGSoLXejpFgM/xSot4ehE6AgJOhe4cfh4CJ0rHrlVJhqTJhOLbIeDLrnIWup1yNqbmisSQ2e1yhoqUuoI2gFEYSPf/2WbhZcjemZ3b0YLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fcPqXvXc; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728310878; c=relaxed/simple;
+	bh=wXq6DEfl+otX2OUYDSxRKZTFFqZwgJsq20ZiWsYFZ3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mFnhLJwR9hk6v1Z3M4PJ3DfEP5cMSQ/DwYd603vhFrIP48gfB2J+Vtp8/4Pi+qgMf191WqYUk7lNULQy7M1kl+Vrinbr3tn+DrWfKJgmsjl/Q3CzZE+PJnUqnXs1TgpbSaRDzlEQDegCjxvwi5APmn8X+9A+Y8CQNATe8kWWT1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GO37LcoC; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fcPqXvXc"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7d4f85766f0so3693739a12.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 07:17:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GO37LcoC"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6cb2ad51162so41084316d6.3;
+        Mon, 07 Oct 2024 07:21:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728310620; x=1728915420; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YZotRyJfqUBQUUh0GdjsSXNxbz4lowqfUZ4/U9osmyA=;
-        b=fcPqXvXcxEMkgbz11ctygKKwnEzhK4OL6i+PhJxnCrinRC0LpMtkgD474UtFJ8nzk6
-         1gPNyUmT3eq+xh6i33Ku1F623wDtyk7LwLwF8VWRHpKlSZnOcIZ7pNmGvwAu5CMFhwmF
-         nURwmfU7OJhF5IQHAS8jPhxl3JZoULmxqDhzHpCkdE8UlPD3Zs5rJpKJbFeDBfPf4aHZ
-         uMIgGQICxCjO8CTGyfTYIqpmsj2PborSN3a7N5EksxSfUN0tXpCPrdfCdikpRrsCBu7+
-         9F1Qz0JRV22GyCSgw3l4nmlfGdZYClqA+29rhA2l3CAa/zEi6qVRHzMwzx3p1nPqi5VR
-         Om2g==
+        d=gmail.com; s=20230601; t=1728310876; x=1728915676; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=zAK4XymC3L6i3k241V0wt6B7pOPxNyzbjvvZCbkfkKY=;
+        b=GO37LcoCamNNtpCcRc2RdmBeOhZWAZNtM8+BDRfp9fSYZceaDQrhdmWxWQfTiuDxej
+         cS+zUgk4NYr81vFtV0Ian+MnfZqtbuSvHIg60x0QPRq3zwS3inPtOOW6lQte6r2whnwO
+         sKCjWD48HFvsWIk146qSJj1h/XHjUKExZ/B55533ZHNe0B3u4ajtqNIMQ9yQiX7YOl4G
+         LoFQ3hnk6RrJ7RLz9ox1mEv3wlFOjAj1KrdBUrHgh3FZKNhj6Ka8D8lcyXdFJ6+ASeIz
+         KP5JuIpr93tj/04bYZPRCyDZLm1J3u/vh+R8dV3OabpEr5yviFAuTKTS4O04U1ziMPIx
+         o9QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728310620; x=1728915420;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YZotRyJfqUBQUUh0GdjsSXNxbz4lowqfUZ4/U9osmyA=;
-        b=BMqFt3Gi57dIYJpUC71yIuWGz6DkPPgu+mUHc2U68bkPFN3Up4P0C3jRSU8O2HhCir
-         RlKmJ/V1kiJONDnXqBDZwIVs192glf5ut9yKufkiKUmxadv35xlSnemzQV7XlXceisAC
-         c1oiDmkFF8HGGIEeVvXzjai05PK5a4z9OS0F6s8RM7E2ZZGXX53gbABDt2Ft7QuYqxRO
-         ow22DkTXj9IX9atbA1QUq0GY1TwcyhabPuEEU1Qfm5tYX/0rOKYxtx6vxthlkitsa5wM
-         GYI5zQPrUrR6NkwXNiIOc3Y8FY9TbLjZENldG0XZYfI7x4OHTHw4crAYOeZLHKVZhv5+
-         Dn9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUsQCYa+0yL2/hiDrJKIr5Cl2nS+s0fhxknNARMpMUuChg3/pfmQacM8zCcA8A1ScyoIajiNR54f8GQksjwLA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YycdN+j3JZDRBlpugIS5ApDalwGEK0dRykuV0X7jNFMuwEKy0U1
-	IYDAfkI6jq5raQAOjqqH1OXLqHR0Uet+tw2a+5D0mAldrbfYEOqT+tGb2g7uSxUdp8USDgFi7tx
-	RfNN+hSyivb5/h5gearxmnFBOn9bcJqyNioQH
-X-Google-Smtp-Source: AGHT+IGRirQUTUs43IAYcReXl0EvbBGWtade4ytNJlT9/pAyB7YZGBvddZQaFl4GNDeiuwukPx5yEImABPr95O01a0M=
-X-Received: by 2002:a05:6a20:29a7:b0:1d6:e593:1d6b with SMTP id
- adf61e73a8af0-1d6e5931deamr10398837637.6.1728310620266; Mon, 07 Oct 2024
- 07:17:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728310876; x=1728915676;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zAK4XymC3L6i3k241V0wt6B7pOPxNyzbjvvZCbkfkKY=;
+        b=im1XW9pVSn70Jkl1jQjFOBuEEBt2kzTbjKsEPI/fq1trN2GxvurF9UKPpvabTAGk3V
+         N2ca1QCb2aPOI9f0zCHqDKmnYS2agurBqVgg7oJLaxMcTENJnM7bz9Xc4I+54ve7xNd4
+         DN+PX3Ix+yMLDW91zamou94dp4upMFiAyyI0+ydN4Nd8gVTlnowq/nvMRhb4CYj9GHqS
+         ZdPBwROQCxENudluVWV4sqUIn0MXIxdlRNVi+m2ROAgThm2Xa8+sIuJPUqVnxgonZzq3
+         3dXiMDoU4z+3VhFGgk5vZMsmt8WKXwD3QeTWx9GOl8k2sE6HOGB7Nhil2sqwPqe3rBjV
+         r+kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVLgVXKheFjG0taI5DEOO7jBkck/9xmtifxZ8ZXAGdlyNhtoGDsxk9IRYaG+0o7P0q6KWj8uiI2NpVSaruGGk=@vger.kernel.org, AJvYcCVw80w4WUK+3BCLus5e0ubpyWiIASdzndq4qBrOX1D4OUt8zBUhw6ZlXyA/ap/Xettb29/3n0IQBA7BZyo=@vger.kernel.org, AJvYcCXGc4vnzuQRd+WYw84bN+/Jjx/itrXOOSLtVdeR2yFDYp7pFnbt3xE8ikadmU0RyueEGlD/HnRW@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbLkKUyZd1DfgOe+whK964ubi9jVP2AtvgybZLFEIl9VajIANV
+	q4pxEM+Lq4pNd+c36pjOyJGHsfzXzcZUE+nAR2DVnoAuFpBnTASs
+X-Google-Smtp-Source: AGHT+IGRJoduihx98XE39c8bw2PlpbXpydpc9CbQWwkox+aktEDVzndR66sqj0UTcswncSC6H7Za4g==
+X-Received: by 2002:a05:6214:4993:b0:6c3:5e7c:8613 with SMTP id 6a1803df08f44-6cb9a2f586amr205645026d6.16.1728310875729;
+        Mon, 07 Oct 2024 07:21:15 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cba46cebccsm25706456d6.21.2024.10.07.07.21.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2024 07:21:15 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E4814120006E;
+	Mon,  7 Oct 2024 10:21:14 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Mon, 07 Oct 2024 10:21:14 -0400
+X-ME-Sender: <xms:Wu4DZ8ya6MHD3a5kScy-k4euejkfWV2i_cUaQB9GnRQhkEZgiZ5Uwg>
+    <xme:Wu4DZwRNI286qyLwDS5ZdKRxUoP3Ss__cP6yiNSdNqokfuLjto_15MQ7gLrO1hXkK
+    RW9FF7xPKud0JlQBA>
+X-ME-Received: <xmr:Wu4DZ-W6SXjIIHoOUFDhQIR_qT7CsRGhW11uNO-fQayKUbWrNYd998h9A6w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvledgjeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfh
+    gfehgeekkeeigfdukefhgfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepfhhu
+    jhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthhopehnvghtug
+    gvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdq
+    lhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhkhgrlhhlfi
+    gvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghh
+    rdgvughupdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:Wu4DZ6i9TZs7C-fP7GPW4CDfrG7K0k7J8B6CYgYVaz-w8QHdSld8Xg>
+    <xmx:Wu4DZ-B0orvb_WiSEOTCaubwqoulMwpD_nAsMsVbBZdnwz9Aw94Gmw>
+    <xmx:Wu4DZ7Kfk1gtRUdNhd8pTcshofhvD577R4tN3czBiqZipA1n7KRJhQ>
+    <xmx:Wu4DZ1B8Cl9moU7ckKOg6Leofrb1ImodvGMxyFFr62r3ghFEKmMxtg>
+    <xmx:Wu4DZ-yal-UwvjnqKHhQtEsTZL3Jb-mUCNozW5uCh3sW7IPEUfIIpWgl>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Oct 2024 10:21:14 -0400 (EDT)
+Date: Mon, 7 Oct 2024 07:19:56 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, anna-maria@linutronix.de,
+	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
+Message-ID: <ZwPuDE16YBS4PKkx@boqun-archlinux>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+ <20241005122531.20298-6-fujita.tomonori@gmail.com>
+ <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
+ <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+ <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
+ <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+ <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch>
+ <CAH5fLgjL9DA7+NFetJGDdi_yW=8YZCYYa_5Ps_bkhBTYwNCgMQ@mail.gmail.com>
+ <ZwPsdvzxQVsD7wHm@boqun-archlinux>
+ <CAH5fLgigW6STtMBxBRTvTtGqPkSSk+EjjphpHXAwXDuCDDfVRw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
- <20241005122531.20298-6-fujita.tomonori@gmail.com> <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
- <ZwG8H7u3ddYH6gRx@boqun-archlinux> <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
- <ZwPT7HZvG1aYONkQ@boqun-archlinux> <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch>
- <CAH5fLgjL9DA7+NFetJGDdi_yW=8YZCYYa_5Ps_bkhBTYwNCgMQ@mail.gmail.com> <ZwPsdvzxQVsD7wHm@boqun-archlinux>
-In-Reply-To: <ZwPsdvzxQVsD7wHm@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 7 Oct 2024 16:16:46 +0200
-Message-ID: <CAH5fLgigW6STtMBxBRTvTtGqPkSSk+EjjphpHXAwXDuCDDfVRw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgigW6STtMBxBRTvTtGqPkSSk+EjjphpHXAwXDuCDDfVRw@mail.gmail.com>
 
-On Mon, Oct 7, 2024 at 4:14=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
->
-> On Mon, Oct 07, 2024 at 04:08:48PM +0200, Alice Ryhl wrote:
-> > On Mon, Oct 7, 2024 at 3:48=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wro=
-te:
-> > >
-> > > On Mon, Oct 07, 2024 at 05:28:28AM -0700, Boqun Feng wrote:
-> > > > On Sun, Oct 06, 2024 at 04:45:21PM +0200, Andrew Lunn wrote:
-> > > > However, this is actually a special case: currently we want to use =
-klint
-> > > > [1] to detect all context mis-matches at compile time. So the above=
- rule
-> > > > extends for kernel: any type-checked *and klint-checked* code that =
-only
-> > > > calls safe Rust functions cannot be unsafe. I.e. we add additional
-> > > > compile time checking for unsafe code. So if might_sleep() has the
-> > > > proper klint annotation, and we actually enable klint for kernel co=
-de,
-> > > > then we can make it safe (along with preemption disable functions b=
-eing
-> > > > safe).
-> > > >
-> > > > > where you use a sleeping function in atomic context. Depending on=
- why
-> > > > > you are in atomic context, it might appear to work, until it does=
- not
-> > > > > actually work, and bad things happen. So it is not might_sleep() =
-which
-> > > > > is unsafe, it is the Rust code calling it.
-> > > >
-> > > > The whole point of unsafe functions is that calling it may result i=
-nto
-> > > > unsafe code, so that's why all extern "C" functions are unsafe, so =
-are
-> > > > might_sleep() (without klint in the picture).
-> > >
-> > > There is a psychological part to this. might_sleep() is a good debug
-> > > tool, which costs very little in normal builds, but finds logic bugs
-> > > when enabled in debug builds. What we don't want is Rust developers
-> > > not scattering it though their code because it adds unsafe code, and
-> > > the aim is not to have any unsafe code.
+On Mon, Oct 07, 2024 at 04:16:46PM +0200, Alice Ryhl wrote:
+> On Mon, Oct 7, 2024 at 4:14 PM Boqun Feng <boqun.feng@gmail.com> wrote:
 > >
-> > We can add a safe wrapper for it:
+> > On Mon, Oct 07, 2024 at 04:08:48PM +0200, Alice Ryhl wrote:
+> > > On Mon, Oct 7, 2024 at 3:48 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> > > >
+> > > > On Mon, Oct 07, 2024 at 05:28:28AM -0700, Boqun Feng wrote:
+> > > > > On Sun, Oct 06, 2024 at 04:45:21PM +0200, Andrew Lunn wrote:
+> > > > > However, this is actually a special case: currently we want to use klint
+> > > > > [1] to detect all context mis-matches at compile time. So the above rule
+> > > > > extends for kernel: any type-checked *and klint-checked* code that only
+> > > > > calls safe Rust functions cannot be unsafe. I.e. we add additional
+> > > > > compile time checking for unsafe code. So if might_sleep() has the
+> > > > > proper klint annotation, and we actually enable klint for kernel code,
+> > > > > then we can make it safe (along with preemption disable functions being
+> > > > > safe).
+> > > > >
+> > > > > > where you use a sleeping function in atomic context. Depending on why
+> > > > > > you are in atomic context, it might appear to work, until it does not
+> > > > > > actually work, and bad things happen. So it is not might_sleep() which
+> > > > > > is unsafe, it is the Rust code calling it.
+> > > > >
+> > > > > The whole point of unsafe functions is that calling it may result into
+> > > > > unsafe code, so that's why all extern "C" functions are unsafe, so are
+> > > > > might_sleep() (without klint in the picture).
+> > > >
+> > > > There is a psychological part to this. might_sleep() is a good debug
+> > > > tool, which costs very little in normal builds, but finds logic bugs
+> > > > when enabled in debug builds. What we don't want is Rust developers
+> > > > not scattering it though their code because it adds unsafe code, and
+> > > > the aim is not to have any unsafe code.
+> > >
+> > > We can add a safe wrapper for it:
+> > >
+> > > pub fn might_sleep() {
+> > >     // SAFETY: Always safe to call.
+> > >     unsafe { bindings::might_sleep() };
 > >
-> > pub fn might_sleep() {
-> >     // SAFETY: Always safe to call.
-> >     unsafe { bindings::might_sleep() };
->
-> It's not always safe to call, because might_sleep() has a
-> might_resched() and in preempt=3Dvoluntary kernel, that's a
-> cond_resched(), which may eventually call __schedule() and report a
-> quiescent state of RCU. This could means an unexpected early grace
-> period, and that means a potential use-afer-free.
+> > It's not always safe to call, because might_sleep() has a
+> > might_resched() and in preempt=voluntary kernel, that's a
+> > cond_resched(), which may eventually call __schedule() and report a
+> > quiescent state of RCU. This could means an unexpected early grace
+> > period, and that means a potential use-afer-free.
+> 
+> Atomicity violations are intended to be caught by klint. If you want
 
-Atomicity violations are intended to be caught by klint. If you want
-to change that decision, you'll have to add unsafe to all functions
-that sleep including Mutex::lock, CondVar::wait, and many others.
+Yes, I already mentioned this to Andrew previously.
 
-Alice
+> to change that decision, you'll have to add unsafe to all functions
+> that sleep including Mutex::lock, CondVar::wait, and many others.
+
+No, I'm not trying to change that decision, just to make it clear that
+we can mark might_sleep() as safe because of the decision, not because
+it's really safe even without klint...
+
+Regards,
+Boqun
+
+> 
+> Alice
