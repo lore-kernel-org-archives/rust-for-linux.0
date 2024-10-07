@@ -1,172 +1,85 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A176E1DE8BD;
-	Mon,  7 Oct 2024 20:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496801DDA15
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 20:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728332944; cv=none; b=X/U/tjp6xjLddNsF33Jv7hA6DHtLuAHc8VarP2TAqGvBYhEf4o7WQ84RIt6PxTT8WPeC6A3KJq5rtI9t6IhPGL8ywgzZR9OXPIAUjrBPa5iksQM+cXD66DBP3HS4qHx0BPbN2UUtpXTfcmzsf9Ho1j8NdqTVD1/+17U95RFdk2c=
+	t=1728333513; cv=none; b=UvRFqIXUIHjoUh5fDHhYf6AHBCC8KDf6KAQsM7aSpD6lV5fNniZfQXYBF65uohv5hUOFTmIVNks3b39okdmD2p6gMUpofMuVU7sXrRmNsL1bwJx/MKl/f8r/Utbo4RIlUzK4AmyX7MpeAV7Kgj4N2Pesbgt94Aht7HMBhPW5kwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728332944; c=relaxed/simple;
-	bh=Xa7wl4NsX9MEgEMZaTMVtXEFrE2GZaEBtQ1xLfIvXdk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gozQhcaHJnWfK2zpX5u4Kg+SxAdpMfkMehyXcGqMDAHzhGJpPr3F+xpK5CFf8raE+3YKsWfkXVD1EfGwxBYicIpvmbR99AqpfSiIXW04SkAsaadn/AgHfv5p2J38rtLiTcvASyJhhhqnaW6vaOh3BuLi2fo8+7Gu+wNp8UiLP+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GCkWva8u; arc=none smtp.client-ip=209.85.167.54
+	s=arc-20240116; t=1728333513; c=relaxed/simple;
+	bh=d4wxyS52GUJW5d6CslPmEp4vtduOFYtWEDX21ZZ2vLg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VF6Mnt3w+MS5r+kqPLfZrOeRRHtfQcxR+NeO3IC3RQJDfhI9IwZ+7FuqrHJZpgNQXZoeeffNqu6uIt86dDR9115GtyCpgsbmAMD/EucSSW05TSyfrfKqQfeksxHBFmNfIDJA8+VQdb7mlwDNxovISugx/o+9m9BItkDxOchmqns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g2DM9StJ; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GCkWva8u"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5398e4ae9efso5310039e87.1;
-        Mon, 07 Oct 2024 13:29:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g2DM9StJ"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7cd85502a34so890420a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 13:38:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728332941; x=1728937741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1728333512; x=1728938312; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xLBSlqtjkMqVvwxCwoJ2mHaidVZbBBOhd29eZhcK/Dg=;
-        b=GCkWva8uNn8GomqRILehjvBdUwcT8GNXOGoy1to2WwiYEwlc+rcqR19QysU/QyAuuK
-         w0bA3Qjj64+lbDjatgJ/ijrtRiNPLrXEznSworQws4IcPFiYwvvT5sWfH+UhDTu7imkb
-         pqbLIMKdur0lp/mMXfSWWyu8bRVBhxUJ8mMP5rqK3kY+f9wVWny0Cxa/NObZuw1Jm9Eb
-         ZsGwD4SjfETrGq7NDZkKgcRgmS5BGZXv2GXRFsFjTVraCEsUT6yKqn7mZRZbREZChFxd
-         ptOtZgwdsSgpGO2NildFDV7Xvh1z/S341SA+85ixyfLu/OgOtow6FKC4mxNSjGMrw/T6
-         eI1w==
+        bh=d4wxyS52GUJW5d6CslPmEp4vtduOFYtWEDX21ZZ2vLg=;
+        b=g2DM9StJGcek1KsbFBUi93NtLq5UyI2XZtgks2JOBYiWniuHZQT8GX+A+xgeo8ca00
+         yQiF65SW0vFzzblrscDU4o76Bj5V2DiiyvluM0xdIEta587MfzOj5YKhWk9oeXRi5LgD
+         UauPCwIeiVmwmBOSQ0ms9YfBpWpm1fjWoUGkmuJYC7XXuRbhZ7QEB/Q4FB6xkGVziwUw
+         FoBytHxeSPUj6jKlYN8HKAaDCU35jq7Cv43nEMOwJCA/5CnpTLYgsy4IsKxk2+5Zy4jk
+         hWBuDnnywQqZGq8YgmGteYszt3w84gfbCvyw5Bo73o77Al3c8nh0ykHWZSe2SLpPUs2w
+         CoIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728332941; x=1728937741;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728333512; x=1728938312;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xLBSlqtjkMqVvwxCwoJ2mHaidVZbBBOhd29eZhcK/Dg=;
-        b=P1C5iRr1N/75iEUbEqfB1neBuihtUrVB3nQDoIfKM5IC96soMnIqEagdJUXmGzCUOx
-         uKER6qa/P7W0WXdrj/26ojbIdPSLW8sA4rgwEt6fc/azBiWKSUZZt0RojdbwgiVAEkpr
-         00QKl+yefKz1Xj5TWVJEtA4tsBHkGYhg+ew2nQb325wRLDerDSArdWHPyf7/U6O8eSgg
-         2svL+Jb8xi/xUVYQEqkQpq7cFWWfBMt9DEgAGn3nqfxvwsUPw55tMg0C1j3GhHP/IikG
-         y6qROCWqdI7BNLdAhHfMbyd4+Mj1U065GCbbDHbRKn6jhmKFm5poaxv4Y90GGGbaQLvv
-         i3UA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTRgjltoNixmWQg3bGgQsrGuH90Kn2T7FTNM8KfC2H/r+bv/kPSdvSQ1DoI4QbQ9qv3oK28RmJ5cw2fxI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlTUfbGCqBUVlpCCJo1fKrJGAXlizNcrLgIgqjkTkx+RFcs2bT
-	0E+FhSqyVTlx1D987bDmnf5VJCKcBWpBS44FPpzUD+RYzwLwExExEb4djqqv
-X-Google-Smtp-Source: AGHT+IEmPNknVfetWBZHpQq/m/4LAIP5u4CBOCK8dpxJcySh/gNHFgbpLd7O/qIqHITdap9kphsu/A==
-X-Received: by 2002:a05:6512:124d:b0:539:9ee4:bab3 with SMTP id 2adb3069b0e04-539ab9ed195mr6795281e87.59.1728332940451;
-        Mon, 07 Oct 2024 13:29:00 -0700 (PDT)
-Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539aff23307sm926237e87.197.2024.10.07.13.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 13:28:59 -0700 (PDT)
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	aliceryhl@google.com
-Cc: dakr@redhat.com,
-	linux-kernel@vger.kernel.org,
-	lyude@redhat.com,
-	airlied@redhat.com,
-	miguel.ojeda.sandonis@gmail.com,
-	boqun.feng@gmail.com
-Subject: [PATCH 3/3] rust: page: Add page_slice_to_page
-Date: Mon,  7 Oct 2024 23:27:52 +0300
-Message-Id: <20241007202752.3096472-4-abdiel.janulgue@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
-References: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
+        bh=d4wxyS52GUJW5d6CslPmEp4vtduOFYtWEDX21ZZ2vLg=;
+        b=GpvgWJWUnrGTkFvMRFLycb9r0BTamt7Hep8UwKFRKEJWjM9lvf6hKWX/Y6q0M+sUmo
+         lMrAdPNOgEzFDEhyVHtBuVw//4LAgfJCe93khKqwpxsQ38PMa+oeNkXJsnnAJ40dctNG
+         2tLPTdojfbEMRv1wEBsnn0dp5Ztci/ARTuDVujoauShqhHb8IRW34W6K4lEOeieCpXSU
+         CH6YHaaYXmAblIcEIF2TehkBuF8ZeBe8UtNFK2zzypN12KgeT3Ms4bTGxNG1srlcwLEk
+         pCS+PMg+Ysrsxr4HpE5sORHWVbpfD52sBm7qV++cHwXsAdZHGsCSV78t+CR2Fvt3lk0l
+         a+cw==
+X-Forwarded-Encrypted: i=1; AJvYcCWtU8fOjyTHUoWlQTU36fWWgP9EE4RMzQ9GvCR1uovggPa7Xc1J+Bgmh7oU+JNqbGblj8MeMCJXd8h+Zldnwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAeAgJOjooBqfFRxSleuZjVO7EFUtLjmFUwwrFGMPqatpblbv/
+	A2+D1Sp08q468Dy2OoqNl578/nDnEFGArWowsjX3umgA+Cq9yzs7O402gthF8osCt6RfSLBd1cN
+	eCPVpANzzkX6uhiksMOMyqqG7H9U=
+X-Google-Smtp-Source: AGHT+IFos+nE3k8ObNQustVl8mJ5VEAH+44wLkHNHhM3KCslyxq/9yYZ+vBi0pYi7TEywl2iBd30HOR0uXkn+3u0wY0=
+X-Received: by 2002:a05:6a20:7286:b0:1cf:4d34:637c with SMTP id
+ adf61e73a8af0-1d6dfacdbbfmr9080955637.7.1728333511738; Mon, 07 Oct 2024
+ 13:38:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <BL0PR02MB4914B9B088865CF237731207E9732@BL0PR02MB4914.namprd02.prod.outlook.com>
+ <4071E558-FC6E-4370-B3A8-5E2B9ED65BE0@kloenk.dev>
+In-Reply-To: <4071E558-FC6E-4370-B3A8-5E2B9ED65BE0@kloenk.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 7 Oct 2024 22:38:19 +0200
+Message-ID: <CANiq72mxb1aQ42A9ffLPP7jCecnEj6O4uxpov=d2fS7OZcgA8g@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: optimize error type to use nonzero
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Filipe Xavier <felipe_life@live.com>, ojeda@kernel.org, aliceryhl@google.com, 
+	Benno Lossin <benno.lossin@proton.me>, gary@garyguo.net, boqun.feng@gmail.com, 
+	alex.gaynor@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Make it convenient to convert buffers into page-sized vmalloc'd chunks which can
-then be used in vmalloc_to_page().
+On Sun, Oct 6, 2024 at 12:17=E2=80=AFPM Fiona Behrens <me@kloenk.dev> wrote=
+:
+>
+> Would it make sense to use to_errno here instead of get, should the inner=
+ type ever get changed again?
+> (Maybe even inline to_errno, but that would be rather out of scope for th=
+is change)
 
-Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
----
- rust/kernel/page.rs | 59 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+I am not sure if it will change, but it sounds reasonable -- do you
+want to create a "good first issue" maybe?
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index a84f382daf5c..490685144694 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -3,7 +3,7 @@
- //! Kernel page allocation and management.
- 
- use crate::{
--    alloc::{AllocError, Flags},
-+    alloc::{AllocError, Flags, VVec, flags::*},
-     bindings,
-     error::code::*,
-     error::Result,
-@@ -106,6 +106,27 @@ pub fn vmalloc_to_page<'a>(
-         Ok(unsafe { &*page.cast() })
-     }
- 
-+    /// A convenience wrapper to vmalloc_to_page which ensures it takes a page-sized buffer
-+    /// represented by `PageSlice`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::page::*;
-+    ///
-+    /// # fn dox() -> Result<(), kernel::alloc::AllocError> {
-+    /// let data: [u8; PAGE_SIZE * 2] = [0; PAGE_SIZE * 2];
-+    /// let buf: &[u8] = &data;
-+    ///
-+    /// let pages: VVec<PageSlice> = buf.try_into()?;
-+    /// let page = Page::page_slice_to_page(&pages[0])?;
-+    /// # Ok(()) }
-+    /// ```
-+    pub fn page_slice_to_page<'a>(page: &PageSlice) -> Result<&'a Self, AllocError>
-+    {
-+        Self::vmalloc_to_page(page.0.as_ptr() as _)
-+    }
-+
-     /// Returns a raw pointer to the page.
-     pub fn as_ptr(&self) -> *mut bindings::page {
-         self.page.get()
-@@ -277,6 +298,42 @@ pub unsafe fn copy_from_user_slice_raw(
-     }
- }
- 
-+/// A page-aligned, page-sized object. This is used for convenience to convert a large buffer into
-+/// an array of page-sized chunks which can then be used in `Page::page_slice_to_page` wrapper.
-+///
-+// FIXME: This should be `PAGE_SIZE`, but the compiler rejects everything except a literal
-+// integer argument for the `repr(align)` attribute.
-+#[repr(align(4096))]
-+pub struct PageSlice([u8; PAGE_SIZE]);
-+
-+impl TryFrom<&[u8]> for VVec<PageSlice> {
-+    type Error = AllocError;
-+
-+    fn try_from(val: &[u8]) -> Result<Self, AllocError> {
-+        let mut k = VVec::new();
-+        let aligned_len: usize;
-+
-+        // Ensure the size is page-aligned.
-+        match core::alloc::Layout::from_size_align(val.len(), PAGE_SIZE) {
-+            Ok(align) => { aligned_len = align.pad_to_align().size() },
-+            Err(_) => { return Err(AllocError) },
-+        };
-+        let pages = aligned_len >> PAGE_SHIFT;
-+        match k.reserve(pages, GFP_KERNEL) {
-+            Ok(_) => {
-+                // SAFETY: from above, the length should be equal to the vector's capacity
-+                unsafe { k.set_len(pages); }
-+                // SAFETY: src buffer sized val.len() does not overlap with dst buffer since
-+                // the dst buffer's size is val.len() padded up to a multiple of PAGE_SIZE.
-+                unsafe { ptr::copy_nonoverlapping(val.as_ptr(), k.as_mut_ptr() as *mut u8,
-+                                                  val.len()) };
-+            },
-+            Err(_) => { return Err(AllocError) },
-+        };
-+        Ok(k)
-+    }
-+}
-+
- impl Drop for Page {
-     fn drop(&mut self) {
-         // SAFETY: By the type invariants, we have ownership of the page and can free it.
--- 
-2.34.1
-
+Cheers,
+Miguel
