@@ -1,154 +1,184 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDB11D26F1
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 12:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF8118BC03;
+	Mon,  7 Oct 2024 12:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728303859; cv=none; b=qAHkTWgeIpBpkt5auGYUN33okmoM2f891mzWcNMha0aXAU1WKlk3qxs044TGG2ekb6hSO26CTibMhnUxLk5u3cc5S665vDhS1Oam9gkdhwDLyCUvPhUsuDfBzXRveQIy3DUM2rSJSJtEv4rvOtF19ZJq7zggLea1WABroRv9Kas=
+	t=1728304190; cv=none; b=HjwKkOjZmYPKTnIm6pqxXMkrVnBUX8fb9mzZlNi1r0C/PzLLgEsVLzA9SMVw263T+mwnWMnV/KErgUjvJoLj8ZGMlFH13/LzN++GMEyhnkFRZJlNDbePv1WJo3qRGxjLeFzao07AEa0AhMQtVIn4xdsH0EDEnX81FVAlFf0/TGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728303859; c=relaxed/simple;
-	bh=t8H6KKTU1kUFSyofCbDB6hb4GjQoj/UNpvlIreQ4WHo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=svvPirOinidyT6DXu3apO4i15QA7G7QzN7Hf+VuC99vzYjVrrH1UgwZz7IXhrIHtoFQmE6zwGyiaEVNHPiLQGHLRVXDCdywnZU45l8t4492tAjCdX+k6HcJx6ppVDXXqbTEoKuhAAfyo7GIguE3gVQDqI1nltJTSlb8xO3o8nSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OOrKqUFV; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728304190; c=relaxed/simple;
+	bh=S0PmYZ88hEZrLiL/PiuJ/v9Q7mo3hEoRYd3HOJjCjwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GOzHeWLrwDAlzvnQkdVuK1V404xxjfznPRVYyVNs/WClG016EZEnHj7fW0uI4L4mUs6i+H2M62ZVSPpMHw2TIStv6vJvudTV2AhDy2LH+kb8TfiwAYa9clAr7zSKoIsYQewUVmgk6OMxse/tib4AIL/6Rh4wQk4wc7KH2nsHtBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MZ0poWZ5; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OOrKqUFV"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42f56ad2afaso58410385e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 05:24:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MZ0poWZ5"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6cb2e5d0104so32241926d6.3;
+        Mon, 07 Oct 2024 05:29:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728303856; x=1728908656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1728304188; x=1728908988; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ku7dHoXpcBGzxmDwFlzy5O2yX7mMKyvUeFGB5ab/Z98=;
-        b=OOrKqUFVGN+til1KTL10MXwaAlvqfhdBAA8OaV/VrMm2yGAP2b+K+rBLws5vWOHClL
-         ysNc9YSd83jY9R+nvpyM16sgL51fZuB4lSgLcGPHKLKNljiOJqu+6eFiIZSM5lLYkNA8
-         ipzPteLU7kLOh6v+kFFqkcJ64PNn4JPqRzxjp7UdAJ/CZCgOAzDUZZQ/suNyknQIli93
-         9frkwkis11dzWOdgunlLuqd37ysfAm+XCAVrD+EGCemfJBxrZYeP0JmxuRdAyYaecUCm
-         oR6RbUoYasV6Nzd4Bf2OxK0wsMBc4FQ7X+Cl95JzEOByYKs4DCxhV2P1GLHkxLTfEQOP
-         kTNA==
+        bh=XoM4lIRKq6wt6tvordN282TXwd9yd9Pg0kZvSLGS/L4=;
+        b=MZ0poWZ5d5nJ8DnSHDuTfwunvHD/Ot2zNoAxAEdurWdzMyk6xpK+k4/an6fWdPuQYh
+         eJMKckL7VNKBOljCCC4G46kD42ltFGoBtCP9Ngw7RrIisN7GfVhFvpjNTDHxPhyvQDSE
+         l13z991WtY3HlFr7LPIlRsQOG/EkFGpWnQlVSfx6CKLtUPFW52sNQCUdwEAyT7TLnZBD
+         qQKc/eWNLQcZiezlmZQAfue5w8/JvY+pj/0+TZQNvACk1IzHpqWSOYC8j58aAwPrnfA8
+         2BK8vCDlMr0Ox1pCRRvLaaglVCUPzrzjgLZaOYItEOuwQDotis8vzZrqOU5KOPaR7hyL
+         3yeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728303856; x=1728908656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728304188; x=1728908988;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ku7dHoXpcBGzxmDwFlzy5O2yX7mMKyvUeFGB5ab/Z98=;
-        b=owY3s42RjTbM4GcExpXLPgsT8FjX5B8lXIOCbPkDFYHyGWP3DLuGy+GYKceqjBt5WX
-         IYj3j+Htdb1O2Mn/q/o48NIPP/NlnP46I3kHZiBNQ0wsWEJZNFsNTurh0ybAbi9WlCVU
-         Ntsb7QikJudwOMjPS8afOY3FXxrTDe2SGtcbRVf5WL6BvFeaCuATG0wh6Lu6rWjYC1MW
-         42Bz8i+LHBY5XGArqy2RvPrpfmZAqo2TrNE2lhlsUKumkUtZvaUQ1htohD7md5Ur0dVe
-         ete7EMsAiqwDMZkcijIZuQc2MmQ+kgxHpzzfASOJM7MvKPFmRqKWxd6L4nf7a3dMgM9K
-         Yyfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhiafr+lNLQ0HZMHO8Ujx+rw0sVSIXpAuKQ5O+b3M4LADA0j9Ed+cJ/RJ8seVMGMJr0Pyzi13Z4F+ra4s4dQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAfYn7hXTWB8MoR3RSoipAKpHXR8KdcHLVQQ8g9H07LYYO6/7c
-	ecznh1c/OMHo1qfmIDeU8P5r5fmLyE3ZHEXGiOMI9ulGdMCSYuyQJov6CJitjvxrrN+YlZq2Hhn
-	GRV2wQfbzbjpdv1KuKC/WjicrdfyUwPQyq0wR
-X-Google-Smtp-Source: AGHT+IH8HYWMusOnnggysgcNaVoQpA7Kkf52UHiKBHrYYgnQi3e5Rs2SF/yP/clJCEOjCdyXWS+b5b1JKOiSHyD1iX0=
-X-Received: by 2002:a5d:61ca:0:b0:37c:fbf8:fc4 with SMTP id
- ffacd0b85a97d-37d0eaea686mr9189645f8f.59.1728303856278; Mon, 07 Oct 2024
- 05:24:16 -0700 (PDT)
+        bh=XoM4lIRKq6wt6tvordN282TXwd9yd9Pg0kZvSLGS/L4=;
+        b=uD5erVJH4AG9AxFioCGZNZBRJwHT6NskCqebl0GKqj+EraWaMNCaqxIRSYSEd8kdie
+         P46LKBT2g7qQxpzNt2AARQ0F4n/ixk0MAXdqhCYUtVeec5VuoIR1ZV7M2H41Ujutzyht
+         dOCASHzTQlZGYo3aUo8usEgoDc3SRXvlCN6lg9pGXNwC8JbxqzNTR49z097veaQWCdgJ
+         XT93Yhy2QB4PgEEPp2lSeqqyUo4dT+fij4YLq6CY880/9ssGsfaYwtZQIT7slYnxJlpD
+         5ext59OUfJ4wLIXpdIN1whsWwtHuH085BDUoiFqxfP1m+CF8fZlWHEVSImB0Er+tFpOj
+         WDUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWXgCHRV8gZN9qlAuHa+kRjbLC5I+SV1rSRtmYghBxX3I0CzpN8MKqsM5YWXTuHViW/hvpJvwuUHwh6wzm0dhM=@vger.kernel.org, AJvYcCWfEuvXd04f9p3mPP7x63rlLfzm3v8AYtFrrzahAQW+X0F4UB0rOdUQSTmjZKpuxUzFpyGAIGWT@vger.kernel.org, AJvYcCXKxeBDKOrZDAW26V7jzf13sdTgKUVq+dGrhCWAdpdBrWy4lZhP+L7pyW/xoBQ3h5Dqtte9QbfOpcetazQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8Qa8YmGkxrhrJ/rrg+BhiFpFX62wqZMpJGxjYJC4gBzFke4Ko
+	y9KmAaG3I71paqiAi9MrIx50LUe3M8c2E4/xJD4fmU7IKuZubOkd
+X-Google-Smtp-Source: AGHT+IGEyeCqIjlSUSKGI4oWYd+KNlZgB0SFN8Z4gxmCPqUzAoWZwMhyG/fWX8kWZY3LWknsznciFQ==
+X-Received: by 2002:a05:6214:5684:b0:6cb:3b9b:1673 with SMTP id 6a1803df08f44-6cb9a4fbdd5mr176978746d6.49.1728304188014;
+        Mon, 07 Oct 2024 05:29:48 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cba46efeddsm25227246d6.71.2024.10.07.05.29.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2024 05:29:47 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CBF3E120006B;
+	Mon,  7 Oct 2024 08:29:46 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 07 Oct 2024 08:29:46 -0400
+X-ME-Sender: <xms:OtQDZyCv97xoN1FWH6QL8w2dK5iLh5iuZS8I8EVp8ViJx6PZ8Tov-g>
+    <xme:OtQDZ8hsQnanpkzGQcdV9to7iarQBkrGzTWXszY7oqP-J2cKx87_qAtWWwaKn0p1e
+    7raZFAGRARza2laUw>
+X-ME-Received: <xmr:OtQDZ1lZxLcebLFYxul1fFCnIxWareSXd3moacpuzTMH9ZkhdbsnhdtoqD92Ig>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddvledghedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeeigeethfejvdfhudegtdevtefhleelffegteev
+    tdelgfeugefhhffhteegiefhheenucffohhmrghinheplhifnhdrnhgvthenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
+    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhe
+    dvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdp
+    nhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrnh
+    gurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhi
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtoh
+    hmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopeho
+    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
+X-ME-Proxy: <xmx:OtQDZwxtz3fxqqg9zam0wKbkTd52nmytCjdrRCXtIHG_aFQDmoAQ7g>
+    <xmx:OtQDZ3T6nYowzw0MAuXho6wIjZY1C8GacVyWYyZ8xXzkIPcLZsDndg>
+    <xmx:OtQDZ7Z3HvDpMPnE47YoCfmx3UGzaA7RsU8AANTb47l_jkskvhRpiQ>
+    <xmx:OtQDZwQO7D6aAYnO1IxRPH62lNc73hiDuBNxZ9xpwHQf1M0gxmDGIQ>
+    <xmx:OtQDZ5Bcekv_zvj5qcQ2luZ4a8Q5kNVioYZYrr83jZNS7EJzAWzPbKpV>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Oct 2024 08:29:46 -0400 (EDT)
+Date: Mon, 7 Oct 2024 05:28:28 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
+Message-ID: <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+ <20241005122531.20298-6-fujita.tomonori@gmail.com>
+ <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
+ <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+ <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com> <20241005122531.20298-5-fujita.tomonori@gmail.com>
-In-Reply-To: <20241005122531.20298-5-fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 7 Oct 2024 14:24:03 +0200
-Message-ID: <CAH5fLgjTifsDKrxZTUTo74HR34X1zusO_7h0ftWWH-iZR_NXNA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 4/6] rust: time: add wrapper for fsleep function
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
 
-On Sat, Oct 5, 2024 at 2:26=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Add a wrapper for fsleep, flexible sleep functions in
-> `include/linux/delay.h` which deals with hardware delays.
->
-> The kernel supports several `sleep` functions to handle various
-> lengths of delay. This adds fsleep, automatically chooses the best
-> sleep method based on a duration.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/helpers/time.c |  6 ++++++
->  rust/kernel/time.rs | 16 ++++++++++++++++
->  2 files changed, 22 insertions(+)
->
-> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-> index 60dee69f4efc..0c85bb06af63 100644
-> --- a/rust/helpers/time.c
-> +++ b/rust/helpers/time.c
-> @@ -1,7 +1,13 @@
->  // SPDX-License-Identifier: GPL-2.0
->
-> +#include <linux/delay.h>
->  #include <linux/ktime.h>
->
-> +void rust_helper_fsleep(unsigned long usecs)
-> +{
-> +       fsleep(usecs);
-> +}
-> +
->  ktime_t rust_helper_ktime_add_ns(const ktime_t kt, const u64 nsec)
->  {
->         return ktime_add_ns(kt, nsec);
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 3e00ad22ed89..5cca9c60f74a 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -5,9 +5,12 @@
->  //! This module contains the kernel APIs related to time and timers that
->  //! have been ported or wrapped for usage by Rust code in the kernel.
->  //!
-> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
->  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.=
-h).
->  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
->
-> +use core::ffi::c_ulong;
-> +
->  /// The number of nanoseconds per microsecond.
->  pub const NSEC_PER_USEC: i64 =3D bindings::NSEC_PER_USEC as i64;
->
-> @@ -178,3 +181,16 @@ fn add(self, delta: Delta) -> Ktime {
->          Ktime::from_raw(t)
->      }
->  }
-> +
-> +/// Sleeps for a given duration.
-> +///
-> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
-> +/// which automatically chooses the best sleep method based on a duratio=
-n.
-> +///
-> +/// `Delta` must be longer than one microsecond.
-> +///
-> +/// This function can only be used in a nonatomic context.
-> +pub fn fsleep(delta: Delta) {
-> +    // SAFETY: FFI call.
-> +    unsafe { bindings::fsleep(delta.as_micros() as c_ulong) }
-> +}
+On Sun, Oct 06, 2024 at 04:45:21PM +0200, Andrew Lunn wrote:
+[...]
+> > > > +    if sleep {
+> > > > +        // SAFETY: FFI call.
+> > > > +        unsafe { bindings::might_sleep() }
+> > > > +    }
+> > > 
+> > > What is actually unsafe about might_sleep()? It is a void foo(void)
+> > 
+> > Every extern "C" function is by default unsafe, because C doesn't have
+> > the concept of safe/unsafe. If you want to avoid unsafe, you could
+> > introduce a Rust's might_sleep() which calls into
+> > `bindings::might_sleep()`:
+> > 
+> > 	pub fn might_sleep() {
+> > 	    // SAFETY: ??
+> > 	    unsafe { bindings::might_sleep() }
+> > 	}
+> > 
+> > however, if you call a might_sleep() in a preemption disabled context
+> > when CONFIG_DEBUG_ATOMIC_SLEEP=n and PREEMPT=VOLUNTERY, it could means
+> > an unexpected RCU quiescent state, which results an early RCU grace
+> > period, and that may mean a use-after-free. So it's not that safe as you
+> > may expected.
+> 
+> If you call might_sleep() in a preemption disabled context you code is
+> already unsafe, since that is the whole point of it, to find bugs
 
-This rounds down. Should this round it up to the nearest microsecond
-instead? It's generally said that fsleep should sleep for at least the
-provided duration, but that it may sleep for longer under some
-circumstances. By rounding up, you preserve that guarantee.
+Well, in Rust, the rule is: any type-checked (compiled successfully)
+code that only calls safe Rust functions cannot be unsafe. So the fact
+that calling might_sleep() in a preemption disabled context is unsafe
+means that something has to be unsafe.
 
-Also, the note about always sleeping for "at least" the duration may
-be a good fit for the docs here as well.
+This eventually can turn into a "blaming game" in the design space: we
+can either design the preemption disable function as unsafe or the
+might_sleep() function as unsafe. But one of them has to be unsafe
+function, otherwise we are breaking the safe code guarantee.
 
-Alice
+However, this is actually a special case: currently we want to use klint
+[1] to detect all context mis-matches at compile time. So the above rule
+extends for kernel: any type-checked *and klint-checked* code that only
+calls safe Rust functions cannot be unsafe. I.e. we add additional
+compile time checking for unsafe code. So if might_sleep() has the
+proper klint annotation, and we actually enable klint for kernel code,
+then we can make it safe (along with preemption disable functions being
+safe).
+
+> where you use a sleeping function in atomic context. Depending on why
+> you are in atomic context, it might appear to work, until it does not
+> actually work, and bad things happen. So it is not might_sleep() which
+> is unsafe, it is the Rust code calling it.
+
+The whole point of unsafe functions is that calling it may result into
+unsafe code, so that's why all extern "C" functions are unsafe, so are
+might_sleep() (without klint in the picture).
+
+
+[1]: https://lwn.net/Articles/951550/
+
+Regards,
+Boqun
+
+> 
+> 	Andrew
+> 
+> 
+> 
+> 
