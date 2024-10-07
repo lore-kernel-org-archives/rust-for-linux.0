@@ -1,90 +1,86 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0C61DB54A
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 17:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FEF1DBB3C;
+	Mon,  7 Oct 2024 17:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728321133; cv=none; b=XSurW6soR2IZVNSlfwsQBN9C/FwFXT+fK1dhxTlCwlQvResdOpeFyG97ZqtHPC2iSUvJh2bzOZ/E3II0B+GxgLNvQWeJqcxebbyAdeJor9umeyGIJujmTW71U/YKyP/c0UBXHBKYKwC27SjS5N7wrwHdMTPXFmgj0OFJ1C+yoo4=
+	t=1728321241; cv=none; b=RsuB1mvgpZ+VErCmRvpqlQujhKdXuMpG2j4d8L4URDINT2D6i21fiyvTRQK0M93NdS5NFgWW168wn+cbHKGqDk85MUlj9VvAxX2Afz++CusazaJpZI10sZFWlXcSexc0yK0YDbKHgcTR+oa7rF0iGShQY9XiKqxYdydT3ZQh9X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728321133; c=relaxed/simple;
-	bh=1wc8m9TFTwWpZqDX3T7GQc/8oAv0Crr+LAkxtX+eRWM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p5+TVeNSO9W1rC6J2cSv0a97lv6DynBa2ouJ1NBSaRJKqSG4kzKIEDlRsX3wb1xM+S4cFIGz2o89I8WkOG84pPzPL8lHqcvt2u6B02rrH1qaG6Jd6P67QzKmfu+lB4f+vvhMUh7FvY/02gApaCrR7NHg+K3Y2uLPUyWzwL/U6Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJdel8IC; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728321241; c=relaxed/simple;
+	bh=+1el5oe20173DkKtwlL01ebh1nxEK5s/2QXdYu96hEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kf9YR+YownZXGMt9Aks+zm6Mx3FJ5o0haRg/xRGUhPQhN8JOvnNKHyu2LjYmrLdhzQcAQEsels7jg7c5IX/66EfUcb5q94RNIv8JffqdytTgooUQbAkQ236O2lKKYz4ZKc9uz3gsNHun4pRbTKKvKiv8n2FyIt/ZPYkxek/MXfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=17Gnuf9a; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HJdel8IC"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7e9f98d3234so208529a12.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 10:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728321132; x=1728925932; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1wc8m9TFTwWpZqDX3T7GQc/8oAv0Crr+LAkxtX+eRWM=;
-        b=HJdel8IChjoLtTUE5ZwG7HSLlgSvAxNMxnk4rMQoOYJKNHwjwE/3hlkS1jO5xqAr2q
-         mPLOykPbpJw1sndO8qYwGZ+qzaLi9b9y5Ibb38rlWMIHVPPM7ZVWQvTrUWXUlG+qaJGm
-         FoFtnZRck1+lUJg1PrJGriXY8QGxCITqoePbWMp2AsLWET9sdlvo3SonfaZwh/rWC8Cp
-         zKcyxKaYabHclhgA6kUDytLao22DRa2c0hdLXnw14YjI/rV7MhfKUjeQtV3qvjmbxebM
-         EmuinXRZQhTo50UNQPXdKc4qUsn0D8+dNs/Pi755hT24+7Ritl/d7kqbvk71l4/kzY9F
-         j5Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728321132; x=1728925932;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1wc8m9TFTwWpZqDX3T7GQc/8oAv0Crr+LAkxtX+eRWM=;
-        b=IciEwx3qfPe5PTm/BcUaOX7osz432oWkq1PLpQVoiCHRgfj8hZEjzqi+IeR8pOfFe5
-         WM7NZTV8gUp2ng8Vs8dkTXoMTz1IECa5URm1WXyCHc2DRqCkUGejyYFLk6eSHT/0H28h
-         HHhf+Z3YuVTZVVXsTfE4DxjhEqdLyaPeFYYU3fhEzNFdKyEd0a2WlaJUlYbTLP9wRolw
-         siGkYBfT5YWnAWkebyTvtNUyd+pV0hs0Dw4w8cn0KuigoOvCWAamWhOvZWECImey2vRp
-         lq8PbFzTx8dbi18AnByqTCJ4N9N7ViXWvxOJZQrC5pM7WHHpxQrpaRHC2xQ7GfN/dUpe
-         nH9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXW/NxDJEQpwNuZwHMRktJrzTj1PhaDR8/7IZ/kNmJqUCs7SqZaXIE9iT3PbsK+U0QWDLsAGc1aHWlE6b3i8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymuOFqClYqCh2MzjTCEp1ei/TbibUB8druxoPrvJFcqkY80y2S
-	1ttKaogdkxcS/QJZCOMW0g5LVxHOEbxmLWciVyYey+XAmoO23XoVG1DbV1EVmCT741hDhYjy6xJ
-	Tm1EYWo3+liOTY69jV+3z4H1unHo=
-X-Google-Smtp-Source: AGHT+IEisR+qt4FNuoIXK0FTJFgcxm3aeIU65sBCQoQ7UDvWszf2pKq/cVYIeOJMSExx7cOUcol/RXQbOk1aJOnhNvQ=
-X-Received: by 2002:a05:6a21:6d9a:b0:1cf:3b1e:ccd with SMTP id
- adf61e73a8af0-1d6dfa3a7b7mr8756884637.5.1728321131871; Mon, 07 Oct 2024
- 10:12:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="17Gnuf9a"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=w6ppkj+1yxEfd3/jQGqcf2ZXkXdKjMbZSyR2uVRspF4=; b=17Gnuf9acoMaaQd0RE23twEGwi
+	wIEVPxK2AxR/WnNqghdtdfWTy7sL74c4oHHlIATIgasy+k7a57Xc16gAAyJ7ISAgb4wU8yEgW2q1+
+	AFYFl7Ru+0553DIa9dmg1MNqd1vT3l1QX3gw7ZrBZydp2+lrLkCZEFoATg4HHmzGNdaI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sxrIi-009I7h-Rp; Mon, 07 Oct 2024 19:13:40 +0200
+Date: Mon, 7 Oct 2024 19:13:40 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, anna-maria@linutronix.de,
+	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
+Message-ID: <5368483b-679a-4283-8ce2-f30064d07cad@lunn.ch>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+ <20241005122531.20298-6-fujita.tomonori@gmail.com>
+ <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
+ <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+ <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch>
+ <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+ <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch>
+ <CAH5fLgjL9DA7+NFetJGDdi_yW=8YZCYYa_5Ps_bkhBTYwNCgMQ@mail.gmail.com>
+ <ZwPsdvzxQVsD7wHm@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240918225115.2309224-1-aliet.exposito@gmail.com>
- <CANiq72keixz_kVpUQMEFQcgewwrjcA_Od3E5-K9jF_UYFrg2aQ@mail.gmail.com> <d39bd39d-510e-4a4a-b883-e01e09583fe0@gmail.com>
-In-Reply-To: <d39bd39d-510e-4a4a-b883-e01e09583fe0@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 7 Oct 2024 19:11:58 +0200
-Message-ID: <CANiq72n6mrm8n9c6va=MJVz39+0ni3TbaJv66tnWx9jzNkj21w@mail.gmail.com>
-Subject: Re: [PATCH 0/2] rust: Move unfit code out of `rust/kernel/types.rs`
-To: =?UTF-8?Q?Aliet_Exp=C3=B3sito?= <aliet.exposito@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZwPsdvzxQVsD7wHm@boqun-archlinux>
 
-On Sun, Oct 6, 2024 at 9:30=E2=80=AFPM Aliet Exp=C3=B3sito <aliet.exposito@=
-gmail.com> wrote:
->
-> Hello Miguel, yes, I have double-checked and I am happy with the rebase.
->
-> I want to continue studying Rust so that little by little I can help in
-> the Rust-for-Linux subsystem.
->
-> Thank you very much to everyone; you have an excellent community, very
-> welcoming to beginners.
+> > pub fn might_sleep() {
+> >     // SAFETY: Always safe to call.
+> >     unsafe { bindings::might_sleep() };
+> 
+> It's not always safe to call, because might_sleep() has a
+> might_resched() and in preempt=voluntary kernel, that's a
+> cond_resched(), which may eventually call __schedule() and report a
+> quiescent state of RCU. This could means an unexpected early grace
+> period, and that means a potential use-afer-free.
 
-Thanks for double-checking and the kind words -- messages like this
-may make others decide to contribute! :)
+How does C handle this?
 
-Cheers,
-Miguel
+I'm not an RCU person...
+
+But if you have called might_sleep() you are about to do something
+which could sleep. If it does sleep, the scheduler is going to be
+called, the grace period has ended, and RCU is going to do its
+thing. If that results in a use-after-free, your code is
+broken. might_sleep makes no difference here, the code is still
+broken, it just happens to light the fuse for the explosion a bit
+earlier.
+
+Or, i'm missing something, not being an RCU person.
+
+	Andrew
