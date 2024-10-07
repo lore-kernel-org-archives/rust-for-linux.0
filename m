@@ -1,97 +1,107 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271121741E0;
-	Mon,  7 Oct 2024 09:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966811BA285;
+	Mon,  7 Oct 2024 11:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728293368; cv=none; b=HdkzOBm6i03dJfCyNYQoi6e3Y2iT1vogG28OWsnvAxJnewljY3H/hPum4vIN0XxSjmATdPN6pjCxisiLnnTVBRVhF4ttMXEAZsGX7NjIkUAHrMINCFRkuXI5SbPDFk0mlANsHt+Epl88ZuTEfblnMwdLO9so3/8P53ppMdlg1gI=
+	t=1728302330; cv=none; b=ojwhOp13Fv+2v9pIxfCUTwgSw61PvTIfkFNOHkx73iZXpd+3B/F7iORUWTPqUsbS9P96uMdpZsyPQul3T8cgTmK9rom/IcF8owAklayragt79q0H04dqmP2BKHu7bB3T+bHTJuOAayTW545BgZl639aCVIoiYVr7MtwMCXiIKho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728293368; c=relaxed/simple;
-	bh=qfOUFBTvqCB4FE9gv1uwZN2K732kdqC0ng7ZaNbM7SA=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=u3JCTwj0bpZV/RsLdEr1CVLED1y/iA4TqRbIDEh5cOJ3r9MecdkVKGp61QQbUilIQrxzUqyvHkpj6ZDH7BdydmVJM6xLwqBMoVqeYLJrC8aHrAKfT4pTpssw64xQQTvJs64q+xN+T9F/E5Box2F9jPKVPRC7+Iy+9gkCLUD/Spo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jZwr4fUR; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728302330; c=relaxed/simple;
+	bh=khvvmbcNdVwUvYoWcpDpONWz7SgWhxezuf85x6iBfXo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PhPfO0EQhVxz44ZOg016dK/FymGvOWnJ2jlqumJV4rpgiCnYF5fKrB9/MHasJZDGO9S6spkL/l/Pe1mnlEwPuZ/Hc/otm9pMtpL+m2EjIggEiEtX+/7Y64Pb2DS6Sgud60hggmtbN67CJ4GkWGROcAH/6kOErfoUMS6vtdtteFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+dofVDJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jZwr4fUR"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-71def715ebdso1574052b3a.2;
-        Mon, 07 Oct 2024 02:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728293366; x=1728898166; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E0mfmzLytCqyX5Ep3iM/eni/YkVGAzsnZDXJh44T6XY=;
-        b=jZwr4fUR079yyBEaGJJfOXltidHpeDnTRSVBfeoLsQe8sVgr2XjYCUKf3ihdpDjmjH
-         CU55LBvSK69HdLwGXds36tG1oDicAauLL0uBZzDpfaqp330rhpOx8+4+H1BKejglBCX0
-         DbnjNBvM27D+vL71txdWDUKPhRxPqpkSAFCQ1uKEvikP70CRN5/YXEcHokZLvdXadPy/
-         eh+NqYEAowkzSColrem1p49T5VSO7Y4nKFvxB1Z1fEWbtIzIR42aCmEXLlRFjGXHuhpS
-         Pnm4MVnme14syyOJxudkSGFwuPmns8tq3/QkyqOMduKNHBHl5iAAICvYTPrIqhBK34VX
-         PI1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728293366; x=1728898166;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=E0mfmzLytCqyX5Ep3iM/eni/YkVGAzsnZDXJh44T6XY=;
-        b=aG4VIHtnt8Ob/moyc288GF3sIABzZFd5S1mwN5M3fuIfbQaOPsGpLdamxBAFD+iqtv
-         eGHvJYvm3kPMPPPQgFrVmR0egiZx2m73yrtwm89k/0pyyzjw26r96lk80AXkReKsf4xR
-         uAbEPBeQjYCH6Y1ggDFT0TLLssagBjm2owMXIX6VQgLxTT5F9GegyH5yZijbY+vWnuMI
-         RMNTsQZyX4i/3p0Q1+nYV3gIk7jGn8ZQASAmLE2MQRM5q9YcJmZrceGmjEvhx1gISCNl
-         9c4FG33fwaInTOnFlnRsrgsx+SyIHOEPBQyJCeeteuaNdDU66DOGLRZPnh6Lno3epy89
-         Wehw==
-X-Forwarded-Encrypted: i=1; AJvYcCURzEdghXfhrXv4y50FBZrw7mRxjjY+eGT9SBruZlbc/u2gWqYNrQ2lV8B1c8wwjdVF9gkKBCpwHv01aMJttMI=@vger.kernel.org, AJvYcCWTtym7loIL2XeKLy6YReMsX9q703V2gYCQYAEqpM2iIYC+FW10C1bemirnKdTj/9gcpsM/Fazo@vger.kernel.org, AJvYcCX3pq0FcrWIW7WhlE3zlOi9BKzqWNmoHJJqj8k3mYhUnwJOk/XOR39D9rYp5t0Xy4Hl0MIwl+aETSHnqMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3GuFJpJDbP98b5JehDSNE8xGPeuY4SZlEyQo8MmUBo70G810B
-	0FZqGg31zOcIeHBCCAwcb7MZOttYs0CLgMCM35DBybn0qCWN3uty
-X-Google-Smtp-Source: AGHT+IFXVeb2ghbbfG+zM1W/Q0//u2QoLcLVxkZCjJ356wpLdAbvlzyiXYHNnZhtURQIboAkpAqisw==
-X-Received: by 2002:a05:6a00:1250:b0:71d:fbff:a4b5 with SMTP id d2e1a72fcca58-71dfbffa617mr9320131b3a.0.1728293366252;
-        Mon, 07 Oct 2024 02:29:26 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e03288a37sm1478705b3a.155.2024.10.07.02.29.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 02:29:25 -0700 (PDT)
-Date: Mon, 07 Oct 2024 18:29:20 +0900 (JST)
-Message-Id: <20241007.182920.1572597460085693509.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, finn@kloenk.dev, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/6] rust: time: Implement PartialEq and
- PartialOrd for Ktime
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLgirPLNMXnqJBuGhpuoj+s32FAS=e3MGgpoeSbkfxxjjLQ@mail.gmail.com>
-References: <3D24A2BA-E6CC-4B82-95EF-DE341C7C665B@kloenk.dev>
-	<20241007.143707.787219256158321665.fujita.tomonori@gmail.com>
-	<CAH5fLgirPLNMXnqJBuGhpuoj+s32FAS=e3MGgpoeSbkfxxjjLQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+dofVDJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D1DC4CEC6;
+	Mon,  7 Oct 2024 11:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728302330;
+	bh=khvvmbcNdVwUvYoWcpDpONWz7SgWhxezuf85x6iBfXo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T+dofVDJZfONJwuk8iBRC3FhzN90jQzdePvN33DKpVREsWB/VlaocZbLKeRjBNOiI
+	 FeSAiYTyTo5pTw9UhtukYpUQRYTqaGDDSnSggqo+lmokr2oM/kLlrCF+RGN3YXlunu
+	 RLqTmUBbeRjzhFETMJ9h2JfdlOLeoFeFS5oLghVngQexPIZXLmTMiJ8NSzD2BJ72U+
+	 KTW8Ypmmxg6W9F5ysR9d6Yfz1I0Jn7BGB4ikV42jjIte3LKk4QIu53wDkTauuL1pAh
+	 pkah0qO1jYn1sJ+mQ8PVQTrtCzDIhko/qds2XPxX1u+2OLdtBhv4dm/iy/EPwpgJR3
+	 FlD+tDtETeLgQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Bjoern Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve Hjonnevag <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Kees Cook <kees@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v5] rust: add PidNamespace
+Date: Mon,  7 Oct 2024 13:58:23 +0200
+Message-ID: <20241007-notaufnahme-missrede-c81272cb0d24@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241002-brauner-rust-pid_namespace-v5-1-a90e70d44fde@kernel.org>
+References: <20241002-brauner-rust-pid_namespace-v5-1-a90e70d44fde@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1351; i=brauner@kernel.org; h=from:subject:message-id; bh=khvvmbcNdVwUvYoWcpDpONWz7SgWhxezuf85x6iBfXo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQzn/lQbOZnxyVV8vy/lKng89MHjS3ljJXjlG49Tkn68 WT1g+43HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPxVWZkOG7Dv0bD4+zir5I1 S17VVhx8ZjtP2VFfcCNHXvykfc/nmjH8r/Fb65PvePHTfpat2b+Mq5Kf1CSUz72vcvGET1wps6Y cKwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Mon, 7 Oct 2024 10:41:23 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
-
->> >> Implement PartialEq and PartialOrd trait for Ktime by using C's
->> >> ktime_compare function so two Ktime instances can be compared to
->> >> determine whether a timeout is met or not.
->> >
->> > Why is this only PartialEq/PartialOrd? Could we either document why or implement Eq/Ord as well?
->>
->> Because what we need to do is comparing two Ktime instances so we
->> don't need them?
+On Wed, 02 Oct 2024 13:38:10 +0200, Christian Brauner wrote:
+> The lifetime of `PidNamespace` is bound to `Task` and `struct pid`.
 > 
-> When you implement PartialEq without Eq, you are telling the reader
-> that this is a weird type such as floats where there exists values
-> that are not equal to themselves. That's not the case here, so don't
-> confuse the reader by leaving out `Eq`.
+> The `PidNamespace` of a `Task` doesn't ever change once the `Task` is
+> alive. A `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE_NEWPID)`
+> will not have an effect on the calling `Task`'s pid namespace. It will
+> only effect the pid namespace of children created by the calling `Task`.
+> This invariant guarantees that after having acquired a reference to a
+> `Task`'s pid namespace it will remain unchanged.
+> 
+> [...]
 
-Understood. I'll add Eq/Ord in the next version.
+Applied to the vfs.rust.pid_namespace branch of the vfs/vfs.git tree.
+Patches in the vfs.rust.pid_namespace branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.rust.pid_namespace
+
+[1/1] rust: add PidNamespace
+      https://git.kernel.org/vfs/vfs/c/2012326b5976
