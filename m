@@ -1,99 +1,97 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BC918BBB7
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Oct 2024 08:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271121741E0;
+	Mon,  7 Oct 2024 09:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728290500; cv=none; b=SD/BsOnWBOlqaRYUl3V+0iRgtk41lpvRQ1eRZ94vfgB4frsdtcyMXTJv5l4Qeh1z6mUUJ/LxjuTWHUK/epzGyM6HiN9aBiSCg0KD5M96y+/Zm8NWYtXrdfvNZZ1p0KVDscfEm6OCnRSHSbB1HTRlJtK74YaMiiC+zogehVDkq6U=
+	t=1728293368; cv=none; b=HdkzOBm6i03dJfCyNYQoi6e3Y2iT1vogG28OWsnvAxJnewljY3H/hPum4vIN0XxSjmATdPN6pjCxisiLnnTVBRVhF4ttMXEAZsGX7NjIkUAHrMINCFRkuXI5SbPDFk0mlANsHt+Epl88ZuTEfblnMwdLO9so3/8P53ppMdlg1gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728290500; c=relaxed/simple;
-	bh=lZq9penah7gAuMo7VonFN6z7LH5CuCz+KTWzrVG0Kkg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pk/qyoSFW4SuZEMNsYQ4HMxhug+YplcLV2eugwXXcqZyK02NWlEo60GQN904FB30saHk+7bdxLcR2HaFsnGQUSMubttswEKZY50Ej0T6EqutngXsEISSgkofTNBGarwk5QBBttuLCsgNt7qqACLQzCMMUBk5Uxbw9tke2ayNNz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3hM/k9lL; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728293368; c=relaxed/simple;
+	bh=qfOUFBTvqCB4FE9gv1uwZN2K732kdqC0ng7ZaNbM7SA=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=u3JCTwj0bpZV/RsLdEr1CVLED1y/iA4TqRbIDEh5cOJ3r9MecdkVKGp61QQbUilIQrxzUqyvHkpj6ZDH7BdydmVJM6xLwqBMoVqeYLJrC8aHrAKfT4pTpssw64xQQTvJs64q+xN+T9F/E5Box2F9jPKVPRC7+Iy+9gkCLUD/Spo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jZwr4fUR; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3hM/k9lL"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37cd8a5aac9so2164032f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Oct 2024 01:41:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jZwr4fUR"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-71def715ebdso1574052b3a.2;
+        Mon, 07 Oct 2024 02:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728290496; x=1728895296; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lZq9penah7gAuMo7VonFN6z7LH5CuCz+KTWzrVG0Kkg=;
-        b=3hM/k9lLi4Lrhjpkdhvk7bALNKUdSPjDlAyaNHCY+7KAAW1qvf5B0sKPhZVU+qlHzY
-         /TgWNSeETECbzwLv/CqLDctjwyjpub6v90FzdFa/8+pHCH8mP46bLsuqelOYdAbBEgUE
-         zLVt9wXC/k/80SRkGiOiEGca2M8w4/pmhss9JCkd2RNEPSJjaD3HmzW33yWQ1KISeiBJ
-         /y4Kw5KcH/p9MUny7MAzjm8RswvrJrmliOiUF/415+fBDE2qtXSJryXm1uxUsCTqflll
-         9kpM+x6THpwe0t7En1MWDG4qGVhpxwRFmrxRoxD8pdj1RNBr9UzYM9dIsRiNGCc1G9oA
-         PwRQ==
+        d=gmail.com; s=20230601; t=1728293366; x=1728898166; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E0mfmzLytCqyX5Ep3iM/eni/YkVGAzsnZDXJh44T6XY=;
+        b=jZwr4fUR079yyBEaGJJfOXltidHpeDnTRSVBfeoLsQe8sVgr2XjYCUKf3ihdpDjmjH
+         CU55LBvSK69HdLwGXds36tG1oDicAauLL0uBZzDpfaqp330rhpOx8+4+H1BKejglBCX0
+         DbnjNBvM27D+vL71txdWDUKPhRxPqpkSAFCQ1uKEvikP70CRN5/YXEcHokZLvdXadPy/
+         eh+NqYEAowkzSColrem1p49T5VSO7Y4nKFvxB1Z1fEWbtIzIR42aCmEXLlRFjGXHuhpS
+         Pnm4MVnme14syyOJxudkSGFwuPmns8tq3/QkyqOMduKNHBHl5iAAICvYTPrIqhBK34VX
+         PI1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728290496; x=1728895296;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lZq9penah7gAuMo7VonFN6z7LH5CuCz+KTWzrVG0Kkg=;
-        b=v/COPPldFP5ufh5J4l+tSyCzB6w3AGaW92OI43iytGYQI3G4ipm/XGlVntXdt9EQT9
-         arc9vYFd2XTm41h+scdepJ8QzHRXyuMCCa2JT1XurqXLOfNdRKfc3yTVED86e4d55VSW
-         ggG1lSAJwL6jSQ80GDdwGEAyBapjSozy5H0Q+uxoYDvpLCmhMB+ff8Oj7Cc6oKULcZSw
-         EShodBg2QvCnBfLqLEfg+3QoO2DpiyFohyVfuHiy/7xvUdDg1oYdKK2e+A42yKsxqIo6
-         bpx1FqSlxuqEJ9vwFgpD0nte9jIbtUcPV3mOZ34HC584WaAtjMinWaRw2eNnIa2qdNVZ
-         XGBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXNFMcWuTqm//UGddzWbXJckhVvGIsjqyT+T7/ZMgQ4Agmzd3mNKqASvqV+CbLeIyh15EEzL1rMSJ6kkpepYA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxD8uPP8TACbl6vOohPkxb7Rfv+BbO4sFQKiG4WpJtbIEkevmjb
-	8pQtO8CuVbHFYBlGuuFYV0xXLH0JXL7YWzVu4B9fftqlfh8uuzUlP+hy0kf9ZyurVcDuOyRZPdA
-	+u82rMIFI5yma6SEY7uBDqIdDtLFUwP25BzPQ
-X-Google-Smtp-Source: AGHT+IGTRgHCCYQ9wvmh2HAydK1cwGiHD4ib1IG2CJRk6JiPA1BuIRNRo/7C2CaH7YWebj5QH1G8ucz5efiqpGwNw7o=
-X-Received: by 2002:a5d:6149:0:b0:37c:cd71:2ba2 with SMTP id
- ffacd0b85a97d-37d0e7bcdf8mr5314481f8f.38.1728290496403; Mon, 07 Oct 2024
- 01:41:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728293366; x=1728898166;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=E0mfmzLytCqyX5Ep3iM/eni/YkVGAzsnZDXJh44T6XY=;
+        b=aG4VIHtnt8Ob/moyc288GF3sIABzZFd5S1mwN5M3fuIfbQaOPsGpLdamxBAFD+iqtv
+         eGHvJYvm3kPMPPPQgFrVmR0egiZx2m73yrtwm89k/0pyyzjw26r96lk80AXkReKsf4xR
+         uAbEPBeQjYCH6Y1ggDFT0TLLssagBjm2owMXIX6VQgLxTT5F9GegyH5yZijbY+vWnuMI
+         RMNTsQZyX4i/3p0Q1+nYV3gIk7jGn8ZQASAmLE2MQRM5q9YcJmZrceGmjEvhx1gISCNl
+         9c4FG33fwaInTOnFlnRsrgsx+SyIHOEPBQyJCeeteuaNdDU66DOGLRZPnh6Lno3epy89
+         Wehw==
+X-Forwarded-Encrypted: i=1; AJvYcCURzEdghXfhrXv4y50FBZrw7mRxjjY+eGT9SBruZlbc/u2gWqYNrQ2lV8B1c8wwjdVF9gkKBCpwHv01aMJttMI=@vger.kernel.org, AJvYcCWTtym7loIL2XeKLy6YReMsX9q703V2gYCQYAEqpM2iIYC+FW10C1bemirnKdTj/9gcpsM/Fazo@vger.kernel.org, AJvYcCX3pq0FcrWIW7WhlE3zlOi9BKzqWNmoHJJqj8k3mYhUnwJOk/XOR39D9rYp5t0Xy4Hl0MIwl+aETSHnqMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3GuFJpJDbP98b5JehDSNE8xGPeuY4SZlEyQo8MmUBo70G810B
+	0FZqGg31zOcIeHBCCAwcb7MZOttYs0CLgMCM35DBybn0qCWN3uty
+X-Google-Smtp-Source: AGHT+IFXVeb2ghbbfG+zM1W/Q0//u2QoLcLVxkZCjJ356wpLdAbvlzyiXYHNnZhtURQIboAkpAqisw==
+X-Received: by 2002:a05:6a00:1250:b0:71d:fbff:a4b5 with SMTP id d2e1a72fcca58-71dfbffa617mr9320131b3a.0.1728293366252;
+        Mon, 07 Oct 2024 02:29:26 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e03288a37sm1478705b3a.155.2024.10.07.02.29.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2024 02:29:25 -0700 (PDT)
+Date: Mon, 07 Oct 2024 18:29:20 +0900 (JST)
+Message-Id: <20241007.182920.1572597460085693509.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, finn@kloenk.dev, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/6] rust: time: Implement PartialEq and
+ PartialOrd for Ktime
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgirPLNMXnqJBuGhpuoj+s32FAS=e3MGgpoeSbkfxxjjLQ@mail.gmail.com>
+References: <3D24A2BA-E6CC-4B82-95EF-DE341C7C665B@kloenk.dev>
+	<20241007.143707.787219256158321665.fujita.tomonori@gmail.com>
+	<CAH5fLgirPLNMXnqJBuGhpuoj+s32FAS=e3MGgpoeSbkfxxjjLQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
- <20241005122531.20298-2-fujita.tomonori@gmail.com> <3D24A2BA-E6CC-4B82-95EF-DE341C7C665B@kloenk.dev>
- <20241007.143707.787219256158321665.fujita.tomonori@gmail.com>
-In-Reply-To: <20241007.143707.787219256158321665.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 7 Oct 2024 10:41:23 +0200
-Message-ID: <CAH5fLgirPLNMXnqJBuGhpuoj+s32FAS=e3MGgpoeSbkfxxjjLQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/6] rust: time: Implement PartialEq and
- PartialOrd for Ktime
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: finn@kloenk.dev, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 7, 2024 at 7:37=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Sun, 06 Oct 2024 12:28:59 +0200
-> Fiona Behrens <finn@kloenk.dev> wrote:
->
-> >> Implement PartialEq and PartialOrd trait for Ktime by using C's
-> >> ktime_compare function so two Ktime instances can be compared to
-> >> determine whether a timeout is met or not.
-> >
-> > Why is this only PartialEq/PartialOrd? Could we either document why or =
-implement Eq/Ord as well?
->
-> Because what we need to do is comparing two Ktime instances so we
-> don't need them?
+On Mon, 7 Oct 2024 10:41:23 +0200
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-When you implement PartialEq without Eq, you are telling the reader
-that this is a weird type such as floats where there exists values
-that are not equal to themselves. That's not the case here, so don't
-confuse the reader by leaving out `Eq`.
+>> >> Implement PartialEq and PartialOrd trait for Ktime by using C's
+>> >> ktime_compare function so two Ktime instances can be compared to
+>> >> determine whether a timeout is met or not.
+>> >
+>> > Why is this only PartialEq/PartialOrd? Could we either document why or implement Eq/Ord as well?
+>>
+>> Because what we need to do is comparing two Ktime instances so we
+>> don't need them?
+> 
+> When you implement PartialEq without Eq, you are telling the reader
+> that this is a weird type such as floats where there exists values
+> that are not equal to themselves. That's not the case here, so don't
+> confuse the reader by leaving out `Eq`.
 
-Alice
+Understood. I'll add Eq/Ord in the next version.
