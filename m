@@ -1,91 +1,82 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46AA1DD52F;
-	Mon,  7 Oct 2024 17:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75FB18BBB2;
+	Mon,  7 Oct 2024 17:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728321292; cv=none; b=dOs2kPD2vhWe4823+jWoUQvkgvKI8wCMW0fF+4PN1dQ/LBSdPmLfKopfartzs/UyQT1mboiEpMMqi2dNvy8rlS+0aGKJoJnIIcl6mMlsacrtE9gsUIAhn7owiOsY5URwjgNyLF1DGwCbe3brwCQn5gG0v5AxxbSKALEprnxTwNk=
+	t=1728321607; cv=none; b=HPQu3C7eWr3pl4HdBQNn7xVwABQSZI4xxgR9weNy3ObHsOL6fnrbyusmSYGHujU8XAtqN7vHpRV5AW51TAch8y02s66fkh2V//6AFo+kBsKn0U98YQaa0y5KWzmhbvxBolsKEaiKYaXFmMhlYBbNDcoHYuWW1QUnOdEA9d5QSAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728321292; c=relaxed/simple;
-	bh=BpYXhQah0fJT3SbEgLlFhwNGnaSQXJFg6G1TaS+EDOM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pps9OQ8o60Akm2SzdfXqHLhcfP84kRLl7SVvEyhiP21BN0OobhQAjW543I+Y6vekVDHgqm3zLAsxDJsx8MlPVbAFaC/xcUavkVsIlWvxlzToJiOvf5hS69SSa0RlsiuYpKawCKTcM++6eaOlKCXftnZYzhLKUFBLs/Cd3TIn82k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5phIiAb; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728321607; c=relaxed/simple;
+	bh=AXhL5/fpZmTmpYZYdSbfVa67sVSZgiynBzawvU+OM+E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bMjp7tvfYGbiuINkm5hUpAouEUBK4NQ4OQM2Fzh9GC3uwMvprTheJditwR6l34EigMFreK8UHn/COhJFg/iUgF2Os7CwgeWBrReHRDOsE1549y8idAsOSDcJRIRFgS5+dJ5qf0WMe40Qo60pjPLtQVlPqUY68XW3W28s8urhZEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=jSCwvQZi; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5phIiAb"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-7db3e962c2aso484296a12.0;
-        Mon, 07 Oct 2024 10:14:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728321291; x=1728926091; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BpYXhQah0fJT3SbEgLlFhwNGnaSQXJFg6G1TaS+EDOM=;
-        b=h5phIiAbTymOpvlyBs+nSpvrdEH8HzPTOJm1O2/ZkW1jQVIUDDgYWaW1sJbBofdsWt
-         OIz/PZ/c1ZkXhmCWsgZV77jlEL7PRJtapJ7+W9LHHU+ddATAH/HFPBvuwUmKj1sOkika
-         HMAHB+DMicJ7z7PQ1b1LnFGqhiiFj4puh0d/zw72+RGNRBFv0DO5L7vaWePmfc2nPRlX
-         7apxfQd3XA2BFMcaxD8BWVlRThLJ+W5YwRcjN0UxJpb0+1LZF3glaXQ0Mtlz3epN8lDd
-         5A/07CjTkDL/TO+5TLamFUTMrB+pkZeu8vizS1rgcTkb3Vq+AEA+Y1LvT2r4v8IV4hdg
-         FJoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728321291; x=1728926091;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BpYXhQah0fJT3SbEgLlFhwNGnaSQXJFg6G1TaS+EDOM=;
-        b=QSHBVf34ToKFIO85mxMu4LE76oxue0en0v/ERT7/T3ieM0kbblF3MP435cKuCQOa5W
-         jJNz0CktLQaLhOMGeqrj6uXOW2wYt1ny0hBo5rsYLpbsxQjQOC/TcNoMQz3de6DhtTrC
-         itzynAPmzsg5uUjjdgDQzxEL0XrR9SFMRQwdrxUD0o6+1yfdBVZ5wmpp924ejdKcwqKO
-         Fi4NTjHk0uUPqkiUWzYH218asGqS6YVFrPk0EwjECEwpy8Ifci2x6iky8bJKrVqlU6Pw
-         NxiZs1s4zI0sRL1VylnUfaEtEflWz69Twk7sdLQAJv3S1TRlwFrv9k2Kix2dkrS6Wxi9
-         7EdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnFhQfpbATaB2L6h5kREbBg0218Zjr14elq+iLH5lH+Xy2piFuiEPQ+tQav4EoqnVn26o62Rfh2P+AA6M4Lg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfvjUqVgQ3eV3LRJRgMPWqub/S7HhPo1zLl6zQkj+R7USrsrRl
-	4v98KOHNNDfnp/jkokYn9pw/hE2otyIGnlBGgKCqmjKSe7P+0ARf6VspPITXmOL2IGtQ1XOIi3I
-	pDmpKMX7mP4kiFGwEUAOfTYeYCWs=
-X-Google-Smtp-Source: AGHT+IG+NPeTglkgCJ+Y1+VY72mMJP/S062G1APqaSWaI8AMKqTGElp9uGT8qmU1d8BdvMQfwASc3Bly/y/6mlnZtfg=
-X-Received: by 2002:a05:6a21:6da4:b0:1cf:4bd8:3a02 with SMTP id
- adf61e73a8af0-1d6dfa1e607mr8475036637.3.1728321290777; Mon, 07 Oct 2024
- 10:14:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="jSCwvQZi"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EBD7642B38
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1728321605; bh=UgszRIWEzyLDrlT97QaiyvYlsMj4p6TaNFZIxLmyX6Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jSCwvQZilrPO5Vx2QQCa4DN2giBngFhA563QGGVfM9QE1n6grWDNAAxALm//8ZteJ
+	 KXt3/hJZOTu8zxuVDlnxnQevKfoy/MCl9KvW71pHjDZWbXNj2tzr5+cxdoxL6YjDi+
+	 siiXqz85O4QsAGO7FVd9varQyUXjop6uxp/WlgtDJhSieykb9ldwcd/U2hFVKS9zFZ
+	 xAnVsEBH589/x2RTZHtkSmfh0Pf05mqlEiNb9KZFwVX5Qseegpt0MwwL46Izn6KOOy
+	 kKD5dqFlQOZ/xVdEFGVaehJH7lFpe//jUkFvgejATUSTRCEOPVNBBmrOWt+GW4NOpm
+	 shdHv9bgphBow==
+Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id EBD7642B38;
+	Mon,  7 Oct 2024 17:20:04 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>, ojeda@kernel.org,
+ dirk.behme@de.bosch.com
+Cc: alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ bilbao@vt.edu, Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+Subject: Re: [PATCH v3] kernel-docs: Add new section for Rust learning
+ materials
+In-Reply-To: <20240922160411.274949-1-carlos.bilbao.osdev@gmail.com>
+References: <20240922160411.274949-1-carlos.bilbao.osdev@gmail.com>
+Date: Mon, 07 Oct 2024 11:20:04 -0600
+Message-ID: <87set7j0e3.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72na=RqV=vhKZr8iZMdvKZXxqX5r7bDgo84KnPWddc4Z1w@mail.gmail.com>
- <20241006140244.5509-1-timo.grautstueck@web.de>
-In-Reply-To: <20241006140244.5509-1-timo.grautstueck@web.de>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 7 Oct 2024 19:14:38 +0200
-Message-ID: <CANiq72knW1J3=gRpEpo5TQSE=oKygObCSKkigFdVDS3315PUww@mail.gmail.com>
-Subject: Re: [PATCH v3] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
-To: =?UTF-8?Q?Timo_Grautst=C3=BCck?= <timo.grautstueck@web.de>
-Cc: linux-kernel@vger.kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, Oct 6, 2024 at 4:03=E2=80=AFPM Timo Grautst=C3=BCck <timo.grautstue=
-ck@web.de> wrote:
+Carlos Bilbao <carlos.bilbao.osdev@gmail.com> writes:
+
+> Include a new section in the Index of Further Kernel Documentation with
+> resources to learn Rust. Reference it in the Rust index. The resources
+> are a product of a survey among assistants to the conference Kangrejos'24.
 >
-> From: Timo Grautstueck <timo.grautstueck@web.de>
+> Signed-off-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+> Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+> ---
 >
-> Just a grammar fix in lib/Kconfig.debug, under the config option
-> RUST_BUILD_ASSERT_ALLOW.
+> Changes since v2:
+>   - Fix wrong title and added date of LPC talks.
+>   - Add more resources proposed by Miguel Ojeda.
+>   - Add review tag of Dirk Behme.
 >
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1006
-> Fixes: ecaa6ddff2fd ("rust: add `build_error` crate")
-> Signed-off-by: Timo Grautstueck <timo.grautstueck@web.de>
+> Changes since v1:
+>   - Added two more Rust blogs proposed by Dirk Behme.
+>
+> ---
+>  Documentation/process/kernel-docs.rst | 163 ++++++++++++++++++++++++--
+>  Documentation/rust/index.rst          |   3 +
+>  2 files changed, 155 insertions(+), 11 deletions(-)
 
-Applied to `rust-fixes` -- thanks!
+Applied, thanks.
 
-(If we don't get any other fixes, I may end up applying this to
-`rust-next`, since it is trivial)
-
-Cheers,
-Miguel
+jon
