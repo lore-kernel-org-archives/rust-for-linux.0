@@ -1,117 +1,91 @@
-Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE2318A936;
-	Sun,  6 Oct 2024 23:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D03F23AB;
+	Mon,  7 Oct 2024 05:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728255786; cv=none; b=Bly098nw9IR/mSqXbnMh7z7tgCZMO5gQWdT2vEEzCLgOYALCOXvrSGbVl0NBVUswMORqSKZz3uZS/E8+xefjB5dN1r3R0gxZKtTCepSLivpK/HBJy/oj+Pkzypj17UAFaCmvTin3+M3jp1bDCLidgr6nuwAjtt7YWH0OTsl0fXo=
+	t=1728279435; cv=none; b=qkJC72xfBaxgs4AbaNVpwtUEPrDIs6+JECVPcllHzTC+DY9Hjh7x0XiX+G1nGSlBlSfj+pXZas4+KacDFat6psnCL2TdgwpD2Ee/dk1yonXPfI58IwpFiy2halPgevyrX1K/S4pHEhDFgnpwD9eTnQHo+7Oz1tCFrlq5lgKq0PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728255786; c=relaxed/simple;
-	bh=AD8JgDXUleSPu87Hyv7wDXWcq1KuZUoop/qqEKl4LtQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SLf6xAIY3ygSyQ22rUsocd6y5PLzGzrQREzYK7BHus056viOlpVdQTRWjcGEqAQK+WAAeeK6xj08oPpcRRnp5527/yz4Z3ljIvd4a8IeU3i2HcDxH7gIBeqyYA4IM1Ki81bWHiDZzkXVgsYnDZ4BfxQt2zAcUZbOtadmYbauiCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gz1ITlQq; arc=none smtp.client-ip=209.85.222.195
+	s=arc-20240116; t=1728279435; c=relaxed/simple;
+	bh=JCadmrC3h0MujzKXcT8U0aRt9DPEEGzc5jwPr2ZooF8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=S5xhQTGGWEjFUtCN6fQYoKfpXfdUtixbKZ2Rn7VFEWAIFzB32qstH1/cw/6z3M1hN58hiDDQE7I3Gq2QyUC+xKdQZpib2X0KfxN3XwRMk81l7seEMMk78AaPPqaG5RzGgfQ5DFiZdsBz9izy3Fm+sNoqpu3fy4Z1t2btifzO9ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JiQkSGt/; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gz1ITlQq"
-Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-7a9b72749bcso333814385a.0;
-        Sun, 06 Oct 2024 16:03:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JiQkSGt/"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20b90984971so41798905ad.3;
+        Sun, 06 Oct 2024 22:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728255780; x=1728860580; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ToAWl+r26V6mZckYwH2iuX+9zA17SvDjO0OOXTi8Ub0=;
-        b=gz1ITlQq0sJLu0kEGQXOqL1iFotnGBiW//6iuoGcHOfguFsAx7+I+0+b3tdwBhi+RK
-         hE5Gp9nOQCD5LknULJxuUc8+Ur68WdzKxT85Xr6ppJc6ieAr+WkwWK92r9VubUjFdND0
-         a/8xjZaqd4wUgAJyzyMSuPFgZwq5U58jEDLd425D0WH+cTpjEJqk9KNBKtiIPms7bG0S
-         sKLwdcJckybEUOkHIgCUi2/26f4GcfWwvXEfhXguLFBvujmTff8+xyYMvaRjkUxxgV1W
-         J01ocDPtyjlhIcYLqocLiyRdE8LV1UyWpdzwjdQId5s5xx7TOPr1sATdXOWtswp4/L4b
-         UnRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728255780; x=1728860580;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1728279432; x=1728884232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ToAWl+r26V6mZckYwH2iuX+9zA17SvDjO0OOXTi8Ub0=;
-        b=dTixSN6czpbfCtFezoqfj2lVyj3RTvBlLACOxgJRMT/ADeEj/Id+vahPQjCVO3eTd3
-         PkHgO093gynzGjUCVvEsTEukZYxS+YA9oVkTbB0U/Knocu3XpyI9IT1fy9uOSz5z4ks1
-         AXPcqai/BdTeI8etITmH46jgAkE0vZuGV9fwVTa5qloG8C+DX/tCYXxqZzc/Xe8MO9+z
-         HQLdy0yI8XZ/W+kObENy1WGV4ItLT4urux0HxUET/aDfjPy7nOyqnKB3dotQqeYN6yMB
-         PTdqzvllCbQ5dAlVN61+I7QZKpxNlJ/MKo2+oaC/to5MUxhjSfxrltdka5ZJgJjLsfcy
-         oCUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6PbOyg9Ss8KDOW2KCKQTtYwA8/KB8e33QqFOsqP1daegB+dNBOOCzJRg+mJr6xS8EZpobPrqob+TBL0g1cBo=@vger.kernel.org, AJvYcCXijwUnFMTwhiYbOhjXfSRmYhQKUA8HhSdUR50qGDkXgKgm8m2LK/gxz0ek96kh7u1jlwFCiXq04VPt2JI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPAfWhtOeuneTJVgn/o64S5ozo250DSDCkIxX6x55RL5UHqcIW
-	hl3HtVg+riSbUTfmtf8tyvTYp4BZmeAnuYIY/vkI9K9MVA6/HDlu
-X-Google-Smtp-Source: AGHT+IEPk1/AfnqYbx7tIifN6X8D/5KFD9cpLu+2VwLIkC0rx17OlUsgiWO9PNZVdC9dwjTS6i7yEw==
-X-Received: by 2002:a05:620a:2486:b0:7a9:cc4e:d205 with SMTP id af79cd13be357-7ae6f421d02mr1581788885a.5.1728255780268;
-        Sun, 06 Oct 2024 16:03:00 -0700 (PDT)
-Received: from eduroam-campus-10-36-135-174.campus-dynamic.uwaterloo.ca (wn-campus-nat-129-97-124-174.dynamic.uwaterloo.ca. [129.97.124.174])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae75760df5sm199723585a.110.2024.10.06.16.02.58
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 06 Oct 2024 16:02:59 -0700 (PDT)
-From: Luna Xin <luna.xin.lx@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: Luna Xin <luna.xin.lx@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] scripts: add `uapi` crate to `generate_rust_analyzer.py`
-Date: Sun,  6 Oct 2024 18:59:50 -0400
-Message-ID: <20241006225952.45012-1-luna.xin.lx@gmail.com>
-X-Mailer: git-send-email 2.46.2
+        bh=cF9L8ZHjqNNLKF2lJh0mQWJpMrn9fQAJhxqakMnEFAI=;
+        b=JiQkSGt/F5Oeo5CIeVL8Qw9o5y69W1zWDs+AvVd6fGO+9Xvoi9IEfpN9LmHcHD+OZM
+         vANIWOcAuOq7L3DwThrS16pnLhAeCu0vA5E4nAgZH1uN7tqvm3lT6SrmwsKMZK0EgP7y
+         lbqIn+ersa7EuNVng193bc4/FVzZs3hanaxAtH16qdCJRKGn+8/2WfN0KWFg8jbPqjbr
+         auowu0H3XDKG4FjoqOpAbHNmsAcJDaqcdakKlpGvuM7nMAGMoDapQeQIEkfVoFC0TRDT
+         ILGTgBMuEnncqgNit2lqu0xg8aYZamxxG3G6mH204FvZPiecd6DK7n14ER0qqQ159LuP
+         N/qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728279432; x=1728884232;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cF9L8ZHjqNNLKF2lJh0mQWJpMrn9fQAJhxqakMnEFAI=;
+        b=jeX0vgDgp/rRMS5Clm3Ypir153+zeHe59foP2EzJLP2o27MhcW8fA6xrDDcWqXb5vq
+         ZsKlNoMP/HOuF5Id+Ky5MbNAwK3C2sJZTN17WaARxxNX0DHzK/5vwmpEURO+lAJzm30C
+         3PmKqP4WNKEdi9Bo3MMXe+YJRpjyPtyjutSEomEXVNeaqR8ivYGmTrShkrnBJMJd36l2
+         SDccGLyedk4OcJBnZt6HYjZ4dXzZaf+/6JHQG+LE3vHy7HqbKH30XUZbqY7obIci3z14
+         Ror8XZSU1o7mAbQg7L1E6MT40/tq3UJoK+HHLqf1PY6Wha7r/ZY4sQpQu45Y8M+1ISHu
+         5lYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwbJYLnTmY/PR1PE5D2a5eUU4KTw74zKeKBDdovQo4N90AAIrzw4EmwoWSBEajUt1pKNFy5Vc0WVwjhP9vCo0=@vger.kernel.org, AJvYcCVeg/WawCNYI0ueVL5jI94QqC3Co4x1J/QcBKKQgVI4NNAhzrPZTeIndH9zfW0QFk73bBOjsySEfOmHljw=@vger.kernel.org, AJvYcCXq+hnDdk9XDNcpanXOc8c08PDawJn+LAaLMckUvtBOoJfGUT1HmeCG17OPAkxxYqMPNArPDUz4@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqzxGyfY/4K+zijlRfklgW0wmEfqNcESMFW8M7yHdF7jH7HXU1
+	x6CVh0qFqBLxioHTBBTm0xX45FmNIcyY/ByAc4p+qyGJN5AcNCnd
+X-Google-Smtp-Source: AGHT+IFV3bfcM3/+6NJSr4u/aMHjiq8zXz5plHNqa6mGpBlqdEH6TUKOc5eNKUGE5sjlVkCXrY5w7w==
+X-Received: by 2002:a17:902:c941:b0:20b:937e:ca34 with SMTP id d9443c01a7336-20bfe05d555mr113149585ad.34.1728279432506;
+        Sun, 06 Oct 2024 22:37:12 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1393175csm32539055ad.140.2024.10.06.22.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Oct 2024 22:37:12 -0700 (PDT)
+Date: Mon, 07 Oct 2024 14:37:07 +0900 (JST)
+Message-Id: <20241007.143707.787219256158321665.fujita.tomonori@gmail.com>
+To: finn@kloenk.dev
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/6] rust: time: Implement PartialEq and
+ PartialOrd for Ktime
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <3D24A2BA-E6CC-4B82-95EF-DE341C7C665B@kloenk.dev>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+	<20241005122531.20298-2-fujita.tomonori@gmail.com>
+	<3D24A2BA-E6CC-4B82-95EF-DE341C7C665B@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-This patch updates the `generate_rust_analyzer.py` script to include
-the `uapi` crate.
+On Sun, 06 Oct 2024 12:28:59 +0200
+Fiona Behrens <finn@kloenk.dev> wrote:
 
-This allows a proper `rust-project.json` to be generated by the script
-so that driver developers can take advantage of rust-analyzer code
-completions when interfacing with `uapi`.
+>> Implement PartialEq and PartialOrd trait for Ktime by using C's
+>> ktime_compare function so two Ktime instances can be compared to
+>> determine whether a timeout is met or not.
+> 
+> Why is this only PartialEq/PartialOrd? Could we either document why or implement Eq/Ord as well?
 
-Signed-off-by: Luna Xin <luna.xin.lx@gmail.com>
----
- scripts/generate_rust_analyzer.py | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index d2bc63cde..61214fd2f 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -93,10 +93,18 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     )
-     crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
-
-+    append_crate(
-+        "uapi",
-+        srctree / "rust"/ "uapi" / "lib.rs",
-+        ["core"],
-+        cfg=cfg,
-+    )
-+    crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
-+
-     append_crate(
-         "kernel",
-         srctree / "rust" / "kernel" / "lib.rs",
--        ["core", "alloc", "macros", "build_error", "bindings"],
-+        ["core", "alloc", "macros", "build_error", "bindings", "uapi"],
-         cfg=cfg,
-     )
-     crates[-1]["source"] = {
-
-base-commit: f5e50614e39e74401b492a2fa125f2e2b6458bab
---
-2.46.2
+Because what we need to do is comparing two Ktime instances so we
+don't need them?
