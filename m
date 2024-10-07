@@ -1,104 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D301D6DAE;
-	Mon,  7 Oct 2024 15:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82EC1D14E3;
+	Mon,  7 Oct 2024 15:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728314522; cv=none; b=VRePwZyRJ/PG/BWi3W/ZgKxshn5JgULkR0dLLVMv+qKd3HZr4yWAE7Nj2t7zOcYCIsrBlf/loco18Z5MELVgtK+PBAKf9N6IP7gYicMgKgcU84uxky8y6WbRXrbEejMkk3VtWpumw89asKOYWeS19gHV8E16uhfc/ylPhL0dtK0=
+	t=1728316508; cv=none; b=IPzMb4f3/xgXG8bn029dA3KMaBH46ZuufNU2mmRcZSSYGNmqVikfcjUfTfrTI2PNVSUOUdK3xxSnOrTE48SSOnLxajLUvLScsFPH3V+Ij2L0SvROizD5dgbjA17l2STlkpQIzscf18J/KDMrh2bkicbvdmJ9n3DYSUvnSfu2Z34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728314522; c=relaxed/simple;
-	bh=ybYxVy1r0p6tcbHPiZuncPNcUxCTPsEMephcffmJyQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=odiCCRr1HeMtcUV1iSsOlmQzMQHNwtjKHb8tjgtFr7bxb5hc1wIrrWgd9VOki6q7vP7QVcFm5k+OYyo+C/FX/jWjFxEmC5FV3ttjGwRGMlhUS92JndFq4MVZHh8QJZSwFOEl65MDaFCnu1m6O0iqj+kyf+5Ms1dwSOQZGfvESKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEUhk+ZG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728316508; c=relaxed/simple;
+	bh=01cY3E7WMjbmgRpn35G0Wsg5xsXMcmTXUoC9DpxF3DY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mZ2STT3Y8V9Pnqev/gbModjdOFNF2CQIcusQJXSNc93UVvPqRa8wH1UCUrKTbKRaGMhA9qNX8Vqwstm+0KQKANrL40XvfXKeyR6AcCMEyNnWMXyoFQISESvx0LmgH3aks23TokEzfoN6GDc33N0mF/P7E2vzu2PvGZJhMaMhToU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=timo.grautstueck@web.de header.b=YuLSiBzB; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEUhk+ZG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6BFC4CEC6;
-	Mon,  7 Oct 2024 15:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728314521;
-	bh=ybYxVy1r0p6tcbHPiZuncPNcUxCTPsEMephcffmJyQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TEUhk+ZG9Rbk1bhjMTqO8MNi1Es4V2uWvDnkGdAQBzMLuokn2wpHMfM3ddu4LOD3L
-	 7N1hYXuXDQPx2IXHP28vCQxFFBfVm+QvUJ8P69NdqawJ5cp0I46+wVvuKKqMuxqTA4
-	 EuFO4Ae5neBPamxCsRR9OIZZSG4SQ4BItCvNaxV39wS7ERaXdaa88H9yd+/HzTncAs
-	 bd98vIOwHiNEXr8z+6AgjJPUyG8PbYp6QT8O92iQcfEJlLERiIlNw2SJMw2bnFNQn+
-	 pzEi1BWlWOYeWSuR4yO43eJJaOPfZI59IVsrSIhI87tVnnLZr5JMj0vKtZo7xscTnH
-	 fVt3u/QLcuhMg==
-Date: Mon, 7 Oct 2024 17:21:53 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v9 19/29] rust: treewide: switch to the kernel `Vec` type
-Message-ID: <ZwP8kTf3r3h40NKF@pollux>
-References: <20241004154149.93856-1-dakr@kernel.org>
- <20241004154149.93856-20-dakr@kernel.org>
- <CAH5fLgida5mybAqE=4kk022ui0hmjRMnAttWrkn213XGXBWLXA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=web.de header.i=timo.grautstueck@web.de header.b="YuLSiBzB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1728316496; x=1728921296; i=timo.grautstueck@web.de;
+	bh=tZyMhH5kp7QMFFRMcSTA1VhW+Z5ZM7Gk0Y6yV2wQRWY=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=YuLSiBzBM2oFmPTScD5Okvbju+TUytW4UMTeu5VGyxjkgzzDY7kno38LQhh4S/jY
+	 +JpKXU0ZT+J062EkbRE+A70LEkeUGeT+OP5eUt6PbbcpaDCtHZRAdt/bIim7HwOxT
+	 6cWq8Ks2AjwbnaqeQJrD/coXTS2/dKJv1tdCwoPDB/vfLc6MZfpuu2N8X1dqa4QM7
+	 Yg2sr4UQVBhza5a1oTh0nd/W6NfRQ5KYIBUOFBq8WDLj1rmBhhs4p+XbnSJlA5O2K
+	 ATsd5tn/1vi6jr1xL95W2cP0NFfxfHDTPximSYmH/suVlFlSvWWgMZBtMGhyolF2T
+	 I8eaewXyfkuu7fq/rQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from fedora ([95.223.78.106]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MzkST-1ttXE10Oxd-00xIwa; Mon, 07
+ Oct 2024 17:54:56 +0200
+From: Timo Grautstueck <timo.grautstueck@web.de>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: miguel.ojeda.sandonis@gmail.com,
+	Timo Grautstueck <timo.grautstueck@web.de>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH] rust: types: 'real-life' example for Either
+Date: Mon,  7 Oct 2024 17:53:15 +0200
+Message-ID: <20241007155315.1145503-1-timo.grautstueck@web.de>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <CANiq72n25iBCJtDV=XD2q5AEg4Awh9hyeKM0YwbeE0pv0H2hLA@mail.gmail.com>
+References: <CANiq72n25iBCJtDV=XD2q5AEg4Awh9hyeKM0YwbeE0pv0H2hLA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgida5mybAqE=4kk022ui0hmjRMnAttWrkn213XGXBWLXA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XM1gdjh2IJlIEGEMQVk7SqSl570Wb1a/u96g4D37eLnYEYkzgD4
+ +S64nV7TQGlAP7jm25p4Oy8DHERs3Yu7H27ArkEXCh1wjgRTmt1mSiQsNNwFzaQYS+Fo4AK
+ uW0Tq6TKPXEkbe/MemnUj8AqupzptKAcZLNEWD6wXnVNgrUGX57KzsCASj7BfddxYjBSFGr
+ JABtgnBJIfmUsgVy2sNsA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:3b2WYKAoh+E=;QzZEVu1dRtxxy9qCU+6Z7BjSweg
+ CBl0r0QbZuXv6nfalKgCsuDt7iLjQzGMt8q0b9bEH/HwW3eQqth2bKnuXtx1t1Wer7iIkwXaj
+ 3kENZPh9i0ia6Z9931Dv7LX3LnYVjcCs00PQyP49/5Gbu3RamJVyNOdnEFVy2PmHnm4xHaT2l
+ lMo/shT7gOOXT3q+35jRb0cfCfQMbyJFEATd0nLTeNWuOMKqcOmqEOjorSHVJ8Xcfi8leJJxl
+ JY2+iC5R1yFdt0KcjGPbcVQPyYQYBT2ad3j1tMi7oVXdiFY2lJ9RXVYJG8XMkmrVt7V+6mjyO
+ VqmsiihwMk2YBw1diDOiKO2wngBDb3DlSGoWCnTn+3gqc3dfMAHdyQsbxunQTt5cCEefZZf3z
+ C4uX6SAHS9T0rV5F2IIhhprehRGJdaO7XfaMSEkH44N2Me85rHPfz9FCNIhHUxzl0mjGMWP3d
+ F3c+/MKRXdMsAwarXGLD25qHtPoUGYsm4jDqDYiP4dKcCQ+QPXcNXLzPFj1c4f0siRoyqO0WY
+ 70v0PcT4O9M3eMQoeFNlGspSfRU2lqFJ7xy/retE2Hg+LrrSmE6wsMsQzZHvZpULTsyhsDh5r
+ rm4VY9cM0HebuGNGKcGNw5y0jeiKo8KBKfQ1s2U5fV0Qn36d/EMnfZFTE89qPt+kFDxkrcaHM
+ zPkqCA0Zaug2gBuSyVU5JRTI4yKAAJ8I/xkIo8ZC5WLPADLcAOJauoq+q9NTHmPFntzI2PgJc
+ ceZ4Du2YY6By55txsBSL8FVGki2AgomKehHslJDtZ7FxiImRch9LmWffPYsEr+g7iz4WNqCi+
+ ImKO4ahgDEgl8/hPrmXySDlg==
 
-On Mon, Oct 07, 2024 at 04:34:59PM +0200, Alice Ryhl wrote:
-> On Fri, Oct 4, 2024 at 5:43 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > Now that we got the kernel `Vec` in place, convert all existing `Vec`
-> > users to make use of it.
-> >
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> 
-> This is missing the mm/kasan/kasan_test_rust.rs file, which was added
-> in v6.12-rc1.
+Added a 'real-life' example for the type `Either`. This example
+uses a work queue and extends the first example in `workqueue.rs`
+(commit ID: 15b286d) to demonstrate how to hold and distinguish
+between two different data types.
 
-Thanks Alice for pointing this out.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1122
+Signed-off-by: Timo Grautstueck <timo.grautstueck@web.de>
+=2D--
+ rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/mm/kasan/kasan_test_rust.rs b/mm/kasan/kasan_test_rust.rs
-index caa7175964ef..9b222624ce47 100644
---- a/mm/kasan/kasan_test_rust.rs
-+++ b/mm/kasan/kasan_test_rust.rs
-@@ -11,7 +11,7 @@
- /// drop the vector, and touch it.
- #[no_mangle]
- pub extern "C" fn kasan_test_rust_uaf() -> u8 {
--    let mut v: Vec<u8> = Vec::new();
-+    let mut v: KVec<u8> = KVec::new();
-     for _ in 0..4096 {
-         v.push(0x42, GFP_KERNEL).unwrap();
-     }
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 5ea9126c8c93..a56192141a0c 100644
+=2D-- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -322,6 +322,60 @@ pub const fn raw_get(this: *const Self) -> *mut T {
+ /// let left_value: Either<i32, &str> =3D Either::Left(7);
+ /// let right_value: Either<i32, &str> =3D Either::Right("right value");
+ /// ```
++///
++/// The following example demonstrates how we can create a struct
++/// that uses `Either` to hold either an integer or a string.
++/// This struct will be scheduled on the workqueue, and when executed,
++/// we will perform different actions depending on whether it holds
++/// a `Left` value (integer) or a `Right` value (string).
++///
++/// ```
++/// use kernel::prelude::*;
++/// use kernel::sync::Arc;
++/// use kernel::types::Either;
++/// use kernel::workqueue::{self, new_work, Work, WorkItem};
++///
++/// #[pin_data]
++/// struct WorkStruct {
++///     value: Either<i32, &'static str>,
++///     #[pin]
++///     work: Work<WorkStruct>,
++/// }
++///
++/// impl_has_work! {
++///     impl HasWork<Self> for WorkStruct { self.work }
++/// }
++///
++/// impl WorkStruct {
++///     fn new(value: Either<i32, &'static str>) -> Result<Arc<Self>> {
++///         Arc::pin_init(pin_init!(WorkStruct {
++///             value,
++///             work <- new_work!("WorkStruct::work"),
++///         }), GFP_KERNEL)
++///     }
++/// }
++///
++/// impl WorkItem for WorkStruct {
++///     type Pointer =3D Arc<WorkStruct>;
++///
++///     fn run(this: Arc<WorkStruct>) {
++///         match &this.value {
++///             Either::Left(left_value) =3D> {
++///                 pr_info!("Left value: {}", left_value);
++///                 pr_info!("Left value times two: {}", left_value << 1)=
+;
++///             }
++///             Either::Right(right_value) =3D> {
++///                 pr_info!("Right value: {}", right_value);
++///                 pr_info!("Length of right value: {}", right_value.len=
+());
++///             }
++///         }
++///     }
++/// }
++///
++/// fn enqueue_work(work_item: Arc<WorkStruct>) {
++///     let _ =3D workqueue::system().enqueue(work_item);
++/// }
++/// ```
+ pub enum Either<L, R> {
+     /// Constructs an instance of [`Either`] containing a value of type `=
+L`.
+     Left(L),
+=2D-
+2.46.2
 
-@Miguel: Can you please fix this up when you apply the series?
-
---
-
-Unrelated to this series, but I think there's also a "regression" against the
-lint series in this file:
-
-warning: unsafe block missing a safety comment
-  --> mm/kasan/kasan_test_rust.rs:20:5
-   |
-20 |     unsafe { *ptr }
-   |     ^^^^^^^^^^^^^^^
-   |
-   = help: consider adding a safety comment on the preceding line
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
-   = note: requested on the command line with `-W clippy::undocumented-unsafe-blocks`
-
-warning: 1 warning emitted
