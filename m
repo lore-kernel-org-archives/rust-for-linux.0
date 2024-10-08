@@ -1,166 +1,171 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33BA1DFE17;
-	Tue,  8 Oct 2024 14:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0FA1E049E;
+	Tue,  8 Oct 2024 15:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728398179; cv=none; b=nWL4YamAYOBUMnVel+vkt2OycmsrM6gfmDlH2MbpFl2FLspuMV3NuJE2XJdkQ7LtK5GSI7sjcBMsOtRY7gvHqtU/sjKqiBg5Wa4yVKd+HnzoP3qvqklI3ixi0GqDU70YSG9JLtSPUlWxetsufsAFYWbnMEfhRPqmLnOXOLScy1A=
+	t=1728400883; cv=none; b=Br3tbaYhSRiWNyIjxCFz1djcJG4vhFE+sVtcL6/7KpJZ/LubNs0NM8UK5LaoTdHpaZ/oX5O3y6FxvkayKPUepFnOGoGkMI9j3iYIUohJBAe1h+tD2OhKH6XYGoAy/j1CLQjmapQ7Lu16P7kKup9W+AnuRZAj8+16NjR0QeYuovI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728398179; c=relaxed/simple;
-	bh=gxxx5O9eecv163qWQ61f/5In0s1MkC0h2hYsYBgpd4o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S/zO1Y80mmqXqTMlScSxEJVGhXux7CI3+0h3l1ITSR0pAxNutZWEtYPlD1L1ILqXY4Obv1k3kDD/b0fs47HVIWiJ+KR5gxwzJvwngpKZV88XMLkADWzqKt4dbEa4UHxZDAO+MsCJysGykz8ZvJ6j3ZtlKUC9Gu0oF4qBFkqm5KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nmUog/XW; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728400883; c=relaxed/simple;
+	bh=433XxIHpU9T7s7INXr8uSL9mwO5qKnfKc1yNBcVny4w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=J7o0SxMe5WbsglJQvZ+zgRhj9Y9dRqjqO9cO/i7awNv3W5xi0zWWLwbBtaNJQJhSnablaXYHUxBCTxvaF+5B/yKJMGjKwgWzt0ADLdlHYYF1/47BInPzlL1R2i/Dnq5fwitktzO9a7RuE+z/4mq3mEn0Ru3fjrXLmoFplN7QzPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Hv8RLVWU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Pzg4cZ6D; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nmUog/XW"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5398df2c871so6110679e87.1;
-        Tue, 08 Oct 2024 07:36:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728398176; x=1729002976; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RAzASSCUQ2aUVsiLqBLU+OR2T2BBF/GKBA/6/Hrht2Y=;
-        b=nmUog/XWxHE98vP1aRBWOdqqiTdra1AWS575jFpoHyM53Y6e7zQN/FcquPeBMs14bf
-         aPuy8kgYFX4JqI1OEv6cuEYAJkv41Tv58BA3MLW378DfwBfALhXp0zSiXBDrK6w7hoW3
-         SG9RMRTkD8IVJ42W+dtP+a6tAMQEg1rJYKi/saiMrSfX5FJsZrQrmOEKrYBQV59PGzpI
-         IgXkUWLLJ3LOEIu4wlQNrUJEkpUiZ7oLKlMCMO5E3EhblLMHa1t47qP28WXxD19DHR4I
-         rTKc3hWJ5y8llNFRd5BhofZh2BWz/9wUnCLGFOznXC6rfN+BioUMPiQDaJZ7Ke4/hRW4
-         NwVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728398176; x=1729002976;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RAzASSCUQ2aUVsiLqBLU+OR2T2BBF/GKBA/6/Hrht2Y=;
-        b=cYrnuD6RbOItIqsgKi4Co2aWslD+EwsN3jUQhNiAtOp6qvExTX6N9+ftVK+/AZGwiH
-         JxTsDcZhuTt+TMDo2KtZsyRGE6t6Bto6S4ayh9f47KEolDx1AVBt2hYdXjWNsFGdVY8G
-         +6HtqRc7CWHDRV6iq1c0e+aLo/dS3rthVgz3OLWpP0xe3ME93FK+H67o0MNpAIqiQ2mP
-         3EY3L+6H9cWtEnM4/hw3HSRIBRgXupPWhFZhnEBgzymHGSDH5MxhWC8ByX3HiUEKa0/4
-         BPEu3CoBjRl3COPCGOinc3kVND830H7LjlrvpDM/jCSBPiG1GXFF9v6aduIhwNK6R6mR
-         jjvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJtH3awfDZ/nC626VnAxYOHkTfVIoH3kIfaoPqDVOK+deP8D57oWriGhIVI7f1VE1Nc88=@vger.kernel.org, AJvYcCUbgGK+kyLacPBfXwZh6DEUgiTVHXLqk+aXtuYMPOhFH+/s+wGhu0dOB7i0wxyaju3rnxRqg/5J97wWBAJ+OeU=@vger.kernel.org, AJvYcCV2rCp5g1JppC/inIrPY76DYPlOaZ2xdBwksr4sgPt/Jd/MlJKupA6Ss8yv/s7PmIv0dqsyysSJTTA=@vger.kernel.org, AJvYcCV9IJ38l6X5LroDzXttFFINdkD3yzgOGnA1lfHoX1xiWG07l8nircOfoo/CsvDyIKP8qCEoSAbLz9hRx0Fi@vger.kernel.org, AJvYcCVWn6u/U1hLaeP8nOPLa/UO6ryUAre4UzB1KTNdeCyAeBTsUrbB955DjqJ/0egzzQSkzPZFeRObE6bh@vger.kernel.org, AJvYcCVZr08z2eEiFB9qZZQPQKg8EQQs1YfSFER4TatCiaj9fipOsjvktYDR35dyW9iYDSkA8vsM9JAdwBB0i5AJ@vger.kernel.org, AJvYcCVzdyFAcpZ+cokUng73bgS8Mm6UjHR1k2FuWrlvxUoysZiXou+QER3OJJFz/rCqDionXvoGGH39/cyMTa34HNMNVA==@vger.kernel.org, AJvYcCW2ura4tB0AkWNuocgWJ/GET8txWB1PrLflKqFDMyIXRUY+r7qInkWU7DBBDWFKZ3mASs4deA9mHlQuCU4b@vger.kernel.org, AJvYcCXOwPz5SHzaAEeTdRy4S8wp0rdekZ+too4VPiu6TVIcNiu1UZgMWkMEqQIw9/6EEkH6qPERZIuOt1AOmQ==@vger.kernel.org, AJvYcCXRdDe3dubXYb9lSLHeHJulIH3EjKyZ63P0AScc+aR+KbyToGrF5T8LxAHKUceMsS0bCo0zyrlwIn5B@vger.kernel.org
-X-Gm-Message-State: AOJu0YzliAqJ64I6yuE+5ZCA/YTG3cGnD2sjQRftKzH5Y0Ebmv6K1Sl/
-	C4xahBG5gp7Vs51HXDV0eE5S8WzB4cq5Df6LvATxzE6KbikHc3Na75TCB4u8MbFmIeHdl+CRyiR
-	6oNV9T++a/Dw7Kxvp+mbzH/8JrA==
-X-Google-Smtp-Source: AGHT+IFk7uSGpMKxSJMgul6omDcmQyMQl5Zy1l8C5NVTbpCgjnnjxrxdxyhpPaT355keXYtQRCu422aiN8olYIcP4XU=
-X-Received: by 2002:a05:6512:3085:b0:539:8a9a:4e56 with SMTP id
- 2adb3069b0e04-539ab8c6fb8mr8574397e87.53.1728398175714; Tue, 08 Oct 2024
- 07:36:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Hv8RLVWU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Pzg4cZ6D"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728400879;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+uLeRZLnttHb34vsWR35vegqVbPeYjV996KCqrj9XyQ=;
+	b=Hv8RLVWU/D5aAnA7/bJpuDDFvJ3gk9zslzZIUoM/qKsAA6WQ23jG5DpueioGf3PHNBQKLN
+	A7GaOOyxHiAuEHL2rhxXyMpUyEM0G7fxsnQdWNHsgIx+mbzfSUR5TgeTDf8P1Icb4uevyz
+	oFzPhtcQs79BUR/J949AncdIDfzlGpQq6NZBCx9ZEX/xvDqc3fBrvMJkBeGdCbTy0ljt7G
+	yrylMSzWbHnWWivOE8SaCbCHLgRMBOTbILybGjB2ysGZ7zdtR9eszZ5TVsD5T8pixzHCHB
+	/6Emuc589kuOY6jZ7K4BX+NCMALws263lx2WkYeH5PcNaNT5b5tx8zRSZEeC8A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728400879;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+uLeRZLnttHb34vsWR35vegqVbPeYjV996KCqrj9XyQ=;
+	b=Pzg4cZ6DABoFz7DpoUM9JiurvlEMFou2t+PJ856YhcjBBWeKsJOVM8U+5M1/Lq/zaVRfg5
+	DWbUEpEOjnsFHXCQ==
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar
+ <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long
+ <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ linux-kernel@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>,
+ Daniel
+ Almeida <daniel.almeida@collabora.com>, Gary Guo <gary@garyguo.net>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas
+ Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo
+ <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
+In-Reply-To: <9f580260866a202d7608f902464b7fae087dd6c6.camel@redhat.com>
+References: <20240916213025.477225-1-lyude@redhat.com>
+ <20240916213025.477225-4-lyude@redhat.com> <8734lew7jn.ffs@tglx>
+ <0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
+ <87a5fgunoc.ffs@tglx>
+ <9f580260866a202d7608f902464b7fae087dd6c6.camel@redhat.com>
+Date: Tue, 08 Oct 2024 17:21:19 +0200
+Message-ID: <878quytyc0.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-35-ardb+git@google.com> <CAFULd4ZNwfPZO-yDjrtT2ANV509HeeYgR80b9AFachaVW5zqrg@mail.gmail.com>
- <CAMzpN2j4uj=mhdi7QHaA7y_NLtaHuRpnit38quK6RjvxdUYQew@mail.gmail.com> <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXF3_Hj9j2f_cBtwTFWvEmB0UoEs_cGkRiWc4AErDx0ftQ@mail.gmail.com>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Tue, 8 Oct 2024 10:36:03 -0400
-Message-ID: <CAMzpN2jWRV8-JzM2FjSvSz+VoDrNVeEJPgF7N5ksLaADHpnHsA@mail.gmail.com>
-Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Oct 4, 2024 at 9:15=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
-te:
+On Mon, Oct 07 2024 at 14:30, Lyude Paul wrote:
+> On Mon, 2024-10-07 at 14:01 +0200, Thomas Gleixner wrote:
+> So actually the new solution I suggested a little after that original email
+> wouldn't need to call local_irq_save() directly - sorry, I just explained it
+> kind of poorly and it hadn't been in my head for very long. I think you'll
+> like this solution a lot more though, lemme explain:
 >
-> On Sat, 28 Sept 2024 at 15:41, Brian Gerst <brgerst@gmail.com> wrote:
-> >
-> > On Wed, Sep 25, 2024 at 2:33=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com>=
- wrote:
-> > >
-> > > On Wed, Sep 25, 2024 at 5:02=E2=80=AFPM Ard Biesheuvel <ardb+git@goog=
-le.com> wrote:
-> > > >
-> > > > From: Ard Biesheuvel <ardb@kernel.org>
-> > > >
-> > > > Specify the guard symbol for the stack cookie explicitly, rather th=
-an
-> > > > positioning it exactly 40 bytes into the per-CPU area. Doing so rem=
-oves
-> > > > the need for the per-CPU region to be absolute rather than relative=
- to
-> > > > the placement of the per-CPU template region in the kernel image, a=
-nd
-> > > > this allows the special handling for absolute per-CPU symbols to be
-> > > > removed entirely.
-> > > >
-> > > > This is a worthwhile cleanup in itself, but it is also a prerequisi=
-te
-> > > > for PIE codegen and PIE linking, which can replace our bespoke and
-> > > > rather clunky runtime relocation handling.
-> > >
-> > > I would like to point out a series that converted the stack protector
-> > > guard symbol to a normal percpu variable [1], so there was no need to
-> > > assume anything about the location of the guard symbol.
-> > >
-> > > [1] "[PATCH v4 00/16] x86-64: Stack protector and percpu improvements=
-"
-> > > https://lore.kernel.org/lkml/20240322165233.71698-1-brgerst@gmail.com=
-/
-> > >
-> > > Uros.
-> >
-> > I plan on resubmitting that series sometime after the 6.12 merge
-> > window closes.  As I recall from the last version, it was decided to
-> > wait until after the next LTS release to raise the minimum GCC version
-> > to 8.1 and avoid the need to be compatible with the old stack
-> > protector layout.
-> >
+> Basically instead of having functions like with_interrupts_disabled, we would
+> instead introduce a new trait that can be implemented by locks with context
+> tokens: BackendWithContext:
 >
-> Hi Brian,
+> pub trait BackendWithContext: Backend {
+> type ContextState;
 >
-> I'd be more than happy to compare notes on that - I wasn't aware of
-> your intentions here, or I would have reached out before sending this
-> RFC.
+> unsafe fn lock_first(ptr: *Self::State)
+> -> (Self::Context, Self::ContextState, Self::GuardState);
 >
-> There are two things that you would need to address for Clang support
-> to work correctly:
-> - the workaround I cc'ed you on the other day [0],
-> - a workaround for the module loader so it tolerates the GOTPCRELX
-> relocations that Clang emits [1]
+> unsafe fn unlock_last(
+> ptr: *Self::State,
+> context_state: Self::ContextState,
+> guard_state: &Self::GuardState
+> );
+> }
 >
+> Where the idea is that a type like SpinlockIrq would define ContextState to be
+> a u64 (holding the flags argument from spin_lock_irqsave). lock_first() would
+> use spin_lock_irqsave and create the token, unlock_last() would use
+> spin_unlock_irqrestore with the saved ContextState. Then we could use those
+> unsafe primitives to implement a method on Lock like this:
 >
+> impl<T: ?Sized, B: BackendWithContext> Lock<T, B> {
+> pub fn lock_with_new<'a>(
+> &self,
+> cb: impl FnOnce(Self::Context, &mut Guard<'a, T, B>) -> R
+> ) -> R;
+> }
 >
-> [0] https://lore.kernel.org/all/20241002092534.3163838-2-ardb+git@google.=
-com/
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit=
-/?id=3Da18121aabbdd
+> What lock_with_new would do is:
+>
+>  * call B::first_lock() (which would be spin_lock_irqsave)
+>  * call cb() with a LocalInterruptsDisabled token and a &mut to the Guard (so
+>    that the caller can't drop the lock before exiting the noirq context)
+>  * Call B::last_unlock() with the ContextState that was passed to first_lock()
+>    (which would be spin_unlock_irqrestore)
+>
+> So we'd absolutely still be modeling around the locking primitives
+> spin_lock_irqsave() and spin_unlock_irqrestore(). And subsequently we could
+> still nest lock contexts like normal. with_irqs_disabled() wouldn't be needed
+> in this arrangement - but we would still need the Interrupt tokens (which
+> would be fine since they're just for enforcing correctness anyway).
 
-The first patch should be applied independently as a bug fix, since it
-already affects the 32-bit build with clang.
+Makes sense.
 
-I don't have an environment with an older clang compiler to test the
-second patch, but I'll assume it will be necessary.  I did run into an
-issue with the GOTPCRELX relocations before [1], but I thought it was
-just an objtool issue and didn't do more testing to know if modules
-were broken or not.
+>> The above example really should not end up in 3 guard contexts, but in
+>> two by combining #1 and #2 into one. In C this looks like:
+>> 
+>>     scoped_guard(spinlock_irqsave)(&A) {
+>>         // Allows to operate on resources which are exclusively
+>>         // protected by A (DataA)
+>>         
+>>  scoped_guard(spinlock)(&B) {
+>>            // Allows to operate on resources which are exclusively
+>>            // protected by B (DataB)
+>>         }
+>>     }
+>> 
+>> Nesting B into lock A is required to keep some aspects of DataA and
+>> DataB consistent. But the other parts of DataB require only B to be
+>> held.
+>> 
+>> For extended fun lock B is not necessarily required to be acquired with
+>> interrupts disabled. The fact that it nests into lock A does not make it
+>> mandatory.
+>> 
+>> A lock is only required to be acquired with interrupts disabled if it
+>> can be taken in interrupt context. That's a per lock property.
+>
+> I think you misunderstood something somewhere - this has always been the case
+> with the bindings I submitted that you don't need a context for all locks,
+> only locks that define one. That is why we reimplement lock() to look like
+> this (where T is the data protected by the lock and B is the backend):
+>
+> pub fn lock<'a>(&'a self) -> Guard<'a, T, B>
+> where
+> B::Context<'a>: Default
+> {
+> self.lock_with(Default::default())
+> }
+>
+> So SpinLock's B::Context is (), which implements Default - meaning you can
+> acquire it simply like this:
+>
+> some_lock.lock();
+>
+> But that wouldn't work for SpinLockIrq with a context of IrqDisabled<'a>,
+> since IrqDisabled doesn't implement Default.
 
-Brian Gerst
+Thanks for clarification. It's clear now.
 
-[1] https://lore.kernel.org/all/20231026160100.195099-6-brgerst@gmail.com/
+Thanks,
+
+        tglx
