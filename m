@@ -1,192 +1,95 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383AA1DEFCE;
-	Tue,  8 Oct 2024 13:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90E116FF26;
+	Tue,  8 Oct 2024 13:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393125; cv=none; b=gWFl3Itne3WNW8V4SX4acqmvtWLfNxx4kYrUM1r01QbVTEZ56TYbYTp9HP8wxa6YZRW73YKyPjzpqA/ljIXDhQmVGr2Nv1iIitqirDaWg/S8z5b7tsdP22DRMPsgh6YZmS+CVADMAVU1RpboyjLtZvopoPsCjgqFl5ytUlHeeQo=
+	t=1728393260; cv=none; b=DctJgiNnDHyc/I3d9CSIgPvIdf2FrT6Bk02zXKM3VnhqIEIOWpTzh2IZXpz4LF0SAB988dYEvNQujUoObLn0aWNReWTJih7mvuaWzirjvdYrCoewstMfqoc5t6fR66Nv0eLxRdWpuh6j6l8AENj1lBXYwi6ayntUu/lnw+wIqrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393125; c=relaxed/simple;
-	bh=Ux4suNlclXCbFSHhA7Y3I7wnHny/O30HsQjFba72H7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vt2YXzifqe7fi9TULltfZPi6ofrLIvXz2aPKLjiBLfuVnlODnGwHo4sXhPPBxKx6v4V0BPPYWW/Myu/bGKvwKonITan0u2ucunIR4TgXzDVB/xl82uzuDeWBIKdt2bOV4PmDZ7oxnxnwNI9RvnXUwj/LWO49kC07sB8xAIDPdUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JMs1DL3t; arc=none smtp.client-ip=209.85.222.173
+	s=arc-20240116; t=1728393260; c=relaxed/simple;
+	bh=NMxQjc2T8csseIw5lnqI5Gms21LeoC5nw88NrOvZtiQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K/feyX7Hmy0jvxgBC4km9KiT662xDyCisD+0+R9G5IdI/iWV1JDvYnBy9Y0me/rdK6c7/6uQr6T0HK2M6W3nbfUFRmcc2izgLZ7CrEx4yepMchFL/V9uvsRVeTty2peUlnYizZdx3knxYO3UnDxBxnpDGtBNKkUO56QMF+N+U1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fT18YtRT; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JMs1DL3t"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7a99e8d5df1so568151585a.2;
-        Tue, 08 Oct 2024 06:12:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fT18YtRT"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-717839f9eb6so673843b3a.3;
+        Tue, 08 Oct 2024 06:14:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728393122; x=1728997922; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1728393258; x=1728998058; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KMYkHMwdVkbSLMxGZAZds8bTSvf1VBR7G7Hyvo2bDKo=;
-        b=JMs1DL3tBbnmYZ0sVJ1w7nEI8asZ1DdfhWJ+t8fYMEp1vbtuVWcDF44lNSJOtUaATS
-         Mktjgpz4cAx9nndxWtWBqKpWhFiRbvkxySGifO2IO0jXHx2j9TpXFgFkJpS0suKl+1PM
-         Ju0Lo3pub2nAMGv8NnypL3PZDWl0nK7oX5m5sDMESGGcVeMsV8tSa5jINHv+P5Pi4r4c
-         DnoPd5K4UalJ9EPu33b/clUrkKd4om09C5UcdKHLoFcEaCx3EF1kmYkn7e7P7TIi+no2
-         vK9/GOp+oPL72d0sEMdEDlS0qQFOYbv+EwRVP2L3terXbhq/Uxke/UIApK/Dehs9C1Xv
-         lXdA==
+        bh=NMxQjc2T8csseIw5lnqI5Gms21LeoC5nw88NrOvZtiQ=;
+        b=fT18YtRTM/GauX11FhWrJ7wxYEDZLmebbrKa3XstyDMT3mUg1TcjUd/FsHwXezWpVG
+         7r1R3bNkS5y5uT0do6wiSNRqs/gdqtziC3zYcomO/tCd2z8nPn7+Of7xVgO3PLqCe5uY
+         KTe9PrzuDhzz/xQdiUxaPOpiC3lkt3ntmwIHkDj/GlYNLbVCMlnyHXEFvionoM/Ldspm
+         chsfgK1x6/MPRRt4OW8NfkmU4TjbS0/+gzZBPRMNzJVEtOXMIm3TNesCBQhmFv6VgX/F
+         73/1cBrwIVi9lGIgPd9cfrcuWbhICEzsWnogPhub40c8w1CL6y1kERmA/j9EdJfTxBVZ
+         GKow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728393122; x=1728997922;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728393258; x=1728998058;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KMYkHMwdVkbSLMxGZAZds8bTSvf1VBR7G7Hyvo2bDKo=;
-        b=HiRNt07REPaTbbxqS3brNUEa+lVMm8CoCCKrjzDHGtPwOJp1H/A231q083kmjz0YD4
-         /gaNpAfCdUu7YGpSwbbGbe80TkjMZgTlVTM21QmEJUWPwv8OutMmqfo0fGNBKHQDEkT4
-         65eEKjH/N2ALxbsnaUrKztyX4HF08pAkkXliZR9acyKgRIf3+2k2D9dOMe1qM6P0hVYU
-         A4B5yEv5119bU6JJBUZF57OyiRZ8nZWmdkDNbEliqoDEjZuFgitvxD80qMNAJ325fxXM
-         7FjeeEUw2ci+6PG9uBMB/XNI6lHbcIIib6TjhC+MSBOpiKvS7TpWbM0QNDCr6b2e8dA8
-         N5YA==
-X-Forwarded-Encrypted: i=1; AJvYcCWY9S3pqTAfU3Htkp3KQXZq+O0wPAWhjbqqHGuY5xTAtLvMJYWnn81IBZg/6+YqkKBKxD8Qob1VWKmcTKpjdF4=@vger.kernel.org, AJvYcCWwAQ3TqR/hBUYi/Db1br3tm9rgteoWehb83FRAOhdMrb++rYmPJFXzPanuOewJsr2JkqBJG1IsbPxtPbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4eLV4xLO6DXtlf5+70VHmO5Tsznhhj9rksQIw07Mt+auaLc/t
-	CvrkU29vvQIHBABVpZAlqdvzqtbVCiyWYwFMyPkKJJ8r4LRrEdkL
-X-Google-Smtp-Source: AGHT+IGsWTvqPZueDUbUsaCDXQY0K9BJDQnEBOl7ormRevhhHgRvlWLX1J+0XIrR/GM5eBOE1MGz0A==
-X-Received: by 2002:a05:620a:394e:b0:7ac:de4d:9129 with SMTP id af79cd13be357-7ae6f44cd21mr2452591985a.31.1728393121978;
-        Tue, 08 Oct 2024 06:12:01 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae75760e8dsm351608585a.108.2024.10.08.06.12.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 06:12:01 -0700 (PDT)
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 028621200068;
-	Tue,  8 Oct 2024 09:12:01 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Tue, 08 Oct 2024 09:12:01 -0400
-X-ME-Sender: <xms:oC8FZ-jDRw0l2DoP-MufIWAa8ZDImBhPBq6VYI96yBfgcDo5R73uyA>
-    <xme:oC8FZ_D1ZjNS2hUHqEvvbbNppgEzJE79yOkyVFH8AFykCfnd1X1XRZRgfH6-x8HCg
-    K5BYmDWSBn0ltaGaQ>
-X-ME-Received: <xmr:oC8FZ2GvbDS45Yik065MTTNvjSVclGb5zvi-shYlHGbf-YX1R5A8_M7GxRE_3A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdefuddgiedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdehpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhg
-    rgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopeifvggushhonhgrfhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
-    thhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhope
-    gsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhn
-    uggsohhrghesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopegrlhhitggvrhihhhhlse
-    hgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:oC8FZ3Q-Jwj-0e9an1ZpLoMcZPB1dgpOTs-csIQCNXTGQq0JFsM33Q>
-    <xmx:oC8FZ7yTBSIMoAob86McNaSjbv32jgNjjyPfZ1uikJ_UcHyJq5nwQQ>
-    <xmx:oC8FZ15rUTm2Ix5bdB98l6jretZZ5TSV-DMbsf_UEbtu89SW-3H5yQ>
-    <xmx:oC8FZ4y8Zn8fwQDDoDLmATgTymsviq_7EG8UhFDj4yv6DFylXUd7jQ>
-    <xmx:oC8FZ3jc5M02a071o9q4oZRrCTAPPN_RK3DM-1dFe_qe7hT1vV32TOVe>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Oct 2024 09:12:00 -0400 (EDT)
-Date: Tue, 8 Oct 2024 06:10:39 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v9 07/29] rust: alloc: add module `allocator_test`
-Message-ID: <ZwUvT4Zsg-1Dww8b@boqun-archlinux>
-References: <20241004154149.93856-1-dakr@kernel.org>
- <20241004154149.93856-8-dakr@kernel.org>
+        bh=NMxQjc2T8csseIw5lnqI5Gms21LeoC5nw88NrOvZtiQ=;
+        b=Zkc11njBE3fYR5COe+lPHMZ2QgzuA7pbY58Pa8DvXySPwkS3P7pyB/jvWj23I7Iqr8
+         PNNtezteY6nbFjrYTIa3aE446vvGEm2y9CafkdGxvYn7i1lT8EdMUAYzDeLNep1YEcwC
+         zg5RtsTM7PJJwSaNFDyHLjtBVvWT57KY4Ah8+xBSI0G5Qkhavs8ltPFf+4xNertKJwjh
+         oKmEmj5JakqeJtOIL2MokN0frA/lpYZU1vnTHXSIb1Au2M7L2VQw5iVboSTH6NJ0MPpt
+         Q7Awe1xuVrUNj+ACjsCh9WgOO0f/1RKH5SY4d4SVJYMQL5Qw/JKkWKgqQDRU+g1cIV7D
+         DiFw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2Npxic0tYEDpdG2jf1DSgH4dNNV5llJ1Pe8H6PYEN/Xyy+L+V2R05KQbjC3sKoURRQb/RCXbDohFmzqKNzDU=@vger.kernel.org, AJvYcCVHsuKqeX09qMOpzwBt1rRwemwQt0/P81fMEfKSZgqiMuGYkKY/8SwydjRtQiOf3WgrU+Ui4M0t@vger.kernel.org, AJvYcCX9hP2gs9B5EGLybJ3nYwkgQaccjKOti512DwO20lGT29kr5X6DObMyWtNSxz6VtniFhtUDqLoGvJAakzM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweUS6024j0+Ae1XiIvASJEFVIeYiWa0GlIfMi69n90sR3yysdD
+	Z8+qJSWpW8itNm21maEk0acK9TCinmpNN2Zyhn1+3uGT/roZO6DLJL1FVCZb28t+bg0l72lzXTV
+	CyISdxcqIuHxvmEyUCoWYcWIrxHg=
+X-Google-Smtp-Source: AGHT+IFIuvyES4s9VElGPqNkC2xj2m2K4rPwfHrrItKyso51Yi8CEyESeZiYUdAkjVNkI+7vvtUAuf75lShL5tVVHd0=
+X-Received: by 2002:a05:6a00:84f:b0:71e:1225:77f0 with SMTP id
+ d2e1a72fcca58-71e12257b7fmr1664544b3a.6.1728393258158; Tue, 08 Oct 2024
+ 06:14:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241004154149.93856-8-dakr@kernel.org>
+References: <20241005122531.20298-6-fujita.tomonori@gmail.com>
+ <06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch> <ZwG8H7u3ddYH6gRx@boqun-archlinux>
+ <e17c0b80-7518-4487-8278-f0d96fce9d8c@lunn.ch> <ZwPT7HZvG1aYONkQ@boqun-archlinux>
+ <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch> <CAH5fLgjL9DA7+NFetJGDdi_yW=8YZCYYa_5Ps_bkhBTYwNCgMQ@mail.gmail.com>
+ <ZwPsdvzxQVsD7wHm@boqun-archlinux> <5368483b-679a-4283-8ce2-f30064d07cad@lunn.ch>
+ <ZwRq7PzAPzCAIBVv@boqun-archlinux> <c3955011-e131-45c9-bf74-da944e336842@lunn.ch>
+In-Reply-To: <c3955011-e131-45c9-bf74-da944e336842@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Oct 2024 15:14:05 +0200
+Message-ID: <CANiq72m3WFj9Eb2iRUM3mLFibWW+cupAoNQt+cqtNa4O9=jq7Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 04, 2024 at 05:41:11PM +0200, Danilo Krummrich wrote:
-> `Allocator`s, such as `Kmalloc`, will be used by e.g. `Box` and `Vec` in
-> subsequent patches, and hence this dependency propagates throughout the
-> whole kernel.
-> 
-> Add the `allocator_test` module that provides an empty implementation
-> for all `Allocator`s in the kernel, such that we don't break the
-> `rusttest` make target in subsequent patches.
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/alloc.rs                |  9 +++++++--
->  rust/kernel/alloc/allocator_test.rs | 19 +++++++++++++++++++
->  2 files changed, 26 insertions(+), 2 deletions(-)
->  create mode 100644 rust/kernel/alloc/allocator_test.rs
-> 
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 91b2a26faf3d..f8ddc8d96da9 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -2,12 +2,17 @@
->  
->  //! Extensions to the [`alloc`] crate.
->  
-> -#[cfg(not(test))]
-> -#[cfg(not(testlib))]
-> +#[cfg(not(any(test, testlib)))]
->  pub mod allocator;
->  pub mod box_ext;
->  pub mod vec_ext;
->  
-> +#[cfg(any(test, testlib))]
-> +pub mod allocator_test;
-> +
-> +#[cfg(any(test, testlib))]
-> +pub use self::allocator_test as allocator;
-> +
->  /// Indicates an allocation error.
->  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
->  pub struct AllocError;
-> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-> new file mode 100644
-> index 000000000000..4785efc474a7
-> --- /dev/null
-> +++ b/rust/kernel/alloc/allocator_test.rs
-> @@ -0,0 +1,19 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#![allow(missing_docs)]
-> +
-> +use super::{AllocError, Allocator, Flags};
-> +use core::alloc::Layout;
-> +use core::ptr::NonNull;
-> +
-> +pub struct Kmalloc;
-> +
-> +unsafe impl Allocator for Kmalloc {
-> +    unsafe fn realloc(
-> +        _ptr: Option<NonNull<u8>>,
-> +        _layout: Layout,
+On Tue, Oct 8, 2024 at 2:13=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> As far as i see, might_sleep() will cause UAF where there is going to
+> be a UAF anyway. If you are using it correctly, it does not cause UAF.
 
-The `old_layout` parameter is missing here.
+This already implies that it is an unsafe function (in general, i.e.
+modulo klint, or a way to force the user to have to write `unsafe`
+somewhere else, or what I call ASHes -- "acknowledged soundness
+holes").
 
-Regards,
-Boqun
+If we consider as safe functions that, if used correctly, do not cause
+UB, then all functions would be safe.
 
-> +        _flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> +        panic!();
-> +    }
-> +}
-> -- 
-> 2.46.1
-> 
+Cheers,
+Miguel
