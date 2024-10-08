@@ -1,208 +1,298 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDEF20ADFB
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Oct 2024 18:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6941E04A9
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Oct 2024 18:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728411937; cv=none; b=RemTvX/5rFuknaO8ibk8XOzU4qXoojT4x8B1mBjakoBIg9PRW6QyPRSHi2qEfgPVTNtBb5Xt691DILBjtiN4sbIaSzsoRumeXJGmfNFrpDL0lDxRfHVOmhi8tT1Gc1F9CqQKBkv10ltGE+vHMjny/3rsQ2wAYdFAJBUXWe2mV/w=
+	t=1728412719; cv=none; b=E1PPRwffiIVfrew/fqiESHa10sc9/3C4ybu5fD4QIgLnUYbtb7VE9J9ZfD479o+vgpI7v9ZgpqCrecOpXI1VTXuby62P0l7MxUCQ5cT+jk3QDT0KVv7PHzxqsOCME6oqJC91EOn3enlJAm7uZ02WlZQLbOCTZHPlsNM+Mcu/Nwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728411937; c=relaxed/simple;
-	bh=hOXbxmxGL9RjWcZWCgTZ0kljKWaTMIJz6LF9nZkfKgo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b7x3FfWedKLQd25XXJPQwoogQwf9zLia2Q6DrilLA/HeLLSI7ga+Ch7QsPEF0nVp2rL1CiIev1OkxmWgb2BLuuTvw335nuKF85zrUMhopl1IpToQh73U3+e9R8XgxfsNHWwnS+xX+VF1/6NxfQBEQlaSmkec6TwEJUejDt3tRwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0FdY2cnm; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1728412719; c=relaxed/simple;
+	bh=4e8r6mYIDO+igGLWTWuZCKBJGTYTPIHxIKjGnvqW3NI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QGgBbkMXINlsjcfAIYkHy7O6snQsJdNtvvZkMP8iseonXpm+KoXM8qAINikrar8InEpweTIubIW3UqNOY88YLN8hMFy1rpwAzgUV+b2bLtDQ/adtovl1PXRAZw8Sa271OKhuh2a476aiLxOtx1e7qQBqw4icsr6ptVeZ9QhAK6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hHEfM2It; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0FdY2cnm"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42cb1dd2886so38445e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Oct 2024 11:25:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hHEfM2It"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-71e0503f4e9so2207179b3a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Oct 2024 11:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728411934; x=1729016734; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O9+qQfvvXgyE3lbO6k8qawt8v4FfcA1COjzGEqqIH8M=;
-        b=0FdY2cnmeqPVl0D3RZk2Fi5NOuT5VbVbt6FFc4E7IIABhaStx0cTGGqCKXYuF+Ovgs
-         xdjYgeNQU88HEvcZsakEaFJBFvJzPpzKFaGxlurZv3AnU2uWJxOy9Hat5KAn901PoDLb
-         vNW9M0k4tnNlYaM5KWxwkvzPKD5U/QJOrgVa9tH7oGbhduRN6PDRG4BZ1O9DfQRybc8l
-         AnupCspSoMt477hLnoa/46Bsj2gtQ3kJXnbsyesp1NF9mg6jV8ZS0UsIIz/B34+LMz0Z
-         cGdxXY0gvCNYwGPXkRbgg1DH/+s+qeLK/miO7uFiyw//yKvzhE1M3YGnJi7vhXVZpJl/
-         1hHQ==
+        d=google.com; s=20230601; t=1728412717; x=1729017517; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gE5C6P+FguMxBPu/VQUgs6ziyMjtABJbpUZYROlb7Hw=;
+        b=hHEfM2ItPg/TX5ns7SsCWCZUQF2i7HefI68ZVm0gKFRIMDbfhGgKYoa9ELFqC4ps+v
+         dVt8FeZo2j/5qTZWKo+P6qg/vBC8gJ3qIbDu0tywruffkVQfcB+mfr2Mrd6JR14QXzb1
+         A6TULAUBpxdtQ++sodnwDpPNBezMm2/xaxZIe8z+q7YyYNxD9DkUS2gh1wk/JuVPcMir
+         OY3ISrJDE7H40m/7KZcIOBufeH/IkbGOSnt95nQ5UCqOzyt0W1vIVXjRc8K2EiisG/pg
+         K4iWrkvKM0bE7XhbX1BaraVVynZNs6gIQl7GQ88mWLDrP7Pm8ldcUBBAvQLmmRqUfQHX
+         NY1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728411934; x=1729016734;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O9+qQfvvXgyE3lbO6k8qawt8v4FfcA1COjzGEqqIH8M=;
-        b=QWZtEqfRxz7+JGJVdQtEVz4VqwTzBdzM9zsXb162iM7FGGAJTCHZnlMexja9b21vf5
-         +NJS2laryTEpL9wzcNPpk2419gBeB9RFeGib6/8cYmfcK//qswHWIctCMAjRWPPL07HO
-         CFzWjU8zTPUKgApln9JHfR0co9CTgKQqwpOnlwVVQTjKKeQgNvIE1gRIIckVQJqwifDa
-         z3CiFvTM+xp8xWkhjrv65tz2TzyskAAB31QMY180LHLrHG1k7if/iSVfkm3CfV7CQbfU
-         Cq7K5nT6gDnmaNgbbUjNEfQ0ejTkvevZ76hWq+RmjcVmH7vkllMj1oEQYmVh+es3bO5x
-         kNew==
-X-Forwarded-Encrypted: i=1; AJvYcCVm6WiFbC7sj1CYmpjfMTX2jhAOJmqFe6H3r91EUCpkjwPMLMcEUop4tlwGw+T1oGYyX+k69zZF9T52NN3XDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUY18rMyNplKDGiWoj5KSO2+sAANNDtfxe8EvJPDrA5jYWmkNv
-	PM5uAHLmJfnO9oxHqPCHJxZ8oSefiLxAzRj9Mkat5okOJjsU4UrRiuJ0iuIe/rZc9UTDZMNT7SJ
-	OoHuBYjY9WH6Ec63BBudz4Wryf4v94NhHLgRA
-X-Google-Smtp-Source: AGHT+IHAssweWZAY+6Z2ceMdPdwwXkz/meoe1Yl5qmMTx3Ojc57hVUGpsCH+wADKon600alISzrnsmRVOkEfwYW3jWI=
-X-Received: by 2002:a05:600c:c07:b0:42c:acd7:b59b with SMTP id
- 5b1f17b1804b1-43058d74771mr362955e9.6.1728411933766; Tue, 08 Oct 2024
- 11:25:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728412717; x=1729017517;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gE5C6P+FguMxBPu/VQUgs6ziyMjtABJbpUZYROlb7Hw=;
+        b=VXDUBRpdwk4ucb9zysXqpYF+zmr1F//BoYV1+5unuB8TkOafJ7x335opPiC5J2dA+Z
+         /5df3gSkEWuHd2VY5qiMh0hZ6TTZ20CcHaN8rt94jAKT1gW0XIwOob6zVhP0VW5aIQDD
+         F4gzkGbSIPq+HG3JBamfs36Qf6v+1VHcNDSdrJpIfXn0adib+VTFIYQT8CCqv7St6/U7
+         IZbyj37lxtXAP1TKZgasKp5kkX+ISR7Cvi2vQhmCnAeRC5+02x58ASzdMC2w1wdfWKu6
+         TdOVqNqx4tX8ReeNcqEYOlxj/hXwTTmO02dEVUX9K4FV3M5luBCmeYCInaEr6bEZrrJb
+         MzlA==
+X-Forwarded-Encrypted: i=1; AJvYcCUsesSn6RyLVpN6RRyTfQg/wDqem/THNHn2nMAr6Z8e9W8+v/NBRTSuXaEOMVaQn1kOb3blxaYv3wwFSPikYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY46g6weTFCnY2aHrbE2UIMg+6PUoBAu/GPa2wa23KEj06II+T
+	L2sxy/9wYVnyfBYcXMeWRnoCPLx7zmSDPRlkZFYljnCOMFAQ4T0mWxFxMUhiIjQpdPWgB4LV7fV
+	Gt1rSeU6nrKOlYpGFvwtYwQVSCg==
+X-Google-Smtp-Source: AGHT+IHPwHgCApbwLq8iY4kWrrOuNY4O6OryDtwGgVkqDB1jCr+wfxpLArIYzmMcvwJcCBoVtp09Mu+Y72QVAtjeedM=
+X-Received: from samitolvanen.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:4f92])
+ (user=samitolvanen job=sendgmr) by 2002:a05:6a00:91db:b0:71e:401:6580 with
+ SMTP id d2e1a72fcca58-71e040166f7mr14892b3a.6.1728412716926; Tue, 08 Oct 2024
+ 11:38:36 -0700 (PDT)
+Date: Tue,  8 Oct 2024 18:38:24 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241008-rustc-option-bootstrap-v2-1-e6e155b8f9f3@google.com> <CAGSQo02oVWxazut2nyh-9K9gK+937zKCfYMBkT4EQE2CddvZtg@mail.gmail.com>
-In-Reply-To: <CAGSQo02oVWxazut2nyh-9K9gK+937zKCfYMBkT4EQE2CddvZtg@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Tue, 8 Oct 2024 11:25:21 -0700
-Message-ID: <CAGSQo01FErmGbeu-+_kRfpQrO4xkaGuSo_zAXTmGHZuFVYXpNw@mail.gmail.com>
-Subject: Re: [PATCH v2] Kbuild: fix issues with rustc-option
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Mime-Version: 1.0
+X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9498; i=samitolvanen@google.com;
+ h=from:subject; bh=4e8r6mYIDO+igGLWTWuZCKBJGTYTPIHxIKjGnvqW3NI=;
+ b=owGbwMvMwCEWxa662nLh8irG02pJDOmsNfKtCvddrh1eEVsbsNnNScFUKvrWfKtpQTtZ2q/YH
+ f0xT0S4o5SFQYyDQVZMkaXl6+qtu787pb76XCQBM4eVCWQIAxenAEzkcxwjw8lft67bq8564pK7
+ Jki6iXvd2RWbLkjPcN//ncclVSXnRiojQ58Cr8zjKLH1R986xLkdf3s79rCrHLNR6BN9cbkOqxx xVgA=
+X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
+Message-ID: <20241008183823.36676-21-samitolvanen@google.com>
+Subject: [PATCH v4 00/19] Implement DWARF modversions
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Err, slight amendment - I think you want `-o $$TMP`, and not
-`--out-dir $$TMPOUT`
+Hi,
 
-You definitely don't want `--out-dir $$TMP`, but the other two
-settings above would be defensible.
+Here's v4 of the DWARF modversions series. The main motivation is
+modversions support for Rust, which is important for distributions
+like Android that are about to ship Rust kernel modules. Per Luis'
+request [1], v2 dropped the Rust specific bits from the series and
+instead added the feature as an option for the entire kernel. Matt is
+addressing Rust modversion_info compatibility issues in a separate
+series [2], and we'll follow up with a patch to actually allow
+CONFIG_MODVERSIONS with Rust once everything else has been sorted
+out.
+
+Short background: Unlike C, Rust source code doesn't have sufficient
+information about the final ABI, as the compiler has considerable
+freedom in adjusting structure layout, for example, which makes
+using a source code parser like genksyms a non-starter. Based on
+earlier feedback, this series uses DWARF debugging information for
+computing versions. DWARF is an established and a relatively stable
+format, which includes all the necessary ABI details, and adding a
+CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+reasonable trade-off.
+
+The first patch moves the genksyms CRC32 implementation to a shared
+header file and the next 15 patches add gendwarfksyms, a tool for
+computing symbol versions from DWARF. When passed a list of exported
+symbols and object files, the tool generates an expanded type string
+for each symbol and computes symbol CRCs similarly to genksyms.
+gendwarfksyms is written in C and uses libdw to process DWARF. Patch
+17 ensures that debugging information is present where we need it,
+patch 18 adds gendwarfksyms as an alternative to genksyms, and the
+last patch adds documentation.
+
+v4 is based on v6.12-rc2 and for your convenience the series is also
+available here:
+
+https://github.com/samitolvanen/linux/commits/gendwarfksyms-v4
+
+If you also want to test the series with Rust modules, this branch
+adds Matt's latest modversion_info series and a small patch to enable
+Rust modversions:
+
+https://github.com/samitolvanen/linux/commits/rustmodversions-v4
+
+Sami
 
 
-On Tue, Oct 8, 2024 at 10:43=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> Thanks for catching this - I had a specialized toolchain enabled which
-> didn't exercise the `RUSTC_BOOTSTRAP` issue, and without an unexpected
-> failure, didn't see the `--out-dir` flag conflict after I got the
-> request to add it.
->
-> Reviewed-By: Matthew Maurer <mmaurer@google.com>
->
->
-> On Tue, Oct 8, 2024 at 10:32=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > Fix a few different compiler errors that cause rustc-option to give
-> > wrong results.
-> >
-> > If KBUILD_RUSTFLAGS or the flags being tested contain any -Z flags, the=
-n
-> > the error below is generated. The RUSTC_BOOTSTRAP environment variable
-> > is added to fix this error.
-> >
-> >         error: the option `Z` is only accepted on the nightly compiler
-> >         help: consider switching to a nightly toolchain: `rustup defaul=
-t nightly`
-> >         note: selecting a toolchain with `+toolchain` arguments require=
- a rustup proxy;
-> >               see <https://rust-lang.github.io/rustup/concepts/index.ht=
-ml>
-> >         note: for more information about Rust's stability policy, see
-> >               <https://doc.rust-lang.org/book/appendix-07-nightly-rust.=
-html#unstable-features>
-> >         error: 1 nightly option were parsed
-> >
-> > The probe may also fail incorrectly with the below error message. To fi=
-x
-> > it, the /dev/null argument is replaced with a new rust/probe.rs file
-> > that doesn't need even the core part of the standard library.
-> >
-> > error[E0463]: can't find crate for `std`
-> >   |
-> >   =3D note: the `aarch64-unknown-none` target may not be installed
-> >   =3D help: consider downloading the target with `rustup target add aar=
-ch64-unknown-none`
-> >   =3D help: consider building the standard library from source with `ca=
-rgo build -Zbuild-std`
-> >
-> > The -o and --out-dir parameters are altered to fix this warning:
-> >
-> >         warning: ignoring --out-dir flag due to -o flag
-> >
-> > I verified that the Kconfig version of rustc-option doesn't have the
-> > same issues.
-> >
-> > Fixes: c42297438aee ("kbuild: rust: Define probing macros for rustc")
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> > Changes in v2:
-> > - Add `export` to RUSTC_BOOTSTRAP.
-> > - Fix error about core being missing.
-> > - Fix warning about -o flag.
-> > - Link to v1: https://lore.kernel.org/r/20241008-rustc-option-bootstrap=
--v1-1-9eb06261d4f7@google.com
-> > ---
-> >  rust/probe.rs             | 7 +++++++
-> >  scripts/Makefile.compiler | 5 +++--
-> >  2 files changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/rust/probe.rs b/rust/probe.rs
-> > new file mode 100644
-> > index 000000000000..bf024e394408
-> > --- /dev/null
-> > +++ b/rust/probe.rs
-> > @@ -0,0 +1,7 @@
-> > +//! Nearly empty file passed to rustc-option by Make.
-> > +//!
-> > +//! The no_core attribute is needed because rustc-option otherwise fai=
-ls due to
-> > +//! not being able to find the core part of the standard library.
-> > +
-> > +#![feature(no_core)]
-> > +#![no_core]
-> > diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-> > index 057305eae85c..08d5b7177ea8 100644
-> > --- a/scripts/Makefile.compiler
-> > +++ b/scripts/Makefile.compiler
-> > @@ -21,6 +21,7 @@ TMPOUT =3D $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD=
-_EXTMOD))/).tmp_$$$$
-> >  # automatically cleaned up.
-> >  try-run =3D $(shell set -e;              \
-> >         TMP=3D$(TMPOUT)/tmp;              \
-> > +       export RUSTC_BOOTSTRAP=3D1;       \
-> >         trap "rm -rf $(TMPOUT)" EXIT;   \
-> >         mkdir -p $(TMPOUT);             \
-> >         if ($(1)) >/dev/null 2>&1;      \
-> > @@ -76,7 +77,7 @@ ld-option =3D $(call try-run, $(LD) $(KBUILD_LDFLAGS)=
- $(1) -v,$(1),$(2),$(3))
-> >  # __rustc-option
-> >  # Usage: MY_RUSTFLAGS +=3D $(call __rustc-option,$(RUSTC),$(MY_RUSTFLA=
-GS),-Cinstrument-coverage,-Zinstrument-coverage)
-> >  __rustc-option =3D $(call try-run,\
-> > -       $(1) $(2) $(3) --crate-type=3Drlib /dev/null --out-dir=3D$$TMPO=
-UT -o "$$TMP",$(3),$(4))
-> > +       $(1) $(2) $(3) --crate-type=3Drlib $(srctree)/rust/probe.rs --o=
-ut-dir=3D$$TMP,$(3),$(4))
-> >
-> >  # rustc-option
-> >  # Usage: rustflags-y +=3D $(call rustc-option,-Cinstrument-coverage,-Z=
-instrument-coverage)
-> > @@ -86,4 +87,4 @@ rustc-option =3D $(call __rustc-option, $(RUSTC),\
-> >  # rustc-option-yn
-> >  # Usage: flag :=3D $(call rustc-option-yn,-Cinstrument-coverage)
-> >  rustc-option-yn =3D $(call try-run,\
-> > -       $(RUSTC) $(KBUILD_RUSTFLAGS) $(1) --crate-type=3Drlib /dev/null=
- --out-dir=3D$$TMPOUT -o "$$TMP",y,n)
-> > +       $(RUSTC) $(KBUILD_RUSTFLAGS) $(1) --crate-type=3Drlib $(srctree=
-)/rust/probe.rs --out-dir=3D$$TMP,y,n)
-> >
-> > ---
-> > base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
-> > change-id: 20241008-rustc-option-bootstrap-607e5bf3114c
-> >
-> > Best regards,
-> > --
-> > Alice Ryhl <aliceryhl@google.com>
-> >
+[1] https://lore.kernel.org/lkml/ZnIZEtkkQWEIGf9n@bombadil.infradead.org/
+[2] https://lore.kernel.org/lkml/20240925233854.90072-1-mmaurer@google.com/
+
+---
+
+v4:
+- Rebased on v6.12-rc2, which now includes all the prerequisites.
+
+- Dropped unnecessary name_only parameter for symbols.c::for_each
+  and cleaned up error handling. (Patch 3)
+
+- Fixed anonymous scope handling to ensure unnamed DIEs don't get
+  names. (Patch 4)
+
+- Added non-variant children to variant_type output, and included
+  DW_AT_discr_value attributes for variants. (Patch 9)
+
+- Added another symbol pointer test case. (Patch 16)
+
+- Picked up (Acked|Reviewed)-by tags from v3.
+
+
+v3: https://lore.kernel.org/lkml/20240923181846.549877-22-samitolvanen@google.com/
+- Updated SPX license headers.
+
+- Squashed the first two patches in v2 and tried to reduce churn as
+  much as reasonable.
+
+- Dropped patch 18 from v2 ("x86/asm-prototypes: Include
+  <asm/ptrace.h>") as it's addressed by a separate patch.
+
+- Changed the error handling code to immediately terminate instead
+  of propagating the errors back to main, which cleaned up the code
+  quite a bit.
+
+- Switched to the list and hashtable implementations in scripts and
+  dropped the remaining tools/include dependencies. Added a couple
+  missing list macros. (patch 1)
+
+- Moved the genksyms CRC32 implementation to scripts/include and
+  dropped the duplicate code. (patches 2 and 14)
+
+- Switched from ad-hoc command line parsing to getopt_long (patch 3).
+
+- Added structure member and function parameter names to the DIE
+  output to match genksyms behavior, and tweaked the symtypes format
+  to be more parser-friendly in general based on Petr's suggestions.
+
+- Replaced the declaration-only struct annotations with more generic
+  kABI stability rules that allow source code annotations to be used
+  where #ifndef __GENKSYMS__ was previously used.  Added support for
+  rules that can be used to exclude enumerators from versioning.
+  (patch 16)
+
+- Per Miroslav's suggestion, added an option to hide structure
+  members from versioning when they're added to existing alignment
+  holes, for example. (patch 16)
+
+- Per Greg's request, added documentation and example macros for the
+  --stable features, and a couple of test cases. (patches 15, 16, and
+  20)
+
+- Fixed making symtypes files, which need to depend on .o files with
+  gendwarfksyms. (patch 19)
+
+- Addressed several other smaller issues that Petr and Masahiro
+  kindly pointed out during the v2 review.
+
+
+v2: https://lore.kernel.org/lkml/20240815173903.4172139-21-samitolvanen@google.com/
+- Per Luis' request, dropped Rust-specific patches and added
+  gendwarfksyms as an alternative to genksyms for the entire
+  kernel.
+
+- Added support for missing DWARF features needed to handle
+  also non-Rust code.
+
+- Changed symbol address matching to use the symbol table
+  information instead of relying on addresses in DWARF.
+
+- Added __gendwarfksyms_ptr patches to ensure the compiler emits
+  the necessary type information in DWARF even for symbols that
+  are defined in other TUs.
+
+- Refactored debugging output and moved the more verbose output
+  behind --dump* flags.
+
+- Added a --symtypes flag for generating a genksyms-style
+  symtypes output based on Petr's feedback, and refactored
+  symbol version calculations to be based on symtypes instead
+  of raw --dump-dies output.
+
+- Based on feedback from Greg and Petr, added --stable flag and
+  support for reserved data structure fields and declaration-onl
+  structures. Also added examples for using these features.
+
+- Added a GENDWARFKSYMS option and hooked up kbuild support
+  for both C and assembly code. Note that with gendwarfksyms,
+  we have to actually build a temporary .o file for calculating
+  assembly modversions.
+
+v1: https://lore.kernel.org/lkml/20240617175818.58219-17-samitolvanen@google.com/
+
+---
+Sami Tolvanen (19):
+  scripts: move genksyms crc32 implementation to a common include
+  tools: Add gendwarfksyms
+  gendwarfksyms: Add address matching
+  gendwarfksyms: Expand base_type
+  gendwarfksyms: Add a cache for processed DIEs
+  gendwarfksyms: Expand type modifiers and typedefs
+  gendwarfksyms: Expand subroutine_type
+  gendwarfksyms: Expand array_type
+  gendwarfksyms: Expand structure types
+  gendwarfksyms: Limit structure expansion
+  gendwarfksyms: Add die_map debugging
+  gendwarfksyms: Add symtypes output
+  gendwarfksyms: Add symbol versioning
+  gendwarfksyms: Add support for kABI rules
+  gendwarfksyms: Add support for reserved and ignored fields
+  gendwarfksyms: Add support for symbol type pointers
+  export: Add __gendwarfksyms_ptr_ references to exported symbols
+  kbuild: Add gendwarfksyms as an alternative to genksyms
+  Documentation/kbuild: Add DWARF module versioning
+
+ Documentation/kbuild/gendwarfksyms.rst      |  274 +++++
+ Documentation/kbuild/index.rst              |    1 +
+ include/linux/export.h                      |   15 +
+ kernel/module/Kconfig                       |   31 +
+ scripts/Makefile                            |    3 +-
+ scripts/Makefile.build                      |   39 +-
+ scripts/gendwarfksyms/.gitignore            |    2 +
+ scripts/gendwarfksyms/Makefile              |   12 +
+ scripts/gendwarfksyms/cache.c               |   44 +
+ scripts/gendwarfksyms/die.c                 |  166 +++
+ scripts/gendwarfksyms/dwarf.c               | 1088 +++++++++++++++++++
+ scripts/gendwarfksyms/examples/kabi.h       |  141 +++
+ scripts/gendwarfksyms/examples/kabi_ex0.c   |   86 ++
+ scripts/gendwarfksyms/examples/kabi_ex1.c   |   89 ++
+ scripts/gendwarfksyms/examples/kabi_ex2.c   |   98 ++
+ scripts/gendwarfksyms/examples/kabi_rules.c |   56 +
+ scripts/gendwarfksyms/examples/symbolptr.c  |   33 +
+ scripts/gendwarfksyms/gendwarfksyms.c       |  187 ++++
+ scripts/gendwarfksyms/gendwarfksyms.h       |  352 ++++++
+ scripts/gendwarfksyms/kabi.c                |  214 ++++
+ scripts/gendwarfksyms/symbols.c             |  319 ++++++
+ scripts/gendwarfksyms/types.c               |  477 ++++++++
+ scripts/genksyms/genksyms.c                 |   77 +-
+ scripts/include/crc32.h                     |   93 ++
+ 24 files changed, 3812 insertions(+), 85 deletions(-)
+ create mode 100644 Documentation/kbuild/gendwarfksyms.rst
+ create mode 100644 scripts/gendwarfksyms/.gitignore
+ create mode 100644 scripts/gendwarfksyms/Makefile
+ create mode 100644 scripts/gendwarfksyms/cache.c
+ create mode 100644 scripts/gendwarfksyms/die.c
+ create mode 100644 scripts/gendwarfksyms/dwarf.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi.h
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex0.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex1.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex2.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_rules.c
+ create mode 100644 scripts/gendwarfksyms/examples/symbolptr.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.h
+ create mode 100644 scripts/gendwarfksyms/kabi.c
+ create mode 100644 scripts/gendwarfksyms/symbols.c
+ create mode 100644 scripts/gendwarfksyms/types.c
+ create mode 100644 scripts/include/crc32.h
+
+
+base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+-- 
+2.47.0.rc0.187.ge670bccf7e-goog
+
