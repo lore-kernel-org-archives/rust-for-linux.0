@@ -1,96 +1,36 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB13215024;
-	Tue,  8 Oct 2024 21:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32038215005;
+	Tue,  8 Oct 2024 22:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728424749; cv=none; b=pKHsL4hdRnSA9jRK91h9pSIVi6Y4ZlPBAwan9qsPfBhmkoRCNt5eb+7DJpgHdrQ4scl+1oIIpT+Mls0TBZo45B7bLPb1aJ0JzRcpthKirfLBkkxdXZcH/d0GABAHyJIXJ3W9Tv9+30v22ElWS8A9KOl/MFGvwOVPHQGUMkNb6dA=
+	t=1728426382; cv=none; b=Qors2qJerpWeo6ykh8AHEJEmV8FrTY04NZy/S6D9TgwUHJQ6TGxOvuxaSTlkBeJWdbbBi5lpkRhNy9sezX2EJvPV6oQFi/sS9Ii1JtGmX5FXWgC0OLgKzUivk2N5n9ApTl20UV7HRfbU+IAWQ4BAB/syeyPcZNp5WUdxRggTHd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728424749; c=relaxed/simple;
-	bh=VoMl7LpDjDXr1VZaAh7ow87FifQ459wX0X4bZGdU9HI=;
+	s=arc-20240116; t=1728426382; c=relaxed/simple;
+	bh=BEN+Imuy9+OSJ/g5BEyh4iCRtXORsG6ZCXrGS4TpajA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gv8w/g1x1pvXGY5u0C7uRvlLLoZA1kmMU0PJlNF7/ZOjM4Wh87a4/XrEyd6NHPuEyCG3BX5N5pWDRsdEe7Wz+Xii0aCKH3T8nO+Sb4DX/5sDZbNMM3d2nV4YtGwwysV7JHMH1TQrjORKk6ayO6Okd2lhPM47N8bHnrx7ZUyy3eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZU6iqLAN; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uAWWB/l4w/Cp4/7usaKv8cgy3nWLhr1Icry5cNGdv75tYRefmSuJqsL5CDfxoX5hQqzDJj/yi8XgHvygjcXstXtTb4XceN5Lz6k8qDKglod/1qiQ3UcsgemO7+A/JU4GRvCHBowV90n8l2+xAgmUtadBGCCeKG/5KG2bkTaWhEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BcJ7mDDi; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZU6iqLAN"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a99fd5beb6so22292285a.0;
-        Tue, 08 Oct 2024 14:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728424747; x=1729029547; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6zzMoQ9GRFFQIfKm8Gy9DFstioAKOO5Mgjhl3aFl9IM=;
-        b=ZU6iqLANroR8XSaJ3DhqkYPRbPEyiuzcc7Q7AXEHhx3UHNfj+sv3AyNBnNh6gGt7Ks
-         zb/20gr2kLlNk4CMccrasWVbxtghrohUmy/QUPNNuWQtvWmgLWi5djMBNh5k7/MTKwDt
-         +x+z4b1QyeWX+GmmLfzqEqf0GI9+/VNqH3Z5tbMbAAe1GXxzmNDTyi1Ed9jrv04Ag2RG
-         ocZiTEXLJM8/VyjWwegMIx7g5ueQ/RUAkaff56tkkMZM4SKzmaSJ6PYGjqbMq2xzHJfF
-         LEa1zshiuyhXcn421oYfsT2luu27fGPuBQH7/YDzkZdoZHPlwoH2sgOYodFG/v2kJT9+
-         vxXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728424747; x=1729029547;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6zzMoQ9GRFFQIfKm8Gy9DFstioAKOO5Mgjhl3aFl9IM=;
-        b=KWdYpAvfqBJSGeVuQ5ettd067INTOFQer02IJE/LM4kwnryB/D80U52ML1udRx8djr
-         t29dOmIUaEX1x7Bveo3Zv5skI2z403fTSrvd4p8AoC6TI18YLEehQxzC8YGiQy8jrshm
-         0GHKpyFdr+Rh3PRRN9EXqkfIGtBlMKWULcEAmVMe+jfUZkd+NTnV1ULmYm/iTmTY02IF
-         sC9XS7xc7kujxtjqu9xxUURUbAtBFXTWlfq8pVhfzPvcOcCabDzVbJOjL153neRDSYqf
-         kTdprdfnNx1rLM3ANiiYSMRuusgzODzmIISU9pSaU3BMV4JAvNMke6q5OS8eABMJCPER
-         hqvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBSZEode1MzWVBX0SvtjK4dlXlkh0sO00TgrM8bDO/FzLGXq10bmbHZ+q+DFIXk2RP7m+32OLFUdjzUEc=@vger.kernel.org, AJvYcCWntzpOh7ogMQZzyafWXuheFKiakog4R0RRuWEPvJ6A5KnD/FaNjxHOhhNfssMqCWAGNxPt9Xd0@vger.kernel.org, AJvYcCXLyZSyhbl2wCTCRxVlLwKLzAmR6Fx3HcFlt5vxzZJ5mM66nvF/M69mKKzUCT/kZ6lCqUloTwcA+mlW2i2QI/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGWNygpx8gSk7/M7u/p9B5tmVvSB3EMvn/nZc2NAqlAJHnGPC8
-	Du625zXjXl0aaphr1dY+mCJc+7OQeucBANqrKoUuRYBjvXpCi8y0
-X-Google-Smtp-Source: AGHT+IElaBK06Rfr7LDkmiWS5ObaJrVEsHKgkBImGnsdOYipQ/6l2iH5PIfu9BNzl/v6kSNfFMdmJA==
-X-Received: by 2002:a05:620a:24cd:b0:7ab:32a8:d61f with SMTP id af79cd13be357-7ae85f6faeemr815005685a.26.1728424747092;
-        Tue, 08 Oct 2024 14:59:07 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7afcde42e20sm64074785a.2.2024.10.08.14.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 14:59:06 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2EA4E1200088;
-	Tue,  8 Oct 2024 17:59:06 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 08 Oct 2024 17:59:06 -0400
-X-ME-Sender: <xms:KqsFZw7aSvKrzJPeYoDvRdPQBiSiCrS7ib1zW_SUwtvOh1BlVsgW3Q>
-    <xme:KqsFZx6Ipdp13Jx8UJwEH1YBXrN6XqpyExauI-68cbiLm8w--jHoBVJE63FXJH_3d
-    8kyzZ7zxV-ZmsKH0g>
-X-ME-Received: <xmr:KqsFZ_dAzkdFCrNREmXHmTwXUk1e1zceTlU0vZMtUf5YFHU3U0hOd9iixH8PVg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdefvddgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfh
-    gfehgeekkeeigfdukefhgfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtg
-    hpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhmrghilhdrtgho
-    mhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtth
-    hopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    nhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqd
-    hfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhk
-    rghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuh
-    hmihgthhdrvgguuhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:KqsFZ1L_xjvEysHZXQj1J5IsMrAt9wJW9oz0q49RYx9QbrmA_ISygg>
-    <xmx:KqsFZ0Im-vSMe-r7eK25vaJN3QJ7nQW8BdKivccOHrQrioRsVdkRmg>
-    <xmx:KqsFZ2wyoA5lCzgkg-9FJ6UhyryDWzAdQBD5vkz9K0oUhHWQewRfvA>
-    <xmx:KqsFZ4IRsL3t_3elIhD1RgLYKrXLK_yTfwC7GZGkzalLkLHRhZzCIQ>
-    <xmx:KqsFZzYNO9zY80RPdMdV6cEZ2CZnoVQ6toGMGOfaVOj2YMQVZ8HG01Ez>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Oct 2024 17:59:05 -0400 (EDT)
-Date: Tue, 8 Oct 2024 14:57:43 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BcJ7mDDi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=/tQgqoykOqtITtW4+3hZ4DRT8pHz+6Smc5S01M5iIBg=; b=Bc
+	J7mDDidO5lxkneR+wsaAezc6SZh3Tpg2WJtraXNn99w7CB9jRQ3QmPsvFJjLc+3K5elD+fZqTWX6L
+	J3JdfqF6VfAJovlZaAYLGoyE0unwrzTx4ynqhBXVAxMPFgrofJqk9WpbqWFi1DmTwd27m5m/fr6sB
+	F+OzLrflP62rj4w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1syIeW-009Q4p-RL; Wed, 09 Oct 2024 00:26:00 +0200
+Date: Wed, 9 Oct 2024 00:26:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Boqun Feng <boqun.feng@gmail.com>
 Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
@@ -101,7 +41,7 @@ Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
-Message-ID: <ZwWq1yDK9Y7ee1pJ@boqun-archlinux>
+Message-ID: <32e97ba4-a47b-488a-b098-725faae21d7d@lunn.ch>
 References: <ZwPT7HZvG1aYONkQ@boqun-archlinux>
  <0555e97b-86aa-44e0-b75b-0a976f73adc0@lunn.ch>
  <CAH5fLgjL9DA7+NFetJGDdi_yW=8YZCYYa_5Ps_bkhBTYwNCgMQ@mail.gmail.com>
@@ -142,36 +82,45 @@ On Tue, Oct 08, 2024 at 02:53:56PM -0700, Boqun Feng wrote:
 > > From what i hear, klint is still WIP. So we have to accept there will
 > > be bad code out there, which will UAF. We want to find such bad code,
 > 
-> If you don't believe in klint, then we need to mark might_sleep() as
-> unsafe, as I already explain a million times, might_sleep() is unsafe
-> without the klint compile time check. You have to accept that an unsafe
-> function should really be marked as unsafe. And yes, in this way, all
-> sleep functions would be marked as unsafe as well (or we could mark all
-> preemption disable function as unsafe), but still an unsafe function is
-> unsafe.
-> 
-> Again, as Miguel mentioned, we can only mark might_sleep() because sleep
-> in atomic context is an ASH, not because it's really safe.
-> 
-> > and the easiest way to find it at the moment is to make it UAF as
-> > fast as possible. might_sleep() does that, __might_sleep() does not,
-> > and using neither is the slowest way.
-> > 
-> 
+> If you don't believe in klint
+
+I did not say that. It is WIP, and without it i assume nothing is
+detecting at compile time that the code is broken. Hence we need to
+find the problem at runtime, which is what might_sleep() is all about.
+
 > might_sleep() is useful because it checks preemption count and task
 > state, which is provided by __might_sleep() as well. I don't think
 > causing UAF helps we detect atomic context violation faster than what
 > __might_sleep() already have. Again, could you provide an example that
 > help me understand your reasoning here?
-> 
 
-Another advantage of __might_sleep() is that it's already an exported
-symbol, so we don't need to introduce a rust helper.
+> > while (1) {
+> >     <reader>                        <updater>
+> >     rcu_read_lock();
+> >     p = rcu_dereference(gp);
+> >     mutex_lock(&lock)
+> >     a = READ_ONCE(p->a);
+> >     mutex_unlock(&lock)
+> >     rcu_read_unlock();
+> > }
 
-Regards,
-Boqun
+The mutex lock is likely to be uncontested, so you don't sleep, and so
+don't trigger the UAF. The code is clearly broken, but you survive.
+Until the lock is contested, you do sleep, RCU falls apart, resulting
+in a UAF.
 
-> Regards,
-> Boqun
-> 
-> > 	Andrew
+Now if you used might_sleep(), every time you go around that loop you
+do some of the same processing as actually sleeping, so are much more
+likely to trigger the UAF.
+
+might_sleep() as you pointed out, is also active when
+CONFIG_DEBUG_ATOMIC_SLEEP is false. Thus it is also going to trigger
+the broken code to UAF faster. And i expect a lot of testing is done
+without CONFIG_DEBUG_ATOMIC_SLEEP and CONFIG_PROVE_LOCKING.
+
+Once klint is completed, and detects all these problems at compile
+time, we can then discard all this might_sleep stuff. But until then,
+the faster code explodes, the more likely it is going to be quickly
+and cheaply fixed.
+
+	Andrew
