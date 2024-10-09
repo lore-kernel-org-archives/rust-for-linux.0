@@ -1,114 +1,111 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CD31DD545
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 16:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B491E1A07
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 16:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728491769; cv=none; b=salFPKWAMASHP8Xnp3I2SyD671d0k/m81c0sdjWr8yRqc8+z0JT5u+J+XoD7rIOpQ/IHZkuvlh21/g56LYksCdP2sJexJkACgTykknbfHqNFUuwVHscqULOSPyhfROGU2PK/HGyfn4lbvYxMvo3Ea7C0gOKYMv9xH1kyFSnJZTA=
+	t=1728492266; cv=none; b=OVl6PwqAfdccC2kLp0sDWvoiHqtAeA7yiNwa7b5YJTkbubCsnHGrMny9lfrcZn21KnJqMSifYI4mt481IS4jy4KVSoAz6LyfDmxpF//+Y4UCA0dsBzgVdhb7oE3f2WkbnAaMmFsmYPK2+fKdIebyaVGOTDZEf/tqa89u8ZLrbAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728491769; c=relaxed/simple;
-	bh=8HKJlWSSCHdy6qITFYkhu5cddwy+nQ1ZeYduwDm6hjo=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QT1wPS2GGwgDDZWNIPK7F6b4cmoTBBy0IRCtdJ3fH5LNOpV4Lz5pw8qzLw5kdBssZbfSFMchR9+e4wcyRKpGeRpRcLXWtz7OCawww3SzHooUfjOlPIz8DCXffnLiXykd24NFYUXa9tCpZ9br5M2oQ6sk7n7c6u2A5hhup0+ZLhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bCup32UD; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1728492266; c=relaxed/simple;
+	bh=f0RFDXhULnyY2BY/Mw9GxD0uAf1hjmfoqcOSDpu3B3I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cl5exWQk+n3p4+KL8lX61te7dN2PCsp2DvqYWzPlFDAuPH33UX3R6jUVWqBON7GX+0OTXgq4x57lheROTvXvEhwYPeluVZtlkefEhnRoN4fWOghwk4CRAAmGWEuH1PX73QlEDRnvODzko3iMpq4PeIckhg5wbVxi3THk82nBcJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vlm4kDYZ; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bCup32UD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1728491760; x=1728750960;
-	bh=zmN7XVnDiHBQMiossOz4+ICOWo+68Q9zVw+WfEF1/vU=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=bCup32UDoeCdBJCu6ZCjcNjQ2Hsq5Weuaqt6jIOUGZnszZJXqPveUf1xNVnfHL+bB
-	 c7dfkT0j5/G3rWv1kb4tpYwly7HEaAByfw5LDpbZ27L4V2GiUALqvZuvTQT4PSFnVp
-	 BIa53l8rtBNRugCCh21l4xn4OR/Lbm9jTWCrmbBtj0j/ty9o8zrXybtgc6ZLODorqk
-	 iqvEOlPPTxIQPstp8hy2aJzk4oGvs/fDlldTqyO0p6ngBCGcdB++zJsu3c8mWAFkhD
-	 vQ+hLahEMGNn9Ip0MCcIfeQGUdIbVWO3smVT7GNWBuoFUlaYeSGLJywRScNAca1R5j
-	 XLSq/e3ZqJkMw==
-Date: Wed, 09 Oct 2024 16:35:55 +0000
-To: Dirk Behme <dirk.behme@gmail.com>, Christian dos Santos de Lima <christiansantoslima21@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-From: Benno Lossin <benno.lossin@proton.me>
-Subject: Re: [PATCH] rust: transmute: Add implementation for FromBytes trait
-Message-ID: <cf317f8a-e67c-4c33-a16e-74f7ef9ef96f@proton.me>
-In-Reply-To: <da18f77e-3ac3-4222-9ceb-72e2955472a7@gmail.com>
-References: <20241009014810.23279-1-christiansantoslima21@gmail.com> <da18f77e-3ac3-4222-9ceb-72e2955472a7@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f7b7b0c10724306e0770a16aea16d3835fcdcb90
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vlm4kDYZ"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4603d3e0547so5791cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 09:44:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728492263; x=1729097063; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f0RFDXhULnyY2BY/Mw9GxD0uAf1hjmfoqcOSDpu3B3I=;
+        b=vlm4kDYZx3YSTtwbXuTFQTWk/xfP6Jdo4ZaVxe+9LpbL35IkiB+KN40v1F3/xcR1bR
+         wjeU8OZ0supROHona17NaptKwYuI70u1ppPB2bV3GkdI1NLHCcqCihFz16j94unYfEDM
+         yWTjRwDQnLdVw9FNZdrIpPJjZClUhpJAL+0VsIpGUOnTywoh+WRpuVgCAht2LcoJm26J
+         dulLyQH2hRc7IrAOTKSeEFOlCiFCIqX6XMrcIV60Tpl7XrI2A8NAf8RRg74FDDyyR2j1
+         57fFBqr/5qwnkeoEe/ObDWSUyV1TfrGUV9TGnRnWo4U9rrzdKjZRXa/T0Nn0ytdQOw3I
+         oSKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728492263; x=1729097063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f0RFDXhULnyY2BY/Mw9GxD0uAf1hjmfoqcOSDpu3B3I=;
+        b=G5xJsCdmAjHbWpHczspaovJ7MCBAxW1cm1DoLrajvMQ1h9IQsUhFmxScxB9xnDQbXD
+         TsA8+byK2v3R90+u0mN60TiHUIatIcMDZzDQDfsXngmLXj5RlNmthuYxoHe8FakHlRVd
+         0oAWQkAqm/TjQ02NeYqLPmXIWOVCOLwAxObx8tjDh1aCkHbRYGonifNADssu+UAZ11y6
+         x8ENg8bkHagububNHcaQmYfyTNvlYVT4MZm8zzKJFD55UHPwJKI+CPrPuuaeNKtsHpbg
+         xoS1tcQ+86C8eTckzkF5Q5ABuCPYgk6ZONjqR091BpemFWIhMoXOpUFOgJ+5tviK5471
+         qPEw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/4j75WpZsmkKvC/KmZpjLUaGFDA5HPbjY5FdtCjUyi37cTl8Q9lcU8XAFXQHZ/YkHok0Te3p2M8k4y65Hlw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2hSjJFdULul+vYN0O7oy8LSjbTiNrD1G1BCclenvCMUQqv7qu
+	iAOq5/KICqcuvdy/5fVmp9uzvMKJ7vYkm/JLLmDVATP20Xg7WHGk2Rn3aWygDkvbEoztv7pWEDz
+	05OzpF5nO8IaHhF378P9Q+a/scIW+lg2mJ7Xf
+X-Google-Smtp-Source: AGHT+IGXi7403SDIdlxuIn/gfNtdZd69ttkza9TvN53TAGxffeRgQIzror4uI050ZcHFWqWlwYkRoIIev0/cUOq0cdo=
+X-Received: by 2002:ac8:6312:0:b0:45f:6a4:4262 with SMTP id
+ d75a77b69052e-45f0a153812mr4783561cf.22.1728492263209; Wed, 09 Oct 2024
+ 09:44:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20241008-cfi-fix-llvm-gate-v1-1-32d47459eee4@google.com> <CAGSQo03ZOppScZT_1DuWYsnveKvYHdc-K_djHi=AB4CKjAbgyQ@mail.gmail.com>
+In-Reply-To: <CAGSQo03ZOppScZT_1DuWYsnveKvYHdc-K_djHi=AB4CKjAbgyQ@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 9 Oct 2024 09:43:45 -0700
+Message-ID: <CABCJKuddiLtjG1TJ_CN+F8Z_7+oOOfZNAFd0=qy_HW4wMMJ3fA@mail.gmail.com>
+Subject: Re: [PATCH] cfi: fix conditions in HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 09.10.24 15:03, Dirk Behme wrote:
-> Am 09.10.24 um 03:47 schrieb Christian dos Santos de Lima:
->> Add implementation and documentation for FromBytes trait.
->>
->> Add new feature block in order to allow using ToBytes
->> and bound to from_bytes_mut function.
->>
->> Link: https://github.com/Rust-for-Linux/linux/issues/1119
->> Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail=
-.com>
->> ---
->>   rust/kernel/lib.rs       |   2 +
->>   rust/kernel/transmute.rs | 302 +++++++++++++++++++++++++++++++++++++--
->>   2 files changed, 290 insertions(+), 14 deletions(-)
->>
-> ...
->> --- a/rust/kernel/transmute.rs
->> +++ b/rust/kernel/transmute.rs
-> ...
->> +unsafe impl FromBytes for u8 {
-> ...
->> +unsafe impl FromBytes for u16 {
-> ...
->> +unsafe impl FromBytes for u32 {
-> ...
->> +unsafe impl FromBytes for u64 {
-> ...
->> +unsafe impl FromBytes for usize {
-> ...
->> +unsafe impl FromBytes for i8 {
-> ...
->> +unsafe impl FromBytes for i16 {
-> ...
->> +unsafe impl FromBytes for i32 {
-> ...
->> +unsafe impl FromBytes for i64 {
-> ...
->> +unsafe impl FromBytes for isize {
-> ...
->=20
-> Asahi Lina's device tree code which reads the device tree node's data
-> as a byte slice and then has to convert it
->=20
-> https://github.com/Fabo/linux/blob/9e496b356ee8e25f9bee9258491aa6ae3a4f1d=
-df/rust/kernel/of.rs#L390
->=20
-> uses macros to avoid code dublication:
->=20
-> prop_int_type!(u8);
-> prop_int_type!(u16);
-> prop_int_type!(u32);
-> prop_int_type!(u64);
-> prop_int_type!(i8);
-> prop_int_type!(i16);
-> prop_int_type!(i32);
-> prop_int_type!(i64);
->=20
-> Would anything like this be possible here, as well? To avoid code
-> dublication?
+Hi Alice,
 
-Yes please, create a macro.
+On Tue, Oct 8, 2024 at 10:46=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> This makes sense, as some folks have a Rust compiler they know has the
+> fix, but build system detection for it isn't there yet. This lets them
+> override availability if needed.
+>
+> That said, we should definitely be sure to get this back to a
+> non-configurable toggle once the LLVM version detection is in.
+>
+> Reviewed-By: Matthew Maurer <mmaurer@google.com>
+>
+> On Tue, Oct 8, 2024 at 10:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > The CFI_ICALL_NORMALIZE_INTEGERS option is incompatible with KASAN
+> > because LLVM will emit some constructors when using KASAN that are
+> > assigned incorrect CFI tags. These constructors are emitted due to use
+> > of -fsanitize=3Dkernel-address or -fsanitize=3Dkernel-hwaddress that ar=
+e
+> > respectively passed when KASAN_GENERIC or KASAN_SW_TAGS are enabled.
+> > However, the KASAN_HW_TAGS option relies on hardware support for MTE
+> > instead and does not pass either flag. (Note also that KASAN_HW_TAGS
+> > does not `select CONSTRUCTORS`.)
+> >
+> > Additionally, the option is configured to have a prompt and gated behin=
+d
+> > EXPERT. The previous method for a user override of the option did not
+> > actually work. This is expected to be temporary, as I intend to add a
+> > precise detection check for 6.13 - I did not included that here to avoi=
+d
+> > adding a RUSTC_LLVM_VERSION config in a fix.
 
----
-Cheers,
-Benno
+This sounds reasonable to me.
 
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+
+Sami
