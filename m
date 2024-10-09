@@ -1,112 +1,105 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15A18C92A;
-	Wed,  9 Oct 2024 18:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE101922EA;
+	Wed,  9 Oct 2024 18:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728497640; cv=none; b=bjIDxsSi03D766/CtFQtf8mgLwMilNphMMCtpZvfHhbPp1NK8sXVH4IAKdqwtVu+ykWY8P5yPulzLS31n41z8ZKjCGk18rSijYWWvheN+k4kjXFVTXqQAd12bCEgjoB/A7UB6VtmMu3xCWmxAzUVsocFCgdL25enCDhb8RHaqyk=
+	t=1728498432; cv=none; b=EKo6Y5/99LSfHzjjoIhVe68FBhsdbTT+7xnUsC436FmNlLiWzLCArfnI2Y7JxcH2xKsbCNveyCoAtH2ZGV4AadKZs0zng3LwBSPpW06IaoazKlDuz+jDTU/C9HeRfa6gbDD2UknZYBz+eHFHylqUBc8LQxFyx4CKg4D7tfmivbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728497640; c=relaxed/simple;
-	bh=XfC3SkocWVRtVo+920XQl5KyZGqj5i5w72C2PreHj9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cTNIoa4ubYWyJIh2O25cyRWDpd+gn/BL11R6D78wNHmXW6NSEfasmjWiW+qK/n8DGHnPbdvmkzmQQySPbC5k5hqo3BxeOnscP/drWEWtvVq9YHgfrRCb+4fTK5DXxkw+W8gVgaLNRuM0vqCLfSlGdjtoJTMCspzyfxX7bYhFXR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J06lsB21; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728498432; c=relaxed/simple;
+	bh=jhZwgy0s6PYh0bkEsa00DYSgW/ye/7lPeDLBcIHBAcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S9MH1UitRWx+TLMM6pDJaClyMSTkFGrKreFqjMDFKgtBTWdm7f/O1ExXesbA3DEf4BQEbOsBGnAhdEzbnXxjTfUnnKGXxiJ3gmTs4prlopKkLVS/TKWvIdU5VWgc7S4S/yXcUw0B8uTd+6LDFuoQ4kDR766LSw8zeyUjM+Yxmw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=siINcN6C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J06lsB21"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43056d99a5aso7657435e9.0;
-        Wed, 09 Oct 2024 11:13:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728497637; x=1729102437; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SkU1AqV1gWitBzfFdvaQ66uFkN//U4RnOTV0fzFYwUQ=;
-        b=J06lsB21ihS4h9a8o8oOPct94G+L4vBLXxfzjY45ElKmyRWSRkplovERfbvYmS/XpT
-         UzjQX6KO/orVfZyqvqxmYHEUOwsSP8ZnnrO9QPpj1ypOVvbUCc5AzIQ8cv9rD0e9DMI2
-         XXZiRhVZhtrKvFHeC/Om780x/MkOrRYh0t2Q8pi+AFkcQJdh67G7L4ljaqhK/aHAj0ki
-         9oVNUhzlWZRLyS06mCcukiHrSjtxv5uYFHXH6sVoSYUG4hbu1AeipvyW1ns9WcodGjZI
-         tjvFigawlNFrnN7vnrDSd36KI3ad7pUFDvxzp/LE3XMZk0WvmqvrrMKxizGAwAx7J262
-         IypQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728497637; x=1729102437;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SkU1AqV1gWitBzfFdvaQ66uFkN//U4RnOTV0fzFYwUQ=;
-        b=pnsj3j3HufJfF8IK2FbbO5TJ4nWd5vIMWuBc0l71VQcNxXjaCGJZRWrLiSGVVH7eRv
-         EzxV7n0HJukTK6cq9HWyAcS78I95Es5Aw/V1152DFcUScj1KUTxkGaMJb/coCnmsXcIB
-         eZnA7M2gEzDicuvZKk87fhpc3T7ppW7UTSWfmJcO51NEiHtwvkcq3GbklfyNwf7zCIzd
-         YqLTCBa4ZJUjwZu3tecFwIwr3LRe5AqZYxXBI1RZDQGGOTuZb3A+x9QTatdWkMZuM43X
-         k4BznvryVvYoW99hhAxDDPmmva9/m2ThRHRy4PyYHJGp91BEJXC0SoJDfWoQ86b556ET
-         MmXg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/t2QDvzFk+wFWEHrVvHRMZbM27g/5TfqnKRvlvpn8Oc7jNCo4+N2GfC8bBwBPsqvLEns0wziR7WPKvspA264=@vger.kernel.org, AJvYcCWAZwIeqJ0JXJMemRpb9jrmOI72Qobj2UaE77cO644BBV/qgsJHv8u36s9YuCieCeNJw/RbHA+9Crp2VLc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx+L/lIU108dsyOz5owtGf6zpTYU34YxTERtrohlJbvRAc8/GU
-	0mnFdziMO2y7I2bvgE+5QXVxb6Sp6o8VQvtZW5Qlwf1aEKQkg2Qd
-X-Google-Smtp-Source: AGHT+IHkx6nurrfAJxD0sWxHtBCoalNuyzqQnbaU9uU02qcU+aVZrJV/lXjVE+HXw5FLJ3ogS575kA==
-X-Received: by 2002:a05:6000:12c7:b0:374:c33d:377d with SMTP id ffacd0b85a97d-37d481d2de3mr439256f8f.28.1728497636719;
-        Wed, 09 Oct 2024 11:13:56 -0700 (PDT)
-Received: from ?IPV6:2003:df:bf2f:2200:1a63:5a2f:b369:2dac? (p200300dfbf2f22001a635a2fb3692dac.dip0.t-ipconnect.de. [2003:df:bf2f:2200:1a63:5a2f:b369:2dac])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d748d450sm27283945e9.39.2024.10.09.11.13.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2024 11:13:56 -0700 (PDT)
-Message-ID: <e028afbc-b65f-4633-b33d-74769509f267@gmail.com>
-Date: Wed, 9 Oct 2024 20:13:55 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="siINcN6C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5D0C4CEC3;
+	Wed,  9 Oct 2024 18:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728498431;
+	bh=jhZwgy0s6PYh0bkEsa00DYSgW/ye/7lPeDLBcIHBAcU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=siINcN6C3vE7ciZFy936DdBHm9bzuDl0gQkUqevFy0SKNyNt3TFUwNQyiTt6NpAAz
+	 1sYQ79TQHwwWQfKoeUT8H9AEP2bEYRg5v5iJ8S2rxjGfGaV8ebZ9mquqM6azvQfe8b
+	 UIPgjpsXQYD3lzUAfL8+3HuIrEIdE1Kczsebpl+DHWOzXH5GuHZy24SUVtze51clQw
+	 573PYTDoSdjSMdvzNyc1a8ZE0oacqmN0ROp79ujWAuu1V/zNz1Q5W10nMsiNva4dVs
+	 3Y/KVl6pKONfcjaQpPbdPhUzWvuYqK62eRmPrsAlEHEulyovNEJQz4JPjOexP1YOGV
+	 jVhHxAmZhlO4A==
+Date: Wed, 9 Oct 2024 11:27:09 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kbuild: refactor cc-option-yn, cc-disable-warning,
+ rust-option-yn macros
+Message-ID: <20241009182709.GA3274931@thelio-3990X>
+References: <20241009102821.2675718-1-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: improve grammar in commentary
-To: Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org
-References: <20241009162358.27735-1-tamird@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20241009162358.27735-1-tamird@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241009102821.2675718-1-masahiroy@kernel.org>
 
-Am 09.10.24 um 18:23 schrieb Tamir Duberstein:
-> Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
-> added an errant "the" where one was not needed; remove it.
+On Wed, Oct 09, 2024 at 07:27:37PM +0900, Masahiro Yamada wrote:
+> cc-option-yn and cc-disable-warning duplicate the compile command seen
+> a few lines above. These can be defined based on cc-option.
 > 
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> I also refactored rustc-option-yn in the same way, although there are
+> currently no users of it.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Reviewed-by: Dirk Behme <dirk.behme@gmail.com>
+Neat!
 
-Thanks
-
-Dirk
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
 > ---
->   rust/exports.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/rust/exports.c b/rust/exports.c
-> index e5695f3b45b7..fd278e272751 100644
-> --- a/rust/exports.c
-> +++ b/rust/exports.c
-> @@ -3,9 +3,9 @@
->    * A hack to export Rust symbols for loadable modules without having to redo
->    * the entire `include/linux/export.h` logic in Rust.
->    *
-> - * This requires the Rust's new/future `v0` mangling scheme because the default
-> - * one ("legacy") uses invalid characters for C identifiers (thus we cannot use
-> - * the `EXPORT_SYMBOL_*` macros).
-> + * This requires Rust's new/future `v0` mangling scheme because the default one
-> + * ("legacy") uses invalid characters for C identifiers (thus we cannot use the
-> + * `EXPORT_SYMBOL_*` macros).
->    *
->    * All symbols are exported as GPL-only to guarantee no GPL-only feature is
->    * accidentally exposed.
-
+> This avoids applying similar fixes to rustc-option and rustc-option-yn.
+> 
+>  scripts/Makefile.compiler | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> index 057305eae85c..73d611d383b2 100644
+> --- a/scripts/Makefile.compiler
+> +++ b/scripts/Makefile.compiler
+> @@ -53,13 +53,11 @@ cc-option = $(call __cc-option, $(CC),\
+>  
+>  # cc-option-yn
+>  # Usage: flag := $(call cc-option-yn,-march=winchip-c6)
+> -cc-option-yn = $(call try-run,\
+> -	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) $(1) -c -x c /dev/null -o "$$TMP",y,n)
+> +cc-option-yn = $(if $(call cc-option,$1),y,n)
+>  
+>  # cc-disable-warning
+>  # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
+> -cc-disable-warning = $(call try-run,\
+> -	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+> +cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip $1))
+>  
+>  # gcc-min-version
+>  # Usage: cflags-$(call gcc-min-version, 70100) += -foo
+> @@ -85,5 +83,4 @@ rustc-option = $(call __rustc-option, $(RUSTC),\
+>  
+>  # rustc-option-yn
+>  # Usage: flag := $(call rustc-option-yn,-Cinstrument-coverage)
+> -rustc-option-yn = $(call try-run,\
+> -	$(RUSTC) $(KBUILD_RUSTFLAGS) $(1) --crate-type=rlib /dev/null --out-dir=$$TMPOUT -o "$$TMP",y,n)
+> +rustc-option-yn = $(if $(call rustc-option,$1),y,n)
+> -- 
+> 2.43.0
+> 
