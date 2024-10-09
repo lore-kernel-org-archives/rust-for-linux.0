@@ -1,220 +1,114 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BA51922EB;
-	Wed,  9 Oct 2024 16:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CD31DD545
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 16:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728491199; cv=none; b=WtemmVkXBOlEnRGA6e6csFrxiBpqGXnd+QoGxJF0SPJW8r/Oo7fvPmO5wqFFdfrhDN7EybxIcJmWMbh7+Mk5ThGJm8Y+hIiF6Looj+QkpuuqeIerlAHMmYxW+DT+QwQopUpmXI+oVM/ZJ9O9Lu4IOcckYGpuB2N7AxnYz6pYqx0=
+	t=1728491769; cv=none; b=salFPKWAMASHP8Xnp3I2SyD671d0k/m81c0sdjWr8yRqc8+z0JT5u+J+XoD7rIOpQ/IHZkuvlh21/g56LYksCdP2sJexJkACgTykknbfHqNFUuwVHscqULOSPyhfROGU2PK/HGyfn4lbvYxMvo3Ea7C0gOKYMv9xH1kyFSnJZTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728491199; c=relaxed/simple;
-	bh=YmgM0zAd+zAe1mYwSmAv2k+//lbCqCcDivPxGZnrfnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUJA4NlL+194IWn3bTTlbrf1qjB1nXYR63iPN7sPjNMOM3iSxXeSQ53vIIqUP2/xU5JFYo4+Fb8N7JhWlbLe7t+ybZji4cqzn2gOys+1vbT0UKSQVMtIUXz2b6PlNjJPGDkhSV8ObocuumVAfwRuUXm5kURiNGHpyng4wfQDaHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a+n7rCwH; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728491769; c=relaxed/simple;
+	bh=8HKJlWSSCHdy6qITFYkhu5cddwy+nQ1ZeYduwDm6hjo=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QT1wPS2GGwgDDZWNIPK7F6b4cmoTBBy0IRCtdJ3fH5LNOpV4Lz5pw8qzLw5kdBssZbfSFMchR9+e4wcyRKpGeRpRcLXWtz7OCawww3SzHooUfjOlPIz8DCXffnLiXykd24NFYUXa9tCpZ9br5M2oQ6sk7n7c6u2A5hhup0+ZLhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bCup32UD; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a+n7rCwH"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6cb2f272f8bso427176d6.0;
-        Wed, 09 Oct 2024 09:26:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728491196; x=1729095996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bzd073SkOPBAyUAjLwTkVGhRj2/hIdOJ9upFoU+xYuE=;
-        b=a+n7rCwHyiBG43369U3MwZ3fHPembv1bwQwJThvmbEWjCmyJydZp8UImdLD296k85y
-         qNBJqwbn0Kc2Iq2gZFUkZSxfnibVcn20Ph0TiPyhoZGOIBeYcCjgl6VjR5R3hqLNCahr
-         9l27K2ZyBcE7yB6dtuzcf5KYJzmRBTjFyR044+uehxN3lGKpzzHNdJEdEty88+NrTzk8
-         4Ecvb3Szaz/RVkqmsxCh77FX+bZ04R0dd6+JjnGqrX5kYB/tuOgJadFx1ODimbmPd+os
-         Ccb/6dVX6t6tCAjt79JRhigf3boUXjtklufoemrhVCnx/yvYZ/3UxQTkdhN13bmIRsaK
-         6F1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728491196; x=1729095996;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bzd073SkOPBAyUAjLwTkVGhRj2/hIdOJ9upFoU+xYuE=;
-        b=HmTnxrFjc7KYXg359rP1gw4V4torLt3Xivucevup3D7UT3SLG8zKNguEzjw6gmWV02
-         oNq3TfOExKItIPga+Veu5ITR1yQkGP/XC3EXATyHAlRa1I9irggPH71eXQQKz1l5UvpP
-         mxrQX00DLjCvsyv4nBwkDdHE2CGBy+iTn0hhN/s54kOQdR2Kc35/lf6+uuGMwJqOdi0o
-         kHv8Tab3uamTzWTxe88/EQVkk6gmxtf7o5u+4tP2/7Tih2a5Aq+9Bn4009GJBZxitsL6
-         SqN2dCiaNic8GNkd5HTz5cndPqVQfIUQmEkc3JM9zeCO4pT5DThPAXCVV2noM5RCoQsi
-         BuDw==
-X-Forwarded-Encrypted: i=1; AJvYcCX5DpKDnDOOtY8H/ShdyWiXZxFgA92tjbaZBxulkbhpwfPXWy/0tnTSm1PlKfRzKv5qcM3iZ/o3WtYUfTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf8O5YF7BspDOQWI39sA42S5bCRB2/ORvcHFAFeRy1Ly8m8TEZ
-	wszX5g3piWXxG/e4FT+pj2gQRNEu4oetG3o41j50nm+7ntyH5JWcGNNGF58f
-X-Google-Smtp-Source: AGHT+IHjo+wclBT91JMpUfAdWEQBLtyYDAAtPa8NSsyCMnSt63IqkFiXSfE0zr/mJtujGYE2toVK4w==
-X-Received: by 2002:a05:6214:5bc1:b0:6cb:8339:5f51 with SMTP id 6a1803df08f44-6cbc92afa7amr53120186d6.1.1728491196497;
-        Wed, 09 Oct 2024 09:26:36 -0700 (PDT)
-Received: from localhost.localdomain ([2620:10d:c091:600::1:6bd1])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cbc19857a7sm15890356d6.6.2024.10.09.09.26.35
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 09 Oct 2024 09:26:36 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Filipe Xavier <felipe_life@live.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: remove unnecessary header includes
-Date: Wed,  9 Oct 2024 12:25:30 -0400
-Message-ID: <20241009162553.27845-2-tamird@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <CANiq72=M+rgJGLOBeSYygQzJZa9XnVvaWgi3DKUyT1Z_Rq=1Kw@mail.gmail.com>
-References: <CANiq72=M+rgJGLOBeSYygQzJZa9XnVvaWgi3DKUyT1Z_Rq=1Kw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bCup32UD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1728491760; x=1728750960;
+	bh=zmN7XVnDiHBQMiossOz4+ICOWo+68Q9zVw+WfEF1/vU=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bCup32UDoeCdBJCu6ZCjcNjQ2Hsq5Weuaqt6jIOUGZnszZJXqPveUf1xNVnfHL+bB
+	 c7dfkT0j5/G3rWv1kb4tpYwly7HEaAByfw5LDpbZ27L4V2GiUALqvZuvTQT4PSFnVp
+	 BIa53l8rtBNRugCCh21l4xn4OR/Lbm9jTWCrmbBtj0j/ty9o8zrXybtgc6ZLODorqk
+	 iqvEOlPPTxIQPstp8hy2aJzk4oGvs/fDlldTqyO0p6ngBCGcdB++zJsu3c8mWAFkhD
+	 vQ+hLahEMGNn9Ip0MCcIfeQGUdIbVWO3smVT7GNWBuoFUlaYeSGLJywRScNAca1R5j
+	 XLSq/e3ZqJkMw==
+Date: Wed, 09 Oct 2024 16:35:55 +0000
+To: Dirk Behme <dirk.behme@gmail.com>, Christian dos Santos de Lima <christiansantoslima21@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+From: Benno Lossin <benno.lossin@proton.me>
+Subject: Re: [PATCH] rust: transmute: Add implementation for FromBytes trait
+Message-ID: <cf317f8a-e67c-4c33-a16e-74f7ef9ef96f@proton.me>
+In-Reply-To: <da18f77e-3ac3-4222-9ceb-72e2955472a7@gmail.com>
+References: <20241009014810.23279-1-christiansantoslima21@gmail.com> <da18f77e-3ac3-4222-9ceb-72e2955472a7@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: f7b7b0c10724306e0770a16aea16d3835fcdcb90
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
-removed the need for these by automatically generating the exports; it
-removed the explicit uses of `EXPORT_SYMBOL_GPL` but didn't remove the
-`#include <linux/export.h>`s.
+On 09.10.24 15:03, Dirk Behme wrote:
+> Am 09.10.24 um 03:47 schrieb Christian dos Santos de Lima:
+>> Add implementation and documentation for FromBytes trait.
+>>
+>> Add new feature block in order to allow using ToBytes
+>> and bound to from_bytes_mut function.
+>>
+>> Link: https://github.com/Rust-for-Linux/linux/issues/1119
+>> Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail=
+.com>
+>> ---
+>>   rust/kernel/lib.rs       |   2 +
+>>   rust/kernel/transmute.rs | 302 +++++++++++++++++++++++++++++++++++++--
+>>   2 files changed, 290 insertions(+), 14 deletions(-)
+>>
+> ...
+>> --- a/rust/kernel/transmute.rs
+>> +++ b/rust/kernel/transmute.rs
+> ...
+>> +unsafe impl FromBytes for u8 {
+> ...
+>> +unsafe impl FromBytes for u16 {
+> ...
+>> +unsafe impl FromBytes for u32 {
+> ...
+>> +unsafe impl FromBytes for u64 {
+> ...
+>> +unsafe impl FromBytes for usize {
+> ...
+>> +unsafe impl FromBytes for i8 {
+> ...
+>> +unsafe impl FromBytes for i16 {
+> ...
+>> +unsafe impl FromBytes for i32 {
+> ...
+>> +unsafe impl FromBytes for i64 {
+> ...
+>> +unsafe impl FromBytes for isize {
+> ...
+>=20
+> Asahi Lina's device tree code which reads the device tree node's data
+> as a byte slice and then has to convert it
+>=20
+> https://github.com/Fabo/linux/blob/9e496b356ee8e25f9bee9258491aa6ae3a4f1d=
+df/rust/kernel/of.rs#L390
+>=20
+> uses macros to avoid code dublication:
+>=20
+> prop_int_type!(u8);
+> prop_int_type!(u16);
+> prop_int_type!(u32);
+> prop_int_type!(u64);
+> prop_int_type!(i8);
+> prop_int_type!(i16);
+> prop_int_type!(i32);
+> prop_int_type!(i64);
+>=20
+> Would anything like this be possible here, as well? To avoid code
+> dublication?
 
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Yes please, create a macro.
+
 ---
-V1 -> V2: Split grammar improvement into separate patch.
-
- rust/helpers/build_bug.c | 1 -
- rust/helpers/err.c       | 1 -
- rust/helpers/kunit.c     | 1 -
- rust/helpers/mutex.c     | 1 -
- rust/helpers/refcount.c  | 1 -
- rust/helpers/signal.c    | 1 -
- rust/helpers/spinlock.c  | 1 -
- rust/helpers/task.c      | 1 -
- rust/helpers/wait.c      | 1 -
- rust/helpers/workqueue.c | 1 -
- 10 files changed, 10 deletions(-)
-
-diff --git a/rust/helpers/build_bug.c b/rust/helpers/build_bug.c
-index e994f7b5928c..44e579488037 100644
---- a/rust/helpers/build_bug.c
-+++ b/rust/helpers/build_bug.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/errname.h>
- 
- const char *rust_helper_errname(int err)
-diff --git a/rust/helpers/err.c b/rust/helpers/err.c
-index be3d45ef78a2..544c7cb86632 100644
---- a/rust/helpers/err.c
-+++ b/rust/helpers/err.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/err.h>
--#include <linux/export.h>
- 
- __force void *rust_helper_ERR_PTR(long err)
- {
-diff --git a/rust/helpers/kunit.c b/rust/helpers/kunit.c
-index 9d725067eb3b..b85a4d394c11 100644
---- a/rust/helpers/kunit.c
-+++ b/rust/helpers/kunit.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <kunit/test-bug.h>
--#include <linux/export.h>
- 
- struct kunit *rust_helper_kunit_get_current_test(void)
- {
-diff --git a/rust/helpers/mutex.c b/rust/helpers/mutex.c
-index a17ca8cdb50c..7e00680958ef 100644
---- a/rust/helpers/mutex.c
-+++ b/rust/helpers/mutex.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/mutex.h>
- 
- void rust_helper_mutex_lock(struct mutex *lock)
-diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
-index f47afc148ec3..d6adbd2e45a1 100644
---- a/rust/helpers/refcount.c
-+++ b/rust/helpers/refcount.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/refcount.h>
- 
- refcount_t rust_helper_REFCOUNT_INIT(int n)
-diff --git a/rust/helpers/signal.c b/rust/helpers/signal.c
-index 63c407f80c26..1a6bbe9438e2 100644
---- a/rust/helpers/signal.c
-+++ b/rust/helpers/signal.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/sched/signal.h>
- 
- int rust_helper_signal_pending(struct task_struct *t)
-diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-index 775ed4d549ae..b7b0945e8b3c 100644
---- a/rust/helpers/spinlock.c
-+++ b/rust/helpers/spinlock.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/spinlock.h>
- 
- void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
-diff --git a/rust/helpers/task.c b/rust/helpers/task.c
-index 7ac789232d11..190fdb2c8e2f 100644
---- a/rust/helpers/task.c
-+++ b/rust/helpers/task.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/sched/task.h>
- 
- struct task_struct *rust_helper_get_current(void)
-diff --git a/rust/helpers/wait.c b/rust/helpers/wait.c
-index c7336bbf2750..ae48e33d9da3 100644
---- a/rust/helpers/wait.c
-+++ b/rust/helpers/wait.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/wait.h>
- 
- void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
-diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
-index f59427acc323..b2b82753509b 100644
---- a/rust/helpers/workqueue.c
-+++ b/rust/helpers/workqueue.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--#include <linux/export.h>
- #include <linux/workqueue.h>
- 
- void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
--- 
-2.47.0
+Cheers,
+Benno
 
