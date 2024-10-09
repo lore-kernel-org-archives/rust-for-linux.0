@@ -1,87 +1,142 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA81EA91;
-	Wed,  9 Oct 2024 13:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0C4193417;
+	Wed,  9 Oct 2024 13:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728478824; cv=none; b=CoaC5LbKY8BsKrEYlR78OkJqSGmRy5wzPVK0s4AeIUKmT5cqAgMyoBZgoQgh2wRRHPbjZy0hLyZnsi0T9WztmxFilNUoY+0yjYBKcL6KPKnikaiW71u7fEbzqeCaf/nbJ5tqgw3TZ952aJ8B25MmJXRiiCg4U4uaJVu79dXuT2E=
+	t=1728478999; cv=none; b=RIjxD64XyufLTj5JgotP36jO84ZKbHiJfJfTB6g1+ouEQylGxQ6qJDa36EcvU3/M9MwLMwSl0L4iAm5JCfr6OXdBn2Z6NAn/XkLbI1HCYzl5rgPMZiSvCl4jhG+8di+R1GpbRljyPExSPuVeqaeDz8v2XdCon3UjtNlatDCa4po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728478824; c=relaxed/simple;
-	bh=KZfd22BMhEgpaN3s2NFsTfKGuLivo1oewb91MjRpynA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QkNWmj6glYwfDCv86I9IHD/m44AcNX4tIbxSs0ZIvObVM18CWbyMHYTWChYlJNqaz4lYDhzAGqt1EYhyeaPOQNfejlWAwGkgShbv+XBS1ZdS8AvgoymaaKpyrPX6pKscFsKhYcQNfiW9zVFQ6msEUtjHmO0KmydsafU0avR75Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTOAPp+V; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1728478999; c=relaxed/simple;
+	bh=pTITtYbh1vHPemB/H2vf0QQMa+1oo+Y8VplzX09Cp24=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Wst2DNRPmUzU74UvatBSMvPLRCTb3S6a9IcnIyhhtku/tSlq5eEESxA5hDWCDhZOhj4EU55LLbU30VJWx9THKi+JoZze+yLKbedcu6aCfvYToHVSzt/bHiX0vgPRquwu6IyD7pdfh3HsSccmzqpb2SrZzZKSPvexg5flpdyFuSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GcQrRB2O; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTOAPp+V"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71df49bbc2fso629643b3a.1;
-        Wed, 09 Oct 2024 06:00:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GcQrRB2O"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a7a843bef98so901248566b.2;
+        Wed, 09 Oct 2024 06:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728478823; x=1729083623; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KZfd22BMhEgpaN3s2NFsTfKGuLivo1oewb91MjRpynA=;
-        b=LTOAPp+Vn6ela6Na9cyHg+e4B9v+heog9MGKhCgD5h6+M8ouZ6kqv07hEOGsqZvV2/
-         3zQEhrqGRadFghRxo/ukLJP+1NQESC63phPDA/FaZCEiqnJbA0LtEWxrQQqy4dTsPFLo
-         bYaMy/7s6I8IjeTtu74xsvuiAD4VOxD44yOwLwrfijG8zeRb56YevioYfZIigGHg9qse
-         4b6A8RRusffR8nOebsR2CeqwMBw4LpeBYF7jieoRFioqdB0+3z4ezE2aDot7MJo6FVcZ
-         FR5puRvHZgJt57MXphAQNVEh27pUkSYL3h500mEUkaM93qhknAx6fPSbjdkzdnaebDgR
-         s/kQ==
+        d=gmail.com; s=20230601; t=1728478995; x=1729083795; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mtQf4ZArKv/00DOm6rVLlFMLox9Vhsd1BVLsnJ5ceYE=;
+        b=GcQrRB2O0qpCdlI0Ct0W1/UD/hk8gE++6A7WBltwJ9ILs4ohb5bkccEECUYE/g14w6
+         /Zj3pshDoKjYWjew674zyLuCQHL6kIPAURbl3cFoqpBOdaBhXcNXYIP0bcY7WHBNCVrB
+         dfZNFPNknJ/L3x5m2B0PIRm+wI1X1wrsit/heBWh/Hdtv7AXP0MHo1hYCGy7C/dotT2A
+         dyOcx4bu0KUux2Zjkkq5+jvhuyllLN1flvi1+zLO8yY00bLzIXDUoZS5nZQeSR6ONPiE
+         Rrfyv6WnqCZloRPSYgvtUH7wUJ5TQQy6dzCDeR7yoriUSPJP5tZHr4EW2e0V+RmB5w2V
+         yGMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728478823; x=1729083623;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KZfd22BMhEgpaN3s2NFsTfKGuLivo1oewb91MjRpynA=;
-        b=w/HCMr7uKg4diT+CvUb/ClgVNX53868hJpbt7RwUrBX5zJoTByYuXV3QZlBcvPrPaZ
-         6gig1w85hDXjCSNoC4PmSyeWAIfxSGggNfgnXLa94Tx+UJ4Bimc+IUONGUeakWjc8UCm
-         l0FHFxgOELvtQEHL3we7EcgX+FeWje/8z5rJypZ0iceTg6EwfuyEuwUGfsEkaclzdgqh
-         v0oZafOYryiExMPpOdI+hTabfLFbyHLOwwnHJbXmY/LasxkTtmeQ8RwRRAPxFxfJUhWr
-         /3/pHHIRG77IMSAs1zRyW0NCuYvSG8K8VIRvYGF0cVYi0mFvYHCQjBXp3vng8qd45thX
-         59zg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYMjr8l4RoUN65IV7eHNDDaq5CTYWMrk4kPgU2Zo6wqcGP6HIU2o42pnGDQTm9E+Twuahm/8kpj5OiaY3hLRA=@vger.kernel.org, AJvYcCWbZfKTLFS214uxR9kVYQYQdf0t3iwZoD0IgUvricQYlC8oBO2s2pCcm11xoVOj6F6Yr6htrK47+r/dpks=@vger.kernel.org, AJvYcCXHF0HY2eWIWqa6P4Sfkfp/AFOA4H7T3Za/DOZ68ofUcUcc+G3nRvFknFsnLJBtVfcu8v2DmhRuyZJdL0Dm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7jJDhhsO8YqYiL6Mnot/2DSS0e0Q3fZJkaRY/E7bkqX6pk3Fn
-	TGOLhD4y9rWmmxPqMGPbTdcFL2noUJ7r/5Ds2bqQpMdGmHltUln/R+sVhRt3QPgjSUHS81ITTsF
-	FsEae1s/Z4dmfsKYQym2l6oF0meE=
-X-Google-Smtp-Source: AGHT+IFU/0OTzluBQrIEQzKoLpAe1Xa8N0nm93Rhje05HGnRv6g58c1SdQ8ZROoTkpBtLe3Bk0ktFI+CG9vbyd6Fj/0=
-X-Received: by 2002:a05:6a00:1307:b0:71e:c41:ebd6 with SMTP id
- d2e1a72fcca58-71e1db6e721mr1677027b3a.1.1728478820956; Wed, 09 Oct 2024
- 06:00:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728478995; x=1729083795;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mtQf4ZArKv/00DOm6rVLlFMLox9Vhsd1BVLsnJ5ceYE=;
+        b=BboBkJ1a1HO2TLvDhWJ/qSabs8/O0HyA3Hlrkm++fuQeVjsih6GDViSEMHZeNDjE23
+         ZpfzLY7bPunfZSU2WEADvD7KjsVOcrjOz76RpQn9afxU4G0TNSQ41iXWSG7msbZfhXxt
+         JBjJBOqyjo1k2kLFAa/TLnjXdXA6FIPVxDdn1pM9qOoqtQU4e691cnkEHYu6hlhlsncw
+         8v093Gb437ODrc2Wc+KoeXeoWnQkSdw/WgcEle/1uhLCTZ7LNRwPqaPYlPfK3rzYzb9i
+         zxb8OWF47ci1tkoi9GxA7xhcaY8p3t35q9q3kvN2FtdVjgP+159PkdhbDnXdXd+9Z25e
+         8AaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUN1GrmIQPN3iHuv8X9hi73qVTlwME0gb4J4wbEvInlOGLUlVRRcu0xz2US6nxxSfTAwdQ6hq+rT2t+aDyla/Y=@vger.kernel.org, AJvYcCVAuMWn5xjufCd2h94bmCfqzPw/ek7jrH8rPMOKEawwaYc+j77P62dRkk8LjPE4JtH/r764owC/SKYMoTo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSXWffyfdB5VNtDqxqKP6LihuHNbwBZ+mPe5816fz+85gkI7sH
+	n9eLgziM3PDOeKMUcMag8pwOYoCrMR+GGshEIJmeO045Bt82uivO
+X-Google-Smtp-Source: AGHT+IEzxtfeqSq1TtGsNbZZpiHRzyb3RwbkvF4fwdAXFafpwR1+8irUWspffs+pxZG0vrqGmmPDWw==
+X-Received: by 2002:a17:907:7289:b0:a99:5ad9:b672 with SMTP id a640c23a62f3a-a998d11f816mr166602566b.10.1728478993466;
+        Wed, 09 Oct 2024 06:03:13 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf2f:2200:1a63:5a2f:b369:2dac? (p200300dfbf2f22001a635a2fb3692dac.dip0.t-ipconnect.de. [2003:df:bf2f:2200:1a63:5a2f:b369:2dac])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99446bd93asm537213166b.82.2024.10.09.06.03.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Oct 2024 06:03:12 -0700 (PDT)
+Message-ID: <da18f77e-3ac3-4222-9ceb-72e2955472a7@gmail.com>
+Date: Wed, 9 Oct 2024 15:03:11 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009-rustc-option-bootstrap-v3-1-5fa0d520efba@google.com>
- <CANiq72nr_X4JY=LUcj14jZfcPV5=Cn3QTucYGmBTz2QdA5=RdA@mail.gmail.com> <CAH5fLgiR552+ETb0HVe1n5KqxB1vXo3LCfsuq68FEbcGrk+FBg@mail.gmail.com>
-In-Reply-To: <CAH5fLgiR552+ETb0HVe1n5KqxB1vXo3LCfsuq68FEbcGrk+FBg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 9 Oct 2024 15:00:08 +0200
-Message-ID: <CANiq72mo2pUHS0a6hY2OgaV6=1V_rT3fSw5WszqjsYzEB_La-g@mail.gmail.com>
-Subject: Re: [PATCH v3] Kbuild: fix issues with rustc-option
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: transmute: Add implementation for FromBytes trait
+To: Christian dos Santos de Lima <christiansantoslima21@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>
+References: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+Content-Language: de-AT-frami
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 9, 2024 at 2:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> That all sounds good to me. Feel free to make the suggested rewordings
-> when you apply this. Otherwise I can send a v4 if you prefer.
+Am 09.10.24 um 03:47 schrieb Christian dos Santos de Lima:
+> Add implementation and documentation for FromBytes trait.
+> 
+> Add new feature block in order to allow using ToBytes
+> and bound to from_bytes_mut function.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/1119
+> Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+> ---
+>   rust/kernel/lib.rs       |   2 +
+>   rust/kernel/transmute.rs | 302 +++++++++++++++++++++++++++++++++++++--
+>   2 files changed, 290 insertions(+), 14 deletions(-)
+> 
+...
+> --- a/rust/kernel/transmute.rs
+> +++ b/rust/kernel/transmute.rs
+...
+> +unsafe impl FromBytes for u8 {
+...
+> +unsafe impl FromBytes for u16 {
+...
+> +unsafe impl FromBytes for u32 {
+...
+> +unsafe impl FromBytes for u64 {
+...
+> +unsafe impl FromBytes for usize {
+...
+> +unsafe impl FromBytes for i8 {
+...
+> +unsafe impl FromBytes for i16 {
+...
+> +unsafe impl FromBytes for i32 {
+...
+> +unsafe impl FromBytes for i64 {
+...
+> +unsafe impl FromBytes for isize {
+...
 
-No worries (but thanks!).
+Asahi Lina's device tree code which reads the device tree node's data 
+as a byte slice and then has to convert it
 
-Cheers,
-Miguel
+https://github.com/Fabo/linux/blob/9e496b356ee8e25f9bee9258491aa6ae3a4f1ddf/rust/kernel/of.rs#L390
+
+uses macros to avoid code dublication:
+
+prop_int_type!(u8);
+prop_int_type!(u16);
+prop_int_type!(u32);
+prop_int_type!(u64);
+prop_int_type!(i8);
+prop_int_type!(i16);
+prop_int_type!(i32);
+prop_int_type!(i64);
+
+Would anything like this be possible here, as well? To avoid code 
+dublication?
+
+Best regards
+
+Dirk
+
+
+
