@@ -1,251 +1,102 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1C91E1A0F;
-	Wed,  9 Oct 2024 15:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9204B1E1049;
+	Wed,  9 Oct 2024 15:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728488233; cv=none; b=i6w6hYAXV3pJWnoq+5OY8C59LruUgpKrNwuR5AE2g2F1FuKGGx84uZblTtzI8o2KNaIVFrvhAW62f91yOcgZbZ5pD02F36zWga2NbgusHE/U2lr/+3QnPVQkCHMDjnBTxX2cxnWML1V0+j3dNwJ2yPWXHwJzCIv4VvToJjWNK8U=
+	t=1728489525; cv=none; b=iZvpm4lBKTcFw3J0ps489R/UEF7naPjW3ylJcc7YpEKKa1yAsGyeJgAvOLpapme3DoN1NdNc6UqAScguAQOU4Qn0+SngGqpjju2XMo9EJsCaOiMjwC70MdaTXxxkdhs8YkmbSB7sP6w3P4YDzFxiV7O677KlXse3TA9dQnU1p+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728488233; c=relaxed/simple;
-	bh=P8MGz3LNk2Y0603knKpYlKyHn7VnI3x9yNJiXnRYrQg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kQSeuKSsRy/mFeoQg2WExlcfZi9+rK9wowa/69LSRD93ciZwB+emPVhjKPqGSD64s+4TgVvdvh4Fv/gvZbZ02YCLVbAhhT5GuUqAwzGt3CLOCBIrPMKaKZdVniWYZis+DpREU3zLx18EhE0daQ75Qc2OiLi1kh5A8qSLtr2U8NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=irG0skcj; arc=none smtp.client-ip=209.85.208.172
+	s=arc-20240116; t=1728489525; c=relaxed/simple;
+	bh=oBAwiLGHSHDOj8mD4XS8encO62UfaTbQ+URhaPIFhYI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pt3nb+FGOYcgyZyiTMr9atWTkDr/P5ZAO1lvnRvNwjsSUYTxZPDbkjXhnVr+sf5lOMg4dTEK58OCB8oXIXpotCGVydv5h6DrfXicFJSwxIUXUb7b3o8NPX6tEklO5oMcLs7AnhuYySaJGUs33LkdhiOeEtWvGzcxv5lh+M7IuJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NEUEz3Ik; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="irG0skcj"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fad100dd9fso103167801fa.3;
-        Wed, 09 Oct 2024 08:37:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEUEz3Ik"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71df49bbc2fso655974b3a.1;
+        Wed, 09 Oct 2024 08:58:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728488230; x=1729093030; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AYVkpM4Dea0jgBbEaWFly3uGZzFTEnbuSisXaR4H3ms=;
-        b=irG0skcj/cX/ermCTpOa1KQtpxICF2hmoLS+VwfE/qfL5BfqXQVQpiOBEMRG+1Trlx
-         dFNz0xEU/e/VcNGZU60HvfykVCL1HklsGTitNjUpPAg77N/Rxk6hhD389DB22DCACnja
-         8OhH5NI66GLWJPq1EPEOjOXn7MuSrbrEN04IK+HQbTW8LonlFYG8NnRbABnKEUpmHGKf
-         HURNtu4I8uypEBrBSc7aXwamFeumEEbOJ0hryi9b598JHbtUrqgjbQDm7n3J+iSZHysm
-         khfPK/GOW7wboYjzSn/OqekiyW8XyP+ZxuFCo9tmhqPw5bJiR5Z53kTodeGC+xh7uT2q
-         TncA==
+        d=gmail.com; s=20230601; t=1728489524; x=1729094324; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oBAwiLGHSHDOj8mD4XS8encO62UfaTbQ+URhaPIFhYI=;
+        b=NEUEz3Ik4n3K7xA8PLFw0Mxl/oit20T5DlzWUCki2L4DMBj52mVOQp5ZfMjMPasm90
+         oQtwPqcAkO7TeDctKZejZFKe3HIo1LU5rayTfEq1rNkyVQPtao8ripX8mnIB3rc2+iDS
+         KTD50FjhxnLxJ5tUdS5UL5ST2qPVz76PLN0Lxt6jmOj7aSbvv9R12sz7zOuQkMCbW3OS
+         AfQD18u5+TWlvDF7oNAfyYrrLpIQjiF4zvAyyNn/Zs3oaebiq7T7iZdnKVcT5AE67Wvf
+         qFsErZ8FzIppgeXMykCKNTc/iWL9CAyQ7wHiK9Eql8kfM7rx5Qi+aU1zeF3qxWrsck9I
+         ORuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728488230; x=1729093030;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AYVkpM4Dea0jgBbEaWFly3uGZzFTEnbuSisXaR4H3ms=;
-        b=hAsufuQd+ckgLmlu6SzDm5BHWca6iS3K2A1+WsXl26zSvTAavHlzRoF/pQOz5REqUi
-         jGYNLNJHeD1b1w1SXPBxrTy3SBFShXR8qsWCcz41XeTPW8fVETseREDi4Du7X942vVaV
-         vD0FKK+KN/hRrzo0ROqtlEC0hoXMIQXyYP92qVkxQbhxO2hqQCzINAi21NwSKdhqTvgQ
-         q/CBIxzfg+9E++UiwH1oQ/hl5jmAlk5Ags3HZW5SEaw/bjIfolz2eChpKFUAwOeXU1i3
-         iB8HsbkjrbPlXeZiMQpMAblkB8/ckMJz7TOVlXdYUTQ8jyn9om8dD4i57p0lEUEQwBwl
-         o0sg==
-X-Forwarded-Encrypted: i=1; AJvYcCUamL+ogVFUL3FnznF+b1shMMQHTwjqF/uyh30KRTimZPhz1c8Sfq02tO/FBbO2MELgf0/NNeM3TsjjCzA=@vger.kernel.org, AJvYcCV7CRksQgDWmZX4IG/61H1PVQaHTTvaPYmBkKoYEZPtleyvyjAsTGM5oPXEZrEgrgA/pn7WHj65tLhDmsT8RDs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypBQV82qDs1NEmc1iRI1rzBHED23gu9fLlHG8aEvnEJCcqT0WB
-	3QMZFuBgO0sgUFm5z/3bVC/ZpBZ/6H9cD7VPm2HQ64olXutmIw2l0Cp76he4
-X-Google-Smtp-Source: AGHT+IEo6/STpMGFOZfGqqWMK0ZXaIxkpaXfgffldN4wmrC5hAQNrkh14ZeNCjibF3DfKe2CC2j9Zg==
-X-Received: by 2002:a05:6512:1113:b0:538:9e36:7b6a with SMTP id 2adb3069b0e04-539c48e335amr2771586e87.32.1728488229764;
-        Wed, 09 Oct 2024 08:37:09 -0700 (PDT)
-Received: from ?IPV6:2003:df:bf2f:2200:1a63:5a2f:b369:2dac? (p200300dfbf2f22001a635a2fb3692dac.dip0.t-ipconnect.de. [2003:df:bf2f:2200:1a63:5a2f:b369:2dac])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a996274deeesm316411966b.103.2024.10.09.08.37.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Oct 2024 08:37:09 -0700 (PDT)
-Message-ID: <813594ff-b167-4ae2-8105-e2f958ec2cc7@gmail.com>
-Date: Wed, 9 Oct 2024 17:37:08 +0200
+        d=1e100.net; s=20230601; t=1728489524; x=1729094324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oBAwiLGHSHDOj8mD4XS8encO62UfaTbQ+URhaPIFhYI=;
+        b=Th+97mc77hGtnL8WLeXgRfvlI63AO2RbQ2nB9BiMonQ1csA4B4CBbu53VCotmbpmKq
+         3dF0tojCY5IB7UZ4pam19y6qLqCrtn0ZNyjOco/ZxjWkMoaVAtNCpKR3KhTEwStUu6jJ
+         tnzU+PB0n2ChDtgni+gMPugnYTt8O+K/Kld3e4n0L9R+T/JlMxKJHBilum0epsA14BuF
+         3gYM+Q+qgXgAip+TpoWK62+lpcLyu53EekVQHkio6gUZkswlEMLDIJ4kbEHpoOGT1fxM
+         Yr/ocR2z2JC1uQtoXjJBAUdMsh4IDFLqTXVi/y6UkDezmed+nduT+cdhHz5InDsVUc0F
+         nSLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaMx+1jO+fo0LTPFNhjasj2rIqZwjFmDnXdVOvqMTEPyvL4SNEspDjkQTlfcX0M6Q2rbEx77sYV2TOl6A=@vger.kernel.org, AJvYcCVpgJ6gLodHIdeLM3DbqQRHmt3FaNEYMM1zQrHfkZo2ntWjWJsZMDsSBf1tg1+j/VoJ4MF0zAccixOJYvKnzbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZwkgiE3sZdAvwlOlO3Z3U2jOc1qjtznRhh5V79B9WgDbgv1SJ
+	SUcfNUt4j5auSq57bGzH9RnSvAkXyqvcqKru2KXA16MIwZiu1mXy4J3wsSYuSutNRYgF3Rz/31B
+	kv7xEzAwQySdzIVfz4aDN8aSHQMs=
+X-Google-Smtp-Source: AGHT+IHH2/cB4g/2MUkUZbMiqMJmjHju8cMBFQXUzMyG4OYKXp1NPuWe1VZngIGtsINbvtnXZqplRrwh0iEB23xRDJY=
+X-Received: by 2002:a05:6a00:1a89:b0:718:e49f:137a with SMTP id
+ d2e1a72fcca58-71e1dbcb854mr2071628b3a.6.1728489523704; Wed, 09 Oct 2024
+ 08:58:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20241009151017.26685-1-tamird@gmail.com> <813594ff-b167-4ae2-8105-e2f958ec2cc7@gmail.com>
+In-Reply-To: <813594ff-b167-4ae2-8105-e2f958ec2cc7@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Oct 2024 17:58:31 +0200
+Message-ID: <CANiq72nUT6cFXCGg4jfN07W7UE-8vma=o9a5DQjsRwtNsKUGbQ@mail.gmail.com>
 Subject: Re: [PATCH] rust: remove unnecessary #includes
-To: Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Dirk Behme <dirk.behme@de.bosch.com>,
- Filipe Xavier <felipe_life@live.com>, linux-kernel@vger.kernel.org
-References: <20241009151017.26685-1-tamird@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20241009151017.26685-1-tamird@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Dirk Behme <dirk.behme@de.bosch.com>, Filipe Xavier <felipe_life@live.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 09.10.24 um 17:09 schrieb Tamir Duberstein:
-> Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
-> removed the need for these by automatically generating the exports; it
-> removed the explicit uses of EXPORT_SYMBOL_GPL but didn't remove the
-> header includes.
+On Wed, Oct 9, 2024 at 5:37=E2=80=AFPM Dirk Behme <dirk.behme@gmail.com> wr=
+ote:
+>
+> * Theoretically the grammer fix in exports.c could go into an
+> independent patch. But if not it at least should be mentioned in the
+> commit message. Let Miguel decide if he wants an extra patch or not ;)
 
+Indeed, in general, one should not have unstated/unrelated changes.
 
-I was about to send the same patch. You have been faster. Thanks! :)
+> * Maybe a
+>
+> Fixes: e26fa546042a ("rust: kbuild: auto generate helper exports")
+>
+> tag could be added? Even though Miguel might route it through
+> rust-next as its not urgent for routing through rust-fixes.
 
-Two nits:
+I think this is a cleanup, i.e. just unnecessary `#include`s being
+present, right? In other words, there is no "bug" apart from not being
+optimal (one could see cleanups as things that should have been done,
+but I guess we should draw the line somewhere).
 
-* Theoretically the grammer fix in exports.c could go into an 
-independent patch. But if not it at least should be mentioned in the 
-commit message. Let Miguel decide if he wants an extra patch or not ;)
+Andreas: was there a reason to keep those `#include`s, just in case?
 
-* Maybe a
+Thanks!
 
-Fixes: e26fa546042a ("rust: kbuild: auto generate helper exports")
-
-tag could be added? Even though Miguel might route it through 
-rust-next as its not urgent for routing through rust-fixes.
-
-Anyhow, regarding the main change:
-
-Reviewed-by: Dirk Behme <dirk.behme@gmail.com>
-
-
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->   rust/exports.c           | 6 +++---
->   rust/helpers/build_bug.c | 1 -
->   rust/helpers/err.c       | 1 -
->   rust/helpers/kunit.c     | 1 -
->   rust/helpers/mutex.c     | 1 -
->   rust/helpers/refcount.c  | 1 -
->   rust/helpers/signal.c    | 1 -
->   rust/helpers/spinlock.c  | 1 -
->   rust/helpers/task.c      | 1 -
->   rust/helpers/wait.c      | 1 -
->   rust/helpers/workqueue.c | 1 -
->   11 files changed, 3 insertions(+), 13 deletions(-)
-> 
-> diff --git a/rust/exports.c b/rust/exports.c
-> index e5695f3b45b7..fd278e272751 100644
-> --- a/rust/exports.c
-> +++ b/rust/exports.c
-> @@ -3,9 +3,9 @@
->    * A hack to export Rust symbols for loadable modules without having to redo
->    * the entire `include/linux/export.h` logic in Rust.
->    *
-> - * This requires the Rust's new/future `v0` mangling scheme because the default
-> - * one ("legacy") uses invalid characters for C identifiers (thus we cannot use
-> - * the `EXPORT_SYMBOL_*` macros).
-> + * This requires Rust's new/future `v0` mangling scheme because the default one
-> + * ("legacy") uses invalid characters for C identifiers (thus we cannot use the
-> + * `EXPORT_SYMBOL_*` macros).
->    *
->    * All symbols are exported as GPL-only to guarantee no GPL-only feature is
->    * accidentally exposed.
-> diff --git a/rust/helpers/build_bug.c b/rust/helpers/build_bug.c
-> index e994f7b5928c..44e579488037 100644
-> --- a/rust/helpers/build_bug.c
-> +++ b/rust/helpers/build_bug.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/errname.h>
->   
->   const char *rust_helper_errname(int err)
-> diff --git a/rust/helpers/err.c b/rust/helpers/err.c
-> index be3d45ef78a2..544c7cb86632 100644
-> --- a/rust/helpers/err.c
-> +++ b/rust/helpers/err.c
-> @@ -1,7 +1,6 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
->   #include <linux/err.h>
-> -#include <linux/export.h>
->   
->   __force void *rust_helper_ERR_PTR(long err)
->   {
-> diff --git a/rust/helpers/kunit.c b/rust/helpers/kunit.c
-> index 9d725067eb3b..b85a4d394c11 100644
-> --- a/rust/helpers/kunit.c
-> +++ b/rust/helpers/kunit.c
-> @@ -1,7 +1,6 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
->   #include <kunit/test-bug.h>
-> -#include <linux/export.h>
->   
->   struct kunit *rust_helper_kunit_get_current_test(void)
->   {
-> diff --git a/rust/helpers/mutex.c b/rust/helpers/mutex.c
-> index a17ca8cdb50c..7e00680958ef 100644
-> --- a/rust/helpers/mutex.c
-> +++ b/rust/helpers/mutex.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/mutex.h>
->   
->   void rust_helper_mutex_lock(struct mutex *lock)
-> diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
-> index f47afc148ec3..d6adbd2e45a1 100644
-> --- a/rust/helpers/refcount.c
-> +++ b/rust/helpers/refcount.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/refcount.h>
->   
->   refcount_t rust_helper_REFCOUNT_INIT(int n)
-> diff --git a/rust/helpers/signal.c b/rust/helpers/signal.c
-> index 63c407f80c26..1a6bbe9438e2 100644
-> --- a/rust/helpers/signal.c
-> +++ b/rust/helpers/signal.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/sched/signal.h>
->   
->   int rust_helper_signal_pending(struct task_struct *t)
-> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> index 775ed4d549ae..b7b0945e8b3c 100644
-> --- a/rust/helpers/spinlock.c
-> +++ b/rust/helpers/spinlock.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/spinlock.h>
->   
->   void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
-> diff --git a/rust/helpers/task.c b/rust/helpers/task.c
-> index 7ac789232d11..190fdb2c8e2f 100644
-> --- a/rust/helpers/task.c
-> +++ b/rust/helpers/task.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/sched/task.h>
->   
->   struct task_struct *rust_helper_get_current(void)
-> diff --git a/rust/helpers/wait.c b/rust/helpers/wait.c
-> index c7336bbf2750..ae48e33d9da3 100644
-> --- a/rust/helpers/wait.c
-> +++ b/rust/helpers/wait.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/wait.h>
->   
->   void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
-> diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
-> index f59427acc323..b2b82753509b 100644
-> --- a/rust/helpers/workqueue.c
-> +++ b/rust/helpers/workqueue.c
-> @@ -1,6 +1,5 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
-> -#include <linux/export.h>
->   #include <linux/workqueue.h>
->   
->   void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
-
+Cheers,
+Miguel
