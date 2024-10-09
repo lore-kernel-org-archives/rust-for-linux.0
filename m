@@ -1,153 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38A41E1A1C;
-	Wed,  9 Oct 2024 12:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C666E1990A7
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 12:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728478328; cv=none; b=O0YWY9NdfUBtWMBLLSZs+96oNE+aE+ZFOJTLK/g5s2z0xcIqHAXvlwZFAnbWPAXx+nwLQlHIUexga7XuAH8srvohwONqizLR2kociBPIQkwtvIkpKKgn/mUv6GP9WySnwBWUFX7YA4tvbdesV3o0wm2hSSF27gYT4r0apl8sXP8=
+	t=1728478374; cv=none; b=papRVfLoPw0cO1D7sNB4MFsuepFUQRq7op3x0Hgi/Gi0Wpn086s9CRub3rr59dCofjXbADlRKkvZHAwCOIY9wvA2iMbe9p4xCoIyQehckInJgNjydPtCBwRD9rVGnu58+f/b1Yg/X5eWX6DA31UlgsB1n4bHPv9l4lVgFmdWAYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728478328; c=relaxed/simple;
-	bh=0+g4RPNqFwAiqg4KBBmuIaFNIKye4ixWBlnS5eJsMMA=;
+	s=arc-20240116; t=1728478374; c=relaxed/simple;
+	bh=SCs06lfwISgbAl6dysqPzcHli4y9o5NXwiDyldWSqXk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ePyNTr1P8xJMPrtDEGeQi7F2omCM+fcPDywDnLp0yjLMYqrIay3IHbpbO4b4y3C0lXvfUYPuSSnt5ZPvf08rmA2YgZ5TeGwW1vtSuiSid2yzIPyfrlGeLlyCD/xowDF/mjhKpiw76xBfMwPhwKmawI93Q+w7ZOZKt5tOaiy6yhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIp7l66E; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=cuRJis3IDHRbIIBAkPc8G3zQDMrWGJB8+w1TFX3UeX/qs7bxC66LmCENw1F7RggtxGtOu97HeODQjagh1Zpk/TjVQXFR91k+K+lvp6CNxdYKkfgZK3OOx+hQ/pgyy5/FwQ1T5qtnCujEzJn/nfbtlJmuNdpcW1lYxb/LmwcDN7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1HLxzRv; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIp7l66E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DADC4CED3;
-	Wed,  9 Oct 2024 12:52:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728478327;
-	bh=0+g4RPNqFwAiqg4KBBmuIaFNIKye4ixWBlnS5eJsMMA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KIp7l66EpT2A6izrUZIHP1Yk0UtO+G0pMvYfpS+7EDjXZfWyQkNKc4xTfnx8ZPFXa
-	 iCYDBYZJItXEWxyTRIlAFKejCVcXHIL5CpCzWnugV0uOzwOWXESIZ4qQBGdAwrUc5t
-	 6lsmkP466VA/kJokpBCw5tKwtsK8vuKKR7yvKr3Rr50eHl1KHoU9bWq7QJodDdP8e1
-	 stnIidmaJ2aA93fHPHETcudZiDSBKOEBz1sjUKvI2v+yXkKoNUwvY3faEJUyZC59Ex
-	 uZSbGGGrRt/BN8tzzyPof3DDlSBHa3mRHAOKC6TKU8Akb81RMTA7CILg3gyZ1DrrmN
-	 WzsHICVhnIsnQ==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2facf48166bso77253011fa.0;
-        Wed, 09 Oct 2024 05:52:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUbyTYqRpYpyTNsm1Bli09HsLgIyD+e7oi9fWym+3LrTbiWS8mZSpiDcS/VeFSxU/a4pK9tgEsm3s+V0gMX@vger.kernel.org, AJvYcCUcnY9UUwQyFUlm16siESKLTPhIysFWPjtl3Dz2fWiPe2eU6cdBPBFuf7T5GIsR2349HQoBKMX92wDkhh4=@vger.kernel.org, AJvYcCXLr+sidYDeOmwvuLEBCtR7RB7GKYq71cOsl3gqGLBV7tkOZJkkafyfOgrh8X8PXtPIgpFVnCBSsoS0+Jbsupg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxX8t6X/d0x3TnEkGN/QYqzFahyZ/27W+naVH2W0tstffQBGtiZ
-	aKFj7z5U8NOs/ilmlFvm2oYfYSUukK3PQ3WRcBbpS+ELG1JxTIm0scf194BDAoH0plCe7fIGnWM
-	8owiQTrxHAyffg3HGbb8qsOjjwbg=
-X-Google-Smtp-Source: AGHT+IFRK+yvoT1UlVPKo87bYUb+4B36nxoDIok7/yENu7BJHMscXnfbpeK8yRaile5ut62tvnLD19TAmIC8/YBX5JY=
-X-Received: by 2002:a05:651c:150a:b0:2fa:de13:5c1d with SMTP id
- 38308e7fff4ca-2fb187385cdmr15453911fa.25.1728478326267; Wed, 09 Oct 2024
- 05:52:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I1HLxzRv"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e01eff868so247512b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 05:52:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728478372; x=1729083172; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gSc/Qq+bUA6UejdQbu4RGQAgtovd3cNA8kyAjwimp0M=;
+        b=I1HLxzRvZq/+C3pGD92x1HFhKoDPv0n7JBF1Fdh0YX/0hm4YeAxlgLPwrPbylLS7yb
+         Mq/vva1sdqK/ODI2tIrHcZvBMEQe9v1EoFf0tKXzLCfI2I1nS60X5U+Gl3h47o9NJATf
+         kLf8xTmzOJgPRYqSzEcBkQbGsAW9HoAcSEB4BHA/82Vf1h7sgWI0sgbiNQYADF6yaSua
+         5mTqI4Xqb3NghtTy5UaX4THtb1sIEIBTfJlpzK1UPsgvEd/ACtIb9FVEr4sqq4MK2Css
+         YDjGGhY/O5bKdeGOqBsRDSJQQYYHfBBv0pP3QuabMzK0Frl4Qy+08VWPgoNeeu3V78jF
+         scAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728478372; x=1729083172;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gSc/Qq+bUA6UejdQbu4RGQAgtovd3cNA8kyAjwimp0M=;
+        b=QBvJlxCV/45k51f0NrPS8/so8bf6qUo0g/PNRVBcAXZkLtdR8hbdvTVhwAeVODCWri
+         mf72bGC9b+MwvoPKr9IBBUHJDJo9NiXEDZ5lIsSkYiu6yXqRnWEZTXuWjXyz9UQ75UE0
+         QMimENp2axfhQXiledRg45wgvxRwYZ/s2LoDvZMjH5pnENoZ12twmLZIuYWfVxziwj8J
+         YXxypvekuA8uiJbFuGK+HO7g6tdusmTdfuJcHvbzhrPwNRrXgFLBnOa1IQRW8qgRhugY
+         d6aU/9P96RdJHjhIWBgFHN21pEpFCONFlw/BbIgviQqNZ2ky73KoSU8P4+cMuJTxq7jS
+         3ZtA==
+X-Forwarded-Encrypted: i=1; AJvYcCX8HpV3VWSH8Xn+kC0KjAmpT3Ql0M6RICE4EwqmSkt5XMNUVr8oWT8BxLbPaDVkL6mThCLkPtdR6camxqOlVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6WgHO46M8KluyX3SKNXJ8s+XzZtlCfHLugJOborW3b3zzgBv2
+	pr6j81+1+SPZ1tG0br3NDT8Kzaq9piNm16txSRRsBoSgBR9WIETe4jNXtfSqhjpaXQtL0hCnv12
+	3cXA+rxwdSFq/9/+7b8x1U/OQnVQ=
+X-Google-Smtp-Source: AGHT+IGDZlk0vSxNbCEp4HYgbqEEEFHlGnksvL3nu9Tb4gLrogFMgZPPcAKSAMsknVA0x9W3GfxEWQHF/YqSRwqrI40=
+X-Received: by 2002:a05:6a20:3948:b0:1cf:308f:f87b with SMTP id
+ adf61e73a8af0-1d8a3c08378mr1749012637.4.1728478372129; Wed, 09 Oct 2024
+ 05:52:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009-rustc-option-bootstrap-v3-1-5fa0d520efba@google.com>
-In-Reply-To: <20241009-rustc-option-bootstrap-v3-1-5fa0d520efba@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 9 Oct 2024 21:51:29 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATSA32f8U1GfiDMwe0CYktTSdecR12Z1YoMZUYJgQCUoA@mail.gmail.com>
-Message-ID: <CAK7LNATSA32f8U1GfiDMwe0CYktTSdecR12Z1YoMZUYJgQCUoA@mail.gmail.com>
-Subject: Re: [PATCH v3] Kbuild: fix issues with rustc-option
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20241001-playlist-deceiving-16ece2f440f5@spud>
+ <250e1e5d-5110-414f-abbd-fb002e715f32@ghiti.fr> <c4906bfc-5bc1-428e-a76f-3fb0bb8711ac@ghiti.fr>
+ <20241009-tamale-revisit-7d2606c5fdf3@spud> <850ede17-6eb3-4269-bec6-2a2a0a629eee@ghiti.fr>
+In-Reply-To: <850ede17-6eb3-4269-bec6-2a2a0a629eee@ghiti.fr>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Oct 2024 14:52:39 +0200
+Message-ID: <CANiq72mZh+=18tWY8E5xA18E0SRQGO+ApgR9sU=+3b9jrVGTDg@mail.gmail.com>
+Subject: Re: [PATCH v1] RISC-V: disallow gcc + rust builds
+To: Alexandre Ghiti <alex@ghiti.fr>, Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
+	Conor Dooley <conor.dooley@microchip.com>, Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	aliceryhl@google.com, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 9, 2024 at 8:42=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Wed, Oct 9, 2024 at 10:34=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wro=
+te:
 >
-> Fix a few different compiler errors that cause rustc-option to give
-> wrong results.
+> Ok, thanks for the explanation: do checkpatch and the documentation need
+> to be updated then? Is that a known issue?
 >
-> If KBUILD_RUSTFLAGS or the flags being tested contain any -Z flags, then
-> the error below is generated. The RUSTC_BOOTSTRAP environment variable
-> is added to fix this error.
+>  From https://docs.kernel.org/process/submitting-patches.html:
 >
->         error: the option `Z` is only accepted on the nightly compiler
->         help: consider switching to a nightly toolchain: `rustup default =
-nightly`
->         note: selecting a toolchain with `+toolchain` arguments require a=
- rustup proxy;
->               see <https://rust-lang.github.io/rustup/concepts/index.html=
->
->         note: for more information about Rust's stability policy, see
->               <https://doc.rust-lang.org/book/appendix-07-nightly-rust.ht=
-ml#unstable-features>
->         error: 1 nightly option were parsed
->
-> Note that RUSTC_BOOTSTRAP is also defined in the top-level Makefile, but
-> its value is unfortunately *not* inherited from the environment. That
-> said, this is changing as of commit 98da874c4303 ("[SV 10593] Export
-> variables to $(shell ...) commands"), which is part of Make 4.4.
->
-> The probe may also fail with the error message below. To fix it, the
-> /dev/null argument is replaced with a file containing the crate
-> attribute #![no_core]. The #![no_core] attribute ensures that rustc does
-> not look for the standard library. It's not possible to instead supply a
-> standard library to rustc, as we need `rustc-option` before the Rust
-> standard library is compiled.
->
->         error[E0463]: can't find crate for `std`
->           |
->           =3D note: the `aarch64-unknown-none` target may not be installe=
-d
->           =3D help: consider downloading the target with `rustup target a=
-dd aarch64-unknown-none`
->           =3D help: consider building the standard library from source wi=
-th `cargo build -Zbuild-std`
->
-> The -o and --out-dir parameters are altered to fix this warning:
->
->         warning: ignoring --out-dir flag due to -o flag
->
-> The --sysroot flag is provided as we would otherwise require it to be
-> present in KBUILD_RUSTFLAGS. The --emit=3Dobj flag is used to write the
-> resulting rlib to /dev/null instead of writing it to a file in
-> $(TMPOUT).
->
-> I verified that the Kconfig version of rustc-option doesn't have the
-> same issues.
->
-> Fixes: c42297438aee ("kbuild: rust: Define probing macros for rustc")
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Based on top of:
-> https://lore.kernel.org/r/20241009102821.2675718-1-masahiroy@kernel.org
-> ---
-> Changes in v3:
-> - Use stdin instead of a rust/probe.rs file.
-> - Fix --out-dir argument.
-> - Move RUSTC_BOOTSTRAP to __rustc-option.
-> - Add --sysroot and --emit=3Dobj flags.
-> - Rebase on top of [PATCH] kbuild: refactor cc-option-yn, cc-disable-warn=
-ing, rust-option-yn macros
-> - Link to v2: https://lore.kernel.org/r/20241008-rustc-option-bootstrap-v=
-2-1-e6e155b8f9f3@google.com
+> "If your patch fixes a bug in a specific commit, e.g. you found an issue
+> using git bisect, please use the =E2=80=98Fixes:=E2=80=99 tag with the fi=
+rst 12
+> characters of the SHA-1 ID, and the one line summary."
 
+I think Geert (Cc'd) wanted to change those docs -- I am not sure if
+the idea is to go with 13 or more, though.
 
-V3 looks good to me.
+In any case, even if there is a conflict, we have the title.
 
-Miguel,
-Will you apply this together with my rustc-option-yn refactoring?
-
-
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-
-
-
-
-
-
-
---
-Best Regards
-Masahiro Yamada
+Cheers,
+Miguel
