@@ -1,184 +1,105 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118BF15573A
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 05:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CF117BB06
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 07:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728453319; cv=none; b=lMGlTv/IcBysUtfmjdJtr1+oCKwlKeQjPc17c12tIDB8gUGMcDohAY9ywmKAIwO0YotTjmuexXhirECtwS/lhJ5Ca4lSbHGnyg6cnHX9S5ScPmoQNbzPe4ioynKlZmee9UBowGE0vE+UZ2IJ3M4f+DbeON+vN7fxmOJF9m5iuoU=
+	t=1728459446; cv=none; b=W+XdAJMVmL+d8emDuhd/Lj0Y6zL1rrKfM3HJ0tOblg50165/F9F5AvHvd1Xg2AD3g5feOQqLdknSp+mA40uaxc36sl2pB7jcwDwR7p8h5A4076cG3yaHt/PYIf7qMc1Wz8n0dV1NlHQEeq0FuL/clVQf3Ss7AFEFlc4ZyksvRVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728453319; c=relaxed/simple;
-	bh=JAEhS2mqRRkb5iEnSsWZ0RACxT/0aX7Tg2yY0kQKOZQ=;
+	s=arc-20240116; t=1728459446; c=relaxed/simple;
+	bh=NRciqDxbOeYLYlKgWsmjwEJ3hvErOI/IWFjMOF/tnBI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nm62wPcmKd6gJBRB1SLqbWejmbb46P+IkCChPUeO5KsUu85JSel9DNZ7U/diPpYxuyeZS+fbondzVBhOLKq277UODBqcD41XOR90dKfRq4pA5Oen5WtroK48fl4eCey7LnWUPk1dXnwCtgXyU70CQ4Wj+lEwZXdpObtmYRtAlmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [209.85.167.177])
-	by gateway (Coremail) with SMTP id _____8CxLOu+GgZn4JoQAA--.23445S3;
-	Wed, 09 Oct 2024 13:55:10 +0800 (CST)
-Received: from mail-oi1-f177.google.com (unknown [209.85.167.177])
-	by front1 (Coremail) with SMTP id qMiowMBxHeS8GgZnn_wgAA--.37740S3;
-	Wed, 09 Oct 2024 13:55:09 +0800 (CST)
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3e03981dad2so313082b6e.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Oct 2024 22:55:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXrU6cx2mgUWaE6cvHbFqoDkSWujzLJ9wBPCuYppQVt6bJ7jHlROFtMS6gzIoy+NJkDlz91CUt/hlhQ3TMN/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC2k8Q/eW/UJWl3UrhE7AT0Iu7wLQkTtqB7+pzSVKHSfVAEg6G
-	clAt+dmzw1X6+JCEe6BQH7rceM9Y+Gd2QZ3Ps6ro6SOW4YhGIpSVGNSEB8Ofu9qDrvRbd+t+3+Z
-	YVIi6OJ15j4SFi/s3XEIWvbnvxphymNJVw/+EQw==
-X-Google-Smtp-Source: AGHT+IFJ2asEEWxZSKka5K8xJcQuE0yhLrJteHJQVgRbKdn7qBkd8DoTGjvy8Kw8yN6hlp3uJSEmZIttYvn4pluc94E=
-X-Received: by 2002:a05:690c:ed0:b0:6db:cea9:6ed9 with SMTP id
- 00721157ae682-6e32219a1f8mr12411127b3.4.1728451783510; Tue, 08 Oct 2024
- 22:29:43 -0700 (PDT)
+	 To:Cc:Content-Type; b=iPSP8PLdKUWOC12ukgoQUsFjl863DQMXCcFFvrUOhxUBLqk1HXW/bROXRJmluO+j7ZhOzoX5Wezk5jtYtLbfBGlkCJs0XlWyQOyJtgpGCBEWPpgsvBRWF+q7DQeGRIUjhNJjuMZT8h9Lmu9euoa8UYiaTvJ9bNAwEooyDGYfB8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NjHRUw2t; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NjHRUw2t"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5398e7dda5fso6557486e87.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 00:37:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728459442; x=1729064242; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0XIMu8BtcEAG9k4wP7FAmgstPZbfLFYFnmsGtAA4kmI=;
+        b=NjHRUw2tUGLhIAT2s4+48pKidw3Exj1l0KJGlHl1kgEyXl48qYb6q2+a6iR3fmCQnD
+         xHUEWjmemvM+KkczuBAvigFbzhv5kR11qeMF+nsw6JnRftbDgWciahF4BApE/cHZvYiq
+         6jl8G4Js8LaKOiM22Od4L2c+WnNvi/A0ncPr69yaYUa0FRoopdF+zf00X5/iyZuGOcag
+         CVeXNMZyGeppTK8AVGUNt35uR+mmsdzYdPObqiVKvpqp1vNfBjaKLpzDMKZsiJWLkKo4
+         7sXAzmjts1Dhln39Lw80zDxjnyYh1Uls4FF6XUZDZwRzsgeJCiz+bzipXqN+KET69ID4
+         jzrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728459442; x=1729064242;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0XIMu8BtcEAG9k4wP7FAmgstPZbfLFYFnmsGtAA4kmI=;
+        b=AYDtgNXG7hGtPQId0wWKIYSAHFBK6DJLuPdA8TihfkTxReP+Aw4NYcvsqL0h0sZWY7
+         oRw+R8YTBjbkZC9HGTBCbkgiQZ2Sx3dmMiKFas1ZAD862FSKtQN7inr8FUktn9vd6BSi
+         pIoKoNKKrCTeX6B+1sXRVh6N772suFOvp2kAbHZtIywXNvcm9QAydZGjxr/rnvp5R1XJ
+         NzH6uVw39VEDmYRY7jXT0rl/7eT2Lr8y/tQNmbdKiRXAwZ7AdkGRonj+PUxdd/10copF
+         dmk8fxGmLDONYmdFoYYzYuL95wRhBvFkZxnYmc0uaLXaa4mTudHoRM2lPu0yFH+EE6gY
+         MiRw==
+X-Gm-Message-State: AOJu0Yzy+ubwDmuTyzd8E1dtKyNUGOwcYMHJVXm86DrCmiTavq5QReKy
+	SutJvUjsIq9nHIkUItkEhdZnl5VQuGb6/aov2gYWVhLfTi29+sJ35YbKrgSOOUdduEdFGck5Gh3
+	CIfIKClTunQSlwqLNgq4WKzkW42kjwKRkY2Z7
+X-Google-Smtp-Source: AGHT+IF7AnezuX19GLgnBAVICGfaiqOh8j/T6OcVfA7CP8tJAOZTyYr1JcFc9km7DM4IrlH5UyFW7WayJLDzPjXaqVI=
+X-Received: by 2002:a05:6512:b89:b0:539:a2e0:4e83 with SMTP id
+ 2adb3069b0e04-539c496f602mr774669e87.52.1728459442343; Wed, 09 Oct 2024
+ 00:37:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
-In-Reply-To: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
-From: WANG Rui <wangrui@loongson.cn>
-Date: Wed, 9 Oct 2024 13:29:31 +0800
-X-Gmail-Original-Message-ID: <CAHirt9g6kCwNarFo8Ah3+3dB=Sp1PJNs3PDJ5yFKBwwbdSqcrw@mail.gmail.com>
-Message-ID: <CAHirt9g6kCwNarFo8Ah3+3dB=Sp1PJNs3PDJ5yFKBwwbdSqcrw@mail.gmail.com>
-Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all architectures
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+In-Reply-To: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 9 Oct 2024 09:37:09 +0200
+Message-ID: <CAH5fLgjJTjxo5oMeagUhV-tJoNZnWu3QWXhT4X3SYe42FpUgWA@mail.gmail.com>
+Subject: Re: [PATCH] rust: transmute: Add implementation for FromBytes trait
+To: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:qMiowMBxHeS8GgZnn_wgAA--.37740S3
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJw48Cr1rZw17XF1xCr15Awc_yoWrWr15pa
-	9Y9F1DCF4kJr48XrWxJrWfWr1j9w4DXr1Y9F1DG34rA347JrsxZ34vyw4qgayDursrCFWx
-	X3WfKFy3Cw1UZ3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	GVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8P8n5UUUUU==
 
-On Wed, Oct 9, 2024 at 1:37=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Wed, Oct 9, 2024 at 3:48=E2=80=AFAM Christian dos Santos de Lima
+<christiansantoslima21@gmail.com> wrote:
 >
-> The KCFI sanitizer stores the CFI tag of a function just before its
-> machine code. However, the patchable-function-entry flag can be used to
-> introduce additional nop instructions before the machine code, taking up
-> the space that normally holds the CFI tag. In this case, a backwards
-> offset is applied to the CFI tag to move them out of the way of the nop
-> instructions. To ensure that C and Rust agree on the offset used by CFI
-> tags, pass the -Zpatchable-function-entry to rustc whenever it is passed
-> to the C compiler.
+> Add implementation and documentation for FromBytes trait.
 >
-> The required rustc version is bumped to 1.81.0 to ensure that the
-> -Zpatchable-function-entry flag is available when CFI is used.
+> Add new feature block in order to allow using ToBytes
+> and bound to from_bytes_mut function.
 >
-> Fixes: ca627e636551 ("rust: cfi: add support for CFI_CLANG with Rust")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1119
+> Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail.=
+com>
 > ---
-> Note that this fix uses rustc-option which has a pending fix:
-> https://lore.kernel.org/all/20241008-rustc-option-bootstrap-v2-1-e6e155b8=
-f9f3@google.com/
-> ---
->  arch/arm64/Makefile     | 2 ++
->  arch/loongarch/Makefile | 1 +
->  arch/riscv/Makefile     | 2 ++
->  init/Kconfig            | 2 +-
->  4 files changed, 6 insertions(+), 1 deletion(-)
+>  rust/kernel/lib.rs       |   2 +
+>  rust/kernel/transmute.rs | 302 +++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 290 insertions(+), 14 deletions(-)
 >
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index 9efd3f37c2fd..d7ec0bb09fc4 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -143,9 +143,11 @@ CHECKFLAGS +=3D -D__aarch64__
->  ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS),y)
->    KBUILD_CPPFLAGS +=3D -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->    CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D4,2
-> +  KBUILD_RUSTFLAGS +=3D $(call rustc-option,-Zpatchable-function-entry=
-=3D4$(comma)2)
->  else ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_ARGS),y)
->    KBUILD_CPPFLAGS +=3D -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->    CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D2
-> +  KBUILD_RUSTFLAGS +=3D $(call rustc-option,-Zpatchable-function-entry=
-=3D2)
->  endif
->
->  ifeq ($(CONFIG_KASAN_SW_TAGS), y)
-> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-> index ae3f80622f4c..f9cef31d1f0e 100644
-> --- a/arch/loongarch/Makefile
-> +++ b/arch/loongarch/Makefile
-> @@ -44,6 +44,7 @@ endif
->  ifdef CONFIG_DYNAMIC_FTRACE
->  KBUILD_CPPFLAGS +=3D -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->  CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D2
-> +KBUILD_RUSTFLAGS +=3D $(call rustc-option,-Zpatchable-function-entry=3D2=
-)
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index dc37aef6a008..5215f5744e12 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -18,6 +18,8 @@
+>  #![feature(lint_reasons)]
+>  #![feature(new_uninit)]
+>  #![feature(unsize)]
+> +#![feature(portable_simd)]
+> +#![feature(trivial_bounds)]
 
-Tested-by: WANG Rui <wangrui@loongson.cn>
+New unstable features must come with a good justification. Why are you
+adding these? Why can't we avoid adding them? This information needs
+to be in the commit message.
 
-
->  endif
->
->  ifdef CONFIG_64BIT
-> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> index d469db9f46f4..65d4dcba309a 100644
-> --- a/arch/riscv/Makefile
-> +++ b/arch/riscv/Makefile
-> @@ -16,8 +16,10 @@ ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
->         KBUILD_CPPFLAGS +=3D -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->  ifeq ($(CONFIG_RISCV_ISA_C),y)
->         CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D4
-> +       KBUILD_RUSTFLAGS +=3D $(call rustc-option,-Zpatchable-function-en=
-try=3D4)
->  else
->         CC_FLAGS_FTRACE :=3D -fpatchable-function-entry=3D2
-> +       KBUILD_RUSTFLAGS +=3D $(call rustc-option,-Zpatchable-function-en=
-try=3D2)
->  endif
->  endif
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index 530a382ee0fe..43434b681c3f 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -1946,7 +1946,7 @@ config RUST
->         depends on !GCC_PLUGIN_RANDSTRUCT
->         depends on !RANDSTRUCT
->         depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-> -       depends on !CFI_CLANG || RUSTC_VERSION >=3D 107900 && HAVE_CFI_IC=
-ALL_NORMALIZE_INTEGERS
-> +       depends on !CFI_CLANG || RUSTC_VERSION >=3D 108100 && HAVE_CFI_IC=
-ALL_NORMALIZE_INTEGERS
->         select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
->         depends on !CALL_PADDING || RUSTC_VERSION >=3D 108100
->         depends on !KASAN_SW_TAGS
->
-> ---
-> base-commit: 4a335f920bc78e51b1d7d216d11f2ecbb6dd949f
-> change-id: 20241008-cfi-patchable-all-ddd6275eaf4f
->
-> Best regards,
-> --
-> Alice Ryhl <aliceryhl@google.com>
->
->
-
+Alice
