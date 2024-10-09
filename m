@@ -1,110 +1,99 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B491E1A07
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 16:44:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327931991CE
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 16:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728492266; cv=none; b=OVl6PwqAfdccC2kLp0sDWvoiHqtAeA7yiNwa7b5YJTkbubCsnHGrMny9lfrcZn21KnJqMSifYI4mt481IS4jy4KVSoAz6LyfDmxpF//+Y4UCA0dsBzgVdhb7oE3f2WkbnAaMmFsmYPK2+fKdIebyaVGOTDZEf/tqa89u8ZLrbAA=
+	t=1728492523; cv=none; b=XulEt0RuzMgdR6+M1wgEyH17ITMfGlK5XdKGiIUc012YWIxo94HJYZePB6a2pyNSPWYC4BrYL6VzXEONeRwKXo4LDVDzqe+DqcCdiiH7c162E3f6sqMDl+8dGF0BBOxnhspwiKzfMxu9ZWtk5x1zm85xNxsq6cbGFvn/j9t380I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728492266; c=relaxed/simple;
-	bh=f0RFDXhULnyY2BY/Mw9GxD0uAf1hjmfoqcOSDpu3B3I=;
+	s=arc-20240116; t=1728492523; c=relaxed/simple;
+	bh=gdKn2odBMpIYhY6Ml1GXd8IVWbn6t3Iuh+kBokXDOdM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cl5exWQk+n3p4+KL8lX61te7dN2PCsp2DvqYWzPlFDAuPH33UX3R6jUVWqBON7GX+0OTXgq4x57lheROTvXvEhwYPeluVZtlkefEhnRoN4fWOghwk4CRAAmGWEuH1PX73QlEDRnvODzko3iMpq4PeIckhg5wbVxi3THk82nBcJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vlm4kDYZ; arc=none smtp.client-ip=209.85.160.174
+	 To:Cc:Content-Type; b=E5o8Qioq+WKrd4BxkKFr1U4Ax9tJRa3Wcqrmoq0tkxALg8IstrL3TPYbauldSzvLMz5BcQ9RTEJRVUJCTnA/bGfIvKpL/GuJm4SNlDCBNCIVggqzO0bT6Bs708Aynx/7ky5mX7xK03PN66MhwnSL8nNf6pnWr4Eg8ge6ZZJOhJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eI8E5mXj; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vlm4kDYZ"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4603d3e0547so5791cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 09:44:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eI8E5mXj"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4601a471aecso3131cf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 09:48:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728492263; x=1729097063; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728492520; x=1729097320; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f0RFDXhULnyY2BY/Mw9GxD0uAf1hjmfoqcOSDpu3B3I=;
-        b=vlm4kDYZx3YSTtwbXuTFQTWk/xfP6Jdo4ZaVxe+9LpbL35IkiB+KN40v1F3/xcR1bR
-         wjeU8OZ0supROHona17NaptKwYuI70u1ppPB2bV3GkdI1NLHCcqCihFz16j94unYfEDM
-         yWTjRwDQnLdVw9FNZdrIpPJjZClUhpJAL+0VsIpGUOnTywoh+WRpuVgCAht2LcoJm26J
-         dulLyQH2hRc7IrAOTKSeEFOlCiFCIqX6XMrcIV60Tpl7XrI2A8NAf8RRg74FDDyyR2j1
-         57fFBqr/5qwnkeoEe/ObDWSUyV1TfrGUV9TGnRnWo4U9rrzdKjZRXa/T0Nn0ytdQOw3I
-         oSKw==
+        bh=gdKn2odBMpIYhY6Ml1GXd8IVWbn6t3Iuh+kBokXDOdM=;
+        b=eI8E5mXjG4M4n94C3oUnOw9TiI1LtFKgAc89jLMN4tAG+pKTcWS0RvWIR7jH9bm19j
+         /GCfz8G5BVWkE1htn6EXvuCASneEZH/JUN9wQJ1jXh63jyuYCvj5UKDSnkCnTtsglHSw
+         yr1lAyXkGHhcw+10UirGyI6U1ou0bM7huKXkOYTPGERgRzNE8OSrqDINrJq5n1fj/wWf
+         G/fkrftiwSm7i05YfL7K4yVSTLKLLW8Wp+LP0lCeGvgoyZYgbGUVUkrTBUdQX49k0Ds8
+         X3Ki4Qyb8OoVYVu2agOOliVS98oqkyPX0RtT70JvLX+uI7GCFBPMPkBrFyDwpZtx60t2
+         HELw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728492263; x=1729097063;
+        d=1e100.net; s=20230601; t=1728492520; x=1729097320;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f0RFDXhULnyY2BY/Mw9GxD0uAf1hjmfoqcOSDpu3B3I=;
-        b=G5xJsCdmAjHbWpHczspaovJ7MCBAxW1cm1DoLrajvMQ1h9IQsUhFmxScxB9xnDQbXD
-         TsA8+byK2v3R90+u0mN60TiHUIatIcMDZzDQDfsXngmLXj5RlNmthuYxoHe8FakHlRVd
-         0oAWQkAqm/TjQ02NeYqLPmXIWOVCOLwAxObx8tjDh1aCkHbRYGonifNADssu+UAZ11y6
-         x8ENg8bkHagububNHcaQmYfyTNvlYVT4MZm8zzKJFD55UHPwJKI+CPrPuuaeNKtsHpbg
-         xoS1tcQ+86C8eTckzkF5Q5ABuCPYgk6ZONjqR091BpemFWIhMoXOpUFOgJ+5tviK5471
-         qPEw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/4j75WpZsmkKvC/KmZpjLUaGFDA5HPbjY5FdtCjUyi37cTl8Q9lcU8XAFXQHZ/YkHok0Te3p2M8k4y65Hlw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2hSjJFdULul+vYN0O7oy8LSjbTiNrD1G1BCclenvCMUQqv7qu
-	iAOq5/KICqcuvdy/5fVmp9uzvMKJ7vYkm/JLLmDVATP20Xg7WHGk2Rn3aWygDkvbEoztv7pWEDz
-	05OzpF5nO8IaHhF378P9Q+a/scIW+lg2mJ7Xf
-X-Google-Smtp-Source: AGHT+IGXi7403SDIdlxuIn/gfNtdZd69ttkza9TvN53TAGxffeRgQIzror4uI050ZcHFWqWlwYkRoIIev0/cUOq0cdo=
-X-Received: by 2002:ac8:6312:0:b0:45f:6a4:4262 with SMTP id
- d75a77b69052e-45f0a153812mr4783561cf.22.1728492263209; Wed, 09 Oct 2024
- 09:44:23 -0700 (PDT)
+        bh=gdKn2odBMpIYhY6Ml1GXd8IVWbn6t3Iuh+kBokXDOdM=;
+        b=mTES5uUjwZSITcc/7OjKGwl4UQoMiZu3ZvkPd6xjS/C5GwxCByYF8UwJ6U7bEgGbr3
+         33URu/TxzcfaRO1dje4I5zcrH/3xZToK1Gwy/RGsDWZgXyESkwNn0gGTUGqZWfiTUNGq
+         TWE1zKPY8W7bshVc5UfO8zhIbTerFf/flB82teZxxlnHVPuP9XG87qZjwAzpSBZHh7Dg
+         e893WdiE/qAButl/FTsv83ZIEktkI6ZW0/Z+vfvwzFuBU4RTDDmaQrdTNH8EzeTm2lxR
+         Mt/U2mIElX3MNmXJKLBPNtVdbQ3V7+vwxeQoiEXvQz7ywDfQEwbX4SBwNkNWl489PspD
+         m9lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmQroLCoc4xyz4mOt5+ZlyA0PZmMx4+MYAW3KJ9OLSo62sSAPMMTkh4JhZsEeUwRxoLj0/FtfZ1UEfXbnQ/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU9nr2SqMHNdRDWrhzmkyvIhawjo8rj7/J7+Y6vJmTorB+/yIM
+	ncb0kHPbNZK6GW7WAYJgSJMxYE8d0q4a+Q2okcaX2Nt6wrEkJtzYlJc2THqNmdUH7hlff0qwNDN
+	thqibrFLBGF4oiQiyKQjVNrQxYeR+FztCA5LB
+X-Google-Smtp-Source: AGHT+IFU2+kjwmtE/tnFQrIWgevFZ6/YDFYn29RzthvZHDHMDNxdPEj2AOVBL4hcHNKv+c2nCcFEUJDPNG9SsF97388=
+X-Received: by 2002:a05:622a:5612:b0:447:dbac:facd with SMTP id
+ d75a77b69052e-45f0a1537fbmr4407531cf.24.1728492519801; Wed, 09 Oct 2024
+ 09:48:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008-cfi-fix-llvm-gate-v1-1-32d47459eee4@google.com> <CAGSQo03ZOppScZT_1DuWYsnveKvYHdc-K_djHi=AB4CKjAbgyQ@mail.gmail.com>
-In-Reply-To: <CAGSQo03ZOppScZT_1DuWYsnveKvYHdc-K_djHi=AB4CKjAbgyQ@mail.gmail.com>
+References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+In-Reply-To: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
 From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 9 Oct 2024 09:43:45 -0700
-Message-ID: <CABCJKuddiLtjG1TJ_CN+F8Z_7+oOOfZNAFd0=qy_HW4wMMJ3fA@mail.gmail.com>
-Subject: Re: [PATCH] cfi: fix conditions in HAVE_CFI_ICALL_NORMALIZE_INTEGERS
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
+Date: Wed, 9 Oct 2024 09:48:03 -0700
+Message-ID: <CABCJKuf83gywnbtkJ3d2VfDRH9f6kcf1Bn1Zau5re=4YoV6E8g@mail.gmail.com>
+Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all architectures
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Alice,
-
-On Tue, Oct 8, 2024 at 10:46=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
+On Tue, Oct 8, 2024 at 10:37=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> This makes sense, as some folks have a Rust compiler they know has the
-> fix, but build system detection for it isn't there yet. This lets them
-> override availability if needed.
+> The KCFI sanitizer stores the CFI tag of a function just before its
+> machine code. However, the patchable-function-entry flag can be used to
+> introduce additional nop instructions before the machine code, taking up
+> the space that normally holds the CFI tag. In this case, a backwards
+> offset is applied to the CFI tag to move them out of the way of the nop
+> instructions. To ensure that C and Rust agree on the offset used by CFI
+> tags, pass the -Zpatchable-function-entry to rustc whenever it is passed
+> to the C compiler.
 >
-> That said, we should definitely be sure to get this back to a
-> non-configurable toggle once the LLVM version detection is in.
+> The required rustc version is bumped to 1.81.0 to ensure that the
+> -Zpatchable-function-entry flag is available when CFI is used.
 >
-> Reviewed-By: Matthew Maurer <mmaurer@google.com>
->
-> On Tue, Oct 8, 2024 at 10:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > The CFI_ICALL_NORMALIZE_INTEGERS option is incompatible with KASAN
-> > because LLVM will emit some constructors when using KASAN that are
-> > assigned incorrect CFI tags. These constructors are emitted due to use
-> > of -fsanitize=3Dkernel-address or -fsanitize=3Dkernel-hwaddress that ar=
-e
-> > respectively passed when KASAN_GENERIC or KASAN_SW_TAGS are enabled.
-> > However, the KASAN_HW_TAGS option relies on hardware support for MTE
-> > instead and does not pass either flag. (Note also that KASAN_HW_TAGS
-> > does not `select CONSTRUCTORS`.)
-> >
-> > Additionally, the option is configured to have a prompt and gated behin=
-d
-> > EXPERT. The previous method for a user override of the option did not
-> > actually work. This is expected to be temporary, as I intend to add a
-> > precise detection check for 6.13 - I did not included that here to avoi=
-d
-> > adding a RUSTC_LLVM_VERSION config in a fix.
-
-This sounds reasonable to me.
+> Fixes: ca627e636551 ("rust: cfi: add support for CFI_CLANG with Rust")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
