@@ -1,119 +1,231 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8729196455;
-	Wed,  9 Oct 2024 14:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74361E32DC;
+	Wed,  9 Oct 2024 15:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728485289; cv=none; b=HMpYEsy7moOPiRUCz7SlY0Ein8oees+w9A16XB2NUztyKwWQ+uwkuZAmFMsGMT6fklxXGh+MNbTi/gO7Zfttedw4SNqHBpuxGmiTDvisSKHRhTZ+ksxTdY2e7a/hkCcrFy/iKG+sSg2NYHuu6zMMZdHxfE96Axsej3PiqXsIi9A=
+	t=1728486643; cv=none; b=q619XJ7CDqtWQhbWclXDa3WZev9p6C61mICT1+n33QB7HmQSyONh1z13ZOrdS/xQCnYkfV392TYJfl3PPntIL7/+zJGy/oZwoFbJ6zlKY6iDAs/G0EHGXQQ+XAyXrykIM7TAxE7TYlxvVTAVdptih6eomuyINP2LW/O2GY4YW98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728485289; c=relaxed/simple;
-	bh=jNj/XXPy6r4c18lIfqRBo2GXYh92bCduVUYJ+2aWp4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V9LXvk8Jv6U/RDO8zGlRNQLeX1zvU1G9HQHa7JHovev9oSIS+d4GSoze/aehTijGY9c/D8nt8lQCQU/E0OdVUt/qL8SGkK5OIrvPdXFoEwsGJI4QiAcnPmzeaWaitono760THABwhHQHaMixlJqBY1DKvWCa4TMWQ7/Zzomt+YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MHAeGee+; arc=none smtp.client-ip=209.85.208.172
+	s=arc-20240116; t=1728486643; c=relaxed/simple;
+	bh=auOGwcwUNtWUimQtw+xEh2t7pxkqUiZdtGtpkjCvDx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AiWbAZPruaKoljZ8Anks/Ll+cUNUInPF9janKwzLKkgvp/Yc2/UY9ISsCP/pIdWE8mTPts9ottFIqNQ61XLtLgiLFA5y2rUOepZZBvxoqlsVSl6ljm2DZnJUFadT8rwOm4PqhZrsdohnvPkYXcxBaeVNBMp5Q5FdvsSuk6zIUhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SeCtMzlZ; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHAeGee+"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fadb636abaso70714441fa.3;
-        Wed, 09 Oct 2024 07:48:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SeCtMzlZ"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6cbbe3f6931so18500126d6.0;
+        Wed, 09 Oct 2024 08:10:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728485286; x=1729090086; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jNj/XXPy6r4c18lIfqRBo2GXYh92bCduVUYJ+2aWp4g=;
-        b=MHAeGee+68uHURELuJUdyYqrh0+5wd9WAS/l+tOLF54vElOmNNtinH/bfLCfBRt4en
-         sBsYCo2KRhsVW5TpvmgL/HofcfGxzpZ8RxTHiZafKYVjhs3IyaUJOCArRpNWd+PPWTGl
-         dBW32NEwUNA6G1OGm1CNVcFlrji4nmtRlSZlgverunc44CnF6KTsLtxyJy84GdNyHSfF
-         krveGXhILLffPuqIT8/myxw9M2ftT8Wlo1fC8oUbH49CEhwbOcVzQEJpBJnuyNEvfNJE
-         d7SS+YRazXHyPx3kW7NatgeXY7XkWQlJgdNj9eOo0JtKjQIQgDEQBNv5H/EJ/VLAAd5H
-         Fq+g==
+        d=gmail.com; s=20230601; t=1728486640; x=1729091440; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MCdXhLxgbUayqOpJqsZSML6FXnMELs945wDi+0XzIdw=;
+        b=SeCtMzlZoU1ZWd8+GFaebIip4mqGzt0KM+9pZvXYD9U2EIRkLiSf4rbDGQqHiLcUiO
+         ZD61njWg4ouNKWbKHXrgIydNqgLpHeukHo8RpGTZIi/VHnzfqiRDrfiNTnLZt+b+Ir6+
+         EOSXqmMCTZdFi3jfYA/B5S57Vu6/MIVsYpu2HwX7Ja+N8v96OMnZRddV5PMORJ/mEEeC
+         6BOeZh1bgli/cziXQNwMQWYzKkKEwYVhfutvgdPzkg2pRi97i9mFi1p3y6zxglxNxHKw
+         vCIvYSVMbHs40JWZnV/dmv7EyEBhSxFDP4LULx9vztI4CmGzPlgSya/1GAq66iqiYByc
+         j0RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728485286; x=1729090086;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jNj/XXPy6r4c18lIfqRBo2GXYh92bCduVUYJ+2aWp4g=;
-        b=oOZqxP0S0jlHsLFxhGZAwOK8Kvxfq1OYDTma43AdQh63iUSKXpde380nIx8qnjqf/x
-         64Wf57/kQLyhJ4BFtBdsBcQTsoyMOvKglLd3nSBgQzPa3r66lFrKF8+NmT5DBtWs1kIx
-         Mj2KfoBeXKNs31jUDAcNHxUUWVuhqi2L5kRzlwHItsvIHg8fHO3DuxhNLeDYyyPugLcn
-         sIfrE2jeF47h1rU/9qhe/1zI1GNXeR90NSCO02C4g8PoGkjnNACqdD9VAlr29E/sFcup
-         ERozpPOuJWhTW0+5dxst3rT+xKMa0kMAd6bN5Mb0yN6oHnukaTx3c+kwu5yPH6tzDxYE
-         aplA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHRndl98gAMWNGTkSufLfyDq2zkmbk10HcVwRBHdPFoCcdsYBT858U1QZRhJk4S/p1GHAFcs9Bf91BjhU=@vger.kernel.org, AJvYcCUhWSSqxksiPqF6lopdnhDYyp82zAnEtyYb6+o3olPvjWRvn9+XgMgoJjPFZz7Avcb1XQoH71eXQBd/3Zej@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqm34GKGm9Vu0VX+Arb38U01YNMczBF41q8EVzJeDJxobRB9xk
-	N0AonDLfKm8ZXaWD3+W/qWt6sKNZ69nutZ3jLN/EJcnIH+3AGP/OchOIfPofA4viwwPt2x0GDg5
-	EtaORNV/p/LVgAY5IFA/AcFUwPNk/EbQYgKA=
-X-Google-Smtp-Source: AGHT+IFbKxcngVdNMaafNvRib0Sbeiy+vLM6P46dY4lKhpB/klY1qmNJ7OnGt0nK6vq0COCmxXeL6Q2+fxhjs8e/eQ4=
-X-Received: by 2002:a05:651c:1992:b0:2f5:2ba:2c99 with SMTP id
- 38308e7fff4ca-2fb187121d1mr19938921fa.9.1728485285444; Wed, 09 Oct 2024
- 07:48:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728486640; x=1729091440;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MCdXhLxgbUayqOpJqsZSML6FXnMELs945wDi+0XzIdw=;
+        b=vzbL9Zo6sqAKJWJQiGkw18o7n8cyz9CbWscCe9b5I4NpNTFS2bg5P6DM6fv0IsYzJd
+         WDcyttAmPOBEtfYRs1yEpIQjMSKwAflJp60KeuqDSbYfvy1u4/1+dGuJRh2ze3OjItu2
+         Aggz8+7BU+XVNX4s75VMhpN0X2NQAONDQZQSIVR8zk+9ux00DjJbjhpcbh37PMeBFfbk
+         NdwFQf0fKIzas6xiiOKy9MHDvaTG5qf60RzNLswNt0+H2Hfc87or0KWEtIMaO9eec7jR
+         iBa4GxInpYuwxagryNysfMbuwdtu1AeTVcMQ+am/F2YmDPKAqJqjk976Aw13P7sUlQ0E
+         vm7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXpa0ys5j6g4MZQQoRvD+n7Nem+WKZOxUXHQBHFj1Ciea+IWfpHgc1UNHE4nB6yVK8LS3Tq6/fa9II1XpE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdgJyHIZHNOBntW3Tx4bWmfCNxpX90rFFaVEEP8Qt/U8Ith2EU
+	BWMOSs+qlD7LkoBchsd3zpbaZ2aZkBM0YOXU+mGCVPs3SrFfbEpRFcrqs0Q2
+X-Google-Smtp-Source: AGHT+IF7X+U4DjPpVCM1oK0fo69qWsoASbXBtNY0ZPbRuz6rtomZNraffTcQeX/KsR/yufxV5l1vyg==
+X-Received: by 2002:a05:6214:469c:b0:6cb:9c5a:7f41 with SMTP id 6a1803df08f44-6cbc932d71amr48878546d6.17.1728486640224;
+        Wed, 09 Oct 2024 08:10:40 -0700 (PDT)
+Received: from localhost.localdomain ([2620:10d:c091:600::1:6bd1])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cba4763b6asm46712606d6.131.2024.10.09.08.10.39
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 09 Oct 2024 08:10:39 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Gary Guo <gary@garyguo.net>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Filipe Xavier <felipe_life@live.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: remove unnecessary #includes
+Date: Wed,  9 Oct 2024 11:09:55 -0400
+Message-ID: <20241009151017.26685-1-tamird@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
- <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
- <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
- <CAJ-ks9neMso9pL_LPOeOwLGZG7Wy9RxV-ixKsDv=Wfzy7yKVBA@mail.gmail.com> <CANiq72kM+29COB6vPQPotXqT3acdbrEgdjU2K6FG8gZC0EEhNg@mail.gmail.com>
-In-Reply-To: <CANiq72kM+29COB6vPQPotXqT3acdbrEgdjU2K6FG8gZC0EEhNg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 9 Oct 2024 10:47:28 -0400
-Message-ID: <CAJ-ks9n=Y_FAdRb=YAaCEGT-y8RP=ssOgBiQtb8T7s+LRBBBhg@mail.gmail.com>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Daniel Gomez <da.gomez@samsung.com>, 
-	Fiona Behrens <me@kloenk.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
-	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 9, 2024 at 10:20=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> In particular, there were some patches NAK'd with arguments that may
-> apply here (e.g. extra process spawns).
+Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
+removed the need for these by automatically generating the exports; it
+removed the explicit uses of EXPORT_SYMBOL_GPL but didn't remove the
+header includes.
 
-Understood. My guess is nobody will care about the process spawn in
-scripts/generate_rust_analyzer.py. Someone might care about the one in
-rust/Makefile, but there are already 4 others. By the way, I notice those a=
-re
-using $(shell ...) - should I be using that form as well?
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/exports.c           | 6 +++---
+ rust/helpers/build_bug.c | 1 -
+ rust/helpers/err.c       | 1 -
+ rust/helpers/kunit.c     | 1 -
+ rust/helpers/mutex.c     | 1 -
+ rust/helpers/refcount.c  | 1 -
+ rust/helpers/signal.c    | 1 -
+ rust/helpers/spinlock.c  | 1 -
+ rust/helpers/task.c      | 1 -
+ rust/helpers/wait.c      | 1 -
+ rust/helpers/workqueue.c | 1 -
+ 11 files changed, 3 insertions(+), 13 deletions(-)
 
-> Moreover, how will it get tested going forward? (e.g. currently I
-> can't, but I could look into setting something up if the kernel wants
-> to support this). If it breaks, is it considered a bug? etc.
+diff --git a/rust/exports.c b/rust/exports.c
+index e5695f3b45b7..fd278e272751 100644
+--- a/rust/exports.c
++++ b/rust/exports.c
+@@ -3,9 +3,9 @@
+  * A hack to export Rust symbols for loadable modules without having to redo
+  * the entire `include/linux/export.h` logic in Rust.
+  *
+- * This requires the Rust's new/future `v0` mangling scheme because the default
+- * one ("legacy") uses invalid characters for C identifiers (thus we cannot use
+- * the `EXPORT_SYMBOL_*` macros).
++ * This requires Rust's new/future `v0` mangling scheme because the default one
++ * ("legacy") uses invalid characters for C identifiers (thus we cannot use the
++ * `EXPORT_SYMBOL_*` macros).
+  *
+  * All symbols are exported as GPL-only to guarantee no GPL-only feature is
+  * accidentally exposed.
+diff --git a/rust/helpers/build_bug.c b/rust/helpers/build_bug.c
+index e994f7b5928c..44e579488037 100644
+--- a/rust/helpers/build_bug.c
++++ b/rust/helpers/build_bug.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/errname.h>
+ 
+ const char *rust_helper_errname(int err)
+diff --git a/rust/helpers/err.c b/rust/helpers/err.c
+index be3d45ef78a2..544c7cb86632 100644
+--- a/rust/helpers/err.c
++++ b/rust/helpers/err.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/err.h>
+-#include <linux/export.h>
+ 
+ __force void *rust_helper_ERR_PTR(long err)
+ {
+diff --git a/rust/helpers/kunit.c b/rust/helpers/kunit.c
+index 9d725067eb3b..b85a4d394c11 100644
+--- a/rust/helpers/kunit.c
++++ b/rust/helpers/kunit.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <kunit/test-bug.h>
+-#include <linux/export.h>
+ 
+ struct kunit *rust_helper_kunit_get_current_test(void)
+ {
+diff --git a/rust/helpers/mutex.c b/rust/helpers/mutex.c
+index a17ca8cdb50c..7e00680958ef 100644
+--- a/rust/helpers/mutex.c
++++ b/rust/helpers/mutex.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/mutex.h>
+ 
+ void rust_helper_mutex_lock(struct mutex *lock)
+diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
+index f47afc148ec3..d6adbd2e45a1 100644
+--- a/rust/helpers/refcount.c
++++ b/rust/helpers/refcount.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/refcount.h>
+ 
+ refcount_t rust_helper_REFCOUNT_INIT(int n)
+diff --git a/rust/helpers/signal.c b/rust/helpers/signal.c
+index 63c407f80c26..1a6bbe9438e2 100644
+--- a/rust/helpers/signal.c
++++ b/rust/helpers/signal.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/sched/signal.h>
+ 
+ int rust_helper_signal_pending(struct task_struct *t)
+diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+index 775ed4d549ae..b7b0945e8b3c 100644
+--- a/rust/helpers/spinlock.c
++++ b/rust/helpers/spinlock.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/spinlock.h>
+ 
+ void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
+diff --git a/rust/helpers/task.c b/rust/helpers/task.c
+index 7ac789232d11..190fdb2c8e2f 100644
+--- a/rust/helpers/task.c
++++ b/rust/helpers/task.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/sched/task.h>
+ 
+ struct task_struct *rust_helper_get_current(void)
+diff --git a/rust/helpers/wait.c b/rust/helpers/wait.c
+index c7336bbf2750..ae48e33d9da3 100644
+--- a/rust/helpers/wait.c
++++ b/rust/helpers/wait.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/wait.h>
+ 
+ void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
+diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
+index f59427acc323..b2b82753509b 100644
+--- a/rust/helpers/workqueue.c
++++ b/rust/helpers/workqueue.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#include <linux/export.h>
+ #include <linux/workqueue.h>
+ 
+ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+-- 
+2.47.0
 
-I guess that's not for me to say. It would be great to have basic automatio=
-n.
-
-> > Thanks Miguel! As this is my first patch, please let me know if further=
- action
-> > is required.
->
-> You're welcome! Yes, a new version would be needed with the proper
-> tags/authorship, but first we should probably wait to hear what Kbuild
-> (or the kernel) thinks.
->
-> Cheers,
-> Miguel
-
-> Please read the section of the documentation I linked, it contains an
-> example on how this should be done, i.e. the Co-developed-by tag
-> cannot be on its own:
-
-My apologies for the oversight.
