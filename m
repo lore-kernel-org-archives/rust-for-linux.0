@@ -1,91 +1,104 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705C0192D82
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 12:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6127A192B6B;
+	Wed,  9 Oct 2024 12:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728475356; cv=none; b=aOuGHT76VxyWEA3dsyPEnSzwWzDtRvvGOOzI18MSnqbqoKIwra4QyuYttXRFImedSlmvmRKkwBBkLCgNP/2Ua6Jlxuhe6It1FsznGJ1TloxdCkb41rVWk2I9vAcaQQz76nbi5CVLwfCuCtgk0aeqZmFfUvTg2ac3+17ut1SUJBU=
+	t=1728477146; cv=none; b=Q9GDyYz6gACC0zfrx6bkpJGmvsSz5yu5dqVuObDEVBElRDiK0NMrklgOplVGBOgGYadj5Q2qtw3Gys71lnOiGH7xErI/8CexsZavoPyDXoGiy23lnzfXYX5M2ZzlqTg/Gs0bsducKsIWV8RqgmDz0HXWffIxGkUA9G2wZG5c0Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728475356; c=relaxed/simple;
-	bh=d0d0vbIjxKlT5RMhMyYh9iNcFRAx7FDRHnCkb6Nc+Po=;
+	s=arc-20240116; t=1728477146; c=relaxed/simple;
+	bh=ZCH7AEVp8yz/8UK3lIBATKhHCBdELuNOK9/9lnJSnAA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iTOOK5hP3kz2PHhcvk1d0Zz9jVYJYgN86rSo/EwJR9v6an4TbLw9hB/cpoIdwVjkGOoqhtg/O+cZsq19pbLPJh9g+lLtZBmi3lLLfgdGe40MBPcsyF9KqDc9uB00RtgFjOTqhi3gFhaUmmLDnytC+TFqqsSqZRJaz1H4SSWPHus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=094RUNNc; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=kSvyXMf3KG7EsNZJi75tIWe6iwPMyq2nsJVN7FQ+5RQs4ATQ4M3cpBuLHOmD3tDumZRFJS4/Ek6SnIL89AgDzQWl8dZ6jk40nuhA02t459DISJJc54RKUBDtRtF4g3OqL7oL3GHwNVBsWgxIHc4EnVBSnLol+Pnus3aml3JMQIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N1Ztz3Eg; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="094RUNNc"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fabd2c4ac0so74381791fa.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 05:02:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N1Ztz3Eg"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71defa23174so694181b3a.3;
+        Wed, 09 Oct 2024 05:32:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728475352; x=1729080152; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728477145; x=1729081945; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d0d0vbIjxKlT5RMhMyYh9iNcFRAx7FDRHnCkb6Nc+Po=;
-        b=094RUNNccfdj9BPn6etOfmu2SOQYDH5bfIoiZL7YiNQJo8PyNsney7S2b9zVIUMFue
-         X/zKOnqR4tVACpBPmYmRQHXvRKGFxrqic3bBiFf9KkEeXsgjjc+rGnNI5ZlgM7/7vm4g
-         daLZAM13lLkU0isdUifrGYqjGoeJfdxRQqAbB5e2/kB6Ut/Nqi4oCRlZmXHewHckzg5Q
-         MEjIyzZLvJZ5JjG7VUuFjBz0CnvpIhq+psopn7V916InGXHfMjlMZNNhoov0cRbkaEXf
-         VtoYTNQW8NmRVmlg20MtlQH5t1w3BB82iMZOtgjVmgvOAeHHk9frYWMLOxZH/uhwrnAC
-         ff2w==
+        bh=qoL22N1zkJY5+zHlWx6b9rySvR2NnQPaN7lfDWm/21o=;
+        b=N1Ztz3Egu0T6YhRbxFwA/jFaF6BzuAdZRN1KNFH0qppe/71Pzc1n+2Sh63pXdY/MkE
+         D4nPtcrKWpUCK0fTlJ+RLfVBFs0Jv1GJnC+rqvvhzum5a7TswX6hVvC4HxyrDrcVzK9U
+         qFLLjpbs+4BBlqa8TMKE1ukDrIiEyG9EJdF3xiCR7ZF3+TO3+VvSu2KIsHIjvN33Aape
+         fBgXqPOFYcS740kcFSgNwrHCgwPjXGJ1ULF/dnIg0lWzVoDrDm68jAbADWOUu+RM3rWC
+         R98d3zBigTIq0und/Ir+VaRqrCAUm7lHp8gcQikhlPInTR6g1JGDSptMajuZcDodXcCd
+         co9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728475352; x=1729080152;
+        d=1e100.net; s=20230601; t=1728477145; x=1729081945;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d0d0vbIjxKlT5RMhMyYh9iNcFRAx7FDRHnCkb6Nc+Po=;
-        b=ZWATVp1eUNmPmXf5+qIZpIUTO6O8XE4ndgjNBnF1+kwpmSz+lsGUOAbXAPyI9kAx6Y
-         xaHrQGuoBOvu0pzJtaR7QWPBs7cKimusAv6Q9o1hpoKEC8yvZ8/OiTs4dY2EIiinetRj
-         bekuuRM4RVUM7VrF1FAJsoWAC1V74F3WnO1fxswFk6dzR4IkpvXm6Aoz8kOhtv4XNpWi
-         ed5DIxrTGoscNK2hd6y6ZrDnzgFgA1cYfj2wgy7fMYf9LLyJZPT70GYbCr5XgdXnmHZN
-         hnjmIGK+mJ7biJnL+kwQpnBQQANY0SYWrtmTRAj631e+iEOzky0oigsZG1zhF2MkNEus
-         /ANw==
-X-Forwarded-Encrypted: i=1; AJvYcCWL9XDEuZho51HKZSiI1rDbruQ/ahdKCfVVUGS6fim5+NVk1TkN17ksJfC3Fp7+TksnObUgzDva+xkwE5nyaw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP6Qti71XWwH3EZD/cff1DbMpSISmXAVJXq4Efe9/i4YDpGVhl
-	akE3IuLq6fS9UI4uMbVzBPcrRuv4v+iTlx3uzNQ+Me28yNBvZwiQyewCuqHl7Z/xomN7mGu/yQm
-	CeTWHQJEt0Ptoz7pXRq3bgF4dF4cMHewTB4Gj
-X-Google-Smtp-Source: AGHT+IH+QlKgtlwzTqoKPr7pabfTtIKf/Dn6uN0z7IhEKa8GkYkV6bH6FebX2gMi8V7F78F8sBbeluZEzIHLWyDgLaQ=
-X-Received: by 2002:a2e:4a0a:0:b0:2f6:5921:f35b with SMTP id
- 38308e7fff4ca-2fb1878f46fmr12619671fa.27.1728475351720; Wed, 09 Oct 2024
- 05:02:31 -0700 (PDT)
+        bh=qoL22N1zkJY5+zHlWx6b9rySvR2NnQPaN7lfDWm/21o=;
+        b=ZvKVShtHVcH4tiYav07ykdjGTM3yeCpJCLiuhrZTy8U9ck4xVbWLlvb7a7ijQ/3hxE
+         ekPe3ZP6LdNy+xPrICh30FnbYwdsJDcVrY9VY3CVUlHXPJBV1o7AyYX46NFXv+a+v0nl
+         QPV9VcX8pM3jHwOzPU9kKxpN/ObDXw4DzTBCEKbJqLzLgqhEfiu/2ibRk8hS31sfgUz/
+         f2fF7MKmjVnIdAuk3ZS1fCrBYLXykAvOE9i5E4pWrnlCThE8F/c9C6m7FN72mvKzZeky
+         IShRK8MPhPMbDkn2WqPjXWfFMbWzCpAKbMWEVLGcr/0pCl4hhHB4vbYPyHy9HwwJJOWB
+         JICQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXU5AzlMt///j50Mr7fUCTzjtGVSQhb93JHlbASVSEcPtzOmWu4ZVXyPHNGZDWlJ2GUCmPvRGMBgRprbms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvojlBeenSGStVoApZqWv/aR5vnkc3DcmWGNGaP3/1MXq7jjyi
+	SAZH9/cPNubOkgahA0OJOON3AeXfzYVr/SFj2tzQ15spoSe1XnNdXMbeadsFIgBAafbXOrCJ2Cs
+	O1Fsh4GqROe1k55x4xnv1iXc/BJQ=
+X-Google-Smtp-Source: AGHT+IF+xs7+Yd6jeDsyH3nhGnSr+++9BwB2Y4D9T9/6pnlJ1sPHN85IM1Q1zku2QTFGp4eEKu5yffwKFAgNG8V1V2Y=
+X-Received: by 2002:a05:6a00:2314:b0:70d:2289:4c55 with SMTP id
+ d2e1a72fcca58-71e1dbcabd4mr1565577b3a.5.1728477144542; Wed, 09 Oct 2024
+ 05:32:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009102821.2675718-1-masahiroy@kernel.org>
-In-Reply-To: <20241009102821.2675718-1-masahiroy@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 9 Oct 2024 14:02:18 +0200
-Message-ID: <CAH5fLggMUPPbE1nW9PCHhhAXcVTia4TU7ARfJwp_GRNpb-51_Q@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: refactor cc-option-yn, cc-disable-warning,
- rust-option-yn macros
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+In-Reply-To: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Oct 2024 14:32:11 +0200
+Message-ID: <CANiq72m9_DUG67keD+Sa660X08_Sm1MSm9NB2K2iEUme5DpozQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: transmute: Add implementation for FromBytes trait
+To: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Trevor Gross <tmgross@umich.edu>, 
-	linux-kernel@vger.kernel.org
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 9, 2024 at 12:28=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
+On Wed, Oct 9, 2024 at 3:48=E2=80=AFAM Christian dos Santos de Lima
+<christiansantoslima21@gmail.com> wrote:
 >
-> cc-option-yn and cc-disable-warning duplicate the compile command seen
-> a few lines above. These can be defined based on cc-option.
->
-> I also refactored rustc-option-yn in the same way, although there are
-> currently no users of it.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
->
-> This avoids applying similar fixes to rustc-option and rustc-option-yn.
+> +pub unsafe trait FromBytes {
+> +    ///Converts a slice of Bytes into a Reference to Self
+> +    ///
+> +    /// # Examples
+> +    /// ```
+> +    ///    pub unsafe trait FromBytes {
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Apart from what Alice mentions (which is critical, since we are
+looking to get into stable Rust as soon as feasible -- please see
+https://rust-for-linux.com/unstable-features#usage-in-the-kernel),
+please also format the code, documentation and examples appropriately
+(please see other files to see how it is usually done, we mostly
+follow Rust's standard library conventions).
+
+> +        unsafe {
+> +            let slice_ptr =3D slice_of_bytes.as_ptr() as *const Self;
+> +            &*slice_ptr
+> +        }
+
+Please note that we require `// SAFETY` comments too. Missing those is
+already a warning/error (depending on the kernel configuration) in
+rust-next.
+
+Thanks for the patch!
+
+Cheers,
+Miguel
