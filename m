@@ -1,105 +1,127 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CF117BB06
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 07:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EFA186E26
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 07:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728459446; cv=none; b=W+XdAJMVmL+d8emDuhd/Lj0Y6zL1rrKfM3HJ0tOblg50165/F9F5AvHvd1Xg2AD3g5feOQqLdknSp+mA40uaxc36sl2pB7jcwDwR7p8h5A4076cG3yaHt/PYIf7qMc1Wz8n0dV1NlHQEeq0FuL/clVQf3Ss7AFEFlc4ZyksvRVA=
+	t=1728460015; cv=none; b=nnrOnqxa7qIw0yhuvPFg8BU7fFIzjiLvvrEGfLkGdh17ud8UJ/YdSmble46Aj6WoJjVDukLTT1z4iYLNtYFrbze8yVk1JyDbv8oA06j9LIkkAD+0Lbx7ErAve1zb99F4l3xTU7MpfyCGAZSeUWpFK+O3dGllnBRDYBV/uaUonCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728459446; c=relaxed/simple;
-	bh=NRciqDxbOeYLYlKgWsmjwEJ3hvErOI/IWFjMOF/tnBI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iPSP8PLdKUWOC12ukgoQUsFjl863DQMXCcFFvrUOhxUBLqk1HXW/bROXRJmluO+j7ZhOzoX5Wezk5jtYtLbfBGlkCJs0XlWyQOyJtgpGCBEWPpgsvBRWF+q7DQeGRIUjhNJjuMZT8h9Lmu9euoa8UYiaTvJ9bNAwEooyDGYfB8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NjHRUw2t; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NjHRUw2t"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5398e7dda5fso6557486e87.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 00:37:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728459442; x=1729064242; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0XIMu8BtcEAG9k4wP7FAmgstPZbfLFYFnmsGtAA4kmI=;
-        b=NjHRUw2tUGLhIAT2s4+48pKidw3Exj1l0KJGlHl1kgEyXl48qYb6q2+a6iR3fmCQnD
-         xHUEWjmemvM+KkczuBAvigFbzhv5kR11qeMF+nsw6JnRftbDgWciahF4BApE/cHZvYiq
-         6jl8G4Js8LaKOiM22Od4L2c+WnNvi/A0ncPr69yaYUa0FRoopdF+zf00X5/iyZuGOcag
-         CVeXNMZyGeppTK8AVGUNt35uR+mmsdzYdPObqiVKvpqp1vNfBjaKLpzDMKZsiJWLkKo4
-         7sXAzmjts1Dhln39Lw80zDxjnyYh1Uls4FF6XUZDZwRzsgeJCiz+bzipXqN+KET69ID4
-         jzrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728459442; x=1729064242;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0XIMu8BtcEAG9k4wP7FAmgstPZbfLFYFnmsGtAA4kmI=;
-        b=AYDtgNXG7hGtPQId0wWKIYSAHFBK6DJLuPdA8TihfkTxReP+Aw4NYcvsqL0h0sZWY7
-         oRw+R8YTBjbkZC9HGTBCbkgiQZ2Sx3dmMiKFas1ZAD862FSKtQN7inr8FUktn9vd6BSi
-         pIoKoNKKrCTeX6B+1sXRVh6N772suFOvp2kAbHZtIywXNvcm9QAydZGjxr/rnvp5R1XJ
-         NzH6uVw39VEDmYRY7jXT0rl/7eT2Lr8y/tQNmbdKiRXAwZ7AdkGRonj+PUxdd/10copF
-         dmk8fxGmLDONYmdFoYYzYuL95wRhBvFkZxnYmc0uaLXaa4mTudHoRM2lPu0yFH+EE6gY
-         MiRw==
-X-Gm-Message-State: AOJu0Yzy+ubwDmuTyzd8E1dtKyNUGOwcYMHJVXm86DrCmiTavq5QReKy
-	SutJvUjsIq9nHIkUItkEhdZnl5VQuGb6/aov2gYWVhLfTi29+sJ35YbKrgSOOUdduEdFGck5Gh3
-	CIfIKClTunQSlwqLNgq4WKzkW42kjwKRkY2Z7
-X-Google-Smtp-Source: AGHT+IF7AnezuX19GLgnBAVICGfaiqOh8j/T6OcVfA7CP8tJAOZTyYr1JcFc9km7DM4IrlH5UyFW7WayJLDzPjXaqVI=
-X-Received: by 2002:a05:6512:b89:b0:539:a2e0:4e83 with SMTP id
- 2adb3069b0e04-539c496f602mr774669e87.52.1728459442343; Wed, 09 Oct 2024
- 00:37:22 -0700 (PDT)
+	s=arc-20240116; t=1728460015; c=relaxed/simple;
+	bh=OW4uTobRIl4BMsIata2unnyM9AwapXIAOfMJUXgoD9k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ifu617EI33BJkfc0TwcQ3Wgq4NSw5nSPxwqZUaMfsUzjBsO8PdbCFL428NZnN0+7NFEsa34d49rNjeQaVhfjqy1rizIgO08H03MmbYfMWP12kCUd4R05IVfPvjP/bSi+N+pn07KBEsL4PgRnhwCjaiD0k8aoh1PKeWI4ibWEbyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 995451C0002;
+	Wed,  9 Oct 2024 07:46:42 +0000 (UTC)
+Message-ID: <250e1e5d-5110-414f-abbd-fb002e715f32@ghiti.fr>
+Date: Wed, 9 Oct 2024 09:46:42 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009014810.23279-1-christiansantoslima21@gmail.com>
-In-Reply-To: <20241009014810.23279-1-christiansantoslima21@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 9 Oct 2024 09:37:09 +0200
-Message-ID: <CAH5fLgjJTjxo5oMeagUhV-tJoNZnWu3QWXhT4X3SYe42FpUgWA@mail.gmail.com>
-Subject: Re: [PATCH] rust: transmute: Add implementation for FromBytes trait
-To: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] RISC-V: disallow gcc + rust builds
+Content-Language: en-US
+To: Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+ Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+ aliceryhl@google.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
+ justinstitt@google.com, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+References: <20241001-playlist-deceiving-16ece2f440f5@spud>
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20241001-playlist-deceiving-16ece2f440f5@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: alex@ghiti.fr
 
-On Wed, Oct 9, 2024 at 3:48=E2=80=AFAM Christian dos Santos de Lima
-<christiansantoslima21@gmail.com> wrote:
+Hi Conor,
+
+On 01/10/2024 13:28, Conor Dooley wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
 >
-> Add implementation and documentation for FromBytes trait.
+> During the discussion before supporting rust on riscv, it was decided
+> not to support gcc yet, due to differences in extension handling
+> compared to llvm (only the version of libclang matching the c compiler
+> is supported). Recently Jason Montleon reported [1] that building with
+> gcc caused build issues, due to unsupported arguments being passed to
+> libclang. After some discussion between myself and Miguel
+
+
+I have just added "[2]" here as it seemed to be missing.
+
+Thanks,
+
+Alex
+
+
+> , it is better
+> to disable gcc + rust builds to match the original intent, and
+> subsequently support it when an appropriate set of extensions can be
+> deduced from the version of libclang.
 >
-> Add new feature block in order to allow using ToBytes
-> and bound to from_bytes_mut function.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1119
-> Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail.=
-com>
+> Closes: https://lore.kernel.org/all/20240917000848.720765-2-jmontleo@redhat.com/ [1]
+> Link: https://lore.kernel.org/all/20240926-battering-revolt-6c6a7827413e@spud/ [2]
+> Fixes: 70a57b247251a ("RISC-V: enable building 64-bit kernels with rust support")
+> Reported-by: Jason Montleon <jmontleo@redhat.com>
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 > ---
->  rust/kernel/lib.rs       |   2 +
->  rust/kernel/transmute.rs | 302 +++++++++++++++++++++++++++++++++++++--
->  2 files changed, 290 insertions(+), 14 deletions(-)
 >
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index dc37aef6a008..5215f5744e12 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -18,6 +18,8 @@
->  #![feature(lint_reasons)]
->  #![feature(new_uninit)]
->  #![feature(unsize)]
-> +#![feature(portable_simd)]
-> +#![feature(trivial_bounds)]
-
-New unstable features must come with a good justification. Why are you
-adding these? Why can't we avoid adding them? This information needs
-to be in the commit message.
-
-Alice
+> Palmer, this is yours to take.
+>
+> CC: jmontleo@redhat.com
+> CC: ojeda@kernel.org
+> CC: alex.gaynor@gmail.com
+> CC: boqun.feng@gmail.com
+> CC: gary@garyguo.net
+> CC: bjorn3_gh@protonmail.com
+> CC: benno.lossin@proton.me
+> CC: a.hindborg@kernel.org
+> CC: aliceryhl@google.com
+> CC: paul.walmsley@sifive.com
+> CC: palmer@dabbelt.com
+> CC: nathan@kernel.org
+> CC: ndesaulniers@google.com
+> CC: morbo@google.com
+> CC: justinstitt@google.com
+> CC: rust-for-linux@vger.kernel.org
+> CC: linux-riscv@lists.infradead.org
+> CC: llvm@lists.linux.dev
+> ---
+>   Documentation/rust/arch-support.rst | 2 +-
+>   arch/riscv/Kconfig                  | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+> index 750ff371570a0..54be7ddf3e57a 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -17,7 +17,7 @@ Architecture   Level of support  Constraints
+>   =============  ================  ==============================================
+>   ``arm64``      Maintained        Little Endian only.
+>   ``loongarch``  Maintained        \-
+> -``riscv``      Maintained        ``riscv64`` only.
+> +``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
+>   ``um``         Maintained        \-
+>   ``x86``        Maintained        ``x86_64`` only.
+>   =============  ================  ==============================================
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 22dc5ea4196ce..76843584960c2 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -177,7 +177,7 @@ config RISCV
+>   	select HAVE_REGS_AND_STACK_ACCESS_API
+>   	select HAVE_RETHOOK if !XIP_KERNEL
+>   	select HAVE_RSEQ
+> -	select HAVE_RUST if RUSTC_SUPPORTS_RISCV
+> +	select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
+>   	select HAVE_SAMPLE_FTRACE_DIRECT
+>   	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
+>   	select HAVE_STACKPROTECTOR
