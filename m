@@ -1,491 +1,134 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D7B180A76;
-	Wed,  9 Oct 2024 10:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747CA18FC83
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Oct 2024 11:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728471514; cv=none; b=GFQEma9c5/P2jlaQKNhtaeQA3b2t9OSxlWeqoYEDTG2DmOKsJsUtKYJpfedSvG1FTdE/3HXVLZX642s21Q+8WcXiiJ9pzI+02LvRQ+brnWz9Tb2FDqDwrTro1w8oThuFkT8/gK/pfA/AU0PbRCSdPiXeI1kkX6Yb5FWEo04X3I4=
+	t=1728473575; cv=none; b=haVkKexbwdBaLFqMHGap//6KKzKRiMag6nRhJ/TORTMloTgg1Qz0aVK2DlYvKUhvl9LobzYlZaklL599UU92GQcbm0nSG88HaEvGjY9rk7JqGcxQve1FVtxHzG5U3mgIQwDP913OXqEQr8Ty9spComoAQ34vmRznUknZJ86rv94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728471514; c=relaxed/simple;
-	bh=PArS4hlJp5vABoJZsm8LNrE+8f6yfqryjBSUoHpBSBw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETuhnkiFzLRsoETUavvH6RMQSJMgFUtbfV4dc/8Xl8CJ47NyrxgV33AjLysy+KieOMiOxbpONxUwPwpPplnMSk5FZfLv9lqTQUXH2hmGmdCmqq0GzWoENq/PiZcmRMed07Lt1aLnjsCPn0wm8lQgD20Unbe7FjkoUqkLdtFKk6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=lcHD6w76; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1728473575; c=relaxed/simple;
+	bh=u2nkpeNDCCtr+RDR1GIBlfqM1CcT4OISAJQIvFmPPH8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MR28FoAmYHRgehZvUnc4/u6rMtWQ4c+VhOa+PsLjF+ngbXNtiDaduvboBdJgNrIz3t8LBmcwtDomwIJmAK1t/Gssw+QvMNAzQjog1JfMwNQr8TNiR0ttPty/ufPX/NnOBcS8Hwub3YihNqAbpr2OeMPYoY5a3f4W7cABBIiGvWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DCJIag5X; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="lcHD6w76"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1728471502; bh=c6Ab05vHf0g89gSXiF5Z/OuQ2xCSXFcvbnfFpVG9ZLM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lcHD6w76ZGzGKZGTeJ67kJr4ioJzHjR0M8DqCyqZ5aKmDaq9eMGPa1ykLruJ/CcAp
-	 aSVhBupdZy5Xm5ioZJS/8hC3cZm4KVqWR9ryC5VC4tdQ8kx5NbKFaQmhMJR1aLdcw8
-	 lhssdcyWFmQpT2Afx+Bc5rmrk+bQ9AZrJQb/geQQ=
-To: Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>,
-	linux-leds@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Fiona Behrens <me@kloenk.dev>
-Subject: [RFC PATCH 1/2] rust: LED abstraction
-Date: Wed,  9 Oct 2024 12:57:58 +0200
-Message-ID: <20241009105759.579579-2-me@kloenk.dev>
-In-Reply-To: <20241009105759.579579-1-me@kloenk.dev>
-References: <20241009105759.579579-1-me@kloenk.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DCJIag5X"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d32dfbd78so1263270f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Oct 2024 04:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728473572; x=1729078372; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lHfdMVCdMqw7XiUFeDg6OwkwsDzXxFWVFFZsqEM0H+A=;
+        b=DCJIag5XxPbi9OC37ORGwovatj+Tu99IFvtSNDWS8+2jYlVlg20cTWWxpVbAHhh/os
+         MLDUXsmiaIi5aPSJsQQwFoAxj0eg5h7z46eWpVjn5JK+0uOaXwdMo7VhqL4KJJ1h1ibE
+         1EdfjOeQb+FKVVrMOPX7ws7n4SPc7FQVEgUbBdbnQm7S5I62ybmNvsw3xY6kfh4Znp78
+         la+MeVEfi170wcJAqxbTngwvRcv2XAAsrgTKjhTbj62qHMzIihppGExRYYfwJBfCKDvU
+         NdEBiv0zYpQfDPMz5MwNDrGqs+tjEecDPEo2NTS8P8zIF6UTXBoW/fD0TOG814DRCtid
+         UjjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728473572; x=1729078372;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lHfdMVCdMqw7XiUFeDg6OwkwsDzXxFWVFFZsqEM0H+A=;
+        b=rqqIbq/fq7vgEvDQlS1XnwK84yVnKNN7f3d7mgWV17qN0yDSUg9GoVWpZWUPPth//w
+         WCizutPmuZ4SJ1D3juis689UihNzkPn8bYNbKtaZN+E7/wvOwy0AjFgH957KfU8k8eCR
+         X/oylz3V4u39HREij7WEg2/eT6tQhhxyNeiEfFK8Y4zlb9jNtxsnnNlLoY2ChrJ2tlbx
+         IL4b00Tvpr9Ha9St5+TvEILLgfLH0Ye6rSSkNrfpllLuv2PuUSC4B8Dn54k5KbDf5T3w
+         DwOQURkjMd3VX4VNor9DewjxSDptNCY3rcaqfiKyid8DWw7mVB7YN2fNV29Gq9swcrHw
+         5YSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7orcX735hFQL9I9ATLCIALxb7GIAG60zw317wKY3tI9/ccDYyD340kveEnmUuHgBQeMyvGRTQSZtc5SHzmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7zeklLSTQ/N/K8wCT81aP1cTYySehfd+TBkSOy2UtqoqdV6Q3
+	tHhFwjsPa779sewnf+W6Wg/J0ADTDyg8ioMw0yJubs1bonHd2hjYv1kE4K8rCYfyt628HV02Fc9
+	6y+wbjuxJ0bA99WbrXCrNjaftrLE3qn4w+a2v
+X-Google-Smtp-Source: AGHT+IF6zuOiLd59PhgXMw7DIzWOXXJgSyWEMApRca5NNJBgSiWPw2nrOVmoTfB+YfDfuvrwx/fLLRPvbmafo2m8vg4=
+X-Received: by 2002:adf:fc88:0:b0:37d:374f:b0a7 with SMTP id
+ ffacd0b85a97d-37d3aa4613dmr1323925f8f.34.1728473571568; Wed, 09 Oct 2024
+ 04:32:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241008-rustc-option-bootstrap-v2-1-e6e155b8f9f3@google.com>
+ <CAK7LNAQ2EY8Uf1APvhZT9XpZ6=8FhAitqePLiCP1S6mBgnXSKQ@mail.gmail.com>
+ <CAH5fLgiZ5awKAm-CHc8qgsQUYtNMWdSEeKC2wuDFh2NUhVmsAA@mail.gmail.com> <CAK7LNAS_22jQzsWDswChAMaE3GhT-1eqE9ngj61NeFz40SNxGw@mail.gmail.com>
+In-Reply-To: <CAK7LNAS_22jQzsWDswChAMaE3GhT-1eqE9ngj61NeFz40SNxGw@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 9 Oct 2024 13:32:38 +0200
+Message-ID: <CAH5fLgh9t7=1sTwWWJHLtDxaaZYZAjLC8h_jVvC809hpqJz07g@mail.gmail.com>
+Subject: Re: [PATCH v2] Kbuild: fix issues with rustc-option
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add abstractions for a simple LED, supporting Single color LED and
-hardware accelerated blinking.
+On Wed, Oct 9, 2024 at 12:32=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> On Wed, Oct 9, 2024 at 4:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > On Tue, Oct 8, 2024 at 9:00=E2=80=AFPM Masahiro Yamada <masahiroy@kerne=
+l.org> wrote:
+> > >
+> > > On Wed, Oct 9, 2024 at 2:32=E2=80=AFAM Alice Ryhl <aliceryhl@google.c=
+om> wrote:
+> > > > diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+> > > > index 057305eae85c..08d5b7177ea8 100644
+> > > > --- a/scripts/Makefile.compiler
+> > > > +++ b/scripts/Makefile.compiler
+> > > > @@ -21,6 +21,7 @@ TMPOUT =3D $(if $(KBUILD_EXTMOD),$(firstword $(KB=
+UILD_EXTMOD))/).tmp_$$$$
+> > > >  # automatically cleaned up.
+> > > >  try-run =3D $(shell set -e;              \
+> > > >         TMP=3D$(TMPOUT)/tmp;              \
+> > > > +       export RUSTC_BOOTSTRAP=3D1;       \
+> > >
+> > >
+> > > try-run is not Rust-specific.
+> > >
+> > > Is there any reason why you did not add it
+> > > to __rustc-option?
+> > >
+> > >
+> > > __rustc-option =3D $(call try-run,\
+> > >        RUSTC_BOOTSTRAP=3D1 $(1) $(2) $(3) --crate-type=3Drlib
+> > > $(srctree)/rust/probe.rs --out-dir=3D$$TMP,$(3),$(4))
+> >
+> > I had an explanation for this in the commit message, but it looks like
+> > it got lost when I rewrote it for v2. Anyway, the reason is that I'd
+> > have to modify both __rustc-option and rustc-option-yn to do that, and
+> > putting it here seemed more future-proof against making the same
+> > mistake in any rustc-* commands added in the future.
+>
+>
+> One solution is to delete rustc-option-yn since there are no users of it.
+>
+> Another solution is to refactor the code.
+>
+> Either way, there is no good reason for code duplication.
+>
+>
+> If you keep rustc-option-yn, you can rebased v3 on top of this patch:
+> https://lore.kernel.org/lkml/20241009102821.2675718-1-masahiroy@kernel.or=
+g/T/#u
 
-This is implemented using a pinned Led struct which holds driver data
-and the C led_classdev struct. The driver data then implements a
-vtable which currently provides `brightness_set`, `brightness_get` and
-`blink_set`. This LED is then registered with the LED core and
-unregistered when it is dropped.
+I'll rebase on top of that. If we choose to delete rustc-option-yn
+then I think we should first merge the refactor and then delete it in
+a follow-up. That way, when someone does need it, they will find the
+refactored implementation in the git history.
 
-Signed-off-by: Fiona Behrens <me@kloenk.dev>
----
- rust/kernel/leds.rs | 399 ++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs  |   2 +
- 2 files changed, 401 insertions(+)
- create mode 100644 rust/kernel/leds.rs
-
-diff --git a/rust/kernel/leds.rs b/rust/kernel/leds.rs
-new file mode 100644
-index 000000000000..5348c1af5b31
---- /dev/null
-+++ b/rust/kernel/leds.rs
-@@ -0,0 +1,399 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! LED subsystem abstractions.
-+//!
-+//! C header: [`includes/linux/leds.h`](srctree/include/linux/leds.h)
-+
-+use core::ffi::c_ulong;
-+use core::num::NonZeroU8;
-+use core::ptr;
-+use core::time::Duration;
-+
-+use crate::device::Device;
-+use crate::{error::from_result, init::PinInit, prelude::*, types::Opaque};
-+
-+/// Color of an LED.
-+#[derive(Copy, Clone)]
-+pub enum Color {
-+    /// White
-+    White,
-+    /// Red
-+    Red,
-+    /// Green
-+    Green,
-+    /// Blue
-+    Blue,
-+    /// Amber
-+    Amber,
-+    /// Violet
-+    Violet,
-+    /// Yellow
-+    Yellow,
-+    /// Purple
-+    Purple,
-+    /// Orange
-+    Orange,
-+    /// Pink
-+    Pink,
-+    /// Cyan
-+    Cyan,
-+    /// Lime
-+    Lime,
-+
-+    /// Infrared
-+    IR,
-+    /// Multicolor LEDs
-+    Multi,
-+    /// Multicolor LEDs that can do arbitrary color,
-+    /// so this would include `RGBW` and similar
-+    RGB,
-+}
-+
-+impl Color {
-+    /// Get String representation of the Color.
-+    pub fn name_cstr(&self) -> Option<&'static CStr> {
-+        // SAFETY: C function call, enum is valid argument.
-+        let name = unsafe { bindings::led_get_color_name(u32::from(self) as u8) };
-+        if name.is_null() {
-+            return None;
-+        }
-+        // SAFETY: pointer from above, valid for static lifetime.
-+        Some(unsafe { CStr::from_char_ptr(name) })
-+    }
-+
-+    /// Get String representation of the Color.
-+    #[inline]
-+    pub fn name(&self) -> Option<&'static str> {
-+        // SAFETY: name from C name array which is valid UTF-8.
-+        self.name_cstr()
-+            .map(|name| unsafe { name.as_str_unchecked() })
-+    }
-+}
-+
-+impl core::fmt::Display for Color {
-+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-+        f.write_str(self.name().unwrap_or("Invalid color"))
-+    }
-+}
-+
-+impl From<Color> for u32 {
-+    fn from(color: Color) -> Self {
-+        match color {
-+            Color::White => bindings::LED_COLOR_ID_WHITE,
-+            Color::Red => bindings::LED_COLOR_ID_RED,
-+            Color::Green => bindings::LED_COLOR_ID_GREEN,
-+            Color::Blue => bindings::LED_COLOR_ID_BLUE,
-+            Color::Amber => bindings::LED_COLOR_ID_AMBER,
-+            Color::Violet => bindings::LED_COLOR_ID_VIOLET,
-+            Color::Yellow => bindings::LED_COLOR_ID_YELLOW,
-+            Color::Purple => bindings::LED_COLOR_ID_PURPLE,
-+            Color::Orange => bindings::LED_COLOR_ID_ORANGE,
-+            Color::Pink => bindings::LED_COLOR_ID_PINK,
-+            Color::Cyan => bindings::LED_COLOR_ID_CYAN,
-+            Color::Lime => bindings::LED_COLOR_ID_LIME,
-+            Color::IR => bindings::LED_COLOR_ID_IR,
-+            Color::Multi => bindings::LED_COLOR_ID_MULTI,
-+            Color::RGB => bindings::LED_COLOR_ID_RGB,
-+        }
-+    }
-+}
-+
-+impl From<&Color> for u32 {
-+    fn from(color: &Color) -> Self {
-+        (*color).into()
-+    }
-+}
-+
-+impl TryFrom<u32> for Color {
-+    type Error = Error;
-+
-+    fn try_from(value: u32) -> Result<Self, Self::Error> {
-+        Ok(match value {
-+            bindings::LED_COLOR_ID_WHITE => Color::White,
-+            bindings::LED_COLOR_ID_RED => Color::Red,
-+            bindings::LED_COLOR_ID_GREEN => Color::Green,
-+            bindings::LED_COLOR_ID_BLUE => Color::Blue,
-+            bindings::LED_COLOR_ID_AMBER => Color::Amber,
-+            bindings::LED_COLOR_ID_VIOLET => Color::Violet,
-+            bindings::LED_COLOR_ID_YELLOW => Color::Yellow,
-+            bindings::LED_COLOR_ID_PURPLE => Color::Purple,
-+            bindings::LED_COLOR_ID_ORANGE => Color::Orange,
-+            bindings::LED_COLOR_ID_PINK => Color::Pink,
-+            bindings::LED_COLOR_ID_CYAN => Color::Cyan,
-+            bindings::LED_COLOR_ID_LIME => Color::Lime,
-+            bindings::LED_COLOR_ID_IR => Color::IR,
-+            bindings::LED_COLOR_ID_MULTI => Color::Multi,
-+            bindings::LED_COLOR_ID_RGB => Color::RGB,
-+            _ => return Err(EINVAL),
-+        })
-+    }
-+}
-+
-+/// Config for the LED.
-+///
-+/// Some fields are optional and only used depending on how the led is registered.
-+pub struct LedConfig {
-+    /// Color of the LED.
-+    pub color: Color,
-+}
-+
-+/// A Led backed by a C `struct led_classdev`, additionally offering
-+/// driver data storage.
-+///
-+/// The LED is unregistered once this LED struct is dropped.
-+// TODO: add devm register variant
-+#[pin_data(PinnedDrop)]
-+pub struct Led<T> {
-+    #[pin]
-+    led: Opaque<bindings::led_classdev>,
-+    /// Driver private data
-+    pub data: T,
-+}
-+
-+impl<T> Led<T> {
-+    /// Return a raw reference to `Self` from a raw `struct led_classdev` C pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must point to a [`bindings::led_classdev`] field in a struct of type `Self`.
-+    unsafe fn led_container_of(ptr: *mut bindings::led_classdev) -> *mut Self {
-+        let ptr = ptr.cast::<Opaque<bindings::led_classdev>>();
-+
-+        // SAFETY: By the safety requirement of this function ptr is embedded in self.
-+        unsafe { crate::container_of!(ptr, Self, led).cast_mut() }
-+    }
-+}
-+
-+impl<'a, T> Led<T>
-+where
-+    T: Operations + 'a,
-+{
-+    /// Register a new LED with a predefine name.
-+    pub fn register_with_name(
-+        name: &'a CStr,
-+        device: Option<&'a Device>,
-+        config: &'a LedConfig,
-+        data: T,
-+    ) -> impl PinInit<Self, Error> + 'a {
-+        try_pin_init!( Self {
-+            led <- Opaque::try_ffi_init(move |place: *mut bindings::led_classdev| {
-+            // SAFETY: `place` is a pointer to a live allocation, so erasing is valid.
-+            unsafe { place.write_bytes(0, 1) };
-+
-+            // SAFETY: `place` is a pointer to a live allocation of `bindings::led_classdev`.
-+            unsafe { Self::build_with_name(place, name) };
-+
-+            // SAFETY: `place` is a pointer to a live allocation of `bindings::led_classdev`.
-+            unsafe { Self::build_config(place, config) };
-+
-+            // SAFETY: `place` is a pointer to a live allocation of `bindings::led_classdev`.
-+            unsafe { Self::build_vtable(place) };
-+
-+        let dev = device.map(|dev| dev.as_raw()).unwrap_or(ptr::null_mut());
-+            // SAFETY: `place` is a pointer to a live allocation of `bindings::led_classdev`.
-+        crate::error::to_result(unsafe {
-+            bindings::led_classdev_register_ext(dev, place, ptr::null_mut())
-+        })
-+            }),
-+            data: data,
-+        })
-+    }
-+
-+    /// Add nameto the led_classdev.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` has to be valid.
-+    unsafe fn build_with_name(ptr: *mut bindings::led_classdev, name: &'a CStr) {
-+        // SAFETY: `ptr` is pointing to a live allocation, so the deref is safe.
-+        let name_ptr = unsafe { ptr::addr_of_mut!((*ptr).name) };
-+        // SAFETY: `name_ptr` points to a valid allocation and we have exclusive access.
-+        unsafe { ptr::write(name_ptr, name.as_char_ptr()) };
-+    }
-+
-+    /// Add config to led_classdev.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` has to be valid.
-+    unsafe fn build_config(ptr: *mut bindings::led_classdev, config: &'a LedConfig) {
-+        // SAFETY: `ptr` is pointing to a live allocation, so the deref is safe.
-+        let color_ptr = unsafe { ptr::addr_of_mut!((*ptr).color) };
-+        // SAFETY: `color_ptr` points to a valid allocation and we have exclusive access.
-+        unsafe { ptr::write(color_ptr, config.color.into()) };
-+    }
-+}
-+
-+impl<T> Led<T>
-+where
-+    T: Operations,
-+{
-+    /// Add the Operations vtable to the `led_classdev` struct.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` has to be valid.
-+    unsafe fn build_vtable(ptr: *mut bindings::led_classdev) {
-+        // SAFETY: `ptr` is pointing to a live allocation, so the deref is safe.
-+        let max_brightness = unsafe { ptr::addr_of_mut!((*ptr).max_brightness) };
-+        // SAFETY: `max_brightness` points to a valid allocation and we have exclusive access.
-+        unsafe { ptr::write(max_brightness, T::MAX_BRIGHTNESS as _) };
-+
-+        // SAFETY: `ptr` is pointing to a live allocation, so the deref is safe.
-+        let set_fn: *mut Option<_> = unsafe { ptr::addr_of_mut!((*ptr).brightness_set) };
-+        // SAFETY: `set_fn` points to a valid allocation and we have exclusive access.
-+        unsafe { ptr::write(set_fn, Some(brightness_set::<T>)) }
-+
-+        if T::HAS_BRIGHTNESS_GET {
-+            // SAFETY: `ptr` is pointing to a live allocation, so the deref is safe.
-+            let get_fn: *mut Option<_> = unsafe { ptr::addr_of_mut!((*ptr).brightness_get) };
-+            // SAFETY: `set_fn` points to a valid allocation and we have exclusive access.
-+            unsafe { ptr::write(get_fn, Some(brightness_get::<T>)) }
-+        }
-+
-+        if T::HAS_BLINK_SET {
-+            // SAFETY: `ptr` is pointing to a live allocation, so the deref is safe.
-+            let blink_fn: *mut Option<_> = unsafe { ptr::addr_of_mut!((*ptr).blink_set) };
-+            // SAFETY: `set_fn` points to a valid allocation and we have exclusive access.
-+            unsafe { ptr::write(blink_fn, Some(blink_set::<T>)) }
-+        }
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T> PinnedDrop for Led<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAEFTY: led is pointing to a live allocation
-+        unsafe { bindings::led_classdev_unregister(self.led.get()) }
-+    }
-+}
-+
-+// SAFETY: `struct led_classdev` holds a mutex.
-+unsafe impl<T: Send> Send for Led<T> {}
-+// SAFETY: `struct led_classdev` holds a mutex.
-+unsafe impl<T: Sync> Sync for Led<T> {}
-+
-+/// LED brightness.
-+#[derive(Debug, Copy, Clone)]
-+pub enum Brightness {
-+    /// LED off.
-+    Off,
-+    /// Led set to the given value.
-+    On(NonZeroU8),
-+}
-+
-+impl Brightness {
-+    /// Half LED brightness
-+    // SAFETY: constant value non zero
-+    pub const HALF: Self = Self::On(unsafe { NonZeroU8::new_unchecked(127) });
-+    /// Full LED brightness.
-+    pub const FULL: Self = Self::On(NonZeroU8::MAX);
-+
-+    /// Convert C brightness value to Rust brightness enum
-+    fn from_c_enum(brightness: bindings::led_brightness) -> Self {
-+        u8::try_from(brightness)
-+            .map(NonZeroU8::new)
-+            .map(|brightness| brightness.map(Self::On).unwrap_or(Self::Off))
-+            .inspect_err(|_| pr_warn!("Brightness out of u8 range\n"))
-+            .unwrap_or(Self::FULL)
-+    }
-+
-+    /// Convert rust brightness enum to C value
-+    fn as_c_enum(&self) -> bindings::led_brightness {
-+        u8::from(self) as bindings::led_brightness
-+    }
-+}
-+
-+impl From<&Brightness> for u8 {
-+    fn from(brightness: &Brightness) -> Self {
-+        match brightness {
-+            Brightness::Off => 0,
-+            Brightness::On(v) => v.get(),
-+        }
-+    }
-+}
-+
-+/// Led operations vtable.
-+// TODO: add blocking variant (either via const generic or second trait)
-+#[macros::vtable]
-+pub trait Operations: Sized {
-+    /// The maximum brightnes this led supports.
-+    const MAX_BRIGHTNESS: u8;
-+
-+    /// Set LED brightness level.
-+    /// This functions must not sleep.
-+    fn brightness_set(this: &mut Led<Self>, brightness: Brightness);
-+
-+    /// Get the LED brightness level.
-+    fn brightness_get(_this: &mut Led<Self>) -> Brightness {
-+        crate::build_error(crate::error::VTABLE_DEFAULT_ERROR)
-+    }
-+
-+    /// Activae hardware accelerated blink, delays are in milliseconds
-+    fn blink_set(
-+        _this: &mut Led<Self>,
-+        _delay_on: Duration,
-+        _delay_off: Duration,
-+    ) -> Result<(Duration, Duration)> {
-+        crate::build_error(crate::error::VTABLE_DEFAULT_ERROR)
-+    }
-+}
-+
-+unsafe extern "C" fn brightness_set<T>(
-+    led_cdev: *mut bindings::led_classdev,
-+    brightness: bindings::led_brightness,
-+) where
-+    T: Operations,
-+{
-+    // SAFETY: By the safety requirement of this function `led_cdev` is embedded inside a `Led<T>`
-+    // struct.
-+    let led = unsafe { &mut *(Led::<T>::led_container_of(led_cdev.cast())) };
-+    let brightness = Brightness::from_c_enum(brightness);
-+    T::brightness_set(led, brightness);
-+}
-+
-+unsafe extern "C" fn brightness_get<T>(
-+    led_cdev: *mut bindings::led_classdev,
-+) -> bindings::led_brightness
-+where
-+    T: Operations,
-+{
-+    // SAFETY: By the safety requirement of this function `led_cdev` is embedded inside a `Led<T>`
-+    // struct.
-+    let led = unsafe { &mut *(Led::<T>::led_container_of(led_cdev.cast())) };
-+    T::brightness_get(led).as_c_enum()
-+}
-+
-+unsafe extern "C" fn blink_set<T>(
-+    led_cdev: *mut bindings::led_classdev,
-+    delay_on: *mut c_ulong,
-+    delay_off: *mut c_ulong,
-+) -> i32
-+where
-+    T: Operations,
-+{
-+    from_result(|| {
-+        // SAFETY: By the safety requirement of this function `led_cdev` is embedded inside a
-+        // `Led<T>` struct.
-+        let led = unsafe { &mut *(Led::<T>::led_container_of(led_cdev.cast())) };
-+
-+        // SAFETY: By the safety requirement of this function `delay_on` is pointing to a valid
-+        // `c_uint`
-+        let on = Duration::from_millis(unsafe { *delay_on } as u64);
-+        // SAFETY: By the safety requirement of this function `delay_off` is pointing to a valid
-+        // `c_uint`
-+        let off = Duration::from_millis(unsafe { *delay_off } as u64);
-+
-+        let (on, off) = T::blink_set(led, on, off)?;
-+
-+        // writing back return values
-+        // SAFETY: By the safety requirement of this function `delay_on` is pointing to a valid
-+        // `c_uint`
-+        unsafe { ptr::write(delay_on, on.as_millis() as c_ulong) };
-+        // SAFETY: By the safety requirement of this function `delay_off` is pointing to a valid
-+        // `c_uint`
-+        unsafe { ptr::write(delay_off, off.as_millis() as c_ulong) };
-+
-+        Ok(0)
-+    })
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b5f4b3ce6b48..8df5f1cdf426 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -38,6 +38,8 @@
- pub mod ioctl;
- #[cfg(CONFIG_KUNIT)]
- pub mod kunit;
-+#[cfg(CONFIG_NEW_LEDS)]
-+pub mod leds;
- pub mod list;
- #[cfg(CONFIG_NET)]
- pub mod net;
--- 
-2.46.0
-
+Alice
