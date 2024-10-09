@@ -1,120 +1,106 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2444A189B98;
-	Wed,  9 Oct 2024 13:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C3C195390;
+	Wed,  9 Oct 2024 13:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728479927; cv=none; b=cfoLGHYhh4ywQ7oSdd0qtjJEknHCQ74LYUHLOZa+9wqixETPgeEJ67sHOHcL6h2GFzgqLcQzzG9a8LgWpl8nGlTa+dchvimq56V0WNcv+aeFwkOvipybLCgjM0ltpL0ebW/8kUApLiajjr8MQwOSftJTCJJwT1V2I1/hfn4tEqM=
+	t=1728480556; cv=none; b=O1Yp+LjX1WaU/0oMeRHYN02DcC7Axq5FLTYHN+15onXWmsNYQuZGlfk+Byp2hH6PO89qg+oZ1PQ2U4XiEJbPw3BFoOBYPvnHf0kzpewKE1rlBjK1s+FoFgP5235zpqsa/umq/GKx3Vc+mSH94TX20zwQw8oIBJNENIIyodkgbEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728479927; c=relaxed/simple;
-	bh=gf4uinudsi3EhhYPe557c3TVX78vkpj0/JnAktTLxWg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K2Z3HMES79MF35Vh4u9txFEuIk9CP3HCW7HINutCy6c3x44Zo1F0i4E1LLjzxkJP1GOq67g9DYFIvxaeXqetBDfrSshjkYgu9wxajvbaFbtGe1KKuzcAjzoLf/xyhNcnfhrDdLF6rhocM8orz5N/p0QFSbfXIWVKtIj2q/5RRD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYQ8V9tv; arc=none smtp.client-ip=209.85.208.170
+	s=arc-20240116; t=1728480556; c=relaxed/simple;
+	bh=1k5Z6P4xLrJ1uUuXsTql97RdplxvApmoHIaD0t5c50o=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=W+J8V68yHZlnWNssVL5BrCF4M+hglCxNdGNi4to2uxiwOog0X3vdUpHg76vceup+M7vef1EFyqkYtjKdv09FWsRa0AyLcQXXnSCcxV6HbWAfkqyuXUZJi5xVUlB8r4JFyMdFlPKPK0hSjQ/6eP0dURYbRuQykFTLQlz51lf+oq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UQFVHPT4; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYQ8V9tv"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fad100dd9fso99989281fa.3;
-        Wed, 09 Oct 2024 06:18:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UQFVHPT4"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e0cd1f3b6so2172347b3a.0;
+        Wed, 09 Oct 2024 06:29:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728479924; x=1729084724; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gf4uinudsi3EhhYPe557c3TVX78vkpj0/JnAktTLxWg=;
-        b=ZYQ8V9tvUb5vHif/56XLSZepDvW6XCLxp+GqEiTqY2tey2WtlMHLv5MAJcXprFJjYv
-         I97wexE4eHqPTCpV5/O0ZpTp9x//0X3JHLkiIZ0HtXpWLiMvpucMxarsLNIh7vwjruNu
-         rWif4mRUlwTMH0iZiBtZLFD7rydWlFlpB1sr1ThmxvkGyfO085uJnIE9DnnRBt1pyjpi
-         H0YwBKBj4JY8B8CsOxNBWqQUnTb2gHNuuruvYkGqPOYek0rF3YV+SoxbJGbSEBvCZTmk
-         cKhr4GmsgF10k4PYPvfJNs2R6mCu6SoLcw52pEYhpBQ7rjVZAs8N8jX60C53G1AMYqUT
-         MPrg==
+        d=gmail.com; s=20230601; t=1728480554; x=1729085354; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+BT2pvzVWlUY5HlQGpJ61u66kO+PlnsR6y06HdfcaLM=;
+        b=UQFVHPT4QkgXbUrTCrlcxgL2cSFpGivBH6oL0KdY1nx9ITIzK9+Nx0aW/hvWkZw9v/
+         OmUM8Efgr2K8eSUpAZVJPL3qlNoKsQ7c/MkdjwEa5lmwJV8uw3mQBXbvR3wOtmz7yPwk
+         6J6BHrYToSvfQg2+S5H/M17EcVdq8MbnyOD47/DHRXFyk1OZ9nxRP1wiKGglLo346IhC
+         W4KkFtWbs/ldOVDWbcR6FRHJ4qBXY6SPj8fGujqsDtkgvylXp+Da9UdVkohYJWeVbIqC
+         aR4givbwiVODDmtnR2THNdGvbopFCmFk6d5XwbA+vul3uHAShqcYdAPQI6YrigChvBad
+         YmHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728479924; x=1729084724;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gf4uinudsi3EhhYPe557c3TVX78vkpj0/JnAktTLxWg=;
-        b=KJUA6d9KjqvpoylzSywVx5qAOg9nfB+1mPmcEKiheVjUaeOlQ/Xjjk+y8hgG5nSjM2
-         CNGATR0G2iwZh47FdMpTcqZL2O0jdn6u5Y04EnmC0v2XeQ32WG0UsSN3tOJ4/0iPE5gU
-         OEI/EJQi+Yjd+NhhxuBYz9qkgJ5R4lDO//qrszvqDkmjhSmV4OAuW19nGXDPpkzqvSuh
-         1qe60J3sTWYzIXkTxqklQiMV96wpbTgAkYcDt6WaPvyW06QstlUILmD5MCxX7WaotUey
-         bXLwc4zdeYyAxEq2fZ0ZLwkfzaVO6fbf4qXAugHp9hkuUbOIVPCdFLLw1TH9bvampCc3
-         MXCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSdD8Gp43/eKO9d3+8kbO5Nd9H19N1rLz6cFSxXR/nruCGyb0TU/sazneoIerMMn5S+VyLdH/NSpaTZxnj@vger.kernel.org, AJvYcCX5qETc0DKUEh5ZOwynld2X0tBiHWt5NKVBUvK7f4GwIkwMGbpmMNSeN6FnCjXrGhcbgSOaMCEcrYOs56c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8w4K+vvDXqtQ8fu2NOY9jt3Hrm+cEcrX+cTd9B4/QCK+X4fRm
-	6bVWn3ATO5PMhUy/IoMngnjEqTxG0FOnf+gaCkDrwyd4vY7CYgPASB5a1DWrfpQtsonMVJuUees
-	BEKXXrkmvhBB+/zYUfrW8vzVu+P4=
-X-Google-Smtp-Source: AGHT+IFyLliKwHPJ9zxnU2SNYwwOW51gKG7j4dWAjY9vwpTFifZsh5HvI2n8XCOM847rNz2nbPQsWUtjJmU1Tyd7FV0=
-X-Received: by 2002:a05:651c:2110:b0:2fa:d75b:2ef5 with SMTP id
- 38308e7fff4ca-2fb187c9afbmr23773891fa.32.1728479924193; Wed, 09 Oct 2024
- 06:18:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728480554; x=1729085354;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+BT2pvzVWlUY5HlQGpJ61u66kO+PlnsR6y06HdfcaLM=;
+        b=BmfShfQJbnrdPVjIQjqVlcTofXcJKj3W9zPXwdu3cb7a9ypAf30f4aquiDcvtHeWDG
+         3sY8QVWZtO8PdJYVBgtTYPas0JrE8hI5j2HRtHYRogGgkBo7WbAuwxkOtx1EZ2GHg6s1
+         KIHnPiUYriWqPEOXFc2EIrXrlr6f3hjaaIeffj8NBHDjNGpH4k12HIZX8dnYlLq1ul0C
+         1bf2ALd7dCOkU+nK5oiFkaa9ySmW6eOHfC8Gjn1OcUb+Diwt7bPBFhi61JWJ1sjtpNTW
+         ZtdNmelGXa++6d1bcw49/UHoNOVSnC3w7aWQsA7GlVH7JQ/E7rvVOUvAf/Q6pBvLnTfF
+         9/Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCUP9RCKoeCq35DxuD4iqi5KCxEi6LqaZCzf/6pwJdL9BQOCN8e4cUM6r5TSdXx1WyNBdXaTk4FF4v+fQxk=@vger.kernel.org, AJvYcCWiw5w1bCHpEU3X/4eNPNtv8pTgbtvbZtMZNDvsgmeVvYnG1P/6e4MZayum9IbfRTME/kYf4KZuhbqyXywLB90=@vger.kernel.org, AJvYcCX0LC3vtHVHcl87wlnWtyyfziywiM3So7xwt2Qyfn5BnN7mZL/b0JIiZKTP3IwsPdX3KUoKTzQv@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQP9Fa1/xMWUD1HLcrexH/k2a5abWq9twkkRbqgc3c6B6RlfB9
+	X5nJPC4PDOPKXjoOXj4GYxwFCwHZVv7VKKQxEpcIK0ryBU8En0qx
+X-Google-Smtp-Source: AGHT+IFkO1nr0stApKsPfqd6wtGEH9NDp4F0QqRs2k+1iFAiYLwP9nloCRJk+2dFE7R1fTva8WXpKQ==
+X-Received: by 2002:a05:6a00:2ea9:b0:71d:fd28:709a with SMTP id d2e1a72fcca58-71e1dbc7bcamr4265810b3a.23.1728480554009;
+        Wed, 09 Oct 2024 06:29:14 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0d477d4sm7764244b3a.134.2024.10.09.06.29.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Oct 2024 06:29:13 -0700 (PDT)
+Date: Wed, 09 Oct 2024 22:28:59 +0900 (JST)
+Message-Id: <20241009.222859.1405378592312581525.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 4/6] rust: time: add wrapper for fsleep
+ function
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAH5fLgjTifsDKrxZTUTo74HR34X1zusO_7h0ftWWH-iZR_NXNA@mail.gmail.com>
+References: <20241005122531.20298-1-fujita.tomonori@gmail.com>
+	<20241005122531.20298-5-fujita.tomonori@gmail.com>
+	<CAH5fLgjTifsDKrxZTUTo74HR34X1zusO_7h0ftWWH-iZR_NXNA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
- <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com> <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
-In-Reply-To: <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 9 Oct 2024 09:18:08 -0400
-Message-ID: <CAJ-ks9neMso9pL_LPOeOwLGZG7Wy9RxV-ixKsDv=Wfzy7yKVBA@mail.gmail.com>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Daniel Gomez <da.gomez@samsung.com>, 
-	Fiona Behrens <me@kloenk.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
-	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 9, 2024 at 9:13=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Wed, Oct 9, 2024 at 2:57=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
-> >
-> > What would you have me link to? With this patch applied and using
->
-> I was thinking perhaps the series from Daniel, if that is the latest
-> discussion (?), i.e. I would like to understand what is the policy
-> around changes like this, what happens if it breaks, etc.
+On Mon, 7 Oct 2024 14:24:03 +0200
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Ah, I see. The relevant discussion took place on zulip[0]. As for policy: I=
-'m
-guessing there isn't one, and the whole endeavor is best-effort.
+>> +/// Sleeps for a given duration.
+>> +///
+>> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
+>> +/// which automatically chooses the best sleep method based on a duration.
+>> +///
+>> +/// `Delta` must be longer than one microsecond.
+>> +///
+>> +/// This function can only be used in a nonatomic context.
+>> +pub fn fsleep(delta: Delta) {
+>> +    // SAFETY: FFI call.
+>> +    unsafe { bindings::fsleep(delta.as_micros() as c_ulong) }
+>> +}
+> 
+> This rounds down. Should this round it up to the nearest microsecond
+> instead? It's generally said that fsleep should sleep for at least the
+> provided duration, but that it may sleep for longer under some
+> circumstances. By rounding up, you preserve that guarantee.
 
-Daniel's other patches weren't necessary for the kernel config I'm using.
+I'll round up in the next version.
 
-> > https://github.com/bee-headers/homebrew-bee-headers I was able to build=
- a kernel
-> > on my apple silicon mac. Relevant config:
->
-> That is great.
->
-> Thanks!
->
-> Cheers,
-> Miguel
+> Also, the note about always sleeping for "at least" the duration may
+> be a good fit for the docs here as well.
 
-Thanks Miguel! As this is my first patch, please let me know if further act=
-ion
-is required.
-
-Cheers.
-Tamir
-
-[0] https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topi=
-c/macOS.20build
+I see, will add it.
