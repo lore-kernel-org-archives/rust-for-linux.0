@@ -1,185 +1,112 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0CA1EABB3;
-	Wed,  9 Oct 2024 17:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15A18C92A;
+	Wed,  9 Oct 2024 18:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728495816; cv=none; b=axVVKbyCtCCyfYD2dxTXLMep0HtZl0O/Yov7vLrS6niT0D1QKfwJuEs557UD4ZzGWB+yixMbiivr+XdzPUdKFjRuSWl6CxtJpW1ZsOOoxvRPM1RVKTM8z4cdd+ZkPu2esJJ/X1ewMRQ9VT731vVPG6lY6ngxraQxTIIbVl8eTbk=
+	t=1728497640; cv=none; b=bjIDxsSi03D766/CtFQtf8mgLwMilNphMMCtpZvfHhbPp1NK8sXVH4IAKdqwtVu+ykWY8P5yPulzLS31n41z8ZKjCGk18rSijYWWvheN+k4kjXFVTXqQAd12bCEgjoB/A7UB6VtmMu3xCWmxAzUVsocFCgdL25enCDhb8RHaqyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728495816; c=relaxed/simple;
-	bh=WH2AnXNFGs2kfRCljIeNV726W6HViMfQ0A2T6W5jCCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=azHeyZV1CdsDBOS/xkjkYTQWTzO/CNrE3IkaQptq6grW269MwUWYvbpTaXoauqCJ1VoPoWX2aBGf8KeJxUlbi7xXQbysuVa7jzBkm+Y9Q/STT/vNJxqAko/O3UVEr4ygem0Zl9M9pWRWG4U4noV1X25X3z8IBad0Nqqf6FdCWS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 720FADA7;
-	Wed,  9 Oct 2024 10:44:02 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 64B333F64C;
-	Wed,  9 Oct 2024 10:43:29 -0700 (PDT)
-Date: Wed, 9 Oct 2024 18:43:24 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all
- architectures
-Message-ID: <ZwbAvEnrzu6UUgGl@J2N7QTR9R3>
-References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+	s=arc-20240116; t=1728497640; c=relaxed/simple;
+	bh=XfC3SkocWVRtVo+920XQl5KyZGqj5i5w72C2PreHj9Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cTNIoa4ubYWyJIh2O25cyRWDpd+gn/BL11R6D78wNHmXW6NSEfasmjWiW+qK/n8DGHnPbdvmkzmQQySPbC5k5hqo3BxeOnscP/drWEWtvVq9YHgfrRCb+4fTK5DXxkw+W8gVgaLNRuM0vqCLfSlGdjtoJTMCspzyfxX7bYhFXR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J06lsB21; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J06lsB21"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43056d99a5aso7657435e9.0;
+        Wed, 09 Oct 2024 11:13:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728497637; x=1729102437; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SkU1AqV1gWitBzfFdvaQ66uFkN//U4RnOTV0fzFYwUQ=;
+        b=J06lsB21ihS4h9a8o8oOPct94G+L4vBLXxfzjY45ElKmyRWSRkplovERfbvYmS/XpT
+         UzjQX6KO/orVfZyqvqxmYHEUOwsSP8ZnnrO9QPpj1ypOVvbUCc5AzIQ8cv9rD0e9DMI2
+         XXZiRhVZhtrKvFHeC/Om780x/MkOrRYh0t2Q8pi+AFkcQJdh67G7L4ljaqhK/aHAj0ki
+         9oVNUhzlWZRLyS06mCcukiHrSjtxv5uYFHXH6sVoSYUG4hbu1AeipvyW1ns9WcodGjZI
+         tjvFigawlNFrnN7vnrDSd36KI3ad7pUFDvxzp/LE3XMZk0WvmqvrrMKxizGAwAx7J262
+         IypQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728497637; x=1729102437;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SkU1AqV1gWitBzfFdvaQ66uFkN//U4RnOTV0fzFYwUQ=;
+        b=pnsj3j3HufJfF8IK2FbbO5TJ4nWd5vIMWuBc0l71VQcNxXjaCGJZRWrLiSGVVH7eRv
+         EzxV7n0HJukTK6cq9HWyAcS78I95Es5Aw/V1152DFcUScj1KUTxkGaMJb/coCnmsXcIB
+         eZnA7M2gEzDicuvZKk87fhpc3T7ppW7UTSWfmJcO51NEiHtwvkcq3GbklfyNwf7zCIzd
+         YqLTCBa4ZJUjwZu3tecFwIwr3LRe5AqZYxXBI1RZDQGGOTuZb3A+x9QTatdWkMZuM43X
+         k4BznvryVvYoW99hhAxDDPmmva9/m2ThRHRy4PyYHJGp91BEJXC0SoJDfWoQ86b556ET
+         MmXg==
+X-Forwarded-Encrypted: i=1; AJvYcCU/t2QDvzFk+wFWEHrVvHRMZbM27g/5TfqnKRvlvpn8Oc7jNCo4+N2GfC8bBwBPsqvLEns0wziR7WPKvspA264=@vger.kernel.org, AJvYcCWAZwIeqJ0JXJMemRpb9jrmOI72Qobj2UaE77cO644BBV/qgsJHv8u36s9YuCieCeNJw/RbHA+9Crp2VLc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx+L/lIU108dsyOz5owtGf6zpTYU34YxTERtrohlJbvRAc8/GU
+	0mnFdziMO2y7I2bvgE+5QXVxb6Sp6o8VQvtZW5Qlwf1aEKQkg2Qd
+X-Google-Smtp-Source: AGHT+IHkx6nurrfAJxD0sWxHtBCoalNuyzqQnbaU9uU02qcU+aVZrJV/lXjVE+HXw5FLJ3ogS575kA==
+X-Received: by 2002:a05:6000:12c7:b0:374:c33d:377d with SMTP id ffacd0b85a97d-37d481d2de3mr439256f8f.28.1728497636719;
+        Wed, 09 Oct 2024 11:13:56 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf2f:2200:1a63:5a2f:b369:2dac? (p200300dfbf2f22001a635a2fb3692dac.dip0.t-ipconnect.de. [2003:df:bf2f:2200:1a63:5a2f:b369:2dac])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d748d450sm27283945e9.39.2024.10.09.11.13.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Oct 2024 11:13:56 -0700 (PDT)
+Message-ID: <e028afbc-b65f-4633-b33d-74769509f267@gmail.com>
+Date: Wed, 9 Oct 2024 20:13:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: improve grammar in commentary
+To: Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org
+References: <20241009162358.27735-1-tamird@gmail.com>
+Content-Language: de-AT-frami
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <20241009162358.27735-1-tamird@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Alice,
-
-On Tue, Oct 08, 2024 at 05:37:16PM +0000, Alice Ryhl wrote:
-> The KCFI sanitizer stores the CFI tag of a function just before its
-> machine code. However, the patchable-function-entry flag can be used to
-> introduce additional nop instructions before the machine code, taking up
-> the space that normally holds the CFI tag.
-
-To clarify, when you say "before the machine code", do you mean when
-NOPs are placed before the function entry point? e.g. if we compiled
-with -fpatchable-function-entry=M,N where N > 0? I'll refer tho this as
-"pre-function NOPs" below.
-
-There's an existing incompatibility between CFI and pre-function NOPs
-for C code, because we override -fpatchable-function-entry on a
-per-function basis (e.g. for noinstr and notrace), and we don't
-currently have a mechanism to ensure the CFI tag is in the same place
-regardless. This is why arm64 has CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-depend on !CFI.
-
-For C code at least, just using regular -fpatchable-function-entry=M or
--fpatchable-function-entry=M,0 shouldn't change the location of the CFI
-tag relative to the function entrypoint, and so should have no adverse
-effect on CFI.
-
-Is Rust any different here?
-
-> In this case, a backwards offset is applied to the CFI tag to move
-> them out of the way of the nop instructions. To ensure that C and Rust
-> agree on the offset used by CFI tags, pass the
-> -Zpatchable-function-entry to rustc whenever it is passed to the C
-> compiler.
-
-As above, I suspect this isn't necessary to make CFI work, for any case
-that works with C today, due to -fpatchable-funtion-entry being
-overridden on a per-function basis. Are you seeing a problem in
-practice, or was this found by inspection?
-
-However IIUC this will allow rust to be traced via ftrace (assuming rust
-records the instrumented locations as gcc and clang do); is that the
-case? Assuming so, is there any ABI difference that might bite us? On
-arm64 we require that anything marked instrumented with
-patchable-function-entry strictly follows the AAPCS64 calling convention
-and our ftrace trampolines save/restore the minimal set of necessary
-registers, and I don't know how rust whether rust will behave the same
-or e.g. use specialized calling conventions internally.
-
-Mark.
-
-> The required rustc version is bumped to 1.81.0 to ensure that the
-> -Zpatchable-function-entry flag is available when CFI is used.
+Am 09.10.24 um 18:23 schrieb Tamir Duberstein:
+> Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
+> added an errant "the" where one was not needed; remove it.
 > 
-> Fixes: ca627e636551 ("rust: cfi: add support for CFI_CLANG with Rust")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+
+Reviewed-by: Dirk Behme <dirk.behme@gmail.com>
+
+Thanks
+
+Dirk
+
 > ---
-> Note that this fix uses rustc-option which has a pending fix:
-> https://lore.kernel.org/all/20241008-rustc-option-bootstrap-v2-1-e6e155b8f9f3@google.com/
-> ---
->  arch/arm64/Makefile     | 2 ++
->  arch/loongarch/Makefile | 1 +
->  arch/riscv/Makefile     | 2 ++
->  init/Kconfig            | 2 +-
->  4 files changed, 6 insertions(+), 1 deletion(-)
+>   rust/exports.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index 9efd3f37c2fd..d7ec0bb09fc4 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -143,9 +143,11 @@ CHECKFLAGS	+= -D__aarch64__
->  ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS),y)
->    KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->    CC_FLAGS_FTRACE := -fpatchable-function-entry=4,2
-> +  KBUILD_RUSTFLAGS += $(call rustc-option,-Zpatchable-function-entry=4$(comma)2)
->  else ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_ARGS),y)
->    KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->    CC_FLAGS_FTRACE := -fpatchable-function-entry=2
-> +  KBUILD_RUSTFLAGS += $(call rustc-option,-Zpatchable-function-entry=2)
->  endif
->  
->  ifeq ($(CONFIG_KASAN_SW_TAGS), y)
-> diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-> index ae3f80622f4c..f9cef31d1f0e 100644
-> --- a/arch/loongarch/Makefile
-> +++ b/arch/loongarch/Makefile
-> @@ -44,6 +44,7 @@ endif
->  ifdef CONFIG_DYNAMIC_FTRACE
->  KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->  CC_FLAGS_FTRACE := -fpatchable-function-entry=2
-> +KBUILD_RUSTFLAGS += $(call rustc-option,-Zpatchable-function-entry=2)
->  endif
->  
->  ifdef CONFIG_64BIT
-> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> index d469db9f46f4..65d4dcba309a 100644
-> --- a/arch/riscv/Makefile
-> +++ b/arch/riscv/Makefile
-> @@ -16,8 +16,10 @@ ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
->  	KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->  ifeq ($(CONFIG_RISCV_ISA_C),y)
->  	CC_FLAGS_FTRACE := -fpatchable-function-entry=4
-> +	KBUILD_RUSTFLAGS += $(call rustc-option,-Zpatchable-function-entry=4)
->  else
->  	CC_FLAGS_FTRACE := -fpatchable-function-entry=2
-> +	KBUILD_RUSTFLAGS += $(call rustc-option,-Zpatchable-function-entry=2)
->  endif
->  endif
->  
-> diff --git a/init/Kconfig b/init/Kconfig
-> index 530a382ee0fe..43434b681c3f 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -1946,7 +1946,7 @@ config RUST
->  	depends on !GCC_PLUGIN_RANDSTRUCT
->  	depends on !RANDSTRUCT
->  	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-> -	depends on !CFI_CLANG || RUSTC_VERSION >= 107900 && HAVE_CFI_ICALL_NORMALIZE_INTEGERS
-> +	depends on !CFI_CLANG || RUSTC_VERSION >= 108100 && HAVE_CFI_ICALL_NORMALIZE_INTEGERS
->  	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
->  	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
->  	depends on !KASAN_SW_TAGS
-> 
-> ---
-> base-commit: 4a335f920bc78e51b1d7d216d11f2ecbb6dd949f
-> change-id: 20241008-cfi-patchable-all-ddd6275eaf4f
-> 
-> Best regards,
-> -- 
-> Alice Ryhl <aliceryhl@google.com>
-> 
-> 
+> diff --git a/rust/exports.c b/rust/exports.c
+> index e5695f3b45b7..fd278e272751 100644
+> --- a/rust/exports.c
+> +++ b/rust/exports.c
+> @@ -3,9 +3,9 @@
+>    * A hack to export Rust symbols for loadable modules without having to redo
+>    * the entire `include/linux/export.h` logic in Rust.
+>    *
+> - * This requires the Rust's new/future `v0` mangling scheme because the default
+> - * one ("legacy") uses invalid characters for C identifiers (thus we cannot use
+> - * the `EXPORT_SYMBOL_*` macros).
+> + * This requires Rust's new/future `v0` mangling scheme because the default one
+> + * ("legacy") uses invalid characters for C identifiers (thus we cannot use the
+> + * `EXPORT_SYMBOL_*` macros).
+>    *
+>    * All symbols are exported as GPL-only to guarantee no GPL-only feature is
+>    * accidentally exposed.
+
