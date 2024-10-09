@@ -1,63 +1,57 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B5221BAEB;
-	Tue,  8 Oct 2024 22:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E733D9E;
+	Wed,  9 Oct 2024 01:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728427704; cv=none; b=Lyxwc90Z+ILoEyTX+TU9wOeT7ct/AyfVxOFVXDOXnDHdQcwAZQ2N1z8Vexty47Z6405gn3VeGCaG8d9kwFPjWzkpoxXPXahMky3xmUfY7lTXhMZaW+kD+cLTDyLSGZLRWiA2tpDrlNfQqZ5YWTpEvpZbaZmfJ6LJviOQlDCLIQM=
+	t=1728438498; cv=none; b=kAWRzUP9iqHOlgGSKb94Z/Qf9W2zV+pGr9i04f1irWozPJGBSgeXTqpbeGMP28uBfMXPMx65Rqxsnc21Kkx934ClHwBYVCmbVRnJGWFE+gGj5PMoOd0LJAQd25wzLpkJvQZPNHbFKtR4DjfMszx0IcKnw5qjSDMyONRye27YaD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728427704; c=relaxed/simple;
-	bh=fZmiMWrnvEU7AtsBXF1xT3bij7HVz3rNHfdt0R1c6is=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CK5yzx2OjI+cCK9WzHUHiw1K2HdEvMJbUalU1wELFF4dxdgO/WrmrtmAWF8XIG7N5XTu5GLYVrXKzuvppyHvHaWe3R5hmfuAqFvtnoMPo5Yq4UthkS/zks+0eUypxJbFaiDtILA8JK9HdJL64rx+F58OJkvSFTRYnX2PszkwQ+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImmB3Dbh; arc=none smtp.client-ip=209.85.222.176
+	s=arc-20240116; t=1728438498; c=relaxed/simple;
+	bh=QB5NCT+C5/RxLUryQmgEXrHDz+jvjJf41PoQ6PO9Ono=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=HJQrKIJfLHumqMX3M7UKFVgotTXM5iS266k/rVMwaUcyrj5cBXpNEiptU4OrZkXQvZuukSedu4o+ZZYi0QvUEvFppwSSRP/k4whxp2I+nmf6sggAry00CLnBhSCj5bgDONrPnphJtOw5R4+NIDkJyH1Kjc23zwIrBQNyDCsuOE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O6tBizck; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImmB3Dbh"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7afe994d519so20974085a.0;
-        Tue, 08 Oct 2024 15:48:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O6tBizck"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e018dfb5fso238552b3a.2;
+        Tue, 08 Oct 2024 18:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728427699; x=1729032499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=izjsYK/zcMAv1lzo33rnDn/MQlO729XBJLAL6PlACzc=;
-        b=ImmB3Dbh39Yg/notQoo0y2Wfd1Osy54h1ZU4ZIyZqilw7XSGobDoXh4/umXdGU57GL
-         prfAmB5hqHBQq7vV1zjBNbE9VQLQhaeeqD5U4mknMwIqwYEudNpWoBOWSyppTh/f6IwP
-         3NbegxOfJM1kq4tkgkSlS0/sGnX6HYXwWvj2OkKTR7I8ySQhWciuyuidicgsBp4dHYFf
-         AHJes9LOF3gfC/868M8P6qsdRSW8jf8myjsfSLQ8UzwHqCJ38rESFEjuVAD1gnt26xGc
-         GXIbdEG4QfAPDC+j4Iw4Kmtv4Y1Qy635/NE+liiYp6T8EBR4SyDKDm0QqeEA02UU7pTo
-         cc+w==
+        d=gmail.com; s=20230601; t=1728438496; x=1729043296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JDSsl/cewZa/jFNzlIPSVBXNAxNEgjHI3CQK3ciJS1I=;
+        b=O6tBizck2xSoEqQDnhNvlHTPpf88Iup1rh3q/HOeqoMt9OqKNNgHCftcm4++WgVC3l
+         Z6NSa7NEpRa38fLBw2Id0YzCzwjwTxPZrU3owtv9j6IEf1uo8Y2qz7GMPmVF7b+NnjOf
+         tM54rCY+sdgjStpD2kRWDXEPpzGGZWm8pLuraf+hbXShMchGR0SVkhgzpiYnuT0PfzBN
+         gGLmz//DFiLsslRkUxUTxK7vx/F1921VJypabvvGwItCEukqA31EFrfH2oRvmnvx0Tb2
+         XPPFlq449V8frIaU1PIpkW/FFkkrnnLsZ3nDfL/DDPVhTJOHtBeFbA5nS0qmAVb0Xzom
+         FwfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728427699; x=1729032499;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=izjsYK/zcMAv1lzo33rnDn/MQlO729XBJLAL6PlACzc=;
-        b=mbIStJyThENXfGCrRrHgqe+gFZV4LBiFsHjH61UT2WjT7f3N4KezFItbPcxpeXz3pr
-         2/87g+NsQJ/JT6W0neEJeIKWVgbIVfoMgZY/TqdfXp/AbboTmPLkbmY4z1p/g+eHEDq4
-         x6CgxKnd6ULxMJs66nuPr3yQfIVDXZBCiJDogs025Z4zT4xnWvUb9HC5UHx/8SC0R6tM
-         X68C/5uf19ArFWL/RImWSUwgv/dEaE2xnRcuHfL3DP92II1yJeEt2qwrQvahRV05KAXO
-         T+nXzI8ZUoi2jha5OvC2/RmiZOSfGausID7xCVyYvCJ4LJQaNRJKlnfTrrW3E1MjTDV5
-         9eVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKInqcjLQVBA5gRZmWwfOfkRWdEU1Fd8o1DBPyGqUKywjx9U8ZIAfHghRMmvJstj1zB4WcuXTBm1qsyHw=@vger.kernel.org, AJvYcCXI62fgkeGI8ZX3avf1uNY+XQ3O04PVBXr1pudPrYjrOxd1X9ZqBCuXarUwCIGmWOWrEXP22cVVKVVYdH7v@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0y8sRRC/VOQ1rkO5cDFMHCyLawF45qeteBTPQL9s9vJIlUcra
-	AKVHhAnO7eyxJl6+8Z0GIcdoCdq8PNDkdfIBA3TZQovBiWWAxnunMrKAciT4
-X-Google-Smtp-Source: AGHT+IGXhK9Cg0i6JBJr1NS5o3nc52SVkPvomsn47NwVWnzgWY3Ix2lNPS/UeLBbWAVt4u2Ugb09fg==
-X-Received: by 2002:a05:620a:2a06:b0:7b0:6e8:9506 with SMTP id af79cd13be357-7b0795536a1mr61356585a.60.1728427699416;
-        Tue, 08 Oct 2024 15:48:19 -0700 (PDT)
-Received: from Tamirs-MBP.mynetworksettings.com (pool-100-37-170-231.nycmny.fios.verizon.net. [100.37.170.231])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45da763fdecsm40671001cf.84.2024.10.08.15.48.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 08 Oct 2024 15:48:19 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
+        d=1e100.net; s=20230601; t=1728438496; x=1729043296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JDSsl/cewZa/jFNzlIPSVBXNAxNEgjHI3CQK3ciJS1I=;
+        b=XDtcEt26bxAcakSoxHkXVE6k7ol/UDs6wOAoDBfzykEQUJETdCa0Vfgdin3IUboFyV
+         hbBdjYH/ZJATTLcdEM2BalCnsGeR8vo9NVvKG8cAo6QikbxHVBxQTTbk2S60A+oMPvgZ
+         KNyBtYVJ7cevyeYj5FkZJocCzYi+bIg0YdaMH6hnU91Lp26eDW4BjQCAuA81ep57IxBy
+         z9bHVei6Oic2HrnYRtmZCt5//q3Wse68dgPdLzKvnfW2WCFBe2jyW97r3eOO00AMg4SN
+         wI4DZLX3vj0wLSfnRdaamIK+AELVlXtweUz0ribdVghgRhDroB9kfkMq5QM4xOOapoxA
+         LDJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWq8jyqepb4B8soJt3/RQy0gfQ8pbPzc8mXyP1jEk7EAzKrupMKfZHmZsL8LnIUncCH2PJQqyKsf/Sv7yA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4vDO4ohkcXT4PYUGbZuljX78l/IkIDDr2KLodSKqRCKGLMljt
+	+Wt0MAbOfEkQIVSfOPQPzv+RoTgJ6tiFINl7VDbFdDaq88el7dh0YcCHi/r5
+X-Google-Smtp-Source: AGHT+IHJWk1/Xlu1M6LtsuGfH/TT2Je+u28M9Dr6MCIjmMG+qZy0ZvZ3vpLCMPkUVKft/RWb5+RWjw==
+X-Received: by 2002:a05:6a20:1582:b0:1cf:4903:7f66 with SMTP id adf61e73a8af0-1d8a3be2fc1mr673018637.2.1728438496328;
+        Tue, 08 Oct 2024 18:48:16 -0700 (PDT)
+Received: from archlinux.. ([138.94.103.170])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0d7e619sm6705918b3a.219.2024.10.08.18.48.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 18:48:16 -0700 (PDT)
+From: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -66,19 +60,11 @@ Cc: Daniel Gomez <da.gomez@samsung.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	"David S. Miller" <davem@davemloft.net>,
-	Kris Van Hees <kris.van.hees@oracle.com>,
-	=?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH] rust: query the compiler for dylib path
-Date: Tue,  8 Oct 2024 18:48:08 -0400
-Message-ID: <20241008224810.84024-1-tamird@gmail.com>
-X-Mailer: git-send-email 2.47.0
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH] rust: transmute: Add implementation for FromBytes trait
+Date: Tue,  8 Oct 2024 22:47:50 -0300
+Message-ID: <20241009014810.23279-1-christiansantoslima21@gmail.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,161 +73,348 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rust proc-macro crates are loaded by the compiler at compile-time, so
-are always dynamic libraries; on macOS, these artifacts get a .dylib
-extension rather than .so.
+Add implementation and documentation for FromBytes trait.
 
-Replace hardcoded paths ending in .so with paths obtained from the
-compiler.
+Add new feature block in order to allow using ToBytes
+and bound to from_bytes_mut function.
 
-Signed-off-by: Fiona Behrens <me@kloenk.dev>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1119
+Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
 ---
- .gitignore                        |  1 +
- Makefile                          |  2 +-
- rust/Makefile                     | 21 ++++++++++++---------
- scripts/generate_rust_analyzer.py | 16 ++++++++++++----
- 4 files changed, 26 insertions(+), 14 deletions(-)
+ rust/kernel/lib.rs       |   2 +
+ rust/kernel/transmute.rs | 302 +++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 290 insertions(+), 14 deletions(-)
 
-diff --git a/.gitignore b/.gitignore
-index 56972adb5031..7cfe4f70b39a 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -22,6 +22,7 @@
- *.dtb.S
- *.dtbo.S
- *.dwo
-+*.dylib
- *.elf
- *.gcno
- *.gcda
-diff --git a/Makefile b/Makefile
-index c5493c0c0ca1..3808869fb95b 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1506,7 +1506,7 @@ MRPROPER_FILES += include/config include/generated          \
- 		  certs/x509.genkey \
- 		  vmlinux-gdb.py \
- 		  rpmbuild \
--		  rust/libmacros.so
-+		  rust/libmacros.so rust/libmacros.dylib
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index dc37aef6a008..5215f5744e12 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -18,6 +18,8 @@
+ #![feature(lint_reasons)]
+ #![feature(new_uninit)]
+ #![feature(unsize)]
++#![feature(portable_simd)]
++#![feature(trivial_bounds)]
  
- # clean - Delete most, but leave enough to build external modules
- #
-diff --git a/rust/Makefile b/rust/Makefile
-index b5e0a73b78f3..a185a4d05b08 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -11,9 +11,6 @@ always-$(CONFIG_RUST) += exports_core_generated.h
- obj-$(CONFIG_RUST) += helpers/helpers.o
- CFLAGS_REMOVE_helpers/helpers.o = -Wmissing-prototypes -Wmissing-declarations
+ // Ensure conditional compilation based on the kernel configuration works;
+ // otherwise we may silently break things like initcall handling.
+diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+index 1c7d43771a37..f2d99c136017 100644
+--- a/rust/kernel/transmute.rs
++++ b/rust/kernel/transmute.rs
+@@ -12,24 +12,298 @@
+ /// # Safety
+ ///
+ /// All bit-patterns must be valid for this type. This type must not have interior mutability.
+-pub unsafe trait FromBytes {}
++pub unsafe trait FromBytes {
++    ///Converts a slice of Bytes into a Reference to Self
++    ///
++    /// # Examples
++    /// ```
++    ///    pub unsafe trait FromBytes {
++    ///        unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self;
++    ///        unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    ///        where
++    ///            Self: ToBytes;
++    ///    }
++    ///
++    ///unsafe impl FromBytes for u32 {
++    ///    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++    ///        let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++    ///        &*slice_ptr
++    ///    }
++    ///
++    ///    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    ///    where
++    ///        Self: ToBytes,
++    ///    {
++    ///        let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++    ///        &mut *slice_ptr
++    ///    }
++    ///}
++    ///
++    ///let slice_of_bytes : &[u8] = &[1, 2, 3, 4];
++    ///let result = u32::from_bytes(slice_of_bytes);
++    ///assert_eq!(*result, 0x4030201);
++    ///```
++    ///# Safety
++    ///
++    ///Guarantee that all values are initiliazed
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self;
++    ///Converts a mutabble slice of Bytes into a mutable Reference to Self
++    /// # Safety
++    ///
++    /// ToBytes in order to allow only types that implements ToBytes
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes;
++}
  
--always-$(CONFIG_RUST) += libmacros.so
--no-clean-files += libmacros.so
--
- always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_helpers_generated.rs
- obj-$(CONFIG_RUST) += alloc.o bindings.o kernel.o
- always-$(CONFIG_RUST) += exports_alloc_generated.h exports_helpers_generated.h \
-@@ -36,9 +33,15 @@ always-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.c
- obj-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated.o
- obj-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.o
- 
--# Avoids running `$(RUSTC)` for the sysroot when it may not be available.
-+# Avoids running `$(RUSTC)` when it may not be available.
- ifdef CONFIG_RUST
- 
-+libmacros_name := $($(RUSTC) --print file-names --crate-name macros --crate-type proc-macro - < /dev/null)
-+libmacros_extension := $(patsubst libmacros.%,%,$(libmacros_name))
-+
-+always-$(CONFIG_RUST) += $(libmacros_name)
-+no-clean-files += $(libmacros_name)
-+
- # `$(rust_flags)` is passed in case the user added `--sysroot`.
- rustc_sysroot := $(shell MAKEFLAGS= $(RUSTC) $(rust_flags) --print sysroot)
- rustc_host_target := $(shell $(RUSTC) --version --verbose | grep -F 'host: ' | cut -d' ' -f2)
-@@ -115,10 +118,10 @@ rustdoc-alloc: $(RUST_LIB_SRC)/alloc/src/lib.rs rustdoc-core rustdoc-compiler_bu
- 	+$(call if_changed,rustdoc)
- 
- rustdoc-kernel: private rustc_target_flags = --extern alloc \
--    --extern build_error --extern macros=$(objtree)/$(obj)/libmacros.so \
-+    --extern build_error --extern macros=$(objtree)/$(obj)/$(libmacros_name) \
-     --extern bindings --extern uapi
- rustdoc-kernel: $(src)/kernel/lib.rs rustdoc-core rustdoc-macros \
--    rustdoc-compiler_builtins rustdoc-alloc $(obj)/libmacros.so \
-+    rustdoc-compiler_builtins rustdoc-alloc $(obj)/$(libmacros_name) \
-     $(obj)/bindings.o FORCE
- 	+$(call if_changed,rustdoc)
- 
-@@ -339,10 +342,10 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
- 		-Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
- 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
- 		--crate-type proc-macro \
--		--crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
-+		--crate-name $(patsubst lib%.$(libmacros_extension),%,$(notdir $@)) $<
- 
- # Procedural macros can only be used with the `rustc` that compiled it.
--$(obj)/libmacros.so: $(src)/macros/lib.rs FORCE
-+$(obj)/$(libmacros_name): $(src)/macros/lib.rs FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
- 
- quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
-@@ -421,7 +424,7 @@ $(obj)/uapi.o: $(src)/uapi/lib.rs \
- $(obj)/kernel.o: private rustc_target_flags = --extern alloc \
-     --extern build_error --extern macros --extern bindings --extern uapi
- $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/alloc.o $(obj)/build_error.o \
--    $(obj)/libmacros.so $(obj)/bindings.o $(obj)/uapi.o FORCE
-+    $(obj)/$(libmacros_name) $(obj)/bindings.o $(obj)/uapi.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
- endif # CONFIG_RUST
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index d2bc63cde8c6..3834ab0eea9d 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -9,6 +9,8 @@ import logging
- import os
- import pathlib
- import sys
-+import os
-+import subprocess
- 
- def args_crates_cfgs(cfgs):
-     crates_cfgs = {}
-@@ -35,8 +37,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     crates_cfgs = args_crates_cfgs(cfgs)
- 
-     def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False):
--        crates_indexes[display_name] = len(crates)
--        crates.append({
-+        crate = {
-             "display_name": display_name,
-             "root_module": str(root_module),
-             "is_workspace_member": is_workspace_member,
-@@ -47,7 +48,15 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             "env": {
-                 "RUST_MODFILE": "This is only for rust-analyzer"
-             }
--        })
+-macro_rules! impl_frombytes {
+-    ($($({$($generics:tt)*})? $t:ty, )*) => {
+-        // SAFETY: Safety comments written in the macro invocation.
+-        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
+-    };
++// SAFETY: All bit patterns are acceptable values of the types below.
++unsafe impl FromBytes for u8 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
 +        }
-+        if is_proc_macro:
-+            proc_macro_dylib_name = subprocess.check_output(
-+                [os.environ["RUSTC"], "--print", "file-names", "--crate-name", display_name, "--crate-type", "proc-macro", "-"],
-+                stdin=subprocess.DEVNULL,
-+            ).decode('utf-8')
-+            crate["proc_macro_dylib_path"] = f"{objtree}/rust/{proc_macro_dylib_name}"
-+        crates_indexes[display_name] = len(crates)
-+        crates.append(crate)
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
+ }
  
-     # First, the ones in `rust/` since they are a bit special.
-     append_crate(
-@@ -77,7 +86,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-         [],
-         is_proc_macro=True,
-     )
--    crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
+-impl_frombytes! {
+-    // SAFETY: All bit patterns are acceptable values of the types below.
+-    u8, u16, u32, u64, usize,
+-    i8, i16, i32, i64, isize,
++unsafe impl FromBytes for u16 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for u32 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for u64 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for usize {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for i8 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for i16 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for i32 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for i64 {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++
++unsafe impl FromBytes for isize {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++            &*slice_ptr
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++            &mut *slice_ptr
++        }
++    }
++}
++// SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
++// patterns are also acceptable for arrays of that type.
++unsafe impl<T: FromBytes> FromBytes for [T] {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const T;
++            let slice_len = slice_of_bytes.len() / core::mem::size_of::<T>();
++            core::slice::from_raw_parts(slice_ptr, slice_len)
++        }
++    }
++
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut T;
++            let slice_len = slice_of_bytes.len() / core::mem::size_of::<T>();
++            core::slice::from_raw_parts_mut(slice_ptr, slice_len)
++        }
++    }
++}
++
++/// # Examples
++///```
++///let slice_of_bytes: &[u8] = &[
++///    1, 0, 0, 0,
++///    2, 0, 0, 0,
++///    3, 0, 0, 0,
++///    4, 0, 0, 0,
++///    5, 0, 0, 0,
++///    6, 0, 0, 0,
++///    7, 0, 0, 0,
++///    8, 0, 0, 0,
++///];
++///
++///let foo = <[u32; 8]>::from_bytes(slice_of_bytes);
++///let expected: [u32; 8] = [1, 2, 3, 4, 5, 6, 7, 8];
++///
++///assert_eq!(*foo, expected);
++///```
++unsafe impl<T: FromBytes, const N: usize> FromBytes for [T; N] {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const T;
++            &*(slice_ptr as *const [T; N])
++        }
++    }
  
-     append_crate(
-         "build_error",
+-    // SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
+-    // patterns are also acceptable for arrays of that type.
+-    {<T: FromBytes>} [T],
+-    {<T: FromBytes, const N: usize>} [T; N],
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *mut T;
++            &mut *(slice_ptr as *mut [T; N])
++        }
++    }
+ }
+ 
+ /// Types that can be viewed as an immutable slice of initialized bytes.
 -- 
-2.47.0
+2.46.2
 
