@@ -1,68 +1,69 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1D71BD027;
-	Thu, 10 Oct 2024 10:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F4E1C0DC1
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 10:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728557739; cv=none; b=KmSN9kUdedpCTgmOG/mLu6sqNK8yeuUCANidotaKhTx5TlAA/j6poQeaL6z2ONg9FKOb0d9MwDDgGIX9+811L1/w+FKiG1M1eyPqGcRB5C6QtwJMkyeyk1XBGNVhmzJGFGWcgY+nq1pMvpsCfaTxYtd6Hf+LfPSY82wmaCpq/mI=
+	t=1728557904; cv=none; b=lPB5djXVzjitptqsIAySRLNy4tHGKXmO7bXB3r679yYPFXPXNWxDZvZypAsdJdJVStHwVQFI/U6qc2V+8iaT1puFEJA20BKCU+F0JAWVXMJoegkgkDhyU52tGP/cdMgWWI0zUIYqIxZ/bcw3vIjOfXo9/O8qMgTdxPtcf4TJ9d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728557739; c=relaxed/simple;
-	bh=LxY7kWckS0SuvYaF2yrTWIemSOOZus+yEuXxUicIZnk=;
+	s=arc-20240116; t=1728557904; c=relaxed/simple;
+	bh=StoaWEIYCCwjnd/+Bfx66/ND8mpJjgF5frrP6tUdr44=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E5em9BvuvTH2RgNDiAYf9MF9ovUHPmvYdtscu+6/bnNQxNXcQQJYmmxfFAc028skfcgCtM6FM8KguE2dd33eRXnmVPuyc2yqIYCFu7OR+4vL9jo8B9Tn9eRh+s9O0+E7PRTueYwGlL8gaIuX6ka6e8DziWCeOSpwLPC4dz+m7Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRgFlN67; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=B8paxVhEcaEdHJa+o9aEPxAGtkgippb+kuxe3xbdSjYbDNpZ35LI5026DMBTAMmCEWHzTuEb3NIksmpS9NNofzGdABP+XiopoUv3+hZ78kAg1yn9wjFzNckRO/sA14nBMd9XIlKuyWaV/vtGooZCrHPNvDPaWK/jpKs99mNkK40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oyriwGmb; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRgFlN67"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7e9f377a3c9so48995a12.3;
-        Thu, 10 Oct 2024 03:55:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oyriwGmb"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-431160cdbd0so4556425e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 03:58:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728557737; x=1729162537; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728557900; x=1729162700; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z7prhNlBf0rjgrPFlAZtBHJ4o24kuE9bb4AC/MN06Po=;
-        b=gRgFlN67mY9ZBYNd8WM425wIQR0sgeBkkvhHhFoawaHHn47RnOZrTGTc/LZs0BXVOS
-         b5zxoUDZ/fg5ZtLW9ChNEGi4DXokymFxyzCzf2sRNW7NN+BmA06ZOc3/oqKxJuJFFh+D
-         6BdPZ85uFMrGhGX/jN827ia/sMMbIPAuFdcRi+19WgMT1DEn296G9zbal5SOmDg1+sjv
-         vrhhqYfBQzyMiKnQGoXDt4jEWRhlEuKnj+U0ntkHYR273u8yAWArZjHOs9sxS2qNfY9r
-         DnoZRiqHldkxAnVjm22JiuQjykDazPana5s6Ps7VhdhbagDmhmFzSk2ilnkc/tlrzw54
-         wtMQ==
+        bh=StoaWEIYCCwjnd/+Bfx66/ND8mpJjgF5frrP6tUdr44=;
+        b=oyriwGmb0SYdoNYaKJKK0DV/Nsq8B6E5ts/qZXwUjE+eYIRG9iHrBHSm2NuOvEJLT0
+         W4vMmx3v0ZAO2pWTMuFsWpnIw7oRzJddO0KaSk03bZ2oEE4/ug8uOQg6ySQL9qWhgnNz
+         bi51pKldd10Dr6knemch1BJcSkzRF91IAn/t+nJf28tNTz3PLL39XI1dEodlCTHGxMfE
+         i/Od99sw/meHoiux+1nme7YH7cTfuCPa0XXOta1VuO4ivTzBX9aMll/fhALyHLZSQtCE
+         rVCO3hGowiG23KJk01F3LlgAsvBAzpR8uuTnEgAVKRjGZpgzNqBMSSFmpSFfLlxnhy6n
+         Uf8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728557737; x=1729162537;
+        d=1e100.net; s=20230601; t=1728557900; x=1729162700;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z7prhNlBf0rjgrPFlAZtBHJ4o24kuE9bb4AC/MN06Po=;
-        b=TwedWWNGNDrQ3CH1+n4YBu63pEzuJFP4y2Tha7JmxFYkT+LEZZf5VO01pfVEf4rE8C
-         0z1w4s5JoU3ACPo20n9IIgSqI9q016/FyUSY15eej5wQQL1E8QIBfsDE9Xj7mt2q7zgM
-         1N0RALwsqm18j8xkmvyLgQsdpgsArU3wi7e4+E1MnPKu1aAiXKI6bFW3z5Uf7b/bsh5c
-         DWdiey+K4z4cEEqeBorn3BXoM1jSvQqt5Ae6o/4z6dcmWwfHIgAJGG3KGYwOuNJN2GOw
-         AsnNyO2mZtF5ofdp9gKBXUDCA+CzWTQnHEGkI+9MQGOXpS0Zr8lLzf2f3B5S1yf3HlDc
-         Uu+A==
-X-Forwarded-Encrypted: i=1; AJvYcCU9COaHpPOyQcdBasbeoqeg7AE3gIIJ8D01MSRfGohdofodHdJtfS37RfI79N08LmXL/HLiQcoGtT4bzoJp@vger.kernel.org, AJvYcCVaZU91N1e44juOXroR3l+OY+qUmCWWNQfifqLpAq7DDNBELVWHNFzaspeguiGouVWlF9VGH/aJ0GH8iuWwgw4=@vger.kernel.org, AJvYcCXpMEuig1iEQy64Kd20JZQg/xaLfHMvm1YLgqgrJZz1+Ai/wpaALUk1YLeUB0+1uHInl3gOuWsx+I9Q0jU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySZvKlGKZlIwNCOQv8uorG6ahj/07+sWLSgVSG+Sqke3kzZWsC
-	OyrcS+a4KveHEuwr1OvMmq5GdCQ+FgWb5lg8I6Jrs1xNmzmdOeMqz4eKSiGa5nusQZUWytAsDln
-	mgOn07mlCZh3PUEeQKO9+aXIMAeM=
-X-Google-Smtp-Source: AGHT+IHAJPvWSarPUcHM5fTP1XOvft1y95dzd2SSxjokwM/tDrb6430mBqh0ufFkL+MZrSQjwaTb5z7red4s3fH34oc=
-X-Received: by 2002:a05:6a00:3e28:b0:714:2051:89ea with SMTP id
- d2e1a72fcca58-71e1db6491amr3947192b3a.1.1728557737046; Thu, 10 Oct 2024
- 03:55:37 -0700 (PDT)
+        bh=StoaWEIYCCwjnd/+Bfx66/ND8mpJjgF5frrP6tUdr44=;
+        b=a3a6n7qdCnDKj/7QuPBxrQJEHk7N6HVHEWvAiRp2DiTvGLb9Kr5V/X0M6B1MoReW7W
+         ZLBaYqE3GpdD7xJ0gBZ9vmZHQNK6+pCTrHGio7jAtbeW9ycXqdqNYelnP4abEZC98QBW
+         cpTQDbcmdsb7oIGlx9ZR1SKnXsOJhz7zlphM/0xzlpJcoApE/QasG+K8byyWFyscldbu
+         hOsIx39HQ3m2Kp/kG394N/KNi9M6OoD0o8q2Sr5PDK2SM+rYAykPrUc/M4PFlCxF9jPu
+         +EpVUgCEj4ZdLeSLtlrrIbCIiSh3zXiqJfDz+adNBrJQiKQ8x0v7yLY+EUmMV4chw3Vf
+         OfnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUSiL25E306JN7X6h2FumUKAF/1Vzub/DGlIFcpChHjJ+lsUqm8xqDbW+rbBqez2aGIDVgdBbWzDz/69JVcJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYJq4nPQ61GBKgFmgGIUM7kbN+UOJz2sato9DmnvJiuBN/Yzui
+	zG8AqUHrvPEuaNgjGWD0xXhL3B5zOB0Ln4SYZ9S9Y8T8w6EDRwPYY6Rud7HGLVC7YN3p/DUkVeG
+	Bd58zkZRSL//IkApVdjHe14Hc76Wbw4alXl2D
+X-Google-Smtp-Source: AGHT+IG6zteYy0eiXshByN3a31ubFooYapYA71mK/l2zbvcpHK0YoSgYWnV/kyVCloGT0HPQCGElonWjcU/HzmR4ZZE=
+X-Received: by 2002:a5d:4092:0:b0:374:c613:7c58 with SMTP id
+ ffacd0b85a97d-37d481d300dmr2263009f8f.29.1728557900384; Thu, 10 Oct 2024
+ 03:58:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241010-icall-detect-vers-v1-0-8f114956aa88@google.com> <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com>
-In-Reply-To: <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 10 Oct 2024 12:55:24 +0200
-Message-ID: <CANiq72ndoSmGVzuPR6ikq0HG1kbMp6ADOY8BonD9=ij9tyU=EQ@mail.gmail.com>
+References: <20241010-icall-detect-vers-v1-0-8f114956aa88@google.com>
+ <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com> <CANiq72ndoSmGVzuPR6ikq0HG1kbMp6ADOY8BonD9=ij9tyU=EQ@mail.gmail.com>
+In-Reply-To: <CANiq72ndoSmGVzuPR6ikq0HG1kbMp6ADOY8BonD9=ij9tyU=EQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 10 Oct 2024 12:58:07 +0200
+Message-ID: <CAH5fLgiqwdKgEux9A-SFAWmhbosW15Ey8j8deKtQa9r336vXZA@mail.gmail.com>
 Subject: Re: [PATCH 1/2] kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
 	Nathan Chancellor <nathan@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -75,50 +76,38 @@ Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 10, 2024 at 11:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Thu, Oct 10, 2024 at 12:55=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> From: Gary Guo <gary@garyguo.net>
+> On Thu, Oct 10, 2024 at 11:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > From: Gary Guo <gary@garyguo.net>
+> >
+> > Each version of Rust supports a range of LLVM versions. There are cases=
+ where
+> > we want to gate a config on the LLVM version instead of the Rust versio=
+n.
+> > Normalized cfi integer tags are one example [1].
+> >
+> > For consistency with cc-version and ld-version, the new version number =
+is added
+> > to the existing rustc-version script, rather than being added to a new =
+script.
+> >
+> > The invocation of rustc-version is being moved from init/Kconfig to
+> > scripts/Kconfig.include to avoid invoking rustc-version.sh twice and fo=
+r
+> > consistency with cc-version.
+> >
+> > Link: https://lore.kernel.org/all/20240925-cfi-norm-kasan-fix-v1-1-0328=
+985cdf33@google.com/ [1]
+> > Signed-off-by: Gary Guo <gary@garyguo.net>
 >
-> Each version of Rust supports a range of LLVM versions. There are cases w=
-here
-> we want to gate a config on the LLVM version instead of the Rust version.
-> Normalized cfi integer tags are one example [1].
->
-> For consistency with cc-version and ld-version, the new version number is=
- added
-> to the existing rustc-version script, rather than being added to a new sc=
-ript.
->
-> The invocation of rustc-version is being moved from init/Kconfig to
-> scripts/Kconfig.include to avoid invoking rustc-version.sh twice and for
-> consistency with cc-version.
->
-> Link: https://lore.kernel.org/all/20240925-cfi-norm-kasan-fix-v1-1-032898=
-5cdf33@google.com/ [1]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Alice: when I apply this, I will need to add your Signed-off-by here
+> (i.e. when handling patches from others, you need to add your SoB
+> too).
 
-Alice: when I apply this, I will need to add your Signed-off-by here
-(i.e. when handling patches from others, you need to add your SoB
-too).
+Oh, sorry I forgot about this.
 
-> +if output=3D$("$@" --version --verbose 2>/dev/null | grep LLVM); then
-> +       set -- $output
-> +       rustc_llvm_version=3D$(get_llvm_canonical_version $3)
-> +else
-> +       echo 0 0
-> +       exit 1
-> +fi
-
-I guess if we don't find "LLVM" in the output, something weird is
-going on, so I guess it is reasonable not printing either here.
-Although, in principle, we could preserve information and print at
-least the `$rustc` one.
-
-Anyway, we may need to rethink this when we start supporting e.g. the
-GCC backend, so I think it is fine as it is.
-
-Thanks!
-
-Cheers,
-Miguel
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
