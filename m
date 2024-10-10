@@ -1,194 +1,81 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352251C57A0
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 08:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E727C1BBBFD
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 08:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728549089; cv=none; b=rlGky1HtdqfxbcMjcyxWNVv1Wtx4GcT5Z/OXd8gKJRWUsCPzoEj1PlX4FoKAxQG1afu28aJHpPfUWXnyq/BUmsXpUyTUHy/9L0MWpNXoDcBJ7HJmf6r5a+a8b9hvycUGNbFVGVZZggsWMfRSMho8ONeifLf7ywsRa9nEmalru24=
+	t=1728549468; cv=none; b=KJryZ/CGF1G6YP+xku3DTsSD9UoBmi9JL2B5bcbzjYFcqMfJaMHt+Qj3LiCe+ioSkk/U0Jf6AB1SHA3o22OiYyKefA9f1rSXKb44UWuuMOehE74pgJsvQybD7ArU5l+s4sn8QnEfPh4LO0sZJMtDjxIJC64b5IV8FFzsS4iR9oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728549089; c=relaxed/simple;
-	bh=osnJ/gYQ8YeI3Ir3s2vU1xez5jQHlWoORgPbRKpVzcE=;
-	h=MIME-Version:Content-Type:Date:Message-ID:CC:Subject:From:To:
-	 In-Reply-To:References; b=WREWhCrU3PcsdFyToNq5+ohGuHmt05ygkKqIg1OtXOiOhEVbHqpwwkcq9LW1452n54f3rplOfI0GBxQngD3JL1UPNuIIln6M5qJHjp9cdL2298X03Zik+UigjWpzviMSa/iXkdw0G7lyle6oBJ0A+H30OL8csFJTaOy58CzoswE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=lOTcUXid; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1728549468; c=relaxed/simple;
+	bh=9FMviRvNNGrKMjQx5y7ab9W6PoN4yQqeRZ8Lp8AbVgg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e6jyu9AGQQmuVpluUNUHNxsXNmCCe+GREH/zR+TTb1BuQEsX7Fld2hIsW1mntWkDgGPypzIXIMI5VhoFirQ+l2q6t+gqBdnj9JnOYY4p96o4E1bmPCvTa8NfiEeFIgAoTiEZxGjuYAo/tdwfgibxhKtxdfkLI1kYqK9rAqZtLjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BFy0h6Dc; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="lOTcUXid"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20241010083124euoutp01a800a40737aa0265887bfc8605db9034~9CjwHtAme0704607046euoutp01T
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 08:31:24 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20241010083124euoutp01a800a40737aa0265887bfc8605db9034~9CjwHtAme0704607046euoutp01T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1728549084;
-	bh=osnJ/gYQ8YeI3Ir3s2vU1xez5jQHlWoORgPbRKpVzcE=;
-	h=Date:CC:Subject:From:To:In-Reply-To:References:From;
-	b=lOTcUXidd2r2w64/CJvTJUJYr0w+PzC4zxVsToE/d5dtkPC8DVhFOpK+/DMo3mq2W
-	 KKRxW9Oc6nTktEaYmVqeGkkEmBpYdHWLSRjgfCT5wE1+Iwz7GH6q9hkyGIbYR0qXv/
-	 y++IimtC84Vzd43N3Pb0GqvKNlaNVbg2UazflOF0=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20241010083124eucas1p14f79f5e3d311bc68b2fcae482e43fe27~9CjvkO6RJ2759927599eucas1p1e;
-	Thu, 10 Oct 2024 08:31:24 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges2new.samsung.com (EUCPMTA) with SMTP id 43.98.09875.CD097076; Thu, 10
-	Oct 2024 09:31:24 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514~9CjvEJroI0813008130eucas1p2I;
-	Thu, 10 Oct 2024 08:31:23 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20241010083123eusmtrp1a4ca1a75f3fdc97a2d039203d258efa8~9CjvC9H_62497224972eusmtrp1s;
-	Thu, 10 Oct 2024 08:31:23 +0000 (GMT)
-X-AuditID: cbfec7f4-131ff70000002693-c2-670790dc8d6c
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id C7.F6.19096.BD097076; Thu, 10
-	Oct 2024 09:31:23 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20241010083123eusmtip2b5366410eebb48e047bcc554dea90d6b~9Cju1bDDH2861228612eusmtip2M;
-	Thu, 10 Oct 2024 08:31:23 +0000 (GMT)
-Received: from localhost (106.110.32.87) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Thu, 10 Oct 2024 09:31:22 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BFy0h6Dc"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37cd8a5aac9so295589f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 01:37:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728549464; x=1729154264; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9FMviRvNNGrKMjQx5y7ab9W6PoN4yQqeRZ8Lp8AbVgg=;
+        b=BFy0h6DcR8nSGgmSWEuxrXFyaIFynw2OIlr7YXHhNKX04RHGqMCrpMkwQk3pqp5ksK
+         AIafqA6QVNpST635rGdf3vAE4w/1HunoTCkUrTjze+1zRGMFhs2+v5EkxjMCG3urpepM
+         e8IH1mr111RmglDvvdqNqqU9YcZgjLJm/Oo3QqJzpZUl/UK4s6TShcORWIvikc8UMMxR
+         7aIPL7tXyDrc80uJwXZcHzCxeuxRyZ0GswsbUi5SD3XYGukAO4LHEviB9z/ABPgD0xX5
+         HpfM4c/sxyHPdCLRJ2IziRgjZlc87zOBe4tFstPU/S9+XYf6iw1Tjekwl+9NM6T+x3xT
+         /I5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728549464; x=1729154264;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9FMviRvNNGrKMjQx5y7ab9W6PoN4yQqeRZ8Lp8AbVgg=;
+        b=wvDoTgFViezB6kZ94R+VEr7/15WZq1U898panfwZbxpxhrA7fbLYmwXQ/rEm7LWewF
+         41/BD0prGeVYjPAkFnLLXsB1eswAZsuVX5VTjRWg8yGG7+mknFgECZRjthnGSp3sJQRs
+         QYHO8132ki1KpgDh9aOuk6ZDXeoygkt0sb1CPuij+qimc3N3KJ0df3adHtA3kbKRf7DS
+         l5Mn9YUgL9g9bWp9JEFTfjlaFjxDpKhgQA30B6cZpO9UVywBvTJiW5lG6BMaGMepEAfy
+         wJfXNIOGv8UsNGsJO3eMgalIsajm9HF7iw2orZtnKjwVMY+cylXtcRslzE1vW8ihiDNx
+         Ca8w==
+X-Gm-Message-State: AOJu0YyNIPSTTZaKyDVsZBSPKaSdHuURdM0EoqugnsSdDIO6YVlF2w1k
+	vYmYhhqOTyIZWm6V9VH+6xuZ3uP83+v1+GspxzWs7ORsOLT/7Tr4n9hjTN0esK0NsMzG89MzsRk
+	BjFO8lls6VE6+xW0jHInOm/vKFAd3t/y2DwYh
+X-Google-Smtp-Source: AGHT+IHo7nvtYBfChOYg2s4EAqI+xEoiq97hn53e361dNMhfgEs18RdVrBlAKwV0JpOtmd2UT3msXVVB2YL5hQrF6o4=
+X-Received: by 2002:a5d:5c85:0:b0:37d:4cf9:e085 with SMTP id
+ ffacd0b85a97d-37d4cf9e0f8mr585415f8f.25.1728549464038; Thu, 10 Oct 2024
+ 01:37:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20241009162358.27735-1-tamird@gmail.com>
+In-Reply-To: <20241009162358.27735-1-tamird@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 10 Oct 2024 10:37:31 +0200
+Message-ID: <CAH5fLgi=ZjXs6KyG5ovaSSkRHCOsVb+3TFCnDvghYjE6w6uBfg@mail.gmail.com>
+Subject: Re: [PATCH] rust: improve grammar in commentary
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Date: Thu, 10 Oct 2024 10:31:22 +0200
-Message-ID: <D4RZIDTJFVX5.16Z4XSB5IW6D1@samsung.com>
-CC: <rust-for-linux@vger.kernel.org>, Fiona Behrens <me@kloenk.dev>,
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
-	<nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
-	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, "David S.
- Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>,
-	=?utf-8?q?=C3=8D=C3=B1igo_Huguet?= <ihuguet@redhat.com>,
-	=?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, Vegard Nossum
-	<vegard.nossum@oracle.com>, Laurent Pinchart
-	<laurent.pinchart@ideasonboard.com>, <linux-kernel@vger.kernel.org>,
-	<linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-From: Daniel Gomez <da.gomez@samsung.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Tamir Duberstein
-	<tamird@gmail.com>
-X-Mailer: aerc 0.18.2-67-g7f69618ac1fd
-In-Reply-To: <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SbUxTVxjeubf3g2bQS2HxRKfEBrdMAwph8ywqGZmJd4k/RLM4t4WtKdeC
-	K4gtLRNkqRWEUgOCDqQwxEioVYRZWEHkw9Qg32MLroDQdUssDErHqsBE/Bj01ow/J8/7PM/7
-	nue8OTQuvkSup5NT0zllqlQhIYUC6/2lnyMmzlPyHaU2EZpwPiLQi4pmCvWM6AToH7uOQKO/
-	dOKoruk0hiqHcgTo1wE3QD9aHuBoaOEFjvTFNRR63tqCoeHWShItP53E0J9/jBKovWGYRGNl
-	sxTKM7tINNneQyDzZRNADZP3cPR0oI1Cg9a+lUNXR3wE2SbzGMa22hpJtkb/DGNvGx0UW21R
-	sxX55QRrua4n2Sp9FcZ6XQ8F7L95bSR77qwFY+c6fiNZT08hwT6xbGKLDPepA6LPhbsTOUWy
-	hlNuj/1amHTXtUSkdYu+1bl6SS0YebMABNCQiYG/m3NBARDSYuYagI22MbAqiJl5AE9XY7zw
-	BMCp0k7ydUfPwohfMAE4m3ftf5fTNIHzRSOAV+cd1GpLIBMMe8sfCVYxzmyDtVfcOI/fg7nN
-	yz6PgNkCx8t/Inh/DLxZaqZWB+FMEQWXuuwrBU2HMLvh40VfDHKlt6PX4usNZY7A+sUGio/3
-	DnxVVOy7K4CJh61nKnCe3wwvFZsFPM6GfU0Pfakhc1sILY/tfmEvrFi+4R8UAme6m/z4bdh/
-	4ZzfI4c19UY/ToNt40ZiNRtkdsHCAQVPx8GcMxdJng6Co55g/rlBsMRahvN0IMw/Kz4Pwo1r
-	FmRcsyDjmgVVA/w6WMepVSlyThWdymVEqqQpKnWqPFJ2PMUCVj5v/8vu+RZgmvFG2gBGAxuA
-	NC4JDYy4QsjFgYnSk5mc8vhXSrWCU9nABlogWRe4JTGMEzNyaTr3DcelccrXKkYHrNdiJbP5
-	G17+/dlFSnbnVVm0pfaecmb6yy/CN8sXAqYexHrMcfL92j3Wqa3BuviCqthRwN1IbLlVo/1O
-	5M6mbnZ67nia98tOHe0+cDUzwVoeTtZXdqXlLA/e7WeeH3Psk+zM2hG23F568AipoSPsUXbz
-	hQ7k/aH2/UOLnSXT9Wr80xNuh2Fon6PIXX1Y44yKHj6Z25ewa0HhNjq/b8kzGEwfpxPWE5Ub
-	5+IPZ0zlZme+FTo4r9mTlbDdcrQ/pu5UtWyjSBgd9+yNsCyJ9bJ35lbSh9pjQ+82diUHaWUF
-	UP/XdLtrL3Fom1cfO9fVUBji1eGaT5hMg+ODnZsyZONLTkwhEaiSpFFbcaVK+h8H2FQ+KwQA
-	AA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCKsWRmVeSWpSXmKPExsVy+t/xe7q3J7CnG0x4q2Fx5/4TVou/s7ez
-	W5y43sRi8eFaE6vFjQv7mS3WbGlksphzvoXF4uKZ14wWGzZdYbY4//Uvs0XnxCXsFn927WCy
-	uLxrDpvF7x/PmCwePrjBarF3/WU2i5vT37BbtK98ymbxbO8JVouV85czWqx/dpjZ4seZPewW
-	Z7edAhJNa1gdJDy2rLzJ5LHr0GY2jyWdv5g8ds66y+6xYFOpx+yOmawem1Z1snnM65zH5PHx
-	6S0Wj+/te9g8eto2MXm833eVzePtiT5Wj8+b5Dz6u4+xB/BH6dkU5ZeWpCpk5BeX2CpFG1oY
-	6RlaWugZmVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GUcePqTteA4f0XT05NsDYzXeboYOTkk
-	BEwkTny9ztTFyMUhJLCUUWLX3W3MEAkZiY1frrJC2MISf651sUEUfWSU+DnnFDOEs5lRYvHD
-	VrAqXgFBiZMzn7CA2MwC2hLLFr5mhrA1JVq3/2YHsVkEVCVuz9wKVW8isXbaSnaQQcwCvewS
-	l3bMA3I4OIQFbCQ+fWMDqWED6t13chNYr4hApMS6b+vZIS5Sk/jfP5EF4oguJol9X68ygSQ4
-	BQIldjXPhnpBUWLGxJUsEHatxOe/zxgnMIrMQnLrLCS3zkJy6wJG5lWMIqmlxbnpucVGesWJ
-	ucWleel6yfm5mxiByWnbsZ9bdjCufPVR7xAjEwfjIUYJDmYlEV7dhazpQrwpiZVVqUX58UWl
-	OanFhxhNgZ6eyCwlmpwPTI95JfGGZgamhiZmlgamlmbGSuK8bFfOpwkJpCeWpGanphakFsH0
-	MXFwSjUwTXk8vbnN9wBviv3S9jX1doIdztkyh+a/iml7dirRq/ap7b1CDccVS990Crk9EGfX
-	qDrzY7nxVo2W6WeEw+Yoyr1IeBAhnxZ3Qsfgi8fjSxPeTD1ftED6t+a1BT98kpbx7V3gW1e0
-	7OqSWyVmdy0+RbwOTFuy/c+t+e/Per/SMJRfXzS90av55qFbsXuSLcQLyv/OmLfzl9Sz4qh9
-	E3/ndvwQfnYt+LTzBR/pynMfs++/1WdrNF0yj2PJMb0pzkLWPWL/p/oIzZil/Sz8dYJKz4wD
-	uSu3v3i6+WkaW1CQwVSFENH7ryQ5Tzbvv3P3SJOw2v7WK7r2Xi+0tv7T2jRx89oPKy489zW1
-	ZOQI3Ld9b6ISS3FGoqEWc1FxIgDBQWT91wMAAA==
-X-CMS-MailID: 20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514
-X-Msg-Generator: CA
-X-RootMTR: 20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514
-References: <20241008224810.84024-1-tamird@gmail.com>
-	<CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
-	<CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
-	<CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
-	<CGME20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514@eucas1p2.samsung.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed Oct 9, 2024 at 3:12 PM CEST, Miguel Ojeda wrote:
-> On Wed, Oct 9, 2024 at 2:57=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
->>
->> What would you have me link to? With this patch applied and using
+On Wed, Oct 9, 2024 at 6:24=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> I was thinking perhaps the series from Daniel, if that is the latest
-> discussion (?), i.e. I would like to understand what is the policy
-> around changes like this, what happens if it breaks, etc.
-
-Building Linux in macOS is now supported for arm64 (targets tested: allyesc=
-onfig
-and defconfig). The upstream policy is to use the build system variables to
-configure the necessary tweaks to support building in macOS. However, this
-will not always be possible then, patches are welcome from the build system
-maintainer to support "portability" across OSes. But not full integration.
-Please, let me know if this is not clear.
-
-This policy forces macOS users to provide their own environment, documentat=
-ion
-and dependencies. I created bee-headers with the intention of providing all=
- this
-(including the missing byteswap, elf and endian headers) as reference or fo=
-r
-developers to use.
-
-So, after installing bee-headers and all other linux dependencies (llvm, se=
-d,
-awk, etc), one would simply do:
-
-source bee-init # To initiate the build enviroment
-make LLVM=3D1 defconfig
-make LLVM=3D1 -j$(nproc)
-
-Here a more detailed documentation:
-https://github.com/bee-headers/homebrew-bee-headers/blob/main/README.md
-
-The last version of the series is v3 [1], which fixes a build error that ca=
-nnot
-be fixed in macOS via build system environment. This is enabled when using =
-Intel
-Xe Graphics (DRM_XE), included in allyesconfig target.
-
-[1] https://lore.kernel.org/all/20240925-macos-build-support-v3-1-233dda880=
-e60@samsung.com/
-
+> Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
+> added an errant "the" where one was not needed; remove it.
 >
->> https://github.com/bee-headers/homebrew-bee-headers I was able to build =
-a kernel
->> on my apple silicon mac. Relevant config:
->
-> That is great.
->
-> Thanks!
->
-> Cheers,
-> Miguel
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
