@@ -1,342 +1,303 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE89D1E32C5;
-	Thu, 10 Oct 2024 21:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728594325; cv=pass; b=mPqVyY8PajdPbOtor7GsaOwjUETjGk/v6R/Upf+9W7tEYYcQbltcig6DGNyc+DnHdrlal9kcKso8m0EOdtoa7yBL7Bqyi6aF97/Z1N/aZAn4Kb8uHyVlw8wjbNpbru0IFAiMy4p+cZoxmQCWMuee6Y/ZY9A5kvNHhVlmtRBAWeo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728594325; c=relaxed/simple;
-	bh=AyzvQX4BvqiEXeegFCAAuOQqgfifSbkORUuQC8kOYEI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T+l6wxSXtj36NwabtziueP4IfjdtE8M0H+cX8YZWfj3Jq4SVwRxuMbUzV9v6Fe7/7jKfDBXBHAjdFE4RLCGPpa+xer+pFbKeTddADlfnWsaC91vGs5tQ6MtNWLMwwsolwZmqyUQ1hPR2byTLBB7JaD7rdf4S+jjkitKLXrgBNuA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=aD+NPpQb; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AA2188CAE;
+	Thu, 10 Oct 2024 22:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728598427; cv=none; b=J9v9+BPF4MG4Bf7Sg3CvkmWGUKkXufMgY1Fo0bBN4HuKaDtxa7H+wZzjCByvobIWOYrqjbwi7PQN/mJShkFP8Q+gmbdLlj2opaUx0V7wh4AmLavXZV9tpkT2aPCKS9KPhQoC9XZp1zvQmGwp3kzUN1499/4DHiJyYMK5tSa2AFc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728598427; c=relaxed/simple;
+	bh=q22wwYQiO2VBHxPxIvpjGVjClYz7q9lpvsiZ1RggzOY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CfI9UCgvhtv8LLx3W9QUCJSk2/EY3UyKBuOG7/eEOmBn24IKvZpNNrNmRCsUJfhTvsJoRaHDErI6E+xtUrJV2GjpL93vLVe9KqNS/I4CQqH3CxH8lASsRlLY+zG2Fc+ZAh9/+bd0yikwa6RGP6fJgCW7R1TCvxTxzsFeDy7ut5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Sd5gxSJR; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="aD+NPpQb"
-ARC-Seal: i=1; a=rsa-sha256; t=1728594274; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cYlyaeIHYTwyfmbnfzSInpDN1qo7N37ZUk7euOLlMT+gcvzBMbi9HhztMGAdjSIAiOZYic165AA3mz57xI4ebh25ACbP7ZIqT35Gt+b8PwrFoxuOAoGNoO9Y1DvxYi0cgOiDteOh7hcvOCXBqFFVqwTUFLbG14RPiQ6cNhKHKjs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1728594274; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MqVYCQFj+yKHI41/NIewCZ7t8Wq2doPeQIymj6djC1M=; 
-	b=QAIFD6CXBjJyv08QigWVulWNPPz1LmdlmebQc0bjInFwxnKttv7NHKU9oRUPwY4A5OZNw4Mzt+lj/0OZPdopeguC6g/+081h0BUJqpbesCnMP2wF38LCZi/Bn0/KY4CpmLg/LwynfZZGYxJxrPrM6raxqYcEw1sZucqdEhGKaR0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728594274;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=MqVYCQFj+yKHI41/NIewCZ7t8Wq2doPeQIymj6djC1M=;
-	b=aD+NPpQbVrLRKciiWpBmI3tSjtCxeufeo+cqsbHO+QQLfYca0Z/TUjy5Rhk/uHlG
-	iyCIp4odqeUYxE8p2jg1qVhYhMX/X0y8feDgVBxCaLVMkyIaJvIMe1myuQBIi9o1w15
-	2eWKQxDayooDBcki8aXRcDyiakKC4ofY7LClO2aE=
-Received: by mx.zohomail.com with SMTPS id 1728594273134157.01325990589646;
-	Thu, 10 Oct 2024 14:04:33 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Sd5gxSJR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1728598422; x=1728857622;
+	bh=+rMiRA5IGnx43R0jh0vX1MDX6tE0GA9S/kOdoqjvBoE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Sd5gxSJRm6Gmn5ZrqDy5+4V74ZwR0oMKvcHdHeDLJZ+9f6BYU+gRNBT+ttCgL97dO
+	 Rp9bJjZqJAEkI2QSHKVU+a8sZ03Yu5AMvjqYdUCLC+g0GtsWgzNBY/88S4gZOo9C6K
+	 StqVqHXMWWmTrWD3+wRAyY1bNk9OLKwIJ3T13H/5fv5Ep8VbCaCw0oRZrpDN1ANi1d
+	 aY1QoT9kOJZbQz4CI4UgyH7vL4adhjMFQjDXHZG5C70IWIcA9I9PElGJ/bR2FgHYmN
+	 R7yTmWZvcNaqp6Qfvt1W6ecxWcnkRbTKnVYuQUyRdeAvy8JOX5jzHx9eMbQ0XCdvAm
+	 la/btuLplOHkA==
+Date: Thu, 10 Oct 2024 22:13:38 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v4] rust: add global lock support
+Message-ID: <2f3e6cac-1642-489b-b045-32211e296137@proton.me>
+In-Reply-To: <CAH5fLghsozD0qeTygBM0-WDgXRwtGcsc6B3bT1794QMx3=vSTg@mail.gmail.com>
+References: <20240930-static-mutex-v4-1-c59555413127@google.com> <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me> <CAH5fLghsozD0qeTygBM0-WDgXRwtGcsc6B3bT1794QMx3=vSTg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 61040bb2d23b0698a75bc8ccb8b41e541a39e674
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH v6 1/3] rust: Introduce irq module
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20240916213025.477225-2-lyude@redhat.com>
-Date: Thu, 10 Oct 2024 18:00:52 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@redhat.com>,
- airlied@redhat.com,
- Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>,
- Waiman Long <longman@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linux-kernel@vger.kernel.org,
- Benno Lossin <benno.lossin@proton.me>,
- Gary Guo <gary@garyguo.net>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Valentin Obst <kernel@valentinobst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <92D047CB-EF1E-4749-86DD-7A8226C45031@collabora.com>
-References: <20240916213025.477225-1-lyude@redhat.com>
- <20240916213025.477225-2-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-ZohoMailClient: External
 
+On 10.10.24 12:53, Alice Ryhl wrote:
+> On Thu, Oct 10, 2024 at 12:39=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> On 30.09.24 15:11, Alice Ryhl wrote:
+>>> diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/gl=
+obal.rs
+>>> new file mode 100644
+>>> index 000000000000..fc02fac864f6
+>>> --- /dev/null
+>>> +++ b/rust/kernel/sync/lock/global.rs
+>>> @@ -0,0 +1,260 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +// Copyright (C) 2024 Google LLC.
+>>> +
+>>> +//! Support for defining statics containing locks.
+>>> +
+>>> +/// Defines a global lock.
+>>> +///
+>>> +/// Supports the following options:
+>>> +///
+>>> +/// * `value` specifies the initial value in the global lock.
+>>> +/// * `wrapper` specifies the name of the wrapper struct.
+>>> +/// * `guard` specifies the name of the guard type.
+>>> +/// * `locked_by` specifies the name of the `LockedBy` type.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// A global counter.
+>>> +///
+>>> +/// ```
+>>> +/// # mod ex {
+>>> +/// # use kernel::prelude::*;
+>>> +/// kernel::sync::global_lock! {
+>>> +///     // SAFETY: Initialized in module initializer before first use.
+>>> +///     static MY_COUNTER: Mutex<u32> =3D unsafe { uninit };
+>>> +///     value: 0;
+>>> +/// }
+>>> +///
+>>> +/// fn increment_counter() -> u32 {
+>>> +///     let mut guard =3D MY_COUNTER.lock();
+>>> +///     *guard +=3D 1;
+>>> +///     *guard
+>>> +/// }
+>>> +///
+>>> +/// impl kernel::Module for MyModule {
+>>> +///     fn init(_module: &'static ThisModule) -> Result<Self> {
+>>> +///         // SAFETY: called exactly once
+>>> +///         unsafe { MY_COUNTER.init() };
+>>> +///
+>>> +///         Ok(MyModule {})
+>>> +///     }
+>>> +/// }
+>>> +/// # struct MyModule {}
+>>> +/// # }
+>>> +/// ```
+>>> +///
+>>> +/// A global mutex used to protect all instances of a given struct.
+>>> +///
+>>> +/// ```
+>>> +/// # mod ex {
+>>> +/// # use kernel::prelude::*;
+>>> +/// kernel::sync::global_lock! {
+>>> +///     // SAFETY: Initialized in module initializer before first use.
+>>> +///     static MY_MUTEX: Mutex<()> =3D unsafe { uninit };
+>>> +///     value: ();
+>>> +///     guard: MyGuard;
+>>> +///     locked_by: LockedByMyMutex;
+>>> +/// }
+>>> +///
+>>> +/// /// All instances of this struct are protected by `MY_MUTEX`.
+>>> +/// struct MyStruct {
+>>> +///     my_counter: LockedByMyMutex<u32>,
+>>> +/// }
+>>> +///
+>>> +/// impl MyStruct {
+>>> +///     /// Increment the counter in this instance.
+>>> +///     ///
+>>> +///     /// The caller must hold the `MY_MUTEX` mutex.
+>>> +///     fn increment(&self, guard: &mut MyGuard) -> u32 {
+>>> +///         let my_counter =3D self.my_counter.as_mut(guard);
+>>> +///         *my_counter +=3D 1;
+>>> +///         *my_counter
+>>> +///     }
+>>> +/// }
+>>> +///
+>>> +/// impl kernel::Module for MyModule {
+>>> +///     fn init(_module: &'static ThisModule) -> Result<Self> {
+>>> +///         // SAFETY: called exactly once
+>>> +///         unsafe { MY_MUTEX.init() };
+>>> +///
+>>> +///         Ok(MyModule {})
+>>> +///     }
+>>> +/// }
+>>> +/// # struct MyModule {}
+>>> +/// # }
+>>> +/// ```
+>>
+>> The docs here don't mention that you still need to call `.init()`
+>> manually (though the examples show it nicely). I don't know if we want
+>> macros to have a `# Safety` section.
+>>
+>>> +#[macro_export]
+>>> +macro_rules! global_lock {
+>>> +    {
+>>> +        $(#[$meta:meta])* $pub:vis static $name:ident: $kind:ident<$va=
+luety:ty> =3D unsafe { uninit };
+>>> +        value: $value:expr;
+>>
+>> I would find it more natural to use `=3D` instead of `:` here, since the=
+n
+>> it would read as a normal statement with the semicolon at the end.
+>> Another alternative would be to use `,` instead of `;`, but that doesn't
+>> work nicely with the static keyword above (although you could make the
+>> user write it in another {}, but that also isn't ideal...).
+>>
+>> Using `=3D` instead of `:` makes my editor put the correct amount of
+>> indentation there, `:` adds a lot of extra spaces.
+>=20
+> That seems sensible.
+>=20
+>>> +        wrapper: $wrapper:ident;
+>>> +        $( name: $lname:literal; )?
+>>> +        $(
+>>> +            guard: $guard:ident;
+>>> +            locked_by: $locked_by:ident;
+>>> +        )?
+>>> +    } =3D> {
+>>> +        $crate::macros::paste! {
+>>> +            type [< __static_lock_ty_ $name >] =3D $valuety;
+>>> +            const [< __static_lock_init_ $name >]: [< __static_lock_ty=
+_ $name >] =3D $value;
+>>
+>> Why are these two items outside of the `mod` below?
+>> Also why do you need to define the type alias? You could just use
+>> `$valuety`, right?
+>=20
+> Because they might access things that are in scope here, but not in
+> scope inside the module.
 
-Hi Lyude.
+Right... That's rather annoying...
 
+>> Also,
+>>
+>>     error: type `__static_lock_ty_VALUE` should have an upper camel case=
+ name
+>>        --> rust/kernel/sync/lock/global.rs:100:18
+>>         |
+>>     100 |               type [< __static_lock_ty_ $name >] =3D $valuety;
+>>         |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert=
+ the identifier to upper camel case: `StaticLockTyValue`
+>>
+>> The same error affects the `wrapper` type forwarding below.
+>>
+>>
+>>> +
+>>> +            #[allow(unused_pub)]
+>>
+>>     error: unknown lint: `unused_pub`
+>>        --> rust/kernel/sync/lock/global.rs:103:21
+>>         |
+>>     103 |               #[allow(unused_pub)]
+>>         |                       ^^^^^^^^^^ help: did you mean: `unused_m=
+ut`
+>=20
+> Uhhh. This is the lint for when you mark a function pub but don't
+> actually export it from the crate. But now I can't find the lint
+> anywhere ... I'm so confused.
 
-> On 16 Sep 2024, at 18:28, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> This introduces a module for dealing with interrupt-disabled contexts,
-> including the ability to enable and disable interrupts
-> (with_irqs_disabled()) - along with the ability to annotate functions =
-as
-> expecting that IRQs are already disabled on the local CPU.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
->=20
-> ---
->=20
-> V2:
-> * Actually make it so that we check whether or not we have interrupts
->  disabled with debug assertions
-> * Fix issues in the documentation (added suggestions, missing periods, =
-made
->  sure that all rustdoc examples compile properly)
-> * Pass IrqDisabled by value, not reference
-> * Ensure that IrqDisabled is !Send and !Sync using
->  PhantomData<(&'a (), *mut ())>
-> * Add all of the suggested derives from Benno Lossin
->=20
-> V3:
-> * Use `impl` for FnOnce bounds in with_irqs_disabled()
-> * Use higher-ranked trait bounds for the lifetime of =
-with_irqs_disabled()
-> * Wording changes in the documentation for the module itself
->=20
-> V4:
-> * Use the actual unsafe constructor for IrqDisabled in
->  with_irqs_disabled()
-> * Fix comment style in with_irqs_disabled example
-> * Check before calling local_irq_restore() in with_irqs_disabled that
->  interrupts are still disabled. It would have been nice to do this =
-from a
->  Drop implementation like I hoped, but I realized rust doesn't allow =
-that
->  for types that implement Copy.
-> * Document that interrupts can't be re-enabled within the `cb` =
-provided to
->  `with_irqs_disabled`, and link to the github issue I just filed about
->  this that describes the solution for this.
->=20
-> V5:
-> * Rebase against rust-next for the helpers split
-> * Fix typo (enabled -> disabled) - Dirk
->=20
-> V6:
-> * s/indicate/require/ in IrqDisabled docs
-> * Reword comment above with_irqs_disabled in code example requested by
->  Benno
-> * Add paragraph to with_irqs_disabled docs requested by Benno
-> * Apply the comments from Boqun's review for V4 that I missed
-> * Document type invariants of `IrqDisabled`
->=20
-> This patch depends on
-> =
-https://lore.kernel.org/rust-for-linux/ZuKNszXSw-LbgW1e@boqun-archlinux/
->=20
-> ---
-> rust/helpers/helpers.c |  1 +
-> rust/helpers/irq.c     | 22 ++++++++++
-> rust/kernel/irq.rs     | 96 ++++++++++++++++++++++++++++++++++++++++++
-> rust/kernel/lib.rs     |  1 +
-> 4 files changed, 120 insertions(+)
-> create mode 100644 rust/helpers/irq.c
-> create mode 100644 rust/kernel/irq.rs
->=20
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 30f40149f3a96..0bb48df454bd8 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -12,6 +12,7 @@
-> #include "build_assert.c"
-> #include "build_bug.c"
-> #include "err.c"
-> +#include "irq.c"
-> #include "kunit.c"
-> #include "mutex.c"
-> #include "page.c"
-> diff --git a/rust/helpers/irq.c b/rust/helpers/irq.c
-> new file mode 100644
-> index 0000000000000..ec1e8d700a220
-> --- /dev/null
-> +++ b/rust/helpers/irq.c
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/irqflags.h>
-> +
-> +unsigned long rust_helper_local_irq_save(void)
-> +{
-> + unsigned long flags;
-> +
-> + local_irq_save(flags);
-> +
-> + return flags;
-> +}
-> +
-> +void rust_helper_local_irq_restore(unsigned long flags)
-> +{
-> + local_irq_restore(flags);
-> +}
-> +
-> +bool rust_helper_irqs_disabled(void)
-> +{
-> + return irqs_disabled();
-> +}
-> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-> new file mode 100644
-> index 0000000000000..ee3a4549aa389
-> --- /dev/null
-> +++ b/rust/kernel/irq.rs
-> @@ -0,0 +1,96 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Interrupt controls
-> +//!
-> +//! This module allows Rust code to control processor interrupts. =
-[`with_irqs_disabled()`] may be
-> +//! used for nested disables of interrupts, whereas [`IrqDisabled`] =
-can be used for annotating code
-> +//! that requires interrupts to be disabled.
-> +
-> +use bindings;
-> +use core::marker::*;
-> +use crate::types::NotThreadSafe;
+Maybe you mean `unreachable_pub`?
 
-Missing rustfmt on this file
-
-> +
-> +/// A token that is only available in contexts where IRQs are =
-disabled.
-> +///
-> +/// [`IrqDisabled`] is marker made available when interrupts are not =
-active. Certain functions take
-> +/// an [`IrqDisabled`] in order to require that they may only be run =
-in IRQ-free contexts.
-> +///
-> +/// This is a marker type; it has no size, and is simply used as a =
-compile-time guarantee that
-> +/// interrupts are disabled where required.
-> +///
-> +/// This token can be created by [`with_irqs_disabled`]. See =
-[`with_irqs_disabled`] for examples and
-> +/// further information.
-> +///
-> +/// # Invariants
-> +///
-> +/// IRQs are disabled when an object of this type exists.
-> +#[derive(Copy, Clone, Debug, Ord, Eq, PartialOrd, PartialEq, Hash)]
-> +pub struct IrqDisabled<'a>(PhantomData<(&'a (), NotThreadSafe)>);
-> +
-> +impl IrqDisabled<'_> {
-> +    /// Create a new [`IrqDisabled`] token in an interrupt disabled =
-context.
-> +    ///
-> +    /// This creates an [`IrqDisabled`] token, which can be passed to =
-functions that must be run
-> +    /// without interrupts. If debug assertions are enabled, this =
-function will assert that
-> +    /// interrupts are disabled upon creation. Otherwise, it has no =
-size or cost at runtime.
-> +    ///
-> +    /// # Panics
-> +    ///
-> +    /// If debug assertions are enabled, this function will panic if =
-interrupts are not disabled
-> +    /// upon creation.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// This function must only be called in contexts where it is =
-already known that interrupts have
-> +    /// been disabled for the current CPU, and the user is making a =
-promise that they will remain
-> +    /// disabled at least until this [`IrqDisabled`] is dropped.
-> +    pub unsafe fn new() -> Self {
-> +        // SAFETY: FFI call with no special requirements
-> +        debug_assert!(unsafe { bindings::irqs_disabled() });
-> +
-> +        // INVARIANT: The safety requirements of this function ensure =
-that IRQs are disabled.
-> +        Self(PhantomData)
-> +    }
-> +}
-> +
-> +/// Run the closure `cb` with interrupts disabled on the local CPU.
-> +///
-> +/// This disables interrupts, creates an [`IrqDisabled`] token and =
-passes it to `cb`. The previous
-> +/// interrupt state will be restored once the closure completes. Note =
-that interrupts must be
-> +/// disabled for the entire duration of `cb`, they cannot be =
-re-enabled. In the future, this may be
-> +/// expanded on [as documented =
-here](https://github.com/Rust-for-Linux/linux/issues/1115).
-> +///
-> +/// # Examples
-> +///
-> +/// Using [`with_irqs_disabled`] to call a function that can only be =
-called with interrupts
-> +/// disabled:
-> +///
-> +/// ```
-> +/// use kernel::irq::{IrqDisabled, with_irqs_disabled};
-> +///
-> +/// // Requiring interrupts be disabled to call a function
-> +/// fn dont_interrupt_me(_irq: IrqDisabled<'_>) {
-> +///     // When this token is available, IRQs are known to be =
-disabled. Actions that rely on this
-> +///     // can be safely performed
-> +/// }
-> +///
-> +/// // Disables interrupts, their previous state will be restored =
-once the closure completes.
-> +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
-> +/// ```
-> +#[inline]
-> +pub fn with_irqs_disabled<T>(cb: impl for<'a> FnOnce(IrqDisabled<'a>) =
--> T) -> T {
-> +    // SAFETY: FFI call with no special requirements
-> +    let flags =3D unsafe { bindings::local_irq_save() };
-> +
-> +    // SAFETY: We just disabled IRQs using `local_irq_save()`
-> +    let ret =3D cb(unsafe { IrqDisabled::new() });
-> +
-> +    // Confirm that IRQs are still disabled now that the callback has =
-finished
-> +    // SAFETY: FFI call with no special requirements
-> +    debug_assert!(unsafe { bindings::irqs_disabled() });
-> +
-> +    // SAFETY: `flags` comes from our previous call to local_irq_save
-> +    unsafe { bindings::local_irq_restore(flags) };
-> +
-> +    ret
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index f10b06a78b9d5..df10c58e95c19 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -36,6 +36,7 @@
-> pub mod firmware;
-> pub mod init;
-> pub mod ioctl;
-> +pub mod irq;
-> #[cfg(CONFIG_KUNIT)]
-> pub mod kunit;
-> pub mod list;
-> --=20
-> 2.46.0
+>> Though I also get
+>>
+>>     error: methods `init` and `lock` are never used
+>>        --> rust/kernel/sync/lock/global.rs:128:42
+>>         |
+>>     122 | /                 impl $wrapper {
+>>     123 | |                     /// Initialize the global lock.
+>>     124 | |                     ///
+>>     125 | |                     /// # Safety
+>>     ...   |
+>>     128 | |                     pub(crate) unsafe fn init(&'static self)=
+ {
+>>         | |                                          ^^^^
+>>     ...   |
+>>     142 | |                     pub(crate) fn lock(&'static self) -> $cr=
+ate::global_lock_inner!(guard $kind, $valuety $(, $guard)?) {
+>>         | |                                   ^^^^
+>>     ...   |
+>>     146 | |                     }
+>>     147 | |                 }
+>>         | |_________________- methods in this implementation
+>>
+>> But that is governed by the `dead_code` lint.
 >=20
+> I guess I have to look into the lints again. I did not get this lint.
 
-=E2=80=94Daniel
+I just put a `global_lock!` invocation into `lib.rs` and didn't use any
+of the functions. But maybe we want that to error?
+
+>>> +            mod [< __static_lock_mod_ $name >] {
+>>> +                use super::[< __static_lock_ty_ $name >] as Val;
+>>> +                use super::[< __static_lock_init_ $name >] as INIT;
+>>> +                type Backend =3D $crate::global_lock_inner!(backend $k=
+ind);
+>>> +                type GuardTyp =3D $crate::global_lock_inner!(guard $ki=
+nd, Val $(, $guard)?);
+>>
+>> `GuardTyp` is only used once, so you should be able to just inline it.
+>> `Backend` is used twice, but I don't know if we need a type alias for
+>> it.
+>=20
+> They're both used twice. Inlining them makes the lines really long.
+
+Ah I missed the one on try_lock. It's fine to keep them.
+
+>>> +                    $wrapper {
+>>> +                        // SAFETY: The user of this macro promises to =
+call `init` before calling
+>>> +                        // `lock`.
+>>> +                        inner: unsafe {
+>>> +                            $crate::sync::lock::Lock::global_lock_help=
+er_new(state, INIT)
+>>> +                        }
+>>> +                    }
+>>> +                }
+>>> +
+>>> +                /// Wrapper type for a global lock.
+>>> +                pub(crate) struct $wrapper {
+>>
+>> How can the wrapper struct be `pub(crate)` when the constant might be
+>> global `pub`?
+>>
+>>     error: type `__static_lock_wrapper_INIT` is more private than the it=
+em `INIT`
+>>        --> rust/kernel/sync/lock/global.rs:206:14
+>>         |
+>>     206 |               };
+>>         |                ^ static `INIT` is reachable at visibility `pub=
+`
+>>         |
+>>
+>> The functions should probably just be `pub`.
+>=20
+> I used to do that, but got some errors about `pub` being unused. I'll
+> look into this again.
+
+Maybe the `unreachable_pub` lint can help?
+
+---
+Cheers,
+Benno
 
