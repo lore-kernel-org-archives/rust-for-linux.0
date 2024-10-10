@@ -1,55 +1,55 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F4E1C0DC1
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 10:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E7D29AF
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 11:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728557904; cv=none; b=lPB5djXVzjitptqsIAySRLNy4tHGKXmO7bXB3r679yYPFXPXNWxDZvZypAsdJdJVStHwVQFI/U6qc2V+8iaT1puFEJA20BKCU+F0JAWVXMJoegkgkDhyU52tGP/cdMgWWI0zUIYqIxZ/bcw3vIjOfXo9/O8qMgTdxPtcf4TJ9d0=
+	t=1728558152; cv=none; b=natagU8p83wMkYOR/LP86goRzA1wEgaxdN6eNupC8ho7jhJK+Tf1rs8r11bDFxWyjptlA2BhpvUloSyAcOazhdwPj7tarkaeNo5NEUTqKJIt8/VZEocQxOGq+6BJqLPy9Pq7zKLqzNnjEN2iCQzSztZZpznps3bJvIS5lZW5P/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728557904; c=relaxed/simple;
-	bh=StoaWEIYCCwjnd/+Bfx66/ND8mpJjgF5frrP6tUdr44=;
+	s=arc-20240116; t=1728558152; c=relaxed/simple;
+	bh=VUZtMlFmU9aktV9oOImu+gMtJQ/WQw06C2hUBzcUsec=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B8paxVhEcaEdHJa+o9aEPxAGtkgippb+kuxe3xbdSjYbDNpZ35LI5026DMBTAMmCEWHzTuEb3NIksmpS9NNofzGdABP+XiopoUv3+hZ78kAg1yn9wjFzNckRO/sA14nBMd9XIlKuyWaV/vtGooZCrHPNvDPaWK/jpKs99mNkK40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oyriwGmb; arc=none smtp.client-ip=209.85.128.51
+	 To:Cc:Content-Type; b=a129R5mtyzTVi8kr2OotlB3ozp9C34J3stlYoShfuyP6FD17d6Dhi3VsOpweX5+E7e+IjdfxzWMwcBtp5AXFvjLKJ2216J5anvejamBSTW13cY9FPLC4l0CmysnZnrbNd5zcVvmPAediqFTIYmgu7PDNKMTt7dyRdVX7zTn9Nio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xXGpw50n; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oyriwGmb"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-431160cdbd0so4556425e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 03:58:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xXGpw50n"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43117917eb9so4777575e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 04:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728557900; x=1729162700; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728558149; x=1729162949; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=StoaWEIYCCwjnd/+Bfx66/ND8mpJjgF5frrP6tUdr44=;
-        b=oyriwGmb0SYdoNYaKJKK0DV/Nsq8B6E5ts/qZXwUjE+eYIRG9iHrBHSm2NuOvEJLT0
-         W4vMmx3v0ZAO2pWTMuFsWpnIw7oRzJddO0KaSk03bZ2oEE4/ug8uOQg6ySQL9qWhgnNz
-         bi51pKldd10Dr6knemch1BJcSkzRF91IAn/t+nJf28tNTz3PLL39XI1dEodlCTHGxMfE
-         i/Od99sw/meHoiux+1nme7YH7cTfuCPa0XXOta1VuO4ivTzBX9aMll/fhALyHLZSQtCE
-         rVCO3hGowiG23KJk01F3LlgAsvBAzpR8uuTnEgAVKRjGZpgzNqBMSSFmpSFfLlxnhy6n
-         Uf8Q==
+        bh=vm7iH+80LuUknHyKz8yii4nAbEM+GkBJz008+GYeeIk=;
+        b=xXGpw50nYPqYjJGKlt5ujy9bErxHFfb0RfiiQ1ddSt5Mxq9ojHQDP/+EadvCjKZN2K
+         Tl6Pk1ynAt+e8HMWzWyqgTKPMV8ScGo62n3eLxthupIWtTKMtGZHEMb7pcYuZU8aFQ2D
+         Eswwa+opBSUFKw6Pn3iN2j0VYDVG/7M2znvxYYBF3R76MWJ44QnkQgxirhtLomIhqmxg
+         37Q+8j8v8i+Wpi7u71qrt9AU5ULs611HZH7Vu2mPh5hci5SMHpbrmaRTqHzZJbEJENO0
+         aaJBMbh7WcSTyC09ROFAMg5g3NPrgmq7oTyRpfN2Uklz7cgkNwnl1BHi5vaZ3bqENznq
+         uvKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728557900; x=1729162700;
+        d=1e100.net; s=20230601; t=1728558149; x=1729162949;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=StoaWEIYCCwjnd/+Bfx66/ND8mpJjgF5frrP6tUdr44=;
-        b=a3a6n7qdCnDKj/7QuPBxrQJEHk7N6HVHEWvAiRp2DiTvGLb9Kr5V/X0M6B1MoReW7W
-         ZLBaYqE3GpdD7xJ0gBZ9vmZHQNK6+pCTrHGio7jAtbeW9ycXqdqNYelnP4abEZC98QBW
-         cpTQDbcmdsb7oIGlx9ZR1SKnXsOJhz7zlphM/0xzlpJcoApE/QasG+K8byyWFyscldbu
-         hOsIx39HQ3m2Kp/kG394N/KNi9M6OoD0o8q2Sr5PDK2SM+rYAykPrUc/M4PFlCxF9jPu
-         +EpVUgCEj4ZdLeSLtlrrIbCIiSh3zXiqJfDz+adNBrJQiKQ8x0v7yLY+EUmMV4chw3Vf
-         OfnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSiL25E306JN7X6h2FumUKAF/1Vzub/DGlIFcpChHjJ+lsUqm8xqDbW+rbBqez2aGIDVgdBbWzDz/69JVcJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYJq4nPQ61GBKgFmgGIUM7kbN+UOJz2sato9DmnvJiuBN/Yzui
-	zG8AqUHrvPEuaNgjGWD0xXhL3B5zOB0Ln4SYZ9S9Y8T8w6EDRwPYY6Rud7HGLVC7YN3p/DUkVeG
-	Bd58zkZRSL//IkApVdjHe14Hc76Wbw4alXl2D
-X-Google-Smtp-Source: AGHT+IG6zteYy0eiXshByN3a31ubFooYapYA71mK/l2zbvcpHK0YoSgYWnV/kyVCloGT0HPQCGElonWjcU/HzmR4ZZE=
-X-Received: by 2002:a5d:4092:0:b0:374:c613:7c58 with SMTP id
- ffacd0b85a97d-37d481d300dmr2263009f8f.29.1728557900384; Thu, 10 Oct 2024
- 03:58:20 -0700 (PDT)
+        bh=vm7iH+80LuUknHyKz8yii4nAbEM+GkBJz008+GYeeIk=;
+        b=WEd91SndC6mEVHK0ybRTV9xgRY8QVu8BsdBI2CIi5xeeobz9BMZbOemsLU6QjnhcQx
+         RF4YnR4YvP2VKTzua4K3VcS3FHJuWHSgm9pJ0HknE4kxUmjWDbWbEzEKQgcgik0bd/ov
+         jy/4s7XqgK4RmxD58RsPPGzVOyz9cf1nMfMVSIVupc6VyngTuq3Q2KIP0GTAPq7GUz15
+         VL6L7klGkhnCBo9tmOAtEtmRusew6aReNL+wjWuesXL+CHABufBkPF0P3yHFzLnY00TM
+         KjFDZ/sYZ/JdEBMZTDc+VZ/xzuzH5KIzWnbSTxT/gECI2A3vDgp0mBQq5HscQumwX6to
+         IiAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWfJVmlOQ4RHHkPUAdXQAepDdonIQyhiNgry3gKf6kHpQfFk4hgFKZ33o6GmmmvOvI9sj1cN1MkM6b584BvpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YybSSW3vFDtjPd4/fseUMYpYKW4SbRWTa27ShlIb601xKOBq2B+
+	SggQMpHm4oa6IMwX0Qpup2P2ONFhYecQPR1MvqMNol2GzJGUbk4Nw8Wgt8XbdWyv+ud6lOIFcxU
+	eU28RhQ15LL1dVQyCNQq5/AMxpbbTsDTI6nlO
+X-Google-Smtp-Source: AGHT+IEhkXYyqV/bhuHZm74JThr/Q/zz0AYwVohM06m/aYfA2ou2oQr9f16G0HxUpPy5+6rG27v0LxANOflRiXXU8PU=
+X-Received: by 2002:a05:600c:45c6:b0:42c:b1ee:4b04 with SMTP id
+ 5b1f17b1804b1-430d70b3d24mr51844575e9.28.1728558149119; Thu, 10 Oct 2024
+ 04:02:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,8 +60,8 @@ References: <20241010-icall-detect-vers-v1-0-8f114956aa88@google.com>
  <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com> <CANiq72ndoSmGVzuPR6ikq0HG1kbMp6ADOY8BonD9=ij9tyU=EQ@mail.gmail.com>
 In-Reply-To: <CANiq72ndoSmGVzuPR6ikq0HG1kbMp6ADOY8BonD9=ij9tyU=EQ@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 10 Oct 2024 12:58:07 +0200
-Message-ID: <CAH5fLgiqwdKgEux9A-SFAWmhbosW15Ey8j8deKtQa9r336vXZA@mail.gmail.com>
+Date: Thu, 10 Oct 2024 13:02:17 +0200
+Message-ID: <CAH5fLgj5rPgV1wBbYJy=T0kjCdECYnDvbim0pEk5y6fp7BVx3Q@mail.gmail.com>
 Subject: Re: [PATCH 1/2] kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -107,7 +107,25 @@ r
 > Alice: when I apply this, I will need to add your Signed-off-by here
 > (i.e. when handling patches from others, you need to add your SoB
 > too).
+>
+> > +if output=3D$("$@" --version --verbose 2>/dev/null | grep LLVM); then
+> > +       set -- $output
+> > +       rustc_llvm_version=3D$(get_llvm_canonical_version $3)
+> > +else
+> > +       echo 0 0
+> > +       exit 1
+> > +fi
+>
+> I guess if we don't find "LLVM" in the output, something weird is
+> going on, so I guess it is reasonable not printing either here.
+> Although, in principle, we could preserve information and print at
+> least the `$rustc` one.
+>
+> Anyway, we may need to rethink this when we start supporting e.g. the
+> GCC backend, so I think it is fine as it is.
 
-Oh, sorry I forgot about this.
+I guess we can just do
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+rustc_llvm_version=3D0
+
+in that case?
