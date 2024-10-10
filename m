@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F9E1E2839
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 22:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89DD1E32C5;
+	Thu, 10 Oct 2024 22:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728598501; cv=none; b=UwgqQha2S39zZAB+mHIUpY4iqr8Y76JaQERq9TbNdre/UHU/yAEyHBXhce5TgnCUnG60YfZsknsuhTr9DP2Z7iXv1/Zzrf4awH0gOAv+bLrxm36ds9heD8AKTB/tGlEYN5fUeJXozAOD5I7oRpwf//O8o00HGwoMg5e7mmll8GI=
+	t=1728598910; cv=none; b=PUNgcEZgl/ACDhCOLZcAeq4aEzydyjCcemSEftLNZCEoutj8go8utBRL8Ys3d/BmkgM7HEZLGwKLCw0rkIFL/uLR43TYLCnWa3zYpz+2H7nljmVm66WJjTHSGTHwNCblBSc/l6cxePfPlLVmWtub5tTn5PQU3pz1cVrMXtYpO5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728598501; c=relaxed/simple;
-	bh=6wuvlwCa6TSt0v332U+6mY0pX9kM6s8vhMYzCkSEeEk=;
+	s=arc-20240116; t=1728598910; c=relaxed/simple;
+	bh=1oz99yS4RcrK4IXNqU16/mIzAMENLRg4ngdxPPKm4sU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YBQuVRDXgSFLQTpaghqHlCKE2VF5Rd7hXYTBH8innRZndDntoE1BxFozuf7fVxQdWzSw4/PEooWnIxg/T4oi839WdQUGhdWkIGm+Z2+ddkEDFm7KbOtLP76KtLM8JeKDZo6mwj7wJeCk0R2Utk3ztacrijKr5KjlJ2cUNr49xxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=O8cHpUgX; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=ne5dHC86hOQnjl92Z/f2Xt7QTOKiI1gRgE4zkylGvlnR9sun34CyANoEvcmHDac3SdDjFzYQWjDECFQDJfC8tb6KaIHtm4JLfbipKWeWeVE/YfryyxbhbJn1WdRr9RMAGsPZDZXAQ6QG8QxLzauLp2nKYtCPlFL3chZ9cuTVPgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VeJQGZ+G; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="O8cHpUgX"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VeJQGZ+G"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1728598497; x=1728857697;
-	bh=c2eztCA1e4UB4MlQh9sJYpniTjBOlUpjxUjuhUGTTBM=;
+	s=protonmail; t=1728598906; x=1728858106;
+	bh=rp/P/5HH2+ZaFWkr9AvBU2PKX4NqLTmJGAGtg0jpa3k=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=O8cHpUgX+pv15xmM7aAjyhLNuYGKog5tKvySd3F4NoAmQFnRlieCKSa2meQA6560M
-	 Lu0LsrdwMN17MXdhfJJZl2G3JyoxJkLNGhtXZVBKID61WeN0Zgi+w7AbtvUoa81IGV
-	 oxnwf5UeA4v2bRTIZMLOClUUhZrPCKv969NZOF4DZCGy0w9Xm/I3SJ464oXAYL14nb
-	 kwCWPywUfbRuYFtaVJT0kB+c2+TfsuhNnNLDWf1qX9LwFS0BdyOaoBhWbkHvamg0gc
-	 7x3zqrOS0Gmvb8tiFKqPXPsCNzCIjQvNpFco+O5d4jLLqVtOkj4+O87tmfEav5Z9iF
-	 2g3LXWWGALQDA==
-Date: Thu, 10 Oct 2024 22:14:52 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
+	b=VeJQGZ+G2gcOOra5KFYtPTDrP5sV1oiJa/Gv1N1IZ6BfrarIirGOakgulpfhMZ2Ch
+	 /gAkFhhZ+85PO9V/rB8zBmCZfcpA4zGWAlKB2psDOX9I8EN0ljJNCCMTZpDFxL1z0q
+	 CbxhblZGh6/Utk/iNqqOmb4J1ZEuqedA5ptwPLqVJxxQ6u9UmrfgRrc71U6XuX3reP
+	 vDfoTTnp/namp71vwC2dd/0z2oO9Ig8YP+pn4pQIP4pQrNbH6I6zUFZ1qeqGHuKhkW
+	 wxxUaNhPKTnexo75hDD+KxFF2clg+Acm4k2jPv81KWQdcN0OOoFRf4oo4rRS0Wx9Mp
+	 Te2aSTm1dtmBA==
+Date: Thu, 10 Oct 2024 22:21:41 +0000
+To: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
 Subject: Re: [PATCH v4] rust: add global lock support
-Message-ID: <2376e7b3-42a4-4743-a5cd-83251dcc0075@proton.me>
-In-Reply-To: <87msjckqfw.fsf@kernel.org>
-References: <20240930-static-mutex-v4-1-c59555413127@google.com> <HVPdDHj35lGMPHyA8YvYjO4hhof-vNaVDqo_ILwyCmuY13oskqVKxaIA7OK4wo6fWYeJIV_RMtbPdjVRGJcLvg==@protonmail.internalid> <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me> <87msjckqfw.fsf@kernel.org>
+Message-ID: <3e7832f7-8806-41e0-8e36-6f178df2eaef@proton.me>
+In-Reply-To: <ZwgB39dXLdFWQkHz@boqun-archlinux>
+References: <20240930-static-mutex-v4-1-c59555413127@google.com> <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me> <CAH5fLghsozD0qeTygBM0-WDgXRwtGcsc6B3bT1794QMx3=vSTg@mail.gmail.com> <Zwfcwg23tfrKIyrq@boqun-archlinux> <CAH5fLgjhTWjmYqxcTRRv6FTpv7Vg9nnVCGGWbSKPqOSjJ5XyQA@mail.gmail.com> <ZwfkzKz5mz6UvZfK@boqun-archlinux> <ZwgB39dXLdFWQkHz@boqun-archlinux>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e1ab7e91a78749aba42462da63b16ce6f6adcaba
+X-Pm-Message-ID: ee1ea3d47b7bb8278ecd414affae5dc91a2fd1fd
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,26 +47,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 10.10.24 16:01, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
+On 10.10.24 18:33, Boqun Feng wrote:
+> On Thu, Oct 10, 2024 at 07:29:32AM -0700, Boqun Feng wrote:
+>> On Thu, Oct 10, 2024 at 03:58:07PM +0200, Alice Ryhl wrote:
+>>> On Thu, Oct 10, 2024 at 3:55=E2=80=AFPM Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+>>>>
+>>>> On Thu, Oct 10, 2024 at 12:53:00PM +0200, Alice Ryhl wrote:
+>>>> [...]
+>>>>>>> +#[macro_export]
+>>>>>>> +macro_rules! global_lock {
+>>>>>>> +    {
+>>>>>>> +        $(#[$meta:meta])* $pub:vis static $name:ident: $kind:ident=
+<$valuety:ty> =3D unsafe { uninit };
+>>>>>>> +        value: $value:expr;
+>>>>>>
+>>>>>> I would find it more natural to use `=3D` instead of `:` here, since=
+ then
+>>>>>> it would read as a normal statement with the semicolon at the end.
+>>>>>> Another alternative would be to use `,` instead of `;`, but that doe=
+sn't
+>>>>>> work nicely with the static keyword above (although you could make t=
+he
+>>>>>> user write it in another {}, but that also isn't ideal...).
+>>>>>>
+>>>>>> Using `=3D` instead of `:` makes my editor put the correct amount of
+>>>>>> indentation there, `:` adds a lot of extra spaces.
+>>>>>
+>>>>> That seems sensible.
+>>>>>
+>>>>
+>>>> While we are at it, how about we make the syntax:
+>>>>
+>>>>         global_lock!{
+>>>>             static MY_LOCK: Mutex<u32> =3D unsafe { 0 };
+>>>>         }
+>>>>
+>>>> or
+>>>>
+>>>>         global_lock!{
+>>>>             static MY_LOCK: Mutex<u32> =3D unsafe { uninit { 0 } };
+>>>>         }
+>>>>
+>>>> ?
+>>>>
+>>>> i.e. instead of a "value" field, we put it in the "initialization
+>>>> expression". To me, this make it more clear that "value" is the
+>>>> initialized value protected by the lock. Thoughts?
+>>>
+>>> `uninit { 0 }` looks pretty terrible IMO. Can we come up with something=
+ better?
+>>>
+>>
 >=20
->>
->> Also,
->>
->>     error: type `__static_lock_ty_VALUE` should have an upper camel case=
- name
->>        --> rust/kernel/sync/lock/global.rs:100:18
->>         |
->>     100 |               type [< __static_lock_ty_ $name >] =3D $valuety;
->>         |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert=
- the identifier to upper camel case: `StaticLockTyValue`
->>
+> how about:
 >=20
-> How did you manage to get these errors?
+>         global_lock!{
+>             static MY_LOCK: Mutex<u32> =3D unsafe { data: 0 };
 
-I added a `global_lock!` invocation to `lib.rs`. Otherwise I also don't
-get them (they might also be emitted from the examples, but I didn't
-compile those).
+I dislike this, since there is no `uninit` anywhere, but the mutex needs
+to be initialized.
+
+>         }
+>=20
+> ?
+>=20
+> "data: " will make it clear that the value is not for the lock state.
+> "uninit" is dropped because the "unsafe" already requires the global
+> variable to be initialised first. Or "unsafe { uninit, data: 0 }" if you
+> want to keep the "uninit" part?
+
+That also looks weird to me...
+
+But I haven't come up with a good alternative
 
 ---
 Cheers,
