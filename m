@@ -1,43 +1,50 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DC91C1AB6
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 10:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F3418DF62;
+	Thu, 10 Oct 2024 10:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728556778; cv=none; b=GiX7SJseis+fItxucX3JvOW7zNMTklDQlf+O9KZxGbrSXetL4mBDiup9pNPLG+OGCt1VJ1gbnjS0g3JlNp6Kirv+bDfUlvC1xEvCMA2YNJiCABhnKCAz2O3GWXUvwaMni4lHQJTm5LbFgYPNLWK3vHVue238EVR7h4wf++z9qSE=
+	t=1728557119; cv=none; b=JCq8efy5UCiFt4lq1/GhJJhk8C34RI+fOdX3hc6h1TXtK2+HSfySvCZMQfKICbHw/lMI24eMnWvgkDH+tDZbkyvVZMWw+gF1XhttgihRaU/XUi5CruprrYC9Fjj0zj0kqeZxDZOnVUelfSMcxRrJetMwF7Fk5cQI7pY3wOcWXMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728556778; c=relaxed/simple;
-	bh=unWCd8Bj7m5kV38bwAaZ3iSQ42tE4Qa+3WqM5c4Oq40=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=McTfNNEpAJLoOVhHbMEyEKd3CwBMgxlRBjP3GRVYdPAXtJ8g9Q9nItcEMCmPVILfuCIoIY21joPoGqF1/xUpFiKlqcZuquYn1W38loE3rvutfNc72PUkUJ4bFz3oCuUTpAJekYiPNumDLIFtH+d1+//qRuR7nVdX42q3Z2Vuy3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QTVi215i; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QTVi215i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=jqhjdjlg5vhhpffs2lm7ksfmp4.protonmail; t=1728556773; x=1728815973;
-	bh=8Zf+6OnIHBMtlXd7FzOuX7ORu081uulAtd21bEUsr2c=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=QTVi215iA8LsutOzi6GKPp9pTSVybknFvKR5OCEBCbFu8lS5kmvabZzwD/NnQw2X9
-	 YTzuS2/iNPQhiYUfJEB+q9c9j/iojAYh70XfKjGRUav0jzwdbt5GriAQYMt2wvNtkK
-	 N7QrDlgLYUb+cpWgfuP0FCWAIMWRy+HjCInmC5hkBL2Xzat9IyAhFDOzcLUCYeRdrr
-	 36R06mAHAsV9v+Bu2T7iif2jS5PnZSgOppSc97240cTC7PPFCSAqdcNDz6b/uGiUKf
-	 X2YjBFggWmncxoaeuI2cxjoppwsziq7A5OAZapb2LWjSvpyRMLwX1v18/RmPJrE9EB
-	 Psk7OJxDPbi1g==
-Date: Thu, 10 Oct 2024 10:39:27 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH v4] rust: add global lock support
-Message-ID: <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me>
-In-Reply-To: <20240930-static-mutex-v4-1-c59555413127@google.com>
-References: <20240930-static-mutex-v4-1-c59555413127@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 0bb8459485997070a8fe7cd17fff164fccb4da71
+	s=arc-20240116; t=1728557119; c=relaxed/simple;
+	bh=JcYGggWCVH3dTIk5TqTj9id32NOF4sFLETCNsN9i/v8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jDRFBxKlmvlbQ8zqguYBPOYolTMRjgsepRpIl5IRtHlcOPTTbbD8MUTYsWmLluw9MEJewQCAYpxHTSXhmLOgtfviUCOGwbFsNvf2mbOS4H3O/vB2omLxHL5de/CHbq0lJ3rtEP1zbW0jtxSpzKdo4MC2Uk5BwLFuk30RkqrUQ/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 31F8B497;
+	Thu, 10 Oct 2024 03:45:46 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1225C3F58B;
+	Thu, 10 Oct 2024 03:45:11 -0700 (PDT)
+Date: Thu, 10 Oct 2024 11:45:07 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Matthew Maurer <mmaurer@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all
+ architectures
+Message-ID: <ZwewMw8jBh6OU-L_@J2N7QTR9R3>
+References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+ <ZwbAvEnrzu6UUgGl@J2N7QTR9R3>
+ <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,247 +52,93 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
 
-On 30.09.24 15:11, Alice Ryhl wrote:
-> diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/glob=
-al.rs
-> new file mode 100644
-> index 000000000000..fc02fac864f6
-> --- /dev/null
-> +++ b/rust/kernel/sync/lock/global.rs
-> @@ -0,0 +1,260 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Support for defining statics containing locks.
-> +
-> +/// Defines a global lock.
-> +///
-> +/// Supports the following options:
-> +///
-> +/// * `value` specifies the initial value in the global lock.
-> +/// * `wrapper` specifies the name of the wrapper struct.
-> +/// * `guard` specifies the name of the guard type.
-> +/// * `locked_by` specifies the name of the `LockedBy` type.
-> +///
-> +/// # Examples
-> +///
-> +/// A global counter.
-> +///
-> +/// ```
-> +/// # mod ex {
-> +/// # use kernel::prelude::*;
-> +/// kernel::sync::global_lock! {
-> +///     // SAFETY: Initialized in module initializer before first use.
-> +///     static MY_COUNTER: Mutex<u32> =3D unsafe { uninit };
-> +///     value: 0;
-> +/// }
-> +///
-> +/// fn increment_counter() -> u32 {
-> +///     let mut guard =3D MY_COUNTER.lock();
-> +///     *guard +=3D 1;
-> +///     *guard
-> +/// }
-> +///
-> +/// impl kernel::Module for MyModule {
-> +///     fn init(_module: &'static ThisModule) -> Result<Self> {
-> +///         // SAFETY: called exactly once
-> +///         unsafe { MY_COUNTER.init() };
-> +///
-> +///         Ok(MyModule {})
-> +///     }
-> +/// }
-> +/// # struct MyModule {}
-> +/// # }
-> +/// ```
-> +///
-> +/// A global mutex used to protect all instances of a given struct.
-> +///
-> +/// ```
-> +/// # mod ex {
-> +/// # use kernel::prelude::*;
-> +/// kernel::sync::global_lock! {
-> +///     // SAFETY: Initialized in module initializer before first use.
-> +///     static MY_MUTEX: Mutex<()> =3D unsafe { uninit };
-> +///     value: ();
-> +///     guard: MyGuard;
-> +///     locked_by: LockedByMyMutex;
-> +/// }
-> +///
-> +/// /// All instances of this struct are protected by `MY_MUTEX`.
-> +/// struct MyStruct {
-> +///     my_counter: LockedByMyMutex<u32>,
-> +/// }
-> +///
-> +/// impl MyStruct {
-> +///     /// Increment the counter in this instance.
-> +///     ///
-> +///     /// The caller must hold the `MY_MUTEX` mutex.
-> +///     fn increment(&self, guard: &mut MyGuard) -> u32 {
-> +///         let my_counter =3D self.my_counter.as_mut(guard);
-> +///         *my_counter +=3D 1;
-> +///         *my_counter
-> +///     }
-> +/// }
-> +///
-> +/// impl kernel::Module for MyModule {
-> +///     fn init(_module: &'static ThisModule) -> Result<Self> {
-> +///         // SAFETY: called exactly once
-> +///         unsafe { MY_MUTEX.init() };
-> +///
-> +///         Ok(MyModule {})
-> +///     }
-> +/// }
-> +/// # struct MyModule {}
-> +/// # }
-> +/// ```
+On Wed, Oct 09, 2024 at 10:15:35PM +0200, Alice Ryhl wrote:
+> On Wed, Oct 9, 2024 at 7:43 PM Mark Rutland <mark.rutland@arm.com> wrote:
+> >
+> > Hi Alice,
+> >
+> > On Tue, Oct 08, 2024 at 05:37:16PM +0000, Alice Ryhl wrote:
+> > > The KCFI sanitizer stores the CFI tag of a function just before its
+> > > machine code. However, the patchable-function-entry flag can be used to
+> > > introduce additional nop instructions before the machine code, taking up
+> > > the space that normally holds the CFI tag.
+> >
+> > To clarify, when you say "before the machine code", do you mean when
+> > NOPs are placed before the function entry point? e.g. if we compiled
+> > with -fpatchable-function-entry=M,N where N > 0? I'll refer tho this as
+> > "pre-function NOPs" below.
+> >
+> > There's an existing incompatibility between CFI and pre-function NOPs
+> > for C code, because we override -fpatchable-function-entry on a
+> > per-function basis (e.g. for noinstr and notrace), and we don't
+> > currently have a mechanism to ensure the CFI tag is in the same place
+> > regardless. This is why arm64 has CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
+> > depend on !CFI.
+> >
+> > For C code at least, just using regular -fpatchable-function-entry=M or
+> > -fpatchable-function-entry=M,0 shouldn't change the location of the CFI
+> > tag relative to the function entrypoint, and so should have no adverse
+> > effect on CFI.
+> >
+> > Is Rust any different here?
+> 
+> Ah, no it shouldn't be. Sami can you confirm?
+> 
+> > > In this case, a backwards offset is applied to the CFI tag to move
+> > > them out of the way of the nop instructions. To ensure that C and Rust
+> > > agree on the offset used by CFI tags, pass the
+> > > -Zpatchable-function-entry to rustc whenever it is passed to the C
+> > > compiler.
+> >
+> > As above, I suspect this isn't necessary to make CFI work, for any case
+> > that works with C today, due to -fpatchable-funtion-entry being
+> > overridden on a per-function basis. Are you seeing a problem in
+> > practice, or was this found by inspection?
+> >
+> > However IIUC this will allow rust to be traced via ftrace (assuming rust
+> > records the instrumented locations as gcc and clang do); is that the
+> > case? Assuming so, is there any ABI difference that might bite us? On
+> > arm64 we require that anything marked instrumented with
+> > patchable-function-entry strictly follows the AAPCS64 calling convention
+> > and our ftrace trampolines save/restore the minimal set of necessary
+> > registers, and I don't know how rust whether rust will behave the same
+> > or e.g. use specialized calling conventions internally.
+> 
+> Well, I was told that it's a problem and was able to trigger a failure
+> on x86. I didn't manage to trigger one on arm64, but I wasn't sure
+> whether that was me doing something wrong, or whether the problem only
+> exists on x86. We already have the flag on x86 for FINEIBT, 
 
-The docs here don't mention that you still need to call `.init()`
-manually (though the examples show it nicely). I don't know if we want
-macros to have a `# Safety` section.
+I believe that hte problem only exists on x86, becaause they use 
+patchable-function-entry for their FINEIBT patching (and use -mfentry
+for ftrace), whereas everyone else uses patchable-function-entry for
+ftrace.
 
-> +#[macro_export]
-> +macro_rules! global_lock {
-> +    {
-> +        $(#[$meta:meta])* $pub:vis static $name:ident: $kind:ident<$valu=
-ety:ty> =3D unsafe { uninit };
-> +        value: $value:expr;
+> but I thought on the off chance that it's not a problem in practice on
+> arm, it still doesn't hurt to add the flag.
 
-I would find it more natural to use `=3D` instead of `:` here, since then
-it would read as a normal statement with the semicolon at the end.
-Another alternative would be to use `,` instead of `;`, but that doesn't
-work nicely with the static keyword above (although you could make the
-user write it in another {}, but that also isn't ideal...).
+It won't adversely affect CFI, but it will open up rust code for ftrace,
+so I'm not sure that "it doesn't hurt".
 
-Using `=3D` instead of `:` makes my editor put the correct amount of
-indentation there, `:` adds a lot of extra spaces.
+AFAICT at the moment this isn't necessary for CFI, so can we drop this
+patch for now?
 
-> +        wrapper: $wrapper:ident;
-> +        $( name: $lname:literal; )?
-> +        $(
-> +            guard: $guard:ident;
-> +            locked_by: $locked_by:ident;
-> +        )?
-> +    } =3D> {
-> +        $crate::macros::paste! {
-> +            type [< __static_lock_ty_ $name >] =3D $valuety;
-> +            const [< __static_lock_init_ $name >]: [< __static_lock_ty_ =
-$name >] =3D $value;
+If we want to pass these flags for !x86, the justification should be to
+enable ftrace for rust code, and we should test that actually works
+(e.g. by testing ftrace with rust code).
 
-Why are these two items outside of the `mod` below?
-Also why do you need to define the type alias? You could just use
-`$valuety`, right?
+What happens on x86 for ftrace and rust?
 
-Also,
+> Regarding the AAPCS64 calling convention thing ... rustc uses the Rust
+> calling convention for functions internally in Rust code and I don't
+> know whether that changes anything relevant for what you mention.
+> Matthew/Sami do you know?
 
-    error: type `__static_lock_ty_VALUE` should have an upper camel case na=
-me
-       --> rust/kernel/sync/lock/global.rs:100:18
-        |
-    100 |               type [< __static_lock_ty_ $name >] =3D $valuety;
-        |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert th=
-e identifier to upper camel case: `StaticLockTyValue`
+From their replies it sounds like that happens to be true in practice
+today, but as above I think we should go test this actually works.
 
-The same error affects the `wrapper` type forwarding below.
-
-
-> +
-> +            #[allow(unused_pub)]
-
-    error: unknown lint: `unused_pub`
-       --> rust/kernel/sync/lock/global.rs:103:21
-        |
-    103 |               #[allow(unused_pub)]
-        |                       ^^^^^^^^^^ help: did you mean: `unused_mut`
-
-Though I also get
-
-    error: methods `init` and `lock` are never used
-       --> rust/kernel/sync/lock/global.rs:128:42
-        |
-    122 | /                 impl $wrapper {
-    123 | |                     /// Initialize the global lock.
-    124 | |                     ///
-    125 | |                     /// # Safety
-    ...   |
-    128 | |                     pub(crate) unsafe fn init(&'static self) {
-        | |                                          ^^^^
-    ...   |
-    142 | |                     pub(crate) fn lock(&'static self) -> $crate=
-::global_lock_inner!(guard $kind, $valuety $(, $guard)?) {
-        | |                                   ^^^^
-    ...   |
-    146 | |                     }
-    147 | |                 }
-        | |_________________- methods in this implementation
-
-But that is governed by the `dead_code` lint.
-
-> +            mod [< __static_lock_mod_ $name >] {
-> +                use super::[< __static_lock_ty_ $name >] as Val;
-> +                use super::[< __static_lock_init_ $name >] as INIT;
-> +                type Backend =3D $crate::global_lock_inner!(backend $kin=
-d);
-> +                type GuardTyp =3D $crate::global_lock_inner!(guard $kind=
-, Val $(, $guard)?);
-
-`GuardTyp` is only used once, so you should be able to just inline it.
-`Backend` is used twice, but I don't know if we need a type alias for
-it.
-
-> +
-> +                /// # Safety
-> +                ///
-> +                /// Must be used to initialize `super::$name`.
-> +                pub(super) const unsafe fn new() -> $wrapper {
-
-Why is this function not associated to `$wrapper`?
-
-> +                    let state =3D $crate::types::Opaque::uninit();
-
-Why not add
-
-    const INIT: $valuety =3D $value;
-
-here instead of outside the mod.
-
-> +                    $wrapper {
-> +                        // SAFETY: The user of this macro promises to ca=
-ll `init` before calling
-> +                        // `lock`.
-> +                        inner: unsafe {
-> +                            $crate::sync::lock::Lock::global_lock_helper=
-_new(state, INIT)
-> +                        }
-> +                    }
-> +                }
-> +
-> +                /// Wrapper type for a global lock.
-> +                pub(crate) struct $wrapper {
-
-How can the wrapper struct be `pub(crate)` when the constant might be
-global `pub`?
-
-    error: type `__static_lock_wrapper_INIT` is more private than the item =
-`INIT`                                                                     =
-                                                                           =
-          =20
-       --> rust/kernel/sync/lock/global.rs:206:14
-        |                                   =20
-    206 |               };                      =20
-        |                ^ static `INIT` is reachable at visibility `pub`
-        |                =20
-
-The functions should probably just be `pub`.
-
----
-Cheers,
-Benno
-
-> +                    inner: $crate::sync::lock::Lock<Val, Backend>,
-> +                }
-> +
-> +              =20
-
+Mark.
