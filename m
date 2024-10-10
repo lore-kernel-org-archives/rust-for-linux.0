@@ -1,133 +1,87 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB381C3F3D
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 14:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A441C9EB0;
+	Thu, 10 Oct 2024 14:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728568907; cv=none; b=EQNWhEiFR1QTAH05KuKz/SmH+roFOwBfrHQVDNJ1Gm6jJI06hzKv1D26hZpiTvAeU5tjB1b5CXviJJxO4jCIx7EZB3ed5PN2TltxUoIInTE2EfZGLTEWWhGZZDc4bIa6yt3eZ2q8aXjP/M424VOSoRXcW0TSfLoRGZ2VJA74TIc=
+	t=1728569129; cv=none; b=HWQ2Gpw3fYMEyo4kwcLajTvTlHvQwKjQMd4Lu0n7gDWH2S1eo6QLpfkv4Sa6JIIq+sJDxQCtVap6KIZ8MZ/q7YQSGUR1mZnjX/qOtF25QAER8gFMUYwab3ZIyWYOpLX4YafZ0KrOHDDZVGj/JI1FaXpoL0xRO8Jf6qjXI1J9O5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728568907; c=relaxed/simple;
-	bh=kALkcQRrhntN1yB20faxRzZG0b1HvvZgGUychwJTUIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kNuim1Ffj3rKBXse+v2LQ10CO3+MNTVSLqPDiUhqf5sfKiBzLNmhpdb0VJrlSNJICvK3OshH6vfNFBRLpCIlzy3Yzi8rxYcke7pQogjvU5luUnVpFXM7mibWNJOSdAaU7mbXdMuJHgBwcT91WS949oNKi1VgLdEfkC/5MuLf9CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qd3BtDhu; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728569129; c=relaxed/simple;
+	bh=S2vQ+zWZaTuORm23PGOyM7U3jQIw5TIwYK7DK8nHzx4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=MQ+Yi729hI9SVLCn8Frz149/3tT+lxk7l9l+mbPXO7zQEuKjGxftbr4LTYfmqmypnmPprngHKVrnYPZCZA6NU4bdn+DiO0h0UxLj/gRPtLKgUlmLQmjUkGIP3xOwN2pkeple8gCBd2lD6+jQjih1bugtVqpjQ+7r04XVV0NK4LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MA82jACN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qd3BtDhu"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37cea34cb57so591580f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 07:01:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728568904; x=1729173704; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B3CizW4u3+UrLWSR0ffHUPIJ13PdM9vRjZPunNir5Hg=;
-        b=qd3BtDhuhekoxfW5j979y9b73Q2YXdYrtICznhDXDyGu6kGBiDp/lMKBjRkOCXFihI
-         DLmT1vWo8ya+6qGSxeZKQo20Ju0Vv7hDNjW87xJMCR33PydrWe+fTPSLqv34UerLEDzv
-         6XYNJcc7fyT5J5QxhhuBjkgYyqRb6jHhcsUCG6TkzBqeZ9lRJOxz8FgPnZJE+U2HJq1v
-         zbdrqPA9cLGDJfHjyzPN6jujQV/prwuq2NxoJbyp4D6dMJNO5GmtG2+h6OSwUXoDGTK6
-         CaDEUoXLPnS6FU1VaautmTkDwQWQX1tldjmSJwKJn+Mymgc2j+PdbyBHkzgBM9sIX0Y5
-         ZRsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728568904; x=1729173704;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B3CizW4u3+UrLWSR0ffHUPIJ13PdM9vRjZPunNir5Hg=;
-        b=OqQvTjP8sKnXpDh6X257/yTNC58/0iWk8w0cUyC7ZzBZm3aAzaCy50hQT1Gc6mRLVD
-         Mt0XHP9tZwkqLyfSemeycdq/4fykE6AfpZrgEJmhPeR1e2r8O7dlhvqBkIFtE97K5Hyo
-         gi0141U1aKZaiYN8MVd5VKXTN3c4ku5M0ktscHasHVJlQBkl+G1itE8Dwt9VTyw25+Sq
-         o7a+WzTkgWHyRIqL9OLGr7UNME/PyACFhe9piBSc8vxvO/D/LwreO+eNKI2NzGkkULSD
-         0xHYD4YvuskeCyhoz+BQGYDavwzMZVa9oxPfKrJJXTF4vITDJlqfWwrUJd1AinA5dRKD
-         jvRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWO7qMNd/NW1ly7y/dVdGOmOOiOggqXi3F2HK8lGDab9vURzqDoRS/wQtY4d9fej7OvGS3gukuYCfr51aezoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcPjyIJsA5T+8r0gLy8pFZby/cXYObBC85fnj0I2yeL9RoHgMn
-	YO3MJZPvHF4z2jboxjq8GYN3rzj0579EY0ml5EcdachZ4zOhs2gnrLIf2auX+/EZL7+WkQ9krH/
-	fnxyBHr0pkyIsi9ERoKTWoSHOyXmx9e+8H567
-X-Google-Smtp-Source: AGHT+IGbl/myGulPH7utUVANwqGBZ1G1wJDyWXE9tQCoFt9Nv3IiGyF+ktDEcfU32Dohut4keUWPmBaXOt/2BJpg4ck=
-X-Received: by 2002:adf:e592:0:b0:37d:4956:b0b4 with SMTP id
- ffacd0b85a97d-37d4956b4a4mr1614858f8f.59.1728568903205; Thu, 10 Oct 2024
- 07:01:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MA82jACN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E446C4CECC;
+	Thu, 10 Oct 2024 14:05:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728569129;
+	bh=S2vQ+zWZaTuORm23PGOyM7U3jQIw5TIwYK7DK8nHzx4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:References:From;
+	b=MA82jACNC+TlvCbNzb3tNunip9YX6Hi7U5vguthxEbW6W7ysO95ti8s9xhrLuI1R1
+	 1O7gsLf/kT/3vwx8BarMXeTvHSr32wfStwG8XbUVvZWx3dr7O/246PJYjDWd3LallD
+	 Ke0xCvB1UHGlk76zDcz2qvMzdDg+b5YwqWM2WgX7n5jVpD8XtidXLvZF58qfKJusOs
+	 oePl0IsO70irzbK3LJgACLEVPVYvX9OoopZPQsaD6JICQpc2h6lA63j9uwEPGwoBR6
+	 4VZ7m5zyf+UhLHjh/So6Bzj93ozpzBKk2505KomKtuYrNb05+lqb3m91k7QyNyzf3m
+	 eEYVwhmvRwcZw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?us-ascii?Q?=3D=3Futf-8=3FQ=3FBj=3DC3=3DB6rn=3F=3D?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] rust: add global lock support
+In-Reply-To: <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me> (Benno Lossin's
+	message of "Thu, 10 Oct 2024 10:39:27 +0000")
+Date: Thu, 10 Oct 2024 16:01:07 +0200
+Message-ID: <87msjckqfw.fsf@kernel.org>
+References: <20240930-static-mutex-v4-1-c59555413127@google.com>
+	<HVPdDHj35lGMPHyA8YvYjO4hhof-vNaVDqo_ILwyCmuY13oskqVKxaIA7OK4wo6fWYeJIV_RMtbPdjVRGJcLvg==@protonmail.internalid>
+	<1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240930-static-mutex-v4-1-c59555413127@google.com> <87r08okqlp.fsf@kernel.org>
-In-Reply-To: <87r08okqlp.fsf@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 10 Oct 2024 16:01:29 +0200
-Message-ID: <CAH5fLghvZsU-rF+6hkOoiAOWhpiLJV1WJNPYCRWTq7cEW8UM1w@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: add global lock support
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Oct 10, 2024 at 3:57=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+"Benno Lossin" <benno.lossin@proton.me> writes:
+
 >
-> Hi Alice,
+> Also,
 >
-> Alice Ryhl <aliceryhl@google.com> writes:
+>     error: type `__static_lock_ty_VALUE` should have an upper camel case name
+>        --> rust/kernel/sync/lock/global.rs:100:18
+>         |
+>     100 |               type [< __static_lock_ty_ $name >] = $valuety;
+>         |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to upper camel case: `StaticLockTyValue`
 >
-> > Add support for creating global variables that are wrapped in a mutex o=
-r
-> > spinlock. Optionally, the macro can generate a special LockedBy type
-> > that does not require a runtime check.
-> >
-> > The implementation here is intended to replace the global mutex
-> > workaround found in the Rust Binder RFC [1]. In both cases, the global
-> > lock must be initialized before first use. The macro is unsafe to use
-> > for the same reason.
-> >
-> > The separate initialization step is required because it is tricky to
-> > access the value of __ARCH_SPIN_LOCK_UNLOCKED from Rust. Doing so will
-> > require changes to the C side. That change will happen as a follow-up t=
-o
-> > this patch.
->
-> Why is this a challenge? It seems to work with locks that are not
-> global.
 
-Because normal locks are not initialized in a const expression.
+How did you manage to get these errors? The only thing I get from clippy
+is this:
 
-> > diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/gl=
-obal.rs
-> > new file mode 100644
-> > index 000000000000..fc02fac864f6
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/lock/global.rs
-> > @@ -0,0 +1,260 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +// Copyright (C) 2024 Google LLC.
-> > +
-> > +//! Support for defining statics containing locks.
-> > +
-> > +/// Defines a global lock.
-> > +///
-> > +/// Supports the following options:
-> > +///
-> > +/// * `value` specifies the initial value in the global lock.
-> > +/// * `wrapper` specifies the name of the wrapper struct.
->
-> Could you add an example to demonstrate when using `wrapper` option
-> would be useful?
+CC      rust/doctests_kernel_generated_kunit.o
+warning: question mark operator is useless here
+    --> rust/doctests_kernel_generated.rs:4744:1
+     |
+4744 | / kernel::sync::global_lock! {
+4745 | |     // SAFETY: Initialized in module initializer before first use.
+4746 | |     static MY_COUNTER: Mutex<u32> = unsafe { uninit };
+4747 | |     value: 0;
+4748 | | }
+     | |_^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_question_mark
+     = note: `-W clippy::needless-question-mark` implied by `-W clippy::all`
+     = help: to override `-W clippy::all` add `#[allow(clippy::needless_question_mark)]`
+     = note: this warning originates in the macro `$crate::global_lock` which comes from the expansion of the macro `kernel::sync::global_lock` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-Probably only guard and locked_by are useful, but I think you need to
-give the wrapper a name to reasonably use guard/locked_by.
+warning: 1 warning emitted
 
-> > +                    /// Lock this global lock.
->
-> "Try to lock..." ?
 
-Thanks. Good point.
+BR Andreas
 
-Alice
