@@ -1,99 +1,117 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492D61C245C;
-	Thu, 10 Oct 2024 11:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E331BDA8D;
+	Thu, 10 Oct 2024 12:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728560669; cv=none; b=WJB4AM4rz3wJgrX4phMIpfrVStFSUhFyuIfRfErHd+Mbt2uFrT55JvKEPepDUfTwZ67vc8IoZ9NPCSLRBwWgJGkxlAkg+B5gI7FR9Pe1JgcixPCYn/zNGzd72hblKO3Ei5kHZI82Y60OQtVUyVEcrIKl7SRymd9aLCKEe2cYcJA=
+	t=1728563105; cv=none; b=M33AxKKW7E5RHCZDMurMQQyIzlaa54hpR59lCRdlwotakrvHZtZVcOvIvzQ7G7zG1tj4t4OEKIH/euEMLjYBSn4YdpB10v6XtZG1rrSp1CjFc/ZoAQCy/JcQ6AfI7pJ6D9wOSAVq5u5SoUfsuUiQAXmul2F8zSmhR3uX5DfFd/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728560669; c=relaxed/simple;
-	bh=2bcJ4+CbIja3RwWUGVJCLGPSRxnGjLzpAXTiDnP2l0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jaLFLANE5paT0J/7KV8ShCG68r9gxujlireYCS+D7cBc5zTpLprM5CYRi7d1ZSr7fLF5B/Y8Dcy80Yw3x03piy8jn7nDksTTISLg8aNsng7S9YnpH5lTYWWuwGeAOKjiu7dxWiAkFkB74ITGa7n1TeXHQYzYsBHmZpFBjVOmWnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WmDJsiTe; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728563105; c=relaxed/simple;
+	bh=HizpD/yKlQdyBbr2TvLEEcfUYqeKG1QhLvslstH1G+w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LlRqCvAwD5yFcc31Rzte3qdITL1fg1qVj0LPRxof6TUucYKqYD5BNOYqrfyw6fSgCFGtTj52oW0tk5hmIDMPY8FyAMNzm/VkyJ3Jvhr+0DSTNri4w7vf5vT1TZ/gbjrXFE24N4qfwxx2WS3PqVeLXcJnkQqi3MbII23krWh37zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/3OhUGf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WmDJsiTe"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-71e1ed14105so42136b3a.3;
-        Thu, 10 Oct 2024 04:44:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728560667; x=1729165467; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2bcJ4+CbIja3RwWUGVJCLGPSRxnGjLzpAXTiDnP2l0k=;
-        b=WmDJsiTemPsQq0+SKvy1o3yByS28J6L2NYL2P5d8oZPobKu5xYT/fg0Vt6sXwvVQdA
-         X3IJUlcnlAdU+aALdT8A4TsDkGLMs+lXiAwABefFbrLDPnW+9GLK0vx6GmZ9+apq5VA4
-         z6MnJ/cAQ21LemTlmGHwgv1816hP5wHnKfpKc7NhSUVrIeZM7mWYNFuj1Ay2fxriaT+p
-         IlaTcOj9HYdK1hh/Njf8WTnpDXxH6Ld6eyuRwfRoKfvqkkrdvBKMojhYMrg8VgsSa7nN
-         yrc8Gw+U5NvsPpsNq6l34Euzn0wojZrZnzATZb8RMeSlKvdiSsdaMm/T8YnCVvoarXLb
-         9YCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728560667; x=1729165467;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2bcJ4+CbIja3RwWUGVJCLGPSRxnGjLzpAXTiDnP2l0k=;
-        b=XzBxU2KGNYJGRTbk4ljJGYkygpWVgvtMaYeGsT6Kbe+kyxHhiL+6DdLEGgQfeKZ/qS
-         5dmAamIVkKVYC5BpoFOLkkqgaf9hR+d4ze+F5SbMjolRUpmPjZduqzfRMz+Rrwj0b0Id
-         b9UpVF6qaUvMuO3RyiD6XeXWP+Wj94PjwWBzCc37Qvv10FDRqTDIvnUKBzT5gDD7lCRw
-         5kOASfSl7jvc0FiS4wv5W8wyCJtVhCXFMRowiNMR5P5YAFxKqgM1g74v2JG0M+0oQTLq
-         WQxq94FqrobnzkI1+NLlQkuLRcHIPYE+GOlC2bSyFN5Cc3+ALzZX1VwR7YBomPF7XwIn
-         Kb/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUExNvcYCw7A7LMfXcObYvnXf7fIFJ9Q8kYTUsQhLoLRqVutb8bFVWSDR7RK93z8fBmbHVpXLxMtXVPYyUcRFI=@vger.kernel.org, AJvYcCXumunvo/PYrHuVSWWgupyRq3dVSuO+MPGsn9AINmbdqAYvegTdz3Lvq4b2/Wv2YhPamv3lYqCMMpTOgOg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCNCkx3NV5APMK0fQhSNjixKoKWJRuCXTIfA96nvt+EkQFNS/m
-	lAPn8RkHBql+DRKHIapdH0mr6lYIn2VZz7YNJ02ET4SQiJmT2zRSB9mMZsYEGay9lSfM4g4kep/
-	70sifZvdTNX9szYggH8PGbTgQcQQ=
-X-Google-Smtp-Source: AGHT+IHld3yA7pZMM4j9W1AYfJL3YZl/msv9ucSw1eVQ8vGB3wsRDok/Qzcvy2JYC9NwbCxsuNZ/OZ5hbL022PTBeCI=
-X-Received: by 2002:a05:6a00:2d97:b0:71c:5e1b:6871 with SMTP id
- d2e1a72fcca58-71e1dbc8d89mr4146646b3a.6.1728560667291; Thu, 10 Oct 2024
- 04:44:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/3OhUGf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4301BC4CECE;
+	Thu, 10 Oct 2024 12:25:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728563105;
+	bh=HizpD/yKlQdyBbr2TvLEEcfUYqeKG1QhLvslstH1G+w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=n/3OhUGfZxCzHMMJ3r6UpqfL8CB69fkt1cYVONODixvCisO5jo5tUbjXiAB2SjyNI
+	 /toprhUD1oBAdkX1JJaCClmlpXRpIEko+aCB6SiAPO0f15Bq9S8eWnGD528g498OwJ
+	 ixEFtVA4oCvKv0mxVkG8w5JMNyfmrK9oQpWzMrpGOcs+rPCBUJ7vpzPCWtr+OWQNJQ
+	 uFNlgUv4Z+xHIqUn66pI8wdFggYzs+y4Jum387mp5i4VE907wAwPo9piJMZfgEm39G
+	 yqem3gme9VtELLpGrmUNhIzjdX/3hQM5fAG9qybYQ/ZJ6ulnoD8gj1QwUdcfUATSFs
+	 uFFjcstbVAvUw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Anna-Maria Behnsen <anna-maria@linutronix.de>,  Frederic Weisbecker
+ <frederic@kernel.org>,  Thomas Gleixner <tglx@linutronix.de>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <51f18817-1ebd-451a-bc6e-e298a9148001@proton.me> (Benno Lossin's
+	message of "Mon, 23 Sep 2024 16:59:47 +0000")
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+	<20240917222739.1298275-3-a.hindborg@kernel.org>
+	<Wohby8PLjQeZ47sXKGeWKOxdA2ShTjjvqOM6xWzhJY1aZ-SYk9TCDAnZN2EqiWuJUKwPKoFCsCofDHjtfeG--w==@protonmail.internalid>
+	<f502f6c6-40b7-4ec4-8d0c-09adb0df1a30@proton.me>
+ <878qvojj0o.fsf@kernel.org>
+	<pvhILkKRTj8T2Ks3off5HLMqewNM_X192WV4J5-nnC4Uu0o9G8-Qk5Tl9bQxsqVCw4QHmeJii7mCK2VorN-xcw==@protonmail.internalid>
+	<33c65715-3af5-44f9-93c5-149d07a4c503@proton.me>
+ <87ldziqqeo.fsf@kernel.org>
+	<51f18817-1ebd-451a-bc6e-e298a9148001@proton.me>
+Date: Thu, 10 Oct 2024 14:24:53 +0200
+Message-ID: <87zfnckuwa.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
- <ZwbAvEnrzu6UUgGl@J2N7QTR9R3> <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
- <ZwewMw8jBh6OU-L_@J2N7QTR9R3> <20241010110344.GL14587@noisy.programming.kicks-ass.net>
- <20241010113748.GL33184@noisy.programming.kicks-ass.net>
-In-Reply-To: <20241010113748.GL33184@noisy.programming.kicks-ass.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 10 Oct 2024 13:44:14 +0200
-Message-ID: <CANiq72=kT9RFcQ3h5U+wAY0pDQQqGU7BTtiPJ-oiHNUG00z3=w@mail.gmail.com>
-Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all architectures
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Oct 10, 2024 at 1:37=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
+Benno Lossin <benno.lossin@proton.me> writes:
+
+> On 23.09.24 18:35, Andreas Hindborg wrote:
+>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>> On 19.09.24 07:43, Andreas Hindborg wrote:
+>>>>>> +    /// until the timer is unarmed and the callback has completed.
+>>>>>> +    ///
+>>>>>> +    /// Note: It must be safe to leak the handle.
+>>>>>> +    type TimerHandle: TimerHandle;
+>>>>>
+>>>>> Why does this need to be an associated type? Couldn't we have a
+>>>>> `TimerHandle<T>` struct? The schedule function below could then return
+>>>>> `TimerHandle<Self>`.
+>>>>
+>>>> At one point, I had some cycles in trait resolution. Moving generics to
+>>>> associated types solved that issue. Maybe this can be changed to a
+>>>> generic. But are generics preferred over associated types for some
+>>>> reason?
+>>>
+>>> The associated type is more complicated IMO, because then every
+>>> implementer of the trait needs to create one. If we can avoid that, I
+>>> would prefer a generic type.
+>> 
+>> When you say create, you mean specify?
 >
-> So much for the debian 'rust-all' package actually including all. Thanks
-> Boqun for telling me about the rustavailable make target.
+> Yes.
+>
+>> Users would not invent their own type to put here, they would use the
+>> types defined by the `hrtimer` module in later patches.
+>
+> I mean the implementers of this trait, not the users of the trait. You
+> define an `ArcTimerHandle`, `PinTimerHandle` and a `PinMutTimerHandle`
+> in this series. I think we can avoid that using a single generic struct.
 
-Yeah, `rust-all` does not seem to include `bindgen`, which I guess was
-the issue (?).
+It is not immediately clear for me how to do this. For `Box` we have:
 
-I guess you have it working now, but for the next time / others, we
-have the `apt` line for Debian at
-https://docs.kernel.org/rust/quick-start.html#debian.
+pub struct BoxTimerHandle<U>
+where
+    U: HasTimer<U>,
+{
+    pub(crate) inner: *mut U,
+}
 
-Cheers,
-Miguel
+but for `Pin<&U>` we have
+
+pub struct PinTimerHandle<'a, U>
+where
+    U: HasTimer<U>,
+{
+    pub(crate) inner: Pin<&'a U>,
+}
+
+How can these be combined to a single generic struct?
+
+
+Best regards,
+Andreas
+
