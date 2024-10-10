@@ -1,211 +1,124 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9261CB322;
-	Thu, 10 Oct 2024 14:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED721CB324;
+	Thu, 10 Oct 2024 14:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728570580; cv=none; b=kYkseccJY5BpAy1S+geAq9HRY+T+rTxhegoPYdta63c/GJLJIe13faIeQVnjI6WpdvVe7NdKj1KPpZYgsHLz9WQ1glo2u8KEhnz+J+8A05NyJj5pD7FYMpQL0f8lsq5PQonMv2FLYzXOOR+nAvdWKcaODm6vSMJUfujbyjlbB7w=
+	t=1728571735; cv=none; b=XLeDCerFDiASXOpeyeqCtB8Gwh7xSxYPWe+Ej8oLNFjV3Vb/mViT2riVB1uXzCOrwodhrcGAKey74zj7jwOFMSiBeuU9ZujFU+AGdm2gkG9PslTP67yUolD73UCoi6CclSp3HemyJE1jeFhYvelpxaud8WqI51zqtNCGSJhPG84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728570580; c=relaxed/simple;
-	bh=yt1fgw5vfOoo8fU0GJj0uv/oBhMl0HTiZdDC0jw0ECs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZY2aqaRInS4qfjC6TfVzWKaAxb+GvuO8T8/ylnSq05vxi6URkOgCNBiFkqcW8ivtSc3XP9J0f10XwPg0TSvKZThs1x8vfJkc8ZE0iW4zyhz6tN5tXEqzJT2ApckfD2GVv6FyKeikLOdZBMakQsk+abpR9QLN7/m6XhZDsBE8rqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYNNcnEV; arc=none smtp.client-ip=209.85.160.176
+	s=arc-20240116; t=1728571735; c=relaxed/simple;
+	bh=MD5Y1JFSub7m+UPd21beBuvfhWy8eN9Icl2C2agrsAE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UV+4PJaC+QH4vDL8QTu1soNwChT0MgEHgzTlZl3htXOw3Gt5z1ASk/MtUWmyftvWCp2j7/Tj0EVCnEEtbOBrvJUb8d1TUIIHz3k24JSzpGsfi+lz4/SqUEqqLC1Ohl69Gyy9p5J9hZaSQe2kRtj34OmNJ0rSb+ifIBPVZtSwTbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CqskIF1c; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYNNcnEV"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-45d8f76eca7so11610691cf.2;
-        Thu, 10 Oct 2024 07:29:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CqskIF1c"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-71de91427d5so122663b3a.2;
+        Thu, 10 Oct 2024 07:48:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728570578; x=1729175378; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=mPey1HDBZR8sZ2lxeY3V+1mHce7z0Zr74RVcUBXVlos=;
-        b=VYNNcnEVV/S8VZIDPUwzdgEa+6FHuVBF2jeaxRbsYAcAI7nYH3aNnV8Ayxzw7p0inT
-         jmULh5LocfBV0xHROZc5lk/Rk7BeFMmarroi/Inzi/ORRBRVQGFYfXZSpC9CWIVu4VGj
-         8GwQ1mb1HkizM7qvrgxJpCy7ZJpuTz/Pi7ulujaMlDWjurDlshNGhKFYjKGSY2HTDl02
-         zZ55FxKQQirHhAI1CiTvQkvvPjYEcJsUXMoq9A27+RLkvoydZ6dada8iTQx4EYN+kF0H
-         sg9Fp3NO1wuZCP4tr22Y4SnHTgKmbQWlUOsRpLUuGVANcWy/t8PKlu0kJLrlR51kBcky
-         hHPg==
+        d=gmail.com; s=20230601; t=1728571734; x=1729176534; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wk8mOEtaS0st9RtIbPiyvPicjXJuaraec7PuPjhsQZk=;
+        b=CqskIF1cJJ1CGgn4jqDMWhwLFKU/NVR1zjupGPbnSqVkmLtNsJ2ZSmJkuT+Yrc/8Wz
+         d+1JzyDhybWhv+MXZEcYdzVXWLmgZ7EeLUeDfhnyNhQgUWy7MeD0lRjiL84bAwUR2jEh
+         H9nnpbVsAXJDTa+BQ2XiZjc7dI8bR3bOADPArXICNgHMDbRJ3yl09g+O2UnJic/e4IBk
+         7Ito5XyL0vNvd7FM8G9v7ClpYCHw77hjRgBecSebCC7qeMzFnblRPYCWByR61CcfzNQh
+         5iyxWZ9g1n/kgNDPruobWXyfkKg/Ac1dG+GS4TzIJ/+BwumYt0B0RTS5FRkWpunfo+yV
+         x+Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728570578; x=1729175378;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mPey1HDBZR8sZ2lxeY3V+1mHce7z0Zr74RVcUBXVlos=;
-        b=YD97KbzbzF/nxADmHFHQZUJ3RHknQGZzkU5jHth/GS0kY8YY0wxEQVd+sfjtN0zkDd
-         5S4eM07pqk3wKuEAcWokTLYj+nkowce/VI4SJeIW+jlLFpyxiz+Jgi3u+uvZMbCG6KzL
-         J/M386ruOyx8b674yfIu9mR0D0gFR3ff5mkr+oDe5+MTdmMg22kISTrmQePwCzWf23Ux
-         1c/KR3bknocR3Rhpe6RxcLZBlU47UuuKl6BAfcCMPf5tWBAgZODDxpo4I3i7z0h4iGBa
-         LCVkRUMDsBtT3DqTki3uXNIZQMr/xRv4El9auTk7PzZ3OaCJSnuLhWoW3SI9nK3YpgUN
-         sJ1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUqfEG+D+ppBHOMc6/AtQOufNx+Lc0ZIM0RTgzjiGYCODM4PfdJ0fnz/AUMgYQ9v7VPhOBZGQ9b603Iemc=@vger.kernel.org, AJvYcCWmH/oEUjPWEgcDTtNWvvZ5WfEiS5kBZszPoE+3ehaKUPTZdGDsjtvNwBTaT54OctK0vuMVBz6ldnnpNAKnsoc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVHf3cokWcSLKiDy7WIKxHziBzYWvBmHWYti7fE3VK2cPTVIX0
-	Mw/ah6T+1OOgpreDbSxIbBB8dkCy0o348pdvhejXPkN8k25P8AoH
-X-Google-Smtp-Source: AGHT+IFdlF3uTv72bTDvXsjVsKTtr8dSKnPkTq2e+dwHD5Pbwt8OxDuseeoyXTahvqpos7fm69BVeQ==
-X-Received: by 2002:a05:6214:5782:b0:6cb:e496:529b with SMTP id 6a1803df08f44-6cbe49653acmr55890536d6.24.1728570578022;
-        Thu, 10 Oct 2024 07:29:38 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cbe862f82dsm5647566d6.107.2024.10.10.07.29.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Oct 2024 07:29:37 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 68B88120006A;
-	Thu, 10 Oct 2024 10:29:37 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 10 Oct 2024 10:29:37 -0400
-X-ME-Sender: <xms:0eQHZxJp6aCDnBAUO9n4bBjIDkPDHjUAPxnO_teVxcecV6gIx8IV8Q>
-    <xme:0eQHZ9IEVvhdQAC0Sm6Oq06P22BGnEdBPOwHgidem2nz2eIOcz_qW1iWl7M678eFT
-    _9O3NtbQGSmBcPYrg>
-X-ME-Received: <xmr:0eQHZ5sR7Yl9ZmkN32wm82mK-YLgMWsYp-5TZhY53pdXfq0hqOLF-8FK2PgG1A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdefhedgkedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfh
-    gfehgeekkeeigfdukefhgfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeelpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgt
-    phhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesgh
-    grrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhm
-    rghilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrd
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepsghoqhhunhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:0eQHZyYtiaGx4YWEHMF8h3ro4p4lkKUJd6PixEU1P4BEfMj0qluGOw>
-    <xmx:0eQHZ4YhRNVIEuRLqlc1Cyu-YJLb4Phq-jXoDOT-ExpWzWU7wVUkfg>
-    <xmx:0eQHZ2BGj6Bcj80TlDJ_N0Ju7pXauu7LBb8UJo-WRejsYdeYRkFeqw>
-    <xmx:0eQHZ2bIWKnep0Lp8weOZ1outlACuBefsuS9yRb0kwNyPD4NFmbDGQ>
-    <xmx:0eQHZ0rEkRk0gmVKUV95-o752S6XjdymEDUuVK5J1j13wVqgpTvkSM1f>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 10 Oct 2024 10:29:36 -0400 (EDT)
-Date: Thu, 10 Oct 2024 07:29:32 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH v4] rust: add global lock support
-Message-ID: <ZwfkzKz5mz6UvZfK@boqun-archlinux>
-References: <20240930-static-mutex-v4-1-c59555413127@google.com>
- <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me>
- <CAH5fLghsozD0qeTygBM0-WDgXRwtGcsc6B3bT1794QMx3=vSTg@mail.gmail.com>
- <Zwfcwg23tfrKIyrq@boqun-archlinux>
- <CAH5fLgjhTWjmYqxcTRRv6FTpv7Vg9nnVCGGWbSKPqOSjJ5XyQA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1728571734; x=1729176534;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wk8mOEtaS0st9RtIbPiyvPicjXJuaraec7PuPjhsQZk=;
+        b=tfLFWBNjLFXnkzW1Yi6RO5F6+C+740Vpj7v4512+cNfYhQtT5h+fkP9kNp8Gby2JM8
+         bOTWGYDj/hJMXmpmGotpH0tKgpkD7ndxGjmRuipzba+0P0bo7A3P6hsxI5GxvqqdPJRA
+         ihBEs4/8ZxKUgIWEmqEIVeMhDkiwFovqmZKpS5e+yQNnf+UUMpP/UeTIrQyXQr8Yd8Y6
+         chIe4pZZhOas7c2buyQQq3Zx6IfirGpUWEPchO4pcowyBaiuEaPuteaIB9xwbFuKpKcr
+         QzB3RmIwZXqa77U66aUd44U8iIHva/xxfNsaDGabHH1p4CCkTDJbl5WAHzVSGsoC1aQw
+         gSoA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3IxTs0uF7IuKpcXdaSsj7KEiUZmt8mrgbbLFOvgLT2pt6oEhSdda40uNLiLywRFy+S8hYP/JcI0MmAZYdIn8=@vger.kernel.org, AJvYcCXfQbr3CF/gWLtv8wOzrbdjLm4xySDhyyfpDL/KEmLMDHsith0J61XKnE3p+R5bdOs+ZiPBn4/HHQwsq14=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZIbygOvl5N0Fbs62SuEbJAqHpneHT4kRlteoqdZi+OYOWz/hN
+	Wh5PvME82zWE2iaYTmbRoGuD5MhnBTOvW+CkFnLfJNlu2MUXSjoPk3TaNuhf5jPXK8lBZjIcHAs
+	ZIQUER1vk6RyYlI4UabLtToQ4z4Y=
+X-Google-Smtp-Source: AGHT+IEljzpMu1ACQ6sQRA8RzgwL3HdCJr8K4MQxtTnAtECkzV3J/8bQwyLAxm6Zuns2qv11cRQg+5TXDKwx0rMQsBI=
+X-Received: by 2002:a05:6a21:3397:b0:1cf:2be2:5e5b with SMTP id
+ adf61e73a8af0-1d8a3c59cb2mr3823983637.11.1728571733800; Thu, 10 Oct 2024
+ 07:48:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjhTWjmYqxcTRRv6FTpv7Vg9nnVCGGWbSKPqOSjJ5XyQA@mail.gmail.com>
+References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+ <ZwbAvEnrzu6UUgGl@J2N7QTR9R3> <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
+ <ZwewMw8jBh6OU-L_@J2N7QTR9R3> <20241010110344.GL14587@noisy.programming.kicks-ass.net>
+ <20241010113748.GL33184@noisy.programming.kicks-ass.net> <CANiq72=kT9RFcQ3h5U+wAY0pDQQqGU7BTtiPJ-oiHNUG00z3=w@mail.gmail.com>
+ <20241010130421.GG17263@noisy.programming.kicks-ass.net>
+In-Reply-To: <20241010130421.GG17263@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Oct 2024 16:48:41 +0200
+Message-ID: <CANiq72kbApTtdLeow5L6G6t4Q_L-0zkDwfwyWcSb_e6P=kO06g@mail.gmail.com>
+Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all architectures
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 10, 2024 at 03:58:07PM +0200, Alice Ryhl wrote:
-> On Thu, Oct 10, 2024 at 3:55 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > On Thu, Oct 10, 2024 at 12:53:00PM +0200, Alice Ryhl wrote:
-> > [...]
-> > > > > +#[macro_export]
-> > > > > +macro_rules! global_lock {
-> > > > > +    {
-> > > > > +        $(#[$meta:meta])* $pub:vis static $name:ident: $kind:ident<$valuety:ty> = unsafe { uninit };
-> > > > > +        value: $value:expr;
-> > > >
-> > > > I would find it more natural to use `=` instead of `:` here, since then
-> > > > it would read as a normal statement with the semicolon at the end.
-> > > > Another alternative would be to use `,` instead of `;`, but that doesn't
-> > > > work nicely with the static keyword above (although you could make the
-> > > > user write it in another {}, but that also isn't ideal...).
-> > > >
-> > > > Using `=` instead of `:` makes my editor put the correct amount of
-> > > > indentation there, `:` adds a lot of extra spaces.
-> > >
-> > > That seems sensible.
-> > >
-> >
-> > While we are at it, how about we make the syntax:
-> >
-> >         global_lock!{
-> >             static MY_LOCK: Mutex<u32> = unsafe { 0 };
-> >         }
-> >
-> > or
-> >
-> >         global_lock!{
-> >             static MY_LOCK: Mutex<u32> = unsafe { uninit { 0 } };
-> >         }
-> >
-> > ?
-> >
-> > i.e. instead of a "value" field, we put it in the "initialization
-> > expression". To me, this make it more clear that "value" is the
-> > initialized value protected by the lock. Thoughts?
-> 
-> `uninit { 0 }` looks pretty terrible IMO. Can we come up with something better?
-> 
+On Thu, Oct 10, 2024 at 3:04=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> Also not rust-src, because for some reason you're not actually
+> freestanding :/
 
-I'm trying, but in the meanwhile, another idea comes to me, can we just
-avoid using the `global_lock!` macro if "locked_by" is not needed? I.e.
-as the global counter in your examples, we probably need a new lock type
-in these cases but we don't use macros. I feel like macros don't bring
-us anything in these usages. As a result, we make `global_lock!`
-dedicated for locked_by usages, where values should usually be a `()`.
+It is there, but it is a suggested package, so I think you would need
+e.g. `--install-suggests`:
 
-> > Besides, instead of a "guard" type name, could you make a
-> > generic guard type over the "locked_by" type? E.g.
-> >
-> >         struct GlobalGuard<L: GlobalLockedBy>(Guard<...>, PhantomData<*mut L>);
-> >
-> > I feel like this could make the relationship between the guard type and
-> > the locked_by type more obvious. But maybe there's something I'm
-> > missing?
-> 
-> Sorry, I don't understand this. Why is the LockedBy type relevant to the guard?
-> 
+    https://packages.debian.org/trixie/rust-all
 
-well, $locked_by's `as_ref()` and `as_mut()` both need a $guard
-reference, instead of asking users to provide an arbitrary $guard name,
-I thought it's better to just make $guard generic over $locked_by.
-However, I realise that $locked_by is a generic type over T, so my
-previous proposal doesn't work. How about another way around: making
-$locked_by type generic over $guard:
+Regarding freestanding, we use `no_std`, which one could argue is
+similar to C's freestanding. That is, we use `core`, which is a subset
+of the full (hosted) standard library, just like C requires some
+headers even in freestanding.
 
-	pub(crate) struct GlobalLockedBy<T: ?Sized, G>(::core::cell::UnsafeCell<T>, ...);
+However, I think you mean not even using those
+headers/sources/libraries, which is fair. Rust calls that `no_core`,
+but it is currently impractical to use/maintain and there are a lot of
+useful things in `core` we want to use anyway, such as the `Result`
+type:
 
-(G is a $guard type)
+    https://doc.rust-lang.org/core/
 
-and if we do
+There are some things that we could remove, though, which is why I
+asked long ago for ways to remove unneeded things for the kernel
+("modularization of `core`"). We got `no_fp_fmt_parse`, implemented by
+Gary back in 2021, and we could perhaps get more in the future if
+really needed.
 
-	global_lock!{
-	    static MY_LOCK ...;
-	    guard: MyGuard;
-	}
+> Yeah, but then you have to first know that we have this file to begin
+> with.
 
-we can have a struct:
+That is fair, but hard to fix. We try our best though: the "Rust"
+entry is in the front page of the kernel docs already, and the first
+paragraph of that page links to the "Quick Start" guide.
 
-	struct MyStruct {
-	    inner: GlobalLockedBy<u32, MyGuard>
-	}
-
-instead of asking users to provide a name of the $locked_by type.
-
-Does this makes sense?
-
-Regards,
-Boqun
-
-> Alice
+Cheers,
+Miguel
