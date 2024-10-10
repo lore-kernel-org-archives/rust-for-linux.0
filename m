@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE982AF18;
-	Thu, 10 Oct 2024 09:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DC91C1AB6
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 10:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728553721; cv=none; b=GX2zJC3cIaiCcyzP/QxuBk+1QrkEzaLL1tQMPAbX9CQgZ3k9U6cHQurldzkXg/KfgbdkTFNAFwyIw0UFgQNyCgiYHd9eGWKxWcqDotRTE155meLuTJ1u+HeBvb7x9Cgjb7py+qLkffx3ssd69fcuG3o+efJ5Hx0AL4MQI3UVSjY=
+	t=1728556778; cv=none; b=GiX7SJseis+fItxucX3JvOW7zNMTklDQlf+O9KZxGbrSXetL4mBDiup9pNPLG+OGCt1VJ1gbnjS0g3JlNp6Kirv+bDfUlvC1xEvCMA2YNJiCABhnKCAz2O3GWXUvwaMni4lHQJTm5LbFgYPNLWK3vHVue238EVR7h4wf++z9qSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728553721; c=relaxed/simple;
-	bh=Hmt3jEs6UFtCZSwVksLED/7D3NvxMMvWC6XgppiqDdk=;
+	s=arc-20240116; t=1728556778; c=relaxed/simple;
+	bh=unWCd8Bj7m5kV38bwAaZ3iSQ42tE4Qa+3WqM5c4Oq40=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iVSj8cXNoAof4uK+5HifLSfP7EXBJLETq3b9Oy6A1ZpUViRCJt4RO9h4rnMwX1KI+SdZ269dTrw1bpzcsXuz0kFaxhQkoM1a0r8MHsUqemcWm7xZOdrboNLGwXZbfFaoLsXakBYbrrcT6YiDXsC9TQ6YRXg73ZDR0LeHsWcpC/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kA0ia7XW; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=McTfNNEpAJLoOVhHbMEyEKd3CwBMgxlRBjP3GRVYdPAXtJ8g9Q9nItcEMCmPVILfuCIoIY21joPoGqF1/xUpFiKlqcZuquYn1W38loE3rvutfNc72PUkUJ4bFz3oCuUTpAJekYiPNumDLIFtH+d1+//qRuR7nVdX42q3Z2Vuy3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QTVi215i; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kA0ia7XW"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QTVi215i"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1728553716; x=1728812916;
-	bh=zjjrWauUtafR1DGK8lQ4A/Pbp3ms1S1NTtMuRVcyuIQ=;
+	s=jqhjdjlg5vhhpffs2lm7ksfmp4.protonmail; t=1728556773; x=1728815973;
+	bh=8Zf+6OnIHBMtlXd7FzOuX7ORu081uulAtd21bEUsr2c=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=kA0ia7XWxjYQ7IHaBlnJMZyUHgv6uMNRaP5fL2Bbv6Pvm4ioSI/5/pSAvZocNlK+N
-	 ciO4wv6VTht6djm++Bcq8Zgt3YSVp4efKCJLtqo42QwmdCQt5AHFrYlALVKCSp5/fB
-	 HjQ59bjThiJ3uNihNqJvTxmjBlVfc5HNfZnSfKPz9TowPmvXIjCRbcSI4MOwfFjCp7
-	 PgBkeGIUKwxCEoDo6+fm4JB0c8mQLCrWF7VoJlbk4Zy2iBgTDro5qnC94nhcYaz7Ov
-	 ckIjR5t7GxEFmoaxi8oMbxSN1hRcpn8yAR2fwhJhlJ2H3hckG6Bz0dmWfvsvVnUjhK
-	 Q306B2yKxJNCA==
-Date: Thu, 10 Oct 2024 09:48:31 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>, Gary Guo <gary@garyguo.net>
+	b=QTVi215iA8LsutOzi6GKPp9pTSVybknFvKR5OCEBCbFu8lS5kmvabZzwD/NnQw2X9
+	 YTzuS2/iNPQhiYUfJEB+q9c9j/iojAYh70XfKjGRUav0jzwdbt5GriAQYMt2wvNtkK
+	 N7QrDlgLYUb+cpWgfuP0FCWAIMWRy+HjCInmC5hkBL2Xzat9IyAhFDOzcLUCYeRdrr
+	 36R06mAHAsV9v+Bu2T7iif2jS5PnZSgOppSc97240cTC7PPFCSAqdcNDz6b/uGiUKf
+	 X2YjBFggWmncxoaeuI2cxjoppwsziq7A5OAZapb2LWjSvpyRMLwX1v18/RmPJrE9EB
+	 Psk7OJxDPbi1g==
+Date: Thu, 10 Oct 2024 10:39:27 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Greg KH <gregkh@linuxfoundation.org>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] rust: block: convert `block::mq` to use `Refcount`
-Message-ID: <19808a54-cb7e-4818-98e9-5de32bfede2c@proton.me>
-In-Reply-To: <87set4min7.fsf@kernel.org>
-References: <20241004155247.2210469-1-gary@garyguo.net> <2024100507-percolate-kinship-fc9a@gregkh> <87zfniop6i.fsf@kernel.org> <CAH5fLghK1dtkF5bRpcRcu2SXZ6vgPoHGLRqW2=r0J3-2T3ALwQ@mail.gmail.com> <fz1Ji-tl63pAnAOL2TkFwggNx45TTBONKOUcKAKq7e6ZOCX2KsklDS6Zbc_xqnMef1eevpM-a64Bui_nEg49mA==@protonmail.internalid> <20241005142332.78b8b5d0.gary@garyguo.net> <87msjioax2.fsf@kernel.org> <871q0onyhf.fsf@kernel.org> <87set4min7.fsf@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v4] rust: add global lock support
+Message-ID: <1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me>
+In-Reply-To: <20240930-static-mutex-v4-1-c59555413127@google.com>
+References: <20240930-static-mutex-v4-1-c59555413127@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 39b58565af7c7faa869c9594e80aa2a7225e8963
+X-Pm-Message-ID: 0bb8459485997070a8fe7cd17fff164fccb4da71
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,141 +47,245 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 10.10.24 11:06, Andreas Hindborg wrote:
-> Andreas Hindborg <a.hindborg@kernel.org> writes:
->=20
->> Andreas Hindborg <a.hindborg@kernel.org> writes:
->>
->>> "Gary Guo" <gary@garyguo.net> writes:
->>>
->>>> On Sat, 5 Oct 2024 13:59:44 +0200
->>>> Alice Ryhl <aliceryhl@google.com> wrote:
->>>>
->>>>> On Sat, Oct 5, 2024 at 11:49=E2=80=AFAM Andreas Hindborg <a.hindborg@=
-kernel.org> wrote:
->>>>>>
->>>>>> Hi Greg,
->>>>>>
->>>>>> "Greg KH" <gregkh@linuxfoundation.org> writes:
->>>>>>
->>>>>>> On Fri, Oct 04, 2024 at 04:52:24PM +0100, Gary Guo wrote:
->>>>>>>> There is an operation needed by `block::mq`, atomically decreasing
->>>>>>>> refcount from 2 to 0, which is not available through refcount.h, s=
-o
->>>>>>>> I exposed `Refcount::as_atomic` which allows accessing the refcoun=
-t
->>>>>>>> directly.
->>>>>>>
->>>>>>> That's scary, and of course feels wrong on many levels, but:
->>>>>>>
->>>>>>>
->>>>>>>> @@ -91,13 +95,17 @@ pub(crate) unsafe fn start_unchecked(this: &AR=
-ef<Self>) {
->>>>>>>>      /// C `struct request`. If the operation fails, `this` is ret=
-urned in the
->>>>>>>>      /// `Err` variant.
->>>>>>>>      fn try_set_end(this: ARef<Self>) -> Result<*mut bindings::req=
-uest, ARef<Self>> {
->>>>>>>> -        // We can race with `TagSet::tag_to_rq`
->>>>>>>> -        if let Err(_old) =3D this.wrapper_ref().refcount().compar=
-e_exchange(
->>>>>>>> -            2,
->>>>>>>> -            0,
->>>>>>>> -            Ordering::Relaxed,
->>>>>>>> -            Ordering::Relaxed,
->>>>>>>> -        ) {
->>>>>>>> +        // To hand back the ownership, we need the current refcou=
-nt to be 2.
->>>>>>>> +        // Since we can race with `TagSet::tag_to_rq`, this needs=
- to atomically reduce
->>>>>>>> +        // refcount to 0. `Refcount` does not provide a way to do=
- this, so use the underlying
->>>>>>>> +        // atomics directly.
->>>>>>>> +        if this
->>>>>>>> +            .wrapper_ref()
->>>>>>>> +            .refcount()
->>>>>>>> +            .as_atomic()
->>>>>>>> +            .compare_exchange(2, 0, Ordering::Relaxed, Ordering::=
-Relaxed)
->>>>>>>> +            .is_err()
->>>>>>>
->>>>>>> Why not just call rust_helper_refcount_set()?  Or is the issue that=
- you
->>>>>>> think you might not be 2 here?  And if you HAVE to be 2, why that m=
-agic
->>>>>>> value (i.e. why not just always be 1 and rely on normal
->>>>>>> increment/decrement?)
->>>>>>>
->>>>>>> I know some refcounts are odd in the kernel, but I don't see where =
-the
->>>>>>> block layer is caring about 2 as a refcount anywhere, what am I mis=
-sing?
->>>>>>
->>>>>> It is in the documentation, rendered version available here [1]. Let=
- me
->>>>>> know if it is still unclear, then I guess we need to update the docs=
-.
->>>>>>
->>>>>> Also, my session from Recipes has a little bit of discussion regardi=
-ng
->>>>>> this refcount and it's use [2].
->>>>>>
->>>>>> Best regards,
->>>>>> Andreas
->>>>>>
->>>>>>
->>>>>> [1] https://rust.docs.kernel.org/kernel/block/mq/struct.Request.html=
-#implementation-details
->>>>>> [2] https://youtu.be/1LEvgkhU-t4?si=3DB1XnJhzCCNnUtRsI&t=3D1685
->>>>>
->>>>> So it sounds like there is one refcount from the C side, and some
->>>>> number of references from the Rust side. The function checks whether
->>>>> there's only one Rust reference left, and if so, takes ownership of
->>>>> the value, correct?
->>>>>
->>>>> In that case, the CAS should have an acquire ordering to synchronize
->>>>> with dropping the refcount 3->2 on another thread. Otherwise, you
->>>>> might have a data race with the operations that happened just before
->>>>> the 3->2 refcount drop.
->>>>>
->>>>> Alice
->>>>
->>>> The code as is is fine since there's no data protected in
->>>> `RequestDataWrapper` yet (in fact it's not even generic yet). I know
->>>> Andreas does want to introduce driver-specific data into that, so in
->>>> the long term the acquire would be necessary.
->>>>
->>>> Andreas, please let me know if you want me to make the change now, or
->>>> you'd rather change the ordering when you introduce data to
->>>> `RequestDataWrapper`.
->>>
->>> I guess we will have said data dependencies when we are going to run
->>> drop for fields in the private data area. Thanks for pointing that out.
->>> I will update the ordering when I submit that patch.
->>>
->>> As I mentioned before, I would rather we do not apply this patch before
->>> we get a way to inline helpers.
->>
->> As discussed offline, the code that suffers the performance regression
->> is downstream, and since this change seems to be important, I can apply
->> the helper LTO patch downstream as well.
->>
->> Since the plan for the downstream code _is_ to move upstream, I really
->> hope to see the helper LTO patch upstream, so we don't get a performance
->> regression because of these refcounts.
->>
->> If we cannot figure out a way to get the LTO patches (or an alternative
->> solution) upstream, we can always revert back to a more performant
->> solution in block.
->=20
-> I forgot to report the result of the benchmarks. Over the usual
-> benchmark workload that I run for `rnull` I see an average 0.8 percent
-> performance penalty with this patch. For some configurations
-> I see 95% CI N=3D40 [-18%;-5%]. So it is not insignificant.
+On 30.09.24 15:11, Alice Ryhl wrote:
+> diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/glob=
+al.rs
+> new file mode 100644
+> index 000000000000..fc02fac864f6
+> --- /dev/null
+> +++ b/rust/kernel/sync/lock/global.rs
+> @@ -0,0 +1,260 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Support for defining statics containing locks.
+> +
+> +/// Defines a global lock.
+> +///
+> +/// Supports the following options:
+> +///
+> +/// * `value` specifies the initial value in the global lock.
+> +/// * `wrapper` specifies the name of the wrapper struct.
+> +/// * `guard` specifies the name of the guard type.
+> +/// * `locked_by` specifies the name of the `LockedBy` type.
+> +///
+> +/// # Examples
+> +///
+> +/// A global counter.
+> +///
+> +/// ```
+> +/// # mod ex {
+> +/// # use kernel::prelude::*;
+> +/// kernel::sync::global_lock! {
+> +///     // SAFETY: Initialized in module initializer before first use.
+> +///     static MY_COUNTER: Mutex<u32> =3D unsafe { uninit };
+> +///     value: 0;
+> +/// }
+> +///
+> +/// fn increment_counter() -> u32 {
+> +///     let mut guard =3D MY_COUNTER.lock();
+> +///     *guard +=3D 1;
+> +///     *guard
+> +/// }
+> +///
+> +/// impl kernel::Module for MyModule {
+> +///     fn init(_module: &'static ThisModule) -> Result<Self> {
+> +///         // SAFETY: called exactly once
+> +///         unsafe { MY_COUNTER.init() };
+> +///
+> +///         Ok(MyModule {})
+> +///     }
+> +/// }
+> +/// # struct MyModule {}
+> +/// # }
+> +/// ```
+> +///
+> +/// A global mutex used to protect all instances of a given struct.
+> +///
+> +/// ```
+> +/// # mod ex {
+> +/// # use kernel::prelude::*;
+> +/// kernel::sync::global_lock! {
+> +///     // SAFETY: Initialized in module initializer before first use.
+> +///     static MY_MUTEX: Mutex<()> =3D unsafe { uninit };
+> +///     value: ();
+> +///     guard: MyGuard;
+> +///     locked_by: LockedByMyMutex;
+> +/// }
+> +///
+> +/// /// All instances of this struct are protected by `MY_MUTEX`.
+> +/// struct MyStruct {
+> +///     my_counter: LockedByMyMutex<u32>,
+> +/// }
+> +///
+> +/// impl MyStruct {
+> +///     /// Increment the counter in this instance.
+> +///     ///
+> +///     /// The caller must hold the `MY_MUTEX` mutex.
+> +///     fn increment(&self, guard: &mut MyGuard) -> u32 {
+> +///         let my_counter =3D self.my_counter.as_mut(guard);
+> +///         *my_counter +=3D 1;
+> +///         *my_counter
+> +///     }
+> +/// }
+> +///
+> +/// impl kernel::Module for MyModule {
+> +///     fn init(_module: &'static ThisModule) -> Result<Self> {
+> +///         // SAFETY: called exactly once
+> +///         unsafe { MY_MUTEX.init() };
+> +///
+> +///         Ok(MyModule {})
+> +///     }
+> +/// }
+> +/// # struct MyModule {}
+> +/// # }
+> +/// ```
 
-Was the benchmark run together with the LTO helper patches?
+The docs here don't mention that you still need to call `.init()`
+manually (though the examples show it nicely). I don't know if we want
+macros to have a `# Safety` section.
+
+> +#[macro_export]
+> +macro_rules! global_lock {
+> +    {
+> +        $(#[$meta:meta])* $pub:vis static $name:ident: $kind:ident<$valu=
+ety:ty> =3D unsafe { uninit };
+> +        value: $value:expr;
+
+I would find it more natural to use `=3D` instead of `:` here, since then
+it would read as a normal statement with the semicolon at the end.
+Another alternative would be to use `,` instead of `;`, but that doesn't
+work nicely with the static keyword above (although you could make the
+user write it in another {}, but that also isn't ideal...).
+
+Using `=3D` instead of `:` makes my editor put the correct amount of
+indentation there, `:` adds a lot of extra spaces.
+
+> +        wrapper: $wrapper:ident;
+> +        $( name: $lname:literal; )?
+> +        $(
+> +            guard: $guard:ident;
+> +            locked_by: $locked_by:ident;
+> +        )?
+> +    } =3D> {
+> +        $crate::macros::paste! {
+> +            type [< __static_lock_ty_ $name >] =3D $valuety;
+> +            const [< __static_lock_init_ $name >]: [< __static_lock_ty_ =
+$name >] =3D $value;
+
+Why are these two items outside of the `mod` below?
+Also why do you need to define the type alias? You could just use
+`$valuety`, right?
+
+Also,
+
+    error: type `__static_lock_ty_VALUE` should have an upper camel case na=
+me
+       --> rust/kernel/sync/lock/global.rs:100:18
+        |
+    100 |               type [< __static_lock_ty_ $name >] =3D $valuety;
+        |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert th=
+e identifier to upper camel case: `StaticLockTyValue`
+
+The same error affects the `wrapper` type forwarding below.
+
+
+> +
+> +            #[allow(unused_pub)]
+
+    error: unknown lint: `unused_pub`
+       --> rust/kernel/sync/lock/global.rs:103:21
+        |
+    103 |               #[allow(unused_pub)]
+        |                       ^^^^^^^^^^ help: did you mean: `unused_mut`
+
+Though I also get
+
+    error: methods `init` and `lock` are never used
+       --> rust/kernel/sync/lock/global.rs:128:42
+        |
+    122 | /                 impl $wrapper {
+    123 | |                     /// Initialize the global lock.
+    124 | |                     ///
+    125 | |                     /// # Safety
+    ...   |
+    128 | |                     pub(crate) unsafe fn init(&'static self) {
+        | |                                          ^^^^
+    ...   |
+    142 | |                     pub(crate) fn lock(&'static self) -> $crate=
+::global_lock_inner!(guard $kind, $valuety $(, $guard)?) {
+        | |                                   ^^^^
+    ...   |
+    146 | |                     }
+    147 | |                 }
+        | |_________________- methods in this implementation
+
+But that is governed by the `dead_code` lint.
+
+> +            mod [< __static_lock_mod_ $name >] {
+> +                use super::[< __static_lock_ty_ $name >] as Val;
+> +                use super::[< __static_lock_init_ $name >] as INIT;
+> +                type Backend =3D $crate::global_lock_inner!(backend $kin=
+d);
+> +                type GuardTyp =3D $crate::global_lock_inner!(guard $kind=
+, Val $(, $guard)?);
+
+`GuardTyp` is only used once, so you should be able to just inline it.
+`Backend` is used twice, but I don't know if we need a type alias for
+it.
+
+> +
+> +                /// # Safety
+> +                ///
+> +                /// Must be used to initialize `super::$name`.
+> +                pub(super) const unsafe fn new() -> $wrapper {
+
+Why is this function not associated to `$wrapper`?
+
+> +                    let state =3D $crate::types::Opaque::uninit();
+
+Why not add
+
+    const INIT: $valuety =3D $value;
+
+here instead of outside the mod.
+
+> +                    $wrapper {
+> +                        // SAFETY: The user of this macro promises to ca=
+ll `init` before calling
+> +                        // `lock`.
+> +                        inner: unsafe {
+> +                            $crate::sync::lock::Lock::global_lock_helper=
+_new(state, INIT)
+> +                        }
+> +                    }
+> +                }
+> +
+> +                /// Wrapper type for a global lock.
+> +                pub(crate) struct $wrapper {
+
+How can the wrapper struct be `pub(crate)` when the constant might be
+global `pub`?
+
+    error: type `__static_lock_wrapper_INIT` is more private than the item =
+`INIT`                                                                     =
+                                                                           =
+          =20
+       --> rust/kernel/sync/lock/global.rs:206:14
+        |                                   =20
+    206 |               };                      =20
+        |                ^ static `INIT` is reachable at visibility `pub`
+        |                =20
+
+The functions should probably just be `pub`.
 
 ---
 Cheers,
 Benno
+
+> +                    inner: $crate::sync::lock::Lock<Val, Backend>,
+> +                }
+> +
+> +              =20
 
