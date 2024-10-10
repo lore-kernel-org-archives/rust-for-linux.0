@@ -1,77 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752BCBE6F;
-	Thu, 10 Oct 2024 09:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48711BC09A
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 09:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728552563; cv=none; b=F0D9nBFUjQJ9MqusSoCrZBUWnEv2Q86u5km1M+XO+yDGTW0LMBOJ/XeBw9InB4sNVHq1pGv+d0ScKxy+6bHQdaaVQYqQwtgaUE2WtQ7B80Fu3DdYaaLTXu2ZkxBYc7yczad4W9WlW+V2SIAUJjIzDSTs/xLsJNC9xe/+ZdE7maw=
+	t=1728553118; cv=none; b=qlORoy313vQqnCCPjoGKjpCL52AHClrIwd7azIefHiLANSDdpzXxOfrOTNwbWq3kk+N4C6GCV/dLtljaGhhcDCToyDK2Z7bgrTfIkvx6oNN/HcBzCEcxReQTJBkS4dLH+apUXGZYBy4Yc8H5mo4g4vypeyjOhPKiZKi7I2YqRlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728552563; c=relaxed/simple;
-	bh=uHHQuCd+hBIGNhvjjP6qSw0Lol5SDSfCg5OF8r0zrs4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MkvoX5oY839nrhvCkxisGouGnkJQuLWtwNN9oAU0zcsxVj/uLUoGt0eUcm2J6/UG/XHKdiT2/mPkq2XblZBWpJq+Z3CwO1kVbM96xDTNE9gwBliBIDDuVt6kdaXwKXCXamMBRaHAOnSxDGc93HSjaWsRSmJuDVAVXOD5o52oceg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDdaetEy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728553118; c=relaxed/simple;
+	bh=LGl5v64OdaSMCvZyhXlX9gOE4oO4AJVSVwQjgTem8xY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tydjNSssu2n+O72gxsXcmh6SugUeaHThVqmqWzftaNIw5extgTXLby31TQU2+ygoB+nB+YUgVJZTnwuv9Ui2qJ7Cd/AgstJ3VpXDW+130aUbsDf4gim2M1K+esqDcy0GcKRqoAAEfcps4nXagROOAsXSG433uj0Cge+aLmo6jBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t3mjSE3A; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDdaetEy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE4BC4CEC5;
-	Thu, 10 Oct 2024 09:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728552563;
-	bh=uHHQuCd+hBIGNhvjjP6qSw0Lol5SDSfCg5OF8r0zrs4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YDdaetEynXX+YuTMPWiX5TdxwuOt3klN+L+GbJU1NwyXKePOjL/KJhTXe9xLacNyl
-	 yAX0jq5e2KpK4n7CFfIEUnRY0H4V+QEN1l5ymfLBgmClvjSJZXGCzyoNGA/fBU+vri
-	 EgLDjyfQgHSDJNSMNDrgKaj4ht1dQP4KZn8FvpfdkohIYKWggsSgRNlZpMsCAyVKSf
-	 tmpDpO+J+2c2l3TXZw/hZ8vJikkKhWVc30SFRBooXsDMy2jNp3eIscKyWw6cf3JUd/
-	 vtG5Fq9UssLS0Ym4NzGlwECqrlLq4i7Lp9t0tQQiWl9qij2Jx1Xe9bcLDvaZY6FVNP
-	 mXulk9raq4eAg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Francesco Zardi <frazar00@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Wedson Almeida Filho <wedsonaf@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
-  Andreas Hindborg <a.hindborg@samsung.com>,  Alice Ryhl
- <aliceryhl@google.com>,  Jens Axboe <axboe@kernel.dk>,
-  rust-for-linux@vger.kernel.org,  linux-block@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] docs: rust: fix formatting for
- kernel::block::mq::Request
-In-Reply-To: <20240903173027.16732-3-frazar00@gmail.com> (Francesco Zardi's
-	message of "Tue, 3 Sep 2024 19:30:29 +0200")
-References: <20240903173027.16732-3-frazar00@gmail.com>
-Date: Thu, 10 Oct 2024 11:29:05 +0200
-Message-ID: <87cyk8mhlq.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t3mjSE3A"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e31e5d1739so15404107b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 02:38:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728553116; x=1729157916; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3JrvS7ZL7zZ+JbiSh4qJJvQSqhwC8oRf994IWaVyGGc=;
+        b=t3mjSE3Ac+b8952KtzLouD8WZaPGF6gxc81LV/7KXPcWAKkqzraaBBDe7YQjG0TXkT
+         /faZNahhlM/cIwt3keP0wSULlGaNTPLh4ehUwPfBuksj9Md61T5mwtzDg/Ng5IYClTp+
+         oc1mt4twiywuiJ2QTfAt0mFUWwF3Ew41n+ZzJBNKZYhq+FeHlRhzMLisnA93r+tZf0C+
+         w0uUwn+Jdp6mDNEIt//q0Z6+fhwGe1QQOqsLlE6OEjEYMNvf1RBthDLbq11R4SthXeYw
+         g69ysgfaJ9g1csDBo0tBePQcJulpyOVeNZl5unXGrCiyP7VnSQmrD61TV4KpR2AU5uRH
+         pe+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728553116; x=1729157916;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3JrvS7ZL7zZ+JbiSh4qJJvQSqhwC8oRf994IWaVyGGc=;
+        b=bDGbUEI5U7O3CprWrLYya14HqCZr6zFGcxbsRYBLbyt5YB3wQ6DTaYXggmEisDD5pK
+         LsnMHfCpiF6w9LlEgV5a8/iT1s7CvCI+CDiQXQGf72MjRqhJ/6fiLVcVOVNBPNZy6ShE
+         eFG1Taz/iJAF6SQ08xYdIP2BeyYqEOEVNYmOPfHtQYSY4ebpp1ZqoIFCgRki74ufOvav
+         t2okyKIQefkgw8zxHMMowWxsUXf5rOAW7qgutiSSjF60ExBVrOT/WkQJKYQVEwHN4t8v
+         EVkgEW0gn6uEhin14U4h/6ovf3TuVdjXXyLUkv19eAZNUmBko8oVBGwBDN299aeKPRZk
+         +p9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXGHgkApJj//m1p1pculHtNcfzTrVEiR8G8ThBC4xfBOYMS21mzFSNUFIteTKiRs2+ayY2bKsXfgv0eJ71lRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy29c48H8Z9QpEJnIRmLZ7am063TYpttJ+acEHuqtRhmuAKSvvF
+	XUIlfDudhdiIh+4E5rzMxL3wxk3qHrRnjHav/fu5xEnc5ugAVoS2NNCS+SDDnuXXcGnoSmNwlFW
+	50o5Wd5n1PGsVfA==
+X-Google-Smtp-Source: AGHT+IFhzGY5t3RkyXoIJV0d1EOFgaxtw5njawDVgbAaGCAdITCJbDElc3h7tzDkVGhbspHmhomdM4Hhz71cxBg=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:4281:b0:6e3:2bc1:da17 with SMTP
+ id 00721157ae682-6e32bc1dc1amr499067b3.4.1728553115778; Thu, 10 Oct 2024
+ 02:38:35 -0700 (PDT)
+Date: Thu, 10 Oct 2024 09:38:25 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJGgB2cC/x3MMQqAMAxA0auUzAbaKoheRRwkiRooVVoRoXh3i
+ +Mb/i+QJalkGE2BJLdmPWKFawzQvsRNULkavPWds86i0hICslxCF96SMvYDeaaWuHMMtTuTrPr 8z2l+3w91fDo+YwAAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=778; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=LGl5v64OdaSMCvZyhXlX9gOE4oO4AJVSVwQjgTem8xY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnB6CXpiAgpO06WePqhI7wIEZSiscJcvGy/If/7
+ 3KVs6ACM5aJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZweglwAKCRAEWL7uWMY5
+ RktWD/9SpAYXqZHXhNSIniY2ws6yScZqR5wRrCqUJtVHBNLOKqw4Dp8vAwve/18pzRMmPpvwx1p
+ 2QO8gShh0uMKct8VIDW2QuGZqRNolmlOZ9+kIvPqA+b3mApSnwI7a8uCX6a+3d/TI3S+ExTN4hw
+ bSW6UdpqsOzsiPIb27tkLIm1Em5LPF44KqZ6xhhFvVNrJsAKyv9iaDRsVTjqwJ9dImdqPoDj/5R
+ LRVyoilklHhQvsAMPDkMGzMYC4XQTmqmLhWoSiPTKJXRvvkG0WlLr+8mjlfipLvv6mXdT53LqAK
+ Zz7f964P3L+33xB1Ul6y555EBO2YTVf0uuEYx99UTcDM9tmL6ytSv8lkR1hqk/nCR+xwHUaAqKJ
+ OsW5xXbQayaohCFTi1B3XdmhpSy+3hWyLuL9rOagP5ARsWHRT7rZtscahS5hCI+MGz369cbkkQL
+ fTk6O+SmRru522Dfk8ZBzReicGS8ZHO27uN/bONlWvi4URRhzndjPel09OQlBWbj98UZgfbQ+cm
+ BPVIEGrUJEZCJ58976wM0fmsr5IKGwFK4tlpUBp1Bx/G0FkvdCVo/54tuMSNPy44GIK7D2dmHa8
+ HP+PMTc/gZYzoZEtkxnUz3Xlom4hJxSqJ+Luxldj9EymFzNWVcaLf30ts5LS4nOw/HPZfe94Ldj UZKkGoV0asyqb1A==
+X-Mailer: b4 0.13.0
+Message-ID: <20241010-icall-detect-vers-v1-0-8f114956aa88@google.com>
+Subject: [PATCH 0/2] Normalized CFI integer tags Kconfig fixes
+From: Alice Ryhl <aliceryhl@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Francesco Zardi <frazar00@gmail.com> writes:
+This series adds a config option for the LLVM version in rustc and uses
+it to fix the detection for the CFI integer tags constructors bugfix.
 
-> Fix several issues with rustdoc formatting for the
-> `kernel::block::mq::Request` module, in particular:
->
-> - An ordered list not rendering correctly, fixed by using numbers prefixes
->   instead of letters
->
-> - Code snippets formatted as regular text, fixed by wrapping the code with
->   `back-ticks`
->
-> - References to types missing intra-doc links, fixed by wrapping the
->   types with [square brackets]
->
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1108
-> Signed-off-by: Francesco Zardi <frazar00@gmail.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (1):
+      cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_INTEGERS
 
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+Gary Guo (1):
+      kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`
 
-Thanks for the patch!
+ arch/Kconfig             | 26 ++++++++++++--------------
+ init/Kconfig             |  8 ++++++--
+ scripts/Kconfig.include  |  4 ++++
+ scripts/rustc-version.sh | 31 +++++++++++++++++++++++++------
+ 4 files changed, 47 insertions(+), 22 deletions(-)
+---
+base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+change-id: 20241010-icall-detect-vers-79c2dc3cd41d
 
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
