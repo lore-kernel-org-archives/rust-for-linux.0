@@ -1,171 +1,157 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994801C578B
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 12:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4011C6F76
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 12:57:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728563374; cv=none; b=fGQPukcc8KkmvJSGpJnjIN1g4SmhTQRywAPjRyTFGktFtDkQTXLwrUM1wrZkDSoh9PlhkT+ARMDpY/YH/15wrh1ua/64DvQWr3+BmJTvd5aloBWk4PZoA8USKhWeULTpoBWcRV4ge45fAZ6RoC7XUyB7KXx2HKY8jCZ8n/m3N7k=
+	t=1728565031; cv=none; b=OSpjgyMS0Gib+cpojXu7Dyrvq4jwz8tIS0ufp0JupNpWiN2DnrhFIDi0KiumCRU5fcPH8sulsgGjgY5BOLmSSiHHhw6UwSwSO/650gmVyarwYI2IBaqCrimYDqb/P9skpEEPH0UwWPe9QRWYUANWRFhos3NcHUyMFOfVnyJ5v7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728563374; c=relaxed/simple;
-	bh=7xvMbYMm9wWbmsflgMl5yPpAedwshWLdYVA6SaZwnPw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L2hHS1Zk8G2XNzO3sW/VT4JVYJ3o1H2gwBdezvVbmhVKB0McQC7H3qbSDjLX920lUMg3l3MqffK3KCo3257/e1aDa9hwjQwB+ueiAz/aD0lCogWVaBX28T/AfPAayZjA/nKH/8K3pG2vL5TQ88V3r6+ch7Z7OberznkG6Wj9nfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=foXlG1EB; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1728565031; c=relaxed/simple;
+	bh=OblR90xVpQ3uxMqRXP8BWxnDSHKdVQMnE4obNvo1stQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VdQYtzS/lY1Yhehcs+lZCCkowx3h/kdwcn4Gb6In6GZjWP23doPQXgACyr7nPjBmTgWFCbQdXPlgrS4k/0LrhLQchv9CaDg/H7bnnCdV5Tg9jqA4lYWnQWXz/P8v4HYGAh/GsG2yb6b5CrHzm3bObfpWfNb/Qi9WpI4mDhltlBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KqhiexEM; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="foXlG1EB"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4305724c12eso6374825e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 05:29:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KqhiexEM"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e2b049b64aso13717007b3.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Oct 2024 05:57:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728563371; x=1729168171; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7xvMbYMm9wWbmsflgMl5yPpAedwshWLdYVA6SaZwnPw=;
-        b=foXlG1EBnOLds2nF0B+Ab9a4KncesADgWN4LbN5li65oVQAl8ME35Q8QJU5zkJ5MsS
-         9XKHoTsiPBNSRCnroWayOYuwtQTUAbYEgEu3mpSSx4apLbOM+KjtAIjsfUEWbBxJmb9g
-         8NcBT6aBA094ZXi85R17+bQNb/yoHnNy+BxSk0dV2jjIB+lQNvvjL1BAAVd3mfP6itjh
-         rOtGTid1SGyrpqGtvj0jvIf3cj8IMzk46sT22uHTlhT66WXH/sK9pw295MrjulO8YqT6
-         Aw3wySYvhPx5OzA49kz6ph1Ysg/M4vt/3Y/byupeNq3kYSWThJ76SbDQF5XXIAWU9JNh
-         ITtw==
+        d=google.com; s=20230601; t=1728565029; x=1729169829; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DOhG2lII0b1XV2Pvd8Pm4xtK1qOLGqdV7w9S0Zd2Ryk=;
+        b=KqhiexEMuln/ajTVAghK2rJeTfuTklhSbDRCh2YbtMCcExf4x6nPk4B67s46rnAPG0
+         dcT0B3i/NanAIo6mICAhkb8Dc6tw2CUP9S5XzuGKSY6TLClKCH363DpxisP4sD9UXz3m
+         XzxlfpPhm7XXLYs0jSTCJjkbRo290+ZrKbMfvTGS4Qm2omkGBOuEzf4xn4reD0u4azY8
+         EztYSj5vFib9J7M1u5IKxIF91T6Is8dwZjahI5n7Cpw+eQsNjYdsRRPN5OO/twcZc7DQ
+         nC4h6PNPoPSjjsuuLh4SAv8wZ5izfRglGOnzAIMrTNsv4xr/xevzWMShnvmFYmJ859u8
+         VnIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728563371; x=1729168171;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7xvMbYMm9wWbmsflgMl5yPpAedwshWLdYVA6SaZwnPw=;
-        b=o+50dCLlfZX8FC7QxHXUWcjhhuecjJUFbRbd5kJHWjKnmWzXdkQ7bm9KZI4D+MHPsh
-         pghXddgzNPOiRZBNOxLnqB5at06wqmPguUebChWXjebTa/crdN2eOFbKLyvQxkLrD68D
-         b02OACSK1dPzSwSjNuoKzjq9wT/yMSS2uFz1KgT0ZkYczEbkL/RAKhtwD1DPfG2jf7wq
-         ADVAGz1esV5OmedHb2+SbLmlZ9STnWdY7ODLaaNly/vhf6Mie/14ICcOLZXZr2S7Tnpz
-         kKWmzUPRmgRnBZlX+S8yR8KeSBc7bTfcCQfZDr+q7jEn8i3AHKWJJaApzA87c74yvRN8
-         ulUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVBXz9GEFWnwFpXsyJ6+Z3IvIyMjoZ1GL85w0hy2JFcHoSfYok4iO7MHvAGymqq0MOl7KMqej070l9ZacUsQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI1IyMFWOSPByDeR5IlFcsYrBQrZ5POBWb0AhIvk5Xs9j2AwP/
-	IM8CvY2GOoKmdXpfbQGjH9G6Iz8r+LqtBlvMfKcxIZ5eqFL0MQQziiMhFRGpUIsgJjJWv2AYfGn
-	cD3aoBUZBBlH93mhs9cPja22njsC+JqKAIwpy
-X-Google-Smtp-Source: AGHT+IFiEOCz+4oYVsNQrtIRYCVjfwTQ+GKkrbG7vHFiSh58inIZVKcmGsdJT2LV421GZQdW2+IWPpPAN1a2dPbCsIs=
-X-Received: by 2002:adf:facd:0:b0:37d:39c8:ecca with SMTP id
- ffacd0b85a97d-37d3ab23165mr3640257f8f.55.1728563370779; Thu, 10 Oct 2024
- 05:29:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728565029; x=1729169829;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DOhG2lII0b1XV2Pvd8Pm4xtK1qOLGqdV7w9S0Zd2Ryk=;
+        b=DxO6uKIvorojDQKgEZoL6cAWyBy630IEvz69ve2zeGmE2tTSUYr50JkdDowCFytaco
+         5fOOve+8ap60K3iJuMsDcQ4txHmoIXed3sz7RHMmijceUD+C9fbQxgnUDd2y7GkSTCo7
+         BX4+TMX1dz72Tot1bpsRkOpXL/KYm0LlH5YeIA8dLuyfAHJnopG5fiIYfLJhXs40dDzI
+         JoyuBr772t0YayCkoErI4D1a6yAnioZRJdZwXtZTghMADbT7J56TwHznh5jaxgDlEEVb
+         Z/mlZPrj4x6qgkXxn3j2QQT8JvRBRLPQQ3DZPBOkhn3ywdJjkNRlReriMic4OCAvjEu7
+         oHRA==
+X-Forwarded-Encrypted: i=1; AJvYcCX458gIRCX2BJdj/mnvyjnGyWeSPmqHMcpBrWwwqGYktzIYbLNSPAeDiPsIKCu37SOaKDs1v4mb6H82frm4Yg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCxPK+9I0MMmLzhANmBDQfdry8R+xrux70s6vNot/NCeNx0Evy
+	I9RwjbRjkdOjqhlAlB1K61nfMblJu6if1U/lMmSiIq7qfYYSFNAsDZaZk94B2jK5TswIg6xIaYw
+	dyJoB6LcPQOgexA==
+X-Google-Smtp-Source: AGHT+IFnN4NiKROer/bhYUK3vmbJ0WzRy9Z6ly5mrAMMM7hZC0uCRREmQ6LL+Xht/BsVZC1c7cKNRgHPb8oUo5I=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a25:103:0:b0:e0b:af9b:fb79 with SMTP id
+ 3f1490d57ef6-e28fe346f12mr108404276.3.1728565029274; Thu, 10 Oct 2024
+ 05:57:09 -0700 (PDT)
+Date: Thu, 10 Oct 2024 12:56:34 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
- <ZwbAvEnrzu6UUgGl@J2N7QTR9R3> <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
- <ZwewMw8jBh6OU-L_@J2N7QTR9R3>
-In-Reply-To: <ZwewMw8jBh6OU-L_@J2N7QTR9R3>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAALPB2cC/2XOQW7DIBCF4atErEsFA9jQVe9RdTGGwUFqQmRXq
+ FXku3ccL+rIyzfi+8VdzDQVmsXb6S4mamUu9cqjezmJeMbrSLIk3gIUWNWDke2CMnuldcghD8Y
+ JfnmbKJefR+Xjk/e5zN91+n1Em16vz75pqaUBTA455Inex1rHL3qN9SLWQIM96jcEjHAw5AL0K
+ Ro8IPOP+IMbMozS0EUdFeaE4YDsHsGGLCMVNPpeOY/WHJDbo25DbkVWaZ+VSwTDE1qW5Q+0caX QawEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2391; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=OblR90xVpQ3uxMqRXP8BWxnDSHKdVQMnE4obNvo1stQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnB88XawLv1JPH9Yp7lgHZ3+4WXZQrNW3dTUC7J
+ CsNSWB2nwOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZwfPFwAKCRAEWL7uWMY5
+ RhFOD/9Wi46kNqF/PhA72INQt/WYgFCKYjm6ixQ4fxU4f/KfewJOEhjWEUPiWMxICagP/QfIdVP
+ foJFdIjRtk6x+oidLD3IsU96jidqNV5kPw3jYU7vbwSyKNxFeZtdyu3HUXvI1dl/54i4Ku6N2q1
+ PuoaHJ9ovsv/tO39bdAhhesIddykQ7dZRrJ6n7xuF+IGHc+7/2sUy7ssRB95TOKpJJeahbOz5xM
+ sIi5Lg6NmU9OnpbkmM07C5ZxWQyk4aod8Wccmc7uz9Ue7fCM9yTpf/w79bmUIeNL7AtTsjwhNYb
+ C4xJAbGKp0cY2Q3PRtQsJMZKozAk8HuSk17nT2RF5xNsIbQjpOC00jLxoQz66nZp84WY7Sk+vYq
+ KvAjSU5lOavfic0QbdUeYvPinGMzoCWhJcnHBVibOBeiSJFv5dfyRBnmvs2BQ2kt9KLiuFaomK1
+ Dol0yFuBmMN6LvCDD9WdCSMRkgjk4c3Sy2bbGGFQ7Yd/+tvQmboaz5WhmkppDb0MEKTaVnCv4KY
+ VyY2DjbFM4DoDbTiI2g/AVKHrfI/5sDuw26chHxy8M6d+9veC0ofEMbMOD6veoFxrg4AL4Lkdgn
+ fEKXjb8nEm3+CWHven01aTubTguh/3L4vdqONQhH3KiKCqE42Hd0tfaOcxZZvPFWPCuuNsThyg3 flADVaXqU1yl2aA==
+X-Mailer: b4 0.13.0
+Message-ID: <20241010-vma-v6-0-d89039b6f573@google.com>
+Subject: [PATCH v6 0/2] Rust support for mm_struct, vm_area_struct, and mmap
+ for miscdevice
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 10 Oct 2024 14:29:18 +0200
-Message-ID: <CAH5fLgi_Dg_a+-+KfKgzoo0z8vF5h7JT9DrFccx9C80qitsg7Q@mail.gmail.com>
-Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all architectures
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Oct 10, 2024 at 12:45=E2=80=AFPM Mark Rutland <mark.rutland@arm.com=
-> wrote:
->
-> On Wed, Oct 09, 2024 at 10:15:35PM +0200, Alice Ryhl wrote:
-> > On Wed, Oct 9, 2024 at 7:43=E2=80=AFPM Mark Rutland <mark.rutland@arm.c=
-om> wrote:
-> > >
-> > > Hi Alice,
-> > >
-> > > On Tue, Oct 08, 2024 at 05:37:16PM +0000, Alice Ryhl wrote:
-> > > > The KCFI sanitizer stores the CFI tag of a function just before its
-> > > > machine code. However, the patchable-function-entry flag can be use=
-d to
-> > > > introduce additional nop instructions before the machine code, taki=
-ng up
-> > > > the space that normally holds the CFI tag.
-> > >
-> > > To clarify, when you say "before the machine code", do you mean when
-> > > NOPs are placed before the function entry point? e.g. if we compiled
-> > > with -fpatchable-function-entry=3DM,N where N > 0? I'll refer tho thi=
-s as
-> > > "pre-function NOPs" below.
-> > >
-> > > There's an existing incompatibility between CFI and pre-function NOPs
-> > > for C code, because we override -fpatchable-function-entry on a
-> > > per-function basis (e.g. for noinstr and notrace), and we don't
-> > > currently have a mechanism to ensure the CFI tag is in the same place
-> > > regardless. This is why arm64 has CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-> > > depend on !CFI.
-> > >
-> > > For C code at least, just using regular -fpatchable-function-entry=3D=
-M or
-> > > -fpatchable-function-entry=3DM,0 shouldn't change the location of the=
- CFI
-> > > tag relative to the function entrypoint, and so should have no advers=
-e
-> > > effect on CFI.
-> > >
-> > > Is Rust any different here?
-> >
-> > Ah, no it shouldn't be. Sami can you confirm?
-> >
-> > > > In this case, a backwards offset is applied to the CFI tag to move
-> > > > them out of the way of the nop instructions. To ensure that C and R=
-ust
-> > > > agree on the offset used by CFI tags, pass the
-> > > > -Zpatchable-function-entry to rustc whenever it is passed to the C
-> > > > compiler.
-> > >
-> > > As above, I suspect this isn't necessary to make CFI work, for any ca=
-se
-> > > that works with C today, due to -fpatchable-funtion-entry being
-> > > overridden on a per-function basis. Are you seeing a problem in
-> > > practice, or was this found by inspection?
-> > >
-> > > However IIUC this will allow rust to be traced via ftrace (assuming r=
-ust
-> > > records the instrumented locations as gcc and clang do); is that the
-> > > case? Assuming so, is there any ABI difference that might bite us? On
-> > > arm64 we require that anything marked instrumented with
-> > > patchable-function-entry strictly follows the AAPCS64 calling convent=
-ion
-> > > and our ftrace trampolines save/restore the minimal set of necessary
-> > > registers, and I don't know how rust whether rust will behave the sam=
-e
-> > > or e.g. use specialized calling conventions internally.
-> >
-> > Well, I was told that it's a problem and was able to trigger a failure
-> > on x86. I didn't manage to trigger one on arm64, but I wasn't sure
-> > whether that was me doing something wrong, or whether the problem only
-> > exists on x86. We already have the flag on x86 for FINEIBT,
->
-> I believe that hte problem only exists on x86, becaause they use
-> patchable-function-entry for their FINEIBT patching (and use -mfentry
-> for ftrace), whereas everyone else uses patchable-function-entry for
-> ftrace.
->
-> > but I thought on the off chance that it's not a problem in practice on
-> > arm, it still doesn't hurt to add the flag.
->
-> It won't adversely affect CFI, but it will open up rust code for ftrace,
-> so I'm not sure that "it doesn't hurt".
->
-> AFAICT at the moment this isn't necessary for CFI, so can we drop this
-> patch for now?
+The first patch introduces mm_struct and vm_area_struct abstractions,
+and the second patch uses them for miscdevice.
 
-I'm okay with dropping this patch for now.
+This updates the vm_area_struct support to use the approach we discussed
+at LPC where there are three different types depending on the kind of
+access you have to the vma. You either have read access, write access,
+or you are initializing it. Each case allows a larger set of operations
+on the vma.
 
-Alice
+This is based on top of char-misc-next for the base miscdevice
+abstractions. That said, the first patch in the series also applies on
+v6.12-rc2.
+
+---
+Changes in v6:
+- Introduce VmArea{Ref,Mut,New} distinction.
+- Add a second patchset for miscdevice.
+- Rebase on char-misc-next (currently on v6.12-rc2).
+- Link to v5: https://lore.kernel.org/r/20240806-vma-v5-1-04018f05de2b@google.com
+
+Changes in v5:
+- Rename VmArea::from_raw_vma to from_raw.
+- Use Pin for mutable VmArea references.
+- Go through `ARef::from` in `mmgrab_current`.
+- Link to v4: https://lore.kernel.org/r/20240802-vma-v4-1-091a87058a43@google.com
+
+Changes in v4:
+- Pull out ARef::into_raw into a separate patch.
+- Update invariants and struct documentation.
+- Rename from_raw_mm to from_raw.
+- Link to v3: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com
+
+Changes in v3:
+- Reorder entries in mm.rs.
+- Use ARef for mmput_async helper.
+- Clarify that VmArea requires you to hold the mmap read or write lock.
+- Link to v2: https://lore.kernel.org/r/20240727-vma-v2-1-ab3e5927dc3a@google.com
+
+Changes in v2:
+- mm.rs is redesigned from scratch making use of AsRef
+- Add notes about whether destructors may sleep
+- Rename Area to VmArea
+- Link to v1: https://lore.kernel.org/r/20240723-vma-v1-1-32ad5a0118ee@google.com
+
+---
+Alice Ryhl (2):
+      rust: mm: add abstractions for mm_struct and vm_area_struct
+      rust: miscdevice: add mmap support
+
+ rust/helpers/helpers.c    |   1 +
+ rust/helpers/mm.c         |  55 ++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/miscdevice.rs |  24 ++++
+ rust/kernel/mm.rs         | 344 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/mm/virt.rs    | 264 +++++++++++++++++++++++++++++++++++
+ 6 files changed, 689 insertions(+)
+---
+base-commit: f893691e742688ae21ad597c5bba13bef54706cd
+change-id: 20240723-vma-f80119f9fb35
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
