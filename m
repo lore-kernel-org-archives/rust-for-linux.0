@@ -1,88 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559CF1BB6BF;
-	Thu, 10 Oct 2024 09:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752BCBE6F;
+	Thu, 10 Oct 2024 09:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728551896; cv=none; b=j24ZuGAHzy4vCnVpVKBVydPNM23IuwWbDxAmdy2syl7+v7I6rw/ssEy5wLeTOq/dbxzSGlumDFZ+WwDIjn/ekd+wUevBZd6U+jK8ndrp86KZ/YxvsKmULTI+38fe9HFXk+PCeh2bb+gPrnnhgevMF8uCpMqPg/xD+c2JmO0Ujfo=
+	t=1728552563; cv=none; b=F0D9nBFUjQJ9MqusSoCrZBUWnEv2Q86u5km1M+XO+yDGTW0LMBOJ/XeBw9InB4sNVHq1pGv+d0ScKxy+6bHQdaaVQYqQwtgaUE2WtQ7B80Fu3DdYaaLTXu2ZkxBYc7yczad4W9WlW+V2SIAUJjIzDSTs/xLsJNC9xe/+ZdE7maw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728551896; c=relaxed/simple;
-	bh=5ZjwbVLjUq1pNlrN8b3jaUaUWq5aTB16JltuEwDStC0=;
+	s=arc-20240116; t=1728552563; c=relaxed/simple;
+	bh=uHHQuCd+hBIGNhvjjP6qSw0Lol5SDSfCg5OF8r0zrs4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rfm1ZZBY0cJHJLCcJzVwfJi0qsRwFlcUBBGDQI9HV34ieufQAwnrgGD87+ypPnBq3w0QYMsZpH+3RDfutyA02fX6ySzKD5eyqxuwytlOXQ8tXNBAgNRMmQrlfb8CBLxWUDyEvl6n27l7xwa5lUv5bVwpi5W/QCdGYYF5Ju9u6I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ngcqbccu; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=MkvoX5oY839nrhvCkxisGouGnkJQuLWtwNN9oAU0zcsxVj/uLUoGt0eUcm2J6/UG/XHKdiT2/mPkq2XblZBWpJq+Z3CwO1kVbM96xDTNE9gwBliBIDDuVt6kdaXwKXCXamMBRaHAOnSxDGc93HSjaWsRSmJuDVAVXOD5o52oceg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDdaetEy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ngcqbccu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0E7C4CEC5;
-	Thu, 10 Oct 2024 09:18:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDdaetEy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE4BC4CEC5;
+	Thu, 10 Oct 2024 09:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728551895;
-	bh=5ZjwbVLjUq1pNlrN8b3jaUaUWq5aTB16JltuEwDStC0=;
+	s=k20201202; t=1728552563;
+	bh=uHHQuCd+hBIGNhvjjP6qSw0Lol5SDSfCg5OF8r0zrs4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Ngcqbccu4VF+Tbj3zFjaLw68jB6Wg0V6Z2Ox2CO4Ap/TOo0z2rQh0ewbPYG1EyhZc
-	 QBoXR0dM28hgm9sFBEFgCKWiUOOKjYXQh8huhdsTcD80/jCW+11nY64RTETT90vvg5
-	 H7IJ32mKnyDGUIU0f5TRQ7MxrWbxVA3XSAz8TNWqU/PZl9d4XhQBSLTb3DYREiDCCI
-	 RmqiVy4T7yDEFRcvIakZItaF9GvbE3n14tmhEqRl6sAV/A2UVU3YffHZgnJjICjlev
-	 LB/UwK6Jnwsbrd8Sc0lbhOzt4NlkL5nGswXrOsxw2cwX6Szghw3c+/HAX738HPjxBB
-	 jOjHYRYzKmr+A==
+	b=YDdaetEynXX+YuTMPWiX5TdxwuOt3klN+L+GbJU1NwyXKePOjL/KJhTXe9xLacNyl
+	 yAX0jq5e2KpK4n7CFfIEUnRY0H4V+QEN1l5ymfLBgmClvjSJZXGCzyoNGA/fBU+vri
+	 EgLDjyfQgHSDJNSMNDrgKaj4ht1dQP4KZn8FvpfdkohIYKWggsSgRNlZpMsCAyVKSf
+	 tmpDpO+J+2c2l3TXZw/hZ8vJikkKhWVc30SFRBooXsDMy2jNp3eIscKyWw6cf3JUd/
+	 vtG5Fq9UssLS0Ym4NzGlwECqrlLq4i7Lp9t0tQQiWl9qij2Jx1Xe9bcLDvaZY6FVNP
+	 mXulk9raq4eAg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Dirk Behme" <dirk.behme@gmail.com>,  "Tamir Duberstein"
- <tamird@gmail.com>,  <rust-for-linux@vger.kernel.org>,  "Gary Guo"
- <gary@garyguo.net>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
- <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Dirk Behme" <dirk.behme@de.bosch.com>,
-  "Filipe Xavier" <felipe_life@live.com>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: remove unnecessary #includes
-In-Reply-To: <CANiq72nUT6cFXCGg4jfN07W7UE-8vma=o9a5DQjsRwtNsKUGbQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Wed, 09 Oct 2024 17:58:31 +0200")
-References: <20241009151017.26685-1-tamird@gmail.com>
-	<813594ff-b167-4ae2-8105-e2f958ec2cc7@gmail.com>
-	<x--jOZgY2fckJNaP-jzH6zCfxC9J6fF5DtOPAtblrs_pGlzEdGu9udVqj0OgVfAbGNwE9zcgDSXrygRiKwAzjA==@protonmail.internalid>
-	<CANiq72nUT6cFXCGg4jfN07W7UE-8vma=o9a5DQjsRwtNsKUGbQ@mail.gmail.com>
-Date: Thu, 10 Oct 2024 11:10:43 +0200
-Message-ID: <87o73smigc.fsf@kernel.org>
+To: Francesco Zardi <frazar00@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
+  Andreas Hindborg <a.hindborg@samsung.com>,  Alice Ryhl
+ <aliceryhl@google.com>,  Jens Axboe <axboe@kernel.dk>,
+  rust-for-linux@vger.kernel.org,  linux-block@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] docs: rust: fix formatting for
+ kernel::block::mq::Request
+In-Reply-To: <20240903173027.16732-3-frazar00@gmail.com> (Francesco Zardi's
+	message of "Tue, 3 Sep 2024 19:30:29 +0200")
+References: <20240903173027.16732-3-frazar00@gmail.com>
+Date: Thu, 10 Oct 2024 11:29:05 +0200
+Message-ID: <87cyk8mhlq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+Francesco Zardi <frazar00@gmail.com> writes:
 
-> On Wed, Oct 9, 2024 at 5:37=E2=80=AFPM Dirk Behme <dirk.behme@gmail.com> =
-wrote:
->>
->> * Theoretically the grammer fix in exports.c could go into an
->> independent patch. But if not it at least should be mentioned in the
->> commit message. Let Miguel decide if he wants an extra patch or not ;)
+> Fix several issues with rustdoc formatting for the
+> `kernel::block::mq::Request` module, in particular:
 >
-> Indeed, in general, one should not have unstated/unrelated changes.
+> - An ordered list not rendering correctly, fixed by using numbers prefixes
+>   instead of letters
 >
->> * Maybe a
->>
->> Fixes: e26fa546042a ("rust: kbuild: auto generate helper exports")
->>
->> tag could be added? Even though Miguel might route it through
->> rust-next as its not urgent for routing through rust-fixes.
+> - Code snippets formatted as regular text, fixed by wrapping the code with
+>   `back-ticks`
 >
-> I think this is a cleanup, i.e. just unnecessary `#include`s being
-> present, right? In other words, there is no "bug" apart from not being
-> optimal (one could see cleanups as things that should have been done,
-> but I guess we should draw the line somewhere).
+> - References to types missing intra-doc links, fixed by wrapping the
+>   types with [square brackets]
 >
-> Andreas: was there a reason to keep those `#include`s, just in case?
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1108
+> Signed-off-by: Francesco Zardi <frazar00@gmail.com>
 
-I don't think so, it looks like they should have been removed with
-Gary's patch that did the auto export.
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-BR Andreas
+Thanks for the patch!
+
 
