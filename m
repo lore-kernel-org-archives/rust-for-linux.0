@@ -1,130 +1,122 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7992F28EB
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 10:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1F1210C3B;
+	Fri, 11 Oct 2024 10:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728641788; cv=none; b=Wf/hBYTaRW/cmEEa3LF+BM1GQXFYiYVKruKYt+yCl8JSFB0BlEq9BNhRv6pd7/SP6nMtvbv/kiq9s1drPJOm6UxpqrdzAKpMs1QLL81mDqFL7o4GY3dLrl2/FwVXXE/NulRa5qoyQhefEvQkL95LYBx3LpnXyCqTdq6FhKzGSOE=
+	t=1728643904; cv=none; b=R9QSsj//Rw0pePlzzHfRry1YUHoZqkoEw1ccvWECfRl+4P21CoRdiEk6PkF1v2LuPIXCZCXtK8HKk1j26Rbodc0vCzPOJeeVMqQF1UOAbnti4c+3YM0Mf2XRfVw7iBpSjOQMThZSV+SHFGfHEjywK8+4KfOTD/zrtclxKIRnRU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728641788; c=relaxed/simple;
-	bh=VnRcOvG00eDk9unXV1hgFBknglSVE5O1qDH//99Y1Rw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mOkqWDO3JI5p3QteQSZpNoCiYyG/v1sPeFSY6Ou5q+djKThKu1t7c1zli/fCSdVVDzwMBOa4QRGUrZ0tkx8kgvzVbJOBY7qcjFd5EIOhTEHTdTULzU2tCKLCKirPpYzUkvpOVSEPwJGYGQX+amDFLerMYC3lLEI0Xmt3ME6/2OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dHsPmUvu; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728643904; c=relaxed/simple;
+	bh=TIFTQ6iNfj327laayt2YjFnYxVtuWPkUg0z8YcA5Xxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BBtZa5MRQlqiAJm8UzXdvnuX4JWpMqILbM6DYSG9b3ijRAWZ+2RNrUa5xU1csTo6P1iFSEVVYxBpQmnIEu5yUgiRkR/fIqz2NmxcMsK4wMYVru/Lktsb/zaQ/wTvYEgenonztM8edoIDARjqgaB7k7Oq1Jh+GEakso4Owss99uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GDJmAqta; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dHsPmUvu"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-430576ff251so16208295e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 03:16:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728641785; x=1729246585; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VnRcOvG00eDk9unXV1hgFBknglSVE5O1qDH//99Y1Rw=;
-        b=dHsPmUvuEGrSeb222HJsh48e4OS2YwbZb/ba8QgQO7B+sRVD80Wae8KSrCv6aINT1E
-         Lm4HaARgBoTn5D8OknLykrc+bhqpWw95UzgkYxte1Ff2ILb6rNdUqywO7hKDwJVfHv2q
-         T49+2eMAvdisJQtEEq/NrhRk7MNuZCekZdGEI3L45SLUvpx6DTG4D6vMMgb7GJP+gYU5
-         MVqqldBidARWrQgDAiP3XcPMlLfW0/lhSu3eAESosLArMXgKJ9HfH7qRtb9V7v9Ojxmu
-         HN1/qrnzRFz+NsbiH3BEjCcW8VccLaunw6h2ELn7XWy8yKbvmNhs2RztkBf8Um/3/KdG
-         npCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728641785; x=1729246585;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VnRcOvG00eDk9unXV1hgFBknglSVE5O1qDH//99Y1Rw=;
-        b=UvvxYIG8Y9AhZRSnf6SUZOGWN2DB4w3fFhXlkrZlLeUQpjdzJmwSGJ8OYe3TK3LLHD
-         gCdXfBw2BH9AOzba+Cn0oykvfLm1+SzSlGIxY/aWTFLDKV602FT9Ib4BRS09l9MCzVIO
-         r6Ert4YU7dZIyIfa9fNxaXnHwoJUG/CKnrEx37Yc1kGN718RiwNM4YAzoAArHlGoHeGg
-         N47ixZ1rb403N2l+Wla2BngrU9Bz6yK/atiMdZphEUjXCvZsy74V5owt50kOlR9PgUKk
-         sWvQ+BcUmapfXg7/y5+IbNIcdYYQamVmJTQLVvp4nzAQO4Y+wJfKY4RZd6oR95IMYIBs
-         oqbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWuEbQcg9A+JHJVyjvvD4sFraFRhmUyZl+zkcDNkkqSgwsaDdJiS8j8KKnoB7b8c3n5UrmwYcVNUkKjpx4eqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYb2zrxE4YGKHBnQBiJ3m6ftRLBu8mxMjWvVR0m/xI71AFVacj
-	RiyIh4uJHDfi2Rmz2TnAAbPOlM2ktaFwvYUwVMp0WZ3ZLbd+gHdj7uIWN+XGCMP3qQV8BrCvHor
-	zpoS3WKuP7HHRb/HRs+3IE/6MWRvpucYwIEL3
-X-Google-Smtp-Source: AGHT+IGMNjtCG9rpECyAAco9DzsrUijuUFkuK2ogFVx/VRCgWggYYygWbJym2kgBDSGBNFLXnFb7cUmfBa/gllnaBLs=
-X-Received: by 2002:a05:600c:4e8a:b0:42c:af06:718 with SMTP id
- 5b1f17b1804b1-4311df435e7mr16515715e9.28.1728641784578; Fri, 11 Oct 2024
- 03:16:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GDJmAqta"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=RFh+ifNvxIfeMOvqcH0bj2fqZ4Q/KL50BBcyRrIOPlM=; b=GDJmAqtaN6oH11wTx1qLaskHBj
+	zKYQwLVIA745qR3XAZTUCnNXBWgIs98fHs0b+YRlR50Lm0umA08Iq8JsIdLAj2T+Tkqbu7LxdkgLk
+	6O1X26CvtGsrd430wJE9VIEtPhffGg5N1z0vYjn+IrwRxG9XuQecXwHeokGtSSMaCM9JPQwEZJGh9
+	TMDnpYZvd5YbAwdhTuTnxIbpolCuKa2bUaYZUYTy8AjkbS7UXnmFbdVw/5HPvDwC/17RFNoyknmL5
+	pK3S4TsmZA7NSkcw4WgqUfjKPPYwa00xJ99bh9WK9dAUF9oGkN6i9RmoJjDsx/YznY0MH8BF7QDUC
+	MHDIF74g==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1szDFA-00000005reF-3H66;
+	Fri, 11 Oct 2024 10:51:37 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5C0AE300642; Fri, 11 Oct 2024 12:51:36 +0200 (CEST)
+Date: Fri, 11 Oct 2024 12:51:36 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Alice Ryhl <aliceryhl@google.com>,
+	Matthew Maurer <mmaurer@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all
+ architectures
+Message-ID: <20241011105136.GP17263@noisy.programming.kicks-ass.net>
+References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+ <ZwbAvEnrzu6UUgGl@J2N7QTR9R3>
+ <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
+ <ZwewMw8jBh6OU-L_@J2N7QTR9R3>
+ <20241010110344.GL14587@noisy.programming.kicks-ass.net>
+ <20241010113748.GL33184@noisy.programming.kicks-ass.net>
+ <CANiq72=kT9RFcQ3h5U+wAY0pDQQqGU7BTtiPJ-oiHNUG00z3=w@mail.gmail.com>
+ <20241010130421.GG17263@noisy.programming.kicks-ass.net>
+ <CANiq72kbApTtdLeow5L6G6t4Q_L-0zkDwfwyWcSb_e6P=kO06g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001-tracepoint-v9-0-1ad3b7d78acb@google.com>
- <20241001-tracepoint-v9-1-1ad3b7d78acb@google.com> <20241001211543.qdjl4pyfhehxqfk7@treble>
- <20241010154320.6d17ba69@gandalf.local.home>
-In-Reply-To: <20241010154320.6d17ba69@gandalf.local.home>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 11 Oct 2024 12:16:10 +0200
-Message-ID: <CAH5fLgiW-AEN-YN3YoW66hV2w6eEP03OC4oefg0N-tdwyLx8cA@mail.gmail.com>
-Subject: Re: [PATCH v9 1/5] rust: add generic static_key_false
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kbApTtdLeow5L6G6t4Q_L-0zkDwfwyWcSb_e6P=kO06g@mail.gmail.com>
 
-On Thu, Oct 10, 2024 at 9:43=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org=
-> wrote:
->
-> On Tue, 1 Oct 2024 14:15:43 -0700
-> Josh Poimboeuf <jpoimboe@kernel.org> wrote:
->
-> > On Tue, Oct 01, 2024 at 01:29:58PM +0000, Alice Ryhl wrote:
-> > > Add just enough support for static key so that we can use it from
-> > > tracepoints. Tracepoints rely on `static_key_false` even though it is
-> > > deprecated, so we add the same functionality to Rust.
+On Thu, Oct 10, 2024 at 04:48:41PM +0200, Miguel Ojeda wrote:
+> On Thu, Oct 10, 2024 at 3:04 PM Peter Zijlstra <peterz@infradead.org> wrote:
 > >
-> > Instead of extending the old deprecated static key interface into Rust,
-> > can we just change tracepoints to use the new one?
-> >
-> > /me makes a note to go convert the other users...
-> >
-> > From: Josh Poimboeuf <jpoimboe@kernel.org>
-> > Subject: [PATCH] tracepoints: Use new static branch API
-> >
-> > The old static key API based on 'struct static_key' is deprecated.
-> > Convert tracepoints to use the new API.
-> >
-> > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
->
-> Alice,
->
-> Can you send a v10 with the added acks and whitespace fixes as well as
-> using static_branch_unlikely(), and I'll pull it into my tree.
->
-> Base it off of v6.12-rc2.
+> > Also not rust-src, because for some reason you're not actually
+> > freestanding :/
+> 
+> It is there, but it is a suggested package, so I think you would need
+> e.g. `--install-suggests`:
+> 
+>     https://packages.debian.org/trixie/rust-all
+> 
+> Regarding freestanding, we use `no_std`, which one could argue is
+> similar to C's freestanding. That is, we use `core`, which is a subset
+> of the full (hosted) standard library, just like C requires some
+> headers even in freestanding.
+> 
+> However, I think you mean not even using those
+> headers/sources/libraries, which is fair. Rust calls that `no_core`,
+> but it is currently impractical to use/maintain and there are a lot of
+> useful things in `core` we want to use anyway, such as the `Result`
+> type:
+> 
+>     https://doc.rust-lang.org/core/
+> 
+> There are some things that we could remove, though, which is why I
+> asked long ago for ways to remove unneeded things for the kernel
+> ("modularization of `core`"). We got `no_fp_fmt_parse`, implemented by
+> Gary back in 2021, and we could perhaps get more in the future if
+> really needed.
 
-Here you go:
-https://lore.kernel.org/all/20241011-tracepoint-v10-0-7fbde4d6b525@google.c=
-om/
+So you could just copy the bits from core you need into the kernel tree
+and leave out those bits you do not, and ocassionally update them when
+needed, right?
 
-Alice
+> > Yeah, but then you have to first know that we have this file to begin
+> > with.
+> 
+> That is fair, but hard to fix. We try our best though: the "Rust"
+> entry is in the front page of the kernel docs already, and the first
+> paragraph of that page links to the "Quick Start" guide.
+
+I'm not really a browser centric kinda guy, the front page is bash in
+the source tree. Using the browser is below bitching about stuff on IRC
+:-)
