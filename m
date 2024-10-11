@@ -1,128 +1,108 @@
-Received: from dd3514.kasserver.com (dd3514.kasserver.com [85.13.129.232])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7969F1C9EAC;
-	Fri, 11 Oct 2024 19:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.129.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A001D0DCB;
+	Fri, 11 Oct 2024 19:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728673627; cv=none; b=aoy7NOTIJJK8rdlk0GtN0aSxjClDtFa+qp+dLGWreItIZktx846qUyq17++KFgjFwbZnM5uCYmc3J0RKa3j2ABfdXygAAVJTFRHjZSs7ed7sUaU/H6MnaVzfAzwM2F/Wi8LKu9sF/s0dggVjOM0ChhHuVarJ2dOIfDKuW5vCyQY=
+	t=1728676128; cv=none; b=NFFiR0NG1DfTYaunyrlNoau9ErWV0P4x2KGzHj2r9D+6g+tsu+oirgoVhYb3jNInSKPvrc13DwmDLEuHJ0kELso9WNVZ6yK3v4MBqrkY2Fg2HNaoN8YHy6jOUBChYyYrF8A9ic3tws95hB7m4TyTSp18KfVzclDrw8gQDDhhyog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728673627; c=relaxed/simple;
-	bh=qJxolLH/s+r6N8THdla8qmGE08QyXUO9znbAqP5MNWQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Jl9MeRbTECp8YSjy57XHULxMyU0/mahvJSuNYiypqO4k/JLigan8SM4VaBVfrms22j5nT756D4qAvvx9f4f5JLolT+O40VHrqryMggCfEKlag0zxVXDSVgjUJLkcVxlMbqu62HyTkf5A5190S3l0rTB/nZz5BJW+asGKhYbr+tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com; spf=pass smtp.mailfrom=walterzollerpiano.com; dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b=dBY9fizC; arc=none smtp.client-ip=85.13.129.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walterzollerpiano.com
+	s=arc-20240116; t=1728676128; c=relaxed/simple;
+	bh=eHR1pJM+yQAJRr+EhCLcm5xM2IPL3wNgQ41k9P8Ch74=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lIEblLOYoNyBrx2TBFhlVY8DmDGhN4nSsmWDVGK/nxd+QDPrNMnP2BvebZ7Oe0kYOrtnkt1pxOk+GpeJaJlfJx44Myl4g3e176XFkamLcoXhe5jwC/7sD9eBrbY2aMjo/fKLSiYv+ZhyUjvdCSI57WYUc/5zFcAuVKW8KRsBqL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuJ4qsYT; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b="dBY9fizC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuJ4qsYT"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71e02ceccd0so294914b3a.0;
+        Fri, 11 Oct 2024 12:48:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=walterzollerpiano.com; s=kas202409051210; t=1728673043;
-	bh=cYxfaAElfPkV13FD5dVIzPaXnnSCjCSQLgi5JCrG0HU=;
-	h=From:Subject:Date:To:Cc:From;
-	b=dBY9fizC0Ike5WsSqVthkI0HWmUcvKGEp+a/TJwuG93KyzDIkHNeikR9nOX81hOUW
-	 j9FjV4PhoOIxkGG7QhPlOIK377wkeqhOu+qzmXQsF2JdmPH/yWOWcUSh7O5wscZnau
-	 4ZACBFHDWxf4SfVUKtb2fGMY3iNxCvXrdUOr1TCPMTvG/UCiKf27UlTwCNJcGdke0M
-	 U80HeEp9sH9qnuXVlFvts3Di/MhKIES3wFAhQmWjif5PuF++hCHCOCeburkWqcXa8F
-	 RbZXK0ZtFy+jdnGuxHTxtVsg7bDzVIhITbm/67aXTnescOG+MAG6qgribKoMLo/UBg
-	 GfAnQjXBB1EtA==
-Received: from [127.0.0.1] (31-10-158-205.cgn.dynamic.upc.ch [31.10.158.205])
-	by dd3514.kasserver.com (Postfix) with ESMTPSA id 6BBC31017A4;
-	Fri, 11 Oct 2024 20:57:22 +0200 (CEST)
-From: Josef Zoller <josef@walterzollerpiano.com>
-Subject: [PATCH 0/3] Character device abstractions for Rust
-Date: Fri, 11 Oct 2024 20:55:41 +0200
-Message-Id: <20241011-rust-char-dev-v1-0-350225ae228b@walterzollerpiano.com>
+        d=gmail.com; s=20230601; t=1728676126; x=1729280926; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eHR1pJM+yQAJRr+EhCLcm5xM2IPL3wNgQ41k9P8Ch74=;
+        b=EuJ4qsYTMtpL7ptb2A5o8sbXNkWJIkDxx2H6yfQVT6/Ykx2AcFtb6OhQ5TF3R/hYml
+         sAx3bwas+OINEWD8nUU2MQ/wpPLhaMGAp8uVyOaNZwglxP0/wkv8MoVLnMCuW0M87GkK
+         OVg6Y3RpNWVlbm7nlaxReer0AT3SYE1kaTkn05cDOJ/Q19yX0lXCX/1M6jfjjR/yDEu2
+         9+O0Mu4wyhg0dxM0pHzvZ7EpuC+SevDBXfsLcRn1dh1IDiz9ST8IvqqLPMoDU9Bxekt7
+         TyL8LEBP9HHjJpsDfE9VPD8Fd96D68TKzv9rS1jCrSu8acYUlzR3iQfQnNaGoPr5aN7W
+         Aw1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728676126; x=1729280926;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eHR1pJM+yQAJRr+EhCLcm5xM2IPL3wNgQ41k9P8Ch74=;
+        b=lM+vVSSRy7mC1moOtGQ7VHkM4UbQcD2IJ+KDAbdld71/IujD4nCLtIWLnTiBsoABGA
+         3vQJibx9EzXovkuSfG7xZucZxgU/etko5VqtKOKtKj3cFUmi7drwDWCcR8AjjbFPjg3S
+         gUHMV/hSHWcxL0XHJRLZt/OuckDQh98AHcRahKK/gR8YtLioXErt+zZlABO2HtWz1z6+
+         gKGHlmd0L9+BXgvAEM/xy/qpNJUSmHrljAsdhZ5TJVUp8M10IBkfKMp5I0VOewNoYXAO
+         J7LpCw6Y/HfRhdO4NF08eN571B17dMaKvHdCYakwYXeKAQPjuiz/xDpb4oUOk472gDtu
+         sM0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUS+zmL2T89XJtn/vYfltBiBqjBpZAhKNdggR9xrVE+Iy/Evy3ufRHLwn2E2mC9kZmzdmyBNXsr6L+W@vger.kernel.org, AJvYcCUX/GnPxllPO4CM05HNScN/Uwu2GbThIkLzX93qTpSBBVFlNze+cgGX0TIhYIoG5CaJhrFkocW5sNUhrdZq@vger.kernel.org, AJvYcCUfLgzYWJfPv4whYsWvFZUEqmR4dSyN7YWRW5CwahwPZi0YXyUWzBNmd+r2o2HDfM4NMtQYTr7K1Fef687yPG8=@vger.kernel.org, AJvYcCWTaY0T3jva5TyHxTHZ/PXFr38HkQuFwu0SJ9nCqYIy3vE7AO/1X7nL10mX9v0iG+FssbwFlTPUZyfV9qNuPFkB226r@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyzj8iYKBrI/QNcbZAWb8HFXk21SHqSqQrBYrTEJ4JMJgn/zxvk
+	0jGg5/y011+fU5baK12PpSAeBQGdHly6MhW0KEG/O5AuDsQyyjgQ/UJ05bzHsrpWfBqcUej0oQt
+	cBQpOW1YDQB3dt0c2vZo5xetmfNU=
+X-Google-Smtp-Source: AGHT+IFm+UwkG6WIg1AqvuqnbDwrR2uK/LvnAOy5vxbnvuoTMa/HQ5sfAKze/sYR1OTnuhhXIrv49b/1Hp/O75r3s04=
+X-Received: by 2002:a05:6a00:9494:b0:71e:3ee6:f8a8 with SMTP id
+ d2e1a72fcca58-71e3ee6f918mr1949743b3a.1.1728676125868; Fri, 11 Oct 2024
+ 12:48:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAK10CWcC/z2OyYoCMRiEX6XJeQLZl34V8ZD8i+bgMkkrA+K7T
- 2jB41dFfdRLDOqNhliXl+j0bKPdrhP0zyLgXK4nkg0nC6OM00pr2R9jk7PqEukpORmqlkxOOYu
- 5uXfi9rf7DscPd/p9TO32CcW9bHCe0nWpFGxAzClxRc05W2TPFAG1olK5IFqdq9m935WLqTqTP
- NvoDQWnnEVDtnoAjCkQK5s5+P1NLYMk3C6Xtq0LkAbvGJkjiOP7/Q8BZyBI+wAAAA==
-X-Change-ID: 20241011-rust-char-dev-f82eb3e29899
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Josef Zoller <josef@walterzollerpiano.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2483;
- i=josef@walterzollerpiano.com; h=from:subject:message-id;
- bh=qJxolLH/s+r6N8THdla8qmGE08QyXUO9znbAqP5MNWQ=;
- b=owEBbQKS/ZANAwAIAROd718OBo3IAcsmYgBnCXURjrnyyf+JwVptt3da+/23SQX8ALLZnFXGh
- 0bflXNCcrOJAjMEAAEIAB0WIQQnwV8chXqnjaC1vcATne9fDgaNyAUCZwl1EQAKCRATne9fDgaN
- yPRaD/9i2cHTA4LxxEsPiZOtFDsLNA3nAMfYGrivbmCPLyjDNA0+tanxtMDkhmiRTuC3DoTTJbP
- /KCw/Y7vK/XwEjXjY9/Ojl/y4VtiESXrohM/Kevfefo36E3q1Z19cqDfvCAqV0z8P5asnB1vQQF
- R7S7oCzDmiESnXRel1jXwEUOS70fIrj69O2Tnq4MbbL4theIVe4qggB23Z8uTmmlIoPun69p6kc
- hfTLJKxFnAyasdX+bKuP2sM5xqlAieh9gg+LiAL7pHwm3ZHwNCvF9/BCnS4OJG5XRxAThMRqJYZ
- 08rJGPaYZD+112tB2CB2C32fF/AqkZB26E0VGyq4Mr2fo+a3KJ/UY18cDUnsCFgdXvPoyxSZSyL
- dV6q/wq1HIDMsZLew6mZjVukirzSUM6SykhtWV7WXGaxbm3B+fDja9rNqpRXXqiCt5KL43O3nwz
- 9ZDjNYvD8IOKNmYiKeTZKXh9Y7Rw+T1JtWk+WY1lidcQEjkRgjnCrzAzWnFwDEE/cQJwBwhESqB
- qp3qJ7XYxoE7nDBmJHzQVmmBLK6tqRbhS0H0kZOVn2BikXHKa7FhQ4ueCMgWl/qE9HWzEtoZLpU
- NdUW4MXel0HE9Cdc/Mss6Mk8lOhQd4U76ni+2nwaNPGm6Xs3yds3yV5FNr6ONVqPBQrzKkmP8Zt
- mVvfGLXLHpKudXg==
-X-Developer-Key: i=josef@walterzollerpiano.com; a=openpgp;
- fpr=27C15F1C857AA78DA0B5BDC0139DEF5F0E068DC8
-X-Spamd-Bar: +
+References: <20241011-tracepoint-v10-0-7fbde4d6b525@google.com>
+ <20241011-tracepoint-v10-1-7fbde4d6b525@google.com> <20241011131316.5d6e5d10@eugeo>
+ <CABCJKuesYQWvfScFaqv_rW5ZqAJNn4zK9iOFAmyTaYKO3S5hgw@mail.gmail.com>
+ <20241011171251.0bd53f01@eugeo> <CABCJKue7qT9drhgrXPEjBO=gPw79vYELAZxz747Z8WMF=vj2MQ@mail.gmail.com>
+In-Reply-To: <CABCJKue7qT9drhgrXPEjBO=gPw79vYELAZxz747Z8WMF=vj2MQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 11 Oct 2024 21:48:32 +0200
+Message-ID: <CANiq72nOCkzTyJCydHOrkz3MRizb27sDO_5Y_cKEv3oZDNNqqQ@mail.gmail.com>
+Subject: Re: [PATCH v10 1/5] rust: add static_branch_unlikely for static_key_false
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
+	linux-arm-kernel@lists.infradead.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Writing character devices is a common way to start writing kernel code,
-especially because of the book "Linux Device Drivers", which is still
-one of the best resources to learn about Linux kernel programming. To
-allow an easier entry into Rust kernel programming specifically, this
-series adds abstractions for these kinds of devices to the Rust API.
+On Fri, Oct 11, 2024 at 7:52=E2=80=AFPM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
+>
+> It's just one line per helper, but sure, I do see your point.
 
-I also included a sample that demonstrates how to use these abstractions
-to create the simplest example from LDD3, the "scull" device.
+I guess we will have a lot of helpers added over time, so even if it
+is one line, it may end up being a lot of lines in total. The rules
+should stay constant, which would be better. Having said that, it is
+true the extra complexity of the rules isn't great either.
 
-I'm also aware of the patch series about misc devices that was sent
-recently. I think these are both valuable additions to the Rust API, and
-could even be combined in some way, in which case the file operations
-abstractions in both series should probably be separated and
-generalized. But I'm still sending this series as it is, because it is
-my first ever patch and I could use some feedback on my approach.
-
-This series depends on the File abstraction patch [1] and the
-Opaque::try_ffi_init patch [2], however, the latter is such a small
-change that it could easily be included in this series if necessary.
-
-Link: https://lore.kernel.org/all/20240915-alice-file-v10-3-88484f7a3dcf@google.com/ [1]
-Link: https://lore.kernel.org/all/20241001-b4-miscdevice-v2-1-330d760041fa@google.com/ [2]
-Signed-off-by: Josef Zoller <josef@walterzollerpiano.com>
----
-Josef Zoller (3):
-      rust: char_dev: add character device abstraction
-      rust: macros: add IoctlCommand derive macro
-      samples: rust: add character device sample
-
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/fs.c               |  16 +
- rust/kernel/char_dev.rs         | 976 ++++++++++++++++++++++++++++++++++++++++
- rust/kernel/init/macros.rs      |  10 +-
- rust/kernel/ioctl.rs            | 236 +++++++++-
- rust/kernel/lib.rs              |   1 +
- rust/kernel/prelude.rs          |   2 +-
- rust/macros/ioctl_cmd.rs        | 202 +++++++++
- rust/macros/lib.rs              |  21 +
- samples/rust/Kconfig            |  10 +
- samples/rust/Makefile           |   1 +
- samples/rust/rust_char_dev.rs   | 506 +++++++++++++++++++++
- 12 files changed, 1977 insertions(+), 5 deletions(-)
----
-base-commit: ce1c54fdff7c4556b08f5b875a331d8952e8b6b7
-change-id: 20241011-rust-char-dev-f82eb3e29899
-prerequisite-patch-id: be636dd988fbd1f993df5fe7cd10eabfadd319b2
-prerequisite-patch-id: 478b4285f3752e64043d2e3b5ccd786ef039f659
-
-Best regards,
--- 
-Josef Zoller <josef@walterzollerpiano.com>
-
+Cheers,
+Miguel
