@@ -1,75 +1,89 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022127.outbound.protection.outlook.com [52.101.96.127])
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2127.outbound.protection.outlook.com [40.107.122.127])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901C2218584;
-	Fri, 11 Oct 2024 12:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2081B1BDAA1;
+	Fri, 11 Oct 2024 12:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.127
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728648409; cv=fail; b=D2UWsn8u/XRpxlUQC8kUCwPrmSZGTK8nb7yb44uNGAf3K/4mj9xKsBINAN751RyfW4FasJaN98nIIqSUhktxGFFBs9UuyCGXcyS5UxV9EwOQ2h/gHAMspo1DgzqzqjUq+TS4t1UdOqZnGfUEfq0JnBwyRhVInSUrG7usO35NHR0=
+	t=1728648809; cv=fail; b=JUPEcAAIqRnPFb0FavFDahCApJ5vnHk/H7sD/gFlbZvPSdTtnWTmfRsUlZtFC36+7HSaGRgoMQAlLfwG/K3/qQjzrLX3Z4QPrk0Wi+8EttGQZdW9nlL1cZNe+6jgvjaNpwt6DnRNlPZOHW8TP4PphqFsX2M3urgCxWXP9sf2g90=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728648409; c=relaxed/simple;
-	bh=gSj6+3Jq8OLy39eV5aDlIC+02J6ntP9XEsJwsQeetpg=;
+	s=arc-20240116; t=1728648809; c=relaxed/simple;
+	bh=N6kBlFnhxHbzzRLvy2n0TO0HMSJSC/kk/oHPglWikRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RBQW3ABQX1LCQRdNnN44NehjJJ5EQzoBjqapOivHdTFgQTBoY6YmU6G20t/7Puz/ElYYRsOpjXR2LrEa2OQa5kXHwVPP45QM6yn1SddS6GUvm+psEp5gIfyVtexq4B/3irHoeGpYTy+aFSNMiD3DzPF6WMKZF73IYoNwYOjxsEo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZMLWP0HQ; arc=fail smtp.client-ip=52.101.96.127
+	 Content-Type:MIME-Version; b=MR78ImdvcpAkDDRPT2v5qMTx3deUfaiaj4A8rDj5VvYp0hJNU6KB1Ry6sRQdlfX02v9ePrmHJha9hxt7kAlJIYPFuzEhCLH9fpM/1Pj5IBHOIux5li8+ALIRD2ShZxq8DJBZeKpSJqBJcmGDlMlw4Q5fUVOgBlRmIbn3VKQaAWg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qnVAhyz1; arc=fail smtp.client-ip=40.107.122.127
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZMLWP0HQ"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qnVAhyz1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hYbKRI9XWO6BQ9FXbDN/GskJgISJIV+RNsdSRGGm5Mtnw69/gRhnRwS3GODpc+Kvl8Zlw0gqQBdp7REOFY7+X5eCswqh5O42CP/YCkErOLFdsDip4BD+H6VDs7eWn6N4x9wkD3dG7oMBXEiU48u0InC6p/tW4g9Vq2bqo2/Sajo7T2WxqRAQoagIrTNvu2wUm+j/Fig4P8X/m1qi3xh9vaKhdPJMTJMosRu+u8rpbALfwtVo/3Cv8WF3fVGGvKmC3XPYmbpqsbOtfT+JjF5qoPEU1t2FBmJG6zPuvKohv5A3bQqwoaFhZM5NSFTOYPml98F84pQp/116gUfseTaVqA==
+ b=EzYC0uPxcOlWNviNH7x9xIWyTraI2XgloWvh3c8Gloom7etjsN03lV9zIGh2EEkEUK+2RhbOpIuV6wp5dPEakLpsdwjYNUHei6uzP1XGrqGwnQH5O9ARdjDVrD06XrsXIRQkdz4GEV/J+0OYl/UeRrIp7HvyfYcgyRWdC0NFPzV/cb1glPxUMY85xjgsMJytXY1pQnXl84xHRRVBSNKoy3rPvJP53BkQvo1ssLxQOzKYnmJheHBIXffl4E+2eeNawCXKxOuHLeJ8pfqPXwJAObHWGTsc9myPjbvtd3qEGjdRVuac/Mx712Xu/XgbXdGvoR76ggyz7OdsgCGp46FdEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gSj6+3Jq8OLy39eV5aDlIC+02J6ntP9XEsJwsQeetpg=;
- b=DZ+PrYE1ihRHrSwfnhepmpoRi9KXUZ2DTG5GODynvxtkiqZ3yvRBr1oW5QzAmPRVZFbbreNgO4QmKGS9Ef2f6XGC5YpCWY6DXdUnKedtqZ42WRYBitdLUL2l1yW36i3WF1QIEOBm+Kt58Zn4Vzt1FFMsWwPdtkLuOUjyz5nib9vHDs43J2XRNKsTD9qSBgJ0TJ0xjCvqM2b/RMKILSm+yfGnH+wHia+9ncwta1tINknYLxUjQzQx19x5xrotT/qPVQlPCoFtID7OhhweTWCgoDlsfjf8Gns0pA5DDb1OjfCXdVJ+tQqFmw6ljfpwpwepmrXlHcKgG6YP8hecAOT4Ng==
+ bh=4DDq+WoksRSvViNEEuG0Aq4sek7ulKuTsXTctEeA4ds=;
+ b=VutUZ6OC5TPcAq8vwuXBg5hrdHkShEU3+f9MiLLTy/6eyGuWZaepJleJYhUJs/kNTaIZ+q9pggxyPlzhhn88R7AjKLpPeSF1PAnWP98zRZyBexJkPnq3ENFIXXMS6x/VswKLyJn7P/HXLgmZ1HqLwdaRtcRXKuFUMuPMe1y3TAGuEfBujG9p40k+pB+7bQkRBszF4DdQjMzs6iIn3jBNt+l147/4FEBMnIyLsdTOmazM2hWHzOTsgiUHHvJYl+P5wGdT1eJXvU1sxIdvpx9Qz484kMVxx0L7sq0HXJBtIiXaQJ4gNdBDLZ05pl3VBsmSjZ5gCVjnDp9IQHV4SvDzcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gSj6+3Jq8OLy39eV5aDlIC+02J6ntP9XEsJwsQeetpg=;
- b=ZMLWP0HQSijN+tSShsZJIBqY1sUPDUm3CUWLlu7w4Jt0W0Un2uZ5E1V3oT6jEq51EKVt720HgeAJCB5p1nGZ6YOdXfDbCM0JmyUSreONxlFOiFoZE+wR+xiIclt08NxMhatbc0l/KaptFmiZIW2qc+BQq+6OQxNaQWfG/OGfwDM=
+ bh=4DDq+WoksRSvViNEEuG0Aq4sek7ulKuTsXTctEeA4ds=;
+ b=qnVAhyz17o0GN+MJ/M1UCcjojgVCA4OuJOWs2C2BT4AfboW+qLLo+nYrjRF4UdsVJeJ2lC7UZs0vSgx9iq9aZGkGoO7H3Jbcnt/R8W0bPcVo6jw8CfnO+Dqb+arbp2xrBfWHjqLq8z6AVTy8KuR+wpUMTta/q6o7uKpgPnmVUyc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO8P265MB7672.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3cb::10) with
+ by LO2P265MB7220.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:31d::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Fri, 11 Oct
- 2024 12:06:44 +0000
+ 2024 12:13:20 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.8048.013; Fri, 11 Oct 2024
- 12:06:44 +0000
-Date: Fri, 11 Oct 2024 13:06:41 +0100
+ 12:13:20 +0000
+Date: Fri, 11 Oct 2024 13:13:16 +0100
 From: Gary Guo <gary@garyguo.net>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: masahiroy@kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>,
- Tejun Heo <tj@kernel.org>, Yoann Congal <yoann.congal@smile.fr>, Randy
- Dunlap <rdunlap@infradead.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Jens Axboe <axboe@kernel.dk>, Jann Horn <jannh@google.com>, Mark Rutland
- <mark.rutland@arm.com>, kees@kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- rust-for-linux@vger.kernel.org, samitolvanen@google.com
-Subject: Re: [PATCH] kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`
-Message-ID: <20241011130641.4a8419c1@eugeo>
-In-Reply-To: <CANiq72ne6F1HpoA5gLYu9K0CcNB13JUFK5QgF_Cf4tAyvOm4qQ@mail.gmail.com>
-References: <CAK7LNARBXt=CWy5CgtHqdePw5L6EtD15emS2Fvre4QWfm_LjUg@mail.gmail.com>
-	<20241011114040.3900487-1-gary@garyguo.net>
-	<CANiq72ne6F1HpoA5gLYu9K0CcNB13JUFK5QgF_Cf4tAyvOm4qQ@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
+ Feng <boqun.feng@gmail.com>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, linux-trace-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Arnd Bergmann
+ <arnd@arndb.de>, linux-arch@vger.kernel.org, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>,
+ Uros Bizjak <ubizjak@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton
+ <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-arm-kernel@lists.infradead.org, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, Andrew Jones
+ <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Conor
+ Dooley <conor.dooley@microchip.com>, Samuel Holland
+ <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Huacai Chen
+ <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao
+ <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton
+ <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ loongarch@lists.linux.dev
+Subject: Re: [PATCH v10 1/5] rust: add static_branch_unlikely for
+ static_key_false
+Message-ID: <20241011131316.5d6e5d10@eugeo>
+In-Reply-To: <20241011-tracepoint-v10-1-7fbde4d6b525@google.com>
+References: <20241011-tracepoint-v10-0-7fbde4d6b525@google.com>
+	<20241011-tracepoint-v10-1-7fbde4d6b525@google.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO4P123CA0533.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2c5::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0147.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c4::20) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -78,134 +92,206 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO8P265MB7672:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5189f2e8-d91b-45b9-83b9-08dce9ed2c74
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB7220:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c607e1f-375d-4803-d0ab-08dce9ee1888
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|10070799003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YWZ6YjRHVXhZZzRqQ3lvekxhUnl2WXZMNHVhd2FnUzEzOGoxaVZYb2hkKzNZ?=
- =?utf-8?B?TUszQ0xvczM0OHgrb2R4WmdvR3pqRjBjQmtYYStYMXhUZnp5ZTBMWDBVQXlD?=
- =?utf-8?B?SUlLaG5hU0lKdHhNaHVRYkV6eG1rakxxdGNDZ1FuejF0U2Q1RUJCVDhBVjZa?=
- =?utf-8?B?UDIyRTQycDYzQVA3R1AvK2lVWUtpL3luY2dYdUtqMUZmS0M5K25pRnRNZHIx?=
- =?utf-8?B?OVRVcEhDbmVRQi9iWHVhdjZkMm9Zc1ZKSStSM2tpUUtVaGJ5clUxaEVvTTZ5?=
- =?utf-8?B?Qm9kUmZqWEZKRmd2QnErbnJEOUh2eGRFM3FMSW00TjNZejcyaU9JTnF3NVJJ?=
- =?utf-8?B?aU54dHp1RUFFdDdoUHhjRVo3Rm1MNVp6SituSTdkcmF4RElMODFxd2puL25u?=
- =?utf-8?B?RVFQa29sQTM1ekkzTGRvWURjQWdaSDVDNll6dXFGOHBOWG1WVkdrMjczckt6?=
- =?utf-8?B?N092YXFoSmMwRXcwZ2UyRkRTcFBqdWJvaFk3TnpZZHM3SW94SEJRc0pXRDJz?=
- =?utf-8?B?QlYzSWxxaEFwOEJpMkFwbFZxNlZIc2JlTnBjZXBVODRvdVZoUUhRU2ltQVYz?=
- =?utf-8?B?VzloUHhBWjl2Y21rblRnTXJtaGRWN2R3aGkxSDVrSlVhQVJSNlI3dE0xVk53?=
- =?utf-8?B?S0l6OGY5dU5abElQWW1ialIvaFRBZW4zNXhrQmJJN0hnTks4THpFblAzNFBw?=
- =?utf-8?B?Q2tIUTdjeHR4OWI3ZWIyWUtkZm0ySENYUXhzRDF6Y2I3OUtsbVliamZERy8v?=
- =?utf-8?B?U1Y0UkVYRnQ4V1d4Y0dwK3FDQVpNeVo1U1kraGpmNGk3QW40QTJsRHNXRTdi?=
- =?utf-8?B?eS91MWM5S3l2YkNJRTBOQkR4Mm9FR3k3VlNwQ3ZhdnFRREJBVjV4OWhueXpl?=
- =?utf-8?B?S3JUZVhZb3hLUWcwTko0ckdpOGlGT3hCbjFTVWtOa2dhcERsaHY2Sk5FZzZM?=
- =?utf-8?B?dWJkUEJLQy9hd1ZTa0pMNWZSbzVqRVBNdTBzNzhNYlU5UXRkWDVKbmo2UENt?=
- =?utf-8?B?Z2l4MGo2Tk53bDQzby9RcFZQenI4YkVRSDNIb1JTenRxNDEyNjkrTWhqNHB4?=
- =?utf-8?B?VlBSbk52YXA2QXpadXdHSWVYdXI5aWV4QjhOdko3TmoxbDBOZWNzT29Jams2?=
- =?utf-8?B?WmZYaVgrQmt5alVxMGVWb1NjRkRFRmp0YTMwdTExcjlPM1BmbVBFbmJLTzRW?=
- =?utf-8?B?VXlxL09Kdkk5amVqbWZwRTdkSFgvdmMxRnR6T0ZvZU1KWEx4TUYraWJ1T2FM?=
- =?utf-8?B?Z0ExcG5vVldybDY1empZeitGL0U1cFhkV3Ntei9ISm4vNFZJeEQ0Z1d5d3A3?=
- =?utf-8?B?QkhvYVVPQ0lYaXhVNTR6L243OHVsOTdIejVqclcvZTZRL1V0SnBvSjRwYngx?=
- =?utf-8?B?UmNXNWlUQWFtTHVVc2lDZm5TVTBNa3B3T0Qyc3Zid2tTamRrV0l5bWZPeExS?=
- =?utf-8?B?elU1UXptNWJuQVZzbm13bldNQmFwNjhQZ0RBTDJPTS9qRlduYXN2TTZiZHhQ?=
- =?utf-8?B?UmxJblZXYmljQmZkTUZSeU9tM05xZVZEQmRnRzdaclZlM2htVUdqMW5WdVdZ?=
- =?utf-8?B?V3dDbUc3K2JLaFpNdjYrbTZzS2xpTVlkb0hONk5UY0ttR3hDYTJtMjBTdGZB?=
- =?utf-8?B?NVo4cE45TSs1bUQ3aG5yc0NIejB2QURCWVJJc1BzQ1VxNVNOYzN1MGZTTWhz?=
- =?utf-8?B?NS8zWXBJdG9DYjR5UWlRU3M3SEp6bEJOVkx3RFBVS3BIR21EZkk5cWV3PT0=?=
+	=?us-ascii?Q?4KmlhvFrBP+lj8H48hDcT2TITHOKv8hRseuNwNm2hRXEveDdPzHhzxsH2CdF?=
+ =?us-ascii?Q?xH7zrifqryJ9IqKjf0UNUBzsF+ibsOd4j5Keo82JkRxlgNi3e2NvBquWSVTP?=
+ =?us-ascii?Q?tQALpF1hKYLEZjavxJSzYA032BgL3zmD43CPLR4DSZkMS3IAgiTyodg/tn8m?=
+ =?us-ascii?Q?fM+q0FOjm7A+lMVIN3VvoLwKs6Fc8sWEWWgJ0dM2A0eAsakxEzCeePzlKlgl?=
+ =?us-ascii?Q?d3sVpUHlW4EDz55yI449jRmRhH5wX0falpS3DpBbd9bZs/HJnCa8x8emzP11?=
+ =?us-ascii?Q?+cycVBccsxr+9FwXYSLaf4NKsedQWxuLyj+bAW0tsfK8dbgFzjirTmQSzWdW?=
+ =?us-ascii?Q?ygLrzc+aa3+VsHxA0N13glIqqIN1LJA/Dlz/Je+hQGxJo1BJpE3H5mo1AfiM?=
+ =?us-ascii?Q?dyIQpyQ6UNQDx7d6lZxZBUnMF0nAQ04oDXjC9a8cdKF+sI5OCLfk5NR/6XWh?=
+ =?us-ascii?Q?VfWongQ5iCTE5NdPPFwgv1aPy0GhXkfn7q+vFMSmOSJcrH1dxh4e+KbBn7pl?=
+ =?us-ascii?Q?REzGg76+0QfTph3oLvi8rl13sWaxU4FjNddkpRVQA04LIEIe4WSebw55frSq?=
+ =?us-ascii?Q?mbsTQeeGUtksyW3wpVeywtPgZLMmbiGPJShwMHW397/hmY3cFLFFeEQ8XN5k?=
+ =?us-ascii?Q?2kT5D9EEL81r+G+V4rmE9D1PjrN7Dp42bKzlUNgYqC08T7EwVRGiyer+upCc?=
+ =?us-ascii?Q?Hk+/GXTNo3QUapo9NwUnfpzy8PaJV9lD6ojlZDr8pqqPM4vGl+dE370scUJ9?=
+ =?us-ascii?Q?DdOMlhpYGxJUQ8IEjV51BiqRF3ARV/HeqLjLYdfBAeG4hcTeS73iKI+ZzLg/?=
+ =?us-ascii?Q?UY7gi+MCEDOmBNbhgZcfVWBdJ3PysMaByyp/5LwjwaP+vV3HG5m2uo3ASejI?=
+ =?us-ascii?Q?xbcX3FmP0DXQWLrqifgnBxkQJYfTTCTaYWffZjtsFBcKqG0K2jDEJzn7ngwM?=
+ =?us-ascii?Q?/MOV34smDdl0EzB5qRwZLNsJa5NdvqkRW+k99kSG5YxB8ftTxtWYPos/x2ek?=
+ =?us-ascii?Q?y96P4tMHlayNO0A66jjZdarsadl2x5b3NozAatiFIf8+UY0a7Hldc4/jEq2Y?=
+ =?us-ascii?Q?qoxdD/MVNMkmkiYQ2X05LEjudjwSNr07HhCtVEMZ16QTQkI1rD5r7PM0QnzP?=
+ =?us-ascii?Q?McWNeHVDLgJVn9uFLL0/SEuN7jMOwtpYRwXtKtQvNSe1Bo8QdpCekV+pE3Rs?=
+ =?us-ascii?Q?uWux4h3sl5mv74lgc57XTFm9215zYI8hYyTJ8eV+hfTOcsX2eJtyvSucAGO2?=
+ =?us-ascii?Q?H+En+ONv1J256CFLG9VYOcON2ussfTN8w4vYC4qREA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(10070799003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUZPQjcyUDloaTYzV0tmZXM4ZjhXeWJRREVhK0w1cjFRMW82T3dQalVjQVd2?=
- =?utf-8?B?NlJqNEdvZW0vNWJsYXdOV0h4em5nRTZwMEY5NDYyYW96UUR1WDNwNmRNTDVV?=
- =?utf-8?B?NmNXNml5OWhEd0JHM3pVUGhtUTlIcDJpSUd5bUowL2R3NHVXL3VtSlJkY0Vl?=
- =?utf-8?B?dHFoMWYyVktZRDF1bm05UVJyeTI2OEpWWXNrM3hLcnBKdnZWZHdLYU9pQjNO?=
- =?utf-8?B?ZVl0QmN1TndFb05wbWQ2MEt1Y2NIcWVYVS82c0FxZEdianQvTm1CZnJDUnFK?=
- =?utf-8?B?dkFvZnpJODBySGtDb1NDNWNaR0FnZFJYckVvQVE2UTZkbHdQdHpYWG5Wbm1K?=
- =?utf-8?B?aTZBdkJ4U2NUZy9PRGFtejlXVlUrZ1RKNTV3anhBZ1ZDNTRkWVRCaUpjZ1Vz?=
- =?utf-8?B?WXdqNk91WFhHTG12dXFQRjVxSXY3bUhVVm5FQmVTcnV3azd3MVZVMCtUYUJw?=
- =?utf-8?B?M1FRY1l1dWRlYmJmc01PdWJVeTQ4SE91MjNnZ3JhRXlva3orM3JHN3BTOVlB?=
- =?utf-8?B?cGFPVi9XWmVFVmhZUGNjVngvOHRJUGE0VEVTTmUvRFdrQURBak1kVTJPdHB6?=
- =?utf-8?B?dlQ3UmRiZmg0S21kLzFaUmhsZ1I0V0dxQUFGK0NwUmpQNDYrbGVPN3VEMDZN?=
- =?utf-8?B?ZWFBcUFzYkYweFFjTFlkOFBMRk8xNS9PekVyL1hxdHVUL2EzSGNTa0cwcGlN?=
- =?utf-8?B?V1FwaEpmQjZjZHFhelp3N0NyYnZlMG9DakljRG5IY1VSdkZ3R1VJV1BVbFBO?=
- =?utf-8?B?OUJsVWtGdmdlVnowSGVBMjJGclNCMEY0ZEJoODlkOURKUjZnR2tXaFQ0ZmxR?=
- =?utf-8?B?VkpxS05ZTWphcTVBRnZJczBrWkZYRTBhRlJaYmpjMU9WZDZ4c20zZlJ2ckxx?=
- =?utf-8?B?NmRxUHdOOGxSb1BPSTNINEJSQy84Tk1TcUd4eVJnaVl2S1A0c2w1RS8zQ0dB?=
- =?utf-8?B?NzZRY3FwZ0g0SDl5SHJvbTlrcUJBZUZVVkNTcEVJVmphVVVjQk5zZEpDVlVj?=
- =?utf-8?B?OUV2UTRXakF4RGtlb0o2bS9BSjExUlEzUHVOZHRZeVJtdjFJdzZGS1R1QmhQ?=
- =?utf-8?B?UFhKRDZQUmIvckx4a2tZSHhmUXBNdC9ad25lalViYUM0OFh4Ynh0YmRpamZT?=
- =?utf-8?B?Z21PVXNoMU5vaUtkTWZSc0JzcHpIOEJvSzhDRTFUYTR2bVpDRUVVaUhjbnFo?=
- =?utf-8?B?aDBZUThkTWhWVjJwaGFMNE9kY2JiV1NTeWoyOWJaZ3lFN0RWdmZDVkFXaGNN?=
- =?utf-8?B?SzhKc21qOFFjVkpud0tWdWE5VTJwSGJDeUovWHlaSlNtSkU0N25RcENGNnpO?=
- =?utf-8?B?QXMvcis4T1djYmc3enZYWVVwalhXMWczR2l1azhUVkZUY2xSRVF1NEk4SmRG?=
- =?utf-8?B?ejkwNWYrZHVSRm8zeDhZczl6Mms2WHJJNGlBZm55cnlQNkRSM01BNHRZS1JV?=
- =?utf-8?B?dmZGeXNtZkMrWDBZN1VpNGJzTDFhNUxpSG5rbkl1bENzMm9oSE9aWTZsa1lv?=
- =?utf-8?B?OU1pOVJraUNxVVdSWG1DR0NwdDdCeVhMdWxSaFBMcVJrZjltOCtWSFFFU1Ez?=
- =?utf-8?B?bU5GVlRFWFNPYnZFMGlVWVNqY2ZXTm1YalVsamRkcjk2NEszYkxkSTNWUUg1?=
- =?utf-8?B?eGZjdmhKQnIvbmxZcnlVeGJyUmpKMVZvdGZzOVRQQUZuZ0hGbC91dThLQXMr?=
- =?utf-8?B?N3o3OEJwaVZ4czZzSDh0ekRSVnlkWTBhTXdTSWlxVlVPNUJVWTN6N3Uyd0dr?=
- =?utf-8?B?VEx0SWwxa0pna0VvazZPdEFCS1BCVURSNUNLQnpZRWNDODA4Sk1VdEQzekFh?=
- =?utf-8?B?MG5yOW9GVll4YTVwMmFScEdEUzlCMlc2ZWpPNlB5N0JFWVA1S3VDempIZVM3?=
- =?utf-8?B?dllaS091NEp2TWhwNjRpc0kzNk16UCtTMkwxM3V1WEcxemVpcmJsNXpkUGtG?=
- =?utf-8?B?dE9nSFZTOW1mR2hPTXgyb2RBTHU0Q3krT3p2QmUzc3hnS0hYUzlUY2x3Wk53?=
- =?utf-8?B?MS9qWjR0eEdueWIwZHV0UjNQY0VUanhGeWtkaWxSTVBMR2h3bE5ZRGEzQmJU?=
- =?utf-8?B?eTVpNS9JVFpvT05DUEh6d1VUV0tHNXFlaHVmWGNMVXhONk5wcDNZVGtCNWFM?=
- =?utf-8?B?c3NReFhpUTd2KzByZjdvMFZnZmVkUHhHdU9IVUhMd0cvQ2NwWGVDZnhuUVJM?=
- =?utf-8?Q?bdqF1l7hH5JNSzZvRdzlP1mr3Ix0FzPf13pu0HMf7fRr?=
+	=?us-ascii?Q?j91FfNDrTiFiRpiVXy2lWKofa/oTZHu3IkvBmMmuHU5lNac290UkOWCR9AOV?=
+ =?us-ascii?Q?xrhmR/W+WdEk+qVYsn8wD9xVkFbIIqHMoA7KYUvmwTJyYoNCkbolMppekQzl?=
+ =?us-ascii?Q?HqyirYc8oKHEDe1zngxKVxObEHtOpsZssXpkxJu/WJx/a3jNHYz+lYAlVgfH?=
+ =?us-ascii?Q?HaCW14OA4XXZQqlRy75UoILqmlbRIUASOdLPOgKsigD1W3Rrd9Gtg6WUZjT7?=
+ =?us-ascii?Q?ZO5dPNg4rh0GovoWlkFe6jR7ACcqqGo4/P0ipWopjoFgz7IxrKUC1gLOASM4?=
+ =?us-ascii?Q?GVhiu3aM9ygQ31kb/yNyoi+cHskFYRMVQI8cCHRLyE40cFpn9B+wBBO4C3Ng?=
+ =?us-ascii?Q?/ZphUT9IPL81W7TTFSOEA1LLdlYjqfsiTsaBl3PB0PTakC8IbE8NdVP7l9TY?=
+ =?us-ascii?Q?YHH7EfvuWpSkv9PyH7QtfGH+6E1orcA5bOGmZ1PuVLBmTGSobpF0seI6rbQm?=
+ =?us-ascii?Q?L5PKHejWEn9UxYGK/g9dLuf8j0E1ZdZjuGrXX2PMbiONub5rzreTZ+MJWC/F?=
+ =?us-ascii?Q?kn7netWg2aF1DoXTNPiCksOim9N8bLJVUJZOd3jUHVGf7FNo+KPKgmI433D/?=
+ =?us-ascii?Q?EAC/2Mo3X44KppThGpgU/gI3O7F7m8U9asvtKn8S83oMdQkJr5/dpSnmBO8a?=
+ =?us-ascii?Q?2TkPOHfedtZtk13FGPpI/HcOEvxvKRTnb982Rye6q4Kxmtbm3jLlwO83UCXs?=
+ =?us-ascii?Q?oT5neN7Vh+PhRCj1pcLvqXGZTkGBu2cp2lzNHHnzPZkPVDzxRR7AnnQbjKWf?=
+ =?us-ascii?Q?J5V9PuG6bFkmN8v9FXGposERROnTzoxnIURp/DYjbz5JE0ijreiPnoJnuc5U?=
+ =?us-ascii?Q?ZglaZLBkL1oqX2fVOLGDAFnlKTCk7hhK0LVraW+C78uXMnx5OyZjd63bsVMy?=
+ =?us-ascii?Q?0RStUOyrhZAgo1ID95reyVpWU262XM0Qq7IKX7LpTOf4O7Zuc13ua0UI1PyJ?=
+ =?us-ascii?Q?mgUMS/f+zFnSvqLQHFEqsMH5Wcq+k176WXL0K8aV48zRQQvxIrjkZF6UeOlt?=
+ =?us-ascii?Q?kTpj5M7euc8ieV+tWtRAsEsMIt9nkNBRSBUGkvGe1N9hJ+/wVZuf09gcB3/7?=
+ =?us-ascii?Q?jjI7TcYPhHjdc//p2LJ5AAb2jU6Wx6o4azx+ZtG83sXRIWpC3zjZ3u2+1cBZ?=
+ =?us-ascii?Q?CuUSQJmV1/BcHHUyAMP9qUPxr5EI/jtlerWh3WrR5CUQiLu5xcn6R1n3bgti?=
+ =?us-ascii?Q?JSZziZDBN7FZziex/fszn4QNNfDOy9faXhk/iQFrZ0Ku5OnJO+J1MKfhOAdw?=
+ =?us-ascii?Q?F12GkWCYZ8kNUKLhV55dd9ptqFXIC0pwcmXBJpH68ns80pr7WqXPmKhmmH69?=
+ =?us-ascii?Q?lPnJmGnkaSt/nEZD7moQW76HReAo8uc/X3tK9ymIjD3fw+NyQp17J/hYdMYi?=
+ =?us-ascii?Q?WR+A75qwMD3KDYcoQR1Ia1d9RUsXFZoYIqFGuBKA8iDGfb/TI4gd0z4qF/VZ?=
+ =?us-ascii?Q?aou2DNiO+UqPuK/9si5gRHml1yFgiq8M0fDMS/SV8Ztd/+AalRofXMgY/4qG?=
+ =?us-ascii?Q?RvsCCDg6btT2UYH72hmCSBPgiHfufTkIZffTumoDM/42SVz1Xd1J6SSDtl5P?=
+ =?us-ascii?Q?y+/9G6tmhLjbQOimPiD3InDQyaBphSFyZs9hbqZ7Wjs/byOwOfJyVupMoaO6?=
+ =?us-ascii?Q?2YlOy3Lw3rY2UcnMjyt7172YPE89IUmx8Ofuy62lsMLj?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5189f2e8-d91b-45b9-83b9-08dce9ed2c74
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c607e1f-375d-4803-d0ab-08dce9ee1888
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 12:06:44.3866
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2024 12:13:20.4375
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tr5c7SDRn7R7q7DDm/yMyTjMlJNG0nAT56zn0pudSWqvKcBMw7k8MP8roouS9CCZA9il3UWPK9qTWd8czk6LVw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7672
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2iCnu3LGOlsfDjHddHxOIqzT/oSYetllUbLhkmG76LI+BaTdHOuI+OePGmQ0GWJG6UQFt6hiPw7Wohb4SSLLXQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB7220
 
-On Fri, 11 Oct 2024 13:53:47 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Fri, 11 Oct 2024 10:13:34 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-> On Fri, Oct 11, 2024 at 1:41=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
-> >
-> > The invocation of rustc-version is being moved from init/Kconfig to
-> > scripts/Kconfig.include for consistency with cc-version. =20
->=20
-> Yeah, I am ambivalent. Dropping them would minimize changes and avoid
-> introducing something only used once, which would be nice too. Happy
-> either way.
->=20
+> Add just enough support for static key so that we can use it from
+> tracepoints. Tracepoints rely on `static_branch_unlikely` with a `struct
+> static_key_false`, so we add the same functionality to Rust.
+> 
+> This patch only provides a generic implementation without code patching
+> (matching the one used when CONFIG_JUMP_LABEL is disabled). Later
+> patches add support for inline asm implementations that use runtime
+> patching.
+> 
+> When CONFIG_JUMP_LABEL is unset, `static_key_count` is a static inline
+> function, so a Rust helper is defined for `static_key_count` in this
+> case. If Rust is compiled with LTO, this call should get inlined. The
+> helper can be eliminated once we have the necessary inline asm to make
+> atomic operations from Rust.
+> 
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/helpers/helpers.c          |  1 +
+>  rust/helpers/jump_label.c       | 15 +++++++++++++++
+>  rust/kernel/jump_label.rs       | 30 ++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |  1 +
+>  5 files changed, 48 insertions(+)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index ae82e9c941af..e0846e7e93e6 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -14,6 +14,7 @@
+>  #include <linux/ethtool.h>
+>  #include <linux/firmware.h>
+>  #include <linux/jiffies.h>
+> +#include <linux/jump_label.h>
+>  #include <linux/mdio.h>
+>  #include <linux/phy.h>
+>  #include <linux/refcount.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 30f40149f3a9..17e1b60d178f 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -12,6 +12,7 @@
+>  #include "build_assert.c"
+>  #include "build_bug.c"
+>  #include "err.c"
+> +#include "jump_label.c"
+>  #include "kunit.c"
+>  #include "mutex.c"
+>  #include "page.c"
+> diff --git a/rust/helpers/jump_label.c b/rust/helpers/jump_label.c
+> new file mode 100644
+> index 000000000000..6948cae5738f
+> --- /dev/null
+> +++ b/rust/helpers/jump_label.c
+> @@ -0,0 +1,15 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2024 Google LLC.
+> + */
+> +
+> +#include <linux/jump_label.h>
+> +
+> +#ifndef CONFIG_JUMP_LABEL
+> +int rust_helper_static_key_count(struct static_key *key)
+> +{
+> +	return static_key_count(key);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_static_key_count);
 
-Another motivation is that in my helper inline series, I need to do
-arithmetic on LLVM version (divide it by 10000 to get major verison),
-which isn't possible for config options, but will work for variables
-defiend in Kconfig.include.
+^ Explicit export should be removed. This only works because we didn't
+remove export.h from all helpers.c yet, but there's a patch to do
+that and this will stop working.
 
-I didn't mention it in the commit message for this patch because this
-is not my patch series :)
+You can add a Reviewed-by from me with this fixed.
 
-Best,
-Gary
-
-> > +if output=3D$("$@" --version --verbose 2>/dev/null | grep LLVM); then =
-=20
->=20
-> Similarly, I wonder if we should use '^LLVM version: ' here or similar
-> to minimize the chances the "LLVM" string appears elsewhere in the
-> future (perhaps in a custom string a vendor adds, though I would
-> expect them to add it lowercase). We are relying on having a $3 when
-> splitting anyway.
->=20
-> Depending on what Masahiro prefers, I will take this one or the
-> one-invocation-only one.
->=20
-> Thanks Gary!
->=20
-> Cheers,
-> Miguel
+> +#endif
+> diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
+> new file mode 100644
+> index 000000000000..4b7655b2a022
+> --- /dev/null
+> +++ b/rust/kernel/jump_label.rs
+> @@ -0,0 +1,30 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Logic for static keys.
+> +//!
+> +//! C header: [`include/linux/jump_label.h`](srctree/include/linux/jump_label.h).
+> +
+> +/// Branch based on a static key.
+> +///
+> +/// Takes three arguments:
+> +///
+> +/// * `key` - the path to the static variable containing the `static_key`.
+> +/// * `keytyp` - the type of `key`.
+> +/// * `field` - the name of the field of `key` that contains the `static_key`.
+> +///
+> +/// # Safety
+> +///
+> +/// The macro must be used with a real static key defined by C.
+> +#[macro_export]
+> +macro_rules! static_branch_unlikely {
+> +    ($key:path, $keytyp:ty, $field:ident) => {{
+> +        let _key: *const $keytyp = ::core::ptr::addr_of!($key);
+> +        let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
+> +        let _key: *const $crate::bindings::static_key = _key.cast();
+> +
+> +        $crate::bindings::static_key_count(_key.cast_mut()) > 0
+> +    }};
+> +}
+> +pub use static_branch_unlikely;
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index b5f4b3ce6b48..708ff817ccc3 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -36,6 +36,7 @@
+>  pub mod firmware;
+>  pub mod init;
+>  pub mod ioctl;
+> +pub mod jump_label;
+>  #[cfg(CONFIG_KUNIT)]
+>  pub mod kunit;
+>  pub mod list;
+> 
 
