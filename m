@@ -1,134 +1,111 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE4620ADF4;
-	Fri, 11 Oct 2024 11:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA6B20ADCD;
+	Fri, 11 Oct 2024 11:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728644836; cv=none; b=DRCxQ/q1PXJKW+h+QrqG4rxrSNA0Gn1wIkMj08Qpnt335RTNwOaZFw7Pyvmhlazfy3zATFIQUFub1+JBo/7p1sRtCNVnJfR3EjaUb+mLeTqPt4UB1e3JWt2QQrwDmdF5hvurTsaHNy3P/Y0GfmXumyO9CGP5pxT4LhRIMoT18r4=
+	t=1728646379; cv=none; b=KYhGcZEkyjXglhQQrLk1D1Y91Z9jGzlxWBIO//sZFbivACPmjVLEWZKh6PP/xgRD8aJOZemBMRANzcDddarQOYhL7bBAxub5RaiSTGB+JK4/IsBOXpVE7KwjfnIevKJLOoVZYV1Bo+3e35xetVioHTRgKul92S9FVj0qocWUfps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728644836; c=relaxed/simple;
-	bh=M/IjkJBR2BtWNfMw7P8y4T+/ylydS1CJe6qVdFG0bEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J0Jmv1DST+CDjjALV5A7gOQc4MDObmjgT/rH655eUxF8ZWhye4RQw5d3P9sCJFUuBa2l/+RZCOpyXrS/5dn4qX9bOxMHdKI1XbYixBOMWGCQiEQXYsZlMScvLYc28En3K320km1/B4rqehH01h5Fvsm6aTiZAMQB+g0l3lUb20g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=X5mii5su; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1728646379; c=relaxed/simple;
+	bh=az4hS+NK8zBr5UCFhRFct2ksVmIL42/RJE4tgtHk2Hg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OStks4/0o6mNrMyM5pryphE6dvtuV7U7d93o7zOi7DasIof1CCPSpFpU7elRCeDuTcSUfsNdH0JhOst+ORAH9kByjB0iX0mVuXWvZmytb0/zp99f3PMm9tBkPa03Br9uqZvrIdSFzqY1TqiYu8XIOgon5cCfDaGb7/eecQvlzB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+BVIdQy; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="X5mii5su"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1728644821; bh=Tq37ereFE4PrmtCrRyi97dZnnR7i737bmhgmm5gNjJM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X5mii5suzTWLjbFedp1Pqtqf5s+n88QBt7XbwbO66a6MG4u1zsbN3V5vQfAtqQvUh
-	 aQ9Xrf4ctJcDzYhA6yBoAP8+YOVAoXFMPGA2VnvVNgfBpdg/gM3tsZ/XtBzYjW2XPt
-	 34d7Ia47zKIbhlcISFJfbQb6/YoOJIVR3GTKvMdI=
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, dakr@redhat.com,
- linux-kernel@vger.kernel.org, lyude@redhat.com, airlied@redhat.com,
- miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
-Subject: Re: [PATCH 1/3] rust: page: replace the page pointer wrapper with
- Opaque
-Date: Fri, 11 Oct 2024 13:07:00 +0200
-Message-ID: <065A20A8-EB66-4350-965C-2456841D03A1@kloenk.dev>
-In-Reply-To: <20241007202752.3096472-2-abdiel.janulgue@gmail.com>
-References: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
- <20241007202752.3096472-2-abdiel.janulgue@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+BVIdQy"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7db3e962c2aso148265a12.0;
+        Fri, 11 Oct 2024 04:32:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728646377; x=1729251177; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=az4hS+NK8zBr5UCFhRFct2ksVmIL42/RJE4tgtHk2Hg=;
+        b=G+BVIdQybCD+ThB3xeA5NXhyLAf6kggLOcmBbKOx6xZzl77qrX0nszdRyU4JGWZlCu
+         eGv9LdLhYvu4JFWfmIZ5/3oCy2vQ1yOEzXFLsFh5PYFc/7CgNihSEYH1wZZAm+L8ymma
+         OGuDFmuZnh1E+jPcqpgPDIn+V4outq9qCKs9GARrX1YtUG4p5N3VnFAenpkHQiASRbmI
+         eFvvkQmGiqtCu382KYYabjMERaK32BDm1BGvVfo+q6hofxspbNLIhJ5bILYQVE87yJlM
+         KUG+phywuka5OTrXHx7RGNF48OwsBhQzx/QBqCK35N8Znc0U6hlMwUOeRIpsjOqaaPAU
+         werA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728646377; x=1729251177;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=az4hS+NK8zBr5UCFhRFct2ksVmIL42/RJE4tgtHk2Hg=;
+        b=f7jgZysExyWG1Wjg2La2E2au5TnrPaNW/Ebz8gjK/59dA0AOFOtlggXPGJp1PwShqM
+         Wn6NpjnOE6B640J74iXMPYxX4ohJFNcAwMUrKMT+VmmHERMKMA5aAvMKJ1zBjW+IvdOa
+         r4smVoNlh/0G9GybgxOd7DFZaPHbfhdK5HnLHPsj8V2rBf8d0FnTauHZ+OO/rgI/v6Sn
+         R0ofSxpSlSsA9sTSWfb6ys33bIMj39WauClfQoT8bzy18Uqjcm+18BTYUZs5nRCW7TvJ
+         DXGX2JBhrnf6OrdSYS70goLeiE4zx9f4SzCCV7wTGbwYyDysZ5zYGYf9GzXdQOJ75odZ
+         kpRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEsH85G0Q+OoLGyTbKjObf1RHHD1Od3inE5NrsNXf+j/9G4VCzAbLg4bl4iRcpk3zJbtJZ+kDVQ1m5bqBQ9NI=@vger.kernel.org, AJvYcCWOF+2/mbOmxnEDXsL77KFwXtjhxoFSKyY3Tykwml6LKjzzDxVucoJ6cEHb2VIiesvdiLt3j+7EJc3d9L4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRaB5X5n4mspt6zSRcRo/obTISsq+yLVT+FBLawLcMQNC0/M59
+	E5KypGK9dUvou42Tu+ydwqjg0hmUSpajx1lXhzF0A8NXN86JbNZeaytzsRtyOJrrzSJ+Jl0ikfV
+	zYgpCMHXVoEgp7Im+T+gNID1iIj4=
+X-Google-Smtp-Source: AGHT+IECMXVvn0oo1MNjapLxNu2xErXjaCUcD29N0fsc68U7YJSRkD+W8Re/vBWLXWMsFfWDHfD0zZ1hSdE8Z8CiYOg=
+X-Received: by 2002:a05:6a00:3e1d:b0:714:2051:89ea with SMTP id
+ d2e1a72fcca58-71e37e25dedmr1609379b3a.1.1728646377173; Fri, 11 Oct 2024
+ 04:32:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241008-cfi-patchable-all-v1-1-512481fd731d@google.com>
+ <ZwbAvEnrzu6UUgGl@J2N7QTR9R3> <CAH5fLgipBfd5pNKqniXqFudruyGaJG=LDc5MEf3Yxq1yRMmQcw@mail.gmail.com>
+ <ZwewMw8jBh6OU-L_@J2N7QTR9R3> <20241010110344.GL14587@noisy.programming.kicks-ass.net>
+ <20241010113748.GL33184@noisy.programming.kicks-ass.net> <CANiq72=kT9RFcQ3h5U+wAY0pDQQqGU7BTtiPJ-oiHNUG00z3=w@mail.gmail.com>
+ <20241010130421.GG17263@noisy.programming.kicks-ass.net> <CANiq72kbApTtdLeow5L6G6t4Q_L-0zkDwfwyWcSb_e6P=kO06g@mail.gmail.com>
+ <20241011105136.GP17263@noisy.programming.kicks-ass.net>
+In-Reply-To: <20241011105136.GP17263@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 11 Oct 2024 13:32:44 +0200
+Message-ID: <CANiq72mYEbGxFZHQ_vfHTybuYO62As-23VR9yASo-b4LcZ_pkg@mail.gmail.com>
+Subject: Re: [PATCH] cfi: rust: pass -Zpatchable-function-entry on all architectures
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Kees Cook <kees@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-On 7 Oct 2024, at 22:27, Abdiel Janulgue wrote:
-
-> Replace NonNull with Opaque to make it possible to cast to a Page point=
-er
-> from a raw struct page pointer.
+On Fri, Oct 11, 2024 at 12:51=E2=80=AFPM Peter Zijlstra <peterz@infradead.o=
+rg> wrote:
 >
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> ---
->  rust/kernel/page.rs | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 208a006d587c..08ff09a25223 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -8,8 +8,9 @@
->      error::code::*,
->      error::Result,
->      uaccess::UserSliceReader,
-> +    types::Opaque,
->  };
-> -use core::ptr::{self, NonNull};
-> +use core::ptr::{self};
->
->  /// A bitwise shift for the page size.
->  pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
-> @@ -25,8 +26,9 @@
->  /// # Invariants
->  ///
->  /// The pointer is valid, and has ownership over the page.
-> +#[repr(transparent)]
->  pub struct Page {
-> -    page: NonNull<bindings::page>,
-> +    page: Opaque<bindings::page>,
+> So you could just copy the bits from core you need into the kernel tree
+> and leave out those bits you do not, and ocassionally update them when
+> needed, right?
 
-Still not to sure where to encode pinning in the type api. Looking into t=
-he C struct I see a union that sometimes holds a list head, should this t=
-hen be a pinned thing in this type?
+Yes, but in practice it is a substantial amount of non-trivial code to
+maintain and some of it is too tied to the compiler (e.g. using
+compiler internal features), thus it would likely require maintaining
+several variations in-tree to make it work across compiler versions.
 
- Fiona
+Maybe when kernel has been compiling with stable Rust for a while, and
+especially if `core` is split into "really tied to the compiler" and
+"the rest", we could consider something like that. Personally I would
+like to be in a position where we can try. Perhaps it could even help
+to simplify gccrs' life compiling a smaller `core`.
 
->  }
->
->  // SAFETY: Pages have no logic that relies on them staying on a given =
-thread, so moving them across
-> @@ -65,15 +67,20 @@ pub fn alloc_page(flags: Flags) -> Result<Self, All=
-ocError> {
->          // SAFETY: Depending on the value of `gfp_flags`, this call ma=
-y sleep. Other than that, it
->          // is always safe to call this method.
->          let page =3D unsafe { bindings::alloc_pages(flags.as_raw(), 0)=
- };
-> -        let page =3D NonNull::new(page).ok_or(AllocError)?;
-> +        if page.is_null() {
-> +            return Err(AllocError);
-> +        }
-> +        // CAST: Self` is a `repr(transparent)` wrapper around `bindin=
-gs::page`.
-> +        let ptr =3D page.cast::<Self>();
->          // INVARIANT: We just successfully allocated a page, so we now=
- have ownership of the newly
->          // allocated page. We transfer that ownership to the new `Page=
-` object.
-> -        Ok(Self { page })
-> +        // SAFETY: According to invariant above ptr is valid.
-> +        Ok(unsafe { ptr::read(ptr) })
->      }
->
->      /// Returns a raw pointer to the page.
->      pub fn as_ptr(&self) -> *mut bindings::page {
-> -        self.page.as_ptr()
-> +        self.page.get()
->      }
->
->      /// Runs a piece of code with this page mapped to an address.
-> @@ -245,6 +252,6 @@ pub unsafe fn copy_from_user_slice_raw(
->  impl Drop for Page {
->      fn drop(&mut self) {
->          // SAFETY: By the type invariants, we have ownership of the pa=
-ge and can free it.
-> -        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
-> +        unsafe { bindings::__free_pages(self.page.get(), 0) };
->      }
->  }
-> -- =
+Even then, we would need to see whether the tradeoff is worth it: we
+may be able to customize `core` here and there, yes, but, for
+instance, we could lose the ability to easily import other code out
+there (virtually all Rust code uses `core`).
 
-> 2.34.1
+Cheers,
+Miguel
