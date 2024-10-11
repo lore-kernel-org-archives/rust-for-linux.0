@@ -1,103 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4DE212D05;
-	Fri, 11 Oct 2024 11:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE4620ADF4;
+	Fri, 11 Oct 2024 11:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728644657; cv=none; b=QVDZ1pxu3ybzkyhSmQiL+7tbIcRH1tKIPR3+zBAHHfErz0ugRLd+Ec5IQwTAnFABbnovqfOG2mMffbdjcHdficKoDoAo33QIQlVIMxz65aT+2ttlWNy9S6NTXsY5vEUlpYB5aVZnUDnHo/XgcKoLCAjPe7+xe0t1bSyK08l1fQs=
+	t=1728644836; cv=none; b=DRCxQ/q1PXJKW+h+QrqG4rxrSNA0Gn1wIkMj08Qpnt335RTNwOaZFw7Pyvmhlazfy3zATFIQUFub1+JBo/7p1sRtCNVnJfR3EjaUb+mLeTqPt4UB1e3JWt2QQrwDmdF5hvurTsaHNy3P/Y0GfmXumyO9CGP5pxT4LhRIMoT18r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728644657; c=relaxed/simple;
-	bh=AIf2fGrcHVCjwQ9BTzN0E7Ks2RMw0PPWpd2+KhWrpmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zg6SBG8Y3HG++dZSGsU/tYMGz9Ph9ObZBkRVhTzg1nIV0M6+QZ2qyo7fqO9+NMaGxINlrIZxnpYhkwrd4Rw/2DJbAhtMBwwGJJUQAYAK4iwakI5JHqcIFRf7MSoM5R9oyoAh0UBB8chSak4PsNHs+pM2tHwPLrFNKkYY4NIEv3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LdgERtEX; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1728644836; c=relaxed/simple;
+	bh=M/IjkJBR2BtWNfMw7P8y4T+/ylydS1CJe6qVdFG0bEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=J0Jmv1DST+CDjjALV5A7gOQc4MDObmjgT/rH655eUxF8ZWhye4RQw5d3P9sCJFUuBa2l/+RZCOpyXrS/5dn4qX9bOxMHdKI1XbYixBOMWGCQiEQXYsZlMScvLYc28En3K320km1/B4rqehH01h5Fvsm6aTiZAMQB+g0l3lUb20g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=X5mii5su; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LdgERtEX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728644655; x=1760180655;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AIf2fGrcHVCjwQ9BTzN0E7Ks2RMw0PPWpd2+KhWrpmg=;
-  b=LdgERtEX6WqoVS+VGMVRH5X4R/9K10akoGdCBxwsOBAoH4hibhRYXHvV
-   NnEbQrc/VCXg/wnOhF8nqxidBK7tAXkVEQBLbt6KQIZqix90c6VJq+vRI
-   BG6uBDG3Uj9Hjgb6nfcg8pNrxHTztZPrBj7AbIrLTlCWm2RaRO+7/35uU
-   eLT+DevkRcZzkJv183gjIpLriwZyq8nYSkgHvrDb6P7UoUzBhOcCh+BHl
-   TdhwDe7AvYQBo27inSQUGbtxeWoZGB2uLfTcmAWSFQVlqNbslNTr7zK2N
-   LKYdJhj9Sy5IS8DZDJZInfTKfAuw01tmdzEmdKuY6rj12oTkVcyfIxAGn
-   g==;
-X-CSE-ConnectionGUID: gjL1dUm7TnWz/5qBsv8rZw==
-X-CSE-MsgGUID: tGQtEfDTQpm0Mtgsj4cwIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="39169334"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="39169334"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 04:04:15 -0700
-X-CSE-ConnectionGUID: yMaNfXsmQQezzxIjU8dynw==
-X-CSE-MsgGUID: XEFYIAzsSKCPLYDNr8MznA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; 
-   d="scan'208";a="107732129"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 11 Oct 2024 04:04:13 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1szDRK-000CDB-0C;
-	Fri, 11 Oct 2024 11:04:10 +0000
-Date: Fri, 11 Oct 2024 19:03:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, aliceryhl@google.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, lyude@redhat.com, airlied@redhat.com,
-	miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
-Subject: Re: [PATCH 3/3] rust: page: Add page_slice_to_page
-Message-ID: <202410111810.hiN1ns3g-lkp@intel.com>
-References: <20241007202752.3096472-4-abdiel.janulgue@gmail.com>
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="X5mii5su"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1728644821; bh=Tq37ereFE4PrmtCrRyi97dZnnR7i737bmhgmm5gNjJM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=X5mii5suzTWLjbFedp1Pqtqf5s+n88QBt7XbwbO66a6MG4u1zsbN3V5vQfAtqQvUh
+	 aQ9Xrf4ctJcDzYhA6yBoAP8+YOVAoXFMPGA2VnvVNgfBpdg/gM3tsZ/XtBzYjW2XPt
+	 34d7Ia47zKIbhlcISFJfbQb6/YoOJIVR3GTKvMdI=
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, dakr@redhat.com,
+ linux-kernel@vger.kernel.org, lyude@redhat.com, airlied@redhat.com,
+ miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
+Subject: Re: [PATCH 1/3] rust: page: replace the page pointer wrapper with
+ Opaque
+Date: Fri, 11 Oct 2024 13:07:00 +0200
+Message-ID: <065A20A8-EB66-4350-965C-2456841D03A1@kloenk.dev>
+In-Reply-To: <20241007202752.3096472-2-abdiel.janulgue@gmail.com>
+References: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
+ <20241007202752.3096472-2-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241007202752.3096472-4-abdiel.janulgue@gmail.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Hi Abdiel,
 
-kernel test robot noticed the following build errors:
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on linus/master v6.12-rc2 next-20241011]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On 7 Oct 2024, at 22:27, Abdiel Janulgue wrote:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Abdiel-Janulgue/rust-page-Extend-support-to-vmalloc_to_page/20241008-052805
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20241007202752.3096472-4-abdiel.janulgue%40gmail.com
-patch subject: [PATCH 3/3] rust: page: Add page_slice_to_page
-config: x86_64-randconfig-014-20241011 (https://download.01.org/0day-ci/archive/20241011/202410111810.hiN1ns3g-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241011/202410111810.hiN1ns3g-lkp@intel.com/reproduce)
+> Replace NonNull with Opaque to make it possible to cast to a Page point=
+er
+> from a raw struct page pointer.
+>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> ---
+>  rust/kernel/page.rs | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+>
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index 208a006d587c..08ff09a25223 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -8,8 +8,9 @@
+>      error::code::*,
+>      error::Result,
+>      uaccess::UserSliceReader,
+> +    types::Opaque,
+>  };
+> -use core::ptr::{self, NonNull};
+> +use core::ptr::{self};
+>
+>  /// A bitwise shift for the page size.
+>  pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
+> @@ -25,8 +26,9 @@
+>  /// # Invariants
+>  ///
+>  /// The pointer is valid, and has ownership over the page.
+> +#[repr(transparent)]
+>  pub struct Page {
+> -    page: NonNull<bindings::page>,
+> +    page: Opaque<bindings::page>,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410111810.hiN1ns3g-lkp@intel.com/
+Still not to sure where to encode pinning in the type api. Looking into t=
+he C struct I see a union that sometimes holds a list head, should this t=
+hen be a pinned thing in this type?
 
-All errors (new ones prefixed by >>):
+ Fiona
 
->> error[E0432]: unresolved import `crate::alloc::VVec`
-   --> rust/kernel/page.rs:6:32
-   |
-   6 |     alloc::{AllocError, Flags, VVec, flags::*},
-   |                                ^^^^ no `VVec` in `alloc`
+>  }
+>
+>  // SAFETY: Pages have no logic that relies on them staying on a given =
+thread, so moving them across
+> @@ -65,15 +67,20 @@ pub fn alloc_page(flags: Flags) -> Result<Self, All=
+ocError> {
+>          // SAFETY: Depending on the value of `gfp_flags`, this call ma=
+y sleep. Other than that, it
+>          // is always safe to call this method.
+>          let page =3D unsafe { bindings::alloc_pages(flags.as_raw(), 0)=
+ };
+> -        let page =3D NonNull::new(page).ok_or(AllocError)?;
+> +        if page.is_null() {
+> +            return Err(AllocError);
+> +        }
+> +        // CAST: Self` is a `repr(transparent)` wrapper around `bindin=
+gs::page`.
+> +        let ptr =3D page.cast::<Self>();
+>          // INVARIANT: We just successfully allocated a page, so we now=
+ have ownership of the newly
+>          // allocated page. We transfer that ownership to the new `Page=
+` object.
+> -        Ok(Self { page })
+> +        // SAFETY: According to invariant above ptr is valid.
+> +        Ok(unsafe { ptr::read(ptr) })
+>      }
+>
+>      /// Returns a raw pointer to the page.
+>      pub fn as_ptr(&self) -> *mut bindings::page {
+> -        self.page.as_ptr()
+> +        self.page.get()
+>      }
+>
+>      /// Runs a piece of code with this page mapped to an address.
+> @@ -245,6 +252,6 @@ pub unsafe fn copy_from_user_slice_raw(
+>  impl Drop for Page {
+>      fn drop(&mut self) {
+>          // SAFETY: By the type invariants, we have ownership of the pa=
+ge and can free it.
+> -        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
+> +        unsafe { bindings::__free_pages(self.page.get(), 0) };
+>      }
+>  }
+> -- =
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 2.34.1
