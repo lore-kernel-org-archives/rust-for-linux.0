@@ -1,119 +1,75 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1178A10A1F
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 21:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6951CB509;
+	Fri, 11 Oct 2024 22:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728681990; cv=none; b=hjAe8sL2S7o/s3zRFJwMqFCm1vWA1qoqJyQYIFDNazxSUVtGwBbzREExwhuDjTXmXhqUSX/VyZXfeh0WILap9Ovd5wjtTfO/rMSDHHca2yqS5rC6gso3RchvIeOkHaBHbhLqrV2GMLh5I0xJxNdYn7eHUIlF0xlAQ+NxIKy1psU=
+	t=1728684794; cv=none; b=WqX/PAgaLjwTtSPxIEbbPK5Kp0HjISY0Q50K8o02A6TTNN6oq1AVvfnfibrwNX2UHt+n8Th2RGAtZirq9SbrRedhHQrCAcM/7ux0w9IOEhAq8mT2q9n1Wql1CkFrLI1iZG2/th+sAQVA36Clljigv9iCEKAtIKuSi4wHk5SmQrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728681990; c=relaxed/simple;
-	bh=Ka+AjjRuR/G5QQKRrwr0FE8Ey+JDrFkkvTACYvoWcLM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BRcJTtjvw31HGwnoIk0KLEYohTPl6J/tS34W2odC2UR9X5IJ56SBFWya3FqX5LCB4B2W26iMlUk0pq9cj9+qxKAe1bQaDhOux9qT08KzCRel23HtssBYljOvmoeWs14UoGRZvUmSU5AJEpF/Uhtwk80KVnOUR1EU/4dFksm7dUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U0ZN+L8u; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728684794; c=relaxed/simple;
+	bh=Y8Xs/sQX2kS6V8xv9rjsehyhc+uRws7azTUCt8jAD9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NX3bN92OHYw9UeR/kg8mVOJbVKT0W0feXHnHN0DBHDIhXTBvqhhIqz5hD5rQ1ttXOKcI2scZDqPiadSVuwarhl67kur+fseTc87vpY8Hq/l1COszYMqMGxPvUI80NdQQiTrkKQJUu/9R1Cr+QzYLzgOBgLuPg28FgPU/eP1kPGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTfmSX7w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U0ZN+L8u"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-460395fb1acso71391cf.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 14:26:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728681988; x=1729286788; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ka+AjjRuR/G5QQKRrwr0FE8Ey+JDrFkkvTACYvoWcLM=;
-        b=U0ZN+L8uihImO99bgGJbn6H8ka1Xgw5xwf6XJMARnqwI73Wdn0fvNXQPqzNTPakdbY
-         Rug+GWKtl+e00Xd5ELfRFvMEe+RR9CAKng/cvtr+IXqp7gqHfI0UCswCfej9Rykd9SK0
-         UqNXJ0qQdOLxuAXoB2owh3RcdawxR2D1dJrepWqKdrHwctO/Zy7RnMHyIIdZHrZHV7+n
-         92HwxlivEHuM4LCAyv3lk8JnTX69ULmtrL3sZrrB3vbBDKLDJnfB07RjFlllY//9lu11
-         011pnrmu00wm0EV0Tao2bpXNMTuoiQDqDBmpqXTn4nyijBRzj8pjh9Hoo2TRREqOJ8zz
-         2vOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728681988; x=1729286788;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ka+AjjRuR/G5QQKRrwr0FE8Ey+JDrFkkvTACYvoWcLM=;
-        b=jaxgzmEYPQ3l4le44P6OnaEOuvFwGTHviffcNQk/HZfg1eOaFGr0quRlulPdK/xDyJ
-         XF5f20xed7djDEGJV3GZJaw+peGSEo0uq2xO6hlZKSTes/8VJq4Cbugc7tWDOLX6js5c
-         IIhhw0lkzzTsnZKXneNZwwSWDjp8DS1NYbP/7K04pMtnBA4pt8zBDz5L4oBV074kAquO
-         dGm2RrFvkyunY0PzZD2cEbcxdTLSTJKBHzNZZJcgj8lCZ5f3Yz0lF04SmBTwfPyXgHZA
-         qLcYpkSLpjHfA+SL+9m2TG2YS5lmWJrzP0DjY1yTRx18Y/JYd0x1gUriQETxQSfwiwvA
-         GQfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGFExpYpxzDBEymYBLhaz9bw0ALSfhS0sOvwMuJFWFNWqdViLT6jJF5L4Q2sB/XGwjO6e8sFvDWbC8qYVeDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyItw0hT+Zg75QAdZ53JEPgflpx4lGLiTct6sMpq33bFenv/aJN
-	bDC6I+cc6TA2ahiy4/IWYRL4MsPw3j5DND1KkAJk1EgZjkhZb/hjfy+3WSbS8/FVvIaMiTsxXWd
-	5nv5Rm5D+YbomPAjOSnNHNbRJHhzgQSq3i7p8
-X-Google-Smtp-Source: AGHT+IEKEmVjWoOqBswBr3NiTYKK5Z9SghdMPP5nc66QbnU8P8zaScBXP/19wKkNBoIcY46P8FQCMYQuouKvAahW2eQ=
-X-Received: by 2002:a05:622a:a60d:b0:460:48fc:3cd8 with SMTP id
- d75a77b69052e-46059bf45e5mr189701cf.5.1728681987767; Fri, 11 Oct 2024
- 14:26:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTfmSX7w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4ED6C4CEC3;
+	Fri, 11 Oct 2024 22:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728684794;
+	bh=Y8Xs/sQX2kS6V8xv9rjsehyhc+uRws7azTUCt8jAD9c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hTfmSX7wRzybyskrZGpgB901vcZ5Ou+9exp2SaSFgWKQ2Ru7VVDGg+Dr0C+2Wskng
+	 gJohezXvM/Hj7OwPTjCewb7TLtH+YEWVNgQeE1E+d2fdJPgvP92/BDiwg578VOVcDo
+	 1aVwl9M7DcdiQxZhDfGQiCGUidIN3i2A9g7NIU44pyixwuLwFgIU69GanyatSPHkYO
+	 pHmL8PZ5+1d/t7/jmIwpiAQPPhoOye9pDR+kr6R9fa4S+h2rLEFPPpjNW8Ag8R+oBx
+	 0zjsafL2k8Ai6fNkaNPwa/fnzutXRX4Xgba4RWs/1pok/olkMgu4CnYW2eiRgYmcho
+	 TdaoWBXXBO3mA==
+Date: Fri, 11 Oct 2024 15:13:12 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
+	gary@garyguo.net, Alex Gaynor <alex.gaynor@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st,
+	j@jannau.net, asahi@lists.linux.dev, linux-modules@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH v5 13/16] export_report: Rehabilitate script
+Message-ID: <Zwmi-MEVE_E4nkzl@bombadil.infradead.org>
+References: <20240925233854.90072-1-mmaurer@google.com>
+ <20240925233854.90072-14-mmaurer@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241011-tracepoint-v10-0-7fbde4d6b525@google.com>
- <20241011-tracepoint-v10-1-7fbde4d6b525@google.com> <20241011131316.5d6e5d10@eugeo>
- <CABCJKuesYQWvfScFaqv_rW5ZqAJNn4zK9iOFAmyTaYKO3S5hgw@mail.gmail.com>
- <20241011171251.0bd53f01@eugeo> <CABCJKue7qT9drhgrXPEjBO=gPw79vYELAZxz747Z8WMF=vj2MQ@mail.gmail.com>
- <CANiq72nOCkzTyJCydHOrkz3MRizb27sDO_5Y_cKEv3oZDNNqqQ@mail.gmail.com>
-In-Reply-To: <CANiq72nOCkzTyJCydHOrkz3MRizb27sDO_5Y_cKEv3oZDNNqqQ@mail.gmail.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Fri, 11 Oct 2024 14:25:49 -0700
-Message-ID: <CABCJKuduZJ4aogg4A6idcMAPMa2N0d4f9aJgbR8HL0YEyTONmA@mail.gmail.com>
-Subject: Re: [PATCH v10 1/5] rust: add static_branch_unlikely for static_key_false
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925233854.90072-14-mmaurer@google.com>
 
-On Fri, Oct 11, 2024 at 12:48=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Oct 11, 2024 at 7:52=E2=80=AFPM Sami Tolvanen <samitolvanen@googl=
-e.com> wrote:
-> >
-> > It's just one line per helper, but sure, I do see your point.
->
-> I guess we will have a lot of helpers added over time, so even if it
-> is one line, it may end up being a lot of lines in total. The rules
-> should stay constant, which would be better. Having said that, it is
-> true the extra complexity of the rules isn't great either.
+On Wed, Sep 25, 2024 at 11:38:28PM +0000, Matthew Maurer wrote:
+> * modules.order has .o files when in a build dir, support this
 
-My only concern is that custom C build rules must be kept in sync with
-Makefile.build changes, while EXPORT_SYMBOL lines should be basically
-maintenance-free. However, perhaps this isn't really an issue since
-most of the complexity is already contained in rule_cc_o_c that we can
-conveniently reuse. Anyway, I think this is something we can worry
-about later if we actually run into problems. I was mostly interested
-in the reasoning behind these changes.
+The commit log is not clear, is it that it's always had *.o files, and
+you're adding them now, why? Why is the .ko search now removed?
 
-Sami
+> * .mod.c source layout has changed,
+
+When, why did this change not happen at that time?
+
+> update regexes to match
+
+Why did this not break anything before ? Is this fixing something, or
+is it prep work?
+
+> * Add a stage 3, to be more robust against additional .mod.c content
+
+Future .mod.c changes?
+
+  Luis
