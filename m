@@ -1,121 +1,120 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97731D14EE
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 22:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E4E1D1F6B
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 22:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728685389; cv=none; b=L2Nkozyg6plSGYOoSRsCPNuyXYrmGJEcTyWUndG7BIL5Sm6+mbt4yWgiGkQax4LqqxcqstFGrTAy4U3umIpq/kbDljt9A60v3zP0l04QHTQC5aAm7A6lvub5RxNoIQ2DyEpaTVwDMX4KiEUYJ2v1ubzweIzKMAHz1e4opkFR7lA=
+	t=1728685665; cv=none; b=YSOXlwdIPYN6ZZsdqJZN3J8DoTTR/rRd43qB4OqAxFbMUmayKYT+EjAysUkFIX+GMJfz34fQ6j64oqu1Ce44/YapzOwUZ6W92Ed7TodvgyYo1nBS0Yx9oVY2D1j2hIjE1B5Yucob+5FeTU4gWoGmBY9Uqe/ChzOQnkcpvgKpaCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728685389; c=relaxed/simple;
-	bh=CJDIZt9SDia3kRARDeq0N7pRKkAvIEdL1EhtcEH4zWU=;
+	s=arc-20240116; t=1728685665; c=relaxed/simple;
+	bh=XpfQ/8ANSakz+1OrHfeuAfLdOL6Di6vnxD3AKYtRJCs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=defc3FefnvBBHw6eCXwCwVq265MlHZIkDV6743AMVYG3VNX4eTbhVDhsTYC/XMG/YXmO6KfNjz3l3FsEE/ceyrB9fmTmA2pmTgT2tR6d7nMU4d2vIzmR4eivh71BAofpnjw6isIvfug9x7kr5qtN3N3pZEmjwkndvB/+TOsYK7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qU5M0pC7; arc=none smtp.client-ip=209.85.167.48
+	 To:Cc:Content-Type; b=VoAEWg6CUMkZQA/d8i/h6gGnYIiw4hvmjeAoz9DUCdSertBWOzHptbjdqCYyXSvWv9O3ZgqMr3294DDo57/IOEPWfi2S9JQvFtut8xdPbSlicLDiqIQqUsAtCPW1YQpWAz00/4VwyABlqdhfZCcNPLoSlCSwU6Q+kubbYpuLc7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vfYElzHk; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qU5M0pC7"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539e66ba398so3400e87.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 15:23:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vfYElzHk"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539e617ef81so2772e87.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 15:27:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728685386; x=1729290186; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728685662; x=1729290462; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=maYFMKfM6boFdhGm6DtqmLZWBbLTCgX3HfNDs5UmCQU=;
-        b=qU5M0pC7kKtnuzCebPkw/6BhkXjMU4cqXfWJ0e5PHlSMp5q5+vfnoTf24vUX1LW5qy
-         RHnmrzCKzVptlo5dWIANhg/LgG9+vKv/cj1ySZvX2t++Sh43UX+w+cEnDULi3m3GGkSM
-         hkESkezf9MFOEjq0rmV7nePk44LnpIgqjOVoh/D/q90dalwQZkMvhHViH9uYiAkRP8TI
-         Cl5NzoR0Tv1RHSsBSCvujxSLUlAaVrpTiPNGv/U2IYm7TD4Zs3AOUina9IZf7/tRNFfv
-         Aow4foN6hEsPRRU20cg0UB7NlY3Y5S/mfmgrKJn4gEVYK3shD/c0zQz+MFTsyDr792nO
-         GShA==
+        bh=8+gUxSDkWsGEMXOFebQ5Xw/lGRc6XJ08PqAablVeqL4=;
+        b=vfYElzHkb52isYENpIwqjNg6h0yBI/F9gbmORY79m+cZT8aGM+HnCBNj+6YNOdl89k
+         XBah9H6MVef0dPSzCRDAYBfIEY//xODyXAqa52LinGavrcX7g7P9aTZNUyuCOHhDu7Y/
+         mY9G7+Om1y9QE/YfcfElQv1tz3r3Ldr3unUEnaZ8nXi4feq1ojonPIRgAmbHGJbj46k9
+         Jkv+64hHd0Y/i/WRYZTgeCJJ8/mF3LKJnTIlqEaM4T/ihG1Gj9NIRz3ri1g0bnuz5IfI
+         Lv31/ecBbMIOe0zgiaFhPQ4HP92VbCXwrMKi2CLX/S80Tl4PKQI4THPDysHz2QcmcLku
+         YBfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728685386; x=1729290186;
+        d=1e100.net; s=20230601; t=1728685662; x=1729290462;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=maYFMKfM6boFdhGm6DtqmLZWBbLTCgX3HfNDs5UmCQU=;
-        b=cQJiXnkRpm+rzKg1Vk6irn+yv1TpsNOSbcrR/udMJsHPrPRyiiiboH0M3oKGWq00jS
-         yxJAE79Yjsa+zNHNKuDeYpjSYRKxB5KIaeDMdBM4AYWH8/jXHpBgKiyyBHNLF9dIJ4vG
-         3+de1ymCUuSnrSiDOVUQAbmWFMlL9RCM2JWuR+G5lrhUAtkPrhc9IiswaaE1NtNH7LWs
-         GFGCQwlqkMZzLTuF83AHHgs2mjxmuD/Bs7He2HKahba/we3LSd0ZRyCySMKnyKLepC6M
-         D8mAeXP9ktvRS/fM2xAC0j2UqHUE1WAbNbS9xP4c8d2x7/5TDKpbsRPl3UNl9c2vJZ2z
-         ZkvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgLYAchtkiIRkFz4fm6id/L6pN0vSSzXEt7hqKvplb7j+w+AvdqZ4ONf26pXP60ndD0ha4IvKQrlX3aOjQLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyphTHeKg9eA2qIqavcviE4ZqV/ZXFZgph13oB48GlWWIkcXHWU
-	zLsdjg9Y5MpF2lr5UiHwkLAbUwZ2VmM1Jci+FaB0c07LJhZtFnDS6x+jG3HS9T3O0wA2MtlhNYx
-	hkfdvD5E4drr0r/SYLQ/g5j/1G1kF+8K+kj0y
-X-Google-Smtp-Source: AGHT+IGr43daPZ49/lS60D7/4sgtSi5WXLqig+kBuBxaN2sMmsSkjjoy3oJWvbRMgwV3mVJzY8wJBYqH4iO+1rac7CY=
-X-Received: by 2002:a05:6512:3d05:b0:533:49ab:780e with SMTP id
- 2adb3069b0e04-539e5f0a2a4mr148247e87.2.1728685385873; Fri, 11 Oct 2024
- 15:23:05 -0700 (PDT)
+        bh=8+gUxSDkWsGEMXOFebQ5Xw/lGRc6XJ08PqAablVeqL4=;
+        b=RJCCFPyVRnX2QhJqk9GdDMiwGYuaAVohYvY29tMrhIxsUwnpXGAN3/PvOSTgWPisJJ
+         gLFjbpkGHbpSik/S0E90HC84N5UMMzP4XTn31ZEpKbyW1QIwn1l2yII13AnTLuTOPsXZ
+         d8yCYyd5q3/kyCL9Diu3wrvWw0WwwsJ8C6CWsShmacWPPXKyoZ942N/ZcZMU8ds8laEY
+         1QZUsaHlf/X7IiyPtW7g5fatSApMxMFUlNJcqGWcYqEd26TZRXTyJL2c8ESNz6pDuBAr
+         dirzbbRdQuUDmRHxFSsCfG90nORQCo2DoDlYT9pgXpWk3qMAlWnT0pQKaSYjKdxlRcOs
+         mEFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVG2cJpvZPAeZINT7E+IUr3WKnsMgtuELzNgdrzpj6zCo+KOrfU7bzfsnK9W9M9rHt+LG0mYVqTXWzDdLxhg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzRucOydEFPoyJ/kJscIJqz05ivY/Enp5Du98qgaMuKaoqaQfU
+	StsdtgbqHC8q2G8ellopQaIspNVS2W4/gYQx3RD1LatWn/dlIm1IwBqJgJe+8axGlVABcmgCg4a
+	Ee2ChTLBx6VgGxEcyaRqehPrSkNOtFVhRBp6Z
+X-Google-Smtp-Source: AGHT+IGXZUm50H+t70ubPlGJraz2/HksPndIYC+fI6Hrd+oxzT344/Iv2iwsY7fhvWCT2jXrm4nAx6oX34CJ6qkR/Wc=
+X-Received: by 2002:a05:6512:3d05:b0:535:68b2:9589 with SMTP id
+ 2adb3069b0e04-539e5f0b82cmr146927e87.2.1728685661778; Fri, 11 Oct 2024
+ 15:27:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925233854.90072-1-mmaurer@google.com> <20240925233854.90072-14-mmaurer@google.com>
- <Zwmi-MEVE_E4nkzl@bombadil.infradead.org>
-In-Reply-To: <Zwmi-MEVE_E4nkzl@bombadil.infradead.org>
+References: <20240925233854.90072-1-mmaurer@google.com> <20240925233854.90072-15-mmaurer@google.com>
+ <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
+In-Reply-To: <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Fri, 11 Oct 2024 15:22:54 -0700
-Message-ID: <CAGSQo03H=O5id=bdRorHmRLNzGM9njcRradQUvjpngk3sXfViw@mail.gmail.com>
-Subject: Re: [PATCH v5 13/16] export_report: Rehabilitate script
+Date: Fri, 11 Oct 2024 15:27:30 -0700
+Message-ID: <CAGSQo01o4fWYwSzZHX5dyTUKcaCSZ7z-hPQ8w63tgBPGbM_UCA@mail.gmail.com>
+Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
 To: Luis Chamberlain <mcgrof@kernel.org>
 Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
-	gary@garyguo.net, Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, 
+	gary@garyguo.net, Michael Ellerman <mpe@ellerman.id.au>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Benjamin Gray <bgray@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
 	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
-	linux-modules@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
+	linux-modules@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 11, 2024 at 3:13=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org=
+On Fri, Oct 11, 2024 at 3:22=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org=
 > wrote:
 >
-> On Wed, Sep 25, 2024 at 11:38:28PM +0000, Matthew Maurer wrote:
-> > * modules.order has .o files when in a build dir, support this
+> On Wed, Sep 25, 2024 at 11:38:29PM +0000, Matthew Maurer wrote:
+> > Adds a new format for MODVERSIONS which stores each field in a separate
+> > ELF section. This initially adds support for variable length names, but
+> > could later be used to add additional fields to MODVERSIONS in a
+> > backwards compatible way if needed. Any new fields will be ignored by
+> > old user tooling, unlike the current format where user tooling cannot
+> > tolerate adjustments to the format (for example making the name field
+> > longer).
+> >
+> > Since PPC munges its version records to strip leading dots, we reproduc=
+e
+> > the munging for the new format. Other architectures do not appear to
+> > have architecture-specific usage of this information.
+> >
+> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
 >
-> The commit log is not clear, is it that it's always had *.o files, and
-> you're adding them now, why? Why is the .ko search now removed?
+> I'm all for the ELF validation work so far, all that was nice, thanks
+> for all that tidying up. This however is not considering when we really
+> need all this at all, and not making it specific to the build times when
+> such things are needed. That is, yes I'd like to see the need for this
+> clearly explicitly defined through Kconfig, a *select FOO_FEATURE* for
+> when this is needed. No need to extend a module with bloat if we don't
+> need it, likewise if a kernel was built without needing those things,
+> why bloat the modules with the extra information?
 
-The script was broken when I found it, but it was a script that
-analyzed MODVERSIONS, so I tried to ensure it would still work with my
-changes. This necessitated rehabilitating it first. I did not touch
-`.modules.order` files, but they contained `.o` and so this script
-wouldn't run correctly.
+To make sure I understand what you're asking for, are you suggesting:
+1. A config flag for supporting parsing the extended format
+2. A config flag for supporting parsing the existing format
+3. A config flag for putting the extended format into produced modules
+4. A config flag for putting the existing format into produced modules
+or some combination of the above?
 
->
-> > * .mod.c source layout has changed,
->
-> When, why did this change not happen at that time?
-
-It was changed for readability [1] back in 2019. I assume the change
-did not happen at that time because this script is rarely run. If we'd
-prefer to discard this patch and ignore the script instead (or remove
-it?), that's fine.
-
-[1]: https://lore.kernel.org/all/20190909113423.2289-2-yamada.masahiro@soci=
-onext.com/
-
->
-> > update regexes to match
->
-> Why did this not break anything before ? Is this fixing something, or
-> is it prep work?
->
-> > * Add a stage 3, to be more robust against additional .mod.c content
->
-> Future .mod.c changes?
-
-The rest of this series adds additional `.mod.c` content to support
-the string names. This stage 3 is intended to prevent that from
-causing the script to choke.
+I'm currently reading this as #3, but figured I'd ask to be certain.
 
 >
 >   Luis
