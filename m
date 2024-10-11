@@ -1,57 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB9A17996;
-	Fri, 11 Oct 2024 02:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F90F635;
+	Fri, 11 Oct 2024 06:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728612243; cv=none; b=e7LYUL0z/dPQn5NCNxYXnuGqLvuQcB0XLmrWMB5Y2xT7yemKiCpEhYiHQcCzhD+5BLkYL2ogL7S1cu8Tm3N6lLhgfwTqJTCwKLVQeftbPAUFwmoR5jlhbqU5I0yUN75Qq1MPMivw7vX+uhqzwHIGP3G0XbFu1yXaoUFuytVR7jg=
+	t=1728629952; cv=none; b=MdsAc0zetmdNn/Q7y9qPb1NaVohGevMz/Zo44+vmmmWFLrue2Lf+IyylkWCW47IPzTgH10zkhVg3A1eXIW/9zqjJYiEwZ+LhRAU7UUweZOcxPcxJ5X9/5nmrn2eXTT0OczOJL824gFaJq9ISnSg7Cbi2aF6KR+VgdLt2u/84+Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728612243; c=relaxed/simple;
-	bh=rc7c6U7V+zKbL4Na9AR8IkBF02SXaIKLBlAX9ny1e1Y=;
+	s=arc-20240116; t=1728629952; c=relaxed/simple;
+	bh=AnM7XamNLc2M6oVcml7mvgQSLuc6IQzUUi2epLGB8ng=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DDia1o+R/HB+gyUrTvW342CkAXiBTR+0pWcOzrboeY1LYrxqtmFqLM8oMIYG3m0GQV0vz+UYkFntdJD8CFBJZadrluDzMgKzuN5vL9C7lNfpOMHX5Yg2xp9ZHZjHEUB/8hfR/Wg9VQTdSCTS95+kEhYalHys4bDOeUh0l9wBxI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVD0G3gI; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=P7WpuQXVzjWDXeDchODyreBqHpIixL5/IF6+FxM6i2AkI1lOK3gxiZVMJWJfI9d7DrsPP7WcKpMvTwz/pE3lTSOM3H4LJ6h9XThH8KNEAk/OMzor0WRcgqs7mGXhFKQOpLzdFBeNXWAOoqMlAeBhZ8jc/A6eKe1TNaQhKurY+Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JHjPgaD8; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVD0G3gI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC02C4CECD;
-	Fri, 11 Oct 2024 02:04:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728612242;
-	bh=rc7c6U7V+zKbL4Na9AR8IkBF02SXaIKLBlAX9ny1e1Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uVD0G3gIiD6YJxFZfEBrloWB3WS2Od2GzHKENU21HmWaPl1ZmFhEeIjboUmX+tON6
-	 teRK2fQv3hoJsY17cjBMs9igZeMeWvvcasqizHGWB7XxxnI+kpcuSzoY6FaR59STlQ
-	 BgiKrtaYf919RgANF3zbiqxmR0ZEU2WVX/8iEA0J8p9hiiOj4/V7yLAPte/PPR//LE
-	 gEPq0ttVcXX6Kbd/MNE8k3IbGLnKHg9xFVQKRNvLnPk2Dp2G0bRVk56jsHZkz/PXGO
-	 sCoVmJRYmooFfPdWQVu8+R5MNCdnvTMuT38Uow58fgLAWiqzPRW/N438aQcs+E+s4S
-	 Kkfwo0zbAwwxQ==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fb2c68ea2cso6129121fa.2;
-        Thu, 10 Oct 2024 19:04:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUGZQep411pDii7NU0ParbqRvkaVMu82UJs2DRpiUhn7s5M661ZM8ov/9Rn4umldkcIipj2pyAzcHuG6kDN@vger.kernel.org, AJvYcCW/9fHBYlS+HD/Koi6C83lqwkArp0ACsNmm/v97NeAIae5VhNZvFZK3ymXwFCuluxTTH3QlqHiZzZX+6DyCZ8k=@vger.kernel.org, AJvYcCXZBBFPNBQWFkitrWqmOdkWQjS77S4WhlfiKhmgRiHxqyNPZwWiUUi6hqowv4do0AwxSxmnfX3JObwRzvA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDtX3vE9i32CrCacnDvLknsxkQPc5we7eLNwv2TXTsebl58yBU
-	rkZxOgct4ItaPcn2CkOCQgvVxiaxfwJ0OPWweu+AstzskYKpgsi8auEnl2iEpOhpw0B2nBGDWRZ
-	C+lb63Bm8PSCu5Vc0EQLocnR/wrI=
-X-Google-Smtp-Source: AGHT+IFSWVXmtFDfsV71FZjubAv2ssNQTvktk2A9cPcXvkGTOGP5RscegNrsCuvPZmJrSlVe3670sSObcbXz/X43boo=
-X-Received: by 2002:a05:6512:220a:b0:533:4477:28a2 with SMTP id
- 2adb3069b0e04-539da3c4bb0mr433254e87.16.1728612241253; Thu, 10 Oct 2024
- 19:04:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JHjPgaD8"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71927b62fa1so158689b3a.2;
+        Thu, 10 Oct 2024 23:59:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728629950; x=1729234750; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aNprZDujeJLDJHdRYQpNiQJhs787CFLT9EgNyD54pMo=;
+        b=JHjPgaD8+pk1ralETKao5Cp2uRBWiwOTuBcC7TgZQ8jdL8W4BoU25Cvicqo/U/OW6p
+         oYJuvMPl8JitT2GxOyeJNVTqH6iFz7ojFeupnqVPhMRZys8/3YCzNDmhvEpQsbukwZh5
+         4aE4AEdu7ApTzkJeRofOmJYfpNkVAN12Z33gaE/KBf+8iFjEzfbMAdw9WFQZAGyJ2JY4
+         zwPeaj0fxF4/sQaBFrp70ieKz7NT6rdMSJrjvTvv8N5QZMD7PGCtsabz8jgiJIpZ96al
+         IxtSnvPT0mv0ynb/SE7bapUrkdCdi8y+B9SpSLP8f3rJmzYd1iEqAsgBd123Jad6XlDy
+         6k6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728629950; x=1729234750;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aNprZDujeJLDJHdRYQpNiQJhs787CFLT9EgNyD54pMo=;
+        b=QOXcQ75Bs4Hs5FZN6Va8D8Oc+y2kjt27IP/KMUp8HmyyQe5ykERCJoSnLLXiwzcc/H
+         3/VGXGCjLBx+TjY9rttfAAwSLDZaysJdRrXk8Nc0Jvqx9dzhB6/P50xnDG8yEf/1iGJu
+         r0x+LtQhuyarMorzQYZkvnen8e3FCC73+ykUDoQwYC2vMoUn4jOXU+i4id3V4IsWteAJ
+         SJapz9ZvnbRYx76dBImxzsAjaGnZmMhaIZIKMS0paSMkXJM38JsIQKxHj2bfnhkm0n+e
+         QCCmaxktNS4iKmtjPUy1wZnW97Ki0Pl+gNCkcukfd7hXDklUADkQfIfLyHTMzqulL8vN
+         LbkA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPuVhT2la75JJRXSpmzdHkyfhOql5WwZGuPYUccy9kZv/dgXFZu5mfJ/86uX3usJHShoimI+eH7uAPAhs=@vger.kernel.org, AJvYcCV1wbZS+rErf+raiV+z2uRqFeBHmd2SjGnKBD2xAhCjh51dtgNryluWkiu9Olkp+WsQ8HaK8wfQ1xFf+BJt6T0=@vger.kernel.org, AJvYcCWtTbi5yZA71A8JnBLlLmnRPs/bvu/RhxpRD9bm6kCco5+5HdLtpQNvpxrC2/uLkn3fLo4U0eWFFoTg6Ume@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGBKO847L24JsBPStBEQWmCakuM2rwZZQGU7Wo9X/EWo5xcpEU
+	mDmQGu7E3pO5IURvpQMuAmn7boVqpLlnv5SNoYq0eFsP8WFmrdDDe8pZQBTDRaDwvVASzxlv5X9
+	kZiZABnEF1DWPDBNlwrz2EAydFFY=
+X-Google-Smtp-Source: AGHT+IHfgp+RekBe+a33lrGFkLogwB1v4IcRvG8U0x5B9hHpF2h7NSFqzr4UUZhb7LVoGtsHegM+6k0gaj2E+Gka+m4=
+X-Received: by 2002:a05:6a21:32a0:b0:1d8:a203:95a4 with SMTP id
+ adf61e73a8af0-1d8bcf12481mr1225502637.5.1728629950384; Thu, 10 Oct 2024
+ 23:59:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241010-icall-detect-vers-v1-0-8f114956aa88@google.com> <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com>
-In-Reply-To: <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 11 Oct 2024 11:03:24 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARBXt=CWy5CgtHqdePw5L6EtD15emS2Fvre4QWfm_LjUg@mail.gmail.com>
-Message-ID: <CAK7LNARBXt=CWy5CgtHqdePw5L6EtD15emS2Fvre4QWfm_LjUg@mail.gmail.com>
+References: <20241010-icall-detect-vers-v1-0-8f114956aa88@google.com>
+ <20241010-icall-detect-vers-v1-1-8f114956aa88@google.com> <CAK7LNARBXt=CWy5CgtHqdePw5L6EtD15emS2Fvre4QWfm_LjUg@mail.gmail.com>
+In-Reply-To: <CAK7LNARBXt=CWy5CgtHqdePw5L6EtD15emS2Fvre4QWfm_LjUg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 11 Oct 2024 08:58:57 +0200
+Message-ID: <CANiq72km-hEBvt-T9CEp6kLJMvemcW99g1hd-E62Xi3H+NX2RA@mail.gmail.com>
 Subject: Re: [PATCH 1/2] kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -61,161 +76,51 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 10, 2024 at 6:38=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Fri, Oct 11, 2024 at 4:04=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
 >
-> From: Gary Guo <gary@garyguo.net>
+> Please notice there is no reason to process
+> rustc_version and rustc_llvm_version in the same script
+> because they are completely independent.
+> It even invokes "rustc --version" twice.
 >
-> Each version of Rust supports a range of LLVM versions. There are cases w=
-here
-> we want to gate a config on the LLVM version instead of the Rust version.
-> Normalized cfi integer tags are one example [1].
+> If you implement it this way, you do not need to
+> touch scripts/rustc-version.sh at all.
 >
-> For consistency with cc-version and ld-version, the new version number is=
- added
-> to the existing rustc-version script, rather than being added to a new sc=
-ript.
->
-> The invocation of rustc-version is being moved from init/Kconfig to
-> scripts/Kconfig.include to avoid invoking rustc-version.sh twice and for
-> consistency with cc-version.
->
-> Link: https://lore.kernel.org/all/20240925-cfi-norm-kasan-fix-v1-1-032898=
-5cdf33@google.com/ [1]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  init/Kconfig             |  6 +++++-
->  scripts/Kconfig.include  |  4 ++++
->  scripts/rustc-version.sh | 31 +++++++++++++++++++++++++------
->  3 files changed, 34 insertions(+), 7 deletions(-)
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index 530a382ee0fe..98cf859d58c2 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -62,7 +62,7 @@ config LLD_VERSION
->
->  config RUSTC_VERSION
->         int
-> -       default $(shell,$(srctree)/scripts/rustc-version.sh $(RUSTC))
-> +       default $(rustc-version)
->         help
->           It does not depend on `RUST` since that one may need to use the=
- version
->           in a `depends on`.
-> @@ -78,6 +78,10 @@ config RUST_IS_AVAILABLE
->           In particular, the Makefile target 'rustavailable' is useful to=
- check
->           why the Rust toolchain is not being detected.
->
-> +config RUSTC_LLVM_VERSION
-> +       int
-> +       default $(rustc-llvm-version)
-> +
->  config CC_CAN_LINK
->         bool
->         default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG=
-_FLAGS) $(USERCFLAGS) $(USERLDFLAGS) $(m64-flag)) if 64BIT
-> diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
-> index 785a491e5996..788097a55731 100644
-> --- a/scripts/Kconfig.include
-> +++ b/scripts/Kconfig.include
-> @@ -65,6 +65,10 @@ cc-option-bit =3D $(if-success,$(CC) -Werror $(1) -E -=
-x c /dev/null -o /dev/null,$
->  m32-flag :=3D $(cc-option-bit,-m32)
->  m64-flag :=3D $(cc-option-bit,-m64)
->
-> +rustc-info :=3D $(shell,$(srctree)/scripts/rustc-version.sh $(RUSTC))
-> +rustc-version :=3D $(shell,set -- $(rustc-info) && echo $1)
-> +rustc-llvm-version :=3D $(shell,set -- $(rustc-info) && echo $2)
-> +
->  # $(rustc-option,<flag>)
->  # Return y if the Rust compiler supports <flag>, n otherwise
->  # Calls to this should be guarded so that they are not evaluated if
-> diff --git a/scripts/rustc-version.sh b/scripts/rustc-version.sh
-> index 4e22593e2eab..24e19ed8f234 100755
-> --- a/scripts/rustc-version.sh
-> +++ b/scripts/rustc-version.sh
-> @@ -3,14 +3,23 @@
->  #
->  # Usage: $ ./rustc-version.sh rustc
->  #
-> -# Print the Rust compiler version in a 6 or 7-digit form.
-> +# Print the Rust compiler version and the LLVM version it uses in a 6 or
-> +# 7-digit form.
-> +
-> +# Convert the version string x.y.z to a canonical up-to-6-digits form.
-> +get_llvm_canonical_version()
-> +{
-> +       IFS=3D.
-> +       set -- $1
-> +       echo $((10000 * $1 + 100 * $2 + $3))
-> +}
->
->  # Convert the version string x.y.z to a canonical up-to-7-digits form.
->  #
-> -# Note that this function uses one more digit (compared to other
-> -# instances in other version scripts) to give a bit more space to
-> +# Note that this function uses one more digit (compared to other instanc=
-es in
-> +# other version scripts and the instance above) to give a bit more space=
- to
->  # `rustc` since it will reach 1.100.0 in late 2026.
-> -get_canonical_version()
-> +get_rustc_canonical_version()
->  {
->         IFS=3D.
->         set -- $1
-> @@ -19,8 +28,18 @@ get_canonical_version()
->
->  if output=3D$("$@" --version 2>/dev/null); then
->         set -- $output
-> -       get_canonical_version $2
-> +       rustc_version=3D$(get_rustc_canonical_version $2)
->  else
-> -       echo 0
-> +       echo 0 0
->         exit 1
->  fi
-> +
-> +if output=3D$("$@" --version --verbose 2>/dev/null | grep LLVM); then
-> +       set -- $output
-> +       rustc_llvm_version=3D$(get_llvm_canonical_version $3)
-> +else
-> +       echo 0 0
-> +       exit 1
-> +fi
-> +
-> +echo $rustc_version $rustc_llvm_version
->
-> --
-> 2.47.0.rc0.187.ge670bccf7e-goog
->
->
+> If both rustc_version and rustc_llvm_version were
+> retrieved from the single invocation of "rustc --version",
+> I would agree "OK, it makes sense to implement it in the
+> same script". But, it isn't.
 
+Yeah, I think we can do that: one is `--verbose`, the other isn't, but
+the verbose one should (hopefully) always contain the non-verbose as
+the first line. Since it is in the first line, we can directly do the
+`set` without having to "extract" that line -- something like [1]
+below?
 
+Independent scripts would be simpler, so that sounds good too.
 
-Please notice there is no reason to process
-rustc_version and rustc_llvm_version in the same script
-because they are completely independent.
-It even invokes "rustc --version" twice.
+By the way, this is a prerequisite for an actual fix we need, so I
+would like to send it as part of a `rust-fixes` PR -- your Ack would
+be great!
 
-If you implement it this way, you do not need to
-touch scripts/rustc-version.sh at all.
+Cheers,
+Miguel
 
+[1]
 
+if ! output=3D$("$@" --version --verbose 2>/dev/null); then
+    echo 0 0
+    exit 1
+fi
 
-If both rustc_version and rustc_llvm_version were
-retrieved from the single invocation of "rustc --version",
-I would agree "OK, it makes sense to implement it in the
-same script". But, it isn't.
+set -- $output
+rustc_version=3D$(get_rustc_canonical_version $2)
 
+if ! output=3D$(echo "$output" | grep ^LLVM); then
+    echo $rustc_version 0
+    exit 1
+fi
 
-
-
-
---
-Best Regards
-
-
-Masahiro Yamada
+set -- $output
+echo $rustc_version $(get_llvm_canonical_version $3)
