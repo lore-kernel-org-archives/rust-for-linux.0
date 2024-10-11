@@ -1,55 +1,55 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A001D0DCB;
-	Fri, 11 Oct 2024 19:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1178A10A1F
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 21:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728676128; cv=none; b=NFFiR0NG1DfTYaunyrlNoau9ErWV0P4x2KGzHj2r9D+6g+tsu+oirgoVhYb3jNInSKPvrc13DwmDLEuHJ0kELso9WNVZ6yK3v4MBqrkY2Fg2HNaoN8YHy6jOUBChYyYrF8A9ic3tws95hB7m4TyTSp18KfVzclDrw8gQDDhhyog=
+	t=1728681990; cv=none; b=hjAe8sL2S7o/s3zRFJwMqFCm1vWA1qoqJyQYIFDNazxSUVtGwBbzREExwhuDjTXmXhqUSX/VyZXfeh0WILap9Ovd5wjtTfO/rMSDHHca2yqS5rC6gso3RchvIeOkHaBHbhLqrV2GMLh5I0xJxNdYn7eHUIlF0xlAQ+NxIKy1psU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728676128; c=relaxed/simple;
-	bh=eHR1pJM+yQAJRr+EhCLcm5xM2IPL3wNgQ41k9P8Ch74=;
+	s=arc-20240116; t=1728681990; c=relaxed/simple;
+	bh=Ka+AjjRuR/G5QQKRrwr0FE8Ey+JDrFkkvTACYvoWcLM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lIEblLOYoNyBrx2TBFhlVY8DmDGhN4nSsmWDVGK/nxd+QDPrNMnP2BvebZ7Oe0kYOrtnkt1pxOk+GpeJaJlfJx44Myl4g3e176XFkamLcoXhe5jwC/7sD9eBrbY2aMjo/fKLSiYv+ZhyUjvdCSI57WYUc/5zFcAuVKW8KRsBqL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuJ4qsYT; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=BRcJTtjvw31HGwnoIk0KLEYohTPl6J/tS34W2odC2UR9X5IJ56SBFWya3FqX5LCB4B2W26iMlUk0pq9cj9+qxKAe1bQaDhOux9qT08KzCRel23HtssBYljOvmoeWs14UoGRZvUmSU5AJEpF/Uhtwk80KVnOUR1EU/4dFksm7dUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U0ZN+L8u; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuJ4qsYT"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71e02ceccd0so294914b3a.0;
-        Fri, 11 Oct 2024 12:48:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U0ZN+L8u"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-460395fb1acso71391cf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 14:26:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728676126; x=1729280926; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728681988; x=1729286788; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eHR1pJM+yQAJRr+EhCLcm5xM2IPL3wNgQ41k9P8Ch74=;
-        b=EuJ4qsYTMtpL7ptb2A5o8sbXNkWJIkDxx2H6yfQVT6/Ykx2AcFtb6OhQ5TF3R/hYml
-         sAx3bwas+OINEWD8nUU2MQ/wpPLhaMGAp8uVyOaNZwglxP0/wkv8MoVLnMCuW0M87GkK
-         OVg6Y3RpNWVlbm7nlaxReer0AT3SYE1kaTkn05cDOJ/Q19yX0lXCX/1M6jfjjR/yDEu2
-         9+O0Mu4wyhg0dxM0pHzvZ7EpuC+SevDBXfsLcRn1dh1IDiz9ST8IvqqLPMoDU9Bxekt7
-         TyL8LEBP9HHjJpsDfE9VPD8Fd96D68TKzv9rS1jCrSu8acYUlzR3iQfQnNaGoPr5aN7W
-         Aw1Q==
+        bh=Ka+AjjRuR/G5QQKRrwr0FE8Ey+JDrFkkvTACYvoWcLM=;
+        b=U0ZN+L8uihImO99bgGJbn6H8ka1Xgw5xwf6XJMARnqwI73Wdn0fvNXQPqzNTPakdbY
+         Rug+GWKtl+e00Xd5ELfRFvMEe+RR9CAKng/cvtr+IXqp7gqHfI0UCswCfej9Rykd9SK0
+         UqNXJ0qQdOLxuAXoB2owh3RcdawxR2D1dJrepWqKdrHwctO/Zy7RnMHyIIdZHrZHV7+n
+         92HwxlivEHuM4LCAyv3lk8JnTX69ULmtrL3sZrrB3vbBDKLDJnfB07RjFlllY//9lu11
+         011pnrmu00wm0EV0Tao2bpXNMTuoiQDqDBmpqXTn4nyijBRzj8pjh9Hoo2TRREqOJ8zz
+         2vOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728676126; x=1729280926;
+        d=1e100.net; s=20230601; t=1728681988; x=1729286788;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eHR1pJM+yQAJRr+EhCLcm5xM2IPL3wNgQ41k9P8Ch74=;
-        b=lM+vVSSRy7mC1moOtGQ7VHkM4UbQcD2IJ+KDAbdld71/IujD4nCLtIWLnTiBsoABGA
-         3vQJibx9EzXovkuSfG7xZucZxgU/etko5VqtKOKtKj3cFUmi7drwDWCcR8AjjbFPjg3S
-         gUHMV/hSHWcxL0XHJRLZt/OuckDQh98AHcRahKK/gR8YtLioXErt+zZlABO2HtWz1z6+
-         gKGHlmd0L9+BXgvAEM/xy/qpNJUSmHrljAsdhZ5TJVUp8M10IBkfKMp5I0VOewNoYXAO
-         J7LpCw6Y/HfRhdO4NF08eN571B17dMaKvHdCYakwYXeKAQPjuiz/xDpb4oUOk472gDtu
-         sM0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUS+zmL2T89XJtn/vYfltBiBqjBpZAhKNdggR9xrVE+Iy/Evy3ufRHLwn2E2mC9kZmzdmyBNXsr6L+W@vger.kernel.org, AJvYcCUX/GnPxllPO4CM05HNScN/Uwu2GbThIkLzX93qTpSBBVFlNze+cgGX0TIhYIoG5CaJhrFkocW5sNUhrdZq@vger.kernel.org, AJvYcCUfLgzYWJfPv4whYsWvFZUEqmR4dSyN7YWRW5CwahwPZi0YXyUWzBNmd+r2o2HDfM4NMtQYTr7K1Fef687yPG8=@vger.kernel.org, AJvYcCWTaY0T3jva5TyHxTHZ/PXFr38HkQuFwu0SJ9nCqYIy3vE7AO/1X7nL10mX9v0iG+FssbwFlTPUZyfV9qNuPFkB226r@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzj8iYKBrI/QNcbZAWb8HFXk21SHqSqQrBYrTEJ4JMJgn/zxvk
-	0jGg5/y011+fU5baK12PpSAeBQGdHly6MhW0KEG/O5AuDsQyyjgQ/UJ05bzHsrpWfBqcUej0oQt
-	cBQpOW1YDQB3dt0c2vZo5xetmfNU=
-X-Google-Smtp-Source: AGHT+IFm+UwkG6WIg1AqvuqnbDwrR2uK/LvnAOy5vxbnvuoTMa/HQ5sfAKze/sYR1OTnuhhXIrv49b/1Hp/O75r3s04=
-X-Received: by 2002:a05:6a00:9494:b0:71e:3ee6:f8a8 with SMTP id
- d2e1a72fcca58-71e3ee6f918mr1949743b3a.1.1728676125868; Fri, 11 Oct 2024
- 12:48:45 -0700 (PDT)
+        bh=Ka+AjjRuR/G5QQKRrwr0FE8Ey+JDrFkkvTACYvoWcLM=;
+        b=jaxgzmEYPQ3l4le44P6OnaEOuvFwGTHviffcNQk/HZfg1eOaFGr0quRlulPdK/xDyJ
+         XF5f20xed7djDEGJV3GZJaw+peGSEo0uq2xO6hlZKSTes/8VJq4Cbugc7tWDOLX6js5c
+         IIhhw0lkzzTsnZKXneNZwwSWDjp8DS1NYbP/7K04pMtnBA4pt8zBDz5L4oBV074kAquO
+         dGm2RrFvkyunY0PzZD2cEbcxdTLSTJKBHzNZZJcgj8lCZ5f3Yz0lF04SmBTwfPyXgHZA
+         qLcYpkSLpjHfA+SL+9m2TG2YS5lmWJrzP0DjY1yTRx18Y/JYd0x1gUriQETxQSfwiwvA
+         GQfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGFExpYpxzDBEymYBLhaz9bw0ALSfhS0sOvwMuJFWFNWqdViLT6jJF5L4Q2sB/XGwjO6e8sFvDWbC8qYVeDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyItw0hT+Zg75QAdZ53JEPgflpx4lGLiTct6sMpq33bFenv/aJN
+	bDC6I+cc6TA2ahiy4/IWYRL4MsPw3j5DND1KkAJk1EgZjkhZb/hjfy+3WSbS8/FVvIaMiTsxXWd
+	5nv5Rm5D+YbomPAjOSnNHNbRJHhzgQSq3i7p8
+X-Google-Smtp-Source: AGHT+IEKEmVjWoOqBswBr3NiTYKK5Z9SghdMPP5nc66QbnU8P8zaScBXP/19wKkNBoIcY46P8FQCMYQuouKvAahW2eQ=
+X-Received: by 2002:a05:622a:a60d:b0:460:48fc:3cd8 with SMTP id
+ d75a77b69052e-46059bf45e5mr189701cf.5.1728681987767; Fri, 11 Oct 2024
+ 14:26:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,12 +60,13 @@ References: <20241011-tracepoint-v10-0-7fbde4d6b525@google.com>
  <20241011-tracepoint-v10-1-7fbde4d6b525@google.com> <20241011131316.5d6e5d10@eugeo>
  <CABCJKuesYQWvfScFaqv_rW5ZqAJNn4zK9iOFAmyTaYKO3S5hgw@mail.gmail.com>
  <20241011171251.0bd53f01@eugeo> <CABCJKue7qT9drhgrXPEjBO=gPw79vYELAZxz747Z8WMF=vj2MQ@mail.gmail.com>
-In-Reply-To: <CABCJKue7qT9drhgrXPEjBO=gPw79vYELAZxz747Z8WMF=vj2MQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 11 Oct 2024 21:48:32 +0200
-Message-ID: <CANiq72nOCkzTyJCydHOrkz3MRizb27sDO_5Y_cKEv3oZDNNqqQ@mail.gmail.com>
+ <CANiq72nOCkzTyJCydHOrkz3MRizb27sDO_5Y_cKEv3oZDNNqqQ@mail.gmail.com>
+In-Reply-To: <CANiq72nOCkzTyJCydHOrkz3MRizb27sDO_5Y_cKEv3oZDNNqqQ@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Fri, 11 Oct 2024 14:25:49 -0700
+Message-ID: <CABCJKuduZJ4aogg4A6idcMAPMa2N0d4f9aJgbR8HL0YEyTONmA@mail.gmail.com>
 Subject: Re: [PATCH v10 1/5] rust: add static_branch_unlikely for static_key_false
-To: Sami Tolvanen <samitolvanen@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
 	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -94,15 +95,25 @@ Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 11, 2024 at 7:52=E2=80=AFPM Sami Tolvanen <samitolvanen@google.=
-com> wrote:
+On Fri, Oct 11, 2024 at 12:48=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> It's just one line per helper, but sure, I do see your point.
+> On Fri, Oct 11, 2024 at 7:52=E2=80=AFPM Sami Tolvanen <samitolvanen@googl=
+e.com> wrote:
+> >
+> > It's just one line per helper, but sure, I do see your point.
+>
+> I guess we will have a lot of helpers added over time, so even if it
+> is one line, it may end up being a lot of lines in total. The rules
+> should stay constant, which would be better. Having said that, it is
+> true the extra complexity of the rules isn't great either.
 
-I guess we will have a lot of helpers added over time, so even if it
-is one line, it may end up being a lot of lines in total. The rules
-should stay constant, which would be better. Having said that, it is
-true the extra complexity of the rules isn't great either.
+My only concern is that custom C build rules must be kept in sync with
+Makefile.build changes, while EXPORT_SYMBOL lines should be basically
+maintenance-free. However, perhaps this isn't really an issue since
+most of the complexity is already contained in rule_cc_o_c that we can
+conveniently reuse. Anyway, I think this is something we can worry
+about later if we actually run into problems. I was mostly interested
+in the reasoning behind these changes.
 
-Cheers,
-Miguel
+Sami
