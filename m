@@ -1,122 +1,268 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589A54C83
-	for <rust-for-linux@vger.kernel.org>; Sat, 12 Oct 2024 06:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AA184A5B;
+	Sat, 12 Oct 2024 07:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728714643; cv=none; b=nvSbpXIbcnfNW0ap4CeEx+gHcVct1WhdpnPPssO3/fOdo+WNMFI7OQQUMK9ymNJXdLqfh0ADJOqbrJ/hO1+10AFQ4FPbBu83E8BzBNC6DU11XOFTS1A6WB2JUMitVsZARERYjOwWrBOqu6vzdJx1uvMX43g2Z9PBthA7TcYD9cA=
+	t=1728716492; cv=none; b=I77ArMsjDVC0gFPTBqo3hBqHAt7imDv7J0OnjUEDzk60ThSQVINMr/zgZK402GpZyIpdcpGHnnHbXKpOtxt8EyFAGG0a4Fc/4zjgvYg7veOUqtSDQ7aswHifKaEx7+6+rhuXiSJ6KvmgB3Tfl7NnzwTGjn87qhiIGod5YEOd0jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728714643; c=relaxed/simple;
-	bh=wkro2RQIo52AY29OFgewTgtqda3hvn/Q+j3WPpGTZDE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=QVfS/Xh7lgSny+rS5GNPPV4NQXeyemrmy4pq2HY/KMOF8GwuB1f65mKBQRiSGG1J4c1vbk5zmDXh02BGdsgh8j62AuevpzLHMKKfQWFpwJiKU3fBONFRmz0Ye9Zzoz2MD2jz87mLXE0jokEnJUUsV+fVjzqorR8W3VYvnqid/sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lieu+ZQW; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1728716492; c=relaxed/simple;
+	bh=cjo/SuvHqrEjGeaAmKU8a4/83En+ovDfojqOPquyNfQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=o6Ynb3zW6sA7wsGEPkMlsjRPATgfOka2Whp94EX/n5hVFpCTac1+u+3r7U0pO1+X1B/lKujvfXqSUAWO5rfGqTaCcIwpck+spUBzW/YA3taJBvNk4EVkmxHEsXCLfh79X5k6okIc4NqWGJ7t1sFblbW4E7cbkSEk3bekxmQeM/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GGCmGGR8; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lieu+ZQW"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a93c1cc74fdso417236866b.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 23:30:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GGCmGGR8"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-71def8af0d9so307423b3a.1;
+        Sat, 12 Oct 2024 00:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728714639; x=1729319439; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WbI7q0JMaliNWF4y+x/lHtBY8InKFG77KeoELw7g81I=;
-        b=lieu+ZQWI82FkRVpYwurUNXfabFDOA9yLlPwougS/iGmf9+ieJyNAYNo7BOhqfE5s+
-         i94GaPXuxsIEe1m0ZTdB2LMfEzeqDgf8VHFdfWqK2qdWenrXL+ebOKW6Go8HPRe1X2Km
-         McyayKqtmp8hIgLOwGQlPRDwJN0p66dj46qbyJ0tBrsm8pIOzPNRhmRlYLk++ngrZieU
-         4gTIdGR+Hy8/CSYFyDunSII9OYXcJMf+CwJi8AzUFpx34NAz5BZ6TK8TEH0jp59ILUlA
-         +hpfQeeT+PwDPdoGEqR9PxujPZTqttc89btSXCO8evEwMxAgw3ri5hb3acOMIwPTUeDH
-         A2YQ==
+        d=gmail.com; s=20230601; t=1728716489; x=1729321289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jJkygPwSYc8Q99TWvuHeC8/tLQITs33tZMlrL9dwFKw=;
+        b=GGCmGGR8FM31Fn+GrwnN7A5sPlg9dspohf9ckQvZf938XcbXmsthlDViXj/3l/Th3j
+         xci/WNtkgqkMX2Ho35P9nPi2ePnqp6Hw4eKF/HL0fktwLwDcLrP+14j1+3nRYQimiQ+T
+         fG61V52L+0ZMUJ/klJl8EPmDG1IQXNcV4S6qtqMjzjNgENazQ6AsuovM3b8HM09ubKH4
+         T+gspkKU+nagKtX0I/dml1S4rpbbpEBZ6R6YeMsWbIkywn2KyVylWqgr4LC1W1C3Gdd4
+         +UsUsF9YlYk+yb4pYs8LGmTbLfAGSH0rG8nKM6X0IVBs/XI4esLjbAgRFXZUWyBqEsff
+         F54w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728714639; x=1729319439;
-        h=content-transfer-encoding:cc:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=WbI7q0JMaliNWF4y+x/lHtBY8InKFG77KeoELw7g81I=;
-        b=aRLYvgiqUQfIk/RjQkF8qL0E43sSXOoUx0t996UNZMiQAgksgPualAXJYHqhCvrPf8
-         KhTzzpvZdQVMmrD3aYSKVz/7YYMCUcPI8pYySVNtbHxtXW1ixXQV1+vjC+ezWUNwxjtn
-         YpU3eUyoZ8cyZDrzcT1TKRttRzvgj0P1SplJsySbcQrhzlGtQfYh8Vwbyi1TeM8+k+ge
-         VT+ep6+YRM6Qy3saqLK5s7NyzrlFkJB+9Tbay8DaGTTcAce38dq/hZWnqv6Pjz2KZJR/
-         HOIggX/7uH/9J8XRnAWrEcRF75WIRp83Ow4Q5zmKhScW7sNP4hlJ2ONx2Slzz2b7t3nM
-         ie1g==
-X-Gm-Message-State: AOJu0YwBhErlUgpBtt6lJKZyBoi3zkIj+/7w+FfIT9sXaOIOEAWPUGDv
-	ozi8HgKdj7V44TROrx4nWab57hkZRnMfCtJZyPG9ZnS6jyUldL1b2/akpeE4
-X-Google-Smtp-Source: AGHT+IFuf4x/DbkdOEQjk4fy2vkMqnF+PDkz6kPRQRtIZevGV9JbBb/wdnuoiobXVpCuPr6I/z2yrg==
-X-Received: by 2002:a17:907:1b1f:b0:a99:e1a1:473f with SMTP id a640c23a62f3a-a99e3ea59ddmr158528866b.57.1728714639076;
-        Fri, 11 Oct 2024 23:30:39 -0700 (PDT)
-Received: from ?IPV6:2003:df:bf0d:b400:7350:36ae:6e0c:c598? (p200300dfbf0db400735036ae6e0cc598.dip0.t-ipconnect.de. [2003:df:bf0d:b400:7350:36ae:6e0c:c598])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a80c0610sm285995066b.123.2024.10.11.23.30.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 23:30:38 -0700 (PDT)
-Message-ID: <9fb9930e-7666-4520-91d0-7e79be56b8f7@gmail.com>
-Date: Sat, 12 Oct 2024 08:30:38 +0200
+        d=1e100.net; s=20230601; t=1728716489; x=1729321289;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jJkygPwSYc8Q99TWvuHeC8/tLQITs33tZMlrL9dwFKw=;
+        b=E01NHgPSFHXEwiLKebAdV7Kd+16UMuphy93LmZpyLCTkI5LQJyJRXY60qqyPNclCBS
+         87xFN2mED2sv+OEbjkcBhNsj5N/7YAbBoCyVbzxgZuDORugLKzmsflR92zkCgHfBerSB
+         Qe0M2SYW1jt+ksQNqVw94vkbAalELcs1sbxYO6G2ugEZf8lNP+D3+8WUZ3dr8zUr6lTZ
+         D4fDyzF73y67dwLbLp7W/YqvLNfDaugLDrd3rfcM9K/Xj8rm/eEeNk/1iCwH15xIeLvK
+         TY6oEBuAE7GFStpDHBxKLWkFbLiRKmipAc6S7ucUgfAwla/+SpPz+8lSFY7MgWY2b1G0
+         oNlw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcrGf+dTCkDziQFVVw/bz5LUF6/YKVTaHCQFJuibd/DFvY9Oq2IeeXNqH46aidHDjwV4jWO/Zu429OaMw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgPTyAJHV0MoGtZjxm4tJQ6IdLy5rTrpgU9bFvEA0Dzy180I6t
+	hG/hi7ZVfbCFESJmLlj1oeqm1/g3dk4oGp9bszVmBreTXverjZEdShvagMkQ
+X-Google-Smtp-Source: AGHT+IFxo4jVlEUozmskPxgiinf0ASTmsMPgSskbhST8zZPMZoN0+FWIrPhwjiBxz2upTQ4eFCoyxQ==
+X-Received: by 2002:a05:6a00:1794:b0:71e:4bda:71ec with SMTP id d2e1a72fcca58-71e4bda72e7mr1431414b3a.4.1728716489334;
+        Sat, 12 Oct 2024 00:01:29 -0700 (PDT)
+Received: from archlinux.. ([138.94.103.170])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea4496b0a2sm3435130a12.92.2024.10.12.00.01.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2024 00:01:28 -0700 (PDT)
+From: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	~lkcamp/patches@lists.sr.ht
+Subject: [PATCH v2] rust: transmute: Add implementation for FromBytes trait
+Date: Sat, 12 Oct 2024 04:01:21 -0300
+Message-ID: <20241012070121.110481-1-christiansantoslima21@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Dirk Behme <dirk.behme@gmail.com>
-Subject: [PATCH] rust: workqueue: Enable execution of doctests
-To: rust-for-linux@vger.kernel.org
-Content-Language: de-AT-frami
-Cc: Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Having the Rust doctests enabled these workqueue tests are built but not
-executed as the final callers of the print_*() functions are missing.
-Add them.
+Add implementation and documentation for FromBytes trait.
 
-The result is
+Add new feature block in order to allow using ToBytes
+and bound to from_bytes_mut function. I'm adding this feature
+because is possible create a value with disallowed bit pattern
+and as_byte_mut could create such value by mutating the array and
+acessing the original value. So adding ToBytes this can be avoided.
 
-     # rust_doctest_kernel_workqueue_rs_0.location: 
-rust/kernel/workqueue.rs:35
-rust_doctests_kernel: The value is: 42
-     ok 94 rust_doctest_kernel_workqueue_rs_0
-     # rust_doctest_kernel_workqueue_rs_3.location: 
-rust/kernel/workqueue.rs:78
-rust_doctests_kernel: The value is: 24
-rust_doctests_kernel: The second value is: 42
-     ok 97 rust_doctest_kernel_workqueue_rs_3
-
-Without this change the "The value ..." outputs are not there meaning 
-that this
-test code is not run.
-
-Cc: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Dirk Behme <dirk.behme@gmail.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1119
+Signed-off-by: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
 ---
-  rust/kernel/workqueue.rs | 5 +++++
-  1 file changed, 5 insertions(+)
+changes in v2:
+     - Rollback the implementation for the macro in the repository and add implementation of functions in trait
+---
+ rust/kernel/lib.rs       |   2 +
+ rust/kernel/transmute.rs | 120 ++++++++++++++++++++++++++++-----------
+ 2 files changed, 88 insertions(+), 34 deletions(-)
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 10d2bc62e2cf..ba0f397f8b8b 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -69,6 +69,8 @@
-  //! fn print_later(val: Arc<MyStruct>) {
-  //!     let _ = workqueue::system().enqueue(val);
-  //! }
-+//!
-+//! # let _ = print_later(MyStruct::new(42).unwrap());
-  //! ```
-  //!
-  //! The following example shows how multiple `work_struct` fields 
-can be used:
-@@ -126,6 +128,9 @@
-  //! fn print_2_later(val: Arc<MyStruct>) {
-  //!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
-  //! }
-+//!
-+//! # let _ = print_1_later(MyStruct::new(24, 25).unwrap());
-+//! # let _ = print_2_later(MyStruct::new(41, 42).unwrap());
-  //! ```
-  //!
-  //! C header: 
-[`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index dc37aef6a008..5215f5744e12 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -18,6 +18,8 @@
+ #![feature(lint_reasons)]
+ #![feature(new_uninit)]
+ #![feature(unsize)]
++#![feature(portable_simd)]
++#![feature(trivial_bounds)]
+ 
+ // Ensure conditional compilation based on the kernel configuration works;
+ // otherwise we may silently break things like initcall handling.
+diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+index 1c7d43771a37..bce42cc7265e 100644
+--- a/rust/kernel/transmute.rs
++++ b/rust/kernel/transmute.rs
+@@ -2,6 +2,7 @@
+ 
+ //! Traits for transmuting types.
+ 
++use core::simd::ToBytes;
+ /// Types for which any bit pattern is valid.
+ ///
+ /// Not all types are valid for all values. For example, a `bool` must be either zero or one, so
+@@ -9,15 +10,58 @@
+ ///
+ /// It's okay for the type to have padding, as initializing those bytes has no effect.
+ ///
++/// # Example
++///
++/// This example is how to use the FromBytes trait
++/// ```
++/// // Initialize a slice of bytes
++/// let foo = &[1, 2, 3, 4];
++///
++/// //Use the function implemented by trait in integer type
++/// let result = u8::from_bytes(foo);
++///
++/// assert_eq!(*result, 0x4030201);
++/// ```
+ /// # Safety
+ ///
+ /// All bit-patterns must be valid for this type. This type must not have interior mutability.
+-pub unsafe trait FromBytes {}
++pub unsafe trait FromBytes {
++    ///Get an imutable slice of bytes and converts to a reference to Self
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self;
++    /// Get a mutable slice of bytes and converts to a reference to Self
++    ///
++    /// # Safety
++    ///
++    ///  Bound ToBytes in order to avoid use with disallowed bit patterns
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes;
++}
+ 
++//Get a reference of slice of bytes and converts into a reference of integer or a slice with a defined size
+ macro_rules! impl_frombytes {
+     ($($({$($generics:tt)*})? $t:ty, )*) => {
+         // SAFETY: Safety comments written in the macro invocation.
+-        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
++        $(unsafe impl$($($generics)*)? FromBytes for $t {
++            unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self
++            {
++                unsafe {
++                    let slice_ptr = slice_of_bytes.as_ptr() as *const Self;
++                    &*slice_ptr
++                }
++            }
++
++            unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++            where
++                Self: ToBytes,
++            {
++                unsafe {
++                    let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut Self;
++                    &mut *slice_ptr
++                }
++
++            }
++        })*
+     };
+ }
+ 
+@@ -28,44 +72,52 @@ macro_rules! impl_frombytes {
+ 
+     // SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
+     // patterns are also acceptable for arrays of that type.
+-    {<T: FromBytes>} [T],
+     {<T: FromBytes, const N: usize>} [T; N],
+ }
+ 
+-/// Types that can be viewed as an immutable slice of initialized bytes.
++/// Get a reference of slice of bytes and converts into a reference of an array of integers
+ ///
+-/// If a struct implements this trait, then it is okay to copy it byte-for-byte to userspace. This
+-/// means that it should not have any padding, as padding bytes are uninitialized. Reading
+-/// uninitialized memory is not just undefined behavior, it may even lead to leaking sensitive
+-/// information on the stack to userspace.
++/// Types for which any bit pattern is valid.
+ ///
+-/// The struct should also not hold kernel pointers, as kernel pointer addresses are also considered
+-/// sensitive. However, leaking kernel pointers is not considered undefined behavior by Rust, so
+-/// this is a correctness requirement, but not a safety requirement.
++/// Not all types are valid for all values. For example, a `bool` must be either zero or one, so
++/// reading arbitrary bytes into something that contains a `bool` is not okay.
+ ///
+-/// # Safety
++/// It's okay for the type to have padding, as initializing those bytes has no effect.
+ ///
+-/// Values of this type may not contain any uninitialized bytes. This type must not have interior
+-/// mutability.
+-pub unsafe trait AsBytes {}
+-
+-macro_rules! impl_asbytes {
+-    ($($({$($generics:tt)*})? $t:ty, )*) => {
+-        // SAFETY: Safety comments written in the macro invocation.
+-        $(unsafe impl$($($generics)*)? AsBytes for $t {})*
+-    };
+-}
+-
+-impl_asbytes! {
+-    // SAFETY: Instances of the following types have no uninitialized portions.
+-    u8, u16, u32, u64, usize,
+-    i8, i16, i32, i64, isize,
+-    bool,
+-    char,
+-    str,
++/// # Example
++///
++/// This example is how to use the FromBytes trait
++/// ```
++/// // Initialize a slice of bytes
++/// let foo = &[1, 2, 3, 4];
++///
++/// //Use the function implemented by trait in integer type
++/// let result = <[u32]>::from_bytes(slice_of_bytes);
++///
++/// assert_eq!(*result, 0x4030201);
++/// ```
++// SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
++// patterns are also acceptable for arrays of that type.
++unsafe impl<T: FromBytes> FromBytes for [T] {
++    unsafe fn from_bytes(slice_of_bytes: &[u8]) -> &Self {
++        //Safety: Guarantee that all values are initiliazed
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_ptr() as *const T;
++            let slice_len = slice_of_bytes.len() / core::mem::size_of::<T>();
++            core::slice::from_raw_parts(slice_ptr, slice_len)
++        }
++    }
+ 
+-    // SAFETY: If individual values in an array have no uninitialized portions, then the array
+-    // itself does not have any uninitialized portions either.
+-    {<T: AsBytes>} [T],
+-    {<T: AsBytes, const N: usize>} [T; N],
++    //Safety: Guarantee that all values are initiliazed
++    unsafe fn from_bytes_mut(slice_of_bytes: &mut [u8]) -> &mut Self
++    where
++        Self: ToBytes,
++    {
++        //Safety: Guarantee that all values are initiliazed
++        unsafe {
++            let slice_ptr = slice_of_bytes.as_mut_ptr() as *mut T;
++            let slice_len = slice_of_bytes.len() / core::mem::size_of::<T>();
++            core::slice::from_raw_parts_mut(slice_ptr, slice_len)
++        }
++    }
+ }
 -- 
-2.34.1
+2.47.0
+
