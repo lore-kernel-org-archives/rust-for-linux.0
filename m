@@ -1,214 +1,373 @@
-Received: from dd3514.kasserver.com (dd3514.kasserver.com [85.13.129.232])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9232564;
-	Sat, 12 Oct 2024 21:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.129.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4B113D897;
+	Sat, 12 Oct 2024 22:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728769745; cv=none; b=ki2x3B0e2Km9SFLaiqy4XyACcrJS3kfqcjTa5qiWVzGEYD1ABNV9B3jaev38IbtkooM5W/KPgGdfgDAiySmNt0Wa90xL53MqQBVEKjMC3SX7oCg2mFJKNliz6/GVMbMfAO9mZMXWgNqpAEpKQzJvwTo4HbA0CIOdrB8dgPH55sU=
+	t=1728771985; cv=none; b=MfipJHy4tbShsyd5oRdJrPSDeb/zVh+vraMIrliVjFWubNFur3mTXaz2Zz4dubmrhsVX7RfkPT+lO4vUdxbVDQhr1hln2Ua16D1pHyBd98TH9DBkfLlZjZcnMkKwDrfEj7ptgU0NwMx7Ju29PJnMJyHtaSzM1bNZpwdxbGvaDPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728769745; c=relaxed/simple;
-	bh=czsCTSHYoHKyHTg8bSdZp3H642CthsJm/P2MaOMfNDg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AG9hrAnCrAjytsQA+WhF6KfSOY13YIzB6ROAZMUj27WyhmW9S8oPRDHbiLMOjZYlM+UjW8d0CPRN3k4IrIQx102ensouBwU7gvvu4lBSyQS++dnxGotLVidzX1nde6yCdnSdCdgFZpxfTGjRnPNNKzUhd0+eKTKVV/hJILotIxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com; spf=pass smtp.mailfrom=walterzollerpiano.com; dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b=rYkJ7Fes; arc=none smtp.client-ip=85.13.129.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walterzollerpiano.com
+	s=arc-20240116; t=1728771985; c=relaxed/simple;
+	bh=epAriPY3WLAExXjkcan2mYIIr2HDZQ681EWkhmSKC5Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kwKrzQPzKLx7K1q8Y0PObbSrgpWGZe1wHgjXYvHi3mugaNXh/2pAcZJx/P1/jnI+OaxRn27tvv5xiPMdgeENwfNKAu0Zk1MXTCii6m3xrASC/2XunLJ6HlVi/70ToLr7FDk0iWIekHhrTQeW1tRrLIcP+9Pti8M4T7RXdptPtV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NRoZtndp; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b="rYkJ7Fes"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NRoZtndp"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-460391553ecso29375781cf.1;
+        Sat, 12 Oct 2024 15:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=walterzollerpiano.com; s=kas202409051210; t=1728769740;
-	bh=cbgYXwrEoEp5y5FnxtUZ41ns07ndwEMx1dxwH63SO/M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rYkJ7Fes3TV6xxErULasiWJh9I0rmIYVwpmELKh2Lznkj2MOzkaOdQW8def2+46Sj
-	 xOjgYMdp3p+TatHVcss3lFvJzPrssdVBMz5pkqzMHBh7hrzn3ZoUXUEZuUoSlQHJHV
-	 1M81yqK3Em+iWOlGkwqS7hKExXLHWeN198MNvb9KHLuGeqcpXw7S1FW/cUmMwNTxZ3
-	 e7+loTn6ewctcM9qUqbi0n2obd149HDy+OJ/7vrXXw7Dd1ER5V9ijGxoIFeo7OhC/Q
-	 G5w3S3aPxb4IIsO1NnkjF4khw/JnwA9OEa7bH7srxgbwubLuiVjvJYEO9ILrAP6ojY
-	 ijm73/cCvLS4g==
-Received: from [192.168.1.124] (31-10-158-205.cgn.dynamic.upc.ch [31.10.158.205])
-	by dd3514.kasserver.com (Postfix) with ESMTPA id 17B38102283;
-	Sat, 12 Oct 2024 23:49:00 +0200 (CEST)
-Message-ID: <984f6b1b-b396-45e1-8325-90a01e4305c3@walterzollerpiano.com>
-Date: Sat, 12 Oct 2024 23:48:59 +0200
+        d=gmail.com; s=20230601; t=1728771982; x=1729376782; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cTODEmh12WV27DmJevPolR2loY5BXrBdlVbSmnzD1QY=;
+        b=NRoZtndpfI+tiQfDJEq0/VZSY8WYLA/6HrFufnM/gri44DIUxG5f1GhCh5VPZsucqb
+         GLB4s1KRKrxQ7wZJSwtudo2MkNUzvxOSJ01JN+B5b+eJBSFmehAruJjvHqecBWwx/TB1
+         db3tKKerYuVjsgmz+XQd0pc2xLTBglDURKlKFVfDQAPey6dBG8Xj3dKtCph5HykbivuX
+         VIx7e+VkBdUrmoXbMOFwhQNcOabHmLnUulJ6FMM4Gr6Qyq9zb9UaRHU39ynn3NNd2ksN
+         Fa4T32jPhIuiANGQGtTdR8bgv6c/6EVmbJTEmeqtnEIEvYr6XfAsiIhjc5I16BkeaEAU
+         540A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728771982; x=1729376782;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cTODEmh12WV27DmJevPolR2loY5BXrBdlVbSmnzD1QY=;
+        b=FMF4mxIj8Ro7F4OqoUP6JN4ARee6sDWUdl8sQyyait7mduYTP6DQaDS50LHolj1OVi
+         2bwAquV+FF9wl0x+GNwbwfxP7D7eoJSKd99NTn4NTO+bA6RybbEnbVSB5hSZeOGGLzDB
+         mV1HJ5MPatsnvKZ3NAqcBCO6Oklkv0E06RoTDowdMm0rXkMTfDfeoIDW+VPf5nDecJmf
+         wC7D7P5SMczbcn0gxHNeab23dYMfKqAqp2QsD2zVU1A13myTZM/mJJVCisFaLCqU0vgh
+         a2SPY8rQP1dNEbM6Z20xxeqnPVkPA+hTdybOdJIIAgHVwuqVT6umHtoJ9CunXHlu7NTE
+         3eiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwcbQ85nVW5PBxDCiwoFzQqYC3lbpjhYGPmysFCBtd7/kkNawH4N7z3DambSJ+JgOoB3Xls/LsKaBVVCw=@vger.kernel.org, AJvYcCWizdB6ZLP0Ebfq9mzAFt1GBWjaBQsW4Ry8J5yWhGmik/RVnh8CkU5h/8spX1PoctejT4qF9COO/FLsf7wjGPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdVs+wt4AgjJSSl8jvZmtmo/zeqmjpcUYNzIXY8UcoS1N9eRQw
+	ZgOqlgUf6HbD1vN2vHS1FazfJzVCJXQweFsFfdNmdk4X7pJCweEy
+X-Google-Smtp-Source: AGHT+IHo+K4CHdxiWrn+d0YLQNlnpkyWalifOQGqBS4uhKoB6SYjRuTpR96I9kFz1YMa0au8Bvq2Ug==
+X-Received: by 2002:ac8:6f0c:0:b0:458:3cb6:13cb with SMTP id d75a77b69052e-460584f2a22mr71586321cf.56.1728771981991;
+        Sat, 12 Oct 2024 15:26:21 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b1148c70a4sm264784285a.22.2024.10.12.15.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2024 15:26:21 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E64A0120007C;
+	Sat, 12 Oct 2024 18:26:20 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Sat, 12 Oct 2024 18:26:20 -0400
+X-ME-Sender: <xms:jPcKZ_rIoIWNT9dAG7hvQ_dPmN6__pvkGtNMBwptPldW_YCh_fJcgg>
+    <xme:jPcKZ5pKdLSLVaudcvR26gT01_EL76kOJx9uJY8HiYI_G2QVGrTzTkFPpyrJt_1ME
+    XvPirNCsx-4T57Eow>
+X-ME-Received: <xmr:jPcKZ8N34pkR_gnuhLAStn_40aKZ5Wa_HxQg598uVHL-BGJnIT9FuypTaN0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegvddguddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
+    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epughirhhkrdgsvghhmhgvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgu
+    sghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlhihuuggvsehrvgguhhgrth
+    drtghomhdprhgtphhtthhopeguihhrkhdrsggvhhhmvgesuggvrdgsohhstghhrdgtohhm
+    pdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvg
+    igrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhhnrgdqmhgrrhhi
+    rgeslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehfrhgvuggvrhhitgeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggv
+X-ME-Proxy: <xmx:jPcKZy6crcP4IF9qB1RyU9PJlMyQuWlev7zV4Y68dOKEsseFlcu_Vg>
+    <xmx:jPcKZ-6X6GVmCfbanRuWrnD4GtifvaU5zznAFZZqiKsII3S0x9mmaw>
+    <xmx:jPcKZ6gg11DFzb-zClOG4bSOorU4diiL1IZVJr-lsJ0fMqs7iHuVQA>
+    <xmx:jPcKZw5pbfBWrGg_ZkYf_U5gHdHQH1hR2dCcyfJWZ3Q9yHbdbubPZQ>
+    <xmx:jPcKZ9IbkbAl2rIeVZ2nBkaIVcfZUAllvk0LLlmU3LFqzK9Vu0oz0A7a>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 12 Oct 2024 18:26:20 -0400 (EDT)
+Date: Sat, 12 Oct 2024 15:26:19 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 00/14] hrtimer Rust API
+Message-ID: <Zwr3i4x7J5qyjFog@Boquns-Mac-mini.local>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+ <e644aec7-02b3-4faf-9a80-629055c5a27a@de.bosch.com>
+ <ZvwKTinnLckZm8aQ@boqun-archlinux>
+ <87a5falmjy.fsf@kernel.org>
+ <dae08234-c9ba-472d-b769-1d07e579a8ac@gmail.com>
+ <Zwmy-2Yc7vGboYvl@boqun-archlinux>
+ <d2ce38a3-9a32-4f4c-88f2-22864b66afe5@gmail.com>
+ <ZwooHrqIiirl1so7@boqun-archlinux>
+ <4dd93603-04fa-4da4-b867-bd12ece4b391@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] rust: char_dev: add character device abstraction
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20241011-rust-char-dev-v1-0-350225ae228b@walterzollerpiano.com>
- <20241011-rust-char-dev-v1-1-350225ae228b@walterzollerpiano.com>
- <2024101253-golf-detonator-592c@gregkh>
-Content-Language: en-US
-From: Josef Zoller <josef@walterzollerpiano.com>
-In-Reply-To: <2024101253-golf-detonator-592c@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Bar: +
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4dd93603-04fa-4da4-b867-bd12ece4b391@gmail.com>
 
+On Sat, Oct 12, 2024 at 09:50:00AM +0200, Dirk Behme wrote:
+> On 12.10.24 09:41, Boqun Feng wrote:
+> > On Sat, Oct 12, 2024 at 07:19:41AM +0200, Dirk Behme wrote:
+> > > On 12.10.24 01:21, Boqun Feng wrote:
+> > > > On Fri, Oct 11, 2024 at 05:43:57PM +0200, Dirk Behme wrote:
+> > > > > Hi Andreas,
+> > > > > 
+> > > > > Am 11.10.24 um 16:52 schrieb Andreas Hindborg:
+> > > > > > 
+> > > > > > Dirk, thanks for reporting!
+> > > > > 
+> > > > > :)
+> > > > > 
+> > > > > > Boqun Feng <boqun.feng@gmail.com> writes:
+> > > > > > 
+> > > > > > > On Tue, Oct 01, 2024 at 02:37:46PM +0200, Dirk Behme wrote:
+> > > > > > > > On 18.09.2024 00:27, Andreas Hindborg wrote:
+> > > > > > > > > Hi!
+> > > > > > > > > 
+> > > > > > > > > This series adds support for using the `hrtimer` subsystem from Rust code.
+> > > > > > > > > 
+> > > > > > > > > I tried breaking up the code in some smaller patches, hopefully that will
+> > > > > > > > > ease the review process a bit.
+> > > > > > > > 
+> > > > > > > > Just fyi, having all 14 patches applied I get [1] on the first (doctest)
+> > > > > > > > Example from hrtimer.rs.
+> > > > > > > > 
+> > > > > > > > This is from lockdep:
+> > > > > > > > 
+> > > > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/locking/lockdep.c#n4785
+> > > > > > > > 
+> > > > > > > > Having just a quick look I'm not sure what the root cause is. Maybe mutex in
+> > > > > > > > interrupt context? Or a more subtle one?
+> > > > > > > 
+> > > > > > > I think it's calling mutex inside an interrupt context as shown by the
+> > > > > > > callstack:
+> > > > > > > 
+> > > > > > > ]  __mutex_lock+0xa0/0xa4
+> > > > > > > ] ...
+> > > > > > > ]  hrtimer_interrupt+0x1d4/0x2ac
+> > > > > > > 
+> > > > > > > , it is because:
+> > > > > > > 
+> > > > > > > +//! struct ArcIntrusiveTimer {
+> > > > > > > +//!     #[pin]
+> > > > > > > +//!     timer: Timer<Self>,
+> > > > > > > +//!     #[pin]
+> > > > > > > +//!     flag: Mutex<bool>,
+> > > > > > > +//!     #[pin]
+> > > > > > > +//!     cond: CondVar,
+> > > > > > > +//! }
+> > > > > > > 
+> > > > > > > has a Mutex<bool>, which actually should be a SpinLockIrq [1]. Note that
+> > > > > > > irq-off is needed for the lock, because otherwise we will hit a self
+> > > > > > > deadlock due to interrupts:
+> > > > > > > 
+> > > > > > > 	spin_lock(&a);
+> > > > > > > 	> timer interrupt
+> > > > > > > 	  spin_lock(&a);
+> > > > > > > 
+> > > > > > > Also notice that the IrqDisabled<'_> token can be simply created by
+> > > > > > > ::new(), because irq contexts should guarantee interrupt disabled (i.e.
+> > > > > > > we don't support nested interrupts*).
+> > > > > > 
+> > > > > > I updated the example based on the work in [1]. I think we need to
+> > > > > > update `CondVar::wait` to support waiting with irq disabled.
+> > > > > 
+> > > > > Yes, I agree. This answers one of the open questions I had in the discussion
+> > > > > with Boqun :)
+> > > > > 
+> > > > > What do you think regarding the other open question: In this *special* case
+> > > > > here, what do you think to go *without* any lock? I mean the 'while *guard
+> > > > > != 5' loop in the main thread is read only regarding guard. So it doesn't
+> > > > > matter if it *reads* the old or the new value. And the read/modify/write of
+> > > > > guard in the callback is done with interrupts disabled anyhow as it runs in
+> > > > > interrupt context. And with this can't be interrupted (excluding nested
+> > > > > interrupts). So this modification of guard doesn't need to be protected from
+> > > > > being interrupted by a lock if there is no modifcation of guard "outside"
+> > > > > the interupt locked context.
+> > > > > 
+> > > > > What do you think?
+> > > > > 
+> > > > 
+> > > > Reading while there is another CPU is writing is data-race, which is UB.
+> > > 
+> > > Could you help to understand where exactly you see UB in Andreas' 'while
+> > > *guard != 5' loop in case no locking is used? As mentioned I'm under the
+> > 
+> > Sure, but could you provide the code of what you mean exactly, if you
+> > don't use a lock here, you cannot have a guard. I need to the exact code
+> > to point out where the compiler may "mis-compile" (a result of being
+> > UB).
+> 
+> 
+> I thought we are talking about anything like
+> 
+> #[pin_data]
+> struct ArcIntrusiveTimer {
+>       #[pin]
+>       timer: Timer<Self>,
+>       #[pin]
+> -      flag: SpinLockIrq<u64>,
+> +      flag: u64,
+>       #[pin]
+>       cond: CondVar,
+> }
+> 
+> ?
+> 
 
+Yes, but have you tried to actually use that for the example from
+Andreas? I think you will find that you cannot write to `flag` inside
+the timer callback, because you only has a `Arc<ArcIntrusiveTimer>`, so
+not mutable reference for `ArcIntrusiveTimer`. You can of course use
+unsafe to create a mutable reference to `flag`, but it won't be sound,
+since you are getting a mutable reference from an immutable reference.
 
-On 12.10.24 09:36, Greg Kroah-Hartman wrote:
-> On Fri, Oct 11, 2024 at 08:55:42PM +0200, Josef Zoller wrote:
->> +unsigned int rust_helper_MAJOR(dev_t dev)
->> +{
->> +	return MAJOR(dev);
->> +}
->
-> I don't think you use this function in the code anywhere.
+Regards,
+Boqun
 
-Yes, I do. I use it at rust/kernel/char_dev.rs:41.
-
->> +unsigned int rust_helper_MINOR(dev_t dev)
->> +{
->> +	return MINOR(dev);
->> +}
->
-> Is this really needed?  No driver should care about their minor number,
-> except to possibly set it, not read it.
-
-It's not really needed, but I use it in my scull example to just print
-the major and minor numbers of the devices, which makes it easy to
-quickly create a device file for testing using mknod.
-
->> +dev_t rust_helper_MKDEV(unsigned int major, unsigned int minor)
->> +{
->> +	return MKDEV(major, minor);
->> +}
->
-> If you are only doing dynamic creation, as your initial text said, I
-> don't think you need this either as the kernel should create it for you.
-
-Yeah, you're right. I forgot to remove this one after I changed to only
-allowing dynamic device number creation.
-
->> diff --git a/rust/kernel/char_dev.rs b/rust/kernel/char_dev.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..b81c0d55ab60f18dc82a99991318a5ae0a26e560
->> --- /dev/null
->> +++ b/rust/kernel/char_dev.rs
->> @@ -0,0 +1,976 @@
->> +// SPDX-License-Identifier: GPL-2.0
->
-> Minor nit, you forgot a copyright line :)
-
-Oh, I just looked at some other rust files in rust/kernel and saw that
-most of them don't have a copyright line. I'll add one to this file.
-
->> +
->> +//! Character device support.
->> +//!
->> +//! C headers: [`include/linux/cdev.h`](srctree/include/linux/cdev.h) and
->> +//! [`include/linux/fs.h`](srctree/include/linux/fs.h)
->> +
->> +use crate::{
->> +    bindings, container_of,
->> +    error::{to_result, VTABLE_DEFAULT_ERROR},
->> +    fs::{File, LocalFile},
->> +    ioctl::IoctlCommand,
->> +    prelude::*,
->> +    types::{ForeignOwnable, Opaque},
->> +    uaccess::{UserPtr, UserSlice, UserSliceReader, UserSliceWriter},
->> +};
->> +use core::{ffi, mem, ops::Deref};
->> +
->> +/// Character device ID.
->> +///
->> +/// This is a wrapper around the kernel's `dev_t` type and identifies a
->> +/// character device by its major and minor numbers.
->> +#[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
->> +#[repr(transparent)]
->> +pub struct CharDeviceID(bindings::dev_t); // u32
->> +
->> +impl CharDeviceID {
->> +    /// Creates a new device ID from the given major and minor numbers.
->> +    ///
->> +    /// This corresponds to the kernel's `MKDEV` macro.
->> +    pub fn new(major: u32, minor: u32) -> Self {
->> +        // SAFETY: The kernel's `MKDEV` macro is safe to call with any values.
->> +        Self(unsafe { bindings::MKDEV(major, minor) })
->> +    }
->> +
->> +    /// Returns the major number of the device ID.
->> +    ///
->> +    /// This corresponds to the kernel's `MAJOR` macro.
->> +    pub fn major(&self) -> u32 {
->> +        // SAFETY: The kernel's `MAJOR` macro is safe to call with any value.
->> +        unsafe { bindings::MAJOR(self.0) }
->> +    }
->> +
->> +    /// Returns the minor number of the device ID.
->> +    ///
->> +    /// This corresponds to the kernel's `MINOR` macro.
->> +    pub fn minor(&self) -> u32 {
->> +        // SAFETY: The kernel's `MINOR` macro is safe to call with any value.
->> +        unsafe { bindings::MINOR(self.0) }
->> +    }
->> +}
->> +
->> +/// Seek mode for the `llseek` method.
->> +///
->> +/// This enum corresponds to the `SEEK_*` constants in the kernel.
->> +#[repr(u32)]
->> +pub enum Whence {
->> +    /// Set the file position to `offset`.
->> +    Set = bindings::SEEK_SET,
->> +    /// Set the file position to the current position plus `offset`.
->> +    Cur = bindings::SEEK_CUR,
->> +    /// Set the file position to the end of the file plus `offset`.
->> +    End = bindings::SEEK_END,
->> +    /// Set the file position to the next location in the file greater than or
->> +    /// equal to `offset` containing data.
->> +    Data = bindings::SEEK_DATA,
->> +    /// Set the file position to the next hole in the file greater than or
->> +    /// equal to `offset`.
->> +    Hole = bindings::SEEK_HOLE,
->> +}
->> +
->> +// Make sure at compile time that the `Whence` enum can be safely converted
->> +// from integers up to `SEEK_MAX`.
->> +const _: () = assert!(Whence::Hole as u32 == bindings::SEEK_MAX);
->> +
->> +/// Trait implemented by a registered character device.
->> +///
->> +/// A registered character device just handles the `open` operation on the
->> +/// device file and returns an open device type (which implements the
->> +/// [`OpenCharDevice`] trait) that handles the actual I/O operations on the
->> +/// device file. Optionally, the `release` operation can be implemented to
->> +/// handle the final close of the device file, but simple cleanup can also be
->> +/// done in the `Drop` implementation of the open device type.
->
-> release is traditionally where you handle cleaning up what was allocated
-> for this "open", and then drop can handle any "global" state for the
-> device associated with this specific instance.  So "simple cleanup"
-> might not be possible in both places, as they are different parts of the
-> lifecycle of a device.
-
-I guess, I haven't explained this clearly enough in the doc comment.
-We have two different types here that correspond to two different parts
-of the lifecycle of a device file:
-
-We have a type implementing the `CharDevice` trait. An instance of this
-type is created on device registration and lives until the device is
-deregistered. And we have a type implementing the `OpenCharDevice`
-trait. An instance of this type is created by the CharDevice type in the
-open implementation and lives until the corresponding release is called.
-That means that the OpenCharDevice type instance is dropped in
-f_ops->release, even when the CharDevice type doesn't implement release,
-so simple cleanup can happen in the drop implementation of the type
-implementing the OpenCharDevice trait and will correctly be called on
-release.
-
-Cheers,
-Josef
+> Best regards
+> 
+> Dirk
+> 
+> > > impression that it doesn't matter if the old or new guard value is read in
+> > > this special case.
+> > > 
+> > 
+> > For one thing, if the compiler believes no one is accessing the value
+> > because the code uses an immutable reference, it can "optimize" the loop
+> > away:
+> > 
+> > 	while *var != 5 {
+> > 	    do_something();
+> > 	}
+> > 
+> > into
+> > 	
+> > 	if *var != 5 {
+> > 	    loop { do_something(); }
+> > 	}
+> > 
+> > But as I said, I need to see the exact code to suggest a relevant
+> > mis-compile, and note that sometimes, even mis-compile seems impossible
+> > at the moment, a UB is a UB, compilers are free to do anything they
+> > want (or don't want). So "mis-compile" is only helping we understand the
+> > potential result of a UB.
+> > 
+> > Regards,
+> > Boqun
+> > 
+> > > Best regards
+> > > 
+> > > Dirk
+> > > 
+> > > 
+> > > > Regards,
+> > > > Boqun
+> > > > 
+> > > > > Thanks
+> > > > > 
+> > > > > Dirk
+> > > > > 
+> > > > > 
+> > > > > > Without
+> > > > > > this, when we get back from `bindings::schedule_timeout` in
+> > > > > > `CondVar::wait_internal`, interrupts are enabled:
+> > > > > > 
+> > > > > > ```rust
+> > > > > > use kernel::{
+> > > > > >        hrtimer::{Timer, TimerCallback, TimerPointer, TimerRestart},
+> > > > > >        impl_has_timer, new_condvar, new_spinlock, new_spinlock_irq,
+> > > > > >        irq::IrqDisabled,
+> > > > > >        prelude::*,
+> > > > > >        sync::{Arc, ArcBorrow, CondVar, SpinLock, SpinLockIrq},
+> > > > > >        time::Ktime,
+> > > > > > };
+> > > > > > 
+> > > > > > #[pin_data]
+> > > > > > struct ArcIntrusiveTimer {
+> > > > > >        #[pin]
+> > > > > >        timer: Timer<Self>,
+> > > > > >        #[pin]
+> > > > > >        flag: SpinLockIrq<u64>,
+> > > > > >        #[pin]
+> > > > > >        cond: CondVar,
+> > > > > > }
+> > > > > > 
+> > > > > > impl ArcIntrusiveTimer {
+> > > > > >        fn new() -> impl PinInit<Self, kernel::error::Error> {
+> > > > > >            try_pin_init!(Self {
+> > > > > >                timer <- Timer::new(),
+> > > > > >                flag <- new_spinlock_irq!(0),
+> > > > > >                cond <- new_condvar!(),
+> > > > > >            })
+> > > > > >        }
+> > > > > > }
+> > > > > > 
+> > > > > > impl TimerCallback for ArcIntrusiveTimer {
+> > > > > >        type CallbackTarget<'a> = Arc<Self>;
+> > > > > >        type CallbackTargetParameter<'a> = ArcBorrow<'a, Self>;
+> > > > > > 
+> > > > > >        fn run(this: Self::CallbackTargetParameter<'_>, irq: IrqDisabled<'_>) -> TimerRestart {
+> > > > > >            pr_info!("Timer called\n");
+> > > > > >            let mut guard = this.flag.lock_with(irq);
+> > > > > >            *guard += 1;
+> > > > > >            this.cond.notify_all();
+> > > > > >            if *guard == 5 {
+> > > > > >                TimerRestart::NoRestart
+> > > > > >            }
+> > > > > >            else {
+> > > > > >                TimerRestart::Restart
+> > > > > > 
+> > > > > >            }
+> > > > > >        }
+> > > > > > }
+> > > > > > 
+> > > > > > impl_has_timer! {
+> > > > > >        impl HasTimer<Self> for ArcIntrusiveTimer { self.timer }
+> > > > > > }
+> > > > > > 
+> > > > > > 
+> > > > > > let has_timer = Arc::pin_init(ArcIntrusiveTimer::new(), GFP_KERNEL)?;
+> > > > > > let _handle = has_timer.clone().schedule(Ktime::from_ns(200_000_000));
+> > > > > > 
+> > > > > > kernel::irq::with_irqs_disabled(|irq| {
+> > > > > >      let mut guard = has_timer.flag.lock_with(irq);
+> > > > > > 
+> > > > > >      while *guard != 5 {
+> > > > > >          pr_info!("Not 5 yet, waiting\n");
+> > > > > >          has_timer.cond.wait(&mut guard); // <-- we arrive back here with interrupts enabled!
+> > > > > >      }
+> > > > > > });
+> > > > > > ```
+> > > > > > 
+> > > > > > I think an update of `CondVar::wait` should be part of the patch set [1].
+> > > > > > 
+> > > > > > 
+> > > > > > Best regards,
+> > > > > > Andreas
+> > > > > > 
+> > > > > > 
+> > > > > > [1] https://lore.kernel.org/rust-for-linux/20240916213025.477225-1-lyude@redhat.com/
+> > > > > > 
+> > > > > > 
+> > > > > 
+> > > 
+> 
+> 
