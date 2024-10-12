@@ -1,59 +1,59 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF2118E0E;
-	Sat, 12 Oct 2024 05:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B61B67A;
+	Sat, 12 Oct 2024 05:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728710386; cv=none; b=CYQWgDNNLSz0QLsZuft3ndt/NYUA/a0TFOHATe9VCO2+EbycPUJ1GQMucoHSpSWsk3e0taissX1tigALr/xeWIPs0A/vlaFSXjsIa9+pHE3ea0ZBmVi3QLvRzvk+geubOMul05bxY/lgn5uKuF/SsW5wzQ+HS4P/ro46E7Q/wrc=
+	t=1728711002; cv=none; b=ruGY8XDHcly2MsgdWqvhaxE/CHPDFUz5xf7/otLsbVYUD0v/OcpM8SXIuGWH+OwoX5rna/oCCKXMksk332Gj/t2sNMQWjkzni1AzmlCOQU7IGTQ5ukFOQXOHJXMCsocPXuZguZ+S+8xns91IZF+p5SaUlh2as0J7KiLq3Rx5quc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728710386; c=relaxed/simple;
-	bh=kUHQwroq/snC6ThTHXwFoppK3Mmm9bxAiXqHFdRSqUw=;
+	s=arc-20240116; t=1728711002; c=relaxed/simple;
+	bh=OPt7fIctfqI+7wLn2jbpl74nQtbjxpgKpI5tOjNS8d4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qqAFWsCAUEfQYgSJbiEbIrNmF2xrfnK0TfgQhNHhcmPbCzFCo61vyI/U1nEIrxuaa4GwZdmS533l1iyhMuECMFX+Qis5VMKUMqkScO07fYOL3jVC6wH4FcJ+HhyuWhHJdL/V4GcJJEaAzlkj/nZnd/hgWY95ptkc9NqQs/jqFw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMdNUd9f; arc=none smtp.client-ip=209.85.218.46
+	 In-Reply-To:Content-Type; b=RbbHYiLIvt29dh9mtskvQ6vE3+sfEwyLyXZdsGLV75Y+sjmKclGrboNGEsXWz649GL/UB5pXQM87dt6Ks9wXuNNDBRSEnvS4mSoj+04FQve3hbDO9RxY4CpZrKC1rMS+p+LcgXMD1Aul9u0eyRtDwkrf7H0iHmpeUVyX9H87ly0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GI39MUvR; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMdNUd9f"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9968114422so383556366b.2;
-        Fri, 11 Oct 2024 22:19:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GI39MUvR"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a99388e3009so360419666b.3;
+        Fri, 11 Oct 2024 22:30:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728710383; x=1729315183; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728710998; x=1729315798; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pxmMStYCBYwAl7LNeZl4VWQYQ7PRcYg5jNsV5Cp3jKg=;
-        b=mMdNUd9fPteGidbzxfeHahXEJwCngTfdD9PMLEhtdGAMzaYngYTc2VUjie3x2G7OII
-         eXZoDv8yh4NWE7Ec9R3cbSFA/OrOZN/zMTbIINgOdFa+Clch0Y+YUyoVTytifCzmwBG4
-         seXcWmjsFHlWPHtLmG9mVGzqovjp5jM0SqKNz1za/Xc0D9TnwpEFFB4tnFQCCUrJ36vo
-         btZpQkfs807slnjHG+5MCdciaEv6ixgi6LW1MW5e4VzMOvvQmOhI85KIo35cuaDPtYED
-         utCv6OiqkCWQy1BvN1Ln0T+QzOgeQeE8dMOonBIOiRoUAhBcFw+k9K+/EM4KgDl4Denh
-         etZQ==
+        bh=Tymw2sNE4Ea4ARYbRwO2NdxK761NUNbBl9SQkfgAh0g=;
+        b=GI39MUvRKRo2jxY40hUCKhxF939s0b0RRCjGQOK2FYAClr5Ua1m7BQNayK+O9vok6V
+         yHfwQFfkrdRN3N50g4+Gj7i5I17HmyX3nI7BY0RwE2LVeZQmd5z1oSeaEf950Cw+BElS
+         vIH+ZmsTwg0kbMqYVFnCIN8B7h1VkimbqkuAAkzEYB6R91ZvqhBxdclHFUCxGpz9gU39
+         GfHhL6HQXT+vZ2U3NgDGvXpZs1iBp9/CAhriOff3CcR62J1KHp8PHA6CI0CMtjPchgvF
+         /HT4iLB1GJeigHSaO0/y6GrXfY2tS5cLk3HkUqcOx5Gfpje14Z8OfSqZ0VitwzDug0X3
+         UphQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728710383; x=1729315183;
+        d=1e100.net; s=20230601; t=1728710998; x=1729315798;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pxmMStYCBYwAl7LNeZl4VWQYQ7PRcYg5jNsV5Cp3jKg=;
-        b=uu9FC/140DRHSYyOLmxLHQdvoXVtqiga1Txw9fdK+VemUe9JcfJLDHEFtaVH4jqQ2y
-         FW/7xm6G7nTg1e1NutYdnPiA7Jgk8xegufGRdsujw7q0GEbCv+Y+mDr78KOy1ZXcXNjr
-         IPFUpMksGlMEiOsnfr//kJoWDZsO+ToAuAKRtYJMgNbC+6znRvJeNw6ZFqn0opL+lLVn
-         JTFAQjsJludhC7/GxnQ9FGFnaQmxBVTT/Pehk/2UAowdY94DxwIzj0wPmNLW/Zluj0dJ
-         xgHoQ8hYlW2YakdMqoQrFPml4+0Qyz7zsLiNSK+t0u/jzsxFRUOUrabpQwOHXn11WUbM
-         02tg==
-X-Forwarded-Encrypted: i=1; AJvYcCUhnst8Mu3vuYQR2ncr9mX5A+qylXcHz5JVRlbGunOhiSKrxOFw1h4QOL4j+U0qdzKMFk5I5XCyihMSE9e/qGE=@vger.kernel.org, AJvYcCVHplGTvS9YUD91Ce4B40Zae/vhliYwmgfyIYvkIJYzDdJNuP6IKzC4zMBymXRUlmpnIdnVIy/HsbyVl3U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2W4sKCASmP46fsVYDSGUZWoOqaQMH7LnuFDv28BNLkgc90wWl
-	bmXHzaZ4GKUF5I6Zx6Z/RVrxsy8lj2RI4Aexjz/LRCeDSEYLj4HW
-X-Google-Smtp-Source: AGHT+IEhdoBjlBK1FLRy0wx6nyRWPilntgKu1aMmLxEKZeK4mKtZpIO9gJjJEj7Bcu6+olB7lyVWnw==
-X-Received: by 2002:a17:907:d2a:b0:a99:442e:34ac with SMTP id a640c23a62f3a-a99b95bc0c6mr466624266b.40.1728710383070;
-        Fri, 11 Oct 2024 22:19:43 -0700 (PDT)
+        bh=Tymw2sNE4Ea4ARYbRwO2NdxK761NUNbBl9SQkfgAh0g=;
+        b=mNZ9vXTZhxIIi8eCJvxzXEzfEuHuPQCrk+D+8uL/wMKM7osGgIyiSMAeqFvqWPiaF2
+         EzI2nQQATmEnOPslfTPzAB/ibuBz879tpA8GinvqZkgLDQ/kiFxA9gq3nL3T03Raf8du
+         ue74NYPywTbjc+JQomWsmHHQk6NbOLxbh5m6ksepg8AuAfg7KMWuEFVFLJrD33il5yJo
+         RAJAAzM9P9Xw+qCWRVt4VMlBhdZsieSCa0WYDu5r45lXzOffy39p1uvJ30DOLFAYeQlS
+         GkPU9WnlETD0SxlqyUiWbij8YZYmls1YH1ui4l5IxgGH0/eXG9URs6IjBHPUSN70Qd4N
+         5nXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvwpQ1p/BwF3MRVsg9eV1+ssJcR1TAiDc1NhPqIzOyoTWwx6sV03fh6rhx1OgON1LWq5JrHhDN5ZNwVDw=@vger.kernel.org, AJvYcCWi+4ivN8WZdbZLt7is3/tKDflfpu2FEafOBAYum+ba7o8yTfU/89b2IbzXKM/Z2rz9RkiVJT8sF3OatmPF0q8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoQrw2PZI/sE28sLwNE4UOY4AggqNJGynAfLWXcrq3pqRx71BX
+	B2nmJyQOkW2PZzTXF8dURrsq0xiC16GoKaQWDOcnAZwOJcoWMNad
+X-Google-Smtp-Source: AGHT+IEWtqUXJoySnT6/Tk2kgdO9OsK8tBc+CVcKtle0zlVkwBwN87AIrEeDiZkBPZWMDUwjC6M9Vw==
+X-Received: by 2002:a17:907:6eac:b0:a99:529d:8199 with SMTP id a640c23a62f3a-a99b9754a81mr347328766b.62.1728710998319;
+        Fri, 11 Oct 2024 22:29:58 -0700 (PDT)
 Received: from ?IPV6:2003:df:bf0d:b400:7350:36ae:6e0c:c598? (p200300dfbf0db400735036ae6e0cc598.dip0.t-ipconnect.de. [2003:df:bf0d:b400:7350:36ae:6e0c:c598])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a80dcf0dsm286570666b.175.2024.10.11.22.19.42
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99ec5aeceasm36343866b.224.2024.10.11.22.29.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 22:19:42 -0700 (PDT)
-Message-ID: <d2ce38a3-9a32-4f4c-88f2-22864b66afe5@gmail.com>
-Date: Sat, 12 Oct 2024 07:19:41 +0200
+        Fri, 11 Oct 2024 22:29:58 -0700 (PDT)
+Message-ID: <aef35907-b92a-4f56-a330-b4be06f11984@gmail.com>
+Date: Sat, 12 Oct 2024 07:29:57 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,208 +61,73 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/14] hrtimer Rust API
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Dirk Behme <dirk.behme@de.bosch.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Gary Guo <gary@garyguo.net>,
+Subject: Re: [PATCH v6 0/3] rust: Add irq abstraction, SpinLockIrq
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240917222739.1298275-1-a.hindborg@kernel.org>
- <e644aec7-02b3-4faf-9a80-629055c5a27a@de.bosch.com>
- <ZvwKTinnLckZm8aQ@boqun-archlinux> <87a5falmjy.fsf@kernel.org>
- <dae08234-c9ba-472d-b769-1d07e579a8ac@gmail.com>
- <Zwmy-2Yc7vGboYvl@boqun-archlinux>
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+References: <20240916213025.477225-1-lyude@redhat.com>
 Content-Language: de-AT-frami
 From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <Zwmy-2Yc7vGboYvl@boqun-archlinux>
+In-Reply-To: <20240916213025.477225-1-lyude@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12.10.24 01:21, Boqun Feng wrote:
-> On Fri, Oct 11, 2024 at 05:43:57PM +0200, Dirk Behme wrote:
->> Hi Andreas,
->>
->> Am 11.10.24 um 16:52 schrieb Andreas Hindborg:
->>>
->>> Dirk, thanks for reporting!
->>
->> :)
->>
->>> Boqun Feng <boqun.feng@gmail.com> writes:
->>>
->>>> On Tue, Oct 01, 2024 at 02:37:46PM +0200, Dirk Behme wrote:
->>>>> On 18.09.2024 00:27, Andreas Hindborg wrote:
->>>>>> Hi!
->>>>>>
->>>>>> This series adds support for using the `hrtimer` subsystem from Rust code.
->>>>>>
->>>>>> I tried breaking up the code in some smaller patches, hopefully that will
->>>>>> ease the review process a bit.
->>>>>
->>>>> Just fyi, having all 14 patches applied I get [1] on the first (doctest)
->>>>> Example from hrtimer.rs.
->>>>>
->>>>> This is from lockdep:
->>>>>
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/locking/lockdep.c#n4785
->>>>>
->>>>> Having just a quick look I'm not sure what the root cause is. Maybe mutex in
->>>>> interrupt context? Or a more subtle one?
->>>>
->>>> I think it's calling mutex inside an interrupt context as shown by the
->>>> callstack:
->>>>
->>>> ]  __mutex_lock+0xa0/0xa4
->>>> ] ...
->>>> ]  hrtimer_interrupt+0x1d4/0x2ac
->>>>
->>>> , it is because:
->>>>
->>>> +//! struct ArcIntrusiveTimer {
->>>> +//!     #[pin]
->>>> +//!     timer: Timer<Self>,
->>>> +//!     #[pin]
->>>> +//!     flag: Mutex<bool>,
->>>> +//!     #[pin]
->>>> +//!     cond: CondVar,
->>>> +//! }
->>>>
->>>> has a Mutex<bool>, which actually should be a SpinLockIrq [1]. Note that
->>>> irq-off is needed for the lock, because otherwise we will hit a self
->>>> deadlock due to interrupts:
->>>>
->>>> 	spin_lock(&a);
->>>> 	> timer interrupt
->>>> 	  spin_lock(&a);
->>>>
->>>> Also notice that the IrqDisabled<'_> token can be simply created by
->>>> ::new(), because irq contexts should guarantee interrupt disabled (i.e.
->>>> we don't support nested interrupts*).
->>>
->>> I updated the example based on the work in [1]. I think we need to
->>> update `CondVar::wait` to support waiting with irq disabled.
->>
->> Yes, I agree. This answers one of the open questions I had in the discussion
->> with Boqun :)
->>
->> What do you think regarding the other open question: In this *special* case
->> here, what do you think to go *without* any lock? I mean the 'while *guard
->> != 5' loop in the main thread is read only regarding guard. So it doesn't
->> matter if it *reads* the old or the new value. And the read/modify/write of
->> guard in the callback is done with interrupts disabled anyhow as it runs in
->> interrupt context. And with this can't be interrupted (excluding nested
->> interrupts). So this modification of guard doesn't need to be protected from
->> being interrupted by a lock if there is no modifcation of guard "outside"
->> the interupt locked context.
->>
->> What do you think?
->>
-> 
-> Reading while there is another CPU is writing is data-race, which is UB.
+Hi Lyude,
 
-Could you help to understand where exactly you see UB in Andreas' 
-'while *guard != 5' loop in case no locking is used? As mentioned I'm 
-under the impression that it doesn't matter if the old or new guard 
-value is read in this special case.
+On 16.09.24 23:28, Lyude Paul wrote:
+> This adds a simple interface for disabling and enabling CPUs, along with
+> the ability to mark a function as expecting interrupts be disabled -
+> along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
+> 
+> Current example usecase (very much WIP driver) in rvkms:
+> 
+> https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-example-08012024
+> 
+> specifically drivers/gpu/drm/rvkms/crtc.rs
+> 
+> This series depends on
+> https://lore.kernel.org/rust-for-linux/ZuKNszXSw-LbgW1e@boqun-archlinux/
+> 
+> Lyude Paul (3):
+>    rust: Introduce irq module
+>    rust: sync: Introduce lock::Backend::Context
+>    rust: sync: Add SpinLockIrq
+
+
+To have it in this thread as well I just want to mention the discussion in
+
+https://lore.kernel.org/rust-for-linux/87a5falmjy.fsf@kernel.org/
+
+which results in the impression that this patch series needs to update 
+`CondVar::wait` to support waiting with irq disabled.
 
 Best regards
 
 Dirk
 
 
-> Regards,
-> Boqun
+>   rust/helpers/helpers.c            |   1 +
+>   rust/helpers/irq.c                |  22 +++++++
+>   rust/kernel/irq.rs                |  96 +++++++++++++++++++++++++++
+>   rust/kernel/lib.rs                |   1 +
+>   rust/kernel/sync.rs               |   2 +-
+>   rust/kernel/sync/lock.rs          |  17 ++++-
+>   rust/kernel/sync/lock/mutex.rs    |   1 +
+>   rust/kernel/sync/lock/spinlock.rs | 105 ++++++++++++++++++++++++++++++
+>   8 files changed, 242 insertions(+), 3 deletions(-)
+>   create mode 100644 rust/helpers/irq.c
+>   create mode 100644 rust/kernel/irq.rs
 > 
->> Thanks
->>
->> Dirk
->>
->>
->>> Without
->>> this, when we get back from `bindings::schedule_timeout` in
->>> `CondVar::wait_internal`, interrupts are enabled:
->>>
->>> ```rust
->>> use kernel::{
->>>       hrtimer::{Timer, TimerCallback, TimerPointer, TimerRestart},
->>>       impl_has_timer, new_condvar, new_spinlock, new_spinlock_irq,
->>>       irq::IrqDisabled,
->>>       prelude::*,
->>>       sync::{Arc, ArcBorrow, CondVar, SpinLock, SpinLockIrq},
->>>       time::Ktime,
->>> };
->>>
->>> #[pin_data]
->>> struct ArcIntrusiveTimer {
->>>       #[pin]
->>>       timer: Timer<Self>,
->>>       #[pin]
->>>       flag: SpinLockIrq<u64>,
->>>       #[pin]
->>>       cond: CondVar,
->>> }
->>>
->>> impl ArcIntrusiveTimer {
->>>       fn new() -> impl PinInit<Self, kernel::error::Error> {
->>>           try_pin_init!(Self {
->>>               timer <- Timer::new(),
->>>               flag <- new_spinlock_irq!(0),
->>>               cond <- new_condvar!(),
->>>           })
->>>       }
->>> }
->>>
->>> impl TimerCallback for ArcIntrusiveTimer {
->>>       type CallbackTarget<'a> = Arc<Self>;
->>>       type CallbackTargetParameter<'a> = ArcBorrow<'a, Self>;
->>>
->>>       fn run(this: Self::CallbackTargetParameter<'_>, irq: IrqDisabled<'_>) -> TimerRestart {
->>>           pr_info!("Timer called\n");
->>>           let mut guard = this.flag.lock_with(irq);
->>>           *guard += 1;
->>>           this.cond.notify_all();
->>>           if *guard == 5 {
->>>               TimerRestart::NoRestart
->>>           }
->>>           else {
->>>               TimerRestart::Restart
->>>
->>>           }
->>>       }
->>> }
->>>
->>> impl_has_timer! {
->>>       impl HasTimer<Self> for ArcIntrusiveTimer { self.timer }
->>> }
->>>
->>>
->>> let has_timer = Arc::pin_init(ArcIntrusiveTimer::new(), GFP_KERNEL)?;
->>> let _handle = has_timer.clone().schedule(Ktime::from_ns(200_000_000));
->>>
->>> kernel::irq::with_irqs_disabled(|irq| {
->>>     let mut guard = has_timer.flag.lock_with(irq);
->>>
->>>     while *guard != 5 {
->>>         pr_info!("Not 5 yet, waiting\n");
->>>         has_timer.cond.wait(&mut guard); // <-- we arrive back here with interrupts enabled!
->>>     }
->>> });
->>> ```
->>>
->>> I think an update of `CondVar::wait` should be part of the patch set [1].
->>>
->>>
->>> Best regards,
->>> Andreas
->>>
->>>
->>> [1] https://lore.kernel.org/rust-for-linux/20240916213025.477225-1-lyude@redhat.com/
->>>
->>>
->>
+> 
+> base-commit: a2f11547052001bd448ccec81dd1e68409078fbb
+> prerequisite-patch-id: 926565461e47df321ce1bed92894cc1f265896ef
 
