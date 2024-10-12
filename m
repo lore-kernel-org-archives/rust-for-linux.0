@@ -1,67 +1,67 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EACB946C;
-	Sat, 12 Oct 2024 11:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11347946C;
+	Sat, 12 Oct 2024 11:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728731076; cv=none; b=JeyRXOhd7tEb9l5isUcf031nJyttkLSWNt6Dv0PYVYhIMR3cEslC+L3EEnIwOCF34frMVO+n43Gp1TMWWGUj1MUxq/DevCc6hEHcEgRhWs6l60If9LA5eiGOZ82LeOPqzUU7QOjJU8oMlWCPly9K1QeNd/4nZtjkOKC8TKvLw4Q=
+	t=1728731314; cv=none; b=ZKLMtvf+hv/FEnpj7ng9Q+cNOPFnvJrDy2IycNaUXKeEA5g0PJOokH6jtgHTbhJSy/GG9kIFAofBAkKzmTNpu8yi/bLYkoBzj8pdB8ZvBCRdQ74vzrAOfuE9ylxxLjvMQNowDY7fGDMq7M6PDLP6+bRRwtpiEP4ec9dIYEOhATQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728731076; c=relaxed/simple;
-	bh=1S7XQPjauL4fA1RrelDc6zTaUMRlw03ylvjDe4mf7lw=;
+	s=arc-20240116; t=1728731314; c=relaxed/simple;
+	bh=anKJOesLh0dpvN5fUmq7rV4ue0GviJ5ZaqwCQHiSo3U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j5BP+iaBX00ybHirNClrlr7buJlkK787Z/WZeQgAwruIgihERnoskmcDzL77BF2/qu38CbeSTS4lFiOWmBKzqQWTERU93t0fh/4Uon2ZBhPFSBjU/9jh1w/YU4y+b4RuWddgpI424XmV4ec/cJPWJtIv268lKIs02MGmXy+YYQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkOKawIQ; arc=none smtp.client-ip=209.85.210.180
+	 To:Cc:Content-Type; b=GSs3vh1VOhaUdyzQX1XO/QHEHs/0S0Axvi+N2ttNVWhzYdgSvldr1lvkLc8vMskMzTepwA8DIMmjxwuuJQut/aj1CxNScVXAfXAn54SYZN9/ZK96FbQtJCE1WXH0lWOne1FP21/kOOI+ZuKiJxoDjQqiZx0w07+ev9pNt2qUDng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wc7ffhU7; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkOKawIQ"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71e4eb91228so105591b3a.2;
-        Sat, 12 Oct 2024 04:04:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wc7ffhU7"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2e2ee0a47fdso306842a91.2;
+        Sat, 12 Oct 2024 04:08:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728731074; x=1729335874; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728731312; x=1729336112; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XroMpCi45CXQlHa3n5Z/flEDjCsFF8PBVEONJxRQYXA=;
-        b=lkOKawIQzq8ZGftfZe+5gg5QmHkknoHURfRC0LCkQ4WesTqg4qq6l+FW20Vco6elKT
-         Jj4v47q3DnD6sCK9D7MqeRUMOgUopKJJetZk37UjCfyn3mkURkSqyrBy6tIhj6sch6aB
-         qV32uF2El2D1QnM4mVnfNG9Cfjqg3yOrxQ0CILjStmhSNoLcBRzQFp1K7TgwUfb/NaZn
-         wW7TWLAGPdxG6ArLhAuib5D0E6lYaKX03MrTnPCkv9oZ0ZYL9yo76ubrwa5qsFbllMz6
-         1srZoluyGB8ZGW+KBgm3p6rupPr0AN/1iXJq7w0NO/avYxhL45CsLL0st+z36GbgXdaU
-         d6Mg==
+        bh=DXpQfdUU6RqG8+Te9GmI74BrkXUQuHFJl7lqEnDb0QY=;
+        b=Wc7ffhU7t0BvJkjKVJf1qdSCGO7fb1HxX5Y4FRICmgoHmFWxYXqz/EdEEiIgrDc1eX
+         KdFCwIVmdfdKABglUcIIUVQ4zx4E68ODje2kBX+DMdjGq8Yy6IsBlH+/7fqI9kR3Cpd0
+         EIHhQ8AWIonssJr+Pm2w4FtwIHITjt3HkVkmY+TjPxcC8OIqV4FE2wpLC77FLE7B4e5O
+         S9AGUCnbHdGiZ6NWovIMLVWrBiyU6q8I3daa6aDkkIq0q/oE8iLnA0kSTP7Mj1uUBO7q
+         0yxMGyTNmvKUlHhKPrMAYO+1tyFqFDPyB0r6WjBx9tJ5IkmZHJ6WOImRE0J1DFX5QatL
+         IoIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728731074; x=1729335874;
+        d=1e100.net; s=20230601; t=1728731312; x=1729336112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XroMpCi45CXQlHa3n5Z/flEDjCsFF8PBVEONJxRQYXA=;
-        b=Ck9qIJpIk5+Zbz9vdqH9Pk/NtqzwwiCqtgwMSIgpQ3Xa1B1twHNFbUd0qNd7rrlQoB
-         kRbWJc/mXcXkhilBkP/xOXZEvcRh5/AmFsB/SYGC0bPXcW3w73CKya/3BkVNcvIf21e0
-         h9tpePFdZWWUW0TlrhPae9tK8QCgP4gaTDPBr8A7QwdklbQOsNPW59agsINDC37yHwEi
-         nTSYNiLhIhj3PwrWz3kYjoB6eHDgMwM4+IxThQWbNP+LUivRDrCYypd7NoJi3QMEYBJK
-         0jv99MFPs3bb+kwAshiciD3XiEygUzMPyUKHKoFhV3TF0uiAfDLCsYNiDukEBWpBKD4O
-         NxMg==
-X-Forwarded-Encrypted: i=1; AJvYcCVq36Msvj+6LSVT0NhS8R1VfTdBE2t1bzzIXadiRxETi7R4CkfJaA5oAxaFWJpsoVWMjagggnqZMHt5Ho/z4Mk=@vger.kernel.org, AJvYcCVqa3eySOfvSGxKA8QZ7v7ewiZoakAiu/qvD6UhwjKjGLfLksmeBRPVziVOoIyYWNCGag5/PsA9uJm/4SI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZtm2LHXPk2zCbPbJEU8OI8Uurze1+h7u3WC0gQ5IugOInH4Uo
-	5EdaBQBr8YUsRdC8XHjwU5pQ7oMZx5T7JnfvMoZVQUczHiFfLbVE3O7wefV1VnSL+S/+8q5UYJP
-	saapLOvNxMKFjJb9+1RqgY6bYsqM=
-X-Google-Smtp-Source: AGHT+IEAt5tdtaeiDpoTuQ8z3jgt02TnSfq3bj5lSqXLETJJCu+grTgzCOvYTrYnuCyx/PBrK2fp1H4xRv/nRaoxmlM=
-X-Received: by 2002:a05:6a20:a106:b0:1cf:52f5:f5 with SMTP id
- adf61e73a8af0-1d8bcef497bmr4471554637.2.1728731074631; Sat, 12 Oct 2024
- 04:04:34 -0700 (PDT)
+        bh=DXpQfdUU6RqG8+Te9GmI74BrkXUQuHFJl7lqEnDb0QY=;
+        b=Jc3U9N/IRK4P+NFMSrQD3Ds50y8WoOFmQ1SuDBRgPu05BSczuk19BhTo1P0/QE2NHA
+         SqVZq1zD/M89ARXedJMk99VKNvLPTkXOxoNN4wXY/LTstEHw3jdnwknw0y9Ej8op/X3P
+         wd4Kfppixwn0CTOEnCDZbBjQmu8eXkjGVkLL82B2t2z5WVl/huzvaPfgAUvwo3TjL556
+         gHI4E4H7l5wR3HWNJwaG1TOd7A29kluxJp2jw6lMFydHeeKAcQ45ockAfijOFJ+VwwEA
+         1eIhDsUqSTBTudZNk8Tj6ndY7OBUGD92yZYHJdBnOCLRH0GtfjsrwMyOQcctuJGzoV8A
+         Sx/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUNcj4gGY2klxDAghfCB7ZFPr/B4Yx5xrFbQSfwX6p8eFyVQoexS+nL6O0A+fVvp+JrmghnHXDzKLhkHkk=@vger.kernel.org, AJvYcCWmh6PHWVC+bkBwvYod278SO+MGOcSLyUQh2I4j1HFDuVAUZmdZqhw9jOplBb9wcRWPpMVBk6WALK2iEg33gbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIIe+IScTgsbLZnygP1I3AqIpeEvtXEkujkrZ2CgJ65QWOEdX7
+	siegmq2NdAX+tmX/0iCZAa/ZM7ks5M0BRH34VQOqH/XygSechrG7LoHIs5VPSo8iUlrpA80Atmo
+	/iOYNjtTP+U6qfSb10tqo6j2CXDk=
+X-Google-Smtp-Source: AGHT+IEnl6eBizhL/KUnxNn9a+QsJLplFC2sm8nTkqQ/Vhlea46k4opUZFsBOsyHgtkw2JwU3bkz7UAc+T3Ym2+XA88=
+X-Received: by 2002:a05:6a00:848:b0:71e:4a06:8a62 with SMTP id
+ d2e1a72fcca58-71e4a069110mr1956772b3a.7.1728731312294; Sat, 12 Oct 2024
+ 04:08:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241012075312.16342-1-witcher@wiredspace.de>
-In-Reply-To: <20241012075312.16342-1-witcher@wiredspace.de>
+References: <20241012075312.16342-1-witcher@wiredspace.de> <20241012075312.16342-7-witcher@wiredspace.de>
+In-Reply-To: <20241012075312.16342-7-witcher@wiredspace.de>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 12 Oct 2024 13:04:21 +0200
-Message-ID: <CANiq72kG0Ai2DHfERD0aPDVuEpLYrZ_2uYdw17=eeHRp+2Q1Rg@mail.gmail.com>
-Subject: Re: [PATCH 1/7] drm/panic: avoid reimplementing Iterator::find
+Date: Sat, 12 Oct 2024 13:08:18 +0200
+Message-ID: <CANiq72k2hDLf+PDkE6EQd7_UK2-XJYa3r2rVqDrjxARN7obT=A@mail.gmail.com>
+Subject: Re: [PATCH 7/7] drm/panic: allow verbose version check
 To: =?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Jocelyn Falempe <jfalempe@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -74,40 +74,36 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Thomas,
-
-These commit logs are nicely explained -- thanks a lot for taking the
-time to write each!
-
-A couple nits below.
-
-On Sat, Oct 12, 2024 at 9:53=E2=80=AFAM Thomas B=C3=B6hler <witcher@wiredsp=
+On Sat, Oct 12, 2024 at 9:54=E2=80=AFAM Thomas B=C3=B6hler <witcher@wiredsp=
 ace.de> wrote:
 >
-> implementing the same logic itself.
-> Clippy complains about this in the `manual_find` lint:
+> Clippy warns about a reimplementation of `RangeInclusive::contains`:
+>
+>     error: manual `!RangeInclusive::contains` implementation
+>        --> drivers/gpu/drm/drm_panic_qr.rs:986:8
+>         |
+>     986 |     if version < 1 || version > 40 {
+>         |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: use: `!(1..=3D40).cont=
+ains(&version)`
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#manual_range_contains
+>         =3D note: `-D clippy::manual-range-contains` implied by `-D warni=
+ngs`
+>         =3D help: to override `-D warnings` add `#[allow(clippy::manual_r=
+ange_contains)]`
+>
+> Ignore this and keep the current implementation as that makes it easier
+> to read.
 
-Typically commit messages use newlines between paragraphs.
+Yeah, I wonder if we may want to disable globally this one (and
+possibly the previous one too) -- I am ambivalent.
 
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1123
+> +    #[allow(clippy::manual_range_contains)]
 
-Since each of these commits fixes part of the issue, I think these are
-meant to be `Link:`s instead of `Closes:`s according to the docs:
-
-    https://docs.kernel.org/process/submitting-patches.html#using-reported-=
-by-tested-by-reviewed-by-suggested-by-and-fixes
-
-In addition, these should probably have a `Fixes:` tag too -- I should
-have mentioned that in the issue, sorry.
-
-Finally, as a suggestion for the future: for a series like this, it
-may make sense to have a small/quick cover letter saying something as
-simple as: "Clippy reports some issues in ... -- this series cleans
-them up.". Having a cover letter also allows you to give a title to
-the series.
-
-Thanks again!
+This (and the previous one) may be good candidates for `#[expect]`. We
+don't have that yet in mainline, but it is in `rust-next`, so we can
+clean it up next cycle.
 
 Cheers,
 Miguel
