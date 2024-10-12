@@ -1,98 +1,159 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3286A195811;
-	Sat, 12 Oct 2024 14:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27CE17C7C;
+	Sat, 12 Oct 2024 15:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728743161; cv=none; b=iAWWJjOdAXuEZCaAbjda+wwknNGDYOMfybZb1rycmlqE+nSjiF5uQUR23i59MMaqvVzHaXdHtumxq5qcToCk8rK1OxLcM+GFBcTrubJ0v8AmjgmfpjaKkaUppH8U+wb9vQTFywy9zCiUZR0LkALLaVXZKjfveHMgGI2oEEZdd4E=
+	t=1728746382; cv=none; b=JCSCd8xHcmXMRQ3Mxc5Yu3SNpMl26j+XPizDItXVUw16/AQaApdeAJvZr6KFIKVYME8pX/CVyj2QxwO69sooRyuQWH1lw0Oa4BoQaizRg+Hvpz88qEojtaCaw8F0FojUH05bfg4kJBRJHg/gEfcYX+/SRkYEl5Z6DEtFe8Vl2F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728743161; c=relaxed/simple;
-	bh=g19ZF4NfxaZkMR50deDEpuIYJHiJELegRWTzAoKqkek=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BpozoRNJE9z1DV3H2Dw44T3Ra6flOY+gC112xjQEXwCgAyxPbSDIYvzwLJOzW7ZAcvYwizyrLiVWt9rjxT0pmTRyIinFKTcS4Y1oAWbg9YBgApgvJIIDNJYTYRqT+iLYhiK6qLCZ5MVS67k6fjRucI4WIiHDGSmcvebr0/QzJ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PTjrmj5A; arc=none smtp.client-ip=209.85.208.182
+	s=arc-20240116; t=1728746382; c=relaxed/simple;
+	bh=eGkwhL0l5q9yqTx+ZgKNcSYaKQAZm2uAzS3eFuTFyh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kh8zhPX+RgyMCWKOL2FRNxHu8t2lr6yvgNnoi60Isx8VPEImgG8kOBojrpRxw1b+3jBKJuWf7VxmH+E6cdon11ajfyRt9ekGFtkeMl/HEuhSt0yIheZ6EMDCqnFf4s2GAp5cqv1QPyz8MRCcpUMJM+l7n/t1vSHbZczi06Qiehk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ab/dtrO1; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PTjrmj5A"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fb470a8b27so333361fa.1;
-        Sat, 12 Oct 2024 07:25:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ab/dtrO1"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6cbd00dd21cso18890226d6.3;
+        Sat, 12 Oct 2024 08:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728743158; x=1729347958; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=g19ZF4NfxaZkMR50deDEpuIYJHiJELegRWTzAoKqkek=;
-        b=PTjrmj5Aw+5CKLBUMO7JwHQuZdnyigkH6nYT2YTu+PBtkpXSKEcZj3wPEGsKPBfMAJ
-         rWvoOqzay/Uz++uK96RRDNmanX4RTfIj90e/mTZvd3X0muaG9Un1RcFcp798NGy36UFB
-         PkpnWbl9+X2usEmsPvPOMRczOUPUV4JxyPYp6kVr5g9LTxrg076jAToEhMbrHc0op+Ev
-         8y1iroihARPJN9AKywrjYaVy2pKgbfObX4uqNUChKJLtGGMLdk2ipngBXvawxQS9iKOu
-         eAw+DdZu3J0t0ISD8etwM8Ls++H6r5GIBvCtqUpkPYWAd6z8AhQqbWRj0/C4MbGkcLyM
-         9HWw==
+        d=gmail.com; s=20230601; t=1728746380; x=1729351180; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+2hqgHp74vp//VMe7oyr+jtqdRDjoaMSJXEykJ5GF+E=;
+        b=Ab/dtrO1z/n8b5edETx2QktfMISAjYDapJVMkB7LTrM8z1x29AwXmdP/q3pnCUn84d
+         XmH/jVAq8TdEpHAM2WIZI9PsBpkiMkCkZHYYWmCfLO/1aTsPSISCC3sL/ZuO+GbIlcrz
+         D39xcJtd+cumRD8K0lAcwUX6MOuSfDO+ky4VE8m/kDfrYTTEQrdkas4C7SQwO7cjTbel
+         Uou71vXNBngePD4ymnEzJSMD4+gb9C+l8LiRbgwTVuzdTW4+6dNBGDuoAq0Ex7Fe5xu5
+         VYR1oOLHNVhMzc4HIOgYqLqg1MebwwLHYj1ehDSyYB8FxRe8VkEQgQ/T9RE3iQoaXn4n
+         x47A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728743158; x=1729347958;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g19ZF4NfxaZkMR50deDEpuIYJHiJELegRWTzAoKqkek=;
-        b=l360ru/JOaguK34aXwpaSF4pS4V+aFX3X7g3Wcz5ylDilSPGcGWZITxn+gI/MYItEZ
-         btHce06LXR8btM33YnmBCerhozcpTICnIWaT8wjYvmPz+2+Ut4Kgu2q12NrLP/7MUFaA
-         GTbt2IXz5l1nXwDfMYuBWXwac0CCUYe7heuUGwppSu3HGqkLGmvu5TubgHaG9Fw6+c2O
-         q9aAJV0SIBhE+E0C7/TyEzqBHkg9H8RdTo8YcH5R2RibS4jT2hSR+Q5qg77omHOcZPHB
-         pdoPsuzY3hMw+FZBJQqr/4v6MLUNP3h33NEIqlUWWztUB7uWJ6WeQQ1LktLPc+EzdcMD
-         ELsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVBtlKAUR8EsJibDLlziEVE6m+AaQw5jttyRDikZ4NnIxEWeCZ+bd4zuqP/NZ5tfsAizTxo/eIWxo85tevU@vger.kernel.org, AJvYcCVchVZ6uhEL6cuZ/HETahMQiUvcAsGZm/HNQRWBwRHPJfuHTdwgJZmRI3i2zV0y4cefb6d9FmMz+lbX45gf3Nc=@vger.kernel.org, AJvYcCXchJgi/4o5Iug/BOPdtqtpP7RvU77elhU2+IoHj5mIKTwYm4QwC9/y1QLDucIqCTIqkgwCzZAmsJTig/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMCf/TJTq9w1w+3dy64l9lr2Rdvouyps73Tm9Cf3fZjVt58eQh
-	tP7Xbto7vIRD2HrkQrHH2ZYQR081aP1ik6x4zFE4+TVcj2wgEv8rq33fW6c+4XqJ7O5DusKlemF
-	2n0lC4XfVsB1AUjzvU+tjHEnwiBs=
-X-Google-Smtp-Source: AGHT+IFLoGSwV7ic4etZ3B32N24F1Bh08Bry9PDbJ3YCptlzJ5QtwiU1BB6lm9FUoBOU4G+Sy7VYGfLYi1On4LVMMxM=
-X-Received: by 2002:a05:651c:1992:b0:2fa:e52f:4460 with SMTP id
- 38308e7fff4ca-2fb207ad4ecmr35362501fa.1.1728743157957; Sat, 12 Oct 2024
- 07:25:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728746380; x=1729351180;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+2hqgHp74vp//VMe7oyr+jtqdRDjoaMSJXEykJ5GF+E=;
+        b=SJMuZANiWO9/LEVLaI4GltqpXw6pduS/6Im0wd/6ielwvivA4fhkrMx8PbrpYnN96T
+         vAeTQzXUYXsEXbtE0jRhIjYb8vtxL7uoW6ADJDpe90p4uYe1JqHUGa26zW7gD1uZjsQ8
+         K1O1hnB2SkxcDDsiEW+h+5qNzbSwG92EyF5jhsEYNXoK/Xu6irdIfMUHrmZQip7t2Dmg
+         RJRNuzpgO+t5ASFHU/V7MVJCN+4/odG3upi8DwHZfMdwXnV3RBpGXxaF4Ti4qtPT3FAY
+         NOzMsNaXzacvW3CRuum+E2SOOyiG0yytvYOEOPMqfKpt3aHaALC7etWkB70e+0i2IKqc
+         F/YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUg0CcKveweIvm02dGFj4vQU/FXKy8cc5fQRcKcs6WLY27ePVt/XmjT3QP5SWulENBF98YF6XWOoqAgfL41a74=@vger.kernel.org, AJvYcCWRVxiWcAJ8P6fdCFeYSC/HBM3o76hQm7O5XI8lSgkxF0HO6HHv2ZNxU8S2Ky/WAX1BfE8K3W4AK6qP6u8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgvawgWG45PB3AuvbDOBzFzEBF66qrbaOKax0JR9lv9SINiGJT
+	SmF1wVDt8lZOQhD9JyM3I/eYQzMKemsErkbYT/TWUc+2IOiVxooZ
+X-Google-Smtp-Source: AGHT+IFuEO2D0JUQ+li+8xP4eefbEmNshsf1ZWYrqiMQDWwBHmwz9rkP9AAUdMfj2bo4nf9gIK6B8w==
+X-Received: by 2002:a05:6214:3198:b0:6cb:3b34:55d3 with SMTP id 6a1803df08f44-6cbf00890f6mr92736546d6.29.1728746379820;
+        Sat, 12 Oct 2024 08:19:39 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cbe867a9c6sm25686986d6.144.2024.10.12.08.19.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2024 08:19:39 -0700 (PDT)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6A11B120006C;
+	Sat, 12 Oct 2024 11:19:38 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Sat, 12 Oct 2024 11:19:38 -0400
+X-ME-Sender: <xms:ipMKZ30YgWrQJ-qseQoCM36rsPVXsz0CoqcVH1RckKGyudtrzK8xBA>
+    <xme:ipMKZ2HXKZaCYtfC4nlDxOav7Fudk1KynLSKsxJmU1S_vS9A7s4rxQ2cUbK4wQsX5
+    RqZfIhvG_phU5SKQg>
+X-ME-Received: <xmr:ipMKZ34yHioZvdi0_KJO-77K2pQ0bHY_-cUlWz1J_aX6Ednirt9dr7JKoAidxQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeguddgkeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeejteffieehudffvdejtddugeefvdeftdekgfeg
+    tddutddtkeefleeihfekteefieenucffohhmrghinheprhhushhtqdhfohhrqdhlihhnuh
+    igrdgtohhmpdhgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonh
+    grlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghnghep
+    pehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudefpd
+    hmohguvgepshhmthhpohhuthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhhn
+    rgdqmhgrrhhirgeslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehfrhgvuggvrh
+    hitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhi
+    gidruggvpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoh
+    epsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggv
+    nhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
+X-ME-Proxy: <xmx:ipMKZ80fRCXFT2uXK4-a9m4YuDcUHEbHUTXwClWwEZWTTYCjD0wgMw>
+    <xmx:ipMKZ6F802UQ2KNWwzOU61JPf4tjsr-3506dOiwK6pQg0_AyYlLx_g>
+    <xmx:ipMKZ99SV2Bq7RrIxtty347GzNXKPNJGHrSaiIerZQAmNO-3Re0qRQ>
+    <xmx:ipMKZ3k01LNGBKqH23DCaU6tJFK_tyIoHD2O14qqFYDbkkhHi7nJHg>
+    <xmx:ipMKZ2Hau46vLCEiPerDlrd1cQmOJXmxr27UvFixOMj_URwifPq1Z63o>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 12 Oct 2024 11:19:37 -0400 (EDT)
+Date: Sat, 12 Oct 2024 08:19:27 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 14/14] rust: hrtimer: add maintainer entry
+Message-ID: <ZwqTf-6xaASnIn9l@boqun-archlinux>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+ <20240917222739.1298275-15-a.hindborg@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
- <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
- <CGME20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514@eucas1p2.samsung.com>
- <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
- <D4RZIDTJFVX5.16Z4XSB5IW6D1@samsung.com> <CANiq72n+mWOP3xNUU4Mep-n5QtJ8zQiwP9JZ-KX68+fOC0GMmw@mail.gmail.com>
-In-Reply-To: <CANiq72n+mWOP3xNUU4Mep-n5QtJ8zQiwP9JZ-KX68+fOC0GMmw@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 12 Oct 2024 10:25:22 -0400
-Message-ID: <CAJ-ks9mrY0eWjagq7hnHzY9jMRzV_4NS1cBfg4ad0v9Q3aV38A@mail.gmail.com>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Daniel Gomez <da.gomez@samsung.com>, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
-	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240917222739.1298275-15-a.hindborg@kernel.org>
 
-On Sat, Oct 12, 2024, 09:41 Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> In other words, it sounds to me like the solution here is to simply
-> provide a variable with the current name as the default, and let
-> out-of-tree override that if they need, rather than query `rustc`.
+On Wed, Sep 18, 2024 at 12:27:38AM +0200, Andreas Hindborg wrote:
+> Add Andreas Hindborg as maintainer for Rust `hrtimer` abstractions. Also
+> add Boqun Feng as reviewer.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-In order for this to be reasonably maintainable we'd want the variable
-to be something like DYLIB_SUFFIX so that we don't have to revisit this
-if macros are ever provided by more than one crate (or worse, have to
-provide N variables).
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
 
-If this is the preferred path, I can rework this patch in that direction.
+Although, I would like to suggest we move hrtimer under
+rust/kernel/time.
 
-Tamir
+Regards,
+Boqun
+
+> ---
+>  MAINTAINERS | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index cc40a9d9b8cd..018847269dd3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10035,6 +10035,16 @@ F:	kernel/time/timer_list.c
+>  F:	kernel/time/timer_migration.*
+>  F:	tools/testing/selftests/timers/
+>  
+> +HIGH-RESOLUTION TIMERS [RUST]
+> +M:	Andreas Hindborg <a.hindborg@kernel.org>
+> +R:	Boqun Feng <boqun.feng@gmail.com>
+> +L:	rust-for-linux@vger.kernel.org
+> +S:	Supported
+> +W:	https://rust-for-linux.com
+> +B:	https://github.com/Rust-for-Linux/linux/issues
+> +F:	rust/kernel/hrtimer.rs
+> +F:	rust/kernel/hrtimer/
+> +
+>  HIGH-SPEED SCC DRIVER FOR AX.25
+>  L:	linux-hams@vger.kernel.org
+>  S:	Orphan
+> -- 
+> 2.46.0
+> 
+> 
+> 
