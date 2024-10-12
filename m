@@ -1,36 +1,36 @@
 Received: from dd3514.kasserver.com (dd3514.kasserver.com [85.13.129.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370458F49;
-	Sat, 12 Oct 2024 21:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9232564;
+	Sat, 12 Oct 2024 21:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.129.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728767687; cv=none; b=evjT8M3vmEFKc0t0S6w4AqwQwxHn3OTjshdTCQ3+xDmSONjDc6lrABMWJckriCVUv5FtGrw0DIYe7ng1Qe8SdyLwsKEo1o1Htk8b9Voa44m1WT9a57PBWfipbOdQ7mlkuVAplEshKX/hp1U72fAmnR6wWWQtEIcPt4vol8Aw2gc=
+	t=1728769745; cv=none; b=ki2x3B0e2Km9SFLaiqy4XyACcrJS3kfqcjTa5qiWVzGEYD1ABNV9B3jaev38IbtkooM5W/KPgGdfgDAiySmNt0Wa90xL53MqQBVEKjMC3SX7oCg2mFJKNliz6/GVMbMfAO9mZMXWgNqpAEpKQzJvwTo4HbA0CIOdrB8dgPH55sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728767687; c=relaxed/simple;
-	bh=/NUcAbKwbXJ/iTal7F66He+nrF+0nzhzv/w9IiUiG6s=;
+	s=arc-20240116; t=1728769745; c=relaxed/simple;
+	bh=czsCTSHYoHKyHTg8bSdZp3H642CthsJm/P2MaOMfNDg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JawadwcSSQBUKC8G33aJ3WHiph6qWTlly4tMXprFjVk8bHoWNWKisG2+UHEaqUY0MAzuAHlSj+Op/aX2H8nQmUXgPiBNeILCtF46Tz/+5vSnUYCQvCdhmnehd4xdy8ryMhDioJPq0lEGHnBUuMNtrOY2IBX135hLT38sDHfMS9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com; spf=pass smtp.mailfrom=walterzollerpiano.com; dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b=k4sZw0C9; arc=none smtp.client-ip=85.13.129.232
+	 In-Reply-To:Content-Type; b=AG9hrAnCrAjytsQA+WhF6KfSOY13YIzB6ROAZMUj27WyhmW9S8oPRDHbiLMOjZYlM+UjW8d0CPRN3k4IrIQx102ensouBwU7gvvu4lBSyQS++dnxGotLVidzX1nde6yCdnSdCdgFZpxfTGjRnPNNKzUhd0+eKTKVV/hJILotIxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com; spf=pass smtp.mailfrom=walterzollerpiano.com; dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b=rYkJ7Fes; arc=none smtp.client-ip=85.13.129.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=walterzollerpiano.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walterzollerpiano.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b="k4sZw0C9"
+	dkim=pass (2048-bit key) header.d=walterzollerpiano.com header.i=@walterzollerpiano.com header.b="rYkJ7Fes"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=walterzollerpiano.com; s=kas202409051210; t=1728767675;
-	bh=Zm8qSnzI2p/5ZwMZ87hk/+G3XVX5j1FDxMimTthXlxE=;
+	d=walterzollerpiano.com; s=kas202409051210; t=1728769740;
+	bh=cbgYXwrEoEp5y5FnxtUZ41ns07ndwEMx1dxwH63SO/M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k4sZw0C9nIKaTnI3R3tlqol+Pv/jYgN8fLvlNTaDsTnJ/jZw/dkcVMt9ZCfL2RCxP
-	 g7MYnLzeGuz2lt5w2VsNh8lW0lB4/bLNfZ08/XRwOqAL9CPfRDpRd8VTd0nxkUizMq
-	 pM39HH0P5h1bKgKIFznLczCMs7dYEgyxkrjsnMjkxReXNnPcAsV34pWnGqIWv7LIoT
-	 etJz++8erBukkSqI03Ov7l2tPLfyoPKLxJoaf0V8gRB5lkBFXSRFFcnwn/3AQi/ogt
-	 JbuZZr8RIMdMk1iBniqq6sjy5+8QHeiyBxFq9lbFEsFoMdPuUaUDe4uU76A+XFS7No
-	 oi4XAGG8UpMEg==
+	b=rYkJ7Fes3TV6xxErULasiWJh9I0rmIYVwpmELKh2Lznkj2MOzkaOdQW8def2+46Sj
+	 xOjgYMdp3p+TatHVcss3lFvJzPrssdVBMz5pkqzMHBh7hrzn3ZoUXUEZuUoSlQHJHV
+	 1M81yqK3Em+iWOlGkwqS7hKExXLHWeN198MNvb9KHLuGeqcpXw7S1FW/cUmMwNTxZ3
+	 e7+loTn6ewctcM9qUqbi0n2obd149HDy+OJ/7vrXXw7Dd1ER5V9ijGxoIFeo7OhC/Q
+	 G5w3S3aPxb4IIsO1NnkjF4khw/JnwA9OEa7bH7srxgbwubLuiVjvJYEO9ILrAP6ojY
+	 ijm73/cCvLS4g==
 Received: from [192.168.1.124] (31-10-158-205.cgn.dynamic.upc.ch [31.10.158.205])
-	by dd3514.kasserver.com (Postfix) with ESMTPA id 408091023B6;
-	Sat, 12 Oct 2024 23:14:35 +0200 (CEST)
-Message-ID: <654edb82-759e-4845-8698-5257fe69a27c@walterzollerpiano.com>
-Date: Sat, 12 Oct 2024 23:14:34 +0200
+	by dd3514.kasserver.com (Postfix) with ESMTPA id 17B38102283;
+	Sat, 12 Oct 2024 23:49:00 +0200 (CEST)
+Message-ID: <984f6b1b-b396-45e1-8325-90a01e4305c3@walterzollerpiano.com>
+Date: Sat, 12 Oct 2024 23:48:59 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Character device abstractions for Rust
+Subject: Re: [PATCH 1/3] rust: char_dev: add character device abstraction
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
@@ -48,67 +48,167 @@ Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
  Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 References: <20241011-rust-char-dev-v1-0-350225ae228b@walterzollerpiano.com>
- <2024101256-amplifier-joylessly-6ca9@gregkh>
+ <20241011-rust-char-dev-v1-1-350225ae228b@walterzollerpiano.com>
+ <2024101253-golf-detonator-592c@gregkh>
 Content-Language: en-US
 From: Josef Zoller <josef@walterzollerpiano.com>
-In-Reply-To: <2024101256-amplifier-joylessly-6ca9@gregkh>
+In-Reply-To: <2024101253-golf-detonator-592c@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Bar: +
 
 
 
-On 12.10.24 09:29, Greg Kroah-Hartman wrote:
-> On Fri, Oct 11, 2024 at 08:55:41PM +0200, Josef Zoller wrote:
->> Writing character devices is a common way to start writing kernel code,
->> especially because of the book "Linux Device Drivers", which is still
->> one of the best resources to learn about Linux kernel programming. To
->> allow an easier entry into Rust kernel programming specifically, this
->> series adds abstractions for these kinds of devices to the Rust API.
+On 12.10.24 09:36, Greg Kroah-Hartman wrote:
+> On Fri, Oct 11, 2024 at 08:55:42PM +0200, Josef Zoller wrote:
+>> +unsigned int rust_helper_MAJOR(dev_t dev)
+>> +{
+>> +	return MAJOR(dev);
+>> +}
 >
-> I understand this, but if at all possible, I would prefer that people
-> stick to using the misc char device interface instead.  It's much
-> simpler and integrates better into the overall system (handles sysfs for
-> you automatically, etc.)
+> I don't think you use this function in the code anywhere.
+
+Yes, I do. I use it at rust/kernel/char_dev.rs:41.
+
+>> +unsigned int rust_helper_MINOR(dev_t dev)
+>> +{
+>> +	return MINOR(dev);
+>> +}
 >
-> I've already merged the misc device rust bindings into my tree, so why
-> not just stick with them?
+> Is this really needed?  No driver should care about their minor number,
+> except to possibly set it, not read it.
 
-Aaaah, I should probably have done some proper 'market research' before
-just blindly diving into and implementing this. So, if I understand you
-correctly, you're saying that only very niche use cases would benefit
-from being implemented as a raw char device, and that the misc device
-interface is the way to go for most cases?
+It's not really needed, but I use it in my scull example to just print
+the major and minor numbers of the devices, which makes it easy to
+quickly create a device file for testing using mknod.
 
->> I also included a sample that demonstrates how to use these abstractions
->> to create the simplest example from LDD3, the "scull" device.
+>> +dev_t rust_helper_MKDEV(unsigned int major, unsigned int minor)
+>> +{
+>> +	return MKDEV(major, minor);
+>> +}
 >
-> This is great, but why not just provide the scull example using misc
-> device?
+> If you are only doing dynamic creation, as your initial text said, I
+> don't think you need this either as the kernel should create it for you.
 
-I don't remember seeing a misc device implementation in the book. Are
-you just saying that the scull device could be easily implemented as a
-misc device instead, or am I missing something?
+Yeah, you're right. I forgot to remove this one after I changed to only
+allowing dynamic device number creation.
 
->> I'm also aware of the patch series about misc devices that was sent
->> recently. I think these are both valuable additions to the Rust API, and
->> could even be combined in some way, in which case the file operations
->> abstractions in both series should probably be separated and
->> generalized. But I'm still sending this series as it is, because it is
->> my first ever patch and I could use some feedback on my approach.
+>> diff --git a/rust/kernel/char_dev.rs b/rust/kernel/char_dev.rs
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..b81c0d55ab60f18dc82a99991318a5ae0a26e560
+>> --- /dev/null
+>> +++ b/rust/kernel/char_dev.rs
+>> @@ -0,0 +1,976 @@
+>> +// SPDX-License-Identifier: GPL-2.0
 >
-> That's great, but I'd prefer to stick with the misc code for now until
-> someone really really really proves that they want a "raw" char
-> interface.
+> Minor nit, you forgot a copyright line :)
 
-Fair enough. So, it seems like I should probably just drop this series,
-right? I will probably still address the other feedback you gave me in
-a second version, but putting much more effort into this series seems
-like a waste of time now.
+Oh, I just looked at some other rust files in rust/kernel and saw that
+most of them don't have a copyright line. I'll add one to this file.
 
-Anyway, thanks for the honest and early feedback! I could have easily
-spent much more time on this series without knowing that it's not what
-you're looking for.
+>> +
+>> +//! Character device support.
+>> +//!
+>> +//! C headers: [`include/linux/cdev.h`](srctree/include/linux/cdev.h) and
+>> +//! [`include/linux/fs.h`](srctree/include/linux/fs.h)
+>> +
+>> +use crate::{
+>> +    bindings, container_of,
+>> +    error::{to_result, VTABLE_DEFAULT_ERROR},
+>> +    fs::{File, LocalFile},
+>> +    ioctl::IoctlCommand,
+>> +    prelude::*,
+>> +    types::{ForeignOwnable, Opaque},
+>> +    uaccess::{UserPtr, UserSlice, UserSliceReader, UserSliceWriter},
+>> +};
+>> +use core::{ffi, mem, ops::Deref};
+>> +
+>> +/// Character device ID.
+>> +///
+>> +/// This is a wrapper around the kernel's `dev_t` type and identifies a
+>> +/// character device by its major and minor numbers.
+>> +#[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
+>> +#[repr(transparent)]
+>> +pub struct CharDeviceID(bindings::dev_t); // u32
+>> +
+>> +impl CharDeviceID {
+>> +    /// Creates a new device ID from the given major and minor numbers.
+>> +    ///
+>> +    /// This corresponds to the kernel's `MKDEV` macro.
+>> +    pub fn new(major: u32, minor: u32) -> Self {
+>> +        // SAFETY: The kernel's `MKDEV` macro is safe to call with any values.
+>> +        Self(unsafe { bindings::MKDEV(major, minor) })
+>> +    }
+>> +
+>> +    /// Returns the major number of the device ID.
+>> +    ///
+>> +    /// This corresponds to the kernel's `MAJOR` macro.
+>> +    pub fn major(&self) -> u32 {
+>> +        // SAFETY: The kernel's `MAJOR` macro is safe to call with any value.
+>> +        unsafe { bindings::MAJOR(self.0) }
+>> +    }
+>> +
+>> +    /// Returns the minor number of the device ID.
+>> +    ///
+>> +    /// This corresponds to the kernel's `MINOR` macro.
+>> +    pub fn minor(&self) -> u32 {
+>> +        // SAFETY: The kernel's `MINOR` macro is safe to call with any value.
+>> +        unsafe { bindings::MINOR(self.0) }
+>> +    }
+>> +}
+>> +
+>> +/// Seek mode for the `llseek` method.
+>> +///
+>> +/// This enum corresponds to the `SEEK_*` constants in the kernel.
+>> +#[repr(u32)]
+>> +pub enum Whence {
+>> +    /// Set the file position to `offset`.
+>> +    Set = bindings::SEEK_SET,
+>> +    /// Set the file position to the current position plus `offset`.
+>> +    Cur = bindings::SEEK_CUR,
+>> +    /// Set the file position to the end of the file plus `offset`.
+>> +    End = bindings::SEEK_END,
+>> +    /// Set the file position to the next location in the file greater than or
+>> +    /// equal to `offset` containing data.
+>> +    Data = bindings::SEEK_DATA,
+>> +    /// Set the file position to the next hole in the file greater than or
+>> +    /// equal to `offset`.
+>> +    Hole = bindings::SEEK_HOLE,
+>> +}
+>> +
+>> +// Make sure at compile time that the `Whence` enum can be safely converted
+>> +// from integers up to `SEEK_MAX`.
+>> +const _: () = assert!(Whence::Hole as u32 == bindings::SEEK_MAX);
+>> +
+>> +/// Trait implemented by a registered character device.
+>> +///
+>> +/// A registered character device just handles the `open` operation on the
+>> +/// device file and returns an open device type (which implements the
+>> +/// [`OpenCharDevice`] trait) that handles the actual I/O operations on the
+>> +/// device file. Optionally, the `release` operation can be implemented to
+>> +/// handle the final close of the device file, but simple cleanup can also be
+>> +/// done in the `Drop` implementation of the open device type.
+>
+> release is traditionally where you handle cleaning up what was allocated
+> for this "open", and then drop can handle any "global" state for the
+> device associated with this specific instance.  So "simple cleanup"
+> might not be possible in both places, as they are different parts of the
+> lifecycle of a device.
+
+I guess, I haven't explained this clearly enough in the doc comment.
+We have two different types here that correspond to two different parts
+of the lifecycle of a device file:
+
+We have a type implementing the `CharDevice` trait. An instance of this
+type is created on device registration and lives until the device is
+deregistered. And we have a type implementing the `OpenCharDevice`
+trait. An instance of this type is created by the CharDevice type in the
+open implementation and lives until the corresponding release is called.
+That means that the OpenCharDevice type instance is dropped in
+f_ops->release, even when the CharDevice type doesn't implement release,
+so simple cleanup can happen in the drop implementation of the type
+implementing the OpenCharDevice trait and will correctly be called on
+release.
 
 Cheers,
 Josef
