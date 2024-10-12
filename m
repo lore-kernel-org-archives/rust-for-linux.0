@@ -1,185 +1,268 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3947646B5
-	for <rust-for-linux@vger.kernel.org>; Sat, 12 Oct 2024 00:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF2118E0E;
+	Sat, 12 Oct 2024 05:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728693065; cv=none; b=iYriogbaLCA8odR1vVERz9zPX0d9OU5dwRYNo/V9DsVUN6gDEaeMhOnbckXBSdhs6WfAxvexqGms1CSpAyYdA0360x3OxiPd6/8uONUlg6X/hh0XOzSGJ1hVu1w1b0/bAk4xVaaQi1tGgDoGCGL2hkpPxkHopZh42Z8clM9ynnc=
+	t=1728710386; cv=none; b=CYQWgDNNLSz0QLsZuft3ndt/NYUA/a0TFOHATe9VCO2+EbycPUJ1GQMucoHSpSWsk3e0taissX1tigALr/xeWIPs0A/vlaFSXjsIa9+pHE3ea0ZBmVi3QLvRzvk+geubOMul05bxY/lgn5uKuF/SsW5wzQ+HS4P/ro46E7Q/wrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728693065; c=relaxed/simple;
-	bh=abPuDlGAZOCwFmBDPYtgCz/VJjFeLYN9OPEzocR2J2U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=swiTAfFhv+rcFa29A9j1jAkH3x6dnSVFzoAu3cW+0V9kfESBO8MFE3sf5dH1f5XqWMIdx77r5JQyFNR4Bbg/KJbAcsWieiylQ3gI835pt0N+7RKRqFq7exg/4oZ/o5yNaLCiBUpABiXudJF1xIdY95iDhOZ5AVMMrh16ajgcmJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YswAkNgY; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1728710386; c=relaxed/simple;
+	bh=kUHQwroq/snC6ThTHXwFoppK3Mmm9bxAiXqHFdRSqUw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qqAFWsCAUEfQYgSJbiEbIrNmF2xrfnK0TfgQhNHhcmPbCzFCo61vyI/U1nEIrxuaa4GwZdmS533l1iyhMuECMFX+Qis5VMKUMqkScO07fYOL3jVC6wH4FcJ+HhyuWhHJdL/V4GcJJEaAzlkj/nZnd/hgWY95ptkc9NqQs/jqFw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMdNUd9f; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YswAkNgY"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-45fb0ebb1d0so49031cf.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Oct 2024 17:31:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMdNUd9f"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9968114422so383556366b.2;
+        Fri, 11 Oct 2024 22:19:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728693062; x=1729297862; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sJGsN3O4dmgvmvJTfWN1EB6FV9LDR+z6vamKRwbxBD4=;
-        b=YswAkNgYieE8OEj9AlpoJDlAd1WZADTgINunYX+EU9l4tutxUw6J5f2j0GaFTk7NaO
-         PbDYAmHjZ0/5zwmJT6/pwJd6iYwpGrw5J9gCVmcqwTBveegO6ind2BzHzWNcZBqkKsae
-         7gbJSkB3q7TQRRGUOWePfPTy0vz6SLD4HSY8e8MwWvFkEggValZfo1mqhEWJOrdGgL79
-         B41o2dg9CoK5oj87/k7KSs8ziWh0kicsfee32BlNx7AxDY9fg27XFYQPjmDMulYsXqs/
-         Se0rHKhlNJkgv2TanUJ1CQQ74Fmmuf6KReuAszNVn8nLZqPmrebod/Fc+QToGIiJXjkN
-         buWQ==
+        d=gmail.com; s=20230601; t=1728710383; x=1729315183; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pxmMStYCBYwAl7LNeZl4VWQYQ7PRcYg5jNsV5Cp3jKg=;
+        b=mMdNUd9fPteGidbzxfeHahXEJwCngTfdD9PMLEhtdGAMzaYngYTc2VUjie3x2G7OII
+         eXZoDv8yh4NWE7Ec9R3cbSFA/OrOZN/zMTbIINgOdFa+Clch0Y+YUyoVTytifCzmwBG4
+         seXcWmjsFHlWPHtLmG9mVGzqovjp5jM0SqKNz1za/Xc0D9TnwpEFFB4tnFQCCUrJ36vo
+         btZpQkfs807slnjHG+5MCdciaEv6ixgi6LW1MW5e4VzMOvvQmOhI85KIo35cuaDPtYED
+         utCv6OiqkCWQy1BvN1Ln0T+QzOgeQeE8dMOonBIOiRoUAhBcFw+k9K+/EM4KgDl4Denh
+         etZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728693062; x=1729297862;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sJGsN3O4dmgvmvJTfWN1EB6FV9LDR+z6vamKRwbxBD4=;
-        b=EZCzZRwv3XQdiDMDF6K1Ua1mvJ2G57mjAsi1Kz2XxYU8yRwyL0gdHuEvGwgvlbaUF3
-         C7yI29Trv60ZaM96srD7W1z4sM/UTyBhraztN3IGCfiv2NAgEOtWIkybZ1zZk3oiiiM9
-         gTB4iA6o4Ipp44zo0FFeYHyepBwaZF4wXgAUbACClWiNMLhGjuMeLEa5iMmfAkYB4lfd
-         C+dEcxmSZCHzolZsb/85vkiI1KYVf6cBcGny2smDZno8WQganrouzxNdxdWrnYFxNnWe
-         bTrVeSHWqLY6SNfAO9KrYtZUSGVo3TqwWRW1u/hhWFk0IgqQpd9jEoVyupmsV9UaGoJO
-         SpnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW25wIv90dT8ao6ni6fjos1ZrFfDszvy5S2WBKuGy9mmzmqnK8+12RWqSu+1jTvwgU3IvAmgSpO7mgV0/QiPw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxghOAUbQr1I4F7F7lHA9yAOq63qcABzwRt5qpSPDM9202hGzuc
-	Id3A801Y2Nyu+d+vv5pME/wdNNBi/kZpDWg6ZtNV37myhPjn4UDrfsTeVz5R2GV8g7l0HM1XehH
-	VZLUJTp5EADPwZ2MY//StzZjE0bBmGstmOzBe
-X-Google-Smtp-Source: AGHT+IF62uzsrTbog5umzZidYkR3ujw904388lXiegQU7aUwsewaU31QThGqPwmYjMh9iiWNwOimm89BXflxS19eetw=
-X-Received: by 2002:a05:622a:768e:b0:458:14dd:108b with SMTP id
- d75a77b69052e-46059c44444mr506521cf.13.1728693061828; Fri, 11 Oct 2024
- 17:31:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728710383; x=1729315183;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pxmMStYCBYwAl7LNeZl4VWQYQ7PRcYg5jNsV5Cp3jKg=;
+        b=uu9FC/140DRHSYyOLmxLHQdvoXVtqiga1Txw9fdK+VemUe9JcfJLDHEFtaVH4jqQ2y
+         FW/7xm6G7nTg1e1NutYdnPiA7Jgk8xegufGRdsujw7q0GEbCv+Y+mDr78KOy1ZXcXNjr
+         IPFUpMksGlMEiOsnfr//kJoWDZsO+ToAuAKRtYJMgNbC+6znRvJeNw6ZFqn0opL+lLVn
+         JTFAQjsJludhC7/GxnQ9FGFnaQmxBVTT/Pehk/2UAowdY94DxwIzj0wPmNLW/Zluj0dJ
+         xgHoQ8hYlW2YakdMqoQrFPml4+0Qyz7zsLiNSK+t0u/jzsxFRUOUrabpQwOHXn11WUbM
+         02tg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhnst8Mu3vuYQR2ncr9mX5A+qylXcHz5JVRlbGunOhiSKrxOFw1h4QOL4j+U0qdzKMFk5I5XCyihMSE9e/qGE=@vger.kernel.org, AJvYcCVHplGTvS9YUD91Ce4B40Zae/vhliYwmgfyIYvkIJYzDdJNuP6IKzC4zMBymXRUlmpnIdnVIy/HsbyVl3U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2W4sKCASmP46fsVYDSGUZWoOqaQMH7LnuFDv28BNLkgc90wWl
+	bmXHzaZ4GKUF5I6Zx6Z/RVrxsy8lj2RI4Aexjz/LRCeDSEYLj4HW
+X-Google-Smtp-Source: AGHT+IEhdoBjlBK1FLRy0wx6nyRWPilntgKu1aMmLxEKZeK4mKtZpIO9gJjJEj7Bcu6+olB7lyVWnw==
+X-Received: by 2002:a17:907:d2a:b0:a99:442e:34ac with SMTP id a640c23a62f3a-a99b95bc0c6mr466624266b.40.1728710383070;
+        Fri, 11 Oct 2024 22:19:43 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf0d:b400:7350:36ae:6e0c:c598? (p200300dfbf0db400735036ae6e0cc598.dip0.t-ipconnect.de. [2003:df:bf0d:b400:7350:36ae:6e0c:c598])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a80dcf0dsm286570666b.175.2024.10.11.22.19.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Oct 2024 22:19:42 -0700 (PDT)
+Message-ID: <d2ce38a3-9a32-4f4c-88f2-22864b66afe5@gmail.com>
+Date: Sat, 12 Oct 2024 07:19:41 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008183823.36676-21-samitolvanen@google.com> <Zwm3ykuiyI3ugr44@bombadil.infradead.org>
-In-Reply-To: <Zwm3ykuiyI3ugr44@bombadil.infradead.org>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Fri, 11 Oct 2024 17:30:22 -0700
-Message-ID: <CABCJKuc6w0bYRmWMk49_KRAiB0ZaHFOPRSP=sEQAbz0ArN1ORA@mail.gmail.com>
-Subject: Re: [PATCH v4 00/19] Implement DWARF modversions
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Konstantin Ryabitsev <mricon@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/14] hrtimer Rust API
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Dirk Behme <dirk.behme@de.bosch.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+ <e644aec7-02b3-4faf-9a80-629055c5a27a@de.bosch.com>
+ <ZvwKTinnLckZm8aQ@boqun-archlinux> <87a5falmjy.fsf@kernel.org>
+ <dae08234-c9ba-472d-b769-1d07e579a8ac@gmail.com>
+ <Zwmy-2Yc7vGboYvl@boqun-archlinux>
+Content-Language: de-AT-frami
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <Zwmy-2Yc7vGboYvl@boqun-archlinux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Luis,
+On 12.10.24 01:21, Boqun Feng wrote:
+> On Fri, Oct 11, 2024 at 05:43:57PM +0200, Dirk Behme wrote:
+>> Hi Andreas,
+>>
+>> Am 11.10.24 um 16:52 schrieb Andreas Hindborg:
+>>>
+>>> Dirk, thanks for reporting!
+>>
+>> :)
+>>
+>>> Boqun Feng <boqun.feng@gmail.com> writes:
+>>>
+>>>> On Tue, Oct 01, 2024 at 02:37:46PM +0200, Dirk Behme wrote:
+>>>>> On 18.09.2024 00:27, Andreas Hindborg wrote:
+>>>>>> Hi!
+>>>>>>
+>>>>>> This series adds support for using the `hrtimer` subsystem from Rust code.
+>>>>>>
+>>>>>> I tried breaking up the code in some smaller patches, hopefully that will
+>>>>>> ease the review process a bit.
+>>>>>
+>>>>> Just fyi, having all 14 patches applied I get [1] on the first (doctest)
+>>>>> Example from hrtimer.rs.
+>>>>>
+>>>>> This is from lockdep:
+>>>>>
+>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/locking/lockdep.c#n4785
+>>>>>
+>>>>> Having just a quick look I'm not sure what the root cause is. Maybe mutex in
+>>>>> interrupt context? Or a more subtle one?
+>>>>
+>>>> I think it's calling mutex inside an interrupt context as shown by the
+>>>> callstack:
+>>>>
+>>>> ]  __mutex_lock+0xa0/0xa4
+>>>> ] ...
+>>>> ]  hrtimer_interrupt+0x1d4/0x2ac
+>>>>
+>>>> , it is because:
+>>>>
+>>>> +//! struct ArcIntrusiveTimer {
+>>>> +//!     #[pin]
+>>>> +//!     timer: Timer<Self>,
+>>>> +//!     #[pin]
+>>>> +//!     flag: Mutex<bool>,
+>>>> +//!     #[pin]
+>>>> +//!     cond: CondVar,
+>>>> +//! }
+>>>>
+>>>> has a Mutex<bool>, which actually should be a SpinLockIrq [1]. Note that
+>>>> irq-off is needed for the lock, because otherwise we will hit a self
+>>>> deadlock due to interrupts:
+>>>>
+>>>> 	spin_lock(&a);
+>>>> 	> timer interrupt
+>>>> 	  spin_lock(&a);
+>>>>
+>>>> Also notice that the IrqDisabled<'_> token can be simply created by
+>>>> ::new(), because irq contexts should guarantee interrupt disabled (i.e.
+>>>> we don't support nested interrupts*).
+>>>
+>>> I updated the example based on the work in [1]. I think we need to
+>>> update `CondVar::wait` to support waiting with irq disabled.
+>>
+>> Yes, I agree. This answers one of the open questions I had in the discussion
+>> with Boqun :)
+>>
+>> What do you think regarding the other open question: In this *special* case
+>> here, what do you think to go *without* any lock? I mean the 'while *guard
+>> != 5' loop in the main thread is read only regarding guard. So it doesn't
+>> matter if it *reads* the old or the new value. And the read/modify/write of
+>> guard in the callback is done with interrupts disabled anyhow as it runs in
+>> interrupt context. And with this can't be interrupted (excluding nested
+>> interrupts). So this modification of guard doesn't need to be protected from
+>> being interrupted by a lock if there is no modifcation of guard "outside"
+>> the interupt locked context.
+>>
+>> What do you think?
+>>
+> 
+> Reading while there is another CPU is writing is data-race, which is UB.
 
-On Fri, Oct 11, 2024 at 4:42=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org=
-> wrote:
->
-> On Tue, Oct 08, 2024 at 06:38:24PM +0000, Sami Tolvanen wrote:
-> > Hi,
-> >
-> > Here's v4 of the DWARF modversions series. The main motivation is
-> > modversions support for Rust, which is important for distributions
-> > like Android that are about to ship Rust kernel modules. Per Luis'
-> > request [1], v2 dropped the Rust specific bits from the series and
-> > instead added the feature as an option for the entire kernel.
->
-> I think its important to mention *rationale* why I recommended it, it
-> let's you more broadly test coverage / support with tooling so that its
-> not just Rust modules which tooling will have to support. It gives the
-> option to have *one* unified way to do things. Not "rust is special",
-> oh no, do this instead. This also allows us to empirically evaluate
-> if this new solution also has benefits. If so what should we look out
-> for, metrics, etc. If there are proven benefits, then by all means
-> why not make the the default.
+Could you help to understand where exactly you see UB in Andreas' 
+'while *guard != 5' loop in case no locking is used? As mentioned I'm 
+under the impression that it doesn't matter if the old or new guard 
+value is read in this special case.
 
-Sure, I can expand the cover letter in the next version to include
-this. I linked to your original request, which gives the reader some
-more background, but you're right, it doesn't hurt to mention it here
-as well.
+Best regards
 
-> > Matt is
-> > addressing Rust modversion_info compatibility issues in a separate
-> > series [2], and we'll follow up with a patch to actually allow
-> > CONFIG_MODVERSIONS with Rust once everything else has been sorted
-> > out.
->
-> So this depends on that work? What's the ordering of things? That work
-> seems to be aimed at addressing long symbols, and that is also
-> generically useful, and there were odd old hacks for that for LTO.
-> Bring the patch reviewer with you, as they may not have all the
-> background.
+Dirk
 
-These patch sets are fully independent, but they are both needed
-before we can support Rust. I'll clarify this too.
 
-> > Short background: Unlike C, Rust source code doesn't have sufficient
-> > information about the final ABI, as the compiler has considerable
-> > freedom in adjusting structure layout, for example, which makes
-> > using a source code parser like genksyms a non-starter. Based on
-> > earlier feedback, this series uses DWARF debugging information for
-> > computing versions. DWARF is an established and a relatively stable
-> > format, which includes all the necessary ABI details, and adding a
-> > CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
-> > reasonable trade-off.
->
-> I think its important to state that most distributions enable CONFIG_DEBU=
-G_INFO
-> already, so this means Rust modules won't be asking much more from
-> distributions.
+> Regards,
+> Boqun
+> 
+>> Thanks
+>>
+>> Dirk
+>>
+>>
+>>> Without
+>>> this, when we get back from `bindings::schedule_timeout` in
+>>> `CondVar::wait_internal`, interrupts are enabled:
+>>>
+>>> ```rust
+>>> use kernel::{
+>>>       hrtimer::{Timer, TimerCallback, TimerPointer, TimerRestart},
+>>>       impl_has_timer, new_condvar, new_spinlock, new_spinlock_irq,
+>>>       irq::IrqDisabled,
+>>>       prelude::*,
+>>>       sync::{Arc, ArcBorrow, CondVar, SpinLock, SpinLockIrq},
+>>>       time::Ktime,
+>>> };
+>>>
+>>> #[pin_data]
+>>> struct ArcIntrusiveTimer {
+>>>       #[pin]
+>>>       timer: Timer<Self>,
+>>>       #[pin]
+>>>       flag: SpinLockIrq<u64>,
+>>>       #[pin]
+>>>       cond: CondVar,
+>>> }
+>>>
+>>> impl ArcIntrusiveTimer {
+>>>       fn new() -> impl PinInit<Self, kernel::error::Error> {
+>>>           try_pin_init!(Self {
+>>>               timer <- Timer::new(),
+>>>               flag <- new_spinlock_irq!(0),
+>>>               cond <- new_condvar!(),
+>>>           })
+>>>       }
+>>> }
+>>>
+>>> impl TimerCallback for ArcIntrusiveTimer {
+>>>       type CallbackTarget<'a> = Arc<Self>;
+>>>       type CallbackTargetParameter<'a> = ArcBorrow<'a, Self>;
+>>>
+>>>       fn run(this: Self::CallbackTargetParameter<'_>, irq: IrqDisabled<'_>) -> TimerRestart {
+>>>           pr_info!("Timer called\n");
+>>>           let mut guard = this.flag.lock_with(irq);
+>>>           *guard += 1;
+>>>           this.cond.notify_all();
+>>>           if *guard == 5 {
+>>>               TimerRestart::NoRestart
+>>>           }
+>>>           else {
+>>>               TimerRestart::Restart
+>>>
+>>>           }
+>>>       }
+>>> }
+>>>
+>>> impl_has_timer! {
+>>>       impl HasTimer<Self> for ArcIntrusiveTimer { self.timer }
+>>> }
+>>>
+>>>
+>>> let has_timer = Arc::pin_init(ArcIntrusiveTimer::new(), GFP_KERNEL)?;
+>>> let _handle = has_timer.clone().schedule(Ktime::from_ns(200_000_000));
+>>>
+>>> kernel::irq::with_irqs_disabled(|irq| {
+>>>     let mut guard = has_timer.flag.lock_with(irq);
+>>>
+>>>     while *guard != 5 {
+>>>         pr_info!("Not 5 yet, waiting\n");
+>>>         has_timer.cond.wait(&mut guard); // <-- we arrive back here with interrupts enabled!
+>>>     }
+>>> });
+>>> ```
+>>>
+>>> I think an update of `CondVar::wait` should be part of the patch set [1].
+>>>
+>>>
+>>> Best regards,
+>>> Andreas
+>>>
+>>>
+>>> [1] https://lore.kernel.org/rust-for-linux/20240916213025.477225-1-lyude@redhat.com/
+>>>
+>>>
+>>
 
-Ack.
-
-> > The first patch moves the genksyms CRC32 implementation to a shared
-> > header file and the next 15 patches add gendwarfksyms, a tool for
-> > computing symbol versions from DWARF.
->
-> In case I find issues with this patch series, let's split up the patches
-> in the next iteration by two sets, one which is the cleanups,  moves,
-> and non functional changes, and then a seprate set with the actual
-> changes needed. This let's us carry on faster so I can apply the first
-> set.
-
-I think the first patch is the only one that matches your description,
-but it's only needed for the gendwarfksyms tool we're adding, so I'm
-not sure it makes sense to merge it separately. I did have a couple of
-other patches in previous versions that would qualify, but they've
-been merged to -rc2 already.
-
-> > When passed a list of exported
-> > symbols and object files, the tool generates an expanded type string
-> > for each symbol and computes symbol CRCs similarly to genksyms.
-> > gendwarfksyms is written in C and uses libdw to process DWARF.
->
-> OK so a new lib dependency at build time. What if that's not present?
-
-Then the build fails. We used to check for libelf (part of elfutils
-like libdw) in Makefile before, but Masahiro explained in commit
-0d989ac2c90b ("kbuild: remove libelf checks from top Makefile") why
-it's not necessary to have separate checks for the library
-dependencies:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D0d989ac2c90b5f51fe12102d3cddf54b959f2014
-
-> > Patch
-> > 17 ensures that debugging information is present where we need it,
-> > patch 18 adds gendwarfksyms as an alternative to genksyms, and the
-> > last patch adds documentation.
-> >
-> > v4 is based on v6.12-rc2 and for your convenience the series is also
-> > available here:
-> >
-> > https://github.com/samitolvanen/linux/commits/gendwarfksyms-v4
->
-> Thanks! OK so I'd like to see next test coverage.
-
-Thanks for the links, I'll take a look and see what tests it makes sense to=
- add.
-
-Sami
