@@ -1,47 +1,46 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C548B14B07A;
-	Mon, 14 Oct 2024 08:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D67315575E;
+	Mon, 14 Oct 2024 08:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894169; cv=none; b=J1aZAWhRHw0VhXrf61ETVYToGZSE/hWhPGHwQoojK6dwjS3jebcEMHudWBB3DvVs8Z/HfJZKiewY3WG8pTjqMCG8z7uGaH0KfA/AUQHfZWls9q4Bz9Nqff5GlC3o8LXV59n6x9++qXfuRlJzxmpv2XMI73/39IDPNiUQM868syQ=
+	t=1728894170; cv=none; b=UETpqQ5umLmExaPi8yNuS6mOhOufF8Ef8aEe9+zWVNc4Izlq5Wp50GHDJofMUTkPaho4XHB5AB24M8guyuVgfYt/DE67uVb9n1WelJWMgZ50JRgT1kmUvrp24KWG0BOQ7qzrDP1gkehwgwB+aciD9JMMogkwY1OE7m6fbeG3vHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728894169; c=relaxed/simple;
-	bh=W9PWd/ItMFmQnOT/0CnlPC6wnFOM4tSVpK13gm+Djiw=;
+	s=arc-20240116; t=1728894170; c=relaxed/simple;
+	bh=nQNvsQI/LKOxp28gKqTsbBASM5OGfHUopU7DTfBEIvg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rnXan2FRVR4NcL/s29tORSB9XqIwJeX/bU2jGEynzjbkzBBtB6qaHC1aiPs55rK9hbG9DZKn8CgQbw09UZuLTIRR3FyKkyhSG7kfqj5mX8Zj9xotlXC8CdV/sT9sjOxueP+8gLuaRjMLe0+r3K/1jKK8LqdA8toxsF/fRBapsms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t/Iazdyd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7G72bjrG; arc=none smtp.client-ip=193.142.43.55
+	 In-Reply-To:To:Cc; b=HpO9H8tpdhiuqyKKwCTwnR6HZf71G1aQe8TqiIGashvvLehCiNwlxpve0RsZfRlt0viMtAYIGDNu15gEvk3N9eI84GdVTaSkRlvN+oadmncD9zhbZZtFiFmfBdMk9M7RzzLjvemjRZI/vR+nWdc9Hqn2idrXKO7N1GYulIjdhig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pmhoyqKY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ania52HS; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t/Iazdyd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7G72bjrG"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pmhoyqKY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ania52HS"
 From: Anna-Maria Behnsen <anna-maria@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728894164;
+	s=2020; t=1728894166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wBROUf8RO8R0id+0aQBgMewZfex9kNjCh0W1OFhDybw=;
-	b=t/IazdydPQQdUZ0LXEJ6xIDIiVBNTyICRDsc7UhT481twRsJ3nFc3x1llzUG1yu0U6FT3+
-	tP9tCiBmtZmtkmkWZdOJ/Jg4vqX6dNmXM1ewhswDGkI/GA90VTioZSeia90JOZhpUj45LT
-	Pcdz1m5H+qpKiFTTbZ9AgW0XKtCpaRMfH6L1+nHEmmBhCBkpnl8W9qM5jrNPQfXSUD/6gf
-	mLAHwi8uAro6gYBopJsztP9Dp8PjcqBwY3ZhWkZ3S4x7E6v5LD1oNLm7rYqOuNz5w68kFg
-	HZWtliESqB00VDW+C/HnHGWMdj+8dVWTFW9zq6z/RF6f4ZlEEF5AmN0/ZLJVZw==
+	bh=ry+dtPsZBklLhcJ65uITnod4UvodhQ0YRrocNcHCAkI=;
+	b=pmhoyqKY6/Hp+Nbkc7dId8BgCrzDJ6QT1UuIAFnkO98NXVGsIeP2puUTcKXXoRAgtnRv4t
+	v3JHN9LN6hTMcmamRJFwfGd8KT8qrZTuj08JTdvPeKqS2pgHTR+9I17zcGqGJfBZ8ROWNc
+	XhN942L6KWxiyE5G9R/l70YbCDsVuSmwwXTP2GgoyCi1ko4JzQ5G3fka/yloL2+fN7qQAH
+	HLmBr6Ja4ZNW51iuRnX3Wax4vr+CKfwna0Qy03RlhGPzmFEqsktP97h9E/TUMImncdfLfj
+	flm50SQ/4XzMxPXUkYOtd1xHBiIyJIhkiynMFJzjkL5mnz7GG2QV5bfF+2WBIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728894164;
+	s=2020e; t=1728894166;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wBROUf8RO8R0id+0aQBgMewZfex9kNjCh0W1OFhDybw=;
-	b=7G72bjrGDeGIZK0pGV23m8bPtanOb2bE6q6NUU8tg59NYx7Bv834Tf7lDamQM2yPaEKkGc
-	Lzn0qlaulvh9Y2Dg==
-Date: Mon, 14 Oct 2024 10:22:19 +0200
-Subject: [PATCH v3 02/16] timers: Move *sleep*() and timeout functions into
- a separate file
+	bh=ry+dtPsZBklLhcJ65uITnod4UvodhQ0YRrocNcHCAkI=;
+	b=Ania52HS0L2fPfnAAHtSDj1YuoBZ8Em64TR+UWoTyfZqGcr76FyIrr3kqQKG5cEckfBvAu
+	iGEBM4FwulsR7AAA==
+Date: Mon, 14 Oct 2024 10:22:23 +0200
+Subject: [PATCH v3 06/16] delay: Rework udelay and ndelay
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,7 +49,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-2-dc8b907cb62f@linutronix.de>
+Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-6-dc8b907cb62f@linutronix.de>
 References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 To: Frederic Weisbecker <frederic@kernel.org>, 
@@ -62,721 +61,125 @@ Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>,
  Anna-Maria Behnsen <anna-maria@linutronix.de>, 
  Miguel Ojeda <ojeda@kernel.org>
 
-All schedule_timeout() and *sleep*() related functions are interfaces on
-top of timer list timers and hrtimers to add a sleep to the code. As they
-are built on top of the timer list timers and hrtimers, the [hr]timer
-interfaces are already used except when queuing the timer in
-schedule_timeout(). But there exists the appropriate interface add_timer()
-which does the same job with an extra check for an already pending timer.
+udelay() as well as ndelay() are defines and no functions and are using
+constants to be able to transform a sleep time into loops and to prevent
+too long udelays/ndelays. There was a compiler error with non-const 8 bit
+arguments which was fixed by commit a87e553fabe8 ("asm-generic: delay.h fix
+udelay and ndelay for 8 bit args"). When using a function, the non-const 8
+bit argument is type casted and the problem would be gone.
 
-Split all those functions as they are into a separate file and use
-add_timer() instead of __mod_timer() in schedule_timeout().
+Transform udelay() and ndelay() into proper functions, remove the no longer
+and confusing division, add defines for the magic values and add some
+explanations as well.
 
-While at it fix minor formatting issues and a multi line printk function
-call in schedule_timeout().
-
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 ---
-v2:
-- Drop adding delay.h to MAINTAINERS file
-- Some more minor formatting fixups
----
- MAINTAINERS                 |   1 +
- kernel/time/Makefile        |   2 +-
- kernel/time/hrtimer.c       | 120 -----------------
- kernel/time/sleep_timeout.c | 317 ++++++++++++++++++++++++++++++++++++++++++++
- kernel/time/timer.c         | 192 ---------------------------
- 5 files changed, 319 insertions(+), 313 deletions(-)
+v3: Fix build error for i386 (missing linux/math.h include).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 91c3e79c69cd..4b067e68911b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10170,6 +10170,7 @@ F:	include/linux/hrtimer.h
- F:	include/linux/timer.h
- F:	kernel/time/clockevents.c
- F:	kernel/time/hrtimer.c
-+F:	kernel/time/sleep_timeout.c
- F:	kernel/time/timer.c
- F:	kernel/time/timer_list.c
- F:	kernel/time/timer_migration.*
-diff --git a/kernel/time/Makefile b/kernel/time/Makefile
-index 4af2a264a160..fe0ae82124fe 100644
---- a/kernel/time/Makefile
-+++ b/kernel/time/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-y += time.o timer.o hrtimer.o
-+obj-y += time.o timer.o hrtimer.o sleep_timeout.o
- obj-y += timekeeping.o ntp.o clocksource.o jiffies.o timer_list.o
- obj-y += timeconv.o timecounter.o alarmtimer.o
+v2: New in v2 (as suggested by Thomas)
+---
+ include/asm-generic/delay.h | 65 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 37 insertions(+), 28 deletions(-)
+
+diff --git a/include/asm-generic/delay.h b/include/asm-generic/delay.h
+index a8cee41cc51b..76cf237b6e4c 100644
+--- a/include/asm-generic/delay.h
++++ b/include/asm-generic/delay.h
+@@ -2,6 +2,9 @@
+ #ifndef __ASM_GENERIC_DELAY_H
+ #define __ASM_GENERIC_DELAY_H
  
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index cddcd08ea827..04f7d8a392c3 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2242,123 +2242,3 @@ void __init hrtimers_init(void)
- 	hrtimers_prepare_cpu(smp_processor_id());
- 	open_softirq(HRTIMER_SOFTIRQ, hrtimer_run_softirq);
- }
--
--/**
-- * schedule_hrtimeout_range_clock - sleep until timeout
-- * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t)
-- * @mode:	timer mode
-- * @clock_id:	timer clock to be used
-- */
--int __sched
--schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
--			       const enum hrtimer_mode mode, clockid_t clock_id)
--{
--	struct hrtimer_sleeper t;
--
--	/*
--	 * Optimize when a zero timeout value is given. It does not
--	 * matter whether this is an absolute or a relative time.
--	 */
--	if (expires && *expires == 0) {
--		__set_current_state(TASK_RUNNING);
--		return 0;
--	}
--
--	/*
--	 * A NULL parameter means "infinite"
--	 */
--	if (!expires) {
--		schedule();
--		return -EINTR;
--	}
--
--	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
--	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
--	hrtimer_sleeper_start_expires(&t, mode);
--
--	if (likely(t.task))
--		schedule();
--
--	hrtimer_cancel(&t.timer);
--	destroy_hrtimer_on_stack(&t.timer);
--
--	__set_current_state(TASK_RUNNING);
--
--	return !t.task ? 0 : -EINTR;
--}
--EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
--
--/**
-- * schedule_hrtimeout_range - sleep until timeout
-- * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t)
-- * @mode:	timer mode
-- *
-- * Make the current task sleep until the given expiry time has
-- * elapsed. The routine will return immediately unless
-- * the current task state has been set (see set_current_state()).
-- *
-- * The @delta argument gives the kernel the freedom to schedule the
-- * actual wakeup to a time that is both power and performance friendly
-- * for regular (non RT/DL) tasks.
-- * The kernel give the normal best effort behavior for "@expires+@delta",
-- * but may decide to fire the timer earlier, but no earlier than @expires.
-- *
-- * You can set the task state as follows -
-- *
-- * %TASK_UNINTERRUPTIBLE - at least @timeout time is guaranteed to
-- * pass before the routine returns unless the current task is explicitly
-- * woken up, (e.g. by wake_up_process()).
-- *
-- * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
-- * delivered to the current task or the current task is explicitly woken
-- * up.
-- *
-- * The current task state is guaranteed to be TASK_RUNNING when this
-- * routine returns.
-- *
-- * Returns 0 when the timer has expired. If the task was woken before the
-- * timer expired by a signal (only possible in state TASK_INTERRUPTIBLE) or
-- * by an explicit wakeup, it returns -EINTR.
-- */
--int __sched schedule_hrtimeout_range(ktime_t *expires, u64 delta,
--				     const enum hrtimer_mode mode)
--{
--	return schedule_hrtimeout_range_clock(expires, delta, mode,
--					      CLOCK_MONOTONIC);
--}
--EXPORT_SYMBOL_GPL(schedule_hrtimeout_range);
--
--/**
-- * schedule_hrtimeout - sleep until timeout
-- * @expires:	timeout value (ktime_t)
-- * @mode:	timer mode
-- *
-- * Make the current task sleep until the given expiry time has
-- * elapsed. The routine will return immediately unless
-- * the current task state has been set (see set_current_state()).
-- *
-- * You can set the task state as follows -
-- *
-- * %TASK_UNINTERRUPTIBLE - at least @timeout time is guaranteed to
-- * pass before the routine returns unless the current task is explicitly
-- * woken up, (e.g. by wake_up_process()).
-- *
-- * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
-- * delivered to the current task or the current task is explicitly woken
-- * up.
-- *
-- * The current task state is guaranteed to be TASK_RUNNING when this
-- * routine returns.
-- *
-- * Returns 0 when the timer has expired. If the task was woken before the
-- * timer expired by a signal (only possible in state TASK_INTERRUPTIBLE) or
-- * by an explicit wakeup, it returns -EINTR.
-- */
--int __sched schedule_hrtimeout(ktime_t *expires,
--			       const enum hrtimer_mode mode)
--{
--	return schedule_hrtimeout_range(expires, 0, mode);
--}
--EXPORT_SYMBOL_GPL(schedule_hrtimeout);
-diff --git a/kernel/time/sleep_timeout.c b/kernel/time/sleep_timeout.c
-new file mode 100644
-index 000000000000..78b2e7e30b1e
---- /dev/null
-+++ b/kernel/time/sleep_timeout.c
-@@ -0,0 +1,317 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ *  Kernel internal schedule timeout and sleeping functions
-+ */
++#include <linux/math.h>
++#include <vdso/time64.h>
 +
-+#include <linux/delay.h>
-+#include <linux/jiffies.h>
-+#include <linux/timer.h>
-+#include <linux/sched/signal.h>
-+#include <linux/sched/debug.h>
-+
-+#include "tick-internal.h"
-+
-+/*
-+ * Since schedule_timeout()'s timer is defined on the stack, it must store
-+ * the target task on the stack as well.
-+ */
-+struct process_timer {
-+	struct timer_list timer;
-+	struct task_struct *task;
-+};
-+
-+static void process_timeout(struct timer_list *t)
-+{
-+	struct process_timer *timeout = from_timer(timeout, t, timer);
-+
-+	wake_up_process(timeout->task);
-+}
-+
-+/**
-+ * schedule_timeout - sleep until timeout
-+ * @timeout: timeout value in jiffies
-+ *
-+ * Make the current task sleep until @timeout jiffies have elapsed.
-+ * The function behavior depends on the current task state
-+ * (see also set_current_state() description):
-+ *
-+ * %TASK_RUNNING - the scheduler is called, but the task does not sleep
-+ * at all. That happens because sched_submit_work() does nothing for
-+ * tasks in %TASK_RUNNING state.
-+ *
-+ * %TASK_UNINTERRUPTIBLE - at least @timeout jiffies are guaranteed to
-+ * pass before the routine returns unless the current task is explicitly
-+ * woken up, (e.g. by wake_up_process()).
-+ *
-+ * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
-+ * delivered to the current task or the current task is explicitly woken
-+ * up.
-+ *
-+ * The current task state is guaranteed to be %TASK_RUNNING when this
-+ * routine returns.
-+ *
-+ * Specifying a @timeout value of %MAX_SCHEDULE_TIMEOUT will schedule
-+ * the CPU away without a bound on the timeout. In this case the return
-+ * value will be %MAX_SCHEDULE_TIMEOUT.
-+ *
-+ * Returns: 0 when the timer has expired otherwise the remaining time in
-+ * jiffies will be returned. In all cases the return value is guaranteed
-+ * to be non-negative.
-+ */
-+signed long __sched schedule_timeout(signed long timeout)
-+{
-+	struct process_timer timer;
-+	unsigned long expire;
-+
-+	switch (timeout) {
-+	case MAX_SCHEDULE_TIMEOUT:
-+		/*
-+		 * These two special cases are useful to be comfortable
-+		 * in the caller. Nothing more. We could take
-+		 * MAX_SCHEDULE_TIMEOUT from one of the negative value
-+		 * but I' d like to return a valid offset (>=0) to allow
-+		 * the caller to do everything it want with the retval.
-+		 */
-+		schedule();
-+		goto out;
-+	default:
-+		/*
-+		 * Another bit of PARANOID. Note that the retval will be
-+		 * 0 since no piece of kernel is supposed to do a check
-+		 * for a negative retval of schedule_timeout() (since it
-+		 * should never happens anyway). You just have the printk()
-+		 * that will tell you if something is gone wrong and where.
-+		 */
-+		if (timeout < 0) {
-+			pr_err("%s: wrong timeout value %lx\n", __func__, timeout);
-+			dump_stack();
-+			__set_current_state(TASK_RUNNING);
-+			goto out;
-+		}
-+	}
-+
-+	expire = timeout + jiffies;
-+
-+	timer.task = current;
-+	timer_setup_on_stack(&timer.timer, process_timeout, 0);
-+	timer.timer.expires = expire;
-+	add_timer(&timer.timer);
-+	schedule();
-+	del_timer_sync(&timer.timer);
-+
-+	/* Remove the timer from the object tracker */
-+	destroy_timer_on_stack(&timer.timer);
-+
-+	timeout = expire - jiffies;
-+
-+ out:
-+	return timeout < 0 ? 0 : timeout;
-+}
-+EXPORT_SYMBOL(schedule_timeout);
-+
-+/*
-+ * We can use __set_current_state() here because schedule_timeout() calls
-+ * schedule() unconditionally.
-+ */
-+signed long __sched schedule_timeout_interruptible(signed long timeout)
-+{
-+	__set_current_state(TASK_INTERRUPTIBLE);
-+	return schedule_timeout(timeout);
-+}
-+EXPORT_SYMBOL(schedule_timeout_interruptible);
-+
-+signed long __sched schedule_timeout_killable(signed long timeout)
-+{
-+	__set_current_state(TASK_KILLABLE);
-+	return schedule_timeout(timeout);
-+}
-+EXPORT_SYMBOL(schedule_timeout_killable);
-+
-+signed long __sched schedule_timeout_uninterruptible(signed long timeout)
-+{
-+	__set_current_state(TASK_UNINTERRUPTIBLE);
-+	return schedule_timeout(timeout);
-+}
-+EXPORT_SYMBOL(schedule_timeout_uninterruptible);
-+
-+/*
-+ * Like schedule_timeout_uninterruptible(), except this task will not contribute
-+ * to load average.
-+ */
-+signed long __sched schedule_timeout_idle(signed long timeout)
-+{
-+	__set_current_state(TASK_IDLE);
-+	return schedule_timeout(timeout);
-+}
-+EXPORT_SYMBOL(schedule_timeout_idle);
-+
-+/**
-+ * schedule_hrtimeout_range_clock - sleep until timeout
-+ * @expires:	timeout value (ktime_t)
-+ * @delta:	slack in expires timeout (ktime_t)
-+ * @mode:	timer mode
-+ * @clock_id:	timer clock to be used
-+ */
-+int __sched schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
-+					   const enum hrtimer_mode mode, clockid_t clock_id)
-+{
-+	struct hrtimer_sleeper t;
-+
-+	/*
-+	 * Optimize when a zero timeout value is given. It does not
-+	 * matter whether this is an absolute or a relative time.
-+	 */
-+	if (expires && *expires == 0) {
-+		__set_current_state(TASK_RUNNING);
-+		return 0;
-+	}
-+
-+	/*
-+	 * A NULL parameter means "infinite"
-+	 */
-+	if (!expires) {
-+		schedule();
-+		return -EINTR;
-+	}
-+
-+	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
-+	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
-+	hrtimer_sleeper_start_expires(&t, mode);
-+
-+	if (likely(t.task))
-+		schedule();
-+
-+	hrtimer_cancel(&t.timer);
-+	destroy_hrtimer_on_stack(&t.timer);
-+
-+	__set_current_state(TASK_RUNNING);
-+
-+	return !t.task ? 0 : -EINTR;
-+}
-+EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
-+
-+/**
-+ * schedule_hrtimeout_range - sleep until timeout
-+ * @expires:	timeout value (ktime_t)
-+ * @delta:	slack in expires timeout (ktime_t)
-+ * @mode:	timer mode
-+ *
-+ * Make the current task sleep until the given expiry time has
-+ * elapsed. The routine will return immediately unless
-+ * the current task state has been set (see set_current_state()).
-+ *
-+ * The @delta argument gives the kernel the freedom to schedule the
-+ * actual wakeup to a time that is both power and performance friendly
-+ * for regular (non RT/DL) tasks.
-+ * The kernel give the normal best effort behavior for "@expires+@delta",
-+ * but may decide to fire the timer earlier, but no earlier than @expires.
-+ *
-+ * You can set the task state as follows -
-+ *
-+ * %TASK_UNINTERRUPTIBLE - at least @timeout time is guaranteed to
-+ * pass before the routine returns unless the current task is explicitly
-+ * woken up, (e.g. by wake_up_process()).
-+ *
-+ * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
-+ * delivered to the current task or the current task is explicitly woken
-+ * up.
-+ *
-+ * The current task state is guaranteed to be TASK_RUNNING when this
-+ * routine returns.
-+ *
-+ * Returns: 0 when the timer has expired. If the task was woken before the
-+ * timer expired by a signal (only possible in state TASK_INTERRUPTIBLE) or
-+ * by an explicit wakeup, it returns -EINTR.
-+ */
-+int __sched schedule_hrtimeout_range(ktime_t *expires, u64 delta,
-+				     const enum hrtimer_mode mode)
-+{
-+	return schedule_hrtimeout_range_clock(expires, delta, mode,
-+					      CLOCK_MONOTONIC);
-+}
-+EXPORT_SYMBOL_GPL(schedule_hrtimeout_range);
-+
-+/**
-+ * schedule_hrtimeout - sleep until timeout
-+ * @expires:	timeout value (ktime_t)
-+ * @mode:	timer mode
-+ *
-+ * Make the current task sleep until the given expiry time has
-+ * elapsed. The routine will return immediately unless
-+ * the current task state has been set (see set_current_state()).
-+ *
-+ * You can set the task state as follows -
-+ *
-+ * %TASK_UNINTERRUPTIBLE - at least @timeout time is guaranteed to
-+ * pass before the routine returns unless the current task is explicitly
-+ * woken up, (e.g. by wake_up_process()).
-+ *
-+ * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
-+ * delivered to the current task or the current task is explicitly woken
-+ * up.
-+ *
-+ * The current task state is guaranteed to be TASK_RUNNING when this
-+ * routine returns.
-+ *
-+ * Returns: 0 when the timer has expired. If the task was woken before the
-+ * timer expired by a signal (only possible in state TASK_INTERRUPTIBLE) or
-+ * by an explicit wakeup, it returns -EINTR.
-+ */
-+int __sched schedule_hrtimeout(ktime_t *expires, const enum hrtimer_mode mode)
-+{
-+	return schedule_hrtimeout_range(expires, 0, mode);
-+}
-+EXPORT_SYMBOL_GPL(schedule_hrtimeout);
-+
-+/**
-+ * msleep - sleep safely even with waitqueue interruptions
-+ * @msecs: Time in milliseconds to sleep for
-+ */
-+void msleep(unsigned int msecs)
-+{
-+	unsigned long timeout = msecs_to_jiffies(msecs);
-+
-+	while (timeout)
-+		timeout = schedule_timeout_uninterruptible(timeout);
-+}
-+EXPORT_SYMBOL(msleep);
-+
-+/**
-+ * msleep_interruptible - sleep waiting for signals
-+ * @msecs: Time in milliseconds to sleep for
-+ */
-+unsigned long msleep_interruptible(unsigned int msecs)
-+{
-+	unsigned long timeout = msecs_to_jiffies(msecs);
-+
-+	while (timeout && !signal_pending(current))
-+		timeout = schedule_timeout_interruptible(timeout);
-+	return jiffies_to_msecs(timeout);
-+}
-+EXPORT_SYMBOL(msleep_interruptible);
-+
-+/**
-+ * usleep_range_state - Sleep for an approximate time in a given state
-+ * @min:	Minimum time in usecs to sleep
-+ * @max:	Maximum time in usecs to sleep
-+ * @state:	State of the current task that will be while sleeping
-+ *
-+ * In non-atomic context where the exact wakeup time is flexible, use
-+ * usleep_range_state() instead of udelay().  The sleep improves responsiveness
-+ * by avoiding the CPU-hogging busy-wait of udelay(), and the range reduces
-+ * power usage by allowing hrtimers to take advantage of an already-
-+ * scheduled interrupt instead of scheduling a new one just for this sleep.
-+ */
-+void __sched usleep_range_state(unsigned long min, unsigned long max, unsigned int state)
-+{
-+	ktime_t exp = ktime_add_us(ktime_get(), min);
-+	u64 delta = (u64)(max - min) * NSEC_PER_USEC;
-+
-+	for (;;) {
-+		__set_current_state(state);
-+		/* Do not return before the requested sleep time has elapsed */
-+		if (!schedule_hrtimeout_range(&exp, delta, HRTIMER_MODE_ABS))
-+			break;
-+	}
-+}
-+EXPORT_SYMBOL(usleep_range_state);
-diff --git a/kernel/time/timer.c b/kernel/time/timer.c
-index 0fc9d066a7be..02355b275bab 100644
---- a/kernel/time/timer.c
-+++ b/kernel/time/timer.c
-@@ -37,7 +37,6 @@
- #include <linux/tick.h>
- #include <linux/kallsyms.h>
- #include <linux/irq_work.h>
--#include <linux/sched/signal.h>
- #include <linux/sched/sysctl.h>
- #include <linux/sched/nohz.h>
- #include <linux/sched/debug.h>
-@@ -2526,141 +2525,6 @@ void update_process_times(int user_tick)
- 		run_posix_cpu_timers();
- }
+ /* Undefined functions to get compile-time errors */
+ extern void __bad_udelay(void);
+ extern void __bad_ndelay(void);
+@@ -12,13 +15,18 @@ extern void __const_udelay(unsigned long xloops);
+ extern void __delay(unsigned long loops);
  
--/*
-- * Since schedule_timeout()'s timer is defined on the stack, it must store
-- * the target task on the stack as well.
-- */
--struct process_timer {
--	struct timer_list timer;
--	struct task_struct *task;
--};
--
--static void process_timeout(struct timer_list *t)
--{
--	struct process_timer *timeout = from_timer(timeout, t, timer);
--
--	wake_up_process(timeout->task);
--}
--
--/**
-- * schedule_timeout - sleep until timeout
-- * @timeout: timeout value in jiffies
+ /*
+- * Implementation details:
 - *
-- * Make the current task sleep until @timeout jiffies have elapsed.
-- * The function behavior depends on the current task state
-- * (see also set_current_state() description):
-- *
-- * %TASK_RUNNING - the scheduler is called, but the task does not sleep
-- * at all. That happens because sched_submit_work() does nothing for
-- * tasks in %TASK_RUNNING state.
-- *
-- * %TASK_UNINTERRUPTIBLE - at least @timeout jiffies are guaranteed to
-- * pass before the routine returns unless the current task is explicitly
-- * woken up, (e.g. by wake_up_process()).
-- *
-- * %TASK_INTERRUPTIBLE - the routine may return early if a signal is
-- * delivered to the current task or the current task is explicitly woken
-- * up.
-- *
-- * The current task state is guaranteed to be %TASK_RUNNING when this
-- * routine returns.
-- *
-- * Specifying a @timeout value of %MAX_SCHEDULE_TIMEOUT will schedule
-- * the CPU away without a bound on the timeout. In this case the return
-- * value will be %MAX_SCHEDULE_TIMEOUT.
-- *
-- * Returns 0 when the timer has expired otherwise the remaining time in
-- * jiffies will be returned. In all cases the return value is guaranteed
-- * to be non-negative.
-- */
--signed long __sched schedule_timeout(signed long timeout)
--{
--	struct process_timer timer;
--	unsigned long expire;
--
--	switch (timeout)
--	{
--	case MAX_SCHEDULE_TIMEOUT:
--		/*
--		 * These two special cases are useful to be comfortable
--		 * in the caller. Nothing more. We could take
--		 * MAX_SCHEDULE_TIMEOUT from one of the negative value
--		 * but I' d like to return a valid offset (>=0) to allow
--		 * the caller to do everything it want with the retval.
--		 */
--		schedule();
--		goto out;
--	default:
--		/*
--		 * Another bit of PARANOID. Note that the retval will be
--		 * 0 since no piece of kernel is supposed to do a check
--		 * for a negative retval of schedule_timeout() (since it
--		 * should never happens anyway). You just have the printk()
--		 * that will tell you if something is gone wrong and where.
--		 */
--		if (timeout < 0) {
--			printk(KERN_ERR "schedule_timeout: wrong timeout "
--				"value %lx\n", timeout);
--			dump_stack();
--			__set_current_state(TASK_RUNNING);
--			goto out;
--		}
--	}
--
--	expire = timeout + jiffies;
--
--	timer.task = current;
--	timer_setup_on_stack(&timer.timer, process_timeout, 0);
--	__mod_timer(&timer.timer, expire, MOD_TIMER_NOTPENDING);
--	schedule();
--	del_timer_sync(&timer.timer);
--
--	/* Remove the timer from the object tracker */
--	destroy_timer_on_stack(&timer.timer);
--
--	timeout = expire - jiffies;
--
-- out:
--	return timeout < 0 ? 0 : timeout;
--}
--EXPORT_SYMBOL(schedule_timeout);
--
--/*
-- * We can use __set_current_state() here because schedule_timeout() calls
-- * schedule() unconditionally.
-- */
--signed long __sched schedule_timeout_interruptible(signed long timeout)
--{
--	__set_current_state(TASK_INTERRUPTIBLE);
--	return schedule_timeout(timeout);
--}
--EXPORT_SYMBOL(schedule_timeout_interruptible);
--
--signed long __sched schedule_timeout_killable(signed long timeout)
--{
--	__set_current_state(TASK_KILLABLE);
--	return schedule_timeout(timeout);
--}
--EXPORT_SYMBOL(schedule_timeout_killable);
--
--signed long __sched schedule_timeout_uninterruptible(signed long timeout)
--{
--	__set_current_state(TASK_UNINTERRUPTIBLE);
--	return schedule_timeout(timeout);
--}
--EXPORT_SYMBOL(schedule_timeout_uninterruptible);
--
--/*
-- * Like schedule_timeout_uninterruptible(), except this task will not contribute
-- * to load average.
-- */
--signed long __sched schedule_timeout_idle(signed long timeout)
--{
--	__set_current_state(TASK_IDLE);
--	return schedule_timeout(timeout);
--}
--EXPORT_SYMBOL(schedule_timeout_idle);
--
- #ifdef CONFIG_HOTPLUG_CPU
- static void migrate_timer_list(struct timer_base *new_base, struct hlist_head *head)
- {
-@@ -2757,59 +2621,3 @@ void __init init_timers(void)
- 	posix_cputimers_init_work();
- 	open_softirq(TIMER_SOFTIRQ, run_timer_softirq);
- }
--
--/**
-- * msleep - sleep safely even with waitqueue interruptions
-- * @msecs: Time in milliseconds to sleep for
-- */
--void msleep(unsigned int msecs)
--{
--	unsigned long timeout = msecs_to_jiffies(msecs);
--
--	while (timeout)
--		timeout = schedule_timeout_uninterruptible(timeout);
--}
--
--EXPORT_SYMBOL(msleep);
--
--/**
-- * msleep_interruptible - sleep waiting for signals
-- * @msecs: Time in milliseconds to sleep for
-- */
--unsigned long msleep_interruptible(unsigned int msecs)
--{
--	unsigned long timeout = msecs_to_jiffies(msecs);
--
--	while (timeout && !signal_pending(current))
--		timeout = schedule_timeout_interruptible(timeout);
--	return jiffies_to_msecs(timeout);
--}
--
--EXPORT_SYMBOL(msleep_interruptible);
--
--/**
-- * usleep_range_state - Sleep for an approximate time in a given state
-- * @min:	Minimum time in usecs to sleep
-- * @max:	Maximum time in usecs to sleep
-- * @state:	State of the current task that will be while sleeping
-- *
-- * In non-atomic context where the exact wakeup time is flexible, use
-- * usleep_range_state() instead of udelay().  The sleep improves responsiveness
-- * by avoiding the CPU-hogging busy-wait of udelay(), and the range reduces
-- * power usage by allowing hrtimers to take advantage of an already-
-- * scheduled interrupt instead of scheduling a new one just for this sleep.
-- */
--void __sched usleep_range_state(unsigned long min, unsigned long max,
--				unsigned int state)
--{
--	ktime_t exp = ktime_add_us(ktime_get(), min);
--	u64 delta = (u64)(max - min) * NSEC_PER_USEC;
--
--	for (;;) {
--		__set_current_state(state);
--		/* Do not return before the requested sleep time has elapsed */
--		if (!schedule_hrtimeout_range(&exp, delta, HRTIMER_MODE_ABS))
--			break;
--	}
--}
--EXPORT_SYMBOL(usleep_range_state);
+- * * The weird n/20000 thing suppresses a "comparison is always false due to
+- *   limited range of data type" warning with non-const 8-bit arguments.
+- * * 0x10c7 is 2**32 / 1000000 (rounded up) -> udelay
+- * * 0x5 is 2**32 / 1000000000 (rounded up) -> ndelay
++ * The microseconds/nanosecond delay multiplicators are used to convert a
++ * constant microseconds/nanoseconds value to a value which can be used by the
++ * architectures specific implementation to transform it into loops.
++ */
++#define UDELAY_CONST_MULT	((unsigned long)DIV_ROUND_UP(1ULL << 32, USEC_PER_SEC))
++#define NDELAY_CONST_MULT	((unsigned long)DIV_ROUND_UP(1ULL << 32, NSEC_PER_SEC))
++
++/*
++ * The maximum constant udelay/ndelay value picked out of thin air to prevent
++ * too long constant udelays/ndelays.
+  */
++#define DELAY_CONST_MAX   20000
+ 
+ /**
+  * udelay - Inserting a delay based on microseconds with busy waiting
+@@ -45,17 +53,17 @@ extern void __delay(unsigned long loops);
+  * #. cache behaviour affecting the time it takes to execute the loop function.
+  * #. CPU clock rate changes.
+  */
+-#define udelay(n)							\
+-	({								\
+-		if (__builtin_constant_p(n)) {				\
+-			if ((n) / 20000 >= 1)				\
+-				 __bad_udelay();			\
+-			else						\
+-				__const_udelay((n) * 0x10c7ul);		\
+-		} else {						\
+-			__udelay(n);					\
+-		}							\
+-	})
++static __always_inline void udelay(unsigned long usec)
++{
++	if (__builtin_constant_p(usec)) {
++		if (usec >= DELAY_CONST_MAX)
++			__bad_udelay();
++		else
++			__const_udelay(usec * UDELAY_CONST_MULT);
++	} else {
++		__udelay(usec);
++	}
++}
+ 
+ /**
+  * ndelay - Inserting a delay based on nanoseconds with busy waiting
+@@ -63,16 +71,17 @@ extern void __delay(unsigned long loops);
+  *
+  * See udelay() for basic information about ndelay() and it's variants.
+  */
+-#define ndelay(n)							\
+-	({								\
+-		if (__builtin_constant_p(n)) {				\
+-			if ((n) / 20000 >= 1)				\
+-				__bad_ndelay();				\
+-			else						\
+-				__const_udelay((n) * 5ul);		\
+-		} else {						\
+-			__ndelay(n);					\
+-		}							\
+-	})
++static __always_inline void ndelay(unsigned long nsec)
++{
++	if (__builtin_constant_p(nsec)) {
++		if (nsec >= DELAY_CONST_MAX)
++			__bad_udelay();
++		else
++			__const_udelay(nsec * NDELAY_CONST_MULT);
++	} else {
++		__udelay(nsec);
++	}
++}
++#define ndelay(x) ndelay(x)
+ 
+ #endif /* __ASM_GENERIC_DELAY_H */
 
 -- 
 2.39.5
