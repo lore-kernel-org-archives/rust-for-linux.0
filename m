@@ -1,47 +1,46 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720F6158A13;
-	Mon, 14 Oct 2024 08:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4251158558;
+	Mon, 14 Oct 2024 08:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894174; cv=none; b=moXU8fdcK7VcX3tjK+d19vuwWhTZ3zVKw3orTlBlEi8+wXt8i30fgM9Kh//dQf/FxRU5Qd/wDbikJZ7U4MZYvRr7FrW9PvSlEwZ7EYuVygvvn0RanXb5HRmbvx4MC9N3i9lXMDiqHZ0nf09det5Vu4GlU0+SM+9Rs+lOZv+gH3A=
+	t=1728894174; cv=none; b=VeDxXFnY/g1RtXQh1ruTKp0zTyblqlLgP6i0TXPCRbuO0XTlnRxS3V3wbqzPngHX5GulkhDbsDJQcsC2jjl3cxU3wYuMn77XCaS5tgvp7zVcG5jUi/N4tvwln/6N3NYh00bFI/A25GJ6u9Nc3rn8qsqJmvhxmtpdriJitHreSCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728894174; c=relaxed/simple;
-	bh=xqAviz1yKAsmHoh5se7gRuA7GtjuV7HmRGx3G4wcIbI=;
+	bh=bzBoPBXvgGgBceKCBKqe7YKjn85sRsKmpKifY22AX2A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M8Da1lQhOTJ+mw3zfd5IVgLKYj5vXPhFkN5KSWLak9hxFD1xcOnyzEkuFbmqmFqVpY9tpgmpf6SQyuWZ3ttN4bEDb6tOnr3oDnpW6fDgDFn3/H8OnA4xvH7mxnEK/O/beru40QaNUdOSa7cwLopBphh9j7m9fBgTtTsVY791TZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=29TnFL8+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kkSO+aIp; arc=none smtp.client-ip=193.142.43.55
+	 In-Reply-To:To:Cc; b=BVLMmM7TY5epvz6OunAVuQTZ4vVxHgRLqYXSXHO8UTCy2blbyDGbklhlEq+3naR7v/fIqUMNdQtRY8BQNSRMssJ2jcGG6SPt0AYdaZ+wdaWZ7iUzO7jNa9svuFuQOAOirj0iFNaldowkL+PjVQvr7Qadqnk97ySA7EfozjhUXss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sTMTFJFG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YiXTsO3q; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="29TnFL8+";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kkSO+aIp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sTMTFJFG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YiXTsO3q"
 From: Anna-Maria Behnsen <anna-maria@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728894171;
+	s=2020; t=1728894170;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wODdgjku5JfjriO9kL1m2ZaFUZK+6PTrhP3Cq+020Qc=;
-	b=29TnFL8+G0QlUT07r9L892yuG/RwhZA4VI/5y7EeVlxMfbYHgCKHbwe7/MkcyBCUFmGfKY
-	oEPmHG/SItqbUOCKOcf+AESoRZYy5ddOJJj4tAqzVvArivXfnJ5q2nJmPKO8Tx8Aq84L0U
-	4gLX5VfSAC/418xlZEtxbs22OT9zIH1B3IL670jKmCSoJZb+9LUA39GsciA8VvpUoDCefQ
-	lV3ZVU42qeNK2Z9Ca2ysRWwyKt+DTfceUMZIIl2vskzeoioJeot1UStbGll9z/DemMJgL0
-	nAb6nKYb5UVVy84tntRqYJ0DtnqHvDgH/LCrW4p0YPqvHmWHUl6Ut/0dc4lDyg==
+	bh=kNRLICfcMX53Pl818PecpUhWq4UAyd0n3QQSNiHMS0Q=;
+	b=sTMTFJFGvylVpObZzdv1qmknTg52pZ48YWiroJTZicX+jQy1Mlt0Nwy4njse3ScvsitBPN
+	AarLq6u0hB7vf/sWLsDpPRUwWhPjaaUfsKuxH4QzSlaIYa2GRhvZ8jn7lX9m0aadfwvU4/
+	r/swaKR5jNTOAIjSbgs2jtN8WnxgN51MlifUV8KxK0Sf+2qxEOIiABHiYuqRWNqNoFXcpJ
+	5FbJ0AXPMhESnvenWqkAtuZ+/XiP4TvWNm24LGiK4v7SFBWPjXkoMFT80ibjuPZpjjNx3S
+	990cpnZFVbHZmQZJpWxuwnUePpRA0XkSpRYeXyu2gyUhOoYw2pgWgfACEt8fQA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728894171;
+	s=2020e; t=1728894170;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wODdgjku5JfjriO9kL1m2ZaFUZK+6PTrhP3Cq+020Qc=;
-	b=kkSO+aIphjh5eZRw/u89nqWbps1prElRs40uxlHVadU6yHJMV7FrnbC7mAf23UOthbCaMH
-	fjdYqYyjYDfkhdAg==
-Date: Mon, 14 Oct 2024 10:22:33 +0200
-Subject: [PATCH v3 16/16] checkpatch: Remove broken sleep/delay related
- checks
+	bh=kNRLICfcMX53Pl818PecpUhWq4UAyd0n3QQSNiHMS0Q=;
+	b=YiXTsO3qLxn3vTSHXPfgV/b1ytZOM/RZ2M/bSg5i6/5WqHxHq3X2mwyl7+SxU5Ckqvkxyg
+	waDWkAxliFM0VODQ==
+Date: Mon, 14 Oct 2024 10:22:31 +0200
+Subject: [PATCH v3 14/16] media: anysee: Fix and remove outdated comment
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,7 +49,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-16-dc8b907cb62f@linutronix.de>
+Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-14-dc8b907cb62f@linutronix.de>
 References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 To: Frederic Weisbecker <frederic@kernel.org>, 
@@ -60,144 +59,62 @@ Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>,
  Alice Ryhl <aliceryhl@google.com>, 
  FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
  Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Miguel Ojeda <ojeda@kernel.org>, Andy Whitcroft <apw@canonical.com>, 
- Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>
+ Miguel Ojeda <ojeda@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ linux-media@vger.kernel.org, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-checkpatch.pl checks for several things related to sleep and delay
-functions. In all warnings the outdated documentation is referenced. All
-broken parts are listed one by one in the following with an explanation why
-this check is broken. For a basic background of those functions please also
-refere to the updated function descriptions of udelay(), nsleep_range() and
-msleep().
+anysee driver was transformed to use usbv2 years ago. The comments in
+anysee_ctrl_msg() still are referencing the old interfaces where msleep()
+was used. The v2 interfaces also changed over the years and with commit
+1162c7b383a6 ("[media] dvb_usb_v2: refactor dvb_usbv2_generic_rw()") the
+usage of msleep() was gone anyway.
 
-Be aware: The change is done with a perl knowledge of the level "I'm able
-to spell perl".
+Remove FIXME comment and update also comment before call to
+dvb_usbv2_generic_rw_locked().
 
-The following checks are broken:
-
-- Check: (! ($delay < 10) )
-  Message: "usleep_range is preferred over udelay;
-            see Documentation/timers/timers-howto.rst\n"
-  Why is the check broken: When it is an atomic context, udelay() is
-                           mandatory.
-
-- Check: ($min eq $max)
-  Message:  "usleep_range should not use min == max args;
-             see Documentation/timers/timers-howto.rst\n"
-  Why is the check broken: When the requested accuracy for the sleep
-                           duration requires it, it is also valid to use
-                           min == max.
-
-- Check: ($delay > 2000)
-  Message: "long udelay - prefer mdelay;
-            see arch/arm/include/asm/delay.h\n"
-  Why is the check broken: The threshold when to start using mdelay() to
-                           prevent an overflow depends on
-                           MAX_UDELAY_MS. This value is architecture
-                           dependent. The used value for the check and
-                           reference is arm specific. Generic would be 5ms,
-                           but this would "break" arm, loongarch and mips
-                           and also the arm value might "break" mips and
-                           loongarch in some configurations.
-
-- Check: ($1 < 20)
-  Message: "msleep < 20ms can sleep for up to 20ms;
-            see Documentation/timers/timers-howto.rst\n"
-  Why is the check broken: msleep(1) might sleep up to 20ms but only on a
-                           HZ=100 system. On a HZ=1000 system this will be
-                           2ms. This means, the threshold cannot be hard
-                           coded as it depends on HZ (jiffy granularity and
-                           timer wheel bucket/level granularity) and also
-                           on the required accuracy of the callsite. See
-                           msleep() and also the USLEEP_RANGE_UPPER_BOUND
-                           value.
-
-Remove all broken checks. Update checkpatch documentation accordingly.
-
-Cc: Andy Whitcroft <apw@canonical.com>
-Cc: Joe Perches <joe@perches.com>
-Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
-v3: Move it to the end of the queue and adapt it to the new patch which
-    removes the link to the outdated documentation before.
-v2: Rephrase commit message
+v3: Remove FIXME comment completely
 ---
- Documentation/dev-tools/checkpatch.rst |  4 ----
- scripts/checkpatch.pl                  | 38 ----------------------------------
- 2 files changed, 42 deletions(-)
+ drivers/media/usb/dvb-usb-v2/anysee.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/dev-tools/checkpatch.rst b/Documentation/dev-tools/checkpatch.rst
-index abb3ff682076..f5c27be9e673 100644
---- a/Documentation/dev-tools/checkpatch.rst
-+++ b/Documentation/dev-tools/checkpatch.rst
-@@ -466,10 +466,6 @@ API usage
-   **UAPI_INCLUDE**
-     No #include statements in include/uapi should use a uapi/ path.
+diff --git a/drivers/media/usb/dvb-usb-v2/anysee.c b/drivers/media/usb/dvb-usb-v2/anysee.c
+index 8699846eb416..bea12cdc85e8 100644
+--- a/drivers/media/usb/dvb-usb-v2/anysee.c
++++ b/drivers/media/usb/dvb-usb-v2/anysee.c
+@@ -46,24 +46,15 @@ static int anysee_ctrl_msg(struct dvb_usb_device *d,
  
--  **USLEEP_RANGE**
--    usleep_range() should be preferred over udelay(). The proper way of
--    using usleep_range() is mentioned in the kernel docs.
--
+ 	dev_dbg(&d->udev->dev, "%s: >>> %*ph\n", __func__, slen, state->buf);
  
- Comments
- --------
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 98790fe5115d..34d4b5beda29 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -6591,28 +6591,6 @@ sub process {
- 			}
- 		}
+-	/* We need receive one message more after dvb_usb_generic_rw due
+-	   to weird transaction flow, which is 1 x send + 2 x receive. */
++	/*
++	 * We need receive one message more after dvb_usbv2_generic_rw_locked()
++	 * due to weird transaction flow, which is 1 x send + 2 x receive.
++	 */
+ 	ret = dvb_usbv2_generic_rw_locked(d, state->buf, sizeof(state->buf),
+ 			state->buf, sizeof(state->buf));
+ 	if (ret)
+ 		goto error_unlock;
  
--# prefer usleep_range over udelay
--		if ($line =~ /\budelay\s*\(\s*(\d+)\s*\)/) {
--			my $delay = $1;
--			# ignore udelay's < 10, however
--			if (! ($delay < 10) ) {
--				CHK("USLEEP_RANGE",
--				    "usleep_range is preferred over udelay; see function description of usleep_range() and udelay().\n" . $herecurr);
--			}
--			if ($delay > 2000) {
--				WARN("LONG_UDELAY",
--				     "long udelay - prefer mdelay; see function description of mdelay().\n" . $herecurr);
--			}
--		}
+-	/* TODO FIXME: dvb_usb_generic_rw() fails rarely with error code -32
+-	 * (EPIPE, Broken pipe). Function supports currently msleep() as a
+-	 * parameter but I would not like to use it, since according to
+-	 * Documentation/timers/timers-howto.rst it should not be used such
+-	 * short, under < 20ms, sleeps. Repeating failed message would be
+-	 * better choice as not to add unwanted delays...
+-	 * Fixing that correctly is one of those or both;
+-	 * 1) use repeat if possible
+-	 * 2) add suitable delay
+-	 */
 -
--# warn about unexpectedly long msleep's
--		if ($line =~ /\bmsleep\s*\((\d+)\);/) {
--			if ($1 < 20) {
--				WARN("MSLEEP",
--				     "msleep < 20ms can sleep for up to 20ms; see function description of msleep().\n" . $herecurr);
--			}
--		}
--
- # check for comparisons of jiffies
- 		if ($line =~ /\bjiffies\s*$Compare|$Compare\s*jiffies\b/) {
- 			WARN("JIFFIES_COMPARISON",
-@@ -7069,22 +7047,6 @@ sub process {
- 			}
- 		}
- 
--# check usleep_range arguments
--		if ($perl_version_ok &&
--		    defined $stat &&
--		    $stat =~ /^\+(?:.*?)\busleep_range\s*\(\s*($FuncArg)\s*,\s*($FuncArg)\s*\)/) {
--			my $min = $1;
--			my $max = $7;
--			if ($min eq $max) {
--				WARN("USLEEP_RANGE",
--				     "usleep_range should not use min == max args;  see function description of usleep_range().\n" . "$here\n$stat\n");
--			} elsif ($min =~ /^\d+$/ && $max =~ /^\d+$/ &&
--				 $min > $max) {
--				WARN("USLEEP_RANGE",
--				     "usleep_range args reversed, use min then max;  see function description of usleep_range().\n" . "$here\n$stat\n");
--			}
--		}
--
- # check for naked sscanf
- 		if ($perl_version_ok &&
- 		    defined $stat &&
+ 	/* get answer, retry few times if error returned */
+ 	for (i = 0; i < 3; i++) {
+ 		/* receive 2nd answer */
 
 -- 
 2.39.5
