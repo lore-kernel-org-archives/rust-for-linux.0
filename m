@@ -1,124 +1,84 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6E4199FB2
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 10:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D7F19CC0C
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 11:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728903378; cv=none; b=gZA4JKTXCD1YhuW6NSQc0fUPLqZpuFfBS2CdFtyAygMoAnRVJ0zgjGbWEfRJcCQBRcoytemPyF9OVC+tM2ahEmW0PSpu7L60BN7aLAPmBWWLQ9AxaGSFpH/9Ap3SQkmcIuRnq4dCWr1eM3AKV7atrh9gBSIA78b6MymqNKocN8A=
+	t=1728903879; cv=none; b=EqjxZMsYkQ7OLIN5Y5Tov2Bu9i+a46VdNTFqCH9NyK48ajfHmR/zysD3peHjeOAs5PlPQ2fmXbivyc15DDldfbj5T3EtKdZmoLLVm3a/9lAkN4WJg4caoSPIOVxcH/OBDYRHKSZO8kFXvV+7Ay1RXAzeMcKRxy1+t0bUCEsSv0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728903378; c=relaxed/simple;
-	bh=Xx7EaSar/S2rSLvZ8rXtHhKPcKbC9rBzFsJKDME9CDo=;
+	s=arc-20240116; t=1728903879; c=relaxed/simple;
+	bh=DoCe7JxWGTYdYqVUaCsDH3VAw3+RGhI8w/LkIHAEVdE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lPWR9yrFOt6njE5NgHeE9kODyJDh4A6zLkMwdvKusomwyftNnNDScfszUT/5KNcjVrrs3a1c8feqck6ocKpeJ4/JnSoOThKoDSkaQoOoIDnzOG+JV0d9Ny7HhSBdfmbM3seln5DeBkuqQIoET3ckz6WAiHxzEyUyl9shay7Wc78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yE6/v7N/; arc=none smtp.client-ip=209.85.128.49
+	 To:Cc:Content-Type; b=evhMDAt+6mUHy5upPknb6AWb33gM2EeTDvjSge2LEYYDqESOCir8mFhe5Vk9PsSmAMd6Df5fqODzc/RCTV80bsuRz6xvvXWYTdCMLqgexOj7kO3BeQorMx+apoM1LX4sjYxqMGtpTcYbK2ZbeKaKIVblM7mWT4YCilPY63pBnbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TmfIRVdY; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yE6/v7N/"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43055b43604so40256155e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 03:56:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TmfIRVdY"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d447de11dso3015343f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 04:04:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728903375; x=1729508175; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728903876; x=1729508676; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u4gp6e12cg+sqnH5wDR5jIQXbUcLC2B1xW6NEdqt2eU=;
-        b=yE6/v7N/Ml1YeO4W/EOoFPv25KnQ/oYeSfLKQpxuMTsXwu3Odcil9evc7kwID6JRKl
-         VGeX0WIxtckje64FUEiSenGgRQiQpPaI0TXCgVzcqUO6WW18SQISAYpoqL1aOpWcCLDT
-         BFBrBMi491Y56DPxOI5ge0jrSGiX0si/tchIzY7j/6dUh+B6oz/dEMdJ23NeHqw2t35Y
-         8/1+i7AMYGUIBVvLAWz0kAjs6oJomBfmvt1UsDMnNKFc/aFZg1IwQQU4xxALx/v/XWco
-         W2QefVQ3En+UEZ9n4H2oe/vbWpDZfLKm+uGrpl3nhCITgwrgsb3ToMBsju+kvOufzaKn
-         2ftw==
+        bh=DoCe7JxWGTYdYqVUaCsDH3VAw3+RGhI8w/LkIHAEVdE=;
+        b=TmfIRVdY92NJWg4KoTvdok06B+PMViP3KyJIpiD1pnTqa2Af91Et44KT3S9PzfxoVi
+         m4b5M5fEaQ9bTiHguZHRb+VPQWp682fMBJ1TXOPCoSr5QMD7TFFRzmHnmMwaqrpkj4M2
+         CJZ6Ftq8IEEHNQf9Chfxb9yJlps0igSR9yJ9nLg4DC0TyL/krAjXlaiQ+BMf96dPCi7G
+         lanCvusr90eZDOYRseCK29eYgIvLb9xpRnMWbNNPwVw+U7yizgreysCLQhbX4LW/KD3P
+         KjcDEvqqWF3iHJsz2ef9KJ5s/q9Ty1YZ/3QVEhNKqgQ9m2XF0FbVAheudKfLhIC7Uo3N
+         CaQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728903375; x=1729508175;
+        d=1e100.net; s=20230601; t=1728903876; x=1729508676;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u4gp6e12cg+sqnH5wDR5jIQXbUcLC2B1xW6NEdqt2eU=;
-        b=UhKrgyQf/zCv/jPE/gxF1lBWR0q6NZ7kAN1RswfJBb8OBH/7TXTXqqdsZeCcw91aUO
-         rA6BVZd02h2Rh33xxJPpIaz8bSF6sDxAyknEGnouRsLvxQLNcn3mFzJnOQ3FjQc/YNVZ
-         D1wqsoXgmDg7T4d50tRikDOAa+zWtSGov5DKdtPsrLCuTPwNqHy7t7h8RzqZTEkGMybs
-         SwdQIl81fDSgMh4bMbZxaJ7Il+8tonznlb4yPVyigSDi8mZHk4pg7BFCS8WhDOGezwMr
-         E/5hUMW98E9q+rMCuK8CRHJGnkWvPTMQ/Bn9PDBbkw+PHQpZdeXLOGPiEU76iQ9FNAA0
-         7AVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkBVYYf/PTD8/axnQXPD7MWT+I+evS+6gY7g1p7yL6UeLd0NL+cHD23bF47R0pwm+Rk6u2tnKrQy+QvbBfCg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqmP4WccnCzX/ZgZ3guSuF0R0LAa/LYFlR9prH4R8una0ty8Oo
-	azCXzwyrXJrvSFxvVUl29szG6Ay3LI5E0oRoALlNXE65ZbKRTHCYQEoE2Fa0p94aQ4i226M2svL
-	M1gr25wljfEzSSCngKL9Z5gj18U/CF97Hvrnj
-X-Google-Smtp-Source: AGHT+IE5eRoWQDx97xOv2leEqqV4jcEBkFr3gadIwamzFJS8TDNfpmwWZcvrbJruha+0XkR+9A8/cfjYWgRPs4yHYCk=
-X-Received: by 2002:adf:ea45:0:b0:37d:4cef:538e with SMTP id
- ffacd0b85a97d-37d552d29edmr7335919f8f.55.1728903374819; Mon, 14 Oct 2024
- 03:56:14 -0700 (PDT)
+        bh=DoCe7JxWGTYdYqVUaCsDH3VAw3+RGhI8w/LkIHAEVdE=;
+        b=mRM0X1HmI5cZLg1HEJ8KSflKKQ7jhuxk2jbtOmgyswPAsiuY6xKk70htZfWtuIOLZR
+         YzkQmkim/M4xDvkp7IQgYP9nIImUVTNTsRcK7jSlIHVkATxSMKt5DN95H766glneZRxL
+         YJeu3J3oPaejcEujuI0GhQfPvUuChhC2pezB8q0k7P7Uq5RMguFVtBDyWaJWoAxtinfy
+         mnYzZOeGlXsmCZ1o/Nbjr5851ao+VodBmaBOCS+sXWVCudYJyii8lFA2AIzOzYHoKE60
+         aUGJlJ42cinMZ72fSVAuWYU7MmAp+fh+Jt57Sm06SjLjIdnMUXngohfOGW+G/CRfaQne
+         PlyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWNaE+GtLIEQYj+elfaU4cpJ4NBsfEDmqENAjNHI1d4S3LaJhf3hQgqpSY1el3jAtkG3eODyaH0R2YqemQYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyORObw8OfFHKNPhWpflvRQyXBKqWXNcBp++wFHoYiklqTWPIq8
+	UJKg9l9eLXhX4BUX0JAj4roA2BnDMkakSvwc1/5MF5WwJI+QoiSaMVdEItxf+HOaU190Ca3Mm0O
+	7GNikznItH4ebaA7BoKQew1bnWqYOdGZadrFJ
+X-Google-Smtp-Source: AGHT+IG0vcxlWp8oOpzZD1e0PNkZb5Z7rfiqa/opvTS/AGs0FHWq5h6FwO7+lfDEtzG1cpZ1FBaIfJOUciaG6My6avU=
+X-Received: by 2002:a5d:4244:0:b0:37d:30e7:3865 with SMTP id
+ ffacd0b85a97d-37d5521ac3fmr7606788f8f.34.1728903876212; Mon, 14 Oct 2024
+ 04:04:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241014-vma-v7-0-01e32f861195@google.com> <20241014-vma-v7-1-01e32f861195@google.com>
- <CANiq72n8oKnAWVj71uus8FuYEqqi+Bvy2zJ4SP=DX9Cgd39UKg@mail.gmail.com>
-In-Reply-To: <CANiq72n8oKnAWVj71uus8FuYEqqi+Bvy2zJ4SP=DX9Cgd39UKg@mail.gmail.com>
+References: <9fb9930e-7666-4520-91d0-7e79be56b8f7@gmail.com>
+ <ZwowM_YKc8Ktzgzr@boqun-archlinux> <Zwowy1ABlKJDbuOb@boqun-archlinux>
+In-Reply-To: <Zwowy1ABlKJDbuOb@boqun-archlinux>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Oct 2024 12:56:02 +0200
-Message-ID: <CAH5fLgjSzGojkkDyETOtU_UHBGyVK5=8WfpsBm5nMqfBQvK+ag@mail.gmail.com>
-Subject: Re: [PATCH v7 1/2] rust: mm: add abstractions for mm_struct and vm_area_struct
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Mon, 14 Oct 2024 13:04:23 +0200
+Message-ID: <CAH5fLghjBnubXnR4x66dRqpAn=yOyNcpHBJ_t9TjkfwsP6gGEQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: workqueue: Enable execution of doctests
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 14, 2024 at 12:47=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Sat, Oct 12, 2024 at 10:18=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> =
+wrote:
 >
-> On Mon, Oct 14, 2024 at 11:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
+> On Sat, Oct 12, 2024 at 01:15:47AM -0700, Boqun Feng wrote:
+> [...]
+> > Otherwise this patch looks good to me.
 > >
-> > +/// #[repr(transparent)]
 >
-> Line in docs.
->
-> > +/// #[repr(transparent)]
-> > +#[repr(transparent)]
->
-> Ditto here, but in this case also outside the docs.
->
-> Some trivial nits I noticed below since I am here.
->
-> > +    /// during the lifetime 'a.
->
-> Backticks (some other instances on lifetimes too).
->
-> > +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
->
-> I would add `bindings::` since otherwise it may be confusing to say
-> the C name without qualifying, since this function is also called the
-> same way.
->
-> > +        // SAFETY: The pointer is valid since self is a reference.
->
-> `self`.
->
-> > +// Make all VmAreaRef methods available on VmAreaMut.
-> > +// Make all VmAreaMut methods available on VmAreaNew.
->
-> Backticks.
->
-> > +    /// Can contain "struct page" and pure PFN pages.
-> > +    /// MADV_HUGEPAGE marked this vma.
->
-> These are copied from C, so it is fine, but we may want to take the
-> chance to format them.
+> Oh, but you may want to Cc other Rust maintainers and reviewers next
+> time ;-)
 
-Thanks for the docs issues. I'll give others a chance to comment too,
-then send a v8 soon.
+It should go to the workqueue maintainers too, especially Tejun Heo.
 
 Alice
