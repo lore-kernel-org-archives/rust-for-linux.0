@@ -1,79 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A759015821A;
-	Mon, 14 Oct 2024 09:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703B5155CB0
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 09:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728897966; cv=none; b=RE61Pm8uSXSceK+OT3YCnrQsdScX2kWHJrtCZl1EwmoApx9SXLLCeCUlkGOy5b1xeneTSNB30p9v82NYFnCFlHDEe3+qyCId7fa9mRJx1gx0m1FKxxsSp9exmUCxN4LFnHu4SoQwqcCn/iEvZNpzaX75CGLFKAPkLnkeWz1HmNA=
+	t=1728898214; cv=none; b=Ev4sHbHwoVVfwZKMK4VGyyesMmIT9a4WtBPrwQFVYt6k1u6m4Ji2ifUVtHepTP9FCOk+BBzb2cPmFPUBvgefBomvSn3pYN6BOxk4QPfueWZYCz1JjSOlEvuygxW2VYQ1u76ezW9W7M7l6sd/cO6pjW2ohWosMf3JlP7/1ks/Kyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728897966; c=relaxed/simple;
-	bh=w0+Cqw0mJHdofaP5FQwQ8u5fizWY9MZm7LMFDhyo/UA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ECUBx31AyIs0fGIPrWvWIwFauxHd7cSfOhdzvETTemrekIa8R05B53dxSBVO832hB9pzgnEIWAbZ6uzR0fwKDeYGKBDJu+VXuiIOk5zYAGF+LntS6xGoB2r/1HXNUjCl0p+h4PE+BzEV1Zaou6EXtWnYyVDPVoFwXJCuBn8/BOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQCMu73i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728898214; c=relaxed/simple;
+	bh=L+BrUmFZG6coCaN6vjYiTwSGbPWblzWyjGISzbq8GQ8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hFgPYJ9UE6UHyKBDX3sPth2BO+RM0V3IKdjLoaHSJj3Fh7if+jT5PJYjtQSR3LOlorcTAnXyQSzf4fF0Kj7r3j+5JFrrAB+dxEv7mWLNl6ApBz0eXupvdpXQO+wNnOSVRkHrSaYpnzAPNvI4XbceFny5QS9ZQP5scIfPlj0+4x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MGR1WjKf; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQCMu73i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F19EC4CEC7;
-	Mon, 14 Oct 2024 09:26:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728897966;
-	bh=w0+Cqw0mJHdofaP5FQwQ8u5fizWY9MZm7LMFDhyo/UA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=BQCMu73io/Tmhxq+Iej/akoEQhy6ZpoZV1QxK+yMvjM0KSwRMEH0IDBfvtSvFNhao
-	 VPBC+8siPJqhKMmUH/4aRDtkuIQB/h8Q/GI5qf3e390qQjEQnToWSvyqe62kPWo12r
-	 sfrp4xSoQ4uTdfaK2Se/3IxW5XROOrq+o3NOwzJU2reZLwprwTiZciuwkUg0ysotvK
-	 xghhsp8VsKXJWFwCQRiVf324pWCVh9tBmHu+GQCFfWTrKnHraQCxtZyH4SSZfbhjAt
-	 gsD/BYTcm3YpG4QDgWnx+M+QyrC/mVLwIzpVapo8neXzYJkEVbTyteeeLh047GPWf7
-	 1MZkUWmc10kDg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4] rust: add global lock support
-In-Reply-To: <2376e7b3-42a4-4743-a5cd-83251dcc0075@proton.me> (Benno Lossin's
-	message of "Thu, 10 Oct 2024 22:14:52 +0000")
-References: <20240930-static-mutex-v4-1-c59555413127@google.com>
-	<HVPdDHj35lGMPHyA8YvYjO4hhof-vNaVDqo_ILwyCmuY13oskqVKxaIA7OK4wo6fWYeJIV_RMtbPdjVRGJcLvg==@protonmail.internalid>
-	<1f688070-66bd-450b-ba5d-b929de64ecf0@proton.me>
- <87msjckqfw.fsf@kernel.org>
-	<84WhswqN_2lGocLpK_symjkhVOPgJQHGCnU6LbFRZ_YgY_hQsHtdHZe6yTB9XaShz4Cmym_AdOBXm4qSzkAyAg==@protonmail.internalid>
-	<2376e7b3-42a4-4743-a5cd-83251dcc0075@proton.me>
-Date: Fri, 11 Oct 2024 16:57:47 +0200
-Message-ID: <875xpylmac.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MGR1WjKf"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e000d68bb1so55778957b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 02:30:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728898211; x=1729503011; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0iJkEGvsoK5hcpHtL67ZHm4We9Hvjnd+4MuIc6M0BiU=;
+        b=MGR1WjKfgkcJYUstKo9OZaK6MzQWsSkWcMzVj7IioAWmGb722cZWmYHg7zliDqdE/d
+         zt2rsNRDsITMLzjtCJ671M51LTK7OxLLyFOM+4JRJEj8lLrWjBRMedmYRBF68K+O0yiZ
+         uBqook2S2kL7FFw39uc0xP1kKZWpzQSMMYPueV/v90L69xziY+n8I1h5uGpRmc3onloQ
+         ldCwL7XgPC559AUhtnhJlSM91onHXn11nhPpuuhnWFzE5doVrBjfJLYn4J9ncWOjv+aa
+         CSBJmrVMa3SvtBGqFH46UQO6e/I53spBM8xcNI3WSMCj4kxn88u1jTMYjKUKkJvOzPhZ
+         SgdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728898211; x=1729503011;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0iJkEGvsoK5hcpHtL67ZHm4We9Hvjnd+4MuIc6M0BiU=;
+        b=v2EoyFOKMBllqwrh/f92ihyQ00EJDBSMCkfb7/TU04kM7aLBurOx/Yk8d1Pt/5x7Mc
+         tUykDLIzNi3lxTT/kqXWnT7eJRajoc1o33N5zqMapFPbZjEO+0EuR1GJMSADeDULnLiZ
+         8M98aZmZoKbKThVG1MvZe6qEkwwGreR6PZVcQnSyrkrX/0ugAuCgt6Djijf2jZKoLjBy
+         aO2mwbCn5fSOPmwZzOLUM/Osa/3Re0DtMutezIZ2EGO4dRZ7SPd37U98HpypjYweHiB2
+         A5KFX5mHsdJJaqzlfG74fe+7WWNF7o6CceAGO0hIXiHMeu0/NkvJymK41cioTvBxlxHN
+         uxng==
+X-Forwarded-Encrypted: i=1; AJvYcCWAhKaHXkx5qn5Qn0+/fzNvv4RbcCY9r+QIEpaA66eSqRZ66t4VU+wdXajDFZWfLZ4VyyTnfBbeBAu2HvCFog==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZmS0AyJnG5321ikSTVITc0uG57ZOn9R2qybrRjhafkb/V6NRo
+	WvhE2FcezO+5MJLKB/EKT9DiXDYf7OlceNDwNIwRbJZeqhGQBM9ZQqsYYi6Kui6CL1YiljnB0MA
+	i/OrCAKMdVzAxYA==
+X-Google-Smtp-Source: AGHT+IFwXQ1X6dy8pYShptQ2LDtPPnqmooRTc0Xq3ILRYcs4f/0Ul1hHs5Lr+vRsdjgMRGuqjHlTTGnR89Tn4+k=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1349:b0:e20:2da6:ed77 with SMTP
+ id 3f1490d57ef6-e2918421de9mr103466276.5.1728898211372; Mon, 14 Oct 2024
+ 02:30:11 -0700 (PDT)
+Date: Mon, 14 Oct 2024 09:29:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAI7kDGcC/2XOy07DMBAF0F+pvMZoxm+z4j8QCz9TS7RGCbJAV
+ f4dp5YgVZZ3NOfO3MiS5pIW8nK6kTm1spR67UE/nUg4u+uUaIk9EwZMgGactouj2QCizTZ7Lkn
+ f/JxTLt/3lrf3ns9l+arzz7204TZ99A0pUs5clK4XmZRep1qnj/Qc6oVsBY3tkR6IdeQ8T9IyH
+ QN3B8T/UX9wIN5R9CpgAJejswck9ogNJDoCi85okMYJfkByj9RAckMC0GSQMTF/QOoPISAMpCj QaCxw61WW+vHSuq6/d4kzh6ABAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2590; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=L+BrUmFZG6coCaN6vjYiTwSGbPWblzWyjGISzbq8GQ8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnDOScqrVsEORZcGk7VjQ60QCLyfj+s9M2lAQyq
+ 2MfNYCRwtmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZwzknAAKCRAEWL7uWMY5
+ RvVpEACbFLL+7SM1I8M7MYHkZ37J9Ht+dM441ZT+0/12QSvTk1IH31bseOF9hH7aSTkrJ4CqyM1
+ LyR+Auei1Nbj1jhjyuvT63Ekqiifj7+0nRxTlphN2g8KdHmyQj9Tns1H51s/fqJbrBtom8QMTg+
+ 9mDeC7j+8ZWIuDy/pvH2ptiTs16EuKqVuvsLgvHiDTee09XD0LesfLqUGo7qFwZUn6T6jdT9xfq
+ OkSZ3lITJCUjizoBspzv8CscpRHaqa5U3QupWq6kNhpl76id7xKo+uQDr766sKW1WMLPRfWdQxW
+ 2Vk1V5Sp7nbOfAGgKpKUxt7IoEn4AwXR+iEaMYmKMTdiIo6ZwbIneW/zhElxAxo5saC99+iYQUd
+ 5ymK0h5twwNMANJIM1unDaZwXoCMfThzLSFpD1em8h4O8aaRy2O5XsnYmFkuq5TQ6DFfA1dgniR
+ NAJGNrdy18pekvn9JsQp6aEMmaYsxoLON3clEFZfmAQpcb63osUbroKvAoBB4JYCVRcJdEipLvk
+ cVe2SmT+pFTm2fd1WBNVRzRdrBsET7vEQ0mk0Wul0jQdJ46Q/3w9U7q/jFMi0BM57N4kzWX3d9+
+ tBTgbpb+gWejsmpE5mJWzrnahTKvLZJI8ZaREmQex1p/3zJ9tjA1aA9BDpbYKFuuhga4MuW2w8y iUeZYAMwegwU+zQ==
+X-Mailer: b4 0.13.0
+Message-ID: <20241014-vma-v7-0-01e32f861195@google.com>
+Subject: [PATCH v7 0/2] Rust support for mm_struct, vm_area_struct, and mmap
+ for miscdevice
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-"Benno Lossin" <benno.lossin@proton.me> writes:
+The first patch introduces mm_struct and vm_area_struct abstractions,
+and the second patch uses them for miscdevice.
 
-> On 10.10.24 16:01, Andreas Hindborg wrote:
->> "Benno Lossin" <benno.lossin@proton.me> writes:
->>
->>>
->>> Also,
->>>
->>>     error: type `__static_lock_ty_VALUE` should have an upper camel case name
->>>        --> rust/kernel/sync/lock/global.rs:100:18
->>>         |
->>>     100 |               type [< __static_lock_ty_ $name >] = $valuety;
->>>         |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to upper camel case: `StaticLockTyValue`
->>>
->>
->> How did you manage to get these errors?
->
-> I added a `global_lock!` invocation to `lib.rs`. Otherwise I also don't
-> get them (they might also be emitted from the examples, but I didn't
-> compile those).
+This updates the vm_area_struct support to use the approach we discussed
+at LPC where there are three different types depending on the kind of
+access you have to the vma. You either have read access, write access,
+or you are initializing it. Each case allows a larger set of operations
+on the vma.
 
-I build the examples for kunit, but I did not get any warnings.
-Interesting.
+The first patch in this series depends on vfs.rust.file for
+NotThreadSafe. The second patch in this series depends on char-misc-next
+for the base miscdevice implementation.
 
-BR Andreas
+---
+Changes in v7:
+- Make the mmap read/write lock guards respect strict owner semantics.
+- Link to v6: https://lore.kernel.org/r/20241010-vma-v6-0-d89039b6f573@google.com
+
+Changes in v6:
+- Introduce VmArea{Ref,Mut,New} distinction.
+- Add a second patchset for miscdevice.
+- Rebase on char-misc-next (currently on v6.12-rc2).
+- Link to v5: https://lore.kernel.org/r/20240806-vma-v5-1-04018f05de2b@google.com
+
+Changes in v5:
+- Rename VmArea::from_raw_vma to from_raw.
+- Use Pin for mutable VmArea references.
+- Go through `ARef::from` in `mmgrab_current`.
+- Link to v4: https://lore.kernel.org/r/20240802-vma-v4-1-091a87058a43@google.com
+
+Changes in v4:
+- Pull out ARef::into_raw into a separate patch.
+- Update invariants and struct documentation.
+- Rename from_raw_mm to from_raw.
+- Link to v3: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com
+
+Changes in v3:
+- Reorder entries in mm.rs.
+- Use ARef for mmput_async helper.
+- Clarify that VmArea requires you to hold the mmap read or write lock.
+- Link to v2: https://lore.kernel.org/r/20240727-vma-v2-1-ab3e5927dc3a@google.com
+
+Changes in v2:
+- mm.rs is redesigned from scratch making use of AsRef
+- Add notes about whether destructors may sleep
+- Rename Area to VmArea
+- Link to v1: https://lore.kernel.org/r/20240723-vma-v1-1-32ad5a0118ee@google.com
+
+---
+Alice Ryhl (2):
+      rust: mm: add abstractions for mm_struct and vm_area_struct
+      rust: miscdevice: add mmap support
+
+ rust/helpers/helpers.c    |   1 +
+ rust/helpers/mm.c         |  55 +++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/miscdevice.rs |  24 ++++
+ rust/kernel/mm.rs         | 357 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/mm/virt.rs    | 264 ++++++++++++++++++++++++++++++++++
+ 6 files changed, 702 insertions(+)
+---
+base-commit: 2d424646119f28780f3963811025c05ea848b85f
+change-id: 20240723-vma-f80119f9fb35
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
