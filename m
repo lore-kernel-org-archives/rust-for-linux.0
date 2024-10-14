@@ -1,201 +1,130 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46E413F43B;
-	Sun, 13 Oct 2024 21:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40B814A0AE;
+	Mon, 14 Oct 2024 03:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728855793; cv=none; b=rvBepDbQIzdP9bC2iOWgqxFeHrgVeQhviYvFCGiyjzNXJnPzicaQQwS+Nfc/KTZ8Y1trhGYrzN5oxyyEFOXMHZX0+JL0i2xkxi8vkU07KrCoyU4pgnCWmja5P5NvorEZZdHTn4t4heO/mf9k5yI2oHg2ZSU+b5of3hAhfJCFDqc=
+	t=1728878266; cv=none; b=g7/8hpH6BfEtJEnE0AKbEVbgU2je0Tr7cL+NHEJx04dRhXJTa5Lq9MjqX2eHe1w7VF9p8F7hs/p2H7PLhiFp8ZK8ot9R2MJ8o23f0e8kOSQ6MMV72AomOLIlbHssHst5fW4cujCekKxLZLRwmfd9SeEF5h49BTcK2OTwhkM9ylg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728855793; c=relaxed/simple;
-	bh=tCStQr3z65tFm9oKRQ+M3I/f8YNEv7e7y/GeqYFwujc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZiztgFLW9ZZGfe7RPQGKqFevAJJ1onKHrQXHTkTSzwQZHi7A2FlPVra0WoqMDDZ6zYrzZz5q1FQ+h9TjxewmazFMG3Jr2WdkkfI3xgY+vaKxRSUv5evQF3T0xQ7KJSAkUaLEyZQdCE535jEUJnHi4r00bBBxtlUeOzI6X4Yt1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zq5IRj51; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728878266; c=relaxed/simple;
+	bh=z+NVXuqAmi8G4+8tRnlxkymWrkRCchQSLAOTmFj4l1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d9Djv8wWzUIhQwblXk/FyqxzpN3J7X4URc/ZLTrg6JJpQENmt9ifzu/xRUNtAKmqzXgheF9ZN+/8LUQOQy9Z9GRKso4n5+2G28rfng4cxnbir0QJtQc0pr5LHeHb+tIPAeECeHbJOXwczvtzYbJY21qBc1CcXPASQUKQzuEZ+hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kgdyskja; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zq5IRj51"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b110709ebeso266683785a.1;
-        Sun, 13 Oct 2024 14:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728855790; x=1729460590; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p+3Hw16kEKVdh6zlTavegWZ1sHjvmfIe8eboirfITWU=;
-        b=Zq5IRj51taseBIgGrOLvvcCTPlFebURd1iOsmo2sbZJmc/A90z8QSZHlA3WwvlNngw
-         lEVfkxsxJPARNh3NqFVoI/Rg8EA3a+8HdZ2TUgm73btb/Gx8q96DEoHH2Caev0dkZpGw
-         HQXPZOPJs4ixPOgtV9/1YumKs2U6jkNG+Uej1pjiAEAryOV8gq+VO4bb5uJvNeFfp26p
-         nIqMtecmdg2m5g6wXsvhUxDZpkcZjZZmEaoMTHGNwc9GfstyYEW5Fb6Hsp51GzXLpn5G
-         eW3FLh9DdBoVOPuDI0UIKl1Vqz57VpII1QThRI0nnMP0gbo+D2d8Z9sdBJ9pf0kHouia
-         /2GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728855791; x=1729460591;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p+3Hw16kEKVdh6zlTavegWZ1sHjvmfIe8eboirfITWU=;
-        b=epaFFowqjC9VTaFLxWCRLY6xbOtN70msZoJfN7Hr+fVAXFi7lTTfhjfL09TlBYUaKn
-         6VA6zJ4CcL/FkFlev6UoZqS1++uXIErUlo8ADdp97OP10IAaL2HQbiZcMNLoCV89X5YI
-         mPMuN+ebZwVATdCd6NG5HL+5k3Mp9w/l6qct11ZSzzMwkierUYOap5u9kpx60sDMrXXn
-         528GfIVunBEhVtuqznuxjn1NTIEDqP0BDXhr0CtCKCnR/8w8nQZZjz7tgvbccioLwQyM
-         +VF1DPDGg33FgQzvqDXe43h34VC25n1SoFd8knEHqNFzav4aAMv6Z0CfAosebYqCjLIx
-         mS/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWHklEXOK8QBDIdijyzZsTvFkl67Yk/PMseAHfJCD4RCnrhRNlhq3Koo9uOFRxhiMtUn+Pw0Rzyq4730aKFtgo=@vger.kernel.org, AJvYcCXgGxLs9E0vTx2F6W6xXEYdcJVmvWrNCex0u3Gdly+yTACIu+3/s3LYXGhR1zLb7gpmIgIx6FLXdNvZN6s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz56yogOkT8utHk8upIpFHmphpRCZIa+iJ9GfcLGXRy0AH1L/Fp
-	VzM0JeKSdZ5xK1FPZECdyg9MTYzkvjOTMj91jfgvTJhH1leRnF+C
-X-Google-Smtp-Source: AGHT+IEV5jf7Q8B7GnKjjKTMF4Ewa5Wk2w/VkBWPo8E3D8kkv3dvNUopUXrd7UjOLPBMSXdjPx4zPg==
-X-Received: by 2002:a05:620a:2903:b0:79f:a82:51b6 with SMTP id af79cd13be357-7b11a3952b8mr1357065385a.37.1728855790593;
-        Sun, 13 Oct 2024 14:43:10 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46042807aa1sm38399721cf.47.2024.10.13.14.43.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 14:43:10 -0700 (PDT)
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9EDD21200074;
-	Sun, 13 Oct 2024 17:43:09 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Sun, 13 Oct 2024 17:43:09 -0400
-X-ME-Sender: <xms:7T4MZw1agnS_pwDfnZQSnFm37QlHxG91_71aXGaNlLYvwSISrxNA6Q>
-    <xme:7T4MZ7EhWkp33DqQqBeSLvDxLHxLtxXmIi_EuDIxRNe5CBOCmmicMwQPd_ThOa_8p
-    55aD4GvYMLdpxMFKg>
-X-ME-Received: <xmr:7T4MZ462MSfoYpfQIVfZWphOxSckV3cBqFQCypjqUhrlMNmH2CYdD-6W8uY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeggecutefuodetggdotefrodftvfcurf
-    hrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffrtefo
-    kffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsuc
-    dlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhr
-    ohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomh
-    eqnecuggftrfgrthhtvghrnhepgfegudffhfehudekfeeilefgtdeitdettedvledtkeel
-    teejuefgffefleeijedunecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpd
-    hkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqd
-    eiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhl
-    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgt
-    phhtthhopeguihhrkhdrsggvhhhmvgesghhmrghilhdrtghomhdprhgtphhtthhopehlhi
-    huuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhu
-    giesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrhesrhgvughhrg
-    htrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesrhgvughhrghtrdgtohhmpdhrtghp
-    thhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihilhhlsehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:7T4MZ526-Q0bJdENtxA2k5lIvD_IsZ877MOjQ3tCOpoWx8rSdDNRFg>
-    <xmx:7T4MZzFH_bsHKEwYQOjwa2rMnRNHA8Gp7fCiEeTDzhZaGWV4xcUG2A>
-    <xmx:7T4MZy_y3zioumTw0idlFxXqMCAb4eH_IVXDnp5yDe9m4zd22wRSTg>
-    <xmx:7T4MZ4np4eJyY7D8XgmkN3eurTm0kCToKZILOk5NEj9PRAuNcBb65g>
-    <xmx:7T4MZzFS_rLiyilzfYxpZGoBDdbtxlTgFgBgkhJhmmmlQgM1joCg2Yx7>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 13 Oct 2024 17:43:09 -0400 (EDT)
-Date: Sun, 13 Oct 2024 14:43:08 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v6 0/3] rust: Add irq abstraction, SpinLockIrq
-Message-ID: <Zww-7DO8jeQfnItV@Boquns-Mac-mini.local>
-References: <20240916213025.477225-1-lyude@redhat.com>
- <aef35907-b92a-4f56-a330-b4be06f11984@gmail.com>
- <875xpvhlgm.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kgdyskja"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148D4C4CEC3;
+	Mon, 14 Oct 2024 03:57:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728878266;
+	bh=z+NVXuqAmi8G4+8tRnlxkymWrkRCchQSLAOTmFj4l1I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Kgdyskja1pvA42Hl74ZuxGKTjSjFLR+1tpBfqhRH9VkF5tPow9Z/2g+dqo2LgN7C3
+	 jihb+gA4gAPzIKypXBkr3qTMLqPLtoEzH/1nuejFQvq3AUEQMt59eSFCutMFbqGuRG
+	 YDLVD5q9IGCiF4ZSBvR7MJFnUnDE+aD6RkAqpOOgAC30NHkKuInrLiXD18BOCePM3k
+	 4GmSUKv5vb8L5h5yitqJZ1Z00xRmfTdFzalryK9O8lf9WiWntzNUFYfU+ECneLlPgA
+	 R1jig934Z6VT+ob07/1MRIvAA2/08GmFDK1ji44j9fbuI/m4xK7a/8N+Wp/kXRsWDE
+	 b403wPp+/gLXg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	dakr@redhat.com,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 10/20] rust: device: change the from_raw() function
+Date: Sun, 13 Oct 2024 23:57:12 -0400
+Message-ID: <20241014035731.2246632-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241014035731.2246632-1-sashal@kernel.org>
+References: <20241014035731.2246632-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875xpvhlgm.ffs@tglx>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.11.3
+Content-Transfer-Encoding: 8bit
 
-On Sun, Oct 13, 2024 at 09:06:01PM +0200, Thomas Gleixner wrote:
-> On Sat, Oct 12 2024 at 07:29, Dirk Behme wrote:
-> 
-> > Hi Lyude,
-> >
-> > On 16.09.24 23:28, Lyude Paul wrote:
-> >> This adds a simple interface for disabling and enabling CPUs, along with
-> >> the ability to mark a function as expecting interrupts be disabled -
-> >> along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
-> >> 
-> >> Current example usecase (very much WIP driver) in rvkms:
-> >> 
-> >> https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-example-08012024
-> >> 
-> >> specifically drivers/gpu/drm/rvkms/crtc.rs
-> >> 
-> >> This series depends on
-> >> https://lore.kernel.org/rust-for-linux/ZuKNszXSw-LbgW1e@boqun-archlinux/
-> >> 
-> >> Lyude Paul (3):
-> >>    rust: Introduce irq module
-> >>    rust: sync: Introduce lock::Backend::Context
-> >>    rust: sync: Add SpinLockIrq
-> >
-> >
-> > To have it in this thread as well I just want to mention the discussion in
-> >
-> > https://lore.kernel.org/rust-for-linux/87a5falmjy.fsf@kernel.org/
-> >
-> > which results in the impression that this patch series needs to update 
-> > `CondVar::wait` to support waiting with irq disabled.
-> 
-> What means waiting with interrupts disabled?
-> 
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 
-`CondVar` wraps a wait queue, and `CondVar::wait` accepts a `Guard` so
-that it will 1) prepare the wait 2) drop lock and schedule 3) regrab the
-lock. The usage of it loosk like:
+[ Upstream commit cc4332afb5631b0e9d2ce5699b7f4b7caf743526 ]
 
-    let cv: CondVar = ...;
-    let l: Lock<...> = ...;
+The function Device::from_raw() increments a refcount by a call to
+bindings::get_device(ptr). This can be confused because usually
+from_raw() functions don't increment a refcount.
+Hence, rename Device::from_raw() to avoid confuion with other "from_raw"
+semantics.
 
-    let mut guard = l.lock(); // or the `guard` can be generated by the
-                              // lock_with_new() function.
+The new name of function should be "get_device" to be consistent with
+the function get_device() already exist in .c files.
 
-    while *guard != 1 {
-        cv.wait(guard); // here we drop the lock and wait.
-	// lock is re-grabbed.
-    }
+This function body also changed, because the `into()` will convert the
+`&'a Device` into `ARef<Device>` and also call `inc_ref` from the
+`AlwaysRefCounted` trait implemented for Device.
 
-2) is implemented by the `unlock()` function of a lock backend (plus a
-schedule()), and 3) is implemented by the `relock()` function a lock
-backend. Currently SpinLockIrqBackend (the backend of SpinLockIrq)
-doesn't re-enable interrupts in `unlock()`, and of course it doesn't
-disable interrupts in `relock()`, and this is actually correct, because
-SpinLockIrq expects the caller to provide `IrqDisabled` token, so it
-doesn't handle the interrupt state itself, therefore `unlock()` cannot
-enable interrupts.
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1088
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20241001205603.106278-1-trintaeoitogc@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ rust/kernel/device.rs   | 15 +++------------
+ rust/kernel/firmware.rs |  2 +-
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-But that makes `cv.wait()` not working, because interrtups would be
-still disabled when schedule() is called.
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 851018eef885e..c8199ee079eff 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -51,18 +51,9 @@ impl Device {
+     ///
+     /// It must also be ensured that `bindings::device::release` can be called from any thread.
+     /// While not officially documented, this should be the case for any `struct device`.
+-    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+-        // SAFETY: By the safety requirements, ptr is valid.
+-        // Initially increase the reference count by one to compensate for the final decrement once
+-        // this newly created `ARef<Device>` instance is dropped.
+-        unsafe { bindings::get_device(ptr) };
+-
+-        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::device`.
+-        let ptr = ptr.cast::<Self>();
+-
+-        // SAFETY: `ptr` is valid by the safety requirements of this function. By the above call to
+-        // `bindings::get_device` we also own a reference to the underlying `struct device`.
+-        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
++    pub unsafe fn get_device(ptr: *mut bindings::device) -> ARef<Self> {
++        // SAFETY: By the safety requirements ptr is valid
++        unsafe { Self::as_ref(ptr) }.into()
+     }
+ 
+     /// Obtain the raw `struct device *`.
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index dee5b4b18aec4..13a374a5cdb74 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -44,7 +44,7 @@ fn request_nowarn() -> Self {
+ ///
+ /// # fn no_run() -> Result<(), Error> {
+ /// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
+-/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
++/// # let dev = unsafe { Device::get_device(core::ptr::null_mut()) };
+ ///
+ /// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev)?;
+ /// let blob = fw.data();
+-- 
+2.43.0
 
-I'm waiting for Lyude's new version (with lock_first(), and
-unlock_last()) to see how we can resolve this. We may need to redesign
-`CondVar::wait`.
-
-> Spinning? Why would you want to do that in the first place?
-> 
-> There are not a lot of use cases to do so, except for core code.
-> 
-
-The use case currently is that a timer callback need to modify something
-inside a lock, that makes the lock irq-unsafe, if a task is waiting for
-this modification, it would need to use `CondVar` to do the wait.
-
-Regards,
-Boqun
-
-> Thanks,
-> 
->         tglx
