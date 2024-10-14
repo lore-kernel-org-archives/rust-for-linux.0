@@ -1,147 +1,277 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2161591E2
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 09:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D738C156879;
+	Mon, 14 Oct 2024 09:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728896777; cv=none; b=d4W4tVvCbUK+q6oB5cOVXPNXcymAiItTUWEHKbQMkteZ8YoOKiCRB6yx5Tto0XBYUxFQZZUp6sKbtHjLF7Xg6kxAKZQtY/l927GKVkpTTaAFqUK7xknfzGpsFojC9VtUcmK7rX68H9omvaPOeoD4mrkE+pmq5J8K4/tQBsYfsQE=
+	t=1728897964; cv=none; b=SaSFMldEfF07Tlh+ep3uwVhexI1mYAiS2YGbc7h/v+uAoGHCj3/RA/UwtXuPD1MZ+BEpfXuWA1v+59PeuHrmBSDCEhj6pybqyR7pej5Sa7W7Kn/i/MkJGVplv6KRSrW+3ojVcvv+xY+d0Opu6uFi8T4YjJyK7gsQTKyO9uuQB7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728896777; c=relaxed/simple;
-	bh=/NYDUbcYsfrPCw8OG9MBVDUi8PxJyMeQ6kptO07FNQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TYk6ajeWXWBsq0a/I4TPxsU2QWGCtKS43WkHTtjepMfqTsb4gh4v3qMdjmf1fdeTKen820HZtFC6Iwmx5MlBBTXtqpBeIF51+mfOiJDBalGU0yoc2hqgH2OfluL4tEXFi1eBFbrPLHRKv7Oc2+7dyQYMBLcXjZo68gFUuMbVCMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YXFTJtbv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1728897964; c=relaxed/simple;
+	bh=OkN6ntUSyjEd9BpNV184pisGSZLDJpArHZ11JjjqXMU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=krlH3ULJKngXgR310aUOeZ8kzr4qbrEoJzyujtrQtMjF1fvrKD5RYpTFepuX+LDNMKaYa6LzpEJBs9CFf+FWwHRJ+ypMNycmW65drZaWQ+x36c9kR1u8NJZ5/hvUte5ZqzvG0v/r0ln0X6FZguL9obXEQ//0jMrAttjmU8sThBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0G8wPKz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YXFTJtbv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728896774;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F17udMnek9Ri4VpOz181mg426zHfJskr96SKZNMjm5U=;
-	b=YXFTJtbvcdEw2QMpQc6fHWLSRAvp1M/wgnotR0bwFbeEAdDTyrQj2LLQnUT6sJRUURJGHv
-	0lg2kX32hveVrMefw9Jxaiwke7pzxoO4zzmVgroAhQfNxZPdvisodr2x0jYO4EYkfgIUvu
-	ckeFpNRBCIah7bAQnwIGd4FPQtEyEPc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-51c2g4W8PWyCFhXY1I-CqQ-1; Mon, 14 Oct 2024 05:06:13 -0400
-X-MC-Unique: 51c2g4W8PWyCFhXY1I-CqQ-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d67fe93c6so630445f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 02:06:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728896772; x=1729501572;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F17udMnek9Ri4VpOz181mg426zHfJskr96SKZNMjm5U=;
-        b=NxNsVTyVlJ5blTNWlU3nNO8VNsWObQwS2Xdt9lsgL1rSYlGM+b244/4e9J4Jum4It6
-         Yfj2UunFbUdnpOFzvobw4bBcmjCICHMpwF/UjLRmSQGMX5GPqYtA5SLL7QhGNrBNeDrJ
-         BPIWaFURI4PNj6SP4m29J85p79aEB9hjqPpWMmV8M8DZGYdYHr+h3PD6A21rUbL+pM3T
-         ahMkBs8GSocAMLmqW0H2klZcNwlfXRxvP+UX7twDhArjO2k66OvhX38chgih8bzxgvm7
-         dXFeAyrg8ku8Nd3qD6YB1Sh7m/XEk2uOwJGJMJSCErrmJGng+5qvhFvZxPJxL+K0tV1a
-         pXCA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6Tt6FIZHYXRjJrBiZ2oVca8e6rZOqaaJM+N/SmZL0jQtn0MXNaW2/sq5E/LtrOs1LwZXN2IB16CyRAz28fg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlreDfw2/lEUnzvN6dKTHOFVXmCyQJWwTAb6+J1sVzPtAoVU1E
-	JLZpKO0CJCgwOxi94rn3Db+tWUEm5a2qlL2QuA7YGTm8if3Ujyrd4raZkaJhs2lIhe39Hu3VzVv
-	8gs2uw8Sd67TDSCC/B4eJc+ETsV6t/uX8DbN+LUIVYEe8kDUj6vnvZNE2jD3dIqsa
-X-Received: by 2002:a5d:424c:0:b0:37d:47f9:be8a with SMTP id ffacd0b85a97d-37d54e0b808mr8221814f8f.0.1728896772247;
-        Mon, 14 Oct 2024 02:06:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmaiFzGAr2+K2rmr2gQwMt3POCAx28GuVYLjzk3R6/H+xl7EfaOtsr7q3eGv0V1GoD7XacMw==
-X-Received: by 2002:a5d:424c:0:b0:37d:47f9:be8a with SMTP id ffacd0b85a97d-37d54e0b808mr8221783f8f.0.1728896771824;
-        Mon, 14 Oct 2024 02:06:11 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6bd057sm10790092f8f.35.2024.10.14.02.06.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 02:06:11 -0700 (PDT)
-Message-ID: <cfde8e06-0931-4a53-bae5-469219e77b49@redhat.com>
-Date: Mon, 14 Oct 2024 11:06:10 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0G8wPKz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B8EC4CEC3;
+	Mon, 14 Oct 2024 09:25:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728897963;
+	bh=OkN6ntUSyjEd9BpNV184pisGSZLDJpArHZ11JjjqXMU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Z0G8wPKzPaQno1/Uk1+Gyi9017Vs2F1LYNSH18Zj8oeLbGf5CXoTQx3DH9/Pbb9l+
+	 /DNaP2OzTYwDtgWeYvjZO0OwdHUHaCkILW6cO5dRlfv44iQofOO18qinEYNLKngCQo
+	 gl80bkKJWzftTo32/Sx6oCg5dkb7MuAIO24st226/xaPOuhSY7tHYBtLSja4dUlpeK
+	 JSStaT8fmQa2r9MntTfethRmmYPKQlJrCxLdBIP1k0gnJCJloMWJCPsAMKFH7VP9uS
+	 8Lo4JChaVh3W2ky9U07GB8oMVaPShx+C/26nHi2MHzRRHS/EPC8UwwTLVYmEIz2efX
+	 UsRvMLZINhdlg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Dirk Behme" <dirk.behme@gmail.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Lyude Paul" <lyude@redhat.com>,
+  "Dirk Behme" <dirk.behme@de.bosch.com>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Anna-Maria
+ Behnsen" <anna-maria@linutronix.de>,  "Frederic Weisbecker"
+ <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Benno Lossin" <benno.lossin@proton.me>,  "Alice Ryhl"
+ <aliceryhl@google.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 00/14] hrtimer Rust API
+In-Reply-To: <9eb1504a-b306-4332-99ce-739bc016622e@gmail.com> (Dirk Behme's
+	message of "Mon, 14 Oct 2024 08:58:00 +0200")
+References: <e644aec7-02b3-4faf-9a80-629055c5a27a@de.bosch.com>
+	<ZvwKTinnLckZm8aQ@boqun-archlinux> <87a5falmjy.fsf@kernel.org>
+	<dae08234-c9ba-472d-b769-1d07e579a8ac@gmail.com>
+	<Zwmy-2Yc7vGboYvl@boqun-archlinux>
+	<d2ce38a3-9a32-4f4c-88f2-22864b66afe5@gmail.com>
+	<ZwooHrqIiirl1so7@boqun-archlinux>
+	<4dd93603-04fa-4da4-b867-bd12ece4b391@gmail.com>
+	<Zwr3i4x7J5qyjFog@Boquns-Mac-mini.local>
+	<c19edf2d-2b53-403f-abcc-a5e81e7613f8@gmail.com>
+	<Zww2Vhsl9sutNm0s@Boquns-Mac-mini.local>
+	<SNbF-P01b40nAmc5Dk3aQjrcNMqgf9hflytDtpeXkQslZJAhgSzctsfVhXb3MkfbGqx5HzA0devlwOybz7dQHw==@protonmail.internalid>
+	<9eb1504a-b306-4332-99ce-739bc016622e@gmail.com>
+Date: Mon, 14 Oct 2024 11:17:08 +0200
+Message-ID: <87ttdfjb6z.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] drm/panic: avoid reimplementing Iterator::find
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- =?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20241012075312.16342-1-witcher@wiredspace.de>
- <CANiq72kG0Ai2DHfERD0aPDVuEpLYrZ_2uYdw17=eeHRp+2Q1Rg@mail.gmail.com>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <CANiq72kG0Ai2DHfERD0aPDVuEpLYrZ_2uYdw17=eeHRp+2Q1Rg@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 12/10/2024 13:04, Miguel Ojeda wrote:
-> Hi Thomas,
-> 
-> These commit logs are nicely explained -- thanks a lot for taking the
-> time to write each!
-> 
-> A couple nits below.
-> 
-> On Sat, Oct 12, 2024 at 9:53 AM Thomas Böhler <witcher@wiredspace.de> wrote:
+"Dirk Behme" <dirk.behme@gmail.com> writes:
+
+> On 13.10.24 23:06, Boqun Feng wrote:
+>> On Sun, Oct 13, 2024 at 07:39:29PM +0200, Dirk Behme wrote:
+>>> On 13.10.24 00:26, Boqun Feng wrote:
+>>>> On Sat, Oct 12, 2024 at 09:50:00AM +0200, Dirk Behme wrote:
+>>>>> On 12.10.24 09:41, Boqun Feng wrote:
+>>>>>> On Sat, Oct 12, 2024 at 07:19:41AM +0200, Dirk Behme wrote:
+>>>>>>> On 12.10.24 01:21, Boqun Feng wrote:
+>>>>>>>> On Fri, Oct 11, 2024 at 05:43:57PM +0200, Dirk Behme wrote:
+>>>>>>>>> Hi Andreas,
+>>>>>>>>>
+>>>>>>>>> Am 11.10.24 um 16:52 schrieb Andreas Hindborg:
+>>>>>>>>>>
+>>>>>>>>>> Dirk, thanks for reporting!
+>>>>>>>>>
+>>>>>>>>> :)
+>>>>>>>>>
+>>>>>>>>>> Boqun Feng <boqun.feng@gmail.com> writes:
+>>>>>>>>>>
+>>>>>>>>>>> On Tue, Oct 01, 2024 at 02:37:46PM +0200, Dirk Behme wrote:
+>>>>>>>>>>>> On 18.09.2024 00:27, Andreas Hindborg wrote:
+>>>>>>>>>>>>> Hi!
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> This series adds support for using the `hrtimer` subsystem from Rust code.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I tried breaking up the code in some smaller patches, hopefully that will
+>>>>>>>>>>>>> ease the review process a bit.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Just fyi, having all 14 patches applied I get [1] on the first (doctest)
+>>>>>>>>>>>> Example from hrtimer.rs.
+>>>>>>>>>>>>
+>>>>>>>>>>>> This is from lockdep:
+>>>>>>>>>>>>
+>>>>>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/kernel/locking/lockdep.c#n4785
+>>>>>>>>>>>>
+>>>>>>>>>>>> Having just a quick look I'm not sure what the root cause is. Maybe mutex in
+>>>>>>>>>>>> interrupt context? Or a more subtle one?
+>>>>>>>>>>>
+>>>>>>>>>>> I think it's calling mutex inside an interrupt context as shown by the
+>>>>>>>>>>> callstack:
+>>>>>>>>>>>
+>>>>>>>>>>> ]  __mutex_lock+0xa0/0xa4
+>>>>>>>>>>> ] ...
+>>>>>>>>>>> ]  hrtimer_interrupt+0x1d4/0x2ac
+>>>>>>>>>>>
+>>>>>>>>>>> , it is because:
+>>>>>>>>>>>
+>>>>>>>>>>> +//! struct ArcIntrusiveTimer {
+>>>>>>>>>>> +//!     #[pin]
+>>>>>>>>>>> +//!     timer: Timer<Self>,
+>>>>>>>>>>> +//!     #[pin]
+>>>>>>>>>>> +//!     flag: Mutex<bool>,
+>>>>>>>>>>> +//!     #[pin]
+>>>>>>>>>>> +//!     cond: CondVar,
+>>>>>>>>>>> +//! }
+>>>>>>>>>>>
+>>>>>>>>>>> has a Mutex<bool>, which actually should be a SpinLockIrq [1]. Note that
+>>>>>>>>>>> irq-off is needed for the lock, because otherwise we will hit a self
+>>>>>>>>>>> deadlock due to interrupts:
+>>>>>>>>>>>
+>>>>>>>>>>> 	spin_lock(&a);
+>>>>>>>>>>> 	> timer interrupt
+>>>>>>>>>>> 	  spin_lock(&a);
+>>>>>>>>>>>
+>>>>>>>>>>> Also notice that the IrqDisabled<'_> token can be simply created by
+>>>>>>>>>>> ::new(), because irq contexts should guarantee interrupt disabled (i.e.
+>>>>>>>>>>> we don't support nested interrupts*).
+>>>>>>>>>>
+>>>>>>>>>> I updated the example based on the work in [1]. I think we need to
+>>>>>>>>>> update `CondVar::wait` to support waiting with irq disabled.
+>>>>>>>>>
+>>>>>>>>> Yes, I agree. This answers one of the open questions I had in the discussion
+>>>>>>>>> with Boqun :)
+>>>>>>>>>
+>>>>>>>>> What do you think regarding the other open question: In this *special* case
+>>>>>>>>> here, what do you think to go *without* any lock? I mean the 'while *guard
+>>>>>>>>> != 5' loop in the main thread is read only regarding guard. So it doesn't
+>>>>>>>>> matter if it *reads* the old or the new value. And the read/modify/write of
+>>>>>>>>> guard in the callback is done with interrupts disabled anyhow as it runs in
+>>>>>>>>> interrupt context. And with this can't be interrupted (excluding nested
+>>>>>>>>> interrupts). So this modification of guard doesn't need to be protected from
+>>>>>>>>> being interrupted by a lock if there is no modifcation of guard "outside"
+>>>>>>>>> the interupt locked context.
+>>>>>>>>>
+>>>>>>>>> What do you think?
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> Reading while there is another CPU is writing is data-race, which is UB.
+>>>>>>>
+>>>>>>> Could you help to understand where exactly you see UB in Andreas' 'while
+>>>>>>> *guard != 5' loop in case no locking is used? As mentioned I'm under the
+>>>>>>
+>>>>>> Sure, but could you provide the code of what you mean exactly, if you
+>>>>>> don't use a lock here, you cannot have a guard. I need to the exact code
+>>>>>> to point out where the compiler may "mis-compile" (a result of being
+>> [...]
+>>>>> I thought we are talking about anything like
+>>>>>
+>>>>> #[pin_data]
+>>>>> struct ArcIntrusiveTimer {
+>>>>>         #[pin]
+>>>>>         timer: Timer<Self>,
+>>>>>         #[pin]
+>>>>> -      flag: SpinLockIrq<u64>,
+>>>>> +      flag: u64,
+>>>>>         #[pin]
+>>>>>         cond: CondVar,
+>>>>> }
+>>>>>
+>>>>> ?
+>>>>>
+>>>>
+>>>> Yes, but have you tried to actually use that for the example from
+>>>> Andreas? I think you will find that you cannot write to `flag` inside
+>>>> the timer callback, because you only has a `Arc<ArcIntrusiveTimer>`, so
+>>>> not mutable reference for `ArcIntrusiveTimer`. You can of course use
+>>>> unsafe to create a mutable reference to `flag`, but it won't be sound,
+>>>> since you are getting a mutable reference from an immutable reference.
+>>>
+>>> Yes, of course. But, hmm, wouldn't that unsoundness be independent on the
+>>> topic we discuss here? I mean we are talking about getting the compiler to
 >>
->> implementing the same logic itself.
->> Clippy complains about this in the `manual_find` lint:
-> 
-> Typically commit messages use newlines between paragraphs.
-> 
->> Reported-by: Miguel Ojeda <ojeda@kernel.org>
->> Closes: https://github.com/Rust-for-Linux/linux/issues/1123
-> 
-> Since each of these commits fixes part of the issue, I think these are
-> meant to be `Link:`s instead of `Closes:`s according to the docs:
-> 
->      https://docs.kernel.org/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
-> 
-> In addition, these should probably have a `Fixes:` tag too -- I should
-> have mentioned that in the issue, sorry.
-> 
-> Finally, as a suggestion for the future: for a series like this, it
-> may make sense to have a small/quick cover letter saying something as
-> simple as: "Clippy reports some issues in ... -- this series cleans
-> them up.". Having a cover letter also allows you to give a title to
-> the series.
-> 
+>> What do you mean? If the code is unsound, you won't want to use it in an
+>> example, right?
+>
+> Yes, sure. But ;)
+>
+> In a first step I just wanted to answer the question if we do need a
+> lock at all in this special example. And that we could do even with
+> unsound read/modify/write I would guess. And then, in a second step,
+> if the answer would be "we don't need the lock", then we could think
+> about how to make the flag handling sound. So I'm talking just about
+> answering that question, not about the final example code. Step by step :)
+>
+>
+>>> read/modify/write 'flag' in the TimerCallback. *How* we tell him to do so
+>>> should be independent on the result what we want to look at regarding the
+>>> locking requirements of 'flag'?
+>>>
+>>> Anyhow, my root motivation was to simplify Andreas example to not use a lock
+>>> where not strictly required. And with this make Andreas example independent
+>>
+>> Well, if you don't want to use a lock then you need to use atomics,
+>> otherwise it's likely a UB,
+>
+> And here we are back to the initial question :) Why would it be UB
+> without lock (and atomics)?
 
-Hi Thomas,
+It is UB at the language level. Miri will yell at you. If you do this,
+the compiler will give you zero guarantees.
 
-If you want to send a v2, the easiest way is to download the mbox series 
-from https://patchwork.freedesktop.org/series/139924/
-and apply it with git am.
+> Some (pseudo) assembly:
+>
+> Lets start with the main thread:
+>
+> ldr x1, [x0]
+> <work with x1>
+>
+> x0 and x1 are registers. x0 contains the address of flag in the main
+> memory. I.e. that instruction reads (ldr == load) the content of that
+> memory location (flag) into x1. x1 then contains flag which can be
+> used then. This is what I mean with "the main thread is read only". If
+> flag, i.e. x1, does contain the old or new flag value doesn't matter.
+> I.e. for the read only operation it doesn't matter if it is protected
+> by a lock as the load (ldr) can't be interrupted.
+>
+> Now to the TimerCallback:
+>
+> ldr x1, [x0]
+> add x1, x1, #1
+> str x1, [x0]
+>
+> This is what I mean with read/modify/write. And this needs to be
+> ensured that it is not interruptable. I.e. that we are scheduled
+> between ldr and add or between add and str. Yes, I *totally* agree
+> that for this a lock is needed:
+>
+> <lock>
+> ldr x1, [x0]
+> add x1, x1, #1
+> str x1, [x0]
+> <unlock>
+>
+> But:
+>
+> In this this special example we know that we are executing this code
+> in interrupt context. I.e.:
+>
+> <interrupts are disabled>
+> ldr x1, [x0]
+> add x1, x1, #1
+> str x1, [x0]
+> <interrupts are still disabled>
+>
+> So this read/modify/write can't be interrupted because the interrupts
+> are off. I.e. the interrupt off prevents the scheduling here. And in
+> this sense replaces the lock. And as mentioned, which value is read by
+> the main thread doesn't matter.
 
-That way you will have my reviewed-by automatically added.
+You can have the interrupt handler running on one core and the process
+on another core. For uni-processor systems you are right. I actually
+think spinlock operations collapse to no-ops on non-SMP configurations.
+Bur for SMP configurations, this would be broken.
 
-I can push this series through drm-misc-next if needed.
+I don't think the rust language cares that though. Doing this kind of
+modification from multiple execution contexts without synchronization is
+always UB in rust.
 
-Best regards,
 
---
-
-Jocelyn
-
-> Thanks again!
-> 
-> Cheers,
-> Miguel
-> 
+BR Andreas
 
