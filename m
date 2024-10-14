@@ -1,193 +1,93 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCD714B965;
-	Mon, 14 Oct 2024 21:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458AF14AD38;
+	Mon, 14 Oct 2024 21:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728940760; cv=none; b=kXcuPeP8aTwCONbbjmdqMqwn4YKAexY2KIhIrFeEstFBEWyLOSSObEMFz5Ay5arfDgLNmByfwLnjMIvDhIAEmkpzTIsxadyjo8UsgE5JsMLMrCQhKU4PXleF206tutTVFuyhs2y5dMv7Dvju+t1dj+MgvhkyLkF36gVOxujoJ1Q=
+	t=1728943025; cv=none; b=f43HB5INmw/1Fq7TJTYWsOPTGzNPIdQ74eRXEqax6IFUZA2xzn3sWLb38TD67BYNZJJAGXVnAth8xEVmS/HUYaOPCCT1vy1ftYgRXOQdKhNno6UQuIvDRlZgtoEP4uUwuyC8WPnhybDQ9B7HVmVbDJFKo4hJzk7KfDHoqCucgzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728940760; c=relaxed/simple;
-	bh=PAFmPTsYSqrYbsWSt40iPYIj+XMcnRXnWh1XxTwJTHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I8mFosKhuKMoR0A2+mXL8PXByTVAPY0MPjPsxoMGgHDv60bPEe2QimaXo/jK5b+4bVkBw+61+0p84A4NvI2J4LSTQQrDx0Mbfsg09ZFj10WzgaGY/BE/Vq+FjNtHg9pLIQP25iSVcL2SEgZjg8WDiRSdF+sLSjxDNNiqDKqL5j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNNxQJxL; arc=none smtp.client-ip=209.85.219.53
+	s=arc-20240116; t=1728943025; c=relaxed/simple;
+	bh=CCNhB8wRuPqzKYstyjiKWxgd79v0ox5Jx4ud5FEvrkc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TWTZVbB79ODoV9dTHWgvFUHNOV7QtDRmUquekZC9DLGT1EmW4eE77y7L/uFSFdmN8w1GRviRdnonUlMDitrNO2uVW0drghjZAmyN2HDKQuHqkpZFvrUpNvVi5tvonL2HB00sDGi3U/aQJdEJ244yofHLyLfmd1r87ZohUw+7Mpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mCWDKhvl; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNNxQJxL"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6cbe9914487so32624906d6.1;
-        Mon, 14 Oct 2024 14:19:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mCWDKhvl"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e31977c653so439640a91.0;
+        Mon, 14 Oct 2024 14:57:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728940757; x=1729545557; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1728943023; x=1729547823; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2MiOAdp88mxGwhMyB4rO6W4QU/jKLCZmdITKe/BNgZQ=;
-        b=cNNxQJxLoPh5EjtDOWhBiU08DhZ1krxyVkejo7bQXctLA0181Oj1n11bTEGo28QBq9
-         h85VYqjd15b7Ni4eUkrDqrdbK9QO6+1MfAiqpr0RzbCRsxGwWC5nuM9W32dME9FuObhg
-         FucVHnmJNYan8coNMLfYOCIZS05Sbs6fHhmpRnrEB3bcPXPPMTva9U+nXqEgBL9f1l9N
-         yqYIy7tU4e63x69UKS7k1oIiZWbB8Hj/Bexs832S6DkE4oC1tpJMqjChQV4x0xaGw2ap
-         eRg0KryU3VPOC1pzTHBYG8XkcdmHQAmhf+AQq0cJkt4N0a6U4/rHeNhkrYvounbIwrGk
-         6m9Q==
+        bh=CCNhB8wRuPqzKYstyjiKWxgd79v0ox5Jx4ud5FEvrkc=;
+        b=mCWDKhvlMvUgvKeqZQTcZkba9J05+lUUZ1quBITspEg13ofQe1neq+iRBPDYaiUuuY
+         prSixy/3GPutj1na3pdUiB2ZFVeaX/uzDBuUIB2xpaIpWQH+KxIP3uqUWEptNz47rxh4
+         IZpJ1KUIgx86c6tPznIvLj3yM6GPmsQ3PYUtCSNkqTJIPG5LaCHe6IK7axX6OEzkyCdc
+         vpwWL2JEtCKQtHlHq+ESCn2RcgD16I2FQxiFQs5uCntQEI1YrMn+5UUFz4MwnXM/p/oz
+         6A4tygM4FtycKAtF/g6uXpfQjQrJgM3Ik1P2+u7MwvPuVRdFNwfikWPHC3Myqq/gFtUg
+         41Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728940757; x=1729545557;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1728943023; x=1729547823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2MiOAdp88mxGwhMyB4rO6W4QU/jKLCZmdITKe/BNgZQ=;
-        b=aWssAe2+saCPpsW1irC1/OlLyYTwjJzbENBUAYheu0j8v8tkQUXRykMyqMc8HQI3e4
-         +Dw7n4rHzHfPsbdvThr9v3YTrlNsm43nU5qPCxLLeCpOoWruAC7CaHYUWvLhVL6lILDd
-         w8iZ+1EX6duOijFCN/fPNK+cJ9nIZPuxJYANYJH1neDVckxkopYr82N4mwiG48AV5CY9
-         rEOpEeXG1lG5Zj/A5XyVot+KJJR5tIXt90gsn5xAupeTiEpEV42q+vcdKn7SUbJOw7Fk
-         D+z62AYFPaUH2yTxFMOZ/6xVdeNvTi6OVQ1tn0/w6ANQh/MpvcXMCG7iOJBa2mIeFnpr
-         Dq0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVZfH3wvGZRNwM21xwQgrSXe89grB+iU8I59Hj+JzNO+zSR7toXUPBKfWtYZc8kXXqVLQqm6sFV85sy+z3xGtc=@vger.kernel.org, AJvYcCVaut/qLB6I20n8A5NchcbZpN7tB+fI9KHeAQ4hTfaMce/zCPfJU/HdKxirA8sPUDactfRxYo3nX872Jhs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWDA8d+igvKbRRkU7OYToZpcoujw1RmVpL1S7lgU1j8YRYjZq5
-	e+ONv+d92u3X/LTuwgSy6mscHxZGxIkL19y0MrVbTaz1kSmHc9Vx
-X-Google-Smtp-Source: AGHT+IGzO2q2s/9dn/cat1gPPyuyoPo+e7nJjOpJTMDlhlAABmQkhJExK4JTITevnji+6N6fPr8Plg==
-X-Received: by 2002:a05:6214:54c8:b0:6cb:d4e6:2507 with SMTP id 6a1803df08f44-6cbeffc1e72mr205437426d6.22.1728940757307;
-        Mon, 14 Oct 2024 14:19:17 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cbe863002bsm49615756d6.110.2024.10.14.14.19.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 14:19:16 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 159A71200069;
-	Mon, 14 Oct 2024 17:19:16 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 14 Oct 2024 17:19:16 -0400
-X-ME-Sender: <xms:04oNZ5v42dhsrUUl3yRs2sERmh4OTDH3Q7T1SuEHgN5rIMgSKhnrjQ>
-    <xme:04oNZyc4BAsUgxOkCsruCdFvEghmauScldEoeqaTKwqG2miMCQO8-UCoQUCDlpp_c
-    VrKj2yhksGRvEIWGQ>
-X-ME-Received: <xmr:04oNZ8xKkwj0Q5XPBevFyEXPGZwamzwVbl0O6d_XZ7SOUwtEHxX8rqitujclyg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeghedgudeiudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesgh
-    hmrghilhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthho
-    pehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopehtmhhgrhhosh
-    hssehumhhitghhrdgvughupdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtth
-    hopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:04oNZwON3RzZUxrTrjLIjnSz8FVL90ZoxRxmkY3GNbkV9d4qkrPn4g>
-    <xmx:1IoNZ5-ADSxyVJdj8tR0fIHRgjlmBN4yQN47UKgfQEhdyvBN86TsWA>
-    <xmx:1IoNZwU6ydicMPxOl9nWPVtuvp2rgcp7rzkL3v6jQjZsYgPQyGW1Yw>
-    <xmx:1IoNZ6fDB12MD_VplaR7LP1gVAd-iHFnz1olszwV9qIA-M6WOjtVVA>
-    <xmx:1IoNZ_cku84vArsLoZdIw9otQKX5sj6ZrsVmIqEwSHI8gYiGnig_RhNR>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 14 Oct 2024 17:19:15 -0400 (EDT)
-Date: Mon, 14 Oct 2024 14:18:57 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
-	tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org,
-	jstultz@google.com, sboyd@kernel.org
-Subject: Re: [PATCH net-next v2 0/6] rust: Add IO polling
-Message-ID: <Zw2KwQbAAKZ_5lPL@boqun-archlinux>
-References: <20241013.101505.2305788717444047197.fujita.tomonori@gmail.com>
- <20241013.115033.709062352209779601.fujita.tomonori@gmail.com>
- <Zws7nK549LWOccEj@Boquns-Mac-mini.local>
- <20241013.141506.1304316759533641692.fujita.tomonori@gmail.com>
+        bh=CCNhB8wRuPqzKYstyjiKWxgd79v0ox5Jx4ud5FEvrkc=;
+        b=JziF1FRb87a37guobFmy0AbRXMDVM6Y4e2rGNj1uknXYO2tUaV4n2/jJ6dDhu0o4d+
+         fBXV+tc884Qj3iq13FVHU2luzhblxiZOJvsaqqFCA9snpgLc6wAyksps7ASIJdsJVRIk
+         5M82XL4viNTU0Yik4s6bFLdSDlc+m4AyrwQApCzPSCDZFV5sWNci+DXb3w2k8QW8JiBU
+         EeBx7M1rECf6E8Uq7SPmPRcxTAOVs4WnmpwLRD1rVgiK37054TUiV4zHauM8nNejMrP6
+         r98nlSAx5SCVR8Qa/LA/9L6JDFuHVd2MpVq0xA58Zm8c3j/37iaV73pVWWJzyvBzv4wj
+         SSww==
+X-Forwarded-Encrypted: i=1; AJvYcCULQr69Dcd5kfJfnp8kz93KHRAdbqLI7GaL6nXoaJUyLkTma1GR1uYhXSHGRUZ35xDSriAB547T0mix54g=@vger.kernel.org, AJvYcCWum6gvfBKjlxydVyYSe2HPa7NjPvK7hw0OPIKNSMaIacfW1LJA1Alvy/oVXJ5aqpNLKF7M4te+1/ZVk42cgec=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjD4jELxpt1EUIR8ncQ9Sp379g8x44m16F1ww2nA4+Tc5BG3nE
+	S8G5U/nByByCqoQyJtWfpa8OLc31CH9LXQmDXbNq0XWQT+Q9Ewo0Kz/ddIUEMsbl7je7lyCvRES
+	ab4+YW4NCu4+TQNvrRGMBJwDtGXY=
+X-Google-Smtp-Source: AGHT+IFETqmdiRm4yosntRLT56uPB2qh9JnPzC1RN9dEryG2oHGK85k6vqx/f3Dn2DZWnUDjaR0ujQdVXIEAaReRt88=
+X-Received: by 2002:a17:902:dac9:b0:20b:642c:222b with SMTP id
+ d9443c01a7336-20ca1724228mr63138165ad.15.1728943023484; Mon, 14 Oct 2024
+ 14:57:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241013.141506.1304316759533641692.fujita.tomonori@gmail.com>
+References: <20241009102821.2675718-1-masahiroy@kernel.org>
+In-Reply-To: <20241009102821.2675718-1-masahiroy@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Oct 2024 23:56:51 +0200
+Message-ID: <CANiq72k4+upHYWOtYD1vLZ222EHaau9Q5nWW_HiQJ+xNLHLzEw@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: refactor cc-option-yn, cc-disable-warning,
+ rust-option-yn macros
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <benno.lossin@proton.me>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Trevor Gross <tmgross@umich.edu>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 13, 2024 at 02:15:06PM +0900, FUJITA Tomonori wrote:
-> On Sat, 12 Oct 2024 20:16:44 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > On Sun, Oct 13, 2024 at 11:50:33AM +0900, FUJITA Tomonori wrote:
-> >> On Sun, 13 Oct 2024 10:15:05 +0900 (JST)
-> >> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-> >> 
-> >> > On Sat, 12 Oct 2024 08:29:06 -0700
-> >> > Boqun Feng <boqun.feng@gmail.com> wrote:
-> >> > 
-> >> >> While, we are at it, I want to suggest that we also add
-> >> >> rust/kernel/time{.rs, /} into the "F:" entries of TIME subsystem like:
-> >> >> 
-> >> >> diff --git a/MAINTAINERS b/MAINTAINERS
-> >> >> index b77f4495dcf4..09e46a214333 100644
-> >> >> --- a/MAINTAINERS
-> >> >> +++ b/MAINTAINERS
-> >> >> @@ -23376,6 +23376,8 @@ F:      kernel/time/timeconv.c
-> >> >>  F:     kernel/time/timecounter.c
-> >> >>  F:     kernel/time/timekeeping*
-> >> >>  F:     kernel/time/time_test.c
-> >> >> +F:     rust/kernel/time.rs
-> >> >> +F:     rust/kernel/time/
-> >> >>  F:     tools/testing/selftests/timers/
-> >> >> 
-> >> >>  TIPC NETWORK LAYER
-> >> >> 
-> >> >> This will help future contributers copy the correct people while
-> >> >> submission. Could you maybe add a patch of this in your series if this
-> >> >> sounds reasonable to you? Thanks!
-> >> > 
-> >> > Agreed that it's better to have Rust time abstractions in
-> >> > MAINTAINERS. You add it into the time entry but there are two options
-> >> > in the file; time and timer?
-> >> > 
-> >> > TIMEKEEPING, CLOCKSOURCE CORE, NTP, ALARMTIMER
-> >> > M:      John Stultz <jstultz@google.com>
-> >> > M:      Thomas Gleixner <tglx@linutronix.de>
-> >> > R:      Stephen Boyd <sboyd@kernel.org>
-> >> > 
-> >> > HIGH-RESOLUTION TIMERS, TIMER WHEEL, CLOCKEVENTS
-> >> > M:      Anna-Maria Behnsen <anna-maria@linutronix.de>
-> >> > M:      Frederic Weisbecker <frederic@kernel.org>
-> >> > M:      Thomas Gleixner <tglx@linutronix.de>
-> >> > 
-> >> > The current Rust abstractions which play mainly with ktimer.h. it's 
-> >> > not time, timer stuff, I think.
-> >> 
-> >> Oops, s/ktimer.h/ktime.h/
-> >> 
-> >> No entry for ktime.h in MAINTAINERS; used by both time and timer
-> >> stuff.
-> >> 
-> > 
-> > I think ktime.h belongs to TIMEKEEPING, since ktime_get() is defined in
-> > kernel/time/timekeeping.c and that's a core function for ktime_t, but
-> 
-> Sounds reasonable.
-> 
-> This patchset adds Delta (also belongs to time, I guess) and fsleep to
-> rust/kernel/time.rs. I think that fsleep belongs to timer (because
-> sleep functions in kernel/time/timer.c). It's better to add
-> rust/kerne/time/timer.rs for fsleep() rather than putting both time
-> and timer stuff to rust/kernel/time.rs?
-> 
+On Wed, Oct 9, 2024 at 12:28=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> cc-option-yn and cc-disable-warning duplicate the compile command seen
+> a few lines above. These can be defined based on cc-option.
+>
+> I also refactored rustc-option-yn in the same way, although there are
+> currently no users of it.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Good point. So how about putting fsleep() into rusk/kernel/time/delay.rs
-and add that into the "F:" entry of TIMER subsystem? Since "sleep"s are
-a set of particular usage of timers which don't directly interact with a
-timer or hrtimer struct, so I feel it's better to have their own
-file/mod rather than sharing it with timers. Plus this results in less
-potential conflicts with Andreas' hrtimer series.
+Applied to `rust-fixes` as a prerequisite for the `rustc-option` fix
+-- thanks everyone!
 
-Regards,
-Boqun
-
-[...]
+Cheers,
+Miguel
