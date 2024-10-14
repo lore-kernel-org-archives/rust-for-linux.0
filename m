@@ -1,55 +1,55 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911A1156C69
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 08:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1BF161311
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 08:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894486; cv=none; b=Htd/VShpJJ+HvXQ1WpbDXKmZH/mnkWd9jlaJep52pQY75avOgwl8oPcKAkrKP6vY855SrOBl9Th3GwbHvRQo7DGcIiVMS9AEuTW3GEBfakpfsH2dhL8Ot5iuYgPFsXgIUUMuL5SxsaZj0IDUDrCni4cVO6HEk5g1G6jANfzLWTw=
+	t=1728894509; cv=none; b=MWGjdx50VTDqpwVcYFpIvZT10TYinbh5sLS3WXhOVZzO85KqegvHq25kTzw0c/7p4fenOfezdfFmW6JXHLREWmqt9TYujx/llbrdqAxWwqv5us9akUKtL5G+zmam3Sq58gQ57NOEEHCa7TdlyzkVjtpEQxC3LwRQ/csxqT4kREk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728894486; c=relaxed/simple;
-	bh=4fZ/6m33GTNrbpNkrlKeyN/Jq7/li7hFF7obcIo4I7E=;
+	s=arc-20240116; t=1728894509; c=relaxed/simple;
+	bh=IyuZvKIkgZQliVBNyPA4Jxtag3pcr7KYyn2TJY2A4ho=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WUdju9pNaOhRY8o7EyR7kjNnlgmpmCpQcexjOqOv5DN366FjiXvJ/yEX84hZ31RI3hzOCj/3ZO47SF4m0ZuZ6OQtGeJOQJZzGblLFlxURaNhMxrvx4nf2rbjmj+meEqUWDKXfGSLHS5KdUGARzhDRg0H5+zGyrpLbCf4Uz3+2AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VzxziGyy; arc=none smtp.client-ip=209.85.128.43
+	 To:Cc:Content-Type; b=RShgeO+xeeTcYHQTXajZ8bV0oRc8h2wJRsoZZ5lU76neq9AAAO9pbRe0GtVHlEwGGoQi9YZTfee0F5MYjh2g2jY0+opwPU26DZbm8gTcmV1QhjBe3mpGBZxYeOTXGdbweQNQIj6VxoMmIWfsbEMQp4BgMjgXLioXS+GKTzl9DTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J+4MgDxM; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VzxziGyy"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4311d972e3eso20795795e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 01:28:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J+4MgDxM"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d5038c653so2422772f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 01:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728894483; x=1729499283; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728894504; x=1729499304; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=M24dNzd553xNHb5Y8IIcUeoG1f4DjGolZJ5waiH250E=;
-        b=VzxziGyyjk7Kj6XZhJhr0Y0Ldyumoq+Re2p8sxwEG2LSXrebpiLXofwQxoqjiHp59M
-         qdRaFTBHWpW/5XlcuFcnfscjUyIkcUDcJqgzu7dqvcA3m5esNmrPkI+ikp4iIGnZFnQh
-         LFWciCIIF5t/bI6uFvQhL9js/UOjlMg2cZRXxD+0PI5SgsHp/xApHbVCUrN4TmS12Wvs
-         XF78wT5yb4vWowI51GBMjVh+qw/gmkJKeuGj9NU1t1CAA1epxjOycnM+jMcFQFcQQESl
-         zQmL0RRIGZXAWMyfclN0ENEKEphIWP1bnr5cTD+PNndSdIPoxifFYZhTXBX9dtv9SJvG
-         o6nQ==
+        bh=BCeu5RGfQHD/7fNcARcJl4VtMP3O2J4piVgLgvXsU9c=;
+        b=J+4MgDxM9/i4mer/yhAgwYV+nqMzjZh/Exfljh+h/cFjYesBJOPetaAJukZQAbSyw1
+         gjRLqo62ateoGayC2gGrM+M/x59qf00gE3YYgIe0B/Dn/TjWqATfzTdo2DhNLgUryYV9
+         nJp38XOQszqoGxjPg1uSDdiBBUdmJH8te3jVQIJXYoFn5nM9rV9+pBOPbtZHNmAJlLtk
+         J0wYQfY91i/ZKDTIurYyuofwj6JcNAo/+HgWE568RuhJD+S3pVpna5GRDA96R2bOMCtm
+         YcGne+5ctzIfKu9YBqIDptkMPgAp5b+ucWXB4/FDifw7RdLwATc8KE9jR2MgXUrnxIBD
+         9Qhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728894483; x=1729499283;
+        d=1e100.net; s=20230601; t=1728894504; x=1729499304;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=M24dNzd553xNHb5Y8IIcUeoG1f4DjGolZJ5waiH250E=;
-        b=EK7kCpq1/O5KyGr0OIH2OZw7uSInjAJ/CO2TfH92Yar74NUJ0R5zbuUrmMaoxST6cD
-         XCw2+lGg7X58GJK7peaZf2fjwwDHYM6lIdwsfj9CPOZKWlg5VmxSx7PL58NvnBHytqt4
-         KsSo/5bMOko2JlbNMV1Lvnep8d9rI3C0ia/UT9UwG66666xDm5YurJWvdAUSmHN5T5BO
-         ZV5FmY9vAcj2Np/nuxd7F1ipIfmc8UnT+uCibHMLn58Sy8Qx+gQe5//1lJpxBZRb0X7a
-         H5Q4D4Tq/oCVaj+Y6xFVhDnDn7Eu4RaJ/5d98HW1TYEO2M7qbUq0SnP3htGlVNDaVHl2
-         HLrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfdrYcyAYMJKOaPZGT8KcNLHhYWGvQ0G8GiGbgGq3cC+aoUN3q1CXJYi8gPk2LDC6zxUZ2s0DKGsQIN31YCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxFy4dWwJp2vnfjbikUF5nHIeDqyX8PCmXYSYjZ37EE8xW7XVT
-	hmAk0KNPHT3FXCjLVsHlKH512t1cGQoAoKnnw0MZPqvlS9VvqaQyRzacCuNZqGy8a35ToViReOQ
-	71Ihf0vIsXuBv09bzAP4Q6aBbcbe6zDin+MHd
-X-Google-Smtp-Source: AGHT+IFB8FFfnlqFKW+nSLnk8WRApZWwjOS9gnyongi0gtF4ICZpB2dBUY9HOCSQhExNJfIuKbhQl4ZLD9UDKKJLEjY=
-X-Received: by 2002:adf:a1d7:0:b0:37d:4833:38fa with SMTP id
- ffacd0b85a97d-37d5ff2c01cmr4561294f8f.21.1728894482691; Mon, 14 Oct 2024
- 01:28:02 -0700 (PDT)
+        bh=BCeu5RGfQHD/7fNcARcJl4VtMP3O2J4piVgLgvXsU9c=;
+        b=JQXYDgRM9qLb8UUpAUIpC7WBlqfN6iWtNqvYsD5F4z7qD4SviLpa5EJf1Uh20buRlK
+         CadB4fK/yMg/sNNIhQOq8A7sWfjumq4FEhMTkRvfcA2bIIMktyXsu5K8h+k+LeBuyT0+
+         SOw/sWImtoKV5cuNdj/5t00mnRSNOvAA9MAYJiwm1DwAhZRSnQacGDzwdMGcIn+UoVYV
+         LbJzpo9J2mzrIlfPUDCU0NEoPCTNc3LU8vejrd/syCwuiyeDSJyZhY2QUApOg0uw9Fui
+         GwNDHRYEanscHhIFChgoH/cCexQnj3sGLozMimjZkvk5LO8iKy5iPMT8OXV+npeHX7Nd
+         5Okg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZEmKWMlQvGNxZE1eyDLdzIzUf2hQy7E0BklsZ5sYkRplrY0xTnQV2e0wSoX6SnSFnAIIjPP8e3KuOa1S3EQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFyayrs1bUu4/fiQ8yFso+N98KasdzMSpOl4/3+Ss80UEofVMv
+	ZB7SPA0Y/d76eNj1WN/INq51VuXbZRpUJjkNOU/CzXglZpmxzflGJ9VzOIeIm/IsmYTwZ8cG/pl
+	IUrZ8U1DFgj9o6nbKlXYhfSQwQBlQDMOpchTb
+X-Google-Smtp-Source: AGHT+IH/x/JFM80zXRfmFjrcoV8VAzGeOzIVfGAemlXaYAsnGiLYKVvSO5aPsLFdNUh4pRe7OfNdBBVD2cxfPVqv4pg=
+X-Received: by 2002:adf:ea49:0:b0:37d:5282:1339 with SMTP id
+ ffacd0b85a97d-37d551d39b3mr6997806f8f.22.1728894503943; Mon, 14 Oct 2024
+ 01:28:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,8 +59,8 @@ MIME-Version: 1.0
 References: <20241012075312.16342-1-witcher@wiredspace.de> <20241012075312.16342-6-witcher@wiredspace.de>
 In-Reply-To: <20241012075312.16342-6-witcher@wiredspace.de>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Oct 2024 10:27:49 +0200
-Message-ID: <CAH5fLgjU3bvDrOsvyxBcCuGOsmbuekrh0Ccy+La_MgHrMEncvQ@mail.gmail.com>
+Date: Mon, 14 Oct 2024 10:28:10 +0200
+Message-ID: <CAH5fLghusTK7M4om9X=_R6tXC_Ytc1TG=NfDXMsQkmfQ5SWUEw@mail.gmail.com>
 Subject: Re: [PATCH 6/7] drm/panic: allow verbose boolean for clarity
 To: =?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -126,15 +126,6 @@ qr.rs
 > +        return (x < 8 && y < 8) || (x < 8 && y >=3D end) || (x >=3D end =
 && y < 8);
 
-Surely introducing a return statement causes another clippy error?
-
-You can do this:
-
-#[allow(clippy::nonminimal_bool)]
-{
-    (x < 8 && y < 8) || (x < 8 && y >=3D end) || (x >=3D end && y < 8)
-}
-
-or just put the allow on the function.
+This should be #[expect(...)] instead of #[allow(...)].
 
 Alice
