@@ -1,121 +1,114 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4251158558;
-	Mon, 14 Oct 2024 08:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49415383F
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 08:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894174; cv=none; b=VeDxXFnY/g1RtXQh1ruTKp0zTyblqlLgP6i0TXPCRbuO0XTlnRxS3V3wbqzPngHX5GulkhDbsDJQcsC2jjl3cxU3wYuMn77XCaS5tgvp7zVcG5jUi/N4tvwln/6N3NYh00bFI/A25GJ6u9Nc3rn8qsqJmvhxmtpdriJitHreSCc=
+	t=1728894208; cv=none; b=lJ63nlM77W3+C+6t6rm7YVE9TUEMMIuue+TmQySEqzUma7Dqd3tPArjBNodjTXu4zo10Uu6N0iAk6M6p/xUKZvJFIr8D8Um3j8SVnX0QNKl+tSilD0iUrGoKonz1Mc5DcaFPMi/tTyH0hWA7doGaSiXlIkeTsYWzR+bOTcEhJ64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728894174; c=relaxed/simple;
-	bh=bzBoPBXvgGgBceKCBKqe7YKjn85sRsKmpKifY22AX2A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BVLMmM7TY5epvz6OunAVuQTZ4vVxHgRLqYXSXHO8UTCy2blbyDGbklhlEq+3naR7v/fIqUMNdQtRY8BQNSRMssJ2jcGG6SPt0AYdaZ+wdaWZ7iUzO7jNa9svuFuQOAOirj0iFNaldowkL+PjVQvr7Qadqnk97ySA7EfozjhUXss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sTMTFJFG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YiXTsO3q; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1728894208; c=relaxed/simple;
+	bh=2nAoBmy9CoC8eCTngzXqAo+qikUPTb5dYzc8bIj9CSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IPI+j5XVDmQ+7iTRQqkXYM4lHfrWqstfwIlUrVIZBy4v6rHo6Ff7kf/MfyEng4pQNjMV2gn8+T0x2Xj0JRxtuVrTOzPtzJ03TZdcac5TWKUsq6Y+zIWWbTrdErFW+5q60Fxliw4vEpCGG9kboTCjBzjyctYAeYP5F1oynh1r1sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4KBYT3sx; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sTMTFJFG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YiXTsO3q"
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728894170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kNRLICfcMX53Pl818PecpUhWq4UAyd0n3QQSNiHMS0Q=;
-	b=sTMTFJFGvylVpObZzdv1qmknTg52pZ48YWiroJTZicX+jQy1Mlt0Nwy4njse3ScvsitBPN
-	AarLq6u0hB7vf/sWLsDpPRUwWhPjaaUfsKuxH4QzSlaIYa2GRhvZ8jn7lX9m0aadfwvU4/
-	r/swaKR5jNTOAIjSbgs2jtN8WnxgN51MlifUV8KxK0Sf+2qxEOIiABHiYuqRWNqNoFXcpJ
-	5FbJ0AXPMhESnvenWqkAtuZ+/XiP4TvWNm24LGiK4v7SFBWPjXkoMFT80ibjuPZpjjNx3S
-	990cpnZFVbHZmQZJpWxuwnUePpRA0XkSpRYeXyu2gyUhOoYw2pgWgfACEt8fQA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728894170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kNRLICfcMX53Pl818PecpUhWq4UAyd0n3QQSNiHMS0Q=;
-	b=YiXTsO3qLxn3vTSHXPfgV/b1ytZOM/RZ2M/bSg5i6/5WqHxHq3X2mwyl7+SxU5Ckqvkxyg
-	waDWkAxliFM0VODQ==
-Date: Mon, 14 Oct 2024 10:22:31 +0200
-Subject: [PATCH v3 14/16] media: anysee: Fix and remove outdated comment
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4KBYT3sx"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37d4fd00574so2283117f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 01:23:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728894204; x=1729499004; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sBUSoaQ7ZrooH++T965gdyO5DJx2bChBhEopwIoT3RI=;
+        b=4KBYT3sxN2FXgsAm2fZ8KtuaygQL3WIRpsXOn3Ra0AWjq84T3PNbCUX4XrsXe4qniP
+         giIzX4XLsKYDgqp4dzSJ2qsk3Z/mBpYqsX9pi9l2KOgpgHxMC1+I7KOXHNq7CPfUjAVI
+         MHRtPvDVKmY0QPoGuqWnHsOhr/3y8t7lIn5P6HG8Kz4jlBWvxVspQNG94kLmoPq7PsGv
+         U/7+18J5AgQNhLyOR+BbBmcJHM65IWRyCPlopTL5U7jEVRFn5v2az0195+Qy1u3ORXs3
+         8h0a2MozVemQ6L7c5Bbx+9yjZAmKeRZJaF9YvoV/ki1UybwSX0V+bBdcKkuv5lSpGB/z
+         qV8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728894204; x=1729499004;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sBUSoaQ7ZrooH++T965gdyO5DJx2bChBhEopwIoT3RI=;
+        b=OnZPz7GD7sCuj0DV6tyaccXHucaywCbT6wSdB2wWdB7/VOyaR5s0Oyasf/YZGoT9PK
+         bFxrWOME4OcbYI2byLRhRJTJvaG0IiXrOuD1RlneNX/B2z7sYTaUuPG1THIv7CcTffjW
+         ieTBhDe+eI++Ytugj2XEKVYFELGfwhPFg474104YyLn0bUBSLziIEuZuKRGgU8I2hLJ/
+         i+WxuyZlZeZ9EFgAFnpDO6JaX09OYF5B5z2fXRpDUlQks/ORVUyfJ/gtoYDG6Gtbvr0K
+         wvu3yb41Ug4MtQB6/WGrW6M+dPb+97G5LL0SIOvR1/NOLrhYx++7/0CkEfU8kGye1k3o
+         tXRA==
+X-Gm-Message-State: AOJu0YxuFJKMOzMrZ9R/ejhZ6AIL97iAyDjkvzMM7GWJJZjdLhyEnJVX
+	vn+Mwff/jhQ1r0wuQk75GbLpWbRV95nIK4ydWTOjjyKGuBV/FG7BKv6cTaSFn6tEvVVSCoc4D5v
+	u8P5D7em+X2vptxvM9UgLvUqv/t0RNZ0FoeGB
+X-Google-Smtp-Source: AGHT+IHa+1qNo/aPVNNBqq8+piM5lE0pb6yC186DN1QTLCPA1B27LhdPXpkyzsL4c16EWmwhBMf6cfTXIWTL5en2Dn8=
+X-Received: by 2002:a5d:5108:0:b0:376:dbb5:10c2 with SMTP id
+ ffacd0b85a97d-37d552d4a14mr8165807f8f.29.1728894204050; Mon, 14 Oct 2024
+ 01:23:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-14-dc8b907cb62f@linutronix.de>
-References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
-In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
-To: Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
- Alice Ryhl <aliceryhl@google.com>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Miguel Ojeda <ojeda@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- linux-media@vger.kernel.org, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <9fb9930e-7666-4520-91d0-7e79be56b8f7@gmail.com>
+In-Reply-To: <9fb9930e-7666-4520-91d0-7e79be56b8f7@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 14 Oct 2024 10:23:09 +0200
+Message-ID: <CAH5fLgit650+Xz6UXB0SLeLzL_ZFKae+ZTDZVA-hsCwX6AzwDw@mail.gmail.com>
+Subject: Re: [PATCH] rust: workqueue: Enable execution of doctests
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-anysee driver was transformed to use usbv2 years ago. The comments in
-anysee_ctrl_msg() still are referencing the old interfaces where msleep()
-was used. The v2 interfaces also changed over the years and with commit
-1162c7b383a6 ("[media] dvb_usb_v2: refactor dvb_usbv2_generic_rw()") the
-usage of msleep() was gone anyway.
+On Sat, Oct 12, 2024 at 8:30=E2=80=AFAM Dirk Behme <dirk.behme@gmail.com> w=
+rote:
+>
+> Having the Rust doctests enabled these workqueue tests are built but not
+> executed as the final callers of the print_*() functions are missing.
+> Add them.
+>
+> The result is
+>
+>      # rust_doctest_kernel_workqueue_rs_0.location:
+> rust/kernel/workqueue.rs:35
+> rust_doctests_kernel: The value is: 42
+>      ok 94 rust_doctest_kernel_workqueue_rs_0
+>      # rust_doctest_kernel_workqueue_rs_3.location:
+> rust/kernel/workqueue.rs:78
+> rust_doctests_kernel: The value is: 24
+> rust_doctests_kernel: The second value is: 42
+>      ok 97 rust_doctest_kernel_workqueue_rs_3
+>
+> Without this change the "The value ..." outputs are not there meaning
+> that this
+> test code is not run.
+>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Dirk Behme <dirk.behme@gmail.com>
 
-Remove FIXME comment and update also comment before call to
-dvb_usbv2_generic_rw_locked().
+One nit below. With that fixed:
 
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
-v3: Remove FIXME comment completely
----
- drivers/media/usb/dvb-usb-v2/anysee.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-diff --git a/drivers/media/usb/dvb-usb-v2/anysee.c b/drivers/media/usb/dvb-usb-v2/anysee.c
-index 8699846eb416..bea12cdc85e8 100644
---- a/drivers/media/usb/dvb-usb-v2/anysee.c
-+++ b/drivers/media/usb/dvb-usb-v2/anysee.c
-@@ -46,24 +46,15 @@ static int anysee_ctrl_msg(struct dvb_usb_device *d,
- 
- 	dev_dbg(&d->udev->dev, "%s: >>> %*ph\n", __func__, slen, state->buf);
- 
--	/* We need receive one message more after dvb_usb_generic_rw due
--	   to weird transaction flow, which is 1 x send + 2 x receive. */
-+	/*
-+	 * We need receive one message more after dvb_usbv2_generic_rw_locked()
-+	 * due to weird transaction flow, which is 1 x send + 2 x receive.
-+	 */
- 	ret = dvb_usbv2_generic_rw_locked(d, state->buf, sizeof(state->buf),
- 			state->buf, sizeof(state->buf));
- 	if (ret)
- 		goto error_unlock;
- 
--	/* TODO FIXME: dvb_usb_generic_rw() fails rarely with error code -32
--	 * (EPIPE, Broken pipe). Function supports currently msleep() as a
--	 * parameter but I would not like to use it, since according to
--	 * Documentation/timers/timers-howto.rst it should not be used such
--	 * short, under < 20ms, sleeps. Repeating failed message would be
--	 * better choice as not to add unwanted delays...
--	 * Fixing that correctly is one of those or both;
--	 * 1) use repeat if possible
--	 * 2) add suitable delay
--	 */
--
- 	/* get answer, retry few times if error returned */
- 	for (i = 0; i < 3; i++) {
- 		/* receive 2nd answer */
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 10d2bc62e2cf..ba0f397f8b8b 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -69,6 +69,8 @@
+>   //! fn print_later(val: Arc<MyStruct>) {
+>   //!     let _ =3D workqueue::system().enqueue(val);
+>   //! }
+> +//!
+> +//! # let _ =3D print_later(MyStruct::new(42).unwrap());
 
--- 
-2.39.5
+Having an empty line followed by a hidden line means that the rendered
+html will have an unnecessary empty line at the end. Please remove the
+empty line.
 
+Alice
