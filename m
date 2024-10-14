@@ -1,46 +1,47 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D67315575E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5BA155CBF;
 	Mon, 14 Oct 2024 08:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728894170; cv=none; b=UETpqQ5umLmExaPi8yNuS6mOhOufF8Ef8aEe9+zWVNc4Izlq5Wp50GHDJofMUTkPaho4XHB5AB24M8guyuVgfYt/DE67uVb9n1WelJWMgZ50JRgT1kmUvrp24KWG0BOQ7qzrDP1gkehwgwB+aciD9JMMogkwY1OE7m6fbeG3vHo=
+	t=1728894170; cv=none; b=end8j0fiTQo9WqNbOPYkysHdbYadry0VwFwHblAaPDov6LSJcVM6JgUJ5jGkrpY7iBZKWBVqGra7XR9eALMttTsJD72KvYk5D14q8eoY21at5IzAv1/UFy75NxGQB5oIYdwwdK1LBgmoQNALtljadZnDvZoqfRrCCglR3ditS/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728894170; c=relaxed/simple;
-	bh=nQNvsQI/LKOxp28gKqTsbBASM5OGfHUopU7DTfBEIvg=;
+	bh=Bf62MSjNCcOsUnnQm2kzh16d6CLGiUEI3eiVV9t9Owc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HpO9H8tpdhiuqyKKwCTwnR6HZf71G1aQe8TqiIGashvvLehCiNwlxpve0RsZfRlt0viMtAYIGDNu15gEvk3N9eI84GdVTaSkRlvN+oadmncD9zhbZZtFiFmfBdMk9M7RzzLjvemjRZI/vR+nWdc9Hqn2idrXKO7N1GYulIjdhig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pmhoyqKY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ania52HS; arc=none smtp.client-ip=193.142.43.55
+	 In-Reply-To:To:Cc; b=lahOfdGA4SuyCKOGfrSGR6dttDoxh3TIlyNE/V0YAx+70SQW/85o/jxJVMvLq59KpWZSEHx8AfVz1owzn0hrwVmwup6A550vXT3pp9diY4R3UIJvliZSjkoVa9mu67GALKnWuSRChS9g2h8lP0eg3jiPpIpUrEjvlnPULlckeIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=B/aSrdnG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=S6JiLyI3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pmhoyqKY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ania52HS"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B/aSrdnG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="S6JiLyI3"
 From: Anna-Maria Behnsen <anna-maria@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728894166;
+	s=2020; t=1728894167;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ry+dtPsZBklLhcJ65uITnod4UvodhQ0YRrocNcHCAkI=;
-	b=pmhoyqKY6/Hp+Nbkc7dId8BgCrzDJ6QT1UuIAFnkO98NXVGsIeP2puUTcKXXoRAgtnRv4t
-	v3JHN9LN6hTMcmamRJFwfGd8KT8qrZTuj08JTdvPeKqS2pgHTR+9I17zcGqGJfBZ8ROWNc
-	XhN942L6KWxiyE5G9R/l70YbCDsVuSmwwXTP2GgoyCi1ko4JzQ5G3fka/yloL2+fN7qQAH
-	HLmBr6Ja4ZNW51iuRnX3Wax4vr+CKfwna0Qy03RlhGPzmFEqsktP97h9E/TUMImncdfLfj
-	flm50SQ/4XzMxPXUkYOtd1xHBiIyJIhkiynMFJzjkL5mnz7GG2QV5bfF+2WBIA==
+	bh=qOaH71wwpXdQZek5RpUCzVvDQCRluMekHdCjKOEhMjY=;
+	b=B/aSrdnG1hdrhqCf9Doxt53XdUEPd/DsqfCqfEtXm+sXaR4YxaOBvD/4G4k6gEJsLkPqNI
+	vHi/uKunKriXr18pR5F29McrnstoIfhveWZg3Q9z3Lafph8GjeECPp6qWNwz+orsvPcojr
+	Snx7csQhHtS1I/k/YSb+dPc2+vClJeJ/Z/M94B8lycT7WPEvSY3DnwB5ND44BUhPWtm7fc
+	5SbflHJua9/3ny+8zX2+wvL8ioeRogGZNozMCMjJDw9WJfWDlsKzeLlmGzBXOqcHiuQjDw
+	Sh4zc4d6RRhGSRWRewxwX+yWhSDZeoxCFlye9hXYxSs2XZskPwA3I1nondd8+w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728894166;
+	s=2020e; t=1728894167;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ry+dtPsZBklLhcJ65uITnod4UvodhQ0YRrocNcHCAkI=;
-	b=Ania52HS0L2fPfnAAHtSDj1YuoBZ8Em64TR+UWoTyfZqGcr76FyIrr3kqQKG5cEckfBvAu
-	iGEBM4FwulsR7AAA==
-Date: Mon, 14 Oct 2024 10:22:23 +0200
-Subject: [PATCH v3 06/16] delay: Rework udelay and ndelay
+	bh=qOaH71wwpXdQZek5RpUCzVvDQCRluMekHdCjKOEhMjY=;
+	b=S6JiLyI3D4+gyIiCjKrWzIAm4jv71/fdJjVfoPCojjq13xGDDrzi/OlrF6cyHiZaMmx4Mf
+	8Fn1cpiVDmJEzqBQ==
+Date: Mon, 14 Oct 2024 10:22:25 +0200
+Subject: [PATCH v3 08/16] mm/damon/core: Use generic upper bound
+ recommondation for usleep_range()
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,7 +50,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-6-dc8b907cb62f@linutronix.de>
+Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-8-dc8b907cb62f@linutronix.de>
 References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 To: Frederic Weisbecker <frederic@kernel.org>, 
@@ -59,127 +60,41 @@ Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>,
  Alice Ryhl <aliceryhl@google.com>, 
  FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
  Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Miguel Ojeda <ojeda@kernel.org>
+ Miguel Ojeda <ojeda@kernel.org>, SeongJae Park <sj@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+ linux-mm@kvack.org
 
-udelay() as well as ndelay() are defines and no functions and are using
-constants to be able to transform a sleep time into loops and to prevent
-too long udelays/ndelays. There was a compiler error with non-const 8 bit
-arguments which was fixed by commit a87e553fabe8 ("asm-generic: delay.h fix
-udelay and ndelay for 8 bit args"). When using a function, the non-const 8
-bit argument is type casted and the problem would be gone.
+The upper bound for usleep_range_idle() was taken from the outdated
+documentation. As a recommondation for the upper bound of usleep_range()
+depends on HZ configuration it is not possible to hard code it.
 
-Transform udelay() and ndelay() into proper functions, remove the no longer
-and confusing division, add defines for the magic values and add some
-explanations as well.
+Use the define "USLEEP_RANGE_UPPER_BOUND" instead.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: damon@lists.linux.dev
+Cc: linux-mm@kvack.org
 Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 ---
-v3: Fix build error for i386 (missing linux/math.h include).
+ mm/damon/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-v2: New in v2 (as suggested by Thomas)
----
- include/asm-generic/delay.h | 65 ++++++++++++++++++++++++++-------------------
- 1 file changed, 37 insertions(+), 28 deletions(-)
-
-diff --git a/include/asm-generic/delay.h b/include/asm-generic/delay.h
-index a8cee41cc51b..76cf237b6e4c 100644
---- a/include/asm-generic/delay.h
-+++ b/include/asm-generic/delay.h
-@@ -2,6 +2,9 @@
- #ifndef __ASM_GENERIC_DELAY_H
- #define __ASM_GENERIC_DELAY_H
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index c725c78b43f0..79efd8089d6c 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1892,8 +1892,7 @@ static unsigned long damos_wmark_wait_us(struct damos *scheme)
  
-+#include <linux/math.h>
-+#include <vdso/time64.h>
-+
- /* Undefined functions to get compile-time errors */
- extern void __bad_udelay(void);
- extern void __bad_ndelay(void);
-@@ -12,13 +15,18 @@ extern void __const_udelay(unsigned long xloops);
- extern void __delay(unsigned long loops);
- 
- /*
-- * Implementation details:
-- *
-- * * The weird n/20000 thing suppresses a "comparison is always false due to
-- *   limited range of data type" warning with non-const 8-bit arguments.
-- * * 0x10c7 is 2**32 / 1000000 (rounded up) -> udelay
-- * * 0x5 is 2**32 / 1000000000 (rounded up) -> ndelay
-+ * The microseconds/nanosecond delay multiplicators are used to convert a
-+ * constant microseconds/nanoseconds value to a value which can be used by the
-+ * architectures specific implementation to transform it into loops.
-+ */
-+#define UDELAY_CONST_MULT	((unsigned long)DIV_ROUND_UP(1ULL << 32, USEC_PER_SEC))
-+#define NDELAY_CONST_MULT	((unsigned long)DIV_ROUND_UP(1ULL << 32, NSEC_PER_SEC))
-+
-+/*
-+ * The maximum constant udelay/ndelay value picked out of thin air to prevent
-+ * too long constant udelays/ndelays.
-  */
-+#define DELAY_CONST_MAX   20000
- 
- /**
-  * udelay - Inserting a delay based on microseconds with busy waiting
-@@ -45,17 +53,17 @@ extern void __delay(unsigned long loops);
-  * #. cache behaviour affecting the time it takes to execute the loop function.
-  * #. CPU clock rate changes.
-  */
--#define udelay(n)							\
--	({								\
--		if (__builtin_constant_p(n)) {				\
--			if ((n) / 20000 >= 1)				\
--				 __bad_udelay();			\
--			else						\
--				__const_udelay((n) * 0x10c7ul);		\
--		} else {						\
--			__udelay(n);					\
--		}							\
--	})
-+static __always_inline void udelay(unsigned long usec)
-+{
-+	if (__builtin_constant_p(usec)) {
-+		if (usec >= DELAY_CONST_MAX)
-+			__bad_udelay();
-+		else
-+			__const_udelay(usec * UDELAY_CONST_MULT);
-+	} else {
-+		__udelay(usec);
-+	}
-+}
- 
- /**
-  * ndelay - Inserting a delay based on nanoseconds with busy waiting
-@@ -63,16 +71,17 @@ extern void __delay(unsigned long loops);
-  *
-  * See udelay() for basic information about ndelay() and it's variants.
-  */
--#define ndelay(n)							\
--	({								\
--		if (__builtin_constant_p(n)) {				\
--			if ((n) / 20000 >= 1)				\
--				__bad_ndelay();				\
--			else						\
--				__const_udelay((n) * 5ul);		\
--		} else {						\
--			__ndelay(n);					\
--		}							\
--	})
-+static __always_inline void ndelay(unsigned long nsec)
-+{
-+	if (__builtin_constant_p(nsec)) {
-+		if (nsec >= DELAY_CONST_MAX)
-+			__bad_udelay();
-+		else
-+			__const_udelay(nsec * NDELAY_CONST_MULT);
-+	} else {
-+		__udelay(nsec);
-+	}
-+}
-+#define ndelay(x) ndelay(x)
- 
- #endif /* __ASM_GENERIC_DELAY_H */
+ static void kdamond_usleep(unsigned long usecs)
+ {
+-	/* See Documentation/timers/timers-howto.rst for the thresholds */
+-	if (usecs > 20 * USEC_PER_MSEC)
++	if (usecs >= USLEEP_RANGE_UPPER_BOUND)
+ 		schedule_timeout_idle(usecs_to_jiffies(usecs));
+ 	else
+ 		usleep_range_idle(usecs, usecs + 1);
 
 -- 
 2.39.5
