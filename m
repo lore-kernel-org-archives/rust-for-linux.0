@@ -1,94 +1,45 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40130.protonmail.ch (mail-40130.protonmail.ch [185.70.40.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8370D1C2327;
-	Mon, 14 Oct 2024 17:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B341AC45F
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 18:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728925208; cv=none; b=hVGJRfTtbM2ea5OFl6/zs9Mo+aKOU79pW7nx1GTCGMRYcUqu8RnkYUvNk2AqCCmEe9CHZMzlzQgnmUNf9BeMmsWMG6Bdg9mu4H1WdsFMOveCBHGTM17S40BkX57IhTzw5Jyi1I9SSPfEUuY5GEuuzYKZypOWySteAAIgnE/X9P4=
+	t=1728931322; cv=none; b=BzXCm/EYFfKhO5EYLnDai4LCTpiv/YCbad2sy9W8d6JmPgBmFaH0Z9HiQUvBuaUmYmVVHtvH0yEbVXp3I3nqzocxLuqBH4Jbo6b8Ch8UI/QJgtmy9GbcKisVWFAqjmj9w9wdGhif+ahUkx9DiFHJINtcQhAQDtG4r5t8gXo5laQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728925208; c=relaxed/simple;
-	bh=l+IkmYOY1emvpWEhAH8hN1Dn1l4FLfVFJ+8YBVygnlo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E63EIYhXOl5g/8D7W31oVwzY0+23nmLFPHvj1yfFCfsNCtgqgQVUHNEB4D6VcvtS2NlxuLgeb5IIfQNgKf6gfhQqek0PuEWQ0DzO9e3ACsE+dyXbM6eClLkgwTz05L22CD1cOEQ5CTy+pNSzz2a8akZqxd2/u+bKfzlfJmUDie4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WDlRgbOo; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728931322; c=relaxed/simple;
+	bh=quadcf+F3w95Vv4EffkoWEgj0LG46W18oiyVW2rhqjk=;
+	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type; b=RtV9pNjM5trGP0OLKaToSMv3je6zv4hFLc3KLBXbXkvgssjmNVm602DlABScek4eM4gJYSyuCa6vOeteI9ftsiY64vQb6jVsb5XHGytx4B6c9+SNr5hb5AGngV1HNnst6pkJliyLxH3P+Xypyh+JC31dP5kaKHg0/+DH14y0T0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MHNU0yhT; arc=none smtp.client-ip=185.70.40.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WDlRgbOo"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20c53efc14fso1910355ad.0;
-        Mon, 14 Oct 2024 10:00:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728925207; x=1729530007; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l+IkmYOY1emvpWEhAH8hN1Dn1l4FLfVFJ+8YBVygnlo=;
-        b=WDlRgbOoMXjgLskV3Cghhl8U0zEz2p+yTuIQSwf26WPAiYNXJ0Ej1+X9AiKNdgiOZq
-         9vLUBSw7uF0BRklVcsWj12tr/bnSx+p+S3sOwQhyeZjbvVst/3f5+Kt6wqMMOgtshGZO
-         hveL712QZnecgBFN0xj4rCn0SJCVeZEvknrZPuvJnMGfI68FUWnSu37M2HlybQSWosAh
-         hjJy2hb6gu2Y2FObFqg1cavd6UPtcj4jj8q457DkedwyhRgjplm81tEQopxaRqoZXPIn
-         rsLaWgCwY/KopoYTJvG9tR0PNv6BRn+7LSQQbyjnx7L8rTFFMe0LXQHcSuuoCtI4IZrW
-         /9CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728925207; x=1729530007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l+IkmYOY1emvpWEhAH8hN1Dn1l4FLfVFJ+8YBVygnlo=;
-        b=QHpO2+wWdADYOTRRD+OmE/aUrgtl9zBi2Vso31AM6DddwJO/dOT3XaXt5YlXi3bx14
-         pwGxvELtQbogYGl/2/trwOcJz81X+OLxtu7BXQZ18W6twnVVFaiiSOej6WY9H84BBE1x
-         Ab2z1wAZrEFVso8aMVDV7/lrBwW2RSaU53yEJJEQuKUEXwmRqsow07huX1iQZUiC+dnP
-         er0/t+UQyJh9in05516MOxmp5RsVA6WH+oEwhaLdkl8mdnnjNJDOxtuI61LOnMnL4ohB
-         wAbzRpBvYkSAZuRCnYXfqQk6eRcF2jZZX43YSqNjqjVtlS8IausROl1IGEUTKilW+Etq
-         ZxuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV53wzVRR72ZoRKanLb/bs4nFBBx+y5G2FwTWJS6AhrqJ+PyY+5tarcsK01I5EL7zl88PtgFLQrlJWB/Jw=@vger.kernel.org, AJvYcCVENhN4h5X9BcZwzuc2Ggnm10bX86r3i4J5g3aM6JCcXn1whzufmjr7sCl2169zKiVLzcwsAVadnyd/40F/dAI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo25xgf8xVYHR+HGdPlRsYK800/gO0yVepI00EbAMDBl6b1AFo
-	mSv2s41W3OrmNpD3JUCEuYEnHi1tKHDAr+6QoOcYkFCCZ3y+YIrBELCtvG/QWcJm/5WjRtY9EEU
-	c8OczkQ9lg3BoVaBiaY70cvisBKE=
-X-Google-Smtp-Source: AGHT+IHK7lgNU2cqHnJklHE865k53HsTuHdHwY3kT9CtZVScB0WjQJlMOR5ix+y9Y3xweVzDqJV2SHjwy23kRy1Rx0o=
-X-Received: by 2002:a17:902:e845:b0:20c:92ce:35b3 with SMTP id
- d9443c01a7336-20ca1429fdbmr66874725ad.2.1728925206043; Mon, 14 Oct 2024
- 10:00:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MHNU0yhT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1728931312; x=1729190512;
+	bh=quadcf+F3w95Vv4EffkoWEgj0LG46W18oiyVW2rhqjk=;
+	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=MHNU0yhTBgnxWD0TaN8vOdBPBuT+LkRSiL5Iwak08YX32VNvZEmz78w8jPnPsL1Md
+	 WdRVO2a4k7F3hHqweij6kVs9/9jbigqDumJJpfkTGQayXircpQ1WptFboEE66K9YBy
+	 AWgj/sEsZmCPplRZymuYGAvWChU56thciQqKN6/TiJ1y3c5Ibzff4PbLTQPqTUEmRL
+	 KPaRur0pW1DqszGzVSHMf3wBqTGcCO9eNvHecA8DM572XIp0yRnaiIL8brkO+H3eCk
+	 1/IYY5/rPWJcV921PJFjErPFKTkNWfb+A4tQ9Y1DLFIXnqE2ntZbNTen/gDC+WfY0t
+	 toWXFJQhEuSlw==
+Date: Mon, 14 Oct 2024 18:41:48 +0000
+To: "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+From: td9076922@proton.me
+Subject: (No Subject)
+Message-ID: <PX63ViVf2lnSC9bS4VtZtbqEADDCbb_V1UOmRDdzwHRDbijkkT5TqOum2rLj4aXahhsDx5QKnunZyxFoyfyJeiCOOcDaop_W6frpyWFJffM=@proton.me>
+Feedback-ID: 122800019:user:proton
+X-Pm-Message-ID: 619d59198c0cec22287ad987b444ca26c1633371
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241012075312.16342-1-witcher@wiredspace.de> <20241012075312.16342-6-witcher@wiredspace.de>
- <13f6f904-bd2c-4b0a-914e-0715d22a7ff5@redhat.com>
-In-Reply-To: <13f6f904-bd2c-4b0a-914e-0715d22a7ff5@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Oct 2024 18:59:54 +0200
-Message-ID: <CANiq72kE0QtiC6OjyV32r_0V2KxhtPk+-8mQGkCvtexif+04vg@mail.gmail.com>
-Subject: Re: [PATCH 6/7] drm/panic: allow verbose boolean for clarity
-To: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: =?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 14, 2024 at 10:54=E2=80=AFAM Jocelyn Falempe <jfalempe@redhat.c=
-om> wrote:
->
-> With the suggestions from Alice Ryhl to not introduce a return, and use
-> expect:
-
-+1 to both.
-
-`expect` (here and the other ones I suggested) require `rust-next`, so
-if this goes through DRM, then we can clean this up later. Otherwise,
-if you prefer `rust-next`, we can change them to `expect` already.
-
-Thanks!
-
-Cheers,
-Miguel
+Empty Message
