@@ -1,119 +1,93 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E3E158A19
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 12:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D971C1A0B07
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 13:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728908103; cv=none; b=Z/8BmAAjEKSs+2g1+jLqO56bPr2NupFJny3JJR0Rm/4+w+qp5j6oIWzMcRWOfRJVERAyTQw5T7sxchGVKRfOUnsWY73/u6WDQP3Mn6ax49EAfY8ItFHX+s/LGSiX0cng5o2LOcu1C7ZZEHvDCPi+p8/AO7iW29OZSSlbE/xMnuY=
+	t=1728912340; cv=none; b=tIYK+ZJSCNrfoArzq9k2pVYRyZ0jGyRA2QB6/cslzuo3NraZtC7mwPs0AgEnZWj61zJc+supYpmJqVDkS71wHslb2QVrRDBm6GN1cYoKRm2xUHrxFRHdASiBN6e2Zyt2iuNfprhxHc3hAJdk74iiPP67cGxHynb3nrNGtcw0lyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728908103; c=relaxed/simple;
-	bh=iQVLJCrO59l+U3C8nBsH7Y/xyKdeTfY2kCaFyYVzpXk=;
+	s=arc-20240116; t=1728912340; c=relaxed/simple;
+	bh=D9ULmpwo07CAG1hQ8yl0FcU2WXv6pGnxGIrk1yXQUBs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=URAzFQLUZuEwGlaWGEYzjkQuIz0pqBRDB0sPJAnfV+/sa2QNOPLmP+hcurBxrdDzAKjg7SRLEKktIOd+ACIU8lYIaM4vyhxHcIoBGAJOe3Ac2/BaSN/CxmEFn6aeTvNW8gIIC3Iqh4uTI2Ch9VxLQ6nLrEh1VTncLzI5aJXKsNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hf24hAuT; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=nDYqLsgL0VXj1PILer0y6JNBY2bp2IFLX6TzSA0ONdqbLf/KABtZ24aeOAjz+ePQP8Nkt19HiCSb4kAz2muWndoRtJ7hMPj38T/7wts4JWOxRGt21Ca7RUoKHg0KGhvEhs+MamZ6bSeqKxsLi1pfUTmUPJxluyP6X4tGwkHtFDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qwkdnois; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hf24hAuT"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d3e8d923fso2961712f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 05:15:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qwkdnois"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d4612da0fso3078559f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 06:25:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728908099; x=1729512899; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728912337; x=1729517137; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e7KSNGy6l9LM1AhD6ncBYc2Uc1aK2VpPwzUYAgzX7Wg=;
-        b=hf24hAuTVNQvGuNeh3s78bjmBZXsLSPIpgm0Y9awwEvB0ufFQuMFbZMA1LHUzVrpCc
-         YVNSa6t8c0WcXxzUFV/GPNuyCj1b0mZ0HacoMSy0ieQl8KJy36+MtYYxtcKyQx0MLKj5
-         xKvuoWtwEnyNH64Xi+c01vewkrxyOyyOlrY+rZhEmmfrrT0X+EPuDW9kNiQrgeHPPHpJ
-         umbs4RMtxJAs09xU4c7WlL7v7oAN3+S9QPb8cP7aC/PQ/X2HydnskjzpV5zIa0Bzy5gS
-         K2JugyGra9lqip91XNFnoFMWu2wGjG2H9QjP8Dhg7VgMXqGjNmj6h296kD+XyQSRkmub
-         VoXA==
+        bh=Qcw6vFzAeM6V1uYExGMaM9DjMaXwb3dLyeYvVAn2Ehw=;
+        b=qwkdnoisiZ8HyWGLX2ltPO04PWpqxbe52Ns1KcVKy9Om+k7y8CpUSHqDTZcDQwJu+H
+         XLUhuBfqR0URS6iWS7xkqcH/BvH9bM45RqftYo5sZP6llVffshpRo8zpp5S4Kk7JXEsS
+         AvarNxHQY8KSchz146CD9VgEZgEG3DXZXLTxW7cpuHwGe7iqKqBYKg53CgQMzjvXLEBg
+         9j+oty1eM6PGw5wFXlpPANWPJ+h4ZWf6nC5bmri7q0+BzKH8Oy83o/UcqcI+u04xDlYv
+         zCYX4LdajnOEfUssrEcPFBFFNcp668bu5Yx25iVEhYtYVFRAn7s4I7T6/WVadRidYghZ
+         WS6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728908099; x=1729512899;
+        d=1e100.net; s=20230601; t=1728912337; x=1729517137;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e7KSNGy6l9LM1AhD6ncBYc2Uc1aK2VpPwzUYAgzX7Wg=;
-        b=I+7JK8ML4koTVD6lOV1UeogEjvEgBS4+ulGqr3G6T4bjZTtkGH257vRnRxZbmBkPHv
-         jOgaULcJ0ykmV08RPe6bg7gzVySsvgxQsQdDXoDK3Bybi3fba1q5ABB5iHkAQue0Ipy+
-         1XKriTu5MIRjwsF2Oild3/cRKLKxeI9JEMuYptbnGXyZtDYRdXOFxDOrYAll37fgPQWp
-         cElTKn5VnO4sP4nxilaQDJN0nkNpFQBRfBHvCCCWeAjwd8xLVGKg8lBH0kimISjXPkJ9
-         Is18SARPrpXUIEWwduViVlMSTkmw1co7K8sKpcgbNTcjWQJfVCzBOdPskEIAC8/L5hky
-         o21w==
-X-Forwarded-Encrypted: i=1; AJvYcCV+e6GH3u1YToCaVsLAFk6JpikrEjW/kaV7hB9Bum9Vhtdus34DrC2ByUxOicdWb7xrm/iU4HVDC/jOxICPog==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzev+5wG/JsiH7XkrSMm5PtWN8hktRsBj1YNkGTvHOzWFdp9ni
-	PK0/kDQvumcPqjWWtuLmTDjh08Wrl9/CekQOdRDc1Q1BGn7/BcIVo7uUkwMh+re2c8ZhsNrMMqy
-	VrCalCgTZyoy82ZKGcDVP9oMFVIor7ztg2Djr
-X-Google-Smtp-Source: AGHT+IHQMN0yL72SF5rkncUiY67lreSaBexOvErTNNOjpfPJPaa/qxhsWysQojiA1+0udb8Z//rGPUkFfpXe0x5GCBc=
-X-Received: by 2002:a05:6000:10c5:b0:37d:4fab:c194 with SMTP id
- ffacd0b85a97d-37d551ed80fmr6540039f8f.25.1728908098738; Mon, 14 Oct 2024
- 05:14:58 -0700 (PDT)
+        bh=Qcw6vFzAeM6V1uYExGMaM9DjMaXwb3dLyeYvVAn2Ehw=;
+        b=MyQFd3lwMNIe6pTNks3yV/HsedYg9ebCpOM47lv4Te+aQiUlstgqDaFve3ib76bD1n
+         t3MqqlY5QRIdx7M0iTfjXhmA9K7L0ZqwKstbN6wvnygWcu/tjIKJZwLamW4zagNDSLtU
+         hyYQXTkJb19A85ruyoNt4VwR3LmQUFELUF7DT0husIBt46Tfl+Okdn926oSXB6KuFzPa
+         zmjcZ7EZw2doUIPbhB4G/MMio6mBR3u2OMSs+uKRzfwZ0QGASF2Vua4Z/GNU2r067yyC
+         25Q/Y5P/T2kLCLU0ZyUJdILDoTEd0L+vzB+wjnoSPdqXbKH/7IMkybXUZp3+WxHdyqna
+         UI2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX9SgfakRLh1m6KpWpvNG0PCk0NQhpGJAlCZqpD7AbUx1we4VBaZRFq+TnZetYOzuGmLiKjxtuDUaXxSh2OkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBe8H7/ktWfOP2ygxS1kMu7OmaQqbQaymEvSphkx9z76YjQ0I5
+	JQhQTXiUzsrpArrfJOcN1fA06mh9eKV2qaRYjCrT2hp6wOrsNhGtlAtVy/3picBfyddsziZ6Sa4
+	60AHdAI4Dm/why6Ghd3JCzhitQenGyxS7VRqc
+X-Google-Smtp-Source: AGHT+IGh9g25AxERQtC7Q/z3tZszAdR6jVdmK0ErRScTUABwGozUjqMJMTLChIuJXgSGz4cvgAjijGBqFoiI0/5liCU=
+X-Received: by 2002:a5d:53cd:0:b0:37c:ca20:52a with SMTP id
+ ffacd0b85a97d-37d551d4f7cmr7789713f8f.8.1728912336980; Mon, 14 Oct 2024
+ 06:25:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241012231300.397010-1-ojeda@kernel.org>
-In-Reply-To: <20241012231300.397010-1-ojeda@kernel.org>
+References: <20240912-shrinker-v1-1-18b7f1253553@google.com> <20240914140745.7b0e5d5c.gary@garyguo.net>
+In-Reply-To: <20240914140745.7b0e5d5c.gary@garyguo.net>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Oct 2024 14:14:46 +0200
-Message-ID: <CAH5fLggkQ-z97O94Am=h8ObJZnC5M4PtWceu9MJfNw5pim=hTA@mail.gmail.com>
-Subject: Re: [RFC PATCH] rust: kernel: clean explicit lifetimes that can be elided
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date: Mon, 14 Oct 2024 15:25:24 +0200
+Message-ID: <CAH5fLgjqksLOOzEyPBDN6Ym9DKpuifdxte2a+NJ-GNQoyUe35g@mail.gmail.com>
+Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 13, 2024 at 1:13=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sat, Sep 14, 2024 at 3:07=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> In nightly Clippy (i.e. Rust 1.83.0), the `needless_lifetimes` lint has
-> been extended [1] to suggest eliding `impl` lifetimes, e.g.
+> On Thu, 12 Sep 2024 09:54:01 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
+> > +/// This struct is used to pass information from page reclaim to the s=
+hrinkers.
+> > +pub struct ShrinkControl<'a> {
+> > +    ptr: NonNull<bindings::shrink_control>,
+> > +    _phantom: PhantomData<&'a bindings::shrink_control>,
+> > +}
 >
->     error: the following explicit lifetimes could be elided: 'a
->     --> rust/kernel/list.rs:647:6
->         |
->     647 | impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator=
- for Iter<'a, T, ID> {}
->         |      ^^                                                        =
-          ^^
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#needless_lifetimes
->         =3D note: `-D clippy::needless-lifetimes` implied by `-D warnings=
-`
->         =3D help: to override `-D warnings` add `#[allow(clippy::needless=
-_lifetimes)]`
->     help: elide the lifetimes
->         |
->     647 - impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator=
- for Iter<'a, T, ID> {}
->     647 + impl<T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for=
- Iter<'_, T, ID> {}
->
-> Thus clean them.
->
-> Link: https://github.com/rust-lang/rust-clippy/pull/13286 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> Do we want this in general, or just in some cases? There is an issue abou=
-t this
-> where we may want to leave some feedback:
->
->     https://github.com/rust-lang/rust-clippy/issues/13514
+> I feel like this can just be a wrapper of `Opaque<ShrinkControl>` and
+> we hand out `&'a ShrinkControl`?
 
-If this lint lands for real, then this change LGTM:
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-However, I don't think the lint is useful. I would rather that we are
-able to allow this lint.
+We need mutable access, but using a pinned mutable reference is too
+inconvenient. I prefer this.
 
 Alice
