@@ -1,55 +1,55 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CFB195811;
-	Mon, 14 Oct 2024 10:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6E4199FB2
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 10:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728902818; cv=none; b=s/UUsdahaiGRrFH/MEyW+NEz2jBo7cDc9E1gbLTKKl2x7urXZWwmQayelcj96R/SBl9sXD31aB+YiKJ6dKbaN/9cB37kCE8NhxOFUSsoGnZy609hL+l7qPur03Rq7o+LCsJHte8FpVmhDePitP9slhe49dUPwULE5JQLQL7l7kw=
+	t=1728903378; cv=none; b=gZA4JKTXCD1YhuW6NSQc0fUPLqZpuFfBS2CdFtyAygMoAnRVJ0zgjGbWEfRJcCQBRcoytemPyF9OVC+tM2ahEmW0PSpu7L60BN7aLAPmBWWLQ9AxaGSFpH/9Ap3SQkmcIuRnq4dCWr1eM3AKV7atrh9gBSIA78b6MymqNKocN8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728902818; c=relaxed/simple;
-	bh=Q/oqmeVmOM3oomHbH8ADDkalQUS4i1GdXNDrEo0uVHk=;
+	s=arc-20240116; t=1728903378; c=relaxed/simple;
+	bh=Xx7EaSar/S2rSLvZ8rXtHhKPcKbC9rBzFsJKDME9CDo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IiktqyGxxlxxJU87wpczMOWwb5Kx6BMyWt4B5VY2jZP0HJEQMfI2zKhajYyI3xdECppqXqBVn08Z9XWQV90PQhwgqsWao6RSFqg7yXc38GPyAELgGsGZxcQjJcEc4OKrThQ75zh++KhDft8Og7ka60KgvgliQDkHISczL8HgMOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D1IyH/pi; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=lPWR9yrFOt6njE5NgHeE9kODyJDh4A6zLkMwdvKusomwyftNnNDScfszUT/5KNcjVrrs3a1c8feqck6ocKpeJ4/JnSoOThKoDSkaQoOoIDnzOG+JV0d9Ny7HhSBdfmbM3seln5DeBkuqQIoET3ckz6WAiHxzEyUyl9shay7Wc78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yE6/v7N/; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D1IyH/pi"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2e2c2a17aa4so849075a91.0;
-        Mon, 14 Oct 2024 03:46:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yE6/v7N/"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43055b43604so40256155e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Oct 2024 03:56:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728902816; x=1729507616; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728903375; x=1729508175; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=46HkK5QbXKink9cFKdDs28XgpJ3tA0weU6y+j41fq5Q=;
-        b=D1IyH/piGOtzcc3KOcWzaj9M3T4rRgsJIMAD/Ipwa/ugmUWLra28sA5feUgrUPDzKA
-         3BJswqC+o9Y6wkVM7lgwbfc0j9y5bVmEmsiCXvM30OFSFKjVr5claHvpEEvwOOlCLPP+
-         pAudTTVfPFvebf0wjHIhezUezZI0Z7s5xdB1gSlWhg+OzLn2NEI16qgHVtuNNL5zOFZ4
-         9DcWe7r/BQ5HeNqON/pzZeCRiIaviO7iWIY7QM/WLnhdNQlLkOoCA7HwwEyWvyUjR1cm
-         9fnP/o7rzs3H3m9Yd00qtgvvbaxqRII3ynPxanmbs9UXFbfmVB5Fp4OHt8lXAw3wAujc
-         UhYw==
+        bh=u4gp6e12cg+sqnH5wDR5jIQXbUcLC2B1xW6NEdqt2eU=;
+        b=yE6/v7N/Ml1YeO4W/EOoFPv25KnQ/oYeSfLKQpxuMTsXwu3Odcil9evc7kwID6JRKl
+         VGeX0WIxtckje64FUEiSenGgRQiQpPaI0TXCgVzcqUO6WW18SQISAYpoqL1aOpWcCLDT
+         BFBrBMi491Y56DPxOI5ge0jrSGiX0si/tchIzY7j/6dUh+B6oz/dEMdJ23NeHqw2t35Y
+         8/1+i7AMYGUIBVvLAWz0kAjs6oJomBfmvt1UsDMnNKFc/aFZg1IwQQU4xxALx/v/XWco
+         W2QefVQ3En+UEZ9n4H2oe/vbWpDZfLKm+uGrpl3nhCITgwrgsb3ToMBsju+kvOufzaKn
+         2ftw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728902816; x=1729507616;
+        d=1e100.net; s=20230601; t=1728903375; x=1729508175;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=46HkK5QbXKink9cFKdDs28XgpJ3tA0weU6y+j41fq5Q=;
-        b=rj5dA3T1nm4r8AYCn/Z45XPGGPn8vqM6erh3dIR5Mcvac+CAfX9KogaGMlzrRN/v8g
-         b/a9n9GWjP83P6IHItCSr+ofPkePY6/GwLmXCOZfc88qdHPMl3S97EM6u6COJ9yhLm1R
-         Nk/rpb8cWU/UkPE4lQdGAtr7A5gY6tQLyTcrM7QRc9tOtJcgjSApL2hRLPYrZwl4HMMe
-         gPVeD3vEEeV/yqZSSFW3vQr8G4X3/YpXWmAxwGOru7syVBfs2pijIQk4dIC708Z3h8vd
-         5RbgUYrHtF+y9PxsCPz9Gs7y6IgHlKlqdNA/oGNInU5S/F+Bim6RSa9UYNLIeLYEKPA+
-         SclA==
-X-Forwarded-Encrypted: i=1; AJvYcCUtavs1XI3PBGFbpPd2xq5sBEgu4r2ER/PfVqXm8Sk4K8xV0N+XMfpB1fLj0aNoH5Ky8hN86dOZ6t+uSyuzP2I=@vger.kernel.org, AJvYcCWKBeP6+mhmeT0ibVZ39WhAJcTAwZINxiXrMI8r/lg9I1i2WD4UOL8g5C05dKaC69qKoMgvyvl9A3lanV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn7eIzGXfBg5oZ5KPAw05/pNfxTzJFYl5m3AyJ25IRfay3qin8
-	vAqT3N1LmRwwD4sgJJ5qbbOC3gg2SQy8cJTUFE/KvabulbUZyyeekFLRdXu5FTQgmjeZQ8SLatT
-	F24AImZbFMXkG1CRwZlcwYvbzW9s=
-X-Google-Smtp-Source: AGHT+IEB/3sBumZ4RFHSZgvSjlHuw3kP78qj5138y8lCPsRQdrBstDKHwCAH9lqgwnJ0Wj1xRlNTTtwIe2wau3XXdyk=
-X-Received: by 2002:a17:90a:db41:b0:2e2:d881:5936 with SMTP id
- 98e67ed59e1d1-2e2f0d96389mr5719048a91.7.1728902816424; Mon, 14 Oct 2024
- 03:46:56 -0700 (PDT)
+        bh=u4gp6e12cg+sqnH5wDR5jIQXbUcLC2B1xW6NEdqt2eU=;
+        b=UhKrgyQf/zCv/jPE/gxF1lBWR0q6NZ7kAN1RswfJBb8OBH/7TXTXqqdsZeCcw91aUO
+         rA6BVZd02h2Rh33xxJPpIaz8bSF6sDxAyknEGnouRsLvxQLNcn3mFzJnOQ3FjQc/YNVZ
+         D1wqsoXgmDg7T4d50tRikDOAa+zWtSGov5DKdtPsrLCuTPwNqHy7t7h8RzqZTEkGMybs
+         SwdQIl81fDSgMh4bMbZxaJ7Il+8tonznlb4yPVyigSDi8mZHk4pg7BFCS8WhDOGezwMr
+         E/5hUMW98E9q+rMCuK8CRHJGnkWvPTMQ/Bn9PDBbkw+PHQpZdeXLOGPiEU76iQ9FNAA0
+         7AVw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkBVYYf/PTD8/axnQXPD7MWT+I+evS+6gY7g1p7yL6UeLd0NL+cHD23bF47R0pwm+Rk6u2tnKrQy+QvbBfCg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqmP4WccnCzX/ZgZ3guSuF0R0LAa/LYFlR9prH4R8una0ty8Oo
+	azCXzwyrXJrvSFxvVUl29szG6Ay3LI5E0oRoALlNXE65ZbKRTHCYQEoE2Fa0p94aQ4i226M2svL
+	M1gr25wljfEzSSCngKL9Z5gj18U/CF97Hvrnj
+X-Google-Smtp-Source: AGHT+IE5eRoWQDx97xOv2leEqqV4jcEBkFr3gadIwamzFJS8TDNfpmwWZcvrbJruha+0XkR+9A8/cfjYWgRPs4yHYCk=
+X-Received: by 2002:adf:ea45:0:b0:37d:4cef:538e with SMTP id
+ ffacd0b85a97d-37d552d29edmr7335919f8f.55.1728903374819; Mon, 14 Oct 2024
+ 03:56:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,12 +57,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241014-vma-v7-0-01e32f861195@google.com> <20241014-vma-v7-1-01e32f861195@google.com>
-In-Reply-To: <20241014-vma-v7-1-01e32f861195@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Oct 2024 12:46:44 +0200
-Message-ID: <CANiq72n8oKnAWVj71uus8FuYEqqi+Bvy2zJ4SP=DX9Cgd39UKg@mail.gmail.com>
+ <CANiq72n8oKnAWVj71uus8FuYEqqi+Bvy2zJ4SP=DX9Cgd39UKg@mail.gmail.com>
+In-Reply-To: <CANiq72n8oKnAWVj71uus8FuYEqqi+Bvy2zJ4SP=DX9Cgd39UKg@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 14 Oct 2024 12:56:02 +0200
+Message-ID: <CAH5fLgjSzGojkkDyETOtU_UHBGyVK5=8WfpsBm5nMqfBQvK+ag@mail.gmail.com>
 Subject: Re: [PATCH v7 1/2] rust: mm: add abstractions for mm_struct and vm_area_struct
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
 	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -75,44 +76,49 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 14, 2024 at 11:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Mon, Oct 14, 2024 at 12:47=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> +/// #[repr(transparent)]
+> On Mon, Oct 14, 2024 at 11:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > +/// #[repr(transparent)]
+>
+> Line in docs.
+>
+> > +/// #[repr(transparent)]
+> > +#[repr(transparent)]
+>
+> Ditto here, but in this case also outside the docs.
+>
+> Some trivial nits I noticed below since I am here.
+>
+> > +    /// during the lifetime 'a.
+>
+> Backticks (some other instances on lifetimes too).
+>
+> > +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
+>
+> I would add `bindings::` since otherwise it may be confusing to say
+> the C name without qualifying, since this function is also called the
+> same way.
+>
+> > +        // SAFETY: The pointer is valid since self is a reference.
+>
+> `self`.
+>
+> > +// Make all VmAreaRef methods available on VmAreaMut.
+> > +// Make all VmAreaMut methods available on VmAreaNew.
+>
+> Backticks.
+>
+> > +    /// Can contain "struct page" and pure PFN pages.
+> > +    /// MADV_HUGEPAGE marked this vma.
+>
+> These are copied from C, so it is fine, but we may want to take the
+> chance to format them.
 
-Line in docs.
+Thanks for the docs issues. I'll give others a chance to comment too,
+then send a v8 soon.
 
-> +/// #[repr(transparent)]
-> +#[repr(transparent)]
-
-Ditto here, but in this case also outside the docs.
-
-Some trivial nits I noticed below since I am here.
-
-> +    /// during the lifetime 'a.
-
-Backticks (some other instances on lifetimes too).
-
-> +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
-
-I would add `bindings::` since otherwise it may be confusing to say
-the C name without qualifying, since this function is also called the
-same way.
-
-> +        // SAFETY: The pointer is valid since self is a reference.
-
-`self`.
-
-> +// Make all VmAreaRef methods available on VmAreaMut.
-> +// Make all VmAreaMut methods available on VmAreaNew.
-
-Backticks.
-
-> +    /// Can contain "struct page" and pure PFN pages.
-> +    /// MADV_HUGEPAGE marked this vma.
-
-These are copied from C, so it is fine, but we may want to take the
-chance to format them.
-
-Cheers,
-Miguel
+Alice
