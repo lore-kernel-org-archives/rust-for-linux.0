@@ -1,107 +1,107 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074A11F9ED1;
-	Tue, 15 Oct 2024 18:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EAD1F81A4;
+	Tue, 15 Oct 2024 18:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016704; cv=none; b=O5Y93TjV5v1NKizzV6xOpHOtUOVJph4IL4pIKPmGrpJLKAIwNYDpHnUqgeIwO7LQIv5/Fu+SAgcPWgs4R7x60VWwvLjI/9Cxck0FAiwGgLd4CEFkH0TlAggUDP4ofYCCx0pYMT4PgPBXLu7zt9Ws6siQTyPODYiKAVw4ZsVux/k=
+	t=1729017233; cv=none; b=UfZKnnrpriJXmTzpHDFlLCVLCNtnHUV6nB4HUdMaPQMzyUUpTA15srSJ68OCD9lC8bMmAlwrdhxbg5cpHmMKeeYxB/kig3f8uCS4ZRBl2jW/7ILufGsFXWsmGHtJnjHTx/z25F/Ip4muaUJoNj7de+o1GrYhqXkABDZkkG+z90Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016704; c=relaxed/simple;
-	bh=MHfDhPw3x+eqogNdMWlOEjEMcbzb70Y543iyq242vuY=;
+	s=arc-20240116; t=1729017233; c=relaxed/simple;
+	bh=QLdn1pGiMX0eDct4lWvnXmyy1ifPJVhEbAjRezecoog=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MRckyOUy3hHVo3IoZYc9TWyuad24sFSdTr2JVdBGp35RFI2VLMxjZ1WBqaKbu66gPmW/nJsLvlTGgYmGnsJkVBDLENQ5TIN6KUrdpxJ/ANDFmp1GTS9ms7+ah/MB2p6Dpll5pfAQQxjATB/Q3lEVJoCLJcLTieCC1VpItP0TVj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j6lH2Jpw; arc=none smtp.client-ip=209.85.219.42
+	 Content-Type:Content-Disposition:In-Reply-To; b=c+0U9qUVU1vYrTTpDzdZEGtnMMqnJFrujfCaw1sy+qoDQjyDiq52bzVUCcMSTxGLKwYWcGzed+TmZPBWtv6I+9xJl2XCpV8SW6Nxo2xplDHAOnf9BlLTwm3nb4fGWph6tQANPqW/kbwIyRBYv31u+MEr/C2hvAChMZP5tL5igG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hcbk1UAn; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j6lH2Jpw"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6cbcc2bd7fcso36430836d6.1;
-        Tue, 15 Oct 2024 11:25:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hcbk1UAn"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6cbf0e6414aso21186556d6.1;
+        Tue, 15 Oct 2024 11:33:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729016702; x=1729621502; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729017231; x=1729622031; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3tcyge6OIeXu/wRZZVMsNbQ6waba0dvaHmzi9agE6E4=;
-        b=j6lH2Jpwx+sc8ai+FwkMY8eF11EPCHREgEUn1p9GATDEhKn7M3UQ4rLxShGBLJXvdU
-         TXJH38xfESNDjI59MSQjbxRdKX5LatO84e8rIzoQoMrssmABfoiR0EroPgVcLvOY8iu4
-         Khaz6AXboyXkO3CM8V/4/O5k8xvPkOqimgIyS0fO/73XpjeR4T6DalKhqnf+XeqV+9bJ
-         D4clsk/Rx8E+VOTS9vyRW8Cc7zzIiGa79N2PIS/lBee+kdIYFeGa7lEt49b857lj2pjl
-         VgC1tMlTjrPml3Y5xlIeotgEp4M6ziDrTVtj8J1++ay1crTIZAoQrd2tC/1oEn9FSTBO
-         6qAA==
+        bh=QwdSz4+8Ky45UzwFORY+UYW0E7DBFtoy97+eh38bxws=;
+        b=hcbk1UAn9OK+IXAMHBN+PCGDC9tY1d8+YJsJSxhiRvFEJZtL+G4j/SnaztLeYk4p1t
+         5ZgHocZujlh98DIeqoC7vXiEaU4goA7D7vyZGM8/UDRbty3Sp8A2sUnf8u9AIWdEUelS
+         u+lUuClujr2OzLYgjGUGwwYLZN0uglzzHuprYkOe0s6watywmHTEQM7jiWB2j0+3McU+
+         tM+3X2+5MdroDcHDFN0ZT0Y6jsgIf8l7mTyxVCIa/TpGpw6Fj7zj5t25+kuiAxPf0eOM
+         /oQRw3Fp6cej8yC2iTGEmiZlCyRQ9+AXvtVXy4W9+LBh8QeK3aMrU9bn/oLSgbgU0Q3z
+         aKZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729016702; x=1729621502;
+        d=1e100.net; s=20230601; t=1729017231; x=1729622031;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3tcyge6OIeXu/wRZZVMsNbQ6waba0dvaHmzi9agE6E4=;
-        b=fTFxMLZacNR97NUA95TQvoAXSNRbw1U8lw5pLCvkiGx4SL5Fgo5+xg2kyfuwEOFpQb
-         fYC2rNJxaonG2wueN9zS5mBqG0C0+WwKjogSykd3myQ+uoVxQdSAfoXATgg//65lxBX+
-         NwDJKO30FvX1HcrHekYsdKlUoRtDMBp4OX3mZwYA6VoCCpHTEug9XSCp7syOTMNolzJ0
-         ukFPxphHy9BPJVkuJxfSmU5EIiNA0mSTsvENl3MhFiSG8cBVZpzVbj6hWeNf/6TEZcSY
-         I6WULrxttoFf8uagc8Ls/D94h48fAHjFEyYIL1sVrXIlM5aM6xqAUmpw5lSVMyhK9dl6
-         nApw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4vpR2HBNvGRmbCmSMaGnjFKxGx9gUbL+vyOWUHDwKdCfJT7FucIVvPfIwYMMtvhIlpQGYXkmJ2tz6/rBd@vger.kernel.org, AJvYcCUGjfy/evBXu4zX52GvJMjMnwyBuEhZtFq+Q2Cr9Ygdr+DpkxoVIRtOXFCU7pS145XCvzY8aKcP7O5S+1dIZX4=@vger.kernel.org, AJvYcCW5U7Tw0iu+yT65FfHr3/j97siY53T9ytdUI3z0MzhgNkUEh1BXIBcFX3Xecwpo4NIPuM5KwNpBu52ff+nG@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw4I2csU4aTsGU4Y/EXMZhANSO1YBWyVUI25YM+zs0QhYioQyA
-	/CkI8AqIyl6pm8vspMi/k4nxDA69lsd7WDfyyFlLeT5rmqxvBsbQ
-X-Google-Smtp-Source: AGHT+IFXLH+1m4nMK8l1UUao6Y6fnQb8jyKmsdLjUAcQyV3jd78eMa2Phpz5Dwm0AITrVDZ1BPMezw==
-X-Received: by 2002:ad4:42c5:0:b0:6cb:f7dd:b6a8 with SMTP id 6a1803df08f44-6cbf7ddb70amr188637736d6.26.1729016701664;
-        Tue, 15 Oct 2024 11:25:01 -0700 (PDT)
+        bh=QwdSz4+8Ky45UzwFORY+UYW0E7DBFtoy97+eh38bxws=;
+        b=vDH3FHUxE7q5u5J3b66rf1ggVwGfwtYxRR4iI+tcif1+CAhkBi/SGZ4BvEsEYdWfA2
+         ftVDawcc1LNx9jvt9iSAZc8eNOSRaRvxDFtn6hM2H7wherVlK4AUnpwwlR5i3U5VRNZU
+         v/eMuvWSr09uMZSvYXFhfinWuuuM9ME/WQbVCb4y5oPCgwkxAShW1SgYURUbD8GML5qd
+         2rTf7RgTPrsa9mtrEbsb+HVi9c8Rszf4j7ymfYfB5CswRopTxnPZ/dHR59hkjwwM86El
+         qB/Hye6HjAjudnv/gNsbmjEM/e+i3CaVc3xXHG41CpIUbIK3Sw5JWkoEP0QDDROjQewS
+         y/yA==
+X-Forwarded-Encrypted: i=1; AJvYcCWORE5ByZNNKXsgB64IqeKVmV0F1LZnPla5mBhrXAAkADTLieLiM7J4GX00DJ5dImC2Nv0rjaB6js6bHzA=@vger.kernel.org, AJvYcCXphd1ojBfb2w+eo3mF3ZrcjkGRrt1ufwecvoHLg7iptdmbPGVLd9DYtlyKAvqT+NEylSJk/5e8g6aGjHeqxmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoeyYLdxks4gcTy3SddQga9fYY7xdNv8OFmTBMUESTy/5hCOMj
+	hPwJBCV8RxqbMoCEHs4CLGfcg2G6EulXovcptUM92Lp+ZH1cJVjK
+X-Google-Smtp-Source: AGHT+IG47YfMpMWRfsK29ywOrKJ5I3JyLV5j7fESJj4JpLi+jJSQPwF7cEuVqLMekZBMWwKKEWVaZA==
+X-Received: by 2002:ad4:4506:0:b0:6cc:2c7c:92e2 with SMTP id 6a1803df08f44-6cc2c7c9343mr4741956d6.18.1729017230808;
+        Tue, 15 Oct 2024 11:33:50 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cc229698bcsm9395756d6.107.2024.10.15.11.25.01
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cc22959a23sm9535806d6.94.2024.10.15.11.33.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 11:25:01 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E95B81200043;
-	Tue, 15 Oct 2024 14:25:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 15 Oct 2024 14:25:00 -0400
-X-ME-Sender: <xms:fLMOZzmaqeWVmPzK2aU3lhc8rzAa3WQC4lDBVoONcx5NSpVRxGUtVg>
-    <xme:fLMOZ238RwyF-_aChyxMAR5W9grzs9D2S97fACEi7XwMWfASIxwAtMKNwWID9OmnQ
-    aUi2RCXK0PjmzF8mA>
-X-ME-Received: <xmr:fLMOZ5rATBk0ntxsRT4HVumDqX2_eAmLTMP0MmkK7984tILPbcs17dWSgL7PJQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvfecutefuodetggdotefrod
+        Tue, 15 Oct 2024 11:33:50 -0700 (PDT)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0E08C1200043;
+	Tue, 15 Oct 2024 14:33:50 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 15 Oct 2024 14:33:50 -0400
+X-ME-Sender: <xms:jbUOZ_0pTuNf-yglbFQaW7x3QuC_tc_9ECbMm_Vex3QXwLEXeqwCFg>
+    <xme:jbUOZ-FKM2UQVoxOiQjAWHQidrLnAnJQr47OOI8ZMfvmGdb9laSV9hrUSm1EDUs6F
+    M6wZVP2fvb_PMhvtw>
+X-ME-Received: <xmr:jbUOZ_5f6Uj9EXEtfnFNi7_u6edLEYkF9_BEPooguFzHY1kxVL6oCzPdGP0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvhecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
     necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephffhkeehffefkefhteeifefggeejhfevieeh
-    ffetuedufffhuddvveefkeevheelnecuffhomhgrihhnpehgvghtrdhgrhhouhhppdgrsh
-    gpphhtrhdrghhrohhuphdpghgvthdrphhiugdprghspghpthhrrdhpihgunecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvsh
-    hmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheeh
-    vddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghl
-    ihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepsghrrghunhgvrheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepvhhirhhoseiivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtth
-    hopehjrggtkhesshhushgvrdgtiidprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtg
-    hpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthht
-    ohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
-X-ME-Proxy: <xmx:fLMOZ7nJkxmifaa8u9DObC9NCqW-gQF7NziH41u0DlA_QYUIoXzBig>
-    <xmx:fLMOZx3e-Ev6wTzSDlL5ipX1gI0Ioqga8p9F6aecASFLfE6c-yJFqA>
-    <xmx:fLMOZ6s8J1r0G16KmsdEuQ1HPoH5Rn6TRXZcdeI7n8vkIjszLesuow>
-    <xmx:fLMOZ1UIeE2UqSG77VADbQdnmr5NzW3oAvYwSjoGqBQY8JTbmGjrrw>
-    <xmx:fLMOZw23pEDyAAbn-WE3BG_5GmTBSfj3gDB5xGvgF1jgGyVWe0UQ8TQq>
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedugedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    rghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopeifih
+    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhho
+    rhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+    dprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgt
+    phhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhope
+    grrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:jbUOZ01_p77o9hz84CLERyolspeHtnMogtPO9JzzLb0vt9QU9Jefgg>
+    <xmx:jbUOZyEm8AY93ktQ8Ksf7QLW7fmtSbmXRWcIe37AM6t7ZvzHOlSNMg>
+    <xmx:jbUOZ19-1Pv8FP6u8M8J0HcVM6yq2XaLanLRd18O1EdG_blQtbo2pA>
+    <xmx:jbUOZ_m5NHeX7RudOLBf7eOI5fJBX-aEbp77pFx3hLVmhzjoJfoYCA>
+    <xmx:jrUOZ-GxxYjD57a-86JGKj0mADqk12fH9B0gbNRV48uc8eKaOnSQOEGA>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Oct 2024 14:25:00 -0400 (EDT)
-Date: Tue, 15 Oct 2024 11:24:39 -0700
+ 15 Oct 2024 14:33:49 -0400 (EDT)
+Date: Tue, 15 Oct 2024 11:33:29 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-fsdevel@vger.kernel.org,
+	Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: task: adjust safety comments in Task methods
-Message-ID: <Zw6zZ00LOa1fkTTF@boqun-archlinux>
-References: <20241015-task-safety-cmnts-v1-1-46ee92c82768@google.com>
+Subject: Re: [PATCH] rust: page: add Rust version of PAGE_ALIGN
+Message-ID: <Zw61edSZrAb8pH1X@boqun-archlinux>
+References: <20241015-page-align-v1-1-68fbd8b6d10c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -110,130 +110,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241015-task-safety-cmnts-v1-1-46ee92c82768@google.com>
+In-Reply-To: <20241015-page-align-v1-1-68fbd8b6d10c@google.com>
 
-On Tue, Oct 15, 2024 at 02:02:12PM +0000, Alice Ryhl wrote:
-> The `Task` struct has several safety comments that aren't so great. For
-> example, the reason that it's okay to read the `pid` is that the field
-> is immutable, so there is no data race, which is not what the safety
-> comment says.
-> 
-> Thus, improve the safety comments. Also add an `as_ptr` helper. This
-> makes it easier to read the various accessors on Task, as `self.0` may
-> be confusing syntax for new Rust users.
+On Tue, Oct 15, 2024 at 02:28:28PM +0000, Alice Ryhl wrote:
+> This is a useful for helper for working with indices into buffers that
+> consist of several pages. I forgot to include it when I added PAGE_SIZE
+> and PAGE_MASK for the same purpose in commit fc6e66f4696b ("rust: add
+> abstraction for `struct page`").
 > 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
-> This is based on top of vfs.rust.file as the file series adds some new
-> task methods. Christian, can you take this through that tree?
-> ---
->  rust/kernel/task.rs | 43 ++++++++++++++++++++++++-------------------
->  1 file changed, 24 insertions(+), 19 deletions(-)
+>  rust/kernel/page.rs | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index 1a36a9f19368..080599075875 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -145,11 +145,17 @@ fn deref(&self) -> &Self::Target {
->          }
->      }
+> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+> index 208a006d587c..90846e3fe829 100644
+> --- a/rust/kernel/page.rs
+> +++ b/rust/kernel/page.rs
+> @@ -20,6 +20,11 @@
+>  /// A bitmask that gives the page containing a given address.
+>  pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
 >  
-> +    /// Returns a raw pointer to the task.
-> +    #[inline]
-> +    pub fn as_ptr(&self) -> *mut bindings::task_struct {
+> +/// Round up the given number to a multiple of `PAGE_SIZE`.
+> +pub fn page_align(addr: usize) -> usize {
 
-FWIW, I think the name convention is `as_raw()` for a wrapper type of
-`Opaque<T>` to return `*mut T`, e.g. `kernel::device::Device`.
+Make it a `const` function? For example, there is a VMBUS_RING_SIZE()
+macro in C that calculates a const number for a vmbus ringbuffer size,
+so it will be useful.
 
-Otherwise this looks good to me.
+> +    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
+
+I guess overflows are unexpected, i.e. the users should not pass a
+`addr` that `> usize::MAX - PAGE_SIZE + 1`?
 
 Regards,
 Boqun
 
-> +        self.0.get()
-> +    }
+> +}
 > +
->      /// Returns the group leader of the given task.
->      pub fn group_leader(&self) -> &Task {
-> -        // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
-> -        // have a valid `group_leader`.
-> -        let ptr = unsafe { *ptr::addr_of!((*self.0.get()).group_leader) };
-> +        // SAFETY: The group leader of a task never changes after initialization, so reading this
-> +        // field is not a data race.
-> +        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
->  
->          // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
->          // and given that a task has a reference to its group leader, we know it must be valid for
-> @@ -159,42 +165,41 @@ pub fn group_leader(&self) -> &Task {
->  
->      /// Returns the PID of the given task.
->      pub fn pid(&self) -> Pid {
-> -        // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
-> -        // have a valid pid.
-> -        unsafe { *ptr::addr_of!((*self.0.get()).pid) }
-> +        // SAFETY: The pid of a task never changes after initialization, so reading this field is
-> +        // not a data race.
-> +        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
->      }
->  
->      /// Returns the UID of the given task.
->      pub fn uid(&self) -> Kuid {
-> -        // SAFETY: By the type invariant, we know that `self.0` is valid.
-> -        Kuid::from_raw(unsafe { bindings::task_uid(self.0.get()) })
-> +        // SAFETY: It's always safe to call `task_uid` on a valid task.
-> +        Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
->      }
->  
->      /// Returns the effective UID of the given task.
->      pub fn euid(&self) -> Kuid {
-> -        // SAFETY: By the type invariant, we know that `self.0` is valid.
-> -        Kuid::from_raw(unsafe { bindings::task_euid(self.0.get()) })
-> +        // SAFETY: It's always safe to call `task_euid` on a valid task.
-> +        Kuid::from_raw(unsafe { bindings::task_euid(self.as_ptr()) })
->      }
->  
->      /// Determines whether the given task has pending signals.
->      pub fn signal_pending(&self) -> bool {
-> -        // SAFETY: By the type invariant, we know that `self.0` is valid.
-> -        unsafe { bindings::signal_pending(self.0.get()) != 0 }
-> +        // SAFETY: It's always safe to call `signal_pending` on a valid task.
-> +        unsafe { bindings::signal_pending(self.as_ptr()) != 0 }
->      }
->  
->      /// Returns the given task's pid in the current pid namespace.
->      pub fn pid_in_current_ns(&self) -> Pid {
-> -        // SAFETY: We know that `self.0.get()` is valid by the type invariant, and passing a null
-> -        // pointer as the namespace is correct for using the current namespace.
-> -        unsafe { bindings::task_tgid_nr_ns(self.0.get(), ptr::null_mut()) }
-> +        // SAFETY: It's valid to pass a null pointer as the namespace (defaults to current
-> +        // namespace). The task pointer is also valid.
-> +        unsafe { bindings::task_tgid_nr_ns(self.as_ptr(), ptr::null_mut()) }
->      }
->  
->      /// Wakes up the task.
->      pub fn wake_up(&self) {
-> -        // SAFETY: By the type invariant, we know that `self.0.get()` is non-null and valid.
-> -        // And `wake_up_process` is safe to be called for any valid task, even if the task is
-> +        // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
->          // running.
-> -        unsafe { bindings::wake_up_process(self.0.get()) };
-> +        unsafe { bindings::wake_up_process(self.as_ptr()) };
->      }
->  }
->  
-> @@ -202,7 +207,7 @@ pub fn wake_up(&self) {
->  unsafe impl crate::types::AlwaysRefCounted for Task {
->      fn inc_ref(&self) {
->          // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-> -        unsafe { bindings::get_task_struct(self.0.get()) };
-> +        unsafe { bindings::get_task_struct(self.as_ptr()) };
->      }
->  
->      unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+>  /// A pointer to a page that owns the page allocation.
+>  ///
+>  /// # Invariants
 > 
 > ---
-> base-commit: 22018a5a54a3d353bf0fee7364b2b8018ed4c5a6
-> change-id: 20241015-task-safety-cmnts-a7cfe4b2c470
+> base-commit: 8d8f785ceb21b9a0de11e05b811cc52d6fa79318
+> change-id: 20241015-page-align-7e5fa4c751be
 > 
 > Best regards,
 > -- 
