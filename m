@@ -1,99 +1,97 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6591170826;
-	Tue, 15 Oct 2024 03:37:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A171318A92A
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 08:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728963431; cv=none; b=IZu0PN2maJoJtwtkFtLoQt9usHeY8fOPsJmd+U4eY+H5h2rPpwwPM7YFt8fLLiSzA7eTz6KgrdwRnyarRli+T884lQvGnqD917jzSM4dJ2uJssvTD19IvWyeaAzP5hxasYmJ5m2pNVfGD+4ISqOMK32pvGA1dsB5okPC3EC+E1c=
+	t=1728980599; cv=none; b=ITxftNhoXCeDdeqIrjYANMkxmxtB1Oo6aW8QMpalEf7k5d3hgSmv337UMSQCECzl/w1bdslVtCmf5qMDlmqOsOGSuAq/7FxMF5G192IBVGxUx3pr/kr0+JHztXoD2RGEJCfKGPBWjTL0Lc6CKW6Lb4SLpOWbcoNZzTgD+5Z8Blk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728963431; c=relaxed/simple;
-	bh=p8eCL8zTOrNqLHveTmywiY+WV2Z/TywYrJw+64IWD2o=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=U/XgpwgtJUs+UF2bOGQB4wvjq9g20F2X59r00cLlTXFXCO0BxtFHRxTv4spSXQfQnamkzXyd0b/ESkkvCPqidXzxmyynYUG+oa+2noUQ3khhP/Fwlya7wQdyRmJetSfhoA33FUz0W0mWDX6u80Iw32Al5F2V0GW3E6UG099cejc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GcJDX5y7; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728980599; c=relaxed/simple;
+	bh=mCCrlw/yEpLXZ1vbGLNLrI1tt3ulJTMqY+P+85p8RWU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uJUNcfA9umZcxlLxBJPkaNNpubjdPJdCzEWfkl/Vv+NX6WBERvc18Y40GMX5iDbiqNvsYJMu42nNrswyK7W2SLoTX/KaT7nUrGQKBTkanmgeyI3teshE5E6qJagU7mRFyXpjdzcYubkOyce6gozOaNKs5kVWe+OIVuDc7zDzZn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XcJ7xyR3; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GcJDX5y7"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7db54269325so4277691a12.2;
-        Mon, 14 Oct 2024 20:37:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XcJ7xyR3"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4311d972e3eso29324695e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 01:23:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728963429; x=1729568229; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MMA7BZ9l18xTiRWfHB7bGR9DrxFbDaKU8n+tQGbmUBc=;
-        b=GcJDX5y76KPUjj7ZOhtICPidWHlOCIjiKqySiB4bvhdnBCAZ8WtQ3eg8vu3DewHoFl
-         yRNSvMoecw5LsTL9muaqtFs77dxeoe3JYlz47oRbP8kRY9HKSjZIm3yIpYy5CYGOeyWJ
-         2dyEggIG3tmTyDH2B6RgCFyAo7B7b3e/Zac8b+ZapRYjwZ8P9rSQAiFFSnNdB2ojndoL
-         UH0GRTXy+FA6bBHS3uxQ3QNRj4WOhqdiGR49E18ozJy2cUgK90AxWJ7gN2gxejD5HzY2
-         Zj8WsHi5GbD5Vo0PD4aV0ToxiFtZ5kzPUGCtLk+kD15z1zo8GvXL1I1yHLKaguvU8pD9
-         JqAA==
+        d=google.com; s=20230601; t=1728980596; x=1729585396; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mCCrlw/yEpLXZ1vbGLNLrI1tt3ulJTMqY+P+85p8RWU=;
+        b=XcJ7xyR3e9t0F7X9nq2IPcvdeyYiAeJV/UnNn4Emag33GhJo2dLDemS7VJSetBMava
+         psE3k7DESJxCge4Z0PKvA80u8ZqBBq47m2matNtIQ85D1tP/oAeSKtzISqwhZLlGuDIr
+         RGMXJBN/eMY5bchXheeZrmfQUlLf+gFpqRv8WRrYytAqxr8J3i23uWGXRRxr+zmm6KvC
+         DO85pvoNTRbZv2W7kmXPcyW1Wl73fj3/R88aPDfCOcM1PFMWcf+kTBjJ3d60MEjBcsM+
+         SEAp4YetcK5VPn1DE3GhDKBwiiFSiHy5dmaaxadpnq/KeLRVxFV01W19iC+hCdN3At0C
+         GLpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728963429; x=1729568229;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MMA7BZ9l18xTiRWfHB7bGR9DrxFbDaKU8n+tQGbmUBc=;
-        b=ZH8jnf/vapPjxAacryYaXh0iy4iq36F5brZa2ulbQzR/LeCnONxYK9b5/9nSdo2k8n
-         dr7LonzsSU06/ABTAxry8sAJyKiQdWV9mj1liu1spq2XnTokkN8aotZ0DxejWebAUJf9
-         gtpCJBAQGezKvlYrZZya//GnKYdHFxupXwvJ6OSyxQQsXe0wa9QQpEdNtlvnkuPU4bB0
-         tmCuH1uVWjyuTCltp2BqdmvSboOPReXWGo7VqnN/Urx0dJn7EyIBf6Cp4fBeWtia92je
-         PVzcRIertmt9vVseWJGWzcStJfnDSpp4iBSKOQhPlqSQxdCL+AWC8bj3YM4ZEhqvfyS8
-         V0nA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZjlsGdfrK7fHhbxjmbU9sxtghuFkNXtjgmKAy0WQ54MEPtlKTHENw1SwnPSAwrjZARcp7khgE@vger.kernel.org, AJvYcCV4SzOT8NJ17LZNgJ4oh4y1O0IIxuhRSzw+7uyQQZPqqIkB0ia+Aer4ORaFcYL9YcQMIebb9LB34OPvmig=@vger.kernel.org, AJvYcCWfnVr55dATlkrpboybJ1P52MId/WcvpcnIfJyfH9UAYyhM0BrVYO4SAVsot7wW7IOwPoP9hUPLHpLBH464RGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4G/L+f5rncVHsnJ5pV+edma5MVqb8p6NJma9i7UbnnMtXQqZI
-	OMvT/WKQ1YuftKrMxVkdyC2HQPFvrFwjZmxH3uFXd2I3JHjmV0km
-X-Google-Smtp-Source: AGHT+IECQLHPiL9iDHyCf5oLwaH4Zy5gaAZOKFXnr/rJ2ec2pNxYmES4Jurmuzz/vFvQClYxa3bI4w==
-X-Received: by 2002:a05:6a20:cfa5:b0:1d8:aa64:874f with SMTP id adf61e73a8af0-1d8c96bbbf8mr17325555637.43.1728963429035;
-        Mon, 14 Oct 2024 20:37:09 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e774cbcf1sm302353b3a.157.2024.10.14.20.37.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 20:37:08 -0700 (PDT)
-Date: Tue, 15 Oct 2024 12:36:53 +0900 (JST)
-Message-Id: <20241015.123653.216260102436009448.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/6] rust: Add read_poll_timeout function
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZwG8H7u3ddYH6gRx@boqun-archlinux>
-References: <20241005122531.20298-6-fujita.tomonori@gmail.com>
-	<06cbea6a-d03e-4c89-9c05-4dc51b38738e@lunn.ch>
-	<ZwG8H7u3ddYH6gRx@boqun-archlinux>
+        d=1e100.net; s=20230601; t=1728980596; x=1729585396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mCCrlw/yEpLXZ1vbGLNLrI1tt3ulJTMqY+P+85p8RWU=;
+        b=LGDqAn+Y8ALPLhh85RgMY6sok/vpAr2Abch39pkKuShA15XSSBLqelm31qR1cSc3Cz
+         x7T9baAEZYy/vaqB5w8T+ravs0NtAILROLQinDRfKHg/TFNXq5+bK3CajnMYFz16cQZA
+         1Nwq7suvZVHnFwVpe7ibhzO549ciETBYIfx+rHor7IjGEs9m1m4YHL4yCJj2rjriGQFX
+         lcCZFHNXwWq8zb1OllTe3Rxr2udA5tf/ZkF2E297gE4fEAXZT4SKiU4PUz4tjW7kUzWn
+         TNItotyMO1ph8KEbGSoOCVjbxN2inrtmhHvXkhelwnasaJrRJiKywv+tVgDBZ77jlLZg
+         ubUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgbrGYJ20jmsDTr8JWcIRdFvDmaT/B7Rd6O5PGSJj2Dfbqv7HVPWuD34LeH/Wzr4eHUuhU/xPjZmKGpcjvuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhMzW5prVlK6JPjTo2PhXrdq9tArH3c00oWAA8GNrjbOeQesCS
+	pTQm3SE/eZGK/2KUpFYYaAi1CUwAQ9qpAbAGEevpc2MiZ2IFYeO92FWioP8E1dVBShtQoPVo47N
+	iP07bsVMoztcM/hvIiNRbYZ0F0RRn2HTmie2U
+X-Google-Smtp-Source: AGHT+IG02K4eUCM+WT5wVbI7W+sQfu30CmI+/4/ytZ4rrCCw1rQADfDrq9S1SteuyO5So2/j3Q5bGNYihWcFQHmjVmI=
+X-Received: by 2002:a5d:452e:0:b0:37d:498a:a23f with SMTP id
+ ffacd0b85a97d-37d600ca0b5mr8444900f8f.53.1728980595829; Tue, 15 Oct 2024
+ 01:23:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20241014-vma-v7-0-01e32f861195@google.com>
+In-Reply-To: <20241014-vma-v7-0-01e32f861195@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 15 Oct 2024 10:23:03 +0200
+Message-ID: <CAH5fLgg8NDEynr_dgrUQABZAOoSfsBajDRnipiuGu8tH3bFqzA@mail.gmail.com>
+Subject: Re: [PATCH v7 0/2] Rust support for mm_struct, vm_area_struct, and
+ mmap for miscdevice
+To: Christian Brauner <brauner@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <liam.howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 5 Oct 2024 15:22:23 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
+On Mon, Oct 14, 2024 at 11:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> The first patch introduces mm_struct and vm_area_struct abstractions,
+> and the second patch uses them for miscdevice.
+>
+> This updates the vm_area_struct support to use the approach we discussed
+> at LPC where there are three different types depending on the kind of
+> access you have to the vma. You either have read access, write access,
+> or you are initializing it. Each case allows a larger set of operations
+> on the vma.
+>
+> The first patch in this series depends on vfs.rust.file for
+> NotThreadSafe. The second patch in this series depends on char-misc-next
+> for the base miscdevice implementation.
 
-> On Sat, Oct 05, 2024 at 08:32:01PM +0200, Andrew Lunn wrote:
->> > might_sleep() is called via a wrapper so the __FILE__ and __LINE__
->> > debug info with CONFIG_DEBUG_ATOMIC_SLEEP enabled isn't what we
->> > expect; the wrapper instead of the caller.
->> 
->> So not very useful. All we know is that somewhere in Rust something is
->> sleeping in atomic context. Is it possible to do better? Does __FILE__
->> and __LINE__ exist in Rust?
->> 
-> 
-> Sure, you can use: 
-> 
-> 	https://doc.rust-lang.org/core/macro.line.html
+Adding Christian as FYI due to the vfs.rust.file dependency.
 
-To get the proper file name and line number with those macros, we need
-to use __might_sleep() instead of might_sleep(). We could also call to
-might_resched() there to emulate might_sleep() but fsleep() works
-without it so I call only __might_sleep() in the next version.
+Alice
