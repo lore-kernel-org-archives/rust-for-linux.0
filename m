@@ -1,67 +1,67 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AF82036E2;
-	Tue, 15 Oct 2024 18:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73322036F1;
+	Tue, 15 Oct 2024 18:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729017813; cv=none; b=LHkUGeTm25L8uBZ1C7ABxQ43N6cHwI55I45jQG3ZtRaBa9f3n6gXknEocGLvyxRJUL7isxGGqRKM0dLGIou2ZKt4lOlyjRdDqFW6jS1RmTu/1i0PCG8GVzcupsScub6QQsF8OyNEy1QN/0o+shSPFsnCloYQn+BddonpJJaUY0w=
+	t=1729017974; cv=none; b=KcxUW7rkYhw/9rmUuhHJL1xplkrSj9Ut8x6FZShoKfWQVGTGvOKFbKG5cKHUY8GgsQasKjJbR5R8ctKljJwAgRtGah49lSqKvKxT5s4JtuG0jtWPNfT3bsvakyPmJerhCPWX6Ie4GGgM0iFB1vUIWkDWZntezSWG+8L0OIREYZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729017813; c=relaxed/simple;
-	bh=pGKnqPQFVIhxOw91xymPo+0W+k5feBiIIzbNeT2NE7c=;
+	s=arc-20240116; t=1729017974; c=relaxed/simple;
+	bh=9KClIjMcjoCppzY7f0hKgjvul5Gc+2NAe3xFLGgCxLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nb73CCuvwYkDU488hUSFtohfLEo1K78HeFtmt03jhMe/2Wl+EP9Ia9JXhAbkbZEw8Yv/o8ktzbRTPmFxKme5MS31elvmCaQjP6yYTFFbLITfoEyVq/o6G011JHgSPJ6M4qQOfxYuqPAb8j2VCQTar8Kh26KZH0dQTSpR4I/fTv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gUi8ITBB; arc=none smtp.client-ip=209.85.219.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=d2fXRAvfP6GGGmtx4bOmx+yg0jhNtkiEPd2HA3JWfPFE7/aGHRvQdA0Ra5RkDCXW0li8S02Yl8MR2lMbpPEQlyygeLgsaOfZ9ehu2c73YDE8GMgtGrXmG9qBbAwIHCF1uCS43Rdftn+PhZNrVBX0ENgrkop7kp9mNeogigvTveE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sz+++DUY; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gUi8ITBB"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6cbf340fccaso1268076d6.1;
-        Tue, 15 Oct 2024 11:43:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sz+++DUY"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7afc847094fso438151385a.2;
+        Tue, 15 Oct 2024 11:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729017810; x=1729622610; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729017971; x=1729622771; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OwVw1EPwTuQ2sBmts8qTWcQOE9Xf7gtA+DQB/tQWrJI=;
-        b=gUi8ITBBbwU7zAKIFB6j1pIVeZxTOmbR8OveXyAfeSBOvnbKyeeb1TzTV1JIQlCoTq
-         YJDIXGoTD+HiEpCC/8L8ZrdtIxM5sjTMbARueD0Ai2WCXfS5jxqthGqw682qn/yKXvQv
-         mPFgp4inQ0Qb0z6FO42//Mrt8HUNTN3geKJr/+X+0dYzmbDrFKdcrH09M3gchys1e0Wg
-         ci/Imy3S1Xp3AmXh4f7/TbMu/X5jlHAowFQy63oiC+ZFQNcks9qPFM1jryR66RTrGkI+
-         5f3qW0LmjqZoNsYuYbUOBnjDyfS8V+yiu1epMADkThoNjlnxmesbQm7DVxSlQdd4mg6+
-         tB6A==
+        bh=khv6hcv6kkDgKzCP7fyWTG/6xWqnN83cb3e1EtyOfCU=;
+        b=Sz+++DUYYvFk9saEvlM3pfOVgggSg3ttMhEypd4dWuQb1hzPG+zczAVOROyc//QaRx
+         Ol7/Sqve6yuWsUyZPFbXkVKwkOQsQCOKpNVSU0EhiAh95+K5Zhb1CD/UjtUYuISye+8G
+         F4/4mZW5qJ/bvJ4G75+V7omqqdEUQVZM/vCPsyzJnAoHePkDM6CrD88HS4ZOVxpf9Anj
+         /xkDccNeuGhfy86qjQ1FYWmudNTtw14k0ulgAJRbJ//V5dINxDcFncGIxai6LO6RdoR7
+         Cr3NqFodwHIIEFGFX1pcj/cecKLYX0QvvBKouy4v+YuHx02dJYsbvaJq+YgMDHm8FnW/
+         4hrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729017810; x=1729622610;
+        d=1e100.net; s=20230601; t=1729017971; x=1729622771;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OwVw1EPwTuQ2sBmts8qTWcQOE9Xf7gtA+DQB/tQWrJI=;
-        b=KGABtYvxN2gdd4MgdqR34GnKTYEYxs49rG4Wr++DWSLjoawEBOhGXw+UTfdGqxdYs7
-         sHnVDi0SBNL6qt9T5zXDFQG6ECq/pMRG6iHMMEoau3tc8j032VMmLNvqW/sm1yfg1JR8
-         I7OL9+Id2aPpt4mKac/YfIqxsQUH2GZ+R1lK3syuapg79o0MLVljy7IC/IEgqvsvCtsf
-         8Uk5GHHRn99l6LVAwzgtL4shPenDgWHG8gtCeScXzkr+so2xDqxOxZtwmsWWXlWz62wx
-         2+HbTtyIrD2g0Vf1foOXtOtwZ0YF8jYEotpNODWr/R4/kt3yPiny2B7rQTVpKHsVYEF6
-         6aUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVznbFDTtDGuCc1xNo3AenAOvlQCM58OyK3LJOxb4fUXOoHWEff2pm15+O6j3wqGFVpwjVSs1xteuf5j0I=@vger.kernel.org, AJvYcCW31BcOCz6uWzVDgJDe3/BfKwNaUQy6VF4PT4ffAsz27YFxOEfyF4O1a7549c0uzaXoJKMpPSQ/Gl5Rx0qaJbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxERfSbb2y6uJcFa4FdhhLdTy/qFvHCZlWp40TCtlxCkTlMqbhp
-	yGikxskQzB3it855ruufDa0zGrWKU4Yr8aFpOoKymiEN/S1QFvLIw+LgXA==
-X-Google-Smtp-Source: AGHT+IFOckJamnPCkjqdVGTmtiA+796cSZzcBTRR1nV41h+hZEqxRBxd+i25THwMcOnkpxbBsyN3ig==
-X-Received: by 2002:a05:6214:338a:b0:6cb:ef36:5fbe with SMTP id 6a1803df08f44-6cbefa741cemr265310866d6.3.1729017810275;
-        Tue, 15 Oct 2024 11:43:30 -0700 (PDT)
+        bh=khv6hcv6kkDgKzCP7fyWTG/6xWqnN83cb3e1EtyOfCU=;
+        b=ra4HwmOKDX77/DMwx9yYIXmYN3uplgeerWlf1V67/IyK6RoABEzLFFX/aecobvKc1q
+         bI2Fxhr4lJbo3HfB9iNiURIEZewutoViRLmf3gTDOKTA/NqohfNmqEtweGNfYUBzhQ2f
+         UdguraDOdBeu0wLfm55IESTLO4Q6caA1y0n7qkIugrYFQMp+TVhNm9KhAL5ERmMvmBgE
+         8Jy1sgPecp8BEHkE8TYDe6PFNGYeVmWTZf5lFpizwQ1b9HtieVwrUQotzpR/QZWYMY6C
+         h7EEJDGRRlym8QA8fngpeKBTzacs7pTXh/xamwGuXGGCDqZSPTDgEVnBcln7FVoxKN8F
+         wDWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3I7Dipr/DwpS8ibrHWqozP+ngwd42rE6/z9+sz+aMUCOQhUrjp8yRjqSxbfqHIsrSIn3sJmKYUybtxrf2Dn8=@vger.kernel.org, AJvYcCWFaSyzy71UgDgndDyquGE6dGZ9dgGmEcXGUbL3eQIKDGxQQ4PZqLzN2WfqwY5AJ5TlVqIm4b1p1lL+5PkY@vger.kernel.org, AJvYcCWh/wqQM+HnFEUZO/Q9rs0HRoAnXJ4t6zXcgSQzxnhULFAmliPB27IKKVZO6UNeZwZoXR26knIhgjFMWon1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPfniH+q0Xn8FKhcAqf8j36P8CowNmTiaafkwYVnkDUelzRGeL
+	9myqX5fYjokxZ7YIz/ALzFa4q7yHc87IgHtizu54ll9zZ2MGYr3a
+X-Google-Smtp-Source: AGHT+IFLZlUJTHO5srdfwWocUIH9sEixb3oyQ2JD3OiGAPufZnDDk3dfTXAkDH+T133qGhtmtjY5WA==
+X-Received: by 2002:a05:620a:4691:b0:7ac:b118:a732 with SMTP id af79cd13be357-7b11a36dfd3mr2269662885a.32.1729017971427;
+        Tue, 15 Oct 2024 11:46:11 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4607b119f59sm9611601cf.47.2024.10.15.11.43.29
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b136164db1sm102765885a.6.2024.10.15.11.46.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 11:43:29 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 721CF1200076;
-	Tue, 15 Oct 2024 14:43:29 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 15 Oct 2024 14:43:29 -0400
-X-ME-Sender: <xms:0bcOZypBPizfA5gMO3llRGOSYp59-hsuENynU67pYFB3YfLjgM4NCw>
-    <xme:0bcOZwqXu4vQa4voW0gYTFzyuIIAEI7ESwWx2ujBsfb0fPsjiGI2xSBJtFz823KjE
-    Vg-D9UUWnlaVmz_KA>
-X-ME-Received: <xmr:0bcOZ3OjKungq74vKwMwJqtvmMaU8hjkTe7QsinM7v1A7Qz8aVyy7Yt1Dl-Xnw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvkecutefuodetggdotefrod
+        Tue, 15 Oct 2024 11:46:11 -0700 (PDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 951021200076;
+	Tue, 15 Oct 2024 14:46:10 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Tue, 15 Oct 2024 14:46:10 -0400
+X-ME-Sender: <xms:crgOZztJzCO9eoe8Cnps_YAEOtkx8m_PC-1JUP6xChbQKDS0R5omDw>
+    <xme:crgOZ0dMILz7Z8a0VuaK-Uv6S-G2L5L6oJ6yQqEGT0ZYIRaNjaCm4Uxou9j0DB0Jr
+    ZDtzhB-FNRrEFDFxQ>
+X-ME-Received: <xmr:crgOZ2ycHPlZN-kuMOVPtHbiMYCEQ6OU-ucOugSKtc570cPdxd2amshtpgM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvlecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
@@ -70,40 +70,40 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvkecutefuodetgg
     ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
     hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
     ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhho
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhho
     uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvgesrhihhhhlrdhiohdprhgtph
-    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehojhgv
-    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
-    hnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdr
-    ohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtg
-    hpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhef
-    pghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhosh
-    hsihhnsehprhhothhonhdrmhgv
-X-ME-Proxy: <xmx:0bcOZx5W6EKOqY13OIzegRE9ic81YQwKvS10J4qT634BaPVNMqgSoA>
-    <xmx:0bcOZx5jN95upEWwqValBJr536en8lZC_Fc_mCoAQttJz72rkbYQ0Q>
-    <xmx:0bcOZxjEMEV7FlP0wat0wGWb0UEUJ6hq-ADQLKT5-nqnYsRgBiThYg>
-    <xmx:0bcOZ76frk4dYStfASEyfyhbShvxjsrQH6VTutyHAcbCPB_FcFmlgw>
-    <xmx:0bcOZ8KEt3MTVE42CkUpp9h6QCXwuYEgO2T_4qrfOjX7BMaV8YxjBOYH>
+    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegsrhgr
+    uhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhk
+    pdhrtghpthhtohepjhgrtghksehsuhhsvgdrtgiipdhrtghpthhtoheprghlvgigrdhgrg
+    ihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
+    nhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
+X-ME-Proxy: <xmx:crgOZyMOK-ar6Tq0QfhOgpgdhKGwSZOCqjhywJ1uRt_Yx9WuidHK5Q>
+    <xmx:crgOZz87kE3-D3joYLQ3w-_VD7l2SRtiTTJOyo1G5wvYpo1hLJpxcg>
+    <xmx:crgOZyVwnly4RXS8JZyQb1go4l_Ssip-ACX4xfZqbFRD8mQFkc0Xkw>
+    <xmx:crgOZ0eP8LKr3kjMKvRCamY9AxonuVBFjOziBQc46FWo6U9fzePHZQ>
+    <xmx:crgOZxeYSwGBVIh1gPGOmiRGadasWOys2dYsbqloxPNDLviKChP3bZdT>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Oct 2024 14:43:28 -0400 (EDT)
-Date: Tue, 15 Oct 2024 11:43:08 -0700
+ 15 Oct 2024 14:46:10 -0400 (EDT)
+Date: Tue, 15 Oct 2024 11:45:49 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <alice@ryhl.io>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
 	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org,
+	Trevor Gross <tmgross@umich.edu>, linux-fsdevel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add Rust version of PAGE_ALIGN
-Message-ID: <Zw63vD879qeHUA_b@boqun-archlinux>
-References: <20241015-page-align-v1-1-68fbd8b6d10c@google.com>
- <Zw61edSZrAb8pH1X@boqun-archlinux>
- <3ea20eb4-2a88-40bd-a453-bf2ff5d52d03@ryhl.io>
+Subject: Re: [PATCH] rust: task: adjust safety comments in Task methods
+Message-ID: <Zw64XYHtjGmbnfTO@boqun-archlinux>
+References: <20241015-task-safety-cmnts-v1-1-46ee92c82768@google.com>
+ <Zw6zZ00LOa1fkTTF@boqun-archlinux>
+ <23a73a6f-160d-4d06-8d45-ec77293ff258@ryhl.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -112,53 +112,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3ea20eb4-2a88-40bd-a453-bf2ff5d52d03@ryhl.io>
+In-Reply-To: <23a73a6f-160d-4d06-8d45-ec77293ff258@ryhl.io>
 
-On Tue, Oct 15, 2024 at 08:44:22PM +0200, Alice Ryhl wrote:
-> On 10/15/24 8:33 PM, Boqun Feng wrote:
-> > On Tue, Oct 15, 2024 at 02:28:28PM +0000, Alice Ryhl wrote:
-> > > This is a useful for helper for working with indices into buffers that
-> > > consist of several pages. I forgot to include it when I added PAGE_SIZE
-> > > and PAGE_MASK for the same purpose in commit fc6e66f4696b ("rust: add
-> > > abstraction for `struct page`").
+On Tue, Oct 15, 2024 at 08:37:36PM +0200, Alice Ryhl wrote:
+> On 10/15/24 8:24 PM, Boqun Feng wrote:
+> > On Tue, Oct 15, 2024 at 02:02:12PM +0000, Alice Ryhl wrote:
+> > > The `Task` struct has several safety comments that aren't so great. For
+> > > example, the reason that it's okay to read the `pid` is that the field
+> > > is immutable, so there is no data race, which is not what the safety
+> > > comment says.
+> > > 
+> > > Thus, improve the safety comments. Also add an `as_ptr` helper. This
+> > > makes it easier to read the various accessors on Task, as `self.0` may
+> > > be confusing syntax for new Rust users.
 > > > 
 > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > > > ---
-> > >   rust/kernel/page.rs | 5 +++++
-> > >   1 file changed, 5 insertions(+)
+> > > This is based on top of vfs.rust.file as the file series adds some new
+> > > task methods. Christian, can you take this through that tree?
+> > > ---
+> > >   rust/kernel/task.rs | 43 ++++++++++++++++++++++++-------------------
+> > >   1 file changed, 24 insertions(+), 19 deletions(-)
 > > > 
-> > > diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> > > index 208a006d587c..90846e3fe829 100644
-> > > --- a/rust/kernel/page.rs
-> > > +++ b/rust/kernel/page.rs
-> > > @@ -20,6 +20,11 @@
-> > >   /// A bitmask that gives the page containing a given address.
-> > >   pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
-> > > +/// Round up the given number to a multiple of `PAGE_SIZE`.
-> > > +pub fn page_align(addr: usize) -> usize {
+> > > diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> > > index 1a36a9f19368..080599075875 100644
+> > > --- a/rust/kernel/task.rs
+> > > +++ b/rust/kernel/task.rs
+> > > @@ -145,11 +145,17 @@ fn deref(&self) -> &Self::Target {
+> > >           }
+> > >       }
+> > > +    /// Returns a raw pointer to the task.
+> > > +    #[inline]
+> > > +    pub fn as_ptr(&self) -> *mut bindings::task_struct {
 > > 
-> > Make it a `const` function? For example, there is a VMBUS_RING_SIZE()
-> > macro in C that calculates a const number for a vmbus ringbuffer size,
-> > so it will be useful.
-> 
-> Good idea.
-> 
-> > > +    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
+> > FWIW, I think the name convention is `as_raw()` for a wrapper type of
+> > `Opaque<T>` to return `*mut T`, e.g. `kernel::device::Device`.
 > > 
-> > I guess overflows are unexpected, i.e. the users should not pass a
-> > `addr` that `> usize::MAX - PAGE_SIZE + 1`?
-> Correct. If this wraps around to zero, that's incorrect. Note that the minus
-> one is in brackets to only trigger overflow detection in the right cases.
+> > Otherwise this looks good to me.
+> Both names are in use. See e.g. Page and File that use as_ptr.
 > 
 
-Make senses, with the const change and some docs on the overflow case,
-feel free to add:
+`Page` is a different case because it currently is a pointer.
+
+> In fact, I was asked to change the name on File *to* as_ptr.
+> 
+
+I'm not able to find the discussion on that ask. Appreciate it if you
+can share a link.
+
+Anyway, this is not important for now, and might not be in the future.
+So:
 
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
 Regards,
 Boqun
 
-> I can mention this in the docs.
-> 
 > Alice
