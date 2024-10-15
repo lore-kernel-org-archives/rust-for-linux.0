@@ -1,114 +1,74 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF2D1CBA18;
-	Tue, 15 Oct 2024 15:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F2B17335C;
+	Tue, 15 Oct 2024 17:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729007625; cv=none; b=eiq6VOJlfBC8rPCrWoCVpoYz8gOAElIiVRyAOWd4Jq81PPoO6xwMYcV8Rnb0VBZlYnHgYMrDewmxbYeuZRQRa+DgIhnuRJBRHfIO0tYUoRFQZZmMcZhrmDqUOJCPbpo8pnz1lWYw2eQNgvgON4nnd0vLdQcKeU3T1dREPooIEhQ=
+	t=1729012137; cv=none; b=k6r0Z1q+mneYLwT41vkTFdV3uJLFf3Jj5w2r4JQ9stw0EBJHnvde1xf+XYmR+XIlDMlbGE+cvvYXdUU6k16dXdgKGx14XufbTdqBKQrvQJakcpooPkbqPuIhO+UbgTUQNpLsMeJbPLy+DlTTR4N0V0XVCUjSyh8n2SFI+sMyD+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729007625; c=relaxed/simple;
-	bh=XCroxmP16g5LieWOzyd0XevG9tSkSKSKPsUmqqxthxc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cmep0PjApc9m2UUrcEyg0dEP1FPEJ8+1THZtenIIKdDecr2OXKFCcS54u+fAvydlEeq9ul3BPN3kqOtqQKUFSuyHJRp8ItIV+sBGYYJ04V2yKgbIwcNUcmHGITiNfDwXkCVO55ArP36/MLogsLuftAkxU2o/qRc7PFnA87KZaCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bLLgjTc6; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729012137; c=relaxed/simple;
+	bh=7x79Q1s8OSa307Oj/n+6Lbu2xwm7cWo5fwwTIA0RjBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K8ZOe2HoTZ/GdT4an/yubRmPgvOrwKbphe26tCr1g2YcSHcNYDG70TlAWNLQBN51ls+vPFN4KWznF88Zj8A/zjUlst6MF27s2Ehkhsx4YfMolksVJ6TPuIgb1khY7Jribc2RNtjg7Dfhz+HxI4cq1ptcTJRdF+v+xlGupXmg1Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIHyo+Rb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bLLgjTc6"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fabb837ddbso69748211fa.1;
-        Tue, 15 Oct 2024 08:53:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729007621; x=1729612421; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XCroxmP16g5LieWOzyd0XevG9tSkSKSKPsUmqqxthxc=;
-        b=bLLgjTc6BAf2Z2Y+cPREeoK00ZmFlXwpvXAAe8rkB5F6UIAlx0CLujKfyjw+RlgKeH
-         ouiCQtIM2nQ2MogzV3Wbwtv6/5/9aOeTe1/jntWICS2KP3XG2aBNRZsIB7hEqY/JABuv
-         oyPuiEvdZndS5hixfUicquCJqtbdD/lox3Waf/zuJBjbb/xRyTk03mz+E32ScCtfs7sg
-         a+SXPb5fLBqZ6eiU9fAGGZsDVAm1mnOM9GZ6ONMEBRrpxACGINuKoQFx4h1sdueYifyL
-         6Qa1/WkejMdPj4SU6sVVuDGwGVHX9ORANUBbqms2n6mOAwXRDAOvExCttOXsATuR9/ic
-         Nrug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729007621; x=1729612421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XCroxmP16g5LieWOzyd0XevG9tSkSKSKPsUmqqxthxc=;
-        b=KGnm42Sbcej4JrL9wTMHMqkqQwD+Y1wKwaUAoEUwjXx1TwhlHj+kUdPKWpBp1meDeT
-         a1eFtktb1fK6Yvqr7/ZGJOhuOIwA1NWciZP3hGLeZM1rY7ZCEwxQO50/POGBYQbDuust
-         Ss77yROn/7xnM+LCq10TuIqy8YCP1nuS9ba2UXD0qD9HtwDR1iGl0bZueIz1cF4K9hrX
-         RYXT3Te17NdGlWafW0GDMH7sEQTzk+Ltcq6kJJqExRIro5fWfGVnrxelsObnthukDuee
-         zzauCCn5IpOw5JugO0Jwg+Xpe/WLaEFaXyWHuE+qJTWfO/8EfL6kKeX2xI4L1cSCVi7x
-         88hg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWiRnsVjTY1Nu6QyHfSLxYyuRNt/cxbroi91CtURKxMoXOWek5A3Y+IalrqgVCC+oUnphzN4buJtwQUQOgRMc=@vger.kernel.org, AJvYcCUZOyw0SWfdS8q0Suw0pClfl5HOLE3fQau0JwuJKfeogYwGeIX3IpxWIhYuntkhEvXL8HDTQe6mKeasUSaY@vger.kernel.org, AJvYcCUw9dJ0ov5EqJcvDG7fAMSYST/eIlndjtmbzVErcGtAPxKU4SVbvErHGUVz21xxWcUFdwgW1ah0M+uVmZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCYmmGGjmHKOQtJgDVe3TlwQ4woaQTsDMxUeLGSESvysAdJjzH
-	k4unaO2oKcGodSDjdaKR4PTZyoJFHFFfvwNxF6ed/Og75uf9taQIIybXfi2HGmDKGbXco+c61/i
-	0haircQJVSG59fROOqltAhViSzu0=
-X-Google-Smtp-Source: AGHT+IFft0vihb1P44brRlcFMJA3m9oUaknSbFYSlrH+loum+22/xxBSO2MOhvQthOnOH8U8tjzeAS/ZcjaFN1xOUKk=
-X-Received: by 2002:a2e:8397:0:b0:2fb:3df8:6a8c with SMTP id
- 38308e7fff4ca-2fb3f1cf79cmr53366921fa.23.1729007621172; Tue, 15 Oct 2024
- 08:53:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIHyo+Rb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CF5C4CEC6;
+	Tue, 15 Oct 2024 17:08:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729012136;
+	bh=7x79Q1s8OSa307Oj/n+6Lbu2xwm7cWo5fwwTIA0RjBU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZIHyo+Rb6bvCUhNAVg16blxDjGcFEjS8mk4XX0lLCxzlifyCN6A7TuqyqL0eQY7+Y
+	 4uNGQR8WSatufJRQUU3um/o4rUBoeHOfk9muzdKnG+1HV7HO2hb0qmGAXvHlAAJ2Lp
+	 kEjreIfiP89TXGZOsWPjYvAKokxq4lwlHvq7hiy0=
+Date: Tue, 15 Oct 2024 19:08:53 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: miscdevice: fix warning on c_uint to u32 cast
+Message-ID: <2024101545-reentry-extenuate-58ce@gregkh>
+References: <20241015-miscdevice-cint-cast-v1-1-fcf4b75700ac@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
- <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
- <CGME20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514@eucas1p2.samsung.com>
- <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
- <D4RZIDTJFVX5.16Z4XSB5IW6D1@samsung.com> <CANiq72n+mWOP3xNUU4Mep-n5QtJ8zQiwP9JZ-KX68+fOC0GMmw@mail.gmail.com>
- <CAJ-ks9mrY0eWjagq7hnHzY9jMRzV_4NS1cBfg4ad0v9Q3aV38A@mail.gmail.com>
- <CANiq72kzEdyQYhsw10h7qVaT2d=0z1qKsOUo-NzZw5xYrn1nuw@mail.gmail.com>
- <CAJ-ks9myRR1PgER6UtkFBE_mmgA7YGFjU11+JZXbjKVcra-sfg@mail.gmail.com>
- <CAK7LNARg=ZvD14ARKw40uk0XNfE5qgWqsrM6H4jBJu0m5XYCWQ@mail.gmail.com>
- <CANiq72n6zkCZdUJ0A8enLW3BgmA_=eJKgDKwNCfs-q3dfeR2BA@mail.gmail.com>
- <CAJ-ks9==6mi7SF5rTR=YouwC6RwktJftqXHqhsBcHNTWxdbfig@mail.gmail.com>
- <CANiq72nBYswZs_m9Ky3KKNz_WmHrsSoRDJqcuHGt2WpvUogtqw@mail.gmail.com>
- <CAJ-ks9khX7Ha4iGWOkbHeXzJLPisE9r=+q54Z9HMQkojR=-a8Q@mail.gmail.com> <CANiq72=mUeMYvgfQVozr363juCuKmMVNx_13dj+q=3KKJ4DeHA@mail.gmail.com>
-In-Reply-To: <CANiq72=mUeMYvgfQVozr363juCuKmMVNx_13dj+q=3KKJ4DeHA@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 15 Oct 2024 11:53:04 -0400
-Message-ID: <CAJ-ks9msDK9UAK5Pv2-TVWXv1-xYD3L0J=JKupN_Z5WW8VrX=g@mail.gmail.com>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>
-Cc: Daniel Gomez <da.gomez@samsung.com>, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
-	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015-miscdevice-cint-cast-v1-1-fcf4b75700ac@google.com>
 
-On Tue, Oct 15, 2024 at 11:30=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> If a trick still requires a similar amount of changes to mainline,
-> then I think we should go for something better/more proper, i.e. the
-> idea is to minimize changes/complexity upstream, after all.
+On Tue, Oct 15, 2024 at 02:13:22PM +0000, Alice Ryhl wrote:
+> When building miscdevice with clippy warnings, the following warning is
+> emitted:
+> 
+> 	warning: casting to the same type is unnecessary (`u32` -> `u32`)
+> 	   --> /home/aliceryhl/rust-for-linux/rust/kernel/miscdevice.rs:220:28
+> 	    |
+> 	220 |     match T::ioctl(device, cmd as u32, arg as usize) {
+> 	    |                            ^^^^^^^^^^ help: try: `cmd`
+> 	    |
+> 	    = help: for further information visit
+> 	      https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_cast
+> 	    = note: `-W clippy::unnecessary-cast` implied by `-W clippy::all`
+> 	    = help: to override `-W clippy::all` add `#[allow(clippy::unnecessary_cast)]`
+> 
+> Thus, fix it.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> This fixes a warning on my patches in char-misc-next. Greg, can you take
+> this through that tree?
 
-In that case v5[0] is probably the way to go?
+Will do, thanks!
 
-On Mon, Oct 14, 2024 at 2:45=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
-> This no-clean-files is meaningless and unnecessary.
-> This line exists inside the "ifdef CONFIG_RUST" ... "endif" block.
->
-> no-clean-files is only used by scripts/Makefile.clean,
-> which does not include include/config/auto.conf.
-
-I see. Was it necessary before this patch? Looks like it came with the
-initial rust support patch.
-
-[0] https://lore.kernel.org/all/20241010142833.98528-2-tamird@gmail.com/
+greg k-h
