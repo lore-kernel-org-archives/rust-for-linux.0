@@ -1,103 +1,121 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556241E4110;
-	Tue, 15 Oct 2024 10:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6BE1E7661;
+	Tue, 15 Oct 2024 11:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728988401; cv=none; b=m6XDeuwSBrh25wG8YLaNGqIwBJOAxQw1oajOQTeSYC7wj7/usH+FFuzyblGrL1TNWb7SegVBbgABNoTuAozjVG2vLfOo286VDcUx+jw3RNvGlJgvV8Dhnp+qJ8D/+y4HRDG6JC1jyUmch0rH/blxUpcRSMQQtXic1LcFfFavGL0=
+	t=1728990372; cv=none; b=sDiISXfs3LwUEOI5U3+X8LkmBqDG4hqx2BuIBGmkXbqrFi9+z22HJhb9gsXvJO/iD6wTOKnuU0od7OPTIv0ptQORS4q8BXZqgG2l8XOSBD7wxiR9II5vFjiOkSm7piiAxQhnNI3m0ZeqddXAlkpBaHfknFRTM2qUVwTRbKPpzjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728988401; c=relaxed/simple;
-	bh=lXqo21sgwNqWP+gBle8iCEqt4Du1RWaVF9uzdyDLp3o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pfqTM5/e6UxvO57liyR+XkDiZljUyWTYPCJV8KFD5Oumse8xiNmgEGwks0rDZ8+aB9ctigh0287dz7jfzNy19YWodEg5VujksTDCRVgS96Be7K8lq6P3T6iHe/AvBTqv2XOwtghc917GIT8T4Rzh4KgGYY+FuRhONM4Mekyl62M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QV0VGneu; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1728990372; c=relaxed/simple;
+	bh=Pg16ByItMJPVcLGJK175Zzik1c1YLvWigsny1vC9XfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m7BaptdOP4Yx3+yNOwte+A7QcVEKzjim9AAEaE0MPDGwduUU8YeGau5C7SH11XemASjsKOx4qS7gGqLwz4LBPzowx9mQhWpPwFDZ+XeJrqSfTvMfBYGK+uF86twb94ggFPvvsoWAvO3He/8Nktgl52SAFymWciz+ZAwknYvAWVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xg3N86VX; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QV0VGneu"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e2d83f15f3so933168a91.0;
-        Tue, 15 Oct 2024 03:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728988399; x=1729593199; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GltPBs08Kl/fytpBSYmRA40owGde5NS/uPC0UnXNWV0=;
-        b=QV0VGneu1/Mb8ck+HuH2zBdGt8aP58pg69CP5eVhOzB+cpO0r0xPc3bDLIDxcpD+9q
-         TQFP0cCwhmpREr4IoHAEzRZjq0NjSKUn0hMzdTgR1YVoQ9ZXOOvR92UJuZlkbeXp4Cq+
-         D2II2nE3UNtY2iafDdMGGuPrkK4yXv/n2pt61qsfsTO9cSYQgmj/ykMEfbKY3/GgiRkL
-         tIvJHwF0yFbBYU2bBZAXDzx8wQwE84dxaTt6HEPnPIkFVDnga1z60NPzt/w1txjNsbuh
-         0ORWDpIGosih3hY5R3HFIxTFjcqfnBOU5Hmql+99ANFrNcvvZabJ9sNL5QIh59QHTu64
-         LNTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728988399; x=1729593199;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GltPBs08Kl/fytpBSYmRA40owGde5NS/uPC0UnXNWV0=;
-        b=BJYeoOzKf+jeGuKetBmK1Scm+4zMSXqG2BZhVzdqPrYkGzpv3bWWgm5Hz7IrcMmMod
-         kwi6diRIFyNy3VC+WXr+PYqD1QOkyWvneboea9PlyrMhWUjHbaUWmmESfNlXv11+UOgQ
-         0IEqCXveBXPO12Pw4zQA1MCpxsGZF2rLle6xJ4ekLRSnAHYJTZy2tK5owV8ReVlQ0qOq
-         qelwUwxyJMy2wgrc2Ct1hxBobkMpCD+R5ekeJDoRahvlF701Rw2YLWOWXjZfMNPR0s45
-         sB9Gc2iAMx9GCcRm9OgP9Oc1vBTsnnBqphqjUBk18MJFzL/IWTt1smHeXwj3F5MyW8af
-         7AlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWSLkcnhczUIZ7svZAE6tb1fieiwLr04AfNWZ5b+wVXzUMrM7i9p2KsH2uOCQjnmnf31c5NNmaY2mKfIkE=@vger.kernel.org, AJvYcCWTzcw1CjE4xM7PXFQFWS+NvO+/M8goV8dS7enowiA0+W9umQ7wmx+YefIgb9xOfNQZM1uIv25uClNCz7z5@vger.kernel.org, AJvYcCXuXJr8ORvfDWEzKIuCkeSpU4MitUDxBg3stjQwo2nikty1qqON4AZjvDYVxQJei76L4xMEPezSf5ZNLZIVMc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRf33mOoK5DFMe9+8dBxdhMfU7VqJWD+BK4lTBIpu5FqATMhTO
-	8QwPFMAXCWfKgU0UeD3TihndFhLrzGbBmUWKnDuxznxInu46xsRLuM8EYSi/w4+UOMo0T2lXIhJ
-	5fxem4dsWOlc6lzr8cGvLNuoT3sY=
-X-Google-Smtp-Source: AGHT+IEOdEVCRTYytB+pvjhxhlGxQl5GWJcx0C3P97d0Hmb89OoPkN9b42EUAsEV0iGg2CbRiwajNuwdLBgx8+ycOYM=
-X-Received: by 2002:a17:90b:360b:b0:2e2:c04b:da94 with SMTP id
- 98e67ed59e1d1-2e2f0d77309mr7056673a91.5.1728988399600; Tue, 15 Oct 2024
- 03:33:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xg3N86VX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728990371; x=1760526371;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Pg16ByItMJPVcLGJK175Zzik1c1YLvWigsny1vC9XfU=;
+  b=Xg3N86VXvUMMCFpx4SMAHT6G8dXyolZYOaL/GLKELTDZ+/EhpoUtDAQ3
+   oq49POZsEU7bb3NaAz1B2v1YKlc445Z5Geso2X9D2aZr9sVE0Bzq3A6uE
+   bjKJcoUei63jYRo9iRzh6Ocg5ZmNnUN35puHi1btNezYBp8fE9BnwStAz
+   61Jw8niswDSbpaYsXZgVmHy2jTlBUWR/y6JvIq6LA4Op7b+UY4c+3Wece
+   265ufoA7oCNyhCa4t8AjRx3ud8lLIg/DGccdfAHs+FcZxNDHbLmZDTHAS
+   8+ndbJ8PsHA5vOmNMGWI/LbvCw0dM/oCepBrsW9PKUA2KjfcCQKWX9MXW
+   Q==;
+X-CSE-ConnectionGUID: nKxYCfGwQCWS2cRvjAYiWw==
+X-CSE-MsgGUID: J3GU7bUwSt+7ws4ms7wGfQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="16000036"
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="16000036"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 04:05:56 -0700
+X-CSE-ConnectionGUID: J8FqnB8lTp+Vvc/ge+MtMw==
+X-CSE-MsgGUID: 5lprZAhjT+akXkKmb4LJAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; 
+   d="scan'208";a="78312581"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 15 Oct 2024 04:05:48 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t0fN4-000I0F-0F;
+	Tue, 15 Oct 2024 11:05:46 +0000
+Date: Tue, 15 Oct 2024 19:05:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v10 5/5] rust: add arch_static_branch
+Message-ID: <202410151814.WmLlAkCq-lkp@intel.com>
+References: <20241011-tracepoint-v10-5-7fbde4d6b525@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
- <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
- <CGME20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514@eucas1p2.samsung.com>
- <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
- <D4RZIDTJFVX5.16Z4XSB5IW6D1@samsung.com> <CANiq72n+mWOP3xNUU4Mep-n5QtJ8zQiwP9JZ-KX68+fOC0GMmw@mail.gmail.com>
- <CAJ-ks9mrY0eWjagq7hnHzY9jMRzV_4NS1cBfg4ad0v9Q3aV38A@mail.gmail.com>
- <CANiq72kzEdyQYhsw10h7qVaT2d=0z1qKsOUo-NzZw5xYrn1nuw@mail.gmail.com>
- <CAJ-ks9myRR1PgER6UtkFBE_mmgA7YGFjU11+JZXbjKVcra-sfg@mail.gmail.com>
- <CAK7LNARg=ZvD14ARKw40uk0XNfE5qgWqsrM6H4jBJu0m5XYCWQ@mail.gmail.com>
- <CANiq72n6zkCZdUJ0A8enLW3BgmA_=eJKgDKwNCfs-q3dfeR2BA@mail.gmail.com> <CAJ-ks9==6mi7SF5rTR=YouwC6RwktJftqXHqhsBcHNTWxdbfig@mail.gmail.com>
-In-Reply-To: <CAJ-ks9==6mi7SF5rTR=YouwC6RwktJftqXHqhsBcHNTWxdbfig@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Oct 2024 12:33:05 +0200
-Message-ID: <CANiq72nBYswZs_m9Ky3KKNz_WmHrsSoRDJqcuHGt2WpvUogtqw@mail.gmail.com>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Daniel Gomez <da.gomez@samsung.com>, 
-	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
-	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241011-tracepoint-v10-5-7fbde4d6b525@google.com>
 
-On Tue, Oct 15, 2024 at 3:11=E2=80=AFAM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> I've opened https://github.com/rust-lang/rust/issues/131720, let's see
-> what the experts think.
+Hi Alice,
 
-Thanks -- I added some context there and linked to it (and Lore) in our lis=
-t:
+kernel test robot noticed the following build errors:
 
-    https://github.com/Rust-for-Linux/linux/issues/355
+[auto build test ERROR on eb887c4567d1b0e7684c026fe7df44afa96589e6]
 
-Cheers,
-Miguel
+url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust-add-static_branch_unlikely-for-static_key_false/20241011-181703
+base:   eb887c4567d1b0e7684c026fe7df44afa96589e6
+patch link:    https://lore.kernel.org/r/20241011-tracepoint-v10-5-7fbde4d6b525%40google.com
+patch subject: [PATCH v10 5/5] rust: add arch_static_branch
+config: riscv-randconfig-r062-20241015 (https://download.01.org/0day-ci/archive/20241015/202410151814.WmLlAkCq-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241015/202410151814.WmLlAkCq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410151814.WmLlAkCq-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> /bin/sh: 1: cannot create rust/kernel/arch_static_branch_asm.rs: Directory nonexistent
+   make[3]: *** [scripts/Makefile.build:311: rust/kernel/arch_static_branch_asm.rs] Error 2
+   make[3]: Target 'rust/' not remade because of errors.
+   make[2]: *** [Makefile:1209: prepare] Error 2
+   make[1]: *** [Makefile:224: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:224: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
