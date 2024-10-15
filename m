@@ -1,200 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CD9149E16;
-	Tue, 15 Oct 2024 14:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6222013212A
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 14:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729002147; cv=none; b=d93qyra2HcjLkwY7og5/GS6K7kz1rROM51E1Ku1/RBOFmhFKVNAL5lR4y6MPORfRCGxlHe77+O3olGxrS4bs6CMU1nljBN7RcRNvZzGYRkll7sxgrZDb3R/oj0qMsVSxXQJ5eeHQCy9B62/eAuppqqkrO0THJVz14wRqQD2h1Zw=
+	t=1729002528; cv=none; b=bjFIhNt7UFV17WyToxsa7Zmn68uJPRPhG2aygjL+8tvlf92svdMACWqGYun58lwmj+P+mkR7IiZFFoVAXUrJMft+8GeENZKzKn0A/fVwDKLwZYUnilt1TT9V5R/iFY/9QI5bKV5su7gTXdoPP5wU5aO/K+ru/ZZUay7ujieZAkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729002147; c=relaxed/simple;
-	bh=3lH1yDNH4/NXorniCVSsSt3aItdm4wsD0ht4IfwjUAM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GO32FNHwr8m865FpGvJyRu3NhlOYm71UhpssX2rpn4hiuxCuFCa6Fa1Z6MQugGMNPh9K8dxabqiaNeVeqFFvtGxzZN8pnzeEPGS1x64Skr2thlyfE9r8j4E4ygR8LsmjsUynDk1A2BSYseTj8BnSLBgZph4o8ORnKHvhUzMzAIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FkJVkntR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729002528; c=relaxed/simple;
+	bh=t8U1gyWwNSEhj9d9K6BaPBQ0ctfmm7LA5efgRVulxro=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Bgkv1lQE8wQclMeIdYbTmB0UmRgBAqM90lhMP3ZZjpwHITRfbUW/ffm1NL/EiLDsBR9XgamalhD+vQQuVe1LDIdwdrYYCx9Coje1ReVpNC1LQS9nUdU29va1rSIV+8rS46uT33AmwKdYm2i+/FjiyhhzZ84Wumza5Cb9fzeY044=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NKVI9wtt; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FkJVkntR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167B0C4CEC6;
-	Tue, 15 Oct 2024 14:22:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729002145;
-	bh=3lH1yDNH4/NXorniCVSsSt3aItdm4wsD0ht4IfwjUAM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FkJVkntRx2kEp8kOuI0hdS8kyQbP+qTDOyl75hWJ1QC9c96KQRoZ4paUJpy0KVrdv
-	 IdtnNyuuVqdfB0TZpDUQWkuxVVuCjjuuBX0XJmbuwE1B918NdJCm25kKYddE0p/ZNV
-	 kncsLrZF8/fcsIaXRVavjOwPaOBWBedn8qOVuiKpvZyqQ76GEcm+1mzKOvy6pVHVnI
-	 uAc5fSsmPCp822btHW9k8jE2CtZmFD/g1ZHC9XAz8dIJpNuLzBAr65GAgrlp5K24VM
-	 7w1TrL9iPeVxG1WxNDxg5iqaDa9dMTGkVR8Sui8k1lj9t00ReQ1WPEuOp3KhP+wV8P
-	 q/HBjYdy4p15w==
-Date: Tue, 15 Oct 2024 16:22:23 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>,
-	linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>
-Subject: Re: [PATCH v3 16/16] checkpatch: Remove broken sleep/delay related
- checks
-Message-ID: <Zw56n9P0Io1bMb0y@localhost.localdomain>
-References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
- <20241014-devel-anna-maria-b4-timers-flseep-v3-16-dc8b907cb62f@linutronix.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NKVI9wtt"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e2e5e376fcso103002357b3.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 07:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729002526; x=1729607326; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XNJeKzAtPjp45SIJ3/kfvuUMRNzvKyffpnVSTmM2Fh0=;
+        b=NKVI9wttr8zX3D/62rJd77UBVNheJgdQXXvVvp4ikoA041oG7ioO8iSuWjWQY6VFRq
+         1aHCB//0VF9EK6ouCZjeF2FgQbJ8far4qD7kJoKTW4Ln0NHz0Yx8wtQlLX894Ty5ldA2
+         NVsZfe4x1U/L/l3XadSKKzlTBNdelb944aeNTbumj0OoXKIFIs9qBvvcCYQ+q8teuPve
+         mLNtxRjfdPP2S3uiyL9Yt/sP21Z3ygWTdXkc8rEMKj8jWD9JVr2KwBiwKUES5HiXw27c
+         ORLOfsZhKicxIwO7jJWiBri6kpB0mVUZH7Mlsb9ccAveEPb1hbcsVLsc6nN0fJBTUJf5
+         9AqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729002526; x=1729607326;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XNJeKzAtPjp45SIJ3/kfvuUMRNzvKyffpnVSTmM2Fh0=;
+        b=qb7zv0xZvF3lMck3Irx7Wjj8adwAH9ThRhLhYdv3GqEKV3HkQNZiFhF9GCbx4tb35p
+         xKJFGmxLEmNUzPnQjxKxacNHPsDchzB809JFGczx48tbUJhNcikKa2B4pNTVB5WhN5HQ
+         Hse8vDlfVMz8G4Q36ZiLaYavYeJqD4QQ40K3ARcsUBnh4UUxfuNwQuedI542F14eZU1g
+         lhJE9tbJnjymfig7HARasZIW29jovOCsHKLLWro31MeLzj3muTkr+8yOZ5KF+O94BA5N
+         58+GRiGhC2Z9Z/ggm3XUvq+7iqjg/XeBF7fDoPccUJz0ELNeY/V/GCNr39JH5IBsR56J
+         3qFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWN6LPiUqFKPS/JUqrJ/Niq4/u0vJZK+KJhsoePAG3RNxhYnj0Ho6M4MxU480zRfqk1dTKnoS/e4Gjla75U5g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ/JEk6TjXf9qGrFxVfF7LeuEDDnRP4e3ReUH+82KiuN5bXt/Y
+	Xj7acH+na053b25ig1ykkUFskRJyD5/RcxRm6A5Q09w1Ti+Ku9BMStDPF6cH/17YHUs4D8ObtfM
+	Pt3wF8iK0WdoANA==
+X-Google-Smtp-Source: AGHT+IEJsZCQdJgQDK83UiVeL8PodNSP1mZnK7L/+YXxdoFRVd72bLcQ3Ll9Bb0b3OGyiUHdTm+vltTMRxpnJ8A=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:2d08:b0:e28:f6b3:3666 with SMTP
+ id 3f1490d57ef6-e2978567367mr346276.7.1729002526293; Tue, 15 Oct 2024
+ 07:28:46 -0700 (PDT)
+Date: Tue, 15 Oct 2024 14:28:28 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-16-dc8b907cb62f@linutronix.de>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAt8DmcC/x2MQQqAIBAAvxJ7TlBRhL4SHcxWWwgThQjEv7d0n
+ IGZDg0rYYNl6lDxoUZ3ZlDzBOH0OaGggxm01EZJZUXx7PxFKQuHNnoTnFU7AgelYqT3n63bGB8 omyDhXAAAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1064; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=t8U1gyWwNSEhj9d9K6BaPBQ0ctfmm7LA5efgRVulxro=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnDnwMVnOv25ulL3mEcQA0kNsek3R1xTz5taYha
+ 5Y1rpWY31+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZw58DAAKCRAEWL7uWMY5
+ RlXgD/4939MppK4B/TGTf4FZZfeJydTXzv8UMnCIqv8aPgKYfnApFk+PbRKDUXzGxTGrpdw5fKG
+ zxA2rh3tCYAMTXueMSZdEFoE8lagpvilyS5Z/cvPQZB3xmh3yTvIjCTlbPG6LPZzHptiGW1RqJC
+ vo54L4y3uiCl4HYLNKGUB3lkzHJHAytQeILBRRWgPtQpZFgQyiNa/cGE3EHPbTqTAOqZXDwo+aF
+ GRql97MJ/xS5HOV4V1miU/Hv0jFDdRphecPH4nDwQ0Ja/d6roUDfpp9MSJwr9MjGfaACh8Nzu8e
+ Rnr4rPSCpdZwokcA7ZbI/NjI/9JMuYg3kqVvt9pTt/g8a1X3HX++F1i9XYfUgkpxcuH6zseKWNc
+ sXl+RmfNUDWsyr48LDF/MKbhlYDtBunbJkcXsUBobeCy66UvP1Ae+zqe+9a6xUypdz8f+bz8ujh
+ FaxQB6i+VwUpCE8BtJ+Q41aI9N3+1PCjA98PmY1EG3MkX2IK+SCpgFFBIWIICa25NIg49cKfDRE
+ TfqYM/LRME+ON8Hxebo1R5stTn/eT4226Qi09e2sEr7N0ov+ZidylEj+XlfmvlLNsbUizpo+D2T
+ qC+TkH6et19oK1qsE2ynkRNeiBojAAiHeSNgr8I0Yw7PyautHKZP0hxLafIwKcIyjP5QeB+k3KK mzG1gXcw+kOfGug==
+X-Mailer: b4 0.13.0
+Message-ID: <20241015-page-align-v1-1-68fbd8b6d10c@google.com>
+Subject: [PATCH] rust: page: add Rust version of PAGE_ALIGN
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Le Mon, Oct 14, 2024 at 10:22:33AM +0200, Anna-Maria Behnsen a écrit :
-> checkpatch.pl checks for several things related to sleep and delay
-> functions. In all warnings the outdated documentation is referenced. All
-> broken parts are listed one by one in the following with an explanation why
-> this check is broken. For a basic background of those functions please also
-> refere to the updated function descriptions of udelay(), nsleep_range() and
-> msleep().
-> 
-> Be aware: The change is done with a perl knowledge of the level "I'm able
-> to spell perl".
-> 
-> The following checks are broken:
-> 
-> - Check: (! ($delay < 10) )
->   Message: "usleep_range is preferred over udelay;
->             see Documentation/timers/timers-howto.rst\n"
->   Why is the check broken: When it is an atomic context, udelay() is
->                            mandatory.
-> 
-> - Check: ($min eq $max)
->   Message:  "usleep_range should not use min == max args;
->              see Documentation/timers/timers-howto.rst\n"
->   Why is the check broken: When the requested accuracy for the sleep
->                            duration requires it, it is also valid to use
->                            min == max.
-> 
-> - Check: ($delay > 2000)
->   Message: "long udelay - prefer mdelay;
->             see arch/arm/include/asm/delay.h\n"
->   Why is the check broken: The threshold when to start using mdelay() to
->                            prevent an overflow depends on
->                            MAX_UDELAY_MS. This value is architecture
->                            dependent. The used value for the check and
->                            reference is arm specific. Generic would be 5ms,
->                            but this would "break" arm, loongarch and mips
->                            and also the arm value might "break" mips and
->                            loongarch in some configurations.
-> 
-> - Check: ($1 < 20)
->   Message: "msleep < 20ms can sleep for up to 20ms;
->             see Documentation/timers/timers-howto.rst\n"
->   Why is the check broken: msleep(1) might sleep up to 20ms but only on a
->                            HZ=100 system. On a HZ=1000 system this will be
->                            2ms. This means, the threshold cannot be hard
->                            coded as it depends on HZ (jiffy granularity and
->                            timer wheel bucket/level granularity) and also
->                            on the required accuracy of the callsite. See
->                            msleep() and also the USLEEP_RANGE_UPPER_BOUND
->                            value.
-> 
-> Remove all broken checks. Update checkpatch documentation accordingly.
-> 
-> Cc: Andy Whitcroft <apw@canonical.com>
-> Cc: Joe Perches <joe@perches.com>
-> Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
-> Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-> ---
-> v3: Move it to the end of the queue and adapt it to the new patch which
->     removes the link to the outdated documentation before.
-> v2: Rephrase commit message
-> ---
->  Documentation/dev-tools/checkpatch.rst |  4 ----
->  scripts/checkpatch.pl                  | 38 ----------------------------------
->  2 files changed, 42 deletions(-)
-> 
-> diff --git a/Documentation/dev-tools/checkpatch.rst b/Documentation/dev-tools/checkpatch.rst
-> index abb3ff682076..f5c27be9e673 100644
-> --- a/Documentation/dev-tools/checkpatch.rst
-> +++ b/Documentation/dev-tools/checkpatch.rst
-> @@ -466,10 +466,6 @@ API usage
->    **UAPI_INCLUDE**
->      No #include statements in include/uapi should use a uapi/ path.
->  
-> -  **USLEEP_RANGE**
-> -    usleep_range() should be preferred over udelay(). The proper way of
-> -    using usleep_range() is mentioned in the kernel docs.
-> -
->  
->  Comments
->  --------
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 98790fe5115d..34d4b5beda29 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -6591,28 +6591,6 @@ sub process {
->  			}
->  		}
->  
-> -# prefer usleep_range over udelay
-> -		if ($line =~ /\budelay\s*\(\s*(\d+)\s*\)/) {
-> -			my $delay = $1;
-> -			# ignore udelay's < 10, however
-> -			if (! ($delay < 10) ) {
-> -				CHK("USLEEP_RANGE",
-> -				    "usleep_range is preferred over udelay; see function description of usleep_range() and udelay().\n" . $herecurr);
-> -			}
-> -			if ($delay > 2000) {
-> -				WARN("LONG_UDELAY",
-> -				     "long udelay - prefer mdelay; see function description of mdelay().\n" . $herecurr);
-> -			}
-> -		}
-> -
-> -# warn about unexpectedly long msleep's
-> -		if ($line =~ /\bmsleep\s*\((\d+)\);/) {
-> -			if ($1 < 20) {
-> -				WARN("MSLEEP",
-> -				     "msleep < 20ms can sleep for up to 20ms; see function description of msleep().\n" . $herecurr);
-> -			}
-> -		}
-> -
->  # check for comparisons of jiffies
->  		if ($line =~ /\bjiffies\s*$Compare|$Compare\s*jiffies\b/) {
->  			WARN("JIFFIES_COMPARISON",
-> @@ -7069,22 +7047,6 @@ sub process {
->  			}
->  		}
->  
-> -# check usleep_range arguments
-> -		if ($perl_version_ok &&
-> -		    defined $stat &&
-> -		    $stat =~ /^\+(?:.*?)\busleep_range\s*\(\s*($FuncArg)\s*,\s*($FuncArg)\s*\)/) {
-> -			my $min = $1;
-> -			my $max = $7;
-> -			if ($min eq $max) {
-> -				WARN("USLEEP_RANGE",
-> -				     "usleep_range should not use min == max args;  see function description of usleep_range().\n" . "$here\n$stat\n");
-> -			} elsif ($min =~ /^\d+$/ && $max =~ /^\d+$/ &&
-> -				 $min > $max) {
-> -				WARN("USLEEP_RANGE",
-> -				     "usleep_range args reversed, use min then max;  see function description of usleep_range().\n" . "$here\n$stat\n");
+This is a useful for helper for working with indices into buffers that
+consist of several pages. I forgot to include it when I added PAGE_SIZE
+and PAGE_MASK for the same purpose in commit fc6e66f4696b ("rust: add
+abstraction for `struct page`").
 
-Why not keep the min > max static check?
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/page.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Thanks.
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 208a006d587c..90846e3fe829 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -20,6 +20,11 @@
+ /// A bitmask that gives the page containing a given address.
+ pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
+ 
++/// Round up the given number to a multiple of `PAGE_SIZE`.
++pub fn page_align(addr: usize) -> usize {
++    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
++}
++
+ /// A pointer to a page that owns the page allocation.
+ ///
+ /// # Invariants
 
-> -			}
-> -		}
-> -
->  # check for naked sscanf
->  		if ($perl_version_ok &&
->  		    defined $stat &&
-> 
-> -- 
-> 2.39.5
-> 
+---
+base-commit: 8d8f785ceb21b9a0de11e05b811cc52d6fa79318
+change-id: 20241015-page-align-7e5fa4c751be
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
