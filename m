@@ -1,164 +1,171 @@
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A756D20370F;
-	Tue, 15 Oct 2024 18:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E11815699D;
+	Tue, 15 Oct 2024 20:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729018245; cv=none; b=iLU+nQju4Fz21iXfZlIByVB7B54bg7KLqE8PXVgNqyHSL9NMdVLA66wxCJMv/J7ZVsVuifNrX9/HxuHGE0WKkXT+ULg2/ObYIlYQ4HazRFJIennj+UxL3ysKf8bvWDzsj5PCSvxud8PGgEt4hzZQ28td2jIRx4T7JYFJy0sWW7U=
+	t=1729023463; cv=none; b=b613rfRN1d+MLakaaBquTtFqA7xURRcAP1cPCXRPv8dv4nM05TvJWZ8a/RRX+fOzAcpcWV47wjRMHU9zWi7uEl3zVDA/TcO7v2lsFeCa8AhCo842FZpY/M5qGCtxwhDhSyEI0yNG1r6c88zswpVJLkRY4LZToeI+a9IpuHZEy5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729018245; c=relaxed/simple;
-	bh=bvS+d+mzsX/e+OeWng1r7+WDCtvvpwqft88GOX+IR5I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ML0m1T31wHpmU274EM403RwTqEAB/Rx4JXgZmaQVGEQ3OlnhHpd2WHxR/diDf4MRemjcjLuhvdr3KgOGNddhdzfEreitD3QP2V3XKGQbeLvpENUQW91ZTlW63XVU7arhYXWP1zQLYa8tiF0nuPUhrxmNuYMupzoMeg1yqAFw5g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=LEN1CdK3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VoSoNW77; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
+	s=arc-20240116; t=1729023463; c=relaxed/simple;
+	bh=dVyHyTA4F3oyIt/YjsGBV4VmzH4VqO8inQbhC56t0DU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CR/kyyng49mfZBIz6HXQuc182gJ9AeJruy15JxGu7SgNc2NhZcWn/jtD91yZvDEYR7mQj16QWz+HWmd0+gDB0sptj8p4/xjEZ0OtYBbcqVZZsTW2NrQu3iwLOgK7VOiXx8FZoSGLurEEiaOWc/N2B2gwQw/8UDpt4Y4EGUBZBRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XuSshw48; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="LEN1CdK3";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VoSoNW77"
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id DD84D1140196;
-	Tue, 15 Oct 2024 14:50:42 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Tue, 15 Oct 2024 14:50:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1729018242;
-	 x=1729104642; bh=rw/wOUJB4u9XmB8hYuCI+/JCDumTEPnWgFre56JTot4=; b=
-	LEN1CdK3zqAl6H891bIKprvY36vRHbrabKaedDDgs1UsK0hwzFnSZZI50FxdaXwj
-	QqejxkQrecFGfDYvfhKOaXUyOzvXgZDvHYnrjL/nvHCBtqRBTbXyTbTbyQ/uNbav
-	sKZDnn5zYuWD537CMFcgC5iMy9coclogcjEbSPyXIL5ME4YUKmWLTQDk5WiQOcHf
-	g8/5nxFUajcL/GGftKvkOhg8Ht3J24PDw+uKM4q4e7DdpZNc0+Qa1XIRo9EvrXzc
-	imOg4GULAWu9pGscfPsKM8SLJnoLIri83xKoBEQpqnbPdCzsEA5ZYBQtzyL/a7A9
-	acJbIJv1h4qpRoib3UmsYQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1729018242; x=
-	1729104642; bh=rw/wOUJB4u9XmB8hYuCI+/JCDumTEPnWgFre56JTot4=; b=V
-	oSoNW77iWqvlE0TZdpxMORuPA/FfYoKIaKl1prRx6Dl6AfW087QhEZkC/pu6vnMr
-	WSortSOV/V990gEXVPn7I7hw1mqi1xuiuY8PFgNUPX3+eeXFdvSqNwmXnayl7UKp
-	/WycL0r+hp/WrQ/MZDMaXHtvwPjHLv70WIo/D9Msqz28UnWENi2mLirRpvfbTy8V
-	B8oJ5aOMp/QflIy94bGZuyjiO0QdXmC5QYLEx4EJaLoGFtdt3A11mMs9lsvQ7dd1
-	6DNY2Cch1gvW6f3Hk5A2VpfyHkKL6/toErOBNQQyWcmgnelMOBImP1A52skk5oCs
-	BeVoKdw2RHDMMLXV6GBHA==
-X-ME-Sender: <xms:grkOZ_Tx-x7KYVJF8K8dr-Zc4EY7YgcTRu7mLuwkT63keEKeXzENRQ>
-    <xme:grkOZwxZjXm8pmfReUJOi7mnBaTow3kBIglfxrDDKcliunkzdBvNHiAb7j0QizYQi
-    Rm5eAlmllOP-Fj6IA>
-X-ME-Received: <xmr:grkOZ00KoDXfFJx7q-RVE6M02svOrb3V1kv7046hKXnl_3t8cgViTpSO-BpZ5YvbLSUequullayWj7ZmyoPX-PpLatKmsPHJzBtE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvlecutefuodetggdotefrod
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XuSshw48"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b13c0f9e34so65470385a.1;
+        Tue, 15 Oct 2024 13:17:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729023460; x=1729628260; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7e8wUvCLZ+54cx0pCJlcOJobLkCUpxQGFBNFP+yb+f0=;
+        b=XuSshw48d9j7l/tASDTb14pZfyU4Utmb7+COW6/1nIEjOpIS26/6mzAEV9dUlTdhPW
+         gyq0HtTKhPJ/PnB8yq7O6pf0Xu+3obGmvLzIXp61sv9E1xJZr+WKkRPSj/JxXeI1S04K
+         0p6Sdzei4Kd1kMnRA9QfU1/thrzwXuF7mha7aLtlNQoFklTyA48MpK9niUIn6QxmH3I1
+         sDAk9Vr/QsZWPb++4nPF2xZsG0j3N89Dqfg4xL7tC6cxJSwGVl4DJv7Lf01++LFxXT1l
+         V/A3c1A7bywlN1TOgmaiDO0DQhE+4Vp5SUTnjsgwFF27C+J96H3eCN3lSiZNhnMQqb2A
+         UDJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729023460; x=1729628260;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7e8wUvCLZ+54cx0pCJlcOJobLkCUpxQGFBNFP+yb+f0=;
+        b=gyoOnLL2HEqm4x2cZD8H2ue+EbLpTzg+IccsKB4hX9dkA8dX4Y0Etatm6dvtxFrc4R
+         xeHGxDVRgYB9AL3UYx70M1PCvfXW1hYeA8JRLAjQ98FC3NT7FMzkjN4drfDjYptNWBE7
+         zLizglCtI5O7u3bSZvfq/sg3mhlILeGhc112Mn3u+JwCQo9d31LaT13DN1nARD2o07E9
+         OZ6ArKDZZLXyo1Rziigl/Q0YYdPZF/WzpMu+LUOqUjkY4/pCqCc+SiYJ4gjAeb+RGAqv
+         4asGnZsVsl6+t+A/ge9/egL1kRfV+XGFTQa4rAnLGCnYz8JXsrfren74L6vm+IgAktEa
+         ZH6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWX3q/3KD+TWVEMGseNGHVJSOO2OTpFZSiB2PVKZV7bGHrXjBAyY3I4HfyCB52IMgQ2gZ+5WuFgPyP5lcXkI6g=@vger.kernel.org, AJvYcCWZn7IQBQK+J5YC56VrnGhTBczUHAzAB1gpdCzdUjnfVLq8B8Pj+X36obIfCA45IZF9BOybXxfX+/+TAgU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcHdPRv9TnxV3qlG8a3bpANOafIEnQ3RQXp4uU9ruJp6QGlCFl
+	Mo40q4wBrJGbEB7mfHTUhfrzl/duPyiC2PUT6dIiYruWvhpY8kcD
+X-Google-Smtp-Source: AGHT+IH4pGSnZufgTJwMduOZM9YXuuJhe6snWsw4uMRMrDf5UC0QWPC8FlBqJ/HVtjiq18bW8pGnKg==
+X-Received: by 2002:a05:620a:3916:b0:7a9:b8d1:a1d with SMTP id af79cd13be357-7b1417f3a82mr245116685a.38.1729023460368;
+        Tue, 15 Oct 2024 13:17:40 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b13b9a3996sm88330785a.39.2024.10.15.13.17.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 13:17:39 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E8AED1200077;
+	Tue, 15 Oct 2024 16:17:38 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Tue, 15 Oct 2024 16:17:38 -0400
+X-ME-Sender: <xms:4s0OZxmtaMsNyVtmPXfq5KMRbmVnJ7awKBXXJGplgQJhudy1yfS3Mg>
+    <xme:4s0OZ81FGDDCNlVS8SW-rqCAVtK1T_BIp9BRkamo7Jl0fvzhxf7ChDuAL9Jh7ke5i
+    RiOG8ZAWzJIheZy2g>
+X-ME-Received: <xmr:4s0OZ3o-aF_ZXA6Qwy6_aafnxMm5D_Djzd4KU0xPIu-vKuSJ5QaiEMOhu-M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedgudegjecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
-    jeenucfhrhhomheptehlihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqne
-    cuggftrfgrthhtvghrnhepfefguefgtdeghfeuieduffejhfevueehueehkedvteefgfeh
-    hedtffdutdfgudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomheprghlihgtvgesrhihhhhlrdhiohdpnhgspghrtghpthhtohepudehpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphht
-    thhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidr
-    ohhrghdruhhkpdhrtghpthhtohepjhgrtghksehsuhhsvgdrtgiipdhrtghpthhtoheprg
-    hlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgr
-    rhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrg
-    hilhdrtghomh
-X-ME-Proxy: <xmx:grkOZ_D8RCgH8A2_oBfRgG9WgtpVB37tonzwNsE5vN2WXtsX9iZ8TA>
-    <xmx:grkOZ4gWI6r-kwgnf2ZMRrYdpCMkPsYdtM53gSSGRwyoPj3dlokLVA>
-    <xmx:grkOZzpkdS29jXiXgTYzXW4HVHu4BMjh0u5ZUlW1EQiSWxD2zcyhQA>
-    <xmx:grkOZzhaHfczW_lvKN5RhmRYYbWY2HaeaRVz64UpE1sWuI6nDOav4A>
-    <xmx:grkOZ0zLSwl_aYzVMJKfbG14HlIK_Njlmg84uFE_b9Ye7HPJ8m68M1T1>
-Feedback-ID: i56684263:Fastmail
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvgedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthho
+    pehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehruhhsthdqfhhorh
+    dqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrhes
+    rhgvughhrghtrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesrhgvughhrghtrdgtoh
+    hmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihi
+    lhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrth
+    drtghomh
+X-ME-Proxy: <xmx:4s0OZxmi3_A3DNegqY91ALMsbytXxlYrrKszXP0tL-g7badTNbVEbQ>
+    <xmx:4s0OZ_0-KtT9vP3AItiR_KfySnG9y_2VKWvbAAhus7A6QM9XKjPUFQ>
+    <xmx:4s0OZwu8tkI9ygjjZKrZK7coMzhnExFdI3caTyHSSwqSpa6pzqjenA>
+    <xmx:4s0OZzWEgetPJ1qQES8Gu0-cV5Zz814nvVv3XrDn-ti2UhBK7RKXpw>
+    <xmx:4s0OZ221eYJOJipl7yfahUb1Wh_rk8eX2HW-kqndIvWKdT0IfBgf__ku>
+Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Oct 2024 14:50:39 -0400 (EDT)
-Message-ID: <54f1e546-1fe0-40f7-87e6-109006b762a6@ryhl.io>
-Date: Tue, 15 Oct 2024 20:53:45 +0200
+ 15 Oct 2024 16:17:38 -0400 (EDT)
+Date: Tue, 15 Oct 2024 13:17:37 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	Benno Lossin <benno.lossin@proton.me>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
+Message-ID: <Zw7N4RKzWAS9qi4I@Boquns-Mac-mini.local>
+References: <20240916213025.477225-1-lyude@redhat.com>
+ <20240916213025.477225-4-lyude@redhat.com>
+ <8734lew7jn.ffs@tglx>
+ <0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
+ <59803e6abd88dc29c402ff2b7ed020e45f4df1df.camel@redhat.com>
+ <ZwPXSs62WY0qNLr6@boqun-archlinux>
+ <87sesxa5i0.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: task: adjust safety comments in Task methods
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Christian Brauner
- <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241015-task-safety-cmnts-v1-1-46ee92c82768@google.com>
- <Zw6zZ00LOa1fkTTF@boqun-archlinux>
- <23a73a6f-160d-4d06-8d45-ec77293ff258@ryhl.io>
- <Zw64XYHtjGmbnfTO@boqun-archlinux>
-Content-Language: en-US, da
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <Zw64XYHtjGmbnfTO@boqun-archlinux>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87sesxa5i0.fsf@kernel.org>
 
-On 10/15/24 8:45 PM, Boqun Feng wrote:
-> On Tue, Oct 15, 2024 at 08:37:36PM +0200, Alice Ryhl wrote:
->> On 10/15/24 8:24 PM, Boqun Feng wrote:
->>> On Tue, Oct 15, 2024 at 02:02:12PM +0000, Alice Ryhl wrote:
->>>> The `Task` struct has several safety comments that aren't so great. For
->>>> example, the reason that it's okay to read the `pid` is that the field
->>>> is immutable, so there is no data race, which is not what the safety
->>>> comment says.
->>>>
->>>> Thus, improve the safety comments. Also add an `as_ptr` helper. This
->>>> makes it easier to read the various accessors on Task, as `self.0` may
->>>> be confusing syntax for new Rust users.
->>>>
->>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->>>> ---
->>>> This is based on top of vfs.rust.file as the file series adds some new
->>>> task methods. Christian, can you take this through that tree?
->>>> ---
->>>>    rust/kernel/task.rs | 43 ++++++++++++++++++++++++-------------------
->>>>    1 file changed, 24 insertions(+), 19 deletions(-)
->>>>
->>>> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
->>>> index 1a36a9f19368..080599075875 100644
->>>> --- a/rust/kernel/task.rs
->>>> +++ b/rust/kernel/task.rs
->>>> @@ -145,11 +145,17 @@ fn deref(&self) -> &Self::Target {
->>>>            }
->>>>        }
->>>> +    /// Returns a raw pointer to the task.
->>>> +    #[inline]
->>>> +    pub fn as_ptr(&self) -> *mut bindings::task_struct {
->>>
->>> FWIW, I think the name convention is `as_raw()` for a wrapper type of
->>> `Opaque<T>` to return `*mut T`, e.g. `kernel::device::Device`.
->>>
->>> Otherwise this looks good to me.
->> Both names are in use. See e.g. Page and File that use as_ptr.
->>
+On Tue, Oct 15, 2024 at 02:57:11PM +0200, Andreas Hindborg wrote:
+> Boqun Feng <boqun.feng@gmail.com> writes:
 > 
-> `Page` is a different case because it currently is a pointer.
+> > On Sat, Oct 05, 2024 at 02:19:38PM -0400, Lyude Paul wrote:
+> >> On Fri, 2024-10-04 at 14:48 -0400, Lyude Paul wrote:
+> >> > 
+> >> > FWIW: I agree we want things to map C closely wherever we can, but part of the
+> >> > reason of having rust in the kernel at all is to take advantage of the
+> >> > features it provides us that aren't in C - so there's always going to be
+> >> > differences in some places. This being said though, I'm more then happy to
+> >> > minimize those as much as possible and explore ways to figure out how to make
+> >> > it so that correctly using these interfaces is as obvious and not-error prone
+> >> > as possible. The last thing I want is to encourage bad patterns in drivers
+> >> > that maintainers have to deal with the headaches of for ages to come,
+> >> > especially when rust should be able to help with this as opposed to harm :).
+> >> 
+> >> I was thinking about this a bit more today and I realized I might actually
+> >> have a better solution that I think would actually map a lot closer to the C
+> >> primitives and I feel a bit silly it didn't occur to me before.
+> >> 
+> >> What if instead of with_interrupts_disabled, we extended Lock so that types
+> >> like SpinLockIrq that require a context like IrqDisabled can require the use
+> >> of two new methods:
+> >> 
+> >> * first_lock<R>(&self, cb: impl for<'a> FnOnce(Guard<'a, T, B>, B::Context<'a>) -> R) -> R
+> >
+> > I think you really want to use a `&mut T` instead of `Guard<'a, T, B>`,
+> > otherwise people can do:
+> >
+> > 	let g = lock1.first_lock(|guard, _ctx| { guard });
+> > 	// here the lock is held, but the interrupts might be enabled.
 > 
->> In fact, I was asked to change the name on File *to* as_ptr.
->>
+> Is it impossible to limit the lifetime of the guard such that it cannot
+> be returned from `first_lock`?
 > 
-> I'm not able to find the discussion on that ask. Appreciate it if you
-> can share a link.
 
-Hmm, it's possible that I misremember. I can't find it either. But it is 
-called as_ptr on File.
+I was wrong saying the original doesn't work, because it has a
+`for<'a>`, that means `'a` is lifetime of the closure, which cannot
+outlive the return value `R`. So this signature might be valid.
 
-> Anyway, this is not important for now, and might not be in the future.
-> So:
+Regards,
+Boqun
+
+> BR Andreas
 > 
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Thanks!
-
-Alice
