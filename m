@@ -1,120 +1,63 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012891C07DF
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 13:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDCB1B219B;
+	Tue, 15 Oct 2024 13:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728998505; cv=none; b=gFnVc+dIX0RR7vByFujg6ubCIJ4CNMX9f92tzu6ZTNwg3Tul9yDNFH3dpGGlwf20+BU1XZN6IwVm18OiqRqOtpVGbhhOU0pwQmrOe/qz0wadykYNR2qJsZ1muxYsr31jJJhGEvIxQ8tZPxuD/HGkyAQ0hYcMGkBWheFbwm0j32o=
+	t=1729000468; cv=none; b=VLuqdWn5ZkUSQ0+RgBAsFyHcoms1ObvX8WBXWHdRB2hoLX6pssq3284OmON7o0FORvEd94vVNAiRufvaRSC+M3By+K0UoXdGgjdhoppTdvLhTiwF8wYMZ0575Kx/oBEmuNK6O9IaFn/9gt2R8qnUrAxBMJNlN07HGKmdZS5bo/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728998505; c=relaxed/simple;
-	bh=K8j37Y3NeHTSMT2XD/Vi8P46SlNMypsxn4DSZpg+r0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uLOSa1QYqy/CSDm0ZeZvoN11ZH9EUHLvH7lwUKQ+e0NmZEnYHBmV3GB6Ler89/wAfQXpDvBP0xq4sJz32Qvfu86zKKbG30TZiKnwHdrDnzAKzArMu93DcsmlmGNGPs1PS1/8Ddhl2Um1l1enoP81urLN72mcaZ314LOzxnO7uMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TS261FeU; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729000468; c=relaxed/simple;
+	bh=tIsMM7fX/CrMgwmOAdB9kTlSRTDalPOoc2fQSb66mKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZnPcftpt2MW80PGL6dHeirerFI4VSM0BfK8A/f21UCqefx82vpzMlyfJThjNqLT3lunuO5yJjadsVwElmPTy6u1DlAbrZP0zsotQHl+64ibciPwHTJZ8RbzvMRmo3266QWIoIdVEKZGGHgkDhua/LbEInGEEZAApMMPDtvESe5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCbD61NR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TS261FeU"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37d4b0943c7so3553899f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 06:21:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728998501; x=1729603301; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9n0q1KEeo2CPHzRQUjPiqBunABt8CrDdywKyGxq8L14=;
-        b=TS261FeUN1VG7pSP7BIYVxSVv6Y4ErA51QUPWqMIc01UO8R21kaGhBPw/3lApd/GFj
-         kM6atMmZO/yXVX3tGk1rCR/Jc6leJ/2xhEziRIZTVV0czsAG+IOToJCbKredoSpft6Yl
-         rN5KtXV7xiMytKLfU0xcz4tIIUI+rr3i0xGiw42dgwFPQtpmWX5RM47+BZJGuII/Tco/
-         W6vt664WA4YXhDBlP/Ewq+EMhJ7+Zw/iu8ZB5Gp01/qhIo44JUo63qSTOpzrI8nS2h06
-         zmh0iwXzcqh+c8Y+6JVO+MNTtdN0MvalYgnDJY6fOLp2VRAz4Pr3IFgMk4TT03TnZVD+
-         Bsbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728998501; x=1729603301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9n0q1KEeo2CPHzRQUjPiqBunABt8CrDdywKyGxq8L14=;
-        b=TiaUyDYn+y/eANO+VON8YwiqIb40ThSHlH1i37H0tqOAiPbxwpINCrcuAvpm/h4j1j
-         JQQv3B5zdRqWav3jVa8Fh3/520R8/iIFn7EgxFWVGY90kJCfZ7yu8bQefb1uqV/zAsa+
-         oS6iqV+1PQXqkZyLoVgzisT4AvrogpO3aONgeKyrBPwDiNYnE9e4EoCOQJ4jS3lYadPl
-         NFuy1KR4GFDj7HfhC+LcWWCQYNRZcMsl4uUqCdrSAUS1ak50MQCEHdAjsF9DrelxqHb6
-         StF0X9kIzHKAbPVAtI1oDcNEQVivoORfv3P/OhLRQSD0hEqoxqfQrq1qUMqe2wd6MSEE
-         4ZBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUesQmiJqZGQhd7Ar/VRcKHLtFr9yguB7/iaMz2CIJbG1wRmS1pWXon+QrxD8+s2tZD2MY7Ih5aOrZH0yGs0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/F3FZ1h9VslmHUaS/3nmZ+FKaInNoFoomd7cmPc65MQ6JvW8o
-	Bdu83AKnKKDUVuaUhRshS2pCFY94hdFAURrM1cmrWKvExN7XLlxCwnWCUT9iY4XLuLG5jd67vKW
-	uAB+XHy7pjerRRGLjZBu1r51KKlAFSv/ExVV7
-X-Google-Smtp-Source: AGHT+IEs4y1lsgZZyZeKndW8H2aOP/taIrYhkxqpBCO265rUvdXSxly/PKF+yBNK4FxQzvpl5te02bSQ+3Szz/EodnM=
-X-Received: by 2002:adf:eace:0:b0:37d:5084:b667 with SMTP id
- ffacd0b85a97d-37d86c040b5mr178619f8f.33.1728998501000; Tue, 15 Oct 2024
- 06:21:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCbD61NR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1939CC4CED1;
+	Tue, 15 Oct 2024 13:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729000467;
+	bh=tIsMM7fX/CrMgwmOAdB9kTlSRTDalPOoc2fQSb66mKU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eCbD61NRnFFntH0NX/eddn0x3225iMNzntGFOyJjmbT0eiLZZqww1thuJSGRYKhed
+	 FudtrU9x5Dsav8253kwjtRDC4ZBzU5+xUztMMfCSe7CwydaW2FTWlc0IEKCTZhXwvn
+	 skdjHbSevEY2qixx8NLqs81jFKDTLDMEBwLa2IitGijMQiKJT529jWcvWzhyBlH20/
+	 bot7hNxRjEZEl4zX/MPLwAdjEfLCqHd1pgXRIL7j1Tc2vO+m8ZE85ctmPIJOLJW4QH
+	 9vITjCng2aWpnvEa6mZYZqWfvSpgDPMlW4HSlRVj7rxYrnnTtaGigwPyGO5jxyzD8B
+	 qHy1KoUQBXKFA==
+Date: Tue, 15 Oct 2024 15:54:24 +0200
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>,
+	linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH v3 09/16] timers: Add a warning to usleep_range_state()
+ for wrong order of arguments
+Message-ID: <Zw50EGyh3DwA8wX4@localhost.localdomain>
+References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
+ <20241014-devel-anna-maria-b4-timers-flseep-v3-9-dc8b907cb62f@linutronix.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241007202752.3096472-1-abdiel.janulgue@gmail.com>
- <20241007202752.3096472-2-abdiel.janulgue@gmail.com> <065A20A8-EB66-4350-965C-2456841D03A1@kloenk.dev>
-In-Reply-To: <065A20A8-EB66-4350-965C-2456841D03A1@kloenk.dev>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 15 Oct 2024 15:21:29 +0200
-Message-ID: <CAH5fLgiSt3Lc5+Rmcfg7frsy2y4o9yuj6LLqp6j0oNrzHRZGGA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: page: replace the page pointer wrapper with Opaque
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
-	dakr@redhat.com, linux-kernel@vger.kernel.org, lyude@redhat.com, 
-	airlied@redhat.com, miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-9-dc8b907cb62f@linutronix.de>
 
-On Fri, Oct 11, 2024 at 1:07=E2=80=AFPM Fiona Behrens <me@kloenk.dev> wrote=
-:
->
->
->
-> On 7 Oct 2024, at 22:27, Abdiel Janulgue wrote:
->
-> > Replace NonNull with Opaque to make it possible to cast to a Page point=
-er
-> > from a raw struct page pointer.
-> >
-> > Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> > ---
-> >  rust/kernel/page.rs | 19 +++++++++++++------
-> >  1 file changed, 13 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> > index 208a006d587c..08ff09a25223 100644
-> > --- a/rust/kernel/page.rs
-> > +++ b/rust/kernel/page.rs
-> > @@ -8,8 +8,9 @@
-> >      error::code::*,
-> >      error::Result,
-> >      uaccess::UserSliceReader,
-> > +    types::Opaque,
-> >  };
-> > -use core::ptr::{self, NonNull};
-> > +use core::ptr::{self};
-> >
-> >  /// A bitwise shift for the page size.
-> >  pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
-> > @@ -25,8 +26,9 @@
-> >  /// # Invariants
-> >  ///
-> >  /// The pointer is valid, and has ownership over the page.
-> > +#[repr(transparent)]
-> >  pub struct Page {
-> > -    page: NonNull<bindings::page>,
-> > +    page: Opaque<bindings::page>,
->
-> Still not to sure where to encode pinning in the type api. Looking into t=
-he C struct I see a union that sometimes holds a list head, should this the=
-n be a pinned thing in this type?
+Le Mon, Oct 14, 2024 at 10:22:26AM +0200, Anna-Maria Behnsen a écrit :
+> There is a warning in checkpatch script that triggers, when min and max
+> arguments of usleep_range_state() are in reverse order. This check does
+> only cover callsites which uses constants. Add this check into the code as
+> a WARN_ON_ONCE() to also cover callsites not using constants and fix the
+> miss usage by resetting the delta to 0.
+> 
+> Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 
-As long as you only hand out immutable references to it, nothing
-further is necessary.
-
-Alice
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
