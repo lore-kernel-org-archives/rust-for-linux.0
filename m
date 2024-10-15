@@ -1,102 +1,99 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3179316A397
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 14:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DA61CB9E5;
+	Tue, 15 Oct 2024 15:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729003566; cv=none; b=SP3uUOkGRtZGLlOrSm/gPGINxjo3qQxWm70n7YMH8kBcyWz43DFRt9zAjixygKZqY2/ARp7v2qwhnpgpnyuR+/qwGbGTNUT/ZI2Bqi9DlNUIspA4BnmcM7y0dw3wUdjhGhSMyQocp+m/wtrJ8XTVBh1jXfxtlixBFc9BJflSR+Q=
+	t=1729004781; cv=none; b=HWYO6ELMcNYp/p53c4jOUy2kUYNND40dEb8cF88zdPsOrdFtWmRKYQwxYG935H0KXaRE5p34zl3hOlBgGnszYE3fNMFOkrYfecMJsO2j28+3Rgues1uAHNSxsyZETOXmZhO5Cv+9UepwYoW8OwjpqVTrRTNN0Z3JEMjebykP5Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729003566; c=relaxed/simple;
-	bh=1bEhqwEHmxJs9+B05nsJYv9A3NKyJkdV9GS5A58QEEw=;
+	s=arc-20240116; t=1729004781; c=relaxed/simple;
+	bh=XvBsOmthnKBPrNadqnGm1o00dVUQIb/e1aIhuZtK1yw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gmwRG+fE3V7/3WFQcu96dBdqARICxsF5s3S3oB/HRK4SEmTVQFpO23iTIOW6qa4n834WsOcXjhcGVc2u5yz1eGVwHKm/dJIe7MMbFVVYuIWb+XRhXHf6S6PLOy2lkG0FKLvQeAaz36hDrqBcBXuFhyy3z8DHL5DsNbVU1OWr5Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wQWy9uv/; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=DEgsa353ukLgGy3rMnJcc2aJxMnQQcxQ9RBMSM3Fa9jRarB0zRokRV4dapn+vRUP/PdSUxCiC5MXVU9aRJqTAyUUbH4CLIruWqQtKJlTSqLS/homhu1U5xEeeKOA/mLeSTU1XM05L9n1us9yygDHylUIxqeAMoYr0Ie3EyVGGIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YeJ/bPa1; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wQWy9uv/"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43140a2f7f7so6551065e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 07:46:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YeJ/bPa1"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539e59dadebso4057395e87.0;
+        Tue, 15 Oct 2024 08:06:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729003563; x=1729608363; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1bEhqwEHmxJs9+B05nsJYv9A3NKyJkdV9GS5A58QEEw=;
-        b=wQWy9uv//SfRwrrDqH78SDvEnd0GeE85qS6kcu0mPJZ4gJE8hzQVp4KPb1dF+1wmnc
-         /C9iAHWIhoLqKATCEWCOB0UqML95jjZAymJXa4PqQPPLkngmcYHhmaf0spO5I2SYAVH3
-         aZbrdm8oNuhbip+uFTT5TZxPKUGmL/HcCt33hxnnAlJ3NOqv+X4J0ej+z5R8/2GqVOZt
-         vLFX9lHEKiTVBkZFvuY3zp2CyKJ36Tzgqg/uc2kJewMzrtCKHQ66RTH4B/pRqg3wBJnU
-         D5LoOFKXYl61rXNxZP6DTf7TnijraWex7iJ+5k6AsBXZt5mNNKkoQkKM8tlQaz20NllZ
-         6JsA==
+        d=gmail.com; s=20230601; t=1729004777; x=1729609577; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XvBsOmthnKBPrNadqnGm1o00dVUQIb/e1aIhuZtK1yw=;
+        b=YeJ/bPa1ajV8sWfdfXZl4GNruUi28XLWjSB9Bs2G3n0T5hirNAhjknX0TTDNKVIX+4
+         irSzym/MXkl/LQ6ZWLehgtgqWw9NnaOY9x8u8dDebnN0xO7KnEaBkEJzjOc4BNFilZbE
+         M528iyG3SnJGZ2lqYJsT9mUmem95P2mgFPRdnqClh0bqWhdMvn81btqTfJ8HGRSZz8VD
+         hscL0oe45pvPFyivKfv6MZj0maqlyjrvJr64h9EkjvvmbVD2SjoG4rLP+8wnWNHLj5Uw
+         X+2AKaVyftTwZY4CywqS9zVQGtfFn1iqMaHwUjFR9XezmjiF33LpIFrQ4rz17CloTLQF
+         P6SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729003563; x=1729608363;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1bEhqwEHmxJs9+B05nsJYv9A3NKyJkdV9GS5A58QEEw=;
-        b=dLR2BKzFX+8NRKlOy96Q9HnEy4DKAG1vH7TY6ggy3d8W/XSmSmx7MMTcWewUh3Kvci
-         UImY3rnpnaMH70vtcR+PHCYnWRaOxx/bWDetpVt62UZFFAk4ntOUXuroA4q97fF5cgAc
-         pUIXpLWzPdwGO+3ri54/Gry/aypi5cW8SHQ7oZwtjr1KFWtWLBjzoLfXWhyNlxHmEIZ/
-         QQsmVQzjHNvQ2hWf/bMYCDqs2whg687r7RzCcQIE3UlPXTLaNV2mz5XZ0n/8uIo6lNlC
-         eg9hJX8PiiW0XAi2CRvkuOgyvdupimlA/GkqYrognSDBJuqV6YSqT+Rl6KxeADcIdBNb
-         sQNg==
-X-Forwarded-Encrypted: i=1; AJvYcCW071lLCzgounomdYbWaMyHMQGYN6GUufCvwcqQZtueleI2ky5PdlIHQz0U9gjD9VEdAWBvKvqn+1ixMHSRQQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNHO3Lw3yoGQHx0pt6JEZb4puuOCSUfVlYWnBwBv2K+aEGuBJo
-	x7eqwvp9SPMgDTAGnZVikywtMBX3pZOHxXeqi1ieSnjeMPeloW95IRgaf1gjY0Y7EO1gNjOv6gA
-	qW+gn03MoCJoUi0NRxEKLz3TesEzwc3XGv23f
-X-Google-Smtp-Source: AGHT+IEK4Wl6/jw5iBhBo/Fx/Cp0uqUqlmPb/nuYJU9OSwXavYyNFlXi/fqkdToVUNxEJNnuM34srOxgnvxgq3tp3J8=
-X-Received: by 2002:a5d:584f:0:b0:37d:5359:1ec1 with SMTP id
- ffacd0b85a97d-37d86d793acmr386815f8f.57.1729003563300; Tue, 15 Oct 2024
- 07:46:03 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729004777; x=1729609577;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XvBsOmthnKBPrNadqnGm1o00dVUQIb/e1aIhuZtK1yw=;
+        b=aC0K2z50sgV2rW++Njn/hG4pI/8A2bwMAP96O5BXmzf79BfNMNgHkewypuUksciuKi
+         c1CEQEZe8x7ldagpepQLWVToK8ZzqRq4SyVpzPoTeWrbZwMEhZra/BJSdcxVNvL2cqbS
+         etqB3WAhpCjv051Cith0U8VlsV98qgim+ZlQOo4DAizzJfZcLGGKRXNHFYbjgxhpRB0p
+         TLvMOTNS/aiQ+rneVjRzqNNiBEKBhnJui2y6AKR8xaYRWu/gd1kaJ5ekwaMCJt5wZDUB
+         sWmN+Sxit/idLZBYXKDpFj62/by57eEc4KnhcJ7YiaSAPFZmcTqhPxQdJjyDPjft9m56
+         9zwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYyIqbZ68OaUXHhTfpjoqIJBHlLg28kZoWSBkYHYp79QHw2VyLACeWrBAPjc7T/yrvHMODceQlCzQm677Yc1I=@vger.kernel.org, AJvYcCV9oS/XdMKm2KsTrEmXC7G9e8Pj3TSM4SpeC3Fx3sZQMaW/ckI02ij+drKrmyKoadYji2GMF88WLWG2Y5w=@vger.kernel.org, AJvYcCWc5ghOWdqsHYeQoIyWVDoFLzG1crHofHpOsl9Yejtiiifk/+THMIK5EwbhR2hbAXyxFRar9qGAXGf8JwYU@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMYOluvEH4wqqZsZuPKo9X8UJy9Ud8VqB1R0iZRfGRSIgOsUeA
+	imHEGOkBdwnygf/aKZkxG4DYHee5ZRUzCwYeQ2jYE0da6wFfz81mN3rCdvgu0SKGqgcHVGGMz7O
+	QlEgWifTrDVADc2ntaRnPYLuOgn8=
+X-Google-Smtp-Source: AGHT+IHQoOP8jo18+oRF/qa4tf8/HVzJKKvXRnn2v7lQpYy+Htgtl6nj/cR8piEY4H9/JgOwIt16LeZEf+7rlgJ0VM8=
+X-Received: by 2002:a2e:a544:0:b0:2f7:7d69:cb5d with SMTP id
+ 38308e7fff4ca-2fb61aa16b5mr7296111fa.0.1729004776352; Tue, 15 Oct 2024
+ 08:06:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241011-tracepoint-v10-5-7fbde4d6b525@google.com>
- <202410151814.WmLlAkCq-lkp@intel.com> <CANiq72nn6zv9MOD2ifTXbWV3W1AgiXL=6zTX_-eGL5ggLj4fbw@mail.gmail.com>
- <CAH5fLghJrrq2nJu7S08bBg2sAjdibkZ4D14K9cqETafnr4CR4w@mail.gmail.com> <CANiq72kRiQvw3xWbMGRxcVJhHN0LMRa0RewxnkofVr=71KQvEA@mail.gmail.com>
-In-Reply-To: <CANiq72kRiQvw3xWbMGRxcVJhHN0LMRa0RewxnkofVr=71KQvEA@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 15 Oct 2024 16:45:51 +0200
-Message-ID: <CAH5fLgjFFmm-m8=4Qbad6X-EOjKfCytE3ncevO1u-sSn-jJF9w@mail.gmail.com>
-Subject: Re: [PATCH v10 5/5] rust: add arch_static_branch
+References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
+ <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
+ <CGME20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514@eucas1p2.samsung.com>
+ <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
+ <D4RZIDTJFVX5.16Z4XSB5IW6D1@samsung.com> <CANiq72n+mWOP3xNUU4Mep-n5QtJ8zQiwP9JZ-KX68+fOC0GMmw@mail.gmail.com>
+ <CAJ-ks9mrY0eWjagq7hnHzY9jMRzV_4NS1cBfg4ad0v9Q3aV38A@mail.gmail.com>
+ <CANiq72kzEdyQYhsw10h7qVaT2d=0z1qKsOUo-NzZw5xYrn1nuw@mail.gmail.com>
+ <CAJ-ks9myRR1PgER6UtkFBE_mmgA7YGFjU11+JZXbjKVcra-sfg@mail.gmail.com>
+ <CAK7LNARg=ZvD14ARKw40uk0XNfE5qgWqsrM6H4jBJu0m5XYCWQ@mail.gmail.com>
+ <CANiq72n6zkCZdUJ0A8enLW3BgmA_=eJKgDKwNCfs-q3dfeR2BA@mail.gmail.com>
+ <CAJ-ks9==6mi7SF5rTR=YouwC6RwktJftqXHqhsBcHNTWxdbfig@mail.gmail.com> <CANiq72nBYswZs_m9Ky3KKNz_WmHrsSoRDJqcuHGt2WpvUogtqw@mail.gmail.com>
+In-Reply-To: <CANiq72nBYswZs_m9Ky3KKNz_WmHrsSoRDJqcuHGt2WpvUogtqw@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 15 Oct 2024 11:05:38 -0400
+Message-ID: <CAJ-ks9khX7Ha4iGWOkbHeXzJLPisE9r=+q54Z9HMQkojR=-a8Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: query the compiler for dylib path
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Daniel Gomez <da.gomez@samsung.com>, 
+	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	oe-kbuild-all@lists.linux.dev, linux-trace-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
+	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Vegard Nossum <vegard.nossum@oracle.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 15, 2024 at 4:44=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Oct 15, 2024 at 3:07=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > Thank you. I was able to reproduce the error locally. It only happens
-> > when CONFIG_JUMP_LABEL is disabled. I've verified that this fixes it.
->
-> You're welcome!
->
-> By the way, if you end up sending a new version, then you could
-> simplify to `ifdef CONFIG_JUMP_LABEL`.
+I did more digging and I don't think this is going to be readily
+fixable upstream:
+see https://github.com/rust-lang/rust/issues/131720#issuecomment-2414179941.
 
-Too late! But I can do that if I send yet another version.
+A symlink fixes the problem if we *never* specify a path to
+libmacros.so, is that how we want to proceed? Note that currently we do
+specify it in one place in rust/Makefile and again in
+generate_rust_analyzer.py, so those would need updates.
 
-Alice
+Tamir
