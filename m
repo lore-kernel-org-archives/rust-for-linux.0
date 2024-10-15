@@ -1,121 +1,153 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47771F80A8;
-	Tue, 15 Oct 2024 21:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5792E1D9675
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 23:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729026821; cv=none; b=u5FFuJOgpjnemBhclZTwOb8YJoZ/aDrOb4IMdEHk1ypJp8sQy/qh7QMTPY5bJnZlHuDm5hfHHqApeuJT0s70j1+AwSf7Sgg++qVtzDdRpU0fgfksx9K4OKzX2kAnRRR2z+AnHjGVInei4veIoV2MAw6ZtQIAGoxnUL5lp7rXQhU=
+	t=1729034373; cv=none; b=W9kaQnZHB2eqvP1+h2ePW3Kv8O9pIUcpHV2WGb7sMkVCJ2XuGy8jV/cB1G7+jkvd9g1HS1Y0aQ3RGliXLlLkSr75I6h7gRzQAOkYKbJhWlxuHQomVjH4JAhaHp/vgCZdeiUMDi4FJF3KZ8bbDdDFHW0fAy6OmgpFRW5dXvRISmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729026821; c=relaxed/simple;
-	bh=srU30wlT2wsVrJmZPkwMohWcppPywLLb+E2fsMsQAPg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=muvqn+zGN2bmPAy+cysIk4f3AnzGUY+xVliM0oMtNJHyPROJ6J8VBJ6OzfPcMC7+2ddBp9WE9JvfVplbL38yTF8SweWWTzaqxzIq+kLTl0yxufSfuX8ZXQp44KJl+FgOE2vimT+3aGGVzRZHoCFZDZAfSa5hIHpkuDGZ9uJSk7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9nby1db; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729034373; c=relaxed/simple;
+	bh=+F2VbNZf1bhZ2UaA03ZPHWNIFVcKxoyVzX20irGYaCE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hTcK7qG4QzBHtmk3oPcbWG6XHaz8EQDffbhAFp/jM54b/2h30pBhZ33S1fyOrCvxXBD9AC70j4R0yWSZ/4WxjLktvCNlcon+nVzkTKs/HSr+it4UQPmP1ADBIVgVpVMxO5sr3MJZY5JoUeipgvfw2RjPm7NtPox3V1yDNjR8iWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RMAVXh/i; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9nby1db"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e2e31aacbbso451852a91.2;
-        Tue, 15 Oct 2024 14:13:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RMAVXh/i"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6dbbeee08f0so5802787b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 16:19:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729026819; x=1729631619; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KOu0ihc9uIYIAfX2AUeosgsSEBssXUcp9S/hXeZuKE0=;
-        b=Z9nby1dbRvpJkRCIWBnj4DCmdyxl6ueOFuwkabCBjecKajUyo9k9HazvtztBsgNYOW
-         RF/IWSEtqJiTd4IzMpDTUEPes0Pxe4EPzfqaI73Ynlk9LjWSwHclKqA81ZqyKiMSgyun
-         ivrs1MxpDa71JZiqBsAt46zH5V+DQ2S238vR1hPTbzSN8dg0QrSubmO5mNARobkFZYkK
-         3CkosEiqSKMcxboMRWv0F4idHvQAih1+BmHYLSYP/dDGEtvvxOMydkk7bQlBn6THjjRj
-         60v80JOHQrqrU9bNXBF1OaqM40Rxx6WfhVLAXMcYr40GcsBAcp0m9Oss0lK+L8i551bs
-         6GRQ==
+        d=google.com; s=20230601; t=1729034370; x=1729639170; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mrJp4iFzpg7dOEUx5ArGmKTsHqr2X7jfl/sNyFyGR+8=;
+        b=RMAVXh/i+YxZUiL1R8LbIDXsHEKlAJ/NHlsL1aDYu9x+gmO4FZazS36eCS3efXDkgU
+         M/wv5Q2AXyzyMyaMqIyYnMi/YjWhlFo2UdGLIw9wnb1Ue6kHlrzuq3qEzySB/RRxeha6
+         762HKR5PMGmkPVBj2m7suAC7WyBAa7kw7b2CPRPk6U+QoHfZMcHsmdXhlTIg8CI+9Awi
+         Ngvcy+tClp4DbCU87qTwclBNgCyeSNr1fAEBzPyApkMtQiGRRpRTICINlm6TFWh87iAP
+         HRQ6NbWhcvuScilDW4IbaokzusUI39jC+SuU3oYqGPO7e43znALB2tG9RiQkZHnENqMB
+         geNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729026819; x=1729631619;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KOu0ihc9uIYIAfX2AUeosgsSEBssXUcp9S/hXeZuKE0=;
-        b=UkChtQ7+ko96IUrx/nMNZEmisqHboJO23ja/u+qLYHepj70WTodiPSV9OLny3YsJIv
-         GL5TLQOU+92qWs49xP5H5FMUGH4TAwm4YCgURk7v6POA6qHFR8/miXgal1LfIv7pU59S
-         FmT8c+FSP92e4GebEdi5qWBTLEiO9EuMBmH8sPJldNNI7jKNNHIz8ysR0oBnCejImNiG
-         RkTuO1UVV+cbK3ShjopUJwFvyRcyvLL1t5FJT7Sm6RjUC43lIenYxC/Ja1KMtHgTvE90
-         n0pq7r+n7AwGYgYGcvwM7FdUVXmOT/0fXz1sWIJEFB3rSuW7xhOblKtGFWr/MPv5XKth
-         FnEw==
-X-Forwarded-Encrypted: i=1; AJvYcCW47KNUq3VCQemVfIpdJiYXoGlqZCE+UI1kgWs6ngv7Pw4xGlVnMOBJB18eWFpD0LOhQU8Xt/NkUIdMhs5cjAk=@vger.kernel.org, AJvYcCXD2VLcL82YSRUzrgk1dDCQ19s00fBdv+WvruOPFf9nbEukxbDQIjHaZbkL2MNhgvMeJyy6yuPUz2huZ1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd2ig6bfZ3ntQWA/PQp9mo9CdeiDa345lxkMn468kYgxCNhfA3
-	5CLSFDBDfEb0QTetOfvsX8a+kFdompjxzqSZj36p+MzZPGUpuzVI3bRNz8smW+g3BLzrZVtm4xB
-	ZZdaT4NO8Bpm1Apx0PAshtjHuUu6wa7r40Lw+Eg==
-X-Google-Smtp-Source: AGHT+IF8kAzRKBXrIifOwRFtD+RFl1CuI4fQA97YZBFOx8cLVWjZ0lhvVZZy/fop5x2p1PZi1RwSxhR23jOZe0cVkCo=
-X-Received: by 2002:a17:90b:2092:b0:2e2:af5b:a18d with SMTP id
- 98e67ed59e1d1-2e2f0c55102mr8932393a91.4.1729026818903; Tue, 15 Oct 2024
- 14:13:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729034370; x=1729639170;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mrJp4iFzpg7dOEUx5ArGmKTsHqr2X7jfl/sNyFyGR+8=;
+        b=uLfbsDhl3E7jODmF60nfaXc7JGofFzF3dEsWfmrM8Zwz453S4CcGkKbZKTZznGgLHf
+         GgKPREQnIg0UmIJSrRpl4mIgCet7sTCHejGeHQqBQhqLFiz3mqm2dHa3fXSIa1RSRMEP
+         DV0JI8R6LUPvTZlUf5FZxksDBBLpV2wgFseq4+Yo5em/0kNcpj0vQYdbTnrI6uDIiRIC
+         DJNk8hM/GNNXmjZg4XgFGQZOZxdBpAefrY+JKyUm2xOWMzR864Qt7ZhucE0koP0Wxwx2
+         A+GG3LDI+7/rLzVu5+mkQnXWk1PwaLmBVYl0FhihJLyzpv57XRx0dkdxA+WeyHKP32wA
+         prsA==
+X-Gm-Message-State: AOJu0YwRxm8f9sirCyY+bb22GVgJ3DOm3EofCZkfyiXA8u5kL+ZwtqDc
+	7T/1U9TezrL4HxVxf9at0ujdEcyWFnLfN3WbseknCMm13k61RtjP4YqWKAso0ph4q6YNPeTe6fe
+	9uoaMLg==
+X-Google-Smtp-Source: AGHT+IGjGandx9utSrvuA6uN/UlbhV0NFNsrW9jxyZLY7Y/xUho6mObXEYFljDf/DSG5duM/8SOImAxH4q50
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a05:690c:7005:b0:6d3:e7e6:8460 with SMTP
+ id 00721157ae682-6e3d35ac029mr391157b3.1.1729034370036; Tue, 15 Oct 2024
+ 16:19:30 -0700 (PDT)
+Date: Tue, 15 Oct 2024 23:18:55 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241004154149.93856-1-dakr@kernel.org>
-In-Reply-To: <20241004154149.93856-1-dakr@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Oct 2024 23:13:26 +0200
-Message-ID: <CANiq72=d4hGNvw8tYNdeVozaMsnJ2BTxhZE_a4sRe73pMC5K=Q@mail.gmail.com>
-Subject: Re: [PATCH v9 00/29] Generic `Allocator` support for Rust
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	akpm@linux-foundation.org, daniel.almeida@collabora.com, 
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com, 
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, 
-	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, 
-	lyude@redhat.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
+Message-ID: <20241015231925.3854230-1-mmaurer@google.com>
+Subject: [PATCH v6 0/5] Extended MODVERSIONS Support
+From: Matthew Maurer <mmaurer@google.com>
+To: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
+	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st, j@jannau.net, 
+	asahi@lists.linux.dev, linux-modules@vger.kernel.org, samitolvanen@google.com, 
+	Matthew Maurer <mmaurer@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 4, 2024 at 5:42=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> This patch series adds generic kernel allocator support for Rust, which s=
-o far
-> is limited to `kmalloc` allocations.
+This patch series is intended for use alongside the Implement
+MODVERSIONS for RUST [1] series as a replacement for the symbol name
+hashing approach used there to enable RUST and MODVERSIONS at the same
+time.
 
-Applied to `rust-next` -- thanks _a lot_ everyone!
+Elsewhere, we've seen a desire for long symbol name support for LTO
+symbol names [2], and the previous series came up [3] as a possible
+solution rather than hashing, which some have objected [4] to.
 
-    [ Fixed typo. - Miguel ]
+This series adds a MODVERSIONS format which uses a section per column.
+This avoids userspace tools breaking if we need to make a similar change
+to the format in the future - we would do so by adding a new section,
+rather than editing the struct definition. In the new format, the name
+section is formatted as a concatenated sequence of NUL-terminated
+strings, which allows for arbitrary length names.
 
-    [ Added temporary `allow(dead_code)` for `dangling_from_layout` to clea=
-n
-      warning in `rusttest` target as discussed in the list (but it is
-      needed earlier, i.e. in this patch already). Added colon. - Miguel ]
+Emitting the extended format is guarded by CONFIG_EXTENDED_MODVERSIONS,
+but the kernel always knows how to validate both the original and
+extended formats.
 
-    [ Added missing `_old_layout` parameter as discussed. - Miguel ]
+If you are testing this patch alongside RUST by manually removing the
+!MODVERSIONS restriction (this series doesn't remove it, because the
+CRCs don't mean what we'd want them to yet, we need the DWARF patch for
+that) and have kernel hardening enabled, you may need the CPU
+Mitigations [5] series. Without it, the foo.mod.o file produced by the
+C compiler will reference __x86_return_thunk, but foo.o will not.
+This means that the version table will not contain a version for
+__x86_return_thunk, but foo.ko will reference it, which will result
+in a version check failure.
 
-    [ Reworded typo. - Miguel ]
+This series depends upon the module verification refactor patches [6]
+that were split off of v5.
 
-    [ Added backticks, fixed typos. - Miguel ]
+[1] https://lore.kernel.org/all/20240617175818.58219-17-samitolvanen@google.com/
+[2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org/
+[3] https://lore.kernel.org/lkml/ZoxbEEsK40ASi1cY@bombadil.infradead.org/
+[4] https://lore.kernel.org/lkml/0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com/
+[5] https://lore.kernel.org/all/20240725183325.122827-1-ojeda@kernel.org/
+[6] https://lore.kernel.org/linux-modules/20241015231651.3851138-1-mmaurer@google.com/T/#t
 
-    [ Formatted a few comments. - Miguel ]
+Changes in v6:
+- Splits verification refactor Luis requested out to a separate change
+- Clarifies commits around export_report.pl repairs
+- Add CONFIG_EXTENDED_MODVERSIONS to control whether extended
+  information is included in the module, per Luis's request.
 
-    [ This patch starts using a new unstable feature, `inline_const`, but
-      it was stabilized in Rust 1.79.0, i.e. the next version after the
-      minimum one, thus it will not be an issue. - Miguel ]
+v5: https://lore.kernel.org/all/20240925233854.90072-1-mmaurer@google.com/
+- Addresses Sami's comments from v3 that I missed in v4 (missing early
+  return, extra parens)
 
-    [ Cleaned `rustdoc` unescaped backtick warning, added a couple more
-      backticks elsewhere, fixed typos, sorted `feature`s, rewrapped
-      documentation lines. - Miguel ]
+v4: https://lore.kernel.org/asahi/20240924212024.540574-1-mmaurer@google.com/
+- Fix incorrect dot munging in PPC
 
-    [ Fixed typos. - Miguel ]
+v3: https://lore.kernel.org/lkml/87le0w2hop.fsf@mail.lhotse/T/
+- Split up the module verification refactor into smaller patches, per
+  Greg K-H's suggestion.
 
-    [ Added newline in documentation, changed case of section to be
-      consistent with an existing one, fixed typo. - Miguel ]
+v2: https://lore.kernel.org/all/20231118025748.2778044-1-mmaurer@google.com/
+- Add loading/verification refactor before modifying, per Luis's request
 
-    [ Converted `kasan_test_rust.rs` too, as discussed. - Miguel ]
+v1: https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mmaurer@google.com/ 
 
-    [ Removed the temporary `allow(dead_code)` as discussed in the list and
-      fixed typo, added backticks. - Miguel ]
 
-Cheers,
-Miguel
+Matthew Maurer (5):
+  export_report: Rehabilitate script
+  modules: Support extended MODVERSIONS info
+  export_report: Tolerate additional `.mod.c` content
+  modpost: Produce extended MODVERSIONS information
+  export_report: Use new version info format
+
+ arch/powerpc/kernel/module_64.c | 23 ++++++++-
+ kernel/module/Kconfig           |  8 +++
+ kernel/module/internal.h        | 11 ++++
+ kernel/module/main.c            | 92 ++++++++++++++++++++++++++++++---
+ kernel/module/version.c         | 45 ++++++++++++++++
+ scripts/export_report.pl        | 17 +++---
+ scripts/mod/modpost.c           | 41 +++++++++++++++
+ 7 files changed, 220 insertions(+), 17 deletions(-)
+
+-- 
+2.47.0.rc1.288.g06298d1525-goog
+
