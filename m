@@ -1,122 +1,98 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6222013212A
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 14:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC2B1C4A0C;
+	Tue, 15 Oct 2024 14:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729002528; cv=none; b=bjFIhNt7UFV17WyToxsa7Zmn68uJPRPhG2aygjL+8tvlf92svdMACWqGYun58lwmj+P+mkR7IiZFFoVAXUrJMft+8GeENZKzKn0A/fVwDKLwZYUnilt1TT9V5R/iFY/9QI5bKV5su7gTXdoPP5wU5aO/K+ru/ZZUay7ujieZAkc=
+	t=1729003440; cv=none; b=tF7LyfcidX/fAysfZ8GfW6pdjMN5FBJfdM+sFufsgGq3MCRMttKAGa+TfAz8SUgN1zIleOV5KjjWL0yBecLZ26+DIDuuBLCWhX0d+ZkZgsYf2xGzAbLeOQRRUtc+LYKCMiV9BejW3Akq9rRNn7B0uJQ2CVdQGQILBRR4kRhaO0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729002528; c=relaxed/simple;
-	bh=t8U1gyWwNSEhj9d9K6BaPBQ0ctfmm7LA5efgRVulxro=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Bgkv1lQE8wQclMeIdYbTmB0UmRgBAqM90lhMP3ZZjpwHITRfbUW/ffm1NL/EiLDsBR9XgamalhD+vQQuVe1LDIdwdrYYCx9Coje1ReVpNC1LQS9nUdU29va1rSIV+8rS46uT33AmwKdYm2i+/FjiyhhzZ84Wumza5Cb9fzeY044=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NKVI9wtt; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1729003440; c=relaxed/simple;
+	bh=A7CxIg3FylzHgSJxPQ/0P9yWq+JAO79Um66+WxhE0R8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OEwtDQLYd2mK4KKyTlONxGGbVQSHcADm7i0Ob1GZ77uSxTth9FB49752uOUONUL/vt57+XjMAWKwLrPJvF01SSANS6VxAtpDFh9ukCO8H2AVfC76HxXOq5IlU0EwIuhlEBGDCs7evz9nkexR3fm0jPq0VBh8gLTry1rT3SAOQSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPaMjyek; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NKVI9wtt"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e2e5e376fcso103002357b3.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 07:28:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPaMjyek"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-20c53efc14fso3243605ad.0;
+        Tue, 15 Oct 2024 07:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729002526; x=1729607326; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XNJeKzAtPjp45SIJ3/kfvuUMRNzvKyffpnVSTmM2Fh0=;
-        b=NKVI9wttr8zX3D/62rJd77UBVNheJgdQXXvVvp4ikoA041oG7ioO8iSuWjWQY6VFRq
-         1aHCB//0VF9EK6ouCZjeF2FgQbJ8far4qD7kJoKTW4Ln0NHz0Yx8wtQlLX894Ty5ldA2
-         NVsZfe4x1U/L/l3XadSKKzlTBNdelb944aeNTbumj0OoXKIFIs9qBvvcCYQ+q8teuPve
-         mLNtxRjfdPP2S3uiyL9Yt/sP21Z3ygWTdXkc8rEMKj8jWD9JVr2KwBiwKUES5HiXw27c
-         ORLOfsZhKicxIwO7jJWiBri6kpB0mVUZH7Mlsb9ccAveEPb1hbcsVLsc6nN0fJBTUJf5
-         9AqA==
+        d=gmail.com; s=20230601; t=1729003438; x=1729608238; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A7CxIg3FylzHgSJxPQ/0P9yWq+JAO79Um66+WxhE0R8=;
+        b=IPaMjyekCcsDjjWOmDOQgvnLLW1bn1wuzuzvKihAo1iSSn5IphTlBnzGHkkrFxNh1o
+         sSb+t1DvKlA8/3ClgG1sSrqNS5jV8Z/1rrebUvxhD/HQ+kLpAQJDSEFAqaH1qU9mF6/v
+         2OOqRPA8QFV3TJyT4sbpo+n/QJtLvY956dztY6nVUHI5nl0mPWlm0ZX/TNpKfaih1gkr
+         s5gvRScQP9sko1YHMOZj5QsdBi3xFDV25tq/T7CM731qvaVOVWmhiZy1dKqEqjg77RbW
+         9cZH1ADByJU7+0+WfOZqqtIWXGinyuJ3rxRHpcxchjPHDBhYerQ0X/8i0BcDyUHo2WW8
+         ukkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729002526; x=1729607326;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XNJeKzAtPjp45SIJ3/kfvuUMRNzvKyffpnVSTmM2Fh0=;
-        b=qb7zv0xZvF3lMck3Irx7Wjj8adwAH9ThRhLhYdv3GqEKV3HkQNZiFhF9GCbx4tb35p
-         xKJFGmxLEmNUzPnQjxKxacNHPsDchzB809JFGczx48tbUJhNcikKa2B4pNTVB5WhN5HQ
-         Hse8vDlfVMz8G4Q36ZiLaYavYeJqD4QQ40K3ARcsUBnh4UUxfuNwQuedI542F14eZU1g
-         lhJE9tbJnjymfig7HARasZIW29jovOCsHKLLWro31MeLzj3muTkr+8yOZ5KF+O94BA5N
-         58+GRiGhC2Z9Z/ggm3XUvq+7iqjg/XeBF7fDoPccUJz0ELNeY/V/GCNr39JH5IBsR56J
-         3qFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWN6LPiUqFKPS/JUqrJ/Niq4/u0vJZK+KJhsoePAG3RNxhYnj0Ho6M4MxU480zRfqk1dTKnoS/e4Gjla75U5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ/JEk6TjXf9qGrFxVfF7LeuEDDnRP4e3ReUH+82KiuN5bXt/Y
-	Xj7acH+na053b25ig1ykkUFskRJyD5/RcxRm6A5Q09w1Ti+Ku9BMStDPF6cH/17YHUs4D8ObtfM
-	Pt3wF8iK0WdoANA==
-X-Google-Smtp-Source: AGHT+IEJsZCQdJgQDK83UiVeL8PodNSP1mZnK7L/+YXxdoFRVd72bLcQ3Ll9Bb0b3OGyiUHdTm+vltTMRxpnJ8A=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:2d08:b0:e28:f6b3:3666 with SMTP
- id 3f1490d57ef6-e2978567367mr346276.7.1729002526293; Tue, 15 Oct 2024
- 07:28:46 -0700 (PDT)
-Date: Tue, 15 Oct 2024 14:28:28 +0000
+        d=1e100.net; s=20230601; t=1729003438; x=1729608238;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A7CxIg3FylzHgSJxPQ/0P9yWq+JAO79Um66+WxhE0R8=;
+        b=hcZGghSKxkJpiWORTQiAX/VN6x9luBXTyRz91lErzoXdJkM6RzPxbfitb8qTnuPAe7
+         R2AhE0hcLrQjl2u/6zLBW4rJZN2EjbYKBR0EyeeDOoD8i8hXf76mJs65Sy/Xc41tOVeJ
+         ptSO4FOXTp7C2+8PiTxVe1ay2bZ75UaaqVvxWiPz7/Vzo0cG2iWqAipL8HGKTmXki6DJ
+         OcxG3fEJc9yCG8s8APQWQcxxk38e58xvEZSRaBWvifjqhxVNNhcE0X88hvUhyI0sKeXK
+         /G6rmaHgqKDAQ9xfoPMtSWA6JpzdpoK5r6i/Rqc58TgWBk9dXFKcmZbOGGvOjW5BOd37
+         VLSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUixrvi37hvsNzjTeWKuX78aiY6kercAaz+pkkmxG1xLouk5pfb7GA2ZAnO0mJeONEB7xiOG9FCxw8SIHWHzw8=@vger.kernel.org, AJvYcCV5+GTE6y3EEiDL6CgBtEulDPnGh627R5xkBYfGK3HTn1P3yvw5Hzpb8f29gzpbKrwDWP2MVs+b3OB/1/BA@vger.kernel.org, AJvYcCVvaSzQMmZtHvLuwRajnPufZnrxg5gwprzg2fird5TPBADGHNIXixzEG12ewXJdRUV/SYWUzaFGYqrvC7NuSpIfQNPu@vger.kernel.org, AJvYcCW118WfRCmlyGV/UrU6Y2vSmc51HXmxukR4BkXgBr2uw8MWWTc8SCTeIYevUmK7yY+2zIm4yUnLiiun@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsldiTl0hiQKd1I7bUg6l8+WWAy2v4ohRqGB14w2k9hIUNwVjP
+	eTMVGmEk9KxQW5QY4VOnJ7PzpvdQGV89KTPL1mCMz2x8kU9sDk7CR1dqFIJNYgpzj5/g6YSj8L4
+	fj58p3hkt6YumsEQkpvpwJ/ge3dqFP0yF/G+tDQ==
+X-Google-Smtp-Source: AGHT+IFoXEBo1ZT1pXaD7KXeYP4P5odzuHy9MKmBB6t4PDsesuSr1w9SzhznkWVEoeEweWV6j6xd4RR7WhJRY5Fpauk=
+X-Received: by 2002:a17:903:2343:b0:20b:b93f:2fec with SMTP id
+ d9443c01a7336-20ca169ee11mr87190225ad.8.1729003438182; Tue, 15 Oct 2024
+ 07:43:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAt8DmcC/x2MQQqAIBAAvxJ7TlBRhL4SHcxWWwgThQjEv7d0n
- IGZDg0rYYNl6lDxoUZ3ZlDzBOH0OaGggxm01EZJZUXx7PxFKQuHNnoTnFU7AgelYqT3n63bGB8 omyDhXAAAAA==
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1064; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=t8U1gyWwNSEhj9d9K6BaPBQ0ctfmm7LA5efgRVulxro=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnDnwMVnOv25ulL3mEcQA0kNsek3R1xTz5taYha
- 5Y1rpWY31+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZw58DAAKCRAEWL7uWMY5
- RlXgD/4939MppK4B/TGTf4FZZfeJydTXzv8UMnCIqv8aPgKYfnApFk+PbRKDUXzGxTGrpdw5fKG
- zxA2rh3tCYAMTXueMSZdEFoE8lagpvilyS5Z/cvPQZB3xmh3yTvIjCTlbPG6LPZzHptiGW1RqJC
- vo54L4y3uiCl4HYLNKGUB3lkzHJHAytQeILBRRWgPtQpZFgQyiNa/cGE3EHPbTqTAOqZXDwo+aF
- GRql97MJ/xS5HOV4V1miU/Hv0jFDdRphecPH4nDwQ0Ja/d6roUDfpp9MSJwr9MjGfaACh8Nzu8e
- Rnr4rPSCpdZwokcA7ZbI/NjI/9JMuYg3kqVvt9pTt/g8a1X3HX++F1i9XYfUgkpxcuH6zseKWNc
- sXl+RmfNUDWsyr48LDF/MKbhlYDtBunbJkcXsUBobeCy66UvP1Ae+zqe+9a6xUypdz8f+bz8ujh
- FaxQB6i+VwUpCE8BtJ+Q41aI9N3+1PCjA98PmY1EG3MkX2IK+SCpgFFBIWIICa25NIg49cKfDRE
- TfqYM/LRME+ON8Hxebo1R5stTn/eT4226Qi09e2sEr7N0ov+ZidylEj+XlfmvlLNsbUizpo+D2T
- qC+TkH6et19oK1qsE2ynkRNeiBojAAiHeSNgr8I0Yw7PyautHKZP0hxLafIwKcIyjP5QeB+k3KK mzG1gXcw+kOfGug==
-X-Mailer: b4 0.13.0
-Message-ID: <20241015-page-align-v1-1-68fbd8b6d10c@google.com>
-Subject: [PATCH] rust: page: add Rust version of PAGE_ALIGN
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, 
+MIME-Version: 1.0
+References: <20241011-tracepoint-v10-5-7fbde4d6b525@google.com>
+ <202410151814.WmLlAkCq-lkp@intel.com> <CANiq72nn6zv9MOD2ifTXbWV3W1AgiXL=6zTX_-eGL5ggLj4fbw@mail.gmail.com>
+ <CAH5fLghJrrq2nJu7S08bBg2sAjdibkZ4D14K9cqETafnr4CR4w@mail.gmail.com>
+In-Reply-To: <CAH5fLghJrrq2nJu7S08bBg2sAjdibkZ4D14K9cqETafnr4CR4w@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 15 Oct 2024 16:43:44 +0200
+Message-ID: <CANiq72kRiQvw3xWbMGRxcVJhHN0LMRa0RewxnkofVr=71KQvEA@mail.gmail.com>
+Subject: Re: [PATCH v10 5/5] rust: add arch_static_branch
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: kernel test robot <lkp@intel.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	oe-kbuild-all@lists.linux.dev, linux-trace-kernel@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a useful for helper for working with indices into buffers that
-consist of several pages. I forgot to include it when I added PAGE_SIZE
-and PAGE_MASK for the same purpose in commit fc6e66f4696b ("rust: add
-abstraction for `struct page`").
+On Tue, Oct 15, 2024 at 3:07=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Thank you. I was able to reproduce the error locally. It only happens
+> when CONFIG_JUMP_LABEL is disabled. I've verified that this fixes it.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/page.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+You're welcome!
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 208a006d587c..90846e3fe829 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -20,6 +20,11 @@
- /// A bitmask that gives the page containing a given address.
- pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
- 
-+/// Round up the given number to a multiple of `PAGE_SIZE`.
-+pub fn page_align(addr: usize) -> usize {
-+    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
-+}
-+
- /// A pointer to a page that owns the page allocation.
- ///
- /// # Invariants
+By the way, if you end up sending a new version, then you could
+simplify to `ifdef CONFIG_JUMP_LABEL`.
 
----
-base-commit: 8d8f785ceb21b9a0de11e05b811cc52d6fa79318
-change-id: 20241015-page-align-7e5fa4c751be
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Cheers,
+Miguel
