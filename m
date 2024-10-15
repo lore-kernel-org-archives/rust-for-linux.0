@@ -1,181 +1,121 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766915699D;
-	Tue, 15 Oct 2024 20:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47771F80A8;
+	Tue, 15 Oct 2024 21:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729023706; cv=none; b=ULFJce3J+SKH/sJVOmH4KtGFHGKcLE+6caRcgRFKD31vjLWqEX7Ze9D0Y2oGTXJyH+dnG3Om7OK3gXXdh2+uZCNsC1asfJ1396XGXkp4bNVx9mqRU59I2reGJW2X/RdUBEzdACKVowXxpFEx12IehvfzJdVz8YPOgsBaKN1NEUM=
+	t=1729026821; cv=none; b=u5FFuJOgpjnemBhclZTwOb8YJoZ/aDrOb4IMdEHk1ypJp8sQy/qh7QMTPY5bJnZlHuDm5hfHHqApeuJT0s70j1+AwSf7Sgg++qVtzDdRpU0fgfksx9K4OKzX2kAnRRR2z+AnHjGVInei4veIoV2MAw6ZtQIAGoxnUL5lp7rXQhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729023706; c=relaxed/simple;
-	bh=TsQoUn05Or380T54uJ70aBO00/spSAkqgsSOR7g1kM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UfIRWayE2VbrAU736b9NM3FI2epVHTZ++qhQQPSwIosxc42V6Rqjg0aBECABlHlEzChW9epzmF81U2lxdJ8T7msjisWI3fBgSUuvtxHzUVUF93ncC0p+umzppm5GRSb2UYC7T8OfQcyBJBWniVlcf78NOy/7VmL9Z4ufVFSUgR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZMbVhdy; arc=none smtp.client-ip=209.85.160.180
+	s=arc-20240116; t=1729026821; c=relaxed/simple;
+	bh=srU30wlT2wsVrJmZPkwMohWcppPywLLb+E2fsMsQAPg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=muvqn+zGN2bmPAy+cysIk4f3AnzGUY+xVliM0oMtNJHyPROJ6J8VBJ6OzfPcMC7+2ddBp9WE9JvfVplbL38yTF8SweWWTzaqxzIq+kLTl0yxufSfuX8ZXQp44KJl+FgOE2vimT+3aGGVzRZHoCFZDZAfSa5hIHpkuDGZ9uJSk7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9nby1db; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZMbVhdy"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4607b8c5392so11310721cf.3;
-        Tue, 15 Oct 2024 13:21:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9nby1db"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e2e31aacbbso451852a91.2;
+        Tue, 15 Oct 2024 14:13:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729023704; x=1729628504; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1729026819; x=1729631619; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BJ6hEDkjFzC0f40auFtQ4iNOTFauqf8PDSFmxPj3NqI=;
-        b=FZMbVhdySndvr54Fx6ieKUPSF2twRS7BGNQN8Py2nMgbDkJTaSTPGZlDicJwojbOUm
-         Iwpvn7K/KdQYyXvfUQsUs2PtISsw/8kh9laqbpNOgZvCxONQ2PAv157dCxjumDn0DNaF
-         Z+n+xIHp4+l2er02q2LOpCVpfuR3aOivm+fqAWYfipJTAmbUc8fnah+phMtykhNA+P4M
-         qqsN+519HDgKw04FVB2c7MuzJPSwliQLESVv/zR5688jwet5V2MjZWd6Uw+ZP7AaPCG9
-         t30VDebZesnnljjGqcigiI4r1r9kk9fuf91TrJhp7EOYWzsJchbeh7sdGFgju7PunIaN
-         n5Xw==
+        bh=KOu0ihc9uIYIAfX2AUeosgsSEBssXUcp9S/hXeZuKE0=;
+        b=Z9nby1dbRvpJkRCIWBnj4DCmdyxl6ueOFuwkabCBjecKajUyo9k9HazvtztBsgNYOW
+         RF/IWSEtqJiTd4IzMpDTUEPes0Pxe4EPzfqaI73Ynlk9LjWSwHclKqA81ZqyKiMSgyun
+         ivrs1MxpDa71JZiqBsAt46zH5V+DQ2S238vR1hPTbzSN8dg0QrSubmO5mNARobkFZYkK
+         3CkosEiqSKMcxboMRWv0F4idHvQAih1+BmHYLSYP/dDGEtvvxOMydkk7bQlBn6THjjRj
+         60v80JOHQrqrU9bNXBF1OaqM40Rxx6WfhVLAXMcYr40GcsBAcp0m9Oss0lK+L8i551bs
+         6GRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729023704; x=1729628504;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1729026819; x=1729631619;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BJ6hEDkjFzC0f40auFtQ4iNOTFauqf8PDSFmxPj3NqI=;
-        b=T74zi3+rY6aF77yaBL+EXsflSAb+1KcmDYglGZQNLJmx5ycifqQQ2x+PAG7DXnQDv/
-         Q6BdN49TFJ+ZMEr8ibopWQUbYoe3RGe3ey93kRwUHAjjuWsUz4F1pJFhv2qs614iL0TS
-         vy+tYJzgTzNwlWsuZbQ9SVyRitkG6IY9K3shr/MV4wkS1Zd+UD6MUjLzD72tpZ8rQ5tZ
-         VycAI8fXDtEw9q4DYc99AZWSlvHtqjnbpujjffbHxh5wO6U1gkNxHFlhxmY1sKTrw8un
-         mAyK245Id8J+3gqX2HELZFyBIZIudxegMLxm/0JRY0bvytB2DWtBPTqyIjPJB/4Qp88o
-         HhYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVd/dbIMzb2SI/8hM5xZ0PI0UuOihOUgPEmjJ+ohqVCMQ8Z/qExaFZmIbLkTWXSzx9VqQdG4eCTrrWUsH8l0fY=@vger.kernel.org, AJvYcCWAG78HRd6zb+QAYtiAvABMQ4l6/b/l6TgymF5KEOtdCqdfI9CwRPnx9QsMiVsgoj+++k5VYlKBX2UBxIM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRII67N7lbjRYoZDZxA/6zjqrKePojkKUhQiUmaphBC6THi+yH
-	KwbNwPVmim2jFHB4Bb4sWJg6eK0nOVOLKcyuzuY0C5c/ha7GWvEa
-X-Google-Smtp-Source: AGHT+IEsFTVOPoFdOxRx/b7iHwpk4gLxKGsQRXQSz8uWbQLC4gmvta6yqQEv5/0HGc5k2rVbNKBfqw==
-X-Received: by 2002:a05:622a:5917:b0:460:37a6:ed80 with SMTP id d75a77b69052e-460584d073dmr222804911cf.40.1729023704133;
-        Tue, 15 Oct 2024 13:21:44 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4607b0a28d3sm10236681cf.18.2024.10.15.13.21.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 13:21:43 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1A4091200066;
-	Tue, 15 Oct 2024 16:21:43 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 15 Oct 2024 16:21:43 -0400
-X-ME-Sender: <xms:1s4OZx7-IbCG5aayqf4syBScqqYzuBGba9KG1F3vfG4AWzHjmokUWw>
-    <xme:1s4OZ-5CZhjsAyt93rpeauDZj9wuklKo8CNq2uAtmiAGHuJ0f02XCzlxtADQl5SaI
-    iFYZzd__HyHL1wu7Q>
-X-ME-Received: <xmr:1s4OZ4erdFJGVY3OqmaJPQRG5U0spbIbm4aTiw5MO2T-EAIxB4AUx9jzy4A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedgudegkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvgedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthho
-    pehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehruhhsthdqfhhorh
-    dqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrhes
-    rhgvughhrghtrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesrhgvughhrghtrdgtoh
-    hmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihi
-    lhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrth
-    drtghomh
-X-ME-Proxy: <xmx:184OZ6K-H2V1CbMnSVQMmuHRjPIEVhK9l_NihfYtrxoXEWQQNyPptA>
-    <xmx:184OZ1J7ZQlfOxhUtCgFPi_xrUj_Zuk2jtF24mCgFpyfPnQQ_dp2XA>
-    <xmx:184OZzzKf3lufnz4b_Tr_NXL3JTpkN7cYrP_rws_wlox-Ry6hRmNqg>
-    <xmx:184OZxKVCHUiA-3aIx0bwsUNGeOSl81XKte7TqmlgX5R1OEFq8xQFg>
-    <xmx:184OZ4Zx3pu6JMG4t0bULaAf704opPi8QFf3fuwX1afNYv6fPuYPyLUE>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Oct 2024 16:21:42 -0400 (EDT)
-Date: Tue, 15 Oct 2024 13:21:41 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	Benno Lossin <benno.lossin@proton.me>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
-Message-ID: <Zw7O1Wn7cwHDcCQl@Boquns-Mac-mini.local>
-References: <20240916213025.477225-1-lyude@redhat.com>
- <20240916213025.477225-4-lyude@redhat.com>
- <8734lew7jn.ffs@tglx>
- <0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
- <59803e6abd88dc29c402ff2b7ed020e45f4df1df.camel@redhat.com>
- <ZwPXSs62WY0qNLr6@boqun-archlinux>
- <87sesxa5i0.fsf@kernel.org>
- <Zw7N4RKzWAS9qi4I@Boquns-Mac-mini.local>
+        bh=KOu0ihc9uIYIAfX2AUeosgsSEBssXUcp9S/hXeZuKE0=;
+        b=UkChtQ7+ko96IUrx/nMNZEmisqHboJO23ja/u+qLYHepj70WTodiPSV9OLny3YsJIv
+         GL5TLQOU+92qWs49xP5H5FMUGH4TAwm4YCgURk7v6POA6qHFR8/miXgal1LfIv7pU59S
+         FmT8c+FSP92e4GebEdi5qWBTLEiO9EuMBmH8sPJldNNI7jKNNHIz8ysR0oBnCejImNiG
+         RkTuO1UVV+cbK3ShjopUJwFvyRcyvLL1t5FJT7Sm6RjUC43lIenYxC/Ja1KMtHgTvE90
+         n0pq7r+n7AwGYgYGcvwM7FdUVXmOT/0fXz1sWIJEFB3rSuW7xhOblKtGFWr/MPv5XKth
+         FnEw==
+X-Forwarded-Encrypted: i=1; AJvYcCW47KNUq3VCQemVfIpdJiYXoGlqZCE+UI1kgWs6ngv7Pw4xGlVnMOBJB18eWFpD0LOhQU8Xt/NkUIdMhs5cjAk=@vger.kernel.org, AJvYcCXD2VLcL82YSRUzrgk1dDCQ19s00fBdv+WvruOPFf9nbEukxbDQIjHaZbkL2MNhgvMeJyy6yuPUz2huZ1w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyd2ig6bfZ3ntQWA/PQp9mo9CdeiDa345lxkMn468kYgxCNhfA3
+	5CLSFDBDfEb0QTetOfvsX8a+kFdompjxzqSZj36p+MzZPGUpuzVI3bRNz8smW+g3BLzrZVtm4xB
+	ZZdaT4NO8Bpm1Apx0PAshtjHuUu6wa7r40Lw+Eg==
+X-Google-Smtp-Source: AGHT+IF8kAzRKBXrIifOwRFtD+RFl1CuI4fQA97YZBFOx8cLVWjZ0lhvVZZy/fop5x2p1PZi1RwSxhR23jOZe0cVkCo=
+X-Received: by 2002:a17:90b:2092:b0:2e2:af5b:a18d with SMTP id
+ 98e67ed59e1d1-2e2f0c55102mr8932393a91.4.1729026818903; Tue, 15 Oct 2024
+ 14:13:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zw7N4RKzWAS9qi4I@Boquns-Mac-mini.local>
+References: <20241004154149.93856-1-dakr@kernel.org>
+In-Reply-To: <20241004154149.93856-1-dakr@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 15 Oct 2024 23:13:26 +0200
+Message-ID: <CANiq72=d4hGNvw8tYNdeVozaMsnJ2BTxhZE_a4sRe73pMC5K=Q@mail.gmail.com>
+Subject: Re: [PATCH v9 00/29] Generic `Allocator` support for Rust
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	akpm@linux-foundation.org, daniel.almeida@collabora.com, 
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com, 
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, 
+	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, 
+	lyude@redhat.com, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 15, 2024 at 01:17:37PM -0700, Boqun Feng wrote:
-> On Tue, Oct 15, 2024 at 02:57:11PM +0200, Andreas Hindborg wrote:
-> > Boqun Feng <boqun.feng@gmail.com> writes:
-> > 
-> > > On Sat, Oct 05, 2024 at 02:19:38PM -0400, Lyude Paul wrote:
-> > >> On Fri, 2024-10-04 at 14:48 -0400, Lyude Paul wrote:
-> > >> > 
-> > >> > FWIW: I agree we want things to map C closely wherever we can, but part of the
-> > >> > reason of having rust in the kernel at all is to take advantage of the
-> > >> > features it provides us that aren't in C - so there's always going to be
-> > >> > differences in some places. This being said though, I'm more then happy to
-> > >> > minimize those as much as possible and explore ways to figure out how to make
-> > >> > it so that correctly using these interfaces is as obvious and not-error prone
-> > >> > as possible. The last thing I want is to encourage bad patterns in drivers
-> > >> > that maintainers have to deal with the headaches of for ages to come,
-> > >> > especially when rust should be able to help with this as opposed to harm :).
-> > >> 
-> > >> I was thinking about this a bit more today and I realized I might actually
-> > >> have a better solution that I think would actually map a lot closer to the C
-> > >> primitives and I feel a bit silly it didn't occur to me before.
-> > >> 
-> > >> What if instead of with_interrupts_disabled, we extended Lock so that types
-> > >> like SpinLockIrq that require a context like IrqDisabled can require the use
-> > >> of two new methods:
-> > >> 
-> > >> * first_lock<R>(&self, cb: impl for<'a> FnOnce(Guard<'a, T, B>, B::Context<'a>) -> R) -> R
-> > >
-> > > I think you really want to use a `&mut T` instead of `Guard<'a, T, B>`,
-> > > otherwise people can do:
-> > >
-> > > 	let g = lock1.first_lock(|guard, _ctx| { guard });
-> > > 	// here the lock is held, but the interrupts might be enabled.
-> > 
-> > Is it impossible to limit the lifetime of the guard such that it cannot
-> > be returned from `first_lock`?
-> > 
-> 
-> I was wrong saying the original doesn't work, because it has a
-> `for<'a>`, that means `'a` is lifetime of the closure, which cannot
-> outlive the return value `R`. So this signature might be valid.
-> 
+On Fri, Oct 4, 2024 at 5:42=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> This patch series adds generic kernel allocator support for Rust, which s=
+o far
+> is limited to `kmalloc` allocations.
 
-But another problem is that with this signature, `cb` can drop the lock,
-which is not expected, because the lock dropping should be done by
-`first_lock` itself.
+Applied to `rust-next` -- thanks _a lot_ everyone!
 
-Regards,
-Boqun
+    [ Fixed typo. - Miguel ]
 
-> Regards,
-> Boqun
-> 
-> > BR Andreas
-> > 
+    [ Added temporary `allow(dead_code)` for `dangling_from_layout` to clea=
+n
+      warning in `rusttest` target as discussed in the list (but it is
+      needed earlier, i.e. in this patch already). Added colon. - Miguel ]
+
+    [ Added missing `_old_layout` parameter as discussed. - Miguel ]
+
+    [ Reworded typo. - Miguel ]
+
+    [ Added backticks, fixed typos. - Miguel ]
+
+    [ Formatted a few comments. - Miguel ]
+
+    [ This patch starts using a new unstable feature, `inline_const`, but
+      it was stabilized in Rust 1.79.0, i.e. the next version after the
+      minimum one, thus it will not be an issue. - Miguel ]
+
+    [ Cleaned `rustdoc` unescaped backtick warning, added a couple more
+      backticks elsewhere, fixed typos, sorted `feature`s, rewrapped
+      documentation lines. - Miguel ]
+
+    [ Fixed typos. - Miguel ]
+
+    [ Added newline in documentation, changed case of section to be
+      consistent with an existing one, fixed typo. - Miguel ]
+
+    [ Converted `kasan_test_rust.rs` too, as discussed. - Miguel ]
+
+    [ Removed the temporary `allow(dead_code)` as discussed in the list and
+      fixed typo, added backticks. - Miguel ]
+
+Cheers,
+Miguel
