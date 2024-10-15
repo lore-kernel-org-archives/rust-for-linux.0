@@ -1,81 +1,81 @@
 Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE331FAF1C;
-	Tue, 15 Oct 2024 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9BC2036E9;
+	Tue, 15 Oct 2024 18:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729017278; cv=none; b=i0pwGxy156yBBf0gBA9u6QEiAA9CMXZaAp/3NzDXLWFI0rytRuoI2gNT/8pyEFFhQlCZcr3Y97mIwYS+ftGuVafwv80FoD7KWwiMQxS3OmkjOyj4P8Z1o1SgCjSQ9x9ZSun7xLgGmCcqKlt2vGdnvLH6yc8lmAhSEo/eurn/w98=
+	t=1729017682; cv=none; b=acA/kN7xVQXxktWKvpWsd2mGLO5HwvEynfD/oUONYTkGghoSv0Z3nYUMvDS2pw5IDPyP2jer51ehvZraH/6Gk94aSYNbljJAHUjVUsGqHh4PLvFtVMiCYRhb49LlpsTtaLUYsiUGVGUocmKBnvN68mhzdJKw5i0PdMk3jKq98DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729017278; c=relaxed/simple;
-	bh=5h4yJYD6mj749ehtFoj/pa6R5CAlrx/gSF34IkWjRkM=;
+	s=arc-20240116; t=1729017682; c=relaxed/simple;
+	bh=2eZIjvihWEM5geU5ik4AfAwmWoRbMdJ3lZPi7M/Kwk0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cRaC8pq+SCTOBw4XMx6EizvmFxBPRlipAhNwxkOuK5GPaiypypmMF96Csi6fGyI5/fOxggg3Mj/Ue+B3EnQWFwb2d/92QkfyQLyy1fLQFRfHQnGdaIEBCOVREc8Oedl3HVQRFpvOHw32KlgVHlKUswEcE/t73o34PYPI/7YUjyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=tvfpz6Tu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Nfuw7vZb; arc=none smtp.client-ip=103.168.172.149
+	 In-Reply-To:Content-Type; b=mO0r2PvPAUMu+hSXJjlF+lye35DhsHb1YhB4Ldw1pcRT9N1IflyugAkfWVQneFIDuMps8sjcK10t8pvTcZ/k6Tg866KllMsHnJlqA86dh2MSApIIh2WSebjZvydkN91uCfuhwerdk5KlKdMi9eaIKBAvJdnWaFxr2Z9IERtus+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=t3s9ivZs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EcotUn04; arc=none smtp.client-ip=103.168.172.149
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="tvfpz6Tu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Nfuw7vZb"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 93CBA138021E;
-	Tue, 15 Oct 2024 14:34:35 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="t3s9ivZs";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EcotUn04"
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 5AC2813801DB;
+	Tue, 15 Oct 2024 14:41:19 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 15 Oct 2024 14:34:35 -0400
+  by phl-compute-02.internal (MEProxy); Tue, 15 Oct 2024 14:41:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
 	:content-transfer-encoding:content-type:content-type:date:date
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1729017275;
-	 x=1729103675; bh=2ofm0Km157SSWcgNu+R/b0e4iC0q+FyX4UDhyX2UdbU=; b=
-	tvfpz6TuGyrCZm7B2zCL38nXnJZE0OhzUTujPCRl5VsUpkKwnWAt4DxxYaoKMScu
-	M40Cgq5qljrfecrxaUTPYdnuEt4t9gwMd6Lo1u0nAqbZSMqzChpnkrpkQ2xfHHsQ
-	vHvbDbXNehsxSK3GxKhetg+Ww9eYKnV412qPBtTL0nHSFveEoUIUv3KYZYWS6mdr
-	QbTOvmYeeD2aZ+/eQLRwhRH6LB8GNNMUHdCPN1YDgnTC9zYOh2ZUTspbhagjRcaR
-	GB4CWu3glA+AHNhmXgnbyFn6DF2dQWy4stW6EjmGRuyCWjmq9ZAxbBVIp36N1YvV
-	YYdEylVYXP32RUoWdYuoPA==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1729017679;
+	 x=1729104079; bh=/M9sEvglFwYFFRw+Fxs1ReLqO49t1fQGy/y6rplIerA=; b=
+	t3s9ivZsiYqISS2XILFZASY3G0nReuuEv7LmVx8h8WJBFXwKBAaJZDXSH0iD/W4Q
+	ajt2wFpnIlO7cykF81SjPvyFtQfboWfbftoGNyHicFUzn/xRxojca9Et4RwMReU2
+	dxw7CLTRdXhC8y2nawBnFAaa6r1PqMakQMlbtdJVVpcy1SO3o9CuDwieqi1Lf2IM
+	xYgcWNbUtYLIKdoDVaJ1MK6OiBXCuUHnpySfcBZCUNha3a4BG6uW/3KED6jEnBDR
+	2IChk+KsQM5qeAc16B+maZlsjOEyoZp5WCiIFhkePKH2um3yNyhtA+VeQNNRv6uW
+	CfGU5ImoJu5hDHBXkqWniw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1729017275; x=
-	1729103675; bh=2ofm0Km157SSWcgNu+R/b0e4iC0q+FyX4UDhyX2UdbU=; b=N
-	fuw7vZbh/PDW+w8I9GkfkLs64bs2Szvb6+KLGwEZiW5fPgzalTw9i43nlMFP1epA
-	pp+uiqsjALa7rV0luFR3Zs38Gx/Y477soFQERgLmZgnr2riOjoaf2yoBLYiSH0XT
-	2bEFzPwBgU8nURBoErODisuZTtVo4LNlP7pzRgjEO1L3YZXP8Dg7Jx5zZkvUESEi
-	rVhZFp1oKr6nysPre/Nh6B/y2Q455fwK27RO+3y/kTOtJIoICcRr7ihywei+pWeK
-	1sCf2kXWPzkun9iSwZwnxxnycDiLtajH2pZ0kmiLVE4Z10OLhA9oGXKp/+i6iwBa
-	V8PziMjVswkw3lw5yid6Q==
-X-ME-Sender: <xms:u7UOZ7rm0WAl9uloqGjdveH6Zxp7fReY4JbRNC08RXHf4-OPWGZq6w>
-    <xme:u7UOZ1p1GBZOhmGXmGGDmtLQapW752DmPXbGHWq7i8odMLsAaLJ4mnoDi8HtOs-2j
-    RyfN0qreBsrKhI1_A>
-X-ME-Received: <xmr:u7UOZ4MrMZQ-WtXEFfsrZqTIY9cYzaymHrxNg2CT9FSfK1pw6cFJ0Xqf4A-byEN2mNQylXDuwhWs1GdanIb4Y71F0qv8NEQ88udo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvjecutefuodetggdotefrod
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1729017679; x=
+	1729104079; bh=/M9sEvglFwYFFRw+Fxs1ReLqO49t1fQGy/y6rplIerA=; b=E
+	cotUn04J+aguvlmt+Ezr7Xh8bpoyRsppFhEYEKR6slfCVbMYnrsEHOyC8s38JdTO
+	/JgniILf5vEA3NObjLsT2C1D4eR2bZ/goG0ifxhx6ylNLbPXKK45CcZDWwRCusXf
+	zEhzJoOtVIFT4DJ4OIZt8AbscZvezlZQWTCIgUmEb2vLhTbqpEYYH9KLPu/hu6OE
+	ykKesoJPiYm8fXPIl/7BVR4+6+gwK8qw5KiKkPAu5T20uDSrIPNtX6akCyNgsdAT
+	2uztvdZpdaxq3vA8ol+opnkwEZxjtZexwZfCabzytepIDcOgpiqfR88KNNHTP9OS
+	s3Iqwzk4iZbjgVC+W7Rqw==
+X-ME-Sender: <xms:TrcOZ7edsSFugR-YENAMiFjwMkFAgmNYBqTQQksh7ecZzDVtMTrazg>
+    <xme:TrcOZxOt_Eq4QAu8urV1n9M5S9cIlIytNJBikGJDX-2sVZr9OV0q3MG4NI1d8_Z06
+    Sgpb92yVrOql8nt9A>
+X-ME-Received: <xmr:TrcOZ0gb-e8tPOeH27fZmdpK9GVQpDPBl0JVVBHT0Zv6qZUkKpstP-ijoFnlU6tmZ6ItkpoQaGidgKobLGnHBv9lTABAfh6qQC8q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegjedguddvkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
     jeenucfhrhhomheptehlihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqne
     cuggftrfgrthhtvghrnhepfefguefgtdeghfeuieduffejhfevueehueehkedvteefgfeh
     hedtffdutdfgudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomheprghlihgtvgesrhihhhhlrdhiohdpnhgspghrtghpthhtohepudehpdhmohgu
+    hfrhhomheprghlihgtvgesrhihhhhlrdhiohdpnhgspghrtghpthhtohepudegpdhmohgu
     vgepshhmthhpohhuthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
     homhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphht
-    thhopegsrhgruhhnvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrse
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidr
-    ohhrghdruhhkpdhrtghpthhtohepjhgrtghksehsuhhsvgdrtgiipdhrtghpthhtoheprg
-    hlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgr
-    rhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrg
-    hilhdrtghomh
-X-ME-Proxy: <xmx:u7UOZ-6krkHgJEnvWCs-VSfbNDGkD-opBEZAoD0LNJjfSCYC243QSA>
-    <xmx:u7UOZ67RNYuKW8RyDrTfBA78KRPy_sr1Vgpg_APtULE-ooxx0XD3zw>
-    <xmx:u7UOZ2g3m1EiMfcTYnAc6b9zIoWBPDayUoxISGLA929npthF5fgNlQ>
-    <xmx:u7UOZ86YW-kxNjnSwrcqk1_CEev5D2ETdx-psrHPfLz22BWnHT_rAA>
-    <xmx:u7UOZ9oC41FGfx0OnFbv_8L_z7jx6OX4kgPf82UtRI3GbKKzBG8dAWS_>
+    thhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinh
+    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfhhr
+    rgguvggrugdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohep
+    sghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnh
+    hnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
+X-ME-Proxy: <xmx:TrcOZ8-51tbgJ7XTO7n_ZLdNmeVXXto8uJdXuRERmVJUMJOr1HadMw>
+    <xmx:TrcOZ3vbdG0Mieaff5ojfCLxbwS0wjY5xLqz3aYoGKhF5oYMLYumcg>
+    <xmx:TrcOZ7GRPBhKUZuJdvCCt4vSNEpDdK8lCJBCTU3OuRHBLooUasnJnw>
+    <xmx:TrcOZ-OfePzKhjghqj0GDrqz3vORcQknTGADUAE2gvD5i_VEXv00mw>
+    <xmx:T7cOZ3HlSM3-EyjFMqCVPjNZmNlt2Rf-z67N9j5exX8IvcJyoVMt2qrv>
 Feedback-ID: i56684263:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Oct 2024 14:34:32 -0400 (EDT)
-Message-ID: <23a73a6f-160d-4d06-8d45-ec77293ff258@ryhl.io>
-Date: Tue, 15 Oct 2024 20:37:36 +0200
+ 15 Oct 2024 14:41:16 -0400 (EDT)
+Message-ID: <3ea20eb4-2a88-40bd-a453-bf2ff5d52d03@ryhl.io>
+Date: Tue, 15 Oct 2024 20:44:22 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,61 +83,61 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: task: adjust safety comments in Task methods
+Subject: Re: [PATCH] rust: page: add Rust version of PAGE_ALIGN
 To: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20241015-task-safety-cmnts-v1-1-46ee92c82768@google.com>
- <Zw6zZ00LOa1fkTTF@boqun-archlinux>
+References: <20241015-page-align-v1-1-68fbd8b6d10c@google.com>
+ <Zw61edSZrAb8pH1X@boqun-archlinux>
 Content-Language: en-US, da
 From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <Zw6zZ00LOa1fkTTF@boqun-archlinux>
+In-Reply-To: <Zw61edSZrAb8pH1X@boqun-archlinux>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10/15/24 8:24 PM, Boqun Feng wrote:
-> On Tue, Oct 15, 2024 at 02:02:12PM +0000, Alice Ryhl wrote:
->> The `Task` struct has several safety comments that aren't so great. For
->> example, the reason that it's okay to read the `pid` is that the field
->> is immutable, so there is no data race, which is not what the safety
->> comment says.
->>
->> Thus, improve the safety comments. Also add an `as_ptr` helper. This
->> makes it easier to read the various accessors on Task, as `self.0` may
->> be confusing syntax for new Rust users.
+On 10/15/24 8:33 PM, Boqun Feng wrote:
+> On Tue, Oct 15, 2024 at 02:28:28PM +0000, Alice Ryhl wrote:
+>> This is a useful for helper for working with indices into buffers that
+>> consist of several pages. I forgot to include it when I added PAGE_SIZE
+>> and PAGE_MASK for the same purpose in commit fc6e66f4696b ("rust: add
+>> abstraction for `struct page`").
 >>
 >> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 >> ---
->> This is based on top of vfs.rust.file as the file series adds some new
->> task methods. Christian, can you take this through that tree?
->> ---
->>   rust/kernel/task.rs | 43 ++++++++++++++++++++++++-------------------
->>   1 file changed, 24 insertions(+), 19 deletions(-)
+>>   rust/kernel/page.rs | 5 +++++
+>>   1 file changed, 5 insertions(+)
 >>
->> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
->> index 1a36a9f19368..080599075875 100644
->> --- a/rust/kernel/task.rs
->> +++ b/rust/kernel/task.rs
->> @@ -145,11 +145,17 @@ fn deref(&self) -> &Self::Target {
->>           }
->>       }
+>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+>> index 208a006d587c..90846e3fe829 100644
+>> --- a/rust/kernel/page.rs
+>> +++ b/rust/kernel/page.rs
+>> @@ -20,6 +20,11 @@
+>>   /// A bitmask that gives the page containing a given address.
+>>   pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
 >>   
->> +    /// Returns a raw pointer to the task.
->> +    #[inline]
->> +    pub fn as_ptr(&self) -> *mut bindings::task_struct {
+>> +/// Round up the given number to a multiple of `PAGE_SIZE`.
+>> +pub fn page_align(addr: usize) -> usize {
 > 
-> FWIW, I think the name convention is `as_raw()` for a wrapper type of
-> `Opaque<T>` to return `*mut T`, e.g. `kernel::device::Device`.
-> 
-> Otherwise this looks good to me.
-Both names are in use. See e.g. Page and File that use as_ptr.
+> Make it a `const` function? For example, there is a VMBUS_RING_SIZE()
+> macro in C that calculates a const number for a vmbus ringbuffer size,
+> so it will be useful.
 
-In fact, I was asked to change the name on File *to* as_ptr.
+Good idea.
+
+>> +    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
+> 
+> I guess overflows are unexpected, i.e. the users should not pass a
+> `addr` that `> usize::MAX - PAGE_SIZE + 1`?
+Correct. If this wraps around to zero, that's incorrect. Note that the 
+minus one is in brackets to only trigger overflow detection in the right 
+cases.
+
+I can mention this in the docs.
 
 Alice
