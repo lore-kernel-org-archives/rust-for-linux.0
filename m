@@ -1,136 +1,109 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34911E1A0C
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 23:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965171D2B34
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 23:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729034409; cv=none; b=VP/QdV/tjPW/5EPx3TfVANzxjjY61vlIZ+q56QQUlomOt08DQGFuvSqepPZpNIlDzv1e56bwUD4DSzl3g/v8r3woDBHG/lwvK+HCktSrEqc5GdpOg96icwI29qCb26NZO5ONlww4tmOXNQwsgBAl/cOII2imtblSbFBXS0uiyhE=
+	t=1729034558; cv=none; b=Rtps1KHiDhs4YWMbaBzgpRgPehmkXd9879MvgGHonHrzF+devZcZbJPL5cd2qqiYCrz+yIv5BNTpi3ocdeVdd9QB5jThkCQsvD0A8kcNuln+DHm1yhEf/hMze0yNUVsMenN0O8OvyhEV6LIQYw8BlliZ20wbBXdXD+dJGJ8j5JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729034409; c=relaxed/simple;
-	bh=THSkSo9lSkuxsbYiUqaXJmBiMFSg1TaDfQHynW6LWoM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mcUuePv+E1Y/t9FPpmbFALpbNyBifI678Pod+FF3ou2J4k01QtYYeVwrDj9FQson1A9Qj48YQk9nFgYhOd6qldzaSS5UcarIOvNjrmUIsqMYY1jsIzX1dkKHhkxRt7qxvv8rB3JU746zhVE2JB7Wj/IYySASIFbbBx6BBefr5l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DJkd1Qjd; arc=none smtp.client-ip=209.85.128.202
+	s=arc-20240116; t=1729034558; c=relaxed/simple;
+	bh=I523jeJXbcx4KI8RALYv3nNxeV4rQgapD1DZyvsalGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IlrII0ucuDgjRA1Wc8P8EATESVAv9ry3TaP/88TCjQocQ6CxmxZrRTW47oNJMqlvpcpLkpMU5KvqP5l3ASYMXqCMuRfqyaO7YT4tq7B62H6l1zeITUNyf70hYJLKXaA0YOtl+LaOV3qkY/ZCDDxgje+s+qXygyWDBGSIaSf6Fbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vln0Nlmb; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DJkd1Qjd"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e370d76c15so51958277b3.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 16:20:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vln0Nlmb"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539e681ba70so1998e87.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Oct 2024 16:22:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729034406; x=1729639206; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y90q7N+0JYvarHeSSS/HcK3d00J7zzbtwQB+DjacdQs=;
-        b=DJkd1Qjd6nfYoALd0SmcygiPVkhCub3F6KQlzJFaGd172PG+zHvYXrDFqdcoFw0l0z
-         tWxJYs8O1wnSlt1nmB4VxN8+fUgqqTfBhiR1l2yEoKMPJWI3W59zpmOEvX9mbskJt5ZT
-         nrBnDIBtqftzCfy78ruvNKuL1ztQTwLC7QLbOMYdZJn13C9pt/W4Vz+YSlZhAJocTjU2
-         I7+ez/lBvnXV0i12tYHwHherRtEsaIgNIovI3jTloJGbO+ZKEPhTn4o1sBQRHEYouOfd
-         1rKPDILVBOJjh8HMLJ9xvCghVD5Iw+lGW8VdhR92biWljp6a1fLZNBHKBTb1EBl1NPrF
-         OwyA==
+        d=google.com; s=20230601; t=1729034555; x=1729639355; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9RUvHKuEBPAnu6MBocZm6vLF52qHvXQbIHH1GlTyCVw=;
+        b=vln0NlmbieQJ9TzD8KL1EZeE6NoBbVmfIBXBnawHcnKnj4FRuHKbNWcEKWdwrv4NSd
+         QAuGVckYewaT/HPK2FUYULU2dMV8FL9gBH/aedg54LGlznabSt14amQbn7XjVf83/trx
+         kvpgXHJ/cuaSEOIKVkP9TgOZTxkvJ9XQnl9lkpKzHlIuYefs8SZ0q6lyDtZguPdmYTjF
+         tbYEOru8TJ4etz1dOdPeLCltOCAtncLG5Ba5b8zvcZbfPHj+wLAtOynwFepjt5UgExFK
+         mRrno2PscYErJI2SPMfB/8FjoATql6/pw8Dd4pcrDzU9CdN+C9M/tO5h52FplZll7b6d
+         97qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729034406; x=1729639206;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y90q7N+0JYvarHeSSS/HcK3d00J7zzbtwQB+DjacdQs=;
-        b=OVnZiNyBzMLgl2o7opZcixCNpqEzHG2kjAHi/fP5OUZjTNsv7764h6cVP3yW5X5nW6
-         fSs18JGgdlKrwjr4ERovmlWGWd/kKx9sxnU4bDsuXriB5xDKUE/DNfefHt42VU4+imDk
-         NfCgQbdRwYIPdwu0LXQhdIgAG7uugxGy+IN4QBRaWiCnk6VZOdJYAxL6CsjgihRkwRS2
-         /q72+fpKUmLHVpSa/d0hTVhjuK5aBvH7YlDJaCtM5xa+oxEi9i3k/AuPsvLoQj9eqAr8
-         a3OtCd5dzIlC+0P7mHzVsqg7tntUtavJiqzBZDY9yj+QZyuatHTwNlgmG767mAGC9+45
-         x0Mg==
-X-Gm-Message-State: AOJu0YwJCJbdnaDboKekWg6wL04JLA0Qi1Uv+w8tP5kj8jGsgLpsGBnV
-	caVnFELd3o4keQ9sK2QltbBnj0AR2CvVvW0bWmxwxpipPrkPiMgQKc4+FI93mAMjwf8ePxcDGV6
-	MMN4TUg==
-X-Google-Smtp-Source: AGHT+IEl0PoSNMsAIV4NYkV6h7fXXICopbsvroAdggBgvaXcptZB1VvmgZiKvr9u8QtCOHgbZG9OiwkRYgC+
-X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
- (user=mmaurer job=sendgmr) by 2002:a05:690c:9b02:b0:6e2:371f:4afe with SMTP
- id 00721157ae682-6e3d4194914mr597357b3.4.1729034405979; Tue, 15 Oct 2024
- 16:20:05 -0700 (PDT)
-Date: Tue, 15 Oct 2024 23:19:00 +0000
-In-Reply-To: <20241015231925.3854230-1-mmaurer@google.com>
+        d=1e100.net; s=20230601; t=1729034555; x=1729639355;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9RUvHKuEBPAnu6MBocZm6vLF52qHvXQbIHH1GlTyCVw=;
+        b=iiVGK7pnh5YuVyOvncPWwvISQG0y48WwqliXNokPiO7Lgb2tGS/418/gJenKPVSMyj
+         jtwZqCOurRIWqKfguJppu/+9XZZ7mQTaEUF0479WhaUdzZCrxwuh5EIGX8AOSL76jtPN
+         21wX2PYGmjifQglAvqHkXG16E5aSVlKofa78Ihp2aXcFSW4lTK2e2Ii9zipN+CZYi46t
+         +UU88eGk7BT5+SC/Jz/CyutEHtmBAGiCEp+D9HH8qLpaRMLTgn2Yn0rB3PzURlNffJku
+         fhAo8N6XRqjarBOezJ638+4EEqe8nwAVAi54PQ7W7p37HyB6aFcIL/ZbIOdq+I7fSDaW
+         RUdw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2Mr23IAiFIey75ZfxaFRu8DCJCW7euC8O+CWKR4EH6LrVV0mzhq8i1ThMQdW9a51/nWoXnRdhQD4piUyzTQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQWEAC/6CW843YfcO1NGSTb9B5jDQdUSSeCizIQ/fO5Sj/3/FC
+	LZBCc8SliV0JOnJQAwsJDy+cWvCemjPrXscv6b6nzeI6IXuWj5nfNrEcgNgw+ayEgoJ/ViYhYNX
+	fTKZmPq9jRXkItl9aKJQvUWYMEAjuTAMoVMi6
+X-Google-Smtp-Source: AGHT+IHGh6PUQoy8hght4ieDSeR+Tsek80+k3WjbTEsufsVtjnaI+27i1yToDuq/77zg6Ww2K7PJe7qX4qx5sJCsaJo=
+X-Received: by 2002:a05:6512:1592:b0:538:9e44:3034 with SMTP id
+ 2adb3069b0e04-53a04d02628mr174009e87.6.1729034554499; Tue, 15 Oct 2024
+ 16:22:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241015231925.3854230-1-mmaurer@google.com>
-X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241015231925.3854230-6-mmaurer@google.com>
-Subject: [PATCH v6 5/5] export_report: Use new version info format
+MIME-Version: 1.0
+References: <20240925233854.90072-1-mmaurer@google.com> <20240925233854.90072-15-mmaurer@google.com>
+ <ZwmlEYdS0aPVF32k@bombadil.infradead.org> <CAGSQo01o4fWYwSzZHX5dyTUKcaCSZ7z-hPQ8w63tgBPGbM_UCA@mail.gmail.com>
+ <ZwmnnMmqVWLaelvQ@bombadil.infradead.org> <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
+ <Zwm4v_1wh5RwuHxF@bombadil.infradead.org>
+In-Reply-To: <Zwm4v_1wh5RwuHxF@bombadil.infradead.org>
 From: Matthew Maurer <mmaurer@google.com>
-To: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
-	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st, j@jannau.net, 
-	asahi@lists.linux.dev, linux-modules@vger.kernel.org, samitolvanen@google.com, 
-	Matthew Maurer <mmaurer@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>
+Date: Tue, 15 Oct 2024 16:22:22 -0700
+Message-ID: <CAGSQo03df-tnmwcz4nh3qtuQPKQ2zLHW0juQyKUXGsdeS7QkLA@mail.gmail.com>
+Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
+	gary@garyguo.net, Michael Ellerman <mpe@ellerman.id.au>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Benjamin Gray <bgray@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
+	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
+	linux-modules@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The new version info format has a superset of symbols in the old format.
-Since this is a tool for in-tree modules, we don't need to parse the old
-one with this tool any longer.
+So, the basic things I can think of to test here are:
 
-Even if we build without CONFIG_EXTENDED_MODVERSIONS, these are still in
-the `.mod.c` file. Their presence in the final module is controlled by
-conditional compilation inside the at file.
+1. The kernel can still load the previous MODVERSIONS format
+2. The kernel can load the new MODVERSIONS format
+3. If we artificially tweak a CRC in the previous format, it will fail to l=
+oad.
+4. If we artificially tweak a CRC in the new format, it will fail to load.
+5. With CONFIG_EXTENDED_MODVERSIONS enabled, the kernel will build and
+load modules with long symbol names, with MODVERSIONS enabled.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- scripts/export_report.pl | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+Is there anything else you were thinking of here, or are those the
+kinds of checks you were envisioning?
 
-diff --git a/scripts/export_report.pl b/scripts/export_report.pl
-index dcef915405f3..6a37df6f947f 100755
---- a/scripts/export_report.pl
-+++ b/scripts/export_report.pl
-@@ -114,31 +114,29 @@ foreach my $thismod (@allcfiles) {
- 	}
- 
- 	my $state=0;
-+	# State map:
-+	# 0 - Looking for names
-+	# 1 - Scanning names
-+	# 2 - Done
- 	while ( <$module> ) {
- 		chomp;
- 		if ($state == 0) {
--			$state = 1 if ($_ =~ /static const struct modversion_info/);
-+			$state = 1 if ($_ =~ /__used __section\("__version_ext_names"\)/);
- 			next;
- 		}
- 		if ($state == 1) {
--			$state = 2 if ($_ =~ /__used __section\("__versions"\)/);
--			next;
--		}
--		if ($state == 2) {
--			if ( $_ =~ /};/ ) {
--				$state = 3;
--				next;
--			}
--			if ( $_ !~ /0x[0-9a-f]+,/ ) {
-+			if ( $_ =~ /;/ ) {
-+				$state = 2;
- 				next;
- 			}
--			my $sym = (split /([,"])/,)[4];
-+			$_ =~ /"(.*)\\0"/;
-+			my $sym = $1;
- 			my ($module, $value, $symbol, $gpl) = @{$SYMBOL{$sym}};
- 			$SYMBOL{ $sym } =  [ $module, $value+1, $symbol, $gpl];
- 			push(@{$MODULE{$thismod}} , $sym);
- 		}
- 	}
--	if ($state != 3) {
-+	if ($state != 2) {
- 		warn "WARNING:$thismod is not built with CONFIG_MODVERSIONS enabled\n";
- 		$modversion_warnings++;
- 	}
--- 
-2.47.0.rc1.288.g06298d1525-goog
-
+On Fri, Oct 11, 2024 at 4:46=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org=
+> wrote:
+>
+> On Fri, Oct 11, 2024 at 04:45:25PM -0700, Luis Chamberlain wrote:
+> >
+> > Also, just as I asked Sami, coould you split this up into patch sets?
+> > One with all the cleanups and elf validation code shifts. And then the
+> > other code. That will let me pick up quickly the first patch set.
+>
+> Oh and if you can think of ways to enhance our test covereage on all
+> this as I noted to Sami, it would be greatly appreciated.
+>
+>   Luis
