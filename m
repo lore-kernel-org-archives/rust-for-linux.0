@@ -1,55 +1,55 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C47156665
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 08:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD24205E20;
+	Wed, 16 Oct 2024 09:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729068752; cv=none; b=AIY7TGbb8LA3tlroKgBprZKLePUFJIOHN4do4476jSvEWLnzaSIQQG3wC90q6JbxooGDYFv4CU+zcyroHvHBGkHoJw1ja6V5JNJ5/10mhAXpyYGp6PEDLrmbP1rPJHwtwUs9JxSHCJhg5dTgPzls7jD9R1uwXmla9yao+rDh4eI=
+	t=1729071742; cv=none; b=NU8hqXGTdxYUuwy76XDyLE4rhRIZ1FHL7MX6B7u1PiIFCiPWBWqLGmTeWc5+2+BYK79W+VVKP+cHYA0fRQhIqgBeKGk+MQ25iF7fJso6MZ/8pQdeM4CZmXvWbF4IUIJUwisGm4fGSd3quDY0hMmCG6m/mcvA1MYzBk2f/p6evi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729068752; c=relaxed/simple;
-	bh=cbpI01CorBSlhvSPRQMFhdScSdtWFnn1JWE+g2X3uiE=;
+	s=arc-20240116; t=1729071742; c=relaxed/simple;
+	bh=0ROIun9+2bA4UZLe9ILmjg9JaR1lCe7+bRu/u/vnsPw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V4XXKhZ8CrhUlUKTwzLv3WjSXbnXM5Ap4EibZN/5Xtx+q9MFUJLaqHJuzOnXz62yHY5yZX8nSbY57iv7d0PaSji7n2LivsRya5mbOI1p7InaoNTUKbPe4VLzHxWo9AJXQhIB486EQLK8rB9W+LzrzsNNiBjes4kQ+1zGzs5pt0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=grwYDZXy; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=cM6Rw/qzgswpUdvdFcT8SNw40i76hxi/rZpj7gBXlWn0UC4DWmz1zPcWYURkwd5itZYEcBI7cJ2HxW+/mZqAa70GOncQ28++KiLFwRAWmt9CVc4lK5H8ywhRUfDQk9nrAg4pQvbaTSEtSHrykv3t9T92DboiKGGcRD69igTaEIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5ZIfUVy; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="grwYDZXy"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d538fe5f2so3652812f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 01:52:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5ZIfUVy"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7ea64af4bbbso414831a12.1;
+        Wed, 16 Oct 2024 02:42:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729068750; x=1729673550; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729071740; x=1729676540; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g93+jT/AcpHh66whjFnNI262tYol3GRMYyQ7fABKQ1E=;
-        b=grwYDZXyXyJFLUnCQ07Aox/z9kTXey557+hUWkCBeLB2fC1NZhRo8ueRPOzeiw/bu1
-         SPSX72aMok8dBVOKfOOEm27LZpyhMmapgTO8r6TixlF0/VNCZOBu9V1PD8+wrcavL3u+
-         bZR1Ji7li76AjR51HyapJ3b5PQw5m/KrFJq5ImfFjRSBtIK2r1CoK75OvP7Hbs7ioiF0
-         xhvftHtRiaFEQkffkprpZzl84ggrT+xQHSq5XxshAJTd75U5PZtKsD/9jwsIZGZAuP2A
-         /RvVTAZagsrIkJ922ttm62X/koBDMNl0Wc8dXSFOxpRgyoh05R8PASy+d8ju/HWInywv
-         HRwQ==
+        bh=0ROIun9+2bA4UZLe9ILmjg9JaR1lCe7+bRu/u/vnsPw=;
+        b=C5ZIfUVynL2ub+WCGXjhpHT9Enb5jBw/5DpuFOszL09mEf108Dhxv/ki6Y7M0O5sAz
+         Pg8qY79VegIMuzleH7NGADqbPH5zHYMc8QQoHMZiCuAZFkgYcHjUHq5Pa7rEzHZvy314
+         K8oQswOn+IOcunvmi55QvVO+MPZQHlATtBcTC+S9Nzoq2zR9r9Qa516XTTL+UjvORkBZ
+         L5MHmMiNrtSbzH6DTLyklQ0Hu7H55aQNwTvw6W+OYFVQjO1Jm/0XHsGX+Ed9uW20kRuI
+         a3WetXZH0Hwbprwyu6NZtqDhf5ym/pw9CGkIDbtyspX9iW/sFklZTX2K/h0w4oLg/Ji2
+         3AIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729068750; x=1729673550;
+        d=1e100.net; s=20230601; t=1729071740; x=1729676540;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g93+jT/AcpHh66whjFnNI262tYol3GRMYyQ7fABKQ1E=;
-        b=GI3EZDovNJquM/0b0CiClX8o+EnX2nWP65xCL7bnPlaR3A1U79uT0AN2H6eqUBXBIO
-         LkJnQMboLwtmqzwbeHPs+JEQHPOe0uGZkvBYXRfDIHNshM5vQW9TsVzlmB0zilXRRdP2
-         c7R5cnFnTizv4Njwmj2Yeq3tcRm2uVgMEA6oUqFze+M5knvrXHyJgUmQ/jHwd89z+9XA
-         ZRD5JgR0GVKMmqxfcc58e6fKfIvwBnsqBU6bFFA5kXqZcH9s5sIftjLT2xICvUGKACp+
-         7gufXXJq8E2D9jTZjrgK7LeKsG15/dOMQlEt/CvLlBhwP3lHQEuogB1hQSZKBM+sMJ4W
-         gpMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTMkpsCp9KELrPxy4LjjBF4TOq5tJMYh/JQGTbiBAxNXtE2m4khI+sSlQvejagPd+xhnp8JFiSjAYUgn5A5Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzvro4g+AiUIDyWAkvnuC6j6i3lSIi+cGROWb7ZJ+KzwGXYHdZI
-	k8fFSq80/z0If2o9gbWlbcLGlLrelkBRY6ill1aJxQhOlgotf39p/v8QpqkjO/YgEBeXZ2RxLPS
-	hki+Ov/erJNT8BP/OLUL6f2JHt7jzAYPwPWiP
-X-Google-Smtp-Source: AGHT+IGe4kv4L/EwUbCN/hDA83kADcD5XSTi2TLDBLcssrpynXzxO8MPXSc9nT4Dq1wix/vP8NV8PattQBIw+5GpyQI=
-X-Received: by 2002:a05:6000:bd1:b0:37d:f4b:b6ab with SMTP id
- ffacd0b85a97d-37d5530a534mr11465247f8f.59.1729068749519; Wed, 16 Oct 2024
- 01:52:29 -0700 (PDT)
+        bh=0ROIun9+2bA4UZLe9ILmjg9JaR1lCe7+bRu/u/vnsPw=;
+        b=vpIkEiFuiFeNUON7nQEaHWaxB8+heeYQI0pL5aNekbwCjVulj0tjs9aoRRe2BDDgsi
+         L8K5ofulr6pb2GXctz2jhfIWv7JtCAEE4qWhmA2pEZyHasIueWYn8Axo1yFmx9vWsVO2
+         otkNVlShk4tMQaTws1fdg8rKdQRPOVxMqtcznWxuukoZANWCZbKQScRiNlmFSOuv9bbe
+         cCfsJ1NC3iNaVX13+6S1ByADRHw+3CldkVzxAgYl0KHrNKZMp255koPjoHMyPgwwXVLS
+         okR0pEBv8IBmwawkOr4SN/mdIHvGWPqie29XdSgYamU7zazWXlRsk08yRiOzRAolZCi9
+         34Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4JRWrv++k7ZN3AhDPOvW+stge+kS+5VG1dL9amjT7kwj6Ppwa5lML3j5WObMv4EioE314hCvkY9nUJTTGWyw=@vger.kernel.org, AJvYcCVOnUhZ5T+2PH9q1dgX6qeI/VbGQZOp2cedEU7LUx5SBwVPHp/xt+jMyOUmWmLOAbtoFSptMJYv@vger.kernel.org, AJvYcCWru1AcE7j9CZGG0rd2FsoXrdg0XVZWyEHYyXLX5afOZKAcrPv5XeV5D1MpI44aEQL9LNzIf2IxhyJZS4I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3SZ6YhNtc1RajsRdFjABgfTxgXHCnsulxrhQPjtib8gA6eqH3
+	1buGgTIHULCdloZhacfdxtHm1dWuOxA5RtwequYYblMtmUnRz2YJhOzvH0W0Nx+ep6w59v4Q4Rd
+	mz2gJBhnU2yJqSaLLG45aETrzips=
+X-Google-Smtp-Source: AGHT+IHi0A8/PV6E9lyeXG/3wVsU9tT7kuHybNSxajW9mmWYQ7zdVM067KZbEGHzCY1n7J1Vvlg+DTAGazeQKOvFmUY=
+X-Received: by 2002:a17:902:da84:b0:20b:642c:222b with SMTP id
+ d9443c01a7336-20d2fe58acdmr9802325ad.15.1729071740219; Wed, 16 Oct 2024
+ 02:42:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,78 +57,39 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-8-fujita.tomonori@gmail.com> <CAH5fLgjk5koTwMOcdsnQjTVWQehjCDPoD2M3KboGZsxigKdMfA@mail.gmail.com>
-In-Reply-To: <CAH5fLgjk5koTwMOcdsnQjTVWQehjCDPoD2M3KboGZsxigKdMfA@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 16 Oct 2024 10:52:17 +0200
-Message-ID: <CAH5fLgi0dN+hkTb0a29XWaGO1xsmyyJMAQyFJDH+geWZwsfAHw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 7/8] rust: Add read_poll_timeout functions
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, 
-	sboyd@kernel.org, linux-kernel@vger.kernel.org
+ <20241016035214.2229-6-fujita.tomonori@gmail.com> <CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+In-Reply-To: <CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 16 Oct 2024 11:42:07 +0200
+Message-ID: <CANiq72mKJuCdB2kCwBj5M04bw2O+7L9=yPiGJQeyMjWEsCxAMA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep function
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 16, 2024 at 10:45=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+On Wed, Oct 16, 2024 at 10:29=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
 wrote:
 >
-> On Wed, Oct 16, 2024 at 5:54=E2=80=AFAM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
-> > +/// Polls periodically until a condition is met or a timeout is reache=
-d.
-> > +///
-> > +/// `op` is called repeatedly until `cond` returns `true` or the timeo=
-ut is
-> > +///  reached. The return value of `op` is passed to `cond`.
-> > +///
-> > +/// `sleep_delta` is the duration to sleep between calls to `op`.
-> > +/// If `sleep_delta` is less than one microsecond, the function will b=
-usy-wait.
-> > +///
-> > +/// `timeout_delta` is the maximum time to wait for `cond` to return `=
-true`.
-> > +///
-> > +/// This macro can only be used in a nonatomic context.
-> > +#[macro_export]
-> > +macro_rules! readx_poll_timeout {
-> > +    ($op:expr, $cond:expr, $sleep_delta:expr, $timeout_delta:expr) =3D=
-> {{
-> > +        #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
-> > +        if !$sleep_delta.is_zero() {
-> > +            // SAFETY: FFI call.
-> > +            unsafe {
-> > +                $crate::bindings::__might_sleep(
-> > +                    ::core::file!().as_ptr() as *const i8,
-> > +                    ::core::line!() as i32,
-> > +                )
-> > +            }
-> > +        }
+> You probably want this:
 >
-> I wonder if we can use #[track_caller] and
-> core::panic::Location::caller [1] to do this without having to use a
-> macro? I don't know whether it would work, but if it does, that would
-> be super cool.
+> delta.as_nanos().saturating_add(time::NSEC_PER_USEC - 1) / time::NSEC_PER=
+_USEC
 >
-> #[track_caller]
-> fn might_sleep() {
->     let location =3D core::panic::Location::caller();
->     // SAFETY: FFI call.
->     unsafe {
->         $crate::bindings::__might_sleep(
->             location.file().as_char_ptr(),
->             location.line() as i32,
->         )
->     }
-> }
+> This would avoid a crash if someone passes i64::MAX nanoseconds and
+> CONFIG_RUST_OVERFLOW_CHECKS is enabled.
 
-Actually, this raises a problem ... core::panic::Location doesn't give
-us a nul-terminated string, so we probably can't pass it to
-`__might_sleep`. The thing is, `::core::file!()` doesn't give us a
-nul-terminated string either, so this code is probably incorrect
-as-is.
+I think we should document whether `fsleep` is expected to be usable
+for "forever" values.
 
-Alice
+It sounds like that, given "too large" values in `msecs_to_jiffies`
+mean "infinite timeout".
+
+Cheers,
+Miguel
