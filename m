@@ -1,175 +1,151 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA78205E23
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 15:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7731125B9;
+	Wed, 16 Oct 2024 19:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729092534; cv=none; b=EsmxhIomiAwNK1G+t8dZSmvpveD6R/6yX6buS6KvtO+AnjGoQRuoTg+VtOvexX3J7JIZJokB1F9OmGg4Kq7FFHQujj3afLuPth08GSTYvX0fqGjQuUvZ5XoOq8FOYHYI7EtlQrS6No0W2HtcgZbojdr+A2Rtvi22C8ITKsZRsKY=
+	t=1729108044; cv=none; b=drl/90Kz2djhtEHMmJhXEkCAwV4vS4FrEf8QtLMmwGhYfjUlIQ4MYcfO9j4APXuo53SbFt5s+f2N4rWhwyfvV/JUMkg9fdFXa/MHz54965dQdkjYBpVRTiftQsVgszVSNn8cKsPSZ6oqSjwZElKogDjXzdOUqR48/b5snB9hJU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729092534; c=relaxed/simple;
-	bh=T9cbP7TJN06jIfuno1N5yC6SPEmVut8xSpFIolYd+D0=;
+	s=arc-20240116; t=1729108044; c=relaxed/simple;
+	bh=pmlNSljXEUqxAokNLwjXCDGzQ9J//4EAy+e28nbhgQI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UwU+sxZBgM7s3uzzgpMsi2aMdY4c93rp7xOavDcRrXRmOTTSJSu9p6RpkEw+ZxtVTPClOGxOuYGr2V5O4XE9jZNxmR99nKkBhPo/C0vNXa84Nt+CCwokxv4Z0WRYrkTzM48hfXw3aqGuA43haFO7pRzp5M+Bx/iHZhK9d+XiLlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JgMHvkPl; arc=none smtp.client-ip=209.85.222.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=mxl5LUpukAx5Kpsb1oA7ksDrAirMk+XBW7T28ybhDy00owgeuwWUvABOlzDnSrKy8RoYAJVGR87KcIrlLv+jFwAHwGLS4OhOk+R7y8e2WdpM77WMk4C5wIeG9pnwMTlkxlyjn2iXX2EXfLWPPQ1+i+WkBuxrWNE41jMRO/ur9aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwc1ggj8; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JgMHvkPl"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b13b3fa372so114389385a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 08:28:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwc1ggj8"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-46045199e4dso1755251cf.3;
+        Wed, 16 Oct 2024 12:47:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729092531; x=1729697331; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=10AsxkhokhL5BMjOGp6Xm4xjuQpoTi7yk4RoFnrIIPk=;
-        b=JgMHvkPl6BqV4Y3uUlajNtBGIytmgFV5neBWx07JB499HzZEFNHyiFIokF5D6FLwXE
-         aXVn/s15Uynx/DzkugudVCqaBGyHeIjTHR1uaiee2u4OvBD30zoS1MBTqqSLyT2qaRYY
-         2Kn2tYRckPCK3H+/aGwfg7i71sYFc9R414SgR/dvir2yCLJPFc99aAYUbxR2Ot920zbE
-         E9Dhos8KSOnGOcnjQ+5L1W4tHSj0qQ4rpNco5G3ykjpapeWfVQO9rGvTWKUWrxl149yC
-         H0QjFwUonCcS1gY9YHZS30gKRSm2nKoigrXcPtu0NAcnQ78u6zHqDpm8DZj+wvRdiWgt
-         PBMA==
+        d=gmail.com; s=20230601; t=1729108041; x=1729712841; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=O7rveXr8EWQwBHFtL+vhmszoaVZ34wapFadx4cT7CFY=;
+        b=cwc1ggj8jvqe1du98tqYzP+BqPyJt1UjPu2d2aJdikWdke5gYWroif7tJ+QYQ5uQS9
+         1riQlNXgvQ1l8sfQb7N/5H2EN6AK0e49Hqoe0em6SUY/ePp3gk2bAxKVyGj6hnH3ieiF
+         B1FjmDZgigFbtRzIIiSsl8BjYBDaKB8eLS0tkEZyylUTNm/jaLXpfGaQmAuOjntt9OLy
+         3Eq17TWis4Ciwm1ISRI0zhZ2jINHO7Yivtx4sKIkMNp6Vj+3bup+Yx/PYoDhl4ZFvJUI
+         Mohtcg6NCXvx2W4TeyHte3tme0fjpNaL1qZUoisLVfToN6GqQaDLq2guBaEWmp+xH5dS
+         Jshg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729092531; x=1729697331;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=10AsxkhokhL5BMjOGp6Xm4xjuQpoTi7yk4RoFnrIIPk=;
-        b=IifjiAhEYYGsCSWsRVhrvF2wZ0po2Jl0AV63zrRLzOxDB2q8IUbZKcziBsw6zjbOIp
-         E0XNxv3AaT91+r9AU6pj81lt0lBek8nh1rdqgnG6OnfJU9JWmP5VoYUfMVFASz4k7rbi
-         iOw2KOag01CX2FTvXjYqPy4iCVSImeLm16T3vTeoYGlGbf4YtfNSMb5st3oUJJ/nhrmD
-         M1IMkdBYQTxPJ3TCFyBuZAiHpHLb9hYE9X+enpDXBG+mNei6RTAr+7ozJU6TUXfV9B1v
-         sTrjAK+TBme+ThByP9T0HYcogd7rRFJZ94e71HZRMrs9EcnqJ8ZfYR2sOZBrAv3fskIS
-         dmhA==
-X-Gm-Message-State: AOJu0Yx12Y8z3A7QV5wg8MxiXWgn41Ax0jI/qBlU00ODNyipVMwK0bx7
-	G4glUFWq4y49debPu/Muo0mnuE73bxt2vGpzWATmiKxBJDH4Pqqw
-X-Google-Smtp-Source: AGHT+IFlPz0ZDcObiyL0sMDh8Y/FQPK4L0UZC0RIty/QsVNQ09GpobWaiuBote5PMhur7RaYCgfHYw==
-X-Received: by 2002:a05:620a:2490:b0:7b1:12e0:39ef with SMTP id af79cd13be357-7b1417d8d19mr627511385a.21.1729092531179;
-        Wed, 16 Oct 2024 08:28:51 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b13617097dsm198550085a.29.2024.10.16.08.28.50
+        d=1e100.net; s=20230601; t=1729108041; x=1729712841;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O7rveXr8EWQwBHFtL+vhmszoaVZ34wapFadx4cT7CFY=;
+        b=H3RtngpdOKxoPbHZ5Ki0OOxsMXIT5GEKYIg9CGLsFDnCd/SwspAY9XUqtNEdpmYx/L
+         wV3YxV4KbquWQUAWkxywISCfIX1ic9ofjeV729nnqV7DkPLC938sPaRyFGoe0G+NFrOA
+         3lD1YPB8BlqHl2Cx2Qk2zRkHTNwz1NjoV3k1Nd8WHuXkrwHJXOzkYg9TbtptVuqQ9hVg
+         Pr4zFdM+OWELm+3Q5C/Z6DdYjL0bBBHqkicY0ncsC0l18K0XOQHo5YPw85DVpelRWDrb
+         1t/ZI6TOe6QLVUQoNdsUxnvCOq5JnHlZI1WQ651xI7GqXJ6lpfGUXi/opY2NtobsbM//
+         HmXg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9vPgQS246OprFySsu9Od6XGfVDhKcdTrPSjx3pCPl6lWgD+XM2cO6LkTI583fUn9qZhD0+dnefdWn0MS07LA=@vger.kernel.org, AJvYcCX678lnsKlO+OA7aLybnLQqXkcL+WND3J/SLKgGzBruYfm58xWgcSnmR/QYz0ia5ivbwbPE0foK@vger.kernel.org, AJvYcCXL9a9j9CdaINI0XnDtcBYjTNJ6OumU21IiV/DQALMxgmEiBRNLOwMRyBNf6d5ysHmNzh1TzKrLiEbemEY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAT3hmPtFtwxmYmtAQTnileozk2XuLdJqGp8lXhFZxUp0Rtmyo
+	78ZYSLmPYsqMhfz0zuZmBSe1exjhcxjNaS2C6CkybNRi/XEuxM6Y
+X-Google-Smtp-Source: AGHT+IF6xCUs696kKcIN/z9eOsuC12fgOayKojaZu5+rDeH8ru39YGtHJA6fE30edqk6BU/Nb7r3kg==
+X-Received: by 2002:a05:622a:1245:b0:460:8d74:3cb4 with SMTP id d75a77b69052e-4608d743f44mr65230681cf.17.1729108041450;
+        Wed, 16 Oct 2024 12:47:21 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4608d335c82sm12806331cf.67.2024.10.16.12.47.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 08:28:50 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2F816120006C;
-	Wed, 16 Oct 2024 11:28:50 -0400 (EDT)
+        Wed, 16 Oct 2024 12:47:20 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2E4121200071;
+	Wed, 16 Oct 2024 15:47:20 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 16 Oct 2024 11:28:50 -0400
-X-ME-Sender: <xms:stsPZ41SxiNROD-VWY7LAoNVrjtzJkRQhIWTs2Id7Q2Bw6bNyUdn8Q>
-    <xme:stsPZzHwjRF0C07XIqLBw26u48tTJkTRJh4-01q85e09v9Lpjd-Ls0ScbGvuN2fFM
-    c0MPfTbUaRSY3LBXg>
-X-ME-Received: <xmr:stsPZw6jx-HedR6agPnkRWYZkm7w1QW54tgqbh69051sK0foYYApmr7CfyM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegledgkeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepjedpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtohepughirhhkrdgsvghhmhgvsehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtg
-    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhmghhrohhs
-    shesuhhmihgthhdrvgguuhdprhgtphhtthhopehtjheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepsghoqhhunhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:stsPZx1tSjhzqyN0Nx_4ZUB6OoIYfgncXdVXNs4AxR3uCdwA4Gr1hg>
-    <xmx:stsPZ7FHuM6niDJp9Y9LAPaAQAXBagn4T0tJbgnEqLmKKJqM_YVdmA>
-    <xmx:stsPZ68o8qpX995p3gVyZZbwAM6yMpwoTuEoYQ9BovCMOawHzGgJew>
-    <xmx:stsPZwkemg9ZjfQjCRxfnb2NrAJQZh7Qm4QEgk6mIRtyrws66hIbXg>
-    <xmx:stsPZ7Gsl6IE39lyD7zjgmob34MonWV__eWGIj8IANvpAd2EKR9-dEwc>
+  by phl-compute-06.internal (MEProxy); Wed, 16 Oct 2024 15:47:20 -0400
+X-ME-Sender: <xms:SBgQZ1hFZppSlJDQAXCKMwaiTs7lokKpe4XZUx8q2rtXpo3z7P44Xg>
+    <xme:SBgQZ6Cy7iThFSdFGsKZrhgSMEgyNxsboVFJGln0EaKgYzclvPhHD4_Rj8CXxr6DE
+    K-UEg_LxriQtj6eNA>
+X-ME-Received: <xmr:SBgQZ1Em_pBCjEseJiXGKpOpUzh7d7cn1IBQHhk6jyeO-zlp-DBlHkwrcqI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdegledgudegvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
+    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledt
+    hffgheegkeekiefgudekhffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgt
+    ohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllh
+    ifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgt
+    hhdrvgguuhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:SBgQZ6SCMujHgZmCytZNQeJDYBMiHTmIj5l69Z8lEhBX-dOR8rCD5Q>
+    <xmx:SBgQZyy8VCLYUNxwe2c_Fd_L39BCmRTpaVzjaIOkoZJsmEWb8cyiSw>
+    <xmx:SBgQZw5DmuADSNR47wUsovCloNytT-5CsrVZf7ooaQGeBs1wmqRjiA>
+    <xmx:SBgQZ3yycqF25PyMSc3dJH_LVQM34pepH8-Jjs3CUSKmg5lhVMdxvw>
+    <xmx:SBgQZ6gzMuWDhUdryhkIL23OeCeBFIhhdiVixoFfyZ3FwIdtC2KmRpnn>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Oct 2024 11:28:49 -0400 (EDT)
-Date: Wed, 16 Oct 2024 08:28:48 -0700
+ 16 Oct 2024 15:47:19 -0400 (EDT)
+Date: Wed, 16 Oct 2024 12:47:18 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Dirk Behme <dirk.behme@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2] rust: workqueue: Enable execution of doctests
-Message-ID: <Zw_bsGqO6MWF-fkL@Boquns-Mac-mini.local>
-References: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's sub
+ operation to Delta
+Message-ID: <ZxAYRthmAIHfW5c2@Boquns-Mac-mini.local>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+ <20241016035214.2229-4-fujita.tomonori@gmail.com>
+ <CAH5fLgjKH_mQcAjwtAWAxnFYXvL6z24=Zcp-ou188-c=eQwPBw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgjKH_mQcAjwtAWAxnFYXvL6z24=Zcp-ou188-c=eQwPBw@mail.gmail.com>
 
-On Wed, Oct 16, 2024 at 03:35:07PM +0200, Dirk Behme wrote:
-> Having the Rust doctests enabled these workqueue tests are built but not
-> executed as the final callers of the print_*() functions are missing.
-> Add them.
+On Wed, Oct 16, 2024 at 10:25:11AM +0200, Alice Ryhl wrote:
+> On Wed, Oct 16, 2024 at 5:53 AM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > Change the output type of Ktime's subtraction operation from Ktime to
+> > Delta. Currently, the output is Ktime:
+> >
+> > Ktime = Ktime - Ktime
+> >
+> > It means that Ktime is used to represent timedelta. Delta is
+> > introduced so use it. A typical example is calculating the elapsed
+> > time:
+> >
+> > Delta = current Ktime - past Ktime;
+> >
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> The result is
+> So this means that you are repurposing Ktime as a replacement for
+> Instant rather than making both a Delta and Instant type? Okay. That
+> seems reasonable enough.
 > 
->     # rust_doctest_kernel_workqueue_rs_0.location:
-> rust/kernel/workqueue.rs:35
-> rust_doctests_kernel: The value is: 42
->     ok 94 rust_doctest_kernel_workqueue_rs_0
->     # rust_doctest_kernel_workqueue_rs_3.location:
-> rust/kernel/workqueue.rs:78
-> rust_doctests_kernel: The value is: 24
-> rust_doctests_kernel: The second value is: 42
->     ok 97 rust_doctest_kernel_workqueue_rs_3
-> 
-> Without this change the "The value ..." outputs are not there meaning
-> that this test code is not run.
-> 
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Cc: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Trevor Gross <tmgross@umich.edu>
-> Cc: Tejun Heo <tj@kernel.org>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Dirk Behme <dirk.behme@gmail.com>
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+I think it's still reasonable to introduce a `Instant<ClockSource>` type
+(based on `Ktime`) to avoid some mis-uses, but we can do that in the
+future.
 
 Regards,
 Boqun
 
-> ---
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > 
-> Changes in v2:
->   - Drop 'let _ ='
->   - Drop empty line
->   - Add additional maintainers into Cc
->   - Drop newline in commit message
->   - Add Reviewed-by from v1
+> Alice
 > 
->  rust/kernel/workqueue.rs | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 10d2bc62e2cf..3755c8e5e9ea 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -69,6 +69,7 @@
->  //! fn print_later(val: Arc<MyStruct>) {
->  //!     let _ = workqueue::system().enqueue(val);
->  //! }
-> +//! # print_later(MyStruct::new(42).unwrap());
->  //! ```
->  //!
->  //! The following example shows how multiple `work_struct` fields can
-> be used:
-> @@ -126,6 +127,8 @@
->  //! fn print_2_later(val: Arc<MyStruct>) {
->  //!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
->  //! }
-> +//! # print_1_later(MyStruct::new(24, 25).unwrap());
-> +//! # print_2_later(MyStruct::new(41, 42).unwrap());
->  //! ```
->  //!
->  //! C header:
-> [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
-> -- 
-> 2.34.1
