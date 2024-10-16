@@ -1,105 +1,116 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F2B1534E6;
-	Wed, 16 Oct 2024 21:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4E71B6D19
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 21:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729112434; cv=none; b=IvZcDguZC2RYRT6PpbHmf/vmlj+oVtp5FH2fmkv5TA23SYh0ABQm6ny3mvZIZd6ACF697BxqLjW+K8hgPRhkLt+Kqovdx8rNbXSrAoVqE7k4M0qlP9DEn+3cDEPEl4NOzKxwHkbZzUKMAWaVgKDo8V/FI8LYNsNC87gqKXKOODc=
+	t=1729113745; cv=none; b=ujltubDbKh0dPvLqDKblDDhu66NWQHRUaGbQF9j12mwy/ChlSWtMuFiGqqATn0PpA2SdZNiCDm2aWKoYztXVCWh6OZNSUGKneTe29kT1FvjFMbuw2gc4xOrxO5lgwRULmNCk5Jzy3Y6hDsiUNVzndUWU33vJ4rwqHe5HtBdA/fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729112434; c=relaxed/simple;
-	bh=1pAsDA7PZOVbb9GLjwzKBWAwHWtXQGNuCBsMyCdPVDk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Fz1jVwGkiStoa24L/gAAnTjLJEXKLK+hrC09ph3aK2W2l0Ag+ZJy2TyAuYPJnEf9kJ4MOJ/qpRK8p+l0bOXyjFQimGhmdCEtvSorvMw9+ub7p1+J/gR9mF0kFgaQ5rzkOyowqGI/Nl0BEZKojEAzx5JO490gcA2V/vjAfTH3UdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nX1zh7Af; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=g3RIajQT; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1729113745; c=relaxed/simple;
+	bh=OyDiTCgIIBa/GkRKvyHzzrkbUA9z+By1KG3O7d5eMiY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BrGPsqnki9FbfIPSC5vWXHX8ZXJso81kVqrfsCNrvNrWswogNnQmEWc3T4t8laRMci9BfR/RjI12qop96P5E9IzDA4gckrnqFVyinlYB3QikYaKtC4UU2ztjoGBuXsi2fni7HMFWou67u0wvAvjv02A6RPmdEtIbJCfjZRfFLs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b06pHtOM; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nX1zh7Af";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="g3RIajQT"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729112431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xoaLcJKvIsnthAJTU0diSgpxqnBbNi4e4pwoTtNpLNw=;
-	b=nX1zh7AfxO2eifrROVLWzzxW6Bu1RVj+gIiPqAWAuYVvpG1ucFZ1+6JO37cxZuEldxp3vI
-	3a+ReYqh/zIdXRwwsOcAfZY0SGX9abb3Pe9bbDv4dsK/XCuwG2knLv5Xt3vXZpR1BvekQY
-	ELDBrCjxmwjRFr/QLYtiXv8DU/DVR/3uMKE08vKB5acLR6O0b3BtgZVJaj1/I+aiVU7QQJ
-	Nb9RJM266/NnPx0E355NKMAruKpQsbKTiYgccjmwYYtX5yzAJ6P72JiZCye9Xg4sw8lm7/
-	R727jodCP43ftqmKWVxC4zznG3Vs004/jjInE8lVYj9PL6aeOOaOwYqIPBWkgA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729112431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xoaLcJKvIsnthAJTU0diSgpxqnBbNi4e4pwoTtNpLNw=;
-	b=g3RIajQTjPkOnSr7MIboQCHDizU0oU84eKVHhdaNVFgyr41NSzBVPNqdBS3ShTjaXycUyL
-	0TdB+RD2HN5S2ZDg==
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
- rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
- airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon
- <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, linux-kernel@vger.kernel.org, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v6 0/3] rust: Add irq abstraction, SpinLockIrq
-In-Reply-To: <Zww-7DO8jeQfnItV@Boquns-Mac-mini.local>
-References: <20240916213025.477225-1-lyude@redhat.com>
- <aef35907-b92a-4f56-a330-b4be06f11984@gmail.com> <875xpvhlgm.ffs@tglx>
- <Zww-7DO8jeQfnItV@Boquns-Mac-mini.local>
-Date: Wed, 16 Oct 2024 23:00:30 +0200
-Message-ID: <87iktrahld.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b06pHtOM"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4601a471aecso33931cf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 14:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729113742; x=1729718542; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5wkZ4sufrMCkWvTY6u4q4CXshqu7FtbhJxCZflIH3KQ=;
+        b=b06pHtOMQM8P0UDfGnbnPHLh/dFOZOtZJ5Rp8PgVMzVVpfaP35TcK2FXHjWREUJ7tA
+         mBnYhP6+XneIQn9jgvNcmGgBe/eN+FvJlnq+J9iWxtNqppWugnxot7VIoNwSVyrSk4dr
+         JHkx+Je7gfhvxiOX6eKL2cgd4+/3n0oaDKF7iZfYAtjZPx+f7Yy2AH1leyPB2MgNL9W4
+         QpsEAe/lDNtPCCte8RxJ+ILNCJFUrPKl9DmMdDdh1+4cm5cyaHRmsf6Lmrxyh1qygr1E
+         nftIBXiksh1K1SXiDDH+cQDi4D2khFfUxvRMsdlUGX4Gr1R9kCyruCFeme5KSdcvCPyT
+         X93Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729113742; x=1729718542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5wkZ4sufrMCkWvTY6u4q4CXshqu7FtbhJxCZflIH3KQ=;
+        b=s6oiGEy+w96MqdVGQdIYU1FTMjqwjxLuWxhwBmDYOke/5xzW0NO1AaUa+p3Q7OJ5pz
+         mjq6RSO61hNe3OWxUzfBD5Nq7mQ8BX4rsjZZKfzAvEL2r/rgH8gHFrJMV8CJwSPHTbHO
+         0vwEhI4Tz4iiHIZ+0a9Ngp4014s1wekOvCEuOn2PikPhUVcJzsUineMaubIbSMKHrU+y
+         Yd25lKBDPfOQkDwelDz46rutlz+mz0rH2+KCE/mLHtRZVcpDFFS9MZzdAX4iNijSOvcl
+         p9cT42E0wGkd1+7ILTJIDtHfqajGHUw7AkRpPigMjZY7spdvAuSw76ZpJ7/oTUAXEjcm
+         W0Og==
+X-Forwarded-Encrypted: i=1; AJvYcCWpqjE5LQtb6TTX8vQyWvLmc+a7p7xZyVGIuNpdkYV36vKl9imPA1r9K+bPVghNyiKuFejo5mXTSACuNtTUIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTRqSkHATK4Lw0st9qy8srdNwob90WsjLCslAYByP8IS0ukTSc
+	9SU8GDMY3cTW1McI7oBgM+KWIrRrP/HCijfpEs1ot6cXtOp6w2PDJxpzRefQ53bxcp/mQCUtGFi
+	y6ZY07MRUFsIhHVSpoRzWlgXciupdLRolBVe3
+X-Google-Smtp-Source: AGHT+IErDmtBkSM4h9tKCOEanhS8tMEL2BUmPka/EOw8X38eJd4BfzXBdA4cVWCS8SklYFIBG5mDLRG4jlKSB1gVUX4=
+X-Received: by 2002:a05:622a:5f08:b0:460:4a62:4ff3 with SMTP id
+ d75a77b69052e-4609f6b45fdmr324641cf.23.1729113742418; Wed, 16 Oct 2024
+ 14:22:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241008183823.36676-21-samitolvanen@google.com>
+ <20241008183823.36676-31-samitolvanen@google.com> <f60bf3b2-6e3a-4382-93d1-1eca521e4ebd@suse.com>
+In-Reply-To: <f60bf3b2-6e3a-4382-93d1-1eca521e4ebd@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 16 Oct 2024 21:21:43 +0000
+Message-ID: <CABCJKue-APgjaWf8pGnYVe3uSBjzApX0FpMUCAHsm56wNSyRVA@mail.gmail.com>
+Subject: Re: [PATCH v4 10/19] gendwarfksyms: Limit structure expansion
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 13 2024 at 14:43, Boqun Feng wrote:
-> On Sun, Oct 13, 2024 at 09:06:01PM +0200, Thomas Gleixner wrote:
-> But that makes `cv.wait()` not working, because interrtups would be
-> still disabled when schedule() is called.
+Hi Petr,
+
+On Wed, Oct 16, 2024 at 2:16=E2=80=AFPM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
 >
-> I'm waiting for Lyude's new version (with lock_first(), and
-> unlock_last()) to see how we can resolve this. We may need to redesign
-> `CondVar::wait`.
+> On 10/8/24 20:38, Sami Tolvanen wrote:
+> >       /*
+> > -      * These can be emitted for stand-elone assembly code, which mean=
+s we
+> > +      * These can be emitted for stand-alone assembly code, which mean=
+s we
+> >        * might run into them in vmlinux.o.
+> >        */
+> >       process(cache, "unspecified_type");
+>
+> Nit: This hunk should be folded into patch #9 ("gendwarfksyms: Expand
+> structure types").
 
-Thinking more about this. I think there is a more general problem here.
+Oops, I'll fix this in the next version.
 
-Much of the rust effort today is trying to emulate the existing way how
-the C implementations work.
+> The commit message and the comment in process_type() describe that each
+> structure type should be expanded only once per symbol, but that doesn't
+> seem to be the case?
 
-I think that's fundamentally wrong because a lot of the programming
-patterns in the kernel are fundamentally wrong in C as well. They are
-just proliferated technical debt.
+Yup, it looks like I messed up the logic here. The ptr_depth check
+should be later.
 
-What should be done is to look at it from the rust perspective in the
-first place: How should this stuff be implemented correctly?
+> If I follow correctly, the type_expand() logic on the output eventually
+> performs only the first expansion for the CRC calculation. However, it
+> looks this process_type() code should do the same, if only to be a bit
+> faster. Or did I misunderstand anything how this should work?
+>
+> I played with the following (applies on the top of the series), which
+> matches my understanding of what should happen:
 
-Then you work from there and go the extra mile to create some creative
-workarounds at the abstraction level instead of trying to mimic the
-existing C nonsense.
+This looks correct to me, and do I like the way you cleaned this up.
+I'll apply this to v5. Thanks!
 
-Which in turn gives you a way cleaner pattern of implementing stuff in
-rust.
-
-Stop worrying about mostly irrelevant low level details which are not
-relevant to the primary audience of rust adoption. We can worry about
-them when we replace the scheduler and the low level interrupt handling
-code ten years down the road.
-
-Please focus on providing a sane and efficient programming environment
-to get actual stuff (drivers) into the rust domain.
-
-Thanks,
-
-        tglx
+Sami
