@@ -1,103 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4CB14EC47;
-	Wed, 16 Oct 2024 23:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27ADB282FA
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 23:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729120915; cv=none; b=ez2vxTzvjsccT8Ksha5y9zuBcrr8p46agMyIKZKXbFPeFO8kYhuX44BpggqHcxWttWWMIYRLOrO5TupCKMe0YHIPv7zEaUNvbDkFcRsld/3vE7QiUhufko5Lc/pRWg1BwuSMebcJn3u+KsI6efUINtx02QC2FPvMtsNCLW1AKyA=
+	t=1729122513; cv=none; b=V6tq1iqbXSR/t53xsUnXC/gsCz66XdlFbWUOHS2zLQ5OnJzU66esro534KnVjzRoT5vHyHygiF5vDdMkmcFaLpZQCTzZcLnWORU68XSc9HDBiTPvtr0qk6GpaLDMc8/w4sDvsvf9SxjUOBJlh1nVuLeERiLa5qG9swlgey2BmF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729120915; c=relaxed/simple;
-	bh=jj2l+z5z0T64UjsqbIKx9n9DA8OiXqjAqg3PCGZgsoU=;
+	s=arc-20240116; t=1729122513; c=relaxed/simple;
+	bh=PaGsx/p0g1rFIDlC9skbTCx5rM5FzER3gMJF5RCNy3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWkp0/mGsgo+rAxNJeK7eNErqGMJC5/T79fYjwq2VFVmlUXarOCjbX90Zp/qQLNiCHUdUuklhg2yDyVHKWaR2rHznHBaNIe2SVT6Ovxgd2mUtoD3WaDBR7UpSCu3HHXmJ5uGZC5LvNIODPdW765mGjWlbkLsjDZ2MVwsHDFDPJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=af7Bah2k; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wq1TWi0sNOL1fdXNBES/m0XR5SX2vGVrUI52xhWDPQ9uiXAYAw5+xUQK89DKmY95HyXmjBXSpxFWOqzdJGKhfzqc1zIplY4XmIrJsUCBb3Onyqwo0EelIOk6qhWHR8kLAs7AXjREr3Lk6t8ZaD0Usf2HYSxGudrSDQIR3DX3GT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DDYDs+Mm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="af7Bah2k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82CEC4CEC5;
-	Wed, 16 Oct 2024 23:21:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729120914;
-	bh=jj2l+z5z0T64UjsqbIKx9n9DA8OiXqjAqg3PCGZgsoU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=af7Bah2k2HGKpQSGvVX0//1Ci0GFMWdzohzgWvqZ9Ud5O2dzDbLEEIPrUPxCRrhl2
-	 w+Bw0udf0cCZ3+n/WXZwh0KBAMGY/XvxgpJbH4cp7gV1tUKBQYdp0Ofc2ct7zdCh1Q
-	 +wLXSNDXsYQuOQRZ1Ay85/IZyvUi/SWqSWbHVXsy6R62raD0HUR5Kql/usoTjVrzSy
-	 hIR20HgR3CkCEFc+uVEIsmi56qZiILM87EB81FchDBLU7swQG6osrl3E/toanDh4R3
-	 r+IGcCk9V4cWh5cZzCnD5mQ04fFBHzmI0IYUpnEUclr9BfO0qkkOo1Un3FPWT+scGP
-	 FpHJUYW5QDvnw==
-Date: Wed, 16 Oct 2024 16:21:52 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>, Helge Deller <deller@gmx.de>
-Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
-	gary@garyguo.net, Michael Ellerman <mpe@ellerman.id.au>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	neal@gompa.dev, marcan@marcan.st, j@jannau.net,
-	asahi@lists.linux.dev, linux-modules@vger.kernel.org,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
-Message-ID: <ZxBKkJu-XPOGs-NG@bombadil.infradead.org>
-References: <20240925233854.90072-1-mmaurer@google.com>
- <20240925233854.90072-15-mmaurer@google.com>
- <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
- <CAGSQo01o4fWYwSzZHX5dyTUKcaCSZ7z-hPQ8w63tgBPGbM_UCA@mail.gmail.com>
- <ZwmnnMmqVWLaelvQ@bombadil.infradead.org>
- <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
- <Zwm4v_1wh5RwuHxF@bombadil.infradead.org>
- <CAGSQo03df-tnmwcz4nh3qtuQPKQ2zLHW0juQyKUXGsdeS7QkLA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DDYDs+Mm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729122510;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=w5zbNhf2ti3veBbqghgqqHYmZD0VaAPt+Z/wXzjXNA4=;
+	b=DDYDs+Mm0oKBEU3jHLkq7IvxbaEXr51AGnM5+Frc8XcQaw/CrwHeVoqUks2uZP3+X6Bxwh
+	sTpMGw5M+7C+Fi9tbEkHe52tADJ3aPRFHRL9/XLKCixgKDSmDKT2znzWtSObxg0kSSe8eb
+	WWVR01p1XR3vrHJbKd3013xRRM/KB0g=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-QXFk1vzHNKWcuwhiSxyKfQ-1; Wed,
+ 16 Oct 2024 19:48:27 -0400
+X-MC-Unique: QXFk1vzHNKWcuwhiSxyKfQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E3C67195608F;
+	Wed, 16 Oct 2024 23:48:25 +0000 (UTC)
+Received: from f39 (unknown [10.39.192.145])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8CC4D19560A3;
+	Wed, 16 Oct 2024 23:48:22 +0000 (UTC)
+Date: Thu, 17 Oct 2024 01:48:19 +0200
+From: Eder Zulian <ezulian@redhat.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	williams@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+Subject: Re: [PATCH] rust: Fix build error
+Message-ID: <ZxBQw1X_OG26RO9o@f39>
+References: <20241014195253.1704625-1-ezulian@redhat.com>
+ <Zw1_rXUyjTBOh0QH@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAGSQo03df-tnmwcz4nh3qtuQPKQ2zLHW0juQyKUXGsdeS7QkLA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zw1_rXUyjTBOh0QH@boqun-archlinux>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Tue, Oct 15, 2024 at 04:22:22PM -0700, Matthew Maurer wrote:
-> So, the basic things I can think of to test here are:
+Hi Boqun,
+On Mon, Oct 14, 2024 at 01:31:41PM -0700, Boqun Feng wrote:
+> Hi Eder,
 > 
-> 1. The kernel can still load the previous MODVERSIONS format
-> 2. The kernel can load the new MODVERSIONS format
-> 3. If we artificially tweak a CRC in the previous format, it will fail to load.
-> 4. If we artificially tweak a CRC in the new format, it will fail to load.
-> 5. With CONFIG_EXTENDED_MODVERSIONS enabled, the kernel will build and
-> load modules with long symbol names, with MODVERSIONS enabled.
+> Thanks for the patch!
+Sure, my pleasure.
 > 
-> Is there anything else you were thinking of here, or are those the
-> kinds of checks you were envisioning?
+> On Mon, Oct 14, 2024 at 09:52:53PM +0200, Eder Zulian wrote:
+> > When CONFIG_DEBUG_SPINLOCK=y and CONFIG_PREEMPT_RT=y the following build
+> > error occurs:
+> > 
+> >     In file included from rust/helpers/helpers.c:22:
+> >     rust/helpers/spinlock.c: In function ‘rust_helper___spin_lock_init’:
+> >     rust/helpers/spinlock.c:10:30: error: implicit declaration of function ‘spinlock_check’; did you mean ‘spin_lock_bh’? [-Wimplicit-function-declaration]
+> >        10 |         __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> >           |                              ^~~~~~~~~~~~~~
+> >           |                              spin_lock_bh
+> >     rust/helpers/spinlock.c:10:30: error: passing argument 1 of ‘__raw_spin_lock_init’ makes pointer from integer without a cast [-Wint-conversion]
+> >        10 |         __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> >           |                              ^~~~~~~~~~~~~~~~~~~~
+> >           |                              |
+> >           |                              int
+> >     In file included from ./include/linux/wait.h:9,
+> >                      from ./include/linux/wait_bit.h:8,
+> >                      from ./include/linux/fs.h:6,
+> >                      from ./include/linux/highmem.h:5,
+> >                      from ./include/linux/bvec.h:10,
+> >                      from ./include/linux/blk_types.h:10,
+> >                      from ./include/linux/blkdev.h:9,
+> >                      from ./include/linux/blk-mq.h:5,
+> >                      from rust/helpers/blk.c:3,
+> >                      from rust/helpers/helpers.c:10:
+> >     ./include/linux/spinlock.h:101:52: note: expected ‘raw_spinlock_t *’ {aka ‘struct raw_spinlock *’} but argument is of type ‘int’
+> >       101 |   extern void __raw_spin_lock_init(raw_spinlock_t *lock, const char *name,
+> >           |                                    ~~~~~~~~~~~~~~~~^~~~
+> >     make[2]: *** [scripts/Makefile.build:229: rust/helpers/helpers.o] Error 1
+> > 
+> > Error observed while building a rt-debug kernel for aarch64.
+> > 
+> > On a PREEMPT_RT build, spin locks have been mapped to rt_mutex types, so
+> > avoid the raw_spinlock_init call for RT.
+> > 
+> 
+> This is true, but to keep lockdep working I think we need to open code
+> the PREEMPT_RT version of spin_lock_init(), please see below
+> 
+> > Suggested-by: Clark Williams <williams@redhat.com>
+> > 
+> 
+> ^ unnecessary emtpy line here.
+Thanks for pointing it out. Should I fix it and send a v2?
+> 
+> > Signed-off-by: Eder Zulian <ezulian@redhat.com>
+> > ---
+> >  rust/helpers/spinlock.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> > index acc1376b833c..924c1a380448 100644
+> > --- a/rust/helpers/spinlock.c
+> > +++ b/rust/helpers/spinlock.c
+> > @@ -6,7 +6,7 @@
+> >  void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
+> >  				  struct lock_class_key *key)
+> >  {
+> > -#ifdef CONFIG_DEBUG_SPINLOCK
+> > +#if defined(CONFIG_DEBUG_SPINLOCK) && !defined(CONFIG_PREEMPT_RT)
+> >  	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> >  #else
+> >  	spin_lock_init(lock);
+> 
+> This should be:
+> 
+> void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
+>  				  struct lock_class_key *key)
+> {
+> #ifdef CONFIG_DEBUG_SPINLOCK
+> # if defined(CONFIG_PREEMPT_RT)
+Even though I don't have a strong preference on this, in my opinion, there is no
+much difference here just a line break and inverted logic. Perhaps it would be
+better to write like this: 'if (IS_ENABLED(CONFIG_PREEMPT_RT && ... ) { this }
+else { that }', however, spinlock_check() is not declared for PREEMPT_RT
+kernels because its declaration is conditional to #ifndef CONFIG_PREEMPT_RT in
+'spinlock.h'. spinlock_check() as is does not make sense for PREEMPT_RT
+because spinlock is not mapped to raw_spinlock but to rt_mutex (cf.
+'spinlock_types.h')
+> 	rt_mutex_base_init(&(lock)->lock);
+> 	__rt_spin_lock_init(lock, name, key, false);
+Apparently, this ^ matches spin_lock_init() in 'spinlock_rt.h', if true, we could
+call spin_lock_init() for PREEMPT_RT kernels. However the debug version of
+__rt_spin_lock_init() (instrumented with lockdep in 'spinlock_rt.c') depends
+on CONFIG_DEBUG_LOCK_ALLOC. Luckily, in my opnion, the #ifdefs are already in
+place.
+> # else /* !CONFIG_PREEMPT_RT */
+>   	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> # endif /* CONFIG_PREEMPT_RT */
+> #else
+> 	spin_lock_init(lock);
+> #endif
+> }
+> 
+Please let me know what you think, and bear with me if I'm missing something.
+Thanks.
+> Regards,
+> Boqun
+> 
+> > -- 
+> > 2.46.2
+> > 
+> > 
+> 
 
-That sounds great. Yeah, the above would be great to test. A while ago
-I wrote a new modules selftests in order to test possible improvements
-on find_symbol() but I also did this due to push the limits of the
-numbers of symbols we could support. I wrote all this to also test the
-possible 64-bit alignment benefits of __ksymtab_ sections on
-architectures without CONFIG_HAVE_ARCH_PREL32_RELOCATIONS (e.g. ppc64,
-ppc64le, parisc, s390x,...). But come to think of it, you might be
-able to easily leverage this to also just test long symbols by self
-generated symbols as another test case. In case its useful to you I've
-put this in a rebased branch 20241016-modules-symtab branch. Feel free
-to use as you see fit.
-
-I forget what we concluded on Helge Deller's alignement patches, I think
-there was an idea on how to address the alignment through other means.
-
-[0] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/log/?h=20241016-modules-symtab
-
-  Luis
