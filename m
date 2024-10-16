@@ -1,127 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0745D13AF2;
-	Wed, 16 Oct 2024 01:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952231304BA;
+	Wed, 16 Oct 2024 03:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729042590; cv=none; b=d1pMqpMwsXCNbc3CePMMB90FW5l5zJSuwStTVoNqkkBxj6e2Wj6nFGnUXr5NUt8xnAMd/J+fpXM6Haem2Sn1ks/3MRbFEuLYvz03+oow/mmgHeopVtwFiUgs4F/49u/FaxOFNveG07zalhEXnO4Dh7AV3VU3lLAkldbhtb1PVbc=
+	t=1729050819; cv=none; b=ucoz8lbWpLpiWdIVL7fvH3hZ/B8lp47ojZzkbjzXyBuRJ5t9TnDERU61EjLU/l33CP8O3ehwsgf/ye7XANU4oUlUhZPaezhtfVYeOuyy/L2GHiI4xCNKE5jr96C8MA/UGHxSUHqDd0wWDMW204BWGU3wrrDKDtSyyVcVYpL41aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729042590; c=relaxed/simple;
-	bh=EyTf8ypYJUnbA4aU4ZY+o5alByAa+yZe1C+/N3NxFes=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oKYNtV8uKtltP1/qhRKIaS5AlMttNZReVAOfe2BT8kQ6MDet8s2NU1EKjAVozvHJe/IvwW0tOcx2+urhOYTYCKa3laIBaFMo0N6oARRML4Ris20CKY8CP+8GA7R6fWEf7L2vKGa17zzVVnHXjXgx3rnq043au2PDdCXaypj/mlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbbkXUgv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729050819; c=relaxed/simple;
+	bh=w2ecT24Kyn76nmgnQevViwuwRFcLvtFR/VWNmAeR4AI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eHXOtmZNVZvoFJuJ36YNxQwFQkvYUdLkUcdTcu7leO6n3406PXJGy79L1vFwdQd76n14kkOwATkYIQwuNJNfcz2HqAStPFTgdAuff6fFLzP9uDWJCF9Qc6MBPmN5AQvOayMqjEnEwOIQEaFmERRzwSJdkGK69C6m9ZkBB/BAEOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJ4HGJTW; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbbkXUgv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B542C4CED5;
-	Wed, 16 Oct 2024 01:36:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729042589;
-	bh=EyTf8ypYJUnbA4aU4ZY+o5alByAa+yZe1C+/N3NxFes=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sbbkXUgvlJwl5fDxfRa30i3mFifxoXfGeNqhFxdx5r8P+y6eDXO4S2RBoGKawPdJQ
-	 vblkrc0pVFWsv6jV6g/uCxmaWqvolQ1YV1UzLqm2W1SNyzNdHDJanqeUp/n8je5rZ1
-	 ZTNa68GE03ZQijuGD0BL23Ui5njzWR99dvJXCkJF1NsBrEdtpcNM7+2r0CGRlgAayH
-	 XmFZo1RGYFaqGp6GiiWLkT2VirfPChAQAhIrsOSsBz/56jR41K+ypf0ND6Qx/txbUL
-	 e7qEudPzb7XRhRUIqAV+UDLFxMfjH9YRZmwM1xY0d+6I5QMQ/5hyakjd9gOu+P7GVg
-	 tqYqvE7Ve9b1A==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2fb498a92f6so33855691fa.1;
-        Tue, 15 Oct 2024 18:36:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUSKt7Re5CPqmkL65AXohNtP4JizhmKJS2pPsvZjMrXoxExOVgbKfmwtcPIqMMzvV/rXDrbzo6WomrtyPI=@vger.kernel.org, AJvYcCX8kDsI5l6kbrfewp51cQSmb+aDVx175exwloljf1JTGFgKdC+GEQatl30jtBXWsCeYS+xsuDlK8UQT/WAdcWo=@vger.kernel.org, AJvYcCXvVSYrwYuedLFO4Dn0GIQmvKJfiCKcVhxZfVJS43lHJ7s0R631u3SJb20uTSQ+bkPO2mrHk6oCg8uxYUuF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9FmPXDAQfIE9XJ+voZV/Ul41+q4QcIPCvj6NggWhK8XS8Mxnx
-	21Q2JiCnSghDYmISxLDU771pzCMKeEMDepa8cmJC7i/sSei6Vk3dafyL/3Es3Cw/SaLC/uugQKG
-	B2TdBY38Ngf6vFPIwHi085DADa0I=
-X-Google-Smtp-Source: AGHT+IHzoVMypscy8BPsGKZUxBnSxDBZTWto2GwTo/mZ1Yq95n7GVmtr3XmzjJJCM6j6cDBCzzagpDlXMSqZjJmpefA=
-X-Received: by 2002:a05:651c:b06:b0:2fb:b8a:7abb with SMTP id
- 38308e7fff4ca-2fb61b6ebbemr12435461fa.21.1729042588147; Tue, 15 Oct 2024
- 18:36:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJ4HGJTW"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2e2dc61bc41so3919623a91.1;
+        Tue, 15 Oct 2024 20:53:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729050817; x=1729655617; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xsDQGvqFbk9A8NMt3RcQDdNjWrv9GKnKY+O+O8W7yyI=;
+        b=aJ4HGJTWfCVVKEzs2D/zJZW7myebX74o1dsVycE42R2EVDDKdkWujyFGTvTXAdrQAS
+         D2ezr347q/olnBRZaQEZwg6DpUe51xzMbuMzmxRcHXSA6aducckj0wJEKB5Y5ARGKIYv
+         fVrQ7nkmIdhhyEhn4OeNOrjPLO70pQU5ShrOfuPnW7YK4jyvHcPmXAifzxDWjhCbELJz
+         ySIsGLmreUsrqoh+KN0BbtMH2Cf1r2ScTUjSpklOnCXRBPCrbydqRwpshyho8sG21oiu
+         KP4q1X422il/QlzyPf7+yx/BsGWoTl134lLT1kQV3W2+vSQjLlLfjT9QZWAwJeqyyALJ
+         MBfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729050817; x=1729655617;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xsDQGvqFbk9A8NMt3RcQDdNjWrv9GKnKY+O+O8W7yyI=;
+        b=ZGsf3bcBcWhtrEK3CUr6VkpMpG+sHo6iIILJJPoEehKQmlmTNzvsHZ0+oew79lcEd4
+         k7rSCZw8fEPT4GMAvKsi1+H6AVwGJG9G+/Tup9rsJdHt58otubi+cO2F/1LRKOhkPHQM
+         1l/Pu2V0JFeMxB2lnrwy8VVdZwwtTPelodLejUoSnZuTAwZ8o90fv8ANlpmsUMez4GIR
+         X57KK52OuB5ebrj3dHEXjiG/Z+Q+cLj9rMGyLxZOJSKuu2FRiSAK3izmsAMSH7OsiHaQ
+         BskyrIppXtBHkLEml/iavFWYcm9JCQbsjvK9UjD5eslIwsWRLmLvzhKh7tTOWzIrLzA3
+         5AGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWW4H+oOaHzmDhI6XcUxUe1VvrUr4aKSe96SJ+5NqrhEtZgZZ3P/9EnreB+7oCST/QRMPnh3fPzgNr6d7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDCszaI0DOdcFZnpTUKwJxm3QilKuHyBthi+5Y+wrvoVDntfwg
+	RDv3qtyky5A0qdozHDBnbpdWJOOiypJoiqbQjntuqytyVBrxqUW7BpUC7E7i
+X-Google-Smtp-Source: AGHT+IHC27WpHhPPnyuyQIiYpsCEcj3Vpq1+oLDHjIegNo5o8Qbn5NnGfSLpWWEMxFd+Cl+y7FDBtA==
+X-Received: by 2002:a17:90a:8a92:b0:2e2:e660:96d5 with SMTP id 98e67ed59e1d1-2e3152f4b3bmr17504386a91.24.1729050816524;
+        Tue, 15 Oct 2024 20:53:36 -0700 (PDT)
+Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e392ed1a4fsm2885691a91.17.2024.10.15.20.53.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Oct 2024 20:53:36 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	arnd@arndb.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/8] rust: Add IO polling
+Date: Wed, 16 Oct 2024 12:52:05 +0900
+Message-ID: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241008224810.84024-1-tamird@gmail.com> <CANiq72=QimAkV0_n2nDiPSXT0N3sWxVeapze9FPPhirmoagbug@mail.gmail.com>
- <CAJ-ks9=sxVfjmbE+MuZg=7atpKFj-LJ4i7pk1ex+ZfvrUnvKqQ@mail.gmail.com>
- <CGME20241010083123eucas1p2432a0bbbf37e85599b477d92965d9514@eucas1p2.samsung.com>
- <CANiq72=geQY8f1J4rEfb-2UP+MOTY031tc=t1wuPNTVzS6tiSQ@mail.gmail.com>
- <D4RZIDTJFVX5.16Z4XSB5IW6D1@samsung.com> <CANiq72n+mWOP3xNUU4Mep-n5QtJ8zQiwP9JZ-KX68+fOC0GMmw@mail.gmail.com>
- <CAJ-ks9mrY0eWjagq7hnHzY9jMRzV_4NS1cBfg4ad0v9Q3aV38A@mail.gmail.com>
- <CANiq72kzEdyQYhsw10h7qVaT2d=0z1qKsOUo-NzZw5xYrn1nuw@mail.gmail.com>
- <CAJ-ks9myRR1PgER6UtkFBE_mmgA7YGFjU11+JZXbjKVcra-sfg@mail.gmail.com>
- <CAK7LNARg=ZvD14ARKw40uk0XNfE5qgWqsrM6H4jBJu0m5XYCWQ@mail.gmail.com>
- <CANiq72n6zkCZdUJ0A8enLW3BgmA_=eJKgDKwNCfs-q3dfeR2BA@mail.gmail.com>
- <CAJ-ks9==6mi7SF5rTR=YouwC6RwktJftqXHqhsBcHNTWxdbfig@mail.gmail.com>
- <CANiq72nBYswZs_m9Ky3KKNz_WmHrsSoRDJqcuHGt2WpvUogtqw@mail.gmail.com>
- <CAJ-ks9khX7Ha4iGWOkbHeXzJLPisE9r=+q54Z9HMQkojR=-a8Q@mail.gmail.com>
- <CANiq72=mUeMYvgfQVozr363juCuKmMVNx_13dj+q=3KKJ4DeHA@mail.gmail.com> <CAJ-ks9msDK9UAK5Pv2-TVWXv1-xYD3L0J=JKupN_Z5WW8VrX=g@mail.gmail.com>
-In-Reply-To: <CAJ-ks9msDK9UAK5Pv2-TVWXv1-xYD3L0J=JKupN_Z5WW8VrX=g@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 16 Oct 2024 10:35:51 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATnhdshYWAHyqz9HRjTggj=7SFB_8d2Oqkr4OOupY9Lag@mail.gmail.com>
-Message-ID: <CAK7LNATnhdshYWAHyqz9HRjTggj=7SFB_8d2Oqkr4OOupY9Lag@mail.gmail.com>
-Subject: Re: [PATCH] rust: query the compiler for dylib path
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"David S. Miller" <davem@davemloft.net>, Kris Van Hees <kris.van.hees@oracle.com>, 
-	=?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Vegard Nossum <vegard.nossum@oracle.com>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 16, 2024 at 12:53=E2=80=AFAM Tamir Duberstein <tamird@gmail.com=
-> wrote:
->
-> On Tue, Oct 15, 2024 at 11:30=E2=80=AFAM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > If a trick still requires a similar amount of changes to mainline,
-> > then I think we should go for something better/more proper, i.e. the
-> > idea is to minimize changes/complexity upstream, after all.
->
-> In that case v5[0] is probably the way to go?
->
-> On Mon, Oct 14, 2024 at 2:45=E2=80=AFPM Masahiro Yamada <masahiroy@kernel=
-.org> wrote:
-> > This no-clean-files is meaningless and unnecessary.
-> > This line exists inside the "ifdef CONFIG_RUST" ... "endif" block.
-> >
-> > no-clean-files is only used by scripts/Makefile.clean,
-> > which does not include include/config/auto.conf.
->
-> I see. Was it necessary before this patch? Looks like it came with the
-> initial rust support patch.
+polls periodically until a condition is met or a timeout is reached.
+By using the function, the 8th patch fixes QT2025 PHY driver to sleep
+until the hardware becomes ready.
+
+As a result of the past discussion, this introduces a new type
+representing a span of time instead of using core::time::Duration or
+time::Ktime.
+
+Unlike the old rust branch, This adds a wrapper for fsleep() instead
+of msleep(). fsleep() automatically chooses the best sleep method
+based on a duration.
+
+v3:
+- Update time::Delta methods (use i64 for everything)
+- Fix read_poll_timeout to show the proper debug info (file and line)
+- Move fsleep to rust/kernel/time/delay.rs
+- Round up delta for fsleep
+- Access directly ktime_t instead of using ktime APIs
+- Add Eq and Ord with PartialEq and PartialOrd
+v2: https://lore.kernel.org/lkml/20241005122531.20298-1-fujita.tomonori@gmail.com/
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (8):
+  rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+  rust: time: Introduce Delta type
+  rust: time: Change output of Ktime's sub operation to Delta
+  rust: time: Implement addition of Ktime and Delta
+  rust: time: Add wrapper for fsleep function
+  MAINTAINERS: rust: Add TIMEKEEPING and TIMER abstractions
+  rust: Add read_poll_timeout functions
+  net: phy: qt2025: Wait until PHY becomes ready
+
+ MAINTAINERS               |  2 +
+ drivers/net/phy/qt2025.rs | 10 +++-
+ rust/helpers/helpers.c    |  2 +
+ rust/helpers/kernel.c     | 13 +++++
+ rust/helpers/time.c       |  8 ++++
+ rust/kernel/error.rs      |  1 +
+ rust/kernel/io.rs         |  5 ++
+ rust/kernel/io/poll.rs    | 84 +++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |  1 +
+ rust/kernel/time.rs       | 99 ++++++++++++++++++++++++++++++++++++---
+ rust/kernel/time/delay.rs | 31 ++++++++++++
+ 11 files changed, 249 insertions(+), 7 deletions(-)
+ create mode 100644 rust/helpers/kernel.c
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/io.rs
+ create mode 100644 rust/kernel/io/poll.rs
+ create mode 100644 rust/kernel/time/delay.rs
 
 
-You can just delete no-clean-files from your patch.
+base-commit: 068f3b34c5c2be5fe7923a9966c1c16f992a2f9c
+-- 
+2.43.0
 
-
-Files specified to $(always-y) are removed by "make clean".
-That's why [0] added no-clean-files to negate it.
-
-
-You are moving "always-$(CONFIG_RUST) +=3D libmacros.so"
-into the "ifdef CONFIG_RUST" ... "endif" block, which is not
-parsed by "make clean".
-
-
-
-
->
-> [0] https://lore.kernel.org/all/20241010142833.98528-2-tamird@gmail.com/
-
-
-
---=20
-Best Regards
-Masahiro Yamada
