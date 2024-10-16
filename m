@@ -1,420 +1,134 @@
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871F11E4A6;
-	Wed, 16 Oct 2024 13:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C031FCC67
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 13:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729084682; cv=none; b=Ymq1Oy/0dtLc+z7YzBcw1I1d4HSM+DgZ3/pmZHkiyIaM55/8VSMYVcgmPShPr3tKM0Xn/eY9ImRptRCSdBnOGLjF+dQWSya+q4cox0wuR230pWlPsdQnbnEkPzbVM18yBDhQrx+w6HoELyoZ9t3hBlowSpqu7QbVd+qTVGIa61M=
+	t=1729085713; cv=none; b=fxQq0kklvbQkI0oZjIvvEIR+OVvDZwGXv71QfC/uRsoMdGeVRH7qxezrOf7soeRkdqg/EUo41G4MSJgUSukQY9fRZlVCT83qj2IXwhsc754ZI64rDC1ocRVCeeZyiUgeP/47Ysz47pyjpiJkH8iyVDMkeccvvnXfXAv3XfYbtxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729084682; c=relaxed/simple;
-	bh=o9QojEEoVu3EJyh7dPNCtmVzfQrHAuliI6UgMyrEw4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UD4ew/UIchRlU3UsnloXfDEuPQhVabfi4IsgXKfE1eaIRMGLD5R7q2eNCt3d0XQ9paycoGzJv+pBoTOqwIShFpio9jsmiYOS5cTzXmvBdUqWdSw4sBOdce3NtUvlNdd4KwZaejPMZvakWOxBONuUCFu0f9b/OWj5As1R+MvS0aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app2 (Coremail) with SMTP id HwEQrADX3gLivA9nNogTAQ--.4577S2;
-	Wed, 16 Oct 2024 21:17:22 +0800 (CST)
-Received: from pride-PowerEdge-R740.. (unknown [222.20.126.129])
-	by gateway (Coremail) with SMTP id _____wDHksbhvA9nECJCAA--.14301S2;
-	Wed, 16 Oct 2024 21:17:22 +0800 (CST)
-From: Dongliang Mu <dzm91@hust.edu.cn>
-To: Alex Shi <alexs@kernel.org>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Dongliang Mu <dzm91@hust.edu.cn>
-Cc: hust-os-kernel-patches@googlegroups.com,
-	Yanteng Si <si.yanteng@linux.dev>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH] docs/zh_CN: add the translation of kbuild/kbuild.rst
-Date: Wed, 16 Oct 2024 21:16:32 +0800
-Message-ID: <20241016131710.2619567-1-dzm91@hust.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1729085713; c=relaxed/simple;
+	bh=QBERmKorMxqVCLC0uXuv+/O/Y7O9Tm88a0mjpgnqG2c=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Iw5z5H+b8ZHAW5CHP6pR6J6DqiDp49VmYjujhbgNyiLtqWscvJOA9sIeG0MBq8uWQNkAPQeT0kNUenC9vyyvHDkF1rAkESAntFnhhSj7j/fRG0HI79Y/Jw+qJ3IIStrkAP35tDj5Ok7C0RV44hrGgavhiAzuLeqsDLWUWsJ+tSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VamGJE6U; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VamGJE6U"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c941623a5aso1658155a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 06:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729085710; x=1729690510; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AIC5ym5lyRpoh3lakhNtawnYUqSX+C+qFI2g7fX8K0U=;
+        b=VamGJE6Utp+TYiI3fcMWX3T+VUS/ofF8cmXFNtfPg2Qs5mH9zFbN4L7rpq5XFT1wc0
+         dwHXD9EraEOEWc3oHawBjpC/GRJUu4Y2Os0aD2HMIJ9jwMLy72sgiczejvyv8EV89hs6
+         RNzpPNgtScXn4npSjjTpzLTGy/zcMyfk3Kkwj/++FR/1PvasHUdJs1iUsmtqGaunynNw
+         2kbY1WgImkkyPm+r/840irycP7KV+ex5zekoMq3GbKvgi8TPj+cNE4+EHJ24XaRZ3W6o
+         oro3NRavJqQXpKSO6EIAgHYwO12N4hebQosZcf0kP1M6dpRTJrvARjiEQUePY9a4UPN0
+         77Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729085710; x=1729690510;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AIC5ym5lyRpoh3lakhNtawnYUqSX+C+qFI2g7fX8K0U=;
+        b=Yg5FT8zQN5KVBq1c4Z0kgGUG1wdOVBY924RINb7w1YJ/6ZjzErIrTDS4X1TVvf6Bgl
+         wXgcIPGMvjdmQnUHjObThxK/rYTdqJ3O9PBfBBigIRyvxA1XvK4IWef6Jpnes721oZO4
+         Wb5tyZj2HDtA3ACA9rq65A0ffKXDY55fMgQoGjU4dcZpAKUT/O9C10yEt/7fMIbvyO+G
+         StbF6DzGV7uDhfJVC594SGyzP++OftYnYdUrAy/daucKtdAYIag9zIYN8DNeZnmh3Acg
+         7Eim1EhauwnCDP25qUAaCv5+rIyORe7N4seEuwOaXe3GZoIq7a8UJvhnCQ2Xgde+Vga0
+         8fqg==
+X-Gm-Message-State: AOJu0YweS1Zgw2dkDNuHrS/J5gqamShkALeD6XaMIJfaPzqXlSWYX0qZ
+	DWTS6cWi0+0FvtoHLsyjyah1p5PzTJQC/5CMg9kVKJRdn0KCWd8Ll5R/r2AO
+X-Google-Smtp-Source: AGHT+IEC9sPunBlaqWyECvTe8EPROe6AsyU0amjOORjCcOcsmb/av1mQY6db/+5HEVU/WvZrh36OhA==
+X-Received: by 2002:a17:906:f5a4:b0:a9a:861:63f4 with SMTP id a640c23a62f3a-a9a335dbc83mr399946466b.17.1729085710083;
+        Wed, 16 Oct 2024 06:35:10 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf0d:b400:4611:f27a:f592:9ec5? (p200300dfbf0db4004611f27af5929ec5.dip0.t-ipconnect.de. [2003:df:bf0d:b400:4611:f27a:f592:9ec5])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a2971b0bfsm187898866b.10.2024.10.16.06.35.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Oct 2024 06:35:08 -0700 (PDT)
+Message-ID: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
+Date: Wed, 16 Oct 2024 15:35:07 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: de-AT-frami, en-US
+To: rust-for-linux@vger.kernel.org
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Tejun Heo <tj@kernel.org>
+From: Dirk Behme <dirk.behme@gmail.com>
+Subject: [PATCH v2] rust: workqueue: Enable execution of doctests
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrADX3gLivA9nNogTAQ--.4577S2
-Authentication-Results: app2; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoW3Cr43KFWUtr4DtFW8ZF48tFb_yoWkZw47pa
-	n3u347t3ZrtryrZFy7KFWjvr18Jr1kJw1Yq3WDtF92qw1xZrWDZr4UKry0yF9rG348J34D
-	CFyUGry7AryUA3JanT9S1TB71UUUU1UqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQab7Iv0xC_Zr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1q6r43M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	WxJVW8Jr1lYx0E74AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r4a6rW5Mx
-	AIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY20_GFW3Jr1UJwCFx2IqxVCFs4IE7xkE
-	bVWUJVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E74
-	80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0
-	I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04
-	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7Cj
-	xVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jydgAUUUUU=
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
+Content-Transfer-Encoding: 7bit
 
-Finish the translation of kbuild/kbuild.rst and move kbuild
-from TODO to the main body.
+Having the Rust doctests enabled these workqueue tests are built but not
+executed as the final callers of the print_*() functions are missing.
+Add them.
 
-Update to commit 2eb5d7f24299 ("kbuild: doc: describe the -C
-option precisely for external module builds")
+The result is
 
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+    # rust_doctest_kernel_workqueue_rs_0.location:
+rust/kernel/workqueue.rs:35
+rust_doctests_kernel: The value is: 42
+    ok 94 rust_doctest_kernel_workqueue_rs_0
+    # rust_doctest_kernel_workqueue_rs_3.location:
+rust/kernel/workqueue.rs:78
+rust_doctests_kernel: The value is: 24
+rust_doctests_kernel: The second value is: 42
+    ok 97 rust_doctest_kernel_workqueue_rs_3
+
+Without this change the "The value ..." outputs are not there meaning
+that this test code is not run.
+
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Trevor Gross <tmgross@umich.edu>
+Cc: Tejun Heo <tj@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Dirk Behme <dirk.behme@gmail.com>
 ---
- .../translations/zh_CN/kbuild/index.rst       |   2 +-
- .../translations/zh_CN/kbuild/kbuild.rst      | 304 ++++++++++++++++++
- 2 files changed, 305 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/translations/zh_CN/kbuild/kbuild.rst
 
-diff --git a/Documentation/translations/zh_CN/kbuild/index.rst b/Documentation/translations/zh_CN/kbuild/index.rst
-index e8eb448c1197..c06268cf44be 100644
---- a/Documentation/translations/zh_CN/kbuild/index.rst
-+++ b/Documentation/translations/zh_CN/kbuild/index.rst
-@@ -15,12 +15,12 @@
-     kconfig
-     headers_install
-     gcc-plugins
-+    kbuild
- 
- TODO:
- 
- - kconfig-language
- - kconfig-macro-language
--- kbuild
- - makefiles
- - modules
- - issues
-diff --git a/Documentation/translations/zh_CN/kbuild/kbuild.rst b/Documentation/translations/zh_CN/kbuild/kbuild.rst
-new file mode 100644
-index 000000000000..e5e2aebe1ebc
---- /dev/null
-+++ b/Documentation/translations/zh_CN/kbuild/kbuild.rst
-@@ -0,0 +1,304 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. include:: ../disclaimer-zh_CN.rst
-+
-+:Original: Documentation/kbuild/kbuild.rst
-+:Translator: 慕冬亮 Dongliang Mu <dzm91@hust.edu.cn>
-+
-+======
-+Kbuild
-+======
-+
-+
-+输出文件
-+========
-+
-+modules.order
-+-------------
-+该文件记录模块在 Makefile 中出现的顺序。modprobe 使用该文件来确定性
-+解析匹配多个模块的别名。
-+
-+modules.builtin
-+---------------
-+该文件列出了所有内置到内核中的模块。modprobe 使用该文件来避免尝试加载
-+内置模块时出错。
-+
-+modules.builtin.modinfo
-+-----------------------
-+该文件包含所有内置模块的 modinfo。与单独模块的 modinfo 不同，所有字段
-+都带有模块名称前缀。
-+
-+modules.builtin.ranges
-+----------------------
-+该文件包含所有内核内置模块的地址偏移范围（每个 ELF 节）。结合 System.map
-+文件，它可以用来将模块名称与符号关联起来。
-+
-+环境变量
-+========
-+
-+KCPPFLAGS
-+---------
-+在预处理时传递的额外选项。kbuild 进行所有预处理（包括构建 C 文件和汇编文件）
-+时，都会使用这些预处理选项。
-+
-+KAFLAGS
-+-------
-+传递给汇编器的额外选项（适用于内置模块和外部模块）。
-+
-+AFLAGS_MODULE
-+-------------
-+外部模块的额外汇编选项。
-+
-+AFLAGS_KERNEL
-+-------------
-+内置模块的额外汇编选项。
-+
-+KCFLAGS
-+-------
-+传递给 C 编译器的额外选项（适用于内置模块和外部模块）。
-+
-+KRUSTFLAGS
-+----------
-+传递给 Rust 编译器的额外选项（适用于内置模块和外部模块）。
-+
-+CFLAGS_KERNEL
-+-------------
-+在编译内置代码时，传递给 $(CC) 的额外选项。
-+
-+CFLAGS_MODULE
-+-------------
-+编译外部模块时，传递给 $(CC) 的额外模块特定选项。
-+
-+RUSTFLAGS_KERNEL
-+----------------
-+在编译内置代码时，传递给 $(RUSTC) 的额外选项。
-+
-+RUSTFLAGS_MODULE
-+----------------
-+用于 $(RUSTC) 的额外模块特定选项。
-+
-+LDFLAGS_MODULE
-+--------------
-+用于 $(LD) 链接模块时的额外选项。
-+
-+HOSTCFLAGS
-+----------
-+在构建主机程序时传递给 $(HOSTCC) 的额外标志。
-+
-+HOSTCXXFLAGS
-+------------
-+在构建主机程序时传递给 $(HOSTCXX) 的额外标志。
-+
-+HOSTRUSTFLAGS
-+-------------
-+在构建主机程序时传递给 $(HOSTRUSTC) 的额外标志。
-+
-+HOSTLDFLAGS
-+-----------
-+链接主机程序时传递的额外选项。
-+
-+HOSTLDLIBS
-+----------
-+在构建主机程序时链接的额外库。
-+
-+.. _zh_cn_userkbuildflags:
-+
-+USERCFLAGS
-+----------
-+用于 $(CC) 编译用户程序（userprogs）时的额外选项。
-+
-+USERLDFLAGS
-+-----------
-+用于 $(LD) 链接用户程序时的额外选项。用户程序（userprogs）是使用 CC 链接的，
-+因此 $(USERLDFLAGS) 应该根据需要包含 "-Wl," 前缀。
-+
-+KBUILD_KCONFIG
-+--------------
-+将顶级 Kconfig 文件设置为此环境变量的值。默认名称为 "Kconfig"。
-+
-+KBUILD_VERBOSE
-+--------------
-+设置 kbuild 的详细程度。可以分配与 "V=..." 相同的值。
-+
-+有关完整列表，请参见 `make help`。
-+
-+设置 "V=..." 优先于 KBUILD_VERBOSE。
-+
-+KBUILD_EXTMOD
-+-------------
-+在构建外部模块时设置内核源代码的搜索目录。
-+
-+设置 "M=..." 优先于 KBUILD_EXTMOD。
-+
-+KBUILD_OUTPUT
-+-------------
-+指定内核构建的输出目录。
-+
-+在单独的构建目录中为预构建内核构建外部模块时，这个变量也可以指向内核输出目录。请注意，
-+这并不指定外部模块本身的输出目录。
-+
-+输出目录也可以使用 "O=..." 指定。
-+
-+设置 "O=..." 优先于 KBUILD_OUTPUT。
-+
-+KBUILD_EXTRA_WARN
-+-----------------
-+指定额外的构建检查。也可以通过在命令行传递 "W=..." 来设置相同的值。
-+
-+请参阅 `make help` 了解支持的值列表。
-+
-+设置 "W=..." 优先于 KBUILD_EXTRA_WARN。
-+
-+KBUILD_DEBARCH
-+--------------
-+对于 deb-pkg 目标，允许覆盖 deb-pkg 部署的正常启发式方法。通常 deb-pkg 尝试根据
-+UTS_MACHINE 变量（在某些架构中还包括内核配置）来猜测正确的架构。KBUILD_DEBARCH
-+的值假定（不检查）为有效的 Debian 架构。
-+
-+KDOCFLAGS
-+---------
-+指定在构建过程中用于 kernel-doc 检查的额外（警告/错误）标志，查看
-+scripts/kernel-doc 了解支持的标志。请注意，这目前不适用于文档构建。
-+
-+ARCH
-+----
-+设置 ARCH 为要构建的架构。
-+
-+在大多数情况下，架构的名称与 arch/ 目录中的子目录名称相同。
-+
-+但某些架构（如 x86 和 sparc）有别名。
-+
-+- x86: i386 表示 32 位，x86_64 表示 64 位
-+- parisc: parisc64 表示 64 位
-+- sparc: sparc32 表示 32 位，sparc64 表示 64 位
-+
-+CROSS_COMPILE
-+-------------
-+指定 binutils 文件名的可选固定部分。CROSS_COMPILE 可以是文件名的一部分或完整路径。
-+
-+在某些设置中，CROSS_COMPILE 也用于 ccache。
-+
-+CF
-+--
-+用于 sparse 的额外选项。
-+
-+CF 通常在命令行中如下所示使用::
-+
-+    make CF=-Wbitwise C=2
-+
-+INSTALL_PATH
-+------------
-+INSTALL_PATH 指定放置更新后的内核和系统映像的路径。默认值是 /boot，但你可以设置
-+为其他值。
-+
-+INSTALLKERNEL
-+-------------
-+使用 "make install" 时调用的安装脚本。
-+默认名称是 "installkernel"。
-+
-+该脚本将会以以下参数调用：
-+
-+   - $1 - 内核版本
-+   - $2 - 内核映像文件
-+   - $3 - 内核映射文件
-+   - $4 - 默认安装路径（如果为空，则使用根目录）
-+
-+"make install" 的实现是架构特定的，可能与上述有所不同。
-+
-+提供 INSTALLKERNEL 以便在交叉编译内核时可以指定自定义安装程序。
-+
-+MODLIB
-+------
-+指定模块的安装位置。
-+默认值为::
-+
-+    $(INSTALL_MOD_PATH)/lib/modules/$(KERNELRELEASE)
-+
-+该值可以被覆盖，在这种情况下将忽略默认值。
-+
-+INSTALL_MOD_PATH
-+----------------
-+INSTALL_MOD_PATH 指定了模块目录重定位时 MODLIB 的前缀，通常由构建根
-+（build roots）所需。它没有在 makefile 中定义，但如果需要，可以作为
-+参数传递给 make。
-+
-+INSTALL_MOD_STRIP
-+-----------------
-+如果 INSTALL_MOD_STRIP 被定义，内核模块在安装后会被剥离。如果
-+INSTALL_MOD_STRIP 的值为 '1'，则会使用默认选项 --strip-debug。否则，
-+INSTALL_MOD_STRIP 的值将作为 strip 命令的选项。
-+
-+INSTALL_HDR_PATH
-+----------------
-+INSTALL_HDR_PATH 指定了执行 "make headers_*" 时，用户空间头文件的安装位置。
-+
-+默认值为::
-+
-+    $(objtree)/usr
-+
-+$(objtree) 是保存输出文件的目录。
-+输出目录通常使用命令行中的 "O=..." 进行设置。
-+
-+该值可以被覆盖，在这种情况下将忽略默认值。
-+
-+INSTALL_DTBS_PATH
-+-----------------
-+INSTALL_DTBS_PATH 指定了设备树二进制文件的安装位置，通常由构建根（build roots）所需。
-+它没有在 makefile 中定义，但如果需要，可以作为参数传递给 make。
-+
-+KBUILD_ABS_SRCTREE
-+--------------------------------------------------
-+Kbuild 在可能的情况下使用相对路径指向源代码树。例如，在源代码树中构建时，源代码树路径是
-+'.'。
-+
-+设置该标志请求 Kbuild 使用源代码树的绝对路径。
-+在某些情况下这是有用的，例如在生成带有绝对路径条目的标签文件时等。
-+
-+KBUILD_SIGN_PIN
-+---------------
-+当签署内核模块时，如果私钥需要密码或 PIN，此变量允许将密码或 PIN 传递给 sign-file 工具。
-+
-+KBUILD_MODPOST_WARN
-+-------------------
-+KBUILD_MODPOST_WARN 可以设置为在最终模块链接阶段出现未定义符号时避免错误。它将这些错误
-+转为警告。
-+
-+KBUILD_MODPOST_NOFINAL
-+----------------------
-+KBUILD_MODPOST_NOFINAL 可以设置为跳过模块的最终链接。这仅在加速编译测试时有用。
-+
-+KBUILD_EXTRA_SYMBOLS
-+--------------------
-+用于依赖其他模块符号的模块。详见 modules.rst。
-+
-+ALLSOURCE_ARCHS
-+---------------
-+对于 tags/TAGS/cscope 目标，可以指定包含在数据库中的多个架构，用空格分隔。例如::
-+
-+    $ make ALLSOURCE_ARCHS="x86 mips arm" tags
-+
-+要获取所有可用架构，也可以指定 all。例如::
-+
-+    $ make ALLSOURCE_ARCHS=all tags
-+
-+IGNORE_DIRS
-+-----------
-+对于 tags/TAGS/cscope 目标，可以选择不包含在数据库中的目录，用空格分隔。例如::
-+
-+    $ make IGNORE_DIRS="drivers/gpu/drm/radeon tools" cscope
-+
-+KBUILD_BUILD_TIMESTAMP
-+----------------------
-+将该环境变量设置为日期字符串，可以覆盖在 UTS_VERSION 定义中使用的时间戳
-+（运行内核时的 uname -v）。该值必须是一个可以传递给 date -d 的字符串。默认值是
-+内核构建某个时刻的 date 命令输出。
-+
-+KBUILD_BUILD_USER, KBUILD_BUILD_HOST
-+------------------------------------
-+这两个变量允许覆盖启动时显示的 user@host 字符串以及 /proc/version 中的信息。
-+默认值分别是 whoami 和 host 命令的输出。
-+
-+LLVM
-+----
-+如果该变量设置为 1，Kbuild 将使用 Clang 和 LLVM 工具，而不是 GCC 和 GNU
-+binutils 来构建内核。
+Changes in v2:
+  - Drop 'let _ ='
+  - Drop empty line
+  - Add additional maintainers into Cc
+  - Drop newline in commit message
+  - Add Reviewed-by from v1
+
+ rust/kernel/workqueue.rs | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 10d2bc62e2cf..3755c8e5e9ea 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -69,6 +69,7 @@
+ //! fn print_later(val: Arc<MyStruct>) {
+ //!     let _ = workqueue::system().enqueue(val);
+ //! }
++//! # print_later(MyStruct::new(42).unwrap());
+ //! ```
+ //!
+ //! The following example shows how multiple `work_struct` fields can
+be used:
+@@ -126,6 +127,8 @@
+ //! fn print_2_later(val: Arc<MyStruct>) {
+ //!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
+ //! }
++//! # print_1_later(MyStruct::new(24, 25).unwrap());
++//! # print_2_later(MyStruct::new(41, 42).unwrap());
+ //! ```
+ //!
+ //! C header:
+[`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
 -- 
-2.43.0
-
+2.34.1
