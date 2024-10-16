@@ -1,55 +1,55 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1791FDFAC
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 08:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E54820262E
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 08:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729067882; cv=none; b=G/wtUCUqEs+DrOc4Hx9qkRCi5yCBk/n0UQ/JfXKb5cWF34b0mJcHzkwgjOckWUR3bUtUjCBe+nQeOM46D29kVn+2Cbu1Wco/MBZWol8tLBzwUfGpe3eg4KK4MmNUnzUWocj9S/tFDT475BCfDiJoovTWPV5DciCQytqBhxlVTrg=
+	t=1729068353; cv=none; b=KPxululK/yRPgw2G815TYppMhP9lnHIcc8Wz2azyA9/z+W43aY63hobnBm3zPATCmE7DF5FnbQ9So3DQPPc7ZvMtTv/2AIDS4OD/L51yCCP+LQASdeRG1uJqLVZrzE2BZ7vHBpayziUk1MTTG1NbXjGgDTfoqWNgpcondnzC6c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729067882; c=relaxed/simple;
-	bh=7mSyqukGBIpCmay8QT2V728qhVZnc5Gk5vx+ah5E968=;
+	s=arc-20240116; t=1729068353; c=relaxed/simple;
+	bh=tPKp6FH8LM1Ajw5jVA0FwWcF7dwxBVDEain5oorsqTk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pJQk/DC0InM7LX0uJ/yS+hD1mbXGXBTT6fh3tSSVz3YhkJesPl/+PCbE5Sag8e98baLVELOdYTMsmu+Hd/UBq97cg4XUdOb3nCzJbSWEhD59groO5PhbGDopx+dNoQIr8946wFugtNNLMjreMuSAanvxC/hNrVQ1BbQQoXQWR0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vz2hSlhG; arc=none smtp.client-ip=209.85.221.41
+	 To:Cc:Content-Type; b=cO7sJmezNGcO9DFkhKpiMlgT051Iy1xoeDHks253UOzc/3jb9/8rkPVWAsoifnWn+XO0HijGaYhgVELWks1rEUIv+HLIbnp9v8cKQQeH05/EE9DtjCC2vtCVIMW5izKjM1Ey8l3C2nNNXSK7bZeiE2KY/hJe/XZFp6f8W0x/trs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SfKADv2m; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vz2hSlhG"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d43a9bc03so3774313f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 01:38:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SfKADv2m"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43140cadeaaso13776365e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 01:45:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729067879; x=1729672679; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1729068350; x=1729673150; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=os7rW/WsJREBniJI2Ek1CEyJc60qK11pTVrWpv5Tjf4=;
-        b=vz2hSlhGXMo7sq89w121E4otwC5bmH089st3UXKOekHf8YNoR4yzFcn0keh48cS4/B
-         D2gE+91DM5RT1yqXH4Y2UHzCl+JHQt1s9FpKysf+NJD537e9FUkyMDjbqRTnQgoRcWh2
-         o8NXOMfpr8dfVTMmVzw/Mbd54+Qkl4UELrY4NA3UG2PlsPB3FQ+YOIWP7d8hZD2zLhTS
-         d8wPcaZpL4Njef87sQ1Iv09fM5ULcmOULfYcXB1zbUVKGpD39bb1TB8nqgomdDvtQumt
-         XAHFioNzJW8sr3L+JdKEzIwAwiPlNhKNtck0MdFR1gfc6dYKvouXij9Rr+QhimtRi4qZ
-         urZw==
+        bh=eQiVeIaORBH2LY7uDomKs6E4i7KqxzjBgaxWXE9AZW0=;
+        b=SfKADv2mKZRcNwzcOQ/67XtZzJQmZFvI7+VHEe74XlSDDFkb2vzTQ4RC5dm993B7xe
+         fvINbtnVUAXyPOzV2WW9lqyxffP8eOYBzShaXzxUnhcN/Q+5KeXBOou0QnAjVIgpx6TB
+         Gegb6YGU/Hi/0E9Kc9jAit4sTGREJbA09oAkpjIqYc+7drdnugv/7C2/GqOBG5Qsv/TD
+         DMmaFFThsrqx+Ru0QkwpB4GbBgz3xazx6VYxNB4/vpcCkGxGwqTZ/pIgWThDLKwAgvqN
+         kIeCMmw896wqU767tRzgwY2hoUib0o4CL5oajAOg8PLiCnfduH3S40GLSRNea/ZH88LB
+         L7kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729067879; x=1729672679;
+        d=1e100.net; s=20230601; t=1729068350; x=1729673150;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=os7rW/WsJREBniJI2Ek1CEyJc60qK11pTVrWpv5Tjf4=;
-        b=g3c4EMlkoK4l20dmFb1hW/QLo5/xxLoT+fWBQmM89Wf+IE5OeigEsTV6GnT3bDAbZ6
-         txuuPJcO1b/P05wdURZs8iC9dg3VWvmECdPYNRNWoemFDz154C4jNvh4sXo6qrXpvp74
-         SN4UiWF6g9GxQbClhL8kvvvn6oIER2iTvPTSmkUuAKaPaudPMY0b3w9bvAaTA5tA/1Sv
-         VHHXSueiNXnqmPhMWrpPZu6DW0aLIoZA1VI2wntijCJ3bt01xmZdV1jQ7SP3qX4cdfci
-         DW8Lxjtb5649U/P4swXz/i5OiA1BHL2rmJ4sidHYYc2pYwcZJJuTTqKRujMiU8wxgU7O
-         157g==
-X-Forwarded-Encrypted: i=1; AJvYcCXAeqdst1TD2pT01J8mvZ+3Zog+5iz+YeWD/x1mLyxHN2oU5B4jT7WDS7EPPRvZGwSjfFsOWv30EBBfqU5g6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmHOtD28gTd0KcHL9uTV5snOjrabxfkNE8gp+J3Z9fcP43444D
-	eegEQl3qdz0P1Xn5MkNlAFknr/G80CxhT7KqEyAG6Y12P+8HMzydSVTjzh3+1auW1dwOoXJ2WNq
-	G8HcbWpWzqaPvTIN25woMHhuFbp7+dObAnVOW
-X-Google-Smtp-Source: AGHT+IFtqFr8sAA3n5PIT0gMS+hHwcyB4XYLtQMFXrhL+hF2dIVZULC0RiaS0vkrRZOcXCMWIFMbLLtpWE9aZ8l4Hkc=
-X-Received: by 2002:a05:6000:b03:b0:37d:4cee:55b with SMTP id
- ffacd0b85a97d-37d600c927bmr9358470f8f.59.1729067878806; Wed, 16 Oct 2024
- 01:37:58 -0700 (PDT)
+        bh=eQiVeIaORBH2LY7uDomKs6E4i7KqxzjBgaxWXE9AZW0=;
+        b=vx0BzuqEetL/Cfi0GNbGaQT7Gy3ZdGJU/lH7+/uuQ2Zgq552+nmXx2JS5f2pbpnZzE
+         FwUK6iGjEtES6gSPMCef1xVf1vxpyYQKZgVR7uYjb6WCt+6+KhYNqrz0G20BfZp5PJTp
+         PQZO6NiuKHGQ5dLBs5oOBKhh8JJbHdJUmdeKtvHYthlflZuhsrya19cvcifDiplWXJnN
+         4aNIfDkUFeRsr8gYkSWMI5VwzfKAPKLq5V+okR1tfNlIydgt8f6VEtXUcLW10oxhW1Nv
+         W+0y0o/AbENOdXFBpUX4nQoEgWEKWacgZEUUSMRBbY8keTcjuYSCT6Jzwuk/f9C5honu
+         /UcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWT/IF+ZNYN8VenJKWm9BEY4bdO4Q10Fc1UwwQW6ygzF0QzTZhWufNmQI+NyV6dTZDQDWP3nSR+MLVkcQ+w5g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ2eLToTmUFlO03EpNh49k/ibWiuAhDmOzZ1NPpczxIRAmyLnX
+	j/mLxt/mGlD1jKnZZVP05teiDtQ5ABmJqtKVf5n7zfw15POUmKOG7b0T2HS4MmQL0Me8gnZZ10x
+	3ATFnh3JLqbR9kv+BM4rKsNcHMSIu/GlXgje6
+X-Google-Smtp-Source: AGHT+IEbvkLiD3zm7BxQJHYNEE6NWiMmGECFe/F6qDAJ/wKkj0TAQEjKK/20MFLf1QqFy6Y1NBbcy4BMRW1uYhU95hE=
+X-Received: by 2002:a05:600c:384c:b0:42c:c1f6:6ded with SMTP id
+ 5b1f17b1804b1-4311df55df7mr156042515e9.29.1729068349781; Wed, 16 Oct 2024
+ 01:45:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,8 +59,8 @@ MIME-Version: 1.0
 References: <20241016035214.2229-1-fujita.tomonori@gmail.com> <20241016035214.2229-8-fujita.tomonori@gmail.com>
 In-Reply-To: <20241016035214.2229-8-fujita.tomonori@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 16 Oct 2024 10:37:46 +0200
-Message-ID: <CAH5fLgg1G4++B+AoXrDc-QxiNL8T4zRV3ChbwN1LsG=urcMJmw@mail.gmail.com>
+Date: Wed, 16 Oct 2024 10:45:36 +0200
+Message-ID: <CAH5fLgjk5koTwMOcdsnQjTVWQehjCDPoD2M3KboGZsxigKdMfA@mail.gmail.com>
 Subject: Re: [PATCH net-next v3 7/8] rust: Add read_poll_timeout functions
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
@@ -74,89 +74,21 @@ Content-Transfer-Encoding: quoted-printable
 
 On Wed, Oct 16, 2024 at 5:54=E2=80=AFAM FUJITA Tomonori
 <fujita.tomonori@gmail.com> wrote:
->
-> Add read_poll_timeout functions which poll periodically until a
-> condition is met or a timeout is reached.
->
-> C's read_poll_timeout (include/linux/iopoll.h) is a complicated macro
-> and a simple wrapper for Rust doesn't work. So this implements the
-> same functionality in Rust.
->
-> The C version uses usleep_range() while the Rust version uses
-> fsleep(), which uses the best sleep method so it works with spans that
-> usleep_range() doesn't work nicely with.
->
-> Unlike the C version, __might_sleep() is used instead of might_sleep()
-> to show proper debug info; the file name and line
-> number. might_resched() could be added to match what the C version
-> does but this function works without it.
->
-> For the proper debug info, readx_poll_timeout() is implemented as a
-> macro.
->
-> readx_poll_timeout() can only be used in a nonatomic context. This
-> requirement is not checked by these abstractions, but it is
-> intended that klint [1] or a similar tool will be used to check it
-> in the future.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Link: https://rust-for-linux.com/klint [1]
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-
-Duplicated SOB? This should just be:
-
-Link: https://rust-for-linux.com/klint [1]
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-
 > +/// Polls periodically until a condition is met or a timeout is reached.
 > +///
-> +/// Public but hidden since it should only be used from public macros.
-> +#[doc(hidden)]
-> +pub fn read_poll_timeout<Op, Cond, T: Copy>(
-> +    mut op: Op,
-> +    cond: Cond,
-> +    sleep_delta: Delta,
-> +    timeout_delta: Delta,
-> +    sleep_before_read: bool,
-> +) -> Result<T>
-> +where
-> +    Op: FnMut() -> Result<T>,
-> +    Cond: Fn(T) -> bool,
-> +{
-> +    let timeout =3D Ktime::ktime_get() + timeout_delta;
-> +    let sleep =3D !sleep_delta.is_zero();
-> +
-> +    if sleep_before_read && sleep {
-> +        fsleep(sleep_delta);
-> +    }
-
-You always pass `false` for `sleep_before_read` so perhaps just remove
-this and the argument entirely?
-
-> +        if cond(val) {
-> +            break val;
-> +        }
-
-This breaks out to another cond(val) check below. Perhaps just `return
-Ok(val)` here to avoid the double condition check?
-
-> +        if !timeout_delta.is_zero() && Ktime::ktime_get() > timeout {
-> +            break op()?;
-> +        }
-
-Shouldn't you just return `Err(ETIMEDOUT)` here? I don't think you're
-supposed to call `op` twice without a sleep in between.
-
-> +        if sleep {
-> +            fsleep(sleep_delta);
-> +        }
-> +        // SAFETY: FFI call.
-> +        unsafe { bindings::cpu_relax() }
-
-Should cpu_relax() be in an else branch? Also, please add a safe
-wrapper function around cpu_relax.
-
+> +/// `op` is called repeatedly until `cond` returns `true` or the timeout=
+ is
+> +///  reached. The return value of `op` is passed to `cond`.
+> +///
+> +/// `sleep_delta` is the duration to sleep between calls to `op`.
+> +/// If `sleep_delta` is less than one microsecond, the function will bus=
+y-wait.
+> +///
+> +/// `timeout_delta` is the maximum time to wait for `cond` to return `tr=
+ue`.
+> +///
+> +/// This macro can only be used in a nonatomic context.
+> +#[macro_export]
 > +macro_rules! readx_poll_timeout {
 > +    ($op:expr, $cond:expr, $sleep_delta:expr, $timeout_delta:expr) =3D> =
 {{
@@ -171,7 +103,24 @@ wrapper function around cpu_relax.
 > +            }
 > +        }
 
-It could be nice to introduce a might_sleep macro that does this
-internally? Then we can reuse this logic in other places.
+I wonder if we can use #[track_caller] and
+core::panic::Location::caller [1] to do this without having to use a
+macro? I don't know whether it would work, but if it does, that would
+be super cool.
+
+#[track_caller]
+fn might_sleep() {
+    let location =3D core::panic::Location::caller();
+    // SAFETY: FFI call.
+    unsafe {
+        $crate::bindings::__might_sleep(
+            location.file().as_char_ptr(),
+            location.line() as i32,
+        )
+    }
+}
 
 Alice
+
+[1]: https://doc.rust-lang.org/nightly/core/panic/struct.Location.html#meth=
+od.caller
