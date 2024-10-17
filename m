@@ -1,55 +1,55 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32311DDC19;
-	Thu, 17 Oct 2024 16:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5EE1DEFE2;
+	Thu, 17 Oct 2024 16:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729182818; cv=none; b=KTVs9QcL80/Iaw9LE5sSmMKsHpbgVZhr74N0U6UXxVBMlSuuLMYFBpv8OKyjUF0Mj+6oKXY8lzdur/M1OaWotSSA8VAomuE5qYNuDGHmCuiE0jsU2qpbFr1nqcYqwR8m57BQKN+R7jT+pKqnyicd1QabjHnkIXaHGqvYk4bIk6o=
+	t=1729183530; cv=none; b=Qv9PCAvqPlex1cNKCVcN2dXbmZZGKRHO0TfJUO+RLYDQqY34lOOFc0ZzzqKY5JIylm8iVsYoMQorpc4LpzzV/uFDfvK5YUKm7MKApGbhaBWBO1j+z9ESah+OMriPji8cBsIWmUgydn/yhlH1gchYQ+LD5NaUwA4mJqL0dx+iU3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729182818; c=relaxed/simple;
-	bh=Y/Fv8WlA4kBpJ6T8HDyPceRLrCK+OaV2GxBkjIvdiHY=;
+	s=arc-20240116; t=1729183530; c=relaxed/simple;
+	bh=mcCUzeXXlnqf/limPhOzfBMV01vv91GtjVpxLhxy9oA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GQGNSbBfmpQCTYEaN/14w5Du6u2EpSFAao0WyytQ2rrZ3HW7q2dT2DRl8HScyJVt7Y9P/Zc6wQ+FpXVHah1MV7H0vrcNVtRIoHI2Rob0k6WOwBOIeMHLFKXchja2Pa3Uoa8fmBhfHL1wTuVr5hTKZSXZShNkZVsIqXJkhCw7AEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RGNoaW4D; arc=none smtp.client-ip=209.85.216.44
+	 To:Cc:Content-Type; b=YC7nftq7I4VvVAmzBkw71bcKa7DPhOgIoskozOcXpkY64/SLMke5cdUkEQD7T8u2RaGM39y7h5yF4g8PEnVJPilOCuEMy1GFLKUuJYTvhT0QFYLlB0Cxim8yYLxYMqdRKq0T7QptC+b+cOuDdgpWFDtSieh1jVPrI2GlDa9HIlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VxDbWaMY; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RGNoaW4D"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e2b720a0bbso197800a91.1;
-        Thu, 17 Oct 2024 09:33:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VxDbWaMY"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e29497f11cso178302a91.2;
+        Thu, 17 Oct 2024 09:45:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729182816; x=1729787616; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729183525; x=1729788325; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YaO0cP4NNuM6HOzNpmw/6nQp9mlOm8VZSS1Wo8VK2sY=;
-        b=RGNoaW4DCl97U0RiyDjPfbxPs+DGbn+75ZwnnFkyMFk0BvaQusW/YiiNryjEXT2iWD
-         uUwZm45ZjQMcMqS2akjfpX5V/bvY9wHtj26+gTmkKO26kmSGdxx+P7tiTSmjzs0RH3JO
-         BFQA+UsqaWp3043xhitUdE9RnPTEG9MM4KHa0uqdDxVNm584/pZfPBu358U9yDoZueUZ
-         IKI4favCI9C8dtON+ZREl1/K34CQKWVloQyjlP7SIvyEbw8InIl/c+9JXZeTjeE77zs+
-         uUHl2QrmZ9beuzc7I2t9MO9diIk2MDGzSprcxufnWvvc8CzG9kA41VrY0kXnPh1eKEyt
-         YHAQ==
+        bh=mcCUzeXXlnqf/limPhOzfBMV01vv91GtjVpxLhxy9oA=;
+        b=VxDbWaMYHoPkxrwN735s0Cr7pKRaDjPI4wLrCkeEk9u2BGJiUvBwHzb9XT9Zotozkx
+         nDqTH/lFtf5kNV1KXb2G9zoGcH1dqx6AaF7m548Jqxso3Kk+MGswVH6Y5fMw0K6RauTu
+         sKR9deOHxVWcifN9y7d7VY3KVltWoDgHhCbExf1am/id5FSOLowfnFeptftSDYM8ssNg
+         K7SUr5ZtP63266q/cwiazIiLnCV+7QdSu6N+CdbyhKFPFYIYd2o166quREpAVMwqdbal
+         IT5iPPisUkUNHDmablBF27SRkqdQi7mhVmpCHNfzg4IFUHMEnwz6zW/V6yXEjmPeGKuG
+         ZuRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729182816; x=1729787616;
+        d=1e100.net; s=20230601; t=1729183525; x=1729788325;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YaO0cP4NNuM6HOzNpmw/6nQp9mlOm8VZSS1Wo8VK2sY=;
-        b=W37/PKRUcFx39z9H+en3fHCCma74Y3zomaVcqauWEdUOYBChSVwiZ2LJkFjswI1z4r
-         dRdjpIZpVmYuknZ6OyR8tDUvhQNTWltL4oS4YnCYuKHhnieZVFSUTbDz3bQlZsfbf9VK
-         v5Pfw1kNFpmKJy9f/LLYda4Ymj7ptkrL/tyLsmieMVBCrzvW/gC/6WBvnaGZbSQ9xUlD
-         MW5NPut+rEL8NdOoMAvF8dJMmXQWdP8xlgqTYRaiM/Bdtv8pp4qG44E2zpnAVt8cFuE7
-         xg1VgXoGWFMeHhuUGkNqG5ecI0DhF2DTr7H1ZqCyg7nlsgrHZx77zcFx4NYVZZS8ID4r
-         LTGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWbFy4HiHkUbW4SnBEs86JTwoOU2uRNc61AlGLkjCB4rytXckR0ODQ4J8sJcjgwwD8wKxtppZr6IvP957brtM=@vger.kernel.org, AJvYcCUoQbhETEj2jYQt6Kzg3TwE5PXujiHZ48QlKo00KlNByd4IyHf1DGDDrkOYyxcHbXBA+sBo1/i9@vger.kernel.org, AJvYcCVkXYy+72yn0RsPBgJ8N+KAtjS8ZqhNy3NBCn6rAEiqh7WnDn/8hFkfwM7xTYUd3/RkumvLFoGu/kji0Bw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz+dE9KEiqG7OaBls/0p6MMec6yfj7ZsH4MjL63lH30+R+yvJk
-	XN2v6i0QaxQGfVcQ+8KUSHKGd0O9m0C5Z3qeRN4SXctg1rEHu0y4gtqmsCBWxnO8mzAxe/eCGGp
-	engddTp8pFtkcMjFkRYKcF0262f0=
-X-Google-Smtp-Source: AGHT+IHJKxeOrtNqTcX1XgH+p7hu4iQFC1L+T4mPbVoZniSNaE6kir8xO20MLig7ziMlkP+/BD9Cso2YCazbfJQRLFk=
-X-Received: by 2002:a17:90a:77c5:b0:2e2:ebce:c412 with SMTP id
- 98e67ed59e1d1-2e55dc34795mr2014a91.2.1729182816007; Thu, 17 Oct 2024 09:33:36
- -0700 (PDT)
+        bh=mcCUzeXXlnqf/limPhOzfBMV01vv91GtjVpxLhxy9oA=;
+        b=clsWhPAXznEy0wymfxPTA5kY0vjeBKjBFc0KCkr7KIB7IAvmiP3ewhWFU1AQQD0CfW
+         0Ed14Kdmo/dKdIwmhM51QSvTFsHRqH1iCxE8iBG5PmV/HWgIyF/2JAOBodMuSQcjJ+ap
+         IXXJn/C1HITY3ioPZO+kNOmNRiV63gda/iNmDSELvSy+qjg/2ePwRPyuhIw5txQTlf+G
+         2VwWLzbw03Kyh4Wz+DJbPwm4hbYxXWgAijrCswp4mDeUkCHj3GapeM6mDlBscU3hgGAN
+         ymM3IPqgGE+u/iusWQ/4TQvOaUMGReP/Y8ETgjg7LAnEOi7zMNp2P6rTF9lcSsAF+RY+
+         yC8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVG1wOk0k1YCSa7+vrmNhgyOhEMsmXCsRIJH5HXQBGVOzHLMlm1OF4y19pe5uCihsAmhbIZxinZAoJl/tY4qfQ=@vger.kernel.org, AJvYcCWP1IDPXnP3EXj3JFMuXWG6SfPe1Dl80oy00+2UwU3RP8UPdxkJpvoxwUAfzAtdIjXhQn+8JVtc577gu+c=@vger.kernel.org, AJvYcCXCN3lCfLEVXl/5AQPAAdXJ9q5r0jKiPDsPC+VTzJFB3lBPqdo/I/g+w/SSS9XWwr30lMdC1XWo@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzp0MjV7MTflgUkBROKPAwEJXwWSAbC4JW+raBSSm7MelVd9uu4
+	FoRcfinS+98e+e/MfhJkg5ke9cDPMcrFqpFVMxtEEW5ZVnjF22lzXyOJb6vUxKuloebIJD/cmjR
+	S80YecBCaRfJm+3i/Lch7wBsKpLd6VhyM
+X-Google-Smtp-Source: AGHT+IEZ/ui/WWQTx0Ex+vbnYBARRrpyCEM94UWKhfXvnrgnk5ObXl96Hg+jcwk/C2LmKNJtaLaQdYsLROOoM7IM0lU=
+X-Received: by 2002:a17:90b:1c8d:b0:2db:60b:eec with SMTP id
+ 98e67ed59e1d1-2e3dc294eb7mr2032178a91.7.1729183525086; Thu, 17 Oct 2024
+ 09:45:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,54 +57,42 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-5-fujita.tomonori@gmail.com> <ZxAZ36EUKapnp-Fk@Boquns-Mac-mini.local>
- <20241017.183141.1257175603297746364.fujita.tomonori@gmail.com>
-In-Reply-To: <20241017.183141.1257175603297746364.fujita.tomonori@gmail.com>
+ <20241016035214.2229-4-fujita.tomonori@gmail.com> <CAH5fLgjKH_mQcAjwtAWAxnFYXvL6z24=Zcp-ou188-c=eQwPBw@mail.gmail.com>
+ <20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
+In-Reply-To: <20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 17 Oct 2024 18:33:23 +0200
-Message-ID: <CANiq72mbWVVCA_EjV_7DtMYHH_RF9P9Br=sRdyLtPFkythST1w@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 4/8] rust: time: Implement addition of Ktime
- and Delta
+Date: Thu, 17 Oct 2024 18:45:13 +0200
+Message-ID: <CANiq72nGoT9DxLwDbg8gZVxk0ba=KqvXLAVz=hRNFMqtCeGNvg@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's sub
+ operation to Delta
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, netdev@vger.kernel.org, 
+Cc: aliceryhl@google.com, netdev@vger.kernel.org, 
 	rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
 	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 17, 2024 at 11:31=E2=80=AFAM FUJITA Tomonori
+On Thu, Oct 17, 2024 at 9:11=E2=80=AFAM FUJITA Tomonori
 <fujita.tomonori@gmail.com> wrote:
 >
-> We could add the Rust version of add_safe method. But looks like
-> ktime_add_safe() is used by only some core systems so we don't need to
-> add it now?
+> Surely, we could create both Delta and Instant. What is Ktime used
+> for? Both can simply use bindings::ktime_t like the followings?
 
-There was some discussion in the past about this -- I wrote there a
-summary of the `add` variants:
+I think it may help having 2 (public) types, rather than reusing the
+`Ktime` name for one of them, because people may associate several
+concepts to `ktime_t` which is what they know already, but I would
+suggest mentioning in the docs clearly that these maps to usecase
+subsets of `ktime_t` (whether we mention or not that they are
+supposed to be `ktime_t`s is another thing, even if they are).
 
-    https://lore.kernel.org/rust-for-linux/CANiq72ka4UvJzb4dN12fpA1WirgDHXc=
-vPurvc7B9t+iPUfWnew@mail.gmail.com/
-
-I think this is a case where following the naming of the C side would
-be worse, i.e. where it is worth not applying our usual guideline.
-Calling something `_safe`/`_unsafe` like the C macros would be quite
-confusing for Rust.
-
-Personally, I would prefer that we stay consistent, which will help
-when dealing with more code. That is (from the message above):
-
-  - No suffix: not supposed to wrap. So, in Rust, map it to operators.
-  - `_unsafe()`: wraps. So, in Rust, map it to `wrapping` methods.
-  - `_safe()`: saturates. So, in Rust, map it to `saturating` methods.
-
-(assuming I read the C code correctly back then.)
-
-And if there are any others that are Rust-unsafe, then map it to
-`unchecked` methods, of course.
+Whether we have a third private type internally for `Ktime` or not
+does not matter much, so whatever is best for implementation purposes.
+And if we do have a private `Ktime`, I would avoid making it public
+unless there is a good reason for doing so.
 
 Cheers,
 Miguel
