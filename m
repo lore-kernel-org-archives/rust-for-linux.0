@@ -1,119 +1,100 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263DE1C2447
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 08:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5D71D4150;
+	Thu, 17 Oct 2024 09:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729153357; cv=none; b=UKsqHYxBZTK6IFSa+I2X2gNs4fgU9Y2RrK7RpRvQoYTMmv8Aep1D3o8cOBYQ7u9Pj7nBqe+7uY2CqehPitNJnEFCOk6U666rbHgp2vFWqX9s8aUqJQZPa9PPfNvxnKWeA7huewdj5s3Y19iO4al9iTDHAhJEUgXEFGIsc24lckc=
+	t=1729156647; cv=none; b=qbKZs/3BdAhNa+o1apHdyVOLYgmnc/oyaY/ISFRFmUliF0Hz8qZtGJA8QQagRvl2R1CzsWdy+HwM4F/fvBy8N93h7UOQB3jRmcqJkr2XS73NacplYL0XZL2rh0/uzPKWp/knXsMW431cmjuBo5rtqNjqYfs19Lcyebl/XCXnqfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729153357; c=relaxed/simple;
-	bh=LHpKCji377DFMvaRbAFReZQaRgC0Kh3loXnkIDQ8RYg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UBjxNjNIC5czW44qOVIH9AOSQ3kken+3HLc5qnMjV3vQViZqb4u4XPRqNPcqI+hBaWxRii7LBs8ppzQ1RP1ymZqY/WT7QqqO7WUuqCiZf6C0fQuZ8mV+M2VtzCf8y6MtHdFU3d9ZYN+OIcjZrwP60Qe70ypg/aJL3bdt6Wcp4J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DBCxnL6B; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729156647; c=relaxed/simple;
+	bh=tnGQZ6lVUra0MiSs7K66Y5k5frQFbVkK1r1M+VtYFT4=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=cirRxIXnV3rJNjVb6+g93K2YD+5lGspz8JFgmVFGx5URmzrzJ6VZzQ1lyVeq7tQm9R+U/eHbsaP+GigCzc34bUmi6PWgO+0ks73sdUN9+mBxloaghq8e3SqxbDTlhqaENYSXlgjX3Pu9M6EOBR0geXPmcDuPPEHcooHmVgtGddc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnnWAINU; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DBCxnL6B"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d5038c653so454454f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 01:22:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnnWAINU"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e3010478e6so607774a91.1;
+        Thu, 17 Oct 2024 02:17:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729153354; x=1729758154; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WsXxx6/wl/PtaXF1WXd5AaVkjicmsyDuglgPitrvJwM=;
-        b=DBCxnL6BNJPyNMaomba0nAcsynBzaLsji6TDxlPIDEYv1j6DSCcVWgHqxIVBC9Iohs
-         9vQrA8fpGyked8GzHKaHaTMi9hr4LR7hwYnySmzkbRpOwWV1C4M8+6apffMaj6m9RQzP
-         XUbkZCpORuukhfL1e3Sy3LtVFeLXVBQTkTgrU0SDz9vOBCVrK+2ZJBCAHgndioDVQ04N
-         XjCvkc2o9llj8bJUjnoWciu+CZaPfqEfOgiDT99vhFIrYWSv9h1JeqdIqrnJr1xBHtP2
-         8dHdTiv4GLqQPi7gFeSOMt1U/qwrjljpZ1hM8aGYvUBk9FQC44b1ZHBoJSfQ1AS4zB1q
-         GF8A==
+        d=gmail.com; s=20230601; t=1729156645; x=1729761445; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yH9xzXbkXQtIf26L75aCO7ntLQ/eZaOKeycwP5Fq5/Y=;
+        b=OnnWAINUceeGGyoSOoe1wiEShxYin0CXrtOM+75IaeI1fb7DifQwpC1K2juTLsGcSO
+         fZxUyX3kg2tfhv/ZDtOZlws0CUKIhTbZX+10xI1fgg7liceXzYeEWAvqmh0o2HN3xvDq
+         Zz9wbugWTIJLTHMRsTPO05xR/hHIdZncGRXgDO2QGLXIQrDuNLo4Tud/jfjyCJd1IXC+
+         2Y7aflyolOSXGUnHaoncHOME14AUDtdb2GIiVrCWzbXt5d7vdtTxN4uoMWluQ6mKgqfP
+         mB+VKjiPQO1NtFgXtaRYpclk0DfX46pdM+Vk+KtVawADIht8tODp+pWmNqT7X/cQGstQ
+         diKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729153354; x=1729758154;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WsXxx6/wl/PtaXF1WXd5AaVkjicmsyDuglgPitrvJwM=;
-        b=vjDwpqjibhcn9QhxBmbO1b1iDv58dvHm0rx2vmBD6RYYbCQ1rgLpLRZKSwCgm3Rhf6
-         VRY3iGlTyNzVfLS6E7pDBu9wMqDLSXmBDzgxzUB/sKuefzO7kx3MTuIMlgBP0SK38pK/
-         2un+r+RSnyW0Dns6ZwxPdQUY4vjdhl5M+/mxjpIFik6/AaHcWC0vOxgx02MgABgCwfF7
-         XZqbvDSzh0xQf3+VmUYu7EX+N6KzJu/r0NmrYHWK2ShoJJcAGUeSj9lG+RBTTyFPNUjR
-         QysdxMHg7pE6VQNM4EKmRTZRggORcv9TYOU2TUJKo5W9LGhf7g0KV61lHxUymdN/Lfzl
-         uSZA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3f9OtYZaJMKm8edLi1tVAlpgmi/rY+DPLbUe3zeVTsx47Arib6AqJLNR6mhw4FmzlnoSQMNdeFTq1scu9wA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU0A8fvauRFa9EO0UOnft5tRlfj03fu6Za2XQj53xQwQ/e9x7R
-	zfLlo80j6x/FyRqeG+pNG9FRXFWSGo/NsVSncs317Uj460oewpZpbq2Boq5QULR55QVd7t9DjSe
-	rrsNyVf1YdpKygE/wlwWfNYuBnieAcRC8eqHt
-X-Google-Smtp-Source: AGHT+IFP0+h2AsfG6hM/KnGPmpu8BMbSpOOTSaL3KNMUlPYqSuiL84qJGLwymSL6TV65MTUPfPFzY2cx7qmxGe21PDM=
-X-Received: by 2002:a05:6000:12cc:b0:37d:41df:136b with SMTP id
- ffacd0b85a97d-37d551ca167mr12503719f8f.13.1729153354030; Thu, 17 Oct 2024
- 01:22:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729156645; x=1729761445;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yH9xzXbkXQtIf26L75aCO7ntLQ/eZaOKeycwP5Fq5/Y=;
+        b=h1Q5T09t4Wvny3jph4uS+SKxddjZ7vI7D4tuTfl5mVIR6Sj3Dz/toM+HGz76B0azv3
+         txz9SOee/d1BWFV53WM/MljuVNQxZQ+DAo2HBvBjBwcSxPWKYNDOMREsnMKiWrxSL5H3
+         I0LAC6v7PRb/3bgjL8tV/VFKP3HggXCLi+2QBsyndRQIZkNZdE0JPedP/BmRwnPt2ZSs
+         4nz3TT7vl5V7xRKPvVVRCTlUOoSTZRca4lQxI188FjYwM2VCeQhW348gCwWYRhBkXjzi
+         w7S5xSpKtb2ii7FEpW25FNhxEeUUORasu6HFdmSXO9f25BzrW+uEYS5HXNWRhvIuSXl9
+         7zYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMscER0To0DkLdRhNk6n8B2EPZZfxi26wjryjrTxk47Pk5iCKznJfR//Aw5pzDfsogzBJdnM9Y@vger.kernel.org, AJvYcCVoxiyb212pfwo2wRg23CSxeQPMO4y1Gg/hyVTSAiCUVRxIj8eXxaMOorqnufj/8ckupzF5v4IToJTh8/lhyig=@vger.kernel.org, AJvYcCXD5Gep2ChxVaJDPTVtlFqjGg+IIkuWlHR++5xPDoTsxMTo1L7nbfQWVQotOTCLg3A1KQaFh7AsLHWGEYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+tDJrO7xq0hGR0Q89D1erv+MS8ZYOVrkxRjp5t7SJoGhHUtkd
+	tr8ObxybI/NS4SnXG8FfhU8a7QMdTSD/RQZOmaIKGD1qlHr5pqR0
+X-Google-Smtp-Source: AGHT+IFVEcY1hgk/uwScEfhUWsPC7yT+/rSLWFxI9G28BBKV/hTtZtoqA+IfxcWbw3Do2sFpRKoAtg==
+X-Received: by 2002:a17:90a:640e:b0:2e2:c681:51ce with SMTP id 98e67ed59e1d1-2e3151b77e0mr23884426a91.1.1729156645101;
+        Thu, 17 Oct 2024 02:17:25 -0700 (PDT)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e3e094bd0bsm1354958a91.53.2024.10.17.02.17.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 02:17:24 -0700 (PDT)
+Date: Thu, 17 Oct 2024 18:17:11 +0900 (JST)
+Message-Id: <20241017.181711.1319333992452672716.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's
+ sub operation to Delta
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ZxAcJEDFQ-n64mnd@Boquns-Mac-mini.local>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+	<20241016035214.2229-4-fujita.tomonori@gmail.com>
+	<ZxAcJEDFQ-n64mnd@Boquns-Mac-mini.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-4-fujita.tomonori@gmail.com> <CAH5fLgjKH_mQcAjwtAWAxnFYXvL6z24=Zcp-ou188-c=eQwPBw@mail.gmail.com>
- <20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
-In-Reply-To: <20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 17 Oct 2024 10:22:20 +0200
-Message-ID: <CAH5fLgiPztunRXrEKF1=sCB16QfbFhQ19p_EorA2f1Xnfu3-zA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's sub
- operation to Delta
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de, 
-	frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, 
-	sboyd@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 17, 2024 at 9:11=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Wed, 16 Oct 2024 10:25:11 +0200
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
-> > On Wed, Oct 16, 2024 at 5:53=E2=80=AFAM FUJITA Tomonori
-> > <fujita.tomonori@gmail.com> wrote:
-> >>
-> >> Change the output type of Ktime's subtraction operation from Ktime to
-> >> Delta. Currently, the output is Ktime:
-> >>
-> >> Ktime =3D Ktime - Ktime
-> >>
-> >> It means that Ktime is used to represent timedelta. Delta is
-> >> introduced so use it. A typical example is calculating the elapsed
-> >> time:
-> >>
-> >> Delta =3D current Ktime - past Ktime;
-> >>
-> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >
-> > So this means that you are repurposing Ktime as a replacement for
-> > Instant rather than making both a Delta and Instant type? Okay. That
-> > seems reasonable enough.
->
-> Yes.
->
-> Surely, we could create both Delta and Instant. What is Ktime used
-> for? Both can simply use bindings::ktime_t like the followings?
->
-> pub struct Instant {
->     inner: bindings::ktime_t,
-> }
->
-> pub struct Delta {
->     inner: bindings::ktime_t,
-> }
+On Wed, 16 Oct 2024 13:03:48 -0700
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-What you're doing is okay. No complaints.
+>>  impl core::ops::Sub for Ktime {
+>> -    type Output = Ktime;
+>> +    type Output = Delta;
+>>  
+>>      #[inline]
+>> -    fn sub(self, other: Ktime) -> Ktime {
+>> -        Self {
+>> -            inner: self.inner - other.inner,
+>> +    fn sub(self, other: Ktime) -> Delta {
+>> +        Delta {
+>> +            nanos: self.inner - other.inner,
+> 
+> My understanding is that ktime_t, when used as a timestamp, can only
+> have a value in range [0, i64::MAX], so this substraction here never
+> overflows, maybe we want add a comment here?
 
-Alice
+Sure, I'll add.
