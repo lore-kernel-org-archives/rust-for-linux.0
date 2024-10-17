@@ -1,98 +1,191 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5EE1DEFE2;
-	Thu, 17 Oct 2024 16:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BB91DFE20;
+	Thu, 17 Oct 2024 17:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729183530; cv=none; b=Qv9PCAvqPlex1cNKCVcN2dXbmZZGKRHO0TfJUO+RLYDQqY34lOOFc0ZzzqKY5JIylm8iVsYoMQorpc4LpzzV/uFDfvK5YUKm7MKApGbhaBWBO1j+z9ESah+OMriPji8cBsIWmUgydn/yhlH1gchYQ+LD5NaUwA4mJqL0dx+iU3I=
+	t=1729184632; cv=none; b=OUT/K5WX5Ne5ULYQ9Lwqp5SrRbDuzMM44GP1BTrAcjPSHPKAwl5pAHgCxun3I8dxnu4DFOIrxPxIWx9sAx9kArw9h+EZkGjLvQc5wcDHh5bNUO+BmdXeq8JNaLFX+ZaeepXj2PGsQvIYRf0lzbnheFn+V4zK7p8EgZOGJjcBfks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729183530; c=relaxed/simple;
-	bh=mcCUzeXXlnqf/limPhOzfBMV01vv91GtjVpxLhxy9oA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YC7nftq7I4VvVAmzBkw71bcKa7DPhOgIoskozOcXpkY64/SLMke5cdUkEQD7T8u2RaGM39y7h5yF4g8PEnVJPilOCuEMy1GFLKUuJYTvhT0QFYLlB0Cxim8yYLxYMqdRKq0T7QptC+b+cOuDdgpWFDtSieh1jVPrI2GlDa9HIlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VxDbWaMY; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1729184632; c=relaxed/simple;
+	bh=659KQMKuOOIeqnMNSnQAXBd2L5FO4DHcKQVH2/5WTe8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M3/w8+GB5bdNC0dSeu4sqZl7SHlNopupgomn6lQi6l4Y8JhoeshS1Uamky1jeF+wdvAi88+5PW00c4pnMJp/p+Aj34uS/Z+D+LrBQ1bAx+P/RHy6n5U8qsI8YD/Hae6aIlBY9uLl59SQx+r50DinM5KBdJhQHz5w4FDN8lxXqS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YQqb42MD; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VxDbWaMY"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e29497f11cso178302a91.2;
-        Thu, 17 Oct 2024 09:45:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YQqb42MD"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6c5acb785f2so6588646d6.0;
+        Thu, 17 Oct 2024 10:03:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729183525; x=1729788325; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mcCUzeXXlnqf/limPhOzfBMV01vv91GtjVpxLhxy9oA=;
-        b=VxDbWaMYHoPkxrwN735s0Cr7pKRaDjPI4wLrCkeEk9u2BGJiUvBwHzb9XT9Zotozkx
-         nDqTH/lFtf5kNV1KXb2G9zoGcH1dqx6AaF7m548Jqxso3Kk+MGswVH6Y5fMw0K6RauTu
-         sKR9deOHxVWcifN9y7d7VY3KVltWoDgHhCbExf1am/id5FSOLowfnFeptftSDYM8ssNg
-         K7SUr5ZtP63266q/cwiazIiLnCV+7QdSu6N+CdbyhKFPFYIYd2o166quREpAVMwqdbal
-         IT5iPPisUkUNHDmablBF27SRkqdQi7mhVmpCHNfzg4IFUHMEnwz6zW/V6yXEjmPeGKuG
-         ZuRA==
+        d=gmail.com; s=20230601; t=1729184629; x=1729789429; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=TzQHH2Yw/aL8qkINhkW0RDbgedwJUaLrecn8wJJjYK4=;
+        b=YQqb42MDPuJFRF/nrQI2X4/xtHukMuuUkwXs+Wo1cJ1594x6E1bVJ0AMnV41TqFuRH
+         ghuCv6sjXOF04WDQvnEIkVtFH04bczI26DAso1g4DZ9eQa5a52Rsc+66ZTzLP8C8Wnvx
+         2hIrZyPpz1wat72kOuDfqEdDbLHawGab8bqfAf7jUOxcvO/WoGaS+xR1gPI4Qaq6cV0B
+         Q+wkrrWVZBbJXhFDVPhkFG5l2fy/IIvOfw92f2j6jQ+yTJ7/Twa95W0CzXBXn23NmBTh
+         00S3GeM4T/g4ZItmSzBCNJCGralr7yBF2C9L8FtodVpFQY4CCK8PYkrfhn+mtp2awcJe
+         VE/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729183525; x=1729788325;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mcCUzeXXlnqf/limPhOzfBMV01vv91GtjVpxLhxy9oA=;
-        b=clsWhPAXznEy0wymfxPTA5kY0vjeBKjBFc0KCkr7KIB7IAvmiP3ewhWFU1AQQD0CfW
-         0Ed14Kdmo/dKdIwmhM51QSvTFsHRqH1iCxE8iBG5PmV/HWgIyF/2JAOBodMuSQcjJ+ap
-         IXXJn/C1HITY3ioPZO+kNOmNRiV63gda/iNmDSELvSy+qjg/2ePwRPyuhIw5txQTlf+G
-         2VwWLzbw03Kyh4Wz+DJbPwm4hbYxXWgAijrCswp4mDeUkCHj3GapeM6mDlBscU3hgGAN
-         ymM3IPqgGE+u/iusWQ/4TQvOaUMGReP/Y8ETgjg7LAnEOi7zMNp2P6rTF9lcSsAF+RY+
-         yC8g==
-X-Forwarded-Encrypted: i=1; AJvYcCVG1wOk0k1YCSa7+vrmNhgyOhEMsmXCsRIJH5HXQBGVOzHLMlm1OF4y19pe5uCihsAmhbIZxinZAoJl/tY4qfQ=@vger.kernel.org, AJvYcCWP1IDPXnP3EXj3JFMuXWG6SfPe1Dl80oy00+2UwU3RP8UPdxkJpvoxwUAfzAtdIjXhQn+8JVtc577gu+c=@vger.kernel.org, AJvYcCXCN3lCfLEVXl/5AQPAAdXJ9q5r0jKiPDsPC+VTzJFB3lBPqdo/I/g+w/SSS9XWwr30lMdC1XWo@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp0MjV7MTflgUkBROKPAwEJXwWSAbC4JW+raBSSm7MelVd9uu4
-	FoRcfinS+98e+e/MfhJkg5ke9cDPMcrFqpFVMxtEEW5ZVnjF22lzXyOJb6vUxKuloebIJD/cmjR
-	S80YecBCaRfJm+3i/Lch7wBsKpLd6VhyM
-X-Google-Smtp-Source: AGHT+IEZ/ui/WWQTx0Ex+vbnYBARRrpyCEM94UWKhfXvnrgnk5ObXl96Hg+jcwk/C2LmKNJtaLaQdYsLROOoM7IM0lU=
-X-Received: by 2002:a17:90b:1c8d:b0:2db:60b:eec with SMTP id
- 98e67ed59e1d1-2e3dc294eb7mr2032178a91.7.1729183525086; Thu, 17 Oct 2024
- 09:45:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729184629; x=1729789429;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TzQHH2Yw/aL8qkINhkW0RDbgedwJUaLrecn8wJJjYK4=;
+        b=JecVwYk2kWObXyRDsC8iZ88skFIIB4YGur63mk4o+nDRmW6vc02dX3XfJD6swL/oHu
+         aEtUuMRXzUO9c51QVADMQK/qiDNWkl4Q2gjDW3CKBX2cpf0B9ucE3fwzkEy/+mBr9xSz
+         VT6MoZG+qpMXhczzOiCu9VFvFLM+WoKq2UaJxADemvkpr0YBHwBin4yMBe1P8BcuSsIq
+         Afvc7hk/16aPB3sJEGAce4mtcZK5Mr1Uc8fUhpUKU3B9/HqrYZ3Gv6hbauAkfLl8bFnf
+         xGiMHE6ozMlIvWHy3RDxD4kjPwUIAj3S8NM5XhsRBQjxn4sFEHRX1hfKs2smBPNJrW7H
+         F40w==
+X-Forwarded-Encrypted: i=1; AJvYcCUbu48GyBNEteiSjcmxaMjbPX76kZKtI8fRApNdBueYA7MZdsWvM+/m3YWgiWrBY7/ChKtTNn8iRvU7roM=@vger.kernel.org, AJvYcCUiPeW/dX+0y88Z+4uh2fXaGUxz1VTd9lxEya0KeiezJBf0YWH09OdcvJU5nOwjLpzgc1EYSYWMxGFmM+tzNps=@vger.kernel.org, AJvYcCVAgvW82scSF3Vpe1PsKPkdb5GgUbti+lwggerx90ffTvoH9U3jWFXFlGmXjugED5acGykba5D+@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg+EAINmEilmDXApnvbTjpR7PjEYjk++SYoDay/hYx8vmHdt3+
+	dEaAAkh6YThTQe6akr4+e0ymaFsL5c/yzhPU2pSQyOk5ua33LhTR
+X-Google-Smtp-Source: AGHT+IE6ouKkRtfltsbG6BF5iJKNzv06F0Hx1rzJ0doSBv3CXh2/sGrsMFPLFSF0aHEYPwgZ/gji8A==
+X-Received: by 2002:a05:6214:418d:b0:6cb:c9bc:1a23 with SMTP id 6a1803df08f44-6cc2b8d6f3bmr91828426d6.24.1729184629172;
+        Thu, 17 Oct 2024 10:03:49 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cc2295b919sm30025626d6.91.2024.10.17.10.03.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 10:03:48 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 140EE1200043;
+	Thu, 17 Oct 2024 13:03:48 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 17 Oct 2024 13:03:48 -0400
+X-ME-Sender: <xms:c0MRZzHubmasZynuDCp-jGRLWQa6GoCxIs9WHOTONRrt1fFs74j8Sg>
+    <xme:c0MRZwWNXaIoR99GXkAqkMZ54XmMojkP9H-QLmNQYW3v6Rf6DLG6AZMsYqidJFRPH
+    p2kgNCbSqxw1n6h3g>
+X-ME-Received: <xmr:c0MRZ1Lhg3zpVVMLarEPZMCV6itoW_xkbI0wLv4dalwXCnqr9V1eakLPzew>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehuddguddutdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
+    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejhfeikeekffejgeegueevffdtgeefudet
+    leegjeelvdffteeihfelfeehvdegkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhmrghilhdrtghomhdp
+    rhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtg
+    hpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    rhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohephhhkrghllhifvghithdu
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+    dprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgv
+    gidrghgrhihnohhrsehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:c0MRZxEIEpkuTwbYs6QjdY7D099lSqXsKFh8S3uSXqnWo4PNCNVd6g>
+    <xmx:dEMRZ5V53MkDau1UvfoxQfeAaw1eAazF8HKrVMukde1IvVf4oFEOwg>
+    <xmx:dEMRZ8M-XtTzAKQUtGh9mOFlCjL73BlIAyA5A35n6zJLdghNra5eUA>
+    <xmx:dEMRZ4185YADTs8w4Qj3Qw4_ptjRTKBja63YBA6sdGH_3ozCTUm_Rw>
+    <xmx:dEMRZ-WCSTCjoqEprEQTjKApJmqzwb6m7dgKlkpoCPbbaQ2bYoqkPq-J>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 17 Oct 2024 13:03:47 -0400 (EDT)
+Date: Thu, 17 Oct 2024 10:03:21 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
+	sboyd@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 4/8] rust: time: Implement addition of Ktime
+ and Delta
+Message-ID: <ZxFDWRIrgkuneX7_@boqun-archlinux>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+ <20241016035214.2229-5-fujita.tomonori@gmail.com>
+ <ZxAZ36EUKapnp-Fk@Boquns-Mac-mini.local>
+ <20241017.183141.1257175603297746364.fujita.tomonori@gmail.com>
+ <CANiq72mbWVVCA_EjV_7DtMYHH_RF9P9Br=sRdyLtPFkythST1w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-4-fujita.tomonori@gmail.com> <CAH5fLgjKH_mQcAjwtAWAxnFYXvL6z24=Zcp-ou188-c=eQwPBw@mail.gmail.com>
- <20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
-In-Reply-To: <20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 17 Oct 2024 18:45:13 +0200
-Message-ID: <CANiq72nGoT9DxLwDbg8gZVxk0ba=KqvXLAVz=hRNFMqtCeGNvg@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's sub
- operation to Delta
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mbWVVCA_EjV_7DtMYHH_RF9P9Br=sRdyLtPFkythST1w@mail.gmail.com>
 
-On Thu, Oct 17, 2024 at 9:11=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Surely, we could create both Delta and Instant. What is Ktime used
-> for? Both can simply use bindings::ktime_t like the followings?
+On Thu, Oct 17, 2024 at 06:33:23PM +0200, Miguel Ojeda wrote:
+> On Thu, Oct 17, 2024 at 11:31 AM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > We could add the Rust version of add_safe method. But looks like
+> > ktime_add_safe() is used by only some core systems so we don't need to
+> > add it now?
+> 
+> There was some discussion in the past about this -- I wrote there a
+> summary of the `add` variants:
+> 
+>     https://lore.kernel.org/rust-for-linux/CANiq72ka4UvJzb4dN12fpA1WirgDHXcvPurvc7B9t+iPUfWnew@mail.gmail.com/
+> 
+> I think this is a case where following the naming of the C side would
+> be worse, i.e. where it is worth not applying our usual guideline.
+> Calling something `_safe`/`_unsafe` like the C macros would be quite
+> confusing for Rust.
+> 
+> Personally, I would prefer that we stay consistent, which will help
+> when dealing with more code. That is (from the message above):
+> 
+>   - No suffix: not supposed to wrap. So, in Rust, map it to operators.
+>   - `_unsafe()`: wraps. So, in Rust, map it to `wrapping` methods.
+>   - `_safe()`: saturates. So, in Rust, map it to `saturating` methods.
+> 
+> (assuming I read the C code correctly back then.)
+> 
+> And if there are any others that are Rust-unsafe, then map it to
+> `unchecked` methods, of course.
+> 
 
-I think it may help having 2 (public) types, rather than reusing the
-`Ktime` name for one of them, because people may associate several
-concepts to `ktime_t` which is what they know already, but I would
-suggest mentioning in the docs clearly that these maps to usecase
-subsets of `ktime_t` (whether we mention or not that they are
-supposed to be `ktime_t`s is another thing, even if they are).
+The point I tried to make is that `+` operator of Ktime can cause
+overflow because of *user inputs*, unlike the `-` operator of Ktime,
+which cannot cause overflow as long as Ktime is implemented correctly
+(as a timestamp). Because the overflow possiblity is exposed to users,
+then we need to 1) document it and 2) provide saturating_add() (maybe
+also checked_add() and overflowing_add()) so that users won't need to do
+the saturating themselves:
 
-Whether we have a third private type internally for `Ktime` or not
-does not matter much, so whatever is best for implementation purposes.
-And if we do have a private `Ktime`, I would avoid making it public
-unless there is a good reason for doing so.
+	let mut kt = Ktime::ktime_get();
+	let d: Delta = <maybe a userspace input>;
 
-Cheers,
-Miguel
+	// kt + d may overflow, so checking
+	if let Some(_) = kt.as_ns().checked_add(d.as_nanos()) {
+	    // not overflow, can add
+	    kt = kt + d;
+	} else {
+	    // set kt to KTIME_SEC_MAX
+	}
+
+instead, they can do:
+
+	let kt = Ktime::ktime_get();
+	let d: Delta = <maybe a userspace input>;
+
+	kt = kt.saturating_add(d);
+
+but one thing I'm not sure is since it looks like saturating to
+KTIME_SEC_MAX is the current C choice, if we want to do the same, should
+we use the name `add_safe()` instead of `saturating_add()`? FWIW, it
+seems harmless to saturate at KTIME_MAX to me. So personally, I like
+what Alice suggested.
+
+Hope these make sense.
+
+Regards,
+Boqun
+
+> Cheers,
+> Miguel
