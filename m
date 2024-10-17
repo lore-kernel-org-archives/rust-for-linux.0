@@ -1,188 +1,131 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF47202626
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 19:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654E5187858
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 20:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729193539; cv=none; b=NB/hdk0z6KrJjKuu/pvKrnWjzRb2izP7/GttNY6tVXieuOqtmiHX4t0QRmZDXRET0d0vnfYtcA8CchvtFACUnLo02FR3/X63Gv6PDriQ1C5lfsnWgRNWlRBUUucQwUqZsGgZneKvIfhMGU1K+tyCQkBFC7VLFExyNRjSXBbmlGU=
+	t=1729195312; cv=none; b=l/Q08PPnhFJUxUdWamevluNkeS2/zmULaHqjnG0v1N4rDdG+/b0V0Fwk4U+QNfbL/roJYdOXDZvkCcSdS7VxNqb+W8FYU7uwk02oOMnYFCkoBQB/vwr3M/c/tOHYwYfsLVYK0t7MD/q6LgZHaQKbUU5VExTeFn7vZLmUYZjIXAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729193539; c=relaxed/simple;
-	bh=vcUXd5tt9utnmCVe/nP6iWVCPF6al6ngb6a3ypPbz8U=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=EkSTrxF5koE9gPkP8EQpCq16vRZ868laPMKwhgETj5/4GxXxsuj9z/XoMl9VsPv3fO2dhL1Z0ILNPtZlpu8m+5ixm2GCzT6SQT9gGVf/Pql2vGgiBgrTNAg9xrhZqT3+WgS0JIpRGHL7mzVq5VMr/qOx+QfMRCkG8gk7HMo0Ero=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=C92aSNRl; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
+	s=arc-20240116; t=1729195312; c=relaxed/simple;
+	bh=7fNZThETAsZ+KPtAOmPafV1RUAaUrZ1Bk8Xp24nVtzA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h3pcsY2A0zFQ4E9xl+1O/LpzGIEr4ZkZdGlR1vRI052tsqJh95oVOmTofbwFGcuJUuLLFBLCHAWptPhf1nqEE/bTRUf63iLTouiWVpeovNuXLwyyOYWEAH46wU2iHa+g2ESAxZ3lf8CEV4AAVVi3k+i633X8wPXXWBe6LVeqciY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elsk.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xybTic05; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elsk.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="C92aSNRl"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71e579abb99so932011b3a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 12:32:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xybTic05"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e3d74e5962so1643989a91.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 13:01:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1729193535; x=1729798335; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TfCj0XZYQNwVFG9YcnvaiklTwIyQ/GhWVOU/ROFZAio=;
-        b=C92aSNRliXUZa4r6bkC42hbLvd1ICOB0CikdQCc4o/w1HHZOf+RWUVIB4jFrkZ54Uj
-         0vgr4ZQ+OeN+1hf3uuvkORB5LcPgLjgoBV1QP3pvVsHXDMheAOE/ndDCakwvdY+qeCT+
-         gSKx1wUbQmWgNWnCbN/+6+XFdK8VWI28xh5ophXT20imLaeKUDux8sGW5soAhYc9iZts
-         kSUvO2HtaYXFRg1eUAMY13vaP6NMx6iGQHu0DVJKHGckQL/Ih+VvLpZchsRZ8y+FKPHn
-         z+9mbSqniDgYEr28lhAiJSWic/N1jiRPSUcyOjoPRPg99tsw2VGR4XyXjkD+Nnr0GtAS
-         YK2w==
+        d=google.com; s=20230601; t=1729195307; x=1729800107; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=N2Hn27ndmTHMGTAUOBpXV3hZypJtQOIDgriaf/PtSKg=;
+        b=xybTic05mcBYMA/QCpFZIPl0/Q2hFz33gAtmXdQsxxEiDs9IK1iLsQEnYeX+ESLsm4
+         9O4klBNViIrXNZFksKr+k+wmdopTcN6tuW++Zw6p7CA04rT85YEmm78Z9lvxgA9yITbz
+         Pb/yJ5uHgD1SlqZa0ibpF+opcF6MUCkQl/Ehz9Q3hIMp4Vu/tKUitoI26tUuMWfdMz5F
+         wzC31GEkLZ25JE03p8kDo+nGbsnTzTPsqLMIt7gNbKo/ndhCBxR2snLgzQn2fkfHWevt
+         FAYpQ+NH41bdltaSDeIpBhGTId7PreAGEYjfYt8S7m4AcJK+IspsKiQJdz14dPuA2Uky
+         Z6ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729193535; x=1729798335;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TfCj0XZYQNwVFG9YcnvaiklTwIyQ/GhWVOU/ROFZAio=;
-        b=AZehTXvT6LTgNKOXOOZu+3vvFn+b4CO+VeNtd9OudZC4iq7zeDqJMeP0JsnZVn1bwx
-         yuGSnG1BluOT25aHeipYNclMaXruRW0JbO9n/9WFMWo8WR4yWV9hTYmhKROewb3QtWti
-         WnBdd3Z3hDotseOLM3mcX5CXA4kIUcx4D5bRdDljRL14VFIgc6qVerJwhuwXXRULhys6
-         5+05aNu3/rVqAiFUyP042JXHkmPPjtFPsD/gZ+y/COxz8nZR/fgLBCpF5K2DtRMwgwWm
-         G0z5p7FBoL43BIHpUnq9P8U0S+W3aIgX+T8Dq3W24x2UypphUauqEZVDdVOpKbT8YvIp
-         s0iA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4BkFkYHl9MzBMOCcHJVBa86hl4pZlxG/1IxcAoBxVfXxmMAggkIMCaNjftjcRp8V33DMV/SS/rJhPtaV32Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwLeGTtM5sUYovXTYMHSAHg8sZoieLPqNE8LponbEIGMD3ZxU9
-	I7jq0XhznouxPr6Q1mbVVm6RRwS0FSfuLz7TFl8gVy8MlFVDGTcXvoiukJrkpvU=
-X-Google-Smtp-Source: AGHT+IEYQqSWyT9DM1JblvCRXie6c7wEQ7WCCMd8WOwGbnCY29CemQ9nchGTw3++94PPWZqamrgDPA==
-X-Received: by 2002:a05:6a00:2d25:b0:71e:5950:97d2 with SMTP id d2e1a72fcca58-71ea3328e08mr68611b3a.17.1729193534443;
-        Thu, 17 Oct 2024 12:32:14 -0700 (PDT)
-Received: from localhost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea34a7fa8sm9965b3a.184.2024.10.17.12.32.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 12:32:13 -0700 (PDT)
-Date: Thu, 17 Oct 2024 12:32:13 -0700 (PDT)
-X-Google-Original-Date: Thu, 17 Oct 2024 12:32:02 PDT (-0700)
-Subject:     Re: [PATCH v11 4/5] jump_label: adjust inline asm to be consistent
-In-Reply-To: <20241015-tracepoint-v11-4-cceb65820089@google.com>
-CC: rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
-  peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, Ard Biesheuvel <ardb@kernel.org>,
-  ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-  gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
-  linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-  Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-  dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, seanjc@google.com, ubizjak@gmail.com,
-  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-  oliver.upton@linux.dev, Mark Rutland <mark.rutland@arm.com>, ryan.roberts@arm.com, tabba@google.com,
-  linux-arm-kernel@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
-  apatel@ventanamicro.com, ajones@ventanamicro.com, alexghiti@rivosinc.com,
-  Conor Dooley <conor.dooley@microchip.com>, samuel.holland@sifive.com, linux-riscv@lists.infradead.org,
-  chenhuacai@kernel.org, kernel@xen0n.name, maobibo@loongson.cn, yangtiezhu@loongson.cn,
-  akpm@linux-foundation.org, zhaotianrui@loongson.cn, loongarch@lists.linux.dev, aliceryhl@google.com
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: aliceryhl@google.com
-Message-ID: <mhng-0614da52-c420-4be1-a5b9-64dacae91d0e@palmer-ri-x1c9a>
+        d=1e100.net; s=20230601; t=1729195307; x=1729800107;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N2Hn27ndmTHMGTAUOBpXV3hZypJtQOIDgriaf/PtSKg=;
+        b=U1zcmwp9Bof/Kn4dufc/qfoKehGtnY92CxuHF5mVZIw8enklh95gUOo/xHpf4CS1Yl
+         V/kddVLB6SFqho9PtD/BIcFAdLq72mYkF6Qdsc2rWUz5r7hLUCQexe4l0NeYVdz+rlbH
+         z4hoOsQyrk2hu9pKHEgtBr0DguJaIMoxUbUOaNoE3CL5AZhy+rFFpC+aGwmzWJPeK5FH
+         go4iTPSGy1jdLtWAnFXc0kRejG2R0nQyjHsqgcbUPG/sXq81YGwdFnuvEL1jT9yKuiD5
+         MqtpEUo9tzE7t+w13idtp4FJpU8QaZMPnpqjctumjJq/an7V+0lEbFk0dEc1hjxThFpT
+         dzqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoCYvw/j+M3tme1Sw79M07paPawvZv13tpr7rO2lIv845WiCSdwopYPRnfg990gJgIZxnTs81AsP6mAf6idg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlxyYe6Ud5A83FkKLnFVy8SjQtsQ/t/xcE+/Cj61N721OjzPKw
+	C4gf2nEUsKbu2iNFZgTJFFIhgnRX+SAAh5bOuXZtMH6Fhq0vfmNUDS+1oY/HYqsHcu8DqA==
+X-Google-Smtp-Source: AGHT+IEZoNiAbxR8ZMQcEg5fAoa+Y+b1EFMFkPmdhu+1szTwmvS4oU3/Ap192vBsPH4qMGzvcfKWvGeH
+X-Received: from elsk.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:dbd])
+ (user=elsk job=sendgmr) by 2002:a17:90a:bf0d:b0:2e2:9546:591a with SMTP id
+ 98e67ed59e1d1-2e561a46746mr1025a91.7.1729195306587; Thu, 17 Oct 2024 13:01:46
+ -0700 (PDT)
+Date: Thu, 17 Oct 2024 20:01:38 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
+Message-ID: <20241017200138.2390077-2-elsk@google.com>
+Subject: [PATCH v1] rust: add PROCMACROLDFLAGS
+From: HONG Yifan <elsk@google.com>
+To: mmaurer@google.com, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Jonathan Corbet <corbet@lwn.net>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Cc: HONG Yifan <elsk@google.com>, kernel-team@android.com, linux-kbuild@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 15 Oct 2024 06:14:58 PDT (-0700), aliceryhl@google.com wrote:
-> To avoid duplication of inline asm between C and Rust, we need to
-> import the inline asm from the relevant `jump_label.h` header into Rust.
-> To make that easier, this patch updates the header files to expose the
-> inline asm via a new ARCH_STATIC_BRANCH_ASM macro.
->
-> The header files are all updated to define a ARCH_STATIC_BRANCH_ASM that
-> takes the same arguments in a consistent order so that Rust can use the
-> same logic for every architecture.
->
-> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  arch/arm/include/asm/jump_label.h       | 14 +++++----
->  arch/arm64/include/asm/jump_label.h     | 20 ++++++++-----
->  arch/loongarch/include/asm/jump_label.h | 16 +++++++----
->  arch/riscv/include/asm/jump_label.h     | 50 ++++++++++++++++++---------------
->  arch/x86/include/asm/jump_label.h       | 35 +++++++++--------------
->  5 files changed, 73 insertions(+), 62 deletions(-)
+These are additional flags to be passed when linking proc macros for the
+Rust toolchain. If unset, it defaults to $(HOSTLDFLAGS).
 
-[...]
+This is needed because the list of flags to link hostprogs is not
+necessarily the same as the list of flags used to link libmacros.so.
+When we build proc macros, we need the latter, not the
+former. To distinguish between the two, introduce this new variable
+to stand out from HOSTLDFLAGS used to link other host progs.
 
-> diff --git a/arch/riscv/include/asm/jump_label.h b/arch/riscv/include/asm/jump_label.h
-> index 1c768d02bd0c..87a71cc6d146 100644
-> --- a/arch/riscv/include/asm/jump_label.h
-> +++ b/arch/riscv/include/asm/jump_label.h
-> @@ -16,21 +16,28 @@
->
->  #define JUMP_LABEL_NOP_SIZE 4
->
-> +#define JUMP_TABLE_ENTRY(key, label)			\
-> +	".pushsection	__jump_table, \"aw\"	\n\t"	\
-> +	".align		" RISCV_LGPTR "		\n\t"	\
-> +	".long		1b - ., " label " - .	\n\t"	\
-> +	"" RISCV_PTR "	" key " - .		\n\t"	\
-> +	".popsection				\n\t"
-> +
-> +/* This macro is also expanded on the Rust side. */
-> +#define ARCH_STATIC_BRANCH_ASM(key, label)		\
-> +	"	.align		2		\n\t"	\
-> +	"	.option push			\n\t"	\
-> +	"	.option norelax			\n\t"	\
-> +	"	.option norvc			\n\t"	\
-> +	"1:	nop				\n\t"	\
-> +	"	.option pop			\n\t"	\
-> +	JUMP_TABLE_ENTRY(key, label)
-> +
->  static __always_inline bool arch_static_branch(struct static_key * const key,
->  					       const bool branch)
->  {
->  	asm goto(
-> -		"	.align		2			\n\t"
-> -		"	.option push				\n\t"
-> -		"	.option norelax				\n\t"
-> -		"	.option norvc				\n\t"
-> -		"1:	nop					\n\t"
-> -		"	.option pop				\n\t"
-> -		"	.pushsection	__jump_table, \"aw\"	\n\t"
-> -		"	.align		" RISCV_LGPTR "		\n\t"
-> -		"	.long		1b - ., %l[label] - .	\n\t"
-> -		"	" RISCV_PTR "	%0 - .			\n\t"
-> -		"	.popsection				\n\t"
-> +		ARCH_STATIC_BRANCH_ASM("%0", "%l[label]")
->  		:  :  "i"(&((char *)key)[branch]) :  : label);
->
->  	return false;
-> @@ -38,21 +45,20 @@ static __always_inline bool arch_static_branch(struct static_key * const key,
->  	return true;
->  }
->
-> +#define ARCH_STATIC_BRANCH_JUMP_ASM(key, label)		\
-> +	"	.align		2		\n\t"	\
-> +	"	.option push			\n\t"	\
-> +	"	.option norelax			\n\t"	\
-> +	"	.option norvc			\n\t"	\
-> +	"1:	j	" label "		\n\t" \
-> +	"	.option pop			\n\t"	\
-> +	JUMP_TABLE_ENTRY(key, label)
-> +
->  static __always_inline bool arch_static_branch_jump(struct static_key * const key,
->  						    const bool branch)
->  {
->  	asm goto(
-> -		"	.align		2			\n\t"
-> -		"	.option push				\n\t"
-> -		"	.option norelax				\n\t"
-> -		"	.option norvc				\n\t"
-> -		"1:	j		%l[label]		\n\t"
-> -		"	.option pop				\n\t"
-> -		"	.pushsection	__jump_table, \"aw\"	\n\t"
-> -		"	.align		" RISCV_LGPTR "		\n\t"
-> -		"	.long		1b - ., %l[label] - .	\n\t"
-> -		"	" RISCV_PTR "	%0 - .			\n\t"
-> -		"	.popsection				\n\t"
-> +		ARCH_STATIC_BRANCH_JUMP_ASM("%0", "%l[label]")
->  		:  :  "i"(&((char *)key)[branch]) :  : label);
->
->  	return false;
+Signed-off-by: HONG Yifan <elsk@google.com>
+---
+ Documentation/kbuild/kbuild.rst | 5 +++++
+ Makefile                        | 1 +
+ rust/Makefile                   | 2 +-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
+diff --git a/Documentation/kbuild/kbuild.rst b/Documentation/kbuild/kbuild.rst
+index 1796b3eba37b..d9866394bd98 100644
+--- a/Documentation/kbuild/kbuild.rst
++++ b/Documentation/kbuild/kbuild.rst
+@@ -91,6 +91,11 @@ HOSTRUSTFLAGS
+ -------------
+ Additional flags to be passed to $(HOSTRUSTC) when building host programs.
+ 
++PROCMACROLDFLAGS
++-------------
++Additional flags to be passed when linking proc macros for the Rust toolchain.
++If unset, it defaults to $(HOSTLDFLAGS).
++
+ HOSTLDFLAGS
+ -----------
+ Additional flags to be passed when linking host programs.
+diff --git a/Makefile b/Makefile
+index b77ac70f8be4..89cdf0eca7de 100644
+--- a/Makefile
++++ b/Makefile
+@@ -469,6 +469,7 @@ KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS) \
+ 		       -I $(srctree)/scripts/include
+ KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O -Cstrip=debuginfo \
+ 			-Zallow-features= $(HOSTRUSTFLAGS)
++KBUILD_PROCMACROLDFLAGS := $(or $(PROCMACROLDFLAGS),$(HOSTLDFLAGS))
+ KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+ 
+diff --git a/rust/Makefile b/rust/Makefile
+index 3678e79317f1..95ceaba35975 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -322,7 +322,7 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
+       cmd_rustc_procmacro = \
+ 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) \
+ 		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
+-		-Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
++		-Clink-args='$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
+ 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
+ 		--crate-type proc-macro \
+ 		--crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
+-- 
+2.47.0.rc1.288.g06298d1525-goog
+
