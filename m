@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ED51DE882;
-	Thu, 17 Oct 2024 13:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7441DE2A2;
+	Thu, 17 Oct 2024 13:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729170569; cv=none; b=WMjAF4/GfyHgugzVVYhQcp7muXHc5uKFCd79L9gbps+WANQ00UKLmrLcPKnaTUD26qRytq6DyL/rWhmKRAcUSbOgNHnM0GWZiQIktOMBpLxifI1WaQVcxk1KPhnHvgM9w2wdBW/K0Rjr6KP71hwSeLos+UnImotyx+s44kSA2tw=
+	t=1729170572; cv=none; b=HI1beb668qvHoRe7gWNdnxcg42rMMJYBdpeovlMENkJX/AZIovSxsbKb2vvPiIwiMdQ6aikFMLTPf83z1olOOzIqXi07Xkcw5LZ56bkYLiHbanc6DM0XpstsNbORUno8krgnfuiqIt/8t0z8m5Pz9t7G1S5BuzTUReH3ud+ZkKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729170569; c=relaxed/simple;
-	bh=5C2sQwreJAUq2xkupKtASZ31n79IvjHwew9MiqdV2gQ=;
+	s=arc-20240116; t=1729170572; c=relaxed/simple;
+	bh=6GsQsOXBkEeRY13Q8KtQu/O5wn3Kj6oFTmpBitQUMoI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QJo9qZnNVOWAHVES07ivKDfdyUmB9V34J/ggaz2ndum8RCPpb+Qow6gKJKcs0EzW+vjr+JoPGjvFoDZ+vtlpA38FMDt6HvJVDZSXdcyEVzTIbj4KEEM4MOX/8HuePoGnUgqUN8l8dzyMBpUuaJBV7V53KlD+evD1T0VZh3H/HFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k03efsGw; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=N9lQsdJ5N14e8M/vj6dHnj2ASRkV4jfsiiRliqL7zUbXAj7bcaJ4e6yi1VzsWwrdRa00lG0H2SEko4Vcc1SQxn0M6QDH3nklR6S0bgjnNSlkGNNjQqQ55hHRug2bnoexBk/5bCGfc6y6RTomSsdBbp2BymJeDqw4idLFqnSO5uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVpJiZeN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k03efsGw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613FEC4CEC3;
-	Thu, 17 Oct 2024 13:09:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVpJiZeN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB57C4CEC5;
+	Thu, 17 Oct 2024 13:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729170568;
-	bh=5C2sQwreJAUq2xkupKtASZ31n79IvjHwew9MiqdV2gQ=;
+	s=k20201202; t=1729170572;
+	bh=6GsQsOXBkEeRY13Q8KtQu/O5wn3Kj6oFTmpBitQUMoI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=k03efsGwkAOdspzTf41oAKUSZenaZH4FETcsJiTM8AuGa/GF+y5Qg93qg8F+L4BjT
-	 YA1ADPcPDbkV5RG6KAeHC8u/u7fSRpjwHq1SmmXMGxiOMb++81jqiPNlWxxlHiwcvF
-	 t5jjdUnGiCgBBfGJmHJEVAPdAkD2QUgFMX1NN66KTAaz5cEDyVtteylkWXMVQe4Mez
-	 OGXSfj5EBqEfY4+ZPQqlo5h7FlKfpk0Bwdfeu8yqMsg7JhHmRp3GPlvZPQSesxBQ+o
-	 3FCSCFoUhBaIiGtuieOatsNv+a/6HoIlRNVTXaG1kIIIN1Q6RBm65khw3LZf7Vjsxv
-	 RUmB6R0GiOhCA==
+	b=BVpJiZeNfa+o7sXwgZhU/9TajP1Ho6+dkU72SJ9Piji006YANwQIRbWBaeWOLaRMu
+	 eq71CQszVoXWUZF5Iw75MkzMhCNJItO3oPq1L+7OONkcUG+apb2vZOz/wystMrPIO/
+	 TV0GVq7U9pcWfzPdvgH64zNviZ7nnT5QzimwtiJMDCO4jHUa5mcDNAaNO+1vgC19Va
+	 ZZXrcPCBgoWlpBVFg/8/ukpIgo0hXOAZQLZmnlQo8SqSAJgWrjkVt/iyDU3YmYsGCe
+	 LJrg/cgc1qbgBqkliGMfS1fVlolYIv3suvkoQeCw32grzHWRx1GXcCuy3ThM+vl1DV
+	 RbVtf6Xb2oHOg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 17 Oct 2024 15:04:30 +0200
-Subject: [PATCH v3 03/13] rust: sync: add `Arc::as_ptr`
+Date: Thu, 17 Oct 2024 15:04:38 +0200
+Subject: [PATCH v3 11/13] rust: hrtimer: add `TimerMode`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-hrtimer-v3-v6-12-rc2-v3-3-59a75cbb44da@kernel.org>
+Message-Id: <20241017-hrtimer-v3-v6-12-rc2-v3-11-59a75cbb44da@kernel.org>
 References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
 In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, 
@@ -53,47 +53,153 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.14.2
 
-Add a method to get a pointer to the data contained in an `Arc`.
+Allow selection of timer mode by passing a `TimerMode` variant to
+`Timer::new`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/sync/arc.rs | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ rust/kernel/hrtimer.rs | 88 +++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 84 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 3021f30fd822f6a59c33f32e08008c7fea483b02..5e73af1253df37c2c810a0ee6f1b1236bbddef5e 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -237,6 +237,15 @@ pub fn into_raw(self) -> *const T {
-         unsafe { core::ptr::addr_of!((*ptr).data) }
-     }
+diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
+index 2c1573e19576de93afc959d71e94173e2c1ed715..1674d1dcba39cc7ab82e1f189002afa365ee9341 100644
+--- a/rust/kernel/hrtimer.rs
++++ b/rust/kernel/hrtimer.rs
+@@ -38,12 +38,13 @@
+ /// # Invariants
+ ///
+ /// * `self.timer` is initialized by `bindings::hrtimer_init`.
+-#[repr(transparent)]
+ #[pin_data]
+ #[repr(C)]
+ pub struct Timer<U> {
+     #[pin]
+     timer: Opaque<bindings::hrtimer>,
++    // This field goes away when `bindings::hrtimer_setup` is added.
++    mode: TimerMode,
+     _t: PhantomData<U>,
+ }
  
-+    /// Return a raw pointer to the data in this arc.
-+    pub fn as_ptr(this: &Self) -> *const T {
-+        let ptr = this.ptr.as_ptr();
+@@ -56,7 +57,7 @@ unsafe impl<U> Sync for Timer<U> {}
+ 
+ impl<T> Timer<T> {
+     /// Return an initializer for a new timer instance.
+-    pub fn new() -> impl PinInit<Self>
++    pub fn new(mode: TimerMode) -> impl PinInit<Self>
+     where
+         T: TimerCallback,
+     {
+@@ -70,7 +71,7 @@ pub fn new() -> impl PinInit<Self>
+                     bindings::hrtimer_init(
+                         place,
+                         bindings::CLOCK_MONOTONIC as i32,
+-                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
++                        mode.into(),
+                     );
+                 }
+ 
+@@ -83,6 +84,7 @@ pub fn new() -> impl PinInit<Self>
+                 // exclusive access.
+                 unsafe { core::ptr::write(function, Some(T::CallbackTarget::run)) };
+             }),
++            mode: mode,
+             _t: PhantomData,
+         })
+     }
+@@ -330,7 +332,7 @@ unsafe fn start(self_ptr: *const Self, expires: Ktime) {
+                 Self::c_timer_ptr(self_ptr).cast_mut(),
+                 expires.to_ns(),
+                 0,
+-                bindings::hrtimer_mode_HRTIMER_MODE_REL,
++                (*Self::raw_get_timer(self_ptr)).mode.into(),
+             );
+         }
+     }
+@@ -362,6 +364,84 @@ fn from(value: TimerRestart) -> Self {
+     }
+ }
+ 
++/// Operational mode of [`Timer`].
++#[derive(Clone, Copy)]
++pub enum TimerMode {
++    /// Timer expires at the given expiration time.
++    Absolute,
++    /// Timer expires after the given expiration time interpreted as a duration from now.
++    Relative,
++    /// Timer does not move between CPU cores.
++    Pinned,
++    /// Timer handler is executed in soft irq context.
++    Soft,
++    /// Timer handler is executed in hard irq context.
++    Hard,
++    /// Timer expires at the given expiration time.
++    /// Timer does not move between CPU cores.
++    AbsolutePinned,
++    /// Timer expires after the given expiration time interpreted as a duration from now.
++    /// Timer does not move between CPU cores.
++    RelativePinned,
++    /// Timer expires at the given expiration time.
++    /// Timer handler is executed in soft irq context.
++    AbsoluteSoft,
++    /// Timer expires after the given expiration time interpreted as a duration from now.
++    /// Timer handler is executed in soft irq context.
++    RelativeSoft,
++    /// Timer expires at the given expiration time.
++    /// Timer does not move between CPU cores.
++    /// Timer handler is executed in soft irq context.
++    AbsolutePinnedSoft,
++    /// Timer expires after the given expiration time interpreted as a duration from now.
++    /// Timer does not move between CPU cores.
++    /// Timer handler is executed in soft irq context.
++    RelativePinnedSoft,
++    /// Timer expires at the given expiration time.
++    /// Timer handler is executed in hard irq context.
++    AbsoluteHard,
++    /// Timer expires after the given expiration time interpreted as a duration from now.
++    /// Timer handler is executed in hard irq context.
++    RelativeHard,
++    /// Timer expires at the given expiration time.
++    /// Timer does not move between CPU cores.
++    /// Timer handler is executed in hard irq context.
++    AbsolutePinnedHard,
++    /// Timer expires after the given expiration time interpreted as a duration from now.
++    /// Timer does not move between CPU cores.
++    /// Timer handler is executed in hard irq context.
++    RelativePinnedHard,
++}
 +
-+        // SAFETY: As `ptr` points to a valid allocation of type `ArcInner`,
-+        // field projection to `data`is within bounds of the allocation.
-+        unsafe { core::ptr::addr_of!((*ptr).data) }
++impl From<TimerMode> for bindings::hrtimer_mode {
++    fn from(value: TimerMode) -> Self {
++        use bindings::*;
++        match value {
++            TimerMode::Absolute => hrtimer_mode_HRTIMER_MODE_ABS,
++            TimerMode::Relative => hrtimer_mode_HRTIMER_MODE_REL,
++            TimerMode::Pinned => hrtimer_mode_HRTIMER_MODE_PINNED,
++            TimerMode::Soft => hrtimer_mode_HRTIMER_MODE_SOFT,
++            TimerMode::Hard => hrtimer_mode_HRTIMER_MODE_HARD,
++            TimerMode::AbsolutePinned => hrtimer_mode_HRTIMER_MODE_ABS_PINNED,
++            TimerMode::RelativePinned => hrtimer_mode_HRTIMER_MODE_REL_PINNED,
++            TimerMode::AbsoluteSoft => hrtimer_mode_HRTIMER_MODE_ABS_SOFT,
++            TimerMode::RelativeSoft => hrtimer_mode_HRTIMER_MODE_REL_SOFT,
++            TimerMode::AbsolutePinnedSoft => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_SOFT,
++            TimerMode::RelativePinnedSoft => hrtimer_mode_HRTIMER_MODE_REL_PINNED_SOFT,
++            TimerMode::AbsoluteHard => hrtimer_mode_HRTIMER_MODE_ABS_HARD,
++            TimerMode::RelativeHard => hrtimer_mode_HRTIMER_MODE_REL_HARD,
++            TimerMode::AbsolutePinnedHard => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_HARD,
++            TimerMode::RelativePinnedHard => hrtimer_mode_HRTIMER_MODE_REL_PINNED_HARD,
++        }
 +    }
++}
 +
-     /// Recreates an [`Arc`] instance previously deconstructed via [`Arc::into_raw`].
-     ///
-     /// # Safety
-@@ -515,11 +524,11 @@ unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
-     }
- 
-     /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously been deconstructed with
--    /// [`Arc::into_raw`].
-+    /// [`Arc::into_raw`] or [`Arc::as_ptr`].
-     ///
-     /// # Safety
-     ///
--    /// * The provided pointer must originate from a call to [`Arc::into_raw`].
-+    /// * The provided pointer must originate from a call to [`Arc::into_raw`] or [`Arc::as_ptr`].
-     /// * For the duration of the lifetime annotated on this `ArcBorrow`, the reference count must
-     ///   not hit zero.
-     /// * For the duration of the lifetime annotated on this `ArcBorrow`, there must not be a
++impl From<TimerMode> for u64 {
++    fn from(value: TimerMode) -> Self {
++        Into::<bindings::hrtimer_mode>::into(value) as u64
++    }
++}
++
+ /// Use to implement the [`HasTimer<T>`] trait.
+ ///
+ /// See [`module`] documentation for an example.
 
 -- 
 2.46.0
