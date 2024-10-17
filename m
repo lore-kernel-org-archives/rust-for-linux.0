@@ -1,203 +1,188 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20E71E0DC3;
-	Thu, 17 Oct 2024 19:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF47202626
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 19:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729192280; cv=none; b=ZHXjPkPAXCqT8i4O4E3fdovrOwDDeZyFNQFKfQMG9y/jTBON6WuN43HH9Fbe/ea26SqQPRq79Rc3m6xuaaBQ8EGZtj6TG4cVKCWhiFC8s025lwc45dG9QSVqY+pqc2PPsIBWyXMrFkDJgL0wWAxP/TvRLsLb3TXY1cPo5MtKqLU=
+	t=1729193539; cv=none; b=NB/hdk0z6KrJjKuu/pvKrnWjzRb2izP7/GttNY6tVXieuOqtmiHX4t0QRmZDXRET0d0vnfYtcA8CchvtFACUnLo02FR3/X63Gv6PDriQ1C5lfsnWgRNWlRBUUucQwUqZsGgZneKvIfhMGU1K+tyCQkBFC7VLFExyNRjSXBbmlGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729192280; c=relaxed/simple;
-	bh=i0LCj33sTv80PVv1n+RWXeecCDYIyQk8xOI/PyH5KAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bOfDgGELJLtgBl72538QOOwDgSEKr9CL04xMsUei48wt3uREooZUiT+0H6R+Ah8AtNWSRT8Uu8EyGJuisgGz94EUxAGPSSnAy++M5xWHaie2i4PzYfZjnejMoJxhUUrXvCVm04EIJCZeRQJGrMXbPQrmRqWTrq6bXF5QnSUKLjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WpgFGlIO; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729193539; c=relaxed/simple;
+	bh=vcUXd5tt9utnmCVe/nP6iWVCPF6al6ngb6a3ypPbz8U=;
+	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
+	 Content-Type; b=EkSTrxF5koE9gPkP8EQpCq16vRZ868laPMKwhgETj5/4GxXxsuj9z/XoMl9VsPv3fO2dhL1Z0ILNPtZlpu8m+5ixm2GCzT6SQT9gGVf/Pql2vGgiBgrTNAg9xrhZqT3+WgS0JIpRGHL7mzVq5VMr/qOx+QfMRCkG8gk7HMo0Ero=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=C92aSNRl; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WpgFGlIO"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7180c7a4e02so763031a34.0;
-        Thu, 17 Oct 2024 12:11:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="C92aSNRl"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71e579abb99so932011b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 12:32:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729192278; x=1729797078; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=0vdDCOsRi+VEULt5VWZ7IdYOYXmxgnEut9AuBf1wioY=;
-        b=WpgFGlIOCWOmA9a1mYr++0vIKIOZrBPYIPX6WmUUR4EWvbUMgEBtEI4PCjUbUO7NNU
-         T4eAdOjLMq6qCMz40hxZJ1Ziz1RLVXbxoGVLAsvD6wLCu/y06jTEn8ZwJQzLXpqLfOCE
-         gQawO5EsaxyH4ID+cYuMoQZ1WQ5vf0/N5uExNqrTTgITWo5l6VR0hVsbG1rVCewLTcO2
-         eqoTNxuS52+g7GDIwB+ngYvHKtG96MdjPTwZcXgcnqup6/X/iCWF3fxxlaVeyRkxlsbS
-         a17GokAiaMAaPUQjRs/jYgBpnFvpYxkBrdHu5CgIgaV/5b0HXKLdgIKX7BRM3S3ngE9U
-         7Fog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729192278; x=1729797078;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1729193535; x=1729798335; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0vdDCOsRi+VEULt5VWZ7IdYOYXmxgnEut9AuBf1wioY=;
-        b=niBayN2RgJAbxFOlkBdzyTbmp58kB6iSDEnb7Ckmt0fN0dJ2mvrT9jUNn0yYksSfuC
-         Rfkpri+t6oFEuQOU5ke0CKTjmHDbBA2Kzt4p3MNjUvRbaNe4CLCZ6YSj8PCRHDtbqYQw
-         HRhcIlZT66MGWzOlVJ0i+41oyOJxoUPJc/zC10xEfDqBa3v9mCznjCSPpeU+ZiY7K/ZP
-         BQVavudIsuu7MHSc+/fgtVsdAWPa/M72bnwnazsIPGNYvvD2YG6LgKz1J1ULb5Sh4Xgm
-         Vw3Prm7hFYGJAFMXzaLIE2uJQqolpMDtaMkx4/4yIt1hmTcSpIjBqDygZmQPk6K/b4ey
-         ahDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWAa0hvCxR6kBIwWQhHf52Nxhok9HOhQnvaqyER1MyEOaOEaE5cwKzjG8NaKbe+7nidNtOuWbtC0BAr+AETuPU=@vger.kernel.org, AJvYcCXPVrdFpWeVoFrf7myQapAxeex8rRFIr1WoByCD0xACnk4AnUcVzWg3p08Ju+TRRDSOCPd9t4RU@vger.kernel.org, AJvYcCXSCZ2LgqPzzDG1Acx/dHHel0MvRTGRZxRIFnP4DdQw2lBBEjKSNF9ye83Y8InkUOF2Ceo81xvqIC99Wc8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxDZoREih1E9jI7ljleT4K3EOwh8jCTwR9i0OpWVOzDgu4EOLu
-	z2HTg/Kc1Qwt0dLe8u5P6dSS8o3xYbbPKvrj9lYx2QtCpKlVAt2c
-X-Google-Smtp-Source: AGHT+IFBdLNqy949zDHUStXk4qwoTIFrnoaGhDbhGXYo1lTaHPLsWGUsNk3U3i2g35PzdkHo1fADaw==
-X-Received: by 2002:a05:6359:4ca5:b0:1c3:9552:6f46 with SMTP id e5c5f4694b2df-1c395527994mr193031955d.15.1729192277703;
-        Thu, 17 Oct 2024 12:11:17 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cc2292e964sm30631486d6.59.2024.10.17.12.11.16
+        bh=TfCj0XZYQNwVFG9YcnvaiklTwIyQ/GhWVOU/ROFZAio=;
+        b=C92aSNRliXUZa4r6bkC42hbLvd1ICOB0CikdQCc4o/w1HHZOf+RWUVIB4jFrkZ54Uj
+         0vgr4ZQ+OeN+1hf3uuvkORB5LcPgLjgoBV1QP3pvVsHXDMheAOE/ndDCakwvdY+qeCT+
+         gSKx1wUbQmWgNWnCbN/+6+XFdK8VWI28xh5ophXT20imLaeKUDux8sGW5soAhYc9iZts
+         kSUvO2HtaYXFRg1eUAMY13vaP6NMx6iGQHu0DVJKHGckQL/Ih+VvLpZchsRZ8y+FKPHn
+         z+9mbSqniDgYEr28lhAiJSWic/N1jiRPSUcyOjoPRPg99tsw2VGR4XyXjkD+Nnr0GtAS
+         YK2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729193535; x=1729798335;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TfCj0XZYQNwVFG9YcnvaiklTwIyQ/GhWVOU/ROFZAio=;
+        b=AZehTXvT6LTgNKOXOOZu+3vvFn+b4CO+VeNtd9OudZC4iq7zeDqJMeP0JsnZVn1bwx
+         yuGSnG1BluOT25aHeipYNclMaXruRW0JbO9n/9WFMWo8WR4yWV9hTYmhKROewb3QtWti
+         WnBdd3Z3hDotseOLM3mcX5CXA4kIUcx4D5bRdDljRL14VFIgc6qVerJwhuwXXRULhys6
+         5+05aNu3/rVqAiFUyP042JXHkmPPjtFPsD/gZ+y/COxz8nZR/fgLBCpF5K2DtRMwgwWm
+         G0z5p7FBoL43BIHpUnq9P8U0S+W3aIgX+T8Dq3W24x2UypphUauqEZVDdVOpKbT8YvIp
+         s0iA==
+X-Forwarded-Encrypted: i=1; AJvYcCV4BkFkYHl9MzBMOCcHJVBa86hl4pZlxG/1IxcAoBxVfXxmMAggkIMCaNjftjcRp8V33DMV/SS/rJhPtaV32Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwLeGTtM5sUYovXTYMHSAHg8sZoieLPqNE8LponbEIGMD3ZxU9
+	I7jq0XhznouxPr6Q1mbVVm6RRwS0FSfuLz7TFl8gVy8MlFVDGTcXvoiukJrkpvU=
+X-Google-Smtp-Source: AGHT+IEYQqSWyT9DM1JblvCRXie6c7wEQ7WCCMd8WOwGbnCY29CemQ9nchGTw3++94PPWZqamrgDPA==
+X-Received: by 2002:a05:6a00:2d25:b0:71e:5950:97d2 with SMTP id d2e1a72fcca58-71ea3328e08mr68611b3a.17.1729193534443;
+        Thu, 17 Oct 2024 12:32:14 -0700 (PDT)
+Received: from localhost ([50.145.13.30])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea34a7fa8sm9965b3a.184.2024.10.17.12.32.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 12:11:17 -0700 (PDT)
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8402B1200043;
-	Thu, 17 Oct 2024 15:02:34 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Thu, 17 Oct 2024 15:02:34 -0400
-X-ME-Sender: <xms:Sl8RZ23ynvKruSP1V-wk9XfKI_RiLWgYMmg30lb0ZtjCRYVxZ7i9bQ>
-    <xme:Sl8RZ5FC7WVdYZl62k0OcPPMTSVXo4Y5RU-Sz1nMyASFq2ADNggKYTQ7Y5upCwpYs
-    t_bndMkdO-EoH8KOA>
-X-ME-Received: <xmr:Sl8RZ-7136LdopFH2Eo7w-HbbvgCFWI0NiDBGzgdMYmBvhvgjhfWmDhetbA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehuddgudefhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledt
-    hffgheegkeekiefgudekhffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnh
-    guohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhn
-    ohhrihesghhmrghilhdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprh
-    gtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopeht
-    mhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:Sl8RZ332mvADykkOvEEfIOz1yTashpuRiTRmdE2zOKhLWuECsjk2yA>
-    <xmx:Sl8RZ5EF74jzcQZPxPNAAF0zEkj0ORt0fYqLcpC12NmgnG8Sg85w-w>
-    <xmx:Sl8RZw9BWG1IB-G70dB259LAvIydkgKjG7oLmr_kXQETIHN5lvCifg>
-    <xmx:Sl8RZ-m-eEcp4Bu9E2usrYyj07becHmFoouGljhouZo2KFcsvM7hrw>
-    <xmx:Sl8RZxFsa_96GuPo_MWsWxx96783vhyK0lvNeSRr_TNidcz4mEYHFa_g>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Oct 2024 15:02:33 -0400 (EDT)
-Date: Thu, 17 Oct 2024 12:02:07 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch,
-	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com,
-	sboyd@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 4/8] rust: time: Implement addition of Ktime
- and Delta
-Message-ID: <ZxFfLyXiDqOva5jN@boqun-archlinux>
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-5-fujita.tomonori@gmail.com>
- <ZxAZ36EUKapnp-Fk@Boquns-Mac-mini.local>
- <20241017.183141.1257175603297746364.fujita.tomonori@gmail.com>
- <CANiq72mbWVVCA_EjV_7DtMYHH_RF9P9Br=sRdyLtPFkythST1w@mail.gmail.com>
- <ZxFDWRIrgkuneX7_@boqun-archlinux>
- <CANiq72kAL8OWCerpXYOeJDcHZNdT+QRj6Vw3YUBYiQG+hgYcVA@mail.gmail.com>
+        Thu, 17 Oct 2024 12:32:13 -0700 (PDT)
+Date: Thu, 17 Oct 2024 12:32:13 -0700 (PDT)
+X-Google-Original-Date: Thu, 17 Oct 2024 12:32:02 PDT (-0700)
+Subject:     Re: [PATCH v11 4/5] jump_label: adjust inline asm to be consistent
+In-Reply-To: <20241015-tracepoint-v11-4-cceb65820089@google.com>
+CC: rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+  peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, Ard Biesheuvel <ardb@kernel.org>,
+  ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+  gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+  linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+  Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+  dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, seanjc@google.com, ubizjak@gmail.com,
+  Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+  oliver.upton@linux.dev, Mark Rutland <mark.rutland@arm.com>, ryan.roberts@arm.com, tabba@google.com,
+  linux-arm-kernel@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
+  apatel@ventanamicro.com, ajones@ventanamicro.com, alexghiti@rivosinc.com,
+  Conor Dooley <conor.dooley@microchip.com>, samuel.holland@sifive.com, linux-riscv@lists.infradead.org,
+  chenhuacai@kernel.org, kernel@xen0n.name, maobibo@loongson.cn, yangtiezhu@loongson.cn,
+  akpm@linux-foundation.org, zhaotianrui@loongson.cn, loongarch@lists.linux.dev, aliceryhl@google.com
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: aliceryhl@google.com
+Message-ID: <mhng-0614da52-c420-4be1-a5b9-64dacae91d0e@palmer-ri-x1c9a>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kAL8OWCerpXYOeJDcHZNdT+QRj6Vw3YUBYiQG+hgYcVA@mail.gmail.com>
 
-On Thu, Oct 17, 2024 at 08:10:17PM +0200, Miguel Ojeda wrote:
-> On Thu, Oct 17, 2024 at 7:03 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > The point I tried to make is that `+` operator of Ktime can cause
-> > overflow because of *user inputs*, unlike the `-` operator of Ktime,
-> > which cannot cause overflow as long as Ktime is implemented correctly
-> > (as a timestamp). Because the overflow possiblity is exposed to users,
-> > then we need to 1) document it and 2) provide saturating_add() (maybe
-> > also checked_add() and overflowing_add()) so that users won't need to do
-> > the saturating themselves:
-> 
-> Generally, operators are expected to possibly wrap/panic, so that
-> would be fine, no?
-> 
+On Tue, 15 Oct 2024 06:14:58 PDT (-0700), aliceryhl@google.com wrote:
+> To avoid duplication of inline asm between C and Rust, we need to
+> import the inline asm from the relevant `jump_label.h` header into Rust.
+> To make that easier, this patch updates the header files to expose the
+> inline asm via a new ARCH_STATIC_BRANCH_ASM macro.
+>
+> The header files are all updated to define a ARCH_STATIC_BRANCH_ASM that
+> takes the same arguments in a consistent order so that Rust can use the
+> same logic for every architecture.
+>
+> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  arch/arm/include/asm/jump_label.h       | 14 +++++----
+>  arch/arm64/include/asm/jump_label.h     | 20 ++++++++-----
+>  arch/loongarch/include/asm/jump_label.h | 16 +++++++----
+>  arch/riscv/include/asm/jump_label.h     | 50 ++++++++++++++++++---------------
+>  arch/x86/include/asm/jump_label.h       | 35 +++++++++--------------
+>  5 files changed, 73 insertions(+), 62 deletions(-)
 
-Yes, but I guess I need to make it clear: the current `+` operator
-implemention is fine for me. What I'm trying to say is: since we have a
-`+` that expects users to not provide inputs that causes overflow, then
-it makes sense to provide a saturating_add() at the same time for the
-API completeness.
+[...]
 
-> It may be surprising to `ktime_t` users, and that is bad. It is one
-> more reason to avoid using the same name for the type, too.
-> 
-> My only concern is that people may expect this sort of thing (timing
-> related) to "usually/just work" and not expect panics. That is bad,
-> but if we remain consistent, it may be best to pay the cost now. In
-> other words, when someone sees an operator, it is saying it is never
-> supposed to wrap, and that is easy to remember. Perhaps some types
-> could avoid providing the operators if it is too dangerous to use
-> them.
-> 
+> diff --git a/arch/riscv/include/asm/jump_label.h b/arch/riscv/include/asm/jump_label.h
+> index 1c768d02bd0c..87a71cc6d146 100644
+> --- a/arch/riscv/include/asm/jump_label.h
+> +++ b/arch/riscv/include/asm/jump_label.h
+> @@ -16,21 +16,28 @@
+>
+>  #define JUMP_LABEL_NOP_SIZE 4
+>
+> +#define JUMP_TABLE_ENTRY(key, label)			\
+> +	".pushsection	__jump_table, \"aw\"	\n\t"	\
+> +	".align		" RISCV_LGPTR "		\n\t"	\
+> +	".long		1b - ., " label " - .	\n\t"	\
+> +	"" RISCV_PTR "	" key " - .		\n\t"	\
+> +	".popsection				\n\t"
+> +
+> +/* This macro is also expanded on the Rust side. */
+> +#define ARCH_STATIC_BRANCH_ASM(key, label)		\
+> +	"	.align		2		\n\t"	\
+> +	"	.option push			\n\t"	\
+> +	"	.option norelax			\n\t"	\
+> +	"	.option norvc			\n\t"	\
+> +	"1:	nop				\n\t"	\
+> +	"	.option pop			\n\t"	\
+> +	JUMP_TABLE_ENTRY(key, label)
+> +
+>  static __always_inline bool arch_static_branch(struct static_key * const key,
+>  					       const bool branch)
+>  {
+>  	asm goto(
+> -		"	.align		2			\n\t"
+> -		"	.option push				\n\t"
+> -		"	.option norelax				\n\t"
+> -		"	.option norvc				\n\t"
+> -		"1:	nop					\n\t"
+> -		"	.option pop				\n\t"
+> -		"	.pushsection	__jump_table, \"aw\"	\n\t"
+> -		"	.align		" RISCV_LGPTR "		\n\t"
+> -		"	.long		1b - ., %l[label] - .	\n\t"
+> -		"	" RISCV_PTR "	%0 - .			\n\t"
+> -		"	.popsection				\n\t"
+> +		ARCH_STATIC_BRANCH_ASM("%0", "%l[label]")
+>  		:  :  "i"(&((char *)key)[branch]) :  : label);
+>
+>  	return false;
+> @@ -38,21 +45,20 @@ static __always_inline bool arch_static_branch(struct static_key * const key,
+>  	return true;
+>  }
+>
+> +#define ARCH_STATIC_BRANCH_JUMP_ASM(key, label)		\
+> +	"	.align		2		\n\t"	\
+> +	"	.option push			\n\t"	\
+> +	"	.option norelax			\n\t"	\
+> +	"	.option norvc			\n\t"	\
+> +	"1:	j	" label "		\n\t" \
+> +	"	.option pop			\n\t"	\
+> +	JUMP_TABLE_ENTRY(key, label)
+> +
+>  static __always_inline bool arch_static_branch_jump(struct static_key * const key,
+>  						    const bool branch)
+>  {
+>  	asm goto(
+> -		"	.align		2			\n\t"
+> -		"	.option push				\n\t"
+> -		"	.option norelax				\n\t"
+> -		"	.option norvc				\n\t"
+> -		"1:	j		%l[label]		\n\t"
+> -		"	.option pop				\n\t"
+> -		"	.pushsection	__jump_table, \"aw\"	\n\t"
+> -		"	.align		" RISCV_LGPTR "		\n\t"
+> -		"	.long		1b - ., %l[label] - .	\n\t"
+> -		"	" RISCV_PTR "	%0 - .			\n\t"
+> -		"	.popsection				\n\t"
+> +		ARCH_STATIC_BRANCH_JUMP_ASM("%0", "%l[label]")
+>  		:  :  "i"(&((char *)key)[branch]) :  : label);
+>
+>  	return false;
 
-Sounds reasonable to me.
-
-> The other option is be inconsistent in our use of operators, and
-> instead give operators the "best" semantics for each type. That can
-> definitely provide better ergonomics in some cases, but there is a
-> high risk of forgetting what each operator does for each type --
-> operator overloading can be quite risky.
-> 
-
-Agreed.
-
-> So that is why I think it may be best/easier to generally say "we
-> don't do operator overloading in general unless the operator really
-> behaves like a core one", especially early on.
-> 
-> >         kt = kt.saturating_add(d);
-> 
-> Yeah, that is what we want (I may be missing something in your argument though).
-> 
-> > but one thing I'm not sure is since it looks like saturating to
-> > KTIME_SEC_MAX is the current C choice, if we want to do the same, should
-> > we use the name `add_safe()` instead of `saturating_add()`? FWIW, it
-> > seems harmless to saturate at KTIME_MAX to me. So personally, I like
-> > what Alice suggested.
-> 
-> Do you mean it would be confusing to not saturate to the highest the
-> lower/inner level type can hold?
-> 
-
-Yes.
-
-> I mean, nothing says we need to saturate to the highest -- we could
-> have a type invariant. (One more reason to avoid the same name).
-> 
-> Worst case, we can have two saturating methods, or two types, if really needed.
-> 
-> Thomas can probably tell us what are the most important use cases
-> needed, and whether it is a good opportunity to clean/redesign this in
-> Rust differently.
-> 
-
-Works for me!
-
-Regards,
-Boqun
-
-> Cheers,
-> Miguel
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com> # RISC-V
