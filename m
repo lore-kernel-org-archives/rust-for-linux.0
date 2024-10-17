@@ -1,113 +1,121 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF30C1D90AD
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 11:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691DD1D517C;
+	Thu, 17 Oct 2024 11:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729164966; cv=none; b=BcdQPcpOw+3fxdaDjxYz2bLAsLjtz9jset3T8xKBFtFTcSjJetZiV7BfJlsh2SaRezbmry25S2v5UK/uUg98dfwks7fp2WAv98W4CT71EBOfxTbiG9N5Ypte5XwzqlAQ39WE7/ozDoyYfJNGZSxWN8Gy6l8iwBdF+/eADQIMQRM=
+	t=1729165166; cv=none; b=VCS0sOHbuYZRDtiM7erWgqHo+40fHiPNza8Gm42Y8ZPHTCcQzFzlcF/K/ez4ppwB1d81XvzOe8+12aRnof9QqeknByIlmwdrrFp4RLcd3dA+BKrpqXHKtypwfIa5DNAUv9z0f8QQzZjfP0FTE5EnZdxvRrKRXOKPiGsWZaoViHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729164966; c=relaxed/simple;
-	bh=Sy/DXM4pRzPmWe5V+bTLfH5NmwJxXluhw8HitOORpCM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HXHFgNAoL9Ze1XwV5L2b9X2gOFQUja8kPCycx0MKrm0chaTlmbvBuMZS3X+d5KImBKenXw+9lnBVtyL/RDKSBeyCzQlZjIYdHSSxqTczIPeSghDNculeVzJgKXPnPHhRWfwJS7DKihMbnVjhcgctJvnxlHp+GOyHEFC2zZj1z+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2uOc6Fyj; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729165166; c=relaxed/simple;
+	bh=z76vLyDMvBNsHLScSM6/6X7rvP+qA/GeX4JNYITLiZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4rl9hs6eQ4Zn5c8kkmAP+t5OX3Vos4ujrYG4NkFVcSdrzr0pHoDb22i3yKAxu9KSUUIt7mitaeJoPWexjg8cQ4oZYPcWuArvok+r7t4ggQ+LEL5N44JSY8RJ1no93gc+6WRGU/0id5clgic41TbW75OIJrYffWk3HA6nBNMEyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDkPc30P; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2uOc6Fyj"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d4fd00574so559434f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 04:36:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729164961; x=1729769761; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A+wLTTflWqI7DwX3CtVzbxrUPGaxb2nfMLXt3Z9pOZU=;
-        b=2uOc6FyjPSTk+2i/cb5sxtRwtjlJ6l0y4TdiL2ovZYWVZiy8khRuOYHfs9KvuEuveh
-         IivHAG2YM6NV3D+w/0VOP+C5IiGXpIdCAKyi6ZaRn4u5MkJh7vFSx7BZO6wwCcsAPB19
-         UwDrj9XhhRNuR1uQe+zQR4c/NrTAitM4vvRcpCGYXjZjtTEm6dzq25jS/iDVnHHEge6j
-         I8Mr28uG8GTTHtudJ4yYoH/RuNVSUbsc2ybqz+kv7EGj/K2FdbBrOWyA5kzsdZrTjSw+
-         LVdcHzF355UWpLNpU4wqn393pFrN7uTj7JeAXtUb4VFT+hgeg0lm7m3IdKLoBQdczVSO
-         K33w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729164961; x=1729769761;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A+wLTTflWqI7DwX3CtVzbxrUPGaxb2nfMLXt3Z9pOZU=;
-        b=tkzRAwqBLnIviDodsPrecWYysuZE4jTAxqfEQCNvKCpMWcZ/jItTPEq5xKv+GMMuQ5
-         aHkveIBw0TK9QiVVzweLiu2APnt50teDKkzqOIbnw7ASRSz2XC49AJFH7vM3yFl4n0gT
-         6SfOqyl5wU2bgO9zqrg2/jUug8vdxMzUVgPYR3lsGecpRPAYeIVkKqc1cJqSaB8tVHAE
-         Q37bhuyDBnypnd03bX5X1IRiwB53Lmzwn3oDySCusPTW4dVXOOb4hisU4GlZlCPgBtsC
-         IHJCMhqoM0hcdHiZ6YaSMae3RXsxaSEIfLkrVyeQHz3GAKqelkPUyDhjznW1gNJpkh/f
-         blxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5b8wXQ9q50iMEorOb5Q653qwdKXwepzwRvhAaYyTliEO+Abe05FpEvTNU+ssujIm0SNQjkVsAHa9u4Mc4IA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKl48CbPICzOt5f728+pGDtf7i/k7lkkLrVfC2CAlWJpm7lMY2
-	9N9mWD/o89bVB8YG/KF1ISUBSb19xmvxqtH9S4TULL3hjwjXEorlEXroc1enZ9zf+bnAfr0NQC5
-	9csJHhf4WFxMi+o88Pwj4XaMT1SAn0Z8c0bCB
-X-Google-Smtp-Source: AGHT+IFScq8wKf7b4NIwQ3yADJ8Emmb+sibLS27zjBHCwk1+AGLKIvy4me1EDq7fdYz69Y5S1X8upaam6ElK0/Xz4ew=
-X-Received: by 2002:adf:f64e:0:b0:37d:2e74:2eea with SMTP id
- ffacd0b85a97d-37d93dcc0d5mr1815750f8f.5.1729164961032; Thu, 17 Oct 2024
- 04:36:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDkPc30P"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729165163; x=1760701163;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=z76vLyDMvBNsHLScSM6/6X7rvP+qA/GeX4JNYITLiZc=;
+  b=PDkPc30PvtuWw7SzRyZb5VFN3+v5uIHAyIckRMQRJ5T3UyaQYN4+20xm
+   7c4yOYt/0gfFPLisN7MDFkQK6+yyM3mJq5EKgBahnqx+4Z33zScyv21uG
+   4IO3hQWL+1Vhg3R2wMFqHG5SbyDFa5FqHuDoztyub2/alWws6dY4CcEka
+   hdA6ohKcSue4OOrF9+3c3QConLCVWhw4HFklq3X8iZp77nL6baFznKlE6
+   7rWSsbTxIYckP8jmGARzoCsJ71BKGMe7RZzzRz0j+S3Chrb7bhaWzAJsB
+   AjPBbOejEnVYvmpDraecpkHHN2jZ8n0MtnHS8oA3v4kS0eO2l/UQN+l3U
+   Q==;
+X-CSE-ConnectionGUID: To4exRfMRqmxqUpSy1/TlQ==
+X-CSE-MsgGUID: XYzrsNQSQKaF/g7VqlpUrw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28531383"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="28531383"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 04:39:23 -0700
+X-CSE-ConnectionGUID: tN5mlECVTQmS+sJTalLTpQ==
+X-CSE-MsgGUID: YDePhtYnSZm+oHqcHR2U1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
+   d="scan'208";a="78130060"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 17 Oct 2024 04:39:19 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1Oqb-000MFr-09;
+	Thu, 17 Oct 2024 11:39:17 +0000
+Date: Thu, 17 Oct 2024 19:38:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Josef Zoller <josef@walterzollerpiano.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Josef Zoller <josef@walterzollerpiano.com>
+Subject: Re: [PATCH 1/3] rust: char_dev: add character device abstraction
+Message-ID: <202410171902.1Oyg06At-lkp@intel.com>
+References: <20241011-rust-char-dev-v1-1-350225ae228b@walterzollerpiano.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241006225952.45012-1-luna.xin.lx@gmail.com>
-In-Reply-To: <20241006225952.45012-1-luna.xin.lx@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 17 Oct 2024 13:35:48 +0200
-Message-ID: <CAH5fLghcW5HgHaV43++Pdf4i7kPQ3CbJKmNmACUyw8iZDWzt3g@mail.gmail.com>
-Subject: Re: [PATCH] scripts: add `uapi` crate to `generate_rust_analyzer.py`
-To: Luna Xin <luna.xin.lx@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241011-rust-char-dev-v1-1-350225ae228b@walterzollerpiano.com>
 
-On Mon, Oct 7, 2024 at 1:03=E2=80=AFAM Luna Xin <luna.xin.lx@gmail.com> wro=
-te:
->
-> This patch updates the `generate_rust_analyzer.py` script to include
-> the `uapi` crate.
->
-> This allows a proper `rust-project.json` to be generated by the script
-> so that driver developers can take advantage of rust-analyzer code
-> completions when interfacing with `uapi`.
->
-> Signed-off-by: Luna Xin <luna.xin.lx@gmail.com>
-> ---
->  scripts/generate_rust_analyzer.py | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index d2bc63cde..61214fd2f 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -93,10 +93,18 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs):
->      )
->      crates[-1]["env"]["OBJTREE"] =3D str(objtree.resolve(True))
->
-> +    append_crate(
-> +        "uapi",
-> +        srctree / "rust"/ "uapi" / "lib.rs",
-> +        ["core"],
-> +        cfg=3Dcfg,
-> +    )
-> +    crates[-1]["env"]["OBJTREE"] =3D str(objtree.resolve(True))
+Hi Josef,
 
-This says that uapi only depends on core, but how does that interact
-with this patch?
+kernel test robot noticed the following build errors:
 
-https://lore.kernel.org/all/20240913213041.395655-1-gary@garyguo.net/
+[auto build test ERROR on ce1c54fdff7c4556b08f5b875a331d8952e8b6b7]
 
-Alice
+url:    https://github.com/intel-lab-lkp/linux/commits/Josef-Zoller/rust-char_dev-add-character-device-abstraction/20241012-030853
+base:   ce1c54fdff7c4556b08f5b875a331d8952e8b6b7
+patch link:    https://lore.kernel.org/r/20241011-rust-char-dev-v1-1-350225ae228b%40walterzollerpiano.com
+patch subject: [PATCH 1/3] rust: char_dev: add character device abstraction
+config: x86_64-randconfig-016-20241017 (https://download.01.org/0day-ci/archive/20241017/202410171902.1Oyg06At-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410171902.1Oyg06At-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410171902.1Oyg06At-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0658]: associated type bounds are unstable
+   --> rust/kernel/char_dev.rs:140:42
+   |
+   140 |     type OpenPtr: for<'a> ForeignOwnable<Borrowed<'a>: Deref<Target: OpenCharDevice>>;
+   |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: see issue #52662 <https://github.com/rust-lang/rust/issues/52662> for more information
+   = help: add `#![feature(associated_type_bounds)]` to the crate attributes to enable
+   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+--
+>> error[E0658]: associated type bounds are unstable
+   --> rust/kernel/char_dev.rs:140:62
+   |
+   140 |     type OpenPtr: for<'a> ForeignOwnable<Borrowed<'a>: Deref<Target: OpenCharDevice>>;
+   |                                                              ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: see issue #52662 <https://github.com/rust-lang/rust/issues/52662> for more information
+   = help: add `#![feature(associated_type_bounds)]` to the crate attributes to enable
+   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
