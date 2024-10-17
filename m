@@ -1,126 +1,110 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926A323741
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 00:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF9613AD33
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 00:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729124801; cv=none; b=GI67Lq6dxSMEqFnPndx+DDq11nQiei1IgwH+ocdfZ4ndqhTuexjuHjjy/meI9q/z8755fjq9yiaCJ+DLPXRd5x42p/JRx0udPgkUXKtbtAwNjJOEv3cOO/4TDuFV4NCokTctwkejl3RIXd9nDEMu+f71YMZqOuQBX3J5EMLv+2g=
+	t=1729125001; cv=none; b=SbyxX1kgnAfArLCSgcOVbRDZSIPI8Dzy4pnFZDPkUeZgu74Kiw8BEV1B/UWjsDfCTgc+P9btIK4RPAohFDXa/paWoN6bzyfT0Ms9+65sofKoFPkpTmipWk67q2yYp/OlCPkfYa5o77ddm/QI22oS6mgOcrs7YyhkEgsi/28IS6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729124801; c=relaxed/simple;
-	bh=0jwTR0iueyndpPrNwaFPpUKTaxSDEKtRjzWhhrTbnME=;
+	s=arc-20240116; t=1729125001; c=relaxed/simple;
+	bh=QQ3yPlmHif47DLR/Zn5xQDSKv4ALd+gwooeN/Tt/rWU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4HzhudjeAywkmPOyIpxsaTpK6v1b8yD56xMmSzCbv1RizXbOqwa9BJYoC2wrU1qruh+ok4zpk1pcq5e/5RuhH05DeCHmyQDqF7h36B/abR4GMxHHTYdrzWHwLB16qWAN1bMzwE3G8ODU26cAgZe42baBKAba7O0myNfoC1LkiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dPAShefK; arc=none smtp.client-ip=209.85.160.174
+	 To:Cc:Content-Type; b=KJ1N2O7gjHHpeC51YelAKDY20+UZndlA/GiMRtCRA5sqNdIs4ElKDZ+c/pU5H31SlT5b8QjuEtdlLWmresJIF5M3DOVUYgfXqBVHrdFv+Eox6pdgjgbBQbdnF3DODwAh4tv6OhNoNheSGSHvRpI9CzxD7+s8U4zCzUcvoaoH8MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=knlKz6cQ; arc=none smtp.client-ip=209.85.160.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dPAShefK"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-460969c49f2so123011cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 17:26:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="knlKz6cQ"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4601a471aecso76451cf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 17:29:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729124798; x=1729729598; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1729124999; x=1729729799; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jWdC8o5l9dSoefG8d0V05ixiC17MDxk90k3DqUJtL94=;
-        b=dPAShefKWC4QLcHJmjMl42aFVABXczWNYOdsNby8FvOQZmrOY+D/bLU44LMmQfp28j
-         o5RU24BNZTDP/dGSSF4rnlvS13/PAsvwi3YP9tLDNCH9eB6NZETgfc/G3zieRIrxHGqk
-         sqCrjVa+fpeBHGLut2kvfeBCE6GLbwnQ7V6Wt0GF5OjvStGyxtrbx+CnB5HbPtyOhBkw
-         wt3ZM0nl0fFdk2+clQPHPKmi7n3GOedeQC3AScb8UfjcPZddocARw79Ape7PfOv+XhMM
-         r/O2ZQnw0eEuKmKRqRMdl8vj33Sx/gwdsXQCkIVtr/f0xMu9O+RUCs1CJN/qDWRvZDB+
-         pkzA==
+        bh=LH0Z2Dabr0v6/YTuA2hPIezpeV5Gwf0kakguPcEDLYw=;
+        b=knlKz6cQ9l8OXoh5ZK9yrXf8FmMKeX+eYOwo9Zvz7UY/o0CHJH2+BbM042VPovmCRa
+         PC+4/bAMZ8Q8giLj2+ORXmqOqEzNoVDTEvYXeyLJrkW8VVyky7yqLEynyxDcxOqQX3X5
+         O9e4Gj7whQ/lsd4riUTn28IvpLB/ioC1qO+V3uUWgi//o8QFA2CwEYCpmGjKUzg/ulML
+         7ChVRA1wlM/GwhR3jEXiqSoGCreX/JCb/xC87C5b4v50TSWWs8dvecomGtyKW4KSZ8dS
+         rlsA+VI8V9CC65d2o8n0uuJnAg7HUFuiI/sSBHqzzqY3lhqCrqpNjVs92pnzAtx1ufGr
+         wRuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729124798; x=1729729598;
+        d=1e100.net; s=20230601; t=1729124999; x=1729729799;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jWdC8o5l9dSoefG8d0V05ixiC17MDxk90k3DqUJtL94=;
-        b=leNfF/33uIY1ilgWlEjeUfa5dtLRFHMvbU5STrMhYvr2r7aD5kBx7h0agrKQ2zrx+/
-         /IuhlSpCF/6/wsF8P/4j+3jIKx13vRxd0wA/x2wTmTxnO9EDy4t6VdXruwWAE0rWnXPv
-         E1y+XKLl4oByexb5UaMjOx9jM17TRHEf4MR6TeXI5IItFACvq0F9e0vfyf2w9NB5xlnK
-         FIw9kIpECVgJXdBTJXZyz1JY7+4kyHdLgfJ76fClQO7XPknMiAtFQySBGJJkE/fXBa7Q
-         rhKio/tDh3s69URKRP9HOD3i2HR+wEs2fIhxmrc+gqrDA8jisqqRSs9Z5WDDyqHBoSsO
-         /gxA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6sfbYJE+bATzSZdoWiwz/MzCDRw8D2PqP/253Ktfe34aGKz7dwvPQy26uEbRZ7UWZBp0qWLwLiz9lC2Dqwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyT8KTUZRKbbSax4Ot2II8LdvXpZ9PeVtdCRTUIG9+rHKBfnLSr
-	ElLNUbbSKKGtmM65iYDQNnKR5koislOndwN6Fs43tGlPEzGozTrrjGv0/D07KmTwN4w5BpUGBkq
-	X8gnjXzDGUZbijNOXAKqXcyf123A3U/VljthT
-X-Google-Smtp-Source: AGHT+IFyrIuiUrO1qU9KQuQZSVEK+54cenmGt/fL8q6O8TUeM+0K1ZlNZ1Ma9YYWd9GL+AJTnwqdve95TquY/nRUVCA=
-X-Received: by 2002:ac8:648d:0:b0:45f:924:6bcd with SMTP id
- d75a77b69052e-4609c8e1b3amr1552851cf.22.1729124798070; Wed, 16 Oct 2024
- 17:26:38 -0700 (PDT)
+        bh=LH0Z2Dabr0v6/YTuA2hPIezpeV5Gwf0kakguPcEDLYw=;
+        b=oHkzxRTR+LcSdY+r0RfhypHYlo98f2f3MQgGUFRJ+b2wVHbr0u0wvyHyxWPqK/GZXc
+         vcQryoKSDK53QHNsLo3GUo8MFrTY5nZICjnDAfYEaZ4/0JZchYCE8J66UqXQj++0kn5l
+         a0X5G4vUB40QHraaDxxXVYSCmJvCDIf5ypBIFkLBFNMD2Z/NsLsZzKW2oVUkxwf4XUq9
+         7epxGWWKwCXWvPDIERyG2qRG5uh74VEoIvKgD7Wcch8qV9ahB92ftiG6ZfromtEdEKCf
+         /xpAJb7CtfVQ0rHs8jHE8dyE3N0NLI5uH5sA1GZ0Fx4b/Vn1N4Gmc95fJvBeKAfZiGzG
+         +fPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXP9oZOSpixPOFdt97RA32kH9979+vMG3B21/A6w/381zGTLCCQitTVD8oP5THeDhsN6QgM+pjF0AfrCDGHJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/jjWUTvDqHQrV41Ick5jaCulxTzf7Dm/Bq9IJClfb5xr0W0QV
+	ciWtUaHm8tQo4bJIetlnuf54SER/W5DnQI2E59UAh5jTX8tqYxVKuiFevgbN4Qw/cbntuBhMdax
+	W6JGKipECXOEOsShc8j/g/LOLrkyqNef0Wv3x
+X-Google-Smtp-Source: AGHT+IEkiqlXHuKYOU8SwBMR0dV+VSeKX1cEYOa+jnRE7HTVIAIwDiHxxERyXoPvpzA18MmYhkLujQjjhoStViWu6eQ=
+X-Received: by 2002:a05:622a:a313:b0:453:5b5a:e77c with SMTP id
+ d75a77b69052e-4609c7856e5mr1655011cf.10.1729124998247; Wed, 16 Oct 2024
+ 17:29:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241015231925.3854230-1-mmaurer@google.com> <20241015231925.3854230-5-mmaurer@google.com>
-In-Reply-To: <20241015231925.3854230-5-mmaurer@google.com>
+References: <20241015231925.3854230-1-mmaurer@google.com> <20241015231925.3854230-2-mmaurer@google.com>
+In-Reply-To: <20241015231925.3854230-2-mmaurer@google.com>
 From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 16 Oct 2024 17:25:58 -0700
-Message-ID: <CABCJKucg9okLPkK1bgDqZ+gdRxSxvkE2Ff8JPBkrcsH+Guo_vg@mail.gmail.com>
-Subject: Re: [PATCH v6 4/5] modpost: Produce extended MODVERSIONS information
+Date: Wed, 16 Oct 2024 17:29:21 -0700
+Message-ID: <CABCJKudqG+8-MdxXRfdu7pYe=UniiiAV1P4QnbP2c1R3Q8DC=Q@mail.gmail.com>
+Subject: Re: [PATCH v6 1/5] export_report: Rehabilitate script
 To: Matthew Maurer <mmaurer@google.com>
 Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
 	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
 	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st, j@jannau.net, 
 	asahi@lists.linux.dev, linux-modules@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Matt,
+Hi,
 
 On Tue, Oct 15, 2024 at 4:19=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
  wrote:
 >
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index 107393a8c48a..d18ff8a1109a 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -1840,15 +1840,56 @@ static void add_versions(struct buffer *b, struct=
- module *mod)
->                         continue;
->                 }
->                 if (strlen(s->name) >=3D MODULE_NAME_LEN) {
-> +#ifdef CONFIG_EXTENDED_MODVERSIONS
-> +                       /* this symbol will only be in the extended info =
-*/
-> +                       continue;
-> +#else
->                         error("too long symbol \"%s\" [%s.ko]\n",
->                               s->name, mod->name);
->                         break;
-> +#endif
+> The `export_report.pl` script was broken [1] a while back due to a code
+> cleanup causing the regex to no longer match. Additionally, it assumes a
+> `modules.order` file containing `.ko` in a build directory with `.mod.c`
+> files. I cannot find when this would have been the case in the history,
+> as normally `.ko` files only appear in `modules.order` in installed
+> modules directories, and those do not contain `.mod.c` files.
+> This patch makes it able to report symbol usage counts for a build tree
+> with modules and MODVERSIONS.
+>
+> Since the rest of this series will change the format of `.mod.c`, this
+> change fixes the script to work correctly against a current build tree.
+> Given that the regex no longer matches the format used in `.mod.c`, it
+> cannot have worked since 2019, so updating this script is purely out of
+> an abundance of caution. I am unsure who uses this script or for what
+> purpose.
+>
+> * modules.order in a build directory uses .o, not .ko files. Allow .o
+>   files when parsing modules.order.
+> * The .mod.c format changed [1] how it expressed the section attribute,
+>   leading to a regex mismatch. Update it to match modpost.c
+>
+> [1]: https://lore.kernel.org/all/20190909113423.2289-2-yamada.masahiro@so=
+cionext.com/
 
-I applied these patches to my test tree[1] and have the following
-options enabled in my .config:
-
-$ grep -E 'MODVERSIONS|GEN.*KSYMS' .config
-CONFIG_HAVE_ASM_MODVERSIONS=3Dy
-CONFIG_MODVERSIONS=3Dy
-# CONFIG_GENKSYMS is not set
-CONFIG_GENDWARFKSYMS=3Dy
-CONFIG_ASM_MODVERSIONS=3Dy
-CONFIG_EXTENDED_MODVERSIONS=3Dy
-
-When I try to build a Rust module, I still get the following error:
-
-ERROR: modpost: too long symbol
-"_RNvXs2_NtNtNtCsivAAjSnxUpM_4core3fmt3num3implNtB9_7Display3fmt"
-[samples/rust/rust_print.ko]
-
-I suspect gating this behind a config would require you to add a new
-command line flag to modpost and check for CONFIG_EXTENDED_MODVERSIONS
-in scripts/Makefile.modpost instead.
-
-[1] https://github.com/samitolvanen/linux/commits/rustmodversions
+If this script has been broken for half a decade and nobody noticed,
+does anyone actually use it? If this is dead code, I would prefer to
+just delete it.
 
 Sami
