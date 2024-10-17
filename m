@@ -1,130 +1,128 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9711DD54E;
-	Thu, 17 Oct 2024 13:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E89C1DDA24;
+	Thu, 17 Oct 2024 13:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729171462; cv=none; b=UvCLs/aBqqnY12JBpUfoCkQLMA0SeLL19YGfLsCX1+IXasVqkPPkTPjdlfb6535Hub7+6l7s9VLUEnsWos10gLTHw/pNsO2UUqKFuuER/Agi/A4CbrJlZ9HFd4ZUEJEePjpGY3xsm1FOmUHO/AEH7tfDFBiFmLNOg+F7Z5kQ4oA=
+	t=1729172105; cv=none; b=ohMmTPdiklhqckWnlUo0C8dwhxY32QMklXRSKd0FfdTugrT5m0I+xGHFukmoPc2wdr0hTtDZAeVoTSpI7MbbY/Nhm84EaHpObagh60dnMv7GZcKW0uFdxadHngcaFkIv5bruPKZPyEIa7zN+y5aVmqWxPCSwC01S+esNdDPu6qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729171462; c=relaxed/simple;
-	bh=AwfeuT+5+2+w/3J2up9DJz2hLy/0MT2GzA1McZFVhGg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rLRGqYyUgAhqZa8NPqLK9EU/mJXBGRcBby+fytxQ/rxEavzXVQsq3bmlX56+G2rfYch7j99xeaqfdwCEQhrkXvfrOau9O+Wa8Ou5d2NWfYyFivzflyroxrymzzhI3bkBTnMNdCfcAw/bK2byq37xTxmJ/z1evZ+229Gw5jSwcU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YK9wy9xt; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729172105; c=relaxed/simple;
+	bh=gWbAqmaxL1IFulKClwhBJngA0SJkHNiuvWOaDGaZeqQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lDImMWpU8KrtzyoS3rB0gSaVsyZshyKQLUUEz/YjpBDBTqXlX8QLycv3nWRickEb6xrB0L4Mni+1uInwdw9SLtljy/SVOa6qzkgx+FOWJA6T7DR2C6E6hixgJi2mWWcTuuCiwOGpiMtxj5iTbMlY/TKiZJSVKgSD87+1/piqwUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X77h9FIX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YK9wy9xt"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20cf3f68ff2so881705ad.2;
-        Thu, 17 Oct 2024 06:24:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729171461; x=1729776261; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AwfeuT+5+2+w/3J2up9DJz2hLy/0MT2GzA1McZFVhGg=;
-        b=YK9wy9xtGqtX8XVER17yscKj1aN4yRqXse0+xUlUsxKQedg+gDOqSNxsKvknVZoeQE
-         Y0u/yjPbXnou6d5zjncEDdYZo819F1B+LU+Ktbrpk0mBnV9gonkSQjNzkZ3YWZ1Vq/Co
-         5wce7FmtA2y5WCl6Y5ym12eZb79Fh43lgwomkGFI4ulq2HLefXBxpa3/R5UKGnu0WSeJ
-         5jIG+uFcbcyAcXV5e2/fB4K/dZAnJ0jnvfomxr1UL+CzUb/RZ3E/6qBUEOoxNfk/KtHj
-         DOY8bIF4CKP4kQ5tq74+qk0eNzZ3H2FJa/iNRv17gOQFNtvk0bJouX90Ncnf1Wfm49ld
-         Htqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729171461; x=1729776261;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AwfeuT+5+2+w/3J2up9DJz2hLy/0MT2GzA1McZFVhGg=;
-        b=U0PtGyiv/ZTvvp11ZVLwoKJTO30OJvcsdXqTOAhpZ9/KZcTwwQrM0NP+Y/tv1j/rFw
-         msYNNXIiZCXTbgH/a7umEBxu30Kvqnya+UnosN4QrnpLMtc/xomsfhjFrJLBZ0T82h2J
-         XvAJJ4EOWCteg+FDzslYlaN2e9iUiksQbe9ifqaxoWsGYSLtjoiX2lFcjuliisph53dQ
-         Lw51wDnuJdO7XvZF71NHyVt32idqL2NvVvXsqU1rGHwcomet/wD+HKUsmZF8Px4SFJPB
-         4lkx976Mm3l8E+Z3yYLQsv4B8b1BJNTcLKfkKvxfd/fEX+FaZIqNfhIaL4BC43AKJrrj
-         aWOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVx8F43UJaCTfB+ayhYvFypXZrdZWvJwLoGN+tWZyQtI01fV7qPqRKJCTEESDJ7f6yXbr0M3gB8sbBFY7MY7GM=@vger.kernel.org, AJvYcCWnu/dwEDpJeY6+46+fZ2sQAA1WNBXXUQJRP6wWBlKxucVLy4JRsmMGCzqWmEfBG1Tsfw/7w0Mx79FxGBU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRsXr4/abjpNKVi7X3vuYOzVQH5dkPUfWnnfo18RT/MPnX/R3P
-	7PkE7Ml9QG2s/QZlIMuQ02nQq/nUPd4koRPIAfvSG6UOVYqyoYAy1aAOoHIrjR4gGRlwfn0aq5I
-	zzZzNNXHNdt6cyW42I1T6Z/Lllds=
-X-Google-Smtp-Source: AGHT+IFz4NYl53lMRUd7X+IJa75+Rd9AY70/7Q6RUZweh0EkKg+FuS9yQF0yU7jF/tMo5iOcZjfVjqY1T2wgPBu4FHU=
-X-Received: by 2002:a17:90b:110c:b0:2e2:cd6b:c6b8 with SMTP id
- 98e67ed59e1d1-2e3dc2a4054mr1725298a91.8.1729171460727; Thu, 17 Oct 2024
- 06:24:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X77h9FIX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEABC4CED1;
+	Thu, 17 Oct 2024 13:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729172104;
+	bh=gWbAqmaxL1IFulKClwhBJngA0SJkHNiuvWOaDGaZeqQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=X77h9FIX3v+yVIz4IwReAXtOanS5K4w0tZBpxuVJUkIiNzZ5HAUz+bxtziSPZtUgM
+	 mksiJv1HP6xbKfCf1cC4Pjy7O6XiFuKEKZM2IGdGnbJK1xl+FhpkPP66ZPDv5bbAAD
+	 s+RZbexs8jPhfO26E58M3zUid8VEl1c1K0kkbFxORilbSY9ONPr46m0FBboIwvnsBM
+	 VkcZkjXKUx8k3eDGbNFRkqC+XDBdUKG6KBfCb/nWPEe3+dU7iLA1+ddxesFx5Qti/N
+	 A9dqqvqa7Y8NalQZ2ntfCeqEUbLott3tNsS1/Q6+k4NSjjqQcA2AfRCeM6EPnyA4Gk
+	 nMxE34je70jIQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,  Thomas Gleixner
+ <tglx@linutronix.de>,  rust-for-linux@vger.kernel.org,  Danilo Krummrich
+ <dakr@redhat.com>,  airlied@redhat.com,  Ingo Molnar <mingo@redhat.com>,
+  Will Deacon <will@kernel.org>,  Waiman Long <longman@redhat.com>,  Peter
+ Zijlstra <peterz@infradead.org>,  linux-kernel@vger.kernel.org,  Benno
+ Lossin <benno.lossin@proton.me>,  Daniel Almeida
+ <daniel.almeida@collabora.com>,  Gary Guo <gary@garyguo.net>,  Miguel
+ Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Wedson
+ Almeida Filho <wedsonaf@gmail.com>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@samsung.com>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Martin Rodriguez Reboredo <yakoyoku@gmail.com>,  Valentin Obst
+ <kernel@valentinobst.de>
+Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
+In-Reply-To: <b33299c95e6f0031b6c4099cb1cff7d25462d687.camel@redhat.com>
+	(Lyude Paul's message of "Wed, 16 Oct 2024 16:57:38 -0400")
+References: <20240916213025.477225-1-lyude@redhat.com>
+	<20240916213025.477225-4-lyude@redhat.com> <8734lew7jn.ffs@tglx>
+	<0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
+	<59803e6abd88dc29c402ff2b7ed020e45f4df1df.camel@redhat.com>
+	<ZwPXSs62WY0qNLr6@boqun-archlinux> <87sesxa5i0.fsf@kernel.org>
+	<Zw7N4RKzWAS9qi4I@Boquns-Mac-mini.local>
+	<Zw7O1Wn7cwHDcCQl@Boquns-Mac-mini.local>
+	<b33299c95e6f0031b6c4099cb1cff7d25462d687.camel@redhat.com>
+Date: Thu, 17 Oct 2024 15:34:50 +0200
+Message-ID: <87a5f2svid.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241014195253.1704625-1-ezulian@redhat.com> <CANiq72n5cPxDORQad2_fJPHXaE2YDHW3enavjWyz1MZBU3oasQ@mail.gmail.com>
- <ZxBXDhZXNgCwAHzN@f39>
-In-Reply-To: <ZxBXDhZXNgCwAHzN@f39>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 17 Oct 2024 15:24:06 +0200
-Message-ID: <CANiq72nqPN64KQat2VhC5EcVBxvNF18Hi19FPz24fqjpaj2LJA@mail.gmail.com>
-Subject: Re: [PATCH] rust: Fix build error
-To: Eder Zulian <ezulian@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, williams@redhat.com, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Oct 17, 2024 at 2:15=E2=80=AFAM Eder Zulian <ezulian@redhat.com> wr=
-ote:
+Lyude Paul <lyude@redhat.com> writes:
+
+> On Tue, 2024-10-15 at 13:21 -0700, Boqun Feng wrote:
+>> On Tue, Oct 15, 2024 at 01:17:37PM -0700, Boqun Feng wrote:
+>> > On Tue, Oct 15, 2024 at 02:57:11PM +0200, Andreas Hindborg wrote:
+>> > > Boqun Feng <boqun.feng@gmail.com> writes:
+>> > > 
+>> > > > On Sat, Oct 05, 2024 at 02:19:38PM -0400, Lyude Paul wrote:
+>> > > > > On Fri, 2024-10-04 at 14:48 -0400, Lyude Paul wrote:
+>> > > > > > 
+>> > > > > > FWIW: I agree we want things to map C closely wherever we can, but part of the
+>> > > > > > reason of having rust in the kernel at all is to take advantage of the
+>> > > > > > features it provides us that aren't in C - so there's always going to be
+>> > > > > > differences in some places. This being said though, I'm more then happy to
+>> > > > > > minimize those as much as possible and explore ways to figure out how to make
+>> > > > > > it so that correctly using these interfaces is as obvious and not-error prone
+>> > > > > > as possible. The last thing I want is to encourage bad patterns in drivers
+>> > > > > > that maintainers have to deal with the headaches of for ages to come,
+>> > > > > > especially when rust should be able to help with this as opposed to harm :).
+>> > > > > 
+>> > > > > I was thinking about this a bit more today and I realized I might actually
+>> > > > > have a better solution that I think would actually map a lot closer to the C
+>> > > > > primitives and I feel a bit silly it didn't occur to me before.
+>> > > > > 
+>> > > > > What if instead of with_interrupts_disabled, we extended Lock so that types
+>> > > > > like SpinLockIrq that require a context like IrqDisabled can require the use
+>> > > > > of two new methods:
+>> > > > > 
+>> > > > > * first_lock<R>(&self, cb: impl for<'a> FnOnce(Guard<'a, T, B>, B::Context<'a>) -> R) -> R
+>> > > > 
+>> > > > I think you really want to use a `&mut T` instead of `Guard<'a, T, B>`,
+>> > > > otherwise people can do:
+>> > > > 
+>> > > > 	let g = lock1.first_lock(|guard, _ctx| { guard });
+>> > > > 	// here the lock is held, but the interrupts might be enabled.
+>> > > 
+>> > > Is it impossible to limit the lifetime of the guard such that it cannot
+>> > > be returned from `first_lock`?
+>> > > 
+>> > 
+>> > I was wrong saying the original doesn't work, because it has a
+>> > `for<'a>`, that means `'a` is lifetime of the closure, which cannot
+>> > outlive the return value `R`. So this signature might be valid.
+>> > 
+>> 
+>> But another problem is that with this signature, `cb` can drop the lock,
+>> which is not expected, because the lock dropping should be done by
+>> `first_lock` itself.
 >
-> I can fix it and send a v2 if that's ok. Is it valid to add two 'Reported=
--by'
-> tags (Clark and kernel test robot)?
+> I thought we agreed on switching this to &mut though? In which case dropping
+> the guard doesn't really matter
 
-Yeah, I think so, at least if they were independently reported. Please
-add a `Closes` if you have it for Clark's report.
+I think we arrived the following over on Zulip [1]:
 
-> Agreed. We don't want code replicated. In my reply to Boqun I added some
-> notes. If that makes sense, we could avoid even the helper in
-> 'spinlock{_,rt}.h'?
+pub fn lock_with_new<U>(&self, cb: impl FnOnce(&mut Guard<'_, T, Backend>, IrqDisabled<'a>) -> U) -> U
 
-Hmm... I am not sure I follow your reply to Boqun. In your version,
-under `DEBUG_SPINLOCK && PREEMPT_RT`, you call `spin_lock_init`, but
-that means we are not passing the given key but creating a new
-static/single one, no? That is why Boqun mentioned that.
 
-> Please correct me if I misunderstood. It seems that Rust doesn't have a
-> pre-processor step to replace macros in the code and the Rust compiler wo=
-rks
-> with 'objects/entities' created for functions and variables, but macros w=
-ould
-> be ignored (since they are string substitution.) Do you have pointers for=
- good
-> docs on this?
+Best regards,
+Andreas
 
-I am not sure what exactly you are referring to, so perhaps this quick
-summary helps (apologies if you already know all this!).
 
-Rust does not understand C, at all. So we use `bindgen`, which is a
-tool that internally uses `libclang` to parse C headers and emit Rust
-code to use them from Rust. Clang (of course) knows about macros and
-can parse them and expand them etc., but those macros (typically)
-expand into C code, not Rust code. So (typically) we can't simply use
-the macro because it does not generate valid Rust code. Thus we use a
-C source file to declare helpers that call the C macros (which is fine
-because it is a C file compiled by a C compiler), and then we can call
-the C helper function from Rust.
+[1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Spinlocks.20with.20IRQs.3F/near/477072424
 
-The problem Boqun pointed out is that, now, since you introduced an
-extra condition in the same `#ifdef`, then `spin_lock_init` is also
-called in a case when `DEBUG_SPINLOCK=3Dy`, which means the key that was
-passed as a parameter is not used but the macro will provide a new
-one.
 
-Does that help?
-
-As for docs, I am happy to point to some -- do you mean on the Rust
-side of things?
-
-Thanks for the patch!
-
-Cheers,
-Miguel
