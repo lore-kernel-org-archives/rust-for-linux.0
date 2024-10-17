@@ -1,131 +1,121 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654E5187858
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 20:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658DC2281D9
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 20:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729195312; cv=none; b=l/Q08PPnhFJUxUdWamevluNkeS2/zmULaHqjnG0v1N4rDdG+/b0V0Fwk4U+QNfbL/roJYdOXDZvkCcSdS7VxNqb+W8FYU7uwk02oOMnYFCkoBQB/vwr3M/c/tOHYwYfsLVYK0t7MD/q6LgZHaQKbUU5VExTeFn7vZLmUYZjIXAU=
+	t=1729197535; cv=none; b=Dw6Mdn/kjLMf8EkwDGp15KRCO7dRX5RefHA8ovJzemcHLnoZXgtkbFzAiXg+Q9Ck9pXZOqgxCtUQQ81zQ8x1hion4z4hnux5IEPeicWEw4lECUvhWqlKMIR6AnVgf8I4KspRZX95zjNtCzh/1YLUXoI8VGf2WWfwiucSfLmXKPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729195312; c=relaxed/simple;
-	bh=7fNZThETAsZ+KPtAOmPafV1RUAaUrZ1Bk8Xp24nVtzA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h3pcsY2A0zFQ4E9xl+1O/LpzGIEr4ZkZdGlR1vRI052tsqJh95oVOmTofbwFGcuJUuLLFBLCHAWptPhf1nqEE/bTRUf63iLTouiWVpeovNuXLwyyOYWEAH46wU2iHa+g2ESAxZ3lf8CEV4AAVVi3k+i633X8wPXXWBe6LVeqciY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elsk.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xybTic05; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1729197535; c=relaxed/simple;
+	bh=cnQlnqdueLjUFXPl+rjNUrcziR/Uu37bRyAKm+ZnoQc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BiRHvKUhyO9RgZsLC2b9eqx+PkKEv4QN8kGHitAaIY1uOG6NPq5WXtp9P8A6SbWKPeK9lFZo8wpHZNJUGvI1/hK2pwpJnICBNaa26Itl4Vgnozo2Y59EqyDuZvzVd3YL+DV0+0LtX+p98bpV2Hdu7uJcAuQWvGr8699t9WGH+Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TRcCd71r; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elsk.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xybTic05"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e3d74e5962so1643989a91.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 13:01:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TRcCd71r"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d6ff1cbe1so1044277f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 13:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729195307; x=1729800107; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=N2Hn27ndmTHMGTAUOBpXV3hZypJtQOIDgriaf/PtSKg=;
-        b=xybTic05mcBYMA/QCpFZIPl0/Q2hFz33gAtmXdQsxxEiDs9IK1iLsQEnYeX+ESLsm4
-         9O4klBNViIrXNZFksKr+k+wmdopTcN6tuW++Zw6p7CA04rT85YEmm78Z9lvxgA9yITbz
-         Pb/yJ5uHgD1SlqZa0ibpF+opcF6MUCkQl/Ehz9Q3hIMp4Vu/tKUitoI26tUuMWfdMz5F
-         wzC31GEkLZ25JE03p8kDo+nGbsnTzTPsqLMIt7gNbKo/ndhCBxR2snLgzQn2fkfHWevt
-         FAYpQ+NH41bdltaSDeIpBhGTId7PreAGEYjfYt8S7m4AcJK+IspsKiQJdz14dPuA2Uky
-         Z6ew==
+        d=google.com; s=20230601; t=1729197531; x=1729802331; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HrcUDqdyzXImioFxfeLr6A00K3sNtV9qNS2Npm9oScs=;
+        b=TRcCd71rwrA/I9JsY4MTxlkiu20pWrGzR0kfgJlfzNyOqJz3LDBkFZ4UvwhO6IyQSd
+         vEJSWALfF1mkDuUqc413LamRc0uE76wLitrPNsW9jKZv5qHZOZz5rlpYj6O5/ZqNFZmF
+         lKCLabNufsvada+lUUZLuo/1A3Q+dA+/Q5L9RdQjUWlVRrXDY/65705qAENlBZ6S1+7y
+         g+qXLdKCcGex5meAtsycLbyzafMT7N0J6d9Ygxyap02oUvacwOy5Ktq/ZAFK43M+gD/t
+         i9TFto5a3K7F4trV84vCLssEi9jMwTfEBoQ639qFgVffedVw+5xLAG6BcKPUG00XdhIQ
+         tkbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729195307; x=1729800107;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N2Hn27ndmTHMGTAUOBpXV3hZypJtQOIDgriaf/PtSKg=;
-        b=U1zcmwp9Bof/Kn4dufc/qfoKehGtnY92CxuHF5mVZIw8enklh95gUOo/xHpf4CS1Yl
-         V/kddVLB6SFqho9PtD/BIcFAdLq72mYkF6Qdsc2rWUz5r7hLUCQexe4l0NeYVdz+rlbH
-         z4hoOsQyrk2hu9pKHEgtBr0DguJaIMoxUbUOaNoE3CL5AZhy+rFFpC+aGwmzWJPeK5FH
-         go4iTPSGy1jdLtWAnFXc0kRejG2R0nQyjHsqgcbUPG/sXq81YGwdFnuvEL1jT9yKuiD5
-         MqtpEUo9tzE7t+w13idtp4FJpU8QaZMPnpqjctumjJq/an7V+0lEbFk0dEc1hjxThFpT
-         dzqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUoCYvw/j+M3tme1Sw79M07paPawvZv13tpr7rO2lIv845WiCSdwopYPRnfg990gJgIZxnTs81AsP6mAf6idg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlxyYe6Ud5A83FkKLnFVy8SjQtsQ/t/xcE+/Cj61N721OjzPKw
-	C4gf2nEUsKbu2iNFZgTJFFIhgnRX+SAAh5bOuXZtMH6Fhq0vfmNUDS+1oY/HYqsHcu8DqA==
-X-Google-Smtp-Source: AGHT+IEZoNiAbxR8ZMQcEg5fAoa+Y+b1EFMFkPmdhu+1szTwmvS4oU3/Ap192vBsPH4qMGzvcfKWvGeH
-X-Received: from elsk.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:dbd])
- (user=elsk job=sendgmr) by 2002:a17:90a:bf0d:b0:2e2:9546:591a with SMTP id
- 98e67ed59e1d1-2e561a46746mr1025a91.7.1729195306587; Thu, 17 Oct 2024 13:01:46
- -0700 (PDT)
-Date: Thu, 17 Oct 2024 20:01:38 +0000
+        d=1e100.net; s=20230601; t=1729197531; x=1729802331;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HrcUDqdyzXImioFxfeLr6A00K3sNtV9qNS2Npm9oScs=;
+        b=O7/sY/MHuZ3NXJEmp62Hy3xSJGc7JmqVoY36seVIkH9Tfpbh7b3jJ4pf2CP0Fbz6eG
+         iwBIMCmAIM6OIj2fZtV2UVOEOshtrJZUUYQ+FVpLzGOP6uDyZbZGdHW5hgTFEulsDYEW
+         RQPsyBj460zHtOlnLVGiVv6WWtiFyqk6rA/Z/sQ5/2bKbG9DiGQSIEjbidXllyQo3knP
+         3e3exOEszApZsEqIgFaSlvVlkDuShn54ysYsA+fGqi01eRCtpVl+WoqkBLEzCMS3yRQz
+         RGcl6xn21h9ABAJVBPxHSXXSLfAFkPoigNWeNgw+zUWcWuqiUnotK7hfb0Jv3VPW0+Vv
+         pMsw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZxy8dc8kj1PkJAmYb5626t7/OUFRyqAKZSpzVKSHGTDsclzu/Ozdi1ch27apDDBhDnvUjvOBbgZFu+J+xDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwebdEQMb4wvQfkAAJqoGfbTsmtKl6gMeNm7GIgjZJFa7pq0AnH
+	l0s0jqhbqYjwGu6qqMdoOVa8iBwztIdwIT7XCMskdwupizwNiQ/wkxO9Qv8hXLEVUAcqYSjwl6x
+	UHT8s/3Mzq9xSkBKTX9o39kd0xo7jofYc62/c
+X-Google-Smtp-Source: AGHT+IHcG3qFIxzTBgPLhK0vUVNvs8oMv5K7oaKrCVIEfYnMO/l//my7v70uumTSJb7AZ47qEdjZy5rUy4JTUVaI2bI=
+X-Received: by 2002:a05:6000:1807:b0:37d:5035:451 with SMTP id
+ ffacd0b85a97d-37eab4edef1mr132912f8f.10.1729197530525; Thu, 17 Oct 2024
+ 13:38:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
-Message-ID: <20241017200138.2390077-2-elsk@google.com>
-Subject: [PATCH v1] rust: add PROCMACROLDFLAGS
-From: HONG Yifan <elsk@google.com>
-To: mmaurer@google.com, Masahiro Yamada <masahiroy@kernel.org>, 
+MIME-Version: 1.0
+References: <20241017200138.2390077-2-elsk@google.com>
+In-Reply-To: <20241017200138.2390077-2-elsk@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 17 Oct 2024 22:38:36 +0200
+Message-ID: <CAH5fLgh3JyY9L6Fg+LXVguyx8iPRbHVHqTyXSfM9gq6jdWRdtw@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: add PROCMACROLDFLAGS
+To: HONG Yifan <elsk@google.com>
+Cc: mmaurer@google.com, Masahiro Yamada <masahiroy@kernel.org>, 
 	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Jonathan Corbet <corbet@lwn.net>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Cc: HONG Yifan <elsk@google.com>, kernel-team@android.com, linux-kbuild@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, kernel-team@android.com, 
+	linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-These are additional flags to be passed when linking proc macros for the
-Rust toolchain. If unset, it defaults to $(HOSTLDFLAGS).
+On Thu, Oct 17, 2024 at 10:01=E2=80=AFPM HONG Yifan <elsk@google.com> wrote=
+:
+>
+> These are additional flags to be passed when linking proc macros for the
+> Rust toolchain. If unset, it defaults to $(HOSTLDFLAGS).
+>
+> This is needed because the list of flags to link hostprogs is not
+> necessarily the same as the list of flags used to link libmacros.so.
+> When we build proc macros, we need the latter, not the
+> former. To distinguish between the two, introduce this new variable
+> to stand out from HOSTLDFLAGS used to link other host progs.
+>
+> Signed-off-by: HONG Yifan <elsk@google.com>
+> ---
+>  Documentation/kbuild/kbuild.rst | 5 +++++
+>  Makefile                        | 1 +
+>  rust/Makefile                   | 2 +-
+>  3 files changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/kbuild/kbuild.rst b/Documentation/kbuild/kbuil=
+d.rst
+> index 1796b3eba37b..d9866394bd98 100644
+> --- a/Documentation/kbuild/kbuild.rst
+> +++ b/Documentation/kbuild/kbuild.rst
+> @@ -91,6 +91,11 @@ HOSTRUSTFLAGS
+>  -------------
+>  Additional flags to be passed to $(HOSTRUSTC) when building host program=
+s.
+>
+> +PROCMACROLDFLAGS
+> +-------------
+> +Additional flags to be passed when linking proc macros for the Rust tool=
+chain.
+> +If unset, it defaults to $(HOSTLDFLAGS).
 
-This is needed because the list of flags to link hostprogs is not
-necessarily the same as the list of flags used to link libmacros.so.
-When we build proc macros, we need the latter, not the
-former. To distinguish between the two, introduce this new variable
-to stand out from HOSTLDFLAGS used to link other host progs.
+It may be less confusing to say "when linking Rust proc macros" here.
+Saying "for the Rust toolchain" could be confusing, as the proc macros
+are "for" use with the various pieces of kernel source code. Most
+people would not think of them as being "for the toolchain".
 
-Signed-off-by: HONG Yifan <elsk@google.com>
----
- Documentation/kbuild/kbuild.rst | 5 +++++
- Makefile                        | 1 +
- rust/Makefile                   | 2 +-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+If you want to mention the toolchain, you could add a sentence: "Since
+proc macros are loaded by rustc at build time, they must be linked in
+a way that is compatible with the rustc toolchain being used."
 
-diff --git a/Documentation/kbuild/kbuild.rst b/Documentation/kbuild/kbuild.rst
-index 1796b3eba37b..d9866394bd98 100644
---- a/Documentation/kbuild/kbuild.rst
-+++ b/Documentation/kbuild/kbuild.rst
-@@ -91,6 +91,11 @@ HOSTRUSTFLAGS
- -------------
- Additional flags to be passed to $(HOSTRUSTC) when building host programs.
- 
-+PROCMACROLDFLAGS
-+-------------
-+Additional flags to be passed when linking proc macros for the Rust toolchain.
-+If unset, it defaults to $(HOSTLDFLAGS).
-+
- HOSTLDFLAGS
- -----------
- Additional flags to be passed when linking host programs.
-diff --git a/Makefile b/Makefile
-index b77ac70f8be4..89cdf0eca7de 100644
---- a/Makefile
-+++ b/Makefile
-@@ -469,6 +469,7 @@ KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS) \
- 		       -I $(srctree)/scripts/include
- KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O -Cstrip=debuginfo \
- 			-Zallow-features= $(HOSTRUSTFLAGS)
-+KBUILD_PROCMACROLDFLAGS := $(or $(PROCMACROLDFLAGS),$(HOSTLDFLAGS))
- KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
- KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
- 
-diff --git a/rust/Makefile b/rust/Makefile
-index 3678e79317f1..95ceaba35975 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -322,7 +322,7 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
-       cmd_rustc_procmacro = \
- 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) \
- 		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
--		-Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
-+		-Clink-args='$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
- 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
- 		--crate-type proc-macro \
- 		--crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
--- 
-2.47.0.rc1.288.g06298d1525-goog
-
+Alice
