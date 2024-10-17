@@ -1,57 +1,58 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27ADB282FA
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Oct 2024 23:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8083214
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 00:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729122513; cv=none; b=V6tq1iqbXSR/t53xsUnXC/gsCz66XdlFbWUOHS2zLQ5OnJzU66esro534KnVjzRoT5vHyHygiF5vDdMkmcFaLpZQCTzZcLnWORU68XSc9HDBiTPvtr0qk6GpaLDMc8/w4sDvsvf9SxjUOBJlh1nVuLeERiLa5qG9swlgey2BmF4=
+	t=1729124125; cv=none; b=kSiTgKQEFUYbGTBswY7sBtPyQFEjxhy7CRRGxzsWmpbQ6QcWjxWpq0p66Xh67R69p/D68LbEi+Dw3BIl6OgeE8H3ZL30KnDMn0EoXiKkWbZSaYcyYyf/KSj559v+IJRUwwTSAYBYN59je5U8di3l4JXiLd3/uilI0kA4+XHSPBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729122513; c=relaxed/simple;
-	bh=PaGsx/p0g1rFIDlC9skbTCx5rM5FzER3gMJF5RCNy3k=;
+	s=arc-20240116; t=1729124125; c=relaxed/simple;
+	bh=FTkCwpCp/85EYo5SWqJaCWTup9Zd3Q50GpEe4JI0guY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wq1TWi0sNOL1fdXNBES/m0XR5SX2vGVrUI52xhWDPQ9uiXAYAw5+xUQK89DKmY95HyXmjBXSpxFWOqzdJGKhfzqc1zIplY4XmIrJsUCBb3Onyqwo0EelIOk6qhWHR8kLAs7AXjREr3Lk6t8ZaD0Usf2HYSxGudrSDQIR3DX3GT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DDYDs+Mm; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=XbSVArlCUzTx+UhgFbtlK9cOl1zmIt4v0KD1knQTHU/Tg/rA7fCBckHVKPnXAINNsZpJoCCpkDuAPGNCQorBs5+RUcIJwPh1jW2A/F/ORp0LMH61AfYvY8BwWYGLq7b5JuwyBkqKAz1X6ZKAA0MxJwVNypKQWvfrA1aqP61hFLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OZALTsV6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DDYDs+Mm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OZALTsV6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729122510;
+	s=mimecast20190719; t=1729124122;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w5zbNhf2ti3veBbqghgqqHYmZD0VaAPt+Z/wXzjXNA4=;
-	b=DDYDs+Mm0oKBEU3jHLkq7IvxbaEXr51AGnM5+Frc8XcQaw/CrwHeVoqUks2uZP3+X6Bxwh
-	sTpMGw5M+7C+Fi9tbEkHe52tADJ3aPRFHRL9/XLKCixgKDSmDKT2znzWtSObxg0kSSe8eb
-	WWVR01p1XR3vrHJbKd3013xRRM/KB0g=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=R3IvdWoUm5mT+46GBWorpSOFyy5vanUssXIrq1EZYnM=;
+	b=OZALTsV6NzbcuhlXyTXRmW1uY9cFW4wiDvN/F8NqLDbH+xRb9pxQ9W1rBsAjqxP8AC85ro
+	Jrg76cXAKuvZkKAGJbpL1MU6PIezcFZJkBfQB/Fi5WyqdphAYjMJxLisK4UMcsOm6x2qUC
+	2+dWMrhxjiNGHl2dxrPASK9eHte24yE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-QXFk1vzHNKWcuwhiSxyKfQ-1; Wed,
- 16 Oct 2024 19:48:27 -0400
-X-MC-Unique: QXFk1vzHNKWcuwhiSxyKfQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-6cpvDtSJNcaNc2oBaJWdPA-1; Wed,
+ 16 Oct 2024 20:15:19 -0400
+X-MC-Unique: 6cpvDtSJNcaNc2oBaJWdPA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E3C67195608F;
-	Wed, 16 Oct 2024 23:48:25 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1EA019560B5;
+	Thu, 17 Oct 2024 00:15:16 +0000 (UTC)
 Received: from f39 (unknown [10.39.192.145])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8CC4D19560A3;
-	Wed, 16 Oct 2024 23:48:22 +0000 (UTC)
-Date: Thu, 17 Oct 2024 01:48:19 +0200
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3DD9B300018D;
+	Thu, 17 Oct 2024 00:15:13 +0000 (UTC)
+Date: Thu, 17 Oct 2024 02:15:10 +0200
 From: Eder Zulian <ezulian@redhat.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	williams@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, williams@redhat.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
 Subject: Re: [PATCH] rust: Fix build error
-Message-ID: <ZxBQw1X_OG26RO9o@f39>
+Message-ID: <ZxBXDhZXNgCwAHzN@f39>
 References: <20241014195253.1704625-1-ezulian@redhat.com>
- <Zw1_rXUyjTBOh0QH@boqun-archlinux>
+ <CANiq72n5cPxDORQad2_fJPHXaE2YDHW3enavjWyz1MZBU3oasQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,118 +62,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zw1_rXUyjTBOh0QH@boqun-archlinux>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+In-Reply-To: <CANiq72n5cPxDORQad2_fJPHXaE2YDHW3enavjWyz1MZBU3oasQ@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Boqun,
-On Mon, Oct 14, 2024 at 01:31:41PM -0700, Boqun Feng wrote:
-> Hi Eder,
-> 
-> Thanks for the patch!
-Sure, my pleasure.
-> 
-> On Mon, Oct 14, 2024 at 09:52:53PM +0200, Eder Zulian wrote:
-> > When CONFIG_DEBUG_SPINLOCK=y and CONFIG_PREEMPT_RT=y the following build
-> > error occurs:
-> > 
-> >     In file included from rust/helpers/helpers.c:22:
-> >     rust/helpers/spinlock.c: In function ‘rust_helper___spin_lock_init’:
-> >     rust/helpers/spinlock.c:10:30: error: implicit declaration of function ‘spinlock_check’; did you mean ‘spin_lock_bh’? [-Wimplicit-function-declaration]
-> >        10 |         __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
-> >           |                              ^~~~~~~~~~~~~~
-> >           |                              spin_lock_bh
-> >     rust/helpers/spinlock.c:10:30: error: passing argument 1 of ‘__raw_spin_lock_init’ makes pointer from integer without a cast [-Wint-conversion]
-> >        10 |         __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
-> >           |                              ^~~~~~~~~~~~~~~~~~~~
-> >           |                              |
-> >           |                              int
-> >     In file included from ./include/linux/wait.h:9,
-> >                      from ./include/linux/wait_bit.h:8,
-> >                      from ./include/linux/fs.h:6,
-> >                      from ./include/linux/highmem.h:5,
-> >                      from ./include/linux/bvec.h:10,
-> >                      from ./include/linux/blk_types.h:10,
-> >                      from ./include/linux/blkdev.h:9,
-> >                      from ./include/linux/blk-mq.h:5,
-> >                      from rust/helpers/blk.c:3,
-> >                      from rust/helpers/helpers.c:10:
-> >     ./include/linux/spinlock.h:101:52: note: expected ‘raw_spinlock_t *’ {aka ‘struct raw_spinlock *’} but argument is of type ‘int’
-> >       101 |   extern void __raw_spin_lock_init(raw_spinlock_t *lock, const char *name,
-> >           |                                    ~~~~~~~~~~~~~~~~^~~~
-> >     make[2]: *** [scripts/Makefile.build:229: rust/helpers/helpers.o] Error 1
-> > 
+Hi Miguel,
+On Mon, Oct 14, 2024 at 10:38:45PM +0200, Miguel Ojeda wrote:
+> On Mon, Oct 14, 2024 at 9:54 PM Eder Zulian <ezulian@redhat.com> wrote:
+> >
 > > Error observed while building a rt-debug kernel for aarch64.
-> > 
-> > On a PREEMPT_RT build, spin locks have been mapped to rt_mutex types, so
-> > avoid the raw_spinlock_init call for RT.
-> > 
 > 
-> This is true, but to keep lockdep working I think we need to open code
-> the PREEMPT_RT version of spin_lock_init(), please see below
+> Thanks for testing with Rust enabled!
+Sure, it's been fun!
 > 
 > > Suggested-by: Clark Williams <williams@redhat.com>
-> > 
 > 
-> ^ unnecessary emtpy line here.
-Thanks for pointing it out. Should I fix it and send a v2?
+> Do you mean `Reported-by`?
+Yes, my mistake.
 > 
-> > Signed-off-by: Eder Zulian <ezulian@redhat.com>
-> > ---
-> >  rust/helpers/spinlock.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> > index acc1376b833c..924c1a380448 100644
-> > --- a/rust/helpers/spinlock.c
-> > +++ b/rust/helpers/spinlock.c
-> > @@ -6,7 +6,7 @@
-> >  void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
-> >  				  struct lock_class_key *key)
-> >  {
-> > -#ifdef CONFIG_DEBUG_SPINLOCK
-> > +#if defined(CONFIG_DEBUG_SPINLOCK) && !defined(CONFIG_PREEMPT_RT)
-> >  	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
-> >  #else
-> >  	spin_lock_init(lock);
+> Also, I am not sure which `Fixes:` tag would fit best here, since
+> `PREEMPT_RT` has been around for quite a while, but only enabled very
+> recently. Thomas: do you have a preference?
 > 
-> This should be:
+I can try to find a culprit and add a 'Fixes:' tag. In my opnion, at first
+glance, it would be the patch that introduced the Rust helper for spinlocks.
+Not sure.
+> In addition (sorry, it was in my backlog):
 > 
-> void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
->  				  struct lock_class_key *key)
-> {
-> #ifdef CONFIG_DEBUG_SPINLOCK
-> # if defined(CONFIG_PREEMPT_RT)
-Even though I don't have a strong preference on this, in my opinion, there is no
-much difference here just a line break and inverted logic. Perhaps it would be
-better to write like this: 'if (IS_ENABLED(CONFIG_PREEMPT_RT && ... ) { this }
-else { that }', however, spinlock_check() is not declared for PREEMPT_RT
-kernels because its declaration is conditional to #ifndef CONFIG_PREEMPT_RT in
-'spinlock.h'. spinlock_check() as is does not make sense for PREEMPT_RT
-because spinlock is not mapped to raw_spinlock but to rt_mutex (cf.
-'spinlock_types.h')
-> 	rt_mutex_base_init(&(lock)->lock);
-> 	__rt_spin_lock_init(lock, name, key, false);
-Apparently, this ^ matches spin_lock_init() in 'spinlock_rt.h', if true, we could
-call spin_lock_init() for PREEMPT_RT kernels. However the debug version of
-__rt_spin_lock_init() (instrumented with lockdep in 'spinlock_rt.c') depends
-on CONFIG_DEBUG_LOCK_ALLOC. Luckily, in my opnion, the #ifdefs are already in
-place.
-> # else /* !CONFIG_PREEMPT_RT */
->   	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
-> # endif /* CONFIG_PREEMPT_RT */
-> #else
-> 	spin_lock_init(lock);
-> #endif
-> }
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
 > 
-Please let me know what you think, and bear with me if I'm missing something.
-Thanks.
-> Regards,
-> Boqun
+I can fix it and send a v2 if that's ok. Is it valid to add two 'Reported-by'
+tags (Clark and kernel test robot)?
+> Finally, I think we should perhaps put a helper in `spinlock{_,rt}.h`
+> that takes the `key` (instead of having this `#ifdef` here) and then
+> just use that from the Rust helpers, because we don't want to
+> duplicate such logic (conditionals) in helpers. And with the RT init
+Agreed. We don't want code replicated. In my reply to Boqun I added some
+notes. If that makes sense, we could avoid even the helper in
+'spinlock{_,rt}.h'?
+> open coding that Boqun mentioned, even more. After all, helpers are
+> meant to be as straightforward as possible, and if we have this sort
+> of thing in helpers, it is harder for everyone to keep them in sync.
+Please correct me if I misunderstood. It seems that Rust doesn't have a
+pre-processor step to replace macros in the code and the Rust compiler works
+with 'objects/entities' created for functions and variables, but macros would
+be ignored (since they are string substitution.) Do you have pointers for good
+docs on this?
 > 
-> > -- 
-> > 2.46.2
-> > 
-> > 
+> In other words, I see helpers as following the same "avoid `#ifdef`s"
+> rule that we prefer in C source files vs. headers.
+> 
+> What do you think, Thomas?
+> 
+> >
+> 
+> Spurious newline.
+Thanks, I'll fix the spurious new line.
+> 
+Thank you.
+> Cheers,
+> Miguel
 > 
 
