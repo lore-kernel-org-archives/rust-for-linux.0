@@ -1,128 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E89C1DDA24;
-	Thu, 17 Oct 2024 13:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05931DDA39
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 14:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729172105; cv=none; b=ohMmTPdiklhqckWnlUo0C8dwhxY32QMklXRSKd0FfdTugrT5m0I+xGHFukmoPc2wdr0hTtDZAeVoTSpI7MbbY/Nhm84EaHpObagh60dnMv7GZcKW0uFdxadHngcaFkIv5bruPKZPyEIa7zN+y5aVmqWxPCSwC01S+esNdDPu6qw=
+	t=1729174133; cv=none; b=eTUMVGsFAy8Pnhuf03E0mb9a1GK+QiVwh2/k2A2lBR6Iy4WfZ9xCOxyuZ03NAvpZRtshq6+TEwMufzEb8ZGiZaWpSAdmrDJd55SptcbEG0pomZmqkksEkUpFFVllmemrhbqmIyPXWsfLyauSYtOdjxuT8+6/YZkQtW7tjr9pREc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729172105; c=relaxed/simple;
-	bh=gWbAqmaxL1IFulKClwhBJngA0SJkHNiuvWOaDGaZeqQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lDImMWpU8KrtzyoS3rB0gSaVsyZshyKQLUUEz/YjpBDBTqXlX8QLycv3nWRickEb6xrB0L4Mni+1uInwdw9SLtljy/SVOa6qzkgx+FOWJA6T7DR2C6E6hixgJi2mWWcTuuCiwOGpiMtxj5iTbMlY/TKiZJSVKgSD87+1/piqwUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X77h9FIX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729174133; c=relaxed/simple;
+	bh=l0NsmYgkaQLaTjYdBXqJw5xZOdd2f3pd3mREd4Ix4AA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ct+riJmCj5MXIoqy8dy3pvUW4WXPoorBwTjFtXBAg/aeD/xh+8r8SZPwkiVUnuy1lHIIuGAtlKYskAc0m7UL7b8DaohUgh1t697HYHVBf2E1R7nJX3ZdGa95jkIIQVkv4dnOvzwHWUL3vsdca3u2axS42/NCBZMTCW3+Mufc2ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eYSF/2Rv; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X77h9FIX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEABC4CED1;
-	Thu, 17 Oct 2024 13:34:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729172104;
-	bh=gWbAqmaxL1IFulKClwhBJngA0SJkHNiuvWOaDGaZeqQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=X77h9FIX3v+yVIz4IwReAXtOanS5K4w0tZBpxuVJUkIiNzZ5HAUz+bxtziSPZtUgM
-	 mksiJv1HP6xbKfCf1cC4Pjy7O6XiFuKEKZM2IGdGnbJK1xl+FhpkPP66ZPDv5bbAAD
-	 s+RZbexs8jPhfO26E58M3zUid8VEl1c1K0kkbFxORilbSY9ONPr46m0FBboIwvnsBM
-	 VkcZkjXKUx8k3eDGbNFRkqC+XDBdUKG6KBfCb/nWPEe3+dU7iLA1+ddxesFx5Qti/N
-	 A9dqqvqa7Y8NalQZ2ntfCeqEUbLott3tNsS1/Q6+k4NSjjqQcA2AfRCeM6EPnyA4Gk
-	 nMxE34je70jIQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,  Thomas Gleixner
- <tglx@linutronix.de>,  rust-for-linux@vger.kernel.org,  Danilo Krummrich
- <dakr@redhat.com>,  airlied@redhat.com,  Ingo Molnar <mingo@redhat.com>,
-  Will Deacon <will@kernel.org>,  Waiman Long <longman@redhat.com>,  Peter
- Zijlstra <peterz@infradead.org>,  linux-kernel@vger.kernel.org,  Benno
- Lossin <benno.lossin@proton.me>,  Daniel Almeida
- <daniel.almeida@collabora.com>,  Gary Guo <gary@garyguo.net>,  Miguel
- Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Wedson
- Almeida Filho <wedsonaf@gmail.com>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@samsung.com>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Martin Rodriguez Reboredo <yakoyoku@gmail.com>,  Valentin Obst
- <kernel@valentinobst.de>
-Subject: Re: [PATCH v6 3/3] rust: sync: Add SpinLockIrq
-In-Reply-To: <b33299c95e6f0031b6c4099cb1cff7d25462d687.camel@redhat.com>
-	(Lyude Paul's message of "Wed, 16 Oct 2024 16:57:38 -0400")
-References: <20240916213025.477225-1-lyude@redhat.com>
-	<20240916213025.477225-4-lyude@redhat.com> <8734lew7jn.ffs@tglx>
-	<0a802e5fc0623ac8ae4653a398d0dfd73c479b96.camel@redhat.com>
-	<59803e6abd88dc29c402ff2b7ed020e45f4df1df.camel@redhat.com>
-	<ZwPXSs62WY0qNLr6@boqun-archlinux> <87sesxa5i0.fsf@kernel.org>
-	<Zw7N4RKzWAS9qi4I@Boquns-Mac-mini.local>
-	<Zw7O1Wn7cwHDcCQl@Boquns-Mac-mini.local>
-	<b33299c95e6f0031b6c4099cb1cff7d25462d687.camel@redhat.com>
-Date: Thu, 17 Oct 2024 15:34:50 +0200
-Message-ID: <87a5f2svid.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eYSF/2Rv"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a99c0beaaa2so158483066b.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Oct 2024 07:08:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1729174125; x=1729778925; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wxqmzyeuFlO3l4tRAe1C7/koqses/L5E0Mtm51tHiq8=;
+        b=eYSF/2RvSacpZ4+2+3Hk+6qSzUOK/PTjqbvcF3EgMQYbfGvwHNPgJEBgtdvr4bRPsF
+         hHdj+jilKhn0jwJQqOHsaXXW3FGxOWgdYl8m6oy2SIq58LhXdWWGLCkjDGFvaEK1/4Fc
+         AWGXxhGgWhlFBBlzwO2wlxCpuKTakK1YZwWNds6g+gIHhriDWIqJCon4MkMqztUVmYKH
+         QV7jV+n/trD+ADwIJJtYe94tVUrM/G6/j4MP8ODJN5c/9CLCLN45JtMmjsIhtdhjNki1
+         FHTnAgXpMNxVXkAShhwQaKsWgVNlmQroJ2fsEVRh88Tn5IE6qlmgOXtXQiuTuU/zJRmQ
+         Lvog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729174125; x=1729778925;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wxqmzyeuFlO3l4tRAe1C7/koqses/L5E0Mtm51tHiq8=;
+        b=oTfbAZDbiLjVBPUfo7Tj7qzUDkjpNLPl5JxdB7qdfoXgqNsvPGeFGAwrWeVgeA6del
+         tzFqKGpZ2c3LfrRk902OfdTyPN4AmaRvKcDN/FWhe4gprCDISpS/vpMgdADdT1RSbQhB
+         YonON6PeevWGCSDEIxDLPf4OhRuYlSPSvu/44u++/6zQOa8kxjWJUMAU/DlWeRfW1TdN
+         0AXWwPv7xvQuOktQ5bSz0zSV8ci141NU7Y9qtB+JKcFhVmXB8cSijWGUh5TZXE8KqR6E
+         X1sInxfr6sXg/jbL97II5qHIuQ4Pvpr8xyWOOKXOVf7olt8GbgRcgLGFKW54g2gZt43D
+         Z+5w==
+X-Forwarded-Encrypted: i=1; AJvYcCV35j3KMuMW8tJrNKZCmnWZwsBvd714znB0O5lUjdryqkyJ2VjQ2Ftj79eBWB33oaEN281Jjbiy5uBmiNLwQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx82OYWIRcCj0ewNXgxdS/JAIfL69iG2/JULzDW4JXJYeVOixwn
+	DEfaGg+shP26mRjeOQCNVkVLjCYIgd1UctSPhD5ziZyBMvK9FwLKi4mboL0Hz7g=
+X-Google-Smtp-Source: AGHT+IEvABkPNy7vk52SMCsHIro6voveAG7rnRjF16+dlvWWg2PQOIEn/QYTj3ofuof+xuyLhHJkNg==
+X-Received: by 2002:a17:907:e25c:b0:a99:46aa:69d3 with SMTP id a640c23a62f3a-a9a34f0dd07mr735175766b.53.1729174125102;
+        Thu, 17 Oct 2024 07:08:45 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a2971ab14sm300538066b.21.2024.10.17.07.08.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Oct 2024 07:08:44 -0700 (PDT)
+Message-ID: <9a3c1b7e-6cd3-45ea-9be1-13a5b436cacd@suse.com>
+Date: Thu, 17 Oct 2024 16:08:42 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/19] gendwarfksyms: Add address matching
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
+ Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+ Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
+ Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20241008183823.36676-21-samitolvanen@google.com>
+ <20241008183823.36676-24-samitolvanen@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20241008183823.36676-24-samitolvanen@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Lyude Paul <lyude@redhat.com> writes:
+On 10/8/24 20:38, Sami Tolvanen wrote:
+> The compiler may choose not to emit type information in DWARF for all
+> aliases, but it's possible for each alias to be exported separately.
+> To ensure we find type information for the aliases as well, read
+> {section, address} tuples from the symbol table and match symbols also
+> by address.
+> 
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> Acked-by: Neal Gompa <neal@gompa.dev>
+> ---
+>  scripts/gendwarfksyms/gendwarfksyms.c |   2 +
+>  scripts/gendwarfksyms/gendwarfksyms.h |  13 +++
+>  scripts/gendwarfksyms/symbols.c       | 148 ++++++++++++++++++++++++++
+>  3 files changed, 163 insertions(+)
+> 
+> diff --git a/scripts/gendwarfksyms/gendwarfksyms.c b/scripts/gendwarfksyms/gendwarfksyms.c
+> index 1a9be8fa18c8..6fb12f9f6023 100644
+> --- a/scripts/gendwarfksyms/gendwarfksyms.c
+> +++ b/scripts/gendwarfksyms/gendwarfksyms.c
+> @@ -103,6 +103,8 @@ int main(int argc, char **argv)
+>  			error("open failed for '%s': %s", argv[n],
+>  			      strerror(errno));
+>  
+> +		symbol_read_symtab(fd);
+> +
+>  		dwfl = dwfl_begin(&callbacks);
+>  		if (!dwfl)
+>  			error("dwfl_begin failed for '%s': %s", argv[n],
+> diff --git a/scripts/gendwarfksyms/gendwarfksyms.h b/scripts/gendwarfksyms/gendwarfksyms.h
+> index 1a10d18f178e..a058647e2361 100644
+> --- a/scripts/gendwarfksyms/gendwarfksyms.h
+> +++ b/scripts/gendwarfksyms/gendwarfksyms.h
+> @@ -66,14 +66,27 @@ extern int dump_dies;
+>   * symbols.c
+>   */
+>  
+> +static inline unsigned int addr_hash(uintptr_t addr)
+> +{
+> +	return hash_ptr((const void *)addr);
+> +}
+> +
+> +struct symbol_addr {
+> +	uint32_t section;
+> +	Elf64_Addr address;
+> +};
+> +
+>  struct symbol {
+>  	const char *name;
+> +	struct symbol_addr addr;
+> +	struct hlist_node addr_hash;
+>  	struct hlist_node name_hash;
+>  };
+>  
+>  typedef void (*symbol_callback_t)(struct symbol *, void *arg);
+>  
+>  void symbol_read_exports(FILE *file);
+> +void symbol_read_symtab(int fd);
+>  struct symbol *symbol_get(const char *name);
+>  
+>  /*
+> diff --git a/scripts/gendwarfksyms/symbols.c b/scripts/gendwarfksyms/symbols.c
+> index 4df685deb9e0..6cb99b8769ea 100644
+> --- a/scripts/gendwarfksyms/symbols.c
+> +++ b/scripts/gendwarfksyms/symbols.c
+> @@ -6,8 +6,39 @@
+>  #include "gendwarfksyms.h"
+>  
+>  #define SYMBOL_HASH_BITS 15
+> +
+> +/* struct symbol_addr -> struct symbol */
+> +static HASHTABLE_DEFINE(symbol_addrs, 1 << SYMBOL_HASH_BITS);
+> +/* name -> struct symbol */
+>  static HASHTABLE_DEFINE(symbol_names, 1 << SYMBOL_HASH_BITS);
+>  
+> +static inline unsigned int symbol_addr_hash(const struct symbol_addr *addr)
+> +{
+> +	return hash_32(addr->section ^ addr_hash(addr->address));
+> +}
+> +
+> +static unsigned int __for_each_addr(struct symbol *sym, symbol_callback_t func,
+> +				    void *data)
+> +{
+> +	struct hlist_node *tmp;
+> +	struct symbol *match = NULL;
+> +	unsigned int processed = 0;
+> +
+> +	hash_for_each_possible_safe(symbol_addrs, match, tmp, addr_hash,
+> +				    symbol_addr_hash(&sym->addr)) {
+> +		if (match == sym)
+> +			continue; /* Already processed */
+> +
+> +		if (match->addr.section == sym->addr.section &&
+> +		    match->addr.address == sym->addr.address) {
+> +			func(match, data);
+> +			++processed;
+> +		}
+> +	}
+> +
+> +	return processed;
+> +}
+> +
+>  static unsigned int for_each(const char *name, symbol_callback_t func,
+>  			     void *data)
+>  {
+> @@ -22,9 +53,13 @@ static unsigned int for_each(const char *name, symbol_callback_t func,
+>  		if (strcmp(match->name, name))
+>  			continue;
+>  
+> +		/* Call func for the match, and all address matches */
+>  		if (func)
+>  			func(match, data);
+>  
+> +		if (match->addr.section != SHN_UNDEF)
+> +			return __for_each_addr(match, func, data) + 1;
+> +
+>  		return 1;
+>  	}
 
-> On Tue, 2024-10-15 at 13:21 -0700, Boqun Feng wrote:
->> On Tue, Oct 15, 2024 at 01:17:37PM -0700, Boqun Feng wrote:
->> > On Tue, Oct 15, 2024 at 02:57:11PM +0200, Andreas Hindborg wrote:
->> > > Boqun Feng <boqun.feng@gmail.com> writes:
->> > > 
->> > > > On Sat, Oct 05, 2024 at 02:19:38PM -0400, Lyude Paul wrote:
->> > > > > On Fri, 2024-10-04 at 14:48 -0400, Lyude Paul wrote:
->> > > > > > 
->> > > > > > FWIW: I agree we want things to map C closely wherever we can, but part of the
->> > > > > > reason of having rust in the kernel at all is to take advantage of the
->> > > > > > features it provides us that aren't in C - so there's always going to be
->> > > > > > differences in some places. This being said though, I'm more then happy to
->> > > > > > minimize those as much as possible and explore ways to figure out how to make
->> > > > > > it so that correctly using these interfaces is as obvious and not-error prone
->> > > > > > as possible. The last thing I want is to encourage bad patterns in drivers
->> > > > > > that maintainers have to deal with the headaches of for ages to come,
->> > > > > > especially when rust should be able to help with this as opposed to harm :).
->> > > > > 
->> > > > > I was thinking about this a bit more today and I realized I might actually
->> > > > > have a better solution that I think would actually map a lot closer to the C
->> > > > > primitives and I feel a bit silly it didn't occur to me before.
->> > > > > 
->> > > > > What if instead of with_interrupts_disabled, we extended Lock so that types
->> > > > > like SpinLockIrq that require a context like IrqDisabled can require the use
->> > > > > of two new methods:
->> > > > > 
->> > > > > * first_lock<R>(&self, cb: impl for<'a> FnOnce(Guard<'a, T, B>, B::Context<'a>) -> R) -> R
->> > > > 
->> > > > I think you really want to use a `&mut T` instead of `Guard<'a, T, B>`,
->> > > > otherwise people can do:
->> > > > 
->> > > > 	let g = lock1.first_lock(|guard, _ctx| { guard });
->> > > > 	// here the lock is held, but the interrupts might be enabled.
->> > > 
->> > > Is it impossible to limit the lifetime of the guard such that it cannot
->> > > be returned from `first_lock`?
->> > > 
->> > 
->> > I was wrong saying the original doesn't work, because it has a
->> > `for<'a>`, that means `'a` is lifetime of the closure, which cannot
->> > outlive the return value `R`. So this signature might be valid.
->> > 
->> 
->> But another problem is that with this signature, `cb` can drop the lock,
->> which is not expected, because the lock dropping should be done by
->> `first_lock` itself.
->
-> I thought we agreed on switching this to &mut though? In which case dropping
-> the guard doesn't really matter
+This change means that symbol_get() doesn't return the first matching
+symbol but the last one matched by an address.
 
-I think we arrived the following over on Zulip [1]:
+For instance:
+void foo(int a1) {}
+void bar(int a1) __attribute__((alias("foo")));
 
-pub fn lock_with_new<U>(&self, cb: impl FnOnce(&mut Guard<'_, T, Backend>, IrqDisabled<'a>) -> U) -> U
+The compiler produces the debug information only for foo() but
+gendwarfksyms would instead report that it processed bar() when reading
+this data, which is misleading. On the other hand, I don't immediately
+see that it would result in an incorrect CRC or symtypes output, because
+the symbols with the same address are effectively treated as one group,
+so I'm not sure if this is important or not.
 
-
-Best regards,
-Andreas
-
-
-[1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Spinlocks.20with.20IRQs.3F/near/477072424
-
-
+-- 
+Thanks,
+Petr
