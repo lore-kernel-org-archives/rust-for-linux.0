@@ -1,100 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9061DED4A;
-	Thu, 17 Oct 2024 13:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9711DD54E;
+	Thu, 17 Oct 2024 13:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729170602; cv=none; b=B6FVk4IAJsP8LU/x+STfOgis89dnkAX/KXQOxnMIjTscrIAJfVwQEyH6xl7KL05IOeai1FQwmQFj8Qx0AWAr9BpPtVtmwiQfDjTLC3yluWAPygHpq/zpY4veJ4QRKjxSOlL2uk27NY0YvO1LalgA7n9KBnGmnntAsTgyNo78o2M=
+	t=1729171462; cv=none; b=UvCLs/aBqqnY12JBpUfoCkQLMA0SeLL19YGfLsCX1+IXasVqkPPkTPjdlfb6535Hub7+6l7s9VLUEnsWos10gLTHw/pNsO2UUqKFuuER/Agi/A4CbrJlZ9HFd4ZUEJEePjpGY3xsm1FOmUHO/AEH7tfDFBiFmLNOg+F7Z5kQ4oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729170602; c=relaxed/simple;
-	bh=thj1T8GZG78if/h67vxds3HK/7SEb5HLjMwJifphF9A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Hdj3wcx+VOWOgkx1AV/yReEXO5ByRe7TBg1dbKkGcUvx8kjO8QsIqsHTU7lyqsO5DYxBRjuoD+qVnTzrpq5N96+oBEtjdkd2h+IsmneoQ7sZ1xvi7cf8drkz8xlowhjEEX/8UDHETyALVNVzE2FAWZ8NFrCU2J35hR1UfLy74+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjXHgz3I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729171462; c=relaxed/simple;
+	bh=AwfeuT+5+2+w/3J2up9DJz2hLy/0MT2GzA1McZFVhGg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rLRGqYyUgAhqZa8NPqLK9EU/mJXBGRcBby+fytxQ/rxEavzXVQsq3bmlX56+G2rfYch7j99xeaqfdwCEQhrkXvfrOau9O+Wa8Ou5d2NWfYyFivzflyroxrymzzhI3bkBTnMNdCfcAw/bK2byq37xTxmJ/z1evZ+229Gw5jSwcU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YK9wy9xt; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjXHgz3I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD88C4CEC3;
-	Thu, 17 Oct 2024 13:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729170600;
-	bh=thj1T8GZG78if/h67vxds3HK/7SEb5HLjMwJifphF9A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=sjXHgz3I47Fe4Q46fTPIQ624SSSNddSi9yCyXxh5YCvxboAtF7rDfm9knhR5fLlj4
-	 sXEFtn02uVTC/0y2TLjaBVEjZgmh1A1Kgf6+5GK4ZLpcfmFeUJi8GKsmWloBMQfQZE
-	 7jTm6VTtlvzKowIYqDaGB7acXHOKHry9WDDV+Aw6V363eyjjxsGNKRD4lDFMlhh4zn
-	 hYNbDjSI3JWlr2agG5OWhP3QvP99eacXnguuuOBH3bWrM0Sr+m6KtpW8lMDNkpAviY
-	 iS3pg/4Q9D2QzW91iUWHiK1epVyNryH/b01ceZnVrcnRADiWiP3mS+125VlvXfHvZY
-	 mpjHNflgIrbnQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 17 Oct 2024 15:04:28 +0200
-Subject: [PATCH v3 01/13] rust: time: Add Ktime::from_ns()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YK9wy9xt"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20cf3f68ff2so881705ad.2;
+        Thu, 17 Oct 2024 06:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729171461; x=1729776261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AwfeuT+5+2+w/3J2up9DJz2hLy/0MT2GzA1McZFVhGg=;
+        b=YK9wy9xtGqtX8XVER17yscKj1aN4yRqXse0+xUlUsxKQedg+gDOqSNxsKvknVZoeQE
+         Y0u/yjPbXnou6d5zjncEDdYZo819F1B+LU+Ktbrpk0mBnV9gonkSQjNzkZ3YWZ1Vq/Co
+         5wce7FmtA2y5WCl6Y5ym12eZb79Fh43lgwomkGFI4ulq2HLefXBxpa3/R5UKGnu0WSeJ
+         5jIG+uFcbcyAcXV5e2/fB4K/dZAnJ0jnvfomxr1UL+CzUb/RZ3E/6qBUEOoxNfk/KtHj
+         DOY8bIF4CKP4kQ5tq74+qk0eNzZ3H2FJa/iNRv17gOQFNtvk0bJouX90Ncnf1Wfm49ld
+         Htqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729171461; x=1729776261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AwfeuT+5+2+w/3J2up9DJz2hLy/0MT2GzA1McZFVhGg=;
+        b=U0PtGyiv/ZTvvp11ZVLwoKJTO30OJvcsdXqTOAhpZ9/KZcTwwQrM0NP+Y/tv1j/rFw
+         msYNNXIiZCXTbgH/a7umEBxu30Kvqnya+UnosN4QrnpLMtc/xomsfhjFrJLBZ0T82h2J
+         XvAJJ4EOWCteg+FDzslYlaN2e9iUiksQbe9ifqaxoWsGYSLtjoiX2lFcjuliisph53dQ
+         Lw51wDnuJdO7XvZF71NHyVt32idqL2NvVvXsqU1rGHwcomet/wD+HKUsmZF8Px4SFJPB
+         4lkx976Mm3l8E+Z3yYLQsv4B8b1BJNTcLKfkKvxfd/fEX+FaZIqNfhIaL4BC43AKJrrj
+         aWOA==
+X-Forwarded-Encrypted: i=1; AJvYcCVx8F43UJaCTfB+ayhYvFypXZrdZWvJwLoGN+tWZyQtI01fV7qPqRKJCTEESDJ7f6yXbr0M3gB8sbBFY7MY7GM=@vger.kernel.org, AJvYcCWnu/dwEDpJeY6+46+fZ2sQAA1WNBXXUQJRP6wWBlKxucVLy4JRsmMGCzqWmEfBG1Tsfw/7w0Mx79FxGBU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRsXr4/abjpNKVi7X3vuYOzVQH5dkPUfWnnfo18RT/MPnX/R3P
+	7PkE7Ml9QG2s/QZlIMuQ02nQq/nUPd4koRPIAfvSG6UOVYqyoYAy1aAOoHIrjR4gGRlwfn0aq5I
+	zzZzNNXHNdt6cyW42I1T6Z/Lllds=
+X-Google-Smtp-Source: AGHT+IFz4NYl53lMRUd7X+IJa75+Rd9AY70/7Q6RUZweh0EkKg+FuS9yQF0yU7jF/tMo5iOcZjfVjqY1T2wgPBu4FHU=
+X-Received: by 2002:a17:90b:110c:b0:2e2:cd6b:c6b8 with SMTP id
+ 98e67ed59e1d1-2e3dc2a4054mr1725298a91.8.1729171460727; Thu, 17 Oct 2024
+ 06:24:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241017-hrtimer-v3-v6-12-rc2-v3-1-59a75cbb44da@kernel.org>
-References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
-In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.14.2
+References: <20241014195253.1704625-1-ezulian@redhat.com> <CANiq72n5cPxDORQad2_fJPHXaE2YDHW3enavjWyz1MZBU3oasQ@mail.gmail.com>
+ <ZxBXDhZXNgCwAHzN@f39>
+In-Reply-To: <ZxBXDhZXNgCwAHzN@f39>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 17 Oct 2024 15:24:06 +0200
+Message-ID: <CANiq72nqPN64KQat2VhC5EcVBxvNF18Hi19FPz24fqjpaj2LJA@mail.gmail.com>
+Subject: Re: [PATCH] rust: Fix build error
+To: Eder Zulian <ezulian@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, williams@redhat.com, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Lyude Paul <lyude@redhat.com>
+On Thu, Oct 17, 2024 at 2:15=E2=80=AFAM Eder Zulian <ezulian@redhat.com> wr=
+ote:
+>
+> I can fix it and send a v2 if that's ok. Is it valid to add two 'Reported=
+-by'
+> tags (Clark and kernel test robot)?
 
-A simple function to turn the provided value in nanoseconds into a Ktime
-value. We allow any type which implements Into<bindings::ktime_t>, which
-resolves to Into<i64>.
+Yeah, I think so, at least if they were independently reported. Please
+add a `Closes` if you have it for Clark's report.
 
-This is useful for some of the older DRM APIs that never got moved to Ktime
+> Agreed. We don't want code replicated. In my reply to Boqun I added some
+> notes. If that makes sense, we could avoid even the helper in
+> 'spinlock{_,rt}.h'?
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/time.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Hmm... I am not sure I follow your reply to Boqun. In your version,
+under `DEBUG_SPINLOCK && PREEMPT_RT`, you call `spin_lock_init`, but
+that means we are not passing the given key but creating a new
+static/single one, no? That is why Boqun mentioned that.
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index e3bb5e89f88dac423e2c0083de8fdfe5ac9a272f..1e02eee09f22b08d4f3ab160e8b31b341b5d015c 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -8,6 +8,8 @@
- //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
- //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
- 
-+use core::convert::Into;
-+
- /// The number of nanoseconds per millisecond.
- pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
- 
-@@ -63,6 +65,12 @@ pub fn to_ns(self) -> i64 {
-     pub fn to_ms(self) -> i64 {
-         self.divns_constant::<NSEC_PER_MSEC>()
-     }
-+
-+    /// Creates a new Ktime from the given duration in nanoseconds
-+    #[inline]
-+    pub fn from_ns(ns: impl Into<bindings::ktime_t>) -> Self {
-+        Self { inner: ns.into() }
-+    }
- }
- 
- /// Returns the number of milliseconds between two ktimes.
+> Please correct me if I misunderstood. It seems that Rust doesn't have a
+> pre-processor step to replace macros in the code and the Rust compiler wo=
+rks
+> with 'objects/entities' created for functions and variables, but macros w=
+ould
+> be ignored (since they are string substitution.) Do you have pointers for=
+ good
+> docs on this?
 
--- 
-2.46.0
+I am not sure what exactly you are referring to, so perhaps this quick
+summary helps (apologies if you already know all this!).
 
+Rust does not understand C, at all. So we use `bindgen`, which is a
+tool that internally uses `libclang` to parse C headers and emit Rust
+code to use them from Rust. Clang (of course) knows about macros and
+can parse them and expand them etc., but those macros (typically)
+expand into C code, not Rust code. So (typically) we can't simply use
+the macro because it does not generate valid Rust code. Thus we use a
+C source file to declare helpers that call the C macros (which is fine
+because it is a C file compiled by a C compiler), and then we can call
+the C helper function from Rust.
 
+The problem Boqun pointed out is that, now, since you introduced an
+extra condition in the same `#ifdef`, then `spin_lock_init` is also
+called in a case when `DEBUG_SPINLOCK=3Dy`, which means the key that was
+passed as a parameter is not used but the macro will provide a new
+one.
+
+Does that help?
+
+As for docs, I am happy to point to some -- do you mean on the Rust
+side of things?
+
+Thanks for the patch!
+
+Cheers,
+Miguel
