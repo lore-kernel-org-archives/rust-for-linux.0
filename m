@@ -1,33 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CA37485;
-	Fri, 18 Oct 2024 22:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C29768E1
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Oct 2024 23:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729292046; cv=none; b=WhcheYc3URgDB9P2ex0y50wbAkY4CRAOhhnmTPOxFTFThpgPgnIFuc+jYCHpZE2Go0Aw9U68RSN34jYsl3h217qbj62XUIAWEKb1AoyV6/MaAlZuIU9+vtwr0+wmEFldVY9DRUHPXfaKcZaHkaFxY1G8CArkUFnqcCyp7oLkABw=
+	t=1729293433; cv=none; b=A9PKJWxYdmqW9B8nd6/9A+8cjHG3Xobw5bXcjNJS9rVyqzdJ+y2sHswM/dEss0Nn6NTYoa3T9P/bzPmrAMS5s5ZuibrbRQMiz6/kqr7+c0guTtoGy6BmPbWb2PE6KE884519broUpbOHMjF9Tg/gT3jiarCXX32d772SVzVTj9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729292046; c=relaxed/simple;
-	bh=WWg0Abc/FBNbUuiw6Nf9RCj1QjsTIpCrigZZ6kZY3no=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DXD1h6RVgjGqAcnbqKMIiUZDtsvijdWL12Jsms69M+vD49t9xdUdm9wAD7GL+pn7lyvoD4RtxU9TM7aEv1aWcqJ5bF6wi7gHIyRjZX9JHGDPqyQ38h9F1gPiHIGDVRpP9URMdafRB6cPvOOd7SJdPajKR89Iw0zDQLgwU73EFaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ev2nPpuB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729293433; c=relaxed/simple;
+	bh=EKFz18dTqTZQNFFtuezUAHUlyCwgEgoHQ8k/pFQxMCQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMKG7G9YShF+mqXSvCW6dTdh6T+5kvhZpGJKNFinPfcHeGbcDyXzvQe58Co1AWBVcaJ68sfs42QPhgCj9AMJnASNnDA4O9UCDn6/5Czj+K+Y4uXpEUW4Y9zzphUyf6HgKQRwQMd7iW4IP+POKyJtpLxyDFOBY44xvxdL6wiGfIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gRtZvI3o; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ev2nPpuB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27207C4CEC3;
-	Fri, 18 Oct 2024 22:54:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729292046;
-	bh=WWg0Abc/FBNbUuiw6Nf9RCj1QjsTIpCrigZZ6kZY3no=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ev2nPpuBh6/l0ej0BsUe+OH92SfCAdnS8vsa7rNoPM41dhxZs2/FuszNYw1BkDJQO
-	 Ow/S6/FF+iuSE1s5u1rs21sExJPf042EnSqlBAwQHDHD79mRTOs5Mi3OPqq0PAm81T
-	 wuY+PR6Di5y1koa12xouYm2KAfWDlB9tp14q/XBt9j5k705dDjs5y8zYMCbWupCYPG
-	 /QWCtkTn4VEQYv33MLfsMOgQvm4KgH7MYW2wjOLtmCTssDJ4+fB+pBFe2KFv+hw6i7
-	 bet65eDmLSruwW5msBsE6a0Xwaxie5ade6xrDfmniLYttLsc8vRg1RSpJB4fWD2F43
-	 ZKyTT6lkgf67Q==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gRtZvI3o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729293429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CLMUyNHQiaCv4zwkoRVVWYMA0GThuwsF5UrHKm3NvKg=;
+	b=gRtZvI3op21vYpqUo07EyYWNYgPF/ixxp7MUQlWa20Z3C7fYsGCZflKPqGO6CdQwHvXkZa
+	k0/0ErO7LeqsDCotGhYZvlElMq+A/8bNMki2CqSkQ2s6JdbrFK030PXAtNmR2u+bdv/gQa
+	LKmkL3j0BjqU8P2OZwDWYN2iy8/dWWM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-336-u6R2lIYdN3SdYMs2BvI5Kw-1; Fri,
+ 18 Oct 2024 19:17:06 -0400
+X-MC-Unique: u6R2lIYdN3SdYMs2BvI5Kw-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4A4C3195608D;
+	Fri, 18 Oct 2024 23:17:04 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.65.88])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A0C91956086;
+	Fri, 18 Oct 2024 23:16:58 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
@@ -35,12 +57,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.12 (2nd)
-Date: Sat, 19 Oct 2024 00:53:29 +0200
-Message-ID: <20241018225329.235175-1-ojeda@kernel.org>
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH v7 0/3] rust: Add local_irq abstraction, SpinLockIrq
+Date: Fri, 18 Oct 2024 19:13:49 -0400
+Message-ID: <20241018231621.474601-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,67 +68,41 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Hi Linus,
+This adds a token for annotating contexts where IRQs may be disabled on
+non-PREEMPT_RT kernels, a way to use these tokens with Lock types, and
+introduces bindings for spin_lock_irqsave() and
+spin_unlock_irqrestore().
 
-Please pull these fixes for Rust (second round).
+This patch series depends on the NotThreadSafe type from Alice:
 
-They have all been in linux-next for a week.
+https://lore.kernel.org/rust-for-linux/20240808-alice-file-v9-1-2cb7b934e0e1@google.com/
 
-No conflicts expected.
+(Please re-review, since there's been some changes here!)
 
-Thanks!
+Lyude Paul (3):
+  rust: Introduce local_irq module
+  rust: sync: Introduce lock::Backend::Context and
+    lock::BackendWithContext
+  rust: sync: Add SpinLockIrq
 
-Cheers,
-Miguel
+ rust/helpers/helpers.c            |   1 +
+ rust/helpers/irq.c                |   8 ++
+ rust/helpers/spinlock.c           |  14 +++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/local_irq.rs          |  56 ++++++++++++
+ rust/kernel/sync.rs               |   2 +-
+ rust/kernel/sync/lock.rs          | 118 +++++++++++++++++++++++-
+ rust/kernel/sync/lock/mutex.rs    |   1 +
+ rust/kernel/sync/lock/spinlock.rs | 146 ++++++++++++++++++++++++++++++
+ 9 files changed, 341 insertions(+), 6 deletions(-)
+ create mode 100644 rust/helpers/irq.c
+ create mode 100644 rust/kernel/local_irq.rs
 
-The following changes since commit 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b:
 
-  Linux 6.12-rc2 (2024-10-06 15:32:27 -0700)
+base-commit: 6ce162a002657910104c7a07fb50017681bc476c
+prerequisite-patch-id: 4e3cfb97c9dc94e99912e67f383497848ac6f81d
+-- 
+2.47.0
 
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.12-2
-
-for you to fetch changes up to 8b8ca9c25fe69c2162e3235c7d6c341127abeed6:
-
-  cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_INTEGERS (2024-10-13 22:23:13 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v6.12 (2nd)
-
-Toolchain and infrastructure:
-
- - Fix several issues with the 'rustc-option' macro. It includes a
-   refactor from Masahiro of three '{cc,rust}-*' macros, which is not
-   a fix but avoids repeating the same commands (which would be several
-   lines in the case of 'rustc-option').
-
- - Fix conditions for 'CONFIG_HAVE_CFI_ICALL_NORMALIZE_INTEGERS'. It
-   includes the addition of 'CONFIG_RUSTC_LLVM_VERSION', which is not a
-   fix but is needed for the actual fix.
-
-And a trivial grammar fix.
-
-----------------------------------------------------------------
-Alice Ryhl (2):
-      kbuild: fix issues with rustc-option
-      cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_INTEGERS
-
-Gary Guo (1):
-      kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`
-
-Masahiro Yamada (1):
-      kbuild: refactor cc-option-yn, cc-disable-warning, rust-option-yn macros
-
-Timo Grautstueck (1):
-      lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
-
- arch/Kconfig                  | 26 ++++++++++++--------------
- init/Kconfig                  |  8 ++++++--
- lib/Kconfig.debug             |  2 +-
- scripts/Kconfig.include       |  3 +++
- scripts/Makefile.compiler     | 14 +++++++-------
- scripts/rustc-llvm-version.sh | 22 ++++++++++++++++++++++
- 6 files changed, 51 insertions(+), 24 deletions(-)
- create mode 100755 scripts/rustc-llvm-version.sh
