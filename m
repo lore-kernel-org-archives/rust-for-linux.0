@@ -1,201 +1,186 @@
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2CA20E327;
-	Fri, 18 Oct 2024 01:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8E017332B;
+	Fri, 18 Oct 2024 05:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729216386; cv=none; b=eMNZivKTD0B16dXiIcXyBOz6oeBpdqsTfOPhilZYcDfvEPUqs0gN2Q6XPjepMqXlhaqNtbPwN4YN6y1s8UiR/w8VSXbk9l5tVVngjraKl4dDjDEWeEVo1ooKOntXoJ/5yRJb9Db/gCRIly5WcXIt6b4K46V6ayN0RWN6gcedJkI=
+	t=1729230721; cv=none; b=YLtbnXKGD+1SFrASgJGrwuk17DL8QQ5tqb1mXHFSKhXZ4iZ/q+kITTfMpxCNoCtJD/WqhMjRt/u8vNUuOwNDj/7obix2OX0UXkOnRN2vP4/0dVIm5Lv5e6DyLy9++oLciEBSKdNp2lx6ilCfqQAaoLKfIAQsuiw6HLen4vIVMs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729216386; c=relaxed/simple;
-	bh=GwT3A+NOL2q0+cWVmACAjiU4di5jpTAluA9HNpF8cyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MiWnqMKiN5nWx2jI0E6utWyaZpqwGaj5CPNYrEKVjC06r0R5atGNqMhobIRU00PB6Pw0LKhPsw8BgvRd0jqbCmWtzGWDOgYuUj/iq8YdYyrvWSSBgin9EkOl3Cu9mjvSBo/3bKy+cmZgpmLeFppPmlSdgoGMLa9zwmd00mySQdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.52])
-	by app2 (Coremail) with SMTP id HwEQrABHTgJhvxFn+E4XAQ--.3867S2;
-	Fri, 18 Oct 2024 09:52:33 +0800 (CST)
-Received: from pride-PowerEdge-R740.. (unknown [222.20.126.129])
-	by gateway (Coremail) with SMTP id _____wB3M8ZcvxFnm+lRAA--.59195S2;
-	Fri, 18 Oct 2024 09:52:28 +0800 (CST)
-From: Dongliang Mu <dzm91@hust.edu.cn>
-To: si.yanteng@linux.dev,
-	Alex Shi <alexs@kernel.org>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Jonathan Corbet <corbet@lwn.net>,
+	s=arc-20240116; t=1729230721; c=relaxed/simple;
+	bh=eAhL9xtwWzNxLLC9A9a0QdkxAaiyQEWH7sgGM+t9H2A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EbdJbdrVXdNwBxdiPY2mp3dVcgz4ckG/tQ81oB3AhDYIEfCpn8wL5N8mL274kG9YN1Aq1HL+d0YzCKT62hDQJNlXBxN0o7nGfSYeGI/77lu/4Jo3xQEXelQ3sSvjttP9osSIDGAWlxgVwLEQ9XUJzwb9gG1u/9GegAWmAQvSNwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3t7Z80c; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S3t7Z80c"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-46090640f0cso15093941cf.0;
+        Thu, 17 Oct 2024 22:51:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729230718; x=1729835518; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=K33FEaP3Z7r7Xl1UJjCNToT4hf/A+FER5tBnwb2tzp8=;
+        b=S3t7Z80cfLekOfhS+rsLK//OOixcTd2t/RtgVYmapIRUATDeSOn8agTR5HXP7MATdm
+         vKtDHQkFRkSrHbyocaVoqpONcXNjry/xjtS9QKYNMdSZIKu1JYkARX9bnmBp7gf/hoBH
+         8FtH5mYQs6meARttP6sX3yaatB38zreGwCk6TS+cndQpy9BjqCLUC9NymuKOl0jrh3kU
+         XXV4ZHu1l3lsay33Kg9Yi2pVBsxHslYnNpLH5P5SmqidoacH05ajEAqwM5v8G3x2AvzV
+         3jp72dU1zf1Mdds90xpgHw6haTbGrEOOtchomQuBYXUiCR8yr1AjGrReRXWtQvCrhEEd
+         tqew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729230718; x=1729835518;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K33FEaP3Z7r7Xl1UJjCNToT4hf/A+FER5tBnwb2tzp8=;
+        b=NaDOfNInIUyVcrFaAWNJR22at1Iev+18M/lBB2TZ1qmzr7KwOnCt6neKUK4ICSS2De
+         N5mbPLnEvvN0PQmGh6ZVcICY33J/0JYGtkSkUNvg5L6/DIxO2FCS55+P75SeW2/+uUc8
+         XYprQe56do1yHzCClRaKnHYwOzMY974ZLlEMvwpg86rtuSUFtq6cUY+4iMXc9SyrlnvY
+         lXS0tXAu90+6j8qXXzb/onX1TZpncVTVJRIH+rm8d4Sqq3dEAhvOVLyBE77oxjQCxClR
+         5CPdr3W6M4YnwWEKqaIo3UStXd8TnM6V8yBbcJld83/d/JkQdTdqEX4nZpC4h3d+ABqB
+         PSaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWWE6WXz7mNQRMvtKpX7cXZpMzhXwuWXgqFCexuuJv9yesg8kvOb1NmRLq7loBkDLiJj7R53yPe958jgd/OmK8=@vger.kernel.org, AJvYcCXg8qxpBZqvTaUi+GuAjw4d5IqZCEMKfIJqp7ZpBd3vIqKQY2BZov27CnnU/xNaQZ9mEmZ+nhA3pDEcs34=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUHblGWjdN78X6dsqkVIFkEzbj99XCOBhBIPXD+dsybRZax0qa
+	d/7CwPKJOqTs7iVaZaFd69wgN21cOrAiC0xCXKOx0gNONbe+4Zzn
+X-Google-Smtp-Source: AGHT+IFC8BiPHIDP++CruiLgFKjf+7YLRJM+2hpzLbzrEp0UM9droiSND9TxyeOlTgZyz+up5JuEEQ==
+X-Received: by 2002:a05:622a:18a1:b0:45b:5cdf:54b5 with SMTP id d75a77b69052e-460aee38890mr15383021cf.41.1729230718506;
+        Thu, 17 Oct 2024 22:51:58 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-460ae999ab8sm4077931cf.50.2024.10.17.22.51.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Oct 2024 22:51:57 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 18BB91200071;
+	Fri, 18 Oct 2024 01:51:57 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Fri, 18 Oct 2024 01:51:57 -0400
+X-ME-Sender: <xms:fPcRZ3ySzsWNOnCPmQezx6r7aSSmw5eSHnPl0JF-245AU2f8TxNeRA>
+    <xme:fPcRZ_Ti1arKwYm4l4Mqabze2LC0Db0QZllPHqTM8qEu06vx1MTh4HcmtybA9SMrI
+    PPKREAPWGSU3XfH1A>
+X-ME-Received: <xmr:fPcRZxUySa_hokYYylwlD-D1TihNKTNY_gDmV11B0XC6ilnBpc4Yx8W8Hyw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehvddguddttdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddt
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepgeeljeeitdehvdehgefgjeevfeejjeekgfev
+    ffeiueejhfeuiefggeeuheeggefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidrug
+    gvpdhrtghpthhtohepughirhhkrdgsvghhmhgvsehgmhgrihhlrdgtohhmpdhrtghpthht
+    oheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqd
+    hlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopegrihhrlhhivggusehrvgguhhgrthdrtghomh
+    dprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopeifihhl
+    lheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgrnhesrhgvughhrghtrd
+    gtohhm
+X-ME-Proxy: <xmx:fPcRZxidaAvl6HQ8WjtxJugb4oJmonF75YomIMavu6J51tnO7_uiAQ>
+    <xmx:fPcRZ5A3ErfTTTbjCg3Etw2XZwbN95Ta7TWNhxKgfYE0CI2hlsStfA>
+    <xmx:fPcRZ6KkU-rbHYwDLTIdjBAYEEq_WnUrmGHKqYBCSMGlfA58LOfU7g>
+    <xmx:fPcRZ4A2fJ_q4sA_pQpHZE9f2qLGRSQxeOe__SIDza0sZBTf4P-94A>
+    <xmx:ffcRZ1wBi8dCYDRL2ozULsZjKqwLFpuEwibiMce1sz-7u62ajui2vuu1>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Oct 2024 01:51:56 -0400 (EDT)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: "Thomas Gleixner" <tglx@linutronix.de>
+Cc: Dirk Behme <dirk.behme@gmail.com>,
+	Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com,
+	Ingo Molnar <mingo@redhat.com>,
+	will@kernel.org,
+	Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linux-kernel@vger.kernel.org,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	wedsonaf@gmail.com,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	aliceryhl@google.com,
 	Trevor Gross <tmgross@umich.edu>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Dongliang Mu <dzm91@hust.edu.cn>
-Cc: hust-os-kernel-patches@googlegroups.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2] docs/zh_CN: update the translation of process/programming-language.rst
-Date: Fri, 18 Oct 2024 09:52:18 +0800
-Message-ID: <20241018015226.3786020-1-dzm91@hust.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [POC 0/6] Allow SpinLockIrq to use a normal Guard interface
+Date: Thu, 17 Oct 2024 22:51:19 -0700
+Message-ID: <20241018055125.2784186-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <1eaf7f61-4458-4d15-bbe6-7fd2e34723f4@app.fastmail.com>
+References: <1eaf7f61-4458-4d15-bbe6-7fd2e34723f4@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrABHTgJhvxFn+E4XAQ--.3867S2
-Authentication-Results: app2; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoW3WrW3Gw18WF1rCF4fZr43ZFb_yoW7tryfpF
-	W7Kr9rKa18J3WxCrZ7Kr12vr1FkFZ5Ka48trWUt3WYyF40ya9IqFyxKr43J342vryxCFWD
-	Z34fuFW8X3y3AFDanT9S1TB71UUUU1UqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUHmb7Iv0xC_Zr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1q6r43M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVW8ZVWrXw
-	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Wrv_ZF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYY7kG6IIYr7AKxVW8JVW5
-	JwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26ryj6F1UMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU5
-	2eHPUUUUU==
-X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
 
-Update to commit 0b02076f9953 ("docs: programming-language: add Rust
-programming language section")
+Hi Thomas,
 
-scripts/checktransupdate.py reports:
+So this series is what I proposed, previously, because the nested
+interrupt API in C is local_irq_save() and local_irq_restore(), the
+following Rust code has the problem of enabling interrupt earlier:
 
-Documentation/translations/zh_CN/process/programming-language.rst
-commit 0b02076f9953 ("docs: programming-language: add Rust programming
-language section")
-commit 38484a1d0c50 ("docs: programming-language: remove mention of the
-Intel compiler")
-2 commits needs resolving in total
+	// l1 and l2 are interrupt disabling locks, their guards (i.e.
+	// return of lock()) can be used to track interrupt state.
 
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
----
-v1->v2: revise the script name
- .../zh_CN/process/programming-language.rst    | 78 +++++++------------
- 1 file changed, 30 insertions(+), 48 deletions(-)
+	// interrupts are enabled in the beginning.
+	
+	let g1 = l1.lock(); // previous interrupt state is enabled.
+	let g2 = l2.lock(); // previous interrupt state is disabled.
 
-diff --git a/Documentation/translations/zh_CN/process/programming-language.rst b/Documentation/translations/zh_CN/process/programming-language.rst
-index fabdc338dbfb..55f132a4b212 100644
---- a/Documentation/translations/zh_CN/process/programming-language.rst
-+++ b/Documentation/translations/zh_CN/process/programming-language.rst
-@@ -3,25 +3,22 @@
- :Original: :ref:`Documentation/process/programming-language.rst <programming_language>`
- :Translator: Alex Shi <alex.shi@linux.alibaba.com>
- 
--.. _cn_programming_language:
--
- 程序设计语言
- ============
- 
--内核是用C语言 :ref:`c-language <cn_c-language>` 编写的。更准确地说，内核通常是用 :ref:`gcc <cn_gcc>`
--在 ``-std=gnu11`` :ref:`gcc-c-dialect-options <cn_gcc-c-dialect-options>` 下编译的：ISO C11的 GNU 方言
--
--这种方言包含对语言 :ref:`gnu-extensions <cn_gnu-extensions>` 的许多扩展，当然，它们许多都在内核中使用。
-+内核是用 C 编程语言编写的 [zh_cn_c-language]_。更准确地说，内核通常使用 ``gcc`` [gcc]_ 编译，
-+并且使用 ``-std=gnu11`` [zh_cn_gcc-c-dialect-options]_：这是 ISO C11 的 GNU 方言。
-+``clang`` [zh_cn_clang]_ 也得到了支持，详见文档：
-+:ref:`使用 Clang/LLVM 构建 Linux <kbuild_llvm>`。
- 
--对于一些体系结构，有一些使用 :ref:`clang <cn_clang>` 和 :ref:`icc <cn_icc>` 编译内核
--的支持，尽管在编写此文档时还没有完成，仍需要第三方补丁。
-+这种方言包含对 C 语言的许多扩展 [zh_cn_gnu-extensions]_，当然，它们许多都在内核中使用。
- 
- 属性
- ----
- 
--在整个内核中使用的一个常见扩展是属性（attributes） :ref:`gcc-attribute-syntax <cn_gcc-attribute-syntax>`
-+在整个内核中使用的一个常见扩展是属性（attributes） [zh_cn_gcc-attribute-syntax]_。
- 属性允许将实现定义的语义引入语言实体（如变量、函数或类型），而无需对语言进行
--重大的语法更改（例如添加新关键字） :ref:`n2049 <cn_n2049>`
-+重大的语法更改（例如添加新关键字） [zh_cn_n2049]_。
- 
- 在某些情况下，属性是可选的（即不支持这些属性的编译器仍然应该生成正确的代码，
- 即使其速度较慢或执行的编译时检查/诊断次数不够）
-@@ -30,42 +27,27 @@
- ``__attribute__((__pure__))`` ），以检测可以使用哪些关键字和/或缩短代码, 具体
- 请参阅 ``include/linux/compiler_attributes.h``
- 
--.. _cn_c-language:
--
--c-language
--   http://www.open-std.org/jtc1/sc22/wg14/www/standards
--
--.. _cn_gcc:
--
--gcc
--   https://gcc.gnu.org
--
--.. _cn_clang:
--
--clang
--   https://clang.llvm.org
--
--.. _cn_icc:
--
--icc
--   https://software.intel.com/en-us/c-compilers
--
--.. _cn_gcc-c-dialect-options:
--
--c-dialect-options
--   https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html
--
--.. _cn_gnu-extensions:
--
--gnu-extensions
--   https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html
--
--.. _cn_gcc-attribute-syntax:
--
--gcc-attribute-syntax
--   https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
--
--.. _cn_n2049:
-+Rust
-+----
- 
--n2049
--   http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2049.pdf
-+内核对 Rust 编程语言 [zh_cn_rust-language]_ 的支持是实验性的，并且可以通过配置选项
-+``CONFIG_RUST`` 来启用。Rust 代码使用 ``rustc`` [rustc]_ 编译器在
-+``--edition=2021`` [zh_cn_rust-editions]_ 选项下进行编译。版本（Editions）是一种
-+在语言中引入非后向兼容的小型变更的方式。
-+
-+除此之外，内核中还使用了一些不稳定的特性 [zh_cn_rust-unstable-features]_。这些不稳定
-+的特性将来可能会发生变化，因此，一个重要的目标是达到仅使用稳定特性的程度。
-+
-+具体请参阅 Documentation/rust/index.rst
-+
-+.. [zh_cn_c-language] http://www.open-std.org/jtc1/sc22/wg14/www/standards
-+.. [gcc] https://gcc.gnu.org
-+.. [zh_cn_clang] https://clang.llvm.org
-+.. [zh_cn_gcc-c-dialect-options] https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html
-+.. [zh_cn_gnu-extensions] https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html
-+.. [zh_cn_gcc-attribute-syntax] https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
-+.. [zh_cn_n2049] http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2049.pdf
-+.. [zh_cn_rust-language] https://www.rust-lang.org
-+.. [rustc] https://doc.rust-lang.org/rustc/
-+.. [zh_cn_rust-editions] https://doc.rust-lang.org/edition-guide/editions/
-+.. [zh_cn_rust-unstable-features] https://github.com/Rust-for-Linux/linux/issues/2
+	drop(g1); // release l1, if we use g1's state, interrupt will be
+		  // enabled. But this is obviously wrong. Because g2
+		  // can only exist with interrupt disabled.
+
+With the new interrupt disable and enable API, instead of a "unsigned
+long", a percpu variable is used to track the outermost interrupt state
+and the nested level, so that "drop(g1);" above won't enable interrupts.
+
+Although this requires extra cost, but I think it might be worth paying,
+because this could make Rust's SpinLockIrq simply use a guard interface
+as SpinLock.
+
+Of course, looking for any comments and suggestions.
+
+Boqun Feng (3):
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+  rust: sync: lock: Add `Backend::BackendInContext`
+
+Lyude Paul (3):
+  rust: Introduce interrupt module
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce lock::Backend::Context
+
+ include/linux/irqflags.h          |  32 +++++++++-
+ include/linux/irqflags_types.h    |   6 ++
+ include/linux/spinlock.h          |  13 ++++
+ include/linux/spinlock_api_smp.h  |  29 +++++++++
+ include/linux/spinlock_rt.h       |  10 +++
+ kernel/locking/spinlock.c         |  16 +++++
+ kernel/softirq.c                  |   3 +
+ rust/helpers/helpers.c            |   1 +
+ rust/helpers/interrupt.c          |  18 ++++++
+ rust/helpers/spinlock.c           |  10 +++
+ rust/kernel/interrupt.rs          |  64 +++++++++++++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/sync.rs               |   2 +-
+ rust/kernel/sync/lock.rs          |  33 +++++++++-
+ rust/kernel/sync/lock/mutex.rs    |   2 +
+ rust/kernel/sync/lock/spinlock.rs | 103 ++++++++++++++++++++++++++++++
+ 16 files changed, 340 insertions(+), 3 deletions(-)
+ create mode 100644 rust/helpers/interrupt.c
+ create mode 100644 rust/kernel/interrupt.rs
+
 -- 
-2.43.0
+2.45.2
 
