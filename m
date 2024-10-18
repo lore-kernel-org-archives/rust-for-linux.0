@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26C2201105;
-	Fri, 18 Oct 2024 10:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2879615CD74;
+	Fri, 18 Oct 2024 11:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729246940; cv=none; b=baVNHkbC3xcpik6Cu5vvjiLlnF4fVkjpmzYXkVwYsUstBgKPSC5MhVnibAMHfmIb0UCAf/ueplPUlvpaV+n1A4fRm2/l+Hv8dSM3VqaPx5KMmtl8VKrh9X7ZAymzNcqxUxCfUntzBuZ3HB0gI7RBQgqHpMRkQ1IFq0B3Kij+Ces=
+	t=1729250223; cv=none; b=C7Vn9aGah9hPLIllFbYTgUkzsy5XOXJGIGvlA2LcZ+E8hPKLe267RMKvKDD287/YQcEQUv7UDjYPqTQVtNZkc4ztb/n3mCgHL2yA8koGhPBvvGrrCB/3gYbBgA9LYqkhhap3IBUkORfFSuaQKS9jK9zDZk9rSvJVCNVazWpXmV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729246940; c=relaxed/simple;
-	bh=JYZFDYYwlzU5T4CwsY7Tajc2AFTl7fnURljZcT4/QBo=;
+	s=arc-20240116; t=1729250223; c=relaxed/simple;
+	bh=TyKBE7MoQqoiy5Ox7Q0k5Y+ZjkzhA38Eo1JU4Sc2i/c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=E2GCkmgIUymWWSUpskxcrQ58/rdtIX5CMJqbYBjVFngU+pvpYhzGnHhXU+ieiT+3B4uMExBYj14d3INYZYXYOIafxt6WHdk78gG7TWEb06JeSxWDCIf6pzjXNrLG1ddaPpta9xeFY3elEiiS9YfOiOGIxLqUGfQW+bFUSJ3ZL9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtUXfY9s; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=QVwzU/A44DE5p9lHbFPfDk1P3/e2dd6jGPZ3o+HZ7a2oFdWqtC7dp2YjeVCkM8R11AQ5ONltDjo0mvUVH9GRjX27l2m4WuErjJICurIUoI6hscjBZSJoqK4Ax2l9sxa6QTvGgd8cH0QrZOcgx5eAmcLcmyvY5diDqDkIC6Gsi0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCX1TYnH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtUXfY9s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD32C4CEC3;
-	Fri, 18 Oct 2024 10:22:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCX1TYnH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FD4C4CEC3;
+	Fri, 18 Oct 2024 11:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729246940;
-	bh=JYZFDYYwlzU5T4CwsY7Tajc2AFTl7fnURljZcT4/QBo=;
+	s=k20201202; t=1729250222;
+	bh=TyKBE7MoQqoiy5Ox7Q0k5Y+ZjkzhA38Eo1JU4Sc2i/c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PtUXfY9s2ubD9LXbcKlcyvl4QBLySdGkNM18gpge6lV6HY7Yw8ZrP2MYfjRiJccgt
-	 uxwjJ/tfz8SCHaCnBRqrg5FKkliWhWkait3WSWN9OQdvozX5DHs6I0kzJUfPvufT4r
-	 CL93ehFI0UpIvpQqRbPKeorYhaW6fnEJOPf1ZEhegxGNC5OF41Ba2kDuiD5UJbEAgE
-	 bOeTUxsul31ZKAQ2iAQ9huZJJ0/0gm62wUpmxsR+zqZA96u2mx+vsvgeFKw3mgI0fs
-	 6x3BC8AOme0y5NC84iKYCVb0XLrvaIRnerP+TILK0y5CJPkJY4IODnC0/0IyTfiT3o
-	 t/Aayrnu4VStg==
+	b=cCX1TYnHS7uJ1XWUQmu993BANGY01CW9anDUPilRpbLH3HJiH97nt/wyi7+VbLTSd
+	 P9AnIk0oaIZFpdpLv73ClS8Sley/tonPfeVdJXvIfPT61NX8qcxpTiCkOVtDpXRT44
+	 zn6HS53RcXi8W49c//UyEaQ2S16rgXLk3v8Tdwjv1eTbsnvpfP+XsfcSyWH9Q8H9bJ
+	 yDB6A17DFvfVGVQFWqpXgMxyZdgzcHDKFCl5AZD0gRDaPIw5p1NH+WYv5PtDrp3pch
+	 9rEplNMbOuyt//rSMhvmPiTHsaSfz43Ozgdam9sa1OMkUuObwm8kZII4jnhElcu2dP
+	 Nu7PVoNITBAow==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>
 Cc: "Thomas Gleixner" <tglx@linutronix.de>,  Dirk Behme
@@ -45,8 +45,8 @@ In-Reply-To: <20241018055125.2784186-1-boqun.feng@gmail.com> (Boqun Feng's
 	message of "Thu, 17 Oct 2024 22:51:19 -0700")
 References: <1eaf7f61-4458-4d15-bbe6-7fd2e34723f4@app.fastmail.com>
 	<20241018055125.2784186-1-boqun.feng@gmail.com>
-Date: Fri, 18 Oct 2024 12:22:07 +0200
-Message-ID: <87v7xpr9rk.fsf@kernel.org>
+Date: Fri, 18 Oct 2024 13:16:43 +0200
+Message-ID: <87r08dr78k.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,12 +84,45 @@ Boqun Feng <boqun.feng@gmail.com> writes:
 > as SpinLock.
 >
 > Of course, looking for any comments and suggestions.
+>
+> Boqun Feng (3):
+>   irq & spin_lock: Add counted interrupt disabling/enabling
+>   rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+>   rust: sync: lock: Add `Backend::BackendInContext`
+>
+> Lyude Paul (3):
+>   rust: Introduce interrupt module
+>   rust: sync: Add SpinLockIrq
+>   rust: sync: Introduce lock::Backend::Context
+>
+>  include/linux/irqflags.h          |  32 +++++++++-
+>  include/linux/irqflags_types.h    |   6 ++
+>  include/linux/spinlock.h          |  13 ++++
+>  include/linux/spinlock_api_smp.h  |  29 +++++++++
+>  include/linux/spinlock_rt.h       |  10 +++
+>  kernel/locking/spinlock.c         |  16 +++++
+>  kernel/softirq.c                  |   3 +
+>  rust/helpers/helpers.c            |   1 +
+>  rust/helpers/interrupt.c          |  18 ++++++
+>  rust/helpers/spinlock.c           |  10 +++
+>  rust/kernel/interrupt.rs          |  64 +++++++++++++++++++
+>  rust/kernel/lib.rs                |   1 +
+>  rust/kernel/sync.rs               |   2 +-
+>  rust/kernel/sync/lock.rs          |  33 +++++++++-
+>  rust/kernel/sync/lock/mutex.rs    |   2 +
+>  rust/kernel/sync/lock/spinlock.rs | 103 ++++++++++++++++++++++++++++++
+>  16 files changed, 340 insertions(+), 3 deletions(-)
+>  create mode 100644 rust/helpers/interrupt.c
+>  create mode 100644 rust/kernel/interrupt.rs
 
-I am curious what kind of performance impact we would have for this
-counter in hot paths? If it is significant, and if we can design an API
-based on scopes and closures that perform better, we should probably do
-that.
+
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+I ran the `hrtimer` examples on top of this, and it seems to work [1].
 
 Best regards,
 Andreas
+
+
+[1] git git://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git hrtimer-boqun-poc
 
