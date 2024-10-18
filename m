@@ -1,78 +1,103 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982E9200C87;
-	Fri, 18 Oct 2024 16:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E10820400F;
+	Fri, 18 Oct 2024 18:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729270575; cv=none; b=lE/mz8vWX+xGefEyx+GH61hCR/7WaBTKBFx36MBEy5xxfOZoH8QHsBxjHkg7TMjDnPByg4IWBJIlQ+4g6kjYqjr/gg7qdOMfEaXc0f61W9LJfQJznpFtNBYv6Qu3RTnok5f3a20/rWKHB+fcSEgFqRJgg76sK7yokpxSEDuBEiI=
+	t=1729277855; cv=none; b=r6V3/SAcKP0i31sAnUExDMRtuaU0IeT0aXc+/i5kkHsyCejQWcw5iQPbVDyaaUgNkU0NGbXgJhLamPKi5o+9Dl8/+GsSCl7YGdyLvS0KTKRyBEwwh0pOPkIJiNnYh5Z8Of15KcQNBcaFJQO1gFPvH92UUcA/b4x8MNTuMep9Mw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729270575; c=relaxed/simple;
-	bh=2nkCyEzm6YDm0J1JHlfuBkEtCsAIcHcfPw3Ho6IwEYc=;
+	s=arc-20240116; t=1729277855; c=relaxed/simple;
+	bh=USwZBd/rmQ4xGvXvT/P1fJ09lLr7kVzbXZdNBQ3+LQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hsXKW0MlW/07uvFDjhh6BCBYz5leeyN+VFlSoq4SxaxwB/UivC0pwzI6vgo2HrU3eJFYAbkeu0sZRhIhklD+9sIu34HoPvi5oqjL5emMIGGzfQSc8eOca0uY96/jFw5GPOLlX+k8O9VI+GWN3Oc2WB9t70yRpJGIL68Po1Sc8FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ODGXfY48; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=RHqtc6u0dyn0WgwdephNSfPCt8N2YMHDYqfmSF1WCTYuoTRhAOlKyKWCVoUrKRaBHCQV+xL+nxFySHI5ul9hGNLU/bTCIh4S7YrNMr6E9T9Cw02A5VHJUraW9EyJLtWifWecHmzW5LpfJbOGdZWba3vN1x4NJe/+XApvnsPm/6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8p/V7BV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ODGXfY48"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=YvTm0/Ddj2Aj9F+19cWeS71uKbiUkGYK6MuTaacqz6g=; b=OD
-	GXfY48tKICvEHrtQ/5BICPYlWREVkMvkhIbI+gV5wadqZngYMRNoqeAjKAdgE06oS91S8+HodIHLp
-	WFbmC/se7C3sY06Rl099bVJVFNiIoO+IKmsFpKbRLG4c97DE/3Nxi/8z49fB5C5TjcdMrG7d4R2SP
-	7fc3GSqCGg51Wm8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1t1qGX-00AYEk-Mr; Fri, 18 Oct 2024 18:55:53 +0200
-Date: Fri, 18 Oct 2024 18:55:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
-Message-ID: <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-3-fujita.tomonori@gmail.com>
- <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
- <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8p/V7BV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E839C4CED4;
+	Fri, 18 Oct 2024 18:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729277854;
+	bh=USwZBd/rmQ4xGvXvT/P1fJ09lLr7kVzbXZdNBQ3+LQ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d8p/V7BV9R5bv/BfDflLo5c3tZfdN++v+8FDLdPwvRIUNhpVdCKrwfx3ZhzYIBBoL
+	 0ysAxmqq6VxKdnMDowczfEE4iLFgRsjBQ2sg7WpucVGrtlDKJF0dDwHAJstYJYOyrU
+	 DwG9HYrZlXnxXvd17vXwqMU5sBdF4IuvNJKEFJq2BTtGPe2hPSji38r6iqSmctgecG
+	 gekuuMP9GT54JXpLCT/hfZ0YED63bGLsxe+SCoelsauWdYjywYupTIiojk1hK7yABg
+	 pvsG3iqbQ42lBLN/swfRU9WaiT3IwJcXkruF3m/hBbMZWz6fGlPM68cvZL0eb7Q52Y
+	 exWIiOd0e8KhA==
+Date: Fri, 18 Oct 2024 19:57:25 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	Len Brown <len.brown@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+	linux-mm@kvack.org, SeongJae Park <sj@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	netdev@vger.kernel.org, linux-sound@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: (subset) [PATCH v3 00/16] timers: Cleanup delay/sleep related
+ mess
+Message-ID: <104a3bf5-97ee-4c48-832f-df6c6e219576@sirena.org.uk>
+References: <172892295715.1548.770734377772758528.b4-ty@kernel.org>
+ <877ca5al86.fsf@somnus>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0RRAV7MzKbX8/czK"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
+In-Reply-To: <877ca5al86.fsf@somnus>
+X-Cookie: What is the sound of one hand clapping?
 
-On Fri, Oct 18, 2024 at 04:31:34PM +0200, Miguel Ojeda wrote:
-> On Fri, Oct 18, 2024 at 3:50 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > Wasn't there a comment that the code should always round up? Delaying
-> > for 0 uS is probably not what the user wants.
-> 
-> This is not delaying, though, so I don't see why a method with this
-> name should return a rounded up value.
-> 
-> Moreover, `ktime_to_us` doesn't round up. The standard library one
-> doesn't, either.
 
-Did you see my other comment, about not actually using these helpers?
-I _guess_ it was not used because it does not in fact round up. So at
-least for this patchset, the helpers are useless. Should we be adding
-useless helpers? Or should we be adding useful helpers? Maybe these
-helpers need a different name, and do actually round up?
+--0RRAV7MzKbX8/czK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-	Andrew
+On Fri, Oct 18, 2024 at 10:06:33AM +0200, Anna-Maria Behnsen wrote:
 
+> Would it be ok for you, if the patch is routed through tip tree? kernel
+> test robot triggers a warning for htmldoc that there is a reference to
+> the no longer existing file 'timer-howto.rst':
+
+>   https://lore.kernel.org/r/202410161059.a0f6IBwj-lkp@intel.com
+
+It should be fine, worst case we just get a duplicate patch which
+doesn't super matter.
+
+--0RRAV7MzKbX8/czK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcSr5QACgkQJNaLcl1U
+h9C6LAf/Qbwvy9NL2Gez+H9VVFae3GlPM9asUcMBaxp+uO7dhCUt0jnpy4Rf+uhV
+aRnDHjTLb+zTbBwpy96DsJWJPVsRkJobSsCa/FwibRcFeIheFZBo0REddV9DuMst
+/au9J4kG1E1c34bFhrulonNSkF8ebaVYLPfMH69+35eENFwXmFho5dT5usAsr/oP
+vDK6Dll8oW1XdvTqbw3CPv8TCPLze4UN799DWoWtS96MCxKR7lNOI0X01GsSUMl5
+GrYacHh5QPJICOAGcu7hqSds9wsAGz3zMSAQ9lrX+bZAOiCoDk0KcyIKLF3Pg7de
+RcnbwA6aEI+sETc/tSshLKzUVeX5FQ==
+=Qqcc
+-----END PGP SIGNATURE-----
+
+--0RRAV7MzKbX8/czK--
