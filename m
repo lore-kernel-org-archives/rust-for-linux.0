@@ -1,87 +1,173 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C00768E1;
-	Fri, 18 Oct 2024 14:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE61C200B90;
+	Fri, 18 Oct 2024 16:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729262319; cv=none; b=hyOdz5EXsE1nCqeD3GPL0DeALwt66baGrQlpYBTHP9GUOelIbbO3IdK+OcS0+9oq961F+gR/B42znaccgLfqdvue79G+TKWQ0jEXi2Tn+jbGycFV0tGm5EVIDARtcMkYs4ML6f64bzqCT1YMdxjEit0Fp0xsu6qnkrwJO426EAg=
+	t=1729267561; cv=none; b=q/CXY/jZA+w1ual+9WGEx7kWdMCQLocB6izLE+GGdV6LLsiwcFCAkkYXBsxF+34U7dawYh5y2imXJxNC0FQFtFtDgFQfqWXbtnrS+t75V62mghpJSwTzmCNSAIsnDvjqqvfNVOUTQmncbL1zjoyH5S1LRYZjZje52hF0ugSFXkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729262319; c=relaxed/simple;
-	bh=v73bTIDUcXnDFQiLmcLtLyT8FFRm72E67ebb2v/k680=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kg7XAqEMpVwBfe1d4Xcclm8uKpUMzAPzQweSlM96RGNyrFaWnE5b8pqQeIC//kr4kKT4ZFVfChRvjs/RtQBZX94jBIVILqOsK+p/cLAWF38dyl62htIKgtpX7TaWSpuen2Om6jhkxBQILYz5I5ogOUg41dKiKYjlqL6uYrR5T+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ExPF4vgP; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1729267561; c=relaxed/simple;
+	bh=71kHDRmY5IaZeFOC6xypg/vnGBvV16MEqznZY7H/UFo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IEiEw7pvFkv+PWQ4yeVPHVjXKWEMxGjTC2jesYTvGroJb/JHJiR97yV2rN+c08HNAAr6szhj/k2jxZbhgNdaPrSFeaGWIotIS1b25mPW0HeM/MwAi8HJvKz37U+MAKx86blXNQ7/pugKr3ml2NXWpiOnOLcHdKfNt2d47MC4/No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DmArXFPd; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ExPF4vgP"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e2c2a17aa4so387539a91.0;
-        Fri, 18 Oct 2024 07:38:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DmArXFPd"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c99be0a4bbso3052190a12.2;
+        Fri, 18 Oct 2024 09:05:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729262317; x=1729867117; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v73bTIDUcXnDFQiLmcLtLyT8FFRm72E67ebb2v/k680=;
-        b=ExPF4vgPd27m9UVDuoXdiRjVPENihfIB1X62TPRMpmTzo+KCrza0Fyavw9kpS92KGH
-         1lXONzII7hWZJgMn60uW18tAEwpQsxnmTCCFQ8Z8jaQ7fRD81bJ7slxg1mwZJXVY2A37
-         c9TbIBATMUL+a5SH+gQ+sS+G0cBTTsZOjfspJ5rl+zPGU6z+jsdVx9O0nuB8cuxW6wn/
-         5wnb5L+OxvO2fsYSzmgeKXEJ9drwqGBhY4u1nB1vq4VftfonCvG5OB4QDn6WrgE7g3Xb
-         ciLHPBSOjUOnwvfCnqopebxsm+WnfY9AfsjQowXXNe4YgCMK9NVxG14cpEYpWzBEPVgf
-         laXw==
+        d=gmail.com; s=20230601; t=1729267557; x=1729872357; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WiEydxIFcGvwbFyNwixtim9OVRuVpyy013HZe8yIIN0=;
+        b=DmArXFPdSFZU0ZUglqHQasojlCHCBHa9uE/6Rd+Dl4eVwdl0wRSFXcGjaBBPHX87nu
+         agiI7CBkV+B1OS8HtHxGB1CmP5TJsAVpyGJe91jVGzBOWsU3a/1p0MZHt/KXkf0WhZnG
+         9Ds1GC0Za5plwSw49OtbjWhwaCEcvYKESfjNkkNZCnFmfaouwVT3lBLFO4DjAYXWUhPd
+         mzhzyOeB0aAlsEAX+qaSdQx/uoXxGohzwJltPQAygHRg5Qpi/bytcYBJGRAG6DeEOeFr
+         m2oKoSley6XCgHDNxLwfDKEukaM/b2l+kyqRcs221wT5NF6hldoXVtsETxarojpIIffZ
+         uv5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729262317; x=1729867117;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v73bTIDUcXnDFQiLmcLtLyT8FFRm72E67ebb2v/k680=;
-        b=vwQcytwa0NE3XaTu7QslZ+gjsmx11dKS7Qq+qWpWwBm3c0sAImyEDbwMR35c1inaTM
-         fg97XSqdaW4mH99XDhRNZKvVZvaC+KLYG3/HcEI8VTJi63JGMXeFngyBlbYsNubJnlta
-         vMibety6v1Q65ZEf1+ZGDgexwFo2xpMmjqqI1QDjxznd6S2A+Je88mMgxXpLImVT6JGc
-         ID5561o2gRmSO7tVALleYLbVFyOFvgBW5Drl0Dw/0ceUuPMl4cLRAzHANez5q/SUaZe2
-         QJ6nPeXAjS0mCHw/vR/gG7CsNmnD12ECaSrODi7RUAxzjvvd2ftUdDsf9yRGlYViS9N7
-         VpPw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+jahlXyMSsFd3PvtIjTYqFAEDNjoKuEN8+e8fRE6kD5I3ced/TD7PxDvUZYFa/2WkEaQ0sDKKTo4bzhBpRrs=@vger.kernel.org, AJvYcCU5hSuXwZaOcxHPb6F0Gdp1bFKg3R4QBfIAvS6472jT0QyRTZelwspGMED2t/YlpaCQfRbKvFdcceUe3kY=@vger.kernel.org, AJvYcCXgDd9p/UWoLUE8FxYrTGPbdT77v9n9u18FglMGd8Lxz96zdFNj2AP7X+CjDBXl0sQT0NcRZBLF@vger.kernel.org
-X-Gm-Message-State: AOJu0YygRbVeqO51zBLeM0n3SIckygFrQfT8oEEj9YooP0kEXfAHXx1U
-	V3dOkOC0kPqH/+gcJ34YZ/CjakfyDe0+hP4f57omsKrM3PkAi/4SLGQlAtplVTJMaLVL5St/WGp
-	VNJBylhBgJnlZeMlm4OOTEAmguE0=
-X-Google-Smtp-Source: AGHT+IHZIhHKyOoGl1Ty0n3ZwEXDNsNQ39lzHwnLbXD0RpAXpY2al3qAt3xUJOC0Bx1QSBXax17KvcTqzyNFH3YhVzQ=
-X-Received: by 2002:a17:90a:e296:b0:2e2:de92:2d52 with SMTP id
- 98e67ed59e1d1-2e561a58096mr1379700a91.9.1729262317102; Fri, 18 Oct 2024
- 07:38:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729267557; x=1729872357;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WiEydxIFcGvwbFyNwixtim9OVRuVpyy013HZe8yIIN0=;
+        b=IoghL947rsEZ29OODB5IOeoZYdS/4zKpI0d36fFmuROIYQfVw7ZdVfUtXrgmGr6xUv
+         QHd/wgTYOXUYfHAmu5yMFYDqyM2c5HeG+bwKNUnx1oxDnYMtKP6M7XC3XhN8szdlyiT6
+         jsWClzZGWDK4r5f+6AWZ6kWi3FI9Q+3pqtSUuDXUwNSSByNYDqsAFBlAejGBRHq/qkYk
+         2cPn1DOmq9hsgXamWUr0aQImSpoYMKc1ajporDwYXuheeH7t/Qu/KCHHJmTrrvr+n/Ul
+         Kc22DQz3ahMQBRkjG5lzmao/C8mq9nHY8IkVddNwDQFY7neOKNsFgdBZNVI/xahovSY6
+         wgNg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDS/GcwVJ5bKAPLBH6l0xFNTwQNOB88QPH1eMI8lgx0+2SWV6Emik1OhYRUo/ConllVhZbtY4BdG3SYTk=@vger.kernel.org, AJvYcCXLZZLKM8fWwhtRe3H4u+O5RAou3mkTfONthvnGt0i4a5w/HzB71IJOxMRD1TArZXWUUnSkNlIWGCJeKVEs3/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFzqcLm6qpfE6GFX900na8xN9+i8h7p4FSgU3UZhLJNEMl3BR9
+	jL/JgwVTqkGGv0nORrVEOOpO8LUBof1PSiLZU/MgC90pWtJT80yM
+X-Google-Smtp-Source: AGHT+IEwGs4u56Rz+sF+QLPktBDSfyKwUa62Irwtgie9uNqIqo49O2wSY2s+JkdWJFtSTdSE64OogQ==
+X-Received: by 2002:a17:907:703:b0:a9a:1585:dd6a with SMTP id a640c23a62f3a-a9a69baadc6mr297321466b.36.1729267556850;
+        Fri, 18 Oct 2024 09:05:56 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf0d:b400:af29:c7b3:c678:5c48? (p200300dfbf0db400af29c7b3c6785c48.dip0.t-ipconnect.de. [2003:df:bf0d:b400:af29:c7b3:c678:5c48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a68bc49a6sm112817266b.129.2024.10.18.09.05.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Oct 2024 09:05:56 -0700 (PDT)
+Message-ID: <ce05b149-63ca-46c9-8eb3-67ff3dc5b2c5@gmail.com>
+Date: Fri, 18 Oct 2024 18:05:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016035214.2229-8-fujita.tomonori@gmail.com>
- <CAH5fLgjk5koTwMOcdsnQjTVWQehjCDPoD2M3KboGZsxigKdMfA@mail.gmail.com>
- <CAH5fLgi0dN+hkTb0a29XWaGO1xsmyyJMAQyFJDH+geWZwsfAHw@mail.gmail.com>
- <20241018.171026.271950414623402396.fujita.tomonori@gmail.com>
- <CAH5fLghpBDKEwW9maYD57O9+FuMDtVUJm7Dx6JdvjS2p5ZQNbQ@mail.gmail.com> <146d0bce-19c8-49bd-be9f-511c8e9b21e5@lunn.ch>
-In-Reply-To: <146d0bce-19c8-49bd-be9f-511c8e9b21e5@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 18 Oct 2024 16:38:25 +0200
-Message-ID: <CANiq72kFThZO1vEHoebPav=tEDYsT7VXdqDW+YHJ8iXo+fG9DA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 7/8] rust: Add read_poll_timeout functions
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, 
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [POC 0/6] Allow SpinLockIrq to use a normal Guard interface
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Lyude Paul <lyude@redhat.com>,
+ rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+ airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+ Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
+ Trevor Gross <tmgross@umich.edu>
+References: <1eaf7f61-4458-4d15-bbe6-7fd2e34723f4@app.fastmail.com>
+ <20241018055125.2784186-1-boqun.feng@gmail.com> <87r08dr78k.fsf@kernel.org>
+Content-Language: de-AT-frami
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <87r08dr78k.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 18, 2024 at 4:15=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> Does this allocate memory? In this case, that would be O.K, but at
+On 18.10.24 13:16, Andreas Hindborg wrote:
+> Boqun Feng <boqun.feng@gmail.com> writes:
+> 
+>> Hi Thomas,
+>>
+>> So this series is what I proposed, previously, because the nested
+>> interrupt API in C is local_irq_save() and local_irq_restore(), the
+>> following Rust code has the problem of enabling interrupt earlier:
+>>
+>> 	// l1 and l2 are interrupt disabling locks, their guards (i.e.
+>> 	// return of lock()) can be used to track interrupt state.
+>>
+>> 	// interrupts are enabled in the beginning.
+>> 	
+>> 	let g1 = l1.lock(); // previous interrupt state is enabled.
+>> 	let g2 = l2.lock(); // previous interrupt state is disabled.
+>>
+>> 	drop(g1); // release l1, if we use g1's state, interrupt will be
+>> 		  // enabled. But this is obviously wrong. Because g2
+>> 		  // can only exist with interrupt disabled.
+>>
+>> With the new interrupt disable and enable API, instead of a "unsigned
+>> long", a percpu variable is used to track the outermost interrupt state
+>> and the nested level, so that "drop(g1);" above won't enable interrupts.
+>>
+>> Although this requires extra cost, but I think it might be worth paying,
+>> because this could make Rust's SpinLockIrq simply use a guard interface
+>> as SpinLock.
+>>
+>> Of course, looking for any comments and suggestions.
+>>
+>> Boqun Feng (3):
+>>   irq & spin_lock: Add counted interrupt disabling/enabling
+>>   rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+>>   rust: sync: lock: Add `Backend::BackendInContext`
+>>
+>> Lyude Paul (3):
+>>   rust: Introduce interrupt module
+>>   rust: sync: Add SpinLockIrq
+>>   rust: sync: Introduce lock::Backend::Context
+>>
+>>  include/linux/irqflags.h          |  32 +++++++++-
+>>  include/linux/irqflags_types.h    |   6 ++
+>>  include/linux/spinlock.h          |  13 ++++
+>>  include/linux/spinlock_api_smp.h  |  29 +++++++++
+>>  include/linux/spinlock_rt.h       |  10 +++
+>>  kernel/locking/spinlock.c         |  16 +++++
+>>  kernel/softirq.c                  |   3 +
+>>  rust/helpers/helpers.c            |   1 +
+>>  rust/helpers/interrupt.c          |  18 ++++++
+>>  rust/helpers/spinlock.c           |  10 +++
+>>  rust/kernel/interrupt.rs          |  64 +++++++++++++++++++
+>>  rust/kernel/lib.rs                |   1 +
+>>  rust/kernel/sync.rs               |   2 +-
+>>  rust/kernel/sync/lock.rs          |  33 +++++++++-
+>>  rust/kernel/sync/lock/mutex.rs    |   2 +
+>>  rust/kernel/sync/lock/spinlock.rs | 103 ++++++++++++++++++++++++++++++
+>>  16 files changed, 340 insertions(+), 3 deletions(-)
+>>  create mode 100644 rust/helpers/interrupt.c
+>>  create mode 100644 rust/kernel/interrupt.rs
+> 
+> 
+> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-No, it does not -- it is all done at compile-time.
+Yes, it seems to work:
 
-Cheers,
-Miguel
+Tested-by: Dirk Behme <dirk.behme@gmail.com>
+
+I used rust-next minus the alloc patches as base. An addional
+try_lock() due to
+
+https://github.com/Rust-for-Linux/linux/commit/f4c2c90bb7b4ae1812dbaca15d9637eecaac2c9f
+
+is needed for that. But thats all I noticed so far :)
+
+Many thanks!
+
+Dirk
+
+
+> I ran the `hrtimer` examples on top of this, and it seems to work [1].
+> 
+> Best regards,
+> Andreas
+> 
+> 
+> [1] git git://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git hrtimer-boqun-poc
+> 
+
