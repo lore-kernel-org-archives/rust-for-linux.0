@@ -1,89 +1,87 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D872A18643;
-	Fri, 18 Oct 2024 14:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C00768E1;
+	Fri, 18 Oct 2024 14:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729261911; cv=none; b=cDmxjX91vQqZyRSO9bM/i6P0uSIKRtAMswgBZ53LfaEELJFedOJazkSGGK+o0QcXcbRSpcNS+b3hQAQWpM80yxJf+BDPJbTzOJHGfMonSHmI5EW99zYaAok0NBV8TOHo0Q61qStWCBGb9m9mTvsV16DR0e801dKCbQYhAQViyuM=
+	t=1729262319; cv=none; b=hyOdz5EXsE1nCqeD3GPL0DeALwt66baGrQlpYBTHP9GUOelIbbO3IdK+OcS0+9oq961F+gR/B42znaccgLfqdvue79G+TKWQ0jEXi2Tn+jbGycFV0tGm5EVIDARtcMkYs4ML6f64bzqCT1YMdxjEit0Fp0xsu6qnkrwJO426EAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729261911; c=relaxed/simple;
-	bh=lk6+DyuoaJPZ7YVCRmtl2RgXqLNl2sAFoVc2fJS/8uk=;
+	s=arc-20240116; t=1729262319; c=relaxed/simple;
+	bh=v73bTIDUcXnDFQiLmcLtLyT8FFRm72E67ebb2v/k680=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L6CG/fOG7/rlPDseBjnByQvwngxLXKh3eTj/cICVzsh3p6UcearWtYOG9czzR86c7vfGLRLGXZa1EOcOG9WBEjaEcJdrpIaOvQP26VmqNYsypPFGvAoFJN0L6wrEneXaYxfeos7pSDI4j0AM8zLH6sX/Bg75SZjJlh7XV2U9GFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COTMlYc7; arc=none smtp.client-ip=209.85.216.44
+	 To:Cc:Content-Type; b=kg7XAqEMpVwBfe1d4Xcclm8uKpUMzAPzQweSlM96RGNyrFaWnE5b8pqQeIC//kr4kKT4ZFVfChRvjs/RtQBZX94jBIVILqOsK+p/cLAWF38dyl62htIKgtpX7TaWSpuen2Om6jhkxBQILYz5I5ogOUg41dKiKYjlqL6uYrR5T+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ExPF4vgP; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COTMlYc7"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e3c0d1ccc6so241156a91.3;
-        Fri, 18 Oct 2024 07:31:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ExPF4vgP"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e2c2a17aa4so387539a91.0;
+        Fri, 18 Oct 2024 07:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729261909; x=1729866709; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729262317; x=1729867117; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lk6+DyuoaJPZ7YVCRmtl2RgXqLNl2sAFoVc2fJS/8uk=;
-        b=COTMlYc7EAAdkT+eIVzw7O8ymxdaIon8VzXPoMuR9xCMOOYoDeXzwkLxBfDX2JZ+fE
-         XyrM9fL5nmRxT/vK51gRxqsd7+ATyxHrJJEj1xbmOm3K2EFhKB1uVeb/0un+CfO+2U1W
-         FsJbccl2+z7f5QyeqyS5ivgdirqpmNjPuZyYc4Z6/JG7t/DU9MeKfisLqeDRfrXzrbeO
-         kKmCehGDFLv8DQKurgG7m0XZAxQnbo+ZLHywcoZpr64xL09jkRawnImujYiUj4VJbHpJ
-         opHoKNtZvsyup5mi5FPPPgGX610rK+VMDauXN0r3vptxkWphY9+ab1ql2KQ1dTRyJ/Am
-         9yGg==
+        bh=v73bTIDUcXnDFQiLmcLtLyT8FFRm72E67ebb2v/k680=;
+        b=ExPF4vgPd27m9UVDuoXdiRjVPENihfIB1X62TPRMpmTzo+KCrza0Fyavw9kpS92KGH
+         1lXONzII7hWZJgMn60uW18tAEwpQsxnmTCCFQ8Z8jaQ7fRD81bJ7slxg1mwZJXVY2A37
+         c9TbIBATMUL+a5SH+gQ+sS+G0cBTTsZOjfspJ5rl+zPGU6z+jsdVx9O0nuB8cuxW6wn/
+         5wnb5L+OxvO2fsYSzmgeKXEJ9drwqGBhY4u1nB1vq4VftfonCvG5OB4QDn6WrgE7g3Xb
+         ciLHPBSOjUOnwvfCnqopebxsm+WnfY9AfsjQowXXNe4YgCMK9NVxG14cpEYpWzBEPVgf
+         laXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729261909; x=1729866709;
+        d=1e100.net; s=20230601; t=1729262317; x=1729867117;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lk6+DyuoaJPZ7YVCRmtl2RgXqLNl2sAFoVc2fJS/8uk=;
-        b=E0sJtnHOLOTX80fLJuyfS6BPCdUa693jPNELWUZwT7cMa1C944HyRZekMCYS+iKlVC
-         eDNjSGuq6LGaPt2rxEIo8FBJuDXLHe23/tGfoLmvNu1JWmH1FAKTxrld35+sn3gZ+NqC
-         y5MiE4Y/Vc+R1skrwbCUMde3e9VJbQ0Fk/58xBxhU6q6t6kohT88Vf0n3glyYhOXl7pn
-         pJNKCaM5gOUrt5gwz6Dz5+XVx6dMRAzONkpPtmuOp5Onv6dTS3/Px3i7ehtVQfXR+CEA
-         Ak3g15GxHZ6tOYvmlj2p9jlffqs5QhnJh7dXYqe6965gawYz2s6cc/rxmSf+8IG8k6kE
-         5Zsw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjsorKrcj9vrzIGd+g7K9BUWWi+VKEH5/0e1LupsuM39Qf+cDskFA2alk2Y4QmeXeuzQ2PfqIl64/67L9bsz0=@vger.kernel.org, AJvYcCVtR+rBwhWENrI22/nefLBwM6RNpNBB43nuWUeDKs4OkhdW7Gt4ljkCT+RjfLJhKLkl+ypCUNWT@vger.kernel.org, AJvYcCWm5G/goUOhh0jNZ5fZaMerA9fNwzuYem6p3TJ/Cy9/uSuPmIAvW0vE3ELQEtz0d88HCS/FpFojDmVwtBc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHNBwV5LABu8LAY35SPdkSalUVJHGl9K/Hipvqq/Wg6buGK0wD
-	CMe3A3wKwNH6DUplW9XO5W0Gj4he3gn8A+tcgxXHaXrKV7qT+iwfimWLQH+ZoNol24xHKFAvD6t
-	SIpWZjzCIDD+CY6Q0rslAQ2twnSbMaMI7
-X-Google-Smtp-Source: AGHT+IE6AwVCtS8wCr7hW9IxbnDDZwoHZNPMOUU43Die0A8kevsXu3rEj4UHploq8tNCukIU1YN3JW+Iii5mbXoy/WM=
-X-Received: by 2002:a17:90b:538f:b0:2e2:da8c:3fb8 with SMTP id
- 98e67ed59e1d1-2e56172b2d8mr1472322a91.6.1729261907506; Fri, 18 Oct 2024
- 07:31:47 -0700 (PDT)
+        bh=v73bTIDUcXnDFQiLmcLtLyT8FFRm72E67ebb2v/k680=;
+        b=vwQcytwa0NE3XaTu7QslZ+gjsmx11dKS7Qq+qWpWwBm3c0sAImyEDbwMR35c1inaTM
+         fg97XSqdaW4mH99XDhRNZKvVZvaC+KLYG3/HcEI8VTJi63JGMXeFngyBlbYsNubJnlta
+         vMibety6v1Q65ZEf1+ZGDgexwFo2xpMmjqqI1QDjxznd6S2A+Je88mMgxXpLImVT6JGc
+         ID5561o2gRmSO7tVALleYLbVFyOFvgBW5Drl0Dw/0ceUuPMl4cLRAzHANez5q/SUaZe2
+         QJ6nPeXAjS0mCHw/vR/gG7CsNmnD12ECaSrODi7RUAxzjvvd2ftUdDsf9yRGlYViS9N7
+         VpPw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+jahlXyMSsFd3PvtIjTYqFAEDNjoKuEN8+e8fRE6kD5I3ced/TD7PxDvUZYFa/2WkEaQ0sDKKTo4bzhBpRrs=@vger.kernel.org, AJvYcCU5hSuXwZaOcxHPb6F0Gdp1bFKg3R4QBfIAvS6472jT0QyRTZelwspGMED2t/YlpaCQfRbKvFdcceUe3kY=@vger.kernel.org, AJvYcCXgDd9p/UWoLUE8FxYrTGPbdT77v9n9u18FglMGd8Lxz96zdFNj2AP7X+CjDBXl0sQT0NcRZBLF@vger.kernel.org
+X-Gm-Message-State: AOJu0YygRbVeqO51zBLeM0n3SIckygFrQfT8oEEj9YooP0kEXfAHXx1U
+	V3dOkOC0kPqH/+gcJ34YZ/CjakfyDe0+hP4f57omsKrM3PkAi/4SLGQlAtplVTJMaLVL5St/WGp
+	VNJBylhBgJnlZeMlm4OOTEAmguE0=
+X-Google-Smtp-Source: AGHT+IHZIhHKyOoGl1Ty0n3ZwEXDNsNQ39lzHwnLbXD0RpAXpY2al3qAt3xUJOC0Bx1QSBXax17KvcTqzyNFH3YhVzQ=
+X-Received: by 2002:a17:90a:e296:b0:2e2:de92:2d52 with SMTP id
+ 98e67ed59e1d1-2e561a58096mr1379700a91.9.1729262317102; Fri, 18 Oct 2024
+ 07:38:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-3-fujita.tomonori@gmail.com> <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
-In-Reply-To: <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
+References: <20241016035214.2229-8-fujita.tomonori@gmail.com>
+ <CAH5fLgjk5koTwMOcdsnQjTVWQehjCDPoD2M3KboGZsxigKdMfA@mail.gmail.com>
+ <CAH5fLgi0dN+hkTb0a29XWaGO1xsmyyJMAQyFJDH+geWZwsfAHw@mail.gmail.com>
+ <20241018.171026.271950414623402396.fujita.tomonori@gmail.com>
+ <CAH5fLghpBDKEwW9maYD57O9+FuMDtVUJm7Dx6JdvjS2p5ZQNbQ@mail.gmail.com> <146d0bce-19c8-49bd-be9f-511c8e9b21e5@lunn.ch>
+In-Reply-To: <146d0bce-19c8-49bd-be9f-511c8e9b21e5@lunn.ch>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 18 Oct 2024 16:31:34 +0200
-Message-ID: <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
+Date: Fri, 18 Oct 2024 16:38:25 +0200
+Message-ID: <CANiq72kFThZO1vEHoebPav=tEDYsT7VXdqDW+YHJ8iXo+fG9DA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 7/8] rust: Add read_poll_timeout functions
 To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+Cc: Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 18, 2024 at 3:50=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On Fri, Oct 18, 2024 at 4:15=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> Wasn't there a comment that the code should always round up? Delaying
-> for 0 uS is probably not what the user wants.
+> Does this allocate memory? In this case, that would be O.K, but at
 
-This is not delaying, though, so I don't see why a method with this
-name should return a rounded up value.
-
-Moreover, `ktime_to_us` doesn't round up. The standard library one
-doesn't, either.
+No, it does not -- it is all done at compile-time.
 
 Cheers,
 Miguel
