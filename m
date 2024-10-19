@@ -1,55 +1,55 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8530A1E4A4;
-	Sat, 19 Oct 2024 12:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B7E1E4A4;
+	Sat, 19 Oct 2024 12:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729340520; cv=none; b=BP6w4EkFcX+KyTh6NYlfnxDKsSdvndBKtWJyIGXi5xFFMsOM9AHz2YrRChDQb9QMSj7BidyyJY2HJVWT3P/93O2SIr/cmKw9NvIjozO1EM5PQai8OGKpnXNaU/OXZkRqCEMiHfDaQoG1hbapfBBQ4WL+n88IHEiFsx6NNmvAAC0=
+	t=1729341682; cv=none; b=m/F4I+cfinCAh1kP8P99hKgB0lfDMQet83OUDCrmG2rdHTwd6H+g24/K0m9mfFmwIO7LaKIvsutXhf8iNHwWa6OMnYFo5YFIqgZDXxViM2JI5qY51ZlYQSEROptYCgLK87grsl+LEkTAc85p8c931uRUe1REiFS5x5sSZua2MNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729340520; c=relaxed/simple;
-	bh=g82XPKrPt2WZCw67QoEdhYkGQe9x2UxkBDSl2UO7qp4=;
+	s=arc-20240116; t=1729341682; c=relaxed/simple;
+	bh=pDRq5XUeT1FKJulbVFabG+bdLxp/YKnBhoGRLsjHd9k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cNIGWJ2sr2UW85G0sd2WE6koDbx2YiNb/txI1/I5MfQ8CsGRQolZUWnW+b7oqFyiOVxfggPBxdKWt2aDcdSX47mGchvszs4cinIiPiI/iTO0XTjbl2mNxeb+ty8qtyF4K5gT8GXRcE8GVjkp5MldULTTjhY21Qeb4gWnIIzpAHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BsHQ165N; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=tjXNNKDcTsSb+x3Yjvw73bfQsMjxRmvpYAeF6GhWAdTRl3y25AKOILU2Wde27c3bz1WkqVSHMvEdKdJIdfcCUPaVhV+2HqvEK33+sL8y2B4GwtrjYdKyeE7auqE9/8v0bzuA930NZZ4gRk6p+PA0pxlYnDpcFF+fQcDzxHWm/Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4oaRV1Z; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BsHQ165N"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2e2d1b7bd57so385439a91.1;
-        Sat, 19 Oct 2024 05:21:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4oaRV1Z"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e2b720a0bbso556097a91.1;
+        Sat, 19 Oct 2024 05:41:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729340518; x=1729945318; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729341679; x=1729946479; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g82XPKrPt2WZCw67QoEdhYkGQe9x2UxkBDSl2UO7qp4=;
-        b=BsHQ165NiGzafabYIHrpm2IWZ0P6iXkKxDmWFgljWrJNNSu4wqg3Wl+y2EESipP2F4
-         OFMJkkc2Y/pqJbTR4UgWJIj9h2nC6c05MRfkKWvSpoP3djXgjMPArMtEH/ECgSup3WUh
-         6Tgl8GEAhS5LAH1kvguD8rv8r7S93+iwMbskX26JR61vr0Tr1i5pZmqSZQU3x3Tt9srO
-         0YvZx8d6WJc/u6WoJkM3fiOL3W/Lwrpnr9wjtnvKPIYiXwC5YrZahbu7NDE8gvDdrWLM
-         fByHXPsz13lLuGQT00hoyQsuCTHWGqXApXy4KnMBJb79jps/7UwxU4TSdG2LA4as3SIe
-         SBmQ==
+        bh=pDRq5XUeT1FKJulbVFabG+bdLxp/YKnBhoGRLsjHd9k=;
+        b=B4oaRV1ZPiUztkGjps8xtjhqmaqXhFCPmmT8auKTc1Ew6Mfi/Xc1aIPX0sWSqmmF3X
+         CiaVy2rWj74Hbee1zG4FsWqqHX0KZD3QdeyXHd9SngyDH0rKNgR2R0zXN5znYFrOpsrW
+         Mui0uOrWW1XnUN97X+fC4wqsFUC/oobE9yYUD6tVpFjivhGzvzz0zGuSf2ZWnWQjfT6z
+         Qe0NehvwgnCVKG4rOucN6tkCCqg1FcSps+IgjBYVbpozZ2pGSpq0tdpnGH8w+o0KfL5a
+         7Y/0jKIYnluPFlc/3Ce3HqfjQ/41Ue8boWi2Rql10zv6i6DOe1s4vRKq3+B2/LfRngBL
+         bXKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729340518; x=1729945318;
+        d=1e100.net; s=20230601; t=1729341679; x=1729946479;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g82XPKrPt2WZCw67QoEdhYkGQe9x2UxkBDSl2UO7qp4=;
-        b=lLm78RGnKU10CFeAtgpxyI//LbUKWZ0Kw9efzDus1kTSXPPBwUvuHoS6Il50hFV3hP
-         PxXoW7mNT8q1Q8ELCsBH0pyiCUYhv71jRv2KT5T8pcZ535Q+tN7A4ll5GpNJG+OE7dTa
-         zCSJ9xrWqv+I+B6qztBFGK3CDNi187rz7Us7Rz8oSxWR4zK+rBuuLvLJ+sce5KXdM8NJ
-         HAuTF4BnyFq10wzmgHWVYcW4izUB11Mq+jRxGnf0J8u18H0dZqeUuJjDJEi70A9vUAo+
-         P45/7QQMD9gDIjHl63MCAOz9sprR1amzWlweykN64opPBdFMeeYIODV6tHTb8tgPhgyq
-         Dy3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWHUnF+FLE1RzAHV3IxLRE0Af3X8PutXJ43pl3gkvr2t8TNu7EPqxqfqniyD7uVEt+ArHsSfT+g@vger.kernel.org, AJvYcCWcXB4SWqIoaFBbb3X7OrwqgxQHs9W1kfZ4D4cUYqWCW0BJhnmcrWULpT5QvlrvHAcBVfCXf9po45HDALE=@vger.kernel.org, AJvYcCWiAo2WZRH+mcKfAOGLkClylA234yJjoEGFpfgKfIyG+yizSV6mSa2kTiY5dOdFJwLAFU+Dq1D70BoCfoYZH/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/w817nGwaOm+aw2waa+WVerGNAtAmATd0xXaX2dOwpj4cIyyw
-	0JX9XIw6pi8swFytVouKi3mkF6rE78C4OywNT9y77rc9X+tG/lCYilrUP58DlocHkmuDAfXylro
-	ZLh4AGKmZ/ldZGtZ83vZ8eH3NTX4dErAWyhM=
-X-Google-Smtp-Source: AGHT+IFFqwJLcPci0kpV0Imx3Ln/B3dSXfPj/0iC5TweuZvhfmptPyQqgtA5en8HG1zvaJMlB9eo5nCaEmBFelgnT60=
-X-Received: by 2002:a17:90b:3846:b0:2e0:9d55:3784 with SMTP id
- 98e67ed59e1d1-2e56144249cmr2953182a91.0.1729340517661; Sat, 19 Oct 2024
- 05:21:57 -0700 (PDT)
+        bh=pDRq5XUeT1FKJulbVFabG+bdLxp/YKnBhoGRLsjHd9k=;
+        b=LLljfw44ph8vEDZy6qgU0nLJgYxb6XJJaWGo9uFP6vydX8sTgfP+r8mwww37vxojfp
+         JYzjsJEsWp6fbPJW8s5PLGcDiWWEz94KlWPsXHAz9yuPdjxQIruzdbW4A4BzZ067RWYL
+         2EhOHDm1sPe+1UyQhvXsq5d7oFf5uUnTwwM6jA5eRBR6uktJ0NKTuQRXoAVCUUdY4uJB
+         2X3fGItnnP1Cbpl+Aeg2oaAITp9AlHWkG4brC1fZIi+w7ShBygXVXLpya2PePWsyTEH8
+         uaJ7d5/Z6r/6RasLeQc/lVh22psjHf6fCzwU5mmV5R76j+5GTRnFe+fG35Hu8L6gNJNR
+         WAEw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0VXiTKPQyC7vmsdIuw3VzY7FXMLh1RhRSzBeNGyIk3zDD4iAH34lrnIWgq1ZRDwOW142l818q@vger.kernel.org, AJvYcCVYXJwp+SYrZ6zxa6UP40Q+hk9JJ9NuucreqnOPatkM6QMYrCL8LCEBSz1VGD2nbEEE/EM8gNkcX2rxFSgLyiQ=@vger.kernel.org, AJvYcCW7p03gup4Kdfgdsx5D2qlBTU3U1fT0rS5Le4A3AXFO5PFA6XYQ/eW2azVUHzYIenJO/WH8RmriAC2Dbk0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLl1ZOXPcLoooxxEGxmLsxlE7vbe9v9Lnirm9rr5kai5kXE+ZL
+	m8yneLi2m8tPS7++yp8zrsmgeJAAg3J0awDdwMt5XfXPzCwbEUKC//H+o/Alqrlb62s+Tw3Sf3f
+	6+S/7GOIALQ8H7S5NrBu5LbCBVAQ=
+X-Google-Smtp-Source: AGHT+IFfblkHjtkpy89oqgoQVHtlbxXiTCQwLk37nU1+Im4GK/deocfjEDtgV7/8pSS3SaHG8xGssNNgpDF2aImWS8k=
+X-Received: by 2002:a17:90a:f485:b0:2d8:9f4e:1c3d with SMTP id
+ 98e67ed59e1d1-2e5618efbaemr2720209a91.5.1729341679619; Sat, 19 Oct 2024
+ 05:41:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,11 +58,12 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
  <20241016035214.2229-3-fujita.tomonori@gmail.com> <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
- <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com> <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
-In-Reply-To: <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
+ <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
+ <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch> <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
+In-Reply-To: <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 19 Oct 2024 14:21:45 +0200
-Message-ID: <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
+Date: Sat, 19 Oct 2024 14:41:07 +0200
+Message-ID: <CANiq72=SDN89a8erzWdFG4nekGie3LomA73=OEM8W7DJPQFj0g@mail.gmail.com>
 Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
@@ -75,43 +76,13 @@ Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 18, 2024 at 6:55=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On Sat, Oct 19, 2024 at 2:21=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Did you see my other comment, about not actually using these helpers?
-> I _guess_ it was not used because it does not in fact round up. So at
-> least for this patchset, the helpers are useless. Should we be adding
-> useless helpers? Or should we be adding useful helpers? Maybe these
-> helpers need a different name, and do actually round up?
+> differently, e.g. `to_micros_ceil`: `to_` since it is not "free"
 
-Yeah, I saw that -- if I understand you correctly, you were asking why
-`as_nanos()` is used and not `as_secs()` directly (did you mean
-`as_micros()`?) by adding rounding on `Delta`'s `as_*()` methods.
-
-So my point here was that a method with a name like `as_*()` has
-nothing to do with rounding, so I wouldn't add rounding here (it would
-be misleading).
-
-Now, we can of course have rounding methods in `Delta` for convenience
-if that is something commonly needed by `Delta`'s consumers like
-`fsleep()`, that is fine, but those would need to be called
-differently, e.g. `to_micros_ceil`: `to_` since it is not "free"
-(following e.g. `to_radians`) and + `_ceil` to follow `div_ceil` from
-the `int_roundings` feature (and shorter than something like
-`_rounded_up`).
-
-In other words, I think you see these small `as_*()` functions as
-"helpers" to do something else, and thus why you say we should provide
-those that we need (only) and make them do what we need (the
-rounding). That is fair.
-
-However, another way of viewing these is as typical conversion methods
-of `Delta`, i.e. the very basic interface for a type like this. Thus
-Tomonori implemented the very basic interface, and since there was no
-rounding, then he added it in `fsleep()`.
-
-I agree having rounding methods here could be useful, but I am
-ambivalent as to whether following the "no unused code" rule that far
-as to remove very basic APIs for a type like this.
+Well, it is sufficiently free, I guess, considering other methods. I
+noticed `as_*()` in this patch take `self` rather than `&self`, though.
 
 Cheers,
 Miguel
