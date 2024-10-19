@@ -1,63 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83332F3E;
-	Sat, 19 Oct 2024 16:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036018DF6B;
+	Sat, 19 Oct 2024 18:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729353661; cv=none; b=uKUql9uI2OCScDU2zB73EVBEKgQvhdA+XT+5SjOcHk6IzcanKL7e+CdWD+JCHNxoJ7BbN/yv7tmlzTwHJq2RBa1dXZLfjdBhITPdiS/PZ8EyurCKM3bfJ6U9o4svTa5cHXFnPWTNxcO9AD7qHfwtNJIBi6lEIoNAoIo2n0Eywp0=
+	t=1729363308; cv=none; b=RCguKD5ptuTeFBveUY5FCJtsPsPe9zvTgHEZt6y4x0dtheirGvbhqGRbQbM8XjGmGEJZtGUBJOOCRao0CDz3grDvTh69IrsikzcEP5Syz9slNAhnbLmfry031OYHFPdtYAjd/iww0vS1XefeVL0PR+bqOrZFTRsgzUAoWWKufxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729353661; c=relaxed/simple;
-	bh=d3LCAwT3b7ZATkM23962Bq9EtN/XygmkUvEsZ61ynDU=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=lm36bu3fnoZZDgiEpiBhC9mwcNs19DKDCgwzBrGT6ndR47b3ZGZXQq8ZwMuFdL2HwTI8aOaTQOeTSWUItp/9r5NAXSry/XidkxLJmLlSLR2n/F66/0J+zuYDXG+56pu/pJBtStxRMcTvUgfGYN9E8hHp+okD+cbp80f04P9yeuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uqg2r3Ft; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729363308; c=relaxed/simple;
+	bh=8FGcCLj2vFQWBEx14s25jzsnrnffI6LVHwOTizRNass=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R2CW35lTym/XMm+QMOSQIgsAXngeeGfNfWag+RWm98QG5m4WEIK3wpdqzfTAoBGNjYbeYWAI9Bjv/BX+6iZUgZhtnUrxuHgOYxIfvCDzecEiSHNQ9YF+sgGwnl5LIxtnAijO1/WhIL+b99QJO2HEIFR8dcOqgxD2VQr4lLx2yvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MeanKRtL; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uqg2r3Ft"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFE7C4CEC5;
-	Sat, 19 Oct 2024 16:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729353659;
-	bh=d3LCAwT3b7ZATkM23962Bq9EtN/XygmkUvEsZ61ynDU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Uqg2r3FtjlALlnAl3H7fsqP46J6j2bgRacLeXYfY9bVT+VcAKSVMupdUuQrs/glKQ
-	 6t2eV3r5pSwVgR2v+DGBnUdpQS0qxnuCWFPiTVwytwlQOH+fr6qAvsneZR/UTWopC6
-	 3H/7/tG2btKnnaVKZ7IA8XAbhI3Um7HUCiuzUYow5GQ3GRFSgszvQihaMDm3hHgzwr
-	 DOqD4CcEazvoMBr45i3bCcx5/8qMQmjVhkecvKufR/EaEU6WrZLt/O2/kTdb+lg2kl
-	 3JkwRoDfPofMWgeu3zD9T+m4C7T3h5WVCZ/5uoBf4z4gqnXkHMnURy5d6b0tQ+6DJH
-	 oXblxDWjYZ76A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 717943805CC0;
-	Sat, 19 Oct 2024 16:01:06 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.12 (2nd)
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20241018225329.235175-1-ojeda@kernel.org>
-References: <20241018225329.235175-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20241018225329.235175-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.12-2
-X-PR-Tracked-Commit-Id: 8b8ca9c25fe69c2162e3235c7d6c341127abeed6
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4e6bd4a33a6cf4d2dce9725630ada847a3947c7c
-Message-Id: <172935366509.3434115.7119420782674548994.pr-tracker-bot@kernel.org>
-Date: Sat, 19 Oct 2024 16:01:05 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MeanKRtL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=er3taqAhn8eBwUdaGb5l/xyrI+eEqdNBV7XOVKviHw0=; b=Me
+	anKRtLn2EkXxVYiSAToajqB6Uk1owwkd0m4BlBiDmpVUSieClmf0SfGmo9UPOpofnoVby9613NBwU
+	yz/U/LgMq+RvoqjoyIhoF3l9uj5jYJ2X0q2nEIsCc/Wkk52ek2feF/imQYr1yr26YYonR8O3DSC/x
+	6bhDqmsRFqnQiGI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t2EO9-00AcGy-Di; Sat, 19 Oct 2024 20:41:21 +0200
+Date: Sat, 19 Oct 2024 20:41:21 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com,
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
+Message-ID: <fad19413-8d58-4cf5-82e6-8d4410fd7e50@lunn.ch>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+ <20241016035214.2229-3-fujita.tomonori@gmail.com>
+ <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
+ <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
+ <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
+ <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
 
-The pull request you sent on Sat, 19 Oct 2024 00:53:29 +0200:
+On Sat, Oct 19, 2024 at 02:21:45PM +0200, Miguel Ojeda wrote:
+> On Fri, Oct 18, 2024 at 6:55 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >
+> > Did you see my other comment, about not actually using these helpers?
+> > I _guess_ it was not used because it does not in fact round up. So at
+> > least for this patchset, the helpers are useless. Should we be adding
+> > useless helpers? Or should we be adding useful helpers? Maybe these
+> > helpers need a different name, and do actually round up?
+> 
+> Yeah, I saw that -- if I understand you correctly, you were asking why
+> `as_nanos()` is used and not `as_secs()` directly (did you mean
+> `as_micros()`?) by adding rounding on `Delta`'s `as_*()` methods.
+> 
+> So my point here was that a method with a name like `as_*()` has
+> nothing to do with rounding, so I wouldn't add rounding here (it would
+> be misleading).
+> 
+> Now, we can of course have rounding methods in `Delta` for convenience
+> if that is something commonly needed by `Delta`'s consumers like
+> `fsleep()`, that is fine, but those would need to be called
+> differently, e.g. `to_micros_ceil`: `to_` since it is not "free"
+> (following e.g. `to_radians`) and + `_ceil` to follow `div_ceil` from
+> the `int_roundings` feature (and shorter than something like
+> `_rounded_up`).
+> 
+> In other words, I think you see these small `as_*()` functions as
+> "helpers" to do something else, and thus why you say we should provide
+> those that we need (only) and make them do what we need (the
+> rounding). That is fair.
+> 
+> However, another way of viewing these is as typical conversion methods
+> of `Delta`, i.e. the very basic interface for a type like this. Thus
+> Tomonori implemented the very basic interface, and since there was no
+> rounding, then he added it in `fsleep()`.
+> 
+> I agree having rounding methods here could be useful, but I am
+> ambivalent as to whether following the "no unused code" rule that far
+> as to remove very basic APIs for a type like this.
 
-> https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.12-2
+I would say ignoring the rule about an API always having a user has
+led to badly designed code, which is actually going to lead to bugs.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4e6bd4a33a6cf4d2dce9725630ada847a3947c7c
+It is clearly a philosophical point, what the base of the type is, and
+what are helpers. For me, the base is a i64 representing nano seconds,
+operations too add, subtract and compare, and a way to get the number
+of nanoseconds in and out.
 
-Thank you!
+I see being able to create such a type from microseconds, millisecond,
+seconds and decades as helpers on top of this base. Also, being able
+to extract the number of nanoseconds from the type but expressed in
+microseconds, milliseconds, seconds and months are lossy helpers on
+top of the base.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+So far, we only have one use case for this type, holding a duration to
+be passed to fsleep(). Rounding down what you pass to fsleep() is
+generally not what the user wants to do, and we should try to design
+the code to avoid this. The current helpers actually encourage such
+bugs, because they round down. Because of this they are currently
+unused. But they are a trap waiting for somebody to fall into. What
+the current users of this type really want is lossy helpers which
+round up. And by reviewing the one user against the API, it is clear
+the current API is wrong.
+
+So i say, throw away the round down helpers until somebody really
+needs them. That avoids a class of bugs, passing a too low value to
+sleep. Add the one helper which is actually needed right now.
+
+There is potentially a better option. Make the actual sleep operation
+part of the type. All the rounding up then becomes part of the core,
+and the developer gets core code which just works correctly, with an
+API which is hard to make do the wrong thing.
+
+	Andrew
