@@ -1,73 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3132F18755C
-	for <rust-for-linux@vger.kernel.org>; Sat, 19 Oct 2024 10:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8530A1E4A4;
+	Sat, 19 Oct 2024 12:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729332255; cv=none; b=CnZVQoj2/EudIf9ca1rJzHjoFG8uQV+u5/GVoURtiKE9uiQKQUw9/MewgMtouMF7Y/QJUnUuIv85ilBkFBi9yf1zMET/MDKOlwZzGMB/wUrSMjhKguwNFCdwR9XCNdEd26IS4JU2X0eEDHS5H8MBGc59+WJgVvha5sLgJ9/T6jI=
+	t=1729340520; cv=none; b=BP6w4EkFcX+KyTh6NYlfnxDKsSdvndBKtWJyIGXi5xFFMsOM9AHz2YrRChDQb9QMSj7BidyyJY2HJVWT3P/93O2SIr/cmKw9NvIjozO1EM5PQai8OGKpnXNaU/OXZkRqCEMiHfDaQoG1hbapfBBQ4WL+n88IHEiFsx6NNmvAAC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729332255; c=relaxed/simple;
-	bh=cKriIWIGyM/ZUbTffbOZfU3d4HH1Kt0jJhIQDqAXDLE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iOICe3bwiJnF7F9u4scQ4PqUeN7Y9PCcJFxFLtrg4PzMAqgoIL/V6oEcaVLpX5RHATSB6FtZ9NGxfzI6EmHSR6rYvnYOc43xo1no3HNHx3QGkOQeS2Q0OvUnLpW1bjZPSodjF7s7dUAx0PwOxkrx8PB25IL6jWUwcjKk3oju3PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iC2975dV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729340520; c=relaxed/simple;
+	bh=g82XPKrPt2WZCw67QoEdhYkGQe9x2UxkBDSl2UO7qp4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cNIGWJ2sr2UW85G0sd2WE6koDbx2YiNb/txI1/I5MfQ8CsGRQolZUWnW+b7oqFyiOVxfggPBxdKWt2aDcdSX47mGchvszs4cinIiPiI/iTO0XTjbl2mNxeb+ty8qtyF4K5gT8GXRcE8GVjkp5MldULTTjhY21Qeb4gWnIIzpAHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BsHQ165N; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iC2975dV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1499FC4CEC5;
-	Sat, 19 Oct 2024 10:04:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1729332254;
-	bh=cKriIWIGyM/ZUbTffbOZfU3d4HH1Kt0jJhIQDqAXDLE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iC2975dVZP1mXD00z5QjXDfD3idJH0aBfs7Fhhg0+IfpNSMSZ1/rZ2MiurS4/lAdR
-	 HFY7jfj9Lx1uU+dn5ZQzXjsDiw0tvtxqMgVqZ1SssqFaJ/j51jn15XssL4vkHHcydC
-	 MNLA1X7b+2mzKBJwLBP2SGQhzSQnjkTGkavg7/UY=
-Date: Sat, 19 Oct 2024 12:04:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Yutaro Ohno <yutaro.ono.418@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH] rust: kernel: fix THIS_MODULE header path in ThisModule
- doc comment
-Message-ID: <2024101926-crisply-immersion-5077@gregkh>
-References: <ZxOBW2WeAnq_mFda@ohnotp>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BsHQ165N"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2e2d1b7bd57so385439a91.1;
+        Sat, 19 Oct 2024 05:21:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729340518; x=1729945318; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g82XPKrPt2WZCw67QoEdhYkGQe9x2UxkBDSl2UO7qp4=;
+        b=BsHQ165NiGzafabYIHrpm2IWZ0P6iXkKxDmWFgljWrJNNSu4wqg3Wl+y2EESipP2F4
+         OFMJkkc2Y/pqJbTR4UgWJIj9h2nC6c05MRfkKWvSpoP3djXgjMPArMtEH/ECgSup3WUh
+         6Tgl8GEAhS5LAH1kvguD8rv8r7S93+iwMbskX26JR61vr0Tr1i5pZmqSZQU3x3Tt9srO
+         0YvZx8d6WJc/u6WoJkM3fiOL3W/Lwrpnr9wjtnvKPIYiXwC5YrZahbu7NDE8gvDdrWLM
+         fByHXPsz13lLuGQT00hoyQsuCTHWGqXApXy4KnMBJb79jps/7UwxU4TSdG2LA4as3SIe
+         SBmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729340518; x=1729945318;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g82XPKrPt2WZCw67QoEdhYkGQe9x2UxkBDSl2UO7qp4=;
+        b=lLm78RGnKU10CFeAtgpxyI//LbUKWZ0Kw9efzDus1kTSXPPBwUvuHoS6Il50hFV3hP
+         PxXoW7mNT8q1Q8ELCsBH0pyiCUYhv71jRv2KT5T8pcZ535Q+tN7A4ll5GpNJG+OE7dTa
+         zCSJ9xrWqv+I+B6qztBFGK3CDNi187rz7Us7Rz8oSxWR4zK+rBuuLvLJ+sce5KXdM8NJ
+         HAuTF4BnyFq10wzmgHWVYcW4izUB11Mq+jRxGnf0J8u18H0dZqeUuJjDJEi70A9vUAo+
+         P45/7QQMD9gDIjHl63MCAOz9sprR1amzWlweykN64opPBdFMeeYIODV6tHTb8tgPhgyq
+         Dy3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWHUnF+FLE1RzAHV3IxLRE0Af3X8PutXJ43pl3gkvr2t8TNu7EPqxqfqniyD7uVEt+ArHsSfT+g@vger.kernel.org, AJvYcCWcXB4SWqIoaFBbb3X7OrwqgxQHs9W1kfZ4D4cUYqWCW0BJhnmcrWULpT5QvlrvHAcBVfCXf9po45HDALE=@vger.kernel.org, AJvYcCWiAo2WZRH+mcKfAOGLkClylA234yJjoEGFpfgKfIyG+yizSV6mSa2kTiY5dOdFJwLAFU+Dq1D70BoCfoYZH/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/w817nGwaOm+aw2waa+WVerGNAtAmATd0xXaX2dOwpj4cIyyw
+	0JX9XIw6pi8swFytVouKi3mkF6rE78C4OywNT9y77rc9X+tG/lCYilrUP58DlocHkmuDAfXylro
+	ZLh4AGKmZ/ldZGtZ83vZ8eH3NTX4dErAWyhM=
+X-Google-Smtp-Source: AGHT+IFFqwJLcPci0kpV0Imx3Ln/B3dSXfPj/0iC5TweuZvhfmptPyQqgtA5en8HG1zvaJMlB9eo5nCaEmBFelgnT60=
+X-Received: by 2002:a17:90b:3846:b0:2e0:9d55:3784 with SMTP id
+ 98e67ed59e1d1-2e56144249cmr2953182a91.0.1729340517661; Sat, 19 Oct 2024
+ 05:21:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZxOBW2WeAnq_mFda@ohnotp>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+ <20241016035214.2229-3-fujita.tomonori@gmail.com> <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
+ <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com> <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
+In-Reply-To: <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 19 Oct 2024 14:21:45 +0200
+Message-ID: <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 19, 2024 at 06:52:27PM +0900, Yutaro Ohno wrote:
-> The doc comment for `ThisModule` incorrectly states the C header file
-> for `THIS_MODULE` as `include/linux/export.h`, while the correct path is
-> `include/linux/init.h`. This is because `THIS_MODULE` was moved in
-> commit 5b20755b7780 ("init: move THIS_MODULE from <linux/export.h> to
-> <linux/init.h>").
-> 
-> Update the doc comment for `ThisModule` to reflect the correct header
-> file path for `THIS_MODULE`.
-> 
-> Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
+On Fri, Oct 18, 2024 at 6:55=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Did you see my other comment, about not actually using these helpers?
+> I _guess_ it was not used because it does not in fact round up. So at
+> least for this patchset, the helpers are useless. Should we be adding
+> useless helpers? Or should we be adding useful helpers? Maybe these
+> helpers need a different name, and do actually round up?
 
-This should get:
+Yeah, I saw that -- if I understand you correctly, you were asking why
+`as_nanos()` is used and not `as_secs()` directly (did you mean
+`as_micros()`?) by adding rounding on `Delta`'s `as_*()` methods.
 
-Fixes: 5b20755b7780 ("init: move THIS_MODULE from <linux/export.h> to <linux/init.h>")
+So my point here was that a method with a name like `as_*()` has
+nothing to do with rounding, so I wouldn't add rounding here (it would
+be misleading).
 
-added to it when merged.
+Now, we can of course have rounding methods in `Delta` for convenience
+if that is something commonly needed by `Delta`'s consumers like
+`fsleep()`, that is fine, but those would need to be called
+differently, e.g. `to_micros_ceil`: `to_` since it is not "free"
+(following e.g. `to_radians`) and + `_ceil` to follow `div_ceil` from
+the `int_roundings` feature (and shorter than something like
+`_rounded_up`).
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In other words, I think you see these small `as_*()` functions as
+"helpers" to do something else, and thus why you say we should provide
+those that we need (only) and make them do what we need (the
+rounding). That is fair.
 
+However, another way of viewing these is as typical conversion methods
+of `Delta`, i.e. the very basic interface for a type like this. Thus
+Tomonori implemented the very basic interface, and since there was no
+rounding, then he added it in `fsleep()`.
+
+I agree having rounding methods here could be useful, but I am
+ambivalent as to whether following the "no unused code" rule that far
+as to remove very basic APIs for a type like this.
+
+Cheers,
+Miguel
