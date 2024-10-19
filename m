@@ -1,87 +1,87 @@
-Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51F313C8E2;
-	Sat, 19 Oct 2024 07:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E951DE4CE
+	for <rust-for-linux@vger.kernel.org>; Sat, 19 Oct 2024 08:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729324006; cv=none; b=bx6+B/V1F04uuRxVVJNZDylGaNgBSuUdXY39PlmTADQny2sjXcjGvhiov8zOQNlNJqTnB3L4w3WMjW4ZGFhb4rjNfMxa/+MLHmksnCi19MKtwNFU86eVPtWCN5dYQ8UxCY/89a0EFknBT/t4ejnFcGml//CsNxs44vleH5TS0r8=
+	t=1729327276; cv=none; b=L+izHBM0y6pLlBSqATyw4cmaQNliFIQ0hLtSHnpaPpiKZWatXlgIFuWDxXwohxXfr4AkMzA0o+uTORXfAzcSRRLUngONPTisAHH0PZGfO/xaeM4PJPGycK6ROjBjt9/WFxBS8Pio3yzxJEOmtcEP3mruhDW3cgOGaMkeI+fp1VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729324006; c=relaxed/simple;
-	bh=M/QX/lS6xRABHzsJFCN2mnwAkudqf4WZN4eEakuqqVs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=Wzq6T8C3mvWFEiV64UmxpDOJvRpZypehBHVAAeYWonmo8jwUin1q6HSI8kmw0UZIqq0Pyjw6N5wECmj0XoPKvckrG4g6ApWZ1Qb+hR2etZOz06jKfosohD5qtOEU4xRJN/rltixS2iQvpS3ANp1ovtELl7X8X6QwGIFWaFjnwYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wiredspace.de; spf=pass smtp.mailfrom=wiredspace.de; dkim=pass (1024-bit key) header.d=wiredspace.de header.i=@wiredspace.de header.b=1ypJ/Wvd; arc=none smtp.client-ip=95.215.58.184
+	s=arc-20240116; t=1729327276; c=relaxed/simple;
+	bh=6WkRiTW6hxrOkXkyZUPVV9ShUISdUKz0rcrZcsQkaX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TXFfqL5dI04okcO2gRjmp/hmdn0Y/p8E2M9Op2sZPknFemV854uKXwoDdUvhZhdo26Zx7XHOF9p042gGKw40XiCxg9j7nrREQ3mBxYgvjtcJT5oDV4fhYB6eI86sKFpHJuPH/hCmk7XCoqARVHrmE11Hvw6mpwmNKWI0PBEoJwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wiredspace.de; spf=pass smtp.mailfrom=wiredspace.de; dkim=pass (1024-bit key) header.d=wiredspace.de header.i=@wiredspace.de header.b=Vy+O6DGU; arc=none smtp.client-ip=95.215.58.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wiredspace.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wiredspace.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wiredspace.de header.i=@wiredspace.de header.b="1ypJ/Wvd"
+	dkim=pass (1024-bit key) header.d=wiredspace.de header.i=@wiredspace.de header.b="Vy+O6DGU"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wiredspace.de;
+	s=key1; t=1729327271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bbAs0TRfliKVT6GU9TEAPy0g/6tMD6uUNyQ5bBgcgz4=;
+	b=Vy+O6DGU3TETIO1c+DK7b3WRhznZrucfviXFE9izV77hP7ZEQYbf3TTLkcEVCd6F3DGPGc
+	mfr7VPWpXMJPVaTqQeEyE5nwUrMsz6dYL8KdA4DhibIf7rxcb06qYG0KXLZ38SV3cICsGr
+	lVTz2nWa99Ao/ogvJqsQNk7VE9YZSH4=
+From: =?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>
+Subject: [PATCH v2 0/7] Cleanup Clippy issues in drm_panic_qr.rs
+Date: Sat, 19 Oct 2024 10:22:45 +0200
+Message-ID: <20241019084048.22336-1-witcher@wiredspace.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wiredspace.de;
-	s=key1; t=1729324002;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M/QX/lS6xRABHzsJFCN2mnwAkudqf4WZN4eEakuqqVs=;
-	b=1ypJ/WvdK7goCa5xjq7zVTXZq4tklKOTOjtfNdORugecDz1IKja1XnRjuqPaWhmAmr8P/0
-	VbYOOMEJQRalQFK+f6DL/3JGoYZUaWrqSF0H9Fw1UuPAI8WFGuPYYp7WDMCnR9u1AUYi6v
-	7nICfbwQURqbDLqM+5H3BGNMWaucgiE=
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 19 Oct 2024 09:46:39 +0200
-Message-Id: <D4ZM720DHP6L.3JT8TO5FP71XU@wiredspace.de>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: =?utf-8?q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>
-To: "Jocelyn Falempe" <jfalempe@redhat.com>, "Miguel Ojeda"
- <miguel.ojeda.sandonis@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/7] drm/panic: avoid reimplementing Iterator::find
-References: <20241012075312.16342-1-witcher@wiredspace.de>
- <CANiq72kG0Ai2DHfERD0aPDVuEpLYrZ_2uYdw17=eeHRp+2Q1Rg@mail.gmail.com>
- <cfde8e06-0931-4a53-bae5-469219e77b49@redhat.com>
-In-Reply-To: <cfde8e06-0931-4a53-bae5-469219e77b49@redhat.com>
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-On Mon Oct 14, 2024 at 11:06 AM CEST, Jocelyn Falempe wrote:
-> Hi Thomas,
+The file drivers/gpu/drm/drm_panic_qr.rs has some lints that Clippy
+complains about. This series cleans them up by either allowing what is
+written or conforming to what Clippy expects where it makes sense.
 
-Hi Jocelyn,
+All explicitly allowed lints are marked with `#[expect(...)]`.
 
-> If you want to send a v2, the easiest way is to download the mbox series=
-=20
-> from https://patchwork.freedesktop.org/series/139924/
-> and apply it with git am.
->
-> That way you will have my reviewed-by automatically added.
+v1 -> v2:
+- Add "Fixes" trailers and rename "Closes" to "Link" trailers as
+  the patches all fix part of the issue.
+- Replace `#[allow(...)]` with `#[expect(...)]`. Support for `expect` is
+  already in rust-next, which is where this series will be merged into.
 
-That's neat to know, thank you! That makes the use-case of patchwork a
-bit clearer for me.
+Thomas Böhler (7):
+  drm/panic: avoid reimplementing Iterator::find
+  drm/panic: remove unnecessary borrow in alignment_pattern
+  drm/panic: prefer eliding lifetimes
+  drm/panic: remove redundant field when assigning value
+  drm/panic: correctly indent continuation of line in list item
+  drm/panic: allow verbose boolean for clarity
+  drm/panic: allow verbose version check
 
-> Best regards,
->
-> --
->
-> Jocelyn
+ drivers/gpu/drm/drm_panic_qr.rs | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-Kind regards,
-
---=20
-Thomas B=C3=B6hler
-https://wiredspace.de
+-- 
+2.46.2
 
