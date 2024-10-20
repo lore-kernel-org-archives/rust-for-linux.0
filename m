@@ -1,115 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81656AA7;
-	Sun, 20 Oct 2024 16:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3D53A1CD;
+	Sun, 20 Oct 2024 21:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729442821; cv=none; b=W33J3n0snAQZtQRJCd3p9jFSfKn0U29RRb9ELv/PbS2rLCxMXGf5fP86OJx23Yg7VRpzJwmViFHp9HFaieS9NZeeRk/foOJciWCwZ3llCUeMTVhattHVIeunimT5E3RNzqrDruVdf9JPZvoGDe6guyrevYGtQXXpnzR2eHxxIkE=
+	t=1729458271; cv=none; b=D+FSI6NzLa8yoQS4bZDyMV9Ely80dfu/0uCqBiQXLEK0bZueWfj9TxmOGqeCEeao0T+Tx9g1fszELshKT3qa+0CoeWG8qFIZPjh9nEmZ6tfakgrrnQNCffrTn4LluPDd11CLAuDUiQXwwmjBiNoezWLOEYelPB21VfqW0DVzGB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729442821; c=relaxed/simple;
-	bh=EWVi1GcxrkqX5S7c3qAcXdg9VPY1LGhqqDRaPzBX8Rs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z1Ki+pCxo2lPg2NVTmdujIOFnMPvap8eMNX2B2z5aNLkjd9+gwHOEFE3C7TS4MOFsaZtZ+FtFUx7XraknVaJf9mm+srJOTlwvXUtwrOp1DDItbtT6jyYkG1r7ls3AL3w2k9tb4IHJqfBb4KBHf2Z605WaXqz/kl+TtGDmJBGIu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jjEKczbw; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729458271; c=relaxed/simple;
+	bh=UNqWV/dZwFS3eMNwGcF9VEENhaytIiNOCmaKg9KAd3Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JOPiKXX9nxBr+8Iqo3ua2fd1b+V/WepMdTh/+z3gphEtIkQRRTwD9zrt7UVfFaf+YggDm2LecP9fqvGJehcBBGHGqTFYYt8XcMAaj9Wn7MuISDoI87Y2eaZIAJDqoS2VfKk3hX16TnJaU6HAenIxzF2T8RCCqXvbxUQbDoOBBks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agXoNP4m; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jjEKczbw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729442819; x=1760978819;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EWVi1GcxrkqX5S7c3qAcXdg9VPY1LGhqqDRaPzBX8Rs=;
-  b=jjEKczbwspWmk16i4RdHsLqoV3ge2QWwcYk7M9Yb0oXkHEqx9VBLYqRu
-   /HOj8XIRB7jz9C9B2CYtgakqsYZr7d5T5GhpQJ1Bw9Z6C3r5P6eCSvxae
-   jci17XTu2HtTQEyf9EE9Wd9i8pC2Ly/8pZMFHSySOiKlregaW/2XmwQfR
-   ECy1h9hVWMIkZgp70ozH2kFYerwGeXNnJeS6iqwzzMD7LAB29GaATdTWh
-   0sGrcZamCbZX5VpgZiyTL4DbeXM6voB7sYbVpxvmwkFLfOuw4o3yPLC6/
-   DuOptcpCfJPkSsK7n+q+YCwiIlIC0z3GadNg4rGtwd/ttDL0xXbXi9skA
-   Q==;
-X-CSE-ConnectionGUID: QtFBghdvTpGo/QPCli9frg==
-X-CSE-MsgGUID: 9+qHSpCkSnGSe9p6dcYKpg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11231"; a="29138971"
-X-IronPort-AV: E=Sophos;i="6.11,218,1725346800"; 
-   d="scan'208";a="29138971"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2024 09:46:58 -0700
-X-CSE-ConnectionGUID: URFWmaxgQyO6rCvrW1T5ug==
-X-CSE-MsgGUID: Af5LEzOVS2SRH54IU5gHmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,218,1725346800"; 
-   d="scan'208";a="79244017"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 20 Oct 2024 09:46:54 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t2Z4u-000QV3-0f;
-	Sun, 20 Oct 2024 16:46:52 +0000
-Date: Mon, 21 Oct 2024 00:46:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH v3 05/13] rust: hrtimer: allow timer restart from timer
- handler
-Message-ID: <202410210020.W6cyMg2D-lkp@intel.com>
-References: <20241017-hrtimer-v3-v6-12-rc2-v3-5-59a75cbb44da@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agXoNP4m"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2e2b4110341so682954a91.1;
+        Sun, 20 Oct 2024 14:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729458269; x=1730063069; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pUATmSfCv27W3Mka25ndw/fZUUEfWKvZU2Hc9HtXU4g=;
+        b=agXoNP4mVlLa+BeZ9vc/AvaS+mezvSzKQdgbxqD5CR7Icp1SsPAHpsy7sgfSt47roD
+         GQm2I9hWn243anKhC48Q3GmGo7E+8zvQTbaAP2IgXZUaf2DE6NXZB6GOXntrxi9Qt20V
+         bXpYulr4x3tiUEvPRUhj9mYU4T69qVTs+7hdHt2cIIK4mduA9HLQ/fXW5upwyhGhw5j+
+         367zQ6hs4dzG8ENQPxvGTaCimWvxuUDZjOh9kBkuKaeVPTsX5WWFhN3UXUe9ErDKv+1h
+         MLVsHPuJnq8Il4lXSn5Ts7asnc/6DgNewTR3X8H0vZ8peNpI/xX18Fy8mJir0NGnKTcY
+         NLyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729458269; x=1730063069;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pUATmSfCv27W3Mka25ndw/fZUUEfWKvZU2Hc9HtXU4g=;
+        b=Vg7IOC6MSxXNdg/70ue1XxrS98QP+jGBQ+xQDYBJ462eiB6PDF5Gn9HTaw2N5CbhLB
+         yqmWsuHbMUG3uQ/JQ/oM9eDC/u3syGsTO3Xk3j5jzz2vWwAxgxgYOdxvIL3Q2OJXNVRP
+         G65+hF3mw0q8egZG3hssrefbKWm2egzmAWSKjQYHy6nSqLP5aun9VsLrujBvM/AxBRwr
+         +d99siNb73t7FwUE+2/tbo456wpGoAWxTTFb5pNCQIwt0E2U/Bgrqffw14yGB00VwtDu
+         HH/aX6GQY1yqeaAwYCmkVi7Gp9SfyHWupA4j9IZdm0i9THTF5kVLIKL1UItH4BmIMXf4
+         G87A==
+X-Forwarded-Encrypted: i=1; AJvYcCV5rgTitn4uTu+cqBkL5HEizRKdRTGqeOWUVy69Q/+x56RRS+DehsXbOwjEd3G0pUDko+xTlgjUl0yqICTkszA=@vger.kernel.org, AJvYcCVaY9On0WdIbuCtD/Yk3N9thYo1GD/6sHfQnTc06kp09G8Z7tEJmyk4xYp9uHa7cy+zBmJdhWzyozvmbf8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWAaBmouhJ3sTzKDAGIviVbbNr+E6brMVN8bxBwTNPCCVcvxsp
+	+kg3RHWpJWWCbzI7QvaiW1G80N1bG9Wx+1D0qvZ7JP5Xg3pUIkY0r7Aa91+6t/Uo33TRwXiMCY2
+	TY9yD3GPSc1i1VP608+3IeiJ78RU=
+X-Google-Smtp-Source: AGHT+IGbb8SvqnhDRVnQof3SJzAdGMzboePIlLB2BLxQxSnmOnedwP/eIElCwjyUsMPZIW7RxW8ToytJ0ApID//+6SE=
+X-Received: by 2002:a17:90b:1889:b0:2e2:c1e5:2df3 with SMTP id
+ 98e67ed59e1d1-2e561856753mr4552264a91.8.1729458268896; Sun, 20 Oct 2024
+ 14:04:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-5-59a75cbb44da@kernel.org>
+References: <20241019084048.22336-1-witcher@wiredspace.de>
+In-Reply-To: <20241019084048.22336-1-witcher@wiredspace.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 20 Oct 2024 23:04:16 +0200
+Message-ID: <CANiq72=FAV_aijHyPLO3EJ4LVXQVysNfK6y=RqNZSKdDTXkg6w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] Cleanup Clippy issues in drm_panic_qr.rs
+To: =?UTF-8?Q?Thomas_B=C3=B6hler?= <witcher@wiredspace.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Jocelyn Falempe <jfalempe@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andreas,
+On Sat, Oct 19, 2024 at 10:41=E2=80=AFAM Thomas B=C3=B6hler <witcher@wireds=
+pace.de> wrote:
+>
+> The file drivers/gpu/drm/drm_panic_qr.rs has some lints that Clippy
+> complains about. This series cleans them up by either allowing what is
+> written or conforming to what Clippy expects where it makes sense.
 
-kernel test robot noticed the following build errors:
+Applied to `rust-next` -- thanks everyone!
 
-[auto build test ERROR on 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b]
+    [ Reworded to indent Clippy's message. - Miguel ]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Hindborg/rust-time-Add-Ktime-from_ns/20241017-211351
-base:   8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
-patch link:    https://lore.kernel.org/r/20241017-hrtimer-v3-v6-12-rc2-v3-5-59a75cbb44da%40kernel.org
-patch subject: [PATCH v3 05/13] rust: hrtimer: allow timer restart from timer handler
-config: um-randconfig-002-20241020 (https://download.01.org/0day-ci/archive/20241021/202410210020.W6cyMg2D-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project bfe84f7085d82d06d61c632a7bad1e692fd159e4)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241021/202410210020.W6cyMg2D-lkp@intel.com/reproduce)
+    [ Reworded to add Clippy warning like it is done in the rest of the
+      series. - Miguel ]
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410210020.W6cyMg2D-lkp@intel.com/
+    [ Reworded to mention the redundant closure cleanup too. - Miguel ]
 
-All errors (new ones prefixed by >>):
-
->> error[E0053]: method `from` has an incompatible type for trait
-   --> rust/kernel/hrtimer.rs:282:20
-   |
-   282 |     fn from(value: bindings::hrtimer_restart) -> Self {
-   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^
-   |                    |
-   |                    expected `u32`, found `i32`
-   |                    help: change the parameter type to match the trait: `u32`
-   |
-   = note: expected signature `fn(u32) -> TimerRestart`
-   found signature `fn(i32) -> TimerRestart`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
