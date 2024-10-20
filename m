@@ -1,121 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B28149E00;
-	Sat, 19 Oct 2024 20:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08FCD299;
+	Sun, 20 Oct 2024 13:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729370735; cv=none; b=W0P45wkxrrFxVAeKyQPhEM/6qv3vps/mhfQH7xMTZe2TQLqnLx9ZKDWZnccUTdyiKiSnlyNcbSh/Iao0Kc11QbvaSPz3GNndxNR3Tlptr1wSso2GG+Eg7e3+dTpVdNFdf6GAGupbzIW9+DO/qpvtG0hnc3DtmEly2nFkCTGKnyg=
+	t=1729429552; cv=none; b=qe34VKrtx9IftDnAE4u2Ln53mhMm+dmG2qL8mN3OSJYbIf9e355k5c3QElg6+PfG6JM6FySolCekuX0CiVxTGDJXPF0/72FvQtvx4RVMVQ1F/3NifmKGjH0Q6le7LvuxajbQiMbf7K9mxRGuPM21HzoTOa1PVGjphSGKqwY/808=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729370735; c=relaxed/simple;
-	bh=gmwDQ6No3ct9TKBBHTtT4Yw2AFEeVWE9FZaRD6OcRhU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BMAFWbvZZSaVZQBTtvBYYMT6jsCZgMW6UPHCEkhgLNvjPtrEVm6moRKAFOfZyvWHZqh6fpPV4t86w+oJvvmkaO94ScJGeh9ostjiaqY61kV0Lfq4Y1ZdVxyg6c8Y8/PqpeUkDsGexZKw7/BrYKiC/wOro+Jn4F+cP0PsKYF49D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUrB6OvU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729429552; c=relaxed/simple;
+	bh=cj4wCZfi9pHUGITp147bbLWoaPids+hjvKMuvLjjgPk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S2mSB6VEm++UeZxT7go0NGScJQIqAT2qFlWPx8djQcVoxHrZ3CPue0mUE58+amiS7H6lDSPrFEnt71ktF+08qehllgsjj3fMHEA/2CrbNqL11kwZesiNwiHkla22FNn4/JWSABjiXAvDlDdNLHiHWMkg9NOI2ARCM3POVgisY5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NzedDcP+; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUrB6OvU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3166CC4CEC5;
-	Sat, 19 Oct 2024 20:45:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729370735;
-	bh=gmwDQ6No3ct9TKBBHTtT4Yw2AFEeVWE9FZaRD6OcRhU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gUrB6OvUzAE3AfRej4jnJKDKbxYWz+cZRF2tn/UZIEQYCHBDOXpBVYbDfJraR7l8n
-	 gQHPGSDOLU6fVoOcnonflRVT6kmlZLGBMcBzFjGdoU/5eToXxY3a2X6/CoWL8Y6Blw
-	 vKtGYWIsOvdhlXC92kFcqafZsLC9tpLm7bpbk3P2Skg4OChT+D7E4n3UBt7xZTHfsB
-	 ThVIQ4MslwI+4PFogaRVcMfc7eHKw/pCuD9frmWslk5PHbQLkDb3S+jXyJ1ktn0C0+
-	 mYdgaWvRjSyREVgG2REjeZMLJkqmzh0Pzohff1f2PBtHLM/G7NDMxg99n+rxReWrI4
-	 CLsyhOwQepJiQ==
-Date: Sat, 19 Oct 2024 13:45:32 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Helge Deller <deller@gmx.de>
-Cc: Matthew Maurer <mmaurer@google.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>, masahiroy@kernel.org,
-	ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	neal@gompa.dev, marcan@marcan.st, j@jannau.net,
-	asahi@lists.linux.dev, linux-modules@vger.kernel.org,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
-Message-ID: <ZxQabNukxBo3utbh@bombadil.infradead.org>
-References: <20240925233854.90072-1-mmaurer@google.com>
- <20240925233854.90072-15-mmaurer@google.com>
- <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
- <CAGSQo01o4fWYwSzZHX5dyTUKcaCSZ7z-hPQ8w63tgBPGbM_UCA@mail.gmail.com>
- <ZwmnnMmqVWLaelvQ@bombadil.infradead.org>
- <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
- <Zwm4v_1wh5RwuHxF@bombadil.infradead.org>
- <CAGSQo03df-tnmwcz4nh3qtuQPKQ2zLHW0juQyKUXGsdeS7QkLA@mail.gmail.com>
- <ZxBKkJu-XPOGs-NG@bombadil.infradead.org>
- <9f3f6bd9-47d1-45fa-aa6b-9e0a80a5ebc6@gmx.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NzedDcP+"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2e31aacbbso522072a91.2;
+        Sun, 20 Oct 2024 06:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729429550; x=1730034350; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cj4wCZfi9pHUGITp147bbLWoaPids+hjvKMuvLjjgPk=;
+        b=NzedDcP+w7fj2Yw6gOp4gpbrRa9mKZy+ytlaSfoOZCs8QgbXfQ+Hl4G1ykP2QGxi0y
+         /3Fv8idxJyN4Nver7bXNGuKKzKnKELwfCbKQPS7Q++1rXBkRnlTWm6W7dqyLyOTs1ko+
+         7TMdelM9mpFg/t0zYEc6C1+PyGhJFkz50OOmuRldek89mLxYneW6dSD//0GzcQHk35ib
+         5Pv9ULSTKSny7DPy0oBs8d2j2x8mBT5hCW9GubFejteUcZjHKqr8BPW8vgBiOwtBjP7/
+         GAtVXX+d1BHnghdrwtQOl5dJE/Ct6es4HAOvRBze+6tOMz+LQH2jkvlrftVxDBOzUwnh
+         SBag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729429550; x=1730034350;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cj4wCZfi9pHUGITp147bbLWoaPids+hjvKMuvLjjgPk=;
+        b=GGjvT7H8FKVAq6c8d1WtSI5YENBr9bNyH2u8VLJRKHr7zVEeHtDbgvROfAGOl49kjb
+         ddDmO64yBiPOaxbk0eSu3QtliOFzYbbkfzQfJ+K3LlFlljaYLMzpskx3NIIGaDPZWXgG
+         wumUHOV70nA2XCBftZWxFfxY9RP2AwEZgxppoWwZaPw2bTUdh0paDU8RTNFlehZX6KYB
+         Vkbzv5MtTyHgqq22sBdVsw5MgCui6qBvT62Q5OTRgoJcyWPIlXPUMOr7ZR94zVhfjXYR
+         e0V6ctJR6a0r8cJSZkHhrpCvcG1MrG7hJiHqDBt6a0l1Nx4EioJQpBuyoLZfAAjymAjS
+         +Kxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkoSHPFm85YfKkZDIhc1o40TNL1QHhpZmtGnJFs0jJi9YYXtuEo0dmj66+XpD0S1UCIjUjexBDISpUXUS9veY=@vger.kernel.org, AJvYcCXL3ESfs8U1FLc5R7cPX1QanEzmITtkhyTq6f6oqp8gkTeReBeO8PkZnq8+pK73yBFRrCl0S6gS@vger.kernel.org, AJvYcCXjEI7bVzmsyDVg8ODQ0K8bveOntylgplfMrkjLSaRuNxav2D3/q5/ZK0HZqeDB+RHSocyWjF5/A2NYODQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9HOFMy3xsjbA2xhvdAygwhRFuINc141BYj1t5IOOsy2Qia0+i
+	kqqtx1W2weLEOOeAQPONjI9GsYbVnPxdzLoGx/xpmy2fGfDuITPbyWIaENWQFKUf8WMOIciuOP8
+	/VALS0ftyMXVxQJSvVC6za4JwuTs=
+X-Google-Smtp-Source: AGHT+IHI5nrAb1fwyAgaJpxdX5zEivzTyqB6sYY5KC4U+kkCD8Fn6Z4uBiA9Vq/eo5l06KFgu+E4H9+/KUUR3JsdYkg=
+X-Received: by 2002:a17:90a:f189:b0:2e2:a70a:f107 with SMTP id
+ 98e67ed59e1d1-2e5615d618emr4290516a91.1.1729429549807; Sun, 20 Oct 2024
+ 06:05:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f3f6bd9-47d1-45fa-aa6b-9e0a80a5ebc6@gmx.de>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+ <20241016035214.2229-3-fujita.tomonori@gmail.com> <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
+ <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
+ <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch> <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
+ <fad19413-8d58-4cf5-82e6-8d4410fd7e50@lunn.ch>
+In-Reply-To: <fad19413-8d58-4cf5-82e6-8d4410fd7e50@lunn.ch>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 20 Oct 2024 15:05:36 +0200
+Message-ID: <CANiq72msOTdVLjX+7+Xx4Si2Sh=s1M=wrg_T+QkpFyBHSC9gwA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 17, 2024 at 02:08:19PM +0200, Helge Deller wrote:
-> Hi Luis,
-> 
-> On 10/17/24 01:21, Luis Chamberlain wrote:
-> > That sounds great. Yeah, the above would be great to test. A while ago
-> > I wrote a new modules selftests in order to test possible improvements
-> > on find_symbol() but I also did this due to push the limits of the
-> > numbers of symbols we could support. I wrote all this to also test the
-> > possible 64-bit alignment benefits of __ksymtab_ sections on
-> > architectures without CONFIG_HAVE_ARCH_PREL32_RELOCATIONS (e.g. ppc64,
-> > ppc64le, parisc, s390x,...). [....]
-> > 
-> > I forget what we concluded on Helge Deller's alignement patches, I think
-> > there was an idea on how to address the alignment through other means.
-> > 
-> > [0] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/log/?h=20241016-modules-symtab
-> 
-> I stumbled upon the unaligned-memory-access.rst document [1].
-> Please read it, as it is a really good document, and the section
-> "Why unaligned access is bad" states:
-> It should be obvious from the above that if your code causes unaligned
-> memory accesses to happen, your code will not work correctly on certain
-> platforms and will cause performance problems on others.
-> 
-> With this in mind, you really should apply both of my alignment
-> patches which you currently carry in [0].
-> 
-> For parisc I partly solved the issue by fixing the arch-specific kernel unalignment
-> handler, but every time module sections are stored unaligned, it triggers
-> performance degregation on parisc (and other sensitive platforms).
-> 
-> I suggest you apply them unconditionally.
-> 
-> Helge
-> 
-> [1]  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/core-api/unaligned-memory-access.rst
+On Sat, Oct 19, 2024 at 8:41=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> So far, we only have one use case for this type, holding a duration to
+> be passed to fsleep(). Rounding down what you pass to fsleep() is
+> generally not what the user wants to do, and we should try to design
+> the code to avoid this. The current helpers actually encourage such
+> bugs, because they round down. Because of this they are currently
+> unused. But they are a trap waiting for somebody to fall into. What
+> the current users of this type really want is lossy helpers which
+> round up. And by reviewing the one user against the API, it is clear
+> the current API is wrong.
 
-You're right, I've just referred to that doc and pushed to the new
-linux modules [2] modules-next branch. This is also great timing so
-that the work that is ongoing for Rust will take this into
-consideration as well. I'll just post the test I wrote as separate
-thing but it surely can be used to help test some of this later.
+If you are talking about Rust's `fsleep()`, then "users" are not the
+ones calling the rounding up operation (the implementation of
+`fsleep()` is -- just like in the C side).
 
-[2] git://git.kernel.org/pub/scm/linux/kernel/git/modules/linux.git
+If you are talking about C's `fsleep()`, then users are not supposed
+to use `bindings::`.
 
-  Luis
+> So i say, throw away the round down helpers until somebody really
+> needs them. That avoids a class of bugs, passing a too low value to
+> sleep. Add the one helper which is actually needed right now.
+
+Eventually this type will likely get other methods for one reason or
+another, including the non-rounding ones. Thus we should be careful
+about the names we pick, which is why I was saying a method like
+`as_micros()` should not be rounding up. That would be confusing, and
+thus potentially end creating bugs, even if it is the only method you
+add today.
+
+Again, if you want to throw away all the unused methods and only have
+the rounding up one, then that is reasonable, but please let's not add
+misleading methods that could add more bugs than the ones you are
+trying to avoid. Please use `as_micros_ceil()` or similar.
+
+> There is potentially a better option. Make the actual sleep operation
+> part of the type. All the rounding up then becomes part of the core,
+> and the developer gets core code which just works correctly, with an
+> API which is hard to make do the wrong thing.
+
+That is orthogonal: whether the sleeping function is in `Delta` or
+not, users would not be the ones calling the rounding up operation
+(please see above).
+
+Anyway, by moving more things into a type, you are increasing its
+complexity. And, depending how modules are organized, you could be
+also giving visibility into the internals of that type, thus
+increasing the possibility of "implementation-side bugs" compared to
+the other way around (it does not really matter here, though).
+
+If you want it as a method for user ergonomics though, that is a
+different topic.
+
+Cheers,
+Miguel
