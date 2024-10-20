@@ -1,134 +1,115 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08FCD299;
-	Sun, 20 Oct 2024 13:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81656AA7;
+	Sun, 20 Oct 2024 16:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729429552; cv=none; b=qe34VKrtx9IftDnAE4u2Ln53mhMm+dmG2qL8mN3OSJYbIf9e355k5c3QElg6+PfG6JM6FySolCekuX0CiVxTGDJXPF0/72FvQtvx4RVMVQ1F/3NifmKGjH0Q6le7LvuxajbQiMbf7K9mxRGuPM21HzoTOa1PVGjphSGKqwY/808=
+	t=1729442821; cv=none; b=W33J3n0snAQZtQRJCd3p9jFSfKn0U29RRb9ELv/PbS2rLCxMXGf5fP86OJx23Yg7VRpzJwmViFHp9HFaieS9NZeeRk/foOJciWCwZ3llCUeMTVhattHVIeunimT5E3RNzqrDruVdf9JPZvoGDe6guyrevYGtQXXpnzR2eHxxIkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729429552; c=relaxed/simple;
-	bh=cj4wCZfi9pHUGITp147bbLWoaPids+hjvKMuvLjjgPk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S2mSB6VEm++UeZxT7go0NGScJQIqAT2qFlWPx8djQcVoxHrZ3CPue0mUE58+amiS7H6lDSPrFEnt71ktF+08qehllgsjj3fMHEA/2CrbNqL11kwZesiNwiHkla22FNn4/JWSABjiXAvDlDdNLHiHWMkg9NOI2ARCM3POVgisY5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NzedDcP+; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729442821; c=relaxed/simple;
+	bh=EWVi1GcxrkqX5S7c3qAcXdg9VPY1LGhqqDRaPzBX8Rs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z1Ki+pCxo2lPg2NVTmdujIOFnMPvap8eMNX2B2z5aNLkjd9+gwHOEFE3C7TS4MOFsaZtZ+FtFUx7XraknVaJf9mm+srJOTlwvXUtwrOp1DDItbtT6jyYkG1r7ls3AL3w2k9tb4IHJqfBb4KBHf2Z605WaXqz/kl+TtGDmJBGIu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jjEKczbw; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NzedDcP+"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2e31aacbbso522072a91.2;
-        Sun, 20 Oct 2024 06:05:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729429550; x=1730034350; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cj4wCZfi9pHUGITp147bbLWoaPids+hjvKMuvLjjgPk=;
-        b=NzedDcP+w7fj2Yw6gOp4gpbrRa9mKZy+ytlaSfoOZCs8QgbXfQ+Hl4G1ykP2QGxi0y
-         /3Fv8idxJyN4Nver7bXNGuKKzKnKELwfCbKQPS7Q++1rXBkRnlTWm6W7dqyLyOTs1ko+
-         7TMdelM9mpFg/t0zYEc6C1+PyGhJFkz50OOmuRldek89mLxYneW6dSD//0GzcQHk35ib
-         5Pv9ULSTKSny7DPy0oBs8d2j2x8mBT5hCW9GubFejteUcZjHKqr8BPW8vgBiOwtBjP7/
-         GAtVXX+d1BHnghdrwtQOl5dJE/Ct6es4HAOvRBze+6tOMz+LQH2jkvlrftVxDBOzUwnh
-         SBag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729429550; x=1730034350;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cj4wCZfi9pHUGITp147bbLWoaPids+hjvKMuvLjjgPk=;
-        b=GGjvT7H8FKVAq6c8d1WtSI5YENBr9bNyH2u8VLJRKHr7zVEeHtDbgvROfAGOl49kjb
-         ddDmO64yBiPOaxbk0eSu3QtliOFzYbbkfzQfJ+K3LlFlljaYLMzpskx3NIIGaDPZWXgG
-         wumUHOV70nA2XCBftZWxFfxY9RP2AwEZgxppoWwZaPw2bTUdh0paDU8RTNFlehZX6KYB
-         Vkbzv5MtTyHgqq22sBdVsw5MgCui6qBvT62Q5OTRgoJcyWPIlXPUMOr7ZR94zVhfjXYR
-         e0V6ctJR6a0r8cJSZkHhrpCvcG1MrG7hJiHqDBt6a0l1Nx4EioJQpBuyoLZfAAjymAjS
-         +Kxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkoSHPFm85YfKkZDIhc1o40TNL1QHhpZmtGnJFs0jJi9YYXtuEo0dmj66+XpD0S1UCIjUjexBDISpUXUS9veY=@vger.kernel.org, AJvYcCXL3ESfs8U1FLc5R7cPX1QanEzmITtkhyTq6f6oqp8gkTeReBeO8PkZnq8+pK73yBFRrCl0S6gS@vger.kernel.org, AJvYcCXjEI7bVzmsyDVg8ODQ0K8bveOntylgplfMrkjLSaRuNxav2D3/q5/ZK0HZqeDB+RHSocyWjF5/A2NYODQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9HOFMy3xsjbA2xhvdAygwhRFuINc141BYj1t5IOOsy2Qia0+i
-	kqqtx1W2weLEOOeAQPONjI9GsYbVnPxdzLoGx/xpmy2fGfDuITPbyWIaENWQFKUf8WMOIciuOP8
-	/VALS0ftyMXVxQJSvVC6za4JwuTs=
-X-Google-Smtp-Source: AGHT+IHI5nrAb1fwyAgaJpxdX5zEivzTyqB6sYY5KC4U+kkCD8Fn6Z4uBiA9Vq/eo5l06KFgu+E4H9+/KUUR3JsdYkg=
-X-Received: by 2002:a17:90a:f189:b0:2e2:a70a:f107 with SMTP id
- 98e67ed59e1d1-2e5615d618emr4290516a91.1.1729429549807; Sun, 20 Oct 2024
- 06:05:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jjEKczbw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729442819; x=1760978819;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=EWVi1GcxrkqX5S7c3qAcXdg9VPY1LGhqqDRaPzBX8Rs=;
+  b=jjEKczbwspWmk16i4RdHsLqoV3ge2QWwcYk7M9Yb0oXkHEqx9VBLYqRu
+   /HOj8XIRB7jz9C9B2CYtgakqsYZr7d5T5GhpQJ1Bw9Z6C3r5P6eCSvxae
+   jci17XTu2HtTQEyf9EE9Wd9i8pC2Ly/8pZMFHSySOiKlregaW/2XmwQfR
+   ECy1h9hVWMIkZgp70ozH2kFYerwGeXNnJeS6iqwzzMD7LAB29GaATdTWh
+   0sGrcZamCbZX5VpgZiyTL4DbeXM6voB7sYbVpxvmwkFLfOuw4o3yPLC6/
+   DuOptcpCfJPkSsK7n+q+YCwiIlIC0z3GadNg4rGtwd/ttDL0xXbXi9skA
+   Q==;
+X-CSE-ConnectionGUID: QtFBghdvTpGo/QPCli9frg==
+X-CSE-MsgGUID: 9+qHSpCkSnGSe9p6dcYKpg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11231"; a="29138971"
+X-IronPort-AV: E=Sophos;i="6.11,218,1725346800"; 
+   d="scan'208";a="29138971"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2024 09:46:58 -0700
+X-CSE-ConnectionGUID: URFWmaxgQyO6rCvrW1T5ug==
+X-CSE-MsgGUID: Af5LEzOVS2SRH54IU5gHmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,218,1725346800"; 
+   d="scan'208";a="79244017"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 20 Oct 2024 09:46:54 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t2Z4u-000QV3-0f;
+	Sun, 20 Oct 2024 16:46:52 +0000
+Date: Mon, 21 Oct 2024 00:46:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v3 05/13] rust: hrtimer: allow timer restart from timer
+ handler
+Message-ID: <202410210020.W6cyMg2D-lkp@intel.com>
+References: <20241017-hrtimer-v3-v6-12-rc2-v3-5-59a75cbb44da@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
- <20241016035214.2229-3-fujita.tomonori@gmail.com> <6bc68839-a115-467f-b83e-21be708f78d7@lunn.ch>
- <CANiq72=_9cxkife3=b7acM7LbmwTLcXMX9LZpDP2JMvy=z3qkA@mail.gmail.com>
- <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch> <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
- <fad19413-8d58-4cf5-82e6-8d4410fd7e50@lunn.ch>
-In-Reply-To: <fad19413-8d58-4cf5-82e6-8d4410fd7e50@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 20 Oct 2024 15:05:36 +0200
-Message-ID: <CANiq72msOTdVLjX+7+Xx4Si2Sh=s1M=wrg_T+QkpFyBHSC9gwA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
-	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-5-59a75cbb44da@kernel.org>
 
-On Sat, Oct 19, 2024 at 8:41=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> So far, we only have one use case for this type, holding a duration to
-> be passed to fsleep(). Rounding down what you pass to fsleep() is
-> generally not what the user wants to do, and we should try to design
-> the code to avoid this. The current helpers actually encourage such
-> bugs, because they round down. Because of this they are currently
-> unused. But they are a trap waiting for somebody to fall into. What
-> the current users of this type really want is lossy helpers which
-> round up. And by reviewing the one user against the API, it is clear
-> the current API is wrong.
+Hi Andreas,
 
-If you are talking about Rust's `fsleep()`, then "users" are not the
-ones calling the rounding up operation (the implementation of
-`fsleep()` is -- just like in the C side).
+kernel test robot noticed the following build errors:
 
-If you are talking about C's `fsleep()`, then users are not supposed
-to use `bindings::`.
+[auto build test ERROR on 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b]
 
-> So i say, throw away the round down helpers until somebody really
-> needs them. That avoids a class of bugs, passing a too low value to
-> sleep. Add the one helper which is actually needed right now.
+url:    https://github.com/intel-lab-lkp/linux/commits/Andreas-Hindborg/rust-time-Add-Ktime-from_ns/20241017-211351
+base:   8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+patch link:    https://lore.kernel.org/r/20241017-hrtimer-v3-v6-12-rc2-v3-5-59a75cbb44da%40kernel.org
+patch subject: [PATCH v3 05/13] rust: hrtimer: allow timer restart from timer handler
+config: um-randconfig-002-20241020 (https://download.01.org/0day-ci/archive/20241021/202410210020.W6cyMg2D-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project bfe84f7085d82d06d61c632a7bad1e692fd159e4)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241021/202410210020.W6cyMg2D-lkp@intel.com/reproduce)
 
-Eventually this type will likely get other methods for one reason or
-another, including the non-rounding ones. Thus we should be careful
-about the names we pick, which is why I was saying a method like
-`as_micros()` should not be rounding up. That would be confusing, and
-thus potentially end creating bugs, even if it is the only method you
-add today.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410210020.W6cyMg2D-lkp@intel.com/
 
-Again, if you want to throw away all the unused methods and only have
-the rounding up one, then that is reasonable, but please let's not add
-misleading methods that could add more bugs than the ones you are
-trying to avoid. Please use `as_micros_ceil()` or similar.
+All errors (new ones prefixed by >>):
 
-> There is potentially a better option. Make the actual sleep operation
-> part of the type. All the rounding up then becomes part of the core,
-> and the developer gets core code which just works correctly, with an
-> API which is hard to make do the wrong thing.
+>> error[E0053]: method `from` has an incompatible type for trait
+   --> rust/kernel/hrtimer.rs:282:20
+   |
+   282 |     fn from(value: bindings::hrtimer_restart) -> Self {
+   |                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+   |                    |
+   |                    expected `u32`, found `i32`
+   |                    help: change the parameter type to match the trait: `u32`
+   |
+   = note: expected signature `fn(u32) -> TimerRestart`
+   found signature `fn(i32) -> TimerRestart`
 
-That is orthogonal: whether the sleeping function is in `Delta` or
-not, users would not be the ones calling the rounding up operation
-(please see above).
-
-Anyway, by moving more things into a type, you are increasing its
-complexity. And, depending how modules are organized, you could be
-also giving visibility into the internals of that type, thus
-increasing the possibility of "implementation-side bugs" compared to
-the other way around (it does not really matter here, though).
-
-If you want it as a method for user ergonomics though, that is a
-different topic.
-
-Cheers,
-Miguel
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
