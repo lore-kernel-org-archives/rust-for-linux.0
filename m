@@ -1,105 +1,92 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A867F199939;
-	Mon, 21 Oct 2024 16:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7181A1991AE;
+	Mon, 21 Oct 2024 18:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729528607; cv=none; b=TkwuXUQVdFWXS8XE17qXNdVodlU2YjC2EZMAPkgaeUlu8BGVOjgMP7IbwX9EGRPJhWFOYZeNjsKkAgzWV7zTeXi1CvrAiALyRkuScY37wroiRQLtQSDoi9nqmZkS4sYIUpkqT9CXVSsT2j3XybyCoulGRZ65NG9ohgmyVuIDvwQ=
+	t=1729534365; cv=none; b=H2V3+Kd/ID2kI6ZEz1GQhNBUySVVN475e+QuLZQmI+3XvUHsA7iupD4u9PjfYnAqelI/At11wRUDRKBuMPHndx0xK+UwNtxgfebtuDim0BEMAm5i6ie8gr/F7DWTbyHztGAmQ7kaLLp39NZz2fP7/vt1EcXs3Id5rP+bDOOcwzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729528607; c=relaxed/simple;
-	bh=XuuGobw0hfMVMmCTBZKSUa46Tfsbw6R+AJV4pdFgx6Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Q6w6xQYZlPNX0PNC8pF+JFLaCtmkGxbX1thFN1kct5sjP+x49qaQ3hqgDRgWJddMpAXXhvk93ppA+cCLZWf5hUHWSSJEDrEswyMxzD3BOM/0o6boAtsmuFHzN79J5Ycb54oCvYiFyhL7Lq4x+Lz/HUxTgJR9+5K4uAUa7pbPDXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=a9x9op6z; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1729534365; c=relaxed/simple;
+	bh=TWnRJClcZl6Uf+e9g4uFsAZMAovmGd/oVdyuodT8JPw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cH7ZcoCy6IK3LIWkMsgOu1Iub3FVy9zhuqnElMfVyhdsraAhraMSOS+B8MTnBf+bVTiFU6IofxdhCBGs9IqBEX7Ns3wb8EA+hvHp4VfCd022dg4JhmLteXztBlifmtOVKXcstfE8hXC0d+Lira1QCAenJUlbyp7RQPUD5eNezsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OxefdqOd; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="a9x9op6z"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net BE20542B3D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1729528603; bh=kkS3fy90jciUzgDpVmMX47FSMiXqhw+lNdT1LNHH8mQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=a9x9op6z1qpevV34J9312DUqgryyzZveELlBtjWPRkqi5pPPA2wm0Hcasqo4WS4ro
-	 fhrTcGmVkW7/GImVLQ09nySRbNHMzAdnE/YkQAxT6/rwcdaDiMXDyKMxOyE2k0Bal+
-	 VR5HCMCK0syfMjzfLTRFMyzpaX6MlW3D/YCc5kTfUdZXQlsFZNH7g7GoZe0ltJIaRw
-	 zfxHzFZbCnyLz9HTIwYzHav0eAoZT0yeT7oi81rzIVtjbDAFjztVq6f72i1mZlspVs
-	 7xesrYZXHv+J4OTxIIrkwcBPupqA0/VZs6QC7w+XwGMUTUTI9GFe1OQuk2LFIZZTe8
-	 UpzicWbS+60Gg==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id BE20542B3D;
-	Mon, 21 Oct 2024 16:36:43 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Dongliang Mu <dzm91@hust.edu.cn>, si.yanteng@linux.dev, Alex Shi
- <alexs@kernel.org>, Yanteng Si <siyanteng@loongson.cn>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: hust-os-kernel-patches@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v2] docs/zh_CN: update the translation of
- process/programming-language.rst
-In-Reply-To: <bae3c59c-39a5-4daa-b37e-bbf077d57643@hust.edu.cn>
-References: <20241018015226.3786020-1-dzm91@hust.edu.cn>
- <87ed49tqia.fsf@trenco.lwn.net>
- <bae3c59c-39a5-4daa-b37e-bbf077d57643@hust.edu.cn>
-Date: Mon, 21 Oct 2024 10:36:43 -0600
-Message-ID: <87wmi1s99g.fsf@trenco.lwn.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OxefdqOd"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7eaebc773d8so172878a12.3;
+        Mon, 21 Oct 2024 11:12:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729534362; x=1730139162; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u9A+VjYXugJOPACtYEFrsBaLcdapWpmus4EmgLLrpEw=;
+        b=OxefdqOdfHu+JdR4u9wh1VDNZqqQE1haSWwm/kY/vnzrZypEs/Pe7ku6dJDUctqFDu
+         PKTGF8KnMcXaAgmtfgA6KlQ8h16qeUqw6EcYsYKAoAa+FJBpwFQsQd+rfZ5hJq+dDPaO
+         Kh9fIObnr3BYclV2PcGtWcLIlFd+ZRAxfbVCiZCemtWyCnZMpl4mqEG4xGezPHEr060U
+         UfWE57bbjX0fQb9WjYqYlrDCp7yE+2fWUlUAHdoDeF5y5j23n/xEiez0f2NMuVlVV2XH
+         7HhNamkxiDepG8NON8GLw3UeTfW+xCkZU52Nhn2aaeq3V3P3fto2/3w3evMPGPx1uVW3
+         t0NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729534362; x=1730139162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u9A+VjYXugJOPACtYEFrsBaLcdapWpmus4EmgLLrpEw=;
+        b=FNPqypJ0HvpIXVsu4BywOIskWirnIoJlnqnWv5Aol3R2+letFHwRAJDvIbw8JYUno5
+         4eKxXmLOEVz0ItHxKeZd++by2CstQH3v+hlHG71O+eD7QZ8AEOS1exw9iHu3aKiYW711
+         2+IVQ9JfYR+xoyAtu6epYrNPdSt76tzrpZdOHlAMs66uGJJr858lD8uALK9XGFLl0meC
+         wiqSr55liJ0Q3tuFTFq6dLu9elnXZmkD33LMs9yGZx5q2/WfUgnoWbAlVHvHsbh2MaCc
+         g9uwGM4Qdd0ZzTvMZzLxaPCi2VoNU/HuoscUD5ybrwj7NdCNRu9UQA0p5wAIUFVRZsQ8
+         UrOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbHQrolQ91Be01hetDZy/vQ9z/Gf2doZoJOkprhl79jzCQBbL30UVyLnpiq4JOc/Yc3/qH8SZC5CxUOLc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLB8L3V4BxA+Ah4mV1bmxa7KqgWOsDUFW9Zc2jHmH+tQSuazcL
+	KIhyKNX1NVmqzZAX8NHMTiA2Kpcd21BbQs+7RbufkeAYwLRQHxEkNH0D8L7kL716jrS4VXq81Wz
+	wEOKo9QWXh/KRps798Fg3z9IF88VZkIk+
+X-Google-Smtp-Source: AGHT+IEB+T2cYEl+ly3fs7GwDgpI4SlkFwMsPEVGfyA/DlvdYvkSbSOYrXotFVtmBvEj/zVPhonOsESlTTKSH/Ild0w=
+X-Received: by 2002:a17:90b:2249:b0:2e2:c04b:da94 with SMTP id
+ 98e67ed59e1d1-2e5618d0f69mr6042358a91.5.1729534362635; Mon, 21 Oct 2024
+ 11:12:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CANiq72=M+rgJGLOBeSYygQzJZa9XnVvaWgi3DKUyT1Z_Rq=1Kw@mail.gmail.com>
+ <20241009162553.27845-2-tamird@gmail.com>
+In-Reply-To: <20241009162553.27845-2-tamird@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 21 Oct 2024 20:12:28 +0200
+Message-ID: <CANiq72nA3EunhnHdfk2q0jZOE8oPszu2TYMhmDE1qNKDfXGoeg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: remove unnecessary header includes
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Dirk Behme <dirk.behme@de.bosch.com>, Fiona Behrens <me@kloenk.dev>, 
+	Filipe Xavier <felipe_life@live.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Dongliang Mu <dzm91@hust.edu.cn> writes:
-
-> On 2024/10/21 23:38, Jonathan Corbet wrote:
->> Dongliang Mu <dzm91@hust.edu.cn> writes:
->>
->>> Update to commit 0b02076f9953 ("docs: programming-language: add Rust
->>> programming language section")
->>>
->>> scripts/checktransupdate.py reports:
->>>
->>> Documentation/translations/zh_CN/process/programming-language.rst
->>> commit 0b02076f9953 ("docs: programming-language: add Rust programming
->>> language section")
->>> commit 38484a1d0c50 ("docs: programming-language: remove mention of the
->>> Intel compiler")
->>> 2 commits needs resolving in total
->>>
->>> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
->>> ---
->>> v1->v2: revise the script name
->>>   .../zh_CN/process/programming-language.rst    | 78 +++++++------------
->>>   1 file changed, 30 insertions(+), 48 deletions(-)
->> This one adds some new build warnings:
->>
->> Documentation/translations/zh_CN/process/programming-language.rst:44: WARNING: duplicate citation gcc, other instance in /stuff/k/git/kernel/Documentation/process/programming-language.rst
->> Documentation/translations/zh_CN/process/programming-language.rst:51: WARNING: duplicate citation rustc, other instance in /stuff/k/git/kernel/Documentation/process/programming-language.rst
->>
->> *Please* be sure to do a docs build before submitting your patches.
+On Wed, Oct 9, 2024 at 6:26=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> I am sorry. I am not sure why I miss this warning. I should strictly 
-> follow the rule - make htmldocs and checkpatch do no trigger any errors 
-> or warns.
+> Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
+> removed the need for these by automatically generating the exports; it
+> removed the explicit uses of `EXPORT_SYMBOL_GPL` but didn't remove the
+> `#include <linux/export.h>`s.
 >
-> A simple question: if you miss the warning in one `make htmldocs` 
-> building``, you rerun `make htmldocs` and still trigger the warning or 
-> just the warnnings do not appear until `make cleandocs` is done?
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Sphinx only rebuilds what it has to, so a warning may not repeat if you
-do not build from a clean tree.
+Applied to `rust-next` -- thanks everyone!
 
-jon
+    [ Reworded title. - Miguel ]
+
+Cheers,
+Miguel
