@@ -1,87 +1,92 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABF31991AE;
-	Mon, 21 Oct 2024 18:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5FB1E573E;
+	Mon, 21 Oct 2024 18:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729534371; cv=none; b=Pr2l9q9vBQ1Hw55+5yINjv5iDCEuNoJu5HtsY3xm6DWlKCcdcfn+aklPtiYDxl92U8wrLgeQ3Ylz6Q/pHRrGTvA+4Ri+sHlJh8ba5hXJPWsdn0iTbR4gc23WSCQ8fLyymdpE/+I9txnIkXVoIgeM+BXXybEC50EeenF80KF8kD0=
+	t=1729534409; cv=none; b=cisK1yhYDhsdV3zUMU1gKo4Ugwd7vWBHOwSSDGeR8Ny0QFCSRQON7m2e3kE9do+zlwa2Mk029XZL//yxORvfs8YlKwvcng2/ZLbKWqFpGyy9PAV9+xCGcGEwoC4MyraMDrNXoNmN490MJVclnj7HvDIHzSKjiQ587fItSfVIaxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729534371; c=relaxed/simple;
-	bh=gG9la+UbjXkYYDwwmvFw6RqEbWAz8w1nv89BLZeythY=;
+	s=arc-20240116; t=1729534409; c=relaxed/simple;
+	bh=bJgud164RD2MQYC+B0FUMsPPQp9pfAsq7hChCNAAOmQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m8/HOFN6riam6vtXLtInM0YkEdIFHLLWlWES+lgOsMrBfvIcXQnvXAGLtO6FIuJzuSnDhWzz7kw7nhZ368gz3BlqXf8U1O0ewdEuWY5oA+hcJhdzSaarePcD3MrV/P+iEo/508tX8rWT63zwFFN4ohNbMRfyQNTsKCwXgsG7l7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=adBji/2s; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=PCAozP9O6J+Pcf2txwPXLpLHD49MtCXdQ5UPlqWwptfeiV5Uy6KZcYjfp1kYfYIVPumma8Hte2GX5F6uzT/RKuVJs0VC1yHY8DLllb3t8xA9BR4ub6CNjcB3CypgCk7dmDfd9/xdarCLk4tnqRPJUToE2SVflR59FZwCJQ5UAoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XhRln9Q5; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="adBji/2s"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2e2ab5bbc01so789366a91.2;
-        Mon, 21 Oct 2024 11:12:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XhRln9Q5"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2e2a96b242cso673017a91.3;
+        Mon, 21 Oct 2024 11:13:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729534369; x=1730139169; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729534407; x=1730139207; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0NTgndgTEyOJpsZjbycQD9UO0OcociRFzORnnCdJBGc=;
-        b=adBji/2sY2p5w0ntg56rXkWdAu0lH7sPpXpkKH/na5diNLevyz0/6bpKhBwIQGtQ9b
-         BealvE5euQdQIbuXFoR9KGf7HiVwjF/MbOzkAb/1d2QI0vgdJue67FgJHHB1ItzqbyjK
-         +oKnV6Qn+yVbskmPzZdgJsSPj4rgGzBQ3bGvN5CT/xHoYA6mmlpy0bZR+gH2irQiRL8J
-         Fc5qlXA5R06b1dES0+uVH904PWa+fT85xb1MRSqh8CoBXZldOFTXmrRugcef2Yjme55q
-         inKyLFE8DezFNMhkGjptZ1UlNyDS5ZQD9nU/40ZDkAgQIrg5Th5gahxs0oeex6EAuenb
-         rYjA==
+        bh=g54jDDiGhngyCAbe+hrcsUOBeSv+Nz+dWdRmMvTkP04=;
+        b=XhRln9Q5Sj1upyqg9JDLY22pwsDo28+QDgfaia51KE3a+9P0gnJfPipYtwaL+ursyM
+         Z0pKAQ6fniBNWCVLCEhn3Svnf0LIdl1RxgB3bVSUflFu87ncX216hAGfnx5Z6c3+uyyP
+         6RS77oJerVzoER8GYzYXZfyuSCTNjPJ6AoWQL0YDpzXVXNnyIXijLztSdgUVTgHSxtlJ
+         WJzqrKgNTBgrwDqQiMHqecm9LQPjp0Br97qQpqJ1LbM1CcKbKJv6xSutL7hmciH7bqNm
+         DaXlyvLxShqs+z3fvk0lfKJy7XwBZKKTzqWBEj1QsJsgrNaz9JzLASj60kTmKX69/k6x
+         Qp/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729534369; x=1730139169;
+        d=1e100.net; s=20230601; t=1729534407; x=1730139207;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0NTgndgTEyOJpsZjbycQD9UO0OcociRFzORnnCdJBGc=;
-        b=jEOBBR7OrSaGm2LQJjVGkCPbxa69OONJTvqNPWyLpwK10wME3CTKtqsuZvbL1n3gMT
-         WYQaB7D3inrZV9PDlIcEgMfyF06+alRKHS85VAgWFeuaiqmOFb0O9tiI+7FvF392OuiB
-         bJqLyIA8hTdaYqB03/pcw7EXyQpvCnOO2S9dMPGL9qjWzGeU+ryrSqSZhil1QYv0l7Z+
-         Qe+6U4EEZ10IFiilbfAnHNWwuxWC5ZVvYOUKBg5oI27WMPgXG70h8XHeh2YF/Q7266M/
-         OZNJklS84ioTjQgKHeOoJwzxiT2T56HwY248lDdLH1elqFi/dvgM1u4Yu4caAebY+vwZ
-         ZBDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVg+a5V/CSThvurYkHp/AfRTKTs80uCuXDmV8AyiTlbTsSYExD3LwJ/wQfsl8Ai11Asx7siJ0S5nHrNSrc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwhVw2WVXuYBSGMbfoYL+uivMmQDoamcb31TO7ozUAGw4U5IVI
-	QIgeMCNsbBMNkmDOCFoZzrjpaL7RHj2E4Z3KHyDtqGW7NcL/bcDw2qzcy4Kv6OMyKfSqOpo/8JL
-	RGWuraJEXkNZodBR3MW1m6O88vTY=
-X-Google-Smtp-Source: AGHT+IFW5FCA2Dztg6+kRu5JR602IeaOSAzQAC3HeXxk2ob+alX7LD90roPRtrGAzAblzic6rxP+0XqTLbkL8elXWho=
-X-Received: by 2002:a17:90a:f189:b0:2e1:f0ee:f41 with SMTP id
- 98e67ed59e1d1-2e5615d5f6emr6007304a91.2.1729534368887; Mon, 21 Oct 2024
- 11:12:48 -0700 (PDT)
+        bh=g54jDDiGhngyCAbe+hrcsUOBeSv+Nz+dWdRmMvTkP04=;
+        b=BgM4JYwio5ARODFD1WjbeMQtZseJRL5VcngOiHIQwXLu1LemSlmwGGfXUi/x/VH02g
+         Hy/EPN4xq0EuZN+96tqQM4AFzZI+QSP1k5iJTInThGJsl/K9z200MQj3HpbmPblci9Th
+         LsA0KdAh6nIT80Ua1FPAQlVj7a0nNRyGJRyucLxopsac49Oik8uGKJLrvIuMXQMfNkwn
+         rJoncy+IymgczKS+EHxod7kF5C/BpAMt1hoOBkVfN4BFtXd5T9UJrT2pfxA6vlb4LiN1
+         qPmQHvNvLolHQATaWzLuanzuVd2vECXP8QfnMIKPf+AXvB3qjx2eKrzE/trUv/l8t/ie
+         kFKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCjGmBnr6T/h/jfD3aaKF2WeJDYzT/T3ByeBfmvqW1KeFpctqVpOjQ223nB9B6ZguWL32ifKU9a4bNPTY=@vger.kernel.org, AJvYcCVp5RS6QLbO2bCOdXjFofSHwMmoLqEiuW3VGBJAh2AK0/nfUhSIl581KdVMeXvhj0AyOiy3M6RVXS9PW/XJNf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT4pzk8uzdWE8NASCHqJeIXw53IdNhpRKxhMz2w3mu4rBVZId9
+	mDKxvwW+hgXpmXskynYvnbtC/fi/up3G7roGGExx8gmFlJkUAhmWvI9O98VVbTR427mRlhzTLZ5
+	r72ZwE/ENsiRr1g2c+V1i6XPOFTQ=
+X-Google-Smtp-Source: AGHT+IFWdXiyh2BH1wiyKebzZOgvmMk9uObaXSUIC7gXp+nFBZve+5gkcGuTKyiIC0c6v00A1oZIIe3Hj2k1K4ZAGDc=
+X-Received: by 2002:a17:90b:4ec3:b0:2db:60b:eec with SMTP id
+ 98e67ed59e1d1-2e5619f8a85mr6176351a91.7.1729534406863; Mon, 21 Oct 2024
+ 11:13:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009162358.27735-1-tamird@gmail.com>
-In-Reply-To: <20241009162358.27735-1-tamird@gmail.com>
+References: <20241016-page-align-v2-1-e0afe85fc4b4@google.com>
+In-Reply-To: <20241016-page-align-v2-1-e0afe85fc4b4@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 21 Oct 2024 20:12:36 +0200
-Message-ID: <CANiq72kG7RLD6EPCvPk3q4uFTLJs8wVx42jGhsYSvWm0SG=cVg@mail.gmail.com>
-Subject: Re: [PATCH] rust: improve grammar in commentary
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Mon, 21 Oct 2024 20:13:12 +0200
+Message-ID: <CANiq72=yDU=5xRVp_BLdocqHe0hfs6FiAhz6dwpbfyHckQSudw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: page: add Rust version of PAGE_ALIGN
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 9, 2024 at 6:24=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+On Wed, Oct 16, 2024 at 1:34=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> Commit e26fa546042a ("rust: kbuild: auto generate helper exports")
-> added an errant "the" where one was not needed; remove it.
+> This is a useful for helper for working with indices into buffers that
+> consist of several pages. I forgot to include it when I added PAGE_SIZE
+> and PAGE_MASK for the same purpose in commit fc6e66f4696b ("rust: add
+> abstraction for `struct page`").
 >
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Applied to `rust-next` -- thanks everyone!
 
-    [ Reworded title. - Miguel ]
+    [ Added intra-doc links, formatted comment. - Miguel ]
 
 Cheers,
 Miguel
