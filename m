@@ -1,146 +1,90 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705E31A726D
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 17:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861A31B654C;
+	Tue, 22 Oct 2024 18:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729617894; cv=none; b=HCPBs7kCCjpgX12y1iOcysRvyen+jTJjUaReOSnBSXRq0DB9YmMPHc0f32f4q48Z/N/ZOGGObNAHsI9qPkc5Yoe+qSGAUcPdJ8Qp8F2KkeW5Xd9uDyriHajFkglLgymyPzcZ+Se9MXgNWJQ/MF/jqoRizwiMUDKKsX8/W3Xj/cY=
+	t=1729621092; cv=none; b=Jc223zextcD0e3OMjza6tc7ebIB2CpNKVOBI40jsIPWf/dfQa+KKmbhe8EH3wxrltVFD7apJrf9sXdB1Y36CdMIOeljVk4y+E1U2u5PzghrZBlZeXBfUDcpWGl81yZaRYkINRCdK/ZGhAYS4brpu4FGYPHCV0pPS3vXEcxjBB2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729617894; c=relaxed/simple;
-	bh=xwc23gWqC5d98YMWFqF/Xhb3SJe/ZnUf9483lyiAdvc=;
+	s=arc-20240116; t=1729621092; c=relaxed/simple;
+	bh=I0ncawAsRIQf7yHcV9v6YkDdfdA0KSVBzsz9dvhzBRc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=syvBTSU3SOmTQVs8iMpC9w1+X1Hv7m5YfUyXoC8nr0/1VKCKuN5hAKAs5mEPxXYGhGSTD3VhaEXpUtGv0YsM7cymRAjZAOURi2xawM2bkpwYCrRVO84vYYbDcPZ/n5hUHfBHDLJNPfqM+tOB9YJPkGiJHLXh/Et0AEaFHRHyxjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TAtlxhGO; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=grqiWYqEmYzAfWVNRx7Y3q7HxqKOCiMbGsGGO67uR2hPr74x/J6HyeaeDN7syWgL8BcRBcQfsQQoGiM1K5ctpt16EAd2KR9Ds7DN+VlaM8I9leEE2ONFVhizmJ9dVTZcK1AUuw/AUiQD0PdknQcXMCSgTYbRILvSlrqqrGvt36Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V/KSRryU; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TAtlxhGO"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43158625112so58303705e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 10:24:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V/KSRryU"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2e5b1aaad96so461731a91.0;
+        Tue, 22 Oct 2024 11:18:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729617891; x=1730222691; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729621091; x=1730225891; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BEt47/5AYkkm+7sRkURZTwcxLPliTpnnCDYwMEIuRCE=;
-        b=TAtlxhGOiGMbHWybwE62zXrXtGXrL4eN9G3vv58bmkoSmpyb+NSFSlFuvbdUcbsD+E
-         zR3BT2AVk8p2j5k9/GJgYlzc3zdIWw7cdbdWSgNteOdOexVKHnb7UDIfUESF8yVSo45s
-         qbXuxoN9z3xBrJ8J8ImlNDh78LCvhFHq93BJrWg4tCEQg1cUkdQZ9kDNy9N+lyK5kH8x
-         Eopt4rCE9jRKlJpsppQHCRxAuNv6f9jmKoR8H8XseOxgvhm8r0wddzHfuAIeltGlwmHZ
-         h3+wrHK2pRnNPjSIin/gWYWoAopXH8NsKW9zjOuIWWtU/Cb0R1fGQIXgqV6ZZDT1h0DI
-         r0gw==
+        bh=I0ncawAsRIQf7yHcV9v6YkDdfdA0KSVBzsz9dvhzBRc=;
+        b=V/KSRryUz+QQ13y64UnMMKiXElMxDpVNBD8cwclaFdV2ltDF7y7t9kr6wXmvbskK8F
+         7NXpw9H43hcWyxXQfA2prt9RCBO7f8QnVOArmGebGQislwx79V6rm3PHwcqpNGSnLmW3
+         /dhtf1FLy3kyPa4wLbSdHHn8LwAisC7wYaL+AfwmrFZsCzJs+gbmB90FmodCAbWGF4fp
+         CSbMtupvgVyMOo5gjdxwdR3k+kP+aQuSPLIweV02k35wLwCIGJmu0+Dx6M24/sFt/6lI
+         0L89hTlVnzq6+BDfLbiJA0HiuIDnJoNFpkzgtjOHJD2RR///V9cPCERuLVQlFlys+IuF
+         kpBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729617891; x=1730222691;
+        d=1e100.net; s=20230601; t=1729621091; x=1730225891;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BEt47/5AYkkm+7sRkURZTwcxLPliTpnnCDYwMEIuRCE=;
-        b=Sym6L29lGHiL1nmXXl/o2ItMCa0EmkpZ0rNjOBVKyW8zPLCJkL1jW85I70DolrpNqg
-         38h749QM0LxzraF6/i5rGcb040Q/6gxwlNcRd2jokrHNIq5MnT3dZgmIygGxQTSHlQcq
-         K98u62lRHb3EutqCPGOF2YcQ+30/ngXEG9Luiqvs+umdd7GdSCuRUy6XUfDBlyUiwT6N
-         gKzNxwE0z2y3aaL3ufPEKFshA4nq3R3t07RPZI9C9rK7mnPqJPSWM5vbe3u014anl6ql
-         1nTLdW5s8S18b7vQP+lqefwvCAzMje4wYrvrsntFL3SHXR3eD1+OhZ9GvM2gSZ0b/ogZ
-         sNpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNhm0nUiHuLZNZLzAysT/tyyavPwtYyis0yjisbaH5GdFXtD6rLDtN6Z72IEAfa6jfJwc7HMnef7h/JKzg7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAYigmkd1xQhwBWdFbXYgkdxqN1wxXCVyrCQMkwQLHyG0ZrZKW
-	MzeBBxghHtisivcVRU0i+GOp5VIY2I5VNYQXPwTYIhcyLiR4a0QsWAApj+v//PZcTsBbWUuBp9S
-	AcLCGiG6LNZ77f6rqnfCqWAC9lgb3FugfYxJo
-X-Google-Smtp-Source: AGHT+IGmXY2PcsYCDDDdMG2hgteb25/thWXJMg5ZQZjESPJOsd2kGa1X9jjQZfEia+y8Dt4u8IqR2iRrDoHqsyEWFJA=
-X-Received: by 2002:adf:fbce:0:b0:37c:d244:bdb1 with SMTP id
- ffacd0b85a97d-37efb7af8afmr181342f8f.26.1729617890704; Tue, 22 Oct 2024
- 10:24:50 -0700 (PDT)
+        bh=I0ncawAsRIQf7yHcV9v6YkDdfdA0KSVBzsz9dvhzBRc=;
+        b=SjFqbrc/TfGFAYNE/EFgMl/7ceKny1hNhxzzGEARHBu8DM8Jst1hIORNSeL/kH5A1t
+         ZZ/GtsaCQ2s7mXbDWS3ZV9b/AmX5ZlkuQghMjpd6+I84+HVG0kSmcHpLKXo0b0I/Ehag
+         Wjw4SKJCP7t8OcaPicHm8zNeizHCX9WUKHAntaaSzfdBPVkcM0A6pidb8OeezFJ4AShk
+         r7F8e7+mMhdwqQWXPjMKyFSk2HBWojqyHK6r1TC/yydvcFlpjUkhbrBW5O5DI3DVicpN
+         xy16U+w2YprWmc+Q4m0PWcpN3cU1scHOL0ZSMqJDqCrFYd2+YY9wfAS2zcBUr9oZdPdv
+         eQvw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0vv6nxWl9/7xqOO0CPOlo/96YVokLAVR/frYqI4CrNxW93x0Bieg/lFgCkK6X4mDdfpxn7UYCG6G7Ug==@vger.kernel.org, AJvYcCUH/xrbjgVOjgvL3nC024O8S6CmWG/8+yk6AvOYuOUtV7bBHs5HBJJYCLOH/3/hglbyOQGwN5adAAxpkbrF@vger.kernel.org, AJvYcCUPTEkcky2SgPZm98TGcC22LummB9Gdus35JtSIW+XjhSxvjfDaFiqpjxOrXCjwaFO9n18lUzItnD9vy0DfZJE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDOchta/qQeu1/SuwIR2rlTy2mC2oCszdtbsMeJYWVu6C756JL
+	7JCeclB6YCOZ2zQIzbQbctQeXaw8jm8OH6IiruyL+WXvSIyEyUEX86lNuzMFAVNyGcMBLIDieG6
+	gA6PaIdfMC9jZXxrE1wwJu+Vp+2w=
+X-Google-Smtp-Source: AGHT+IFWENN2kUGUgFc+5VTacL6qecqwBecLkdOpuyUli3hT8G3Ji+Ak3iOAwSoM5rIIKv/sUolih9Es/vjGtBlCg08=
+X-Received: by 2002:a17:90b:148f:b0:2e3:1af7:6ead with SMTP id
+ 98e67ed59e1d1-2e5616e9f15mr7829383a91.5.1729621090802; Tue, 22 Oct 2024
+ 11:18:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021-static-mutex-v5-1-8d118a6a99b7@google.com>
- <ZxZxzjEaSZ8e_6mn@boqun-archlinux> <CAH5fLgg=Hb5NDaQQJW4SVh+hCj51bp+BzCMQs=Pg_L+_MMiZgA@mail.gmail.com>
- <ZxfWglfYr52xTIO4@Boquns-Mac-mini.local>
-In-Reply-To: <ZxfWglfYr52xTIO4@Boquns-Mac-mini.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 22 Oct 2024 19:24:38 +0200
-Message-ID: <CAH5fLggv98iPAPm=PPa686osmfjqcdH9D3wD47ytCqkqbgwx7w@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: add global lock support
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+References: <20240903173027.16732-3-frazar00@gmail.com> <87cyk8mhlq.fsf@kernel.org>
+In-Reply-To: <87cyk8mhlq.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 22 Oct 2024 20:17:57 +0200
+Message-ID: <CANiq72nYKH+UCQQ8mHTc1Z7Spinp9v9hrjLzVyWHXaoeSShQTw@mail.gmail.com>
+Subject: Re: [PATCH v2] docs: rust: fix formatting for kernel::block::mq::Request
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Francesco Zardi <frazar00@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 22, 2024 at 6:44=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Thu, Oct 10, 2024 at 11:29=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
 >
-> On Tue, Oct 22, 2024 at 02:46:19PM +0200, Alice Ryhl wrote:
-> > On Mon, Oct 21, 2024 at 5:23=E2=80=AFPM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Mon, Oct 21, 2024 at 01:17:23PM +0000, Alice Ryhl wrote:
-> > > [...]
-> > > > +///
-> > > > +/// A global mutex used to protect all instances of a given struct=
-.
-> > > > +///
-> > > > +/// ```
-> > > > +/// # mod ex {
-> > > > +/// # use kernel::prelude::*;
-> > > > +/// kernel::sync::global_lock! {
-> > > > +///     // SAFETY: Initialized in module initializer before first =
-use.
-> > > > +///     unsafe(uninit) static MY_MUTEX: Mutex<(), Guard =3D MyGuar=
-d, LockedBy =3D LockedByMyMutex> =3D ();
-> > >
-> > > Thanks! This looks much better now ;-)
-> > >
-> > > But I still want to get rid of "LockedBy=3D", so I've tried and seems=
- it
-> > > works, please see the below diff on top of your patch, I think it's
-> > > better because:
-> > >
-> > > * Users don't to pick up the names for the locked_by type ;-)
-> > > * It moves a significant amount of code out of macros.
-> > > * By having:
-> > >
-> > >     struct MyStruct {
-> > >         my_counter: GlobalLockedBy<MyGuard, u32>,
-> > >     }
-> > >
-> > >   , it's much clear for users to see which guard is used to protected
-> > >   `my_counter`.
-> > >
-> > > I prefer this way. Any concern about doing this?
-> >
-> > I think I came up with an even better way of doing it. The macro can
+> Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> Cool!
->
-> > generate a dummy token type for the global lock, and then we can have
-> > three types: GlobalLock<T>, GlobalGuard<T>, GlobalLockedBy<T> that are
-> > all generic over the token type. The token type is an empty enum with
->
-> Just to make sure I understand it, so let's say the token type's name is
-> `TK`, you mean we have GlobalLock<T, TK>, GlobalGuard<T, TK> and
-> GlobalLockedBy<S, TK>? Where T is the type protected by the static mutex
-> and S is the type protected by the locked_by type?
+> Thanks for the patch!
 
-Something along those lines, yes.
+Andreas/Jens: do you want me to pick this through `rust-next`?
 
-> > no contents, but implements an unsafe trait saying that there's only
-> > one static using it.
-> >
-> > This way we also do not need the helper module, as we no longer need
-> > to generate a struct with private fields.
-> >
->
-> Sounds good to me. Do you plan to let the user name the token type? It's
-> fine to me, or do you want to name the token based on the static lock
-> name?
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
 
-The name of the lock has the wrong case, so we can't really reuse it.
+Thanks!
 
-Alice
+Cheers,
+Miguel
