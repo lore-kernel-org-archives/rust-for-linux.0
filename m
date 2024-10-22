@@ -1,347 +1,119 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01D919D06B
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 11:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91B19DF4A
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 12:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729597700; cv=none; b=kuUaIkHxK9ZQYt4Msc6Q5xjEki5Qlcrsi+MXJjn0oxnmDls4MNoJWRFsn8ATSoh5Q/q8wCqhM8ov697TjrTe7Hp73b4LLCDW6q/uLNPR37UfbkDAWWH6M+2WaooCGVJncg/6MrINa8/9iJsOOrv4WopOiblLLaUhy29Z/9cMqd4=
+	t=1729601196; cv=none; b=gwEawuO4KsmXFTpVJwgaBW438S2kRaW6ju3JW48HQhp1uzTRhEmDqawcLfyKt+au5Z/iQkAEb3pspbKOsziQXS1y4BpL/1Wn2i7zXZrWWtMpa2W54WSzcsghg2UL2uNEnHARFT/cOE2nyBLcHCrRQWoisB1F2qB8bkQjuIm8jKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729597700; c=relaxed/simple;
-	bh=ZuDh7T7vqb/uJ2Oh6TRsNbWExWPRw6celRvdfqKZJE4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SHBZ2odzlPJ8VKTQ6ND139DgeHpWHiDGCxWAerI6FWKunQUKyX6TmVs26nq9JX2jL1BlGMnUmmh6Ufwgi/4421lLer1SXe8cO/tFmNn937gSPX/7sDvVa7+nPL0BYfusczv632nSN4X6uyrEWwlyiYA+aWGx9oqxolwNyGBgK+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gm0MBwpd; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1729601196; c=relaxed/simple;
+	bh=Vx2h3v1y9ITGYk/4YqnyyI5UsVK+4L4HjGCwI5LwPHs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kLmmw0cIi481cb9yokUTNwRzJ1lXvJdSDRJZussQN+VywXJROEI0JyjgWBQsdTbN0JWcoEtnxqXLu4N0qzOg70Lg/UeFIAPmHJ0zJU/DSf5zWBNIHT/ob9TwnC+CtBcDDaEHUaNkwi9BY3E6Wq4JBxiR8Xgr5XT4yqwONQX9TCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tSu5DL4S; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gm0MBwpd"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9a3dc089d8so769807566b.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 04:48:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tSu5DL4S"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so5378742f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 05:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1729597696; x=1730202496; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TJFTWiRH4O8HY/U6C1bLi9fAv/VSueOH/7iJiF8HHhM=;
-        b=gm0MBwpdQ3CJ4xWRVtEV8HmXqAkAx8cQBGeh7W2iZ391eP8DKHAZucHIrnto6xm3CG
-         yWmnY6d1Ju3qQgG4yUmcDuqNkvx2b/r7tUVLWUWMUgeQwaPHTGIPavxx/zdwye5oGzDf
-         Hbq8pnA7+QYYDrdc1jjQ3kubvlsAgp0uv0x34N0NT+qfwsP4fpoe8C/CU7pZT2lJ3e2A
-         dG6ao6rcJSsp6Ab9ob8TA22PSB4CGzvpbEF6Y1aS7nqmmGtOmblm81YTzcw+9ODqEy0a
-         NYhntunA3sJwOmV/Y/AXIDxg6NyZL4e7aiuMH4PcjiyzINxgxHJPpoe+/sDPoxMBPGtV
-         ogzw==
+        d=google.com; s=20230601; t=1729601193; x=1730205993; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hWt1QgZ+k4yosJJFZ2Lxkp6vi2dnYByQlfBoj3HTnos=;
+        b=tSu5DL4Sgi1wuZnTAchlavyWjcSuIdk4FcneJ/j7h4kOGNpCsEV+5rttVTtHR6stH6
+         2ZMYvZ4KKnTjAVxCeooBJZqFjUTb/ffO9PDMI+vfEMF91RQCh0tSRqY2917s0OHyIT3q
+         f//i28yJEGMyBlUh1ShQFPHVJYzUnp0TBmnmyTsSfSDzDwFW1qJwneJCagllbpkNr0xl
+         ZeCqpDKrXn7g5PvRCkBDRZr2xxsjxeWom063Ym8EbllT7UthVtb2JrK0qTPuRIMTbE/q
+         w+ecVxMs418SQZ6gQdZsmI4bq3edRKxnaC+7kVs96dnfplgG6R0QIL9EQanMkOzXyH1u
+         Ekdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729597696; x=1730202496;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TJFTWiRH4O8HY/U6C1bLi9fAv/VSueOH/7iJiF8HHhM=;
-        b=MBkl9P3rtdYwqUiBxqEZQyjn+7su0OY843nvGyXPABuajLWzlaQ0uLbJFwHBSw4Bn4
-         8vqyz2CzhCG4ByhLKEJswBRdGeuXmSLwDS8qjeJOIRTAhz0Z1vp/6EeAPg0q/DC3ga4i
-         3q/wvP2Qkrkgrcf1N6tB8klThsZi1xBZfi0y+rtZyonIEnka1FAQSehmSwyzPTYCEEwx
-         l4G5BAE8VnK0P7hGaDBs/9LbPiLZfmn2W8czQpyyy2e9lHw4oAEKt/lxb7rOcs7Uk4Fk
-         iG/S+1EF0fmXGPBEyWRQ7dWEmjGPK8Jrp4cV0hDV4aKy45KUJ2b04b/rywNyF7O1m9tG
-         eyJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXluOllIakVcaH2umR7Cxjm4EYqCmQNLXlrbroX392Wn8Eiv+2CeThVZNcCzEqSTLKO7VwRhB23486dNxc8EQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyworlJrBtSM25PDURioussINIOJz21AgT3wkJMfMfAPAc4NokJ
-	PqHh1HCjzznJLC3HXHo0Oxi10tTS3KoySheLDnxCZVosDv/26jRpUdbHisviQkc=
-X-Google-Smtp-Source: AGHT+IGirT1OYLdQdwRgbtzBYUPa7HMsmRQgF+L+andwnPHiKz4xoSVTAFzmWrtDqIA/pp1+hj4X3Q==
-X-Received: by 2002:a17:906:c14a:b0:a99:40e6:157c with SMTP id a640c23a62f3a-a9a6995e2a4mr1455707166b.4.1729597696091;
-        Tue, 22 Oct 2024 04:48:16 -0700 (PDT)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912ee10bsm328222566b.51.2024.10.22.04.48.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Oct 2024 04:48:15 -0700 (PDT)
-Message-ID: <8fa10131-fae2-4052-b541-e4a6ef570d63@suse.com>
-Date: Tue, 22 Oct 2024 13:48:14 +0200
+        d=1e100.net; s=20230601; t=1729601193; x=1730205993;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hWt1QgZ+k4yosJJFZ2Lxkp6vi2dnYByQlfBoj3HTnos=;
+        b=fdpNQiSkeHsHldk6x5Him/l+AKWeAO+4FrrwG7YIjIfaeLNicxY/9sBEupyFgUc5Ij
+         kDhWO25qIFk0rJyKnoywk8lGoPD6iJ8TIX/FDlgKeGmfXaY6JPW8nqVyt9ZDxVg7hqHz
+         0litldBvuRFxF+dPwwI7ZWuaULETQKMiMR2c98oG7e8lTCtBKcFbaxspmX8zOD5F0u19
+         MXppiQC9S8XZAuo5Ku6zSyMAJrodSm/Iy6G70xKDMD0c8X0IwSabwU0Ceq2OdoxXFH05
+         WWQQGi+kaGWdCjaS3mwbWGAQcNX711qnfs9k7JI9dfvS3lgH4s14owkHGy7lBg5g2331
+         TCXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmmtUZUHRwAQ9bZGpbNlksZleindrK6Wi4i2RfRV0BlUswZyQdUl4txDyOsvFlZTAK8ASfyI4ZTPGbOoiNlg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCDqaC+lLGXBnbg8W+eq2BgQy51Iuf7hxRHSXEM9q92N9NK1RR
+	ZkeNiZI7RY5YzFL1KceKXkU/C/XdAj+Mgb/VlE96kLt/oXlziV/9XHExSbem/9hfKAbyjBEb8Oq
+	d9nfzCUzjoTKDFhDjYZ/LXFSBzgSlmXuaakrf
+X-Google-Smtp-Source: AGHT+IHHrb1ZvDYKv4j0/c2a3JEmXpHadHXvk776QJ9rlhtlmkBkz9Vi+wH6TGQLWMsWaJaZ1alAT7TfAiJDX888U4w=
+X-Received: by 2002:adf:f9d0:0:b0:37c:cfa4:d998 with SMTP id
+ ffacd0b85a97d-37eb4768898mr12672840f8f.49.1729601193295; Tue, 22 Oct 2024
+ 05:46:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/19] gendwarfksyms: Add symbol versioning
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
- Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
- Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
- Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20241008183823.36676-21-samitolvanen@google.com>
- <20241008183823.36676-34-samitolvanen@google.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20241008183823.36676-34-samitolvanen@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241021-static-mutex-v5-1-8d118a6a99b7@google.com> <ZxZxzjEaSZ8e_6mn@boqun-archlinux>
+In-Reply-To: <ZxZxzjEaSZ8e_6mn@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 22 Oct 2024 14:46:19 +0200
+Message-ID: <CAH5fLgg=Hb5NDaQQJW4SVh+hCj51bp+BzCMQs=Pg_L+_MMiZgA@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: add global lock support
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/8/24 20:38, Sami Tolvanen wrote:
-> Calculate symbol versions from the fully expanded type strings in
-> type_map, and output the versions in a genksyms-compatible format.
-> 
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> Acked-by: Neal Gompa <neal@gompa.dev>
-> ---
->  scripts/gendwarfksyms/dwarf.c         |  25 +++++-
->  scripts/gendwarfksyms/gendwarfksyms.c |  11 ++-
->  scripts/gendwarfksyms/gendwarfksyms.h |  13 ++-
->  scripts/gendwarfksyms/symbols.c       |  59 +++++++++++++
->  scripts/gendwarfksyms/types.c         | 122 +++++++++++++++++++++++++-
->  5 files changed, 222 insertions(+), 8 deletions(-)
-> 
-> diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
-> index e1a9e9061b1d..a47a3a0f7a69 100644
-> --- a/scripts/gendwarfksyms/dwarf.c
-> +++ b/scripts/gendwarfksyms/dwarf.c
-> @@ -723,12 +723,33 @@ static int process_type(struct state *state, struct die *parent, Dwarf_Die *die)
->  /*
->   * Exported symbol processing
->   */
-> +static struct die *get_symbol_cache(struct state *state, Dwarf_Die *die)
-> +{
-> +	struct die *cache;
-> +
-> +	cache = die_map_get(die, DIE_SYMBOL);
-> +
-> +	if (cache->state != DIE_INCOMPLETE)
-> +		return NULL; /* We already processed a symbol for this DIE */
-> +
-> +	cache->tag = dwarf_tag(die);
-> +	return cache;
-> +}
-> +
->  static void process_symbol(struct state *state, Dwarf_Die *die,
->  			   die_callback_t process_func)
->  {
-> +	struct die *cache;
-> +
-> +	symbol_set_die(state->sym, die);
-> +
-> +	cache = get_symbol_cache(state, die);
-> +	if (!cache)
-> +		return;
-> +
->  	debug("%s", state->sym->name);
-> -	check(process_func(state, NULL, die));
-> -	state->sym->state = SYMBOL_MAPPED;
-> +	check(process_func(state, cache, die));
-> +	cache->state = DIE_SYMBOL;
->  	if (dump_dies)
->  		fputs("\n", stderr);
->  }
-> diff --git a/scripts/gendwarfksyms/gendwarfksyms.c b/scripts/gendwarfksyms/gendwarfksyms.c
-> index 24c87523fc3a..e90d909d259b 100644
-> --- a/scripts/gendwarfksyms/gendwarfksyms.c
-> +++ b/scripts/gendwarfksyms/gendwarfksyms.c
-> @@ -23,6 +23,8 @@ int dump_dies;
->  int dump_die_map;
->  /* Print out type strings (i.e. type_map) */
->  int dump_types;
-> +/* Print out expanded type strings used for symbol versions */
-> +int dump_versions;
->  /* Write a symtypes file */
->  int symtypes;
->  static const char *symtypes_file;
-> @@ -35,6 +37,7 @@ static void usage(void)
->  	      "      --dump-dies      Dump DWARF DIE contents\n"
->  	      "      --dump-die-map   Print debugging information about die_map changes\n"
->  	      "      --dump-types     Dump type strings\n"
-> +	      "      --dump-versions  Dump expanded type strings used for symbol versions\n"
->  	      "  -T, --symtypes file  Write a symtypes file\n"
->  	      "  -h, --help           Print this message\n"
->  	      "\n",
-> @@ -69,9 +72,10 @@ static int process_module(Dwfl_Module *mod, void **userdata, const char *name,
->  	} while (cu);
->  
->  	/*
-> -	 * Use die_map to expand type strings and write them to `symfile`.
-> +	 * Use die_map to expand type strings, write them to `symfile`, and
-> +	 * calculate symbol versions.
->  	 */
-> -	generate_symtypes(symfile);
-> +	generate_symtypes_and_versions(symfile);
->  	die_map_free();
->  
->  	return DWARF_CB_OK;
-> @@ -92,6 +96,7 @@ int main(int argc, char **argv)
->  				 { "dump-dies", 0, &dump_dies, 1 },
->  				 { "dump-die-map", 0, &dump_die_map, 1 },
->  				 { "dump-types", 0, &dump_types, 1 },
-> +				 { "dump-versions", 0, &dump_versions, 1 },
->  				 { "symtypes", 1, NULL, 'T' },
->  				 { "help", 0, NULL, 'h' },
->  				 { 0, 0, NULL, 0 } };
-> @@ -167,5 +172,7 @@ int main(int argc, char **argv)
->  	if (symfile)
->  		check(fclose(symfile));
->  
-> +	symbol_print_versions();
-> +
->  	return 0;
->  }
-> diff --git a/scripts/gendwarfksyms/gendwarfksyms.h b/scripts/gendwarfksyms/gendwarfksyms.h
-> index e47b5e967520..814f53ef799e 100644
-> --- a/scripts/gendwarfksyms/gendwarfksyms.h
-> +++ b/scripts/gendwarfksyms/gendwarfksyms.h
-> @@ -26,6 +26,7 @@ extern int debug;
->  extern int dump_dies;
->  extern int dump_die_map;
->  extern int dump_types;
-> +extern int dump_versions;
->  extern int symtypes;
->  
->  /*
-> @@ -98,6 +99,7 @@ static inline unsigned int addr_hash(uintptr_t addr)
->  enum symbol_state {
->  	SYMBOL_UNPROCESSED,
->  	SYMBOL_MAPPED,
-> +	SYMBOL_PROCESSED
->  };
->  
->  struct symbol_addr {
-> @@ -112,6 +114,7 @@ struct symbol {
->  	struct hlist_node name_hash;
->  	enum symbol_state state;
->  	uintptr_t die_addr;
-> +	unsigned long crc;
->  };
->  
->  typedef void (*symbol_callback_t)(struct symbol *, void *arg);
-> @@ -119,6 +122,10 @@ typedef void (*symbol_callback_t)(struct symbol *, void *arg);
->  void symbol_read_exports(FILE *file);
->  void symbol_read_symtab(int fd);
->  struct symbol *symbol_get(const char *name);
-> +void symbol_set_die(struct symbol *sym, Dwarf_Die *die);
-> +void symbol_set_crc(struct symbol *sym, unsigned long crc);
-> +void symbol_for_each(symbol_callback_t func, void *arg);
-> +void symbol_print_versions(void);
->  
->  /*
->   * die.c
-> @@ -128,7 +135,8 @@ enum die_state {
->  	DIE_INCOMPLETE,
->  	DIE_UNEXPANDED,
->  	DIE_COMPLETE,
-> -	DIE_LAST = DIE_COMPLETE
-> +	DIE_SYMBOL,
-> +	DIE_LAST = DIE_SYMBOL
->  };
->  
->  enum die_fragment_type {
-> @@ -158,6 +166,7 @@ static inline const char *die_state_name(enum die_state state)
->  	CASE_CONST_TO_STR(DIE_INCOMPLETE)
->  	CASE_CONST_TO_STR(DIE_UNEXPANDED)
->  	CASE_CONST_TO_STR(DIE_COMPLETE)
-> +	CASE_CONST_TO_STR(DIE_SYMBOL)
->  	}
->  
->  	error("unexpected die_state: %d", state);
-> @@ -245,6 +254,6 @@ void process_cu(Dwarf_Die *cudie);
->   * types.c
->   */
->  
-> -void generate_symtypes(FILE *file);
-> +void generate_symtypes_and_versions(FILE *file);
->  
->  #endif /* __GENDWARFKSYMS_H */
-> diff --git a/scripts/gendwarfksyms/symbols.c b/scripts/gendwarfksyms/symbols.c
-> index e414257333e5..e17f11a02f6e 100644
-> --- a/scripts/gendwarfksyms/symbols.c
-> +++ b/scripts/gendwarfksyms/symbols.c
-> @@ -66,6 +66,36 @@ static unsigned int for_each(const char *name, symbol_callback_t func,
->  	return 0;
->  }
->  
-> +static void set_crc(struct symbol *sym, void *data)
-> +{
-> +	unsigned long *crc = data;
-> +
-> +	if (sym->state == SYMBOL_PROCESSED && sym->crc != *crc)
-> +		warn("overriding version for symbol %s (crc %lx vs. %lx)",
-> +		     sym->name, sym->crc, *crc);
-> +
-> +	sym->state = SYMBOL_PROCESSED;
-> +	sym->crc = *crc;
-> +}
-> +
-> +void symbol_set_crc(struct symbol *sym, unsigned long crc)
-> +{
-> +	if (for_each(sym->name, set_crc, &crc) == 0)
-> +		error("no matching symbols: '%s'", sym->name);
-> +}
-> +
-> +static void set_die(struct symbol *sym, void *data)
-> +{
-> +	sym->die_addr = (uintptr_t)((Dwarf_Die *)data)->addr;
-> +	sym->state = SYMBOL_MAPPED;
-> +}
-> +
-> +void symbol_set_die(struct symbol *sym, Dwarf_Die *die)
-> +{
-> +	if (for_each(sym->name, set_die, die) == 0)
-> +		error("no matching symbols: '%s'", sym->name);
-> +}
-> +
->  static bool is_exported(const char *name)
->  {
->  	return for_each(name, NULL, NULL) > 0;
-> @@ -120,6 +150,16 @@ struct symbol *symbol_get(const char *name)
->  	return sym;
->  }
->  
-> +void symbol_for_each(symbol_callback_t func, void *arg)
-> +{
-> +	struct hlist_node *tmp;
-> +	struct symbol *sym;
-> +
-> +	hash_for_each_safe(symbol_names, sym, tmp, name_hash) {
-> +		func(sym, arg);
-> +	}
-> +}
-> +
->  typedef void (*elf_symbol_callback_t)(const char *name, GElf_Sym *sym,
->  				      Elf32_Word xndx, void *arg);
->  
-> @@ -231,3 +271,22 @@ void symbol_read_symtab(int fd)
->  {
->  	elf_for_each_global(fd, elf_set_symbol_addr, NULL);
->  }
-> +
-> +void symbol_print_versions(void)
-> +{
-> +	struct hlist_node *tmp;
-> +	struct symbol *sym;
-> +
-> +	hash_for_each_safe(symbol_names, sym, tmp, name_hash) {
-> +		if (sym->state != SYMBOL_PROCESSED)
-> +			warn("no information for symbol %s", sym->name);
-> +
-> +		printf("#SYMVER %s 0x%08lx\n", sym->name, sym->crc);
-> +
-> +		free((void *)sym->name);
-> +		free(sym);
-> +	}
-> +
-> +	hash_init(symbol_addrs);
-> +	hash_init(symbol_names);
-> +}
+On Mon, Oct 21, 2024 at 5:23=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Mon, Oct 21, 2024 at 01:17:23PM +0000, Alice Ryhl wrote:
+> [...]
+> > +///
+> > +/// A global mutex used to protect all instances of a given struct.
+> > +///
+> > +/// ```
+> > +/// # mod ex {
+> > +/// # use kernel::prelude::*;
+> > +/// kernel::sync::global_lock! {
+> > +///     // SAFETY: Initialized in module initializer before first use.
+> > +///     unsafe(uninit) static MY_MUTEX: Mutex<(), Guard =3D MyGuard, L=
+ockedBy =3D LockedByMyMutex> =3D ();
+>
+> Thanks! This looks much better now ;-)
+>
+> But I still want to get rid of "LockedBy=3D", so I've tried and seems it
+> works, please see the below diff on top of your patch, I think it's
+> better because:
+>
+> * Users don't to pick up the names for the locked_by type ;-)
+> * It moves a significant amount of code out of macros.
+> * By having:
+>
+>     struct MyStruct {
+>         my_counter: GlobalLockedBy<MyGuard, u32>,
+>     }
+>
+>   , it's much clear for users to see which guard is used to protected
+>   `my_counter`.
+>
+> I prefer this way. Any concern about doing this?
 
-I had some minor comment about adjusting the name of function
-symbol_print_versions() and possibly changing sym->name to 'char *' on
-the v2 of the patch:
-https://lore.kernel.org/all/286b1cc5-1757-4f0a-bb66-0875f4608c7e@suse.com/
-Please have a look, it seems it felt through the cracks.
+I think I came up with an even better way of doing it. The macro can
+generate a dummy token type for the global lock, and then we can have
+three types: GlobalLock<T>, GlobalGuard<T>, GlobalLockedBy<T> that are
+all generic over the token type. The token type is an empty enum with
+no contents, but implements an unsafe trait saying that there's only
+one static using it.
 
-In any case, the patch looks ok to me, feel free to add:
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+This way we also do not need the helper module, as we no longer need
+to generate a struct with private fields.
 
--- 
-Thanks,
-Petr
+Alice
