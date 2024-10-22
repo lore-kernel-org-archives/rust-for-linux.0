@@ -1,119 +1,211 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91B19DF4A
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 12:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC58819ABD1
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 13:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729601196; cv=none; b=gwEawuO4KsmXFTpVJwgaBW438S2kRaW6ju3JW48HQhp1uzTRhEmDqawcLfyKt+au5Z/iQkAEb3pspbKOsziQXS1y4BpL/1Wn2i7zXZrWWtMpa2W54WSzcsghg2UL2uNEnHARFT/cOE2nyBLcHCrRQWoisB1F2qB8bkQjuIm8jKU=
+	t=1729602882; cv=none; b=PRm0scX65vdov+5qH5Plinc32u6Z6RUBzSvOKuKLN54Z27pP6N3t5JFjRq3yfYI0a5uI342q8ODk1zTLjtz19uBrs26G3+1DWUg0Mr3uHcBxRk7OYyB7pM7b9l4GiTJcEohKNNDeqv5e+5CjuL1hseBoLPE70OvSDx40kZJIjWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729601196; c=relaxed/simple;
-	bh=Vx2h3v1y9ITGYk/4YqnyyI5UsVK+4L4HjGCwI5LwPHs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kLmmw0cIi481cb9yokUTNwRzJ1lXvJdSDRJZussQN+VywXJROEI0JyjgWBQsdTbN0JWcoEtnxqXLu4N0qzOg70Lg/UeFIAPmHJ0zJU/DSf5zWBNIHT/ob9TwnC+CtBcDDaEHUaNkwi9BY3E6Wq4JBxiR8Xgr5XT4yqwONQX9TCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tSu5DL4S; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1729602882; c=relaxed/simple;
+	bh=bzYa45NCqnTORazHFkLQGM6CgtEUVNWRvkcY6jTZj4o=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WhzQR+BhbStqQOEX0DRgpken2IyyZqmkYkkmpLNYQ7nMzZsyOwFnaDaW12WgsUqllN3RQlz/U/V8cBaOUF9Oa7TaE/wDVXtNFfJtLuZAwoI4KBwScsHJTInWEx0I5qjs4KwWH8hpUQtM4AFSQAW9FKp+UFoqmr+xBXfKITlJIqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VxS1N5eg; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tSu5DL4S"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so5378742f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 05:46:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VxS1N5eg"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4314c6ca114so45014385e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Oct 2024 06:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729601193; x=1730205993; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hWt1QgZ+k4yosJJFZ2Lxkp6vi2dnYByQlfBoj3HTnos=;
-        b=tSu5DL4Sgi1wuZnTAchlavyWjcSuIdk4FcneJ/j7h4kOGNpCsEV+5rttVTtHR6stH6
-         2ZMYvZ4KKnTjAVxCeooBJZqFjUTb/ffO9PDMI+vfEMF91RQCh0tSRqY2917s0OHyIT3q
-         f//i28yJEGMyBlUh1ShQFPHVJYzUnp0TBmnmyTsSfSDzDwFW1qJwneJCagllbpkNr0xl
-         ZeCqpDKrXn7g5PvRCkBDRZr2xxsjxeWom063Ym8EbllT7UthVtb2JrK0qTPuRIMTbE/q
-         w+ecVxMs418SQZ6gQdZsmI4bq3edRKxnaC+7kVs96dnfplgG6R0QIL9EQanMkOzXyH1u
-         Ekdw==
+        d=google.com; s=20230601; t=1729602879; x=1730207679; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FRAykP1fNNvIzFYLduUZiWTcjJefEob5v3W2FI1wTa4=;
+        b=VxS1N5eg16RDv2J7hGy1mLeapVRLh/Bdf9+kDjf/FWhKdO2OtaCICqtQRlCi2bXhs3
+         w9a6AZ1Qgw3E2gEtLkgcK5jXC5VbF8SdZUfx01WPgs7u7Opu17AbFtf+2PenefhWmXqx
+         q02VxNGm+7mlZoIt0/kIxKrsxSwaAlRGCjv66j9fStfyxkne3x9sqpcOI4uUaQdpj7BJ
+         oJVKq9Bu010JXDJIeFltxvpBbUlF2HS0cgwNrF0neQjpzNyn8rPS9q+31jDg1UkOHWrH
+         xcf/oA0MfiXX2hr1ufdE+J+sQW7tdS+LCkQXy1e7zLgM7DX1DMRZl3U2Lt0oqeizpluj
+         GvVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729601193; x=1730205993;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hWt1QgZ+k4yosJJFZ2Lxkp6vi2dnYByQlfBoj3HTnos=;
-        b=fdpNQiSkeHsHldk6x5Him/l+AKWeAO+4FrrwG7YIjIfaeLNicxY/9sBEupyFgUc5Ij
-         kDhWO25qIFk0rJyKnoywk8lGoPD6iJ8TIX/FDlgKeGmfXaY6JPW8nqVyt9ZDxVg7hqHz
-         0litldBvuRFxF+dPwwI7ZWuaULETQKMiMR2c98oG7e8lTCtBKcFbaxspmX8zOD5F0u19
-         MXppiQC9S8XZAuo5Ku6zSyMAJrodSm/Iy6G70xKDMD0c8X0IwSabwU0Ceq2OdoxXFH05
-         WWQQGi+kaGWdCjaS3mwbWGAQcNX711qnfs9k7JI9dfvS3lgH4s14owkHGy7lBg5g2331
-         TCXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmmtUZUHRwAQ9bZGpbNlksZleindrK6Wi4i2RfRV0BlUswZyQdUl4txDyOsvFlZTAK8ASfyI4ZTPGbOoiNlg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCDqaC+lLGXBnbg8W+eq2BgQy51Iuf7hxRHSXEM9q92N9NK1RR
-	ZkeNiZI7RY5YzFL1KceKXkU/C/XdAj+Mgb/VlE96kLt/oXlziV/9XHExSbem/9hfKAbyjBEb8Oq
-	d9nfzCUzjoTKDFhDjYZ/LXFSBzgSlmXuaakrf
-X-Google-Smtp-Source: AGHT+IHHrb1ZvDYKv4j0/c2a3JEmXpHadHXvk776QJ9rlhtlmkBkz9Vi+wH6TGQLWMsWaJaZ1alAT7TfAiJDX888U4w=
-X-Received: by 2002:adf:f9d0:0:b0:37c:cfa4:d998 with SMTP id
- ffacd0b85a97d-37eb4768898mr12672840f8f.49.1729601193295; Tue, 22 Oct 2024
- 05:46:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729602879; x=1730207679;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FRAykP1fNNvIzFYLduUZiWTcjJefEob5v3W2FI1wTa4=;
+        b=tTRfMdiwPJcxajS/qbEg4tyTB8IT6B0ewCR++ALUlC+A4GVdfUfqI66V5KcaGfjy5f
+         NwiVtmtjfVbG0w2eOm6PsIJaSHVjK1Z3xesPQTEecYOgbA5HkgKf7I6SpeGliEGaqHvM
+         HINHG7h76NgCxbMXSjcfXeE5HmjeLIf+vJvZHtp5Pm+kUJgUsFzA4F8I8lNoXTs7n8sN
+         wEuB7HdaevRmC+bcLwAuKlM7MVVqqP6M5gZeq0joQhOh56TV9/cp/nch2a1cOx59eDbQ
+         48P6HzA7g6BZnSOutSpBwXipx1eMscibMuCbvMrLZaGfiiP93my5j6JDWNfLxR0KtKbN
+         NPcw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzzSp51Mu78Mep9wA8tduLVvzkPwOXuNAwEwdqXWx6QgO80t0UjetIG1TLQ2et5Paaom+I5sNSRRZ+SD1MHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0NVMZ2Yf6U8VzicKp2vp66TGYQBoueUSGNuJHc7vCyaBJ0vL9
+	wBdqVp2QXQNliQQ3gKo3z/xM5LUeUFdzguJNHTg/8JlY2LU6Th6JerjedrnfHRM5w8uydHIKAsk
+	96Cy+iyfT2dnWBg==
+X-Google-Smtp-Source: AGHT+IFcqWhJUXiZ+rZ/V741zsPMrG2CvyVlgjMZLkwXlzhjncAltLOLeJDXI64RvetcvYdkLvACS6viaCgQRDE=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:600c:255:b0:431:3ba7:7854 with SMTP
+ id 5b1f17b1804b1-431615b82edmr519905e9.0.1729602879107; Tue, 22 Oct 2024
+ 06:14:39 -0700 (PDT)
+Date: Tue, 22 Oct 2024 13:14:13 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241021-static-mutex-v5-1-8d118a6a99b7@google.com> <ZxZxzjEaSZ8e_6mn@boqun-archlinux>
-In-Reply-To: <ZxZxzjEaSZ8e_6mn@boqun-archlinux>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIACSlF2cC/x2MywoCMQwAf6XkbKCP7Qr+ingIbbqbg1UafEDZf
+ zd4nGGYCcpDWOHiJgx+i8qjG4STg7JT3xilGkP0cQk+RryLlmphYXx1pcb4odGxyRfbOWWfMq0 5BLDBc7Dp//x6O44fT/hL3WwAAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4553; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=bzYa45NCqnTORazHFkLQGM6CgtEUVNWRvkcY6jTZj4o=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnF6UqAKf9A2qfrFBy87/C7ylF9u/jbGKpGNj/K
+ lr0mAkYWHeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZxelKgAKCRAEWL7uWMY5
+ Rnu/EACUHXj1gYSEHGrd5wJArXWLMfyyKdkuvDvPNGREdQKqWJjVuhy1fgUN6aqm7xenYMDDCUl
+ l+k1xTusz/+FEdjgLcb9HYkuvuCBE6sl8BLNlpe+PwLHIAa54hnEEWzSm2Bx8370alpPhyQrYxE
+ sS4tT+g/lTUj1FpaTRI1RgCs9bp4q2UEj7MOQnwSZHHREAfBEZHJHsFHCR7s0XRPF2q8RoiWmSf
+ 2Y8pK8bERSWvXvTz9mUvW4VNpmyeD7+gc+veLgJY6bf5iqvdTO1ML4WEGR9dTz9mh9Y92VLh5JW
+ /4HrQjFkpMvs4/zJ3lhJma9vHtvpTrkOwbbQS0X0xGatGNBbZmQJcJogPFyFMsN04YzkEg8G3NI
+ 7tANuPgmXxNgQE00leptSEm5r/sbE1R4gZoxIa+D1DTxi873C098PBZx9f1nPXO/OZZWpWhpTvM
+ OK8PYWn6QNsdoytnGRU9M0bGNIg0irNOIINRB1MscHDlKADfQD6DdXzDlms0/FdRjvu2LTTdezs
+ vUF43O2QMr5wG4GnkR41WrGB3H/DN9fh6VyCZsn0cgTzlmArisQy4oiOX1Q2xUzB/FVZfQT/EsK
+ 44ku4oyUyQzl3UNfSnkkD3dqUo8JOkU7n7iJe7sHdtqhP4K8IxTek+0nLWcdzeYW6NEJmPoI7YG sDIKOw5fpoOOnmA==
+X-Mailer: b4 0.13.0
+Message-ID: <20241022-miscdevice-unsafe-warn-fix-v1-1-a78fde1740d6@google.com>
+Subject: [PATCH] rust: miscdevice: add missing safety comments
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 22 Oct 2024 14:46:19 +0200
-Message-ID: <CAH5fLgg=Hb5NDaQQJW4SVh+hCj51bp+BzCMQs=Pg_L+_MMiZgA@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: add global lock support
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Oct 21, 2024 at 5:23=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Mon, Oct 21, 2024 at 01:17:23PM +0000, Alice Ryhl wrote:
-> [...]
-> > +///
-> > +/// A global mutex used to protect all instances of a given struct.
-> > +///
-> > +/// ```
-> > +/// # mod ex {
-> > +/// # use kernel::prelude::*;
-> > +/// kernel::sync::global_lock! {
-> > +///     // SAFETY: Initialized in module initializer before first use.
-> > +///     unsafe(uninit) static MY_MUTEX: Mutex<(), Guard =3D MyGuard, L=
-ockedBy =3D LockedByMyMutex> =3D ();
->
-> Thanks! This looks much better now ;-)
->
-> But I still want to get rid of "LockedBy=3D", so I've tried and seems it
-> works, please see the below diff on top of your patch, I think it's
-> better because:
->
-> * Users don't to pick up the names for the locked_by type ;-)
-> * It moves a significant amount of code out of macros.
-> * By having:
->
->     struct MyStruct {
->         my_counter: GlobalLockedBy<MyGuard, u32>,
->     }
->
->   , it's much clear for users to see which guard is used to protected
->   `my_counter`.
->
-> I prefer this way. Any concern about doing this?
+This fixes the following four warnings:
 
-I think I came up with an even better way of doing it. The macro can
-generate a dummy token type for the global lock, and then we can have
-three types: GlobalLock<T>, GlobalGuard<T>, GlobalLockedBy<T> that are
-all generic over the token type. The token type is an empty enum with
-no contents, but implements an unsafe trait saying that there's only
-one static using it.
+	warning: unsafe block missing a safety comment
+	   --> /home/aliceryhl/rust-for-linux/rust/kernel/miscdevice.rs:168:15
+	    |
+	168 |             ..unsafe { MaybeUninit::zeroed().assume_init() }
+	    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	    |
+	    = help: consider adding a safety comment on the preceding line
+	    = help: for further information visit
+	      https://rust-lang.github.io/rust-clippy/master/index.html#undocumented_unsafe_blocks
+	    = note: requested on the command line with `-W clippy::undocumented-unsafe-blocks`
 
-This way we also do not need the helper module, as we no longer need
-to generate a struct with private fields.
+	warning: unsafe function's docs are missing a `# Safety` section
+	   --> /home/aliceryhl/rust-for-linux/rust/kernel/miscdevice.rs:175:1
+	    |
+	175 | / unsafe extern "C" fn fops_open<T: MiscDevice>(
+	176 | |     inode: *mut bindings::inode,
+	177 | |     file: *mut bindings::file,
+	178 | | ) -> c_int {
+	    | |__________^
+	    |
+	    = help: for further information visit
+	      https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+	    = note: `-W clippy::missing-safety-doc` implied by `-W clippy::all`
+	    = help: to override `-W clippy::all` add `#[allow(clippy::missing_safety_doc)]`
 
-Alice
+	warning: unsafe function's docs are missing a `# Safety` section
+	   --> /home/aliceryhl/rust-for-linux/rust/kernel/miscdevice.rs:196:1
+	    |
+	196 | / unsafe extern "C" fn fops_release<T: MiscDevice>(
+	197 | |     _inode: *mut bindings::inode,
+	198 | |     file: *mut bindings::file,
+	199 | | ) -> c_int {
+	    | |__________^
+	    |
+	    = help: for further information visit
+	      https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+
+	warning: unsafe function's docs are missing a `# Safety` section
+	   --> /home/aliceryhl/rust-for-linux/rust/kernel/miscdevice.rs:210:1
+	    |
+	210 | / unsafe extern "C" fn fops_ioctl<T: MiscDevice>(
+	211 | |     file: *mut bindings::file,
+	212 | |     cmd: c_uint,
+	213 | |     arg: c_ulong,
+	214 | | ) -> c_long {
+	    | |___________^
+	    |
+	    = help: for further information visit
+	      https://rust-lang.github.io/rust-clippy/master/index.html#missing_safety_doc
+
+Note that these warnings are currently not enabled in the build, but
+rust-next contains a commit that will enable them, so we should fix
+them.
+
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/miscdevice.rs | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index 50885fb511bf..7e2a79b3ae26 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -165,6 +165,7 @@ impl<T: MiscDevice> VtableHelper<T> {
+             } else {
+                 None
+             },
++            // SAFETY: All zeros is a valid value for `bindings::file_operations`.
+             ..unsafe { MaybeUninit::zeroed().assume_init() }
+         };
+     }
+@@ -172,6 +173,10 @@ impl<T: MiscDevice> VtableHelper<T> {
+     &VtableHelper::<T>::VTABLE
+ }
+ 
++/// # Safety
++///
++/// `file` and `inode` must be the file and inode for a file that is undergoing initialization.
++/// The file must be associated with a `MiscDeviceRegistration<T>`.
+ unsafe extern "C" fn fops_open<T: MiscDevice>(
+     inode: *mut bindings::inode,
+     file: *mut bindings::file,
+@@ -193,6 +198,10 @@ impl<T: MiscDevice> VtableHelper<T> {
+     0
+ }
+ 
++/// # Safety
++///
++/// `file` and `inode` must be the file and inode for a file that is being released. The file must
++/// be associated with a `MiscDeviceRegistration<T>`.
+ unsafe extern "C" fn fops_release<T: MiscDevice>(
+     _inode: *mut bindings::inode,
+     file: *mut bindings::file,
+@@ -207,6 +216,9 @@ impl<T: MiscDevice> VtableHelper<T> {
+     0
+ }
+ 
++/// # Safety
++///
++/// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
+ unsafe extern "C" fn fops_ioctl<T: MiscDevice>(
+     file: *mut bindings::file,
+     cmd: c_uint,
+@@ -223,6 +235,9 @@ impl<T: MiscDevice> VtableHelper<T> {
+     }
+ }
+ 
++/// # Safety
++///
++/// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
+ #[cfg(CONFIG_COMPAT)]
+ unsafe extern "C" fn fops_compat_ioctl<T: MiscDevice>(
+     file: *mut bindings::file,
+
+---
+base-commit: 4f94fbb8848c4d2bc5260045ed66907b1bf520fd
+change-id: 20241022-miscdevice-unsafe-warn-fix-f735035a6511
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
