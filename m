@@ -1,365 +1,860 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338A2E56A;
-	Wed, 23 Oct 2024 14:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFBA1C727F
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 14:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693437; cv=none; b=JzN5edASNXQWhWPqTa/UVPlP39E1z5uKO8eBUOwzxHxgGDGcOxPtAMAEuRU87oyw6OLGDI3lr7NATEMrRsqTFSCy9Hppom9iUIvUsJ2vQe8HU9f0uf+3rW0j3XDuY/zVuCqesoUNliyJntxIo1eNthoI4p0jyFFQV+1bQIfVs1E=
+	t=1729695233; cv=none; b=CwUpZajuTwYltH0YpWMjzE4cQG8qjZ20LE0ptpRHxq4lRZy5A36EapJav5Ge/O7tC2sF1m0akBC3LZyUAxESP/l5zxScLweiYhPT0wa+rxIwKNT2OmM/BXBI4BWRenCpcv3Wsp7Eevchrxihk5s9KTq7LDb42ygvgacI/P53UQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693437; c=relaxed/simple;
-	bh=GSKWRm7+KiJmw4ntv/ripLnaQt+ggFemxRWiNQsqGxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ow0sscsGboOaTybcLhDdolgjAT9QTi3h43EdssV8TijEks0P1HOdH6lnVs/QntkcMgutVFK0A0FfiwFCPgr2gPJpRAuL57K8GsemQ+rMjuiHnIFkRFSWSuF2Etf6ECfHkp/i4ELzD7Vu/Dd4iC82UNhILZZg3CMX0Obmq9nxkDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+PoQIej; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729695233; c=relaxed/simple;
+	bh=fq1WBOzKmWadz/K9QCVkFZouQxPhg6etL3AtWeqx8EA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uCrl66tmj/vuh3uUGLUakNMVebxbwFNMENwkGL846lIH0za/6AoSlDPooD0umloFVHc3ouGWiAgnGeGl1P8z2dD3qp0crDtdaCAeq6RkI7Wcrt1gg94f10Pn5EvxfaobX+Uf9QyOkCGBqcqfFrjFs5QdTcwIFbgQdv16xnk6D+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LTQeAvdb; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+PoQIej"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55A9C4CEC6;
-	Wed, 23 Oct 2024 14:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729693436;
-	bh=GSKWRm7+KiJmw4ntv/ripLnaQt+ggFemxRWiNQsqGxE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K+PoQIejVNC+d9UpeYu7lvUT1gGdGf7SMf24VgTMpN7DTaZQtFFjOK6K5xBp7Qv8T
-	 NnMtirHIDUQKrSGNtQcnmtXv1u2sve41YM4ABKHqUdz4N9GCgDK3a++h4gpdoB/v/g
-	 hRPc9dE6yE0aBVtH+utpIv4XZlufsTUnCytk6fj3HThNpjYtrJL7fiuiubn0FUEI/9
-	 rRcBS0tr23alae5QSUI4Mc5SoDuY7Lp6ZEsghKg9OMMMcfFW5RMYZ6arNxlUbLmmS7
-	 dLCuJtC5f0IxqZ+PM/Kyh2ECUDMEYEna9EBx4vXzoCjGP8bR3eQVhnQkqpvhyQxEtM
-	 gwBipMQxMzFfg==
-Date: Wed, 23 Oct 2024 09:23:55 -0500
-From: Rob Herring <robh@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
- driver abstractions
-Message-ID: <20241023142355.GA623906-robh@kernel.org>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-16-dakr@kernel.org>
- <20241022234712.GB1848992-robh@kernel.org>
- <ZxibWpcswZxz5A07@pollux>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LTQeAvdb"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9a850270e2so726722466b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 07:53:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1729695229; x=1730300029; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZnJRDe4vtquZV6ROMDiYOzyrBKItBdUGEm89puOpFCk=;
+        b=LTQeAvdbABFF5U8ZxFssgfy6eJmsV+PjHi5E3F5npjtf5KjSJfo4Ys/NETrFflsZoh
+         RbtrMU1FWGOhJ+6uSyCy+wFcolNv7nK1jTDnFSSSZDaPrLWsEkXQUkXdx1VT6DFiIFJB
+         WPTBLHa8/9UrmwroXoT7azhdanUW6HDocalJKFOhzFOBQ+WU/IsGdxshMzPlK1/JvDsN
+         T9pr9wVNK5+L0YgSK/rcrP8LQl5u2c0RMyguZuq+pCvkD4GvNI6ZwIUKuDUCt6GHXFGz
+         wEL1ozWIWyNO9sGwtWWuHolFnMshh17eNU8f7T0i7h0PMB6iw9DXk7k1G7CvD4l6y+Ki
+         o1QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729695229; x=1730300029;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZnJRDe4vtquZV6ROMDiYOzyrBKItBdUGEm89puOpFCk=;
+        b=bLAC7+AoETa6UeirfHigvCeM4dE82osTZo0ZH+x4sMHkNArq9OI5LBxuvCv5o8VlXd
+         FbbIGPsFeoQXMpFpJPf3gS++XIc5D01k59GHRsU0T0Nbstn59VEr+tWcYmAlAXr27Wp3
+         rsI4mk+M8jjfOCCC4oqGAvDPIO4UcVCsln69J8bwzS7Dbrf85S0GTwWpYetxDU/onlkT
+         qTybcKzuBoV76CHk23tKxswgErAKmCSyUSlMHF8Y/HyxQIgR2xohhaWm7tT5qLBbVMlV
+         458yYT1sh4iq40wwu4OL4TicXr4hjdrJRNMoV5HFV0n0jUf1GHUDHJR2EmW7JP/eWlSs
+         oxTA==
+X-Forwarded-Encrypted: i=1; AJvYcCUefnHc8+4TPlDhbmiCnsC+kSqdPefodAktEg4x56yLE+3MsilTP3RZeuuQLsz3mFcBmNcTk05h7ULc7h+YUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywmrax86cwgQvj2Qikrksx7/A8CM1ZnOvjldVPCz8/It0K0Sp8X
+	x8z91xfGI8gpijUWRVPR04L9KseI6ciww1sxgqBhIeHFYK9kctpdmVuBeS+bMok=
+X-Google-Smtp-Source: AGHT+IHLhU8h/AmdBXRqSVrFOtK+xOFG7k6XctnaXWr0jE6dDoeiEsr1mfrcYRck732QWZPcQ1U9OA==
+X-Received: by 2002:a17:907:7296:b0:a99:46ff:f4e6 with SMTP id a640c23a62f3a-a9abf96f10bmr262136566b.61.1729695228327;
+        Wed, 23 Oct 2024 07:53:48 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912f7c1csm483572866b.88.2024.10.23.07.53.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 07:53:48 -0700 (PDT)
+Message-ID: <55549683-2453-4b67-a380-8ace34b3a06d@suse.com>
+Date: Wed, 23 Oct 2024 16:53:46 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZxibWpcswZxz5A07@pollux>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 15/19] gendwarfksyms: Add support for reserved and
+ ignored fields
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
+ Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+ Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
+ Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20241008183823.36676-21-samitolvanen@google.com>
+ <20241008183823.36676-36-samitolvanen@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20241008183823.36676-36-samitolvanen@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 23, 2024 at 08:44:42AM +0200, Danilo Krummrich wrote:
-> On Tue, Oct 22, 2024 at 06:47:12PM -0500, Rob Herring wrote:
-> > On Tue, Oct 22, 2024 at 11:31:52PM +0200, Danilo Krummrich wrote:
-> > > Implement the basic platform bus abstractions required to write a basic
-> > > platform driver. This includes the following data structures:
-> > > 
-> > > The `platform::Driver` trait represents the interface to the driver and
-> > > provides `pci::Driver::probe` for the driver to implement.
-> > > 
-> > > The `platform::Device` abstraction represents a `struct platform_device`.
-> > > 
-> > > In order to provide the platform bus specific parts to a generic
-> > > `driver::Registration` the `driver::RegistrationOps` trait is implemented
-> > > by `platform::Adapter`.
-> > > 
-> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > ---
-> > >  MAINTAINERS                     |   1 +
-> > >  rust/bindings/bindings_helper.h |   1 +
-> > >  rust/helpers/helpers.c          |   1 +
-> > >  rust/helpers/platform.c         |  13 ++
-> > >  rust/kernel/lib.rs              |   1 +
-> > >  rust/kernel/platform.rs         | 217 ++++++++++++++++++++++++++++++++
-> > >  6 files changed, 234 insertions(+)
-> > >  create mode 100644 rust/helpers/platform.c
-> > >  create mode 100644 rust/kernel/platform.rs
-> > > 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 87eb9a7869eb..173540375863 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -6985,6 +6985,7 @@ F:	rust/kernel/device.rs
-> > >  F:	rust/kernel/device_id.rs
-> > >  F:	rust/kernel/devres.rs
-> > >  F:	rust/kernel/driver.rs
-> > > +F:	rust/kernel/platform.rs
-> > >  
-> > >  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
-> > >  M:	Nishanth Menon <nm@ti.com>
-> > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > > index 312f03cbdce9..217c776615b9 100644
-> > > --- a/rust/bindings/bindings_helper.h
-> > > +++ b/rust/bindings/bindings_helper.h
-> > > @@ -18,6 +18,7 @@
-> > >  #include <linux/of_device.h>
-> > >  #include <linux/pci.h>
-> > >  #include <linux/phy.h>
-> > > +#include <linux/platform_device.h>
-> > >  #include <linux/refcount.h>
-> > >  #include <linux/sched.h>
-> > >  #include <linux/slab.h>
-> > > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > > index 8bc6e9735589..663cdc2a45e0 100644
-> > > --- a/rust/helpers/helpers.c
-> > > +++ b/rust/helpers/helpers.c
-> > > @@ -17,6 +17,7 @@
-> > >  #include "kunit.c"
-> > >  #include "mutex.c"
-> > >  #include "page.c"
-> > > +#include "platform.c"
-> > >  #include "pci.c"
-> > >  #include "rbtree.c"
-> > >  #include "rcu.c"
-> > > diff --git a/rust/helpers/platform.c b/rust/helpers/platform.c
-> > > new file mode 100644
-> > > index 000000000000..ab9b9f317301
-> > > --- /dev/null
-> > > +++ b/rust/helpers/platform.c
-> > > @@ -0,0 +1,13 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +#include <linux/platform_device.h>
-> > > +
-> > > +void *rust_helper_platform_get_drvdata(const struct platform_device *pdev)
-> > > +{
-> > > +	return platform_get_drvdata(pdev);
-> > > +}
-> > > +
-> > > +void rust_helper_platform_set_drvdata(struct platform_device *pdev, void *data)
-> > > +{
-> > > +	platform_set_drvdata(pdev, data);
-> > > +}
-> > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > > index 5946f59f1688..9e8dcd6d7c01 100644
-> > > --- a/rust/kernel/lib.rs
-> > > +++ b/rust/kernel/lib.rs
-> > > @@ -53,6 +53,7 @@
-> > >  pub mod net;
-> > >  pub mod of;
-> > >  pub mod page;
-> > > +pub mod platform;
-> > >  pub mod prelude;
-> > >  pub mod print;
-> > >  pub mod rbtree;
-> > > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> > > new file mode 100644
-> > > index 000000000000..addf5356f44f
-> > > --- /dev/null
-> > > +++ b/rust/kernel/platform.rs
-> > > @@ -0,0 +1,217 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +//! Abstractions for the platform bus.
-> > > +//!
-> > > +//! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
-> > > +
-> > > +use crate::{
-> > > +    bindings, container_of, device,
-> > > +    device_id::RawDeviceId,
-> > > +    driver,
-> > > +    error::{to_result, Result},
-> > > +    of,
-> > > +    prelude::*,
-> > > +    str::CStr,
-> > > +    types::{ARef, ForeignOwnable},
-> > > +    ThisModule,
-> > > +};
-> > > +
-> > > +/// An adapter for the registration of platform drivers.
-> > > +pub struct Adapter<T: Driver>(T);
-> > > +
-> > > +impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
-> > > +    type RegType = bindings::platform_driver;
-> > > +
-> > > +    fn register(
-> > > +        pdrv: &mut Self::RegType,
-> > > +        name: &'static CStr,
-> > > +        module: &'static ThisModule,
-> > > +    ) -> Result {
-> > > +        pdrv.driver.name = name.as_char_ptr();
-> > > +        pdrv.probe = Some(Self::probe_callback);
-> > > +
-> > > +        // Both members of this union are identical in data layout and semantics.
-> > > +        pdrv.__bindgen_anon_1.remove = Some(Self::remove_callback);
-> > > +        pdrv.driver.of_match_table = T::ID_TABLE.as_ptr();
-> > > +
-> > > +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-> > > +        to_result(unsafe { bindings::__platform_driver_register(pdrv, module.0) })
-> > > +    }
-> > > +
-> > > +    fn unregister(pdrv: &mut Self::RegType) {
-> > > +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-> > > +        unsafe { bindings::platform_driver_unregister(pdrv) };
-> > > +    }
-> > > +}
-> > > +
-> > > +impl<T: Driver + 'static> Adapter<T> {
-> > > +    fn id_info(pdev: &Device) -> Option<&'static T::IdInfo> {
-> > > +        let table = T::ID_TABLE;
-> > > +        let id = T::of_match_device(pdev)?;
-> > > +
-> > > +        Some(table.info(id.index()))
-> > > +    }
-> > > +
-> > > +    extern "C" fn probe_callback(pdev: *mut bindings::platform_device) -> core::ffi::c_int {
-> > > +        // SAFETY: The platform bus only ever calls the probe callback with a valid `pdev`.
-> > > +        let dev = unsafe { device::Device::from_raw(&mut (*pdev).dev) };
-> > > +        // SAFETY: `dev` is guaranteed to be embedded in a valid `struct platform_device` by the
-> > > +        // call above.
-> > > +        let mut pdev = unsafe { Device::from_dev(dev) };
-> > > +
-> > > +        let info = Self::id_info(&pdev);
-> > > +        match T::probe(&mut pdev, info) {
-> > > +            Ok(data) => {
-> > > +                // Let the `struct platform_device` own a reference of the driver's private data.
-> > > +                // SAFETY: By the type invariant `pdev.as_raw` returns a valid pointer to a
-> > > +                // `struct platform_device`.
-> > > +                unsafe { bindings::platform_set_drvdata(pdev.as_raw(), data.into_foreign() as _) };
-> > > +            }
-> > > +            Err(err) => return Error::to_errno(err),
-> > > +        }
-> > > +
-> > > +        0
-> > > +    }
-> > > +
-> > > +    extern "C" fn remove_callback(pdev: *mut bindings::platform_device) {
-> > > +        // SAFETY: `pdev` is a valid pointer to a `struct platform_device`.
-> > > +        let ptr = unsafe { bindings::platform_get_drvdata(pdev) };
-> > > +
-> > > +        // SAFETY: `remove_callback` is only ever called after a successful call to
-> > > +        // `probe_callback`, hence it's guaranteed that `ptr` points to a valid and initialized
-> > > +        // `KBox<T>` pointer created through `KBox::into_foreign`.
-> > > +        let _ = unsafe { KBox::<T>::from_foreign(ptr) };
-> > > +    }
-> > > +}
-> > > +
-> > > +/// Declares a kernel module that exposes a single platform driver.
-> > > +///
-> > > +/// # Examples
-> > > +///
-> > > +/// ```ignore
-> > > +/// kernel::module_platform_driver! {
-> > > +///     type: MyDriver,
-> > > +///     name: "Module name",
-> > > +///     author: "Author name",
-> > > +///     description: "Description",
-> > > +///     license: "GPL v2",
-> > > +/// }
-> > > +/// ```
-> > > +#[macro_export]
-> > > +macro_rules! module_platform_driver {
-> > > +    ($($f:tt)*) => {
-> > > +        $crate::module_driver!(<T>, $crate::platform::Adapter<T>, { $($f)* });
-> > > +    };
-> > > +}
-> > > +
-> > > +/// IdTable type for platform drivers.
-> > > +pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<of::DeviceId, T>;
-> > > +
-> > > +/// The platform driver trait.
-> > > +///
-> > > +/// # Example
-> > > +///
-> > > +///```
-> > > +/// # use kernel::{bindings, c_str, of, platform};
-> > > +///
-> > > +/// struct MyDriver;
-> > > +///
-> > > +/// kernel::of_device_table!(
-> > > +///     OF_TABLE,
-> > > +///     MODULE_OF_TABLE,
-> > > +///     <MyDriver as platform::Driver>::IdInfo,
-> > > +///     [
-> > > +///         (of::DeviceId::new(c_str!("redhat,my-device")), ())
-> > 
-> > All compatible strings have to be documented as do vendor prefixes and 
-> > I don't think "redhat" is one. An exception is you can use 
-> > "test,<whatever>" and not document it.
+On 10/8/24 20:38, Sami Tolvanen wrote:
+> Distributions that want to maintain a stable kABI need the ability
+> to make ABI compatible changes to kernel data structures without
+> affecting symbol versions, either because of LTS updates or backports.
 > 
-> Yeah, I copied that from the sample driver, where it's probably wrong too.
+> With genksyms, developers would typically hide these changes from
+> version calculation with #ifndef __GENKSYMS__, which would result
+> in the symbol version not changing even though the actual type has
+> changed.  When we process precompiled object files, this isn't an
+> option.
 > 
-> I guess "vendor,device" would be illegal as well?
-
-Yes.
-
-> > There's a check for undocumented compatibles. I guess I'll have to add 
-> > rust parsing to it...
-> > 
-> > BTW, how do you compile this code in the kernel? 
+> Change union processing to recognize field name prefixes that allow
+> the user to ignore the union completely during symbol versioning with
+> a __kabi_ignored prefix in a field name, or to replace the type of a
+> placeholder field using a __kabi_reserved field name prefix.
 > 
-> You mean this example? It gets compiled as a KUnit doctest, but it obvously
-> doesn't execute anything, so it's a compile only test.
-
-Yes. That's a question for my own education.
-
-> > 
-> > > +///     ]
-> > > +/// );
-> > > +///
-> > > +/// impl platform::Driver for MyDriver {
-> > > +///     type IdInfo = ();
-> > > +///     const ID_TABLE: platform::IdTable<Self::IdInfo> = &OF_TABLE;
-> > > +///
-> > > +///     fn probe(
-> > > +///         _pdev: &mut platform::Device,
-> > > +///         _id_info: Option<&Self::IdInfo>,
-> > > +///     ) -> Result<Pin<KBox<Self>>> {
-> > > +///         Err(ENODEV)
-> > > +///     }
-> > > +/// }
-> > > +///```
-> > > +/// Drivers must implement this trait in order to get a platform driver registered. Please refer to
-> > > +/// the `Adapter` documentation for an example.
-> > > +pub trait Driver {
-> > > +    /// The type holding information about each device id supported by the driver.
-> > > +    ///
-> > > +    /// TODO: Use associated_type_defaults once stabilized:
-> > > +    ///
-> > > +    /// type IdInfo: 'static = ();
-> > > +    type IdInfo: 'static;
-> > > +
-> > > +    /// The table of device ids supported by the driver.
-> > > +    const ID_TABLE: IdTable<Self::IdInfo>;
-
-Another thing. I don't think this is quite right. Well, this part is 
-fine, but assigning the DT table to it is not. The underlying C code has 
-2 id tables in struct device_driver (DT and ACPI) and then the bus 
-specific one in the struct ${bus}_driver.
-
-> > > +
-> > > +    /// Platform driver probe.
-> > > +    ///
-> > > +    /// Called when a new platform device is added or discovered.
-> > > +    /// Implementers should attempt to initialize the device here.
-> > > +    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>>;
-> > > +
-> > > +    /// Find the [`of::DeviceId`] within [`Driver::ID_TABLE`] matching the given [`Device`], if any.
-> > > +    fn of_match_device(pdev: &Device) -> Option<&of::DeviceId> {
-> > 
-> > Is this visible to drivers? It shouldn't be.
+> For example, assume we want to add a new field to an existing
+> alignment hole in a data structure, and ignore the new field when
+> calculating symbol versions:
 > 
-> Yeah, I think we should just remove it. Looking at struct of_device_id, it
-> doesn't contain any useful information for a driver. I think when I added this I
-> was a bit in "autopilot" mode from the PCI stuff, where struct pci_device_id is
-> useful to drivers.
+>   struct struct1 {
+>     int a;
+>     /* a 4-byte alignment hole */
+>     unsigned long b;
+>   };
+> 
+> To add `int n` to the alignment hole, we can add a union that includes
+> a __kabi_ignored field that causes gendwarfksyms to ignore the entire
+> union:
+> 
+>   struct struct1 {
+>     int a;
+>     union {
+>       char __kabi_ignored_0;
+>       int n;
+>     };
+>     unsigned long b;
+>   };
+> 
+> With --stable, both structs produce the same symbol version.
+> 
+> Alternatively, when a distribution expects future modification to a
+> data structure, they can explicitly add reserved fields:
+> 
+>   struct struct2 {
+>     long a;
+>     long __kabi_reserved_0; /* reserved for future use */
+>   };
+> 
+> To take the field into use, we can again replace it with a union, with
+> one of the fields keeping the __kabi_reserved name prefix to indicate
+> the original type:
+> 
+>   struct struct2 {
+>     long a;
+>     union {
+>       long __kabi_reserved_0;
+>       struct {
+>           int b;
+>           int v;
+>       };
+>     };
+> 
+> Here gendwarfksyms --stable replaces the union with the type of the
+> placeholder field when calculating versions.
+> 
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> Acked-by: Neal Gompa <neal@gompa.dev>
+> ---
+>  scripts/gendwarfksyms/dwarf.c             | 202 +++++++++++++++++++++-
+>  scripts/gendwarfksyms/examples/kabi.h     |  80 +++++++++
+>  scripts/gendwarfksyms/examples/kabi_ex0.c |  86 +++++++++
+>  scripts/gendwarfksyms/examples/kabi_ex1.c |  89 ++++++++++
+>  scripts/gendwarfksyms/examples/kabi_ex2.c |  98 +++++++++++
+>  scripts/gendwarfksyms/gendwarfksyms.h     |  29 ++++
+>  6 files changed, 583 insertions(+), 1 deletion(-)
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_ex0.c
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_ex1.c
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_ex2.c
+> 
+> diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
+> index b15f1a5db452..72e24140b6e3 100644
+> --- a/scripts/gendwarfksyms/dwarf.c
+> +++ b/scripts/gendwarfksyms/dwarf.c
+> @@ -308,6 +308,9 @@ static void __process_list_type(struct state *state, struct die *cache,
+>  {
+>  	const char *name = get_name_attr(die);
+>  
+> +	if (stable && is_kabi_prefix(name))
+> +		name = NULL;
+> +
+>  	process_list_comma(state, cache);
+>  	process(cache, type);
+>  	process_type_attr(state, cache, die);
+> @@ -441,11 +444,193 @@ static void process_variant_part_type(struct state *state, struct die *cache,
+>  	process(cache, "}");
+>  }
+>  
+> +static int get_kabi_status(Dwarf_Die *die)
+> +{
+> +	const char *name = get_name_attr(die);
+> +
+> +	if (is_kabi_prefix(name)) {
+> +		name += KABI_PREFIX_LEN;
+> +
+> +		if (!strncmp(name, KABI_RESERVED_PREFIX,
+> +			     KABI_RESERVED_PREFIX_LEN))
+> +			return KABI_RESERVED;
+> +		if (!strncmp(name, KABI_IGNORED_PREFIX,
+> +			     KABI_IGNORED_PREFIX_LEN))
+> +			return KABI_IGNORED;
+> +	}
+> +
+> +	return KABI_NORMAL;
+> +}
+> +
+> +static int check_struct_member_kabi_status(struct state *state,
+> +					   struct die *__unused, Dwarf_Die *die)
+> +{
+> +	int res;
+> +
+> +	if (dwarf_tag(die) != DW_TAG_member_type)
+> +		error("expected a member");
 
-TBC, you mean other than *data, right? If so, I agree. 
+Nit: If I understand the code correctly, the failed tag check here would
+indicate an error in the internal logic that should never happen, so
+a plain assert() would be more appropriate? Similarly in
+check_union_member_kabi_status().
 
-The DT type and name fields are pretty much legacy, so I don't think the 
-rust bindings need to worry about them until someone converts Sparc and 
-PowerMac drivers to rust (i.e. never).
+> +
+> +	/*
+> +	 * If the union member is a struct, expect the __kabi field to
+> +	 * be the first member of the structure, i.e..:
+> +	 *
+> +	 * union {
+> +	 * 	type new_member;
+> +	 * 	struct {
+> +	 * 		type __kabi_field;
+> +	 * 	}
+> +	 * };
+> +	 */
+> +	res = get_kabi_status(die);
+> +
+> +	if (res == KABI_RESERVED &&
+> +	    !get_ref_die_attr(die, DW_AT_type, &state->kabi.placeholder))
+> +		error("structure member missing a type?");
+> +
+> +	return res;
+> +}
+> +
+> +static int check_union_member_kabi_status(struct state *state,
+> +					  struct die *__unused, Dwarf_Die *die)
+> +{
+> +	Dwarf_Die type;
+> +	int res;
+> +
+> +	if (dwarf_tag(die) != DW_TAG_member_type)
+> +		error("expected a member");
+> +
+> +	if (!get_ref_die_attr(die, DW_AT_type, &type))
+> +		error("union member missing a type?");
+> +
+> +	/*
+> +	 * We expect a union with two members. Check if either of them
+> +	 * has a __kabi name prefix, i.e.:
+> +	 *
+> +	 * union {
+> +	 * 	...
+> +	 * 	type memberN; // <- type, N = {0,1}
+> +	 *	...
+> +	 * };
+> +	 *
+> +	 * The member can also be a structure type, in which case we'll
+> +	 * check the first structure member.
+> +	 *
+> +	 * In any case, stop processing after we've seen two members.
+> +	 */
+> +	res = get_kabi_status(die);
+> +
+> +	if (res == KABI_RESERVED)
+> +		state->kabi.placeholder = type;
+> +	if (res != KABI_NORMAL)
+> +		return res;
+> +
+> +	if (dwarf_tag(&type) == DW_TAG_structure_type)
+> +		res = checkp(process_die_container(
+> +			state, NULL, &type, check_struct_member_kabi_status,
+> +			match_member_type));
+> +
+> +	if (res <= KABI_NORMAL && ++state->kabi.members < 2)
+> +		return 0; /* Continue */
+> +
+> +	return res;
+> +}
+> +
+> +static int get_union_kabi_status(Dwarf_Die *die, Dwarf_Die *placeholder)
+> +{
+> +	struct state state;
+> +	int res;
+> +
+> +	if (!stable)
+> +		return KABI_NORMAL;
+> +
+> +	/*
+> +	 * To maintain a stable kABI, distributions may choose to reserve
+> +	 * space in structs for later use by adding placeholder members,
+> +	 * for example:
+> +	 *
+> +	 * struct s {
+> +	 * 	u32 a;
+> +	 *	// an 8-byte placeholder for future use
+> +	 * 	u64 __kabi_reserved_0;
+> +	 * };
+> +	 *
+> +	 * When the reserved member is taken into use, the type change
+> +	 * would normally cause the symbol version to change as well, but
+> +	 * if the replacement uses the following convention, gendwarfksyms
+> +	 * continues to use the placeholder type for versioning instead,
+> +	 * thus maintaining the same symbol version:
+> +	 *
+> +	 * struct s {
+> +	 * 	u32 a;
+> +	 *	union {
+> +	 * 		// placeholder replaced with a new member `b`
+> +	 * 		struct t b;
+> +	 * 		struct {
+> +	 * 			// the placeholder type that is still
+> +	 *			// used for versioning
+> +	 * 			u64 __kabi_reserved_0;
+> +	 * 		};
+> +	 * 	};
+> +	 * };
+> +	 *
+> +	 * I.e., as long as the replaced member is in a union, and the
+> +	 * placeholder has a __kabi_reserved name prefix, we'll continue
+> +	 * to use the placeholder type (here u64) for version calculation
+> +	 * instead of the union type.
+> +	 *
+> +	 * It's also possible to ignore new members from versioning if
+> +	 * they've been added to alignment holes, for example, by
+> +	 * including them in a union with another member that uses the
+> +	 * __kabi_ignored name prefix:
+> +	 *
+> +	 * struct s {
+> +	 * 	u32 a;
+> +	 *	// an alignment hole is used to add `n`
+> +	 * 	union {
+> +	 * 		u32 n;
+> +	 *		// hide the entire union member from versioning
+> +	 * 		u8 __kabi_ignored_0;
+> +	 * 	};
+> +	 * 	u64 b;
+> +	 * };
+> +	 *
+> +	 * Note that the user of this feature is responsible for ensuring
+> +	 * that the structure actually remains ABI compatible.
+> +	 */
+> +	state.kabi.members = 0;
+> +
+> +	res = checkp(process_die_container(&state, NULL, die,
+> +					   check_union_member_kabi_status,
+> +					   match_member_type));
+> +
+> +	if (placeholder && res == KABI_RESERVED)
+> +		*placeholder = state.kabi.placeholder;
+> +
+> +	return res;
+> +}
+> +
+> +static bool is_kabi_ignored(Dwarf_Die *die)
+> +{
+> +	Dwarf_Die type;
+> +
+> +	if (!stable)
+> +		return false;
+> +
+> +	if (!get_ref_die_attr(die, DW_AT_type, &type))
+> +		error("member missing a type?");
+> +
+> +	return dwarf_tag(&type) == DW_TAG_union_type &&
+> +	       checkp(get_union_kabi_status(&type, NULL)) == KABI_IGNORED;
+> +}
+> +
+>  static int ___process_structure_type(struct state *state, struct die *cache,
+>  				     Dwarf_Die *die)
+>  {
+>  	switch (dwarf_tag(die)) {
+>  	case DW_TAG_member:
+> +		if (is_kabi_ignored(die))
+> +			return 0;
+> +		return check(process_type(state, cache, die));
+>  	case DW_TAG_variant_part:
+>  		return check(process_type(state, cache, die));
+>  	case DW_TAG_class_type:
+> @@ -503,7 +688,22 @@ static void __process_structure_type(struct state *state, struct die *cache,
+>  
+>  DEFINE_PROCESS_STRUCTURE_TYPE(class)
+>  DEFINE_PROCESS_STRUCTURE_TYPE(structure)
+> -DEFINE_PROCESS_STRUCTURE_TYPE(union)
+> +
+> +static void process_union_type(struct state *state, struct die *cache,
+> +			       Dwarf_Die *die)
+> +{
+> +	Dwarf_Die placeholder;
+> +
+> +	int res = checkp(get_union_kabi_status(die, &placeholder));
+> +
+> +	if (res == KABI_RESERVED)
+> +		check(process_type(state, cache, &placeholder));
+> +	if (res > KABI_NORMAL)
+> +		return;
+> +
+> +	__process_structure_type(state, cache, die, "union_type",
+> +				 ___process_structure_type, match_all);
+> +}
+>  
+>  static void process_enumerator_type(struct state *state, struct die *cache,
+>  				    Dwarf_Die *die)
+> diff --git a/scripts/gendwarfksyms/examples/kabi.h b/scripts/gendwarfksyms/examples/kabi.h
+> index c53e8d4a7d2e..ec99c2fb9e96 100644
+> --- a/scripts/gendwarfksyms/examples/kabi.h
+> +++ b/scripts/gendwarfksyms/examples/kabi.h
+> @@ -43,6 +43,28 @@
+>  		__section(".discard.gendwarfksyms.kabi_rules") =     \
+>  			"1\0" #hint "\0" #target "\0" #value
+>  
+> +#define __KABI_NORMAL_SIZE_ALIGN(_orig, _new)                                             \
+> +	union {                                                                           \
+> +		_Static_assert(                                                           \
+> +			sizeof(struct { _new; }) <= sizeof(struct { _orig; }),            \
+> +			__FILE__ ":" __stringify(__LINE__) ": " __stringify(              \
+> +				_new) " is larger than " __stringify(_orig));             \
+> +		_Static_assert(                                                           \
+> +			__alignof__(struct { _new; }) <=                                  \
+> +				__alignof__(struct { _orig; }),                           \
+> +			__FILE__ ":" __stringify(__LINE__) ": " __stringify(              \
+> +				_orig) " is not aligned the same as " __stringify(_new)); \
+> +	}
+> +
+> +#define __KABI_REPLACE(_orig, _new)                    \
+> +	union {                                        \
+> +		_new;                                  \
+> +		struct {                               \
+> +			_orig;                         \
+> +		};                                     \
+> +		__KABI_NORMAL_SIZE_ALIGN(_orig, _new); \
+> +	}
+> +
+>  /*
+>   * KABI_USE_ARRAY(fqn)
+>   *   Treat the struct fqn as a declaration, i.e. even if a definition
+> @@ -58,4 +80,62 @@
+>  #define KABI_ENUMERATOR_IGNORE(fqn, field) \
+>  	__KABI_RULE(enumerator_ignore, fqn, field)
+>  
+> +/*
+> + * KABI_RESERVE
+> + *   Reserve some "padding" in a structure for use by LTS backports.
+> + *   This normally placed at the end of a structure.
 
-I would guess the PCI cases might be questionable, too. Like DT, drivers 
-may be accessing the table fields, but that's not best practice. All the 
-match fields are stored in pci_dev, so why get them from the match 
-table? 
+Nit: s/This normally/This is normally/.
 
-Rob
+> + *   number: the "number" of the padding variable in the structure.  Start with
+> + *   1 and go up.
+> + */
+> +#define KABI_RESERVE(n) unsigned long __kabi_reserved##n
+> +
+> +/*
+> + * KABI_RESERVE_ARRAY
+> + *   Same as _BACKPORT_RESERVE but allocates an array with the specified
+> + *   size in bytes.
+> + */
+> +#define KABI_RESERVE_ARRAY(n, s) \
+> +	unsigned char __aligned(8) __kabi_reserved##n[s]
+> +
+> +/*
+> + * KABI_IGNORE
+> + *   Add a new field that's ignored in versioning.
+> + */
+> +#define KABI_IGNORE(n, _new)                     \
+> +	union {                                  \
+> +		_new;                            \
+> +		unsigned char __kabi_ignored##n; \
+> +	}
+> +
+> +/*
+> + * KABI_USE(number, _new)
+> + *   Use a previous padding entry that was defined with KABI_RESERVE
+> + *   number: the previous "number" of the padding variable
+> + *   _new: the variable to use now instead of the padding variable
+> + */
+> +#define KABI_USE(number, _new) __KABI_REPLACE(KABI_RESERVE(number), _new)
+> +
+> +/*
+> + * KABI_USE2(number, _new1, _new2)
+> + *   Use a previous padding entry that was defined with KABI_RESERVE for
+> + *   two new variables that fit into 64 bits.  This is good for when you do not
+> + *   want to "burn" a 64bit padding variable for a smaller variable size if not
+> + *   needed.
+> + */
+> +#define KABI_USE2(number, _new1, _new2)        \
+> +	__KABI_REPLACE(                        \
+> +		KABI_RESERVE(number), struct { \
+> +			_new1;                 \
+> +			_new2;                 \
+> +		})
+> +/*
+> + * KABI_USE_ARRAY(number, bytes, _new)
+> + *   Use a previous padding entry that was defined with KABI_RESERVE_ARRAY
+> + *   number: the previous "number" of the padding variable
+> + *   bytes: the size in bytes reserved for the array
+> + *   _new: the variable to use now instead of the padding variable
+> + */
+> +#define KABI_USE_ARRAY(number, bytes, _new) \
+> +	__KABI_REPLACE(KABI_RESERVE_ARRAY(number, bytes), _new)
+> +
+>  #endif /* __KABI_H__ */
+> diff --git a/scripts/gendwarfksyms/examples/kabi_ex0.c b/scripts/gendwarfksyms/examples/kabi_ex0.c
+> new file mode 100644
+> index 000000000000..934324cba837
+> --- /dev/null
+> +++ b/scripts/gendwarfksyms/examples/kabi_ex0.c
+> @@ -0,0 +1,86 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * kabi_ex0.c
+> + *
+> + * Copyright (C) 2024 Google LLC
+> + *
+> + * Reserved and ignored data structure field examples with --stable.
+> + */
+> +
+> +/*
+> + * The comments below each example contain the expected gendwarfksyms
+> + * output, which can be verified using LLVM's FileCheck tool:
+> + *
+> + * https://llvm.org/docs/CommandGuide/FileCheck.html
+> + *
+> + * $ gcc -g -c examples/kabi_ex0.c examples/kabi_ex0.o
+> + *
+> + * Verify --stable output:
+> + *
+> + * $ echo -e "ex0a\nex0b\nex0c" | \
+> + * 	./gendwarfksyms --stable --dump-dies \
+> + * 		examples/kabi_ex0.o 2>&1 >/dev/null | \
+> + * 	FileCheck examples/kabi_ex0.c --check-prefix=STABLE
+> + *
+> + * Verify that symbol versions match with --stable:
+> + *
+> + * $ echo -e "ex0a\nex0b\nex0c" | \
+> + * 	./gendwarfksyms --stable examples/kabi_ex0.o | \
+> + * 	sort | \
+> + * 	FileCheck examples/kabi_ex0.c --check-prefix=VERSION
+> + */
+> +
+> +#include "kabi.h"
+> +
+> +/*
+> + * Example 0: Reserved fields.
+> + */
+> +
+> +struct {
+> +	int a;
+> +	KABI_RESERVE(0);
+> +	KABI_RESERVE(1);
+> +} ex0a;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) a data_member_location(0) ,
+> + * STABLE-NEXT:   member base_type [[ULONG:long unsigned int|unsigned long]] byte_size(8) encoding(7) data_member_location(8) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) data_member_location(16)
+> + * STABLE-NEXT: } byte_size(24)
+> + *
+> + * VERSION-DAG: #SYMVER ex0a 0x[[#%.08x,EX0:]]
+> + */
+> +
+> +struct {
+> +	int a;
+> +	KABI_RESERVE(0);
+> +	KABI_USE2(1, int b, int c);
+> +} ex0b;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) a data_member_location(0) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) data_member_location(8) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) data_member_location(16)
+> + *
+> + * STABLE-NEXT: } byte_size(24)
+> + *
+> + * VERSION-DAG: #SYMVER ex0b 0x[[#%.08x,EX0]]
+> + */
+> +
+> +struct {
+> +	int a;
+> +	KABI_USE(0, void *p);
+> +	KABI_USE2(1, int b, int c);
+> +} ex0c;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) a data_member_location(0) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) data_member_location(8) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) data_member_location(16)
+> + * STABLE-NEXT: } byte_size(24)
+> + *
+> + * VERSION-DAG: #SYMVER ex0c 0x[[#%.08x,EX0]]
+> + */
+> diff --git a/scripts/gendwarfksyms/examples/kabi_ex1.c b/scripts/gendwarfksyms/examples/kabi_ex1.c
+> new file mode 100644
+> index 000000000000..7bc34bc7dec8
+> --- /dev/null
+> +++ b/scripts/gendwarfksyms/examples/kabi_ex1.c
+> @@ -0,0 +1,89 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * kabi_ex1.c
+> + *
+> + * Copyright (C) 2024 Google LLC
+> + *
+> + * Reserved and ignored data structure field examples with --stable.
+> + */
+> +
+> +/*
+> + * The comments below each example contain the expected gendwarfksyms
+> + * output, which can be verified using LLVM's FileCheck tool:
+> + *
+> + * https://llvm.org/docs/CommandGuide/FileCheck.html
+> + *
+> + * $ gcc -g -c examples/kabi_ex1.c examples/kabi_ex1.o
+> + *
+> + * Verify --stable output:
+> + *
+> + * $ echo -e "ex1a\nex1b\nex1c" | \
+> + * 	./gendwarfksyms --stable --dump-dies \
+> + * 		examples/kabi_ex1.o 2>&1 >/dev/null | \
+> + * 	FileCheck examples/kabi_ex1.c --check-prefix=STABLE
+> + *
+> + * Verify that symbol versions match with --stable:
+> + *
+> + * $ echo -e "ex1a\nex1b\nex1c" | \
+> + * 	./gendwarfksyms --stable examples/kabi_ex1.o | \
+> + * 	sort | \
+> + * 	FileCheck examples/kabi_ex1.c --check-prefix=VERSION
+> + */
+> +
+> +#include "kabi.h"
+> +
+> +/*
+> + * Example 1: A reserved array.
+> + */
+> +
+> +struct {
+> +	unsigned int a;
+> +	KABI_RESERVE_ARRAY(0, 64);
+> +} ex1a;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type unsigned int byte_size(4) encoding(7) a data_member_location(0) ,
+> + * STABLE-NEXT:   member array_type[64] {
+> + * STABLE-NEXT:     base_type unsigned char byte_size(1) encoding(8)
+> + * STABLE-NEXT:   } data_member_location(8)
+> + * STABLE-NEXT: } byte_size(72)
+> + *
+> + * VERSION-DAG: #SYMVER ex1a 0x[[#%.08x,EX1:]]
+> + */
+> +
+> +struct {
+> +	unsigned int a;
+> +	KABI_USE_ARRAY(
+> +		0, 64, struct {
+> +			void *p;
+> +			KABI_RESERVE_ARRAY(1, 56);
+> +		});
+> +} ex1b;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type unsigned int byte_size(4) encoding(7) a data_member_location(0) ,
+> + * STABLE-NEXT:   member array_type[64] {
+> + * STABLE-NEXT:     base_type unsigned char byte_size(1) encoding(8)
+> + * STABLE-NEXT:   } data_member_location(8)
+> + * STABLE-NEXT: } byte_size(72)
+> + *
+> + * VERSION-DAG: #SYMVER ex1b 0x[[#%.08x,EX1]]
+> + */
+> +
+> +struct {
+> +	unsigned int a;
+> +	KABI_USE_ARRAY(0, 64, void *p[8]);
+> +} ex1c;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type unsigned int byte_size(4) encoding(7) a data_member_location(0) ,
+> + * STABLE-NEXT:   member array_type[64] {
+> + * STABLE-NEXT:     base_type unsigned char byte_size(1) encoding(8)
+> + * STABLE-NEXT:   } data_member_location(8)
+> + * STABLE-NEXT: } byte_size(72)
+> + *
+> + * VERSION-DAG: #SYMVER ex1c 0x[[#%.08x,EX1]]
+> + */
+> diff --git a/scripts/gendwarfksyms/examples/kabi_ex2.c b/scripts/gendwarfksyms/examples/kabi_ex2.c
+> new file mode 100644
+> index 000000000000..947ea5675b4f
+> --- /dev/null
+> +++ b/scripts/gendwarfksyms/examples/kabi_ex2.c
+> @@ -0,0 +1,98 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * kabi_ex2.c
+> + *
+> + * Copyright (C) 2024 Google LLC
+> + *
+> + * Reserved and ignored data structure field examples with --stable.
+> + */
+> +
+> +/*
+> + * The comments below each example contain the expected gendwarfksyms
+> + * output, which can be verified using LLVM's FileCheck tool:
+> + *
+> + * https://llvm.org/docs/CommandGuide/FileCheck.html
+> + *
+> + * $ gcc -g -c examples/kabi_ex2.c examples/kabi_ex2.o
+> + *
+> + * Verify --stable output:
+> + *
+> + * $ echo -e "ex2a\nex2b\nex2c" | \
+> + * 	./gendwarfksyms --stable --dump-dies \
+> + * 		examples/kabi_ex2.o 2>&1 >/dev/null | \
+> + * 	FileCheck examples/kabi_ex2.c --check-prefix=STABLE
+> + *
+> + * Verify that symbol versions match with --stable:
+> + *
+> + * $ echo -e "ex2a\nex2b\nex2c" | \
+> + * 	./gendwarfksyms --stable examples/kabi_ex2.o | \
+> + * 	sort | \
+> + * 	FileCheck examples/kabi_ex2.c --check-prefix=VERSION
+> + */
+> +
+> +#include "kabi.h"
+> +
+> +/*
+> + * Example 2: An ignored field added to an alignment hole.
+> + */
+> +
+> +struct {
+> +	int a;
+> +	unsigned long b;
+> +	int c;
+> +	unsigned long d;
+> +} ex2a;
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) a data_member_location(0) ,
+> + * STABLE-NEXT:   member base_type [[ULONG:long unsigned int|unsigned long]] byte_size(8) encoding(7) b data_member_location(8)
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) c data_member_location(16) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) d data_member_location(24)
+> + * STABLE-NEXT: } byte_size(32)
+> + *
+> + * VERSION-DAG: #SYMVER ex2a 0x[[#%.08x,EX2:]]
+> + */
+> +
+> +struct {
+> +	int a;
+> +	KABI_IGNORE(0, unsigned int n);
+> +	unsigned long b;
+> +	int c;
+> +	unsigned long d;
+> +} ex2b;
+> +
+> +_Static_assert(sizeof(ex2a) == sizeof(ex2b), "ex2a size doesn't match ex2b");
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) a data_member_location(0) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) b data_member_location(8)
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) c data_member_location(16) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) d data_member_location(24)
+> + * STABLE-NEXT: } byte_size(32)
+> + *
+> + * VERSION-DAG: #SYMVER ex2b 0x[[#%.08x,EX2]]
+> + */
+> +
+> +struct {
+> +	int a;
+> +	KABI_IGNORE(0, unsigned int n);
+> +	unsigned long b;
+> +	int c;
+> +	KABI_IGNORE(1, unsigned int m);
+> +	unsigned long d;
+> +} ex2c;
+> +
+> +_Static_assert(sizeof(ex2a) == sizeof(ex2c), "ex2a size doesn't match ex2c");
+> +
+> +/*
+> + * STABLE:      variable structure_type {
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) a data_member_location(0) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) b data_member_location(8)
+> + * STABLE-NEXT:   member base_type int byte_size(4) encoding(5) c data_member_location(16) ,
+> + * STABLE-NEXT:   member base_type [[ULONG]] byte_size(8) encoding(7) d data_member_location(24)
+> + * STABLE-NEXT: } byte_size(32)
+> + *
+> + * VERSION-DAG: #SYMVER ex2c 0x[[#%.08x,EX2]]
+> + */
+> diff --git a/scripts/gendwarfksyms/gendwarfksyms.h b/scripts/gendwarfksyms/gendwarfksyms.h
+> index f32ad4389b58..1cff868bacdb 100644
+> --- a/scripts/gendwarfksyms/gendwarfksyms.h
+> +++ b/scripts/gendwarfksyms/gendwarfksyms.h
+> @@ -222,6 +222,20 @@ void cache_clear_expanded(struct expansion_cache *ec);
+>  /*
+>   * dwarf.c
+>   */
+> +
+> +/* See dwarf.c:get_union_kabi_status */
+> +#define KABI_PREFIX "__kabi_"
+> +#define KABI_PREFIX_LEN (sizeof(KABI_PREFIX) - 1)
+> +#define KABI_RESERVED_PREFIX "reserved"
+> +#define KABI_RESERVED_PREFIX_LEN (sizeof(KABI_RESERVED_PREFIX) - 1)
+> +#define KABI_IGNORED_PREFIX "ignored"
+> +#define KABI_IGNORED_PREFIX_LEN (sizeof(KABI_IGNORED_PREFIX) - 1)
+> +
+> +static inline bool is_kabi_prefix(const char *name)
+> +{
+> +	return name && !strncmp(name, KABI_PREFIX, KABI_PREFIX_LEN);
+> +}
+> +
+
+Nit: The new KABI_* macros and the is_kabi_prefix() function are used
+only in dwarf.c so could be all moved there.
+
+>  struct expansion_state {
+>  	bool expand;
+>  	unsigned int ptr_depth;
+> @@ -229,6 +243,18 @@ struct expansion_state {
+>  	const char *current_fqn;
+>  };
+>  
+> +enum kabi_status {
+> +	/* >0 to stop DIE processing */
+> +	KABI_NORMAL = 1,
+> +	KABI_RESERVED,
+> +	KABI_IGNORED,
+> +};
+> +
+> +struct kabi_state {
+> +	int members;
+> +	Dwarf_Die placeholder;
+> +};
+> +
+>  struct state {
+>  	struct symbol *sym;
+>  	Dwarf_Die die;
+> @@ -239,6 +265,9 @@ struct state {
+>  	/* Structure expansion */
+>  	struct expansion_state expand;
+>  	struct expansion_cache expansion_cache;
+> +
+> +	/* Reserved or ignored members */
+> +	struct kabi_state kabi;
+>  };
+>  
+>  typedef int (*die_callback_t)(struct state *state, struct die *cache,
+
+I've noted some nits above which you might want to trivially address.
+Otherwise this looks ok to me, feel free to add:
+
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+
+-- 
+Thanks,
+Petr
