@@ -1,114 +1,76 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802A014A62A
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 19:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7338813AA2F;
+	Wed, 23 Oct 2024 19:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729713083; cv=none; b=LMn3DaS32Rk6fU9i0fhE2b+hFauZP3OAnJj2VylfRt5NnJl2gVDhnZ0K6XcVxszR7ytK+PP4bcXB7FRURxtK+cX+htUgjIcO4dRlOTUgeY+VpBSZ6SymjI4do0myqD7mCkePXFqZ7JF3GUwDNMfL2sovnlbeircDT2rR3CH54G8=
+	t=1729713147; cv=none; b=X7iw+uFXCDIIVwNE65NFQqRrFVdOmsSHuPfxgMNzOBrfJ/hBb+hjMPlq2jfwpATZJkyA+RTo2fmhgpPLe9muGqEBQO6ysFu6Y2Zsia9Y/VO5PI3aeboBLHrGpnBLdf2n4XISsiLbAGjbSU4xGOLX4ZZAXGoFFNKF6Xln1LeYWck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729713083; c=relaxed/simple;
-	bh=XGHEe5rM0A26uQ4DtcESOpz4L+iI4KcJJWZIxJpt6wc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B8NLsOXSs6fw+p8MT68ExmdbFg7XZvyXrHoda64h4/NbasYQd5cAo4knIPQ7W+0JqgmgWH/dccKOz8RnzIspE37gqncjlGiaRp1KIwmA3bpL74+o5t54BJm0L+WWs2xVdMzWwF6bICEYYX1RLnMNnA2An4iCwMZz+PPLRtTEDgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dDiKGZto; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1729713147; c=relaxed/simple;
+	bh=O+zehsLqoh4JYaQs/FYh0KngRH9Ood+BEx4/xBJQ++c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a9vygxWWGm5YeyFlUz/+HiAF+U8ZD4zN6U3OV6KGRrqExNCmxidfwCWDAvmxNdcQ0cQEvxGIUQaNKjGBKcpGkSvOJaclLERnk/8KAn0RvnI5BVdp8RNvQRqbNUg8lXfEzzed2+5ooFtYopptp0hcYDrizmccEl0kdS08DfyrDyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=AbpLzDL5; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dDiKGZto"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1729713074; x=1729972274;
-	bh=5gl5rX8a3hs+xgXtF32k8w4jMMMQDTmRjC0W5Kfzh8c=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dDiKGZtoL/1nd2931NeWt+lDg0O0THWDrnDXlgw+xm4Ymgpbuf3tK7Bzyc1mQWkj5
-	 HBnLXU2Nweb6JQZ10vMNACAYt5ijlLUV/exAbbyJpeAUkIyNKWW0oiLL5U8/OL5Fuv
-	 0dZtItS/UihG2NaSPEXcZiIJQVKVrG3gQeqN7WUcGYloHIyQnRjDr7AKC3uGjUrMAh
-	 myD6DY7pwsYATp58s0LC3CEiCIQgrWzh4/QTWWIkbgCLYu1WPKthVxG6zO4DbnrTOc
-	 ow4bFpoeBD8Wg2ElVUyIOlHRpALF1hJ4VjIzYzA3WpEyI6U0Cwrt/ZrRGjG4Ys6ztq
-	 Uxn06PGwXI4/Q==
-Date: Wed, 23 Oct 2024 19:51:09 +0000
-To: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nell Shamrell-Harrington <nells@linux.microsoft.com>
-Subject: Re: [PATCH v2] rust: types: extend `Opaque` documentation
-Message-ID: <f7f65b97-2921-4a7d-b564-ff7479cad1ec@proton.me>
-In-Reply-To: <20241002050301.1927545-1-dirk.behme@de.bosch.com>
-References: <20241002050301.1927545-1-dirk.behme@de.bosch.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 53cb22c32c233fc568c9b85f4d4680707faf8566
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AbpLzDL5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=O+zehsLqoh4JYaQs/FYh0KngRH9Ood+BEx4/xBJQ++c=; b=AbpLzDL52Y6pbMKkz7kk8+MfbS
+	p/xLyIwnriSP/7R1dd8viQNV9aAfZHPN27VbuO6c0pStB+P8esSBWk3+nXozIyw08IOAOooNg2XLY
+	jtc3gZSch+lp8JrQrILsoN9+BgnvNov67zxRFV/WLFwsCQm3bnviv+3SyKn3ugo1kNQKVyErHDY8i
+	/EpCSs4xBmxd5WkhgkcSPGntw8a6TsKqHy5ciye8rlH1srh3mlY16Mr15B4ymOMXFP2mRnZ9eyNG3
+	ET2sjKDtZPvTtqSWJZfFiODDz7vLszxCnlAtyGHQ6v/OhVOOR7hb6dHwTT791uT3WI9GQe7TESoWT
+	wYMBrTgg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t3hOa-00000008XTm-34pI;
+	Wed, 23 Oct 2024 19:51:56 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5216130073F; Wed, 23 Oct 2024 21:51:52 +0200 (CEST)
+Date: Wed, 23 Oct 2024 21:51:52 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@gmail.com>,
+	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
+	Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20241023195152.GE11151@noisy.programming.kicks-ass.net>
+References: <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <87a5eu7gvw.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a5eu7gvw.ffs@tglx>
 
-On 02.10.24 07:03, Dirk Behme wrote:
-> Update the `Opaque` documentation and add an example as proposed by
-> Miguel Ojeda in [1]. The documentation update is mainly taken from
-> Benno Lossin's description [2].
->=20
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Cc: Benno Lossin <benno.lossin@proton.me>
-> Cc: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-> Link :https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/top=
-ic/What.20to.20work.20on.20next.3F/near/467478085 [1]
-> Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/top=
-ic/What.20to.20work.20on.20next.3F/near/470498289 [2]
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-> ---
->=20
-> Changes in v2: Correct typos and formatting. Drop non-camel-case.
->                Add SAFETY comment.
->=20
->  rust/kernel/types.rs | 45 +++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 44 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 10e3b1a999f4c..5e96f2c46f9fd 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -290,7 +290,50 @@ fn drop(&mut self) {
->=20
->  /// Stores an opaque value.
->  ///
-> -/// This is meant to be used with FFI objects that are never interpreted=
- by Rust code.
-> +/// `Opaque<T>` is meant to be used with FFI objects that are never inte=
-rpreted by Rust code.
-> +///
-> +/// It is used to wrap structs from the C side, like for example `Opaque=
-<bindings::mutex>`.
-> +/// It gets rid of all the usual assumptions that Rust has for a value:
-> +///
-> +/// * The value is allowed to be uninitialized (for example have invalid=
- bit patterns: `3` for a `bool`).
-> +/// * The value is allowed to be mutated, when a `&Opaque<T>` exists on =
-the Rust side.
-> +/// * No uniqueness for mutable references: it is fine to have multiple =
-&mut `Opaque<T>` point to the same value.
+On Wed, Oct 23, 2024 at 09:34:27PM +0200, Thomas Gleixner wrote:
+> On Thu, Oct 17 2024 at 22:51, Boqun Feng wrote:
+> Ideally you make that part of the preemption count. Bit 24-30 are free
+> (or we can move them around as needed). That's deep enough and you get
+> the debug sanity checking of the preemption counter for free (might need
+> some extra debug for this...)
 
-The "`" should be in front of the "&mut".
+Urgh, so we've already had trouble that nested spinlocks bust through
+the 0xff preempt mask (because lunacy). You sure you want to be this
+stingy with bits?
 
-> +/// * The value is not allowed to be shared with other threads (i.e. it =
-is `!Sync`).
-> +///
-> +/// This has to be used for all values that the C side has access to, be=
-cause it can't be ensured
-> +/// that the C side is adhering to the usual constraints that Rust needs=
-.
-> +///
-> +/// Using `Opaque<T>` allows to continue to use references on the Rust s=
-ide even for values shared with C.
-
-Miguel already mentioned this: could you add my Co-developed-by, since
-most of this stuff is from me. Thanks!
-
----
-Cheers,
-Benno
-
+We still have a few holes in pcpu_hot iirc.
