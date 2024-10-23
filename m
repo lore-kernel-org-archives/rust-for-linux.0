@@ -1,116 +1,185 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7BD15AAC1;
-	Wed, 23 Oct 2024 09:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD31A7240;
+	Wed, 23 Oct 2024 10:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729677122; cv=none; b=UO53TUV+tralV5ceIuDcgbqiwD/gacup8F6LL91Nr5VUoYXosj+JT4yQx++DB7pZjFcIKIOuznw6iEEneyEu2UIfyanTW76wsUwNB8jxzpBIOa3hgEeQ0En2V9+LQVBp4S+0L/7xLP3LG+mxRM0usCzV2SrXj3sx921MMyM10/U=
+	t=1729679182; cv=none; b=VTe4TG6S+NAKruwKm+zKM0HPs05tLO/rPF9msT9DcjJUks9e8XhRjax1XUl/6EZZy4Z4/GZwC3nHDkuhbmsnfS6O4sZBW3S5Kys8m5KK0eppLK2BSCJeQgpbzmlvvzBKggVudQ2WDSJhyf6W24uXuRYYYGhoQoECYo5KV09zEgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729677122; c=relaxed/simple;
-	bh=KVG+LgeTsLcyc+fpYicfssUNkaHh7Ne9ebt7bjnWcAw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KZL/4CpqVAM/HX14UEY9YBXYrghrEDlZMiZg/VzkNE7VMprFfaMIwP/6AU7Rud/nWCy75aIIpF0UVf0pnSrboFQV0/nIF5q+uZT92hembQ7HcKWFP5rjcqHj4/FAOfbXs2URWfVkf/JY0rMXVA+rIYXZyQF4FKCFx02wGVjxzn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ADIq34tk; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1729679182; c=relaxed/simple;
+	bh=/rY8Bix/A3eVXwrAPy6PsBPfRtj8YorTvFp2uXlNHQI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HCUkI+FGkiW4FsB8WAN/9hmK8uIvvN78ow6pPJBLrwwzJ2m8fezRIPTPiyaUQlj+xVJzzXAjBtissoRguJMRC3phSvJJu7s0REwgEeLotmCh7HkLQAjQRtwEYH29Sk958GBUjLqMpSL91TN87QTOIICUfIgi1YYxCezBOl5vlaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R8BOqF7o; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ADIq34tk"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7eadb7f77e8so440445a12.1;
-        Wed, 23 Oct 2024 02:52:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R8BOqF7o"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539f84907caso7507504e87.3;
+        Wed, 23 Oct 2024 03:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729677120; x=1730281920; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pkQeDkofuLximRnKKf+OZHZQhGpW0sW9HFbld40vo3o=;
-        b=ADIq34tk73aj0QdUGObx/CXRnYiQdO4xjaav4OCV0BVTlLkldNi+sNnnhV2hgTOqVi
-         mPYCdf18o6abJAKxK6XsJdRzYYz0s7xBT1vol0FzPGPeLH0ZkRM2jPlfTblfaU1Veo6O
-         5q/AgXXgeqtcVrjhdD8IO/koX4SUjSWucsiGvDtWCIhd/C26XUh42PZ2nFdTS2tLzG6W
-         xQxTirdd5GJYNqlq08gGZexCqYBKUJmsDy73exGHHm9akysHGKS0iN9ly1FLuXFqI1nz
-         2CK/GGfCb61xyIURk96a41rrxLoZd8m6TwJ4JMOQrHOnbJ3fbnuUPdiixw9NFCFHL8Xo
-         GYVQ==
+        d=gmail.com; s=20230601; t=1729679177; x=1730283977; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MEzfxMbPEV9VQ/sTcsJTaL4CVZMzEblAgELJ3Wx2y6Y=;
+        b=R8BOqF7o5UeBT+exrF3glswfLa5iCLtKxqGXRxtcfy79ZwUQ6Ynh3sK7OXn6BwAvYu
+         wwDo/hoNzmZX+CazGGL7Jur7m+CVil/p8EyST58IGW2D4sSBM4fltvzP707GrMcs/Vwi
+         o5MZFvs+Z0i+uMmGo/RO0w6O5JdMSZQccpBDfBpNnm0AsypyQWcjg9SmslrSX7dCAxqX
+         S0e2NUj5+aT3UtlmS5nnXPNnB+68GHhu5vpg8bJtbpsePGqu3aRxbxodOz46dBCpccLA
+         ZAKGx+LX2abYlGLtJUg5kSCxtoeQgaSOMEFGvpZb7AnT7bDKOkSYEcTytNk1DDHa8I8E
+         +DsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729677120; x=1730281920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pkQeDkofuLximRnKKf+OZHZQhGpW0sW9HFbld40vo3o=;
-        b=eE11eoXD/nhxqQFMu45iRZucAPPH8R0I10AG/HWOVJA/Ug5ZZ4bIGGDFmxIclotXWC
-         1Um5dzZUbduvB3EHZD2EPRUBSOAfsqiDDMEGnSxTstcyu224igKf2kqbXv7C4iB/oQ8/
-         vZTgZXEXe+ntnu6ltfJUhM2knek/hrghTFx+bebMCS47LqaqCuzsSkk6vDIdHqfJZ/3n
-         /rOwO/vZW/z0S7vtRsYmW0nmCv1pNBaDq8/SQkySWrujpuc94Y6U1BsU3rOkIwlhylTe
-         Iu2nh2vqK1hrR9W4MKTbWUWOxMYOZqfYfXRo41ewW77YU/4xDlTAz6qDbNK2VCzAX8pL
-         Ntjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSnfQulgOYeDI41WbB4DRwM4BT24zoFSc/Ksjd+dWXeDsakn6Oa/dJO3N4+Q09QgbJFnwq42cYQtaEvQY=@vger.kernel.org, AJvYcCUzmrbsWc/Z2bF7tQ2FVvETwlSOZmaRbtJcqCCmeaTQ9BBFreReTbzTmid9K4OASAwoHMKEYEjuSeC67q24+U8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzj0PnZre0XqBYiLIJw00IgFYat26mPhzt9IULHqs+cH5PviHQb
-	rI9UkwGkA6XUhIS8puTFfZX69aAn6ayoeu93Nw86kpV+qKU7nVqAXiZjjnHccMy+txaePsGK9b4
-	D5iMCLezhfhbFlXZqumOL/DJF2ME=
-X-Google-Smtp-Source: AGHT+IFjo9VQQNSXEKEjdyoBruP80pCYF3csoMWfcpF3ddf2Rxdo/elU9rpL0xypUDw3Ellg5/pf7IG3kdG1uPMBRpw=
-X-Received: by 2002:a17:90b:3cd:b0:2e2:a60f:289e with SMTP id
- 98e67ed59e1d1-2e76b204452mr973258a91.0.1729677120060; Wed, 23 Oct 2024
- 02:52:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729679177; x=1730283977;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MEzfxMbPEV9VQ/sTcsJTaL4CVZMzEblAgELJ3Wx2y6Y=;
+        b=NT8fvedwbUv8ZAxYohNL90uu6vQqhocn7oM1Vk43PNJq80sYCXN3oawpFVkn9Vr4Kk
+         e97Dpy/u4iBRpU9zrmSCT2HDMX9pcXnGjvaZ5wj9lJw/v7fYGZ27TEahOfvQgDSobWYj
+         8xYeGBNJr9QGQvr7fc7AnCam10+Jcz5gpVRUQiD31nci4SW/PuKXqxPPd9LZmSoIIK49
+         uwIo7I7WM1bdG0oTyjf6EHbdwAhfK8vddPzllcu8XmAVhq18aVOmNm/J/DA8gxNc44gS
+         /lka/tKhgG5atOQ1CBdnE3GEbI45pM/KYHFYR/VfULQoLErPrzvhbu1SU7aKf8QSqnKb
+         f6FA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdCex0Q9ngmh/VS6jYGse22nAWzj9hl5HgwQJkPw9bVInKhTNKk3ODh2S8NpNKB2zRbNiOhLqJH9l0XSI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR6ZKwZ3jTie0nCL9dUtC92AyNMD9fK5R1nzFa0KG5+w+ElNts
+	o28zh2EY1L+rx6GxfjYOiegxupXpCBT0tfAjWOAl3ogwiwUJ9qiSxzEPLQ==
+X-Google-Smtp-Source: AGHT+IHQViEDeVEDA5/FOENcYb86azyDwtpqrmo9m3FxrmDFVkYX3O9g7YTfCmOA6sNWyjYsQYCMjA==
+X-Received: by 2002:a05:6512:1325:b0:539:e88f:23a3 with SMTP id 2adb3069b0e04-53b1a3c9300mr926638e87.60.1729679177117;
+        Wed, 23 Oct 2024 03:26:17 -0700 (PDT)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2242fbaesm1005518e87.182.2024.10.23.03.26.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 03:26:15 -0700 (PDT)
+Message-ID: <b154dd13-8cd8-4066-ba3d-6597959ca5c5@gmail.com>
+Date: Wed, 23 Oct 2024 13:26:14 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com> <Zxitz41uPPeloK0o@pollux>
-In-Reply-To: <Zxitz41uPPeloK0o@pollux>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 23 Oct 2024 11:51:47 +0200
-Message-ID: <CANiq72nagKRUmHWVOFGNBuiVnqdmgqPm8b6ZtG1edobmrQMr3w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] Introduce Owned type and Ownable trait (was:
- "rust: page: Add support for vmalloc_to_page")
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
-	aliceryhl@google.com, dakr@redhat.com, linux-kernel@vger.kernel.org, 
-	airlied@redhat.com, boqun.feng@gmail.com, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] rust: types: add `Owned` type and `Ownable` trait
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, dakr@redhat.com,
+ linux-kernel@vger.kernel.org, airlied@redhat.com,
+ miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
+References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
+ <20241022224832.1505432-2-abdiel.janulgue@gmail.com>
+ <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 23, 2024 at 10:03=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> I wonder if it would make sense to make `CLIPPY=3D1` the default and only=
- disable
-> it by explicitly passing `CLIPPY=3D0`.
 
-That is what I wanted, but when I asked long ago to the Clippy
-maintainers if using `clippy-driver` was guaranteed to not affect
-codegen, the answer was no: for instance, optimization may be affected
-(at least back then), and the maintainers said the intention is that
-is not to be used for normal compiling. So I sent a PR to document
-that. See:
 
-    https://github.com/rust-lang/rust-clippy/issues/8035
-    https://github.com/rust-lang/rust-clippy/pull/8037
+On 23/10/2024 12:28, Alice Ryhl wrote:
+> On Wed, Oct 23, 2024 at 12:49 AM Abdiel Janulgue
+> <abdiel.janulgue@gmail.com> wrote:
+>>
+>> Add the 'Owned' type, a simple smart pointer type that owns the
+>> underlying data.
+>>
+>> An object implementing `Ownable' can constructed by wrapping it in
+>> `Owned`, which has the advantage of allowing fine-grained control
+>> over it's resource allocation and deallocation.
+>>
+>> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>> ---
+>>   rust/kernel/types.rs | 62 ++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 62 insertions(+)
+>>
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index ced143600eb1..3f632916bd4d 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
+>> @@ -429,3 +429,65 @@ pub enum Either<L, R> {
+>>       /// Constructs an instance of [`Either`] containing a value of type `R`.
+>>       Right(R),
+>>   }
+>> +
+>> +/// A smart pointer that owns the underlying data `T`.
+>> +///
+>> +/// This is a simple smart pointer that owns the underlying data. Typically, this would be
+>> +/// returned as a wrapper for `T` in `T`'s constructor.
+>> +/// When an object adds an option of being constructed this way, in addition to implementing
+>> +/// `Drop`, it implements `Ownable` as well, thus having finer-grained control in where
+>> +/// resource allocation and deallocation happens.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// The pointer is always valid and owns the underlying data.
+>> +pub struct Owned<T: Ownable> {
+>> +    ptr: NonNull<T>,
+>> +}
+>> +
+>> +impl<T: Ownable> Owned<T> {
+>> +    /// Creates a new smart pointer that owns `T`.
+>> +    ///
+>> +    /// # Safety
+>> +    /// `ptr` needs to be a valid pointer, and it should be the unique owner to the object,
+>> +    /// in other words, no other entity should free the underlying data.
+>> +    pub unsafe fn to_owned(ptr: *mut T) -> Self {
+> 
+> Please rename this function to from_raw to match the name used by
+> other similar functions.
+> 
+> Also, I don't love this wording. We don't really want to guarantee
+> that it is unique. For example, pages have one primary owner, but
+> there can be others who also have refcounts to the page, so it's not
+> really unique. I think you just want to say that `ptr` must point at a
+> valid value of type `T`, and it must remain valid until `ptr_drop` is
+> called.
+> 
+>> +impl<T: Ownable> Deref for Owned<T> {
+>> +    type Target = T;
+>> +
+>> +    fn deref(&self) -> &Self::Target {
+>> +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+>> +        // safe to dereference it.
+>> +        unsafe { self.ptr.as_ref() }
+>> +    }
+>> +}
+>> +
+>> +impl<T: Ownable> DerefMut for Owned<T> {
+>> +    fn deref_mut(&mut self) -> &mut Self::Target {
+>> +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+>> +        // safe to dereference it.
+>> +        unsafe { self.ptr.as_mut() }
+>> +    }
+>> +}
+> 
+> We only want Deref, not DerefMut. DerefMut both requires uniqueness in
+> a way that is stronger than what we can really promise, and it also
+> implies that the value is *not* pinned, but we generally want to use
+> Owned with pinned things. Thus, we can't use DerefMut.
+> 
+>> +/// An Ownable type is a type that can be put into `Owned<T>`, and when `Owned<T>` drops,
+>> +/// `ptr_drop` will be called.
+>> +pub unsafe trait Ownable {
+>> +    /// # Safety
+>> +    /// This could only be called in the `Owned::drop` function.
+>> +    unsafe fn ptr_drop(ptr: *mut Self);
+>> +}
+>> +
+>> +impl<T: Ownable> Drop for Owned<T> {
+>> +    fn drop(&mut self) {
+>> +       // SAFETY: In Owned<T>::drop.
+>> +       unsafe {
+>> +           <T as Ownable>::ptr_drop(self.ptr.as_mut());
+> 
+> This uses NonNull::as_mut which creates a mutable reference. You
+> should use NonNull::as_ptr instead.
+> 
+> Also this code will look better if you move the semicolon so it is
+> outside of the unsafe block.
 
-Similarly, Christian proposed running `rustfmtcheck` unconditionally
-on build and offering a way to turn it off instead. I think that would
-be ideal too, but it could potentially lead to problems too, so I am
-not sure either; see e.g.:
+Thanks for the feedback! Will do that in next revision.
 
-    https://lore.kernel.org/rust-for-linux/CANiq72=3D=3DAkkqCDaZMENQRg8cf4z=
-deHpTHwdWS3sZiFWm0vyJUA@mail.gmail.com/
-
-So I wonder if we should instead go with a "dev mode" like `D=3D1` that
-enables Clippy, `rustfmtcheck`, `-Dwarnings` (even if `WERROR=3Dn` and
-applying to everything, not just kernel objects,), potentially
-`rustdoc`-related warnings too, and whatever other tooling/checks in
-the future (e.g. klint), and not just for Rust but potentially for C
-and other bits too (e.g. `W=3D1`, some important subset of Coccinelle
-scripts...).
-
-That way, "normal builds" (i.e. those done by users) stay as
-fast/clean/warning-free/bug-free/optimized as possible even across
-compiler versions, potential bugs in the toolchain, etc. And I imagine
-it would be easier for newcomers, too.
-
-Opinions welcome! I am happy to prepare an RFC, since it seems a few
-people would like something like that.
-
-Cheers,
-Miguel
+/Abdiel
