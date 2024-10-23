@@ -1,154 +1,149 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E61ABEB7;
-	Wed, 23 Oct 2024 18:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7621D47CB;
+	Wed, 23 Oct 2024 19:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729706835; cv=none; b=oDM5F0VVrl027keNZHdra69WElNjqrzI5zn/4bp7q0bwut54SaEMWdbLXdz2HKlaUziKFrplPAlMQMLPqce77CK7KSSR32vBqdm5r0GHf7eDJi+RFyh/MWWBFvH905bNnmTRCcJUVDDrYipoQ5Ho5pOKUg+RRzQumzhpzTJuTh8=
+	t=1729712072; cv=none; b=nomUX+22lufxeoCUGwwuuE8trbi9fvlpJGP8NyH2tkv+cd3fOXwIAHaLyS6ioJw8tRCDnrZctm5CENTiKLbrsfUw2YFnKzkAYhXwc6DWI1lppkIxxV3BsV7gJe2Y9sibjnG9MW1X0Jbnn4FEJK//jRFi5vb0lu3dL+0Fr4CQkhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729706835; c=relaxed/simple;
-	bh=tqmojDpKvljjbhg2zjwLCjuHUGdPGlAsse9W9QlPFb8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rd4ijznPSxqi8KgYDMwQOlV2wlHA8zxAp8J7JGRfqL2swgfWdlcRl/akItNwTs1Vr7SqYthUHOIeGk2WQ+rOeN4DTCyVshx4QTLbfifcVRwV6fBCTxyfgvEd9CjeSEdEa8LF9ymISruvbiKFnikrEp5N4xOTf3Ej1W3dw82odeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nASM56O/; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729712072; c=relaxed/simple;
+	bh=keEtpzn12wH3jYAScIGBjUyx/oN5KkajtGOKvPK5oV0=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
+	 Content-Type; b=hh+H3LRs151iPaDFeqqa06VuFtj2nydV0GW4fTFNm95lxa9eEDpnfXd6ySqt9nn5CzaIUkD0Cf+cgwryCstahHP1iua+SN5XQl70zu1CL9KFAayFQzlTkyxcNBqEjPx/8oEF+wpNf772LRS0VuS3l5fKclBNoqzK4DLdlbeP91Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M3/Zjr4H; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=80AmFc+f; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nASM56O/"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6cbf0e6414aso735776d6.1;
-        Wed, 23 Oct 2024 11:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729706832; x=1730311632; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WiBjXGH4g1k1OSDOsy8qY2INBvd/rJ7dZoNyBo84T4w=;
-        b=nASM56O/loarUlIhoIryDZhe2qb1zBLDHGlOqGUb5Eo4wdsZOKs9/ltTJfLaJxWhtK
-         U/Ffbru+YEK0Zu/iYT2Qb8HIjlkgBXpXovSFinDs2djr0RNQ5SFBoWov8YhLBdjcF6/U
-         ZG/hotCr51oac1c9VKRpHX+NMbG/1//dwRSDQzSErgVlX9A8FnsO/z/SQAsdjhdbIpei
-         cRKGsO1NUf4c+bhEjboBmXmfp5jZrabNZogQUKU0fGB7PMLtBbbjTDppw3vSkqAn0Ujc
-         xf7bffI0uCUIJ94OxtBLg8fan8BQc5LV6FYbm/uB+jzbiBiFF2eEF4mLagEiWIHOD/Nh
-         QVXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729706832; x=1730311632;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WiBjXGH4g1k1OSDOsy8qY2INBvd/rJ7dZoNyBo84T4w=;
-        b=ItgbshYbSUY1OZicdEyKSYepBwbp24szwjA+UFqCUrEgjlToVMQZUDdsQBgfVXnoUU
-         zRnIPn9rLVEMKQSCTT5qnkeMU8Q+/4nt8xF1SjCjmmWNFaxRj3kxYBDoLreykDgwvXs0
-         iyi0AWmTN24VCsmz5C/ufOp8xoZeDhSz/h2pYemVr4OaLjuV2UHMTaER9htUxFhaD8vU
-         XuYsW/QITou6c0/A8LPTa38nM76Yrcg9CjtsFFljUqEEQ1RIFglyKvFv20PXMKfF6yZd
-         lWPg7pv6TiDn2+J1cHKHjTzWURlvI/pn8RwSNIcVcSmj/oAfyEaaN2fpmDL2eGtjZs3I
-         nwtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWirQlJHcyHGdJVtUPtp3OfiNRZ1BMBHXUikkGQwjCpmFeLJTGFe9bPIuJp0bbq5LGR//6P5P7eceM73uE=@vger.kernel.org, AJvYcCXb78fUrreiv+LxYuzjJhd14IeYXq8MyLcpYCBd4sTCQZzEsCbTmNI+pQ7kUtlbS7rfY7VkPWXA9E/LlfidZIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM45CEXm0ltsn+gWsFafkIzMgpFi6h0tucvOV6KMKqcX7KFguH
-	LAVOrfdN6rAAZcX42vRU6vYbm072F8HNf03pFYcKG3W5PonpSjSk
-X-Google-Smtp-Source: AGHT+IHmoIk6I77uz+NXLrEtq3qVVCTmMpLFLgc4eh0diQ+EpRPIcklAmHhZKI/TUkRE+qr/2E+AhQ==
-X-Received: by 2002:a05:6214:2b82:b0:6cb:f345:8bcf with SMTP id 6a1803df08f44-6ce34271b85mr49210536d6.46.1729706832511;
-        Wed, 23 Oct 2024 11:07:12 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce0099cff4sm41177566d6.100.2024.10.23.11.07.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 11:07:11 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5584F1200043;
-	Wed, 23 Oct 2024 14:07:11 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 23 Oct 2024 14:07:11 -0400
-X-ME-Sender: <xms:TzsZZxEoVVOgruSGO39DWGIrEVuv995AfaF5qm0UEVXKR61KVcYi_Q>
-    <xme:TzsZZ2Vx4_KTam4e3lhq1tBbRD3i_3UdITCECMfh4Virbfu9Sw24yLuhg5yQCPAgi
-    Bf5g1_RJ6n8OTOqNA>
-X-ME-Received: <xmr:TzsZZzJeNNkDeyiXzf_0-6b6l9zKPh5CJbjii8Gbz9J_YNkkkCeGtaE4qgY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeijedguddulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeekpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopegrsgguihgvlhdrjhgrnhhulhhguhgvsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepuggrkhhrsehrvgguhhgrthdrtghomhdprhgtphhtthhopehl
-    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    grihhrlhhivggusehrvgguhhgrthdrtghomhdprhgtphhtthhopehmihhguhgvlhdrohhj
-    vggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunh
-    esfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:TzsZZ3Fz6P5YvsULJfNBmjnmuu0cu6ul5o4ee2z9YKRD756qsOig-w>
-    <xmx:TzsZZ3VxIAcZX4wjOSLyHBBrJXXANFt3ekgFRJR88k0xcgxxBQo2Ng>
-    <xmx:TzsZZyMJgr2xHeNOorPhnY-sRckUZ1iKv1N8LjBu2MgBuiSkSmmOqQ>
-    <xmx:TzsZZ23ndL1HK1X7DEZtJJ-cTn9LkTlIA7-2epCz81FTSGRgswRJqw>
-    <xmx:TzsZZ0VE35mysHYUiHvxhiu75iWctFJ_6PAMDQy4jrWspAceBt-byknc>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Oct 2024 14:07:10 -0400 (EDT)
-Date: Wed, 23 Oct 2024 11:07:09 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, airlied@redhat.com,
-	miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH v2 1/5] rust: types: add `Owned` type and `Ownable` trait
-Message-ID: <Zxk7Tf-jhSse51AS@Boquns-Mac-mini.local>
-References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
- <20241022224832.1505432-2-abdiel.janulgue@gmail.com>
- <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
- <b154dd13-8cd8-4066-ba3d-6597959ca5c5@gmail.com>
- <ZxkPC-dLRBqBKZ5J@Boquns-Mac-mini.local>
- <CAH5fLggEGMVspJoO6CE-gTa3-OHfkUnS=L1X-VNC8Cp57GYVkA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M3/Zjr4H";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="80AmFc+f"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729712068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to; bh=UKIaAPZQV2NhEf5qtKaNoRvOAmY1eWGmO5suz4rUei0=;
+	b=M3/Zjr4HzJi1dr2+mXP+zcICt1DEHerfYJUYgKcV9RQvajGhYU672t9+p6yuUPSNyR6CZr
+	QtqBDo3ADc0YlhQnAVuuy+kluJUH1fRCNvOCVRIGn63NkoX0n5vTtJZMagfYiRmHNJLa+p
+	/aEYwYNjv0GS537iwgH+FcjIXshp8DxCJ+skhELwVweLTuOdh1FU3BjIe5V97xZ4Ff0NAW
+	DchCZVoM9wW4r6wedkExE4CVDdxP09rgb0Go7wh+aI9SkcRpUzvULeLkuDeklqr+Jit0Ze
+	Df4+mGmpvJRwbQ+md4tZbfABQjce8zG5gcQm9Py3yQGtCpDPLTDt1USudo+vNw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729712068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to; bh=UKIaAPZQV2NhEf5qtKaNoRvOAmY1eWGmO5suz4rUei0=;
+	b=80AmFc+fW6GvGUEnvwawa5hPbCSOwMkH75v9fvjR1MyyXRZLVimM7LBJ8pg4FYx9XV4W5M
+	yGMhy+R/fXRLI9Ag==
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
+ rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+ airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+ Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
+ aliceryhl@google.com, Trevor Gross <tmgross@umich.edu>, Boqun Feng
+ <boqun.feng@gmail.com>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+In-Reply-To: <20241018055125.2784186-2-boqun.feng@gmail.com>
+Date: Wed, 23 Oct 2024 21:34:27 +0200
+Message-ID: <87a5eu7gvw.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLggEGMVspJoO6CE-gTa3-OHfkUnS=L1X-VNC8Cp57GYVkA@mail.gmail.com>
+Content-Type: text/plain
 
-On Wed, Oct 23, 2024 at 07:52:23PM +0200, Alice Ryhl wrote:
-[...]
-> > > > > +impl<T: Ownable> Owned<T> {
-> > > > > +    /// Creates a new smart pointer that owns `T`.
-> > > > > +    ///
-> > > > > +    /// # Safety
-> > > > > +    /// `ptr` needs to be a valid pointer, and it should be the unique owner to the object,
-> > > > > +    /// in other words, no other entity should free the underlying data.
-> > > > > +    pub unsafe fn to_owned(ptr: *mut T) -> Self {
-> > > >
-> > > > Please rename this function to from_raw to match the name used by
-> > > > other similar functions.
-> > > >
-> > > > Also, I don't love this wording. We don't really want to guarantee
-> > > > that it is unique. For example, pages have one primary owner, but
-> > > > there can be others who also have refcounts to the page, so it's not
-> > > > really unique. I think you just want to say that `ptr` must point at a
-> >
-> > But then when `Owned<Page>` dropped, it will call __free_pages() which
-> > invalidate any other existing users. Do you assume that the users will
-> > use pointers anyway, so it's their unsafe responsiblity to guarantee
-> > that they don't use an invalid pointer?
-> >
-> > Also I assume you mean the others have refcounts to the page *before* an
-> > `Owned<Page>` is created, right? Because if we really have a use case
-> > where we want to have multiple users of a page after `Owned<Page>`
-> > created, we should better provide a `Owned<Page>` to `ARef<Page>`
-> > function.
-> 
-> The __free_pages function just decrements a refcount. If there are
-> other references to it, it's not actually freed.
-> 
+On Thu, Oct 17 2024 at 22:51, Boqun Feng wrote:
+> Currently the nested interrupt disabling and enabling is present by
+> Also add the corresponding spin_lock primitives: spin_lock_irq_disable()
+> and spin_unlock_irq_enable(), as a result, code as follow:
+>
+> 	spin_lock_irq_disable(l1);
+> 	spin_lock_irq_disable(l2);
+> 	spin_unlock_irq_enable(l1);
+> 	// Interrupts are still disabled.
+> 	spin_unlock_irq_enable(l2);
+>
+> doesn't have the issue that interrupts are accidentally enabled.
+>
+> This also makes the wrapper of interrupt-disabling locks on Rust easier
+> to design.
 
-Then why don't we use page_put() there? ;-) And instead of
-`Owned<Page>`, we can wrap the kernel::page as `ARef<Page>`, no?
+Clever!
 
-Regards,
-Boqun
+> +DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> +
+> +static inline void local_interrupt_disable(void)
+> +{
+> +	unsigned long flags;
+> +	long new_count;
+> +
+> +	local_irq_save(flags);
+> +
+> +	new_count = raw_cpu_inc_return(local_interrupt_disable_state.count);
 
-> Alice
+Ideally you make that part of the preemption count. Bit 24-30 are free
+(or we can move them around as needed). That's deep enough and you get
+the debug sanity checking of the preemption counter for free (might need
+some extra debug for this...)
+
+So then this becomes:
+
+local_interrupt_disable()
+{
+        cnt = preempt_count_add_return(LOCALIRQ_OFFSET);
+        if ((cnt & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
+        	local_irq_save(flags);
+                this_cpu_write(..., flags);
+        }
+}
+
+and
+
+local_interrupt_enable()
+{
+        if ((preempt_count() & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
+        	local_irq_restore(this_cpu_read(...flags);
+                preempt_count_sub_test_resched(LOCALIRQ_OFFSET);
+        } else {
+                // Does not need a resched test because it's not going
+                // to 0
+                preempt_count_sub(LOCALIRQ_OFFSET);
+        }
+}
+
+and then the lock thing becomes
+
+spin_lock_irq_disable()
+{
+        local_interrupt_disable();
+        lock();
+}
+
+spin_unlock_irq_enable()
+{
+        unlock();
+        local_interrupt_enable();
+}
+
+instead having to do:
+
+spin_unlock_irq_enable()
+{
+        unlock();
+        local_interrupt_enable();
+        preempt_enable();
+}
+
+Which needs two distinct checks, one for the interrupt and one for the
+preemption counter. Hmm?
+
+Thanks,
+
+        tglx
