@@ -1,184 +1,123 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554011D14EE
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 14:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4421ADFF5;
+	Wed, 23 Oct 2024 15:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729695546; cv=none; b=jLWXWoYXUYRWrOrHVGWbNwnB4z/ABdsCiXQmjihWd5iJsR8/1NjZhWFDm88C4buEcp167j1r6PPeWl4lk4p+2zmbnGOTAKbiVRgsVl7aCQCBWHpCNNyEKbnGpRTocKHgZOtTjknw+RfKBckWt2tIuzzjDDEYNA2vm9SQxRzqvdA=
+	t=1729697825; cv=none; b=pbEVo4rDd1f01m7ohqaHYr3e605dxsPqN8qclk9bSIBLhc25W3p38jX99yQihgn9D/5L49rT/tth165J75M45IIAySDxkebvGgTvR3QEYXpWT20kG9M8qlz8settipID17Mc9Nd0qZNB9BcikLzePPjzhCRVWUJS1ivfjW1UiIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729695546; c=relaxed/simple;
-	bh=qVcZMLHwHyQhq7MBDvAiHcGYCqm+ZH0H3VY5fyTsc+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oFcqHB5abIthEu0kZF+UZoEnEMs9kdnkmG6rf/LckP7f1u86j0qi2PkD04LBOz3nMNQKZrOkykz8m3bTsTPLV0ci7w9X3KfnCLJAMzaAYx0OtPeaSfu788ZmmECLxZzTcdvT7r2ko0fw1tMbtDpMW74xhE1f8tNXkv7gRt9vleM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IjJHcUG7; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1729697825; c=relaxed/simple;
+	bh=lk0BVWNF7JihPDu8AoY+TTLyFPUHODOZeiL1akPZRvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=THPpjEkw6yPWzsVK0Jtc8QTHittGbfEg/Qwj73djwKZEu2EWTaLuSMYHj+LNDgmzdTIOyV5xmJJtMwkBc8HAczHQHu1JNdPUUSzxJvz/+7CmsnJxdPnsXuf4Z8MIVUITfcNWWT+UETOcBgLPs3iB9Zx1zkLee+M+FSZAaMe2Jms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8i9ZywW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IjJHcUG7"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9abe139088so149167266b.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 07:59:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1729695542; x=1730300342; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QdfhAg7XOG6KB9fpE58iZth2jLApIcWYhDgoIBS8gtw=;
-        b=IjJHcUG7cnM+rwPbkfTo+GNQQhH3RCA9s/I9xBEuu+1Ttq8VN4p8jfdaX1fYK9HipZ
-         xEB+NgfdClVy1oc4btYQNynlMTUWWBlS1Wuxkn3Y868WX1lWom/g8Lq3LcNdu95BrugC
-         6ZAgFLiR5VQf7aEnrZNRV1+nBNAB1Ryq/7zcPllZjCCb/VFwWGODEzVKVXvXNLPrsoQ5
-         n3VZ5T0AFKcMMly/TU0iQSd6qi+9s4S27Un6PJiu8WMcH6ej1yqY66LrhzUo8jy5ZHuS
-         D0Y5VNehGTcZI/p5E+TVUKgKODIT7d1MPHEehCvxwTX0NdkkP0+sr50aWAzZRWdbXQLr
-         hSVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729695542; x=1730300342;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QdfhAg7XOG6KB9fpE58iZth2jLApIcWYhDgoIBS8gtw=;
-        b=P5qy4YQYeHFfvCp0V8muhlV7yi90mNAm766yi+89AakwSMqVs4zuGIs/0kIDAdmSxm
-         8VYManu0QOMmVWkD/5LtdkYEunbFmfAcMBnhf6PwIbmNXpXE1Lzr1jFJFlQHc6hFyj2l
-         HnKGUTFMyNoo0o5x+f3GR2fwKXhB0hmtdgUyYQN5cLU2G64NYyCnl7GbviShLVdA2t8n
-         P8CumOzkDuu1BHrYmMPINaRCYGUjL3ozvFcgcbSoXqb2b38x2/Ic35IukpD3hd5z+Lb9
-         gby3I7QXzZS8/F06MQtN6eMTYSvNAAKDplMwqoFZoZepLKbO93a5D3cMLusFVEDFLlSW
-         j9vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzBQfJwlxb3PgbehC/F9ioQ3k83QzR3xW63MjQ8Y9yhqMP6LSJcyknTyz2Q6HoyI87vP7Zz/PYt4Sl1QJMyg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhQYiXnhEKhMr0w2CH/iM7mhbPRqlGLaynyOp568opnSgzKN3M
-	s+xulWiNunZ0uROVZqt9cEogyWW/DHAhiYbrCLhFPbBl8BV9miQk+rX/27qJuVc=
-X-Google-Smtp-Source: AGHT+IFC1aic+ZWmPBAnotFGoZ7s0fl8OisT/L75WyZvmDcXyVbJaWz0S1S/NSTReRarLlppasFQew==
-X-Received: by 2002:a17:906:794c:b0:a9a:4a:284a with SMTP id a640c23a62f3a-a9abf8792bbmr287818566b.26.1729695542525;
-        Wed, 23 Oct 2024 07:59:02 -0700 (PDT)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912d6234sm486571666b.24.2024.10.23.07.59.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Oct 2024 07:59:02 -0700 (PDT)
-Message-ID: <8017c328-f039-46c3-b472-f203cd6e2cfe@suse.com>
-Date: Wed, 23 Oct 2024 16:59:00 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8i9ZywW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B042CC4CEC6;
+	Wed, 23 Oct 2024 15:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729697824;
+	bh=lk0BVWNF7JihPDu8AoY+TTLyFPUHODOZeiL1akPZRvY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K8i9ZywWG1tpdwujXwquT2/K5g7j+78KPhFfoMyqJmVgJDCqTdlotB1hX/oUmisbr
+	 yuI5GmWmRTqXUNPTuRjJGGQQjv7JZrcpmof2zYnc5lHVJVc/om4nkUXf7Y2beDYC+O
+	 YS4kUcLC+z6Y+7m4pgidBbx4UHcuSr29AOqWWv14LqVOeMeEtWDaXjQ4byxBuhZ9B9
+	 UVhfnAWMvgAKJv2SLlVScKAQs6H2XWbKq4mwQ1YVE7h+AqK6GM4d0tj2sGA7TFpc5G
+	 Z1DUYs2oocSPMv273HEkHfX0RMUhAQ7oIhDludID8sNHB1hEIROK2wJNG2gWNMjI4B
+	 aDGLVMl6myaWA==
+Date: Wed, 23 Oct 2024 10:37:03 -0500
+From: Rob Herring <robh@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
+Message-ID: <20241023153703.GA1064929-robh@kernel.org>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-17-dakr@kernel.org>
+ <20241023000408.GC1848992-robh@kernel.org>
+ <Zxie5Lu2z_Xc_RXM@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/19] kbuild: Add gendwarfksyms as an alternative to
- genksyms
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
- Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
- Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
- Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20241008183823.36676-21-samitolvanen@google.com>
- <20241008183823.36676-39-samitolvanen@google.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20241008183823.36676-39-samitolvanen@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zxie5Lu2z_Xc_RXM@pollux>
 
-On 10/8/24 20:38, Sami Tolvanen wrote:
-> When MODVERSIONS is enabled, allow selecting gendwarfksyms as the
-> implementation, but default to genksyms.
+On Wed, Oct 23, 2024 at 08:59:48AM +0200, Danilo Krummrich wrote:
+> On Tue, Oct 22, 2024 at 07:04:08PM -0500, Rob Herring wrote:
+> > On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
+> > > Add a sample Rust platform driver illustrating the usage of the platform
+> > > bus abstractions.
+> > > 
+> > > This driver probes through either a match of device / driver name or a
+> > > match within the OF ID table.
+> > 
+> > I know if rust compiles it works, but how does one actually use/test 
+> > this? (I know ways, but I might be in the minority. :) )
 > 
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> Acked-by: Neal Gompa <neal@gompa.dev>
-> ---
->  kernel/module/Kconfig  | 25 ++++++++++++++++++++++++-
->  scripts/Makefile       |  2 +-
->  scripts/Makefile.build | 39 +++++++++++++++++++++++++++++++--------
->  3 files changed, 56 insertions(+), 10 deletions(-)
+> For testing a name match I just used platform_device_register_simple() in a
+> separate module.
 > 
-> diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
-> index f9e5f82fa88b..e6b2427e5c19 100644
-> --- a/kernel/module/Kconfig
-> +++ b/kernel/module/Kconfig
-> @@ -169,13 +169,36 @@ config MODVERSIONS
->  	  make them incompatible with the kernel you are running.  If
->  	  unsure, say N.
->  
-> +choice
-> +	prompt "Module versioning implementation"
-> +	depends on MODVERSIONS
-> +	default GENKSYMS
-> +	help
-> +	  Select the tool used to calculate symbol versions for modules.
-> +
-> +	  If unsure, select GENKSYMS.
-> +
-> +config GENKSYMS
-> +	bool "genksyms (from source code)"
-> +	help
-> +	  Calculate symbol versions from pre-processed source code using
-> +	  genksyms.
-> +
-> +	  If unsure, say Y.
-> +
->  config GENDWARFKSYMS
-> -	bool
-> +	bool "gendwarfksyms (from debugging information)"
->  	depends on DEBUG_INFO
->  	# Requires full debugging information, split DWARF not supported.
->  	depends on !DEBUG_INFO_REDUCED && !DEBUG_INFO_SPLIT
->  	# Requires ELF object files.
->  	depends on !LTO
-> +	help
-> +	  Calculate symbol versions from DWARF debugging information using
-> +	  gendwarfksyms. Requires DEBUG_INFO to be enabled.
-> +
-> +	  If unsure, say N.
-> +endchoice
->  
->  config ASM_MODVERSIONS
->  	bool
-> diff --git a/scripts/Makefile b/scripts/Makefile
-> index d7fec46d38c0..8533f4498885 100644
-> --- a/scripts/Makefile
-> +++ b/scripts/Makefile
-> @@ -53,7 +53,7 @@ hostprogs += unifdef
->  targets += module.lds
->  
->  subdir-$(CONFIG_GCC_PLUGINS) += gcc-plugins
-> -subdir-$(CONFIG_MODVERSIONS) += genksyms
-> +subdir-$(CONFIG_GENKSYMS) += genksyms
->  subdir-$(CONFIG_GENDWARFKSYMS) += gendwarfksyms
->  subdir-$(CONFIG_SECURITY_SELINUX) += selinux
->  subdir-$(CONFIG_SECURITY_IPE) += ipe
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 8f423a1faf50..ae13afb71123 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -107,18 +107,28 @@ cmd_cpp_i_c       = $(CPP) $(c_flags) -o $@ $<
->  $(obj)/%.i: $(obj)/%.c FORCE
->  	$(call if_changed_dep,cpp_i_c)
->  
-> +gendwarfksyms := scripts/gendwarfksyms/gendwarfksyms
-> +getexportsymbols = $(NM) $(1) | sed -n 's/.* __export_symbol_\(.*\)/$(2)/p'
-> +
->  genksyms = scripts/genksyms/genksyms		\
->  	$(if $(1), -T $(2))			\
->  	$(if $(KBUILD_PRESERVE), -p)		\
->  	-r $(or $(wildcard $(2:.symtypes=.symref)), /dev/null)
->  
->  # These mirror gensymtypes_S and co below, keep them in synch.
-> +ifdef CONFIG_GENDWARFKSYMS
-> +symtypes_dep_c = $(obj)/%.o
-> +cmd_gensymtypes_c = $(if $(skip_gendwarfksyms),,			\
-> +	$(call getexportsymbols,$(2:.symtypes=.o),\1) |			\
-> +	$(gendwarfksyms) $(2:.symtypes=.o) $(if $(1), --symtypes $(2)))
+> Probing through the OF table is indeed a bit more tricky. Since I was too lazy
+> to pull out a random ARM device of my cupboard I just used QEMU on x86 and did
+> what drivers/of/unittest.c does. If you're smart you can also just enable those
+> unit tests and change the compatible string to "unittest". :)
+> 
+> > 
+> > The DT unittests already define test platform devices. I'd be happy to 
+> > add a device node there. Then you don't have to muck with the DT on some 
+> > device and it even works on x86 or UML.
+> 
+> Sounds good, I'll add one in there for this sample driver -- any preferences?
 
-Is it possible to pass options to gendwarfksyms that apply to the entire
-build, specifically, how can one say to use the --stable option? If not
-then I think it would be good to add something as
-KBUILD_GENDWARFKSYMS_STABLE (similar to KBUILD_PRESERVE), or maybe
-a generic GENDWARFKSYMSFLAGS?
+I gave this a spin and added the patch below in. Feel free to squash it 
+into this one.
 
--- 
-Thanks,
-Petr
+8<----------------------------------------------------------------
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Date: Wed, 23 Oct 2024 10:29:47 -0500
+Subject: [PATCH] of: unittest: Add a platform device node for rust platform
+ driver sample
+
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+
+diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
+index fa39611071b3..575ea260a877 100644
+--- a/drivers/of/unittest-data/tests-platform.dtsi
++++ b/drivers/of/unittest-data/tests-platform.dtsi
+@@ -33,6 +33,11 @@ dev@100 {
+                                        reg = <0x100>;
+                                };
+                        };
++
++                       test-device@2 {
++                               compatible = "test,rust-device";
++                               reg = <0x2>;
++                       };
+                };
+        };
+ };
+diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+index 55caaaa4f216..5cf4a8f86c13 100644
+--- a/samples/rust/rust_driver_platform.rs
++++ b/samples/rust/rust_driver_platform.rs
+@@ -15,7 +15,7 @@ struct SampleDriver {
+     MODULE_OF_TABLE,
+     <SampleDriver as platform::Driver>::IdInfo,
+     [(
+-        of::DeviceId::new(c_str!("redhat,rust-sample-platform-driver")),
++        of::DeviceId::new(c_str!("test,rust-device")),
+         Info(42)
+     )]
+ );
