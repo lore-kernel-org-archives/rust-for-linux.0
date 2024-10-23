@@ -1,133 +1,91 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A821AC882;
-	Wed, 23 Oct 2024 12:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC12156C72;
+	Wed, 23 Oct 2024 13:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729686842; cv=none; b=QXCWqwWtZiJRQAC//DNmpni3aHD1XpYrxNB7O7K+bzdEsSn9G1Lj04KoS2zS+LlM0QOHzQSLyNLh5h27fFLRhoCH/hh5Yn4i21jSd4o9lU2k+/UnXbLocOGEmNQLuxpLBNh9iOHU7dOM23iDcKJOLL2bTXLbEUaGs1b3ZuSHd18=
+	t=1729688980; cv=none; b=ViD9NuSqsPtBq6fIpKqSwX9OfmT/3MehLG5XSrzkm5PhguTl5uAUB56j7hJiQ99NId0WA5T/tZHFt82LDcYkTgCcefzVPMu6FTzTHEOk5IGDVv88XFaqZS/tKNMKn++sn/6f3Wk9amL7DsRNxPnyZVXMoanG9aTcpX4rixThfLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729686842; c=relaxed/simple;
-	bh=6qBPmAgCD2RNJ5ERNzeh2m1p2+HKuBilNgolUWw92fQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=kJK555oyeJV85qCUsdX46+PiOTLAmkAFO2M6Kkf7aBjfroqaNiF7NHnsp5zxwQCHlH47skf+0tdIMxWucmwdFGBqueABxBFsrHtlB96pAq0rx9yiNKUyCX8WrRcJ3vtdL8b6rUnbGIgu9q/t5+K+WUzzxAyINiLFsu7Fp1EOGDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7RZ81Dj; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1729688980; c=relaxed/simple;
+	bh=jQ9/9WH7ZrEsfOMIYmLQONL2CsFM8pn1Cwr67WOtQU4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FmbHDVeSvzj8Yzn4Yqaf8lEvBtoYAM82uxSqKP2bEwWxsCV3eRnAkitfJFmFfy/sM1WxYOMCTCfbN7bcS9JQs4+sHReB37djnXafVMlxIpyjSrYiGHDObb/G5uHYZx8a9aV8VHZu40tUIE+Se94CxXE9/eeGKwBGdcSBXOWVM9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FQLj9tyb; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7RZ81Dj"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-208cf673b8dso65493035ad.3;
-        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FQLj9tyb"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e2a96b242cso874148a91.3;
+        Wed, 23 Oct 2024 06:09:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729686840; x=1730291640; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ue+11o5O3jAWZIekjz1MSKEWKTEaJ2momNJN9wnFir8=;
-        b=I7RZ81DjwHMplg2XiIzk1b8cjeS/J7OJvxeXBvG0cHl7Qjx9gUrblRD2C4gexBbbKj
-         Om0hHfNtHS7M3z0UrQ0e5wzDl/qxjWGyULrUu3ZcCh+IdsYJY7f0fDqY1rQd8xSjhHQO
-         GhFSUTY+qxrZuMW3W+zdwCFjkRK7usOCXVseI07TPOgj5ECDJjUhE915PvKm0vayTG1Y
-         8SOnjwoWQ52Qi0E3hWAzoDsxWAsS+bhtIa7x0iNDAT8vL2eR5UmkVkLifnRep6/YlQ0K
-         3bhHlkRYSQpS9MX1LVADZa9Un1Ihgaxo/AgxT8OYg7rXSff8qUBHCLDSnlhYdPFBIkyP
-         7AGw==
+        d=gmail.com; s=20230601; t=1729688978; x=1730293778; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jQ9/9WH7ZrEsfOMIYmLQONL2CsFM8pn1Cwr67WOtQU4=;
+        b=FQLj9tyboy0LtEcVg/uuHl4TmZHzjEx5ITi0CA99ME0NqWOY5b82kUx/n5OKXp0N7v
+         dcUfiYgUHePeJn+hhz5AY0Zw7nc7RrYJHWp4sm+ncw64b7bw1RKwctQNFt3ER68u478D
+         YRRJwXsuVAZs1fa3rfY13whQ1demvmAhxqAwpGWsYqe1zXAoHxLTdZJ0Y2lHPAq6UZx6
+         Bf2w+wDvuoU8nfmEcnxZslDBfq9K1ffxAKfejkE00PH8TO3YjQZAGuGJAUPHtxOczXuf
+         xXFRjg62OImX7sZrCiZSy2DdQQiKodCEZwAxHLeoORRW9BrYCzhX7sG1a0RDsNa9Tpva
+         9kMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729686840; x=1730291640;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ue+11o5O3jAWZIekjz1MSKEWKTEaJ2momNJN9wnFir8=;
-        b=sMi4egnAiyrqXrIplDwWGztlzjLxZKeDlk1W59YflPA71UTaCBN9tmqlWIY9WOyuT8
-         YW4nDRN4VwBfIXkw5R3AF5J1EzjsGXuVyxhx08aSdMbbzOEhzBnk0kPcAHD8mZLngUHl
-         +PwnDwO++5UwfRkQW6P3Sz9RKOC6Yn4/jtjeP5DfTXDtu+26DnWW7ptwaC8ncw1t4ujz
-         0MK4D8JR7tpUiyQnU5ntsuq91aZxw6u6PU4CRS4+bG2riTAw3BWb7ZzAslOSS85PBJ4W
-         WzWVHO59U4xM+rCTZ2tnZ8pt2NI7jBkXIfqXnNNgXaq+KCROpKaloCCsrDrVMxghDzlh
-         HbzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV2kJnbMmwV02fg54Ml6t299u6sea/MhO+FilJ5YecDGS1vTRl1n2iwz2BSLogOqsBnUHdkFY7j@vger.kernel.org, AJvYcCVQzYeVBD9L8Qv/Mdt96DWuw5TtjkUvr4i5GJBcbryjP/WEeMIM6VRfl41je9y7NINT9mmvYJ+fHMCTdSA=@vger.kernel.org, AJvYcCX/becbvJI34l3TFOxS/DeiveR8H1t9EnKkGDmvjGzQjKow95pcQ34N/qz9S18tm9kbvyM7gGFhlUjTVNm3EZ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc9m8uPLT0eJD6RWUrhZmTmzkyOH1/ShhAN0APiWcIhy9mQzxE
-	1Q4zl7AZ+B7nIy3Qux0T95/Ukc83D4838DUHDSD6BgiZmFI6x10h
-X-Google-Smtp-Source: AGHT+IH9n/qU6Rv+MXUSEUJm4JVUaOK76SXTgg8tMJecu8olE0KEpAZsSmxYsevEjWL/iDDH23E0yw==
-X-Received: by 2002:a17:902:f541:b0:20c:5b80:930f with SMTP id d9443c01a7336-20fa9e29844mr31991765ad.12.1729686840422;
-        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
-Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7ef0ad34sm56832105ad.68.2024.10.23.05.33.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
-Date: Wed, 23 Oct 2024 21:33:45 +0900 (JST)
-Message-Id: <20241023.213345.2086786446806395897.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep
- function
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
-References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
-	<20241016035214.2229-6-fujita.tomonori@gmail.com>
-	<CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1729688978; x=1730293778;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jQ9/9WH7ZrEsfOMIYmLQONL2CsFM8pn1Cwr67WOtQU4=;
+        b=VOgC6LdLXIKEW4yH5JjJqtdDQT1GpB1/CPnd1iomWCrMV8rrVZoQWq/rvcsUhfL1sk
+         ObaY2apN+x9SVpi1moe0ifhHOA39CTk3EScpVDk/rcdp700/Sl5ISdQrXB4a+uo0e3T5
+         VQK0v4wE1V3HvIs2zRVaA1jo+ml4dvoic8MXvwD36rG9hQ29dhKUoUaevnqTr8JYpMzk
+         dGYSW7rJw68ILB8iT4Kq7b5Jm/4g4IUpVXHUI31pZfGp0r7ppWc6+x3eHfngtFEuYMxl
+         Ak6wqWxKTp6t4IhiQPYok0U9bOGK/tCHrbPFE0kIte1n8aPPX2p922EYywc6iwI+E9pF
+         76gQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5y2Z+p8nVJMd3OUdf/k/sPsVfy/u6fxxA5xyGBRh858Sw6mcTJR9Y5BBTpi39lY/fc8XFvUz48sPFtRc=@vger.kernel.org, AJvYcCXE9OkiH1PEmL2K9pvCRTTGNZMVMXNsF2RDjsJdIUX9frv3lW1XBjJCbfHsrJ4F47H65WPJNV+p@vger.kernel.org, AJvYcCXcvucG06vGcP3IQunbJP0ZHgdZ75bkLLzWBVUhvVvR40JK9VeP4VnvZ8SWrSyrvUs2wBqaNP9llvPfAoHhcqU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVDSHYk/WRfvluSN3NyjnoJygANlOcmgqMq3ArXXm2MRA/aFFb
+	VtuOBl0jWpy9GvyKHNrImuCaau5xQunx7qW8ar7UkgcEUNP5wLY0d8L0j9duy2wlU+ZqAM+LOaV
+	mhHBzBdmoEJ70nkFzj00SgXceOBc=
+X-Google-Smtp-Source: AGHT+IG7BBsy1SQ2iDld34NBmrRkFzKTk4ypPLV9Be2XK/RQ+YiKHayD4gm6vhh+LZZmCe2i/VOdGtkG6w3uPBw5QEU=
+X-Received: by 2002:a17:90a:fe85:b0:2db:60b:eec with SMTP id
+ 98e67ed59e1d1-2e76b7116e2mr1215907a91.7.1729688978503; Wed, 23 Oct 2024
+ 06:09:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch> <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
+ <CANiq72=SDN89a8erzWdFG4nekGie3LomA73=OEM8W7DJPQFj0g@mail.gmail.com> <20241023.205310.480345328758576061.fujita.tomonori@gmail.com>
+In-Reply-To: <20241023.205310.480345328758576061.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 23 Oct 2024 15:09:25 +0200
+Message-ID: <CANiq72kk=c_KqXi_V9HgeiLQ7BV37iU+viCEoqs2qM3yoy3zQg@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 16 Oct 2024 10:29:12 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Wed, Oct 23, 2024 at 1:53=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Should use &self for as_*() instead?
 
->> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
->> new file mode 100644
->> index 000000000000..dc7e2b3a0ab2
->> --- /dev/null
->> +++ b/rust/kernel/time/delay.rs
->> @@ -0,0 +1,31 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Delay and sleep primitives.
->> +//!
->> +//! This module contains the kernel APIs related to delay and sleep that
->> +//! have been ported or wrapped for usage by Rust code in the kernel.
->> +//!
->> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
->> +
->> +use crate::time;
->> +use core::ffi::c_ulong;
->> +
->> +/// Sleeps for a given duration at least.
->> +///
->> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
->> +/// which automatically chooses the best sleep method based on a duration.
->> +///
->> +/// `Delta` must be longer than one microsecond.
-> 
-> Why is this required? Right now you just round up to one microsecond,
-> which seems okay.
+I don't think there is a hard rule, so taking `self` is fine even if uncomm=
+on.
 
-Oops, it should have been removed.
-
->> +/// This function can only be used in a nonatomic context.
->> +pub fn fsleep(delta: time::Delta) {
->> +    // SAFETY: FFI call.
->> +    unsafe {
->> +        // Convert the duration to microseconds and round up to preserve
->> +        // the guarantee; fsleep sleeps for at least the provided duration,
->> +        // but that it may sleep for longer under some circumstances.
->> +        bindings::fsleep(
->> +            ((delta.as_nanos() + time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC) as c_ulong,
-> 
-> You probably want this:
-> 
-> delta.as_nanos().saturating_add(time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC
-> 
-> This would avoid a crash if someone passes i64::MAX nanoseconds and
-> CONFIG_RUST_OVERFLOW_CHECKS is enabled.
-
-Ah, I'll fix.
+But probably we should discuss eventually if we want more concrete
+guidelines here (i.e. more concrete than Rust usual ones).
 
 Thanks!
+
+Cheers,
+Miguel
