@@ -1,213 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26991798C;
-	Wed, 23 Oct 2024 00:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68867EAC5;
+	Wed, 23 Oct 2024 01:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729641849; cv=none; b=ncKQxFKshkBjcLimSf9d9/uM2ftjFmJsieEFXEcwk9grsu34KgPropBbhyOXbE7vyeeN5QA29n7z5mclncBBwfab1v/riUSYU0v728QDkgLYPO8cCn0lqwpaaFtb53Dv7SkmYVQMSwmtwRdJ+OYHajNp3ifKBno6+XT2hY9ik3w=
+	t=1729648745; cv=none; b=mxeeyOhQpIi/7h9bl5YmSK98AJtomwOy+O32U+4bJRL7wt1DBSH0O1+3x0fSPMkpt82dUtA0gHWZXmegVgBCeWfuRSvgf0ZN+BkV/n/RQE7NYwrrkFTnusOifR9R5//ZPgHmfeL8aGuGeXutqdu/Cxa98/d0/SN2A3p9WLnjWM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729641849; c=relaxed/simple;
-	bh=lp+qOB2AsGXn3zORPru0TEAo87RI1MyOJb9mTrSMdWI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RE3MiBJVfYSBzXzlNo/b3RUbERURrn9A+B+yeznddkb3Hst7azXcf7JTAGOGAEwqjc+K+FV1nWifKCGKpX0e49Yd88xYlFLER4FwU5yQVHnXmlVYzJnAtLhkR36lQRmlnZpBdjuhEgemkUrQAJy0WCx4kxR4FyHDQSRiVXPDNdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXK3ZBl3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729648745; c=relaxed/simple;
+	bh=xV5uo3j+DCMuw9m/bkOEroNUQp5mGUIsVBycCzCBgWU=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=llTrv/XesiTpVpNQ+VmRHJLxE6WO3Ym7f2R9yhpV5VmCw2ENeP8Odx+HywwMA+WnhQJNU+tVVxcCS2Qlqt0UfeYN2Ndjz0/jn98oTRj4yCdtll42kU7XN1BeHkjtN+Eetw9FpMhEOngxVDsxCywHh0NMo/H98Ye/EA1yIKqKUwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nCZdedoD; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXK3ZBl3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14756C4CEE7;
-	Wed, 23 Oct 2024 00:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729641849;
-	bh=lp+qOB2AsGXn3zORPru0TEAo87RI1MyOJb9mTrSMdWI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jXK3ZBl3KW9rfPcw7U0EoPj5+z8C2qWD5+sQxr2ptHDzUelYirfjUhbN6q5T9hLZd
-	 2r+iV8vy6JlEGdPBZbwMFCCHljH4fSg9rBU/bcSxKEZvyVGBrnGAbMC58rLA5KGU/F
-	 kN6zKxos2jfMzYb4zZDqSl1vh/RXLtKiFNMFp7hZ1/npSfNl/MSRq2iPQK3audE2Bi
-	 GSsC0GLX7qsVCy0bRTqjuzw/fPP1RaBgKMaxGNcIEZknAkvNjOXRvL1r2CdQbdEm47
-	 WJvzNER/IjE+Rr1NS8bGFCqcAKB3j3yEJ55gPNSw4IQkoA+suB2rwOG+yCNK69DAAg
-	 O6K4qc5Ii+b2A==
-Date: Tue, 22 Oct 2024 19:04:08 -0500
-From: Rob Herring <robh@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
-Message-ID: <20241023000408.GC1848992-robh@kernel.org>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-17-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nCZdedoD"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-208cf673b8dso61379185ad.3;
+        Tue, 22 Oct 2024 18:59:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729648744; x=1730253544; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7DP8kBMWbDvYjwhvSIEx+g+xP6R3QphH2HAC+pYinyw=;
+        b=nCZdedoDZDc0YSHVmahm2h9AeUocruwtjRVrLF5i3YgMPEMeEnvGtEbCgOv4JH815y
+         I9iMKSRbNdcddX9OOg+69AZlfxucZV71uzDGyawtGHxpUhU25JlACb3m0QPn6+y5rUm0
+         NIgrjVjJmh94R6HOCm9w20skx80VYK3HnG2+Rm8cLHFnNB41EDi689JtJn14S7Mki7qw
+         6EBVqOIVsAO0mesR0sUXg0wwBh3n4bnxN3M8MBl0UjTAUZfODQmwJFOAKCh27W3iAPjz
+         uLFOS6VKVGUWaMZ/nTA6/T+mLCx4jQa2WhdFZfl8Vbd3ezceWCVAvpWqbuExY0P9mVyh
+         O2wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729648744; x=1730253544;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7DP8kBMWbDvYjwhvSIEx+g+xP6R3QphH2HAC+pYinyw=;
+        b=huXvBfndoigfptZBlRdIipLVXuWMF7Gqor7uhqely3a2Xpvm270fWmsxCyWau4ZQXW
+         xU2Ddj14B61LKYTDkHQgTj4SOeybu11cUJ5srTCulKyoVp7bjMdQ4+Y0trDwH4vxDyaV
+         p5qbN5NUO5lmFeUZUi0/0xCpCFXRuSLMlGZKdmph00hO/FGH9sNpd/nIgiEveVs08g1a
+         VwGQfm5CrTA9uOghzSal3DJB2/w3MJGOhmolN07tKHrbhnRr/6//AJeAqIj4DRW3z+X+
+         lpk3tjSHxmjGym5vObd+fzVwem3leSW/l0UGqEZD4uwcyglNaQkoPrLs3wPHfDDyRZXg
+         OHJw==
+X-Forwarded-Encrypted: i=1; AJvYcCVdJdw7uHD2eaGdhOGWKjvwEs364NS9cnxIygLhMEXJtqcinWbpesfF0RVdh0vVxH2PTgvWNFyp@vger.kernel.org, AJvYcCVqeTwx7e7ILU/gIpt/e/HfnOI+sOuY80NEQmVn7hP24306pz7IbN9jDpt8xljjaOweko8KpWHma9Ok9i0=@vger.kernel.org, AJvYcCWQc2pdyj/tiWGZ+O6dFsA2jeznssANuKigtfuGN0dMB9T6FxCy2jIkQQlWxCbHUZRT9T3vJsY1OiQKCi1JZn0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3qToMW+huo2A2nIVR82UBlU6L6CaM4ehvAIz/BH+TO+saqlg9
+	GEB9atQ/Yue9/D2BY8um9ah3MrYiiv+yz1vZrPoGknix8Km2z0st
+X-Google-Smtp-Source: AGHT+IHWh2jsK6iB0vS/ZeQw7gXNj6J/AlmnsvI9xbeNALA6Gv6lXTJNluaKBvbizD+lGoQvdK3BxA==
+X-Received: by 2002:a17:903:40c8:b0:20c:c9db:7c45 with SMTP id d9443c01a7336-20fa9e584edmr15543235ad.20.1729648743650;
+        Tue, 22 Oct 2024 18:59:03 -0700 (PDT)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7f0db9d5sm48726425ad.194.2024.10.22.18.58.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2024 18:59:03 -0700 (PDT)
+Date: Wed, 23 Oct 2024 10:58:55 +0900 (JST)
+Message-Id: <20241023.105855.1516501489443596246.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/8] rust: time: Change output of Ktime's
+ sub operation to Delta
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72nGoT9DxLwDbg8gZVxk0ba=KqvXLAVz=hRNFMqtCeGNvg@mail.gmail.com>
+References: <CAH5fLgjKH_mQcAjwtAWAxnFYXvL6z24=Zcp-ou188-c=eQwPBw@mail.gmail.com>
+	<20241017.161050.543382913045883751.fujita.tomonori@gmail.com>
+	<CANiq72nGoT9DxLwDbg8gZVxk0ba=KqvXLAVz=hRNFMqtCeGNvg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022213221.2383-17-dakr@kernel.org>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
-> Add a sample Rust platform driver illustrating the usage of the platform
-> bus abstractions.
+On Thu, 17 Oct 2024 18:45:13 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+
+>> Surely, we could create both Delta and Instant. What is Ktime used
+>> for? Both can simply use bindings::ktime_t like the followings?
 > 
-> This driver probes through either a match of device / driver name or a
-> match within the OF ID table.
+> I think it may help having 2 (public) types, rather than reusing the
+> `Ktime` name for one of them, because people may associate several
+> concepts to `ktime_t` which is what they know already, but I would
+> suggest mentioning in the docs clearly that these maps to usecase
+> subsets of `ktime_t` (whether we mention or not that they are
+> supposed to be `ktime_t`s is another thing, even if they are).
 
-I know if rust compiles it works, but how does one actually use/test 
-this? (I know ways, but I might be in the minority. :) )
+Sounds good. I'll create both `Delta` and `Instant`.
 
-The DT unittests already define test platform devices. I'd be happy to 
-add a device node there. Then you don't have to muck with the DT on some 
-device and it even works on x86 or UML.
+> Whether we have a third private type internally for `Ktime` or not
+> does not matter much, so whatever is best for implementation purposes.
+> And if we do have a private `Ktime`, I would avoid making it public
+> unless there is a good reason for doing so.
 
-And I've started working on DT (fwnode really) property API bindings as 
-well, and this will be great to test them with.
-
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  MAINTAINERS                          |  1 +
->  samples/rust/Kconfig                 | 10 +++++
->  samples/rust/Makefile                |  1 +
->  samples/rust/rust_driver_platform.rs | 62 ++++++++++++++++++++++++++++
->  4 files changed, 74 insertions(+)
->  create mode 100644 samples/rust/rust_driver_platform.rs
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 173540375863..583b6588fd1e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6986,6 +6986,7 @@ F:	rust/kernel/device_id.rs
->  F:	rust/kernel/devres.rs
->  F:	rust/kernel/driver.rs
->  F:	rust/kernel/platform.rs
-> +F:	samples/rust/rust_driver_platform.rs
->  
->  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
->  M:	Nishanth Menon <nm@ti.com>
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index 6d468193cdd8..70126b750426 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -41,6 +41,16 @@ config SAMPLE_RUST_DRIVER_PCI
->  
->  	  If unsure, say N.
->  
-> +config SAMPLE_RUST_DRIVER_PLATFORM
-> +	tristate "Platform Driver"
-> +	help
-> +	  This option builds the Rust Platform driver sample.
-> +
-> +	  To compile this as a module, choose M here:
-> +	  the module will be called rust_driver_platform.
-> +
-> +	  If unsure, say N.
-> +
->  config SAMPLE_RUST_HOSTPROGS
->  	bool "Host programs"
->  	help
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index b66767f4a62a..11fcb312ed36 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -3,5 +3,6 @@
->  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
->  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
->  obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
-> +obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
->  
->  subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> new file mode 100644
-> index 000000000000..55caaaa4f216
-> --- /dev/null
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -0,0 +1,62 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust Platform driver sample.
-> +
-> +use kernel::{c_str, of, platform, prelude::*};
-> +
-> +struct SampleDriver {
-> +    pdev: platform::Device,
-> +}
-> +
-> +struct Info(u32);
-> +
-> +kernel::of_device_table!(
-> +    OF_TABLE,
-> +    MODULE_OF_TABLE,
-> +    <SampleDriver as platform::Driver>::IdInfo,
-> +    [(
-> +        of::DeviceId::new(c_str!("redhat,rust-sample-platform-driver")),
-
-Perhaps use the same compatible as the commented example. Same comments 
-on that apply to this.
-
-> +        Info(42)
-
-Most of the time this is a pointer to a struct. It would be better to 
-show how to do that.
-
-> +    )]
-> +);
-> +
-> +impl platform::Driver for SampleDriver {
-> +    type IdInfo = Info;
-> +    const ID_TABLE: platform::IdTable<Self::IdInfo> = &OF_TABLE;
-
-Probably want to name this OF_ID_TABLE for when ACPI_ID_TABLE is added.
-
-> +
-> +    fn probe(pdev: &mut platform::Device, info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-> +        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-> +
-> +        match (Self::of_match_device(pdev), info) {
-
-That answers my question on being exposed to drivers. This is a big no 
-for me.
-
-> +            (Some(id), Some(info)) => {
-> +                dev_info!(
-> +                    pdev.as_ref(),
-> +                    "Probed by OF compatible match: '{}' with info: '{}'.\n",
-> +                    id.compatible(),
-
-As I mentioned, "real" drivers don't need the compatible string.
-
-> +                    info.0
-> +                );
-> +            }
-> +            _ => {
-> +                dev_info!(pdev.as_ref(), "Probed by name.\n");
-> +            }
-> +        };
-> +
-> +        let drvdata = KBox::new(Self { pdev: pdev.clone() }, GFP_KERNEL)?;
-> +
-> +        Ok(drvdata.into())
-> +    }
-> +}
-> +
-> +impl Drop for SampleDriver {
-> +    fn drop(&mut self) {
-> +        dev_dbg!(self.pdev.as_ref(), "Remove Rust Platform driver sample.\n");
-> +    }
-> +}
-> +
-> +kernel::module_platform_driver! {
-> +    type: SampleDriver,
-> +    name: "rust_driver_platform",
-> +    author: "Danilo Krummrich",
-> +    description: "Rust Platform driver",
-> +    license: "GPL v2",
-> +}
-> -- 
-> 2.46.2
-> 
+I don't think implementing `Delta` and `Instant` types on the top of a
+private Ktime makes sense. I'll just rename the current `Ktime` type to
+`Instant` type.
