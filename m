@@ -1,87 +1,118 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259331AB6C2;
-	Wed, 23 Oct 2024 11:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C581A0AEC;
+	Wed, 23 Oct 2024 12:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729684409; cv=none; b=gIyg7Vz7/hvL3c48zovytTo0K3fP7judRzyXHYfzm2xUdylTwu0v2mvq+Hvq7XB8+4OtCgIYKTW7S7WO74SPg9gAvdrdKxD7z9v225Ou/dIMOI4Y+7vVGuWnRoSpCnl2B+i25JH5A7j3tv/uQ6MGFOZT3BHvspoYueabd3ZiP98=
+	t=1729684922; cv=none; b=PrRHMqDd0zDuP0mRhpjlJLc0YxpCjDxLnpetxav/EvIzlbvzB6LJVHiCk8x21sLcPGf4M0PWHeaYaKopNZay31mXwRNDdN25ZdW0MkL2orUDrEFIxNRgU46wy9udtD/ZL/dypvrMbeUiV1c614jVpiqDZDP7Snc6OmNglKVy3kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729684409; c=relaxed/simple;
-	bh=xpUXNbcfBX0xDyTt0e4N9Vrd0dcOLqTl6DoApUzeeBY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Ly4VvknfPuTh7np6OeL9cCaiRXeTHDirI1cNnT2rLdwvpw+1NNMVCQXjCOHKMSgqCTO/CEwJRExOScx+pQ3eNq6egKwAPFxbRcRuhHdyGrusVgh9MI6RTaaOel1rvcDhyAlBaHdzrqVzgobzhau7RmdyW2I4iCwDlwNPeETYz/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hs+OqEwj; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729684922; c=relaxed/simple;
+	bh=YVyxI9zNAkBvLFKPpoMb1qj8toKGLTB4Psq/rpM99gI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AeoxNbID49KSBSnq+MF385bBVaXEZzBz7/v0HF8IQk4QDd8nNfY/i8m65N4MNB768QKWMtaImB5H0nSMHQCKIGe6a2k8xbrGMfMdnGk5ZsX3jlbKKso6ZuDgWwJfSnQ4EBTqKvEYZcUrDEQTrWXfdr3WwQkQd5B+H+BYFN05O0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZAGgg5Le; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hs+OqEwj"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3a3b4663e40so26057165ab.2;
-        Wed, 23 Oct 2024 04:53:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729684407; x=1730289207; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xpUXNbcfBX0xDyTt0e4N9Vrd0dcOLqTl6DoApUzeeBY=;
-        b=hs+OqEwj1sb5BfwHOWdYDSq/8+ckvIAHKG5f+VHxra5vkPzkIpD5NB6GNy6cBs7bSa
-         +NsE7bxRj8PRPgF02O3LX144LLpNMnoswHpx8nbFtHRQbvVKjSczqLmbH3QETlPLjwmI
-         ZrrMshhlG5wvTDlDwzStogBP4SI1VPP/pDFXLrDacgO5OkCz3Ytn0N/x+Igv8lfQTUc+
-         VLlnnrS9pQOwpXzGjFMJYhk/yDvYKN/fAVee6aM6ngnWIS4GKQ6I8NBPBYBsuOHiI3SG
-         gudqenkawdUWMC1oFCI9+4xKnd9dZO/+3MsTBk2PEAv+A4KA7nLB5WmA/mw0+RRV9wv9
-         kyEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729684407; x=1730289207;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xpUXNbcfBX0xDyTt0e4N9Vrd0dcOLqTl6DoApUzeeBY=;
-        b=GV+19riDWQ+/FwaVF608sgIR5Z4OzV5zC4HhJnElacGs53iWZfyfP5Dq1BMzF/TNa6
-         DZlrg0+36EYfFZg+uOfcB8JrI439FxDBj9+08C50aHVdSbIZODyQyGsBgg7svrJgTpGx
-         mRYjx9DLKhJtJRTlyPlYnxL/6leYPrN4egG/xNpUix3mKIfmhbXs91uyHGY998Zd+lRI
-         qYb0U89MEGC9j/ckhtU8k9BHhcJ9vw/U3v85po/wKxRgPh5dbbdFtrCT3q5dXz0OlkN+
-         CdA35uB44/Yy9iV1658/VA5YZBb6Jnzzu+DcoG8HqvC+rDW3zAKfKLchYKS3jRcQlCnq
-         eBlw==
-X-Forwarded-Encrypted: i=1; AJvYcCUssWzSvDmNaLxlA/zqHtBSYAn9H++X8riT4FhHRou5Kzc51+AUcMFk1neYzvWEYl7vPz75H1r4rKvebI7t7cg=@vger.kernel.org, AJvYcCWbP8rTLfFemFkiV4KBCE3l5dXzAFrTiRkfVeOcUrXbDnvMm6pyjkJJErzwjOCQ0n+y5FLNDUUY4/czGQs=@vger.kernel.org, AJvYcCXFJuk/k2pk4uqpxFlilCp2NQYuqsd3R6ol7eL95jx5rKwBvWp5uiDx9dIMOn8gfxeqCrBRacsq@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqfApED4HgSGegJyOv6CIDKWJGL445EyE+mW6p81gQ3mnrsmi8
-	GeCnR+DVFt5X4OexXd0I5cjWjEyrnMetDk3tkZdKPzfGokfLGRZF
-X-Google-Smtp-Source: AGHT+IHH5B72cSBCbY5Yrw1UnarnQaxVJx1ABBEEKRtzlzXz4ucq8fvEsGMc/PlZCAcleuWSRaQ3Lg==
-X-Received: by 2002:a05:6e02:1c44:b0:3a3:4164:eec9 with SMTP id e9e14a558f8ab-3a4d598caa9mr24724945ab.14.1729684407100;
-        Wed, 23 Oct 2024 04:53:27 -0700 (PDT)
-Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eaeabde7d5sm6577038a12.93.2024.10.23.04.53.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 04:53:26 -0700 (PDT)
-Date: Wed, 23 Oct 2024 20:53:10 +0900 (JST)
-Message-Id: <20241023.205310.480345328758576061.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72=SDN89a8erzWdFG4nekGie3LomA73=OEM8W7DJPQFj0g@mail.gmail.com>
-References: <940d2002-650e-4e56-bc12-1aac2031e827@lunn.ch>
-	<CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
-	<CANiq72=SDN89a8erzWdFG4nekGie3LomA73=OEM8W7DJPQFj0g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZAGgg5Le"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BEAC4CEC6;
+	Wed, 23 Oct 2024 12:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729684922;
+	bh=YVyxI9zNAkBvLFKPpoMb1qj8toKGLTB4Psq/rpM99gI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZAGgg5LeHEXtyFY2LHADmjnajOLRMcjYqUepM+I++wwP0qee4ITD4qFMILsqzS66p
+	 IKEDaCozhWrURldrGlUpSHVPNwpdcXMOiKaWWZ5b/jvwcX9qEETE57jHAAYR7H5ABQ
+	 jt8spzIDp8jfaa1m9sxqOh+/V4nyplkGMDlofne6nAzE4fB1IORB4+ileP2DAEa/ll
+	 K8xZ7b3esgDcr4ug9TSrqEQcQaEuXZvyWIJTsrzGB+Kpy2tc3c5lxuAuQdrBM/iW3S
+	 5yfZKy/ZUCtLFApD5jiT17Qu+M0TcV6MCq9n34qB27EurVB4KKw2tjHIfgudwBptim
+	 1CRl8lfr018Ew==
+Date: Wed, 23 Oct 2024 14:01:56 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+	dakr@redhat.com, linux-kernel@vger.kernel.org, airlied@redhat.com,
+	boqun.feng@gmail.com, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v2 0/5] Introduce Owned type and Ownable trait (was:
+ "rust: page: Add support for vmalloc_to_page")
+Message-ID: <ZxjltAbZmzbjXnKn@pollux>
+References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
+ <Zxitz41uPPeloK0o@pollux>
+ <CANiq72nagKRUmHWVOFGNBuiVnqdmgqPm8b6ZtG1edobmrQMr3w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nagKRUmHWVOFGNBuiVnqdmgqPm8b6ZtG1edobmrQMr3w@mail.gmail.com>
 
-T24gU2F0LCAxOSBPY3QgMjAyNCAxNDo0MTowNyArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
-b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBTYXQsIE9jdCAxOSwgMjAy
-NCBhdCAyOjIx4oCvUE0gTWlndWVsIE9qZWRhDQo+IDxtaWd1ZWwub2plZGEuc2FuZG9uaXNAZ21h
-aWwuY29tPiB3cm90ZToNCj4+DQo+PiBkaWZmZXJlbnRseSwgZS5nLiBgdG9fbWljcm9zX2NlaWxg
-OiBgdG9fYCBzaW5jZSBpdCBpcyBub3QgImZyZWUiDQo+IA0KPiBXZWxsLCBpdCBpcyBzdWZmaWNp
-ZW50bHkgZnJlZSwgSSBndWVzcywgY29uc2lkZXJpbmcgb3RoZXIgbWV0aG9kcy4gSQ0KPiBub3Rp
-Y2VkIGBhc18qKClgIGluIHRoaXMgcGF0Y2ggdGFrZSBgc2VsZmAgcmF0aGVyIHRoYW4gYCZzZWxm
-YCwgdGhvdWdoLg0KDQpTaG91bGQgdXNlICZzZWxmIGZvciBhc18qKCkgaW5zdGVhZD8NCg==
+On Wed, Oct 23, 2024 at 11:51:47AM +0200, Miguel Ojeda wrote:
+> On Wed, Oct 23, 2024 at 10:03 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > I wonder if it would make sense to make `CLIPPY=1` the default and only disable
+> > it by explicitly passing `CLIPPY=0`.
+> 
+> That is what I wanted, but when I asked long ago to the Clippy
+> maintainers if using `clippy-driver` was guaranteed to not affect
+> codegen, the answer was no: for instance, optimization may be affected
+> (at least back then), and the maintainers said the intention is that
+> is not to be used for normal compiling. So I sent a PR to document
+> that. See:
+> 
+>     https://github.com/rust-lang/rust-clippy/issues/8035
+>     https://github.com/rust-lang/rust-clippy/pull/8037
+
+That's pretty unfortunate, I didn't know.
+
+I think for the long term it'd be good to find a way though. Once more and more
+subsystems / people start adding Rust code, I could imagine patches to start
+slipping through and fixing things up after it's been discovered in -next would
+be painful.
+
+> 
+> Similarly, Christian proposed running `rustfmtcheck` unconditionally
+> on build and offering a way to turn it off instead. I think that would
+> be ideal too, but it could potentially lead to problems too, so I am
+> not sure either; see e.g.:
+> 
+>     https://lore.kernel.org/rust-for-linux/CANiq72==AkkqCDaZMENQRg8cf4zdeHpTHwdWS3sZiFWm0vyJUA@mail.gmail.com/
+
+Yeah, that's a tricky one; if not enabled by default I'd be a bit worried about
+the same thing to happen as mentioned above.
+
+Additionally, for development trees where things slipped through it'd be
+annoying when `rustfmt` changes more stuff than expected.
+
+> 
+> So I wonder if we should instead go with a "dev mode" like `D=1` that
+> enables Clippy, `rustfmtcheck`, `-Dwarnings` (even if `WERROR=n` and
+> applying to everything, not just kernel objects,), potentially
+> `rustdoc`-related warnings too, and whatever other tooling/checks in
+> the future (e.g. klint), and not just for Rust but potentially for C
+> and other bits too (e.g. `W=1`, some important subset of Coccinelle
+> scripts...).
+
+I think that'd be great for short / mid term, it'd make it much easier to ensure
+that all relevant checks were executed and hence make it less likely for things
+slip through.
+
+For the long term, I think it'd be great to keep looking for ways to always
+enable the clippy and format checks. Or at least the clippy ones if we're too
+concerned about `rustfmt` to break.
+
+> 
+> That way, "normal builds" (i.e. those done by users) stay as
+> fast/clean/warning-free/bug-free/optimized as possible even across
+> compiler versions, potential bugs in the toolchain, etc. And I imagine
+> it would be easier for newcomers, too.
+> 
+> Opinions welcome! I am happy to prepare an RFC, since it seems a few
+> people would like something like that.
+> 
+> Cheers,
+> Miguel
+> 
