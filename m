@@ -1,87 +1,94 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343231A7AF6;
-	Wed, 23 Oct 2024 10:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1DB19DFAC;
+	Wed, 23 Oct 2024 10:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729679202; cv=none; b=SQB5Dsv5JO7QvEZpsjSfzgXDMgxg1i0PIbSmm1+HYmXYENsN8g80uL9jM3jMv8+paQP41FLGVmJtP4gpyncLIlL26HvXoWu8VaeK/aRWsBNs7eWizNNMre/1Kigv1A5s3zSgR3PUdI4KzP1M0iH+EB52bX/2BfYz63sQpsDq+ds=
+	t=1729681160; cv=none; b=GRRzdVgMrd/pMe4pWkWvmqru5D2r7BsBCs6PvL47aCgkSPQfE4hXg+qBp9YdbWHeH+0hYMh+R4EB0mEY7a9Z35XUeSiguRZPG9NyeqC64wfYPRWuZ/8t5EwHbex8ugIkE6ys+sAWJhpyzRjJKT/2k2WqGAJm9CJFXPlck1XG4+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729679202; c=relaxed/simple;
-	bh=QBuEo5eIVgcTnsQ0f9dFMCLkDRYCkv+Zgcpy1jNnZRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N4vYVlvS5son16pf3J3ruW+18CQJRMTumNX1HNGdXWExN0BbpsxR2+WeExtLqdTNEOEUA1/E7b2MtkCRVq3h7joNDSdbQwODIG6xzUJqbETOulkOC0AnYQsEeVthIBbc44lDgLGdHsjN8+TaRjj7Ki/1fmz2hICInHB/UGpu5e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YP/BYOVT; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1729681160; c=relaxed/simple;
+	bh=dQn3QKooFfpkED5AWgQUsidsNUhCz5rbmLpHrgZVl3w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mSh83b9nEgggmZDc9trlRimF3QknQJCRa5oToLjr2Xqlwj3EoU8naEAQLlLo2H0drBY4mir5LPNdQOPCY6l2idyq/gwhvdC7YYdyIjKJza2BxgNL68CnFxVjndWcA8ux/mb76Ra9Be2GKizXqa9fbi/diiWbpiXMPbLs9HswVJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UEJwya1L; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YP/BYOVT"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539f0f9ee49so7214587e87.1;
-        Wed, 23 Oct 2024 03:26:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UEJwya1L"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2e2ee0a47fdso1274354a91.2;
+        Wed, 23 Oct 2024 03:59:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729679199; x=1730283999; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PI3pexgot2AS5y2K3N1eH+jxvyIvFandoOsjehy81XI=;
-        b=YP/BYOVTlY54m2KnxXec6xsqIcBh5+ZlGxcqhLPZtTnF6/YKPdncVP7BFCqLUZ2Dxd
-         hcnqvb3D9a99z+DRretevDb5xZYfP8XSQ6M7J13/f4pUomOJ222lrkr27bygSEJq75nN
-         4G1O+sFORsemRo6PuJKo9CW4mTB/13diQ9pJOwGT2H6ZW5zr8x8WUTQA3XjK8gBIQAVJ
-         zV35cAGku5V84tIMC6NaZZAgX3+5qm2bSwreDnnabvobIX6zCzMLVyMxgY21p4WYIXGT
-         dGM7r0qN0XF06pXfjypsGoLmukqzfLql9rStAzPRp7Z5e55wbgOV+a/YE8xcv8GQgn0t
-         hH2w==
+        d=gmail.com; s=20230601; t=1729681158; x=1730285958; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dQn3QKooFfpkED5AWgQUsidsNUhCz5rbmLpHrgZVl3w=;
+        b=UEJwya1L3oTNJQlsVK4/YDCffLxerD8YTC6pX5l1c1nH1kRPYnMXwKaiU+HJ2PshhX
+         YKHZ4YoHPo5jAHo40gp9NrvX7gc2gQ1qISaL63CMaNeHM99IXI78iL5O0824BVcQYGHe
+         13f5z9tW/hpz6jchO+c7BrHfGRuMP84HbIdFPNyRAMwtOygBBN9O+bN9Scth8E1Y+1mU
+         4p5+YoIh4lkK842YVSwKR9sOnHp/Khhcv11vAxJisjY3AI0lXosmfU2I0T5cU6u0IXZ+
+         QMM+ZF3XEg46oj/2TRr/g+lCDX5IpAIwiNNFb++fUTsxJ+Vmqvi73wq3Cjp3M355EamP
+         qvqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729679199; x=1730283999;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PI3pexgot2AS5y2K3N1eH+jxvyIvFandoOsjehy81XI=;
-        b=vn+fe4xRtT/uwPxdsmMXoPrOLR8xdSMCYNBh3tzMmY0iq/sRzyosoC+Bl5+zuHmY7I
-         xyjtfV/an/eDyTouEm3KUn7BdDZ31cQyyaRL6O92BylfGO+YycblmL3j06GMrGCE9t76
-         FjABRsYEzIcwrI4qIJ5LBAWtir77BC9xBds7Zf4a/VK4+eOLBYZtiM8JgmxmLbOERLik
-         2FBw3gE7aSmEy7wz0iziFqaIJAA9p2xHVLon3nYBF/4Huvk/BHMtPDYZufLLEXm4hXjJ
-         AcyEkUUOYzCsJ3r6Ck6VK6leR5nH5GebwlYQcbyOUxJjwnHav71EzOrgKkFIgT7u2lYh
-         hywQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWhgxVMQ87oByRJkGCqHZ+YiXpKmfWmavsHqRkHT7zZ9KZMhubTJtsGcYtVM6cgkGI9aQjuu/AWCEmEL+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnBNQRQFOJx/vBLMMX09NQI6AuRx0kQ6RYEpPdz057U0AyOCbp
-	h9+irM4gFZumrXSD3MOQnZUmcp0yCNl6MIumEjEN2SAjeN1omTqxYY6Dfw==
-X-Google-Smtp-Source: AGHT+IG8wFEAFtFm9Gw7OOgeiTmHEDudfTFzqnZcJjfeFZRkNo8oYisrFFGzVFLM2c52Mz0atBovww==
-X-Received: by 2002:a05:6512:3a95:b0:539:edf4:68b4 with SMTP id 2adb3069b0e04-53b1a37f186mr866757e87.57.1729679199291;
-        Wed, 23 Oct 2024 03:26:39 -0700 (PDT)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a22422167sm1020400e87.129.2024.10.23.03.26.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Oct 2024 03:26:38 -0700 (PDT)
-Message-ID: <74db5f3b-c329-474e-9a9d-de67d7cb888c@gmail.com>
-Date: Wed, 23 Oct 2024 13:26:37 +0300
+        d=1e100.net; s=20230601; t=1729681158; x=1730285958;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dQn3QKooFfpkED5AWgQUsidsNUhCz5rbmLpHrgZVl3w=;
+        b=OmpITayMuUrwrateU7zYkC71JEzvoGNs2nNbTNTB9zkuLTuMDxIH7Sg7lYotiLaVWl
+         ceJaRGh5XGZa/D+a3WcKZg9/g0bXc3DOotOIC5rGfcH1G6QaxKWfUuiZQU9gFFXaibhH
+         +PdwtwkD/0a2OVgqfTR//3BMzcpHLkWFRxx5CySx6YgW6Dq35MZlL8QPG4dvRnchQOjd
+         eSglV+g4s93fp3sipEzB47GjY1GSGkvEPpOq75WLv5FGFzZR9LEcEz+4MR/NcZc/6OBD
+         tmND8R2qjnUIEW3mxprVYA3rv8gNDTobMYL4qE5faVmXCct0pH/z2u4bb1ijf7V7cPAB
+         uhbw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8opolXf6ew8Bx0nxrHru5aK0JfKCI1Py766zd/yfVz7PqejgNxfT+luCez80NpUzjVfA2hGZNcTaq7uw=@vger.kernel.org, AJvYcCUNPjc7WL8eSka0/AQ9Phq1+v7CMyGnruAUfi5HIoc5B5QKGt9Yhkk8d7VMfN/nFlKIRGoRf3rBYKbC8wuXF6E=@vger.kernel.org, AJvYcCUqzhsPEsetpbeGlUCEesmEXksCnVKGd527DomHb4z2TfDB5sxfK62CLT+2GUbYURZszOmhCOXx@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZzB3NvWEs6pXj/Zv0hQ5AcB77omhd/eTSYNCfc0JpY0GN1l6w
+	v7Aj1LRERZLxZyywiKNJtfTbh6asJKONlDDnP8NH6L1eyQ/ACoMbHVvjcOFiDMHSDAxhVB3R5v5
+	BKlwKoE9loDfN3RzBXHalh24+rqCjB+254DA=
+X-Google-Smtp-Source: AGHT+IFO30ySqoMpYk7KKeOKqHfToaE9f7OcJTdBgyaCFCvOpkXkDtsvH7hgHzCdhYCHCR/4zVmRh5PtA0mhxdiLLlI=
+X-Received: by 2002:a17:90b:4a83:b0:2e2:e929:e8d2 with SMTP id
+ 98e67ed59e1d1-2e76b6c3194mr984364a91.4.1729681156711; Wed, 23 Oct 2024
+ 03:59:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] rust: page: Extend support to vmalloc_to_page
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, dakr@redhat.com,
- linux-kernel@vger.kernel.org, airlied@redhat.com,
- miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
-References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
- <20241022224832.1505432-4-abdiel.janulgue@gmail.com>
- <Zxi287W_MJcMB4YO@pollux>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <Zxi287W_MJcMB4YO@pollux>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <ZxAZ36EUKapnp-Fk@Boquns-Mac-mini.local> <20241017.183141.1257175603297746364.fujita.tomonori@gmail.com>
+ <CANiq72mbWVVCA_EjV_7DtMYHH_RF9P9Br=sRdyLtPFkythST1w@mail.gmail.com> <20241023.155102.880821493029416131.fujita.tomonori@gmail.com>
+In-Reply-To: <20241023.155102.880821493029416131.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 23 Oct 2024 12:59:03 +0200
+Message-ID: <CANiq72nvMAMff7Oar-UCvajZ-sP4XdE9vNGW49L9CMsRzSTwCQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 4/8] rust: time: Implement addition of Ktime
+ and Delta
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: boqun.feng@gmail.com, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org, 
+	tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 23/10/2024 11:42, Danilo Krummrich wrote:
->> +    ) -> Result<&'a Self, AllocError>
-> 
-> Please don't use `AllocError`. We're not allocating anything here.
-> 
-> Anyway, do we need this as a separate function at all?
-Thanks. Would it make sense to squash this function into 
-`Page::page_slice_to_page` instead?
+On Wed, Oct 23, 2024 at 8:51=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Can we add the above to Documentation/rust/coding-guidelines.rst?
 
-/Abdiel
+Sounds good to me -- I will send a patch.
+
+Just to confirm, do you mean the whole operators overloading guideline
+that I mentioned elsewhere and what semantics the arithmetic operators
+should have (i.e.to avoid having to repeatedly document why operator
+do "not supposed to wrap" and why we relegate saturating/wrapping/...
+to methods), or something else?
+
+Thanks!
+
+Cheers,
+Miguel
