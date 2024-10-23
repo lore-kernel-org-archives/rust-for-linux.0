@@ -1,69 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C018E1CA84;
-	Wed, 23 Oct 2024 11:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09BC145B1B;
+	Wed, 23 Oct 2024 11:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729683049; cv=none; b=pENK+K9ZLYivG0Ljz+LWhGAvOEu0BBNEH8AFx9eGqJnUlHQ7RDZ6l6YUhUrshprkmKVfuX65gO+E/tslCJgxoSPIlzT3JISfpk0G1ADK4ZmVeQtDcY31N+W5UxsuG8HXhMW2HGfpxLz5H8FmOrOLN8z8bf8hcXTwmwQ/nzXfvF4=
+	t=1729683246; cv=none; b=CaG1F+H8HEymxXS8QBdsN/ly3PPYlWNEI9vWuA17oJn/UNnnY20tyu+vWI1hw22eSZUqUC6XmKI6v7ha1ykN2gJIndbtEpWKMSypdZu9ITIeVl9NP38B1ByLEZbvWa75+5jlltXiDj7dgqIVke8+xJhlFpNnQbuGpmzDZYrCeYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729683049; c=relaxed/simple;
-	bh=oV5yBCvSY/I5nvYmeJJWIoBisEBeBCIXfe1qmu3o4Do=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g+AX7gG4YKcjxo1gydbwdkDEddc3jAZ2vaJSiIe9kol+PumhYe1HFT9KUWSC9LtJJySTqs8LIIikqpgtGox0CO33JIs+wj1PsRNxr29V9C4YFE/PZGINIqj8c+B7dPbVCFgUw/eJLWKFyk4L48zkkd9WNbZL7FwVRQjWMvNwvzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHZUcYEq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729683246; c=relaxed/simple;
+	bh=6ekIhr6LIRQoiqBNm39lVH2whzKUguM4E8G0SKHwOjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IMJgo5kib7uToPRJNXa3a1zW5lCX1zYS5ssliDZhsOggr40MavmdHf4OupFiJk/k3/BKu//J3GJKvODK7CSnW847H5ksHjTBj4LmOIJcG2eI6HllGFsa0b34bTKwZElyuMmcyD7ZEQ1H19aF0dNIDTINSJHZ0oDOFlwQQ7weSJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iKhDO0eq; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHZUcYEq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88803C4CEC6;
-	Wed, 23 Oct 2024 11:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729683049;
-	bh=oV5yBCvSY/I5nvYmeJJWIoBisEBeBCIXfe1qmu3o4Do=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IHZUcYEq7qL91FC+WsF7IOCp7SLTUj5nBcyMpkym6lOX8CAAOCanK5xz8hksYiiyz
-	 UgYavvcpStcvdUnfB20o31CkVkekGSNC5sJ0BxHIoj1kuT+8SF/xOp7NQl49+RL0rb
-	 czrH43eDVGHMqZMXZNd3wG/OEOB3xb9++IqaYdAwZxMyZNMNUVjAN06yb3JnEY5vrx
-	 1B25VctE5GeG0sKC+ynnoeIqbqRzIHSXQUxEig+Kn0vUCiP0nsY525ijYloEwsvO5V
-	 P+P5pi/ebod3wR+2ff05Rhh3OkvQlgmrYc4MfrjKH3nC+V+6BVenQjdhSKSvQURe4B
-	 hmPUb/Lt3pOeA==
-Date: Wed, 23 Oct 2024 13:30:44 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, airlied@redhat.com,
-	miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
-Subject: Re: [PATCH v2 3/5] rust: page: Extend support to vmalloc_to_page
-Message-ID: <ZxjeZH4fz6ihRRkr@pollux>
-References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
- <20241022224832.1505432-4-abdiel.janulgue@gmail.com>
- <Zxi287W_MJcMB4YO@pollux>
- <74db5f3b-c329-474e-9a9d-de67d7cb888c@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iKhDO0eq"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539ee1acb86so5039440e87.0;
+        Wed, 23 Oct 2024 04:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729683243; x=1730288043; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W1UjQBMNm7fCJHZ5GrQYk9mjiccdMOgKswvtQC1VZ0U=;
+        b=iKhDO0eqKzc+4ixiWno6O9rUJ9C6M9x+oQ7KoEyJyGNI0Q6cmEPEnn+2biEH7UrSeM
+         NaL2KUKsigfGfookNpvRmCTNiekq6hfuqxa58p50e/L9skDJv1qAUNLrOUFvlHIxqg2l
+         pZnwkBr9a1y6wWtQSlYV+/5j2ukS6yRpv3kEq1N9nhVQ+GKd2NomQ9/6PJCXbTYn6ZbP
+         1hel5ygUtI+nHvzaUf3xCmSqJP/PL4thyoFp47LcYZ2bwUjVoeI3HeyK45OiAkNyIrIn
+         Yh1xOkJOREJKc9lqxwgkkviKOJw0bBM1HVIgPxa0tt2WedgSzEkua1ls5N9FChIMckUP
+         1+rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729683243; x=1730288043;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W1UjQBMNm7fCJHZ5GrQYk9mjiccdMOgKswvtQC1VZ0U=;
+        b=F57t4ty7K7Lpj828OnlRnTnuH3HIOwV1rcMMp+RdsF4Lxnqv1TA5KVoBhkpxSzLOvF
+         6TnJlPoLxRBRb/FBGnRxwkO9gjTYydYdna21lySZDYcWB8ZGI3uFWMltTL18McgBylr4
+         ic+P85Kgq3xxd48IskRXHRQKdyUhXtKXb/2QCpe2OJSeldFLOdfMWc1dUS+hJzOGFtCr
+         FpcNdpsKVgWoh9lwS007FKWtXybY3ff2tC1PRab9Ql1aJ3+6Bg61+vUAwZcu8UyPfHsq
+         1NfZE6qjHqQbAAQp3bRL2JE6o2fvhSXLH11L2OM0n3SWxvtdaQ0vV37eMBlte3XNLk1m
+         XxDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW6To2fGooYrZiI8xG+jWPRmDKfjtcs4SnKwN9R+/BzrzovPmmRhHSFGSegyDZsjeZH4yiBNOIfSzY75qE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBLWzcndW4kT+w/U8hno+7N25baUXue317KRMDzwdqDlt7in6o
+	AsP0GX5vy3CrBULiwyGxL+BT1J9vnK2Wci8DSpa6b5ob3PBD8ZS9YyPSAw==
+X-Google-Smtp-Source: AGHT+IFbOlLK48PExhhHxRYQG5J/MleXz68mjZXyQ9bAK0Ab++/QpPHn3LzqVFdZyj7sv9gY4PtHYA==
+X-Received: by 2002:a05:6512:31c1:b0:52b:de5b:1b30 with SMTP id 2adb3069b0e04-53b1a36196amr1146252e87.44.1729683242539;
+        Wed, 23 Oct 2024 04:34:02 -0700 (PDT)
+Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2243ed31sm1029769e87.254.2024.10.23.04.34.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 04:34:01 -0700 (PDT)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: a.hindborg@kernel.org,
+	linux-kernel@vger.kernel.org,
+	dakr@redhat.com,
+	airlied@redhat.com,
+	miguel.ojeda.sandonis@gmail.com,
+	wedsonaf@gmail.com,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH 0/2] Add dma coherent allocator abstraction
+Date: Wed, 23 Oct 2024 14:32:49 +0300
+Message-ID: <20241023113309.1724992-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <74db5f3b-c329-474e-9a9d-de67d7cb888c@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 23, 2024 at 01:26:37PM +0300, Abdiel Janulgue wrote:
-> On 23/10/2024 11:42, Danilo Krummrich wrote:
-> > > +    ) -> Result<&'a Self, AllocError>
-> > 
-> > Please don't use `AllocError`. We're not allocating anything here.
-> > 
-> > Anyway, do we need this as a separate function at all?
-> Thanks. Would it make sense to squash this function into
-> `Page::page_slice_to_page` instead?
+This series adds support for the dma coherent allocator. This is based
+on code developed by Andreas Hindborg for the rnvme driver. We adapted
+this for basic use in the Nova driver to access the GSP via DMA [0].
 
-Probably, though in the future we might also want to add `virt_to_page()` if
-to `Page::page_slice_to_page` if it's not a Vmalloc address.
+[0] https://gitlab.freedesktop.org/abj/nova-drm
 
-But I think it should be fine to handle both cases in `Page::page_slice_to_page`
-directly.
+Abdiel Janulgue (2):
+  rust: error: Add EOVERFLOW
+  rust: add dma coherent allocator abstraction.
 
-> 
-> /Abdiel
-> 
+ rust/kernel/dma.rs   | 153 +++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/error.rs |   1 +
+ rust/kernel/lib.rs   |   1 +
+ 3 files changed, 155 insertions(+)
+ create mode 100644 rust/kernel/dma.rs
+
+
+base-commit: 15541c9263ce34ff95a06bc68f45d9bc5c990bcd
+-- 
+2.43.0
+
