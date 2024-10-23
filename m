@@ -1,47 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE90136E21;
-	Wed, 23 Oct 2024 15:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7386613B7AF
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 16:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729699059; cv=none; b=paPq2i674shJN7LM2M2Kr5a/v8/Dh/5vkfHfEOd+rrN2lFqjljdJhnBT61f/tD2MmBDfu5/N/PX4QGaIjbQbU8rIDckP2Q75dgz6j8Et238wyO/X0cp48AtyJGb5bPB+CbJiDdRrUpnLF+VkzrzVUKDIpCPhyzMu8/6vC4mZyxo=
+	t=1729699243; cv=none; b=HOskbZvqAbVtM3j+BRjQzXHCadD6iuOBeVBjRhVHxfQX+OnIw80oj4wX1YIWmKvIrQM6SGzkKW8W0ZggIVD76V+264w9QWcj+nbU1TgpeKkpd08hMnFOmuuMOlr57bMovM7ZlK2BllQNczjj/JS9Ir9BSGxEU0CfNAvdL4SA5Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729699059; c=relaxed/simple;
-	bh=B78ryvKF67MiZdQxaBwJo78TUToM4c88TbX4KJ39PiQ=;
+	s=arc-20240116; t=1729699243; c=relaxed/simple;
+	bh=qtL+K8nMPb/GmW9LWWzNKP+4xCtLcYRaYOGM+HdS0tg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDKpYluB5Ec/4YQRMmovH8GcyeFn9h6wEX9XAeSGdV/Qq7pjSYIvNUvgX2LLl6iuWHc/1vIh1kEEU59yl5NncdaBGV0656WNVKAru6l8hhOf+lfq9YRVDremKQTKuVS7Nn+P5UgqwPU6gmJC/gkAeozQGuCNZtOXwk0iBawhKC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BvbTBSe+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eNKy/rfYg3MFtrtD9f8PaRve9SwH2cddGQBxKoXpO0jD3DYRc++CYmwwxF356Eqxt9uLSU0L4ZsI4jt3Vr8BJVSEuA7BM2kxCbYNGyle+RhNzTKO5DhXjy5/6Tbs8q5mS8vYUmv7tqs3DOUQoita3eeCeoCGIdHIPvFt0V+9tPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j2eUFcgH; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BvbTBSe+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0E8C4CEC6;
-	Wed, 23 Oct 2024 15:57:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729699058;
-	bh=B78ryvKF67MiZdQxaBwJo78TUToM4c88TbX4KJ39PiQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BvbTBSe+cBz60GH+b2U9iOa1nt5ktU1nEDrvXTRpBsc+xWsStGex2BnPY7cw8ZXwG
-	 dyYV2CNAoJaBFJ8L0HQduJCb1bFYU7N1moDd3Hw0iVUjcQR0JMC8HUJTwgPP5jTk21
-	 kFvhS6yr/0maF3qENtDA6vVr7DqZPO8sP2Y3nGQcVvR/MJv7UfCJlFI34GJDgCQrgk
-	 z5/bbEWd+R4uioZn7+VZV5YgFy+8eVHsv2RNMyBpMMGYkneWx/v4tUUEmgl/xsnzAg
-	 OTcxMs/oa9bZYcMr/UzxW25nXnQL8wj0xBLadtcV5Xg2eCO0w73mzJRRI4JgvNc38T
-	 HCE0mf53pUfhA==
-Date: Wed, 23 Oct 2024 10:57:37 -0500
-From: Rob Herring <robh@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 13/16] samples: rust: add Rust PCI sample driver
-Message-ID: <20241023155737.GB1064929-robh@kernel.org>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-14-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j2eUFcgH"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7b1418058bbso512274785a.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 09:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729699241; x=1730304041; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q/BL4q4GodncwL53tdL1x5irR4Z1xxFebFUi/3e8kdk=;
+        b=j2eUFcgHoXwA2wRgNvGF3SDb8e8/w9L0eS8Zm9T2s30b57/nyYPwVY5kmV5SlCtNGf
+         KHuwI3qxLyovtDLjphyKwGlwKLNRnq3CGTLb5kYTEq3HXljVmo3EybxC5lJrRIFMVL0t
+         n4zHuzH7+RI3XZ7Wt83ikcEvsNYBK9HVNjg/zq/gO5/0iHTFYUMEjA5dfTA9Y5hdYTZ5
+         Gx7/O+q2PM/ZuPfw9SiFyZZDrNET4/Zz8YQ6FNQRqNEP76zwLMbGtdoWO5d7bfEj0roZ
+         cfvN959K5/mF9TBcAhqAkSiG7GjeOrf5jBva1hqEaLvntpQh6u8TLKy+Pr/jIc0irgow
+         tJwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729699241; x=1730304041;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q/BL4q4GodncwL53tdL1x5irR4Z1xxFebFUi/3e8kdk=;
+        b=oaC6SHH6+9TxwfR1WcAQ+QIV4zKBmnzTS7NxUVno9xnAMlE6oWjDD3J1+K3zj7VD+y
+         uS1pFIyDtr4zv2a/CF3J9qQT9kv34ikq2yFD+Z4bVP1w/p5jZSvlLKRmaQ8h4fzDbCVx
+         XSmgGdsIBmDX5918SC4KtVQ2dYIRawOTWzNQ0PiBdm24uyhi8ONin/vM0+He/F2DwCKQ
+         J4Q+t0z/WqsE/DiV0wt1COf8ZsE4DEBsus9IOqku3SQ15B1DKPV7EVH9S/0raK3yUy/K
+         ClZ5qxShTeK0muuT2kNXVDtTx+KwGh3mS3ZmwqONPksutxmwbq7IqCCCcrektgsx0AvK
+         +w+Q==
+X-Gm-Message-State: AOJu0YxckQS8ekJcKKb/ZVciu17iHTfjhVX+bpJh9653H2oi3/qR9LUf
+	FfiY45P3gPAwTnPN+02G1CWXuFgba6zgsySNSxBfERa5O0/Nl0a2
+X-Google-Smtp-Source: AGHT+IGKzMowfU6/R3P4lpxq0xqfPqPCoiaeeQuOmNJ0djlK9xb8p/33iV4OwGcEQY6Dy5mo44DlNA==
+X-Received: by 2002:a05:622a:13d4:b0:460:96b6:3b56 with SMTP id d75a77b69052e-46114725991mr44114511cf.55.1729699240730;
+        Wed, 23 Oct 2024 09:00:40 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-460d3cba55asm42287101cf.49.2024.10.23.09.00.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 09:00:40 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 92D441200043;
+	Wed, 23 Oct 2024 12:00:39 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 23 Oct 2024 12:00:39 -0400
+X-ME-Sender: <xms:px0ZZxWQ2KQ9qG91T1KAIJTdivIJDElby5H0NK4G3SgnvdwZcUuRTQ>
+    <xme:px0ZZxlT-hJseVokac6gyZA-XmRgC2ZKKeP3mP-6H3LQAARtoJqzZ8jhjmv34sMZW
+    AK8Va4RKkKQRT5RyA>
+X-ME-Received: <xmr:px0ZZ9YvqjvLpLZHR8_DtFlv2-niAUWbmJQAZ05YIQtNktcS_-uR-1XId4o>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeijedgleefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopeihuhhtrghrohdrohhnohdrgedukeesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    rghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesgh
+    grrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhm
+    rghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrd
+    hmvgdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:px0ZZ0UOnED0bkBjf86m5CEyQeCCwSw5aC0DYZHd_nnS51a6tBqNvQ>
+    <xmx:px0ZZ7nVI_HKPoR7weBbs1La1GRez9K3Mnlf4HHs0aLhduYkiklJ3g>
+    <xmx:px0ZZxfSuNOQBoh1Q4Dmgz4YEn3mrPO5k9JcqoegZaIR_dM082hOIg>
+    <xmx:px0ZZ1GvQ0QZbCTmcoiOqrjKzbLZ0IY5PBkQeaNgerMBiVUHMmIzlg>
+    <xmx:px0ZZ1k4scViTzZc3wlOwHRPcMnyMlVXrBHiOH_kopMP_4HbbXMLYvjv>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Oct 2024 12:00:38 -0400 (EDT)
+Date: Wed, 23 Oct 2024 09:00:37 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Yutaro Ohno <yutaro.ono.418@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH] rust: block: fix formatting in GenDisk doc
+Message-ID: <Zxkdpf1tT0e79maJ@Boquns-Mac-mini.local>
+References: <ZxkcU5yTFCagg_lX@ohnotp>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,144 +108,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241022213221.2383-14-dakr@kernel.org>
+In-Reply-To: <ZxkcU5yTFCagg_lX@ohnotp>
 
-On Tue, Oct 22, 2024 at 11:31:50PM +0200, Danilo Krummrich wrote:
-> This commit adds a sample Rust PCI driver for QEMU's "pci-testdev"
-> device. To enable this device QEMU has to be called with
-> `-device pci-testdev`.
-
-Note that the DT unittests also use this device. So this means we have 2 
-drivers that bind to the device. Probably it's okay, but does make 
-them somewhat mutually-exclusive.
- 
-> The same driver shows how to use the PCI device / driver abstractions,
-> as well as how to request and map PCI BARs, including a short sequence of
-> MMIO operations.
+On Thu, Oct 24, 2024 at 12:54:59AM +0900, Yutaro Ohno wrote:
+> Align bullet points and improve indentation in the `Invariants` section
+> of the `GenDisk` struct documentation for better readability.
 > 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+> Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
+
+This looks good to me, but not sure we need a "Fixes:" tag, Miguel?
+
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
 > ---
->  MAINTAINERS                     |   1 +
->  samples/rust/Kconfig            |  11 ++++
->  samples/rust/Makefile           |   1 +
->  samples/rust/rust_driver_pci.rs | 109 ++++++++++++++++++++++++++++++++
->  4 files changed, 122 insertions(+)
->  create mode 100644 samples/rust/rust_driver_pci.rs
+>  rust/kernel/block/mq/gen_disk.rs | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2d00d3845b4a..d9c512a3e72b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17940,6 +17940,7 @@ F:	include/linux/of_pci.h
->  F:	include/linux/pci*
->  F:	include/uapi/linux/pci*
->  F:	rust/kernel/pci.rs
-> +F:	samples/rust/rust_driver_pci.rs
->  
->  PCIE DRIVER FOR AMAZON ANNAPURNA LABS
->  M:	Jonathan Chocron <jonnyc@amazon.com>
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index b0f74a81c8f9..6d468193cdd8 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -30,6 +30,17 @@ config SAMPLE_RUST_PRINT
->  
->  	  If unsure, say N.
->  
-> +config SAMPLE_RUST_DRIVER_PCI
-> +	tristate "PCI Driver"
-> +	depends on PCI
-> +	help
-> +	  This option builds the Rust PCI driver sample.
-> +
-> +	  To compile this as a module, choose M here:
-> +	  the module will be called driver_pci.
-> +
-> +	  If unsure, say N.
-> +
->  config SAMPLE_RUST_HOSTPROGS
->  	bool "Host programs"
->  	help
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index 03086dabbea4..b66767f4a62a 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -2,5 +2,6 @@
->  
->  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
->  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-> +obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
->  
->  subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-> new file mode 100644
-> index 000000000000..d24dc1fde9e8
-> --- /dev/null
-> +++ b/samples/rust/rust_driver_pci.rs
-> @@ -0,0 +1,109 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust PCI driver sample (based on QEMU's `pci-testdev`).
-> +//!
-> +//! To make this driver probe, QEMU must be run with `-device pci-testdev`.
-> +
-> +use kernel::{bindings, c_str, devres::Devres, pci, prelude::*};
-> +
-> +struct Regs;
-> +
-> +impl Regs {
-> +    const TEST: usize = 0x0;
-> +    const OFFSET: usize = 0x4;
-> +    const DATA: usize = 0x8;
-> +    const COUNT: usize = 0xC;
-> +    const END: usize = 0x10;
-> +}
-> +
-> +type Bar0 = pci::Bar<{ Regs::END }>;
-> +
-> +#[derive(Debug)]
-> +struct TestIndex(u8);
-> +
-> +impl TestIndex {
-> +    const NO_EVENTFD: Self = Self(0);
-> +}
-> +
-> +struct SampleDriver {
-> +    pdev: pci::Device,
-> +    bar: Devres<Bar0>,
-> +}
-> +
-> +kernel::pci_device_table!(
-> +    PCI_TABLE,
-> +    MODULE_PCI_TABLE,
-> +    <SampleDriver as pci::Driver>::IdInfo,
-> +    [(
-> +        pci::DeviceId::new(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-> +        TestIndex::NO_EVENTFD
-> +    )]
-> +);
-> +
-> +impl SampleDriver {
-> +    fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
-> +        // Select the test.
-> +        bar.writeb(index.0, Regs::TEST);
-> +
-> +        let offset = u32::from_le(bar.readl(Regs::OFFSET)) as usize;
-
-The C version of readl takes care of from_le for you. Why not here?
-
-Also, can't we do better with rust and make this a generic:
-
-let offset = bar.read::<u32>(Regs::OFFSET)) as usize;
-
-
-> +        let data = bar.readb(Regs::DATA);
-> +
-> +        // Write `data` to `offset` to increase `count` by one.
-> +        //
-> +        // Note that we need `try_writeb`, since `offset` can't be checked at compile-time.
-> +        bar.try_writeb(data, offset)?;
-> +
-> +        Ok(u32::from_le(bar.readl(Regs::COUNT)))
-> +    }
-> +}
+> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+> index 708125dce96a..c6df153ebb88 100644
+> --- a/rust/kernel/block/mq/gen_disk.rs
+> +++ b/rust/kernel/block/mq/gen_disk.rs
+> @@ -174,9 +174,9 @@ pub fn build<T: Operations>(
+>  ///
+>  /// # Invariants
+>  ///
+> -///  - `gendisk` must always point to an initialized and valid `struct gendisk`.
+> -///  - `gendisk` was added to the VFS through a call to
+> -///     `bindings::device_add_disk`.
+> +/// - `gendisk` must always point to an initialized and valid `struct gendisk`.
+> +/// - `gendisk` was added to the VFS through a call to
+> +///   `bindings::device_add_disk`.
+>  pub struct GenDisk<T: Operations> {
+>      _tagset: Arc<TagSet<T>>,
+>      gendisk: *mut bindings::gendisk,
+> -- 
+> 2.47.0
+> 
