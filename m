@@ -1,160 +1,154 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29B71CFEC8
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 17:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E61ABEB7;
+	Wed, 23 Oct 2024 18:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729705958; cv=none; b=QouHDh0JopTWpSKqBPpvYZd1iwjoWThN0PNZWPOoOc5IqhSB2xVE+MxX2VIZ1TebpdjXB1CCRv2O98VQhuUeN1/YggZGsCE+CoV4o+SzIx7UfbipBbcxohzHfZm6dns0+bOXkHAhxLOIcngtLaBXqFqdtLNeOOUgnX9XYuj3zeU=
+	t=1729706835; cv=none; b=oDM5F0VVrl027keNZHdra69WElNjqrzI5zn/4bp7q0bwut54SaEMWdbLXdz2HKlaUziKFrplPAlMQMLPqce77CK7KSSR32vBqdm5r0GHf7eDJi+RFyh/MWWBFvH905bNnmTRCcJUVDDrYipoQ5Ho5pOKUg+RRzQumzhpzTJuTh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729705958; c=relaxed/simple;
-	bh=A5+8sBlIb1ZNt44ESdYFCJS7xJRUZ00NTJDcHm6uh7s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JNzJON8Mle6JDMh7TDknKxZbuyytPDLmHft6s/Ya7EWqmuk40WgCBAM90OHo/npEOPVldcup5seui9lsyYInPYmXvqZquaYOi84d8P1wgtZtpBqhUiHPF3iorks7D/4HNvctYMms5qf/Ligq4Lyl6+bIRtBFCs0SBzsss2+eHqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Tq0VON76; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729706835; c=relaxed/simple;
+	bh=tqmojDpKvljjbhg2zjwLCjuHUGdPGlAsse9W9QlPFb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rd4ijznPSxqi8KgYDMwQOlV2wlHA8zxAp8J7JGRfqL2swgfWdlcRl/akItNwTs1Vr7SqYthUHOIeGk2WQ+rOeN4DTCyVshx4QTLbfifcVRwV6fBCTxyfgvEd9CjeSEdEa8LF9ymISruvbiKFnikrEp5N4xOTf3Ej1W3dw82odeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nASM56O/; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Tq0VON76"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-431481433bdso273565e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 10:52:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nASM56O/"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6cbf0e6414aso735776d6.1;
+        Wed, 23 Oct 2024 11:07:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729705955; x=1730310755; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1729706832; x=1730311632; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SBqgi4VDMBAlTqVP0H5QHEUKjlARJMIz3uADQ7P28XA=;
-        b=Tq0VON76vc1MO1XmGylPhsEG5TE9svckXO23GDAJedArDuktEJrHz+zgoAeeF9ATEN
-         R8jhM0Rywp88rIE92Ij6ERZVzAMxA7GEvBflaUq8cxMQ8zPvAhSdbFWpxsPqh9RGcU4L
-         l62IagQ30Nuhrc4l58VdVtBaxZFFpufiv5w+AE3Cus2nVL/jWW+n+Kuf/Rxahoof1bff
-         e61U95699BIT70CND2hz6eQZ2kHu3BJr+bApKdx6GWgd/z6KUc3uDuPwnop1pQf0aMGr
-         vM8RBkGeMpOeL0o1SiFZDw7SP/VgolyGNkp4lnUKjEIHdNYC1bFzYD8iTe/+SzccMvMR
-         PQ7A==
+        bh=WiBjXGH4g1k1OSDOsy8qY2INBvd/rJ7dZoNyBo84T4w=;
+        b=nASM56O/loarUlIhoIryDZhe2qb1zBLDHGlOqGUb5Eo4wdsZOKs9/ltTJfLaJxWhtK
+         U/Ffbru+YEK0Zu/iYT2Qb8HIjlkgBXpXovSFinDs2djr0RNQ5SFBoWov8YhLBdjcF6/U
+         ZG/hotCr51oac1c9VKRpHX+NMbG/1//dwRSDQzSErgVlX9A8FnsO/z/SQAsdjhdbIpei
+         cRKGsO1NUf4c+bhEjboBmXmfp5jZrabNZogQUKU0fGB7PMLtBbbjTDppw3vSkqAn0Ujc
+         xf7bffI0uCUIJ94OxtBLg8fan8BQc5LV6FYbm/uB+jzbiBiFF2eEF4mLagEiWIHOD/Nh
+         QVXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729705955; x=1730310755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1729706832; x=1730311632;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SBqgi4VDMBAlTqVP0H5QHEUKjlARJMIz3uADQ7P28XA=;
-        b=oum+tzk6HRvv4BBXvNonljkHOys+9cpJl5VVEIYBdp4mCuguue6vxAKt6X33LzjhxB
-         6Cz8uElguVpioCy+//4kHnsicMQOBiGXm3ywrTWpHkTNFZQ1T+d4XKWMGaqWPq15mla5
-         Q3z3WoUJ66MlHB7UuN0EKgVciZcErFycZlzpVcTDFi95qe/hgjTwlfCDVU1DZDSZyL9q
-         7M3QvjXQ1oX1mw7xAzvUqoCXjjqXxo9sTdfX89FjTOhH4W+vTd/JC17ecc8f01DydqNx
-         IGseMxy6CXBfvP/eFzbfUhdjjS4OUS3Y+vcwuzjjFACQa1EfzW79e5elbZO6Q4232R5I
-         aKmw==
-X-Forwarded-Encrypted: i=1; AJvYcCXNacFshSY1oxy7m45D7dwAOjU/9dFDFpJb4LG8HpZcWikz25Jf8picLjfl8a0S4Mub/utD/blsgSfoe/I8zA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQck6Cd+m/IgDdfNgQlo9RL7aXgDih4nKolh8mHBDHV5nAUbpl
-	kv9/mis/ZPzQLySCZeLlZywf49ep8Gf7pmF+Y5kD5PxVGw6x6xu4VYG7uvad/+2TbGf6stxiqsz
-	OjTy0qbsELV/a/f8Q/xizI1NxJHHDjRkvj1RE
-X-Google-Smtp-Source: AGHT+IHEC6RrPWVdwE47hhc5ylIuECiJjw7EVoXZWFa5G2Oz6TMdW+KOd+xue2n1r7s3mpRvAX/96gXO6gBmsrjuPVY=
-X-Received: by 2002:a5d:5223:0:b0:37d:33a3:de14 with SMTP id
- ffacd0b85a97d-37efcf00deamr2275403f8f.7.1729705954866; Wed, 23 Oct 2024
- 10:52:34 -0700 (PDT)
+        bh=WiBjXGH4g1k1OSDOsy8qY2INBvd/rJ7dZoNyBo84T4w=;
+        b=ItgbshYbSUY1OZicdEyKSYepBwbp24szwjA+UFqCUrEgjlToVMQZUDdsQBgfVXnoUU
+         zRnIPn9rLVEMKQSCTT5qnkeMU8Q+/4nt8xF1SjCjmmWNFaxRj3kxYBDoLreykDgwvXs0
+         iyi0AWmTN24VCsmz5C/ufOp8xoZeDhSz/h2pYemVr4OaLjuV2UHMTaER9htUxFhaD8vU
+         XuYsW/QITou6c0/A8LPTa38nM76Yrcg9CjtsFFljUqEEQ1RIFglyKvFv20PXMKfF6yZd
+         lWPg7pv6TiDn2+J1cHKHjTzWURlvI/pn8RwSNIcVcSmj/oAfyEaaN2fpmDL2eGtjZs3I
+         nwtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWirQlJHcyHGdJVtUPtp3OfiNRZ1BMBHXUikkGQwjCpmFeLJTGFe9bPIuJp0bbq5LGR//6P5P7eceM73uE=@vger.kernel.org, AJvYcCXb78fUrreiv+LxYuzjJhd14IeYXq8MyLcpYCBd4sTCQZzEsCbTmNI+pQ7kUtlbS7rfY7VkPWXA9E/LlfidZIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM45CEXm0ltsn+gWsFafkIzMgpFi6h0tucvOV6KMKqcX7KFguH
+	LAVOrfdN6rAAZcX42vRU6vYbm072F8HNf03pFYcKG3W5PonpSjSk
+X-Google-Smtp-Source: AGHT+IHmoIk6I77uz+NXLrEtq3qVVCTmMpLFLgc4eh0diQ+EpRPIcklAmHhZKI/TUkRE+qr/2E+AhQ==
+X-Received: by 2002:a05:6214:2b82:b0:6cb:f345:8bcf with SMTP id 6a1803df08f44-6ce34271b85mr49210536d6.46.1729706832511;
+        Wed, 23 Oct 2024 11:07:12 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce0099cff4sm41177566d6.100.2024.10.23.11.07.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 11:07:11 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5584F1200043;
+	Wed, 23 Oct 2024 14:07:11 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 23 Oct 2024 14:07:11 -0400
+X-ME-Sender: <xms:TzsZZxEoVVOgruSGO39DWGIrEVuv995AfaF5qm0UEVXKR61KVcYi_Q>
+    <xme:TzsZZ2Vx4_KTam4e3lhq1tBbRD3i_3UdITCECMfh4Virbfu9Sw24yLuhg5yQCPAgi
+    Bf5g1_RJ6n8OTOqNA>
+X-ME-Received: <xmr:TzsZZzJeNNkDeyiXzf_0-6b6l9zKPh5CJbjii8Gbz9J_YNkkkCeGtaE4qgY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeijedguddulecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeekpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtg
+    homhdprhgtphhtthhopegrsgguihgvlhdrjhgrnhhulhhguhgvsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepuggrkhhrsehrvgguhhgrthdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grihhrlhhivggusehrvgguhhgrthdrtghomhdprhgtphhtthhopehmihhguhgvlhdrohhj
+    vggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunh
+    esfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:TzsZZ3Fz6P5YvsULJfNBmjnmuu0cu6ul5o4ee2z9YKRD756qsOig-w>
+    <xmx:TzsZZ3VxIAcZX4wjOSLyHBBrJXXANFt3ekgFRJR88k0xcgxxBQo2Ng>
+    <xmx:TzsZZyMJgr2xHeNOorPhnY-sRckUZ1iKv1N8LjBu2MgBuiSkSmmOqQ>
+    <xmx:TzsZZ23ndL1HK1X7DEZtJJ-cTn9LkTlIA7-2epCz81FTSGRgswRJqw>
+    <xmx:TzsZZ0VE35mysHYUiHvxhiu75iWctFJ_6PAMDQy4jrWspAceBt-byknc>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Oct 2024 14:07:10 -0400 (EDT)
+Date: Wed, 23 Oct 2024 11:07:09 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	rust-for-linux@vger.kernel.org, dakr@redhat.com,
+	linux-kernel@vger.kernel.org, airlied@redhat.com,
+	miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v2 1/5] rust: types: add `Owned` type and `Ownable` trait
+Message-ID: <Zxk7Tf-jhSse51AS@Boquns-Mac-mini.local>
+References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
+ <20241022224832.1505432-2-abdiel.janulgue@gmail.com>
+ <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
+ <b154dd13-8cd8-4066-ba3d-6597959ca5c5@gmail.com>
+ <ZxkPC-dLRBqBKZ5J@Boquns-Mac-mini.local>
+ <CAH5fLggEGMVspJoO6CE-gTa3-OHfkUnS=L1X-VNC8Cp57GYVkA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
- <20241022224832.1505432-2-abdiel.janulgue@gmail.com> <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
- <b154dd13-8cd8-4066-ba3d-6597959ca5c5@gmail.com> <ZxkPC-dLRBqBKZ5J@Boquns-Mac-mini.local>
-In-Reply-To: <ZxkPC-dLRBqBKZ5J@Boquns-Mac-mini.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 23 Oct 2024 19:52:23 +0200
-Message-ID: <CAH5fLggEGMVspJoO6CE-gTa3-OHfkUnS=L1X-VNC8Cp57GYVkA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] rust: types: add `Owned` type and `Ownable` trait
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
-	dakr@redhat.com, linux-kernel@vger.kernel.org, airlied@redhat.com, 
-	miguel.ojeda.sandonis@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLggEGMVspJoO6CE-gTa3-OHfkUnS=L1X-VNC8Cp57GYVkA@mail.gmail.com>
 
-On Wed, Oct 23, 2024 at 4:58=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Wed, Oct 23, 2024 at 01:26:14PM +0300, Abdiel Janulgue wrote:
+On Wed, Oct 23, 2024 at 07:52:23PM +0200, Alice Ryhl wrote:
+[...]
+> > > > > +impl<T: Ownable> Owned<T> {
+> > > > > +    /// Creates a new smart pointer that owns `T`.
+> > > > > +    ///
+> > > > > +    /// # Safety
+> > > > > +    /// `ptr` needs to be a valid pointer, and it should be the unique owner to the object,
+> > > > > +    /// in other words, no other entity should free the underlying data.
+> > > > > +    pub unsafe fn to_owned(ptr: *mut T) -> Self {
+> > > >
+> > > > Please rename this function to from_raw to match the name used by
+> > > > other similar functions.
+> > > >
+> > > > Also, I don't love this wording. We don't really want to guarantee
+> > > > that it is unique. For example, pages have one primary owner, but
+> > > > there can be others who also have refcounts to the page, so it's not
+> > > > really unique. I think you just want to say that `ptr` must point at a
 > >
+> > But then when `Owned<Page>` dropped, it will call __free_pages() which
+> > invalidate any other existing users. Do you assume that the users will
+> > use pointers anyway, so it's their unsafe responsiblity to guarantee
+> > that they don't use an invalid pointer?
 > >
-> > On 23/10/2024 12:28, Alice Ryhl wrote:
-> > > On Wed, Oct 23, 2024 at 12:49=E2=80=AFAM Abdiel Janulgue
-> > > <abdiel.janulgue@gmail.com> wrote:
-> > > >
-> > > > Add the 'Owned' type, a simple smart pointer type that owns the
-> > > > underlying data.
-> > > >
-> > > > An object implementing `Ownable' can constructed by wrapping it in
-> > > > `Owned`, which has the advantage of allowing fine-grained control
-> > > > over it's resource allocation and deallocation.
-> > > >
-> > > > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> > > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > > > Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> > > > ---
-> > > >   rust/kernel/types.rs | 62 +++++++++++++++++++++++++++++++++++++++=
-+++++
-> > > >   1 file changed, 62 insertions(+)
-> > > >
-> > > > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > > > index ced143600eb1..3f632916bd4d 100644
-> > > > --- a/rust/kernel/types.rs
-> > > > +++ b/rust/kernel/types.rs
-> > > > @@ -429,3 +429,65 @@ pub enum Either<L, R> {
-> > > >       /// Constructs an instance of [`Either`] containing a value o=
-f type `R`.
-> > > >       Right(R),
-> > > >   }
-> > > > +
-> > > > +/// A smart pointer that owns the underlying data `T`.
-> > > > +///
-> > > > +/// This is a simple smart pointer that owns the underlying data. =
-Typically, this would be
-> > > > +/// returned as a wrapper for `T` in `T`'s constructor.
-> > > > +/// When an object adds an option of being constructed this way, i=
-n addition to implementing
-> > > > +/// `Drop`, it implements `Ownable` as well, thus having finer-gra=
-ined control in where
-> > > > +/// resource allocation and deallocation happens.
-> > > > +///
-> > > > +/// # Invariants
-> > > > +///
-> > > > +/// The pointer is always valid and owns the underlying data.
-> > > > +pub struct Owned<T: Ownable> {
-> > > > +    ptr: NonNull<T>,
-> > > > +}
-> > > > +
-> > > > +impl<T: Ownable> Owned<T> {
-> > > > +    /// Creates a new smart pointer that owns `T`.
-> > > > +    ///
-> > > > +    /// # Safety
-> > > > +    /// `ptr` needs to be a valid pointer, and it should be the un=
-ique owner to the object,
-> > > > +    /// in other words, no other entity should free the underlying=
- data.
-> > > > +    pub unsafe fn to_owned(ptr: *mut T) -> Self {
-> > >
-> > > Please rename this function to from_raw to match the name used by
-> > > other similar functions.
-> > >
-> > > Also, I don't love this wording. We don't really want to guarantee
-> > > that it is unique. For example, pages have one primary owner, but
-> > > there can be others who also have refcounts to the page, so it's not
-> > > really unique. I think you just want to say that `ptr` must point at =
-a
->
-> But then when `Owned<Page>` dropped, it will call __free_pages() which
-> invalidate any other existing users. Do you assume that the users will
-> use pointers anyway, so it's their unsafe responsiblity to guarantee
-> that they don't use an invalid pointer?
->
-> Also I assume you mean the others have refcounts to the page *before* an
-> `Owned<Page>` is created, right? Because if we really have a use case
-> where we want to have multiple users of a page after `Owned<Page>`
-> created, we should better provide a `Owned<Page>` to `ARef<Page>`
-> function.
+> > Also I assume you mean the others have refcounts to the page *before* an
+> > `Owned<Page>` is created, right? Because if we really have a use case
+> > where we want to have multiple users of a page after `Owned<Page>`
+> > created, we should better provide a `Owned<Page>` to `ARef<Page>`
+> > function.
+> 
+> The __free_pages function just decrements a refcount. If there are
+> other references to it, it's not actually freed.
+> 
 
-The __free_pages function just decrements a refcount. If there are
-other references to it, it's not actually freed.
+Then why don't we use page_put() there? ;-) And instead of
+`Owned<Page>`, we can wrap the kernel::page as `ARef<Page>`, no?
 
-Alice
+Regards,
+Boqun
+
+> Alice
