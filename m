@@ -1,73 +1,74 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AD819E99E;
-	Wed, 23 Oct 2024 12:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A821AC882;
+	Wed, 23 Oct 2024 12:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729685981; cv=none; b=hsczFrQLGteOgGv4hh85U5qos/9jiCUSdaFZhB+MGxZ9o1ApAA0h8GxqWxyLucwpq/gZxTHpkDl+W4EUBySRs2VDQDVHuMpJH0jVLEQa9xoqHeM7VG/WdpcsQnHIW7uBQ6dbnxZ/BRekXHSK/m9rMWGoPI/WwnbM9HH/rBAzLZY=
+	t=1729686842; cv=none; b=QXCWqwWtZiJRQAC//DNmpni3aHD1XpYrxNB7O7K+bzdEsSn9G1Lj04KoS2zS+LlM0QOHzQSLyNLh5h27fFLRhoCH/hh5Yn4i21jSd4o9lU2k+/UnXbLocOGEmNQLuxpLBNh9iOHU7dOM23iDcKJOLL2bTXLbEUaGs1b3ZuSHd18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729685981; c=relaxed/simple;
-	bh=bpoSaXCNKO7Cw3mJI5N3nyjRvluxJRnEyt9XdHcLaHw=;
+	s=arc-20240116; t=1729686842; c=relaxed/simple;
+	bh=6qBPmAgCD2RNJ5ERNzeh2m1p2+HKuBilNgolUWw92fQ=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=LG4HCBJjtNNk7krm0ZzzP/4iQ/ube5AAUNkJofN9qLr3877lpoU9rDH6Tgyxdaqn3H31GR0ckiWL+8yEH8cx+onRdnZY277XC2xTxpDiD2FmX8bcnavsfvYKH8d7VmpZJ/hfxMwO7WGBEngC8Mio9fW8tErK1iwiAbpz0dOOMJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NMVim+A7; arc=none smtp.client-ip=209.85.214.180
+	 Mime-Version:Content-Type; b=kJK555oyeJV85qCUsdX46+PiOTLAmkAFO2M6Kkf7aBjfroqaNiF7NHnsp5zxwQCHlH47skf+0tdIMxWucmwdFGBqueABxBFsrHtlB96pAq0rx9yiNKUyCX8WrRcJ3vtdL8b6rUnbGIgu9q/t5+K+WUzzxAyINiLFsu7Fp1EOGDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7RZ81Dj; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMVim+A7"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20cdda5cfb6so69422415ad.3;
-        Wed, 23 Oct 2024 05:19:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7RZ81Dj"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-208cf673b8dso65493035ad.3;
+        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729685979; x=1730290779; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729686840; x=1730291640; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bpoSaXCNKO7Cw3mJI5N3nyjRvluxJRnEyt9XdHcLaHw=;
-        b=NMVim+A7t3dhUeF34ZqSnxFvXSD+fiA4hSHO3TdotynfE/EjGEAeJd6MYHlnezqRhG
-         QDj9gF55k6RMWGsRqvhuCvhh/PTSmTg+h2z39gh9I8dgY6BiOSWfKzjCK/YOXdEsXVIj
-         ncZXZvIXROkofifSNwFGcbTgq3nkkGgh0w8+iNblhh/0kYS1NkZDlzF5LxbTTp93GYiB
-         xBGzSeHe0UAebSxCVWLVHIlK0dYmbAG+4Yoj3kiHbNtb05tYhHhSP+DBAW7To8rnooWk
-         cRTuadziO2xB7GQXEGjmgNYwtqZWlmWvwZ528GRFLlFDjcKGLzCEmjOftPQzyBHMX5HY
-         1kCQ==
+        bh=ue+11o5O3jAWZIekjz1MSKEWKTEaJ2momNJN9wnFir8=;
+        b=I7RZ81DjwHMplg2XiIzk1b8cjeS/J7OJvxeXBvG0cHl7Qjx9gUrblRD2C4gexBbbKj
+         Om0hHfNtHS7M3z0UrQ0e5wzDl/qxjWGyULrUu3ZcCh+IdsYJY7f0fDqY1rQd8xSjhHQO
+         GhFSUTY+qxrZuMW3W+zdwCFjkRK7usOCXVseI07TPOgj5ECDJjUhE915PvKm0vayTG1Y
+         8SOnjwoWQ52Qi0E3hWAzoDsxWAsS+bhtIa7x0iNDAT8vL2eR5UmkVkLifnRep6/YlQ0K
+         3bhHlkRYSQpS9MX1LVADZa9Un1Ihgaxo/AgxT8OYg7rXSff8qUBHCLDSnlhYdPFBIkyP
+         7AGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729685979; x=1730290779;
+        d=1e100.net; s=20230601; t=1729686840; x=1730291640;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=bpoSaXCNKO7Cw3mJI5N3nyjRvluxJRnEyt9XdHcLaHw=;
-        b=iMJbE6gEZtHBz8BsNDQEQPYD9IJqvXYLghVkTpL10cEdH75yRP/OJ+OVvOR8UpPH1V
-         ggpjsXLSQPUX4BvrazX6Uv3dkR+Cq0gs/hh7CvIeICR16t9I8uPl9hoVd8F1dYEyydnr
-         cW+TcEAqyRrteHJHP6bxo+lDx2QQMzNvHjlDJgfdoo/UQoMPmvAwGrx19RVAbkN/0cYX
-         6VwvfPkD9CcnB0c2AMCYUIe32xL0wAYe2Kwl7QbMr3oKJeIaBdmllCwW1thkrQmADjdy
-         84JbFhTFclhhMej0oyVq9HYJcDBy/lBDTDavoUAGk8fJAy+rP0ygB9SvNHWZK7umsbZE
-         AvAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMFGv0RkNILT3sqqxTTnmJMRjgQPErm6eMDrs+MLr2k3AsZSpnURQRq6Vg+sRzcmYMmraWj95j@vger.kernel.org, AJvYcCVoG+uProIl9aetJTAV3h6XhWA6lZA1p6cYmLSWIRVMm/tZgvOa+a4qX/tk3KvHhUzWXWX0J3yn+hv41jcp8nk=@vger.kernel.org, AJvYcCVvkvMer3dl6Y59VcURb6It5heunUOZKQALDd8zSZtrJ+b60iQ4lTz/dZmdhW465JiPsDggA/2Q2qwdftw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVGewPAuIfM0UiEYvrWi0c8nrDGhJTm+e1L9ZLos6JY7f1hR0l
-	+kroazeyrTJYTo6jstxN2qqRWKnkXpLjMNF0GRHhonPzWDLoHwHv
-X-Google-Smtp-Source: AGHT+IGJh3IdzcNDdDdjjhDWtvRZ9eYEFwFvE4gYLdxgsHx7HcV7hGTX23QteHRJcq72I38G1dqnRQ==
-X-Received: by 2002:a17:90a:f6d7:b0:2da:8e9b:f37b with SMTP id 98e67ed59e1d1-2e76b616a98mr2558286a91.24.1729685978855;
-        Wed, 23 Oct 2024 05:19:38 -0700 (PDT)
+        bh=ue+11o5O3jAWZIekjz1MSKEWKTEaJ2momNJN9wnFir8=;
+        b=sMi4egnAiyrqXrIplDwWGztlzjLxZKeDlk1W59YflPA71UTaCBN9tmqlWIY9WOyuT8
+         YW4nDRN4VwBfIXkw5R3AF5J1EzjsGXuVyxhx08aSdMbbzOEhzBnk0kPcAHD8mZLngUHl
+         +PwnDwO++5UwfRkQW6P3Sz9RKOC6Yn4/jtjeP5DfTXDtu+26DnWW7ptwaC8ncw1t4ujz
+         0MK4D8JR7tpUiyQnU5ntsuq91aZxw6u6PU4CRS4+bG2riTAw3BWb7ZzAslOSS85PBJ4W
+         WzWVHO59U4xM+rCTZ2tnZ8pt2NI7jBkXIfqXnNNgXaq+KCROpKaloCCsrDrVMxghDzlh
+         HbzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2kJnbMmwV02fg54Ml6t299u6sea/MhO+FilJ5YecDGS1vTRl1n2iwz2BSLogOqsBnUHdkFY7j@vger.kernel.org, AJvYcCVQzYeVBD9L8Qv/Mdt96DWuw5TtjkUvr4i5GJBcbryjP/WEeMIM6VRfl41je9y7NINT9mmvYJ+fHMCTdSA=@vger.kernel.org, AJvYcCX/becbvJI34l3TFOxS/DeiveR8H1t9EnKkGDmvjGzQjKow95pcQ34N/qz9S18tm9kbvyM7gGFhlUjTVNm3EZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc9m8uPLT0eJD6RWUrhZmTmzkyOH1/ShhAN0APiWcIhy9mQzxE
+	1Q4zl7AZ+B7nIy3Qux0T95/Ukc83D4838DUHDSD6BgiZmFI6x10h
+X-Google-Smtp-Source: AGHT+IH9n/qU6Rv+MXUSEUJm4JVUaOK76SXTgg8tMJecu8olE0KEpAZsSmxYsevEjWL/iDDH23E0yw==
+X-Received: by 2002:a17:902:f541:b0:20c:5b80:930f with SMTP id d9443c01a7336-20fa9e29844mr31991765ad.12.1729686840422;
+        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
 Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e76df52ff1sm1248770a91.6.2024.10.23.05.19.34
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e7ef0ad34sm56832105ad.68.2024.10.23.05.33.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 05:19:38 -0700 (PDT)
-Date: Wed, 23 Oct 2024 21:19:32 +0900 (JST)
-Message-Id: <20241023.211932.442277563193487776.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, anna-maria@linutronix.de, frederic@kernel.org,
+        Wed, 23 Oct 2024 05:34:00 -0700 (PDT)
+Date: Wed, 23 Oct 2024 21:33:45 +0900 (JST)
+Message-Id: <20241023.213345.2086786446806395897.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
  tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/8] rust: time: Introduce Delta type
+Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep
+ function
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72msOTdVLjX+7+Xx4Si2Sh=s1M=wrg_T+QkpFyBHSC9gwA@mail.gmail.com>
-References: <CANiq72nV2+9cWd1pjjpfr_oG_mQQuwkLaoya9p5uJ4qJ2wS_mw@mail.gmail.com>
-	<fad19413-8d58-4cf5-82e6-8d4410fd7e50@lunn.ch>
-	<CANiq72msOTdVLjX+7+Xx4Si2Sh=s1M=wrg_T+QkpFyBHSC9gwA@mail.gmail.com>
+In-Reply-To: <CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+References: <20241016035214.2229-1-fujita.tomonori@gmail.com>
+	<20241016035214.2229-6-fujita.tomonori@gmail.com>
+	<CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -77,16 +78,56 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Sun, 20 Oct 2024 15:05:36 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Wed, 16 Oct 2024 10:29:12 +0200
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-> Again, if you want to throw away all the unused methods and only have
-> the rounding up one, then that is reasonable, but please let's not add
-> misleading methods that could add more bugs than the ones you are
-> trying to avoid. Please use `as_micros_ceil()` or similar.
+>> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+>> new file mode 100644
+>> index 000000000000..dc7e2b3a0ab2
+>> --- /dev/null
+>> +++ b/rust/kernel/time/delay.rs
+>> @@ -0,0 +1,31 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Delay and sleep primitives.
+>> +//!
+>> +//! This module contains the kernel APIs related to delay and sleep that
+>> +//! have been ported or wrapped for usage by Rust code in the kernel.
+>> +//!
+>> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
+>> +
+>> +use crate::time;
+>> +use core::ffi::c_ulong;
+>> +
+>> +/// Sleeps for a given duration at least.
+>> +///
+>> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
+>> +/// which automatically chooses the best sleep method based on a duration.
+>> +///
+>> +/// `Delta` must be longer than one microsecond.
+> 
+> Why is this required? Right now you just round up to one microsecond,
+> which seems okay.
 
-as_micros_ceil() looks good. I'll add it in the next version.
+Oops, it should have been removed.
 
-I'll drop the unused methods in the next version. I think that adding
-a type with the unused, very basic interface isn't bad though; it
-could give more info about the type.
+>> +/// This function can only be used in a nonatomic context.
+>> +pub fn fsleep(delta: time::Delta) {
+>> +    // SAFETY: FFI call.
+>> +    unsafe {
+>> +        // Convert the duration to microseconds and round up to preserve
+>> +        // the guarantee; fsleep sleeps for at least the provided duration,
+>> +        // but that it may sleep for longer under some circumstances.
+>> +        bindings::fsleep(
+>> +            ((delta.as_nanos() + time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC) as c_ulong,
+> 
+> You probably want this:
+> 
+> delta.as_nanos().saturating_add(time::NSEC_PER_USEC - 1) / time::NSEC_PER_USEC
+> 
+> This would avoid a crash if someone passes i64::MAX nanoseconds and
+> CONFIG_RUST_OVERFLOW_CHECKS is enabled.
+
+Ah, I'll fix.
+
+Thanks!
