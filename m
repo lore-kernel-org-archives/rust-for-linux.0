@@ -1,59 +1,59 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD31A7240;
-	Wed, 23 Oct 2024 10:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343231A7AF6;
+	Wed, 23 Oct 2024 10:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729679182; cv=none; b=VTe4TG6S+NAKruwKm+zKM0HPs05tLO/rPF9msT9DcjJUks9e8XhRjax1XUl/6EZZy4Z4/GZwC3nHDkuhbmsnfS6O4sZBW3S5Kys8m5KK0eppLK2BSCJeQgpbzmlvvzBKggVudQ2WDSJhyf6W24uXuRYYYGhoQoECYo5KV09zEgU=
+	t=1729679202; cv=none; b=SQB5Dsv5JO7QvEZpsjSfzgXDMgxg1i0PIbSmm1+HYmXYENsN8g80uL9jM3jMv8+paQP41FLGVmJtP4gpyncLIlL26HvXoWu8VaeK/aRWsBNs7eWizNNMre/1Kigv1A5s3zSgR3PUdI4KzP1M0iH+EB52bX/2BfYz63sQpsDq+ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729679182; c=relaxed/simple;
-	bh=/rY8Bix/A3eVXwrAPy6PsBPfRtj8YorTvFp2uXlNHQI=;
+	s=arc-20240116; t=1729679202; c=relaxed/simple;
+	bh=QBuEo5eIVgcTnsQ0f9dFMCLkDRYCkv+Zgcpy1jNnZRM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HCUkI+FGkiW4FsB8WAN/9hmK8uIvvN78ow6pPJBLrwwzJ2m8fezRIPTPiyaUQlj+xVJzzXAjBtissoRguJMRC3phSvJJu7s0REwgEeLotmCh7HkLQAjQRtwEYH29Sk958GBUjLqMpSL91TN87QTOIICUfIgi1YYxCezBOl5vlaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R8BOqF7o; arc=none smtp.client-ip=209.85.167.43
+	 In-Reply-To:Content-Type; b=N4vYVlvS5son16pf3J3ruW+18CQJRMTumNX1HNGdXWExN0BbpsxR2+WeExtLqdTNEOEUA1/E7b2MtkCRVq3h7joNDSdbQwODIG6xzUJqbETOulkOC0AnYQsEeVthIBbc44lDgLGdHsjN8+TaRjj7Ki/1fmz2hICInHB/UGpu5e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YP/BYOVT; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R8BOqF7o"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539f84907caso7507504e87.3;
-        Wed, 23 Oct 2024 03:26:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YP/BYOVT"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539f0f9ee49so7214587e87.1;
+        Wed, 23 Oct 2024 03:26:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729679177; x=1730283977; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729679199; x=1730283999; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=MEzfxMbPEV9VQ/sTcsJTaL4CVZMzEblAgELJ3Wx2y6Y=;
-        b=R8BOqF7o5UeBT+exrF3glswfLa5iCLtKxqGXRxtcfy79ZwUQ6Ynh3sK7OXn6BwAvYu
-         wwDo/hoNzmZX+CazGGL7Jur7m+CVil/p8EyST58IGW2D4sSBM4fltvzP707GrMcs/Vwi
-         o5MZFvs+Z0i+uMmGo/RO0w6O5JdMSZQccpBDfBpNnm0AsypyQWcjg9SmslrSX7dCAxqX
-         S0e2NUj5+aT3UtlmS5nnXPNnB+68GHhu5vpg8bJtbpsePGqu3aRxbxodOz46dBCpccLA
-         ZAKGx+LX2abYlGLtJUg5kSCxtoeQgaSOMEFGvpZb7AnT7bDKOkSYEcTytNk1DDHa8I8E
-         +DsQ==
+        bh=PI3pexgot2AS5y2K3N1eH+jxvyIvFandoOsjehy81XI=;
+        b=YP/BYOVTlY54m2KnxXec6xsqIcBh5+ZlGxcqhLPZtTnF6/YKPdncVP7BFCqLUZ2Dxd
+         hcnqvb3D9a99z+DRretevDb5xZYfP8XSQ6M7J13/f4pUomOJ222lrkr27bygSEJq75nN
+         4G1O+sFORsemRo6PuJKo9CW4mTB/13diQ9pJOwGT2H6ZW5zr8x8WUTQA3XjK8gBIQAVJ
+         zV35cAGku5V84tIMC6NaZZAgX3+5qm2bSwreDnnabvobIX6zCzMLVyMxgY21p4WYIXGT
+         dGM7r0qN0XF06pXfjypsGoLmukqzfLql9rStAzPRp7Z5e55wbgOV+a/YE8xcv8GQgn0t
+         hH2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729679177; x=1730283977;
+        d=1e100.net; s=20230601; t=1729679199; x=1730283999;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MEzfxMbPEV9VQ/sTcsJTaL4CVZMzEblAgELJ3Wx2y6Y=;
-        b=NT8fvedwbUv8ZAxYohNL90uu6vQqhocn7oM1Vk43PNJq80sYCXN3oawpFVkn9Vr4Kk
-         e97Dpy/u4iBRpU9zrmSCT2HDMX9pcXnGjvaZ5wj9lJw/v7fYGZ27TEahOfvQgDSobWYj
-         8xYeGBNJr9QGQvr7fc7AnCam10+Jcz5gpVRUQiD31nci4SW/PuKXqxPPd9LZmSoIIK49
-         uwIo7I7WM1bdG0oTyjf6EHbdwAhfK8vddPzllcu8XmAVhq18aVOmNm/J/DA8gxNc44gS
-         /lka/tKhgG5atOQ1CBdnE3GEbI45pM/KYHFYR/VfULQoLErPrzvhbu1SU7aKf8QSqnKb
-         f6FA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdCex0Q9ngmh/VS6jYGse22nAWzj9hl5HgwQJkPw9bVInKhTNKk3ODh2S8NpNKB2zRbNiOhLqJH9l0XSI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR6ZKwZ3jTie0nCL9dUtC92AyNMD9fK5R1nzFa0KG5+w+ElNts
-	o28zh2EY1L+rx6GxfjYOiegxupXpCBT0tfAjWOAl3ogwiwUJ9qiSxzEPLQ==
-X-Google-Smtp-Source: AGHT+IHQViEDeVEDA5/FOENcYb86azyDwtpqrmo9m3FxrmDFVkYX3O9g7YTfCmOA6sNWyjYsQYCMjA==
-X-Received: by 2002:a05:6512:1325:b0:539:e88f:23a3 with SMTP id 2adb3069b0e04-53b1a3c9300mr926638e87.60.1729679177117;
-        Wed, 23 Oct 2024 03:26:17 -0700 (PDT)
+        bh=PI3pexgot2AS5y2K3N1eH+jxvyIvFandoOsjehy81XI=;
+        b=vn+fe4xRtT/uwPxdsmMXoPrOLR8xdSMCYNBh3tzMmY0iq/sRzyosoC+Bl5+zuHmY7I
+         xyjtfV/an/eDyTouEm3KUn7BdDZ31cQyyaRL6O92BylfGO+YycblmL3j06GMrGCE9t76
+         FjABRsYEzIcwrI4qIJ5LBAWtir77BC9xBds7Zf4a/VK4+eOLBYZtiM8JgmxmLbOERLik
+         2FBw3gE7aSmEy7wz0iziFqaIJAA9p2xHVLon3nYBF/4Huvk/BHMtPDYZufLLEXm4hXjJ
+         AcyEkUUOYzCsJ3r6Ck6VK6leR5nH5GebwlYQcbyOUxJjwnHav71EzOrgKkFIgT7u2lYh
+         hywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhgxVMQ87oByRJkGCqHZ+YiXpKmfWmavsHqRkHT7zZ9KZMhubTJtsGcYtVM6cgkGI9aQjuu/AWCEmEL+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnBNQRQFOJx/vBLMMX09NQI6AuRx0kQ6RYEpPdz057U0AyOCbp
+	h9+irM4gFZumrXSD3MOQnZUmcp0yCNl6MIumEjEN2SAjeN1omTqxYY6Dfw==
+X-Google-Smtp-Source: AGHT+IG8wFEAFtFm9Gw7OOgeiTmHEDudfTFzqnZcJjfeFZRkNo8oYisrFFGzVFLM2c52Mz0atBovww==
+X-Received: by 2002:a05:6512:3a95:b0:539:edf4:68b4 with SMTP id 2adb3069b0e04-53b1a37f186mr866757e87.57.1729679199291;
+        Wed, 23 Oct 2024 03:26:39 -0700 (PDT)
 Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2242fbaesm1005518e87.182.2024.10.23.03.26.14
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a22422167sm1020400e87.129.2024.10.23.03.26.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Oct 2024 03:26:15 -0700 (PDT)
-Message-ID: <b154dd13-8cd8-4066-ba3d-6597959ca5c5@gmail.com>
-Date: Wed, 23 Oct 2024 13:26:14 +0300
+        Wed, 23 Oct 2024 03:26:38 -0700 (PDT)
+Message-ID: <74db5f3b-c329-474e-9a9d-de67d7cb888c@gmail.com>
+Date: Wed, 23 Oct 2024 13:26:37 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,125 +61,27 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] rust: types: add `Owned` type and `Ownable` trait
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, dakr@redhat.com,
+Subject: Re: [PATCH v2 3/5] rust: page: Extend support to vmalloc_to_page
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, dakr@redhat.com,
  linux-kernel@vger.kernel.org, airlied@redhat.com,
  miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
 References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
- <20241022224832.1505432-2-abdiel.janulgue@gmail.com>
- <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
+ <20241022224832.1505432-4-abdiel.janulgue@gmail.com>
+ <Zxi287W_MJcMB4YO@pollux>
 Content-Language: en-US
 From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
+In-Reply-To: <Zxi287W_MJcMB4YO@pollux>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-
-
-On 23/10/2024 12:28, Alice Ryhl wrote:
-> On Wed, Oct 23, 2024 at 12:49 AM Abdiel Janulgue
-> <abdiel.janulgue@gmail.com> wrote:
->>
->> Add the 'Owned' type, a simple smart pointer type that owns the
->> underlying data.
->>
->> An object implementing `Ownable' can constructed by wrapping it in
->> `Owned`, which has the advantage of allowing fine-grained control
->> over it's resource allocation and deallocation.
->>
->> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
->> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
->> ---
->>   rust/kernel/types.rs | 62 ++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 62 insertions(+)
->>
->> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> index ced143600eb1..3f632916bd4d 100644
->> --- a/rust/kernel/types.rs
->> +++ b/rust/kernel/types.rs
->> @@ -429,3 +429,65 @@ pub enum Either<L, R> {
->>       /// Constructs an instance of [`Either`] containing a value of type `R`.
->>       Right(R),
->>   }
->> +
->> +/// A smart pointer that owns the underlying data `T`.
->> +///
->> +/// This is a simple smart pointer that owns the underlying data. Typically, this would be
->> +/// returned as a wrapper for `T` in `T`'s constructor.
->> +/// When an object adds an option of being constructed this way, in addition to implementing
->> +/// `Drop`, it implements `Ownable` as well, thus having finer-grained control in where
->> +/// resource allocation and deallocation happens.
->> +///
->> +/// # Invariants
->> +///
->> +/// The pointer is always valid and owns the underlying data.
->> +pub struct Owned<T: Ownable> {
->> +    ptr: NonNull<T>,
->> +}
->> +
->> +impl<T: Ownable> Owned<T> {
->> +    /// Creates a new smart pointer that owns `T`.
->> +    ///
->> +    /// # Safety
->> +    /// `ptr` needs to be a valid pointer, and it should be the unique owner to the object,
->> +    /// in other words, no other entity should free the underlying data.
->> +    pub unsafe fn to_owned(ptr: *mut T) -> Self {
+On 23/10/2024 11:42, Danilo Krummrich wrote:
+>> +    ) -> Result<&'a Self, AllocError>
 > 
-> Please rename this function to from_raw to match the name used by
-> other similar functions.
+> Please don't use `AllocError`. We're not allocating anything here.
 > 
-> Also, I don't love this wording. We don't really want to guarantee
-> that it is unique. For example, pages have one primary owner, but
-> there can be others who also have refcounts to the page, so it's not
-> really unique. I think you just want to say that `ptr` must point at a
-> valid value of type `T`, and it must remain valid until `ptr_drop` is
-> called.
-> 
->> +impl<T: Ownable> Deref for Owned<T> {
->> +    type Target = T;
->> +
->> +    fn deref(&self) -> &Self::Target {
->> +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
->> +        // safe to dereference it.
->> +        unsafe { self.ptr.as_ref() }
->> +    }
->> +}
->> +
->> +impl<T: Ownable> DerefMut for Owned<T> {
->> +    fn deref_mut(&mut self) -> &mut Self::Target {
->> +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
->> +        // safe to dereference it.
->> +        unsafe { self.ptr.as_mut() }
->> +    }
->> +}
-> 
-> We only want Deref, not DerefMut. DerefMut both requires uniqueness in
-> a way that is stronger than what we can really promise, and it also
-> implies that the value is *not* pinned, but we generally want to use
-> Owned with pinned things. Thus, we can't use DerefMut.
-> 
->> +/// An Ownable type is a type that can be put into `Owned<T>`, and when `Owned<T>` drops,
->> +/// `ptr_drop` will be called.
->> +pub unsafe trait Ownable {
->> +    /// # Safety
->> +    /// This could only be called in the `Owned::drop` function.
->> +    unsafe fn ptr_drop(ptr: *mut Self);
->> +}
->> +
->> +impl<T: Ownable> Drop for Owned<T> {
->> +    fn drop(&mut self) {
->> +       // SAFETY: In Owned<T>::drop.
->> +       unsafe {
->> +           <T as Ownable>::ptr_drop(self.ptr.as_mut());
-> 
-> This uses NonNull::as_mut which creates a mutable reference. You
-> should use NonNull::as_ptr instead.
-> 
-> Also this code will look better if you move the semicolon so it is
-> outside of the unsafe block.
-
-Thanks for the feedback! Will do that in next revision.
+> Anyway, do we need this as a separate function at all?
+Thanks. Would it make sense to squash this function into 
+`Page::page_slice_to_page` instead?
 
 /Abdiel
