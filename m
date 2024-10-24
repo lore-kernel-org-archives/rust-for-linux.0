@@ -1,92 +1,78 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3601EB9E9;
-	Thu, 24 Oct 2024 15:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF55B1AE005;
+	Thu, 24 Oct 2024 16:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729782694; cv=none; b=ANm+yPdLeAWjeAncptHMbD4zDN25AbYZwYua1ZUmhdxNl7uWHNWYbjrWOEAs43ZY0DTrKMUaArBwMiPNa6Ruo6/Ezu90X87VVKDVJ/TVwzRE90Cj6X8Wm0RqBIoX+MM4GmgzPq8eZ7rDimiivVjRsbrGBu7E7HDcxHypgMOAVks=
+	t=1729786693; cv=none; b=tW47vmn2IE4jzvGGkherzJ/rZpQvC95rmmhLA/EUiG57+NA33BvJ+wA2z3/dhZjH11JpTNHYChwmXdnBNpHQUt96oyRUnwJj/6/n7pYkydDlolUFGFBnn5cWrGbLmoZnd6kHcl7ydtLeaPWKjV1LJbQL51mjpTJfSsq+1B041Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729782694; c=relaxed/simple;
-	bh=ChJjjmUOkenqb3cpEHOeJkT4zO1OgvJJ7sIw5ZfqDDI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KAGo9KFz1NIiHMjsyZaKlpZWSWAAqX6UZor/fVOgOdEsMnJ078LdbA8/UGer46+SQQxXcCePMK1LmRsTEiyFvOtvQqesPHXdXCr+7PsK/dWlvI2tACS+GAXdWOlqMAWF7lRsgK2tJXDCRK42Ul2W3LWu/AsyaxVSa/ruu9m0Cn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlDHjphZ; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729786693; c=relaxed/simple;
+	bh=eACe4BV7izCB9TZCjey9Dz3CscEhpMH8kIe4r6aUA8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cWdsFOpXoGCowFkAMOeQtjcC35nSyJjccyeZ3lgto85unTjj1F7D8RiWpsFgz3UN7UDNYpecdnwtFIDPYfGDugcsXTAyDhtqIbUSDIAkhLO0PWrG4uqTYIeS60bKV5T3uhJGMpcISEmNrS+Qg6ucOtFoQB1mRBXP8NmzrSiDXVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Hyh7jfbE; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlDHjphZ"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e56750bb13so155420a91.2;
-        Thu, 24 Oct 2024 08:11:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729782692; x=1730387492; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ChJjjmUOkenqb3cpEHOeJkT4zO1OgvJJ7sIw5ZfqDDI=;
-        b=LlDHjphZav+VmATjAVdE5B8r4Cgk65SK5rKl/z6Am2mCotAgX/4GPGCARqshDPbZQf
-         fOWb/RIveSCIzZkUV/a2JlkOWniSMxiJtODq7AWF/mLL4slaQEYgMxZUQoAf3ktXv6ei
-         +QNN1bdCaPXgyyplUNZaMYZ0hB4moOtRsdQ2DogWqvq00K0vfTBNrDGIfrgXtLCo1fek
-         AfCyON4bXRuvJ710Q0O49/rNAyd8ZOxP36c8IrfVuSdJDNCWBGKgURm6z+8hbcVugQZ9
-         5XyXM5EGWOQ9x4IHdcYhNvhPeJv3EAYioEQ7LNzRjHqih1pwMwZS47dLjyHiLd1KQOHF
-         GR9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729782692; x=1730387492;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ChJjjmUOkenqb3cpEHOeJkT4zO1OgvJJ7sIw5ZfqDDI=;
-        b=JqM1jTOvszeP7PGQFh04s6BNal5UP5VuSOrrBYGcIqh3Omvs4oPkDVl4dibK1BujLD
-         6vcy3HUGKcdgdEaP2iGzoPcAdYnhgEHZdSRp5zVBRS66JEnRaOG6il6mEz1C371e4D8R
-         GbCTKa++M3L5x5i17jrYEU7gaxewlWqgGxZxggj9Th7JAyj1372CJJbV4F6feRHlPdFz
-         rU2HxmKYqqJRahha7cBSjfzRxCJt76RZobgQPjskg/ZS3rYKM7EiCNKeqtL1hprDsuJA
-         rgPM8xpDDLX2hxSRP6SN8GZlWkq5QQ3FyawpYbvt90PPSk7wsSjrV/o8IyLn6IY7PlFX
-         0ZdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvsvvvuWpkK5K144Y55/E8QjGQ8/Eqr0G/M29U78H0i7uiUOeqM6BkddEgqktg1bKRjTEOvSjzmSzvCn4=@vger.kernel.org, AJvYcCXcifseQEvNNVnF4maKRi2ddt3fFEO678wWVsGgnQa8h2/t38LhdKuf0nBNzFts6uU9ODURfaxv4RW6wJZRH6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFG8LCWZI72G4ka4hBMGnF+K1WWay11Mg1RwbxIVRlRbcop60s
-	k9jOX8ev0IyeLw11waJx0qg79Ri6JRjEbaZQkuoe7PxcuowRhBNY+pI31iR/Uuvo+pe89ZkqXRM
-	DAa6XHvFBHbCnAYtiv9ngTpT8L/w=
-X-Google-Smtp-Source: AGHT+IF58Lb/dCYGWTo4rXd+PQkoaOUoDK0Ly4TNLuDftx0txVM4t5YeKUH7ny/k0PCRtT2LigDRM2J5epTSAEwGc6o=
-X-Received: by 2002:a17:90a:6286:b0:2e2:b20b:59de with SMTP id
- 98e67ed59e1d1-2e76b5e039bmr3321192a91.3.1729782691837; Thu, 24 Oct 2024
- 08:11:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Hyh7jfbE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mEPllzIKJ41a2AXuCEun1BBXDaydWS3LbCjq9Yk6Xss=; b=Hyh7jfbE5a6YERoZ5qv/rTHnF9
+	Dtu/acJsFnb1wrfvRYnsx2piWR724s0fm+nds/jJ0tYQkwr2UcF8G/0pPY71dN/KYeu5Amo3kipPJ
+	0oJyakwSl/aA9CxnO058gVjHxM5S4adgquMtLU0BGZitiJh0l95Y1wHvDEfILzebbIAk2BGGULbCI
+	AwJQfE7UdzTzgsMInmMZHTn13eByz4uKO/jarri2zYPx/l0hleXKaX8kDm90ADgb0Wxw/QjA1AK4q
+	tFSKurq47zOEgIjuxf0Lf1qTKcLhaGpM8q3u0yNwgq8abIkZw/iNSofe1OCSiVzUVfCuX3bbqahkK
+	BWN6v/YA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t40XA-00000004N0f-1qis;
+	Thu, 24 Oct 2024 16:18:01 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2A07F300599; Thu, 24 Oct 2024 18:18:00 +0200 (CEST)
+Date: Thu, 24 Oct 2024 18:18:00 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Dirk Behme <dirk.behme@gmail.com>, rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
+	Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20241024161759.GF9767@noisy.programming.kicks-ass.net>
+References: <1eaf7f61-4458-4d15-bbe6-7fd2e34723f4@app.fastmail.com>
+ <20241018055125.2784186-1-boqun.feng@gmail.com>
+ <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <09dab2fd1a8fc8caee2758563c0174030f7dd8c2.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
- <9A3613EA-3901-4C44-A3C3-7A6B7DB49CDB@collabora.com>
-In-Reply-To: <9A3613EA-3901-4C44-A3C3-7A6B7DB49CDB@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 24 Oct 2024 17:11:19 +0200
-Message-ID: <CANiq72=2NgfMhzFhSJAY+e4dkoPdrqjgOv=DPiHMZWbtM08tGQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: kernel: add support for bits/genmask macros
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09dab2fd1a8fc8caee2758563c0174030f7dd8c2.camel@redhat.com>
 
-On Thu, Oct 24, 2024 at 5:07=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Sorry, I switched to b4 yesterday and I am still getting used to the work=
-flow with it.
+On Mon, Oct 21, 2024 at 04:44:02PM -0400, Lyude Paul wrote:
 
-No worries at all!
+> I like this so far (at least, assuming we consider making 
+> raw_spin_lock_irq_disable() and enable() temporary names, and then following
+> up with some automated conversions across the kernel using coccinelle).
 
-> This should read =E2=80=9CChanges from v1=E2=80=9D
+Well, I hated adding a 3rd spinlock API enough that I tried replacing
+the whole of irqsave/irqrestore with this thing in one go, and that is
+utterly failing to boot :-(
 
-It should also go below the `---` line (i.e. currently the SoB would
-be dropped).
+Coccinelle isn't going to help I'm afraid.
 
-Thanks!
-
-Cheers,
-Miguel
