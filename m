@@ -1,84 +1,94 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04281FE0ED;
-	Thu, 24 Oct 2024 17:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05A61FE107;
+	Thu, 24 Oct 2024 17:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729790543; cv=none; b=TBlkAqmX2gsLb4DQTiP7QOuF/alicv8K7ajeiztIfpNSXh1A9riax9a9gmpoZ+3nXLk7rnYIEACea2VJVlb+s4IbLUodQIHQ0nlikJ8bMW5fPWZM7E5/9ERIZSWqbFbLo1yggk5DnWQPY34Q7oJ5x6cMAwTFcBOKvFK5CFh3fLk=
+	t=1729790790; cv=none; b=UAJcwZdwK+JmmXWc3gE1wXiIXAUdODw4uJSTAdhnIANbLQ2ifndJhKqtlm6QDKWgpFbBYmFacd5lnaUzcPiDnqRjLa8DfpiAZk2o74FCP9jGawUlT6SLJsadrQkk++QbsBNAQP5nlf/Cv5EcIyVZ3UtiyRf7NHjX0gU9FaOPFrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729790543; c=relaxed/simple;
-	bh=wIuVCwuQSmU9TT+eX/r6kAmocD1hUdlcNmxwdd/zI90=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iBnaIcfgCdsBDPau9PZAU5RkDPxdwbDQHOm7GCAsa1kTmQkUIxttotQJBN3RhpDQGi8rfyp0jpVoUrFd9OaR01jTegqOwzh4q/daUgmtgY0mtJSLO1lwB59RgV2H1uo3g5rgul5z1suHjuRRzotimn3KHpKDOie5Nai9N5KQ5gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CtNIwoQa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LRMrOuJM; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1729790790; c=relaxed/simple;
+	bh=uyA62426iCGfJjQuEXLHddgjcLqfe7HQ197e+A2pODc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cMELQUQ+DO6ouZ53QuXkAddhDaUI+fiqQkjR/4h71i8+UK4e0RI0JYKNuBpvipbKAX8EzJifK2bToLmFxEJ7rbqaEmaV6Vyt4U9K7RYuTriwlu9GAxfjKwAZUf7luHzcqgskwa7AbXinW6WiDY2OM2VAkHCl0nevrElOUDbUSHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dInqIB3R; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CtNIwoQa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LRMrOuJM"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729790539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TbyQ/C9SYHe3bdpUj5IPx6bVXUYJHaelwqgH9B9vyKo=;
-	b=CtNIwoQatLcjHjHLFgb696snT0vMTnx02tc7ZoJWNowgXceusSOgVDg/SbQFiB6MCrzIei
-	EYYZt9kQFMrfdoYeF0MVVTseKxyXbSuhzw3yHG1H/mQhmcXr8Lq+VCYxXed9W6wCLqKKJE
-	edSQkQjWUn+7HyyHSBSanWRARyqDdbnVNWIR2MBK2EenZH5tcJzdQFvQBIu3Im5k9zn/1C
-	hKvRU8fEPuQ9KG5P5VErThnTb39+VezVrnDEJjSRAUBFerejz0hBUjWfPm6YSYUR5qyNo1
-	vc+8MV/f+Ov9YQ8xk3Rpk9dvWD5a4E63zBmvqDrJWoqmI7V8og6UX1uiW1uAeQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729790539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TbyQ/C9SYHe3bdpUj5IPx6bVXUYJHaelwqgH9B9vyKo=;
-	b=LRMrOuJM2taEpAtgcl7W4IdEOJ+ZoheVTXXOGixx/0FJirgFZGiTiaQEtIjqNShNjV41y6
-	qOCAhGGWf89gYmBA==
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@gmail.com>,
- Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Danilo
- Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar
- <mingo@redhat.com>, will@kernel.org, Waiman Long <longman@redhat.com>,
- linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
- aliceryhl@google.com, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
- disabling/enabling
-In-Reply-To: <20241024100538.GE9767@noisy.programming.kicks-ass.net>
-References: <20241018055125.2784186-2-boqun.feng@gmail.com>
- <87a5eu7gvw.ffs@tglx>
- <20241023195152.GE11151@noisy.programming.kicks-ass.net>
- <877c9y7dwx.ffs@tglx>
- <20241024100538.GE9767@noisy.programming.kicks-ass.net>
-Date: Thu, 24 Oct 2024 19:22:19 +0200
-Message-ID: <87bjz95sc4.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dInqIB3R"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e2b4110341so180195a91.1;
+        Thu, 24 Oct 2024 10:26:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729790786; x=1730395586; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1Cmyp2pbCrnL8r6TKnpyqShEFdJNBNPbRm5jXu0QNwc=;
+        b=dInqIB3RwGG8wd/qG/pSbwOs3aiQPSU/YWBTxaUc5GxVXmFDNdRMRm0scTdZ65pdnH
+         mcXajvPHWcBCvK0CBoRL68J/rpgMeb4qn39eq3QH5XLGJZh0TWXAMvwiQdHlYtUMSWek
+         y4ft99D+sjkZXkUAtHDBlHvJPh/rvh7R3tDuLCTSe7922uSbXJrcYd81JtcDzmIDnayP
+         wa90xEtjxsV6hrtEoRvpWOaf5N7cw3/+cpdS9sNQfVrHiM/HXt7VAvn68KQB/9srsNCM
+         JfILZOETbJYRKJChjnIFPsgrhYr5+XQtMirMwXoP+HQMHoa/ZkKTYIFg4kkbqMdS1Tzb
+         G9TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729790786; x=1730395586;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1Cmyp2pbCrnL8r6TKnpyqShEFdJNBNPbRm5jXu0QNwc=;
+        b=noJbsoemFPRJFkE8gJNEQxCx+ZiIw4fWLzYyaEYobqOJYX90p9qSpG05x6NQ5ZV/HQ
+         De3yodcihWlUfvhbiHYNSSsBBWgK2OdzCKghNcBVeEhoAMLwt6A3lOwUVrX03EQ2mABc
+         1wygf3MwGOR5YagEy8IZqXy3+2tYgYV/xpvraW1VaVShhaWbIKf8ZhcZWbstD7bHjoCr
+         xT0aich0a4h/m/DVB/HObP/EgyuTn4nVpY/4XfFuCFvy7N5wexh58FF9d9i0jJj6Xlax
+         3Uik9evVU80odZEOqE4kcRxRSObpfKol+fhWQru4tfkCqeLMdgYUPGvP7mVhJ/MqRG0T
+         27FA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5HxvWaULVxoKmwbBbd0fqTiiFJFNz2kmxJUOZyVCFDE3Wmtj5mU6rXDQAy22EW9PVnbPTdQAwUcV9bTw=@vger.kernel.org, AJvYcCX31i0koWliwu+yNt0zCOvjSR4tm1q7GWB+CThdw+dUBVGwIeImqNmU/EJe5fIXJl1Nw7yOz34zZ79G4vEXKQc=@vger.kernel.org, AJvYcCXYgtwW/mAHz6qvJg/a4IJC+KpvRHWnpcnEqsdnfEfzfBzgBcpNolkvoS9IU827pxg160Nu/m8L@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW2BLkeymr9ZyHPYdxTREreYfcw2zUq6YjYnhaW+WyWUaW+RoD
+	pQB4RL4abmSEMWiEe3hyF84Cu4Pv//y2/KMmfiZhm4WTBpRy5FNB9vTPuexIpRTkU8B1aBXAi+t
+	s72IIl85e3R26IB2iJchixcqCW14=
+X-Google-Smtp-Source: AGHT+IEyqfq0vzt+4pDxQx+AINTPUEv/2877gmMNBg1AkvLwqhkXvpxeUMsCwfZwBdhgZX+AqgjV12C+PS/R33L5U2Q=
+X-Received: by 2002:a17:90a:eb15:b0:2e2:c414:80a4 with SMTP id
+ 98e67ed59e1d1-2e76b84cd66mr3163049a91.9.1729790785889; Thu, 24 Oct 2024
+ 10:26:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241016035214.2229-6-fujita.tomonori@gmail.com>
+ <CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+ <CANiq72mKJuCdB2kCwBj5M04bw2O+7L9=yPiGJQeyMjWEsCxAMA@mail.gmail.com> <20241024.092248.1743299714523375638.fujita.tomonori@gmail.com>
+In-Reply-To: <20241024.092248.1743299714523375638.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 24 Oct 2024 19:26:12 +0200
+Message-ID: <CANiq72kWqSCSkUk1efZyAi+0ScNTtfALn+wiJY_aoQefu2TNvg@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep function
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 24 2024 at 12:05, Peter Zijlstra wrote:
-> On Wed, Oct 23, 2024 at 10:38:38PM +0200, Thomas Gleixner wrote:
->> But if we want to support insanity then we make preempt count 64 bit and
->> be done with it. But no, I don't think that encouraging insanity is a
->> good thing.
+On Thu, Oct 24, 2024 at 2:22=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> The problem is that in most release builds the overflow will be silent
-> and cause spurious weirdness that is a pain in the arse to debug :/
->
-> That is my only concern -- making insane code crash hard is good, making
-> it silently mostly work but cause random weirdness is not.
+> Do you mean msecs_to_jiffies() returns MAX_JIFFY_OFFSET ((LONG_MAX >>
+> 1)-1) with a value exceeding i32::MAX milliseconds?
 
-I wish we could come up with a lightweight check for that.
+Yeah -- well, I was referring to its docs:
 
-Thanks,
+ * - negative values mean 'infinite timeout' (MAX_JIFFY_OFFSET)
+ *
+ * - 'too large' values [that would result in larger than
+ *   MAX_JIFFY_OFFSET values] mean 'infinite timeout' too.
 
-        tglx
+So I assume `fsleep` is meant to inherit that.
+
+Cheers,
+Miguel
