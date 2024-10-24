@@ -1,121 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A471F9EC8;
-	Thu, 24 Oct 2024 17:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04281FE0ED;
+	Thu, 24 Oct 2024 17:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729789789; cv=none; b=RcAosLdo5Q4jcc3kjJIdeSiDDgLoClJPqUAQG6xnyxWFQ5Uv40aEN4R/0lXC5JAO+eKULKCq0oLWyym3nVRvbatH2puJy0p2PxS1PecQZoZJSkOyqO+IUEDKXlEsd+y695Tf4pr+/G13mFjlhx3UQxLqH0z9I3WDEXG7+b9XKtI=
+	t=1729790543; cv=none; b=TBlkAqmX2gsLb4DQTiP7QOuF/alicv8K7ajeiztIfpNSXh1A9riax9a9gmpoZ+3nXLk7rnYIEACea2VJVlb+s4IbLUodQIHQ0nlikJ8bMW5fPWZM7E5/9ERIZSWqbFbLo1yggk5DnWQPY34Q7oJ5x6cMAwTFcBOKvFK5CFh3fLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729789789; c=relaxed/simple;
-	bh=CyuZyMSHUH950XnFjZcDtRSS16p129Q/WANbny7txC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UUnimS4eQWUWzcFNQWdso9e9yWywmZipor++7eCA/nh1KIu7qxGpgbaptT79w/x83WzUrGpBKLgy0a0xPbA53N8V7MRg0crE2ltUBhpk6y934lhpyxxEm4Pe4jPo/BJbBuiJ43uOhEpYU5/fncHzHK16hdY2DNtDC6d+QGC5K0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHu2/k0V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729790543; c=relaxed/simple;
+	bh=wIuVCwuQSmU9TT+eX/r6kAmocD1hUdlcNmxwdd/zI90=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iBnaIcfgCdsBDPau9PZAU5RkDPxdwbDQHOm7GCAsa1kTmQkUIxttotQJBN3RhpDQGi8rfyp0jpVoUrFd9OaR01jTegqOwzh4q/daUgmtgY0mtJSLO1lwB59RgV2H1uo3g5rgul5z1suHjuRRzotimn3KHpKDOie5Nai9N5KQ5gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CtNIwoQa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LRMrOuJM; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHu2/k0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B580CC4CEC7;
-	Thu, 24 Oct 2024 17:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729789788;
-	bh=CyuZyMSHUH950XnFjZcDtRSS16p129Q/WANbny7txC8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WHu2/k0VbBXjIUAEXv5TZexZsoN2dEl21z9T8Wxro4RE2L01jjIdw+PWh/Q1sc/RR
-	 7ZtdvqkiUHN8StnCaAffXi1aaybMNzzDbxqOEiT99ape5ABC1lieWiOUgzCB2BkQfx
-	 a+74UlHJAEaPJDOIVcUBmMXqSUB+X5UIZ4iSJGpP4be4EEcX0tuMIRZ5a9GGh3/ihw
-	 bus+JJp7656weG0d71j+Q+gOwsUqhnVRj2PynHpKxGBVdkecBUf0XmWoegvOKHr+6X
-	 L5xBBKPMK1El7Z5Ml9yRyAFgoaoFfH4yV5nJ6BvdKcB2Y/MGpWkb+kZiuoBHJKfLzE
-	 rD0QEopub78sg==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <n.schier@avm.de>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] kbuild: simplify rustfmt target
-Date: Fri, 25 Oct 2024 02:09:22 +0900
-Message-ID: <20241024170936.1922548-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CtNIwoQa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LRMrOuJM"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729790539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TbyQ/C9SYHe3bdpUj5IPx6bVXUYJHaelwqgH9B9vyKo=;
+	b=CtNIwoQatLcjHjHLFgb696snT0vMTnx02tc7ZoJWNowgXceusSOgVDg/SbQFiB6MCrzIei
+	EYYZt9kQFMrfdoYeF0MVVTseKxyXbSuhzw3yHG1H/mQhmcXr8Lq+VCYxXed9W6wCLqKKJE
+	edSQkQjWUn+7HyyHSBSanWRARyqDdbnVNWIR2MBK2EenZH5tcJzdQFvQBIu3Im5k9zn/1C
+	hKvRU8fEPuQ9KG5P5VErThnTb39+VezVrnDEJjSRAUBFerejz0hBUjWfPm6YSYUR5qyNo1
+	vc+8MV/f+Ov9YQ8xk3Rpk9dvWD5a4E63zBmvqDrJWoqmI7V8og6UX1uiW1uAeQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729790539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TbyQ/C9SYHe3bdpUj5IPx6bVXUYJHaelwqgH9B9vyKo=;
+	b=LRMrOuJM2taEpAtgcl7W4IdEOJ+ZoheVTXXOGixx/0FJirgFZGiTiaQEtIjqNShNjV41y6
+	qOCAhGGWf89gYmBA==
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@gmail.com>,
+ Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Danilo
+ Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar
+ <mingo@redhat.com>, will@kernel.org, Waiman Long <longman@redhat.com>,
+ linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
+ aliceryhl@google.com, Trevor Gross <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+In-Reply-To: <20241024100538.GE9767@noisy.programming.kicks-ass.net>
+References: <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <87a5eu7gvw.ffs@tglx>
+ <20241023195152.GE11151@noisy.programming.kicks-ass.net>
+ <877c9y7dwx.ffs@tglx>
+ <20241024100538.GE9767@noisy.programming.kicks-ass.net>
+Date: Thu, 24 Oct 2024 19:22:19 +0200
+Message-ID: <87bjz95sc4.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-There is no need to prune the rust/alloc directory because it was
-removed by commit 9d0441bab775 ("rust: alloc: remove our fork of the
-`alloc` crate").
+On Thu, Oct 24 2024 at 12:05, Peter Zijlstra wrote:
+> On Wed, Oct 23, 2024 at 10:38:38PM +0200, Thomas Gleixner wrote:
+>> But if we want to support insanity then we make preempt count 64 bit and
+>> be done with it. But no, I don't think that encouraging insanity is a
+>> good thing.
+>
+> The problem is that in most release builds the overflow will be silent
+> and cause spurious weirdness that is a pain in the arse to debug :/
+>
+> That is my only concern -- making insane code crash hard is good, making
+> it silently mostly work but cause random weirdness is not.
 
-Pruning the rust/test directory is unneeded because no '*.rs' files are
-generated within it.
+I wish we could come up with a lightweight check for that.
 
-To avoid forking the 'grep' process, filter out generated files using
-the option, ! -name '*generated*'.
+Thanks,
 
-Now that the '-path ... -prune' option is no longer used, there is no
-need to use the absolute path. Searching in $(srctree) is sufficient.
-
-The comment mentions the use case where $(srctree) is '..', that is,
-$(objtree) is a sub-directory of $(srctree). In this scenario, all
-'*.rs' files under $(objtree) are generated files and filters out by
-the '*generated*' pattern.
-
-Add $(RCS_FIND_IGNORE) as a shortcut. Although I do not believe '*.rs'
-files would exist under the .git directory, there is no need to traverse
-it.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
----
-
-Changes in v2:
-  - Merge the previous two patches
-  - Remove -prune completely
-  - Filter out 'generated' files by the find option
-  - Remove the unnecessary comment
-  - Add $(RCS_FIND_IGNORE)
-
- Makefile | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index eaa8511dc4bf..9f251f528504 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1754,18 +1754,9 @@ rusttest: prepare
- # Formatting targets
- PHONY += rustfmt rustfmtcheck
- 
--# We skip `rust/alloc` since we want to minimize the diff w.r.t. upstream.
--#
--# We match using absolute paths since `find` does not resolve them
--# when matching, which is a problem when e.g. `srctree` is `..`.
--# We `grep` afterwards in order to remove the directory entry itself.
- rustfmt:
--	$(Q)find $(abs_srctree) -type f -name '*.rs' \
--		-o -path $(abs_srctree)/rust/alloc -prune \
--		-o -path $(abs_objtree)/rust/test -prune \
--		| grep -Fv $(abs_srctree)/rust/alloc \
--		| grep -Fv $(abs_objtree)/rust/test \
--		| grep -Fv generated \
-+	$(Q)find $(srctree) $(RCS_FIND_IGNORE) \
-+		-type f -a -name '*.rs' -a ! -name '*generated*' -print \
- 		| xargs $(RUSTFMT) $(rustfmt_flags)
- 
- rustfmtcheck: rustfmt_flags = --check
--- 
-2.43.0
-
+        tglx
