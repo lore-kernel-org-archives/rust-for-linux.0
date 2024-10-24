@@ -1,111 +1,93 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3C91FAC42
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 21:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C0B848C;
+	Thu, 24 Oct 2024 00:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729718110; cv=none; b=TRGSQrLZgn1EdwcmVxZ3NuQX45dmQXD/5Dly/5H8y7IIf9Ilfumt3mBu4h3qI2j8Y057il1e7WGvH4569CV5dAxZiglRiKDGbVO1nkcBP7QpJAdxJLjsKil3ClavyCRiOQN1hOERdYLO7fpndHuooAABZLXEXoaE8Iy1efNvDtU=
+	t=1729729377; cv=none; b=T7Gcc1oaU2WX3p8/o7KMtcYtm4+XmCaaVVs6X6G2NAWQT2O/UuUlzbpWdSM3btL+CnNE7ymFYRzd5HXIfq1Pdl5HKkt4gIgdjEdbvhNCTqWCDVqcAQktUI+ZtXO4kF+X7feOqmnHg2F7CpU0hK/ufFodZ/Jt1VEcWTBfNa7kFb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729718110; c=relaxed/simple;
-	bh=4ZP52DrOKx/INwLhclU+6dl4fO5N9uCgynBJoArxSTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t6U8a+M/Xxvt6sdgrvIdovF6fnRO6zq1CTSpDVmdjY1vtHPtVMYICAEJsrxaAJGUhmgITXZ40JbTUCWbfgOk1U2CerOmZr1xzEoROM2M/RysMoyDbGMxSAvb1qRgV+uxrSCMZUC5Xxxw+4w74/DbELUoy1TObjOrfCmpIhsX3Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JCBhlMDe; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1729729377; c=relaxed/simple;
+	bh=o/i0czh18H01Bh++/viBvqJsWZfb8X++LjTv5T5KwxA=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tcUB9kZ/sLgCp05nKwriO/AzEFG0Lagf3/mAvp9maBmXf0VsTMiGstjDOiu4IYVQTq2alIrzdzkOIbH4jIO/reXKdkpxDrE8u0KjGqDj8MJIzfs3ncHFPJHtz65ZPcoOsNl8eyx1mK5iLEYkjhV8O0qWFZUxwy036uP0ySw5WoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpvfHnRl; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JCBhlMDe"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4315a8cff85so20665e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Oct 2024 14:15:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpvfHnRl"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-71e681bc315so274598b3a.0;
+        Wed, 23 Oct 2024 17:22:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729718107; x=1730322907; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WfTzqdb1VSf8Gk5yizZmo+tj3CJXoQHkksQYnazcBsI=;
-        b=JCBhlMDe4thyQiMvCnjU7Cm62K3f4D/bQJxXwiTfkdaGX74UcG+RqrrjhDEK3CBcFD
-         0TKd8lMZMNTcVDT1rt2XNW6+yt41AxK0wdup8GeV2y9sWbncpeULC2EPTUJv52GFHEdI
-         AnC8csmb3MG+sHpoA8zdm4ANyEUp/EcgUwxzHVd8SsDEGmIMQeB9SNo5NR84UHIGhPLL
-         CZsj/v6b5h9uRtv2qTGScWboWAyKttG6NoirpxYS3QPxrd934uAUWtfEkIOQxIiDgRIO
-         BCuusWi0H+YfVCsxF6bK94uOo2pTkUN+eL61zpBbz1FWz1hJvcsp5zWKzKWO6LrvFfAZ
-         IzBw==
+        d=gmail.com; s=20230601; t=1729729375; x=1730334175; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o/i0czh18H01Bh++/viBvqJsWZfb8X++LjTv5T5KwxA=;
+        b=GpvfHnRlhc1pM6pbQuRmmu7p09OKJEO2QkTym+S48Nr9jUNL99bN7/neCIPhbdyXDI
+         fBuhJzvpX9RoVZ9G1CiXFz03D4psfEWb0MgNQmdA7akZ3lAqa7S++VOhhYnWS+bJtN2o
+         7Yy3Vk7bvRtlqwBXmdNfCjDh/tZm0dgtFRBgABwzR/7/je+mVW0aWN9DQYz2IkHPE5kM
+         HdtAc5D6jbJsPkuUQUX5PP0MvbVB09ovo8plKrRy8zyJ2lQ9985roHBlyzV7Wm4Y6A5Q
+         wIAhOnC0wvJDExKjzXe53mql/t9e4qRS7tqv1lwc/x6byQuKejPvIPx6XqI8v5fqEtDb
+         E37w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729718107; x=1730322907;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WfTzqdb1VSf8Gk5yizZmo+tj3CJXoQHkksQYnazcBsI=;
-        b=BOSmGZSEt46c46DkSTTxifdWYaUBf4D2LTDSe4Sg9UbiwATdz9dmEWgfih/N/uRdCd
-         J+okmXudAEHekFjL7BfppJ/dwk7XftRHnF2LruUIHeWgH0sYz/mjVyr+WmOcEHTGE4mZ
-         tXs2XixmROqz8yQVh9hqcy8/Konvgug4dHdxGNlJtDyK/lyaYmild3qqpSYoRmYKf6sR
-         0VkTB4odPXR4/nmjNesXRcqIY6iWYybEtnCmN+DbAmBlKbelJvnWLCLef6QGrxMVMfuX
-         DUXucv7zyrsy5TZZxOUDpGKmUlSyqSq7Gmnr30Bo0CRopg4o1is8gwgCfGadfBYsBeiZ
-         IIhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVoLQpRDoqM8VWonBErWqWEhjs0E2TDIWFPscSW8SyJ3DD4AGof+af5OZkZ8k0+bu4zE21JmllF4wtCHOHv5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyX7y+2BFOYuEtVcnqzXdNi7pmDh1jr60RwvnxztqlEos65sQl8
-	jUg5+fmt84Tu8hxYyLSPRqNYXTqsg8A+6EWWABl9hndHccEVu2CpAsg0L6dgAadWLJJ2HfVYqv+
-	0sGQ+ihymjCpFhNFCROG5V1PVvkB8w0+aQ4f1
-X-Google-Smtp-Source: AGHT+IFqBJIw1NFCo41gy3+FTzGpIJM2Xgam9sFU+VbVhx4UVG5MiIzQo2Dnw0+91MIY4eDDcQSOrd12O2f8n7BVvB0=
-X-Received: by 2002:a05:600c:3d86:b0:428:e6eb:1340 with SMTP id
- 5b1f17b1804b1-4318a55bda2mr1281755e9.4.1729718106868; Wed, 23 Oct 2024
- 14:15:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729729375; x=1730334175;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=o/i0czh18H01Bh++/viBvqJsWZfb8X++LjTv5T5KwxA=;
+        b=KEjvwUuyX7fIb6E2gMfFn3rO3xFXavVlX6nl3BRFxcMCsY+wCO58VoZOivt1zIpIl8
+         0BQSMlkfX3+7aIg6szG0rtJFc0dS1c8JxV2KbLVvWlHcGRfGeNeY6TFDKdNaoEi9hJpy
+         KLerByIXR9ZRYnieHWGGMMwXhFIsVnS/S1NC7dPsQVV6Yr9JrzNDFRx0IxoNGtw49lnB
+         PBa74hALyvefnT1zeAHn9Ypwh2fR6Lo4lo3FmxHFnTvF/xf4WfsVHP5FZdkYOfeT+FmI
+         MygRNHCcak97RXdMcNTX3IAPsEfXwVBfrq95ht1ZtmVHuJAAV11lRNCAwDMhg3H9dp+B
+         rveA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDqCvX4VwL7suxb4fgQXXpKuqNfs/4qTN2s9v7ookBMzCGkjdv/CZti7lnEksVNSHCsDUGp0O6PswwdEo=@vger.kernel.org, AJvYcCVLEWRIxE+aaAk3CaEt9uxYEYIhNr5ua+ex0UOhvZE+0uvJgow/BuIaGIIXg9wRYM5CIRjGyrqWs4FpTrsa+nY=@vger.kernel.org, AJvYcCWRX98HMTgjz/ICcpC8RNqQ2/pg464jfUtrur6NOHorEVVS/divntD7MaaaZ1/jAVFL/11lg9ye@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBgVvSZaF4+sJdF/hIY/ipaugr4LK/HIWFW9s4fRKo0f6WXj2I
+	iYx9EP+Txu5huvwMabqQMA10mk1za/T0kH1E8svj2cox96T08EyK
+X-Google-Smtp-Source: AGHT+IHsiev09pNB8pqeGsewSHkIKAVMQz7zVum35IyU1VaOqBZ4LK4Z85lBsnr7xV6CC5bpnegQpg==
+X-Received: by 2002:a05:6a00:22d4:b0:71e:5709:2330 with SMTP id d2e1a72fcca58-720452cf756mr560400b3a.7.1729729375113;
+        Wed, 23 Oct 2024 17:22:55 -0700 (PDT)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ec1312e7dsm7156595b3a.11.2024.10.23.17.22.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 17:22:54 -0700 (PDT)
+Date: Thu, 24 Oct 2024 09:22:48 +0900 (JST)
+Message-Id: <20241024.092248.1743299714523375638.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: aliceryhl@google.com, fujita.tomonori@gmail.com,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 5/8] rust: time: Add wrapper for fsleep
+ function
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72mKJuCdB2kCwBj5M04bw2O+7L9=yPiGJQeyMjWEsCxAMA@mail.gmail.com>
+References: <20241016035214.2229-6-fujita.tomonori@gmail.com>
+	<CAH5fLgjTGmD0=9wJRP+aNtHC2ab7e9tuRwnPZZt8RN3wpmZHBg@mail.gmail.com>
+	<CANiq72mKJuCdB2kCwBj5M04bw2O+7L9=yPiGJQeyMjWEsCxAMA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241008183823.36676-21-samitolvanen@google.com>
- <20241008183823.36676-39-samitolvanen@google.com> <8017c328-f039-46c3-b472-f203cd6e2cfe@suse.com>
-In-Reply-To: <8017c328-f039-46c3-b472-f203cd6e2cfe@suse.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 23 Oct 2024 21:14:30 +0000
-Message-ID: <CABCJKueABoo8xVfE1JBZk-kw8cTK0h5ibOqo+hBEAgpfGSTgdg@mail.gmail.com>
-Subject: Re: [PATCH v4 18/19] kbuild: Add gendwarfksyms as an alternative to genksyms
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
-	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
-	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Hi,
-
-On Wed, Oct 23, 2024 at 2:59=E2=80=AFPM Petr Pavlu <petr.pavlu@suse.com> wr=
-ote:
->
-> On 10/8/24 20:38, Sami Tolvanen wrote:
-> > +gendwarfksyms :=3D scripts/gendwarfksyms/gendwarfksyms
-> > +getexportsymbols =3D $(NM) $(1) | sed -n 's/.* __export_symbol_\(.*\)/=
-$(2)/p'
-> > +
-> >  genksyms =3D scripts/genksyms/genksyms         \
-> >       $(if $(1), -T $(2))                     \
-> >       $(if $(KBUILD_PRESERVE), -p)            \
-> >       -r $(or $(wildcard $(2:.symtypes=3D.symref)), /dev/null)
-> >
-> >  # These mirror gensymtypes_S and co below, keep them in synch.
-> > +ifdef CONFIG_GENDWARFKSYMS
-> > +symtypes_dep_c =3D $(obj)/%.o
-> > +cmd_gensymtypes_c =3D $(if $(skip_gendwarfksyms),,                    =
- \
-> > +     $(call getexportsymbols,$(2:.symtypes=3D.o),\1) |                =
- \
-> > +     $(gendwarfksyms) $(2:.symtypes=3D.o) $(if $(1), --symtypes $(2)))
->
-> Is it possible to pass options to gendwarfksyms that apply to the entire
-> build, specifically, how can one say to use the --stable option? If not
-> then I think it would be good to add something as
-> KBUILD_GENDWARFKSYMS_STABLE (similar to KBUILD_PRESERVE), or maybe
-> a generic GENDWARFKSYMSFLAGS?
-
-Yeah, I left that as an exercise to the user in this version, but I
-agree, adding a KBUILD_ flag seems reasonable.
-
-Sami
+T24gV2VkLCAxNiBPY3QgMjAyNCAxMTo0MjowNyArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBXZWQsIE9jdCAxNiwgMjAy
+NCBhdCAxMDoyOeKAr0FNIEFsaWNlIFJ5aGwgPGFsaWNlcnlobEBnb29nbGUuY29tPiB3cm90ZToN
+Cj4+DQo+PiBZb3UgcHJvYmFibHkgd2FudCB0aGlzOg0KPj4NCj4+IGRlbHRhLmFzX25hbm9zKCku
+c2F0dXJhdGluZ19hZGQodGltZTo6TlNFQ19QRVJfVVNFQyAtIDEpIC8gdGltZTo6TlNFQ19QRVJf
+VVNFQw0KPj4NCj4+IFRoaXMgd291bGQgYXZvaWQgYSBjcmFzaCBpZiBzb21lb25lIHBhc3NlcyBp
+NjQ6Ok1BWCBuYW5vc2Vjb25kcyBhbmQNCj4+IENPTkZJR19SVVNUX09WRVJGTE9XX0NIRUNLUyBp
+cyBlbmFibGVkLg0KPiANCj4gSSB0aGluayB3ZSBzaG91bGQgZG9jdW1lbnQgd2hldGhlciBgZnNs
+ZWVwYCBpcyBleHBlY3RlZCB0byBiZSB1c2FibGUNCj4gZm9yICJmb3JldmVyIiB2YWx1ZXMuDQo+
+IA0KPiBJdCBzb3VuZHMgbGlrZSB0aGF0LCBnaXZlbiAidG9vIGxhcmdlIiB2YWx1ZXMgaW4gYG1z
+ZWNzX3RvX2ppZmZpZXNgDQo+IG1lYW4gImluZmluaXRlIHRpbWVvdXQiLg0KDQpEbyB5b3UgbWVh
+biBtc2Vjc190b19qaWZmaWVzKCkgcmV0dXJucyBNQVhfSklGRllfT0ZGU0VUICgoTE9OR19NQVgg
+Pj4NCjEpLTEpIHdpdGggYSB2YWx1ZSBleGNlZWRpbmcgaTMyOjpNQVggbWlsbGlzZWNvbmRzPw0K
