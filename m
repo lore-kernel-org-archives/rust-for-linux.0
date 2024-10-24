@@ -1,76 +1,224 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2709F170A27;
-	Thu, 24 Oct 2024 21:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750C32178E3;
+	Thu, 24 Oct 2024 21:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729803761; cv=none; b=cUU5PzvAFgGf0cR7puN5pO0hjfYlapxXBJ3/7F2h1oQtAbZCSZc6BhbUMAaGh8SPbgJ7qMrd5L86zukGQLfogfQXMKtpQUc4VWpKw6Ut6R8Uqy8RvQmWnmIIpa+kQcyvfABDVwI/x2vhSo/Lhyu2Ur0omTeCJTrlsRnbdcO54VY=
+	t=1729807076; cv=none; b=pwDr6DLhvY6cVBvQY/bEdOjYc396ZAerTvL8fvW4RdjxthIZKP4SSkJJa0Bs1O4/6hnfRnPZZ2oBUOPz3Hf5uGcF/no5jG25R1dcITG+QVcxoOrk73qmutEBQlee9GpfWIPLGYkbICmORvPoKL9i9jFer5PlSP8h1vC6vA2wScs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729803761; c=relaxed/simple;
-	bh=JRu/0yRLFkjGcQnRvva+FsDQtQypm8tdfhveZVg1Ocg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bC+QKEdPn1vWR8bKvXZdO/zFl6JARm5CwEIhiBjhzWLGyDt38TR0W/rggn3U6UF1gKNL0AjBkk/VxP5xVHl4pMTXUchJB7lh5eorGg1UBnZKI2VuNDqF7Hha6vpwJcknuj5sdo2oPeIi4OjzeNQkfl+tS/uG9gYC0hkp936WHtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=lvGIaJcU; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1729807076; c=relaxed/simple;
+	bh=uctbUevpAb5f7eNTAx113WUp/RM64VGoO7T5/Esjzbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hw9SLqpHCsifoYe6I2w2qUZMHRoOK2RM5BVzFcIP8Tbz6fyIfGV3a9QF8vHFySDHpVRIW1Ib8/zhkqRtZoXDM9eQVPrYMe4UPzX3XCUyDF0EKApbwlQy1UlV1Btw0eUmiCnyjTrOtumtBSYmLk+PwE4HdeJa8F5IUPF0rl0Ov40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ByfetNjS; arc=none smtp.client-ip=209.85.222.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="lvGIaJcU"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 41AF642C0D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1729803759; bh=CjqmLTP7r6fnx9k6gL8lAGFaj5pUPVS/3GNp7nsyHWM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lvGIaJcUI2xmSkzqFobfbkypZWvt1Ad7FnNihTyw9kYC8mpXU70KnAh44He+KVan+
-	 VvP2w7YdoQ+pB5eAK6hG2crd4kCZFiPP1zDe/Ej1BrpJ8F8TBMDhmFAgL6EJ6wg1/w
-	 QfvAvo80OXSkIrpxZgSsRqDfNLWkZ9rwFRapSjRZetVr5kMB1edD5IzFdEZBAQAvk5
-	 w59NIvcY38f+eDT1AVD43H5k4sbY4I/b8XB2boywNzUa7HMCeXWX/2lIzoOjnJGZ+C
-	 wgS+traxCfEgCAoPX47178lKvoQb1fYiF56ydBQHr3vzRU9NuPjjaTitjfjqNZVDCD
-	 +5EoXVP/3jnGA==
-Received: from localhost (mdns.lwn.net [45.79.72.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 41AF642C0D;
-	Thu, 24 Oct 2024 21:02:39 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Dongliang Mu <dzm91@hust.edu.cn>, si.yanteng@linux.dev, Alex Shi
- <alexs@kernel.org>, Yanteng Si <siyanteng@loongson.cn>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, Dongliang Mu <dzm91@hust.edu.cn>
-Cc: hust-os-kernel-patches@googlegroups.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v3] docs/zh_CN: update the translation of
- process/programming-language.rst
-In-Reply-To: <874j5146ek.fsf@trenco.lwn.net>
-References: <20241023062750.849951-1-dzm91@hust.edu.cn>
- <874j5146ek.fsf@trenco.lwn.net>
-Date: Thu, 24 Oct 2024 15:02:37 -0600
-Message-ID: <87wmhx2p02.fsf@trenco.lwn.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ByfetNjS"
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-84fc0209e87so385510241.1;
+        Thu, 24 Oct 2024 14:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729807073; x=1730411873; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y3GG1M8mZMf3NOK61KII0Pd2B4NFeAW3CspARjHNIbU=;
+        b=ByfetNjSDsXCv6phUzjq4j5Herbf6EMvyaX++JMtAIq6204hxaIWnTeCHS2nIz1zyQ
+         YHQsNhPrSERTRHly3tgwYJtCz4USnKrg+TJR/l14wkVpTOdQAcAgqHNO0v4NcFnjDD/F
+         P+RP8DS0HbSMOiPyaeT7IeC0iK9UjsVQyX+hw2jt18i/2UhtVbXcU1x37IrcACPNLV91
+         iUS7jNc6EkPTLB57Js0+wUUXJcr7cmkr6kLDbjDATNFOJMwfx1ERV3RFfFYNQFBK4S7z
+         +fMTcG2s9IzbiKRKGQRs8NEk0MjuvlpHkJZ3OWMKon9E3Akpzq4dgTvlb+h45U7fiTqy
+         haog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729807073; x=1730411873;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y3GG1M8mZMf3NOK61KII0Pd2B4NFeAW3CspARjHNIbU=;
+        b=tLC87YfejD5DVJYOOq3Xor4QTeRCpIWvVIB8wzdJY3yFBDK4CMb/ToM/GbEI6/Il1m
+         zZyF/AdJlWSjaf8lCFPxxVUmqKAVktlGYHCtiZPufz96dX2UYmiLOtWzK9ZhCSSF89zv
+         sQqaly0SshLP1q9/GCioflsXuGr81lxDiImIJQVfMqeATMxUFmFqxEWqkk0tdZmwo0V3
+         zKN/TAbRvrBesZCUsF+w6/jYWTnO9zkSMyq6Os4HZ+OGV2LtOVBp2IPaU0/j5RLZErz/
+         D6T3vsdOEy0D2S1hNs1OFEW42kHb3u0PyLAGnuDoSaG4bJxJ1rY8drv5OspF5/rsAZxX
+         bQqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCSZRm0Ks/V+xTwwAd3qbRI5Ofd6MYbeaeyFbFodxKFQh/70kSbCr4qQF1pwF8IYG7f83Ne/zQDySel5w=@vger.kernel.org, AJvYcCUlPhZCJmmnBt0m0SAwme1RRHA7aozrc5tMQTvb7wMnIO6rafXSkPGApYDZ2Es6aNU5fHKI67FfqrOx7u6gfkA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV0tv+2xx9IEEaOdyzkkRClLLBUNkri4XmttoD4fHlMDwfbcfs
+	WOlNxZYOdPqRLriruO5GiCQaP8gOSHiuvrbyYfr9ffmxftqR9cg5
+X-Google-Smtp-Source: AGHT+IGbBt//HrkW7rtbk1WIb1GNQzbBU91VQ1Gt7Y9Iejv5lmi9B7E1VEDAKKKngyTomKtgNpnG6g==
+X-Received: by 2002:a05:6102:cc7:b0:4a4:6858:3365 with SMTP id ada2fe7eead31-4a751c92486mr10137173137.21.1729807072930;
+        Thu, 24 Oct 2024 14:57:52 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce008f5ccdsm54312146d6.32.2024.10.24.14.57.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 14:57:52 -0700 (PDT)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AF9181200066;
+	Thu, 24 Oct 2024 17:57:51 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Thu, 24 Oct 2024 17:57:51 -0400
+X-ME-Sender: <xms:38IaZ4Pl2OIrJXppkLVKz6CuidCn89cFl3qRnvd6P_doB8toueGSfA>
+    <xme:38IaZ--GR-ut7I8R__BrfW0x4TcdtcF3i7SdYHTAghDbBijDvyakxc7wlNRhI8IzI
+    wuM-rOFZJCtjguh-w>
+X-ME-Received: <xmr:38IaZ_SFYw7cd63vcGVMqeJ9OTXd19QqdV89ywE45HdXPwbK93BMGrvMbdbvww>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejuddgtdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvg
+    dprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthho
+    peguihhrkhdrsggvhhhmvgesghhmrghilhdrtghomhdprhgtphhtthhopehlhihuuggvse
+    hrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhg
+    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrhesrhgvughhrghtrdgtoh
+    hmpdhrtghpthhtoheprghirhhlihgvugesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
+    mhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihilhhlsehkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:38IaZwutjOSeiraSDnUkukhnlKmczTwd0mZPAKajhe9axIz4CFwqzw>
+    <xmx:38IaZwdUxf9W4oNPpoTVMe2ojKu5s4H5h8Odyf9vVSdTkYrS9jrFsw>
+    <xmx:38IaZ02t3TkFHboXU14ysLlttPKgwnnhBs6fauV0-iJZSu76Xzb59A>
+    <xmx:38IaZ0-Jr8jML4AfMvZ8EjrUwPYS8IjhglfcTv68zm8kDDxRxZ9TcA>
+    <xmx:38IaZ389n0fwRSMup83tmpO31MBhmegknLTkVloNVNL_KWHxSkreH8MK>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Oct 2024 17:57:51 -0400 (EDT)
+Date: Thu, 24 Oct 2024 14:57:02 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <ZxrCrlg1XvaTtJ1I@boqun-archlinux>
+References: <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <87a5eu7gvw.ffs@tglx>
+ <20241023195152.GE11151@noisy.programming.kicks-ass.net>
+ <877c9y7dwx.ffs@tglx>
+ <20241024100538.GE9767@noisy.programming.kicks-ass.net>
+ <87bjz95sc4.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87bjz95sc4.ffs@tglx>
 
-Jonathan Corbet <corbet@lwn.net> writes:
+On Thu, Oct 24, 2024 at 07:22:19PM +0200, Thomas Gleixner wrote:
+> On Thu, Oct 24 2024 at 12:05, Peter Zijlstra wrote:
+> > On Wed, Oct 23, 2024 at 10:38:38PM +0200, Thomas Gleixner wrote:
+> >> But if we want to support insanity then we make preempt count 64 bit and
+> >> be done with it. But no, I don't think that encouraging insanity is a
+> >> good thing.
+> >
+> > The problem is that in most release builds the overflow will be silent
+> > and cause spurious weirdness that is a pain in the arse to debug :/
+> >
+> > That is my only concern -- making insane code crash hard is good, making
+> > it silently mostly work but cause random weirdness is not.
+> 
+> I wish we could come up with a lightweight check for that.
+> 
 
-> This still generates warnings:
->
-> Documentation/translations/zh_CN/mm/physical_memory.rst:131: WARNING: duplicate label nodes, other instance in /home/corbet/kernel/Documentation/mm/physical_memory.rst
-> Documentation/translations/zh_CN/mm/physical_memory.rst:325: WARNING: duplicate label zones, other instance in /home/corbet/kernel/Documentation/mm/physical_memory.rst
-> Documentation/translations/zh_CN/mm/physical_memory.rst:334: WARNING: duplicate label pages, other instance in /home/corbet/kernel/Documentation/mm/physical_memory.rst
-> Documentation/translations/zh_CN/mm/physical_memory.rst:350: WARNING: duplicate label initialization, other instance in /home/corbet/kernel/Documentation/mm/physical_memory.rst
+Since the preempt part takes exactly one byte in the preempt counter,
+maybe we could use a "incb + jo"?
 
-My apologies - that wasn't your patch at all - that's what I get for
-trying to do things in a hurry.  Sorry for the noise.
+For example as below, note that since I used OF here, so it will try the
+byte as s8 therefore overflow at 128, so 127 is the max level of
+nesting.
 
-jon
+Would this be a relatively lightweight check?
+
+Regards,
+Boqun
+
+--------------------------->8
+diff --git a/arch/x86/include/asm/current.h b/arch/x86/include/asm/current.h
+index bf5953883ec3..c233b7703194 100644
+--- a/arch/x86/include/asm/current.h
++++ b/arch/x86/include/asm/current.h
+@@ -16,7 +16,10 @@ struct pcpu_hot {
+ 	union {
+ 		struct {
+ 			struct task_struct	*current_task;
+-			int			preempt_count;
++			union {
++				int		preempt_count;
++				u8		preempt_bytes[4];
++			};
+ 			int			cpu_number;
+ #ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
+ 			u64			call_depth;
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index c55a79d5feae..8d3725f8f2c7 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -251,6 +251,17 @@ do {									\
+ 		percpu_binary_op(size, qual, "add", var, val);		\
+ } while (0)
+ 
++#define percpu_check_inc(size, qual, _var)				\
++({									\
++	bool overflow;							\
++									\
++	asm qual (__pcpu_op1_##size("inc", __percpu_arg([var]))		\
++		  CC_SET(o)						\
++	    : CC_OUT(o) (overflow), [var] "+m" (__my_cpu_var(_var)));	\
++									\
++	overflow;							\
++})
++
+ /*
+  * Add return operation
+  */
+@@ -488,6 +499,7 @@ do {									\
+ #define this_cpu_read_stable_4(pcp)			__raw_cpu_read_stable(4, pcp)
+ 
+ #define raw_cpu_add_1(pcp, val)				percpu_add_op(1, , (pcp), val)
++#define raw_cpu_check_inc_1(pcp)			percpu_check_inc(1, , (pcp))
+ #define raw_cpu_add_2(pcp, val)				percpu_add_op(2, , (pcp), val)
+ #define raw_cpu_add_4(pcp, val)				percpu_add_op(4, , (pcp), val)
+ #define raw_cpu_and_1(pcp, val)				percpu_binary_op(1, , "and", (pcp), val)
+diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
+index 919909d8cb77..a39cf8c0fc8b 100644
+--- a/arch/x86/include/asm/preempt.h
++++ b/arch/x86/include/asm/preempt.h
+@@ -2,6 +2,7 @@
+ #ifndef __ASM_PREEMPT_H
+ #define __ASM_PREEMPT_H
+ 
++#include <asm/bug.h>
+ #include <asm/rmwcc.h>
+ #include <asm/percpu.h>
+ #include <asm/current.h>
+@@ -76,7 +77,12 @@ static __always_inline bool test_preempt_need_resched(void)
+ 
+ static __always_inline void __preempt_count_add(int val)
+ {
+-	raw_cpu_add_4(pcpu_hot.preempt_count, val);
++	if (__builtin_constant_p(val) && val == 1) {
++		/* Panic if overflow */
++		BUG_ON(raw_cpu_check_inc_1(pcpu_hot.preempt_bytes[0]));
++	} else {
++		raw_cpu_add_4(pcpu_hot.preempt_count, val);
++	}
+ }
+ 
+ static __always_inline void __preempt_count_sub(int val)
