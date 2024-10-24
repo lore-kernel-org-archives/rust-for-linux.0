@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83011547C6;
-	Thu, 24 Oct 2024 15:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE8A1E571C;
+	Thu, 24 Oct 2024 15:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729782443; cv=pass; b=ErcJ+bXVRnR30Og+aPvhCRyzWJfoyTnvbKiBQKOIWnOkMG9Ah7udRJRLREXj3vbnCd7u5VthqT1Nnn47rRBPXoOgBvnDRdpbueHqINMz75duZ/Vi9cw9N4Kb2zQtoQdK3G3eLvJ0Gx/00DUFsNsAltMe40lxmCFTOtERJ9RcgIg=
+	t=1729782541; cv=pass; b=GGl+3Ya3BAHyAQqBHoBUFJdNHbrD7s0yie6XEDJr/E99KM4ajeNN5it1LAhdcwuk2/twFjV/0V+6mFzyc5+ZHqdXttAhvAgUnq9DObj8wcPKQTwsCoOL1qkkC5w4HUS01t5xrCOx0ewxiFDuY8mYhg1iUisCgqNjtrl+iG+ZArY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729782443; c=relaxed/simple;
-	bh=Wz/PVw0CPKAqygkaCBh8BmQFt0VNmRCIKbV4klh5YsE=;
+	s=arc-20240116; t=1729782541; c=relaxed/simple;
+	bh=xa1LtoAqJFTO7vrCqWRiLQ66QpcziqNwdsC01+w0pL8=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=oI8cuktdNds7oJVAgLMlUdoeAWgl+lD/MOYwQeXfmAEEx4p4CXxa1amb8qCz4L3BAcOh4Dxc5xa8FO19fW1Tehxx8yeceH8Xnz1hy8r/oaAYa7odyXx95GPgkiGt18ybAgPfJH4Mz7HSgk+IYEatlldEW9aHIPyfrHlUDQ6yrHg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=S3e/wCQi; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=VWtB2eIYC3+IVjDzwBAndGnBTBGpwOPi44LTSd+jMmmswikSCiA20n3TI/UxLHMrDRpBgRSkeyZfRoMDDeaoqnFBIZHT16hPqrQfYOBpo1FLna4zkq/911T1ptJnor9zpQ2EsHX6Kh4taHu4rZ12n1MSdubCFjLlgMTh03ptej0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GBWE69oS; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="S3e/wCQi"
-ARC-Seal: i=1; a=rsa-sha256; t=1729782423; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GBWE69oS"
+ARC-Seal: i=1; a=rsa-sha256; t=1729782517; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=CfETI2KyJQZd8pl7i6h0p6q028h4BCiYPwThbOG1VJ61YTaVFQejrjxoGRRgb8m/s9Pc/BaADjC+KVMgbKceM9kg2KEIExiuiaXKxWS6rX6ua0uI/A+QDVLY3imyI08J7SGiXMDbtya/htM5R4TdUgw77zJncuAbDtC/gHqOSWo=
+	b=ESmEgKh2Yocn5/AKBpPKm+XFZqDq2VLRRm9h4defjWikTjDeIdxr6zqcSTzJ/6fTTOjIOMH2AvCzUHFRCSXfrTskjqklTlI1aaMgC9hd6EvJeD+sfLhEiXEEGByGZfDwMc7OJ6m18jTBbT5g2rYwqQhZRNgQdNYIM6yAj1r5pK0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1729782423; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0qQwptEb7Ebb/SwUTLcOOwAte79lhU9t6XG2RmJvzg4=; 
-	b=ZHoZwvv8MrQTmpNfKXfPLnOXkvaUEtnbq7Us7mrRchiK4eXZa00pcZa/ie/miDA+rsCJM1KFPHx/XtsSzJNLfvccdS2J/e7C2gX04ferM+kRtQrozesA8WbDjXF9D9QzQl7q5KPCsa35AtLr3pBCosgwvU+L/2AjirxGtN9eEus=
+	t=1729782517; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1cTT2JYj3LwnZ+FoymHAjk9GBazW666dYq/Sk34dsRU=; 
+	b=dK9hmaZD4YCHFeO6/Z5Hj3/R8wlYlQYwjpJ/ms3KJqyxkzPT7i628BNndX84gNChVQB2Lc3qdcq2QumTSIENzUoNCMtqRxmrvZe/iFGac5f9vhUOMm9MX2jUuMwAnKNAWl3nahCO6s3ZPRV5TDo8RJEL1JY5HIV2SyQFEzJ6MmE=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729782423;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729782517;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=0qQwptEb7Ebb/SwUTLcOOwAte79lhU9t6XG2RmJvzg4=;
-	b=S3e/wCQitiARBJrbildi0RHQEyNYwjzDfxdcS3pzigPKCQQeSrtumaHjWH3N11Qc
-	PmbwqWGZqyJwlvoqeZ/Yn9GkMg7hznjZDPuAPSk6+WmT3Ifs2cNpKHag578YG9T+JaX
-	mK8D2ptoW11VbJrwDqxyLgK1ExQ0Uhs6qA064aZ8=
-Received: by mx.zohomail.com with SMTPS id 1729782422250823.0422495875763;
-	Thu, 24 Oct 2024 08:07:02 -0700 (PDT)
+	bh=1cTT2JYj3LwnZ+FoymHAjk9GBazW666dYq/Sk34dsRU=;
+	b=GBWE69oSeemYhLf8u8sVQ3L3x+v0paMycGSdqnnWqV9/KPaYjrR9S7n9OIuIUD1J
+	g50Kfx9i5JXa8yhzaNy+SSAkjIIkARu5RRqE+LUhUhJTX50jUlBuAnFaw3R1KkqdRYQ
+	2NbNiA6R/Gyjf8GZ9NOguTfKZOcfCvtMsGaLTlOA=
+Received: by mx.zohomail.com with SMTPS id 1729782517033178.29242145646106;
+	Thu, 24 Oct 2024 08:08:37 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,16 +44,11 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH v2] rust: kernel: add support for bits/genmask macros
+Subject: Re: [PATCH] rust: irq: add support for request_irq()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
-Date: Thu, 24 Oct 2024 12:06:47 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9A3613EA-3901-4C44-A3C3-7A6B7DB49CDB@collabora.com>
-References: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
+In-Reply-To: <CANiq72=tywaM4n-6isLmpu5fC3uj5H7g4QfiaksXcaPH_Pfxaw@mail.gmail.com>
+Date: Thu, 24 Oct 2024 12:08:22 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
@@ -61,30 +56,50 @@ To: Miguel Ojeda <ojeda@kernel.org>,
  Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>
+ Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <EF671774-94A4-43B2-B959-3ACFBE8F3FCE@collabora.com>
+References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+ <CANiq72=tywaM4n-6isLmpu5fC3uj5H7g4QfiaksXcaPH_Pfxaw@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: Apple Mail (2.3818.100.11.1.3)
 X-ZohoMailClient: External
 
-Sorry, I switched to b4 yesterday and I am still getting used to the =
-workflow with it.
+Hi Miguel, yes, my bad.
 
-
-> On 24 Oct 2024, at 11:17, Daniel Almeida =
-<daniel.almeida@collabora.com> wrote:
+> On 24 Oct 2024, at 12:05, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >=20
-> These macros are converted from their kernel equivalent.
+> Hi Daniel,
 >=20
-> ---
-> - Added ticks around `BIT`, and `h >=3Dl` (Thanks, Benno).
-> - Decided to keep the arguments as `expr`, as I see no issues with =
-that
-> - Added a proper example, with an assert_eq!() (Thanks, Benno)
-> - Fixed the condition h <=3D l, which should be h >=3D l.
-> - Checked that the assert for the condition above is described in the
->  docs.
+> A couple procedural things on your latest patches (no need to send new
+> versions right away).
 >=20
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
+> <daniel.almeida@collabora.com> wrote:
+>>=20
+>> Both regular and threaded versions are supported.
+>=20
+> I am not sure if the commit message was truncated, but it should
+> explain why the change is done and what is being changed. For
+> instance, it should mention who will need this upstream. Please see
+> other similar patches/series we have, e.g. one of the latest ones in =
+Lore:
+>=20
+>    =
+https://lore.kernel.org/rust-for-linux/20241022213221.2383-1-dakr@kernel.o=
+rg/
+>=20
+>> base-commit: 33c255312660653cf54f8019896b5dca28e3c580
+>=20
+> Please try this one on top of `rust-next` -- you will get new Clippy
+> warnings about missing safety sections & comments.
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
 
-
-This should read =E2=80=9CChanges from v1=E2=80=9D
-
+=E2=80=94 Daniel=
