@@ -1,106 +1,89 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5151BC9EB;
-	Thu, 24 Oct 2024 10:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410B61714B0
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 13:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729764362; cv=none; b=PdeR0kDQDocwP+5MxzuMG0Lfcatfa9mmZr3hoOoasO8A0e3NiPEI9DVdQ+VArJdXZH/DVPBKSzzOy34PMs2jMxrl4zFxuRveccAjRJiBTpEo8CN9m8DyHewgs1cDag0cqi9Sz9E354SvSNiFvI+cYY/e+w+9/KaL8gTvtpOwHkY=
+	t=1729778319; cv=none; b=qazecyl+MtN/m8DL19WCHWYq7c4RBRI3T6BKJ3jPlAZ9KRyQksVgcUAcpS0kzfoTktHpdSqAol7+irYFwFrpF9F66mO2mdsiujUpU5m1Zh+Uc4q7pW+pXfMN9oWdqUCSouUWYsYijn/wuAxVRPqG/dnFTEXvpROpLVYt7iMdt7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729764362; c=relaxed/simple;
-	bh=vMnzIe1Y7VLgul6Sg3fg/HURFiCbI/ZKfQebAyqFYdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3wY0+Q4nC1BIhgurWBmwYx9UaEDuA88s3V9U9ZV4uBY3M4Bdn2vPkDCsmf5Zz7cU0ynASUbqw96ILlhPiYdWp80UBb6VKjpNT2L9TCKBH89YtW6JWFkmGIBXk4JbyYEG5K3yLBBAsFBUamZ6z180bIySv2/87/CBfQA6JeNqf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=S91c0fUV; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1729778319; c=relaxed/simple;
+	bh=D+tWMkucZDreOHA2Cub2LtlU4ZdniRztqPTlRKuXX7A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p5xbo3YrEJtwogWd2JT2Ugm75GL+BaaHvVbxRlZlK9nDG+/rPnp5uJIhDA1d2OSqZFpE825/UmKcnLXIrwfRIFftgY6/T1zlLS/Z/E/1vewm3oWPEyguOrX2I+6OOcb0VKC2lzU0qHWA8ZD64A0V/2P3y17s/9XfUk5hnuhUqHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAPqUDXc; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="S91c0fUV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=m0wed4gUWIFjxZRcY+/N6dXDmR+cmXo9MUg9q4akerw=; b=S91c0fUV8L1tqPcUolusAK1XeB
-	q6UBGyKlQ1QC9iatUFekrOqrTGz4DnC+JmKJlYz9fMWLy7B/zbUQd1lCf0Vw4m5EGVIq7vrPcNLia
-	VXp2ByYpa5/TGCg577IChXWoy2nSGEgfFkRaEvcuVRGRmmDgvdJyHOpQV9xauMIUq8zqxgPA6cdkb
-	Iv6fhEtiZABufyHrz6z7vVzlHyzoE6ABXQDUTUSdb/bpOMJxcFgN9BCkBZTz5Sdv8xl9tqagb2vxs
-	1z7WQONYbiQ6KYh71/Ui+ZwAP3AGjH3S1zINjIwpKmiOm+03Jz4Gw1SiOvYU8SXzzHSQRuRZFocuF
-	SMLqh85g==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1t3uio-0000000426s-1yeJ;
-	Thu, 24 Oct 2024 10:05:39 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 4BAE1300599; Thu, 24 Oct 2024 12:05:38 +0200 (CEST)
-Date: Thu, 24 Oct 2024 12:05:38 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@gmail.com>,
-	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
-	Ingo Molnar <mingo@redhat.com>, will@kernel.org,
-	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
-	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
- disabling/enabling
-Message-ID: <20241024100538.GE9767@noisy.programming.kicks-ass.net>
-References: <20241018055125.2784186-2-boqun.feng@gmail.com>
- <87a5eu7gvw.ffs@tglx>
- <20241023195152.GE11151@noisy.programming.kicks-ass.net>
- <877c9y7dwx.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAPqUDXc"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2e2e31aacbbso173793a91.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 06:58:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729778317; x=1730383117; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D+tWMkucZDreOHA2Cub2LtlU4ZdniRztqPTlRKuXX7A=;
+        b=ZAPqUDXcw2KGijMUUF4oCRftlAyqEo8LJg4/DBe8G88PRqcDn1wwfRfTNYt8mJnkHm
+         SBsaxIIO/+wfPJom7D0YwGSKT3Gix1sk2+kFfKOerHcQy9LW8sb6M90PP+MTo57COUm8
+         t/ABKubQNn/4hCkPjnuBpK9xEtUlD9OMjOdG0jUb6Kwkh6/onnxgxowVri/g6xvb32D8
+         DLd0ok797281srZCDAiRPl12V54r9t664U3GBzSAyrwrTu4qAXeJF64L8WqOfeY/mXOB
+         x3FfSmxCw5RxMGJCfT47ZBnK2g/tRIBlpKuTI2CcP+QZuoYjsuIWNrrijKpMFrk/7ncr
+         OQPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729778317; x=1730383117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D+tWMkucZDreOHA2Cub2LtlU4ZdniRztqPTlRKuXX7A=;
+        b=g9LiaQpDd7fm0hIBw+eaYpisgVr3fVZhQWEz/7pdlVJTZTnjILXnCHvPFYxD3ci3sY
+         4OvYCjJKtvZ6sF7gy49fpGmtMZxfBkpSjkpsYvQkIfvZdPcRdH0dpUggHls4w2Vx3NqF
+         AmWZayYo9fRdqBV2TiKnNt/J0n+cJg0LD2GgARdDmprcUdWzHm9B6VpDI0XYi+x1qwfc
+         aBLUzv4cGkWdfIrtvMMdtAx7aH8aRTSONs1IYIsLcnGp9eVgBn1LbvXSIEdztYzEcAim
+         8ZCVDdHA/SyFoypC4VVr6YjtLHUg0YrDos4mcJyiaywcmUTyaLm+GuFlUfHaDWvGUNCU
+         Xmcg==
+X-Forwarded-Encrypted: i=1; AJvYcCV8onNzhWdC3iJU1nli9zQRJwbU5oKM1sRx/dLVXG4jtCkLDg4dM3xfP1o4+YVqy7+T7rrE637WRANdxcFs+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL9oLhI0lU5vx/EP4B82xnFrzoSK3cIPRwYJjppgRJzVWJH22z
+	WLq3NfVYU8yyn3pqMEAwbcMHFI+nuTQsq+JXQOhqSe5Ra6rrqquCl/YAHTULvTZ+vr5/4RSandM
+	Ycnv09VhgQ5Bt7OOaY7EBpawp2/y42vg1
+X-Google-Smtp-Source: AGHT+IGyO8bTDAC71IDqmYaoa/E1UUFd7zGTY3EgLwCYgP7Pdd1+ns0ry3vbk/c3tPAhauqUwpZuItya/R82ECKwa7o=
+X-Received: by 2002:a17:90a:2f62:b0:2e2:af5b:a18d with SMTP id
+ 98e67ed59e1d1-2e76b6ee988mr2978662a91.4.1729778317168; Thu, 24 Oct 2024
+ 06:58:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877c9y7dwx.ffs@tglx>
+References: <ZxkcU5yTFCagg_lX@ohnotp> <Zxkdpf1tT0e79maJ@Boquns-Mac-mini.local>
+In-Reply-To: <Zxkdpf1tT0e79maJ@Boquns-Mac-mini.local>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 24 Oct 2024 15:58:25 +0200
+Message-ID: <CANiq72kek+83THbtn=eQUwksAqjbXHUpXQG-yZu1WLgid6MUyA@mail.gmail.com>
+Subject: Re: [PATCH] rust: block: fix formatting in GenDisk doc
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Yutaro Ohno <yutaro.ono.418@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 23, 2024 at 10:38:38PM +0200, Thomas Gleixner wrote:
-> On Wed, Oct 23 2024 at 21:51, Peter Zijlstra wrote:
-> > On Wed, Oct 23, 2024 at 09:34:27PM +0200, Thomas Gleixner wrote:
-> >> On Thu, Oct 17 2024 at 22:51, Boqun Feng wrote:
-> >> Ideally you make that part of the preemption count. Bit 24-30 are free
-> >> (or we can move them around as needed). That's deep enough and you get
-> >> the debug sanity checking of the preemption counter for free (might need
-> >> some extra debug for this...)
-> >
-> > Urgh, so we've already had trouble that nested spinlocks bust through
-> > the 0xff preempt mask (because lunacy).
-> 
-> Seriously? Such overflow should just panic the kernel. That's broken by
-> definition.
+On Wed, Oct 23, 2024 at 6:00=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> This looks good to me, but not sure we need a "Fixes:" tag, Miguel?
 
-It will not panic, it will mostly work and randomly do weird things.
-Only once you build with DEBUG_PREEMPT=y will you notice.
+I think it is fine either way (it depends on who you ask).
 
-> > You sure you want to be this stingy with bits?
-> 
-> Anything above 64 nest levels is beyond insane.
+Personally, I don't mind having it or not, but sometimes I may
+nevertheless take trivial fixes like this one through `rust-next`
+instead of `rust-fixes`.
 
-Agreed.
+Thanks!
 
-> But if we want to support insanity then we make preempt count 64 bit and
-> be done with it. But no, I don't think that encouraging insanity is a
-> good thing.
-
-The problem is that in most release builds the overflow will be silent
-and cause spurious weirdness that is a pain in the arse to debug :/
-
-That is my only concern -- making insane code crash hard is good, making
-it silently mostly work but cause random weirdness is not.
-
-> It actually makes a lot of sense even for the non rust case to avoid
-> local_irq_save/restore. We discussed that for years and I surely have
-> some half finished patch set to implement it somewhere in the poison
-> cabinet.
-
-Heh, yeah, me too. I even have patches using CR8 *somewhere*.
+Cheers,
+Miguel
