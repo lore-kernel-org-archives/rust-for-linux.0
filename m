@@ -1,195 +1,230 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2086.outbound.protection.outlook.com [40.107.104.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B95167271
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 04:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729745741; cv=fail; b=U0r2kXHrcy+40lDCzfHkTR6K2XJ+VFiuTi4FG7/tj4ZQczSQgpAIK68BXSfaKWLs+wjr0hFXTOiRgOFGDRMFAcLW1LBZrZCPBNWHfMCppYX1w7Q6jr9zZZWI2JdP+0e4vCexeRnB8m3R7RVcM+lXJL2PzLKUU0NwK75QYVp4Efo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729745741; c=relaxed/simple;
-	bh=0x9bJZwbLqfhQc0o7A+C5lhsScXS6vuAdB1zbUKezI8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=WIVIntGr6hM2eJd75vStgDk+jxT4HNI+S2/VRVz7+cLzKP+iumHefQkIVyxVkQY5gLDXr3FwL0hl4ieTb1CN6viVi4bfjk+RrkBQ4fxs2OGuA1LYMCyO7Ix6Mb8S0NI8z/an+PzN+VSp+oKVt7M7DDtRWpEKCpIQpoQC1CwPJT8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=ez5g9G2W; arc=fail smtp.client-ip=40.107.104.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9D81C01;
+	Thu, 24 Oct 2024 05:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729746334; cv=none; b=s9W5SEMDc133wWIAzYD9BRrpLrS64VnbU0ulPz1OUP0/IEoCMfxLNfnPbYUqcd8K9x3F3v9k8KqRlAWRrJyk+l+E5qhO0jND+9amdlgTZiIQ7e8OvkcQPc2rVmWqdTQb2Jga+NKULrJBXrBXuwZ0f7HepmjtH6QBFyfJBJQ2fCY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729746334; c=relaxed/simple;
+	bh=3GdWZI4rN9PzAf70JPGws41Cu2zBOhxDyX0i8m0pRXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0akIDcimDtYwmIDxhwZB5lmzgOfQ3ddzXX09/VirJxPr68yq3PilIT9mSZZStO/ayIsjMEbfxWNnBRWmzEq66CupE4brMcogFtIvlo9+h0E1du2gwm0Q73+4K41cbeUwX3ZBFtcoNmNk3igskSGRNNUdb3t8w/QkOis9yIUyE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fy+BqPJE; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="ez5g9G2W"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vbdo8mr60+EDdKHqeTKc02hliGiozgl+EBDbHfUXW2ozbyBpPaBkLXGDdU3oz5fa/6Wnjp9M3oPitBgghb0VhcYbQgKwnjIPVytrZihTCAs9Enfa48SpRi+cW7DjSLV+b9p98cFweN4gTHfuT0WK9a4u5tz0UuWnqt2eInipSvN5Kj1W4HrDKj10SGUeTmWgPJYf9rDzOygiIZDIX4M67AotFrymISKSGLQjuhErxMh4GB540T3Wf0/ui+97OsqGdUZczePF/kXeo10RCBj9kTrzaFyXs6/QuikhLD1aRO40l6aC+PaQL4VA85Is25qugpfmSWhSy4jSbda6EDyikg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I80w3mc35DudkQTkkOuhPu2g4aukpvDnjOJCmS5IT8g=;
- b=SmELOGWYTnCznDvDNWK+sltbaLDqzwP0xQdg/6CvLyMUgq7K5LgMHuhX0vRMGQ1HIg4X4NuDTCWg3ppnLBT4ffN+M2QzQ5j+TdyS7I5zvJBFCn0sLkHn8tDyk6Pxduk/1C/dZaRcZzr8Wcpddw1IkHgjy2qUZXGdB8EvyMOsKUkTyHVuNlC8BbVJE88o6fMiAi3yU+JcwDbig6bJI6UVN83/pMBXn84vpyc6X5gp2BXtnsJ+DPSM9giqmHdGNWZhPsJmwf5gGDdtdK/lMxnRmHJ8pkPU9SJuoq00IzGUIuFU3QqH51shjOYNBYCxYh/FecvpkQAdTV+CnXF7/vmCaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=proton.me smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I80w3mc35DudkQTkkOuhPu2g4aukpvDnjOJCmS5IT8g=;
- b=ez5g9G2WQl/CPSCd57h0KB6hL1A3Grud+R0ILSw2SMMSzeXUYMFbh+ScOS1JBmsKByxot+2+JbIjUzq9kw9GsCAK1m1vxX7S9r+nTxJTPDnTNS5QfxuCQk0gULRHP47bazoSQrgkl1QSS5qZZDrjaewz7HZzAaJz6JS+GQBc7Xg98LPD4+PyP6SY8ZChViRaTnHPmS8Ps3QL3wqUuI6VgpQRJbBYj3h6hoIPOisF080qU2SOAdFWz2fd/JgDQnc+XYhTRII9JHp6nhFlLaXVycJEgVomPLpjpvR1m5IqjLgtAIoPO9TWQn5H1RKsWnmyAlHz3jfO+/X+bhu69bdZVA==
-Received: from DB8P191CA0021.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:130::31)
- by AS1PR10MB5770.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:47d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Thu, 24 Oct
- 2024 04:55:34 +0000
-Received: from DU6PEPF0000A7E3.eurprd02.prod.outlook.com
- (2603:10a6:10:130:cafe::b7) by DB8P191CA0021.outlook.office365.com
- (2603:10a6:10:130::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.17 via Frontend
- Transport; Thu, 24 Oct 2024 04:55:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- DU6PEPF0000A7E3.mail.protection.outlook.com (10.167.8.41) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.14 via Frontend Transport; Thu, 24 Oct 2024 04:55:33 +0000
-Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 24 Oct
- 2024 06:55:33 +0200
-Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
- (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 24 Oct
- 2024 06:55:32 +0200
-Message-ID: <6e74f5f8-67aa-40a7-92c5-fbf478cfdebb@de.bosch.com>
-Date: Thu, 24 Oct 2024 06:55:20 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fy+BqPJE"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cbd1ae26a6so2705816d6.1;
+        Wed, 23 Oct 2024 22:05:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729746331; x=1730351131; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+LU6zWTxMemrmV1/tq1c5hy6KSI2S/PziqX1LsIFOl0=;
+        b=fy+BqPJEGYxLKx7BoBE/3UVFNBdFjBQPObrjjhehRAQoGXUeyL6qexapffBvypYVqu
+         GK0EzleE5Gt7XnWny8R7hnrciFInzcU2J2179mW7Z4YTGJcusiwm+6ohv45mwdpnoQ9R
+         hLH2GPa9ytzzjFop/saKRMx5U1LB82OGKO8tkn8iDvp2zT+fUWrKSI+HQ5Av4iZHXu8F
+         L8871AVrozZxGcICgxZrdMqBXfbbuIy4ADHDH1tt6oOITg70pnHhSpXX/tDRofOE8K6r
+         VYjHnGie/CymPTSgsQfu2vo1+RzutWmeWPfeWRLc1bTwEFF2Nii0IB98sQ4tJ3lGf2ch
+         6fmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729746331; x=1730351131;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+LU6zWTxMemrmV1/tq1c5hy6KSI2S/PziqX1LsIFOl0=;
+        b=BETkSKm1R0DdMKPYpwT7GIytsJedOG6Mpz9qWLciOYtsIzJEUm8dvbER6JnYFvIQ8V
+         vWGHWxsmPlu/2+pzAG9O9zhZxGrWKSenUjqe4rzxX95dx8Mhjj1LlAa2lDk/AAmzM7q1
+         Y+Dfnp/rlOZDw9r//r2ZQjG2aal0sFmUslge+WAxlRUAWo9MGlLvE6+BUxpnReNyAjJM
+         PnKvgvEX37UB+Qs/oF5bU/0zZi6NFKaU7ZxAPvB0hX+73g0BLUwSD8C+PV8Tuga9kHta
+         rtl1k8EuJ+0ZBdS5ubRwtEpYKWvh2tXu238hjJD2XG5B9WRmwEJONe6H+UwNEF9/2n7l
+         4y3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUZgjYfWgsnJO+eDL0YQEK1/HjZlp6wRL30xopSD2P2CEb0ZGC6DvpUBCmFFCPtozBCvFDqaYx0Orve9Eh4/1Q=@vger.kernel.org, AJvYcCXPxl6Z0MQJMWsH2CEvWGNScNkVcW3Dd3s364Mlbf5k+ShU/2YXP4Dipf3i7o2VZhobAASjdEjNH0LgJAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs9ghHhuHVeUXJEM+KFhvmX3g2Z1gUKHV8r8F1BDFcFFCVJWOq
+	e/uyrYYk0d0t4hp74t7z4C2Dj8o5yeozkxnA6PbqlY9HCUfXAcHw
+X-Google-Smtp-Source: AGHT+IE+cAGG+wI4nDNeQfD4AnRER263XL4pr2BFYANfq4PdTQSnCA9r/Dxn/voqdTq7fVRi8lCKKg==
+X-Received: by 2002:a0c:fe09:0:b0:6cc:74e0:4fef with SMTP id 6a1803df08f44-6d08d3ff46bmr7430486d6.1.1729746330989;
+        Wed, 23 Oct 2024 22:05:30 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce00999ab0sm46761086d6.93.2024.10.23.22.05.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 22:05:30 -0700 (PDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DDE92120006A;
+	Thu, 24 Oct 2024 01:05:29 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Thu, 24 Oct 2024 01:05:29 -0400
+X-ME-Sender: <xms:mdUZZ-VVNah9XS8u1ByX7EuyyTzznOHXOdLSTCJc58TPSUFcTUxW0w>
+    <xme:mdUZZ6ls85buPwX6FjunU8YvcPwPFX5EQirtJoPG1n17Hs-cs69v3f3gvjjCStdSi
+    iaykWcCT_lAVohxgQ>
+X-ME-Received: <xmr:mdUZZyZycapfj_T-XRuT2efW3ogEdr4Jp2vDE2RpedrTb_zp9yr0TjGZON8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeikedgleduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvg
+    dprhgtphhtthhopeguihhrkhdrsggvhhhmvgesghhmrghilhdrtghomhdprhgtphhtthho
+    pehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlh
+    hinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrhesrhgv
+    ughhrghtrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesrhgvughhrghtrdgtohhmpd
+    hrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihilhhl
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtg
+    homh
+X-ME-Proxy: <xmx:mdUZZ1Uqx_KuRv81jDtyo9TUV8Ftie9sseb0mz8F7VViPAJXCRlSFQ>
+    <xmx:mdUZZ4kodUcLeLqwQYZifea50YU4ZlYqFyKt7ig6MOgeRFINCADzZg>
+    <xmx:mdUZZ6f0f1zwT7TKx-IVYPw8MbAzfnQhs4gIgwF8ZPgZ3U0pRtGiTw>
+    <xmx:mdUZZ6HG2iacU563Lu3Xh0Lvyb2FA9N81BlXB0ZeNloBGGbTpCWOdg>
+    <xmx:mdUZZ2kFuNwRVOdPyAeJreTi-ko0v4dtsw3q2TyXfI8LKQNBCaOLFOFK>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Oct 2024 01:05:29 -0400 (EDT)
+Date: Wed, 23 Oct 2024 22:05:28 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+	Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <ZxnVmCqk2PzsOj2h@Boquns-Mac-mini.local>
+References: <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <87a5eu7gvw.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: types: extend `Opaque` documentation
-To: Benno Lossin <benno.lossin@proton.me>, <rust-for-linux@vger.kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-CC: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-References: <20241002050301.1927545-1-dirk.behme@de.bosch.com>
- <f7f65b97-2921-4a7d-b564-ff7479cad1ec@proton.me>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <f7f65b97-2921-4a7d-b564-ff7479cad1ec@proton.me>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7E3:EE_|AS1PR10MB5770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 497c8e16-b88b-4e21-3732-08dcf3e817f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UmVXZFRpNnhmMm54c3MrQUJtb29nZkVTamZnWXhyWndqb0t2MlhHWXFhN0h2?=
- =?utf-8?B?NFNkaVcrMVZYMHJMWEt1VE5VYzFLN1d5ZGozblRUVEYvSVhEZVh3S2VHUjlR?=
- =?utf-8?B?SEh4dDZQaE05UTl2Y0IrMFQrZmdXeXJGQzR5VVFXSC9jbitWTFhjNks3UnN1?=
- =?utf-8?B?REg5a1dqV3Y4TjhLYlNEZUd1dXR3OGdDSklCd2ZUVjJBV2VhL1I4MGRZMDV6?=
- =?utf-8?B?Y3FldU1VTW83bStRcjlVc1dGQWpaOEFpTmJZR1JQbXVZcTFTMjdhZDBacUhp?=
- =?utf-8?B?cTczY1JzdnlILyswUGpKMVJqeExWRGhEZmdPdVJwL2t0aUxrUnNRM0hjRk0y?=
- =?utf-8?B?L2NDUGs4UkNZVUk2N3BCRGNnZkhKaC9pOWMxWEhNZnRPZUN4VkZTb01SQ245?=
- =?utf-8?B?dGpObVQySGJZQ3RkMHpwcHFSTnAzazkvM3hRTDhDSmpCYzNKQnVlYklzY3pL?=
- =?utf-8?B?Yk9hUE12ZEp1VlR2YkJhVG5KVGV5c1lsODRtN1pnZDRRL05EalhNelZLM0Jq?=
- =?utf-8?B?NDF2cjhRN0xJZHVpN1BNWEVHNGNtZ0JPU21rWFVNaFdyc016Rkg5TU10Q2RC?=
- =?utf-8?B?M1JiU2hFMmhpaGwrNHBSYUFacTF6U2U0NnhuMUZ5UlBlaVJiQThBUFRoUTA0?=
- =?utf-8?B?RjAzZUpxYnVGMy9uVFF2R3JhYWFmNkZ6M2kyUWdoSVdYNWRXcWRZVVpBeE1o?=
- =?utf-8?B?WldDRDNZcFc5dVdPQWY5N2FtbllWMUt6dTJNUEY3SmVMRkxsWjBvNFc1VGI5?=
- =?utf-8?B?YkZjWGZtemk5YkY3M3U4dEJPVTNKd29ZR3RTR05hcmNqOTU2YWw1dUZOTGNU?=
- =?utf-8?B?K2FtNzZQWHdqeTBNZExrbjgzNEZ0LzhvRVV6R1loemZtVXdyV003aE0yWTd2?=
- =?utf-8?B?d1JRT1B0MVJmNENzTVBUaGt2LzhwTGhIcjc3NnAvT3NnNkNOSlVyWWNGYXBz?=
- =?utf-8?B?Uy9QUG1YS0dHUW0ySlcrUTNTOVJOdDZvYjRaRXRjQmZ6RDV0YVVDdU8xUWhG?=
- =?utf-8?B?QUNxd3gyMXRpMFRrWk5BMmxNSDhpZmV3V0RXR1ROUVN6bDIzMHhNNTNEblF6?=
- =?utf-8?B?VXp3Tk5uN2srNkxyaTNCeWxMN213RWRWQzk3TDFONTk4Z3hsaWF4S0ZreEFO?=
- =?utf-8?B?c3hYb0NYNmhLZkhTMTlkM2ZmZXBxYWhYNExEZXhCNlY1NnhndUtURklnMGNT?=
- =?utf-8?B?T0dHMm43UVdCeFhPZHB3c3Z4Wk43dXZBREtabGJzbFl3TkFBL0ZEeVh5L0pS?=
- =?utf-8?B?S3JUVEJIc3BrNmRNTGx6azJRVGRmY3dPcnZORHhPQ2VDb1JvZVBqUFJqYzRO?=
- =?utf-8?B?WDczOHBzaW9ReERzM01BODl1MmZoZk5oY2haT1VCMzZhaEpheWdyVnZoZ0FK?=
- =?utf-8?B?QXlCeWdIYTNMS2pUbE91ZXEvNyt0bkYwZlViYlhDaDFIVW5GL1pHOHVaU0VO?=
- =?utf-8?B?cUtWN1BiUDN6eHNVTngrdmhUc21aOTE4cHRRTFJuVEFSNHFUY1lyWjBmait3?=
- =?utf-8?B?SFNFVGt4WFB4YUkvSFU1dlVKVzFFTitKa2xnN001Wm9zcVFiOGMxMVkzWlVD?=
- =?utf-8?B?dUN2R3gxQmxHRTgyRk1UQng4NGFLd01KSlB0bWZ2eHIydEt6TUtUckxWd1c4?=
- =?utf-8?B?TWU4SG5ac1VWM3g1eHU1cUxUQmIwdktTQ3dYWTNmK0JTYlQ4UURLYjBua2o0?=
- =?utf-8?B?MjVTM1lZbHlRZ3l2RlI3RTRyelVBeS94QS8vdmlOc3J6RGw5aTZxU21vakNh?=
- =?utf-8?B?ZE5tUDZRZ090cE5uMnVIbDMxSGNqVlNHREhnV0daT2V0N21hcm9zR3dLOW55?=
- =?utf-8?Q?THG81aQzME2QsYzQv59fUjKQeTO4kVtrJMwOk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 04:55:33.8607
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 497c8e16-b88b-4e21-3732-08dcf3e817f3
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000A7E3.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR10MB5770
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a5eu7gvw.ffs@tglx>
 
-On 23.10.2024 21:51, Benno Lossin wrote:
-> On 02.10.24 07:03, Dirk Behme wrote:
->> Update the `Opaque` documentation and add an example as proposed by
->> Miguel Ojeda in [1]. The documentation update is mainly taken from
->> Benno Lossin's description [2].
->>
->> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
->> Cc: Benno Lossin <benno.lossin@proton.me>
->> Cc: Nell Shamrell-Harrington <nells@linux.microsoft.com>
->> Link :https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/What.20to.20work.20on.20next.3F/near/467478085 [1]
->> Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Help/topic/What.20to.20work.20on.20next.3F/near/470498289 [2]
->> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
->> ---
->>
->> Changes in v2: Correct typos and formatting. Drop non-camel-case.
->>                 Add SAFETY comment.
->>
->>   rust/kernel/types.rs | 45 +++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 44 insertions(+), 1 deletion(-)
->>
->> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> index 10e3b1a999f4c..5e96f2c46f9fd 100644
->> --- a/rust/kernel/types.rs
->> +++ b/rust/kernel/types.rs
->> @@ -290,7 +290,50 @@ fn drop(&mut self) {
->>
->>   /// Stores an opaque value.
->>   ///
->> -/// This is meant to be used with FFI objects that are never interpreted by Rust code.
->> +/// `Opaque<T>` is meant to be used with FFI objects that are never interpreted by Rust code.
->> +///
->> +/// It is used to wrap structs from the C side, like for example `Opaque<bindings::mutex>`.
->> +/// It gets rid of all the usual assumptions that Rust has for a value:
->> +///
->> +/// * The value is allowed to be uninitialized (for example have invalid bit patterns: `3` for a `bool`).
->> +/// * The value is allowed to be mutated, when a `&Opaque<T>` exists on the Rust side.
->> +/// * No uniqueness for mutable references: it is fine to have multiple &mut `Opaque<T>` point to the same value.
+On Wed, Oct 23, 2024 at 09:34:27PM +0200, Thomas Gleixner wrote:
+> On Thu, Oct 17 2024 at 22:51, Boqun Feng wrote:
+> > Currently the nested interrupt disabling and enabling is present by
+> > Also add the corresponding spin_lock primitives: spin_lock_irq_disable()
+> > and spin_unlock_irq_enable(), as a result, code as follow:
+> >
+> > 	spin_lock_irq_disable(l1);
+> > 	spin_lock_irq_disable(l2);
+> > 	spin_unlock_irq_enable(l1);
+> > 	// Interrupts are still disabled.
+> > 	spin_unlock_irq_enable(l2);
+> >
+> > doesn't have the issue that interrupts are accidentally enabled.
+> >
+> > This also makes the wrapper of interrupt-disabling locks on Rust easier
+> > to design.
 > 
-> The "`" should be in front of the "&mut".
+> Clever!
 > 
->> +/// * The value is not allowed to be shared with other threads (i.e. it is `!Sync`).
->> +///
->> +/// This has to be used for all values that the C side has access to, because it can't be ensured
->> +/// that the C side is adhering to the usual constraints that Rust needs.
->> +///
->> +/// Using `Opaque<T>` allows to continue to use references on the Rust side even for values shared with C.
+
+Thanks! ;-)
+
+> > +DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> > +
+> > +static inline void local_interrupt_disable(void)
+> > +{
+> > +	unsigned long flags;
+> > +	long new_count;
+> > +
+> > +	local_irq_save(flags);
+> > +
+> > +	new_count = raw_cpu_inc_return(local_interrupt_disable_state.count);
 > 
-> Miguel already mentioned this: could you add my Co-developed-by, since
-> most of this stuff is from me. Thanks!
+> Ideally you make that part of the preemption count. Bit 24-30 are free
+> (or we can move them around as needed). That's deep enough and you get
+> the debug sanity checking of the preemption counter for free (might need
+> some extra debug for this...)
+> 
+> So then this becomes:
+> 
+> local_interrupt_disable()
+> {
+>         cnt = preempt_count_add_return(LOCALIRQ_OFFSET);
+>         if ((cnt & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
+>         	local_irq_save(flags);
+>                 this_cpu_write(..., flags);
+>         }
+> }
+> 
+> and
+> 
+> local_interrupt_enable()
+> {
+>         if ((preempt_count() & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
+>         	local_irq_restore(this_cpu_read(...flags);
+>                 preempt_count_sub_test_resched(LOCALIRQ_OFFSET);
+>         } else {
+>                 // Does not need a resched test because it's not going
+>                 // to 0
+>                 preempt_count_sub(LOCALIRQ_OFFSET);
+>         }
+> }
+> 
 
-Yes, sure. I think I was just waiting for your Ack for that ;)
+Yes, this looks nice, one tiny problem is that it requires
+PREEMPT_COUNT=y ;-) Maybe we can do: if PREEMPT_COUNT=y, we use preempt
+count, otherwise use a percpu?
 
-Miguel: Do you want a v3 adding Benno's CDB & SOB and the movement of 
-"`" above? Or could you do that while applying?
+Hmm... but this will essentially be: we have a irq_disable_count() which
+is always built-in, and we also uses it as preempt count if
+PREEMPT_COUNT=y. This doesn't look too bad to me.
 
-Thanks!
+> and then the lock thing becomes
+> 
+> spin_lock_irq_disable()
+> {
+>         local_interrupt_disable();
+>         lock();
+> }
+> 
+> spin_unlock_irq_enable()
+> {
+>         unlock();
+>         local_interrupt_enable();
+> }
+> 
+> instead having to do:
+> 
+> spin_unlock_irq_enable()
+> {
+>         unlock();
+>         local_interrupt_enable();
+>         preempt_enable();
+> }
+> 
+> Which needs two distinct checks, one for the interrupt and one for the
 
-Dirk
+No? Because now since we fold the interrupt disable count into preempt
+count, so we don't need to care about preempt count any more if we we
+local_interrupt_{disable,enable}(). For example, in the above
+local_interrupt_enable(), interrupts are checked at local_irq_restore()
+and preemption is checked at preempt_count_sub_test_resched(). Right?
 
+Regards,
+Boqun
+
+> preemption counter. Hmm?
+> 
+> Thanks,
+> 
+>         tglx
