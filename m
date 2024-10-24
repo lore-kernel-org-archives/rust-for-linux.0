@@ -1,57 +1,57 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BABF12D1F1
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 23:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB631DD0F9
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 23:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729810818; cv=none; b=Xf14rgYUajxwD39C8255M88Uke2gGGpfb47BJHmHQ1gWxpIZmCKnB9twZyJ2GSN6BIXG0k3n5E999KUVPgMFqD2WSNK75fd2bbLrJqcB1wGDhtcbQ4pNYPV+k/36WqUAu5LkaTNSlVmTgRv79OFnGSAyKYpPrL8MPZd6pOB5NOw=
+	t=1729810920; cv=none; b=AiIhrSzaoTNK251OU5C4ZSTxloRD4KiRpeLeE2ZoLBLemQ+fGiGKcgJKd20w9tm+De21CX0ul4PncjHSdp+gUQaImlZAE3fatGwWQP43l3ZWR5JUoY1PzO+/LE61tWIeHE8wXvHSVNuaX15k1GLEpUl7naGtZFitXALy8/VOp/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729810818; c=relaxed/simple;
-	bh=bjkd3I8PVvryUBj9cjaPUkOhrD6exRyenT2IT2meDaM=;
+	s=arc-20240116; t=1729810920; c=relaxed/simple;
+	bh=ybEBU/t/SJePZebl4iAjsIn1gGCyVGhTKSar4dgvytE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pX2KummWj2R+2EQ4rNkQrhzCy+Cx5YWbzjTCJGr+F+IiQUair20ECVu2rFj+P1h/1s7LuOnMfb0XQdj3fK+7OnkVy2PpUkPTBmHnQZ1XbjTKaMEAa4a8YmNatA2P9axmGXk/N0+rVmn6yHUTV/rlxAwySNanm4mb/d4dZ3Bv1EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xMk/KbW5; arc=none smtp.client-ip=209.85.214.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=o6fNYcKlyjLI7ezHtcnAi+rtKdzWgpmHv9WlW979aeq2ULVB/FPohkpGGlZwfK0ezpF/a9EPkLIwyRa0nsytEVw9IgtpGmsgAZuR4ujXYPj7MF7Xd7BleZQgkgggJF5V0KXbAiXk4vJqICHMEPyOR52wge7I3Z4fidii2Q362yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=icxf1yBL; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xMk/KbW5"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20ca4877690so34995ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 16:00:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="icxf1yBL"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20ca4877690so35375ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 16:01:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729810815; x=1730415615; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1729810918; x=1730415718; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1N/YHxtexapkwEa/KzhGq9uJiSxlgwwlfK/Xn4dDvz8=;
-        b=xMk/KbW5IhCvPKqnco1uNdEZayG6EvHJN0R8UMYxj4R5TnY1l1zvYNFS9Bgv7M1IDF
-         IwIdxI+BWsOHpIbBRyAHR8zKQZOixgRb15IDDdVvso77YkoJT2aoBS5tcaoiNb3otLUv
-         +J/5uhhHDOHzg7alPcCteqkNwv6ANqhMSL9hvAsm4IXRrgs891rUSqfFO/gfglpBIqTW
-         8jLju8gQp3z03stQ7kHbEajMOi65BwHPv3llnJrYY5+5d0Vxc689Er6g8TB4f6WxjDGo
-         Svq6JmtdXYi5JwJ6TAbeGfqBCraQUxN1DfReg1spY9tm9uIr2rOFS+yMS0feHVC0I7JJ
-         mJmg==
+        bh=YWPqFC2idLXwWLVGXP8sgBtLusvgfrCXLHA1CgLV1iw=;
+        b=icxf1yBLDguit0cVY9iCBraP7Qp4FL43FqAT2G6joQoC3FaY3fqe1Bg4Hl4HfK66JN
+         95OmZuWqsKEGnpSs498al2+y9zlbrJEdF4F4BnYfApcpL/KLgzfQ09dAqjfao7WmGCa0
+         I9Dh5GzkFvfAkKl97y9oebePwuig4qgYWd8l3RH1e5GPGUI++nF5ST7LSfPpWMuN2CPd
+         O0+NCBGZRDYPItqTZDF6/IxK7tEBaRvRCtJVaSIniqgcKTi+voqu/3K9bhR6x2RmxbRe
+         mYSp3OTJmd8drOIaQc5Hk8iNdAkYagVKV0it1iXsblzyxlLwVI9Xz3eX7PlaoGmsMp7e
+         wT5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729810815; x=1730415615;
+        d=1e100.net; s=20230601; t=1729810918; x=1730415718;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1N/YHxtexapkwEa/KzhGq9uJiSxlgwwlfK/Xn4dDvz8=;
-        b=aHdC3gMenuJcg+KcEyvJoZeMSlucV+lYlEjBi9xTq7dlCxx05uKEEMevijr6kQ6BVl
-         +co1qsbLh+pVVRPQS0m4yxORyE6yCM3ca9oBP/hU8Sn47K/dJRXUUKgISp9KXoiA91Ah
-         f/fl8h9UQE/cyjXuPwWht2Vyhvy5jFsUGkGKrd1G4Pgx2CJ6/lftMOXqQQEDlL9Ab+3A
-         fU6PB0Tq/RhycWv0nB1n3n+Czd2/YzBQXLSuCySRBLiAiCziqaPcUUYvjsiauf6wiFi+
-         FRBBBnAthO3sNPrr40gI+OhHg09z5VMetv+g53mIe9aCk3Bk3I+8mndvfti5mztRPuuD
-         dIJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXchIzWtvp5uS8Rg0cnksa+uK/nftIvzXKWDLCQ9/u1jTElUQ8b9vOmBFRzHRJRAO1lHfCdU8zCOxLDfYr8sw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5dC6hR5+o8+1EkVYo+5s56gLDtXkXvho0sCRvD1r9F80YSp5d
-	aTCcPy097lr+Po79/J4VKdacnXUdN69lCGPbaMNfm4unDja4QXcoAY/W6j2odg==
-X-Google-Smtp-Source: AGHT+IF/Dyf8ydqbgus1FTEPKZm1RYCxf83AYTE17X2EEDE3xOS0BfMauJXXQXefEKpmi0ZHk/dmfQ==
-X-Received: by 2002:a17:902:d4cb:b0:20c:6c50:dc80 with SMTP id d9443c01a7336-2105b1ccb2amr461955ad.9.1729810815119;
-        Thu, 24 Oct 2024 16:00:15 -0700 (PDT)
+        bh=YWPqFC2idLXwWLVGXP8sgBtLusvgfrCXLHA1CgLV1iw=;
+        b=e17oIlsh3fUQPZVyuCaU1lLzRw0UPuoGtgtZ8diIvwaBQx/2fqiWZuY/MmpyzwdGXD
+         xhgxQEACpuC9SYu/uDPYTWzUOEMnD5Lznhah+aEPd36DAS1wkSlPjwsDvC6YYEgvJ9hk
+         5iUYzshod7AnnlV1sCKPSFLl9FR86r390ahA0qtjgyF41RKw9PkTLv4mQqGxa+9YqidZ
+         vHwYVGlVDcvT9b+z6AQrduFf6fSnJEFwkPZhLylQTpnAD5tmmTIFKIAK0lipa3UejyhL
+         2Ew/C5c2Gml+7iGGaaX02BXnTysI+dC0WEHJJpmsdHAjbbrar+Whmyw23gdaMOV7BkwH
+         5peA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwR4gl0OW+s+Nzw4Mf8g9jKfPkTV1pqT43wNNzxfZ3yTLJvJdUITnfPCCgjItC07+gxnCOT+mlbjRSwOBmmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUfqV7Tul8c5dPLb7I0SJag1khw1MIT4abHvoLxrsx6dBjpOta
+	mK0WMZ/+QPMnedHkRRHpIDJ3rCyr7yke89Vg7zmpvCGk7wH9GKteqMKgfwhOSA==
+X-Google-Smtp-Source: AGHT+IECEzj2j2R3HEQNqRkKqGUxd9Vcb7D0j4G32E56QFP5qsmcyNWJW/GLTUqkmxlzQwTttNdiEQ==
+X-Received: by 2002:a17:902:cec8:b0:20c:a8cf:fa27 with SMTP id d9443c01a7336-20fc2219a8dmr1193475ad.18.1729810917420;
+        Thu, 24 Oct 2024 16:01:57 -0700 (PDT)
 Received: from google.com (254.80.82.34.bc.googleusercontent.com. [34.82.80.254])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e8e3555c1dsm29218a91.4.2024.10.24.16.00.12
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e8e3572efbsm26644a91.22.2024.10.24.16.01.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 16:00:12 -0700 (PDT)
-Date: Thu, 24 Oct 2024 23:00:08 +0000
+        Thu, 24 Oct 2024 16:01:56 -0700 (PDT)
+Date: Thu, 24 Oct 2024 23:01:52 +0000
 From: Sami Tolvanen <samitolvanen@google.com>
 To: Matthew Maurer <mmaurer@google.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>,
@@ -74,10 +74,10 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>,
 	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
 	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] modules: Support extended MODVERSIONS info
-Message-ID: <20241024230008.GA1382412@google.com>
+Subject: Re: [PATCH v7 2/3] modpost: Produce extended MODVERSIONS information
+Message-ID: <20241024230152.GB1382412@google.com>
 References: <20241023-extended-modversions-v7-0-339787b43373@google.com>
- <20241023-extended-modversions-v7-1-339787b43373@google.com>
+ <20241023-extended-modversions-v7-2-339787b43373@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -86,22 +86,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241023-extended-modversions-v7-1-339787b43373@google.com>
+In-Reply-To: <20241023-extended-modversions-v7-2-339787b43373@google.com>
 
-On Wed, Oct 23, 2024 at 02:31:28AM +0000, Matthew Maurer wrote:
-> Adds a new format for MODVERSIONS which stores each field in a separate
-> ELF section. This initially adds support for variable length names, but
-> could later be used to add additional fields to MODVERSIONS in a
-> backwards compatible way if needed. Any new fields will be ignored by
-> old user tooling, unlike the current format where user tooling cannot
-> tolerate adjustments to the format (for example making the name field
-> longer).
+On Wed, Oct 23, 2024 at 02:31:29AM +0000, Matthew Maurer wrote:
+> Generate both the existing modversions format and the new extended one
+> when running modpost. Presence of this metadata in the final .ko is
+> guarded by CONFIG_EXTENDED_MODVERSIONS.
 > 
-> Since PPC munges its version records to strip leading dots, we reproduce
-> the munging for the new format. Other architectures do not appear to
-> have architecture-specific usage of this information.
+> We no longer generate an error on long symbols in modpost if
+> CONFIG_EXTENDED_MODVERSIONS is set, as they can now be appropriately
+> encoded in the extended section. These symbols will be skipped in the
+> previous encoding. An error will still be generated if
+> CONFIG_EXTENDED_MODVERSIONS is not set.
 > 
 > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+
+Thanks for fixing this, LGTM.
 
 Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
