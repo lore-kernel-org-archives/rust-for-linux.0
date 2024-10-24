@@ -1,111 +1,124 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211E917BD3;
-	Thu, 24 Oct 2024 06:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC7016A92D
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 07:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729750178; cv=none; b=kPavHu3tFtiFFGCRiPYaZ5sCLFG4Xhq6v5BDMdRID4+t+KJOtV6SHKHPbhwedM867/hwQ3EHe80aov7moVyjY6MIdJqUBWRJMs23jWxVgjTX0t7buYssm/qJ+UVE+f7A6FSW6+PpuvDXTuKOuUmcmUbS7hH9gETPreU+ZmNJ2dU=
+	t=1729754609; cv=none; b=Ig2AJI1/BW98jwpHbuJaTsjSuIruYaMrp4ZIBmPJmVniPxbEK0ItA6Y+4QsuvDxvrGZpxxXr6Wwnbi2hfmYbHApR3qvi7qyh3ao0X94QxGAsar4rgNjyMAvX1zM/yhoSa0tm1SOMcAtffYRa/ZcElCOJQL5dfhShuly971YDkYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729750178; c=relaxed/simple;
-	bh=PcgAAox4ofYSglKlR7U2qP9QT63P1uz7ubVNbTxtPfs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YqiLQRGVgDzxOBg5edehreihKAbRjruA/poIYDjDpL/T0GQjFOlVUEDjQFtERDLMn0770FUnkA4xjy/vXaFcSqlyTKvk1tlhn72YE7MfI/CMubHQP/RiETNoRULGRMBDQ7w4jTO8UOmRxBqlBVXlTtpNRq3T2IsZzusHelYtgGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tx+t+zJU; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729754609; c=relaxed/simple;
+	bh=NUf5vsCqWDPm0OIwNmgUWaqxky2gzOkGmBQ9DnUdAvU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SjPKICSip46W1mHqpzf1fNb7J7VAvC+EpzCwvIMQNwvMF940pwNFeoRU3L5bypeT3QoiHT23I8pZ5Bmsjj+hgkYNGckx7PU3SuH0gMBNVRGXwh8ykrMpblY7T4ffqKmLUoHryIS9FwDfLT27O+cFQMT6/lS1PxVi1IJ1Rlzw/sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=09FsMYjg; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tx+t+zJU"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539f58c68c5so776468e87.3;
-        Wed, 23 Oct 2024 23:09:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="09FsMYjg"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37d4c482844so383112f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 00:23:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729750174; x=1730354974; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mxebdquBlAlwZJ5oz/fW7V6vZLRtB6HS9hVsNow4hfk=;
-        b=Tx+t+zJU1iWxv0rBWfuwQmOeabJzjWEQiyQVDto/2KfHXuVfZH4tzqI/KRV9svC8Ag
-         A22HYD/8ijXWeuW7PCq3K68eK/Xp9NbcXouWbPT8KQWcQxbC79TCHfUwMHp2pxHRcxE7
-         0VKzdWD5fPcC316NjrUSoZ3gopiaewHdCkX1Yz1M4mJuVJxsYliF7sHH9n9as4pv8Aik
-         8my1WSWj6VjHIX/5d6LT81SgLpR0BEReMlbVgT261eLO3lou47P4NdgVU76cJzYCc4NE
-         EWNfDdIENErZS357Pe7igzTmDj9F0ipQAjfd+jTFkC6RFVfNClshiSGWBBw5+eBjZLH2
-         EsTA==
+        d=google.com; s=20230601; t=1729754604; x=1730359404; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VjQ3VSBcMbvoBOSbq+eLgFcX/NE3MbB3Xfds4RRtWEk=;
+        b=09FsMYjgvgBsIEiWW/vtHBHh5TIUSbn8zPPhZyzihXqsn/ZyXzAi9PRewaF3lhjRht
+         Tm/pwXi0GXND7HPnRDAI1y80IA5hke2b/8X7qhOy9SLfVDLRf6opMxKhmvNCTcPu2HE0
+         TXavI+SiDIY2VomaHtzGiHcKZnmkLDmodcvmiSMe2jhL5Jci4KaKXB4Oa84BnBreLQR5
+         JhlAraTeipn7YRJyqIB/8DKbDGtYeeSR478FFpdDUgP6z75D6H7rU/5+hUxLpO7yPpiN
+         bkhoOfQ8psELbawczECUvPZiBQuSkvQ3ly+vkP+wWFvrhFESeiymZ6+RgwTslzitkIth
+         DR4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729750174; x=1730354974;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxebdquBlAlwZJ5oz/fW7V6vZLRtB6HS9hVsNow4hfk=;
-        b=dZREKa+bkcSpgstlp6hbj6Nt72zi9jm07QiERElNjeUfqj5X0YYUGqKdcaIdN5Xp6C
-         JCSXGhWxtYkh8/a5zONHp5uAfOvTcfJxm2DwLmspx9pnC5q7Mi0iwnEWUPfn9A5RFDQ9
-         oJsgdRPseYiGGyomgNtvWhfYymGpfcTdXgGrNkTc4u8velHw2gOS+/Pn+g09hRmCp1uN
-         xFiy8e00pSb7aHJ8Qy9wz3o5mBEmW9TR5ffEGhXOOmDqpsd7AiNnT04vY5VWNyHqzN90
-         yxfkzzSww2R0z2VUOHKGQHjq0eASOnXGbSOxzlIf+Un4gGx1WObbsGdgvKyBC7pVQ8kp
-         RbfA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyQvETqFJv5OsINq91sR7ov34Ukl6cF1h1y3Uv3Tqf23CXlmLa4KbAngEk51UIv1ep+wGPZ4W4cWKvD4Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTiGWzGTfInsW2g8KEIxsHNI/IrOVkkk0c/3DZRqzkfAwkaZ//
-	y+qm1YgthKCD+ZHLgDFBGFcfp0B0CixMEGisOA1vWeE6hE18Z+9U
-X-Google-Smtp-Source: AGHT+IFhFF/po4GR7sgK1fno9tCDeh8VOqPb14fKZK/pIpdsZzUoh3CrVD0afSZ/iVNCBqSM9nc0dw==
-X-Received: by 2002:a05:6512:1154:b0:539:e0e6:cf42 with SMTP id 2adb3069b0e04-53b1a39b039mr4532355e87.43.1729750174091;
-        Wed, 23 Oct 2024 23:09:34 -0700 (PDT)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2243145fsm1254817e87.192.2024.10.23.23.09.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Oct 2024 23:09:33 -0700 (PDT)
-Message-ID: <bc15b5f4-9596-486e-a275-5cde82a92985@gmail.com>
-Date: Thu, 24 Oct 2024 09:09:32 +0300
+        d=1e100.net; s=20230601; t=1729754604; x=1730359404;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VjQ3VSBcMbvoBOSbq+eLgFcX/NE3MbB3Xfds4RRtWEk=;
+        b=a407sSdeniBgFHX1MaHnFvVk1+q2IHGDjfeD/WDAsRTt/rZ5OAQ0yGbMCcP55JHJQQ
+         QN4vXxGj1RGg7JJA5NcK4xsy92fF2g0nNj3xOnlcIujJkvRufNx9d4G0xwdph3Leiz5v
+         GbeZh7BMR3qnZDQ4JolxkEAKYRYZFzEHBmS5xQPTVy8tkJM+r8PAZzAoaLmH5YS6jtvv
+         oPCVTUyViCeURdRb1gS0x+UC4CuTbR0HSXvkka7dKh+Zp/EYmHnvdaBp257C39y7fl6V
+         dsWfoOhLC0RFwQK7aUlvMHsozWGLbB5hW60MEG0wPYkxqpgzVArLspHixD6BlYjuNKPb
+         6H3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVnJPHAwdb311M6eDm1lXZeHaUdAjhSQN1tpsy7QlE6j+aQ/UjS3JONqi0ay5IrU8ESPefBgNFOSiIdrQWkLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmKHOcNjSu05pE0Ko8rfOspnO2ck/gyw7plpHu3MogJh89YQyk
+	VH/up6PrvXgJ4W48s7B557iiP9dfPQiGV1nlm8JeNGv0mKgOe43yf1SREivNJlqMHLRXN9Vwovx
+	JV1PcmE3aZMX5tKsQdyatZHI/Wad5DGEYzS1k
+X-Google-Smtp-Source: AGHT+IFp0poCfIXUOQkUrqqum2pObWFIoUI99VN6TmYo9C67y3qDw5okBA7a2XjhtCZ3e1knqSnV+zbEnXoFxGZ2bgc=
+X-Received: by 2002:a5d:69ce:0:b0:37d:51f8:46fd with SMTP id
+ ffacd0b85a97d-38045868bf7mr757387f8f.22.1729754604487; Thu, 24 Oct 2024
+ 00:23:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] rust: error: Add EOVERFLOW
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, a.hindborg@kernel.org,
- linux-kernel@vger.kernel.org, dakr@redhat.com, airlied@redhat.com,
- miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
-References: <20241023113309.1724992-1-abdiel.janulgue@gmail.com>
- <20241023113309.1724992-2-abdiel.janulgue@gmail.com>
- <CAH5fLgj7zYc6jg3vyqKNc85vkAvfgD1yqrUWj2-NcyR3kDPCbQ@mail.gmail.com>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <CAH5fLgj7zYc6jg3vyqKNc85vkAvfgD1yqrUWj2-NcyR3kDPCbQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
+ <20241022224832.1505432-2-abdiel.janulgue@gmail.com> <CAH5fLgjZ91xFo4hV4dPnDXLFr9jX3na60tVt_KuNU_c6WhhzAA@mail.gmail.com>
+ <b154dd13-8cd8-4066-ba3d-6597959ca5c5@gmail.com> <ZxkPC-dLRBqBKZ5J@Boquns-Mac-mini.local>
+ <CAH5fLggEGMVspJoO6CE-gTa3-OHfkUnS=L1X-VNC8Cp57GYVkA@mail.gmail.com> <Zxk7Tf-jhSse51AS@Boquns-Mac-mini.local>
+In-Reply-To: <Zxk7Tf-jhSse51AS@Boquns-Mac-mini.local>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 24 Oct 2024 09:23:11 +0200
+Message-ID: <CAH5fLgh1zXRA1dHBEtiNxWW8kNMtO47bBnaFLVhpzgxsnS1ysw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: types: add `Owned` type and `Ownable` trait
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
+	dakr@redhat.com, linux-kernel@vger.kernel.org, airlied@redhat.com, 
+	miguel.ojeda.sandonis@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Oct 23, 2024 at 8:07=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Wed, Oct 23, 2024 at 07:52:23PM +0200, Alice Ryhl wrote:
+> [...]
+> > > > > > +impl<T: Ownable> Owned<T> {
+> > > > > > +    /// Creates a new smart pointer that owns `T`.
+> > > > > > +    ///
+> > > > > > +    /// # Safety
+> > > > > > +    /// `ptr` needs to be a valid pointer, and it should be th=
+e unique owner to the object,
+> > > > > > +    /// in other words, no other entity should free the underl=
+ying data.
+> > > > > > +    pub unsafe fn to_owned(ptr: *mut T) -> Self {
+> > > > >
+> > > > > Please rename this function to from_raw to match the name used by
+> > > > > other similar functions.
+> > > > >
+> > > > > Also, I don't love this wording. We don't really want to guarante=
+e
+> > > > > that it is unique. For example, pages have one primary owner, but
+> > > > > there can be others who also have refcounts to the page, so it's =
+not
+> > > > > really unique. I think you just want to say that `ptr` must point=
+ at a
+> > >
+> > > But then when `Owned<Page>` dropped, it will call __free_pages() whic=
+h
+> > > invalidate any other existing users. Do you assume that the users wil=
+l
+> > > use pointers anyway, so it's their unsafe responsiblity to guarantee
+> > > that they don't use an invalid pointer?
+> > >
+> > > Also I assume you mean the others have refcounts to the page *before*=
+ an
+> > > `Owned<Page>` is created, right? Because if we really have a use case
+> > > where we want to have multiple users of a page after `Owned<Page>`
+> > > created, we should better provide a `Owned<Page>` to `ARef<Page>`
+> > > function.
+> >
+> > The __free_pages function just decrements a refcount. If there are
+> > other references to it, it's not actually freed.
+> >
+>
+> Then why don't we use page_put() there? ;-) And instead of
+> `Owned<Page>`, we can wrap the kernel::page as `ARef<Page>`, no?
 
+I don't think there's a function called page_put?
 
-On 23/10/2024 14:39, Alice Ryhl wrote:
-> On Wed, Oct 23, 2024 at 1:34 PM Abdiel Janulgue
-> <abdiel.janulgue@gmail.com> wrote:
->>
->> Trivial addition for missing EOVERFLOW error.
->>
->> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
->> ---
->>   rust/kernel/error.rs | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
->> index 7cd3bbab52f2..92bfdaaedb02 100644
->> --- a/rust/kernel/error.rs
->> +++ b/rust/kernel/error.rs
->> @@ -63,6 +63,7 @@ macro_rules! declare_err {
->>       declare_err!(EPIPE, "Broken pipe.");
->>       declare_err!(EDOM, "Math argument out of domain of func.");
->>       declare_err!(ERANGE, "Math result not representable.");
->> +    declare_err!(EOVERFLOW, "Value too large for defined data type.");
->>       declare_err!(ERESTARTSYS, "Restart the system call.");
->>       declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
->>       declare_err!(ERESTARTNOHAND, "Restart if no handler.");
-> 
-> The commit message should explain why you're adding it. What will you
-> use it for?
-
-Yup I forgot to include the intent of the change, which is needed in the 
-next patch. But will fix in next update.
-
-/Abdiel
-
+Alice
