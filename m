@@ -1,230 +1,111 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9D81C01;
-	Thu, 24 Oct 2024 05:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211E917BD3;
+	Thu, 24 Oct 2024 06:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729746334; cv=none; b=s9W5SEMDc133wWIAzYD9BRrpLrS64VnbU0ulPz1OUP0/IEoCMfxLNfnPbYUqcd8K9x3F3v9k8KqRlAWRrJyk+l+E5qhO0jND+9amdlgTZiIQ7e8OvkcQPc2rVmWqdTQb2Jga+NKULrJBXrBXuwZ0f7HepmjtH6QBFyfJBJQ2fCY=
+	t=1729750178; cv=none; b=kPavHu3tFtiFFGCRiPYaZ5sCLFG4Xhq6v5BDMdRID4+t+KJOtV6SHKHPbhwedM867/hwQ3EHe80aov7moVyjY6MIdJqUBWRJMs23jWxVgjTX0t7buYssm/qJ+UVE+f7A6FSW6+PpuvDXTuKOuUmcmUbS7hH9gETPreU+ZmNJ2dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729746334; c=relaxed/simple;
-	bh=3GdWZI4rN9PzAf70JPGws41Cu2zBOhxDyX0i8m0pRXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i0akIDcimDtYwmIDxhwZB5lmzgOfQ3ddzXX09/VirJxPr68yq3PilIT9mSZZStO/ayIsjMEbfxWNnBRWmzEq66CupE4brMcogFtIvlo9+h0E1du2gwm0Q73+4K41cbeUwX3ZBFtcoNmNk3igskSGRNNUdb3t8w/QkOis9yIUyE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fy+BqPJE; arc=none smtp.client-ip=209.85.219.43
+	s=arc-20240116; t=1729750178; c=relaxed/simple;
+	bh=PcgAAox4ofYSglKlR7U2qP9QT63P1uz7ubVNbTxtPfs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YqiLQRGVgDzxOBg5edehreihKAbRjruA/poIYDjDpL/T0GQjFOlVUEDjQFtERDLMn0770FUnkA4xjy/vXaFcSqlyTKvk1tlhn72YE7MfI/CMubHQP/RiETNoRULGRMBDQ7w4jTO8UOmRxBqlBVXlTtpNRq3T2IsZzusHelYtgGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tx+t+zJU; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fy+BqPJE"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cbd1ae26a6so2705816d6.1;
-        Wed, 23 Oct 2024 22:05:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tx+t+zJU"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-539f58c68c5so776468e87.3;
+        Wed, 23 Oct 2024 23:09:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729746331; x=1730351131; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+LU6zWTxMemrmV1/tq1c5hy6KSI2S/PziqX1LsIFOl0=;
-        b=fy+BqPJEGYxLKx7BoBE/3UVFNBdFjBQPObrjjhehRAQoGXUeyL6qexapffBvypYVqu
-         GK0EzleE5Gt7XnWny8R7hnrciFInzcU2J2179mW7Z4YTGJcusiwm+6ohv45mwdpnoQ9R
-         hLH2GPa9ytzzjFop/saKRMx5U1LB82OGKO8tkn8iDvp2zT+fUWrKSI+HQ5Av4iZHXu8F
-         L8871AVrozZxGcICgxZrdMqBXfbbuIy4ADHDH1tt6oOITg70pnHhSpXX/tDRofOE8K6r
-         VYjHnGie/CymPTSgsQfu2vo1+RzutWmeWPfeWRLc1bTwEFF2Nii0IB98sQ4tJ3lGf2ch
-         6fmQ==
+        d=gmail.com; s=20230601; t=1729750174; x=1730354974; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mxebdquBlAlwZJ5oz/fW7V6vZLRtB6HS9hVsNow4hfk=;
+        b=Tx+t+zJU1iWxv0rBWfuwQmOeabJzjWEQiyQVDto/2KfHXuVfZH4tzqI/KRV9svC8Ag
+         A22HYD/8ijXWeuW7PCq3K68eK/Xp9NbcXouWbPT8KQWcQxbC79TCHfUwMHp2pxHRcxE7
+         0VKzdWD5fPcC316NjrUSoZ3gopiaewHdCkX1Yz1M4mJuVJxsYliF7sHH9n9as4pv8Aik
+         8my1WSWj6VjHIX/5d6LT81SgLpR0BEReMlbVgT261eLO3lou47P4NdgVU76cJzYCc4NE
+         EWNfDdIENErZS357Pe7igzTmDj9F0ipQAjfd+jTFkC6RFVfNClshiSGWBBw5+eBjZLH2
+         EsTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729746331; x=1730351131;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+LU6zWTxMemrmV1/tq1c5hy6KSI2S/PziqX1LsIFOl0=;
-        b=BETkSKm1R0DdMKPYpwT7GIytsJedOG6Mpz9qWLciOYtsIzJEUm8dvbER6JnYFvIQ8V
-         vWGHWxsmPlu/2+pzAG9O9zhZxGrWKSenUjqe4rzxX95dx8Mhjj1LlAa2lDk/AAmzM7q1
-         Y+Dfnp/rlOZDw9r//r2ZQjG2aal0sFmUslge+WAxlRUAWo9MGlLvE6+BUxpnReNyAjJM
-         PnKvgvEX37UB+Qs/oF5bU/0zZi6NFKaU7ZxAPvB0hX+73g0BLUwSD8C+PV8Tuga9kHta
-         rtl1k8EuJ+0ZBdS5ubRwtEpYKWvh2tXu238hjJD2XG5B9WRmwEJONe6H+UwNEF9/2n7l
-         4y3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUZgjYfWgsnJO+eDL0YQEK1/HjZlp6wRL30xopSD2P2CEb0ZGC6DvpUBCmFFCPtozBCvFDqaYx0Orve9Eh4/1Q=@vger.kernel.org, AJvYcCXPxl6Z0MQJMWsH2CEvWGNScNkVcW3Dd3s364Mlbf5k+ShU/2YXP4Dipf3i7o2VZhobAASjdEjNH0LgJAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs9ghHhuHVeUXJEM+KFhvmX3g2Z1gUKHV8r8F1BDFcFFCVJWOq
-	e/uyrYYk0d0t4hp74t7z4C2Dj8o5yeozkxnA6PbqlY9HCUfXAcHw
-X-Google-Smtp-Source: AGHT+IE+cAGG+wI4nDNeQfD4AnRER263XL4pr2BFYANfq4PdTQSnCA9r/Dxn/voqdTq7fVRi8lCKKg==
-X-Received: by 2002:a0c:fe09:0:b0:6cc:74e0:4fef with SMTP id 6a1803df08f44-6d08d3ff46bmr7430486d6.1.1729746330989;
-        Wed, 23 Oct 2024 22:05:30 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce00999ab0sm46761086d6.93.2024.10.23.22.05.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 22:05:30 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DDE92120006A;
-	Thu, 24 Oct 2024 01:05:29 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Thu, 24 Oct 2024 01:05:29 -0400
-X-ME-Sender: <xms:mdUZZ-VVNah9XS8u1ByX7EuyyTzznOHXOdLSTCJc58TPSUFcTUxW0w>
-    <xme:mdUZZ6ls85buPwX6FjunU8YvcPwPFX5EQirtJoPG1n17Hs-cs69v3f3gvjjCStdSi
-    iaykWcCT_lAVohxgQ>
-X-ME-Received: <xmr:mdUZZyZycapfj_T-XRuT2efW3ogEdr4Jp2vDE2RpedrTb_zp9yr0TjGZON8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeikedgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvg
-    dprhgtphhtthhopeguihhrkhdrsggvhhhmvgesghhmrghilhdrtghomhdprhgtphhtthho
-    pehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlh
-    hinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrhesrhgv
-    ughhrghtrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesrhgvughhrghtrdgtohhmpd
-    hrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepfihilhhl
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtg
-    homh
-X-ME-Proxy: <xmx:mdUZZ1Uqx_KuRv81jDtyo9TUV8Ftie9sseb0mz8F7VViPAJXCRlSFQ>
-    <xmx:mdUZZ4kodUcLeLqwQYZifea50YU4ZlYqFyKt7ig6MOgeRFINCADzZg>
-    <xmx:mdUZZ6f0f1zwT7TKx-IVYPw8MbAzfnQhs4gIgwF8ZPgZ3U0pRtGiTw>
-    <xmx:mdUZZ6HG2iacU563Lu3Xh0Lvyb2FA9N81BlXB0ZeNloBGGbTpCWOdg>
-    <xmx:mdUZZ2kFuNwRVOdPyAeJreTi-ko0v4dtsw3q2TyXfI8LKQNBCaOLFOFK>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Oct 2024 01:05:29 -0400 (EDT)
-Date: Wed, 23 Oct 2024 22:05:28 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
-	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
- disabling/enabling
-Message-ID: <ZxnVmCqk2PzsOj2h@Boquns-Mac-mini.local>
-References: <20241018055125.2784186-2-boqun.feng@gmail.com>
- <87a5eu7gvw.ffs@tglx>
+        d=1e100.net; s=20230601; t=1729750174; x=1730354974;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mxebdquBlAlwZJ5oz/fW7V6vZLRtB6HS9hVsNow4hfk=;
+        b=dZREKa+bkcSpgstlp6hbj6Nt72zi9jm07QiERElNjeUfqj5X0YYUGqKdcaIdN5Xp6C
+         JCSXGhWxtYkh8/a5zONHp5uAfOvTcfJxm2DwLmspx9pnC5q7Mi0iwnEWUPfn9A5RFDQ9
+         oJsgdRPseYiGGyomgNtvWhfYymGpfcTdXgGrNkTc4u8velHw2gOS+/Pn+g09hRmCp1uN
+         xFiy8e00pSb7aHJ8Qy9wz3o5mBEmW9TR5ffEGhXOOmDqpsd7AiNnT04vY5VWNyHqzN90
+         yxfkzzSww2R0z2VUOHKGQHjq0eASOnXGbSOxzlIf+Un4gGx1WObbsGdgvKyBC7pVQ8kp
+         RbfA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyQvETqFJv5OsINq91sR7ov34Ukl6cF1h1y3Uv3Tqf23CXlmLa4KbAngEk51UIv1ep+wGPZ4W4cWKvD4Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTiGWzGTfInsW2g8KEIxsHNI/IrOVkkk0c/3DZRqzkfAwkaZ//
+	y+qm1YgthKCD+ZHLgDFBGFcfp0B0CixMEGisOA1vWeE6hE18Z+9U
+X-Google-Smtp-Source: AGHT+IFhFF/po4GR7sgK1fno9tCDeh8VOqPb14fKZK/pIpdsZzUoh3CrVD0afSZ/iVNCBqSM9nc0dw==
+X-Received: by 2002:a05:6512:1154:b0:539:e0e6:cf42 with SMTP id 2adb3069b0e04-53b1a39b039mr4532355e87.43.1729750174091;
+        Wed, 23 Oct 2024 23:09:34 -0700 (PDT)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a2243145fsm1254817e87.192.2024.10.23.23.09.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 23:09:33 -0700 (PDT)
+Message-ID: <bc15b5f4-9596-486e-a275-5cde82a92985@gmail.com>
+Date: Thu, 24 Oct 2024 09:09:32 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a5eu7gvw.ffs@tglx>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] rust: error: Add EOVERFLOW
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, a.hindborg@kernel.org,
+ linux-kernel@vger.kernel.org, dakr@redhat.com, airlied@redhat.com,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com
+References: <20241023113309.1724992-1-abdiel.janulgue@gmail.com>
+ <20241023113309.1724992-2-abdiel.janulgue@gmail.com>
+ <CAH5fLgj7zYc6jg3vyqKNc85vkAvfgD1yqrUWj2-NcyR3kDPCbQ@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CAH5fLgj7zYc6jg3vyqKNc85vkAvfgD1yqrUWj2-NcyR3kDPCbQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 23, 2024 at 09:34:27PM +0200, Thomas Gleixner wrote:
-> On Thu, Oct 17 2024 at 22:51, Boqun Feng wrote:
-> > Currently the nested interrupt disabling and enabling is present by
-> > Also add the corresponding spin_lock primitives: spin_lock_irq_disable()
-> > and spin_unlock_irq_enable(), as a result, code as follow:
-> >
-> > 	spin_lock_irq_disable(l1);
-> > 	spin_lock_irq_disable(l2);
-> > 	spin_unlock_irq_enable(l1);
-> > 	// Interrupts are still disabled.
-> > 	spin_unlock_irq_enable(l2);
-> >
-> > doesn't have the issue that interrupts are accidentally enabled.
-> >
-> > This also makes the wrapper of interrupt-disabling locks on Rust easier
-> > to design.
-> 
-> Clever!
-> 
 
-Thanks! ;-)
 
-> > +DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
-> > +
-> > +static inline void local_interrupt_disable(void)
-> > +{
-> > +	unsigned long flags;
-> > +	long new_count;
-> > +
-> > +	local_irq_save(flags);
-> > +
-> > +	new_count = raw_cpu_inc_return(local_interrupt_disable_state.count);
+On 23/10/2024 14:39, Alice Ryhl wrote:
+> On Wed, Oct 23, 2024 at 1:34 PM Abdiel Janulgue
+> <abdiel.janulgue@gmail.com> wrote:
+>>
+>> Trivial addition for missing EOVERFLOW error.
+>>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>> ---
+>>   rust/kernel/error.rs | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+>> index 7cd3bbab52f2..92bfdaaedb02 100644
+>> --- a/rust/kernel/error.rs
+>> +++ b/rust/kernel/error.rs
+>> @@ -63,6 +63,7 @@ macro_rules! declare_err {
+>>       declare_err!(EPIPE, "Broken pipe.");
+>>       declare_err!(EDOM, "Math argument out of domain of func.");
+>>       declare_err!(ERANGE, "Math result not representable.");
+>> +    declare_err!(EOVERFLOW, "Value too large for defined data type.");
+>>       declare_err!(ERESTARTSYS, "Restart the system call.");
+>>       declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
+>>       declare_err!(ERESTARTNOHAND, "Restart if no handler.");
 > 
-> Ideally you make that part of the preemption count. Bit 24-30 are free
-> (or we can move them around as needed). That's deep enough and you get
-> the debug sanity checking of the preemption counter for free (might need
-> some extra debug for this...)
-> 
-> So then this becomes:
-> 
-> local_interrupt_disable()
-> {
->         cnt = preempt_count_add_return(LOCALIRQ_OFFSET);
->         if ((cnt & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
->         	local_irq_save(flags);
->                 this_cpu_write(..., flags);
->         }
-> }
-> 
-> and
-> 
-> local_interrupt_enable()
-> {
->         if ((preempt_count() & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
->         	local_irq_restore(this_cpu_read(...flags);
->                 preempt_count_sub_test_resched(LOCALIRQ_OFFSET);
->         } else {
->                 // Does not need a resched test because it's not going
->                 // to 0
->                 preempt_count_sub(LOCALIRQ_OFFSET);
->         }
-> }
-> 
+> The commit message should explain why you're adding it. What will you
+> use it for?
 
-Yes, this looks nice, one tiny problem is that it requires
-PREEMPT_COUNT=y ;-) Maybe we can do: if PREEMPT_COUNT=y, we use preempt
-count, otherwise use a percpu?
+Yup I forgot to include the intent of the change, which is needed in the 
+next patch. But will fix in next update.
 
-Hmm... but this will essentially be: we have a irq_disable_count() which
-is always built-in, and we also uses it as preempt count if
-PREEMPT_COUNT=y. This doesn't look too bad to me.
+/Abdiel
 
-> and then the lock thing becomes
-> 
-> spin_lock_irq_disable()
-> {
->         local_interrupt_disable();
->         lock();
-> }
-> 
-> spin_unlock_irq_enable()
-> {
->         unlock();
->         local_interrupt_enable();
-> }
-> 
-> instead having to do:
-> 
-> spin_unlock_irq_enable()
-> {
->         unlock();
->         local_interrupt_enable();
->         preempt_enable();
-> }
-> 
-> Which needs two distinct checks, one for the interrupt and one for the
-
-No? Because now since we fold the interrupt disable count into preempt
-count, so we don't need to care about preempt count any more if we we
-local_interrupt_{disable,enable}(). For example, in the above
-local_interrupt_enable(), interrupts are checked at local_irq_restore()
-and preemption is checked at preempt_count_sub_test_resched(). Right?
-
-Regards,
-Boqun
-
-> preemption counter. Hmm?
-> 
-> Thanks,
-> 
->         tglx
