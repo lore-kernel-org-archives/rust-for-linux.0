@@ -1,131 +1,85 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F111CB33E;
-	Thu, 24 Oct 2024 08:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D57189F4B
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 08:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729757858; cv=none; b=P7Uq3O6kjMovYiJBWTFkND7e7E+sohjO5wcMV9KVvtlEzhgvQ9qhdYe6SfukqLFHFQUqHX5p72iI2ramSLNTV6E+ame1eQ8gi0ZYsFbAbBsEW/x2DK9WftS8jIyiw/YYm80NxHKrmQtgANiZRE+pi0WQasgXldxQZpmgWpq0oCU=
+	t=1729760047; cv=none; b=IAWPZSjjh7CLFh7JItkBpSDMTnqGr3Sa/lb4+0ikEIAQ4JwwSwpOu0WeQHevDQHAJlYnSJXR3Iw95PyZLRvUJmg2+C+v6g2TGCozy2VIIz4gsQTLcG8jnasJnUNrt6xnvEsswi9rPg50bC4ULyrZG6cH699U0S93Mw0b4kZzafk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729757858; c=relaxed/simple;
-	bh=9E/DsnuVB9UMNxDvRm78ZugZBCzTVrchqbXuWcs7kGQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LY9V6uUPPbRginyPJ2vPhu1L9sbWt+zJJFs6FgoGZlaJUM8a3p9DK2sGI3TUih5BTH1Se6R9rGvCOrL6ayCm+NPfDaPhcUY6cBUDBu4M5+QMwogwYFeGMHfgvfChByouQnB05ZkKhAxxrTJhNOh6SlDM0pDi0asAdFNbiS0BFNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0jMdAfXt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LSxLfKbB; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1729760047; c=relaxed/simple;
+	bh=7qn5xqIG5u5GiblQrbTPx9/mTPROORNnN3wkm5g9fv8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tNQtn/DkN0EH9nAWxjiecdcKFeH9xreXfCjpT8jWiBQMeROwfaS+IVpZ9UuJHpi4/NY+3CY3HWJ4bzRKSRNvebIKUzW8TV55SJ/9lNwnUncpkZpytbmVB0r2WXLepzlFnP5zloGhWzY4SKRQLNZ2QpgOv+QUHzxGdH42scS969Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YNpt6I+F; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0jMdAfXt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LSxLfKbB"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729757854;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IRJgU4eNasgp3CwItJtcihGQh5qaQF4uTiJjQeDr1q8=;
-	b=0jMdAfXt+tlJ4A22h0DkBJ9ldaPq++kXVt0NESUqX4xrHL0MiuepHgoRxwH+/7/NCA1LJN
-	P9mI47McoH1sLG16zrymRiu5LQRHyDUXCg5Qyg5vRTmJWF1d3/3Zoxu1Gceaepje/t0H4v
-	HIUBwCBJmbDyRNVy6iqCdcSZ9jwHUY78BFz6XAHRYoUQcE1c0QgGvycpNVpau2rpUHPpS0
-	3ndeiO2aZSUQ2qgLLzUchM6xPFwKmugq2opp1asaR9mk2pMVuMLE77Nfa06yS5bwbpN3ET
-	yqKvrPPIH2UKwcPb6kdSuqCxC9UpyEfQ8YcY99mW1rS+CgVSrLRfNhgfL2VlAw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729757854;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IRJgU4eNasgp3CwItJtcihGQh5qaQF4uTiJjQeDr1q8=;
-	b=LSxLfKbB3uncxadkjDqNb5h9bIl978ikT3jvRYHp/Vwe4fGI44lz2CBZRU2I9XRRjWSckh
-	vf+Y+XCb/EFAZIDQ==
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Dirk Behme <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
- rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
- airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
- Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
- aliceryhl@google.com, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
- disabling/enabling
-In-Reply-To: <ZxnVmCqk2PzsOj2h@Boquns-Mac-mini.local>
-References: <20241018055125.2784186-2-boqun.feng@gmail.com>
- <87a5eu7gvw.ffs@tglx> <ZxnVmCqk2PzsOj2h@Boquns-Mac-mini.local>
-Date: Thu, 24 Oct 2024 10:17:33 +0200
-Message-ID: <87zfmt6hk2.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YNpt6I+F"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2e2a96b242cso105881a91.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 01:54:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729760045; x=1730364845; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7qn5xqIG5u5GiblQrbTPx9/mTPROORNnN3wkm5g9fv8=;
+        b=YNpt6I+FJXjBqgQlYADT0duPJp+l7O+ewrsho6/LoeUNMDiXAaBg0Z7M7yu/UM3MDj
+         QFnXrKlKanOOxQBmlC04fHsFhIlOM2dk982JQZvO+vjb0oSKe4xcHWOMYgta7VphHLxr
+         /+F7xCZI+NkS4RZRboJb2siNa3t2IjYSBRJgp3nx9GRxVPcO7dCtm7tf7EUA7yHp8sXl
+         iW/SDYaGeCYs/RWa++CbaZ7kQ/WPCsFWphV3xmATVhGX+Gzuam0JU6ZwmnhUeAZ7mt6W
+         5x0zPu+Gs/a4dqHp8DLbEZDLLddX+FnXkyVRmyk9F6H7TaMHoiB/pVI73chywnGRvZJh
+         H1zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729760045; x=1730364845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7qn5xqIG5u5GiblQrbTPx9/mTPROORNnN3wkm5g9fv8=;
+        b=Tg0J7DYkQ7tK3hfw+N+14utnV+mULAQTfjxyRJ729ZQAqh/cVpsJHwlhTYXKFgBeBX
+         nYUojZkiMncA+4dpC4PhAYj76mTO8RMYLFvuGq/JbAdZ0UgN/KQDx606F9bRqYL2sh1j
+         sgOY2HTr0lq384ZeZPSfsflGkK4B14RlwUkKitdq8MiMec/jqBKXjetZ+wQ3LeQP8MVn
+         qbhw6T0CNRbiih+SqhFQafnpGuaJWSwtSHZ6lEE7PZ/cglrjnlCH7dUkVUKJAGz0/DCC
+         9C6phtOh6XuN4rWBXZlQx8h+U3EfH49f8FEkivDrJc55hRFu/TTCFbvwyowY551gclg/
+         azqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlJMf1kqudGS4uECq0JyPaKRYwUtB9Y1HoH/0PRsCgAWEJ81bxYsZj2ukI3CIYMK4hdHWatHtob3karTQXhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxKaBRhMoyyfgtEkjekZvyN5A7URf4d7MiXK5UjFOisHQDpmFw
+	h+Iuh4UhTjsQ1/G5fLPeFmP2KaqB0N4WEJ+zTuwJW25+dwKRmZfH6AflUgEeCgdEA2vsRvED7dO
+	pS1cKuX/fakC672sgFPNebK4d707Qeul2
+X-Google-Smtp-Source: AGHT+IHU44hXxBO+HlIF/FpBVdIN2EcTPNggKC6eQdiFI0ud3+wbLv41y4+TyRP5KFkea92sUWylFZGa5V6ESn0XGNc=
+X-Received: by 2002:a17:90b:4c84:b0:2db:60b:eee with SMTP id
+ 98e67ed59e1d1-2e76b74d76emr2676858a91.9.1729760044854; Thu, 24 Oct 2024
+ 01:54:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241002050301.1927545-1-dirk.behme@de.bosch.com>
+ <f7f65b97-2921-4a7d-b564-ff7479cad1ec@proton.me> <6e74f5f8-67aa-40a7-92c5-fbf478cfdebb@de.bosch.com>
+In-Reply-To: <6e74f5f8-67aa-40a7-92c5-fbf478cfdebb@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 24 Oct 2024 10:53:51 +0200
+Message-ID: <CANiq72mX4ayVoaDBX5w=B+s1jvMZX0GLfTJvrZ5TqBaHiCUS7A@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: types: extend `Opaque` documentation
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Nell Shamrell-Harrington <nells@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 23 2024 at 22:05, Boqun Feng wrote:
-> On Wed, Oct 23, 2024 at 09:34:27PM +0200, Thomas Gleixner wrote:
->> local_interrupt_enable()
->> {
->>         if ((preempt_count() & LOCALIRQ_MASK) == LOCALIRQ_OFFSET) {
->>         	local_irq_restore(this_cpu_read(...flags);
->>                 preempt_count_sub_test_resched(LOCALIRQ_OFFSET);
->>         } else {
->>                 // Does not need a resched test because it's not going
->>                 // to 0
->>                 preempt_count_sub(LOCALIRQ_OFFSET);
->>         }
->> }
->> 
+On Thu, Oct 24, 2024 at 6:55=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> Yes, this looks nice, one tiny problem is that it requires
-> PREEMPT_COUNT=y ;-) Maybe we can do: if PREEMPT_COUNT=y, we use preempt
-> count, otherwise use a percpu?
->
-> Hmm... but this will essentially be: we have a irq_disable_count() which
-> is always built-in, and we also uses it as preempt count if
-> PREEMPT_COUNT=y. This doesn't look too bad to me.
+> Yes, sure. I think I was just waiting for your Ack for that ;)
 
-The preempt counter is always there even when PREEMPT_COUNT=n. It's
-required for tracking hard/soft interrupt and NMI context.
+Yeah, one needs permission to add it, so you did the right thing :)
 
-The only difference is that preempt_disable()/enable() are NOOPs. So in
-that case preempt_count_sub_test_resched() becomes a plain preempt_count_sub().
+> Miguel: Do you want a v3 adding Benno's CDB & SOB and the movement of
+> "`" above? Or could you do that while applying?
 
->> and then the lock thing becomes
->> 
->> spin_lock_irq_disable()
->> {
->>         local_interrupt_disable();
->>         lock();
->> }
->> 
->> spin_unlock_irq_enable()
->> {
->>         unlock();
->>         local_interrupt_enable();
->> }
->> 
->> instead having to do:
->> 
->> spin_unlock_irq_enable()
->> {
->>         unlock();
->>         local_interrupt_enable();
->>         preempt_enable();
->> }
->> 
->> Which needs two distinct checks, one for the interrupt and one for the
->
-> No? Because now since we fold the interrupt disable count into preempt
-> count, so we don't need to care about preempt count any more if we we
-> local_interrupt_{disable,enable}(). For example, in the above
-> local_interrupt_enable(), interrupts are checked at local_irq_restore()
-> and preemption is checked at preempt_count_sub_test_resched(). Right?
+I can do that, no worries -- thanks!
 
-Correct. That's what I pointed out. By folding it into preempt count
-this becomes one operation, while in your POC it's two distinct checks
-and operations.
-
-Thanks,
-
-        tglx
+Cheers,
+Miguel
