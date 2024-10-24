@@ -1,91 +1,143 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFA01DD88B
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 14:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729778555; cv=none; b=aMS7ZFj/vqbhQH12TgOpK5GkEyX8Ekn/2rHIhZ2f73Fd2quo30glj4X49DZMKeSQlqYc1CNf6pC+fua1FptFN772mgMnKc3XeIdqs7fEQH6dqYbNz1FR+N7CdZjvUd+orwhnfWLonA1y+FSb/827rudwjAq1UnSOp/RxDdarIOc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729778555; c=relaxed/simple;
-	bh=BJUW9o5T+0389ynSlmZYcdzqOwtWKK+nSqKf4+mdE+g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EbAANNs0glNxHDka/AIoa6uOxr7NvTAgZs+/i46qwXMqygBy27QXxYBwDv+ngG20jhiYRec8Mn31ThMxWNLTaSqnC3b8EteFaPu4ByNpsWkRnnw4ui23p1AhJxCLKYHnWUjCfb6wUOt7V9EhONd4cyF01eXVtzQVIyR36/WZa+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/dRKa9g; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201721DFEF;
+	Thu, 24 Oct 2024 14:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729779542; cv=pass; b=C0iiMB04yppASZ8G5clA2Wit2OOC3eKEeRGcdKGHnfESe2AgI7ii6gk+s+9Y2NlenGOppBsV8ZX4izUOisSkgMhdu5nNrKgX12B4zQxC8RyybJp/8XM+xBPIfdezIes3BBCubhORbWB+CFpfNIKCu2hcGu5UQXEpyIHh5oWVIN0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729779542; c=relaxed/simple;
+	bh=3NdYKUfySXxtD63reDBOJZ/wn7LGWiZOFW6xaI6sgqk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ugKcy4jgcjqeq6aESMzGuhbRDkB8cEW9pFD+W1sUT8azjheaQiAp1wSm1hODVVf2Fx7NBljqlwlfaMbKGo+5FuB9RBtv64M+EZM6rAXWGLnvzVPH+jIA1gG73v9MmIzPObiDwVF6H+0LVRXy+wW8nQwCK07U7MSiShYelhhX8KE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LAVL/a8W; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/dRKa9g"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e2c2a17aa4so193265a91.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 07:02:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729778553; x=1730383353; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7cO71aRg65/X23lv004Xn1sA/4IVese/2NUnDNzBuvQ=;
-        b=H/dRKa9gPniM6xLfbAYxZWpQ8K+I6oAVIXn9EXRY5wo90hc3EfFDlLc7+fwThE/7bW
-         BFsBXHjfyLDhY2ZuU2avEtoscs3e9Ic61mfSSMPCiPVJt+How2nEWDF1H3Mvyx/EEx4K
-         +wvaN+kzRbwewZILC18MBZwbDmwoaS/oaQayPikVBvpI4IXh92FlTaMdk5+OoDcYOk8X
-         +QirL+wSiFhgMv8JHHd85EtOGIpmY/kZOv/LSMWFexJ/LBZEZMm0Tt47zWSfDfsh2dsX
-         d/p3fvTTUujQWpJvpkptelgyCdOMV9R7jCxXCWKIObei81knAqQTc/WuUUMcxzbqsEpY
-         oLKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729778553; x=1730383353;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7cO71aRg65/X23lv004Xn1sA/4IVese/2NUnDNzBuvQ=;
-        b=btRD80f8seIXPcfuzlI15p+WNQlZ1LWcyEfr2wNb5GckfbnD9OLXTY3EavkfGJ2S85
-         IDemcR43zhF1q2MnrqHwJCw4JP6ehYRloKbxaV8k0RglVPlKiQi25v78vnY74HDdV7/q
-         bzzK8vLu69zr884jv9rP9+kbrodFXefZ2XO2VteGvBAGNQM6bdVIyz/e2kWp7nBXUZQ9
-         jp89uLHQCKudxxuYYiJjFwRcw+LJuSLxKyRn7+yGSCOEWjb+MIMx91VQYTLY8GkBiEE1
-         Dup+wv6Kvrv/Ep95Wk6Ae3+CCVuypQ3Or7LjSOWBxQb1Xav++8E6uOQ73fzNDCEvqTw5
-         bBwA==
-X-Gm-Message-State: AOJu0YxKuSLjS2e/DwF50nWPmu6ufSoUxdkRy3nm+5LX97OVyIpjhZYJ
-	dl2idpfSS6q1LkRxguRIq9wF9wfVCzkASlQNRdzihYfrIwsPqWCJlDiChz+z+Tativ6liDzNEVD
-	aQbWM28TINWRSwSDqBCIHRJ6j430=
-X-Google-Smtp-Source: AGHT+IEB2U42AZlteFQt8sVuus/tnGmJtLO7Bc/DpO11wYXaFZo26JKX1nEykkl91YOp0ZzNGb4pr/4biaSLLjj5sYg=
-X-Received: by 2002:a17:90b:4a83:b0:2e2:e929:e8d2 with SMTP id
- 98e67ed59e1d1-2e76b6c3194mr2928943a91.4.1729778552619; Thu, 24 Oct 2024
- 07:02:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LAVL/a8W"
+ARC-Seal: i=1; a=rsa-sha256; t=1729779518; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=iH0XLxn2OeKqB/byCkNzIDWWI7vC7vaJkUTLjC6v1FvI/CYAUj/aHuh5T3bjgBfY4q2qAftQ58CBYWusRXc3EjqhJ7pwsfDQaNyGi+uLY6blRvrUo1Z8WLgxwD/tc4GrX/20Ibib0TIZytA0LHKQed8HwI50jlcLKLWoKVGfIjg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1729779518; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=PF7cungfDRPFH9gPEK5GCjpDqQca8LfjysnH2xrJJnQ=; 
+	b=DF/1FxUZ3kJaMkRFBmgcAIFct0jamxQpsNqTSHt7Pa44ZaReqq2Gxx5JCLkV657TGpR+Go9goPoArzT+tPlSNfCTRNk8Np0V3kwGBFwj1gw76N6EWonpfzoLF2W6t223JoocnTlg/naEF2scS/JRJXWDOothRr9qt0575pu7KUo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729779518;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=PF7cungfDRPFH9gPEK5GCjpDqQca8LfjysnH2xrJJnQ=;
+	b=LAVL/a8WOKRL5B8P5ZtLQJ756aErnpd6bmAq5/kHZhcFD+js0TW4MCu5lVSuVUXJ
+	nmbyOCy4mNNbr2NW6pQqh6h4F3UzqMZ9kilvr2nKkDgSVah+y13YFNM3XzMzqx02xSp
+	NYvsx6iC1aeP2rccfZesULzCA0qDcGsdpGJZCWvk=
+Received: by mx.zohomail.com with SMTPS id 1729779517170426.45219885642916;
+	Thu, 24 Oct 2024 07:18:37 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Thu, 24 Oct 2024 11:17:47 -0300
+Subject: [PATCH v2] rust: kernel: add support for bits/genmask macros
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZxkcU5yTFCagg_lX@ohnotp>
-In-Reply-To: <ZxkcU5yTFCagg_lX@ohnotp>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 24 Oct 2024 16:02:20 +0200
-Message-ID: <CANiq72n_UpZVgcs2=bBGPX9NYbpmGA6TQgREYk+2qAD_8ksV3Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: block: fix formatting in GenDisk doc
-To: Yutaro Ohno <yutaro.ono.418@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAApXGmcC/x3MQQrDIBBA0auEWWcg0ZRCrhKysHbUoURlJoRC8
+ O6VLt/i/xuUhElhHW4Quli55A4zDuCTy5GQ391gJrPMk7F4lsoeq8tnKoKiGCkfTj8Y3Ms/njZ
+ QWCz0vAoF/v7X297aD3shCoRqAAAA
+X-Change-ID: 20241023-topic-panthor-rs-genmask-fabc573fef43
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Wed, Oct 23, 2024 at 5:55=E2=80=AFPM Yutaro Ohno <yutaro.ono.418@gmail.c=
-om> wrote:
->
-> Align bullet points and improve indentation in the `Invariants` section
-> of the `GenDisk` struct documentation for better readability.
->
-> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-> Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
+These macros are converted from their kernel equivalent.
 
-Andreas: happy to apply this through `rust-next` if needed.
+---
+- Added ticks around `BIT`, and `h >=l` (Thanks, Benno).
+- Decided to keep the arguments as `expr`, as I see no issues with that
+- Added a proper example, with an assert_eq!() (Thanks, Benno)
+- Fixed the condition h <= l, which should be h >= l.
+- Checked that the assert for the condition above is described in the
+  docs.
 
-It would be good to have some automated checking on this, just like
-`doc_lazy_continuation` does, so I opened:
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+ rust/kernel/bits.rs | 36 ++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs  |  1 +
+ 2 files changed, 37 insertions(+)
 
-    https://github.com/rust-lang/rust-clippy/issues/13601
+diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..479883984f995f6b44272fa4566a08f1c1e6b143
+--- /dev/null
++++ b/rust/kernel/bits.rs
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Bit manipulation macros.
++//!
++//! C header: [`include/linux/bits.h`](srctree/include/linux/bits.h)
++
++/// Produces a literal where bit `n` is set.
++///
++/// Equivalent to the kernel's `BIT` macro.
++///
++#[macro_export]
++macro_rules! bit {
++    ($n:expr) => {
++        (1 << $n)
++    };
++}
++
++/// Create a contiguous bitmask starting at bit position `l` and ending at
++/// position `h`, where `h >= l`.
++///
++/// # Examples
++/// ```
++///     use kernel::genmask;
++///     let mask = genmask!(39, 21);
++///     assert_eq!(mask, 0x000000ffffe00000);
++/// ```
++///
++#[macro_export]
++macro_rules! genmask {
++    ($h:expr, $l:expr) => {{
++        const _: () = {
++            assert!($h >= $l);
++        };
++        ((!0u64 - (1u64 << $l) + 1) & (!0u64 >> (64 - 1 - $h)))
++    }};
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index b5f4b3ce6b48203507f89bcc4b0bf7b076be6247..4f256941ac8fbd1263d5c014a0ce2f5ffb9d1849 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -27,6 +27,7 @@
+ extern crate self as kernel;
+ 
+ pub mod alloc;
++pub mod bits;
+ #[cfg(CONFIG_BLOCK)]
+ pub mod block;
+ mod build_assert;
 
-Cheers,
-Miguel
+---
+base-commit: 91e21479c81dd4e9e22a78d7446f92f6b96a7284
+change-id: 20241023-topic-panthor-rs-genmask-fabc573fef43
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
