@@ -1,93 +1,115 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1945621620D;
-	Fri, 25 Oct 2024 15:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAE820BB54
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 15:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729868661; cv=none; b=DdoAlNTxHLUjsuTOSgQ8H8ePnP+Yogh1IFa1IkO2jPf2R21Vc8lyp44oQuFUEBEEEpPGHDKSgP//1Af3XsfHVLBr7fgF5ZX2jroM8mszBEs2AoKVW0jslMcLDgyX+Dc0y3E3vQ5XQOzxb93P4Sdx3dyFaClmOs/ynl+aGxNyEJc=
+	t=1729869445; cv=none; b=CTozKN9kstnSjw2etdlcuCYB+/v37fVucbkCNJZiGg1KvYom4L95ByZWVJ6IjB87dGQzbRMw5zbI9girvfxHdtRbl1WtOsPEQsiYBk7kfo9feSfAQP8aMb2tD9ApCG0kv+k6DLxVQLbAxpPWJNVKVnGUykyb2npIpk9/XJQNTWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729868661; c=relaxed/simple;
-	bh=mlmnQ4/sFK58UR6568F7XShCLS7ImvZOowlmC0vXTM4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RmA/sZfI1tmgKte7IDPt47XIGqP9FQ/jqLzYbmCy572Jh98+YGZhMCZVMiFoJxW5ILgSDlcOFBb6eYKjx+RSsK16zQO3+4Ejt+5XIPesVJOQZiIA1ev7t6ga2mlSXmbMRZB4oErdkmgLr/XfZFKg+dQcjU41RjRgr/lBIDerIHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ekoWd9D8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t8Kw+wD3; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1729869445; c=relaxed/simple;
+	bh=WyV1hkEvF+T/HeQTn57dPx/lNsuJ1E8Fo9iYV0s5bYk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L4xaXukNp1sFnsKY3kHXQLsai51dcorcvkQZ04N5DLOoD3DUBhRHgabUNwUqLquAAhaAM31yOV1QZeojQbyxrbf7NMhVqFJoVaW3BGrowwdEiYLK6vG9C/G7G0b6uYRxYHEWTUlzJ6+A57IqSavGGu08M3jw3NtH5YH4Jfys4Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=US8TsSCh; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ekoWd9D8";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t8Kw+wD3"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729868656;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iUko+tsFDdkgoEEBhKPnLKM59O9aqLgte2dS9dVnswo=;
-	b=ekoWd9D8j2IsU28xfOgnqNeAFgKQuKzvo4rwH0dHCXdyf2jG62AfvlKla48pyeHz6NyXtR
-	D6I16/T/euzXq4RvP/gkVfGBphj/iLCDVpC2WKwxAd2i9svC86h8B3VsCIcNvHrP63sCpB
-	y2NYIZDCvnNHGokDIOb4T5XoxvQhc9dzyijVs+Us5dMN3omPOqKgtDZHJBMUUj4XrPAg3U
-	6rvs2Syg+au851D3Rf+dJmkWTC3V6EgjfY7K34o31MYFpEOt0Iu2Nx9f5e7Dh72PH2BCNQ
-	s8GE6F9SnX+Qbwd1HvouhyDYWzfbunlsy1n53q8Lwj/b6Sl0S9Z+6QBTb3g1Sg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729868656;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iUko+tsFDdkgoEEBhKPnLKM59O9aqLgte2dS9dVnswo=;
-	b=t8Kw+wD3yZYwxssG1/UFNv5CbC7NDQAQ24m4BCp9dNV5lVh7eB4xTTAw6h7wLzyk2TWvSl
-	EUffb3m5cd3o/MBw==
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dirk Behme
- <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
- rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
- airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
- Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com, Trevor Gross
- <tmgross@umich.edu>
-Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
- disabling/enabling
-In-Reply-To: <ZxrCrlg1XvaTtJ1I@boqun-archlinux>
-References: <20241018055125.2784186-2-boqun.feng@gmail.com>
- <87a5eu7gvw.ffs@tglx>
- <20241023195152.GE11151@noisy.programming.kicks-ass.net>
- <877c9y7dwx.ffs@tglx>
- <20241024100538.GE9767@noisy.programming.kicks-ass.net>
- <87bjz95sc4.ffs@tglx> <ZxrCrlg1XvaTtJ1I@boqun-archlinux>
-Date: Fri, 25 Oct 2024 17:04:15 +0200
-Message-ID: <87y12c4428.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="US8TsSCh"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43153c6f70aso196375e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 08:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729869442; x=1730474242; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5+qZdWqWXtWylOyw2WfWUb01ZrPpEIVk78Q8a8ZQT7Y=;
+        b=US8TsSChL9L6bQ3qGqZAqeFxud9UpLeAyY6yLwsVHa94dX63/wjmo1Z0tfnpfRr1Cq
+         0bOi8+m0FY2WA7+nInHYsUk49TjqgWuMEP+WI6Czib7M8C+imMfvZ4eCzQURSNgqLaet
+         IAfiiqs8rHGwm5EOZuqHhw2pbRzbz47UadrmB4D60P283hWUxhBb+khWYbeiABbleHs5
+         rxs57eREzZh47ibtGpqi4gDpR7AILpQHDH2gEQW44SyfdzxYUnUq2jMvN9p2Ua8COVKA
+         V61xmxmAf5tWQKFIOIn41O1f7GAHIWrASyzXCF4d9oxzevRH9PZl2gmUimAsJUiL9zq/
+         xDLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729869442; x=1730474242;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5+qZdWqWXtWylOyw2WfWUb01ZrPpEIVk78Q8a8ZQT7Y=;
+        b=VugKal+gGtIy0lILJ7A17M8RExnrGhBmpBPGa6YofMvYpXZnIaEW8sxkDRF0r4jsg6
+         zAFKaQqJ84TlRVYGXv9I+lJ88XEa9pi2bA8cP5rgRfLns8RBpAXkftFIrx9WY2ETZW9Y
+         ed+7ppGNoDVJcLIjt4q9Z48eT4UYMXcYOXWnE9k1qIpnPgXIZAZRO3LjDEyW0YYwFN6q
+         sKukCpZLIaRbhJUGFVC6Hlb7jrhlEghBGecBCyNHM10QtoX6p1/C9smgbFklxy4N3oAn
+         uB8eSriC7PLBFMEOs00iAuDAb5SDvJmNT3OtQgc76HkPzQdERF6aQ5KOuQQ9W/UMfj0S
+         EmiA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMvGVlakYwt2ovOnJRGGuBhKnxmYHtWSNbmuoJGvg5NcK6KMzqflCUj/VZp7ZjJm8mQBJ+Wx0/2iQ2dMC0YQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+P+YoijaJ0ctWnqAnEbva9wwznHQ3N9uei5yW5b3kQIYhHvO5
+	/CCafj9gXuwX+zm4BFLoGdXdL2e2lRcAcOauKrZ6Nh4jKk5BLln9IJz3DDZ3a0JeG0H86EYw2m7
+	bq5tUygV+N3dvNJjhMocTUvaJasVT9M8hISxo
+X-Google-Smtp-Source: AGHT+IEGaAp8MS7+26iNwYNpWISUUbwzO5Gpf75slOy8OxD2gSiQH/Cp9KNx7+Lhww385En/cRWbywx/almGe6T6PY4=
+X-Received: by 2002:a05:600c:34c3:b0:42c:9e35:cde6 with SMTP id
+ 5b1f17b1804b1-43191f8e5f8mr4966315e9.2.1729869441852; Fri, 25 Oct 2024
+ 08:17:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241023-extended-modversions-v7-0-339787b43373@google.com>
+ <20241023-extended-modversions-v7-1-339787b43373@google.com> <874j50juyp.fsf@mail.lhotse>
+In-Reply-To: <874j50juyp.fsf@mail.lhotse>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Fri, 25 Oct 2024 08:17:08 -0700
+Message-ID: <CAGSQo03L--HDUBeo3xEUANbBcSf4GK5GUNGmHSBzL+ixpRGuqA@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3] modules: Support extended MODVERSIONS info
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Oct 24 2024 at 14:57, Boqun Feng wrote:
-> On Thu, Oct 24, 2024 at 07:22:19PM +0200, Thomas Gleixner wrote:
->> On Thu, Oct 24 2024 at 12:05, Peter Zijlstra wrote:
->> > That is my only concern -- making insane code crash hard is good, making
->> > it silently mostly work but cause random weirdness is not.
->> 
->> I wish we could come up with a lightweight check for that.
->> 
-> Since the preempt part takes exactly one byte in the preempt counter,
-> maybe we could use a "incb + jo"?
+> Sorry I realise it's version 7, but although the above looks correct it's
+> kind of dense.
 >
-> For example as below, note that since I used OF here, so it will try the
-> byte as s8 therefore overflow at 128, so 127 is the max level of
-> nesting.
+> I think the below would also work and is (I think) easier to follow, and
+> is more obviously similar to the existing code. I'm sure your version is
+> faster, but I don't think it's that performance critical.
 >
-> Would this be a relatively lightweight check?
+> static void dedotify_ext_version_names(char *str_seq, unsigned long size)
+> {
+>         char *end = str_seq + size;
+>         char *p = str_seq;
+>
+>         while (p < end) {
+>                 if (*p == '.')
+>                         memmove(p, p + 1, end - p - 1);
+>
+>                 p += strlen(p) + 1;
+>         }
+> }
+>
+> The tail of str_seq will be filled with nulls as long as the last string
+> was null terminated.
+>
+> cheers
 
-That's definitely an interesting thought, though it adds a conditional
-into preempt_disable(). We should try and see whether it's significant.
+As you alluded to, what you're providing is potentially O(n^2) in the
+number of symbols a module depends on - the existing code is O(n).
+If leading dots on names are rare, this is probably fine. If they're
+common, this will potentially make loading modules with a large number
+of imported symbols actually take a measurable amount of additional
+time.
 
-Thanks,
-
-        tglx
+That said, I take your point about complexity, and trust you to know
+your arch's inputs/requirements, so if I don't hear back again I will
+incorporate that into the next revision of the patch (to be produced
+after the gendwarfksyms update comes out).
