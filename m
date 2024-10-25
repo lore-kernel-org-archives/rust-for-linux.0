@@ -1,123 +1,92 @@
 Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650D61BC5C
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 04:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEB118BC1C
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 04:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729829425; cv=none; b=s4XDKOJxBP59BFLnsYPqpaFUmsmHOLycYBliT2OjjhMYvUqV6grgHBPd0akieDyouV2v5L9m12Z0HoHQHYeLcRrFRvgW4uvbOYn0dlMn5Ycouk0E65rAKeSzfcTTr+vB5tl3lkdPYsQKslG/NGSvvch+T3SN/DhNR6sS8qRSlxY=
+	t=1729830556; cv=none; b=PLPCnUR+kCy2BuiN+w8i8tOdJkxFwera1aI/tfmZ5cKy4JQdX9yG5Gczwp8mS0/rAs2jYZZu0e6ySwRIbdxGqcAKYhMJxiaQZCMC82HhPtp6MXh1UH5hZ5A9MosQH1elBIQzw9kbLve8qqeVFn8aVP6sCbs7DmEM4+XDFag9NTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729829425; c=relaxed/simple;
-	bh=ekdJWWct6csrgu0g3q5eQ/4BZKKv6zAydS4GjVC4oKs=;
+	s=arc-20240116; t=1729830556; c=relaxed/simple;
+	bh=EWCK8syvlG430LCfer51vMNGSWA+i5Z13fpF3yXP7Hg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rswNUWkmI5rbLbGXHB4ICbPhYxKw1Af4CxxTq10x+fTNIkRSzuX12RMqriqWwDdKjhbXIgNTeYTvl6bbCvVq0Iwng/OlbxXjKfqI8pi1GDpqLJOIbxCkG4zeiuRPvhHeGVQlw9VQEnxFES1a5RlXJM0RLExAWPqQ1ksMlbIdiwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=XsiTcJZt; arc=none smtp.client-ip=209.85.128.180
+	 To:Cc:Content-Type; b=VVwYl9p/xNyQ/T7DoQpl4Q0luJavddY/EUvhTo6XBxwX5c0U3e6sJl1XnPwCN8WtT0Q28NuLQO67SYoZHgOpf/IWFgvzNBd+hNxInei9U/CWYbk1fAsVB2/g8WtUR/FMk+m8FPD4/9/qWN2EHQwuYNe8qC8+MCk8useytZyMzAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=CMmcVlZP; arc=none smtp.client-ip=209.85.128.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="XsiTcJZt"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e38ebcc0abso20861857b3.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 21:10:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="CMmcVlZP"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e38fc62b9fso15779637b3.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 21:29:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1729829421; x=1730434221; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1729830553; x=1730435353; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b1IUI/Dv7tIqR57YCOc1ojUu2ND9yCjRYfTcqCJ6tlg=;
-        b=XsiTcJZt/kvwxxuwjK2mIW3fryNvVfNF/PSKw0KAnW4nHJNz93eKzVIsWmb8x+UhVo
-         AkpJOO4F3dw4SPohytlDLN5kAqEdzCeHnDXhhEmlnb+cOEvOg02qMKVeXxuggICdUH5f
-         eOcM1+3/xAXdzIajZuLT6HF6TaJ9n9p4c8JLzRgf+B8P8qLTnEHieJ74qQdDoWJWBnIV
-         h9BEl5LZBtlTTaVsmfqo2QJli9/1BCSdmUtwrl45EK6MNujht1hT6Bj6KLWwT9yOzyZX
-         +vJftNqhTpFB8Fk+IVGXaM1h/iej2z0u2w1FkF2d7r0EQnUvoi14ARNrgetuprPWKYNL
-         0+2A==
+        bh=EWCK8syvlG430LCfer51vMNGSWA+i5Z13fpF3yXP7Hg=;
+        b=CMmcVlZPoAWmezduIuZGWyt/a7o9ZFPeE3mLACnXT9yfNlBUqSU143ypr3OXRO8Nco
+         o5egG9DX8uVvqpdie+Sa53oN/VRC5ezxAx66u4LI5kHlz6BN2rfwYRXDV6ZCv5LvqtaI
+         GxRw7OYVSu+BaiKqaXu3026KcGHmxqg/uZBaD36YFaqzUM5pyyOLEVuoJTFqzChMEwTy
+         C6g9AOTkeZ+xzo8SMTJ1oxmXbUOIiZWC1rQw+A6FfUwAyyLl8Gk7lFQ5L6NvS4uN9fLJ
+         m96y/CN/Br6ezL7/T+5KmcpgXAABNWVpbdUqczgoQX2nmgd3zXgmJklqq5il/bS6PVd0
+         SkzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729829421; x=1730434221;
+        d=1e100.net; s=20230601; t=1729830553; x=1730435353;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b1IUI/Dv7tIqR57YCOc1ojUu2ND9yCjRYfTcqCJ6tlg=;
-        b=giQLxim4H3nZxUY1ibduZ+1jb4EgQlORsM4PjSMXY1sYsOhMoqSHt3nlZkYmSaI2iw
-         Aap3E9rwNwp/QZoOaGvvSTzM3n2QdECDu/30W1C0NsuUVN+P60hIw4gCDK5UbaxLlmqg
-         wS05PZHaH8PJSaTjKAhxbZq3zP269eTpLYp+ZORdBBIJXsJFz8Ngiv9gpFxYo4hRYt8y
-         KzSkJ7KgUOHe+3vgw4xqzdy4SK+45MF1KzY3UFpqFXKTmz3a+fx7EBwKApnB29lrRw87
-         ny38F76kpBLfZ+z7gfnc6tF77F9LopCvclCWlnPcOFqsP22E9o4DXo58aHUzykvSZ/3y
-         yYWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUA5icFBtpBv49ZDrYZ4cHqx88Ln/w19Tss+X1x7BDAuNqRnmHOub3MdlCLG8bCk6fsiI7Z3j8QPtObjGuAhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx45P+GbeEotuQ+jWVkMYb18Oy2CpEyFkPjjkR6AG+zF/uNz3Ju
-	At8zBEFhAi+Ys/hcX7eWZpkyCmE6rbhqtJoJWkbztASxSIwHgbl4yZy5Ax+kGhppn5E3zjaFgLE
-	ecL/5oHMyKTuKYwoSr6lyo+6DpcGQqh06A3P4Zg==
-X-Google-Smtp-Source: AGHT+IHcK0AVcQUDIMsT5GR4MQ8q5gxpZbDoGV4WWKNOcxg9dr5CYVu9m9eOZ4ZodKrAUOmLJSUvoxDXs2zYREtYdNA=
-X-Received: by 2002:a05:690c:ec1:b0:6e3:430c:b120 with SMTP id
- 00721157ae682-6e85814c704mr43629697b3.5.1729829421356; Thu, 24 Oct 2024
- 21:10:21 -0700 (PDT)
+        bh=EWCK8syvlG430LCfer51vMNGSWA+i5Z13fpF3yXP7Hg=;
+        b=Z4Y/3b6Q25m0KZdi3gTCSROTeQk6wfPI6xCOElTeXTeXf9GomHcK9QdaHYVu1vcXp2
+         H1GHYeUZzbDQZRLY93PgiRqv6EWxrQAyiDxy1SLXj43BPymZyZVpwZR9AnAS2PDymTUb
+         UAXtFCuU31f9RscKEMIDUMzm+4iSimQM7HUSPHdQhj0w93AkMkrp3m2aE7r6CGbbOmbU
+         WF0ZakoIEeBrSgKNVNr+j+mqNvpU3/IdFmPaWFwB8H4XPIyNB5pL1dWNu8iod06tFj8y
+         0q7L/2ttJOPbQOb4KdQWiLc5JabvUEGIf4IDqPXVTkw8CBzpZkLeh+ocNMxR/QSEcIBq
+         1M3w==
+X-Forwarded-Encrypted: i=1; AJvYcCXPmUImmpYLR85ob74DG9OF+ekGKdbxrr/rmuO/lkJOHBHeHCJFKrl6gdjDG9iZ1uhuVa26B9PF05t0mMIxRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlMQT579+dT2kX2cPHG1vPa5/3rSvPg86kSZhtRsRVJwEhuQse
+	hYpau9R2n6l1L6+bl8y9j1oaAyPxvNovx6OsdNw0He7pAXUF8KZmYbMu/2TSqQCT6tQeJ0Mqwvx
+	adw52VUfiYjBmjWcVnv4FT0hwBnkotZCMYmu2Sw==
+X-Google-Smtp-Source: AGHT+IFxXvvTdE3yugP3KWorwEDSHTOOfHgNN/Z+duUWd0Akjtp00/GgCjbXkozJntXhXwb5dgIWMV2hMm2N1FcFclI=
+X-Received: by 2002:a05:690c:6687:b0:6b1:1476:d3c5 with SMTP id
+ 00721157ae682-6e7f0e04bbcmr104496997b3.12.1729830552972; Thu, 24 Oct 2024
+ 21:29:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com> <20241001-b4-miscdevice-v2-1-330d760041fa@google.com>
-In-Reply-To: <20241001-b4-miscdevice-v2-1-330d760041fa@google.com>
+References: <20241025033118.44452-1-fujita.tomonori@gmail.com> <20241025033118.44452-2-fujita.tomonori@gmail.com>
+In-Reply-To: <20241025033118.44452-2-fujita.tomonori@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 24 Oct 2024 23:10:10 -0500
-Message-ID: <CALNs47tbt46VAcT5rm0Y6QBP6kc4ocBFDPOZugthPmNdaHrwPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: types: add Opaque::try_ffi_init
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Thu, 24 Oct 2024 23:29:02 -0500
+Message-ID: <CALNs47typNN-Zp=Lf44DUkS8vUQme08zt_qPtxO3mngmfrnnFA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/7] rust: time: Add PartialEq/Eq/PartialOrd/Ord trait
+ to Ktime
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de, 
+	jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	hkallweit1@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 1, 2024 at 3:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Thu, Oct 24, 2024 at 10:34=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> This will be used by the miscdevice abstractions, as the C function
-> `misc_register` is fallible.
+> Add PartialEq/Eq/PartialOrd/Ord trait to Ktime so two Ktime instances
+> can be compared to determine whether a timeout is met or not.
 >
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/types.rs | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 9e7ca066355c..070d03152937 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> i=
-mpl PinInit<Self> {
->          }
->      }
->
-> +    /// Creates a fallible pin-initializer from the given initializer cl=
-osure.
-> +    ///
-> +    /// The returned initializer calls the given closure with the pointe=
-r to the inner `T` of this
-> +    /// `Opaque`. Since this memory is uninitialized, the closure is not=
- allowed to read from it.
-> +    ///
-> +    /// This function is safe, because the `T` inside of an `Opaque` is =
-allowed to be
-> +    /// uninitialized. Additionally, access to the inner `T` requires `u=
-nsafe`, so the caller needs
-> +    /// to verify at that point that the inner value is valid.
-> +    pub fn try_ffi_init<E>(
-> +        init_func: impl FnOnce(*mut T) -> Result<(), E>,
-> +    ) -> impl PinInit<Self, E> {
-> +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `init=
-_func` to not fully
-> +        // initialize the `T`.
-> +        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_fu=
-nc(Self::raw_get(slot))) }
-> +    }
+> Use the derive implements; we directly touch C's ktime_t rather than
+> using the C's accessors because more efficient and we already do in
 
-[1] adjusts `ffi_init` to use `try_ffi_init`. Maybe this should do the same=
-?
+"because more efficient" -> "because it is more efficient"
 
-[1]: https://lore.kernel.org/rust-for-linux/20241022213221.2383-2-dakr@kern=
-el.org/
+> the existing code (Ktime::sub).
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
