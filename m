@@ -1,198 +1,135 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2059.outbound.protection.outlook.com [40.107.247.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBD7B641;
-	Fri, 25 Oct 2024 05:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729833331; cv=fail; b=GaCf3koPm7wbBN9wqNS/mWJbk9rl8DYmeDGvaY1nies70Yju2uTMvtExyXhq90g2eN9H65UiPxVVWnX+FQSFquWbdVC4greKdsZNvAR+QZ+e79vcy+JcOMsoU43FmsM/n0i683MTh3zEIjqOQxvNS1grbDTJQHA+fVHXaTNOdM0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729833331; c=relaxed/simple;
-	bh=SaNXVBj+f88hWBdF4TS8HGrhh141obfm0zPuxztEbGc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g/HZPMb3FBmPaj0atNmOCx3y9PPNtxx02oRCdTcBCF5vS/qt9sjFJ/OoIo9z0u65yEhEUs8TllAwvIYW5iM9AIyGSd0UGNLMWoQLzzfd6rxvLzdDRaHA0I8a25TIPmvo86GPoMVjIcFD6nSFnrJkj+FMXwT3AaFSc2ewylZ5sgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=n9SC8FMb; arc=fail smtp.client-ip=40.107.247.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B531C1BA89C
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 07:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729843095; cv=none; b=Zpbou3Ged0TPhCtpe1w+ZYZ/kOlYYt6JXJGZx83NEd53ICe0fx0mofzKDebnWFYRJGyBhXIUZ/J0HU3cnuZcxuoAZzp+WtKR+dmzsPIatD5PPUwoiQf2UdTkmA+BnSqZYzQUDG4ciYqlc7levkdvv1aPrF89rWmR1ULPcAuwtuQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729843095; c=relaxed/simple;
+	bh=F3OTFb+Ka41zug8DD/JcTMAO7la9WvVw47fnZrElHRY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lFCLq+fQFUibaC8yiYkgeS/nESaR4nHeEm4q/CJQC1Zg8TI3ihkknia2tFxlIj+vZiE/pwmJLzwBjGvqu3E/9UobVcUqzjAH9ptQB/+K3DC0CltGkKNPnUqIMnWirEL+cejpwz8eSf6qGbD6orLcEM++cgSXJgCDrbRb65glAeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X+QcQpMp; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="n9SC8FMb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WNNIYL3Vcov3XC/P/Md/KJ2ZlW/FUnjtxggtzWOLlxJx3Tx53pXSmHTTUzFDC4XODFigLJlyD3Lvszh62GKDKHdi9O/JehHJHA8USVyok/Nvo45W77Zg2PJm19Dj98kODCeCKZTosD4UVSLWqBRPiql/VSj7ncju4K/jfMrCzLl9X2dGZ/rlIBjXVJiE3Lo4PxR85lUIYjRsBu8/ZhG/6XRXrU97r6A0DwZeT7QqTf393jlQqIY/1ivutUlVtgG4VNCmdm+tT9A88xRJN8slQmdiixziOCF0+tjARrlJjF90ylCx2NOU2By15U1dBv3LfVa6fNcJEdkJBa3w5zPNhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z0pRpCOj9rDEMoYsuBth9GOhFMd+u8z+UeimDyTIpMQ=;
- b=rUwD4TtA42EnnxqOaWiZV63lqADJmK1y8mC3TkdaoDz5GpZXab6WEUTVP7wEaM55QekFYK10vc571G2o+1QvNr4opsZOVOQKArZlyAGOR6ipcvU0Hy4svtJvgAurAqCxDiqtuxTdEVLRNkAH7MkuyVa35L9d1KuIABs2mTknWYZI/j0Adq3+KS9kcW9ir2YTFniT9oEOrYCQBtEHwJP0Fr6H8OcfGOPToMAvjYNq7+niPIzfHRFhPEjlKOuEDrhWjD2OkufeGrYRVLMSHBAW/Va/ncVElZENYOeHLxsiZsqMt+1v4jJeUM5P6vFPKaSTrzL4BiUdfPIFWg5bTRpg7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z0pRpCOj9rDEMoYsuBth9GOhFMd+u8z+UeimDyTIpMQ=;
- b=n9SC8FMb72APnK+44yrsJtV8Rhz73Iz7Gt3rlbVTTWQwxWeBBLTPtD8HmsiZxEDrOU1HfOV476/IHPR382OLR34kFy4m7rDw4RrV3KoUie1s8MG5gr/zGAFOhoo4y3xz6irKgjaeYsfrPLmx9Ev7ZCxMM+YxkQ/9rKZQeEDIQnttY1K4fcFAT9L5mL391pYdLsgXA9D47gjfqp5tPj/hUapo9pxxCKX/mriexuiAGNhw1byE/dl7qbRjSOBpp6oAGpeZxeHYmCTqGqiI+hzCSJc+6J1pCQ+2YbBugbRcCa67kFXBJ8SqLIrWXfBNE0FX6oaeMVlJDwqlJKdegHIBqw==
-Received: from AS8PR07CA0060.eurprd07.prod.outlook.com (2603:10a6:20b:459::33)
- by GVXPR10MB8001.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:1::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.16; Fri, 25 Oct
- 2024 05:15:24 +0000
-Received: from AMS1EPF0000003F.eurprd04.prod.outlook.com
- (2603:10a6:20b:459:cafe::e6) by AS8PR07CA0060.outlook.office365.com
- (2603:10a6:20b:459::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.8 via Frontend
- Transport; Fri, 25 Oct 2024 05:15:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- AMS1EPF0000003F.mail.protection.outlook.com (10.167.16.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.14 via Frontend Transport; Fri, 25 Oct 2024 05:15:24 +0000
-Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 25 Oct
- 2024 07:15:23 +0200
-Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
- (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 25 Oct
- 2024 07:15:22 +0200
-Message-ID: <7ce81fa7-c316-48fc-8013-e1aad9e24fd8@de.bosch.com>
-Date: Fri, 25 Oct 2024 07:15:12 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X+QcQpMp"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4316cce103dso23019145e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 00:58:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729843092; x=1730447892; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gvsJwj5OC8LoQ+z+43ue0ktqi67sFQ/7TMkfuB2TfQo=;
+        b=X+QcQpMp9R0Il4UDJLXKn646bF8DoYYK6PYSys4kmeM1g84HVKd7donhyxVk4yahuq
+         MxxuBFyrdVbImuvWKeS/c/0gJpPzqghaLWJ5hR7/uxRsm3y5b8iri5cUrFxnpthZNzqe
+         6a/Cpb3rYndPW9ZSyRJck0pLhNdenI8mG0HayCzh13WOyeDwTey5oFpyJjsNOD3TTEJe
+         e8RVlzTOiekbNXRPP/cn7PCOanPChj99omTp4CKfmK4U1YzDkZ6511vGCvkmsXeXLM1r
+         SC7DvUOz+z0QliPihKpb8NoabchbTmVdCgvph78vGn+dY7fepH6Ma9BH+NDosLJotqrr
+         w8ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729843092; x=1730447892;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gvsJwj5OC8LoQ+z+43ue0ktqi67sFQ/7TMkfuB2TfQo=;
+        b=lvOUC1gkvLZzmFInqldlayZzDyZreqMaWtXBr+SqF4CdeeNamj0LUEU4e22GM2Hwsm
+         wB0Vgn23OxV6B2qg+fo+HZ1c/q1/+1Z9zdNB5xuWF1BzIZfX0ZJiYmeImEjOb2B1rPZW
+         a2auZSCHMs6E7lxueHsQAe7e5NXtiJViEt8/irmTp1lWaMeC19Mu502VEVQC8+M9DW2x
+         zrWv59ofNrucQNS4mu47vwVwurS52QZIvVLfRtnAMrHKX0fY0Fe1lPrcnj6q1ECZCf28
+         qjMWLGSSFezm3hxfFTKGnXFVhnfdp59PyguSeGeRz59LyOxG9V1sWAR9kDkd454FGCGC
+         5+/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXW8mmBuE3JrOY7IkebPe8Vz+IO33Sy5D+TqITCA8l2Xh1oTer3KmkMF9t9giy7IZRv9d7lwuOvduoCCDQDTQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqUz0vR1XGBFGeJv692MFkljkpt7QntKl9ar9rxdMp81Sulm3a
+	+Czi5rmfzqFkBFTMNArNyfViYJurwcNLLgeNkBw7L2ykMrD3bHU3s8uwh73Sjxm+Nbaj9ujOToP
+	ixFx9OO/x7EKKgFg7WER8SSirtpS3k90Ls07N
+X-Google-Smtp-Source: AGHT+IF9+NCbOu+bXyKItOLR5RH+FlGastQlQIJxhsNhdaqorYjditBHdDFu9kDS7X1pMearnA6JmaII6gKT8FNLJ54=
+X-Received: by 2002:a05:600c:1909:b0:42f:8229:a09e with SMTP id
+ 5b1f17b1804b1-4318424df6fmr95356955e9.29.1729843092034; Fri, 25 Oct 2024
+ 00:58:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/16] Device / Driver PCI / Platform Rust abstractions
-To: Danilo Krummrich <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
-	<rafael@kernel.org>, <bhelgaas@google.com>, <ojeda@kernel.org>,
-	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
-	<bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>, <tmgross@umich.edu>,
-	<a.hindborg@samsung.com>, <aliceryhl@google.com>, <airlied@gmail.com>,
-	<fujita.tomonori@gmail.com>, <lina@asahilina.net>, <pstanner@redhat.com>,
-	<ajanulgu@redhat.com>, <lyude@redhat.com>, <robh@kernel.org>,
-	<daniel.almeida@collabora.com>, <saravanak@google.com>
-CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>
-References: <20241022213221.2383-1-dakr@kernel.org>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20241022213221.2383-1-dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS1EPF0000003F:EE_|GVXPR10MB8001:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04578fb3-d54c-404f-83b4-08dcf4b407ff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|82310400026|376014|1800799024|36860700013|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WEFuQXc3VE9nbm5ERGlMNzNLaEtQbDc2aEwvMCtwMkpwMERuaHk5SEhQZndB?=
- =?utf-8?B?dC84Yzk3RE9CaU5RelUyRC9IYXJmSGdhUTJNSnpQQWxvUFhqQ3Zlc3FsL2Mv?=
- =?utf-8?B?Q0NaMWp6VTR6QUUvaDVPRlVkcStSTTJvbDJjbzZseXpLQ1N2VHNjRjZYRnZH?=
- =?utf-8?B?Y0xQT1FSWWtVbDdYbXkzY2RTWTFzSlN1eVkreUpZUmZDc2xaQzBxL0VQUmdt?=
- =?utf-8?B?QXNoQ3ZEZWVVVklzc2FMcFFZZ0hiaThlQzI0NWxhKzhKT284MGFCWjVXSlM2?=
- =?utf-8?B?d1dlUEdIcmt2NCtUVFZwZm1Fd3VCV1lsT3ZvN3pVRWZ5Q3ZhU2Zlc3FBdGds?=
- =?utf-8?B?L0hGL3hPS2svK2pMOGkweG0za29lYjFPQTBBK2dLVU9UT2VyQmZ5RlhkcC9F?=
- =?utf-8?B?dlFueHpjRjJQWUpSRlFZbHlPOXYzR1RVeXFsNGZPc3hyOGttNE5TSlIyVGVo?=
- =?utf-8?B?aWNFWWQ1TjVxZWFRakVlQXNEeG0vVjFGTk5IVExJRCtSTmF4RG5md2VYTGZE?=
- =?utf-8?B?UTI3ZE9PV1V6TEhsZ1dzcVVsOGpsZ281VDVHOUFrMHoyK0Q1UkRRdXU1R05u?=
- =?utf-8?B?cEdaUXpZMkNXdnFURWpocnVPQlNsUUZvR2ZJaGtuNmlMVFJSdHAwTkZ0ZUg5?=
- =?utf-8?B?MFVxNm5icnQwRzRmMEV0WFI2S2tiQ0NDazdJYVJPa0QrdDhjVVJBd1VwRTdl?=
- =?utf-8?B?THVKY1I5SzJOc0piUEFLVDlrd00vd2F2S2pJclB2bUF2dmxzVHYwRTVQSkJT?=
- =?utf-8?B?cXJEcGZuWktXNkd4NktZUDU3VmZPYjZJUGU0NG5BQTcvTHFubjltZ1djdnNW?=
- =?utf-8?B?L05HYUlxRm5wZVJIT1JpR2RNM1BEUi9nTWVnMGRhVlRhYTVOMHEwRFNuemRW?=
- =?utf-8?B?TzFRNTBKRmRTaG03Snl5UldhWFRXNmloRG9VTmhlTjAwbzVGUDhMMVFyaVVN?=
- =?utf-8?B?cXNSNGwybDVrQkFoUVdQUE1sTjloTkpGTUNEODhUbjVrK08ySU90dVBBL1c3?=
- =?utf-8?B?UGR6VThEcHZYajl5TVpMNE93aXlZbUY4Y285dVRYTkdNVFozOGtENTJhci8v?=
- =?utf-8?B?TEN2YkdLRFlmMzBBNFR2c3FKMUVoeDBCMVpRMzZQa3laZVpOTEZLWFFhM3VO?=
- =?utf-8?B?dzZqb2pwWmhFeTNsTHFpYXVRRGRpbXJWYzlTcHdXdm1PNm4wanl1dDFWSm1F?=
- =?utf-8?B?NU5COWk2RlNzZk5POXIzYUU0SjNqY0NQQlRibStPVGZqdFlRMndrR3lQaGRn?=
- =?utf-8?B?VFNwRlQzaVF1eDBDMTNYQ2QvemVWRXBqSk45SWpuTWgrbjdzYVB0L3hzUjYr?=
- =?utf-8?B?RlRoUFl1aXNQZ29rS20zM1pXVW1BVUZNMVdiWWFSZVBlcUhaOU5vSVBSSndy?=
- =?utf-8?B?THd2Y0xTQU1PQ3ZoNVV5Y2dxVXcwcmJVbTNTbkpqS21SbVdNaDV1TDQvL2F2?=
- =?utf-8?B?djRKY3luRjhMbkErR2xJTmpnNkxvQjRaR1BPc2hydzNlNEl0MGFIUnNUaEFT?=
- =?utf-8?B?a2Z1QVRrYS85WlB0SjR2cHJhYzNwR1lsazhRR1d1cURzV2EzdW1KeU96WFN4?=
- =?utf-8?B?U2FrcTByVVFFSDYzc3BNajNyYjFrdVhSdm5BWHhwVmZzTHlKZENKS1J2L1Jw?=
- =?utf-8?B?eHdnaXVYLzhTRjA0SXExdG9WTDJQWHNLL2puNE5INVduaHVBcHpZUTZpQlFP?=
- =?utf-8?B?OWdaQnRlYUgyUksrZUhOR1B6N2tlR2Rzd2xKWHBvN3hpcnpTd1lDVkQ0RE9l?=
- =?utf-8?B?Q1MzQWZKWkFBdTJURWRJQ3NTUE5UdEZZOW5YT3F0cWdBR1JOTGtjbkdWNmxZ?=
- =?utf-8?B?cnk5QzBWcDZGeHlVWXBIT0F6THFiTHhRTTdodldRcE5WV2J3WUdQUGE2T3g2?=
- =?utf-8?B?TncwV3B6WlV0S1pHOVVFb09Ld08zYWM2a3VVU3FrYm42ZVVoNUlpTmlESGRk?=
- =?utf-8?Q?T/BIY6n6PU0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(376014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 05:15:24.4619
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04578fb3-d54c-404f-83b4-08dcf4b407ff
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF0000003F.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR10MB8001
+References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
+ <20241001-b4-miscdevice-v2-1-330d760041fa@google.com> <CALNs47tbt46VAcT5rm0Y6QBP6kc4ocBFDPOZugthPmNdaHrwPQ@mail.gmail.com>
+In-Reply-To: <CALNs47tbt46VAcT5rm0Y6QBP6kc4ocBFDPOZugthPmNdaHrwPQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 25 Oct 2024 09:57:59 +0200
+Message-ID: <CAH5fLgj=+aXo3sj9wKJudHYtL5pBHB8AzGS5njWEDzD0wydrOw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: types: add Opaque::try_ffi_init
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo,
+On Fri, Oct 25, 2024 at 6:10=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+ote:
+>
+> On Tue, Oct 1, 2024 at 3:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > This will be used by the miscdevice abstractions, as the C function
+> > `misc_register` is fallible.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/types.rs | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index 9e7ca066355c..070d03152937 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) ->=
+ impl PinInit<Self> {
+> >          }
+> >      }
+> >
+> > +    /// Creates a fallible pin-initializer from the given initializer =
+closure.
+> > +    ///
+> > +    /// The returned initializer calls the given closure with the poin=
+ter to the inner `T` of this
+> > +    /// `Opaque`. Since this memory is uninitialized, the closure is n=
+ot allowed to read from it.
+> > +    ///
+> > +    /// This function is safe, because the `T` inside of an `Opaque` i=
+s allowed to be
+> > +    /// uninitialized. Additionally, access to the inner `T` requires =
+`unsafe`, so the caller needs
+> > +    /// to verify at that point that the inner value is valid.
+> > +    pub fn try_ffi_init<E>(
+> > +        init_func: impl FnOnce(*mut T) -> Result<(), E>,
+> > +    ) -> impl PinInit<Self, E> {
+> > +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `in=
+it_func` to not fully
+> > +        // initialize the `T`.
+> > +        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_=
+func(Self::raw_get(slot))) }
+> > +    }
+>
+> [1] adjusts `ffi_init` to use `try_ffi_init`. Maybe this should do the sa=
+me?
+>
+> [1]: https://lore.kernel.org/rust-for-linux/20241022213221.2383-2-dakr@ke=
+rnel.org/
 
-On 22.10.2024 23:31, Danilo Krummrich wrote:
-> This patch series implements the necessary Rust abstractions to implement
-> device drivers in Rust.
-> 
-> This includes some basic generalizations for driver registration, handling of ID
-> tables, MMIO operations and device resource handling.
-> 
-> Those generalizations are used to implement device driver support for two
-> busses, the PCI and platfrom bus (with OF IDs) in order to provide some evidence
-> that the generalizations work as intended.
-> 
-> The patch series also includes two patches adding two driver samples, one PCI
-> driver and one platform driver.
-> 
-> The PCI bits are motivated by the Nova driver project [1], but are used by at
-> least one more OOT driver (rnvme [2]).
-> 
-> The platform bits, besides adding some more evidence to the base abstractions,
-> are required by a few more OOT drivers aiming at going upstream, i.e. rvkms [3],
-> cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
-> 
-> The patches of this series can also be [7], [8] and [9].
+Ah, I wasn't able to find previous patches for this, but I guess there was =
+one.
 
-Just some minor typos:
+This patch has already landed in char-misc-next, so this can be a
+follow-up if you want to change it.
 
------------------------------------------------------
-0004_rust_implement_generic_driver_registration.patch
------------------------------------------------------
-WARNING: 'privide' may be misspelled - perhaps 'provide'?
-#63: FILE: rust/kernel/driver.rs:14:
-+/// Amba, etc.) to privide the corresponding subsystem specific 
-implementation to register /
-                     ^^^^^^^
----------------------------------------------------------
-0005_rust_implement_idarray_idtable_and_rawdeviceid.patch
----------------------------------------------------------
-WARNING: 'offest' may be misspelled - perhaps 'offset'?
-#84: FILE: rust/kernel/device_id.rs:39:
-+    /// The offest to the context/data field.
-              ^^^^^^
------------------------------------
-0009_rust_add_io_io_base_type.patch
------------------------------------
-WARNING: 'embedd' may be misspelled - perhaps 'embed'?
-#27:
-bound to, subsystems should embedd the corresponding I/O memory type
-                             ^^^^^^
-
-Best regards
-
-Dirk
-
+Alice
