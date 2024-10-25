@@ -1,128 +1,123 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D339D1B0F1C;
-	Fri, 25 Oct 2024 03:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650D61BC5C
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 04:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729827279; cv=none; b=gortbliKT+8oii0tTPaIbs39tdBiIiBJ/VjTXJTZcddFAKprLQdRjlXKlddyxIHXVNUGSraitcl8F8pHugGqC0FtH4Go9gjvt1yQsXO3KnJa4J2qMfqWIZivRUl2Xfvvd7r3hVUgtgm74uXKDPY22AJdVCM++SQP1niMnio+BkE=
+	t=1729829425; cv=none; b=s4XDKOJxBP59BFLnsYPqpaFUmsmHOLycYBliT2OjjhMYvUqV6grgHBPd0akieDyouV2v5L9m12Z0HoHQHYeLcRrFRvgW4uvbOYn0dlMn5Ycouk0E65rAKeSzfcTTr+vB5tl3lkdPYsQKslG/NGSvvch+T3SN/DhNR6sS8qRSlxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729827279; c=relaxed/simple;
-	bh=jB92JpeDW2yhP2VRKGudKbbfDREsNE6Gpy5FBMVK5aM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tckyOhPpPKUS6sI3a5I23tv2nzvWtHdH53BW13lNmVqc0vdOYExH9l3a6uF+0tH6APXKUg02GPe+Ez3/IfNVPmlt+qicFHE9cf6inmAGVIGqPTFpgRBRvJfW4QgF2dyVvNm9RA48m1vwsRI056fkn6jP2/727sF2xjmOk8WsnUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QbgCZRqK; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1729829425; c=relaxed/simple;
+	bh=ekdJWWct6csrgu0g3q5eQ/4BZKKv6zAydS4GjVC4oKs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rswNUWkmI5rbLbGXHB4ICbPhYxKw1Af4CxxTq10x+fTNIkRSzuX12RMqriqWwDdKjhbXIgNTeYTvl6bbCvVq0Iwng/OlbxXjKfqI8pi1GDpqLJOIbxCkG4zeiuRPvhHeGVQlw9VQEnxFES1a5RlXJM0RLExAWPqQ1ksMlbIdiwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=XsiTcJZt; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QbgCZRqK"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7ea8de14848so877201a12.2;
-        Thu, 24 Oct 2024 20:34:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="XsiTcJZt"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6e38ebcc0abso20861857b3.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Oct 2024 21:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729827277; x=1730432077; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=umich.edu; s=google-2016-06-03; t=1729829421; x=1730434221; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mK2RJ1Xug5oMAzwhSCqVHPpqDu7p/3YqJqaxy25r6IM=;
-        b=QbgCZRqKte0cIj2PmXXi1/D/AM/ld59kHK+Rz4IHb6EA8ztM1vEPQUVtD7yK7KuZA+
-         F7DG9W5aWUimm0B8GAstODa5WstGSp7FZe5NKffesTEeSqE9dVK+jQ6vLs+K6GHnrHQg
-         sbRSzh2r8zqrZe9eP6vGmj7AtQMnIE4HY7Adtz3lgvZkNfe3lok0WxH8VWjCTy4rZnN7
-         uG9M9yv1rNzbPiMqv6m1h3f8Lo960m2oJsPBvcoivqEs6RuCxzruDgNPydY7MiJ1t8LZ
-         0xOh6pZgPzMbvy3iut2zeheiUcwaf3LegSaNxMchAhaK2t773jSy1/E2ooyl2oeZ7RKf
-         WkOw==
+        bh=b1IUI/Dv7tIqR57YCOc1ojUu2ND9yCjRYfTcqCJ6tlg=;
+        b=XsiTcJZt/kvwxxuwjK2mIW3fryNvVfNF/PSKw0KAnW4nHJNz93eKzVIsWmb8x+UhVo
+         AkpJOO4F3dw4SPohytlDLN5kAqEdzCeHnDXhhEmlnb+cOEvOg02qMKVeXxuggICdUH5f
+         eOcM1+3/xAXdzIajZuLT6HF6TaJ9n9p4c8JLzRgf+B8P8qLTnEHieJ74qQdDoWJWBnIV
+         h9BEl5LZBtlTTaVsmfqo2QJli9/1BCSdmUtwrl45EK6MNujht1hT6Bj6KLWwT9yOzyZX
+         +vJftNqhTpFB8Fk+IVGXaM1h/iej2z0u2w1FkF2d7r0EQnUvoi14ARNrgetuprPWKYNL
+         0+2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729827277; x=1730432077;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1729829421; x=1730434221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mK2RJ1Xug5oMAzwhSCqVHPpqDu7p/3YqJqaxy25r6IM=;
-        b=U/Y357W9qT5FkuuQDeg0fhuTt/KbOeGd97/FsppLnIsYOaejuq/Gv41hGpwFNSxkNt
-         XvGscEj4FnIDqnVSjnYh5Z7dfg6yNwp8lZjnUnFgxB4WN87PKJZs+aXVTE8w6YceAxHi
-         GaQQZvvfnU9FdwdIXo9uuM3YIR4IfAG0BQhkLg4VV23oCVkhzGdz7SyoMAE5UWSd/J2g
-         HP2Q1YnCNRc5iBiVx+IWoVB8Qy5v2OMndhwZKKw7O2oFObPjScIaYxx3g7jsCLIOHZ1F
-         wzwQ+MCFkLDiLAu7xhU/txQc/iEtZomQ+3eaKESt0vq5AWcCPdtP4S3UMq2UHu67Kitc
-         rF+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUi7L3vrYX9zAdCZnAzS8T6ItuWrAETnSY4496dDfr/BUK43+ebj5XIWCoDocioksmmfTS42CIbh5PyVTRthN8=@vger.kernel.org, AJvYcCWwYw1SPPqMgEZVSfVIkvWUPBvp5b0LtcqksQjbFqKSBQdgQVuBN2i1j0z9DtPCs7ocNhlcwOsRjf1ZyUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv85pUFpkYjQMA8eBSHoT1yjRdeMiiYJyL1CfGZTrzvpL8hb7Z
-	c0hgmBw2qFKkc9/k82kxg4/VlqUXYB+WFiEHFxTy3FTb6xsy6l2KeC83iCVj
-X-Google-Smtp-Source: AGHT+IEH7dK1McuvR7hzSWJAMJ7WGlTHb2AlplhCtkFMzCX87+IiwGmqetTU9HQS3ZVTMuAz2d+mnw==
-X-Received: by 2002:a05:6a20:1d98:b0:1d9:4837:ada2 with SMTP id adf61e73a8af0-1d978bad18emr10579527637.35.1729827276975;
-        Thu, 24 Oct 2024 20:34:36 -0700 (PDT)
-Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7205791db5fsm180188b3a.11.2024.10.24.20.34.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 20:34:36 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: anna-maria@linutronix.de,
-	frederic@kernel.org,
-	tglx@linutronix.de,
-	jstultz@google.com,
-	sboyd@kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	tmgross@umich.edu,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	arnd@arndb.de
-Subject: [PATCH v4 7/7] net: phy: qt2025: Wait until PHY becomes ready
-Date: Fri, 25 Oct 2024 12:31:18 +0900
-Message-ID: <20241025033118.44452-8-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241025033118.44452-1-fujita.tomonori@gmail.com>
-References: <20241025033118.44452-1-fujita.tomonori@gmail.com>
+        bh=b1IUI/Dv7tIqR57YCOc1ojUu2ND9yCjRYfTcqCJ6tlg=;
+        b=giQLxim4H3nZxUY1ibduZ+1jb4EgQlORsM4PjSMXY1sYsOhMoqSHt3nlZkYmSaI2iw
+         Aap3E9rwNwp/QZoOaGvvSTzM3n2QdECDu/30W1C0NsuUVN+P60hIw4gCDK5UbaxLlmqg
+         wS05PZHaH8PJSaTjKAhxbZq3zP269eTpLYp+ZORdBBIJXsJFz8Ngiv9gpFxYo4hRYt8y
+         KzSkJ7KgUOHe+3vgw4xqzdy4SK+45MF1KzY3UFpqFXKTmz3a+fx7EBwKApnB29lrRw87
+         ny38F76kpBLfZ+z7gfnc6tF77F9LopCvclCWlnPcOFqsP22E9o4DXo58aHUzykvSZ/3y
+         yYWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUA5icFBtpBv49ZDrYZ4cHqx88Ln/w19Tss+X1x7BDAuNqRnmHOub3MdlCLG8bCk6fsiI7Z3j8QPtObjGuAhg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx45P+GbeEotuQ+jWVkMYb18Oy2CpEyFkPjjkR6AG+zF/uNz3Ju
+	At8zBEFhAi+Ys/hcX7eWZpkyCmE6rbhqtJoJWkbztASxSIwHgbl4yZy5Ax+kGhppn5E3zjaFgLE
+	ecL/5oHMyKTuKYwoSr6lyo+6DpcGQqh06A3P4Zg==
+X-Google-Smtp-Source: AGHT+IHcK0AVcQUDIMsT5GR4MQ8q5gxpZbDoGV4WWKNOcxg9dr5CYVu9m9eOZ4ZodKrAUOmLJSUvoxDXs2zYREtYdNA=
+X-Received: by 2002:a05:690c:ec1:b0:6e3:430c:b120 with SMTP id
+ 00721157ae682-6e85814c704mr43629697b3.5.1729829421356; Thu, 24 Oct 2024
+ 21:10:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com> <20241001-b4-miscdevice-v2-1-330d760041fa@google.com>
+In-Reply-To: <20241001-b4-miscdevice-v2-1-330d760041fa@google.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Thu, 24 Oct 2024 23:10:10 -0500
+Message-ID: <CALNs47tbt46VAcT5rm0Y6QBP6kc4ocBFDPOZugthPmNdaHrwPQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: types: add Opaque::try_ffi_init
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Wait until a PHY becomes ready in the probe callback by
-using readx_poll_timeout function.
+On Tue, Oct 1, 2024 at 3:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> This will be used by the miscdevice abstractions, as the C function
+> `misc_register` is fallible.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/types.rs | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 9e7ca066355c..070d03152937 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> i=
+mpl PinInit<Self> {
+>          }
+>      }
+>
+> +    /// Creates a fallible pin-initializer from the given initializer cl=
+osure.
+> +    ///
+> +    /// The returned initializer calls the given closure with the pointe=
+r to the inner `T` of this
+> +    /// `Opaque`. Since this memory is uninitialized, the closure is not=
+ allowed to read from it.
+> +    ///
+> +    /// This function is safe, because the `T` inside of an `Opaque` is =
+allowed to be
+> +    /// uninitialized. Additionally, access to the inner `T` requires `u=
+nsafe`, so the caller needs
+> +    /// to verify at that point that the inner value is valid.
+> +    pub fn try_ffi_init<E>(
+> +        init_func: impl FnOnce(*mut T) -> Result<(), E>,
+> +    ) -> impl PinInit<Self, E> {
+> +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `init=
+_func` to not fully
+> +        // initialize the `T`.
+> +        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_fu=
+nc(Self::raw_get(slot))) }
+> +    }
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- drivers/net/phy/qt2025.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+[1] adjusts `ffi_init` to use `try_ffi_init`. Maybe this should do the same=
+?
 
-diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-index 28d8981f410b..f7480c19d4cc 100644
---- a/drivers/net/phy/qt2025.rs
-+++ b/drivers/net/phy/qt2025.rs
-@@ -18,7 +18,9 @@
-     DeviceId, Driver,
- };
- use kernel::prelude::*;
-+use kernel::readx_poll_timeout;
- use kernel::sizes::{SZ_16K, SZ_8K};
-+use kernel::time::Delta;
- 
- kernel::module_phy_driver! {
-     drivers: [PhyQT2025],
-@@ -93,7 +95,13 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
-         // The micro-controller will start running from SRAM.
-         dev.write(C45::new(Mmd::PCS, 0xe854), 0x0040)?;
- 
--        // TODO: sleep here until the hw becomes ready.
-+        readx_poll_timeout!(
-+            || dev.read(C45::new(Mmd::PCS, 0xd7fd)),
-+            |val| val != 0x00 && val != 0x10,
-+            Delta::from_millis(50),
-+            Delta::from_secs(3)
-+        )?;
-+
-         Ok(())
-     }
- 
--- 
-2.43.0
-
+[1]: https://lore.kernel.org/rust-for-linux/20241022213221.2383-2-dakr@kern=
+el.org/
