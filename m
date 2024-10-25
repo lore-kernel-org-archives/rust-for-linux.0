@@ -1,106 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86747A945;
-	Fri, 25 Oct 2024 16:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BB9189F45;
+	Fri, 25 Oct 2024 18:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729872509; cv=none; b=u18yoXPNMIVvMrSTOFxJzU84lF/mXrpn1IWDpdRvW92o3Qnr8wvK0Ji8hdv3zTmLVFv2ajFvnsWBlhXiUXU9ddZjOVIub8NK7qaNjXy7vyNNYup4jpjVbEDZ8W/k0JdxQ3Y0FPygd9H0VhbbUM9mLhr78xsb04qIorh/f8WVCnQ=
+	t=1729880928; cv=none; b=cuYya4DzBR0K9M6X6MpCxeT539RpOiph29BuT4455ymzZ90jVpKTMMNZiFPi6C+UnSgAvGFMlwBFqiIEdUlXhOocH6cwqUkT5nftE8XeyK5zci5rSCyeVXTK35Xjb5rG5ELFDzYj5nmadRZpEJ5VhkbqhIzh+S1yK0koGypRfgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729872509; c=relaxed/simple;
-	bh=m8UhqT2D8mXrCfBkPS2cGqIO6xu+2R3YfSp9wUkMwc0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K1cRK9Uk2krGzmYXKG9YXzyLUWZL5TL2SvLa9ElSXGbXxdSOC5DqPceyaROo2nyfd7vPD/2dk3BGr12xumD9bQfkZd1ZSWrQ6T8B6XkKGN4kjz+OXYRveLSajqNCQ1jbfGHgPSPfHPcLWjoYdJEYqeLk690FHanRwQXjjbx3Yxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibV6iOhX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1729880928; c=relaxed/simple;
+	bh=/aDlb0UwpoGJmp7MrRgdzgAr9m+W4eTXUR96iB2yEnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lWwu542cVr1uEkDrDvXbUpHVNKPL/s80dpvDikqwh943CTfTebcFctqwYmA17l7gb7BfAJ9CPkjugzBiRpzcxOP0qNUBtiT/cisX/CdhTBBi9JjYjTV6JNo9QiF2k0By2APVimGVLB7UZazUedPsbor8OdlDqwitvcaDtTsgIaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bnLHMFMs; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibV6iOhX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36A7C4AF0C;
-	Fri, 25 Oct 2024 16:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729872509;
-	bh=m8UhqT2D8mXrCfBkPS2cGqIO6xu+2R3YfSp9wUkMwc0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ibV6iOhXN0LWHRi8nL73fHlMvPhS6TUhJy8iKgHSKg4siemaRqo4cQ8kwRdA0AEDc
-	 XZ2dGX1K4scjvErwi1xBbf4PDKM3Le/CLP5p8+rHfFhU2sagk5g8SdvmrJz5zcBsed
-	 wlOKXsoV8j/jqcn8PX5jNNHxGO1BjGq+0Bph/dykP+MqVc99+1Cxsr4TgitTPITehf
-	 X8MXcxsksGYKOXSrRKAA+dMz3V+nS4JpYCYklDAjDOyEJtgAr5JyFf6iP+E6aiGXxn
-	 ffHutK/z/TFRVvezBvolNfZIo34YTWwAFSgoLwfkpdQBoImmKesEXGXel7x59/vOSZ
-	 W67aeKyuWUWOg==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53b1fbb8be5so2382586e87.1;
-        Fri, 25 Oct 2024 09:08:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU57q6c15PcQdneCq4nB/4Wdu9KVVdDQEjM4jue6fEFSihPnCzHJaLl/R9FwhZAHx8eZJeGoYM5rLlNl25w@vger.kernel.org, AJvYcCW89ZnpZ7I96MJey43u29aeydC2y4xXCb01EbTpfD6UNJtaWzBw8I7LdFchXhAlMiSAwVF6v2MWP36H@vger.kernel.org, AJvYcCWHz7gw04pUDX69G7nNoblvR64UF03E73/yi7utSqUpYRbXBIRaO9WjcmBZQH6/NDEiEdgiYCqCxJej@vger.kernel.org, AJvYcCX6KW3+EsleePC40QyMGYe8YG4CWCwoYP4lkUrptMTpx3R17N3ByqIboHcbTLwalth8A/hDicgBTk7uTFXTEw0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg6NvZQILiFP5Z6zTyCTLHhB0oIcJvgPeztNGBFRnfwLWXc5SP
-	gOb7o00JjGTQGEsIJJtsKWIj2kFRVPAjXFjOXoOyO8xFTsnhRrlfKoN92wOno4skiPrpb8uUkWI
-	bi2udSgDzeLJJTJAI4OyPHSYqWw==
-X-Google-Smtp-Source: AGHT+IHljjKv2qhcHHlmzfYbXgiQ90Hr3WJDc2pE/XSMP8L+P9Fb91lskzB2hiKz32t6vMM1/rR3HOboQGzO7wn7kGk=
-X-Received: by 2002:a05:6512:12c4:b0:539:fa32:6c84 with SMTP id
- 2adb3069b0e04-53b2373720amr1970236e87.18.1729872507229; Fri, 25 Oct 2024
- 09:08:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bnLHMFMs"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Iqv+nUZGjuwSdtEpE3hQFxjYLll6GHjszBuIDOIhGKw=; b=bnLHMFMsDJUw2JGzRFgM5oAO8y
+	lDtJafm6iBfr03HMl6X+BSoGupb+N7pBbGEohS5rQPlOQsyqIF9I7mmic5kkoZixo73nhATBG2NSm
+	NT6y0SWkSWLNpFEFtRcOivh6Ajh/l+C1H3nwwui3hhhAg9lV5kVKbxKWmfhCpLF2NMUjCHuZWjwi+
+	Vu5AC8SdSat6ACZat2+JAm6NPdqSCbcYhRRpCwATwc334MC4QDPpxMvt38Zl+6I7Sl0EpVZYq3oOM
+	Ik6txZUELLOs23COptuMN5cPa4Ie7/V4iX3qAqNmaDe23z5qw9tIuxGMU6/8f4fRWWJEc3/KgNLsp
+	AEyiOGyg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t4P31-00000005VMd-0J0Y;
+	Fri, 25 Oct 2024 18:28:31 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id E015030083E; Fri, 25 Oct 2024 20:28:30 +0200 (CEST)
+Date: Fri, 25 Oct 2024 20:28:30 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@gmail.com>,
+	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
+	Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, wedsonaf@gmail.com,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20241025182830.GO14555@noisy.programming.kicks-ass.net>
+References: <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <87a5eu7gvw.ffs@tglx>
+ <20241023195152.GE11151@noisy.programming.kicks-ass.net>
+ <877c9y7dwx.ffs@tglx>
+ <20241024100538.GE9767@noisy.programming.kicks-ass.net>
+ <87bjz95sc4.ffs@tglx>
+ <ZxrCrlg1XvaTtJ1I@boqun-archlinux>
+ <87y12c4428.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-17-dakr@kernel.org>
- <20241023000408.GC1848992-robh@kernel.org> <553bfc07-179e-4ca9-99ac-74b90badb6b0@de.bosch.com>
-In-Reply-To: <553bfc07-179e-4ca9-99ac-74b90badb6b0@de.bosch.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 25 Oct 2024 11:08:14 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqKmKUxwY3O3m2iYPjN6eODaAzzTj+4CSqBg5RyGKPk_pA@mail.gmail.com>
-Message-ID: <CAL_JsqKmKUxwY3O3m2iYPjN6eODaAzzTj+4CSqBg5RyGKPk_pA@mail.gmail.com>
-Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com, 
-	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com, 
-	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com, 
-	lyude@redhat.com, daniel.almeida@collabora.com, saravanak@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y12c4428.ffs@tglx>
 
-On Fri, Oct 25, 2024 at 5:33=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
-> wrote:
->
-> On 23.10.2024 02:04, Rob Herring wrote:
-> > On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
-> >> Add a sample Rust platform driver illustrating the usage of the platfo=
-rm
-> >> bus abstractions.
-> >>
-> >> This driver probes through either a match of device / driver name or a
-> >> match within the OF ID table.
-> >
-> > I know if rust compiles it works, but how does one actually use/test
-> > this? (I know ways, but I might be in the minority. :) )
-> >
-> > The DT unittests already define test platform devices. I'd be happy to
-> > add a device node there. Then you don't have to muck with the DT on som=
-e
-> > device and it even works on x86 or UML.
->
-> Assuming being on x86, having CONFIG_OF and CONFIG_OF_UNITTEST enabled,
-> seeing the ### dt-test ### running nicely at kernel startup and seeing
-> the compiled in test device tree under /proc/device-tree:
->
-> Would using a compatible from the test device tree (e.g. "test-device")
-> in the Rust Platform driver sample [1] let the probe() of that driver
-> sample run?
+On Fri, Oct 25, 2024 at 05:04:15PM +0200, Thomas Gleixner wrote:
+> On Thu, Oct 24 2024 at 14:57, Boqun Feng wrote:
+> > On Thu, Oct 24, 2024 at 07:22:19PM +0200, Thomas Gleixner wrote:
+> >> On Thu, Oct 24 2024 at 12:05, Peter Zijlstra wrote:
+> >> > That is my only concern -- making insane code crash hard is good, making
+> >> > it silently mostly work but cause random weirdness is not.
+> >> 
+> >> I wish we could come up with a lightweight check for that.
+> >> 
+> > Since the preempt part takes exactly one byte in the preempt counter,
+> > maybe we could use a "incb + jo"?
 
-No, because that binds with the platform driver within the unittest.
+probably something like:
 
-Maybe it would work if you manually unbind the unittest driver and
-bind the rust sample.
+	incb
+	jno 1f
+	ud2
+1:
 
-> Or is this a wrong/not sufficient understanding?
->
-> I tried that, without success ;)
+is best, something about forward branches being preferred or somesuch.
+Anyway, if we want to use the same thing for the interrupt disable
+depth, we need another byte, meaning we need to compress the
+NEED_RESCHED, NMI and HARDIRQ masks into a single byte.
 
-Did you try the patch I sent in this thread? That works and only
-depends on kconfig options to work.
-
-Rob
+Might just be possible I suppose.
