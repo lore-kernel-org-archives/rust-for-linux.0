@@ -1,184 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790751E1A39;
-	Fri, 25 Oct 2024 13:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1945621620D;
+	Fri, 25 Oct 2024 15:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729864512; cv=none; b=LvasQerYwZJPsIFzZ7OszdfFuLAI3OwkHX6LkW3zCWJYPNKDxFXzhaTuOLPNBUwx2oTtclWqRqrS9RnDfqmwr1QgtQR+4xwEGvToTHOakmiVNwhMrhpLMTE8KJD1J0g0w4ZfDjRt9K3PcfJjz/2FTAx/0V0L7zGnA0jsRv5wUBY=
+	t=1729868661; cv=none; b=DdoAlNTxHLUjsuTOSgQ8H8ePnP+Yogh1IFa1IkO2jPf2R21Vc8lyp44oQuFUEBEEEpPGHDKSgP//1Af3XsfHVLBr7fgF5ZX2jroM8mszBEs2AoKVW0jslMcLDgyX+Dc0y3E3vQ5XQOzxb93P4Sdx3dyFaClmOs/ynl+aGxNyEJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729864512; c=relaxed/simple;
-	bh=7NqT3649F1dXeuQNWNY44V3yXWIYCEWHbVLE10r7iAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZQOclFdHmeQtNa2blhuO957zeqD04s5FYzEiCf9ji9HXg3bgLLs7R7WGNhSfdEPNaW+EM3HMkTLH1xJ4j4nw9dUsUO7ooipYgxKjp7j5Ux1FdKnbEPw8tkrd3/Tf5nWEr0TFkviGX+S++9WWuaAPMaOaajmC4Q7/z1BAGSeyA9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mcBA7oKU; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1729868661; c=relaxed/simple;
+	bh=mlmnQ4/sFK58UR6568F7XShCLS7ImvZOowlmC0vXTM4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RmA/sZfI1tmgKte7IDPt47XIGqP9FQ/jqLzYbmCy572Jh98+YGZhMCZVMiFoJxW5ILgSDlcOFBb6eYKjx+RSsK16zQO3+4Ejt+5XIPesVJOQZiIA1ev7t6ga2mlSXmbMRZB4oErdkmgLr/XfZFKg+dQcjU41RjRgr/lBIDerIHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ekoWd9D8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t8Kw+wD3; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mcBA7oKU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729864510; x=1761400510;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7NqT3649F1dXeuQNWNY44V3yXWIYCEWHbVLE10r7iAE=;
-  b=mcBA7oKU0yGnldiSiv2oCxlJWhopjigMRv1oN1wpOap/Bjes6zzL99BQ
-   haO6eTRWcM+jsAM0kEOSfy48bOTvbvSA3PafY6iDMna4tQJIdnaL2qryD
-   Je0bCz3joJalvlGLOyit4Qm5RAnXKt6bhTXXiZgBEKhPnEwhCM7Wn8xNb
-   8o92LUKFOJAP8qNKMZWqOpFWWKE23lx5HNRRSzKFXOfIhe63OsDIE2MFC
-   eWMo2HilD9Y51nzPHQpbl5+ZRaVo+1mxZVYtO3GTSO1y3ISIgFYAcNRal
-   7SM6+bqMPmjx5TY++J8o4ablL0aJdXdJhzYvo5ZIT//DNCXi5x245UhwS
-   Q==;
-X-CSE-ConnectionGUID: bZlpI/3yQviK0wHq9J6uPQ==
-X-CSE-MsgGUID: e3mSbVLpTYWTKmMG+TeR4w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46997858"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="46997858"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 06:55:10 -0700
-X-CSE-ConnectionGUID: 6qxGZX07Trmb36yDd1F4OQ==
-X-CSE-MsgGUID: 4rqoCvHUTzWLQ6lBj85Wqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; 
-   d="scan'208";a="85499018"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 25 Oct 2024 06:55:06 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t4KmO-000YK2-2V;
-	Fri, 25 Oct 2024 13:55:04 +0000
-Date: Fri, 25 Oct 2024 21:54:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v2] rust: kernel: add support for bits/genmask macros
-Message-ID: <202410252126.lJKyvEk1-lkp@intel.com>
-References: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ekoWd9D8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t8Kw+wD3"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729868656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iUko+tsFDdkgoEEBhKPnLKM59O9aqLgte2dS9dVnswo=;
+	b=ekoWd9D8j2IsU28xfOgnqNeAFgKQuKzvo4rwH0dHCXdyf2jG62AfvlKla48pyeHz6NyXtR
+	D6I16/T/euzXq4RvP/gkVfGBphj/iLCDVpC2WKwxAd2i9svC86h8B3VsCIcNvHrP63sCpB
+	y2NYIZDCvnNHGokDIOb4T5XoxvQhc9dzyijVs+Us5dMN3omPOqKgtDZHJBMUUj4XrPAg3U
+	6rvs2Syg+au851D3Rf+dJmkWTC3V6EgjfY7K34o31MYFpEOt0Iu2Nx9f5e7Dh72PH2BCNQ
+	s8GE6F9SnX+Qbwd1HvouhyDYWzfbunlsy1n53q8Lwj/b6Sl0S9Z+6QBTb3g1Sg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729868656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iUko+tsFDdkgoEEBhKPnLKM59O9aqLgte2dS9dVnswo=;
+	b=t8Kw+wD3yZYwxssG1/UFNv5CbC7NDQAQ24m4BCp9dNV5lVh7eB4xTTAw6h7wLzyk2TWvSl
+	EUffb3m5cd3o/MBw==
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Dirk Behme
+ <dirk.behme@gmail.com>, Lyude Paul <lyude@redhat.com>,
+ rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+ airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
+ Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@samsung.com>, aliceryhl@google.com, Trevor Gross
+ <tmgross@umich.edu>
+Subject: Re: [POC 1/6] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+In-Reply-To: <ZxrCrlg1XvaTtJ1I@boqun-archlinux>
+References: <20241018055125.2784186-2-boqun.feng@gmail.com>
+ <87a5eu7gvw.ffs@tglx>
+ <20241023195152.GE11151@noisy.programming.kicks-ass.net>
+ <877c9y7dwx.ffs@tglx>
+ <20241024100538.GE9767@noisy.programming.kicks-ass.net>
+ <87bjz95sc4.ffs@tglx> <ZxrCrlg1XvaTtJ1I@boqun-archlinux>
+Date: Fri, 25 Oct 2024 17:04:15 +0200
+Message-ID: <87y12c4428.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
+Content-Type: text/plain
 
-Hi Daniel,
+On Thu, Oct 24 2024 at 14:57, Boqun Feng wrote:
+> On Thu, Oct 24, 2024 at 07:22:19PM +0200, Thomas Gleixner wrote:
+>> On Thu, Oct 24 2024 at 12:05, Peter Zijlstra wrote:
+>> > That is my only concern -- making insane code crash hard is good, making
+>> > it silently mostly work but cause random weirdness is not.
+>> 
+>> I wish we could come up with a lightweight check for that.
+>> 
+> Since the preempt part takes exactly one byte in the preempt counter,
+> maybe we could use a "incb + jo"?
+>
+> For example as below, note that since I used OF here, so it will try the
+> byte as s8 therefore overflow at 128, so 127 is the max level of
+> nesting.
+>
+> Would this be a relatively lightweight check?
 
-kernel test robot noticed the following build errors:
+That's definitely an interesting thought, though it adds a conditional
+into preempt_disable(). We should try and see whether it's significant.
 
-[auto build test ERROR on 91e21479c81dd4e9e22a78d7446f92f6b96a7284]
+Thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-kernel-add-support-for-bits-genmask-macros/20241024-222614
-base:   91e21479c81dd4e9e22a78d7446f92f6b96a7284
-patch link:    https://lore.kernel.org/r/20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea%40collabora.com
-patch subject: [PATCH v2] rust: kernel: add support for bits/genmask macros
-config: x86_64-buildonly-randconfig-003-20241025 (https://download.01.org/0day-ci/archive/20241025/202410252126.lJKyvEk1-lkp@intel.com/config)
-compiler: clang version 19.1.2 (https://github.com/llvm/llvm-project 7ba7d8e2f7b6445b60679da826210cdde29eaf8b)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241025/202410252126.lJKyvEk1-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410252126.lJKyvEk1-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0015]: cannot call non-const fn `kunit_get_current_test` in constants
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
-   = note: this error originates in the macro `kernel::kunit_assert` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error: `core::ptr::mut_ptr::<impl *mut T>::is_null` is not yet stable as a const fn
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = help: add `#![feature(const_ptr_is_null)]` to the crate attributes to enable
-   = note: this error originates in the macro `kernel::kunit_assert` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0015]: cannot call non-const fn `Arguments::<'_>::new_v1` in constants
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
-   = note: this error originates in the macro `format_args` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0015]: cannot call non-const fn `err` in constants
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
-   = note: this error originates in the macro `kernel::kunit_assert` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error: `Arguments::<'a>::new_const` is not yet stable as a const fn
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = help: add `#![feature(const_fmt_arguments_new)]` to the crate attributes to enable
-   = note: this error originates in the macro `format_args` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0658]: referencing statics in constants is unstable
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: see issue #119618 <https://github.com/rust-lang/rust/issues/119618> for more information
-   = help: add `#![feature(const_refs_to_static)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
-   = note: `static` and `const` variables can refer to other `const` variables. A `const` variable, however, cannot refer to a `static` variable.
-   = help: to fix this, the value can be extracted to a `const` and then used.
-   = note: this error originates in the macro `kernel::kunit_assert` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0015]: cannot call non-const fn `__kunit_do_failed_assertion` in constants
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
-   = note: this error originates in the macro `kernel::kunit_assert` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0015]: cannot call non-const fn `__kunit_abort` in constants
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
-   = note: this error originates in the macro `kernel::kunit_assert` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0015]: cannot call non-const formatting macro in constants
-   --> rust/doctests_kernel_generated.rs:317:16
-   |
-   317 |     let mask = genmask!(39, 21);
-   |                ^^^^^^^^^^^^^^^^
-   |
-   = note: calls in constants are limited to constant functions, tuple structs and tuple variants
-   = note: this error originates in the macro `format_args` which comes from the expansion of the macro `genmask` (in Nightly builds, run with -Z macro-backtrace for more info)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+        tglx
