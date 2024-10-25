@@ -1,115 +1,106 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAE820BB54
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 15:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86747A945;
+	Fri, 25 Oct 2024 16:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729869445; cv=none; b=CTozKN9kstnSjw2etdlcuCYB+/v37fVucbkCNJZiGg1KvYom4L95ByZWVJ6IjB87dGQzbRMw5zbI9girvfxHdtRbl1WtOsPEQsiYBk7kfo9feSfAQP8aMb2tD9ApCG0kv+k6DLxVQLbAxpPWJNVKVnGUykyb2npIpk9/XJQNTWs=
+	t=1729872509; cv=none; b=u18yoXPNMIVvMrSTOFxJzU84lF/mXrpn1IWDpdRvW92o3Qnr8wvK0Ji8hdv3zTmLVFv2ajFvnsWBlhXiUXU9ddZjOVIub8NK7qaNjXy7vyNNYup4jpjVbEDZ8W/k0JdxQ3Y0FPygd9H0VhbbUM9mLhr78xsb04qIorh/f8WVCnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729869445; c=relaxed/simple;
-	bh=WyV1hkEvF+T/HeQTn57dPx/lNsuJ1E8Fo9iYV0s5bYk=;
+	s=arc-20240116; t=1729872509; c=relaxed/simple;
+	bh=m8UhqT2D8mXrCfBkPS2cGqIO6xu+2R3YfSp9wUkMwc0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4xaXukNp1sFnsKY3kHXQLsai51dcorcvkQZ04N5DLOoD3DUBhRHgabUNwUqLquAAhaAM31yOV1QZeojQbyxrbf7NMhVqFJoVaW3BGrowwdEiYLK6vG9C/G7G0b6uYRxYHEWTUlzJ6+A57IqSavGGu08M3jw3NtH5YH4Jfys4Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=US8TsSCh; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=K1cRK9Uk2krGzmYXKG9YXzyLUWZL5TL2SvLa9ElSXGbXxdSOC5DqPceyaROo2nyfd7vPD/2dk3BGr12xumD9bQfkZd1ZSWrQ6T8B6XkKGN4kjz+OXYRveLSajqNCQ1jbfGHgPSPfHPcLWjoYdJEYqeLk690FHanRwQXjjbx3Yxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibV6iOhX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="US8TsSCh"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43153c6f70aso196375e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 08:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729869442; x=1730474242; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5+qZdWqWXtWylOyw2WfWUb01ZrPpEIVk78Q8a8ZQT7Y=;
-        b=US8TsSChL9L6bQ3qGqZAqeFxud9UpLeAyY6yLwsVHa94dX63/wjmo1Z0tfnpfRr1Cq
-         0bOi8+m0FY2WA7+nInHYsUk49TjqgWuMEP+WI6Czib7M8C+imMfvZ4eCzQURSNgqLaet
-         IAfiiqs8rHGwm5EOZuqHhw2pbRzbz47UadrmB4D60P283hWUxhBb+khWYbeiABbleHs5
-         rxs57eREzZh47ibtGpqi4gDpR7AILpQHDH2gEQW44SyfdzxYUnUq2jMvN9p2Ua8COVKA
-         V61xmxmAf5tWQKFIOIn41O1f7GAHIWrASyzXCF4d9oxzevRH9PZl2gmUimAsJUiL9zq/
-         xDLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729869442; x=1730474242;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5+qZdWqWXtWylOyw2WfWUb01ZrPpEIVk78Q8a8ZQT7Y=;
-        b=VugKal+gGtIy0lILJ7A17M8RExnrGhBmpBPGa6YofMvYpXZnIaEW8sxkDRF0r4jsg6
-         zAFKaQqJ84TlRVYGXv9I+lJ88XEa9pi2bA8cP5rgRfLns8RBpAXkftFIrx9WY2ETZW9Y
-         ed+7ppGNoDVJcLIjt4q9Z48eT4UYMXcYOXWnE9k1qIpnPgXIZAZRO3LjDEyW0YYwFN6q
-         sKukCpZLIaRbhJUGFVC6Hlb7jrhlEghBGecBCyNHM10QtoX6p1/C9smgbFklxy4N3oAn
-         uB8eSriC7PLBFMEOs00iAuDAb5SDvJmNT3OtQgc76HkPzQdERF6aQ5KOuQQ9W/UMfj0S
-         EmiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMvGVlakYwt2ovOnJRGGuBhKnxmYHtWSNbmuoJGvg5NcK6KMzqflCUj/VZp7ZjJm8mQBJ+Wx0/2iQ2dMC0YQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+P+YoijaJ0ctWnqAnEbva9wwznHQ3N9uei5yW5b3kQIYhHvO5
-	/CCafj9gXuwX+zm4BFLoGdXdL2e2lRcAcOauKrZ6Nh4jKk5BLln9IJz3DDZ3a0JeG0H86EYw2m7
-	bq5tUygV+N3dvNJjhMocTUvaJasVT9M8hISxo
-X-Google-Smtp-Source: AGHT+IEGaAp8MS7+26iNwYNpWISUUbwzO5Gpf75slOy8OxD2gSiQH/Cp9KNx7+Lhww385En/cRWbywx/almGe6T6PY4=
-X-Received: by 2002:a05:600c:34c3:b0:42c:9e35:cde6 with SMTP id
- 5b1f17b1804b1-43191f8e5f8mr4966315e9.2.1729869441852; Fri, 25 Oct 2024
- 08:17:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibV6iOhX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36A7C4AF0C;
+	Fri, 25 Oct 2024 16:08:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729872509;
+	bh=m8UhqT2D8mXrCfBkPS2cGqIO6xu+2R3YfSp9wUkMwc0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ibV6iOhXN0LWHRi8nL73fHlMvPhS6TUhJy8iKgHSKg4siemaRqo4cQ8kwRdA0AEDc
+	 XZ2dGX1K4scjvErwi1xBbf4PDKM3Le/CLP5p8+rHfFhU2sagk5g8SdvmrJz5zcBsed
+	 wlOKXsoV8j/jqcn8PX5jNNHxGO1BjGq+0Bph/dykP+MqVc99+1Cxsr4TgitTPITehf
+	 X8MXcxsksGYKOXSrRKAA+dMz3V+nS4JpYCYklDAjDOyEJtgAr5JyFf6iP+E6aiGXxn
+	 ffHutK/z/TFRVvezBvolNfZIo34YTWwAFSgoLwfkpdQBoImmKesEXGXel7x59/vOSZ
+	 W67aeKyuWUWOg==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53b1fbb8be5so2382586e87.1;
+        Fri, 25 Oct 2024 09:08:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU57q6c15PcQdneCq4nB/4Wdu9KVVdDQEjM4jue6fEFSihPnCzHJaLl/R9FwhZAHx8eZJeGoYM5rLlNl25w@vger.kernel.org, AJvYcCW89ZnpZ7I96MJey43u29aeydC2y4xXCb01EbTpfD6UNJtaWzBw8I7LdFchXhAlMiSAwVF6v2MWP36H@vger.kernel.org, AJvYcCWHz7gw04pUDX69G7nNoblvR64UF03E73/yi7utSqUpYRbXBIRaO9WjcmBZQH6/NDEiEdgiYCqCxJej@vger.kernel.org, AJvYcCX6KW3+EsleePC40QyMGYe8YG4CWCwoYP4lkUrptMTpx3R17N3ByqIboHcbTLwalth8A/hDicgBTk7uTFXTEw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg6NvZQILiFP5Z6zTyCTLHhB0oIcJvgPeztNGBFRnfwLWXc5SP
+	gOb7o00JjGTQGEsIJJtsKWIj2kFRVPAjXFjOXoOyO8xFTsnhRrlfKoN92wOno4skiPrpb8uUkWI
+	bi2udSgDzeLJJTJAI4OyPHSYqWw==
+X-Google-Smtp-Source: AGHT+IHljjKv2qhcHHlmzfYbXgiQ90Hr3WJDc2pE/XSMP8L+P9Fb91lskzB2hiKz32t6vMM1/rR3HOboQGzO7wn7kGk=
+X-Received: by 2002:a05:6512:12c4:b0:539:fa32:6c84 with SMTP id
+ 2adb3069b0e04-53b2373720amr1970236e87.18.1729872507229; Fri, 25 Oct 2024
+ 09:08:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023-extended-modversions-v7-0-339787b43373@google.com>
- <20241023-extended-modversions-v7-1-339787b43373@google.com> <874j50juyp.fsf@mail.lhotse>
-In-Reply-To: <874j50juyp.fsf@mail.lhotse>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Fri, 25 Oct 2024 08:17:08 -0700
-Message-ID: <CAGSQo03L--HDUBeo3xEUANbBcSf4GK5GUNGmHSBzL+ixpRGuqA@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3] modules: Support extended MODVERSIONS info
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-17-dakr@kernel.org>
+ <20241023000408.GC1848992-robh@kernel.org> <553bfc07-179e-4ca9-99ac-74b90badb6b0@de.bosch.com>
+In-Reply-To: <553bfc07-179e-4ca9-99ac-74b90badb6b0@de.bosch.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 25 Oct 2024 11:08:14 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKmKUxwY3O3m2iYPjN6eODaAzzTj+4CSqBg5RyGKPk_pA@mail.gmail.com>
+Message-ID: <CAL_JsqKmKUxwY3O3m2iYPjN6eODaAzzTj+4CSqBg5RyGKPk_pA@mail.gmail.com>
+Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com, 
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com, 
+	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com, 
+	lyude@redhat.com, daniel.almeida@collabora.com, saravanak@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Sorry I realise it's version 7, but although the above looks correct it's
-> kind of dense.
+On Fri, Oct 25, 2024 at 5:33=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> I think the below would also work and is (I think) easier to follow, and
-> is more obviously similar to the existing code. I'm sure your version is
-> faster, but I don't think it's that performance critical.
+> On 23.10.2024 02:04, Rob Herring wrote:
+> > On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
+> >> Add a sample Rust platform driver illustrating the usage of the platfo=
+rm
+> >> bus abstractions.
+> >>
+> >> This driver probes through either a match of device / driver name or a
+> >> match within the OF ID table.
+> >
+> > I know if rust compiles it works, but how does one actually use/test
+> > this? (I know ways, but I might be in the minority. :) )
+> >
+> > The DT unittests already define test platform devices. I'd be happy to
+> > add a device node there. Then you don't have to muck with the DT on som=
+e
+> > device and it even works on x86 or UML.
 >
-> static void dedotify_ext_version_names(char *str_seq, unsigned long size)
-> {
->         char *end = str_seq + size;
->         char *p = str_seq;
+> Assuming being on x86, having CONFIG_OF and CONFIG_OF_UNITTEST enabled,
+> seeing the ### dt-test ### running nicely at kernel startup and seeing
+> the compiled in test device tree under /proc/device-tree:
 >
->         while (p < end) {
->                 if (*p == '.')
->                         memmove(p, p + 1, end - p - 1);
->
->                 p += strlen(p) + 1;
->         }
-> }
->
-> The tail of str_seq will be filled with nulls as long as the last string
-> was null terminated.
->
-> cheers
+> Would using a compatible from the test device tree (e.g. "test-device")
+> in the Rust Platform driver sample [1] let the probe() of that driver
+> sample run?
 
-As you alluded to, what you're providing is potentially O(n^2) in the
-number of symbols a module depends on - the existing code is O(n).
-If leading dots on names are rare, this is probably fine. If they're
-common, this will potentially make loading modules with a large number
-of imported symbols actually take a measurable amount of additional
-time.
+No, because that binds with the platform driver within the unittest.
 
-That said, I take your point about complexity, and trust you to know
-your arch's inputs/requirements, so if I don't hear back again I will
-incorporate that into the next revision of the patch (to be produced
-after the gendwarfksyms update comes out).
+Maybe it would work if you manually unbind the unittest driver and
+bind the rust sample.
+
+> Or is this a wrong/not sufficient understanding?
+>
+> I tried that, without success ;)
+
+Did you try the patch I sent in this thread? That works and only
+depends on kconfig options to work.
+
+Rob
