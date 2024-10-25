@@ -1,135 +1,186 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2047.outbound.protection.outlook.com [40.107.20.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B531C1BA89C
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 07:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729843095; cv=none; b=Zpbou3Ged0TPhCtpe1w+ZYZ/kOlYYt6JXJGZx83NEd53ICe0fx0mofzKDebnWFYRJGyBhXIUZ/J0HU3cnuZcxuoAZzp+WtKR+dmzsPIatD5PPUwoiQf2UdTkmA+BnSqZYzQUDG4ciYqlc7levkdvv1aPrF89rWmR1ULPcAuwtuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729843095; c=relaxed/simple;
-	bh=F3OTFb+Ka41zug8DD/JcTMAO7la9WvVw47fnZrElHRY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lFCLq+fQFUibaC8yiYkgeS/nESaR4nHeEm4q/CJQC1Zg8TI3ihkknia2tFxlIj+vZiE/pwmJLzwBjGvqu3E/9UobVcUqzjAH9ptQB/+K3DC0CltGkKNPnUqIMnWirEL+cejpwz8eSf6qGbD6orLcEM++cgSXJgCDrbRb65glAeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X+QcQpMp; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5D918D655;
+	Fri, 25 Oct 2024 10:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729852385; cv=fail; b=IFFq/ZZ0gcTKTvFFDlJIhgp6th/hcMg2DGLNBDifTfihHUb5cakxnsmtw0lvNtbtX0MGuepi1T7ZdU1hZN9iJbDQk5DPpd9xFVlm8q10mzAs3aJia7uYyBsmwT5Wzrs2VHtucRGaMK1PG+pAgNIEzpNWGqMHCXCDq3hEqIKd+aU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729852385; c=relaxed/simple;
+	bh=EolDaJR0iwjYUOos3BKcbnlcMeVfQQZGk/GJULYYb2c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=r2IJyO7LHcCfpywV+0Ngd550I2nV6z66UOFLWgLk35/XKvDWuXGEjjxDy6gxFbZ18EQTzXvj/a9fzUqu6VgHDLPUh7tdVARiCSEkILnk4O0yXzqL1zkw6JhLQqCPPnCKEiP0O0YTx3o3PKllWNSw1Tk5cUFb245gbQmaIIwMUpQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=GB9gvuIo; arc=fail smtp.client-ip=40.107.20.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X+QcQpMp"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4316cce103dso23019145e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 25 Oct 2024 00:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729843092; x=1730447892; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gvsJwj5OC8LoQ+z+43ue0ktqi67sFQ/7TMkfuB2TfQo=;
-        b=X+QcQpMp9R0Il4UDJLXKn646bF8DoYYK6PYSys4kmeM1g84HVKd7donhyxVk4yahuq
-         MxxuBFyrdVbImuvWKeS/c/0gJpPzqghaLWJ5hR7/uxRsm3y5b8iri5cUrFxnpthZNzqe
-         6a/Cpb3rYndPW9ZSyRJck0pLhNdenI8mG0HayCzh13WOyeDwTey5oFpyJjsNOD3TTEJe
-         e8RVlzTOiekbNXRPP/cn7PCOanPChj99omTp4CKfmK4U1YzDkZ6511vGCvkmsXeXLM1r
-         SC7DvUOz+z0QliPihKpb8NoabchbTmVdCgvph78vGn+dY7fepH6Ma9BH+NDosLJotqrr
-         w8ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729843092; x=1730447892;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gvsJwj5OC8LoQ+z+43ue0ktqi67sFQ/7TMkfuB2TfQo=;
-        b=lvOUC1gkvLZzmFInqldlayZzDyZreqMaWtXBr+SqF4CdeeNamj0LUEU4e22GM2Hwsm
-         wB0Vgn23OxV6B2qg+fo+HZ1c/q1/+1Z9zdNB5xuWF1BzIZfX0ZJiYmeImEjOb2B1rPZW
-         a2auZSCHMs6E7lxueHsQAe7e5NXtiJViEt8/irmTp1lWaMeC19Mu502VEVQC8+M9DW2x
-         zrWv59ofNrucQNS4mu47vwVwurS52QZIvVLfRtnAMrHKX0fY0Fe1lPrcnj6q1ECZCf28
-         qjMWLGSSFezm3hxfFTKGnXFVhnfdp59PyguSeGeRz59LyOxG9V1sWAR9kDkd454FGCGC
-         5+/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXW8mmBuE3JrOY7IkebPe8Vz+IO33Sy5D+TqITCA8l2Xh1oTer3KmkMF9t9giy7IZRv9d7lwuOvduoCCDQDTQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqUz0vR1XGBFGeJv692MFkljkpt7QntKl9ar9rxdMp81Sulm3a
-	+Czi5rmfzqFkBFTMNArNyfViYJurwcNLLgeNkBw7L2ykMrD3bHU3s8uwh73Sjxm+Nbaj9ujOToP
-	ixFx9OO/x7EKKgFg7WER8SSirtpS3k90Ls07N
-X-Google-Smtp-Source: AGHT+IF9+NCbOu+bXyKItOLR5RH+FlGastQlQIJxhsNhdaqorYjditBHdDFu9kDS7X1pMearnA6JmaII6gKT8FNLJ54=
-X-Received: by 2002:a05:600c:1909:b0:42f:8229:a09e with SMTP id
- 5b1f17b1804b1-4318424df6fmr95356955e9.29.1729843092034; Fri, 25 Oct 2024
- 00:58:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="GB9gvuIo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rssR0SPwBcv3MElVwipthuPiZZf8HzpMkoX90Vb0x7cJBWvWUaoI9R+WKsxu8ghV2s7AwTeoFo6BVP/fECwWWjeuC3txfSZlNRtM1LlOYo+yCNpT22fgGZD6bEjAf0Ab8Oz6HrreC5YUnxoaFuGGMGkj7RP1l4JSBnO/WlxPzr7EfS9Jb8N173q5zHRPpBIqaYEjYn4g0+fSW9WVkrbzWcMb6JtiMnCx5leg/FSYlMGUWIXqqwk6Q9H800ZS1FDdIjw1x2Jp34GG7olA5UgDbO56xtSS2flBQIqGQJG5pzcZcicAZv0FtHlDuwJbAP9MwTHDUBVN6NzMyYvGwPsYTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vZbapgb5lAp681rG5rBcbNNx+DCPk6+p7IrWnDCjNkg=;
+ b=LZkraRe7FWwwYsZ6KtI2A62v/DMAqIyITR8KOf7DT8xXfrJU/MNStAmyrzi2lm3VjjvkwLNK6VkuQJrdVpqnhlS/RSGS2Mzua4EjABUhHPIXZdd5gx4FxkMOwdDa0fmexsWMQcofPpZznOoR2CALYdxa7GW5FbOAtI9FgeRZSjohphlW4XLyJvz0BxoDOZBSwUznFVfonJvYjsxcRwoyVgXSNBajH6JfWAHItWa8dvzNQK5NH6ciN321BtCE+g5a7ILGLwfSTZQIePEHB3XyStlayyzRBPZ4Emb48xK2oE4iniThkgB/CpJXuARzwRG5QsiXtJFrrOFUJ0HMqqD7Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vZbapgb5lAp681rG5rBcbNNx+DCPk6+p7IrWnDCjNkg=;
+ b=GB9gvuIoFlUDb+rxB8tk/LuhXoPjqY4FOcdvWeXvqn1Sl0rDawXdzdlJ8FBu3jZIzPeCKLUgijNNrp3bcK/SwsG6p18PR3ZgFdr7E3Qc5K9+YAhT2VZ9acQCnV9+TRoCQS0w5dbJqtkxbdF7bgyTcietn4XfJt4RYrTwBrTtuWMrT2kXarnIVLhbBfWYweMdo2vV8Kvq2yG7P5nvW9c21Jd33WvRE+DCcysagjDBcf+3TEGnHtweliY5aS5Nj0/3PmGcP2fKKfEgpS84/ct4hiG0PkmVBh9Yd577iW1Sxuzb++nr0Nmqt2jlw8Td2pf5fJqGCJArynTY77Hs2c7W3w==
+Received: from DU6P191CA0018.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:540::6) by
+ DU4PR10MB9072.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:55c::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8093.17; Fri, 25 Oct 2024 10:32:58 +0000
+Received: from DU2PEPF00028D0A.eurprd03.prod.outlook.com
+ (2603:10a6:10:540:cafe::5) by DU6P191CA0018.outlook.office365.com
+ (2603:10a6:10:540::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.21 via Frontend
+ Transport; Fri, 25 Oct 2024 10:32:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DU2PEPF00028D0A.mail.protection.outlook.com (10.167.242.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8093.14 via Frontend Transport; Fri, 25 Oct 2024 10:32:56 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 25 Oct
+ 2024 12:32:38 +0200
+Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
+ (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 25 Oct
+ 2024 12:32:38 +0200
+Message-ID: <553bfc07-179e-4ca9-99ac-74b90badb6b0@de.bosch.com>
+Date: Fri, 25 Oct 2024 12:32:27 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001-b4-miscdevice-v2-0-330d760041fa@google.com>
- <20241001-b4-miscdevice-v2-1-330d760041fa@google.com> <CALNs47tbt46VAcT5rm0Y6QBP6kc4ocBFDPOZugthPmNdaHrwPQ@mail.gmail.com>
-In-Reply-To: <CALNs47tbt46VAcT5rm0Y6QBP6kc4ocBFDPOZugthPmNdaHrwPQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 25 Oct 2024 09:57:59 +0200
-Message-ID: <CAH5fLgj=+aXo3sj9wKJudHYtL5pBHB8AzGS5njWEDzD0wydrOw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: types: add Opaque::try_ffi_init
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
+To: Rob Herring <robh@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+CC: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <bhelgaas@google.com>,
+	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+	<tmgross@umich.edu>, <a.hindborg@samsung.com>, <aliceryhl@google.com>,
+	<airlied@gmail.com>, <fujita.tomonori@gmail.com>, <lina@asahilina.net>,
+	<pstanner@redhat.com>, <ajanulgu@redhat.com>, <lyude@redhat.com>,
+	<daniel.almeida@collabora.com>, <saravanak@google.com>,
+	<rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <devicetree@vger.kernel.org>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-17-dakr@kernel.org>
+ <20241023000408.GC1848992-robh@kernel.org>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20241023000408.GC1848992-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PEPF00028D0A:EE_|DU4PR10MB9072:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ba8ac28-2b21-4430-fab7-08dcf4e06422
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?K0hiVDhhRFUyb1diZTR3WXloeDhtK0hueGdOY3pvTDVvU3kzcU5hUTdHeGhm?=
+ =?utf-8?B?dkRLSG9YV3NyRnNvOEJSWGJYRW13dlVJS2V1cERZU3Vnc1phZDN6d2x5a092?=
+ =?utf-8?B?Y0FoZ0d3ZHdsSUVXK3ZIVURFVlJpYUhlNFRZMWJsUEpuNXpYcFViWllFUEFa?=
+ =?utf-8?B?U1BXejFrc09yV0MyTWxBWGdHaHZId1Z6MUk3WDJQUU9xeFQ0bjE3UXh3UDlF?=
+ =?utf-8?B?NFVERGtyZUZZbWpqbHBHTDg1TEkxVDI3K1BLSERJU2FsbjE5VXRyT1pDUzYr?=
+ =?utf-8?B?VERhcUV4a2c0VGpZa3JTS282Q1VSb0pOMGJ3Q3BEV2tIWG0wdkZPUFdPa3V1?=
+ =?utf-8?B?RDRoZlV5eTJJMEN4bVZNd3M2VEtzY1JIeW0zclpKVUZmYUFxL3cwU0djWU10?=
+ =?utf-8?B?amgyb1lZSWYrL3JNb2hwTGJJRElJamZ1YTlQWnNjamhGVGJmVXovTUZZcG4v?=
+ =?utf-8?B?dVdTRlR6UkZoaVpPSUV2UkQvYmRGbGpPMFdSa08vTnlydHA1UVZRRUVxSjZZ?=
+ =?utf-8?B?TXY3YlU0UzJjWVRQZlNUNktLSW02dU9kYWcxVXdiRGxpWUo3NHRDdUp0ZlFq?=
+ =?utf-8?B?VG5BZlhUdHVZWk9SWjlnYWRGYXRuQ3FCdEhaaEJSekhlKzg3VnFjQzRVSHA2?=
+ =?utf-8?B?MzRXbndJcXN3eFVYcWpiVDNrVjRSdFVObUxqUnpMUEZyY2dtemRHVHhNUkZX?=
+ =?utf-8?B?Vjc0K0gzdUlwMVBNRDJPQXZ3dDJDNHgrU3B3UHNobmg2VFFiSHZsZlVKdDBL?=
+ =?utf-8?B?eGZBdHZlQWp1Ry93TmprZGlyVGMyNnV0eDk4a1g5cjh1UXNHaXJZY1FZVWdX?=
+ =?utf-8?B?MWsyRURMM3lTZVlwS0k1N3ZrT0QzSDZKSXQwbGN2cSs2NTlNZTJ4NDlsWWhF?=
+ =?utf-8?B?QXV6MDEvZG00ajd6MFRXN3pPbVR2RUtEZXAvSTFWcDZpZ3pDSjdxdk95d1lh?=
+ =?utf-8?B?WXdFWlN2Zk9pcTMyK2trTXpRcEw0RFgwWGdQb0dBN0d6alJCem9XMXJtSXgr?=
+ =?utf-8?B?endQemkrZ2E5Z2R1TE96S2RpVWxKbkVEdGFsMFZpdjN1M3dZUnhqZ2JZb3k0?=
+ =?utf-8?B?YVVSdDZaa2dtV0Q3THBsa1ZPL3lxdWUzQlUyWVZJQ3VKWGFRTFFSckxJbHZL?=
+ =?utf-8?B?MDE1Lzl2YlVEcTYyWVVZZm5ZV0JrSm9qQW1YdGVoRnRXNWYzUjJkTDhJYzN4?=
+ =?utf-8?B?UWJJSXR1SGErb3JvY3FIZlNUcHBPUkwzN0dCZ0ZxSmNaUUY0eVBxRFFmK3hs?=
+ =?utf-8?B?K0VpSlNCM3RqUU14cW5FSWhmNy94QnhPRmcyYWxsMjM4cWVWbThJMnk1TWM5?=
+ =?utf-8?B?YUxZSmJwajhPWElUTTRTbmhNb0FzRUQ3QTFhdFM1WitoVjJCOFZOcFh6U3hS?=
+ =?utf-8?B?SnBOS3BNZG9KdmRCei9MRi9wWkVVdmdMYm9jdXBTeThEeWcxQjVQMWQ2WXVz?=
+ =?utf-8?B?OWlsdjZBT2hzODVXcVdMMkcxQlQvNFM1NGpoMmlHeEdDS0ZuaDdEcTZaVWlS?=
+ =?utf-8?B?Y3JCMEU3V0U4L1BnVko3c0hzQmxoQ3hiNFNodE9vcDlRVmFLQzVLMG9wL0J1?=
+ =?utf-8?B?VlhDT05xSWxCQUpPOXRIeWhYY1pNTWtqN2hTd3dLNzB4UzU4c09tbFZxZHh4?=
+ =?utf-8?B?UitDT2JFdWlNcVFMS1lKdXBhaW5MRDhPSlkzU2IvK3lNQ3RuTG5ING9pb29j?=
+ =?utf-8?B?a3hQYm13anIvcVMyaWZ0TG0yV0trdHRqMmZDQzFha3VFaWY3SzdoOEFzQTBL?=
+ =?utf-8?B?Mlg1cmltZnlndjFwZEdxRmE2NW4wOThuS3JES3JxOUNFbVZTbE5GQXA2VEJk?=
+ =?utf-8?B?YTJGOE9WSUNRVzNRb0FMOUR4ZThQaHkxS25GN1lxL2hUZjRSeS9iSUF6dWV4?=
+ =?utf-8?B?bXJWODhrYWxJZU96dE8vaThkZGxWUXpyaGxSbHkyS0gweFE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 10:32:56.8695
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ba8ac28-2b21-4430-fab7-08dcf4e06422
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D0A.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR10MB9072
 
-On Fri, Oct 25, 2024 at 6:10=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> On Tue, Oct 1, 2024 at 3:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
-> >
-> > This will be used by the miscdevice abstractions, as the C function
-> > `misc_register` is fallible.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/types.rs | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index 9e7ca066355c..070d03152937 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> > @@ -299,6 +299,22 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) ->=
- impl PinInit<Self> {
-> >          }
-> >      }
-> >
-> > +    /// Creates a fallible pin-initializer from the given initializer =
-closure.
-> > +    ///
-> > +    /// The returned initializer calls the given closure with the poin=
-ter to the inner `T` of this
-> > +    /// `Opaque`. Since this memory is uninitialized, the closure is n=
-ot allowed to read from it.
-> > +    ///
-> > +    /// This function is safe, because the `T` inside of an `Opaque` i=
-s allowed to be
-> > +    /// uninitialized. Additionally, access to the inner `T` requires =
-`unsafe`, so the caller needs
-> > +    /// to verify at that point that the inner value is valid.
-> > +    pub fn try_ffi_init<E>(
-> > +        init_func: impl FnOnce(*mut T) -> Result<(), E>,
-> > +    ) -> impl PinInit<Self, E> {
-> > +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `in=
-it_func` to not fully
-> > +        // initialize the `T`.
-> > +        unsafe { init::pin_init_from_closure::<_, E>(move |slot| init_=
-func(Self::raw_get(slot))) }
-> > +    }
->
-> [1] adjusts `ffi_init` to use `try_ffi_init`. Maybe this should do the sa=
-me?
->
-> [1]: https://lore.kernel.org/rust-for-linux/20241022213221.2383-2-dakr@ke=
-rnel.org/
+On 23.10.2024 02:04, Rob Herring wrote:
+> On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
+>> Add a sample Rust platform driver illustrating the usage of the platform
+>> bus abstractions.
+>>
+>> This driver probes through either a match of device / driver name or a
+>> match within the OF ID table.
+> 
+> I know if rust compiles it works, but how does one actually use/test
+> this? (I know ways, but I might be in the minority. :) )
+> 
+> The DT unittests already define test platform devices. I'd be happy to
+> add a device node there. Then you don't have to muck with the DT on some
+> device and it even works on x86 or UML.
 
-Ah, I wasn't able to find previous patches for this, but I guess there was =
-one.
+Assuming being on x86, having CONFIG_OF and CONFIG_OF_UNITTEST enabled, 
+seeing the ### dt-test ### running nicely at kernel startup and seeing 
+the compiled in test device tree under /proc/device-tree:
 
-This patch has already landed in char-misc-next, so this can be a
-follow-up if you want to change it.
+Would using a compatible from the test device tree (e.g. "test-device") 
+in the Rust Platform driver sample [1] let the probe() of that driver 
+sample run?
 
-Alice
+Or is this a wrong/not sufficient understanding?
+
+I tried that, without success ;)
+
+Best regards
+
+Dirk
+
+--- a/samples/rust/rust_driver_platform.rs
++++ b/samples/rust/rust_driver_platform.rs
+@@ -15,7 +15,7 @@ struct SampleDriver {
+      SAMPLE_MODULE_OF_TABLE,
+      <SampleDriver as platform::Driver>::IdInfo,
+      [(
+-        of::DeviceId::new(c_str!("redhat,rust-sample-platform-driver")),
++        of::DeviceId::new(c_str!("test-device")),
+          Info(42)
+      )]
+  );
