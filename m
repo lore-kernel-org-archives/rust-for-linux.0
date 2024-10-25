@@ -1,312 +1,264 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E118A217F52;
-	Fri, 25 Oct 2024 21:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C830217F2C;
+	Fri, 25 Oct 2024 22:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729890761; cv=none; b=rNUIrfPrBcYpph/0bq58yCRi2Tf5QeByVi8x3+PXPjbREnIMIcDSQAWHPC4B+2x4wMzJ7WvCqALe3RIS8XuVsS8P8hWck9ydM/ZFi7mlW9SwGQ7UgxZ6kq4fKQeYU+dDFcAV5+zR97VzB5JBsSdymcICX0wjifItv0hLlyx+L8M=
+	t=1729893824; cv=none; b=a3YSjQ2+sOQRGP1rvHPrP/zE85O9L5baKWvUOnT576HxjXAkg4F5SjeHlUORtEDJ+ipDyR0nn+A4hesrhBu861pvqaceRiyLvIH7oL0jwWgoX/IQwECL+8yJwnFNUkOMP6k8jxKbDZhfStqIK1KwHsV4hU8YQfFgOWO4Pz3kPhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729890761; c=relaxed/simple;
-	bh=IjlTqsHUhgGQl8xGIVfkPYK5Bm5/5+SHMtnaoOWnxtQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MBEiBPyVpdjm8OynvQEAaTQBPs4ISSe7w3u4NXs2hjcpbtXaczpXndJhZ3mNedJOdpqVVhQ379rj3CCfcO2Xb9sD/Tn8mOG0Sp+SnUEbqO09GuKWROm4GbhadE9JbY4ysOGL3saNoXDL1h1WaNPN6Ym4vMhbqdMVeRgli3ZOfLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HvHAaNM7; arc=none smtp.client-ip=209.85.128.181
+	s=arc-20240116; t=1729893824; c=relaxed/simple;
+	bh=FOTLbL7gbW7YTtHMiRM1I70X/lPdVT4Cyr/dpLlXWgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H8hQ4FiyY4FDnCYqPmwXgK2pXhzKyfi+GBBSMi/IW0Ka9/0sC3i3QA9Ko3oaoYyMoK4iFjwQbglo8bIOJFyd7A11E/oYVERVG8nI99yusk4oA0i4kjntn4fjYEyEdTbw0juWxsKbCvbIaNEM5of09EHcZ7Dp/CSlDDOKJRmaycc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LsfHVAf7; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HvHAaNM7"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6e7e1232648so24879167b3.0;
-        Fri, 25 Oct 2024 14:12:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LsfHVAf7"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-460b16d4534so12649111cf.3;
+        Fri, 25 Oct 2024 15:03:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729890758; x=1730495558; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1729893821; x=1730498621; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oB6lXwMyCbAAmCk2oZzw/HCk/bTAUS3sM4zrs31ZW/0=;
-        b=HvHAaNM7LWj1kJUSIIt0MXiUKWDMdcNXCjc/afEaTqT0/gY6s1GlvKEQ0KrsRqzFqN
-         o/+JFHvqfmc5tvDyPaWO65E+9hTg94PgGZtV1nx7wJ7Mkh51Y+CXUvX7joh7fXwoavN2
-         k55Sx6q9Lj2SUnlqt/SehlJ22j7Vh9Wq0t/43InspKyGmGC+XoaB8HQQMoFd8qCfUb7F
-         BfZCPW+UC4aSOwt6nZmhgIwJJL2zpr36WZzW68hctRytFJFaY5QCAkehwmwpuez9HPtg
-         yM5p2LYVEkbuq5zakp1Chw6+k2EpUNrLIHoBRClFGrF3FFxyvi17qFEZa3pPiI/q+Ypw
-         PQNA==
+        bh=JT5COGsxViqKRAdujVI1CBo0jutDQ8MfmHu6RZKf300=;
+        b=LsfHVAf7yCd5k5G3EEDwXi4uyVvkSUFCyVcflnuaqgHoWICMqNwb9bh+b+VgPFDdwR
+         2ysYGZC+RfYz7CUJqx/h9RPOB4id3KZ2HJn/KS7/RpeRUPJvnafTiFT40Vh9+46zGaQI
+         Bc38WRUcYf1/lxGLsRXSPqrXiMvLvM8X8pSYBWfHtp0VuHKQ7wWSqBb6IyEHpfvns6uf
+         zvE0ceWW24fLshjThhaMzqvSq7Hd7P1UWOm+lT/xP0gNfTADIybJ6v2CJtgOTkhdp/xN
+         l3X87svaE3gyObKR+8ca1r+2j54N4xVThI5k1dlcGx6oGEf5iwJBourzPOtCOnqYKWx0
+         w6oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729890758; x=1730495558;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1729893821; x=1730498621;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oB6lXwMyCbAAmCk2oZzw/HCk/bTAUS3sM4zrs31ZW/0=;
-        b=ZVOxitAVHsR+4QhOmKNcbSaAOzYrq9h7hMOhj4qvDtBVD+UTSCvV7MoobjtCPn2GAm
-         bRFefXdsVamFTgC6KUTSg+usjxuD2bPKnzBbvMw6BhefyoHHYaavK/54jTccZNOfgHpp
-         Hkv+JUZSXOdZSjDE2F+R1qwEnwtcIzyyNLNAX+p3KzYl/Po6c0q0Fv2UKIyNX+dJ4vZN
-         moBgZFRt+FPPKbN0S97OciCvTQSjBpMEhqWoWDCpyw6jI6WV29iEAJ0h1RmQZPc5sR0g
-         nK7quK8mD71laxvC1ekgBU0XH4TAmbsq8Hzo+fCapLQq3mdqIuwq0hLSsd57nKfI4po2
-         8Psg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZNbPjzrbYk7BdKNvE6/pVjgqSeEBa0qa9VtT4PDa/UszWSe+ew7cdWN3QPF1MW6Ujxo+0ZcQUKQ080svBulw=@vger.kernel.org, AJvYcCW4a+6ZCHc/KsVVJMVX142zMfIh1ETcCSqA5DrbhD1HX10/hKzn2HT5RwjBznHm/rg3277HQERfmmPd@vger.kernel.org, AJvYcCXTEV+Z+ZoUGdP50ete7NCkKU16zYhqaIVQOby70SJR8enqToJWqyNYq0pgh7aFcv6D+bq2Qo0Vr6vVhw3F@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJX4z4OStLC9fIIqJpwf9sTwH9hCKCLIDZ65Z0+60OGn+nrvb9
-	WxGD/QJYDEdCWC1WRi/5BxOoYJCyamYn7sR9HS79bmlPWZCzhgEkIn6qvu9y3Khw3jqd04ZEf8u
-	zem4PEtCQaW0Py5RqPr3MRN1k4tM=
-X-Google-Smtp-Source: AGHT+IFhl2DXXYedYolNgqaxt8qLhlSq3KHoxK8qW+TlUw6cyJr6abONpTIbzSI2LM+5sB3IQoPJEUUyWgyYt+4VQNY=
-X-Received: by 2002:a05:690c:2a8e:b0:6e6:1018:64c7 with SMTP id
- 00721157ae682-6e9d8b8dbadmr9108777b3.41.1729890757618; Fri, 25 Oct 2024
- 14:12:37 -0700 (PDT)
+        bh=JT5COGsxViqKRAdujVI1CBo0jutDQ8MfmHu6RZKf300=;
+        b=DFr5kFV2jmlMcc7bihPeSnqYBTMqUNDiSFLikHrPO6ZSts9Mh18CqoMeoW1XPEXW+K
+         yVAiyLtfEk9OgSMHggD+1IbJeDUpZTGUf4LZt5EHMyodck5SHSHw4pfLL+VzKbSa2Vm4
+         p4NKqBiHiCeF6wk3dcdaZqT/Ru8bI1q6cfu6X8LyMvJP5lqWteHscLH2X9TIy+bBk4i2
+         04QKKYCe25yYPG/U6apK4VfLsvHBLUSM2rAT+rajaIDQ8zBh3/FAq0ApiHMs51mDH1H9
+         Zxz2dRgCcJYcUhddR77vdjuvYs1xeUmaAEdGQZXWjaR0LFNwlemPA9qsSEBzx5eTXrOt
+         rQTw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8ISeT5MzORLG1jeB3kgh+7VxhXA31nj6xMZFB6dvSxAkIUX7MehnBYEqbu/Y7Vkiz9ojux4i3@vger.kernel.org, AJvYcCWTxGsLUcYibedImUD/U9opTiWxIO8eM4n1UFiLV2WwXp8adkjdnAYx9RN7erpF6Y/frUZUUDstz8sFf3E=@vger.kernel.org, AJvYcCXCgQUI0WwLfCXHpEfrd5nc5ptl/Oqg2JMvJB0dj3Ptbgbcle6IgaUDbmF60eO+kUmvgcHtwlTTVHAvDsVydDo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5r4PiFr9Oet4nrbH9dvXxlep2tpzZHEplwiUiRL4AJ5Go3ujq
+	doGo3WLD/VQbG69km2fZTbK/+S97P3AUHuTmIfao/+d3mZKt0GBBpaLK7g==
+X-Google-Smtp-Source: AGHT+IFfvSEpk8tbWKhiexx3cSY8b2ZjrPMrXV0fEahdYXPYpGoYpmPb5mOS2mmhspGWWMBQJFIz/g==
+X-Received: by 2002:a05:622a:54d:b0:460:b2ce:ce96 with SMTP id d75a77b69052e-4613c177337mr9454031cf.41.1729893820827;
+        Fri, 25 Oct 2024 15:03:40 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4613237f394sm10110511cf.65.2024.10.25.15.03.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2024 15:03:40 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 82AEF1200068;
+	Fri, 25 Oct 2024 18:03:39 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 25 Oct 2024 18:03:39 -0400
+X-ME-Sender: <xms:uxUcZzYxhY7zfrSCndYL7pFXUJX3f5URE3g4Ltc-HQC3V54qxmlP3g>
+    <xme:uxUcZyaUqtKwMFwlx1JWOD9IYOHPvcVoeFU2-rKOMoPX8KuO53crmL0gNbiR7FrLh
+    1vxYiE2eua3II_vhA>
+X-ME-Received: <xmr:uxUcZ1-QI3IfrtnWaGvuSKQl1IbpBpABd1Rr4Qmb_iLL1RwcnT-Ft5CNUAE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejfedgtdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeevuefgjeeugfeuveeifeegjeetleffleegteek
+    ueethfdvgfekgeffuefghfejffenucffohhmrghinheprhhushhtqdhfohhrqdhlihhnuh
+    igrdgtohhmpdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonh
+    grlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghnghep
+    pehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupd
+    hmohguvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhi
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnnhgrqdhmrghrihgrsehlihhnuhhtrh
+    honhhigidruggvpdhrtghpthhtohepfhhrvgguvghrihgtsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehjsh
+    htuhhlthiisehgohhoghhlvgdrtghomhdprhgtphhtthhopehssghohigusehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:uxUcZ5o-UUs0Pe01KdXEw3y_1xWpIUaaYsd_x5_YWJ2NJZDrxd6mcg>
+    <xmx:uxUcZ-rHEY4nYpTu-5sXpLU9S1tv_cosR8sjlxDwmy3nNZZI4o7bAQ>
+    <xmx:uxUcZ_T2zC9gvKM31wpKJ0XgRAVOyjZ0y-p5HDIqDvMaHZ-pmrqAcA>
+    <xmx:uxUcZ2rvsTNO_PXsqPrKGvbw_QFbyyGRJEa1Jh5IqqYEQfaUXdJa_w>
+    <xmx:uxUcZ_74RIpdOOfPuT4syf-7MFTCfOvM29GPdr45ky6VxFZLn5odLHqZ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 25 Oct 2024 18:03:38 -0400 (EDT)
+Date: Fri, 25 Oct 2024 15:03:37 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	jstultz@google.com, sboyd@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de
+Subject: Re: [PATCH v4 4/7] rust: time: Add wrapper for fsleep function
+Message-ID: <ZxwVuceNORRAI7FV@Boquns-Mac-mini.local>
+References: <20241025033118.44452-1-fujita.tomonori@gmail.com>
+ <20241025033118.44452-5-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org> <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
-In-Reply-To: <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
-From: Alex Gaynor <alex.gaynor@gmail.com>
-Date: Fri, 25 Oct 2024 17:12:26 -0400
-Message-ID: <CAFRnB2WPEQaa6X6LqMk+JTxprguakNqFXvjaUGQ0QazxKH=z4Q@mail.gmail.com>
-Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241025033118.44452-5-fujita.tomonori@gmail.com>
 
-On Fri, Oct 25, 2024 at 5:06=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
- wrote:
->
-> The device property API is a firmware agnostic API for reading
-> properties from firmware (DT/ACPI) devices nodes and swnodes.
->
-> While the C API takes a pointer to a caller allocated variable/buffer,
-> the rust API is designed to return a value and can be used in struct
-> initialization. Rust generics are also utilized to support different
-> sizes of properties (e.g. u8, u16, u32).
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+On Fri, Oct 25, 2024 at 12:31:15PM +0900, FUJITA Tomonori wrote:
+> Add a wrapper for fsleep, flexible sleep functions in
+> `include/linux/delay.h` which typically deals with hardware delays.
+> 
+> The kernel supports several `sleep` functions to handle various
+> lengths of delay. This adds fsleep, automatically chooses the best
+> sleep method based on a duration.
+> 
+> `sleep` functions including `fsleep` belongs to TIMERS, not
+> TIMEKEEPING. They are maintained separately. rust/kernel/time.rs is an
+> abstraction for TIMEKEEPING. To make Rust abstractions match the C
+> side, add rust/kernel/time/delay.rs for this wrapper.
+> 
+> fsleep() can only be used in a nonatomic context. This requirement is
+> not checked by these abstractions, but it is intended that klint [1]
+> or a similar tool will be used to check it in the future.
+> 
+> Link: https://rust-for-linux.com/klint [1]
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > ---
-> Not sure if we need the KVec variant, but I kept it as that was my first
-> pass attempt. Most callers are filling in some value in a driver data
-> struct. Sometimes the number of elements is not known, so the caller
-> calls to get the array size, allocs the correct size buffer, and then
-> reads the property again to fill in the buffer.
->
-> I have not implemented a wrapper for device_property_read_string(_array)
-> because that API is problematic for dynamic DT nodes. The API just
-> returns pointer(s) into the raw DT data. We probably need to return a
-> copy of the string(s) instead for rust.
->
-> After property accessors, next up is child node accessors/iterators.
-> ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/device.rs           | 145 ++++++++++++++++++++++++++++++++++=
-+++++-
->  2 files changed, 145 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 217c776615b9..65717cc20a23 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -19,6 +19,7 @@
->  #include <linux/pci.h>
->  #include <linux/phy.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
->  #include <linux/refcount.h>
->  #include <linux/sched.h>
->  #include <linux/slab.h>
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 0c28b1e6b004..bb66a28df890 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -5,10 +5,14 @@
->  //! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
->
->  use crate::{
-> +    alloc::KVec,
->      bindings,
-> +    error::{to_result, Result},
-> +    prelude::*,
-> +    str::CStr,
->      types::{ARef, Opaque},
->  };
-> -use core::{fmt, ptr};
-> +use core::{fmt, mem::size_of, ptr};
->
->  #[cfg(CONFIG_PRINTK)]
->  use crate::c_str;
-> @@ -189,6 +193,145 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Ar=
-guments<'_>) {
->              )
->          };
->      }
+>  rust/helpers/helpers.c    |  1 +
+>  rust/helpers/time.c       |  8 ++++++++
+>  rust/kernel/time.rs       |  4 +++-
+>  rust/kernel/time/delay.rs | 30 ++++++++++++++++++++++++++++++
+>  4 files changed, 42 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/helpers/time.c
+>  create mode 100644 rust/kernel/time/delay.rs
+> 
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 30f40149f3a9..c274546bcf78 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -21,6 +21,7 @@
+>  #include "slab.c"
+>  #include "spinlock.c"
+>  #include "task.c"
+> +#include "time.c"
+>  #include "uaccess.c"
+>  #include "wait.c"
+>  #include "workqueue.c"
+> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+> new file mode 100644
+> index 000000000000..7ae64ad8141d
+> --- /dev/null
+> +++ b/rust/helpers/time.c
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +    /// Returns if a firmware property `name` is true or false
-> +    pub fn property_read_bool(&self, name: &CStr) -> bool {
-> +        unsafe { bindings::device_property_present(self.as_raw(), name.a=
-s_ptr() as *const i8) }
-> +    }
+> +#include <linux/delay.h>
 > +
-> +    /// Returns if a firmware string property `name` has match for `matc=
-h_str`
-> +    pub fn property_match_string(&self, name: &CStr, match_str: &CStr) -=
-> Result<usize> {
-> +        let ret =3D unsafe {
-> +            bindings::device_property_match_string(
-> +                self.as_raw(),
-> +                name.as_ptr() as *const i8,
-> +                match_str.as_ptr() as *const i8,
-> +            )
-> +        };
-> +        to_result(ret)?;
-> +        Ok(ret as usize)
-> +    }
+> +void rust_helper_fsleep(unsigned long usecs)
+> +{
+> +	fsleep(usecs);
+> +}
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 3cc1a8a76777..cfc31f908710 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -2,12 +2,14 @@
+>  
+>  //! Time related primitives.
+>  //!
+> -//! This module contains the kernel APIs related to time and timers that
+> +//! This module contains the kernel APIs related to time that
+>  //! have been ported or wrapped for usage by Rust code in the kernel.
+>  //!
+>  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
+>  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
+>  
+> +pub mod delay;
 > +
-> +    /// Returns firmware property `name` scalar value
-> +    ///
-> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> +    pub fn property_read<T: Copy>(&self, name: &CStr) -> Result<T> {
-> +        let mut val: [T; 1] =3D unsafe { core::mem::zeroed() };
+>  /// The number of nanoseconds per microsecond.
+>  pub const NSEC_PER_USEC: i64 = bindings::NSEC_PER_USEC as i64;
+>  
+> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+> new file mode 100644
+> index 000000000000..f80f35f50949
+> --- /dev/null
+> +++ b/rust/kernel/time/delay.rs
+> @@ -0,0 +1,30 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +        Self::_property_read_array(&self, name, &mut val)?;
-> +        Ok(val[0])
-> +    }
+> +//! Delay and sleep primitives.
+> +//!
+> +//! This module contains the kernel APIs related to delay and sleep that
+> +//! have been ported or wrapped for usage by Rust code in the kernel.
+> +//!
+> +//! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
 > +
+> +use crate::time;
+> +use core::ffi::c_ulong;
+> +
+> +/// Sleeps for a given duration at least.
+> +///
+> +/// Equivalent to the kernel's [`fsleep`], flexible sleep function,
+> +/// which automatically chooses the best sleep method based on a duration.
+> +///
+> +/// The function sleeps infinitely (MAX_JIFFY_OFFSET) if `Delta` is negative
+> +/// or exceedes i32::MAX milliseconds.
+> +///
 
-This, and several of the other methods are unsound, because they can
-be used to construct arbitrary types for which may not allow all bit
-patterns. You can use:
-https://rust.docs.kernel.org/kernel/types/trait.FromBytes.html as the
-bound to ensure only valid types are used.
+I know Miguel has made his suggestion:
 
-Also, instead of using mem::zeroed(), you should use MaybeUnininit
-(https://doc.rust-lang.org/stable/core/mem/union.MaybeUninit.html)
-which allows you to avoid needing to zero initialize.
+	https://lore.kernel.org/rust-for-linux/CANiq72kWqSCSkUk1efZyAi+0ScNTtfALn+wiJY_aoQefu2TNvg@mail.gmail.com/
 
-> +    /// Returns firmware property `name` array values
-> +    ///
-> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> +    pub fn property_read_array<T, const N: usize>(&self, name: &CStr) ->=
- Result<[T; N]> {
-> +        let mut val: [T; N] =3D unsafe { core::mem::zeroed() };
-> +
-> +        Self::_property_read_array(self, name, &mut val)?;
-> +        Ok(val)
-> +    }
-> +
-> +    fn _property_read_array<T>(&self, name: &CStr, val: &mut [T]) -> Res=
-ult {
-> +        match size_of::<T>() {
-> +            1 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u8_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u8,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            2 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u16_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u16,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            4 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u32_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u32,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            8 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u64_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u64,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            _ =3D> return Err(EINVAL),
-> +        }
-> +        Ok(())
-> +    }
-> +
-> +    pub fn property_read_array_vec<T>(&self, name: &CStr, len: usize) ->=
- Result<KVec<T>> {
-> +        let mut val: KVec<T> =3D KVec::with_capacity(len, GFP_KERNEL)?;
-> +
-> +        // SAFETY: len always matches capacity
-> +        unsafe { val.set_len(len) }
-> +        Self::_property_read_array::<T>(&self, name, val.as_mut_slice())=
-?;
-> +        Ok(val)
-> +    }
-> +
-> +    /// Returns array length for firmware property `name`
-> +    ///
-> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> +    pub fn property_count_elem<T>(&self, name: &CStr) -> Result<usize> {
-> +        let ret;
-> +
-> +        match size_of::<T>() {
-> +            1 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u8_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            2 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u16_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            4 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u32_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            8 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u64_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            _ =3D> return Err(EINVAL),
-> +        }
-> +        to_result(ret)?;
-> +        Ok(ret.try_into().unwrap())
-> +    }
->  }
->
->  // SAFETY: Instances of `Device` are always reference-counted.
->
-> --
-> 2.45.2
->
+, but I think what we should really do here is just panic if `Delta` is
+negative or exceedes i32::MAX milliseconds, and document clearly that
+this function expects `Delta` to be in a certain range, i.e. it's the
+user's responsibility to check. Because:
 
+*	You can simply call schedule() with task state set properly to
+	"sleep infinitely".
 
---=20
-All that is necessary for evil to succeed is for good people to do nothing.
+*	Most of the users of fsleep() don't need this "sleep infinitely"
+	functionality. Instead, they want to sleep with a reasonable
+	short time.
+
+> +/// This function can only be used in a nonatomic context.
+> +pub fn fsleep(delta: time::Delta) {
+> +    // SAFETY: FFI call.
+> +    unsafe {
+> +        // Convert the duration to microseconds and round up to preserve
+> +        // the guarantee; fsleep sleeps for at least the provided duration,
+> +        // but that it may sleep for longer under some circumstances.
+> +        bindings::fsleep(delta.as_micros_ceil() as c_ulong)
+
+If delta is 0x10000_0000i64 * 1000_000 (=0xf424000000000i64), which
+exceeds i32::MAX milliseconds, the result of `delta.as_micros_ceil() as
+c_ulong` is:
+
+*	0 on 32bit
+*	0x3e800000000 on 64bit
+
+, if I got my math right. The first is obviously not "sleeps
+infinitely".
+
+Continue on 64bit case, in C's fsleep(), 0x3e800000000 will be cast to
+"int" (to call msleep()), which results as 0, still not "sleep
+infinitely"?
+
+Regards,
+Boqun
+
+> +    }
+> +}
+> -- 
+> 2.43.0
+> 
+> 
