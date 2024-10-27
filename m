@@ -1,197 +1,246 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BBB17E010;
-	Sun, 27 Oct 2024 22:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A007618EBF;
+	Sun, 27 Oct 2024 22:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730066880; cv=none; b=BVsanCzmQD6/RgbMk0lCON5bMyHUgTakAy0LwYcjsmjSr2LAJN0SWR+P7hPH97Q/6RjDib6dzA5uS8sHlwigLvIXkOZ/hPYmFwkWyl5L2z/pD3hlBlmOZWP1eseZbqqyfwty8XRDv+txQUgpsc7dRS0mYk/Xl7B4kW5iXQ3yEkY=
+	t=1730067609; cv=none; b=QC/V6rVdNgrtTyhCjDE5ysKF64z3tvAA5+trgTLQDx5+NCWyJbts0l+qatdBUfe1tmDeaVmOTrIVXPfbBcyAji/i2o4jSOLUxxxS6p2Ur7HgBRvuhes8jovu0ZCRgutCIol4CCODKUb0A/xZhfj8+bIlO1hJBsM5J3l22q5yLsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730066880; c=relaxed/simple;
-	bh=M+fOSh12DY+uXB0hOkCfy3jG4u35jWzV5295JwlSo7w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=emjEgGug8MGADdcq5MtbQegF7SRdjlxs8LxFtXFuYJouj3R1vx60J7mYj4A2wRjF1vAuXBGQ7oq1dzro6cJ763TkDXaAsimYasWO9vzSkA3Le7cz5qBmCZ7KZrAcfPRiBbDjaEoM8koOvAfcq8dD+LrmG/xKMqu8Adb6+8fNGCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cn6T7qQf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730067609; c=relaxed/simple;
+	bh=D2fzt15oN40rPfOx05cCSxCIdosrthcOMzQY+rwabv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=szVzX79BsI7M7zAU4ypbkKy2iZ6Z4pm5vIQTodLptq6W/QoSBYvNbhY9rNByzaEa7AET+E2Pj6WFTygL+rOQ0SUafu6ET11dALisDW8kqTqPc/QgKuIp9AtGNI72Twd62gPufHku9MtTy14qL3b683YJXCb65ZvnERk0o8sWnkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K59S0Lsa; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cn6T7qQf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6F7C4CEE9;
-	Sun, 27 Oct 2024 22:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730066879;
-	bh=M+fOSh12DY+uXB0hOkCfy3jG4u35jWzV5295JwlSo7w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cn6T7qQfR/9Su+CuRbNy6ExAmf9ypbJtK2lkhN2jjtYvW0FnV7wfZrZLtlrX5IcFR
-	 QehAQqBUdWWir1hpu5LMmA/Ulq2/G7PsnhYjGrrf4+jWx6sWYVW6Ze5mso+LHZXZli
-	 YEPxImFCKyrgtsOPjzjSzOyW0wYY9WivOnoExfvlMtYkdS5Uti8MX7AfKVsE9E2Kgh
-	 m/ida35h1/aso5f/ABuntjp0c54gPaTfQZTiXB9ldHPiEXHAuHE7ybBKcPl2OQ0Eok
-	 TEg4kdu9Jgl/3KADrTM/nqucSfE7zffJDo2VaFTFg1deFMiOQmhojg158XYFE9jX2r
-	 b7m8hkye65BHg==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-53b1fbb8be5so3735902e87.1;
-        Sun, 27 Oct 2024 15:07:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU4AZxFIKmSkL/6E1in2qKweVJ78yLflNRxhwOLtS3nbChFLcN6ihIkLVZFXNnh/IN03xS4nxzUD5JVN3Q6@vger.kernel.org, AJvYcCUa4py41q1mksYL/vZ2lwPtAW+QnjIG15JbxfZls0lHJtrujYMxDsswHHZVHUxDgcaKjGUqUacBAjPDjURQW1s=@vger.kernel.org, AJvYcCW0GYsELYqRRv/zty29hxM9GAFSG/MJuxX/KJ8niugCASocApUvNDOrsRvrAzHj+Y7wtI2bQSHY4eEG@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg3eAMAG6nRjnJke3ug0RlSHyqYFPHdf+eNck9Ek26j0Ke4OaT
-	bmyCpgZ2y+YepF1vlV78Qdalj/qGfgxrz3uvTFf8W4fUyMujUuCu58mK/mt/eFnHdXD5Fr+9kmE
-	GvvL9jS4uSsQvDvu+mhLzmWKi0w==
-X-Google-Smtp-Source: AGHT+IGzVz1+qVJIKILu1Ma9w+9AyxRZ4PZhCLFxlDC+YXiCCbqzllw4dwrJ7/Sp4wTsYMZ6ff8zbm9Jx/qpfxN2+Is=
-X-Received: by 2002:a05:6512:1092:b0:539:fc50:915f with SMTP id
- 2adb3069b0e04-53b236a6802mr4614391e87.2.1730066877695; Sun, 27 Oct 2024
- 15:07:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K59S0Lsa"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-460c0f9c13eso32630071cf.0;
+        Sun, 27 Oct 2024 15:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730067606; x=1730672406; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7DWIM30hSmiFkVWlDf1md4/nYtdvjo5qOjKey5YjI/w=;
+        b=K59S0LsaJctHG2Z4mO7ojeMJmna1nV1FCV2Da60vSN3+DbCv6pZ0nNsw126XmrOx+3
+         OdZg8znowepasWmPSkYAyjKaE8caFJinLtHpdIvD/f2qoB1DNc+nKr/U+xEnbvujXFTH
+         wwDa6XWRqdpcoIXN39INnOQsEud2tXstG56qIwUQCX9iQPl5J9+7V3AMM8+4Uw5160bz
+         rc0IerYyBmPdf8AZFILM/tmU/8+guVLD6OpKRzoM9q5WZADMFmd7/r3oXDZjaS1cYjct
+         o9yfRZnu8QMXCIxKrh1bjgugAYBfBRuPoYWawUQTP2d1ZBZbGhqm8SS5TGI0x2MdELTJ
+         l7aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730067606; x=1730672406;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7DWIM30hSmiFkVWlDf1md4/nYtdvjo5qOjKey5YjI/w=;
+        b=B3NcSGURLTG5rVkUFdtdP2W7PYWiJYK78sfQDtp/rEgrcgLSQqHMm9Qa1EJjCy2MSd
+         bJYqcU98klj7AOM1Hx3ambQh+68D7tr+NVC9P8KujWkevNmMsKSAqRBxQr7U96aEHptB
+         95XuIEipi21NY7FKJNaXLiIIaSFqVUIrsdK9AL6fV0P5iUfK9qMRl/PGyCKMYdKIG8U2
+         VovoWAGpxavhngEfejm6nSMXkQeoW+EYHvg11RaasEU+7UnDNPz/0e8xUwx0ETEEIwe1
+         M2T2Y0SOIKhRuAub1WljTuqu3yIBFkSncp1L7HguB4nsgTEMOaBIueeyu2ivHPWiYGt7
+         Ywdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUdZl/GS9pYAT7fshDZRXI6MtyVj0c74tPCdFahjH3yvGtDJdDZXpZFN9a5B3scgL6pyGxlyCD5nXcbqwo=@vger.kernel.org, AJvYcCV2s7JURfX9xmU53KSPGlfu/Gg9/gS9KFFX9Xj61H2Iig+FB5Dhta473M/1DRMP48u7jmRNk1MJWash5qIz8RY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysOZAMdJAa3ONyVnLARu9cGSky+OXQJT/Oh5KXO6u/5Lv2jm/7
+	Q7lX6zxMri9baMDyU3qVTwoY+6MQOWxYmy/A/UMuA65EfMgR+Mpb
+X-Google-Smtp-Source: AGHT+IEG1QvJ/g9ScTXJuJpuzLdjUd2+GPkNkIVDSjZVlb0UQBGYNwbT+U2Sbup1kXCuopmvWGhV7g==
+X-Received: by 2002:ac8:5884:0:b0:45f:560:86de with SMTP id d75a77b69052e-4613b426930mr134001411cf.7.1730067606470;
+        Sun, 27 Oct 2024 15:20:06 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4613237f394sm28646771cf.65.2024.10.27.15.20.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Oct 2024 15:20:05 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E414E1200043;
+	Sun, 27 Oct 2024 18:20:04 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sun, 27 Oct 2024 18:20:04 -0400
+X-ME-Sender: <xms:lLweZzR3-Q1-vEia1n6vHmXRM15-iGZ0WbzpgVmFLFixZNqF7ubNKg>
+    <xme:lLweZ0yVNli_wPGA5vRFfCaX-0h1L9kE2cvksjZWPL1m7t7CrraR6gDvH_k2ftMMP
+    i0zXXPMjvpMCDj4dw>
+X-ME-Received: <xmr:lLweZ40x0BpMDi9HcVdTZpyuowuDyB0QbSGigluX17JPq6CNAh_vFtpTf28>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejiedgudeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeelpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheprggsughivghlrdhjrghnuhhlghhuvgesghhmrghilhdrtghomhdprhgtphht
+    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegu
+    rghkrhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghirhhlihgvugesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhish
+    esghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:lLweZzAzCbAZK5xk2FymnSrqpmniVkEdPFsj5frN-Uv20Z9GP9kZ5Q>
+    <xmx:lLweZ8iva0SeRPQ2b1oH59RVoYwJTSJs5cLvcyrXjzfLtAiOnEOc6A>
+    <xmx:lLweZ3okDt-wuNHsDY9PvS_F-PvPLhKSgxvJJwVEzoTHL59ccpMOLg>
+    <xmx:lLweZ3i14IygYn5NbPlbFsG7qIO3_harNik7Mc18ljb2737jd_r3UA>
+    <xmx:lLweZ_TgB0Iil_lIoa74CtCVnUUu8Nc5mR0dMxxJweYReMw0774oo4vH>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 27 Oct 2024 18:20:04 -0400 (EDT)
+Date: Sun, 27 Oct 2024 15:20:03 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+	dakr@redhat.com, linux-kernel@vger.kernel.org, airlied@redhat.com,
+	miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v2 5/5] rust: firmware: implement `Ownable` for Firmware
+Message-ID: <Zx68k94GrHb3Kz3-@Boquns-Mac-mini.local>
+References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
+ <20241022224832.1505432-6-abdiel.janulgue@gmail.com>
+ <ZxjDUxUiKfE_7tvq@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
- <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAFRnB2WPEQaa6X6LqMk+JTxprguakNqFXvjaUGQ0QazxKH=z4Q@mail.gmail.com>
-In-Reply-To: <CAFRnB2WPEQaa6X6LqMk+JTxprguakNqFXvjaUGQ0QazxKH=z4Q@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Sun, 27 Oct 2024 17:07:44 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJzh7dWU9gAZV_cKfi_6kOm3stbr9DdFzdse4gUYPn9Vg@mail.gmail.com>
-Message-ID: <CAL_JsqJzh7dWU9gAZV_cKfi_6kOm3stbr9DdFzdse4gUYPn9Vg@mail.gmail.com>
-Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
-To: Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZxjDUxUiKfE_7tvq@pollux>
 
-On Fri, Oct 25, 2024 at 4:12=E2=80=AFPM Alex Gaynor <alex.gaynor@gmail.com>=
- wrote:
->
-> On Fri, Oct 25, 2024 at 5:06=E2=80=AFPM Rob Herring (Arm) <robh@kernel.or=
-g> wrote:
-> >
-> > The device property API is a firmware agnostic API for reading
-> > properties from firmware (DT/ACPI) devices nodes and swnodes.
-> >
-> > While the C API takes a pointer to a caller allocated variable/buffer,
-> > the rust API is designed to return a value and can be used in struct
-> > initialization. Rust generics are also utilized to support different
-> > sizes of properties (e.g. u8, u16, u32).
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+On Wed, Oct 23, 2024 at 11:35:15AM +0200, Danilo Krummrich wrote:
+> On Wed, Oct 23, 2024 at 01:44:49AM +0300, Abdiel Janulgue wrote:
+> > For consistency, wrap the firmware as an `Owned` smart pointer in the
+> > constructor.
+> > 
+> > Cc: Danilo Krummrich <dakr@redhat.com>
+> > Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 > > ---
-> > Not sure if we need the KVec variant, but I kept it as that was my firs=
-t
-> > pass attempt. Most callers are filling in some value in a driver data
-> > struct. Sometimes the number of elements is not known, so the caller
-> > calls to get the array size, allocs the correct size buffer, and then
-> > reads the property again to fill in the buffer.
-> >
-> > I have not implemented a wrapper for device_property_read_string(_array=
-)
-> > because that API is problematic for dynamic DT nodes. The API just
-> > returns pointer(s) into the raw DT data. We probably need to return a
-> > copy of the string(s) instead for rust.
-> >
-> > After property accessors, next up is child node accessors/iterators.
-> > ---
-> >  rust/bindings/bindings_helper.h |   1 +
-> >  rust/kernel/device.rs           | 145 ++++++++++++++++++++++++++++++++=
-+++++++-
-> >  2 files changed, 145 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
-elper.h
-> > index 217c776615b9..65717cc20a23 100644
-> > --- a/rust/bindings/bindings_helper.h
-> > +++ b/rust/bindings/bindings_helper.h
-> > @@ -19,6 +19,7 @@
-> >  #include <linux/pci.h>
-> >  #include <linux/phy.h>
-> >  #include <linux/platform_device.h>
-> > +#include <linux/property.h>
-> >  #include <linux/refcount.h>
-> >  #include <linux/sched.h>
-> >  #include <linux/slab.h>
-> > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> > index 0c28b1e6b004..bb66a28df890 100644
-> > --- a/rust/kernel/device.rs
-> > +++ b/rust/kernel/device.rs
-> > @@ -5,10 +5,14 @@
-> >  //! C header: [`include/linux/device.h`](srctree/include/linux/device.=
-h)
-> >
-> >  use crate::{
-> > +    alloc::KVec,
-> >      bindings,
-> > +    error::{to_result, Result},
-> > +    prelude::*,
-> > +    str::CStr,
-> >      types::{ARef, Opaque},
-> >  };
-> > -use core::{fmt, ptr};
-> > +use core::{fmt, mem::size_of, ptr};
-> >
-> >  #[cfg(CONFIG_PRINTK)]
-> >  use crate::c_str;
-> > @@ -189,6 +193,145 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::=
-Arguments<'_>) {
-> >              )
-> >          };
+> >  rust/kernel/firmware.rs | 31 ++++++++++++++++++-------------
+> >  1 file changed, 18 insertions(+), 13 deletions(-)
+> > 
+> > diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> > index dee5b4b18aec..6da834b37455 100644
+> > --- a/rust/kernel/firmware.rs
+> > +++ b/rust/kernel/firmware.rs
+> > @@ -4,8 +4,8 @@
+> >  //!
+> >  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+> >  
+> > -use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> > -use core::ptr::NonNull;
+> > +use crate::{bindings, device::Device, error::Error, error::Result, str::CStr,
+> > +            types::{Opaque, Owned, Ownable}};
+> >  
+> >  /// # Invariants
+> >  ///
+> > @@ -52,10 +52,11 @@ fn request_nowarn() -> Self {
+> >  /// # Ok(())
+> >  /// # }
+> >  /// ```
+> > -pub struct Firmware(NonNull<bindings::firmware>);
+> > + #[repr(transparent)]
+> > +pub struct Firmware(Opaque<bindings::firmware>);
+> >  
+> >  impl Firmware {
+> > -    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> > +    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Owned<Self>> {
+> 
+> I think it's fine to implement this for consistency, but I'm not sure I like
+> that drivers have to refer to it as `Owned<Firmware>`.
+> 
+
+May I ask why not? ;-)
+
+Ideally, we should not wrap a pointer to particular type, instead we
+should wrap the type and then combine it with a meaningful pointer type,
+e.g. Box<>, ARef<>, Owned<> ... in this way, we de-couple how the
+lifetime of object is maintained (described by the pointer type) and
+what operations are available on the object (described by the wrapper
+type).
+
+If later on, a firmware object creation is doable in pure Rust code for
+some condition, we can then have a function that returns a
+`KBox<Firmware>` (assume using kmalloc for the object), and it will just
+work (tm).
+
+Regards,
+Boqun
+
+> Anyway, if we keep it this way the patch also needs the following change.
+> 
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index 6da834b37455..1db854eb2422 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -115,8 +115,8 @@ unsafe fn ptr_drop(ptr: *mut Self) {
+> 
+>  // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, which is safe to be used from
+>  // any thread.
+> -unsafe impl Send for Firmware {}
+> +unsafe impl Send for Owned<Firmware> {}
+> 
+>  // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, references to which are safe to
+>  // be used from any thread.
+> -unsafe impl Sync for Firmware {}
+> +unsafe impl Sync for Owned<Firmware> {}
+> 
+> >          let mut fw: *mut bindings::firmware = core::ptr::null_mut();
+> >          let pfw: *mut *mut bindings::firmware = &mut fw;
+> >  
+> > @@ -65,25 +66,26 @@ fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> >          if ret != 0 {
+> >              return Err(Error::from_errno(ret));
+> >          }
+> > -
+> > +        // CAST: Self` is a `repr(transparent)` wrapper around `bindings::firmware`.
+> > +        let ptr = fw.cast::<Self>();
+> >          // SAFETY: `func` not bailing out with a non-zero error code, guarantees that `fw` is a
+> >          // valid pointer to `bindings::firmware`.
+> > -        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
+> > +        Ok(unsafe { Owned::to_owned(ptr) })
 > >      }
-> > +
-> > +    /// Returns if a firmware property `name` is true or false
-> > +    pub fn property_read_bool(&self, name: &CStr) -> bool {
-> > +        unsafe { bindings::device_property_present(self.as_raw(), name=
-.as_ptr() as *const i8) }
-> > +    }
-> > +
-> > +    /// Returns if a firmware string property `name` has match for `ma=
-tch_str`
-> > +    pub fn property_match_string(&self, name: &CStr, match_str: &CStr)=
- -> Result<usize> {
-> > +        let ret =3D unsafe {
-> > +            bindings::device_property_match_string(
-> > +                self.as_raw(),
-> > +                name.as_ptr() as *const i8,
-> > +                match_str.as_ptr() as *const i8,
-> > +            )
-> > +        };
-> > +        to_result(ret)?;
-> > +        Ok(ret as usize)
-> > +    }
-> > +
-> > +    /// Returns firmware property `name` scalar value
-> > +    ///
-> > +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> > +    pub fn property_read<T: Copy>(&self, name: &CStr) -> Result<T> {
-> > +        let mut val: [T; 1] =3D unsafe { core::mem::zeroed() };
-> > +
-> > +        Self::_property_read_array(&self, name, &mut val)?;
-> > +        Ok(val[0])
-> > +    }
-> > +
->
-> This, and several of the other methods are unsound, because they can
-> be used to construct arbitrary types for which may not allow all bit
-> patterns. You can use:
-> https://rust.docs.kernel.org/kernel/types/trait.FromBytes.html as the
-> bound to ensure only valid types are used.
-
-I meant to ask a question on this. FromBytes is probably still too
-permissive for what is supported in DT. I think floating point types
-would be allowed which is not valid in DT (though asahi linux has some
-downstream patches adding FP data support). What I really need is the
-Integer trait from the num crate or some way to define the exact types
-supported. I tried Into<u32>, etc., but that didn't work.
-
->
-> Also, instead of using mem::zeroed(), you should use MaybeUnininit
-> (https://doc.rust-lang.org/stable/core/mem/union.MaybeUninit.html)
-> which allows you to avoid needing to zero initialize.
-
-Okay, thanks. Being new to rust, I find this a bit complicated
-compared to C (perhaps it has to be to avoid this class of bugs).
-Maybe that's because this stuff seems to have been evolving some with
-the kernel rust support. In any case, some examples of how (and
-perhaps) to do uninitialized and zero-initialized allocations would be
-helpful as both are common in the kernel.
-
-Rob
+> >  
+> >      /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
+> > -    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> > +    pub fn request(name: &CStr, dev: &Device) -> Result<Owned<Self>> {
+> >          Self::request_internal(name, dev, FwFunc::request())
+> >      }
+> >  
+> >      /// Send a request for an optional firmware module. See also
+> >      /// `bindings::firmware_request_nowarn`.
+> > -    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
+> > +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Owned<Self>> {
+> >          Self::request_internal(name, dev, FwFunc::request_nowarn())
+> >      }
+> >  
+> >      fn as_raw(&self) -> *mut bindings::firmware {
+> > -        self.0.as_ptr()
+> > +        self.0.get()
+> >      }
+> >  
+> >      /// Returns the size of the requested firmware in bytes.
+> > @@ -101,10 +103,13 @@ pub fn data(&self) -> &[u8] {
+> >      }
+> >  }
+> >  
+> > -impl Drop for Firmware {
+> > -    fn drop(&mut self) {
+> > -        // SAFETY: `self.as_raw()` is valid by the type invariant.
+> > -        unsafe { bindings::release_firmware(self.as_raw()) };
+> > +unsafe impl Ownable for Firmware {
+> > +    unsafe fn ptr_drop(ptr: *mut Self) {
+> > +        // SAFETY:
+> > +        // - By the type invariants, we have ownership of the ptr and can free it.
+> > +        // - Per function safety, this is called in Owned::drop(), so `ptr` is a
+> > +        //   unique pointer to object, it's safe to release the firmware.
+> > +        unsafe { bindings::release_firmware(ptr.cast()) };
+> >      }
+> >  }
+> >  
+> > -- 
+> > 2.43.0
+> > 
+> 
