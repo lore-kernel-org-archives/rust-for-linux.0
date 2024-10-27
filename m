@@ -1,187 +1,90 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E90C17C61;
-	Sun, 27 Oct 2024 22:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6329B17C219;
+	Sun, 27 Oct 2024 23:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730068967; cv=none; b=gli05NsbDT/zgQzjzl6zxbRMPT4ZF/DxC0ORbzd8vcAfsLX1fLxoLU4ANdQm3tpCbgiUBzK/oM2pSRrpz+1RNPfwaXxeKdaoRPqUQ5dnaWVcYiTf8/ETLfujwYOW8kv7qos8bSlC3O1zlzdeQTXwkqEtrgBje1TMvWfI7bu0chI=
+	t=1730071723; cv=none; b=LRuLkOdkDnAtCTIT6kYHYRYeVl7hj/kyef9cVs2Pn5fxkY1ptikpC+3Yr+apnIawGgswQ8jcc6Zx8hUTO2e1FRLBbHnKXPLGohJhbUElYrmS5G3AoLOpv4PL6xftpLaZ0PryDW7vL+dcSbRWErd3hMieRllLGWRVefnyCOv1AiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730068967; c=relaxed/simple;
-	bh=uwcvHusTROomeBLvylyvcg7lb+WgLhouV6Wbzq3dRwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QYfL4fVoPrEpcVmEqjuqbPet3PrbLEG9UK3anxW0XZYaqrbEkmZEgq/1yOvSkmrLkvCN9/zCY8Kc5zCPzlis1NQ93bd6ouwvkTdVGSIjRv+mBuE4s1aF7v1h+EQsMmZLz24yaPgtix7DQ9Suf/R7un1Nxd4AHFS8wrPbYEAwN54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ba5hmnaJ; arc=none smtp.client-ip=209.85.222.174
+	s=arc-20240116; t=1730071723; c=relaxed/simple;
+	bh=CYK5sksRp+HHK6ke3ltM89SdmUKYCjXGNd/ci7rSmkI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LrQvM+qzHnX6QG/ObXO+ijuNRSeHm5AgAq8TTT9EQ8w6O/S2ObpQKg3kZi6Wm2PxhHnnKhs7+HZlbZgMTgBYkTQ9SpDYBVzakE5vrJwuwCTYXRTQON//MVcKPOWUoVtUcEa5dH9ncHwkPsj0VED70pxHHnpvPoziar/oEAzsqM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DN7TMRxO; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ba5hmnaJ"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7b1467af9dbso306127185a.0;
-        Sun, 27 Oct 2024 15:42:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DN7TMRxO"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e31977c653so588256a91.0;
+        Sun, 27 Oct 2024 16:28:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730068964; x=1730673764; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1730071721; x=1730676521; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zf88lwRLiw9XE+1YEpyETRw1RNFcdzsY3C5vLeR+o+I=;
-        b=ba5hmnaJo1/34X8FDZgdV0PwdISmh72IrnzHBEkMJAsz/5CmTxurUccv7HCXNQDV0a
-         msr0eSH+lWwtIhMRYkEYI5Hx5AF69ZHRI+PqBeZT8gOr4zFj+O/k3RUw3bujLgOh01Hd
-         WLIWScG/6OvfcO8q0LBG38lC41p2C7Rgz/tug5V+GkivyGBW8/oEQrTAi1qZHpNDHFYX
-         0luEb4px2JC9W1bhzdeU/uM6VcLaJS2wcSRg32oIDyJC/pZiViFBnoH7o12AlVq/dagZ
-         QxV71EDpBmeGxlt5Pn5rxHSZ+am6LSCgwI6q2ya+m5i5twhxPOZ59YjW9+2kyp0N9QwQ
-         d2Pw==
+        bh=CYK5sksRp+HHK6ke3ltM89SdmUKYCjXGNd/ci7rSmkI=;
+        b=DN7TMRxOkfiU/Rt5+9UyIAWcW2QimeXJtztz97csRUA3PyTKNfUmAuB3YZCbN+/etB
+         k4OHdmnFC8kwz3kSn/ZATzeypYNMehipj9iV7vRGyS9Ztk9hUbLiRwHRO/Cz4VqJyUBN
+         v6PnLyrhhD21ZGiWmTIAYqXn6IphKoxU/xMkhiEpNW+REZvF5WOadfI2IDzbvAGm4o50
+         0IsXOj50l1l0XURAe+JGXEUKKfQWglVYSS5iak40OlAXE8c5uljqz6vynpiVKi8WByBs
+         Ev+LjOp9ciGjZFF44JZ6SgP83onb3Z9c13lkEiWQSSHRZt/91iXNhdVgKSrfEikGlpKp
+         BwGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730068964; x=1730673764;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1730071721; x=1730676521;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zf88lwRLiw9XE+1YEpyETRw1RNFcdzsY3C5vLeR+o+I=;
-        b=aUOIamnKgJfZrvsaXLF6eANQTeJJ8PMXPlQ0pRpCnHvU93A41YCRDYQMaUr72b/br2
-         rAU0BqpwCHv34fJ6uwS3emPcisqxJs4Eay7a5tyPU8OaRLan9cPaTeVIsuNBVFfX5W95
-         psaaOpY9UsA94zDAewJXoXsCIO9qlfFGF8PXqzIpFqTRiuLIMdzxc6cNU5JeO7cyDjP9
-         ibhXm6MdPH0mYx8o2F6QaXtgDryGvSx9/FoZ+YEMsScJERnT2vw3zAfbG9ooRTdDQ9Gy
-         AT8EprVBu9NwW9VkXlLB7G28tgggT/OpkBOgvJi0vY3qVe63s0OZbfb7yn6gi9MIWmsi
-         B+Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6MSpNJjiHQZaRfoxwcZ+cnVUWc+f83g9r2l0iCYtRafzydxFdqjVlNOLlDC7f82n+mmB5Fv3BQoG/y0ckiiQ=@vger.kernel.org, AJvYcCV8J60dAtb3T+LV/PDoLR00gid0/JQSNj+vOP5BhlIRv9si1nGaFxYcPtQzW/5Aa5k0DuIOUuPptctU8MBw@vger.kernel.org, AJvYcCVn09d1MI2Qsm0I85AZ9Wk+64M8pvdOE+xpe0ziWQRvZkDMwVCUmKJaboubbVMjEDEHP2MqphZFTGCK@vger.kernel.org, AJvYcCWolvtyvE0cE23Ts7ODiD9EAWf/XJBpy3q1LAd2yw7gMkBSbjiydcYL7uCTWnlaY1sRUnpeermhcx+Y@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgZTLJIv0neEXR1ocivduTtdtdmGHKWs7EidafaXuODecLX0gQ
-	d9/o270OJS2TRtFuEBN/HF1cF3CJ7kE9Ro6eaXKMPv2bU+pDW/GI
-X-Google-Smtp-Source: AGHT+IGuEo27itZqVNbjuW74b9O6UzUFckGLYcwJUF47GVyp1zWayZUgYG0JcTltHutqwp9sOcXnmg==
-X-Received: by 2002:a05:620a:280a:b0:7af:ce28:a10c with SMTP id af79cd13be357-7b193edacb6mr1010834485a.12.1730068963970;
-        Sun, 27 Oct 2024 15:42:43 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d27a9ffsm270684285a.23.2024.10.27.15.42.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Oct 2024 15:42:43 -0700 (PDT)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D3C361200043;
-	Sun, 27 Oct 2024 18:42:42 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sun, 27 Oct 2024 18:42:42 -0400
-X-ME-Sender: <xms:4sEeZ_VHJmyGg-FfIabIaaOtTjLSI20jkk0ilxUbc4p0oMXOOZhF_Q>
-    <xme:4sEeZ3ndxIS0gIWBEnKtjq0KBv00ahm3NpMMEzHntnr-ty-sqypDa_m2clp-0W2Aa
-    JFWrrVRONvH1D9b3Q>
-X-ME-Received: <xmr:4sEeZ7ZauXdN0Hgvcnx5Ur37MMQ3MmC1dPLQfKynLkkk11La_KYsOZe-LUk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejjedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
-    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    epuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhu
-    gihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgt
-    phhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrgh
-    grhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhho
-    rdhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtoh
-    hmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
-X-ME-Proxy: <xmx:4sEeZ6WPFjovLxdtqrWq6_gxxTCmV0sZyHdw5a1OFAHCm4WPLY3c3w>
-    <xmx:4sEeZ5krCb9DTpM9NnVd6I084dqSTDordDDA-BGg-eteG72MNpb4oQ>
-    <xmx:4sEeZ3eiBfQWaHDdAZOqQB4AhIVUJUO8wpVzuHoyWiWRNHuqnCMC6Q>
-    <xmx:4sEeZzGormCjIH0dhCPuMfw76sEaTZeVfvkeNYBuHIkuNAsdTkl65w>
-    <xmx:4sEeZ7lvVqn9mWXbfvRZ8_kUgvFNGjPD1YhlxN6C5g_b1v4vXW5jGNkZ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 27 Oct 2024 18:42:42 -0400 (EDT)
-Date: Sun, 27 Oct 2024 15:42:41 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 11/16] rust: pci: add basic PCI device / driver
- abstractions
-Message-ID: <Zx7B4Y5iegKVXpC4@Boquns-Mac-mini.local>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-12-dakr@kernel.org>
+        bh=CYK5sksRp+HHK6ke3ltM89SdmUKYCjXGNd/ci7rSmkI=;
+        b=Fx7XibrQa5VknO0pzObVlbtLPadnHUSql1GyB9nnjr6UEcxstztgxOivws6mf71cuC
+         LbsevgwXBDzjCZAL2m4SY+8Qtz4lXELP9TFISCA7mOr+CFNmZ+DBPnpopa/mnK+YEMs7
+         FHC13ulbXWwrllMQWL2l3ZzxEPuA18kM7yVNo9LxKQH1tEReTtjE96wZQFYILVSdEX8T
+         tN9WqJaOV6ngjNEc2Qn1tFwGmujGvvn9vBpGk/ZntPM9B52mWH/s901ttppfokr13AeY
+         RwNDxqCRPJuMmzr8WeF4Vc7UeTJ0wpR9mY947oRodZ0wvAJICFrwSy4ES0Z6trLR0mwc
+         k2ug==
+X-Forwarded-Encrypted: i=1; AJvYcCURPvHzDO9I9j3ecMT0tiYkhIPcZQ/FoKX6tbg75Ca07F2ohbdsiXhFquvs0705JhcLcU8VV3xJIXqLyp8=@vger.kernel.org, AJvYcCV8D30umIiubxuoz9u5Dp/kFYO7tbzj5qp+S5tATc9YLAofj52pqn107XxlTzSzyMA5iRp0yiR7cTNHL+6AZ9g=@vger.kernel.org, AJvYcCXXc3of2SHBWw7/sBpaLmSLZ5gceKAdsuxTrcmLx9VzPlEG3KdF6WIEq9P4nYNVB6La/qEGcfvpn+H0bLTg@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQkXxzvam/uEJzON4NNaHMzNfw4itQciLYTiDytwENL2qkO85c
+	TrPIpixpy7FX9OFfFdIxTKrEQfqLuSSTSbMg9qTRu0BSUa60vlZWpzMm9X2ZnmwYte8LXO1MrMV
+	zznoK6Qkxy27cR5W1h/oh3evaOGQ=
+X-Google-Smtp-Source: AGHT+IHq8rw6W8p4S0W/aeuhnIgrpHXtsRtdd+z1XCCrOBHUp853lIr5u8gfY2RgCHl2JwvNYEokrNqMnwuiiLIT1kU=
+X-Received: by 2002:a17:90a:718c:b0:2e2:abab:c456 with SMTP id
+ 98e67ed59e1d1-2e8f1051e49mr3244664a91.1.1730071720605; Sun, 27 Oct 2024
+ 16:28:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241022213221.2383-12-dakr@kernel.org>
+References: <20241027145636.416030-1-ojeda@kernel.org> <20241027222505.GA2882707@thelio-3990X>
+In-Reply-To: <20241027222505.GA2882707@thelio-3990X>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 28 Oct 2024 00:28:28 +0100
+Message-ID: <CANiq72my=xgeu=TZZAZKEvRq_wKm=tr=Juv1Mxdf50MEVxi53Q@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: avoid errors with old `rustc`s without LLVM
+ patch version
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Thorsten Leemhuis <regressions@leemhuis.info>, 
+	Cameron MacPherson <cameron.macpherson@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo,
+On Sun, Oct 27, 2024 at 11:25=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
+rg> wrote:
+>
+> and it still works for me with rustc 1.82.0:
+>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
 
-On Tue, Oct 22, 2024 at 11:31:48PM +0200, Danilo Krummrich wrote:
-[...]
-> +/// The PCI device representation.
-> +///
-> +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
-> +/// device, hence, also increments the base device' reference count.
-> +#[derive(Clone)]
-> +pub struct Device(ARef<device::Device>);
-> +
+Thanks for checking! I took the tags.
 
-Similar to https://lore.kernel.org/rust-for-linux/ZgG7TlybSa00cuoy@boqun-archlinux/
-
-Could you also avoid wrapping a point to a PCI device? Instead, wrap the
-object type:
-
-    #[repr(transparent)]
-    pub struct Device(Opaque<bindings::pci_dev>);
-
-    impl AlwaysRefCounted for Device {
-        <put_device() and get_device() on ->dev>
-    }
-
-Regards,
-Boqun
-
-> +impl Device {
-> +    /// Create a PCI Device instance from an existing `device::Device`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
-> +    /// a `bindings::pci_dev`.
-> +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
-> +        Self(dev)
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::pci_dev {
-> +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
-> +        // embedded in `struct pci_dev`.
-> +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
-> +    }
-> +
-> +    /// Enable memory resources for this device.
-> +    pub fn enable_device_mem(&self) -> Result {
-> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
-> +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
-> +        if ret != 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(())
-> +        }
-> +    }
-> +
-> +    /// Enable bus-mastering for this device.
-> +    pub fn set_master(&self) {
-> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
-> +        unsafe { bindings::pci_set_master(self.as_raw()) };
-> +    }
-> +}
-> +
-> +impl AsRef<device::Device> for Device {
-> +    fn as_ref(&self) -> &device::Device {
-> +        &self.0
-> +    }
-> +}
-> -- 
-> 2.46.2
-> 
-> 
+Cheers,
+Miguel
