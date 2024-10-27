@@ -1,50 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E3818EBF;
-	Sun, 27 Oct 2024 22:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E90C17C61;
+	Sun, 27 Oct 2024 22:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730067908; cv=none; b=KJeZZoBwJ3LN32yiIAu23CEXSVfO+4RRdKoe3cTuaCnOl2zV/v+pLjFOdxccrLV2Wsz3uN4jthZYK3SXLr4kUy81my5mcO3ZlybxvtjoW6g73cZ4eRPwu+T7LeawdvYUfptDC9QkeIMhfrO0XLt1X1O2IhqR1M6YaQn0+JWeuXo=
+	t=1730068967; cv=none; b=gli05NsbDT/zgQzjzl6zxbRMPT4ZF/DxC0ORbzd8vcAfsLX1fLxoLU4ANdQm3tpCbgiUBzK/oM2pSRrpz+1RNPfwaXxeKdaoRPqUQ5dnaWVcYiTf8/ETLfujwYOW8kv7qos8bSlC3O1zlzdeQTXwkqEtrgBje1TMvWfI7bu0chI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730067908; c=relaxed/simple;
-	bh=Oaq3n6Gzx6um57cBqNlIEN/f+doqASBTkxLUrEN1T90=;
+	s=arc-20240116; t=1730068967; c=relaxed/simple;
+	bh=uwcvHusTROomeBLvylyvcg7lb+WgLhouV6Wbzq3dRwM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F4WXNdXqqPS2dli2gemOHIBFnVcdnNolLkp6c1KpDKlMslElbIXz54x2ByqySTqUTs5QzdRan/TW2qsucc0N+FC7RAg7cY57Olxj+xaRGOqMWOJxbHwwopnr0pqYMZ5g9r4NOAIW47pYL6DG5EWYVU1y1P+K3Lr26DR6L8A6tbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdvPjBRS; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QYfL4fVoPrEpcVmEqjuqbPet3PrbLEG9UK3anxW0XZYaqrbEkmZEgq/1yOvSkmrLkvCN9/zCY8Kc5zCPzlis1NQ93bd6ouwvkTdVGSIjRv+mBuE4s1aF7v1h+EQsMmZLz24yaPgtix7DQ9Suf/R7un1Nxd4AHFS8wrPbYEAwN54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ba5hmnaJ; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdvPjBRS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A1EC4CEC3;
-	Sun, 27 Oct 2024 22:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730067908;
-	bh=Oaq3n6Gzx6um57cBqNlIEN/f+doqASBTkxLUrEN1T90=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WdvPjBRS3Voup2Ze5EOavrRAWlWmhsZY9g5H8HHU0PrM1CdP0UhQtmK6NXjKpwBfN
-	 lvkiuHbM9d9BRbmdIoAib83X03jK3xgjpcgaYfPUNukYqd10MyqBj7FqGrc8Vgo2o+
-	 cyhhTqHMpNIX4UCW2umr0LhR3UEIfshiCTXO5dqjcDDYcCaDLWzs7zR8hSumstSYvk
-	 wzQGSH1js2OrHI+oLS8s8LXAYjl3cVjgwmoCoOTq51+10+R8umMx0krPbRfQcfZnE4
-	 a2nVTXoLlqLC81XtNgEMLJOnVYGZjBHcm9vdgKz9KNiUN73GPrHhE+jZjzddRLD0w/
-	 oqzzL+2GUMZJA==
-Date: Sun, 27 Oct 2024 15:25:05 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, Nicolas Schier <nicolas@fjasle.eu>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Cameron MacPherson <cameron.macpherson@gmail.com>
-Subject: Re: [PATCH] kbuild: rust: avoid errors with old `rustc`s without
- LLVM patch version
-Message-ID: <20241027222505.GA2882707@thelio-3990X>
-References: <20241027145636.416030-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ba5hmnaJ"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7b1467af9dbso306127185a.0;
+        Sun, 27 Oct 2024 15:42:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730068964; x=1730673764; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zf88lwRLiw9XE+1YEpyETRw1RNFcdzsY3C5vLeR+o+I=;
+        b=ba5hmnaJo1/34X8FDZgdV0PwdISmh72IrnzHBEkMJAsz/5CmTxurUccv7HCXNQDV0a
+         msr0eSH+lWwtIhMRYkEYI5Hx5AF69ZHRI+PqBeZT8gOr4zFj+O/k3RUw3bujLgOh01Hd
+         WLIWScG/6OvfcO8q0LBG38lC41p2C7Rgz/tug5V+GkivyGBW8/oEQrTAi1qZHpNDHFYX
+         0luEb4px2JC9W1bhzdeU/uM6VcLaJS2wcSRg32oIDyJC/pZiViFBnoH7o12AlVq/dagZ
+         QxV71EDpBmeGxlt5Pn5rxHSZ+am6LSCgwI6q2ya+m5i5twhxPOZ59YjW9+2kyp0N9QwQ
+         d2Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730068964; x=1730673764;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zf88lwRLiw9XE+1YEpyETRw1RNFcdzsY3C5vLeR+o+I=;
+        b=aUOIamnKgJfZrvsaXLF6eANQTeJJ8PMXPlQ0pRpCnHvU93A41YCRDYQMaUr72b/br2
+         rAU0BqpwCHv34fJ6uwS3emPcisqxJs4Eay7a5tyPU8OaRLan9cPaTeVIsuNBVFfX5W95
+         psaaOpY9UsA94zDAewJXoXsCIO9qlfFGF8PXqzIpFqTRiuLIMdzxc6cNU5JeO7cyDjP9
+         ibhXm6MdPH0mYx8o2F6QaXtgDryGvSx9/FoZ+YEMsScJERnT2vw3zAfbG9ooRTdDQ9Gy
+         AT8EprVBu9NwW9VkXlLB7G28tgggT/OpkBOgvJi0vY3qVe63s0OZbfb7yn6gi9MIWmsi
+         B+Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6MSpNJjiHQZaRfoxwcZ+cnVUWc+f83g9r2l0iCYtRafzydxFdqjVlNOLlDC7f82n+mmB5Fv3BQoG/y0ckiiQ=@vger.kernel.org, AJvYcCV8J60dAtb3T+LV/PDoLR00gid0/JQSNj+vOP5BhlIRv9si1nGaFxYcPtQzW/5Aa5k0DuIOUuPptctU8MBw@vger.kernel.org, AJvYcCVn09d1MI2Qsm0I85AZ9Wk+64M8pvdOE+xpe0ziWQRvZkDMwVCUmKJaboubbVMjEDEHP2MqphZFTGCK@vger.kernel.org, AJvYcCWolvtyvE0cE23Ts7ODiD9EAWf/XJBpy3q1LAd2yw7gMkBSbjiydcYL7uCTWnlaY1sRUnpeermhcx+Y@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgZTLJIv0neEXR1ocivduTtdtdmGHKWs7EidafaXuODecLX0gQ
+	d9/o270OJS2TRtFuEBN/HF1cF3CJ7kE9Ro6eaXKMPv2bU+pDW/GI
+X-Google-Smtp-Source: AGHT+IGuEo27itZqVNbjuW74b9O6UzUFckGLYcwJUF47GVyp1zWayZUgYG0JcTltHutqwp9sOcXnmg==
+X-Received: by 2002:a05:620a:280a:b0:7af:ce28:a10c with SMTP id af79cd13be357-7b193edacb6mr1010834485a.12.1730068963970;
+        Sun, 27 Oct 2024 15:42:43 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d27a9ffsm270684285a.23.2024.10.27.15.42.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Oct 2024 15:42:43 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D3C361200043;
+	Sun, 27 Oct 2024 18:42:42 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sun, 27 Oct 2024 18:42:42 -0400
+X-ME-Sender: <xms:4sEeZ_VHJmyGg-FfIabIaaOtTjLSI20jkk0ilxUbc4p0oMXOOZhF_Q>
+    <xme:4sEeZ3ndxIS0gIWBEnKtjq0KBv00ahm3NpMMEzHntnr-ty-sqypDa_m2clp-0W2Aa
+    JFWrrVRONvH1D9b3Q>
+X-ME-Received: <xmr:4sEeZ7ZauXdN0Hgvcnx5Ur37MMQ3MmC1dPLQfKynLkkk11La_KYsOZe-LUk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejjedgtddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
+    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhu
+    gihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgt
+    phhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrgh
+    grhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhho
+    rdhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtoh
+    hmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
+X-ME-Proxy: <xmx:4sEeZ6WPFjovLxdtqrWq6_gxxTCmV0sZyHdw5a1OFAHCm4WPLY3c3w>
+    <xmx:4sEeZ5krCb9DTpM9NnVd6I084dqSTDordDDA-BGg-eteG72MNpb4oQ>
+    <xmx:4sEeZ3eiBfQWaHDdAZOqQB4AhIVUJUO8wpVzuHoyWiWRNHuqnCMC6Q>
+    <xmx:4sEeZzGormCjIH0dhCPuMfw76sEaTZeVfvkeNYBuHIkuNAsdTkl65w>
+    <xmx:4sEeZ7lvVqn9mWXbfvRZ8_kUgvFNGjPD1YhlxN6C5g_b1v4vXW5jGNkZ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 27 Oct 2024 18:42:42 -0400 (EDT)
+Date: Sun, 27 Oct 2024 15:42:41 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 11/16] rust: pci: add basic PCI device / driver
+ abstractions
+Message-ID: <Zx7B4Y5iegKVXpC4@Boquns-Mac-mini.local>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-12-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,79 +112,76 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241027145636.416030-1-ojeda@kernel.org>
+In-Reply-To: <20241022213221.2383-12-dakr@kernel.org>
 
-On Sun, Oct 27, 2024 at 03:56:36PM +0100, Miguel Ojeda wrote:
-> Some old versions of `rustc` did not report the LLVM version without
-> the patch version, e.g.:
-> 
->     $ rustc --version --verbose
->     rustc 1.48.0 (7eac88abb 2020-11-16)
->     binary: rustc
->     commit-hash: 7eac88abb2e57e752f3302f02be5f3ce3d7adfb4
->     commit-date: 2020-11-16
->     host: x86_64-unknown-linux-gnu
->     release: 1.48.0
->     LLVM version: 11.0
-> 
-> Which would make the new `scripts/rustc-llvm-version.sh` fail and,
-> in turn, the build:
-> 
->     $ make LLVM=1
->       SYNC    include/config/auto.conf.cmd
->     ./scripts/rustc-llvm-version.sh: 13: arithmetic expression: expecting primary: "10000 * 10 + 100 * 0 + "
->     init/Kconfig:83: syntax error
->     init/Kconfig:83: invalid statement
->     make[3]: *** [scripts/kconfig/Makefile:85: syncconfig] Error 1
->     make[2]: *** [Makefile:679: syncconfig] Error 2
->     make[1]: *** [/home/cam/linux/Makefile:780: include/config/auto.conf.cmd] Error 2
->     make: *** [Makefile:224: __sub-make] Error 2
-> 
-> Since we do not need to support such binaries, we can avoid adding logic
-> for computing `rustc`'s LLVM version for those old binaries.
-> 
-> Thus, instead, just make the match stricter.
-> 
-> Other `rustc` binaries (even newer) did not report the LLVM version at
-> all, but that was fine, since it would not match "LLVM", e.g.:
-> 
->     $ rustc --version --verbose
->     rustc 1.49.0 (e1884a8e3 2020-12-29)
->     binary: rustc
->     commit-hash: e1884a8e3c3e813aada8254edfa120e85bf5ffca
->     commit-date: 2020-12-29
->     host: x86_64-unknown-linux-gnu
->     release: 1.49.0
-> 
-> Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-> Cc: Gary Guo <gary@garyguo.net>
-> Reported-by: Cameron MacPherson <cameron.macpherson@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219423
-> Fixes: af0121c2d303 ("kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Danilo,
 
-and it still works for me with rustc 1.82.0:
+On Tue, Oct 22, 2024 at 11:31:48PM +0200, Danilo Krummrich wrote:
+[...]
+> +/// The PCI device representation.
+> +///
+> +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
+> +/// device, hence, also increments the base device' reference count.
+> +#[derive(Clone)]
+> +pub struct Device(ARef<device::Device>);
+> +
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
+Similar to https://lore.kernel.org/rust-for-linux/ZgG7TlybSa00cuoy@boqun-archlinux/
 
-> ---
->  scripts/rustc-llvm-version.sh | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/rustc-llvm-version.sh b/scripts/rustc-llvm-version.sh
-> index b6063cbe5bdc..a500d1ae3101 100755
-> --- a/scripts/rustc-llvm-version.sh
-> +++ b/scripts/rustc-llvm-version.sh
-> @@ -13,7 +13,7 @@ get_canonical_version()
->  	echo $((10000 * $1 + 100 * $2 + $3))
->  }
->  
-> -if output=$("$@" --version --verbose 2>/dev/null | grep LLVM); then
-> +if output=$("$@" --version --verbose 2>/dev/null | grep -E 'LLVM.*[0-9]+\.[0-9]+\.[0-9]+'); then
->  	set -- $output
->  	get_canonical_version $3
->  else
+Could you also avoid wrapping a point to a PCI device? Instead, wrap the
+object type:
+
+    #[repr(transparent)]
+    pub struct Device(Opaque<bindings::pci_dev>);
+
+    impl AlwaysRefCounted for Device {
+        <put_device() and get_device() on ->dev>
+    }
+
+Regards,
+Boqun
+
+> +impl Device {
+> +    /// Create a PCI Device instance from an existing `device::Device`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
+> +    /// a `bindings::pci_dev`.
+> +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
+> +        Self(dev)
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::pci_dev {
+> +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
+> +        // embedded in `struct pci_dev`.
+> +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
+> +    }
+> +
+> +    /// Enable memory resources for this device.
+> +    pub fn enable_device_mem(&self) -> Result {
+> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
+> +        if ret != 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(())
+> +        }
+> +    }
+> +
+> +    /// Enable bus-mastering for this device.
+> +    pub fn set_master(&self) {
+> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> +        unsafe { bindings::pci_set_master(self.as_raw()) };
+> +    }
+> +}
+> +
+> +impl AsRef<device::Device> for Device {
+> +    fn as_ref(&self) -> &device::Device {
+> +        &self.0
+> +    }
+> +}
 > -- 
-> 2.47.0
+> 2.46.2
+> 
 > 
