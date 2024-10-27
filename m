@@ -1,260 +1,124 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E114217F2C;
-	Sun, 27 Oct 2024 05:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9212C13B;
+	Sun, 27 Oct 2024 14:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730007078; cv=none; b=uQRnjtZQIkGftww35Kb4qbFVPUGoelBOaNBXHXZH2dgGYE35fphlUxBa3okXif4Y9+dmUb6KjyZVyrRJ5D5dL6X3/hSjzG8NUb8sK+iC1R1yHqpuqnW3yupivYSLeEzbXmYhQ1T4n70jgERK0WgDv7WPQjpjvfw2s+4DuxNdVbQ=
+	t=1730041019; cv=none; b=pTgkUws9hS+d4dgxIsw4wMPzZgZ0wKHd0MlUAwtMyh2LpvxU86fW0A8HXrc5J9E6Wwrb4HvkJZUaPqBfgGC7tqKldYGzyR43A0VVibeWtBg09ceqvKUKalMVEJuxY7YH8enJOi212BlUxNLkp+aSFSMNLtpPPKlpfIcEzXlTddY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730007078; c=relaxed/simple;
-	bh=pjW8AVHIzHCGMscn1YH8JH5wxY6uHqnQQGAR2HPmKDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vCJYF6sEqTL2BxBpfAUOlz9kX1tZ+K0k+4gsRFMC7hRbk1hraLCC06pc+h/4aJ42/1bY7r1AynH9WGpOu8zfnirO3Be7VyHpSWpSWprXjZr/NcDzocWkiBeiWbuIeplsej+45NR/gEOMUHb6pmQrseO480FndR9vsetzSa8mWvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bUQ78tIG; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1730041019; c=relaxed/simple;
+	bh=7ZZH3dE8R6xGp6O0QBNTJfT3j6IIfvB12djZK2Q9kDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H96tj28H29LfnroDc5T3aOi7UaBLpSuKjGXjMs39C7XMFid3dgdy9q9qdGOzaQNUqM4c/WSfmeYNwT43tUIN2TgJbqI42jbO662Hq75U6amvHrkLITnGh0ulyWQV2HxE7nK700tFC0bi7cZa8jxX8T3xiuM/v6oKwu/hHv07gSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLGvJKtX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bUQ78tIG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730007074; x=1761543074;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pjW8AVHIzHCGMscn1YH8JH5wxY6uHqnQQGAR2HPmKDo=;
-  b=bUQ78tIGKATu27UZd3/syh3NJqgyQ3+PO2ZjOec/IgdEJ87+IMZEkV5D
-   EEzQxeeBN7s4xNhxaxwq7JPXOi0TSP2ZYOi3utqatrtuxk/KncZy4Cy05
-   Rf+C2UExSIU04jgdpysrAHG0p5R2D5A4ksu2Tc8qpi4MxV7X4F88821LA
-   NtFTmM5aHkT16Z3u2tzWNngK8EGlBeyGSc6ivZJMCC2JcVYwkED0ZIIs+
-   Pu/Pr2cyO7fhp4iHovraOGenqrQ8SpfgDOF1zwrHArEmjxrFUU9sd6o4e
-   8cZ8BkVl5X0ZRmj3ZYW3ioloSoELYB94njjl8/tdkbb5qwWLzoMMMla8g
-   g==;
-X-CSE-ConnectionGUID: JVsm5Ut/RS+jHqq4/xf5IQ==
-X-CSE-MsgGUID: FVy5wmdIQz2ozMdhNL4aCA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11237"; a="29740887"
-X-IronPort-AV: E=Sophos;i="6.11,236,1725346800"; 
-   d="scan'208";a="29740887"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2024 22:31:14 -0700
-X-CSE-ConnectionGUID: fyxYp0mlQR6XN6oG2ZA6gA==
-X-CSE-MsgGUID: ueLv2YnHS+OzKx0o3pyQPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,236,1725346800"; 
-   d="scan'208";a="81413079"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 26 Oct 2024 22:31:10 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t4vro-000aOq-1Z;
-	Sun, 27 Oct 2024 05:31:08 +0000
-Date: Sun, 27 Oct 2024 13:30:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLGvJKtX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D9CC4CEC3;
+	Sun, 27 Oct 2024 14:56:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730041018;
+	bh=7ZZH3dE8R6xGp6O0QBNTJfT3j6IIfvB12djZK2Q9kDY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SLGvJKtX4DKXURQNQNzsXcOyZRL6H8lSqMHh3s4BIk3tBSb3+tn/AtUK4ifY8N2zW
+	 UEUCKlhlKYWpI003y5KRXD+N5nxMOWB9kijonAyUcI2VjBB3U3of98sxCHqM2jEhEA
+	 HNIIKrT3H2Odk+VS7nvHmJTTE7aIrckMOxwD/xw/XKZVrQ2wCs5CO7yIHSLAd1shV4
+	 S9USUxCHSLGhwsLR3veVb2ffQEQGCw2EIs6jkKj3189uXfioWVyA6HdebKlnGtqOWB
+	 fDjTIho6Hpokac1n3AaQqZnzRW8/2UiTgub0SVkDZ/2J6nO3PYQ48L3Ohs2YaGtk8t
+	 Q13iWYHzjgyEg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH] rust: irq: add support for request_irq()
-Message-ID: <202410271331.Kh0GAuXf-lkp@intel.com>
-References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Cameron MacPherson <cameron.macpherson@gmail.com>
+Subject: [PATCH] kbuild: rust: avoid errors with old `rustc`s without LLVM patch version
+Date: Sun, 27 Oct 2024 15:56:36 +0100
+Message-ID: <20241027145636.416030-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Daniel,
+Some old versions of `rustc` did not report the LLVM version without
+the patch version, e.g.:
 
-kernel test robot noticed the following build errors:
+    $ rustc --version --verbose
+    rustc 1.48.0 (7eac88abb 2020-11-16)
+    binary: rustc
+    commit-hash: 7eac88abb2e57e752f3302f02be5f3ce3d7adfb4
+    commit-date: 2020-11-16
+    host: x86_64-unknown-linux-gnu
+    release: 1.48.0
+    LLVM version: 11.0
 
-[auto build test ERROR on 33c255312660653cf54f8019896b5dca28e3c580]
+Which would make the new `scripts/rustc-llvm-version.sh` fail and,
+in turn, the build:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-irq-add-support-for-request_irq/20241024-222633
-base:   33c255312660653cf54f8019896b5dca28e3c580
-patch link:    https://lore.kernel.org/r/20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca%40collabora.com
-patch subject: [PATCH] rust: irq: add support for request_irq()
-config: riscv-randconfig-001-20241027 (https://download.01.org/0day-ci/archive/20241027/202410271331.Kh0GAuXf-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241027/202410271331.Kh0GAuXf-lkp@intel.com/reproduce)
+    $ make LLVM=1
+      SYNC    include/config/auto.conf.cmd
+    ./scripts/rustc-llvm-version.sh: 13: arithmetic expression: expecting primary: "10000 * 10 + 100 * 0 + "
+    init/Kconfig:83: syntax error
+    init/Kconfig:83: invalid statement
+    make[3]: *** [scripts/kconfig/Makefile:85: syncconfig] Error 1
+    make[2]: *** [Makefile:679: syncconfig] Error 2
+    make[1]: *** [/home/cam/linux/Makefile:780: include/config/auto.conf.cmd] Error 2
+    make: *** [Makefile:224: __sub-make] Error 2
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410271331.Kh0GAuXf-lkp@intel.com/
+Since we do not need to support such binaries, we can avoid adding logic
+for computing `rustc`'s LLVM version for those old binaries.
 
-All errors (new ones prefixed by >>):
+Thus, instead, just make the match stricter.
 
->> error[E0432]: unresolved import `kernel::irq::Registration`
-   --> rust/doctests_kernel_generated.rs:1837:5
-   |
-   1837 | use kernel::irq::Registration;
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ no `Registration` in `irq`
-   |
-   help: consider importing one of these items instead
-   |
-   1837 | use kernel::irq::request::Registration;
-   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1837 | use kernel::net::phy::Registration;
-   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---
->> error[E0432]: unresolved import `kernel::sync::lock::SpinLock`
-   --> rust/doctests_kernel_generated.rs:1839:5
-   |
-   1839 | use kernel::sync::lock::SpinLock;
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no `SpinLock` in `sync::lock`
-   |
-   help: a similar name exists in the module
-   |
-   1839 | use kernel::sync::lock::spinlock;
-   |                         ~~~~~~~~
-   help: consider importing this type alias instead
-   |
-   1839 | use kernel::sync::SpinLock;
-   |     ~~~~~~~~~~~~~~~~~~~~~~
---
->> error[E0412]: cannot find type `ThreadedIrqReturn` in module `irq`
-   --> rust/doctests_kernel_generated.rs:1955:34
-   |
-   1955 |     fn handle_irq(&self) -> irq::ThreadedIrqReturn {
-   |                                  ^^^^^^^^^^^^^^^^^ not found in `irq`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::irq::request::ThreadedIrqReturn;
-   |
-   help: if you import `ThreadedIrqReturn`, refer to it directly
-   |
-   1955 -     fn handle_irq(&self) -> irq::ThreadedIrqReturn {
-   1955 +     fn handle_irq(&self) -> ThreadedIrqReturn {
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `ThreadedIrqReturn`
-   --> rust/doctests_kernel_generated.rs:1963:9
-   |
-   1963 |         ThreadedIrqReturn::WakeThread
-   |         ^^^^^^^^^^^^^^^^^ use of undeclared type `ThreadedIrqReturn`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::irq::request::ThreadedIrqReturn;
-   |
---
->> error[E0412]: cannot find type `ThreadedFnReturn` in module `irq`
-   --> rust/doctests_kernel_generated.rs:1968:33
-   |
-   1968 |     fn thread_fn(&self) -> irq::ThreadedFnReturn {
-   |                                 ^^^^^^^^^^^^^^^^ not found in `irq`
-   |
-   help: consider importing this enum
-   |
-   3    + use kernel::irq::request::ThreadedFnReturn;
-   |
-   help: if you import `ThreadedFnReturn`, refer to it directly
-   |
-   1968 -     fn thread_fn(&self) -> irq::ThreadedFnReturn {
-   1968 +     fn thread_fn(&self) -> ThreadedFnReturn {
-   |
---
->> error[E0412]: cannot find type `Registration` in module `irq`
-   --> rust/doctests_kernel_generated.rs:1975:64
-   |
-   1975 |     fn register_irq(irq: u32, handler: Handler) -> Result<irq::Registration<Handler>> {
-   |                                                                ^^^^^^^^^^^^ not found in `irq`
-   |
-   help: consider importing one of these items
-   |
-   3    + use kernel::irq::request::Registration;
-   |
-   3    + use kernel::net::phy::Registration;
-   |
-   help: if you import `Registration`, refer to it directly
-   |
-   1975 -     fn register_irq(irq: u32, handler: Handler) -> Result<irq::Registration<Handler>> {
-   1975 +     fn register_irq(irq: u32, handler: Handler) -> Result<Registration<Handler>> {
-   |
---
->> error[E0433]: failed to resolve: use of undeclared type `ThreadedRegistration`
-   --> rust/doctests_kernel_generated.rs:1976:28
-   |
-   1976 |         let registration = ThreadedRegistration::register(irq, irq::flags::SHARED, "my-device", handler)?;
-   |                            ^^^^^^^^^^^^^^^^^^^^ use of undeclared type `ThreadedRegistration`
-   |
-   help: consider importing this struct
-   |
-   3    + use kernel::irq::request::ThreadedRegistration;
-   |
---
->> error[E0433]: failed to resolve: could not find `flags` in `irq`
-   --> rust/doctests_kernel_generated.rs:1976:69
-   |
-   1976 |         let registration = ThreadedRegistration::register(irq, irq::flags::SHARED, "my-device", handler)?;
-   |                                                                     ^^^^^ could not find `flags` in `irq`
-   |
-   help: consider importing this module
-   |
-   3    + use kernel::irq::request::flags;
-   |
-   help: if you import `flags`, refer to it directly
-   |
-   1976 -         let registration = ThreadedRegistration::register(irq, irq::flags::SHARED, "my-device", handler)?;
-   1976 +         let registration = ThreadedRegistration::register(irq, flags::SHARED, "my-device", handler)?;
-   |
---
->> error[E0432]: unresolved import `kernel::irq::Registration`
-   --> rust/doctests_kernel_generated.rs:1934:5
-   |
-   1934 | use kernel::irq::Registration;
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ no `Registration` in `irq`
-   |
-   help: consider importing one of these items instead
-   |
-   1934 | use kernel::irq::request::Registration;
-   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   1934 | use kernel::net::phy::Registration;
-   |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
---
->> error[E0432]: unresolved import `kernel::sync::lock::SpinLock`
-   --> rust/doctests_kernel_generated.rs:1936:5
-   |
-   1936 | use kernel::sync::lock::SpinLock;
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ no `SpinLock` in `sync::lock`
-   |
-   help: a similar name exists in the module
-   |
-   1936 | use kernel::sync::lock::spinlock;
-   |                         ~~~~~~~~
-   help: consider importing this type alias instead
-   |
-   1936 | use kernel::sync::SpinLock;
-   |     ~~~~~~~~~~~~~~~~~~~~~~
---
->> error[E0405]: cannot find trait `Handler` in module `kernel::irq`
-   --> rust/doctests_kernel_generated.rs:1855:19
-   |
-   1855 | impl kernel::irq::Handler for Handler {
-   |                   ^^^^^^^ not found in `kernel::irq`
-   |
-   help: consider importing this trait
-   |
-   3    + use kernel::irq::request::Handler;
-   |
-   help: if you import `Handler`, refer to it directly
-   |
-   1855 - impl kernel::irq::Handler for Handler {
-   1855 + impl Handler for Handler {
-   |
-..
+Other `rustc` binaries (even newer) did not report the LLVM version at
+all, but that was fine, since it would not match "LLVM", e.g.:
 
+    $ rustc --version --verbose
+    rustc 1.49.0 (e1884a8e3 2020-12-29)
+    binary: rustc
+    commit-hash: e1884a8e3c3e813aada8254edfa120e85bf5ffca
+    commit-date: 2020-12-29
+    host: x86_64-unknown-linux-gnu
+    release: 1.49.0
+
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Gary Guo <gary@garyguo.net>
+Reported-by: Cameron MacPherson <cameron.macpherson@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219423
+Fixes: af0121c2d303 ("kbuild: rust: add `CONFIG_RUSTC_LLVM_VERSION`")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ scripts/rustc-llvm-version.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/rustc-llvm-version.sh b/scripts/rustc-llvm-version.sh
+index b6063cbe5bdc..a500d1ae3101 100755
+--- a/scripts/rustc-llvm-version.sh
++++ b/scripts/rustc-llvm-version.sh
+@@ -13,7 +13,7 @@ get_canonical_version()
+ 	echo $((10000 * $1 + 100 * $2 + $3))
+ }
+ 
+-if output=$("$@" --version --verbose 2>/dev/null | grep LLVM); then
++if output=$("$@" --version --verbose 2>/dev/null | grep -E 'LLVM.*[0-9]+\.[0-9]+\.[0-9]+'); then
+ 	set -- $output
+ 	get_canonical_version $3
+ else
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.0
+
