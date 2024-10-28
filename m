@@ -1,330 +1,160 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B39612F585;
-	Mon, 28 Oct 2024 15:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730129953; cv=pass; b=EIUlzxCWoJrhgUS63PXAv/Tfh7Wd2pZFse50lOUT531M/aA/yBtQSUB/IBrJSoSbbT06o81n8hbo2SPWZHzkFJpamrqRm0EkxFsotZwlUMHP5OWk9FB4D4ZIP1GRdxCSibF7hdVx5CV0NIsoPVlGgt8SfqeR2D5rK2ZpPiQ5R6w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730129953; c=relaxed/simple;
-	bh=0bcqQqglJVUMU+heQ73+rEwUTrzV9tFB9SivV6cQ2lM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Rf1SEV2ZjgunC89Z9mxq1AlCJrOmYuh+Yi6XHgGyfFTqFWNtm31Gy92JgHrBzRUsW6zxDCEmcjgFSt1mqXWkgDMeMhyeqFVjU54/X8+bNx1lScIhVpnn4MKyoIeXrpxvPDgxr+nUqrVJBGvvRhLG88R/FhDFNiTUytjBTRv5N/Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=aexAM7vc; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1A71DE4C0
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Oct 2024 15:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730130199; cv=none; b=Oe+anKh4GTbmjIrF5CqdZi7gmnCnj+aRcuc70wnqBwuQRV8gdzVQIjx5sDfiORh/UscBVEjrSwCkMmqkEvI+li+Q8Z47N5B38GT31KjcdXzee4Engl9EEFPABZFuB5gj/47S/QJGbkQHpkPhlQ1KGl+EW3FgoaeFkAOTQzfZg0U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730130199; c=relaxed/simple;
+	bh=IlBBjm72DKIw/XuEiNkxw4eSSDZpdFL6BcX9NUOV1OE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lu5KnSmXNNPACZD01XHb3RKntP8/5beTkprfZoXkqhSBv+uC9LrNcIySSTqq4UiAEYREJ+jw/lmK+O+JxCCkCmpzxdRvG98AxC/xmcNH+PdNmcUgbuga9zCXJ0JFyYSNFQHpcPuYfti+aYnGipQEEi3DzM5iApv1kRbuuWuvT+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mkow0958; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="aexAM7vc"
-ARC-Seal: i=1; a=rsa-sha256; t=1730129941; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=J4y3ZDcEAs0i/zF0ABDZ241J9J+Kjlprkn7IoaMsfS2ff5eE0diN+5zhkmwwSatj3soaYFJp//7wZUlZcRvjipJTf3tM4Q1iECoDqAlRHriNII/55ojNWmlMngrABt4IzXHAJStOcwqgMqIKy8EAsLEA+OQc/5HvLwo9gGGEq3I=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730129941; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=WN2d6PMago0xonk1IbyOYNDjM2/1VGz96OtyU/lNLG0=; 
-	b=CMQgb6dkkp4hp49GjoDf2Q22ssln7rgAX7qGdmkldrQ06c06JLFUU77MDWRR5lkxvMdX53YC8EXE2eweghzccqxlDipChH0RCOUTpnYdHhwKcz9R6aDJf+batfcnwXNuzPc653ArvQeoaoK/KdH0arbDbqaEFzU4QWDcIO/7MjA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730129941;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=WN2d6PMago0xonk1IbyOYNDjM2/1VGz96OtyU/lNLG0=;
-	b=aexAM7vckI3cvYhJZdUE976phMe+aCy80YLHIe2OrUi4AbUf7w2SdhkpZehcGfit
-	F1Kio3FNaD0IlM4l4tfK6uajFvMwv6ksrIQ3GpPGZCFdKPnlODVsCVLDvs4CtZNaqHR
-	OrwFFK6mVw/GCKnLrbDovdsePVPd9ADx+UmukvAQ=
-Received: by mx.zohomail.com with SMTPS id 1730129940763523.7744098008807;
-	Mon, 28 Oct 2024 08:39:00 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mkow0958"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d4c1b1455so2906875f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Oct 2024 08:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730130196; x=1730734996; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vkB8rijGowJHc7ApNinf8Nlc0DfdTCUjppLIF5zI/v4=;
+        b=mkow0958oktCIrrTjGyr3hnD0lTpQEUklSATUtyaN240yUEIDZSd27f+Nq+4RPzd/L
+         RlysOy/6jKuzeQeftrbrCmCIv0fIpVtd/2kuqbt/1OGc/TxTblPNdyzhBmIHWW+Tgdrw
+         gk2Nt2o8mSxNPT78F01LsPCFeCQ9syjfbEhkqkxlv3wFBkbUlj+16xv8srJWeTkfCFmJ
+         M87jIn2vF2X6cPSmn0xZYjN078jP4ogjAIwfH7IcG08iNq3+P0s7FreuzQKRyF4d2pq4
+         6mp/Ppu11GAt0LuM4v7BX3IGTG+HQlIsLa42OZ97cxOoKM3E5DgDQgJTbHARE3ctJEF6
+         q9qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730130196; x=1730734996;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vkB8rijGowJHc7ApNinf8Nlc0DfdTCUjppLIF5zI/v4=;
+        b=mhZ6tWGKccDMIsBZQFxcMORUzbuvRqdtpPpkEVpl3KLmQx0fg+3Le098wAnltlNq5z
+         +Qe7W+o0qc/CD3mVVtc9oy9ZDkAjHALgowXprPgdJ8d5UcGr8Oe2i5/N5thnPPqtVXM5
+         lZMkp9ud5SkD+6y+NajqLcxYU2eVBm3V8dhIWoYYU4anMmkfz13cMKqqKB2foEHIL3WB
+         HFNe/P1oZ0DhRhmLhisD5jzTUgWAko3MseZMKW0uydryWcLMLCT7o6AWz1Ig4UCJ5EiS
+         4zdd6sBlEduqYcksuN8awpi90hPm57loNmYs+fIuxlDIvlxop7aZVTq4sb3/mYiU0AF3
+         YtCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIH3pcUhGdDMLHWnv24qFcnCcPBLt/xZa1KJFA8sFovVbqyfUM0nuTNZc2u/MgxljLXleLUm2lj6U4J3mFBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhnWrqU9ZMNJG5PNqHvjWB2KcDk1xmUy4XUM+WtM6kiSfQIU8/
+	UcTyWg6PP0QXDl59j2SKSL1zi1rh0ojDzA41AKY0klehxaaRQflj4raXBNC4sJI1N+MWcdbvxXt
+	+Ebh6ClQp8e/nRO6MONLq/hYlhlb9yb/ClDLz
+X-Google-Smtp-Source: AGHT+IE1qO2/N5gbw3WcB8+fHdcuKTaKJxDuV5TxTMiR2W6fNk9ELaoYbYNgwfXegVSEMJJPvVjvp/JEygeFXanRY/8=
+X-Received: by 2002:a5d:4c46:0:b0:378:89be:1825 with SMTP id
+ ffacd0b85a97d-380611f55a1mr5497562f8f.49.1730130195719; Mon, 28 Oct 2024
+ 08:43:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH 2/2] rust: add dma coherent allocator abstraction.
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20241023113309.1724992-3-abdiel.janulgue@gmail.com>
-Date: Mon, 28 Oct 2024 12:38:45 -0300
-Cc: rust-for-linux@vger.kernel.org,
- a.hindborg@kernel.org,
- linux-kernel@vger.kernel.org,
- dakr@redhat.com,
- airlied@redhat.com,
- miguel.ojeda.sandonis@gmail.com,
- wedsonaf@gmail.com,
- Andreas Hindborg <a.hindborg@samsung.com>
+MIME-Version: 1.0
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-10-dakr@kernel.org>
+In-Reply-To: <20241022213221.2383-10-dakr@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 28 Oct 2024 16:43:02 +0100
+Message-ID: <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
+Subject: Re: [PATCH v3 09/16] rust: add `io::Io` base type
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6CF29D3D-C930-4274-9BAC-365C0F32DF56@collabora.com>
-References: <20241023113309.1724992-1-abdiel.janulgue@gmail.com>
- <20241023113309.1724992-3-abdiel.janulgue@gmail.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-ZohoMailClient: External
 
-Hi Abdiel,
+On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>
+> I/O memory is typically either mapped through direct calls to ioremap()
+> or subsystem / bus specific ones such as pci_iomap().
+>
+> Even though subsystem / bus specific functions to map I/O memory are
+> based on ioremap() / iounmap() it is not desirable to re-implement them
+> in Rust.
+>
+> Instead, implement a base type for I/O mapped memory, which generically
+> provides the corresponding accessors, such as `Io::readb` or
+> `Io:try_readb`.
+>
+> `Io` supports an optional const generic, such that a driver can indicate
+> the minimal expected and required size of the mapping at compile time.
+> Correspondingly, calls to the 'non-try' accessors, support compile time
+> checks of the I/O memory offset to read / write, while the 'try'
+> accessors, provide boundary checks on runtime.
 
-> On 23 Oct 2024, at 08:32, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
-wrote:
->=20
-> Add a simple dma coherent allocator rust abstraction which was based =
-on
-> Andreas Hindborg's dma abstractions from the rnvme driver.
->=20
-> This version:
-> - Does not introduce the unused dma pool functionality for now.
-> - Represents the internal CPU buffer as a slice instead of using raw
->  pointer reads and writes.
+And using zero works because the user then statically knows that zero
+bytes are available ... ?
 
-This patch is not a v2, so was anybody against using a raw pointer at =
-some time?
+> `Io` is meant to be embedded into a structure (e.g. pci::Bar or
+> io::IoMem) which creates the actual I/O memory mapping and initializes
+> `Io` accordingly.
+>
+> To ensure that I/O mapped memory can't out-live the device it may be
+> bound to, subsystems should embedd the corresponding I/O memory type
+> (e.g. pci::Bar) into a `Devres` container, such that it gets revoked
+> once the device is unbound.
 
-> - Ensures both 32 and 64-bit DMA addressing works.
-> - Make use of Result error-handling instead of Some.
->=20
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> ---
-> rust/kernel/dma.rs | 153 +++++++++++++++++++++++++++++++++++++++++++++
-> rust/kernel/lib.rs |   1 +
-> 2 files changed, 154 insertions(+)
-> create mode 100644 rust/kernel/dma.rs
->=20
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+I wonder if `Io` should be a reference type instead. That is:
+
+struct Io<'a, const SIZE: usize> {
+    addr: usize,
+    maxsize: usize,
+    _lifetime: PhantomData<&'a ()>,
+}
+
+and then the constructor requires "addr must be valid I/O mapped
+memory for maxsize bytes for the duration of 'a". And instead of
+embedding it in another struct, the other struct creates an `Io` on
+each access?
+
+> Co-developed-by: Philipp Stanner <pstanner@redhat.com>
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+[...]
+
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
 > new file mode 100644
-> index 000000000000..8390b3a4e8aa
+> index 000000000000..750af938f83e
 > --- /dev/null
-> +++ b/rust/kernel/dma.rs
-> @@ -0,0 +1,153 @@
+> +++ b/rust/kernel/io.rs
+> @@ -0,0 +1,234 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Direct memory access (DMA).
+> +//! Memory-mapped IO.
 > +//!
-> +//! C header: =
-[`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+> +//! C header: [`include/asm-generic/io.h`](srctree/include/asm-generic/i=
+o.h)
 > +
-> +use crate::{
-> +    bindings,
-> +    device::Device,
-> +    error::code::*,
-> +    error::Result,
-> +    types::ARef,
-> +};
+> +use crate::error::{code::EINVAL, Result};
+> +use crate::{bindings, build_assert};
 > +
-> +/// Abstraction of dma_alloc_coherent
+> +/// IO-mapped memory, starting at the base address @addr and spanning @m=
+axlen bytes.
 > +///
-> +/// # Invariants
+> +/// The creator (usually a subsystem / bus such as PCI) is responsible f=
+or creating the
+> +/// mapping, performing an additional region request etc.
 > +///
-> +/// For the lifetime of an instance of CoherentAllocation:
-> +/// 1. The cpu address pointer is valid and is accessed with an index =
-bounded within count.
-> +/// 2. We hold a reference to the device.
-> +pub struct CoherentAllocation<T: 'static> {
-> +    dev: ARef<Device>,
-> +    dma_handle: bindings::dma_addr_t,
-> +    count: usize,
-> +    cpu_addr: &'static mut [T],
-> +}
+> +/// # Invariant
+> +///
+> +/// `addr` is the start and `maxsize` the length of valid I/O mapped mem=
+ory region of size
+> +/// `maxsize`.
 
-Not sure why there=E2=80=99s =E2=80=99static here. The lifetime of =
-`cpu_addr` is the lifetime of the object.
+Do you not also need an invariant that `SIZE <=3D maxsize`?
 
-This is why keeping a pointer and building the slice as needed is =
-actually a better approach, IMHO.
-That will correctly express the lifetime we want to enforce, i.e.:
-
-```
-pub fn cpu(&=E2=80=99a self) -> &=E2=80=99a mut [T];=20
-```
-
-Where =E2=80=98a is automatically filled in, of course.
-
-Also, naming a slice as `cpu_addr` doesn=E2=80=99t sound very good, to =
-be honest.
-
-> +
-> +impl<T> CoherentAllocation<T> {
-> +    /// Allocates a region of `size_of::<T> * count` of consistent =
-memory.
-> +    ///
-> +    /// Returns a CoherentAllocation object which contains a pointer =
-to the allocated region
-> +    /// (in the processor's virtual address space) and the device =
-address which can be
-> +    /// given to the device as the DMA address base of the region. =
-The region is released once
-> +    /// [`CoherentAllocation`] is dropped.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::device::Device;
-> +    /// use kernel::dma::CoherentAllocation;
-> +    ///
-> +    /// # fn dox(dev: &Device) -> Result<()> {
-> +    /// let c: CoherentAllocation<u64> =3D =
-CoherentAllocation::alloc_coherent(dev, 4, GFP_KERNEL)?;
-
-Have you considered ZSTs? What happens if someone writes down:
-
-```
-let c =3D CoherentAllocation<()> =3D =E2=80=A6
-```
-
-This doesn=E2=80=99t really make sense and should be forbidden.
-
-
-> +    /// # Ok(()) }
-> +    /// ```
-> +    pub fn alloc_coherent(
-> +        dev: &Device,
-> +        count: usize,
-> +        flags: kernel::alloc::Flags,
-> +    ) -> Result<CoherentAllocation<T>> {
-> +        let t_size =3D core::mem::size_of::<T>();
-> +        let size =3D count.checked_mul(t_size).ok_or(EOVERFLOW)?;
-> +        let mut dma_handle =3D 0;
-> +        // SAFETY: device pointer is guaranteed as valid by invariant =
-on `Device`.
-> +        // We ensure that we catch the failure on this function and =
-throw an ENOMEM
-> +        let ret =3D unsafe {
-> +            bindings::dma_alloc_attrs(
-> +                dev.as_raw(),
-> +                size,
-> +                &mut dma_handle, flags.as_raw(),
-> +                0,
-> +            )
-> +        };
-> +        if ret.is_null() {
-> +            return Err(ENOMEM)
-> +        }
-
-I assume that ZSTs will simply return ENOMEM as per above, but that=E2=80=99=
-s not quite
-right either. The API should prevent this per-design instead of =
-returning `Error`.
-
-> +
-> +        Ok(Self {
-> +            dev: dev.into(),
-> +            dma_handle,
-> +            count,
-> +            // SAFETY: The raw buffer and size is valid from the =
-checks we've made above.
-> +            cpu_addr: unsafe { core::slice::from_raw_parts_mut(ret as =
-_, size) },
-> +        })
-> +    }
-> +
-> +    /// Reads a value on a location specified by index.
-> +    pub fn read(&self, index: usize) -> Result<T>
-> +    where
-> +        T: Copy
-> +    {
-> +        if let Some(val) =3D self.cpu_addr.get(index) {
-> +            Ok(*val)
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
-> +
-> +    /// Write a value on the memory location specified by index.
-> +    pub fn write(&mut self, index: usize, value: &T) -> Result
-> +    where
-> +        T: Copy,
-> +    {
-> +        if let Some(elem) =3D self.cpu_addr.get_mut(index) {
-> +            *elem =3D *value;
-> +            Ok(())
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
-> +
-> +    /// Performs a read and then a write of a value on a location =
-specified by index.
-> +    pub fn read_write(&mut self, index: usize, value: &T) -> =
-Result<T>
-> +    where
-> +        T: Copy,
-> +    {
-> +        if let Some(elem) =3D self.cpu_addr.get_mut(index) {
-> +            let val =3D *elem;
-> +            *elem =3D *value;
-> +            Ok(val)
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
-> +
-> +    /// Returns the base address to the allocated region and the dma =
-handle.
-> +    /// Caller takes ownership of returned resources.
-> +    pub fn into_parts(self) -> (usize, bindings::dma_addr_t) {
-> +        let ret =3D (self.cpu_addr.as_mut_ptr() as _, =
-self.dma_handle);
-> +        core::mem::forget(self);
-> +        ret
-> +    }
-> +
-> +    /// Returns the base address to the allocated region in the CPU's =
-virtual address space.
-> +    pub fn start_ptr(&self) -> *const T {
-> +        self.cpu_addr.as_ptr() as _
-> +    }
-> +
-> +    /// Returns the base address to the allocated region in the CPU's =
-virtual address space as
-> +    /// a mutable pointer.
-> +    pub fn start_ptr_mut(&mut self) -> *mut T {
-> +        self.cpu_addr.as_mut_ptr() as _
-> +    }
-> +
-> +    /// Returns a DMA handle which may given to the device as the DMA =
-address base of
-> +    /// the region.
-> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
-> +        self.dma_handle
-> +    }
-> +}
-> +
-> +impl<T> Drop for CoherentAllocation<T> {
-> +    fn drop(&mut self) {
-> +        let size =3D self.count * core::mem::size_of::<T>();
-> +
-> +        // SAFETY: the device, cpu address, and the dma handle is =
-valid due to the
-> +        // type invariants on `CoherentAllocation`.
-> +        unsafe { bindings::dma_free_attrs(self.dev.as_raw(), size,
-> +                                          self.cpu_addr.as_mut_ptr() =
-as _,
-> +                                          self.dma_handle, 0) }
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index b62451f64f6e..b713c92eb1ef 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -32,6 +32,7 @@
-> pub mod block;
-> mod build_assert;
-> pub mod device;
-> +pub mod dma;
-> pub mod error;
-> #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
-> pub mod firmware;
-> --=20
-> 2.43.0
->=20
->=20
-
-Everything else looks good to me!
-
-=E2=80=94 Daniel
-
+Alice
