@@ -1,103 +1,130 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B771D5AC6;
-	Mon, 28 Oct 2024 07:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522A1762E0;
+	Mon, 28 Oct 2024 09:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730101921; cv=none; b=cGP7VlCPwW+0RcqopqjTBJzGEw8iUEGdbkiAKdHRaUjPaLO358kI/VzRnQ1nVan5d4i9f/UjFr5lTn+p+tjxdyCmRA3377Bj/hTVA99csGjNRu7Ek1Rx+hv3dcRtDxpnU9fOmETbku9cu/k6/wUw6+MzIQ94WL/UcSkP0qX6Q9I=
+	t=1730107963; cv=none; b=To8kxv5if613Qd4kj2QOxoG47P526flwsodckIBC5+KDe9nG3dmQRYEzUinruANZOh+y+c3RyKLrH9oxiiinP7cgGgVj+NtV2IoXEH8q5ZbRnIi/HilSqqpb9yuqv44ElD3sIKWlyBcg+FpxWLljyA8DGpjnGKFBbyqA8z47r+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730101921; c=relaxed/simple;
-	bh=8L8SBjVc+uA+SfZvx5iBf5Qoo6mVUp7FizerDJZPIEk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QPFI7ApBKGRQfRXsmQZdaSahBifbiVVDlAsL5uSR5ag2hcW+Xoy82LUSZfpsEm8/6kzTgfmCT7aRnE2obYIwmOVi5r8fRPt8v5CM05dDtOkNPhbfxHVZ8Y/iiQTzSbunWt4ojCecGKvHt6Z118RV5uFUEgzizVdG3br25UpLak4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ndIHjEOC; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730107963; c=relaxed/simple;
+	bh=jHYX6x1sSyIZMS3Ae4dRPqlmWRl9NIWGJ6MG3Ic6j6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ll/yMwegyJW5nZzVLZqu8zBP377E6/NXQM2SVjPK2DQ17/ovtl2PgxmoN1FJkO2+Y87BC0sK/CCIDeGlMGtN/DP62hb2dEH7D/vjr2LQP7rv8oTU92HbQ52A2xB2p9euuGmNg8oVQOKaOAAzal9/5WuMe5Td4Ajt5zTU2PZgq7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQbbWfAD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ndIHjEOC"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e59dadebso4636292e87.0;
-        Mon, 28 Oct 2024 00:51:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730101917; x=1730706717; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2t7PRpXCWMJEMwx+JkIvQ8UmWLLLuKvDIeT29JMOGv4=;
-        b=ndIHjEOCd6K3pOEEhJmzTR572M7kxU7GdUIKa4z4zybNZzG8fcfHNgoX4OhxZhATko
-         4QikAjQkmSjcBrbysRPKTQeHw+Cacmg++JXEVWhKfQ+Rafp43iC4SELedeSuIWko9CWk
-         UzU1MKhEXEvUUfyjszYHMasNhv9oOWpXyHNx9o2HtiVrKbolXuJbOqPef4GMvnqIbkks
-         u36JXzHbDrz6DOM6r2XvxzJ7v1imCgfQKF2R7nAhxcCBOlLszaFAvUp+oLYjbpEmtjoo
-         KVOMeNEnf47H0Tvvisx4yJX6D0IotUDMSiEC59MM6gDj5nTy6IS6IbzBqXYDq/o0bMWs
-         6hZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730101917; x=1730706717;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2t7PRpXCWMJEMwx+JkIvQ8UmWLLLuKvDIeT29JMOGv4=;
-        b=o6TEg4Ga04WL1+1H8cEOSnsoVMUugZp203Loe41yfU4Iqdx5nlruzHDhY5CUwpqQVI
-         ZcCXuG4UfCIYwjAtO6OQEprofPJWS29TJRXv8beDhJWAhLJdvhVxmktLqniQWKmSMAtw
-         mKQdIdQTKuXygAxfxb26E/4orV0UyDru5qsIo9gE9Vhw8E1gNI0q0NOH10d/Xce13Q17
-         NzK8I4gvBt+BRKdMIoUxe/AfyoNSGNGbRA+kyshyLm/8riCo//isB5rr4bfQRkuy9oP/
-         XUABxkA8eCSld21pIpAK124vxU0xIvXzMkbJxPyAL4ZdyzqMa6ewrF1FTIPmz7HY0tj7
-         0y/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUhaYsQi30ob+8NGjwr9LDDDFJGRjwb4VdYvheRHuHGy+FfCO93Tj6Qv+zYuicdvdZ0EV85OzwwmlJvWXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM23hZJT6d9zmcIEy9NqZDKIXKSVGCDpBXRtaGXe93fPA80kCL
-	bB2cxzhaOkp8D/sPmL9P+ikaJQceOqwPZPMCg/PiloNM86kuCZ1iDlJMnw==
-X-Google-Smtp-Source: AGHT+IFW6TuSGnQiPxqiYcrHg9zWINYMHlpXAWM7scBW7VsygkzbAV32/7q6NSFOD2XtBTB2kk4nLw==
-X-Received: by 2002:a05:6512:3b98:b0:539:fb56:7790 with SMTP id 2adb3069b0e04-53b348ec010mr2832964e87.6.1730101916820;
-        Mon, 28 Oct 2024 00:51:56 -0700 (PDT)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53b2e1af34asm995502e87.144.2024.10.28.00.51.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Oct 2024 00:51:56 -0700 (PDT)
-Message-ID: <4387755c-896f-4fd7-be2f-2f54c5b074bd@gmail.com>
-Date: Mon, 28 Oct 2024 09:51:55 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQbbWfAD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA3FC4CEC3;
+	Mon, 28 Oct 2024 09:32:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730107962;
+	bh=jHYX6x1sSyIZMS3Ae4dRPqlmWRl9NIWGJ6MG3Ic6j6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GQbbWfAD7Zn4qd90donpPj898f9FGSqhmY+Su2xiXClSOj/RhCNCqstfRDiMaj8Il
+	 /OLvJ/CN0V6wvSOgoQRrJmtYDPZBIsk6KI1WAuh2D/CtWJ6SXliDz0kWkFr0L+lcer
+	 cuKarAMEEB51ul3/UKCed5DaoBMdFFpDUZNJHS5wG9/VPkR3J2umx1exfkhZwn0mbc
+	 WuZd53s1rii8deBpfG/HQvl1XXF6lqXgemMKe1W+X5rG7xJrwduJSFBIa0UprAe8dN
+	 ccw3DyqR6TclORq2HD4F/oPPmuBmmXyv3d6pI0x17ejzBZfWkx7wiqNfI3dpkrnF3p
+	 m8SDho1PfdJGQ==
+Date: Mon, 28 Oct 2024 10:32:34 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
+Message-ID: <Zx9aMguDJWqDVnJf@pollux>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-17-dakr@kernel.org>
+ <20241023000408.GC1848992-robh@kernel.org>
+ <Zxie5Lu2z_Xc_RXM@pollux>
+ <20241023153703.GA1064929-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] rust: add dma coherent allocator abstraction.
-To: rust-for-linux@vger.kernel.org
-Cc: a.hindborg@kernel.org, linux-kernel@vger.kernel.org, dakr@redhat.com,
- airlied@redhat.com, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
- Andreas Hindborg <a.hindborg@samsung.com>
-References: <20241023113309.1724992-1-abdiel.janulgue@gmail.com>
- <20241023113309.1724992-3-abdiel.janulgue@gmail.com>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <20241023113309.1724992-3-abdiel.janulgue@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023153703.GA1064929-robh@kernel.org>
 
-
-On 23/10/2024 14:32, Abdiel Janulgue wrote:
-> Add a simple dma coherent allocator rust abstraction which was based on
-> Andreas Hindborg's dma abstractions from the rnvme driver.
+On Wed, Oct 23, 2024 at 10:37:03AM -0500, Rob Herring wrote:
+> On Wed, Oct 23, 2024 at 08:59:48AM +0200, Danilo Krummrich wrote:
+> > On Tue, Oct 22, 2024 at 07:04:08PM -0500, Rob Herring wrote:
+> > > On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
+> > > > Add a sample Rust platform driver illustrating the usage of the platform
+> > > > bus abstractions.
+> > > > 
+> > > > This driver probes through either a match of device / driver name or a
+> > > > match within the OF ID table.
+> > > 
+> > > I know if rust compiles it works, but how does one actually use/test 
+> > > this? (I know ways, but I might be in the minority. :) )
+> > 
+> > For testing a name match I just used platform_device_register_simple() in a
+> > separate module.
+> > 
+> > Probing through the OF table is indeed a bit more tricky. Since I was too lazy
+> > to pull out a random ARM device of my cupboard I just used QEMU on x86 and did
+> > what drivers/of/unittest.c does. If you're smart you can also just enable those
+> > unit tests and change the compatible string to "unittest". :)
+> > 
+> > > 
+> > > The DT unittests already define test platform devices. I'd be happy to 
+> > > add a device node there. Then you don't have to muck with the DT on some 
+> > > device and it even works on x86 or UML.
+> > 
+> > Sounds good, I'll add one in there for this sample driver -- any preferences?
 > 
-> This version:
-> - Does not introduce the unused dma pool functionality for now.
-> - Represents the internal CPU buffer as a slice instead of using raw
->    pointer reads and writes.
-> - Ensures both 32 and 64-bit DMA addressing works.
-> - Make use of Result error-handling instead of Some.
+> I gave this a spin and added the patch below in. Feel free to squash it 
+> into this one.
 
-
-Ping! Does this approach make sense? :)
+Looks good -- it only works if the sample driver is built-in though, but I think
+that should be fine.
 
 > 
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> ---
->   rust/kernel/dma.rs | 153 +++++++++++++++++++++++++++++++++++++++++++++
->   rust/kernel/lib.rs |   1 +
->   2 files changed, 154 insertions(+)
->   create mode 100644 rust/kernel/dma.rs
+> 8<----------------------------------------------------------------
+> From: "Rob Herring (Arm)" <robh@kernel.org>
+> Date: Wed, 23 Oct 2024 10:29:47 -0500
+> Subject: [PATCH] of: unittest: Add a platform device node for rust platform
+>  driver sample
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> 
+> diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
+> index fa39611071b3..575ea260a877 100644
+> --- a/drivers/of/unittest-data/tests-platform.dtsi
+> +++ b/drivers/of/unittest-data/tests-platform.dtsi
+> @@ -33,6 +33,11 @@ dev@100 {
+>                                         reg = <0x100>;
+>                                 };
+>                         };
+> +
+> +                       test-device@2 {
+> +                               compatible = "test,rust-device";
+> +                               reg = <0x2>;
+> +                       };
+>                 };
+>         };
+>  };
+> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+> index 55caaaa4f216..5cf4a8f86c13 100644
+> --- a/samples/rust/rust_driver_platform.rs
+> +++ b/samples/rust/rust_driver_platform.rs
+> @@ -15,7 +15,7 @@ struct SampleDriver {
+>      MODULE_OF_TABLE,
+>      <SampleDriver as platform::Driver>::IdInfo,
+>      [(
+> -        of::DeviceId::new(c_str!("redhat,rust-sample-platform-driver")),
+> +        of::DeviceId::new(c_str!("test,rust-device")),
+>          Info(42)
+>      )]
+>  );
 > 
