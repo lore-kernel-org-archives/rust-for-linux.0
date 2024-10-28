@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522A1762E0;
-	Mon, 28 Oct 2024 09:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088ECA59;
+	Mon, 28 Oct 2024 10:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730107963; cv=none; b=To8kxv5if613Qd4kj2QOxoG47P526flwsodckIBC5+KDe9nG3dmQRYEzUinruANZOh+y+c3RyKLrH9oxiiinP7cgGgVj+NtV2IoXEH8q5ZbRnIi/HilSqqpb9yuqv44ElD3sIKWlyBcg+FpxWLljyA8DGpjnGKFBbyqA8z47r+Y=
+	t=1730110544; cv=none; b=N9zxfN0AtivIcytmLYIIg8RHiCXatg5Tprjt+M6fjPDfnL728KOWV9reDtzcJIq6H5WJkKNVUVPMIajyDz8MN6cSr3rbw57nijjJKCAiX9/BY2WQJGiQZOMYc81l/YxMP5saAq4Lwv+ooJFogyrw9Rnaif9cV6+WFyoTbmTsSJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730107963; c=relaxed/simple;
-	bh=jHYX6x1sSyIZMS3Ae4dRPqlmWRl9NIWGJ6MG3Ic6j6s=;
+	s=arc-20240116; t=1730110544; c=relaxed/simple;
+	bh=FNlGLpo7ThFgdkXFr0K2A7/imjFw4XYgmYXIs27D2C0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ll/yMwegyJW5nZzVLZqu8zBP377E6/NXQM2SVjPK2DQ17/ovtl2PgxmoN1FJkO2+Y87BC0sK/CCIDeGlMGtN/DP62hb2dEH7D/vjr2LQP7rv8oTU92HbQ52A2xB2p9euuGmNg8oVQOKaOAAzal9/5WuMe5Td4Ajt5zTU2PZgq7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQbbWfAD; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=m0CK+Mbwe4gdKWOxk6j7oh4gQMfnr9nbYl5UQrafctEmALMFDupehoAD3gPZqOc2izE2Bort0uB+Db+C/j1faLi1aQtydGfGkTsqISnjxwPhsYqd1KR6ZLjnyBtDey/uEi5kmy12lFYKFHXx2+ELfOwHtmGyG1+GxdvmB3kLDes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuokBvtN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQbbWfAD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA3FC4CEC3;
-	Mon, 28 Oct 2024 09:32:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuokBvtN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD2BC4CEC3;
+	Mon, 28 Oct 2024 10:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730107962;
-	bh=jHYX6x1sSyIZMS3Ae4dRPqlmWRl9NIWGJ6MG3Ic6j6s=;
+	s=k20201202; t=1730110543;
+	bh=FNlGLpo7ThFgdkXFr0K2A7/imjFw4XYgmYXIs27D2C0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GQbbWfAD7Zn4qd90donpPj898f9FGSqhmY+Su2xiXClSOj/RhCNCqstfRDiMaj8Il
-	 /OLvJ/CN0V6wvSOgoQRrJmtYDPZBIsk6KI1WAuh2D/CtWJ6SXliDz0kWkFr0L+lcer
-	 cuKarAMEEB51ul3/UKCed5DaoBMdFFpDUZNJHS5wG9/VPkR3J2umx1exfkhZwn0mbc
-	 WuZd53s1rii8deBpfG/HQvl1XXF6lqXgemMKe1W+X5rG7xJrwduJSFBIa0UprAe8dN
-	 ccw3DyqR6TclORq2HD4F/oPPmuBmmXyv3d6pI0x17ejzBZfWkx7wiqNfI3dpkrnF3p
-	 m8SDho1PfdJGQ==
-Date: Mon, 28 Oct 2024 10:32:34 +0100
+	b=OuokBvtNFNZMki3pSHIjGzx63J/7nixUiryJ3SYdiBZD5oG7tzDC/rbcQ+K66/9KQ
+	 nM+ngcqiMRKxpTeSbP+FJzn03qqie8T6mTKojTU+sviDw2hcKkJHgDvhaNxNDkFJ0f
+	 JwRlE48oJNkINFvUXwkLjOY2cfq7ucMA4AhW7D2N6wf+Xnag5hqnXlJl6+5bt3F0K9
+	 Uwlj9bgIwZuqyogtOxiTOAFz7gtVwq9KYSfVfpEavk34jBHo7GgHyY14e3kkwmxL3I
+	 TJSWQLKLcqyjQpnS0PCLRrCxvxhZXX2aFvNr7/V1wV9jmuakzbIX1uiCkE6t5k5fwq
+	 OJ7fUY80ShSyQ==
+Date: Mon, 28 Oct 2024 11:15:35 +0100
 From: Danilo Krummrich <dakr@kernel.org>
 To: Rob Herring <robh@kernel.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
@@ -38,13 +38,14 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 	daniel.almeida@collabora.com, saravanak@google.com,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 16/16] samples: rust: add Rust platform sample driver
-Message-ID: <Zx9aMguDJWqDVnJf@pollux>
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
+Message-ID: <Zx9kR4OhT1pErzEk@pollux>
 References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-17-dakr@kernel.org>
- <20241023000408.GC1848992-robh@kernel.org>
- <Zxie5Lu2z_Xc_RXM@pollux>
- <20241023153703.GA1064929-robh@kernel.org>
+ <20241022213221.2383-16-dakr@kernel.org>
+ <20241022234712.GB1848992-robh@kernel.org>
+ <ZxibWpcswZxz5A07@pollux>
+ <20241023142355.GA623906-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,78 +54,86 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241023153703.GA1064929-robh@kernel.org>
+In-Reply-To: <20241023142355.GA623906-robh@kernel.org>
 
-On Wed, Oct 23, 2024 at 10:37:03AM -0500, Rob Herring wrote:
-> On Wed, Oct 23, 2024 at 08:59:48AM +0200, Danilo Krummrich wrote:
-> > On Tue, Oct 22, 2024 at 07:04:08PM -0500, Rob Herring wrote:
-> > > On Tue, Oct 22, 2024 at 11:31:53PM +0200, Danilo Krummrich wrote:
-> > > > Add a sample Rust platform driver illustrating the usage of the platform
-> > > > bus abstractions.
-> > > > 
-> > > > This driver probes through either a match of device / driver name or a
-> > > > match within the OF ID table.
+On Wed, Oct 23, 2024 at 09:23:55AM -0500, Rob Herring wrote:
+> On Wed, Oct 23, 2024 at 08:44:42AM +0200, Danilo Krummrich wrote:
+> > On Tue, Oct 22, 2024 at 06:47:12PM -0500, Rob Herring wrote:
+> > > On Tue, Oct 22, 2024 at 11:31:52PM +0200, Danilo Krummrich wrote:
+> > > > +///     ]
+> > > > +/// );
+> > > > +///
+> > > > +/// impl platform::Driver for MyDriver {
+> > > > +///     type IdInfo = ();
+> > > > +///     const ID_TABLE: platform::IdTable<Self::IdInfo> = &OF_TABLE;
+> > > > +///
+> > > > +///     fn probe(
+> > > > +///         _pdev: &mut platform::Device,
+> > > > +///         _id_info: Option<&Self::IdInfo>,
+> > > > +///     ) -> Result<Pin<KBox<Self>>> {
+> > > > +///         Err(ENODEV)
+> > > > +///     }
+> > > > +/// }
+> > > > +///```
+> > > > +/// Drivers must implement this trait in order to get a platform driver registered. Please refer to
+> > > > +/// the `Adapter` documentation for an example.
+> > > > +pub trait Driver {
+> > > > +    /// The type holding information about each device id supported by the driver.
+> > > > +    ///
+> > > > +    /// TODO: Use associated_type_defaults once stabilized:
+> > > > +    ///
+> > > > +    /// type IdInfo: 'static = ();
+> > > > +    type IdInfo: 'static;
+> > > > +
+> > > > +    /// The table of device ids supported by the driver.
+> > > > +    const ID_TABLE: IdTable<Self::IdInfo>;
+> 
+> Another thing. I don't think this is quite right. Well, this part is 
+> fine, but assigning the DT table to it is not. The underlying C code has 
+> 2 id tables in struct device_driver (DT and ACPI) and then the bus 
+> specific one in the struct ${bus}_driver.
+
+The assignment of this table in `Adapter::register` looks like this:
+
+`pdrv.driver.of_match_table = T::ID_TABLE.as_ptr();`
+
+What do you think is wrong with this assignment?
+
+> 
+> > > > +
+> > > > +    /// Platform driver probe.
+> > > > +    ///
+> > > > +    /// Called when a new platform device is added or discovered.
+> > > > +    /// Implementers should attempt to initialize the device here.
+> > > > +    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>>;
+> > > > +
+> > > > +    /// Find the [`of::DeviceId`] within [`Driver::ID_TABLE`] matching the given [`Device`], if any.
+> > > > +    fn of_match_device(pdev: &Device) -> Option<&of::DeviceId> {
 > > > 
-> > > I know if rust compiles it works, but how does one actually use/test 
-> > > this? (I know ways, but I might be in the minority. :) )
+> > > Is this visible to drivers? It shouldn't be.
 > > 
-> > For testing a name match I just used platform_device_register_simple() in a
-> > separate module.
-> > 
-> > Probing through the OF table is indeed a bit more tricky. Since I was too lazy
-> > to pull out a random ARM device of my cupboard I just used QEMU on x86 and did
-> > what drivers/of/unittest.c does. If you're smart you can also just enable those
-> > unit tests and change the compatible string to "unittest". :)
-> > 
-> > > 
-> > > The DT unittests already define test platform devices. I'd be happy to 
-> > > add a device node there. Then you don't have to muck with the DT on some 
-> > > device and it even works on x86 or UML.
-> > 
-> > Sounds good, I'll add one in there for this sample driver -- any preferences?
+> > Yeah, I think we should just remove it. Looking at struct of_device_id, it
+> > doesn't contain any useful information for a driver. I think when I added this I
+> > was a bit in "autopilot" mode from the PCI stuff, where struct pci_device_id is
+> > useful to drivers.
 > 
-> I gave this a spin and added the patch below in. Feel free to squash it 
-> into this one.
+> TBC, you mean other than *data, right? If so, I agree. 
 
-Looks good -- it only works if the sample driver is built-in though, but I think
-that should be fine.
+Yes.
 
 > 
-> 8<----------------------------------------------------------------
-> From: "Rob Herring (Arm)" <robh@kernel.org>
-> Date: Wed, 23 Oct 2024 10:29:47 -0500
-> Subject: [PATCH] of: unittest: Add a platform device node for rust platform
->  driver sample
+> The DT type and name fields are pretty much legacy, so I don't think the 
+> rust bindings need to worry about them until someone converts Sparc and 
+> PowerMac drivers to rust (i.e. never).
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> I would guess the PCI cases might be questionable, too. Like DT, drivers 
+> may be accessing the table fields, but that's not best practice. All the 
+> match fields are stored in pci_dev, so why get them from the match 
+> table?
+
+Fair question, I'd like to forward it to Greg. IIRC, he explicitly requested to
+make the corresponding struct pci_device_id available in probe() at Kangrejos.
+
 > 
-> diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
-> index fa39611071b3..575ea260a877 100644
-> --- a/drivers/of/unittest-data/tests-platform.dtsi
-> +++ b/drivers/of/unittest-data/tests-platform.dtsi
-> @@ -33,6 +33,11 @@ dev@100 {
->                                         reg = <0x100>;
->                                 };
->                         };
-> +
-> +                       test-device@2 {
-> +                               compatible = "test,rust-device";
-> +                               reg = <0x2>;
-> +                       };
->                 };
->         };
->  };
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index 55caaaa4f216..5cf4a8f86c13 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -15,7 +15,7 @@ struct SampleDriver {
->      MODULE_OF_TABLE,
->      <SampleDriver as platform::Driver>::IdInfo,
->      [(
-> -        of::DeviceId::new(c_str!("redhat,rust-sample-platform-driver")),
-> +        of::DeviceId::new(c_str!("test,rust-device")),
->          Info(42)
->      )]
->  );
+> Rob
 > 
