@@ -1,133 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24721193091;
-	Mon, 28 Oct 2024 10:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5321E48A;
+	Mon, 28 Oct 2024 13:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730110884; cv=none; b=r8Bdlye2grBZcaGY8I35D2dXGEWpU9tkYCuGaGgotpwsHBd1vsWujKdPdhdWJWhsqcJ60W4gDccopnM6+6Ui4WBd1X67BykQKmmHkpItlUFufejuZkRcmVhQeibW0TZ6Qz2dB7x/oMHbOgS0xhZehNuYNJd46DmKWziFPsZjFhI=
+	t=1730121254; cv=none; b=AO3nEaTQggxwmovnwP+/qLr1bMNcjGkafnO4SqeDW/E1d2OV6gb96S61tbTNAXfCd7Fd6K8oqbn+6gBG2ZcnZLMJomvYYKP3LFz4C70PPjtkgv+P/lmlgIkpWlG35/x06QG5MUX67DD8GDFg/BRzR5LiPg0u6n0seKrtvdJHASw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730110884; c=relaxed/simple;
-	bh=owNUxo2qvIqiw6YFzUe3v+lHPOEmrIQQY5K8b53qT60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AgLb0GBuHhZyTkp+m5GrymEAy9GmFntbuGw/aojlg/VdbvS8ueIVqfCMk0NW1wDL4jhsXPkKMj2yixrSV8Qhx9qEXKgaJt01gODPHiOZ2pkkxOHA0qDxbRr6KEWYy/qQUoCvC4249Lj5nJ4mHSUV+ZcuYguZ4t33tMnuEabdMVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFJ6YR4v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730121254; c=relaxed/simple;
+	bh=umXgkxvsn6pDDf/HDvjTuNRj/50/wdrGHMkq15iPbhc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DYWv5X/plFQO/7QXiuhujgs/vnCYB9qF+zO30AqakjmSOBdrgiwOTz9D90uWMRYZWIlFBO1G0dUgNUhhBWGrxC1g1MlOTOjySECkNzNn3YyfyfQgQlF0F5qJTbjUKVCqUdTFDgo+1ClXMa0TvJ5mO0Dj6GgURHLSn52s49oCGt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYZdU+03; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFJ6YR4v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDE1C4CEC3;
-	Mon, 28 Oct 2024 10:21:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYZdU+03"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEA1C4CEEC;
+	Mon, 28 Oct 2024 13:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730110883;
-	bh=owNUxo2qvIqiw6YFzUe3v+lHPOEmrIQQY5K8b53qT60=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qFJ6YR4v9rfHzqTOjhA3QuldxEbUh9bUsWCIlSZRiS1yTs9WbHQFLCrkQkL1sCvSs
-	 IHH8XLVXwJFAhVFyEjx/4O6tD0AB444yGdk6zufQ4XPFnDp2j7XJuwG393PP6M3uz6
-	 5GxSIp8WR13wevxTKL2rAOMaaOn8zw/pXJ6BRK0dEZgckXDx5ATOJyn9STqwCIwI7u
-	 jeAXhragt3V2YJ/lHUSWlBGfkgE+wiq/TRlwZL5M+l0usM4NRApQwNCkYVEMeebZft
-	 fXpgrXAOt9C22EEAms1nuU16QtWlCxfPanH03kyfD7r820IJim30lSAYkKsQUaPxEH
-	 OG4TeHKDB0htQ==
-Date: Mon, 28 Oct 2024 11:21:15 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 11/16] rust: pci: add basic PCI device / driver
- abstractions
-Message-ID: <Zx9lm9pSq2ymnJZL@pollux>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-12-dakr@kernel.org>
- <Zx7B4Y5iegKVXpC4@Boquns-Mac-mini.local>
+	s=k20201202; t=1730121254;
+	bh=umXgkxvsn6pDDf/HDvjTuNRj/50/wdrGHMkq15iPbhc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DYZdU+03iEdFhVk6XAp+TgXryYadk927GCLCnF/cjY1oEcuv1ykc2UbVIA35FN92j
+	 oTbxzoRmr7/iyleb+67SXJQk/AWyK9bUhn4Z0eJ/8nRaKnz51vyMi5mhhsdLSWHF1d
+	 Lb38yEAt7DwS89iHYA7KCK5vhLWRnv0c0mN1L4F2Me8JrPL0Ac1JaH5CFtTsrby4as
+	 MM/1qIY5BNOQ26XP78kKBUzGGfrbYdUGgtZg1wFeizzEYp/H4r8tgjb2EgOjUIL35Y
+	 AcBteTQDzJOWcUPavb2SMWIbP5LpY6zP/uWn9xkv0krN7WMQGN1xySJ+0g4pgZD5x+
+	 IB4sMXh3eStUw==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb3da341c9so40504411fa.2;
+        Mon, 28 Oct 2024 06:14:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV7tWww33e2GWEwVlyVM3mhul2iST+6ypTS/4czmG23j5P9tu03TDS0ll2FqMmwFx1Nz9dVY6AsYE/EpwkP@vger.kernel.org, AJvYcCVAd/PYGPqSbRMp4oXYtcX15IeINEW8IudXmVbtmQ0gubIk1YPPI1GVlRBsIEAk1ZK+yo0Dp+SZJZ5Q8QQ=@vger.kernel.org, AJvYcCWC6rKGFQwt70l2sdOlHm/W396yYGAvKCIRfHXV/+g5X0s+pjkvqWaw9AdkjIqbMxRBAU0RskqedJmqjTrz0A==@vger.kernel.org, AJvYcCX39l6soPmMvWJNyTwj5P7XPcfvyTxOJGj7lvsl24jLWiGm+TSZq+Ivys8zXFvdwX3sRYw02cYJI/aJKf+jIyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywsB1RgtquwRh9Oh9PcDQTmo+Xfu29cQMWt3CCprc9YS58z1Hn
+	z76nGKqqI/5AOvaZZYhl40A+x6xKjFoFagQmz1vHnxaPZMh4moZh5UPi3yNYs5/4Gfd5GfFPOxS
+	yUOsdRS2MgDd3tY7cwHaqyeuoyLg=
+X-Google-Smtp-Source: AGHT+IG9gyko7VXssgM2SznITKHdLjhPfPryjecLgn1FTNeKz7JFR7J+mcsrozK/vjiUGUaUbgu6OiWUprCs1uMwqR8=
+X-Received: by 2002:a05:651c:1504:b0:2fb:5014:c998 with SMTP id
+ 38308e7fff4ca-2fcbe08cf24mr28249331fa.28.1730121252616; Mon, 28 Oct 2024
+ 06:14:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zx7B4Y5iegKVXpC4@Boquns-Mac-mini.local>
+References: <20241015231925.3854230-1-mmaurer@google.com> <20241015231925.3854230-2-mmaurer@google.com>
+In-Reply-To: <20241015231925.3854230-2-mmaurer@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 28 Oct 2024 14:13:36 +0100
+X-Gmail-Original-Message-ID: <CAK7LNASAbDNZYcSZ+F+4JrbGFWiV4qO-W=HfaBEieKhcg+=jCw@mail.gmail.com>
+Message-ID: <CAK7LNASAbDNZYcSZ+F+4JrbGFWiV4qO-W=HfaBEieKhcg+=jCw@mail.gmail.com>
+Subject: Re: [PATCH v6 1/5] export_report: Rehabilitate script
+To: Matthew Maurer <mmaurer@google.com>
+Cc: ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net, 
+	mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
+	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
+	linux-modules@vger.kernel.org, samitolvanen@google.com, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 27, 2024 at 03:42:41PM -0700, Boqun Feng wrote:
-> Hi Danilo,
-> 
-> On Tue, Oct 22, 2024 at 11:31:48PM +0200, Danilo Krummrich wrote:
-> [...]
-> > +/// The PCI device representation.
-> > +///
-> > +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
-> > +/// device, hence, also increments the base device' reference count.
-> > +#[derive(Clone)]
-> > +pub struct Device(ARef<device::Device>);
-> > +
-> 
-> Similar to https://lore.kernel.org/rust-for-linux/ZgG7TlybSa00cuoy@boqun-archlinux/
-> 
-> Could you also avoid wrapping a point to a PCI device? Instead, wrap the
-> object type:
-> 
->     #[repr(transparent)]
->     pub struct Device(Opaque<bindings::pci_dev>);
-> 
->     impl AlwaysRefCounted for Device {
->         <put_device() and get_device() on ->dev>
->     }
+On Wed, Oct 16, 2024 at 1:19=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> The `export_report.pl` script was broken [1] a while back due to a code
+> cleanup causing the regex to no longer match.
 
-Yeah, the idea was to avoid the duplicate implementation of `AlwaysRefCounted`,
-but I agree it's a bit messy. Will change it.
+Instead of the link to lore, you can refer to
+commit a3d0cb04f7df ("modpost: use __section in the output to *.mod.c")
 
-> 
-> Regards,
-> Boqun
-> 
-> > +impl Device {
-> > +    /// Create a PCI Device instance from an existing `device::Device`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
-> > +    /// a `bindings::pci_dev`.
-> > +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
-> > +        Self(dev)
-> > +    }
-> > +
-> > +    fn as_raw(&self) -> *mut bindings::pci_dev {
-> > +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
-> > +        // embedded in `struct pci_dev`.
-> > +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
-> > +    }
-> > +
-> > +    /// Enable memory resources for this device.
-> > +    pub fn enable_device_mem(&self) -> Result {
-> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
-> > +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
-> > +        if ret != 0 {
-> > +            Err(Error::from_errno(ret))
-> > +        } else {
-> > +            Ok(())
-> > +        }
-> > +    }
-> > +
-> > +    /// Enable bus-mastering for this device.
-> > +    pub fn set_master(&self) {
-> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
-> > +        unsafe { bindings::pci_set_master(self.as_raw()) };
-> > +    }
-> > +}
-> > +
-> > +impl AsRef<device::Device> for Device {
-> > +    fn as_ref(&self) -> &device::Device {
-> > +        &self.0
-> > +    }
-> > +}
-> > -- 
-> > 2.46.2
-> > 
-> > 
-> 
+
+
+> Additionally, it assumes a
+> `modules.order` file containing `.ko` in a build directory with `.mod.c`
+> files. I cannot find when this would have been the case in the history,
+> as normally `.ko` files only appear in `modules.order` in installed
+> modules directories, and those do not contain `.mod.c` files.
+
+If necessary, you can refer to
+commit f65a486821cf ("kbuild: change module.order to list *.o instead of *.=
+ko")
+
+
+As suggested, I vote for the removal since it has been broken for 5 years
+since a3d0cb04f7df.
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
