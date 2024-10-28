@@ -1,67 +1,67 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA531DE2C4
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Oct 2024 15:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0B31DE4F6
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Oct 2024 15:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730128691; cv=none; b=DpzTh6OUrP9JfoB/rnLJOzz3rcAVrAQwdeUyqFHDgAOvOSpnuhi2Q7KJ0qeuB/FXrtzhHl6DnqlZZCxYnBH5kGMW4igI6NQdAoXv4qq6m6LZpUZumCed5iBf2amhyNYnaFRGwH3GH5+DqxcEFbjYGW3/G9HxxAmJIpn8c5vCiD0=
+	t=1730129392; cv=none; b=KyqHV/B8+aIu31OiFYtuQDB5vZtxkHLlbo5aZN5BR8mJgRphP+5KQoteqj7x8WQC3D5/mql6gDzZTZtSXjCEeugP3bKwbyAxidsefHQJ3EsIurXMQG0707k4kZxUHeMXuF6Yy9XZUhQkJa6cNPF/w1lKhp+ArljDq7/SW8FkDA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730128691; c=relaxed/simple;
-	bh=q/0+tkYI5bNjwo8HanO/z9VdvEfdgc33WYasp4apUs8=;
+	s=arc-20240116; t=1730129392; c=relaxed/simple;
+	bh=AAzETCzm3PUNUothvEzvyRscZ+S2yMTWy3ZHS7T6Z4I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uds13tUyidteuhDFIl4O8qhLdTwP3Ah4YbhQ6XEoxazlzk7Wm+2U127ZnP3u+oKnz/e0akmWSdjLI6cjQf4ZYT6PZobsdxLlBWzCiuBvErYxWfJet8w8XmdeANpjYtAcdGbgGOTXNEprz+Q3Katy579qng8p5g/hYkzx58E7qHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ogg5Krat; arc=none smtp.client-ip=209.85.128.43
+	 To:Cc:Content-Type; b=if4vp16tybWfkkC0XrocPkkpBe7YYd26k/+wzZqlqBhBXg+3IuG4DZa4gNfoyuFTuSiys2QL51UggeFIBrWAFPKTmPth9vM2zlvro3mvHxnUF5bYdX9LU3MyrbbwyDHWI1ri6lITo0QBEJDFfoeC/fT4fi7x/fLp8BH6YjOTMv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ujW+G9TZ; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ogg5Krat"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4315839a7c9so46401785e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Oct 2024 08:18:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ujW+G9TZ"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4315df7b43fso46200165e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Oct 2024 08:29:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730128687; x=1730733487; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730129388; x=1730734188; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u9UYqjv3kpCsvVaf+yhQYbY8eaOWe7oMd7SNEJNj1Mo=;
-        b=Ogg5KratyIH4B74dHxB0cctGWcx+XS44D5880cMuEfVcAqGr16q/63SWetqqOyTnDW
-         /kSXH2Q2uZz2nyYZ3fZckaDqfSnOtyLxtJnHBXlabh8vQVI/UcQOhiwLEMg56uFe8Lhf
-         EMmN9PHQ5tbUihjsdFFwg5VzA9/YLS+qu/kMG9J+/A1L4LAF0ft35D1jO8KUglsreRsX
-         zBqnZAxwqkLWhMjPZ671kbCEW/u8eQn5TAk9FNKnZHYUosEZBWtxO75Hv5YWvn4ny40A
-         xB1fmfdronOC/L5XWXVGoT+hYzjyeYQPY3i6i/IFuej/nkbj+gNH2/ykpRFdVOWSnVRj
-         x+AQ==
+        bh=V3FAgKWaXDYSeOE3sz6lYi88L4aRpYRsQzJF96vEboY=;
+        b=ujW+G9TZdFf+gpmuC77V/iJf1Qojm+UKAM9fl/TJ6NqU9/WSPvw/52UoVa972H3jb0
+         M43iNuOrgx0IzM3+T1F15jGtaZixPLAuZY1ltlR2udEQDAG0EQO6VdXYtCezAu+RmlMx
+         xPSEfBnQqrmW0vXTVoxx3uDz61Z9B6GJ/M7PB/ncB5fiUVjWpAMIfG8vIs9iW9yrcuaO
+         b7IA+RX3MwlYMOudQ2XhJ+7SJQNMP+jfSMNGCDrBmaSHVqYBKEvpn++N0FfCzmBUu+hx
+         GwUmuQfHvcJVwbn6Vgx94/hh8lw3N+8D7oPoJUaF7UNA9vyInkh/86ohClx2FSMFY7cE
+         KnkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730128687; x=1730733487;
+        d=1e100.net; s=20230601; t=1730129388; x=1730734188;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u9UYqjv3kpCsvVaf+yhQYbY8eaOWe7oMd7SNEJNj1Mo=;
-        b=QmGDXYCgHWbyMAKleWc5eenK9VO2zo/bomtuLP1Lok8dhSlAjXXjOxN58I3AuhS5Io
-         MoK4pbE6podOXfiRo+XNh42rWkv1N170ABH0/ZRiUEWqefdf4+FKy4iCEzx1g93Z7AQI
-         nHd3FeNiktHS541geZqRGRvTTtYz14m2gJ6WOD95kDLBddYthYbr0CaJseCZlvvzCP7p
-         kDpzbH9SxeuNw/Ac8XgIWnfrvBRMx3+fJTVDB88HHDgRmkXwpPsz/M8YBDs1q8XmYyHd
-         Cnd81YFLuQemBuptKwM20rA+b9OsKjlVXBYTU1sy1IG/zuRGbRQl/CefRHqkyzrEJSkk
-         1u1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWlr4HvsFXq8flOwHMM53RKL1n0uFBzvqWE6nw/GduYq4pV+T1QPLwsUqTGWM7L6SEH/fb1NGHWLOYWJ50xEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWNEA7dx9QFxeFUs2cVfe7u6tw9NNXZu3URc8NiOgwNZWDMUCF
-	vO4T0zJx5j7TzkCtOG8OVDgX6lPmT25V+eJoCBF+3TJjF2eOA4S3L7NwR1UTbHiPvd/ZfYNS55D
-	c1mBxdYT5+uEHF4daBfMGbJEUeqSXkVt1rpb8
-X-Google-Smtp-Source: AGHT+IG8IlRulUeU8MVBvRA5xQ95yrZVFmxS8Of+zdiWkSTJFGX3IxuumGa4sA7FEuCwTbT/e6K/Nvse82eAIrlfIfI=
-X-Received: by 2002:a05:600c:4694:b0:42c:b7f9:4bbd with SMTP id
- 5b1f17b1804b1-4319ad0aefbmr85861345e9.26.1730128686556; Mon, 28 Oct 2024
- 08:18:06 -0700 (PDT)
+        bh=V3FAgKWaXDYSeOE3sz6lYi88L4aRpYRsQzJF96vEboY=;
+        b=XSzGrQNeT+xQncfGq0P4WzcHjMRJdpm19wyzk1UmS3WGe7g/09y/AUBEhp1Xe6fhDI
+         PeqFDEFTNhcylBS1roeJa9Di9EigHw/GuFGmAnDhqFQgSx21a7iJf4nBbB4lBbbQtwTA
+         7xir6Wy7a3x56crQv/GXbiQ8V2X4rZS+a1AXAwBYqY0u/LqZuRXTWTSf6PFIvlmUWsFu
+         fnIQwGhuphojYryNw5O7Q6h2AiDaQ4GppTUBg5ipBC/eXlCHIeQvPFFb/cQjqs0iqi2Q
+         VsFE0Pb3qWpWKsbm1oN7FL03Oo6z1t6VpWoWdOWlkK6G4Eh8V4kDJWD3M3L9Ax9GB3sW
+         aTNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUiGMFOWkFOBbfnCvOy3PKZqsqf0VqCvmLPspNVNRlry9Fe/BrAimFEz4ELIZZ7DiLX0i2ZUKz/AcDBJUVuJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY2fOQdLfC40g20+bQ/eid8FxpvQfV9DO2OiG4lXrr7PcpvT66
+	JeQc/6whpkaDbIH9X3eZdaYVbzqrl8XZRYtwhhG6917Ox2990nIINFZWYP1l2trTZOZaN4IYPmU
+	k2XAgkyW7u5CoSfv5mPUqGP321vewNKLgg+uf
+X-Google-Smtp-Source: AGHT+IHawBDIgilbZPsUe/TSlQw0DqkHLPio+71RhsjpUAuIluzp6NO/FWJ7APyR+ockCRbn1Xrrhd602oyEi9t6HwM=
+X-Received: by 2002:a05:600c:3c8c:b0:431:4fa0:2e0b with SMTP id
+ 5b1f17b1804b1-4319ad146b1mr68407845e9.28.1730129387966; Mon, 28 Oct 2024
+ 08:29:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
-In-Reply-To: <20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com>
+References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+In-Reply-To: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 28 Oct 2024 16:17:53 +0100
-Message-ID: <CAH5fLgjOKQdKViAGArMjvXjVmYpbo_sA8xoQGwu+DCW1FDFRXA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: kernel: add support for bits/genmask macros
+Date: Mon, 28 Oct 2024 16:29:36 +0100
+Message-ID: <CAH5fLgjRJtdpcOZySpRN-keLSMJjJdfXZGOhy_cEbiM3uNU7Tw@mail.gmail.com>
+Subject: Re: [PATCH] rust: irq: add support for request_irq()
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -72,95 +72,254 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 24, 2024 at 4:18=E2=80=AFPM Daniel Almeida
+On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
 <daniel.almeida@collabora.com> wrote:
 >
-> These macros are converted from their kernel equivalent.
->
-> ---
-> - Added ticks around `BIT`, and `h >=3Dl` (Thanks, Benno).
-> - Decided to keep the arguments as `expr`, as I see no issues with that
-> - Added a proper example, with an assert_eq!() (Thanks, Benno)
-> - Fixed the condition h <=3D l, which should be h >=3D l.
-> - Checked that the assert for the condition above is described in the
->   docs.
+> Both regular and threaded versions are supported.
 >
 > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-My main question here is whether this should be a macro_rules! or const fn.
+I left some comments below:
 
-One factor in favor of a macro is that if you need it to work in const
-context, then you can't use generics, which means that you must
-restrict it so it only works with a single integer type. On the other
-hand, genmask! already only works for the u64 type, so that argument
-doesn't work for genmask!.
-
-Either way, I'd like to see the reason for your choice in the commit messag=
-e.
-
->  rust/kernel/bits.rs | 36 ++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs  |  1 +
->  2 files changed, 37 insertions(+)
->
-> diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
+> diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..479883984f995f6b44272fa45=
-66a08f1c1e6b143
+> index 0000000000000000000000000000000000000000..4b5c5b80c3f43d482132423c2=
+c52cfa5696b7661
 > --- /dev/null
-> +++ b/rust/kernel/bits.rs
-> @@ -0,0 +1,36 @@
+> +++ b/rust/kernel/irq/request.rs
+> @@ -0,0 +1,450 @@
 > +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright 2019 Collabora ltd.
+
+should this be 2024?
+
+> +/// The value that can be returned from an IrqHandler;
+> +pub enum IrqReturn {
+> +    /// The interrupt was not from this device or was not handled.
+> +    None =3D bindings::irqreturn_IRQ_NONE as _,
 > +
-> +//! Bit manipulation macros.
-> +//!
-> +//! C header: [`include/linux/bits.h`](srctree/include/linux/bits.h)
-> +
-> +/// Produces a literal where bit `n` is set.
-> +///
-> +/// Equivalent to the kernel's `BIT` macro.
-> +///
-> +#[macro_export]
-> +macro_rules! bit {
-> +    ($n:expr) =3D> {
-> +        (1 << $n)
-> +    };
+> +    /// The interrupt was handled by this device.
+> +    Handled =3D bindings::irqreturn_IRQ_HANDLED as _,
 > +}
 > +
-> +/// Create a contiguous bitmask starting at bit position `l` and ending =
-at
-> +/// position `h`, where `h >=3D l`.
+> +/// Callbacks for an IRQ handler.
+> +pub trait Handler: Sync {
+> +    /// The actual handler function. As usual, sleeps are not allowed in=
+ IRQ
+> +    /// context.
+> +    fn handle_irq(&self) -> IrqReturn;
+> +}
+> +
+> +/// A registration of an IRQ handler for a given IRQ line.
 > +///
+> +/// # Invariants
+> +///
+> +/// * We own an irq handler using `&self` as its private data.
+
+The invariants section is usually last.
+
 > +/// # Examples
-> +/// ```
-> +///     use kernel::genmask;
-> +///     let mask =3D genmask!(39, 21);
-> +///     assert_eq!(mask, 0x000000ffffe00000);
-> +/// ```
 > +///
-> +#[macro_export]
-> +macro_rules! genmask {
-> +    ($h:expr, $l:expr) =3D> {{
-> +        const _: () =3D {
-> +            assert!($h >=3D $l);
-> +        };
+> +/// The following is an example of using `Registration`:
+> +///
+> +/// ```
+> +/// use kernel::prelude::*;
+> +/// use kernel::irq;
+> +/// use kernel::irq::Registration;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::lock::SpinLock;
+> +///
+> +/// // Declare a struct that will be passed in when the interrupt fires.=
+ The u32
+> +/// // merely serves as an example of some internal data.
+> +/// struct Data(u32);
+> +///
+> +/// // [`handle_irq`] returns &self. This example illustrates interior
+> +/// // mutability can be used when share the data between process contex=
+t and IRQ
+> +/// // context.
+> +/// //
+> +/// // Ideally, this example would be using a version of SpinLock that i=
+s aware
+> +/// // of `spin_lock_irqsave` and `spin_lock_irqrestore`, but that is no=
+t yet
+> +/// // implemented.
+> +///
+> +/// type Handler =3D SpinLock<Data>;
 
-Based on the error reported by the bot, you probably need to use
-`$crate::build_assert!` here instead of the stdlib `assert!` macro. I
-don't think the stdlib macro works in const context.
+I doubt this will compile outside of the kernel crate. It fails the
+orphan rule because your driver neither owns the SpinLock type or the
+Handler trait. You should move `SpinLock` inside `Data` instead.
 
-> +        ((!0u64 - (1u64 << $l) + 1) & (!0u64 >> (64 - 1 - $h)))
+> +/// impl kernel::irq::Handler for Handler {
+> +///     // This is executing in IRQ context in some CPU. Other CPUs can =
+still
+> +///     // try to access to data.
+> +///     fn handle_irq(&self) -> irq::IrqReturn {
+> +///         // We now have exclusive access to the data by locking the S=
+pinLock.
+> +///         let mut handler =3D self.lock();
+> +///         handler.0 +=3D 1;
+> +///
+> +///         IrqReturn::Handled
+> +///     }
+> +/// }
+> +///
+> +/// // This is running in process context.
+> +/// fn register_irq(irq: u32, handler: Handler) -> Result<irq::Registrat=
+ion<Handler>> {
 
-The implementation looks okay. I tried it:
-fn main() {
-    println!("{:03b}", genmask!(0,0));
-    println!("{:03b}", genmask!(1,0));
-    println!("{:03b}", genmask!(2,0));
-    println!("{:03b}", genmask!(2,1));
-}
-prints:
-001
-011
-111
-110
+Please try compiling the example. The return type should be
+Result<Arc<irq::Registration<Handler>>>.
+
+> +///     let registration =3D Registration::register(irq, irq::flags::SHA=
+RED, "my-device", handler)?;
+> +///
+> +///     // You can have as many references to the registration as you wa=
+nt, so
+> +///     // multiple parts of the driver can access it.
+> +///     let registration =3D Arc::pin_init(registration)?;
+> +///
+> +///     // The handler may be called immediately after the function abov=
+e
+> +///     // returns, possibly in a different CPU.
+> +///
+> +///     // The data can be accessed from the process context too.
+> +///     registration.handler().lock().0 =3D 42;
+> +///
+> +///     Ok(registration)
+> +/// }
+> +///
+> +/// # Ok::<(), Error>(())
+> +///```
+> +#[pin_data(PinnedDrop)]
+> +pub struct Registration<T: Handler> {
+> +    irq: u32,
+> +    #[pin]
+> +    handler: Opaque<T>,
+> +}
+> +
+> +impl<T: Handler> Registration<T> {
+> +    /// Registers the IRQ handler with the system for the given IRQ numb=
+er. The
+> +    /// handler must be able to be called as soon as this function retur=
+ns.
+> +    pub fn register(
+> +        irq: u32,
+> +        flags: Flags,
+> +        name: &'static CStr,
+
+Does the name need to be 'static?
+
+> +        handler: T,
+> +    ) -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {
+> +            irq,
+> +            handler: Opaque::new(handler)
+> +        })
+> +        .pin_chain(move |slot| {
+> +            // SAFETY:
+> +            // - `handler` points to a valid function defined below.
+> +            // - only valid flags can be constructed using the `flags` m=
+odule.
+> +            // - `devname` is a nul-terminated string with a 'static lif=
+etime.
+> +            // - `ptr` is a cookie used to identify the handler. The sam=
+e cookie is
+> +            // passed back when the system calls the handler.
+> +            to_result(unsafe {
+> +                bindings::request_irq(
+> +                    irq,
+> +                    Some(handle_irq_callback::<T>),
+> +                    flags.0,
+> +                    name.as_char_ptr(),
+> +                    &*slot as *const _ as *mut core::ffi::c_void,
+
+Can simplify to `slot as *mut c_void` or `slot.cast()`.
+
+> +                )
+> +            })?;
+> +
+> +            Ok(())
+> +        })
+> +    }
+> +
+> +    /// Returns a reference to the handler that was registered with the =
+system.
+> +    pub fn handler(&self) -> &T {
+> +        // SAFETY: `handler` is initialized in `register`.
+> +        unsafe { &*self.handler.get() }
+
+This relies on T being Sync as it could also get accessed by the irq
+handler in parallel. You probably want the SAFETY comment to mention
+that.
+
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl<T: Handler> PinnedDrop for Registration<T> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY:
+> +        // - `self.irq` is the same as the one passed to `reques_irq`.
+> +        // -  `&self` was passed to `request_irq` as the cookie. It is
+> +        // guaranteed to be unique by the type system, since each call t=
+o
+> +        // `register` will return a different instance of `Registration`=
+.
+> +        //
+> +        // Notice that this will block until all handlers finish executi=
+ng, so,
+> +        // at no point will &self be invalid while the handler is runnin=
+g.
+> +        unsafe { bindings::free_irq(self.irq, &*self as *const _ as *mut=
+ core::ffi::c_void) };
+
+I can't tell if this creates a pointer to the Registration or a
+pointer to a pointer to the Registration. Please spell out the type:
+```
+&*self as *const Self as *mut core::ffi::c_void
+```
+
+> +    }
+> +}
+> +
+> +/// The value that can be returned from `ThreadedHandler::handle_irq`.
+> +pub enum ThreadedIrqReturn {
+> +    /// The interrupt was not from this device or was not handled.
+> +    None =3D bindings::irqreturn_IRQ_NONE as _,
+> +
+> +    /// The interrupt was handled by this device.
+> +    Handled =3D bindings::irqreturn_IRQ_HANDLED as _,
+> +
+> +    /// The handler wants the handler thread to wake up.
+> +    WakeThread =3D bindings::irqreturn_IRQ_WAKE_THREAD as _,
+> +}
+> +
+> +/// The value that can be returned from `ThreadedFnHandler::thread_fn`.
+> +pub enum ThreadedFnReturn {
+> +    /// The thread function did not make any progress.
+> +    None =3D bindings::irqreturn_IRQ_NONE as _,
+> +
+> +    /// The thread function ran successfully.
+> +    Handled =3D bindings::irqreturn_IRQ_HANDLED as _,
+> +}
+
+This is the same as IrqReturn?
+
+> +/// Callbacks for a threaded IRQ handler.
+> +pub trait ThreadedHandler: Sync {
+> +    /// The actual handler function. As usual, sleeps are not allowed in=
+ IRQ
+> +    /// context.
+> +    fn handle_irq(&self) -> ThreadedIrqReturn;
+> +
+> +    /// The threaded handler function. This function is called from the =
+irq
+> +    /// handler thread, which is automatically created by the system.
+> +    fn thread_fn(&self) -> ThreadedFnReturn;
+> +}
+
+Most of my comments above also reply to ThreadedHandler.
 
 Alice
