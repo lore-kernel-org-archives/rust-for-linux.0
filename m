@@ -1,93 +1,210 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5321E48A;
-	Mon, 28 Oct 2024 13:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F8538396;
+	Mon, 28 Oct 2024 13:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730121254; cv=none; b=AO3nEaTQggxwmovnwP+/qLr1bMNcjGkafnO4SqeDW/E1d2OV6gb96S61tbTNAXfCd7Fd6K8oqbn+6gBG2ZcnZLMJomvYYKP3LFz4C70PPjtkgv+P/lmlgIkpWlG35/x06QG5MUX67DD8GDFg/BRzR5LiPg0u6n0seKrtvdJHASw=
+	t=1730121784; cv=none; b=QHpNzAjF+L/ZxrA1jUNi+hIG3HwOOe0vVKDyhnt9D/IaeazejB1HYlG73HlXS61i7aKFP8GgmwoTc8Dhuca60nfyJsuzsroCh+7G9Vo3iGU8lnLdwNfWDKFC3BkR+0W5ECccnMKeAJBoYAYOnTtWsw622INXeDSXvO04VxAZ/ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730121254; c=relaxed/simple;
-	bh=umXgkxvsn6pDDf/HDvjTuNRj/50/wdrGHMkq15iPbhc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DYWv5X/plFQO/7QXiuhujgs/vnCYB9qF+zO30AqakjmSOBdrgiwOTz9D90uWMRYZWIlFBO1G0dUgNUhhBWGrxC1g1MlOTOjySECkNzNn3YyfyfQgQlF0F5qJTbjUKVCqUdTFDgo+1ClXMa0TvJ5mO0Dj6GgURHLSn52s49oCGt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYZdU+03; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730121784; c=relaxed/simple;
+	bh=9tECmQTWRmCrctZx1DA72M0oCUbizMBPA+xl+7zZJYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a7iPZFw1JBZbxyzidJOQjssUfxgBGmWu8TtTx2jjbFxJ0+q39wjHLfUwTzVb4gr9mvtS73KccDfZJ6YLKb3+eXMxGl2GU1qNXuH8GX8znxtMshl4kqi+CYdhi3PD3XmzOVIbMcRS8eE9BPXHRk7G7XmUM7tv22taRnwBxqq4mVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PudSzRtk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYZdU+03"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEA1C4CEEC;
-	Mon, 28 Oct 2024 13:14:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PudSzRtk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED931C4CEC3;
+	Mon, 28 Oct 2024 13:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730121254;
-	bh=umXgkxvsn6pDDf/HDvjTuNRj/50/wdrGHMkq15iPbhc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DYZdU+03iEdFhVk6XAp+TgXryYadk927GCLCnF/cjY1oEcuv1ykc2UbVIA35FN92j
-	 oTbxzoRmr7/iyleb+67SXJQk/AWyK9bUhn4Z0eJ/8nRaKnz51vyMi5mhhsdLSWHF1d
-	 Lb38yEAt7DwS89iHYA7KCK5vhLWRnv0c0mN1L4F2Me8JrPL0Ac1JaH5CFtTsrby4as
-	 MM/1qIY5BNOQ26XP78kKBUzGGfrbYdUGgtZg1wFeizzEYp/H4r8tgjb2EgOjUIL35Y
-	 AcBteTQDzJOWcUPavb2SMWIbP5LpY6zP/uWn9xkv0krN7WMQGN1xySJ+0g4pgZD5x+
-	 IB4sMXh3eStUw==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb3da341c9so40504411fa.2;
-        Mon, 28 Oct 2024 06:14:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV7tWww33e2GWEwVlyVM3mhul2iST+6ypTS/4czmG23j5P9tu03TDS0ll2FqMmwFx1Nz9dVY6AsYE/EpwkP@vger.kernel.org, AJvYcCVAd/PYGPqSbRMp4oXYtcX15IeINEW8IudXmVbtmQ0gubIk1YPPI1GVlRBsIEAk1ZK+yo0Dp+SZJZ5Q8QQ=@vger.kernel.org, AJvYcCWC6rKGFQwt70l2sdOlHm/W396yYGAvKCIRfHXV/+g5X0s+pjkvqWaw9AdkjIqbMxRBAU0RskqedJmqjTrz0A==@vger.kernel.org, AJvYcCX39l6soPmMvWJNyTwj5P7XPcfvyTxOJGj7lvsl24jLWiGm+TSZq+Ivys8zXFvdwX3sRYw02cYJI/aJKf+jIyU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywsB1RgtquwRh9Oh9PcDQTmo+Xfu29cQMWt3CCprc9YS58z1Hn
-	z76nGKqqI/5AOvaZZYhl40A+x6xKjFoFagQmz1vHnxaPZMh4moZh5UPi3yNYs5/4Gfd5GfFPOxS
-	yUOsdRS2MgDd3tY7cwHaqyeuoyLg=
-X-Google-Smtp-Source: AGHT+IG9gyko7VXssgM2SznITKHdLjhPfPryjecLgn1FTNeKz7JFR7J+mcsrozK/vjiUGUaUbgu6OiWUprCs1uMwqR8=
-X-Received: by 2002:a05:651c:1504:b0:2fb:5014:c998 with SMTP id
- 38308e7fff4ca-2fcbe08cf24mr28249331fa.28.1730121252616; Mon, 28 Oct 2024
- 06:14:12 -0700 (PDT)
+	s=k20201202; t=1730121783;
+	bh=9tECmQTWRmCrctZx1DA72M0oCUbizMBPA+xl+7zZJYo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PudSzRtksSiVNKwGVRWY+Dv/cjY6o52UJ0NnBF7zVDLApZAd+3k1U+8KEOalpOQSz
+	 POD/7Kbnv5zzk76wsCPMIf0GzShT7MPuShwXhOmvrxsYnXj/H/8UMUCSnH8fHWrJz8
+	 fqBbtiavtPcg2WMEWraY9Vozjtw5ejFDYzr62CACQtyvybrbMMo28MQtnYVd4S7Vu/
+	 gFF4y9CUyjwEyQXnBnNs+gniZG0KiyXqY+D55Gcivzne0KfVo0RRDyw8lWaxqlrPJV
+	 UTO4rZjPzhelBMLEhjQBnbfbQPc0JrbawU9rmefiYtL8ehhGebUyH4kPGwkxWcpUA+
+	 JQiK+GV53c/3g==
+Date: Mon, 28 Oct 2024 14:22:56 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 13/16] samples: rust: add Rust PCI sample driver
+Message-ID: <Zx-QMBHtWSFkLiKm@pollux>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-14-dakr@kernel.org>
+ <20241023155737.GB1064929-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241015231925.3854230-1-mmaurer@google.com> <20241015231925.3854230-2-mmaurer@google.com>
-In-Reply-To: <20241015231925.3854230-2-mmaurer@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 28 Oct 2024 14:13:36 +0100
-X-Gmail-Original-Message-ID: <CAK7LNASAbDNZYcSZ+F+4JrbGFWiV4qO-W=HfaBEieKhcg+=jCw@mail.gmail.com>
-Message-ID: <CAK7LNASAbDNZYcSZ+F+4JrbGFWiV4qO-W=HfaBEieKhcg+=jCw@mail.gmail.com>
-Subject: Re: [PATCH v6 1/5] export_report: Rehabilitate script
-To: Matthew Maurer <mmaurer@google.com>
-Cc: ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net, 
-	mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
-	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
-	linux-modules@vger.kernel.org, samitolvanen@google.com, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023155737.GB1064929-robh@kernel.org>
 
-On Wed, Oct 16, 2024 at 1:19=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> The `export_report.pl` script was broken [1] a while back due to a code
-> cleanup causing the regex to no longer match.
+On Wed, Oct 23, 2024 at 10:57:37AM -0500, Rob Herring wrote:
+> On Tue, Oct 22, 2024 at 11:31:50PM +0200, Danilo Krummrich wrote:
+> > This commit adds a sample Rust PCI driver for QEMU's "pci-testdev"
+> > device. To enable this device QEMU has to be called with
+> > `-device pci-testdev`.
+> 
+> Note that the DT unittests also use this device. So this means we have 2 
+> drivers that bind to the device. Probably it's okay, but does make 
+> them somewhat mutually-exclusive.
+>  
+> > The same driver shows how to use the PCI device / driver abstractions,
+> > as well as how to request and map PCI BARs, including a short sequence of
+> > MMIO operations.
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  MAINTAINERS                     |   1 +
+> >  samples/rust/Kconfig            |  11 ++++
+> >  samples/rust/Makefile           |   1 +
+> >  samples/rust/rust_driver_pci.rs | 109 ++++++++++++++++++++++++++++++++
+> >  4 files changed, 122 insertions(+)
+> >  create mode 100644 samples/rust/rust_driver_pci.rs
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 2d00d3845b4a..d9c512a3e72b 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -17940,6 +17940,7 @@ F:	include/linux/of_pci.h
+> >  F:	include/linux/pci*
+> >  F:	include/uapi/linux/pci*
+> >  F:	rust/kernel/pci.rs
+> > +F:	samples/rust/rust_driver_pci.rs
+> >  
+> >  PCIE DRIVER FOR AMAZON ANNAPURNA LABS
+> >  M:	Jonathan Chocron <jonnyc@amazon.com>
+> > diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> > index b0f74a81c8f9..6d468193cdd8 100644
+> > --- a/samples/rust/Kconfig
+> > +++ b/samples/rust/Kconfig
+> > @@ -30,6 +30,17 @@ config SAMPLE_RUST_PRINT
+> >  
+> >  	  If unsure, say N.
+> >  
+> > +config SAMPLE_RUST_DRIVER_PCI
+> > +	tristate "PCI Driver"
+> > +	depends on PCI
+> > +	help
+> > +	  This option builds the Rust PCI driver sample.
+> > +
+> > +	  To compile this as a module, choose M here:
+> > +	  the module will be called driver_pci.
+> > +
+> > +	  If unsure, say N.
+> > +
+> >  config SAMPLE_RUST_HOSTPROGS
+> >  	bool "Host programs"
+> >  	help
+> > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> > index 03086dabbea4..b66767f4a62a 100644
+> > --- a/samples/rust/Makefile
+> > +++ b/samples/rust/Makefile
+> > @@ -2,5 +2,6 @@
+> >  
+> >  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
+> >  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+> > +obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+> >  
+> >  subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
+> > diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
+> > new file mode 100644
+> > index 000000000000..d24dc1fde9e8
+> > --- /dev/null
+> > +++ b/samples/rust/rust_driver_pci.rs
+> > @@ -0,0 +1,109 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Rust PCI driver sample (based on QEMU's `pci-testdev`).
+> > +//!
+> > +//! To make this driver probe, QEMU must be run with `-device pci-testdev`.
+> > +
+> > +use kernel::{bindings, c_str, devres::Devres, pci, prelude::*};
+> > +
+> > +struct Regs;
+> > +
+> > +impl Regs {
+> > +    const TEST: usize = 0x0;
+> > +    const OFFSET: usize = 0x4;
+> > +    const DATA: usize = 0x8;
+> > +    const COUNT: usize = 0xC;
+> > +    const END: usize = 0x10;
+> > +}
+> > +
+> > +type Bar0 = pci::Bar<{ Regs::END }>;
+> > +
+> > +#[derive(Debug)]
+> > +struct TestIndex(u8);
+> > +
+> > +impl TestIndex {
+> > +    const NO_EVENTFD: Self = Self(0);
+> > +}
+> > +
+> > +struct SampleDriver {
+> > +    pdev: pci::Device,
+> > +    bar: Devres<Bar0>,
+> > +}
+> > +
+> > +kernel::pci_device_table!(
+> > +    PCI_TABLE,
+> > +    MODULE_PCI_TABLE,
+> > +    <SampleDriver as pci::Driver>::IdInfo,
+> > +    [(
+> > +        pci::DeviceId::new(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
+> > +        TestIndex::NO_EVENTFD
+> > +    )]
+> > +);
+> > +
+> > +impl SampleDriver {
+> > +    fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
+> > +        // Select the test.
+> > +        bar.writeb(index.0, Regs::TEST);
+> > +
+> > +        let offset = u32::from_le(bar.readl(Regs::OFFSET)) as usize;
+> 
+> The C version of readl takes care of from_le for you. Why not here?
 
-Instead of the link to lore, you can refer to
-commit a3d0cb04f7df ("modpost: use __section in the output to *.mod.c")
+It's just an abstraction around the C readl(), so it does -- good catch.
 
+> 
+> Also, can't we do better with rust and make this a generic:
+> 
+> let offset = bar.read::<u32>(Regs::OFFSET)) as usize;
 
+I think we probably could, but we'd still need to handle the special cases for 1
+to 8 bytes type size (always using memcopy_{to,from}io() would lead to
+unnecessary overhead). Hence, there's probably not much benefit in that.
 
-> Additionally, it assumes a
-> `modules.order` file containing `.ko` in a build directory with `.mod.c`
-> files. I cannot find when this would have been the case in the history,
-> as normally `.ko` files only appear in `modules.order` in installed
-> modules directories, and those do not contain `.mod.c` files.
+Also, what would be the logic for a generic `{read, write}::<T>` in terms of
+memory barriers? I think memcopy_{to,from}io() is always "relaxed", isn't it?
 
-If necessary, you can refer to
-commit f65a486821cf ("kbuild: change module.order to list *.o instead of *.=
-ko")
+I think it's probably best to keep the two separate, the b,w,l,q variants and
+a generic one that maps to memcopy_{to,from}io().
 
-
-As suggested, I vote for the removal since it has been broken for 5 years
-since a3d0cb04f7df.
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+> 
+> 
+> > +        let data = bar.readb(Regs::DATA);
+> > +
+> > +        // Write `data` to `offset` to increase `count` by one.
+> > +        //
+> > +        // Note that we need `try_writeb`, since `offset` can't be checked at compile-time.
+> > +        bar.try_writeb(data, offset)?;
+> > +
+> > +        Ok(u32::from_le(bar.readl(Regs::COUNT)))
+> > +    }
+> > +}
+> 
