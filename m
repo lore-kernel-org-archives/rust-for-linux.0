@@ -1,48 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F8538396;
-	Mon, 28 Oct 2024 13:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1E0191F82;
+	Mon, 28 Oct 2024 13:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730121784; cv=none; b=QHpNzAjF+L/ZxrA1jUNi+hIG3HwOOe0vVKDyhnt9D/IaeazejB1HYlG73HlXS61i7aKFP8GgmwoTc8Dhuca60nfyJsuzsroCh+7G9Vo3iGU8lnLdwNfWDKFC3BkR+0W5ECccnMKeAJBoYAYOnTtWsw622INXeDSXvO04VxAZ/ME=
+	t=1730122631; cv=none; b=dnQsyk1UaX9wmVBhYiv7JZdJ+xHtg22v/M+H6+5w583S3wHJ6pygfOY6id/rNhIStdVaAE+ioEdL0kqFUM1MgKk2QUeaUqcObjOy+b8z03rdFfnfc564O5vUQJ0Dw+2/bANPdiB3qkjsVhA8uPbDVSL+rVMxe9Y7FYVX8Z06BsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730121784; c=relaxed/simple;
-	bh=9tECmQTWRmCrctZx1DA72M0oCUbizMBPA+xl+7zZJYo=;
+	s=arc-20240116; t=1730122631; c=relaxed/simple;
+	bh=aHES0ByIrFPPx+zTxjezPtrFGuM9d9BX9c2dVH0/IAA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a7iPZFw1JBZbxyzidJOQjssUfxgBGmWu8TtTx2jjbFxJ0+q39wjHLfUwTzVb4gr9mvtS73KccDfZJ6YLKb3+eXMxGl2GU1qNXuH8GX8znxtMshl4kqi+CYdhi3PD3XmzOVIbMcRS8eE9BPXHRk7G7XmUM7tv22taRnwBxqq4mVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PudSzRtk; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mkFprT22v5KOJi68hr077yv270l/DeKaLodpJMEDxkJWK/Q/s38IchVeGUNno23n+465xYgH5QwqBAJHiuFUhgjC8/uzYwKvSifW5A97u1qUEU6Ifx88T5MxkTZc+GYAMQk07FMjcLeEvuFG7++HKP5dOd1bwzzYurG+pZVWyEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E244CvMN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PudSzRtk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED931C4CEC3;
-	Mon, 28 Oct 2024 13:22:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E244CvMN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F06C4CEC3;
+	Mon, 28 Oct 2024 13:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730121783;
-	bh=9tECmQTWRmCrctZx1DA72M0oCUbizMBPA+xl+7zZJYo=;
+	s=k20201202; t=1730122631;
+	bh=aHES0ByIrFPPx+zTxjezPtrFGuM9d9BX9c2dVH0/IAA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PudSzRtksSiVNKwGVRWY+Dv/cjY6o52UJ0NnBF7zVDLApZAd+3k1U+8KEOalpOQSz
-	 POD/7Kbnv5zzk76wsCPMIf0GzShT7MPuShwXhOmvrxsYnXj/H/8UMUCSnH8fHWrJz8
-	 fqBbtiavtPcg2WMEWraY9Vozjtw5ejFDYzr62CACQtyvybrbMMo28MQtnYVd4S7Vu/
-	 gFF4y9CUyjwEyQXnBnNs+gniZG0KiyXqY+D55Gcivzne0KfVo0RRDyw8lWaxqlrPJV
-	 UTO4rZjPzhelBMLEhjQBnbfbQPc0JrbawU9rmefiYtL8ehhGebUyH4kPGwkxWcpUA+
-	 JQiK+GV53c/3g==
-Date: Mon, 28 Oct 2024 14:22:56 +0100
+	b=E244CvMNjpxFFkEcJHnV2nu520yuB6IKfxcs1t5UMYbzWYJrZMZkjmr6jI8QHM1yr
+	 zOc9JxV+lnaq+IDJM+m08Em0n4vqDtPZ0AhogP/2s8pHVWKk2xu5faBFiE+guOcW29
+	 EVInUdPHYaRIimP+ezj4GK84w0OqbdApIhwz49el4I8gxOQWCrKLySu00Aat2pTq2t
+	 IzCceeZuEI+c/8ze05c5bKrSJdczBwdSpF9HpfqPjp1mDI9D+/ndea7zMtojs484vb
+	 zMBZeoPgbSxY2A/1SyyiCePxMi9Fm0tMwBFNbzfX7+5bbtDpVMD2t77vwD6sms9hVS
+	 3lNO1EZcAERhg==
+Date: Mon, 28 Oct 2024 14:37:06 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 13/16] samples: rust: add Rust PCI sample driver
-Message-ID: <Zx-QMBHtWSFkLiKm@pollux>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-14-dakr@kernel.org>
- <20241023155737.GB1064929-robh@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+	dakr@redhat.com, linux-kernel@vger.kernel.org, airlied@redhat.com,
+	miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v2 5/5] rust: firmware: implement `Ownable` for Firmware
+Message-ID: <Zx-Tgm9CJO-Myrgv@pollux>
+References: <20241022224832.1505432-1-abdiel.janulgue@gmail.com>
+ <20241022224832.1505432-6-abdiel.janulgue@gmail.com>
+ <ZxjDUxUiKfE_7tvq@pollux>
+ <Zx68k94GrHb3Kz3-@Boquns-Mac-mini.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,160 +47,149 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241023155737.GB1064929-robh@kernel.org>
+In-Reply-To: <Zx68k94GrHb3Kz3-@Boquns-Mac-mini.local>
 
-On Wed, Oct 23, 2024 at 10:57:37AM -0500, Rob Herring wrote:
-> On Tue, Oct 22, 2024 at 11:31:50PM +0200, Danilo Krummrich wrote:
-> > This commit adds a sample Rust PCI driver for QEMU's "pci-testdev"
-> > device. To enable this device QEMU has to be called with
-> > `-device pci-testdev`.
-> 
-> Note that the DT unittests also use this device. So this means we have 2 
-> drivers that bind to the device. Probably it's okay, but does make 
-> them somewhat mutually-exclusive.
->  
-> > The same driver shows how to use the PCI device / driver abstractions,
-> > as well as how to request and map PCI BARs, including a short sequence of
-> > MMIO operations.
+On Sun, Oct 27, 2024 at 03:20:03PM -0700, Boqun Feng wrote:
+> On Wed, Oct 23, 2024 at 11:35:15AM +0200, Danilo Krummrich wrote:
+> > On Wed, Oct 23, 2024 at 01:44:49AM +0300, Abdiel Janulgue wrote:
+> > > For consistency, wrap the firmware as an `Owned` smart pointer in the
+> > > constructor.
+> > > 
+> > > Cc: Danilo Krummrich <dakr@redhat.com>
+> > > Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> > > Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> > > ---
+> > >  rust/kernel/firmware.rs | 31 ++++++++++++++++++-------------
+> > >  1 file changed, 18 insertions(+), 13 deletions(-)
+> > > 
+> > > diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> > > index dee5b4b18aec..6da834b37455 100644
+> > > --- a/rust/kernel/firmware.rs
+> > > +++ b/rust/kernel/firmware.rs
+> > > @@ -4,8 +4,8 @@
+> > >  //!
+> > >  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+> > >  
+> > > -use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> > > -use core::ptr::NonNull;
+> > > +use crate::{bindings, device::Device, error::Error, error::Result, str::CStr,
+> > > +            types::{Opaque, Owned, Ownable}};
+> > >  
+> > >  /// # Invariants
+> > >  ///
+> > > @@ -52,10 +52,11 @@ fn request_nowarn() -> Self {
+> > >  /// # Ok(())
+> > >  /// # }
+> > >  /// ```
+> > > -pub struct Firmware(NonNull<bindings::firmware>);
+> > > + #[repr(transparent)]
+> > > +pub struct Firmware(Opaque<bindings::firmware>);
+> > >  
+> > >  impl Firmware {
+> > > -    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> > > +    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Owned<Self>> {
 > > 
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  MAINTAINERS                     |   1 +
-> >  samples/rust/Kconfig            |  11 ++++
-> >  samples/rust/Makefile           |   1 +
-> >  samples/rust/rust_driver_pci.rs | 109 ++++++++++++++++++++++++++++++++
-> >  4 files changed, 122 insertions(+)
-> >  create mode 100644 samples/rust/rust_driver_pci.rs
+> > I think it's fine to implement this for consistency, but I'm not sure I like
+> > that drivers have to refer to it as `Owned<Firmware>`.
 > > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 2d00d3845b4a..d9c512a3e72b 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -17940,6 +17940,7 @@ F:	include/linux/of_pci.h
-> >  F:	include/linux/pci*
-> >  F:	include/uapi/linux/pci*
-> >  F:	rust/kernel/pci.rs
-> > +F:	samples/rust/rust_driver_pci.rs
-> >  
-> >  PCIE DRIVER FOR AMAZON ANNAPURNA LABS
-> >  M:	Jonathan Chocron <jonnyc@amazon.com>
-> > diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> > index b0f74a81c8f9..6d468193cdd8 100644
-> > --- a/samples/rust/Kconfig
-> > +++ b/samples/rust/Kconfig
-> > @@ -30,6 +30,17 @@ config SAMPLE_RUST_PRINT
-> >  
-> >  	  If unsure, say N.
-> >  
-> > +config SAMPLE_RUST_DRIVER_PCI
-> > +	tristate "PCI Driver"
-> > +	depends on PCI
-> > +	help
-> > +	  This option builds the Rust PCI driver sample.
-> > +
-> > +	  To compile this as a module, choose M here:
-> > +	  the module will be called driver_pci.
-> > +
-> > +	  If unsure, say N.
-> > +
-> >  config SAMPLE_RUST_HOSTPROGS
-> >  	bool "Host programs"
-> >  	help
-> > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> > index 03086dabbea4..b66767f4a62a 100644
-> > --- a/samples/rust/Makefile
-> > +++ b/samples/rust/Makefile
-> > @@ -2,5 +2,6 @@
-> >  
-> >  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
-> >  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-> > +obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
-> >  
-> >  subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-> > diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-> > new file mode 100644
-> > index 000000000000..d24dc1fde9e8
-> > --- /dev/null
-> > +++ b/samples/rust/rust_driver_pci.rs
-> > @@ -0,0 +1,109 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Rust PCI driver sample (based on QEMU's `pci-testdev`).
-> > +//!
-> > +//! To make this driver probe, QEMU must be run with `-device pci-testdev`.
-> > +
-> > +use kernel::{bindings, c_str, devres::Devres, pci, prelude::*};
-> > +
-> > +struct Regs;
-> > +
-> > +impl Regs {
-> > +    const TEST: usize = 0x0;
-> > +    const OFFSET: usize = 0x4;
-> > +    const DATA: usize = 0x8;
-> > +    const COUNT: usize = 0xC;
-> > +    const END: usize = 0x10;
-> > +}
-> > +
-> > +type Bar0 = pci::Bar<{ Regs::END }>;
-> > +
-> > +#[derive(Debug)]
-> > +struct TestIndex(u8);
-> > +
-> > +impl TestIndex {
-> > +    const NO_EVENTFD: Self = Self(0);
-> > +}
-> > +
-> > +struct SampleDriver {
-> > +    pdev: pci::Device,
-> > +    bar: Devres<Bar0>,
-> > +}
-> > +
-> > +kernel::pci_device_table!(
-> > +    PCI_TABLE,
-> > +    MODULE_PCI_TABLE,
-> > +    <SampleDriver as pci::Driver>::IdInfo,
-> > +    [(
-> > +        pci::DeviceId::new(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-> > +        TestIndex::NO_EVENTFD
-> > +    )]
-> > +);
-> > +
-> > +impl SampleDriver {
-> > +    fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
-> > +        // Select the test.
-> > +        bar.writeb(index.0, Regs::TEST);
-> > +
-> > +        let offset = u32::from_le(bar.readl(Regs::OFFSET)) as usize;
 > 
-> The C version of readl takes care of from_le for you. Why not here?
+> May I ask why not? ;-)
 
-It's just an abstraction around the C readl(), so it does -- good catch.
+I think it's because with this an instance of `Firmware` is never a valid thing
+to have, which is a bit weird at a first glance.
+
+But I fully agree with the existance of the `Owned` type and the rationale
+below.
 
 > 
-> Also, can't we do better with rust and make this a generic:
+> Ideally, we should not wrap a pointer to particular type, instead we
+> should wrap the type and then combine it with a meaningful pointer type,
+> e.g. Box<>, ARef<>, Owned<> ... in this way, we de-couple how the
+> lifetime of object is maintained (described by the pointer type) and
+> what operations are available on the object (described by the wrapper
+> type).
 > 
-> let offset = bar.read::<u32>(Regs::OFFSET)) as usize;
-
-I think we probably could, but we'd still need to handle the special cases for 1
-to 8 bytes type size (always using memcopy_{to,from}io() would lead to
-unnecessary overhead). Hence, there's probably not much benefit in that.
-
-Also, what would be the logic for a generic `{read, write}::<T>` in terms of
-memory barriers? I think memcopy_{to,from}io() is always "relaxed", isn't it?
-
-I think it's probably best to keep the two separate, the b,w,l,q variants and
-a generic one that maps to memcopy_{to,from}io().
-
+> If later on, a firmware object creation is doable in pure Rust code for
+> some condition, we can then have a function that returns a
+> `KBox<Firmware>` (assume using kmalloc for the object), and it will just
+> work (tm).
 > 
+> Regards,
+> Boqun
 > 
-> > +        let data = bar.readb(Regs::DATA);
-> > +
-> > +        // Write `data` to `offset` to increase `count` by one.
-> > +        //
-> > +        // Note that we need `try_writeb`, since `offset` can't be checked at compile-time.
-> > +        bar.try_writeb(data, offset)?;
-> > +
-> > +        Ok(u32::from_le(bar.readl(Regs::COUNT)))
-> > +    }
-> > +}
+> > Anyway, if we keep it this way the patch also needs the following change.
+> > 
+> > diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> > index 6da834b37455..1db854eb2422 100644
+> > --- a/rust/kernel/firmware.rs
+> > +++ b/rust/kernel/firmware.rs
+> > @@ -115,8 +115,8 @@ unsafe fn ptr_drop(ptr: *mut Self) {
+> > 
+> >  // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, which is safe to be used from
+> >  // any thread.
+> > -unsafe impl Send for Firmware {}
+> > +unsafe impl Send for Owned<Firmware> {}
+> > 
+> >  // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, references to which are safe to
+> >  // be used from any thread.
+> > -unsafe impl Sync for Firmware {}
+> > +unsafe impl Sync for Owned<Firmware> {}
+> > 
+> > >          let mut fw: *mut bindings::firmware = core::ptr::null_mut();
+> > >          let pfw: *mut *mut bindings::firmware = &mut fw;
+> > >  
+> > > @@ -65,25 +66,26 @@ fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> > >          if ret != 0 {
+> > >              return Err(Error::from_errno(ret));
+> > >          }
+> > > -
+> > > +        // CAST: Self` is a `repr(transparent)` wrapper around `bindings::firmware`.
+> > > +        let ptr = fw.cast::<Self>();
+> > >          // SAFETY: `func` not bailing out with a non-zero error code, guarantees that `fw` is a
+> > >          // valid pointer to `bindings::firmware`.
+> > > -        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
+> > > +        Ok(unsafe { Owned::to_owned(ptr) })
+> > >      }
+> > >  
+> > >      /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
+> > > -    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> > > +    pub fn request(name: &CStr, dev: &Device) -> Result<Owned<Self>> {
+> > >          Self::request_internal(name, dev, FwFunc::request())
+> > >      }
+> > >  
+> > >      /// Send a request for an optional firmware module. See also
+> > >      /// `bindings::firmware_request_nowarn`.
+> > > -    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
+> > > +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Owned<Self>> {
+> > >          Self::request_internal(name, dev, FwFunc::request_nowarn())
+> > >      }
+> > >  
+> > >      fn as_raw(&self) -> *mut bindings::firmware {
+> > > -        self.0.as_ptr()
+> > > +        self.0.get()
+> > >      }
+> > >  
+> > >      /// Returns the size of the requested firmware in bytes.
+> > > @@ -101,10 +103,13 @@ pub fn data(&self) -> &[u8] {
+> > >      }
+> > >  }
+> > >  
+> > > -impl Drop for Firmware {
+> > > -    fn drop(&mut self) {
+> > > -        // SAFETY: `self.as_raw()` is valid by the type invariant.
+> > > -        unsafe { bindings::release_firmware(self.as_raw()) };
+> > > +unsafe impl Ownable for Firmware {
+> > > +    unsafe fn ptr_drop(ptr: *mut Self) {
+> > > +        // SAFETY:
+> > > +        // - By the type invariants, we have ownership of the ptr and can free it.
+> > > +        // - Per function safety, this is called in Owned::drop(), so `ptr` is a
+> > > +        //   unique pointer to object, it's safe to release the firmware.
+> > > +        unsafe { bindings::release_firmware(ptr.cast()) };
+> > >      }
+> > >  }
+> > >  
+> > > -- 
+> > > 2.43.0
+> > > 
+> > 
 > 
