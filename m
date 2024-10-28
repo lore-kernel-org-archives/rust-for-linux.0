@@ -1,28 +1,28 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2064.outbound.protection.outlook.com [40.107.20.64])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2057.outbound.protection.outlook.com [40.107.21.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64468190055;
-	Mon, 28 Oct 2024 07:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F6918FDDA;
+	Mon, 28 Oct 2024 07:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730099498; cv=fail; b=kAeC4BzFMRUrNQD2p1fPxH0e5IrL13boMDRWxnh91RkOEHGJRTMGt+sQrdvptvHmzXoyaIS7QmCvqXAR1ED9woKXdtlz1GTl2TG8LIXDkyeIbH3DDjE3cwPSDT5wY2srCGkNmvw8r3IKleQsBShh/jjaTgrGd1vsUoA5KtllkgU=
+	t=1730099515; cv=fail; b=ehzrKtA/+g1U9t9mPz31Bu0nt9A1/fuj44Nwz1KF+2BqgmbM8HWiTUtMlmVted0C7BYily5tGhD1ircSYqaMDyy4TZhnv9g0kkjCJWUb8pCKaZTu4gVNVAodmn4gyF2+o9G37Ovyzu/YaQgUzS7P8B0LCHQHyCn4EBQ3TrV6K5k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730099498; c=relaxed/simple;
-	bh=/TL3jOU9OdOAwlRQ/VUhOlozHuywOJydFYnPGqKCwBA=;
+	s=arc-20240116; t=1730099515; c=relaxed/simple;
+	bh=ul61saJyAM//zivN5FD0iRX8uWhMYdPrv4rOD1Bluow=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=T3ol7mWDZCSh9V/eRUHaACuv/UlYZMLq6nwx6ZnW4AEp2S3oxHekmHWbF/2Md9DP7gYI35vOy0zVKsoiW0CdwF6nG1ZyRD44opsHMPeAc++whvDsZJr4ckHbS4eRMFucjLn4Xi1+5K311vYN13sXCm48c5x34WGm0rQXmmcx078=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=vBTJCu4I; arc=fail smtp.client-ip=40.107.20.64
+	 In-Reply-To:Content-Type; b=Flzo2/Uu30WxvfqwK/qS6GWPGScxQOtlxH8+fGQAJwlDKz/rCiCvUP3O3a8XuXvT0qlpMxqsBuaMsCQhuiyOqtEkym6l/GCZLyUsVd+YlAqH5AiiZT0b4jmqJqWgiLXdMzTASNurDJNgL91CNGu4hNbkKAavwLCSEaMI62F2HSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Ntc6Azc3; arc=fail smtp.client-ip=40.107.21.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="vBTJCu4I"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Ntc6Azc3"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UCAhdEnbnlOoqKHP4obb2tmivrb7r7RJuiKgifXv2kzpgP2um25SF+ilmGxjIyBAw4UKdlRdORNakQ1s/L+qc9n31s30+qIQsKHN5szI9vJE23gCZBShU67hAxZ+zFW9VX3WL76QMwaIrz9GdAIfYBqiUKZAwzuYHETJVTJ/LQky/APqwvjIuu7g7rt0gxGVeRRQYHBIq9z19mYo5OLJqe/oLl8+/bttiE8q8DgCnA1FhIokoq0WD5xNGltbFWRv7Cj6Im4/ySWr3yy2435ENKmgPxW6dQqa20VcabS/uH2dJN8K1YJVRaCfqeWJZTS+Z5LpNRI2ds4fhT2qX8cGMA==
+ b=qOq462Hak7G+PbklA3hpM7eowyicu0XwlAyt6AOpaIxwEBI5y0L7z/FMkvO7p+iIzI6t7599X63C6uLjlbj7o3wf52JlQdByCjn6RGx2TBZVS8NA3Jj4FQg31zLMYUSB+jyU/327gR2P1JPzPNVI6tQN3dZhalLFjtORbvWkkPxuk8LCxn8zIdepHSkgMg6EeAr86m7BxsRo0TkRK8keipKq0E7CtDh54kekpcAVlbVtn9/+QU6Iok71DZ3Vrn2zMUq6pV1Z/sDPV5jhxubjsQ/EeVzSy9hv0UBDskKf6t9EmOtnJrq6ooiNUxzSWvCGop7L7DcKfOF1zedZHO9dbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Sxzptn975Fi4Bcz9M7DVdTyGmkJ00blFoigKJuuv5k=;
- b=dnHbJcpjD3O1hUOmaPoTVlJL+kqoIS9N3oaybg0J8wCS+W1yHAaPCtni5O7gQHxBA09Hcp66cgv0px0foPRLaLFtMfWdMYDFSNOUm4bpXA12CvI9SyYaj1ILPJBYvDus+H4ZhQUsNljyAEv+WR5AiAzjjlG3po2i3JtnOYSjQya5l5A4g3NeDeIaSSZtDYfmcYVplOdmiDdZ8fJklNKon2KmqAM8LVZjDHrtkglDI7tO6Xr0mHk0+RzrrKIidp/1ibUEwHar9sTRJ79cta5yeWr7CGNADji6fDlC6A1p/sZ8Xmbg7g0jc+1V9s3t5TwNgHTLWgHf82RLzEbkPuBowg==
+ bh=AtFC1fYGuw+YfbcbvxbEKkvuh/P+TLFu8jUu+dgdFgM=;
+ b=xEDlCKc2yzmydse8ndIU6bJWP0hgz4Pa4zz1eGOlrrEG7AnM10XuDWbhYSGsUZ9g/1rqhJo+Rsnsx9heR2ySNTlAel1qNUd//KGGbtSQ7DM6BwnZMxoda/t2dSD2EkAnMLOkkQ5PmAMh0KHu3vjwLzKDpGZFu11u/1uWlnLlb/OpbUjUGUou9LUk2tvvI+V6VyjrOx+Iu9of8kL59cq8c+1jApOCy1pzsWKl6fTXIdlGjGmXbk58p6qPH2IlBfNEE0P/YVX/XdbsLBiTT6eOTMchMdYXdSmtaDurKhKionkjrsuTwzBBCrARQUroGzZqYIYcYB5GuOqSNiwz7fADQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
  dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Sxzptn975Fi4Bcz9M7DVdTyGmkJ00blFoigKJuuv5k=;
- b=vBTJCu4ITw9wIC1z14QIZzO/wuuX2UB8pdqiEW9jkvvWbrW1db4XQ3CoNV7Ok9AIcG83hAIqUlC5VksqnbXCI44VX6dpTL68mwX9wqj0Vif9Ekn2nmLfm85fBU8+XKiI8gaV2RTkHiRhyJ1oLCtRbRIMZ/ZcYkrF6PJ+G2+6m0zvTnvzVZJraGq0xnaU3EiS3mh1VyatEOtrZeuWVnkDwA/rLqCverAUdAMOYcBGyCygZXOIIWGlx/vShjolSbA4z6vteEi3wYV63XPwDoxa6e0DbhP9db8gCvS6xCrG8pekLENXBym4qQG5wLrEd1KArhTAqYj/JvZVP7gcshHb6g==
-Received: from DU7P251CA0004.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:551::28)
- by AM7PR10MB3954.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:176::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.13; Mon, 28 Oct
- 2024 07:11:30 +0000
-Received: from DU2PEPF00028D01.eurprd03.prod.outlook.com
- (2603:10a6:10:551:cafe::31) by DU7P251CA0004.outlook.office365.com
- (2603:10a6:10:551::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.23 via Frontend
- Transport; Mon, 28 Oct 2024 07:11:30 +0000
+ bh=AtFC1fYGuw+YfbcbvxbEKkvuh/P+TLFu8jUu+dgdFgM=;
+ b=Ntc6Azc31Sl0mMG5zscTyW3T+UmSpkKW48Ma3st08A560IWdVCIPlV9D66xAfOE60j90gRg6GxT+vG+SdlaYvd+iSauFVU6Zq7zwefNvsl2R2oa4BFhEvkCEL1pB1GeT+lHAlzW99Adr/rvyVCwqiQBq4BflDAsKsMAcmA7L7H2Zc0ALi/y/FQYphCcaobZzP4p093PnIHWRE6E1vowzubdKmL87NRDZARf8VqN9T1j++xRlV1NhMyMIZw0U9NZkbeM1qgsBZB9uJlPXLV66QLUJ4bD6++omI59yV21wibDagQW2MHE28UaRB3ftkUD+Q3fMTcUwCJscUkxrTgY8sg==
+Received: from DUZPR01CA0307.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4ba::23) by PAWPR10MB6877.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:102:33a::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.11; Mon, 28 Oct
+ 2024 07:11:49 +0000
+Received: from DU2PEPF00028CFD.eurprd03.prod.outlook.com
+ (2603:10a6:10:4ba:cafe::71) by DUZPR01CA0307.outlook.office365.com
+ (2603:10a6:10:4ba::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24 via Frontend
+ Transport; Mon, 28 Oct 2024 07:11:48 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
  smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=de.bosch.com;
@@ -49,19 +49,19 @@ Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
  139.15.153.205 as permitted sender) receiver=protection.outlook.com;
  client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
 Received: from eop.bosch-org.com (139.15.153.205) by
- DU2PEPF00028D01.mail.protection.outlook.com (10.167.242.185) with Microsoft
+ DU2PEPF00028CFD.mail.protection.outlook.com (10.167.242.181) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.14 via Frontend Transport; Mon, 28 Oct 2024 07:11:29 +0000
-Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ 15.20.8114.16 via Frontend Transport; Mon, 28 Oct 2024 07:11:48 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
  (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 28 Oct
- 2024 08:11:17 +0100
-Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2000.de.bosch.com
- (10.139.217.201) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 08:11:48 +0100
+Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
+ (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 28 Oct
- 2024 08:11:16 +0100
-Message-ID: <48315bce-e55b-4462-b7d0-7f4db3223be2@de.bosch.com>
-Date: Mon, 28 Oct 2024 08:11:10 +0100
+ 2024 08:11:47 +0100
+Message-ID: <563e12c3-7910-4b40-8f1e-e39e5a54b79c@de.bosch.com>
+Date: Mon, 28 Oct 2024 08:11:42 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,7 +69,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/3] Initial rust bindings for device property reads
+Subject: Re: [PATCH RFC 1/3] of: unittest: Add a platform device node for rust
+ platform driver sample
 To: "Rob Herring (Arm)" <robh@kernel.org>, Saravana Kannan
 	<saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
@@ -82,134 +83,111 @@ To: "Rob Herring (Arm)" <robh@kernel.org>, Saravana Kannan
 CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<rust-for-linux@vger.kernel.org>
 References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+ <20241025-rust-platform-dev-v1-1-0df8dcf7c20b@kernel.org>
 Content-Language: en-US
 From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+In-Reply-To: <20241025-rust-platform-dev-v1-1-0df8dcf7c20b@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PEPF00028D01:EE_|AM7PR10MB3954:EE_
-X-MS-Office365-Filtering-Correlation-Id: 980b1b0a-5070-4ed1-ab01-08dcf71fbe7e
+X-MS-TrafficTypeDiagnostic: DU2PEPF00028CFD:EE_|PAWPR10MB6877:EE_
+X-MS-Office365-Filtering-Correlation-Id: e726700c-9668-467c-845d-08dcf71fca39
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026|921020;
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|7416014|82310400026|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UDBicitPWWVQT2pjOWZyZmM1bldCMWxVbXFwOXZSSi9sbDhmVWdOaWRvVmoy?=
- =?utf-8?B?YVBKYlIrYWxXMHp6T3NDaGVMOTFkNnk4aVBaQlZadGczQ2xORzZsNjJlZDVV?=
- =?utf-8?B?bVJhZ3RvdzRGZ3Q4Qmh4SUUyS1JtWCtyNFJvUHQxVmFYQ0lmaVJSbGZUaHND?=
- =?utf-8?B?cDEzQi9MeFg0M0QzQnZhNE10RmNuQmxvdVZERkhLc0dPQnFpN2FSMzJGT3hl?=
- =?utf-8?B?aW9wNlJDY0krKyt1dzI2SXE1Ny9BRHl3WE8rRDRlckRDcHhpdnpYUzRqYURj?=
- =?utf-8?B?T0MrZk1IWnh3aDZZTHcxSVI1cFUrOGRER0dOVUVKdUIvZEJsSUxQZW9xUzIy?=
- =?utf-8?B?bFNEOXVDN21qdmVIb3JCZnp3RXpZeUJyNXY1dXZyMHA1T092UjJ0UFRZL0pG?=
- =?utf-8?B?R3JVbE5YdkNqeFRDVERIbmxJc09uUUtyZmlUQStKcE05TXlsemlyZnZtK1hO?=
- =?utf-8?B?VXF2dE5WSzV6Z21EaUEzYlplWm9VdWZLV2NSRXNoczk5M05nb0pTUDBhdk9C?=
- =?utf-8?B?Y1RTWTNidDFSc01QbndPTHRxZHdzNjF3N0FUMEJBcWJCSHdrWGJ1SWxKR24x?=
- =?utf-8?B?UFdTV2V2UDlOV1EzSjZsUGxoS0htbGxWMklGWVoyNVVkTUxWejJFUUxhZERk?=
- =?utf-8?B?ZjJzaXBJRjM0eHk5ZG5kQ1JNTWttblA2aWVjakNNNTUzUm1pUmlQQ1M2RGY0?=
- =?utf-8?B?ck5ucFJscXlOQ3VOdWFEaXRFOWJ0STBQUnBVNXRJaUhRK0hKR1N1NlZHelpr?=
- =?utf-8?B?OEZ1cm1jd0kvVG5Rem1Xa2hvOHR3UkpVN0JLb1NXT3NSTm5pczZkNml1bmtY?=
- =?utf-8?B?QjB4dVVyN21uN1JMOUw0TmNQZGtwVXEyNnl3OWZFY09FS1ZVQ1NpVU8xN3h4?=
- =?utf-8?B?UDk3U3Q4Q3JGbnF1ZGNnNEc0bXJEdk1VU0tyNmRtWEpJN1kwTEpwbTFLcFFZ?=
- =?utf-8?B?NW9lWnovSnBZakNDbDhKOHk0NXJlVlljVTl5djlOdjZCancrWDZQdmpFcm9I?=
- =?utf-8?B?U1ZqS3pVQ2JqMnA5bUVrd1RDS2R2Z3ZHQUdXV29KZjEvM2p6MHAremh2L1lo?=
- =?utf-8?B?SE9ZK3IwUUgwWHJ3NVVmZVBJWHNEck9rc2Y1SVhodmN3UzVNdSsxRm01MzdX?=
- =?utf-8?B?cUVyNk9TUTlBVk5SL3E2OTdVSXVab1BvbmZhQlU3ckFNc2NBUUI2U09QN0lG?=
- =?utf-8?B?TWJJK0NJazdhaVVYZFE3WHpJVkpsemtOREtSMkNhNVV6OXNRaHpSRi83SzhM?=
- =?utf-8?B?UUNJUmJrNTlzUkNLa2dxdFE0cm1MSG90RXZzdVBaVkZZN2lXeWtocFA4SUFn?=
- =?utf-8?B?eXNUL2JKNmdSUWhMYWo2UzhjRnZyVE5GS2JNL041MElCaUYyL0NNSkM2ZStr?=
- =?utf-8?B?OTVoZjJnUXZoWmtUUklEN1V5UW11RlNldE5QdFZVTWNwbEJLQzZXbytnSzhF?=
- =?utf-8?B?VktLeEpLS0dhL0xOWlgyZmFVdXNZTTg5cHUrdGFwa1NWb2xNdFRoWlBiSVlL?=
- =?utf-8?B?eWRmd3lSd3hGQWFhVGpDSjM2MTY3RWFPVEZLUHZZQ0xoT0V2Q040bUNCUDBk?=
- =?utf-8?B?czlydGV3WXhTWlRDUUpGWlRnVkV0UFhiR3g4aEx3WE1UaTIwUzhXclcvTTgv?=
- =?utf-8?B?M3NiTjBEczRsVGhtWnVYakdMNWcxQXMxY25yZTJzazBhNkxvU3RWekNHWnVk?=
- =?utf-8?B?YWdLYlFUWmR3a3RVb2UvWlVjMjN0Q0g4WXZBSjA5QVFxQ0k4dVp3OU9NVWJK?=
- =?utf-8?B?VkFqZWw3bUVuSHl3d2hrUjlUR0t2WmRNQ21XdXdrVnBoeTluS003REd6MjRG?=
- =?utf-8?B?TzNoQUxoZ1lQTXRDUk92c1ZTeDBGYVhUVHZ2MXFOUEVSTktNUnN4MXJlVGps?=
- =?utf-8?B?bkpEdGNwdkFNS0FTMmFCTHcwYnpUQlNoSWw2eForSG5XazVwOVlPN0JFRlFO?=
- =?utf-8?Q?udgGAVZvqgM=3D?=
+	=?utf-8?B?MVFyMzlpb3JCKzl4dy96VXQ5dXloRU5yQkNkdHRnQzlIT2hzdUlGamV2RFI2?=
+ =?utf-8?B?Qlo2ZjZqUGdzNkpZWXRpWTUycmQxcWI4Vmt4OG1rcEJrSmxBYnN5SVo3WUgy?=
+ =?utf-8?B?ODRMc2RJdy9vZ3BZUGw1bnZ4VkIzTHFlbTJxN0Z3Ymk2b3BBRkZ6ZVFlSlBD?=
+ =?utf-8?B?NGJ1dVM4eStaejE1aTZGTktPTUFMK0ZaMW5kQ2JYNEoxZ1FwejFpaTFpdGZZ?=
+ =?utf-8?B?dlFjcHJQc3MwUFFvcEl3ak8vdWl5NGRaUWtna0hNdDNHdzIrcEVmRjZvcjY4?=
+ =?utf-8?B?Rm1kZlpUdkxGTVJQUVVoTGVNUlVwVUV0YkJBYkFDcXFuQ3g5cXphemVsbzhQ?=
+ =?utf-8?B?YVNqcmVhUVNlUzFUTlU2ZUp2dFdqdU5zQ1Zib2doK25BVDZDWFBhUEJFaGNC?=
+ =?utf-8?B?YldDd2JTY1J1WFFNQlpOK2Jid3Nwd0JCNDVPaW1ISmxXUGVLUlBiNmZXN0lM?=
+ =?utf-8?B?b1VRaU1lUVRjTTJBbHZqaTBybGcyZ2t3dE5yM0JXSUM3R0dvL0duZ25KaTdt?=
+ =?utf-8?B?LzNuQzRwTEU2dzhKN2hZUDNvMVo4RERLU3NvQkxzQjQzTlVIZHlIaTJzZSs1?=
+ =?utf-8?B?Tjc0VTVJYkN0a3g4NVAxR3BFeXVySU9ZR1YxS0xNcUpBeG91cWZ3a1NMbHB6?=
+ =?utf-8?B?M0lHZG1OSW1xWjkwUUVhSlBnQ3RKQlNmd3JrUnhibzk3VTM2ZzNOc3VrUjJM?=
+ =?utf-8?B?QVJROG1yd2ZQcEZ0T05ET1V4ZU0zUmRRcjRvNHBWWEhVVUNUYlpiSmpDdHZ3?=
+ =?utf-8?B?RXZvc3FaTnNpb1duRG5tNURiZlRpSjdFb3BmTXlhVlNIcmpYRVpBT2UvNEo4?=
+ =?utf-8?B?WEpIeXRISjhsdHBNRGpSVlk4YU9XK05YeUJ6T1ZhbDJhMmRsZXdBV2hTVHFL?=
+ =?utf-8?B?MEozQlRTTDQxZFNUazVKODlrTitVckxpOG01a1BKYlZ3Y3U3c2kwYXpsSnhv?=
+ =?utf-8?B?QkdrNkJTOHZyMEVGOTRBb0VubXQ1T1JIaGptbnpFYUhHbmlpd1g0QVZYU0pG?=
+ =?utf-8?B?a1lhUUdzQkJwVjVaKzFVWS9TUHZPUlZFZHFJNks2NndrVy9jMzdqZ09GUnlS?=
+ =?utf-8?B?T1JkeUsvd2NzWWdMSk51eHBNeTVrdlpZWXNOVnBYMXRKU0VkNTc4NEZ1eG5i?=
+ =?utf-8?B?dVh5cCsxL01LSnBVOHJ0TEVWUDIyQ3llSzN5YmtwYXBzTW9WTStKeVNFVnF5?=
+ =?utf-8?B?eDJrRk9jUGFvVk5tejR6NXNsZUI0dFpsMWtScUh0cDdKKzNkUmRIRmw0Uzk1?=
+ =?utf-8?B?OG5LNmFXbTZMaVhBc1dHRWxBVHo1eWJEVDV6azFzbEw3R2pxVks0OHFMUGVu?=
+ =?utf-8?B?eGtSdURFOWZoZGg2dzh0WlZDbFhhamVaT1E2ZUYyVXF4ZDk2WFRFbzNKV2R3?=
+ =?utf-8?B?L3FmTnVLZjVVREtVeE5LTUJZUDErU09XSE9UbTlRcDhWZFFzUVpnZjhJNUhS?=
+ =?utf-8?B?Sm5pemdoMG4rMUZ2ZmJ5eUwwMWE3czREb01Ndm9BMGk1Ti9DdU9EVnNUQjJz?=
+ =?utf-8?B?ckh3RjlJV3plMW9LWmM4L0FWMkttMnJvU3pndEZoK0o2UW4xTEN6YXdneHdL?=
+ =?utf-8?B?dHRTTE4zTGIzemE1dVMzZ3VmKy80WG1hc1YrUE5McVRYTklHb2lUajlFRFBv?=
+ =?utf-8?B?N3dBRXliUHVKVjk3TjlTYWxha3dvZ3lZVVZQNHBLQkh0ejZtZDRsdlZEM2cz?=
+ =?utf-8?B?cStXUnRKQk5IcjJ6ZVZlLzhINjI2YTBKa0MvZ1hKMnFaclVVbTd4M1BxR1VZ?=
+ =?utf-8?B?UVVFTHI2ZmtST2NSWDBFWDA1cFVFRkRiNzd5d04rWDk0TzR3UTc3U3MrWFlQ?=
+ =?utf-8?B?aFNudWlPd3d1Z2FKMjNGU2paem9SMHBNcWt6dUdFQ0pRQ3pRd3M5QmFGV0E4?=
+ =?utf-8?B?cmFHZVJEZjlOcFJPTE8zMnhvd1R2V01xL0NYdHB3M2tNZUt3cSt4KzcvaTgw?=
+ =?utf-8?Q?p2eputNWILQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026)(921020);DIR:OUT;SFP:1101;
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026)(921020);DIR:OUT;SFP:1101;
 X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 07:11:29.0849
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 07:11:48.7800
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 980b1b0a-5070-4ed1-ab01-08dcf71fbe7e
+X-MS-Exchange-CrossTenant-Network-Message-Id: e726700c-9668-467c-845d-08dcf71fca39
 X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF00028D01.eurprd03.prod.outlook.com
+	DU2PEPF00028CFD.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3954
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR10MB6877
 
 On 25.10.2024 23:05, Rob Herring (Arm) wrote:
-> I got asked about upstreaming DT rust bindings, so I decided to take a
-> stab at it.
-
-Many thanks for this!
-
-> This series adds rust bindings for the device property API
-> which is a firmware agnostic interface for reading firmware properties.
-> There are "DT rust bindings" patches floating around, but for many
-> drivers they don't need to know any DT specifics nor deal with struct
-> device_node (and its refcounts). And reading firmware properties are
-> simple enough for my feeble rust abilities.
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>   drivers/of/unittest-data/tests-platform.dtsi | 5 +++++
+>   samples/rust/rust_driver_platform.rs         | 2 +-
+>   2 files changed, 6 insertions(+), 1 deletion(-)
 > 
-> This series is based on top of Danilo's PCI and platform device
-> series[1], though that's really only for the sample driver.
+> diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
+> index fa39611071b3..2caaf1c10ee6 100644
+> --- a/drivers/of/unittest-data/tests-platform.dtsi
+> +++ b/drivers/of/unittest-data/tests-platform.dtsi
+> @@ -33,6 +33,11 @@ dev@100 {
+>   					reg = <0x100>;
+>   				};
+>   			};
+> +
+> +			test-device@2 {
+> +				compatible = "test,rust-device";
+> +				reg = <0x2>;
+> +			};
+>   		};
+>   	};
+>   };
+> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+> index 55caaaa4f216..5cf4a8f86c13 100644
+> --- a/samples/rust/rust_driver_platform.rs
+> +++ b/samples/rust/rust_driver_platform.rs
+> @@ -15,7 +15,7 @@ struct SampleDriver {
+>       MODULE_OF_TABLE,
+>       <SampleDriver as platform::Driver>::IdInfo,
+>       [(
+> -        of::DeviceId::new(c_str!("redhat,rust-sample-platform-driver")),
+> +        of::DeviceId::new(c_str!("test,rust-device")),
+>           Info(42)
+>       )]
+>   );
+> 
 
+I'm not sure if parts or all of this should be squashed into Danilo's 
+patches. Anyway:
 
-On x86 having CONFIG_OF_UNITTESTS enabled I get
-
-rust_driver_platform testcase-data:platform-tests:test-device@2: Probed 
-by OF compatible match: 'test,rust-device' with info: '42'.
-rust_driver_platform testcase-data:platform-tests:test-device@2: matched 
-compatible string idx = 0
-rust_driver_platform testcase-data:platform-tests:test-device@2: bool 
-prop is false
-rust_driver_platform testcase-data:platform-tests:test-device@2: 
-'test,u32-prop' is 0xdeadbeef
-rust_driver_platform testcase-data:platform-tests:test-device@2: 
-'test,i16-array' is [1, 2, -3, -4]
-rust_driver_platform testcase-data:platform-tests:test-device@2: 
-'test,i16-array' length is 4
-
-with this. Looks good :)
-
-I'm not sure if it makes sense for an RFC patch series but in case it helps:
-
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-
-Some comments will follow in the individual patches.
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
 
 Best regards
 
 Dirk
-
-
-> Please tell me how my rust code sucks before I spend more time beating
-> my head against the wall^W^W^W^W^W^W learning rust.
-> 
-> Rob
-> 
-> [1] https://lore.kernel.org/all/20241022213221.2383-1-dakr@kernel.org/
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
-> Rob Herring (Arm) (3):
->        of: unittest: Add a platform device node for rust platform driver sample
->        rust: Add bindings for device properties
->        samples: rust: platform: Add property read examples
-> 
->   drivers/of/unittest-data/tests-platform.dtsi |   8 ++
->   rust/bindings/bindings_helper.h              |   1 +
->   rust/kernel/device.rs                        | 145 ++++++++++++++++++++++++++-
->   samples/rust/rust_driver_platform.rs         |  24 ++++-
->   4 files changed, 176 insertions(+), 2 deletions(-)
-> ---
-> base-commit: eeb31b3e7e9e1b485763ecc66ece8afba1416b2a
-> change-id: 20241025-rust-platform-dev-0e89debcbba5
-> 
-> Best regards,
-
