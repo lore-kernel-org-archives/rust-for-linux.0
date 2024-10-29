@@ -1,411 +1,175 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5011205E12
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 13:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCAF206049
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 13:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730209633; cv=none; b=UtsVkLzphWhIEUXPlMVE1hS/HS9qUVA3T7wd9gm6zKoPVL/+NN84Io/7qpmeEQBzHz1iRJxcPerIN+oLSWi3Sc6/sdCrFRF1Ce4+4ICTPwFd0hvzcw0Y10Mu9DL29ZDAi3z4fT1LkwcpZNQ98tNu74C93GGyLvDcoz5Fn/K/FV8=
+	t=1730210370; cv=none; b=a1FWjAAnW9mfz1hxLSYr2+f8dslYsjMFaf5JeBukH11YJdJ/tnF5Z1uqItIQMsRAxruyPCPCbFBYDcGdYldpCQQgFMQsdPQtxBzGP12KcG6/p3i5qV4uPmVAbq8IoBNEL5TLGT7/WDmYesd+kvViIQZSidQc71HWOoFFm4OjqY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730209633; c=relaxed/simple;
-	bh=cq27wZz7dVLJMOmm0mkBoV4a/SvFeK1Ra68XlDGi/tY=;
+	s=arc-20240116; t=1730210370; c=relaxed/simple;
+	bh=HWBADJXnoh2NUNrdZ4R8VuuNYl1bmNxvyx9KhUtUxEA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s4t5FaEgq0MK4Ui2s1G/QsaffcgsYG39kRTwamCPRF7e0N1SZvScKPIGjA6NWPweHcOxRxZGqzBcHSmmgA4/kvhI7zyZz+hbJXnxpBcMktt6hEokZRwG9vvqCLiS98rZUWQRukqN5U77NZHRfYHMXUdVzhLXCqfGO6T2DzSzKfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qhcjg3/a; arc=none smtp.client-ip=209.85.167.43
+	 To:Cc:Content-Type; b=sKASQtTAKIDIm8yLCL1SDzWmeXO9jsK+Mj0/fPew8h8wtoC9Mxd7ndcaCgoT6kgR329z/6pcfBhcn9/CodSSIaGW/S8CgLFyuXmRcoFtvCpeUeg3s99eMoSFq/2B9fmgQ361JhBPYJJcFU2+uYxBNj3HpilI4cgvXwROjJjRe6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s/1PBN+O; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qhcjg3/a"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53a007743e7so6274218e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 06:47:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s/1PBN+O"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d495d217bso5094963f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 06:59:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730209628; x=1730814428; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730210364; x=1730815164; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LArg21E2WXO5e66MBAzgbobynxnG6RwUCWHJ6JjyJPU=;
-        b=Qhcjg3/aDoweAWAyVByWPgYgyRut5tEtZmbwL/1P2M76JLq5sYQOnIvhBwLtzlfQM3
-         PZODjYtiNtOTgD1GK3eyHRxOYlI1sXWeVZeIDkJkTiYmmLcMXHbMPtL+q6lC8voQZ+6u
-         gEu2wVemehCgZdgiRsZHjAL5U5OMBfVKs1gzLicpta7+DVW/5ik9pKnbJpjOkrO0X4kD
-         u43R5t6zhZzpPTzNK9TTNE0G9fRznDXqdFJuLtjlRs1f1poF4AxRBipzIC8j/wBWkUBk
-         cLTCSQvVwmGJXeLPtL3k2AIAK1HIpLtvl7RJ15fVqR6KNQ7HOnhY7aIVwroTX4UenIqM
-         I/Tg==
+        bh=N0+r5DXauPWMBo80TC003d10oYhw7X04leDKPh0fruY=;
+        b=s/1PBN+O4ssMce33ShcFRDVxgnF0bzyFMTPkXBQD+CHNpuVcPuUuWVIeFbSTQ2RKAX
+         SzyfVCwgP9Gr6Pg6PF4WkcbBPDkpqXzHpLIp+XaOAZKHslD9yMLSO8njq8gWrrtDp20b
+         FJBYhxAFMCe6o1QLNfDMRgaa51ritTL6O1Exth+2EPQ75ob8OOZ39+RqdTFbpYWkXjsv
+         ZSMABo/ZMKJ4IFg+lSI2eA6UqEQQr2UI6VrBgva2iMmHufjp57xL/PCEJz4jkhV1HKFE
+         5F4IVQrn3D0tk7wvtLul1Cti40IuvA1GDUxOTxTDsuBu0cdPxSfHiCAT3PZ6BvJNCBS0
+         I59g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730209628; x=1730814428;
+        d=1e100.net; s=20230601; t=1730210364; x=1730815164;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LArg21E2WXO5e66MBAzgbobynxnG6RwUCWHJ6JjyJPU=;
-        b=YqIcKj3zE5un67QSjpujuiafSawyx0bSlAuGUkpTrKjqe5sCbXzIPAJ1ozRcwvD+TW
-         q7p8XB/98iFQvAQqoY2oPwFk86ethu83mOvkuGxgiI7M1q4WRIlDZ2LXGfw43w/Z/ZAW
-         bqfsErxmvFh3wc7kchx4AXy7n+Hhp+YEa343bdWj2e/3dFlnLZnzdh+SAuvo3emXKl8u
-         M7ZHy/PCX+F3TkxE84pkebldnuQbte5a6ZVBKO+RLbOGhV+Id3DmR6kwOFuNpLuIx9zf
-         m9VC/pT1oGqEl1SMVlBy9AHblZt8nizF37L0ki8cBcVjazavzUn55oZUQT8f4sACtuwK
-         HcRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJkRgJTDOtKWh/PSpxjFcVSk7cq5j7Y6Oa6Gy3ZH5P2mWstJ5JpCzG8YsZ25lOG6lYafEEtl2H1qWFN1yOgg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7Pm6DFPGd1ZzCE7ndFcYJ/koZmA6ExfAP/0JRz0TSGCUSBttJ
-	ryy0H7VCWopxo9pQ2nuWwAu6p3WCChGaowk6cTsfV9MMaQEuoKogFLRahbI4FBRcLxR1ikVhI3D
-	q+nq0OhctcclLroy6Sawd0ZPKV5lLS1Gy2OLy
-X-Google-Smtp-Source: AGHT+IHItb9FX0fWN2MM4pYj544OpUsB66WeSfDGuaODqOudecBLf5ATg6AZ/ngQWd3qN6yPQtudPVotEpB8Jmx0lps=
-X-Received: by 2002:a05:6512:3d22:b0:539:f6c4:c29d with SMTP id
- 2adb3069b0e04-53b34b39798mr5839187e87.54.1730209627512; Tue, 29 Oct 2024
- 06:47:07 -0700 (PDT)
+        bh=N0+r5DXauPWMBo80TC003d10oYhw7X04leDKPh0fruY=;
+        b=QB72xRp0bA2ameJp1edttNyWZY3EeEwUwkUakHe29XhhAnzt3ClueFuEr3J9809l4m
+         Lhj86cduK4/dPWw1L/QFWXyjhOIWi1yq8B03X+701/2LaWBUQqTFb+f3bVOIwr2ESsYF
+         6Z4lbkiAgRpl5d98gScJ39EPdR9sFQIUJUMHyxO5sawgNgbGSQ5JMLqIPwCcaBzQn6yQ
+         QI/Db9xC9csFc8PZQByC59kIAuC4s+J3N8Bb1v9V0/tgSAVZWTTjDgMSZ5r0EeqBkeMO
+         inVhVLOz6hlA2mPdIfsUaM+1y9nlImav/BngmV/nOmmuNs65Xh6OvLQm/7VTUULeRATj
+         +Cyg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7mXEfadJ/e3zvFjzSHHBHoiXNjcszPpE7QtDUa46fNGE6CC1IgLy/BzI5PWFfnTkmReRZC6mhxJw+tHLpGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUiTE3a+XOLZivWjWp1Gaf9hKq7WsoVTKmH7dpdoL2M99RBd3D
+	JBa7NqvW5HiD+XhEekPrGt5XmmyRb2ASJMUizLZ49xyzOLUi7qQoaN+bYTLqR7MguUtmeb0TzNP
+	hkGxT+4xoF6PnHLUZ1v3twcKT6SHrJh/PYxxr
+X-Google-Smtp-Source: AGHT+IHKguE544j9cYCAx/GnN3x2cBIU4yFs+FD0nSAsUtdOZzL/B0VKKdtS72gv2gH4vafJAmdHPLNGHnEY0QP/rKg=
+X-Received: by 2002:a5d:56d2:0:b0:37e:f4a1:2b58 with SMTP id
+ ffacd0b85a97d-38061172aa9mr11280347f8f.16.1730210364034; Tue, 29 Oct 2024
+ 06:59:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-topic-panthor-rs-platform_io_support-v1-1-3d1addd96e30@collabora.com>
- <CAH5fLgjdDm3nNvR8g-a6Z8UsSnEDygLJ8i3u63aCrpG5ambQ3A@mail.gmail.com> <BC47085B-4160-4D9B-89F4-06EDE706CD5A@collabora.com>
-In-Reply-To: <BC47085B-4160-4D9B-89F4-06EDE706CD5A@collabora.com>
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-7-dakr@kernel.org>
+In-Reply-To: <20241022213221.2383-7-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Oct 2024 14:46:55 +0100
-Message-ID: <CAH5fLghv3cBGO0HEH-5GXiDZZWyKSJYxQu8s0fi8D=eneS-OXw@mail.gmail.com>
-Subject: Re: [PATCH] rust: platform: add Io support
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 29 Oct 2024 14:59:10 +0100
+Message-ID: <CAH5fLgji5SozS2Y+G16pPS3iiKnee-p94xO+uZZykTd_7EBOpQ@mail.gmail.com>
+Subject: Re: [PATCH v3 06/16] rust: add rcu abstraction
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 7:23=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> Hi Alice,
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 >
-> > On 28 Oct 2024, at 12:37, Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
-> > <daniel.almeida@collabora.com> wrote:
-> >>
-> >> The IoMem is backed by ioremap_resource()
-> >>
-> >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> >> ---
-> >> The PCI/Platform abstractions are in-flight and can be found at:
-> >>
-> >> https://lore.kernel.org/rust-for-linux/Zxili5yze1l5p5GN@pollux/T/#t
-> >> ---
-> >> rust/bindings/bindings_helper.h |  1 +
-> >> rust/helpers/io.c               | 11 ++++++
-> >> rust/kernel/platform.rs         | 88 +++++++++++++++++++++++++++++++++=
-++++++++
-> >> 3 files changed, 100 insertions(+)
-> >>
-> >> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_=
-helper.h
-> >> index 217c776615b9593a2fa921dee130c357dbd96761..90b2d29e7b99f33ceb313b=
-4cc7f8232fef5eed17 100644
-> >> --- a/rust/bindings/bindings_helper.h
-> >> +++ b/rust/bindings/bindings_helper.h
-> >> @@ -13,6 +13,7 @@
-> >> #include <linux/errname.h>
-> >> #include <linux/ethtool.h>
-> >> #include <linux/firmware.h>
-> >> +#include <linux/ioport.h>
-> >> #include <linux/jiffies.h>
-> >> #include <linux/mdio.h>
-> >> #include <linux/of_device.h>
-> >> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-> >> index f9bb1bbf1fd5daedc970fc342eeacd8777a8d8ed..f708c09c4c87634c56af29=
-ef22ebaa2bf51d82a9 100644
-> >> --- a/rust/helpers/io.c
-> >> +++ b/rust/helpers/io.c
-> >> @@ -1,6 +1,7 @@
-> >> // SPDX-License-Identifier: GPL-2.0
-> >>
-> >> #include <linux/io.h>
-> >> +#include <linux/ioport.h>
-> >>
-> >> u8 rust_helper_readb(const volatile void __iomem *addr)
-> >> {
-> >> @@ -89,3 +90,13 @@ void rust_helper_writeq_relaxed(u64 value, volatile=
- void __iomem *addr)
-> >>        writeq_relaxed(value, addr);
-> >> }
-> >> #endif
-> >> +
-> >> +resource_size_t rust_helper_resource_size(struct resource *res)
-> >> +{
-> >> +       return resource_size(res);
-> >> +}
-> >> +
-> >> +void __iomem *rust_helper_ioremap(resource_size_t addr, unsigned long=
- size)
-> >> +{
-> >> +       return ioremap(addr, size);
-> >> +}
-> >> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> >> index addf5356f44f3cf233503aed97f1aa0d32f4f062..d152432c80a4499ead30dd=
-aebe8d87a9679bfa97 100644
-> >> --- a/rust/kernel/platform.rs
-> >> +++ b/rust/kernel/platform.rs
-> >> @@ -4,11 +4,15 @@
-> >> //!
-> >> //! C header: [`include/linux/platform_device.h`](srctree/include/linu=
-x/platform_device.h)
-> >>
-> >> +use core::ops::Deref;
-> >> +
-> >> use crate::{
-> >>     bindings, container_of, device,
-> >>     device_id::RawDeviceId,
-> >> +    devres::Devres,
-> >>     driver,
-> >>     error::{to_result, Result},
-> >> +    io::Io,
-> >>     of,
-> >>     prelude::*,
-> >>     str::CStr,
-> >> @@ -208,6 +212,49 @@ fn as_raw(&self) -> *mut bindings::platform_devic=
-e {
-> >>         // embedded in `struct platform_device`.
-> >>         unsafe { container_of!(self.0.as_raw(), bindings::platform_dev=
-ice, dev) }.cast_mut()
-> >>     }
-> >> +
-> >> +    /// Maps a platform resource through ioremap() where the size is =
-known at
-> >> +    /// compile time.
-> >> +    pub fn ioremap_resource_sized<const SIZE: usize>(
-> >> +        &self,
-> >> +        resource: u32,
-> >> +    ) -> Result<Devres<IoMem<SIZE>>> {
-> >> +        let res =3D self.resource(resource)?;
-> >> +        let size =3D self.resource_len(resource)? as usize;
-> >
-> > You're calling platform_get_resource twice here? Can you be sure that
-> > it returns the same pointer each time?
+> Add a simple abstraction to guard critical code sections with an rcu
+> read lock.
 >
-> This comes from the DT. Yes, it will be the same pointer (so long as we
-> pass the same index).
->
-> Although, I did not see where it is being called twice?
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-The `resource_len` function calls `resource`, so you call `resource`
-twice. Each call to `resource` results in a call to
-`platform_get_resource`.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> >> +        // SAFETY: `res` is guaranteed to be a valid MMIO address and=
- the size
-> >> +        // is given by the kernel as per `self.resource_len()`.
-> >> +        let io =3D unsafe { IoMem::new(res as _, size) }?;
-> >
-> > Why do we know that `res` is a valid MMIO address? Is it because
-> > platform_get_resource always does so?
+>  rust/helpers/helpers.c  |  1 +
+>  rust/helpers/rcu.c      | 13 +++++++++++
+>  rust/kernel/sync.rs     |  1 +
+>  rust/kernel/sync/rcu.rs | 52 +++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 67 insertions(+)
+>  create mode 100644 rust/helpers/rcu.c
+>  create mode 100644 rust/kernel/sync/rcu.rs
 >
-> Again, if there=E2=80=99s a problem, the DT itself should be fixed. Also =
-the C code would be broken too.
-
-Sorry if I was unclear. I just wanted you to elaborate in the safety commen=
-t :)
-
-> >> +        let devres =3D Devres::new(self.as_ref(), io, GFP_KERNEL)?;
-> >> +
-> >> +        Ok(devres)
-> >> +    }
-> >> +
-> >> +    /// Maps a platform resource through ioremap().
-> >> +    pub fn ioremap_resource(&self, resource: u32) -> Result<Devres<Io=
-Mem>> {
-> >> +        self.ioremap_resource_sized::<0>(resource)
-> >> +    }
-> >
-> > I guess size zero is special?
-> >
->
-> `ioremap_resource_sized` is used when you know the size at compile time. =
-Setting SIZE =3D=3D 0
-> means that you get runtime checks on whether your reads and writes are wi=
-thin bounds,
-> because you will have to use try_read() and try_write() instead of read()=
- and write() or your build
-> will fail.
->
-> This is not related to this patch in particular, but to a preceding one t=
-hat introduces struct Io.
->
-> We merely expose the same API from Io to users here.
->
-> Although I do agree it=E2=80=99s a bit confusing that SIZE 0 is special-c=
-ased. It took me a while and
-> several read-throughs to understand what was going on.
->
-> Note that it=E2=80=99s common to have to read the size from the DT, so de=
-ferring to runtime checks
-> seems to be unavoidable in a lot of cases if we want to have a safe API.
->
-> Here=E2=80=99s the relevant code from that commit:
->
-> ```
-> +macro_rules! define_write {
-> + ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) =3D> {
-> + /// Write IO data from a given offset known at compile time.
-> + ///
-> + /// Bound checks are performed on compile time, hence if the offset is =
-not known at compile
-> + /// time, the build will fail.
-> + $(#[$attr])*
-> + #[inline]
-> + pub fn $name(&self, value: $type_name, offset: usize) {
-> +       let addr =3D self.io_addr_assert::<$type_name>(offset);
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 20a0c69d5cc7..0720debccdd4 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -16,6 +16,7 @@
+>  #include "mutex.c"
+>  #include "page.c"
+>  #include "rbtree.c"
+> +#include "rcu.c"
+>  #include "refcount.c"
+>  #include "signal.c"
+>  #include "slab.c"
+> diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
+> new file mode 100644
+> index 000000000000..f1cec6583513
+> --- /dev/null
+> +++ b/rust/helpers/rcu.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +       // SAFETY: By the type invariant `addr` is a valid address for MM=
-IO operations.
-> +        unsafe { bindings::$name(value, addr as _, ) }
-> + }
+> +#include <linux/rcupdate.h>
 > +
-> + /// Write IO data from a given offset.
-> + ///
-> + /// Bound checks are performed on runtime, it fails if the offset (plus=
- the type size) is
-> + /// out of bounds.
-> + $(#[$attr])*
-> + pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
-> +       let addr =3D self.io_addr::<$type_name>(offset)?;
+> +void rust_helper_rcu_read_lock(void)
+> +{
+> +       rcu_read_lock();
+> +}
 > +
-> +       // SAFETY: By the type invariant `addr` is a valid address for MM=
-IO operations.
-> +       unsafe { bindings::$name(value, addr as _) }
-> +       Ok(())
-> + }
-> ```
+> +void rust_helper_rcu_read_unlock(void)
+> +{
+> +       rcu_read_unlock();
+> +}
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 0ab20975a3b5..1806767359fe 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -11,6 +11,7 @@
+>  mod condvar;
+>  pub mod lock;
+>  mod locked_by;
+> +pub mod rcu;
 >
-> Where,
->
-> ```
-> + #[inline]
-> + fn io_addr<U>(&self, offset: usize) -> Result<usize> {
-> +       if !Self::offset_valid::<U>(offset, self.maxsize()) {
-> +               return Err(EINVAL);
-> + }
+>  pub use arc::{Arc, ArcBorrow, UniqueArc};
+>  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+> new file mode 100644
+> index 000000000000..5a35495f69a4
+> --- /dev/null
+> +++ b/rust/kernel/sync/rcu.rs
+> @@ -0,0 +1,52 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> + // Probably no need to check, since the safety requirements of `Self::n=
-ew` guarantee that
-> + // this can't overflow.
-> + self.base_addr().checked_add(offset).ok_or(EINVAL)
-> + }
-> + #[inline]
-> + fn io_addr_assert<U>(&self, offset: usize) -> usize {
-> +       build_assert!(Self::offset_valid::<U>(offset, SIZE));
+> +//! RCU support.
+> +//!
+> +//! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdat=
+e.h)
 > +
-> +       self.base_addr() + offset
-> + }
-> ```
->
-> And
->
-> ```
-> + #[inline]
-> + const fn offset_valid<U>(offset: usize, size: usize) -> bool {
-> +       let type_size =3D core::mem::size_of::<U>();
-> +       if let Some(end) =3D offset.checked_add(type_size) {
-> +               end <=3D size && offset % type_size =3D=3D 0
-> +       } else {
-> +               false
-> +       }
-> + }
-> ```
+> +use crate::bindings;
+> +use core::marker::PhantomData;
+> +
+> +/// Evidence that the RCU read side lock is held on the current thread/C=
+PU.
+> +///
+> +/// The type is explicitly not `Send` because this property is per-threa=
+d/CPU.
+> +///
+> +/// # Invariants
+> +///
+> +/// The RCU read side lock is actually held while instances of this guar=
+d exist.
+> +pub struct Guard {
+> +    _not_send: PhantomData<*mut ()>,
 
-Acknowledged.
-
-> >> +    /// Returns the resource len for `resource`, if it exists.
-> >> +    pub fn resource_len(&self, resource: u32) -> Result<bindings::res=
-ource_size_t> {
-> >
-> > Should this just return usize? Should we have a type alias for this siz=
-e type?
->
->
-> I guess usize would indeed be a better fit, if we consider the code below=
-:
->
-> ```
-> #ifdef CONFIG_PHYS_ADDR_T_64BIT
-> typedef u64 phys_addr_t;
-> #else
-> typedef u32 phys_addr_t;
-> #endif
->
-> typedef phys_addr_t resource_size_t;
-
-Hmm. I guess they probably do that because phys_addr_t could differ
-from size_t? Sounds like we may want a typedef called phys_addr_t
-somewhere on the Rust side?
-
-> >> +        match self.resource(resource) {
-> >> +            // SAFETY: if a struct resource* is returned by the kerne=
-l, it is valid.
-> >> +            Ok(resource) =3D> Ok(unsafe { bindings::resource_size(res=
-ource) }),
-> >> +            Err(e) =3D> Err(e),
-> >> +        }
-> >> +    }
-> >> +
-> >> +    fn resource(&self, resource: u32) -> Result<*mut bindings::resour=
-ce> {
-> >> +        // SAFETY: By the type invariants, we know that `self.ptr` is=
- non-null and valid.
-> >> +        let resource =3D unsafe {
-> >> +            bindings::platform_get_resource(self.as_raw(), bindings::=
-IORESOURCE_MEM, resource)
-> >> +        };
-> >> +        if !resource.is_null() {
-> >> +            Ok(resource)
-> >> +        } else {
-> >> +            Err(EINVAL)
-> >> +        }
-> >> +    }
-> >> }
-> >>
-> >> impl AsRef<device::Device> for Device {
-> >> @@ -215,3 +262,44 @@ fn as_ref(&self) -> &device::Device {
-> >>         &self.0
-> >>     }
-> >> }
-> >> +
-> >> +/// A I/O-mapped memory region for platform devices.
-> >> +///
-> >> +/// See also [`kernel::pci::Bar`].
-> >> +pub struct IoMem<const SIZE: usize =3D 0>(Io<SIZE>);
-> >> +
-> >> +impl<const SIZE: usize> IoMem<SIZE> {
-> >> +    /// Creates a new `IoMem` instance.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// The caller must make sure that `paddr` is a valid MMIO addres=
-s.
-> >> +    unsafe fn new(paddr: usize, size: usize) -> Result<Self> {
-> >
-> > What happens if `size !=3D SIZE`?
->
->
-> ```
-> +impl<const SIZE: usize> Io<SIZE> {
-> + ///
-> + ///
-> + /// # Safety
-> + ///
-> + /// Callers must ensure that `addr` is the start of a valid I/O mapped =
-memory region of size
-> + /// `maxsize`.
-> + pub unsafe fn new(addr: usize, maxsize: usize) -> Result<Self> {
-> +       if maxsize < SIZE {
-> +               return Err(EINVAL);
-> +        }
-> ```
->
-> As we=E2=80=99ve seen in the other code snippets I pasted, it=E2=80=99s S=
-IZE that is used in the try_read and
-> try_write checks.
-
-Ok.
+Once 6.13 is released, you'll want to use NotThreadSafe here instead
+of PhantomData. It's landing upstream through vfs.rust.file.
 
 Alice
