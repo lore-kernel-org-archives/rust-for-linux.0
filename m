@@ -1,118 +1,267 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDE61DFE3C
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 08:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C95204091;
+	Tue, 29 Oct 2024 08:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730191514; cv=none; b=J9WcS+xNcjlew5/uasGmJnowxOEz9iciIu3PJrDeUzqdEgQuG5Ta/LUCVCRS4+7u01zSEU7FWH6rMMW/2jT0x0sgt4vlctyr3vxLvFBH3wab0HggwZNlyUl9SvBLu3AVlC6UPJ8DPOnFv1U6YsZs2RUIALq5axWKotuWsErr/4Q=
+	t=1730191852; cv=none; b=rgE66PVXi2PrjSeYDlhETlP0x4CyL1UcuLFQsDDJ+hXi9q6SfrzxB0juwaYpdQH12wbF0Q90CAGH8XCgVi2DZpNiEquQOl+gwGWJiLWYt6WwZ3IsOaa5GJgogBc7okAeppvkCt0hohCKDo5TptyK0vbrB6nOJv3rOiGcL223Usc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730191514; c=relaxed/simple;
-	bh=5iLG1ygbBpNOpviW0stMPb9oHKkA9QZTlmRbWt7p1/s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BacrHkveYBCSO5KLyybOtZumycElVYyQajk3Reph9tdhu7tQbGP0WlKjAI8XjuCtBo8b3GnGT/XmTbsmv5AizSBYDmMBykKgkMuWjkQHaxRqTqoGQRH3nd9Y+qthbsqbTUtiof5r+Sv3AnxUPwchIsk02Cu+uE9o2JIm+UGr/gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i5gN04Zq; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730191852; c=relaxed/simple;
+	bh=W5rqZ6tX1MxtmhXIMLhi2lKSnRqfo6Db9jRER9ZOPyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Do4/mR4tVwe8NuoXXMIvVJuePsEW8lRKHXA9HpJ0YSQDO5zOi1LiaVZLHfLx5WAPYGx9jtnenL8F4ONLxiQWQlYrNk3ayUWIa+PTGD0VgQZpbHEMjd0UQlI2jzM29/xkm4a+3XosgXunAG3wnT7tlCx8Im/xwa6nYk77LigtlFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVA6647f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i5gN04Zq"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43159c9f617so50314595e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 01:45:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730191510; x=1730796310; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=peBsrRNawNKr7JJQJfccCDO+5eE12sTFtfer6rwD+KE=;
-        b=i5gN04ZqlK2HCgZcleKZ/iTGsjbaY+5oOrHMvu0TdGaWSIxGJWacNfkhxsoPhacxC1
-         Zm5OvZ/FudGG3mWj1F7Pyw88R9MAeZx2ihKDVtb9V90WgS6zbkLyewWKaL9r+la78i5N
-         haRRPaaX3H2neo9tMZC5LwnK1ceYlgycMPgFuQOip3bTAaXnqpB5+GrLRYYPfnDuT+iW
-         qHl4rxH1rfkGRcKB2wGGltT6A4veq4ryFYc/YdZK4cyafBpImm4m4lEbK1Zb89D9d14a
-         NYw5fXHmwWOID3LXRGP6shbxPhnrKGbueQcD4SjUQyJqu+kw/U/mrcO18XiCUrTRRXEd
-         lZiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730191511; x=1730796311;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=peBsrRNawNKr7JJQJfccCDO+5eE12sTFtfer6rwD+KE=;
-        b=b3N/1yYB5KrQubjOBSrjRPFRwYr28BcbGp7NVqjeWQiBpi02yczS3ngAB6YV2hHcqE
-         w4UcD2sysZljrqczdtZoi9bjfcfCSplzE6V5ApwRh+kZvUoX7hkeyuHbWykWM1h+otqs
-         EPBspEw1znPCgpUXBMnp21mn5LgHweoM6kogYbDknL1XdnhsySn8QQmxtDSdJha3eduN
-         aGmMcUCu2uyCMbX8DMHApS2B+NH19x6oCgdFtikujA1fnOikjxtPBe/YphcvrXCRW9Y6
-         hFNfbxeNMfqR+KChkWzDnBdhJgPz+cBEAldKIzC5vVk0iXHS7xjBlMhuUHy1vP3XmQYR
-         F3Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCUA6Uxr81w4/RCgn+N5YIFScz9rRldccySKk63xAtqH9busR2Q6Sc2ZS+TlsMZS4MHQgZ5toQKMfR1Eqlrs9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoB/alYRhknV5+zVkYhPw6xKktk5cxQ1PYmf84LV5B9XcY5zx7
-	EQ/7UMWeDoE9MpTUjs6/TR8D2iyVhFusuZ9VWFU5HFDcI9FvbMzIa52bndjjJdlTM0U5MWl0S8a
-	ZbS9Pt4XSCHEOxDNZ5sMToHf4BlsPLWkbSqpg
-X-Google-Smtp-Source: AGHT+IEEY/dMsBZ3e2U0u509yeggdsMUr/CItNLFG/xhXVMShOSRNFPSaW+ywQuJPunaYeuuT6zzeDltGWAruwY0FKM=
-X-Received: by 2002:a05:600c:1c01:b0:431:9a68:ec84 with SMTP id
- 5b1f17b1804b1-4319ad04780mr82049255e9.23.1730191510581; Tue, 29 Oct 2024
- 01:45:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVA6647f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7490EC4CEE4;
+	Tue, 29 Oct 2024 08:50:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730191851;
+	bh=W5rqZ6tX1MxtmhXIMLhi2lKSnRqfo6Db9jRER9ZOPyo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sVA6647f8jsVVS/EBPiL4UabKzSoJHcWMVtg3lHdmISN4XotY7i60/5uD6Y/lIYXR
+	 wBIySdLP2nfpmsHxdi5Kuln0s1Bugqol3C2CUZ+m3QfaO40Wufvh17CVtzCNyhWjYD
+	 7MsvaXjKf4JCwtYDUZgv2xPwGRckv+DJ5TCmw3FJ8EfHPRtDg9zwnRjoaGUeey4QR7
+	 4MP/9PfR2ysd9bvj+CTQTZWK/sRakYvsEyhBKyxFcqeFfhVDL+iCMGUYINITHlLeDP
+	 Dxn14HPC71IrHPs/7ZaosbP/qXyJukGidJO7JdN/UVde15tyg427pV3aWhhdwiVtmh
+	 VkWUb7Y78KWrQ==
+Date: Tue, 29 Oct 2024 09:50:43 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	robh@kernel.org, daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
+Message-ID: <ZyCh4_hcr6qJJ8jw@pollux>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-16-dakr@kernel.org>
+ <42a5af26-8b86-45ce-8432-d7980a185bde@de.bosch.com>
+ <Zx9lFG1XKnC_WaG0@pollux>
+ <fd9f5a0e-b2d4-4b72-9f34-9d8fcc74c00c@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_F71CE9D125A8C6191D8CF95B3A4F3BB2F506@qq.com>
-In-Reply-To: <tencent_F71CE9D125A8C6191D8CF95B3A4F3BB2F506@qq.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Oct 2024 09:44:56 +0100
-Message-ID: <CAH5fLggUUG5dCTjqM0oMpLff1xdGRFxdbkL=gpEaRfkq1fZgng@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Implement Display for Box
-To: JCKeep <2407018371@qq.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd9f5a0e-b2d4-4b72-9f34-9d8fcc74c00c@de.bosch.com>
 
-On Tue, Oct 29, 2024 at 1:55=E2=80=AFAM JCKeep <2407018371@qq.com> wrote:
->
-> Currently `impl Display` is missing for `Box<T, A>`, as a result,
-> things like using `Box<..>` directly as an operand in `pr_info!()`
-> are impossible, which is less ergonomic compared to `Box` in Rust
-> std.
->
-> Therefore add `impl Display` for `Box`.
->
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1126
-> Signed-off-by: Guangbo Cui <2407018371@qq.com>
+On Tue, Oct 29, 2024 at 08:20:55AM +0100, Dirk Behme wrote:
+> On 28.10.2024 11:19, Danilo Krummrich wrote:
+> > On Thu, Oct 24, 2024 at 11:11:50AM +0200, Dirk Behme wrote:
+> > > > +/// IdTable type for platform drivers.
+> > > > +pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<of::DeviceId, T>;
+> > > > +
+> > > > +/// The platform driver trait.
+> > > > +///
+> > > > +/// # Example
+> > > > +///
+> > > > +///```
+> > > > +/// # use kernel::{bindings, c_str, of, platform};
+> > > > +///
+> > > > +/// struct MyDriver;
+> > > > +///
+> > > > +/// kernel::of_device_table!(
+> > > > +///     OF_TABLE,
+> > > > +///     MODULE_OF_TABLE,
+> > > 
+> > > It looks to me that OF_TABLE and MODULE_OF_TABLE are quite generic names
+> > > used here. Shouldn't they be somehow driver specific, e.g. OF_TABLE_MYDRIVER
+> > > and MODULE_OF_TABLE_MYDRIVER or whatever? Same for the other
+> > > examples/samples in this patch series. Found that while using the *same*
+> > > somewhere else ;)
+> > 
+> > I think the names by themselves are fine. They're local to the module. However,
+> > we stringify `OF_TABLE` in `module_device_table` to build the export name, i.e.
+> > "__mod_of__OF_TABLE_device_table". Hence the potential duplicate symbols.
+> > 
+> > I think we somehow need to build the module name into the symbol name as well.
+> 
+> Something like this?
+
+No, I think we should just encode the Rust module name / path, which should make
+this a unique symbol name.
+
+diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+index 5b1329fba528..63e81ec2d6fd 100644
+--- a/rust/kernel/device_id.rs
++++ b/rust/kernel/device_id.rs
+@@ -154,7 +154,7 @@ macro_rules! module_device_table {
+     ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
+         #[rustfmt::skip]
+         #[export_name =
+-            concat!("__mod_", $table_type, "__", stringify!($table_name), "_device_table")
++            concat!("__mod_", $table_type, "__", module_path!(), "_", stringify!($table_name), "_device_table")
+         ]
+         static $module_table_name: [core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
+             unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
+
+For the doctests for instance this
+
+  "__mod_of__OF_TABLE_device_table"
+
+becomes
+
+  "__mod_of__doctests_kernel_generated_OF_TABLE_device_table".
+
+> 
+> 
+> Subject: [PATCH] rust: device: Add the module name to the symbol name
+> 
+> Make the symbol name unique by adding the module name to avoid
+> duplicate symbol errors like
+> 
+> ld.lld: error: duplicate symbol: __mod_of__OF_TABLE_device_table
+> >>> defined at doctests_kernel_generated.ff18649a828ae8c4-cgu.0
+> >>> rust/doctests_kernel_generated.o:(__mod_of__OF_TABLE_device_table) in
+> archive vmlinux.a
+> >>> defined at rust_driver_platform.2308c4225c4e08b3-cgu.0
+> >>>            samples/rust/rust_driver_platform.o:(.rodata+0x5A8) in
+> archive vmlinux.a
+> make[2]: *** [scripts/Makefile.vmlinux_o:65: vmlinux.o] Error 1
+> make[1]: *** [Makefile:1154: vmlinux_o] Error 2
+> 
+> __mod_of__OF_TABLE_device_table is too generic. Add the module name.
+> 
+> Proposed-by: Danilo Krummrich <dakr@kernel.org>
+> Link: https://lore.kernel.org/rust-for-linux/Zx9lFG1XKnC_WaG0@pollux/
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 > ---
-> Changes in v2:
-> - Add missing tag: Suggested-by.
-> - Update the patch title and the changelogs.
-> - Link to v1: https://lore.kernel.org/rust-for-linux/tencent_CA5A5D6268F0=
-D1419BAFA6AFB4EB5A37920A@qq.com
->
->  rust/kernel/alloc/kbox.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index d69c32496..5f4765800 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -427,6 +427,16 @@ fn deref_mut(&mut self) -> &mut T {
->      }
+>  rust/kernel/device_id.rs             | 4 ++--
+>  rust/kernel/of.rs                    | 4 ++--
+>  rust/kernel/pci.rs                   | 5 +++--
+>  rust/kernel/platform.rs              | 1 +
+>  samples/rust/rust_driver_pci.rs      | 1 +
+>  samples/rust/rust_driver_platform.rs | 1 +
+>  6 files changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+> index 5b1329fba528..231f34362da9 100644
+> --- a/rust/kernel/device_id.rs
+> +++ b/rust/kernel/device_id.rs
+> @@ -151,10 +151,10 @@ fn info(&self, index: usize) -> &U {
+>  /// Create device table alias for modpost.
+>  #[macro_export]
+>  macro_rules! module_device_table {
+> -    ($table_type: literal, $module_table_name:ident, $table_name:ident) =>
+> {
+> +    ($table_type: literal, $device_name: literal, $module_table_name:ident,
+> $table_name:ident) => {
+>          #[rustfmt::skip]
+>          #[export_name =
+> -            concat!("__mod_", $table_type, "__", stringify!($table_name),
+> "_device_table")
+> +            concat!("__mod_", $table_type, "__", stringify!($table_name),
+> "_", $device_name, "_device_table")
+>          ]
+>          static $module_table_name: [core::mem::MaybeUninit<u8>;
+> $table_name.raw_ids().size()] =
+>              unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
+> diff --git a/rust/kernel/of.rs b/rust/kernel/of.rs
+> index a37629997974..77679c30638c 100644
+> --- a/rust/kernel/of.rs
+> +++ b/rust/kernel/of.rs
+> @@ -51,13 +51,13 @@ pub fn compatible<'a>(&self) -> &'a CStr {
+>  /// Create an OF `IdTable` with an "alias" for modpost.
+>  #[macro_export]
+>  macro_rules! of_device_table {
+> -    ($table_name:ident, $module_table_name:ident, $id_info_type: ty,
+> $table_data: expr) => {
+> +    ($device_name: literal, $table_name:ident, $module_table_name:ident,
+> $id_info_type: ty, $table_data: expr) => {
+>          const $table_name: $crate::device_id::IdArray<
+>              $crate::of::DeviceId,
+>              $id_info_type,
+>              { $table_data.len() },
+>          > = $crate::device_id::IdArray::new($table_data);
+> 
+> -        $crate::module_device_table!("of", $module_table_name,
+> $table_name);
+> +        $crate::module_device_table!("of", $device_name,
+> $module_table_name, $table_name);
+>      };
 >  }
->
-> +impl<T, A> fmt::Display for Box<T, A>
-> +where
-> +    T: ?Sized + fmt::Display,
-> +    A: Allocator,
-> +{
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Display::fmt(&**self, f)
-
-I had probably written this as:
-<T as fmt::Display>::fmt(&**self, f)
-
-This way it's more obvious that you don't get infinite recursion from
-having Box::fmt call itself infinitely.
-
-Alice
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 58f7d9c0045b..806d192b9600 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -176,14 +176,14 @@ fn index(&self) -> usize {
+>  /// Create a PCI `IdTable` with its alias for modpost.
+>  #[macro_export]
+>  macro_rules! pci_device_table {
+> -    ($table_name:ident, $module_table_name:ident, $id_info_type: ty,
+> $table_data: expr) => {
+> +    ($device_name: literal, $table_name:ident, $module_table_name:ident,
+> $id_info_type: ty, $table_data: expr) => {
+>          const $table_name: $crate::device_id::IdArray<
+>              $crate::pci::DeviceId,
+>              $id_info_type,
+>              { $table_data.len() },
+>          > = $crate::device_id::IdArray::new($table_data);
+> 
+> -        $crate::module_device_table!("pci", $module_table_name,
+> $table_name);
+> +        $crate::module_device_table!("pci", $device_name,
+> $module_table_name, $table_name);
+>      };
+>  }
+> 
+> @@ -197,6 +197,7 @@ macro_rules! pci_device_table {
+>  /// struct MyDriver;
+>  ///
+>  /// kernel::pci_device_table!(
+> +///     "MyDriver",
+>  ///     PCI_TABLE,
+>  ///     MODULE_PCI_TABLE,
+>  ///     <MyDriver as pci::Driver>::IdInfo,
+> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> index a926233a789f..fcdd3c5da0e5 100644
+> --- a/rust/kernel/platform.rs
+> +++ b/rust/kernel/platform.rs
+> @@ -118,6 +118,7 @@ macro_rules! module_platform_driver {
+>  /// struct MyDriver;
+>  ///
+>  /// kernel::of_device_table!(
+> +///     "MyDriver",
+>  ///     OF_TABLE,
+>  ///     MODULE_OF_TABLE,
+>  ///     <MyDriver as platform::Driver>::IdInfo,
+> diff --git a/samples/rust/rust_driver_pci.rs
+> b/samples/rust/rust_driver_pci.rs
+> index d24dc1fde9e8..6ee570b59233 100644
+> --- a/samples/rust/rust_driver_pci.rs
+> +++ b/samples/rust/rust_driver_pci.rs
+> @@ -31,6 +31,7 @@ struct SampleDriver {
+>  }
+> 
+>  kernel::pci_device_table!(
+> +    "SampleDriver",
+>      PCI_TABLE,
+>      MODULE_PCI_TABLE,
+>      <SampleDriver as pci::Driver>::IdInfo,
+> diff --git a/samples/rust/rust_driver_platform.rs
+> b/samples/rust/rust_driver_platform.rs
+> index fd7a5ad669fe..9dfbe3b9932b 100644
+> --- a/samples/rust/rust_driver_platform.rs
+> +++ b/samples/rust/rust_driver_platform.rs
+> @@ -11,6 +11,7 @@ struct SampleDriver {
+>  struct Info(u32);
+> 
+>  kernel::of_device_table!(
+> +    "SampleDriver",
+>      OF_TABLE,
+>      MODULE_OF_TABLE,
+>      <SampleDriver as platform::Driver>::IdInfo,
+> -- 
+> 2.46.2
+> 
