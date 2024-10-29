@@ -1,101 +1,115 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF55206045
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 14:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF5420721C
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 14:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730211472; cv=none; b=IMzmGaNbAr9mrrSibVCiZLE9DlADXtMXxaI6VIusfDr5ee91WwN6HXXB5iSrbRV9eJVAWmWo+D/3X+/+6Kz01uUwQqeQzwy3I7d8ypAMcagzXT5W7IrzmCbxWWTIPXqL4lmAwfErVLM4l+Z+7bqqzeQh4HPKLsYL9Xx0HTdHmgw=
+	t=1730212498; cv=none; b=HaHrGkeQ3fbSVBKtLb6bb3+/tHYjN/y0fKtCBT0kVNEk8MPTCSqIbjRPSWe1ehfuf6DsolNuqcjWnNKBjFi7UEWIQkOTwwA05yKDleAyz49nV7FKjba41X5pGSICzWmWO9cIWPxIh9xmsVYUWUCC/9OODtOnLmhWiHCApywjsIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730211472; c=relaxed/simple;
-	bh=L6njmtDV2cbOykXHmeJ6c8LVfIwB8LafghBRfLJvvy8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X6R1nKLL0daiL2loy24W5iLH4gC8qfrL7J0bccRAfHangFBs3QOM1UScEhm062Izb599alws7+TRXFQm3nNuX8zeC80eU5MlWspTJ7BX22aYv5NxJzf/co2NVZIy9xQZt0Kxt56FxQDiRQFc4HNj0jOh6lEA/8fqjVY2HFt5uO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TwFCwFZX; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730212498; c=relaxed/simple;
+	bh=rqoQgM6iVagwN7p3lG0/af1VJDdqao2BQgWLbunzjl8=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=XMT6qDnBwbJLz/MDEVXeOsFddZFGpjw20HR/pJ+Qxf7gz7yzXCMTMiYk4+BXx8mSDI8Qye9ixrUY5HzkY2Sgkl9RXzxhSMJv0EIoSEOPjcRNKPueoR2jW7Vi/lJVWU4c2Iz9oJ5AA+quZPVnROMhJZXzieMoeEYm4UmS0Va0NKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=bseYVoTL; arc=none smtp.client-ip=203.205.221.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TwFCwFZX"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4319399a411so41807175e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 07:17:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730211468; x=1730816268; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L6njmtDV2cbOykXHmeJ6c8LVfIwB8LafghBRfLJvvy8=;
-        b=TwFCwFZXPn+V3TXef0Gr+Fq/AB6ok554ZcAKIpCXw/oXL9C4Nh498UcHG3LexRKDIl
-         wC9Kj3gGgtm7Y175kX4gC4YFeanHtk1/OoKdAqU4nkuFKP23fVir4AvjQzLFcErQj3pM
-         RmwvJAHZPyEXwMKM0qZtm8tsswmawWksau2brE5RNo3XLOh6wIjN+QfETgziIlxY3pLX
-         c0DPvTCG7TC8tBFgapK69xqdn44+bFK4V7MHNh5ieJPqKcLU2VGBrHFqWO7MoIarlUBs
-         7KXPoENevovQ9HQlYFS7IgNJ3RnpmUYKbvGNOkVWl2C2aeIPvHu5BskyPji/8mnYeHSF
-         F1uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730211468; x=1730816268;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L6njmtDV2cbOykXHmeJ6c8LVfIwB8LafghBRfLJvvy8=;
-        b=lYaEeC7u3oIObjTUaB+DMFvWMOdNkjhlEC29kkqH7uvZ/etorNc31YDXtkkJAgYHlU
-         eo6CYk3ZnjPxsozshqQkONQmbQm+cvrC+/7lmrOipuR7TCjoPCiIGRMGhYIeKPRsQ2By
-         40ZamCIYLU3yQi+dLd1Iu+OlLRuGp1/iPYWWU1/X/Hg7RvPF7Qrfnw1EvpgK4fu3Xytu
-         Vk/x+JtHc1gMZQ0pbPBpMtGG1RMYEe3hamVwVsDt89kWSYhL/okoNOIFSaolTBWvbCbf
-         n9uoGVg1mNnP80YRNzN5FUGUakPW2rt5icsdisM695Q+2SNPab8XmfMDix8r7cIP5WOw
-         Sosg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5lYfuVtqFSuZFW5WJtD7NMF7WmFLtDki24MNg/CrFCxJDe6qvYePenmOxXJ++QO9ThMyFPHmJRcyjR+BABg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPI5dOh2DKC+xJjbOxontxOHG87xZ/vp60WW7WBG5yeeqrdKQC
-	w60HeeBzvIp6i3DHpZWhRnzva/aFH8bnR04VFRd2Nl9FScGwbyfNHJDQlGchgyGwQOzOEEiV+Cn
-	Wrktnvl/DXdyAkU5RFcex8tIX9q1g5Qq9GYl9
-X-Google-Smtp-Source: AGHT+IHhbBKGiK7BgU4W978cOb33NcTjzUbMbdW09EsxTh1luCi/3DLowadG0MtS+fdBvmIOkjTTesI9JgwmFdik64o=
-X-Received: by 2002:a05:600c:4f03:b0:42c:ba83:3f0e with SMTP id
- 5b1f17b1804b1-4319ac7078dmr109957335e9.7.1730211468245; Tue, 29 Oct 2024
- 07:17:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="bseYVoTL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1730212189; bh=oX6pVKZL0LoC2rP4iV8l6TWsMm59JwV3vGy5W7uv+io=;
+	h=From:To:Cc:Subject:Date;
+	b=bseYVoTLuKMjxuh1dZc4p+4F8Jjy9zNULobJ8kK4mjSpIwCkdoyaBXHdWqIRqVXSc
+	 nC5V8yq303/liuUyuYsiCMjJPi2Ft/VCMq3M4tuahtLLVHCW7VInt1rVBtFSRwasZt
+	 ou/XRlaZYG9aplU2mV9lRe7EhVPu/+fztut+mDng=
+Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.bbrouter ([124.240.55.158])
+	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
+	id 76FA5891; Tue, 29 Oct 2024 22:29:47 +0800
+X-QQ-mid: xmsmtpt1730212187tiaz3vhn5
+Message-ID: <tencent_CC0134B8E94CCD93D347DAB9ACAB48652F09@qq.com>
+X-QQ-XMAILINFO: MR/iVh5QLeiejHYHMy0VEdEUcFxB2ModXr0YDJavZnO5p2ZK10TDEf3R1Qg1yf
+	 JnlTHweGv4EhnwDlp210Rz5wJXIN46mX3beFC/V5acRNGSWqts0pO7qgrxb6kVzM4ICCRVsQu0LU
+	 r+t/y6Chbts1rq3ZmPHxCSNTOOC5+YWfQsZ7x8cQqdrEdJxxT2AXYt7mFizGgixRL6o/AKqybvzi
+	 Rpvs+6yf/dSMqttFryMhRQiZeh7IbjQprgXioIZU1+gUB1rutoSyO2tk8BkftEv9a8rSsWsBlYvi
+	 Y+wvpH6w+wxDFhzuf+ZnF7XZlFVDyVhTRhVmOC8GERLldbPtCmUs2AXuD85oeEOSWg5stm2t5/KE
+	 CLe99ZBHAuDzCWH0MfEPWacEiyFdHnzJRXdVag8lV2Qgeuqqu0dGxxo2bCBwh87BFEqvQJjED2qx
+	 s18eBaI3NzD0xesCC7pzcKPZeM4bESNTrymHtaDST2YLYCKHUpbauv2Prpg2as9GedQZH0duAL4m
+	 iOo9YZM5JUYjHg0EXodTt6pkgG8949C0vVYQVVtSLHafQdd0y+VyKrgxTyLUHrEyN+5PKJfBCskz
+	 U1zd3oGtz2jK7P1ZEH37u4ukf8+8KFydPuMGJ84vbGuazjV62QQjVtMsgUOmSNpwt999d2yTuLyk
+	 Uo9GmhnVR+t6er/SKrm99RHOUZHTxAJ/hMx6iY5QpalAyZSU+hg0sS5KMEoJnVQaevcb+IvmKcJu
+	 ww3spw9PbniH+lGiUuhU0mPcx88AziADHqaWDAr/FswWoRxpL/MjowqQc5vxePPJQKCP3BmhXDni
+	 vyFHve05m3mKnpgJ9lxT/mwj4lgt7eCWsrSHchsNVyzbiTT4rUP0fLXvnqNDQlq0vxaBfybKp8bv
+	 iCb/yG5h8L+dUsjr9UHlY3zbufKb3FK4RWL020GTUj2aby5cTiJTnlokQo2ZOvsACxwYtGQtCrFu
+	 OKpNbDokpMOE0/qWcrgoMtmVeWnQaAXpTIdA0HYf32Ei3EK5/Fh8//mSJWLw51DzXHbEFd89ON60
+	 vyS4EBpQ==
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+From: Guangbo Cui <2407018371@qq.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Guangbo Cui <2407018371@qq.com>
+Subject: [PATCH v3] rust: Implement Display for Box
+Date: Tue, 29 Oct 2024 22:28:38 +0800
+X-OQ-MSGID: <20241029142837.572660-1-2407018371@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023-static-mutex-v6-1-d7efdadcc84f@google.com> <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
-In-Reply-To: <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Oct 2024 15:17:36 +0100
-Message-ID: <CAH5fLgg6xO71ud3mHvEaKhU1tYKf7RKTrVcL1brHoORf9nSgoQ@mail.gmail.com>
-Subject: Re: [PATCH v6] rust: add global lock support
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 28, 2024 at 6:49=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Wed, Oct 23, 2024 at 01:23:18PM +0000, Alice Ryhl wrote:
-> > Add support for creating global variables that are wrapped in a mutex o=
-r
-> > spinlock.
-> >
-> > The implementation here is intended to replace the global mutex
-> > workaround found in the Rust Binder RFC [1]. In both cases, the global
-> > lock must be initialized before first use. The macro is unsafe to use
-> > for the same reason.
-> >
-> > The separate initialization step is required because it is tricky to
-> > access the value of __ARCH_SPIN_LOCK_UNLOCKED from Rust. Doing so will
-> > require changes to the C side. That change will happen as a follow-up t=
-o
-> > this patch.
-> >
-> > Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-=
-08ba9197f637@google.com/#Z31drivers:android:context.rs [1]
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Currently `impl Display` is missing for `Box<T, A>`, as a result,
+things like using `Box<..>` directly as an operand in `pr_info!()`
+are impossible, which is less ergonomic compared to `Box` in Rust
+std.
 
-Thanks!
+Therefore add `impl Display` for `Box`.
 
-Alice
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1126
+Signed-off-by: Guangbo Cui <2407018371@qq.com>
+---
+Changes in v3:
+- Update `fmt` implementation to clarify that it does not call itself infinitely.
+- Link to v2: https://lore.kernel.org/rust-for-linux/tencent_F71CE9D125A8C6191D8CF95B3A4F3BB2F506@qq.com
+Changes in v2:
+- Add missing tag: Suggested-by.
+- Update the patch title and the changelogs.
+- Link to v1: https://lore.kernel.org/rust-for-linux/tencent_CA5A5D6268F0D1419BAFA6AFB4EB5A37920A@qq.com
+
+ rust/kernel/alloc/kbox.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index d69c32496..a496a866d 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -427,6 +427,16 @@ fn deref_mut(&mut self) -> &mut T {
+     }
+ }
+ 
++impl<T, A> fmt::Display for Box<T, A>
++where
++    T: ?Sized + fmt::Display,
++    A: Allocator,
++{
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        <T as fmt::Display>::fmt(&**self, f)
++    }
++}
++
+ impl<T, A> fmt::Debug for Box<T, A>
+ where
+     T: ?Sized + fmt::Debug,
+-- 
+2.34.1
+
