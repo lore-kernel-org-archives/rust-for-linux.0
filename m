@@ -1,55 +1,41 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E276201022;
-	Tue, 29 Oct 2024 18:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EB1190486;
+	Tue, 29 Oct 2024 19:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730228277; cv=none; b=CeYHQ5b9DyAObjlauiUQ6gkPUCZvTkkEmCXO5Btk6RuW84eSUKTv+uptYhGc5fue61Y33ZsvRs46LTasNzIKU9IOQuD2wzA11a8dhZD8g8Oy5CCvg294/ZdlrvpX8jIJKYVqVrZOba9EWB5juHyOGcPHVewgu570d1KR/ckeXZU=
+	t=1730230546; cv=none; b=FZ9QW7UjzpbM6ZnaVg49zUMZVVoTJmhoN8p2RHuNOaTvxs+4yGuvLKA3vtISuJlfxfgD1dNcAym6ZTPrtbUhjhgpNNyDZOssdM9ZlIxY6VIIHtTg9aKNo3rfJTbOJewzoJj4GhjaYGXfstNkhd5U4+wGkgABgzPBlho7tdhGUa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730228277; c=relaxed/simple;
-	bh=ySTL85gCZZkHnt5AGdEgcTbyspiCYGBvcQFbbg7bkrY=;
+	s=arc-20240116; t=1730230546; c=relaxed/simple;
+	bh=5KQbaA+O7BsA/JA0J1T6fbaSAGxHI5cW1PQ5/cTrGuY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QJzwWMgVSwTd29VDWzQx5cWh2wsGFVNwkWu7b+ve01fLUzyx2ucmNxg/eTrB8KshD06P38QLUB5RmbLA613Bj5/6XAI6OWdFe82rE28on6c83Jthm5d3cXTF1pMIEAyAn+QXNpp+bMgl20GLA7A8Cg4nzKyRaTtXYQ7b2G4l9xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HgoHfePH; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=eb099/7UlCLanjHlJXf9QsvM+KTa9hlu7RpdMT283kf6jTM0MQ1CSSBHbO+fysJ0Gnrk5JC7gEcyJaDIbyuP6OIaod+HB2fMzzwPbjKQnq6f1ob48Jxy86kjbnjTxki8nfYxU6Oh2qwqcFgQ7vDKNbjx5Egkc+h/Bcc8bxT1Hc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WF44hvjf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HgoHfePH"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2e56750bb13so720681a91.2;
-        Tue, 29 Oct 2024 11:57:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730228275; x=1730833075; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ySTL85gCZZkHnt5AGdEgcTbyspiCYGBvcQFbbg7bkrY=;
-        b=HgoHfePHVUtHzy3U6r4MMKcGZeAkQjRZ0TJlDEt3C01DarxjuTpuBbRVt+gPCDZZ7a
-         CZw2OmRd5S8VJpC1TS8Enz+gBu0spuse0EQuCv9P614cEm50w8NkjxJdu0pSshrZ5Tmp
-         GmbzO2P3cN30Twh2N5tJHs4xLrKCXwayEJ9t6ePiTwuFyvilb+AHTsCIDa3MDUXXqraU
-         iUXC+HQbE1oYYsWIrCbt6aoW2n09eRRF1zKccQvS9oyz1kFBuzejeVJBeTiSZ+OBCZoW
-         NE418KDrVvaV1FPwdikbmS9Iopg7w4h67ntz8/wlKQsls/YL14kHNwfjsDSMGtk24BdA
-         q7vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730228275; x=1730833075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ySTL85gCZZkHnt5AGdEgcTbyspiCYGBvcQFbbg7bkrY=;
-        b=ikbNMr7f3ehDCcKC2bA+aHHQPs9KKZ5vqxhd1k+TkST0W3gIKyDPdKIDgXDZ/CJWAM
-         QC0b8bcVVjG8qa4gY1Lq3ZkusWq0PMmKW2bCRWPQfK7fncC6U5e+mj15tbK20vMOjlJw
-         /QgzZ72Vnxu++RbBhDp+HyndkpcEhQEkV7OjmEqopKkh9YFocn+czSJeEBQKz7G6jafK
-         T9XZsNsop1ZXGTcpH/3nIAPeAIH+HqE0EHP9y4UTl7P7Fssj7exmd8nS6CYANJ1rro+o
-         awID6T4lJop19+tCdj2zq4sxbELDyuL4BljoSB+tPxNfTjd4YiQy3ayNSA+St5LvgakJ
-         Zcew==
-X-Forwarded-Encrypted: i=1; AJvYcCUsFMTnjW4S47GOfExqv3B2EHOnPxSmQVoQHXgDUJkDmKXh0beNPwOEeo+2pSwCbVmMSPpf6zOdogQqQnP1@vger.kernel.org, AJvYcCVbh6GVT+yiMBvJW8o8ho6sCE+C0Vpbfc/yxh2KIfmonM9uI+QAMoSWcZ28jmpjU5IRmTElj9kobkj/iHBHQDU=@vger.kernel.org, AJvYcCVjESkWYkzREJmXvm7zyXOSpMn9dixi/Z9IzYzRreyDEexJCq7stNdGvpeSsI6vcVXRVqh498syqfRi@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHJtOGOau3sNttlSU9D0coFOHS2FcGA+8uetYhEaNSF2eo+kFF
-	rvet27lsTsz8mn8y1VKKhmeWgUtfaA/l6XqXkjwTmg5PG8+4z7mp3b82MpIjs6bpCTlxRXbPOOn
-	g+OXeek6t5322LO//N9NnzAZp3s0=
-X-Google-Smtp-Source: AGHT+IFk68O2VV8WqrVcbpew9zPtZW7HMmQ6dfJHfx5Kat+3TMbDp6RwBvgP+T7BGyPw79tq12gGL2xZCcPIQK+hp1w=
-X-Received: by 2002:a17:90a:734a:b0:2e2:a667:1a11 with SMTP id
- 98e67ed59e1d1-2e8f104f989mr6323964a91.1.1730228275431; Tue, 29 Oct 2024
- 11:57:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WF44hvjf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B52BC4CECD;
+	Tue, 29 Oct 2024 19:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730230546;
+	bh=5KQbaA+O7BsA/JA0J1T6fbaSAGxHI5cW1PQ5/cTrGuY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WF44hvjfVsOy9QH0lokqppbf52+iVfI4qe+h0ERxoOQpWnFl5wtUniBjt9TS0am7z
+	 TjM1JlOPueujGXP5g6til6XH9RIHmPeRwnSXyYNSe2H/wElFIpSsGPtG0DGEa5xKmv
+	 sGw3nb4sv2l9cKB+DiJEFKwIlbVopxiag95TtOzSvLgGCpYbduP2pREgoSZITayFO0
+	 MnQww53c+BYB4iLRmSjY4aL9h9p3lc488tOKVBNlb2BkdX4AiW/hTEICV2nc7ylaJu
+	 rV6D34Xd162dixrhEjKO3s/aDeg4bbxnsVXkKDa3YP73kOZA3QadFHplTZlujJGvD5
+	 jO6HdLJp1v1jA==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539e5c15fd3so5174562e87.3;
+        Tue, 29 Oct 2024 12:35:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUgieVhC+tB0c9qjMaf+XVnY7E2vwmLyEqqx+9oLhwve9xfyCZZxaeiaqKyVP4qdy7aPTOOzhDzr259uJDW5yA=@vger.kernel.org, AJvYcCVS2sZ/qZh1KjiGdz4PA/UmWN/ijXCbwWHL1nS6l6UyuGZBMLfRDOF2IrQQTf7L154o4f5tedSY3Yd+i5ge@vger.kernel.org, AJvYcCXXkEYPv9FGB4LEqa3VI4LHooe4Oen3REGJfTCctW/ltc6coCHvrmplhbS0sJNlNfW3aGebuur4oRWC@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQLzohTqvA+RK5yewyecUqWPR6HbKsF07h/1b2ljaaXg9lq7MN
+	aZhkXG6rDd5GaopJxR8a2ziRrfvisCWTTguavOWugkm+lgmazD193uRUwWXce9e1djNqV8oD5uS
+	YCFkTtfdhHn8ySXCLY+B/RamnxA==
+X-Google-Smtp-Source: AGHT+IFe9PFqt+n8Vs6QpequE7rsrw365RDFEY3bYDcLHyZ8EyQZTv5AB4GWHhbd1GDB4ZBkz78jJbxqGvlOMrcJxas=
+X-Received: by 2002:a05:6512:3f1c:b0:539:e761:c21a with SMTP id
+ 2adb3069b0e04-53b34a365c7mr7068570e87.48.1730230543434; Tue, 29 Oct 2024
+ 12:35:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,14 +44,16 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
  <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
- <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com> <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
-In-Reply-To: <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 29 Oct 2024 19:57:42 +0100
-Message-ID: <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+ <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com>
+ <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com> <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+In-Reply-To: <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 29 Oct 2024 14:35:29 -0500
+X-Gmail-Original-Message-ID: <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com>
+Message-ID: <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com>
 Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Saravana Kannan <saravanak@google.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -77,17 +65,27 @@ Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Tue, Oct 29, 2024 at 1:57=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> One option is to define a trait for integers:
+> On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > One option is to define a trait for integers:
 
-+1, one more thing to consider is whether it makes sense to define a
-DT-only trait that holds all the types that can be a device property
-(like `bool` too, not just the `Integer`s).
+Yeah, but that doesn't feel like something I should do here. I imagine
+other things might need the same thing. Perhaps the bindings for
+readb/readw/readl for example. And essentially the crate:num already
+has the trait I need. Shouldn't the kernel mirror that? I recall
+seeing some topic of including crates in the kernel?
 
-Then we can avoid e.g. `property_read_bool` and simply do it in `property_r=
-ead`.
+> +1, one more thing to consider is whether it makes sense to define a
+> DT-only trait that holds all the types that can be a device property
+> (like `bool` too, not just the `Integer`s).
+>
+> Then we can avoid e.g. `property_read_bool` and simply do it in `property=
+_read`.
 
-Cheers,
-Miguel
+Is there no way to say must have traitA or traitB?
+
+Rob
