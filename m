@@ -1,68 +1,67 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F012022D6
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 13:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B13ABA2D
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 13:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730207792; cv=none; b=X+hSog4y6Ce+YEdaF3gMLoOlVbv5aE+fQSgIeyQ/EVGBot+Q+U9AqEWRhZ9sDLFqh0Rw9G2UBVizSK63kR94TPVoUruQ1fbXrFziogq64+1fG+U64r14um3iivbgf8U166v9ZE8ZYZCl/NAe5eA1/CDlWAffJRUIqh/XM7xNfFA=
+	t=1730208433; cv=none; b=hevV13ELIK+jteZUx0oj6d0H2pbZn9kzEN0V9Akl9NtZ2qz7eFT9C5UaKseBwSmbz4xfieroQ3CoQzBykPMiGLyee8ezOOtz/ILhsk648CJIhEC+2IjcnywCDl72EoDmfWCX/29C+eLnaXvn836yP6T5wSLoAp+fE5LD+qJc2/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730207792; c=relaxed/simple;
-	bh=ORScFiiSj6DBWVhn8Ip6edyJLDCC004uaKK2dEp4X1g=;
+	s=arc-20240116; t=1730208433; c=relaxed/simple;
+	bh=0l0pGwPPXUKryR0mqg/2ZJbi/yLW7k9MKNg+xvqxwtM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IiNkTbAP89Gt2Xv2L0eJ5B+jVGSxa185ojs+p77LHMCTCI9hkP8VnGQ1qHUmMKmDNtYZh4POmckDAJRY9hJxPcDzX4YiNZtc0yEQM8c8Dt2aAmkeGqY0tVkSUOsMuda/MCPAcfWf1f54AHwenBGzjpG41OKmQSYIyDdzWA2ro14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ogG0of+B; arc=none smtp.client-ip=209.85.214.175
+	 To:Cc:Content-Type; b=Bc2aVSyaVsjiduL9gAiJRvEPZz+u8+f+aBdYKpuNVu4MkOpZMWIfywJKEC25droN+tXzRl3gFeEW3HfIYOEOh4Yz1fO1qntD2bd1zsDMoNw5CZqb0Tf8rtz2OchSn9k57Ay5v6yE9YVK1JXA+OkLCg5h+o2Im2sChudc9SkoMnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T+uupmNB; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ogG0of+B"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-208cf673b8dso50822675ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 06:16:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T+uupmNB"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20c8b557f91so50135435ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 06:27:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730207789; x=1730812589; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730208429; x=1730813229; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G4FgCQ6GkthTlMOY7Hwmvw1LED0yrWV2Of7OG03sNbg=;
-        b=ogG0of+Bgo8R4elC2gdsau+roG160QzUNvRJF+l8FYhN6C+6f/yCSqPvHuI3DYybXf
-         e9zun2XeDN2QAb3xiauDaqFLlxGC0luC30X47Q9s9vz0UJrqkBCDUQxlMAkYG6pcyvaD
-         bsDfLyKaJ5mKdDfL4aTXohFz+ywzYuE4EFVKf+sy3QU6NCQM+KfePC9ECtECRskG7lP7
-         wDSr2h6Yfy4WOUnRhizfobsqLx/p4bIOv9GeJUABS0RIZDJpsK4vh2XzZ4ASe4KYWXvz
-         Iw7AY8bbZ3YPl06EaIYRlI+ZqDk2/Bxw4r1J/yriK6i96vLcYLhr7yh7liNiM/7tolUK
-         PHEg==
+        bh=bPmbbkDdlgj5tS54qzNXga3fylyvP9KnhhI/PLfNTwk=;
+        b=T+uupmNBwuy7DtS9taEVtLVI0AaS6djVyFZpHnp8393T7J6qiOekGT+JsXSam1rWd8
+         H1tYiM77b9Dil/vAvZ78BGje04zfDaLWypOK0PjOUAnIub58sse3F7oSd3UnLD2D2zQp
+         QIeOewYELo9NDcBGqcEYKfnz5FJKYleG3HJBT/0lv9l/4t+/0+a4+7BCwgtV50AdF+qg
+         HZ2RenjBotNCzPAQTqNEtgGhsyjWZP2TapfEYYRlKLFbkJBUacz3r0B8DM03XjJQQUjm
+         421MRAJEZPLo9remtyPcA0mroR28W6Qgtk2pTLIC4IltDEONgTTb8KVM651nNC73bS6S
+         dC8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730207789; x=1730812589;
+        d=1e100.net; s=20230601; t=1730208429; x=1730813229;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G4FgCQ6GkthTlMOY7Hwmvw1LED0yrWV2Of7OG03sNbg=;
-        b=BLlHrQUY1PvSL2sMK0aMeSOjChHHjnxfwFGssnYH8AwUN2tW3pM9ENE8LGoz3CyzW4
-         PmcMqF6dEULZ2sCtMf4G1LJSuy0ticBy5g8ftfey+Hp3D5X9u9Buk0PB6td/xYWtryEk
-         KbU0dEoA1x4iJY49lx0WIKbMW0Yt40XpLGhB7JjAlo5UDJiIIWavjiChylDsyDcfCDgu
-         ow5+rMuO8lHDtp4srT+aoU0dBtme+Cf7pzioeuQluvOIXX+xe6aNUNys3S4vjeI9HSMP
-         9Y92Drpra+i6M56mZJ6CuzLcNxYSAe5KkbnrO7t9ets2lNoAOsez3DYQXCgreEuBv4ar
-         o96Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWE+pyowmRDruphDAYBT9v8cc7R+fGGuwQ89bnuQ5C63TTzcVMOVzohyyzDhzeCWww4OcPNJz755mLYgxK0Rw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKR9IX66MjBpAC/cjeXsDbAoDZelVTwBiM/RgQEAfy+FS7fyiR
-	wdCVNtX3zzPFcNhqUBKS12UN+tydZ+9WngWhKOf752G+b2E2W8INw9pKb8cxWGrJSuZFj9MepBg
-	o70CMt8aJ4l7RfHeGmT0lVyHy57PzKZRi5i/n
-X-Google-Smtp-Source: AGHT+IG7aPEWXrKU2oQ6UttFO6K5zHHkqze1cQRhd6cCywBZr/BAJUMAwKfw3MVUjRift3AdGsm8Yxujz0XZfRoELXY=
-X-Received: by 2002:a17:902:d4c3:b0:20b:b0ab:4fc3 with SMTP id
- d9443c01a7336-210c6c934c1mr173443635ad.49.1730207789184; Tue, 29 Oct 2024
- 06:16:29 -0700 (PDT)
+        bh=bPmbbkDdlgj5tS54qzNXga3fylyvP9KnhhI/PLfNTwk=;
+        b=KGRxJ6R6nCjkx3LRshY6X2ZujJb8UI2efmwmhGZaS37g5pXglIbNN3Ltj9+6inzjPB
+         RpDxtc/SNc8zPKeapVVnBs1aflLQ0QP74EzAL4xRlMuBHzp6sYVZJhIHLBjLHeKEuRnE
+         FAXe73kvfASJCnpGlekZRKTdTvB8KD+ls/hiDZxEm9vN7ZTrVhBT2Vi4Y4Z9MTKnUEGA
+         4QAGI1obRP2uktaPsiU0sOJDQwcs+DZXNEXfEgiiddSSOdTd8icDww8gm9eTlr2qHYzz
+         vCnPsKvRuYt0anPcaUY2tPNT7OkI1IZkPh2MIgegBRgMh0stEA68Lhv5Po5zE2mFBjTZ
+         MZ0A==
+X-Forwarded-Encrypted: i=1; AJvYcCU49goZCNO5kKR/ysseZ0O266zzEUmKdcRoGNxL9BI4fpl/M+VkFEtbQXPUacCq4d1iA0rlC2HJjl5/Cs5QYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2m0p5dRag+8wfzUfVv+MpE0VdkWDaQsGm4iORDIMZd3l5SiwU
+	WA99CEwV3mBlIwCSEQVDxIw0EzrM0uKceCa2IJqwWIfGBSXUkSVkiM6LiQlXF7aauDvYF/iOXVP
+	/ZpEV77mGfE1YRRd/vE98ZJZZ7CdmvLWjfb9m
+X-Google-Smtp-Source: AGHT+IEUNZ/udRp7n1cUowspy1x3Bn3BLvEgiqcEq2EHGavw+WCKwCDiifwnii7tkTSakAD08lG9y4jmuYIdK6y3Srw=
+X-Received: by 2002:a17:903:2b08:b0:20c:ceb4:aa7f with SMTP id
+ d9443c01a7336-210c68a1acdmr163437405ad.11.1730208428942; Tue, 29 Oct 2024
+ 06:27:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-16-dakr@kernel.org>
-In-Reply-To: <20241022213221.2383-16-dakr@kernel.org>
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-8-dakr@kernel.org>
+In-Reply-To: <20241022213221.2383-8-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Oct 2024 14:16:14 +0100
-Message-ID: <CAH5fLgiab5vssuQ2CO4kuKHhhWma=17858w8wbtmYUOXA-Cd1Q@mail.gmail.com>
-Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
- driver abstractions
+Date: Tue, 29 Oct 2024 14:26:55 +0100
+Message-ID: <CAH5fLgjcy=DQrCYt-k40D4_NcwgdrykUW9d74srGn5hxxo2Xmw@mail.gmail.com>
+Subject: Re: [PATCH v3 07/16] rust: add `Revocable` type
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
 	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
@@ -72,37 +71,288 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
 	daniel.almeida@collabora.com, saravanak@google.com, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
  wrote:
-> +    /// Find the [`of::DeviceId`] within [`Driver::ID_TABLE`] matching t=
-he given [`Device`], if any.
-> +    fn of_match_device(pdev: &Device) -> Option<&of::DeviceId> {
-> +        let table =3D Self::ID_TABLE;
+>
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+>
+> Revocable allows access to objects to be safely revoked at run time.
+>
+> This is useful, for example, for resources allocated during device probe;
+> when the device is removed, the driver should stop accessing the device
+> resources even if another state is kept in memory due to existing
+> references (i.e., device context data is ref-counted and has a non-zero
+> refcount after removal of the device).
+>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/lib.rs       |   1 +
+>  rust/kernel/revocable.rs | 211 +++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 212 insertions(+)
+>  create mode 100644 rust/kernel/revocable.rs
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 89f6bd2efcc0..b603b67dcd71 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -54,6 +54,7 @@
+>  pub mod prelude;
+>  pub mod print;
+>  pub mod rbtree;
+> +pub mod revocable;
+>  pub mod sizes;
+>  mod static_assert;
+>  #[doc(hidden)]
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> new file mode 100644
+> index 000000000000..83455558d795
+> --- /dev/null
+> +++ b/rust/kernel/revocable.rs
+> @@ -0,0 +1,211 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +        // SAFETY:
-> +        // - `table` has static lifetime, hence it's valid for read,
-> +        // - `dev` is guaranteed to be valid while it's alive, and so is
-> +        //   `pdev.as_dev().as_raw()`.
-> +        let raw_id =3D unsafe { bindings::of_match_device(table.as_ptr()=
-, pdev.as_dev().as_raw()) };
+> +//! Revocable objects.
+> +//!
+> +//! The [`Revocable`] type wraps other types and allows access to them t=
+o be revoked. The existence
+> +//! of a [`RevocableGuard`] ensures that objects remain valid.
 > +
-> +        if raw_id.is_null() {
-> +            None
+> +use crate::{
+> +    bindings,
+> +    init::{self},
+> +    prelude::*,
+> +    sync::rcu,
+> +};
+> +use core::{
+> +    cell::UnsafeCell,
+> +    marker::PhantomData,
+> +    mem::MaybeUninit,
+> +    ops::Deref,
+> +    ptr::drop_in_place,
+> +    sync::atomic::{AtomicBool, Ordering},
+> +};
+> +
+> +/// An object that can become inaccessible at runtime.
+> +///
+> +/// Once access is revoked and all concurrent users complete (i.e., all =
+existing instances of
+> +/// [`RevocableGuard`] are dropped), the wrapped object is also dropped.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// # use kernel::revocable::Revocable;
+> +///
+> +/// struct Example {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// fn add_two(v: &Revocable<Example>) -> Option<u32> {
+> +///     let guard =3D v.try_access()?;
+> +///     Some(guard.a + guard.b)
+> +/// }
+> +///
+> +/// let v =3D KBox::pin_init(Revocable::new(Example { a: 10, b: 20 }), G=
+FP_KERNEL).unwrap();
+> +/// assert_eq!(add_two(&v), Some(30));
+> +/// v.revoke();
+> +/// assert_eq!(add_two(&v), None);
+> +/// ```
+> +///
+> +/// Sample example as above, but explicitly using the rcu read side lock=
+.
+> +///
+> +/// ```
+> +/// # use kernel::revocable::Revocable;
+> +/// use kernel::sync::rcu;
+> +///
+> +/// struct Example {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// fn add_two(v: &Revocable<Example>) -> Option<u32> {
+> +///     let guard =3D rcu::read_lock();
+> +///     let e =3D v.try_access_with_guard(&guard)?;
+> +///     Some(e.a + e.b)
+> +/// }
+> +///
+> +/// let v =3D KBox::pin_init(Revocable::new(Example { a: 10, b: 20 }), G=
+FP_KERNEL).unwrap();
+> +/// assert_eq!(add_two(&v), Some(30));
+> +/// v.revoke();
+> +/// assert_eq!(add_two(&v), None);
+> +/// ```
+> +#[pin_data(PinnedDrop)]
+> +pub struct Revocable<T> {
+> +    is_available: AtomicBool,
+> +    #[pin]
+> +    data: MaybeUninit<UnsafeCell<T>>,
+> +}
+> +
+> +// SAFETY: `Revocable` is `Send` if the wrapped object is also `Send`. T=
+his is because while the
+> +// functionality exposed by `Revocable` can be accessed from any thread/=
+CPU, it is possible that
+> +// this isn't supported by the wrapped object.
+> +unsafe impl<T: Send> Send for Revocable<T> {}
+> +
+> +// SAFETY: `Revocable` is `Sync` if the wrapped object is both `Send` an=
+d `Sync`. We require `Send`
+> +// from the wrapped object as well because  of `Revocable::revoke`, whic=
+h can trigger the `Drop`
+> +// implementation of the wrapped object from an arbitrary thread.
+> +unsafe impl<T: Sync + Send> Sync for Revocable<T> {}
+> +
+> +impl<T> Revocable<T> {
+> +    /// Creates a new revocable instance of the given data.
+> +    pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
+> +        pin_init!(Self {
+> +            is_available: AtomicBool::new(true),
+> +            // SAFETY: The closure only returns `Ok(())` if `slot` is fu=
+lly initialized; on error
+> +            // `slot` is not partially initialized and does not need to =
+be dropped.
+> +            data <- unsafe {
+> +                init::pin_init_from_closure(move |slot: *mut MaybeUninit=
+<UnsafeCell<T>>| {
+> +                    init::PinInit::<T, core::convert::Infallible>::__pin=
+ned_init(data,
+> +                                                                        =
+         slot as *mut T)?;
+> +                    Ok::<(), core::convert::Infallible>(())
+> +                })
+
+If you change `data` to be `Opaque`, then this can just be
+
+data <- Opaque::ffi_init(data)
+
+(or maybe you need try_ffi_init)
+
+> +
+> +    /// Tries to access the \[revocable\] wrapped object.
+> +    ///
+> +    /// Returns `None` if the object has been revoked and is therefore n=
+o longer accessible.
+> +    ///
+> +    /// Returns a guard that gives access to the object otherwise; the o=
+bject is guaranteed to
+> +    /// remain accessible while the guard is alive. In such cases, calle=
+rs are not allowed to sleep
+> +    /// because another CPU may be waiting to complete the revocation of=
+ this object.
+> +    pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+> +        let guard =3D rcu::read_lock();
+> +        if self.is_available.load(Ordering::Relaxed) {
+> +            // SAFETY: Since `self.is_available` is true, data is initia=
+lised and has to remain
+> +            // valid because the RCU read side lock prevents it from bei=
+ng dropped.
+> +            Some(unsafe { RevocableGuard::new(self.data.assume_init_ref(=
+).get(), guard) })
 > +        } else {
-> +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of =
-`struct of_device_id` and
-> +            // does not add additional invariants, so it's safe to trans=
-mute.
-> +            Some(unsafe { &*raw_id.cast::<of::DeviceId>() })
+> +            None
 > +        }
 > +    }
+> +
+> +    /// Tries to access the \[revocable\] wrapped object.
 
-Sorry if this has already been mentioned, but this method should
-probably be marked #[cfg(CONFIG_OF)] so that you can use these
-abstractions even if OF is disabled.
+These backslashes seem wrong.
+
+> +    /// Returns `None` if the object has been revoked and is therefore n=
+o longer accessible.
+> +    ///
+> +    /// Returns a shared reference to the object otherwise; the object i=
+s guaranteed to
+> +    /// remain accessible while the rcu read side guard is alive. In suc=
+h cases, callers are not
+> +    /// allowed to sleep because another CPU may be waiting to complete =
+the revocation of this
+> +    /// object.
+> +    pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -=
+> Option<&'a T> {
+> +        if self.is_available.load(Ordering::Relaxed) {
+> +            // SAFETY: Since `self.is_available` is true, data is initia=
+lised and has to remain
+> +            // valid because the RCU read side lock prevents it from bei=
+ng dropped.
+> +            Some(unsafe { &*self.data.assume_init_ref().get() })
+> +        } else {
+> +            None
+> +        }
+> +    }
+> +
+> +    /// Revokes access to and drops the wrapped object.
+> +    ///
+> +    /// Access to the object is revoked immediately to new callers of [`=
+Revocable::try_access`]. If
+> +    /// there are concurrent users of the object (i.e., ones that called=
+ [`Revocable::try_access`]
+> +    /// beforehand and still haven't dropped the returned guard), this f=
+unction waits for the
+> +    /// concurrent access to complete before dropping the wrapped object=
+.
+> +    pub fn revoke(&self) {
+> +        if self
+> +            .is_available
+> +            .compare_exchange(true, false, Ordering::Relaxed, Ordering::=
+Relaxed)
+> +            .is_ok()
+> +        {
+> +            // SAFETY: Just an FFI call, there are no further requiremen=
+ts.
+> +            unsafe { bindings::synchronize_rcu() };
+> +
+> +            // SAFETY: We know `self.data` is valid because only one CPU=
+ can succeed the
+> +            // `compare_exchange` above that takes `is_available` from `=
+true` to `false`.
+> +            unsafe { drop_in_place(self.data.assume_init_ref().get()) };
+> +        }
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl<T> PinnedDrop for Revocable<T> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // Drop only if the data hasn't been revoked yet (in which case =
+it has already been
+> +        // dropped).
+> +        // SAFETY: We are not moving out of `p`, only dropping in place
+> +        let p =3D unsafe { self.get_unchecked_mut() };
+> +        if *p.is_available.get_mut() {
+> +            // SAFETY: We know `self.data` is valid because no other CPU=
+ has changed
+> +            // `is_available` to `false` yet, and no other CPU can do it=
+ anymore because this CPU
+> +            // holds the only reference (mutable) to `self` now.
+> +            unsafe { drop_in_place(p.data.assume_init_ref().get()) };
+> +        }
+> +    }
+> +}
+> +
+> +/// A guard that allows access to a revocable object and keeps it alive.
+> +///
+> +/// CPUs may not sleep while holding on to [`RevocableGuard`] because it=
+'s in atomic context
+> +/// holding the RCU read-side lock.
+> +///
+> +/// # Invariants
+> +///
+> +/// The RCU read-side lock is held while the guard is alive.
+> +pub struct RevocableGuard<'a, T> {
+> +    data_ref: *const T,
+> +    _rcu_guard: rcu::Guard,
+> +    _p: PhantomData<&'a ()>,
+> +}
+
+Is this needed? Can't all users just use `try_access_with_guard`?
 
 Alice
