@@ -1,175 +1,293 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCAF206049
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 13:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3541392
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 14:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730210370; cv=none; b=a1FWjAAnW9mfz1hxLSYr2+f8dslYsjMFaf5JeBukH11YJdJ/tnF5Z1uqItIQMsRAxruyPCPCbFBYDcGdYldpCQQgFMQsdPQtxBzGP12KcG6/p3i5qV4uPmVAbq8IoBNEL5TLGT7/WDmYesd+kvViIQZSidQc71HWOoFFm4OjqY4=
+	t=1730211406; cv=none; b=td1jSOhB4Hnpp7POrTFZQTcA853tBmNevHCdudaL5H3IqEWcwxVJk0HV/mozuoQOxRFjFBYrjARi1trRzWL91aWVKIhf1XZYHwOrHgCfwUMOvN9Gx5fpFFAVbdV7txXA094xl4SVpTsan4n/Oy/moRvGDs7cRlF1jwXiMrdKico=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730210370; c=relaxed/simple;
-	bh=HWBADJXnoh2NUNrdZ4R8VuuNYl1bmNxvyx9KhUtUxEA=;
+	s=arc-20240116; t=1730211406; c=relaxed/simple;
+	bh=UQEvXpB+gCYw5ekhyUv+qz++Xa7jR5ixcUi6qSQssUs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sKASQtTAKIDIm8yLCL1SDzWmeXO9jsK+Mj0/fPew8h8wtoC9Mxd7ndcaCgoT6kgR329z/6pcfBhcn9/CodSSIaGW/S8CgLFyuXmRcoFtvCpeUeg3s99eMoSFq/2B9fmgQ361JhBPYJJcFU2+uYxBNj3HpilI4cgvXwROjJjRe6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s/1PBN+O; arc=none smtp.client-ip=209.85.221.53
+	 To:Cc:Content-Type; b=vF3wgVZpblmoj5NfAwlRBISX1Oa7IF/Or0QFf2YtlR9ufW/WL3qYtI9DBaNeBVH7kk7Za4ZVAq6nSmYIyG0GEUjAA8mOUn38H3+PCCF3fOnTzq2geZIHnyd9vWk5Av30Xmuv/sgMhncSoN4XI/C9d5J/CObmhvG7Mg91Jun1TWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fOJsXV3K; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s/1PBN+O"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d495d217bso5094963f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 06:59:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fOJsXV3K"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d4fd00574so3577750f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 07:16:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730210364; x=1730815164; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730211402; x=1730816202; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N0+r5DXauPWMBo80TC003d10oYhw7X04leDKPh0fruY=;
-        b=s/1PBN+O4ssMce33ShcFRDVxgnF0bzyFMTPkXBQD+CHNpuVcPuUuWVIeFbSTQ2RKAX
-         SzyfVCwgP9Gr6Pg6PF4WkcbBPDkpqXzHpLIp+XaOAZKHslD9yMLSO8njq8gWrrtDp20b
-         FJBYhxAFMCe6o1QLNfDMRgaa51ritTL6O1Exth+2EPQ75ob8OOZ39+RqdTFbpYWkXjsv
-         ZSMABo/ZMKJ4IFg+lSI2eA6UqEQQr2UI6VrBgva2iMmHufjp57xL/PCEJz4jkhV1HKFE
-         5F4IVQrn3D0tk7wvtLul1Cti40IuvA1GDUxOTxTDsuBu0cdPxSfHiCAT3PZ6BvJNCBS0
-         I59g==
+        bh=EF49F4TL2bGDfzZ1W3gqbFJy0q9VsnFcF7FddQtLUFA=;
+        b=fOJsXV3KiV1EQWRPkZtRhli4B3eylGwjYL+PHeY6CSQq0rV39F9PMMjuopYHC8B4yM
+         vDX5BDsSIuUcN7mHl1KbKm8CQQ2y2dWtwdcfZCuCccDDudFYwawpkN+hWxP48i0g2Qw7
+         k97qGcgdZCjqcHZf00Y7mYKaprLwpLoiJS9vi0BVZ65iGyz/h6oRdc15VL8nBmqDkUgx
+         XTV3HyvK2dMpqtB0qKUOQ1AysZH02w0RCo0nn2BweuPjDZYafugp6zDbWyoj7wXbAvde
+         VfUIsvu7x/okB/JQ2yxNj2IS0HqgeIg0USXnkhYTbB9LYuH2ArRqtmkIKGjlfrd5ULjN
+         M5wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730210364; x=1730815164;
+        d=1e100.net; s=20230601; t=1730211402; x=1730816202;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N0+r5DXauPWMBo80TC003d10oYhw7X04leDKPh0fruY=;
-        b=QB72xRp0bA2ameJp1edttNyWZY3EeEwUwkUakHe29XhhAnzt3ClueFuEr3J9809l4m
-         Lhj86cduK4/dPWw1L/QFWXyjhOIWi1yq8B03X+701/2LaWBUQqTFb+f3bVOIwr2ESsYF
-         6Z4lbkiAgRpl5d98gScJ39EPdR9sFQIUJUMHyxO5sawgNgbGSQ5JMLqIPwCcaBzQn6yQ
-         QI/Db9xC9csFc8PZQByC59kIAuC4s+J3N8Bb1v9V0/tgSAVZWTTjDgMSZ5r0EeqBkeMO
-         inVhVLOz6hlA2mPdIfsUaM+1y9nlImav/BngmV/nOmmuNs65Xh6OvLQm/7VTUULeRATj
-         +Cyg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7mXEfadJ/e3zvFjzSHHBHoiXNjcszPpE7QtDUa46fNGE6CC1IgLy/BzI5PWFfnTkmReRZC6mhxJw+tHLpGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUiTE3a+XOLZivWjWp1Gaf9hKq7WsoVTKmH7dpdoL2M99RBd3D
-	JBa7NqvW5HiD+XhEekPrGt5XmmyRb2ASJMUizLZ49xyzOLUi7qQoaN+bYTLqR7MguUtmeb0TzNP
-	hkGxT+4xoF6PnHLUZ1v3twcKT6SHrJh/PYxxr
-X-Google-Smtp-Source: AGHT+IHKguE544j9cYCAx/GnN3x2cBIU4yFs+FD0nSAsUtdOZzL/B0VKKdtS72gv2gH4vafJAmdHPLNGHnEY0QP/rKg=
-X-Received: by 2002:a5d:56d2:0:b0:37e:f4a1:2b58 with SMTP id
- ffacd0b85a97d-38061172aa9mr11280347f8f.16.1730210364034; Tue, 29 Oct 2024
- 06:59:24 -0700 (PDT)
+        bh=EF49F4TL2bGDfzZ1W3gqbFJy0q9VsnFcF7FddQtLUFA=;
+        b=UBGXxSTDbkd3MKo5fJISGeCuxH2FJDFq9ixHpe3UORjmeF9hIgMhMsSFCbloaLCgBh
+         hlSZ8hqnYpUBV6H4CmQsvVxJwX91iksQihg1kvPZoqL/sWXjffVb3H8EEQtkUWoMuLc0
+         ldFFoaV5Q+A/K8589Fkiqh1AgmxK69tLraud7BeX83zKGtZwERSRubllUG6KCd9sUwhT
+         QVC5kkQmRUE8o65c/uQ7jObox+CJkNi9pTz/q6YhvxIuqlJROtbpF8rzAX6PNgdCo4IE
+         zhDMOre8P6+vDGh2Tl9UOjtFsNqL44i8d6VnzEkYzqOzSCLK3Rg6pN/Op4BZ5Qn8Azwl
+         L5rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW7UON0HHZc2Ku1xBTzQRBWrdhdmuy/JX0ySYvTcIRb49Aa3wqasibP23XgPMvk3Miz7a21gvtEajX67TW0ag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMIotBBhx7JCrh0r5pFx0rPICME8RgcsYvSCEBqyJP5wteSTgA
+	3ebjjxDpg8yw86yiTZbFKlcfNhEdXQpqFJQ0eMR9lBe8rFS1V47CP8elNmH9LqirkOOq2lx0Dys
+	9P2iy6rxr0bSeQPsU3axXMAxsXUTpHqlfDrTm
+X-Google-Smtp-Source: AGHT+IEfbXY1+De9GOc7DR30d21LlHb1sNgtBauu2PL1dMzu0MewQT6NNFZLprHgHhJf205GTElgQn6gFzczzSX0Ak4=
+X-Received: by 2002:a05:6000:acb:b0:37d:3b31:7a9d with SMTP id
+ ffacd0b85a97d-38162909bdcmr2015705f8f.23.1730211402215; Tue, 29 Oct 2024
+ 07:16:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-7-dakr@kernel.org>
-In-Reply-To: <20241022213221.2383-7-dakr@kernel.org>
+References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org> <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
+In-Reply-To: <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Oct 2024 14:59:10 +0100
-Message-ID: <CAH5fLgji5SozS2Y+G16pPS3iiKnee-p94xO+uZZykTd_7EBOpQ@mail.gmail.com>
-Subject: Re: [PATCH v3 06/16] rust: add rcu abstraction
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
-	daniel.almeida@collabora.com, saravanak@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Tue, 29 Oct 2024 15:16:29 +0100
+Message-ID: <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
+On Fri, Oct 25, 2024 at 11:06=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org=
+> wrote:
 >
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> The device property API is a firmware agnostic API for reading
+> properties from firmware (DT/ACPI) devices nodes and swnodes.
 >
-> Add a simple abstraction to guard critical code sections with an rcu
-> read lock.
+> While the C API takes a pointer to a caller allocated variable/buffer,
+> the rust API is designed to return a value and can be used in struct
+> initialization. Rust generics are also utilized to support different
+> sizes of properties (e.g. u8, u16, u32).
 >
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+> Not sure if we need the KVec variant, but I kept it as that was my first
+> pass attempt. Most callers are filling in some value in a driver data
+> struct. Sometimes the number of elements is not known, so the caller
+> calls to get the array size, allocs the correct size buffer, and then
+> reads the property again to fill in the buffer.
+>
+> I have not implemented a wrapper for device_property_read_string(_array)
+> because that API is problematic for dynamic DT nodes. The API just
+> returns pointer(s) into the raw DT data. We probably need to return a
+> copy of the string(s) instead for rust.
+>
+> After property accessors, next up is child node accessors/iterators.
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/device.rs           | 145 ++++++++++++++++++++++++++++++++++=
++++++-
+>  2 files changed, 145 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 217c776615b9..65717cc20a23 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -19,6 +19,7 @@
+>  #include <linux/pci.h>
+>  #include <linux/phy.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+>  #include <linux/refcount.h>
+>  #include <linux/sched.h>
+>  #include <linux/slab.h>
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 0c28b1e6b004..bb66a28df890 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -5,10 +5,14 @@
+>  //! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+>
+>  use crate::{
+> +    alloc::KVec,
+>      bindings,
+> +    error::{to_result, Result},
+> +    prelude::*,
+> +    str::CStr,
+>      types::{ARef, Opaque},
+>  };
+> -use core::{fmt, ptr};
+> +use core::{fmt, mem::size_of, ptr};
+>
+>  #[cfg(CONFIG_PRINTK)]
+>  use crate::c_str;
+> @@ -189,6 +193,145 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Ar=
+guments<'_>) {
+>              )
+>          };
+>      }
+> +
+> +    /// Returns if a firmware property `name` is true or false
+> +    pub fn property_read_bool(&self, name: &CStr) -> bool {
+> +        unsafe { bindings::device_property_present(self.as_raw(), name.a=
+s_ptr() as *const i8) }
+> +    }
+> +
+> +    /// Returns if a firmware string property `name` has match for `matc=
+h_str`
+> +    pub fn property_match_string(&self, name: &CStr, match_str: &CStr) -=
+> Result<usize> {
+> +        let ret =3D unsafe {
+> +            bindings::device_property_match_string(
+> +                self.as_raw(),
+> +                name.as_ptr() as *const i8,
+> +                match_str.as_ptr() as *const i8,
+> +            )
+> +        };
+> +        to_result(ret)?;
+> +        Ok(ret as usize)
+> +    }
+> +
+> +    /// Returns firmware property `name` scalar value
+> +    ///
+> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
+> +    pub fn property_read<T: Copy>(&self, name: &CStr) -> Result<T> {
+> +        let mut val: [T; 1] =3D unsafe { core::mem::zeroed() };
+> +
+> +        Self::_property_read_array(&self, name, &mut val)?;
+> +        Ok(val[0])
+> +    }
+> +
+> +    /// Returns firmware property `name` array values
+> +    ///
+> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
+> +    pub fn property_read_array<T, const N: usize>(&self, name: &CStr) ->=
+ Result<[T; N]> {
+> +        let mut val: [T; N] =3D unsafe { core::mem::zeroed() };
+> +
+> +        Self::_property_read_array(self, name, &mut val)?;
+> +        Ok(val)
+> +    }
+> +
+> +    fn _property_read_array<T>(&self, name: &CStr, val: &mut [T]) -> Res=
+ult {
+> +        match size_of::<T>() {
+> +            1 =3D> to_result(unsafe {
+> +                bindings::device_property_read_u8_array(
+> +                    self.as_raw(),
+> +                    name.as_ptr() as *const i8,
+> +                    val.as_ptr() as *mut u8,
+> +                    val.len(),
+> +                )
+> +            })?,
+> +            2 =3D> to_result(unsafe {
+> +                bindings::device_property_read_u16_array(
+> +                    self.as_raw(),
+> +                    name.as_ptr() as *const i8,
+> +                    val.as_ptr() as *mut u16,
+> +                    val.len(),
+> +                )
+> +            })?,
+> +            4 =3D> to_result(unsafe {
+> +                bindings::device_property_read_u32_array(
+> +                    self.as_raw(),
+> +                    name.as_ptr() as *const i8,
+> +                    val.as_ptr() as *mut u32,
+> +                    val.len(),
+> +                )
+> +            })?,
+> +            8 =3D> to_result(unsafe {
+> +                bindings::device_property_read_u64_array(
+> +                    self.as_raw(),
+> +                    name.as_ptr() as *const i8,
+> +                    val.as_ptr() as *mut u64,
+> +                    val.len(),
+> +                )
+> +            })?,
+> +            _ =3D> return Err(EINVAL),
+> +        }
+> +        Ok(())
+> +    }
+> +
+> +    pub fn property_read_array_vec<T>(&self, name: &CStr, len: usize) ->=
+ Result<KVec<T>> {
+> +        let mut val: KVec<T> =3D KVec::with_capacity(len, GFP_KERNEL)?;
+> +
+> +        // SAFETY: len always matches capacity
+> +        unsafe { val.set_len(len) }
+> +        Self::_property_read_array::<T>(&self, name, val.as_mut_slice())=
+?;
+> +        Ok(val)
+> +    }
+> +
+> +    /// Returns array length for firmware property `name`
+> +    ///
+> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
+> +    pub fn property_count_elem<T>(&self, name: &CStr) -> Result<usize> {
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+This always returns usize? I'm a bit confused ...
 
->  rust/helpers/helpers.c  |  1 +
->  rust/helpers/rcu.c      | 13 +++++++++++
->  rust/kernel/sync.rs     |  1 +
->  rust/kernel/sync/rcu.rs | 52 +++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 67 insertions(+)
->  create mode 100644 rust/helpers/rcu.c
->  create mode 100644 rust/kernel/sync/rcu.rs
->
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 20a0c69d5cc7..0720debccdd4 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -16,6 +16,7 @@
->  #include "mutex.c"
->  #include "page.c"
->  #include "rbtree.c"
-> +#include "rcu.c"
->  #include "refcount.c"
->  #include "signal.c"
->  #include "slab.c"
-> diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
-> new file mode 100644
-> index 000000000000..f1cec6583513
-> --- /dev/null
-> +++ b/rust/helpers/rcu.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/rcupdate.h>
-> +
-> +void rust_helper_rcu_read_lock(void)
-> +{
-> +       rcu_read_lock();
-> +}
-> +
-> +void rust_helper_rcu_read_unlock(void)
-> +{
-> +       rcu_read_unlock();
-> +}
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 0ab20975a3b5..1806767359fe 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -11,6 +11,7 @@
->  mod condvar;
->  pub mod lock;
->  mod locked_by;
-> +pub mod rcu;
->
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
->  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> new file mode 100644
-> index 000000000000..5a35495f69a4
-> --- /dev/null
-> +++ b/rust/kernel/sync/rcu.rs
-> @@ -0,0 +1,52 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! RCU support.
-> +//!
-> +//! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdat=
-e.h)
-> +
-> +use crate::bindings;
-> +use core::marker::PhantomData;
-> +
-> +/// Evidence that the RCU read side lock is held on the current thread/C=
-PU.
-> +///
-> +/// The type is explicitly not `Send` because this property is per-threa=
-d/CPU.
-> +///
-> +/// # Invariants
-> +///
-> +/// The RCU read side lock is actually held while instances of this guar=
-d exist.
-> +pub struct Guard {
-> +    _not_send: PhantomData<*mut ()>,
+> +        match size_of::<T>() {
+> +            1 =3D> {
+> +                ret =3D unsafe {
+> +                    bindings::device_property_read_u8_array(
+> +                        self.as_raw(),
+> +                        name.as_ptr() as *const i8,
+> +                        ptr::null_mut(),
+> +                        0,
+> +                    )
+> +                }
+> +            }
+> +            2 =3D> {
+> +                ret =3D unsafe {
+> +                    bindings::device_property_read_u16_array(
+> +                        self.as_raw(),
+> +                        name.as_ptr() as *const i8,
+> +                        ptr::null_mut(),
+> +                        0,
+> +                    )
+> +                }
+> +            }
+> +            4 =3D> {
+> +                ret =3D unsafe {
+> +                    bindings::device_property_read_u32_array(
+> +                        self.as_raw(),
+> +                        name.as_ptr() as *const i8,
+> +                        ptr::null_mut(),
+> +                        0,
+> +                    )
+> +                }
+> +            }
+> +            8 =3D> {
+> +                ret =3D unsafe {
+> +                    bindings::device_property_read_u64_array(
+> +                        self.as_raw(),
+> +                        name.as_ptr() as *const i8,
+> +                        ptr::null_mut(),
+> +                        0,
+> +                    )
+> +                }
+> +            }
+> +            _ =3D> return Err(EINVAL),
 
-Once 6.13 is released, you'll want to use NotThreadSafe here instead
-of PhantomData. It's landing upstream through vfs.rust.file.
+You can use `kernel::build_error!` here to trigger a build failure if
+the size is wrong.
 
 Alice
