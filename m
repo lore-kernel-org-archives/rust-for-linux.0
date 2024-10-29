@@ -1,215 +1,159 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6941204924
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 09:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461857464;
+	Tue, 29 Oct 2024 09:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730193888; cv=none; b=tEur39V3dYE4pIA2YRXOF2O5Ey+86FbCoJA1ZyrX6b7OkJDhppjMMQMIo5dgMFc7UD8iCRu+h4rQsueUmb0WC6neY7eJ934oXhcXL1k2xtacohp1aWfCwp4Ab+WXR/5Q1r8XQm5hOl26Z9CkQELg8sBvcTA70YnQnNlDSfdym8E=
+	t=1730195411; cv=none; b=c1Ff3WdO1b1HFWHUU8uWmKmA+Wo4FN1kQV4WtnwtzueLvVhAWRoI++F4S/NQcTrjqHDx9T8Ofk2dycQqnpkQ6NqqyV/qvtnceCD5+wwJBvS7fJIssr95dmiVPhZgZhqUEqBN4ZjIP49mgaxUWcl7G5zR7v2N19VNn0DoCSapwSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730193888; c=relaxed/simple;
-	bh=lvKDYgMcSvvhTyIBb6ECAc1q865WqLsWsBgNoK5wF70=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aZo/yzyHjPqmciyGdfA4y0t4l43wUeH2+w12LLbhONpNjTKtxkUhzd2h7DfNiMMOXKKujaGOXyJerMEoxSq5O8NqCPh+8GITQ/Hv0U+2H8iuri2l2qdY/QVkjDZu+pIA7TzCsVXBGRTQ7T8455a52XyueSMqwp/37st1mzGG1JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NWsuspQ4; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+	s=arc-20240116; t=1730195411; c=relaxed/simple;
+	bh=Jn0ABiK+AWZJNL+SopDLk/VwjOzWfJ+dRnvmXfPerLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H4xEXnmz4E9n1Y3u9mzXgleDRSAITARkf1tpnbv1RcxGnDF231EGJlXnaoFgCVFW6z9fwSxk3JY4K+hnK/4rXVVy9GgneSmW1P630PK+5eUdAPivIjKBTn3yOZTSh1q7NyiWIMrMHhGc+ZMiiFRFXh7x2vlEHw1d4LK50Entx/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kpwA/4Di; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NWsuspQ4"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e7fb84f999so78033247b3.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 02:24:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730193885; x=1730798685; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ci1oKFH7l7WT9pl4IwsUJvvMv23hze9L/lrXNyoJlVo=;
-        b=NWsuspQ4VW5XaQgZXor47tgDVdnrt9Fq80ycCRpfD4phtzLiR/T7C2X4JImcNhwsTY
-         o93zF+dQUTDr5VD+m7UgKWfEzLfoSmmug8FCtLOgeMkrAhxpRH6FcZ8IT7sW/lVxrqUv
-         wonhjgnHysSjYPah294jE28LVB/cNcEe1jTCr1ZwDWQj69d/uS9vDjUxTi+7C6OCYfV7
-         tIxTnnDOsaVuoVKHZHXyF0HPx1l0X2SE37DzSJz7Vfy8Ss39IUMsykztOfBrX1/n/Z35
-         8+AAKLoo39AznLENhwdD80zIFr3pIlaALJuNeBWA6cvwRfZiFfeBSPZIXP4ljG041Mda
-         lk3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730193885; x=1730798685;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ci1oKFH7l7WT9pl4IwsUJvvMv23hze9L/lrXNyoJlVo=;
-        b=QFo/niKH66QJH9kPuI6trCpZPGHMiDFRdoiR1+5YUN1KwKO3xKatbT38Nc1aavld+i
-         UjcWGahqwyFTd/sZZ11HOtSt1Ce0nfZD8stzdIEnY01ZPUsKxUYmyh3yqD8UsA/OnlTx
-         nMx0S1cGHXljISJtwmLZQbtosh/A5bAVd4JYiRB5UGUBpqZu5H7BwL7MkgwVlJJXwlIR
-         4IR/p9uMbyWx4/t10Wkkygtp//vzwxzxUUzUpee4pmzaJcv3P3BqbW0yO90IgkKuxbv7
-         NExi8Aj3JckqnjkeziQLxdDqCmP1p2j/31yqWhyyHjjKCnrZdDVQoWZKRCVwJo9CjCZW
-         i8dA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjoXs5z1ScigVQ7n/zA2VLQBGnMhVZ7MbsIM4Bi5pLd4DKSg0nNPxQpjk5jON41Np00zx2Btr7xHpIvsJXuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhU6Bbp3yT3McJDFr21yX2+FNJZYf4tvuMICcqxFiNCqkrCYqV
-	1ZamzeZqpEV1EeL8UcSxjXWz0UsNjMGzOXFYcLNo1yyq1zZ+tzJUQCbnVsgxo6GyVL8HviZsx9I
-	uQfEKiE+WaQ==
-X-Google-Smtp-Source: AGHT+IEqlyW4/tadreX6bN11wpCmzXQCZWMdmwaTsthqhgrxW9b3cNSTo/5NH/qdY8Gte5je22w3U1+J/ieEyw==
-X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:b1:7045:ac11:6237])
- (user=davidgow job=sendgmr) by 2002:a5b:2ca:0:b0:e30:bf92:7a64 with SMTP id
- 3f1490d57ef6-e30bf927b96mr1319276.2.1730193884736; Tue, 29 Oct 2024 02:24:44
- -0700 (PDT)
-Date: Tue, 29 Oct 2024 17:24:19 +0800
-In-Reply-To: <20241029092422.2884505-1-davidgow@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kpwA/4Di"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA727C4CECD;
+	Tue, 29 Oct 2024 09:50:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730195410;
+	bh=Jn0ABiK+AWZJNL+SopDLk/VwjOzWfJ+dRnvmXfPerLA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kpwA/4Didjz6wU9pe1VaxOjA92PTwPSTKvIc4SbmJoiKheldKLF8bqblkst9wvEux
+	 jttMvgpdJqQslPsy9eU3THhRvqAXAWK4R5IphqmtCyQLYdn3kPCeMY8/f9tmLOo2iu
+	 gSgPhkWyK6xWdpeJmKYDwvUG9oWoJvhE+5l0NWayPvaoxkjGkFHruve+2tLHQwWbeI
+	 mIAn8EjQtZYMPMB+W0JZfMxaZYPPVEOkVH/dHe7Cn/5V4hyO9KylfFG5NtUXVPlDu+
+	 zU1iB4xZS2E7F69X5zSV3nBqyV7H3eu3BaF3yRa5etVi/UzK9yYhcVqQ3EKLjJ4JFK
+	 0fb7pP1fNk51g==
+Date: Tue, 29 Oct 2024 10:50:02 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	robh@kernel.org, daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
+Message-ID: <ZyCvyrb5jsY1O4uX@pollux>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-16-dakr@kernel.org>
+ <42a5af26-8b86-45ce-8432-d7980a185bde@de.bosch.com>
+ <Zx9lFG1XKnC_WaG0@pollux>
+ <fd9f5a0e-b2d4-4b72-9f34-9d8fcc74c00c@de.bosch.com>
+ <ZyCh4_hcr6qJJ8jw@pollux>
+ <8d72e37e-9e27-4857-b0eb-0b1e98cc5610@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241029092422.2884505-1-davidgow@google.com>
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
-Message-ID: <20241029092422.2884505-4-davidgow@google.com>
-Subject: [PATCH v2 3/3] rust: kunit: allow to know if we are in a test
-From: David Gow <davidgow@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, 
-	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Matt Gilbride <mattgilbride@google.com>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Gow <davidgow@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d72e37e-9e27-4857-b0eb-0b1e98cc5610@de.bosch.com>
 
-From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+On Tue, Oct 29, 2024 at 10:19:08AM +0100, Dirk Behme wrote:
+> On 29.10.2024 09:50, Danilo Krummrich wrote:
+> > On Tue, Oct 29, 2024 at 08:20:55AM +0100, Dirk Behme wrote:
+> > > On 28.10.2024 11:19, Danilo Krummrich wrote:
+> > > > On Thu, Oct 24, 2024 at 11:11:50AM +0200, Dirk Behme wrote:
+> > > > > > +/// IdTable type for platform drivers.
+> > > > > > +pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<of::DeviceId, T>;
+> > > > > > +
+> > > > > > +/// The platform driver trait.
+> > > > > > +///
+> > > > > > +/// # Example
+> > > > > > +///
+> > > > > > +///```
+> > > > > > +/// # use kernel::{bindings, c_str, of, platform};
+> > > > > > +///
+> > > > > > +/// struct MyDriver;
+> > > > > > +///
+> > > > > > +/// kernel::of_device_table!(
+> > > > > > +///     OF_TABLE,
+> > > > > > +///     MODULE_OF_TABLE,
+> > > > > 
+> > > > > It looks to me that OF_TABLE and MODULE_OF_TABLE are quite generic names
+> > > > > used here. Shouldn't they be somehow driver specific, e.g. OF_TABLE_MYDRIVER
+> > > > > and MODULE_OF_TABLE_MYDRIVER or whatever? Same for the other
+> > > > > examples/samples in this patch series. Found that while using the *same*
+> > > > > somewhere else ;)
+> > > > 
+> > > > I think the names by themselves are fine. They're local to the module. However,
+> > > > we stringify `OF_TABLE` in `module_device_table` to build the export name, i.e.
+> > > > "__mod_of__OF_TABLE_device_table". Hence the potential duplicate symbols.
+> > > > 
+> > > > I think we somehow need to build the module name into the symbol name as well.
+> > > 
+> > > Something like this?
+> > 
+> > No, I think we should just encode the Rust module name / path, which should make
+> > this a unique symbol name.
+> > 
+> > diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+> > index 5b1329fba528..63e81ec2d6fd 100644
+> > --- a/rust/kernel/device_id.rs
+> > +++ b/rust/kernel/device_id.rs
+> > @@ -154,7 +154,7 @@ macro_rules! module_device_table {
+> >       ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
+> >           #[rustfmt::skip]
+> >           #[export_name =
+> > -            concat!("__mod_", $table_type, "__", stringify!($table_name), "_device_table")
+> > +            concat!("__mod_", $table_type, "__", module_path!(), "_", stringify!($table_name), "_device_table")
+> >           ]
+> >           static $module_table_name: [core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
+> >               unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
+> > 
+> > For the doctests for instance this
+> > 
+> >    "__mod_of__OF_TABLE_device_table"
+> > 
+> > becomes
+> > 
+> >    "__mod_of__doctests_kernel_generated_OF_TABLE_device_table".
+> 
+> 
+> What implies *one* OF/PCI_TABLE per path (file)?
 
-In some cases, we need to call test-only code from outside the test
-case, for example, to mock a function or a module.
+No, you can still have as many as you want for the same file, you just have to
+give them different identifier names -- you can't have two statics with the same
+name in one file anyways.
 
-In order to check whether we are in a test or not, we need to test if
-`CONFIG_KUNIT` is set.
-Unfortunately, we cannot rely only on this condition because:
-- a test could be running in another thread,
-- some distros compile KUnit in production kernels, so checking at runtime
-  that `current->kunit_test !=3D NULL` is required.
+Well, I guess you somehow can (just like the doctests do), but it does make
+sense to declare drivers in such a way.
 
-Forturately, KUnit provides an optimised check in
-`kunit_get_current_test()`, which checks CONFIG_KUNIT, a global static
-key, and then the current thread's running KUnit test.
+I think as long as we take care that separate Rust modules can't interfere with
+each other it's good enough.
 
-Add a safe wrapper function around this to know whether or not we are in
-a KUnit test and examples showing how to mock a function and a module.
+> 
+> For example adding a second FooDriver example to platform.rs won't be
+> possible?
 
-Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
----
+Not unless you change the identifier name unfortunately. But that might be
+fixable by putting doctests in separate `mod $(DOCTEST) {}` blocks.
 
-Changes since v1:
-https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@google.com=
-/
-- Rebased on top of rust-next.
-- Use the `kunit_get_current_test()` C function, which wasn't previously
-  available, instead of rolling our own.
-- (Thanks also to Boqun for suggesting a nicer way of implementing this,
-  which I tried, but the `kunit_get_current_test()` version obsoleted.)
-
----
- rust/kernel/kunit.rs | 72 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index abcf0229ffee..bfc80394546a 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -272,11 +272,83 @@ macro_rules! kunit_unsafe_test_suite {
-     };
- }
-=20
-+/// In some cases, you need to call test-only code from outside the test c=
-ase, for example, to
-+/// create a function mock. This function can be invoked to know whether w=
-e are currently running a
-+/// KUnit test or not.
-+///
-+/// # Examples
-+///
-+/// This example shows how a function can be mocked to return a well-known=
- value while testing:
-+///
-+/// ```
-+/// # use kernel::kunit::in_kunit_test;
-+/// #
-+/// fn fn_mock_example(n: i32) -> i32 {
-+///     if in_kunit_test() {
-+///         100
-+///     } else {
-+///         n + 1
-+///     }
-+/// }
-+///
-+/// let mock_res =3D fn_mock_example(5);
-+/// assert_eq!(mock_res, 100);
-+/// ```
-+///
-+/// Sometimes, you don't control the code that needs to be mocked. This ex=
-ample shows how the
-+/// `bindings` module can be mocked:
-+///
-+/// ```
-+/// // Import our mock naming it as the real module.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// use bindings_mock_example as bindings;
-+///
-+/// // This module mocks `bindings`.
-+/// mod bindings_mock_example {
-+///     use kernel::kunit::in_kunit_test;
-+///     use kernel::bindings::u64_;
-+///
-+///     // Make the other binding functions available.
-+///     pub(crate) use kernel::bindings::*;
-+///
-+///     // Mock `ktime_get_boot_fast_ns` to return a well-known value when=
- running a KUnit test.
-+///     pub(crate) unsafe fn ktime_get_boot_fast_ns() -> u64_ {
-+///         if in_kunit_test() {
-+///             1234
-+///         } else {
-+///             unsafe { kernel::bindings::ktime_get_boot_fast_ns() }
-+///         }
-+///     }
-+/// }
-+///
-+/// // This is the function we want to test. Since `bindings` has been moc=
-ked, we can use its
-+/// // functions seamlessly.
-+/// fn get_boot_ns() -> u64 {
-+///     unsafe { bindings::ktime_get_boot_fast_ns() }
-+/// }
-+///
-+/// let time =3D get_boot_ns();
-+/// assert_eq!(time, 1234);
-+/// ```
-+pub fn in_kunit_test() -> bool {
-+    // SAFETY: kunit_get_current_test() is always safe to call from C (it =
-has fallbacks for
-+    // when KUnit is not enabled), and we're only comparing the result to =
-NULL.
-+    unsafe { !bindings::kunit_get_current_test().is_null() }
-+}
-+
- #[kunit_tests(rust_kernel_kunit)]
- mod tests {
-+    use super::*;
-+
-     #[test]
-     fn rust_test_kunit_kunit_tests() {
-         let running =3D true;
-         assert_eq!(running, true);
-     }
-+
-+    #[test]
-+    fn rust_test_kunit_in_kunit_test() {
-+        let in_kunit =3D in_kunit_test();
-+        assert_eq!(in_kunit, true);
-+    }
- }
---=20
-2.47.0.163.g1226f6d8fa-goog
-
+> 
+> +/// struct FooDriver;
+> +///
+> +/// kernel::of_device_table!(
+> +///     OF_TABLE,
+> +///     MODULE_OF_TABLE,
+> +///     <FooDriver as platform::Driver>::IdInfo,
+> +///     [
+> +///         (of::DeviceId::new(c_str!("test,rust-device2")), ())
+> +///     ]
+> +/// );
+> 
+> Best regards
+> 
+> Dirk
+> 
+> 
+> 
+> 
