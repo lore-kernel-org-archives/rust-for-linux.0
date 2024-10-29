@@ -1,105 +1,93 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5571A205ADF;
-	Tue, 29 Oct 2024 18:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E276201022;
+	Tue, 29 Oct 2024 18:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730227717; cv=none; b=ZykpqiGIuAKcIn5OHgf/gpm/duAynXZS6o9sloWsJFlmdAam0f6CJK8kDa6pHvGnuZVEO8h+TWfCOmEa0IzeYP1vDJNfp+OWUFYyWYP8kvHfvNl34eZMYMmgDVUIcMhIWftarb/Nf4RO1MGu0E3oGctGGRezfX0bA/a4UdJklEk=
+	t=1730228277; cv=none; b=CeYHQ5b9DyAObjlauiUQ6gkPUCZvTkkEmCXO5Btk6RuW84eSUKTv+uptYhGc5fue61Y33ZsvRs46LTasNzIKU9IOQuD2wzA11a8dhZD8g8Oy5CCvg294/ZdlrvpX8jIJKYVqVrZOba9EWB5juHyOGcPHVewgu570d1KR/ckeXZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730227717; c=relaxed/simple;
-	bh=5WnX6mec9o85P35lihHwoMy/zr9nqgBrCUWkxtOD2No=;
+	s=arc-20240116; t=1730228277; c=relaxed/simple;
+	bh=ySTL85gCZZkHnt5AGdEgcTbyspiCYGBvcQFbbg7bkrY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fwF8i9sfwYUMZfOpnd4/og/EoW5xDabAZ8KSxbbCPkbCcyOIBJupXq+2NrycTYwoMrwnuqxgaUF6RYZtnZMTbiukMQhJHwNZ5V7prgEGUjgQ7Km7H75Nb3ujUEYElKGYFn2P4j39BwMuLKVWNiOegfVPsm/pOpjXORKSznOJUnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCPib8Aw; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=QJzwWMgVSwTd29VDWzQx5cWh2wsGFVNwkWu7b+ve01fLUzyx2ucmNxg/eTrB8KshD06P38QLUB5RmbLA613Bj5/6XAI6OWdFe82rE28on6c83Jthm5d3cXTF1pMIEAyAn+QXNpp+bMgl20GLA7A8Cg4nzKyRaTtXYQ7b2G4l9xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HgoHfePH; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCPib8Aw"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2e2b71fd16fso867793a91.3;
-        Tue, 29 Oct 2024 11:48:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HgoHfePH"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2e56750bb13so720681a91.2;
+        Tue, 29 Oct 2024 11:57:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730227714; x=1730832514; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730228275; x=1730833075; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TCRE+6EZ/yw1XNuf7LsU8HLd7SdSlt1GHV/fpsit1T8=;
-        b=RCPib8AwO45rMYqI59wXGx+qZ76q5laqOITbRlApyNEeGAUoLogjCgGmfN9V4aIg96
-         wbN2aWMS/YLpjVfZLoKGRMTXCq+dMJF1Nwron0YavprKW+vHedToDZd2UYv6sBw0XpOw
-         9QLD2bikNXetnGCrK3oMFp8LsbQs+NgzAF9PpITxf/iDpgUmiAbwXicPEdhAwgpI+Cu7
-         2qMuaaH+Mw7g7DjbCfPmcxL7zOWOHRtDWQc7ifEu0cTvDTpzUC4yM2xf1JLbBPhQrcF5
-         4XSXyFryYfDsdhkVy5CH159YtEVYpzh3ciRAP1mW+mT3lK9ZQqRvtnoPlTTz4+yWwpQs
-         fCKA==
+        bh=ySTL85gCZZkHnt5AGdEgcTbyspiCYGBvcQFbbg7bkrY=;
+        b=HgoHfePHVUtHzy3U6r4MMKcGZeAkQjRZ0TJlDEt3C01DarxjuTpuBbRVt+gPCDZZ7a
+         CZw2OmRd5S8VJpC1TS8Enz+gBu0spuse0EQuCv9P614cEm50w8NkjxJdu0pSshrZ5Tmp
+         GmbzO2P3cN30Twh2N5tJHs4xLrKCXwayEJ9t6ePiTwuFyvilb+AHTsCIDa3MDUXXqraU
+         iUXC+HQbE1oYYsWIrCbt6aoW2n09eRRF1zKccQvS9oyz1kFBuzejeVJBeTiSZ+OBCZoW
+         NE418KDrVvaV1FPwdikbmS9Iopg7w4h67ntz8/wlKQsls/YL14kHNwfjsDSMGtk24BdA
+         q7vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730227714; x=1730832514;
+        d=1e100.net; s=20230601; t=1730228275; x=1730833075;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TCRE+6EZ/yw1XNuf7LsU8HLd7SdSlt1GHV/fpsit1T8=;
-        b=XJ5RV2cAPlN23Wkk1tLa5zw+/DkQi7Kr1fd+1Omt59N5h8P4K0+H77myibnR8vKmzd
-         lCgZ5ip0T1X0Skn54RFUXy3pvjqvastFqbCHMC4NZbSkFoWV4eLvXmWlI219AnnQYKhD
-         6RSMdnJvYISo4WAhzPmT3D/1Ekj1Qmlo9TWWrdrEWB/+vmvJmXNQagj2YYlddYP0oRx5
-         6Tth40FJEr4bHnSYbGx0orhiRb/mxnHl420bcyty4Nc8kQ0t9FUe6md3+pLZKeBrinwc
-         rUHMOR3FcGM88T62MlyuSrDc0J9gQiCUPUb2GjUEGdHDCrm8ETXOY/4rihaZ4LJVAGsY
-         IjHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUr0AYMZiaTLFAKonc0uGFpTjaarwCvdC79ipU/XIPFubKibYJTHpFYKJyAYgw/GH6Hndq4qIu9UKW80mw=@vger.kernel.org, AJvYcCWz+fGDxcUHDKPITtdNRf0UooCLhJa7LB+ysq3XV3pCEs7bv9Z/ysy5cfg05BKotSn4WnwPFWgbWuu5Vnny1ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy8YzHPU1Nl/nKh/5Gc5tiLdqupo8waSNdyggS4pBlx0KoV0v8
-	mUySFrSR1e1HefKEZjbGBPGvVcE09v85XiqgKX2CSMhR3BtTdY/UZYkEe9/oJBHugGWKPqjAweQ
-	u+/IWkKbdfaNSxuKyINhVA1lJKCM=
-X-Google-Smtp-Source: AGHT+IG2CQMkHrmxNtRfFEVPwh41ZlDTCRnQWP3Ar3wgBdllVXYr99MB7lqUQ2gQYyQcruioOgvW5dVlUkp/p8WXb/I=
-X-Received: by 2002:a17:90b:ec9:b0:2e2:e860:f69d with SMTP id
- 98e67ed59e1d1-2e8f11c0f0fmr6059857a91.7.1730227714615; Tue, 29 Oct 2024
- 11:48:34 -0700 (PDT)
+        bh=ySTL85gCZZkHnt5AGdEgcTbyspiCYGBvcQFbbg7bkrY=;
+        b=ikbNMr7f3ehDCcKC2bA+aHHQPs9KKZ5vqxhd1k+TkST0W3gIKyDPdKIDgXDZ/CJWAM
+         QC0b8bcVVjG8qa4gY1Lq3ZkusWq0PMmKW2bCRWPQfK7fncC6U5e+mj15tbK20vMOjlJw
+         /QgzZ72Vnxu++RbBhDp+HyndkpcEhQEkV7OjmEqopKkh9YFocn+czSJeEBQKz7G6jafK
+         T9XZsNsop1ZXGTcpH/3nIAPeAIH+HqE0EHP9y4UTl7P7Fssj7exmd8nS6CYANJ1rro+o
+         awID6T4lJop19+tCdj2zq4sxbELDyuL4BljoSB+tPxNfTjd4YiQy3ayNSA+St5LvgakJ
+         Zcew==
+X-Forwarded-Encrypted: i=1; AJvYcCUsFMTnjW4S47GOfExqv3B2EHOnPxSmQVoQHXgDUJkDmKXh0beNPwOEeo+2pSwCbVmMSPpf6zOdogQqQnP1@vger.kernel.org, AJvYcCVbh6GVT+yiMBvJW8o8ho6sCE+C0Vpbfc/yxh2KIfmonM9uI+QAMoSWcZ28jmpjU5IRmTElj9kobkj/iHBHQDU=@vger.kernel.org, AJvYcCVjESkWYkzREJmXvm7zyXOSpMn9dixi/Z9IzYzRreyDEexJCq7stNdGvpeSsI6vcVXRVqh498syqfRi@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHJtOGOau3sNttlSU9D0coFOHS2FcGA+8uetYhEaNSF2eo+kFF
+	rvet27lsTsz8mn8y1VKKhmeWgUtfaA/l6XqXkjwTmg5PG8+4z7mp3b82MpIjs6bpCTlxRXbPOOn
+	g+OXeek6t5322LO//N9NnzAZp3s0=
+X-Google-Smtp-Source: AGHT+IFk68O2VV8WqrVcbpew9zPtZW7HMmQ6dfJHfx5Kat+3TMbDp6RwBvgP+T7BGyPw79tq12gGL2xZCcPIQK+hp1w=
+X-Received: by 2002:a17:90a:734a:b0:2e2:a667:1a11 with SMTP id
+ 98e67ed59e1d1-2e8f104f989mr6323964a91.1.1730228275431; Tue, 29 Oct 2024
+ 11:57:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241023-static-mutex-v6-1-d7efdadcc84f@google.com> <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
-In-Reply-To: <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
+References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+ <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
+ <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com> <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
+In-Reply-To: <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 29 Oct 2024 19:48:21 +0100
-Message-ID: <CANiq72mb9X0LiDtDe9ptbqm3Ls527Xp+szX7px+Zw6OP8-aefQ@mail.gmail.com>
-Subject: Re: [PATCH v6] rust: add global lock support
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 29 Oct 2024 19:57:42 +0100
+Message-ID: <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 6:49=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->
-> In addition, I've also queued it in my lockdep-for-tip branch:
->
->         https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/l=
-og/?h=3Dlockdep-for-tip
->
-> as I want to help route Rust lock-related patches into tip, so this is
-> a practice round for me ;-)
->
-> Miguel, feel free to take it via rust-next with my Reviewed-by, I will
-> drop it from my branch once if I see it shows up in v6.13-rc1.
+> One option is to define a trait for integers:
 
-No, no, it is great if you can take them :)
++1, one more thing to consider is whether it makes sense to define a
+DT-only trait that holds all the types that can be a device property
+(like `bool` too, not just the `Integer`s).
 
-By "if I see it shows up in v6.13-rc1", do you mean your branch is not
-meant for v6.13?
-
-Couple of things I noticed that I would normally double-check/fix in
-place: the "// SAFETY: called exactly once" comment could be
-formatted, and I think the "Link:" tag should be before your SoB
-(well, at least b4 does that, which makes sense since you added it,
-but I have seen commits done differently too).
-
-Thanks!
+Then we can avoid e.g. `property_read_bool` and simply do it in `property_r=
+ead`.
 
 Cheers,
 Miguel
