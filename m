@@ -1,184 +1,501 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC2B1991CD;
-	Tue, 29 Oct 2024 21:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9A7183CD1;
+	Tue, 29 Oct 2024 21:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730236354; cv=none; b=MOmIofLqi7S5LC8FBtPV5pvhuW994EKsb2rNCHpnEBMWiOKTw4WkrJ5VQ+pz+snDe7HgCPjatgJNSs8ReoVm6yHUY1XUG+M0Ww6Ohid9pF6Qxm6IFoUGKurmeCKQ0hqAh2kSo62vHaEhKgWgG3gt2waUBMQghV4ZXC3H1CA/1bA=
+	t=1730236603; cv=none; b=WRIdY34YU42hTbjMNRO2eOpKQy0Ksk8jkbSuVjpyoGdk0jB4E6tR8Z+z/9R2m4cr2P9rIVKGxfU4Ygr46dXJX96jnSA08DzWc3uL8mDUvfqPVlpahWgzXIyuPyKqcdGOA9S+aXA3zBfWqzkAD3OErvJ+pEGRSdkxZQu7NmqQkFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730236354; c=relaxed/simple;
-	bh=204BV9XbDi7xTyMgZCCLdtJzxzTmC9djfzMFwknc3I8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KTUymukAFrRKzGYJkq9VaJNLha91Ayc7D1jhhWXI8hsWDbJ21BGhPI6F5qKP7YaiZruEp/+k/E0jZ2txLo1YMOxIgQfGX0ck2UwBBsrTz1cqfWqNGLkKwC54t+wa1E+n8ZJtgPa+aSd7FOUkY4IkKJZbN+76kpM2OXMnFdxLcvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lpaWBnBg; arc=none smtp.client-ip=209.85.160.172
+	s=arc-20240116; t=1730236603; c=relaxed/simple;
+	bh=KF6k/sf4BtfxXSYpHKN2VRJwyR1ZLkhoXH17r/Vmtcw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Aosr9r+t1aKMSbBwYsut6Nlx/uLgZO+SMH8PidTdL/OrpTvmJ/b/1az2uejK6/0DxmYskt5kQBTZfzxbPhTY+tQ3F/kcA3f9uWkyvZpDtUb0P1eyZdHDcD9d6yHinJb7GAWzbyDFsR0DzifsFD69mxFkHrUtOwbzf8uUtMIdKss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TAExV4Pj; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lpaWBnBg"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-460dce6fff9so43257171cf.1;
-        Tue, 29 Oct 2024 14:12:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TAExV4Pj"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9932aa108cso892125466b.2;
+        Tue, 29 Oct 2024 14:16:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730236351; x=1730841151; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ob3s5eW5DFFmF/sJYltP1wSc/GVzO5gvkP17mjeImM8=;
-        b=lpaWBnBgI1+yImECKr9xXorNiU94jbviCc+ppI3sCJo5L+0VtzQ6Z1QvystBKxUd7o
-         nZ8ogqqM5sCDk0OwDZ7H0IEJVZ7rAORPuuxnmtuFNxwjsl1BixdipigLM1Bw9Fp/Vy9W
-         5HEQWDhOBXZV/YqmpOB+oANvQKOW7Z8LQtjvxuTlTjerXmNCWrEiY3EkdVUVaoyjg9Ns
-         Z1ztM0jIg6X3ZZW7VNMH1m6lnrL0T7eTnvyXTCA8Aj/VUsdLXuqDYOUd9wwuHB0w1V/X
-         0G3EtihzPR8GbseJmQkZjZcWFu1do0qiX/kic1W0gbv1etrdAnpj/O0TGhj9yRvBWSMi
-         azTA==
+        d=gmail.com; s=20230601; t=1730236599; x=1730841399; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eNjze8/e/pDiJjT4CDGP1IpmXLfqOK0/8/R1XToB9zw=;
+        b=TAExV4PjOob2QT6OtaWYEUIDYMam9B5xyLH1vitzeJhHujOOXDgGrNevCyKqwV7zv/
+         XIgiSU+N3VLML5rL/SuKmWl2KI0snFqQsiu7ES40LRy9rU4GQ3R1R8vXu+Xfg0VLzxGn
+         z7AY9ix3jxEx9GbhaurRueezjUDUjNjtJxMpqFU4TnToAIpo4Bm0s0QhizbwtJ06lzBx
+         OhigeJ8XYhHokB9hZgvn4QCs5n9+b6ALNIl4OF9J+RgivUK3N/+8Wa2Nosu5bL3bgeqq
+         RzxpelsASAAWseVNvrf0WmsLTTStdBYNl8oufcCzzS/wFfUsw7X0dPsSKArdPdwVQoTn
+         vFVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730236351; x=1730841151;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ob3s5eW5DFFmF/sJYltP1wSc/GVzO5gvkP17mjeImM8=;
-        b=hlxikVGv/EIoY0GW/VN/19fjDLGO/4zYFo4svFamPfHP+isFmJdxH1aTASFq6rexXg
-         ENqNseOX3294EKDXqoTuiTfPJmrvjqLYq+5rW2htaxtIf3SdSB0QBV7g/xEL+8oOpL7y
-         EBuY56V8Jv3WmUlurE7bMULMwcGfajGI5lVmVIg9dEMm02KEaqDCtI+ahm3BT54pRr/X
-         70WQMlXH8tMLVRKeSOCoGZDvsj0n6ABLNCI67lGNvDnFlGOd65XOLGM5T2EFtvGybhvb
-         vQNY2tB9GgB31sxKs6Z99teEjlPhJpBHHztpEsk9pOxlBq6Q4xN6g6Z24K16PU7DmOeS
-         SUag==
-X-Forwarded-Encrypted: i=1; AJvYcCVaMQyrEzcHrEKvhhB7J8H8BlKBqo6cELF2RvJJIePUVW4uw5JIq4Qt2uJm4VK4v1SZdbTrUy+YS5HlER4bMTc=@vger.kernel.org, AJvYcCW0fPy7nBzw9yvocR9x/e1HJhE2KQM8j23eBuFF9Zheu4JqLPqsAR+mEWpntlpeN9ODlDlvO0g3tyNv0oY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYF6zAhL+XWfmLj+S3wppkrgAQJNZyhdx2li5KR7mZmF7P47Jp
-	rvAG5RrBbFxetc2q6RBgPtH4u7QdbCQlHn12NT04OQ7mcoNq/uJ9
-X-Google-Smtp-Source: AGHT+IHSmmyxcd/2Yj9vg57U61l66xXmn8h145jdJFp5JjfJN3yfgTdQuWx93nU2BQH6MzbWClE6+A==
-X-Received: by 2002:a05:622a:110b:b0:45f:873:ff5e with SMTP id d75a77b69052e-4613c1b54b7mr196318231cf.57.1730236351560;
-        Tue, 29 Oct 2024 14:12:31 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46132376491sm48090281cf.66.2024.10.29.14.12.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 14:12:31 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 74589120006C;
-	Tue, 29 Oct 2024 17:12:30 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 29 Oct 2024 17:12:30 -0400
-X-ME-Sender: <xms:vk8hZ-bojyLvPpXRrD0ZlUkjH6vJ2JAcFXaeGtAv2xT0FmyGb6z_SQ>
-    <xme:vk8hZxbqgnI2jVmBm3A88k2JAnns0lnwfGmk5eZdTVoe0WNjZWlquBg1huDJeI2Uw
-    emsOhU7oZSdpj6CUA>
-X-ME-Received: <xmr:vk8hZ4_HtTeWIujdpoTLjbdQ73JTMKWWLapB2IEV9OkT_xPG8MX-N9iGBfs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekuddgudegudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeefhfehveetieettdevgeeggedujeffjedv
-    ueeludeugedvfeehgeetlefffeeiteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpd
-    dufedqrhgtuddrnhhonecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqie
-    elvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdr
-    tghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmh
-    htphhouhhtpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishes
-    ghhmrghilhdrtghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehp
-    vghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmihhnghhosehrvg
-    guhhgrthdrtghomhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtoheplhhonhhgmhgrnhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepghgrrhihse
-    hgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhn
-    mhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:vk8hZwreZ0jZGiONx-u9UM9QEhELvLw0mBM1sfF1LVwWoUjuaCrAAw>
-    <xmx:vk8hZ5pKMr85r_ImOIkM9rVJg8gaN5RAg_yhHlMzsNMGrV5S5ewjcg>
-    <xmx:vk8hZ-S7Tmpt7Ch9yJG0NA1E0gTRPSILQNQ-YgDVhRxew2H2PdVbDw>
-    <xmx:vk8hZ5ppImHpD7AbWl5SoM68KuaWvMmJF3wqSy0n3IqnFqrPZpVG0w>
-    <xmx:vk8hZ24fMDVji3zkhuCL27kPNT7vRm27Qipz6xV-XTn6SLa8Jua2d6mY>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 29 Oct 2024 17:12:29 -0400 (EDT)
-Date: Tue, 29 Oct 2024 14:12:28 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH v6] rust: add global lock support
-Message-ID: <ZyFPvO4jNLieAXUe@Boquns-Mac-mini.local>
-References: <20241023-static-mutex-v6-1-d7efdadcc84f@google.com>
- <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
- <CANiq72mb9X0LiDtDe9ptbqm3Ls527Xp+szX7px+Zw6OP8-aefQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1730236599; x=1730841399;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eNjze8/e/pDiJjT4CDGP1IpmXLfqOK0/8/R1XToB9zw=;
+        b=QhMpQ3hlgy4ev2WDr1Af8qdIlCcMlb5C3c4EZffhnkpOw2zN15uOUVheGoyEM9aWFe
+         z5CA2D1ZFW2LwL+XS6lozi3Akeh5GK2EEnahjbina85qGkpaHE1p6JGaDxjFWyDL0d4w
+         VY/tvLp3DzdvSqkjARSiqrcFx0caqIaRkvpArchYPLhdos9zaMxczx3xDldyLZKvcnbY
+         zyL167KoSWdcl7hEKtqKKG45F6Ug8OtGhA24kZDJ0D5jmOmeoB0bOm9+14yEPuX+DwSj
+         cMIfN4nzMmNP752ET7/8eXS+MpmAkGtBKdUzpikBejO96/mEc78htFjH59OEbZesJ8VI
+         4zcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQKGF90SN8JECc4Igh/40kSvMC/OoyBJlnkkAL90TtjCzbDa5PhJWggoZgPzqaqU0Yp+ov6xXhbPgp@vger.kernel.org, AJvYcCWh8AK7DrLY2X2uojEJjjjFaC04fzdh1qWyngPYAg1ZhY3Le73GqbmenAP4SNAQLH6AY2PbVTJKYe3ZVjba@vger.kernel.org, AJvYcCXtPOmkzU9VgsH7TaB0LJ82NkDq0Xoj+KswOxiLfc97+IdQ5eBONraPLRxPyqI3DDXVBMS1PjgUb7wg@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtta1VXXomMAnq6QCDpqa9AmnLvNQFTy7blRipGElYnCbjgqtL
+	1zlkNB/DhPDWSw5Klq2mRmuApJ/Q1LFst/Ei+6wfL/F3xeQt6W8e
+X-Google-Smtp-Source: AGHT+IGRLl1HrmAnBkeOu842W8vTj1SaHNURuV4x1OPd0x8rIAxFnRq3CFiVFOL9PvSvhT/SMVvI6A==
+X-Received: by 2002:a17:907:7d87:b0:a99:fba0:e135 with SMTP id a640c23a62f3a-a9de619ee32mr1258833466b.46.1730236598574;
+        Tue, 29 Oct 2024 14:16:38 -0700 (PDT)
+Received: from [10.1.2.5] ([193.170.134.247])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f029884sm505483666b.59.2024.10.29.14.16.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Oct 2024 14:16:38 -0700 (PDT)
+Message-ID: <3e0c9198-f78e-424e-b754-b18dcc8072c5@gmail.com>
+Date: Tue, 29 Oct 2024 22:16:36 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mb9X0LiDtDe9ptbqm3Ls527Xp+szX7px+Zw6OP8-aefQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/16] rust: pci: add basic PCI device / driver
+ abstractions
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
+ rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+ a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+ fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+ ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+ daniel.almeida@collabora.com, saravanak@google.com
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-12-dakr@kernel.org>
+Content-Language: en-US
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20241022213221.2383-12-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 29, 2024 at 07:48:21PM +0100, Miguel Ojeda wrote:
-> On Mon, Oct 28, 2024 at 6:49 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> >
-> > In addition, I've also queued it in my lockdep-for-tip branch:
-> >
-> >         https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/log/?h=lockdep-for-tip
-> >
-> > as I want to help route Rust lock-related patches into tip, so this is
-> > a practice round for me ;-)
-> >
-> > Miguel, feel free to take it via rust-next with my Reviewed-by, I will
-> > drop it from my branch once if I see it shows up in v6.13-rc1.
+Hi,
+
+On 22.10.24 11:31 PM, Danilo Krummrich wrote:
+> Implement the basic PCI abstractions required to write a basic PCI
+> driver. This includes the following data structures:
 > 
-> No, no, it is great if you can take them :)
+> The `pci::Driver` trait represents the interface to the driver and
+> provides `pci::Driver::probe` for the driver to implement.
 > 
-
-Thanks!
-
-> By "if I see it shows up in v6.13-rc1", do you mean your branch is not
-> meant for v6.13?
+> The `pci::Device` abstraction represents a `struct pci_dev` and provides
+> abstractions for common functions, such as `pci::Device::set_master`.
 > 
-
-Right, so I'm acting as a sub-subsystem maintainer, and I submit pull
-requests to the tip tree, and then tip will send pull requests to
-Linus. So usually (yeah, I'm calling sometimes I've done only twice as
-"usually"), I submit my PR at rc2 to rc4, and tip will carry that into
-the next merge window. For example, since we are at v6.12-rc5, my next
-PR will be at v6.13-rc{2, 3 or 4}. So if this patch is going via me, it
-has to be in v6.14.
-
-I think this patch has no problem to go into v6.13, so again, feel free
-to do it ;-)
-
-> Couple of things I noticed that I would normally double-check/fix in
-> place: the "// SAFETY: called exactly once" comment could be
-
-Got it. This particular one needs to be "// SAFETY: Called exactly
-once", right?
-
-Note that since lockdep-for-tip is not watched by linux-next, I have
-some flexibilities between queuing a patch and preparing it for the PR
-(I will need to rebase anyway). This could give contributers an early
-notice and we both would have less things to watch (contributers can
-just wait for the patches to show up eventually in Linus' tree instead
-of checking the list for a reply, and I only need to focus on my branch
-for improvement) for normal cases.
-
-> formatted, and I think the "Link:" tag should be before your SoB
-> (well, at least b4 does that, which makes sense since you added it,
-> but I have seen commits done differently too).
+> In order to provide the PCI specific parts to a generic
+> `driver::Registration` the `driver::RegistrationOps` trait is implemented
+> by `pci::Adapter`.
 > 
-
-For this I'm following the precedents in tip tree: always put the patch
-links at the last line. See the "Commit notifications" in
-Documentation/process/maintainer-tip.rst. (And yeah, I have to manually
-modify this after b4 applies the patches if you have to ask ;-))
-
-Regards,
-Boqun
-
-> Thanks!
+> `pci::DeviceId` implements PCI device IDs based on the generic
+> `device_id::RawDevceId` abstraction.
 > 
-> Cheers,
-> Miguel
+> Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  MAINTAINERS                     |   1 +
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/helpers.c          |   1 +
+>  rust/helpers/pci.c              |  18 ++
+>  rust/kernel/lib.rs              |   2 +
+>  rust/kernel/pci.rs              | 284 ++++++++++++++++++++++++++++++++
+>  6 files changed, 307 insertions(+)
+>  create mode 100644 rust/helpers/pci.c
+>  create mode 100644 rust/kernel/pci.rs
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 97914d0752fb..2d00d3845b4a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17939,6 +17939,7 @@ F:	include/asm-generic/pci*
+>  F:	include/linux/of_pci.h
+>  F:	include/linux/pci*
+>  F:	include/uapi/linux/pci*
+> +F:	rust/kernel/pci.rs
+>  
+>  PCIE DRIVER FOR AMAZON ANNAPURNA LABS
+>  M:	Jonathan Chocron <jonnyc@amazon.com>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index a80783fcbe04..cd4edd6496ae 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -15,6 +15,7 @@
+>  #include <linux/firmware.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/mdio.h>
+> +#include <linux/pci.h>
+>  #include <linux/phy.h>
+>  #include <linux/refcount.h>
+>  #include <linux/sched.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 3acb2b9e52ec..8bc6e9735589 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -17,6 +17,7 @@
+>  #include "kunit.c"
+>  #include "mutex.c"
+>  #include "page.c"
+> +#include "pci.c"
+>  #include "rbtree.c"
+>  #include "rcu.c"
+>  #include "refcount.c"
+> diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
+> new file mode 100644
+> index 000000000000..7c4f3ba49486
+> --- /dev/null
+> +++ b/rust/helpers/pci.c
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/pci.h>
+> +
+> +void rust_helper_pci_set_drvdata(struct pci_dev *pdev, void *data)
+> +{
+> +	pci_set_drvdata(pdev, data);
+> +}
+> +
+> +void *rust_helper_pci_get_drvdata(struct pci_dev *pdev)
+> +{
+> +	return pci_get_drvdata(pdev);
+> +}
+> +
+> +u64 rust_helper_pci_resource_len(struct pci_dev *pdev, int bar)
+> +{
+> +	return pci_resource_len(pdev, bar);
+> +}
+
+This should return resource_size_t to build on 32 bit architectures.
+
+Error when building with my 32 bit arm patch:
+error[E0308]: mismatched types
+   --> rust/kernel/pci.rs:398:21
+    |
+398 |         Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?) })
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u32`, found `u64`
+    |
+help: you can convert a `u64` to a `u32` and panic if the converted value doesn't fit
+    |
+398 |         Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?).try_into().unwrap() })
+    |                                                                               ++++++++++++++++++++
+
+error: aborting due to 1 previous error
+
+
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 5cb892419453..3ec690eb6d43 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -73,6 +73,8 @@
+>  pub use bindings;
+>  pub mod io;
+>  pub use macros;
+> +#[cfg(all(CONFIG_PCI, CONFIG_PCI_MSI))]
+> +pub mod pci;
+>  pub use uapi;
+>  
+>  #[doc(hidden)]
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> new file mode 100644
+> index 000000000000..ccc9a5f322e4
+> --- /dev/null
+> +++ b/rust/kernel/pci.rs
+> @@ -0,0 +1,284 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for the PCI bus.
+> +//!
+> +//! C header: [`include/linux/pci.h`](srctree/include/linux/pci.h)
+> +
+> +use crate::{
+> +    bindings, container_of, device,
+> +    device_id::RawDeviceId,
+> +    driver,
+> +    error::{to_result, Result},
+> +    str::CStr,
+> +    types::{ARef, ForeignOwnable},
+> +    ThisModule,
+> +};
+> +use core::ops::Deref;
+> +use kernel::prelude::*;
+> +
+> +/// An adapter for the registration of PCI drivers.
+> +pub struct Adapter<T: Driver>(T);
+> +
+> +impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+> +    type RegType = bindings::pci_driver;
+> +
+> +    fn register(
+> +        pdrv: &mut Self::RegType,
+> +        name: &'static CStr,
+> +        module: &'static ThisModule,
+> +    ) -> Result {
+> +        pdrv.name = name.as_char_ptr();
+> +        pdrv.probe = Some(Self::probe_callback);
+> +        pdrv.remove = Some(Self::remove_callback);
+> +        pdrv.id_table = T::ID_TABLE.as_ptr();
+> +
+> +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> +        to_result(unsafe {
+> +            bindings::__pci_register_driver(pdrv as _, module.0, name.as_char_ptr())
+> +        })
+> +    }
+> +
+> +    fn unregister(pdrv: &mut Self::RegType) {
+> +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> +        unsafe { bindings::pci_unregister_driver(pdrv) }
+> +    }
+> +}
+> +
+> +impl<T: Driver + 'static> Adapter<T> {
+> +    extern "C" fn probe_callback(
+> +        pdev: *mut bindings::pci_dev,
+> +        id: *const bindings::pci_device_id,
+> +    ) -> core::ffi::c_int {
+> +        // SAFETY: The PCI bus only ever calls the probe callback with a valid pointer to a
+> +        // `struct pci_dev`.
+> +        let dev = unsafe { device::Device::from_raw(&mut (*pdev).dev) };
+> +        // SAFETY: `dev` is guaranteed to be embedded in a valid `struct pci_dev` by the call
+> +        // above.
+> +        let mut pdev = unsafe { Device::from_dev(dev) };
+> +
+> +        // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct pci_device_id` and
+> +        // does not add additional invariants, so it's safe to transmute.
+> +        let id = unsafe { &*id.cast::<DeviceId>() };
+> +        let info = T::ID_TABLE.info(id.index());
+> +
+> +        match T::probe(&mut pdev, id, info) {
+> +            Ok(data) => {
+> +                // Let the `struct pci_dev` own a reference of the driver's private data.
+> +                // SAFETY: By the type invariant `pdev.as_raw` returns a valid pointer to a
+> +                // `struct pci_dev`.
+> +                unsafe { bindings::pci_set_drvdata(pdev.as_raw(), data.into_foreign() as _) };
+> +            }
+> +            Err(err) => return Error::to_errno(err),
+> +        }
+> +
+> +        0
+> +    }
+> +
+> +    extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
+> +        // SAFETY: The PCI bus only ever calls the remove callback with a valid pointer to a
+> +        // `struct pci_dev`.
+> +        let ptr = unsafe { bindings::pci_get_drvdata(pdev) };
+> +
+> +        // SAFETY: `remove_callback` is only ever called after a successful call to
+> +        // `probe_callback`, hence it's guaranteed that `ptr` points to a valid and initialized
+> +        // `KBox<T>` pointer created through `KBox::into_foreign`.
+> +        let _ = unsafe { KBox::<T>::from_foreign(ptr) };
+> +    }
+> +}
+> +
+> +/// Declares a kernel module that exposes a single PCI driver.
+> +///
+> +/// # Example
+> +///
+> +///```ignore
+> +/// kernel::module_pci_driver! {
+> +///     type: MyDriver,
+> +///     name: "Module name",
+> +///     author: "Author name",
+> +///     description: "Description",
+> +///     license: "GPL v2",
+> +/// }
+> +///```
+> +#[macro_export]
+> +macro_rules! module_pci_driver {
+> +($($f:tt)*) => {
+> +    $crate::module_driver!(<T>, $crate::pci::Adapter<T>, { $($f)* });
+> +};
+> +}
+> +
+> +/// Abstraction for bindings::pci_device_id.
+> +#[repr(transparent)]
+> +#[derive(Clone, Copy)]
+> +pub struct DeviceId(bindings::pci_device_id);
+> +
+> +impl DeviceId {
+> +    const PCI_ANY_ID: u32 = !0;
+> +
+> +    /// PCI_DEVICE macro.
+> +    pub const fn new(vendor: u32, device: u32) -> Self {
+> +        Self(bindings::pci_device_id {
+> +            vendor,
+> +            device,
+> +            subvendor: DeviceId::PCI_ANY_ID,
+> +            subdevice: DeviceId::PCI_ANY_ID,
+> +            class: 0,
+> +            class_mask: 0,
+> +            driver_data: 0,
+> +            override_only: 0,
+> +        })
+> +    }
+> +
+> +    /// PCI_DEVICE_CLASS macro.
+> +    pub const fn with_class(class: u32, class_mask: u32) -> Self {
+> +        Self(bindings::pci_device_id {
+> +            vendor: DeviceId::PCI_ANY_ID,
+> +            device: DeviceId::PCI_ANY_ID,
+> +            subvendor: DeviceId::PCI_ANY_ID,
+> +            subdevice: DeviceId::PCI_ANY_ID,
+> +            class,
+> +            class_mask,
+> +            driver_data: 0,
+> +            override_only: 0,
+> +        })
+> +    }
+> +}
+> +
+> +// Allow drivers R/O access to the fields of `pci_device_id`; should we prefer accessor functions
+> +// to void exposing C structure fields?
+> +impl Deref for DeviceId {
+> +    type Target = bindings::pci_device_id;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.0
+> +    }
+> +}
+> +
+> +// SAFETY:
+> +// * `DeviceId` is a `#[repr(transparent)` wrapper of `pci_device_id` and does not add
+> +//   additional invariants, so it's safe to transmute to `RawType`.
+> +// * `DRIVER_DATA_OFFSET` is the offset to the `driver_data` field.
+> +unsafe impl RawDeviceId for DeviceId {
+> +    type RawType = bindings::pci_device_id;
+> +
+> +    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::pci_device_id, driver_data);
+> +
+> +    fn index(&self) -> usize {
+> +        self.driver_data as _
+> +    }
+> +}
+> +
+> +/// IdTable type for PCI
+> +pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
+> +
+> +/// Create a PCI `IdTable` with its alias for modpost.
+> +#[macro_export]
+> +macro_rules! pci_device_table {
+> +    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
+> +        const $table_name: $crate::device_id::IdArray<
+> +            $crate::pci::DeviceId,
+> +            $id_info_type,
+> +            { $table_data.len() },
+> +        > = $crate::device_id::IdArray::new($table_data);
+> +
+> +        $crate::module_device_table!("pci", $module_table_name, $table_name);
+> +    };
+> +}
+> +
+> +/// The PCI driver trait.
+> +///
+> +/// # Example
+> +///
+> +///```
+> +/// # use kernel::{bindings, pci};
+> +///
+> +/// struct MyDriver;
+> +///
+> +/// kernel::pci_device_table!(
+> +///     PCI_TABLE,
+> +///     MODULE_PCI_TABLE,
+> +///     <MyDriver as pci::Driver>::IdInfo,
+> +///     [
+> +///         (pci::DeviceId::new(bindings::PCI_VENDOR_ID_REDHAT, bindings::PCI_ANY_ID as u32), ())
+> +///     ]
+> +/// );
+> +///
+> +/// impl pci::Driver for MyDriver {
+> +///     type IdInfo = ();
+> +///     const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> +///
+> +///     fn probe(
+> +///         _pdev: &mut pci::Device,
+> +///         _id: &pci::DeviceId,
+> +///         _id_info: &Self::IdInfo,
+> +///     ) -> Result<Pin<KBox<Self>>> {
+> +///         Err(ENODEV)
+> +///     }
+> +/// }
+> +///```
+> +/// Drivers must implement this trait in order to get a PCI driver registered. Please refer to the
+> +/// `Adapter` documentation for an example.
+> +pub trait Driver {
+> +    /// The type holding information about each device id supported by the driver.
+> +    ///
+> +    /// TODO: Use associated_type_defaults once stabilized:
+> +    ///
+> +    /// type IdInfo: 'static = ();
+> +    type IdInfo: 'static;
+> +
+> +    /// The table of device ids supported by the driver.
+> +    const ID_TABLE: IdTable<Self::IdInfo>;
+> +
+> +    /// PCI driver probe.
+> +    ///
+> +    /// Called when a new platform device is added or discovered.
+> +    /// Implementers should attempt to initialize the device here.
+> +    fn probe(dev: &mut Device, id: &DeviceId, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
+> +}
+> +
+> +/// The PCI device representation.
+> +///
+> +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
+> +/// device, hence, also increments the base device' reference count.
+> +#[derive(Clone)]
+> +pub struct Device(ARef<device::Device>);
+> +
+> +impl Device {
+> +    /// Create a PCI Device instance from an existing `device::Device`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
+> +    /// a `bindings::pci_dev`.
+> +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
+> +        Self(dev)
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::pci_dev {
+> +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
+> +        // embedded in `struct pci_dev`.
+> +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
+> +    }
+> +
+> +    /// Enable memory resources for this device.
+> +    pub fn enable_device_mem(&self) -> Result {
+> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
+> +        if ret != 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(())
+> +        }
+> +    }
+> +
+> +    /// Enable bus-mastering for this device.
+> +    pub fn set_master(&self) {
+> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> +        unsafe { bindings::pci_set_master(self.as_raw()) };
+> +    }
+> +}
+> +
+> +impl AsRef<device::Device> for Device {
+> +    fn as_ref(&self) -> &device::Device {
+> +        &self.0
+> +    }
+> +}
+
+Cheers
+Christian
+
