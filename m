@@ -1,150 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94EE1DED7D;
-	Tue, 29 Oct 2024 09:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1321E0E04
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 09:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730193662; cv=none; b=AfH+LToUPPLwWk7SG8El2ug+5Fe6L4fBDrG+wgBcm9IC+23RRLUlfi1459hnj7Z2fcBRqvk6Czu5JYxg4adAy8pUSNoqrD+CUg/vzKw19Q80+VjWcylRSFH9pAuiPdxh20lpc95j6sKjtZPrSX2QomlLR1O2oWTvbEvl6Jb9DXM=
+	t=1730193874; cv=none; b=nLFbL7ZbDwucwGDId616T31YkeGQ5IjunufWopsazffIFWkz8qgCLzLJnWPj/j3CRoBoCajTKxJfk5J4lhkdZjrMqsoZJfg+VdOQgtUYCBp35fkkqs3eKRT0WNsZCCO3pxVTuQzDbvnNQhm4ZjPJT7LnqNrNNDruIfK9NE1jU3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730193662; c=relaxed/simple;
-	bh=GjTReHWGV6rszkOE6k4zHrl1t2L3x/04FxHrfnEJ1+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pZAJBJNwJ1emwfhaL49+rCJkO+FnovNTtoANtiKyyVE/RcHUfivGMwEuwXQq56ZNgtLGj913mxT/BQb46j0IJaVxVaoP1dVlHupLrtB08a7NyPwhcBSzIU+rb+7DKKno1ZT8qqZOLbP6YNg7zDBUcBb9d/jyxqh0k7Bhec6UrDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAATjhVM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730193874; c=relaxed/simple;
+	bh=UTc6KxPryWSJ7soBdBEQQsIFrovCwOrroDeykYKubkA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kvMj+Vao8zOWtEK3JjXnhadkuzd1/I+HtP4LZsLoi9F68epopgRHTL6rvQYiH1mQWLzxdsw4t0gvVoDK+oWHcMjPOl/sAnIUvDHBkBx/JphW6CW6Ih/3ZB4yNfsO45VIfw0kwpdLi7kDigFOAKEa8w/DeTU0X0h13eXdBT/bEfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wf7+CFGW; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAATjhVM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8968EC4CECD;
-	Tue, 29 Oct 2024 09:20:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730193661;
-	bh=GjTReHWGV6rszkOE6k4zHrl1t2L3x/04FxHrfnEJ1+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hAATjhVMq2PNlF1OCTlGtQottODNS6M3rP23Iy6ciGtr2Bz2ETtdQxgImTc9jdPCu
-	 ISa+2j3bZEJYKyp69lDGZAbirqNUeiIrpDj9w4tJHd/blUzHnlUUFy1VemezzHE/sW
-	 3dDJRztIyL8Bvb3BHyvHfyBVewf0/N3NV8qwZ+5rdTFMjBPXRiaHF+r1M9mq+0GKvK
-	 EMpJIbmYvXcor0C7rynZnVJja3Az7cYA/UCWhxmcFh3zJ7fFga6XLHSrcU9Jx8Js+b
-	 iNTVv4r1aQIbns2EU9F3XJMMcnu1rGuUhCqzdagSO9jh1MZfd9ETvpnzCyTekkvvBl
-	 S5PrVa2K48M8Q==
-Date: Tue, 29 Oct 2024 10:20:53 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 09/16] rust: add `io::Io` base type
-Message-ID: <ZyCo9SRP4aFZ6KsZ@pollux>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-10-dakr@kernel.org>
- <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wf7+CFGW"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e24a31ad88aso7695727276.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 02:24:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730193871; x=1730798671; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lOv1XNqhzSTi2v1xjBl65HyN11WbqhoetLuPTUihhNM=;
+        b=wf7+CFGWiGFsCLaWMGtdp6N05yholN3SpkS+Vjb2leNNAKobeKr3s+/pQ9nVpUqPCw
+         cTfJrlK+tMykNbqoLcWcS5E2W7wEerJxCzfqbm3Awp/aZ0Z2QuWiGFB6JTpV5u7DI4UC
+         ylDJAQe8udwFNnY7h/bbvyFooPJ3bk66+e51z3fo/o38/PY28gaY9iFUgMV3TYrGCAl+
+         E4MwKcUIzTvN+pKYO9qoU6plzWvMMdne2AW6OA+KPwwaO9F9B4Dll2RcOERSfjvMQY7f
+         YsV/IMrJWRE7wqVf9jaG/Bpp8jdKrbF9YIYLCDNxP+K24fgVvFMdgQEr8uPDFpNVNgNT
+         oUiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730193871; x=1730798671;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lOv1XNqhzSTi2v1xjBl65HyN11WbqhoetLuPTUihhNM=;
+        b=Mh+fJxvk18HxaELmraE1AXYHgv7FJA6594BzovX2uFzRhZ3zMEFywkuRsHYMuQoTXf
+         ycvwoXmcy+ESH4ta/E3sIiqz8Kw4whDsNen8iLLWQFZL0fNNDfROMrduWZWm1WW0k0Pb
+         DYucME6reXHvicLz+lfqw3AWvmHH2uqDlebOuEUtD6mV82176oYl4DpvJ8aUY/RsDF1w
+         iN1xpJNQDXka3cP8B9LSQfffOhO5cSrQ2VlJ5Fst/7IMucHes5TPCqqXc/fffyBlAy5P
+         L8/Cmewwb3V8x0D2vJUOluUpwl4BNsY1BjmgYlpyLcOnEYIn05YBw0L8pSfDONvQM/Qe
+         QW7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWjRA4UenoKuPyXqqPsORmnyZvCIKBdXhRDXhOOuaGkHU3IM+s2g0fjM1mnDrlKyQWQ0ObR2lz2rkAcMb9Oow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNiLYupXbiYHueKDIj2X/bhvGhvvKjyUhYGc3Hwx+btnqK1zRu
+	N1R7xO2I9yVl82wptpGxsI6ZbIh7o9+A7fFlssjC72g8yWz++HQj0FIXFszpk3fMPpiWXpK0BH8
+	AeLQlaT4Xqw==
+X-Google-Smtp-Source: AGHT+IG/46UeBOug7p4Ly1YH4lLjvx8EExzDPr//o0o5DvNHCO5mK2Ewif9tZkVgP9PjRPWZ0rP5D9bCD72H4g==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:b1:7045:ac11:6237])
+ (user=davidgow job=sendgmr) by 2002:a25:9086:0:b0:e29:74e3:616c with SMTP id
+ 3f1490d57ef6-e3087a4f19cmr7832276.3.1730193870982; Tue, 29 Oct 2024 02:24:30
+ -0700 (PDT)
+Date: Tue, 29 Oct 2024 17:24:16 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <20241029092422.2884505-1-davidgow@google.com>
+Subject: [PATCH v2 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+From: David Gow <davidgow@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, 
+	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Matt Gilbride <mattgilbride@google.com>
+Cc: David Gow <davidgow@google.com>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 04:43:02PM +0100, Alice Ryhl wrote:
-> On Tue, Oct 22, 2024 at 11:33 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > I/O memory is typically either mapped through direct calls to ioremap()
-> > or subsystem / bus specific ones such as pci_iomap().
-> >
-> > Even though subsystem / bus specific functions to map I/O memory are
-> > based on ioremap() / iounmap() it is not desirable to re-implement them
-> > in Rust.
-> >
-> > Instead, implement a base type for I/O mapped memory, which generically
-> > provides the corresponding accessors, such as `Io::readb` or
-> > `Io:try_readb`.
-> >
-> > `Io` supports an optional const generic, such that a driver can indicate
-> > the minimal expected and required size of the mapping at compile time.
-> > Correspondingly, calls to the 'non-try' accessors, support compile time
-> > checks of the I/O memory offset to read / write, while the 'try'
-> > accessors, provide boundary checks on runtime.
-> 
-> And using zero works because the user then statically knows that zero
-> bytes are available ... ?
+This series was originally written by Jos=C3=A9 Exp=C3=B3sito, and has been
+modified and updated by Matt Gilbride and myself. The original version
+can be found here:
+https://github.com/Rust-for-Linux/linux/pull/950
 
-Zero would mean that the (minimum) resource size is unknown at compile time.
-Correspondingly, any call to `read` and `write` would not compile, since the
-compile time check requires that `offset + type_size <= SIZE`.
+Add support for writing KUnit tests in Rust. While Rust doctests are
+already converted to KUnit tests and run, they're really better suited
+for examples, rather than as first-class unit tests.
 
-(Hope this answers the questions, I'm not sure I got it correctly.)
+This series implements a series of direct Rust bindings for KUnit tests,
+as well as a new macro which allows KUnit tests to be written using a
+close variant of normal Rust unit test syntax. The only change required
+is replacing '#[cfg(test)]' with '#[kunit_tests(kunit_test_suite_name)]'
 
-> 
-> > `Io` is meant to be embedded into a structure (e.g. pci::Bar or
-> > io::IoMem) which creates the actual I/O memory mapping and initializes
-> > `Io` accordingly.
-> >
-> > To ensure that I/O mapped memory can't out-live the device it may be
-> > bound to, subsystems should embedd the corresponding I/O memory type
-> > (e.g. pci::Bar) into a `Devres` container, such that it gets revoked
-> > once the device is unbound.
-> 
-> I wonder if `Io` should be a reference type instead. That is:
-> 
-> struct Io<'a, const SIZE: usize> {
->     addr: usize,
->     maxsize: usize,
->     _lifetime: PhantomData<&'a ()>,
-> }
-> 
-> and then the constructor requires "addr must be valid I/O mapped
-> memory for maxsize bytes for the duration of 'a". And instead of
-> embedding it in another struct, the other struct creates an `Io` on
-> each access?
+An example test would look like:
+	#[kunit_tests(rust_kernel_hid_driver)]
+	mod tests {
+	    use super::*;
+	    use crate::{c_str, driver, hid, prelude::*};
+	    use core::ptr;
 
-So, we'd create the `Io` instance in `deref` of the parent structure, right?
-What would be the advantage?
+	    struct SimpleTestDriver;
+	    impl Driver for SimpleTestDriver {
+	        type Data =3D ();
+	    }
 
-> 
-> > Co-developed-by: Philipp Stanner <pstanner@redhat.com>
-> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> 
-> [...]
-> 
-> > diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> > new file mode 100644
-> > index 000000000000..750af938f83e
-> > --- /dev/null
-> > +++ b/rust/kernel/io.rs
-> > @@ -0,0 +1,234 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Memory-mapped IO.
-> > +//!
-> > +//! C header: [`include/asm-generic/io.h`](srctree/include/asm-generic/io.h)
-> > +
-> > +use crate::error::{code::EINVAL, Result};
-> > +use crate::{bindings, build_assert};
-> > +
-> > +/// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
-> > +///
-> > +/// The creator (usually a subsystem / bus such as PCI) is responsible for creating the
-> > +/// mapping, performing an additional region request etc.
-> > +///
-> > +/// # Invariant
-> > +///
-> > +/// `addr` is the start and `maxsize` the length of valid I/O mapped memory region of size
-> > +/// `maxsize`.
-> 
-> Do you not also need an invariant that `SIZE <= maxsize`?
+	    #[test]
+	    fn rust_test_hid_driver_adapter() {
+	        let mut hid =3D bindings::hid_driver::default();
+	        let name =3D c_str!("SimpleTestDriver");
+	        static MODULE: ThisModule =3D unsafe { ThisModule::from_ptr(ptr::n=
+ull_mut()) };
 
-I guess so, yes. It's enforced by `Io::new`, which fails if `SIZE > maxsize`.
+        	let res =3D unsafe {
+	            <hid::Adapter<SimpleTestDriver> as driver::DriverOps>::registe=
+r(&mut hid, name, &MODULE)
+	        };
+	        assert_eq!(res, Err(ENODEV)); // The mock returns -19
+	    }
+	}
 
-> 
-> Alice
-> 
+
+Please give this a go, and make sure I haven't broken it! There's almost
+certainly a lot of improvements which can be made -- and there's a fair
+case to be made for replacing some of this with generated C code which
+can use the C macros -- but this is hopefully an adequate implementation
+for now, and the interface can (with luck) remain the same even if the
+implementation changes.
+
+A few small notable missing features:
+- Attributes (like the speed of a test) are hardcoded to the default
+  value.
+- Similarly, the module name attribute is hardcoded to NULL. In C, we
+  use the KBUILD_MODNAME macro, but I couldn't find a way to use this
+  from Rust which wasn't more ugly than just disabling it.
+- Assertions are not automatically rewritten to use KUnit assertions.
+
+---
+
+Changes since v1:
+https://lore.kernel.org/lkml/20230720-rustbind-v1-0-c80db349e3b5@google.com=
+/T/
+- Rebase on top of the latest rust-next (commit 718c4069896c)
+- Make kunit_case a const fn, rather than a macro (Thanks Boqun)
+- As a result, the null terminator is now created with
+  kernel::kunit::kunit_case_null()
+- Use the C kunit_get_current_test() function to implement
+  in_kunit_test(), rather than re-implementing it (less efficiently)
+  ourselves.
+
+Changes since the GitHub PR:
+- Rebased on top of kselftest/kunit
+- Add const_mut_refs feature
+  This may conflict with https://lore.kernel.org/lkml/20230503090708.252431=
+0-6-nmi@metaspace.dk/
+- Add rust/macros/kunit.rs to the KUnit MAINTAINERS entry
+
+---
+Jos=C3=A9 Exp=C3=B3sito (3):
+  rust: kunit: add KUnit case and suite macros
+  rust: macros: add macro to easily run KUnit tests
+  rust: kunit: allow to know if we are in a test
+
+ MAINTAINERS          |   1 +
+ rust/kernel/kunit.rs | 191 +++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs   |   1 +
+ rust/macros/lib.rs   |  29 +++++++
+ 4 files changed, 222 insertions(+)
+
+--=20
+2.47.0.163.g1226f6d8fa-goog
+
