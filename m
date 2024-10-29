@@ -1,247 +1,411 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA70205143;
-	Tue, 29 Oct 2024 13:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5011205E12
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 13:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730209328; cv=none; b=nWLzErLlaziW4taSGWk7acPaaQKSjx3/cHX9OvY6z860y7ub24/wbm8TRa1+OvqwnHYK5aS4tKZ/J+RfAzZdMDDsJ6Wwt8xguQQ3XLX7m9Am4lRxrHvOy/1J3uSCdkMdQ1u6tQPhUmtvzP3ZbEo11RMjEy3c59e+ZE7ZuMzociw=
+	t=1730209633; cv=none; b=UtsVkLzphWhIEUXPlMVE1hS/HS9qUVA3T7wd9gm6zKoPVL/+NN84Io/7qpmeEQBzHz1iRJxcPerIN+oLSWi3Sc6/sdCrFRF1Ce4+4ICTPwFd0hvzcw0Y10Mu9DL29ZDAi3z4fT1LkwcpZNQ98tNu74C93GGyLvDcoz5Fn/K/FV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730209328; c=relaxed/simple;
-	bh=sw3TolEZ3I43vRjBY3K3D57EzWKqjwUKgg8Sef0n3U4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DA99PPLpmRV8n0MuCIoHIieAvapqu9fbMPl2UC49shLEm84NjsUEu9Zsd84N1/DVvJ5H5WBs9kK1P80QIBitzO2CvJ9scofacUjRPItRLElFd5+cI6jpv5igOjinlY1YzRHxKU+WxTPO+RrMeE5Je6QCdAu8YRZC3O2PvDJTLmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OEJI9B2F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730209633; c=relaxed/simple;
+	bh=cq27wZz7dVLJMOmm0mkBoV4a/SvFeK1Ra68XlDGi/tY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s4t5FaEgq0MK4Ui2s1G/QsaffcgsYG39kRTwamCPRF7e0N1SZvScKPIGjA6NWPweHcOxRxZGqzBcHSmmgA4/kvhI7zyZz+hbJXnxpBcMktt6hEokZRwG9vvqCLiS98rZUWQRukqN5U77NZHRfYHMXUdVzhLXCqfGO6T2DzSzKfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qhcjg3/a; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEJI9B2F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8C4C4CECD;
-	Tue, 29 Oct 2024 13:42:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730209328;
-	bh=sw3TolEZ3I43vRjBY3K3D57EzWKqjwUKgg8Sef0n3U4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OEJI9B2Fyiie60G+QtVoMTHQJhDOfwU3gYBP6VNErNwQkLX8Wo34iquf3unxd9TTj
-	 hG+EZ0NcAuAcO+ED18zpkYyLtsl3mn43U3hjAWF8NgJbLqHOkJU1AVdN+wfroOSS0w
-	 9HF6Yeuam7FWMFnhmOlk9fVGUm3Au0YbNkcZvBMEKzMsWV2yAu1yjRJci9gCSbOEOf
-	 wMHOrEQueIJQROn+ymHwpPO5agqOK2DcZuybJCMJVYDlT1L84FpzaK9ctbJ5X5FsX4
-	 VXDyYKXB9oK7cnCo2bjByapuFhyon0bkAra17BZTIdkI6FrrAoE3QkmPaHBv9UNuyK
-	 TlBNsad1GwKzQ==
-Message-ID: <e713fe2a-df7b-445d-9f2b-08a22161ff8e@kernel.org>
-Date: Tue, 29 Oct 2024 14:42:02 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qhcjg3/a"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53a007743e7so6274218e87.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 06:47:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730209628; x=1730814428; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LArg21E2WXO5e66MBAzgbobynxnG6RwUCWHJ6JjyJPU=;
+        b=Qhcjg3/aDoweAWAyVByWPgYgyRut5tEtZmbwL/1P2M76JLq5sYQOnIvhBwLtzlfQM3
+         PZODjYtiNtOTgD1GK3eyHRxOYlI1sXWeVZeIDkJkTiYmmLcMXHbMPtL+q6lC8voQZ+6u
+         gEu2wVemehCgZdgiRsZHjAL5U5OMBfVKs1gzLicpta7+DVW/5ik9pKnbJpjOkrO0X4kD
+         u43R5t6zhZzpPTzNK9TTNE0G9fRznDXqdFJuLtjlRs1f1poF4AxRBipzIC8j/wBWkUBk
+         cLTCSQvVwmGJXeLPtL3k2AIAK1HIpLtvl7RJ15fVqR6KNQ7HOnhY7aIVwroTX4UenIqM
+         I/Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730209628; x=1730814428;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LArg21E2WXO5e66MBAzgbobynxnG6RwUCWHJ6JjyJPU=;
+        b=YqIcKj3zE5un67QSjpujuiafSawyx0bSlAuGUkpTrKjqe5sCbXzIPAJ1ozRcwvD+TW
+         q7p8XB/98iFQvAQqoY2oPwFk86ethu83mOvkuGxgiI7M1q4WRIlDZ2LXGfw43w/Z/ZAW
+         bqfsErxmvFh3wc7kchx4AXy7n+Hhp+YEa343bdWj2e/3dFlnLZnzdh+SAuvo3emXKl8u
+         M7ZHy/PCX+F3TkxE84pkebldnuQbte5a6ZVBKO+RLbOGhV+Id3DmR6kwOFuNpLuIx9zf
+         m9VC/pT1oGqEl1SMVlBy9AHblZt8nizF37L0ki8cBcVjazavzUn55oZUQT8f4sACtuwK
+         HcRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJkRgJTDOtKWh/PSpxjFcVSk7cq5j7Y6Oa6Gy3ZH5P2mWstJ5JpCzG8YsZ25lOG6lYafEEtl2H1qWFN1yOgg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7Pm6DFPGd1ZzCE7ndFcYJ/koZmA6ExfAP/0JRz0TSGCUSBttJ
+	ryy0H7VCWopxo9pQ2nuWwAu6p3WCChGaowk6cTsfV9MMaQEuoKogFLRahbI4FBRcLxR1ikVhI3D
+	q+nq0OhctcclLroy6Sawd0ZPKV5lLS1Gy2OLy
+X-Google-Smtp-Source: AGHT+IHItb9FX0fWN2MM4pYj544OpUsB66WeSfDGuaODqOudecBLf5ATg6AZ/ngQWd3qN6yPQtudPVotEpB8Jmx0lps=
+X-Received: by 2002:a05:6512:3d22:b0:539:f6c4:c29d with SMTP id
+ 2adb3069b0e04-53b34b39798mr5839187e87.54.1730209627512; Tue, 29 Oct 2024
+ 06:47:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20241024-topic-panthor-rs-platform_io_support-v1-1-3d1addd96e30@collabora.com>
+ <CAH5fLgjdDm3nNvR8g-a6Z8UsSnEDygLJ8i3u63aCrpG5ambQ3A@mail.gmail.com> <BC47085B-4160-4D9B-89F4-06EDE706CD5A@collabora.com>
+In-Reply-To: <BC47085B-4160-4D9B-89F4-06EDE706CD5A@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 29 Oct 2024 14:46:55 +0100
+Message-ID: <CAH5fLghv3cBGO0HEH-5GXiDZZWyKSJYxQu8s0fi8D=eneS-OXw@mail.gmail.com>
 Subject: Re: [PATCH] rust: platform: add Io support
 To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241024-topic-panthor-rs-platform_io_support-v1-1-3d1addd96e30@collabora.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20241024-topic-panthor-rs-platform_io_support-v1-1-3d1addd96e30@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/24/24 4:20 PM, Daniel Almeida wrote:
-> The IoMem is backed by ioremap_resource()
+On Mon, Oct 28, 2024 at 7:23=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> Hi Alice,
+>
+> > On 28 Oct 2024, at 12:37, Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
+> > <daniel.almeida@collabora.com> wrote:
+> >>
+> >> The IoMem is backed by ioremap_resource()
+> >>
+> >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> >> ---
+> >> The PCI/Platform abstractions are in-flight and can be found at:
+> >>
+> >> https://lore.kernel.org/rust-for-linux/Zxili5yze1l5p5GN@pollux/T/#t
+> >> ---
+> >> rust/bindings/bindings_helper.h |  1 +
+> >> rust/helpers/io.c               | 11 ++++++
+> >> rust/kernel/platform.rs         | 88 +++++++++++++++++++++++++++++++++=
+++++++++
+> >> 3 files changed, 100 insertions(+)
+> >>
+> >> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_=
+helper.h
+> >> index 217c776615b9593a2fa921dee130c357dbd96761..90b2d29e7b99f33ceb313b=
+4cc7f8232fef5eed17 100644
+> >> --- a/rust/bindings/bindings_helper.h
+> >> +++ b/rust/bindings/bindings_helper.h
+> >> @@ -13,6 +13,7 @@
+> >> #include <linux/errname.h>
+> >> #include <linux/ethtool.h>
+> >> #include <linux/firmware.h>
+> >> +#include <linux/ioport.h>
+> >> #include <linux/jiffies.h>
+> >> #include <linux/mdio.h>
+> >> #include <linux/of_device.h>
+> >> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+> >> index f9bb1bbf1fd5daedc970fc342eeacd8777a8d8ed..f708c09c4c87634c56af29=
+ef22ebaa2bf51d82a9 100644
+> >> --- a/rust/helpers/io.c
+> >> +++ b/rust/helpers/io.c
+> >> @@ -1,6 +1,7 @@
+> >> // SPDX-License-Identifier: GPL-2.0
+> >>
+> >> #include <linux/io.h>
+> >> +#include <linux/ioport.h>
+> >>
+> >> u8 rust_helper_readb(const volatile void __iomem *addr)
+> >> {
+> >> @@ -89,3 +90,13 @@ void rust_helper_writeq_relaxed(u64 value, volatile=
+ void __iomem *addr)
+> >>        writeq_relaxed(value, addr);
+> >> }
+> >> #endif
+> >> +
+> >> +resource_size_t rust_helper_resource_size(struct resource *res)
+> >> +{
+> >> +       return resource_size(res);
+> >> +}
+> >> +
+> >> +void __iomem *rust_helper_ioremap(resource_size_t addr, unsigned long=
+ size)
+> >> +{
+> >> +       return ioremap(addr, size);
+> >> +}
+> >> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> >> index addf5356f44f3cf233503aed97f1aa0d32f4f062..d152432c80a4499ead30dd=
+aebe8d87a9679bfa97 100644
+> >> --- a/rust/kernel/platform.rs
+> >> +++ b/rust/kernel/platform.rs
+> >> @@ -4,11 +4,15 @@
+> >> //!
+> >> //! C header: [`include/linux/platform_device.h`](srctree/include/linu=
+x/platform_device.h)
+> >>
+> >> +use core::ops::Deref;
+> >> +
+> >> use crate::{
+> >>     bindings, container_of, device,
+> >>     device_id::RawDeviceId,
+> >> +    devres::Devres,
+> >>     driver,
+> >>     error::{to_result, Result},
+> >> +    io::Io,
+> >>     of,
+> >>     prelude::*,
+> >>     str::CStr,
+> >> @@ -208,6 +212,49 @@ fn as_raw(&self) -> *mut bindings::platform_devic=
+e {
+> >>         // embedded in `struct platform_device`.
+> >>         unsafe { container_of!(self.0.as_raw(), bindings::platform_dev=
+ice, dev) }.cast_mut()
+> >>     }
+> >> +
+> >> +    /// Maps a platform resource through ioremap() where the size is =
+known at
+> >> +    /// compile time.
+> >> +    pub fn ioremap_resource_sized<const SIZE: usize>(
+> >> +        &self,
+> >> +        resource: u32,
+> >> +    ) -> Result<Devres<IoMem<SIZE>>> {
+> >> +        let res =3D self.resource(resource)?;
+> >> +        let size =3D self.resource_len(resource)? as usize;
+> >
+> > You're calling platform_get_resource twice here? Can you be sure that
+> > it returns the same pointer each time?
+>
+> This comes from the DT. Yes, it will be the same pointer (so long as we
+> pass the same index).
+>
+> Although, I did not see where it is being called twice?
 
-ioremap_resource()?
+The `resource_len` function calls `resource`, so you call `resource`
+twice. Each call to `resource` results in a call to
+`platform_get_resource`.
 
-Also, that's a rather short commit message for such a core piece of
-infrastructure, can you please expand on this?
+> >> +        // SAFETY: `res` is guaranteed to be a valid MMIO address and=
+ the size
+> >> +        // is given by the kernel as per `self.resource_len()`.
+> >> +        let io =3D unsafe { IoMem::new(res as _, size) }?;
+> >
+> > Why do we know that `res` is a valid MMIO address? Is it because
+> > platform_get_resource always does so?
+>
+> Again, if there=E2=80=99s a problem, the DT itself should be fixed. Also =
+the C code would be broken too.
 
-> 
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> ---
-> The PCI/Platform abstractions are in-flight and can be found at:
-> 
-> https://lore.kernel.org/rust-for-linux/Zxili5yze1l5p5GN@pollux/T/#t
-> ---
->   rust/bindings/bindings_helper.h |  1 +
->   rust/helpers/io.c               | 11 ++++++
->   rust/kernel/platform.rs         | 88 +++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 100 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 217c776615b9593a2fa921dee130c357dbd96761..90b2d29e7b99f33ceb313b4cc7f8232fef5eed17 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -13,6 +13,7 @@
->   #include <linux/errname.h>
->   #include <linux/ethtool.h>
->   #include <linux/firmware.h>
-> +#include <linux/ioport.h>
->   #include <linux/jiffies.h>
->   #include <linux/mdio.h>
->   #include <linux/of_device.h>
-> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-> index f9bb1bbf1fd5daedc970fc342eeacd8777a8d8ed..f708c09c4c87634c56af29ef22ebaa2bf51d82a9 100644
-> --- a/rust/helpers/io.c
-> +++ b/rust/helpers/io.c
-> @@ -1,6 +1,7 @@
->   // SPDX-License-Identifier: GPL-2.0
->   
->   #include <linux/io.h>
-> +#include <linux/ioport.h>
->   
->   u8 rust_helper_readb(const volatile void __iomem *addr)
->   {
-> @@ -89,3 +90,13 @@ void rust_helper_writeq_relaxed(u64 value, volatile void __iomem *addr)
->   	writeq_relaxed(value, addr);
->   }
->   #endif
+Sorry if I was unclear. I just wanted you to elaborate in the safety commen=
+t :)
+
+> >> +        let devres =3D Devres::new(self.as_ref(), io, GFP_KERNEL)?;
+> >> +
+> >> +        Ok(devres)
+> >> +    }
+> >> +
+> >> +    /// Maps a platform resource through ioremap().
+> >> +    pub fn ioremap_resource(&self, resource: u32) -> Result<Devres<Io=
+Mem>> {
+> >> +        self.ioremap_resource_sized::<0>(resource)
+> >> +    }
+> >
+> > I guess size zero is special?
+> >
+>
+> `ioremap_resource_sized` is used when you know the size at compile time. =
+Setting SIZE =3D=3D 0
+> means that you get runtime checks on whether your reads and writes are wi=
+thin bounds,
+> because you will have to use try_read() and try_write() instead of read()=
+ and write() or your build
+> will fail.
+>
+> This is not related to this patch in particular, but to a preceding one t=
+hat introduces struct Io.
+>
+> We merely expose the same API from Io to users here.
+>
+> Although I do agree it=E2=80=99s a bit confusing that SIZE 0 is special-c=
+ased. It took me a while and
+> several read-throughs to understand what was going on.
+>
+> Note that it=E2=80=99s common to have to read the size from the DT, so de=
+ferring to runtime checks
+> seems to be unavoidable in a lot of cases if we want to have a safe API.
+>
+> Here=E2=80=99s the relevant code from that commit:
+>
+> ```
+> +macro_rules! define_write {
+> + ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) =3D> {
+> + /// Write IO data from a given offset known at compile time.
+> + ///
+> + /// Bound checks are performed on compile time, hence if the offset is =
+not known at compile
+> + /// time, the build will fail.
+> + $(#[$attr])*
+> + #[inline]
+> + pub fn $name(&self, value: $type_name, offset: usize) {
+> +       let addr =3D self.io_addr_assert::<$type_name>(offset);
 > +
-> +resource_size_t rust_helper_resource_size(struct resource *res)
-> +{
-> +	return resource_size(res);
-> +}
+> +       // SAFETY: By the type invariant `addr` is a valid address for MM=
+IO operations.
+> +        unsafe { bindings::$name(value, addr as _, ) }
+> + }
 > +
-> +void __iomem *rust_helper_ioremap(resource_size_t addr, unsigned long size)
-> +{
-> +	return ioremap(addr, size);
-> +}
-> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> index addf5356f44f3cf233503aed97f1aa0d32f4f062..d152432c80a4499ead30ddaebe8d87a9679bfa97 100644
-> --- a/rust/kernel/platform.rs
-> +++ b/rust/kernel/platform.rs
-> @@ -4,11 +4,15 @@
->   //!
->   //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
->   
-> +use core::ops::Deref;
+> + /// Write IO data from a given offset.
+> + ///
+> + /// Bound checks are performed on runtime, it fails if the offset (plus=
+ the type size) is
+> + /// out of bounds.
+> + $(#[$attr])*
+> + pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
+> +       let addr =3D self.io_addr::<$type_name>(offset)?;
 > +
->   use crate::{
->       bindings, container_of, device,
->       device_id::RawDeviceId,
-> +    devres::Devres,
->       driver,
->       error::{to_result, Result},
-> +    io::Io,
->       of,
->       prelude::*,
->       str::CStr,
-> @@ -208,6 +212,49 @@ fn as_raw(&self) -> *mut bindings::platform_device {
->           // embedded in `struct platform_device`.
->           unsafe { container_of!(self.0.as_raw(), bindings::platform_device, dev) }.cast_mut()
->       }
+> +       // SAFETY: By the type invariant `addr` is a valid address for MM=
+IO operations.
+> +       unsafe { bindings::$name(value, addr as _) }
+> +       Ok(())
+> + }
+> ```
+>
+> Where,
+>
+> ```
+> + #[inline]
+> + fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+> +       if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> +               return Err(EINVAL);
+> + }
 > +
-> +    /// Maps a platform resource through ioremap() where the size is known at
-> +    /// compile time.
-> +    pub fn ioremap_resource_sized<const SIZE: usize>(
-> +        &self,
-> +        resource: u32,
-> +    ) -> Result<Devres<IoMem<SIZE>>> {
-> +        let res = self.resource(resource)?;
-> +        let size = self.resource_len(resource)? as usize;
+> + // Probably no need to check, since the safety requirements of `Self::n=
+ew` guarantee that
+> + // this can't overflow.
+> + self.base_addr().checked_add(offset).ok_or(EINVAL)
+> + }
+> + #[inline]
+> + fn io_addr_assert<U>(&self, offset: usize) -> usize {
+> +       build_assert!(Self::offset_valid::<U>(offset, SIZE));
 > +
-> +        // SAFETY: `res` is guaranteed to be a valid MMIO address and the size
-> +        // is given by the kernel as per `self.resource_len()`.
-> +        let io = unsafe { IoMem::new(res as _, size) }?;
-> +        let devres = Devres::new(self.as_ref(), io, GFP_KERNEL)?;
-> +
-> +        Ok(devres)
-> +    }
-> +
-> +    /// Maps a platform resource through ioremap().
-> +    pub fn ioremap_resource(&self, resource: u32) -> Result<Devres<IoMem>> {
-> +        self.ioremap_resource_sized::<0>(resource)
-> +    }
-> +
-> +    /// Returns the resource len for `resource`, if it exists.
-> +    pub fn resource_len(&self, resource: u32) -> Result<bindings::resource_size_t> {
-> +        match self.resource(resource) {
-> +            // SAFETY: if a struct resource* is returned by the kernel, it is valid.
-> +            Ok(resource) => Ok(unsafe { bindings::resource_size(resource) }),
-> +            Err(e) => Err(e),
+> +       self.base_addr() + offset
+> + }
+> ```
+>
+> And
+>
+> ```
+> + #[inline]
+> + const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> +       let type_size =3D core::mem::size_of::<U>();
+> +       if let Some(end) =3D offset.checked_add(type_size) {
+> +               end <=3D size && offset % type_size =3D=3D 0
+> +       } else {
+> +               false
+> +       }
+> + }
+> ```
+
+Acknowledged.
+
+> >> +    /// Returns the resource len for `resource`, if it exists.
+> >> +    pub fn resource_len(&self, resource: u32) -> Result<bindings::res=
+ource_size_t> {
+> >
+> > Should this just return usize? Should we have a type alias for this siz=
+e type?
+>
+>
+> I guess usize would indeed be a better fit, if we consider the code below=
+:
+>
+> ```
+> #ifdef CONFIG_PHYS_ADDR_T_64BIT
+> typedef u64 phys_addr_t;
+> #else
+> typedef u32 phys_addr_t;
+> #endif
+>
+> typedef phys_addr_t resource_size_t;
+
+Hmm. I guess they probably do that because phys_addr_t could differ
+from size_t? Sounds like we may want a typedef called phys_addr_t
+somewhere on the Rust side?
+
+> >> +        match self.resource(resource) {
+> >> +            // SAFETY: if a struct resource* is returned by the kerne=
+l, it is valid.
+> >> +            Ok(resource) =3D> Ok(unsafe { bindings::resource_size(res=
+ource) }),
+> >> +            Err(e) =3D> Err(e),
+> >> +        }
+> >> +    }
+> >> +
+> >> +    fn resource(&self, resource: u32) -> Result<*mut bindings::resour=
+ce> {
+> >> +        // SAFETY: By the type invariants, we know that `self.ptr` is=
+ non-null and valid.
+> >> +        let resource =3D unsafe {
+> >> +            bindings::platform_get_resource(self.as_raw(), bindings::=
+IORESOURCE_MEM, resource)
+> >> +        };
+> >> +        if !resource.is_null() {
+> >> +            Ok(resource)
+> >> +        } else {
+> >> +            Err(EINVAL)
+> >> +        }
+> >> +    }
+> >> }
+> >>
+> >> impl AsRef<device::Device> for Device {
+> >> @@ -215,3 +262,44 @@ fn as_ref(&self) -> &device::Device {
+> >>         &self.0
+> >>     }
+> >> }
+> >> +
+> >> +/// A I/O-mapped memory region for platform devices.
+> >> +///
+> >> +/// See also [`kernel::pci::Bar`].
+> >> +pub struct IoMem<const SIZE: usize =3D 0>(Io<SIZE>);
+> >> +
+> >> +impl<const SIZE: usize> IoMem<SIZE> {
+> >> +    /// Creates a new `IoMem` instance.
+> >> +    ///
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// The caller must make sure that `paddr` is a valid MMIO addres=
+s.
+> >> +    unsafe fn new(paddr: usize, size: usize) -> Result<Self> {
+> >
+> > What happens if `size !=3D SIZE`?
+>
+>
+> ```
+> +impl<const SIZE: usize> Io<SIZE> {
+> + ///
+> + ///
+> + /// # Safety
+> + ///
+> + /// Callers must ensure that `addr` is the start of a valid I/O mapped =
+memory region of size
+> + /// `maxsize`.
+> + pub unsafe fn new(addr: usize, maxsize: usize) -> Result<Self> {
+> +       if maxsize < SIZE {
+> +               return Err(EINVAL);
 > +        }
-> +    }
-> +
-> +    fn resource(&self, resource: u32) -> Result<*mut bindings::resource> {
-> +        // SAFETY: By the type invariants, we know that `self.ptr` is non-null and valid.
-> +        let resource = unsafe {
-> +            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, resource)
-> +        };
-> +        if !resource.is_null() {
-> +            Ok(resource)
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
->   }
->   
->   impl AsRef<device::Device> for Device {
-> @@ -215,3 +262,44 @@ fn as_ref(&self) -> &device::Device {
->           &self.0
->       }
->   }
-> +
-> +/// A I/O-mapped memory region for platform devices.
-> +///
-> +/// See also [`kernel::pci::Bar`].
-> +pub struct IoMem<const SIZE: usize = 0>(Io<SIZE>);
+> ```
+>
+> As we=E2=80=99ve seen in the other code snippets I pasted, it=E2=80=99s S=
+IZE that is used in the try_read and
+> try_write checks.
 
-Is this meant to be bus specific, such as `pci::Bar` is PCI specific?
+Ok.
 
-If so, I think it'd be better to pass the platform device and resource index to
-`platform::IoMem` (or whatever we want to call it) and let it take care of 
-everything.
-
-> +
-> +impl<const SIZE: usize> IoMem<SIZE> {
-> +    /// Creates a new `IoMem` instance.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must make sure that `paddr` is a valid MMIO address.
-> +    unsafe fn new(paddr: usize, size: usize) -> Result<Self> {
-> +        // SAFETY: the safety requirements assert that `paddr` is a valid MMIO address.
-> +        let addr = unsafe { bindings::ioremap(paddr as _, size as u64) };
-
-Do we need to consider ioremap_uc(), ioremap_wc(), ioremap_np()?
-
-Also, I think you're missing request_region() here.
-
-> +        if addr.is_null() {
-> +            return Err(ENOMEM);
-> +        }
-> +
-> +        // SAFETY: `addr` is guaranteed to be the start of a valid I/O mapped memory region of
-> +        // size `size`.
-> +        let io = unsafe { Io::new(addr as _, size)? };
-> +
-> +        Ok(IoMem(io))
-> +    }
-> +}
-> +
-> +impl<const SIZE: usize> Drop for IoMem<SIZE> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: Safe as by the invariant of `Io`.
-> +        unsafe { bindings::iounmap(self.0.base_addr() as _) };
-> +    }
-> +}
-> +
-> +impl<const SIZE: usize> Deref for IoMem<SIZE> {
-> +    type Target = Io<SIZE>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.0
-> +    }
-> +}
-> 
-> ---
-> base-commit: 2a5c159f49a5801603af03510c7cef89ff4c9850
-> change-id: 20241023-topic-panthor-rs-platform_io_support-f97aeb2ea887
-> 
-> Best regards,
-
+Alice
