@@ -1,77 +1,85 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCF1204035
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 11:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163C205133
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 11:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730202222; cv=none; b=FMCr7zCZmhoRBqlE6pTR6gYhC8glxtCmwFhyc7fObFxeJ0kOM7+L/eZmLV+etn2mbx6x/IwiltiC3G+cE58wvnI/l4dfu0HjkCEgXx+e/nPWRTG3UVW4j/bR6p9TNzT2f8/+cuAWQxW9eihVrrRpEZYvj9K/cVStO/aRn7ODaDg=
+	t=1730203162; cv=none; b=sRx4pSCIY3P2xc9G19R4mrAx4s48aYza5HQVQVgcfuu8hhXQtvu4QVhWkvitGFy8T7mJmFLgU1upFT32BMtIKOxvEdiVXl52t8+aiQkzBAX1uiAUwXGKK5pBH/K5QbIj+guacEGtadoRCRK61tQuyYS3K0dTc8mfT6xGBK1QjUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730202222; c=relaxed/simple;
-	bh=JCmaIhmnxRpxxLYwl6HbdoQXKg1XuDM8GTD9armEslo=;
-	h=Message-ID:Content-Type:From:Mime-Version:Subject:Date:References:
-	 Cc:In-Reply-To:To; b=f0E9ofBx3RnpS0xcbeUtsRw1XF0cZzaQbEEidBPYUg0sqNTTpYneE0qGrV3SDA5bM6UIGOBFoblNO4kPCvG7nK7Dsj9+Bkil6jG748+7Wfwjrhe+hyPG4vgClutYIISJ+FAqvjy6qMk4Mh76+00VzbdQ1lOSCkvFT8Jmw+pq2WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=FqEBDkcO; arc=none smtp.client-ip=43.163.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1730203162; c=relaxed/simple;
+	bh=KnVUXaVKB5y0TG2yLz8bQXQzHlldf0oR8DEfxOVn/Co=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qqi5LHr/NFP/smvuHwKwjVMH9me04VLGkgtKn9q3p6ZWf/PS718naSpiWh9b3iqAstTeVKBhfeAoKIC4S1AxCahnM346xzzfJMgHfTZakaoEVXtqjfvKFISshO5rDCCbO4/htDb+5lkaLp7AD5S/Xp3ro9OhohffPY4KWBBIBPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q9HVOxQP; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="FqEBDkcO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1730201910; bh=JCmaIhmnxRpxxLYwl6HbdoQXKg1XuDM8GTD9armEslo=;
-	h=From:Subject:Date:References:Cc:In-Reply-To:To;
-	b=FqEBDkcOd1/p+Jii7CPA8OsUxPxiEn79T8oQLvwxa4nnVO+1cpHoQaSCp5U9S90zU
-	 MA/Q+x7cRrwFyg7zcItzUnKrnJBROfI+yrIzXoy6l6tF6ftjukf/8llpePrcxkYtcL
-	 VToXi3xurUZ0bsLlr2kJjJ/ru+YE+nvNC3/CrpI4=
-Received: from smtpclient.apple ([240e:47e:d800:409c:48c3:2f09:4c53:9e21])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id 99C84CDD; Tue, 29 Oct 2024 19:38:28 +0800
-X-QQ-mid: xmsmtpt1730201908tu2sa668k
-Message-ID: <tencent_FA97431A44741CE61FE95CEDBCD62CA43A08@qq.com>
-X-QQ-XMAILINFO: Of6TnALcrk8RborGbpwe9uQVllNR+pPZmhuYauUFq0W3KseYiMA2oJAmV96PND
-	 vE5fC6euZWmA6VDvzNjwJxC8YSqEQHAd3qvyJDqS3DPO5yL1CQu560uwCvjUA2zxinnZMbelcsfE
-	 um6wy/YUk/SodGmZLlWTIO3mSQXCBlqZXPeUbfa9YuCR1DDUP/PQAE/ykxr2xoBxo25gI1LyoNvd
-	 u23HvvrdRZpZB5FsqRPx1fSeTGLxJyX4Hqi9fhC9kWnTk1SKkB/27YOvK6ItxI+CXK1/23odcs+A
-	 udYgZaV59Zgc5d8117ywiS9nBBYrxbSUMZ1RuXPTlFmSOQw7K1Wc7gHfSBrukYqiBRQeOtulWK35
-	 c0jwMd4oO+E+gZqMqqIBT6DCY/eEgXfK14pQztmqPMNjgDgOU/mrVargl96SzT30H3SVtd7e3nJV
-	 jWCuno1CmyDpZ7ekZAc4/S4kP8fRmQREOremJ2CeoQdYJWZzukXqRVFPlhKLtWY2za3ppdlPTeON
-	 dLORX0eCRkuw2m5/4+mjj07+TSg4d2iwj6RPuENXF9eM7G5yVSeieT9SaU1ZP/m2MBDYnbI2qw3k
-	 XEYYOsHrJ+3w5I+XQpiMbzNEQXXyVfBXT9fVj5VY+mOWX6r7Eg2OsULhkRe4iyAZbypAlRcLi2iE
-	 tf7AMSEMGIurMbqvyBPJ9lpgemDkoPGUuMOJRZ2/wBCfxwy6C6RaOsp2wus4fcrxkevuMz8GjRlv
-	 5tUxaAuOF0rKUambIEFNkvbYuKshUzlLh+U6Sch0W1fmiBrd9/Wg71YUrd4aZDh3nV8fGJ3R3wJb
-	 4B1oCEuR/4s+s6BnL9MMf7mFmMgbOXjSZJDdnnyPver0plz7/Rk1b5EA0DOFEvoQyW/NlFFVzDAb
-	 UimURC4S9D7nnWizgbINmpg//ehd7X6c9gHxiPmIdltJuuhaZsMuAR5+mjSbCpyEX4+OG0UwUCyW
-	 Egs0fFNtG7E4L6ZJj6WKX8hVI3AwA5
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: =?utf-8?B?5bSU5YWJ5Y2a?= <2407018371@qq.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q9HVOxQP"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539983beb19so6334803e87.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 04:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730203159; x=1730807959; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KnVUXaVKB5y0TG2yLz8bQXQzHlldf0oR8DEfxOVn/Co=;
+        b=Q9HVOxQPEIysoFbSHzRVMaF2EcU9lSoSDcXUMaFrcP7Wz4JbME58ESZK+ayfVaYOM+
+         tlU43+k0f3Bt9N/VAyQoGBrWjC2NRgCcMmqrVP+EUn2P5yA+5e2YJH6nVcAp5u/OeQQU
+         ruAC3cJMkMwa+ZaMNfvlnZB4YEqBVzuinGHp/tx9rnr1ogGiiUSGHHPpx/5UKQiV9txn
+         WiZRqz7pkGxQnuaBockNBydX+QoEyNoovT1gfj5N+YivNTqT3rMLwMSuOlsCyBTfZHyp
+         a/T6M8wGi5ieHnB3nx+ga3Bj7nUAaryR5GtWNIlR4IoYqQPoZQIoxv+PvxQDJ7Qi0pR1
+         JoVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730203159; x=1730807959;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KnVUXaVKB5y0TG2yLz8bQXQzHlldf0oR8DEfxOVn/Co=;
+        b=gGxo6VxyYnAj2DzSnax8P+zdxtPuMQRVm/oyITsgrhrpGAcL7DEoAyvrIZLP19KyGL
+         DQlHjs8L0dTiGWl33XqrAYPWq9NlVdYv180OaqBYd6g/ru2hxBeLCJBO26skI0a3BWB9
+         1DZmegFQ2jPDWcNawl3gia4LE1XrxzXN7Vzu8KlonnWH5y10+rM4oRZp+Jo89OQgSe4M
+         urWhgvgLgHy+mhslbuWXmbtWQyA14Jq8dbOAUnOjHNY9F2k1gC+SQiCufcMw+owomYY6
+         kyYShqECT1elFtBMH+bJ7fZkO6PnJ8d3W97Q3WUpo5MymPOFSZ90G0P8fIQjxRKZRuq5
+         SwUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmtaVxNWWRJ9Ho4L4VpEoOL22OdXR30ORLT5U0Rw6N2BybELfql/dTv741WwGprBIlxsHcLikwgtqgrv/G2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOWaUDjbSM9vZz9iEVUwcXayg3njFwBmVe+8iKi1Z6cmVgNGaO
+	3uzEQ5SSIASWOAs+IbJLnQYdnOfIOZNCGlo4nKQc0rElZSi1zpjCD1YP1oAKdD8Q8ly8Xwv5wcH
+	VW4pcq2kjVcvQr41P/FybGc6DAD4lKrjGnZZEDRkz/efso7Q8mg==
+X-Google-Smtp-Source: AGHT+IEXIWzFCFMjjrHGrHTNAb/w0zyZCb19ulrPIZWWw3Hxnr8q0Cp+66ZSr9KrOfShicv/GQzC/wNYgN3ZdxtSuEw=
+X-Received: by 2002:a05:6512:110f:b0:539:ea49:d163 with SMTP id
+ 2adb3069b0e04-53b348c8a11mr5903365e87.21.1730203158778; Tue, 29 Oct 2024
+ 04:59:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v2] rust: Implement Display for Box
-Date: Tue, 29 Oct 2024 19:38:18 +0800
-X-OQ-MSGID: <CF3956C2-B6B9-45B3-A5E9-742A51477EF4@qq.com>
-References: <CAH5fLgg_2uxUQr6T-g4dtCuv6bA0X7SQDi5dUt3kLDOG2sw8GQ@mail.gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org
-In-Reply-To: <CAH5fLgg_2uxUQr6T-g4dtCuv6bA0X7SQDi5dUt3kLDOG2sw8GQ@mail.gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: iPhone Mail (22B5023e)
+MIME-Version: 1.0
+References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+In-Reply-To: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 29 Oct 2024 12:59:05 +0100
+Message-ID: <CAH5fLgjmfzTU_88H4mGiv++CbBj0xB5AoiimULCEx_b0wsMmMw@mail.gmail.com>
+Subject: Re: [PATCH] rust: irq: add support for request_irq()
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> They are equivalent. I said "more obvious" in the sense that my
-> version makes it easier for the reader to *verify* that they are
-> equivalent.
+On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> Both regular and threaded versions are supported.
+>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Sorry, English isn=E2=80=99t my first language. I=E2=80=99ll change it in ne=
-xt version, Thanks.
+Why implement request_irq over devm_request_irq?
 
-Regards,
-Jckeep=
-
+Alice
