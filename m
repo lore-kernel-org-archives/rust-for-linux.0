@@ -1,293 +1,101 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3541392
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 14:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF55206045
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 14:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730211406; cv=none; b=td1jSOhB4Hnpp7POrTFZQTcA853tBmNevHCdudaL5H3IqEWcwxVJk0HV/mozuoQOxRFjFBYrjARi1trRzWL91aWVKIhf1XZYHwOrHgCfwUMOvN9Gx5fpFFAVbdV7txXA094xl4SVpTsan4n/Oy/moRvGDs7cRlF1jwXiMrdKico=
+	t=1730211472; cv=none; b=IMzmGaNbAr9mrrSibVCiZLE9DlADXtMXxaI6VIusfDr5ee91WwN6HXXB5iSrbRV9eJVAWmWo+D/3X+/+6Kz01uUwQqeQzwy3I7d8ypAMcagzXT5W7IrzmCbxWWTIPXqL4lmAwfErVLM4l+Z+7bqqzeQh4HPKLsYL9Xx0HTdHmgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730211406; c=relaxed/simple;
-	bh=UQEvXpB+gCYw5ekhyUv+qz++Xa7jR5ixcUi6qSQssUs=;
+	s=arc-20240116; t=1730211472; c=relaxed/simple;
+	bh=L6njmtDV2cbOykXHmeJ6c8LVfIwB8LafghBRfLJvvy8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vF3wgVZpblmoj5NfAwlRBISX1Oa7IF/Or0QFf2YtlR9ufW/WL3qYtI9DBaNeBVH7kk7Za4ZVAq6nSmYIyG0GEUjAA8mOUn38H3+PCCF3fOnTzq2geZIHnyd9vWk5Av30Xmuv/sgMhncSoN4XI/C9d5J/CObmhvG7Mg91Jun1TWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fOJsXV3K; arc=none smtp.client-ip=209.85.221.49
+	 To:Cc:Content-Type; b=X6R1nKLL0daiL2loy24W5iLH4gC8qfrL7J0bccRAfHangFBs3QOM1UScEhm062Izb599alws7+TRXFQm3nNuX8zeC80eU5MlWspTJ7BX22aYv5NxJzf/co2NVZIy9xQZt0Kxt56FxQDiRQFc4HNj0jOh6lEA/8fqjVY2HFt5uO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TwFCwFZX; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fOJsXV3K"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-37d4fd00574so3577750f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 07:16:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TwFCwFZX"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4319399a411so41807175e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Oct 2024 07:17:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730211402; x=1730816202; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730211468; x=1730816268; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EF49F4TL2bGDfzZ1W3gqbFJy0q9VsnFcF7FddQtLUFA=;
-        b=fOJsXV3KiV1EQWRPkZtRhli4B3eylGwjYL+PHeY6CSQq0rV39F9PMMjuopYHC8B4yM
-         vDX5BDsSIuUcN7mHl1KbKm8CQQ2y2dWtwdcfZCuCccDDudFYwawpkN+hWxP48i0g2Qw7
-         k97qGcgdZCjqcHZf00Y7mYKaprLwpLoiJS9vi0BVZ65iGyz/h6oRdc15VL8nBmqDkUgx
-         XTV3HyvK2dMpqtB0qKUOQ1AysZH02w0RCo0nn2BweuPjDZYafugp6zDbWyoj7wXbAvde
-         VfUIsvu7x/okB/JQ2yxNj2IS0HqgeIg0USXnkhYTbB9LYuH2ArRqtmkIKGjlfrd5ULjN
-         M5wQ==
+        bh=L6njmtDV2cbOykXHmeJ6c8LVfIwB8LafghBRfLJvvy8=;
+        b=TwFCwFZXPn+V3TXef0Gr+Fq/AB6ok554ZcAKIpCXw/oXL9C4Nh498UcHG3LexRKDIl
+         wC9Kj3gGgtm7Y175kX4gC4YFeanHtk1/OoKdAqU4nkuFKP23fVir4AvjQzLFcErQj3pM
+         RmwvJAHZPyEXwMKM0qZtm8tsswmawWksau2brE5RNo3XLOh6wIjN+QfETgziIlxY3pLX
+         c0DPvTCG7TC8tBFgapK69xqdn44+bFK4V7MHNh5ieJPqKcLU2VGBrHFqWO7MoIarlUBs
+         7KXPoENevovQ9HQlYFS7IgNJ3RnpmUYKbvGNOkVWl2C2aeIPvHu5BskyPji/8mnYeHSF
+         F1uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730211402; x=1730816202;
+        d=1e100.net; s=20230601; t=1730211468; x=1730816268;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EF49F4TL2bGDfzZ1W3gqbFJy0q9VsnFcF7FddQtLUFA=;
-        b=UBGXxSTDbkd3MKo5fJISGeCuxH2FJDFq9ixHpe3UORjmeF9hIgMhMsSFCbloaLCgBh
-         hlSZ8hqnYpUBV6H4CmQsvVxJwX91iksQihg1kvPZoqL/sWXjffVb3H8EEQtkUWoMuLc0
-         ldFFoaV5Q+A/K8589Fkiqh1AgmxK69tLraud7BeX83zKGtZwERSRubllUG6KCd9sUwhT
-         QVC5kkQmRUE8o65c/uQ7jObox+CJkNi9pTz/q6YhvxIuqlJROtbpF8rzAX6PNgdCo4IE
-         zhDMOre8P6+vDGh2Tl9UOjtFsNqL44i8d6VnzEkYzqOzSCLK3Rg6pN/Op4BZ5Qn8Azwl
-         L5rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7UON0HHZc2Ku1xBTzQRBWrdhdmuy/JX0ySYvTcIRb49Aa3wqasibP23XgPMvk3Miz7a21gvtEajX67TW0ag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMIotBBhx7JCrh0r5pFx0rPICME8RgcsYvSCEBqyJP5wteSTgA
-	3ebjjxDpg8yw86yiTZbFKlcfNhEdXQpqFJQ0eMR9lBe8rFS1V47CP8elNmH9LqirkOOq2lx0Dys
-	9P2iy6rxr0bSeQPsU3axXMAxsXUTpHqlfDrTm
-X-Google-Smtp-Source: AGHT+IEfbXY1+De9GOc7DR30d21LlHb1sNgtBauu2PL1dMzu0MewQT6NNFZLprHgHhJf205GTElgQn6gFzczzSX0Ak4=
-X-Received: by 2002:a05:6000:acb:b0:37d:3b31:7a9d with SMTP id
- ffacd0b85a97d-38162909bdcmr2015705f8f.23.1730211402215; Tue, 29 Oct 2024
- 07:16:42 -0700 (PDT)
+        bh=L6njmtDV2cbOykXHmeJ6c8LVfIwB8LafghBRfLJvvy8=;
+        b=lYaEeC7u3oIObjTUaB+DMFvWMOdNkjhlEC29kkqH7uvZ/etorNc31YDXtkkJAgYHlU
+         eo6CYk3ZnjPxsozshqQkONQmbQm+cvrC+/7lmrOipuR7TCjoPCiIGRMGhYIeKPRsQ2By
+         40ZamCIYLU3yQi+dLd1Iu+OlLRuGp1/iPYWWU1/X/Hg7RvPF7Qrfnw1EvpgK4fu3Xytu
+         Vk/x+JtHc1gMZQ0pbPBpMtGG1RMYEe3hamVwVsDt89kWSYhL/okoNOIFSaolTBWvbCbf
+         n9uoGVg1mNnP80YRNzN5FUGUakPW2rt5icsdisM695Q+2SNPab8XmfMDix8r7cIP5WOw
+         Sosg==
+X-Forwarded-Encrypted: i=1; AJvYcCV5lYfuVtqFSuZFW5WJtD7NMF7WmFLtDki24MNg/CrFCxJDe6qvYePenmOxXJ++QO9ThMyFPHmJRcyjR+BABg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPI5dOh2DKC+xJjbOxontxOHG87xZ/vp60WW7WBG5yeeqrdKQC
+	w60HeeBzvIp6i3DHpZWhRnzva/aFH8bnR04VFRd2Nl9FScGwbyfNHJDQlGchgyGwQOzOEEiV+Cn
+	Wrktnvl/DXdyAkU5RFcex8tIX9q1g5Qq9GYl9
+X-Google-Smtp-Source: AGHT+IHhbBKGiK7BgU4W978cOb33NcTjzUbMbdW09EsxTh1luCi/3DLowadG0MtS+fdBvmIOkjTTesI9JgwmFdik64o=
+X-Received: by 2002:a05:600c:4f03:b0:42c:ba83:3f0e with SMTP id
+ 5b1f17b1804b1-4319ac7078dmr109957335e9.7.1730211468245; Tue, 29 Oct 2024
+ 07:17:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org> <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
-In-Reply-To: <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
+References: <20241023-static-mutex-v6-1-d7efdadcc84f@google.com> <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
+In-Reply-To: <Zx_OoCRrA_WTay_O@Boquns-Mac-mini.local>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Oct 2024 15:16:29 +0100
-Message-ID: <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
-Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+Date: Tue, 29 Oct 2024 15:17:36 +0100
+Message-ID: <CAH5fLgg6xO71ud3mHvEaKhU1tYKf7RKTrVcL1brHoORf9nSgoQ@mail.gmail.com>
+Subject: Re: [PATCH v6] rust: add global lock support
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 25, 2024 at 11:06=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org=
-> wrote:
+On Mon, Oct 28, 2024 at 6:49=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
 >
-> The device property API is a firmware agnostic API for reading
-> properties from firmware (DT/ACPI) devices nodes and swnodes.
+> On Wed, Oct 23, 2024 at 01:23:18PM +0000, Alice Ryhl wrote:
+> > Add support for creating global variables that are wrapped in a mutex o=
+r
+> > spinlock.
+> >
+> > The implementation here is intended to replace the global mutex
+> > workaround found in the Rust Binder RFC [1]. In both cases, the global
+> > lock must be initialized before first use. The macro is unsafe to use
+> > for the same reason.
+> >
+> > The separate initialization step is required because it is tricky to
+> > access the value of __ARCH_SPIN_LOCK_UNLOCKED from Rust. Doing so will
+> > require changes to the C side. That change will happen as a follow-up t=
+o
+> > this patch.
+> >
+> > Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-=
+08ba9197f637@google.com/#Z31drivers:android:context.rs [1]
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 >
-> While the C API takes a pointer to a caller allocated variable/buffer,
-> the rust API is designed to return a value and can be used in struct
-> initialization. Rust generics are also utilized to support different
-> sizes of properties (e.g. u8, u16, u32).
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
-> Not sure if we need the KVec variant, but I kept it as that was my first
-> pass attempt. Most callers are filling in some value in a driver data
-> struct. Sometimes the number of elements is not known, so the caller
-> calls to get the array size, allocs the correct size buffer, and then
-> reads the property again to fill in the buffer.
->
-> I have not implemented a wrapper for device_property_read_string(_array)
-> because that API is problematic for dynamic DT nodes. The API just
-> returns pointer(s) into the raw DT data. We probably need to return a
-> copy of the string(s) instead for rust.
->
-> After property accessors, next up is child node accessors/iterators.
-> ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/device.rs           | 145 ++++++++++++++++++++++++++++++++++=
-+++++-
->  2 files changed, 145 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 217c776615b9..65717cc20a23 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -19,6 +19,7 @@
->  #include <linux/pci.h>
->  #include <linux/phy.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
->  #include <linux/refcount.h>
->  #include <linux/sched.h>
->  #include <linux/slab.h>
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 0c28b1e6b004..bb66a28df890 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -5,10 +5,14 @@
->  //! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
->
->  use crate::{
-> +    alloc::KVec,
->      bindings,
-> +    error::{to_result, Result},
-> +    prelude::*,
-> +    str::CStr,
->      types::{ARef, Opaque},
->  };
-> -use core::{fmt, ptr};
-> +use core::{fmt, mem::size_of, ptr};
->
->  #[cfg(CONFIG_PRINTK)]
->  use crate::c_str;
-> @@ -189,6 +193,145 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Ar=
-guments<'_>) {
->              )
->          };
->      }
-> +
-> +    /// Returns if a firmware property `name` is true or false
-> +    pub fn property_read_bool(&self, name: &CStr) -> bool {
-> +        unsafe { bindings::device_property_present(self.as_raw(), name.a=
-s_ptr() as *const i8) }
-> +    }
-> +
-> +    /// Returns if a firmware string property `name` has match for `matc=
-h_str`
-> +    pub fn property_match_string(&self, name: &CStr, match_str: &CStr) -=
-> Result<usize> {
-> +        let ret =3D unsafe {
-> +            bindings::device_property_match_string(
-> +                self.as_raw(),
-> +                name.as_ptr() as *const i8,
-> +                match_str.as_ptr() as *const i8,
-> +            )
-> +        };
-> +        to_result(ret)?;
-> +        Ok(ret as usize)
-> +    }
-> +
-> +    /// Returns firmware property `name` scalar value
-> +    ///
-> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> +    pub fn property_read<T: Copy>(&self, name: &CStr) -> Result<T> {
-> +        let mut val: [T; 1] =3D unsafe { core::mem::zeroed() };
-> +
-> +        Self::_property_read_array(&self, name, &mut val)?;
-> +        Ok(val[0])
-> +    }
-> +
-> +    /// Returns firmware property `name` array values
-> +    ///
-> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> +    pub fn property_read_array<T, const N: usize>(&self, name: &CStr) ->=
- Result<[T; N]> {
-> +        let mut val: [T; N] =3D unsafe { core::mem::zeroed() };
-> +
-> +        Self::_property_read_array(self, name, &mut val)?;
-> +        Ok(val)
-> +    }
-> +
-> +    fn _property_read_array<T>(&self, name: &CStr, val: &mut [T]) -> Res=
-ult {
-> +        match size_of::<T>() {
-> +            1 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u8_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u8,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            2 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u16_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u16,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            4 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u32_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u32,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            8 =3D> to_result(unsafe {
-> +                bindings::device_property_read_u64_array(
-> +                    self.as_raw(),
-> +                    name.as_ptr() as *const i8,
-> +                    val.as_ptr() as *mut u64,
-> +                    val.len(),
-> +                )
-> +            })?,
-> +            _ =3D> return Err(EINVAL),
-> +        }
-> +        Ok(())
-> +    }
-> +
-> +    pub fn property_read_array_vec<T>(&self, name: &CStr, len: usize) ->=
- Result<KVec<T>> {
-> +        let mut val: KVec<T> =3D KVec::with_capacity(len, GFP_KERNEL)?;
-> +
-> +        // SAFETY: len always matches capacity
-> +        unsafe { val.set_len(len) }
-> +        Self::_property_read_array::<T>(&self, name, val.as_mut_slice())=
-?;
-> +        Ok(val)
-> +    }
-> +
-> +    /// Returns array length for firmware property `name`
-> +    ///
-> +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> +    pub fn property_count_elem<T>(&self, name: &CStr) -> Result<usize> {
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-This always returns usize? I'm a bit confused ...
-
-> +        match size_of::<T>() {
-> +            1 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u8_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            2 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u16_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            4 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u32_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            8 =3D> {
-> +                ret =3D unsafe {
-> +                    bindings::device_property_read_u64_array(
-> +                        self.as_raw(),
-> +                        name.as_ptr() as *const i8,
-> +                        ptr::null_mut(),
-> +                        0,
-> +                    )
-> +                }
-> +            }
-> +            _ =3D> return Err(EINVAL),
-
-You can use `kernel::build_error!` here to trigger a build failure if
-the size is wrong.
+Thanks!
 
 Alice
