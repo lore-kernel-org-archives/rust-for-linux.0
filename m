@@ -1,222 +1,82 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33F31863F;
-	Tue, 29 Oct 2024 02:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5F47464;
+	Tue, 29 Oct 2024 06:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730167741; cv=none; b=P1R/gkKUgCeV9EBKdbj5n1K6do0ev4ZStXu71cF6BQ+AVOAYSEPxZ/63anorjFYprwWq1y1xzAlphGfU+4HjPcJjwkcvWmNnbthaTLCmvJbC8JoZtdk8FpvFX03AXgSSAlYsA3rGiHJQApP7O4NAjFKZb5im6nBe8ZfC1u9ZbUY=
+	t=1730182338; cv=none; b=XAGHiTQVeNQ902qnB0lPjfZd6wjNs6Q9uhNMy3RVTKVBbh3pvogLTUEX7nyIYO+SeUffuZjRXe6/XMcsMGeX/1LgHCEfjzvPOxdqx7gbQl8nSF4/fAxnWP0b17cU7/+eiG8wpp7LwH3EczL6x8lFr4oa504i4rhoyzMx1+8eNRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730167741; c=relaxed/simple;
-	bh=LKgbyEk4LMPGGHytb6lDuy0msQtdn+V7JOF1z1aqpzo=;
+	s=arc-20240116; t=1730182338; c=relaxed/simple;
+	bh=Kzk8mG3w4M0DJo16dim3KWCQXCsAv1NmNVUeuFf3sBA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jezFoc+j8DgeNYA6w2jstv+ozmS63DgLm2L2H7PNn7zk4NhjJlcDtMFYFkDVCFtcSZR+bPWeS/CHULtB0Z/xDFM49CMP8aD3X/M+/i1oPiVbbsCxN7wGxP6oBN20fqnKuc0nZZH37wu0VnoQq3wXeqDauPf02xWHbLYzpsWLzjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bdohM4aS; arc=none smtp.client-ip=209.85.128.176
+	 To:Cc:Content-Type; b=S9hWV0uZbY/B638T8RJV9LeB4LQQUJbw29CZC09uDg9jwzVFlMGPQX26zJ/Wk8/bPWZnybFAg6MxwuinfQIV5RxFGQkDfJNVAoDCxYNfMGRniZ6LBfGyLwKRzORZ+hj2JNA/up9xIDcjAQ6vub7CjCXXZtAvB6ZXhfdLPhpfxmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLa8QQgp; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bdohM4aS"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6e8063533b5so48780027b3.1;
-        Mon, 28 Oct 2024 19:08:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLa8QQgp"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20c693b68f5so54159355ad.1;
+        Mon, 28 Oct 2024 23:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730167739; x=1730772539; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730182335; x=1730787135; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=POAC9Eq7jdy/DJpHixlYJQgZCur0l0rG31IXlnXpLtM=;
-        b=bdohM4aSnftZhPNW8958CWRKuS0w0dkOz8rDh+a25HY6wKfLqiFxBr8AD2MZWjf5V2
-         DSls6RDOitd5PPf9ugHFdFyqBtC58n/KTgkQ7anqd/Lzfazfb8ResQK7bijY9VfkD85a
-         TDyrYI8TXcjA9eagHoSknO1YCrCwm6Z50Szd6V6y9xUHAlWczDFNtHWm7PcYEIHF6HZ8
-         SWsyKwU7SmjJ8wzUcQ8F5qdASh82dI891Pj+XWnXU74ZtzXQQWHtHPPwcJLMIQQ/o4t+
-         zkSJPF78srDjXKdZEP372EgYAxXJQ5g67NSamZ4aNHWYvkhYQ0qkPBRV2piFP5EwGUXt
-         fULw==
+        bh=Kzk8mG3w4M0DJo16dim3KWCQXCsAv1NmNVUeuFf3sBA=;
+        b=BLa8QQgpc//k2XGf8TbrJ+SQEdLrAeq8HU8JiOTgg92Ug8X5GR7bgHkQx7BRFp8sZ3
+         15OSG5PE45pK2eUzCSa0GS4aSh+GpRLVGIEtUszcYTi3rpIllKQtliuac5ESVCaZmo+R
+         +/4DMzYpSIexBTZ01iUHLDz9rsqjxfYkoc+UszN2xskyB1uSW8njvKkBFnyFYUV9ZsJL
+         Kj0G+WHlEHv9502/ACzGUBEmRAK3xDmzFbh+OpBX4/2ETncCCoMs7m85/YOoz/5rm4DY
+         62cl9XXOWnrD4MdrX3moTkY/69utoCoSP7iZddZ901tw0Zkbf0dW7Ap/gDB/UnoQD2hG
+         AB6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730167739; x=1730772539;
+        d=1e100.net; s=20230601; t=1730182335; x=1730787135;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=POAC9Eq7jdy/DJpHixlYJQgZCur0l0rG31IXlnXpLtM=;
-        b=IEBTuGZmjtuvSEv9BSEt8sqOy3QqISf9HgTyLaC9VeV+CYTdmwewVsAKBKooXtnHN5
-         r6sesuXI4CNZ1mhTRw2XtyFDVlKve+DVl7nbTn+spBaDBGoglA1PnCHUwrs8wRvxjWrB
-         u8byKJZz7DIOilj3h24jzq08PjAgUcoQBz5ebQBF1asbx32C6kNsMDevIISZIeAnIHc7
-         hi/HG3xGfvSbsw2O8L1/YkevCiOxbFHGQdi/wdo19teaTN0dnThGMRgUi+wCybLWzj7Z
-         xTbJlQHTAghWsYsleyf48pDu3V9titSYvTqct3PaJLgye51FNut8IXIprH5sl9KRU/EH
-         EMqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWuuwowntkDWY7AnwfwVcee1KQNK/wsTk6lTsQ+Qw8lODcdbVMM4DSJmUN0PvhLv+s791x8YwvJjvw4@vger.kernel.org, AJvYcCXRCcClk2IzQeLkm1R1LfxAUjgjZY9GUOFlYl3HaocF2rZxr/2Kzfg2P97SXIIQuc79dEPkY8OMlvIQ6Htqdns=@vger.kernel.org, AJvYcCXtKzncY1SVNDHNWXw0L5WsZgWwd1c3KAx5QjhS1D9Hkc//3XRgkQdFHdxykTW5Rq4AysCz70k1uaiz+7O8@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKnP+rUqRHJlALKuZh5kwb87+l4wABSjKbLnmIsZACsp5uIAdA
-	IclXVq1WisjcxOZKY8W6grbPNiIStSFKJ6x3npkmrFWb1GicOC8r5LxglFJtuhNBP8uO5J7QYaJ
-	Fa1UfDYS20Qe0262LWunzHJSt0S8=
-X-Google-Smtp-Source: AGHT+IH3AL1fkYF6LSyP8vCdNdSLgOV4hnxcwTXlF52COLGQOKSPrf1hHMCfLjfbbEolB8g5RoeGTXXIJbBX5v0jH9s=
-X-Received: by 2002:a05:690c:4b93:b0:6e3:2630:2a0c with SMTP id
- 00721157ae682-6e9d8a6ffe0mr111101187b3.26.1730167738560; Mon, 28 Oct 2024
- 19:08:58 -0700 (PDT)
+        bh=Kzk8mG3w4M0DJo16dim3KWCQXCsAv1NmNVUeuFf3sBA=;
+        b=tSiK9EZ+QfoBW2gGFrfYbeVkJ6TTSguBd+RBmlJe3753T0mYsI6IhHorpuv2v1uMsD
+         Svxf5T6l182aPSFcKl8+bvZFcc2hrxutdiv0QZXhKQ1wX0M05zHfyww62bWhmA3V8hfI
+         Iv5Jv3rVmz+8qgWqAcKKBFEWDB+ethQEdddIKQdVhB183b4WIXbCnb0F8NB4HHwt55YZ
+         G1jBgPmiXZBOCQpzmKzJd8rHjJ0SDrHj/sWwP28qQb8IilDaETz0OJcfm1LEVFGOM5+7
+         v53xP2OT4SReS+Tm8Aa5JtCpE4wKo5OcSa1UgKvxAKKFMUu+rSp89CHKCy5jj298qKoF
+         C46w==
+X-Forwarded-Encrypted: i=1; AJvYcCVsr86EpSy3Tyb0u70plmZnG1SVrcE4+kXWGE5l/xHWLkDK6KkGjKQ8qZSnjIuB6e8sFS2ACdpsKpYpRNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH1fsnod8nTSms0A0/JpDzpb7w3o9nIXYOPlPCW0XmNvsj537g
+	pOqJTwWd77QSuMtfB2wCo8PkEQHb9CgmRMj89jhkYjxxlZkkoaOUlWKQuj4cg9+P/7cmnq9FzXw
+	Q8ZYYhqZZjZBmUsHWXn9DseVIoSDa94Rjw1crZw==
+X-Google-Smtp-Source: AGHT+IFDmIyepVPsDIv/cyWTJ48jhP7A08uiBSPpB/uVY2dRCd95mv+BO/Aq7Ks9pni7Zgx9IIgOqPLaqsYkL+GoGv8=
+X-Received: by 2002:a17:903:192:b0:20b:7be8:8eb9 with SMTP id
+ d9443c01a7336-210c6ccc963mr138766145ad.54.1730182335142; Mon, 28 Oct 2024
+ 23:12:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
- <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAFRnB2WPEQaa6X6LqMk+JTxprguakNqFXvjaUGQ0QazxKH=z4Q@mail.gmail.com>
- <CAL_Jsq+nqFgK4D6ua+Kx8SiqCZFYaD-nse7vjPLqOLvP0hfo7A@mail.gmail.com>
-In-Reply-To: <CAL_Jsq+nqFgK4D6ua+Kx8SiqCZFYaD-nse7vjPLqOLvP0hfo7A@mail.gmail.com>
-From: Alex Gaynor <alex.gaynor@gmail.com>
-Date: Mon, 28 Oct 2024 22:08:46 -0400
-Message-ID: <CAFRnB2XO4hS7RTeNCzxXc4cSNF-XGsUy4yZuYWjKJ1MSvd0gHw@mail.gmail.com>
-Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
-To: Rob Herring <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <cover.1728818976.git.hridesh699@gmail.com> <32382c55dbcb6482d6e686d541c2e15b282908cd.1728818976.git.hridesh699@gmail.com>
+In-Reply-To: <32382c55dbcb6482d6e686d541c2e15b282908cd.1728818976.git.hridesh699@gmail.com>
+From: Hridesh MG <hridesh699@gmail.com>
+Date: Tue, 29 Oct 2024 11:41:37 +0530
+Message-ID: <CALiyAo==Bk1qjVcnQKc+0YUOzgKuYSvJts+eNrMDx+E3XxMsGw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/4] checkpatch: warn on empty rust doc comments
+To: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
+	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Jens Axboe <axboe@kernel.dk>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Patrick Miller <paddymills@proton.me>, 
+	Alex Mantel <alexmantel93@mailbox.org>, Matt Gilbride <mattgilbride@google.com>, 
+	Aswin Unnikrishnan <aswinunni01@gmail.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 28, 2024 at 6:24=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Fri, Oct 25, 2024 at 4:12=E2=80=AFPM Alex Gaynor <alex.gaynor@gmail.co=
-m> wrote:
-> >
-> > On Fri, Oct 25, 2024 at 5:06=E2=80=AFPM Rob Herring (Arm) <robh@kernel.=
-org> wrote:
-> > >
-> > > The device property API is a firmware agnostic API for reading
-> > > properties from firmware (DT/ACPI) devices nodes and swnodes.
-> > >
-> > > While the C API takes a pointer to a caller allocated variable/buffer=
-,
-> > > the rust API is designed to return a value and can be used in struct
-> > > initialization. Rust generics are also utilized to support different
-> > > sizes of properties (e.g. u8, u16, u32).
-> > >
-> > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > > ---
-> > > Not sure if we need the KVec variant, but I kept it as that was my fi=
-rst
-> > > pass attempt. Most callers are filling in some value in a driver data
-> > > struct. Sometimes the number of elements is not known, so the caller
-> > > calls to get the array size, allocs the correct size buffer, and then
-> > > reads the property again to fill in the buffer.
-> > >
-> > > I have not implemented a wrapper for device_property_read_string(_arr=
-ay)
-> > > because that API is problematic for dynamic DT nodes. The API just
-> > > returns pointer(s) into the raw DT data. We probably need to return a
-> > > copy of the string(s) instead for rust.
-> > >
-> > > After property accessors, next up is child node accessors/iterators.
-> > > ---
-> > >  rust/bindings/bindings_helper.h |   1 +
-> > >  rust/kernel/device.rs           | 145 ++++++++++++++++++++++++++++++=
-+++++++++-
-> > >  2 files changed, 145 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings=
-_helper.h
-> > > index 217c776615b9..65717cc20a23 100644
-> > > --- a/rust/bindings/bindings_helper.h
-> > > +++ b/rust/bindings/bindings_helper.h
-> > > @@ -19,6 +19,7 @@
-> > >  #include <linux/pci.h>
-> > >  #include <linux/phy.h>
-> > >  #include <linux/platform_device.h>
-> > > +#include <linux/property.h>
-> > >  #include <linux/refcount.h>
-> > >  #include <linux/sched.h>
-> > >  #include <linux/slab.h>
-> > > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> > > index 0c28b1e6b004..bb66a28df890 100644
-> > > --- a/rust/kernel/device.rs
-> > > +++ b/rust/kernel/device.rs
-> > > @@ -5,10 +5,14 @@
-> > >  //! C header: [`include/linux/device.h`](srctree/include/linux/devic=
-e.h)
-> > >
-> > >  use crate::{
-> > > +    alloc::KVec,
-> > >      bindings,
-> > > +    error::{to_result, Result},
-> > > +    prelude::*,
-> > > +    str::CStr,
-> > >      types::{ARef, Opaque},
-> > >  };
-> > > -use core::{fmt, ptr};
-> > > +use core::{fmt, mem::size_of, ptr};
-> > >
-> > >  #[cfg(CONFIG_PRINTK)]
-> > >  use crate::c_str;
-> > > @@ -189,6 +193,145 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt=
-::Arguments<'_>) {
-> > >              )
-> > >          };
-> > >      }
-> > > +
-> > > +    /// Returns if a firmware property `name` is true or false
-> > > +    pub fn property_read_bool(&self, name: &CStr) -> bool {
-> > > +        unsafe { bindings::device_property_present(self.as_raw(), na=
-me.as_ptr() as *const i8) }
-> > > +    }
-> > > +
-> > > +    /// Returns if a firmware string property `name` has match for `=
-match_str`
-> > > +    pub fn property_match_string(&self, name: &CStr, match_str: &CSt=
-r) -> Result<usize> {
-> > > +        let ret =3D unsafe {
-> > > +            bindings::device_property_match_string(
-> > > +                self.as_raw(),
-> > > +                name.as_ptr() as *const i8,
-> > > +                match_str.as_ptr() as *const i8,
-> > > +            )
-> > > +        };
-> > > +        to_result(ret)?;
-> > > +        Ok(ret as usize)
-> > > +    }
-> > > +
-> > > +    /// Returns firmware property `name` scalar value
-> > > +    ///
-> > > +    /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
-> > > +    pub fn property_read<T: Copy>(&self, name: &CStr) -> Result<T> {
-> > > +        let mut val: [T; 1] =3D unsafe { core::mem::zeroed() };
-> > > +
-> > > +        Self::_property_read_array(&self, name, &mut val)?;
-> > > +        Ok(val[0])
-> > > +    }
-> > > +
-> >
-> > This, and several of the other methods are unsound, because they can
-> > be used to construct arbitrary types for which may not allow all bit
-> > patterns. You can use:
-> > https://rust.docs.kernel.org/kernel/types/trait.FromBytes.html as the
-> > bound to ensure only valid types are used.
-> >
-> > Also, instead of using mem::zeroed(), you should use MaybeUnininit
-> > (https://doc.rust-lang.org/stable/core/mem/union.MaybeUninit.html)
-> > which allows you to avoid needing to zero initialize.
->
-> Something like this what you had in mind?:
->
-> pub fn property_read_array<T, const N: usize>(&self, name: &CStr) ->
-> Result<[T; N]> {
->     let mut val: [MaybeUninit<T>; N] =3D [const { MaybeUninit::uninit() }=
-; N];
->
->     Self::_property_read_array(self, name, &mut val)?;
->
->     // SAFETY: On success, _property_read_array has filled in the array
->     let val =3D unsafe { mem::transmute_copy(&val) };
->     Ok(val)
-> }
-
-Yes, that's right. Ideally you could use
-https://doc.rust-lang.org/stable/core/mem/union.MaybeUninit.html#method.arr=
-ay_assume_init
-instead of transmute, but it's not yet stable.
-
-Alex
-
---=20
-All that is necessary for evil to succeed is for good people to do nothing.
+Just dropping a gentle ping=E2=80=94please let me know if there=E2=80=99s a=
+nything
+additional I can do to help move this forward.
