@@ -1,133 +1,180 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44878193402
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 10:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC601D1E7A;
+	Wed, 30 Oct 2024 12:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730284303; cv=none; b=jUwx/fQo3zb2CmKzLav+7DSjlHPy1xg3VSWpITtXOSHwtThLSu9GAm8WppzVPJKW9UJ/x19yZeQva1z8UzYCeJvzme1YmrMpBTO9IliCPXye6dEZIHaOjt8in1psn1WepRwde9oH0Q35mGBRPg1JgRedWirm+teFIvB8YJFZ2/Q=
+	t=1730291044; cv=none; b=QdtdV3gwafP85Vb3VgCS70ey7JKE0i/ErI0QG/ZYx6Bn3lfSJGdg0Oe+OUzEhKwq/3xj4D/mqjZpe3wOxNjjjrRB+vj6+9kzLcdoUdjO8NoyBjMEn+LvhgwN6tUDSDwT5f1A63KdBIm01WRyxQbG/VnwvAeYRfNltrep3/dqQcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730284303; c=relaxed/simple;
-	bh=HJK67huFrgBbh0oq3D9/SSpm2m6CsdbT12PbWndMQ+Y=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ff57xCI9dr9cLyIZZ7zTdHU2l6cdCg29k/kXP6TMWoPUV6RyUBF9uCJnb1qJkyA60JHYOVo+NagsTLCtFy1OehOoJSkFAGc6s3W6bFCDqSRWNXUu/x+mvzGnWHlonFccTttdfNKL53nudS8rmJmug7ZLk4yrTwhlDH0+xufi7r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C5FZRHHx; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1730291044; c=relaxed/simple;
+	bh=bY0GAYNYCE+RSpo4fyBnoTfZwqxIoHX79jv6jrJ4QT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VChlk8L2lpqb4AwmLAbOwYwWG1JQXyhEZA9ZERHVLaHYUnqo2FywKb/sVLTvyiei4GqvWkgAfpuSQ1W67YOO4EpBDx+Y7/0bwo83MxRhrmW8JqeIpfMSFoOPyc2Ydgq0dtRxr0Qhr6XPdxtdw3VEPfhxEIvv8CZFZwyzlXTUAw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEhdjvWK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C5FZRHHx"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-37d458087c0so485690f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 03:31:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730284300; x=1730889100; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=k6MdjXaWjXuXFvZiq7sXgM/XS2xMntv/yleDKxQ87K8=;
-        b=C5FZRHHxz8Rbz0bgu5Nx8pNogVLAdrarxhBwmhIFwta7ovbYmK1Nc+8wr6GXxH+9C6
-         mpXK3ZfmnOQerpI8n/iROXbfmaL1iYAPdbZdMhMfsKjdhskqGmILvmANOEYGybxZodYm
-         67FER3Cbt6MBEITvUweLQFK4IhLtq5+bu6DUNBcThZ1UY7hJlP9zTx72P4PrluGm+IMU
-         AKimNlmXnV7lAIX3BpHuloc30JYVZjO8J8q9nV9NWUa7iFflmdfTl4pZKGWhnpBejLAj
-         ZDwr3V8urj05wK4tiktBi1oHdlfCs+RbS0L6aQso97rRQBhxoUJ0yzAPmDrU8OoQnj8P
-         hpsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730284300; x=1730889100;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k6MdjXaWjXuXFvZiq7sXgM/XS2xMntv/yleDKxQ87K8=;
-        b=kpTHWK7BMQvSg8F8lCdKBWJZ/+EOESx3ggpg48la5htVjjBnSKCkQG71ruPnfY5PFQ
-         PFTQXE5bwqu2mjg1YoaQecnEwVHhozDYxuz2A+dZx5xsNeL3e6MLegg+8IeenvXFVn+1
-         VmMcFwCg8yVOxVzGIk5ANV0Ew9FLCKF6016PA3qW5p9APyg+1BFz3V6rDKd2bidyHWoc
-         7s5V/fsUjOqrDz4Zx4DQwfVeDu5oCD45cHi+MIzPxQlu4MnUanbENmEcvNYhwlQRC7zA
-         IFO6O90Up9XQcMsxyMp6ZjeNi3/zcAcP9zqbMnU2m/+GcCkH31zC+e0BTiIalf70eSk+
-         ZjFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWWNP+AtS7p6ihLQc8i7uciAEekfiWuk2s4V7If0N/HmUYdB2hLvqz4IPjV+pxMNTSAjkuXxVFQeCpX5xGcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzGRZz6kIXOWfIu3q1w1XPJeli/8fxYmqy/NZpR33uQFnoKxl0
-	hdvBiAdqEp8Cp8e0wS5zOJJM2saKgVwO+vTS6x9NcY/CjUJd4Ii34KTQb8zsCK2ezjFwVu9MfQy
-	7dWIlLTb5s3l5OA==
-X-Google-Smtp-Source: AGHT+IFnZQr30Y+M2jhTAmoir5ZrxKPXp/akJvD704Eg2oZKQaaz30lDM/zqxKc6KNIUk1EYIT5KPVY3MJkj4sQ=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:adf:ee0e:0:b0:37d:3878:ff42 with SMTP id
- ffacd0b85a97d-381b97ee8ffmr2906f8f.5.1730284299740; Wed, 30 Oct 2024 03:31:39
- -0700 (PDT)
-Date: Wed, 30 Oct 2024 10:31:34 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEhdjvWK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70262C4AF09;
+	Wed, 30 Oct 2024 12:24:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730291043;
+	bh=bY0GAYNYCE+RSpo4fyBnoTfZwqxIoHX79jv6jrJ4QT0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LEhdjvWK4A9Zgjc5KoJoLfBA1TF5llAqVoIoB6Pc4P5I9gWgPPeOmMYOIWYmZ9CgY
+	 ZZhK4eeg2bxiccWbkgTpssSJUBgBpKe7J05noYaarosExUgW12+bhuKJi1OWVPjQPC
+	 uIJfqkPTZtDmpFzVj35uoJFZsjIXarXUjQl2XsNGsSpEuMusMr7vFm2/BlJSKqJJVt
+	 npJ6McW+76DExTE2qXvmffaWpLTtt8nzBmOyBOjzbSqDts/ekjVuvBCSwPW7FCSpbT
+	 Utd79sQsdlnhWa8StSFEK4l8j6ydLXSh3wlCDRnqRBdFJxuk/abBQKd1tJPAF2hIBS
+	 6BNmnznGY4fAA==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-539e59dadebso7775998e87.0;
+        Wed, 30 Oct 2024 05:24:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUrEeV0jZ1EcqM19I4D/lmyl8ibicLndeMZWiAnoKTfmMn0U82/+odK7L8gxXPMifguWFgj/WzXJ4OkSyaRcVg=@vger.kernel.org, AJvYcCWBVL5DwP9hzqUXGGURkWXSRLDc9DUs2nSvpjppQXc9Jsv9cC90L5fiJLJqiPlWyFTUyH4gXZfb4WI6@vger.kernel.org, AJvYcCX8fF6/HNz0ogiR4HVeDpKj/CjyNSVPS0JIQoPyWOI/T3KchufvBecwJ2yAWSi1vA5L16pOtpnn1lSUAAtt@vger.kernel.org, AJvYcCXySi80zeLg7lZcnCOC15z9l3yBxcWssz8F1ZGCVUlHJ8LvsTrOevvgj1C5WuaI39er7WmwsrdYirBV@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD/ng5DaNDFSjEsgMoepSy0bi8uqKRNQZlw/IDqHf2CBeN/EtT
+	/nllG/GDc17inHqQFoAIuvOszmgOEYBHaqq9mSNXni5nCdvpvWjaxu38V+DsPOhvPM7xKUpyUp0
+	ST4g1HM3iXuktOfvO41UTZYj+wg==
+X-Google-Smtp-Source: AGHT+IEjmd362Hqb5BBG6j7OLpPRxtrkzKY/9eQkTx2RwWQmpEEJo7tsXGjQ/w8hsZo0lxGp1u96hzI1IqyL3t6dZZs=
+X-Received: by 2002:a05:6512:3d26:b0:539:f4a6:ef4b with SMTP id
+ 2adb3069b0e04-53b34c8db59mr8102763e87.55.1730291041754; Wed, 30 Oct 2024
+ 05:24:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAULImcC/x3MQQqAIBBA0avErBvQsSi7SrQwnWogLBQiiO6et
- HyL/x/InIQzDNUDiS/JcsQCXVfgNxdXRgnFQIoarYxCvwiKd/uO2mqDwba9CYEcdTOU6Ey8yP0 Px+l9PzrYWaVgAAAA
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1882; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=HJK67huFrgBbh0oq3D9/SSpm2m6CsdbT12PbWndMQ+Y=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnIgsIDkprsQHnquBzdddO8VG6yBx2gIzt/R/V5
- lOhbSIB5+qJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZyILCAAKCRAEWL7uWMY5
- Rg26EACVKjteAW4c2ejRnwDxOvD+WRYhuqP2MXBTJDi14yPKpgXf5UV7MXboKuBCpFJJuOXVePc
- WBanDEMSZZFSxR7lvkXUZLLwJd/sdKiZ13Zkoa2Q9KletFcqEGPFU7TMU0+pa6GccYWOYSBkNjv
- pndYPVexIcfWKGapv5dJvqJl6J/l9qeMkGfVSUOnEJdVlk3U/5x3238QmhaWFrOwruu6FkVx/Ns
- u1XpYfQY6MxpgUJNVejZ3iY5gOdnwiB1/7lzkHPDiQUm1ceipEz2mXamJ9Hsn5ORv3s3En5YJNo
- 8DOwVj9owfmZMLU8BKJ+zQ9XBN+6JLQmOJ3/u6BzzPYryBhL9Gn/Qs+b5h/KYFd6Se4xGX0GyiR
- 1uuLVlSiE/TrT00Uf4UWqKgMw/UGAhBtybtQqO/cuWuvlgVysD3NIuA0Bd11hcOZUhtbP40ybBf
- Awn6DMPJjSm9Hzm43vsBAryKKeCEOjM34MubEip40az9Ts5LAjIC/NZBcpVSl0JYlLMUhDvR3He
- s79reSUwhw4CkZEWcrqw6plhWTaYwMwzaTGnVQujYbHobrvADtywiDPs5rDroCkdulGQ3sxAjRT
- 7cJSvjVU5GReIi4IlrQZoHJDgrP72U5PZi0NXkvURae6I/UWJD0gIHNURf0wJi+uolSh+iHeOsy s/2OSs2/mRYqwiA==
-X-Mailer: b4 0.13.0
-Message-ID: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
-Subject: [PATCH] cfi: tweak llvm version for HAVE_CFI_ICALL_NORMALIZE_INTEGERS
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev, kernel test robot <oliver.sang@intel.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-16-dakr@kernel.org>
+ <20241022234712.GB1848992-robh@kernel.org> <ZxibWpcswZxz5A07@pollux>
+ <20241023142355.GA623906-robh@kernel.org> <Zx9kR4OhT1pErzEk@pollux>
+In-Reply-To: <Zx9kR4OhT1pErzEk@pollux>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 30 Oct 2024 07:23:47 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLVdoQNSSDCfGcf0wCZE9VQphRhHKANxhpei_UoFzkN9g@mail.gmail.com>
+Message-ID: <CAL_JsqLVdoQNSSDCfGcf0wCZE9VQphRhHKANxhpei_UoFzkN9g@mail.gmail.com>
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com, 
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
+	daniel.almeida@collabora.com, saravanak@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The llvm fix [1] did not make it for 19.0.0, but ended up getting
-backported to llvm 19.1.3 [2]. Thus, fix the version requirement to
-correctly specify which versions have the bug.
+On Mon, Oct 28, 2024 at 5:15=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Wed, Oct 23, 2024 at 09:23:55AM -0500, Rob Herring wrote:
+> > On Wed, Oct 23, 2024 at 08:44:42AM +0200, Danilo Krummrich wrote:
+> > > On Tue, Oct 22, 2024 at 06:47:12PM -0500, Rob Herring wrote:
+> > > > On Tue, Oct 22, 2024 at 11:31:52PM +0200, Danilo Krummrich wrote:
+> > > > > +///     ]
+> > > > > +/// );
+> > > > > +///
+> > > > > +/// impl platform::Driver for MyDriver {
+> > > > > +///     type IdInfo =3D ();
+> > > > > +///     const ID_TABLE: platform::IdTable<Self::IdInfo> =3D &OF_=
+TABLE;
+> > > > > +///
+> > > > > +///     fn probe(
+> > > > > +///         _pdev: &mut platform::Device,
+> > > > > +///         _id_info: Option<&Self::IdInfo>,
+> > > > > +///     ) -> Result<Pin<KBox<Self>>> {
+> > > > > +///         Err(ENODEV)
+> > > > > +///     }
+> > > > > +/// }
+> > > > > +///```
+> > > > > +/// Drivers must implement this trait in order to get a platform=
+ driver registered. Please refer to
+> > > > > +/// the `Adapter` documentation for an example.
+> > > > > +pub trait Driver {
+> > > > > +    /// The type holding information about each device id suppor=
+ted by the driver.
+> > > > > +    ///
+> > > > > +    /// TODO: Use associated_type_defaults once stabilized:
+> > > > > +    ///
+> > > > > +    /// type IdInfo: 'static =3D ();
+> > > > > +    type IdInfo: 'static;
+> > > > > +
+> > > > > +    /// The table of device ids supported by the driver.
+> > > > > +    const ID_TABLE: IdTable<Self::IdInfo>;
+> >
+> > Another thing. I don't think this is quite right. Well, this part is
+> > fine, but assigning the DT table to it is not. The underlying C code ha=
+s
+> > 2 id tables in struct device_driver (DT and ACPI) and then the bus
+> > specific one in the struct ${bus}_driver.
+>
+> The assignment of this table in `Adapter::register` looks like this:
+>
+> `pdrv.driver.of_match_table =3D T::ID_TABLE.as_ptr();`
+>
+> What do you think is wrong with this assignment?
 
-Link: https://github.com/llvm/llvm-project/pull/104826 [1]
-Link: https://github.com/llvm/llvm-project/pull/113938 [2]
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202410281414.c351044e-oliver.sang@intel.com
-Fixes: 8b8ca9c25fe6 ("cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_INTEGERS")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- arch/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Every bus implementation will need the DT and ACPI tables, so they
+should not be declared and assigned in platform driver code, but in
+the generic device/driver abstractions just like the underlying C
+code. The one here should be for platform_device_id. You could put all
+3 tables here, but that's going to be a lot of duplication I think.
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 00163e4a237c..bd9f095d69fa 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -855,14 +855,14 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
- 	def_bool y
- 	depends on $(cc-option,-fsanitize=kcfi -fsanitize-cfi-icall-experimental-normalize-integers)
- 	# With GCOV/KASAN we need this fix: https://github.com/llvm/llvm-project/pull/104826
--	depends on CLANG_VERSION >= 190000 || (!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
-+	depends on CLANG_VERSION >= 190103 || (!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
- 
- config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
- 	def_bool y
- 	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
- 	depends on RUSTC_VERSION >= 107900
- 	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull/129373
--	depends on (RUSTC_LLVM_VERSION >= 190000 && RUSTC_VERSION >= 108200) || \
-+	depends on (RUSTC_LLVM_VERSION >= 190103 && RUSTC_VERSION >= 108200) || \
- 		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
- 
- config CFI_PERMISSIVE
+> >
+> > > > > +
+> > > > > +    /// Platform driver probe.
+> > > > > +    ///
+> > > > > +    /// Called when a new platform device is added or discovered=
+.
+> > > > > +    /// Implementers should attempt to initialize the device her=
+e.
+> > > > > +    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -=
+> Result<Pin<KBox<Self>>>;
+> > > > > +
+> > > > > +    /// Find the [`of::DeviceId`] within [`Driver::ID_TABLE`] ma=
+tching the given [`Device`], if any.
+> > > > > +    fn of_match_device(pdev: &Device) -> Option<&of::DeviceId> {
+> > > >
+> > > > Is this visible to drivers? It shouldn't be.
+> > >
+> > > Yeah, I think we should just remove it. Looking at struct of_device_i=
+d, it
+> > > doesn't contain any useful information for a driver. I think when I a=
+dded this I
+> > > was a bit in "autopilot" mode from the PCI stuff, where struct pci_de=
+vice_id is
+> > > useful to drivers.
+> >
+> > TBC, you mean other than *data, right? If so, I agree.
+>
+> Yes.
+>
+> >
+> > The DT type and name fields are pretty much legacy, so I don't think th=
+e
+> > rust bindings need to worry about them until someone converts Sparc and
+> > PowerMac drivers to rust (i.e. never).
+> >
+> > I would guess the PCI cases might be questionable, too. Like DT, driver=
+s
+> > may be accessing the table fields, but that's not best practice. All th=
+e
+> > match fields are stored in pci_dev, so why get them from the match
+> > table?
+>
+> Fair question, I'd like to forward it to Greg. IIRC, he explicitly reques=
+ted to
+> make the corresponding struct pci_device_id available in probe() at Kangr=
+ejos.
 
----
-base-commit: 8b8ca9c25fe69c2162e3235c7d6c341127abeed6
-change-id: 20241030-cfi-icall-1913-d9583dd2a27b
+Which table gets passed in though? Is the IdInfo parameter generic and
+can be platform_device_id, of_device_id or acpi_device_id? Not sure if
+that's possible in rust or not.
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+PCI is the exception, not the rule here, in that it only matches with
+pci_device_id. At least I think that is the case currently, but it is
+entirely possible we may want to do ACPI/DT matching like every other
+bus. There are cases where PCI devices are described in DT.
 
+Rob
