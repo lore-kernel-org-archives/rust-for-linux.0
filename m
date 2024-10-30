@@ -1,323 +1,335 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FD921764F;
-	Wed, 30 Oct 2024 20:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EA8213ECD;
+	Wed, 30 Oct 2024 21:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730321214; cv=none; b=QtWnu8dmE9L0QK05RTnVGF3NP7/Z/4xjRkjCq8LtRiffGK6xZZBGv/p6nFp/YJWnFdbaMuZPVxJIBj+JiXgr6EJgXAci3pscjQaKIykSFhf3VZWGe+zUOMtU29ps+7W/7FcTcFiHESEkh/UpK7E/ZzWQtMguMKXBT6SvAY4fpgM=
+	t=1730322031; cv=none; b=YXda8e7DXGtHLmsIRUkpiGU/WgpdKkyoFqmczoJUtBIr/GPXVzPI+ItnGHaEDyhmBzIrI/NOymx6k3PkrUk0rj9mKRH4vBGOmM6HQL/Bcj9XkUBnLDl9Z8YqER6SHe3rHB8XL0eK2OJp6WcNV3Pio8z+mpW26tncYDq02bvn63c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730321214; c=relaxed/simple;
-	bh=W4MnTSRZDNO9E61wQewB+RTJNY8Ad1FjU0v7XnbB2GA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JYb44oVrjQFKZq7enm0U3WWJ79bfbbVGORafj4OTQs4ENb5oNNSlFWRqu7UZGL5d3iZQL43q86T2f7DeDlYfYpx7Es3TOZylcuSCoNayJpcHYTIg9MNwhh71euRGPSHOJsYoIhmRNykTvOf6tcQFjHKhE28CJMPW3vfi9g8/SSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YIewImVw; arc=none smtp.client-ip=209.85.160.181
+	s=arc-20240116; t=1730322031; c=relaxed/simple;
+	bh=lyQCKkp48yFiQHrb2X1TI5cHtzSw6UvtKRxCJxEmqTc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G+r4poRic9I9ZeYu9q7Gp1FXJn9JFzgqo4MmOhO4AeCEtN+aIY4cHZaMuwtgzgsNL0HsN6zpwLGSUW1Rri6xiSva7RGsmDlxgM0y6LcMixTyfkPmiVluuktdjLYYpBjXhJ1z0bxX9YS6tu9Allw+uRcIQjA8HAi+gLbkHx2GL4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kBkfyf9v; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIewImVw"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4609beb631aso1971071cf.2;
-        Wed, 30 Oct 2024 13:46:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBkfyf9v"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539e8607c2aso284805e87.3;
+        Wed, 30 Oct 2024 14:00:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730321211; x=1730926011; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D7EQG/Q6VbC722wpvCuI4LW8lAPiBh2mzpjGaHeNXNA=;
-        b=YIewImVwwMh48QcsWhAj2MxG3RBA7laoDyVeRZf2QtglobplOUM+WJn0AVq43lnqoA
-         suRBseXnloCFxIC4Pv6S3OOD0RSYu7cSAf6SlN5vlCYjEUIBUDUxq4bYByj2hYN6nWqm
-         Cb3XqebVZEoCq3CuJsJcVeSqVhIPzz/evD3kK8ceJJvK2XwsKNW4R2ICVTk0VkwCu46k
-         jjQsYI1emV+JT8jNhDUhDf7H7f23wHShtOCVl4NlhEjnLHu56SDpVabX1zVjdS+pCMVJ
-         xND6gRQts/be0lhr5T4TuwtH58gv8r6KsjKTofasqSc7Ihvao6KGF9t10bYjLBGkcX4r
-         w4eA==
+        d=gmail.com; s=20230601; t=1730322026; x=1730926826; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iTOYM8hLDlIhNM0EHGK2WLZ+VwRTD0dUszdaQDhEWfg=;
+        b=kBkfyf9vSkc99LVgZoDV15oFRVfooozWv4rcIbYV0QNy724wF3djPRQwJ4ix7t+UTq
+         DFXhH2Ef4pm5zED22NmQaJ56tXU5ti7nv0PKVoGrfjM7yOuvQov2Vv3A2VbdoH2sb0+c
+         ThNXhVOzCmBtVzaCfT7/1PLF3PqfbF6N9yb/hvBYoMuGT12LzUip/FN9vmq4lp/WPWXa
+         Oc4If3+juFxdsdIes9o5XMdbjVo+PiekTT+6IjEuB2aXOuZPjw3VXkii3K4hCU/69GLU
+         G2ow9JBg3HDf7C+KQhhSE7R19v0sclT6ZnBBEzk5KwSUykm6Bmf+KsxyaBtHkajW02pY
+         Tg1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730321211; x=1730926011;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D7EQG/Q6VbC722wpvCuI4LW8lAPiBh2mzpjGaHeNXNA=;
-        b=EVbvCfKIrVX68gUIlTRQtuUqqbdvhbuD8Z+OeP9eqV01w0p4byVS9X5+YNWwIce3H6
-         LxfJbI9ed6ZAdp5OTlqYkMj1ZYfXjKFELJYrcjuLQO9UqhQPPKzrpoxpBN3ec5xLVmuH
-         9/ecFVjNRwaGfT322sp/FiccrlAH4ZHa6zX2LTg0xE+8JKh/NXdYgXfxW8A3imMR9EJ1
-         QH0a833BwZ/JsrCZBTPKznEV7eVyoSCqJWHd4+lnpO5JOSVWnNA6RoUV2GoJi3LFj6jv
-         mGoP1LZ7reA5GhjUDAi2Hm4b6gewZNsfiHqh/nRhcN9xRxp/TcN/I0XepL+5K6eceAXo
-         ZoOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXF/PQyuJrTh++qvZdU7/Ub8a1UadBQpg3fkK91y7WJqwbYBCy56Y+zsAm0cx+1Q1yMFyQbZjaVBCBgrwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnLd+Ic6iKHyD/xrS1Q9GbhINybaZDrlO4aFLzhLGudmUAMz3u
-	xQUlMAOor+RHdg3LyZpF69amn7ZHFJIM1rCnteSRJjGfEPsc+sle
-X-Google-Smtp-Source: AGHT+IHmc4EhWRojtL4gb+xI0AsEzjyGtJ4Yf30hx5KKYzliFhLnMGO2r8R7H0l9WI0/7zYE5exRbg==
-X-Received: by 2002:ac8:584f:0:b0:460:a730:3176 with SMTP id d75a77b69052e-4613bfb6ce8mr260600811cf.11.1730321210672;
-        Wed, 30 Oct 2024 13:46:50 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2620:10d:c091:600::1:89dc])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad0c72efsm271271cf.50.2024.10.30.13.46.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 13:46:49 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 30 Oct 2024 16:46:42 -0400
-Subject: [PATCH 5/5] rust: add improved version of
- `ForeignOwnable::borrow_mut`
+        d=1e100.net; s=20230601; t=1730322026; x=1730926826;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iTOYM8hLDlIhNM0EHGK2WLZ+VwRTD0dUszdaQDhEWfg=;
+        b=KrwE4b1AGl5TP+fpizQo8jWzwXoTi+YG/NE2cjmzF1AAC6mrfvBMiIh/Ul+aLY8Ksz
+         IzhWIogMja4KH9Zu2RrB7XMPj6rxoPY7Sl+k3hKBlL+3/95zihaqZhJtDGBrpUvSPazV
+         4cPSwKE4dROLO+ThRi0ecT+6f0xVdhQ5TCTIxFabCxTONrhhaOZfE2J6nl4DV4niL7/z
+         I+5fME2oD0tP8NOQfBZt8RQtUPXS9nTOgYUaAyNMgccok2Gtq3Vrc8Bc7gujbbjSV4g1
+         nu7a/IYvtih5Z5jhxCVeT68r+OzJkUnGew91Z0WerRGe9yBaBtqDzU+5sd52sTl6g4jo
+         HhKA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYRsquBGDEP28rCINnVpF6BVSdOQBgiUqvX/LyFaDYP6sxeFukKQSSHLPci1nOpiNFbnJI6IRykrn5g2ya@vger.kernel.org, AJvYcCW/yE8K2z6phOfgedrSEVI/SWmYs2ItJ6z6/beVPZctOjnGsgdNyuDvXtllTWBpLS+zlaJGRACD5GPViiKguw==@vger.kernel.org, AJvYcCWJFgi9uOXqS9frKKDY+uvfFAtbZrW8iVM/FFWnCcQzdSuzgV1arlflAGoUmGfFid5eNv/ac69PkuBc+ZsA+/4=@vger.kernel.org, AJvYcCWXWKnTnkg+oanfRooWP2krQ/RRFddkjBr7AKobfe45w8+PgFOiCHTBLnRhC42rPxtBe3zR0pZn+tUTeec=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ+OVazX0mspmmrr8H+60/uA57Rk8pJXg27jS3E/pT2U0mzSYy
+	dIPe18EmgKSu4t2J2umW+jMB5N5U9GEzGvH4VBaF3e9B6E1sXHq0efVuWpLX63re0OJSdE6JFje
+	5ws7J1Gu+Bev8qkN3DL7e18a/Sa4=
+X-Google-Smtp-Source: AGHT+IHn69gcm0LSFxKIg/7imMG1C0qqBwjxlIZpTicJxl6ADiw9oYIxwLzxcFDeC3RuDvF9v4sdvvjyMFy3q2DLgyM=
+X-Received: by 2002:a05:6512:1082:b0:539:fcf9:6332 with SMTP id
+ 2adb3069b0e04-53b348e554bmr8823799e87.33.1730322025610; Wed, 30 Oct 2024
+ 14:00:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-borrow-mut-v1-5-8f0ceaf78eaf@gmail.com>
-References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
-In-Reply-To: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>, 
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-X-Mailer: b4 0.15-dev
+References: <20241030170106.1501763-21-samitolvanen@google.com>
+In-Reply-To: <20241030170106.1501763-21-samitolvanen@google.com>
+Reply-To: sedat.dilek@gmail.com
+From: Sedat Dilek <sedat.dilek@gmail.com>
+Date: Wed, 30 Oct 2024 21:59:48 +0100
+Message-ID: <CA+icZUWTdgM7HQrnR_NzgZZQE3aXXk+tAqD3srNd1Eyjr5d7EA@mail.gmail.com>
+Subject: Re: [PATCH v5 00/19] Implement DWARF modversions
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Alice Ryhl <aliceryhl@google.com>
+On Wed, Oct 30, 2024 at 6:01=E2=80=AFPM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
+>
+> Hi,
+>
+> Here's v5 of the DWARF modversions series. The main motivation is
+> modversions support for Rust, which is important for distributions
+> like Android that are about to ship Rust kernel modules. Per Luis'
+> request [1], v2 dropped the Rust specific bits from the series and
+> instead added the feature as an option for the entire kernel to
+> make it easier to evaluate the benefits of this approach, and to
+> get better test coverage. Matt is addressing Rust modversion_info
+> compatibility issues in a separate patch set [2] that depends on this
+> series, and actually allows modversions to be enabled with Rust.
+>
+> Short background: Unlike C, Rust source code doesn't have sufficient
+> information about the final ABI, as the compiler has considerable
+> freedom in adjusting structure layout, for example, which makes
+> using a source code parser like genksyms a non-starter. Based on
+> earlier feedback, this series uses DWARF debugging information for
+> computing versions. DWARF is an established and a relatively stable
+> format, which includes all the necessary ABI details, and adding a
+> CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+> reasonable trade-off as most distributions already enable it.
+>
+> The first patch moves the genksyms CRC32 implementation to a shared
+> header file to avoid code duplication and the next 15 patches add
+> gendwarfksyms, a tool for computing symbol versions from DWARF. When
+> passed a list of exported symbols and object files, the tool
+> generates an expanded type string for each symbol and computes symbol
+> CRCs similarly to genksyms. gendwarfksyms is written in C and uses
+> libdw to process DWARF. Patch 17 ensures that debugging information
+> is present where we need it, patch 18 adds gendwarfksyms as an
+> alternative to genksyms, and the last patch adds documentation.
+>
+> v5 is based on v6.12-rc5 and for your convenience the series is also
+> available here:
+>
+> https://github.com/samitolvanen/linux/commits/gendwarfksyms-v5
+>
+> If you also want to test the series with Rust modules, this branch
+> adds Matt's latest modversion_info series:
+>
+> https://github.com/samitolvanen/linux/commits/rustmodversions-v5
+>
+> Sami
+>
+>
+> [1] https://lore.kernel.org/lkml/ZnIZEtkkQWEIGf9n@bombadil.infradead.org/
+> [2] https://lore.kernel.org/lkml/20240925233854.90072-1-mmaurer@google.co=
+m/
+>
+> ---
+>
+> v5:
+> - Rebased on v6.12-rc5.
+>
+> - Fixed an issue with limiting structure expansion, and applied
+>   Petr's clean-up. (Patch 10)
+>
+> - Dropped an unnecessary return statement in error path. (Patch
+>   12)
+>
+> - Addressed several other smaller issues Petr brought up. (Patches
+>   13, 14, and 15)
+>
+> - Added a KBUILD_GENDWARFKSYMS_STABLE flag to enable --stable for
+>   the entire kernel build. (Patch 18)
+>
 
-Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-that was intended to provide mutable access to the inner value. However,
-the method accidentally made it possible to change the address of the
-object being modified, which usually isn't what we want. (And when we
-want that, it can be done by calling `from_foreign` and `into_foreign`,
-like how the old `borrow_mut` was implemented.)
+Hi Sami,
 
-In this patch, we introduce an alternate definition of `borrow_mut` that
-solves the previous problem. Conceptually, given a pointer type `P` that
-implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-kind of access as an `&mut P` would, except that it does not let you
-change the pointer `P` itself.
+perfect timing: Nathan uploaded SLIM LLVM toolchain v19.1.3
 
-This is analogous to how the existing `borrow` method provides the same
-kind of access to the inner value as an `&P`.
+KBUILD_GENDWARFKSYMS_STABLE is to be set manually?
+What value is recommended?
 
-Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-immutable access to the inner `T`. This is because mutable references
-assume exclusive access, but there might be other handles to the same
-reference counted value, so the access isn't exclusive. The `Arc` type
-implements this by making `borrow_mut` return the same type as `borrow`.
+Thanks.
+-Sedat-
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-
----
-
-Source: https://lore.kernel.org/all/20230710074642.683831-1-aliceryhl@google.com/
----
- rust/kernel/alloc/kbox.rs | 21 ++++++++++++++
- rust/kernel/sync/arc.rs   |  7 +++++
- rust/kernel/types.rs      | 71 ++++++++++++++++++++++++++++++++++++++---------
- 3 files changed, 86 insertions(+), 13 deletions(-)
-
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index de7fadeb7fdf5cf6742c2e9749e959ac5f82359e..6ae81d4f74e9f7cf228385490f3a065082c1f4f6 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -354,6 +354,7 @@ impl<T: 'static, A> ForeignOwnable for Box<T, A>
-     A: Allocator,
- {
-     type Borrowed<'a> = &'a T;
-+    type BorrowedMut<'a> = &'a mut T;
- 
-     fn into_foreign(self) -> *mut core::ffi::c_void {
-         Box::into_raw(self).cast()
-@@ -372,6 +373,13 @@ unsafe fn borrow<'a>(ptr: *mut core::ffi::c_void) -> &'a T {
-         // immutable for the duration of 'a.
-         unsafe { &*ptr }
-     }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> &'a mut T {
-+        let ptr = ptr.cast();
-+        // SAFETY: The safety requirements of this method ensure that the pointer is valid and that
-+        // nothing else will access the value for the duration of 'a.
-+        unsafe { &mut *ptr }
-+    }
- }
- 
- impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
-@@ -379,6 +387,7 @@ impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
-     A: Allocator,
- {
-     type Borrowed<'a> = Pin<&'a T>;
-+    type BorrowedMut<'a> = Pin<&'a mut T>;
- 
-     fn into_foreign(self) -> *mut core::ffi::c_void {
-         // SAFETY: We are still treating the box as pinned.
-@@ -403,6 +412,18 @@ unsafe fn borrow<'a>(ptr: *mut core::ffi::c_void) -> Pin<&'a T> {
-         // SAFETY: This pointer originates from a `Pin<Box<T>>`.
-         unsafe { Pin::new_unchecked(r) }
-     }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> Pin<&'a mut T> {
-+        let ptr = ptr.cast();
-+        // SAFETY: The safety requirements for this function ensure that the object is still alive,
-+        // so it is safe to dereference the raw pointer.
-+        // The safety requirements of `from_foreign` also ensure that the object remains alive for
-+        // the lifetime of the returned value.
-+        let r = unsafe { &mut *ptr };
-+
-+        // SAFETY: This pointer originates from a `Pin<Box<T>>`.
-+        unsafe { Pin::new_unchecked(r) }
-+    }
- }
- 
- impl<T, A> Deref for Box<T, A>
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 4552913c75f747d646bf408c1e8a1a883afb4b6a..8b21197ceba3508bcac6f1b54d73244d9bdfd5a7 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -334,6 +334,7 @@ pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
- 
- impl<T: 'static> ForeignOwnable for Arc<T> {
-     type Borrowed<'a> = ArcBorrow<'a, T>;
-+    type BorrowedMut<'a> = Self::Borrowed<'a>;
- 
-     fn into_foreign(self) -> *mut core::ffi::c_void {
-         ManuallyDrop::new(self).ptr.as_ptr().cast()
-@@ -363,6 +364,12 @@ unsafe fn borrow<'a>(ptr: *mut core::ffi::c_void) -> ArcBorrow<'a, T> {
-         // for the lifetime of the returned value.
-         unsafe { ArcBorrow::new(inner) }
-     }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> ArcBorrow<'a, T> {
-+        // SAFETY: The safety requirements for `borrow_mut` are a superset of the safety
-+        // requirements for `borrow`.
-+        unsafe { Self::borrow(ptr) }
-+    }
- }
- 
- impl<T: ?Sized> Deref for Arc<T> {
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index b8a7b2ee96a17081ad31e1bb73cb0513bcd05ef4..d742544da793a08eaf342ba88722dfb1319b93d6 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -19,26 +19,33 @@
- /// This trait is meant to be used in cases when Rust objects are stored in C objects and
- /// eventually "freed" back to Rust.
- pub trait ForeignOwnable: Sized {
--    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
--    /// [`ForeignOwnable::from_foreign`].
-+    /// Type used to immutably borrow a value that is currently foreign-owned.
-     type Borrowed<'a>;
- 
-+    /// Type used to mutably borrow a value that is currently foreign-owned.
-+    type BorrowedMut<'a>;
-+
-     /// Converts a Rust-owned object to a foreign-owned one.
-     ///
-     /// The foreign representation is a pointer to void. There are no guarantees for this pointer.
-     /// For example, it might be invalid, dangling or pointing to uninitialized memory. Using it in
--    /// any way except for [`ForeignOwnable::from_foreign`], [`ForeignOwnable::borrow`],
--    /// [`ForeignOwnable::try_from_foreign`] can result in undefined behavior.
-+    /// any way except for [`from_foreign`], [`try_from_foreign`], [`borrow`], or [`borrow_mut`] can
-+    /// result in undefined behavior.
-+    ///
-+    /// [`from_foreign`]: Self::from_foreign
-+    /// [`try_from_foreign`]: Self::try_from_foreign
-+    /// [`borrow`]: Self::borrow
-+    /// [`borrow_mut`]: Self::borrow_mut
-     fn into_foreign(self) -> *mut core::ffi::c_void;
- 
-     /// Converts a foreign-owned object back to a Rust-owned one.
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
--    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
--    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] for
--    /// this object must have been dropped.
-+    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and it
-+    /// must not be passed to `from_foreign` more than once.
-+    ///
-+    /// [`into_foreign`]: Self::into_foreign
-     unsafe fn from_foreign(ptr: *mut core::ffi::c_void) -> Self;
- 
-     /// Tries to convert a foreign-owned object back to a Rust-owned one.
-@@ -48,8 +55,9 @@ pub trait ForeignOwnable: Sized {
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must either be null or satisfy the safety requirements for
--    /// [`ForeignOwnable::from_foreign`].
-+    /// `ptr` must either be null or satisfy the safety requirements for [`from_foreign`].
-+    ///
-+    /// [`from_foreign`]: Self::from_foreign
-     unsafe fn try_from_foreign(ptr: *mut core::ffi::c_void) -> Option<Self> {
-         if ptr.is_null() {
-             None
-@@ -60,17 +68,53 @@ unsafe fn try_from_foreign(ptr: *mut core::ffi::c_void) -> Option<Self> {
-         }
-     }
- 
--    /// Borrows a foreign-owned object.
-+    /// Borrows a foreign-owned object immutably.
-+    ///
-+    /// This method provides a way to access a foreign-owned value from Rust immutably. It provides
-+    /// you with exactly the same abilities as an `&Self` when the value is Rust-owned.
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
--    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-+    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
-+    /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
-+    /// the lifetime 'a.
-+    ///
-+    /// [`into_foreign`]: Self::into_foreign
-+    /// [`from_foreign`]: Self::from_foreign
-     unsafe fn borrow<'a>(ptr: *mut core::ffi::c_void) -> Self::Borrowed<'a>;
-+
-+    /// Borrows a foreign-owned object mutably.
-+    ///
-+    /// This method provides a way to access a foreign-owned value from Rust mutably. It provides
-+    /// you with exactly the same abilities as an `&mut Self` when the value is Rust-owned, except
-+    /// that the address of the object must not be changed.
-+    ///
-+    /// Note that for types like [`Arc`], an `&mut Arc<T>` only gives you immutable access to the
-+    /// inner value, so this method also only provides immutable access in that case.
-+    ///
-+    /// In the case of `Box<T>`, this method gives you the ability to modify the inner `T`, but it
-+    /// does not let you change the box itself. That is, you cannot change which allocation the box
-+    /// points at.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
-+    /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
-+    /// the lifetime 'a.
-+    ///
-+    /// The lifetime 'a must not overlap with the lifetime of any other call to [`borrow`] or
-+    /// `borrow_mut` on the same object.
-+    ///
-+    /// [`into_foreign`]: Self::into_foreign
-+    /// [`from_foreign`]: Self::from_foreign
-+    /// [`borrow`]: Self::borrow
-+    /// [`Arc`]: crate::sync::Arc
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> Self::BorrowedMut<'a>;
- }
- 
- impl ForeignOwnable for () {
-     type Borrowed<'a> = ();
-+    type BorrowedMut<'a> = ();
- 
-     fn into_foreign(self) -> *mut core::ffi::c_void {
-         core::ptr::NonNull::dangling().as_ptr()
-@@ -79,6 +123,7 @@ fn into_foreign(self) -> *mut core::ffi::c_void {
-     unsafe fn from_foreign(_: *mut core::ffi::c_void) -> Self {}
- 
-     unsafe fn borrow<'a>(_: *mut core::ffi::c_void) -> Self::Borrowed<'a> {}
-+    unsafe fn borrow_mut<'a>(_: *mut core::ffi::c_void) -> Self::BorrowedMut<'a> {}
- }
- 
- /// Runs a cleanup function/closure when dropped.
-
--- 
-2.47.0
-
+> - Updated documentation to include KBUILD flags. (Patch 19)
+>
+> - Picked up Reviewed-by tags from v4.
+>
+> v4: https://lore.kernel.org/lkml/20241008183823.36676-21-samitolvanen@goo=
+gle.com/
+> - Rebased on v6.12-rc2, which now includes all the prerequisites.
+>
+> - Dropped unnecessary name_only parameter for symbols.c::for_each
+>   and cleaned up error handling. (Patch 3)
+>
+> - Fixed anonymous scope handling to ensure unnamed DIEs don't get
+>   names. (Patch 4)
+>
+> - Added non-variant children to variant_type output, and included
+>   DW_AT_discr_value attributes for variants. (Patch 9)
+>
+> - Added another symbol pointer test case. (Patch 16)
+>
+> - Picked up (Acked|Reviewed)-by tags from v3.
+>
+>
+> v3: https://lore.kernel.org/lkml/20240923181846.549877-22-samitolvanen@go=
+ogle.com/
+> - Updated SPX license headers.
+>
+> - Squashed the first two patches in v2 and tried to reduce churn as
+>   much as reasonable.
+>
+> - Dropped patch 18 from v2 ("x86/asm-prototypes: Include
+>   <asm/ptrace.h>") as it's addressed by a separate patch.
+>
+> - Changed the error handling code to immediately terminate instead
+>   of propagating the errors back to main, which cleaned up the code
+>   quite a bit.
+>
+> - Switched to the list and hashtable implementations in scripts and
+>   dropped the remaining tools/include dependencies. Added a couple
+>   missing list macros. (patch 1)
+>
+> - Moved the genksyms CRC32 implementation to scripts/include and
+>   dropped the duplicate code. (patches 2 and 14)
+>
+> - Switched from ad-hoc command line parsing to getopt_long (patch 3).
+>
+> - Added structure member and function parameter names to the DIE
+>   output to match genksyms behavior, and tweaked the symtypes format
+>   to be more parser-friendly in general based on Petr's suggestions.
+>
+> - Replaced the declaration-only struct annotations with more generic
+>   kABI stability rules that allow source code annotations to be used
+>   where #ifndef __GENKSYMS__ was previously used.  Added support for
+>   rules that can be used to exclude enumerators from versioning.
+>   (patch 16)
+>
+> - Per Miroslav's suggestion, added an option to hide structure
+>   members from versioning when they're added to existing alignment
+>   holes, for example. (patch 16)
+>
+> - Per Greg's request, added documentation and example macros for the
+>   --stable features, and a couple of test cases. (patches 15, 16, and
+>   20)
+>
+> - Fixed making symtypes files, which need to depend on .o files with
+>   gendwarfksyms. (patch 19)
+>
+> - Addressed several other smaller issues that Petr and Masahiro
+>   kindly pointed out during the v2 review.
+>
+>
+> v2: https://lore.kernel.org/lkml/20240815173903.4172139-21-samitolvanen@g=
+oogle.com/
+> - Per Luis' request, dropped Rust-specific patches and added
+>   gendwarfksyms as an alternative to genksyms for the entire
+>   kernel.
+>
+> - Added support for missing DWARF features needed to handle
+>   also non-Rust code.
+>
+> - Changed symbol address matching to use the symbol table
+>   information instead of relying on addresses in DWARF.
+>
+> - Added __gendwarfksyms_ptr patches to ensure the compiler emits
+>   the necessary type information in DWARF even for symbols that
+>   are defined in other TUs.
+>
+> - Refactored debugging output and moved the more verbose output
+>   behind --dump* flags.
+>
+> - Added a --symtypes flag for generating a genksyms-style
+>   symtypes output based on Petr's feedback, and refactored
+>   symbol version calculations to be based on symtypes instead
+>   of raw --dump-dies output.
+>
+> - Based on feedback from Greg and Petr, added --stable flag and
+>   support for reserved data structure fields and declaration-onl
+>   structures. Also added examples for using these features.
+>
+> - Added a GENDWARFKSYMS option and hooked up kbuild support
+>   for both C and assembly code. Note that with gendwarfksyms,
+>   we have to actually build a temporary .o file for calculating
+>   assembly modversions.
+>
+> v1: https://lore.kernel.org/lkml/20240617175818.58219-17-samitolvanen@goo=
+gle.com/
+>
+> ---
+>
+> Sami Tolvanen (19):
+>   scripts: move genksyms crc32 implementation to a common include
+>   tools: Add gendwarfksyms
+>   gendwarfksyms: Add address matching
+>   gendwarfksyms: Expand base_type
+>   gendwarfksyms: Add a cache for processed DIEs
+>   gendwarfksyms: Expand type modifiers and typedefs
+>   gendwarfksyms: Expand subroutine_type
+>   gendwarfksyms: Expand array_type
+>   gendwarfksyms: Expand structure types
+>   gendwarfksyms: Limit structure expansion
+>   gendwarfksyms: Add die_map debugging
+>   gendwarfksyms: Add symtypes output
+>   gendwarfksyms: Add symbol versioning
+>   gendwarfksyms: Add support for kABI rules
+>   gendwarfksyms: Add support for reserved and ignored fields
+>   gendwarfksyms: Add support for symbol type pointers
+>   export: Add __gendwarfksyms_ptr_ references to exported symbols
+>   kbuild: Add gendwarfksyms as an alternative to genksyms
+>   Documentation/kbuild: Add DWARF module versioning
+>
+>  Documentation/kbuild/gendwarfksyms.rst      |  276 +++++
+>  Documentation/kbuild/index.rst              |    1 +
+>  include/linux/export.h                      |   15 +
+>  kernel/module/Kconfig                       |   31 +
+>  scripts/Makefile                            |    3 +-
+>  scripts/Makefile.build                      |   41 +-
+>  scripts/gendwarfksyms/.gitignore            |    2 +
+>  scripts/gendwarfksyms/Makefile              |   12 +
+>  scripts/gendwarfksyms/cache.c               |   44 +
+>  scripts/gendwarfksyms/die.c                 |  166 +++
+>  scripts/gendwarfksyms/dwarf.c               | 1109 +++++++++++++++++++
+>  scripts/gendwarfksyms/examples/kabi.h       |  141 +++
+>  scripts/gendwarfksyms/examples/kabi_ex0.c   |   86 ++
+>  scripts/gendwarfksyms/examples/kabi_ex1.c   |   89 ++
+>  scripts/gendwarfksyms/examples/kabi_ex2.c   |   98 ++
+>  scripts/gendwarfksyms/examples/kabi_rules.c |   56 +
+>  scripts/gendwarfksyms/examples/symbolptr.c  |   33 +
+>  scripts/gendwarfksyms/gendwarfksyms.c       |  185 ++++
+>  scripts/gendwarfksyms/gendwarfksyms.h       |  288 +++++
+>  scripts/gendwarfksyms/kabi.c                |  263 +++++
+>  scripts/gendwarfksyms/symbols.c             |  339 ++++++
+>  scripts/gendwarfksyms/types.c               |  477 ++++++++
+>  scripts/genksyms/genksyms.c                 |   77 +-
+>  scripts/include/crc32.h                     |   93 ++
+>  24 files changed, 3840 insertions(+), 85 deletions(-)
+>  create mode 100644 Documentation/kbuild/gendwarfksyms.rst
+>  create mode 100644 scripts/gendwarfksyms/.gitignore
+>  create mode 100644 scripts/gendwarfksyms/Makefile
+>  create mode 100644 scripts/gendwarfksyms/cache.c
+>  create mode 100644 scripts/gendwarfksyms/die.c
+>  create mode 100644 scripts/gendwarfksyms/dwarf.c
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi.h
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_ex0.c
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_ex1.c
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_ex2.c
+>  create mode 100644 scripts/gendwarfksyms/examples/kabi_rules.c
+>  create mode 100644 scripts/gendwarfksyms/examples/symbolptr.c
+>  create mode 100644 scripts/gendwarfksyms/gendwarfksyms.c
+>  create mode 100644 scripts/gendwarfksyms/gendwarfksyms.h
+>  create mode 100644 scripts/gendwarfksyms/kabi.c
+>  create mode 100644 scripts/gendwarfksyms/symbols.c
+>  create mode 100644 scripts/gendwarfksyms/types.c
+>  create mode 100644 scripts/include/crc32.h
+>
+>
+> base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+> --
+> 2.47.0.163.g1226f6d8fa-goog
+>
