@@ -1,69 +1,67 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215641F6694
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 14:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA2E213EE5;
+	Wed, 30 Oct 2024 15:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730299947; cv=none; b=C9fWTETqXFRIWuS5K6eF+MdSp1DoF9sn+XQ2WPiXKsZ3jyi+UdkTcNRst1inUjsPbiLEJwHXFS8dQjfQWPiD0RnpjufKT2n7ZE50gZ6Kg4h4CIyz1OAuOx/8YU8snj6h3FpPdEgCzxEB59lMPt6/FJyZj7Fgsj7DGvICwL/hgBA=
+	t=1730301719; cv=none; b=q9nvobmAshkPpTIWDQrdZciZ66XyMKNxush/voVtnYcIki+fUZ0eVzX1lmkxC71w4kHRr15mUhBdLnPm/ak7+1BIchiOZjKO5mqjncb5CFl3/0f4HwGJ3qL/tH5q+0zj9lHBXBtTM358NdjMi7RM/PsawttNpB7Q7PAmajXFU2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730299947; c=relaxed/simple;
-	bh=CnqspzQJDbcEt8CN7RzD+XIZAwYYdzUkf98BJ2/Pus0=;
+	s=arc-20240116; t=1730301719; c=relaxed/simple;
+	bh=q28afKGBxlWaTBYntLh/Nt9kA9+T1WZwBlrU/Kj/q2k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a0qv4cM41G92AaG4sN1Ef10/7oAw51kWM5G9s8R3MggqMiUwfFuIBRaE8v5qXDnU2XexzDXSe8C8tyaV3YZmc/LqkChVQyZncH6uFcJ2V/LcbcwOMS/0sKOb61SSBS2410O5/lNpJOSwyZkSEqJO2niPZekqudA+SeJdY/ndC3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BZkVBjZE; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=pc6+g7e/x5lSp8sc/7T2FIHEZxs0OlrC/dRODAE14KS0MSGywQmQjhvETc53HiUBLt2reyYHDz8BrZxgGzEfZLpFbdNZC65GXKLvEBeAnmRXbcq/ZdqDiEZL1IBRwvFuFf/YEnceCkW472+oix3eyhShjdLvmojIzo1/jKceshs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FCbz804w; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BZkVBjZE"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4315ee633dcso220655e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 07:52:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FCbz804w"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2e56750bb13so818034a91.2;
+        Wed, 30 Oct 2024 08:21:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730299943; x=1730904743; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730301717; x=1730906517; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xQVFTZ7PEDYj3PNRsJwqRC83zORWsozaW2gJdNeeReo=;
-        b=BZkVBjZEtY/VSJJBGFupBKBRDt7LEdaLoHvHLcYkKRJSFWlqnW1nc71GsIKAxpmVaF
-         ENLZqmI8JYg1zpRUSuBlTScCpSaW9S1jJ6JZkHcvFuXwI0Mze9F5K3wcWIk579D/d97t
-         Pvlc+501d2rSEkNqoosXJ4SZ0LuLDm2WzTNyjGo3O572zBGImC+OShFO6dbiSJhP5xur
-         AyPxoScQ0TBVTj8LY+u3Bwvn42hE7Lz4F7loKhD+cBF07CPZ7FPlcb3LgE4DR8rMI8ww
-         f9vc62hGTWkY/L4pyxUZ17ZnAGi8mstsYAcbNuI8CfKdMW57uG4BTmBJhHIzqhN2I+r0
-         zbMg==
+        bh=q28afKGBxlWaTBYntLh/Nt9kA9+T1WZwBlrU/Kj/q2k=;
+        b=FCbz804w2xs/H0OeT+prJKRVbRaGq4P9g0fiTXEra+CQNGywRAck0Qqh+3x2gjfShT
+         LonP3Qn4f7udZt3r3gbjrma5TpLCUKVO+fbUsKEEGb9WzWBTNY6vXdWKl20rwhIVPtkV
+         EyFQ41B75TaggbUBD75Bq9dHAJScdpgp9vL5ozAKmf+6kibSG+rhPB2nFPf/S1em4tsc
+         IsKT/EVzkBOZLwfxG6AyjPsH6ghog0+9UeHyrMu9mLeALv8oZoVDnBtB7gX5GnH928Wo
+         7+e+1tU8x5f7PxAXvxvpxgp1n2Kt8AKG/V2ovYh4gfVGYXWPYEtDB6DcNDhTs2UhELYB
+         MNlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730299943; x=1730904743;
+        d=1e100.net; s=20230601; t=1730301717; x=1730906517;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xQVFTZ7PEDYj3PNRsJwqRC83zORWsozaW2gJdNeeReo=;
-        b=tjo9JB4Dm4koNy8uAbPwqt60yRXqEu3OvJJ4Gik7/baNDwWbCPqfcYmZ/EfxSKvsd+
-         5U4EZTo+bNLy2cikhGpN456Q0n1bus5HGeY85FURqfnm5FRM0D6ozonTnkYAiXDTPMoN
-         Y1Tl0RIELboKxLNEDtkiPFf/HrflrR/aRoH/sQI6fjtdLd+TqiM0nP+9fRBWqW3NGe/N
-         uigN9j0l/whmhq0m4RTJeYqBWfRMO3KzpvOvTqlooSjUq+QEPpk3TxmYmXXipANp+nK9
-         5kmlIBNYLjOr6v+XxjYivBUSqGWrttXiyrLdkn8aB/zQ9jSyj5BaeCD3Q1d6wi1ALx3k
-         Ieug==
-X-Forwarded-Encrypted: i=1; AJvYcCVqpVTby1PSkSfNUcEIRC2YYfogIXTUf9Q9n9SUbqATkLLf57/pW5/xYe69BI3/aeok5mc99+F7LiCMzOrTEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLPNfA6sErn2BmUD+4R7ffPG27MR5/ghidYO64ePW1oYWHqPfu
-	V8flkfTZK4D1iOJkybgj9viKU4ZJ/c0ZvUIwx4mB+dChOmHGcV4hlx4ZAzzH5e+p9mc1y+Kickr
-	2rwyQ1HQffDENK6E+bt9LIJ3piAfLbY0N+NLr
-X-Gm-Gg: ASbGncv/Vz2zOtrcGVPPz4CsuGltu4aU6HaOQnqX2LOPqUrlR957O7gFakCCzg7v9E6
-	UxmvKB7Da5P7mkPyZtcI1qBKqAZ5g
-X-Google-Smtp-Source: AGHT+IGL5BtkrvM8HTgS2rSp77gYVDKzQwCNJqBnp5ZX5IGgEF0dDY9UEHGCgoNirzA9uBYFvA5Z8gdr6YSS/UJaDso=
-X-Received: by 2002:a05:600c:3aca:b0:426:66a0:6df6 with SMTP id
- 5b1f17b1804b1-431b3c4c915mr10794795e9.0.1730299943257; Wed, 30 Oct 2024
- 07:52:23 -0700 (PDT)
+        bh=q28afKGBxlWaTBYntLh/Nt9kA9+T1WZwBlrU/Kj/q2k=;
+        b=VHw81dKipwhYtNsF3PSvqI1YG2uZRhV1qGFYq37La+/eaYIunYTzeb2VeqqCCEWY3+
+         vwWLpgKQ637Ywe5yieseeBbU0WD7rhlt+f3hNuyrD6FzRJNUWfjChI9Zzf7nu6EDX0eD
+         Wk1T+imFklui5NkSFXDkLreZESKL/3OAMWHTQ3L5jCWZMraNEgyOsEYrwmP/QkzVs1e6
+         YCE2taGFP15sDf/DNQARugA2WWboyW/VDb5JE2xSqLxkMPIbETL9xMrdaR9J94suTqJt
+         uS4+PBtkgXD7dE2xw+E9m7+22OQxGOEM993T04+ikGpfLhT6DKL1llpX2rGGnZOTK3d7
+         ehLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW5yyWzk5HWIpLwUoQcQVWk7XavFD8KNzoGNBUb7SGIs0Pmnd4a1JLthRVbtfkLjn3RnRDDs2CXq9eJKBI=@vger.kernel.org, AJvYcCXFfNEYtBTjKnKl5ElvLECIWdg03qRGBo8/uwan2fH0Cw6E/6MPG8wYOBZ7QnGNd6noyZ71BMKROEYQA9Wm0H0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5htbpvToTmROKvYLY4Ag0kqTrtXBMa1hnO0VATJym9UPwhcst
+	u9Vu38vEBcpBrbFWhKlYMv3VbgsI0vbjYcJXTz6ErRj84J7u5l3Gimbx96LjuPS2sNw6wOc1XYp
+	bRem5CU981WMMB005lWVSWpPVmD4okIckQLo=
+X-Google-Smtp-Source: AGHT+IG+aJnZ7jclz0dMGPso6SfR+Fgv1OkYRsN/+ljD+v2cjeK5jtibjdfVkk6WAVK6iHGm/ocR141Vkiewt/KDjKw=
+X-Received: by 2002:a17:90a:5205:b0:2e2:da69:e3fa with SMTP id
+ 98e67ed59e1d1-2e8f104fc1emr7272695a91.2.1730301717024; Wed, 30 Oct 2024
+ 08:21:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
-In-Reply-To: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 30 Oct 2024 07:51:45 -0700
-Message-ID: <CABCJKue6ZmqpkrMToF3B3_xTZDgkFKxh-CSZOJU9pt02aDd8bw@mail.gmail.com>
-Subject: Re: [PATCH] cfi: tweak llvm version for HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+References: <20241030-bindgen-libclang-warn-v1-1-3a7ba9fedcfe@google.com>
+In-Reply-To: <20241030-bindgen-libclang-warn-v1-1-3a7ba9fedcfe@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 30 Oct 2024 16:21:44 +0100
+Message-ID: <CANiq72mkKsj2JNg-iT4UTC_fRt88n8PWuFW96cAj17oHpW0MQA@mail.gmail.com>
+Subject: Re: [PATCH] rust: warn when using libclang >=19.1 with bindgen <0.70
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -71,58 +69,33 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
 	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	kernel test robot <oliver.sang@intel.com>
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 30, 2024 at 3:31=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+On Wed, Oct 30, 2024 at 2:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> The llvm fix [1] did not make it for 19.0.0, but ended up getting
-> backported to llvm 19.1.3 [2]. Thus, fix the version requirement to
-> correctly specify which versions have the bug.
->
-> Link: https://github.com/llvm/llvm-project/pull/104826 [1]
-> Link: https://github.com/llvm/llvm-project/pull/113938 [2]
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202410281414.c351044e-oliver.sang@=
-intel.com
-> Fixes: 8b8ca9c25fe6 ("cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_IN=
-TEGERS")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  arch/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 00163e4a237c..bd9f095d69fa 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -855,14 +855,14 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
->         def_bool y
->         depends on $(cc-option,-fsanitize=3Dkcfi -fsanitize-cfi-icall-exp=
-erimental-normalize-integers)
->         # With GCOV/KASAN we need this fix: https://github.com/llvm/llvm-=
-project/pull/104826
-> -       depends on CLANG_VERSION >=3D 190000 || (!GCOV_KERNEL && !KASAN_G=
-ENERIC && !KASAN_SW_TAGS)
-> +       depends on CLANG_VERSION >=3D 190103 || (!GCOV_KERNEL && !KASAN_G=
-ENERIC && !KASAN_SW_TAGS)
->
->  config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
->         def_bool y
->         depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
->         depends on RUSTC_VERSION >=3D 107900
->         # With GCOV/KASAN we need this fix: https://github.com/rust-lang/=
-rust/pull/129373
-> -       depends on (RUSTC_LLVM_VERSION >=3D 190000 && RUSTC_VERSION >=3D =
-108200) || \
-> +       depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D =
-108200) || \
->                 (!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
+> However, the regression fix is only available in bindgen versions 0.70.0
+> or later. This means that when older bindgen versions are used with new
 
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+No, it is also available in bindgen 0.69.5 -- it was backported there.
 
-Sami
+As I was mentioning in Zulip, I want to gather some information first
+before deciding whether to put a warning here or do something else,
+especially since there is no code triggering it yet in mainline (that
+we are aware of).
+
+For instance, I have been checking some distributions. Fedora 41 will
+get the backported version in 2 days (according to the maintainers),
+and indeed the new one does not trigger it (and the base one does).
+The Docker `fedora:41` image is OK as-is, but only because it seems to
+have the update because it is still a pre-release. Fedora 40 is OK.
+
+I also tested Debian and Ubuntu: Ubuntu LTS is OK, but Oracular is
+not. Debian Testing is OK, but Sid is not. I have pinged them to see
+what they have in mind.
+
+Cheers,
+Miguel
