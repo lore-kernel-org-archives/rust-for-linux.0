@@ -1,314 +1,206 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC124214402
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 16:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D112768FC;
+	Wed, 30 Oct 2024 16:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730304312; cv=none; b=p7imW/mal2lHzxrSN/WuOp7QuwJtFYMhHPRGnUy9bxRvU5dQ9XFTqUEMrHW2tmTCSP/bRji2c1f0wC/fFQoXo36s3YGWdgfTtkrUSd/BnusjbeSxWjLjaUFBQuV05lmmFpSbBe3tXvrwkaYlTZgOVWL84gnh4olvY+4LGulqEVk=
+	t=1730306863; cv=none; b=SK11opp6sCzK3Yw5+TFLbkGxp8H5/Y8ayc49O2iOyZQxQ48yw9UQQ4cXhVrAygQZ7+aBNw5i0zFBjsxu9Z68JdEiPLddq31Y+qQmUWExB/TCfhuF0/XAleGq4qeTICBdeuWxppEzTzDVOXZ2xjfp2C4hFkkXrf+51sTc1DsHsfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730304312; c=relaxed/simple;
-	bh=tEriRl1s5aMKzJQzUep/R+6Ah6Myzoilu5Gt/biRO6w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Vbk5UBKAVhZxYn0XPQJ0weGrQVclSLQUhwHHObrnizDfIL7/+eltWNhz243xBSU4l1Fk97aWw3oTFtfzokbIeJu8miy0wi+2+/dl7C13SrC2Dqjr+LjC51kGYtTXqehwTmytAi190nDtzqH3m4FFPRCz8YZf3TE0hjF6zHas3j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mmZJWuPm; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1730306863; c=relaxed/simple;
+	bh=G9u9zhuA94H/fUMNkQs5qyanCAF7/yxcojMjY/sX3ZU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZrjuG55osYKlzAWFEtzz/nYHS4uzSorGVidxPqo370m5J4rTaG8iH979meB9wUc2a3gYFYE4M4F6dX87MKDEnPpa3jXNx4VEaayb/TMcPyD9hvjdCfIn6wlflHrxQffGj7cCK/qlozu95er4MovePCm2m0lam638x68J1Yv56MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2YGCmmd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mmZJWuPm"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e28fea2adb6so9585417276.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 09:05:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730304308; x=1730909108; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JqrmG66m6B1UCkhHvZIk418M17bGfpbVQcwN/mZmV/M=;
-        b=mmZJWuPmy0eZ3G5XAH7HhCgrqwGdjbFehO38Ynnok2hQJUIAT+0xbWmrYFG3SldMZi
-         4FfWOvJXZevf6zrB816MafunbmaMQemOkY/lMFJBiCVEwgxB4jBbl+hWpPdGgo7dRw7d
-         KLw4a65AfgVLkfOnKPRMTjh7Mi4+QmwtSUkcNUPx4CV11Kaz2PqS/ziwtm8m/3udiZ7u
-         fJl+c7oyqtO1RopSyFMHtcOFpsL/Wy8nTS8oIHU1MQ8ZiaWEopJvOMONXSLkIwa0ybAp
-         zvtkOoaN5/yXcTmbNmpKrR2MUDaSHdk2vW/bnxGnCI30H+nx6MyA65XwPdU1KNT0tHeb
-         zQBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730304308; x=1730909108;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JqrmG66m6B1UCkhHvZIk418M17bGfpbVQcwN/mZmV/M=;
-        b=Hng75rDk+ZfFZXqXvFA9iMy2NFggXVt944YTIVEe0+l2X5JSUSD3D3F97LPwkwO0b0
-         JjL1482rvJNOoDeHBEjCRVxESi2wgseR4UBseWdEK1EfsPcuESo+IOA/musFmSXwGv8R
-         HrbGfn502D8kYosTOsiTxGoWIT/qWmCkWC23qq3PkYPH7s63bvHE1j3VER4+K4lkqjnU
-         VrFFinR0NucoOsSN00YnX1palDsDeTz7jkbJH/VPfyz8jUf6vLMZba6i3ENVDX6kBT2d
-         eCF/+Q2lXwWMmx0jTpvrChQ/SkCB8rbYvN1YcNu7jaRkhyiBXK9d8pe+KmU/k8vTehGW
-         mZ+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVs8mj4TARefRdrJgfUzXIL7lsIcV6Ou3g7kg2JHNvqyhakuUr64J/lxm0iMSsX9TQS9dn0UqTVa5s3W4bFxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpmG6XjGs9gTJcMmVO16ZkJbKkC6E0YX3MZDdfrOj/i+rppJxT
-	V0AqlarX1uQ/q/EcaaC5YzYrH1GqIk6pkCmoEN6kj07WSwW1gwb5YpgTlKo/tJRQZvfypUG+PzE
-	tCLfrnMqpl/nyRQ==
-X-Google-Smtp-Source: AGHT+IFi/aR3eZmVoAL9Wz4p5EtnW6YunurLPIJuDUlAryYR3kFyV0YKLO6vsDSY51xhlGqCS1gC7bq434rMmfY=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a25:ed07:0:b0:e1d:912e:9350 with SMTP id
- 3f1490d57ef6-e3087bc765dmr51968276.6.1730304307760; Wed, 30 Oct 2024 09:05:07
- -0700 (PDT)
-Date: Wed, 30 Oct 2024 16:04:28 +0000
-In-Reply-To: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2YGCmmd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1DAC4CEDA;
+	Wed, 30 Oct 2024 16:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730306862;
+	bh=G9u9zhuA94H/fUMNkQs5qyanCAF7/yxcojMjY/sX3ZU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=T2YGCmmdSBZ8gg0xGA6L+5GpJbCouJJeTP/WKv2ItzgiZDaDS4/bEDxnUKeZEUBl5
+	 ue079TH0egbePlIkyn0w4Q5Ci2V2SsZi7C7Lz7yrd0wXxhHkvXAv2VjnxKiExU1Sw9
+	 +7XSQ5TsYMMSflwswMty1KA3kIMRxK4olo3q2J3uowEqjwie8joHRywRHFyOOkYOeJ
+	 S2EuO3wJlNgJmmAI8b8cDSY5XGmWnIRSBMrKAl4+Z1wvj8fA2Ib1EsrJGH/xTx6jxw
+	 tzqcMxE6jQl/u2aXlqgYLfYhuyPy8fKIOFumSXLnZRXAK86d9MWq+AFdieza7hWQge
+	 XRMT9U/38FOng==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539ebb5a20aso28494e87.2;
+        Wed, 30 Oct 2024 09:47:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUZH0JrnV3ntGMIoos4k+kCrlUiTf2X2eVg+YVyE5CsJXe5hxelP12w3+rjyw70tykqH75n5TnBybre+vMZ@vger.kernel.org, AJvYcCUnM0CiODB4FEKzoODqbdyfT4HmJL5PtjbQfd+EMfNMlZHixcJfNx7OitnvadCVayclFgJ5o2OEXn3tQhed+AE=@vger.kernel.org, AJvYcCXYEoesBoLndS62lvrbts78JOrA1g8BkfoTJ7OkxHqct//ROM5C/XgRMJ0Cmta+1efjdYS3qn0sew5J@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI2YgUi+HduQrkpXju/E89qatNoQZ7cLouaF+oAvIoiAgJeIuR
+	ZZWXkR0EwEuV1ShcgLylBI96XgTOg9wLA7D59R2wZjxe+MrerlsIoOjCJqdxikaIRsCYRcYYDNG
+	DFZnxzNrI2z0yb23tPDybhF6xPQ==
+X-Google-Smtp-Source: AGHT+IGQ6H9qIhqtA2x22Lv1WNjZfStTB5wUkQiDjZODnFYdktSwlxnt6RTQXmtXnMQMYc0LM7iws8mWHFwymfjBU5U=
+X-Received: by 2002:a05:6512:32c7:b0:536:a50a:3c25 with SMTP id
+ 2adb3069b0e04-53b348c1612mr8787033e87.12.1730306860915; Wed, 30 Oct 2024
+ 09:47:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7761; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=tEriRl1s5aMKzJQzUep/R+6Ah6Myzoilu5Gt/biRO6w=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnIlkj+zi/ZeCsvvjAjU6Nb9xOSl6DubI5Y/Iwy
- 1JbUL9MEGmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZyJZIwAKCRAEWL7uWMY5
- RnMrD/9GOSq+2yFRe/8k8SIbCJosPtOngpcRFceZEKecE5pRUpUhsuGpdIulecGorZlT7tcfTF7
- yrDZPb5ueqeo9wHnC6xEW3CZNx87ladgXT8SQj1lNkcnP6KpD/alvOkTHSD/BnedRWQxGRVK9Li
- KHP0TINKG2hcDqPbkYkjlwdgZF7Ta5ggrweahQAMEnVTa7FcVsR1ZEVdVt+txPh8Zb9IJIsdph4
- STpTD9SIC/TLDzSC+1hjY48M72ZHuuabI5ePkc8rstSiDkDlkFgq/FUVeMEhCSlC2irnl91KtQT
- 6WDkAKn7sVk30GREem94CI7KAcp9b6i7T1vMhm4XEaru6w9wPARl1Gy/6IgJ3JCGGZU+edYb1u2
- POCxtK/YUwn1oGWe7DeODIBNXcD3mtVoqOLtwiVSI6pRIRsJALNDpWY3Mvj5uMsBDtXsL8GG1nD
- QxMhI85t3tzOpDcPvQhG8+6026MCkv1TRefxTfga0067dSW1G1owYNYkV02PndF26FrhYGnXCSb
- GrG/OGiQzLTKvkgCaePQiB9/qbWor/pEW3K2kT8dTceXB70qm1u9ENXA0wkUkMF72UB0+C3Jo9n
- aAvVHTvLeIEQgUuSurrni4jzoRe+diXRQH6uSIB8H38CHj2nIVPEDbQ0y3VyGQomV5QcHr7cMuq bDnNS7IMkNetjhw==
-X-Mailer: b4 0.13.0
-Message-ID: <20241030-tracepoint-v12-5-eec7f0f8ad22@google.com>
-Subject: [PATCH v12 5/5] rust: add arch_static_branch
-From: Alice Ryhl <aliceryhl@google.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+ <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
+ <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com>
+ <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
+ <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+ <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com>
+ <CAH5fLggCDiKUu_dvJZeJr8UD5RvUpqRJbdYKf1F3_MvCdOVK6g@mail.gmail.com>
+ <CAL_JsqL+b-f5K24qTxyA09c_QPeb07s4Hb=s1VqrdksBB4BQ=Q@mail.gmail.com> <79c47555-c9e9-4ff6-8c43-c7c26a91afd4@gmail.com>
+In-Reply-To: <79c47555-c9e9-4ff6-8c43-c7c26a91afd4@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 30 Oct 2024 11:47:27 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJkkUk6AoAdgfVHROk=wpRo0En=gi7zwXe6S7LUEsdocQ@mail.gmail.com>
+Message-ID: <CAL_JsqJkkUk6AoAdgfVHROk=wpRo0En=gi7zwXe6S7LUEsdocQ@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To allow the Rust implementation of static_key_false to use runtime code
-patching instead of the generic implementation, pull in the relevant
-inline assembly from the jump_label.h header by running the C
-preprocessor on a .rs.S file. Build rules are added for .rs.S files.
+On Wed, Oct 30, 2024 at 11:03=E2=80=AFAM Dirk Behme <dirk.behme@gmail.com> =
+wrote:
+>
+> On 30.10.24 15:05, Rob Herring wrote:
+> > On Wed, Oct 30, 2024 at 3:15=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
+m> wrote:
+> >>
+> >> On Tue, Oct 29, 2024 at 8:35=E2=80=AFPM Rob Herring <robh@kernel.org> =
+wrote:
+> >>>
+> >>> On Tue, Oct 29, 2024 at 1:57=E2=80=AFPM Miguel Ojeda
+> >>> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >>>>
+> >>>> On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google=
+.com> wrote:
+> >>>>>
+> >>>>> One option is to define a trait for integers:
+> >>>
+> >>> Yeah, but that doesn't feel like something I should do here. I imagin=
+e
+> >>> other things might need the same thing. Perhaps the bindings for
+> >>> readb/readw/readl for example. And essentially the crate:num already
+> >>> has the trait I need. Shouldn't the kernel mirror that? I recall
+> >>> seeing some topic of including crates in the kernel?
+> >>
+> >> You can design the trait to look similar to traits in external crates.
+> >> We did that for FromBytes/AsBytes.
+> >>
+> >> I assume you're referring to the PrimInt trait [1]? That trait doesn't
+> >> really let you get rid of the catch-all case, and it's not even
+> >> unreachable due to the u128 type.
+> >
+> > It was num::Integer which seems to be similar.
+> >
+> >>
+> >> [1]: https://docs.rs/num-traits/0.2.19/num_traits/int/trait.PrimInt.ht=
+ml
+> >>
+> >>>> +1, one more thing to consider is whether it makes sense to define a
+> >>>> DT-only trait that holds all the types that can be a device property
+> >>>> (like `bool` too, not just the `Integer`s).
+> >>>>
+> >>>> Then we can avoid e.g. `property_read_bool` and simply do it in `pro=
+perty_read`.
+> >>>
+> >>> Is there no way to say must have traitA or traitB?
+> >>
+> >> No. What should it do if you pass it something that implements both tr=
+aits?
+> >>
+> >> If you want a single function name, you'll need one trait.
+> >
+> > I'm not sure I want that actually.
+> >
+> > DT boolean is a bit special. A property not present is false.
+> > Everything else is true. For example, 'prop =3D <0>' or 'prop =3D
+> > "string"' are both true. I'm moving things in the kernel to be
+> > stricter so that those cases are errors. I recently introduced
+> > (of|device)_property_present() for that reason. There's no type
+> > information stored in DT.  At the DT level, it's all just byte arrays.
+> > However, we now have all the type information for properties within
+> > the schema. So eventually, I want to use that to warn on accessing
+> > properties with the wrong type.
+> >
+> > For example, I think I don't want this to work:
+> >
+> > if dev.property_read(c_str!("test,i16-array"))? {
+> >     // do something
+> > }
+> >
+> > But instead have:
+> >
+> > if dev.property_present(c_str!("test,i16-array")) {
+> >     // do something
+> > }
+>
+> I think we have "optional" properties which can be there (=3D=3D true) or
+> not (=3D=3D false). Let's assume for this example "test,i16-array" is suc=
+h
+> kind of "optional" property. With what you gave above we need two
+> device tree accesses, then? One to check if it is there and one to
+> read the data:
 
-Since the relevant inline asm has been adjusted to export the inline asm
-via the ARCH_STATIC_BRANCH_ASM macro in a consistent way, the Rust side
-does not need architecture specific code to pull in the asm.
+Yes, lots of properties are optional especially since any new property
+added has to be because the DT is an ABI.
 
-It is not possible to use the existing C implementation of
-arch_static_branch via a Rust helper because it passes the argument
-`key` to inline assembly as an 'i' parameter. Any attempt to add a C
-helper for this function will fail to compile because the value of `key`
-must be known at compile-time.
+> let mut array =3D <empty_marker>;
+> if dev.property_present(c_str!("test,i16-array")) {
+>     array =3D dev.property_read(c_str!("test,i16-array"))?;
+> }
+>
+> ?
+>
+> Instead of these two accesses, I was thinking to use the error
+> property_read() will return if the optional property is not there to
+> just do one access:
+>
+> let mut array =3D <empty_marker>;
+> if let Ok(val) =3D dev.property_read(c_str!("test,i16-array")) {
+>        array =3D val;
+> }
+>
+> (and ignore the error case as its irrelvant in the optional case)
+>
+> Have I missed anything?
 
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/Makefile                           |  6 +++++
- rust/kernel/.gitignore                  |  3 +++
- rust/kernel/arch_static_branch_asm.rs.S |  7 +++++
- rust/kernel/jump_label.rs               | 46 ++++++++++++++++++++++++++++++++-
- rust/kernel/lib.rs                      | 35 +++++++++++++++++++++++++
- scripts/Makefile.build                  |  9 ++++++-
- 6 files changed, 104 insertions(+), 2 deletions(-)
+If you grep "_property_present", most if not all calls never need the
+data. When you need the data, you read it and test for EINVAL if you
+want to handle "not present". The overhead of parsing the data is not
+nothing, so I think it is better to provide both.
 
-diff --git a/rust/Makefile b/rust/Makefile
-index b5e0a73b78f3..bc2a9071dd29 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -36,6 +36,8 @@ always-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.c
- obj-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated.o
- obj-$(CONFIG_RUST_KERNEL_DOCTESTS) += doctests_kernel_generated_kunit.o
- 
-+always-$(subst y,$(CONFIG_RUST),$(CONFIG_JUMP_LABEL)) += kernel/arch_static_branch_asm.rs
-+
- # Avoids running `$(RUSTC)` for the sysroot when it may not be available.
- ifdef CONFIG_RUST
- 
-@@ -424,4 +426,8 @@ $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/alloc.o $(obj)/build_error.o \
-     $(obj)/libmacros.so $(obj)/bindings.o $(obj)/uapi.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+ifdef CONFIG_JUMP_LABEL
-+$(obj)/kernel.o: $(obj)/kernel/arch_static_branch_asm.rs
-+endif
-+
- endif # CONFIG_RUST
-diff --git a/rust/kernel/.gitignore b/rust/kernel/.gitignore
-new file mode 100644
-index 000000000000..d082731007c6
---- /dev/null
-+++ b/rust/kernel/.gitignore
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+/arch_static_branch_asm.rs
-diff --git a/rust/kernel/arch_static_branch_asm.rs.S b/rust/kernel/arch_static_branch_asm.rs.S
-new file mode 100644
-index 000000000000..2afb638708db
---- /dev/null
-+++ b/rust/kernel/arch_static_branch_asm.rs.S
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <linux/jump_label.h>
-+
-+// Cut here.
-+
-+::kernel::concat_literals!(ARCH_STATIC_BRANCH_ASM("{symb} + {off} + {branch}", "{l_yes}"))
-diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
-index 4b7655b2a022..2f2df03a3275 100644
---- a/rust/kernel/jump_label.rs
-+++ b/rust/kernel/jump_label.rs
-@@ -24,7 +24,51 @@ macro_rules! static_branch_unlikely {
-         let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
-         let _key: *const $crate::bindings::static_key = _key.cast();
- 
--        $crate::bindings::static_key_count(_key.cast_mut()) > 0
-+        #[cfg(not(CONFIG_JUMP_LABEL))]
-+        {
-+            $crate::bindings::static_key_count(_key) > 0
-+        }
-+
-+        #[cfg(CONFIG_JUMP_LABEL)]
-+        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
-     }};
- }
- pub use static_branch_unlikely;
-+
-+/// Assert that the assembly block evaluates to a string literal.
-+#[cfg(CONFIG_JUMP_LABEL)]
-+const _: &str = include!(concat!(
-+    env!("OBJTREE"),
-+    "/rust/kernel/arch_static_branch_asm.rs"
-+));
-+
-+#[macro_export]
-+#[doc(hidden)]
-+#[cfg(CONFIG_JUMP_LABEL)]
-+macro_rules! arch_static_branch {
-+    ($key:path, $keytyp:ty, $field:ident, $branch:expr) => {'my_label: {
-+        $crate::asm!(
-+            include!(concat!(env!("OBJTREE"), "/rust/kernel/arch_static_branch_asm.rs"));
-+            l_yes = label {
-+                break 'my_label true;
-+            },
-+            symb = sym $key,
-+            off = const ::core::mem::offset_of!($keytyp, $field),
-+            branch = const $crate::jump_label::bool_to_int($branch),
-+        );
-+
-+        break 'my_label false;
-+    }};
-+}
-+
-+#[cfg(CONFIG_JUMP_LABEL)]
-+pub use arch_static_branch;
-+
-+/// A helper used by inline assembly to pass a boolean to as a `const` parameter.
-+///
-+/// Using this function instead of a cast lets you assert that the input is a boolean, and not some
-+/// other type that can also be cast to an integer.
-+#[doc(hidden)]
-+pub const fn bool_to_int(b: bool) -> i32 {
-+    b as i32
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 55f81f49024e..97286b99270e 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -148,3 +148,38 @@ macro_rules! container_of {
-         ptr.sub(offset) as *const $type
-     }}
- }
-+
-+/// Helper for `.rs.S` files.
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! concat_literals {
-+    ($( $asm:literal )* ) => {
-+        ::core::concat!($($asm),*)
-+    };
-+}
-+
-+/// Wrapper around `asm!` configured for use in the kernel.
-+///
-+/// Uses a semicolon to avoid parsing ambiguities, even though this does not match native `asm!`
-+/// syntax.
-+// For x86, `asm!` uses intel syntax by default, but we want to use at&t syntax in the kernel.
-+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-+#[macro_export]
-+macro_rules! asm {
-+    ($($asm:expr),* ; $($rest:tt)*) => {
-+        ::core::arch::asm!( $($asm)*, options(att_syntax), $($rest)* )
-+    };
-+}
-+
-+/// Wrapper around `asm!` configured for use in the kernel.
-+///
-+/// Uses a semicolon to avoid parsing ambiguities, even though this does not match native `asm!`
-+/// syntax.
-+// For non-x86 arches we just pass through to `asm!`.
-+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
-+#[macro_export]
-+macro_rules! asm {
-+    ($($asm:expr),* ; $($rest:tt)*) => {
-+        ::core::arch::asm!( $($asm)*, $($rest)* )
-+    };
-+}
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 8f423a1faf50..03ee558fcd4d 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -248,12 +248,13 @@ $(obj)/%.lst: $(obj)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
- 
--rust_allowed_features := new_uninit
-+rust_allowed_features := asm_const,asm_goto,new_uninit
- 
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
- # modules case.
- rust_common_cmd = \
-+	OBJTREE=$(abspath $(objtree)) \
- 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
- 	-Zallow-features=$(rust_allowed_features) \
- 	-Zcrate-attr=no_std \
-@@ -303,6 +304,12 @@ quiet_cmd_rustc_ll_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
- $(obj)/%.ll: $(obj)/%.rs FORCE
- 	+$(call if_changed_dep,rustc_ll_rs)
- 
-+quiet_cmd_rustc_rs_rs_S = RSCPP $(quiet_modtag) $@
-+      cmd_rustc_rs_rs_S = $(CPP) $(c_flags) -xc -C -P $< | sed '1,/^\/\/ Cut here.$$/d' >$@
-+
-+$(obj)/%.rs: $(obj)/%.rs.S FORCE
-+	+$(call if_changed_dep,rustc_rs_rs_S)
-+
- # Compile assembler sources (.S)
- # ---------------------------------------------------------------------------
- 
+The typical pattern in the C code is:
 
--- 
-2.47.0.163.g1226f6d8fa-goog
+u32 val =3D DEFAULT_VALUE;
+of_property_read_u32(node, "a-property", &val);
 
+// val is now either the read property or the default. If the property
+is required, then the error code needs to be checked.
+
+Maybe we should have:
+
+let val: u32 =3D dev.property_read_optional(c_str!("test,i16-array"),
+DEFAULT_VALUE);
+
+Or looks like Option<> could be used here?:
+
+let val: u32 =3D dev.property_read(c_str!("test,i16-array"),
+Option<DEFAULT_VALUE>);
+
+One thing I'd like to improve is having fewer driver error messages
+and a printk for a missing required property is a common one. We have
+APIs like clk_get and clk_get_optional (which parse firmware
+properties). The difference is the former prints an error message on
+error case and the latter is silent.
+
+Rob
