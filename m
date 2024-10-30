@@ -1,143 +1,144 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC571EABBE
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 13:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304611EE02F;
+	Wed, 30 Oct 2024 14:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730295672; cv=none; b=ZwIJKJX+LbZPLw2S1LpFdI/lftfPbSLiBokjWn6xDX/0ZS0EJxR6SULJbFtHs6SiNlccemGT7+2+L7U4hAc6o7ZPvgmoAMGpkMx9e6Iayczi4+dLaBcqpNZNw1YWnBrJPu2EXy6dbWoUALBhRWFreE+01zWfJ7+Fi+Nn3dD9NzA=
+	t=1730297167; cv=none; b=bn1yyVM/c7PRCI7u6wWVo+wseMfS+X0Xautb0oQ6ve6qoV+Siu9r6BL28wvSU5R8lfiVPXaHdFWCfaRTawsUz1mhJkbyAWeiFbM7B/UjaV/chinufWjnUzH8P8gz9GqzTah0Dn404zP0jOBvRTEnpaBIOD6S2m4E86CAKTxbD4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730295672; c=relaxed/simple;
-	bh=4TcP5RobiXr2DcxYkoWURTLQh2mLkq/s7RGmwBrfTv0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AGmlS+v18Zjkk50a1HGfSItrDPeyuB42q73OwON/WhTGRSryR1zig2FzHo05a1CN/TXe5nAyIS5XVdDM/+TvsXGd8u3f/N5pIefN1qyEUplfEjK+P+DVlmF98gfOEXFI/oH7/Ede/PKS/vCdyQvGqetryw0BhEiHyoNbjltVnQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wuXtvqI1; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1730297167; c=relaxed/simple;
+	bh=GrmqlZoNz0TpM8NpGoFe5fj7IqEdF5q25++QH0auuBg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tSDAOGgCzDoXWeC7CwA/fnsrtRizB0i9oupuX+7Nvuyh5C5DYQkXmCUj8WRoQ9XWtcLisiBU7v1ZgPpKTFTxzY8B7ZO7wiWJ6BnIrUTANrPAbie8kduzWjn9lh9w41UY+LCsaP9DTULTiZNeNoxOdaJz51KHl77l3ltb8JSVTmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzP2bmj9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wuXtvqI1"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e293150c2c6so14015186276.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 06:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730295670; x=1730900470; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZnlfbBmZO5geh/KK/4QX/wlajnJlukkheUAeVySVGiY=;
-        b=wuXtvqI1YzdzgRoLaDDtPIAiOF9aFDpWK66xpCANiGnpdym7TLW7yZFsvZgZ4hGxku
-         MabIcGvmrA/QaPTfnGwOi7JxVGOattUcti7lOshhjduJb3eGHlL7gA2i/PGoSNHPGkx/
-         7dBbeQulVU34PXRZ3ybo5OuruQLevPXSYDLy5ewqz3ApkDZ6IOTmFB8SJesAw8BPBd1Q
-         Z7MO4hkmwIt3uA9q/LTcIr8p+J9lZaC6o6iWE9K1NOSnzcrVnPRFc+uQAWdpsr0gwTe/
-         wgVctTUKwCHNdCQ7pnx0EMbGtt0HB9forIAgf1P+NequubhZmcT0PBBDVjWgrALJd8rM
-         HSxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730295670; x=1730900470;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZnlfbBmZO5geh/KK/4QX/wlajnJlukkheUAeVySVGiY=;
-        b=Zcy6aR5JMUrO0l9Wk2TAJLSjXe7byuLgJKgsh/si2j00AnNyiaTB6Jfy4DGWZabqcc
-         Ip84JbxIKJ3S923lvHp3z3N0tgPA+1W2KeQhWrmTq33ny5oKMARkYV6iMX26Wn5dub9S
-         i6wx8imiaDcBjyKNMSuuWgpjIQZYdg2UXL/E/YmDZQsrc/cw4YqS2GeUfo4DwmxfUQKZ
-         zQG7kU8g2N1LoSWmdUR4n8pbFZn+y9e1ZIUdiPcu8sO7mDKBlL8i7x1Gffjckpbe8JyK
-         7Sjd+75org476Ey8vpTBCx7ku1140VfJHfTjp09wMrrdnOu70qMvgT6co2PmDnKYp/I/
-         Ig7Q==
-X-Gm-Message-State: AOJu0YxOaq/61f4h9Br0GFaEiFIlsM4Igt8uOBtgLfN/gjt1ttEGu/L5
-	7KQoeRPfY9a98VQl2XErazYWnK9Kk++r24Tky4/Yi5vlukGrJrpuAkZbvsgIQxUVYNvZs69oAto
-	hvXejtwSJBfTXVQ==
-X-Google-Smtp-Source: AGHT+IHinEnSBKjGIvFyvFHxDv3LvQXdI65dpVh6rvDdkIDUnjlR6rNwc4+MlGkUrUIIo8bHk+SanKh7PJylJvY=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a25:a562:0:b0:e30:c43a:d36b with SMTP id
- 3f1490d57ef6-e30c43ad423mr3794276.10.1730295669665; Wed, 30 Oct 2024 06:41:09
- -0700 (PDT)
-Date: Wed, 30 Oct 2024 13:40:55 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzP2bmj9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57ABC4CED1;
+	Wed, 30 Oct 2024 14:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730297166;
+	bh=GrmqlZoNz0TpM8NpGoFe5fj7IqEdF5q25++QH0auuBg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LzP2bmj9AU3xmjif/OR1xSgemSO8y2JeqioNRTfxa/Lbzlf/Eh9+hUMaGhz4mFnV+
+	 J0doz+2H2b5iWoHqvkpMwZEacYe+YMVqB6Xp49/dtZFB59jKDpbUrgATImW5U7h1BB
+	 zZ/QWDLYJ2/XpcljqWkQ7DFTVQbhdHiWwYDOeIfj/uMEY6pzZmhOlIZvor7spf/GDj
+	 v4Y6ne/7qjIWMP7b3qilD9WRrLlbFR2Sb/GX58yqC81vmVggcivhWuQQWOe9rrMlgz
+	 wv59/toTTGeD3E01qWwIC5D6AfZ+h1SelSp1R2vvlMJgbvyD2UCNLvc6gRefHcRyhp
+	 0ILKJo7UF83kg==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fb3ce15172so9310791fa.0;
+        Wed, 30 Oct 2024 07:06:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUrweV4YYyBapi/duR1wfqinpOFs3eV/0B7BK481kRrENyc2WKc+Th5k+CE58Ri6ly7W8ddPtsXWfWYudKEgjY=@vger.kernel.org, AJvYcCVgt8WYUTVRkJT0z4o2JXTNFBjXjQKeQ4hcQT7NlKI4yEnB/3cEzNcmknkPjy0jAyTBnpDQTrK4XZhc@vger.kernel.org, AJvYcCWcxoE7LtHcV5f3HqzPMuVK7DaIyW8yC1Fb25fs8VaenxBlaDPj9wcO6rLnvsuAhSEnHKbt+NE5xIb1OL4W@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8eCSlAP8uKZ0nHLT3ztYhLGE9s+QXFjLcfrFmma/XzA3ySAdu
+	DQE9wHlVeA1EX72FRSqNxcU/lcJHAkWgcZomAGSIcjVnXWqfw+JSV4CGldLObjY+UvYjV6RALGA
+	YR+bPBclx6FEsGrYy4CAvv6QATQ==
+X-Google-Smtp-Source: AGHT+IHraIDvgEshI6B9Lhwn0jf1bScQv1+cJh9BmMoQ68/u5a9ivzRXYW10ns73NHalIqSCwJ3femN7Utb8XdqZF+8=
+X-Received: by 2002:a05:6512:a93:b0:53b:48f2:459b with SMTP id
+ 2adb3069b0e04-53c316319a7mr876648e87.23.1730297165207; Wed, 30 Oct 2024
+ 07:06:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAGY3ImcC/x2MWwqAIBAArxL73YJlD+oq0YfaaguxhUIF0d2TP
- gdm5oFEkSnBWDwQ6eTEu2SoygLcaiQQ8pIZalU3ldIKLcsSSHBj67Ys4GWioCPrh56MblUHuT0 ieb7/7zS/7wdYmh0XZwAAAA==
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2455; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=4TcP5RobiXr2DcxYkoWURTLQh2mLkq/s7RGmwBrfTv0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnIjdwMyJDfPWJwQS2tSSwnep0neZlzfm5nIIuf
- 97o8jpmioKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZyI3cAAKCRAEWL7uWMY5
- RvdMD/9hG7LVutgKti3KMkRZDZy9QG4Cs/By8fe2jNZ+rTNNpPzOcMRTd0nny2hxsIHnAPp/hhK
- BG3NqaX5pjSvibufuLe57cN5w8yRCZyzpA3gjVmTdSRG67e80W1IfJ/5vfhPSqE2IhzqucQk0Ka
- ovfj0Xa+Fx3ikAl8ohOd8spIPgWnEUriZaMGRhxMuZlRSOUy76NmFL8KQh5/MK8aw7KuYUvzgRZ
- /gp0gtd7vrQxnBDAqhSONMX0s3g6KgY8QcKkSTbLj90Os4+uPly8eMlNY3xpCCanBzpBnNiC9rt
- oky4srlFyocsyFpYmXGwA6IeDmakwuiCoNtSHGQLFfMylQuc4IXoibx5r3pYP2IDiGTIzU0UyCA
- 5+MEH0coyJ8qy4cnyOJw7/+8kqZT6G7EXCVRJq9MMBye0/nLeSvticm89JoCjs2+sG/6OHzKKaL
- nk0IqZWlknpWh6gz06CpnBBn2T4H1FOTO0l5zivV0amo60uj9w0oLKITAs1KHXes76qsCz2c7o+
- 3qtq+UcCEMtoYhTKJ489EmpTHv9KYD3TCQ7mIOPZbHDy7hOd3pEuAN/54ZYqLxZw8dde6ylHI4Y
- m4Kwho/n3k2d4XtcgsQiEPyY4yJppABx+sJvxrFAD8Vhl3fqfl9+NThSmvegv4CbZ+Y5FdyIi4W uthUD+x2oLsc38g==
-X-Mailer: b4 0.13.0
-Message-ID: <20241030-bindgen-libclang-warn-v1-1-3a7ba9fedcfe@google.com>
-Subject: [PATCH] rust: warn when using libclang >=19.1 with bindgen <0.70
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+MIME-Version: 1.0
+References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+ <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
+ <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com>
+ <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
+ <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+ <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com> <CAH5fLggCDiKUu_dvJZeJr8UD5RvUpqRJbdYKf1F3_MvCdOVK6g@mail.gmail.com>
+In-Reply-To: <CAH5fLggCDiKUu_dvJZeJr8UD5RvUpqRJbdYKf1F3_MvCdOVK6g@mail.gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 30 Oct 2024 09:05:51 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqL+b-f5K24qTxyA09c_QPeb07s4Hb=s1VqrdksBB4BQ=Q@mail.gmail.com>
+Message-ID: <CAL_JsqL+b-f5K24qTxyA09c_QPeb07s4Hb=s1VqrdksBB4BQ=Q@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Saravana Kannan <saravanak@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When testing a clang upgrade with Rust Binder, I encountered a build
-failure caused by bindgen not translating some symbols related to
-tracepoints. This was caused by commit 2e770edd8ce1 ("[libclang] Compute
-the right spelling location") changing the behavior of a function
-exposed by libclang. Bindgen fixed the regression in commit 600f63895f73
-("Use clang_getFileLocation instead of clang_getSpellingLocation").
+On Wed, Oct 30, 2024 at 3:15=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> On Tue, Oct 29, 2024 at 8:35=E2=80=AFPM Rob Herring <robh@kernel.org> wro=
+te:
+> >
+> > On Tue, Oct 29, 2024 at 1:57=E2=80=AFPM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > >
+> > > On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.=
+com> wrote:
+> > > >
+> > > > One option is to define a trait for integers:
+> >
+> > Yeah, but that doesn't feel like something I should do here. I imagine
+> > other things might need the same thing. Perhaps the bindings for
+> > readb/readw/readl for example. And essentially the crate:num already
+> > has the trait I need. Shouldn't the kernel mirror that? I recall
+> > seeing some topic of including crates in the kernel?
+>
+> You can design the trait to look similar to traits in external crates.
+> We did that for FromBytes/AsBytes.
+>
+> I assume you're referring to the PrimInt trait [1]? That trait doesn't
+> really let you get rid of the catch-all case, and it's not even
+> unreachable due to the u128 type.
 
-However, the regression fix is only available in bindgen versions 0.70.0
-or later. This means that when older bindgen versions are used with new
-versions of libclang, bindgen may do the wrong thing, which could lead
-to a build failure.
+It was num::Integer which seems to be similar.
 
-I encountered the bug with some header files related to tracepoints, but
-it could also cause build failures in other circumstances. Thus, always
-emit a warning when using an old bindgen with a new libclang so that
-other people do not have to spend time chasing down the same bug as me.
+>
+> [1]: https://docs.rs/num-traits/0.2.19/num_traits/int/trait.PrimInt.html
+>
+> > > +1, one more thing to consider is whether it makes sense to define a
+> > > DT-only trait that holds all the types that can be a device property
+> > > (like `bool` too, not just the `Integer`s).
+> > >
+> > > Then we can avoid e.g. `property_read_bool` and simply do it in `prop=
+erty_read`.
+> >
+> > Is there no way to say must have traitA or traitB?
+>
+> No. What should it do if you pass it something that implements both trait=
+s?
+>
+> If you want a single function name, you'll need one trait.
 
-If you encounter this warning, it is recommended that you upgrade
-bindgen to 0.70 or later.
+I'm not sure I want that actually.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- scripts/rust_is_available.sh | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+DT boolean is a bit special. A property not present is false.
+Everything else is true. For example, 'prop =3D <0>' or 'prop =3D
+"string"' are both true. I'm moving things in the kernel to be
+stricter so that those cases are errors. I recently introduced
+(of|device)_property_present() for that reason. There's no type
+information stored in DT.  At the DT level, it's all just byte arrays.
+However, we now have all the type information for properties within
+the schema. So eventually, I want to use that to warn on accessing
+properties with the wrong type.
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 5262c56dd674..30695612a0d7 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -225,6 +225,18 @@ if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
- 	exit 1
- fi
- 
-+if [ "$bindgen_libclang_cversion" -ge 190100 ] && [ "$rust_bindings_generator_cversion" -lt 7000 ]; then
-+	echo >&2 "***"
-+	echo >&2 "*** You're using libclang version 19.1+ together with a version of the"
-+	echo >&2 "*** Rust bindings generator '$BINDGEN' from before version 0.70. This"
-+	echo >&2 "*** combination has a known bug that may lead to build failures."
-+	echo >&2 "*** (https://github.com/rust-lang/rust-bindgen/pull/2824)"
-+	echo >&2 "***   Your bindgen version:  $rust_bindings_generator_version"
-+	echo >&2 "***   Your libclang version: $bindgen_libclang_version"
-+	echo >&2 "***"
-+	warning=1
-+fi
-+
- # If the C compiler is Clang, then we can also check whether its version
- # matches the `libclang` version used by the Rust bindings generator.
- #
+For example, I think I don't want this to work:
 
----
-base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
-change-id: 20241030-bindgen-libclang-warn-cebf97ea3506
+if dev.property_read(c_str!("test,i16-array"))? {
+    // do something
+}
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+But instead have:
 
+if dev.property_present(c_str!("test,i16-array")) {
+    // do something
+}
+
+To actually warn on property_read_bool, I'm going to have to rework
+the underlying C implementation to separate device_property_present
+and device_property_read_bool implementations.
+
+Rob
