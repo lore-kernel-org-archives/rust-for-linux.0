@@ -1,206 +1,317 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D112768FC;
-	Wed, 30 Oct 2024 16:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711A21B44E
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 17:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730306863; cv=none; b=SK11opp6sCzK3Yw5+TFLbkGxp8H5/Y8ayc49O2iOyZQxQ48yw9UQQ4cXhVrAygQZ7+aBNw5i0zFBjsxu9Z68JdEiPLddq31Y+qQmUWExB/TCfhuF0/XAleGq4qeTICBdeuWxppEzTzDVOXZ2xjfp2C4hFkkXrf+51sTc1DsHsfw=
+	t=1730307686; cv=none; b=RvnomrNWtM8TEINRnphzh7lyNbyqW9NG8Lv1W1PUZoyl0nWF0Pinu5PMdc0E83TgNvE9L9PygYIGaTpgOFFQzyy4rqJaaXlh98iOvFixEkL1hdtuwk+Shx8pwz5VqDkAxJxvPaJ59YqNXugaK++CwNDydkJkGIlXDeTI8tA9+X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730306863; c=relaxed/simple;
-	bh=G9u9zhuA94H/fUMNkQs5qyanCAF7/yxcojMjY/sX3ZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZrjuG55osYKlzAWFEtzz/nYHS4uzSorGVidxPqo370m5J4rTaG8iH979meB9wUc2a3gYFYE4M4F6dX87MKDEnPpa3jXNx4VEaayb/TMcPyD9hvjdCfIn6wlflHrxQffGj7cCK/qlozu95er4MovePCm2m0lam638x68J1Yv56MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2YGCmmd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730307686; c=relaxed/simple;
+	bh=fQR1ipAg12rN5GQOwppGuY5jZB1MJHykOwFYTdB2cBU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=g0gGNS/Uttm0FPGb5UbPFNa4UbPU5yd62B1U+TwsGwLdjTnX012xRV5ggn5G697CUiWtS2BbFCiFJ92cNj96O8/6Epxjq3nCD37ZlLEUs3JThSXnlESRxbZNgN9ni1e/ZRlq5b3grkJXXL9TVMmDoqkxif86DZj+mlpWm6WhCiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4V5sPlKo; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2YGCmmd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1DAC4CEDA;
-	Wed, 30 Oct 2024 16:47:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730306862;
-	bh=G9u9zhuA94H/fUMNkQs5qyanCAF7/yxcojMjY/sX3ZU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=T2YGCmmdSBZ8gg0xGA6L+5GpJbCouJJeTP/WKv2ItzgiZDaDS4/bEDxnUKeZEUBl5
-	 ue079TH0egbePlIkyn0w4Q5Ci2V2SsZi7C7Lz7yrd0wXxhHkvXAv2VjnxKiExU1Sw9
-	 +7XSQ5TsYMMSflwswMty1KA3kIMRxK4olo3q2J3uowEqjwie8joHRywRHFyOOkYOeJ
-	 S2EuO3wJlNgJmmAI8b8cDSY5XGmWnIRSBMrKAl4+Z1wvj8fA2Ib1EsrJGH/xTx6jxw
-	 tzqcMxE6jQl/u2aXlqgYLfYhuyPy8fKIOFumSXLnZRXAK86d9MWq+AFdieza7hWQge
-	 XRMT9U/38FOng==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539ebb5a20aso28494e87.2;
-        Wed, 30 Oct 2024 09:47:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUZH0JrnV3ntGMIoos4k+kCrlUiTf2X2eVg+YVyE5CsJXe5hxelP12w3+rjyw70tykqH75n5TnBybre+vMZ@vger.kernel.org, AJvYcCUnM0CiODB4FEKzoODqbdyfT4HmJL5PtjbQfd+EMfNMlZHixcJfNx7OitnvadCVayclFgJ5o2OEXn3tQhed+AE=@vger.kernel.org, AJvYcCXYEoesBoLndS62lvrbts78JOrA1g8BkfoTJ7OkxHqct//ROM5C/XgRMJ0Cmta+1efjdYS3qn0sew5J@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI2YgUi+HduQrkpXju/E89qatNoQZ7cLouaF+oAvIoiAgJeIuR
-	ZZWXkR0EwEuV1ShcgLylBI96XgTOg9wLA7D59R2wZjxe+MrerlsIoOjCJqdxikaIRsCYRcYYDNG
-	DFZnxzNrI2z0yb23tPDybhF6xPQ==
-X-Google-Smtp-Source: AGHT+IGQ6H9qIhqtA2x22Lv1WNjZfStTB5wUkQiDjZODnFYdktSwlxnt6RTQXmtXnMQMYc0LM7iws8mWHFwymfjBU5U=
-X-Received: by 2002:a05:6512:32c7:b0:536:a50a:3c25 with SMTP id
- 2adb3069b0e04-53b348c1612mr8787033e87.12.1730306860915; Wed, 30 Oct 2024
- 09:47:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4V5sPlKo"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2e2ca403f5dso7672a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 10:01:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730307682; x=1730912482; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=om9+T+BzGiFlRsW2pBH91Ute5YSKt+l3yNwMimZjYxE=;
+        b=4V5sPlKoCm9L+vVhHvsMTGG4mwPGkuWZ8QGxY81cAa5f3Ma5t8Tb8zHpov/iIQCnmH
+         Zjm937Wfs3NRZGaBhCn4Pt4h78foTjIzEaOZ6IDo9ZAtC0uoEU0EhxvAaMjpHpB+ellk
+         5w7KlDXhY1uZCew/nSFiPkZLY0/FABJjK1ad00ZsOiNBvYp0EkWi56w54wnV9uoe5kwq
+         P4ZLZFMf8ms3avLk1SNX+EkS1nOsUGZmoCTdxfsrPQFZu5zjyum0D+fvlMFA3RLvF1uw
+         U+3KxXEt30yOpqX6FbRY25g6seLdQ6dodRThAYLHjntyJ2tcoG4Ztu9fp7z+YMt66RHZ
+         9dWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730307682; x=1730912482;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=om9+T+BzGiFlRsW2pBH91Ute5YSKt+l3yNwMimZjYxE=;
+        b=Bvi04GYrp5XuRk/4c3oTLDe/0uFBY8nQ9dlf0RagT+QOBJ5Q3bsgPe5pVTHrdGcaKg
+         1+yR4EIFwhOnk2zgqQS807nNoVdV4G0TFkOsbMEusQ1M7pHByhMoEjrPodmNLW3mrbOE
+         PmfiNTVwKxfo5muoxvJibQLXkH9Lc17YGISZ1u3Oa3nACLEmi2UH9CFojJT8iXgsTvlZ
+         Xvl+ac6lmMxPmxkFjSAjUd2fC5cWHtDsIC5uum/QhxozGfM8S7HqC1PFM9VHl4fF6Pn3
+         AE2xpoJMOC2Zs2fBkh0R4tI0tk7uSVxBMlBRQkh3zg+RlXMraPppP4kITlkfKFdapjs2
+         r+IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmS5i18vuWQmxiLafLu4j7w2VfkkvZAXJ2S5s0pRC2PJYZHn1u3fYJodhS7KTYkcgIGgCQW4WCMWN6LZQ09w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8tFUJfjCIRqnsVkhoM1py3BFqqRuy5yKq+KGiqCNU51MtoQM2
+	UH9fqT0XiC+zbPo5W2JOsDbPeLBKpuqymEUXi0HM86NBQ1D12iuaOElAo0LYFTSRdawx20NRAOJ
+	ZxdE9yul2go+YPuRH7asZtTdsUg==
+X-Google-Smtp-Source: AGHT+IE7JUiy1OA0lARRilo5KjNtcOiy48QgqtB55vOxlLLSgVgbh4T6s2qrhweBdzwLjj5G6iB7dCy5/BdtSL8N0ns=
+X-Received: from samitolvanen.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:4f92])
+ (user=samitolvanen job=sendgmr) by 2002:a17:90b:23d1:b0:2e2:af0f:9875 with
+ SMTP id 98e67ed59e1d1-2e8f11ccdfdmr29458a91.7.1730307682329; Wed, 30 Oct 2024
+ 10:01:22 -0700 (PDT)
+Date: Wed, 30 Oct 2024 17:01:07 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
- <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
- <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com>
- <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
- <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
- <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com>
- <CAH5fLggCDiKUu_dvJZeJr8UD5RvUpqRJbdYKf1F3_MvCdOVK6g@mail.gmail.com>
- <CAL_JsqL+b-f5K24qTxyA09c_QPeb07s4Hb=s1VqrdksBB4BQ=Q@mail.gmail.com> <79c47555-c9e9-4ff6-8c43-c7c26a91afd4@gmail.com>
-In-Reply-To: <79c47555-c9e9-4ff6-8c43-c7c26a91afd4@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 30 Oct 2024 11:47:27 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJkkUk6AoAdgfVHROk=wpRo0En=gi7zwXe6S7LUEsdocQ@mail.gmail.com>
-Message-ID: <CAL_JsqJkkUk6AoAdgfVHROk=wpRo0En=gi7zwXe6S7LUEsdocQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
-To: Dirk Behme <dirk.behme@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Mime-Version: 1.0
+X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10158; i=samitolvanen@google.com;
+ h=from:subject; bh=fQR1ipAg12rN5GQOwppGuY5jZB1MJHykOwFYTdB2cBU=;
+ b=owGbwMvMwCEWxa662nLh8irG02pJDOlKaUHNn8KrtUQ5P6ZrZpz9n/RgkfQn7T3fZ0rkzFPmV
+ uyc9/VwRykLgxgHg6yYIkvL19Vbd393Sn31uUgCZg4rE8gQBi5OAZiI7C+G/4EXeuoNcm7MXc8Y
+ dj9359GWpPlbZyivk7uu475Ac9m9UDVGhoneiktuc8aJsG5Scbqjqli+7NnpvefLC3eoqTV9CD6 byQgA
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <20241030170106.1501763-21-samitolvanen@google.com>
+Subject: [PATCH v5 00/19] Implement DWARF modversions
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 30, 2024 at 11:03=E2=80=AFAM Dirk Behme <dirk.behme@gmail.com> =
-wrote:
->
-> On 30.10.24 15:05, Rob Herring wrote:
-> > On Wed, Oct 30, 2024 at 3:15=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
-m> wrote:
-> >>
-> >> On Tue, Oct 29, 2024 at 8:35=E2=80=AFPM Rob Herring <robh@kernel.org> =
-wrote:
-> >>>
-> >>> On Tue, Oct 29, 2024 at 1:57=E2=80=AFPM Miguel Ojeda
-> >>> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >>>>
-> >>>> On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google=
-.com> wrote:
-> >>>>>
-> >>>>> One option is to define a trait for integers:
-> >>>
-> >>> Yeah, but that doesn't feel like something I should do here. I imagin=
-e
-> >>> other things might need the same thing. Perhaps the bindings for
-> >>> readb/readw/readl for example. And essentially the crate:num already
-> >>> has the trait I need. Shouldn't the kernel mirror that? I recall
-> >>> seeing some topic of including crates in the kernel?
-> >>
-> >> You can design the trait to look similar to traits in external crates.
-> >> We did that for FromBytes/AsBytes.
-> >>
-> >> I assume you're referring to the PrimInt trait [1]? That trait doesn't
-> >> really let you get rid of the catch-all case, and it's not even
-> >> unreachable due to the u128 type.
-> >
-> > It was num::Integer which seems to be similar.
-> >
-> >>
-> >> [1]: https://docs.rs/num-traits/0.2.19/num_traits/int/trait.PrimInt.ht=
-ml
-> >>
-> >>>> +1, one more thing to consider is whether it makes sense to define a
-> >>>> DT-only trait that holds all the types that can be a device property
-> >>>> (like `bool` too, not just the `Integer`s).
-> >>>>
-> >>>> Then we can avoid e.g. `property_read_bool` and simply do it in `pro=
-perty_read`.
-> >>>
-> >>> Is there no way to say must have traitA or traitB?
-> >>
-> >> No. What should it do if you pass it something that implements both tr=
-aits?
-> >>
-> >> If you want a single function name, you'll need one trait.
-> >
-> > I'm not sure I want that actually.
-> >
-> > DT boolean is a bit special. A property not present is false.
-> > Everything else is true. For example, 'prop =3D <0>' or 'prop =3D
-> > "string"' are both true. I'm moving things in the kernel to be
-> > stricter so that those cases are errors. I recently introduced
-> > (of|device)_property_present() for that reason. There's no type
-> > information stored in DT.  At the DT level, it's all just byte arrays.
-> > However, we now have all the type information for properties within
-> > the schema. So eventually, I want to use that to warn on accessing
-> > properties with the wrong type.
-> >
-> > For example, I think I don't want this to work:
-> >
-> > if dev.property_read(c_str!("test,i16-array"))? {
-> >     // do something
-> > }
-> >
-> > But instead have:
-> >
-> > if dev.property_present(c_str!("test,i16-array")) {
-> >     // do something
-> > }
->
-> I think we have "optional" properties which can be there (=3D=3D true) or
-> not (=3D=3D false). Let's assume for this example "test,i16-array" is suc=
-h
-> kind of "optional" property. With what you gave above we need two
-> device tree accesses, then? One to check if it is there and one to
-> read the data:
+Hi,
 
-Yes, lots of properties are optional especially since any new property
-added has to be because the DT is an ABI.
+Here's v5 of the DWARF modversions series. The main motivation is
+modversions support for Rust, which is important for distributions
+like Android that are about to ship Rust kernel modules. Per Luis'
+request [1], v2 dropped the Rust specific bits from the series and
+instead added the feature as an option for the entire kernel to
+make it easier to evaluate the benefits of this approach, and to
+get better test coverage. Matt is addressing Rust modversion_info
+compatibility issues in a separate patch set [2] that depends on this
+series, and actually allows modversions to be enabled with Rust.
 
-> let mut array =3D <empty_marker>;
-> if dev.property_present(c_str!("test,i16-array")) {
->     array =3D dev.property_read(c_str!("test,i16-array"))?;
-> }
->
-> ?
->
-> Instead of these two accesses, I was thinking to use the error
-> property_read() will return if the optional property is not there to
-> just do one access:
->
-> let mut array =3D <empty_marker>;
-> if let Ok(val) =3D dev.property_read(c_str!("test,i16-array")) {
->        array =3D val;
-> }
->
-> (and ignore the error case as its irrelvant in the optional case)
->
-> Have I missed anything?
+Short background: Unlike C, Rust source code doesn't have sufficient
+information about the final ABI, as the compiler has considerable
+freedom in adjusting structure layout, for example, which makes
+using a source code parser like genksyms a non-starter. Based on
+earlier feedback, this series uses DWARF debugging information for
+computing versions. DWARF is an established and a relatively stable
+format, which includes all the necessary ABI details, and adding a
+CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+reasonable trade-off as most distributions already enable it.
 
-If you grep "_property_present", most if not all calls never need the
-data. When you need the data, you read it and test for EINVAL if you
-want to handle "not present". The overhead of parsing the data is not
-nothing, so I think it is better to provide both.
+The first patch moves the genksyms CRC32 implementation to a shared
+header file to avoid code duplication and the next 15 patches add
+gendwarfksyms, a tool for computing symbol versions from DWARF. When
+passed a list of exported symbols and object files, the tool
+generates an expanded type string for each symbol and computes symbol
+CRCs similarly to genksyms. gendwarfksyms is written in C and uses
+libdw to process DWARF. Patch 17 ensures that debugging information
+is present where we need it, patch 18 adds gendwarfksyms as an
+alternative to genksyms, and the last patch adds documentation.
 
-The typical pattern in the C code is:
+v5 is based on v6.12-rc5 and for your convenience the series is also
+available here:
 
-u32 val =3D DEFAULT_VALUE;
-of_property_read_u32(node, "a-property", &val);
+https://github.com/samitolvanen/linux/commits/gendwarfksyms-v5
 
-// val is now either the read property or the default. If the property
-is required, then the error code needs to be checked.
+If you also want to test the series with Rust modules, this branch
+adds Matt's latest modversion_info series:
 
-Maybe we should have:
+https://github.com/samitolvanen/linux/commits/rustmodversions-v5
 
-let val: u32 =3D dev.property_read_optional(c_str!("test,i16-array"),
-DEFAULT_VALUE);
+Sami
 
-Or looks like Option<> could be used here?:
 
-let val: u32 =3D dev.property_read(c_str!("test,i16-array"),
-Option<DEFAULT_VALUE>);
+[1] https://lore.kernel.org/lkml/ZnIZEtkkQWEIGf9n@bombadil.infradead.org/
+[2] https://lore.kernel.org/lkml/20240925233854.90072-1-mmaurer@google.com/
 
-One thing I'd like to improve is having fewer driver error messages
-and a printk for a missing required property is a common one. We have
-APIs like clk_get and clk_get_optional (which parse firmware
-properties). The difference is the former prints an error message on
-error case and the latter is silent.
+---
 
-Rob
+v5:
+- Rebased on v6.12-rc5.
+
+- Fixed an issue with limiting structure expansion, and applied
+  Petr's clean-up. (Patch 10)
+
+- Dropped an unnecessary return statement in error path. (Patch
+  12)
+
+- Addressed several other smaller issues Petr brought up. (Patches
+  13, 14, and 15)
+
+- Added a KBUILD_GENDWARFKSYMS_STABLE flag to enable --stable for
+  the entire kernel build. (Patch 18)
+
+- Updated documentation to include KBUILD flags. (Patch 19)
+
+- Picked up Reviewed-by tags from v4.
+
+v4: https://lore.kernel.org/lkml/20241008183823.36676-21-samitolvanen@google.com/
+- Rebased on v6.12-rc2, which now includes all the prerequisites.
+
+- Dropped unnecessary name_only parameter for symbols.c::for_each
+  and cleaned up error handling. (Patch 3)
+
+- Fixed anonymous scope handling to ensure unnamed DIEs don't get
+  names. (Patch 4)
+
+- Added non-variant children to variant_type output, and included
+  DW_AT_discr_value attributes for variants. (Patch 9)
+
+- Added another symbol pointer test case. (Patch 16)
+
+- Picked up (Acked|Reviewed)-by tags from v3.
+
+
+v3: https://lore.kernel.org/lkml/20240923181846.549877-22-samitolvanen@google.com/
+- Updated SPX license headers.
+
+- Squashed the first two patches in v2 and tried to reduce churn as
+  much as reasonable.
+
+- Dropped patch 18 from v2 ("x86/asm-prototypes: Include
+  <asm/ptrace.h>") as it's addressed by a separate patch.
+
+- Changed the error handling code to immediately terminate instead
+  of propagating the errors back to main, which cleaned up the code
+  quite a bit.
+
+- Switched to the list and hashtable implementations in scripts and
+  dropped the remaining tools/include dependencies. Added a couple
+  missing list macros. (patch 1)
+
+- Moved the genksyms CRC32 implementation to scripts/include and
+  dropped the duplicate code. (patches 2 and 14)
+
+- Switched from ad-hoc command line parsing to getopt_long (patch 3).
+
+- Added structure member and function parameter names to the DIE
+  output to match genksyms behavior, and tweaked the symtypes format
+  to be more parser-friendly in general based on Petr's suggestions.
+
+- Replaced the declaration-only struct annotations with more generic
+  kABI stability rules that allow source code annotations to be used
+  where #ifndef __GENKSYMS__ was previously used.  Added support for
+  rules that can be used to exclude enumerators from versioning.
+  (patch 16)
+
+- Per Miroslav's suggestion, added an option to hide structure
+  members from versioning when they're added to existing alignment
+  holes, for example. (patch 16)
+
+- Per Greg's request, added documentation and example macros for the
+  --stable features, and a couple of test cases. (patches 15, 16, and
+  20)
+
+- Fixed making symtypes files, which need to depend on .o files with
+  gendwarfksyms. (patch 19)
+
+- Addressed several other smaller issues that Petr and Masahiro
+  kindly pointed out during the v2 review.
+
+
+v2: https://lore.kernel.org/lkml/20240815173903.4172139-21-samitolvanen@google.com/
+- Per Luis' request, dropped Rust-specific patches and added
+  gendwarfksyms as an alternative to genksyms for the entire
+  kernel.
+
+- Added support for missing DWARF features needed to handle
+  also non-Rust code.
+
+- Changed symbol address matching to use the symbol table
+  information instead of relying on addresses in DWARF.
+
+- Added __gendwarfksyms_ptr patches to ensure the compiler emits
+  the necessary type information in DWARF even for symbols that
+  are defined in other TUs.
+
+- Refactored debugging output and moved the more verbose output
+  behind --dump* flags.
+
+- Added a --symtypes flag for generating a genksyms-style
+  symtypes output based on Petr's feedback, and refactored
+  symbol version calculations to be based on symtypes instead
+  of raw --dump-dies output.
+
+- Based on feedback from Greg and Petr, added --stable flag and
+  support for reserved data structure fields and declaration-onl
+  structures. Also added examples for using these features.
+
+- Added a GENDWARFKSYMS option and hooked up kbuild support
+  for both C and assembly code. Note that with gendwarfksyms,
+  we have to actually build a temporary .o file for calculating
+  assembly modversions.
+
+v1: https://lore.kernel.org/lkml/20240617175818.58219-17-samitolvanen@google.com/
+
+---
+
+Sami Tolvanen (19):
+  scripts: move genksyms crc32 implementation to a common include
+  tools: Add gendwarfksyms
+  gendwarfksyms: Add address matching
+  gendwarfksyms: Expand base_type
+  gendwarfksyms: Add a cache for processed DIEs
+  gendwarfksyms: Expand type modifiers and typedefs
+  gendwarfksyms: Expand subroutine_type
+  gendwarfksyms: Expand array_type
+  gendwarfksyms: Expand structure types
+  gendwarfksyms: Limit structure expansion
+  gendwarfksyms: Add die_map debugging
+  gendwarfksyms: Add symtypes output
+  gendwarfksyms: Add symbol versioning
+  gendwarfksyms: Add support for kABI rules
+  gendwarfksyms: Add support for reserved and ignored fields
+  gendwarfksyms: Add support for symbol type pointers
+  export: Add __gendwarfksyms_ptr_ references to exported symbols
+  kbuild: Add gendwarfksyms as an alternative to genksyms
+  Documentation/kbuild: Add DWARF module versioning
+
+ Documentation/kbuild/gendwarfksyms.rst      |  276 +++++
+ Documentation/kbuild/index.rst              |    1 +
+ include/linux/export.h                      |   15 +
+ kernel/module/Kconfig                       |   31 +
+ scripts/Makefile                            |    3 +-
+ scripts/Makefile.build                      |   41 +-
+ scripts/gendwarfksyms/.gitignore            |    2 +
+ scripts/gendwarfksyms/Makefile              |   12 +
+ scripts/gendwarfksyms/cache.c               |   44 +
+ scripts/gendwarfksyms/die.c                 |  166 +++
+ scripts/gendwarfksyms/dwarf.c               | 1109 +++++++++++++++++++
+ scripts/gendwarfksyms/examples/kabi.h       |  141 +++
+ scripts/gendwarfksyms/examples/kabi_ex0.c   |   86 ++
+ scripts/gendwarfksyms/examples/kabi_ex1.c   |   89 ++
+ scripts/gendwarfksyms/examples/kabi_ex2.c   |   98 ++
+ scripts/gendwarfksyms/examples/kabi_rules.c |   56 +
+ scripts/gendwarfksyms/examples/symbolptr.c  |   33 +
+ scripts/gendwarfksyms/gendwarfksyms.c       |  185 ++++
+ scripts/gendwarfksyms/gendwarfksyms.h       |  288 +++++
+ scripts/gendwarfksyms/kabi.c                |  263 +++++
+ scripts/gendwarfksyms/symbols.c             |  339 ++++++
+ scripts/gendwarfksyms/types.c               |  477 ++++++++
+ scripts/genksyms/genksyms.c                 |   77 +-
+ scripts/include/crc32.h                     |   93 ++
+ 24 files changed, 3840 insertions(+), 85 deletions(-)
+ create mode 100644 Documentation/kbuild/gendwarfksyms.rst
+ create mode 100644 scripts/gendwarfksyms/.gitignore
+ create mode 100644 scripts/gendwarfksyms/Makefile
+ create mode 100644 scripts/gendwarfksyms/cache.c
+ create mode 100644 scripts/gendwarfksyms/die.c
+ create mode 100644 scripts/gendwarfksyms/dwarf.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi.h
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex0.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex1.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex2.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_rules.c
+ create mode 100644 scripts/gendwarfksyms/examples/symbolptr.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.h
+ create mode 100644 scripts/gendwarfksyms/kabi.c
+ create mode 100644 scripts/gendwarfksyms/symbols.c
+ create mode 100644 scripts/gendwarfksyms/types.c
+ create mode 100644 scripts/include/crc32.h
+
+
+base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+-- 
+2.47.0.163.g1226f6d8fa-goog
+
