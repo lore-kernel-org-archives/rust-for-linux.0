@@ -1,208 +1,121 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D51DE8B9
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 08:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A69E1E0DB8
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 08:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730275498; cv=none; b=Wr7uGo3K5sc2IstW/GIFU6Br2W+oLPHFsIGLKKiCHSfzgqzTT/QM+ALcQr29VWLuOkxXYhOdw/PV/z8ZIBXVBkFhBZMdE8hnhQw0QSWOrJuLiZgiRe+rSc6VS5DojzYyW1kbdS/Wm22V/t0MYxQJD9OPRJ+t7K3IDKcDlSVyCjY=
+	t=1730275776; cv=none; b=Nbe03+tqv/BaVzTMYtyzsMIUaGt388kSUUL6n6mBiza3MRH/2KEja9R2jwPLfzK+f06/d9aVy9h1VJ2FewVTE0jBcIVlFS6Vo2XmBAl9u51oCI8+zK2Wka8mRjsTuZ1iYUixpwCdwfhmg4M9MNq7XSwcyvHOxtmOVvpN/RYctCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730275498; c=relaxed/simple;
-	bh=uIeID8LPkVV7vbsIkbApKkA4nCAHOHCbaN4cEw6ZYcM=;
+	s=arc-20240116; t=1730275776; c=relaxed/simple;
+	bh=+kVSzx9rf4BIG7BfgSll1dC+VOkG6fik/owXU9ICoG4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ed3aJ6PCOvlJPhoZmKNKKqY4JVyQyfZWsSyNAheTIs4J0MQToT9qD0eLGbLpAoX36OHNuBgNaMyELyAGf0Twbs4Ty06A+42lo4sg9lVqNaGufOVld3Vdex5RHL7pJTeohBJHrVqgn2nluCIF6prQTcqcPS5k7B7Qt9LLuidHtp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w5rmvAdN; arc=none smtp.client-ip=209.85.221.45
+	 To:Cc:Content-Type; b=R3gqBuEeGOoem0w9Sjie1kvBnLusAiRyoywGEVE5ITwa9u7J3A4h4pcl1odhBYbGUK/h4U1iEnPQr3JPJnlsiN4N9Wj5x2BPB7YY3kz4qJ71qWVQZY0kBRHndYK4rJPXiAM06hQq6P1Zlq/nYm0pLedWjnKfiY9bHu4LyIcsj+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q/EMnEqP; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w5rmvAdN"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-37d43a9bc03so4341525f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 01:04:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q/EMnEqP"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d4c1b1455so4028369f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 01:09:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730275495; x=1730880295; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730275773; x=1730880573; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=95RTSh8J+27qXgrorPD5Q3P6nvO44Dt8mII1tFtUkPY=;
-        b=w5rmvAdNdopCxTt1EwoBkRJxap2Rvi5hc8hpBz+TVNPXpms6/xYc8uyniN2fCGIoPU
-         5o8Y3hzSj8ZTrHV5nnljyXRcBlERs4vZIm1IRLeGvzFzI3tZDbl/ngvZKzsd+IDDGW2V
-         oVtOowIiF1UkxI6cS2EqKYUYXl1UThhccC4W9YBQ6QTyamq3msGabmoTN4uDRfddBola
-         ig54L8vc5dxbpQHwvVnTCIkau6lun4GmDYiT+eHEomrbLBsgO/gKwJUS8u1B5DOhiNyl
-         yoXPTCngxEgPRgU2nkxA3536HtBicmlKhtNEiSc+0T9r/lEnrDGRurQGgod457FetsBw
-         AGJQ==
+        bh=+kVSzx9rf4BIG7BfgSll1dC+VOkG6fik/owXU9ICoG4=;
+        b=q/EMnEqPFZUZV/gEDBmi998tbHUDIBDjB29VJ5eQeCB1i4+TxHBJmsUom0zgPXkHeu
+         039vVD+15aUVSPij3pKtNhn3r9XK6y3cCO1DhRxUFTj5fVquBo08ixr9cUpe2/oAQ1Ee
+         mBHTkf2CN86fsz+sO4C8Z6LhJk6DM9i4Yfkmk5ZBFrish8WCWkrmIEc+QTQUKrSScBD/
+         ug7kTq2KAZZPxU+35LrS/AVDlqW8f4qIZvqy5eEVJMmT4VgpRtoHLniqg0cTcK/TU9WX
+         U6O60ygRLcLy7EChrMAFggTQ+qXUyGAb9LO2ZtDlRQjj2NU3Wwehg49LzfrufBHGUiXn
+         Ri+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730275495; x=1730880295;
+        d=1e100.net; s=20230601; t=1730275773; x=1730880573;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=95RTSh8J+27qXgrorPD5Q3P6nvO44Dt8mII1tFtUkPY=;
-        b=XH59+DWYx9ETD4VAW0TEQ+DD8spJ1rGrmO4VjPQ+8ZbxQREeKQiYb/o4b3gKJ3lRFB
-         jjI2xUNzVypUF0KJfr9Nppuyjz4fohdZJrhdf0/hbcoJuV78j3ODxOb8ukpYN2FIvJXj
-         g80Oj20jmM9VaBDhAVKA1Q7FaeiVYf4cc7oSqOIwnsHh3Z+jJswtkUyYy2U25yahwq5P
-         LSEXSKVLdLuMZ2jUAetfVlO/JO9aLW9Q6HgNa7wOq6mh7hrnmd3wPl/1+iu3yGUYBOt+
-         9pKo3l+gyO23zuWhNxDHerojFdVpHLFPh9nGT/lg3RgHfxMuzGDLDSrVUNoIpwrKH+qE
-         h6yg==
-X-Forwarded-Encrypted: i=1; AJvYcCXEee7W/rtjdHoYj5Sgrz9YF5fLWqDG5lAI2Nnb3omIKDNRL8GAq+tq+Ad/4MqXmQ2VK2j/0AHUy4QbsULy2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8uurcM10A+kIbINf9eo/EldDz7lC8e0jSeXppHBqFcFII72QC
-	HveAdW8FdCffXyZ6/Sf2hJ+RcY1srFpJYYUJcpy6SN9pk9tMMxIHdz6LrVrmQOL9DSg657nvXjO
-	kpSAYPGq2ak0pNaCCQQ9NEc6e47YLRevtqnUQ
-X-Google-Smtp-Source: AGHT+IEO8HFZjd7+VNFhebqwnkZwF6uDUNNFfey/mrUvUsK0aGS/SN5Vy+JcStW4TaK1VVchX5VbiY422M+f2Hi1rVs=
-X-Received: by 2002:a5d:658c:0:b0:37d:46fa:d1d3 with SMTP id
- ffacd0b85a97d-3806119ac9emr10555574f8f.34.1730275494522; Wed, 30 Oct 2024
- 01:04:54 -0700 (PDT)
+        bh=+kVSzx9rf4BIG7BfgSll1dC+VOkG6fik/owXU9ICoG4=;
+        b=T8JMS4xEHYMpj9l+NfuWYx98oxdw5EK7Vn2CgZoHDoesMkysZr6t8UZhnw1w4Pdg7B
+         KGJMfjTvelYn9lBFmPX4f8/qMlh13IJp0vbME7K+v910Dz4hIPVZMszKJIWDjFXFzb5/
+         puPu5YbKOSCCLR2JKHf5spnyfak8kvi5avorKhuv0JTeRy3pJOgX7/OyIOsHGKU4SHvi
+         JR3ToWd3ABRqski6QXvtjlIU+WzbNeZaw1uBvkx9FSxrHUOJ5ZwR1z4rKu1YVlrmrKJ0
+         4ir+06mqZus9z5riQsFMIWFVgvnOxjCaKdKj+RLZH7Q+L+YFom0MwxEBsmfmtYTh0Zuv
+         XtIA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/dbiaq5lVLoF52y1n5Lc3PqUNgrkW4qaqq9pQH77yfPj4quQ2yfNuzoR4L3w7ks4HXXg5SsvYUX7hJ6Jb8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6zzYpp6cG5ybMtk1ptH7Jlk3ocp1Y4d6rWtRBf2I6VWS0CYpZ
+	vwmIIhtcRp42/QNl/RLfm5yZkady1Ria9s7TI4X5WuXr/1+q6VUlymhWyD9xKkFT9dO8aQ4fQgJ
+	KFvXWHAOPK1q0fKwIs0SXoTwZQWkBwUtMLHcs
+X-Google-Smtp-Source: AGHT+IFKM7cBceg79DhIJpxYNbilbjqWxqPxFbnvkwCq6F8IMzAmrdLoK45koFerLCKZMqJgFqe+f8/8Mxyt4nqaq3g=
+X-Received: by 2002:a5d:4d03:0:b0:37c:d225:6d33 with SMTP id
+ ffacd0b85a97d-381b710f718mr1739159f8f.55.1730275772880; Wed, 30 Oct 2024
+ 01:09:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241029092422.2884505-1-davidgow@google.com> <20241029092422.2884505-2-davidgow@google.com>
- <CAH5fLghSJtxKPZczEzc30m=LrG_BX0JkxX+0tFQLhojsOEzogg@mail.gmail.com> <CABVgOS=tp1SiZeQYgDX2ET3twJ8-xCZTu8ofsWabjsQZQbyMCg@mail.gmail.com>
-In-Reply-To: <CABVgOS=tp1SiZeQYgDX2ET3twJ8-xCZTu8ofsWabjsQZQbyMCg@mail.gmail.com>
+References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+ <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org> <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
+ <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com>
+ <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
+ <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+ <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com> <CAL_Jsq+PYtRR2T2ShPyC0Ae3P0FnzKKPr1uK=QG0hVmPUV=PVg@mail.gmail.com>
+In-Reply-To: <CAL_Jsq+PYtRR2T2ShPyC0Ae3P0FnzKKPr1uK=QG0hVmPUV=PVg@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 30 Oct 2024 09:04:41 +0100
-Message-ID: <CAH5fLggKDanVVYschS85mw_00vVnJ7SeJ9pKGYFrmmFh7iC4cg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: kunit: add KUnit case and suite macros
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <rmoar@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
+Date: Wed, 30 Oct 2024 09:09:20 +0100
+Message-ID: <CAH5fLgjyOMa_pVW1fLP8MR1E-=xF-qL2F4_NT42+y7tP9za2Xw@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
+To: Rob Herring <robh@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Saravana Kannan <saravanak@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Matt Gilbride <mattgilbride@google.com>, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 30, 2024 at 5:59=E2=80=AFAM David Gow <davidgow@google.com> wro=
+On Tue, Oct 29, 2024 at 11:05=E2=80=AFPM Rob Herring <robh@kernel.org> wrot=
+e:
+>
+> On Tue, Oct 29, 2024 at 2:35=E2=80=AFPM Rob Herring <robh@kernel.org> wro=
 te:
->
-> On Tue, 29 Oct 2024 at 20:08, Alice Ryhl <aliceryhl@google.com> wrote:
 > >
-> > On Tue, Oct 29, 2024 at 10:24=E2=80=AFAM David Gow <davidgow@google.com=
-> wrote:
+> > On Tue, Oct 29, 2024 at 1:57=E2=80=AFPM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
 > > >
-> > > From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-> > >
-> > > Add a couple of Rust const functions and macros to allow to develop
-> > > KUnit tests without relying on generated C code:
-> > >
-> > >  - The `kunit_unsafe_test_suite!` Rust macro is similar to the
-> > >    `kunit_test_suite` C macro. It requires a NULL-terminated array of
-> > >    test cases (see below).
-> > >  - The `kunit_case` Rust function is similar to the `KUNIT_CASE` C ma=
-cro.
-> > >    It generates as case from the name and function.
-> > >  - The `kunit_case_null` Rust function generates a NULL test case, wh=
-ich
-> > >    is to be used as delimiter in `kunit_test_suite!`.
-> > >
-> > > While these functions and macros can be used on their own, a future
-> > > patch will introduce another macro to create KUnit tests using a
-> > > user-space like syntax.
-> > >
-> > > Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-> > > Co-developed-by: Matt Gilbride <mattgilbride@google.com>
-> > > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
-> > > Co-developed-by: David Gow <davidgow@google.com>
-> > > Signed-off-by: David Gow <davidgow@google.com>
-> > > ---
-> > >
-> > > Changes since v1:
-> > > https://lore.kernel.org/lkml/20230720-rustbind-v1-1-c80db349e3b5@goog=
-le.com/
-> > > - Rebase on top of rust-next
-> > > - As a result, KUnit attributes are new set. These are hardcoded to t=
-he
-> > >   defaults of "normal" speed and no module name.
-> > > - Split the kunit_case!() macro into two const functions, kunit_case(=
-)
-> > >   and kunit_case_null() (for the NULL terminator).
-> > >
-> > > ---
-> > >  rust/kernel/kunit.rs | 108 +++++++++++++++++++++++++++++++++++++++++=
-++
-> > >  rust/kernel/lib.rs   |   1 +
-> > >  2 files changed, 109 insertions(+)
-> > >
-> > > diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> > > index 824da0e9738a..fc2d259db458 100644
-> > > --- a/rust/kernel/kunit.rs
-> > > +++ b/rust/kernel/kunit.rs
-> > > @@ -161,3 +161,111 @@ macro_rules! kunit_assert_eq {
-> > >          $crate::kunit_assert!($name, $file, $diff, $left =3D=3D $rig=
-ht);
-> > >      }};
-> > >  }
-> > > +
-> > > +/// Represents an individual test case.
-> > > +///
-> > > +/// The test case should have the signature
-> > > +/// `unsafe extern "C" fn test_case(test: *mut crate::bindings::kuni=
-t)`.
-> > > +///
-> > > +/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated l=
-ist of test cases.
-> > > +/// Use `kunit_case_null` to generate such a delimeter.
-> > > +const fn kunit_case(name: &kernel::str::CStr, run_case: unsafe exter=
-n "C" fn(*mut kernel::bindings::kunit)) -> kernel::bindings::kunit_case {
+> > > On Tue, Oct 29, 2024 at 7:48=E2=80=AFPM Alice Ryhl <aliceryhl@google.=
+com> wrote:
+> > > >
+> > > > One option is to define a trait for integers:
 > >
-> > This should probably say `name: &'static CStr` to require that the
-> > name lives forever.
+> > Yeah, but that doesn't feel like something I should do here. I imagine
+> > other things might need the same thing. Perhaps the bindings for
+> > readb/readw/readl for example. And essentially the crate:num already
+> > has the trait I need. Shouldn't the kernel mirror that? I recall
+> > seeing some topic of including crates in the kernel?
 >
-> Fixed in v3, thanks.
+> Looking a bit closer at FromBytes, that's almost what I need. I'm not
+> worried if it also includes usize and isize. However, since the trait
+> also is provided for arrays/slices, the following happens to work:
 >
-> > > +/// Registers a KUnit test suite.
-> > > +///
-> > > +/// # Safety
-> > > +///
-> > > +/// `test_cases` must be a NULL terminated array of test cases.
-> > > +///
-> > > +/// # Examples
-> > > +///
-> > > +/// ```ignore
-> > > +/// unsafe extern "C" fn test_fn(_test: *mut crate::bindings::kunit)=
- {
-> > > +///     let actual =3D 1 + 1;
-> > > +///     let expected =3D 2;
-> > > +///     assert_eq!(actual, expected);
-> > > +/// }
-> > > +///
-> > > +/// static mut KUNIT_TEST_CASE: crate::bindings::kunit_case =3D crat=
-e::kunit_case(name, test_fn);
-> > > +/// static mut KUNIT_NULL_CASE: crate::bindings::kunit_case =3D crat=
-e::kunit_case_null();
-> > > +/// static mut KUNIT_TEST_CASES: &mut[crate::bindings::kunit_case] =
-=3D unsafe {
-> > > +///     &mut[KUNIT_TEST_CASE, KUNIT_NULL_CASE]
-> > > +/// };
-> > > +/// crate::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
-> > > +/// ```
-> > > +#[macro_export]
-> > > +macro_rules! kunit_unsafe_test_suite {
-> > > +    ($name:ident, $test_cases:ident) =3D> {
-> > > +        const _: () =3D {
-> > > +            static KUNIT_TEST_SUITE_NAME: [i8; 256] =3D {
-> > > +                let name_u8 =3D core::stringify!($name).as_bytes();
-> > > +                let mut ret =3D [0; 256];
-> > > +
-> > > +                let mut i =3D 0;
-> > > +                while i < name_u8.len() {
-> > > +                    ret[i] =3D name_u8[i] as i8;
-> > > +                    i +=3D 1;
-> > > +                }
-> >
-> > I assume the name must be zero-terminated? If so, you probably need to
-> > enforce that somehow, e.g. by failing if `name_u8` is longer than 255
-> > bytes.
+> let prop: [i16; 4] =3D dev.property_read(c_str!("test,i16-array"))?;
 >
-> Nice catch. I'm not sure how to nicely throw a compile time error in
-> this function, so I'm truncating it here and doing a compile error in
-> the macro in patch #2. This isn't ideal, but seems to work.
+> Which is a typo meant to be:
+>
+> let prop: [i16; 4] =3D dev.property_read_array(c_str!("test,i16-array"))?=
+;
+>
+> And it doesn't really work. It reads all the data, but reads it as a
+> u64 (DT data is BE), so the order is wrong.
+>
+> And now my dreams of "if it compiles, it works" are shattered. ;)
 
-You should be able to just panic! if it happens.
-
-Also, I believe it should be i < 255 instead of 256?
+It sounds like FromBytes isn't the right way to go, then.
 
 Alice
