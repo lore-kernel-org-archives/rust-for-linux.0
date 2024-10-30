@@ -1,67 +1,69 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AF41EABA4;
-	Wed, 30 Oct 2024 14:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215641F6694
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 14:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730297661; cv=none; b=CKUxbgtpFivaRKQq4Wh3DLsInHfo93qgbSQTjd5st3OifBsfSRr0hOhBFOJeKu6Vf/BPP2PE3Gl9e/KCh3K+EYCSvQvzSAP273TiV8l9Nu7mzid8hosOFXklyKMQdhfSGJh2m9rfFElmL5s9llXOikqX/KUSm+WGXLaFJuje3VM=
+	t=1730299947; cv=none; b=C9fWTETqXFRIWuS5K6eF+MdSp1DoF9sn+XQ2WPiXKsZ3jyi+UdkTcNRst1inUjsPbiLEJwHXFS8dQjfQWPiD0RnpjufKT2n7ZE50gZ6Kg4h4CIyz1OAuOx/8YU8snj6h3FpPdEgCzxEB59lMPt6/FJyZj7Fgsj7DGvICwL/hgBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730297661; c=relaxed/simple;
-	bh=lm82dG4gEMFUUwjiq5PdNc9pfTbs1IPJ2CYyR+z76lY=;
+	s=arc-20240116; t=1730299947; c=relaxed/simple;
+	bh=CnqspzQJDbcEt8CN7RzD+XIZAwYYdzUkf98BJ2/Pus0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C8SBs6xuWC3MapGzk5WZCA+ir0rRCZCIFNRvyVBZuDGMNfLU/Vi8nVkRi/dGQxFoGNYpZatzTHKOORu6lqqnNzmeLIKNzo6/aTXMNDpuBTKM7tE0WrEVfsRQ/Wi27WnqiVqOMz8MgDdsYnxx0tgWvkfmfZVf+9Hlm04zgoDmpXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hY4xOLpk; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=a0qv4cM41G92AaG4sN1Ef10/7oAw51kWM5G9s8R3MggqMiUwfFuIBRaE8v5qXDnU2XexzDXSe8C8tyaV3YZmc/LqkChVQyZncH6uFcJ2V/LcbcwOMS/0sKOb61SSBS2410O5/lNpJOSwyZkSEqJO2niPZekqudA+SeJdY/ndC3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BZkVBjZE; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hY4xOLpk"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2fb5014e2daso64504841fa.0;
-        Wed, 30 Oct 2024 07:14:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BZkVBjZE"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4315ee633dcso220655e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Oct 2024 07:52:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730297657; x=1730902457; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730299943; x=1730904743; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NjEYIiKosyIkwaGCSTQKyunT1Lv7dxar/a+ft9/60k0=;
-        b=hY4xOLpkB0N5U2lPdZkeF28s1o901OyRdyICFajaPSrpdLNICj/OCOkL8qvh5h9A2h
-         dxJT6QKw02l9jHwrMyxr7uzYfmlRv9m8UDWpjgTWE9PhucnvHHuFUnbYBc6EjL4d3bEv
-         3t3bMUKYQk6wnUrVUfwHF9D+RriJ7DdHfZ7uIjUmkdm8m5dfqbcSRrac4AOr38xfqUOa
-         9v5wpgCvv813qBYaFoi+0LLGL47AafwHtmouES1dT+8BNbrYFvb2+AzA7rrg9TAXwQIW
-         6Bwza4IlE0qaL+d1nTT41DIVzrX0zHZrZPseksZvSwuFmjbu5EHfF2UbLLwZvPcx4Heu
-         nCZQ==
+        bh=xQVFTZ7PEDYj3PNRsJwqRC83zORWsozaW2gJdNeeReo=;
+        b=BZkVBjZEtY/VSJJBGFupBKBRDt7LEdaLoHvHLcYkKRJSFWlqnW1nc71GsIKAxpmVaF
+         ENLZqmI8JYg1zpRUSuBlTScCpSaW9S1jJ6JZkHcvFuXwI0Mze9F5K3wcWIk579D/d97t
+         Pvlc+501d2rSEkNqoosXJ4SZ0LuLDm2WzTNyjGo3O572zBGImC+OShFO6dbiSJhP5xur
+         AyPxoScQ0TBVTj8LY+u3Bwvn42hE7Lz4F7loKhD+cBF07CPZ7FPlcb3LgE4DR8rMI8ww
+         f9vc62hGTWkY/L4pyxUZ17ZnAGi8mstsYAcbNuI8CfKdMW57uG4BTmBJhHIzqhN2I+r0
+         zbMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730297657; x=1730902457;
+        d=1e100.net; s=20230601; t=1730299943; x=1730904743;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NjEYIiKosyIkwaGCSTQKyunT1Lv7dxar/a+ft9/60k0=;
-        b=kt5Yrzh5wHiIxzJMeb8lq1rdbuaXWzqki8ARB4mdYR3ZyyoorLHcd6LgUOwYLAiOfL
-         Ah8RWHrZ8U+MdTYIuvasTTbo/28BrTCd0aiNdPjRHh5KOLy0Bmuq6pv6G2f5clF5hwWT
-         vfAMUuwqTDotcD+HwpcFyczjfiylm3CvaE+sZ+lbLifnURbaJrqmESuwTBkFrhYcluCX
-         UElmWeP4ZUc/5xtdJBb2b2gogGuINb6fVZxYTzNTN1xeZtobmu4VvMYhNfgPlO/vl/4r
-         D8UWoU8TLMPdmqsgJH1yXf3j+8hxcy2OQl+AJJ8f0HXriiZsNLtJj95eDDKhGjYsPDRS
-         JESw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2JxYxF0Q0+KI+rYk/c/1Qmnekp5tKdKCRUIEDzrIlhykh0oA46ZjQEnMeyLiAGhojPdjyJe4KXjYzbkX1ci0=@vger.kernel.org, AJvYcCWQ4wD4Olu3Iy9nnlqkuu8v/tZaIVXCgAxEN4akvfggdRBJFTIGoagwEaRMuHn76HPxMQoo0dWgv5BMfEo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMw8OxsbbAesI2qQCZ/lYi16Hh4lTqvYU+WlrUMu6s45cVDDiC
-	FjvsigQZuH3Fg7DnC8eUCeT+Bn+6X02ytp0K/gSgdCZmduvyz3L96KYx9QzkaOvq6QVaZlufjIG
-	4BHCmpPInQN4TJV/8qWfzvJjynZM=
-X-Google-Smtp-Source: AGHT+IGdMnV/z71AQCWEOuBcJ9BI2pfv9dIvw2BJ2X9O2ZlhjIti22LPzo+oXDns9q2mEY122Yj6P6Hohr1Ta1EbEzs=
-X-Received: by 2002:a2e:a543:0:b0:2fb:61c0:103 with SMTP id
- 38308e7fff4ca-2fcbdf63825mr81608301fa.4.1730297656743; Wed, 30 Oct 2024
- 07:14:16 -0700 (PDT)
+        bh=xQVFTZ7PEDYj3PNRsJwqRC83zORWsozaW2gJdNeeReo=;
+        b=tjo9JB4Dm4koNy8uAbPwqt60yRXqEu3OvJJ4Gik7/baNDwWbCPqfcYmZ/EfxSKvsd+
+         5U4EZTo+bNLy2cikhGpN456Q0n1bus5HGeY85FURqfnm5FRM0D6ozonTnkYAiXDTPMoN
+         Y1Tl0RIELboKxLNEDtkiPFf/HrflrR/aRoH/sQI6fjtdLd+TqiM0nP+9fRBWqW3NGe/N
+         uigN9j0l/whmhq0m4RTJeYqBWfRMO3KzpvOvTqlooSjUq+QEPpk3TxmYmXXipANp+nK9
+         5kmlIBNYLjOr6v+XxjYivBUSqGWrttXiyrLdkn8aB/zQ9jSyj5BaeCD3Q1d6wi1ALx3k
+         Ieug==
+X-Forwarded-Encrypted: i=1; AJvYcCVqpVTby1PSkSfNUcEIRC2YYfogIXTUf9Q9n9SUbqATkLLf57/pW5/xYe69BI3/aeok5mc99+F7LiCMzOrTEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLPNfA6sErn2BmUD+4R7ffPG27MR5/ghidYO64ePW1oYWHqPfu
+	V8flkfTZK4D1iOJkybgj9viKU4ZJ/c0ZvUIwx4mB+dChOmHGcV4hlx4ZAzzH5e+p9mc1y+Kickr
+	2rwyQ1HQffDENK6E+bt9LIJ3piAfLbY0N+NLr
+X-Gm-Gg: ASbGncv/Vz2zOtrcGVPPz4CsuGltu4aU6HaOQnqX2LOPqUrlR957O7gFakCCzg7v9E6
+	UxmvKB7Da5P7mkPyZtcI1qBKqAZ5g
+X-Google-Smtp-Source: AGHT+IGL5BtkrvM8HTgS2rSp77gYVDKzQwCNJqBnp5ZX5IGgEF0dDY9UEHGCgoNirzA9uBYFvA5Z8gdr6YSS/UJaDso=
+X-Received: by 2002:a05:600c:3aca:b0:426:66a0:6df6 with SMTP id
+ 5b1f17b1804b1-431b3c4c915mr10794795e9.0.1730299943257; Wed, 30 Oct 2024
+ 07:52:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030-bindgen-libclang-warn-v1-1-3a7ba9fedcfe@google.com>
-In-Reply-To: <20241030-bindgen-libclang-warn-v1-1-3a7ba9fedcfe@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 30 Oct 2024 10:13:40 -0400
-Message-ID: <CAJ-ks9=8Bo94Fg_By956ce8X0r-6xBWGO_Ka+rCQ2h3tF2nkRA@mail.gmail.com>
-Subject: Re: [PATCH] rust: warn when using libclang >=19.1 with bindgen <0.70
+References: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
+In-Reply-To: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 30 Oct 2024 07:51:45 -0700
+Message-ID: <CABCJKue6ZmqpkrMToF3B3_xTZDgkFKxh-CSZOJU9pt02aDd8bw@mail.gmail.com>
+Subject: Re: [PATCH] cfi: tweak llvm version for HAVE_CFI_ICALL_NORMALIZE_INTEGERS
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -69,85 +71,58 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
 	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	kernel test robot <oliver.sang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 30, 2024 at 9:41=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+On Wed, Oct 30, 2024 at 3:31=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> When testing a clang upgrade with Rust Binder, I encountered a build
-> failure caused by bindgen not translating some symbols related to
-> tracepoints. This was caused by commit 2e770edd8ce1 ("[libclang] Compute
-> the right spelling location") changing the behavior of a function
-> exposed by libclang. Bindgen fixed the regression in commit 600f63895f73
-> ("Use clang_getFileLocation instead of clang_getSpellingLocation").
+> The llvm fix [1] did not make it for 19.0.0, but ended up getting
+> backported to llvm 19.1.3 [2]. Thus, fix the version requirement to
+> correctly specify which versions have the bug.
 >
-> However, the regression fix is only available in bindgen versions 0.70.0
-> or later. This means that when older bindgen versions are used with new
-> versions of libclang, bindgen may do the wrong thing, which could lead
-> to a build failure.
->
-> I encountered the bug with some header files related to tracepoints, but
-> it could also cause build failures in other circumstances. Thus, always
-> emit a warning when using an old bindgen with a new libclang so that
-> other people do not have to spend time chasing down the same bug as me.
->
-> If you encounter this warning, it is recommended that you upgrade
-> bindgen to 0.70 or later.
->
+> Link: https://github.com/llvm/llvm-project/pull/104826 [1]
+> Link: https://github.com/llvm/llvm-project/pull/113938 [2]
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202410281414.c351044e-oliver.sang@=
+intel.com
+> Fixes: 8b8ca9c25fe6 ("cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_IN=
+TEGERS")
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  scripts/rust_is_available.sh | 12 ++++++++++++
+>  arch/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 00163e4a237c..bd9f095d69fa 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -855,14 +855,14 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+>         def_bool y
+>         depends on $(cc-option,-fsanitize=3Dkcfi -fsanitize-cfi-icall-exp=
+erimental-normalize-integers)
+>         # With GCOV/KASAN we need this fix: https://github.com/llvm/llvm-=
+project/pull/104826
+> -       depends on CLANG_VERSION >=3D 190000 || (!GCOV_KERNEL && !KASAN_G=
+ENERIC && !KASAN_SW_TAGS)
+> +       depends on CLANG_VERSION >=3D 190103 || (!GCOV_KERNEL && !KASAN_G=
+ENERIC && !KASAN_SW_TAGS)
+>
+>  config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+>         def_bool y
+>         depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+>         depends on RUSTC_VERSION >=3D 107900
+>         # With GCOV/KASAN we need this fix: https://github.com/rust-lang/=
+rust/pull/129373
+> -       depends on (RUSTC_LLVM_VERSION >=3D 190000 && RUSTC_VERSION >=3D =
+108200) || \
+> +       depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D =
+108200) || \
+>                 (!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
 
-Might be time to rename this script - in another patch of course.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
->  1 file changed, 12 insertions(+)
->
-> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-> index 5262c56dd674..30695612a0d7 100755
-> --- a/scripts/rust_is_available.sh
-> +++ b/scripts/rust_is_available.sh
-> @@ -225,6 +225,18 @@ if [ "$bindgen_libclang_cversion" -lt "$bindgen_libc=
-lang_min_cversion" ]; then
->         exit 1
->  fi
->
-> +if [ "$bindgen_libclang_cversion" -ge 190100 ] && [ "$rust_bindings_gene=
-rator_cversion" -lt 7000 ]; then
-> +       echo >&2 "***"
-> +       echo >&2 "*** You're using libclang version 19.1+ together with a=
- version of the"
-> +       echo >&2 "*** Rust bindings generator '$BINDGEN' from before vers=
-ion 0.70. This"
-
-Maybe `version >=3D 19.1` and `version < 0.70` would be clearer than
-`version 19.1+` and `before version 0.70` respectively.
-
-> +       echo >&2 "*** combination has a known bug that may lead to build =
-failures."
-> +       echo >&2 "*** (https://github.com/rust-lang/rust-bindgen/pull/282=
-4)"
-> +       echo >&2 "***   Your bindgen version:  $rust_bindings_generator_v=
-ersion"
-> +       echo >&2 "***   Your libclang version: $bindgen_libclang_version"
-> +       echo >&2 "***"
-> +       warning=3D1
-> +fi
-> +
->  # If the C compiler is Clang, then we can also check whether its version
->  # matches the `libclang` version used by the Rust bindings generator.
->  #
->
-> ---
-> base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
-> change-id: 20241030-bindgen-libclang-warn-cebf97ea3506
->
-> Best regards,
-> --
-> Alice Ryhl <aliceryhl@google.com>
->
->
-
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Sami
