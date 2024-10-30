@@ -1,142 +1,111 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ABE33E7;
-	Wed, 30 Oct 2024 05:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB4E1CF289;
+	Wed, 30 Oct 2024 05:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730265416; cv=none; b=GljaWHogbHzzQrV38VqoFiIwG/bFhF54kcxAMKQ90auDULT3N/IPz+WU0V9l7swC22g+qHr1E+xuqdjrUa0GAPzdddMk1rK6AKMXv5NvoZE4X/BrgkOWDvT7+fq8HsT0bW389M/KrbpqJwQ5zpN+bhNHMB7/DO+9u7Ci/xrf2FQ=
+	t=1730266531; cv=none; b=Jrncrvt+8TZkbplwjFLjO/0w6eSdKWd9thdz+23t8ut/olbSiwVQ0rfT+IRA5TbkJJ1tM5dmT2pGfDCFnf0AlkzgkK/FFSuNG+73lBJEC4QFK6mFZqOTFeSAfBXqIk7eHbUkXZqdpfcWzEKxnlZ9EdZZUrDx9Z05WxLWvucNm2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730265416; c=relaxed/simple;
-	bh=4Ng+sAjoGKPc64iH0Yjl/NQmTniY/TRLqMyzQ0hldhc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=du8bJRDqhir5mTNoz9ti6ZKc3/FonI1qtmF2moSTAgfGmIbZUrakRijIDZVMr1+aJk5zsZIIR6DmHUFaG512htf3z7LRhN4rKUpGrqabW47erWUC986THamGD9GZdadIjiR4KRzyL5hp5iGE25TpLO997LqQw7ZRqbK7Brdu2kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ECljN6qE; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730266531; c=relaxed/simple;
+	bh=iNv76ZzAMBPTV4l1YgFD0Bej4qjTGYw2zGCKkGf5dtk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HxsusLOWFjyLqJSbft2BCLnSQSdxO0Ovj3v/fk5wUzyM5rZiaX3qW16+7yzOOV7c7Pbns1ge3xsK4i8yO+EE8TGOYaIYxIVgO8Li7a1COu6v2hhm4kMe8cIF2lsC+bRZFyr5dpHsTRAjLkyYDm93l/iPZFI1dl7yoyHCZiL2m5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=iBvnjoKY; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ECljN6qE"
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-50d4a6ef70aso1939519e0c.3;
-        Tue, 29 Oct 2024 22:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730265414; x=1730870214; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A3t0O0GmcqTq9xrptWk5P2Qqwk7hlGCeWrvNQml6CD0=;
-        b=ECljN6qE7jO4fOm/XV7ajxkAr1yfZWiqs5nii5GV4ROpuff4i82vo9f4LgtNwMBS/s
-         n7JgvYwOUn2oDb8KQaDBczATgl1C1KOixzZjcPyJDT6H+GdLPwidr9ozAp86RY6JOeIm
-         8GTO2g+WAysL81HgOCyeD/4DP+MRmkTAcuRBctGuYF5yFp2ZZASnRBc+2AA6NUAUeLQT
-         MDOItI6Nhm6lFVhO8z2glkoi1tgId8IqaCLCtUDi3plTY0ZesBfjh9ELrw5aK94y620A
-         JD7ceo4JSgjFvmslzVVIDW19m6PyWZkjxQB0y21qgqEpFnQo/vL18Y2+0NyB2IntqJhA
-         hg5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730265414; x=1730870214;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A3t0O0GmcqTq9xrptWk5P2Qqwk7hlGCeWrvNQml6CD0=;
-        b=uIVGkCux7ovwAUyNudGJuVs8LRwtdV5UKAw3XXgEQ+3MwO3CAI+3TmS8zZ4gBT2SrR
-         0OYvLeSdRMWvIl6ao8ti9N/p3bAxahTUKwB/H/Dpv0FtbJlvGniF204q49MvOPDaZDDZ
-         wdpQJZ0P9yPeGQ04rENzFiw3xyDxOCp+0xI/WLSIpl4cXUBfSu9cod8cIA0b2ni8K66+
-         eRUobDnmx7fn9vnOcqX8aLjkMjl/BiYEYP4do+7wSmrRQQJ+8BJa48hNShzIBtHzRlJ/
-         Cz4FC0wYMGR3Gqhn2KA/WR7tEOhi9/n45RDmKklR437opVCNkcjf/AdzHkYE8tdoN8+J
-         dunQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/0gEaZYMhPmyGq1JPPHm6nj6wSxnrtakLJ/xG49OYBe68TejaRhONb+sPc7dn941gQ3AFcMEZpcrSeozSxFN4@vger.kernel.org, AJvYcCU1mwWa9mIpYMvS/YmWymrY+HbXZMQSMxmthzyRvfWaQjgVGmc6wb8Z3wX7DvPUtiC2MGlVAf/T9UzWdYQd9BU=@vger.kernel.org, AJvYcCW1Q9MRcB9rB2f3Ad+EbcedFzz4NFAaqKEzrCJ+8L03b+44Nvp31X48El4hheqyRdYmNwqRPw/StyoQEqs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJEAry//6YVX/JPOlouefrq4iiEJF/WE2yWbnrVCs+r3T3PPHZ
-	Uh/BAImXI0+qyMLrqBjE3eUsSoCZCw+yNl4TUZFFbNFCHoGv3oitwqglrQ==
-X-Google-Smtp-Source: AGHT+IEnOcZXGUTKVaYXyJaAMXPkvTr53n/gkKo0Ltw7Rw2vEnrdj4C744uk532l9yr1uO9p9u0mTw==
-X-Received: by 2002:a05:6122:1796:b0:50d:160e:de73 with SMTP id 71dfb90a1353d-5101503520fmr12493138e0c.6.1730265413811;
-        Tue, 29 Oct 2024 22:16:53 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b18d2ab5f9sm484066385a.70.2024.10.29.22.16.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Oct 2024 22:16:53 -0700 (PDT)
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C9BAA1200043;
-	Wed, 30 Oct 2024 01:16:52 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 30 Oct 2024 01:16:52 -0400
-X-ME-Sender: <xms:RMEhZzgW6ULsvv5dCUpCmQPST-Tnj_Zd_rEPXBa_6y_H0_bvFFapWg>
-    <xme:RMEhZwDiyjrAwlZODv8s4aEA5vXWnlTwa9uK_hPUgx-8kpeU_sdjBoMH1LRDK-lUz
-    vnHQnc7Pcw_54Ogjw>
-X-ME-Received: <xmr:RMEhZzGSzp6djL3Mc_a1BSibs7wEN3W2mPt59RgohMx41mk6kHR6ANWXuTM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekvddgkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopegurghvihgughhofiesghhoohhglhgvrdgtoh
-    hmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhho
-    shgvrdgvgihpohhsihhtohekleesghhmrghilhdrtghomhdprhgtphhtthhopegsrhgvnh
-    gurghnrdhhihhgghhinhhssehlihhnuhigrdguvghvpdhrtghpthhtoheprhhmohgrrhes
-    ghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilh
-    drtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthho
-    pegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegsjhhorh
-    hnfegpghhhsehprhhothhonhhmrghilhdrtghomh
-X-ME-Proxy: <xmx:RMEhZwSxW72_o-vt9G1-syqfPoQN-duNA8VaCUYnFVHqOxkBX611xA>
-    <xmx:RMEhZwy7B-Ux8YHm0g7HvXHs_Ptl7Xb4GhyuIuG3vfqoDvEqlE2kXA>
-    <xmx:RMEhZ24ITs6sD1P3B4jQ8KGJwmeGiauraYvDmnSkNhMjjstVb_bX_g>
-    <xmx:RMEhZ1z80Y6cJHktE9s61gsizLo8HufjDIpYsENepIWHOBSnzwmUzg>
-    <xmx:RMEhZwjoo-2oxWH9ef2IMZwENSkDL_KL9nw89p52h8B4iQMvJyiu3TAs>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Oct 2024 01:16:52 -0400 (EDT)
-Date: Tue, 29 Oct 2024 22:16:51 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Rae Moar <rmoar@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Matt Gilbride <mattgilbride@google.com>, kunit-dev@googlegroups.com,
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] rust: macros: add macro to easily run KUnit tests
-Message-ID: <ZyHBQzR_17qfcpng@Boquns-Mac-mini.local>
-References: <20241030045719.3085147-2-davidgow@google.com>
- <20241030045719.3085147-6-davidgow@google.com>
- <ZyHACjac2gk4M5MX@Boquns-Mac-mini.local>
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="iBvnjoKY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1730266522;
+	bh=fTiOGMiECd5augAVpcP0FAu96xmTgJEVxQ1j0YsCjtE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=iBvnjoKYWd263kXfDZH/Sh3Gw+wTz+mRV6lTEiTnUbqNaziGATw0mFF/3EToCY/PD
+	 udF0Al/to8Vm7A/g41rEuux1jQmB83t1Kr6C9ZcQq4Xq/UaQGqAjDuqJV9oYMQ82jV
+	 DVKSCXTurLYVR3+ooGcH3Sq/8S1VGrbDhpePRLxQaDxfhTLlnj2C0cZONLKusDrrK8
+	 Up/XjvkE6J4cyUVYfviZrBdnHI4CfI/7Nodpb4xfjVNDjDyDZi2/hCfSA9SdvnllD2
+	 wZb6ggjadgnszxDjHOe9PnHOTusOlD1OemAGIwvANBqjeV8PiDciNgQEVMkU1dnQnL
+	 n0M/8hQTWodXw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XdbS75X7wz4x8f;
+	Wed, 30 Oct 2024 16:35:19 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>,
+ Daniel Gomez <da.gomez@samsung.com>, Masahiro Yamada
+ <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas
+ Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v7 1/3] modules: Support extended MODVERSIONS info
+In-Reply-To: <CAGSQo03L--HDUBeo3xEUANbBcSf4GK5GUNGmHSBzL+ixpRGuqA@mail.gmail.com>
+References: <20241023-extended-modversions-v7-0-339787b43373@google.com>
+ <20241023-extended-modversions-v7-1-339787b43373@google.com>
+ <874j50juyp.fsf@mail.lhotse>
+ <CAGSQo03L--HDUBeo3xEUANbBcSf4GK5GUNGmHSBzL+ixpRGuqA@mail.gmail.com>
+Date: Wed, 30 Oct 2024 16:35:10 +1100
+Message-ID: <878qu6dugh.fsf@mpe.ellerman.id.au>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZyHACjac2gk4M5MX@Boquns-Mac-mini.local>
+Content-Type: text/plain
 
-On Tue, Oct 29, 2024 at 10:11:38PM -0700, Boqun Feng wrote:
-[...]
-> > +
-> > +    let new_body: TokenStream = vec![body.stream(), kunit_macros.parse().unwrap()]
-> > +        .into_iter()
-> > +        .collect();
-> > +
-> > +    // Remove the `#[test]` macros.
-> > +    let new_body = new_body.to_string().replace("#[test]", "");
-> 
-> Yeah, I want to see how you do it this time ;-) So if you do a
-> `.to_string()` on a `TokenStream`, you lose all the span [1] information
-> ("span information" is a term invited by me, hope I get it right ;-))
+Matthew Maurer <mmaurer@google.com> writes:
+>> Sorry I realise it's version 7, but although the above looks correct it's
+>> kind of dense.
+>>
+>> I think the below would also work and is (I think) easier to follow, and
+>> is more obviously similar to the existing code. I'm sure your version is
+>> faster, but I don't think it's that performance critical.
+>>
+>> static void dedotify_ext_version_names(char *str_seq, unsigned long size)
+>> {
+>>         char *end = str_seq + size;
+>>         char *p = str_seq;
+>>
+>>         while (p < end) {
+>>                 if (*p == '.')
+>>                         memmove(p, p + 1, end - p - 1);
+>>
+>>                 p += strlen(p) + 1;
+>>         }
+>> }
+>>
+>> The tail of str_seq will be filled with nulls as long as the last string
+>> was null terminated.
+>
+> As you alluded to, what you're providing is potentially O(n^2) in the
+> number of symbols a module depends on - the existing code is O(n).
+> If leading dots on names are rare, this is probably fine. If they're
+> common, this will potentially make loading modules with a large number
+> of imported symbols actually take a measurable amount of additional
+> time.
 
-Not important: I meant I am not a procdure macro expert, hope "span
-information" is what is used when discussing span preservation ;-)
+It should only be a single symbol these days, .TOC., for both big and
+little endian builds.
 
-Regards,
-Boqun
+But maybe someone out there is still building their kernel ELFv1, in
+which case every function will begin with '.'.
 
-> e.g. if there is a compile error in the test code, the compiler cannot
-> report the exact line of the error, it can only report there is an
-> error.
-> 
-[...]
+I still don't think it will be measurable, but n^2 is asking for
+trouble.
+
+So forget it, just use your version, you've already written it anyway.
+Sorry for the noise.
+
+cheers
