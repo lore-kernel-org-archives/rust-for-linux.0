@@ -1,55 +1,55 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5832019C57E;
-	Thu, 31 Oct 2024 12:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E682198A0E;
+	Thu, 31 Oct 2024 12:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730377431; cv=none; b=LwGBUGH2fUf9axjE9YR21ZWf4WpGrlr+G0kaO5oHwz5mkYlvW/4NcIIBmo5Nnf/z9Kd5oaxXX9pqjh7vjpUCSQYu5DM2kuB3nILVpRg56ZhGZJ0CchIVvUErBSdjWr1tM0GS0AsYU8y5eNDYvsVCJ+P7nG4N9lHhqQPCiE4W4gA=
+	t=1730377664; cv=none; b=iwdjdn72np8CRsphQjA5r3Ydzv7p6uCVGBgu8muoXiKIi1TEKzYoxxjddX/hfwwviqa33K3dEZePxJ31yhs+oKibidTJjV1DMvcwZuSdpipHWHfqYesrAn/2vSqCbj4jdzmm3mKS4BldDvMoRvGFOlq5TrSvgTJOPjDcpNevXLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730377431; c=relaxed/simple;
-	bh=cHnElZx40WtHGGv5vY7xCfA4p0WfTqZ/eNHcwm2Spy8=;
+	s=arc-20240116; t=1730377664; c=relaxed/simple;
+	bh=2f2FwjVS9onJufta/g0XnwYWiZbQ2E5zbbWuSemr7dc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JEem6/QLutsk0ZhIVhxu/1JZXHDXMWJ2iPTQKp13kbesKWgyv0GaDNVoumcf7urr8ly7BRZ5gpr1swGG1prcBBy5MJw/LojAmCsEtvLJkFUIc9oZhfzTR1XC6pBG+VgQw1m2YET593NCqxXjq0XtblU7DAJIKlMq0ucnm87pwn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KORCNQa/; arc=none smtp.client-ip=209.85.208.179
+	 To:Cc:Content-Type; b=YLrd2Ii4BA9WV9mAVvtbZo8M3Lxa475PLiZ0KwRYpU1n08uOjytjJwIkzrWl5JIX1DtaZ4xynbfo2/DOflxEzaXl1SZ7e11+BpJv0AsUeug2tWyflqWhmqZ4QwMQvNeSf9mOIy1VfrboDR5elbSTPm02djeHRtPdCDusa7ZbB+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YA+KhHMa; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KORCNQa/"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2fb559b0b00so7195531fa.0;
-        Thu, 31 Oct 2024 05:23:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YA+KhHMa"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e2a96b242cso101213a91.3;
+        Thu, 31 Oct 2024 05:27:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730377427; x=1730982227; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730377662; x=1730982462; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cHnElZx40WtHGGv5vY7xCfA4p0WfTqZ/eNHcwm2Spy8=;
-        b=KORCNQa/pf6Tvm6Uw/gDAite/1KPmW2zbKeGzjxxgoD7QquxLrrszI8pG1ZSFfboXi
-         nNUCuPoxNgnRECX6Yru/qnp6Jir0ArGNHtjFrBdrT23+UReruAC2hK1IJ5F4YJrCS7Ud
-         1qjmgcvjb3jx6yznunq8B8bwUpMlMG+IeERXqkkidlzkcgvGyg/YACbiUGqgf0mwe2o3
-         V7Kj6wcKkAovFtoi2+lNiRSMvR5o/mrRzf1hI7+xMxo5uKb49PEuQS0qyIASxXmIO2AS
-         m+9bOOqf/ez/HYLATP5WX2Zl4ZiT4W9ZY0sUpOAEnV0CIAaem3oMykElr8CKLYqEun0Q
-         gUYQ==
+        bh=odcUYvsYLdeICior6+6tFe2Km+FAg+O9mLlpAee680Y=;
+        b=YA+KhHMa3Hm5Zx+lsh0HLsGzi/OUh0Scyp1xO2YnqqL1QaLKSfPMPDNdZFzz7L06qd
+         bWQLwuN1Ckat9j2CAq7vxarWScY3GU7dMBKiAZo8R+jyZuHKDO3sX++X45LaxgXQxU77
+         thh/zGAOuk5WuPhkDKX3GW234JV9wB+jY7GteDlMvVMOFWRhONSxhQcdh5zB61JmnWYs
+         6jnuvZdEnZiJWXLoojD15BL8qd6esCd8XGlF7PVVlJdGR7yNKR8XwYZzEkqARkwjyYXe
+         7xXHRYdP6HhqIdHghZUHDk08s6G4XTonQ38TazkbAxCWzPdybA5rRoqHRnWlManD2FIH
+         zKGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730377427; x=1730982227;
+        d=1e100.net; s=20230601; t=1730377662; x=1730982462;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cHnElZx40WtHGGv5vY7xCfA4p0WfTqZ/eNHcwm2Spy8=;
-        b=T7b1ZGojCfFH5Uo8ODZQbqcj6gzYFwsn661BzjEdTr0Ra9jzmRiBno1V8VtcHTZaE0
-         3kO3HRxc0VcV0MrD6hmfrnsqk6+IGIe/vqfmDxL1HF/Hr669R307sTozqIIj4pSMx44k
-         2+d+TDHAgLCs8JJIMuIM3mEbEBK4jFFACCrO6CEVaD+reHyWRbGIZo0a00uV+MT6+81g
-         bOv8LQ5bpXa49o+JhlFXnYt9oVPhbssxotQBuSvRwjkpnHcIdlKi/Aa8DOrE9FD6jXO9
-         00g3pQP3vAPLAlRhETyND0d+bT+Z69bW39uNdY8IHfkXZgp0A32cNp7Sq4tknjWig+uo
-         yxgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdnPLrzqRXkXBDK7e/OoCpJbnIpdKko6mjRXeYyZhMXI+lfEoSS+a3NY+zn4uB3utyROkv9HFrkiZQXPE=@vger.kernel.org, AJvYcCWuXW2y7aN87BygKPJUH2LuQ1S1dc+3tYoRQ01XmUg/FIo0Ow1+JwCbRPyO32bLd+Df5JEq67Ixeg4Sgq4S4+0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZFVDWcEQ05fIvCu+trakoj8d+7dyKRXHGkqLDMmpxBfMVrk3P
-	5WyZuaAhng97QaN/yKHOaFmhKfFo2RxpGRKypDPtpSn+Vorp/tHrDvS1wiONtQeGIYHG7pe4arS
-	h3omhfulCvioXBPD0Um5gSlfGP9RouNgx
-X-Google-Smtp-Source: AGHT+IFZUYEA254Qk6D+v3WHD21L3+ILquiDWwnqdm2cnVHLdtKDJadjOimhdoQmnze34t7AwR6F7hUPD/zki1ClaPI=
-X-Received: by 2002:a05:651c:1a0c:b0:2fa:d67a:ada7 with SMTP id
- 38308e7fff4ca-2fcc940c781mr67851511fa.23.1730377427035; Thu, 31 Oct 2024
- 05:23:47 -0700 (PDT)
+        bh=odcUYvsYLdeICior6+6tFe2Km+FAg+O9mLlpAee680Y=;
+        b=cmhpdJBHWsaHkHQXGmApAKfs3pIBMhiMqfKxi5uJkh/1Cjhzh7p3KcZEjrKsQyldrf
+         jljfVDvC/XCOesRKOWTQJUNsgqxcl0s+4YypkAxy0JPMalpgYbXxLudf+ygJc1Ticot8
+         qr1XMfPCA36+CKUcvjt1Y8xsHwO6NUs6vEtOUj/+gsZoxMloQHhnameQtUzeCpvMMl+/
+         sUwxJAq93Nk2VX/DEC/eA6kFlfuWLwILLdZj5YoiTtJ5QIk+oBXpRezeSb7iQyBqeFRW
+         yaqyKEdi/hcgatGBFTnfBmkuUv9JH9AgSdSkmfB8NsYGstV0v9OtZ1+TXBcx+Gj13OYX
+         4fYA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+X0Z+eCReKoqLXgjDAWPqOanyIcjHtneS1k8VjKw5mt/FBwdfLc+K3umFegqSedqMOziVd694LX8qZDLL2+Q=@vger.kernel.org, AJvYcCXGPxs36GHUycv0QACLBUHrQA0D5VgbM1dKPOXxeig2377Hqd2N55vwjXA64KvpWrZYgpGYHlvwLLSiUTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6LZX4Cc64OKt2zAl2fciZCyFMjbMRetzFwqwO2Z45OT4DVysR
+	pZzw804nsK09yd71IfaQAOgonaFuVwTQ/iiVdDLxX3VVCn/B8JKDAdgXAjvpjrjiM9pQZcrtPpu
+	mfh19AQk865vQyvjyPCOwCMVz+/liHGmAJXg=
+X-Google-Smtp-Source: AGHT+IG8tgiQfVWD6reNJmxRYR9C5VqhfOefz6CNHCp9HaJcC0OjVs6ddI1ocUDyqwnbuyGAyvdH36ndBd2cTuaFbjQ=
+X-Received: by 2002:a17:90a:d808:b0:2e7:8a36:a9ad with SMTP id
+ 98e67ed59e1d1-2e8f11e864emr9305765a91.9.1730377662312; Thu, 31 Oct 2024
+ 05:27:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,62 +58,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
  <20241030-borrow-mut-v1-5-8f0ceaf78eaf@gmail.com> <CAH5fLggeAm1qobKzUkjw-+oNQRnCaDH2f2TTiRvmrRMg417LCA@mail.gmail.com>
-In-Reply-To: <CAH5fLggeAm1qobKzUkjw-+oNQRnCaDH2f2TTiRvmrRMg417LCA@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 31 Oct 2024 08:23:11 -0400
-Message-ID: <CAJ-ks9mHp=uZUq0BN6D33+s-eEO1vN+1a4_mZahuqLD9-A1UeQ@mail.gmail.com>
+ <CAJ-ks9mHp=uZUq0BN6D33+s-eEO1vN+1a4_mZahuqLD9-A1UeQ@mail.gmail.com>
+In-Reply-To: <CAJ-ks9mHp=uZUq0BN6D33+s-eEO1vN+1a4_mZahuqLD9-A1UeQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 31 Oct 2024 13:27:29 +0100
+Message-ID: <CANiq72meJWYH+45xhZf5abOqSwnWAaDVOeKG7ahLtOUa3w_8ug@mail.gmail.com>
 Subject: Re: [PATCH 5/5] rust: add improved version of `ForeignOwnable::borrow_mut`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 31, 2024 at 6:54=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Thu, Oct 31, 2024 at 1:23=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> On Wed, Oct 30, 2024 at 9:46=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > From: Alice Ryhl <aliceryhl@google.com>
-> >
-> > Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-> > that was intended to provide mutable access to the inner value. However=
-,
-> > the method accidentally made it possible to change the address of the
-> > object being modified, which usually isn't what we want. (And when we
-> > want that, it can be done by calling `from_foreign` and `into_foreign`,
-> > like how the old `borrow_mut` was implemented.)
-> >
-> > In this patch, we introduce an alternate definition of `borrow_mut` tha=
-t
-> > solves the previous problem. Conceptually, given a pointer type `P` tha=
-t
-> > implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-> > kind of access as an `&mut P` would, except that it does not let you
-> > change the pointer `P` itself.
-> >
-> > This is analogous to how the existing `borrow` method provides the same
-> > kind of access to the inner value as an `&P`.
-> >
-> > Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-> > immutable access to the inner `T`. This is because mutable references
-> > assume exclusive access, but there might be other handles to the same
-> > reference counted value, so the access isn't exclusive. The `Arc` type
-> > implements this by making `borrow_mut` return the same type as `borrow`=
-.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
->
-> You must add your own SoB at the end when resending other's patches.
->
-> Alice
+> Thanks, I'll add it in v2. Does the order matter?
 
-Thanks, I'll add it in v2. Does the order matter?
+Yes, please add it after the reviews you picked up, i.e. the latest
+thing in your commit message. Please see:
+
+    https://docs.kernel.org/process/submitting-patches.html
+
+Thanks!
+
+Cheers,
+Miguel
