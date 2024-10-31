@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DC08F5C;
-	Thu, 31 Oct 2024 08:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198A119581F;
+	Thu, 31 Oct 2024 08:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730364658; cv=none; b=Lf0C6nPny57Rp7y3C/pMMD5fGsBEr8g91/U9eQzdahnckgxzquntFVseUeddxK6o4PVZ3PSjddaI4lTZNZ4sIGghDYO5OhbhU9x4zfZRR4YOUGUBUFFnJFTslcwVwYV0yXvcCt2MmXCFlwah5v468xSnCwJ4ppWgg/YCfIhVzFk=
+	t=1730364662; cv=none; b=Ov+mLAguYgLTdlGi1IijfkPlPhP3TMyqCBdxa/qd8gQOpnB2bPuPMrzW+mHT4ReFZx+VXMPY+e48GNAV5R8hS7zv+qIPsZfTjNq0abpKJpH1iN49f+KMPTsO2CA7wVTZeUc6bo5EDALcyzMof1x0D7EXaLnnWt6vBohOcS6RX+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730364658; c=relaxed/simple;
-	bh=5nxsWTrLROjlD6GbFhe70Ry68Ml5itSMkuGKF63D778=;
+	s=arc-20240116; t=1730364662; c=relaxed/simple;
+	bh=yQzl9Z7XI1hNGcRFzwce3+wTJUhB5Z2qyakn5jWwZ5I=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=D12TG+1Re3K+iLl6H/RDpds56B3sSmW5jbCcUMzOjBe2I+mjZjUI7vtunwjVr/WMJbkTDFplTXRFA5csUHmreORgzjAyw/mjs7HnTaeBhk9kFQZHEliQqP9wK6r0dF77GmNs16bM6SzEasYG2KETLKld84nLaCSF1myJ8NDS/gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhN8NuN5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=C8pmC+Rv0enn3Z0sSK8FydYoHufDq87p10GTtq16xY+/6c1LzPmgz0uqYjqwNgsPjC+nvjmcoJ6CTygzPjn3Tz+4JlC4ReDKnh8A6KI28pHEBNdpXLRAtVHAVwRujRAygTVdyKsYfnYm/We8cw349dDEMZo4skesQiVhk7P415E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ze00NFzW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhN8NuN5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4F3C4CEC3;
-	Thu, 31 Oct 2024 08:50:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ze00NFzW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A898C4CEC3;
+	Thu, 31 Oct 2024 08:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730364657;
-	bh=5nxsWTrLROjlD6GbFhe70Ry68Ml5itSMkuGKF63D778=;
+	s=k20201202; t=1730364661;
+	bh=yQzl9Z7XI1hNGcRFzwce3+wTJUhB5Z2qyakn5jWwZ5I=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FhN8NuN5eZnvWxnJp3LChAmf/7n923ddxGyXM5v0FFwAWlPO4hFWc7dT6WCEz4a2P
-	 YP2bcuTEuzDIcZZ03UhiknY9NzWR9CzZzzF+fbFo8jdGSSNqKR5EmUCxt6qzFHx4A4
-	 fkOdCL/m5cLK6r/XDf8czMRyUDvKE15mygnSh3n6oxOJMhjXxEXd5AGe7LdoPoTk4c
-	 tAENdZV6qXuCMkvCxUXMgtGDvrPvcHFd/SRzPqZFrl6/DKPMgh9vpry0YMCfKNb1D9
-	 JFJa2XjpomSlZSwDATXOjfCBIT51EJu8F+fAvNizxkBXEU62LvkeZWVx1OwoSYx1Cl
-	 7GbGT2Rs/AYxQ==
+	b=Ze00NFzW1HvZoO3WqAHJXJXn3Q1OiwV8kXPYWsNFMl52TUU1GPsD/nq/I/Gdch7WL
+	 d1l+e3iu7l2xqhi9zzVK3CA6HSNWX1bhUW7RhkRhxBwynFP0vnNC0xlWlDMxUZlv05
+	 cMdNABKLlT6L9hx9p3kk8J//KpApQ9EBcDIr+cWbEbmf87517OlTPW6J/Fc6769a6p
+	 +NUwCfkUu3rjbAWVACSVRvL2wSxYtuKfGsBafT02PAZgxnycijEjWI25j/VJlGvO7c
+	 fUQ22Ept6FQdv3bd3vPmyfP5Qxj9rud0b9NCDAyoJ/C8S0mIN6RAP99pZpr+nfO8cU
+	 md4+TZDMzEiMA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Tamir Duberstein" <tamird@gmail.com>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
@@ -35,17 +35,15 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
  Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
   "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
  <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  "Martin Rodriguez Reboredo"
- <yakoyoku@gmail.com>
-Subject: Re: [PATCH 5/5] rust: add improved version of
- `ForeignOwnable::borrow_mut`
-In-Reply-To: <20241030-borrow-mut-v1-5-8f0ceaf78eaf@gmail.com> (Tamir
-	Duberstein's message of "Wed, 30 Oct 2024 16:46:42 -0400")
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/5] rust: change `ForeignOwnable` pointer to mut
+In-Reply-To: <20241030-borrow-mut-v1-3-8f0ceaf78eaf@gmail.com> (Tamir
+	Duberstein's message of "Wed, 30 Oct 2024 16:46:40 -0400")
 References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
-	<dRdemlQoKKeflc1Ti5B10auAxUEmuuQYkbPZdUjE3AR-Snp03qz4q-JqVcp91_LW9Q-PY0PJut6RMzDMEP3-aA==@protonmail.internalid>
-	<20241030-borrow-mut-v1-5-8f0ceaf78eaf@gmail.com>
-Date: Thu, 31 Oct 2024 09:50:27 +0100
-Message-ID: <87ttcsodv0.fsf@kernel.org>
+	<oVgFAmT8rBrdYoquaCoUcWKqIOVnct8QxS55ZI1D4l0JhpL-VlkH70vlCZEqdmjcc1If4w0vrQczFHWPPVopMA==@protonmail.internalid>
+	<20241030-borrow-mut-v1-3-8f0ceaf78eaf@gmail.com>
+Date: Thu, 31 Oct 2024 09:45:39 +0100
+Message-ID: <875xp8psng.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,39 +54,12 @@ Content-Type: text/plain
 
 "Tamir Duberstein" <tamird@gmail.com> writes:
 
-> From: Alice Ryhl <aliceryhl@google.com>
+> It is slightly more convenient to operate on mut pointers, and this also
+> properly conveys the desired ownership semantics of the trait.
 >
-> Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-> that was intended to provide mutable access to the inner value. However,
-> the method accidentally made it possible to change the address of the
-> object being modified, which usually isn't what we want. (And when we
-> want that, it can be done by calling `from_foreign` and `into_foreign`,
-> like how the old `borrow_mut` was implemented.)
->
-> In this patch, we introduce an alternate definition of `borrow_mut` that
-> solves the previous problem. Conceptually, given a pointer type `P` that
-> implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-> kind of access as an `&mut P` would, except that it does not let you
-> change the pointer `P` itself.
->
-> This is analogous to how the existing `borrow` method provides the same
-> kind of access to the inner value as an `&P`.
->
-> Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-> immutable access to the inner `T`. This is because mutable references
-> assume exclusive access, but there might be other handles to the same
-> reference counted value, so the access isn't exclusive. The `Arc` type
-> implements this by making `borrow_mut` return the same type as `borrow`.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
 
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Best regards,
-Andreas Hindborg
 
 
