@@ -1,55 +1,55 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4CB1BD9FC;
-	Thu, 31 Oct 2024 13:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654814901B;
+	Thu, 31 Oct 2024 13:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730381092; cv=none; b=NldnknxdS18TfMQ0TaEv+bdgUdAgfXY9eH+DQQH8DD/HZKVmopxzVlfkeY/sWH1bP98Ap1hS/rPMhmxSvnvk8ec1fqKjwujWJTORa/cjnvWN1YN+84hWvT5hNSP3mex4BmgtETLLxyBeo6f9ZZoA1iuF+WB+1EMHH48dxQgBFNA=
+	t=1730381456; cv=none; b=eaSjau+bsRCXDlkkhZHRRoARx4MKOhhNt2+8ULhDLKIy5SaaeTJILOV5i11cywYttz2YFpJaqs79qpnyhUdC0XbelBmSUpV7EXYlqJGmM5pmbUy8W9P7A1c+bHfhKZsSEMxIbqTBhXFcC6ddRPM4aGq2Q7CZKO6Bu5A9LiW/rfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730381092; c=relaxed/simple;
-	bh=s3Lar00z/TMKMxtUmNXahKam1H1r9Hk5LJMLQbExYfs=;
+	s=arc-20240116; t=1730381456; c=relaxed/simple;
+	bh=NfLIGeDaw18FAGlX4fbe7xt3D2534q3CjGw2MZWy5hA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jRCNFZWAdx0HojLXaIv8vwzR6834awss/1ukMPDbP117eTEILHNo+79so8qAZc8R59gfNC9WLx7jQYwD4K6gwiY2nqNJIAePVjX7GvW2kwD3IL3Cm3FA5CxqAKuKYmurydbvwuTUGTeOzPj6IyidTTMN6Ltm/+s8SlIljGs/iy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gjivpw9v; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=LVcDXHtBienWyttJpg+tIRl0ZbBQ4hYW+toL3oraeOjz48z3Mv/faIzsqlYlrMnuk81YKXoAnhVXwO8YiL4fHJptrmxHDa8FTZTeISmWLNfEexpQay5g/Nff2700AFFSfmc0xB3H5HI9QFg8xewUf38PAciVt6Bp9umCgfcLHys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWAS+snB; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gjivpw9v"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb5111747cso9519671fa.2;
-        Thu, 31 Oct 2024 06:24:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWAS+snB"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb5638dd57so9019241fa.0;
+        Thu, 31 Oct 2024 06:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730381089; x=1730985889; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730381453; x=1730986253; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s3Lar00z/TMKMxtUmNXahKam1H1r9Hk5LJMLQbExYfs=;
-        b=Gjivpw9vEZPwADv2itWnDgDJ6Qe4d79xybHjm4osGFCYM9wtQzE+R6V+N9DgPWlXJQ
-         6W38fxXqmir65v2mlxZ5mjsx40sOCG0hpdeucaU3hcG6IY3veAa5qIfuuiNsXTC9vtHZ
-         FiXjlDK2NWIYzJsqvuV0KvO0adKFZXi9yNHKU9TS455P0IAR5vuNfexB7udZ5qzv8Y4n
-         ttlUiiR7NYvkaCbRxg4hGtnkeeV8QcJHwnE2UU3k3Ebs1V7f4eJRq8edeocfAU1vde2/
-         lmqyXcgQyunTgqIOC/zjmTmdfOhUgQQJvh3v4YLxmzKJMAm3bmWWkBoqAmAW6Ks9vURX
-         Z+2w==
+        bh=NfLIGeDaw18FAGlX4fbe7xt3D2534q3CjGw2MZWy5hA=;
+        b=UWAS+snBWR6S71ZXHfKl50HbWX+Sg5Q5TyICYN4OH4mC46IeUeF0xmImVb6icTva26
+         5djHyTXY0hYx2xjW0z2NcE937euKVeRUtOxJbktv9VHlwj43LHw/IA7z2d5EkTecZtiJ
+         pGMjhi6zPE0G9osgpbjrBuvVwTujr4H6CS9mamIQnt0jGRNohjcZwE30YegzzbjFBwfJ
+         A5xQlmT3wLJYUbtbmiWIZkwo08ooUeOwS8ZPzrEsA0HuQI2gKND4rx//yxAd6rEBZxCN
+         dT/WZixvtoFzAmxTgiIHLYmncK3l3AhUXm4ZbiI6og7+sSG0dJR9iM8IO/dbLXq6X0k9
+         zqmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730381089; x=1730985889;
+        d=1e100.net; s=20230601; t=1730381453; x=1730986253;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s3Lar00z/TMKMxtUmNXahKam1H1r9Hk5LJMLQbExYfs=;
-        b=GNJPujBcClegWzsepDIxuu6VYPYwTTJOYKa2J7u1E3Z7peIQPkDfKlnD/WV/FGu9vz
-         NRufpb6ORp22lvjR2MNuuHDaBCwhtaG2xJUklb/ntdvSIYxnRxREZVkkTIlBCgwlD7ha
-         tl8cWq5chTlhB4WINQHvKUGZxZbup24ZEsEjRiWE5k79HE9cttHhg0svgp1jUyw6Gqoo
-         2xUo6JN49y1c8+GtLSrV7J4635RhSx3JTS6PxNEjrYfZhbO2Qv7vxvu2RjaEt0ZiMOps
-         STRkmcJRnV24fr3BjNnXDki6vTA3m16J6C9ed8bT6qbVFSYcdxMYiEextNbIbn8AiHU6
-         hpww==
-X-Forwarded-Encrypted: i=1; AJvYcCWYQvb0v++xSXtiiUHtNQ1hRbDOoXQp+CCqBYTh+kiWYbkpMWeV3yA3uqJa9EFmcdruC3h2V/+Fb4uDz/o=@vger.kernel.org, AJvYcCXHtl0x6HdSKtdFq2jIHqn6Cw1hxd/vJo7BUDlJUuTpKguR8Ss70qGgUbbADSEif0+mekp4K+ZUamzoruBuQII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFeBorp3btQ3cVAOn9LbHROmM9ooZir/NCgw1iHXahJfLxHZyZ
-	YgKFa0l36dgtzvQ2iS8dmUNRK8fgWjOoUHLm/gIdRZr6jlkxSu2ne5VQsoiqpgtzUVC6R+c/+o8
-	jFIR7p8OX2FpOhF1GAMB6Z2KdUi4=
-X-Google-Smtp-Source: AGHT+IEnvKtIbxnAcrxbDgeETdHzFq0MmO3NjN0pPGuiojMp5x9J7i6g+2xdFn7RmNxhEcKgktDEB1pkrsf37HR9OwA=
-X-Received: by 2002:a2e:d12:0:b0:2fa:cd7e:3b40 with SMTP id
- 38308e7fff4ca-2fdec5f5801mr15627671fa.11.1730381088401; Thu, 31 Oct 2024
- 06:24:48 -0700 (PDT)
+        bh=NfLIGeDaw18FAGlX4fbe7xt3D2534q3CjGw2MZWy5hA=;
+        b=ondBIS+5k7BVIunYfNlZhDkpl5+XtIimlFRGhpRtLud3O0mkQcGSQXHoyUGOWZOFD1
+         MwDrygP/xccNG/tTgen9q3WCdPYT7pCk07hlph66EiWIfg8mPU2vSrgMmnMfZe+BS3V1
+         6t3CNeUHLJKZQEmPOJGTE+Xsnw8R+M9uAOJ2UCtv4HILQhgmOhJ5Vpldm0O9S0G8I8bi
+         A/xZIBJ0aZ6uU/YHhH1bxGUojXCaamgacIbDcRNt8kvhZP4rjE6/HsxwMZBRUlCbcp4M
+         fOfX2n0IwHEVoE58z0cyqQIf3m51G3ABKciCvuyZacTtSgApgWF2ikPwxbFLBMuGl9gy
+         3Dxg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6R2ZInEhDWlw7txPbLAQ6PHrBDnxf6wEytD+CJZEglyMEHy+5qYTBv0M0xaLVHDvYJyChRuzDjsNPe3w=@vger.kernel.org, AJvYcCWow83zcSqWSuuVE0pDgnI4BZFyttk3fadVqla2QIXBQ1+OWXTP5+Q4JEAk8MguL1oSsDeXYFrmT5sr5DanwCs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPd5AkwqbZZ79Nm7IgiOi9D7rvOcZbyxsMQ+0kGikPx6WHfnH+
+	UmYu2X2TBm3n2kxRvGFh5zv7o3Uplqal9k4Okg7vfhn876QfQ37yc35WX1B/2fXk7TVFkrfP1+L
+	uBks/Ll60F+yCRAMIeSGc2riApFY=
+X-Google-Smtp-Source: AGHT+IFcwTon6tIY5EFfcay8SqKZjCjiZZdmJoWLH6TXRlHf74KaW9+MCxKW5n3qJZtXQKFgo96Tb5GG8pucmrjJ8p4=
+X-Received: by 2002:a2e:b88e:0:b0:2fa:e658:27b4 with SMTP id
+ 38308e7fff4ca-2fcbdf5fe55mr93967721fa.4.1730381452321; Thu, 31 Oct 2024
+ 06:30:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,36 +57,43 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
- <20241030-borrow-mut-v1-2-8f0ceaf78eaf@gmail.com> <CAH5fLghmVYwNKPGrtHzUQXhEyxiD=ZyF6LNHoWUREWH+dpK=DA@mail.gmail.com>
-In-Reply-To: <CAH5fLghmVYwNKPGrtHzUQXhEyxiD=ZyF6LNHoWUREWH+dpK=DA@mail.gmail.com>
+ <Pn1b5OU4cqz38Aiv4RL7MuzPDwDGvxLVRrLuCF7Q3_HaeLzlh4jaM0krBqB39DCFmRLWK59Do8DPaVxLNaaTNQ==@protonmail.internalid>
+ <20241030-borrow-mut-v1-4-8f0ceaf78eaf@gmail.com> <871pzwpsm9.fsf@kernel.org>
+ <CAJ-ks9m-THyqK1tYL39t979BagBqj3Z-MOSn8wPhDc82awjzug@mail.gmail.com> <CANiq72nX2=yigRKhP3jN0kQ8vD0kMvUOp3rFpRQZJGAX6RrRhg@mail.gmail.com>
+In-Reply-To: <CANiq72nX2=yigRKhP3jN0kQ8vD0kMvUOp3rFpRQZJGAX6RrRhg@mail.gmail.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 31 Oct 2024 09:24:11 -0400
-Message-ID: <CAJ-ks9mf-5cGZCGFGPLnCV-7r5PMfpJhXWYFrqq2owTeAHtcqg@mail.gmail.com>
-Subject: Re: [PATCH 2/5] rust: types: avoid `as` casts, narrow unsafe scope
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+Date: Thu, 31 Oct 2024 09:30:16 -0400
+Message-ID: <CAJ-ks9mf2H8xZ+uZyeQqiGEDY35tyDBP-UpaqXhe_padv=Dqmg@mail.gmail.com>
+Subject: Re: [PATCH 4/5] rust: reorder `ForeignOwnable` items
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 31, 2024 at 4:47=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Thu, Oct 31, 2024 at 8:40=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Wed, Oct 30, 2024 at 9:46=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+> On Thu, Oct 31, 2024 at 1:23=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
 m> wrote:
 > >
-> > Replace `as` casts with `cast{,_const,_mut}` which are a bit safer.
-> >
-> > Reduce the scope of unsafe blocks and add missing safety comments where
-> > an unsafe block has been split into several unsafe blocks.
+> > This change was part of the original patch. Do you prefer the code
+> > movement in the same commit?
 >
-> Reducing the scope of unsafe is good, but moving calls to "cast"
-> outside of the scope is excessive IMO.
+> If we do it, please keep it separate, that is a good idea.
+>
+> However, I think Andreas means to avoid the movement at all,
+> regardless of which commit is used to do it.
 
-My intention here was to avoid applying subjective judgement by moving
-out of unsafe everything that could be. I'll omit this from v2 since
-it isn't clear where to draw the line.
+Understood. I'll update the commit message to explain that this also
+avoids inconsistency with the implementation in kbox.rs, which is
+already in this order.
+
+Andreas, please let me know if this is acceptable.
+
+Thanks.
+Tamir
