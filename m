@@ -1,55 +1,55 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FF319ABC2;
-	Thu, 31 Oct 2024 11:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BCF19AD89;
+	Thu, 31 Oct 2024 11:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730375449; cv=none; b=AlpC+rPTRkdtp9fAxfu+0dLLVqWz4FR2Xd/u6fNgKKfrChT4Qi7w8t8naUA3tL3aATsKj9BuP1i6CKcssB+LYmbaEZ52vmzqvusVN8Fi4DQJDvBKie6bX9kAPYsJRyPtAUS493/YXswvZiEJcsQPZM4Nm1KQNnBzFpJVR2eUErQ=
+	t=1730375467; cv=none; b=YZBMYexqQFYksqZnibiMNxfd4YCE874dzvfktHvxnd4A5u9fvW6/OvHu2YmRKMryZJmHDHIz62MRDMAC1MoA73+ZPLp9Ao/BwMIS/o3+mLZkmjI69v20/jyU5+saeIOe2hJDThQD/qcTwTHsHoTTGu/AbNo+Wgll70pbmNh8S4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730375449; c=relaxed/simple;
-	bh=pfysqH01FD7sfcWYcL4ziD5LKo28t3lRvp6E7rfa8O4=;
+	s=arc-20240116; t=1730375467; c=relaxed/simple;
+	bh=zZcIyMiPbOnKM2cuGZ0wCC2mHmVyVKKxbAWex7UXd4k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G89DXclcGaiqF0jdYm8b7vC+xYOWdRGrIJnyR+eWBuDLqFKbkNqpRrCXIMLjBhJ1opEdAUq8Qzyra76ls0oT3SqRWteb2E+apBJXxFkCFRS7d1PUBiVRHU8IQ+0oftUdXxv2i+kammoRfd+0l3dhQlZXvjxqt56KicCY8gbBSug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTdD0iKn; arc=none smtp.client-ip=209.85.208.178
+	 To:Cc:Content-Type; b=mWD0BcFOulIGYk4g4Sdjv4e4uE9BoLWN3zG2TYk7U13d2xL9aHi2QKybsyD0wNdQaSl5NXSTxnc9PJMcaZwGhC9O9lNm1RYRL5hOM5bHfT7pQsfCxVXvGKTXj7gB3tlk/nNU7C7BNYCePXUj5fmZapVcNB0+7XiVN/Ip1/0fYRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gNz8rdeW; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTdD0iKn"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2f7657f9f62so7134411fa.3;
-        Thu, 31 Oct 2024 04:50:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gNz8rdeW"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fc96f9c41fso9138391fa.0;
+        Thu, 31 Oct 2024 04:51:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730375446; x=1730980246; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730375463; x=1730980263; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Stg8oTx/JY2f4JZWsatzVnk/fAucLKtr/wHi1HEc9aQ=;
-        b=mTdD0iKnUZQTTHseae4i+dElszd0uHhaiaksWQ/y5vOfNRww0lJnIbsmaa3klfwlV2
-         92qlJNBEHDy+pHYhqv+u/4ITjuDeS61PpQcdJp2CamLY/wKwlHdfYtCtED+wzECQand8
-         0KyqnwHqq1TFmPeZBBBvSlFBCSoKdSc3rCa30lziFn0CrP3aoCPuhmlgZOqMukCZUJxl
-         uJ3M+UdP1+nCQMM2jP4yTF+XjJZVFygnIIKzONbTxRl+p1dQ6jYqCDHUyGv4R8K+toZ+
-         iT1dvzCz0LAI2GpnBjd2ia+lttHI56CPR8tJIf/2pzOu+rPR15/sus6Sc8AvO8tHPyd1
-         5WLQ==
+        bh=plSye77KWeY4jld03CzbnOJTPipsRUWcox69aurs8ZA=;
+        b=gNz8rdeW987sEiYt6rr7LtPIi3KkysfLAYexaq0VkeCos/dlysetmzv0BV90o8DMxp
+         Zdy/2qK+fdaUE+/SsnjZzs7xm15gG3gxHvQY1IjUqZZVR1Tvp/nrWwgbQQkhbwoDl8h7
+         UU1g7ZzEgsjGGvP20e1pA0XctaSs7CDLCZbaXVdxcDPO7WkYaGiFSy/pPLGHI+gfsl2O
+         AETRUodGzV5VjqezX4yU5lKnuXjCbLgdIQpTGYg2rG7VxF07QIAzt5BWAmaTkPtOYE8j
+         63vutXvgwq+fcPT2PZA1gCIbuXtsQjxVKn/2Um5G5K4OJvpgKQH3ZXrAGD0Gk+5Er23D
+         7u2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730375446; x=1730980246;
+        d=1e100.net; s=20230601; t=1730375463; x=1730980263;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Stg8oTx/JY2f4JZWsatzVnk/fAucLKtr/wHi1HEc9aQ=;
-        b=OOZhoIbnweSnBaHQhjTDU1W+h/bkjxItAhM9zOPic/Li9I9YBSE7KiXAd2RYiBmzzP
-         VTFVs6aGLY/TarCDBPVdsb9DH6fGgM9bPZfxhwfNLDEAtVsIilV9U+dipD6pmHbbxNfN
-         dpZ8gBHR06DS0dvLe41/BI1u3sLUBdryea5aMF4Mz/LJXJ9a0M6g0MfoZ0Ylgl+Nsf/z
-         8uym84qMgpuEBPbzvxNdnxUQM3sST0SlO76kPDJqHbjNIdXnTKgFnNq+8w+NUhnoUgye
-         THFmkCMtxKehRmn2fdB2nOvaAitiBjNj51cwl3SOCVoAdViP/5aXsKciCuDEttGX7UlR
-         dJZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGVJ9Yh4XXHFPOZVURppPbKnbIiNnengP58UFe91M83R0xczZNRnLBrDnI7gUC3xKLnA/J7KynbrvkT3U=@vger.kernel.org, AJvYcCUx/O62DCGAEQWioE+C7ODxUjaxsx2WQiE2mzjST0ORpqm8rXNnG7JzXnRCSr1VcsET3UO8s/3Xa53Nreq8ylI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5sBSOP+hsrpDFizdORSxrUHCrRPteqs8TnHiMZswlccfI/Ex9
-	q50gHKTtLDGKPlIDvqqFfckoQhV87Ir341j8FXHVofjQ3aTXIZkPd4xZ3m+7AyOM5zWbWy7fbOH
-	HPD9rUC7dJdM83HyU3Wpj67HTilo=
-X-Google-Smtp-Source: AGHT+IEbappliEtAC1kjvX5QtgBDeCijNrbhETiVCl7g41WopCd3cn4eta6l0lVFDsibeC4FlVBoZku3IrGpi9tqxdQ=
-X-Received: by 2002:a2e:a99e:0:b0:2fb:5a7e:504c with SMTP id
- 38308e7fff4ca-2fcbdfae76bmr99375731fa.13.1730375445556; Thu, 31 Oct 2024
- 04:50:45 -0700 (PDT)
+        bh=plSye77KWeY4jld03CzbnOJTPipsRUWcox69aurs8ZA=;
+        b=ZmKb3OZlkWfKhucEChRqBhsYEuQ+FxfHfuew90hO7d0Brumb8x6kT4I/u9e5mgJdWI
+         kC4BmDNpu+Ee9nneALG1Vmh8bJENOWoFzSHFurrRxUtURyE1/GHmAtyktdeoYEUQK9zr
+         6uccGggpuykUD7xiYBSfhDsLlnrTpyci48FlYVpUfUylS9m5QYBmLvoWSfAg8qsIA9qE
+         Pw2asUNlJfN6PT/nGN/CrJgNzOUU+BX6Vq+fJH2DVnz2MdyA3+qQL5b7skj2wT1RRXam
+         1UDxmkTs8vRCGhoFeGn06NK/iJuZcJcZ04BTddquxwTWtosuXxTPZ09cFXaQYGfLvpLi
+         IOyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUu0sIRUCsrY6XUKc1kst65UP1u42iCTpw58BlpqV+dDF17cVr4X1bNJr3liG5pewnj8Qu6yL5iBFFKKAs=@vger.kernel.org, AJvYcCXiEsd6ehK6Ms6lwboFEFyRF5mkPvonorxR0hhOj4TssQbFjX6tSqo2GfHW/UHFxgPXcw9uE/Kunh3aJjfuA0k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxhOPxzMHeqd5brqpxGf9UIlmWjFu+mDlSalC1AYQW3JRHhN1i
+	eyxcw38moEHTcxhgWyZMd/v2KEFGVdTbRs1/+7qv+l/lYaiCboW1eIdcgJ/vJU999g0sU5LCeDP
+	hmtVMKM/OsLN2XJfVcgW4wy5brjU=
+X-Google-Smtp-Source: AGHT+IFeOj7xn2WZIWnbdXVMtLHHC3syWav4q+UEwRfqBrXsDx9TmK2gldq/ldWbxhu5kviYSlZX/G63ck3gFBWoiKg=
+X-Received: by 2002:a2e:be8a:0:b0:2fb:5d19:4689 with SMTP id
+ 38308e7fff4ca-2fdef22284amr7253761fa.1.1730375462299; Thu, 31 Oct 2024
+ 04:51:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,13 +57,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
- <4Gt8heJcUIL12zJWx8G_MkgF3vZQPoFAEagztu_-UzAVBIVIx_qJn6E7bWdq3QMKQ4n3GcuXitfXwY5HMxX7KQ==@protonmail.internalid>
- <20241030-borrow-mut-v1-1-8f0ceaf78eaf@gmail.com> <87jzdopthc.fsf@kernel.org>
-In-Reply-To: <87jzdopthc.fsf@kernel.org>
+ <KJyhrgAd_z6Zh0U1iafSryM8P_vhgxML3COlPRUtks83dD0fidaO7EfCaNWqQLhVcN0hqekp3v6qmakvURvCsA==@protonmail.internalid>
+ <20241030-borrow-mut-v1-2-8f0ceaf78eaf@gmail.com> <87frocpsui.fsf@kernel.org>
+In-Reply-To: <87frocpsui.fsf@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 31 Oct 2024 07:50:08 -0400
-Message-ID: <CAJ-ks9=ph2ejGEyi_nS9vfA662xQS-yFFxT3t2yDkGaV9AqYGw@mail.gmail.com>
-Subject: Re: [PATCH 1/5] rust: arc: use `NonNull::new_unchecked`
+Date: Thu, 31 Oct 2024 07:50:26 -0400
+Message-ID: <CAJ-ks9mrHuBEGvCi8pTNE=P1YHU81+cWF_emAvOKnsW0wQSWMQ@mail.gmail.com>
+Subject: Re: [PATCH 2/5] rust: types: avoid `as` casts, narrow unsafe scope
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -74,79 +74,170 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 31, 2024 at 4:50=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+On Thu, Oct 31, 2024 at 4:51=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
 .org> wrote:
+>
+> Hi Tamir,
 >
 > "Tamir Duberstein" <tamird@gmail.com> writes:
 >
-> > There is no need to check (and panic on violations of) the safety
-> > requirements on `ForeignOwnable` functions. Avoiding the check is
-> > consistent with the implementation of `ForeignOwnable` for `Box`.
+> > Replace `as` casts with `cast{,_const,_mut}` which are a bit safer.
+> >
+> > Reduce the scope of unsafe blocks and add missing safety comments where
+> > an unsafe block has been split into several unsafe blocks.
 > >
 > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > > ---
-> >  rust/kernel/sync/arc.rs | 12 ++++++++----
-> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> >  rust/kernel/alloc/kbox.rs | 32 +++++++++++++++----------
+> >  rust/kernel/sync/arc.rs   | 59 +++++++++++++++++++++++++++++----------=
+--------
+> >  rust/kernel/types.rs      |  5 ++--
+> >  3 files changed, 59 insertions(+), 37 deletions(-)
 > >
-> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> > index db9da352d588f65348aa7a5204abbb165b70197f..4857230bd8d410bcca97b20=
-81c3ce2f617ee7921 100644
-> > --- a/rust/kernel/sync/arc.rs
-> > +++ b/rust/kernel/sync/arc.rs
-> > @@ -337,9 +337,9 @@ fn into_foreign(self) -> *const core::ffi::c_void {
+> > diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> > index d69c32496b86a2315f81cafc8e6771ebb0cf10d1..7a5fdf7b660fb91ca2a8e50=
+23d69d629b0d66062 100644
+> > --- a/rust/kernel/alloc/kbox.rs
+> > +++ b/rust/kernel/alloc/kbox.rs
+> > @@ -182,12 +182,12 @@ impl<T, A> Box<MaybeUninit<T>, A>
+> >      ///
+> >      /// Callers must ensure that the value inside of `b` is in an init=
+ialized state.
+> >      pub unsafe fn assume_init(self) -> Box<T, A> {
+> > -        let raw =3D Self::into_raw(self);
+> > +        let raw =3D Self::into_raw(self).cast();
+> >
+> >          // SAFETY: `raw` comes from a previous call to `Box::into_raw`=
+. By the safety requirements
+> >          // of this function, the value inside the `Box` is in an initi=
+alized state. Hence, it is
+> >          // safe to reconstruct the `Box` as `Box<T, A>`.
+> > -        unsafe { Box::from_raw(raw.cast()) }
+> > +        unsafe { Box::from_raw(raw) }
+>
+> I don't think this change makes sense, and it also does not do what the
+> commit message says. The patch has quite a few changes of this pattern,
+> and I think you should drop those changes from the patch.
+
+It's reducing the scope of the unsafe block, as mentioned in the commit mes=
+sage.
+
+> I _do_ think changing `as _` to `ptr::cast` makes sense.
+>
 > >      }
 > >
-> >      unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'=
-a, T> {
-> > -        // By the safety requirement of this function, we know that `p=
-tr` came from
-> > -        // a previous call to `Arc::into_foreign`.
-> > -        let inner =3D NonNull::new(ptr as *mut ArcInner<T>).unwrap();
-> > +        // SAFETY: The safety requirements of this function ensure tha=
-t `ptr` comes from a previous
-> > +        // call to `Self::into_foreign`.
-> > +        let inner =3D unsafe { NonNull::new_unchecked(ptr as _) };
->
-> Please use an explicit cast.
-
-This changes to .cast() in a subsequent patch.
-
->
+> >      /// Writes the value and converts to `Box<T, A>`.
+> > @@ -247,10 +247,10 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<=
+T, A>>, AllocError>
 > >
-> >          // SAFETY: The safety requirements of `from_foreign` ensure th=
-at the object remains alive
-> >          // for the lifetime of the returned value.
-> > @@ -347,10 +347,14 @@ unsafe fn borrow<'a>(ptr: *const core::ffi::c_voi=
-d) -> ArcBorrow<'a, T> {
+> >      /// Forgets the contents (does not run the destructor), but keeps =
+the allocation.
+> >      fn forget_contents(this: Self) -> Box<MaybeUninit<T>, A> {
+> > -        let ptr =3D Self::into_raw(this);
+> > +        let ptr =3D Self::into_raw(this).cast();
+> >
+> >          // SAFETY: `ptr` is valid, because it came from `Box::into_raw=
+`.
+> > -        unsafe { Box::from_raw(ptr.cast()) }
+> > +        unsafe { Box::from_raw(ptr) }
+> >      }
+> >
+> >      /// Drops the contents, but keeps the allocation.
+> > @@ -356,19 +356,21 @@ impl<T: 'static, A> ForeignOwnable for Box<T, A>
+> >      type Borrowed<'a> =3D &'a T;
+> >
+> >      fn into_foreign(self) -> *const core::ffi::c_void {
+> > -        Box::into_raw(self) as _
+> > +        Box::into_raw(self).cast_const().cast()
+>
+> But since we are at it, why not be more explicit and do `cast::<core::ffi=
+:c_void>`?
+
+These functions (`cast`, `cast_const`, and `cast_mut`) exist as a
+compromise between fully inferred and fully explicit type coercion.
+The doc comment on `cast_mut` explains:
+
+/// This is a bit safer than as because it wouldn=E2=80=99t silently change
+the type if the code is refactored. [0]
+
+The inverse is true of `cast` - it won't silently change the constness
+if the code is refactored.
+
+The purpose of this patch is to demonstrate the number of places where
+both type and constness casting is taking place, and to set up the
+removal of costness casts in a subsequent patch.
+
+>
+> <cut>
+>
+> > @@ -347,9 +352,11 @@ unsafe fn borrow<'a>(ptr: *const core::ffi::c_void=
+) -> ArcBorrow<'a, T> {
 > >      }
 > >
 > >      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
-> > +        // SAFETY: The safety requirements of this function ensure tha=
-t `ptr` comes from a previous
-> > +        // call to `Self::into_foreign`.
-> > +        let inner =3D unsafe { NonNull::new_unchecked(ptr as _) };
->
-> Please use an explicit cast.
-
-This changes in a subsequent patch, here it is matching the prevailing
-convention. I will restore the type ascription in v2.
-
-
->
+> > +        let ptr =3D ptr.cast_mut().cast();
 > > +
+> >          // SAFETY: The safety requirements of this function ensure tha=
+t `ptr` comes from a previous
+> >          // call to `Self::into_foreign`.
+> > -        let inner =3D unsafe { NonNull::new_unchecked(ptr as _) };
+> > +        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
+> >
 > >          // SAFETY: By the safety requirement of this function, we know=
  that `ptr` came from
 > >          // a previous call to `Arc::into_foreign`, which guarantees th=
 at `ptr` is valid and
-> >          // holds a reference count increment that is transferrable to =
-us.
-> > -        unsafe { Self::from_inner(NonNull::new(ptr as _).unwrap()) }
-> > +        unsafe { Self::from_inner(inner) }
-> >      }
-> >  }
+> > @@ -376,10 +383,14 @@ fn as_ref(&self) -> &T {
+> >
+> >  impl<T: ?Sized> Clone for Arc<T> {
+> >      fn clone(&self) -> Self {
+> > +        // SAFETY: By the type invariant, there is necessarily a refer=
+ence to the object, so it is
+> > +        // safe to dereference it.
 >
-> Otherwise lgtm.
+> I think it could be "By the type invariant and the existence of `&self`,
+> it is safe to create a shared reference to the object pointed to by
+> `self.ptr`."
+
+This comment was taken from the `Deref` impl just above. Should it be
+updated there as well? The comment is contained in the `Drop` impl as
+well.
+
+>
+> <cut>
+>
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index fae80814fa1c5e0f11933f2f15e173f0e3a10fe0..e8b7ff1387381e50d796397=
+8e57b1d567113b035 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -418,7 +418,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> >      /// }
+> >      ///
+> >      /// let mut data =3D Empty {};
+> > -    /// let ptr =3D NonNull::<Empty>::new(&mut data as *mut _).unwrap(=
+);
+> > +    /// let ptr =3D NonNull::new(&mut data).unwrap();
+> >      /// # // SAFETY: TODO.
+> >      /// let data_ref: ARef<Empty> =3D unsafe { ARef::from_raw(ptr) };
+> >      /// let raw_ptr: NonNull<Empty> =3D ARef::into_raw(data_ref);
+> > @@ -450,8 +450,9 @@ fn deref(&self) -> &Self::Target {
+> >  impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
+> >      fn from(b: &T) -> Self {
+> >          b.inc_ref();
+> > +        let b =3D b.into();
+> >          // SAFETY: We just incremented the refcount above.
+> > -        unsafe { Self::from_raw(NonNull::from(b)) }
+> > +        unsafe { Self::from_raw(b) }
+>
+> I think this change makes the code _less_ readable.
+>
 >
 > Best regards,
 > Andreas
 >
+>
+
+Link: https://doc.rust-lang.org/stable/std/primitive.pointer.html#method.ca=
+st_mut
+[0]
