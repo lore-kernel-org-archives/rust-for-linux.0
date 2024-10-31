@@ -1,99 +1,99 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654814901B;
-	Thu, 31 Oct 2024 13:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAC514F121
+	for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 14:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730381456; cv=none; b=eaSjau+bsRCXDlkkhZHRRoARx4MKOhhNt2+8ULhDLKIy5SaaeTJILOV5i11cywYttz2YFpJaqs79qpnyhUdC0XbelBmSUpV7EXYlqJGmM5pmbUy8W9P7A1c+bHfhKZsSEMxIbqTBhXFcC6ddRPM4aGq2Q7CZKO6Bu5A9LiW/rfQ=
+	t=1730383430; cv=none; b=PYHsCLaqpdTzNVFC+ZrYOAixvaFYgshe/4BoWccxHF3j8Pt/gUSEeABpk+aFLDrw5wKq4lqR+ivZ2hfZjhUgZQohL/Oi+Xi/oyQ5+xEacPai3RwyQ4ulnmcKJvocD9OME4Ehtc49TBueGcGb6AYh96ImL9qf6pecUi3osPaLSFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730381456; c=relaxed/simple;
-	bh=NfLIGeDaw18FAGlX4fbe7xt3D2534q3CjGw2MZWy5hA=;
+	s=arc-20240116; t=1730383430; c=relaxed/simple;
+	bh=/ujG1cezyJOLtrJGpOSVlHT/h9268ICutSdVP2Ou40Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LVcDXHtBienWyttJpg+tIRl0ZbBQ4hYW+toL3oraeOjz48z3Mv/faIzsqlYlrMnuk81YKXoAnhVXwO8YiL4fHJptrmxHDa8FTZTeISmWLNfEexpQay5g/Nff2700AFFSfmc0xB3H5HI9QFg8xewUf38PAciVt6Bp9umCgfcLHys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWAS+snB; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=C3euGL4JMHYiZVfKdiXPvWCZ7RgjhNyJbs3xW4pbfWXiEFZZvC9FWX73U1/PEdBqcFzR74vG6dL3EO23s1zXruwuft0RbzKiOvtwq7UHLZMwv2PXAeV5c9HVXZ80AoBRY5lcSqpk/GKvl6cYw6NJtHoUSj/u8C7Jd0kC+1yukV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2x67lOBd; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWAS+snB"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb5638dd57so9019241fa.0;
-        Thu, 31 Oct 2024 06:30:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2x67lOBd"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d6a2aa748so541664f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 07:03:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730381453; x=1730986253; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730383426; x=1730988226; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NfLIGeDaw18FAGlX4fbe7xt3D2534q3CjGw2MZWy5hA=;
-        b=UWAS+snBWR6S71ZXHfKl50HbWX+Sg5Q5TyICYN4OH4mC46IeUeF0xmImVb6icTva26
-         5djHyTXY0hYx2xjW0z2NcE937euKVeRUtOxJbktv9VHlwj43LHw/IA7z2d5EkTecZtiJ
-         pGMjhi6zPE0G9osgpbjrBuvVwTujr4H6CS9mamIQnt0jGRNohjcZwE30YegzzbjFBwfJ
-         A5xQlmT3wLJYUbtbmiWIZkwo08ooUeOwS8ZPzrEsA0HuQI2gKND4rx//yxAd6rEBZxCN
-         dT/WZixvtoFzAmxTgiIHLYmncK3l3AhUXm4ZbiI6og7+sSG0dJR9iM8IO/dbLXq6X0k9
-         zqmw==
+        bh=/ujG1cezyJOLtrJGpOSVlHT/h9268ICutSdVP2Ou40Q=;
+        b=2x67lOBd4axvrilCA99OAdT7oI3WqCHOv0489EHHahjCpiaunmirfy+sxdvBwJ2w6G
+         BxaHxZf0VVqKeE7ISXJ2Oh+fLobtsO5QWFkQ3rqiuKrDw1F/UBrUavAAutOq2RgzkT8w
+         Zaco5TZLD4b+nDRs3jCoVJ4So4mal3miuJQgW5I3nTlBj9vH6Px3NwyKV1oSSvszHgL+
+         DEnqu6zj6C6PuzSpfSLY91IDglEy/1OXNkv84blfPSSF0FKSwP+JtljPBSCp31yRzm8W
+         vQC0q/XNe96/8WQTsOi+uJ+Oi4p8hM7ZCN1Uu9HODB4ZZlJEDL9LlY+pr0uc0zrx8xiS
+         H+UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730381453; x=1730986253;
+        d=1e100.net; s=20230601; t=1730383426; x=1730988226;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NfLIGeDaw18FAGlX4fbe7xt3D2534q3CjGw2MZWy5hA=;
-        b=ondBIS+5k7BVIunYfNlZhDkpl5+XtIimlFRGhpRtLud3O0mkQcGSQXHoyUGOWZOFD1
-         MwDrygP/xccNG/tTgen9q3WCdPYT7pCk07hlph66EiWIfg8mPU2vSrgMmnMfZe+BS3V1
-         6t3CNeUHLJKZQEmPOJGTE+Xsnw8R+M9uAOJ2UCtv4HILQhgmOhJ5Vpldm0O9S0G8I8bi
-         A/xZIBJ0aZ6uU/YHhH1bxGUojXCaamgacIbDcRNt8kvhZP4rjE6/HsxwMZBRUlCbcp4M
-         fOfX2n0IwHEVoE58z0cyqQIf3m51G3ABKciCvuyZacTtSgApgWF2ikPwxbFLBMuGl9gy
-         3Dxg==
-X-Forwarded-Encrypted: i=1; AJvYcCV6R2ZInEhDWlw7txPbLAQ6PHrBDnxf6wEytD+CJZEglyMEHy+5qYTBv0M0xaLVHDvYJyChRuzDjsNPe3w=@vger.kernel.org, AJvYcCWow83zcSqWSuuVE0pDgnI4BZFyttk3fadVqla2QIXBQ1+OWXTP5+Q4JEAk8MguL1oSsDeXYFrmT5sr5DanwCs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPd5AkwqbZZ79Nm7IgiOi9D7rvOcZbyxsMQ+0kGikPx6WHfnH+
-	UmYu2X2TBm3n2kxRvGFh5zv7o3Uplqal9k4Okg7vfhn876QfQ37yc35WX1B/2fXk7TVFkrfP1+L
-	uBks/Ll60F+yCRAMIeSGc2riApFY=
-X-Google-Smtp-Source: AGHT+IFcwTon6tIY5EFfcay8SqKZjCjiZZdmJoWLH6TXRlHf74KaW9+MCxKW5n3qJZtXQKFgo96Tb5GG8pucmrjJ8p4=
-X-Received: by 2002:a2e:b88e:0:b0:2fa:e658:27b4 with SMTP id
- 38308e7fff4ca-2fcbdf5fe55mr93967721fa.4.1730381452321; Thu, 31 Oct 2024
- 06:30:52 -0700 (PDT)
+        bh=/ujG1cezyJOLtrJGpOSVlHT/h9268ICutSdVP2Ou40Q=;
+        b=a4BxE5fpp3TdrhGf2wfuzeOyqLNU4iG144XzbLbdrtnMoxTnuBWQzGqcxdEAJ1Y0a0
+         0WrHAyt+DWmNJipDkedSqvsJmcysxDjx3YaA5CebqZyQU87Dp22hcvZe6wSiIONmnR1E
+         DhTUGiw7GIc4DvcH+U41e6ayErl6oLqBqBup1Gm1S1aVR30b6PmU2EVadvvfjt6Y+D3K
+         mQx9sfe/+O+9FnJ6z1g2PdvnAtiabHTpO6tuqZNCDLad1hqmQKJZiM5P6iRGXs8FKh7P
+         K/ME9Em3BH6iI/L9lFxKrF5Y7ZOX1lfCR+k4w8l/as+Ge4PiWSiA+ecJgPRN8K51qIFA
+         Op0A==
+X-Forwarded-Encrypted: i=1; AJvYcCX+W+T6y+v2GcHaVe2um5pdk9T2fSSq99o0fJNUiun9VQGOjlN5odm04WBRPQD+S6eDhTbJD5xKrISmDKzKAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjSFOGfcBgq2djuyaeil1PNcc+St7nBDeuMk2ey94exmoPA7j6
+	U/hnmZeqhW6PqqFhhlNvsfWtF6EVkZjea0ARUe5wugisDL/nBsn+W3SiISJ8KUJxw2DSU6yhKoQ
+	alDuJRAzP8d5gfrJWAFIRxUxN6UP60bV7UKIN
+X-Google-Smtp-Source: AGHT+IHf/f0WMGY5XNed4m51/xvXz/jJNZeXwlI9IFRgtvyFISoVvCcIb42ZBfoVHnQGnw0bffjs/1UKGO7A1p8T41g=
+X-Received: by 2002:a05:6000:1569:b0:37d:5103:8894 with SMTP id
+ ffacd0b85a97d-381c7aa4a56mr46347f8f.42.1730383426371; Thu, 31 Oct 2024
+ 07:03:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
- <Pn1b5OU4cqz38Aiv4RL7MuzPDwDGvxLVRrLuCF7Q3_HaeLzlh4jaM0krBqB39DCFmRLWK59Do8DPaVxLNaaTNQ==@protonmail.internalid>
- <20241030-borrow-mut-v1-4-8f0ceaf78eaf@gmail.com> <871pzwpsm9.fsf@kernel.org>
- <CAJ-ks9m-THyqK1tYL39t979BagBqj3Z-MOSn8wPhDc82awjzug@mail.gmail.com> <CANiq72nX2=yigRKhP3jN0kQ8vD0kMvUOp3rFpRQZJGAX6RrRhg@mail.gmail.com>
-In-Reply-To: <CANiq72nX2=yigRKhP3jN0kQ8vD0kMvUOp3rFpRQZJGAX6RrRhg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 31 Oct 2024 09:30:16 -0400
-Message-ID: <CAJ-ks9mf2H8xZ+uZyeQqiGEDY35tyDBP-UpaqXhe_padv=Dqmg@mail.gmail.com>
-Subject: Re: [PATCH 4/5] rust: reorder `ForeignOwnable` items
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-11-dakr@kernel.org>
+In-Reply-To: <20241022213221.2383-11-dakr@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 31 Oct 2024 15:03:33 +0100
+Message-ID: <CAH5fLgj1rd3b4aaMj8b6Rs77_t+LZApxK-dmP2gk98L-NjFyWw@mail.gmail.com>
+Subject: Re: [PATCH v3 10/16] rust: add devres abstraction
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 31, 2024 at 8:40=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> On Thu, Oct 31, 2024 at 1:23=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > This change was part of the original patch. Do you prefer the code
-> > movement in the same commit?
+> Add a Rust abstraction for the kernel's devres (device resource
+> management) implementation.
 >
-> If we do it, please keep it separate, that is a good idea.
+> The Devres type acts as a container to manage the lifetime and
+> accessibility of device bound resources. Therefore it registers a
+> devres callback and revokes access to the resource on invocation.
 >
-> However, I think Andreas means to avoid the movement at all,
-> regardless of which commit is used to do it.
+> Users of the Devres abstraction can simply free the corresponding
+> resources in their Drop implementation, which is invoked when either the
+> Devres instance goes out of scope or the devres callback leads to the
+> resource being revoked, which implies a call to drop_in_place().
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Understood. I'll update the commit message to explain that this also
-avoids inconsistency with the implementation in kbox.rs, which is
-already in this order.
+How is this intended to be used? Every single field I add of this type
+is going to result in an additional synchronize_rcu() call in my
+destructor. Those calls are pretty expensive.
 
-Andreas, please let me know if this is acceptable.
-
-Thanks.
-Tamir
+Alice
