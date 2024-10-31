@@ -1,67 +1,67 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C19B15666C
-	for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 08:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DEE15667D
+	for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 08:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730363858; cv=none; b=IAM94lxqA+413F1OusK3Ee7briL7rL+rKrPe2KrxGi8lf7WWRC5zMDrGz6HDS4O+Sox2CDESBhqn4DnEcdQyVt4spKKEFtzetcZ4sAz+UwtBWoPRAoaiGxfxWt8bAEt96frcQeGx6rcX/qlIoLDMNSaMw6DgC6c45MgVGqc1kL4=
+	t=1730364424; cv=none; b=Dhb+WSTLeGydqHAgRc64PU36SjyHCQrAoveREl40nq6gR1G6c9KYOqDUTZbAuN1Q7S/V5UIaf7sb8fGk9AHiBrRIg5LPVFnMNl4KnXnv2L4kNS9g+rU4Ft6I+Etip/k83/Vz6gLPdtAl/vHzgyreyG2W0YLJOVscut7qXbHVLw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730363858; c=relaxed/simple;
-	bh=TfYVHYoD+0Zz8nVSnlljH4qLV4ccoBgjmuVjs+vfcck=;
+	s=arc-20240116; t=1730364424; c=relaxed/simple;
+	bh=0D4tVlRd687v0ISh56LHhdh4/Xc9l/Gat0sjfygQ0DY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JLy7RtbQMljQAIfY50Xdkiz1g4YjvHn/IX52b57WDgJ80alPu77EjFX3rH4D8h97MeYa0/oa2+WWSvBhZ/uQqhcD10pW6767AquON2jVgK2gWuySvQ/5wjrXExQW7Hxr4nXu7kMxDGxSE/XLUwYZnrynFAAs7ZXkkbic1FjMIz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zVF194pP; arc=none smtp.client-ip=209.85.221.48
+	 To:Cc:Content-Type; b=mMB0fyJdSIrUfNQ69jc5S5/YvA9VYffWQWIOLw+0kg0tnICVi++n8NjcMSCgxqiQZCrjHMRVqU8ILeFYu9KCX7ol1YlBO1b14vzL3oPvyIdCHx9+uXkxAW5k22XhaSUufxqXgpKt7yHKVWFrKlGCwuHo1UGixQEKuOCINiaLErM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0c1NRGGX; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zVF194pP"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37d41894a32so364856f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 01:37:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0c1NRGGX"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d808ae924so403483f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 01:47:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730363854; x=1730968654; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730364420; x=1730969220; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TfYVHYoD+0Zz8nVSnlljH4qLV4ccoBgjmuVjs+vfcck=;
-        b=zVF194pPPAfUvEWURJcmvYwmptQIyBJRO+i1ILrriGAAr78PkZIaKGX+ToWdZLGqeJ
-         PMYK/FWJsJHuJpsMMeIDmEWh+sk3QyD6FJ13AM/OC+iIEkMzjDPf0QafvJHnUIu4JhHh
-         HpJsqtDHKhNpfvK6a0cZTSImLNzKufeaSUrbNsuqF2ZequwPXi/kFXLU32p68IAKV2iJ
-         ptG5dgG9K2SlNXt5JTybtVzsOC81ZFHWUN9g0308gnJGqpgR9uqm/xOldsPzZpqdhpqZ
-         9v5iVaQGURfdXrzo+lu4GgLwMbuuX1I2f3qp6hk/P8ltI9qIlktbnGt8tG8cwxxwZm8G
-         pYcQ==
+        bh=0D4tVlRd687v0ISh56LHhdh4/Xc9l/Gat0sjfygQ0DY=;
+        b=0c1NRGGXR585JoDEONKwdw78UWZX7CFGCy1WmkcAFY1RYxnQVsWcmkyJnjOJtTO60n
+         4AWFdteYfeqG8GXVun4D6YvrnOrLsKANfm7cQ0wfO3dt2+OmTPAQDRQO4l4MUakQRlBO
+         OY9kB7tlZpVd4aQw53ybTVYpCQPKl4oU7f2lQt9tUHRuOumQCHik/OaOU8Gsx2oKnBXE
+         zMqCK6QGPCJJ70eLj5TEwCDvlp71X7Pe9GQDTUX+XoyTBCCIl2T+OY41bvj2ABIgqLWw
+         DjJKB9Ro6H+jnIeugSitJ+00vx6PgnAlM8bgl+1DHVcl5IVRQZ5+X+6skkaGQrjLZQXm
+         70xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730363854; x=1730968654;
+        d=1e100.net; s=20230601; t=1730364420; x=1730969220;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TfYVHYoD+0Zz8nVSnlljH4qLV4ccoBgjmuVjs+vfcck=;
-        b=szlV9fW64oyRuRoSCTMKqDmp686q3YBq9Vch8xaSyh2vPxBfnZxETXxduQNo48zMI7
-         4QU8EPCLZ5dvZ6uchyHZ8l83TCdTtFfUkn3xmf1Z11zBfZmHHFMIL78Yduxw9Uk5ybk0
-         ozTHSdd8t4XDxsqn7M4stBQvfo9Kwe+mO4FZrNHFjwFFjhG66bNEHMvwoTQoRBNcbYxM
-         3kMgBeBUZ/6hai5594Us3g0NtcbD32x23ZT6hcp930XfEq76o05/P7gfiiJVMh5UqrbW
-         RgRyD5+hdF517d/N04FQft8Z0fZIVOYJZf7KhVmcbIlyb/hk8OfsTu9SVjvqyqvnXpY3
-         cSPg==
-X-Forwarded-Encrypted: i=1; AJvYcCWoVVdLSHHM7tKd07s/WTAz1Vo00qISxC6z5PasK/vu/n7KuG/HkcV5sLBtP/fj4mbYVr0DFiWRrWboeP8n2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqdTQhbVdKuIXynN9kkAit4t26iU5A4+budyZw1szahRQXuZD9
-	5EQDcUNLBc/J5JBrgR0l6e8VQkuAxKVoDIuMsM0gMrN2cve1gnucS+zR+bgZiwWtDIzlQjSTeUY
-	EoDa7b1gzfOZEvPWG1rOrcSE3H+A3kW7d0MQ6
-X-Google-Smtp-Source: AGHT+IFkoCACno8J9Cj+eUE14YCUisaOXgkfyTdtha6bjRw0zep0Vdt6hu08BE87FX/3HSzt/APQfm8linyfYj32PnM=
-X-Received: by 2002:a5d:64a1:0:b0:37d:2e74:2eea with SMTP id
- ffacd0b85a97d-381c1306a0dmr1180656f8f.5.1730363854418; Thu, 31 Oct 2024
- 01:37:34 -0700 (PDT)
+        bh=0D4tVlRd687v0ISh56LHhdh4/Xc9l/Gat0sjfygQ0DY=;
+        b=O084R2nOExSoeW1TCa21mi6tSOM7N+ZGEvxs1aqfFBhOP3PZyLKGysUxTVFW+I95Tf
+         ma+Fpstx0mcDjZp4aaraparaIm/qOqY5CzI6MN0wYly1OpXmntpZ4YnuSWBt8/v9GQ4x
+         n/sZ3fbHTK04mwDVr6toTResyhezS+hPln8KoBmgx4Kx+uJzuxuFIokzx50Ku1gORjbq
+         a8rqs4dXKaBQ+7FOn5phunjypMjak0HyWbCqUkT5K7Sj4bpPVo6jFFL1IGTu+Osd46Qf
+         VlhnxSDI9vdCCyU1bTTun+rQE0XPMZogwB3q8id4sd6R+Lpl/rKPag9tikT6QeH+wXpY
+         jyKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWti9s785s8SY3+OHIcZra7J5IMYCqsObKpDwIJh+RUM63t7vcUu8aPuAGWUvgF9RhBrpfGfanFkHRqXHx/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyefLPbfhio+asUfxCDUnIbrFW5IyXtFzQB+e42KXueOp7kvfLI
+	xUJrQJXCPrmpOGvFiGuq93pJ3XAHGRRS9bfMbs8AhbiL508zIF/5x3avRodcd68EFGLdRLxlKt2
+	mGnesOvNALWwaB85ELnutUQ1sxft3H9rqRiy0
+X-Google-Smtp-Source: AGHT+IEdVuVJE104C7GRWDnjlwViWFa3jZJwm/j9uc/7w/AVQluSXMtXKgS/kWAB6Cvl+10e3bPt272n48PAR3m0zoI=
+X-Received: by 2002:a05:6000:1150:b0:37d:453f:4491 with SMTP id
+ ffacd0b85a97d-380610f81c2mr11857437f8f.8.1730364420471; Thu, 31 Oct 2024
+ 01:47:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com> <20241030-borrow-mut-v1-1-8f0ceaf78eaf@gmail.com>
-In-Reply-To: <20241030-borrow-mut-v1-1-8f0ceaf78eaf@gmail.com>
+References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com> <20241030-borrow-mut-v1-2-8f0ceaf78eaf@gmail.com>
+In-Reply-To: <20241030-borrow-mut-v1-2-8f0ceaf78eaf@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 31 Oct 2024 09:37:21 +0100
-Message-ID: <CAH5fLggmdqF3SjEZn336O8g9Aqjw9MfCqrDoFVRTWiirkjXn1w@mail.gmail.com>
-Subject: Re: [PATCH 1/5] rust: arc: use `NonNull::new_unchecked`
+Date: Thu, 31 Oct 2024 09:46:48 +0100
+Message-ID: <CAH5fLghmVYwNKPGrtHzUQXhEyxiD=ZyF6LNHoWUREWH+dpK=DA@mail.gmail.com>
+Subject: Re: [PATCH 2/5] rust: types: avoid `as` casts, narrow unsafe scope
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -75,10 +75,12 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Oct 30, 2024 at 9:46=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
  wrote:
 >
-> There is no need to check (and panic on violations of) the safety
-> requirements on `ForeignOwnable` functions. Avoiding the check is
-> consistent with the implementation of `ForeignOwnable` for `Box`.
+> Replace `as` casts with `cast{,_const,_mut}` which are a bit safer.
 >
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Reduce the scope of unsafe blocks and add missing safety comments where
+> an unsafe block has been split into several unsafe blocks.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reducing the scope of unsafe is good, but moving calls to "cast"
+outside of the scope is excessive IMO.
+
+Alice
