@@ -1,81 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672C1360;
-	Thu, 31 Oct 2024 00:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E8217991;
+	Thu, 31 Oct 2024 00:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730333655; cv=none; b=mWMGN5WFg3mRBrrnTtvciooM+ckgKrGhoiO5Fl2jaIGjR/lLCILDXAiXbqkCTSOpLuH7yslX/E75BC8ADbNkAuis+UM1VTL80asSIZM+RsKROBUdWRZwiyl6i+hGWvgpblaStcdh4jbCkwJLi6Jc+nwjzNId85BfO2MH/sUnsRE=
+	t=1730335312; cv=none; b=B/LIVO1wuE8tTXccGMwIc1AaOrAbfJARwrq1P4bjEy/ouyahd4EeJjUnVPSGXMhpBhs8mWE8G+YVqW8AYxVXwCuKIxrFprBTgvSQTVDRRuuznn3jCRNNNsbJQB1LgKkjiXAm2n7+JY6VQhM5SsjrSoPjvKKfmyfEWdC8W8aJabo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730333655; c=relaxed/simple;
-	bh=Cb+W+pVunO2LoGhA6b9apl9QwWngOitHlidshvRfXoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OMfS+69VMsfjThzStMbrwdRqfZQSw6pZK1GhA+6LEs2BByI0Bso2F5a2E3Xct3JAm+RzSWXPUyAFAZ7iK7lKhPNnt2Jc8oWXDDOQzf3PUuQ3yj+ka02j2SvLnH/2rrj7ex40OlhruCGAq22YLN3ZoubIH/WbQb+NioHMVQ0U+lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4CFC4CECE;
-	Thu, 31 Oct 2024 00:14:10 +0000 (UTC)
-Date: Wed, 30 Oct 2024 20:14:08 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Alice Ryhl <aliceryhl@google.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf
- <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel
- <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
- linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak
- <ubizjak@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
- <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton
- <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-arm-kernel@lists.infradead.org, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, Andrew Jones
- <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Conor
- Dooley <conor.dooley@microchip.com>, Samuel Holland
- <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao
- <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton
- <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- loongarch@lists.linux.dev, Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH v12 4/5] jump_label: adjust inline asm to be consistent
-Message-ID: <20241030201408.732cebd5@rorschach.local.home>
-In-Reply-To: <ZyLLCmq9-9BX7GBd@shell.armlinux.org.uk>
-References: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
-	<20241030-tracepoint-v12-4-eec7f0f8ad22@google.com>
-	<20241030191316.2a27ff1b@rorschach.local.home>
-	<ZyLLCmq9-9BX7GBd@shell.armlinux.org.uk>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1730335312; c=relaxed/simple;
+	bh=qA1rYBoTcRGu4j/brwnbXznrXHIEbVFk3fpviSwXAOE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=k6r9452eBEYwzmW763gLWv2xkp2OIumie2YtkrI6Jp4wBLr8oYCWLR3rEBqp+g4jdydn/8vmDPC72bQlT8E1jpnvUtA+bzBY4TiaY6lYUY1SHkl88Pd7SzNNcM47k/+U7t4yIbzlmT803aV477U++6gdPDoL0UJUgCRlsx8c47U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Me2qE0hM; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Me2qE0hM"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e2d1b7bd57so59477a91.1;
+        Wed, 30 Oct 2024 17:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730335310; x=1730940110; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qA1rYBoTcRGu4j/brwnbXznrXHIEbVFk3fpviSwXAOE=;
+        b=Me2qE0hMyl7+XHSRyNetog+H1FcStNGG1QeWD6kJDn9yaXsq7gy7zySxYA2wrzpaa+
+         Ki3HV73kP7AHtIFZUT/k+d/bxiVNksqTvdTbpuxCe+BN6cZShZyUkiPtTjiDz0eje9ZB
+         zXks1Sz6HB9PfO/3u14r6g3TMMvMeAePRZ6NmV5jrCWd0idYk0K5dTZADpOQBJ+TRkIe
+         hs5/IG9NoREkwh9scF4Po9QQeAS0bv9LV3SRcgqJYYxjN/k48oSK+R7ByyGdQ55ji+JQ
+         D/lsOgjrDpOqHxqpXUmpS+svIVwSTeN69dpigshaLgk8mCVszWixfCqcuwZURd1xLehn
+         8v2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730335310; x=1730940110;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qA1rYBoTcRGu4j/brwnbXznrXHIEbVFk3fpviSwXAOE=;
+        b=w4b+zDwefBJqFxQPo3aRREmRnk+B9JKUm0/K4+1BB8QjFA7Xp809406a/F5EkT4hw1
+         Mn9fJnSxDzLoXYzNvz9YBVU/K7aB1NpgEmPt5W/P51Qjb2aY6jHkqw5/OGeut1QBGCb9
+         AndS9sfFd+T+5wWGdjqu5UBInq4umjjAnprFXE9NEMoj6wez6rg1G/hQoElly6cEzMwP
+         8sYS8UFTCdkUIBqL3QYJbWwfr5f6qUnihfGY3q8EEPpBUsksEsbYd2AI5plTF+VOMcrO
+         bTuovbCP0gpxEbavc3A26chhclj5zNCVPhW2/2TsZZhVxtICjwUpmHM2UrebAqI6iDt0
+         GFKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVzyRMf7euxJfHQZPCua/cG+4PKEXv/hYResZqq8vsHlHXQUOz6rOt5gBuQ/PDt0qoRZgIkR6feFkkG4AYpsd8=@vger.kernel.org, AJvYcCX7StFzbBCxuPZ8iceHMYx0VXnfXx09wtzmdMuKvBIRYajB4F014My1Y21xXyrKrIKL6BabeWIUh8wmP7U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDWD+73QG/cVevFE5hEfdt4N16/56/bbgqwcYCzrRPQj4JwfqZ
+	up5qkDfLxTxGu6FOhAlp/Ox9Z9Ati9blFlJyFrB3Q8s9pclSF8JdbmUX4dT4aPe+G4p48v2lYOC
+	0GI7VOnT/Vq2TjvuzRgTwGuIOGl8=
+X-Google-Smtp-Source: AGHT+IHhV0Xkp1Tr39p6coxF85Ir1uMvPPvrs9jINbR+k5GV/0iQHouMzFAY9zvvFItUs3YR8ROUukzamuV6Gzynz0E=
+X-Received: by 2002:a17:90b:3594:b0:2e2:9026:8bee with SMTP id
+ 98e67ed59e1d1-2e8f12e2bcamr8883272a91.9.1730335310165; Wed, 30 Oct 2024
+ 17:41:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
+In-Reply-To: <20241030-cfi-icall-1913-v1-1-ab8a26e13733@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 31 Oct 2024 01:41:37 +0100
+Message-ID: <CANiq72nUBuqbKm6Z0mWRcZ_J3=LOEPEdTiPEq3vYTWtrfLpwvg@mail.gmail.com>
+Subject: Re: [PATCH] cfi: tweak llvm version for HAVE_CFI_ICALL_NORMALIZE_INTEGERS
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	kernel test robot <oliver.sang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 31 Oct 2024 00:10:50 +0000
-"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+On Wed, Oct 30, 2024 at 11:31=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> The llvm fix [1] did not make it for 19.0.0, but ended up getting
+> backported to llvm 19.1.3 [2]. Thus, fix the version requirement to
+> correctly specify which versions have the bug.
+>
+> Link: https://github.com/llvm/llvm-project/pull/104826 [1]
+> Link: https://github.com/llvm/llvm-project/pull/113938 [2]
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202410281414.c351044e-oliver.sang@=
+intel.com
+> Fixes: 8b8ca9c25fe6 ("cfi: fix conditions for HAVE_CFI_ICALL_NORMALIZE_IN=
+TEGERS")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-> > Still missing an ack from the ARM maintainer (32 bit, just added) and loongarch.
-> > 
-> > I'll wait till Monday, if I don't hear anything against these patches
-> > I'll pull them in.  
-> 
-> As of what has recently happened, I am not participating in technical
-> activities until such time that I'm told what is now acceptable. So
-> far, that has not been forthcoming, and thus I believe it is unwise to
-> engage in technical discussion.
+Applied to `rust-fixes` -- thanks everyone!
 
-Oh, OK. Thanks for letting me know.
-
--- Steve
+Cheers,
+Miguel
