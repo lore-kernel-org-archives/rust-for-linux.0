@@ -1,108 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28B613B592;
-	Thu, 31 Oct 2024 07:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B94D1547F5
+	for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 08:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730360947; cv=none; b=L//KmXl0jNKIOPk2PP3Jb9jMZKiKein542NzGgsauHHm2QPIMZVJr2vQJ6PZCfUvCy37MseqxgqKESHljXqgUKS3gyY6cwAJclfffqNPP/d4SSPPtZYz4pIxBBRdJyztpNFvUl14W8yR9UXFrgRKWJgnyzOoEz3Wdks+Pl/FXLM=
+	t=1730363054; cv=none; b=twjUd4oHn/SDfI1UMJngezIVPD6uSFHzjuQzAmaNPG5/ESfpy8Tuhwv0AjVQ0PnvoUzH2KeKELxoP3K+/hMyBOupRaP71Vk59pkzSvF80LvW+OYIo2j4Ozdz+ejvirCms1jM7kqly4VK8lOitrjBzfoqfKr2VhpD/LodHRaX7sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730360947; c=relaxed/simple;
-	bh=EXHWSS4logdtrwKjIzfO9t3TjGTyP1RV6tB6ogIEHgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cN2x76rQnGPdy6v9gBdGzW6ncLPyff3wjhSLReKPf9CSJm3Rl4k4Cp8D5Zr2P0H13jqAPMVR/pE4LZ9U9nSAAMLVMzo6052Y6Qg7+WtnGpbRurmeE+W+zOGufj5FzDLh6IlatVAPR4QS3jMdI1mONokcGiH0gmzF/sU6R7uV+4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9hUM9xG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730363054; c=relaxed/simple;
+	bh=7P9pmT/GhUsgv6g9JZZA+uaKXZv/EYRGbxtNoofZhgU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gF4iudeinEUFEBGaKq/Iw/1k/VpabZIbOnouCwcrZ1sb/FfW02z6Rnk98XlQLsywWjz/rFr0kliNpZGWo3VIVL9ne/oBckRieyN4edIJAqwULDNXYB7xhhSzQGbYj06wS8wtLQX5E+Z+HvJw4FLMIrkogIYb5f5z7TWSRCFfnUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VTWYXXDB; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9hUM9xG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A54C4CEC3;
-	Thu, 31 Oct 2024 07:49:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730360946;
-	bh=EXHWSS4logdtrwKjIzfO9t3TjGTyP1RV6tB6ogIEHgA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P9hUM9xGJ0zGQcWn7D6lF6DXp3nsvhvg5D71xd8wf+NeK/96heOa7sPwBVgt1VqcO
-	 1mWyYj2tTjsA9untrING3/jjazm1XncSIcPYushVUiwYGqcn1SYKmCi2/xBDo+/OJ1
-	 DFRycFpSlEaaRQDfwJOKuMM4qsVDv3q8EBe2/nU+eUQwOrEzvEkijoUzsowb4QnaU5
-	 OhIYJlvLKclpwOiBe3fORCxQjYxNVHufKvWwgWuZcde+0qIEEwiYUcYR84wK1WtAeN
-	 Kp9jDhLZOmzYUKwHLYwy870NNJpWODbZrXd42m1jK6fzKc+34ahYwSoMU64m3Rbq4p
-	 /vI3Gmz8ejWmQ==
-Date: Thu, 31 Oct 2024 00:49:04 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 1/3] modules: Support extended MODVERSIONS info
-Message-ID: <ZyM2cHGaIT9vFOGq@bombadil.infradead.org>
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-1-93acdef62ce8@google.com>
- <874j4tcbhf.fsf@mpe.ellerman.id.au>
- <ZyMJaFcF4dTTzNgK@bombadil.infradead.org>
- <CAGSQo02H_RwtLpdt4E_LWKjzGvryY_7s20e4QhhA5B7N0LPxVA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VTWYXXDB"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37d4ac91d97so517155f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 01:24:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730363051; x=1730967851; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CUTHIFGLjfIlqltxSXJmbiVoqSs/WdXy43tuqHLqFMk=;
+        b=VTWYXXDBIsjVHOhrN3t7Yq8AcHq822IF9PDo387LJWsOMAcJlG0iLpd08/XUlx8uQs
+         yYqHuS1nZvR3FCrn6/IaxoKDwwuqhYJ86tZHR9Cl6Pyd48Xxw/uq0HbWqpfXXrvQUfRl
+         p0f7XYFfm1oorccY3hctDgS5QeEwhP4GDmcceAqydxTDmYeWXaJ5aLtOIBYl6YqYTwiS
+         Tn7SRiwJ0mjNwiquhJ2A9QjT5Vqd7rCf+1X2LZqGlBZcez7HSDWcMj8lyN7mWHRl062J
+         hb3BadYq9aNy6psvmbn/HHQo01l0eSQGwJjgqjgFpBmZHbVspQSeUFmdLDRMFCnggFUD
+         4iTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730363051; x=1730967851;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CUTHIFGLjfIlqltxSXJmbiVoqSs/WdXy43tuqHLqFMk=;
+        b=TUFUkYgk2m0uMgQHgcdJAtJPSjZsb7BerAb808+sAQhHdr3qX7G83HOP2sChW5f7JG
+         sCeRUZGB1sTAt5bkz/YfQQ5vG3UnNrFWChI0J0oEdA5gAGHdSPtPHrsCrgw+iAH7QyS9
+         gIWTZ+Wms34KIJ8RViDycXpPevrne6fj+UMnVoJNQA32AnsEKQ5LioWLCV9o4fzWJqUe
+         Qxah1bWeWKeKZSQ0B0Bs7bdCZoDR2j/VLlI1CRLZS49lDbkSxlJzoppYTJBH1hsxSi0o
+         X+MlIZrDGGjwfBT17Ye6kKpd9E59Xn7YqVmpo4lEyXEIhDxDyA0aNcjgjFCqQiHupMvw
+         /Szw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVVihWUJ2GEwl9Bkhu1AbrlPlfuV9hAYiaOd14iD8UCNDHqzj6KLwHW6B04y/8da4Wxszm1fy0YwWymlxMew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDnnLb4e8JA0emvdgBG/UtR+un6v7zO5S9awzQ9DNfXptrEGaU
+	0XKuAm+CHJM1udc7WlZEFuXXBYX1pIirZhJVvKbWmX8kQVIIh489FMD5KeK7+gh7c/SF6SUM9yP
+	rxEd276RWy1TWoPOVlf57YXgVtqt5VGdBPKWc
+X-Google-Smtp-Source: AGHT+IFtjOxxUb/w2G28nf6KGqHhzJsxP3H0ByZaNk2VjVY6wfjsY7uicwSMHS0mF9U2Nt2qmOhQJkSqHn49PHXFLj0=
+X-Received: by 2002:adf:ea91:0:b0:37c:c51b:8d9c with SMTP id
+ ffacd0b85a97d-38061228564mr16476136f8f.38.1730363050774; Thu, 31 Oct 2024
+ 01:24:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo02H_RwtLpdt4E_LWKjzGvryY_7s20e4QhhA5B7N0LPxVA@mail.gmail.com>
+References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-16-dakr@kernel.org>
+ <CAH5fLghVDqWiWfi2WKsNi3n=2pR_Hy3ZLwY8q2xfjAvpHuDx=w@mail.gmail.com> <ZyJ19GDyVrGPbSEM@pollux>
+In-Reply-To: <ZyJ19GDyVrGPbSEM@pollux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 31 Oct 2024 09:23:58 +0100
+Message-ID: <CAH5fLgjADyNAmdNJG+cKRcpZPLx8iKbxAvm4ZQo=c+cVNjuw=w@mail.gmail.com>
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 30, 2024 at 10:06:12PM -0700, Matthew Maurer wrote:
-> On Wed, Oct 30, 2024 at 9:37 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+On Wed, Oct 30, 2024 at 7:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Wed, Oct 30, 2024 at 04:50:43PM +0100, Alice Ryhl wrote:
+> > On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
+org> wrote:
+> > > +/// Drivers must implement this trait in order to get a platform dri=
+ver registered. Please refer to
+> > > +/// the `Adapter` documentation for an example.
+> > > +pub trait Driver {
+> > > +    /// The type holding information about each device id supported =
+by the driver.
+> > > +    ///
+> > > +    /// TODO: Use associated_type_defaults once stabilized:
+> > > +    ///
+> > > +    /// type IdInfo: 'static =3D ();
+> > > +    type IdInfo: 'static;
+> > > +
+> > > +    /// The table of device ids supported by the driver.
+> > > +    const ID_TABLE: IdTable<Self::IdInfo>;
+> > > +
+> > > +    /// Platform driver probe.
+> > > +    ///
+> > > +    /// Called when a new platform device is added or discovered.
+> > > +    /// Implementers should attempt to initialize the device here.
+> > > +    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -> Re=
+sult<Pin<KBox<Self>>>;
 > >
-> > On Thu, Oct 31, 2024 at 12:22:36PM +1100, Michael Ellerman wrote:
-> > > Matthew Maurer <mmaurer@google.com> writes:
-> > > > Adds a new format for MODVERSIONS which stores each field in a separate
-> > > > ELF section. This initially adds support for variable length names, but
-> > > > could later be used to add additional fields to MODVERSIONS in a
-> > > > backwards compatible way if needed. Any new fields will be ignored by
-> > > > old user tooling, unlike the current format where user tooling cannot
-> > > > tolerate adjustments to the format (for example making the name field
-> > > > longer).
-> > > >
-> > > > Since PPC munges its version records to strip leading dots, we reproduce
-> > > > the munging for the new format. Other architectures do not appear to
-> > > > have architecture-specific usage of this information.
-> > > >
-> > > > Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-> > > > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > > > ---
-> > > >  arch/powerpc/kernel/module_64.c | 24 ++++++++++-
-> > >
-> > > Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> >
-> > Michael, Matthew, why make everyone deal with this instead of just
-> > making this an arch thing and ppc would be the only one doing it?
-> >
-> >   Luis
-> >
-> 
-> I'm not sure I understand - the PPC changes are in an arch-specific
-> directory, and triggered through the arch-implemented callback
-> mod_frob_arch_sections. What would you like done to make it more of an
-> arch-thing?
+> > This forces the user to put their driver data in a KBox, but they
+> > might want to use an Arc instead. You don't actually *need* a KBox -
+> > any ForeignOwnable seems to fit your purposes.
+>
+> This is intentional, I do need a `KBox` here.
+>
+> The reason is that I want to enforce that the returned `Pin<KBox<Self>>` =
+has
+> exactly the lifetime of the binding of the device and driver, i.e. from p=
+robe()
+> until remove(). This is the lifetime the structure should actually repres=
+ent.
+>
+> This way we can attach things like `Registration` objects to this structu=
+re, or
+> anything else that should only exist from probe() until remove().
+>
+> If a driver needs some private driver data that needs to be reference cou=
+nted,
+> it is usually attached to the class representation of the driver.
+>
+> For instance, in Nova the reference counted stuff is attached to the DRM =
+device
+> and then I just have the DRM device (which itself is reference counted) e=
+mbedded
+> in the `Driver` structure.
+>
+> In any case, drivers can always embed a separate `Arc` in their `Driver`
+> structure if they really have a need for that.
 
-Sorry, yes, I see that now, that's what I get for late night patch
-review. Nevermidn, this all looks good to me now.
+Is this needed for soundness of those registrations?
 
-  Luis
+Also, I've often seen drivers use devm_kzalloc or similar to allocate
+exactly this object. KBox doesn't allow for that.
+
+
+Alice
