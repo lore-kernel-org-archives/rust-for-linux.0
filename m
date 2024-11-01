@@ -1,107 +1,104 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398E4136347;
-	Fri,  1 Nov 2024 14:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDB01C7610
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 16:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730471416; cv=none; b=Xu+SgMz6JaGunDGMu2Fq9AODMmPrFttoWivmL8jxk86Fr6BQm0h7D1kAE5pKATSlhkgzjJcETevsgZ1255zmbF+BfhG4rmWVjIvqiRxK+Y7KUHtOVL7RTlKOgMxB5y/NOCD5Jfo3axWpA5beUNJn8qoKRQdXwEa6QqKkQyImVhs=
+	t=1730480216; cv=none; b=b9amLGPYasMxeqikJbzJ6h1MmNMGHKcZQ70EkJh2ryBwzxpRPwKG5rqpsVeSYntzrI+50HTEVFeogs861JmwX2PMjzMjIgySupTerXxBqVEjNS811j3NU+yylGpyCtbVn0XWQxRPMmoQIA8/KdOYfLPh0WwI9CTA/K13zRDbwbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730471416; c=relaxed/simple;
-	bh=TKAtd4Xz8cLFFFmnHPins+tJ+Mfne7qr3bvUedak18U=;
+	s=arc-20240116; t=1730480216; c=relaxed/simple;
+	bh=i8O+uZUxJvitzxO+GEB6MrzAKW3i24r0zpb4JuO31xA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j6wmE/oqM9AwxvXH8nR8oJgRZ1XVDz7CLXIhNJ6n7Cmgis6bd98yN3rBn5s5mpwexO0KkVshvPcpl53RbechQlAXtYmTDYEkGufCG66tlDIaan7AUXLx5lb5AoHXm5/eOc4ua3iJjQ+paPaXU56MSF6UO7Cm/+4KdIloIJqWxvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=clV2wVvV; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=LqP/lib98PmN5x8fOor3uNBB2FzoWcsnw96Kn8KZW5txInJKw9Cy8Rf7zvt49EY2KUB5vqTi8+7CDY7ep8QD5Q1GTTAFcqeqdlU6XvLxswbUTdUw6pqpMc5u3P0kTt9axr1EcwtGw+0UboqhCjaFzk0/ZL9qRa6oZnZU2/gKXvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=EpviSNub; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="clV2wVvV"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7ea64af4bbbso270847a12.1;
-        Fri, 01 Nov 2024 07:30:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="EpviSNub"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6e9ba45d67fso21798927b3.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 09:56:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730471414; x=1731076214; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1730480213; x=1731085013; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TKAtd4Xz8cLFFFmnHPins+tJ+Mfne7qr3bvUedak18U=;
-        b=clV2wVvVpvtg73poXDClHokmVTSuMI+Fz7X8wserVsovSY/SBHAduC3FMs7xF2EzMo
-         J7MoqPO90lgbhyOCFiRhe+CUurxGxwrZBB/AjpbCvM7EQYTm8jVjIbLwUE+mRigT04Ui
-         FNfMp0t63MjMY3/0xPiC0lf0yBuIZ+BEPTrriV7x9MsDJ4DbcPXxhzptDSdX8xMKPgsd
-         JcP4SFXzzFW1IhWBaGafFUEGxCR1zB41f78L8esOaOdxX+Rwd8X0UJtJC2S7tmTHWkoF
-         eHgzm1FYmYPIl6uaDUqe0GWZSq3D8a3GnkFbdXzJnRE8zgU1QduTCURKo1K9atvS0H2/
-         ShNA==
+        bh=rxE7WaVgo5r0HZcP1X6U835BE06QJIdzvrF7o7xI5VI=;
+        b=EpviSNubGNAacQ1ss6AYuqTu84mCCgR2VEJE7cJsJ5UcYmZAQfAjuBKoZJEN3r4I9r
+         sPxsc2HO6UnhwNtgK4On3rKPVtUH0lRN3lkYynYq9ZuuNpG2Ei7ubTVtdt9j1RpfGtgr
+         sBbxHftqiztPU7vVFex+Rg8t7vuGNZ8aJJKuvLCDsBtMZddInHklArxkag9bqoON+UVP
+         VsdWi2S+6n4ZQh+DeMUW7bxfti8vNuGnrb2wmmm+vOeeIi6ErzYeYFSp8TY/SDtArhiv
+         28KN+L0/886ZEplR5baj+YOa0kvrrjhIQRXEJ2m1dvtxRpoXTPq3E1plP4lvTSitSsX9
+         YoXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730471414; x=1731076214;
+        d=1e100.net; s=20230601; t=1730480213; x=1731085013;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TKAtd4Xz8cLFFFmnHPins+tJ+Mfne7qr3bvUedak18U=;
-        b=reMdGsOJNS3fZey1MPu4eBzWV9N5DBt65fzufp2TKDSUPj5grOXt630EohOxbz4PZ8
-         6psCDrP4aWzGIvREos6hLEVAouteOAjf/H1LdCCA7EprgpqhWgqOwc0LwY5ecm0WDZp4
-         aX7mgGuqPUXIL4k76SEySmsdzDUX7j5iNVAfP1Jju8XKmY50mWn6Dp+vEJcI4t25zu36
-         juLNujfc4pMZpj6zx8sf2t1alr3tOcLlUBP6OnQaQQ00Q8Vp3fbdHu79miLLnl4Xvc36
-         9Pr8k53thK9c3hv0iWIiu3HxsB8niiUuKaxbeJLlVT23A8ozeuyWueVTD0kecBXSQDNV
-         YdgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcddTIFhAUva6E5m4fxOb8nt4UIPOxfdXgU8wI57ZcNJRdfqeZhg6tbyN49RbIM1jZHBDBJme4OlNk@vger.kernel.org, AJvYcCUe3POq1CKgdLDMz2qn3xbpuLOLoSsK/fl8duCYWjEs7l/wSnwKZhUbvjf4F4JsgTHviP7x@vger.kernel.org, AJvYcCW7KYjj/XP8jOjd80nepQYw5wHuokjARoOMr5Vh2TzM71baJx52ZVYCxXp12zmT9sTzTUlSihPKlMTEF5VupA==@vger.kernel.org, AJvYcCWrA/gIKCcGyaQx5vpm3q4Og4KhwKLVz+LCd+2n1tRcNXKzL/YvgTqdfmqaaPII85tiyBSx1iU0eM71ilrO@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMAIo/qasMDLO6pQZELkxNxXHnLXTQGTEwCEIl7IwDDjqIkZCZ
-	42F/dGLW/ZJH/dFvpluA70bgmKWcstTjINT737cHaAoBoWFWqqqdO6HjCDCd7Yay+70EslMIpTK
-	7TC5LglDHoBK6OFmm/sZ+os4p2RU=
-X-Google-Smtp-Source: AGHT+IGOQhefEp7FLZkdniAIiiIsTLBIszMwpP4/Ctt+MCmEaSNoKLq4eMcSMtSjAgS5QbXUeuU5N7LkDLjPkosOQVw=
-X-Received: by 2002:a17:902:d50c:b0:20c:5da8:47b8 with SMTP id
- d9443c01a7336-210c689759amr141323595ad.5.1730471414470; Fri, 01 Nov 2024
- 07:30:14 -0700 (PDT)
+        bh=rxE7WaVgo5r0HZcP1X6U835BE06QJIdzvrF7o7xI5VI=;
+        b=XBxFdgAsU4GiY6Iz2pFIPl/zg2Z9JtghueX5zY0blzJac9E61jDkJtWYnNYaWJlmDY
+         xzj2zqMVyzx2grx0TWZ3PG7s5MPI3zNzcw9YIUJmfDS2Cf8cgLaE96A+QAQDjeHB1fEL
+         9Ka8Fa9mEekKDYKmoWcYsmgu1aFkrmKrOlFQ5ZCH9CaUsUjStdjqJFjd6luvrC9TeZWz
+         V4ZX34iWhkhrNu/2D1VDCF8VbopD8nJW6YyqOP0X83+IhL8QGr0I45DpNOt7iwyENhtU
+         gQxNTybtjAmjxNZY+RiSWCnprAdw31O/+SQyCOXtRZShX0m0O6FnhnAUgMnHSgeRlbwe
+         J2jg==
+X-Forwarded-Encrypted: i=1; AJvYcCVx2nEnbSVPJqYyeX1gnl0vG+9tilmozVoMB6/rzznGmn/Y4kQ6cCNl2iz9DU49kEPXS8LSD3WhHiXF2vFCJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzanpoaqtxMQkmsoNCePbCRS3Nt6e7pibMqyREP5tsQR6IR0ssJ
+	VOH2c5uEUiY5W8/hQTJfxfn0iOvvklFEHhXK/8TwOSGvPO+ZbiU9GN4q7KBUj3/rS9hyO2yF6Gg
+	VS+FTejhoyBASUDJrmUOy5wNTEKYtqocJ3hP5
+X-Google-Smtp-Source: AGHT+IFrUTWzgyjlHFLv35YIhawUguqiFZlN8JkVX36bMb7nh64mC/bvCf2Gq6Oq2P3WorBR5lRH5khSJFZMf6kJNg8=
+X-Received: by 2002:a05:690c:1e:b0:6e7:e76e:5852 with SMTP id
+ 00721157ae682-6ea3b96aaa6mr155834947b3.32.1730480213140; Fri, 01 Nov 2024
+ 09:56:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241101060237.1185533-1-boqun.feng@gmail.com>
-In-Reply-To: <20241101060237.1185533-1-boqun.feng@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 1 Nov 2024 15:30:01 +0100
-Message-ID: <CANiq72ndWJtzSQSFYuVkRPhdan_PvNpvGEhQXKAZKESnt7JVAA@mail.gmail.com>
-Subject: Re: [RFC v2 00/13] LKMM *generic* atomics in Rust
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, lkmm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	Trevor Gross <tmgross@umich.edu>, dakr@redhat.com, 
-	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
+References: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
+ <20241101095620.2526421-1-aliceryhl@google.com>
+In-Reply-To: <20241101095620.2526421-1-aliceryhl@google.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Fri, 1 Nov 2024 12:56:42 -0400
+Message-ID: <CAHC9VhS5wLQeF4LX67UgUYVG3oViA7CmSZS_kugH+M5J0XS2Vg@mail.gmail.com>
+Subject: Re: [PATCH] rust: lsm: replace context+len with lsm_context
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: naresh.kamboju@linaro.org, casey@schaufler-ca.com, 
+	anders.roxell@linaro.org, arnd@arndb.de, brauner@kernel.org, 
+	dan.carpenter@linaro.org, kees@kernel.org, linux-kernel@vger.kernel.org, 
+	lkft-triage@lists.linaro.org, ojeda@kernel.org, regressions@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	lkft@linaro.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 1, 2024 at 7:03=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> wr=
+On Fri, Nov 1, 2024 at 5:56=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
 ote:
 >
-> This time, I try implementing a generic atomic type `Atomic<T>`, since
-> Benno and Gary suggested last time, and also Rust standard library is
-> also going to that direction [1].
+> This brings the Rust SecurityCtx abstraction [1] up to date with the new
+> API where context+len is replaced with an lsm_context [2] struct.
+>
+> Link: https://lore.kernel.org/r/20240915-alice-file-v10-5-88484f7a3dcf@go=
+ogle.com [1]
+> Link: https://lore.kernel.org/r/20241023212158.18718-3-casey@schaufler-ca=
+.com [2]
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Closes: https://lore.kernel.org/r/CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEz=
+JazDsdk9o5zw@mail.gmail.com
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/helpers/security.c |  8 ++++----
+>  rust/kernel/security.rs | 38 +++++++++++++++++---------------------
+>  2 files changed, 21 insertions(+), 25 deletions(-)
 
-I would like to thank Boqun for trying out this approach, even when he
-wasn't (and maybe still isn't) convinced.
+Thanks Alice.  Would you like me to pull this in via the LSM tree with
+the associated LSM changes, or would you prefer to do this some other
+way?
 
-Cheers,
-Miguel
+I'm going to merge this into lsm/dev for now so that we fix the issue
+in linux-next, but I'm happy to drop it or do something else, let me
+know.
+
+--=20
+paul-moore.com
