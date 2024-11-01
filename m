@@ -1,62 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D011E2007;
-	Fri,  1 Nov 2024 21:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE84F1547DC;
+	Fri,  1 Nov 2024 21:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730495428; cv=none; b=SidNQLjx9ODzwdclX/eYNVoQ8x+QhQyFnTr/bF/6PWu61LqywkujgjXsNKMAse+qftf8PQJmnOlAQeAGcj4u7EcSU6YgivlIe5m0nTGoSdPenwQ5l8MyVQNXIwNQXLTpZGAP8pvee9ZcdFt5tTkv4rOdWIUIYZxmCGFZG6kDjH8=
+	t=1730496585; cv=none; b=PsWN39mixXy6s/KebXlrD8lZOhNgcIo9+mdJo47FGE9zlcR2fFk7/pwh8+ymq6nJR5b2QCS+cg019D3BRlqlGXKIYvH2kdEkfC0nndBxC1fkGFI6D3HPzINQlWZmIK1kMxw7VcYKYKYg2nRNZIvDBA/51RSWB4X4BtIYt1/p1ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730495428; c=relaxed/simple;
-	bh=iyoQ0SoznYC5xCs0wEiyKZlGiMYOyU/gfF8eEWA0h94=;
+	s=arc-20240116; t=1730496585; c=relaxed/simple;
+	bh=wUv4Mmyden8QXixNRuHywr5j0xg1h8babFVNw+OZ6Ak=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OZRAzhJmslsGIuWaZ5iuqUR/V1IQPs5uaWxXDMgvDpxsR2I+/cvAcLlm070obxdJgvkb3SxJKovpualVjqrPh4k3dw9FUbHgoC80+ZCCKT0QNIb6Ptv4efZesil3sEeLmt0JsQei8+tQ/ey06us2vOiFrbx8obt46gonETPCp6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OnxqZhlL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=aOiuYzH/htkrk3Gvu4f5Hls7FcN8oOYK7Tl9WkvXOBlLVUfDwXwODIeqj2OVyJSS78I8NrxY93ynlXb3fP9m12tZMI3AAuzdJz1Q7ebuVs7VjGcIhlBvcVAAleMRWbntFmCHZxCqnuI5XaKgwADMxDmALl1eOJ0SPZJ+kdJiRUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=exGovcmf; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OnxqZhlL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019BAC4CECD;
-	Fri,  1 Nov 2024 21:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730495425;
-	bh=iyoQ0SoznYC5xCs0wEiyKZlGiMYOyU/gfF8eEWA0h94=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OnxqZhlLQCm4F6jRIlfQHrp3HE9n+L+dOm9rbuBMf7OdYO8rKcf1IuXg5KqhdQg7x
-	 xvXAzYTsxP5HhRtcZ2JzXmr7gBdf7Kb/DxBQW1G2Jz/Dxg3S0tlb/JOy0L4J06JkXF
-	 sih+G67GeO3dZQpUW/pFFmjemzwtkZ3OscUle9QSxkGkH1WjHzuprWUyCBpGA7279K
-	 uE1fMVVVDlN0tQ4qomSIx+10fe1fYLWLIuMzkUnaKLzQpCuU4z1qcIUgV7qzyygpLd
-	 OcPlLj0Lhu+1k/dFDb/fd+w/xz7Md5vKJHywpsoREfDnn7501JrZDpOgSbnWID/ptY
-	 z/PcsRO8UinZQ==
-Date: Fri, 1 Nov 2024 14:10:23 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Lucas De Marchi <lucas.de.marchi@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="exGovcmf"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6cbe90c7c95so15643886d6.1;
+        Fri, 01 Nov 2024 14:29:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730496583; x=1731101383; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q6RqVmSnLlS+aTA+4ijNGjm2L+S42vaFccd3PBdWHCU=;
+        b=exGovcmf5Eedqh81c752ZYWnxBTaZM23VoY41OeObVD5NNHIA52DwsGddEyzFyGUQE
+         Dnx/ZSOsdFh6tFu/fKAenx0aSVeYanN436BISEc+9e/1goua+KiaWsbNnvyyp8cMY+Fy
+         5cDGC0D4LUedAWDZwZhgmobDN5tYZTUtGR4pbmcSBmnQhUuWuvmCQUyp+3vPMK5ICGFb
+         ni/Ofqu0C5HRZpJlyGiHxCFITR3MkQwJ6sHe44KX6oKbpyNHB8Rv2M+shjMZ1eVJ21sB
+         Pc1UaGSWTM3dwNfTD2X4SmUKYF0neTQHVfwpSuqLaBcW59S+Lb9bUw3rp1vuX5mcuXuY
+         2uKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730496583; x=1731101383;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q6RqVmSnLlS+aTA+4ijNGjm2L+S42vaFccd3PBdWHCU=;
+        b=EO7NeQW/hHzTbOm6QOTJOmyiEAwejBT91C/RkY5UjGKOKT4X9rgEOJPqO+PljUzvki
+         CnyZo0oXY/kiMO/KCOA9nPD195XgORmLF9AUYK85Vx/l21+8c9I5UcaQPpXwph3owzzA
+         VbCH11zvs1qu878BrSypeQxCakwV659Ll98s1A/9a3SwUPKXm/WMqywiFGTuLh30JX3l
+         d8MJ6llovN+fUZJuXerpOIHFGtEr5BPw85ZGtlMZW2k1iEXO/9OAK7YDqkQTRpluPnle
+         boYl99jwUNTIWQnK06LEmWpkIyNamvwggNmfLE5CHMXHT+kUDY96yht3aZ6jLQbS+thx
+         x8HA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQSjo7tBNFbAMNVbO6XRahMwbKIWtFgupvE7zyFbpjVmOM+LY/q41qLLrukmt7qJiNg3KQg2iEcg72GGhtkFI=@vger.kernel.org, AJvYcCVk/s/FZ4VoaQ4LBJ234QcdZHid/UzGDuZG2WSUNQVnL6SlS2nY76y3P06r8xidElj1oVlOZig7sU5BYP4D2nRc@vger.kernel.org, AJvYcCWF/MzM+evfEycg0ADy/YoTGoezIOerN4J4fqUxrt3LphES7LZAIP5YoN17JQ6dbRQZiUFDieGhUCTGxNM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL38zj2AzTYoAKTxBG/J8/6Vh8bsmlEFW30do78pXfckl6+2U3
+	Tv2p4VkYVHkJIFFHG7gSWUVSC+JYhydymyx+D3kTNcqfRn1dDMpz
+X-Google-Smtp-Source: AGHT+IHg6WfvVjXsdZ9cmM2dc/TNrHtqK2fwwM81+rrqESxKCi4tQDqTMFY8TEdHmsS0quOjMnzWHQ==
+X-Received: by 2002:a05:6214:2e47:b0:6cc:41cb:4c6c with SMTP id 6a1803df08f44-6d35c1aeedfmr58433476d6.48.1730496582679;
+        Fri, 01 Nov 2024 14:29:42 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d35c73440esm13139686d6.63.2024.11.01.14.29.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Nov 2024 14:29:42 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 784FD1200043;
+	Fri,  1 Nov 2024 17:29:41 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 01 Nov 2024 17:29:41 -0400
+X-ME-Sender: <xms:RUglZ7TbCS-pn0w_fjxb_XLpfMkQxnOy9lWXgvBx0EqB8D8yXWbMbQ>
+    <xme:RUglZ8xffMw00fieXW7voXJBA3hS_hM2rzl-Y9d-anZ5qMCcnKJ3Cyj51wmjhkJTr
+    -zWYTqW7uNdgMsGPA>
+X-ME-Received: <xmr:RUglZw1qdv4kMgMHUwxZWYeGHZf6DXwzEPdYbwV--LCQV3woV9P9MwhhRww>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekledgudegkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhlvgdrtg
+    homhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehj
+    ohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghrvg
+    hnuggrnhdrhhhighhgihhnsheslhhinhhugidruggvvhdprhgtphhtthhopehrmhhorghr
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrih
+    hlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
+    ohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepsghjoh
+    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:RUglZ7BBkgqbyQJwGHJeTooJomjJ0EQGII8nPsf3Hk2odjYjKFXP5A>
+    <xmx:RUglZ0jczVGMkeOXnFilCk6aFdH9OzhKSxqX8ojTUe_kYgb1WBMlVA>
+    <xmx:RUglZ_oW1stnW4619jlhvPzMznM-o_AL31N4JKWn4ZtEhJEtO7I-rw>
+    <xmx:RUglZ_j14Y86mgdQnXUIOeoN3Zx9jXIQH2cHoQxdxYaQWPiiYPwWcg>
+    <xmx:RUglZ3RXgx9whNMXvTdasYdZaONS9nfEgNB6BJ3PTqJ4jCP4DqjTlghX>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 Nov 2024 17:29:40 -0400 (EDT)
+Date: Fri, 1 Nov 2024 14:29:39 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: David Gow <davidgow@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	Rae Moar <rmoar@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-Message-ID: <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
- <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Matt Gilbride <mattgilbride@google.com>, kunit-dev@googlegroups.com,
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] rust: kunit: allow to know if we are in a test
+Message-ID: <ZyVIQxTf1qkts1d_@Boquns-Mac-mini.local>
+References: <20241101064505.3820737-1-davidgow@google.com>
+ <20241101064505.3820737-4-davidgow@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,42 +112,77 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
+In-Reply-To: <20241101064505.3820737-4-davidgow@google.com>
 
-On Thu, Oct 31, 2024 at 01:00:28PM -0700, Matthew Maurer wrote:
-> > The question is, if only extended moversions are used, what new tooling
-> > requirements are there? Can you test using only extended modversions?
-> >
-> >   Luis
+On Fri, Nov 01, 2024 at 02:45:02PM +0800, David Gow wrote:
+[...]
+> +/// ```
+> +/// // Import our mock naming it as the real module.
+> +/// #[cfg(CONFIG_KUNIT)]
+> +/// use bindings_mock_example as bindings;
+> +///
+> +/// // This module mocks `bindings`.
+> +/// mod bindings_mock_example {
+> +///     use kernel::kunit::in_kunit_test;
+> +///     use kernel::bindings::u64_;
+> +///
+> +///     // Make the other binding functions available.
+> +///     pub(crate) use kernel::bindings::*;
+> +///
+> +///     // Mock `ktime_get_boot_fast_ns` to return a well-known value when running a KUnit test.
+> +///     pub(crate) unsafe fn ktime_get_boot_fast_ns() -> u64_ {
+
+Clippy complains this `unsafe` pub function doesn't have a "# Safety"
+section. Actually this function is not necessarily to be `unsafe`.
+
+> +///         if in_kunit_test() {
+> +///             1234
+> +///         } else {
+> +///             unsafe { kernel::bindings::ktime_get_boot_fast_ns() }
+
+Need safety comments here,
+
+> +///         }
+> +///     }
+> +/// }
+> +///
+> +/// // This is the function we want to test. Since `bindings` has been mocked, we can use its
+> +/// // functions seamlessly.
+> +/// fn get_boot_ns() -> u64 {
+> +///     unsafe { bindings::ktime_get_boot_fast_ns() }
+
+and here. If you make ktime_get_boot_fast_ns() safe, then no unsafe
+block is needed here.
+
+Regards,
+Boqun
+
+> +/// }
+> +///
+> +/// let time = get_boot_ns();
+> +/// assert_eq!(time, 1234);
+> +/// ```
+> +pub fn in_kunit_test() -> bool {
+> +    // SAFETY: kunit_get_current_test() is always safe to call from C (it has fallbacks for
+> +    // when KUnit is not enabled), and we're only comparing the result to NULL.
+> +    unsafe { !bindings::kunit_get_current_test().is_null() }
+> +}
+> +
+>  #[kunit_tests(rust_kernel_kunit)]
+>  mod tests {
+> +    use super::*;
+> +
+>      #[test]
+>      fn rust_test_kunit_example_test() {
+>          assert_eq!(1 + 1, 2);
+>      }
+> +
+> +    #[test]
+> +    fn rust_test_kunit_in_kunit_test() {
+> +        let in_kunit = in_kunit_test();
+> +        assert!(in_kunit);
+> +    }
+>  }
+> -- 
+> 2.47.0.199.ga7371fff76-goog
 > 
-> I'm not sure precisely what you're asking for. Do you want:
-> 1. A kconfig that suppresses the emission of today's MODVERSIONS
-> format? 
-
-Yes that's right, a brave new world, and with the warning of that.
-
-> This would be fairly easy to do, but I was leaving it enabled
-> for compatibility's sake, at least until extended modversions become
-> more common. This way existing `kmod` tools and kernels would continue
-> to be able to load new-style modules.
-
-Sure, understood why we'd have both.
-
-> 2. libkmod support for parsing the new format? I can do that fairly
-> easily too, but wanted the format actually decided on and accepted
-> before I started modifying things that read modversions.
-
-This is implied, what I'd like is for an A vs B comparison to be able to
-be done on even without rust modules, so that we can see if really
-libkmod changes are all that's needed. Does boot fail without a new
-libkmod for this? If so the Kconfig should specificy that for this new
-brave new world.
-
-If a distribution can leverage just one format, why would they not
-consider it if they can ensure the proper tooling is in place. We
-haven't itemized the differences in practice and this could help
-with this. One clear difference so far is the kabi stuff, but that's
-just evaluating one way of doing things so far, I suspect we'll get
-more review on that from Petr soon.
-
-  Luis
