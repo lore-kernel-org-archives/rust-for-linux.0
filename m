@@ -1,87 +1,208 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D0E155C98
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 09:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42AA15C15C
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 09:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730452287; cv=none; b=WNUvOkNmKNyZiFpZUfXLgcCTAhSTFglrZrelGFbHKdqljtwIwtsKg74v+USVB3heYvFyWcPjTqMO6BtqqFkKCPQP5E5vcZglf8Hdwgeg18vi7YCaTF4NnbZnz1+3CReojWWpFkJUQV54xz/XnCLtbC72klVdnFxBfE71RyHPjRM=
+	t=1730454988; cv=none; b=XRdH1TOfs4LV0Df/s1efkcOjkCnAgem412B4xWTLMLRFGcbMBEk3jiND9fAmQYXcFxrq/r0mH9I69jl217Qf/REWzJQhfz+FpGIqr3LNVmD8/8mm9T/Di1SstaTrAJOEm/HaJ0+nDTSkcf4YVLO6a45QFH23TSQgW5suPMlPQqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730452287; c=relaxed/simple;
-	bh=4cSB5Cq09W88oLyxZ2Nnt8VK1unVUhcI4RGMh3WtG34=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TsmC/1MpQwEgtbEkwIZ/P6lgMuw33E+qOINT0Q9BIPREJLHb5re06YPsTh5/9BSNvl7/cGC9+Xz4AIF3H4iiUJ3J9g69OP1BxRrsjAwNRnOxsc0Jqog1YfMgTixmNFgvFSSqx5YwNjDPl/ugNKA+i9pHMAVi8Ztrwlkrr3Ulwc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cQFSM2YZ; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1730454988; c=relaxed/simple;
+	bh=GOQxGFD0ZytTWG4OwqVfXTYJinyLhPSthymBTy2Eb8E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=faEyHDC2KCjBuloaU342zmJzfTu+y4PeZEFUx1t2A46btbHXeMMpw8a3VxlrV85+uBJjXNRyfpxBUu9ukkKLzwaQODwAHFExFb/tDHMUDuwPGVHBvw4qgcbQ1ncYJfpywt6MZdOPifwQddA6UfUxPMRDiBeZS+k4h+jF5pJyHIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IZRDdOzw; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cQFSM2YZ"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d495d217bso1484062f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 02:11:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IZRDdOzw"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6ea527764c3so40050737b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 02:56:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730452284; x=1731057084; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4cSB5Cq09W88oLyxZ2Nnt8VK1unVUhcI4RGMh3WtG34=;
-        b=cQFSM2YZpRrcdOY/Bb4SqJ0YfEysBOQCyp6q1HghPfcP5Wd6x0wp5Z5roXWP1JUROV
-         Q2hh/kJjPcluNosm4k5ocwOi1HVJ/YGN4LU0fiIhcv9obG7nAo6cuCu9f4rkOhzwsKdV
-         nmBjgy9/a5VN24sx99QMc35ZDQd3lfOMYq86HmtXvYOtrahSyl2WjyDPCsFvBrq+7VSG
-         2Od9w8Mi1s+x2S4W8OspuWHWlutbwtlYCqAq0t5EAcZMOtXkfvB5+x1V/pTTJx4LDRov
-         D1TFQd7S4eC6VHfEyueUT+Xx4BFVGf0mxtyAnvXyidYBEiKAfoKVRJI+hi6yiyKnZ/IT
-         6qKw==
+        d=google.com; s=20230601; t=1730454985; x=1731059785; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hmoflKYnQ7aKNSDRrJZTeq26rnTAdjCp4mlK4HuQWvs=;
+        b=IZRDdOzwZ2vze/urn98eWXPxFeAqbfrLI4RncPkZgRzPigYL70Bkc2PY5SuKeE0RU0
+         Y7AM1f3iE/HOaUlyUU5QGof7r4RRRDS08KXf7F+aAKccgJbAXcvWwqidzFBDUvqeaDmA
+         G24WZJkAMtst6MxyiVN16FuJnoPichvuhd7J99hsoVOlCpqU+JS7H7dtxTDft/xIdGPp
+         hC54LPXTctGhOUdVKvJFWUZsvjWid2Ua3BYN6SmkTHl4F/+C3puCwGRmkpVggL9x/A/0
+         +Or9vudgZTkgyNcAhy1WUk8qooSZq5lQBeOzRc+ucraAaz4U4Xvdpgip8VubksdGDFEz
+         GfJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730452284; x=1731057084;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4cSB5Cq09W88oLyxZ2Nnt8VK1unVUhcI4RGMh3WtG34=;
-        b=oN1ixKmB2JJMm7o5S9+ofipvpyvpfBM78nHP4bhgVj69zI0OeoEwFwO7rW0aiGDfRi
-         TKOdbjSuWzBHy9M6MHy7UKSOU9nKUQf5uJZBhwKo7l2+cMNECzlOmkeTUFKKpILgJLJZ
-         I4+iMs1brn4QrvMbqLIOhEVGqEy9zURZcyTx4oO4/aJweM0vSc08eNoZxiPpj+kGRqUV
-         wjrWxWVrR6EVB1BViETJI2AfzpE6oJ1tXMUJAcJ32uGxMrTI8yjzwbmnSpcWLRV52y1V
-         0OYJ8/Y+E/LhT23VS1qZpbpUg0ooKWu5JnZ5AaV2zBdFmzz1t2JxpsoTd+rRNSc9KJpd
-         wfgA==
-X-Gm-Message-State: AOJu0YxKWiQuk0EbffYVETq5ypFvrdSM+JB0XlYs5LXZjubISl7ouRF9
-	zGOYl/1B6qqR6njReWynYpXQvWwJHOoXQ9HA0u+3vxpyYNYWqSFdcy4tKXRNDXoP3z6DE/k2kxl
-	YM5r+LhtiSdL5LeJ8CLskcOIKJeDhG3h/DA00
-X-Google-Smtp-Source: AGHT+IGeAyqZlKGNJOe75qmuPtMi2hgivEI5vof4f8/olpYjnTg2touXC6W+wqreUBykvGeWkUr9TSLb9rFCROm2K8M=
-X-Received: by 2002:a05:6000:178b:b0:37c:c51b:8d9c with SMTP id
- ffacd0b85a97d-381c7ac412bmr2555766f8f.38.1730452283554; Fri, 01 Nov 2024
- 02:11:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730454985; x=1731059785;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hmoflKYnQ7aKNSDRrJZTeq26rnTAdjCp4mlK4HuQWvs=;
+        b=g8HaMVOd7ZZcWs5hd4K42SwgNUuvDgvOSFktCKu/WcooMJT5+dcvVLyfKCRMwyXdcY
+         fThRQwiluO3S/p31cE4hjZga0UI1gox5JX8cg+H8c7F4UBNjTGA+vJsnyVFPQkYummOF
+         1rQdBu9sSrW4QYKReixLb8vUcEhSYFf47EYXo5yOqaKnE3DdNtHcX+CtVM4omzE0qfbc
+         e+BLG1NankFetUGO3wrC+0nn2pxbGy4/X4Wt6zUn0c5HYL6NRFxyI3Srrc42WouLn0K8
+         3cv4x9RHEMZztC8bMdtO7cAW4QpmSb0qqL4yHtZBtfQQ2NOVp0rLn/Cog6Se65syBNL3
+         9IkA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPU6O9cAtqSi9qwdUMxsxjw73QjKKgQFzGjb5w54n0YiXsJIZu2RXKyd66D4sJJreq6syYv7p+HPwv7tjpiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrFjgWvkq899BlA2QiIOu23vyxIkQSC7hERx8SauaNBfRZA2fz
+	8Nft5EMZUoqCgQ74JxhF4gBW12XoGJRDdyQjgEzAJMaJXOhR2+sAt5S+INaJJIERSaYb0mPT+xh
+	aD+WFQaDDMDsN+Q==
+X-Google-Smtp-Source: AGHT+IG2fVavzKlnr4QzZpcUQDvvH6D6+f+Mk98GHmIS792VM/YBglqgRG49x2iPQiQQgs27XavEgVyKXXEFay4=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:4c09:b0:6e7:e493:2db6 with SMTP
+ id 00721157ae682-6ea3b951361mr2169417b3.3.1730454984742; Fri, 01 Nov 2024
+ 02:56:24 -0700 (PDT)
+Date: Fri,  1 Nov 2024 09:56:20 +0000
+In-Reply-To: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241031231025.3466571-1-lyude@redhat.com> <20241031231025.3466571-3-lyude@redhat.com>
-In-Reply-To: <20241031231025.3466571-3-lyude@redhat.com>
+Mime-Version: 1.0
+References: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5092; i=aliceryhl@google.com;
+ h=from:subject; bh=GOQxGFD0ZytTWG4OwqVfXTYJinyLhPSthymBTy2Eb8E=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnJKKPl6aPrGB8YTXJhfCzaL9Oh695k3ASS1Fqb
+ y3dRMfFgamJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZySijwAKCRAEWL7uWMY5
+ Rn1pD/0TgLwq1yTZG8MK2EimNMvaP+KRF5HOpUY+kINtMwhlA+cfPHB3cZUHdMnckrRzKixRoop
+ ONTExWRb5Mm2vGHke0i/y8kJwwnb4aiQxj+uG0qKdveVgldDwmA/0NgCkHuoUEyWQoJhpNvYHE1
+ n+2GHxop9oTk8Nn904nRVvbTiDfVo8zXdiJi1M9nOnWeN6WdxdhZkZEbb8P7PmMFTweOItGI3HP
+ AYkH2Si70HDANTT6r36zWbvAp+lVeWaQ8Zj6P0aiJkBCPvLn6NKooSYiOzov/CTUQBmwmBEJWT2
+ mB47CVWjNG9SiBZhLgZdN7KeQaGDJQq2FG5SmyamwIwaGCXJgXdKj/qV60n/6cuxouPzEqwXDgM
+ BA0GE/fOcKieVMJHZdmokhL7fLFu6wMOeirSXVK/Pbkd9Mtvjyp8MhsJAgTZqB14KYKEwneiPPn
+ sF6gnFmJNFkYgzAIOVmjG9RaSI5FPj/f+Yl5+oa8aN+YgHmwaH+ZJ6efAvvXEEcTkNp3x7nr96S
+ +Cy6VIqBcsN3y3cTHvqYDXBlMolGUUh4Ef4XLv3sx4P8b1Damfp3OQ9evnZRNn1tMs4jMkqtbZ8
+ kz/QFbkyBb4Aym2/tyQhp9QZwM6OEZyH4xVlQgz5UGcOGSG0mbS83pAkwKV9soL1jGZtYPG7yL3 7OJLPCoeETzQkYg==
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <20241101095620.2526421-1-aliceryhl@google.com>
+Subject: [PATCH] rust: lsm: replace context+len with lsm_context
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 1 Nov 2024 10:11:11 +0100
-Message-ID: <CAH5fLgh=qgJ-+VzzVn=jGTJUQDx6WSiUaRLYouQknuKkCi05dw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: sync: Make Guard::new() public
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Filipe Xavier <felipe_life@live.com>
+To: naresh.kamboju@linaro.org, casey@schaufler-ca.com, paul@paul-moore.com
+Cc: anders.roxell@linaro.org, arnd@arndb.de, brauner@kernel.org, 
+	dan.carpenter@linaro.org, kees@kernel.org, linux-kernel@vger.kernel.org, 
+	lkft-triage@lists.linaro.org, ojeda@kernel.org, regressions@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	lkft@linaro.org, aliceryhl@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 1, 2024 at 12:10=E2=80=AFAM Lyude Paul <lyude@redhat.com> wrote=
-:
->
-> Since we added a Lock::from_raw() function previously, it makes sense to
-> also introduce an interface for creating a Guard from a reference to a Lo=
-ck
-> for instances where we've derived the Lock from a raw pointer and know th=
-at
-> the lock is already acquired, something we do in the KMS API.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+This brings the Rust SecurityCtx abstraction [1] up to date with the new
+API where context+len is replaced with an lsm_context [2] struct.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240915-alice-file-v10-5-88484f7a3dcf@google.com [1]
+Link: https://lore.kernel.org/r/20241023212158.18718-3-casey@schaufler-ca.com [2]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/r/CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/helpers/security.c |  8 ++++----
+ rust/kernel/security.rs | 38 +++++++++++++++++---------------------
+ 2 files changed, 21 insertions(+), 25 deletions(-)
+
+diff --git a/rust/helpers/security.c b/rust/helpers/security.c
+index 239e5b4745fe..0c4c2065df28 100644
+--- a/rust/helpers/security.c
++++ b/rust/helpers/security.c
+@@ -8,13 +8,13 @@ void rust_helper_security_cred_getsecid(const struct cred *c, u32 *secid)
+ 	security_cred_getsecid(c, secid);
+ }
+ 
+-int rust_helper_security_secid_to_secctx(u32 secid, char **secdata, u32 *seclen)
++int rust_helper_security_secid_to_secctx(u32 secid, struct lsm_context *cp)
+ {
+-	return security_secid_to_secctx(secid, secdata, seclen);
++	return security_secid_to_secctx(secid, cp);
+ }
+ 
+-void rust_helper_security_release_secctx(char *secdata, u32 seclen)
++void rust_helper_security_release_secctx(struct lsm_context *cp)
+ {
+-	security_release_secctx(secdata, seclen);
++	security_release_secctx(cp);
+ }
+ #endif
+diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
+index 2522868862a1..25d2b1ac3833 100644
+--- a/rust/kernel/security.rs
++++ b/rust/kernel/security.rs
+@@ -15,60 +15,56 @@
+ ///
+ /// # Invariants
+ ///
+-/// The `secdata` and `seclen` fields correspond to a valid security context as returned by a
+-/// successful call to `security_secid_to_secctx`, that has not yet been destroyed by calling
+-/// `security_release_secctx`.
++/// The `ctx` field corresponds to a valid security context as returned by a successful call to
++/// `security_secid_to_secctx`, that has not yet been destroyed by `security_release_secctx`.
+ pub struct SecurityCtx {
+-    secdata: *mut core::ffi::c_char,
+-    seclen: usize,
++    ctx: bindings::lsm_context,
+ }
+ 
+ impl SecurityCtx {
+     /// Get the security context given its id.
+     pub fn from_secid(secid: u32) -> Result<Self> {
+-        let mut secdata = core::ptr::null_mut();
+-        let mut seclen = 0u32;
+-        // SAFETY: Just a C FFI call. The pointers are valid for writes.
+-        to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen) })?;
++        // SAFETY: `struct lsm_context` can be initialized to all zeros.
++        let mut ctx: bindings::lsm_context = unsafe { core::mem::zeroed() };
++
++        // SAFETY: Just a C FFI call. The pointer is valid for writes.
++        to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut ctx) })?;
+ 
+         // INVARIANT: If the above call did not fail, then we have a valid security context.
+-        Ok(Self {
+-            secdata,
+-            seclen: seclen as usize,
+-        })
++        Ok(Self { ctx })
+     }
+ 
+     /// Returns whether the security context is empty.
+     pub fn is_empty(&self) -> bool {
+-        self.seclen == 0
++        self.ctx.len == 0
+     }
+ 
+     /// Returns the length of this security context.
+     pub fn len(&self) -> usize {
+-        self.seclen
++        self.ctx.len as usize
+     }
+ 
+     /// Returns the bytes for this security context.
+     pub fn as_bytes(&self) -> &[u8] {
+-        let ptr = self.secdata;
++        let ptr = self.ctx.context;
+         if ptr.is_null() {
+-            debug_assert_eq!(self.seclen, 0);
++            debug_assert_eq!(self.len(), 0);
+             // We can't pass a null pointer to `slice::from_raw_parts` even if the length is zero.
+             return &[];
+         }
+ 
+         // SAFETY: The call to `security_secid_to_secctx` guarantees that the pointer is valid for
+-        // `seclen` bytes. Furthermore, if the length is zero, then we have ensured that the
++        // `self.len()` bytes. Furthermore, if the length is zero, then we have ensured that the
+         // pointer is not null.
+-        unsafe { core::slice::from_raw_parts(ptr.cast(), self.seclen) }
++        unsafe { core::slice::from_raw_parts(ptr.cast(), self.len()) }
+     }
+ }
+ 
+ impl Drop for SecurityCtx {
+     fn drop(&mut self) {
+-        // SAFETY: By the invariant of `Self`, this frees a pointer that came from a successful
++        // SAFETY: By the invariant of `Self`, this frees a context that came from a successful
+         // call to `security_secid_to_secctx` and has not yet been destroyed by
+         // `security_release_secctx`.
+-        unsafe { bindings::security_release_secctx(self.secdata, self.seclen as u32) };
++        unsafe { bindings::security_release_secctx(&mut self.ctx) };
+     }
+ }
+
+base-commit: c88416ba074a8913cf6d61b789dd834bbca6681c
+-- 
+2.47.0.199.ga7371fff76-goog
+
