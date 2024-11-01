@@ -1,316 +1,265 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A1A14885D;
-	Fri,  1 Nov 2024 17:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6501CDA04
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 17:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730483231; cv=none; b=dapukC8LKETrTJ20YNCQEuofTnqf6Ryqvrr5rUvbmDvcKHL9fM6NXNDAp7eQEdBNHONfbzJJ4jDWVtdaFg3Blc0tke2Lun2BoJ/rEwoqdvr8CdGw0SwvP+mw2VcBVWhVE6kdWV4QxpAdCxpelmYamHE1PsWxvsV6w+AosSOOSvw=
+	t=1730483345; cv=none; b=BkTDaZZ1hqSfyn6UpnvI5jScY7F+EfOUShQo/eXbNVT5HPAmGbow9N9B+obM1m2sq4+DhpGABfVDXGaPJVPYFnr2V2iCYAhDhWkaAIDdxU62VFlGVX6I6xbLgSBou3Pn+ZY/+U0ajJUALW6v5ZJaDWyRzJ7EFNGyhQ8rI60RPHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730483231; c=relaxed/simple;
-	bh=xCF1mikqyq5ZGJlU4AFffRojpURr2wlyTW8yNjGksvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/ys3J2dmw9flDKPCV9h5qN9CCVZQP2nIBk7Uc4jE9fbfjBuDHiYFvnjxTX1mFNjqdRgSNL8Mp0HQjLf7CCSkUosZ0/OxZItiSUx3xykcreziEuog5Jf8AwUqKd2XnMpKOMLwA02hP5sPu52CDLzf8PB2vg14OSjh0TglmxBOE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b/3Aa7s/; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730483345; c=relaxed/simple;
+	bh=MNq1vw75irUPKm3uNfACSw7+CS/AqwPLJNAX26gOUdA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IdSnpKbyVZ2IoiCBbq68YlbFoHGxQyC6RE/FY23aAFn5kPX5wzl94r+KLpxpZ1T0+dPNy+MX1rhyMUMEwwjQcj5BfyZ48p0Mum983VATWkv2L4zZxQ0dJJP8ASzrIt65lqlJb58P+6wxN3UKKZrDUSHvmasOOO2ubXKLuVHlBWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wquSA1m3; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b/3Aa7s/"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b13fe8f4d0so150109685a.0;
-        Fri, 01 Nov 2024 10:47:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wquSA1m3"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e7f633af02so32762177b3.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 10:49:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730483228; x=1731088028; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rl0P62FeOI5xHTqt+LnRVZPXGFPBc72ClUpJb3byPSI=;
-        b=b/3Aa7s/6L6mXktOoRzv/uhrKg+021j5kZI+hWomq2he+JwtGlAcW0ledZDd0KgLWQ
-         APRdSGWeb2d3Z27hdT2D9k3P6o//oXUE4xa3OaKF3G2d2aj1Be+hsT1xuEhlILzoKlI/
-         kQJGMT/yhO20svytgJTphokA9cms+N+qUMEftfAOIYH5SKO4vqZdOMLkRkqNNpbxSuux
-         OKcyk4L2YJ+cJ5FxNTmPcS0b7gHOu70EfjOmlI4PfIuLssB7eEP9Y1ntqpNBQ8AYqWj7
-         p/14jlXScR/ymO+v7fMPccHlPX9CfrI8zYyNZ6q68Pl3jkmaLGWaA4L9buEC9/His04t
-         3xfg==
+        d=google.com; s=20230601; t=1730483342; x=1731088142; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gHgmf8yOjF5FUpV4FRVUFTRzyvX9RwDhNCCPw1xBMs4=;
+        b=wquSA1m3FQnMwe2tm0Leg2NlVIC0xcrhrGH7Vx9wyAwrXHFLLWNGUOoDwZpTgXBWd4
+         ZQCey0VEayb540aESpB42atpWQM7Q0/4LGSer2GwZM5OJPLXHr4sO+0ICQ++T9YSt69K
+         u14vCc9ctNW8BhNG5taOpBmZUFfMVz2YgeA2GVPoTGM6A7swPmWkJl1Nywd4RLUpVy4Z
+         6TU28JWkMsu/LNuEnoTJ/D++FRGbSLX8TZ8hkLiN4h716sCJm70le2kbypmw5Md/weL2
+         kXmIDbYfC5DtoLl6nMIoUPwySiBjcoZx+P1QCcGy1FbzBuAYGIjeQgCqBtukKD6oEq8M
+         iHtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730483228; x=1731088028;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Rl0P62FeOI5xHTqt+LnRVZPXGFPBc72ClUpJb3byPSI=;
-        b=s8aBmm7c+br44c8irlU++NS1MzrO0KEUba7HUl9iTwFOjNwsX3JeDBHLqKYvAZcZWZ
-         AnLGye+ovUyJvsp7mvjyVrFSkgTKII/ZQM4QUs8WK8oioSEj55Mpv824gCr+ON/N/IoH
-         48YxMCvy5qwxq64wus83mt8Tml0hQgvMwYFSmMP9Lw7izYYkmkkuP4jTXTuAL1Qa3CuU
-         i4ULNEDxKvirPgxU1RbaX4D25qiRuNQVhMNGAk9fIDMb4mhQ7pKIVXpH6jI7I6BQU9Y1
-         kBmRFXjMTCQXK0B7v/lQuCniKp9dL4wyAEpPD1e1pqSE2SqLU/pVje6ZmEKfzaebPgyR
-         //og==
-X-Forwarded-Encrypted: i=1; AJvYcCUnuhc3fm1are66kuP3LtwdXoDQ1I3/lAev4sKZSYC4PWRTJhLuRZVOtCgALxt7CLdQIW2asr81ujjFiRg=@vger.kernel.org, AJvYcCVgBdaqDZmrcV/bYvRC6TLVBHH26lyVjIAU4bttkB5ioaMJKRxFZjxM/1AVYzswIUtsDzhMXs0kI5oG+bu/+yU=@vger.kernel.org, AJvYcCWm9HH267QI3nwSKGOEInBN7+W+2WDYpTJscF2H1gTcZMFRytZfNMCwadw42x0+EkjXPTRVJD4oaIPUwUVGFmeS@vger.kernel.org
-X-Gm-Message-State: AOJu0YySzH6TlxJ2PbQzBxAg8YRWPTXIaGsXGTnZ1fTeoHYzN5soKB0z
-	LgqjgU134XnyxcyINGR5v4lcQjQCW3wPSZeR6QrtHVx8T4p0xhti
-X-Google-Smtp-Source: AGHT+IEPrNd1bftTbnG4GrWuWQfsJzn0GzYPrHHdbqMK7ZsY1+zHB/eNbgJYJb0bHPiXz4GbakIpbA==
-X-Received: by 2002:a05:620a:c4f:b0:7b1:127c:6234 with SMTP id af79cd13be357-7b2f24efc9emr872715485a.34.1730483227594;
-        Fri, 01 Nov 2024 10:47:07 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39eb143sm190982685a.12.2024.11.01.10.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 10:47:06 -0700 (PDT)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3CB651200066;
-	Fri,  1 Nov 2024 13:47:06 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 01 Nov 2024 13:47:06 -0400
-X-ME-Sender: <xms:GhQlZzBvpZgccVz-hXP4YHdUvGinZhokqbmj4JRQrd8U0-ysU7x9Dg>
-    <xme:GhQlZ5iTiwiopIxPwLFa_zYYrmAcoiXJyulkoycS3XESrWpS0AzDMixxEakhzXrOh
-    MYeI8bq6kZXYqO0XQ>
-X-ME-Received: <xmr:GhQlZ-m_iOFSkMD2dduwjl3jL3iPBWx-wv0zxlRCocLSCCFIYCPjtqaVc6E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekledguddtgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekrodttddt
-    udenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeduhfekudeifedtfeetkeduheegfffgudev
-    iefghffggedutdehfeehgffgjedvfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpd
-    hruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
-    pehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlih
-    hthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhm
-    rghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhoug
-    gvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhlvgdrtgho
-    mhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjoh
-    hsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghrvghn
-    uggrnhdrhhhighhgihhnsheslhhinhhugidruggvvhdprhgtphhtthhopehrmhhorghrse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhl
-    rdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoh
-    epsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepsghjohhr
-    nhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:GhQlZ1x4VCFJ1hqKkXV8A052cVdLB2i_OeL5mjTV_v_aL1sGJxmvWg>
-    <xmx:GhQlZ4SrLQ4ezHKjgTvVgx8DFSvGLlHN163U9ZEQr5avB88Li--AlQ>
-    <xmx:GhQlZ4Y7ISi6k0u6nL6IK005ZzSnjvHbQbosXUnzgChay047SqMbFg>
-    <xmx:GhQlZ5RNxnfsTp6-IZY5F5VWUm6FG1t-pzLg1tlIzO1wkX1b4urN1Q>
-    <xmx:GhQlZ-DMQg7YGane0Z1Ebe2e_GOyMsP4TjhLSC6AaV7a4GyiDrk4dOEW>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 Nov 2024 13:47:05 -0400 (EDT)
-Date: Fri, 1 Nov 2024 10:47:04 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Rae Moar <rmoar@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Matt Gilbride <mattgilbride@google.com>, kunit-dev@googlegroups.com,
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] rust: kunit: add KUnit case and suite macros
-Message-ID: <ZyUUGNywoADngOwM@Boquns-Mac-mini.local>
-References: <20241101064505.3820737-1-davidgow@google.com>
- <20241101064505.3820737-2-davidgow@google.com>
+        d=1e100.net; s=20230601; t=1730483342; x=1731088142;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gHgmf8yOjF5FUpV4FRVUFTRzyvX9RwDhNCCPw1xBMs4=;
+        b=w3pnzGI3U4ZUvjvbSbWeNCksKGhvPQXyw+SR3CYEIF4+iYFkfagTYugTay7uY2Nsyg
+         Gr68eerA5i6VLB/ae+TR/AnDCvfauWardnug21FTCBrUVvscpdf6kxD97fPEMORCDqmO
+         yzW/U2qx/LzbIvOPG6WJKT+pnMdUBWC7dJWMzAKV08tCbjPbqkdAEExqzxsgnIY889SR
+         ctA9ILV877gYmUr0mzfZCtVnAVL9k2Qzu/qgtdeXGbJ9tE4oIFhng3LrlP0QDKCZUUhH
+         XFDVOnDYlZRkzH6macNC7h5nXxIoeNarkbp7TYayDqWgoI/VLMVJy47P9l2w6ZWIgxad
+         cB8w==
+X-Forwarded-Encrypted: i=1; AJvYcCV0cvu3yMPCdDWZR+SHRIF+qwrMS2LeIgPu8kvHPtchKZFi20kaPXf8V98n6fXqlM8ko8bRRe1fVnjtljaY4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOFff2jb16H8dsZgRu118oWoyl+K3roK5J++cXF3xw0Bi2hUl+
+	eb/plrKbKrtK0s5SXF7GvYK12Soz1uVSfNPshiNXSh/wtnVNhdbQOg9oPMnW22ARWRuGneI4eq9
+	zu/JEEHqQCvOqsw==
+X-Google-Smtp-Source: AGHT+IFWPK+8jTuj/8ARDH3sf8FN30h0/V8rLUflMtASKVnWhKOAN7Kh3zxgZ8xlx5S/14HS0km2yhZx9K25O6M=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:11:b0:6ea:6872:2fe6 with SMTP
+ id 00721157ae682-6ea68723031mr394537b3.4.1730483342526; Fri, 01 Nov 2024
+ 10:49:02 -0700 (PDT)
+Date: Fri,  1 Nov 2024 17:48:55 +0000
+In-Reply-To: <CAH5fLgi+JJHCA_XTPC0-kaacZC6=aGSa-+DiNt06GSJNFhKc3w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241101064505.3820737-2-davidgow@google.com>
+Mime-Version: 1.0
+References: <CAH5fLgi+JJHCA_XTPC0-kaacZC6=aGSa-+DiNt06GSJNFhKc3w@mail.gmail.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6173; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=MNq1vw75irUPKm3uNfACSw7+CS/AqwPLJNAX26gOUdA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnJRPMV3tqElTC1f/7fwxC0jgj8Zy8AsmPI1zej
+ DVXmJgV0CGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZyUTzAAKCRAEWL7uWMY5
+ Rpo8EACsKxwatzXsgHlXD2b0a7MaqQ6ns6T6StjlDf6f63OfgZZnw4tUY4YNg6ElS2XrbNKeAJ1
+ sioGi2vpjVjqCo//I15Z8xocXpodOWyVM9bYCEpDpBpwPJdLJ1JOSdNhb828HNveMyaqw+Mf423
+ ldmO1IZukag99HulYyHtHubkrPhg0hXRjNayCmjc2VYQEC/4IgnoA9RCA/hYz7upEZIZ1ABxOhu
+ 9cLFZdcp9rn1xi4P3OZGIiuu/KZQCSujQgFjt8JQKdHecRgadg4pQJM2BzzEQLtiP9jPdxYCxgn
+ 9/a3pbVATU/60V+ydh+KfywrADoidyA6oYG0+kyEvNmhd8QSMe9NBMy6H5cExAhdjP9Vzqf4r0H
+ 9b8hY20KG1Ip2+Ijgm6af/aEdFeHe5fqpJjNzJWrkdsfh5vv2d/yAF49I9n8YDasP6SM4X+YaOq
+ lveI93/OeXCmqdWVybDnU5eiaYkD/MY19lWZI7Ny+8p1lkxnO/0TxDKEhsrqnFukQ7Hw36B4iQN
+ sr0nXxARPd9XY9YXrD5a2lOvhoJ5FPcyQz4k+Gz3BxKvsveqXi78s9H2JlVhJ86M8JwH7yPE9g4
+ OhuW6ZRUmFOWv6aP91wtE1BsUrrizIulcINpeQmN+mjRw0UNxCJcQWHgVCuP985UuKCKfvfJiIb zBBSv8zpG3oqvEg==
+X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
+Message-ID: <20241101-lsm-secctx-v1@google.com>
+Subject: [PATCH] rust: security: add abstraction for secctx
+From: Alice Ryhl <aliceryhl@google.com>
+To: paul@paul-moore.com, ojeda@kernel.org, brauner@kernel.org
+Cc: anders.roxell@linaro.org, arnd@arndb.de, dan.carpenter@linaro.org, 
+	kees@kernel.org, naresh.kamboju@linaro.org, casey@schaufler-ca.com, 
+	linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org, 
+	regressions@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, lkft@linaro.org, 
+	benno.lossin@proton.me, yakoyoku@gmail.com, tmgross@umich.edu, 
+	gary@garyguo.net, aliceryhl@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Nov 01, 2024 at 02:45:00PM +0800, David Gow wrote:
-> From: José Expósito <jose.exposito89@gmail.com>
-> 
-> Add a couple of Rust const functions and macros to allow to develop
-> KUnit tests without relying on generated C code:
-> 
->  - The `kunit_unsafe_test_suite!` Rust macro is similar to the
->    `kunit_test_suite` C macro. It requires a NULL-terminated array of
->    test cases (see below).
->  - The `kunit_case` Rust function is similar to the `KUNIT_CASE` C macro.
->    It generates as case from the name and function.
->  - The `kunit_case_null` Rust function generates a NULL test case, which
->    is to be used as delimiter in `kunit_test_suite!`.
-> 
-> While these functions and macros can be used on their own, a future
-> patch will introduce another macro to create KUnit tests using a
-> user-space like syntax.
-> 
-> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-> Co-developed-by: Matt Gilbride <mattgilbride@google.com>
-> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
-> Co-developed-by: David Gow <davidgow@google.com>
-> Signed-off-by: David Gow <davidgow@google.com>
-> ---
-> 
-> Changes since v3:
-> https://lore.kernel.org/linux-kselftest/20241030045719.3085147-4-davidgow@google.com/
-> - The kunit_unsafe_test_suite!() macro now panic!s if the suite name is
->   too long, triggering a compile error. (Thanks, Alice!)
-> 
-> Changes since v2:
-> https://lore.kernel.org/linux-kselftest/20241029092422.2884505-2-davidgow@google.com/
-> - The kunit_unsafe_test_suite!() macro will truncate the name of the
->   suite if it is too long. (Thanks Alice!)
-> - We no longer needlessly use UnsafeCell<> in
->   kunit_unsafe_test_suite!(). (Thanks Alice!)
-> 
-> Changes since v1:
-> https://lore.kernel.org/lkml/20230720-rustbind-v1-1-c80db349e3b5@google.com/
-> - Rebase on top of rust-next
-> - As a result, KUnit attributes are new set. These are hardcoded to the
->   defaults of "normal" speed and no module name.
-> - Split the kunit_case!() macro into two const functions, kunit_case()
->   and kunit_case_null() (for the NULL terminator).
-> 
-> ---
->  rust/kernel/kunit.rs | 112 +++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs   |   1 +
->  2 files changed, 113 insertions(+)
-> 
-> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> index 824da0e9738a..85bc1faff0d5 100644
-> --- a/rust/kernel/kunit.rs
-> +++ b/rust/kernel/kunit.rs
-> @@ -161,3 +161,115 @@ macro_rules! kunit_assert_eq {
->          $crate::kunit_assert!($name, $file, $diff, $left == $right);
->      }};
->  }
-> +
-> +/// Represents an individual test case.
-> +///
-> +/// The test case should have the signature
-> +/// `unsafe extern "C" fn test_case(test: *mut crate::bindings::kunit)`.
-> +///
-> +/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list of test cases.
-> +/// Use `kunit_case_null` to generate such a delimeter.
-> +const fn kunit_case(name: &'static kernel::str::CStr, run_case: unsafe extern "C" fn(*mut kernel::bindings::kunit)) -> kernel::bindings::kunit_case {
-> +    kernel::bindings::kunit_case {
-> +        run_case: Some(run_case),
-> +        name: name.as_char_ptr(),
-> +        attr: kernel::bindings::kunit_attributes {
-> +            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
-> +        },
-> +        generate_params: None,
-> +        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
-> +        module_name: core::ptr::null_mut(),
-> +        log: core::ptr::null_mut(),
-> +    }
-> +}
-> +
-> +/// Represents the NULL test case delimiter.
-> +///
-> +/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list of test cases. This
-> +/// function retuns such a delimiter.
-> +const fn kunit_case_null() -> kernel::bindings::kunit_case {
-> +    kernel::bindings::kunit_case {
-> +        run_case: None,
-> +        name: core::ptr::null_mut(),
-> +        generate_params: None,
-> +        attr: kernel::bindings::kunit_attributes {
-> +            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
-> +        },
-> +        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
-> +        module_name: core::ptr::null_mut(),
-> +        log: core::ptr::null_mut(),
-> +    }
-> +}
-> +
-> +
-> +/// Registers a KUnit test suite.
-> +///
-> +/// # Safety
-> +///
-> +/// `test_cases` must be a NULL terminated array of test cases.
-> +///
-> +/// # Examples
-> +///
-> +/// ```ignore
-> +/// unsafe extern "C" fn test_fn(_test: *mut crate::bindings::kunit) {
-> +///     let actual = 1 + 1;
-> +///     let expected = 2;
-> +///     assert_eq!(actual, expected);
-> +/// }
-> +///
-> +/// static mut KUNIT_TEST_CASE: crate::bindings::kunit_case = crate::kunit_case(name, test_fn);
-> +/// static mut KUNIT_NULL_CASE: crate::bindings::kunit_case = crate::kunit_case_null();
-> +/// static mut KUNIT_TEST_CASES: &mut[crate::bindings::kunit_case] = unsafe {
-> +///     &mut[KUNIT_TEST_CASE, KUNIT_NULL_CASE]
-> +/// };
-> +/// crate::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
-> +/// ```
-> +#[macro_export]
-> +macro_rules! kunit_unsafe_test_suite {
-> +    ($name:ident, $test_cases:ident) => {
-> +        const _: () = {
-> +            static KUNIT_TEST_SUITE_NAME: [i8; 256] = {
-> +                let name_u8 = core::stringify!($name).as_bytes();
-> +                let mut ret = [0; 256];
-> +
-> +                if name_u8.len() > 255 {
-> +                    panic!(concat!("The test suite name `", core::stringify!($name), "` exceeds the maximum length of 255 bytes."));
-> +                }
-> +
-> +                let mut i = 0;
-> +                while i < name_u8.len() {
-> +                    ret[i] = name_u8[i] as i8;
-> +                    i += 1;
-> +                }
-> +
-> +                ret
-> +            };
-> +
-> +            static mut KUNIT_TEST_SUITE: $crate::bindings::kunit_suite =
-> +                $crate::bindings::kunit_suite {
-> +                    name: KUNIT_TEST_SUITE_NAME,
-> +                    // SAFETY: User is expected to pass a correct `test_cases`, hence this macro
-> +                    // named 'unsafe'.
-> +                    test_cases: unsafe { $test_cases.as_mut_ptr() },
-> +                    suite_init: None,
-> +                    suite_exit: None,
-> +                    init: None,
-> +                    exit: None,
-> +                    attr: $crate::bindings::kunit_attributes {
-> +                        speed: $crate::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
-> +                    },
-> +                    status_comment: [0; 256usize],
-> +                    debugfs: core::ptr::null_mut(),
-> +                    log: core::ptr::null_mut(),
-> +                    suite_init_err: 0,
-> +                    is_init: false,
-> +                };
-> +
-> +            #[used]
-> +            #[link_section = ".kunit_test_suites"]
-> +            static mut KUNIT_TEST_SUITE_ENTRY: *const $crate::bindings::kunit_suite =
-> +                // SAFETY: `KUNIT_TEST_SUITE` is static.
-> +                unsafe { core::ptr::addr_of_mut!(KUNIT_TEST_SUITE) };
+Add an abstraction for viewing the string representation of a security
+context.
 
-FYI, `addr_of` and `addr_of_mut` is safe now on statics since 1.82:
+This is needed by Rust Binder because it has a feature where a process
+can view the string representation of the security context for incoming
+transactions. The process can use that to authenticate incoming
+transactions, and since the feature is provided by the kernel, the
+process can trust that the security context is legitimate.
 
-	https://blog.rust-lang.org/2024/10/17/Rust-1.82.0.html#safely-addressing-unsafe-statics
+This abstraction makes the following assumptions about the C side:
+* When a call to `security_secid_to_secctx` is successful, it returns an
+  lsm context containing a pointer and length. The pointer references a
+  byte string and is valid for reading for that many bytes.
+* The string may be referenced until `security_release_secctx` is
+  called.
+* If CONFIG_SECURITY is set, then the three methods mentioned in
+  rust/helpers are available without a helper. (That is, they are not a
+  #define or `static inline`.)
 
-We need a `#[allow(unused_unsafe)]` here to avoid the unused unsafe
-warning.
+This patch had to be modified after its first landing due to some
+conflicts with other changes. Please see [1] for details.
 
-Regards,
-Boqun
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20241101095620.2526421-1-aliceryhl@google.com [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/helpers.c          |  1 +
+ rust/helpers/security.c         | 15 +++++++
+ rust/kernel/lib.rs              |  1 +
+ rust/kernel/security.rs         | 70 +++++++++++++++++++++++++++++++++
+ 5 files changed, 88 insertions(+)
+ create mode 100644 rust/helpers/security.c
+ create mode 100644 rust/kernel/security.rs
 
-> +        };
-> +    };
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index b62451f64f6e..d662aa37070f 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -18,6 +18,7 @@
->  #![feature(inline_const)]
->  #![feature(lint_reasons)]
->  #![feature(unsize)]
-> +#![feature(const_mut_refs)]
->  
->  // Ensure conditional compilation based on the kernel configuration works;
->  // otherwise we may silently break things like initcall handling.
-> -- 
-> 2.47.0.199.ga7371fff76-goog
-> 
-> 
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index ae82e9c941af..3f3c39f9a83b 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -18,6 +18,7 @@
+ #include <linux/phy.h>
+ #include <linux/refcount.h>
+ #include <linux/sched.h>
++#include <linux/security.h>
+ #include <linux/slab.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 30f40149f3a9..36a0c833e7b4 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -17,6 +17,7 @@
+ #include "page.c"
+ #include "rbtree.c"
+ #include "refcount.c"
++#include "security.c"
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
+diff --git a/rust/helpers/security.c b/rust/helpers/security.c
+new file mode 100644
+index 000000000000..f6deb0b28b48
+--- /dev/null
++++ b/rust/helpers/security.c
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/security.h>
++
++#ifndef CONFIG_SECURITY
++int rust_helper_security_secid_to_secctx(u32 secid, struct lsm_context *cp)
++{
++	return security_secid_to_secctx(secid, cp);
++}
++
++void rust_helper_security_release_secctx(struct lsm_context *cp)
++{
++	security_release_secctx(cp);
++}
++#endif
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 22a3bfa5a9e9..a71dc73a0d9d 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -46,6 +46,7 @@
+ pub mod print;
+ pub mod sizes;
+ pub mod rbtree;
++pub mod security;
+ mod static_assert;
+ #[doc(hidden)]
+ pub mod std_vendor;
+diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
+new file mode 100644
+index 000000000000..25d2b1ac3833
+--- /dev/null
++++ b/rust/kernel/security.rs
+@@ -0,0 +1,70 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2024 Google LLC.
++
++//! Linux Security Modules (LSM).
++//!
++//! C header: [`include/linux/security.h`](srctree/include/linux/security.h).
++
++use crate::{
++    bindings,
++    error::{to_result, Result},
++};
++
++/// A security context string.
++///
++/// # Invariants
++///
++/// The `ctx` field corresponds to a valid security context as returned by a successful call to
++/// `security_secid_to_secctx`, that has not yet been destroyed by `security_release_secctx`.
++pub struct SecurityCtx {
++    ctx: bindings::lsm_context,
++}
++
++impl SecurityCtx {
++    /// Get the security context given its id.
++    pub fn from_secid(secid: u32) -> Result<Self> {
++        // SAFETY: `struct lsm_context` can be initialized to all zeros.
++        let mut ctx: bindings::lsm_context = unsafe { core::mem::zeroed() };
++
++        // SAFETY: Just a C FFI call. The pointer is valid for writes.
++        to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut ctx) })?;
++
++        // INVARIANT: If the above call did not fail, then we have a valid security context.
++        Ok(Self { ctx })
++    }
++
++    /// Returns whether the security context is empty.
++    pub fn is_empty(&self) -> bool {
++        self.ctx.len == 0
++    }
++
++    /// Returns the length of this security context.
++    pub fn len(&self) -> usize {
++        self.ctx.len as usize
++    }
++
++    /// Returns the bytes for this security context.
++    pub fn as_bytes(&self) -> &[u8] {
++        let ptr = self.ctx.context;
++        if ptr.is_null() {
++            debug_assert_eq!(self.len(), 0);
++            // We can't pass a null pointer to `slice::from_raw_parts` even if the length is zero.
++            return &[];
++        }
++
++        // SAFETY: The call to `security_secid_to_secctx` guarantees that the pointer is valid for
++        // `self.len()` bytes. Furthermore, if the length is zero, then we have ensured that the
++        // pointer is not null.
++        unsafe { core::slice::from_raw_parts(ptr.cast(), self.len()) }
++    }
++}
++
++impl Drop for SecurityCtx {
++    fn drop(&mut self) {
++        // SAFETY: By the invariant of `Self`, this frees a context that came from a successful
++        // call to `security_secid_to_secctx` and has not yet been destroyed by
++        // `security_release_secctx`.
++        unsafe { bindings::security_release_secctx(&mut self.ctx) };
++    }
++}
+
+base-commit: 1008010aafe7b1e06974b8b1bf29b052fcf87f92
+-- 
+2.47.0.199.ga7371fff76-goog
+
