@@ -1,208 +1,158 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02olkn2091.outbound.protection.outlook.com [40.92.44.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42AA15C15C
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 09:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730454988; cv=none; b=XRdH1TOfs4LV0Df/s1efkcOjkCnAgem412B4xWTLMLRFGcbMBEk3jiND9fAmQYXcFxrq/r0mH9I69jl217Qf/REWzJQhfz+FpGIqr3LNVmD8/8mm9T/Di1SstaTrAJOEm/HaJ0+nDTSkcf4YVLO6a45QFH23TSQgW5suPMlPQqo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730454988; c=relaxed/simple;
-	bh=GOQxGFD0ZytTWG4OwqVfXTYJinyLhPSthymBTy2Eb8E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=faEyHDC2KCjBuloaU342zmJzfTu+y4PeZEFUx1t2A46btbHXeMMpw8a3VxlrV85+uBJjXNRyfpxBUu9ukkKLzwaQODwAHFExFb/tDHMUDuwPGVHBvw4qgcbQ1ncYJfpywt6MZdOPifwQddA6UfUxPMRDiBeZS+k4h+jF5pJyHIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IZRDdOzw; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508FC15D5B6;
+	Fri,  1 Nov 2024 10:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.44.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730456610; cv=fail; b=fGsRIOCcy4dpPA02yBP1sBuhudnK7kU4IZnEt/Xcm+oXjBSnMxw7K4zOUUefpkNJW3AU0GZkjZG2gfB7jxq/rmGhrdbWumf1eCzio58x/A0mHPbtdLCN8ZsZLQrFKTvzFUsGKjjZdd2Cw55gDPmQUil5YN1/IQGBC5QFlSo4Bwg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730456610; c=relaxed/simple;
+	bh=VI/8uPm6GLXfS0XqO8ysUaWgPAatn8v5JRBefgksAaQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=s/Sn6urVvSE5qhadTTLKSN3NDERIzAgHde7FR2lbHIgw3CB3R+8tk3xNDP6owSNLwJulqQdKGSgkAdih1zbrJ7nmCS/JYKnSCM37EwHuFBGCJ8yBdD703hRWx2/xZc2QOlePFD2vJetC65AFWQwlaG5a1f4Dag3fzEMhUH1UouI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=RT1sXvJH; arc=fail smtp.client-ip=40.92.44.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IZRDdOzw"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6ea527764c3so40050737b3.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 02:56:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730454985; x=1731059785; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmoflKYnQ7aKNSDRrJZTeq26rnTAdjCp4mlK4HuQWvs=;
-        b=IZRDdOzwZ2vze/urn98eWXPxFeAqbfrLI4RncPkZgRzPigYL70Bkc2PY5SuKeE0RU0
-         Y7AM1f3iE/HOaUlyUU5QGof7r4RRRDS08KXf7F+aAKccgJbAXcvWwqidzFBDUvqeaDmA
-         G24WZJkAMtst6MxyiVN16FuJnoPichvuhd7J99hsoVOlCpqU+JS7H7dtxTDft/xIdGPp
-         hC54LPXTctGhOUdVKvJFWUZsvjWid2Ua3BYN6SmkTHl4F/+C3puCwGRmkpVggL9x/A/0
-         +Or9vudgZTkgyNcAhy1WUk8qooSZq5lQBeOzRc+ucraAaz4U4Xvdpgip8VubksdGDFEz
-         GfJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730454985; x=1731059785;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmoflKYnQ7aKNSDRrJZTeq26rnTAdjCp4mlK4HuQWvs=;
-        b=g8HaMVOd7ZZcWs5hd4K42SwgNUuvDgvOSFktCKu/WcooMJT5+dcvVLyfKCRMwyXdcY
-         fThRQwiluO3S/p31cE4hjZga0UI1gox5JX8cg+H8c7F4UBNjTGA+vJsnyVFPQkYummOF
-         1rQdBu9sSrW4QYKReixLb8vUcEhSYFf47EYXo5yOqaKnE3DdNtHcX+CtVM4omzE0qfbc
-         e+BLG1NankFetUGO3wrC+0nn2pxbGy4/X4Wt6zUn0c5HYL6NRFxyI3Srrc42WouLn0K8
-         3cv4x9RHEMZztC8bMdtO7cAW4QpmSb0qqL4yHtZBtfQQ2NOVp0rLn/Cog6Se65syBNL3
-         9IkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPU6O9cAtqSi9qwdUMxsxjw73QjKKgQFzGjb5w54n0YiXsJIZu2RXKyd66D4sJJreq6syYv7p+HPwv7tjpiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrFjgWvkq899BlA2QiIOu23vyxIkQSC7hERx8SauaNBfRZA2fz
-	8Nft5EMZUoqCgQ74JxhF4gBW12XoGJRDdyQjgEzAJMaJXOhR2+sAt5S+INaJJIERSaYb0mPT+xh
-	aD+WFQaDDMDsN+Q==
-X-Google-Smtp-Source: AGHT+IG2fVavzKlnr4QzZpcUQDvvH6D6+f+Mk98GHmIS792VM/YBglqgRG49x2iPQiQQgs27XavEgVyKXXEFay4=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:690c:4c09:b0:6e7:e493:2db6 with SMTP
- id 00721157ae682-6ea3b951361mr2169417b3.3.1730454984742; Fri, 01 Nov 2024
- 02:56:24 -0700 (PDT)
-Date: Fri,  1 Nov 2024 09:56:20 +0000
-In-Reply-To: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="RT1sXvJH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QyhlxDQeSNqjmtsqRSCTIhhWjShGj/9QuU4AXHMF0hiKaZKvonOysnre+z2p//jgv01wz9B+AIc/OYlZlDGBvcFzaiXqPDcRpOeyOZsrTGIFF03DVXwfDzaxXsJ4YM6pc/legtQiXufHYwunESoN0+HjM3sAgANoF/V14ipxMMucJE42stsqswqe8xVjCerl5WN5j5baHfNSTPOWgFi9aw7j9pP9gDFeO8NYT/C3mSOl6Foq6Q7DQWf6/Uk/UP9ygmeZflMK+RPMMt/8SP/hHoFpqBtArtFAVxaQaoWh871YTNWjvP2x28Dq+9prjac2RRxrQqZfbDV1EiN6XNcp3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VI/8uPm6GLXfS0XqO8ysUaWgPAatn8v5JRBefgksAaQ=;
+ b=KhorTpXz5kef/EkGVKIG98bfZz7DdJN8dNSgNmxXDlZQvmzMakOrQx5JkdJzie60sHdmiGR0+D0VZr0+qcKXT3Vo+qAnfD0w1g3GaqrXd2XZPpNgvTA1WaySnEkMLy52F+U4ZV8ytL1dIpFNz+fMP1KXIwNvWxp7FZEbfA+Uf9KLzR1NEyuZ2ASmelwqn2cQ/Tcyt5PcUKdlzyBu+A1jMMRC3rv/ecJRURZ2XOvbyd2lGcTclYq/qU7nlU33jH0FA5aoOeF8P10eq8PfM0myPa84D38ZVZSVxCwe89NIOQTsDIPDKi0rHYbJh8i476jo2opH04beGEgflv+xSWtWkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VI/8uPm6GLXfS0XqO8ysUaWgPAatn8v5JRBefgksAaQ=;
+ b=RT1sXvJHBpiSAsBs1Y+/5TO1iZrjOZ0ZMKZCUFWlWTyWd1atespv21LjRMy3dIGh+OBjIrRdziV3LcnGOJE9+6oeMv7K6JbiGlseWOtxPgg3AnCfkLC9iHgeSWqLPr0bNL7fVAFZqAgO4lFd2ncamT6lfC70sW/pG2AtM11RtOWvNqoO1IBTRMUw+5x2bBuPY4m7ZfgaZCvQLiSSzdKMXrcyz6mHUICLECon890Z6oXQDMVt2is5cZiFJ4GiuEHWBequzTpvu3FmLUsG805o1xVdATFxVqmp4OHHLy/9kGtVin94Gn1Df/k4DXO6xeyYs3FgzFMC4mbEuvBAigc9tQ==
+Received: from BL0PR02MB4914.namprd02.prod.outlook.com (2603:10b6:208:53::23)
+ by DS0PR02MB9273.namprd02.prod.outlook.com (2603:10b6:8:14b::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.32; Fri, 1 Nov
+ 2024 10:23:23 +0000
+Received: from BL0PR02MB4914.namprd02.prod.outlook.com
+ ([fe80::906b:d00a:2d95:d089]) by BL0PR02MB4914.namprd02.prod.outlook.com
+ ([fe80::906b:d00a:2d95:d089%3]) with mapi id 15.20.8114.015; Fri, 1 Nov 2024
+ 10:23:23 +0000
+From: Filipe Xavier <felipe_life@live.com>
+To: Lyude Paul <lyude@redhat.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Martin
+ Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst
+	<kernel@valentinobst.de>
+Subject: Re: [PATCH v3 2/2] rust: sync: Make Guard::new() public
+Thread-Topic: [PATCH v3 2/2] rust: sync: Make Guard::new() public
+Thread-Index: AQHbK+oeZFmQtg8uyESeAvoIm2eaG7KiN6Pq
+Date: Fri, 1 Nov 2024 10:23:23 +0000
+Message-ID:
+ <BL0PR02MB491496C88E898872E92339E2E9562@BL0PR02MB4914.namprd02.prod.outlook.com>
+References: <20241031231025.3466571-1-lyude@redhat.com>
+ <20241031231025.3466571-3-lyude@redhat.com>
+In-Reply-To: <20241031231025.3466571-3-lyude@redhat.com>
+Accept-Language: pt-BR, en-US
+Content-Language: pt-BR
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL0PR02MB4914:EE_|DS0PR02MB9273:EE_
+x-ms-office365-filtering-correlation-id: efe147f1-7db5-4b67-118f-08dcfa5f371a
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8060799006|7092599003|461199028|15080799006|8062599003|19110799003|15030799003|3412199025|440099028|102099032;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?d2ZHRFRsRUJXeThjcG43RXB4WUhEREVzN1ltakJQeDM4WDhEdDFKREk3aFFH?=
+ =?utf-8?B?Vm9yc21yLzZidEpZT3U4VnlCSXRTTE9wR3RQMytUQjdndE55WEJRbjNWazh4?=
+ =?utf-8?B?dnptNDV2MHhib3ZEbXo3RVJhUDcxNUlTNGt2WjRHU0xZTnRPVTVOZjBsRXQ3?=
+ =?utf-8?B?UW5wSVZQNUtIdGhxdE5GSkpURUV6Z3Jtc2lUTkZ4djZUellzZVJkMFdUdlN3?=
+ =?utf-8?B?bTJNTjlHRFZaUzlPVld3VlE3Nm95VE0zSksvSFpGMyt4RmF3U3pXVHJoWnZp?=
+ =?utf-8?B?VTZDYlBScTRZWW1KaWhiKzlBVTZTS1hpQ2duOGxqaVpKT0N0M1MyMWYzemw0?=
+ =?utf-8?B?b2FlZnhuOEFhd1B0bkUwNERQa0lvU3RDcGJEMXljLzFaekxQbjhhdFBZSGJE?=
+ =?utf-8?B?SWFiMGdwbTNvQjVUR0pManFBaHdYS3JweEMyY01ZRWF5N3RMSE1wR24rQWZx?=
+ =?utf-8?B?UjhDY2xHaXBpOTMrRVhmd0V0dWYwSFc3eTVjMkl2bWxBQ09iZk9vR24yZTRw?=
+ =?utf-8?B?WitDZkhHS3RvVFVaWDBtcXpSY3JxcWpyU3dUWmlQTlh2Nm9UV3QrUTdRY0Ew?=
+ =?utf-8?B?Ym5oQXc1L1hQRDhsZGl4aGc4M21oVU5TMFlmRnZqZm5yMUJqL0FCdStKOWFv?=
+ =?utf-8?B?MnlDNWFkWTNFSUR6OVIxdHRZRUI5cU5uZ254bzFlRW1taGIzS2UwbkpzQ0Q1?=
+ =?utf-8?B?enNuWXhEODgrdnVRSVpwMVNuY1Izd0luem1LaXc5WkpPWEZnRStHL0lDS01M?=
+ =?utf-8?B?SzZPYXQ2aFNER3Z0QW41UFJoMkMvaGsxS0lnOHNZc1U5dldWcUFtd1ltSzIx?=
+ =?utf-8?B?Wnp6RFQrcldFbmdaVVpYLy9RMFVOYklqUmViUmdhNldhWGJwVUxiYk9HRlJZ?=
+ =?utf-8?B?ZUFJZzZDa2RYWi9GeVRuQW9nelNBT21MNHJxcjVBNDV3OXZTZDA1akhIaUFj?=
+ =?utf-8?B?dUlrbkNGL2svWnhjTzRLUUFUdG9qY1gwRE5Da1JPQzBnL3hXb0xOU3Blenp1?=
+ =?utf-8?B?aUJhSkJST3dBUklxMmF4djZZNUExZzk2RCthSkMvOXIzZzA5bzkweDNseGxY?=
+ =?utf-8?B?bSszamdvcys2dWRpL1VEcFRscExlczlmU3hwWUNLbG9jVml4QVhlL3FDYzEy?=
+ =?utf-8?B?Z1JzSXp1UHRxbDdBblZoWWRtY25sSlRUYkJCNjBGNi9ZdHlwa3orY203Y2p0?=
+ =?utf-8?B?OGkybFZoV0RvcmY1OHRYM0hBaWdHcTFuQzNKcjdhUnlKbnc1cFBONHd6M3Vj?=
+ =?utf-8?B?WjdPSHZFU2R2MGY0dUROaitYQUszakdpWEdlV21DalloUTlkZ0d2WjU5VXJp?=
+ =?utf-8?B?a2pRZTFVaE5pcWNORlNSTmUwY0lNOEViOGVjbW1DSEp0cmlSZTJ6dVM2ckZv?=
+ =?utf-8?B?RmMyakw5Ukx3TTlXQllyNlBrYlJCL1lEb09rMi82OXJuTXVBeEdmZHpOMVZ3?=
+ =?utf-8?Q?nOwZhZgE?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?eVA0UDFMRmpqVVJaODVjQ3hNLy9GaFM1c0kzMXFsVjdQOG00eVpmWjZCaXQv?=
+ =?utf-8?B?NTF5QXRwbURxazcrMmN0a2Rmd2JKampOeVFPdDdxOGZSYmpDMERrOWJyZDcr?=
+ =?utf-8?B?V01nMU1hV0ZvdHlxRmp2MEZLcU5GZEptdFh3MTkvd01aTXh5T2VSaGlBOXZt?=
+ =?utf-8?B?c3JwekVwVjdONndORGFsR1ZBMjhHZGlUZXNYZ3paZy93RWVUWHJSN1Z0Mkp3?=
+ =?utf-8?B?NW93N0lxOWgrcXloaEw4VEFiVHBNWWdVNDRSL2p2OFMwZmpLUHVqWXdndjJx?=
+ =?utf-8?B?Y1pUOXNkb2EzaUFrV3RxbXBtV2s2UVRDWGpSWTB0a001cEIrUFAvejVXaVdJ?=
+ =?utf-8?B?MFA0ajhhZlhkYmR5OGZES3RBNUV6SnlyaHB1aHRpTzQvMTBBTlRlc0lWSEtt?=
+ =?utf-8?B?UlZsdFArbEVWYzA0SHRySEN6c3JxWkxidTdydXI4Z29hNkhwVXN3bldDRkFk?=
+ =?utf-8?B?NisxMXd4NWl1NFJxbXV0cTBRTHIzTEJjSHgvWGhmOG4wSTZjL1FvdUh0NUZU?=
+ =?utf-8?B?VkxCeGNScysyVC94Y09VOXRORVZkbUR2R2IvL0tjbGFJVkx3VkhENnFLWnUx?=
+ =?utf-8?B?VkNZclVUY01YeFluZEc3U0RId1YyMXpsRm9wa1VDUzZTc2FSdkhtN0lZUHVE?=
+ =?utf-8?B?WnN1dkhlVHlsYkJjK1NZdXZMaWU4dWwvYXcvbk0zZlZsa0wxNzVGdU5PbjdF?=
+ =?utf-8?B?dS81SUxOb2x1cTAyREQ1MVQ5dmc2TjVwanhnU2UxcDFYWHZEenorN3M1YUJz?=
+ =?utf-8?B?UGVNeG1CbEdlL0Y4cHZueDFnOXdrU0YzWnYyaDA4bE8zR2tsZDdzYTB4Nmtq?=
+ =?utf-8?B?b2pnUmNCeS84ZVBOMHNIZWpWYTVSalJaRFduVy9EZTkyQjA3MGhuemYzSlp3?=
+ =?utf-8?B?YzBJRWF6akxTRFR2VlM2RDBZdmUxa2YwZnNxcXlJUVFJOU9XWTNWZmZ0c0Jv?=
+ =?utf-8?B?WURrbHo5S010N3FFUFowamdVVk8zUVZwY1VRcWJUcWt3K2N3bktSZTVkQW8w?=
+ =?utf-8?B?NEFVQVdpMFp4S3RNSzNna0h5Q1Z1TkdDU2VWTVVaLzJudFNZTHN0dllrSWxm?=
+ =?utf-8?B?cHNuQStCQnpaZ3JORGxwdTVJMlF1S2c4NlhCR3YydnpsVmVrMWI4WWZvcGF5?=
+ =?utf-8?B?ajhXakMxK29laEtlbXlVZWJuSE9Fb3cvT0J2NEZ1ZkMwK0d3MVpybDE0dFVM?=
+ =?utf-8?B?bi9zQWFUWk9iMmZiaWlSTnpJbjE1QkozditvbXhNMDVSbUFFVE5XSUR6b0Zl?=
+ =?utf-8?B?NDM5LzBTVFRGNUc0ZU5Scy9JeUFEYnkxcUdGOW5RaDM4c3dFaFpsRGZ5Mytx?=
+ =?utf-8?B?RkdHbzM1VnRmNlNzU2dnYWxvenJseUZHV2QyTWRJT3BlZTFncDJxcWZ4NDF0?=
+ =?utf-8?B?RlJyT3Rsbi82WUVvYXkxb2MxZkFrN3pSbmhaQXR1WVdOYWRYNWxSN2JQaFhh?=
+ =?utf-8?B?ZmVSS05SMlMrQ29oekk4TU9nZUovSzQ3bnVXVU5oVDZlbFBhbDBPd0NJZURw?=
+ =?utf-8?B?RmJZL3pLUlJVLzlOT1p3RHJZSGN3NWVMVmdMbTI3SzBFbVNBaHlSZk52eUVv?=
+ =?utf-8?B?M3lYRW5JVHR1QnBxSHMyNnBETDdZVXpXZFdZdmhuRXZwWldZSnlpWDFEWDNh?=
+ =?utf-8?B?cTViNGsweEg0dkRWa0RuaVVEa0FudSt5V1NLYktER2JWbVFDQStVRWhuejF6?=
+ =?utf-8?B?TkV1RHgwSnozS053NWxrbGQzblN4YVd4dUFZazliSXRNMStPTE9rWWkxcHBR?=
+ =?utf-8?Q?w+KgoUf1uUpIZvcT/U=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5092; i=aliceryhl@google.com;
- h=from:subject; bh=GOQxGFD0ZytTWG4OwqVfXTYJinyLhPSthymBTy2Eb8E=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnJKKPl6aPrGB8YTXJhfCzaL9Oh695k3ASS1Fqb
- y3dRMfFgamJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZySijwAKCRAEWL7uWMY5
- Rn1pD/0TgLwq1yTZG8MK2EimNMvaP+KRF5HOpUY+kINtMwhlA+cfPHB3cZUHdMnckrRzKixRoop
- ONTExWRb5Mm2vGHke0i/y8kJwwnb4aiQxj+uG0qKdveVgldDwmA/0NgCkHuoUEyWQoJhpNvYHE1
- n+2GHxop9oTk8Nn904nRVvbTiDfVo8zXdiJi1M9nOnWeN6WdxdhZkZEbb8P7PmMFTweOItGI3HP
- AYkH2Si70HDANTT6r36zWbvAp+lVeWaQ8Zj6P0aiJkBCPvLn6NKooSYiOzov/CTUQBmwmBEJWT2
- mB47CVWjNG9SiBZhLgZdN7KeQaGDJQq2FG5SmyamwIwaGCXJgXdKj/qV60n/6cuxouPzEqwXDgM
- BA0GE/fOcKieVMJHZdmokhL7fLFu6wMOeirSXVK/Pbkd9Mtvjyp8MhsJAgTZqB14KYKEwneiPPn
- sF6gnFmJNFkYgzAIOVmjG9RaSI5FPj/f+Yl5+oa8aN+YgHmwaH+ZJ6efAvvXEEcTkNp3x7nr96S
- +Cy6VIqBcsN3y3cTHvqYDXBlMolGUUh4Ef4XLv3sx4P8b1Damfp3OQ9evnZRNn1tMs4jMkqtbZ8
- kz/QFbkyBb4Aym2/tyQhp9QZwM6OEZyH4xVlQgz5UGcOGSG0mbS83pAkwKV9soL1jGZtYPG7yL3 7OJLPCoeETzQkYg==
-X-Mailer: git-send-email 2.47.0.163.g1226f6d8fa-goog
-Message-ID: <20241101095620.2526421-1-aliceryhl@google.com>
-Subject: [PATCH] rust: lsm: replace context+len with lsm_context
-From: Alice Ryhl <aliceryhl@google.com>
-To: naresh.kamboju@linaro.org, casey@schaufler-ca.com, paul@paul-moore.com
-Cc: anders.roxell@linaro.org, arnd@arndb.de, brauner@kernel.org, 
-	dan.carpenter@linaro.org, kees@kernel.org, linux-kernel@vger.kernel.org, 
-	lkft-triage@lists.linaro.org, ojeda@kernel.org, regressions@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	lkft@linaro.org, aliceryhl@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-0f88b.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR02MB4914.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: efe147f1-7db5-4b67-118f-08dcfa5f371a
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Nov 2024 10:23:23.2451
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR02MB9273
 
-This brings the Rust SecurityCtx abstraction [1] up to date with the new
-API where context+len is replaced with an lsm_context [2] struct.
-
-Link: https://lore.kernel.org/r/20240915-alice-file-v10-5-88484f7a3dcf@google.com [1]
-Link: https://lore.kernel.org/r/20241023212158.18718-3-casey@schaufler-ca.com [2]
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/r/CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/helpers/security.c |  8 ++++----
- rust/kernel/security.rs | 38 +++++++++++++++++---------------------
- 2 files changed, 21 insertions(+), 25 deletions(-)
-
-diff --git a/rust/helpers/security.c b/rust/helpers/security.c
-index 239e5b4745fe..0c4c2065df28 100644
---- a/rust/helpers/security.c
-+++ b/rust/helpers/security.c
-@@ -8,13 +8,13 @@ void rust_helper_security_cred_getsecid(const struct cred *c, u32 *secid)
- 	security_cred_getsecid(c, secid);
- }
- 
--int rust_helper_security_secid_to_secctx(u32 secid, char **secdata, u32 *seclen)
-+int rust_helper_security_secid_to_secctx(u32 secid, struct lsm_context *cp)
- {
--	return security_secid_to_secctx(secid, secdata, seclen);
-+	return security_secid_to_secctx(secid, cp);
- }
- 
--void rust_helper_security_release_secctx(char *secdata, u32 seclen)
-+void rust_helper_security_release_secctx(struct lsm_context *cp)
- {
--	security_release_secctx(secdata, seclen);
-+	security_release_secctx(cp);
- }
- #endif
-diff --git a/rust/kernel/security.rs b/rust/kernel/security.rs
-index 2522868862a1..25d2b1ac3833 100644
---- a/rust/kernel/security.rs
-+++ b/rust/kernel/security.rs
-@@ -15,60 +15,56 @@
- ///
- /// # Invariants
- ///
--/// The `secdata` and `seclen` fields correspond to a valid security context as returned by a
--/// successful call to `security_secid_to_secctx`, that has not yet been destroyed by calling
--/// `security_release_secctx`.
-+/// The `ctx` field corresponds to a valid security context as returned by a successful call to
-+/// `security_secid_to_secctx`, that has not yet been destroyed by `security_release_secctx`.
- pub struct SecurityCtx {
--    secdata: *mut core::ffi::c_char,
--    seclen: usize,
-+    ctx: bindings::lsm_context,
- }
- 
- impl SecurityCtx {
-     /// Get the security context given its id.
-     pub fn from_secid(secid: u32) -> Result<Self> {
--        let mut secdata = core::ptr::null_mut();
--        let mut seclen = 0u32;
--        // SAFETY: Just a C FFI call. The pointers are valid for writes.
--        to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen) })?;
-+        // SAFETY: `struct lsm_context` can be initialized to all zeros.
-+        let mut ctx: bindings::lsm_context = unsafe { core::mem::zeroed() };
-+
-+        // SAFETY: Just a C FFI call. The pointer is valid for writes.
-+        to_result(unsafe { bindings::security_secid_to_secctx(secid, &mut ctx) })?;
- 
-         // INVARIANT: If the above call did not fail, then we have a valid security context.
--        Ok(Self {
--            secdata,
--            seclen: seclen as usize,
--        })
-+        Ok(Self { ctx })
-     }
- 
-     /// Returns whether the security context is empty.
-     pub fn is_empty(&self) -> bool {
--        self.seclen == 0
-+        self.ctx.len == 0
-     }
- 
-     /// Returns the length of this security context.
-     pub fn len(&self) -> usize {
--        self.seclen
-+        self.ctx.len as usize
-     }
- 
-     /// Returns the bytes for this security context.
-     pub fn as_bytes(&self) -> &[u8] {
--        let ptr = self.secdata;
-+        let ptr = self.ctx.context;
-         if ptr.is_null() {
--            debug_assert_eq!(self.seclen, 0);
-+            debug_assert_eq!(self.len(), 0);
-             // We can't pass a null pointer to `slice::from_raw_parts` even if the length is zero.
-             return &[];
-         }
- 
-         // SAFETY: The call to `security_secid_to_secctx` guarantees that the pointer is valid for
--        // `seclen` bytes. Furthermore, if the length is zero, then we have ensured that the
-+        // `self.len()` bytes. Furthermore, if the length is zero, then we have ensured that the
-         // pointer is not null.
--        unsafe { core::slice::from_raw_parts(ptr.cast(), self.seclen) }
-+        unsafe { core::slice::from_raw_parts(ptr.cast(), self.len()) }
-     }
- }
- 
- impl Drop for SecurityCtx {
-     fn drop(&mut self) {
--        // SAFETY: By the invariant of `Self`, this frees a pointer that came from a successful
-+        // SAFETY: By the invariant of `Self`, this frees a context that came from a successful
-         // call to `security_secid_to_secctx` and has not yet been destroyed by
-         // `security_release_secctx`.
--        unsafe { bindings::security_release_secctx(self.secdata, self.seclen as u32) };
-+        unsafe { bindings::security_release_secctx(&mut self.ctx) };
-     }
- }
-
-base-commit: c88416ba074a8913cf6d61b789dd834bbca6681c
--- 
-2.47.0.199.ga7371fff76-goog
-
+T24gRnJpLCBOb3YgMSwgMjAyNCBhdCAxMjoxMOKAr0FNIEx5dWRlIFBhdWwgPGx5dWRlQHJlZGhh
+dC5jb20+IHdyb3RlOgo+Cj4gU2luY2Ugd2UgYWRkZWQgYSBMb2NrOjpmcm9tX3JhdygpIGZ1bmN0
+aW9uIHByZXZpb3VzbHksIGl0IG1ha2VzIHNlbnNlIHRvCj4gYWxzbyBpbnRyb2R1Y2UgYW4gaW50
+ZXJmYWNlIGZvciBjcmVhdGluZyBhIEd1YXJkIGZyb20gYSByZWZlcmVuY2UgdG8gYSBMb2NrCj4g
+Zm9yIGluc3RhbmNlcyB3aGVyZSB3ZSd2ZSBkZXJpdmVkIHRoZSBMb2NrIGZyb20gYSByYXcgcG9p
+bnRlciBhbmQga25vdyB0aGF0Cj4gdGhlIGxvY2sgaXMgYWxyZWFkeSBhY3F1aXJlZCwgc29tZXRo
+aW5nIHdlIGRvIGluIHRoZSBLTVMgQVBJLgo+Cj4gU2lnbmVkLW9mZi1ieTogTHl1ZGUgUGF1bCA8
+bHl1ZGVAcmVkaGF0LmNvbT4KClJldmlld2VkLWJ5OiBGaWxpcGUgWGF2aWVyIDxmZWxpcGVfbGlm
+ZUBsaXZlLmNvbT4K
