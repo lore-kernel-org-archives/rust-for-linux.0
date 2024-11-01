@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9478381B9;
-	Fri,  1 Nov 2024 13:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425C519B595;
+	Fri,  1 Nov 2024 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730467352; cv=none; b=T+823IedD+hlENSuuq9jAdBJgnkoBXArEiTdbXmUSr0FfQCFAqtyXGhKQ6QPi/dVNRPlViTUADP8H8ISY5tRhLOipUCc9HsYGMPyPlJRasOvj3RmFT1C3Fz/5SvMawiSzQzosD8lUszT+mADbotdqocVL1QwyQB+0j0sdKOgw8Y=
+	t=1730467507; cv=none; b=NPFTha6pP8z24PxdCeMeoaSsaAras/Wm+wkQEmPpAu4udSk5jDgplkFA/laAFI5+bdFc/Vkvxivl5NaUTA89Pe0bqGmbk6Uux46faJnrQWK08wzslnTn5yMqFrmeMKSZSKKQ/YFkSsMfa7qIQjOOOZCLfnMxXElUs5pku2nZhb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730467352; c=relaxed/simple;
-	bh=JJ8e8veNWCycOWMOQ5ARA78paLuhRw5g/xjSkFeBzQg=;
+	s=arc-20240116; t=1730467507; c=relaxed/simple;
+	bh=+gWLxkzDFu0men3WpeyM2YQpE+xw02L+EZDYwHbxjY4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WuX/WR4ghEne5SFtRii04+S6je4xbXy9yZbOBOAzbpnUpbl+qElEKC8eTDNrGBEZUb5IA7ZBbzeQDejT/C4u7VnmFX+nUw/1qpasG/TDWyz0aD+hpfTXLaol/yRyQLcop0qIH+fxZB7ExGyLoPMxUdN3Rlfe3nWtg3zHTrnuyA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVZ1m78h; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=kIvqeNa8FO4Zc6j/Fojps4fXoiIfKSsX/fzXYutFgQkiME7bR6C9qASJcj+VfDgM6Ces23bYK7lCGamW9DQaV0XAQHRBtZQ3g356xaKx3WyO9GK+1jlqOtHzmeDv2LiyStdirkJZSdSbxISH5b8kA9b/YzRzM5xFTVQICn4qz34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cO2cGDjr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVZ1m78h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E353C4CECD;
-	Fri,  1 Nov 2024 13:22:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cO2cGDjr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE903C4CECD;
+	Fri,  1 Nov 2024 13:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730467352;
-	bh=JJ8e8veNWCycOWMOQ5ARA78paLuhRw5g/xjSkFeBzQg=;
+	s=k20201202; t=1730467506;
+	bh=+gWLxkzDFu0men3WpeyM2YQpE+xw02L+EZDYwHbxjY4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hVZ1m78hGN4qkmNwMyCzbJPomXUea/8naJIsTdKdGy066vQSbrQw/8/H6o64D2ZrL
-	 9wGHgX8yxHzwSXjQx7S/UTgufxJ/NkrLp/NoihWJHHG5pzZnkFUI1jMmNCOd8lDFkT
-	 E/Xv/1FPPf/shQrXtSiWxADviF/G6jDRyLZkDR1fr/RnpA6qATPb3SpCS1t0HV5Qrl
-	 oD1oTFoRMrJmFhX5OpqnFlLWP/o1g8USDNGAP0agRfvJHJrbXJ8np7Ij4wI9rPWaqV
-	 oW5nmKm7VZXXb3QHeYKI0bEmm6EHQZqHM2S+JXP7xA2uzcRgQ371hTIL8oP+kyyiAT
-	 wBZWwCUhGVWvA==
+	b=cO2cGDjryYPxJ6XxWrK+/Z5kbrdHJ8Rh6JiTF6QUmQzdxXaceDflNfrcj9Ukbpq7z
+	 L8OAMsrmn5N6j7FDVSV2xQTUcBLZyFk6b2QWMNiTcZtK0GuMI81CtTU7ZtbMkhLf0x
+	 uj2pS2GwujxSiIo3z9MiYljklnf86JLCNSJsGuqyu81dT1LPcXEvDbhPi9UjjA16bf
+	 wKrbyyrx2R4a74bMalKMKbuWAijZqnSAy3KzmjnX5TDkpB/5lhzZG4TEnDIGDQPm34
+	 yQ4SJVGe3D0yDeG/m+3WSLq1kGNRs+9FIMN9rR0X3VQ1qpxOJFlJr4+gFHGdmXMdc3
+	 /k+EMmBBjeYUA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Tamir Duberstein" <tamird@gmail.com>,  "Miguel Ojeda"
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,  "Miguel Ojeda"
  <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
  <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
  =?utf-8?Q?=C3=B6rn?= Roy Baron
@@ -37,18 +37,19 @@ Cc: "Tamir Duberstein" <tamird@gmail.com>,  "Miguel Ojeda"
   "Danilo Krummrich" <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
   <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH 4/5] rust: reorder `ForeignOwnable` items
-In-Reply-To: <CANiq72nX2=yigRKhP3jN0kQ8vD0kMvUOp3rFpRQZJGAX6RrRhg@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Thu, 31 Oct 2024 13:40:20 +0100")
+In-Reply-To: <CAJ-ks9mf2H8xZ+uZyeQqiGEDY35tyDBP-UpaqXhe_padv=Dqmg@mail.gmail.com>
+ (Tamir
+	Duberstein's message of "Thu, 31 Oct 2024 09:30:16 -0400")
 References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
 	<Pn1b5OU4cqz38Aiv4RL7MuzPDwDGvxLVRrLuCF7Q3_HaeLzlh4jaM0krBqB39DCFmRLWK59Do8DPaVxLNaaTNQ==@protonmail.internalid>
 	<20241030-borrow-mut-v1-4-8f0ceaf78eaf@gmail.com>
 	<871pzwpsm9.fsf@kernel.org>
 	<CAJ-ks9m-THyqK1tYL39t979BagBqj3Z-MOSn8wPhDc82awjzug@mail.gmail.com>
-	<ozMyxxwj0PTAkz1x7kMYTL5RqFlrbvJRrrc-d2UWlJxME89Dy--7ZPYLzExR73oyY3FjYyZN1Y7u8d-NCCXp7g==@protonmail.internalid>
 	<CANiq72nX2=yigRKhP3jN0kQ8vD0kMvUOp3rFpRQZJGAX6RrRhg@mail.gmail.com>
-Date: Fri, 01 Nov 2024 14:22:19 +0100
-Message-ID: <878qu3nl6c.fsf@kernel.org>
+	<VFlWu_3oX5K_m5UWyd8xyC2ap0ju_5IerlL0EmQ905VcE7VHfpSzx8NeFlUDSWYH2Vnjg3U7d5NdGRj6gYH8yQ==@protonmail.internalid>
+	<CAJ-ks9mf2H8xZ+uZyeQqiGEDY35tyDBP-UpaqXhe_padv=Dqmg@mail.gmail.com>
+Date: Fri, 01 Nov 2024 14:24:49 +0100
+Message-ID: <874j4rnl26.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,24 +59,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-> On Thu, Oct 31, 2024 at 1:23=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
+> On Thu, Oct 31, 2024 at 8:40=E2=80=AFAM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
 >>
->> This change was part of the original patch. Do you prefer the code
->> movement in the same commit?
+>> On Thu, Oct 31, 2024 at 1:23=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
+om> wrote:
+>> >
+>> > This change was part of the original patch. Do you prefer the code
+>> > movement in the same commit?
+>>
+>> If we do it, please keep it separate, that is a good idea.
+>>
+>> However, I think Andreas means to avoid the movement at all,
+>> regardless of which commit is used to do it.
 >
-> If we do it, please keep it separate, that is a good idea.
+> Understood. I'll update the commit message to explain that this also
+> avoids inconsistency with the implementation in kbox.rs, which is
+> already in this order.
 >
-> However, I think Andreas means to avoid the movement at all,
-> regardless of which commit is used to do it.
+> Andreas, please let me know if this is acceptable.
 
-Exactly.
+I would prefer not to move the code, but I am not going to make more
+noise about it that this :) I don't care what order these items are, and
+so to me it is just noise in the history.
 
 
 Best regards,
 Andreas Hindborg
+
 
 
 
