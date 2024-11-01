@@ -1,193 +1,87 @@
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738B314B962
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 09:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D0E155C98
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 09:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730451692; cv=none; b=Hwm1zUjtvE8mgy/oItfKEv+9jJ54MRwSl8qTt3qGau6yUd5gYV5uy46cxX1D4/kkNs79c//WfNRqkExngQho4ftIASqHuTpBw3BtGFxAluS6+Ri8+rIOXgmwUdew8XGqL/i+C21VERtDEjxSMoGbtkeisM1mhFnkuq4JPa9gxXk=
+	t=1730452287; cv=none; b=WNUvOkNmKNyZiFpZUfXLgcCTAhSTFglrZrelGFbHKdqljtwIwtsKg74v+USVB3heYvFyWcPjTqMO6BtqqFkKCPQP5E5vcZglf8Hdwgeg18vi7YCaTF4NnbZnz1+3CReojWWpFkJUQV54xz/XnCLtbC72klVdnFxBfE71RyHPjRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730451692; c=relaxed/simple;
-	bh=NwXYkU476LZtGluB4lV1HIV7sAeNYigHhuApbCJpgyI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Q9gGD1X69KGL9gijoyezXrUAXmR9GBDpNNXeDuExDoO8jrqIjbUDlbX6FvcRZ8S/V44u8zyoOha3+vvqrazk9yvONp/2y8O/T1jC5hvdFNqJ/ij3kp2UeCPoRgbLjqhiTKvy3qtOjvGKE1YRAwC5udQ4Q3hQncNXSw5TN97cw58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SBSi1bVc; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1730452287; c=relaxed/simple;
+	bh=4cSB5Cq09W88oLyxZ2Nnt8VK1unVUhcI4RGMh3WtG34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TsmC/1MpQwEgtbEkwIZ/P6lgMuw33E+qOINT0Q9BIPREJLHb5re06YPsTh5/9BSNvl7/cGC9+Xz4AIF3H4iiUJ3J9g69OP1BxRrsjAwNRnOxsc0Jqog1YfMgTixmNFgvFSSqx5YwNjDPl/ugNKA+i9pHMAVi8Ztrwlkrr3Ulwc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cQFSM2YZ; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SBSi1bVc"
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3e607556c83so1005188b6e.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 02:01:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cQFSM2YZ"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d495d217bso1484062f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 02:11:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730451689; x=1731056489; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7hAIS5ePVJ+LyF/EPZq+6vW+8bpoW4OU+Q4L+IGQdhM=;
-        b=SBSi1bVc7QryXZs8t2G/sARAbbQ9L2vsLBD+N1vb+57eOcMGtMbgSrq36ElfUkm/xB
-         XZIpHWU4XmSb2jKAK8gqUOqlKnPEwaWiDLaYlf+xgdiuZYja1TziugX9OFxVKw13N4HN
-         gD4xsGgEw36iPvg8yd68jwC8PtzKE8Bm3J3Z08seOvMcj3kKSi+Ge7zWgP+alFHaprRM
-         rV+eCUW2ChffBkZCF7wxIkIa0/nBN9dYrYUMx2OueBxGc1yBYoBqyWEplkUJcXNig5OT
-         A3osPpKVdgDWF92rZqO6UqqgjsINPAXLNszwKGjLf7RzqpLclfq1NoSI7Vu4qWBt9NGj
-         TQBg==
+        d=google.com; s=20230601; t=1730452284; x=1731057084; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4cSB5Cq09W88oLyxZ2Nnt8VK1unVUhcI4RGMh3WtG34=;
+        b=cQFSM2YZpRrcdOY/Bb4SqJ0YfEysBOQCyp6q1HghPfcP5Wd6x0wp5Z5roXWP1JUROV
+         Q2hh/kJjPcluNosm4k5ocwOi1HVJ/YGN4LU0fiIhcv9obG7nAo6cuCu9f4rkOhzwsKdV
+         nmBjgy9/a5VN24sx99QMc35ZDQd3lfOMYq86HmtXvYOtrahSyl2WjyDPCsFvBrq+7VSG
+         2Od9w8Mi1s+x2S4W8OspuWHWlutbwtlYCqAq0t5EAcZMOtXkfvB5+x1V/pTTJx4LDRov
+         D1TFQd7S4eC6VHfEyueUT+Xx4BFVGf0mxtyAnvXyidYBEiKAfoKVRJI+hi6yiyKnZ/IT
+         6qKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730451689; x=1731056489;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7hAIS5ePVJ+LyF/EPZq+6vW+8bpoW4OU+Q4L+IGQdhM=;
-        b=uX+2uvMd7XgcxMNWh/jBNseero/5YE8kXREkfDn/MBC9jcgdCUjHDq0XVAd6zBfp4u
-         vWFvsecpw/G93sAyyBBnVt13zSD6H7fzTjTilXD7bIx2JxjLSzljL8Z302U/N+CGLYFw
-         xBhlFRK4QIogOMcdkpHBVMts8yd0Vv1gD2+15NzJD/aAgfrXy4L/YsaAJ5FW4+bGNF32
-         twgumz3HFzpohSYbscOlqDaXZ1+yMRmktx2Jlgou1sZiMY5NJ3vmOVvPGHlG5PcFpO0L
-         L0wS8bZW6U7HQvGgqQo8n8juC0J9GVaWFBr1n0DE8ClGOSGtMU4fcd1ewfBnAzGm2RPC
-         5Ddg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIWzCHLk4ZsL3taImqiECiRRv/eGJcFvzKOhRA6SCsh3A5hYHdnVacQZL/D5QPyCt06DaadtBfrGMg4gYfpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAfZe+77Lp++pLyZr4sC9rqekfECFpFoFr/6vJbGhCXtaa49fy
-	dz/QdhnaOKuZh1vNjTx2Jm/qJeVEnRQsDy3FQiD//KdNLeglDpXQnq/Gc9W5H4rBsqlDu6Y3Cj/
-	puP2gatQCjYqjdfQ/vIptwm2PeGuDT7iOzAT/FQ==
-X-Google-Smtp-Source: AGHT+IGaH57iqzcu6+LLy0GxLcoHNVWRsTAHclSdPzMpgspZ7/pcrULQzVzWxa4HnMZnY5zXwOjo7nllXmEuskDaKpw=
-X-Received: by 2002:a05:6808:338b:b0:3e6:3867:b630 with SMTP id
- 5614622812f47-3e63867b653mr18725783b6e.6.1730451689515; Fri, 01 Nov 2024
- 02:01:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1730452284; x=1731057084;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4cSB5Cq09W88oLyxZ2Nnt8VK1unVUhcI4RGMh3WtG34=;
+        b=oN1ixKmB2JJMm7o5S9+ofipvpyvpfBM78nHP4bhgVj69zI0OeoEwFwO7rW0aiGDfRi
+         TKOdbjSuWzBHy9M6MHy7UKSOU9nKUQf5uJZBhwKo7l2+cMNECzlOmkeTUFKKpILgJLJZ
+         I4+iMs1brn4QrvMbqLIOhEVGqEy9zURZcyTx4oO4/aJweM0vSc08eNoZxiPpj+kGRqUV
+         wjrWxWVrR6EVB1BViETJI2AfzpE6oJ1tXMUJAcJ32uGxMrTI8yjzwbmnSpcWLRV52y1V
+         0OYJ8/Y+E/LhT23VS1qZpbpUg0ooKWu5JnZ5AaV2zBdFmzz1t2JxpsoTd+rRNSc9KJpd
+         wfgA==
+X-Gm-Message-State: AOJu0YxKWiQuk0EbffYVETq5ypFvrdSM+JB0XlYs5LXZjubISl7ouRF9
+	zGOYl/1B6qqR6njReWynYpXQvWwJHOoXQ9HA0u+3vxpyYNYWqSFdcy4tKXRNDXoP3z6DE/k2kxl
+	YM5r+LhtiSdL5LeJ8CLskcOIKJeDhG3h/DA00
+X-Google-Smtp-Source: AGHT+IGeAyqZlKGNJOe75qmuPtMi2hgivEI5vof4f8/olpYjnTg2touXC6W+wqreUBykvGeWkUr9TSLb9rFCROm2K8M=
+X-Received: by 2002:a05:6000:178b:b0:37c:c51b:8d9c with SMTP id
+ ffacd0b85a97d-381c7ac412bmr2555766f8f.38.1730452283554; Fri, 01 Nov 2024
+ 02:11:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 1 Nov 2024 14:31:18 +0530
-Message-ID: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
-Subject: next-20241101: rust/kernel/security.rs - error[E0061]: this function
- takes 2 arguments but 3 arguments were supplied
-To: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	rust-for-linux@vger.kernel.org, 
-	Linux Regressions <regressions@lists.linux.dev>
-Cc: Arnd Bergmann <arnd@arndb.de>, aliceryhl@google.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, kees@kernel.org, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
+References: <20241031231025.3466571-1-lyude@redhat.com> <20241031231025.3466571-3-lyude@redhat.com>
+In-Reply-To: <20241031231025.3466571-3-lyude@redhat.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 1 Nov 2024 10:11:11 +0100
+Message-ID: <CAH5fLgh=qgJ-+VzzVn=jGTJUQDx6WSiUaRLYouQknuKkCi05dw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: sync: Make Guard::new() public
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Filipe Xavier <felipe_life@live.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The rustclang-lkftconfig-kselftest builds failed with rust clang on the
-Linux next-20241101 tag.
+On Fri, Nov 1, 2024 at 12:10=E2=80=AFAM Lyude Paul <lyude@redhat.com> wrote=
+:
+>
+> Since we added a Lock::from_raw() function previously, it makes sense to
+> also introduce an interface for creating a Guard from a reference to a Lo=
+ck
+> for instances where we've derived the Lock from a raw pointer and know th=
+at
+> the lock is already acquired, something we do in the KMS API.
+>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-First seen on Linux next-20241101 tag.
-  Good: next-20241031
-  Bad:  next-20241101
-
-arm64:
-  build:
-    * rustclang-lkftconfig-kselftest
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Build log:
----------
-error[E0061]: this function takes 2 arguments but 3 arguments were supplied
-     --> rust/kernel/security.rs:32:28
-      |
-32    |         to_result(unsafe {
-bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
-})?;
-      |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                    ----------- unexpected argument #3 of type `&mut
-u32`
-      |
-note: expected `*mut lsm_context`, found `&mut *mut _`
-     --> rust/kernel/security.rs:32:70
-      |
-32    |         to_result(unsafe {
-bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
-})?;
-      |
-      ^^^^^^^^^^^^
-      = note:    expected raw pointer `*mut bindings::lsm_context`
-              found mutable reference `&mut *mut _`
-note: function defined here
-     --> /home/tuxbuild/.cache/tuxmake/builds/1/build/rust/bindings/bindings_generated.rs:76185:12
-      |
-76185 |     pub fn security_secid_to_secctx(secid: u32_, cp: *mut
-lsm_context) -> core::ffi::c_int;
-      |            ^^^^^^^^^^^^^^^^^^^^^^^^
-help: consider removing the borrow
-      |
-32    -         to_result(unsafe {
-bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
-})?;
-32    +         to_result(unsafe {
-bindings::security_secid_to_secctx(secid, secdata, &mut seclen) })?;
-      |
-help: remove the extra argument
-      |
-32    -         to_result(unsafe {
-bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
-})?;
-32    +         to_result(unsafe {
-bindings::security_secid_to_secctx(secid, /* *mut
-bindings::lsm_context */) })?;
-      |
-
-error[E0061]: this function takes 1 argument but 2 arguments were supplied
-     --> rust/kernel/security.rs:72:18
-      |
-72    |         unsafe {
-bindings::security_release_secctx(self.secdata, self.seclen as u32) };
-      |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  ------------------ unexpected argument #2 of type `u32`
-      |
-note: expected `*mut lsm_context`, found `*mut i8`
-     --> rust/kernel/security.rs:72:52
-      |
-72    |         unsafe {
-bindings::security_release_secctx(self.secdata, self.seclen as u32) };
-      |                                                    ^^^^^^^^^^^^
-      = note: expected raw pointer `*mut bindings::lsm_context`
-                 found raw pointer `*mut i8`
-note: function defined here
-     --> /home/tuxbuild/.cache/tuxmake/builds/1/build/rust/bindings/bindings_generated.rs:76201:12
-      |
-76201 |     pub fn security_release_secctx(cp: *mut lsm_context);
-      |            ^^^^^^^^^^^^^^^^^^^^^^^
-help: remove the extra argument
-      |
-72    -         unsafe {
-bindings::security_release_secctx(self.secdata, self.seclen as u32) };
-72    +         unsafe { bindings::security_release_secctx(/* *mut
-bindings::lsm_context */) };
-      |
-
-error: aborting due to 2 previous errors
-
-For more information about this error, try `rustc --explain E0061`.
-make[3]: *** [rust/Makefile:405: rust/kernel.o] Error 1
-
-Build image:
------------
-- https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/
-- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241101/testrun/25629042/suite/build/test/rustclang-lkftconfig-kselftest/log
-
-Steps to reproduce:
-------------
- - # tuxmake --runtime podman --target-arch arm64 --toolchain rustclang \
-             --kconfig defconfig \
-             --kconfig-add
-https://gitlab.com/Linaro/lkft/kernel-fragments/-/raw/main/systemd.config
-\
-             --kconfig-add tools/testing/selftests/rust/config \
-             LLVM=1 LLVM_IAS=1 TARGETS=rust \
-             debugkernel dtbs dtbs-legacy headers kernel kselftest modules
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/tuxmake_reproducer.sh
-
-metadata:
-----
-  git describe: next-20241101
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-  git sha: c88416ba074a8913cf6d61b789dd834bbca6681c
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/
-  toolchain: rustclang
-  config: defconfig
-  arch: arm64
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
