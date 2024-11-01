@@ -1,191 +1,193 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B98E1494A7;
-	Fri,  1 Nov 2024 07:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738B314B962
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 09:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730444724; cv=none; b=jmqfCTieC+aHOOKkb4r+BgxQmJsJc3qL7Fatz6EgjQlmzFOagAF48CTgGhXtrrGFeDURM6yOivYyXuNd682Nz0lyHHjzEGvR5h1BkP76NJSgGoscVIPdVyv5sXMj07Kjz9VY8PxKdh4QT7z1r6c2KNuLCUmvDYsDECMr7sMbOxY=
+	t=1730451692; cv=none; b=Hwm1zUjtvE8mgy/oItfKEv+9jJ54MRwSl8qTt3qGau6yUd5gYV5uy46cxX1D4/kkNs79c//WfNRqkExngQho4ftIASqHuTpBw3BtGFxAluS6+Ri8+rIOXgmwUdew8XGqL/i+C21VERtDEjxSMoGbtkeisM1mhFnkuq4JPa9gxXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730444724; c=relaxed/simple;
-	bh=ThxAaKztzBi0/cRlZPNliYJwvg/hi15Q8xMYGl3W3fA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nj070xdla1VMfY2rT6xVD72pPZG+n/9u1cLVoRMiDWfWZSNF5vBi96+bluGDWfSwe9MDyLidf8rWuR7ZwdiFMAwITqFi0KawwSb5ES/4KoxdJfA5L9SqRk8LqA0J1LnVCzI+H92ak+3vZnk0Nvoc1tCAiQTi3BSofv7w8IqbN4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBVjOAXc; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730451692; c=relaxed/simple;
+	bh=NwXYkU476LZtGluB4lV1HIV7sAeNYigHhuApbCJpgyI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Q9gGD1X69KGL9gijoyezXrUAXmR9GBDpNNXeDuExDoO8jrqIjbUDlbX6FvcRZ8S/V44u8zyoOha3+vvqrazk9yvONp/2y8O/T1jC5hvdFNqJ/ij3kp2UeCPoRgbLjqhiTKvy3qtOjvGKE1YRAwC5udQ4Q3hQncNXSw5TN97cw58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SBSi1bVc; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBVjOAXc"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6cc2ea27a50so24210786d6.0;
-        Fri, 01 Nov 2024 00:05:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SBSi1bVc"
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3e607556c83so1005188b6e.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Nov 2024 02:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730444721; x=1731049521; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CeRtSAMS9mSdK5Z3YnzN1Gk/iNcxNQ7vtANptzs5s5s=;
-        b=KBVjOAXcWCexCu+G2KqhxQzfb2JOdXzNpnggaysw6apOFIGb7wvGFcRYUI7e71Go7y
-         REDznD85wYKUxpZDtinEVHMjjLDoPheLi+dV71tNGf5hyDCjNcbfjH91/2YM1NevGwpX
-         Bz/nX88xoDAYYRN/u0LLq8EvWMG1ScHtkLqeXMNWIpb3FlR9th4OVnNK8/f9C1D1w06x
-         86SsSucgDi3BjzHCRV63+7zBZz8LU/kOzjYhviMkRfTLp6X1Ud+F1swHhQFluekAftre
-         v9m+qwrlFK+BI/xB3NbZvCPNTrGU+nXy6sJBnjpTUmD9kfms5ofV5GINl3PBxOB7/aPc
-         CWLg==
+        d=linaro.org; s=google; t=1730451689; x=1731056489; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7hAIS5ePVJ+LyF/EPZq+6vW+8bpoW4OU+Q4L+IGQdhM=;
+        b=SBSi1bVc7QryXZs8t2G/sARAbbQ9L2vsLBD+N1vb+57eOcMGtMbgSrq36ElfUkm/xB
+         XZIpHWU4XmSb2jKAK8gqUOqlKnPEwaWiDLaYlf+xgdiuZYja1TziugX9OFxVKw13N4HN
+         gD4xsGgEw36iPvg8yd68jwC8PtzKE8Bm3J3Z08seOvMcj3kKSi+Ge7zWgP+alFHaprRM
+         rV+eCUW2ChffBkZCF7wxIkIa0/nBN9dYrYUMx2OueBxGc1yBYoBqyWEplkUJcXNig5OT
+         A3osPpKVdgDWF92rZqO6UqqgjsINPAXLNszwKGjLf7RzqpLclfq1NoSI7Vu4qWBt9NGj
+         TQBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730444721; x=1731049521;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CeRtSAMS9mSdK5Z3YnzN1Gk/iNcxNQ7vtANptzs5s5s=;
-        b=AjuERcGMAme3mlskIXqHsn2rBEAo/7QiONToEHupAEUG/nAsdzO0c5KjPpNFNK2jEm
-         Fg8T2Pw13FW4fuW9q4qSgSArA8DgeeIzYrA9bn0tldROoVDZnyfu2TIZSfS8+o1Favd6
-         OD72/oW00tu7fwxKgO+w5XQcQt88w+wjk/JFyV68yiihmnwq7tC6t+y0liBGSvK5hcVZ
-         UC4LPukjCeLOybAmhzkAGNlKGpkyu4ypL8cxWhVpna0jxq4bJdpE0BaltQ0onmVpWp45
-         gbFyDoVzLOLKsyOSsSJD5n9GacLHHlW6qRicw//+YB524WQ0kE0K9b8fGGP+EX18CXQ0
-         nCyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVaAOC21FyDtN3YIOWYh/ByLFOPYGowcQ4UKs5Mqv78he1ke4Wm1YrdZifbudJpoE2Z73AL7vF/aaVM7V03ZQ==@vger.kernel.org, AJvYcCViM6D1W8GJzBJm2GHaDzk7c8dFDYaiv9E46N7j2KSdl5chWsvGat6ekFUiVfQPsd9DLT3E@vger.kernel.org, AJvYcCWPrPQDfQPUl63g8YGmsZmiuGPcNPYxvhTh/xraf8Sh3X8+zRnjNRaoRWIadUyVJxgBh0OJgjviHH8AIHzK@vger.kernel.org, AJvYcCXcrs70+fXUU0EubW3zmBKBZYSkoAdRmStISrHg318O8HuqhrZsUET88GmCQf5HHYjcNJeqAZpMvvKi@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGhEQX0En9zMT8UnvmSte8c0Vd0ZXrpQxoH0aEUyHO+qDpg+6w
-	6SRoOZGuboNT8x64U2dNWQprH7/QLk0gxqLBDO2cHM3sB+Uv8BoGlBeiVoFI
-X-Google-Smtp-Source: AGHT+IFrsBo99R77+QegcYKVQJQa7o75kxQSDycQVpMwSj1BelPv4m5AvmbCAqFWjQIDvFEi2jWTGQ==
-X-Received: by 2002:a0c:c682:0:b0:6d1:6fae:6451 with SMTP id 6a1803df08f44-6d3542aa362mr74394476d6.10.1730444721125;
-        Fri, 01 Nov 2024 00:05:21 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d353f9f4e4sm16288896d6.10.2024.11.01.00.05.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 00:05:20 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4AB8A1200043;
-	Fri,  1 Nov 2024 03:05:20 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Fri, 01 Nov 2024 03:05:20 -0400
-X-ME-Sender: <xms:sH0kZ08A3ouC4fowzy8CSGkVPjbjWmcH-KuAODKOAsrCLPXJl3Z70A>
-    <xme:sH0kZ8s3lxTPyi2hDzujZuvrhYp-WVf8-Sf965vl8Mk3R2lql72y6v2VufyoFEwaz
-    oOXSs2tRAG9rZPtcw>
-X-ME-Received: <xmr:sH0kZ6B7BxHG5qIwZWa1yZDfbd6nweSSBw-d-22bBr5sYk5gUgAUybdtWTM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekkedguddttdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeehkedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehrtghusehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhlvhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhk
-    mhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepohhjvggurgeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtgho
-    mh
-X-ME-Proxy: <xmx:sH0kZ0fPpPWT-ZMfAxLmoGiEJHvS0eh430pWhKA5tKb98M7sCRzotQ>
-    <xmx:sH0kZ5PPHY1qYd6c1_1iUjnQTJ0cl6EE16KaUf7P8wfTPdmLjVqmlg>
-    <xmx:sH0kZ-kPmjSKwJbiG5nyq4rQA1UfTXHPU9ulFdJ5SBKWQExnooNYpg>
-    <xmx:sH0kZ7utTfsVwCtwWjp_A8pra2-EkoBQjbUGOpgE0RhPKsLrU44XVQ>
-    <xmx:sH0kZ3vHPSUXZMOXlCAjhtq15r6J38ifscptCou0h_BaMU1BRYJYHLol>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 Nov 2024 03:05:19 -0400 (EDT)
-Date: Fri, 1 Nov 2024 00:04:09 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: David Gow <davidgow@google.com>
-Cc: rust-for-linux@vger.kernel.org, rcu@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev, lkmm@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
- linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org,
- Trevor Gross <tmgross@umich.edu>,	dakr@redhat.com,
- Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,	Albert Ou <aou@eecs.berkeley.edu>,
- linux-riscv@lists.infradead.org
-Subject: Re: [RFC v2 11/13] rust: sync: Add memory barriers
-Message-ID: <ZyR9aTAhtCdpdC-h@boqun-archlinux>
-References: <20241101060237.1185533-1-boqun.feng@gmail.com>
- <20241101060237.1185533-12-boqun.feng@gmail.com>
- <CABVgOSn1eeZo7HggJYNEzzuGGpKABF=NbyMZLQbNjRwCAKXY-w@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1730451689; x=1731056489;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7hAIS5ePVJ+LyF/EPZq+6vW+8bpoW4OU+Q4L+IGQdhM=;
+        b=uX+2uvMd7XgcxMNWh/jBNseero/5YE8kXREkfDn/MBC9jcgdCUjHDq0XVAd6zBfp4u
+         vWFvsecpw/G93sAyyBBnVt13zSD6H7fzTjTilXD7bIx2JxjLSzljL8Z302U/N+CGLYFw
+         xBhlFRK4QIogOMcdkpHBVMts8yd0Vv1gD2+15NzJD/aAgfrXy4L/YsaAJ5FW4+bGNF32
+         twgumz3HFzpohSYbscOlqDaXZ1+yMRmktx2Jlgou1sZiMY5NJ3vmOVvPGHlG5PcFpO0L
+         L0wS8bZW6U7HQvGgqQo8n8juC0J9GVaWFBr1n0DE8ClGOSGtMU4fcd1ewfBnAzGm2RPC
+         5Ddg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIWzCHLk4ZsL3taImqiECiRRv/eGJcFvzKOhRA6SCsh3A5hYHdnVacQZL/D5QPyCt06DaadtBfrGMg4gYfpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAfZe+77Lp++pLyZr4sC9rqekfECFpFoFr/6vJbGhCXtaa49fy
+	dz/QdhnaOKuZh1vNjTx2Jm/qJeVEnRQsDy3FQiD//KdNLeglDpXQnq/Gc9W5H4rBsqlDu6Y3Cj/
+	puP2gatQCjYqjdfQ/vIptwm2PeGuDT7iOzAT/FQ==
+X-Google-Smtp-Source: AGHT+IGaH57iqzcu6+LLy0GxLcoHNVWRsTAHclSdPzMpgspZ7/pcrULQzVzWxa4HnMZnY5zXwOjo7nllXmEuskDaKpw=
+X-Received: by 2002:a05:6808:338b:b0:3e6:3867:b630 with SMTP id
+ 5614622812f47-3e63867b653mr18725783b6e.6.1730451689515; Fri, 01 Nov 2024
+ 02:01:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABVgOSn1eeZo7HggJYNEzzuGGpKABF=NbyMZLQbNjRwCAKXY-w@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 1 Nov 2024 14:31:18 +0530
+Message-ID: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
+Subject: next-20241101: rust/kernel/security.rs - error[E0061]: this function
+ takes 2 arguments but 3 arguments were supplied
+To: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	rust-for-linux@vger.kernel.org, 
+	Linux Regressions <regressions@lists.linux.dev>
+Cc: Arnd Bergmann <arnd@arndb.de>, aliceryhl@google.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Paul Moore <paul@paul-moore.com>, kees@kernel.org, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Nov 01, 2024 at 02:55:23PM +0800, David Gow wrote:
-> On Fri, 1 Nov 2024 at 14:07, Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Memory barriers are building blocks for concurrent code, hence provide
-> > a minimal set of them.
-> >
-> > The compiler barrier, barrier(), is implemented in inline asm instead of
-> > using core::sync::atomic::compiler_fence() because memory models are
-> > different: kernel's atomics are implemented in inline asm therefore the
-> > compiler barrier should be implemented in inline asm as well.
-> >
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > ---
-> >  rust/helpers/helpers.c      |  1 +
-> >  rust/kernel/sync.rs         |  1 +
-> >  rust/kernel/sync/barrier.rs | 67 +++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 69 insertions(+)
-> >  create mode 100644 rust/kernel/sync/barrier.rs
-> >
-> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > index ab5a3f1be241..f4a94833b29d 100644
-> > --- a/rust/helpers/helpers.c
-> > +++ b/rust/helpers/helpers.c
-> > @@ -8,6 +8,7 @@
-> >   */
-> >
-> >  #include "atomic.c"
-> > +#include "barrier.c"
-> 
-> It looks like "barrier.c" is missing, so this isn't compiling for me.
-> I assume it was meant to be added in this patch...?
-> 
+The rustclang-lkftconfig-kselftest builds failed with rust clang on the
+Linux next-20241101 tag.
 
-Yes, I just send an updated one.
+First seen on Linux next-20241101 tag.
+  Good: next-20241031
+  Bad:  next-20241101
 
-Glad being "checking missing files" buddies with you ;-) Thanks!
+arm64:
+  build:
+    * rustclang-lkftconfig-kselftest
 
-Regards,
-Boqun
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> Thanks,
-> -- David
+Build log:
+---------
+error[E0061]: this function takes 2 arguments but 3 arguments were supplied
+     --> rust/kernel/security.rs:32:28
+      |
+32    |         to_result(unsafe {
+bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
+})?;
+      |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    ----------- unexpected argument #3 of type `&mut
+u32`
+      |
+note: expected `*mut lsm_context`, found `&mut *mut _`
+     --> rust/kernel/security.rs:32:70
+      |
+32    |         to_result(unsafe {
+bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
+})?;
+      |
+      ^^^^^^^^^^^^
+      = note:    expected raw pointer `*mut bindings::lsm_context`
+              found mutable reference `&mut *mut _`
+note: function defined here
+     --> /home/tuxbuild/.cache/tuxmake/builds/1/build/rust/bindings/bindings_generated.rs:76185:12
+      |
+76185 |     pub fn security_secid_to_secctx(secid: u32_, cp: *mut
+lsm_context) -> core::ffi::c_int;
+      |            ^^^^^^^^^^^^^^^^^^^^^^^^
+help: consider removing the borrow
+      |
+32    -         to_result(unsafe {
+bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
+})?;
+32    +         to_result(unsafe {
+bindings::security_secid_to_secctx(secid, secdata, &mut seclen) })?;
+      |
+help: remove the extra argument
+      |
+32    -         to_result(unsafe {
+bindings::security_secid_to_secctx(secid, &mut secdata, &mut seclen)
+})?;
+32    +         to_result(unsafe {
+bindings::security_secid_to_secctx(secid, /* *mut
+bindings::lsm_context */) })?;
+      |
 
+error[E0061]: this function takes 1 argument but 2 arguments were supplied
+     --> rust/kernel/security.rs:72:18
+      |
+72    |         unsafe {
+bindings::security_release_secctx(self.secdata, self.seclen as u32) };
+      |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ------------------ unexpected argument #2 of type `u32`
+      |
+note: expected `*mut lsm_context`, found `*mut i8`
+     --> rust/kernel/security.rs:72:52
+      |
+72    |         unsafe {
+bindings::security_release_secctx(self.secdata, self.seclen as u32) };
+      |                                                    ^^^^^^^^^^^^
+      = note: expected raw pointer `*mut bindings::lsm_context`
+                 found raw pointer `*mut i8`
+note: function defined here
+     --> /home/tuxbuild/.cache/tuxmake/builds/1/build/rust/bindings/bindings_generated.rs:76201:12
+      |
+76201 |     pub fn security_release_secctx(cp: *mut lsm_context);
+      |            ^^^^^^^^^^^^^^^^^^^^^^^
+help: remove the extra argument
+      |
+72    -         unsafe {
+bindings::security_release_secctx(self.secdata, self.seclen as u32) };
+72    +         unsafe { bindings::security_release_secctx(/* *mut
+bindings::lsm_context */) };
+      |
 
+error: aborting due to 2 previous errors
+
+For more information about this error, try `rustc --explain E0061`.
+make[3]: *** [rust/Makefile:405: rust/kernel.o] Error 1
+
+Build image:
+-----------
+- https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241101/testrun/25629042/suite/build/test/rustclang-lkftconfig-kselftest/log
+
+Steps to reproduce:
+------------
+ - # tuxmake --runtime podman --target-arch arm64 --toolchain rustclang \
+             --kconfig defconfig \
+             --kconfig-add
+https://gitlab.com/Linaro/lkft/kernel-fragments/-/raw/main/systemd.config
+\
+             --kconfig-add tools/testing/selftests/rust/config \
+             LLVM=1 LLVM_IAS=1 TARGETS=rust \
+             debugkernel dtbs dtbs-legacy headers kernel kselftest modules
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/tuxmake_reproducer.sh
+
+metadata:
+----
+  git describe: next-20241101
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+  git sha: c88416ba074a8913cf6d61b789dd834bbca6681c
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2oEm06IqsdrtzGl1UIGSDghznWx/
+  toolchain: rustclang
+  config: defconfig
+  arch: arm64
+
+--
+Linaro LKFT
+https://lkft.linaro.org
