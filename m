@@ -1,224 +1,230 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE808154C0B
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 06:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FC013C8EA
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Nov 2024 06:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730443527; cv=none; b=B1pCLIqFfsHKcksEYOe1L1x0n9PlhWCDY9Oroxh7CQjYySjTHemdO9jglpNyX/oORKF/JO1s5Qtn9DWZfOvp27fKAI+qXPfungoZT27Q9Ywv4bZ8SImoR1Msh7BMvn7z1hOSczMbRu9+HZ/HNgd4MhER95UPzaSYhDbZlcpkHEY=
+	t=1730444138; cv=none; b=agdw+FsIXVwQngb7hTL8+fvCBoic6oXpAHhgkohHbGaUwjNFEOiN8jqx78jiXO1Ofm8I2quWBpRnZKD9+xLCXiGDyeuICxzYWqoVvWqhGaV1CTtMOSRmnMXOugGegr0QCm0YW/keitNfqV6hkuXYQj6wrMJirqI8xSrf4OqHxqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730443527; c=relaxed/simple;
-	bh=f3EQWER6RRuCLdLa6B3j/75NplNWzvD63Oagrzez9Kg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oviGDYZdaCf4TOLFtTm6UqX34KadZcqVHF7IVAgGXPvRM8qcfoSZeUY19O9/cPz9jNYQWnUpXsnOGBmwi5uviDzTgstF1+7j1EmlJx2/+NmI05Tb8foP67i6/9+peSfAaR4ZHQz9PQdIkBeTMeSqAdddAdX6qah6g/KugU1zIFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0FBm8o7; arc=none smtp.client-ip=209.85.219.201
+	s=arc-20240116; t=1730444138; c=relaxed/simple;
+	bh=8Xro1hB++ffFQy+q1GZAqj/yRPSmg9dGVO9tZ+ibpFY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UafRnPEhfDWgCx1hsOwsBJl2q4XUc0PZAaRDRcEA6qVLsVUf2108GW/8MP7dUD/hzQE8m4xuwi95O8k2G5dkDSD1uJ1LFjvyLQmr83YdP3XzWLm6NThxyV7t37DIzJ1NwrnNGQkQ3ViRVGSVa72LrkPE7Ddwhd79FDZP72rlX9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VapPZq+/; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0FBm8o7"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e2b9f2c6559so2728922276.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 23:45:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VapPZq+/"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7b154f71885so124571485a.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 31 Oct 2024 23:55:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730443524; x=1731048324; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lHPJiykftORb/g35WFmCs+9SKBvzp/KNUqXI3sEF0e8=;
-        b=H0FBm8o75WDSOJooUUCigqPjMN3jae5MqpmZunAzEgBkm6gJ5vbwxfhq+yKMVTvleH
-         6Wgc5bsj7iVTFbtCt+xBIQLohnIL68AQJlj1qtD2tuOWBWCEoM+xXulN5cF4PDavEGjT
-         BY3iD0BkUqTXzoI9v4K8gHp+Qp4x4AjYPCahqf/m5gHnOqyBhEp/CkzW1oEVfjNisAqz
-         wfUiU2PkB8X1C7hvzk/t8mLIIkNJF7zclY3M81JI/p5sFJGBYJkXON/ktQbhrN9B7y7M
-         2WnqMp/HzSgCZd6JAaye4Pstz2ghkF63RktuA11RM+OwsWsIO85tgTCTNX70ivF+CbYD
-         o8uw==
+        d=google.com; s=20230601; t=1730444135; x=1731048935; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RTqxkaMfELcSfTB4vYJYvqSZqkdyNNe/IMEvTNuVgV4=;
+        b=VapPZq+/OwUDj37m7zhIaagOSoh8prRMY8yTHTMI7voyUJiL5WLIZ1SCDYQvuhKtvi
+         TEpovySFNKSXLNhwVyxDYuGpzHeIYEqz5VglAd/D0bkUpG4mK2/gu3HwrVIY3T4HfQ2x
+         vymmWbCYnhmsnEX8c24VCw9LgD6WgAxHGIN1kofzPRaw0NwtKdNUNa1+GuumOWkR5bfN
+         bYNsN8qLov8h1CUjFjVlZF7kFqXbMsFh7GYDZIrE8OeIzg6MHS+A9gYjFynAzh5OiM7V
+         2zc2FgpsjAcB7yyVIyvyoON0lR1TY6y7FOcH1/3LZWZDPsUPN4lZm+pENbmjfoA8ex0L
+         kAdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730443524; x=1731048324;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lHPJiykftORb/g35WFmCs+9SKBvzp/KNUqXI3sEF0e8=;
-        b=bSbBhR2c+u/CuAg4p3Whi6Tir9omzINFTEiOfx9Ian6FOufRLQ56MdEPsL9JwqWB+y
-         4CS1xAsH9EiPlsVYREYvMT7gJnVTbDWVkR6JHf2lZjkBbHXgX7oPtId2ntTOrSaafdTo
-         LvxGlAtbbHvtJs+O1gUimknT5ORr/eqaYqp2+qBhLPjJh/Dz7p1s90Gsic9FsLyKGR0M
-         PKpu/+fhgjPffL1JEIJmsRxg1IHvqj2eSlFt8m1X1pniv4cVfK0/kfFkN1Dxgn6C2kSg
-         8QfKhBBLC2gpjWi5DAB4PiAhBktMEszbJfXkdX3wkR6umd17kXTbS8d/WT57yBkEn9Ac
-         itCA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxNzDZ2giAKKrpCAChUzvnW59zOjmyf8EYW6KKYhfqRc0UsO20IvVJ1pR1oBZzMt/WQ4got7lPbMGQfXt7sQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywa1+OiEirthya3FwD8pg3PZ7bfuSoQo/PHc4aY4PCFDlK0dUVg
-	LNZXyh20eK9O2BSTHbPrzvnXgudWF6w4Z8mFA7LZtlAulzH7AI7c5uC0YAS5NVe3EbdgBZ76oOh
-	DrdNyTsOK8w==
-X-Google-Smtp-Source: AGHT+IEIXo3M6l3NU9Qv2uOCk9CnzdlHFgd4U1XPtBHdD4Ek09zM+pvRo5MbMvTvDW7Nu3Tut9Zu4gtndT2qHg==
-X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:b1:7045:ac11:6237])
- (user=davidgow job=sendgmr) by 2002:a25:aa83:0:b0:e30:c235:d79f with SMTP id
- 3f1490d57ef6-e30e5b282d1mr2857276.8.1730443523956; Thu, 31 Oct 2024 23:45:23
- -0700 (PDT)
-Date: Fri,  1 Nov 2024 14:45:02 +0800
-In-Reply-To: <20241101064505.3820737-1-davidgow@google.com>
+        d=1e100.net; s=20230601; t=1730444135; x=1731048935;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RTqxkaMfELcSfTB4vYJYvqSZqkdyNNe/IMEvTNuVgV4=;
+        b=Udo5kHT1nKcUxcm1hDUSBwusR5A5NHud5B01FWX2ZnaELKVm+9ZxJBQ2fTklg4QqHy
+         BZ0odwkFAAEfJAkPNvCH06MANvZRcUsY/SXRfm9tdx25ZcY5SLsx2uz/WF0I2VU3yJX4
+         WVd/gT/0TD02juYNxLYmrH75bYZ8wRxHwekUS3WZAdzBvsju0VyKOFe1ZFbzAXLa1vLS
+         jopygwBpsaJ+LPPSeuyOhkDSBdbpWJzrmYmJZnZJjIZ7NTcixVCezPk8G86kInHK03rZ
+         v18ZpRbN2fTKOmAnkKT5JTYOqCKyqaspGoqI9rioq0bAnu2G5uy+XLtrKoxhBk03Oq2T
+         68DA==
+X-Gm-Message-State: AOJu0YwVFNxvo5z3A+j1X2CUar2YqdSEEi45jwCM+ZOhqmPHA+yaR6r6
+	ofVT2oaGCZrAEuJGsHCi0hr5nQkAkroih1hhNKbTP0/+RsgGWMAwVeSAI/w5h+kgP3anCttvJlA
+	bejNhrtiQyjRGQ/ITFhnx9Uj7Et9ss7E1sqC7
+X-Google-Smtp-Source: AGHT+IE4S7Q0h8OJ2H3g3I/XFhR9utnXmELEKEYRR2BzZ8Cx10/IIjWI/q+ZZ+LLbQu427yMJ/JljGi2TFBj5lE9ZAM=
+X-Received: by 2002:a05:6214:5b02:b0:6cb:5605:ffb2 with SMTP id
+ 6a1803df08f44-6d35c14e001mr31591696d6.24.1730444134988; Thu, 31 Oct 2024
+ 23:55:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241101064505.3820737-1-davidgow@google.com>
-X-Mailer: git-send-email 2.47.0.199.ga7371fff76-goog
-Message-ID: <20241101064505.3820737-4-davidgow@google.com>
-Subject: [PATCH v4 3/3] rust: kunit: allow to know if we are in a test
+MIME-Version: 1.0
+References: <20241101060237.1185533-1-boqun.feng@gmail.com> <20241101060237.1185533-12-boqun.feng@gmail.com>
+In-Reply-To: <20241101060237.1185533-12-boqun.feng@gmail.com>
 From: David Gow <davidgow@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, 
-	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Matt Gilbride <mattgilbride@google.com>
-Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Gow <davidgow@google.com>
+Date: Fri, 1 Nov 2024 14:55:23 +0800
+Message-ID: <CABVgOSn1eeZo7HggJYNEzzuGGpKABF=NbyMZLQbNjRwCAKXY-w@mail.gmail.com>
+Subject: Re: [RFC v2 11/13] rust: sync: Add memory barriers
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	llvm@lists.linux.dev, lkmm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
+	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	Trevor Gross <tmgross@umich.edu>, dakr@redhat.com, 
+	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000ffecae0625d46b50"
+
+--000000000000ffecae0625d46b50
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+On Fri, 1 Nov 2024 at 14:07, Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> Memory barriers are building blocks for concurrent code, hence provide
+> a minimal set of them.
+>
+> The compiler barrier, barrier(), is implemented in inline asm instead of
+> using core::sync::atomic::compiler_fence() because memory models are
+> different: kernel's atomics are implemented in inline asm therefore the
+> compiler barrier should be implemented in inline asm as well.
+>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+>  rust/helpers/helpers.c      |  1 +
+>  rust/kernel/sync.rs         |  1 +
+>  rust/kernel/sync/barrier.rs | 67 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 69 insertions(+)
+>  create mode 100644 rust/kernel/sync/barrier.rs
+>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index ab5a3f1be241..f4a94833b29d 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -8,6 +8,7 @@
+>   */
+>
+>  #include "atomic.c"
+> +#include "barrier.c"
 
-In some cases, we need to call test-only code from outside the test
-case, for example, to mock a function or a module.
+It looks like "barrier.c" is missing, so this isn't compiling for me.
+I assume it was meant to be added in this patch...?
 
-In order to check whether we are in a test or not, we need to test if
-`CONFIG_KUNIT` is set.
-Unfortunately, we cannot rely only on this condition because:
-- a test could be running in another thread,
-- some distros compile KUnit in production kernels, so checking at runtime
-  that `current->kunit_test !=3D NULL` is required.
+Thanks,
+-- David
 
-Forturately, KUnit provides an optimised check in
-`kunit_get_current_test()`, which checks CONFIG_KUNIT, a global static
-key, and then the current thread's running KUnit test.
+--000000000000ffecae0625d46b50
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Add a safe wrapper function around this to know whether or not we are in
-a KUnit test and examples showing how to mock a function and a module.
-
-Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
----
-
-Changes since v3:
-https://lore.kernel.org/linux-kselftest/20241030045719.3085147-8-davidgow@g=
-oogle.com/
-- The example test has been updated to no longer use assert_eq!() with
-  a constant bool argument (fixes a clippy warning).
-
-No changes since v2:
-https://lore.kernel.org/linux-kselftest/20241029092422.2884505-4-davidgow@g=
-oogle.com/
-
-Changes since v1:
-https://lore.kernel.org/lkml/20230720-rustbind-v1-3-c80db349e3b5@google.com=
-/
-- Rebased on top of rust-next.
-- Use the `kunit_get_current_test()` C function, which wasn't previously
-  available, instead of rolling our own.
-- (Thanks also to Boqun for suggesting a nicer way of implementing this,
-  which I tried, but the `kunit_get_current_test()` version obsoleted.)
-
----
- rust/kernel/kunit.rs | 72 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 71ce1d145be8..ad38d6d62446 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -276,10 +276,82 @@ macro_rules! kunit_unsafe_test_suite {
-     };
- }
-=20
-+/// In some cases, you need to call test-only code from outside the test c=
-ase, for example, to
-+/// create a function mock. This function can be invoked to know whether w=
-e are currently running a
-+/// KUnit test or not.
-+///
-+/// # Examples
-+///
-+/// This example shows how a function can be mocked to return a well-known=
- value while testing:
-+///
-+/// ```
-+/// # use kernel::kunit::in_kunit_test;
-+/// #
-+/// fn fn_mock_example(n: i32) -> i32 {
-+///     if in_kunit_test() {
-+///         100
-+///     } else {
-+///         n + 1
-+///     }
-+/// }
-+///
-+/// let mock_res =3D fn_mock_example(5);
-+/// assert_eq!(mock_res, 100);
-+/// ```
-+///
-+/// Sometimes, you don't control the code that needs to be mocked. This ex=
-ample shows how the
-+/// `bindings` module can be mocked:
-+///
-+/// ```
-+/// // Import our mock naming it as the real module.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// use bindings_mock_example as bindings;
-+///
-+/// // This module mocks `bindings`.
-+/// mod bindings_mock_example {
-+///     use kernel::kunit::in_kunit_test;
-+///     use kernel::bindings::u64_;
-+///
-+///     // Make the other binding functions available.
-+///     pub(crate) use kernel::bindings::*;
-+///
-+///     // Mock `ktime_get_boot_fast_ns` to return a well-known value when=
- running a KUnit test.
-+///     pub(crate) unsafe fn ktime_get_boot_fast_ns() -> u64_ {
-+///         if in_kunit_test() {
-+///             1234
-+///         } else {
-+///             unsafe { kernel::bindings::ktime_get_boot_fast_ns() }
-+///         }
-+///     }
-+/// }
-+///
-+/// // This is the function we want to test. Since `bindings` has been moc=
-ked, we can use its
-+/// // functions seamlessly.
-+/// fn get_boot_ns() -> u64 {
-+///     unsafe { bindings::ktime_get_boot_fast_ns() }
-+/// }
-+///
-+/// let time =3D get_boot_ns();
-+/// assert_eq!(time, 1234);
-+/// ```
-+pub fn in_kunit_test() -> bool {
-+    // SAFETY: kunit_get_current_test() is always safe to call from C (it =
-has fallbacks for
-+    // when KUnit is not enabled), and we're only comparing the result to =
-NULL.
-+    unsafe { !bindings::kunit_get_current_test().is_null() }
-+}
-+
- #[kunit_tests(rust_kernel_kunit)]
- mod tests {
-+    use super::*;
-+
-     #[test]
-     fn rust_test_kunit_example_test() {
-         assert_eq!(1 + 1, 2);
-     }
-+
-+    #[test]
-+    fn rust_test_kunit_in_kunit_test() {
-+        let in_kunit =3D in_kunit_test();
-+        assert!(in_kunit);
-+    }
- }
---=20
-2.47.0.199.ga7371fff76-goog
-
+MIIUqgYJKoZIhvcNAQcCoIIUmzCCFJcCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+erg7AgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFKFQnbTpSq0q
+cOYnlrbegXJIIvA6MFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBR
+nRJBmUP+IpudtmSQ/R55Sv0qv8TO9zHTlIdsIf2Gc/zeCi0SamUQkFWb01d7Q+20kcpxNzwV6M7y
+hDRk5uuVFvtVxOrmbhflCo0uBpD9vz/symtfJYZLNyvSDi1PIVrwGNpyRrD0W6VQJxzzsBTwsO+S
+XWN3+x70+QDf7+zovW7KF0/y8QYD6PIN7Y9LRUXct0HKhatkHmO3w6MSJatnqSvsjffIwpNecUMo
+h10c6Etz17b7tbGdxdxLw8njN+UnfoFp3v4irrafB6jkArRfsR5TscZUUKej0ihl7mXEKUBmClkP
+ndcbXHFxS6WTkpjvl7Jjja8DdWJSJmdEWUnFjnQnDrqLqvYjeVMS/8IBF57eyT6yEPrMzA+Zd+f5
+hnM7HuBSGvVHv+c/rlHVp0S364DBGXj11obl7nKgL9D59QwC5/kNJ1whoKwsATUSepanzALdOTn3
+BavXUVE38e4c90il44T1bphqtLfmHZ1T5ZwxjtjzNMKy0Mb9j/jcFxfibCISYbnk661FBe38bhYj
+0DhqINx2fw0bwhpfFGADOZDe5DVhI7AIW/kEMHuIgAJ/HPgyn1+tldOPWiFLQbTNNBnfGv9sDPz0
+hWV2vSAXq35i+JS06BCkbGfE5ci6zFy4pt8fmqMGKFH/t3ELCTYo116lqUTDcVC8DAWN8E55aDGC
+AmowggJmAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAZ6Vqszmp/3gGFW0sCFu
+eDANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgnAZSTbUKSVwXFX+K1mtOMX8DKU2j
+RJnF4AfAllZWGlMwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQx
+MTAxMDY1NTM1WjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
+BAIBMA0GCSqGSIb3DQEBAQUABIIBAK12YcHU7tsM0oQvmjsFpbUkdCoOs8KrOx0ZIGQb1QQOj+Fz
+RsULjZEVJfCzBZz0IVMaxTNzrGErk7rtE4BX42UPfBtQe8zppg19OTNG2+t1AClH8XN4ltTV+rgT
+gfj0XWYBzMvopFa2mTe8vpge4kJhZ+ztidvj33oerdCcDbP5fbVxcHNC35y/sOv3nGaff334isXm
+Ozp5Qghkv5rX/0qq7w/Qtnumwi4gd8i8sLrACEAt/d8zf/3AJS/wT53cpJmYNojpiSonSwrDGtU7
+6XzNihCYQeM/yW9cM+QYDSYKNZHGTTZgsWaxr6lfYMERgK6VPnAcD+MI1tdVz840b80=
+--000000000000ffecae0625d46b50--
