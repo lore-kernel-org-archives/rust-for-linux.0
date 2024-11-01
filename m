@@ -1,151 +1,118 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C4A1E47A5;
-	Fri,  1 Nov 2024 21:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C108619B3E3;
+	Fri,  1 Nov 2024 21:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730497101; cv=none; b=u9WCkp9rig2DnslMRg9yV/FkBBMsRDq7/YIO8Rilgg88jRD1r724y2soUJwYjP1fwXUMqTiRwrV9mamjBgP2IOB48XfS4ySJw+SSccvh1plP8A1kxat76PGpBm5wiBtq7WPGExUtkApYZomnYCW05phykpCzweigf3e/12mHI2Y=
+	t=1730498012; cv=none; b=ivENLGJmibTmj4tN2+lf/oXVcU2/8WT1XP0nRk4Ts4DVduyLKoTiIIiTwleaNme2dIJSDV/8WYEyLfWezRXVA+cnB8t3wm6hCraTE/YBAIKRVqnT9Hekv5uL5grPj9GOTM8tzYfFF1qAfZR9kQc/6O0FMs7iFd4GpR/luogFYNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730497101; c=relaxed/simple;
-	bh=NaUGQoO+qua7rt17PrqWsXidf3yvC6bM0P7qWmzWNvQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aiwp+prRCKvYaTswJOyxj58UJW28lnYG1G/q3wykIPMgOn2Jj3cDQHW7bcuYGQT6Vb+OMOHQplq0fKBWSM2mIVnGbiGyBSst5Ix1p5DSzys5fBvUhoNIH6EGaTCJHggZtZa7/ufSXG3qRzVyvaP5RqF5yQpGRs5D68UH4g6DS3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkGTGYk/; arc=none smtp.client-ip=209.85.160.179
+	s=arc-20240116; t=1730498012; c=relaxed/simple;
+	bh=IZdZ6VXEanQmS5aew0GTy+jBEAFwB31oJoDQbvCC9c4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HPODW3AE56qTYxan97kUkbfFpejgeXggi2Gx4e/lrfVHhtq4hI5N7GMIZIKjsnTrCm/a6McVZ50LBoMDLCmBGc7ExLmpc3fK59AmueP81xN2Q3FBHQeGXEz7qvPycnG+7wUeliQ5WbB2QAQ8Tvfmx2ar+OzPSo09axI+WK5MYOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OVs+geFY; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkGTGYk/"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-460e6d331d6so15129581cf.2;
-        Fri, 01 Nov 2024 14:38:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OVs+geFY"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20c9d8563cbso1720205ad.2;
+        Fri, 01 Nov 2024 14:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730497099; x=1731101899; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1730498010; x=1731102810; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xCOILmRNqBE6ZWY1p4IX8uvti1SM8oZ7fsEHU+TvcSA=;
-        b=CkGTGYk/XJ4M+jEfKLmfc3G65Gc5dXlCAcLst7nghrKqnsWDparsXJzSAUsEDo+wXN
-         LFM3FLOygfMaZRTzKRD/CCKyKcFE8e+NHrkO2KP5lfMWCeRAtCQqGfV+nNvxTODQOpQZ
-         JzsLkJ5TiVI05rbtBbb4gsYvRLbvfld2MXDhacKoLJC6QiL9Zkc+Qvw3EG8cIGQfNSmc
-         +ulyImzzi4c3w+9yU/IyQY+kWkcfQ2aJwMsSSRkGlPyxKDPMplAFqexb9GSOYOJqata3
-         NlBckCqUx1akpM5dKmmjBfRPPp2yBDjZBfqLYuOnyKBessBH49vfDzyepe5XK0xa6R9G
-         zOKQ==
+        bh=JqYwLVYCa7JtRMAY7L0dqHTnkU3lG0gdXzLLQWwhxDs=;
+        b=OVs+geFYukywTmpGykw65yRFlUG6Cjs2Xkb1V7VeyITcHBwO6ng/Hg/7zuvFhp5DSb
+         fnfiKfURZp/qlFq9jzXm00TEdTzKvvpMD53TuNPRWjzrQnHT1GD+nK/bnQSgW/r8lUI0
+         Wn/CsRediimrml0DZWc5eoGUeC/nD01sr+IycA/XHYBhHWOcT8PRJzXlgr4MDw0mwk+u
+         dSqA5FZlnVrkw2CEq6t/uM/5xMpLnp4xz+rEErytifBQgp47YdF3SHLaPweJVLeT9cn8
+         pnRaTTO/ofNIJYqejPehbvqMVOvMViiOHxfLGdH0fWLrtwJF/VvWMQQmKrLxCgUNTjNk
+         r+OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730497099; x=1731101899;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1730498010; x=1731102810;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xCOILmRNqBE6ZWY1p4IX8uvti1SM8oZ7fsEHU+TvcSA=;
-        b=lcrGcxKnMtMDmoRJg7ZLIlU4FfNL0wxwa8G8Qk9rLCi90YkpqTbttKLX/9i12ZezsY
-         z5h+YglJE0SfKJ7ivqS8YhDLRSCe8/afuZPG5cQPkT7eWLbOZwO+Hscwby0pvtqjjHal
-         0CGmhC/BRIc3qahT0EYE17rLOkXrtiyNAH53AigZaS1DarD2g432+ezx3El5aIJr13QL
-         FdwOA391FMeK9DFYddyU//hSA1NN0WMspdX0KZoORea7OY1La/3OVfK0xNFNhrVF1vUf
-         ER10ENOtkLKwgtWMt8ysXGq+8FH1p4VRU2nP4QTZ01zaHVObjFU+IrbDtIebPgM6heyx
-         5uJA==
-X-Forwarded-Encrypted: i=1; AJvYcCViApLZf3xfOw2ibOQYZJm4Bc7reBxXGpFO5V0hqEf8SAHqAqjtP6zMmLvsCeNlEuoclrjeUFrArer8wGE=@vger.kernel.org, AJvYcCWXtL9Cl0lSDsBLbMPAPSdf6ERbtu9KKYcYf0ctMpkIFn6ASyE2qmOpR8pslFXRfBNTWegKvV6AMe26qQNPgbU=@vger.kernel.org, AJvYcCWcbUj7QuF4Yi1ZX0qBYC/mzoD+t2vKXB2KmWb79EEp4kHNDrymWCg6i+7l4x//6eHEhaaM0KA9VC+KY5GJOkuI@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz86B/zl3C6NSMI8Hg2NQJX51dlXIjYWWtkJDhhRG/N4e5b9FwJ
-	Ull2HvEhvmY8QXaaVqPdMCMnCLGZB7K1gUxWfjtLXwhSeDmTlEbQ
-X-Google-Smtp-Source: AGHT+IFzuAuuMva5coyqLPg9S15y8Mlaf80dpYp9sux05DwQgjZpyiJ8ElxROSwl3wxI07O7wq0IFA==
-X-Received: by 2002:ac8:4e35:0:b0:462:c322:47b9 with SMTP id d75a77b69052e-462c32249bfmr21194581cf.17.1730497098666;
-        Fri, 01 Nov 2024 14:38:18 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad0893e3sm22421981cf.6.2024.11.01.14.38.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 14:38:18 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A1C701200043;
-	Fri,  1 Nov 2024 17:38:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Fri, 01 Nov 2024 17:38:17 -0400
-X-ME-Sender: <xms:SUolZ67Zi6tFQeKLYrDAGgygskeNElk99V5waD3BD2Epu8Iw_lEIVw>
-    <xme:SUolZz4ffIiMw4fjIG4bFoafs1Or_JQ34pfEempuwmnQ1ynOCM2OVhu6B69DupIBw
-    ND1VZO9sI8UEOzyDg>
-X-ME-Received: <xmr:SUolZ5dZcym49XMSNA-ceTX4wwhpeB0O_o_grNBmCoRasKdmWQbLnAgUCZI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekledgudehtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenogfuuhhsphgvtghtffhomhgrihhnucdlgeelmdenucfjughr
-    peffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfhvg
-    hnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghr
-    nhepkeejgfdufefhiefggffhtdehgefgtdduvdekjeelffehueefffetteevgfefueejne
-    cuffhomhgrihhnpehgihhthhhusgdrihhonecuvehluhhsthgvrhfuihiivgeptdenucfr
-    rghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsoh
-    hnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhg
-    peepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduie
-    dpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhl
-    vgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehjohhsvgdrvgigphhoshhithhokeelsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    sghrvghnuggrnhdrhhhighhgihhnsheslhhinhhugidruggvvhdprhgtphhtthhopehrmh
-    horghrsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtg
-    hpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohep
-    sghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:SUolZ3I7shbs8uYlTvA_--JMSUBThRNdym6H__rY5PKLeht3FhgyZA>
-    <xmx:SUolZ-J_p7BK9E4_RDDjZL3nmk_CsYM4kPqTew2Q8FoxrOSaV7qiVg>
-    <xmx:SUolZ4wbdRWtJHgTeccwd_MwD_YSUdupY-2vIFaaMdWWwqg9oQrdMg>
-    <xmx:SUolZyIUSpnf6l39nX2cFK3c3EAi_5YlJ5TGIVCLVjs_YYMcPB_ePQ>
-    <xmx:SUolZ1brqeYtkrotPzyhNGlOSSIcse4LCf7ne9eiTYAHJhOL8ygTmsyM>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 Nov 2024 17:38:17 -0400 (EDT)
-Date: Fri, 1 Nov 2024 14:38:16 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Rae Moar <rmoar@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Matt Gilbride <mattgilbride@google.com>, kunit-dev@googlegroups.com,
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] rust: macros: add macro to easily run KUnit tests
-Message-ID: <ZyVKSKUq_bKH5jn_@Boquns-Mac-mini.local>
-References: <20241101064505.3820737-1-davidgow@google.com>
- <20241101064505.3820737-3-davidgow@google.com>
+        bh=JqYwLVYCa7JtRMAY7L0dqHTnkU3lG0gdXzLLQWwhxDs=;
+        b=Q5vxDYNATNZzBxwL5q5vHubdpWfWmCQANfea1QcFMUVEKLLHGuohXERvmPQW/SYMbv
+         wLxDR/PFPM+OyqYZ7fpvUpwwYXLsA42YkReXjwyK1WSKbu+OSMEgOHyeCj452upypm+I
+         e2H4dGdAClqNzc2Rshl3LzaGyWDFKlEHyt2t0CJdYx27DGTq8BKr++FPFM7BYL8lcvmF
+         BR6x3TZODEianrBT1TFCDMhfbmfJLR7LiralK/J+Wg8RopygMRSepq01/PyWl8OEAoS4
+         lkYr04/2FSOef35AfFsk32T9Jk+/ndCsRKJRJ7R/Lq7G+vUAHwJI0ll0axZLpmcZTcgV
+         +HYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmCD6GSJNNRAPZV1rspHPtJ/wggR+lN6NkAzyuiZazahQfvm7aGXagS3pvmEQFnr2RSTD9NhmyAF1oXUTpDcI=@vger.kernel.org, AJvYcCV3k197+dAuy61c9+iaKoHi+oJjT/3Oi8WB1brhf+pq5F00quTfGIP/cFfllao0DSUROqaM1LbNZQHv6LU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyolzzVRamHyT0JFUz+gPNzkqFXwZNff667O7HCjA6HEIz5OnI
+	oNqqSxVYF2eptfhCybn+bL/j5didKNczAToYHbyZYMLVIBmwhtmep6FWsmJAo8a+/ieCV1Q4lLw
+	Jyqr7ugwRRYvbIYrDuyHiUrpnKC8=
+X-Google-Smtp-Source: AGHT+IEc1aTXPvVEUSIoKCLoAmYgk4WBu38+9EUhHW7R0qMkv+fThruAveeyX4iyfF2oG6AR2Z0eD85EMHz9Qf3XGKQ=
+X-Received: by 2002:a17:903:244c:b0:20c:85dc:6630 with SMTP id
+ d9443c01a7336-210c688651amr151312905ad.1.1730498009889; Fri, 01 Nov 2024
+ 14:53:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241101064505.3820737-3-davidgow@google.com>
+References: <20240704145607.17732-1-ethan.twardy@gmail.com>
+In-Reply-To: <20240704145607.17732-1-ethan.twardy@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 1 Nov 2024 22:53:17 +0100
+Message-ID: <CANiq72nvVb-SG_M6KRpuYP9kYA0qwQ7faVtavgewzF+ZHO95Rw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Enable rustdoc tests for the macros crate
+To: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Aswin Unnikrishnan <aswinunni01@gmail.com>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 01, 2024 at 02:45:01PM +0800, David Gow wrote:
-[...]
-> @@ -273,3 +275,11 @@ macro_rules! kunit_unsafe_test_suite {
->          };
->      };
->  }
-> +
-> +#[kunit_tests(rust_kernel_kunit)]
-> +mod tests {
-> +    #[test]
-> +    fn rust_test_kunit_example_test() {
-> +        assert_eq!(1 + 1, 2);
+On Thu, Jul 4, 2024 at 4:57=E2=80=AFPM Ethan D. Twardy <ethan.twardy@gmail.=
+com> wrote:
+>
+> This patch series addresses GitHub issue Rust-For-Linux/linux#1076 by
+> enabling the rustdoc tests for the macros crate and updating kbuild to
+> compile these tests with appropriate dependencies respected. Reviewers:
+> Please pay particular attention to the Kbuild changes in rust/Makefile.
+> I appreciate your time in reviewing this series!
 
-Clippy reported:
+Applied to `rust-next` -- thanks Ethan!
 
-ERROR:root:error: identical args used in this `assert_eq!` macro call
-   --> ../rust/kernel/kunit.rs:348:20
-    |
-348 |         assert_eq!(1 + 1, 2);
-    |                    ^^^^^^^^
-    |
-    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#eq_op
-    = note: `-D clippy::eq-op` implied by `-D warnings`
-    = help: to override `-D warnings` add `#[allow(clippy::eq_op)]`
+I had to rebase it and simplify/change/clean some things here and
+there as you can see below, so it would be great if you can
+double-check the result in the branch -- please let me know if you see
+anything wrong!
 
-but this lint doesn't make sense to me, I would say we just drop this
-lint?
+    [ Rebased (`alloc` is gone nowadays, sysroot handling is simpler) and
+      simplified (reused `rustdoc_test` rule instead of adding a new one,
+      no need for `rustdoc-compiler_builtins`, removed unneeded `macros`
+      explicit path). Made `vtable` example fail (avoiding to increase
+      the complexity in the `rusttest` target). Removed unstable
+      `-Zproc-macro-backtrace` option. Reworded accordingly. - Miguel ]
 
-Regards,
-Boqun
+    [ Rebased (moved the `export` to the `rustdoc_test` rule, enable the
+      firmware example too). Removed `export` for `RUST_MODFILE`. Removed
+      unneeded `rust` language in examples, as well as `#[macro_use]`
+      `extern`s. Reworded accordingly. - Miguel ]
 
-> +    }
-> +}
-[...]
+    [ Rebased (one fix was already applied) and reworded. Remove unneeded
+      `rust` as language in examples. - Miguel ]
+
+    [ Rebased (use `K{Box,Vec}` instead, enable `lint_reasons` feature).
+      Remove unneeded `rust` as language in examples, as well as
+      `#[macro_use]` `extern`s. - Miguel ]
+
+I think we could also simplify some of those tests (I think the
+examples are clear without so many constants), but I didn't want to
+introduce extra/unneeded changes to your series.
+
+Thanks!
+
+Cheers,
+Miguel
