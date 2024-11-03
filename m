@@ -1,411 +1,187 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EBE14B965
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Nov 2024 07:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A37633F9
+	for <rust-for-linux@vger.kernel.org>; Sun,  3 Nov 2024 03:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730532954; cv=none; b=RpHQwzbgHyokIsOro56u8AhYRPwSXwNi7JhdYOL2s2M0FirWYTcRT2HbrxRT4meB9NWqrnbVWkN2kEiszpZ38woyLzGhKlR3XkJR8PqoLTyjrgCh4Eq9r7za9d4gsAjXJcPjrtNbpTTNoqZ6qKBK0fjEcsTRxuSX94cgt9YMV08=
+	t=1730603158; cv=none; b=HkybuH8vdFKZQATnSc+2O/yclnLQqWde3Cc3vd3SAjDyu6pL2V4oJ18lgMHt+aNM1maGwYj0MR6Cw/7SUEBDjaf9sa5DtDxBZ6a1FgDBJ4FJuZ90aF4fmv2VK8Gq+NBeBLPFFfBVx1DSd3a1G1hCBQynDKoKwTCej5NxPbKY2Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730532954; c=relaxed/simple;
-	bh=Lm+if9JYD0woVlQzHTnEH6MXE1cIZuTE9lVrUuvj1d0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EcTu0ihvKtzn6PQbm/N5etOh8niJVxZadswlZhm5qJSadve0iH5LkxEAo8Vo6JJAdwnzbqKdF9vWHu5xnCHytEdI4tVXQ9mOQAUc/wUuIAgbhCpJUK9HpwoCeX83UDsVMHVZTCz5BIJ9ZvNK4/0Rj87qcizzxzbDdzq6ZpAru0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=njhE4r23; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730603158; c=relaxed/simple;
+	bh=4toWlWgJq0ayCCYa53gCderZ7YOSxADiU9nyxxVseUs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NJsg6lhUQcbupdsky5YlP2C7NeMVNhr2Z3HHNBrx0UX91004rgpp3xTvN2BetnGjNy6fgmSSmT9GYRogB39GMyvQn4JKj3oMD2HOrFO9gq4XKP5LDOUhve6DC/oUCIsaBeReDFMyuGV+BKqEIn/OIS4Fqp8E3FOxYRkq4sY+ssM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Inf+RG3K; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="njhE4r23"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6ce3fc4e58bso16490966d6.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 02 Nov 2024 00:35:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Inf+RG3K"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2e2e88cb0bbso2449313a91.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 02 Nov 2024 20:05:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730532950; x=1731137750; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RH5Sc3AlBdXzdcdi66EXuyJ8rPGOTaQFL5Xpxa9nwss=;
-        b=njhE4r23VtMQfA38F2c5erLxIMPPShBCHBNvAmHud2H+rH4E7KGrjzPa121d8O0BVR
-         GLWQfoef9UoNK/FIufP83Ps4gDsY7Gmfw4U3og5CIO6PN+etZRYDe6eyq831yq5jt4WU
-         xXOSVCiR90ldJVyZYRtO/ZAPRMzXhFVQjJqZ25drFZkWeAHRmQA9vv6E7Z3D/nfPCIWT
-         hseW2AM4Qd4O8WLp2BrOIn7Zj8X+5okeVG1GnUYd1iy1J1aeczl4NDXXaHy/5qdUOdq/
-         qDap7MwlhZFq5IPgF+r9t66msjoReOwaY+R5tf2kdc79/AsmppBtEU6Qr42wXJ+hEDoB
-         fShA==
+        d=gmail.com; s=20230601; t=1730603156; x=1731207956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wyj1YstXFsCCM9cVKcEjdaLKrcdGRM47+1CPpU1xF4c=;
+        b=Inf+RG3KIZ1w9QtBElV10+zkcZ22px03IlfsOXqQH+6rcQ/GPJD34t58lAkr7DfasS
+         G0dNpksu0kNFlvflak2l/Dm15TBd/s7S5UtHZU+2HwdEBpbB4ba0j2QvN0aOehDLar2s
+         Jkz9BT8CuYs7Z0QrSZo2iz6Ev436McCys/Luiyv89TSpepO4RkkT1jxjEyvkKcv/CA4D
+         Y82jjTA2iDduurzLY/jYMDIzeQTn4NlV/4/CE+Rjv9VGETPo+fPafmniZbeslnOmpoAB
+         kiQ3fHo1zCYZT9vsqDXQVWi9OG5b8l7JOA09RWzJmvo+2vJCfol8f+CA11SqliaC2Xlj
+         RxzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730532950; x=1731137750;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1730603156; x=1731207956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RH5Sc3AlBdXzdcdi66EXuyJ8rPGOTaQFL5Xpxa9nwss=;
-        b=iPAN5e8KbSQf1N8eJbmYIKqcPvtQNXb2NJ2XpRTd1Q6iu9YYomtA6tqXrWR3rQzMc+
-         sMKYGhBmaKnlWHgXS0apuCvyOC9dKJC2Y39J2s77QIGgO4BH4XDO6yLiYJ+O41EV1Khz
-         vIbEyOByD/NNq72YkuPdkZQvU6udQsn2THeXWZlu3brlGWdps8k+dpystFtefstqGpJG
-         +g+tjrsDMr/vstIxAlrhdqrJNW70Kbiq/vU7pOMdgS59VgcyQnOa/Drl/5UlyCfnH14P
-         aazS64B0O8jEUSIm8hLC5TOm3lSTKXzBjyN4fYpeFTBVlDT3PYKvJztjF4o79COQqi/h
-         8Z2w==
-X-Gm-Message-State: AOJu0YzpZXoZs4ndcaeF0SHXdb3r29WwX8WDMWvK/7NwyyJGpZQmC0lG
-	rBjIlS8XqjJNspqNqu5wuPNztUIgeRlk8atsOFwIM14iRRMGyzVxQED0AbM57jC/bvNdbG54xxc
-	c95iLidt7UmMultfD5ZUFPCV0vD4uGyIok9Sk
-X-Google-Smtp-Source: AGHT+IHUz45ItoR1nmaHd4gznB/gNgPKf4eAB6aqlka0kPvR/qumLPH9XGK3LKrtvFLqiVEn/M7d745AV4yWWS8sDrc=
-X-Received: by 2002:a05:6214:3c9b:b0:6ce:1f00:ffcc with SMTP id
- 6a1803df08f44-6d351b06955mr141171956d6.42.1730532949743; Sat, 02 Nov 2024
- 00:35:49 -0700 (PDT)
+        bh=wyj1YstXFsCCM9cVKcEjdaLKrcdGRM47+1CPpU1xF4c=;
+        b=e7SrplK0Glz/cBlYSbbQm316b2suR3uEniZ5kViBNjJTd9zxdIxBwL1+NzfTIH+/B1
+         mdIdGKC+NGK4he4PovOcypV0PN5So9B7E65e4NLoH720Voz8advgJcgc6yOq3+ruf/8s
+         G7B+iUfw6e1J+wODT5FJocrK6bQ7UuCIGDQ3w3G62cLiQ/li606iv/VsKJ3nqpRLLiyR
+         5qDJ4ID3U3qTfa171+e6uJEwinMfKhDSXPOv9+tDBfvb+QeWBhKXEUdekaR3Exl9OSNz
+         zaSIUeTvWEyZ5m3pofImV/1zRMJ9fx7tormNmU08Si9iyUoWYoLDUuVz9uFU46+qjXDR
+         Xi6g==
+X-Gm-Message-State: AOJu0YxiRhV7+EaITRVY2rYO7Hlqydd46lWUvw3Xmyr1Z27dQjM0ocpi
+	Zyv/FGJoK2pfql9KQhIe1UrLKVOzTPKlJdyAYqseJ0Ua4MzyToyDWhI0th2p
+X-Google-Smtp-Source: AGHT+IHZZNVPbjpOIpq1VGb9n3iMxjRgUCChDcRmrF5+G9Xb4zyEdy0W1O41NbG73RynQFhaQbKU5w==
+X-Received: by 2002:a17:90a:d807:b0:2e2:ac13:6f7 with SMTP id 98e67ed59e1d1-2e8f104f11cmr31304761a91.4.1730603155999;
+        Sat, 02 Nov 2024 20:05:55 -0700 (PDT)
+Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e92fc0084asm7313600a91.51.2024.11.02.20.05.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Nov 2024 20:05:55 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Subject: [PATCH v1] rust: Add pr_*_once macros
+Date: Sun,  3 Nov 2024 12:05:30 +0900
+Message-ID: <20241103030530.76756-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241101060237.1185533-1-boqun.feng@gmail.com>
-In-Reply-To: <20241101060237.1185533-1-boqun.feng@gmail.com>
-From: David Gow <davidgow@google.com>
-Date: Sat, 2 Nov 2024 15:35:36 +0800
-Message-ID: <CABVgOSm1cDcrsgYutooRG-ZLuzMypAO+ndNFyPy2w3_5B84TSQ@mail.gmail.com>
-Subject: Re: [RFC v2 00/13] LKMM *generic* atomics in Rust
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	llvm@lists.linux.dev, lkmm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, 
-	Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
-	Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
-	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
-	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	Trevor Gross <tmgross@umich.edu>, dakr@redhat.com, 
-	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000c8305b0625e91953"
+Content-Transfer-Encoding: 8bit
 
---000000000000c8305b0625e91953
-Content-Type: text/plain; charset="UTF-8"
+Add Rust version of pr_[emerg|alert|crit|err|warn|notic|info]_once
+functions, which print a message only once.
 
-On Fri, 1 Nov 2024 at 14:04, Boqun Feng <boqun.feng@gmail.com> wrote:
->
-> Hi,
->
-> This is another RFC version of LKMM atomics in Rust, you can find the
-> previous versions:
->
-> v1: https://lore.kernel.org/rust-for-linux/20240612223025.1158537-1-boqun.feng@gmail.com/
-> wip: https://lore.kernel.org/rust-for-linux/20240322233838.868874-1-boqun.feng@gmail.com/
->
-> I add a few more people Cced this time, so if you're curious about why
-> we choose to implement LKMM atomics instead of using the Rust ones, you
-> can find some explanation:
->
-> * In my Kangrejos talk: https://lwn.net/Articles/993785/
-> * In Linus' email: https://lore.kernel.org/rust-for-linux/CAHk-=whkQk=zq5XiMcaU3xj4v69+jyoP-y6Sywhq-TvxSSvfEA@mail.gmail.com/
->
-> This time, I try implementing a generic atomic type `Atomic<T>`, since
-> Benno and Gary suggested last time, and also Rust standard library is
-> also going to that direction [1].
->
-> Honestly, a generic atomic type is still not quite necessary for myself,
-> but here are a few reasons that it's useful:
->
-> *       It's useful for type alias, for example, if you have:
->
->         type c_long = isize;
->
->         Then `Atomic<c_clong>` and `Atomic<isize>` is the same type,
->         this may make FFI code (mapping a C type to a Rust type or vice
->         versa) more readable.
->
-> *       In kernel, we sometimes switch atomic to percpu for better
->         scalabity, percpu is naturally a generic type, because it can
->         have data that is larger than machine word size. Making atomic
->         generic ease the potential switching/refactoring.
->
-> *       Generic atomics provide all the functionalities that non-generic
->         atomics could have.
->
-> That said, currently "generic" is limited to a few types: the type must
-> be the same size as atomic_t or atomic64_t, other than basic types, only
-> #[repr(<basic types>)] struct can be used in a `Atomic<T>`.
->
-> Also this is not a full feature set patchset, things like different
-> arithmetic operations and bit operations are still missing, they can be
-> either future work or for future versions.
->
-> I included an RCU pointer implementation as one example of the usage, so
-> a patch from Danilo is added, but I will drop it once his patch merged.
->
-> This is based on today's rust-next, and I've run all kunit tests from
-> the doc test on x86, arm64 and riscv.
->
-> Feedbacks and comments are welcome! Thanks.
->
-> Regards,
-> Boqun
->
-> [1]: https://github.com/rust-lang/rust/issues/130539
->
-
-Thanks, Boqun.
-
-I played around a bit with porting the blk-mq atomic code to this. As
-neither an expert in Rust nor an expert in atomics, this is probably
-both non-idiomatic and wrong, but unlike the `core` atomics, it
-provides an Atomic::<u64> on 32-bit systems, which gets UML's 32-bit
-build working again.
-
-Diff below -- I'm not likely to have much time to work on this again
-soon, so feel free to pick it up/fix it if it suits.
-
-Thanks,
--- David
-
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
-diff --git a/rust/kernel/block/mq/operations.rs
-b/rust/kernel/block/mq/operations.rs
-index 9ba7fdfeb4b2..822d64230e11 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -11,7 +11,8 @@
-     error::{from_result, Result},
-     types::ARef,
- };
--use core::{marker::PhantomData, sync::atomic::AtomicU64,
-sync::atomic::Ordering};
-+use core::marker::PhantomData;
-+use kernel::sync::atomic::{Atomic, Relaxed};
+ rust/kernel/print.rs | 92 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
- /// Implement this trait to interface blk-mq as block devices.
- ///
-@@ -77,7 +78,7 @@ impl<T: Operations> OperationsVTable<T> {
-         let request = unsafe { &*(*bd).rq.cast::<Request<T>>() };
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index a28077a7cb30..57dbb45ba5c0 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -414,3 +414,95 @@ macro_rules! pr_cont (
+         $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
+     )
+ );
++
++/// Executes code only once if the condition is true.
++///
++/// Public but hidden since it should only be used from public macros.
++#[doc(hidden)]
++#[macro_export]
++macro_rules! do_once_lite_if (
++    ($condition:expr, $e:expr) => (
++        {
++            #[link_section = ".data.once"]
++            static ALREADY_DONE: core::sync::atomic::AtomicBool =
++                core::sync::atomic::AtomicBool::new(false);
++            let mut ret = false;
++
++            if $condition && !ALREADY_DONE.swap(true, core::sync::atomic::Ordering::Relaxed) {
++                $e;
++                ret = true;
++            }
++            ret
++        }
++    )
++);
++
++/// Prints an emergency-level message (level 0) only once.
++///
++/// Equivalent to the kernel's [`pr_emerg_once`] macro.
++#[macro_export]
++macro_rules! pr_emerg_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_emerg!($($arg)*))
++    )
++);
++
++/// Prints an alert-level message (level 1) only once.
++///
++/// Equivalent to the kernel's [`pr_alert_once`] macro.
++#[macro_export]
++macro_rules! pr_alert_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_alert!($($arg)*))
++    )
++);
++
++/// Prints a critical-level message (level 2) only once.
++///
++/// Equivalent to the kernel's [`pr_crit_once`] macro.
++#[macro_export]
++macro_rules! pr_crit_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_crit!($($arg)*))
++    )
++);
++
++/// Prints an error-level message (level 3) only once.
++///
++/// Equivalent to the kernel's [`pr_err_once`] macro.
++#[macro_export]
++macro_rules! pr_err_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_err!($($arg)*))
++    )
++);
++
++/// Prints a warning-level message (level 4) only once.
++///
++/// Equivalent to the kernel's [`pr_warn_once`] macro.
++#[macro_export]
++macro_rules! pr_warn_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_warn!($($arg)*))
++    )
++);
++
++/// Prints a notice-level message (level 5) only once.
++///
++/// Equivalent to the kernel's [`pr_notice_once`] macro.
++#[macro_export]
++macro_rules! pr_notice_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_notice!($($arg)*))
++    )
++);
++
++/// Prints an info-level message (level 6) only once.
++///
++/// Equivalent to the kernel's [`pr_info_once`] macro.
++#[macro_export]
++macro_rules! pr_info_once (
++    ($($arg:tt)*) => (
++        $crate::do_once_lite_if!(true, $crate::pr_info!($($arg)*))
++    )
++);
 
-         // One refcount for the ARef, one for being in flight
--        request.wrapper_ref().refcount().store(2, Ordering::Relaxed);
-+        request.wrapper_ref().refcount().store(2, Relaxed);
+base-commit: ae7851c29747fa3765ecb722fe722117a346f988
+-- 
+2.43.0
 
-         // SAFETY:
-         //  - We own a refcount that we took above. We pass that to `ARef`.
-@@ -186,7 +187,7 @@ impl<T: Operations> OperationsVTable<T> {
-
-             // SAFETY: The refcount field is allocated but not initialized, so
-             // it is valid for writes.
--            unsafe {
-RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(AtomicU64::new(0))
-};
-+            unsafe {
-RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Atomic::<u64>::new(0))
-};
-
-             Ok(0)
-         })
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index 7943f43b9575..8d4060d65159 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -13,8 +13,8 @@
- use core::{
-     marker::PhantomData,
-     ptr::{addr_of_mut, NonNull},
--    sync::atomic::{AtomicU64, Ordering},
- };
-+use kernel::sync::atomic::{Atomic, Relaxed};
-
- /// A wrapper around a blk-mq [`struct request`]. This represents an
-IO request.
- ///
-@@ -102,8 +102,7 @@ fn try_set_end(this: ARef<Self>) -> Result<*mut
-bindings::request, ARef<Self>> {
-         if let Err(_old) = this.wrapper_ref().refcount().compare_exchange(
-             2,
-             0,
--            Ordering::Relaxed,
--            Ordering::Relaxed,
-+            Relaxed
-         ) {
-             return Err(this);
-         }
-@@ -168,13 +167,13 @@ pub(crate) struct RequestDataWrapper {
-     /// - 0: The request is owned by C block layer.
-     /// - 1: The request is owned by Rust abstractions but there are
-no [`ARef`] references to it.
-     /// - 2+: There are [`ARef`] references to the request.
--    refcount: AtomicU64,
-+    refcount: Atomic::<u64>,
- }
-
- impl RequestDataWrapper {
-     /// Return a reference to the refcount of the request that is embedding
-     /// `self`.
--    pub(crate) fn refcount(&self) -> &AtomicU64 {
-+    pub(crate) fn refcount(&self) -> &Atomic::<u64> {
-         &self.refcount
-     }
-
-@@ -184,7 +183,7 @@ pub(crate) fn refcount(&self) -> &AtomicU64 {
-     /// # Safety
-     ///
-     /// - `this` must point to a live allocation of at least the size
-of `Self`.
--    pub(crate) unsafe fn refcount_ptr(this: *mut Self) -> *mut AtomicU64 {
-+    pub(crate) unsafe fn refcount_ptr(this: *mut Self) -> *mut Atomic::<u64> {
-         // SAFETY: Because of the safety requirements of this function, the
-         // field projection is safe.
-         unsafe { addr_of_mut!((*this).refcount) }
-@@ -202,28 +201,22 @@ unsafe impl<T: Operations> Sync for Request<T> {}
-
- /// Store the result of `op(target.load())` in target, returning new value of
- /// target.
--fn atomic_relaxed_op_return(target: &AtomicU64, op: impl Fn(u64) ->
-u64) -> u64 {
--    let old = target.fetch_update(Ordering::Relaxed,
-Ordering::Relaxed, |x| Some(op(x)));
--
--    // SAFETY: Because the operation passed to `fetch_update` above always
--    // return `Some`, `old` will always be `Ok`.
--    let old = unsafe { old.unwrap_unchecked() };
--
--    op(old)
-+fn atomic_relaxed_op_return(target: &Atomic::<u64>, op: impl Fn(u64)
--> u64) -> u64 {
-+    let old = target.load(Relaxed);
-+    let new_val = op(old);
-+    target.compare_exchange(old, new_val, Relaxed);
-+    old
- }
-
- /// Store the result of `op(target.load)` in `target` if `target.load() !=
- /// pred`, returning [`true`] if the target was updated.
--fn atomic_relaxed_op_unless(target: &AtomicU64, op: impl Fn(u64) ->
-u64, pred: u64) -> bool {
--    target
--        .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |x| {
--            if x == pred {
--                None
--            } else {
--                Some(op(x))
--            }
--        })
--        .is_ok()
-+fn atomic_relaxed_op_unless(target: &Atomic::<u64>, op: impl Fn(u64)
--> u64, pred: u64) -> bool {
-+    let old = target.load(Relaxed);
-+    if old == pred {
-+        false
-+    } else {
-+        target.compare_exchange(old, op(old), Relaxed).is_ok()
-+    }
- }
-
- // SAFETY: All instances of `Request<T>` are reference counted. This
-
---000000000000c8305b0625e91953
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIIUqgYJKoZIhvcNAQcCoIIUmzCCFJcCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
-4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
-mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
-KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
-VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
-ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
-vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
-BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
-OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
-1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
-ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
-BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
-18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
-bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
-AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
-BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
-A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
-MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
-jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
-0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
-jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
-jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
-C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
-NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
-zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
-A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
-hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
-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
-erg7AgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
-/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFKFQnbTpSq0q
-cOYnlrbegXJIIvA6MFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
-BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
-MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
-LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
-bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
-FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBR
-nRJBmUP+IpudtmSQ/R55Sv0qv8TO9zHTlIdsIf2Gc/zeCi0SamUQkFWb01d7Q+20kcpxNzwV6M7y
-hDRk5uuVFvtVxOrmbhflCo0uBpD9vz/symtfJYZLNyvSDi1PIVrwGNpyRrD0W6VQJxzzsBTwsO+S
-XWN3+x70+QDf7+zovW7KF0/y8QYD6PIN7Y9LRUXct0HKhatkHmO3w6MSJatnqSvsjffIwpNecUMo
-h10c6Etz17b7tbGdxdxLw8njN+UnfoFp3v4irrafB6jkArRfsR5TscZUUKej0ihl7mXEKUBmClkP
-ndcbXHFxS6WTkpjvl7Jjja8DdWJSJmdEWUnFjnQnDrqLqvYjeVMS/8IBF57eyT6yEPrMzA+Zd+f5
-hnM7HuBSGvVHv+c/rlHVp0S364DBGXj11obl7nKgL9D59QwC5/kNJ1whoKwsATUSepanzALdOTn3
-BavXUVE38e4c90il44T1bphqtLfmHZ1T5ZwxjtjzNMKy0Mb9j/jcFxfibCISYbnk661FBe38bhYj
-0DhqINx2fw0bwhpfFGADOZDe5DVhI7AIW/kEMHuIgAJ/HPgyn1+tldOPWiFLQbTNNBnfGv9sDPz0
-hWV2vSAXq35i+JS06BCkbGfE5ci6zFy4pt8fmqMGKFH/t3ELCTYo116lqUTDcVC8DAWN8E55aDGC
-AmowggJmAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
-BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAZ6Vqszmp/3gGFW0sCFu
-eDANBglghkgBZQMEAgEFAKCB1DAvBgkqhkiG9w0BCQQxIgQgF0vqo1HVFT/bQ7EkNDs2Hus8IOJB
-l7ayh+mRl5TWm7kwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjQx
-MTAyMDczNTUwWjBpBgkqhkiG9w0BCQ8xXDBaMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
-YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBCjALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
-BAIBMA0GCSqGSIb3DQEBAQUABIIBAKaR1ftvw40UB8q5VJnefq54/RCk1WTZ6iZ7N63ow3udHZuU
-q8PXVid4CoTVbuyli8a9eYjBoNKkBZATNlXdZXu70UW0pL7ZT/szUD/ifDyYp0pG8L88xOorTU9/
-/2OsBqCz7XqHuDXxNvISdtZGhS54eFTQOqpRDWJHL2SyKZYhKSfxJqK9aXFlM8NCigEEjREczx2w
-cKGZOuV8BMwr+ASTA3re3nICdbGJ/9ZZdgjJx9e5Zuis/XNYgfioHfQmD+O1DuyDd5UAiWWmw+UL
-Rrt/X/IJHkKWtelCwF83G1tCsLQbtsvvrshx3WycCCnILrjI7esiXDmQzsxzmLho1og=
---000000000000c8305b0625e91953--
