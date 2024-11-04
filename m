@@ -1,97 +1,94 @@
-Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F2D13B58C
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 14:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B5378685
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 15:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730729521; cv=none; b=Ed4D1khnDf/hjU57TmqL0Y+38XTvGBiXF/is6ArHmtlY4L82a9aPk3M2XCCyIYzCPh8wn3yRRp5wr0p24VM0Iz4qrD/HOzwkApKwFLRRZ9xRWO6fZzrRnLKZAxgzhvzNs8bIJsHlGUDTLoWNtFuqqsgamu8q4gclnkq2Q9OXX6Y=
+	t=1730735122; cv=none; b=MfWQU1ni2u1bxGKBuQB8IzsC+YxQkrk90L7h1oT1rwfWZK4g03hwLivTFj70DTXUfdnaWrnp/17LwTqpAvTVoXxHpkZ4KItewYvbrzNxgJWtmM4udMa5jntgpVpJzmZtX9p/nCGzvWvEKFXTyWSajLuWlwYVpm+vhc9PZqiFc8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730729521; c=relaxed/simple;
-	bh=vt9cRyzcleFSCP7sTpT5vaCvrF3bmFoMpQ4eGLjNWAY=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=sPs4cO3OMmwxvIpAgPUDQu8lfbpFq/k8j4QkcZqZsJnkZdKE3kuM2zV0f+zDS3XmJM5cBuYARC3k9kM5M+yNi+1wWXlbTW39LCy4Pzu+av6hgqY9v+nAsWT5D84hTMMxH6/hXTdLSJKpkOBOdBN+Jd9AE/hStO+TWqwMAgnCbr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=p2FW3Ka2; arc=none smtp.client-ip=203.205.221.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1730735122; c=relaxed/simple;
+	bh=UtQr1uDBySJ71KDV2EGYcJ59B46x0csqCAO4rkddS2c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qSFoespOvIeCEO0eozUxzlsBK1uXqJ04RVFLx8hP6Mu1ab1/TIvDsHQyaRASwzyIAe5Dr04oRKXwszhSttFAo4Zx4rvKXYEqx7jUW7twMucE/3yJobexdyLOapmvmAZl8S+AaxNj9gjK7KTA+7fiUpfMAGuxd+bXrozvdpn9vOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=flxO8GPC; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="p2FW3Ka2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1730729209; bh=/wpv3wVw/temWpTqr/O2SUzl5YcA8AwLTSQyHVEuj4Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p2FW3Ka2VFqo2Vc15FfXyaSkPXmzsYQDmXrnOlN+dQaFT8l5eXgi+6cZHImF4y6V2
-	 i+SiTVUMcqMRHPp/0wLpoiFCSuUyl+8IaRSGmAkxuKfy98lkH12QND90pr+UUzvW70
-	 v9b56YVdMbCQTafuY0Iff8cY7EOdTJMQNFT2CQk8=
-Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.bbrouter ([124.240.53.233])
-	by newxmesmtplogicsvrsza15-1.qq.com (NewEsmtp) with SMTP
-	id 1AF97A91; Mon, 04 Nov 2024 22:06:47 +0800
-X-QQ-mid: xmsmtpt1730729207tp1viw338
-Message-ID: <tencent_2E70D3E99973A54BB6C3590393365CFA6B0A@qq.com>
-X-QQ-XMAILINFO: NtvpdyJXE1j9jure4FuKuqFW+FFUfXeje49+tyRaspFB8KTLXvmgJ2Qf0lflKA
-	 AKhDlEFHHwyAJIDASQehON7vXLr+appoafOlpqsDQ0qn7n7Ecr63yrnkTM1SURy0aB2VGDr+o7mD
-	 2Kb/tSmymg10W5ApCO5wTlh4xO16CsqZPPWPXLPlf+3+mvqZmGaRXfX6Uz6zIfhif57blWd9bMiF
-	 su/JkTYHtpgAYBWKYYXyUsYM2UwR+lIZ58VZycm3PVGJkw++f1E1dhJQnfqE26CRIYb1bqBnnKhh
-	 jK0wM+9TkpQoLKu05M9gi8HItHGr5DlvR/KaR875qTiUqFcIwjpDckUugNbCTh5+OIruMW6n6yFU
-	 MLMUPV/uUeWJcsryQCainTkoNmYpsMzbhYDm7ISRfAXHDrZxIiulSZVP4uR8y3gw7vKYWIUjuohl
-	 t2e5KJ5Z08xjaGZgGXyUKbx6HTSqhcv5XJQBDmVRurVtzom26oVergM0jAKrWGZ84Q2H2zi8kWFO
-	 fmok0OGJo3/KLWiGVZescEulAk9ZbLnqPahtlyhfIKAyvIFim6ReADDU47yuRbdQoivgG7H0hOJC
-	 eVu9iv2eP8uRP9a8Y9A2oCC0+/Exu7RVB/N85TWr+tkThr0AS+8EZ1SCRe9Dts6N9FKw6n9aU8Ew
-	 7rm8AejAn9Yys0fagbtMe4/Ow9x3h85tPSL4VgDl2QM7N3jODfvqxyY0WkKFA1+7lzLZ6x7YVM3R
-	 AFAGzk3aKjw9sRW7FeW37m6UClfAf7moC0NbhP+va/Gx68Hrf/4irLPCvT1zoOHnGAtyMyeOh3XO
-	 680oX/a+qOMcaeVBkHfa3HVJovHXdyL8XtQohlk39JoYbO26a4lctcAMf1vEP5tlwmg63AoMEIn0
-	 G+w20qZGKVJ4Wl3ZfDcOATw0WFfaBQSp3/4uuh+THY+P3rLS2R0gZvK0EbNw71jx4IZAG0emu72y
-	 RxnnWin2Ht9yJFnZQmVoXMONoELO5OAfK19fGfENOQVlvFB8eL+Qbktkv9hA8027QXMyjotQFtqP
-	 wxJA8ah5gCuTNR8WZai0XETe0ccLzwclt9k34xi6SnQD6ee5HP9txa0yn++K8=
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-From: Guangbo Cui <2407018371@qq.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Guangbo Cui <2407018371@qq.com>
-Subject: [PATCH v4 2/2] rust: align Debug implementation for Box with Display
-Date: Mon,  4 Nov 2024 22:06:42 +0800
-X-OQ-MSGID: <20241104140642.877707-1-2407018371@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241104140514.877185-1-2407018371@qq.com>
-References: <20241104140514.877185-1-2407018371@qq.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="flxO8GPC"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539f1d96668so653484e87.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Nov 2024 07:45:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730735119; x=1731339919; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UtQr1uDBySJ71KDV2EGYcJ59B46x0csqCAO4rkddS2c=;
+        b=flxO8GPChvNRp0WJzb5mjv9WYIKGIDOF5O9EzBvVi0vu77jKo/9Ru4PoSuDcKR6jJV
+         5pws5VPIbPxI7P57s/vb8ImxzJBgRqjVHhJ4maY+JKEealqI/EHSz0I5Xb8vcUNlpo2R
+         5sfl9pzX7rRP+TBSQKDVuFrWNH53Q4SeNaz0HixkFdDX7EX2P+FudS/2jHS4BsW4T22t
+         Dp3vgAwgggEjPgO2h9c73hjD1nv8+7OXv9vTfs4BJgueUYZjuKvRXzmqsm+/5FLojPky
+         ClKXPZ7O8RH4uRlBpou6lLFYfkBsSAa+zBmYnyWsRpS9SDK+SWWTUGj0YPiQ/A47GL0n
+         K03w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730735119; x=1731339919;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UtQr1uDBySJ71KDV2EGYcJ59B46x0csqCAO4rkddS2c=;
+        b=AbMj1WJ57PUoTHMW7HPDqtbmt+iQcSSlXipRY+R+9s0gPGr3lL26j9LQJ0OY8QEIVN
+         RsoZgvl20o1/lWUUDdeyhpMoGHu+RbRDz5sQWjrzc7FSIJSbndfsaWe94+fUb15wAT1x
+         WEHaMlN1OvxlFgNYnUjLUeX4Rqwld19B3ciAY7/cdQhp35bLxpI6O6U3ke7SwSfKD7So
+         wYVbuO28l13yKCoHPJxgXNpMKOD3sDymo527B29xvDbFC1jCFOcGXSyZP7JpI4z15XEy
+         mq2N3WzpSDi2G0SN5s5P/x4GJX/pxtC09lBNicW9W5BdYiiWjQQhlikDZCS38h9r4ovH
+         yAaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXtQKEU1P55+n6IAIvu1Kyu8daJ2VrMFGhNzJpl94Inlmk6DaqYB7S7/553g3RsWpN3eWjQU64vADtF+i0iQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyJ/Yu1yEBT59hjHYE7teGLX6lcijuPi/k6ry53YtTWmRiyERH
+	Ivbk9d2B40a6PTNWRBG2h2n/UR2xDcGmLNBlm1OlufxTukhuqWiBo+epdqM+MvmXbvqyWUIPBpc
+	FyzD9ekeTaxqY4HgxM6+ohs/h9ko=
+X-Google-Smtp-Source: AGHT+IFFIjYkqCcCzh81yVZOt7l4PnOZO3Abh6q8IFNr2OwrRva+fPkWn1ALfJun6puAEa6hHOmiKyKicrxwLSeQ/5A=
+X-Received: by 2002:a05:6512:3c96:b0:535:6a7b:9c03 with SMTP id
+ 2adb3069b0e04-53b34911d43mr4864029e87.6.1730735118793; Mon, 04 Nov 2024
+ 07:45:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241103030530.76756-1-fujita.tomonori@gmail.com>
+ <CANiq72n3bdNoYsSo47BGK2AJX_yhREoOxfKwkMBwz4v3bR-UHQ@mail.gmail.com> <20241104.110803.2105992905862489345.fujita.tomonori@gmail.com>
+In-Reply-To: <20241104.110803.2105992905862489345.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 4 Nov 2024 16:44:58 +0100
+Message-ID: <CANiq72nNMM5hCMa=hDbvpX6AVR5L2pswdQJ3AN05ynHx2Z3Q0w@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: Add pr_*_once macros
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: jens.korinth@tuta.io, rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ensure consistency between `Debug` and `Display` for `Box` by
-updating `Debug` to match the new `Display` style.
+On Mon, Nov 4, 2024 at 3:08=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> The code to execute only once is very basic code like the kind found
+> in textbooks? I think that his focus is on optimizing that code. Once
+> the the basic code is merged, it's easier to send patches to optimize
+> it.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Guangbo Cui <2407018371@qq.com>
----
- rust/kernel/alloc/kbox.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It doesn't matter that it is "very basic code". This was discussed 2
+weeks ago in Zulip. Most importantly, it was a new contributor to the
+kernel that was working on it (as far as I know).
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index a496a866d..49c24727f 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -443,7 +443,7 @@ impl<T, A> fmt::Debug for Box<T, A>
-     A: Allocator,
- {
-     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        fmt::Debug::fmt(&**self, f)
-+        <T as fmt::Debug>::fmt(&**self, f)
-     }
- }
- 
--- 
-2.34.1
+The issue is that sending code without any indication about the
+discussion, without Cc'ing the author, and so on, is the sort of thing
+that can annoy people. And if they are new contributors, it can drive
+them away.
 
+We need to be careful about this.
+
+Cheers,
+Miguel
