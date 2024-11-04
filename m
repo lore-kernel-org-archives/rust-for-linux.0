@@ -1,96 +1,105 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22B4AD2D;
-	Mon,  4 Nov 2024 19:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730747997; cv=pass; b=JtdIe/VDNXco1aZye9cn+4wsAURHZbMHn//T8wlIMeFAzdAZo5eUuEQhLVx4y3uhOmKuvXzwIb1I5H9YnmvdtPlj34E0C2lFFoQXEn7yXfQJqFToOUbBuinb4W2qZpAIPPwDFcchCoOdGRVOvuQ1ra+LsmuV11bxyBexRJZpO/k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730747997; c=relaxed/simple;
-	bh=zbNYl5RY5/49ulL2/Ro5OEqk2Qd270rdKotK9zKL22Y=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=iymzzAAW7pnwpVZ138xlU5GupJV1y8yDqPyBOuSa0f+X/RKV2vuFM3MgMp/f3ts4jGjRAa2Gqb6rGdp279C2cQkCjjixFUe4jfeQ5IHPF/z3xvwaRsz311CnBWcGMXTW+NqnD5FX3WiRHBw1H7yPvuKd1gEbQ04dNLxIQoz1UJg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GSqPSLPZ; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DCF1CACD0
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 20:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730750470; cv=none; b=I7VdRGD0KozdnwWOVig3TuvVylncjNFhZSm/w/T7NwlnsvWF5Ee6XrP4k0ybGvORz+5X85tkfQ318dgbUetGkhqAnAgZZEYcY/xkG+7D+CzzMJsKYnVRYaNVeo/asWeIjM/sESrT3JUcczLIH3ZsZOZzJgVbzyMEGxdM1P8x82M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730750470; c=relaxed/simple;
+	bh=Fl/KeUzwHauEGQFaocBbFkQCQIyXFmdARVPEmr7CgN0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qeYfNR1bze72sxFgZPsbLqTVwZPlQqNHr9VdmsGiJ/UEFPMaUysGYs2BnYFZ+vW7hcydT4/bbMjZ+4tTFJDiYB8KKCXMqBh61g+LsFweHXBxETPfFYgH8KpRLhKn8rZWHpVGJC9M5vhIDmMlM8DBUYZcf+tu0l7tBDd0txuxoUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPIlmh/W; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GSqPSLPZ"
-ARC-Seal: i=1; a=rsa-sha256; t=1730747981; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YAICD64OoN8Pc21yQvw+tGpyKyfTqhyZ4pXFZ0KjgoBaS7FDnWi6SE20HiyYXHqHh8DwtRVLnxsSKk03RVCXeYZJgZ0c1yBnXOjgJxOgYwqz6/PX26ZcQZ/ch+FrcBluIOSFHs/dSWKhpmfbUqhW8rNb97xy/2qgy/4BfJpfBAQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730747981; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=zbNYl5RY5/49ulL2/Ro5OEqk2Qd270rdKotK9zKL22Y=; 
-	b=YEdlHIiYCsbStUMX7DxdneuaxjTEOJ1rkJZWbJrvjgYb8hJkpUsOA0WbPkSe9LSDp1XXjwcQCkh3wy/621kgiiLE4i0kCHfTMGURgeeTy2CqPhleIYWPnshqS18eYZWtTfDnPB/Te5nt629K/9P6zVtIGBXRJlars1mCdXIzzJA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730747981;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=zbNYl5RY5/49ulL2/Ro5OEqk2Qd270rdKotK9zKL22Y=;
-	b=GSqPSLPZog18hHwrB4G04pY2YrzAEOR3yfB2qn9Z9l97I22oXxhjPA2t+tpYgDqO
-	g9Ook03lkYk/IEgIgiG6RtbSjelF1hEDkdvD7NGR14Py9s7zx97I+evhBQoSA9ltV+t
-	Sh794x5mR9IH3i1s95zC5QOFbdwH0rrujbvruXi0=
-Received: by mx.zohomail.com with SMTPS id 1730747979393312.83221910305576;
-	Mon, 4 Nov 2024 11:19:39 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPIlmh/W"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20ca1b6a80aso47258075ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Nov 2024 12:01:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730750468; x=1731355268; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FrJmUTTDqbxIfWzAs9Kp6Dewke7F9OaUzl7jERdPupU=;
+        b=aPIlmh/Wf90Jqu1dT/bcHlk/66pSkgSjGYXTawF2/ILFT7QIXQ8PX9YTE6DMH2Ak0+
+         zRMFHyiIIsO8Jv2qr37Oi4g61HVBupPZkzyGqHO6nrYGYBDx99AWJAHCg00Arsf30mhj
+         Ss31fedmpZoUB8e7Sg5omQAlDzVo0FkSipGywPJDtLcxeRCKllSLmZAJHbYmQad8zRSe
+         5JHaM7qmup8HBUNzpIPWeI64SjedzGP8jXSCvawMGEK+9SMfMnFhq4omtdlfUptnoDpC
+         8qd9LB3s3Wo043ewPYSC63uTR0W6B9cxVRmmh0O3AT7z6hsayZfIsFfa2mF05VHvH0W8
+         iX/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730750468; x=1731355268;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FrJmUTTDqbxIfWzAs9Kp6Dewke7F9OaUzl7jERdPupU=;
+        b=JiKE8Hn2+6yc8jqseA7MQ1oc7ywvfYsyuLPwNUzszuMBOdtiv6p5tdZcKF+zdaD91K
+         3xO2cP7klS+ydCzric69g7z0ludgXuXHYlzzQRMg6cJrRjR9e8kwDa53p5iYNl4xBjqW
+         1K8sLrn3U3Qe7iK0JkZreO2qPciBRjWotvUpjnAZa2gRl5tT58XHX9ZO9W+9hvkDpWz0
+         tAas3S7MBsYRu7o+N/0CLLcjuvKa91O4ZnqlGc8BCBJTa1wE6Q6vjcywQl3niM79WCy+
+         iUvE8BXdNaJhpvRE+k5rSysit0xCN6juyoj1v72LPRbumT2CCGTJMszZ5NDqRG4w4Jph
+         N4kA==
+X-Gm-Message-State: AOJu0YzvFJhmPQ0ploEe29o19uP4ZgCYapAAnW/ouN4jraLQxhyeyGbz
+	EacOyGEIIrqcU5Pf9tRJ9UO5LrCaVQ9xrgzIuy1WJOCyWqbQnZQ6LT+bUA==
+X-Google-Smtp-Source: AGHT+IE4wTGwfjugjJLMBXjtfdAIXXFyr40fkvJsA2Dg20lQnSmGovofuDRayFiKu7eDjbdy1Q753Q==
+X-Received: by 2002:a17:90b:4fd1:b0:2e2:a8dd:9bb5 with SMTP id 98e67ed59e1d1-2e94c2aef84mr18448801a91.12.1730750467784;
+        Mon, 04 Nov 2024 12:01:07 -0800 (PST)
+Received: from pop-os.. ([187.106.38.80])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e93da98448sm9072700a91.6.2024.11.04.12.01.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 12:01:07 -0800 (PST)
+From: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+Subject: [PATCH] rust-next: make from_errno use try_from_errno
+Date: Mon,  4 Nov 2024 17:00:13 -0300
+Message-Id: <20241104200014.12996-1-guilhermev2huehue@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH] rust: irq: add support for request_irq()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAH5fLgjmfzTU_88H4mGiv++CbBj0xB5AoiimULCEx_b0wsMmMw@mail.gmail.com>
-Date: Mon, 4 Nov 2024 16:19:23 -0300
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D72CA8B1-E71E-410C-AD7E-D7A81CC3F807@collabora.com>
-References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
- <CAH5fLgjmfzTU_88H4mGiv++CbBj0xB5AoiimULCEx_b0wsMmMw@mail.gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Alice,
+Make from_errno use try_from_errno (available in rust-next).  
 
+This also allows to remove unsafe code and a comment or two too.
+ this project or the open source license(s) involved.
 
-> On 29 Oct 2024, at 08:59, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
-> <daniel.almeida@collabora.com> wrote:
->>=20
->> Both regular and threaded versions are supported.
->>=20
->> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->=20
-> Why implement request_irq over devm_request_irq?
->=20
-> Alice
->=20
-
-As we spoke earlier, and for the record, devm will automate the
-lifetime of a resource, taking care to relinquish it when the driver
-is unloaded.
-
-I feel better with an explicit `Drop` implementation, which is why
-the devm versions were not chosen. IMHO, the problem it was
-designed to solve often simply does not apply to Rust code.
-
-=E2=80=94 Daniel
-
+Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+---
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 7cd3bbab52f2..077f95cbb6ae 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -101,19 +101,17 @@ impl Error {
+     /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
+     /// be returned in such a case.
+     pub fn from_errno(errno: core::ffi::c_int) -> Error {
+-        if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
+-            // TODO: Make it a `WARN_ONCE` once available.
+-            crate::pr_warn!(
+-                "attempted to create `Error` with out of range `errno`: {}",
+-                errno
+-            );
+-            return code::EINVAL;
++        match Error::try_from_errno(errno) {
++            Some(error) => error,
++            None => {
++                // TODO: Make it a `WARN_ONCE` once available.
++                crate::pr_warn!(
++                    "attempted to create `Error` with out of range `errno`: {}",
++                    errno
++                );
++                code::EINVAL
++            }
+         }
+-
+-        // INVARIANT: The check above ensures the type invariant
+-        // will hold.
+-        // SAFETY: `errno` is checked above to be in a valid range.
+-        unsafe { Error::from_errno_unchecked(errno) }
+     }
