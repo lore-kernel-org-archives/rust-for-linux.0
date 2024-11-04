@@ -1,308 +1,267 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94B81C876D;
-	Mon,  4 Nov 2024 20:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730751924; cv=pass; b=jEx5Ez6DHB3+UnY1P7AxrfsmNTCALPZzagTZLZPds6y7eCSVH5VmBFMjb91cDQS6nuqS3IGjzyDtUKfSHMh3VOu66oifTO4SmmEkD8ot6kufTFN7RJTD6BrhLbCI+k2zJzQggn1p37BdTN2PS1/FATyLhnkdrb7Wck1Lkz1kCaw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730751924; c=relaxed/simple;
-	bh=IgH0Hi9twoxRqlIfhGMWyNWOyhNYrOjcFQdTclRMvXE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=FlLSZ9IXwxhJMLIKP7zCTGLZepj2LcX4ahfpPJYY4zk12C0iBDuUBH95Ux++csgadwwsjW/iWpHAb+bQVr/GYnzZ+bPwktWCy7UygfbeH4j2O5xs/For4jYj8c3Pt96HHPilKRp7Ix0FJdtNIRhCN4YkFuWPqPU8VbxN4TKxMU0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=inI3xzpn; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7DA1F7553;
+	Mon,  4 Nov 2024 21:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730755222; cv=none; b=dc50Bq48HhcF4FvPHR2HTuVVM7YibmUdvmFEb3+CalS0sWMi3xfYmswa/H9hqkRvHalecNCkzHC6sBI4rh3cUOoylLaKrCL38hddDrfoRVL2gkKQXme2z4mpM2BCvlzw2Dj8MAhyBux+8bnx3/TBaWJaqHtNz/NBVY8mmoXHHgk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730755222; c=relaxed/simple;
+	bh=Ex/yRDEcS38I2U+QV2u5q2lo/RA6PTu9t8WSYCQth9s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WBZUfCin9Uv0STdJ4W+rmHcRgaCjjdinl/tEiNUY9aPGvz83CghnZPG2JDZU7c6SITB/Npc3cd0qdDQiZaUoHMIP5IoGgEruSYwT14Jxr3JX6HIcrHtPkcBECR46zT5SRRSL7f3cpZkP4lYrkz/yf+gOnMzT5Lvi38StHff1YCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U7a2MHGx; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="inI3xzpn"
-ARC-Seal: i=1; a=rsa-sha256; t=1730751905; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=RWD5eQlrw8bowUcvX/gJOsiJsblWBq/XADeT9X9WiKWgjg+mj72NPCKqAK+uQqpMzhFLRPcbKZvmTnxH4lJT2hCMVmj/y9hqIK+qz4AciRzP+TSRhhSYo+mqAfvVQZtJtk0+xZkTMYGXbER2bCNichNAp15QmsWO3+VYbYNY2k4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730751905; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=s6jThQfUMqEvoXJre/xevuEPnTumQrVzYHlNzE7HSCg=; 
-	b=jO3N8QDcxONa5yMwzlCB/Han4ldGnTOlldkRpRnNWh1SMi5K1xDbASylrFdGbbXI/Vn4x6MzHMo/ZSQEP68r63qy3qtS4mFjebc+Lo18z9yP+7n3zD3xSvKhWlPXcUT6MY/izJleiwlnL/7/i3wIxumfrC8UdXL/Hzyn67CUxX4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730751905;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=s6jThQfUMqEvoXJre/xevuEPnTumQrVzYHlNzE7HSCg=;
-	b=inI3xzpnP77TZuLN8ymkamrYQpT/kLvVWk86ceryQtvhCCaRGeaT2UWm979jVLLO
-	THXkhrt0YxlxlrtCo6nCgn8ncXF9709UbaL2FYyxsifwt1Gdpfy3JnDbbABjMmfOC7n
-	SUkY3fiM+wY40fvBiLBJzmZZkXgl0tGbC6N5ctZs=
-Received: by mx.zohomail.com with SMTPS id 1730751904089317.91208057147844;
-	Mon, 4 Nov 2024 12:25:04 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U7a2MHGx"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fb59652cb9so42339561fa.3;
+        Mon, 04 Nov 2024 13:20:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730755219; x=1731360019; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mo3XbQnXPNJgTn+edeHCGinHSuyv/nW/EU54SGOsWYg=;
+        b=U7a2MHGxLf6+eRiXEvyh/uPLGhJ+VthBJC3gXSBkmmofn1hz4f6fyb13Des+MECK00
+         WhEykGNsf1n3VMd3x7oACLy5gL8BrGrzD2uLP+jmLsw/6jLu31OngCPzOCUMQmJf1FjT
+         KGLSZxb9kDw0H5Is6v4yb+Fn5srjCujETLWMotxSKR2mC53AacbQPhu9GaPHCUVMPDlq
+         7WfIBWbGX3GYNW4NX8sSedbHJAObbtYg3x6OwucP8cU1NIvWSth4FFpMlfmDUO8P2C5H
+         eRXLGm4ooLH5p3+j6cHPQp1fWRslPiZe776dXrMIOwjseyqSNYeSVf1Szj1o6I3oyLfr
+         5qog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730755219; x=1731360019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mo3XbQnXPNJgTn+edeHCGinHSuyv/nW/EU54SGOsWYg=;
+        b=Om5QkRZYa6n2kHWPg00AFUUz1JnIpsfe6Rj5julBaDfAUUJtWdC7ImM1uvbFvzyOCK
+         51Sk/mHScOJ7Ix5BX6OVg7fBxO0LH/E35Bcxs/g7r4q8xGCBLXewlbShAo4BUeZwT3hY
+         aX5aNH+Jw+bLDvoY60NF7dFVMKcBXTB4il3+uJvn8kHNNEKzMOHTMr9ij4bY1mR1OhEC
+         fW2uo26YXrvL1vTtGUog2JpJEVxiz7fF431zMYhmFS//k0ReYuwyuvfqU6EBTDOsdO/H
+         Z8T30a06377W+LoLdCMus5YwbYqf6XZAUXcXfS8dkQpNltKUp8QCjoz5yGloA/alA24T
+         a21A==
+X-Forwarded-Encrypted: i=1; AJvYcCWdc+s8ZBgllKBSvlNqDpU+k/exyl4IdsDxO3DVH5nsp7b7sewLZwKjjKDVDeEu8cWRsNekllHV+E3dfVE=@vger.kernel.org, AJvYcCXWCB1cWRWzF35fIIm2amQ/FT2AscSuwwx2t3V497KFNDDNBDSLIyvPtTSSyNuu2GidskeECHJH3nVnv+EIOYg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywaThzZDSKClx12vTelOh4923XeK+7pDeBl8BRpygAmb0/0pi9
+	NXw8o1jnpoi0GhV7u9hl4oPai0crGsIIhqGEA37/8Y+SrHYZ7blga3LI8+VBd3jgq7J+/+Rdc/K
+	z5kwhIO8ADLS2gpxGi+NU0Kr+I2c=
+X-Google-Smtp-Source: AGHT+IGEnQRleiUK+bDc5XsJLFoXEu8sezFpNQJYh8P4+YtRF+9gEsSGsAJfFIJByaSv4HbYgKHnCm2c0R6VUQCf2hE=
+X-Received: by 2002:a05:651c:50c:b0:2fb:8920:99c6 with SMTP id
+ 38308e7fff4ca-2fdec85890bmr79774071fa.23.1730755218293; Mon, 04 Nov 2024
+ 13:20:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH] rust: platform: add Io support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <e713fe2a-df7b-445d-9f2b-08a22161ff8e@kernel.org>
-Date: Mon, 4 Nov 2024 17:24:48 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+References: <20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com>
+ <KJyhrgAd_z6Zh0U1iafSryM8P_vhgxML3COlPRUtks83dD0fidaO7EfCaNWqQLhVcN0hqekp3v6qmakvURvCsA==@protonmail.internalid>
+ <20241030-borrow-mut-v1-2-8f0ceaf78eaf@gmail.com> <87frocpsui.fsf@kernel.org>
+ <oMImkzhVI8Suke0P43bPXzVQrUiKWfFjEEqD2PrWWWx9qnyLx0rwCtjbgxRSdempiC-jexN26NFzejD5bFTiMw==@protonmail.internalid>
+ <CAJ-ks9mrHuBEGvCi8pTNE=P1YHU81+cWF_emAvOKnsW0wQSWMQ@mail.gmail.com> <87cyjfnl8d.fsf@kernel.org>
+In-Reply-To: <87cyjfnl8d.fsf@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 4 Nov 2024 17:19:42 -0400
+Message-ID: <CAJ-ks9n9g+QgH=YMkeenm5219sCAK5v8-gaOh46r=E9snbR2iQ@mail.gmail.com>
+Subject: Re: [PATCH 2/5] rust: types: avoid `as` casts, narrow unsafe scope
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <738E8478-D2B8-4A25-9FEE-41D31C50DB4C@collabora.com>
-References: <20241024-topic-panthor-rs-platform_io_support-v1-1-3d1addd96e30@collabora.com>
- <e713fe2a-df7b-445d-9f2b-08a22161ff8e@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-ZohoMailClient: External
 
-Hi Danilo, thanks for the review!
+On Fri, Nov 1, 2024 at 9:21=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
+>
+> "Tamir Duberstein" <tamird@gmail.com> writes:
+>
+> > On Thu, Oct 31, 2024 at 4:51=E2=80=AFAM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
+> >>
+> >> Hi Tamir,
+> >>
+> >> "Tamir Duberstein" <tamird@gmail.com> writes:
+> >>
+> >> > Replace `as` casts with `cast{,_const,_mut}` which are a bit safer.
+> >> >
+> >> > Reduce the scope of unsafe blocks and add missing safety comments wh=
+ere
+> >> > an unsafe block has been split into several unsafe blocks.
+> >> >
+> >> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> >> > ---
+> >> >  rust/kernel/alloc/kbox.rs | 32 +++++++++++++++----------
+> >> >  rust/kernel/sync/arc.rs   | 59 +++++++++++++++++++++++++++++-------=
+-----------
+> >> >  rust/kernel/types.rs      |  5 ++--
+> >> >  3 files changed, 59 insertions(+), 37 deletions(-)
+> >> >
+> >> > diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> >> > index d69c32496b86a2315f81cafc8e6771ebb0cf10d1..7a5fdf7b660fb91ca2a8=
+e5023d69d629b0d66062 100644
+> >> > --- a/rust/kernel/alloc/kbox.rs
+> >> > +++ b/rust/kernel/alloc/kbox.rs
+> >> > @@ -182,12 +182,12 @@ impl<T, A> Box<MaybeUninit<T>, A>
+> >> >      ///
+> >> >      /// Callers must ensure that the value inside of `b` is in an i=
+nitialized state.
+> >> >      pub unsafe fn assume_init(self) -> Box<T, A> {
+> >> > -        let raw =3D Self::into_raw(self);
+> >> > +        let raw =3D Self::into_raw(self).cast();
+> >> >
+> >> >          // SAFETY: `raw` comes from a previous call to `Box::into_r=
+aw`. By the safety requirements
+> >> >          // of this function, the value inside the `Box` is in an in=
+itialized state. Hence, it is
+> >> >          // safe to reconstruct the `Box` as `Box<T, A>`.
+> >> > -        unsafe { Box::from_raw(raw.cast()) }
+> >> > +        unsafe { Box::from_raw(raw) }
+> >>
+> >> I don't think this change makes sense, and it also does not do what th=
+e
+> >> commit message says. The patch has quite a few changes of this pattern=
+,
+> >> and I think you should drop those changes from the patch.
+> >
+> > It's reducing the scope of the unsafe block, as mentioned in the commit=
+ message.
+>
+> I guess you are right. I read the commit message semantically as "split
+> unsafe blocks where there are multiple unsafe operations". I still do
+> not think it makes sense to do these code movements.
+>
+> >
+> >> I _do_ think changing `as _` to `ptr::cast` makes sense.
+> >>
+> >> >      }
+> >> >
+> >> >      /// Writes the value and converts to `Box<T, A>`.
+> >> > @@ -247,10 +247,10 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<B=
+ox<T, A>>, AllocError>
+> >> >
+> >> >      /// Forgets the contents (does not run the destructor), but kee=
+ps the allocation.
+> >> >      fn forget_contents(this: Self) -> Box<MaybeUninit<T>, A> {
+> >> > -        let ptr =3D Self::into_raw(this);
+> >> > +        let ptr =3D Self::into_raw(this).cast();
+> >> >
+> >> >          // SAFETY: `ptr` is valid, because it came from `Box::into_=
+raw`.
+> >> > -        unsafe { Box::from_raw(ptr.cast()) }
+> >> > +        unsafe { Box::from_raw(ptr) }
+> >> >      }
+> >> >
+> >> >      /// Drops the contents, but keeps the allocation.
+> >> > @@ -356,19 +356,21 @@ impl<T: 'static, A> ForeignOwnable for Box<T, =
+A>
+> >> >      type Borrowed<'a> =3D &'a T;
+> >> >
+> >> >      fn into_foreign(self) -> *const core::ffi::c_void {
+> >> > -        Box::into_raw(self) as _
+> >> > +        Box::into_raw(self).cast_const().cast()
+> >>
+> >> But since we are at it, why not be more explicit and do `cast::<core::=
+ffi:c_void>`?
+> >
+> > These functions (`cast`, `cast_const`, and `cast_mut`) exist as a
+> > compromise between fully inferred and fully explicit type coercion.
+> > The doc comment on `cast_mut` explains:
+> >
+> > /// This is a bit safer than as because it wouldn=E2=80=99t silently ch=
+ange
+> > the type if the code is refactored. [0]
+> >
+> > The inverse is true of `cast` - it won't silently change the constness
+> > if the code is refactored.
+> >
+> > The purpose of this patch is to demonstrate the number of places where
+> > both type and constness casting is taking place, and to set up the
+> > removal of costness casts in a subsequent patch.
+>
+> I agree that `cast_const`, `cast_mut` and `cast` is an improvement to `as
+> _`. But I think we would get even more robustness if we went with fully
+> qualifying the generic parameter as in `.cast::<core::ffi::c_void>`.
 
-> On 29 Oct 2024, at 10:42, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On 10/24/24 4:20 PM, Daniel Almeida wrote:
->> The IoMem is backed by ioremap_resource()
->=20
-> ioremap_resource()?
+I'd prefer not to make this series more controversial with that
+change. Since we all agree that `as` casts are better avoided, I'll do
+only that here.
 
-Yeah, a small mixup with the similarly named `devm_ioremap_resource`.
+> >
+> >>
+> >> <cut>
+> >>
+> >> > @@ -347,9 +352,11 @@ unsafe fn borrow<'a>(ptr: *const core::ffi::c_v=
+oid) -> ArcBorrow<'a, T> {
+> >> >      }
+> >> >
+> >> >      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+> >> > +        let ptr =3D ptr.cast_mut().cast();
+> >> > +
+> >> >          // SAFETY: The safety requirements of this function ensure =
+that `ptr` comes from a previous
+> >> >          // call to `Self::into_foreign`.
+> >> > -        let inner =3D unsafe { NonNull::new_unchecked(ptr as _) };
+> >> > +        let inner =3D unsafe { NonNull::new_unchecked(ptr) };
+> >> >
+> >> >          // SAFETY: By the safety requirement of this function, we k=
+now that `ptr` came from
+> >> >          // a previous call to `Arc::into_foreign`, which guarantees=
+ that `ptr` is valid and
+> >> > @@ -376,10 +383,14 @@ fn as_ref(&self) -> &T {
+> >> >
+> >> >  impl<T: ?Sized> Clone for Arc<T> {
+> >> >      fn clone(&self) -> Self {
+> >> > +        // SAFETY: By the type invariant, there is necessarily a re=
+ference to the object, so it is
+> >> > +        // safe to dereference it.
+> >>
+> >> I think it could be "By the type invariant and the existence of `&self=
+`,
+> >> it is safe to create a shared reference to the object pointed to by
+> >> `self.ptr`."
+> >
+> > This comment was taken from the `Deref` impl just above. Should it be
+> > updated there as well? The comment is contained in the `Drop` impl as
+> > well.
+>
+> I did not realize it was a copy.
+>
+> I think the type invariant is actually not well formed:
+>
+> /// # Invariants
+> ///
+> /// The reference count on an instance of [`Arc`] is always non-zero.
+>
+> There is not a reference count on an instance of `Arc`, there is a count
+> on `ArcInner`, of which `Arc` owns one.
+>
+> What do you think?
 
-Thanks for catching that.
+I think this is picking nits. The next line is similarly "malformed":
 
->=20
-> Also, that's a rather short commit message for such a core piece of
-> infrastructure, can you please expand on this?
->=20
->> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->> ---
->> The PCI/Platform abstractions are in-flight and can be found at:
->> https://lore.kernel.org/rust-for-linux/Zxili5yze1l5p5GN@pollux/T/#t
->> ---
->>  rust/bindings/bindings_helper.h |  1 +
->>  rust/helpers/io.c               | 11 ++++++
->>  rust/kernel/platform.rs         | 88 =
-+++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 100 insertions(+)
->> diff --git a/rust/bindings/bindings_helper.h =
-b/rust/bindings/bindings_helper.h
->> index =
-217c776615b9593a2fa921dee130c357dbd96761..90b2d29e7b99f33ceb313b4cc7f8232f=
-ef5eed17 100644
->> --- a/rust/bindings/bindings_helper.h
->> +++ b/rust/bindings/bindings_helper.h
->> @@ -13,6 +13,7 @@
->>  #include <linux/errname.h>
->>  #include <linux/ethtool.h>
->>  #include <linux/firmware.h>
->> +#include <linux/ioport.h>
->>  #include <linux/jiffies.h>
->>  #include <linux/mdio.h>
->>  #include <linux/of_device.h>
->> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
->> index =
-f9bb1bbf1fd5daedc970fc342eeacd8777a8d8ed..f708c09c4c87634c56af29ef22ebaa2b=
-f51d82a9 100644
->> --- a/rust/helpers/io.c
->> +++ b/rust/helpers/io.c
->> @@ -1,6 +1,7 @@
->>  // SPDX-License-Identifier: GPL-2.0
->>    #include <linux/io.h>
->> +#include <linux/ioport.h>
->>    u8 rust_helper_readb(const volatile void __iomem *addr)
->>  {
->> @@ -89,3 +90,13 @@ void rust_helper_writeq_relaxed(u64 value, =
-volatile void __iomem *addr)
->>   writeq_relaxed(value, addr);
->>  }
->>  #endif
->> +
->> +resource_size_t rust_helper_resource_size(struct resource *res)
->> +{
->> + return resource_size(res);
->> +}
->> +
->> +void __iomem *rust_helper_ioremap(resource_size_t addr, unsigned =
-long size)
->> +{
->> + return ioremap(addr, size);
->> +}
->> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
->> index =
-addf5356f44f3cf233503aed97f1aa0d32f4f062..d152432c80a4499ead30ddaebe8d87a9=
-679bfa97 100644
->> --- a/rust/kernel/platform.rs
->> +++ b/rust/kernel/platform.rs
->> @@ -4,11 +4,15 @@
->>  //!
->>  //! C header: =
-[`include/linux/platform_device.h`](srctree/include/linux/platform_device.=
-h)
->>  +use core::ops::Deref;
->> +
->>  use crate::{
->>      bindings, container_of, device,
->>      device_id::RawDeviceId,
->> +    devres::Devres,
->>      driver,
->>      error::{to_result, Result},
->> +    io::Io,
->>      of,
->>      prelude::*,
->>      str::CStr,
->> @@ -208,6 +212,49 @@ fn as_raw(&self) -> *mut =
-bindings::platform_device {
->>          // embedded in `struct platform_device`.
->>          unsafe { container_of!(self.0.as_raw(), =
-bindings::platform_device, dev) }.cast_mut()
->>      }
->> +
->> +    /// Maps a platform resource through ioremap() where the size is =
-known at
->> +    /// compile time.
->> +    pub fn ioremap_resource_sized<const SIZE: usize>(
->> +        &self,
->> +        resource: u32,
->> +    ) -> Result<Devres<IoMem<SIZE>>> {
->> +        let res =3D self.resource(resource)?;
->> +        let size =3D self.resource_len(resource)? as usize;
->> +
->> +        // SAFETY: `res` is guaranteed to be a valid MMIO address =
-and the size
->> +        // is given by the kernel as per `self.resource_len()`.
->> +        let io =3D unsafe { IoMem::new(res as _, size) }?;
->> +        let devres =3D Devres::new(self.as_ref(), io, GFP_KERNEL)?;
->> +
->> +        Ok(devres)
->> +    }
->> +
->> +    /// Maps a platform resource through ioremap().
->> +    pub fn ioremap_resource(&self, resource: u32) -> =
-Result<Devres<IoMem>> {
->> +        self.ioremap_resource_sized::<0>(resource)
->> +    }
->> +
->> +    /// Returns the resource len for `resource`, if it exists.
->> +    pub fn resource_len(&self, resource: u32) -> =
-Result<bindings::resource_size_t> {
->> +        match self.resource(resource) {
->> +            // SAFETY: if a struct resource* is returned by the =
-kernel, it is valid.
->> +            Ok(resource) =3D> Ok(unsafe { =
-bindings::resource_size(resource) }),
->> +            Err(e) =3D> Err(e),
->> +        }
->> +    }
->> +
->> +    fn resource(&self, resource: u32) -> Result<*mut =
-bindings::resource> {
->> +        // SAFETY: By the type invariants, we know that `self.ptr` =
-is non-null and valid.
->> +        let resource =3D unsafe {
->> +            bindings::platform_get_resource(self.as_raw(), =
-bindings::IORESOURCE_MEM, resource)
->> +        };
->> +        if !resource.is_null() {
->> +            Ok(resource)
->> +        } else {
->> +            Err(EINVAL)
->> +        }
->> +    }
->>  }
->>    impl AsRef<device::Device> for Device {
->> @@ -215,3 +262,44 @@ fn as_ref(&self) -> &device::Device {
->>          &self.0
->>      }
->>  }
->> +
->> +/// A I/O-mapped memory region for platform devices.
->> +///
->> +/// See also [`kernel::pci::Bar`].
->> +pub struct IoMem<const SIZE: usize =3D 0>(Io<SIZE>);
->=20
-> Is this meant to be bus specific, such as `pci::Bar` is PCI specific?
+/// The object pointed to by [`Arc`] is always pinned.
 
-Yes.
+There's no object pointed to by Arc, it is pointed to by ArcInner.
 
-> If so, I think it'd be better to pass the platform device and resource =
-index to
-> `platform::IoMem` (or whatever we want to call it) and let it take =
-care of everything.
+> I am OK with you copying the comment from `Deref`, but if you want to,
+> you could fix the wording of the invariant and update the comments.
 
-Ack.
+It's not crystal clear to me what the difference between these
+wordings is, so I'll just leave it as-is. Perhaps you could update all
+the phrasing in a separate patch?
 
->=20
->> +
->> +impl<const SIZE: usize> IoMem<SIZE> {
->> +    /// Creates a new `IoMem` instance.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// The caller must make sure that `paddr` is a valid MMIO =
-address.
->> +    unsafe fn new(paddr: usize, size: usize) -> Result<Self> {
->> +        // SAFETY: the safety requirements assert that `paddr` is a =
-valid MMIO address.
->> +        let addr =3D unsafe { bindings::ioremap(paddr as _, size as =
-u64) };
->=20
-> Do we need to consider ioremap_uc(), ioremap_wc(), ioremap_np()?
+> In that case the safety comment could be something like my suggestion.
+> The fact that a reference to the `Arc` is live combined with the
+> invariant is what guarantees the pointee of `self.ptr` is live as well.
+>
+> Best regards,
+> Andreas Hindborg
 
-Do you guys need it for Nova? Maybe we can return different types =
-depending on
-which ioremap function was called.
-
->=20
-> Also, I think you're missing request_region() here.
-
-That=E2=80=99s true
-
->=20
->> +        if addr.is_null() {
->> +            return Err(ENOMEM);
->> +        }
->> +
->> +        // SAFETY: `addr` is guaranteed to be the start of a valid =
-I/O mapped memory region of
->> +        // size `size`.
->> +        let io =3D unsafe { Io::new(addr as _, size)? };
->> +
->> +        Ok(IoMem(io))
->> +    }
->> +}
->> +
->> +impl<const SIZE: usize> Drop for IoMem<SIZE> {
->> +    fn drop(&mut self) {
->> +        // SAFETY: Safe as by the invariant of `Io`.
->> +        unsafe { bindings::iounmap(self.0.base_addr() as _) };
->> +    }
->> +}
->> +
->> +impl<const SIZE: usize> Deref for IoMem<SIZE> {
->> +    type Target =3D Io<SIZE>;
->> +
->> +    fn deref(&self) -> &Self::Target {
->> +        &self.0
->> +    }
->> +}
->> ---
->> base-commit: 2a5c159f49a5801603af03510c7cef89ff4c9850
->> change-id: 20241023-topic-panthor-rs-platform_io_support-f97aeb2ea887
->> Best regards,
->=20
->=20
-
-=E2=80=94 Daniel
-
+Cheers.
+Tamir
