@@ -1,166 +1,104 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19951FC3;
-	Mon,  4 Nov 2024 22:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8831D5CE7
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 23:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730760129; cv=none; b=qZkdb1CKTfCr/MNCZ5mrhb9vMsYPw29gDsFvKk/zlxKM8BxTWFPmh7wedNlzo2QxtBkVfTk1sf4fO6HoxD6aPOule0Wp5rPyfHlE+tQMN8SFNvw9akc+i6/JwSOdq4JQ4rsYa6YsxX90G8u6nBtxujuTc7ORYaCH820P113GyRE=
+	t=1730763231; cv=none; b=d1AujA/378g8Ll4s9bmEql3fC7CkXUO1ohfx6PpPiXPz7I2R47GJabQsqTpV2XfWz1zVXrccY2tQewaVWns/kmbIGzmnNiEta7WPRhSSzGRHu5qEAjj8mjXg5WAIhvdIgI+hJAqBnayq3geMZ3jrIwlG7JQAg75FHbmqmPSh2CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730760129; c=relaxed/simple;
-	bh=UIMQBl83V2Bns8yGAXTRumgr/92RHa2mv7Anyp60yE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IWk6Ul0FHpsLIfzSW0FOVzP9sRiXqJc/aApVmYaWjKgx6X+ms0v5IZfzuuKNANnfmQGGGj0mtpqziF5qZLdf6kJGCHRxkcEkovcFMnz4W924t85h4zGwg1CXOWMO/YSr24awtG4unByokF/I+USwu8fWTCUbMUARJPu9WH+ec3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNlWATDH; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1730763231; c=relaxed/simple;
+	bh=xeXFoO6rpGFTfW67aFdtZg1DADblEtbw0u7DA+FvHvI=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Act0SQzs8bF/NFoQQ5zWyssvKzg42CjzBrHiY/QodCUrb23vc8DiUPwocyrQZaosu2R2IvxxaD662Dq8vLy5iItD3bUh8gJOn7P4jrMwaLXw7znivBhL4KLIqp8EDO2BA778eLSoC/xsXZi9mtiBMZYWAQZPUCCk0bFiySbx/To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0Fd1xZu; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNlWATDH"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7b158542592so352020685a.2;
-        Mon, 04 Nov 2024 14:42:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0Fd1xZu"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7ae3d7222d4so3467532a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Nov 2024 15:33:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730760127; x=1731364927; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lyv50UDAwS0ps1lDbxLMzi7cs8LVSE1+F2Y15Lj+yls=;
-        b=eNlWATDH0+UOBivqeV088jqnHe5epIjDLTGNyLeyhBzdBi8FalIMb+5c3WHUO96hwA
-         FkQgRlsjiiq2FG5ju19xU8FSiZ8UJab07Qf07S3s1GUhQbSdI3CkT+IgHmpChMEcjzIL
-         PygsHuEjNao5IQRS2oo4MHKrtmwihwpcco+KfFhCO2KNJJzE5naE6QWMCLZx5grDq5FM
-         TeAWDH2B3SK8Sawg+s5UWjtn1AdcBaoTjH1oTZhAlmWscpaYMNd0ivxqx/ngQLPwRKJ0
-         HtMt0FPUrI/Jk5g+wlyILTbqSEsZhF/nBVlQPr0exe49Y19bSGB9Cn2ReKm8bN2XVV5D
-         7m8w==
+        d=gmail.com; s=20230601; t=1730763230; x=1731368030; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=heuluemexJBQ8njzhkrobyveDd7MJI7zIcl7ZO4hjpo=;
+        b=b0Fd1xZuoMIjqSxK8baQj93maRRIu6XxJXB+MHCIozTDNZdp8n/vu48b4im8glBe7s
+         2WfCB1/jkh3fpNiLqbIfl0K2TA9B3QIg+lQ8IcjeQSrYU+zC7xDf7w8mlcUbMVDqtCN8
+         U/eldwZT4tRYkpFvbZ98WxYnxk1AVamjHp7CHqfPTZ4zkQHGkXb8rdjsfkTqe1KltRVn
+         D9pl5zkje4HAHBaJBlpXtgj63ncP5WxSEpQFfIBb6b45R5tb3h0T0OmEFsnxEHETkuIu
+         bklh/2c3Q2EbdN5f/48qD/EGmVGO2XaklUB7csgzKtwiylOOpWTCsYDFrsqKd4LPSP14
+         Kvmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730760127; x=1731364927;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lyv50UDAwS0ps1lDbxLMzi7cs8LVSE1+F2Y15Lj+yls=;
-        b=c5Xx8sQh6q5cfJnsvCtvYpHpaKIBZ2Ji6oufeJRfjJhyLayxiusEw2Ro2JCHaKxxZI
-         awK3g6cnCkJ2AghOE5Fbsgn+iOYVMxsrUEH5GS8VWYWTOahrwPHpm/HuF6rlC1Hjn/dl
-         S2r4dOxtIlU59R9eGLAq2z7dDPL6ZuFM+F3I/wGyAX6Bh/PpmiFs7n+GBbk/MHk7X+Mp
-         GuyeUFvHRI783hNqyQuDPAStbUP8bukOAwK4JHew5+F88ML1yj4LW6btbIyrVDL6CeNv
-         wFqCGh1YwTw/Y8pm4M5krw5jF6wYZOzxG6L9pGavd8nEizSjbOXZh/KXN7SFqBNtJ86y
-         mt1A==
-X-Forwarded-Encrypted: i=1; AJvYcCV1pcu42QWWSDT8WJVlRGSX+aj27lut6E3ey6MAqGbDCY8a6nktAa7LeF5OgBXbQdd+m7IvPGUyIiwP4RaFyrM=@vger.kernel.org, AJvYcCW4OTeyhamg/ZYpUcl8e/IfTeU1sVGztNSKaLn6wOywsJFdUygjwX1CRTPO0gv3KRn4XlDWAuO22A+Tnto=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtBbROxIRXpx2bmbc6MKjA6WdEi0NDPzEc+K/7vwEjmHegl3+E
-	70GXCkVf0uTsOCJ5MQ7WySqgQKrIDjr/jbL7mXhJF2it8PX15BGs
-X-Google-Smtp-Source: AGHT+IGGVNb3beS/nECB8mb5RSvaOeo3Beb5QajMsPATQi1S9AA2nRRTgVJ0GvRp4Gl2KYW/undv+Q==
-X-Received: by 2002:a05:620a:4711:b0:7b1:7f5f:4988 with SMTP id af79cd13be357-7b2fb982c4amr2357263285a.36.1730760126453;
-        Mon, 04 Nov 2024 14:42:06 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39e9a6fsm464593785a.18.2024.11.04.14.42.05
+        d=1e100.net; s=20230601; t=1730763230; x=1731368030;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=heuluemexJBQ8njzhkrobyveDd7MJI7zIcl7ZO4hjpo=;
+        b=hrG+yKHQx2QDg941z81Ld/S48Fq40h+Fh+tr494Nx9HGt1R8u2BkeuqOfjnXsTw9oD
+         eKnutXp67ydzg6vg5lJJ6YUqw8z8xyN61Nk3jJAtCmWH8bXzFKoTey0BOCHCahoEjDZp
+         3TKg3c+dRyapcZpMbwYVIbxgV8n7par4yVkqAA39LYO/r6Qu5vS0p2krYdykzHEaztDT
+         1S8CUMtEJR8O2gmkzdTYWuVj2SykV5NhDpzsbhPOR9lbE871oLbVKF8W0P3U81X0ibkO
+         o6idRxcbUGJ1ILiXmI4/PM9fgx+uDzmjOX+HCyZqJPmTqGoKwk6O5meNPCoXYc3AH+on
+         5bZA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlfB3dnk2t9SOeomyJYaieBzu2Kj4C/m7Ngae9pUzTTA0cA2qie2GKCwWAh+MoUMOMZWhfHelTVaiaGHxssg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZPx3K9GX1vj5Yn69JWJSJ/4eaatKmNhE2uPtvZNSfnPNNJvT1
+	Ro9Y3eP8S5Lt+3McWWDMEQum2ZIJThtu+XD2Ocx7QUstyarp4LWI
+X-Google-Smtp-Source: AGHT+IFXLy5kJS7EK8R303EfQrWoyv28kB4v9SgXhNZU2mGKDYzUMVv9hwl2n8xvHNG4IPD5eIjgCA==
+X-Received: by 2002:a17:90b:4d05:b0:2e2:c6c2:b3d5 with SMTP id 98e67ed59e1d1-2e93c14e8a5mr23448855a91.9.1730763229735;
+        Mon, 04 Nov 2024 15:33:49 -0800 (PST)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e93daac445sm8299663a91.18.2024.11.04.15.33.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 14:42:06 -0800 (PST)
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8CA091200043;
-	Mon,  4 Nov 2024 17:42:05 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Mon, 04 Nov 2024 17:42:05 -0500
-X-ME-Sender: <xms:vU0pZz-mSIaZDjSe2OllzWZ5jlwrI45WjCS5U_yECRSLs1uDuWUe3w>
-    <xme:vU0pZ_t-VZ4wqLk88_B1-J_YKOCHd2Voh9TxVaHtoj5WpJxDY0NqxHX4UqrdFSeGp
-    pWmeisCyBw4xS1B7g>
-X-ME-Received: <xmr:vU0pZxDrQOvkPzTppdxls5LlTswUCPYPKSOvrIPacNx-2xmqToN4SYbe9jM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeljedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedv
-    veevleevhfekhefftdekieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrgh
-    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
-    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
-    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
-    rdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehtrghmihhrugesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohep
-    sghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnh
-    hnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusgho
-    rhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:vU0pZ_fhd1XMxLIRIJGVBKoI9COMjtFzRx-wDSUmRZKD8cE4ZV0Ysg>
-    <xmx:vU0pZ4PkBtcmh2ZaDlPqtHTI65qOBlc7OkyTCMvOlhagU503bxaBow>
-    <xmx:vU0pZxma54JTEkui6ey9oyZ_unEwakVXzYi44Fe-b3FDfA4DPnXPOA>
-    <xmx:vU0pZyukuADDJKUwStNeT0fXWj27a7Kz2ofx8mGuo3rxFxIQ_0gQmQ>
-    <xmx:vU0pZytVcdwPdlcrQ-vZ9pI3p2Xal6o_EzoULdh9QYEoDsh71dAkooqO>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Nov 2024 17:42:05 -0500 (EST)
-Date: Mon, 4 Nov 2024 14:42:04 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: arc: remove unused PhantomData
-Message-ID: <ZylNvC8enwPG4IQ4@Boquns-Mac-mini.local>
-References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
+        Mon, 04 Nov 2024 15:33:49 -0800 (PST)
+Date: Tue, 05 Nov 2024 08:33:43 +0900 (JST)
+Message-Id: <20241105.083343.2243442761267649401.fujita.tomonori@gmail.com>
+To: jens.korinth@tuta.io
+Cc: miguel.ojeda.sandonis@gmail.com, fujita.tomonori@gmail.com,
+ rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: Add pr_*_once macros
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <OAtDBYR--B-9@tuta.io>
+References: <20241104.110803.2105992905862489345.fujita.tomonori@gmail.com>
+	<CANiq72nNMM5hCMa=hDbvpX6AVR5L2pswdQJ3AN05ynHx2Z3Q0w@mail.gmail.com>
+	<OAtDBYR--B-9@tuta.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi Tamir,
+On Mon, 4 Nov 2024 23:08:21 +0100 (CET)
+jens.korinth@tuta.io wrote:
 
-On Mon, Nov 04, 2024 at 05:23:44PM -0400, Tamir Duberstein wrote:
-> There's no need for this. The type had the same form when it was first
+> FWIW, my motivation to look into it was the TODO
+> kernel/error.rs:123. Might be a good first place to use the new
+> macros.
 
-I believe we need this `PhantomData` to inform drop chec [1] that the
-drop of `Arc` may result into the drop of an `ArcInner<T>`. Rust std
-`Arc` has the similar definition [2], you can find more information
-about PhantomData usage on drop checking at [3].
+I think that WARN_ONCE needs much work than the code to execute once.
 
-[1]: https://doc.rust-lang.org/nightly/std/ops/trait.Drop.html#drop-check
-[2]: https://doc.rust-lang.org/src/alloc/sync.rs.html#245
-[3]: https://doc.rust-lang.org/nightly/std/marker/struct.PhantomData.html#ownership-and-the-drop-check
+The following your warn_once implementation (from Zulip) isn't what C's
+WARN_ONCE does.
 
-Regards,
-Boqun
+macro_rules! warn_once {
+    ($($arg:tt)*) => (
+        do_once_lite_if!(true, crate::pr_warn!($($arg)*))
+    )
+}
 
-> introduced, so it seems this was never necessary.
-> 
-> Fixed: 9dc043655003 ("rust: sync: add `Arc` for ref-counted allocations")
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  rust/kernel/sync/arc.rs | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index db9da352d588f65348aa7a5204abbb165b70197f..7e54d31538273d410f80fd65b2070e75e4f69428 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -127,7 +127,6 @@
->  /// ```
->  pub struct Arc<T: ?Sized> {
->      ptr: NonNull<ArcInner<T>>,
-> -    _p: PhantomData<ArcInner<T>>,
->  }
->  
->  #[pin_data]
-> @@ -219,7 +218,6 @@ unsafe fn from_inner(inner: NonNull<ArcInner<T>>) -> Self {
->          // INVARIANT: By the safety requirements, the invariants hold.
->          Arc {
->              ptr: inner,
-> -            _p: PhantomData,
->          }
->      }
->  
-> 
-> ---
-> base-commit: ae7851c29747fa3765ecb722fe722117a346f988
-> change-id: 20241104-simplify-arc-70c3574b5fac
-> 
-> Best regards,
-> -- 
-> Tamir Duberstein <tamird@gmail.com>
-> 
+I think that all the architectures that support Rust implement WARN_ONCE
+in assembly. The simple wrapper for them doesn't work.
+
+I assume that we simply can't cut and past the assembly in the C side
+so it will be complicated.
+
+I would recommend you to work on pr_*_once than WARN_ONCE; just a
+wrapper for pr_* function.
+
