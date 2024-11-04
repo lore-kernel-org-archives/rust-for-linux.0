@@ -1,166 +1,166 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526641C32E2
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 22:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19951FC3;
+	Mon,  4 Nov 2024 22:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730758837; cv=none; b=RdFO8K9w4afeSuRvtOOdcudoBFq/eLf0iM6xj0TlQdyLXTRTSwPyR5TrcpPKmXX6qOBjxFxW2YabjbFT9GUeaRm29ggmGZ8yitdP4hOUxUmgxPk4gI/frtUGjjo36zLBV015XM1F4qdDtjE63AP8+JwdgJpwQ8oGV1q5ert52Ek=
+	t=1730760129; cv=none; b=qZkdb1CKTfCr/MNCZ5mrhb9vMsYPw29gDsFvKk/zlxKM8BxTWFPmh7wedNlzo2QxtBkVfTk1sf4fO6HoxD6aPOule0Wp5rPyfHlE+tQMN8SFNvw9akc+i6/JwSOdq4JQ4rsYa6YsxX90G8u6nBtxujuTc7ORYaCH820P113GyRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730758837; c=relaxed/simple;
-	bh=wOt7t/8sMAgSI9ElnsNuPC8fNf/VNstqxoRnvj5FM3g=;
+	s=arc-20240116; t=1730760129; c=relaxed/simple;
+	bh=UIMQBl83V2Bns8yGAXTRumgr/92RHa2mv7Anyp60yE0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DHeJCytaE75zSlrFKbYRwSSE4IuGTmj0OUseWFFK/UtsbdS02qHix8M5RKTUtHp3/Wg9axmawTt2JA0lAIDnRfIVqqW8cbfOUUvv7MJnMcRw10EhXTsG2JwqFC+wv51xsXndVIV1XvdxaaOAxSSbpTLXqMOsaGncEJxNaPUCO5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZWUPGoAu; arc=none smtp.client-ip=209.85.160.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=IWk6Ul0FHpsLIfzSW0FOVzP9sRiXqJc/aApVmYaWjKgx6X+ms0v5IZfzuuKNANnfmQGGGj0mtpqziF5qZLdf6kJGCHRxkcEkovcFMnz4W924t85h4zGwg1CXOWMO/YSr24awtG4unByokF/I+USwu8fWTCUbMUARJPu9WH+ec3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNlWATDH; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZWUPGoAu"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-460b2e4c50fso34019241cf.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Nov 2024 14:20:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNlWATDH"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7b158542592so352020685a.2;
+        Mon, 04 Nov 2024 14:42:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730758835; x=1731363635; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=phScqf4D/d54fySjQekcubFd9RWdf0+NzrN1jJmrde0=;
-        b=ZWUPGoAucmPb8mtHKdzG6AS4M/XIco+oJv9l9czKYpMj2dLH67zhVRd+5oSxFBjxOT
-         4/y1FsJcZs+0+Boy0qVyUbh4nMekHK1cdKrG2xGd4m73Tz9NYdd9xIalvUWZPn1coluD
-         CMsdeK/+2kcrCgHRngFXOWgsADqcOsR2txkv3HsQfk1QRsTJgu1++PaINH09Ppo7r6Je
-         IH82GZSIDUF9lB4oRDSRq29X0lj83aEWlSg04D2+NsOvDcjwdJCmcv8BXF439W4i6rw7
-         g3/IcAFux5wb9oUMp03s0ez4KXxaf3aDJIvA/CEjfBl3exNdZHLwl5cKYiWlOBhySkaV
-         1XwA==
+        d=gmail.com; s=20230601; t=1730760127; x=1731364927; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lyv50UDAwS0ps1lDbxLMzi7cs8LVSE1+F2Y15Lj+yls=;
+        b=eNlWATDH0+UOBivqeV088jqnHe5epIjDLTGNyLeyhBzdBi8FalIMb+5c3WHUO96hwA
+         FkQgRlsjiiq2FG5ju19xU8FSiZ8UJab07Qf07S3s1GUhQbSdI3CkT+IgHmpChMEcjzIL
+         PygsHuEjNao5IQRS2oo4MHKrtmwihwpcco+KfFhCO2KNJJzE5naE6QWMCLZx5grDq5FM
+         TeAWDH2B3SK8Sawg+s5UWjtn1AdcBaoTjH1oTZhAlmWscpaYMNd0ivxqx/ngQLPwRKJ0
+         HtMt0FPUrI/Jk5g+wlyILTbqSEsZhF/nBVlQPr0exe49Y19bSGB9Cn2ReKm8bN2XVV5D
+         7m8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730758835; x=1731363635;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=phScqf4D/d54fySjQekcubFd9RWdf0+NzrN1jJmrde0=;
-        b=Gtlkjtu8hD+Hdw2a6JAbVxKyS4WRLtMO2v2IfZqevT/87KsgPB9TPso2uqdnd42n8Z
-         hg7r6+uBZXq3cICVtaUV8EkDT0V3UAjxf0pY/5zMjsDe65zWqzXOBd//RJFpGFasBeMN
-         Zx7Im5/iTUlqeLK4lqVQp+KSXW4d7QscJwuSAm4AAgCywt55TYfFGXlxcEIsJ0lU98DE
-         ZCiqJL7ZPrS8dwCGhcTbTVdr5kJ2gdfj/l/rIji1IvcmKmf8FS4JVozfdwmajAhgHrSS
-         BcWaR9qEdcegr2YhhXTmwb99+nr5/tG+JA7FBedSjH1kGAwgsWzrhfoHQJLz51qbdosA
-         fnJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXx7ey9KHulp/1/A/RhiB3Lrqxth2xunkQCRXx1BO5FpDmybWvtHkE2uMj13mKa9BWpu6RwN9xe8Ufh6EVlIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIPXnXTp4dyFDy5e7LMSrfjilLeey85sG9j6fS2ecdy9EQRrVG
-	ky7vYsoVkxST9JoVSzqMMDnpPv4d7NaKZm0ySWRQ4OMJ9Lc53xCP
-X-Google-Smtp-Source: AGHT+IH2qda2pdopbOOx00xQyTMdEq1IuosWeGziqmtpZLNBzF8JcSN0gTgsXXUiTCdL9c2QEOZL/A==
-X-Received: by 2002:ac8:5806:0:b0:460:c2f3:9017 with SMTP id d75a77b69052e-4613bff0d8emr540908011cf.17.1730758833904;
-        Mon, 04 Nov 2024 14:20:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730760127; x=1731364927;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lyv50UDAwS0ps1lDbxLMzi7cs8LVSE1+F2Y15Lj+yls=;
+        b=c5Xx8sQh6q5cfJnsvCtvYpHpaKIBZ2Ji6oufeJRfjJhyLayxiusEw2Ro2JCHaKxxZI
+         awK3g6cnCkJ2AghOE5Fbsgn+iOYVMxsrUEH5GS8VWYWTOahrwPHpm/HuF6rlC1Hjn/dl
+         S2r4dOxtIlU59R9eGLAq2z7dDPL6ZuFM+F3I/wGyAX6Bh/PpmiFs7n+GBbk/MHk7X+Mp
+         GuyeUFvHRI783hNqyQuDPAStbUP8bukOAwK4JHew5+F88ML1yj4LW6btbIyrVDL6CeNv
+         wFqCGh1YwTw/Y8pm4M5krw5jF6wYZOzxG6L9pGavd8nEizSjbOXZh/KXN7SFqBNtJ86y
+         mt1A==
+X-Forwarded-Encrypted: i=1; AJvYcCV1pcu42QWWSDT8WJVlRGSX+aj27lut6E3ey6MAqGbDCY8a6nktAa7LeF5OgBXbQdd+m7IvPGUyIiwP4RaFyrM=@vger.kernel.org, AJvYcCW4OTeyhamg/ZYpUcl8e/IfTeU1sVGztNSKaLn6wOywsJFdUygjwX1CRTPO0gv3KRn4XlDWAuO22A+Tnto=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtBbROxIRXpx2bmbc6MKjA6WdEi0NDPzEc+K/7vwEjmHegl3+E
+	70GXCkVf0uTsOCJ5MQ7WySqgQKrIDjr/jbL7mXhJF2it8PX15BGs
+X-Google-Smtp-Source: AGHT+IGGVNb3beS/nECB8mb5RSvaOeo3Beb5QajMsPATQi1S9AA2nRRTgVJ0GvRp4Gl2KYW/undv+Q==
+X-Received: by 2002:a05:620a:4711:b0:7b1:7f5f:4988 with SMTP id af79cd13be357-7b2fb982c4amr2357263285a.36.1730760126453;
+        Mon, 04 Nov 2024 14:42:06 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad0b0d04sm51806881cf.36.2024.11.04.14.20.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f39e9a6fsm464593785a.18.2024.11.04.14.42.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 14:20:33 -0800 (PST)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EF7A91200066;
-	Mon,  4 Nov 2024 17:20:32 -0500 (EST)
+        Mon, 04 Nov 2024 14:42:06 -0800 (PST)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8CA091200043;
+	Mon,  4 Nov 2024 17:42:05 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 04 Nov 2024 17:20:32 -0500
-X-ME-Sender: <xms:sEgpZ0ZJkcR806ZERBTbAkleIAM1D3MCk6mNOvFq3W-c4pphHpinfg>
-    <xme:sEgpZ_YyL8IjeES-50C_GyDplQZ97bimEyAg6d7ls2zlQXxoOv9jTlUJnXtPknp0P
-    zRXefQCsHbM4q1Keg>
-X-ME-Received: <xmr:sEgpZ-8OClxvQpbFHZGmKpVyHzr-WJzawxV-RS83iAM_ky86DTYQZHnHZLs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeliedgudehkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddt
-    jeenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledt
-    hffgheegkeekiefgudekhffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudefpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehjvghnshdrkhhorhhinhhthhesthhuth
-    grrdhiohdprhgtphhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguohhnihhssehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    ghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesph
-    hrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehp
-    rhhothhonhdrmhgv
-X-ME-Proxy: <xmx:sEgpZ-qB6oQ9eP6JvwarHi61_mQw3x4DNbmRPQch4CIXhdeDqoiizw>
-    <xmx:sEgpZ_pQjTSaizrRUCFeqXcK4OvWhop8rHu1Fb1TCykfmNeTDdCR5w>
-    <xmx:sEgpZ8SySkqTS8rspiTZbFPZsVKYIyU2PfSbIKER5ECbY4zIbYK61A>
-    <xmx:sEgpZ_rGt_UULnCItn3D-jPMn3acVqSDsyzOprXO1lZFIquBSLRuBg>
-    <xmx:sEgpZ04hLf_xfJ4u9CYD1R2ldA2rQ-tjqfb-qylaj3w4Mr4Ih53mZfyr>
+  by phl-compute-11.internal (MEProxy); Mon, 04 Nov 2024 17:42:05 -0500
+X-ME-Sender: <xms:vU0pZz-mSIaZDjSe2OllzWZ5jlwrI45WjCS5U_yECRSLs1uDuWUe3w>
+    <xme:vU0pZ_t-VZ4wqLk88_B1-J_YKOCHd2Voh9TxVaHtoj5WpJxDY0NqxHX4UqrdFSeGp
+    pWmeisCyBw4xS1B7g>
+X-ME-Received: <xmr:vU0pZxDrQOvkPzTppdxls5LlTswUCPYPKSOvrIPacNx-2xmqToN4SYbe9jM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeljedgtddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedv
+    veevleevhfekhefftdekieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrgh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
+    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
+    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
+    rdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehtrghmihhrugesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohep
+    sghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnh
+    hnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusgho
+    rhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:vU0pZ_fhd1XMxLIRIJGVBKoI9COMjtFzRx-wDSUmRZKD8cE4ZV0Ysg>
+    <xmx:vU0pZ4PkBtcmh2ZaDlPqtHTI65qOBlc7OkyTCMvOlhagU503bxaBow>
+    <xmx:vU0pZxma54JTEkui6ey9oyZ_unEwakVXzYi44Fe-b3FDfA4DPnXPOA>
+    <xmx:vU0pZyukuADDJKUwStNeT0fXWj27a7Kz2ofx8mGuo3rxFxIQ_0gQmQ>
+    <xmx:vU0pZytVcdwPdlcrQ-vZ9pI3p2Xal6o_EzoULdh9QYEoDsh71dAkooqO>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Nov 2024 17:20:32 -0500 (EST)
-Date: Mon, 4 Nov 2024 14:20:31 -0800
+ 4 Nov 2024 17:42:05 -0500 (EST)
+Date: Mon, 4 Nov 2024 14:42:04 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
-To: jens.korinth@tuta.io
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Rust For Linux <rust-for-linux@vger.kernel.org>,
-	Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary <gary@garyguo.net>, Bjorn3 Gh <bjorn3_gh@protonmail.com>,
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	A Hindborg <a.hindborg@kernel.org>,
-	Aliceryhl <aliceryhl@google.com>, Tmgross <tmgross@umich.edu>
-Subject: Re: [PATCH v1] rust: Add pr_*_once macros
-Message-ID: <ZylIr69GP-qymLyz@Boquns-Mac-mini.local>
-References: <20241103030530.76756-1-fujita.tomonori@gmail.com>
- <CANiq72n3bdNoYsSo47BGK2AJX_yhREoOxfKwkMBwz4v3bR-UHQ@mail.gmail.com>
- <20241104.110803.2105992905862489345.fujita.tomonori@gmail.com>
- <CANiq72nNMM5hCMa=hDbvpX6AVR5L2pswdQJ3AN05ynHx2Z3Q0w@mail.gmail.com>
- <OAtDBYR--B-9@tuta.io>
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: arc: remove unused PhantomData
+Message-ID: <ZylNvC8enwPG4IQ4@Boquns-Mac-mini.local>
+References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <OAtDBYR--B-9@tuta.io>
+In-Reply-To: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
 
-On Mon, Nov 04, 2024 at 11:08:21PM +0100, jens.korinth@tuta.io wrote:
-> Nov 4, 2024, 16:45 by miguel.ojeda.sandonis@gmail.com:
-> 
-> > On Mon, Nov 4, 2024 at 3:08 AM FUJITA Tomonori
-> > <fujita.tomonori@gmail.com> wrote:
-> >
-> >>
-> >> The code to execute only once is very basic code like the kind found
-> >> in textbooks? I think that his focus is on optimizing that code. Once
-> >> the the basic code is merged, it's easier to send patches to optimize
-> >> it.
-> >>
-> >
-> > It doesn't matter that it is "very basic code". This was discussed 2
-> > weeks ago in Zulip. Most importantly, it was a new contributor to the
-> > kernel that was working on it (as far as I know).
-> >
-> > The issue is that sending code without any indication about the
-> > discussion, without Cc'ing the author, and so on, is the sort of thing
-> > that can annoy people. And if they are new contributors, it can drive
-> > them away.
-> >
-> > We need to be careful about this.
-> >
-> I think you both make good points. Fujita, you're right - it is very
-> basic code with little technical complexity, so it may not be worth
-> overthinking. At the same time, I really appreciate you including me
+Hi Tamir,
 
-I wouldn't call it (adding an extra load() before xchg()) "overthinking"
-;-), because we are working in kernel, and we care about performance. We
-actually use that pattern everywhere in the kernel. So thank you for
-your work on this, the implementation and the benchmarking.
+On Mon, Nov 04, 2024 at 05:23:44PM -0400, Tamir Duberstein wrote:
+> There's no need for this. The type had the same form when it was first
+
+I believe we need this `PhantomData` to inform drop chec [1] that the
+drop of `Arc` may result into the drop of an `ArcInner<T>`. Rust std
+`Arc` has the similar definition [2], you can find more information
+about PhantomData usage on drop checking at [3].
+
+[1]: https://doc.rust-lang.org/nightly/std/ops/trait.Drop.html#drop-check
+[2]: https://doc.rust-lang.org/src/alloc/sync.rs.html#245
+[3]: https://doc.rust-lang.org/nightly/std/marker/struct.PhantomData.html#ownership-and-the-drop-check
 
 Regards,
 Boqun
 
-> in this conversation and acknowledging my contribution, Miguel;
-> communities can be quite sensitive, and sometimes, attention to the
-> small details really does make a difference. Perhaps we could simply
-> add a "Suggested-by" or "Co-developed-by" acknowledgment and move
-> forward?
+> introduced, so it seems this was never necessary.
 > 
-> FWIW, my motivation to look into it was the TODO kernel/error.rs:123.
-> Might be a good first place to use the new macros.
+> Fixed: 9dc043655003 ("rust: sync: add `Arc` for ref-counted allocations")
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  rust/kernel/sync/arc.rs | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> Jens
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index db9da352d588f65348aa7a5204abbb165b70197f..7e54d31538273d410f80fd65b2070e75e4f69428 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -127,7 +127,6 @@
+>  /// ```
+>  pub struct Arc<T: ?Sized> {
+>      ptr: NonNull<ArcInner<T>>,
+> -    _p: PhantomData<ArcInner<T>>,
+>  }
+>  
+>  #[pin_data]
+> @@ -219,7 +218,6 @@ unsafe fn from_inner(inner: NonNull<ArcInner<T>>) -> Self {
+>          // INVARIANT: By the safety requirements, the invariants hold.
+>          Arc {
+>              ptr: inner,
+> -            _p: PhantomData,
+>          }
+>      }
+>  
+> 
+> ---
+> base-commit: ae7851c29747fa3765ecb722fe722117a346f988
+> change-id: 20241104-simplify-arc-70c3574b5fac
+> 
+> Best regards,
+> -- 
+> Tamir Duberstein <tamird@gmail.com>
+> 
