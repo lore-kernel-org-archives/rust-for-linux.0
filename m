@@ -1,92 +1,135 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC871AC458;
-	Mon,  4 Nov 2024 10:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6661C4A0A
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 11:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730716282; cv=none; b=LbAvupPyaSm6D69PG4uXrlJVFLzkToa9t2a7hewLwtyh/JVaYsVqsuANAsDP9vHXHJ7dHehkMjrLG/EV880cEJCYqOqA11D3vAFqiXuv+njaBCZ/5FOYuc+KyHqHPEW+MwgMCSkZQeMF/qRPIDe+Nux/mdcxB57LVr4OCuGP6Q8=
+	t=1730718559; cv=none; b=ZuDb/BSPGhUVTvdjOSuZz/z+naLYRjVvLoIpVcPUB4AMVCFZGHQPgt4gwvrAkT6NtvIKIJkwvgxDXAbzFpTgQwiSO95VT+wAF9O9UyjJAGW7/8xkPkwdvlC6I0cFRbk90gPt7v0Z1JkhO9FBZEgmJ6MEal2uQh4cyHBKkBd6JKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730716282; c=relaxed/simple;
-	bh=KNnTuRjeph/PxeFWH2OjkqD6QF+athM8Qh94/GVFiuE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffliakHTvFpidUtiEVpDBqf+w1w2DZ7hOozSk0uPYhLRp8RLRs7I0DXEviw7Oyukn76TAaBYFD8BzN5S3dBxBnIpt26Azn6GiQ4G6Ptq5PhbEUso+b+waVXJ1q0GH8FCdIqSmg/KmwV6xKX5sS6EcaKcwfntPnCMpK8nYQw0BTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VPMm5EZh; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730718559; c=relaxed/simple;
+	bh=+laLeFzUJ/5mjzCzevIlsqRx+X7kkxRYhLJixrUkzew=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VKLeiFfty+kQZYQn57IYSURP4hRxGobasXTIV9UdhhIpnc+pQQCotPM8G41s27Ff1hhpN2y3Cww8L/5SHfPzAa7bDUKp6ucTNRWoVF8nFTEPlms2KDYALbKJJMhZ5E7R4miIfpV+S9/mumdxMFc/mJSg5+6wxQU1ohaxBgQ7pmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RpAZ2Y3K; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VPMm5EZh"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-539fb49c64aso5372255e87.0;
-        Mon, 04 Nov 2024 02:31:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730716279; x=1731321079; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=slUFAVbY5/wKAk/TmOVIAwa4COIPRsTBYPw4oUXG8Jw=;
-        b=VPMm5EZhm5+Lcjv/iJrtd5k7lszncWZ1HrjczoBu+P0MOCtaLsm0dmBMUEat0104Kj
-         NvgzDkHB7C87t6YXcq6V/vc5eqDNcqNNM1aDO9YzBC7yI2EBf/W+ch6X48Jr+yPwTFDl
-         tiRrq+eBCMQDn4PQrFZ4GjJQJj9VzELmNzrCInGaiZp+1mQpPQFi6q4FYrgdmaxNdSUw
-         GP75slstaLMJlmMW4GbFKA09x8upgnboG+ymSYtRKY0yuSCAxJYvnxBmq2qTot7w92y3
-         kcasDMk2IaBCNjn0QlkGxNR+1m9EUdgilMiYs7G/zbBJOW222ugmHLOF7L/zUguYJkut
-         4sjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730716279; x=1731321079;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=slUFAVbY5/wKAk/TmOVIAwa4COIPRsTBYPw4oUXG8Jw=;
-        b=n/uMuRlbsbn9x9Gse22henLyJ4/8Wi21s9fa4Lw5kRP2Fdf0QMG5DFEVPuH2lM6UYn
-         daRdArCdudWVTJrh6Mux1l1ljhqS0TU1kmGwczLDXf844Y+xHVgghIePfu81N3Fsmb5Z
-         XmZ5IXpSu9sBn7BPSq2I9N8ixL/MJ4zpmWuwXYd+rBtATzCyx0aj5OiQH9evb9Q0p0mT
-         tvl6kRPs686buGF69qPGCf5PdEyHdUrOzs/J7WDG24n4p5/GCtQ0s6WfUWy0gvYaSwWT
-         d9ZQgxsBAKE0FU3WYwEwiNNdKaKPfvJK8gWdBmtSMSVP690GnBTYiurGp9xEyhTbt2Hm
-         ApsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULziOa0pGHsh9o4IipikwpTJFp5dBEPj01BoWaSdGDee2DpGeGbNrahX3TfzEGWIRVuse0zx9D9HGJst8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI2ycu+t8LhLzOrZBI+IUaoS4uQ2GGhmfpksaOXjG161XybU0H
-	ZsPoznzLfRuve17BW1jErn4XQlN8FYbMyBnEbDAHs2SxJe3u4wQ2
-X-Google-Smtp-Source: AGHT+IGK+lmHk4o+V9+0ikSoBiJZqg6QykoW+ZRxIDliOFYdRFEcSLMUbdhefW3br9WByiTmjmgPvw==
-X-Received: by 2002:ac2:4c56:0:b0:535:6a34:b8c3 with SMTP id 2adb3069b0e04-53d65dca63dmr9144991e87.5.1730716278359;
-        Mon, 04 Nov 2024 02:31:18 -0800 (PST)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bdcbe44sm1617800e87.201.2024.11.04.02.31.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Nov 2024 02:31:16 -0800 (PST)
-Message-ID: <229a3c3f-aad3-48b7-8d04-18ee1ab8c9fb@gmail.com>
-Date: Mon, 4 Nov 2024 12:31:16 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RpAZ2Y3K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730718556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cHfiYyGhwO85yfX2nMQtJYDaSaYp/kcb4Um/3beuNnA=;
+	b=RpAZ2Y3KYQl89PeUSYMc8LFUdskvz9m3uOUrFvUhNbEh1OLE1PvNEaAimH8mHBdivCeHjL
+	KW9Reu2wzHVR+YwdErBW4pbJEgoeMOunVLE/Qmo6NGg4ckA9+859U+zSeV9vss+IMETyaF
+	pvoWZ4BFX6CsPUoFPmWleEompIW8ejU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-cwirs87oPGmyff5eBckLkw-1; Mon,
+ 04 Nov 2024 06:09:13 -0500
+X-MC-Unique: cwirs87oPGmyff5eBckLkw-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 448D21955D55;
+	Mon,  4 Nov 2024 11:09:11 +0000 (UTC)
+Received: from f39 (unknown [10.39.194.39])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7EB6C300018D;
+	Mon,  4 Nov 2024 11:09:07 +0000 (UTC)
+Date: Mon, 4 Nov 2024 12:09:04 +0100
+From: Eder Zulian <ezulian@redhat.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, williams@redhat.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+Subject: Re: [PATCH] rust: Fix build error
+Message-ID: <ZyirUGVxvyAjERpP@f39>
+References: <20241014195253.1704625-1-ezulian@redhat.com>
+ <CANiq72n5cPxDORQad2_fJPHXaE2YDHW3enavjWyz1MZBU3oasQ@mail.gmail.com>
+ <ZxBXDhZXNgCwAHzN@f39>
+ <CANiq72nqPN64KQat2VhC5EcVBxvNF18Hi19FPz24fqjpaj2LJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] rust: add dma coherent allocator abstraction.
-To: Alice Ryhl <aliceryhl@google.com>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
- a.hindborg@kernel.org, linux-kernel@vger.kernel.org, dakr@redhat.com,
- airlied@redhat.com, miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com,
- Andreas Hindborg <a.hindborg@samsung.com>
-References: <20241104090711.3000818-1-abdiel.janulgue@gmail.com>
- <20241104090711.3000818-3-abdiel.janulgue@gmail.com>
- <CAH5fLgisLyW-d9rsHJ8Vp8HpWh7PZxtkXooVQyMTxs445Ah4GQ@mail.gmail.com>
- <f6889ce1-f1e0-438d-a9e6-4340a92cb6ef@gmail.com>
- <CAH5fLggDqXiyXLbmGQfUcgx3nCv+uhsqwWBwk2j522v8jOp9aw@mail.gmail.com>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <CAH5fLggDqXiyXLbmGQfUcgx3nCv+uhsqwWBwk2j522v8jOp9aw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nqPN64KQat2VhC5EcVBxvNF18Hi19FPz24fqjpaj2LJA@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
+Hi,
+Really sorry for the long pause, I was OOO for some days...
 
-
-On 04/11/2024 12:00, Alice Ryhl wrote:
+On Thu, Oct 17, 2024 at 03:24:06PM +0200, Miguel Ojeda wrote:
+> On Thu, Oct 17, 2024 at 2:15 AM Eder Zulian <ezulian@redhat.com> wrote:
+> >
+> > I can fix it and send a v2 if that's ok. Is it valid to add two 'Reported-by'
+> > tags (Clark and kernel test robot)?
 > 
-> You'll need your own trait, or you can build_assert! that the size is
-> non-zero in the constructor. 
+> Yeah, I think so, at least if they were independently reported. Please
+> add a `Closes` if you have it for Clark's report.
+> 
+> > Agreed. We don't want code replicated. In my reply to Boqun I added some
+> > notes. If that makes sense, we could avoid even the helper in
+> > 'spinlock{_,rt}.h'?
+> 
+> Hmm... I am not sure I follow your reply to Boqun. In your version,
+> under `DEBUG_SPINLOCK && PREEMPT_RT`, you call `spin_lock_init`, but
+> that means we are not passing the given key but creating a new
+> static/single one, no? That is why Boqun mentioned that.
+> 
 
-I think we can catch this in the constructor. I'll try the build_assert! 
-approach first as it's simpler.
+I shall send v2 based on Boqun's suggestion soon.
 
-/Abdiel
+> > Please correct me if I misunderstood. It seems that Rust doesn't have a
+> > pre-processor step to replace macros in the code and the Rust compiler works
+> > with 'objects/entities' created for functions and variables, but macros would
+> > be ignored (since they are string substitution.) Do you have pointers for good
+> > docs on this?
+> 
+> I am not sure what exactly you are referring to, so perhaps this quick
+> summary helps (apologies if you already know all this!).
+> 
+> Rust does not understand C, at all. So we use `bindgen`, which is a
+> tool that internally uses `libclang` to parse C headers and emit Rust
+> code to use them from Rust. Clang (of course) knows about macros and
+> can parse them and expand them etc., but those macros (typically)
+> expand into C code, not Rust code. So (typically) we can't simply use
+> the macro because it does not generate valid Rust code. Thus we use a
+> C source file to declare helpers that call the C macros (which is fine
+> because it is a C file compiled by a C compiler), and then we can call
+> the C helper function from Rust.
+> 
+> The problem Boqun pointed out is that, now, since you introduced an
+> extra condition in the same `#ifdef`, then `spin_lock_init` is also
+> called in a case when `DEBUG_SPINLOCK=y`, which means the key that was
+> passed as a parameter is not used but the macro will provide a new
+> one.
+> 
+> Does that help?
+
+Yes, thank you!
+
+> 
+> As for docs, I am happy to point to some -- do you mean on the Rust
+> side of things?
+> 
+> Thanks for the patch!
+> 
+> Cheers,
+> Miguel
+> 
+
+Cheeers,
+Eder
+
