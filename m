@@ -1,45 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9146114E2FD;
-	Mon,  4 Nov 2024 05:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592A56FC5
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 06:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730699305; cv=none; b=hnH1v8W+Etou6Aq2tHxcz0p5nXtwqA6HmlOSV+fwaf3XNpcDIKU4DGZcvv6qMFBo4f/NNqCjMC+inzJt4miegUbTEaUA0WLtIhHvWEesop2QMohIU9wWfRlmV1p2vmBgFBb195Y6HeviOP6vb1+5q5+UbcZPV3N7ubROssYTImA=
+	t=1730700499; cv=none; b=opxoDv8tjrs6wlJcZHdGGeGXYS2VgKj4bW5GmEXw+LcSGEUlgOBv37aFiQ3FoZ8AxUTa9V+BzFQ4Ztu1gaGcyoNm0DtE8Eu31D1phzM15XVRfcXxi8l+7FxTGfnXLj2FfHG5RRvPiPkoNteoCNQci/a+GRRFKKp1zBsRkmABMXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730699305; c=relaxed/simple;
-	bh=B1KH/Bq2gXhpWwNvJdqHlM36GE9xSh5E23+vE+/6SPM=;
+	s=arc-20240116; t=1730700499; c=relaxed/simple;
+	bh=nJyNh0OCf+mt/G/ye4fp/HaKW30GfbAXONgJhizhUbY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aW7q2l+0NRSQ37d/XCW+lWnZKwjWa54hALE64G86gmkPZZcVr9QNErZG3uDyLI4uKxDmQbzJe616jjB7sAtTwELC692x1tUwn0RbMI9xtrrHZN2amizV7gPKcAuvnQf2IRp2VVWtHDlk+J+TvtNXGIz/p/vHBXb7Xhttl5ESAeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O77Z6fJ9; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=gP2E5TfKNcf1ys7wW5mvliCbwYz8+YGvfLB3tppmjTW3X3+udZdSV+puQ1gdAYSoSnzVfzLGuD5lF/kZhWexyxk6cjoPgNA27PdRbP4R52SB4ExTw5LGg3xYWBVZb52l30zM6aqa0ak6n8cfo9BuzGKxgeiEXqNB7NEM8z5fijE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a0D+ZX+D; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O77Z6fJ9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96521C4CECE;
-	Mon,  4 Nov 2024 05:48:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730699305;
-	bh=B1KH/Bq2gXhpWwNvJdqHlM36GE9xSh5E23+vE+/6SPM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O77Z6fJ9RU4Ps6WqWiBppB+u+B8lk9Cn8XA/RZwIqzC9Izp33ERkWP2nEvhbL7s2o
-	 JcXFkGnZtlspN1zmaI49XhGmvo0UUz/uRsusY527qXi1ncoutXhcsair879aizQrcb
-	 DgpsEgovKCxXrUnLvwdq5Qx0vlWDBfrSpJDek7Yo=
-Date: Mon, 4 Nov 2024 01:24:26 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	Wedson Almeida Filho <wedsonaf@google.com>
-Subject: Re: [PATCH v3 08/16] rust: add `dev_*` print macros.
-Message-ID: <2024110409-speller-blasphemy-2539@gregkh>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-9-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a0D+ZX+D"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b1474b1377so338782985a.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 03 Nov 2024 22:08:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730700496; x=1731305296; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SW+RvmKJcto1pkLoXXYXLIklISppKq7OJ3PEIrF6I9g=;
+        b=a0D+ZX+DQ5+HtX07t/27lqQVpIckgbg9bUc7FCet0DgPbjxHfLsvvvz5Kn8N3yfHA8
+         DMjb2aa4IljoizV2vOAYcZuOw9I+a0QXJzsF+i4bh4t4jVTIlPgHIdHwW3Ld58VS3BcE
+         12lNNfbo3khfOQtfRxV7+/MrlgdthkMfUL3FFcH2q4WFYQ/IcmnHv78i4tXt1U6slDCj
+         gcXImgpTtmcUDiSBmOASjRvuTtwxJhQEQuBt1dg0iTDsUQypJRnBpuuFDUt7BgVPdl4a
+         PDimCrQaDk6LsD2ff2HI6NSYGy07O71dcthy7Rq8rmCHGKhpsxw0uVbKmsYvht296NQB
+         d1yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730700496; x=1731305296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SW+RvmKJcto1pkLoXXYXLIklISppKq7OJ3PEIrF6I9g=;
+        b=nNB7NbG9NpvfrbwjWdgSYHWvSFNY80srPmoFhN8a9qv0j0vLPWD2cuH55eheiGw9NP
+         pf5/Fw/+sZGtIDJkdGp1G41936z6Xa7BBf7gbItVnUHfswq+2QOhRebJS3V4Lai81FyP
+         c950GzITizmO1LPZoHCUDuDTGRbrYtGpjZ0hqijbWoCcYp+zbEh51GtKUZmCmx+n4m7h
+         ftIXp19ql3/gseAIEbw/5QiY1hQG4QflIamLPithvxD5kLb++jAyi3PVpDVqIDsstjsy
+         D98L/5prb1T33NmQNJxblWjlCp03qwdzZF1lj4G5jqisMA3e4hhHmYCIvCvZMyohDoXX
+         6Vgg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAcxziHL8hwvCLYH7KMFUC64ZgxP8/aUPqJJWJBC99t20q+unwP4djvmkKa6rxPe8be/M3FTOK14IY3GcBmQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2KXxciVR21j9EjkLxYFAmwcyW0UjZPT2tTEQTxqJp4WlKGxP1
+	RaZUVNFxGWRnZCqfpVl5Dr5BwTPL4p6JNaEHKeki6gzlVTDZeEqw
+X-Google-Smtp-Source: AGHT+IHnbDqq9z7DV6XTkDm/Cc5agc9HifiWdJ2sImOff5mr+dNgpJnEHihpCZq7Y9UmuOsfnC5RZQ==
+X-Received: by 2002:a05:620a:25cc:b0:7b1:4a0b:891 with SMTP id af79cd13be357-7b2f24c6b1cmr2127837285a.3.1730700496225;
+        Sun, 03 Nov 2024 22:08:16 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b2f3a112edsm387537085a.58.2024.11.03.22.08.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Nov 2024 22:08:15 -0800 (PST)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 14CA31200043;
+	Mon,  4 Nov 2024 01:08:15 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Mon, 04 Nov 2024 01:08:15 -0500
+X-ME-Sender: <xms:zmQoZyoL2lQxbe1TN-n0ptLVTdK1pSOS8WARTeEVrOt7VnBUa6RfYg>
+    <xme:zmQoZwqZjAWqvi1OX5KzNTYjCC-XMqLKfjSKtmT6HdzUulK_hzn54US0xHmlsgNWv
+    YeilR4tkGraFBTeYA>
+X-ME-Received: <xmr:zmQoZ3N99GaQKunbLTo-UBoZZe54M6z6Z1pWGBYVTECkb6bDHcRC9c5wNCs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdelhedgleduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudefpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmh
+    grihhlrdgtohhmpdhrtghpthhtohepjhgvnhhsrdhkohhrihhnthhhsehtuhhtrgdrihho
+    pdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhmrghilh
+    drtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgr
+    rhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhroh
+    htohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhho
+    thhonhdrmhgv
+X-ME-Proxy: <xmx:zmQoZx4otiP5C5KIljxFuqa73J3p2hr6yZL4b17JmQHT39d7uMrJDg>
+    <xmx:z2QoZx7NhRi5JaMRxCVMcijbYwi1uKMs8PjhObZ0gbAkEfvomv0pZw>
+    <xmx:z2QoZxjmz0MlLJpCHIiBebRDbcjaZ4gfMb-kFPljJYVwjXYyQqGrfg>
+    <xmx:z2QoZ74Z_AgKtEMhsvIHCoHJ3Jys3Vb3jaYr8WyWhC5X94c3VDz5Vw>
+    <xmx:z2QoZ8J2UNoiCE8wEt7HZ_FblJgt3Sgr_bIwR8wWPpmZVrW_kw_i3Dkf>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 Nov 2024 01:08:14 -0500 (EST)
+Date: Sun, 3 Nov 2024 22:08:13 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: jens.korinth@tuta.io, miguel.ojeda.sandonis@gmail.com,
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: Add pr_*_once macros
+Message-ID: <ZyhkzafudRiL4H39@Boquns-Mac-mini.local>
+References: <20241103030530.76756-1-fujita.tomonori@gmail.com>
+ <CANiq72n3bdNoYsSo47BGK2AJX_yhREoOxfKwkMBwz4v3bR-UHQ@mail.gmail.com>
+ <OAo8RFp--B-9@tuta.io>
+ <20241104.111512.1370021952355538395.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,24 +110,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241022213221.2383-9-dakr@kernel.org>
+In-Reply-To: <20241104.111512.1370021952355538395.fujita.tomonori@gmail.com>
 
-On Tue, Oct 22, 2024 at 11:31:45PM +0200, Danilo Krummrich wrote:
-> From: Wedson Almeida Filho <wedsonaf@google.com>
+On Mon, Nov 04, 2024 at 11:15:12AM +0900, FUJITA Tomonori wrote:
+> On Sun, 3 Nov 2024 23:29:29 +0100 (CET)
+> jens.korinth@tuta.io wrote:
 > 
-> Implement `dev_*` print macros for `device::Device`.
+> >> Hmm... Isn't this derived from what Jens was working on in Zulip? (Cc'd)
+> >>
+> > Looks very similar. But more importantly it's missing the hotpath
+> > improvement suggested by Boqun Feng, which improves the perfomance
+> > significantly:
 > 
-> They behave like the macros with the same names in C, i.e., they print
-> messages to the kernel ring buffer with the given level, prefixing the
-> messages with corresponding device information.
-> 
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/device.rs  | 319 ++++++++++++++++++++++++++++++++++++++++-
->  rust/kernel/prelude.rs |   2 +
->  2 files changed, 320 insertions(+), 1 deletion(-)
+> I think that it's better to start with the very basic code and then
+> optimize it with commit log that includes benchmark results.
 
-This is good to grab now, I've added it to my char-misc tree, thanks!
+I don't think that is necessary, if you look at how DO_ONCE_LITE_IF is
+implemented today in C, it already has the load for checking:
 
-greg k-h
+	if (unlikely(__ret_cond && !__already_done)) {
+
+you will just need to use atomics to fix the data race issues in C, and
+the xchg() to fix the "not exactly once" issue.
+
+Regards,
+Boqun
