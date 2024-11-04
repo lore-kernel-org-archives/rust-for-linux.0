@@ -1,92 +1,115 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A53433FE;
-	Mon,  4 Nov 2024 17:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959D518622
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 18:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730741780; cv=none; b=uH14Td2/4uDsyCU3ufcot47WpmbyljMfpA7USvzfxT7K1S8WvOYaNJ/I0p6fIIi+Ul+TfK+1BUx4tI9wkKruJAYp/EKw4icMZx0iqOlUyFc7nDT8Fa+twScMy5ne5ipskckrwn4foByAt3ij+smAjGJUMwAM9wDdoRIUhrd4q58=
+	t=1730746352; cv=none; b=tE7HHEdR+RIL6LYi+c5k1gcjWgmNzY7aIMwo+DcQZn79MWNSdteE7ieSOCImsOhdqOjgMtnsgu+spy/2gHMJCdsvhfNF9KR3rbicvd8AWQOYSRZEVll8rSXGn2FyPcL9Mu+3KmITsfnDySdK9VeAu7sMk0L4j/2ZZF4Z90duWWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730741780; c=relaxed/simple;
-	bh=14Y2C3CtK6n0zKXAiwUiWs4AmbFkmgaPQlfz0wwA+rY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cgQMMkXXNc4Cdt7b9vISuwVIPZa4iWVKR+GupkvTl4p1gYkUIttZPJRoOG91UpbSMGvJwxJxXfyKnyZbsjPIOvmGJWMlbzoG7TMPfW+K8rekfeTSlOMLywxoAe8SfHg1ZF69WpG7GFWprGRy6AdVp957J9CF7MLZEtcGcjDieEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ikj/qr/S; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730746352; c=relaxed/simple;
+	bh=qbwKTwSv7Je4zcchgOjGr+03qw6xwc1hbCSe9S4CZQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eQrwFwXYzhgx2Ur9GGlzq0w6HhzcDNSd7iC121pZiqHis7/bxx60I/8k5U0eS0N9vq7nNg3bUdEaaALOHNlPx0/CKgYCUuNQjy4+5zl6WfRY7QokAULPnDtwZJtBqLnpkQMETLCInCeh/iqBGiJaPugjlM0KmDW0mBl38c8avzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=gs4Dpadm; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ikj/qr/S"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2e2da8529e1so415194a91.1;
-        Mon, 04 Nov 2024 09:36:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="gs4Dpadm"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cedf5fe237so1110491a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Nov 2024 10:52:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730741778; x=1731346578; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=14Y2C3CtK6n0zKXAiwUiWs4AmbFkmgaPQlfz0wwA+rY=;
-        b=ikj/qr/SvHqevBrclbV99++lcRbn7OG1R0kjisqEszgBIeBaOe47rkrMH6N7oGuC2Z
-         //eSyCye0y0sErok0X8G/tg/90lAwenpEcFMcVellNf8hlhoC2+POmQDNM2NvWsKDP6q
-         CmChLxqcQeqSYDy+m4MoR2D5Af36X6DgMtryDa5Lx3m3R9/MaEhFLWhUsve0OnMqJLYh
-         RmOK5cH9MsfEMZ1EivaOp8XA9dWWFLMS5UR8XFXOQdcO8xnamaGFqXBzlsA6qtwePy0B
-         +wEzKJjpNoV56I8zQOg+JdDpQqUnAYw/lKi5rTrWV3TA4Pf1XfrM5jIH4FqVDwrOKcPj
-         M09Q==
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1730746349; x=1731351149; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jj73W7L6Lxdeb5OW2HZUTx3jNfZe6GKRUpYgEeeMV3A=;
+        b=gs4DpadmSmgx5ZoXvIkykeDv9F4okVnz7dCncPCW+VyS8PsvU8y8LqhdmoHhod1/1e
+         OI9CZZ9jFh1FzugRFHGwI1yGQmL6G74LE5g8WMWXPzCpwnygfUy668TBK2R1UwUEAKFC
+         gd0OYSfRyfQI+bdoYWZn0gCsfEhKOuZ7N2C3sbF1skJ7XcmEL+80ArEkSjxlINo0tenk
+         my3hc0tbhTOBxJHtOlhioawz6c2vvCPLez87uU03FjTDzhg6Uh0je2FsW5Te+8x93ICI
+         oTYDGH7o53tKM2+I4YyB3roiapwMkrboADVyYap61m8NnlWlXIvLb5CMiOSn74lW5A5C
+         flHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730741778; x=1731346578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=14Y2C3CtK6n0zKXAiwUiWs4AmbFkmgaPQlfz0wwA+rY=;
-        b=PtqJE20NLggcxRPdtX/U7UEdau6YLnxAkvlKp1L/lw1o0sPfQCMMw73AyFENPJFB/4
-         sz80wsbG1VKw6KR8fBfGnxF5w43UxdWBDHFzNMgP+rZh1JM8QvaQUlS84apKZzIwZ3dc
-         h8ggtrQ4m6G2i1dq6qz/FcQYSmdAp4dpjmcTg6Xd5MEBqhzAbQAq2rtDJvTxnqcVyNIH
-         y2R18q38HGUMmCWQhy+oR3UL5lm7SBWSRMcMMryMY8RM8MJODf/7ntUmWCP67VGgsWxy
-         8/QqNp+tK4bWmJAoHXJxJQV0vzlU3GQKEGR0M6d+mx6cl5ZNt5RCnQROSMIFa4Bxi1ri
-         lQnA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMI+gkRliGOc4a+8jpwVv1UqQWWxqmHyzpGafblN9ZFT62LgvuHz17EHEzx1bq2vgTu4S2XTb15EVz@vger.kernel.org, AJvYcCV4boliGxRO0V5rPH8eJCpW/bgYBP0R1gssx9YWO/EutCTFpbZsayeOJb/rZfIYXChC+PstuY6i4AC6R6/+zOg=@vger.kernel.org, AJvYcCVl+TPfGxnAnEbjFuCx4afwXvAvTiv7y5SstJxCOyDBak2W5cDH719wl5sYa7b47WieA+stSiK2OS0W@vger.kernel.org, AJvYcCXbn7pJcVDlPNqndCfU+S5j/e6mv+YatC0sMD4MGJARY4HBUBNdhUMQ6Xt4eiCcpCNg339gyccsbwEh64o4@vger.kernel.org
-X-Gm-Message-State: AOJu0YycIlEjjvuNqYr5VFBGA872qHt0tfVAMxKtc8WKICo2ZJLIRch3
-	cTsMjcWLzlrmJ5bYc0ixdOjCRbaIBbeNN/AwjZlSX9j2HkmdqQy0v/nqlaQUulvaXvUip9dKy1S
-	hUq1MbkEekX2Es3KuaiJdSrpWGm0=
-X-Google-Smtp-Source: AGHT+IFYUp8Z31hGCqN7mtBnIVFG458aQgB2jJN9y0AHvYhO6ezYNnK1zqkRnPaCXsvZOB/Saq/9VW1K8wEZC65yQms=
-X-Received: by 2002:a17:90a:780b:b0:2e2:b20b:59de with SMTP id
- 98e67ed59e1d1-2e8f1068be8mr16152054a91.3.1730741778234; Mon, 04 Nov 2024
- 09:36:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730746349; x=1731351149;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jj73W7L6Lxdeb5OW2HZUTx3jNfZe6GKRUpYgEeeMV3A=;
+        b=K/V4otlVnU9+Kiedx6uIfwuf9JbFutb468ZLgSSM+Zy4LBs32fvolEwn8BSAemejUy
+         pbrawwQrUf0M0HBptJEa7jCiYfYFT9Eh+UEupHhEkkqjIdHlHYxZ1AZcoTkb/vNtZTA4
+         dobG7TFRtPO6LuG5MTzQ194+DRz6QEoRmDIBfkzYGIOcK5B/q2BM3kR5mWaVaBFzYGwg
+         ObsDdTC7FTJaQKMDpeMUSi0sLObalUhogTszGOVIa0w8vwLBM2givU10JkkuNXzk2tAo
+         7ZiWcBF6mu+zQDHdPErtpK06nj/MngPbtfW/OCN0KWKByGdY7+y7weUnGnWPlCdCVfD7
+         iDGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXMW96X/T5RvurQl+JRGRZJgDnpw3VGSDxSiD+eUi+Csrize4LEe8lQ3fgCLN7imWjwlNXkwRDpNPFBv6+ypA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNG8Xxu7TgRkaCSPsvw7DYwFYfKpat68KghFjY3VGLhFov1Agh
+	+FFrWBB+KFqtlWDXekA6pf+juczN0wXLS/Q23YWcd/GbpU/NWNZ5HSU0+Xqu5nM=
+X-Google-Smtp-Source: AGHT+IEptgPQf7qdaXg4w6W5CvyO+Zr0DrkdbM/cZm7hkzJEZ3U66nbrU/N/W8+PzWG0oTu3lnvwug==
+X-Received: by 2002:a17:906:6a12:b0:a9a:1778:7024 with SMTP id a640c23a62f3a-a9e65576989mr1515789766b.20.1730746348662;
+        Mon, 04 Nov 2024 10:52:28 -0800 (PST)
+Received: from mordor.lan ([95.85.217.110])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb17cf805sm16659766b.120.2024.11.04.10.52.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 10:52:28 -0800 (PST)
+From: Daniel Sedlak <daniel@sedlak.dev>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Daniel Sedlak <daniel@sedlak.dev>
+Subject: [PATCH] rust: error: make `from_errno` use `try_from_errno`
+Date: Mon,  4 Nov 2024 19:51:35 +0100
+Message-ID: <20241104185135.18974-1-daniel@sedlak.dev>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022213221.2383-1-dakr@kernel.org> <20241022213221.2383-3-dakr@kernel.org>
- <CAH5fLghQ3Rdgk+xzz9RzNzTs4vYLMO0q-SkDOrnb1u4TkPQVUA@mail.gmail.com> <2024110425-overfill-follicle-c963@gregkh>
-In-Reply-To: <2024110425-overfill-follicle-c963@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 4 Nov 2024 18:36:05 +0100
-Message-ID: <CANiq72nh5KMDHhnD_06CqVDNU4SvRaghpfY4_K1U8GxYjDky5g@mail.gmail.com>
-Subject: Re: [PATCH v3 02/16] rust: introduce `InPlaceModule`
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, 
-	rafael@kernel.org, bhelgaas@google.com, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com, 
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
-	daniel.almeida@collabora.com, saravanak@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 4, 2024 at 6:48=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> If no one objects, I'll just add this to the char/misc tree that already
-> has the other misc device rust code in it.
+Thanks to this simplification we are able to remove
+another redundant `unsafe`.
 
-Sounds good, thanks! I gave it a quick spin (on top of `rust-next`)
-just in case it triggered lints etc.:
+Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+---
+ rust/kernel/error.rs | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 7cd3bbab52f2..2339b1fc7353 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -101,19 +101,16 @@ impl Error {
+     /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
+     /// be returned in such a case.
+     pub fn from_errno(errno: core::ffi::c_int) -> Error {
+-        if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
++        if let Some(error) = Self::try_from_errno(errno) {
++            error
++        } else {
+             // TODO: Make it a `WARN_ONCE` once available.
+             crate::pr_warn!(
+                 "attempted to create `Error` with out of range `errno`: {}",
+                 errno
+             );
+-            return code::EINVAL;
++            code::EINVAL
+         }
+-
+-        // INVARIANT: The check above ensures the type invariant
+-        // will hold.
+-        // SAFETY: `errno` is checked above to be in a valid range.
+-        unsafe { Error::from_errno_unchecked(errno) }
+     }
+ 
+     /// Creates an [`Error`] from a kernel error code.
+-- 
+2.47.0
 
-Cheers,
-Miguel
