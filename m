@@ -1,104 +1,254 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8831D5CE7
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Nov 2024 23:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302411CD0C;
+	Tue,  5 Nov 2024 02:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730763231; cv=none; b=d1AujA/378g8Ll4s9bmEql3fC7CkXUO1ohfx6PpPiXPz7I2R47GJabQsqTpV2XfWz1zVXrccY2tQewaVWns/kmbIGzmnNiEta7WPRhSSzGRHu5qEAjj8mjXg5WAIhvdIgI+hJAqBnayq3geMZ3jrIwlG7JQAg75FHbmqmPSh2CA=
+	t=1730773355; cv=none; b=cjp3cFSs0r4RFY/ySSIBZpGmu4xqZdP0FSI/x+qEo+cvI/XJ7u3zXrTnprmJC6OLsEYget1hXR2EqyUNObijjSTLtyQToH5PbN2pfdVKqwJ0u0BB/M0vSer30ogIHPo286PXpqzcTF352vBlIEFryGUiv4/oVou0sFIq3FLSezc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730763231; c=relaxed/simple;
-	bh=xeXFoO6rpGFTfW67aFdtZg1DADblEtbw0u7DA+FvHvI=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Act0SQzs8bF/NFoQQ5zWyssvKzg42CjzBrHiY/QodCUrb23vc8DiUPwocyrQZaosu2R2IvxxaD662Dq8vLy5iItD3bUh8gJOn7P4jrMwaLXw7znivBhL4KLIqp8EDO2BA778eLSoC/xsXZi9mtiBMZYWAQZPUCCk0bFiySbx/To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0Fd1xZu; arc=none smtp.client-ip=209.85.215.171
+	s=arc-20240116; t=1730773355; c=relaxed/simple;
+	bh=ZqtOBaUIlL85JSjKLjL7Yg8E/caHl+YIQGeipquFDcU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YBbrlxA/p1NAIK6c6Pcbllpj2KgGLQxDGC+nXNuIxmPUIVS6A+OKkjiiC/xllAdDvzSVa991W9zxmBuq+wqxCEw/XVuaSpt78pwusWlk82Tb+DjY7kaKLlnFAihC2qzlwFuh7s7UVU/4syeR727oQsQjLiZ/necjgen3UhehALQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezqXrmF7; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0Fd1xZu"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7ae3d7222d4so3467532a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Nov 2024 15:33:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezqXrmF7"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20cbcd71012so56748965ad.3;
+        Mon, 04 Nov 2024 18:22:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730763230; x=1731368030; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=heuluemexJBQ8njzhkrobyveDd7MJI7zIcl7ZO4hjpo=;
-        b=b0Fd1xZuoMIjqSxK8baQj93maRRIu6XxJXB+MHCIozTDNZdp8n/vu48b4im8glBe7s
-         2WfCB1/jkh3fpNiLqbIfl0K2TA9B3QIg+lQ8IcjeQSrYU+zC7xDf7w8mlcUbMVDqtCN8
-         U/eldwZT4tRYkpFvbZ98WxYnxk1AVamjHp7CHqfPTZ4zkQHGkXb8rdjsfkTqe1KltRVn
-         D9pl5zkje4HAHBaJBlpXtgj63ncP5WxSEpQFfIBb6b45R5tb3h0T0OmEFsnxEHETkuIu
-         bklh/2c3Q2EbdN5f/48qD/EGmVGO2XaklUB7csgzKtwiylOOpWTCsYDFrsqKd4LPSP14
-         Kvmg==
+        d=gmail.com; s=20230601; t=1730773353; x=1731378153; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=P0iBc0IPqxP7vxZT8Hy98lVaunuO0bTpMT753cTdrf4=;
+        b=ezqXrmF70MVNNbYs/cFhvLUM2S3F7ipcV8Zcv/3s7QYgwkWAVVLvJipbuFFq/9k7tK
+         j4w/bO0Z5zlIXH3ulgfiBzIdzJs4v4uggD2yFX7i1ID55nkQoEUj9+k4F5dKG9cpJpsc
+         Fgpin+vj5xgV4RvOhW1J0COGo2vCk/falBo6dQsrTZPaQvOWfu94jh2F21N0LS6uUduo
+         jDjCFDQyP5VPk+PEYnNkjywm3Rwkg2vfsoyYJC3NW3Col/9rsDksXCZlJvA0+oHpy8VN
+         wWgq8xJ6nZObhgpvwI16dRdu+/VFO+4piUk6ll8vR7PQaXUMu9xJLwiDhGMOJV7Dtm2Z
+         pVxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730763230; x=1731368030;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=heuluemexJBQ8njzhkrobyveDd7MJI7zIcl7ZO4hjpo=;
-        b=hrG+yKHQx2QDg941z81Ld/S48Fq40h+Fh+tr494Nx9HGt1R8u2BkeuqOfjnXsTw9oD
-         eKnutXp67ydzg6vg5lJJ6YUqw8z8xyN61Nk3jJAtCmWH8bXzFKoTey0BOCHCahoEjDZp
-         3TKg3c+dRyapcZpMbwYVIbxgV8n7par4yVkqAA39LYO/r6Qu5vS0p2krYdykzHEaztDT
-         1S8CUMtEJR8O2gmkzdTYWuVj2SykV5NhDpzsbhPOR9lbE871oLbVKF8W0P3U81X0ibkO
-         o6idRxcbUGJ1ILiXmI4/PM9fgx+uDzmjOX+HCyZqJPmTqGoKwk6O5meNPCoXYc3AH+on
-         5bZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlfB3dnk2t9SOeomyJYaieBzu2Kj4C/m7Ngae9pUzTTA0cA2qie2GKCwWAh+MoUMOMZWhfHelTVaiaGHxssg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZPx3K9GX1vj5Yn69JWJSJ/4eaatKmNhE2uPtvZNSfnPNNJvT1
-	Ro9Y3eP8S5Lt+3McWWDMEQum2ZIJThtu+XD2Ocx7QUstyarp4LWI
-X-Google-Smtp-Source: AGHT+IFXLy5kJS7EK8R303EfQrWoyv28kB4v9SgXhNZU2mGKDYzUMVv9hwl2n8xvHNG4IPD5eIjgCA==
-X-Received: by 2002:a17:90b:4d05:b0:2e2:c6c2:b3d5 with SMTP id 98e67ed59e1d1-2e93c14e8a5mr23448855a91.9.1730763229735;
-        Mon, 04 Nov 2024 15:33:49 -0800 (PST)
-Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e93daac445sm8299663a91.18.2024.11.04.15.33.46
+        d=1e100.net; s=20230601; t=1730773353; x=1731378153;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P0iBc0IPqxP7vxZT8Hy98lVaunuO0bTpMT753cTdrf4=;
+        b=wgxzWj2RcPotmK5il3gdUDW7fdnCQAwyIukvDyc/8Ij//bQsh1rxOKViK0RaXgN0v3
+         pacpkNxuNvFElfTB9YJW1bE7Yqn77lyLWuuG/3mk5HbHbw7zECNuxUVF7LC7Kv3RoCeA
+         e77Taz/rY2yPiAr6H/zzqB7AzMz7fPseS3fFrNQzj2wX6lc/CJBJ1mcJspFZC0E8mZ8J
+         SbJpWpbo+rpKCiF6TLYidPHkhR2mJyGSLrxaUOLaR+KR53XZ9xBv8kU9ikLxwznlLBYF
+         APSLV6GE/YvxUuabl6hzsmo9vqdoPgWWs4eWK/OQob0VHu3WNB+kWPPbWnnbRxIyLbNE
+         rSsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWY8HLq5i82k6XJSNysDNNzIMhF23hZntXq9xqWhH+lfFlNWabBhQHwLLdr+kaWo9Dl+8FSRT+c3Z9vZPc1MA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuiCXI2gnhBAdG5bprESmtmABMfj5HHeLbrHZdxibrFKKfm18V
+	VYW3kNh74LD7sftUr13drwWUc3Aa3MZthBKmNlj2Ygd6X1E8Dz3dSEyfGw==
+X-Google-Smtp-Source: AGHT+IHhm/h6HzlWVU0IdX0YaJiUjJb3+/dvHNQi5XOqYuY/1mBNnFH585Yh2b2uswX3oTPwd51vGw==
+X-Received: by 2002:a17:903:1c4:b0:211:31ac:89f1 with SMTP id d9443c01a7336-21131ac8d4emr134815185ad.8.1730773353062;
+        Mon, 04 Nov 2024 18:22:33 -0800 (PST)
+Received: from toolbox.alistair23.me (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net. [2403:580b:97e8:0:82ce:f179:8a79:69f4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211057c68d8sm68159625ad.227.2024.11.04.18.22.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 15:33:49 -0800 (PST)
-Date: Tue, 05 Nov 2024 08:33:43 +0900 (JST)
-Message-Id: <20241105.083343.2243442761267649401.fujita.tomonori@gmail.com>
-To: jens.korinth@tuta.io
-Cc: miguel.ojeda.sandonis@gmail.com, fujita.tomonori@gmail.com,
- rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu
-Subject: Re: [PATCH v1] rust: Add pr_*_once macros
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <OAtDBYR--B-9@tuta.io>
-References: <20241104.110803.2105992905862489345.fujita.tomonori@gmail.com>
-	<CANiq72nNMM5hCMa=hDbvpX6AVR5L2pswdQJ3AN05ynHx2Z3Q0w@mail.gmail.com>
-	<OAtDBYR--B-9@tuta.io>
+        Mon, 04 Nov 2024 18:22:32 -0800 (PST)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	a.hindborg@kernel.org,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	gary@garyguo.net
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH] rust: bindings: Support some inline static functions
+Date: Tue,  5 Nov 2024 12:21:43 +1000
+Message-ID: <20241105022143.1087112-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 4 Nov 2024 23:08:21 +0100 (CET)
-jens.korinth@tuta.io wrote:
+The kernel includes a large number of static inline functions that are
+defined in header files. One example is the crypto_shash_descsize()
+function which is defined in hash.h as
 
-> FWIW, my motivation to look into it was the TODO
-> kernel/error.rs:123. Might be a good first place to use the new
-> macros.
-
-I think that WARN_ONCE needs much work than the code to execute once.
-
-The following your warn_once implementation (from Zulip) isn't what C's
-WARN_ONCE does.
-
-macro_rules! warn_once {
-    ($($arg:tt)*) => (
-        do_once_lite_if!(true, crate::pr_warn!($($arg)*))
-    )
+static inline unsigned int crypto_shash_descsize(struct crypto_shash *tfm)
+{
+	return tfm->descsize;
 }
 
-I think that all the architectures that support Rust implement WARN_ONCE
-in assembly. The simple wrapper for them doesn't work.
+bindgen is currently unable to generate bindings to these functions as
+they are not publically exposed (they are static after all).
 
-I assume that we simply can't cut and past the assembly in the C side
-so it will be complicated.
+The Rust code currently uses rust_helper_* functions, such as
+rust_helper_alloc_pages() for example to call the static inline
+functions. But this is a hassle as someone needs to write a C helper
+function.
 
-I would recommend you to work on pr_*_once than WARN_ONCE; just a
-wrapper for pr_* function.
+Instead we can use the bindgen wrap-static-fns feature. The feature
+is marked as experimental, but has recently been promoted to
+non-experimental (dependig on your version of bindgen).
+
+By supporting wrap-static-fns we automatically generate a C file called
+extern.c that exposes the static inline functions, for example like this
+
+```
+unsigned int crypto_shash_descsize__extern(struct crypto_shash *tfm) { return crypto_shash_descsize(tfm); }
+```
+
+The nice part is that this is auto-generated.
+
+We then also get a bindings_generate_static.rs file with the Rust
+binding, like this
+
+```
+extern "C" {
+    #[link_name = "crypto_shash_descsize__extern"]
+    pub fn crypto_shash_descsize(tfm: *mut crypto_shash) -> core::ffi::c_uint;
+}
+```
+
+So now we can use the static inline functions just like normal
+functions.
+
+There are a bunch of static inline functions that don't work though, because
+the C compiler fails to build extern.c:
+ * functions with inline asm generate "operand probably does not match constraints"
+   errors (rip_rel_ptr() for example)
+ * functions with bit masks (u32_encode_bits() and friends) result in
+   "call to ‘__bad_mask’ declared with attribute error: bad bitfield mask"
+   errors
+
+As well as that any static inline function that calls a function that has been
+kconfig-ed out will fail to link as the function being called isn't built
+(mdio45_ethtool_gset_npage for example)
+
+Due to these failures we use a allow-list system (where functions must
+be manually enabled).
+
+Link: https://github.com/rust-lang/rust-bindgen/discussions/2405
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+If this is accepted or at least Acked I can work on removing the
+existing rust_helper_* functions and convert them to be auto-generated.
+
+ rust/.gitignore      |  2 ++
+ rust/Makefile        | 29 +++++++++++++++++++++++++++--
+ rust/bindings/lib.rs |  4 ++++
+ 3 files changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/rust/.gitignore b/rust/.gitignore
+index d3829ffab80ba..741a180238013 100644
+--- a/rust/.gitignore
++++ b/rust/.gitignore
+@@ -1,10 +1,12 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ bindings_generated.rs
++bindings_generated_static.rs
+ bindings_helpers_generated.rs
+ doctests_kernel_generated.rs
+ doctests_kernel_generated_kunit.c
+ uapi_generated.rs
+ exports_*_generated.h
++extern.c
+ doc/
+ test/
+diff --git a/rust/Makefile b/rust/Makefile
+index b5e0a73b78f3e..649346cfc373e 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -10,12 +10,13 @@ always-$(CONFIG_RUST) += exports_core_generated.h
+ # for Rust only, thus there is no header nor prototypes.
+ obj-$(CONFIG_RUST) += helpers/helpers.o
+ CFLAGS_REMOVE_helpers/helpers.o = -Wmissing-prototypes -Wmissing-declarations
++CFLAGS_REMOVE_extern.o = -Wmissing-prototypes -Wmissing-declarations -Wdiscarded-qualifiers
+ 
+ always-$(CONFIG_RUST) += libmacros.so
+ no-clean-files += libmacros.so
+ 
+-always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_helpers_generated.rs
+-obj-$(CONFIG_RUST) += alloc.o bindings.o kernel.o
++always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_generated_static.rs bindings/bindings_helpers_generated.rs
++obj-$(CONFIG_RUST) += alloc.o bindings.o kernel.o extern.o
+ always-$(CONFIG_RUST) += exports_alloc_generated.h exports_helpers_generated.h \
+     exports_bindings_generated.h exports_kernel_generated.h
+ 
+@@ -267,6 +268,10 @@ endif
+ 
+ bindgen_c_flags_final = $(bindgen_c_flags_lto) -D__BINDGEN__
+ 
++bindgen_static_functions = --experimental --wrap-static-fns \
++	--blocklist-type '.*' \
++	--allowlist-function crypto_shash_descsize
++
+ quiet_cmd_bindgen = BINDGEN $@
+       cmd_bindgen = \
+ 	$(BINDGEN) $< $(bindgen_target_flags) \
+@@ -275,6 +280,19 @@ quiet_cmd_bindgen = BINDGEN $@
+ 		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
+ 		$(bindgen_target_cflags) $(bindgen_target_extra)
+ 
++quiet_cmd_bindgen_static = BINDGEN $@
++      cmd_bindgen_static = \
++	$(BINDGEN) $< $(bindgen_target_flags) \
++		--use-core --with-derive-default --ctypes-prefix core::ffi --no-layout-tests \
++		--no-debug '.*' --enable-function-attribute-detection \
++		$(bindgen_static_functions) \
++		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
++		$(bindgen_target_cflags) $(bindgen_target_extra)
++
++$(src)/extern.c: $(obj)/bindings/bindings_generated_static.rs
++	@cp /tmp/bindgen/extern.c $(src)/
++	@sed -i 's|rust/bindings|bindings|g' $@
++
+ $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags = \
+     $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
+ $(obj)/bindings/bindings_generated.rs: private bindgen_target_extra = ; \
+@@ -283,6 +301,12 @@ $(obj)/bindings/bindings_generated.rs: $(src)/bindings/bindings_helper.h \
+     $(src)/bindgen_parameters FORCE
+ 	$(call if_changed_dep,bindgen)
+ 
++$(obj)/bindings/bindings_generated_static.rs: private bindgen_target_flags = \
++    $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
++$(obj)/bindings/bindings_generated_static.rs: $(src)/bindings/bindings_helper.h \
++    $(src)/bindgen_parameters FORCE
++	$(call if_changed_dep,bindgen_static)
++
+ $(obj)/uapi/uapi_generated.rs: private bindgen_target_flags = \
+     $(shell grep -Ev '^#|^$$' $(src)/bindgen_parameters)
+ $(obj)/uapi/uapi_generated.rs: $(src)/uapi/uapi_helper.h \
+@@ -410,6 +434,7 @@ $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
+ $(obj)/bindings.o: $(src)/bindings/lib.rs \
+     $(obj)/compiler_builtins.o \
+     $(obj)/bindings/bindings_generated.rs \
++    $(obj)/bindings/bindings_generated_static.rs \
+     $(obj)/bindings/bindings_helpers_generated.rs FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+index 93a1a3fc97bc9..63b915a8e4fbf 100644
+--- a/rust/bindings/lib.rs
++++ b/rust/bindings/lib.rs
+@@ -33,6 +33,10 @@ mod bindings_raw {
+         env!("OBJTREE"),
+         "/rust/bindings/bindings_generated.rs"
+     ));
++    include!(concat!(
++        env!("OBJTREE"),
++        "/rust/bindings/bindings_generated_static.rs"
++    ));
+ }
+ 
+ // When both a directly exposed symbol and a helper exists for the same function,
+-- 
+2.47.0
 
