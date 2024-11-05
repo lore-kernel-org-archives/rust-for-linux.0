@@ -1,102 +1,89 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3D41CEAA0;
-	Tue,  5 Nov 2024 09:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628FA163
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 Nov 2024 09:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730799134; cv=none; b=Ufb0nnVXoxqUrkg6VW8C2f9mjscchjMTmGcDKv535M7NtVwL7rxohyPcaU8m4fyKZdErB/sI1lm7QlshJLQrymS6HWwL6VXQL6WhmAaLvu3VC2FqDSCsNBVPldlzces5U9/QIOKrS/7ix/fNDYBXgDkj0uH1h6MSb8b5X3cf1ec=
+	t=1730800177; cv=none; b=rStCjPKrFBaL640IwS6ZsbXJrfj8K8hHseGNCVvCnMweR4ZqbzFI1FmbLpU+EuIyHqeCojcQAp63NGTOcR3rTGIUsRNVCfbWk0U/y9AgYDAi8Oln9cXT2ZmQrPtlKLKXrYQqzA4rjOArl7ieC7cvTWC3QZ6MpH2D2MV6YWc4Z8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730799134; c=relaxed/simple;
-	bh=y3k9t7IlGyTNXiIeWwet9nwGsTFYHdSA6pQdrYorthU=;
+	s=arc-20240116; t=1730800177; c=relaxed/simple;
+	bh=WSxyeRDT7brI8fXCDr6Wzow6scSsG+0rHCTG58ApGHQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sXE/s9XBZ5z5ctGssbDKAzDJF8OOmU1QWxvZvTAkXXXY0f9XG8O2lp1sRCHmdJ7SlhoG4AvHTlhm7SIApwclbaDP7v9VBfAoGeksmFOJfTOCynkBkQoHdeO8A+xX11t1LjmL9VRbiMuXunSm4f/c30L7Y1up0BJK0EZva2MT3Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsAwKZzT; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=D7SEakq9x1n8Uir+cq1nqWNEVJW8qqkrMMP5IV+7K3x272Z9R7CJlgljkA6cwmhcAXpRPrVVF4xIDXmyrewU1jFoYxTUDRfWFGYVe5/RzX/nW82iwBP6a7K04Qb+jtV4oiRrALjPXquo6e6XYqYs9rLQX02Uhzim3werDOlxV58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LDcZjBR6; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsAwKZzT"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-71e5a00d676so259709b3a.1;
-        Tue, 05 Nov 2024 01:32:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LDcZjBR6"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4314f38d274so62171295e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 Nov 2024 01:49:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730799131; x=1731403931; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730800174; x=1731404974; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KjScqKwTVHOB/jKA3HSvu1a3WrYkMhLJWnO+IQHcbSE=;
-        b=bsAwKZzT1mlhwcxsvnXR1eUoXVHRPJBl8lQy4xkXGSzJICFgvKXYwnwLxSyY0LusQY
-         KdWsmPwemfLmXa/Fk67xhgDKtOgKlxAVbH435k6CSvCNo07Y8hr8kVqvbkMWRYj7pllp
-         4REc1WBFFQgnLdINAEbNRzvZ4o/0GACwl0iA58/mdaB2SUOT6IX6wzF2KPMmcZniyDUZ
-         JNjZexnnJEZsy7wgW0uKrrlKnvzD/G150H58NmU91mWDBCcEXP+Kkl1U7ypyKXo3TCBj
-         KVIT9L60prIdnv3PEpY9o6nB52qa3vNdrrEx6lO3CwkNexXGwRuPYG7mHU8HH3d6IaV1
-         1lyQ==
+        bh=WSxyeRDT7brI8fXCDr6Wzow6scSsG+0rHCTG58ApGHQ=;
+        b=LDcZjBR6VmgCozCiZMpRH7qD0X5L2An+8Q3xm7kJ2v5NJ6zROe1prNrxHkmlHDtY5U
+         jdJX7ei9n69FexRyxTVI8/9+LRf3nONmpdo2S1wIWI9yRZMuAWLcJMXNGr19lYFJXCtz
+         mxE3hyvuw6jb2lAVc94OsHdL7W8ObUqniFiNiXqVCEPCt4KUl0DlLTyL234xC2qqxWMh
+         lHETignOfSg167gpMX97+zrukpoTDsyU2revpiUO8WxCX8K0FPJe+s9GDUJVqj1uUWy8
+         eZBkCM1G5Z2nFTJzlfSVhFNkCkF8+6Yjq4o5kP1N9POtEFRjMMSs70R1r53PZriYhi6r
+         yI6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730799131; x=1731403931;
+        d=1e100.net; s=20230601; t=1730800174; x=1731404974;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KjScqKwTVHOB/jKA3HSvu1a3WrYkMhLJWnO+IQHcbSE=;
-        b=XlHJkJOoAhfetPkI0l1RF2IXmj8aIKOAtou49i9RZjcymqlditzZYfMb2Y3OU1E0FF
-         LEjHbYlKR6MqpPrEtt7dLdkmqANRViIkQalrv1eGCut4UI/ztkCuBZbibbArTyU1QldJ
-         nWuPb5Y5D08lObiTLwccN+n7Wg+AgWOZ2T9QerSq7vyWEXichQwKGiJ57v/2hMVlYySf
-         7VQFJUGqocHQuV65gIsRuz5hewIHJykKqiNv3qnfVx5g2gbmWYMXpFZcctkaXgZ9KHnI
-         Eys5heOdjys9G1tsJCTHx9uUuhyALU6YAjQeP9piDcJQg4NHvrzZY5461rdm8a2h6StF
-         SAHg==
-X-Forwarded-Encrypted: i=1; AJvYcCV1CxoytjRdHNsbTKKFsn/3Hpm6TLNgKzkWpfm4UdR/sd5Pv9B+pY8wM5j8JJoq9z5++Ft0nZ5D3bpC1JZ3cg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvjQn7pwRK02Hvxoq4Nfuo433Its6mCdaqOw5dAYzDVGsyPBGT
-	2kClUVBSca69YedlFNpqHP+RdMTJIo/j6hJ8RsFXxhBnzUWnA7YtX3QJjCeyvhh0XQT43PS3oz1
-	Bs1AFmeEhyW7ymaMANv1AHVFo/WI=
-X-Google-Smtp-Source: AGHT+IGRd4XDNlYX0EkHremT6+nIdodm4gRNBRYKAOsJFM+Oj6DD4zTVHYe3RsWa+rp/MyTW7eaTvNcJ8+D7PVtENfI=
-X-Received: by 2002:a17:90a:f016:b0:2e2:d881:5936 with SMTP id
- 98e67ed59e1d1-2e8f11ace1emr17324063a91.7.1730799131484; Tue, 05 Nov 2024
- 01:32:11 -0800 (PST)
+        bh=WSxyeRDT7brI8fXCDr6Wzow6scSsG+0rHCTG58ApGHQ=;
+        b=YcgRttRm5467yI2YwLBM+mjMk60f5AX2uhkdxATCoQTv5hnc/lHrF75fU7N00ykvGF
+         fAniOvZrBpWVb5wUXex1CBqIIrmi9iPxyAd7f+Wp5jqAzBVkZXwNkK7ASQi3GqwhuSdf
+         WaLOXzC0ShbqA781oyHLFFkxJNB3qWty/kvogXHh+nfdqCd+Zg2QEQVfK4J2Zs4aG6ik
+         TgOSAkD68KQ2Chi2/R2g33HcQt/H505aN+4N8f0kSaGgHK2lunQoEHj8C7TCwm8lLGz9
+         TeQRiVkOY3P0lPYuQRS2jkznUYL5Z1ZTVF2PGNMKdeRkv9tH35XzijAGgFL8AXZIAH4z
+         ujbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmqQQQ2Y6b00azkJs+iYiEJqDoN9BiSq8ROV1Yainl4msKMpBCOXlEbltdWEhe3+fQw2Xs5dD+geo5ZGl1Pw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsCUuGEAlEeqbh0zVzUzdAhgiHuJpEtdnrxTDjg51wE9GuvKOQ
+	USmxED0mCa0tEQp7saKPYwqgErlVmpvYKdcMchZGtvk2uehkNomMW0aQypxQJUPhvFwGL/gqHF3
+	hvH3rulk/tBgov5gVq8CYuRAvRObIRidt0I8C
+X-Google-Smtp-Source: AGHT+IG9Pq7AVQnpHVvnLmiGGQW/TqFYN2hCr50GvIm4X4t39SM5Knc3eWwgQpiIH/K4NKNGRT7MK+vktj4d86uT4Xs=
+X-Received: by 2002:a05:6000:1f8c:b0:37d:2de3:bf8a with SMTP id
+ ffacd0b85a97d-381c7a6bcb4mr16091403f8f.26.1730800173559; Tue, 05 Nov 2024
+ 01:49:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105022143.1087112-1-alistair.francis@wdc.com>
-In-Reply-To: <20241105022143.1087112-1-alistair.francis@wdc.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 5 Nov 2024 10:31:58 +0100
-Message-ID: <CANiq72=L=CMUBu7jBn0H2Wb8vupYzOYFrSQ_9gyFZj_w2JU_uQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: bindings: Support some inline static functions
-To: Alistair Francis <alistair23@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	ojeda@kernel.org, boqun.feng@gmail.com, a.hindborg@kernel.org, 
-	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu, 
-	gary@garyguo.net, Alistair Francis <alistair.francis@wdc.com>
+References: <20241104140514.877185-1-2407018371@qq.com> <tencent_78A46797341AFC745CE618E9EAEDA2D62708@qq.com>
+In-Reply-To: <tencent_78A46797341AFC745CE618E9EAEDA2D62708@qq.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 5 Nov 2024 10:49:19 +0100
+Message-ID: <CAH5fLgh1xrWnHpUdbHrnLZoGTsj16uCGAKoYPQcM7q51HwRDOw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: Implement Display for Box
+To: Guangbo Cui <2407018371@qq.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 5, 2024 at 3:22=E2=80=AFAM Alistair Francis <alistair23@gmail.c=
-om> wrote:
+On Mon, Nov 4, 2024 at 3:06=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wrot=
+e:
 >
-> If this is accepted or at least Acked I can work on removing the
-> existing rust_helper_* functions and convert them to be auto-generated.
+> Currently `impl Display` is missing for `Box<T, A>`, as a result,
+> things like using `Box<..>` directly as an operand in `pr_info!()`
+> are impossible, which is less ergonomic compared to `Box` in Rust
+> std.
+>
+> Therefore add `impl Display` for `Box`.
+>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1126
+> Signed-off-by: Guangbo Cui <2407018371@qq.com>
 
-Yeah, we have tracked the feature for a long time, please see:
-
-    https://github.com/Rust-for-Linux/linux/issues/353
-
-So it is definitely in our plan to use (assuming it works).
-
-But, yeah, we would need the patch with the conversions, to show how
-it would look in practice (i.e. comparing before/after etc.), i.e. the
-usual kernel rule.
-
-> +       --allowlist-function crypto_shash_descsize
-
-We probably should put this into something similar to
-`rust/bindgen_parameters` (and remove this variable).
-
-> +       @cp /tmp/bindgen/extern.c $(src)/
-
-I don't think we can use/assume `/tmp` -- we will need
-`--wrap-static-fns-path` or similar.
-
-Thanks for trying out the new feature!
-
-Cheers,
-Miguel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
