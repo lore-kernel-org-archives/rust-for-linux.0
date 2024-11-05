@@ -1,143 +1,105 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0D618F2F7
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 Nov 2024 10:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737141D174E
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 Nov 2024 10:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730801391; cv=none; b=MzepWjC6hUEgKxVpKPQnU1RbJNYDtO535AMB/eKaGgLT/0ouSYLavP8dIdZ7peQ9mYqi7RxpcGEaInF0MTH3hDTNNyjJxiqQCPhab0XxrD4jcyj4A0pJ+MPZKgTNen8DBZJ5X0vXgN1XpCfUCWgCQTuSRIoNLzqcMsT3Sneh7oA=
+	t=1730803659; cv=none; b=ophvavUznnF4PWQ/22IlDyNIWSZwwyqJpy2Jp8MI9Hv5h8FdnPkTtF0kEjwCGU+LbaBpJFjiq30C4J4jf2/9Y+hAL56KYltBrPKaEHg4lT0aOvzPSMpp173X//miMVc1dadoQWAn/TKv409sdfqqUeIPpHMonN7mQV2X0XH45jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730801391; c=relaxed/simple;
-	bh=RHeVziAoN8CGsuY1ZAh7sRIuK3iFRADOSuijtUbubnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mG7hS5rJVtVrK7dUz2CS+pkIdM+xVNQ08ea8GHq+km/1L5+ah1ZAgBGAM03RilVRtoLdF99YMNa3ZRPRse67bSSzqjRrahaIApN5yq8XH3jYJQ9tQy0hupoGw3fFuEKeqT6Lnf7nxDhWRswZFJI0hNI09GoiOenusEJO8HmCc6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FFTf6o0n; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730803659; c=relaxed/simple;
+	bh=Kc2K8UrbQfukNRjtwVeMfjrvCpkhcSzDbtxbWZ9JIiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iY8cyiUgYKz6O847TwMfce6pI3Ts6Uzol7Mf4k8TACSxo5s7QaaGQn7EhyjMyb41twAP9lh5REhZForV793BN8DzqeARoNTWoNFMPfr3tPsCogbBhpPNosv89H1RH9c8X+x0iGQpWlqyvMIZ41jLyp3xENd/+mm3ZL7c29FjJsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OSAEpaJ6; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FFTf6o0n"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3807dd08cfcso4444183f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 Nov 2024 02:09:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OSAEpaJ6"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539f84907caso5744150e87.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 Nov 2024 02:47:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730801388; x=1731406188; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6bWo52DOYiB3ZcRQB3C1o4jMfb9oGGlF3xYVSdDQ1Ec=;
-        b=FFTf6o0n54o4i2v0X7XHEgglxvp927x04fIe2eFg+3T1YkmE+GxHbDtoKKcLVV4Tqy
-         897y6oHDoNRyh0CA4oBB2CVp221GGLa1olj6Vny4czYWlaQ3f8FGhIQluQVroFgjWTjy
-         s3tMBCBOXSqrETaFcWzoHuhpwihHQLc5AfrNzWKCCr5mEwidIgNij4nTVcjTj3YJ+fAl
-         lI2E6JVl6Nb2EVSybIyjfy9P+UPXkLT0JIBZxUdQGqALPftKo+XFTz5QIvKjDKcMKopU
-         ws4wVIb9ieQcD0ZNHdTItxl96lR2drwNzfrReBSt+UMHTiEHSiT/XKJ0Jz/18syof8S8
-         pbKw==
+        d=gmail.com; s=20230601; t=1730803655; x=1731408455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=inkuPNhLqPkDYmbDcCjMZKP6wSmS+xfll841NSENZlQ=;
+        b=OSAEpaJ6vtGmSoadMcECCLfmAz1pas4DHVGH/zmUFB9rnoeyMf9SUbTC885kqRO3yh
+         Yexg1n2YAC1A6+UeEA15aVOPk1QMKd3QyyG13gpjGdHW9Dj+mtIe/CvYlVkaaRa99sDF
+         kxChpsC76mzYFGkz/0xQYbhIU49kJfS6DWvV1Ygj+E77mEros/DKrW/t4MaZdfPJVp3H
+         EP/vM7eH6+uSUpFirDQSXBRuSRiF0QS/lcCPe74PRoS06zN39NQpkO1lk6y2j8+Ab33/
+         JiHrWqqTVk9jG9zBrfiSMXd7Gfkz3zeNVgIWkBVjdBMe9ZJ3m7cyTiVRl8jGXjWOPDJb
+         zaTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730801388; x=1731406188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6bWo52DOYiB3ZcRQB3C1o4jMfb9oGGlF3xYVSdDQ1Ec=;
-        b=OkqRQHnynX6651jBriodHi57oKZbWoaiG4Ecjo87duhIqfEjwl+fq9CU+zCqEaHIXd
-         NHk1nJi6AoG/JVbrJMwzKYR/j5c+gdg4D85ut8pa+fLIvO2QMvRgsvyCrHYD+chwNLbk
-         B0WWVQ6qy/DC6kD9ktxGO2WESFAei2T12yuSvLDkQ724djVc0oR5DxcgpdEbsGo9hgfw
-         aWCTpIhgFL5cd7VHaUillrl2EYCUDzJZknOEaHxAZr9cnGDoDD/ixgEtMkH/E7IMNg+d
-         KpauSBDSAzlRFPx1/sw6l4XxeF1DNfpPrnksjzebxnQBuXCyJYZrDO9oiACJTMPoelW8
-         esJg==
-X-Forwarded-Encrypted: i=1; AJvYcCV2vCcrLj3H3mH/WlLWOdj/gUQzZWER0tGx7AcHfsz+fw8tUjWGK2OY+yX8rAvzevJOxNf9b4+bZiU92XLRdQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/P7T5+FccscuPPOkggmgE4nS1WBgBpzdhbejtfRX4ev7pu/j3
-	aasARrUf/pp2010W3GYY1V0jYZVP2uP/o5Ncapch/v9PArFDg16EqqWGGOF5PM4aBX7VBT9bIsc
-	n7gVuq4X3EQg+TL8dx2xhgX12v7nU0/E/A9nM
-X-Google-Smtp-Source: AGHT+IGXYx42z9SXdXlET0RfHWNg/+rG8WhSiYHUJbNJqzBz9Ox0kXsvFU1ogU1d5wdLYDMTLQVLF1Y95kbBYBuSXJM=
-X-Received: by 2002:a05:6000:2706:b0:381:d88b:2bb9 with SMTP id
- ffacd0b85a97d-381d88b2bf4mr5164411f8f.51.1730801388247; Tue, 05 Nov 2024
- 02:09:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730803655; x=1731408455;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=inkuPNhLqPkDYmbDcCjMZKP6wSmS+xfll841NSENZlQ=;
+        b=RBsjCbPBpw3UFslDavJ7mF2UJlOWkSrMOeR05BpCvQI/DziQIblLgxk9y4eSc32G/F
+         QiFeA6VDNPY4xpv4H/uI3g/IKk923WAfmNIZHdpWp6Px9xPmx8NDwi3+rAxOC0MeLVsB
+         QIKZVKM9i9vzLMVCDM7IUUFsSDMbeHGceem9TXpv/TmffE26wrSi4Zh1s5POiOod1vb0
+         PQxHK2q+Ov+jw2lh+3tSl0xyGyLSu47ksalTGXMu2YzuC1IeefYCE3vekhYdV8tqmj8B
+         0eBSPKBrHvdDDGTMDsKoJ6GaK7CQesnH/sa7XkRTaYLG5D1td6on0XkcN03YNFdqK863
+         BuTA==
+X-Gm-Message-State: AOJu0YwuaQbn8kIEPLGz2tBn45+SRLetLCyVGJIt9UI5WcPp3g1t8Pis
+	JnM3H0iTrfgyfd/E4PCwPrZuf2A0wQ8YnuPH3S3MO/GKXmWJGGQA6lOHDA==
+X-Google-Smtp-Source: AGHT+IF2E4CJdKcm++7hWLfX3uFehGAuQElHscSzGVb2r0TnchK/P7gQCGHXdJcYE5EHCDRVtstbDQ==
+X-Received: by 2002:a05:6512:2204:b0:539:e65a:8a7c with SMTP id 2adb3069b0e04-53b34c995camr13511751e87.58.1730803655225;
+        Tue, 05 Nov 2024 02:47:35 -0800 (PST)
+Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc9620bsm2082686e87.37.2024.11.05.02.47.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 02:47:33 -0800 (PST)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: aliceryhl@google.com,
+	daniel.almeida@collabora.com,
+	a.hindborg@kernel.org,
+	dakr@redhat.com,
+	airlied@redhat.com,
+	miguel.ojeda.sandonis@gmail.com,
+	wedsonaf@gmail.com,
+	a.hindborg@samsung.com,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH v4 0/2] Add dma coherent allocator abstraction
+Date: Tue,  5 Nov 2024 12:46:55 +0200
+Message-ID: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241024-topic-panthor-rs-platform_io_support-v1-1-3d1addd96e30@collabora.com>
- <CAH5fLgjdDm3nNvR8g-a6Z8UsSnEDygLJ8i3u63aCrpG5ambQ3A@mail.gmail.com>
- <BC47085B-4160-4D9B-89F4-06EDE706CD5A@collabora.com> <CAH5fLghv3cBGO0HEH-5GXiDZZWyKSJYxQu8s0fi8D=eneS-OXw@mail.gmail.com>
- <935A78FF-0851-4A72-BCCB-C33E3F4BF61C@collabora.com>
-In-Reply-To: <935A78FF-0851-4A72-BCCB-C33E3F4BF61C@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 5 Nov 2024 11:09:36 +0100
-Message-ID: <CAH5fLgiirkt-JOF3XWNAyEFWZ=nGBPumqVVBOc_-PvfqriD-fw@mail.gmail.com>
-Subject: Re: [PATCH] rust: platform: add Io support
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 4, 2024 at 10:28=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Hi Alice!
->
-> > On 29 Oct 2024, at 10:46, Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > On Mon, Oct 28, 2024 at 7:23=E2=80=AFPM Daniel Almeida
-> > <daniel.almeida@collabora.com> wrote:
-> >>
-> >> Hi Alice,
-> >>
-> >>> On 28 Oct 2024, at 12:37, Alice Ryhl <aliceryhl@google.com> wrote:
-> >>>
-> >>> On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
-> >>> <daniel.almeida@collabora.com> wrote:
-> >>>> +    /// Returns the resource len for `resource`, if it exists.
-> >>>> +    pub fn resource_len(&self, resource: u32) -> Result<bindings::r=
-esource_size_t> {
-> >>>
-> >>> Should this just return usize? Should we have a type alias for this s=
-ize type?
-> >>
-> >>
-> >> I guess usize would indeed be a better fit, if we consider the code be=
-low:
-> >>
-> >> ```
-> >> #ifdef CONFIG_PHYS_ADDR_T_64BIT
-> >> typedef u64 phys_addr_t;
-> >> #else
-> >> typedef u32 phys_addr_t;
-> >> #endif
-> >>
-> >> typedef phys_addr_t resource_size_t;
-> >
-> > Hmm. I guess they probably do that because phys_addr_t could differ
-> > from size_t? Sounds like we may want a typedef called phys_addr_t
-> > somewhere on the Rust side?
->
->
-> By the way, I wonder if that connects with Gary=E2=80=99s work on unifyin=
-g the bindgen
-> primitives somehow.
->
->
-> I think that having a #ifdef for `phys_addr_t` is pretty self-explanatory=
-, but I have no
-> idea why this is not simply `size_t`. My understanding is that `size_t` a=
-nd `phys_addr_t`
-> should be basically interchangeable, in the sense that, for example, a 32=
-bit machine can
-> only address up to 0xffffffff, and, by extension, can only have objects t=
-hat are 0xffffffff in size
-> at maximum.
->
-> This behavior is identical to usize, unless I missed something.
->
-> Maybe more knowledgeable people than me can chime in here?
+This series adds support for the dma coherent allocator.
 
-It seems PHYS_ADDR_T_64BIT can be set even on some 32-bit machines.
-See config HIGHMEM64G for 32-bit processors with more than 4 GB of
-physical ram.
+Changs since v3:
+- Reject ZST types by checking the type size in the constructor in
+  addition to requiring FromBytes/AsBytes traits for the type (Alice Ryhl).
 
-Alice
+Changes since v2:
+- Fixed missing header for generating the bindings.
+
+Changes since v1:
+- Fix missing info in commit log where EOVERFLOW is used
+- Restrict the dma coherent allocator to numeric types for now for valid
+  behaviour (Daniel Almeida).
+- Build slice dynamically.
+
+Abdiel Janulgue (2):
+  rust: error: Add EOVERFLOW
+  rust: add dma coherent allocator abstraction.
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/dma.rs              | 169 ++++++++++++++++++++++++++++++++
+ rust/kernel/error.rs            |   1 +
+ rust/kernel/lib.rs              |   1 +
+ 4 files changed, 172 insertions(+)
+ create mode 100644 rust/kernel/dma.rs
+
+
+base-commit: ae7851c29747fa3765ecb722fe722117a346f988
+-- 
+2.43.0
+
