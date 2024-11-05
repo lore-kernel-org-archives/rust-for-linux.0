@@ -1,67 +1,67 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628FA163
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 Nov 2024 09:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A6A163
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 Nov 2024 09:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730800177; cv=none; b=rStCjPKrFBaL640IwS6ZsbXJrfj8K8hHseGNCVvCnMweR4ZqbzFI1FmbLpU+EuIyHqeCojcQAp63NGTOcR3rTGIUsRNVCfbWk0U/y9AgYDAi8Oln9cXT2ZmQrPtlKLKXrYQqzA4rjOArl7ieC7cvTWC3QZ6MpH2D2MV6YWc4Z8s=
+	t=1730800197; cv=none; b=PBBUUfiqRPmA+/iJdH/0y2WXzFO18jeKHeHzRx5tqrHrPAmUAslV0YVSwsb5LaobhDvGmPE05uErCi4fs8NZEr30L94bi2vmD4Etsy1JRD6wT8XIHhidzsxwDFfRs7c+Uoxe3qX2huAqaiII0pfq1J7k9sfy8wrIAmQKgqLshuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730800177; c=relaxed/simple;
-	bh=WSxyeRDT7brI8fXCDr6Wzow6scSsG+0rHCTG58ApGHQ=;
+	s=arc-20240116; t=1730800197; c=relaxed/simple;
+	bh=IXb9cQqHT8o8aMKgG1mO0NFQOJzW0wjEJA3r2RbQkpw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D7SEakq9x1n8Uir+cq1nqWNEVJW8qqkrMMP5IV+7K3x272Z9R7CJlgljkA6cwmhcAXpRPrVVF4xIDXmyrewU1jFoYxTUDRfWFGYVe5/RzX/nW82iwBP6a7K04Qb+jtV4oiRrALjPXquo6e6XYqYs9rLQX02Uhzim3werDOlxV58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LDcZjBR6; arc=none smtp.client-ip=209.85.128.48
+	 To:Cc:Content-Type; b=UCVCvkv3LrDi8u8Nurg9+myTAwgEiFfo280eswJiL81xTUvSOjZoRzmQ0s0KoXSZdiyqQbUx3S/h8Gi+zoV8EgqjRbrTG1amNqgDscVqpacxavLLR7jjTxwjNOxqJJ5ML2OGwiBd3nT5Zh69sZ8xESpxMVQM60SioUlKy20J5tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ujbPv36o; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LDcZjBR6"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4314f38d274so62171295e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 Nov 2024 01:49:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ujbPv36o"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d473c4bb6so4711675f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 Nov 2024 01:49:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730800174; x=1731404974; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1730800194; x=1731404994; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WSxyeRDT7brI8fXCDr6Wzow6scSsG+0rHCTG58ApGHQ=;
-        b=LDcZjBR6VmgCozCiZMpRH7qD0X5L2An+8Q3xm7kJ2v5NJ6zROe1prNrxHkmlHDtY5U
-         jdJX7ei9n69FexRyxTVI8/9+LRf3nONmpdo2S1wIWI9yRZMuAWLcJMXNGr19lYFJXCtz
-         mxE3hyvuw6jb2lAVc94OsHdL7W8ObUqniFiNiXqVCEPCt4KUl0DlLTyL234xC2qqxWMh
-         lHETignOfSg167gpMX97+zrukpoTDsyU2revpiUO8WxCX8K0FPJe+s9GDUJVqj1uUWy8
-         eZBkCM1G5Z2nFTJzlfSVhFNkCkF8+6Yjq4o5kP1N9POtEFRjMMSs70R1r53PZriYhi6r
-         yI6g==
+        bh=IXb9cQqHT8o8aMKgG1mO0NFQOJzW0wjEJA3r2RbQkpw=;
+        b=ujbPv36oBPGkTh1XbubBls8aChNRggdkUpUbyxhBRZbFb9fDFAADjtfMDy125LrjaL
+         JEbAc1/ysmIH+TW9D63JlyyHhqdzV03KnjqozePQWrUmO1cbQjZlWFXb5vl/0F82Ff0C
+         BKcFEc/50ZNLBgSF4YZarsaVmqhks5WAFUk5ToC/b8IxJbQ8m4gGZn/gzPcBiFTggKre
+         PmQl8EPDaM/lujhM4JuiDeOwRyD2bQfR4qjDN4KEu3CATkzKTbEGzeWNqzE5SbO4E9r8
+         /kT9G+7hUWSnHBgQHAceXT+B+5cjbVU81nb5v2hdDznhUbYg6mv+q8qbS4jFH9q9znrA
+         zJdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730800174; x=1731404974;
+        d=1e100.net; s=20230601; t=1730800194; x=1731404994;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WSxyeRDT7brI8fXCDr6Wzow6scSsG+0rHCTG58ApGHQ=;
-        b=YcgRttRm5467yI2YwLBM+mjMk60f5AX2uhkdxATCoQTv5hnc/lHrF75fU7N00ykvGF
-         fAniOvZrBpWVb5wUXex1CBqIIrmi9iPxyAd7f+Wp5jqAzBVkZXwNkK7ASQi3GqwhuSdf
-         WaLOXzC0ShbqA781oyHLFFkxJNB3qWty/kvogXHh+nfdqCd+Zg2QEQVfK4J2Zs4aG6ik
-         TgOSAkD68KQ2Chi2/R2g33HcQt/H505aN+4N8f0kSaGgHK2lunQoEHj8C7TCwm8lLGz9
-         TeQRiVkOY3P0lPYuQRS2jkznUYL5Z1ZTVF2PGNMKdeRkv9tH35XzijAGgFL8AXZIAH4z
-         ujbA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmqQQQ2Y6b00azkJs+iYiEJqDoN9BiSq8ROV1Yainl4msKMpBCOXlEbltdWEhe3+fQw2Xs5dD+geo5ZGl1Pw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsCUuGEAlEeqbh0zVzUzdAhgiHuJpEtdnrxTDjg51wE9GuvKOQ
-	USmxED0mCa0tEQp7saKPYwqgErlVmpvYKdcMchZGtvk2uehkNomMW0aQypxQJUPhvFwGL/gqHF3
-	hvH3rulk/tBgov5gVq8CYuRAvRObIRidt0I8C
-X-Google-Smtp-Source: AGHT+IG9Pq7AVQnpHVvnLmiGGQW/TqFYN2hCr50GvIm4X4t39SM5Knc3eWwgQpiIH/K4NKNGRT7MK+vktj4d86uT4Xs=
-X-Received: by 2002:a05:6000:1f8c:b0:37d:2de3:bf8a with SMTP id
- ffacd0b85a97d-381c7a6bcb4mr16091403f8f.26.1730800173559; Tue, 05 Nov 2024
- 01:49:33 -0800 (PST)
+        bh=IXb9cQqHT8o8aMKgG1mO0NFQOJzW0wjEJA3r2RbQkpw=;
+        b=gXLX029/G8FWHjJdlDzVZ1DVKEJ9HP9HEqukQryLdFotQvsT8+SJdKkXCN1zRttO4w
+         n4kQvMlKqDl/X1pjLoOk8diy9mwIIc53iPrjb8+7gj9MppXLxwaMhsEnW2E30sDlLOgx
+         I8UZbFDNwIS5wA+g+mh18x3iJBrGqE5xVj3pInhJG5oGxdEZuK4jb1oEEoGx2rCRUW27
+         xC7rGQVYqOl9NHrOqix9zNuWxo6TpaG++sMB0r1WPqVu5vVdEsD1a2gYoDTVm8FwkPf7
+         0jyWzx2s9yA4G1c7KCfhx1mniFl8v4shVUr9m27qtWfcUekuer6F0xtourAHGxX/wdyt
+         L36g==
+X-Forwarded-Encrypted: i=1; AJvYcCV8VxZ5DaTf+USy2UirF9MDhdK2n602dXon7wijTiud8dW28wZQiFr6GCVkG5pmx7ZrL0ypvt6fmm13BTTB3A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT73BWoAf4XIc5j7l5G9xnxNPEOLW3C3DxkQ6aEbAXnOb9TD93
+	JELsjWkXHHUk/J2MFrW/jndhf59Irih9ffr4LbWVVgvHVfdB4qO90piajUUPbaInpiAraSK6mvF
+	9VswRWs0dl7vS48IFD0+tzTWR0SAH2vqJ6dPd
+X-Google-Smtp-Source: AGHT+IHb8iA7M2SPqI88lSUscw/3UTlhwxMNkAwwv4ZX4xjp8BIP6ZjG/FCGGWfYZrk+M2H/mhpY1r8TPmAqDd222uw=
+X-Received: by 2002:a5d:64c5:0:b0:37d:4c40:699 with SMTP id
+ ffacd0b85a97d-381c7a467admr17707898f8f.5.1730800194047; Tue, 05 Nov 2024
+ 01:49:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104140514.877185-1-2407018371@qq.com> <tencent_78A46797341AFC745CE618E9EAEDA2D62708@qq.com>
-In-Reply-To: <tencent_78A46797341AFC745CE618E9EAEDA2D62708@qq.com>
+References: <20241104140514.877185-1-2407018371@qq.com> <tencent_2E70D3E99973A54BB6C3590393365CFA6B0A@qq.com>
+In-Reply-To: <tencent_2E70D3E99973A54BB6C3590393365CFA6B0A@qq.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 5 Nov 2024 10:49:19 +0100
-Message-ID: <CAH5fLgh1xrWnHpUdbHrnLZoGTsj16uCGAKoYPQcM7q51HwRDOw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: Implement Display for Box
+Date: Tue, 5 Nov 2024 10:49:40 +0100
+Message-ID: <CAH5fLgjO9=r5GMv2hXjPmRB8HAB-7EELhgB2NM2DQvw7h3HjMQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] rust: align Debug implementation for Box with Display
 To: Guangbo Cui <2407018371@qq.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -72,18 +72,13 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 4, 2024 at 3:06=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wrot=
+On Mon, Nov 4, 2024 at 3:07=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wrot=
 e:
 >
-> Currently `impl Display` is missing for `Box<T, A>`, as a result,
-> things like using `Box<..>` directly as an operand in `pr_info!()`
-> are impossible, which is less ergonomic compared to `Box` in Rust
-> std.
+> Ensure consistency between `Debug` and `Display` for `Box` by
+> updating `Debug` to match the new `Display` style.
 >
-> Therefore add `impl Display` for `Box`.
->
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1126
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
 > Signed-off-by: Guangbo Cui <2407018371@qq.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
