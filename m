@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D14220E303;
-	Wed,  6 Nov 2024 23:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746E61D966A;
+	Wed,  6 Nov 2024 23:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730935960; cv=pass; b=TXnkgze0Q9EgLfdlXIEQJU545XiGJZKUloB/MVPIDyxbn4Gb9fASYVtoIBzMSKvJhHtvBC8Rtr7RCwTc6ASn9OshZbS8z7m8rHw3FYVNo4UMmYcLkcEMG08zujo+fjakQYQlEQhaOUcmoq8XBLzqAWtor1D038Ewc8P0B1OjEVw=
+	t=1730936724; cv=pass; b=Uauh3+XaJpJd72NhRdR4poz5Y3GD3O7QwzuLJ5J+7J15Ej637oqRFBm0qDff5VG0FnhesuY+L1kmtJjYRqjXf+I2BDwrUToJszvUtzMbTDfTSo3cnqP+UlZk2RO0pHojsv2G8sfW/dL7oY1Vu3RdM4hne4lWMh/vSSWY8fzlgjk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730935960; c=relaxed/simple;
-	bh=KIJ3PZEYHZzSKqlk7pSylcibSpSuclteWz3lwPm7zJA=;
+	s=arc-20240116; t=1730936724; c=relaxed/simple;
+	bh=w9RBdGBrQqRvP4QVYXJHPuVD77PpiUcpzIMOVebp6nc=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=NTBS+erHzVQrB0IYFIGBTUfIZHijD0uI4xaUAmHsRJjZ/QSWAdlSoza3bHCdYvCI3dd2NHCrKN0KaGyevoUdb36uefnqQ28TR1xoeOLEh64dIIy4al2sfO37XNRq9Vkn8PGooN+5BvngHUJh6qQ3akkDeT4qUMSVSNkNtrwFHkE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=c23dkm1D; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=bNBKlThnjCcfs7Wz8afDAV4W0HIFj08nVMG4aXpHPU8wbZoevv+jWTV5k5JHX0rzDyZIBtQ1UOABH4i0i/+qahVXbYqs3opL+1FzUmOFXTY34bVsXFNCj7hTfx06I+Vyff6lL4O24KYSVXM5HByCIWifGuBcrpgbhMxsCxjp7qs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cTT8TQfj; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="c23dkm1D"
-ARC-Seal: i=1; a=rsa-sha256; t=1730935925; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cTT8TQfj"
+ARC-Seal: i=1; a=rsa-sha256; t=1730936695; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=gIxp/k1/AT16DGs/9OuFQuqu4DZfyvzhzu8KIzsQ2ux4cdYB50FV+qfI9PFTR721KkXAQCIQVHWZSuP4dpUeUfphIMZysakBuXIA7pgKJFy1SSnKUasH4f2o/drfXP8KxrN68c2m5qlQFgnd1EmpDVU2Ht/3XNgkYvjqp1KHUv0=
+	b=R6HMMUHtc1LGPVEXrD5PNCVUxuA7BNkb7qJL3b0pLjLv8KPrIoadLVYSoabQ3Z+dYr67mzJPDqk/klYxmCyN1pZjEL4TFpbrIa/ruLX0WAV5YTwj4qgQXrVd1NZP9xJ/sg3VtgwMoaE2n2XRNUbiyFJfhoPtoeSxNv7H4Xsf8c8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730935925; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yFsTqCsvyoWKOmvFZ59RIJPhJzOGv5NnUYCSCIgnK6c=; 
-	b=KZ8iOWcQHZyUTVZOiIGhvDY9cEdr+DKIHqKMDXlllv6YOaUF0GRMIaAInOvmRT8N+pUh4i4RAnovlbu357vWGulWhPpKi7TdHXX6Bg8eT8pqkTzLeY+5s62v8Z5O/WFtFHgElDbmGuPWQDu60RXa8eFeIK6uSJWG7DNuIIrmr/M=
+	t=1730936695; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=w9RBdGBrQqRvP4QVYXJHPuVD77PpiUcpzIMOVebp6nc=; 
+	b=RXsjqdDFZQ9QelySvS1PT8h+kkEyaqZOHzHv477RVO68k+djASH4mQZcOoGs4jU7GagDjlOuSd/TDOH6AgQ0wSgDtC60AmAog+s3Ux5EmBnHhhCPpkU3CNN47P9ocdI2umln9L1hWbpG9cqA8CiSj2cAoJ/K2xa2WHvbG58n/nc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730935925;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730936695;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=yFsTqCsvyoWKOmvFZ59RIJPhJzOGv5NnUYCSCIgnK6c=;
-	b=c23dkm1Dw2W5xTizFmk+vWd2IEtJdCM1bZGoA6ugcd3JTE/KPLx2iwJB461yQWIL
-	jGo/K/uZNevCCqQUrMj7O9ZpcGaQfwWE/0ibbbImgWiQQtz7m9L9YtJUFxDLTiwaZjQ
-	EHN3SvmljdMW7y23egyEzh42cs5U9Qc2cQ5fC8HQ=
-Received: by mx.zohomail.com with SMTPS id 1730935922326552.8283967488513;
-	Wed, 6 Nov 2024 15:32:02 -0800 (PST)
+	bh=w9RBdGBrQqRvP4QVYXJHPuVD77PpiUcpzIMOVebp6nc=;
+	b=cTT8TQfjqYSX70R+jyXBXf3BreIvqkS/bPYdo1zcpQqYXavSLEcTWfuKhcb/sFB/
+	c9+YbkfqcF5ndTea00wwVd7HXbcGw7u9YZr3XhaKwno6pflglCl+Kr+3fHn9/GkfQ6x
+	IfqTxL1p3uzUoEE0DKAu4CHGUxwEeNcfWMmQdFfU=
+Received: by mx.zohomail.com with SMTPS id 1730936692453913.7917799009244;
+	Wed, 6 Nov 2024 15:44:52 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -46,8 +46,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
 Subject: Re: [PATCH v3 09/16] rust: add `io::Io` base type
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
-Date: Wed, 6 Nov 2024 20:31:44 -0300
+In-Reply-To: <CAH5fLgjC5Rcq5VJbEFSVP_rE0xjj8CGdqxZexhPVsGcTZ+85HA@mail.gmail.com>
+Date: Wed, 6 Nov 2024 20:44:35 -0300
 Cc: Danilo Krummrich <dakr@kernel.org>,
  gregkh@linuxfoundation.org,
  rafael@kernel.org,
@@ -73,114 +73,54 @@ Cc: Danilo Krummrich <dakr@kernel.org>,
  linux-pci@vger.kernel.org,
  devicetree@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <04E0C753-9D96-4D99-992E-63E36C0F1904@collabora.com>
+Message-Id: <A309C141-E390-44C1-A2B7-A7A9CDB132D7@collabora.com>
 References: <20241022213221.2383-1-dakr@kernel.org>
  <20241022213221.2383-10-dakr@kernel.org>
  <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
+ <ZyCo9SRP4aFZ6KsZ@pollux>
+ <CAH5fLgjC5Rcq5VJbEFSVP_rE0xjj8CGdqxZexhPVsGcTZ+85HA@mail.gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
 X-Mailer: Apple Mail (2.3826.200.121)
 X-ZohoMailClient: External
 
-Hi,
+Sorry, I didn=E2=80=99t see this:
 
-> On 28 Oct 2024, at 12:43, Alice Ryhl <aliceryhl@google.com> wrote:
+> On 29 Oct 2024, at 07:18, Alice Ryhl <aliceryhl@google.com> wrote:
 >=20
-> On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich =
-<dakr@kernel.org> wrote:
->>=20
->> I/O memory is typically either mapped through direct calls to =
-ioremap()
->> or subsystem / bus specific ones such as pci_iomap().
->>=20
->> Even though subsystem / bus specific functions to map I/O memory are
->> based on ioremap() / iounmap() it is not desirable to re-implement =
-them
->> in Rust.
->>=20
->> Instead, implement a base type for I/O mapped memory, which =
-generically
->> provides the corresponding accessors, such as `Io::readb` or
->> `Io:try_readb`.
->>=20
->> `Io` supports an optional const generic, such that a driver can =
-indicate
->> the minimal expected and required size of the mapping at compile =
-time.
->> Correspondingly, calls to the 'non-try' accessors, support compile =
-time
->> checks of the I/O memory offset to read / write, while the 'try'
->> accessors, provide boundary checks on runtime.
->=20
-> And using zero works because the user then statically knows that zero
-> bytes are available ... ?
->=20
->> `Io` is meant to be embedded into a structure (e.g. pci::Bar or
->> io::IoMem) which creates the actual I/O memory mapping and =
-initializes
->> `Io` accordingly.
->>=20
->> To ensure that I/O mapped memory can't out-live the device it may be
->> bound to, subsystems should embedd the corresponding I/O memory type
->> (e.g. pci::Bar) into a `Devres` container, such that it gets revoked
->> once the device is unbound.
->=20
-> I wonder if `Io` should be a reference type instead. That is:
->=20
-> struct Io<'a, const SIZE: usize> {
->    addr: usize,
->    maxsize: usize,
->    _lifetime: PhantomData<&'a ()>,
-> }
->=20
-> and then the constructor requires "addr must be valid I/O mapped
-> memory for maxsize bytes for the duration of 'a". And instead of
-> embedding it in another struct, the other struct creates an `Io` on
-> each access?
+> What you're doing now is a bit awkward to use. You have to make sure
+> that it never escapes the struct it's created for, so e.g. you can't
+> give out a mutable reference as the user could otherwise `mem::swap`
+> it with another Io. Similarly, the Io can never be in a public field.
+> Your safety comment on Io::new really needs to say something like
+> "while this struct exists, the `addr` must be a valid I/O region",
+> since I assume such regions are not valid forever? Similarly if we
 
-Please let=E2=80=99s not add a lifetime here. Drivers will usually have =
-this mapped
-at probe time and it will usually remain mapped until remove(), so I =
-think this
-works fine the way it is.
+Io is meant to be a private member within a wrapper type that actually
+acquires the underlying I/O region, like `pci::Bar` or =
+`Platform::IoMem`.
 
->=20
->> Co-developed-by: Philipp Stanner <pstanner@redhat.com>
->> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->=20
-> [...]
->=20
->> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
->> new file mode 100644
->> index 000000000000..750af938f83e
->> --- /dev/null
->> +++ b/rust/kernel/io.rs
->> @@ -0,0 +1,234 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Memory-mapped IO.
->> +//!
->> +//! C header: =
-[`include/asm-generic/io.h`](srctree/include/asm-generic/io.h)
->> +
->> +use crate::error::{code::EINVAL, Result};
->> +use crate::{bindings, build_assert};
->> +
->> +/// IO-mapped memory, starting at the base address @addr and =
-spanning @maxlen bytes.
->> +///
->> +/// The creator (usually a subsystem / bus such as PCI) is =
-responsible for creating the
->> +/// mapping, performing an additional region request etc.
->> +///
->> +/// # Invariant
->> +///
->> +/// `addr` is the start and `maxsize` the length of valid I/O mapped =
-memory region of size
->> +/// `maxsize`.
->=20
-> Do you not also need an invariant that `SIZE <=3D maxsize`?
->=20
-> Alice
+Doesn=E2=80=99t that fix the above?
 
+> look at [1], the I/O region actually gets unmapped *before* the Io is
+> destroyed since IoMem::drop runs before the fields of IoMem are
+> destroyed, so you really need something like "until the last use of
+> this Io" and not "until this Io is destroyed" in the safety comment.
+>=20
+> If you compare similar cases in Rust, then they also do what I
+> suggested. For example, Vec<T> holds a raw pointer, and it uses unsafe
+> to assert that it's valid on each use of the raw pointer - it does not
+> create e.g. an `&'static mut [T]` to hold in a field of the Vec<T>.
+> Having an IoRaw<S> and an Io<'a, S> corresponds to what Vec<T> does
+> with IoRaw being like NonNull<T> and Io<'a, S> being like &'a T.
+>=20
+> [1]: =
+https://lore.kernel.org/all/20241024-topic-panthor-rs-platform_io_support-=
+v1-1-3d1addd96e30@collabora.com/
 
+What I was trying to say in my last message is that the wrapper type, =
+i.e.:
+IoMem and so on, should not have a lifetime parameter, but IIUC this is =
+not
+what you=E2=80=99re suggesting here, right?
+
+=E2=80=94 Daniel=
