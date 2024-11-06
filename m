@@ -1,154 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05CB335B5;
-	Wed,  6 Nov 2024 02:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239EC1D5AC6
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Nov 2024 08:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730859364; cv=none; b=c5bj/rUu8S0qIreyl/DAED8VKi9u82OVkO9sRNu6WRGZG7OdtgrkUzcrrRPQdhyCX1Hafpd4UIhEqr4vkg4ywT/w5R0ZUUunt1vDY+0YqrOwFpt9YGIQXi1IHn56nRypzJP7i6XlB0RbpdgFD1AbporXQVfN1LvMAqWITMoufAk=
+	t=1730882832; cv=none; b=BrfM4bsYUjCyPTNCc9P+B9BBKg85h1qJeuhC2L6mQOqOv+FMZUZDryYpfny0WeLeOiEOZMT0Zk2rag6sBJeDE/Fg2damWIrqP1P1cG1kHFfWkMvvq0E5YXWDy2A1VDIbmmUun0ujBnKmjqy4996NTKBb40s8wRCIPLmDPTlL2vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730859364; c=relaxed/simple;
-	bh=2ceZS9atdvYQglPAeHWkMwFTe23RRaA6HdpaUHEf2oE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YbAT2gD9/OD03sS214zUl44hqf0VbUqL1EIfUUlMkBX9fDhAhQa7WEppxXqZRpCH4fLfaXn9KYFMXxgP8urvAsbcwDgNO3Z7eRac8ns0NCbYl5p/K1mNTJ823JA4BL8d30FEIPEjC8cjexXOOH9Sx0Wmll3o1Bth2zc+aadrsfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIhBZjsk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730882832; c=relaxed/simple;
+	bh=hO/r4VGYGOtHPrlaSJYQrv4NcFnwHHgPRRwPNzdRpD4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tl6w+3tZpjsuLPxz0hVNYwbksQ1OTiwPpZwXfxc07MNzsB5KPGEFAyxvrUAQT/FBKxbZ8j6yOS2XanqreaLUqCcQqz6JGqdydBtIoSM8MlLtEUMknHZfnSRZ6FXi3lbfXtvdRon+X8VLH/iuq/6henRp4ecsksHwIgZuU/1SCUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YI/QYTUB; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIhBZjsk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CBAC4CED1;
-	Wed,  6 Nov 2024 02:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859363;
-	bh=2ceZS9atdvYQglPAeHWkMwFTe23RRaA6HdpaUHEf2oE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MIhBZjsktrtesO5k1TPXMbC8XTanJSHPKWNM0vGLuOl1bFPdHdk7n8gm3zZowb5Ms
-	 j32tLEsR3+YyNkxm9OWTUhs7yOStVihPojeRZG93G5LdAjLCsQVHrDmvnr1qTrY/lG
-	 kc2RqvxU50wYh5cftvuGAdvuETv7RcoLj1Yu6lhwk63mW3Gqm9g/K7awIsb6HzCJ+T
-	 dt8VZUHl0IFsTdAlEyuWyTf4FtZKW7jvUZsdMPvJqLQxG/S90yQP4FkYKIwQJ04qUd
-	 Rh3b8+Ahy00Sir0NK1AIlbFhCBlWKtC9bHag0/Jg8Qbmx1K4OKxKSfj0c0tSPNC9K1
-	 7OPXYta84teZQ==
-Date: Tue, 5 Nov 2024 18:16:01 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
-	Lucas De Marchi <lucas.de.marchi@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-Message-ID: <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
- <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
- <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
- <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YI/QYTUB"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-539e63c8678so7139630e87.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 Nov 2024 00:47:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730882829; x=1731487629; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aFXlIHSxfdDcobvUiRDb+mQpZMUb2QsQMzBcu03DS4o=;
+        b=YI/QYTUBG9Q8lU52GNPkLy9q1JGwCcoFN1I6rB6RH3AH4fps0J+x4FD214Pw3U9VRj
+         K8hFKD177BQc61W1dhNvmjyM1uXBAojvi9yeUV2THZSpYtAYdocSuO2BG7G4B8ss+LU1
+         VD1UpwIdbsWPfmvxsEGJgEut0TZuVsdkDLHog/G16MPReLflIeUJHCfTmFAOtA+IKWUU
+         XQtqNOEgbe/sCWn/G+O4EGwmhdVEQC2DnbgLG/qLPppESOhSH4dls8aDCEu3x8Z1nR9+
+         BnT54Z1bIcO+Z9evaULo3IDY7uyPE9/vDSEwXC7o7jI5sa/2NFU+uP2O/xqJGKbP9gwm
+         NBrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730882829; x=1731487629;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aFXlIHSxfdDcobvUiRDb+mQpZMUb2QsQMzBcu03DS4o=;
+        b=r7KNGXF7H4T6IXnmp0TZdfQbPEKfdRcbPUlhqy5pAiUgrSAZJdRExG19HcKtpK/YH0
+         HdwbZI/Ylsku7CZGsPcdSjjK71w2bGaDjZax9FQN23Tkw8ZpfObC39+b8d2mfrpHU1a6
+         7UFzotVHjyqcFEQIwMBHPmc4MXNqOLd+diwCvwj4Uo6QUEAHCPQiY45LtII4v8rulY3B
+         4B1mXJMGBSSpMBTrhaehlaHZiK9fcCWIINuqF9m3UtsXkpGF4Gm8aQGL6JCY0rzH+cEV
+         v/vE7TaFi6g51HSB0J5RTqYmEB6qA0CLks6IJtYOhu0IvJn0Kchuhdfuco0G6Eu+Yibf
+         Q+AQ==
+X-Gm-Message-State: AOJu0Yy0ip1UqdpAlN0qUHNWZNMmqfV9HWrovkyETmDNsTtcx8ALQQNV
+	MyuhB91huQEJyGnfHMA56QaL/59ENF9aTII6qFb5VdEvLDsUlUjc
+X-Google-Smtp-Source: AGHT+IGFCZBcEZN+9oXVZ5tJNmUopDraSZ+iZ9iviWsjK5V7KGA3rheEBm4UFClHtTLpsJ3T+cg5OQ==
+X-Received: by 2002:a05:6512:4015:b0:536:a564:fd48 with SMTP id 2adb3069b0e04-53d65dca86amr9118178e87.3.1730882828934;
+        Wed, 06 Nov 2024 00:47:08 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53c7bc9c133sm2442885e87.100.2024.11.06.00.47.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 00:47:07 -0800 (PST)
+Message-ID: <af6aa7ed-0eaf-4ce1-82d8-c3915f2c8e49@gmail.com>
+Date: Wed, 6 Nov 2024 10:47:06 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] rust: add dma coherent allocator abstraction.
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+ daniel.almeida@collabora.com, a.hindborg@kernel.org, dakr@redhat.com,
+ airlied@redhat.com, wedsonaf@gmail.com, a.hindborg@samsung.com
+References: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
+ <20241105104726.3111058-3-abdiel.janulgue@gmail.com>
+ <CANiq72nLNQD6f_Y2+jdcn3w_K0oXaEX-Y+mUE6Nco565m8Jzgw@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CANiq72nLNQD6f_Y2+jdcn3w_K0oXaEX-Y+mUE6Nco565m8Jzgw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
 
-On Tue, Nov 05, 2024 at 04:26:51PM -0800, Matthew Maurer wrote:
-> On Fri, Nov 1, 2024 at 2:10 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
-> >
-> > On Thu, Oct 31, 2024 at 01:00:28PM -0700, Matthew Maurer wrote:
-> > > > The question is, if only extended moversions are used, what new tooling
-> > > > requirements are there? Can you test using only extended modversions?
-> > > >
-> > > >   Luis
-> > >
-> > > I'm not sure precisely what you're asking for. Do you want:
-> > > 1. A kconfig that suppresses the emission of today's MODVERSIONS
-> > > format?
-> >
-> > Yes that's right, a brave new world, and with the warning of that.
+
+
+On 05/11/2024 13:23, Miguel Ojeda wrote:
+> Hi Abdiel,
 > 
-> OK, I can send another revision with a suppression config, perhaps
-> CONFIG_NO_BASIC_MODVERSIONS
-
-Great.
-
-> > > This would be fairly easy to do, but I was leaving it enabled
-> > > for compatibility's sake, at least until extended modversions become
-> > > more common. This way existing `kmod` tools and kernels would continue
-> > > to be able to load new-style modules.
-> >
-> > Sure, understood why we'd have both.
-> >
-> > > 2. libkmod support for parsing the new format? I can do that fairly
-> > > easily too, but wanted the format actually decided on and accepted
-> > > before I started modifying things that read modversions.
-> >
-> > This is implied, what I'd like is for an A vs B comparison to be able to
-> > be done on even without rust modules, so that we can see if really
-> > libkmod changes are all that's needed. Does boot fail without a new
-> > libkmod for this? If so the Kconfig should specificy that for this new
-> > brave new world.
+> Some quick comments on the docs I noticed.
 > 
-> libkmod changes are not needed for boot - the userspace tools do not
-> examine this data for anything inline with boot at the moment, libkmod
-> only looks at it for kmod_module_get_versions, and modprobe only looks
-> at that with --show-modversions or --dump-modversions, which are not
-> normally part of boot.
+> On Tue, Nov 5, 2024 at 11:47 AM Abdiel Janulgue
+> <abdiel.janulgue@gmail.com> wrote:
+>>
+>> +/// Abstraction of dma_alloc_coherent
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// For the lifetime of an instance of CoherentAllocation, the cpu address is a valid pointer
+>> +/// to an allocated region of consistent memory and we hold a reference to the device.
 > 
-> With the code as is, the only change will be that if a module with
-> EXTENDED_MODVERSIONS set contains an over-length symbol (which
-> wouldn't have been possible before), the overlong symbol's modversion
-> data will not appear in --show-modversions. After patching `libkmod`
-> in a follow-up patch, long symbols would appear as well. If booted
-> against an old kernel, long symbols will not have their CRCs in the
-> list to be checked. However, the old kernel could not export these
-> symbols, so it will fail to resolve the symbol and fail the load
-> regardless.
+> Please use Markdown formatting everywhere (including documentation
+> like here, as well as comments). For documentation, also please use
+> intra-doc links where applicable (i.e. the square brackets, e.g.
+> [`Foo`]).
+> 
+> Also, ideally, please define/explain the abstraction, rather than just
+> saying it is an abstraction of something else.
+> 
+> Finally, if you want to have a link to a C header to refer to it, you
+> can use a `srctree/...` link (please refer to others to see how it is
+> usually done).
+> 
+>> +    /// # fn dox(dev: &Device) -> Result<()> {
+> 
+> Can we avoid this, i.e. use the `# Ok::<(), ...>(())` approach instead?
+> 
+> I see we got another `dox()` function in `page.rs`, which I guess is
+> where you got it from, 
 
-Thanks for checking all this. It is exactly what I was looking for.
-All this should be part of the cover letter and Kconfig documentation.
+Yep, just learning it from existing code. But will update it.
 
-> If we add and enable NO_BASIC_MODVERSIONS like you suggested above,
-> today's --show-modversions will claim there is no modversions data.
-> Applying a libkmod patch will result in modversions info being
-> displayed by that command again. If booted against a new kernel,
-> everything will be fine.
-
-*This* is is the sort of information I was also looking for and I think
-it would be good to make it clear for the upcoming NO_BASIC_MODVERSIONS.
-
-> If booted against an old kernel, it will
-> behave as though there is no modversions information.
-
-Huh? This I don't get. If you have the new libkmod and boot
-an old kernel, that should just not break becauase well, long
-symbols were not ever supported properly anyway, so no regression.
-
-I'm not quite sure I understood your last comment here though,
-can you clarify what you meant?
-
-Anyway, so now that this is all cleared up, the next question I have
-is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
-userspace requirements aren't large at all, what actual benefits does
-using this new extended mod versions have? Why wouldn't a distro end
-up preferring this for say a future release for all modules?
-
-  Luis
+Regards,
+Abdiel
