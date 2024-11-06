@@ -1,125 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBA218C903;
-	Wed,  6 Nov 2024 02:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05CB335B5;
+	Wed,  6 Nov 2024 02:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858923; cv=none; b=VFu+DtC08/RIQH2WrvtFKb3jTdYQNLcdTM3w6bkYFC4uEk6NrN/g9YvrjGV6IHJv9YPONx5EoY+jy4yQUwyu1O305jJ2hGYruQgI8fAmAmWjsCXFWhMe/mCQ2FUfF63jfLwfpSuZFmFcCxbHbpJl4zEamnQRuk/Sf1snWhDFFKc=
+	t=1730859364; cv=none; b=c5bj/rUu8S0qIreyl/DAED8VKi9u82OVkO9sRNu6WRGZG7OdtgrkUzcrrRPQdhyCX1Hafpd4UIhEqr4vkg4ywT/w5R0ZUUunt1vDY+0YqrOwFpt9YGIQXi1IHn56nRypzJP7i6XlB0RbpdgFD1AbporXQVfN1LvMAqWITMoufAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858923; c=relaxed/simple;
-	bh=6RdsDJCekACBSQ/decuXvIXkG38AIIzXKc9s9K/m2gg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lr3yLsxcELH4ZEviu4VrdtYRl43Kp66ga93tfizhtb2RKCgp6I57JX1ngQT8C4vwsTy8cCULleIFdUoHWaWnpcWWU76y+OCW8pwiyzMGpu/KGmNyDo5x+9haai1+tVh1qGfMb/KhC64edndvDOMH+JcYFOF6hUhhygWJM6mBgH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLHmkCgU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730859364; c=relaxed/simple;
+	bh=2ceZS9atdvYQglPAeHWkMwFTe23RRaA6HdpaUHEf2oE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YbAT2gD9/OD03sS214zUl44hqf0VbUqL1EIfUUlMkBX9fDhAhQa7WEppxXqZRpCH4fLfaXn9KYFMXxgP8urvAsbcwDgNO3Z7eRac8ns0NCbYl5p/K1mNTJ823JA4BL8d30FEIPEjC8cjexXOOH9Sx0Wmll3o1Bth2zc+aadrsfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIhBZjsk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLHmkCgU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9674AC4CECF;
-	Wed,  6 Nov 2024 02:08:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIhBZjsk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CBAC4CED1;
+	Wed,  6 Nov 2024 02:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858923;
-	bh=6RdsDJCekACBSQ/decuXvIXkG38AIIzXKc9s9K/m2gg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bLHmkCgUJ8DNphFMJIs7Y3zWta2o/5rLa7tqziceKYdXxus72OVZ4cX+WT3Owi4tH
-	 GeCEDoEbkPXfWNLhFNVRVU3ay+cNaMYJa2ReoghcKoWNjHPVVVZiSKrXE4aKEMlWiu
-	 H2tS88ZzFwO7Re5Wmuz1xRquMvrWiIZAYE8kPVY1o1dNUEzaUzR9cfq2ejIEddVgFN
-	 wullEsRfSuLLKnImSGCS7lZiFgtk8mlvUoks/y7F+tzmnA9rmXFNGKZGhkjzQAC4Qo
-	 dnAnympltpJLRlZvIwnNaoabTBpI8AijOmlIq0rBxWkCkSfY+sT2XPQybyA8l/2DxZ
-	 XsNTTbAkmF/1A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	conor.dooley@microchip.com
-Cc: Jason Montleon <jmontleo@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	s=k20201202; t=1730859363;
+	bh=2ceZS9atdvYQglPAeHWkMwFTe23RRaA6HdpaUHEf2oE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MIhBZjsktrtesO5k1TPXMbC8XTanJSHPKWNM0vGLuOl1bFPdHdk7n8gm3zZowb5Ms
+	 j32tLEsR3+YyNkxm9OWTUhs7yOStVihPojeRZG93G5LdAjLCsQVHrDmvnr1qTrY/lG
+	 kc2RqvxU50wYh5cftvuGAdvuETv7RcoLj1Yu6lhwk63mW3Gqm9g/K7awIsb6HzCJ+T
+	 dt8VZUHl0IFsTdAlEyuWyTf4FtZKW7jvUZsdMPvJqLQxG/S90yQP4FkYKIwQJ04qUd
+	 Rh3b8+Ahy00Sir0NK1AIlbFhCBlWKtC9bHag0/Jg8Qbmx1K4OKxKSfj0c0tSPNC9K1
+	 7OPXYta84teZQ==
+Date: Tue, 5 Nov 2024 18:16:01 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	Lucas De Marchi <lucas.de.marchi@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev
-Subject: FAILED: Patch "RISC-V: disallow gcc + rust builds" failed to apply to v6.11-stable tree
-Date: Tue,  5 Nov 2024 21:08:39 -0500
-Message-ID: <20241106020840.164364-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
+Message-ID: <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
+References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
+ <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
+ <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
+ <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
+ <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
+ <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
 
-The patch below does not apply to the v6.11-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Tue, Nov 05, 2024 at 04:26:51PM -0800, Matthew Maurer wrote:
+> On Fri, Nov 1, 2024 at 2:10 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> >
+> > On Thu, Oct 31, 2024 at 01:00:28PM -0700, Matthew Maurer wrote:
+> > > > The question is, if only extended moversions are used, what new tooling
+> > > > requirements are there? Can you test using only extended modversions?
+> > > >
+> > > >   Luis
+> > >
+> > > I'm not sure precisely what you're asking for. Do you want:
+> > > 1. A kconfig that suppresses the emission of today's MODVERSIONS
+> > > format?
+> >
+> > Yes that's right, a brave new world, and with the warning of that.
+> 
+> OK, I can send another revision with a suppression config, perhaps
+> CONFIG_NO_BASIC_MODVERSIONS
 
-Thanks,
-Sasha
+Great.
 
------------------- original commit in Linus's tree ------------------
+> > > This would be fairly easy to do, but I was leaving it enabled
+> > > for compatibility's sake, at least until extended modversions become
+> > > more common. This way existing `kmod` tools and kernels would continue
+> > > to be able to load new-style modules.
+> >
+> > Sure, understood why we'd have both.
+> >
+> > > 2. libkmod support for parsing the new format? I can do that fairly
+> > > easily too, but wanted the format actually decided on and accepted
+> > > before I started modifying things that read modversions.
+> >
+> > This is implied, what I'd like is for an A vs B comparison to be able to
+> > be done on even without rust modules, so that we can see if really
+> > libkmod changes are all that's needed. Does boot fail without a new
+> > libkmod for this? If so the Kconfig should specificy that for this new
+> > brave new world.
+> 
+> libkmod changes are not needed for boot - the userspace tools do not
+> examine this data for anything inline with boot at the moment, libkmod
+> only looks at it for kmod_module_get_versions, and modprobe only looks
+> at that with --show-modversions or --dump-modversions, which are not
+> normally part of boot.
+> 
+> With the code as is, the only change will be that if a module with
+> EXTENDED_MODVERSIONS set contains an over-length symbol (which
+> wouldn't have been possible before), the overlong symbol's modversion
+> data will not appear in --show-modversions. After patching `libkmod`
+> in a follow-up patch, long symbols would appear as well. If booted
+> against an old kernel, long symbols will not have their CRCs in the
+> list to be checked. However, the old kernel could not export these
+> symbols, so it will fail to resolve the symbol and fail the load
+> regardless.
 
-From 33549fcf37ec461f398f0a41e1c9948be2e5aca4 Mon Sep 17 00:00:00 2001
-From: Conor Dooley <conor.dooley@microchip.com>
-Date: Tue, 1 Oct 2024 12:28:13 +0100
-Subject: [PATCH] RISC-V: disallow gcc + rust builds
+Thanks for checking all this. It is exactly what I was looking for.
+All this should be part of the cover letter and Kconfig documentation.
 
-During the discussion before supporting rust on riscv, it was decided
-not to support gcc yet, due to differences in extension handling
-compared to llvm (only the version of libclang matching the c compiler
-is supported). Recently Jason Montleon reported [1] that building with
-gcc caused build issues, due to unsupported arguments being passed to
-libclang. After some discussion between myself and Miguel, it is better
-to disable gcc + rust builds to match the original intent, and
-subsequently support it when an appropriate set of extensions can be
-deduced from the version of libclang.
+> If we add and enable NO_BASIC_MODVERSIONS like you suggested above,
+> today's --show-modversions will claim there is no modversions data.
+> Applying a libkmod patch will result in modversions info being
+> displayed by that command again. If booted against a new kernel,
+> everything will be fine.
 
-Closes: https://lore.kernel.org/all/20240917000848.720765-2-jmontleo@redhat.com/ [1]
-Link: https://lore.kernel.org/all/20240926-battering-revolt-6c6a7827413e@spud/ [2]
-Fixes: 70a57b247251a ("RISC-V: enable building 64-bit kernels with rust support")
-Cc: stable@vger.kernel.org
-Reported-by: Jason Montleon <jmontleo@redhat.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20241001-playlist-deceiving-16ece2f440f5@spud
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
----
- Documentation/rust/arch-support.rst | 2 +-
- arch/riscv/Kconfig                  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+*This* is is the sort of information I was also looking for and I think
+it would be good to make it clear for the upcoming NO_BASIC_MODVERSIONS.
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 750ff371570a0..54be7ddf3e57a 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -17,7 +17,7 @@ Architecture   Level of support  Constraints
- =============  ================  ==============================================
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
--``riscv``      Maintained        ``riscv64`` only.
-+``riscv``      Maintained        ``riscv64`` and LLVM/Clang only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
- =============  ================  ==============================================
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 62545946ecf43..f4c570538d55b 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -177,7 +177,7 @@ config RISCV
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RETHOOK if !XIP_KERNEL
- 	select HAVE_RSEQ
--	select HAVE_RUST if RUSTC_SUPPORTS_RISCV
-+	select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
- 	select HAVE_SAMPLE_FTRACE_DIRECT
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
- 	select HAVE_STACKPROTECTOR
--- 
-2.43.0
+> If booted against an old kernel, it will
+> behave as though there is no modversions information.
 
+Huh? This I don't get. If you have the new libkmod and boot
+an old kernel, that should just not break becauase well, long
+symbols were not ever supported properly anyway, so no regression.
 
+I'm not quite sure I understood your last comment here though,
+can you clarify what you meant?
 
+Anyway, so now that this is all cleared up, the next question I have
+is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
+userspace requirements aren't large at all, what actual benefits does
+using this new extended mod versions have? Why wouldn't a distro end
+up preferring this for say a future release for all modules?
 
+  Luis
