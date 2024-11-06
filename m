@@ -1,95 +1,83 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397C5646
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Nov 2024 11:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD181E04AD;
+	Wed,  6 Nov 2024 13:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730892338; cv=none; b=CqhOV4pm+IKUNcqWPvYB0ld8bImcD0Zs5whGgYSo010e9qftdyE6MhTr1hLLkptRHT1a9lojaG255xk3CGowm9sDRlaQkzkDtgMR/zEjiVHkRII0ayh6aFU1albbbTHc1qzX0ZQdshNqSc2ueiwXRRBBVZucb3jzWhmn3cP7Zhk=
+	t=1730898748; cv=none; b=fAH9Ly+vjSFhE9LC1CSNHqVuejoEw2b5wx9udpwJODhoz6Q/XemdxKTKG16/sCbAjpzonh5h+Du6GWQnPbS2Gy6drBmx9tFsGnaGSgST+nELCL/LnzuyIFGNTtqJGmbt6zVISQW7sMB7evaSzsG+k6kECWDY5uOUazUchOVUAmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730892338; c=relaxed/simple;
-	bh=0SH4HQQGM4nuSX8jcv0O7MeRE9p8Ya1KNahVTK725iU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WFV2OVs8Mmmncnmtg2yR/NHaDAHD9xO0ESx2AKVCz5OPEvi7Afx1hlOaWkl40T111FvSf7LEreILWtTG9torvVy1rcZbQ54JkmK6pm+X3PI1fUIHyGjy1KCvwN4yJvukoidIF5joyz6brJ8gLdkEsocFR4Gg1hFPXWV9bh+x7mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EOQw7/O4; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730898748; c=relaxed/simple;
+	bh=3SfESvrKfdyPsR2Toa1m1lCX2fQeSf+A2nGffmF11BM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fGenyS9gPLtx7E6bODNeeZZ1/tPEJEKkj+J4+/XTZkcJPYSWn6uQWcm6BCDFIiFRAkL5j1sotrOTiaSCg+PyMx41lyM+YpaMufL1+abpqBQdrCJyRxT2vVBw5+11Ify9NVwF2YJtwBhmxSsnjU1hfVN17jLcZMU/yk76lDNu0oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGmwz3OA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EOQw7/O4"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e31977c653so624441a91.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 Nov 2024 03:25:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730892337; x=1731497137; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0SH4HQQGM4nuSX8jcv0O7MeRE9p8Ya1KNahVTK725iU=;
-        b=EOQw7/O4PYW3q6O5RxUoaSDHN5cn86rM7To3h8EbfDqeL8gBhCSgozCUdBFGHRzMT6
-         c+PZ5ib44sAXX83gfOK0tZ0p1JNPrdR82I/8vKU11WhR3PyNvdR7WXGxEMr3Wj6VNTdE
-         FYAYqvCTNg/25A0NXRmdcbEhh58k5xCzlK76fVO8aqO9YJUi8s9SmAlHNyPmhzBqD0Ht
-         q+JYJkcn5v2SZEqm+ihBK4dCGI2ZS/1Ay6MsELF0Tbqh3ltauXHjNmwAQRAFf8sB1P4I
-         qS20GzACOxDcbIkwGIoOrJrZvBuLNn+Xkdh+5NO+MHoQr6dhvbiaaIfzzolovJP3JoHo
-         qK+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730892337; x=1731497137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0SH4HQQGM4nuSX8jcv0O7MeRE9p8Ya1KNahVTK725iU=;
-        b=bD1IIFD9pcaMSQpvJIFuw3k423+RHS65XvWZSyS7aIbfq3PWZt/ftUKCIp9Thh8he9
-         gkffmeFTS2A5aYVVOKGjcoYBZILQIyhFIH9RVDAsWkRjASf0myr7gGLbTwk7S9omQc+Y
-         uN3GanfFqGOvk6mYId+Erb+N71I+EASRj6qNQqBCCUfK/M1Xb7WTstGMh7b8uT4BcuJd
-         W7TMRUmwNEZ1md8vTGaYxHpyW0bm0z3+XhR80EpetuiBGOWQu6jdZkPA5WPH1orV1U6D
-         PHkEkir8QdqSZcBnsInym4vtpAVwLAs5rhsrGZJc4JIi4mBt6xa/CN6y+TX/i7KbPHbV
-         PdoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtoOzygatahcfUID+Ox0xJE4uRpyaZrpXUQf+Hg1sT3k2FkfoGzppHxnIDZaFkzJka1+k37rK7WfXnINLWuA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytBicw3a9Zv9IUgQinSawefZkN5q8gEa0wGiuIYY77migCRi/n
-	BC7tpQVQ9X1/yiLNJJIEBv44gsNQgiNzU0uk9EVV94oD2ec6P3mBWv3AYFdRON46LqMikE/MDnm
-	Ny1wnkHTnQZtbajM15RY69rYM7Yw=
-X-Google-Smtp-Source: AGHT+IGYhi3DfA2ZWN/u/9OuypCJaUopiu28ztHgj8qw0CjyGjcV+PmFQLurGwuT2m/yuTMeAH/IvIINjrGAvspRe24=
-X-Received: by 2002:a17:90b:3cce:b0:2e2:c414:80a4 with SMTP id
- 98e67ed59e1d1-2e8f12e1014mr19492556a91.9.1730892336591; Wed, 06 Nov 2024
- 03:25:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGmwz3OA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AE1C4CED4;
+	Wed,  6 Nov 2024 13:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730898747;
+	bh=3SfESvrKfdyPsR2Toa1m1lCX2fQeSf+A2nGffmF11BM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BGmwz3OAHtxzQimhPb+0ta8GU6ekMnC0Nr55rDVo5Z3eBQBSlzx2R0yCIlpqJTOug
+	 j2jouZOq2FDue45FB9L57askeLY0wQvdBhk/Gs0RrA+xfuh6r844UNGSxzP1OQXWIs
+	 WXhKJLIxD2erc+Tx9VY3wDSHDZY+JfqC87LI5/t4yCyTb2NIa+Jd6NPO6/Ndk+e/sn
+	 7wPD0pSWLEOAvVSYTLYShwVsWDCllhThbE4uSdrDpnIealbuz3ZctYPnh6JBIFnxXG
+	 77B/lfXugrwKHs9CL6LdpZVWzV+0Ah6f+DmjxZMCmxviBIoCDOqDZRF9mx6ufS7cB3
+	 YKiC40WL00LVg==
+Date: Wed, 6 Nov 2024 13:12:23 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, conor.dooley@microchip.com,
+	Jason Montleon <jmontleo@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	llvm@lists.linux.dev
+Subject: Re: FAILED: Patch "RISC-V: disallow gcc + rust builds" failed to
+ apply to v6.11-stable tree
+Message-ID: <20241106-undead-cupbearer-a22f27c8b9e2@spud>
+References: <20241106020840.164364-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
- <20241105104726.3111058-3-abdiel.janulgue@gmail.com> <CANiq72nLNQD6f_Y2+jdcn3w_K0oXaEX-Y+mUE6Nco565m8Jzgw@mail.gmail.com>
- <459782fe-afca-4fe6-8ffb-ba7c7886de0a@de.bosch.com>
-In-Reply-To: <459782fe-afca-4fe6-8ffb-ba7c7886de0a@de.bosch.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 6 Nov 2024 12:25:23 +0100
-Message-ID: <CANiq72nsK1D4NuQ1U7NqMWoYjXkqQSj4QuUEL98OmFbq022Z9A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] rust: add dma coherent allocator abstraction.
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
-	aliceryhl@google.com, daniel.almeida@collabora.com, a.hindborg@kernel.org, 
-	dakr@redhat.com, airlied@redhat.com, wedsonaf@gmail.com, 
-	a.hindborg@samsung.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="T7IwLFePnUSWKnbZ"
+Content-Disposition: inline
+In-Reply-To: <20241106020840.164364-1-sashal@kernel.org>
 
-On Wed, Nov 6, 2024 at 11:21=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
-> wrote:
->
-> Are we talking about something like [1]?
 
-Yeah.
+--T7IwLFePnUSWKnbZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> While reading this I was looking at something similar to get rid of some
-> .unwrap(). Would something like [2] be acceptable as well?
+On Tue, Nov 05, 2024 at 09:08:39PM -0500, Sasha Levin wrote:
+> The patch below does not apply to the v6.11-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-Yeah -- sometimes the `unwrap()` in examples may be used for
-simplicity, but in "real code" we should use `?`.
-
-Personally, I think that we should strive to give "real code" in
-examples too, especially since they are part of the test suite, so
-ideally we don't panic.
-
-Thanks!
+I sent 20241106-happily-unknotted-9984b07a414e@spud that should be a
+6.11 viable version of this change.
 
 Cheers,
-Miguel
+Conor.
+
+--T7IwLFePnUSWKnbZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZytrNwAKCRB4tDGHoIJi
+0lrZAQDwZgrJpDCrMBOUflphmluD0ARCIvhYF9shsNzm9sAm5gEA4dQEww2rvB2W
+ETWhXsstVjfNvdt4kg8SZh+nFLTwKQc=
+=IEMP
+-----END PGP SIGNATURE-----
+
+--T7IwLFePnUSWKnbZ--
