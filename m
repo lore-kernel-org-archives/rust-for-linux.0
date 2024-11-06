@@ -1,114 +1,239 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5614B824A3
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Nov 2024 22:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9F11DE2CD;
+	Wed,  6 Nov 2024 23:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730931593; cv=none; b=f5Kaq1zLwpnpq8wD89x9zrYPhmtpAI7oLOYwY7rLDGkufeQR8WsvaeSqyRLJFn0mKDrJMSzVew/2Ne+2hhESM3V8uhhymGO55dfOf6Fwzv8SypfXVE46Rfg62/zpSgnknooAbEklxwZBiqM9wP4/8lqg20Tgopj2Pe4iwrktLGc=
+	t=1730935575; cv=none; b=l9uVRKnkVwjX1/dnDbl7QrbHByRNQ90D75WMeQOfwx17DLLEWOzfiIyOLfm+s8VBIXmUTMCAZ16MvhKuFMh5c1u6ad5hfHF6zlMqTetaAjz1uAk+yGmKpqgP3OwuEqCAi7qNL2+h4zaoiwyfLAyiNiDE7pGGBTUUXOhdp50ZW4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730931593; c=relaxed/simple;
-	bh=oBnBqWpM8lRdtEoqkpENq0fMTF0z3JfZf00+3RNW9zY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oWHeeYr2HtpJOAPtdd4hItiLRIv7AZ3WEGXUv6X60aoZOKCIUu41/a93Js1Xr13H4X3Kbhx12s5D8RjNyu5rtxHDsaKMv27+8lf/1/zCDgc7DOKX0jQMI2fr/32fHnillhL508OQHxgQuZp2rXLaxGqZ8HXy1nyhgxJhjotEDTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RvjM3cOT; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1730935575; c=relaxed/simple;
+	bh=g46WnnIOGjqkQwYrb3HR+XA03ou4N5YVNpSTV5E8hmc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxZsSTwSzD8Rbs0WSqgZnWR8yd/TE5QNKrmqA2rKsuQBkQe4NsqnRlhhalQ/BuJ553Jas9UmyCYz7D9tO1BsBgb6uEJnjViVfSXYKz5m+5j/w0Iw4AejIyBlC6BsX8YOrY+aA06DB6ojm0aEIzP/DGLeJw30wTxVxFSfpBFHyUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BwsJZkbx; arc=none smtp.client-ip=209.85.219.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RvjM3cOT"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c934b2c991so7462a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 06 Nov 2024 14:19:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BwsJZkbx"
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e30d0d84d23so319294276.3;
+        Wed, 06 Nov 2024 15:26:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1730931591; x=1731536391; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VIfMB0/RRt0Ar1Plzd0i42wcI4LGr6zVtLHR+97rgBY=;
-        b=RvjM3cOTcqB/hxPw4bBvMJEFKEJsFueDkFcki+11WjTgflchF3SVXTd+1Ay0uD2CUK
-         KwPGBCImdQtQU/UYiPcEzzHHd95JAeNnXeyJOqokGNR8IPJEnB8qwaHGvXF/ePSceMdm
-         WmDm6c8WDspITHEtx709i2VHyfzomGBHmhVz5x75dy0iJK0gb042cUOdhWwxdmheK7+E
-         00v5aQzV9FObAVyhGgPTqB/Usfg5opluGpSchzfG1o6JgELDa56AToVMZXoZp61guguo
-         M4ve8BOVjtaVk9PZg1Zz7Ll5FpBkFQqJ9hwX1Eka6K73yvHfEQeI8BesACY2ERg4RYFE
-         h37A==
+        d=gmail.com; s=20230601; t=1730935573; x=1731540373; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OFLEBmby1hjS/I/DUU6gTf3FMTsFKIjPYBp1gPAcVfA=;
+        b=BwsJZkbx0C4GK8EB+iJ+clgUtX5xEOR8h/swAQbync33Qkbpi4JXvkfPY/3nUtwWN/
+         i+XZ3KUn43bzOqtteDedqwHkSlA6pvo2G6v1DbKHRa9ig7/NIOyyP/m0rKoLx+EbVI61
+         bU3tCzcDyxHxVNAD1OoGf62bp4HG1BJL/9rRE2VJlwYUfFC/eQowIvzKG5o99PZ5xI4h
+         QlIZDuFtqticGYm1mGGz2R5/R0itjWA+huuETsKKGuVg2pQYXTGvFeGM1a6sigvfwqjB
+         SbrKg6KtFT6MHPXuK5yWO0LfVyw7ylredVUVhionyCgqukc79P3ccYSPbBa+WZKX6Tk/
+         DwYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730931591; x=1731536391;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VIfMB0/RRt0Ar1Plzd0i42wcI4LGr6zVtLHR+97rgBY=;
-        b=ulOkvGhfKGHrP7n4z24BsZI5S+ZaTPzDWEGAgwAyxDS8C8f7SJ4RZAjQcMAUvSCTU/
-         wUJKx7Wbz/fDUtKRM4J33jXVAbHOtqvyI5Ig/aWJU06+kVceGN5Rofy3pAdt7y3NBx40
-         DMX51PPE/pB80jZ56Cw/D9va59xDAwUW1H2UzGDrlSwOoMW5yAwxQ3FgV4ZDog2rFh7C
-         noVZGMnOOmYLh22wI+ywbMLpfaFFJ54s4hrmEJ6/JDd8PpIyDvLe+kv1liqLhx1YpANo
-         k0mOYVq63cOfoD3Y4+VRFmiuFDYReKBwLX93Rs72+7MPozNkj2Squ7bpcLoKmpdYNZVB
-         DbMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuVL3Qj/k2IhEzkjjkYTm6DbweuOnitiYJNpd77UiLjUBelOQZbfYxnQck8s3k1zCmhvLvZoyyRclNt+ZVeA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9Hm1BW2GUa7Z2a5koTpkiAJQ6izBTKsJbvjlgK+sWYKCrB7rX
-	wru6mmhO6qYbUbbvOwvMw6QJuT/yc3V7IZVmbvfv+OA4wUk5D5clq5nQT2tOHlaat56xmpFZfzT
-	0+2pRnFAAEuWG88s2Ro2h0bv4LWW+i8DPwWnZ
-X-Gm-Gg: ASbGncuCEdaobJEQBkEk8GsbpwBPMtGV68bxpxCoxSe9mmONSH8vZTiR2bBvvzH/v9X
-	D/ymOx+bFTS2I6UJJO1ki8u4ZZa8ZoaXmQWzufqVeFv3lVjt/MJx3VgYeGcwF
-X-Google-Smtp-Source: AGHT+IHr43cQPFdqXPCZMuhW0YfDPZKYdGnYJyq09Flo3eqNIAHnldTJTztppmJyfXcIKbSiu12OxTpcgO6RCsjM9mo=
-X-Received: by 2002:a50:8d09:0:b0:5cb:6b7e:9634 with SMTP id
- 4fb4d7f45d1cf-5cefbc29fcfmr233654a12.2.1730931590492; Wed, 06 Nov 2024
- 14:19:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730935573; x=1731540373;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OFLEBmby1hjS/I/DUU6gTf3FMTsFKIjPYBp1gPAcVfA=;
+        b=JaB/WqFTqYPhsJg5OyPyAelhShl0HpPvkWmIv7AjzqzdeWrnq1pdQakR4cV6KzrdkE
+         Z0FY57m7v1n7FIk61sLOLMrlfWsx3R677ySbBNYOpieCndiJjRDgQ0dqzRJYSsGd07Kj
+         4dPWdCSjUsJBGCbB/lXIYomVKkBRAppU76j8jJmWEgdohaaAqtJtx+m3Jf/P1Seb1qqF
+         XGIlyg4aF8LZjj5f/LMG/ARSctLFl6qJeeq0z9sT25v+dALrX+ML6lKuotwstg+iMP8o
+         6Rw6mzBEjnnTup9o2oPacaaHpNKQRamgFDT2/rzGEzB7LWvbXEZPLNdMY370oLi4Yyfr
+         rLAA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVrkjzS+htFXWHhKPlkZJ9EQUlngYpSVu/8B55Jtsj5uiekHweU61jBp54NceSFY/or4BnUO3AgZl2kF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMrpz0fg7EeAWuc3eSP2WS1KxARfDDCdkTVjTCpZEZVcdMNw/H
+	zsb9GVOIpPNwwAkXw7lEYh9moRxSFM62CkCPr+9IlzE9FG2I1X2rJjENpA==
+X-Google-Smtp-Source: AGHT+IE3EXX48EsTM/zAfGkWMEq0ZNtl+JtINjLVNJpiZ6tSxqgGB43crkvstXz3ZtTs9BbcuIZRkA==
+X-Received: by 2002:a05:690c:102:b0:6e7:e5d6:64cc with SMTP id 00721157ae682-6e9d8a22ae2mr23112897b3.20.1730935572502;
+        Wed, 06 Nov 2024 15:26:12 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d396643135sm566856d6.130.2024.11.06.15.26.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 15:26:11 -0800 (PST)
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4DBFA120006A;
+	Wed,  6 Nov 2024 18:26:11 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Wed, 06 Nov 2024 18:26:11 -0500
+X-ME-Sender: <xms:E_srZ4XZDhsUvOR71WY-SZ1i4hA1sjR3cxl74CxSBLm-Xao5YH52EA>
+    <xme:E_srZ8k3UgGs5UuPjqsk8ZSk3itc1TbJHcRI4n520IH617n-IT8MkfC4I_mw-4H5F
+    RM0aIZwmByY48kCTw>
+X-ME-Received: <xmr:E_srZ8auzCDGZmHSFJH15mYE_gnZIC5t9_13he1NNIBnKdWns8ivMNnQrLK1ug>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtdefgddutdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdethedu
+    udejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
+    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
+    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
+    vgdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    gviihulhhirghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdq
+    lhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhguhgv
+    lhdrohhjvggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepth
+    hglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepfihilhhlihgrmhhssehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
+    ghgrrhihsehgrghrhihguhhordhnvght
+X-ME-Proxy: <xmx:E_srZ3W6l_PYwxbb_C1hLNxQcaSxt0ldMgsnXS05CuJuRQZ8phQpyw>
+    <xmx:E_srZylGP58UZEYJwjfueRdkqlik4aZTjvZJaSI4ixWb--bbnRjIjQ>
+    <xmx:E_srZ8dRrGOGIUwU-vrvrhizn6cqjYCSqmKnx2LRF6bTc-KN3uu3BA>
+    <xmx:E_srZ0Et6akzSmgFKsNYkjLUjxwy-KfMNWJ5Ki20ZhKrvcH0-z5wYw>
+    <xmx:E_srZ4l3jfUaSOHePb9nJx0MPJw797ra-2_DqN0BW2k_r-VCWOo9E9wz>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 6 Nov 2024 18:26:10 -0500 (EST)
+Date: Wed, 6 Nov 2024 15:24:42 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Eder Zulian <ezulian@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com, tglx@linutronix.de,
+	williams@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	jlelli@redhat.com
+Subject: Re: [PATCH v2] rust: Fix build error
+Message-ID: <Zyv6unk_tRyv_v7m@boqun-archlinux>
+References: <20241106211215.2005909-1-ezulian@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org> <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
- <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org> <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
- <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
-In-Reply-To: <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 6 Nov 2024 14:19:38 -0800
-Message-ID: <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, Lucas De Marchi <lucas.de.marchi@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241106211215.2005909-1-ezulian@redhat.com>
 
->
-> > If booted against an old kernel, it will
-> > behave as though there is no modversions information.
->
-> Huh? This I don't get. If you have the new libkmod and boot
-> an old kernel, that should just not break becauase well, long
-> symbols were not ever supported properly anyway, so no regression.
+Hi Eder,
 
-Specifically, if you set NO_BASIC_MODVERSIONS, build a module, and
-then load said module with a kernel *before* EXTENDED_MODVERSIONS
-existed, it will see no modversion info on the module to check. This
-will be true regardless of symbol length.
+Seems I forgot to reply you on your reply to v1, sorry about that.
 
->
-> I'm not quite sure I understood your last comment here though,
-> can you clarify what you meant?
->
-> Anyway, so now that this is all cleared up, the next question I have
-> is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
-> userspace requirements aren't large at all, what actual benefits does
-> using this new extended mod versions have? Why wouldn't a distro end
-> up preferring this for say a future release for all modules?
+For the commit title, I think it better be:
 
-I think a distro will end up preferring using this for all modules,
-but was intending to put both in for a transitional period until the
-new format was more accepted.
+	rust: helpers: Avoid raw_spin_lock initialization for PREEMPT_RT
 
->
->   Luis
+, because in general, title of the commit should be as specific as
+possible (otherwise, half year later there could be 10 commits titled
+"rust: Fix build error").
+
+On Wed, Nov 06, 2024 at 10:12:15PM +0100, Eder Zulian wrote:
+> On a PREEMPT_RT build, spin locks have been mapped to rt_mutex types, so
+> avoid the raw_spinlock_init call for RT.
+> 
+> When CONFIG_DEBUG_SPINLOCK=y and CONFIG_PREEMPT_RT=y the following build
+> error occurs:
+> 
+> https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
+> 
+
+Since you already use the "Closes" tag to refer the bug report, let's
+avoid links showing twice, how rephrase the above three paragraphs as:
+
+"""
+When PREEMPT_RT=y, spin locks are mapped to rt_mutex types, so using
+spinlock_check() + __raw_spin_lock_init() to initialize spin locks is
+incorrect, and would cause build errors.
+
+Introduce __spin_lock_init() to initialize a spin lock with lockdep
+rquired information for PREEMPT_RT builds, and use it in the Rust
+helper.
+"""
+
+Thoughts?
+
+> Fixes: 876346536c1b ("rust: kbuild: split up helpers.c")
+
+I'm not sure this is the correct "Fixes" tag, that commit is a code
+move, so it's unlikely introducing issue itself. Moreover, we really
+need PREEMPT_RT being able to trigger the issue, so I think the correct
+"Fixes" tag is:
+
+Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
+
+(yes, I know PREEMPT_RT is a long existing project, but it was until
+that commit, you can build a kernel with PREEMPT_RT=y IIUC)
+
+This will help stable maintainers for backport decisions.
+
+
+The rest of patch looks good to me (we could maybe provide a
+__spin_lock_init() for !RT build as well, but that's more of a
+cleanup)
+
+Regards,
+Boqun
+
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
+> Signed-off-by: Eder Zulian <ezulian@redhat.com>
+> ---
+> V1 -> V2: Cleaned up style and addressed review comments
+>  include/linux/spinlock_rt.h | 15 +++++++--------
+>  rust/helpers/spinlock.c     |  8 ++++++--
+>  2 files changed, 13 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
+> index f9f14e135be7..f6499c37157d 100644
+> --- a/include/linux/spinlock_rt.h
+> +++ b/include/linux/spinlock_rt.h
+> @@ -16,22 +16,21 @@ static inline void __rt_spin_lock_init(spinlock_t *lock, const char *name,
+>  }
+>  #endif
+>  
+> -#define spin_lock_init(slock)					\
+> +#define __spin_lock_init(slock, name, key, percpu)		\
+>  do {								\
+> -	static struct lock_class_key __key;			\
+> -								\
+>  	rt_mutex_base_init(&(slock)->lock);			\
+> -	__rt_spin_lock_init(slock, #slock, &__key, false);	\
+> +	__rt_spin_lock_init(slock, name, key, percpu);		\
+>  } while (0)
+>  
+> -#define local_spin_lock_init(slock)				\
+> +#define _spin_lock_init(slock, percpu)				\
+>  do {								\
+>  	static struct lock_class_key __key;			\
+> -								\
+> -	rt_mutex_base_init(&(slock)->lock);			\
+> -	__rt_spin_lock_init(slock, #slock, &__key, true);	\
+> +	__spin_lock_init(slock, #slock, &__key, percpu);	\
+>  } while (0)
+>  
+> +#define spin_lock_init(slock)		_spin_lock_init(slock, false)
+> +#define local_spin_lock_init(slock)	_spin_lock_init(slock, true)
+> +
+>  extern void rt_spin_lock(spinlock_t *lock) __acquires(lock);
+>  extern void rt_spin_lock_nested(spinlock_t *lock, int subclass)	__acquires(lock);
+>  extern void rt_spin_lock_nest_lock(spinlock_t *lock, struct lockdep_map *nest_lock) __acquires(lock);
+> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> index b7b0945e8b3c..5971fdf6f755 100644
+> --- a/rust/helpers/spinlock.c
+> +++ b/rust/helpers/spinlock.c
+> @@ -6,10 +6,14 @@ void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
+>  				  struct lock_class_key *key)
+>  {
+>  #ifdef CONFIG_DEBUG_SPINLOCK
+> +# if defined(CONFIG_PREEMPT_RT)
+> +	__spin_lock_init(lock, name, key, false);
+> +# else /*!CONFIG_PREEMPT_RT */
+>  	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> -#else
+> +# endif /* CONFIG_PREEMPT_RT */
+> +#else /* !CONFIG_DEBUG_SPINLOCK */
+>  	spin_lock_init(lock);
+> -#endif
+> +#endif /* CONFIG_DEBUG_SPINLOCK */
+>  }
+>  
+>  void rust_helper_spin_lock(spinlock_t *lock)
+> -- 
+> 2.47.0
+> 
+> 
