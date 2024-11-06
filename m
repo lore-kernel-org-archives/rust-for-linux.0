@@ -1,116 +1,146 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283B3201106;
-	Wed,  6 Nov 2024 19:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11A4209668
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Nov 2024 21:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730920178; cv=none; b=M0lkDCsb+zSlXRIwaB8PBbXRz8ShSOsn6skWuF+7o173dASbfP1n17VTGIRxuVUaVxKFn9kwhO6c/6spShOzIKo3KKSu0zAt2T9MOEijk7LSzX5r6a1W7rjE5INUoZqQb/5TdJ/4Op2dn+dBNoxpEzcXnOAMrXyyMn3YhfKX69A=
+	t=1730927586; cv=none; b=suECi+CzoICOxS8QW22A+zWvX7hVWbsM0IMASVP2Wwo0YVAC7izu/4qkMHuPTtxstQFfcLhRA7hB5o8mx1dYcS6WJia6u8xmGQCk0LF0lQYVodnvD6Ys9YngfB+tCdeV/AJaSAj5F3YvzFVdTiczF5crrpeFcg/txiroqqZjnng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730920178; c=relaxed/simple;
-	bh=e7p68YBbZMXRvFAfDeh/8xkKP3Je1m9pDyDdbE5+MDI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=taT/LOOWQa1oiE9Nxp3+7arVznXAu/xZYuRTnv8YFOmoYT7zSBfkchq+ah7EOMnbIqaxn78Gg2MFdhrf8kZJ2Cj4/pvf2f/r/wYKaYevtTkvpyYhm3kfsGnDEm4/2yPX0cvxW4bJR0DC+2BgowAnzgh2sTF0aMwnxHHnGNZoWFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5QaWgJS; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730927586; c=relaxed/simple;
+	bh=2Be2vptfkRRusVApOXjRb/TOfYhZr3S2q2yLZnErf24=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n4R0mFZxt3YQ4ol9ffu9fLNyFI2pMMQDAM0i3k/8934TkNiVo//cr6Pb1w+Z+/g9Obh+bK8IPqI4tpanjUSQ+iFC7HGEzdSiFr9AJwvrFI1SIuIY+tlaffGGudpw33wczVyrTmr+SqTDTrPdHE4KFqMKAzlUIjSA+04A/LdA5os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RhV8oxBg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5QaWgJS"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb4af0b6beso1959861fa.3;
-        Wed, 06 Nov 2024 11:09:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730920175; x=1731524975; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e7p68YBbZMXRvFAfDeh/8xkKP3Je1m9pDyDdbE5+MDI=;
-        b=G5QaWgJSQST2ttmKkcCsI3j2oHR34vLyBFTKvYqyCAoMvx3mBsAVSnkULzEt/g0elk
-         dMLlGc4vrhualdlxDvfkvca52dayUUZLU3wxBtIBhJJWV34VemTwnXhIhqarTjIug2jw
-         NDfM192HEUtjNgFs9/1F67BjLVI7x7HheDe3LNwJQonUGlABv/i04QtH4u+LjE53dUNQ
-         A+6odUseE4tuBF1sWNMpQAxpXhqD1aCHX2W9q+RNMrmaKI19rJ0jKBOn8d/Q28fblV3L
-         YVlE23Vb0IbSP2vQTI4yK17ZmwPrV+gxFWHkQwKNc7rS38UNdYM98aCWjKit/aj3I2At
-         DNrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730920175; x=1731524975;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e7p68YBbZMXRvFAfDeh/8xkKP3Je1m9pDyDdbE5+MDI=;
-        b=WrX6LdQM8ETCw2H98veHDaaZhE1n80Lc0hNNIKaGFogykkpSU6bgejsapJocB4yJYo
-         9e9wyAEIqIbcNUeYtjZY5/qA1FLtoB04ULscsqMMBiIFyD291BShVN1hVEpqyV7cxSht
-         dtD9V8RyVOi0mD5hiBeuFqV8D8IKN8hqBABXya1lg8FsT4LvHwjzHpu/chwH2to9kMXi
-         ma9PQjGW8Br1e7FAbNDP2flskg4ARtBph8fxhWuNvcVyN2bIQ6weHIAlj8Izi59WLO+K
-         +otYHQow5rgEag++lBFZLXFM24S6dqXxHqsLbB70ei1Kol7CaxSr+48l80JEv7DJMoN0
-         Nw8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVyjz4CYVcB7ZpOJ26uCMFF3gKtUxWP9NMkC8F/OhipD4Ss9+wmuoWWl8ObqYVDw687Uhbcc03pg5TBB66ShyM=@vger.kernel.org, AJvYcCWEscS2DO2ekJz6fYHy5E4Oh4VjOSV9JN2Ah+E+HIUCfi0VGtmSS9s/hAXaK+ZMGL4AUmKWc6A+bLS4wlw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPvmrr4o/XTMyNixuLUW3e/Bpw66/lmpf9yO6n+mchbnhb9G1+
-	gJXciVDGKOB3nNsLhBiGvWvJjiizcZS2lgGZ80TDGqVfUrCwRDcx5rYmVEzpjYDSPRpYM5YquPu
-	hbVWHbFnFpp7VrlrF+jh1hmy1Rk8=
-X-Google-Smtp-Source: AGHT+IHgF6RWu96nevnfTcoUiInCMl4EtY7bI0XtjfAgxlvJ/rHrmbsvM6PbQJbxEuq714EZ/9RNSM1L0dOWAHmc2iw=
-X-Received: by 2002:a05:651c:b20:b0:2fb:63b5:c0bc with SMTP id
- 38308e7fff4ca-2fedb793caamr171684141fa.3.1730920175010; Wed, 06 Nov 2024
- 11:09:35 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RhV8oxBg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730927582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6CaKWX2sAhCDPrXFOg5z+X6ACDdnGEgP4/mWIeAlabk=;
+	b=RhV8oxBgAooD3tW3ZOPDTlYm6CqgNZ+9tGhLw/LPRMEVAc8Afbdx19gb2Yy+gkplnHSBm/
+	UQ2DC18iQVp4BQq2aKh2Og9TfVt0Jgy/udiBru0LfJkQPv6pJIPzYnnHHiz56IEbP8Q3x6
+	mjvrbnMdG9kvDpo8VKRyqzAxw/ZRQbI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-pg-M9TUrP3K8DYQtVkkOdQ-1; Wed,
+ 06 Nov 2024 16:12:59 -0500
+X-MC-Unique: pg-M9TUrP3K8DYQtVkkOdQ-1
+X-Mimecast-MFC-AGG-ID: pg-M9TUrP3K8DYQtVkkOdQ
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9D972195608B;
+	Wed,  6 Nov 2024 21:12:57 +0000 (UTC)
+Received: from f39.redhat.com (unknown [10.39.192.235])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CA52E1956088;
+	Wed,  6 Nov 2024 21:12:51 +0000 (UTC)
+From: Eder Zulian <ezulian@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: boqun.feng@gmail.com,
+	miguel.ojeda.sandonis@gmail.com,
+	tglx@linutronix.de,
+	williams@redhat.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	jlelli@redhat.com
+Subject: [PATCH v2] rust: Fix build error
+Date: Wed,  6 Nov 2024 22:12:15 +0100
+Message-ID: <20241106211215.2005909-1-ezulian@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
- <ZylNvC8enwPG4IQ4@Boquns-Mac-mini.local> <CANiq72nQ6b1wO6i6zWW6ZWeQFN4SJVB28b216FDU70KmtCbaxA@mail.gmail.com>
- <CAJ-ks9=xW_WWZXB0CbDvU-3otkYs-TY+PSYeiPyidM58QujC3g@mail.gmail.com>
- <CAH5fLgjXXE32k2VuC9yGrNG7ib5vo7V+fsvRxWG0ijopK7MDCQ@mail.gmail.com>
- <CAJ-ks9=b=UEp9KCZ5_dE5yDKWZ1BEfnTkAtS4LiNQ4wzMgdT4A@mail.gmail.com>
- <CANiq72=MmpyquVfi=796v0BAmx6=yuy_gvzeRgUVPhpq8E4rrw@mail.gmail.com>
- <CAJ-ks9muM0RRtawt-C=vwT7b29rhsHbh1FjpX7LbJ=a05tLuPQ@mail.gmail.com> <CANiq72kBo4x7D92Xe7Wkvu=Jj+YmMH+-ARiovG+SHt9BYECbvg@mail.gmail.com>
-In-Reply-To: <CANiq72kBo4x7D92Xe7Wkvu=Jj+YmMH+-ARiovG+SHt9BYECbvg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 6 Nov 2024 15:08:56 -0400
-Message-ID: <CAJ-ks9kWuQEaj7DUqHm50jAS3ageYZktsiaJvJmava=76mJP5w@mail.gmail.com>
-Subject: Re: [PATCH] rust: arc: remove unused PhantomData
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Wed, Nov 6, 2024 at 2:30=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Wed, Nov 6, 2024 at 5:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
-> >
-> > The upstream changes to dropck predate the PR I linked up-thread which
-> > landed in 2017. Since this Arc code was written in 2022, it never had
-> > any effect. Isn't it proper to keep the "Fixes" tag?
->
-> If there is a bug, definitely yes, but I don't think that applies is
-> -- this is more of a cleanup, no?
->
-> Sometimes things are marked as "fixes" that are perhaps a stretch
-> (e.g. a typo in a comment). It depends a bit on the maintainer and how
-> we define "bug" (e.g. does it count in docs, or just actual end
-> users). But here it just seems something is superfluous, at worst, and
-> it does not need to be backported either. Even if we kept the tag for
-> some reason, I think this belongs in `rust-next`.
+On a PREEMPT_RT build, spin locks have been mapped to rt_mutex types, so
+avoid the raw_spinlock_init call for RT.
 
-Thanks, I forgot that "Fixes" changes are backported. This makes sense!
+When CONFIG_DEBUG_SPINLOCK=y and CONFIG_PREEMPT_RT=y the following build
+error occurs:
 
-> But if I am missing something, and this does indeed fix something that
-> we should prioritize, please let me know!
->
-> What looks more important, to me, is to clarify/document why (or why
-> not) we have it, regardless of whether we keep it or not, i.e. having
-> thought about it, I think it wouldn't hurt having a line/comment even
-> if we remove it.
+https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
 
-Will do.
+Fixes: 876346536c1b ("rust: kbuild: split up helpers.c")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
+Signed-off-by: Eder Zulian <ezulian@redhat.com>
+---
+V1 -> V2: Cleaned up style and addressed review comments
+ include/linux/spinlock_rt.h | 15 +++++++--------
+ rust/helpers/spinlock.c     |  8 ++++++--
+ 2 files changed, 13 insertions(+), 10 deletions(-)
 
-> Thanks!
->
-> Cheers,
-> Miguel
+diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
+index f9f14e135be7..f6499c37157d 100644
+--- a/include/linux/spinlock_rt.h
++++ b/include/linux/spinlock_rt.h
+@@ -16,22 +16,21 @@ static inline void __rt_spin_lock_init(spinlock_t *lock, const char *name,
+ }
+ #endif
+ 
+-#define spin_lock_init(slock)					\
++#define __spin_lock_init(slock, name, key, percpu)		\
+ do {								\
+-	static struct lock_class_key __key;			\
+-								\
+ 	rt_mutex_base_init(&(slock)->lock);			\
+-	__rt_spin_lock_init(slock, #slock, &__key, false);	\
++	__rt_spin_lock_init(slock, name, key, percpu);		\
+ } while (0)
+ 
+-#define local_spin_lock_init(slock)				\
++#define _spin_lock_init(slock, percpu)				\
+ do {								\
+ 	static struct lock_class_key __key;			\
+-								\
+-	rt_mutex_base_init(&(slock)->lock);			\
+-	__rt_spin_lock_init(slock, #slock, &__key, true);	\
++	__spin_lock_init(slock, #slock, &__key, percpu);	\
+ } while (0)
+ 
++#define spin_lock_init(slock)		_spin_lock_init(slock, false)
++#define local_spin_lock_init(slock)	_spin_lock_init(slock, true)
++
+ extern void rt_spin_lock(spinlock_t *lock) __acquires(lock);
+ extern void rt_spin_lock_nested(spinlock_t *lock, int subclass)	__acquires(lock);
+ extern void rt_spin_lock_nest_lock(spinlock_t *lock, struct lockdep_map *nest_lock) __acquires(lock);
+diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+index b7b0945e8b3c..5971fdf6f755 100644
+--- a/rust/helpers/spinlock.c
++++ b/rust/helpers/spinlock.c
+@@ -6,10 +6,14 @@ void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
+ 				  struct lock_class_key *key)
+ {
+ #ifdef CONFIG_DEBUG_SPINLOCK
++# if defined(CONFIG_PREEMPT_RT)
++	__spin_lock_init(lock, name, key, false);
++# else /*!CONFIG_PREEMPT_RT */
+ 	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+-#else
++# endif /* CONFIG_PREEMPT_RT */
++#else /* !CONFIG_DEBUG_SPINLOCK */
+ 	spin_lock_init(lock);
+-#endif
++#endif /* CONFIG_DEBUG_SPINLOCK */
+ }
+ 
+ void rust_helper_spin_lock(spinlock_t *lock)
+-- 
+2.47.0
+
