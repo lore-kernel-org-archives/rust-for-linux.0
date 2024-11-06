@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110D020D50C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1106D20D508
 	for <rust-for-linux@vger.kernel.org>; Wed,  6 Nov 2024 23:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730935744; cv=none; b=bKe+yfynlNRkSYrtt1PEik5CRdCQCptKKCssZ8ogyv5uPce5Wn3vYm8ZSU22q8D+3cGywH3meQdjW7pt06zUcc8FJlUFdrsmIIpXoBRABrLPB94X1HRhhQp3PYOIQJmk+wkJMSQe3Yh6vrRadfKxBugABcnXLr8jz+UMebbx85o=
+	t=1730935744; cv=none; b=a9kFm3m7rnEL/gUh1lpVAHxuavguV5BC+UqjWE9cdfcKYjBexw/FneOJKzofBPZAvyghCitUdsFSvArRjxYc1Q4dpmxQdu1dknSiwe2LJBofc53urnoZ+kbaKV4HTzgmz1+WXn+jfWnJphb3Xa9gi/1oyoBTU4fVF/N0ljiIP3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730935744; c=relaxed/simple;
-	bh=1VXfwh8WaHJSmw0wKYo9irhx2sS5IwKiAAFSaYNlDIM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ml/8mfwpUA01KEt9DfIcOGPaUR982Tdr1Np/Wo/owo+gFw/s32SxYTIqjWNo251IFqtkeMg4jujLMKwFm77RJv5Uhtpv6r19wnPFAMio573BSv2kvhNSb025B2TfjTZC1gZy1sl4S9UyNXpKrXNTZRO0u3fC/eIQ3huovfDQtpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSAa0R3m; arc=none smtp.client-ip=10.30.226.201
+	bh=tw5fLm83O0UTmbo9rIYoAbdVNaWkQiP+TDLFds65lNo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o+MLvjuowuCPxCtrZ4Z6oLzxO6RyW05+oICmnirsY+VI7L4jnb76s9JgqH9n0v2BtTVnHP/AFMZjLj/JVWJH66UGcJ3pX7uVYcWjFhFdJi/QSOWNOTkVjRvXhXkH/K8ICs/mCmm038hCvwx1N8hIc5jsxeG+uXLlL5SH2+FXmHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvcXe+fx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSAa0R3m"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B55C5C4CED2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvcXe+fx"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A69E7C4CEC6;
 	Wed,  6 Nov 2024 23:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1730935743;
-	bh=1VXfwh8WaHJSmw0wKYo9irhx2sS5IwKiAAFSaYNlDIM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CSAa0R3mJ+NoHNIMHxby1PwHsowSt5UwARmnkSDrs6DI7ujZvO2XCWzrKoGbXvCLT
-	 YhPk7drJDUgaZ2hKRSa/Ro9WlLaVurUItF196Zked3Oh7Nem5k97aJG5bD4Pv77Xu8
-	 xkvdJGI8JP9ebNXhRQ2khH9Ha/0CiDuaotLpR8Z3n9cGEvKrexiyA4k6fb4thcoFkJ
-	 D1nqOBxyqUGrM1iBNQxYK4J/FXbdG14GNowuoPtYEIii27/ocenDEWG5DHPIajKGPr
-	 RQ/rAAKZ1vc5yBJIAd5YgW3N4du0WbVi/Zni1FGwXiEsuWNi23HCTFDzCbO6WFwD+8
-	 sehNcUP0JlaAA==
+	bh=tw5fLm83O0UTmbo9rIYoAbdVNaWkQiP+TDLFds65lNo=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=TvcXe+fx5cyniaVtl4cn55a1HFKQlE8T4siOD3x65lRfMovVJVPPUB1cDvQNz95MJ
+	 kXvIXYefTBB8rLIdjBmNvF8uekRuC19z12e29tTT2Fw6qWvnQD85Ew83ksu7+NTdZm
+	 iTnWEOPb1OpgxKSVf48K7jlELmCd2Zsjxu7DBJxZZHYtIT/yCZUSVlx2J3PX13rbOW
+	 5ZqGxrwejKa4RBZi9Js4Oo0+oK2Dq8om5R2/ljaFycoP83NXbzUP5JJ6860Lu6xN0F
+	 D4+GBYtiPHd4J+95lUzWYW0rEJ6JZZcoJ7Z3qm362LIAjLaVzC/6eT2uiWtYaTd/fC
+	 mkaFnBfUc/vmw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB17FD59F7F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9929CD59F7C;
 	Wed,  6 Nov 2024 23:29:03 +0000 (UTC)
 From: Jens Korinth via B4 Relay <devnull+jens.korinth.tuta.io@kernel.org>
-Date: Thu, 07 Nov 2024 00:28:31 +0100
-Subject: [PATCH v2 1/3] rust: print: Add do_once_lite macro
+Subject: [PATCH v2 0/3] rust: Add pr_*_once macros
+Date: Thu, 07 Nov 2024 00:28:30 +0100
+Message-Id: <20241107-pr_once_macros-v2-0-dc0317ff301e@tuta.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,9 +40,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-pr_once_macros-v2-1-dc0317ff301e@tuta.io>
-References: <20241107-pr_once_macros-v2-0-dc0317ff301e@tuta.io>
-In-Reply-To: <20241107-pr_once_macros-v2-0-dc0317ff301e@tuta.io>
+X-B4-Tracking: v=1; b=H4sIAJ/7K2cC/03MQQ6CMBCF4auYWVsCLRR15T2MIbVOYYztkCkaE
+ 8LdbVyZt/oW718hoxBmOO1WEHxTJk4Fer8DP7k0oqJ7Mehat01T92qWgZPHITovnJVtzQFt6G5
+ HbaCcZsFAn1/wci0OwlEtk6D7z5iyztRVb/vOqkaF14MWVy0cObHQeYyOnpXnCNv2BZlrqAijA
+ AAA
+X-Change-ID: 20241107-pr_once_macros-6438e6f5b923
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -53,11 +55,11 @@ Cc: rust-for-linux@vger.kernel.org,
  FUJITA Tomonori <fujita.tomonori@gmail.com>, 
  Dirk Behme <dirk.behme@gmail.com>, Jens Korinth <jens.korinth@tuta.io>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730935742; l=1737;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730935742; l=1165;
  i=jens.korinth@tuta.io; s=20241107; h=from:subject:message-id;
- bh=XAaxx9JmqKS+Pe6xMJnXcJZk36ZsLXSLNP4nDUqpGWQ=;
- b=nlo7tRq3zFwZSaKfoh2qn6IK8kzCzxDKbH8xIpf4z5UJL/fZtWhMG3GZ599jVImoik7A/dFDP
- JSxC2eEEyAzCDxybfZKNsgLSjw5p1N2hmIP62lxAGr2QNw+KZEJ+X5v
+ bh=tw5fLm83O0UTmbo9rIYoAbdVNaWkQiP+TDLFds65lNo=;
+ b=Sh9XFH3RvKvlt28Wir7l4tE3kbQ9S0dnphTIpAAuVJnAo2M+IMtK3QZsf5WDeQAcRXExciXXb
+ 3i2L4fJMk+JDO9j/kVH73OXbO+JeQ3pvUI+WAfSgUoHMDRIWt/mALeD
 X-Developer-Key: i=jens.korinth@tuta.io; a=ed25519;
  pk=bG0q4Zyj3o4d/r326zKL7ym+/tXzyykcjh+U0M13iyc=
 X-Endpoint-Received: by B4 Relay for jens.korinth@tuta.io/20241107 with
@@ -65,61 +67,37 @@ X-Endpoint-Received: by B4 Relay for jens.korinth@tuta.io/20241107 with
 X-Original-From: Jens Korinth <jens.korinth@tuta.io>
 Reply-To: jens.korinth@tuta.io
 
-From: Jens Korinth <jens.korinth@tuta.io>
+Add Rust version of pr_[emerg|alert|crit|err|warn|notic|info]_once
+functions, which print a message only once.
 
-Add do_once_lite macro that executes code only once.
-Has two rules, one with a condition to replace [`do_once_lite_if`] in
-the kernel, and one without.
+v2:
+- Split patch into do_once_lite part and pr_*_once macros
+- Add macro rule for call without condition => renamed to do_once_lite
+- Used condition-less call in pr_*_once macros
+- Added examples
+- Removed TODO in kernel/error.rs using pr_warn_once
+v1: https://lore.kernel.org/rust-for-linux/20241106.083113.356536037967804464.fujita.tomonori@gmail.com/
 
 Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
+Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- rust/kernel/print.rs | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+FUJITA Tomonori (1):
+      rust: print: Add pr_*_once macros
 
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index a28077a7cb301193dcca293befb096b2dd153202..9c7434b221984ad325138e5dc90ab4340cd0be2e 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -414,3 +414,37 @@ macro_rules! pr_cont (
-         $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
-     )
- );
-+
-+/// Executes code only once.
-+///
-+/// Equivalent to the kernel's [`do_once_lite_if`] macro when called with
-+/// a condition expression.
-+/// Public but hidden since it should only be used from public macros.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::do_once_lite!(pr_warn!("warn once"));
-+/// kernel::do_once_lite!({ /* perform_complex_test() */ true }, pr_warn!("warn only once"));
-+/// ```
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! do_once_lite (
-+    ($e:expr) => (
-+         $crate::do_once_lite!(true, $e);
-+    );
-+    ($condition:expr, $e:expr) => (
-+        {
-+            #[link_section = ".data.once"]
-+            static ALREADY_DONE: core::sync::atomic::AtomicBool =
-+                core::sync::atomic::AtomicBool::new(false);
-+
-+            if !ALREADY_DONE.load(core::sync::atomic::Ordering::Relaxed)
-+                && $condition
-+                && !ALREADY_DONE.swap(true, core::sync::atomic::Ordering::Relaxed)
-+            {
-+                $e;
-+            }
-+        }
-+    );
-+);
+Jens Korinth (2):
+      rust: print: Add do_once_lite macro
+      rust: error: Replace pr_warn by pr_warn_once
 
+ rust/kernel/error.rs |   3 +-
+ rust/kernel/print.rs | 143 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 144 insertions(+), 2 deletions(-)
+---
+base-commit: ae7851c29747fa3765ecb722fe722117a346f988
+change-id: 20241107-pr_once_macros-6438e6f5b923
+
+Best regards,
 -- 
-2.44.1
+Jens Korinth <jens.korinth@tuta.io>
 
 
