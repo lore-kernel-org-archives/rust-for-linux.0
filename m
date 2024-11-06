@@ -1,83 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD181E04AD;
-	Wed,  6 Nov 2024 13:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01A01FA276;
+	Wed,  6 Nov 2024 13:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730898748; cv=none; b=fAH9Ly+vjSFhE9LC1CSNHqVuejoEw2b5wx9udpwJODhoz6Q/XemdxKTKG16/sCbAjpzonh5h+Du6GWQnPbS2Gy6drBmx9tFsGnaGSgST+nELCL/LnzuyIFGNTtqJGmbt6zVISQW7sMB7evaSzsG+k6kECWDY5uOUazUchOVUAmM=
+	t=1730900709; cv=none; b=J3+iBnsQLU0WCOTqxtTaES+TBgrkTIRCQEpl5/DfPj6PrfXnp2Y4uwTEe1of2YCFmjiak/9v07PnEM+LCQPcM1YU5pRSZ4Fd/7rNG2uydLRes9LWQ+5snvv0nsfuMM2WZNfDMOOtkZZpJJ/b+LVtsLSVeLRmAl9gXgGUl6UOUlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730898748; c=relaxed/simple;
-	bh=3SfESvrKfdyPsR2Toa1m1lCX2fQeSf+A2nGffmF11BM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fGenyS9gPLtx7E6bODNeeZZ1/tPEJEKkj+J4+/XTZkcJPYSWn6uQWcm6BCDFIiFRAkL5j1sotrOTiaSCg+PyMx41lyM+YpaMufL1+abpqBQdrCJyRxT2vVBw5+11Ify9NVwF2YJtwBhmxSsnjU1hfVN17jLcZMU/yk76lDNu0oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGmwz3OA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1730900709; c=relaxed/simple;
+	bh=PRfP3mrthFXqO8z1UzhBDfaDERwKXLXkFR5QCYXGAq8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IGEBNZt5vjNM9jcJQoLoU3o0c1037YagW2Ud36gP+5Qznrt55OmGZKb3YMay2e9AKQqHEhrXe0O/Dw4DMmK5YlkgigpOCgwOBQGuYEhztKfZTolfFsJS4TaFaRCLzMY7gJwsh+hdOwhmVXL/gWZ/FMlIjm7vQJRbmuBkXiDNDws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mE20lKKz; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGmwz3OA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AE1C4CED4;
-	Wed,  6 Nov 2024 13:12:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730898747;
-	bh=3SfESvrKfdyPsR2Toa1m1lCX2fQeSf+A2nGffmF11BM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BGmwz3OAHtxzQimhPb+0ta8GU6ekMnC0Nr55rDVo5Z3eBQBSlzx2R0yCIlpqJTOug
-	 j2jouZOq2FDue45FB9L57askeLY0wQvdBhk/Gs0RrA+xfuh6r844UNGSxzP1OQXWIs
-	 WXhKJLIxD2erc+Tx9VY3wDSHDZY+JfqC87LI5/t4yCyTb2NIa+Jd6NPO6/Ndk+e/sn
-	 7wPD0pSWLEOAvVSYTLYShwVsWDCllhThbE4uSdrDpnIealbuz3ZctYPnh6JBIFnxXG
-	 77B/lfXugrwKHs9CL6LdpZVWzV+0Ah6f+DmjxZMCmxviBIoCDOqDZRF9mx6ufS7cB3
-	 YKiC40WL00LVg==
-Date: Wed, 6 Nov 2024 13:12:23 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, conor.dooley@microchip.com,
-	Jason Montleon <jmontleo@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev
-Subject: Re: FAILED: Patch "RISC-V: disallow gcc + rust builds" failed to
- apply to v6.11-stable tree
-Message-ID: <20241106-undead-cupbearer-a22f27c8b9e2@spud>
-References: <20241106020840.164364-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mE20lKKz"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fb5014e2daso61857761fa.0;
+        Wed, 06 Nov 2024 05:45:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730900706; x=1731505506; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PRfP3mrthFXqO8z1UzhBDfaDERwKXLXkFR5QCYXGAq8=;
+        b=mE20lKKzhumN6npQ6O05N/5WD+qhS+T/lwG7GFBoPx5Nv/9nKQeMn1yLhaW2D+klcL
+         d1uQ1yvh6+LI4RDJJZg/dqbRIUuJxVm6s89+SiodfO2lqgIPxDaXQSckNAu80I94XOTE
+         FktVrDrKBriTcJn9zWU24sfPssWqe1h0RKV7UYhiAz/pz9cOYG32B+dCeK58tc/bLtgb
+         zb4fQMQK34ZQ5kSu7mbRioZU7cPt5b6LDbTslqXXew6dN252f6nKTD41is0MvygUhiyH
+         VBkV34fTRhifZNfUoefgWbYyNOrwHS29z3OpF9QuAIP5pwBqcNGoDAv2diDu/UF4vXXb
+         W2dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730900706; x=1731505506;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PRfP3mrthFXqO8z1UzhBDfaDERwKXLXkFR5QCYXGAq8=;
+        b=RIdvOiVR71mZyXOCCeecsmUERL5JawezEZL/Kxl+C6w/IOCzwzI+2R33rXbTxIZbcw
+         PENRWJPgThiRdC1fx+Rg7JS9Whtdv/6YWWoKtRF2eheckCrO5KlWCh31kV7LvtyxgcDU
+         FOkJ4emtbm74MynLzq9aP1pzKVx+dNYNi0m8+FWjMtRkG4zn5XXZLXN1xDY2qPXn5cwp
+         Y27IxqfF/3O/zwRuKCZWPfGFte37iSjAWb3QxpKwtQFt4VbuhLrQEZl79gFdu4atdLir
+         Hc6YCqU9WCCgt2NVtB6+MMFsL68qkjwFiLHvw9QCiNkyhsGWIMEzEI0vtEbpSOzVzFc1
+         LOeg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZHZgHGAqeuM76bl3/YRy1zWyJ3jDhNXGzZeQiRGmBEyqbJWnS6SgfzTaTKlOLvYUDh4hxVHvuVFlNh6w=@vger.kernel.org, AJvYcCVz7bYHhdHc8SEOZokkzZvbeixWnq7zj1ArdTs4lpGG481lmIOSVo38f6VpCTn3jhXX/SxLkmSHIY/X73V7yfA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOkrgbtODuSZtFK/GhZYzO77hS/lzfo/qfS4EpWpSMqRdGA7S4
+	CJSp1BIu0w132CtNTLP+TIm629R8T106EmSc50ce5XcWp5g5exQYNsMS2LMc0j1yBneXYH1GEPK
+	rAn31jHxXeeMCbMUaYGEil296XlcnWc6Mb/bzDQ==
+X-Google-Smtp-Source: AGHT+IELinPh6kMtPZIP+nahufU32K4ML7ul8ABbiKuMB0PqMwTZcIuuGNgfP6rzZ7Nn5cP2Lr7pslHb2Ini0UymVNs=
+X-Received: by 2002:a05:651c:510:b0:2fa:f5f1:2539 with SMTP id
+ 38308e7fff4ca-2fedb79ef0emr107100971fa.24.1730900705695; Wed, 06 Nov 2024
+ 05:45:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="T7IwLFePnUSWKnbZ"
-Content-Disposition: inline
-In-Reply-To: <20241106020840.164364-1-sashal@kernel.org>
+References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
+ <ZylNvC8enwPG4IQ4@Boquns-Mac-mini.local> <CANiq72nQ6b1wO6i6zWW6ZWeQFN4SJVB28b216FDU70KmtCbaxA@mail.gmail.com>
+ <CAJ-ks9=xW_WWZXB0CbDvU-3otkYs-TY+PSYeiPyidM58QujC3g@mail.gmail.com> <CAH5fLgjXXE32k2VuC9yGrNG7ib5vo7V+fsvRxWG0ijopK7MDCQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgjXXE32k2VuC9yGrNG7ib5vo7V+fsvRxWG0ijopK7MDCQ@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 6 Nov 2024 09:44:29 -0400
+Message-ID: <CAJ-ks9=b=UEp9KCZ5_dE5yDKWZ1BEfnTkAtS4LiNQ4wzMgdT4A@mail.gmail.com>
+Subject: Re: [PATCH] rust: arc: remove unused PhantomData
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Nov 6, 2024 at 5:26=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> On Tue, Nov 5, 2024 at 9:13=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> wrote:
+> >
+> > On Tue, Nov 5, 2024 at 8:29=E2=80=AFAM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > >
+> > > On Mon, Nov 4, 2024 at 11:42=E2=80=AFPM Boqun Feng <boqun.feng@gmail.=
+com> wrote:
+> > > >
+> > > > I believe we need this `PhantomData` to inform drop chec [1] that t=
+he
+> > > > drop of `Arc` may result into the drop of an `ArcInner<T>`. Rust st=
+d
+> > > > `Arc` has the similar definition [2], you can find more information
+> > > > about PhantomData usage on drop checking at [3].
+> > >
+> > > Hmm... But they use `may_dangle` in their `Drop` and we don't (and we
+> > > have a `Drop` unlike something like `Unique`), no? Or am I confused?
+> > > i.e. if I understand correctly, that would have been needed in the
+> > > past, but not anymore.
+> >
+> > Doing a bit of archaeology I found the reasoning for the presence of
+> > `PhantomData` in std's `Arc`[0]. The TL;DR is that the presence of a
+> > type parameter `T` implies "owns T", but `Arc` owns `ArcInner<T>`
+> > rather than `T`. Thus in order to get correct dropck behavior it is
+> > necessary to opt out of "owns T" using `may_dangle` and opt into "owns
+> > ArcInner<T>" using `PhantomData`.
+> >
+> > Please check my understanding; I couldn't find detailed documentation
+> > of the interaction between `may_dangle` and `PhantomData`. If this
+> > sounds correct, should we add `may_dangle` to our dropck? compile-fail
+> > tests would be useful here.
+>
+> We don't *have* to use #[may_dangle]. Using it may allow more stuff,
+> but it's not a problem for it to be missing. We probably don't want to
+> use it since it's unstable.
+>
+> Since we don't use #[may_dangle], we don't *need* the PhantomData
+> field. Having it doesn't change anything.
 
---T7IwLFePnUSWKnbZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Nov 05, 2024 at 09:08:39PM -0500, Sasha Levin wrote:
-> The patch below does not apply to the v6.11-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-
-I sent 20241106-happily-unknotted-9984b07a414e@spud that should be a
-6.11 viable version of this change.
-
-Cheers,
-Conor.
-
---T7IwLFePnUSWKnbZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZytrNwAKCRB4tDGHoIJi
-0lrZAQDwZgrJpDCrMBOUflphmluD0ARCIvhYF9shsNzm9sAm5gEA4dQEww2rvB2W
-ETWhXsstVjfNvdt4kg8SZh+nFLTwKQc=
-=IEMP
------END PGP SIGNATURE-----
-
---T7IwLFePnUSWKnbZ--
+In that case, should we reconsider this patch?
