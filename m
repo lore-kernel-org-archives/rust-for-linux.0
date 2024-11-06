@@ -1,95 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E64F1DDA3B
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Nov 2024 23:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730935744; cv=none; b=ZTZ6i9BD9RDbkmpUWQ4EFG8wElIYsA46IduA/X8tLbPqKabl8POKG6/cYWYP5BLgrW68s+v8YF2ZfNbk2lj3GORTbklwnvx/o/AGlMr1O+SM+vrh0Ddcb4MhGI7PjULcAU9lCt0timc1IJzPgn9gPxmH6jc0uEftdOWuyZRTLsU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730935744; c=relaxed/simple;
-	bh=FHGhaxX9A6w6dofyFIe2kgutlpUueSeGpMF8xdQrn74=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L49/NsSNh2s7QTnOkJ33N8mvqKZFYw7vLaJKNUijjjfA/tbbGT7E/aAeWWDo6IIKKAAXMtz0sw0dPFyoJewIYeWaxR3g8dgPC7ElIuBI7NsNd4bdzXJ6gQX07v80Y4FSSo4MsWIzLThqCwSkpE0G2Qy3ONMBDzudnaCMxcfHTLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7Pr/Ppm; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D14220E303;
+	Wed,  6 Nov 2024 23:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730935960; cv=pass; b=TXnkgze0Q9EgLfdlXIEQJU545XiGJZKUloB/MVPIDyxbn4Gb9fASYVtoIBzMSKvJhHtvBC8Rtr7RCwTc6ASn9OshZbS8z7m8rHw3FYVNo4UMmYcLkcEMG08zujo+fjakQYQlEQhaOUcmoq8XBLzqAWtor1D038Ewc8P0B1OjEVw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730935960; c=relaxed/simple;
+	bh=KIJ3PZEYHZzSKqlk7pSylcibSpSuclteWz3lwPm7zJA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NTBS+erHzVQrB0IYFIGBTUfIZHijD0uI4xaUAmHsRJjZ/QSWAdlSoza3bHCdYvCI3dd2NHCrKN0KaGyevoUdb36uefnqQ28TR1xoeOLEh64dIIy4al2sfO37XNRq9Vkn8PGooN+5BvngHUJh6qQ3akkDeT4qUMSVSNkNtrwFHkE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=c23dkm1D; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7Pr/Ppm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DBC77C4CED7;
-	Wed,  6 Nov 2024 23:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730935743;
-	bh=FHGhaxX9A6w6dofyFIe2kgutlpUueSeGpMF8xdQrn74=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=L7Pr/PpmEgKRzdnRxIXhjPMo4UqFXmSiC1+JqVHqJ8y0IxonEEbfzM3coNNCThKln
-	 8E2KKd9W+7KSao7jtffcm2lUZK/vRKcG2u387lhkqozc5dIoiechiqij6JTIutsQJ3
-	 Fe0SYfQAF+3nTM9jWUCnLJZiZgdKV5JMOWQGCptNx1BLXGd/x7jd6omS5496rG6KOj
-	 yiJrw7Zp7OiCXTl3CnBC54p0C7/YZ9DTd8CdDdm2XkTUgLoO910jVTtKgib8l8oeDC
-	 TzKeswi82SlGVrqvZ71DRaZFVPUq0SM961YIjT6NhMyCKNQ6l7XESbgMhtASMVvkfU
-	 1dnN+6Kib373A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB00AD29FA5;
-	Wed,  6 Nov 2024 23:29:03 +0000 (UTC)
-From: Jens Korinth via B4 Relay <devnull+jens.korinth.tuta.io@kernel.org>
-Date: Thu, 07 Nov 2024 00:28:33 +0100
-Subject: [PATCH v2 3/3] rust: error: Replace pr_warn by pr_warn_once
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="c23dkm1D"
+ARC-Seal: i=1; a=rsa-sha256; t=1730935925; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=gIxp/k1/AT16DGs/9OuFQuqu4DZfyvzhzu8KIzsQ2ux4cdYB50FV+qfI9PFTR721KkXAQCIQVHWZSuP4dpUeUfphIMZysakBuXIA7pgKJFy1SSnKUasH4f2o/drfXP8KxrN68c2m5qlQFgnd1EmpDVU2Ht/3XNgkYvjqp1KHUv0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1730935925; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yFsTqCsvyoWKOmvFZ59RIJPhJzOGv5NnUYCSCIgnK6c=; 
+	b=KZ8iOWcQHZyUTVZOiIGhvDY9cEdr+DKIHqKMDXlllv6YOaUF0GRMIaAInOvmRT8N+pUh4i4RAnovlbu357vWGulWhPpKi7TdHXX6Bg8eT8pqkTzLeY+5s62v8Z5O/WFtFHgElDbmGuPWQDu60RXa8eFeIK6uSJWG7DNuIIrmr/M=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730935925;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=yFsTqCsvyoWKOmvFZ59RIJPhJzOGv5NnUYCSCIgnK6c=;
+	b=c23dkm1Dw2W5xTizFmk+vWd2IEtJdCM1bZGoA6ugcd3JTE/KPLx2iwJB461yQWIL
+	jGo/K/uZNevCCqQUrMj7O9ZpcGaQfwWE/0ibbbImgWiQQtz7m9L9YtJUFxDLTiwaZjQ
+	EHN3SvmljdMW7y23egyEzh42cs5U9Qc2cQ5fC8HQ=
+Received: by mx.zohomail.com with SMTPS id 1730935922326552.8283967488513;
+	Wed, 6 Nov 2024 15:32:02 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-pr_once_macros-v2-3-dc0317ff301e@tuta.io>
-References: <20241107-pr_once_macros-v2-0-dc0317ff301e@tuta.io>
-In-Reply-To: <20241107-pr_once_macros-v2-0-dc0317ff301e@tuta.io>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Dirk Behme <dirk.behme@gmail.com>, Jens Korinth <jens.korinth@tuta.io>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730935742; l=871;
- i=jens.korinth@tuta.io; s=20241107; h=from:subject:message-id;
- bh=bZLBDxudHxGsVw5ADGygZHTwpiRJkVukaGhfv2uAfCU=;
- b=rCRDNFVHsl6EvjGErsf96ETgFVTCOcgf4A4s1Q94yDktDaDqLW5xgq2wU1C+7PZ1M+OLqzIUn
- gWNdGWRyyC3ClY9JuqFHxUaOnMkg6sZjn22Py0ggrsz2uQYA881j02Z
-X-Developer-Key: i=jens.korinth@tuta.io; a=ed25519;
- pk=bG0q4Zyj3o4d/r326zKL7ym+/tXzyykcjh+U0M13iyc=
-X-Endpoint-Received: by B4 Relay for jens.korinth@tuta.io/20241107 with
- auth_id=270
-X-Original-From: Jens Korinth <jens.korinth@tuta.io>
-Reply-To: jens.korinth@tuta.io
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v3 09/16] rust: add `io::Io` base type
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
+Date: Wed, 6 Nov 2024 20:31:44 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ gregkh@linuxfoundation.org,
+ rafael@kernel.org,
+ bhelgaas@google.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,
+ tmgross@umich.edu,
+ a.hindborg@samsung.com,
+ airlied@gmail.com,
+ fujita.tomonori@gmail.com,
+ lina@asahilina.net,
+ pstanner@redhat.com,
+ ajanulgu@redhat.com,
+ lyude@redhat.com,
+ robh@kernel.org,
+ saravanak@google.com,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ devicetree@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <04E0C753-9D96-4D99-992E-63E36C0F1904@collabora.com>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-10-dakr@kernel.org>
+ <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-From: Jens Korinth <jens.korinth@tuta.io>
+Hi,
 
-Use new pr_warn_once macro to resolve TODO in error.rs.
+> On 28 Oct 2024, at 12:43, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Tue, Oct 22, 2024 at 11:33=E2=80=AFPM Danilo Krummrich =
+<dakr@kernel.org> wrote:
+>>=20
+>> I/O memory is typically either mapped through direct calls to =
+ioremap()
+>> or subsystem / bus specific ones such as pci_iomap().
+>>=20
+>> Even though subsystem / bus specific functions to map I/O memory are
+>> based on ioremap() / iounmap() it is not desirable to re-implement =
+them
+>> in Rust.
+>>=20
+>> Instead, implement a base type for I/O mapped memory, which =
+generically
+>> provides the corresponding accessors, such as `Io::readb` or
+>> `Io:try_readb`.
+>>=20
+>> `Io` supports an optional const generic, such that a driver can =
+indicate
+>> the minimal expected and required size of the mapping at compile =
+time.
+>> Correspondingly, calls to the 'non-try' accessors, support compile =
+time
+>> checks of the I/O memory offset to read / write, while the 'try'
+>> accessors, provide boundary checks on runtime.
+>=20
+> And using zero works because the user then statically knows that zero
+> bytes are available ... ?
+>=20
+>> `Io` is meant to be embedded into a structure (e.g. pci::Bar or
+>> io::IoMem) which creates the actual I/O memory mapping and =
+initializes
+>> `Io` accordingly.
+>>=20
+>> To ensure that I/O mapped memory can't out-live the device it may be
+>> bound to, subsystems should embedd the corresponding I/O memory type
+>> (e.g. pci::Bar) into a `Devres` container, such that it gets revoked
+>> once the device is unbound.
+>=20
+> I wonder if `Io` should be a reference type instead. That is:
+>=20
+> struct Io<'a, const SIZE: usize> {
+>    addr: usize,
+>    maxsize: usize,
+>    _lifetime: PhantomData<&'a ()>,
+> }
+>=20
+> and then the constructor requires "addr must be valid I/O mapped
+> memory for maxsize bytes for the duration of 'a". And instead of
+> embedding it in another struct, the other struct creates an `Io` on
+> each access?
 
-Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
----
- rust/kernel/error.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Please let=E2=80=99s not add a lifetime here. Drivers will usually have =
+this mapped
+at probe time and it will usually remain mapped until remove(), so I =
+think this
+works fine the way it is.
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 7cd3bbab52f208961390de03a255446950e9eb04..fe1b31506b30fba0ec9d5339d80c2a7fa76ce7c7 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -102,8 +102,7 @@ impl Error {
-     /// be returned in such a case.
-     pub fn from_errno(errno: core::ffi::c_int) -> Error {
-         if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
--            // TODO: Make it a `WARN_ONCE` once available.
--            crate::pr_warn!(
-+            crate::pr_warn_once!(
-                 "attempted to create `Error` with out of range `errno`: {}",
-                 errno
-             );
-
--- 
-2.44.1
+>=20
+>> Co-developed-by: Philipp Stanner <pstanner@redhat.com>
+>> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>=20
+> [...]
+>=20
+>> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+>> new file mode 100644
+>> index 000000000000..750af938f83e
+>> --- /dev/null
+>> +++ b/rust/kernel/io.rs
+>> @@ -0,0 +1,234 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Memory-mapped IO.
+>> +//!
+>> +//! C header: =
+[`include/asm-generic/io.h`](srctree/include/asm-generic/io.h)
+>> +
+>> +use crate::error::{code::EINVAL, Result};
+>> +use crate::{bindings, build_assert};
+>> +
+>> +/// IO-mapped memory, starting at the base address @addr and =
+spanning @maxlen bytes.
+>> +///
+>> +/// The creator (usually a subsystem / bus such as PCI) is =
+responsible for creating the
+>> +/// mapping, performing an additional region request etc.
+>> +///
+>> +/// # Invariant
+>> +///
+>> +/// `addr` is the start and `maxsize` the length of valid I/O mapped =
+memory region of size
+>> +/// `maxsize`.
+>=20
+> Do you not also need an invariant that `SIZE <=3D maxsize`?
+>=20
+> Alice
 
 
