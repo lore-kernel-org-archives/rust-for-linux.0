@@ -1,55 +1,55 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C5136D;
-	Wed,  6 Nov 2024 18:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283B3201106;
+	Wed,  6 Nov 2024 19:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730917824; cv=none; b=M8wfkFOwH9Bvbakzzk6t/8wYd1sstFBXkh8Y4/d41VTD5AL4vGa7/n+uBDePRFZ0HMEVZ6xMjAlpNl2IVRQEEm8FhLqeJO4PScqTqOvowPOsdrz0eXcB0UCYYt9Dn/p1aH1srkAdeUc0vDN6b4hdxsXpn3lHFzUGA4UpJNJ7F0E=
+	t=1730920178; cv=none; b=M0lkDCsb+zSlXRIwaB8PBbXRz8ShSOsn6skWuF+7o173dASbfP1n17VTGIRxuVUaVxKFn9kwhO6c/6spShOzIKo3KKSu0zAt2T9MOEijk7LSzX5r6a1W7rjE5INUoZqQb/5TdJ/4Op2dn+dBNoxpEzcXnOAMrXyyMn3YhfKX69A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730917824; c=relaxed/simple;
-	bh=gF5yzVYH46mvGRFeqrnnwmfx2DTqUT/8f1nV3OgxZoI=;
+	s=arc-20240116; t=1730920178; c=relaxed/simple;
+	bh=e7p68YBbZMXRvFAfDeh/8xkKP3Je1m9pDyDdbE5+MDI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PTGKGNLeDwT02dat/gToUF/7sVb+uL9JEyu/4yZn14yOOG+EmyU2lzM5Yc5KhcUt/pH/YegmNcMRoHTkCrX3DID1GJ3xcB7nxmovn5RF20tyHCsDKDuwHrBxoxsI4BIy+EvVXLUYqEx9KKnbBOXY3db18+3Z2iToGluqm0C+lDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cik0xK+A; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=taT/LOOWQa1oiE9Nxp3+7arVznXAu/xZYuRTnv8YFOmoYT7zSBfkchq+ah7EOMnbIqaxn78Gg2MFdhrf8kZJ2Cj4/pvf2f/r/wYKaYevtTkvpyYhm3kfsGnDEm4/2yPX0cvxW4bJR0DC+2BgowAnzgh2sTF0aMwnxHHnGNZoWFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5QaWgJS; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cik0xK+A"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2e31977c653so12974a91.0;
-        Wed, 06 Nov 2024 10:30:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5QaWgJS"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb4af0b6beso1959861fa.3;
+        Wed, 06 Nov 2024 11:09:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730917822; x=1731522622; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730920175; x=1731524975; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gF5yzVYH46mvGRFeqrnnwmfx2DTqUT/8f1nV3OgxZoI=;
-        b=Cik0xK+AA9hQuH9OMezILM0sNxwAHeFesL5aYOSrhsRXZCuHK3KnIwGv/81tF03VFu
-         GJBW4ZGtyXkNrZaMl57NBwfKjWj2pvqFKGjSTb1jEs5hmnvSAfK1yE7JGhpkbNJkrrOf
-         6stgVu4xrWl4ehEMLx5eDKKdAymdlsXXzcNx/+kHXxbHdWckLx9aqljmuA1/zEQPvqYw
-         CBSTOUwJa1BGz/9ee5IcQCWeUVXHw5Jcdk3FIiwYTp7Ktd6Y44JU+fqgQkEnEwnsWeGR
-         kq6MQOVhX2HoQVR4lkq2l31jAEuihsMsVDz1R6nieZVFB6chfq0I8S/WMN1riMr6kxH9
-         OTPw==
+        bh=e7p68YBbZMXRvFAfDeh/8xkKP3Je1m9pDyDdbE5+MDI=;
+        b=G5QaWgJSQST2ttmKkcCsI3j2oHR34vLyBFTKvYqyCAoMvx3mBsAVSnkULzEt/g0elk
+         dMLlGc4vrhualdlxDvfkvca52dayUUZLU3wxBtIBhJJWV34VemTwnXhIhqarTjIug2jw
+         NDfM192HEUtjNgFs9/1F67BjLVI7x7HheDe3LNwJQonUGlABv/i04QtH4u+LjE53dUNQ
+         A+6odUseE4tuBF1sWNMpQAxpXhqD1aCHX2W9q+RNMrmaKI19rJ0jKBOn8d/Q28fblV3L
+         YVlE23Vb0IbSP2vQTI4yK17ZmwPrV+gxFWHkQwKNc7rS38UNdYM98aCWjKit/aj3I2At
+         DNrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730917822; x=1731522622;
+        d=1e100.net; s=20230601; t=1730920175; x=1731524975;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gF5yzVYH46mvGRFeqrnnwmfx2DTqUT/8f1nV3OgxZoI=;
-        b=N7eFdQrqa+uHW1nFTUuLzPWhwtBgO6nRDqpvitaYFH+5GK8w3D/xZwV7uT+Gc0bDU0
-         QOcLB+UYIm6G4O5fhLk3FupoZ/degie+SQd7AOlrLNR8ZCfM8jTaWe7MekK/PpfyhyOh
-         9ZAccEsA49M6Pk/ya5kKufe26COdEBUSrKxQ0lsVVecSyo5oHvw6ZHte687D6Mpn1EsG
-         BKrXYUJokX0VvOaqF8CqiTvXR5nDArqMDGWrwr3SxGCr7qY7JPcrnExXWz3UDoKR+i3F
-         GlasNTkHBYcxxh1T55hYUTrs8emwP7GzqC0Kp6XlbsnjEWc4smFwGkf4Vu0ERZQLlMu/
-         pB1A==
-X-Forwarded-Encrypted: i=1; AJvYcCU9t7D+wMg+Ky+EMYwCYiqEeMPt7iKKj6CJVb5nov3KGTK0ckFteQzb+YchUsj7BiWvamuh7YN/7RPrL2IBLLQ=@vger.kernel.org, AJvYcCXhFvCz1DkeJ0MMnGyJ5cqkz4CUei9MshceT68nnq2pSfwRjxGzut6lsrCGsImz3CE51xdIXWbTWa08kJ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmM17AFFiaN9HTNQolMoJBPMaETwlXr/Hg8wDb49nxjnqp39tA
-	c0JtMBTX77x0VtWXnoQgoprFvf7AY4nW/erHnnbO4vDbx5/EwNPQo7BHZiSO+SCWUgGrSPOXZxV
-	ev+J/SU3ibOjjpxhq2oLsaV5oFio=
-X-Google-Smtp-Source: AGHT+IGugjNzUPl9S05Fiqq/N1TaSPnc6TQF3WdZmgyKufOmNd1/JHc9uWZB9T7rqhi8og8VXuAxKNd762hhNfoQcn4=
-X-Received: by 2002:a17:90b:164e:b0:2e2:abab:c456 with SMTP id
- 98e67ed59e1d1-2e9a4a8c9edmr137897a91.1.1730917822407; Wed, 06 Nov 2024
- 10:30:22 -0800 (PST)
+        bh=e7p68YBbZMXRvFAfDeh/8xkKP3Je1m9pDyDdbE5+MDI=;
+        b=WrX6LdQM8ETCw2H98veHDaaZhE1n80Lc0hNNIKaGFogykkpSU6bgejsapJocB4yJYo
+         9e9wyAEIqIbcNUeYtjZY5/qA1FLtoB04ULscsqMMBiIFyD291BShVN1hVEpqyV7cxSht
+         dtD9V8RyVOi0mD5hiBeuFqV8D8IKN8hqBABXya1lg8FsT4LvHwjzHpu/chwH2to9kMXi
+         ma9PQjGW8Br1e7FAbNDP2flskg4ARtBph8fxhWuNvcVyN2bIQ6weHIAlj8Izi59WLO+K
+         +otYHQow5rgEag++lBFZLXFM24S6dqXxHqsLbB70ei1Kol7CaxSr+48l80JEv7DJMoN0
+         Nw8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVyjz4CYVcB7ZpOJ26uCMFF3gKtUxWP9NMkC8F/OhipD4Ss9+wmuoWWl8ObqYVDw687Uhbcc03pg5TBB66ShyM=@vger.kernel.org, AJvYcCWEscS2DO2ekJz6fYHy5E4Oh4VjOSV9JN2Ah+E+HIUCfi0VGtmSS9s/hAXaK+ZMGL4AUmKWc6A+bLS4wlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPvmrr4o/XTMyNixuLUW3e/Bpw66/lmpf9yO6n+mchbnhb9G1+
+	gJXciVDGKOB3nNsLhBiGvWvJjiizcZS2lgGZ80TDGqVfUrCwRDcx5rYmVEzpjYDSPRpYM5YquPu
+	hbVWHbFnFpp7VrlrF+jh1hmy1Rk8=
+X-Google-Smtp-Source: AGHT+IHgF6RWu96nevnfTcoUiInCMl4EtY7bI0XtjfAgxlvJ/rHrmbsvM6PbQJbxEuq714EZ/9RNSM1L0dOWAHmc2iw=
+X-Received: by 2002:a05:651c:b20:b0:2fb:63b5:c0bc with SMTP id
+ 38308e7fff4ca-2fedb793caamr171684141fa.3.1730920175010; Wed, 06 Nov 2024
+ 11:09:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,13 +61,14 @@ References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
  <CAJ-ks9=xW_WWZXB0CbDvU-3otkYs-TY+PSYeiPyidM58QujC3g@mail.gmail.com>
  <CAH5fLgjXXE32k2VuC9yGrNG7ib5vo7V+fsvRxWG0ijopK7MDCQ@mail.gmail.com>
  <CAJ-ks9=b=UEp9KCZ5_dE5yDKWZ1BEfnTkAtS4LiNQ4wzMgdT4A@mail.gmail.com>
- <CANiq72=MmpyquVfi=796v0BAmx6=yuy_gvzeRgUVPhpq8E4rrw@mail.gmail.com> <CAJ-ks9muM0RRtawt-C=vwT7b29rhsHbh1FjpX7LbJ=a05tLuPQ@mail.gmail.com>
-In-Reply-To: <CAJ-ks9muM0RRtawt-C=vwT7b29rhsHbh1FjpX7LbJ=a05tLuPQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 6 Nov 2024 19:30:10 +0100
-Message-ID: <CANiq72kBo4x7D92Xe7Wkvu=Jj+YmMH+-ARiovG+SHt9BYECbvg@mail.gmail.com>
+ <CANiq72=MmpyquVfi=796v0BAmx6=yuy_gvzeRgUVPhpq8E4rrw@mail.gmail.com>
+ <CAJ-ks9muM0RRtawt-C=vwT7b29rhsHbh1FjpX7LbJ=a05tLuPQ@mail.gmail.com> <CANiq72kBo4x7D92Xe7Wkvu=Jj+YmMH+-ARiovG+SHt9BYECbvg@mail.gmail.com>
+In-Reply-To: <CANiq72kBo4x7D92Xe7Wkvu=Jj+YmMH+-ARiovG+SHt9BYECbvg@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 6 Nov 2024 15:08:56 -0400
+Message-ID: <CAJ-ks9kWuQEaj7DUqHm50jAS3ageYZktsiaJvJmava=76mJP5w@mail.gmail.com>
 Subject: Re: [PATCH] rust: arc: remove unused PhantomData
-To: Tamir Duberstein <tamird@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -77,32 +78,39 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 6, 2024 at 5:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+On Wed, Nov 6, 2024 at 2:30=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> The upstream changes to dropck predate the PR I linked up-thread which
-> landed in 2017. Since this Arc code was written in 2022, it never had
-> any effect. Isn't it proper to keep the "Fixes" tag?
+> On Wed, Nov 6, 2024 at 5:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> wrote:
+> >
+> > The upstream changes to dropck predate the PR I linked up-thread which
+> > landed in 2017. Since this Arc code was written in 2022, it never had
+> > any effect. Isn't it proper to keep the "Fixes" tag?
+>
+> If there is a bug, definitely yes, but I don't think that applies is
+> -- this is more of a cleanup, no?
+>
+> Sometimes things are marked as "fixes" that are perhaps a stretch
+> (e.g. a typo in a comment). It depends a bit on the maintainer and how
+> we define "bug" (e.g. does it count in docs, or just actual end
+> users). But here it just seems something is superfluous, at worst, and
+> it does not need to be backported either. Even if we kept the tag for
+> some reason, I think this belongs in `rust-next`.
 
-If there is a bug, definitely yes, but I don't think that applies is
--- this is more of a cleanup, no?
+Thanks, I forgot that "Fixes" changes are backported. This makes sense!
 
-Sometimes things are marked as "fixes" that are perhaps a stretch
-(e.g. a typo in a comment). It depends a bit on the maintainer and how
-we define "bug" (e.g. does it count in docs, or just actual end
-users). But here it just seems something is superfluous, at worst, and
-it does not need to be backported either. Even if we kept the tag for
-some reason, I think this belongs in `rust-next`.
+> But if I am missing something, and this does indeed fix something that
+> we should prioritize, please let me know!
+>
+> What looks more important, to me, is to clarify/document why (or why
+> not) we have it, regardless of whether we keep it or not, i.e. having
+> thought about it, I think it wouldn't hurt having a line/comment even
+> if we remove it.
 
-But if I am missing something, and this does indeed fix something that
-we should prioritize, please let me know!
+Will do.
 
-What looks more important, to me, is to clarify/document why (or why
-not) we have it, regardless of whether we keep it or not, i.e. having
-thought about it, I think it wouldn't hurt having a line/comment even
-if we remove it.
-
-Thanks!
-
-Cheers,
-Miguel
+> Thanks!
+>
+> Cheers,
+> Miguel
