@@ -1,126 +1,104 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746E61D966A;
-	Wed,  6 Nov 2024 23:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730936724; cv=pass; b=Uauh3+XaJpJd72NhRdR4poz5Y3GD3O7QwzuLJ5J+7J15Ej637oqRFBm0qDff5VG0FnhesuY+L1kmtJjYRqjXf+I2BDwrUToJszvUtzMbTDfTSo3cnqP+UlZk2RO0pHojsv2G8sfW/dL7oY1Vu3RdM4hne4lWMh/vSSWY8fzlgjk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730936724; c=relaxed/simple;
-	bh=w9RBdGBrQqRvP4QVYXJHPuVD77PpiUcpzIMOVebp6nc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bNBKlThnjCcfs7Wz8afDAV4W0HIFj08nVMG4aXpHPU8wbZoevv+jWTV5k5JHX0rzDyZIBtQ1UOABH4i0i/+qahVXbYqs3opL+1FzUmOFXTY34bVsXFNCj7hTfx06I+Vyff6lL4O24KYSVXM5HByCIWifGuBcrpgbhMxsCxjp7qs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cTT8TQfj; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAD61863F;
+	Thu,  7 Nov 2024 01:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730944523; cv=none; b=us4/pie2nyYjXYE6BPcEz0ByyWCTYzIuQt9EO8gRmNEvkqRAE3/XnfWnyzjXHxWYY0HtLrVO2NVFACjtAz54Dd3Zw+ovt2JtdfsKDjv6/ic2geZuzqnHpXUQJDB9rnRYG7DvpAQsTq/Ie7JLXHYDimx5tbDfxYhmDRHoAOcd66g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730944523; c=relaxed/simple;
+	bh=kDekRCLr+NF2MQ1qVzVsOMVeBpe9K+eR1IW2MKnj0+I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FABj/YQOKuj4+egA/yVyYxswCfef3/tKTlHaIfAGR+5I8KtUxrzgkPaNXl9TlIerDSHrQpOuyGZf4KwIoBMaqxinB4logdmzHSR1+eDW49ZXTgfjXYVo063fCU88dAA8tlrAOuJdh2wlz+GnuxfQhWVFC2eKlECRuZZezzxpgiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=beA0IjCq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JwU9kLsU; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cTT8TQfj"
-ARC-Seal: i=1; a=rsa-sha256; t=1730936695; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=R6HMMUHtc1LGPVEXrD5PNCVUxuA7BNkb7qJL3b0pLjLv8KPrIoadLVYSoabQ3Z+dYr67mzJPDqk/klYxmCyN1pZjEL4TFpbrIa/ruLX0WAV5YTwj4qgQXrVd1NZP9xJ/sg3VtgwMoaE2n2XRNUbiyFJfhoPtoeSxNv7H4Xsf8c8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1730936695; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=w9RBdGBrQqRvP4QVYXJHPuVD77PpiUcpzIMOVebp6nc=; 
-	b=RXsjqdDFZQ9QelySvS1PT8h+kkEyaqZOHzHv477RVO68k+djASH4mQZcOoGs4jU7GagDjlOuSd/TDOH6AgQ0wSgDtC60AmAog+s3Ux5EmBnHhhCPpkU3CNN47P9ocdI2umln9L1hWbpG9cqA8CiSj2cAoJ/K2xa2WHvbG58n/nc=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730936695;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=w9RBdGBrQqRvP4QVYXJHPuVD77PpiUcpzIMOVebp6nc=;
-	b=cTT8TQfjqYSX70R+jyXBXf3BreIvqkS/bPYdo1zcpQqYXavSLEcTWfuKhcb/sFB/
-	c9+YbkfqcF5ndTea00wwVd7HXbcGw7u9YZr3XhaKwno6pflglCl+Kr+3fHn9/GkfQ6x
-	IfqTxL1p3uzUoEE0DKAu4CHGUxwEeNcfWMmQdFfU=
-Received: by mx.zohomail.com with SMTPS id 1730936692453913.7917799009244;
-	Wed, 6 Nov 2024 15:44:52 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="beA0IjCq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JwU9kLsU"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730944520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yHuhaXluNZvcHKNGAX2RD73UJnUTFKyvNvfGTuAweb8=;
+	b=beA0IjCqm47gFCy89nu4n0Dxtzy1E+7+aas/Y1g+KmukfMhBuU71scU80r/XnXFsowGUmJ
+	mQ4Wc/NRX13L1JHzW2x4ZR15YEncQ6RnXomxULoxVwN1Icv27k7c3zeG+YC+PnsMsViG6R
+	xSrdGyh9E1eX3yYG9znKOTdOiC68l/Ms69DJJj+uRhIZHJYMevBdV9x+ASDJEOyXgbUndV
+	iA0OHdABekjjgNKpNKqbTxTaCroKWOam6xFDWJmGL1vyTj3q7m+Q7pv5A0mX64VgC2f5vg
+	ShsuvGmKlR9mXV0OATaBsve5RRAnLieUIcOULHFz4NyuNI1T0/FBB3HJ/a2xTw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730944520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yHuhaXluNZvcHKNGAX2RD73UJnUTFKyvNvfGTuAweb8=;
+	b=JwU9kLsUjzScL+bTQAUuqUKzQ6xlhvPWMtjdq2Mqwcmn8FLp2FvxsqqY8B5Y+DihwGO3XY
+	or1fNp0fCihjGOCw==
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas
+ Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v3 02/13] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-2-59a75cbb44da@kernel.org>
+References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
+ <20241017-hrtimer-v3-v6-12-rc2-v3-2-59a75cbb44da@kernel.org>
+Date: Thu, 07 Nov 2024 02:55:20 +0100
+Message-ID: <87v7wzoliv.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v3 09/16] rust: add `io::Io` base type
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAH5fLgjC5Rcq5VJbEFSVP_rE0xjj8CGdqxZexhPVsGcTZ+85HA@mail.gmail.com>
-Date: Wed, 6 Nov 2024 20:44:35 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- gregkh@linuxfoundation.org,
- rafael@kernel.org,
- bhelgaas@google.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- benno.lossin@proton.me,
- tmgross@umich.edu,
- a.hindborg@samsung.com,
- airlied@gmail.com,
- fujita.tomonori@gmail.com,
- lina@asahilina.net,
- pstanner@redhat.com,
- ajanulgu@redhat.com,
- lyude@redhat.com,
- robh@kernel.org,
- saravanak@google.com,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org,
- devicetree@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A309C141-E390-44C1-A2B7-A7A9CDB132D7@collabora.com>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241022213221.2383-10-dakr@kernel.org>
- <CAH5fLggFD7pq0WCfMPYTZcFkvrXajPbxTBtkvSeh-N2isT1Ryw@mail.gmail.com>
- <ZyCo9SRP4aFZ6KsZ@pollux>
- <CAH5fLgjC5Rcq5VJbEFSVP_rE0xjj8CGdqxZexhPVsGcTZ+85HA@mail.gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Sorry, I didn=E2=80=99t see this:
+Andreas!
 
-> On 29 Oct 2024, at 07:18, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> What you're doing now is a bit awkward to use. You have to make sure
-> that it never escapes the struct it's created for, so e.g. you can't
-> give out a mutable reference as the user could otherwise `mem::swap`
-> it with another Io. Similarly, the Io can never be in a public field.
-> Your safety comment on Io::new really needs to say something like
-> "while this struct exists, the `addr` must be a valid I/O region",
-> since I assume such regions are not valid forever? Similarly if we
+On Thu, Oct 17 2024 at 15:04, Andreas Hindborg wrote:
+> +impl<T> Timer<T> {
+> +    /// Return an initializer for a new timer instance.
+> +    pub fn new() -> impl PinInit<Self>
+> +    where
+> +        T: TimerCallback,
+> +    {
+> +        pin_init!(Self {
+> +            // INVARIANTS: We initialize `timer` with `hrtimer_init` below.
+> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtimer| {
+> +                // SAFETY: By design of `pin_init!`, `place` is a pointer live
+> +                // allocation. hrtimer_init will initialize `place` and does not
+> +                // require `place` to be initialized prior to the call.
+> +                unsafe {
+> +                    bindings::hrtimer_init(
+> +                        place,
+> +                        bindings::CLOCK_MONOTONIC as i32,
+> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
+> +                    );
+> +                }
+> +
+> +                // SAFETY: `place` is pointing to a live allocation, so the deref
+> +                // is safe.
+> +                let function =
+> +                    unsafe { core::ptr::addr_of_mut!((*place).function) };
 
-Io is meant to be a private member within a wrapper type that actually
-acquires the underlying I/O region, like `pci::Bar` or =
-`Platform::IoMem`.
+I assume you are sending a new version of this series due to the
+reported build issue.
 
-Doesn=E2=80=99t that fix the above?
+If so, can you please rebase against
 
-> look at [1], the I/O region actually gets unmapped *before* the Io is
-> destroyed since IoMem::drop runs before the fields of IoMem are
-> destroyed, so you really need something like "until the last use of
-> this Io" and not "until this Io is destroyed" in the safety comment.
->=20
-> If you compare similar cases in Rust, then they also do what I
-> suggested. For example, Vec<T> holds a raw pointer, and it uses unsafe
-> to assert that it's valid on each use of the raw pointer - it does not
-> create e.g. an `&'static mut [T]` to hold in a field of the Vec<T>.
-> Having an IoRaw<S> and an Io<'a, S> corresponds to what Vec<T> does
-> with IoRaw being like NonNull<T> and Io<'a, S> being like &'a T.
->=20
-> [1]: =
-https://lore.kernel.org/all/20241024-topic-panthor-rs-platform_io_support-=
-v1-1-3d1addd96e30@collabora.com/
+  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
 
-What I was trying to say in my last message is that the wrapper type, =
-i.e.:
-IoMem and so on, should not have a lifetime parameter, but IIUC this is =
-not
-what you=E2=80=99re suggesting here, right?
+It contains the new hrtimer_setup() function, which initializes the
+timer including the callback function pointer.
 
-=E2=80=94 Daniel=
+Thanks,
+
+        tglx
