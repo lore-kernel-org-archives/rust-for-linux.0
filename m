@@ -1,70 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450621216A
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 14:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB7221217B;
+	Thu,  7 Nov 2024 16:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730989821; cv=none; b=gG726ZuiYE5aXuThA2L+SKscqbKlhJbJew+9hs4PX85mY90NktVzihtC34keYXUQDOTzc6y0f77cDQE4nQmor2163bpOQZn5T39c0gfLN5Idh8fRpyhxwrnflOxKOrEQSuntUcBVlkWt96IAaqqFKRnR+0dEotjU6QXNv4oVyqw=
+	t=1730996300; cv=none; b=USmnVdbMgNmadKD6YCpe3G3VV2gYn9StvOliUo3yi9uGd0rQscWodWLKbcWnEa2hU/vI7m3jOFUHEbo0tuRkUW3LeS0GElqhJtsaXYhqq80gnR3e0EDZtHGG55IsGnmgMPRCsDgSsYNtkw/Xvffsl8hzlRAjgBFegDQwSi4dzjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730989821; c=relaxed/simple;
-	bh=sx1AB983x+ysd8rtm0xmyCQrPxnNHDAugcultwR1RZg=;
+	s=arc-20240116; t=1730996300; c=relaxed/simple;
+	bh=A2nMQyJoMt6BAljCrcBq7DiDey2ikvTaqDoVHrO86MU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+ZWpXcogXweRYsLDeLOL28ondJ3ZynTz0eEw0bUTcRVQE3IUQo+qJYjW8qpn7DJV/YwC0WI/EgRiTxJ0gBFv5PoBQFR4Z1Rt9EuGYJShlMBhuucFtU9MAYyh3zliBUshx3WJZk/YYAxixAeAW59vAa2BgvWh5F1EHVtGUi6MHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ivHcCI3r; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdL6G8y6QYNqkSy6sIbr79iPh1A5k5i/Ai7AHu4Q3tRil5Dp+j03NTKEjoW9ZyfVms4f0fqNfvZ83BgXKMrXsCgmhZcaHmjhglo8r6UEjVbWlDUrr/55z29rIjh0cFqhqieMOV1iXp+0uhxzDaZrDoqZZABBdyspx07MWThmoy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4hFP3pm; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ivHcCI3r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730989819; x=1762525819;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sx1AB983x+ysd8rtm0xmyCQrPxnNHDAugcultwR1RZg=;
-  b=ivHcCI3rmKoB4mKTMweUQC0b9YYDtkUBy8iNQHXD6ZuvnnA/THymc1C8
-   bDyZTyGiOZ7TdwjRhU7hT2IDJo+pDgi8CosUQHfuxub6SIvZ2bn+i1F1n
-   cZWIafgNj/8Dm1TyHNswbg0v2fiLhCRien0fVrNnGO6v4+lWaLPSM66Qq
-   sdyBdckwRhTUnnU0lYiOccDuViMtykvXxZHH5F2BlBGU2Trh1g/1leAPX
-   uCi3stzJJairBBK/41+5qzftwr1S+RT+lU51R9G7lps2qWNd9e7wJ3muj
-   0NKGlwjtWnOfgzYR9rEpzGDpCGxzcR5dmaqz2vSnwwysUaNFNTEWSoSSu
-   A==;
-X-CSE-ConnectionGUID: t2XoYA7yRt24LHf7wuO/zg==
-X-CSE-MsgGUID: KTThZ2gPSfmf3pHa9YkcXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="31055507"
-X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="31055507"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 06:30:19 -0800
-X-CSE-ConnectionGUID: u94g9OayR56ImobS0P0fmw==
-X-CSE-MsgGUID: p8Wb9B1zRMG69S09nuHFvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="115933258"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 07 Nov 2024 06:30:16 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t93WX-000qLQ-29;
-	Thu, 07 Nov 2024 14:30:13 +0000
-Date: Thu, 7 Nov 2024 22:29:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jens Korinth via B4 Relay <devnull+jens.korinth.tuta.io@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Jens Korinth <jens.korinth@tuta.io>
-Subject: Re: [PATCH v2 2/3] rust: print: Add pr_*_once macros
-Message-ID: <202411072242.YQFMjUwb-lkp@intel.com>
-References: <20241107-pr_once_macros-v2-2-dc0317ff301e@tuta.io>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4hFP3pm"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6d382664fadso6723516d6.2;
+        Thu, 07 Nov 2024 08:18:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730996298; x=1731601098; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Ek2Pr8aC1LxJ28dsLHeiGtZcdlMJfDyuW9uAHn9N+A=;
+        b=B4hFP3pmTWAkP5ux0z5GGlxSc40hjlaSYNy1Pp2XNuxKhFn99PEWFq4zcDyUucTyDP
+         GAFidG5h+OU6R31hSlbSSbGZWsj+En32YNfQ4tM0zM/ljRiE+EnTh0afcNWRUaUwzIle
+         cLKAUtGSSVzBDrcsBI4RQV253c4Xy12+5yW+MeTeFSLUpCsn6GMRMF0FmVasGShDQ8Ui
+         6n7OQjNIx4/P8Li15ndYsLlWEkiA8doX+QvRSmITL8hHUK+0HctcEOOp/Oj0oMAdFV2i
+         l7I+lSfxN2S0lloTSV/k1oCU7WoiO2SPWethb8D8qDX/crQ3PgWCOdLXABjEBkm0ATQ+
+         mpAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730996298; x=1731601098;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Ek2Pr8aC1LxJ28dsLHeiGtZcdlMJfDyuW9uAHn9N+A=;
+        b=YysGpfyEygnevX1Fhwll9HUe44cfpTF8svU5XEgC8fwoDhU5MW0yJDxwmq1/IujeFT
+         BnXx2SFpTlW0zU8S1sqL6jkLBqj15Uyjmz50KyptZdsjy/UQNn/4oDkbNgGeSnRllzsF
+         e7uNk0w0J7mXvie7yDAjA9WXQZLJybKUe+dZVe++ATtW6X15g/9SLBG2W6WkGPLI4RnB
+         IeV/IOgFri11QSonXwmQyJyK+kMwMeFDn78Q+6x2TgSPWoLVdHwvAsAvt/cnoB+QlO7q
+         gR9i4rL4UqRz0wSr/xYcP1Poih/WBgcuftzdfPBR/zZNr3u698pGWjiSg2yFV29B1EPR
+         aQLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlUPTculfO4OFs/wM3q/ZmfFuNdjgk517EOSdH0zGXWv0MldNFl4hknKG2u/P5+piJJ892BWhIFMuD/jg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy62lVlH+NEckZOVaADEWitfIf3jhwYX1jOp9DgEy0E1Bj7de4S
+	0M51pHbBfWOjbYR7AX49E9C0NPbcvpWwrCWYSWYu0za7SeECsCeZRBoY/A==
+X-Google-Smtp-Source: AGHT+IEXFFQsIp3iT1zsWEbcwE/s/lvUyCnHxT2DaOGBExHe0673Ml80H6X/0gvJxQB79Kiw3yZSFw==
+X-Received: by 2002:a05:6214:3d9c:b0:6d1:992e:4c5a with SMTP id 6a1803df08f44-6d39d054bf7mr7233356d6.45.1730996298187;
+        Thu, 07 Nov 2024 08:18:18 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961e07ffsm9090136d6.7.2024.11.07.08.18.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 08:18:17 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2B20F1200066;
+	Thu,  7 Nov 2024 11:18:17 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 07 Nov 2024 11:18:17 -0500
+X-ME-Sender: <xms:SegsZ2hwpQp0iy0T3asPqS8kYMIO0yZPgazT8YRBTZnh5gjC_gx8ww>
+    <xme:SegsZ3BoREMaArUShRdCeziybwBq6moU-gU3KUXTbhs-_D9X6s-LcAnq6sL1bbbWX
+    wnYJp95g-87J54zEQ>
+X-ME-Received: <xmr:SegsZ-FvlXjA96EdGagbdrF9ZPXpezWHSuB5rdD0r96kUe0t0AaNyfJ1p00>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtdeggdekiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieev
+    tdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihht
+    hidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrg
+    hilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohepvgiiuhhlihgrnhesrhgvughhrghtrdgtohhmpd
+    hrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhm
+    rghilhdrtghomhdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprh
+    gtphhtthhopeifihhllhhirghmshesrhgvughhrghtrdgtohhmpdhrtghpthhtohepohhj
+    vggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:SegsZ_Q0dCAjXmN73H4igej1_DTqr-iqbK1YDYi-Vy8Xnp4LqqRSdg>
+    <xmx:SegsZzyIQd55nEqssMXzZoD_XwLroxk6Vs_qtIrABuRufNOl2nbmcA>
+    <xmx:SegsZ96Fg6JBdfyPHpam5J3ULdE4Fo7Sxy0olRkT84dVPuHRguzNqg>
+    <xmx:SegsZwwFi7uttvqBvRO2EyIXO1PatSFNwLmmjdrGqFXsgy3UFsEEQg>
+    <xmx:SegsZ_i6etjr6PFG_Bxny2FuSArPSK7K04YZ0BqZcInr9zpHpalztyJR>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Nov 2024 11:18:16 -0500 (EST)
+Date: Thu, 7 Nov 2024 08:18:15 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Eder Zulian <ezulian@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com, tglx@linutronix.de,
+	williams@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	jlelli@redhat.com
+Subject: Re: [PATCH v2] rust: Fix build error
+Message-ID: <ZyzoR4JLPOm9Pi_z@Boquns-Mac-mini.local>
+References: <20241106211215.2005909-1-ezulian@redhat.com>
+ <Zyv6unk_tRyv_v7m@boqun-archlinux>
+ <ZyxpA2ez-9E4c7G5@f39>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,40 +109,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241107-pr_once_macros-v2-2-dc0317ff301e@tuta.io>
+In-Reply-To: <ZyxpA2ez-9E4c7G5@f39>
 
-Hi Jens,
+On Thu, Nov 07, 2024 at 08:15:15AM +0100, Eder Zulian wrote:
+[...]
+> > > Fixes: 876346536c1b ("rust: kbuild: split up helpers.c")
+> > 
+> > I'm not sure this is the correct "Fixes" tag, that commit is a code
+> > move, so it's unlikely introducing issue itself. Moreover, we really
+> > need PREEMPT_RT being able to trigger the issue, so I think the correct
+> 
+> One may argue that we need 'RUST=y' in order to trigger the issue.
+> 
 
-kernel test robot noticed the following build errors:
+But RUST support was in mainline earlier than PREEMPT_RT enablement
+(again I know we have RT code quite earlier than Rust support, but we
+are talking about mainline and potential stable backporting here), so
+when the lock support in Rust was added, although the code was missing
+RT support, but it's fine from a mainline PoV, and when we really
+enabled PREEMPT_RT, we should have added the missing piece.
 
-[auto build test ERROR on ae7851c29747fa3765ecb722fe722117a346f988]
+In other words, would we want to backport this fix into an early version
+(say 6.6 stable) where RT has not been enabled? Would there be users who
+want to use RT and Rust in that version?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jens-Korinth-via-B4-Relay/rust-print-Add-do_once_lite-macro/20241107-073105
-base:   ae7851c29747fa3765ecb722fe722117a346f988
-patch link:    https://lore.kernel.org/r/20241107-pr_once_macros-v2-2-dc0317ff301e%40tuta.io
-patch subject: [PATCH v2 2/3] rust: print: Add pr_*_once macros
-config: arm64-randconfig-003-20241107 (https://download.01.org/0day-ci/archive/20241107/202411072242.YQFMjUwb-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241107/202411072242.YQFMjUwb-lkp@intel.com/reproduce)
+Regards,
+Boqun
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411072242.YQFMjUwb-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error: cannot find macro `pr_err_once` in this scope
-   --> rust/doctests_kernel_generated.rs:3782:1
-   |
-   3782 | pr_err_once!("hello {}n", "there");
-   | ^^^^^^^^^^^
-   |
-   help: consider importing this macro
-   |
-   3    + use kernel::pr_err_once;
-   |
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > "Fixes" tag is:
+> > 
+> > Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
+> > 
+> > (yes, I know PREEMPT_RT is a long existing project, but it was until
+> > that commit, you can build a kernel with PREEMPT_RT=y IIUC)
+> > 
+> > This will help stable maintainers for backport decisions.
+> > 
+> 
+> Perhaps omitting the 'Fixes:' tag would be a solution. Is that an option?
+> 
+> > 
+> > The rest of patch looks good to me (we could maybe provide a
+> > __spin_lock_init() for !RT build as well, but that's more of a
+> > cleanup)
+> > 
+> > Regards,
+> > Boqun
+> > 
+> 
+> Thanks,
+> Eder
+> 
+[...]
