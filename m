@@ -1,119 +1,113 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DDB194C7A;
-	Thu,  7 Nov 2024 10:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A2A1F4714
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 11:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730975816; cv=none; b=kaliJypCOa9M+4ivzs0tabDW50Q31kbJYSrnwf0ZuqNlXm9VUV5tE9CWH4uEHXQnXJRgIIc5JdGgJYwvMfQi9T0EzIFlgyVhfz6rew4v29ZCC4zF9kJCQcAwkp8rqrHT2nEbyyqgyiXdkAcsRxlykrRYYzURthnen4b9auCUq+M=
+	t=1730978104; cv=none; b=kAFz6mEzZkH6dlHU4QHrLgYqAv8Ttji+hmK93wZm+kZbuiUIJeXm6uMP6yEoYSjCSTlkF391Vxj/NqCChE5nLbtq/Gc4dTYwLEG4eOPFzVzw1yTkf1fr7qfdw22r6jmsXUdeB+FxxDN5Df0V9Jzp6AM+wr4yLIAfDROHqSxGmlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730975816; c=relaxed/simple;
-	bh=RrLnnEzts4OYKPhtFwS8cDUHlQU9M//D5j+x88JxFpI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=upkeV3S1IgR0Ng6AdhT0YdswDwRozkjHnVSVHtni2FHsdRFAxvruRj8BDeNhdq4/RH31vlqOVJ0FzJbN6UtPQAIKGt9u7dQlQxfSw5bBJUyAJEFP5+iJbfVlVFKWbMAygJcyZoKpY56Ak+8de54JHFgJ4mYHmJnSvdT8ImSbOOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xhocu4RF; arc=none smtp.client-ip=209.85.160.182
+	s=arc-20240116; t=1730978104; c=relaxed/simple;
+	bh=V5VhorDVTYk9kgRgQT3zxUQiREEPENj/ivvJqbAYVWk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NBUIBsLlybpFPsftsOvwRJ12jeMIyEV24w2FF0KvzCFxQmMhfQQW+IQwqt4fXjekDLLTKzt/j3DSYw1XBsJ7NwyLY+PuLdEjN6NxQKvUcW/05L/7/2kEpBfbTuKO+623HpvyaLvA7TCQORfWcyXtozenYbcVZrkrZC5h8eN5NHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mwp7CbMC; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xhocu4RF"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-460c0f9c13eso7443241cf.0;
-        Thu, 07 Nov 2024 02:36:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mwp7CbMC"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7eab7600800so126319a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Nov 2024 03:15:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730975813; x=1731580613; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qJJ/2q9m7IN1WFoWz8zbCoBZWDdzsyKokuxTCKWRdM8=;
-        b=Xhocu4RF5W//kbFa28bAn7e1wmqA3etXjYabZKZhaH7NlAvB+WJ7YMzh/jR3C76Wyi
-         FlqxPm8qpaNqyeBlUdnM8JRBHdWaGfHnSwi4UxFxEBp2DsfUhIX2Jj4oDSPBfDIC0zVX
-         yRsathZvRbb6d8nzYi2bVFt8TqVuzhfvhIKTxUZVz0w9L196H9J32dfWr21W8oLolQcs
-         u6kakiEgEccUl2RwkBOpKrSDsKYQjfOhxANJD3NvwPGKaCks8dyyjDLTwjijI/3Vlc8t
-         7fAhvvcZPPtKiLyTMsFPv2DkRKFf0xvItP/lqEnjHhBWYYaFUbvfHRqftvI9ruqIM9Uj
-         Duaw==
+        d=gmail.com; s=20230601; t=1730978103; x=1731582903; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xMvwfhR2+pKl1yccPZMLcSVs7lJVWe66FlSL61eYp0g=;
+        b=Mwp7CbMCbeWln2k6rRrhsVRIK+Fjx2wOIAmzbw1KsW2xNLOnnlSXZ3Aj1aLvVdZPy5
+         t1cAmf5AdwGH73J4orZNXP/bT5ZWFiXL1gN8tPdyb+Qxd4C4GQSyzzJodzc6Zogaop8c
+         LmGFMZH/o3avsmGdTIst37s9CVrgskia/GkVKoRSNIgGXsFmZll4oJwJOX7xtmEb34jU
+         yxv0JbkBRMF/ccfVVFRMuxO1T2HsPcZTc9W+kRXV4va4ZtXn0EmF9KKdb0wUeNWSoaHA
+         dDI9KUu1Yv2/c8aqivLpWnptbNsNTSEn2Kg8FU+q2g6ukRHXupNecYKI+93p/FX1Hynn
+         k+RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730975813; x=1731580613;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qJJ/2q9m7IN1WFoWz8zbCoBZWDdzsyKokuxTCKWRdM8=;
-        b=URzGAA1rUPlMb4GJVUwmfCg92Yvz5+pleJDAq+kK5T768ZCoGdCCWwI/ydDWuGY5MP
-         no422iTA/4pYLAlXSLUHPxxMNH7XZqxOUR9jcDhZNGGx7On9jIRmZnYabXsASM0AnoA/
-         nXRtZNA2AVOS+m40XFsln4AnX7i2CYQxxNOfhrDSFPAENstoHbCcIyPAdCunAxC0QPyB
-         30awecuPQmHOOhqcoElCYcMvbKQG/1RHn5BK5qxz9G0kqzCIpggXNr94+pvYa/UpaWIr
-         0SeCEtnrUAfu62/H0JF/qtZ1X/3vF+rGN6b3EoZtt4kolsBcmR6Vjr2VDPZRZiSE2Y4f
-         9M6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUQaJiATv9h/MVr5/72n22sypmGyhcEGFwBZhPqR7uJb8fHVjQc0/HCZOfJmegodLAoDD5z/aasLoKvgEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkPsfjlArT0ntSwV1Zhyy298DBPqdaZVoUm7lR9nBmAcJvZFLc
-	49O5mzj73q5JN13RWmqjIjwe1TefZIDQvon+Th4JKbJsAtww+rW9
-X-Google-Smtp-Source: AGHT+IGkoPWAC1CKA63p5xdA73+R/tQ2SGnKgNg5dasna/m3dj2T33IUP2ywx2BbIe7ev71MmXieww==
-X-Received: by 2002:a05:622a:134a:b0:462:b896:798 with SMTP id d75a77b69052e-462fb7772f3mr42597381cf.19.1730975813359;
-        Thu, 07 Nov 2024 02:36:53 -0800 (PST)
-Received: from 156.1.168.192.in-addr.arpa ([2600:4041:5be7:7c00:b804:d77a:4d8a:e731])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ff5c97fcsm6170511cf.80.2024.11.07.02.36.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 02:36:52 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 07 Nov 2024 05:36:46 -0500
-Subject: [PATCH v2] rust: sync: document `PhantomData` in `Arc`
+        d=1e100.net; s=20230601; t=1730978103; x=1731582903;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xMvwfhR2+pKl1yccPZMLcSVs7lJVWe66FlSL61eYp0g=;
+        b=QM/VvtF2bepPr6Xi8FkzD3p4kVXTkB8Hth4wPZasGQ40IziXYKrg8keMznJwj+TOZU
+         eyDmaV/fUT+GMMjWtRs3v2TWX6T9Fgv7HKBIDQYJhZ9pLX28PJ5oLYCJ64n0l7mYdt14
+         gOiXAv3Z9yNSzJkSNDRZ2ni+zEsmRlf1ieS+9KftC6zaWVAkKz0s41PTjG99qqnWWKv/
+         s4yWuYbotEsyDvKJNwWsx6lOL9zKak603CWeZ0mxAkbr5OgotWzBtzgO/20THH/5yD7H
+         GLUqQLRw2hpSklX83rgUwHXT0bQTQMyI9+YjLIVe+XpGDsaWM0HlKTeXzdnTt1/9TiHT
+         ophA==
+X-Forwarded-Encrypted: i=1; AJvYcCWHImuix90Yt0xFhl4CkGzQ5m6gVQcmIUWElslEbrY1MXTCltyFiKSaPKnP7EMl+xtKB96U0B/nCTAMU18N/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPHs8XeqxlYMJ54OmVYoRhi4JUDOH+9u+nhPLDBKIm1ohyBIMf
+	RtmoLtQMQeioZLIH+ZHxa458rZ0Hwfwpt0h4QXTWuqnjpGvEXz+Rer4k6sEARLaFljtJPb1xfqm
+	ivcKduiFykUUEKtSkuhhzyfqCUg4=
+X-Google-Smtp-Source: AGHT+IGD+9Hs8oJht/Z82rYNwINQkAPf7O19FPibk9DXJnbCB+WK95goXN4aZbOxZ8M5/pIZ6y1RBQuhABBbxAAxjPI=
+X-Received: by 2002:a17:902:cf09:b0:20c:6bff:fcbf with SMTP id
+ d9443c01a7336-2117d2b7669mr3283005ad.10.1730978102580; Thu, 07 Nov 2024
+ 03:15:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241107-simplify-arc-v2-1-7256e638aac1@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAD2YLGcC/3XMQQ6DIBCF4auYWZcGKMTYVe9hXNApo5OIGmhIj
- eHupe67/F/yvgOSj+wT3JsDos+ceF1q6EsDOLll9IJftUFLbZSSRiQO28y0CxdRtBJvtjVPSw6
- hXrboiT8n1w+1J07vNe6nntVv/QNlJZRwhgh1J6mT9jEGx/MV1wBDKeULlYYY9qgAAAA=
-X-Change-ID: 20241104-simplify-arc-70c3574b5fac
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
+References: <20241107-pr_once_macros-v2-0-dc0317ff301e@tuta.io> <20241107-pr_once_macros-v2-2-dc0317ff301e@tuta.io>
+In-Reply-To: <20241107-pr_once_macros-v2-2-dc0317ff301e@tuta.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 7 Nov 2024 12:14:49 +0100
+Message-ID: <CANiq72k_Mcf=i+0WP5_VBV+vsgWoRJccNNgtU=BtNvoJbO1+Ng@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] rust: print: Add pr_*_once macros
+To: jens.korinth@tuta.io
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a comment explaining the relevant semantics of `PhantomData`. This
-should help future readers who may, as I did, assume that this field is
-redundant at first glance.
+On Thu, Nov 7, 2024 at 12:29=E2=80=AFAM Jens Korinth via B4 Relay
+<devnull+jens.korinth.tuta.io@kernel.org> wrote:
+>
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>
+> Add Rust version of pr_[emerg|alert|crit|err|warn|notic|info]_once
+> functions, which print a message only once.
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
-Changes in v2:
-- Reworked as a new comment (Boqun Feng, Miguel Ojeda).
-- Link to v1: https://lore.kernel.org/r/20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com
----
- rust/kernel/sync/arc.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+When sending a patch from someone else, then you need to sign the
+commit too, i.e. after Tomonori's SoB:
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index db9da352d588f65348aa7a5204abbb165b70197f..547d56766f507afe4bc733f7f1b465a55b64312a 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -127,6 +127,14 @@
- /// ```
- pub struct Arc<T: ?Sized> {
-     ptr: NonNull<ArcInner<T>>,
-+    // NB: this informs dropck that objects of type `ArcInner<T>` may be used in `<Arc<T> as
-+    // Drop>::drop`. Note that dropck already assumes that objects of type `T` may be used in
-+    // `<Arc<T> as Drop>::drop` and the distinction between `T` and `ArcInner<T>` is not presently
-+    // meaningful with respect to dropck - but this may change in the future so this is left here
-+    // out of an abundance of caution.
-+    //
-+    // See https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking
-+    // for more detail on the semantics of dropck in the presence of `PhantomData`.
-     _p: PhantomData<ArcInner<T>>,
- }
- 
+    https://docs.kernel.org/process/submitting-patches.html#sign-your-work-=
+the-developer-s-certificate-of-origin
 
----
-base-commit: ae7851c29747fa3765ecb722fe722117a346f988
-change-id: 20241104-simplify-arc-70c3574b5fac
+I think you added examples (which is great!), i.e. you modified
+Tomonori's patch/code/message -- did Tomonori agree on the changes? If
+you did agree in private, please ignore this. If not, Tomonori: can
+you please say whether you are OK with the patch? Thanks!
 
-Best regards,
--- 
-Tamir Duberstein <tamird@gmail.com>
+> +/// Equivalent to the kernel's [`pr_emerg_once`] macro.
 
+I think these intra-doc links go to the Rust one, not the C one, since
+I don't see the reference below. (Please see how it is was done in the
+other macros in the file.)
+
+> +/// # Examples
+> +/// ```
+> +/// kernel::pr_warn_once!("hello {}\n", "there");
+> +/// ```
+
+Nit: missing newline between the header and the example (also other
+instances below).
+
+Thanks!
+
+Cheers,
+Miguel
