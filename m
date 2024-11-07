@@ -1,134 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B5421642A
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 16:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B783215F51;
+	Thu,  7 Nov 2024 16:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730997208; cv=none; b=PvbaDTpzTVw5ss81y7D8HmNl1GfOyf4/HTI4mJOAskiTAzsMWzDh/5O+3i2H/Doyauvt8U4XTC7QJ0JzYc8nkaUEooEBicZHYwlV53/QXRnebFToh4kW6dRblJQLgw2P5QWb3xQiA481/ADF0/R4IMkBLTsW8VKMot6EhQD5PeE=
+	t=1730998264; cv=none; b=I6/FlfjOZNkJ8TjMvjCFAXzHmZie1Q3RhCwaWOq/F9Mku/9GNJlzTzUh+BNE4+whW/VKVadX6W58bsO5WSkZxqXWzd30+MdTsKs5kwcZQakpiX6IdpqgsHxXwNslrx5yoJSGJf70+IFV6TLNUX52IJ2zZXwKI0MJuwGw4YHk9G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730997208; c=relaxed/simple;
-	bh=plyEQYZsOFD0eahZb07r7fI7T4FMYsCig72lTQm1fF4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rz65rcG5pnM385Wz/C1a6ebe/A+zzt5phPrbLiPShhdpqZLtdcRUl3pcdZ9bfpjewH0gpGyd/289BRmJMBKA+6mvFopl3tbSWhvth3egN41AnN1j93mbPDj8X/9flawoBz6dkBN8l9t5Cncow40DC76mnqF9uK5VTbwPcweRuu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AW1BnTAO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1730998264; c=relaxed/simple;
+	bh=E/Ublx9EuQS/XvZoT0cVYlMFdyoW4m3OgmSQDGKntL4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RNjntYNUNbecqMmgGM8bbKQmpHdf9gVGPZNSSnklfe2plgMZkbj/dWKHG1JnJwZUqyetiZMgXGPsKQsJCTJv4Q+5olP9uvIE15hLYhUfdbQP7tFtG+Bytdj7CRQ9JILxHf9RibL7lOBE01LYH2eRewXCkb3w6z0ZdDV1+SbuGhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WT7mmD8Y; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AW1BnTAO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730997204;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zMjkOAXRUweWLYfsCWWeULwPGyQsNWJyMb4kmiUqKYk=;
-	b=AW1BnTAOCtV6cazJoWUyHKsSaZBKIrB4cp+yX39AvkCmOQiguERq8DapMwwXSNzAUcGcYq
-	jLdpY4uKTM4AlX9OGiVtD21TiojLwegaKd65ZcWnKmpwt8DTxHbve4h5GBbKIBl6Nte76G
-	sS7RqrLYsiSnzWI4TOUj5ujEc0CUGcY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-Z7P1yVEXMti1emoDulNUlw-1; Thu,
- 07 Nov 2024 11:33:21 -0500
-X-MC-Unique: Z7P1yVEXMti1emoDulNUlw-1
-X-Mimecast-MFC-AGG-ID: Z7P1yVEXMti1emoDulNUlw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 03385195609E;
-	Thu,  7 Nov 2024 16:32:54 +0000 (UTC)
-Received: from f39.redhat.com (unknown [10.39.192.153])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 231E21953880;
-	Thu,  7 Nov 2024 16:32:45 +0000 (UTC)
-From: Eder Zulian <ezulian@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	linux-next@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: miguel.ojeda.sandonis@gmail.com,
-	tglx@linutronix.de,
-	williams@redhat.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	jlelli@redhat.com,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	longman@redhat.com,
-	boqun.feng@gmail.com,
-	bigeasy@linutronix.de,
-	sfr@canb.auug.org.au,
-	hpa@zytor.com
-Subject: [PATCH v3 0/1] rust: helpers: Avoid raw_spin_lock initialization for PREEMPT_RT
-Date: Thu,  7 Nov 2024 17:32:22 +0100
-Message-ID: <20241107163223.2092690-1-ezulian@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WT7mmD8Y"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7eab7600800so169676a12.1;
+        Thu, 07 Nov 2024 08:51:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730998262; x=1731603062; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E/Ublx9EuQS/XvZoT0cVYlMFdyoW4m3OgmSQDGKntL4=;
+        b=WT7mmD8YRK5iHg0nLf4+/UmOBWA+LnVxq7vmJogtJiPhttQkp1qQ9L7dAQrJNv1yZt
+         jlv7X62l73woKylLlcBrZmlNekM3uZJBZ/nCwt1JR9pNGqKfZJwJ9txlhiPgXGv1yeo3
+         uuZPXt5FIzg2veck7i0H+kTqZJ/akN1166B/rvS447J6vofKHCnFESRO+ixnftc1/YAB
+         8TZcnhDtGX6h22WMO4S8vNzxeY+8BF2Occ6tSn9JkHTekN2R3c8eW4lcFVQ1ft8Gcp0z
+         k6uwdYWFv/23F+LfpGdXZ2TBA2Ks3HuepViqD2SUlaClU76UrD+LKjMocPpb+bB9/g9v
+         Q+1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730998262; x=1731603062;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E/Ublx9EuQS/XvZoT0cVYlMFdyoW4m3OgmSQDGKntL4=;
+        b=EDHcXOmtnlgGVkfFebUC9bs7k7sTQ9rVsreNgEOAfYSe4kSbxVfBYhQPQ7Hs7zcLnv
+         F0bjoKEeNSRVf/V7iAhC0xNE4nsIq/wKWZH8XZ2XCSaFtInqZR/g28nlhZln+LRcutCP
+         yMgFY2eXxGjWN1D0i4yIgZGuhdVf2F6aBIptA58Zb4rMPCSa1rrGxvevEgfRbvI9mfac
+         w5X/1+VpHeE0DGqNJnQ50CywYIauUZkU2zeYQ1uQlxJblfkE47Y6p1jZRj3Uu9x1tvYe
+         791e0pcftAVxc8kWiqqZuHlN8yffO5/gDWXRySpbpmQs2CZCJdk/14GStmJekQ9qHigh
+         iKCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWEj8jXLuNTGaeF8VFFdZYcGB3j6vJVzAy19winfleGv3dDgE3E121/GNzLa4zk4Ihv2slqOfk0Doc1@vger.kernel.org, AJvYcCWjSW2tAd6meDpbJgb3YazltZCwjMUTvDQMSRTrs7SYmeunn9ttKQiO2E3P9ik4LEEGBkOLT6dGv7yudXmez/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNx3vtFjjw6r8bawSQGAh6eidPyh/3N/wGHoi2nuSHQvEMYwUm
+	Rsg2Kzv1k3lSBMBrXT5aBcyRAQdBZlzhLduPWH9ScgDq5618DKChWSi0/YmqTZoRgPVCiT9Zw5K
+	87nxqmO+8N8vnpv4YJeWqN1mtMUE=
+X-Google-Smtp-Source: AGHT+IF55uLyVKzW81v77ZooPdqu6e2xxt42okC1mlc37JVo0c+phgrrwHHAuV7JT9NKZHH/79Se9bjEr/mf6eabxOk=
+X-Received: by 2002:a17:90b:1e0f:b0:2e3:b92:aaf6 with SMTP id
+ 98e67ed59e1d1-2e9af95212cmr360651a91.3.1730998262521; Thu, 07 Nov 2024
+ 08:51:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20241107163223.2092690-1-ezulian@redhat.com>
+In-Reply-To: <20241107163223.2092690-1-ezulian@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 7 Nov 2024 17:50:50 +0100
+Message-ID: <CANiq72nmWeyXkV0fhKwQESm10OdVuS7UGAux2N3ic2B0zNhuuQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/1] rust: helpers: Avoid raw_spin_lock initialization
+ for PREEMPT_RT
+To: Eder Zulian <ezulian@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, tglx@linutronix.de, williams@redhat.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, jlelli@redhat.com, 
+	peterz@infradead.org, mingo@redhat.com, will@kernel.org, longman@redhat.com, 
+	boqun.feng@gmail.com, bigeasy@linutronix.de, sfr@canb.auug.org.au, 
+	hpa@zytor.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello!
+On Thu, Nov 7, 2024 at 5:33=E2=80=AFPM Eder Zulian <ezulian@redhat.com> wro=
+te:
+>
+> As a note, at the time of writing, RUST support for x86_64 depends on
+> !(MITIGATION_RETHUNK && KASAN) || RUSTC_VERSION >=3D 108300. Miguel Ojeda
+> pointed out that this can be avoided with Rust 1.83, to be released in 3
+> weeks (2024-11-28).
 
-When PREEMPT_RT=y, spin locks are mapped to rt_mutex types, so using
-spinlock_check() + __raw_spin_lock_init() to initialize spin locks is
-incorrect, and would cause build errors. 
+I was referring there to the "or" in that condition, i.e. the "||
+RUSTC_VERSION >=3D 108300" part. In other words, it was just a comment I
+made to explain in the other thread that disabling KASAN or RETHUNK is
+not needed anymore when you use 1.83 in the future. :)
 
-This v3 patch introduces __spin_lock_init() to initialize a spin lock with
-lockdep rquired information for PREEMPT_RT builds, and use it in the Rust
-helper.
+But that seems unrelated to the patch here, so normally you wouldn't
+add it to the cover letter. Or am I missing something? Same for the
+`make rustavailable` note below (i.e. `RUST=3Dy` already implies that).
 
-This patch was developed on top of linux-next/master.
+(Of course, no need to resend anything for this -- it is just a note
+to clarify, and anyway the cover letter does not go into the
+repository :)
 
-As a note, at the time of writing, RUST support for x86_64 depends on
-!(MITIGATION_RETHUNK && KASAN) || RUSTC_VERSION >= 108300. Miguel Ojeda
-pointed out that this can be avoided with Rust 1.83, to be released in 3
-weeks (2024-11-28).
+Thanks!
 
-In order to reproduce the problem rust must be available on the system.
-
-  $ make LLVM=1 rustavailable
-
-With CONFIG_PREEMPT_RT=y, CONFIG_RUST=y, and CONFIG_DEBUG_SPINLOCK=y a
-x86_64 kernel can be built with
-
-  $ make LLVM=1 -j$(nproc) bzImage 
-
-The problem was reported at least in:
-https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
-https://lore.kernel.org/all/20241107182411.57e2b418@canb.auug.org.au/
-
-Links to v1 and v2 where improvement suggestions were made:
-https://lore.kernel.org/all/20241014195253.1704625-1-ezulian@redhat.com/
-https://lore.kernel.org/all/20241106211215.2005909-1-ezulian@redhat.com/
-
-Version 2 changes:
-
-- Cleaned up style and incorporated feedback from reviewers Boqun Feng and
-  Miguel Ojeda.
-
-Version 3 changes:
-
-- Addressed review comments from Boqun Feng. Improved commit title and
-  description and used a proper 'Fixed:' tag.
-
-Thanks,
-
-Eder Zulian (1):
-  rust: helpers: Avoid raw_spin_lock initialization for PREEMPT_RT
-
- include/linux/spinlock_rt.h | 15 +++++++--------
- rust/helpers/spinlock.c     |  8 ++++++--
- 2 files changed, 13 insertions(+), 10 deletions(-)
-
--- 
-2.47.0
-
+Cheers,
+Miguel
