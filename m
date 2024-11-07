@@ -1,218 +1,215 @@
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2067.outbound.protection.outlook.com [40.107.105.67])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861CC192590;
-	Thu,  7 Nov 2024 07:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730962913; cv=fail; b=OdoSU0a0iJ1FEldZ99LorCYDiz2bL/6gebmt9PXTOVYdDIoTV1jxisQCXdQLKGDQyXczYiz4etTsI6X/hmNwxJ3tD0lKRs5m9Csdutz7eeFJrPTqudtY39PhVG2gxIBKzLsKUkePGsGkn6PxnM4TnAe4bwYszwdSHNcX54IEhSU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730962913; c=relaxed/simple;
-	bh=MNtgrkf0PRoLxoF4ODsleHRY0FW0UB3G0uiC3fHq04s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=M2YJIwEtl7sd3tXi4iH7iIBCl2t9MdBw+/Do5s9KIGw9sJ39xyuST5N/GTANWWjeCC54xEJbzj2msin6sbB+9bXMxheREIsavIqIJuNo0wb5K5WqPW0bpvfId0NbNhT2U6SgBLdEXV9t0Y7fDvJ2rqN0g7//dNeXJnXiR+REe9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Rr8PQo+b; arc=fail smtp.client-ip=40.107.105.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A822C1822E5
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 07:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1730963732; cv=none; b=N3kpBQsiB+O6QftCdFyWD9ovHeJ8dcxRL0/3jYsfoxIdJMWzdU5Rz4bnxD/2GwOTDQxMc9j12t+mDTy5Y0kHp86DlBh15cfMoyszdx6t+0Jt1nDZmHiJxlolXS/ThKpYOeYqyJjllhlwACHFyZnkZDRpoKDAAXyVE7v1EoI2ptM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1730963732; c=relaxed/simple;
+	bh=lXWtxPNo74z5ZeoYBKRsaS68HHO19mRvwGTc8gfz5Gc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a8E9FM75g1PFimID7bJs2izZZK2NK+Y68LIUsUdY9IXUTkuEk1/NVc9v3a0koUFhav8h2BRU91lA2TFhAAjM4vf5136B3pIHxYx8XSP0w+Yn6ajjYUk7y5qu1YgWb10urWQChALV/OuElVvR+MEfzdeI3WAtwj5ikkeSg2yXeuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T2mg6fJX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Rr8PQo+b"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GGYzOBBHu/Usvwp7SEQ73d9D8hyT0m+fKyXD1jTKDY/OENPuBEBJUdnOCUuG951L+n5qVN1qluSBCba7cYywGGE9KYo6rGc7r1Aq+idiByMtMrjnuHtj7HiWWD/yEoPiflcLhIoAjXBJqYlm0S5nuy93vpiCOGL4679YB3xAqls4rF5xlsnO9dO/vo/7OllbAyawwgVSPt1F8m0HnkUCIwfitmBlEjmAotGns6xNuqwkbEHYcu5pFzN2WNYgnnCcFDDSFc3NWtyP5hIMaQ25vsReEBWy4Gr1DltSqYuiE6WtQT0EDNHY+pPTwulxrlf+Tbmq0Z8KdLa8VeDeCUwYpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O2jsow5xzAxttWH1dpZFeA5beqTPv+k+HxRX6sI31Ro=;
- b=Q9WIJAFY5ptGZGdfLAUi8XsuivBoVv3UzprZ6l7ELB+QAcDoIBgo65OMhuqlfXi1jVS7ucE+M0nahysGnNTdqaSGVPABHt68ZnvU4RyxRu+Go+YIVJBTMHk8jxb2ktBKGOuWWe/JBHnqL4hAEOsRaj+zMgihc9/ZLJTcSQIDY8Qq/QCvE9CfJkRnAZFIAExOgiqiUUu9izAihwZYiiwVhxng0AIOq4aX4ya6wKQ6oNSzOeSd8ypcVUtfPmKPSqncCWWklCt66BgC5Yr+Vo0Y1C77aouWawMfNIWBscvlwWskkPyY/dXr1SdhdWqMl5v/w/VMR8+G26WS4lQM+z2NtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O2jsow5xzAxttWH1dpZFeA5beqTPv+k+HxRX6sI31Ro=;
- b=Rr8PQo+bVorbhyE5hGFFuKIPsqGVe1zm+zQRlSCuhmNH0wRFIxOOid5rtoTZ01UG/WyyQdZuCEvNBUVx113MfD4lTvV6XaBfQ+sxfHxZvyTPa3aCoRcawcQ4fn0VNIfAkmT3YsyZUv1PboAJA/Fx5DgP1IH7SisGSCn37t+0fZLxYvn1QwnMQBDgu5wzwhh74FtCbO57lUTeyipLTreaHM4K919ZPWBMkNSF8ncoNW80f5ueDF1kDcDKm40osb4qk9DPNqHaAbGah+IvUfOkxO3GVT8qhRwd+PteWxLwpXUC2PpPgzjjvlUVYKFSHHbF8+JRF0ukyPhy4qVs1DeKzw==
-Received: from AS9PR06CA0164.eurprd06.prod.outlook.com (2603:10a6:20b:45c::15)
- by PRAPR10MB5252.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:292::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 07:01:46 +0000
-Received: from AMS1EPF0000004C.eurprd04.prod.outlook.com
- (2603:10a6:20b:45c:cafe::40) by AS9PR06CA0164.outlook.office365.com
- (2603:10a6:20b:45c::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.20 via Frontend
- Transport; Thu, 7 Nov 2024 07:01:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- AMS1EPF0000004C.mail.protection.outlook.com (10.167.16.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8137.17 via Frontend Transport; Thu, 7 Nov 2024 07:01:46 +0000
-Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 7 Nov
- 2024 08:01:31 +0100
-Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2000.de.bosch.com
- (10.139.217.201) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 7 Nov
- 2024 08:01:31 +0100
-Message-ID: <3d898bd0-315d-4e3d-a500-5605e9047946@de.bosch.com>
-Date: Thu, 7 Nov 2024 08:01:21 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T2mg6fJX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730963729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vlnl+BN22QGPgjCM/dg8SoykCXyuozWfzcPdu+gOQ9c=;
+	b=T2mg6fJXXm7CpHUJ28L4tqAf4jRvm3C8Ko28nIJeel475TILiRtAhjW1mVo2nl5YdNnRCm
+	gJXVXcxHUD8dAiTjvnwf4IJw6vqCq+sORFUh9SZC5NYMoBQyCkW2rriKbVFwtBtc46y7Dk
+	i2ZQWu1oKyBiFO6rAZl7VXGMRE77AY8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-w5Bkvbh2PAuhsQxPerlU_Q-1; Thu,
+ 07 Nov 2024 02:15:25 -0500
+X-MC-Unique: w5Bkvbh2PAuhsQxPerlU_Q-1
+X-Mimecast-MFC-AGG-ID: w5Bkvbh2PAuhsQxPerlU_Q
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E1201956083;
+	Thu,  7 Nov 2024 07:15:23 +0000 (UTC)
+Received: from f39 (unknown [10.39.192.153])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A23261956054;
+	Thu,  7 Nov 2024 07:15:18 +0000 (UTC)
+Date: Thu, 7 Nov 2024 08:15:15 +0100
+From: Eder Zulian <ezulian@redhat.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	miguel.ojeda.sandonis@gmail.com, tglx@linutronix.de,
+	williams@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	jlelli@redhat.com
+Subject: Re: [PATCH v2] rust: Fix build error
+Message-ID: <ZyxpA2ez-9E4c7G5@f39>
+References: <20241106211215.2005909-1-ezulian@redhat.com>
+ <Zyv6unk_tRyv_v7m@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/13] rust: bindings: Auto-generate inline static
- functions
-To: Alistair Francis <alistair23@gmail.com>, <alex.gaynor@gmail.com>,
-	<benno.lossin@proton.me>, <gary@garyguo.net>, <linux-kernel@vger.kernel.org>,
-	<ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<bjorn3_gh@protonmail.com>, <alistair.francis@wdc.com>, <me@kloenk.dev>,
-	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <boqun.feng@gmail.com>,
-	<aliceryhl@google.com>
-References: <20241107020831.1561063-1-alistair.francis@wdc.com>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20241107020831.1561063-1-alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS1EPF0000004C:EE_|PRAPR10MB5252:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e293f89-a8ad-4fd4-eae9-08dcfefa0b49
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MmJJSmQyR3o0cC9FMnpKNElRK01XTWVobEJGOFdqSmVKeDFZWStnb3ZmeFc3?=
- =?utf-8?B?QzZUcEVMWm4rNU8rRndVbTY0VmthRWltT1VENDdXWGJZT3lmUGFhMHF5TWVG?=
- =?utf-8?B?Q3Fybis2RGZlNTE1N3NJa051cGhwVCtMZUs2SWE0UkJCWTRJNEQzaGl6T0pL?=
- =?utf-8?B?ZDltME0zOVFpSnEyc1l0cmxEZzlmY1M2ZHEwRFdQTW4vYkZJUDRXeThaTFJm?=
- =?utf-8?B?N0ovaG05eGxBTUVCdHpoYi9wcnR5SG93UlZmZmJQUWZ6NGV4dnZYZGV3T2pj?=
- =?utf-8?B?SHVEWThXcytERlo5ZWFBSHlCQkZyQTVKYS9Td0l6SnFlc3ZUVGRyL1poOGJh?=
- =?utf-8?B?M09JVm5MbmVEZVB0eFEwZHErSGM2c0hYZDRFT040c0VrVzdHd0FEbHhSM3NR?=
- =?utf-8?B?OGQxYzFwck5aOUEyb1ZIUTlWOFNiUTdjV2dHeWR2aENZcUpRaWVaWTlNOUFi?=
- =?utf-8?B?cFZSWFJpTFJxUXV2TTdsM3FaZzVEMDJQRXI0K1lYMzlsU1dKbzdwMVBuVGFj?=
- =?utf-8?B?VVNFV1R3TVMreWNjRjZsbno0K0NFSmxFTGlzUFFKNUlaRVdNK3g0MURnME5p?=
- =?utf-8?B?Nm43VFNmQXpMRFBpK3pscWhFOUF4Kytuck84VXhEcVJCaFRUQk1rSExwUmox?=
- =?utf-8?B?RG9vVXc5a0FYVzdNNndZQy9qQTBIVzFMOFFVby9mSWwxUkhhdFVJdWxwMjBq?=
- =?utf-8?B?UG4vYWNZclo3UHpQYW1tQVFmbFlnQUxYeHBMVTdSaVo2WEhkcGszTCtNZFJ1?=
- =?utf-8?B?TUJDUWhYaUpGUUl5QVFvMDI3NSs1SXh6VjY4d2huYnVHYlAxRm9zZ1lxb2Jx?=
- =?utf-8?B?L3lBYkkvcjdZZEtHaURqdkZtd2RvNlBlVTVvK1R2eFM0bS91d1B0eDVHb0sz?=
- =?utf-8?B?Y1lEa1RYcjVIRTJiSDcrYVhWd0FKSExLM0dlYkpZOGxmVk9ydzJwd1Bkc2tP?=
- =?utf-8?B?Z2pBaDlmQjF0VlZIT0VaeWZJUzEveTZYRjdBOEUzanhTemo3cm5tVTl4Sy9G?=
- =?utf-8?B?WEs2S21uc090STNTUFRHcDNXV2N6dUpLQ0tBR1pIc25OUGlOc2E5VGg1REt2?=
- =?utf-8?B?dkNhNTNxVCs1M1Qrb1ZnSko0NFlzdklHM3FPR01NRXV6dUxHenNNd0dFYkpx?=
- =?utf-8?B?WEtncXdzdlNlbisvbS84SVVmdVp3cnkrZGNYSDk3em5zRkdiVGhRd0VCTUhW?=
- =?utf-8?B?eXptdHptZHlWUnpOOEJWaGFoN2RVSXMxd00vcmJsaldqVGc2MWlnVE01TXFy?=
- =?utf-8?B?V2E4THRaa0xBc0lhN0dBWkNUdjRFak9vQzBJanlzenJFUUQ2dGZjeDhuaGZl?=
- =?utf-8?B?U3ExeVNLVWhSVzhLbTFMSFNsVlQyZlUyNDJybmZUeGJKTHU1ZlhtVW16bHpR?=
- =?utf-8?B?VmM1aEsxVE9sc3pZVUhjaHhPRVZOTHB4anJkTWFTa0N0bVYyN2lhQjJhZ3JO?=
- =?utf-8?B?cDVPTU9zbWhZWkd6UlBHeUFjS2p3ektuRE5aUTR0QWZwQlRPSnBSWktZWVpR?=
- =?utf-8?B?U0JOeWk3WXU2S3Z4WG5mVTVrVEdaRVZXaFZBNVRmNDNpODNhY0NYK2FLdnJr?=
- =?utf-8?B?cnZSdzRmMEVSYzJUaklqOVBZZTJyWFJpOTc1SmpZMkgzMjNYdTdLSGYxK1Iy?=
- =?utf-8?B?M0FxVko0dXdpbyt0a2Y3UnY1bkRXeW53NXVGMTFDdTVkVi82c0VVRUQ4WkRo?=
- =?utf-8?B?QXoxcE9RR2EvN3pGWklnZzlCMW1BQVRNS2l5bGxBcjVyb2labjdSemo3aVB1?=
- =?utf-8?B?Tzh3MFVxUzFLeFY4VWEvcG1lNy9Fb0hrL0cxbXJWMXAxdVNFd2grMVhjNGRC?=
- =?utf-8?B?NlBvZzJzRWcxeVJhZ25iTm9LZ21QbDJ5SzQ5cmY2dWZKbDZ0TGdvZWNzSW5K?=
- =?utf-8?Q?bV4gCO1eLrXGK?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 07:01:46.3815
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e293f89-a8ad-4fd4-eae9-08dcfefa0b49
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF0000004C.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PRAPR10MB5252
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zyv6unk_tRyv_v7m@boqun-archlinux>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On 07.11.2024 03:08, Alistair Francis wrote:
-> The kernel includes a large number of static inline functions that are
-> defined in header files. One example is the crypto_shash_descsize()
-> function which is defined in hash.h as
-> 
-> ```
-> static inline unsigned int crypto_shash_descsize(struct crypto_shash *tfm)
-> {
->          return tfm->descsize;
-> }
-> ```
-> 
-> bindgen is currently unable to generate bindings to these functions as
-> they are not publically exposed (they are static after all).
-> 
-> The Rust code currently uses rust_helper_* functions, such as
-> rust_helper_alloc_pages() for example to call the static inline
-> functions. But this is a hassle as someone needs to write a C helper
-> function.
-> 
-> Instead we can use the bindgen wrap-static-fns feature. The feature
-> is marked as experimental, but has recently been promoted to
-> non-experimental (dependig on your version of bindgen).
-> 
-> By supporting wrap-static-fns we automatically generate a C file called
-> extern.c that exposes the static inline functions, for example like this
-> 
-> ```
-> unsigned int crypto_shash_descsize__extern(struct crypto_shash *tfm) { return crypto_shash_descsize(tfm); }
-> ```
-> 
-> The nice part is that this is auto-generated.
-> 
-> We then also get a bindings_generate_static.rs file with the Rust
-> binding, like this
-> 
-> ```
-> extern "C" {
->      #[link_name = "crypto_shash_descsize__extern"]
->      pub fn crypto_shash_descsize(tfm: *mut crypto_shash) -> core::ffi::c_uint;
-> }
-> ```
-> 
-> So now we can use the static inline functions just like normal
-> functions.
-> 
-> There are a bunch of static inline functions that don't work though, because
-> the C compiler fails to build extern.c:
->   * functions with inline asm generate "operand probably does not match constraints"
->     errors (rip_rel_ptr() for example)
->   * functions with bit masks (u32_encode_bits() and friends) result in
->     "call to ‘__bad_mask’ declared with attribute error: bad bitfield mask"
->     errors
-> 
-> As well as that any static inline function that calls a function that has been
-> kconfig-ed out will fail to link as the function being called isn't built
-> (mdio45_ethtool_gset_npage for example)
-> 
-> Due to these failures we use a allow-list system (where functions must
-> be manually enabled).
-> 
-> This series adds support for bindgen generating wrappers for inline statics and
-> then converts the existing helper functions to this new method. This doesn't
-> work for C macros, so we can't reamove all of the helper functions, but we
-> can remove most.
+Hi Boqun,
 
-Maybe this should be re-done against rust-next which at least contains
+On Wed, Nov 06, 2024 at 03:24:42PM -0800, Boqun Feng wrote:
+> Hi Eder,
+> 
+> Seems I forgot to reply you on your reply to v1, sorry about that.
+> 
+> For the commit title, I think it better be:
+> 
+> 	rust: helpers: Avoid raw_spin_lock initialization for PREEMPT_RT
+> 
 
-https://github.com/Rust-for-Linux/linux/commit/d4d7c05f9656fd8e14c6977a54986264eb296ec8
+Sure, I will fix it. Much better indeed.
 
-which seems to conflict with the removal of some helpers file in this 
-series.
+> , because in general, title of the commit should be as specific as
+> possible (otherwise, half year later there could be 10 commits titled
+> "rust: Fix build error").
+> 
+> On Wed, Nov 06, 2024 at 10:12:15PM +0100, Eder Zulian wrote:
+> > On a PREEMPT_RT build, spin locks have been mapped to rt_mutex types, so
+> > avoid the raw_spinlock_init call for RT.
+> > 
+> > When CONFIG_DEBUG_SPINLOCK=y and CONFIG_PREEMPT_RT=y the following build
+> > error occurs:
+> > 
+> > https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
+> > 
+> 
+> Since you already use the "Closes" tag to refer the bug report, let's
+> avoid links showing twice, how rephrase the above three paragraphs as:
+> 
+> """
+> When PREEMPT_RT=y, spin locks are mapped to rt_mutex types, so using
+> spinlock_check() + __raw_spin_lock_init() to initialize spin locks is
+> incorrect, and would cause build errors.
+> 
+> Introduce __spin_lock_init() to initialize a spin lock with lockdep
+> rquired information for PREEMPT_RT builds, and use it in the Rust
+> helper.
+> """
+> 
+> Thoughts?
+> 
 
-Thanks!
+Makes sense. Will do.
 
-Dirk
+> > Fixes: 876346536c1b ("rust: kbuild: split up helpers.c")
+> 
+> I'm not sure this is the correct "Fixes" tag, that commit is a code
+> move, so it's unlikely introducing issue itself. Moreover, we really
+> need PREEMPT_RT being able to trigger the issue, so I think the correct
 
+One may argue that we need 'RUST=y' in order to trigger the issue.
+
+> "Fixes" tag is:
+> 
+> Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
+> 
+> (yes, I know PREEMPT_RT is a long existing project, but it was until
+> that commit, you can build a kernel with PREEMPT_RT=y IIUC)
+> 
+> This will help stable maintainers for backport decisions.
+> 
+
+Perhaps omitting the 'Fixes:' tag would be a solution. Is that an option?
+
+> 
+> The rest of patch looks good to me (we could maybe provide a
+> __spin_lock_init() for !RT build as well, but that's more of a
+> cleanup)
+> 
+> Regards,
+> Boqun
+> 
+
+Thanks,
+Eder
+
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes: https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
+> > Signed-off-by: Eder Zulian <ezulian@redhat.com>
+> > ---
+> > V1 -> V2: Cleaned up style and addressed review comments
+> >  include/linux/spinlock_rt.h | 15 +++++++--------
+> >  rust/helpers/spinlock.c     |  8 ++++++--
+> >  2 files changed, 13 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
+> > index f9f14e135be7..f6499c37157d 100644
+> > --- a/include/linux/spinlock_rt.h
+> > +++ b/include/linux/spinlock_rt.h
+> > @@ -16,22 +16,21 @@ static inline void __rt_spin_lock_init(spinlock_t *lock, const char *name,
+> >  }
+> >  #endif
+> >  
+> > -#define spin_lock_init(slock)					\
+> > +#define __spin_lock_init(slock, name, key, percpu)		\
+> >  do {								\
+> > -	static struct lock_class_key __key;			\
+> > -								\
+> >  	rt_mutex_base_init(&(slock)->lock);			\
+> > -	__rt_spin_lock_init(slock, #slock, &__key, false);	\
+> > +	__rt_spin_lock_init(slock, name, key, percpu);		\
+> >  } while (0)
+> >  
+> > -#define local_spin_lock_init(slock)				\
+> > +#define _spin_lock_init(slock, percpu)				\
+> >  do {								\
+> >  	static struct lock_class_key __key;			\
+> > -								\
+> > -	rt_mutex_base_init(&(slock)->lock);			\
+> > -	__rt_spin_lock_init(slock, #slock, &__key, true);	\
+> > +	__spin_lock_init(slock, #slock, &__key, percpu);	\
+> >  } while (0)
+> >  
+> > +#define spin_lock_init(slock)		_spin_lock_init(slock, false)
+> > +#define local_spin_lock_init(slock)	_spin_lock_init(slock, true)
+> > +
+> >  extern void rt_spin_lock(spinlock_t *lock) __acquires(lock);
+> >  extern void rt_spin_lock_nested(spinlock_t *lock, int subclass)	__acquires(lock);
+> >  extern void rt_spin_lock_nest_lock(spinlock_t *lock, struct lockdep_map *nest_lock) __acquires(lock);
+> > diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> > index b7b0945e8b3c..5971fdf6f755 100644
+> > --- a/rust/helpers/spinlock.c
+> > +++ b/rust/helpers/spinlock.c
+> > @@ -6,10 +6,14 @@ void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
+> >  				  struct lock_class_key *key)
+> >  {
+> >  #ifdef CONFIG_DEBUG_SPINLOCK
+> > +# if defined(CONFIG_PREEMPT_RT)
+> > +	__spin_lock_init(lock, name, key, false);
+> > +# else /*!CONFIG_PREEMPT_RT */
+> >  	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> > -#else
+> > +# endif /* CONFIG_PREEMPT_RT */
+> > +#else /* !CONFIG_DEBUG_SPINLOCK */
+> >  	spin_lock_init(lock);
+> > -#endif
+> > +#endif /* CONFIG_DEBUG_SPINLOCK */
+> >  }
+> >  
+> >  void rust_helper_spin_lock(spinlock_t *lock)
+> > -- 
+> > 2.47.0
+> > 
+> > 
+> 
 
