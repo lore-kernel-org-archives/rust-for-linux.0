@@ -1,62 +1,67 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2077.outbound.protection.outlook.com [40.107.20.77])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2055.outbound.protection.outlook.com [40.107.21.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87318193070
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 12:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DE71F4267;
+	Thu,  7 Nov 2024 12:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730982400; cv=fail; b=KNAxD0eL2MRPychC7pmzecgrNJgJWU+syft9H0PNrLO6U0/GbAm87DgOmSHrAmfv/CgDtbtpgmx1VeL3MWGAsWUpSdw8xFgqBZN+0eyZmUXS1+GX+ximL6UVGtCRDD7e/9tLJehS9hv1vqB8/SxlCs5S9mDg0S0swumZ8RM8EYc=
+	t=1730983826; cv=fail; b=CmikNxgxTOxDzQnofupQj/s+f9DUDpcRa0XNxG2F2K/Kp78hV6sZkqKBgv2nGj6snRRZWoGC263+rkTq7vKHwNm1rQPqWftG1b8aKSiecymdCQ0Y4DmU3V5PZWrFiq5rdbiQvJ9p99spNe0HIsWbewALceRt0AKjY4NX12Pexww=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730982400; c=relaxed/simple;
-	bh=A/ht55RpbbGRvpeN7tUu92a1RVRcBlQ9NoGrO13sANg=;
+	s=arc-20240116; t=1730983826; c=relaxed/simple;
+	bh=xIllkFyL92umJQ/VkFkf0DckECSGAn6bWH/563LsidI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=iMXzC/pjb6ccFe38HTxM4DMGOKz88OGlrMIhYiy69tf1qsu3kGsChWX6nvBm/MuO5B+N990Tpap+5fkbGS5q2LNZ3+CEpi0JIxmsJ4hb0QsO2KYaKmbWOZXSo4+4+CpCakrw7HZ1EEiUZ049HfOlFNgreHAkPZGHOIoTJg3Y1vY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk; spf=pass smtp.mailfrom=prevas.dk; dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b=Qh8FHJ8B; arc=fail smtp.client-ip=40.107.20.77
+	 Content-Type:MIME-Version; b=LCv0LICLUS4uhgt6pJCIQKZO53DXpQvtT1tG9FxJQgAyjswkT9OTIdIm/prmUiYI6H/fI9+BW/hl3DrjzeIa662Dh6FyCayo3sG2fj0f+EhzXmU8aC1Nl/YnSniE8TSc5/ZBqOE2YyLH61hVQAPsyJC2mdp35r/gyTDG/9gycuc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk; spf=pass smtp.mailfrom=prevas.dk; dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b=EajvfmCR; arc=fail smtp.client-ip=40.107.21.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prevas.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b="Qh8FHJ8B"
+	dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b="EajvfmCR"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nd8WPFbUKJ3UizqnndOkP7LCMnPYnpeCA6RABqnSNbFSGWSK/iQyL2WemUiOF2lxpxElHlaDh+rI3VkajXMQbhnMhiDgsJLeIjikVyGRx3xuq0rFDL2QBqi1vSOvrN8UTDREGCt694qyc2RmSS73L58PBLLHTHj/oWcmpFAvPdU9AilvpIzE66DIqB4IF8G0GX28YI7ae8YEbJiSmkg1DrmYcikge83hqKErf8f3YpE/yTif1opZN6JBf1pp0pdWVAA6uY4ToJYkClBc+/WLZev5z2ZptW2Vxewq/RxLTchU3vCqoEDmCqSqwMwMehk7wCKQiGOxnK14v3atl9Fx3A==
+ b=MbN+5nN/XcejYmLDMDkmLCbI4rI8SfJ06Iy19PusItyYsXaGODkoN09PiixaS/6TdRi612FD7TcfIY4mbzAOyQB5j60P6c9fujKksS0PfHWyyC/iUrKKVm3xweHeo00ah7/v6k63hK2A+BJzX4VHSsqWh2XAI4BSvuTT65xC29GE3g+pipjF2O8jK6aSU4OTG0hw4CDmkolbgELIAHZwgsUem5iEMommk5Hm7Jj/JAH46H1LQlmIiTh4jX88T/rxLvNW+XkLVajjXmxv9hsOnBZ8Caer2EFAS9DPVntSw6MlkQPzCL8OVCHVPPlEnZilcOL9MJ0W3D9uEpAyBg07Kg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V4VPkk/Vri82YJw7k5dzkkTy/eli2Mo/WJFEDjTuc2A=;
- b=S0Ra2I7ljBzorgFDA+UMlDzhBMswj9ItcCCfz6SfMzhGwaRSDXnkIBskIW7RzdkFoUcMcSU6/RXEHidDKAYXIGuh4lGUjFhS74NAkP/DsW+VnvFTZYr7HHIG8s1MPnAzTXB07bDD5AQ7uFM9mcGd7MRsJjKCMyUZM+bS7GkviIXDy3f2t87ejcpvGv+tED5V+2AaUccOV65tKk7V2szC5ZjUPyvjI5cWUZ/gqf5gOAT8jp3uEUKKQHTWWuiNhKy9oRJxeBXcbJS9+Z2+im3mlWoX7jWKp8jyk9SIgBmkVGuaroI6oJUY0Dmb5QGA9cJUPCzMTHT8o/A13619f+Qt/g==
+ bh=xIllkFyL92umJQ/VkFkf0DckECSGAn6bWH/563LsidI=;
+ b=MeAs76fFvHgrIRzHhyLOvGKvAjGTNfSJB5PfIX4XWkT/quduLAcc7LJrEKOq+pENgJZoHgW8/KDQRO409yW6Wc4umMXOuFIfqbHqM3rUxEcjPjLEQXjF2nz4PuKB0yZTkPSLK8Dgk8ks8AEcRvOGkNeup2a3PBy1QCSjnrn0uyshsa8D18TKMnhrFJYt1n6uf+ffFdsVgEDmt78gJkFJ3Mup4w30YSsnVQB63/7/0zLO4bRPl57hL5BpqfdcPHTH6ewDvsXDMWwmI6UAO/PL2ayfA2qbEi87wu09QqQQ4A5E2DtN+9wf5bR11rajRaFRt5mtGnTOViKNa3Crw6cG/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
  dkim=pass header.d=prevas.dk; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V4VPkk/Vri82YJw7k5dzkkTy/eli2Mo/WJFEDjTuc2A=;
- b=Qh8FHJ8BKeery2foROmhimJbqJofQrOjYClg4QPykeQmfSvqwBykBsh2x3uPuIduovHy30puE38Q3OponcI8bHiqA2wFk0APFkwKv2PEqAORGu5KMeG3ggUqvmObWu9OW1I2DGv/ffNMoUCA5d1td7xzRTzug0MycpJUepULQF0=
+ bh=xIllkFyL92umJQ/VkFkf0DckECSGAn6bWH/563LsidI=;
+ b=EajvfmCREJJyHzf+sqZG+KUQo+vjBMXykq+QxlNgUY8KY6l8pp7xOXhix+DN5w9UZf1w0UWDKsX3WnsZY6+UDjdE+XdBhsPBtXSIYSCyi+LxQUBPCb+P74/T4Gsz0biEU0aPakgxFS8Xpr9cyzryk7pOOfWnxcLM3GsfK0Kmxz4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=prevas.dk;
 Received: from DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:41::17)
- by DU4PR10MB8687.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:56c::5) with
+ by DU0PR10MB6977.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:415::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
- 2024 12:26:32 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.18; Thu, 7 Nov
+ 2024 12:50:17 +0000
 Received: from DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::7e2c:5309:f792:ded4]) by DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::7e2c:5309:f792:ded4%5]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
- 12:26:32 +0000
+ 12:50:17 +0000
 From: Rasmus Villemoes <ravi@prevas.dk>
-To: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org,  Daniel Sedlak <daniel@sedlak.dev>,
-  Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH] rust-next: make from_errno use try_from_errno
-In-Reply-To: <20241105114819.14051-1-guilhermev2huehue@gmail.com> (Guilherme
-	Augusto Martins da Silva's message of "Tue, 5 Nov 2024 08:48:19
-	-0300")
-References: <20241105114819.14051-1-guilhermev2huehue@gmail.com>
-Date: Thu, 07 Nov 2024 13:26:37 +0100
-Message-ID: <87bjyrgrgi.fsf@prevas.dk>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: anna-maria@linutronix.de,  frederic@kernel.org,  tglx@linutronix.de,
+  jstultz@google.com,  sboyd@kernel.org,  linux-kernel@vger.kernel.org,
+  netdev@vger.kernel.org,  rust-for-linux@vger.kernel.org,  andrew@lunn.ch,
+  hkallweit1@gmail.com,  tmgross@umich.edu,  ojeda@kernel.org,
+  alex.gaynor@gmail.com,  gary@garyguo.net,  bjorn3_gh@protonmail.com,
+  benno.lossin@proton.me,  a.hindborg@samsung.com,  aliceryhl@google.com,
+  arnd@arndb.de
+Subject: Re: [PATCH v5 6/7] rust: Add read_poll_timeout functions
+In-Reply-To: <20241101010121.69221-7-fujita.tomonori@gmail.com> (FUJITA
+	Tomonori's message of "Fri, 1 Nov 2024 10:01:20 +0900")
+References: <20241101010121.69221-1-fujita.tomonori@gmail.com>
+	<20241101010121.69221-7-fujita.tomonori@gmail.com>
+Date: Thu, 07 Nov 2024 13:50:23 +0100
+Message-ID: <874j4jgqcw.fsf@prevas.dk>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Content-Type: text/plain
-X-ClientProxiedBy: MM0P280CA0102.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:9::23) To DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
+X-ClientProxiedBy: MM0P280CA0101.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:9::27) To DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
  (2603:10a6:10:41::17)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -65,127 +70,104 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR10MB2475:EE_|DU4PR10MB8687:EE_
-X-MS-Office365-Filtering-Correlation-Id: f53d2435-7077-48d7-c40a-08dcff276939
+X-MS-TrafficTypeDiagnostic: DB7PR10MB2475:EE_|DU0PR10MB6977:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d4e9f3b-d568-4993-8f60-08dcff2abb02
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|1800799024|376014|38350700014;
+	BCL:0;ARA:13230040|376014|7416014|366016|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GUYoEhhOIzFUsh5Zn0PyvE00hYekEtBf/awe7JBw2KdF9JiYvjioXvVx28XY?=
- =?us-ascii?Q?y/3YtlKAGA98OSR1yTPCurDqc/PSvxWh6vC5/aOPgjjOKnWT29u1ACmQkvLY?=
- =?us-ascii?Q?m28LokuDHTvxNcIJeW345MgFwhgGrFYlh6V15L22ayz7LmYRaqfqoF3kLVoD?=
- =?us-ascii?Q?ZuRJsbrhYgRyQh+fUZNduk2Rawl1Lu2/iEYt306Qsl03rGxzbrQVuLDWFWjM?=
- =?us-ascii?Q?uhppUosWHdG/JgaZpsfS7AyAg2670oypDvvNkEMRcasYK1yc8JUITx2p/mRs?=
- =?us-ascii?Q?ugkZNC9YLSLIwNPdR2wgkUPjIfZ4Saieq6O7Ldm6LXh7vM3I2zH2AVLY/ODH?=
- =?us-ascii?Q?yzch0ktJ8LfN2EllLVKfjvdtY/wkvBwRvun0U6flRM7N7pRlmsvGFS2zUM6O?=
- =?us-ascii?Q?wUzBJAeo+Qd8ajhxUR2tfAjXJFCa3iuDKMnLxpnyHYovJqVkV9e0MhTSq4Qj?=
- =?us-ascii?Q?9VcJkB8h0dgMND24uKp3pLUCptV9Uk0GAdELPTk7yOdcv5knl02L6Dc0Sajq?=
- =?us-ascii?Q?ZCQVJlqxFwvoG62W3q5yPqvcnZYePajIOlzavqx6NOBzH5PJLjJbYRg7jf1x?=
- =?us-ascii?Q?ukZT2i/4Nt/55eCORBm0alKM0bfrjUjR0NOoY0drjgMbkCNV9I1Lsad4dPAd?=
- =?us-ascii?Q?y3q0KgUJgJkNb8gPLvuHcT64Bs23d/QQTFjL66Eo3nF573/T2rpunFW+xptW?=
- =?us-ascii?Q?xQrVFV/3Pt44ivC5vAT+4utupqLP/uo/OOywFK/GjshOkNS6tvKqu9JJ67pr?=
- =?us-ascii?Q?67pgdPHT6vrOqH6AjYvC6GVPWd/4mq+57IxXMyUjTb0J/Y9Nq4ztT+b9s5xk?=
- =?us-ascii?Q?YtjoG07A7xerA1mq0wAm1L4eFp49MpUaNSqD/LSwMUo8g1Jumt/i625LFFtr?=
- =?us-ascii?Q?MW8+eODT0WgqprEjkS/ldpzyyJXSNaDv7kOyTJ7Omoc+rtL0/OPU9I/d3cD+?=
- =?us-ascii?Q?cnnbfQRQJ2oVQb101RkpVmzrtrIOtzTaUdbP9KeYf8N5aw/2+/jm4we2P0h7?=
- =?us-ascii?Q?YeZo3mg7XrFtzvta1XwGZLT49+nA4qvpAva1jyzLWY4C9TXzMLvNTh6IMgP0?=
- =?us-ascii?Q?A5cLPueWdeFTBinOuHceEyu1Ef/UyvwQPfc/9n+wz8ifr2+XE9HAJ/nr5jhV?=
- =?us-ascii?Q?ATyw+rKuv+OupuNgt4vXvPD1Glbk6Hxx01GC43T4BPmX1S5nJN5euirfprRX?=
- =?us-ascii?Q?/4ET0sNl5hogzzttDHU3l8RlZryh9olNDtgIXrTUkOYLPcECkKDHv8H/By2F?=
- =?us-ascii?Q?yr903c2M7iQ1+0qrMER2Q5b7QqAMrFODvN+29d0hTk6GwZIzJKc1qadrXy4W?=
- =?us-ascii?Q?q0XabkMAdHWVSHdWw7XTvWKX?=
+	=?us-ascii?Q?OQKy2AnxsB8ilNGEH8YyazOBNCtUqT8lomHSgijpQ8ANn97hnGOAFedUyLug?=
+ =?us-ascii?Q?eqdTMupvm8U42JXzjiGqKOyeY7kQ5GOk9B7f5iPruWZK/r5jeBB2omDT28Mm?=
+ =?us-ascii?Q?BH1dFU9hHp0I8Yvm6Fvbnq53R3B2ikMheBdmCglKjCg9qvv3xx2xz2s/ZAhX?=
+ =?us-ascii?Q?rVBDBgNdTh34Pp6GOXY+4gMdr/JTl4OcGn1NrBOE2kMKQmX1Rs1DlH0BcMmW?=
+ =?us-ascii?Q?/9uSfR/gtYvegwKbI4hEy3OWFkTFKfi3rVHKIcnRABLpjq6qzwwQipKIWHL3?=
+ =?us-ascii?Q?hCqjwdHDgikd2Kc7M+cqiwlk0TGtFRDHV57l68Lwiibb1wwt/MgExtKgIXFg?=
+ =?us-ascii?Q?XK631VkFqKRhJbf0/4F/yaA9UGi3Rz9RF4TM0Dcy3WI/JaA7yBHuslP/14ck?=
+ =?us-ascii?Q?iY2zfBwss/8DYYASTt+bmiaSjsw7+sqghmABT9tDd1muGqgppF++zaEqOpnw?=
+ =?us-ascii?Q?HZurt05puqOpnz1NP6reTkk2bXFavklaedGKpmA6K0YasmfpqC6fYC5sNAMP?=
+ =?us-ascii?Q?3rhWdylVVaQmstdxOYfHTFbwinICxGEinQMkNBkCoTb9nTdT5XPoS9rqzik1?=
+ =?us-ascii?Q?kjvARH386C4GG4NGj+k/JDcyhBYzhvU0T64EwZ00DoVx7TIh7RgxD1gPldnP?=
+ =?us-ascii?Q?UMchsW/Jh0AHoRdoZCm3XEqnuBbdbLHpfMXMRnicAmPvt6KDhL78MmmCHkWz?=
+ =?us-ascii?Q?qA3TecnczA1QDN4iHH6/tsAspnq2eeHX36GlSp3FTkN9um4bUQe5TAFWGpqc?=
+ =?us-ascii?Q?4uz/6i9Gc+EDmJhba7yuqFXOZhRgNaQAu7OlP/1IwsQB4UHdYa9wO4DO5Gmv?=
+ =?us-ascii?Q?ckHoocx7r8XNkNnmCr/ctcj9hVEUKM9kMcC0tyxEn6VC1DHycWvF6GnmTE7b?=
+ =?us-ascii?Q?zrHyLQ2WVzevTXKpIGe3AmuUQiDy2xKPZVDIZed3NwkQfpeA72WIfGkNQpqe?=
+ =?us-ascii?Q?IQ0CpzhXgXqWWDxTB0nfOiPgxJoTZHkfJefkCUjhgtuwhb2izumutEq6E1vP?=
+ =?us-ascii?Q?G/niEVKG5bqMRQ8sqibuizOxis2f8gOuavzNhEcQJsp3kyVuISn7xw1sLmzO?=
+ =?us-ascii?Q?bYLOcY7pswXgKJOtmloPwwZhCBJQbrBkMnPSthw161mem8vD3oqyAs55PtlR?=
+ =?us-ascii?Q?MK2s1fIW+yImXqTfig9zVIkqrIxiA0DzAa+J4e8cc6Jq7TUvQRgs+DG08iTc?=
+ =?us-ascii?Q?S24XIkH6u8LXbueYyWR0AcGnU/+/pgIoUUVgtkyvx3DiN5uWoOjsQRR6MsJt?=
+ =?us-ascii?Q?LdoBmhI22dpB8F3+Tf+qpYynFPeMEGsioXBId7b2wU8vBHwMz5EvGHO+rSWa?=
+ =?us-ascii?Q?Z9khSPCLIMJuaiAnSOYYd7PAsX9vn2nQTOxZs0GMg/AcL5xPyRA8tT8vfhY3?=
+ =?us-ascii?Q?Zr+dhuk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WyLy1H6IT7aadd880KROmGCFn3XqLILQY1M2A2cmN8YFJYAZbJxDQ8LdmlaU?=
- =?us-ascii?Q?vS7EPcrSOXMwm+nSGrjgSoQe1odlmXlL1H0KyPtQBB2QpTaabX1p5cCm23+P?=
- =?us-ascii?Q?73QhpJeg7YKJn+PVAkoPMVAgwAe46pdkFExPP16hCfjULoYmcKNTBHJXA8Qv?=
- =?us-ascii?Q?TlHcltmYcHZHRyI6UQ1I8UHx4/BaOH2zbxiYJVkbRl/0cXt8RfsjRiFVxNhZ?=
- =?us-ascii?Q?+hEd7U6mmFATG5EAOR+u9xaAYHNDwG97T0nOTPYIOvql9JIRHP5+0++lKe+H?=
- =?us-ascii?Q?v60WZvbLFAXp1mw+JPlCG6Q6Dul48bp1o12fLdOhW6DwYfVW9Vh/8QdEybrY?=
- =?us-ascii?Q?PleVcx+u5s3qdJhai74h0wZ6DqSzAZhqFa+fjW15sJk12MO1pfxZR9K0+msY?=
- =?us-ascii?Q?h3R3MhHN4/KKi1rSnHb472Csundf/7ojVOQ3n9NgEnoZ0wyDKx4Ljb1wmFW8?=
- =?us-ascii?Q?QNTDIpZaJw0xpAWMq59RJzzq9XvR144s/00D5s1GuJRj8G4dNz0K8rAshHO3?=
- =?us-ascii?Q?+0SjQIcSy3BwEDP3NNyDer15W2kPwEJB9IpBFECkw3n+uAcjPAV0Yc7y8FxL?=
- =?us-ascii?Q?Y2bW/37Kh7hGtLUPcx6qRbMvElp0358YWskT+4aomKZzGwgPTvgUfQeB6ork?=
- =?us-ascii?Q?5QJ89hG/6U4mGp7oiOOVVqPEkiZ7r4zrIoJ7zJuHfeBHPaCwntPigw12Csnz?=
- =?us-ascii?Q?3Y3dYKTPt6n8NDKJYqNThY3UFt591p60ZDetGAhARj9KnMycM4XChhT9BS6M?=
- =?us-ascii?Q?mmzXnD42DsLYfePjy0xLfrSzRjvF5C/8zvZVKJPausa4i/cqMmXFpwfq6kji?=
- =?us-ascii?Q?CQb1dCS0hZkAw28efmdhF7qje4ng+Sw/B2vPZcbr7OGtn94y0fDOr+F8+yCR?=
- =?us-ascii?Q?k65wRtU/ffxT+VI0+tOxEFse32OiF5fGTenoPv1pF8sE50zLy0JuDmytv4/A?=
- =?us-ascii?Q?Y28GfScrZHmrZBqjCNxlZ1wPoREx7uiOhpCZzsNt/z6tHSMh6ZDS7xrkzuS2?=
- =?us-ascii?Q?/XwPkYGcBoDzLLtbCoTxU5QwmO8HuI8WKTRW0MkKn13CzAVp4D8/pB1s4Ksd?=
- =?us-ascii?Q?qO31EmkOXfOTcYucet5AjZA84Wm9mGbu2RClxWK+60IPVNLkgwkSW68I+aI+?=
- =?us-ascii?Q?dCosJKW8foehTEsckZumEs9Doz516/iNk4FFG7Jw5J7VxmByGk0mD1hG3+jq?=
- =?us-ascii?Q?RgYRfzCLOFOfDWlYJaXKaI/bcv5RAYKnN4cmgzUJV7BIgNFFvUEaOVCX+Xde?=
- =?us-ascii?Q?CoM5So31asCUBbZtiljAAlUuTM9wTdNjBOFPppLtnN8+C6whvbC0fKloDKg2?=
- =?us-ascii?Q?6BTIBM6BgQ3mhzmTkgId2fXrUNEApbLc4O4z5FQ6uRebKJ/rNfPn7Ry17CA/?=
- =?us-ascii?Q?Td7pnDnBW7L8K6+T60iXcEldoUc/gQOdgneDNuFolVqRu0VeXL3cSBBGzfd8?=
- =?us-ascii?Q?ZlhQBrBOZgjGJO9Z6iiPBPrCNoOsq1iE4mVKdFCDgk/FiwB6IQMsxte+X0qY?=
- =?us-ascii?Q?Vds7XPO/pZu18cXzw+NdNQ68YjZxyIyxV+A4LEYnjDxVrEynDN8aKl6uJ9gH?=
- =?us-ascii?Q?OtBbUAMxvDb9JNOgS9PUAJXreMSRFX+dGJV4tcJcJ6dMUPUsC2luyD3xXe3e?=
- =?us-ascii?Q?uA=3D=3D?=
+	=?us-ascii?Q?EyIR4tqKaWJUeWaFF426K0HnOXlfXwbDJAUOMzKOhOi/NsNIyBcmsjsVapxD?=
+ =?us-ascii?Q?3rGB9nbEzlxxkNG26PSyHucLfFw7uC+9n3bKiywoCVRgqbYkOyUbcLbYhjVD?=
+ =?us-ascii?Q?taTDQb5WSQHxMi44+V5ciiU0wMSx8l0S16kYM32HtEbdfzr5c5EGwWT/QhOW?=
+ =?us-ascii?Q?KZXIqv7BAdYAa2J8vebrQ27hwIkUqMsyrKNnaZKZzgNBCzjNIQKG8zzF4xhz?=
+ =?us-ascii?Q?3WXxvFpohIxiu48jlvJGiIc4UEdWdMBNumqdzFVYPErupgTa5y04Ut5G03jV?=
+ =?us-ascii?Q?e8fD8IlN1+tm75uZrXzwn5AFlrqMLqK6KOzjrS5zzbAqAYgImsrleOZDjW+7?=
+ =?us-ascii?Q?bgbYre4PTCEdWcKnqYbO7R/tH6d+J11Vc6Chg0XCdoh7F9dOlJ9HvlgNWjdx?=
+ =?us-ascii?Q?ENNfqbCS75QUMKfljVhtn+YTLL/aGzIlvOBGN+OlBEvcE7D5cEIctiGvULP4?=
+ =?us-ascii?Q?0OWiLzPdNmon30px+jUGXZzU1WLwpdrupG6fBsdD3FjDlrPbW45P0dnrQGcO?=
+ =?us-ascii?Q?kBKPRgrUTxVjPt6yIdEXfI1DAkr4W6UGuCsf5a9Cyo/xqo+FXgFT/2EtZedV?=
+ =?us-ascii?Q?fy7rXTlo71p2vZ5g0lUWavF7hLKDdgP6RSnSE5ZCjsJ0ygFzQ7WL1IYJflYV?=
+ =?us-ascii?Q?B+Se1X5tRLC3rpf/FMie3DEWy1pUgO1VbY7ikuoWJ7ADbXSXgQB4bbygMC2s?=
+ =?us-ascii?Q?mM8lzBQAyhF6qxkZS8U5QxuePYaKb33PAL3eX4zyuLc8WSj/20qbf/P3/4wQ?=
+ =?us-ascii?Q?TcSkhXgbZiKEOlSQCFpPX8PxttJxCMTOLsUAZOPjUTJpVgI796Wo7NOj0zD/?=
+ =?us-ascii?Q?k3Z5vmoDXGbrAYkB8LMV65T3pHJnpidhD26AXoKIYqwwYH0frlkmyycOdIE3?=
+ =?us-ascii?Q?rPymMG5WCWMmf/8/JhUlLMZLPzeQYgkwfKbABuXUQWkfAazwxI/aKa50CqZu?=
+ =?us-ascii?Q?Tyy9dIMPLilZaGriZN1EOFxRgEaZa3C8DTEg5o7I5fBtIM5wPpYrmgHWmskn?=
+ =?us-ascii?Q?4Av+5M0laB+cMhU4xmy2eBcD5+kKCi5FfoMAPaSHLj537gVNqL+Q73jnEgcT?=
+ =?us-ascii?Q?BRzYD+gZniqot3EcrD63vTzVPtoRPXlxxyYRC34oToLjNaeWoZ3EwD9ccvft?=
+ =?us-ascii?Q?fwP/hNVwKxuRiJQljjLmBDcSMdRy7Zy+3CbumWvbWJ3LQNIctE9t/ifwk6y8?=
+ =?us-ascii?Q?Vfg7myE7dggstinjO6IqvqKBlZYwOdoceJMgMdFY69jWMY+LPgUmGqI0jIhi?=
+ =?us-ascii?Q?gEWEay736i6MIcfceH8mSP8kTWs5b6vg/W97mGZgN+rwZnAdLjeN3C76jV6C?=
+ =?us-ascii?Q?s47K2QervvNAFSQp07lw2vfFYl80m/zdNDToKzwrSeFaJs2WMqBarQHwOyIx?=
+ =?us-ascii?Q?wRXxShiUF+v5e9FfaQgfHKw+WtirvgNSC8ZDvt18FxtLNSmICXtYloNIptFe?=
+ =?us-ascii?Q?MZN1bWdH+PFkEFlwqKZ2ZNE9/CNiUDeyJMM3FvaX5kvW5/R/vjctdyCHU3RF?=
+ =?us-ascii?Q?uo1tPpm2VLfRov4Z8Sh0dNDq4xwewPGaPRVN0NF+w3sLlblWSklNfOi7Voqk?=
+ =?us-ascii?Q?AZTcfern8gKgXjo2hK7mf76OXlb9HqVw2x5hPU74IP0lVkxTOayVG6ullLdL?=
+ =?us-ascii?Q?rg=3D=3D?=
 X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-Network-Message-Id: f53d2435-7077-48d7-c40a-08dcff276939
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d4e9f3b-d568-4993-8f60-08dcff2abb02
 X-MS-Exchange-CrossTenant-AuthSource: DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 12:26:31.9715
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 12:50:17.4183
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OWEq95uJ8Lb4XNqpv7fyLocEe1ANuKomoyWZ4/BN7VK35cGIoYIObrfS7K8daOIh7o1bMEcQss2cC5aU47Wlhk0QLA7IgTKcZIYV8/wqsQ4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR10MB8687
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7/dI0RPldT5dgZW9J9j+XNAZ87hDuu7aysAY7cvKTvoWgU1N1BCCw6e/R5JF7mucHBrWpNgIZ21v9AL02jjV39PmbGRz5GZTxeHmmHpoekE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB6977
 
-On Tue, Nov 05 2024, Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com> wrote:
+On Fri, Nov 01 2024, FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-> Modified the from_errno function to use try_from_errno to reduce code duplication while still maintaning all existing behavior and error handling and also reduces unsafe code.
->
-> Co-developed-by: Daniel Sedlak <daniel@sedlak.dev>
-> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
-> Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
-> Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1125
-> ---
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 7cd3bbab52f2..077f95cbb6ae 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -101,19 +101,17 @@ impl Error {
->      /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
->      /// be returned in such a case.
->      pub fn from_errno(errno: core::ffi::c_int) -> Error {
-> -        if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
-> -            // TODO: Make it a `WARN_ONCE` once available.
-> -            crate::pr_warn!(
-> -                "attempted to create `Error` with out of range `errno`: {}",
-> -                errno
-> -            );
-> -            return code::EINVAL;
-> +        match Error::try_from_errno(errno) {
-> +            Some(error) => error,
-> +            None => {
-> +                // TODO: Make it a `WARN_ONCE` once available.
-> +                crate::pr_warn!(
-> +                    "attempted to create `Error` with out of range `errno`: {}",
-> +                    errno
-> +                );
-> +                code::EINVAL
-> +            }
+> For the proper debug info, readx_poll_timeout() and __might_sleep()
+> are implemented as a macro. We could implement them as a normal
+> function if there is a clean way to get a null-terminated string
+> without allocation from core::panic::Location::file().
 
+Would it be too much to hope for either a compiler flag or simply
+default behaviour for having the backing, static store of the file!()
+&str being guaranteed to be followed by a nul character? (Of course that
+nul should not be counted in the slice's length). That would in general
+increase interop with C code.
 
-Not really related to the change done here, but I've often wondered why
-the kernel doesn't have a dedicated EBUG that can be used in places
-where a genuine kernel bug is detected at run-time, but BUG() is too
-much, and we can survive by just passing some error back up the stack
-(possibly with a WARN or pr_warn()). In fact, an EBUG could be useful in
-userspace code as well for library code that detects some
-should-not-happen inconsistency.
+This is hardly the last place where Rust code would pass
+Location::file() into C, and having to pass that as a (ptr,len) pair
+always and updating the receiving C code to use %.*s seems like an
+uphill battle, especially when the C code passes the const char* pointer
+through a few layers before it is finally passed to a printf-like
+function.
 
-EINVAL is already way overused, and substituting that when a programming
-error rather than bad user input is detected seems to just overload it
-even more.
+And creating the nul-terminated strings with c_str! needlessly doubles
+the storage needed for the file names (unless the rust compiler is smart
+enough to then re-use the c_str result for the backing store of the
+file!() &str).
 
 Rasmus
