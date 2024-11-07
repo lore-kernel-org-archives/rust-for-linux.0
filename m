@@ -1,145 +1,207 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6F121218B
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 13:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5C321216F;
+	Thu,  7 Nov 2024 13:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730984470; cv=none; b=Q2z72XPKz6A3KRMWkUo99iRvybUMt+qbVprj9oAEqx9FIdLCJnJeL3D6lTsgQxMO/HHcNDC9NYj/OuYOoBFJnAqsSJIFBkiFcui5E9uQMocnCCWo9/HJ3VjRfU/X2F2wZNClDm4KllyAM/9EEhxCx/t3bPPSlkXBl2HQd+AA5rQ=
+	t=1730987241; cv=none; b=Jro1OoJvDm3XIIHGu0Thd6t3qXLx1P2kzRBdNL5T76FMgZ2UuBrY8MFIkDdiBlq9Sb/9MSn0yY0sIlwQ4Z0hj6XgwGobyDFQtwu7YcQeMdRFcwg8s1B7N4JOhNRPm703RsVupKsRjlJ+7kujbsakv3Ea3cAPxHTgiJ8QZMf4pVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730984470; c=relaxed/simple;
-	bh=co5T5RMOHXr3gU3KKNMD29jzCpapCiUf+S9uv1Hlpgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rO7BY9fporkNGGVHdsS0ZZEBsenqcOrmj1PRgmj88wiJfFadpqgOXKHZma+8ACYL3s86TH+tR4Oeow9cOUwkipY/l9qHKeVTJ+bpdYKVxOpX2+DRW8SYs18q4xjsD21FpHmphJIf2iSzWh0dkCl8OhZFwgH/BUZhQyftalaa5Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LEF5UUqN; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730987241; c=relaxed/simple;
+	bh=teiR7eNLBVr8RDghyAeADI9F/MDxnoSWtmo4z9efsCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JwjS9TzhhIONuh/7qMBRwWph3LxJGy07qLevU8JP39dK3EKnekKwF36P7XNe81uvsbOJHcGjuzxyw2Ygy9B1ECGA6PStFbXJSrWLT8uRGglbR3+NNyMc8wtn8jn/qPXE0FAyH4rcWXq4EFvm2mI8j0NrGIM0iixNWpoAY+eHztI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cxcTSJLb; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LEF5UUqN"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539f7606199so861457e87.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 Nov 2024 05:01:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730984467; x=1731589267; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JxinRcE5K4xRCdSQncUBdS4LnsRa5+N0CdQ21Rwks/g=;
-        b=LEF5UUqNl8KcYzna6gnuwEZO56/O1eGs6XVUDE9XcLFNOh99BXDrni1xZZKOm+Lxqh
-         e47mLpGzS4AwCvXDkVFLMSJbxqbaDffd8KKLNwhdbDYno71kDW3samcP4jQVEnShcorq
-         Rfjt9b6QS83c6gM2OUYik9WrHwzlUR8c6CAQv6tiUgBiwgyKZVDJF4LeHWjYj20xQpkf
-         iEJGMfWDZOSFPse2vUsbRfgqNZYX1IiKQaqJKeEIzmD/XJI5sW2/ONcRCeK/7SCR2pOk
-         Am1NOoc3EQcPvzfFDjEKvHNlYwA2n37Dxaw2gxVi+HRtP7+NP9Yu9udDzkXmR7D5P3ZU
-         g0VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730984467; x=1731589267;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JxinRcE5K4xRCdSQncUBdS4LnsRa5+N0CdQ21Rwks/g=;
-        b=t+G1cftOYkIvTxcyHvbVGSFW+fvamFp3CSqi+klYFRBRPCuMLHvZWI9Cl5JnDzsFuA
-         IvUTVBqvPXrUcRrnUJd+SJZDTBPeTIK4fj1H7RM5pELjRCjjv4ETZbed8ptoqeLTpsmp
-         mDhQFhV9D7k58BflDsfROWJQex2JU+BMscLbkYayE8AVsZPtEwc7IH1LfXIasnQpRIcM
-         DTHPazl4RM560jdjr/ewcbtvCHZ3OuFZdTH2u2sOkJ0j8WfkmJ603eMi41fC9vyFbwm6
-         Kb3FVKIIWoLuD+ZGxzpCdCIj42N5Yr2MNLaXpLMQ0zNoUpcd/TIUdvdLYzGlOl3dUpaM
-         kC/g==
-X-Gm-Message-State: AOJu0YwZHO/bDacxywqRZyOT/PNo0cDwvaPq1Qz4+n1tTdSBVw2vZlsD
-	v2FzMFcUDkLUI6R6AIJ3IK9h+L0PZFFzRAtdTU108+/AsFmA7s0r
-X-Google-Smtp-Source: AGHT+IEZM0wSjRowYyOjzGaFTDSpoaAdI8fYmP72Rpavb9MRfCXZMpVQTGgiklt24r5KrskHgpNcFA==
-X-Received: by 2002:a05:6512:3caa:b0:536:7362:5923 with SMTP id 2adb3069b0e04-53d8407012amr758993e87.1.1730984466123;
-        Thu, 07 Nov 2024 05:01:06 -0800 (PST)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53d826786acsm208459e87.30.2024.11.07.05.01.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Nov 2024 05:01:04 -0800 (PST)
-Message-ID: <2afe6041-20c6-4121-acb0-ffb295575619@gmail.com>
-Date: Thu, 7 Nov 2024 15:01:03 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cxcTSJLb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730987240; x=1762523240;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=teiR7eNLBVr8RDghyAeADI9F/MDxnoSWtmo4z9efsCE=;
+  b=cxcTSJLbXBSc14u/S7lK+mr9H/QzWvmtsHFHR6/PdH7ZpTUlXhJbkn41
+   Gn8rifNeD0MMfa4aKyDro1eRkjhisQJN9vG7Au+Wl/GJfampsWsSGRK7C
+   FAiAyCVzScDn5zLOz9KsiiObPhJZIuN9xUtprcrfCt31N22503xGLPuX5
+   t5RiJm9BD6xSE3as+3yaVJ5UfQqF4uW7H5oTworMtW5CiAMJiUt7A8Z2l
+   MSHthwdoQXMWjm5Dz8gcpy/FWimIRoizZwSSIMhmsGOjs9pyVdu7CjN+D
+   tEeFN7fM+ZdNQfomKsbFbTjlvgVmFeEeQKYm5+q66H6GzXSQkzKHZGeiy
+   w==;
+X-CSE-ConnectionGUID: qpdE3GpTQKGmfY0bi2DBEA==
+X-CSE-MsgGUID: ssOVq2lbT9mEGpW666EPTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="30943327"
+X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
+   d="scan'208";a="30943327"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 05:47:18 -0800
+X-CSE-ConnectionGUID: xIffS3baTQGrXma9DQM+0w==
+X-CSE-MsgGUID: 0yIJaI+rQf+qKD9QW0pVKw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
+   d="scan'208";a="89615620"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 07 Nov 2024 05:47:14 -0800
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t92qt-000qJ4-31;
+	Thu, 07 Nov 2024 13:47:11 +0000
+Date: Thu, 7 Nov 2024 21:46:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alistair Francis <alistair23@gmail.com>, alex.gaynor@gmail.com,
+	benno.lossin@proton.me, gary@garyguo.net,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, bjorn3_gh@protonmail.com,
+	alistair.francis@wdc.com, me@kloenk.dev, a.hindborg@kernel.org,
+	tmgross@umich.edu, boqun.feng@gmail.com, aliceryhl@google.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	alistair23@gmail.com
+Subject: Re: [PATCH 03/13] rust: helpers: Remove build_bug helper
+Message-ID: <202411072158.bzyWKRAM-lkp@intel.com>
+References: <20241107020831.1561063-4-alistair.francis@wdc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] rust: add dma coherent allocator abstraction.
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com,
- a.hindborg@kernel.org, dakr@redhat.com, airlied@redhat.com,
- miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, a.hindborg@samsung.com
-References: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
- <20241105104726.3111058-3-abdiel.janulgue@gmail.com>
- <81E07830-0A54-49C8-AC07-6511F6C816C4@collabora.com>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <81E07830-0A54-49C8-AC07-6511F6C816C4@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107020831.1561063-4-alistair.francis@wdc.com>
 
-Hi Daniel,
+Hi Alistair,
 
-Thanks for the feedback!
+kernel test robot noticed the following build errors:
 
-On 06/11/2024 18:40, Daniel Almeida wrote:
-> Calling `get/get_mut()` for each T seems a bit of too much overhead.
-> 
-> If T is u32, for example, I expect a driver to want to read or write
-> a significant number of them at once. This should be common
-> if you want to read or write raw bytes.
-> 
-> You should probably make the CPU-addressable region available
-> to users after validating if the range asked is within bounds.
-> 
-> Luckily, cpu_buf() will already tie the lifetime of the slice to &self,
-> so they cannot touch that memory if the mapping is gone.
+[auto build test ERROR on v6.12-rc6]
+[also build test ERROR on linus/master]
+[cannot apply to rust/rust-next next-20241107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-You mean the read/write helpers could be removed and we expose the 
-cpu_buf() helper instead that takes a valid range, returns a checked 
-slice and let the user have the flexibility in implementing read/writes 
-themselves. Is this what you had in mind?
+url:    https://github.com/intel-lab-lkp/linux/commits/Alistair-Francis/rust-bindings-Support-some-inline-static-functions/20241107-101321
+base:   v6.12-rc6
+patch link:    https://lore.kernel.org/r/20241107020831.1561063-4-alistair.francis%40wdc.com
+patch subject: [PATCH 03/13] rust: helpers: Remove build_bug helper
+config: um-randconfig-001-20241107 (https://download.01.org/0day-ci/archive/20241107/202411072158.bzyWKRAM-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241107/202411072158.bzyWKRAM-lkp@intel.com/reproduce)
 
-> 
-> The fact that reads/writes will copy the memory is also a bit problematic
-> given that you can offer access to the underlying buffer without copying
-> anything. Also, the bound on `FromBytes/AsBytes` is, for now, a de facto
-> bound on `Copy`, since it is only implemented for types which themselves
-> implement Copy, i.e.:
-> 
-> ```
-> // SAFETY: All bit patterns are acceptable values of the types below.
-> unsafe impl FromBytes for u8 {}
-> unsafe impl FromBytes for u16 {}
-> unsafe impl FromBytes for u32 {}
-> unsafe impl FromBytes for u64 {}
-> unsafe impl FromBytes for usize {}
-> unsafe impl FromBytes for i8 {}
-> unsafe impl FromBytes for i16 {}
-> unsafe impl FromBytes for i32 {}
-> unsafe impl FromBytes for i64 {}
-> unsafe impl FromBytes for isize {}
-> // SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
-> // patterns are also acceptable for arrays of that type.
-> unsafe impl<T: FromBytes> FromBytes for [T] {}
-> unsafe impl<T: FromBytes, const N: usize> FromBytes for [T; N] {}
-> ```
-> 
-> Also, I think FromBytes is a bit restrictive here. In a lot of places, drivers
-> expect to be able to cast the mapping to a given struct whose definition
-> was sourced from some technical document or vendor code somewhere.
-> 
-> For example, here is some code for the H.264 decoder in the `rkvdec`
-> driver:
-> 
-> ```
-> 	struct rkvdec_h264_priv_tbl *priv_tbl;
-> 
-> <cut>
-> 
-> 	priv_tbl = dma_alloc_coherent(rkvdec->dev, sizeof(*priv_tbl),
-> 				      &h264_ctx->priv_tbl.dma, GFP_KERNEL);
-> ```
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411072158.bzyWKRAM-lkp@intel.com/
 
-We could just remove the FromBytes/AsBytes bound and let
-the constructor handle the ZST restriction there (like in the current 
-submission)? If that is the case, there would be no need to wrestle with 
-this issue then?
+All errors (new ones prefixed by >>):
 
-/Abdiel
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+   |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+   35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+   |                                                   ^
+   In file included from rust/helpers/helpers.c:15:
+   In file included from rust/helpers/page.c:4:
+   In file included from include/linux/highmem.h:12:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   585 |         __raw_writeb(value, PCI_IOBASE + addr);
+   |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+   |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+   |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   693 |         readsb(PCI_IOBASE + addr, buffer, count);
+   |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   701 |         readsw(PCI_IOBASE + addr, buffer, count);
+   |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   709 |         readsl(PCI_IOBASE + addr, buffer, count);
+   |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   718 |         writesb(PCI_IOBASE + addr, buffer, count);
+   |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   727 |         writesw(PCI_IOBASE + addr, buffer, count);
+   |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   736 |         writesl(PCI_IOBASE + addr, buffer, count);
+   |                 ~~~~~~~~~~ ^
+   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+   clang diag: include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   13 warnings generated.
+   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+   clang diag: include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+   clang diag: include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+   clang diag: include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   clang diag: include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+   rust/extern.c:1:10: fatal error: 'bindings/bindings_helper.h' file not found
+   1 | #include "bindings/bindings_helper.h"
+   |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
+   make[3]: *** [scripts/Makefile.build:229: rust/extern.o] Error 1 shuffle=3582132138
+>> error[E0425]: cannot find function `errname` in crate `bindings`
+   --> rust/kernel/error.rs:149:38
+   |
+   149 |         let ptr = unsafe { bindings::errname(-self.0) };
+   |                                      ^^^^^^^ not found in `bindings`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
