@@ -1,91 +1,136 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6411B1991CD;
-	Thu,  7 Nov 2024 08:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484321DF96A
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 08:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730969410; cv=none; b=GFnZwd69la29OamhyNQkJeD2yiFxbIuOFgzt8YRHv/F5gn0BrO4iH4g95tXp22AsUjZ68RPau+9f7D7DFUziBbh+V+0welotxOsGEUlF+L4LOO98gqDZG6D33evZgFelAsw73Vuoqf31AMiOgNWEZ9ALglmNX28qeVM93rM+b9U=
+	t=1730969785; cv=none; b=WqJslYsWHRk6jDPgalz8LSvJaC6zDFsQm3JmcdvrLji67TpxYbmPur8XfVXy0In3YqqoZQ+WhQgBUGrAAQf0LdvJxRT1RY9usfArVba901ROrKSjUs5YP91TCGc6uFb51OplzIE2p/B1HGIqzDazLf4hMNNQi9FNE8IdSouLP60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730969410; c=relaxed/simple;
-	bh=H8MjRnjID1uTEDUAKHEgT4tFVgOx5diYG2ePznb9AV4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XoftcMNowbRIivv1j3TKr7LA6W0m9yrDJzV9VDl/GKey/Jb8D6ycyzLTXg3gseMOwAD5M2AnWtYWyS0B4inSWAHmcU6YvQd4hNW1CSKmhE47ZRoWEzKGXfhgU27AtgYdk+2m4Zh4Al9oJmbn7xtOwfiC6y67oPQzcdV1AfIBDZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cpxRIQoc; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1730969785; c=relaxed/simple;
+	bh=CQNAGnUoGDZggfHjbjLDDTG4ahs/y5NdKS86iF+tVc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijdkokGc/algM1u2Q50wMooWX7a+lH/x5kXL2J7EEbjPEV7RV2nx12CiFoVmXjp/zCmNDTmeXP340IbcJsh5B9Hk3kfD3KodEABcj/rbjh0iz0nnrKACbhEDqZRLFxGAn+7iuTywZHZAm+W7D7wMse5BaKfiNffcAANp9LDQdWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DOWGEyii; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cpxRIQoc"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2e2a96b242cso105369a91.3;
-        Thu, 07 Nov 2024 00:50:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DOWGEyii"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37ed3bd6114so426986f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Nov 2024 00:56:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730969409; x=1731574209; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H8MjRnjID1uTEDUAKHEgT4tFVgOx5diYG2ePznb9AV4=;
-        b=cpxRIQoc9Cp0K+PNqhZQ3F68GIzVc0elHbE5ByovnwVL//wNxZeY61jB8XofIhYia3
-         cO3GdhiN7QkhFUNwcnl+6MN82wVR4LvMR/Yleek6wNJ24kdqLrDW2m0HMMSGYiyl0lY7
-         zlnIoIdXYez+YG7va/U9nnTGiyx9mBad9L3wi0elrD1v4lMXLgVERX5dvPQp20/Ejpat
-         xtExYnhqOGLPbY1nEV8V+CEk+mxjdoxpYqdoa8s+W4fU/yFtXXlEepvys6vIg1rK+QVl
-         7SZK/S+1BvqNdFOE2FXuNsoRML/Dg/YyIqN+85j2lGTC4ws+qa/iGbc2n/6NQc8f1uxI
-         ChZQ==
+        d=suse.com; s=google; t=1730969781; x=1731574581; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NgQ+roLUSesIOXxkTR1/vCOejYMqb2hchyHM3frNze0=;
+        b=DOWGEyiioKf63jsRA47ytgGZm5GjDARsMjZqT0cSdmFwlKW/B/lquzOxQz+ndnowmt
+         q4auX5OE9Ock28shSoT7Ah+BkODCKE+VxxcdGO9SBa25dIT331EqNBPPjsCRYdlroSD1
+         /vfCXmjZCtmGB+6h4cfCmO2Q4fH4mPQS/GVed4Mh2k15O7EVSgsqS8C6yccUJEqSKl/6
+         ZzBa8zxTwnTvBSNlxyDn8jguY+nQVtyGd5qoZpXSsGHzR/Jj7qfUqWqOad+DvihIBXMK
+         z4cwary2KqOSUkgOyy356tC9eofy7LGd9UtRgiY5K9vCXL5vvDbRJZ05mSEpOuqTobHw
+         TVZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730969409; x=1731574209;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H8MjRnjID1uTEDUAKHEgT4tFVgOx5diYG2ePznb9AV4=;
-        b=cRn95lTGCUSgPiNMguTXeIWg7YqE6yHhUw0cqjBCwIc7z5S2gzw6+Is03XVxUih5rn
-         lj2W9Zp1AqPG02cKco4HyEwFrrENnbdhWnOuutVTryRZX8d6d2+lExBCTng+NV5BT99c
-         xbVLdNDMZioAyaF1GT9/eL4Eim7t8f3C+bcpuBNOGGDGvccVyGVTfDJTVQ0DWFBQaEZY
-         R1o1tDNEGyDxNGqFmcCEIcC36WzbPbuxNRSeT6IMDh/YsQBF0EVsHEu8h7xOYGQLs71p
-         jByyqztwJnUGsbr3WMU95sWal0nS5b5Ln4vd3TxiTcmFBANTNjPa0E23TZKPqbKOfVxa
-         esFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUccnCrndvPeOIahZCCCxEoiUX5Uy4XBgEio14yhE28nV7S51m779XXUMyDWKPadWZyARZhw1yPoSZFTmM=@vger.kernel.org, AJvYcCWF8bh0JkP2x3IA52QpYApBI2NED3Lc8HXXCiuSXuAbJpMc6Ed60tzW0z5hmJVTGjz370sqaDIH4bpnKasS0aM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm13dyX0IycXCTLSjMuG3R89IFNi9xRGQP65ik1c2uihy7Rsis
-	Y0pJtuelvnW4/skuKKsqCYsgRlUUcbNaizl74Ptn+odgC+dU7+gUO/NZB39Y1+eRvpH1wwBLUDL
-	PHDD4lZq0mgKLNE3+g7cl1aTllnE=
-X-Google-Smtp-Source: AGHT+IExNUP8piBVCyG0DG48joA3VriVvFmk5hGZt9eVqqXsAW1UKahoTZ4/Lr44ADXYzjoR4NSNTWrz2GnQdvMqqk4=
-X-Received: by 2002:a17:90b:4b85:b0:2e7:8a36:a9ad with SMTP id
- 98e67ed59e1d1-2e9ab0e6359mr185592a91.9.1730969408633; Thu, 07 Nov 2024
- 00:50:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1730969781; x=1731574581;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NgQ+roLUSesIOXxkTR1/vCOejYMqb2hchyHM3frNze0=;
+        b=tBOiw869qsYC6an1dyHgsDHElF8eRqsFgOAP5mb6K/7nY26Mdu7XRPj47TA+WayjD4
+         yzvttYqpqiChPtMkdrpF5NmsgIDab2Yg+FEjs1jJbvfYAzenV7yhk/bhnYr1IOjTcEMB
+         x+aqXd60WN2tcBom7BKScN+vngkslFaKpizjpKi7Med+xr+dy0CFvA2sCCd74V0ZyUI2
+         HEVNEWtLmqjtCDQWmsJ5qBUjweZLT0BkOG5+YPV5u0Oog7OtRZnn6NuwkDrAu7R/4Xqp
+         kSQrgJGK8D0o6OdJoW+ww8qv2hxtrL0nPRv7tZOCDE4kOLkW8G/ZPIgQLUihmAKkmxax
+         meIA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7Pk9fZWQfKNnohAkxciIL5LxIaAT4jrgAP971FEloVpN3HNQ2t9i3DanBXpi+DAeN32KcHLNEaQvGKurbYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9OvUD05dygPd12FL9WxXj/+GjOJSEfF2sTwUxgMqw9Dt1+To8
+	py4ulWaXCLUv18DbHadGJqPQExFsnpLctTmD/0Xo0vsQZaezAxZT8VNKLP5maoI=
+X-Google-Smtp-Source: AGHT+IFXLdmKW/NhLS7COiH0rxP4pldjP5IIgC/oTWxhlDbhZ9wQ9LD2MxcsYmvJtsQzv8dU50mXfQ==
+X-Received: by 2002:a5d:6d8a:0:b0:37c:d244:bdb1 with SMTP id ffacd0b85a97d-381c7a5e8c9mr16982507f8f.26.1730969781547;
+        Thu, 07 Nov 2024 00:56:21 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381ed9ea653sm1096170f8f.65.2024.11.07.00.56.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 00:56:21 -0800 (PST)
+Date: Thu, 7 Nov 2024 09:56:18 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, anna-maria@linutronix.de,
+	frederic@kernel.org, tglx@linutronix.de, jstultz@google.com,
+	sboyd@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, arnd@arndb.de,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v5 6/7] rust: Add read_poll_timeout functions
+Message-ID: <ZyyAsjsz05AlkOBd@pathway.suse.cz>
+References: <20241101010121.69221-1-fujita.tomonori@gmail.com>
+ <20241101010121.69221-7-fujita.tomonori@gmail.com>
+ <ZyvhDbNAhPTqIoVi@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
- <ZylNvC8enwPG4IQ4@Boquns-Mac-mini.local> <CANiq72nQ6b1wO6i6zWW6ZWeQFN4SJVB28b216FDU70KmtCbaxA@mail.gmail.com>
- <CAJ-ks9=xW_WWZXB0CbDvU-3otkYs-TY+PSYeiPyidM58QujC3g@mail.gmail.com>
- <CAH5fLgjXXE32k2VuC9yGrNG7ib5vo7V+fsvRxWG0ijopK7MDCQ@mail.gmail.com>
- <CAJ-ks9=b=UEp9KCZ5_dE5yDKWZ1BEfnTkAtS4LiNQ4wzMgdT4A@mail.gmail.com>
- <CANiq72=MmpyquVfi=796v0BAmx6=yuy_gvzeRgUVPhpq8E4rrw@mail.gmail.com>
- <CAJ-ks9muM0RRtawt-C=vwT7b29rhsHbh1FjpX7LbJ=a05tLuPQ@mail.gmail.com>
- <CANiq72kBo4x7D92Xe7Wkvu=Jj+YmMH+-ARiovG+SHt9BYECbvg@mail.gmail.com> <CAJ-ks9kWuQEaj7DUqHm50jAS3ageYZktsiaJvJmava=76mJP5w@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kWuQEaj7DUqHm50jAS3ageYZktsiaJvJmava=76mJP5w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 7 Nov 2024 09:49:56 +0100
-Message-ID: <CANiq72mmoPtPz7KEAK49KvsD9tmVuVEVW5UWyxgdcXQY_4S_mg@mail.gmail.com>
-Subject: Re: [PATCH] rust: arc: remove unused PhantomData
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZyvhDbNAhPTqIoVi@boqun-archlinux>
 
-On Wed, Nov 6, 2024 at 8:09=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
->
-> Thanks, I forgot that "Fixes" changes are backported. This makes sense!
+On Wed 2024-11-06 13:35:09, Boqun Feng wrote:
+> On Fri, Nov 01, 2024 at 10:01:20AM +0900, FUJITA Tomonori wrote:
+> > Add read_poll_timeout functions which poll periodically until a
+> > condition is met or a timeout is reached.
+> > 
+> > C's read_poll_timeout (include/linux/iopoll.h) is a complicated macro
+> > and a simple wrapper for Rust doesn't work. So this implements the
+> > same functionality in Rust.
+> > 
+> > The C version uses usleep_range() while the Rust version uses
+> > fsleep(), which uses the best sleep method so it works with spans that
+> > usleep_range() doesn't work nicely with.
+> > 
+> > Unlike the C version, __might_sleep() is used instead of might_sleep()
+> > to show proper debug info; the file name and line
+> > number. might_resched() could be added to match what the C version
+> > does but this function works without it.
+> > 
+> > The sleep_before_read argument isn't supported since there is no user
+> > for now. It's rarely used in the C version.
+> > 
+> > For the proper debug info, readx_poll_timeout() and __might_sleep()
+> > are implemented as a macro. We could implement them as a normal
+> > function if there is a clean way to get a null-terminated string
+> > without allocation from core::panic::Location::file().
+> > 
+> 
+> So printk() actually support printing a string with a precison value,
+> that is: a format string "%.*s" would take two inputs, one for the length
+> and the other for the pointer to the string, for example you can do:
+> 
+> 	char *msg = "hello";
+> 
+> 	printk("%.*s\n", 5, msg);
+> 
+> This is similar to printf() in glibc [1].
+> 
+> If we add another __might_sleep_precision() which accepts a file name
+> length:
+> 
+> 	void __might_sleep_precision(const char *file, int len, int line)
+> 
+> then we don't need to use macro here, I've attached a diff based
+> on your whole patchset, and it seems working.
+> 
+> Cc printk folks to if they know any limitation on using precision.
 
-Sometimes they are, yeah, but things that should go into stable should
-be marked explicitly nevertheless.
+I am not aware of any printk() limitation here. The "%.*s" format
+should work the same way as in printf() in the userspace.
 
-Cheers,
-Miguel
+Best Regards,
+Petr
+
