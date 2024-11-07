@@ -1,215 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A822C1822E5
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 07:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6D31991D2
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Nov 2024 07:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730963732; cv=none; b=N3kpBQsiB+O6QftCdFyWD9ovHeJ8dcxRL0/3jYsfoxIdJMWzdU5Rz4bnxD/2GwOTDQxMc9j12t+mDTy5Y0kHp86DlBh15cfMoyszdx6t+0Jt1nDZmHiJxlolXS/ThKpYOeYqyJjllhlwACHFyZnkZDRpoKDAAXyVE7v1EoI2ptM=
+	t=1730966175; cv=none; b=G56LpvZZu54BwNJPXVnpos11O/inBhl89k7we4MGFAghfmULVeXOD81WgOUHSuaj1QjzorNTPRWhUmvCB6uxUmw7THZHJVxlxeN5UqVdgdXuBY3TbzBW64KkywW+hSMnhL6nfrMEpZc5jt2B+eXQnsNakmqZyxPP7YOORwMizKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730963732; c=relaxed/simple;
-	bh=lXWtxPNo74z5ZeoYBKRsaS68HHO19mRvwGTc8gfz5Gc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8E9FM75g1PFimID7bJs2izZZK2NK+Y68LIUsUdY9IXUTkuEk1/NVc9v3a0koUFhav8h2BRU91lA2TFhAAjM4vf5136B3pIHxYx8XSP0w+Yn6ajjYUk7y5qu1YgWb10urWQChALV/OuElVvR+MEfzdeI3WAtwj5ikkeSg2yXeuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T2mg6fJX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1730966175; c=relaxed/simple;
+	bh=jDomde3/iUFvIfJ3iganah2LEQ63z2Z0sAm6v1RGRhw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XJA8Q6CdsqQO22X9+Cfhs/YJvJtWCrOL/u2tYBa5MlxCqBsYokJ+iyehtrvvlZ1TyW0C0sTeVG6sOa7DHcjABKrszWpXTMi3P80q6uDI8EmgFYaatAiXq6nuqVr/Vz+cwiu+q5jKrHw43fjmHRTc1HwvUJWK2oUW3BoNTed8qC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AiLz1lvG; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T2mg6fJX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1730963729;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vlnl+BN22QGPgjCM/dg8SoykCXyuozWfzcPdu+gOQ9c=;
-	b=T2mg6fJXXm7CpHUJ28L4tqAf4jRvm3C8Ko28nIJeel475TILiRtAhjW1mVo2nl5YdNnRCm
-	gJXVXcxHUD8dAiTjvnwf4IJw6vqCq+sORFUh9SZC5NYMoBQyCkW2rriKbVFwtBtc46y7Dk
-	i2ZQWu1oKyBiFO6rAZl7VXGMRE77AY8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-593-w5Bkvbh2PAuhsQxPerlU_Q-1; Thu,
- 07 Nov 2024 02:15:25 -0500
-X-MC-Unique: w5Bkvbh2PAuhsQxPerlU_Q-1
-X-Mimecast-MFC-AGG-ID: w5Bkvbh2PAuhsQxPerlU_Q
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E1201956083;
-	Thu,  7 Nov 2024 07:15:23 +0000 (UTC)
-Received: from f39 (unknown [10.39.192.153])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A23261956054;
-	Thu,  7 Nov 2024 07:15:18 +0000 (UTC)
-Date: Thu, 7 Nov 2024 08:15:15 +0100
-From: Eder Zulian <ezulian@redhat.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com, tglx@linutronix.de,
-	williams@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	jlelli@redhat.com
-Subject: Re: [PATCH v2] rust: Fix build error
-Message-ID: <ZyxpA2ez-9E4c7G5@f39>
-References: <20241106211215.2005909-1-ezulian@redhat.com>
- <Zyv6unk_tRyv_v7m@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AiLz1lvG"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d5aedd177so424017f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 06 Nov 2024 23:56:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730966172; x=1731570972; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=izGbQDZbA5gZiVbrG2xjhpkYo/HP9m4/wsr5q1Biwlw=;
+        b=AiLz1lvGYLKNJi6NMD8lNzlso28koZajZdvc0mvjljoKIBQQKb+DumbX7YkVLcUBaO
+         wdZ2YTNwj775cGQbWV0s3hcCn7tq5b75CWqz3vdKutciggp0cOfGKfzVTbaivDaLCFF9
+         etwLF8OlrrKQgiGiuVmj6oNX7meICP8qQ4ws77TJa+N75xKjlSLFXixxawOjuk8fsiQk
+         y3htjjbu9dyq1u0qXb8CofBb/k66wNG/255MGT/Y2k+5k/BrdiRNcO4C1Lb2pKgSz+Kc
+         3fwqRkXhfxm0TDKRlK+tgWGOabkHKBprIBcBe09L9pEJalH7eK2eTXoQo7T3CE5tj8xh
+         aQIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730966172; x=1731570972;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=izGbQDZbA5gZiVbrG2xjhpkYo/HP9m4/wsr5q1Biwlw=;
+        b=tBZ3aap3aZeswZa9yj6TPqGWl8eMa7midONLKLqgpki48afxYUIZzZ6kujZCfJ1+Ss
+         ixR1vdgnW6qiOzZYEdT1bir/6XcYhVUwvgWqrMI+X79BHsYWNWlqXKKuO6xdoyviVtNs
+         WbdiWGI0NdZKPk9ZJDNx8bLB0+YAZ40oHP2zDjlzIvPfADe2yfiQPO6KKB6qMdAfxat7
+         n4B5mCNgiJDNHSA5g9EWviSm68wo2MoGh1s8Hm8YWVXNY9SM0R15feSq0a9/kJ07Kel8
+         SYdY7iSXOBLAP4v4pyf1aYFvniDt1oNzDh5k+FgFDnhp1+OJHrxwXl3PuIPZRTolbglz
+         KEGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGDdaaMOslkq42o84wGIeGhAgB936MQLDAIooK0qHg5YvPtBpCceTlX/ZqtTOje7tX2PxowPPzP1BGDMa6/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxot+G8VWE17d4gIxoF/ycexHf5DD+i11f2G/5VffCwG4ZTQPLu
+	JrFl/4iOe8JwWFiqQgR9LZD6ZqkG3x8YPt6j8YG5SR3lS+PcGy5Eex92a5UuTuoReBLzKqcZrK5
+	J6WHRfonYS9B9ZrjuTV5k9xfNxOllwM2LBw9H
+X-Google-Smtp-Source: AGHT+IFe1EMbcnGrMkjttOt1av9g+20rXev7NSCpetyPrTr+VYaK1t65Ogth97wIOCnGytVqSGvqJpUgTuD3IfRKLBE=
+X-Received: by 2002:a5d:5982:0:b0:37d:3e8b:846f with SMTP id
+ ffacd0b85a97d-381ef6a1bddmr190822f8f.24.1730966172361; Wed, 06 Nov 2024
+ 23:56:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zyv6unk_tRyv_v7m@boqun-archlinux>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+References: <20241104-simplify-arc-v1-1-a4ffc290f905@gmail.com>
+ <ZylNvC8enwPG4IQ4@Boquns-Mac-mini.local> <CANiq72nQ6b1wO6i6zWW6ZWeQFN4SJVB28b216FDU70KmtCbaxA@mail.gmail.com>
+ <CAJ-ks9=xW_WWZXB0CbDvU-3otkYs-TY+PSYeiPyidM58QujC3g@mail.gmail.com>
+ <CANiq72=9XiYOMQ9ttDrgqTt=mPZnWJuCL0EgQBjFObfqVmr1UA@mail.gmail.com>
+ <CAJ-ks9kNmH2t2Lo2PdLuH5rwSC3UQRGWd-cTAX9-Q2FE6oGHiQ@mail.gmail.com>
+ <CANiq72k3AJgMq_US7MYGpzKRqOXZQKpOkBXAd8DwBKyE+Bz3Jg@mail.gmail.com> <CAJ-ks9kKtGkBmjQCfM-idP6uYas_wOqMq7q-oPxZ=+MkS8XVqg@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kKtGkBmjQCfM-idP6uYas_wOqMq7q-oPxZ=+MkS8XVqg@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 7 Nov 2024 08:55:58 +0100
+Message-ID: <CAH5fLgjgKmAOEdofTR-ZnqcLa1D_KJ9C3fs4PchYyzZjBBYG_A@mail.gmail.com>
+Subject: Re: [PATCH] rust: arc: remove unused PhantomData
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Boqun,
+On Wed, Nov 6, 2024 at 10:13=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> On Wed, Nov 6, 2024 at 2:20=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > On Wed, Nov 6, 2024 at 5:33=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
+om> wrote:
+> > >
+> > > I would be happy to add the relevant details to the commit message bu=
+t
+> > > this is one citation that I haven't been able to locate. The closest
+> > > mention I could find[0] only vaguely mentions that this change was
+> > > made, but does not reference a commit (and certainly not an RFC).
+> >
+> > In Boqun's first link, there is a reference to the nomicon with
+> > details, and the section:
+> >
+> >     https://doc.rust-lang.org/nomicon/phantom-data.html#generic-paramet=
+ers-and-drop-checking
+> >
+> > explains the change, including:
+> >
+> >     "But ever since RFC 1238, this is no longer true nor necessary."
+> >
+> > There was another RFC (1327) after that, for a finer-grained approach
+> > (`may_dangle`). The name of the feature gate was also changed.
+> >
+> > Anyway, I don't think we need to add any of that to the commit message
+> > though. Perhaps linking the latest RFC is good for context, so if you
+> > think it is a good idea, of course please go for it -- but in case you
+> > are referring to what I said, I didn't say that we should add the RFC
+> > bits into the commit message.
+> >
+> > Cheers,
+> > Miguel
+>
+> Thanks a lot for all the hand-holding here. I think the sensible thing
+> to do here is to add a comment rather than remove the PhantomData.
+> I'll send that as v2 shortly if no-one objects.
 
-On Wed, Nov 06, 2024 at 03:24:42PM -0800, Boqun Feng wrote:
-> Hi Eder,
-> 
-> Seems I forgot to reply you on your reply to v1, sorry about that.
-> 
-> For the commit title, I think it better be:
-> 
-> 	rust: helpers: Avoid raw_spin_lock initialization for PREEMPT_RT
-> 
+Adding a comment and keeping PhantomData SGTM.
 
-Sure, I will fix it. Much better indeed.
-
-> , because in general, title of the commit should be as specific as
-> possible (otherwise, half year later there could be 10 commits titled
-> "rust: Fix build error").
-> 
-> On Wed, Nov 06, 2024 at 10:12:15PM +0100, Eder Zulian wrote:
-> > On a PREEMPT_RT build, spin locks have been mapped to rt_mutex types, so
-> > avoid the raw_spinlock_init call for RT.
-> > 
-> > When CONFIG_DEBUG_SPINLOCK=y and CONFIG_PREEMPT_RT=y the following build
-> > error occurs:
-> > 
-> > https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
-> > 
-> 
-> Since you already use the "Closes" tag to refer the bug report, let's
-> avoid links showing twice, how rephrase the above three paragraphs as:
-> 
-> """
-> When PREEMPT_RT=y, spin locks are mapped to rt_mutex types, so using
-> spinlock_check() + __raw_spin_lock_init() to initialize spin locks is
-> incorrect, and would cause build errors.
-> 
-> Introduce __spin_lock_init() to initialize a spin lock with lockdep
-> rquired information for PREEMPT_RT builds, and use it in the Rust
-> helper.
-> """
-> 
-> Thoughts?
-> 
-
-Makes sense. Will do.
-
-> > Fixes: 876346536c1b ("rust: kbuild: split up helpers.c")
-> 
-> I'm not sure this is the correct "Fixes" tag, that commit is a code
-> move, so it's unlikely introducing issue itself. Moreover, we really
-> need PREEMPT_RT being able to trigger the issue, so I think the correct
-
-One may argue that we need 'RUST=y' in order to trigger the issue.
-
-> "Fixes" tag is:
-> 
-> Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-> 
-> (yes, I know PREEMPT_RT is a long existing project, but it was until
-> that commit, you can build a kernel with PREEMPT_RT=y IIUC)
-> 
-> This will help stable maintainers for backport decisions.
-> 
-
-Perhaps omitting the 'Fixes:' tag would be a solution. Is that an option?
-
-> 
-> The rest of patch looks good to me (we could maybe provide a
-> __spin_lock_init() for !RT build as well, but that's more of a
-> cleanup)
-> 
-> Regards,
-> Boqun
-> 
-
-Thanks,
-Eder
-
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
-> > Signed-off-by: Eder Zulian <ezulian@redhat.com>
-> > ---
-> > V1 -> V2: Cleaned up style and addressed review comments
-> >  include/linux/spinlock_rt.h | 15 +++++++--------
-> >  rust/helpers/spinlock.c     |  8 ++++++--
-> >  2 files changed, 13 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
-> > index f9f14e135be7..f6499c37157d 100644
-> > --- a/include/linux/spinlock_rt.h
-> > +++ b/include/linux/spinlock_rt.h
-> > @@ -16,22 +16,21 @@ static inline void __rt_spin_lock_init(spinlock_t *lock, const char *name,
-> >  }
-> >  #endif
-> >  
-> > -#define spin_lock_init(slock)					\
-> > +#define __spin_lock_init(slock, name, key, percpu)		\
-> >  do {								\
-> > -	static struct lock_class_key __key;			\
-> > -								\
-> >  	rt_mutex_base_init(&(slock)->lock);			\
-> > -	__rt_spin_lock_init(slock, #slock, &__key, false);	\
-> > +	__rt_spin_lock_init(slock, name, key, percpu);		\
-> >  } while (0)
-> >  
-> > -#define local_spin_lock_init(slock)				\
-> > +#define _spin_lock_init(slock, percpu)				\
-> >  do {								\
-> >  	static struct lock_class_key __key;			\
-> > -								\
-> > -	rt_mutex_base_init(&(slock)->lock);			\
-> > -	__rt_spin_lock_init(slock, #slock, &__key, true);	\
-> > +	__spin_lock_init(slock, #slock, &__key, percpu);	\
-> >  } while (0)
-> >  
-> > +#define spin_lock_init(slock)		_spin_lock_init(slock, false)
-> > +#define local_spin_lock_init(slock)	_spin_lock_init(slock, true)
-> > +
-> >  extern void rt_spin_lock(spinlock_t *lock) __acquires(lock);
-> >  extern void rt_spin_lock_nested(spinlock_t *lock, int subclass)	__acquires(lock);
-> >  extern void rt_spin_lock_nest_lock(spinlock_t *lock, struct lockdep_map *nest_lock) __acquires(lock);
-> > diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> > index b7b0945e8b3c..5971fdf6f755 100644
-> > --- a/rust/helpers/spinlock.c
-> > +++ b/rust/helpers/spinlock.c
-> > @@ -6,10 +6,14 @@ void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
-> >  				  struct lock_class_key *key)
-> >  {
-> >  #ifdef CONFIG_DEBUG_SPINLOCK
-> > +# if defined(CONFIG_PREEMPT_RT)
-> > +	__spin_lock_init(lock, name, key, false);
-> > +# else /*!CONFIG_PREEMPT_RT */
-> >  	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
-> > -#else
-> > +# endif /* CONFIG_PREEMPT_RT */
-> > +#else /* !CONFIG_DEBUG_SPINLOCK */
-> >  	spin_lock_init(lock);
-> > -#endif
-> > +#endif /* CONFIG_DEBUG_SPINLOCK */
-> >  }
-> >  
-> >  void rust_helper_spin_lock(spinlock_t *lock)
-> > -- 
-> > 2.47.0
-> > 
-> > 
-> 
-
+Alice
