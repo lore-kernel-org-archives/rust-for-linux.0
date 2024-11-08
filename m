@@ -1,97 +1,85 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0E1E00A6;
-	Fri,  8 Nov 2024 12:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E15D1E0B66;
+	Fri,  8 Nov 2024 13:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731070448; cv=none; b=bXUO7OM4sVieGeddRNTfTMp5pJBti4ZFcGUwsx+SuzV8PwwFZMVkqasusoyXXOKMeZqOdT6TC/fuLVuamyhcyFxJZ57vOQO1JyMoFdF9mhXMoaNloEKk6RYVCJPNzbePAQwUnqGk8d5qaqX33lLt0ranBQVgQpVoueeMYh7BmEg=
+	t=1731071634; cv=none; b=sRsaLJ9mPcAxksuydU8wougPH/UfI8SFPxW8p7uAJJDRt6n6U0nNF8JNWr3gZm/Q3DYxS0F2PgAdt5OAMkQx4lXS/rA4Es1MhTZUhUo/X6p8LgJexFgWh+iUdSBOzHsDgCUS8OgMx1B6SJPVGdMJMPeTqTtqS7uS7lzkYsZiub0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731070448; c=relaxed/simple;
-	bh=Yvz0H/Y8zZiFugbvh32Aq7wBcwI/7h0sDm5Ksw3k5jA=;
+	s=arc-20240116; t=1731071634; c=relaxed/simple;
+	bh=N5pWQxlHcc2dwHiRSIg+NN/d2DilzRLSZISJB0UfURM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sSHQqRfwzWi30GJj8oqvd+2hJ0UJfNpCppgcPsRLbecoZBU909i77ftPBHynZVM6X0LEnl1ZXXMB7I307MVAGaI4oXP/wt2dbzdfhqboQ2c+XJn29xUQz9S3s02ugiHj3N+1k+GC1lZ6ncpmqkyXoS9JUU0PE6/iCggB9GE0XSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jc0DikdS; arc=none smtp.client-ip=209.85.167.49
+	 To:Cc:Content-Type; b=KguGS1qj7KSZ6y/x1tKEHvEfAbJCGdTI+iviZ0ciHOcwG3m89Epx7ngGc91HHD9cSN6UFD00XCVeTLk5lLPxfM8LpRtWLE9kXQvqNufBMw8RgoNAy6ZbR1zRLAgr5cMureFxSjlmWYN1Lj2L7e76WmEUyYBS+7s8LzF7apb+BzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ens9IaMI; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jc0DikdS"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539f4d8ef84so2542721e87.0;
-        Fri, 08 Nov 2024 04:54:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ens9IaMI"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e31977c653so291656a91.0;
+        Fri, 08 Nov 2024 05:13:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731070445; x=1731675245; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731071632; x=1731676432; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Yvz0H/Y8zZiFugbvh32Aq7wBcwI/7h0sDm5Ksw3k5jA=;
-        b=Jc0DikdS9ymfyhV+vt/cye7jKFh/HSOW8UfFuFMd7n+6T2kgYVSMXgLbPw9/SEAVNR
-         clucb4cAwlh/Wh6JsEuCBfpVzG7KAwzjoTIFdY0PzZ1/h504Kr8IHRSiBpxvFeQ9T/rZ
-         DmnzsCTKO8MjQtj4+Z8J/Azuak5NbQCRTfJ2GTERi3Hv7fTqm4jSOJMOtA9Gk9v7gi57
-         lQVjoGWGNmREtDz+dylj9VxZs3LRxNZAeuTjRbxPX78/DqkJ8KtFPGcRvZJKwlwz8ELO
-         inL2s/K4cMFU49fDTo/n1djR+4e73VGgeRX2c+5Uv1pzfUPfdp6gOmmojOhmeLyXFKgy
-         qhLA==
+        bh=g/x8B2/vBEewsh7Nqwh1OUibNre29okGAiUfwZlgjiE=;
+        b=ens9IaMIKEnKw7OWGZ/jNcw2gGKZvbw9NVhUJnJMf2xiE35lGLGWmY5tRuB+YCLjFH
+         fBYkLdiTSrCGPwuEBF0tOcMy5JAZPUbbKm8PIUU0Z+8QGxsKnZaWD0FEefzhTo5HtMzt
+         i5mbGxrWumyZFi15yjtUGR+Pc7p2xkYO1HRaL5wCGKLO4cO+75GrFrGJeKH6w87tMGbj
+         KBswO2OpAg4wJzFEYL0X0VxJEKgVLYE5LtrA6uzmNUgl6B5mdLnAjPMFKGvDWBYXaAMo
+         S+vkQ32WaB3YoMl/tQST7hgqhX2VvBxhm0tsejy0/Ilw7uB5u+3Kr+ApG0MFbW5RmoeU
+         jaNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731070445; x=1731675245;
+        d=1e100.net; s=20230601; t=1731071632; x=1731676432;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Yvz0H/Y8zZiFugbvh32Aq7wBcwI/7h0sDm5Ksw3k5jA=;
-        b=fXpEvOoQdbKwVjwQVUk2SdSsxoGEX4QcNyUsG+cMY4I1cP9M14j8iH1jSeZmrrQaW6
-         dyZlPb2QMF74OSZneDIxNB7OwkXrVdeuAe0nojA1T0Lx1MFmPuehWrAdMI1LnCKf2fpU
-         c+fAnb2y0SMtBbWml7qQVj9OwPKvpdST1E4SKa/47lCjzPd8jVv79vDtv37NLAg2F+wV
-         hQT+DVdppzAU1IJ+6CzMlF0/MuGO58+YlP/ygNRZBsmMqGnbbmDLTuJ+QVOSYZLgL5tz
-         eOITBKkJf/zCrTYinh/gDilslVgckBE1coEmf4a8fB9dE9OIuuCsqFM6CRaR1AKljnAM
-         iQEA==
-X-Forwarded-Encrypted: i=1; AJvYcCW4FvLc7rLqVEYSk6++fhozXmkA7c/jhprCFfYmhlEhvabDEU3VKOjT+tBi8WIfoM7da3krwlMa0wqjRzBwimw=@vger.kernel.org, AJvYcCXsu/SZCJMc4BNUZFSgbx9sA7Ci2QVaxtbORZXQ/YHDkTfTL19MvrzTAXgjKc9+q87HjqdznUaHciSK0Zk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR5CaVzU43bUYp4KtNZVuTqzBQIHguXslSTkDMdBLcPUVKloIq
-	s1ymPLkSOxqnCMsQwtbweMzLOhYJQ9ml4CnLiOQsOJFtVfQBD5lws0FwFHn+gusrTVyxMn68LmG
-	s+zRaZrmSkpmuyhCi84yZE2qulhI=
-X-Google-Smtp-Source: AGHT+IHb1MRDNO0gqw9M4M/zgZqsXTO3f0QlKo7gx2naqOwIh5UCA7LEv2cl+FmyAKUFLrp77x6vQZEhv9DGKdsUt60=
-X-Received: by 2002:a05:651c:1602:b0:2f8:c0bd:d65f with SMTP id
- 38308e7fff4ca-2ff2016dff3mr14921521fa.20.1731070444628; Fri, 08 Nov 2024
- 04:54:04 -0800 (PST)
+        bh=g/x8B2/vBEewsh7Nqwh1OUibNre29okGAiUfwZlgjiE=;
+        b=jFFtXBBrMKS70OyJzPUeigKvlhDgqoRFxrZoyuEtS5/xucluZ6azrG99raG1RSqr6v
+         BomfVpIn5un+MgtPXCMMpHVP22Z0zTmMDO7Zv2dzub+VBwa7Gaf46QhVOJ/sxpSGGhqy
+         wtaXHlHIGM65eRrqDJfJV2vZ/2gYzGrGEgtCb/leG5X9hy0o3d9pucAeJOfri7I9D+RL
+         sqqqAPBNXLBehy5FQndWpV5zOOErZLGGmdf5Fy/qd76apoBFgFwPQz0/3DxIkrHl5Iwb
+         Brl+CdsolDlkx1cBmgGWbvgYY5Wi80FP46zlrEKnB5XyjzYKrfsaejRCCiLmKonJsCcm
+         pGSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAatViG4SMEV4XhZI8E8bvZMIiwc46WDR02iyv0itY9n4p5xir32XKqsK8bkocyZ9BVDtracyY2zd1D4C6FTc=@vger.kernel.org, AJvYcCV7Ly7PC3TLQxOAXjDqK07ibGSi588yMbX9rJH7ZRyBRK5EsC0p+XsXFWx2qhKQ/NA2X5oGXB3cWiUGWYk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbA4SLhDW56ywmT1ctHWHlHKZ1XPHwZdcu4iPvZ0HX75IQlUNP
+	DLmybA3dRGKVKLtbIN8HU2UFghIsl+uo1f8/LGPif9BdyDsf+6tczw2a/MMzN49WCylNHhOnLry
+	91s/UqrciZR9JY57S1gHs6ymS4HE=
+X-Google-Smtp-Source: AGHT+IHRlvte0vtT16pL+15CXpPExfa2kAy86QQ2//oC9ZrAYaM1A7uMRJ7G4MLiIh1T9l2d82Ofuf189toe72h6cb4=
+X-Received: by 2002:a17:90b:164a:b0:2e2:abab:c456 with SMTP id
+ 98e67ed59e1d1-2e9b14bd4admr1743702a91.1.1731071632521; Fri, 08 Nov 2024
+ 05:13:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104-borrow-mut-v2-0-de650678648d@gmail.com>
- <20241104-borrow-mut-v2-3-de650678648d@gmail.com> <CAH5fLgiMHE5GXQv8pSR_KYWsa44zr1o_FNrg1mj8QuTvNQmXhQ@mail.gmail.com>
- <CAJ-ks9=Ej0St7XnmvTysdnjPHh6O+4XdYFC6LouwEJR9GpUPNQ@mail.gmail.com>
- <CAH5fLgi=n-v5C4hH-+uozbiwwWCU_QGzhxfdTXfTyyy2ejJR+w@mail.gmail.com>
- <CAJ-ks9n8eSPsb7_RqWk-3OgtsrZquA=94uBopkdwtHuTPUisaA@mail.gmail.com> <CAH5fLgjukqj49UHw33uJewc5Z5q=_f4uXzv2jyQ2=2eFCyWa=A@mail.gmail.com>
-In-Reply-To: <CAH5fLgjukqj49UHw33uJewc5Z5q=_f4uXzv2jyQ2=2eFCyWa=A@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 8 Nov 2024 07:53:28 -0500
-Message-ID: <CAJ-ks9m33v4WddztHWOgCkBWuO0RdfbE8iZKj+1EJ+YBLaGyZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] rust: arc: split unsafe block, add missing comment
-To: Alice Ryhl <aliceryhl@google.com>
+References: <20241104-borrow-mut-v2-0-de650678648d@gmail.com> <20241104-borrow-mut-v2-2-de650678648d@gmail.com>
+In-Reply-To: <20241104-borrow-mut-v2-2-de650678648d@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 8 Nov 2024 14:13:40 +0100
+Message-ID: <CANiq72mT4FfDXDX-tdWo3owLdrsg3KBDrQC_1whA7-ZhVH4H+g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] rust: types: avoid `as` casts
+To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 8, 2024 at 7:47=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Mon, Nov 4, 2024 at 10:20=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> On Fri, Nov 8, 2024 at 1:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
-> >
-> > On Fri, Nov 8, 2024 at 7:37=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> > > You could write `unsafe { (*self.ptr.as_ptr()).refcount.get() }` to
-> > > avoid the as_ref call.
-> >
-> > Doesn't `(*self.ptr.as_ptr())` have the same problem?
->
-> It's not quite the same. Both `*ptr` and `(*ptr).field` are place
-> expressions which do not inherently involve the creation of a
-> reference in the way that `NonNull::as_ref` does.
+> -    /// let ptr =3D NonNull::<Empty>::new(&mut data as *mut _).unwrap();
+> +    /// let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
 
-Thanks for explaining!
-Tamir
+Nit: this one does not change it to `cast_*()`.
+
+Cheers,
+Miguel
