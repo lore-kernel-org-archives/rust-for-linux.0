@@ -1,57 +1,57 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3F21A9B20
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Nov 2024 19:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8763A1F26FE
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Nov 2024 20:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731092548; cv=none; b=I8ERDVaem5CZlLVa7ZqkPwxx/upkVfUhkEpampQVydMIHNF3LQj38PJqBtc0pq10/UQiOyePdCN0ewLj4FXI1MMQ6ss4wk56e6lhfbJLAPaTVhnePL0PVtcxo3xnYTvt6V+lUBvSdrmUWzdDgkoQOhgd6JJc8a/a8G8VYbQDKzE=
+	t=1731096367; cv=none; b=Zhjz+DFAudNbKitMGec8ZmUlpIqL5JE10xnH7hh+J1LkJ6bgY54qnTUu9gLBz1CgEgYNrp8hgUTmGzXWhm4OokUnruriZk3d95ohQnhqt5zXGcB/NCxnL/YYF24fvQn4Zzt+7d3osVl1+V5DFQ/hk1j6QSRw/7N7B7uXwdqwlpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731092548; c=relaxed/simple;
-	bh=YEwWWdTygdfPwKXQSTYfbGOGF0MUKQwYGLbCoB2q61s=;
+	s=arc-20240116; t=1731096367; c=relaxed/simple;
+	bh=ywmyj2+mwTU628wLUF2xRspDilFf9o3W6NRYN3/t0Co=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iyAQ+pQWZsp6BcCc/mhP9pOJtlDVKF7bgy3882nbhenIYD2Tx4D3RDEWC6g5m/0vQi1t19yQGUEYAQWkVYtkdoEhixOJ2eOrijEbFwLbzGJy5XoAGKslp+DdhRFwPr0rfydJA03F9Xbo3UVZJFSqYcTzO+UVmVCw986Mw04PnnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SbXZ003E; arc=none smtp.client-ip=209.85.167.48
+	 To:Cc:Content-Type; b=XjjvfLvbgjwi5t7k5SNjRuujbrKK5RJrDIyk0HX1mjSyqPd0YgmE8tVVW6foD9CzyBxnaWjNGds3vPjY/O8YDpCoFqsWFnx0RzHuAR6wNlLDBOsqaOSm6y1rbzqCIODQ5sIu1eNPIclKV/Wrt2xAeyAS9ju4yL5MHwgu/ssOAww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fwfAZUQz; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SbXZ003E"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-539e19d8c41so2581e87.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Nov 2024 11:02:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fwfAZUQz"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539e66ba398so2636e87.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Nov 2024 12:06:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731092545; x=1731697345; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1731096364; x=1731701164; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x5dcxcXk694RMvcWb5k1dVNXtrLmI1dR+rZM3ZVOTn8=;
-        b=SbXZ003Ec3w7NUnDIGW3iTgd53PYg1JPTrasFHue60HxH31oGQmk1wTDjo0UI3256p
-         esXJUBTJxyFHCOf9+W1V4pebjjau6k45z2jj7R2TuOyHJ2heKV5sLsjtfPguNuMslgIF
-         vz+xCx6pDt9aFomTDn4qR+ghF2dj9XT1zDOiFGSeLzy8fWQGsSFxJd8GqKVnrMs6nDjD
-         3npwvTwlmgzQfY6UYJXeSejbyUIpoEo2gLC4BXk0KNQXh20oBXQvbWF+zSqyvQgWxnHJ
-         e2bJE/SorWv+GmInkeKX9oXpQEhNH10qInN+iOq5QTc8hVgeigHivTbHQ7lgnBpiFcZM
-         vadQ==
+        bh=ywmyj2+mwTU628wLUF2xRspDilFf9o3W6NRYN3/t0Co=;
+        b=fwfAZUQz0fvk7PCOIOzGg42vgzPQxYhmbEbHSgcYCt4yAsP7Liq9z9TgppYCuhi80o
+         eUS29yeWjWecnlzjrR9v6i2RDNKDta2OoiGxiipKAuWxz0gHPdwLNH0Ji69+OuVUBQ3b
+         FM5ecf0NI0qm5f61YifSTS5yLwgaSj6wzZ4v9c6RLpq5+qVvFlh6/AV3gcOjkCm2H2QT
+         mzvJ7SIpIpYnzo5Qdy04stul9qNhAlKstdLrvNAE1n3uVO8XbL4atUrJ19rbU6epU3Y+
+         K93IEIc4jKloVbhg8GAo/56gFs1/713Ky0hjUNt+Ia1uiEESFqFl+15PJUAo9ycwipCb
+         ZRCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731092545; x=1731697345;
+        d=1e100.net; s=20230601; t=1731096364; x=1731701164;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=x5dcxcXk694RMvcWb5k1dVNXtrLmI1dR+rZM3ZVOTn8=;
-        b=ce2sS01I9vm7lCANv+dfMCiRzoWGpYtzScvv0GuAokH0jbhjGzkap0BrlbivvineFZ
-         3oLOkCvmX79D2MmR5F6oaXwOP17suR6lxFM95HIq7O4bWRAK5VUIB0nKPQLeqm61q2Ke
-         VDUNDzTQyT9W1/kwfqQ97NPXkCyWREczxYiYdYFOrwgGC8Sf+7rM9c4IaVmy9dvlZCsK
-         oys0FaCfng8oOyiNHXaht/EP5ucFibBqNMtSvKRkLjpj9iFC1EFUst3UD5m2R3Ep7EpO
-         x55V3A2hMhHNK8o/CUWvJ3+qe/qea0/DAITMVf0BmJrH38zrKfHeSFBqzyPQXqA1izxX
-         +rwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsJnM7CjCEzGkwhblsaywVmoKNCkfOD8zkn4q+07u+n9EGi0+Ho66Sh6zfMHas70V+klW2deMpPsPINeIHSA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyas0R3I3YzZGO5vtu1RxqDo/4pALc3iMhasDvGZr5Kjfe9jW5W
-	04ZYHZ7GcX6LL9FIZRiDLZqE7eawTPj4eqSMBTJ1K52uCS3WH1se++w4UCLESHQ2rUGkQGnTMKx
-	6m46+9Tvw2W3uqXMcNAMq2vU/h0HZcisPtNI2q6O7Eerun+PkfSRdOeA=
-X-Gm-Gg: ASbGncshWYAcYKr0XZmWheS5BKaLyeT7ILBcNfJfTF+O8oOZoq2HPFB+XX2jTH4t8Ph
-	q7VsWNYkFf9ZezA/Kl5t8p4PfPuBIpjdAuuWFB2sbcFelTrLsZWxN/M+y7zQ=
-X-Google-Smtp-Source: AGHT+IHcdHRiwMr8+Qu01GgNV0vMtk5CA/bfKgogQKcSIdPXH6MUjs+l+BdiSRl0GGjfEWL4sNJIizZBndurlTIUza4=
-X-Received: by 2002:ac2:518e:0:b0:536:88d0:420d with SMTP id
- 2adb3069b0e04-53d8bdf9fb4mr22123e87.6.1731092544016; Fri, 08 Nov 2024
- 11:02:24 -0800 (PST)
+        bh=ywmyj2+mwTU628wLUF2xRspDilFf9o3W6NRYN3/t0Co=;
+        b=IvXsI7pPYg9GBHKJaaGSsf9xXGJwynUfTLK23zFqNT7OGHDdDT/V/bxOMRlr3qM0/G
+         VKyZNhlF/oodZ9ziVM5go4jFO4qL25Ioie140mBy6QGFXmZZyG57f2KupYW2LMYYSUnD
+         6XMQow2vrrQsrY3BdYcUGTK0EZN/uavnvGqyugq9X41YslgDPwbmd2lQYfEba70KnXWv
+         XmgMlzegBdG8RJeg8eHfR+xoPMtCvXLg22ZIqgId0Mt8Ixa5d4qp9Wyb2a96Jh78BVsT
+         a1Gi6ezR+KkrVevCww6Qkn0BLUj0EskJuu7GIxmwc3iS0MKCXsj/lLzhrzbpvvHXeanC
+         cK2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVmyQfY1wqp+ok+7i5yl9gYsp607abnzdUQP54EKC9yHpp6wgVPOS5KMTyUMOZZl7QY1mSHd9x53qyFIIO+lQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0X/tOkZ04awljNKM80wi1PmdrQ5rVHKPwVIV5Saidx1iq5ufD
+	Kv4sxW/eY1+nSKRUl9X0H/cNXFRfHL/pvbVrli3dkhqtE6xHNpp5GqJFVlNmVDbj53hEQXTuZm+
+	HjrXNYLq+JVJoGoYDNSVBnYfeIT8qwE2jPpry
+X-Gm-Gg: ASbGnctc+H3HYh0bDZ9m6ggnb+XS5g1lmz1wxaOnaznUBXbRWTmVDVrk0ti9CzvB17F
+	gNxFdWJmoIplW3ZgMEp8rGMCbN0spmeXiFmGksR3OhuZLSyWKbMaBFIBsrls=
+X-Google-Smtp-Source: AGHT+IH3kL4lLs0Uipupi9GWt32/5/tNTyCIa5bVmyx6fwQw8gtGwZzBdd1MsiyDybp0ou2acgQ0QsuHTDGC9DKGes0=
+X-Received: by 2002:ac2:44cf:0:b0:533:49ab:780e with SMTP id
+ 2adb3069b0e04-53d8bd9a3e5mr66025e87.2.1731096363220; Fri, 08 Nov 2024
+ 12:06:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,10 +59,11 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241010-vma-v6-0-d89039b6f573@google.com> <20241010-vma-v6-1-d89039b6f573@google.com>
-In-Reply-To: <20241010-vma-v6-1-d89039b6f573@google.com>
+ <CAG48ez3gXicVYXiPsQDmYuPSsKMbES2KRQDk+0ANWSS0zDkqSw@mail.gmail.com>
+In-Reply-To: <CAG48ez3gXicVYXiPsQDmYuPSsKMbES2KRQDk+0ANWSS0zDkqSw@mail.gmail.com>
 From: Jann Horn <jannh@google.com>
-Date: Fri, 8 Nov 2024 20:01:47 +0100
-Message-ID: <CAG48ez3gXicVYXiPsQDmYuPSsKMbES2KRQDk+0ANWSS0zDkqSw@mail.gmail.com>
+Date: Fri, 8 Nov 2024 21:05:27 +0100
+Message-ID: <CAG48ez20pcWiHXCKWv74cw-CDjeMrO+kcbZtmsgRo=7+Yxzspg@mail.gmail.com>
 Subject: Re: [PATCH v6 1/2] rust: mm: add abstractions for mm_struct and vm_area_struct
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
@@ -77,229 +78,38 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 10, 2024 at 2:56=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> These abstractions allow you to manipulate vmas. Rust Binder will uses
-> these in a few different ways.
+On Fri, Nov 8, 2024 at 8:01=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+> On Thu, Oct 10, 2024 at 2:56=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> > These abstractions allow you to manipulate vmas. Rust Binder will uses
+> > these in a few different ways.
+> >
+> > In the mmap implementation, a VmAreaNew will be provided to the mmap
+> > call which allows it to modify the vma in ways that are only okay durin=
+g
+> > initial setup. This is the case where the most methods are available.
+> >
+> > However, Rust Binder needs to insert and remove pages from the vma as
+> > time passes. When incoming messages arrive, pages may need to be
+> > inserted if space is missing, and in this case that is done by using a
+> > stashed ARef<Mm> and calling mmget_not_zero followed by mmap_write_lock
+> > followed by vma_lookup followed by vm_insert_page. In this case, since
+> > mmap_write_lock is used, the VmAreaMut type will be in use.
 >
-> In the mmap implementation, a VmAreaNew will be provided to the mmap
-> call which allows it to modify the vma in ways that are only okay during
-> initial setup. This is the case where the most methods are available.
->
-> However, Rust Binder needs to insert and remove pages from the vma as
-> time passes. When incoming messages arrive, pages may need to be
-> inserted if space is missing, and in this case that is done by using a
-> stashed ARef<Mm> and calling mmget_not_zero followed by mmap_write_lock
-> followed by vma_lookup followed by vm_insert_page. In this case, since
-> mmap_write_lock is used, the VmAreaMut type will be in use.
+> FYI, the way the C binder implementation uses vma_lookup() and
+> vm_insert_page() is not very idiomatic. The standard way of
+> implementing binder_alloc_free_page() would be to use something like
+> unmap_mapping_range() instead of using
+> vma_lookup()+zap_page_range_single(); though to set that up, you'd
+> have to create one inode per binder file, maybe with something like
+> the DRM subsystem's drm_fs_inode_new(). And instead of having
+> binder_install_single_page(), the standard way would be to let
+> binder_vm_fault() install PTEs lazily on fault. That way you'd never
+> have to take mmap locks or grab MM references yourself.
 
-FYI, the way the C binder implementation uses vma_lookup() and
-vm_insert_page() is not very idiomatic. The standard way of
-implementing binder_alloc_free_page() would be to use something like
-unmap_mapping_range() instead of using
-vma_lookup()+zap_page_range_single(); though to set that up, you'd
-have to create one inode per binder file, maybe with something like
-the DRM subsystem's drm_fs_inode_new(). And instead of having
-binder_install_single_page(), the standard way would be to let
-binder_vm_fault() install PTEs lazily on fault. That way you'd never
-have to take mmap locks or grab MM references yourself.
-
-I guess the one benefit of the current implementation of C binder over
-the more idiomatic approach is that it avoids taking a fault after
-binder_install_buffer_pages(), but that's probably not such a hot path
-that it matters...
-
-> Another use-case is the shrinker, where the mmap read lock is taken
-> instead, and zap_page_range_single is used to remove pages from the vma.
-> In this case, only the read lock is taken, so the VmAreaRef type will be
-> in use.
-
-I think this might also use unmap_mapping_range() in a more idiomatic
-implementation.
-
-> Future extensions could involve a VmAreaRcuRef for accessing vma methods
-> that are okay to use when holding just the rcu read lock. However, these
-> methods are not needed from Rust yet.
-
-You're probably talking about the VMA read lock here? There's not much
-you can do under just RCU.
-
-> +    /// Unmap pages in the given page range.
-> +    #[inline]
-> +    pub fn zap_page_range_single(&self, address: usize, size: usize) {
-> +        // SAFETY: By the type invariants, the caller holds at least the=
- mmap read lock, so this
-> +        // access is okay. Any value of `address` and `size` is allowed.
-
-FWIW, if you passed in a size that is big enough to make the end
-address wrap around the end of the address space, I think you could at
-least hit a BUG_ON() in unmap_page_range(). I don't know what level of
-safety kernel Rust is going for though - I guess that might be
-acceptable?
-
-> +        unsafe {
-> +            bindings::zap_page_range_single(
-> +                self.as_ptr(),
-> +                address as _,
-> +                size as _,
-> +                core::ptr::null_mut(),
-> +            )
-> +        };
-> +    }
-> +}
-> +
-> +impl VmAreaMut {
-> +    /// Access a virtual memory area given a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `vma` is valid for the duration of 'a, =
-and that the mmap write lock
-> +    /// (or stronger) is held for at least the duration of 'a.
-
-A mutable VMA should probably also come with the vma write lock held
-(meaning vma_start_write() has been called on it) - that's needed for
-almost all operations that actually mutate the VMA. (Though with the
-comments below, maybe you don't actually have any use for VmAreaMut
-for now.)
-
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -> =
-&'a Self {
-> +        // SAFETY: The caller ensures that the invariants are satisfied =
-for the duration of 'a.
-> +        unsafe { &*vma.cast() }
-> +    }
-> +
-> +    /// Sets the flags associated with the virtual memory area.
-> +    ///
-> +    /// The possible flags are a combination of the constants in [`flags=
-`].
-> +    #[inline]
-> +    pub fn set_flags(&self, flags: usize) {
-> +        // SAFETY: By the type invariants, the caller holds the mmap wri=
-te lock, so this access is
-> +        // not a data race.
-> +        unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags =3D flags as=
- _ };
-
-It can be a data race, for example you could race with pte_mkwrite()
-called from remove_migration_pte(). (But that's an existing issue, the
-same data race currently occurs with existing vm_flags updates in
-other core kernel paths.)
-
-Separately from that: If you want to update the flags of existing
-VMAs, you need to call vma_start_write() first. The vm_flags_set()
-helper is designed to enforce this automatically.
-
-But really I think drivers normally don't change the flags of existing
-VMAs anyway, only the flags of newly created VMAs; only core MM code
-should be changing the flags of existing VMAs. You should maybe move
-this method over into VmAreaNew.
-
-There are ways to set VMA flags that are dangerous and invalid; I
-think VM_PFNMAP|VM_MIXEDMAP would be an example (though that might not
-actually lead to any actual bad consequences with the way the code is
-currently written). Clearing VM_MIXEDMAP after calling
-vm_insert_page() might be another one.
-
-VM_HUGETLB is also a flag you really shouldn't be touching from driver
-code, that would cause type confusion through a bad cast in
-unmap_single_vma -> __unmap_hugepage_range -> hstate_vma ->
-hstate_file -> hstate_inode.
-
-I'm not sure how safe against programmer error this is supposed to be;
-if you want the API to be safe even against silly blunders, I think
-you'd have to at least allowlist which bits the driver may clear and
-which bits it may set, and additionally deny at least the bad
-combination VM_MIXEDMAP|VM_PFNMAP. Though you might want to introduce
-higher-level helpers instead, so that a driver author doesn't blunder
-by checking VM_WRITE without also clearing VM_MAYWRITE, which is a
-somewhat common mistake that IIRC has led to several security bugs in
-the past.
-
-I think the reasonable ways in which drivers might want to change
-flags on a VmAreaNew are:
-
-1. clear VM_MAYWRITE after checking VM_WRITE is unset
-2. (you could do the same with the VM_EXEC/VM_MAYEXEC bits)
-3. set VM_PFNMAP (only valid if not VM_MIXEDMAP and no PTEs have been
-installed yet)
-4. set VM_MIXEDMAP (only valid if not VM_PFNMAP)
-5. set VM_IO/VM_DONTEXPAND
-6. set VM_DONTCOPY/VM_DONTDUMP (only permanently effective if VM_IO is also=
- set)
-
-> +    }
-> +
-> +    /// Maps a single page at the given address within the virtual memor=
-y area.
-> +    ///
-> +    /// This operation does not take ownership of the page.
-> +    #[inline]
-> +    pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result =
-{
-> +        // SAFETY: By the type invariants, the caller holds the mmap wri=
-te lock, so this access is
-> +        // not a data race. The page is guaranteed to be valid and of or=
-der 0. The range of
-> +        // `address` is already checked by `vm_insert_page`.
-> +        to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), addre=
-ss as _, page.as_ptr()) })
-
-vm_insert_page() has a kinda weird contract because there are two
-contexts from which you can call it cleanly:
-
-1. You can call it on a VmAreaRef (just like zap_page_range_single(),
-you only need to hold an mmap read lock or VMA read lock, no write
-lock is required); however, you must ensure that the VMA is already
-marked VM_MIXEDMAP. This is the API contract under which you'd call
-this from a fault handler.
-
-2. You can call it on a VmAreaNew (and it will take care of setting
-VM_MIXEDMAP for you).
-
-I think nothing would immediately crash if you called vm_insert_page()
-on a VMA that does not yet have VM_MIXEDMAP while holding the mmap
-lock in write mode; but that would permit weird scenarios where you
-could, for example, have a userfaultfd context associated with a VMA
-which becomes VM_MIXEDMAP, while normally you can't attach userfaultfd
-contexts to VM_MIXEDMAP VMAs. I don't think if that actually leads to
-anything bad, but it would be a weird state that probably shouldn't be
-permitted.
-
-There are also safety requirements for the page being installed, but I
-guess the checks that vm_insert_page() already does via
-validate_page_before_insert() might be enough to make this safe...
-
-> +    }
-> +}
-> +
-> +impl VmAreaNew {
-> +    /// Access a virtual memory area given a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `vma` is valid for the duration of 'a, =
-and that the vma is
-> +    /// currently undergoing initial VMA setup.
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -> =
-&'a Self {
-> +        // SAFETY: The caller ensures that the invariants are satisfied =
-for the duration of 'a.
-> +        unsafe { &*vma.cast() }
-> +    }
-> +
-> +    /// Make this vma anonymous.
-> +    #[inline]
-> +    pub fn set_anonymous(&self) {
-> +        // SAFETY: The vma is not yet shared.
-> +        unsafe { (*self.as_ptr()).vm_ops =3D core::ptr::null() };
-> +    }
-
-What would you use this for? I don't think drivers are supposed to
-create anonymous VMAs. (Also, if you called this after inserting some
-non-anonymous pages into the VMA, that might confuse some core MM
-code, though I don't know if it can actually cause anything really
-bad.)
+Let me know if you think it would be helpful to see a prototype of
+that in C - I think I can cobble that together, but doing it nicely
+will require some work to convert at least some of the binder_alloc
+locking to mutexes, and some more work to switch the ->f_mapping of
+the binder file or something like that. (I guess modeling that in Rust
+might be a bit of a pain though...)
