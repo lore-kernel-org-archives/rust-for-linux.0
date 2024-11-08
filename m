@@ -1,55 +1,55 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D81E767C;
-	Fri,  8 Nov 2024 12:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B195D1E7C36;
+	Fri,  8 Nov 2024 12:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731068660; cv=none; b=YBxQgKTr60wfRQCXKP7iJBMu3qrMfXtBoNtK9/cPgqnTKOkWsFExm2eGAyhqTicNq3TBPBpvjo1ryPasLfJblARBHafT1jfpB6p6LVTqNZFI+Mxtr/PsFm6fEuQnCtl3SJFD6XWqyV8T05cwI26FRkRp53RzGrjKL7IGSp8ap2k=
+	t=1731069019; cv=none; b=jPNNmqF5yuKgUP44Ye9Cq2v9Sk55vXIT8WYxt2axGjU1kJYeiT0Sth+hwhf15Vd9G4VDATewQQne78qN2ytFOrq6H5jW7xjMxyMWEus9FxNcEWdyimUUCyLLxYAD6/d8Fm9zLQ1J7WNE25pClKPs02ho20xlc3iEM3FBh5iCjcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731068660; c=relaxed/simple;
-	bh=19VOh0mfo+GkU0/6whFY/DMa3nyp2+WBMNfzkRFhso8=;
+	s=arc-20240116; t=1731069019; c=relaxed/simple;
+	bh=JbA7j9iRgDw5N+kjHouOdhD/KtZGez3I+W3DVh+Nkns=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h3OXhbKjc5AAdqXY5pRPVo8hl9jhE0J0sgOA4xaYZVU6Mc8bJvElsB22a1iQaMpvPeqrPJg+iwigQcx8b5AePMEwzJPhXtvioR7v/6B1L+v/QAnllZEfbg53cQcM3BdH35ucybWN2eKFW0vAmOmHielpIdgCrUE/Bi/Kx2hePTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lI5tM7gJ; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=r2HBQA6fnHvIjq3tFSLBZL67AUViEbI6TAeyfGAmQpgl6oZX3IDsNNXVTzyXHnKbfGi8cso+3V6jspsEuqNdJkPqS+y6qHAeI1IKhDS3dxoCL5v+QYzlDOC9f3illXpJjQu/S7arkV4yrOABi1+z3ZmV80FN0jVby6lav8AOB+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcG/Ehy4; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lI5tM7gJ"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb5014e2daso19382671fa.0;
-        Fri, 08 Nov 2024 04:24:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcG/Ehy4"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2fb6110c8faso21400181fa.1;
+        Fri, 08 Nov 2024 04:30:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731068657; x=1731673457; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731069016; x=1731673816; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=19VOh0mfo+GkU0/6whFY/DMa3nyp2+WBMNfzkRFhso8=;
-        b=lI5tM7gJ0c1UzZ9MPFyGQB7ktJugfnc+pQstvqfOBNAJfwhtm58BjTX5DTJoJKmJwT
-         mu3ctwuF7nI9QBKJDO+ovg+3SynJgn0NKvhAfNe634HOeYrVV6fFr/Dgts3Z9YM06wiP
-         XtSSSMC0Lwy6QfKDqJLYjstR9odAQXtjWxJa0JHv59/3N+VxrRlcncXv1Zpn6nHVUkbJ
-         kgJnYi620C7JmsOr+f9WKieJkQZi8PmqYnWpxnljr0GFQLcHwTdh4ZSodjKr8q5HUd6f
-         /ZIBSLdosHgrlWmyUWcwbAb6e3uMevZx7CWysoH9DqHz7TbgecQihXkkOD/ssCER+09i
-         VZ/w==
+        bh=I1TfxRT6YrJCzqaJD2FpFr/vppnAry7dWCIlul0kxmA=;
+        b=EcG/Ehy4B+ZK3woVHGJ6mfQJIW42A/dJTTCS5G04jMAq/RgeDC5sXIXqfMIrV5XKXk
+         aQBVzIql/NN24pLYWgdlHJfeWqLfA98/24df8WzYy/cqgXHbVJPFN7z1YFMvJhesvmnC
+         8Yl9mb/9WAOOIZhFCk0GNCyeILIr76Yab2yvPHO0f/mg0JoZWC9vf1AbeuiltLNLfFAa
+         cPbu4XloALbU6N+CP5dg6Ekpp4/sJfDe/RNKS7EYbo53sDBZqQfmD9ZOuf5dwoyR0Huv
+         aWxli2jbDXpbjNl2YJToEOzRWWcJUiVRGf2lZJMFEB40e3AnzOY0xdPoXqbImuR0YkPJ
+         Ltvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731068657; x=1731673457;
+        d=1e100.net; s=20230601; t=1731069016; x=1731673816;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=19VOh0mfo+GkU0/6whFY/DMa3nyp2+WBMNfzkRFhso8=;
-        b=GVg9/VZyx7++OZE3xQc2HpDnnxLR5S/cO0F1ZCOqhDKXsHuwRlYgc2iVo7jeSLhVsa
-         umjDthxorD0Z+bAjHOWsCkkSBYIs5VDH9don5PXUX6ZWJa2f/oZ7y00lwipykONqv2WQ
-         zEE7ved3zKK52vcU4BLDIarGCreD4MfPDr2S1S800uSn0apz2LqrgH+Xg24pGpJTvg14
-         uZeAGvsFf1jzT9TK8gCe6ReAhs41J7R2vWwZ0DcvnPUGmbDE6ZTMNn8q/qDsN+lR3ek4
-         HvvjhI6wBgI0+IyyMAeOyPzPWKrjm+6p8W0EfDp42S8LstjkXUAWzGRPVsR82yayaE29
-         IIBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGJXjzjwpvTzaOv7iMTW9gJYXIKFjgmWYjIIipHyg6QRlEaboZyBUjd7vbPcQ8xOnuNlO7tFN4d2rdxgf9jwA=@vger.kernel.org, AJvYcCV0h2rNtq1LA8PpvfDIb68yWrt0BFcoEpsNNPLwzhWEUFE88cAbbU4612ffhYqpFSVZyfswD49imoXxOEs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIBYoencnPx9MAKZp9PShF5kfjSTq7+/qRynOGhdDebSMeVgVs
-	FultVr230sAYoLxWOazxJ2L5eJsCjA49BrzxhEjPE8fP9UQcBCHqJJsHNb1Y/i8Wk5fgYGn7vSV
-	K2WLGbg4dzpNodl/S6B+HckbZ0ok=
-X-Google-Smtp-Source: AGHT+IEGspbaqqpTSvYg3MFUuaDdZlJOHhSuCJ06Z+cgzGLAz+L4ChvxSYk4aZjUWABaiwlVApX6ikLX0yzbAcqanFQ=
-X-Received: by 2002:a05:651c:1551:b0:2f7:5f6e:d894 with SMTP id
- 38308e7fff4ca-2ff2028a857mr15426871fa.25.1731068656979; Fri, 08 Nov 2024
- 04:24:16 -0800 (PST)
+        bh=I1TfxRT6YrJCzqaJD2FpFr/vppnAry7dWCIlul0kxmA=;
+        b=PlnqbMCxZZ1mwsZHyjEZ5nw81OIWf87mhe5ituyZKzWpYHDypBvgAdAxY022H7O5bc
+         8oXlGWqqlp5ZJQzB2yc6yBM9EprfmhwjTD1ybURfFTx7tMmXPOKzHfjM9+cFXsIFUmuT
+         gKwrTxAvUJ/RQCoAFEjltiGvvCH+OAvk36OHtaTBnCUN5rgM83cuqLVOJFqTMLIedEzr
+         G4Q/DbkM3VHRucW20bgZdbw9wwWn/98F0aXjWmn3faKuF5jpQNYhVxjUHZC6sOGcHiM/
+         effkXENZZk4/zpL9igjr03nM0UiftzUl/+JziI7mwNBrrkXzk0NxmveOkJY4fQkj1pUE
+         6kpg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6VCiq/eyI6tfT5F2ZsRv5/SvaaMVvqWUX8TTNn2OmFa8kmKu8Q93dmXKCllR5sS3l0+Yf/0NQ2FiK+B5hrZE=@vger.kernel.org, AJvYcCXlp+/5bhOSED20fzk/OFqi3x8kOwHw5Rn5pWvZQkn6xgfEGeri1A+uIPIV8LPEwcYpx9rupUsoP8H7OIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9igquRu6JfCBsxnOLbGEEZBTl/ZpggBn/V34QjH5eRPF+zDR5
+	TceXy1v3W2JBDBgqz6YqlteC09f0clxSLtl7bKjoCry0GTf+iwL8WBPUnaPLGRzlkHC2cz9yfCK
+	Cs/mnS1wl+n3tjCizSANA3zYaca8=
+X-Google-Smtp-Source: AGHT+IFf2Tf3HdF46mL3UjwOYi3iO25rXFbd1kX5sxfZ1oHi9QhtoINs0qb8pb/Gk/2u4luNNWhJF590Ii7atv5E3PM=
+X-Received: by 2002:a2e:bc13:0:b0:2fa:c0df:3d7b with SMTP id
+ 38308e7fff4ca-2ff201b730emr13693651fa.22.1731069015664; Fri, 08 Nov 2024
+ 04:30:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,12 +57,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241104-borrow-mut-v2-0-de650678648d@gmail.com>
- <20241104-borrow-mut-v2-4-de650678648d@gmail.com> <CAH5fLgjmVaGiHGkZa+hUmLfEJVQs7irNPamXJGu3Q-x8oPw2QQ@mail.gmail.com>
-In-Reply-To: <CAH5fLgjmVaGiHGkZa+hUmLfEJVQs7irNPamXJGu3Q-x8oPw2QQ@mail.gmail.com>
+ <20241104-borrow-mut-v2-3-de650678648d@gmail.com> <CAH5fLgiMHE5GXQv8pSR_KYWsa44zr1o_FNrg1mj8QuTvNQmXhQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgiMHE5GXQv8pSR_KYWsa44zr1o_FNrg1mj8QuTvNQmXhQ@mail.gmail.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 8 Nov 2024 07:23:40 -0500
-Message-ID: <CAJ-ks9=JNfhWNf2t08nbkMROzXme7k-NHtg3psag0dWjYDnoTw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] rust: change `ForeignOwnable` pointer to mut
+Date: Fri, 8 Nov 2024 07:29:39 -0500
+Message-ID: <CAJ-ks9=Ej0St7XnmvTysdnjPHh6O+4XdYFC6LouwEJR9GpUPNQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/6] rust: arc: split unsafe block, add missing comment
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -73,22 +73,26 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 8, 2024 at 6:39=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+On Fri, Nov 8, 2024 at 6:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
 ote:
->
-> On Mon, Nov 4, 2024 at 10:20=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
+> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> > index af383bcd003e1122ebe1b62a49fe40279458e379..9adea755a5ad1a7b03f7fc3=
+0a7abc76c1f966c6c 100644
+> > --- a/rust/kernel/sync/arc.rs
+> > +++ b/rust/kernel/sync/arc.rs
+> > @@ -377,10 +377,14 @@ fn as_ref(&self) -> &T {
 > >
-> > It is slightly more convenient to operate on mut pointers, and this als=
-o
-> > properly conveys the desired ownership semantics of the trait.
-> >
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >  impl<T: ?Sized> Clone for Arc<T> {
+> >      fn clone(&self) -> Self {
+> > +        // SAFETY: By the type invariant, there is necessarily a refer=
+ence to the object, so it is
+> > +        // safe to dereference it.
+> > +        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.get();
 >
-> Normally you would put your SoB after RB tags.
->
-> Alice
+> I would normally prefer to avoid creating a reference to the entire
+> ArcInner, but in this particular case it is okay due to the specifics
+> of how Arc works.
 
-Thanks, will do in v3.
+Note that this particular line appears also in the Drop impl just
+below. That said, can you help me understand the concern with creating
+a reference to the entire ArcInner?
