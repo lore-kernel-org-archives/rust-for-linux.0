@@ -1,232 +1,137 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F92F143725
-	for <rust-for-linux@vger.kernel.org>; Sat,  9 Nov 2024 22:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731192981; cv=none; b=KASnjIhqgZjMsmXZMszRVLdOpUtadZP+HRFuRwf/O12gH+yylE3yKOq9xrWpcGzU9nbOGFLOUgjtRlxEx9zIrvJUm19f69n7tmFqWUwNRm+IgWvDFn2rs7oiBoX2nxKpb9Tpf2n8YrYuTGQuZTJXNgyQuR19sHbUO+2thz2YkM0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731192981; c=relaxed/simple;
-	bh=P+D6x1BnxiLzSb8sxPCDveCp6Rs+ti7XVuSAKimttNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OlNtktQmcYTgRf/dAwrdCW0tzQ0F6o85aQcc28khrE0rHDv5pOscvsGY2D/hcAKO00NAGeZ3cT+Xs5tDCKYyppU1xpWGRIOQcjdJT3ZtFoVMsIVs20UZHjoDf6WI5FXPkJfgDbgY6cZzAmJdo7s/ZgLhUpLudqKPHVoJoaSx5qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ce9Sj5If; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26611E4BE;
+	Sat,  9 Nov 2024 23:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731195224; cv=pass; b=mkAHxMxG6yUySqI1X14uHr4aA/8fqwerofMdAuk3eym21Uruu3IJG7ww3MKlw+37y03PQvbPDdVxUsoQzodiwlU0y+wsKNUHxVMJ6PANgt2yRsvC5rA5R+CPFpxx61Zjcbu/ODUqu40TNTEJsFJ6D/eRJfbmPSeKD2H18F2DVrk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731195224; c=relaxed/simple;
+	bh=OTChu5Xh2WDzZYFci/Hlm2qvkrxX+jwft25slN/Aayk=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ZNEmcBmLQTyFrpvSa7VvqcO0F+ZmwCjxWG2whikopIK08G9TcHpUTOtldL4OvUUm8wAY/yJcAkwWO/QlHnVoSv8fxVMjvBstuzk+wne8FUjQ5SXznhTffU+EcezINpzSp3b0IMYlV+sDpwKn4+kUL3qucIofjv4pMtIcLnQJW54=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=U5N3BRcD; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ce9Sj5If"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6cbcc2bd7fcso22237516d6.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 09 Nov 2024 14:56:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731192978; x=1731797778; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w2S47meCWaQQ1uv98U0ntjdCH75dPCt5PUycqnq47Tw=;
-        b=Ce9Sj5IfVhslkoQdasiPqOxBrIQsaATLVY1EkejcvyHvpOGfNL8/NEDNLxIvmSlxFm
-         v6+himD2R+NuGnggTJfVl+ohOZkD03WKD8aSOSikps3wc8lLEdpQQCWeqaZFLAaqLxJW
-         VwHP6VKHGNQ70kbEQx+WrsnT3qY3wlPAC6G6If11mxmJElU6n4sa+BdHxW6/VlIVSyVz
-         j+Wgz5Rg4q7HAfRvJvyvjL0NISKnaC/XFC4FobPG5iTmN9SiVOUZyZAjmKkNktPVTgz/
-         NoFZO2ERha+DnrAUw9oeELRqf/+1w82jxFI2nLg6BZZ6x4u9DfuhZfiv7D64+5qDPiS7
-         sWpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731192978; x=1731797778;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w2S47meCWaQQ1uv98U0ntjdCH75dPCt5PUycqnq47Tw=;
-        b=OyLvsymfKxXsiO5mcCVDBragOh6PtNnrkqpQbxnfwfJ+2hmGEIIdSkedQdqqKZVRje
-         KszpOWx/Vwea6/LDV+f6wU/wZErLPWYq7wPfThznoBEkap1NU8m08Ycplt+eGOuo0fiL
-         LExF3Et47OLrEX0btxJebuhwnXriXJNb4/IAKeINO/6QQl1VPjXR/OqKOtqCfo2Lq0M4
-         8bYbDIQpyTnNFT8MNUjCm8gOiJcCGV8YGqSPQeEOntwwNcqwbUUA2jSdwgVq7LbXow3M
-         lO+/Iz2evS0qWFH9O+3zQb2vLahL26Jo1RJUpF5Ad/C+a8qNpZx95oMZZwPdYBWq6d2D
-         B72g==
-X-Forwarded-Encrypted: i=1; AJvYcCWWpZnqhIQUZLgLGJB+m7/pdbBYGPZpTZshkqeUlpKfK9bBtETqzXZDf7wELNAVTsBbTk8r9ffWTvItR3s2ZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF2F5YWSm0K/VpsUbaThxrfGbNbvZEs8uxcodDnkBsw4Zyy9o6
-	g/lLgx+WNAr1I/JBACBmZu3JtDi2bJlLm2mI3KYcDDauzp6ORN5l
-X-Google-Smtp-Source: AGHT+IHdpih8V6b6J31UOHSAa10QpABOgusM2Fgbf5lcuCY7yKEPqAT1PMBsSH667r9wtxAu5871UQ==
-X-Received: by 2002:a05:6214:3217:b0:6cb:f16f:65d5 with SMTP id 6a1803df08f44-6d39e120db9mr109641736d6.12.1731192977770;
-        Sat, 09 Nov 2024 14:56:17 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d39664284dsm35517126d6.132.2024.11.09.14.56.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Nov 2024 14:56:17 -0800 (PST)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9F83E1200043;
-	Sat,  9 Nov 2024 17:56:16 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sat, 09 Nov 2024 17:56:16 -0500
-X-ME-Sender: <xms:kOgvZ5SPt0y3sg5zkYuF39_e3jhU0LutEvNTlz-EDE94NMJKJDiuyg>
-    <xme:kOgvZyw2jZEZZ8Ff_ttGHfex-LO5-vsHyZ8eO0Gmm2Y68PI1GPhbYNOvOhTdJ9lNH
-    eSADwOcE84v-XcNJg>
-X-ME-Received: <xmr:kOgvZ-3wu-cmsdsbq6ITdk4YzSsF3nK0N27tuHhjuD4OfOXzV9bOkXEcuYNpJQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtdelgddtgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
-    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homheqnecuggftrfgrthhtvghrnhepieektdffjeffvdefudeiiedvfeekudefkeejvddu
-    teefuefgteekgeeludeiieffnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgpd
-    hkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqd
-    eiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhl
-    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudefpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehjvghnshdrkhhorhhinhhthhesthhuthgrrdhiohdp
-    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgi
-    drghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
-    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
-    gtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhr
-    tghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    grlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhs
-    sehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:kOgvZxDv2WpRolj2GaG0NXAKok3sI43OdxljKjOp8OaGBdnim_QKeg>
-    <xmx:kOgvZyjulsqgXcCakP13fYEBE9Ivp3AA1gVCmJFExEwBHmfMy_1MKw>
-    <xmx:kOgvZ1rzAZqrUG7Y5rVG8EhOk11v-gQQHQMJc8FRsIXvTc-ozZWaPw>
-    <xmx:kOgvZ9gKDSkxXUIkJmH5b7BFGBL8uN6jDo1NqR9h5teaRA4GEy0SvQ>
-    <xmx:kOgvZ9R6HIrM-i1eKeuuLxipeddfSfbIIBmk8mUiwiSQibykSKTtGaPD>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 9 Nov 2024 17:56:16 -0500 (EST)
-Date: Sat, 9 Nov 2024 14:56:15 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: jens.korinth@tuta.io
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Dirk Behme <dirk.behme@gmail.com>
-Subject: Re: [PATCH v3 1/3] rust: print: Add do_once_lite macro
-Message-ID: <Zy_oj_k-qUPLSVEr@tardis.local>
-References: <20241109-pr_once_macros-v3-0-6beb24e0cac8@tuta.io>
- <20241109-pr_once_macros-v3-1-6beb24e0cac8@tuta.io>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="U5N3BRcD"
+ARC-Seal: i=1; a=rsa-sha256; t=1731195206; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=D8AHu1Meo6IpkWljgXCohFH2DR5rDPngrAjHkGVGboAIL8dYNq61iSUunvC97i2JQ3ezbJtoe0pGDWxbUCmzenXppJSZV1kyepNHmhHsgiFJzRnII6+ddpiNi656s1Mn/rfN8SRGw9NfPhP918QVjp4goX7W/dkthej28qbRRq0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1731195206; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OTChu5Xh2WDzZYFci/Hlm2qvkrxX+jwft25slN/Aayk=; 
+	b=LXAYnGIHkSxQ3Z4/aMwdCkweKK+yl6b/XZMogivvlq30RwrE4jR5Mgd9TYuzhRs9oQZL4KkYEfZSLd0hCFBwHWBktRpAiMvozj1BEdw6EiqgXap7eG8E0g5qVOOBdVW0l22bVn/28Z2VQE3e/UxEVpOkUDG34PM+IgqSPva3om4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1731195206;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=OTChu5Xh2WDzZYFci/Hlm2qvkrxX+jwft25slN/Aayk=;
+	b=U5N3BRcDY4KoPkckbBvrE36IjVs+mRVKq2Nkr7i6UpWjl5ZwKBtHuZtEDKE4yDav
+	2dctwxq7H0kao+ox6+KFcFrG7OCu6yAnJ6duh/ZTgyN+Bn7Vf/eVUa3Fs+5kzjVNjIC
+	POesevw7/2jwehBxUc+1BViFv4E9aEV3dhU6Tcvc=
+Received: by mx.zohomail.com with SMTPS id 1731195204964700.2759917507861;
+	Sat, 9 Nov 2024 15:33:24 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241109-pr_once_macros-v3-1-6beb24e0cac8@tuta.io>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v3] rust: transmute: Add implementation for FromBytes
+ trait
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20241109055442.85190-1-christiansantoslima21@gmail.com>
+Date: Sat, 9 Nov 2024 20:33:09 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ ~lkcamp/patches@lists.sr.ht,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C0A689E8-4192-4851-9650-5B76F5A30086@collabora.com>
+References: <20241109055442.85190-1-christiansantoslima21@gmail.com>
+To: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-Hi Jens,
++cc Abdiel
 
-Thanks for working on this!
-
-On Sat, Nov 09, 2024 at 09:30:07PM +0100, Jens Korinth via B4 Relay wrote:
-> From: Jens Korinth <jens.korinth@tuta.io>
-> 
-> Add do_once_lite macro that executes code only once.
-> Has two rules, one with a condition to replace [`do_once_lite_if`] in
-> the kernel, and one without.
-> 
-
-Instead of a do_once_lite macro, I suggest that we implement a `Once`
-type similar to the std one [1]. "Doing something once" doesn't need to
-be implemented as a macro or relying the static memory allocation. I've
-checked the usage of section ".data.once", it's only used for reset
-WARN_*ONCE() state (see clear_warn_once_set()), so we can have an `Once`
-implementation, and mark it as `.data.once` link section in
-`pr_*_once!()` like:
-
-	macro_rules! pr_warn_once (
-	    ($($arg:tt)*) => {{
-		#[link_section = ".data.once"]
-		static ONCE: Once = Once::new();
-
-		ONCE.call_once(|| { $crate::pr_warn!($($arg)*) });
-	    }}
-	);
-
-With this `Once` type, we can do other things like waiting for some
-initialization to finish. We can put the waiting as a future work, since
-`pr_*_once!()` don't need it.
-
-Thoughts?
+Hi Christian,
 
 
-Another meta comment is the usage of `AtomicBool`, please see the LKMM
-atomic patchset [2]. In short, we won't use core::sync atomics in
-kernel, instead we can only use the atomics implemented by ourselves.
-And we currently don't support `Atomic<u8>`, there requires some work to
-get that done.
+> On 9 Nov 2024, at 02:54, Christian dos Santos de Lima =
+<christiansantoslima21@gmail.com> wrote:
+>=20
+> Add implementation and documentation for FromBytes trait.
+>=20
+> Add new feature block in order to allow using ToBytes
+> and bound to from_bytes_mut function. I'm adding this feature
+> because is possible create a value with disallowed bit pattern
+> and as_byte_mut could create such value by mutating the array and
+> accessing the original value. So adding ToBytes this can be avoided.
 
-The other thing of using `AtomicBool` is that it's not the most
-space-efficient way for `Once` (if xchg() is used) on all the archs that
-support Rust in kernel. RISCV doesn't has a byte-wise swap, so the
-implementation has to simulate with a 32-bit or 64-bit swap + mask,
-that'll be totally 5 instructions, and each instruction take 4 bytes. As
-a result, if the `swap()` is inlined (which most atomic operations would
-be for performance reasons), you save 3 bytes by using `AtomicBool`
-other than `AtomicI32` at data section, but you pay 4*4 extra bytes at
-the instruction section compared to using `AtomicI32`.
+I=E2=80=99ve read this a couple of times. It=E2=80=99s hard to =
+understand what you=E2=80=99re trying to say.
 
-The solution could be: 1) forcing the `swap()` to be a outline function
-call, or 2) using i32 insteal of bool for `Once` on RISCV. Either way,
-I would like to see this being taken care of, and you could share some
-results of the space cost from the solution you finally use. Thanks!
+There are some grammar errors, but the even the key idea is hard to =
+understand. IOW,
+I had to go on Github to get the extra context needed to understand this =
+part below:
 
-[1]: https://doc.rust-lang.org/std/sync/struct.Once.html#
-[2]: https://lore.kernel.org/rust-for-linux/20241101060237.1185533-1-boqun.feng@gmail.com/
+> possible create a value with disallowed bit pattern
+> and as_byte_mut could create such value by mutating the array and
+> accessing the original value. So adding ToBytes this can be avoided.
 
 
-Regards,
-Boqun
+Also, core::simd::ToBytes? Maybe Bjorn meant a new =
+kernel::transmute::ToBytes trait?
 
-> Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
-> ---
->  rust/kernel/print.rs | 34 ++++++++++++++++++++++++++++++++++
->  1 file changed, 34 insertions(+)
-> 
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index a28077a7cb301193dcca293befb096b2dd153202..9c7434b221984ad325138e5dc90ab4340cd0be2e 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -414,3 +414,37 @@ macro_rules! pr_cont (
->          $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
->      )
->  );
+Christian, are you aware of Abdiel=E2=80=99s dma_alloc_coherent patch =
+[0]? How is this patch
+an improvement over the simpler code below, for example?
+
+> + fn cpu_buf(&self) -> &[T]
+> + {
+> + // SAFETY: The pointer is valid due to type invariant on =
+`CoherentAllocation` and
+> + // is valid for reads for `self.count * size_of::<T>` bytes.
+> + unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
+> + }
 > +
-> +/// Executes code only once.
-> +///
-> +/// Equivalent to the kernel's [`do_once_lite_if`] macro when called with
-> +/// a condition expression.
-> +/// Public but hidden since it should only be used from public macros.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// kernel::do_once_lite!(pr_warn!("warn once"));
-> +/// kernel::do_once_lite!({ /* perform_complex_test() */ true }, pr_warn!("warn only once"));
-> +/// ```
-> +#[doc(hidden)]
-> +#[macro_export]
-> +macro_rules! do_once_lite (
-> +    ($e:expr) => (
-> +         $crate::do_once_lite!(true, $e);
-> +    );
-> +    ($condition:expr, $e:expr) => (
-> +        {
-> +            #[link_section = ".data.once"]
-> +            static ALREADY_DONE: core::sync::atomic::AtomicBool =
-> +                core::sync::atomic::AtomicBool::new(false);
-> +
-> +            if !ALREADY_DONE.load(core::sync::atomic::Ordering::Relaxed)
-> +                && $condition
-> +                && !ALREADY_DONE.swap(true, core::sync::atomic::Ordering::Relaxed)
-> +            {
-> +                $e;
-> +            }
-> +        }
-> +    );
-> +);
-> 
-> -- 
-> 2.44.1
-> 
-> 
+> + fn cpu_buf_mut(&mut self) -> &mut [T]
+> + {
+> + // SAFETY: The pointer is valid due to type invariant on =
+`CoherentAllocation` and
+> + // is valid for reads for `self.count * size_of::<T>` bytes.
+> + unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.count) =
+}
+> + }
+
+I believe that most users would have a pointer to memory allocated on =
+the C side, as you can
+see from Abdiel=E2=80=99s excerpt above. Without a user, it=E2=80=99s =
+hard to know why we need this, specially
+given the simd::ToBytes bound.
+
+Just my 2c.
+
+=E2=80=94 Daniel
+
+
+[0] =
+https://lore.kernel.org/rust-for-linux/20241105104726.3111058-3-abdiel.jan=
+ulgue@gmail.com/=
