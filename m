@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26611E4BE;
-	Sat,  9 Nov 2024 23:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9DA233D62
+	for <rust-for-linux@vger.kernel.org>; Sat,  9 Nov 2024 23:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731195224; cv=pass; b=mkAHxMxG6yUySqI1X14uHr4aA/8fqwerofMdAuk3eym21Uruu3IJG7ww3MKlw+37y03PQvbPDdVxUsoQzodiwlU0y+wsKNUHxVMJ6PANgt2yRsvC5rA5R+CPFpxx61Zjcbu/ODUqu40TNTEJsFJ6D/eRJfbmPSeKD2H18F2DVrk=
+	t=1731195762; cv=pass; b=Axj44UouDCaPcd3M/6bclrkaT39iUkhu5gaC2o2wNl6dbvWw/iYy6S07JgzLgFNILwgiO+BkubTfK0yWR+DOcOlvuM1WhGblbe7pJJN/QiY9k/CO38tcu5ZuSyVVhDG43l1O+tjikZ8DhLeRM22TykGmU88e14IolpG3hTZRuj4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731195224; c=relaxed/simple;
-	bh=OTChu5Xh2WDzZYFci/Hlm2qvkrxX+jwft25slN/Aayk=;
+	s=arc-20240116; t=1731195762; c=relaxed/simple;
+	bh=+cUuFbMeMskbVlyiIIsFhdb/9+3BEiQiYb2beUpmYyM=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ZNEmcBmLQTyFrpvSa7VvqcO0F+ZmwCjxWG2whikopIK08G9TcHpUTOtldL4OvUUm8wAY/yJcAkwWO/QlHnVoSv8fxVMjvBstuzk+wne8FUjQ5SXznhTffU+EcezINpzSp3b0IMYlV+sDpwKn4+kUL3qucIofjv4pMtIcLnQJW54=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=U5N3BRcD; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=nefa3tNA0LGFiu18z5pAXiNtcQYIlLhQO5ihHckIue0wlXtCNQ0hSjdGehpDXFLcULKtV15ITI7Uzm2Y0+5iGcSO3FLu07EmRu1LmbGxN29R2EfIMIFv/oh9/gReBf58dm5ZwR+IlGak8/0TS+xAX6pmbRSeByaNQScziWho90o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fB3EwaTp; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="U5N3BRcD"
-ARC-Seal: i=1; a=rsa-sha256; t=1731195206; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fB3EwaTp"
+ARC-Seal: i=1; a=rsa-sha256; t=1731195749; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=D8AHu1Meo6IpkWljgXCohFH2DR5rDPngrAjHkGVGboAIL8dYNq61iSUunvC97i2JQ3ezbJtoe0pGDWxbUCmzenXppJSZV1kyepNHmhHsgiFJzRnII6+ddpiNi656s1Mn/rfN8SRGw9NfPhP918QVjp4goX7W/dkthej28qbRRq0=
+	b=IXu1DddGhl3F8HqU8S3b3M65nQuRunu2DNp7CVVPeoDwY7ve1DNUcNU2Y4JiYQ+HQbPgF/TS6nt7b5cduXKkDqxrEcI/nrFimm2fdGsivjRtsHBolM9FtQt8Te62jh4HpFWlrSY50LvsXfYSSaj8iTDjsJ+v3qGTGEkoOJs6I6M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1731195206; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=OTChu5Xh2WDzZYFci/Hlm2qvkrxX+jwft25slN/Aayk=; 
-	b=LXAYnGIHkSxQ3Z4/aMwdCkweKK+yl6b/XZMogivvlq30RwrE4jR5Mgd9TYuzhRs9oQZL4KkYEfZSLd0hCFBwHWBktRpAiMvozj1BEdw6EiqgXap7eG8E0g5qVOOBdVW0l22bVn/28Z2VQE3e/UxEVpOkUDG34PM+IgqSPva3om4=
+	t=1731195749; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MVzArtzAhC2KZegJDx/Eg+TgZrGXSJ2H4Nr2IImTR/Q=; 
+	b=XFO7ayCayhe9KQ2MLV4tD5p+EeBKeONUvt06BJt8aG7ZBC4zCvEsT0+qb3/2mxQfRAaWgne1cvVfr36E7JFfKjXxxwFtj81N6xTmWnn2v264/bHPVWouZcZUeEeVUZ7xj1CvEaaHLNjCwQ1fbOt4CI9IpNteeLn2FYQXiNBqxUM=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1731195206;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1731195749;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=OTChu5Xh2WDzZYFci/Hlm2qvkrxX+jwft25slN/Aayk=;
-	b=U5N3BRcDY4KoPkckbBvrE36IjVs+mRVKq2Nkr7i6UpWjl5ZwKBtHuZtEDKE4yDav
-	2dctwxq7H0kao+ox6+KFcFrG7OCu6yAnJ6duh/ZTgyN+Bn7Vf/eVUa3Fs+5kzjVNjIC
-	POesevw7/2jwehBxUc+1BViFv4E9aEV3dhU6Tcvc=
-Received: by mx.zohomail.com with SMTPS id 1731195204964700.2759917507861;
-	Sat, 9 Nov 2024 15:33:24 -0800 (PST)
+	bh=MVzArtzAhC2KZegJDx/Eg+TgZrGXSJ2H4Nr2IImTR/Q=;
+	b=fB3EwaTpS4+q1atF28LhIZmuKHvQNPvXAfe6YskiWuJ/KedH0/7CeE2Vl3/tey1U
+	DLxApkY0bDJUxuJM758vgKaLvvTxXffYAC2NxfLMyyxTuNZCqsKm/76GStO07EP7/ZI
+	ey5n9T0OP3JCkJ/j6YvmFA8Pq1rt3ewevdvwR4Yc=
+Received: by mx.zohomail.com with SMTPS id 1731195746792914.9116872030504;
+	Sat, 9 Nov 2024 15:42:26 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,94 +44,124 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v3] rust: transmute: Add implementation for FromBytes
- trait
+Subject: Re: [PATCH v4 2/2] rust: add dma coherent allocator abstraction.
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20241109055442.85190-1-christiansantoslima21@gmail.com>
-Date: Sat, 9 Nov 2024 20:33:09 -0300
+In-Reply-To: <2afe6041-20c6-4121-acb0-ffb295575619@gmail.com>
+Date: Sat, 9 Nov 2024 20:42:12 -0300
 Cc: rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- ~lkcamp/patches@lists.sr.ht,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>
+ aliceryhl@google.com,
+ a.hindborg@kernel.org,
+ dakr@redhat.com,
+ airlied@redhat.com,
+ miguel.ojeda.sandonis@gmail.com,
+ wedsonaf@gmail.com,
+ a.hindborg@samsung.com
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C0A689E8-4192-4851-9650-5B76F5A30086@collabora.com>
-References: <20241109055442.85190-1-christiansantoslima21@gmail.com>
-To: Christian dos Santos de Lima <christiansantoslima21@gmail.com>
+Message-Id: <A970979F-F4E6-4474-81F2-8FF471C82C35@collabora.com>
+References: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
+ <20241105104726.3111058-3-abdiel.janulgue@gmail.com>
+ <81E07830-0A54-49C8-AC07-6511F6C816C4@collabora.com>
+ <2afe6041-20c6-4121-acb0-ffb295575619@gmail.com>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 X-Mailer: Apple Mail (2.3826.200.121)
 X-ZohoMailClient: External
 
-+cc Abdiel
+Hi Abdiel,
 
-Hi Christian,
-
-
-> On 9 Nov 2024, at 02:54, Christian dos Santos de Lima =
-<christiansantoslima21@gmail.com> wrote:
+> On 7 Nov 2024, at 10:01, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
+wrote:
 >=20
-> Add implementation and documentation for FromBytes trait.
+> Hi Daniel,
 >=20
-> Add new feature block in order to allow using ToBytes
-> and bound to from_bytes_mut function. I'm adding this feature
-> because is possible create a value with disallowed bit pattern
-> and as_byte_mut could create such value by mutating the array and
-> accessing the original value. So adding ToBytes this can be avoided.
+> Thanks for the feedback!
+>=20
+> On 06/11/2024 18:40, Daniel Almeida wrote:
+>> Calling `get/get_mut()` for each T seems a bit of too much overhead.
+>> If T is u32, for example, I expect a driver to want to read or write
+>> a significant number of them at once. This should be common
+>> if you want to read or write raw bytes.
+>> You should probably make the CPU-addressable region available
+>> to users after validating if the range asked is within bounds.
+>> Luckily, cpu_buf() will already tie the lifetime of the slice to =
+&self,
+>> so they cannot touch that memory if the mapping is gone.
+>=20
+> You mean the read/write helpers could be removed and we expose the =
+cpu_buf() helper instead that takes a valid range, returns a checked =
+slice and let the user have the flexibility in implementing read/writes =
+themselves. Is this what you had in mind?
 
-I=E2=80=99ve read this a couple of times. It=E2=80=99s hard to =
-understand what you=E2=80=99re trying to say.
+Yes, that=E2=80=99s what I have in mind.
 
-There are some grammar errors, but the even the key idea is hard to =
-understand. IOW,
-I had to go on Github to get the extra context needed to understand this =
-part below:
+>=20
+>> The fact that reads/writes will copy the memory is also a bit =
+problematic
+>> given that you can offer access to the underlying buffer without =
+copying
+>> anything. Also, the bound on `FromBytes/AsBytes` is, for now, a de =
+facto
+>> bound on `Copy`, since it is only implemented for types which =
+themselves
+>> implement Copy, i.e.:
+>> ```
+>> // SAFETY: All bit patterns are acceptable values of the types below.
+>> unsafe impl FromBytes for u8 {}
+>> unsafe impl FromBytes for u16 {}
+>> unsafe impl FromBytes for u32 {}
+>> unsafe impl FromBytes for u64 {}
+>> unsafe impl FromBytes for usize {}
+>> unsafe impl FromBytes for i8 {}
+>> unsafe impl FromBytes for i16 {}
+>> unsafe impl FromBytes for i32 {}
+>> unsafe impl FromBytes for i64 {}
+>> unsafe impl FromBytes for isize {}
+>> // SAFETY: If all bit patterns are acceptable for individual values =
+in an array, then all bit
+>> // patterns are also acceptable for arrays of that type.
+>> unsafe impl<T: FromBytes> FromBytes for [T] {}
+>> unsafe impl<T: FromBytes, const N: usize> FromBytes for [T; N] {}
+>> ```
+>> Also, I think FromBytes is a bit restrictive here. In a lot of =
+places, drivers
+>> expect to be able to cast the mapping to a given struct whose =
+definition
+>> was sourced from some technical document or vendor code somewhere.
+>> For example, here is some code for the H.264 decoder in the `rkvdec`
+>> driver:
+>> ```
+>> struct rkvdec_h264_priv_tbl *priv_tbl;
+>> <cut>
+>> priv_tbl =3D dma_alloc_coherent(rkvdec->dev, sizeof(*priv_tbl),
+>>      &h264_ctx->priv_tbl.dma, GFP_KERNEL);
+>> ```
+>=20
+> We could just remove the FromBytes/AsBytes bound and let
+> the constructor handle the ZST restriction there (like in the current =
+submission)? If that is the case, there would be no need to wrestle with =
+this issue then?
+>=20
+> /Abdiel
+>=20
 
-> possible create a value with disallowed bit pattern
-> and as_byte_mut could create such value by mutating the array and
-> accessing the original value. So adding ToBytes this can be avoided.
+Alice pointed out to me later that the FromBytes/AsBytes traits can be =
+implemented
+by driver-defined types. I had missed that.
+
+Given this, the FromBytes/AsBytes bound seems fine. Drivers would just =
+need to
+implement the (unsafe) traits for their types and it would be up to them =
+to make
+sure that the safety requirements hold.
+
+Given the above, I am fine with FromBytes/AsBytes, you don=E2=80=99t =
+need to change
+that IMHO.
+
+With read() and write() gone, so is the bound on Copy, which also =
+satisfies
+my other comment.
+
+=E2=80=94 Daniel.
 
 
-Also, core::simd::ToBytes? Maybe Bjorn meant a new =
-kernel::transmute::ToBytes trait?
 
-Christian, are you aware of Abdiel=E2=80=99s dma_alloc_coherent patch =
-[0]? How is this patch
-an improvement over the simpler code below, for example?
-
-> + fn cpu_buf(&self) -> &[T]
-> + {
-> + // SAFETY: The pointer is valid due to type invariant on =
-`CoherentAllocation` and
-> + // is valid for reads for `self.count * size_of::<T>` bytes.
-> + unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
-> + }
-> +
-> + fn cpu_buf_mut(&mut self) -> &mut [T]
-> + {
-> + // SAFETY: The pointer is valid due to type invariant on =
-`CoherentAllocation` and
-> + // is valid for reads for `self.count * size_of::<T>` bytes.
-> + unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.count) =
-}
-> + }
-
-I believe that most users would have a pointer to memory allocated on =
-the C side, as you can
-see from Abdiel=E2=80=99s excerpt above. Without a user, it=E2=80=99s =
-hard to know why we need this, specially
-given the simd::ToBytes bound.
-
-Just my 2c.
-
-=E2=80=94 Daniel
-
-
-[0] =
-https://lore.kernel.org/rust-for-linux/20241105104726.3111058-3-abdiel.jan=
-ulgue@gmail.com/=
