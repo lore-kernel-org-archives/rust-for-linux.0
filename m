@@ -1,95 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3474519F411
-	for <rust-for-linux@vger.kernel.org>; Sat,  9 Nov 2024 20:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E37D13BC12;
+	Sat,  9 Nov 2024 20:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731184238; cv=none; b=G/KCv5bDbnMfNOTrhPphvHL5wCySJYGRrNt/38Vu6qifV9ymitYEPxXXOF0KnXRJIMUxKbcaQSOZ2iJ5ztrXufCuZ1NHThTNSRUrp/6wlp0h/HuaL9/DCq7L9e6tsJOv7DgilWPExu+ugawTTcuH8WwO+Pt1UrHVwlY0Z6jC20E=
+	t=1731184366; cv=none; b=HbecqsgoYnFIluvzRD6mr3myALRKlLkAOhgiOrBLXWejeBip0uSbJBq4+i5wdwVK5aLushk41BCSJrlbyxKb12JvLLkmqvM4T0AAH3bnPFvArJ6YhQiEyVAvCkz+72YtsyAnjArxD+6CjWM/jYGmpL7wCwZv/OSQUszD+3roAAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731184238; c=relaxed/simple;
-	bh=FHGhaxX9A6w6dofyFIe2kgutlpUueSeGpMF8xdQrn74=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Nb60TwEvzBChJype4N3ZjU9Uz/noaBWPvXZrPS5QFL8u7X8D/0ZHaIrvh/k70BadvLdFvRkJp0iJXdu091hQIDUkEDylCuOpg7NIespm5lP032UHnAyVqFvzJFar89wf2ONe3zzTQ75R0Z3ybcXf8MubhB2lREEDEu01edXwq0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tkeapy/Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731184366; c=relaxed/simple;
+	bh=8xpxyEfI555geThWq9tsO1QjLFbEyBXqujrrvnAdajY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kH0zPWTZ02xSfnS2WLqeldojHByGCfS3NaIEH2xjpHX2C9z2SAkLLYQzIHSnVetcD/6UJqzVx9Mr46M9WK+LtSOAmDiknxO97tljDq3rI0RPGehi07CE50rnJ9UsJ4hpuPICiVeStjumn0vyavIIZWsPx52ugVXfrAkAGf8NZ9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZPSddN6; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tkeapy/Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D0D89C4AF0B;
-	Sat,  9 Nov 2024 20:30:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731184237;
-	bh=FHGhaxX9A6w6dofyFIe2kgutlpUueSeGpMF8xdQrn74=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=tkeapy/ZdaLRLQ3MD5IIDNG7Yu6+QkNNgFMAdMTU5qUQqrJ020K3/dkKA2UULdVE9
-	 8Nhv+d9D+RQ8xn99NDxMbI6Brh8kiGVhzcpzS1HZQPVWLBQFGWW6pNQnRuWoJkDwcj
-	 fWpOQeJCXHvxEjUiGSMx5NRueMtEVSakEfDXFHtvzR4mr6P+QvMVcvO0llElvcwM1x
-	 UnsaWhQby3auX4nBqX6zi/oGt/UFae46Ag+G+E9tzF7ETRIUbuoIwQWAeDrmm14Yyz
-	 MI1PtVFsTIkCNJ/oYUzka5V3MmByWmsv1I1n2SxHtMyh+bUJCXrxMA84g2GvT/uZDD
-	 TLKcR2+MHyx/Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C03EFD5E384;
-	Sat,  9 Nov 2024 20:30:37 +0000 (UTC)
-From: Jens Korinth via B4 Relay <devnull+jens.korinth.tuta.io@kernel.org>
-Date: Sat, 09 Nov 2024 21:30:09 +0100
-Subject: [PATCH v3 3/3] rust: error: Replace pr_warn by pr_warn_once
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZPSddN6"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20cb8954ec9so4170265ad.3;
+        Sat, 09 Nov 2024 12:32:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731184364; x=1731789164; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=txlj4/on3Ga9QXI0Vgih7uY95lnyqtcv0s2L9FFiS/0=;
+        b=lZPSddN63YLgCwLexGZBCHb4BQ/9RlXTbl2tCxU9LLiMcMjz0MsEgLOIVFl0WZIPEQ
+         1qCJLrtsVEJzreR2Fvlw1XOnPvQ+jAWm+moqtEHZHoqSFkhfm45HV+G5d3oWJLB/3qwj
+         vpKKzFZLEBHVwjC+bN/iyAsekfBPsVGStrkasLhm8CMO6pmmOAX3y26VJHCumDAUGFcv
+         lwoOxJnP4Vp2jhQSALDFDJnpkwxZWD+mLvT+ltlq7Cyk5XtyAHELkahGm7Gkk1skGOcC
+         xYIwRUGu8o6o87Pim/F2zVqPJPc5IaPpkIom8ur2BWok13JDoYyxQbtdawY7PXMfy4Gp
+         b7lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731184364; x=1731789164;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=txlj4/on3Ga9QXI0Vgih7uY95lnyqtcv0s2L9FFiS/0=;
+        b=aOfKuSi7rIbYmMAM+Rrt9U1wWMSU3UlwrrM81HOywiX2luoPfR7gzeAImcV60McnVg
+         N3Y+xmJoK+82sfg+0z3w3Sc1MD9p22xx3mVZlJP4GDBce+cyjGBEqZouSDVGAh1ZIJbU
+         7Fvghxx9Kampm4cvVjzDBVW46B9uCfO85PsXhZ/qORg+G3EkgLFezzhj4xjul8V3DZ5+
+         vyfq3u9O3JRWt/tqSnNZpS7B+USMP1q40g3Tyx7m1rIi2r7ZdSCSYP8OvnX++x+1HSAU
+         r0Zy+aGeWdTpqYAQS+sa1HoONaC9CL1q4gb8MrGxMdnBhUcU4ikaSJw67qSRP3O7A3EP
+         lRIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBwIXn86J0iT7GIyhi6A1FN8L0GotDxBQvIfCbpqOfq/flcvmSnx9liXxz6AJsydPzodFkB21bfaCRM1k=@vger.kernel.org, AJvYcCVbOYmwe3NVT9LrsmDmEhWaqJXrGA21rBrWJICUGaFQqXdR/iKo2CPPHu7IXpOdGu4hk6HwXBEKM92GtR3hwGSJ@vger.kernel.org, AJvYcCW21S/vF7kwgvqcH7JNEQWLin9j66WEeaXk25eTnsqB2aYNWwiRMtwusOg0e0cH0cWlBgAh3F4LWZC9S9LGTRI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVQysvEL+XOQXCzPwBsL9RpZbrVZ3Sgt41GYApLzHw05PiJxoJ
+	1ztlylN+ZSe3r2bVIj/O3QXRF3eiZXrn7F3kzfRwf2Cv5OsGqYsDvq0gQVa/najm8qZytrlqUBe
+	leTREeR1PhmJIJh40rZQCz7ghL6E=
+X-Google-Smtp-Source: AGHT+IHBcFg3hYK28O/uquSXklX+ZaazN5F5oi/XKmnhVr71as4eEqMd8emvbhC6Y0ZBhIgfi3Ojg1DgmNOZehrFfaA=
+X-Received: by 2002:a17:90b:4b43:b0:2e2:cd5e:b25 with SMTP id
+ 98e67ed59e1d1-2e9b1680927mr4264455a91.6.1731184364243; Sat, 09 Nov 2024
+ 12:32:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241109-pr_once_macros-v3-3-6beb24e0cac8@tuta.io>
-References: <20241109-pr_once_macros-v3-0-6beb24e0cac8@tuta.io>
-In-Reply-To: <20241109-pr_once_macros-v3-0-6beb24e0cac8@tuta.io>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Dirk Behme <dirk.behme@gmail.com>, Jens Korinth <jens.korinth@tuta.io>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731184236; l=871;
- i=jens.korinth@tuta.io; s=20241107; h=from:subject:message-id;
- bh=bZLBDxudHxGsVw5ADGygZHTwpiRJkVukaGhfv2uAfCU=;
- b=6+ZSRETK6UwifxPKFo41QPqrr0AH+c/soH4o+418zkt5npLUEhHomEIBZrcSLOb76qb5V8y7m
- qE5+OtNGiVSBEK/U0aDugS2KDwjtT3XYZ64sm3jwXoCi+pBiAMcDoIY
-X-Developer-Key: i=jens.korinth@tuta.io; a=ed25519;
- pk=bG0q4Zyj3o4d/r326zKL7ym+/tXzyykcjh+U0M13iyc=
-X-Endpoint-Received: by B4 Relay for jens.korinth@tuta.io/20241107 with
- auth_id=270
-X-Original-From: Jens Korinth <jens.korinth@tuta.io>
-Reply-To: jens.korinth@tuta.io
+References: <20241101064505.3820737-1-davidgow@google.com> <20241101064505.3820737-2-davidgow@google.com>
+ <ZyUUGNywoADngOwM@Boquns-Mac-mini.local> <CABVgOSmAj0hwVF0cKmzK_wS96Q4hgbe0t5L2dHFpcZpqrHev4Q@mail.gmail.com>
+In-Reply-To: <CABVgOSmAj0hwVF0cKmzK_wS96Q4hgbe0t5L2dHFpcZpqrHev4Q@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 9 Nov 2024 21:32:31 +0100
+Message-ID: <CANiq72=-8mq0ke-_K_a1syX6QRyQXRKNka6GLKWuMHAOn236JA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] rust: kunit: add KUnit case and suite macros
+To: David Gow <davidgow@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <rmoar@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jens Korinth <jens.korinth@tuta.io>
+On Sat, Nov 9, 2024 at 9:18=E2=80=AFAM David Gow <davidgow@google.com> wrot=
+e:
+>
+> Is there somewhere else we can put the attribute to support this
+> without having to either disable the warning, or use the experimental
+> feature globally?
 
-Use new pr_warn_once macro to resolve TODO in error.rs.
+Yeah, on the item, e.g. https://godbolt.org/z/oo8osadn4:
 
-Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
----
- rust/kernel/error.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+    const _: () =3D {
+        static mut X: i32 =3D 42;
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 7cd3bbab52f208961390de03a255446950e9eb04..fe1b31506b30fba0ec9d5339d80c2a7fa76ce7c7 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -102,8 +102,7 @@ impl Error {
-     /// be returned in such a case.
-     pub fn from_errno(errno: core::ffi::c_int) -> Error {
-         if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
--            // TODO: Make it a `WARN_ONCE` once available.
--            crate::pr_warn!(
-+            crate::pr_warn_once!(
-                 "attempted to create `Error` with out of range `errno`: {}",
-                 errno
-             );
+        #[allow(unused_unsafe)]
+        static mut S: *const i32 =3D unsafe { core::ptr::addr_of_mut!(X) };
+    };
 
--- 
-2.44.1
-
-
+Cheers,
+Miguel
