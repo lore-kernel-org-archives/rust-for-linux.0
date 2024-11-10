@@ -1,100 +1,132 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C903E1547F5
-	for <rust-for-linux@vger.kernel.org>; Sun, 10 Nov 2024 10:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B3429422;
+	Sun, 10 Nov 2024 14:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731236221; cv=none; b=tDZ9UQxMJND8JpVbUF+S6FtW9IQ0Kg6PgHH0FxDKYHWkOl9RYB98z0K1Oz/qOK1GXYfYJnoD3Huk3nQndQwGR+/750UdCkSJvKhjhpcHK7AuoYvuuws9DCUNrvY8DKX+4llrPhCStswSjvtaOQSVuEPCUZ6X2jwBX/G5oeqg8Rg=
+	t=1731248051; cv=none; b=WB9saq3OzXHV6ideNNKW14vTWwa5KwKpv4iRWBMHHGcFJduhMav1Jlk95FDMCC3MsEUH4rV0tViyk/ZscRQisSrVSifvAu/b+MV32bIm/2vr4HiNSDzVsryF7XI2J/gofnvtpUH2Oo5clb4z7YYqK8o7wlJFeQyo1cRP34q9N0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731236221; c=relaxed/simple;
-	bh=fApCHzHaNaMN9ZQJrGXmdWes5ZsjF+zWr97kyjUl1Ww=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NgstSNEHUtLfDPNBbVk0USZ4n0twoRRKkWw6tKscubzk7KLS5YJizBdDbwRwD55HkBkXNs7zcQrZu25QDcNDYnJVtnPoiHZdpgT5FqLtH71KGfRlq4exdaUjBGHxoRbiMTS92sR+HrUVbHi8fJLb0EgyCCQnon1dBBvZUqsEfek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPNRG97x; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1731248051; c=relaxed/simple;
+	bh=pOzIUOF7wiHLtB7YQ3u3vJikhq9NWR9CPNS8vj3sDwg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=N3wkDRUfWtreQV4d5CxYDPAAng4zI/EcXV5zrrrduOAKEWyhX6NQhq8LFYlCqtJnP3U+taX+K6SGZv3ZZmOEQYk9XZOt2G2NQgYTW6GZ4/8RhtC8Vr2+/31i/Jr8JJ80ZEQU9liPy+fnSBXH5XL7KsllNZFibZErjSPle4kreXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fKlri7W5; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPNRG97x"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4314c452180so25975635e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 10 Nov 2024 02:56:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fKlri7W5"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6cbcc2bd7fcso25317996d6.1;
+        Sun, 10 Nov 2024 06:14:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731236217; x=1731841017; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S6pZc1K5vHW1yLRrOq46D/RKiIu83zxt8iuFPjL5iSM=;
-        b=tPNRG97xDYcZRaVFOPuoMoDKQsphmkyD+SxrMAW2TwOnX22AtrW3+672fryaqR0zAj
-         us4HTz+iOj+cyP4peFjaoZJWZp3V0Mc8PvMU64xJFkuuTvaskWHuKkvvOmr6liD8BKDE
-         0+dc3X6Vu1ttFp/99H+6PAaBg4PJ0mDP2ntPvGWmN+ln0A0PJRnnBaqSmM8F2f/cIPdH
-         HZdoWgdAPK3+HMfkgONVXMJJJQ3TPIXq6yWUsMs10rN5U9O85d+PSv3yKVWjnUHh2Xei
-         mN7G/YO1P5UOaZqhUsfos2UY7zWTKrzA1O3gBCKlGHwAZXYsQXSX2ndgX0q7AlVliEnE
-         eX7w==
+        d=gmail.com; s=20230601; t=1731248048; x=1731852848; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9qUdG7l9v15Zf1jE/yxJ8LrZf94YWwjhDRp1CDkovWY=;
+        b=fKlri7W5om48tzEY0WiaxQe4ey0dz2yn/C2D+EV3LCPuCSHXIVU+hmFN2/PQgosO9v
+         odIjOV2WYC8bPxGgV+TDoCOqviLXX7rQT+0hhgM60Trw4yyZUf+til/NyWsbx7IbCJjQ
+         KIx59Z5d3AIy80qE7O4bqDgsfoY8yUl87K44L+kdZWRuG7de5Gykvgej9V4RajhUTEHD
+         KT6Bkf77d6A700sMsehQhCm5DzhAoC7prA+RljZ7IufdOdWSka3+uZoy79GNQmgbHWKw
+         GieN6CLUeHz4BqBLdf+C7h+3AvPVPeQar0gBcPRE798ZsDUppMJCDq9q3eHrPy2+v+k5
+         o49g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731236217; x=1731841017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S6pZc1K5vHW1yLRrOq46D/RKiIu83zxt8iuFPjL5iSM=;
-        b=Yvp3jDjUVut433LBQf+Vxs7JbvEMvtRII1dpOzaktJqFYHmx1J1HBxvBvv4oI4I8aH
-         kC5s2mC5YOczZZpiSIvO7PJT4njezzPjMDrdRx+05pKG5H+t2wIsO1tfqY4Cd7lTFgdT
-         yHNDqGwa9BKvqEHzcKqJ3EwleltkcYKLLIaURMt0nBsU2SDpSOF2ofc74zFrNZos+ESq
-         OBPhaHQzdQLeNGRkG4o51+b5ZMq/x1DlQdFbvfaeSKuM7w5dYFQASGgommWQPiTz03P0
-         2+Kwh/zT5yy3/5AgG0NvW19szIOjTZTVpgqlxs1zoUWpAcEXVDzezGqRakJz8qgFkDyW
-         JQRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEivQUhYQI1QasgAJW2aJHa1jN7t9RD5elMwvvpYhPscHG3o/i7KQrDAqeJLcik9e68AoiifxKPGThNnfMxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN+UdQFnWUgRUX4hliagc2shMlc3YSomR6+rV35f/Oe8XPhKHa
-	zbEFVFfrrwxJXBhz7kddhajwEJTgyVFHgSOdqVnAtARQjZOxTdooz4NLX3LRstEQ8TA6G2Poe7N
-	01E5A5JxgfiYVR71C6ZMOvDCSJMfRmGWiBC+7
-X-Google-Smtp-Source: AGHT+IHMoahnfY0BITCuLZrb0MEqyF9R5+UE+yA+o8e4yfiWrcrbfycPVvQoH4GneTAdVu6kkPrdqxT9YFq58Bk4Ryc=
-X-Received: by 2002:a05:6000:1acc:b0:37c:cc7c:761c with SMTP id
- ffacd0b85a97d-381f1a6675fmr6413285f8f.3.1731236217034; Sun, 10 Nov 2024
- 02:56:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731248048; x=1731852848;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9qUdG7l9v15Zf1jE/yxJ8LrZf94YWwjhDRp1CDkovWY=;
+        b=DeV8LquJz0b1KEWEm5ZSgqcT+zQrEqEx+eBKrQqAT5nWlqVmtLtFxnvDchZVWCApVg
+         n/OnoL4wFreSNoxMBJ13TqqMbuDN8npQ3vPQjgBVdO4JVshHAEdO5uouCVl38cQ+su2Z
+         OG3tu8/N1naho9+b+Xh5+qExXDgAptjur3q2V/Z4ec5uagLpovVNW8+GaOxb2nEdH/ec
+         nFZnrmmv9xqIfJHl+wJG28qFWoKz1kCoCI4h2/NqLHZx6qfTOn7o8c6baxDvlniqb7sK
+         Wc0PAmuANz9QgVHcyS724DjAt1fBVfzMJ77jmdkKFDrUp4/auHiDvkUIDw7hQ11Ovhx2
+         altw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0e647n8kmPDcnBqA7j6dKoRGeNP3I461ygGMAi3gBMAo4dZPwl4bV4k2cEz8Zv6DVSkxncKvGwgdiWzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoPYsuHyLiPKUlkycZMsV40vQ5wktARNGYtCCujWoiS+U7pOdu
+	uSW2je6Wzn8hFHmH5Xhmr2o9Xv4tW5tFpbYysBvZobjB38SSSL62
+X-Google-Smtp-Source: AGHT+IG4/Q6M9FyY/tQKrE67oQB9Db/vk7rMOxvcN22TktcM/OhiwoOgIanwDhMtkSiCajlJwAp4Rw==
+X-Received: by 2002:a05:6214:4905:b0:6d1:9e77:f5cb with SMTP id 6a1803df08f44-6d39e14f33emr142174266d6.22.1731248048223;
+        Sun, 10 Nov 2024 06:14:08 -0800 (PST)
+Received: from 159.1.168.192.in-addr.arpa ([2600:4041:5be7:7c00:3d4c:5fc2:8f61:bb43])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961dfa0csm44570046d6.14.2024.11.10.06.14.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Nov 2024 06:14:07 -0800 (PST)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH v4 0/6] rust: add improved version of
+ `ForeignOwnable::borrow_mut`
+Date: Sun, 10 Nov 2024 09:14:01 -0500
+Message-Id: <20241110-borrow-mut-v4-0-053976068215@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241109165520.1461400-1-ojeda@kernel.org>
-In-Reply-To: <20241109165520.1461400-1-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 10 Nov 2024 11:56:44 +0100
-Message-ID: <CAH5fLghd2qdW02CeX5QgP2p2mwgxGEj93MrW5G-T1zOCVaUOhw@mail.gmail.com>
-Subject: Re: [PATCH RESEND] samples: rust: fix `rust_print` build making it a
- combined module
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Mark Rutland <mark.rutland@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, patches@lists.linux.dev, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKm/MGcC/23M0Q6CIBTG8VdxXEcDRKGueo/WheJB2TIaGNWc7
+ 97Rm7R1A/vO9vuPJEJwEMkxG0mA5KLzNxxylxHTVbcWqGtwE8GE5CxntPYh+CftHwNVheWaWwA
+ rDUFwD2Dda4mdL7g7Fwcf3ks78fn6N5M4ZVRbZqCySuNzavvKXffG92TOJPGlnMkNFUgbKAtWK
+ l1K3fzSfE31huZIa8WlPMgCP1jTaZo+LOKekRoBAAA=
+X-Change-ID: 20241030-borrow-mut-75f181feef4c
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>, 
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Sat, Nov 9, 2024 at 5:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> The `rust_print` module, when built as a module, fails to build with:
->
->     ERROR: modpost: missing MODULE_LICENSE() in samples/rust/rust_print_e=
-vents.o
->     ERROR: modpost: "__tracepoint_rust_sample_loaded" [samples/rust/rust_=
-print.ko] undefined!
->     ERROR: modpost: "rust_do_trace_rust_sample_loaded" [samples/rust/rust=
-_print.ko] undefined!
->
-> Fix it by building it as a combined one.
->
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/all/20241108152149.28459a72@canb.auug.org=
-.au/
-> Fixes: 91d39024e1b0 ("rust: samples: add tracepoint to Rust sample")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This is a re-submission of Alice's patch[0]. The leading commits are
+intended to improve the consistency and ergonomics of `ForeignOwnable`,
+and to split out the code movement originally included in the patch.
 
-Thanks for fixing this, Miguel!
+`ForeignOwnable::borrow_mut` is a dependency of the memory backing
+feature of `rnull`, the Rust null block driver.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/all/20230710074642.683831-1-aliceryhl@google.com/T/#u [0]
+
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v4:
+- Remove (another) superfluous `cast_const()`. (Alice Ryhl)
+- Link to v3: https://lore.kernel.org/r/20241108-borrow-mut-v3-0-b7144945714e@gmail.com
+
+Changes in v3:
+- Remove superfluous `cast_const()`. (Alice Ryhl)
+- Correct SoB placement. (Alice Ryhl)
+- Mention `as` cast removal. (Miguel Ojeda)
+- Link to v2: https://lore.kernel.org/r/20241104-borrow-mut-v2-0-de650678648d@gmail.com
+
+Changes in v2:
+- Call out ordering inconsistency in commit message.
+- Restore pointer type ascriptionin Arc. (Andreas Hindborg)
+- Remove most reduction of unsafe blocks. (Andreas Hindborg)
+- Lift splitting of unsafe block into separate patch.
+- Link to v1: https://lore.kernel.org/r/20241030-borrow-mut-v1-0-8f0ceaf78eaf@gmail.com
+
+---
+Alice Ryhl (1):
+      rust: add improved version of `ForeignOwnable::borrow_mut`
+
+Tamir Duberstein (5):
+      rust: arc: use `NonNull::new_unchecked`
+      rust: types: avoid `as` casts
+      rust: arc: split unsafe block, add missing comment
+      rust: change `ForeignOwnable` pointer to mut
+      rust: reorder `ForeignOwnable` items
+
+ rust/kernel/alloc/kbox.rs | 41 ++++++++++++++++-----
+ rust/kernel/sync/arc.rs   | 42 ++++++++++++++-------
+ rust/kernel/types.rs      | 93 +++++++++++++++++++++++++++++++++++------------
+ 3 files changed, 129 insertions(+), 47 deletions(-)
+---
+base-commit: ae7851c29747fa3765ecb722fe722117a346f988
+change-id: 20241030-borrow-mut-75f181feef4c
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
