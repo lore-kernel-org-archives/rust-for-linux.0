@@ -1,107 +1,71 @@
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF4B1DA53
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 13:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622EE19C552;
+	Mon, 11 Nov 2024 13:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731332983; cv=none; b=q0X2WfKVEUBneVFF+MvoBxYkHTRLKveBzRb9CqMZ323y12zBZt+qtoS/tqAyM1uF5difPMGOGGcix9SVPCQudYwywir+NkymMvE0hV9IacXGHoVm/+a8lRcss+hXkNHOM8OhZvXARQW3ApM1BCF4OUb84pPcuvVxYb7eQAwp3QE=
+	t=1731333130; cv=none; b=G7jicl+u+V5+l+59RtwN+KLQ5+hKOqrDCzjM6naf6wC38LLF6pTjscVKXGbfY0D5WnibB2QsiFFrqZhdRsQ4qZ7jJcxFaHWmrfW8Kt/kHr2bw/l+bI8xwbqup/XaOy6cl7B6xY3Rvce96h4I0xVWaT9M8fd+lxSkd/vbPCDgN74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731332983; c=relaxed/simple;
-	bh=fQr9lMQ/6dJ0BF0hfUWOj6Presxs5zpWHcrDseXjjFE=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=GmE6e70b1/035eKJarmM89+21eXq08aT9Ji3GfgGZ/+ABF0tW4O9D3WSiPthBcrfNkZ5P4ylQksV+W8F7nSNSiAxU+jIvnaYgbHhZWB6wRruGDhUcLc4AbebbqDeVoHrtoKEPUW8hDEue6hQ7shJZlZzC8gZSes2KdwaGdOSkMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=vCUqV5Gj; arc=none smtp.client-ip=203.205.221.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1731333130; c=relaxed/simple;
+	bh=QxF/kLnSp35vJXvisUEwnI1LBa6wyV6iJAHjZxY0B2U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=F8VQ8XGw/sIP9GJRVLoKKwA9bcAg8ru2neTXiM97BRzN0jWgRHzod2SVClXZvQpNRLdYlehVdrKoKhSl8e3bgi+UedGC+8/uRNHcQuSjBjaY6qiHton1sdGUFcGKQglkp24vxZrw1hTkuSY5Rqxcu1gMdeAOGr087WYsM1M8RpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBxND8Qu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="vCUqV5Gj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1731332676; bh=Ooo7pZezX3WrjqeZ0wkZJN7/xwoNtBuhqR7BwtDE7+k=;
-	h=From:To:Cc:Subject:Date;
-	b=vCUqV5GjiOd6jEiLsSBVa5fDUg3UcGFayxq0S+izcf57DasEJsa6rvzB4W1T6RdIW
-	 JYQzH8az1nsp6EFSdVjr1zE4QwEa5fUK40/zbSp3rfFgqHGqgYcEDHeRe2q9LkFOJd
-	 k+eeucBF1WKLHEuDr5/95ky1QcUGR0rD6MB8UWzU=
-Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.bbrouter ([124.240.52.202])
-	by newxmesmtplogicsvrszc16-0.qq.com (NewEsmtp) with SMTP
-	id B2222620; Mon, 11 Nov 2024 21:44:34 +0800
-X-QQ-mid: xmsmtpt1731332674tgrb1wy5r
-Message-ID: <tencent_2AD25C6A6898D3A598CBA54BB6AF59BB900A@qq.com>
-X-QQ-XMAILINFO: NkHKfw09D6j8tFugrFYQ+3VR+lIZJ45iG9oQMIf45CdSiUgbeTLoyVvEFBVcom
-	 pBMq5BPhPQIcxY7ncuN4gyNB2R+q3jwr6et3ZTHRzNCeP/0D6jO/P7DnG3NC0aJt16R3Thlj4E7U
-	 3PFtrVVcxRhoCfQlOCylwPonM1JRWtyacg4P4HFSFU3Mxa/cIBQ5zSPugKvprvNTgqTB+fHd2Ps7
-	 pOGcXffGQ+TgEulQi9txA8u3bZ77OpOvtnS9AIsRdDuFQiZ4kf6bsj51K6pT0bQFts5/9tC7nkef
-	 +3uOZTXk7RFo+tvdsQWR7tjaNXFjtXyWYIlnQ9lagg84zuqtyP+rzzxpzDQOeMmlA3Lmc7Px2h1f
-	 kRfeuJuJXJLChUl2JTS8pLNx03EzBLYZLm840afJ+s4lgO675e3S2jF2DIz3twqgrycbm9CR7WT2
-	 7ULwuoF38wlMEQ8l/O4KPT6PoQK1gS6VPtfGQREB7N43iyRvH+yY/enU/yU3DY571xfl52hzsp0i
-	 x4tXGzhK4D03isUveI3RHU7ZWtALXR2AlEVmmhn5psoUq+OsxZjE0sGLsSV0+Mdi26WbAUb4f2lI
-	 SLkcpEMabI1pVEsXOyoVB4OPxQa/OVT74ofNUdHQzvgUCG1GoCyFJ8m7URgTBLyjrmX8DoVO0FMg
-	 LGmy/Wz+1acjOO39fsIKyNUlJphxPBCf1lZYXZA1O8PbxDyObA6nQvXIUy/SR5EwLG/5E9puI+iL
-	 cnbnvDYOOvyvkyk28V2NcScWTcGFSxD/1eD4Z3xmA3J8G+IaxxQRjE90tr8x5+59kheydaqixFO0
-	 m2pE5tzGW6g7zLJDTYhlyvFTco5DkNf1eTWytzWh+7KNqe7u8gNHuVQqDcLN/NZ2ZN262GqyD1zt
-	 8iq26TzwdhLxUB99iPzHAXS588QL22CBthKM5o/3VqWq0lp+w/GM1IyvCz63v4t1QcYj2d2jykYP
-	 /ojt08/o6c/2oTLmFEAi+3jnbGSi5SIOi0Tm7zDn9EPxbnAtBTgo2GFqkP4ByY
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From: Guangbo Cui <2407018371@qq.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	Guangbo Cui <2407018371@qq.com>
-Subject: [PATCH v5 1/2] rust: Implement Display for Box
-Date: Mon, 11 Nov 2024 21:40:41 +0800
-X-OQ-MSGID: <20241111134039.1507783-1-2407018371@qq.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBxND8Qu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33C7C4CED5;
+	Mon, 11 Nov 2024 13:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731333129;
+	bh=QxF/kLnSp35vJXvisUEwnI1LBa6wyV6iJAHjZxY0B2U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=cBxND8Qu9cTGbaT7QfeYp70ZWP2tXTwzTvXIHRapuEG0Ql+UwTfi/gg7nh5mms4jE
+	 QEjOCra/die2mSlP2N7KOW34mEQPiZJzZYUF849N0M/crm3qoJrRTzeofoQ9Rf1SPl
+	 hErSIaRuKagLCGffIyjTSD6oy/Ig5hEtxexOdwENYVKF99Ht/efEgfEBz6k6Wf2mHp
+	 F1GPtQXkEdc40wtc5WuPVcY5mM+CgSnEt+EcGjkH1UV/73cvWbjA5p4IyyCVG5uoIb
+	 d6W9Nf7bx6i4HF/LsAZwxty8imOk2T+LUYz1brFyZLgM9Gyn13nVu3GSgVZPOYXq66
+	 rMjkX0WRj2eZw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Dirk Behme" <dirk.behme@de.bosch.com>
+Cc: "Alistair Francis" <alistair@alistair23.me>,
+  <linux-kernel@vger.kernel.org>,  <boqun.feng@gmail.com>,
+  <me@kloenk.dev>,  <benno.lossin@proton.me>,  <tmgross@umich.edu>,
+  <aliceryhl@google.com>,  <gary@garyguo.net>,  <ojeda@kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  <alex.gaynor@gmail.com>,
+  <alistair.francis@wdc.com>,  <bjorn3_gh@protonmail.com>,
+  <alistair23@gmail.com>
+Subject: Re: [PATCH v3 00/11] rust: bindings: Auto-generate inline static
+ functions
+In-Reply-To: <9369b621-47d1-4967-8a68-874bb602deeb@de.bosch.com> (Dirk Behme's
+	message of "Mon, 11 Nov 2024 14:23:07 +0100")
+References: <20241111112615.179133-1-alistair@alistair23.me>
+	<bR_L15e11CHC0AS4d41vkbo-whYRfTKoU_htcjK8F_inG0Y5HQslqOWHOLBeNTCYqsgSqOtHXeoOj4ifT5ndJA==@protonmail.internalid>
+	<9369b621-47d1-4967-8a68-874bb602deeb@de.bosch.com>
+Date: Mon, 11 Nov 2024 14:51:56 +0100
+Message-ID: <87msi5swsj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Currently `impl Display` is missing for `Box<T, A>`, as a result,
-things like using `Box<..>` directly as an operand in `pr_info!()`
-are impossible, which is less ergonomic compared to `Box` in Rust
-std.
+"Dirk Behme" <dirk.behme@de.bosch.com> writes:
 
-Therefore add `impl Display` for `Box`.
+>
+> It builds for me now and the htmldocs were built as well.
+>
+> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/1126
-Signed-off-by: Guangbo Cui <2407018371@qq.com>
----
- rust/kernel/alloc/kbox.rs | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Does it build for you if you have a clean tree? I think there is a
+dependency issue in the makefile, as indicated in another email.
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index d69c32496..a496a866d 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -427,6 +427,16 @@ fn deref_mut(&mut self) -> &mut T {
-     }
- }
- 
-+impl<T, A> fmt::Display for Box<T, A>
-+where
-+    T: ?Sized + fmt::Display,
-+    A: Allocator,
-+{
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-+        <T as fmt::Display>::fmt(&**self, f)
-+    }
-+}
-+
- impl<T, A> fmt::Debug for Box<T, A>
- where
-     T: ?Sized + fmt::Debug,
--- 
-2.34.1
+
+Best regards,
+Andreas Hindborg
+
+
+
 
