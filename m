@@ -1,125 +1,102 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150AA17E46E;
-	Mon, 11 Nov 2024 10:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F399913C81B
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 10:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731320993; cv=none; b=pw9RjLfgx7gXDxEeyrN/avS+yDVxkVeyKgZBKi5P18bn+3ChS6DTRX2X3JtmH+0NySxSbaPizq/EyLJGszdjrKCOa8ZdXm9Zk/vdHYAN/jBK7ax8onQ19LtuFVQrO+5DZMhyDhutR1F3Hats5CIzmJMcN5nz/UiTRwoASdgmLoM=
+	t=1731322142; cv=none; b=p+kdDvFcIJjfVy/O2rlDVzhaxWx0siPb5GLU4zpL7aeuH86SD29n2VwSLd39CvfSg9NYOv0aMIBSV4qmKulfJFZ8KGqSNjrC27+72skP9WwDSX7JzcdSobDehRaarT5RuyfCrhDSVGMUdOqfDCQyDbYkKbm/epnjVg2aRh305Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731320993; c=relaxed/simple;
-	bh=bfZl5CREUTUHR4q8Niu6V5DmOW+Gu+Il2F3M01CaJ6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CImWGzbt3fFYJlPZTmrk0x4TUird9GZs2+HTQilWcIHoZ1mk1P18k3jf7iegqhRjZMPy/W1kF43CDK4UwPNEwc4PEkuhs1XfNEEwqr1zzqFudKF7+vbG7G4dyzGYqYM/m76WfAx3H/erP11dfnIZqpG7h4jppRVNWMAt+5vYKls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=STNo+WMR; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1731322142; c=relaxed/simple;
+	bh=sOqyKN/qEy1QWBmtxX1ReBle7jq4Eg/wLsy4HAsjhlU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EstHQ7yezWu+sYSM18erPqH4nq575v9QvlR79mOsa9a44FKvTFuC7tKk6SNEMGpwvpRusvXs3jV7fU8tFtKAIyu9QoJAlnNvL73gWSsYGl+SVBHapZ4yj8xbCF/u4xyoj+Sac0cdyDIZsDbEJVkeJqjW/TWGTjR/9RvMOrSb1j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VGwNQGfq; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="STNo+WMR"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1731320493; bh=vZgICiMRxjJHJ0uPsv4p4obm0nF80+Ne6X/xLfL8LVk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=STNo+WMRnTiW2hduFCpzkvIkfCuQ7S3gtU2lGTruFYGEYsgOW+0FlkM4FKMq4IbIW
-	 YIfSDYeXrDpbo2Mdyt7csPwfnhiIN4lVEK9PYO8XGEbFLLlM4nL7yjAfmuHPzfCxXY
-	 anSOtCnivu/DEQpAd62U4meueCw/U3ic/FVB5+l8=
-To: Lee Jones <lee@kernel.org>
-Cc: Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] rust: LED abstractions
-Date: Mon, 11 Nov 2024 11:21:30 +0100
-Message-ID: <468C6459-F13F-421D-B592-5B8425D57650@kloenk.dev>
-In-Reply-To: <20241111094102.GA8552@google.com>
-References: <20241009105759.579579-1-me@kloenk.dev>
- <20241111094102.GA8552@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VGwNQGfq"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb498a92f6so35160471fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 02:49:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731322139; x=1731926939; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3jprrbDINYaFwGf6ijshswBIrrn6HkzEo4MU8QQL6pY=;
+        b=VGwNQGfqUbkpRkKIfmaewehAiZ7+ZMF1m5CRP6DrWCB1JDYhpwX4qEN7ltC4uwjrRQ
+         K2gtUjKbEUZWrLGV1iTijjqhYqY7KzuxZoLyluKmeGHRaVVVnY9SnrsYJ2ft+2GnamY7
+         SBW5K4ya8LRQy8100SrDJT2l2OLOocPd/DxlxyDoutuPK4IGnj79PXH8+sewEDD87XNx
+         NKqP7Ck1tp7pHyaiIVn0ihz2DrN/Q1Gf+zBPwkj50zRGnT9FGCcCKWmPbto9cfUXvFf7
+         eFA+4cpcZBL24UaDXPjuBUM7/4C3wp8BOYp3D/ZcgtF+ZGbAgVXKbnXP1jtXFibziwSV
+         KXYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731322139; x=1731926939;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3jprrbDINYaFwGf6ijshswBIrrn6HkzEo4MU8QQL6pY=;
+        b=prNfTN4R8RgxqO1QLHAzPdPVv7Yvw/E1h+gdElcGmzGswe40Kbu+KC/hc7yalks0WV
+         4iahiRESqcAH24BFuVicKAqnAcrNNvYMWNU1HoM3SD1cOsfbLCNCo0V+UMuyCloVuk3u
+         MyOs2Ztn7lkSp9hKsGzISE9gSHnQD7zGJDH2e+5GTnIbMvMGG9bgGQlTJ58DXEsw71wm
+         0qaqSZnf3OeZWvEojCBb4ydCXIwQ0RlsXp/8cQr89WshfWdUw996IvtCFDd2QvaiJpir
+         Qryj40P4EqwCKMidzGAWK9s6LM7iEJU0gd4FDDtKJwgeXHWoP8zNF2720SMhFSOyoGB2
+         nAsA==
+X-Gm-Message-State: AOJu0YzVDIAGQCdIAaIBDF8IPWo8qcZbgnGUEz0hAUavQOeb0zB06Z7g
+	d9IkthUKRMMdW7eOTrWZavJEIgUYBIOn4KvFzoc6wMkc1VnKkPsr
+X-Google-Smtp-Source: AGHT+IF5A3Gp6MnXpi5WDRJibabD/7pGUV39mx2Lq9SxwV3kUj3HGFiDYWi0CpKAfxMqyb67b/KV/w==
+X-Received: by 2002:a2e:a99e:0:b0:2fb:8777:7359 with SMTP id 38308e7fff4ca-2ff2030c203mr62930571fa.39.1731322138774;
+        Mon, 11 Nov 2024 02:48:58 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ff17901111sm16340511fa.54.2024.11.11.02.48.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 02:48:57 -0800 (PST)
+Message-ID: <bf8a1bb0-59ab-41cb-9116-2258d9ce686e@gmail.com>
+Date: Mon, 11 Nov 2024 12:48:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] rust: add dma coherent allocator abstraction.
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+ a.hindborg@kernel.org, dakr@redhat.com, airlied@redhat.com,
+ miguel.ojeda.sandonis@gmail.com, wedsonaf@gmail.com, a.hindborg@samsung.com
+References: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
+ <20241105104726.3111058-3-abdiel.janulgue@gmail.com>
+ <81E07830-0A54-49C8-AC07-6511F6C816C4@collabora.com>
+ <2afe6041-20c6-4121-acb0-ffb295575619@gmail.com>
+ <A970979F-F4E6-4474-81F2-8FF471C82C35@collabora.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <A970979F-F4E6-4474-81F2-8FF471C82C35@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
+On 10/11/2024 01:42, Daniel Almeida wrote:
+>> You mean the read/write helpers could be removed and we expose the cpu_buf() helper instead that takes a valid range, returns a checked slice and let the user have the flexibility in implementing read/writes themselves. Is this what you had in mind?
+> 
+> Yes, that’s what I have in mind.
+> 
+> 
+> Alice pointed out to me later that the FromBytes/AsBytes traits can be implemented
+> by driver-defined types. I had missed that.
+> 
+> Given this, the FromBytes/AsBytes bound seems fine. Drivers would just need to
+> implement the (unsafe) traits for their types and it would be up to them to make
+> sure that the safety requirements hold.
+> 
+> Given the above, I am fine with FromBytes/AsBytes, you don’t need to change
+> that IMHO.
+> 
+> With read() and write() gone, so is the bound on Copy, which also satisfies
+> my other comment.
+> 
 
-On 11 Nov 2024, at 10:41, Lee Jones wrote:
+Thanks! Will incorporate this feedback on the next re-spin.
 
-> On Wed, 09 Oct 2024, Fiona Behrens wrote:
->
->> This RFC implements a basic LED abstraction to show how this would wor=
-k with rust.
->>
->> Currently this just implements a sample driver, to show how to use the=
- abstraction, which just
->> prints the requested state, supporting a on/off LED and an led with br=
-ightness level up to 255 and
->> hardware blinking. I intend to write a hardware specific driver for su=
-bmitting.
->>
->> The abstractions is a generic struct that holds a generic driver data =
-on which the vtable is
->> implemented. Because this struct also holds the c led_classdev (includ=
-e/linux/leds.h) struct this
->> struct is pinned and is using pin_init to create and directly register=
- the LED.
->> Dropping the struct unregisteres the LED. I plan to also add devm func=
-tions later, but as device
->> abstractions in rust are not yet that far I opted agains that for the =
-first iteration of the LED
->> abstractions.
->>
->> This is currently using core::time::Duration for the blinking interval=
-, but will likely change that
->> to use the Delta time type from FUJITA Tomonori [1].
->>
->> This is requiring the Opaque::try_ffi_init patch by Alice Ryhl[2] whic=
-h just got merged into
->> char-misc-testing.
->>
->> [1]: https://lore.kernel.org/rust-for-linux/20241005122531.20298-3-fuj=
-ita.tomonori@gmail.com/
->> [2]: https://lore.kernel.org/rust-for-linux/20240926-b4-miscdevice-v1-=
-1-7349c2b2837a@google.com/
->>
->> Fiona Behrens (2):
->>   rust: LED abstraction
->>   samples: rust: led sample
->>
->>  rust/kernel/leds.rs      | 399 ++++++++++++++++++++++++++++++++++++++=
-+
->>  rust/kernel/lib.rs       |   2 +
->>  samples/rust/Kconfig     |  10 +
->>  samples/rust/Makefile    |   1 +
->>  samples/rust/rust_led.rs | 103 ++++++++++
->>  5 files changed, 515 insertions(+)
->>  create mode 100644 rust/kernel/leds.rs
->>  create mode 100644 samples/rust/rust_led.rs
->
-> FYI: I'm not ignoring this patch-set.  On the contrary.  I'm trying to
-> place myself into a position where I can not only review it with some
-> confidence, but use it to author LED drivers.
->
-
-Ah amazing, the first RFC was to probe for a general would LED accept rus=
-t code, and this sounds like a yes. Nice!
-
-Currently still working on a LED driver for a Lenovo board that does not =
-(as of when I started, and think still not yet) have a C driver for the L=
-ED. Current things missing is a static dmi match table (idea is to hardco=
-ded that for now) and a abstraction for port memory but working on that, =
-and can otherwise just go around that with unsafe calls in the driver its=
-elf.
-
-  - Fiona
-
-> -- =
-
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+/abdiel
