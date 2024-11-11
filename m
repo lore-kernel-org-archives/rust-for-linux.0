@@ -1,107 +1,269 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4251AAE19
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 12:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E765919F104
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 12:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731329687; cv=none; b=dCRWI2Z7yBBEq//VZzZE1dI2ZoMOsAM0302OcYXrJhI+mHq8fIh35o+3crPqNG/Ivwn4Lf/gAb1l9cz7Mja6r3O+FLOHxaQgU8bzlw8xVw8Mfn9kozz1Bwe8hYeotJc5/20ee11VIaUPX+YXJWLFbX3m7izheD3qWu3nMdTvjZs=
+	t=1731329730; cv=none; b=ADRmrKvoKpMjSgicHeQSjHjb9UcSdrz26zIIuaLA7UO8rmbj3mpafjCUwACW9YsjdqalmQTMOl35hDYY0CEZhZL3wye1mvJKtlfJUS8jyN7NqsIEiSHhcmf1ca/9oZ5/Rq/RNOJJ/xs8+LXrhIuIy9qgkTUQufCoJMig+XlKzzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731329687; c=relaxed/simple;
-	bh=5kiJXTpUS3rRhAxb8abDU7E+24cj7yxt2y8v3LwYboA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=COHs063yQrnDaTskqMC/dJEyEKXRwJ4hN8Ev4OI9lJmu1LljatL6AHfl3I2gfFoYdWpPH8JkkKh9R8mWvlsO0sfEVjPAV23ugCKXFjficAVt1616Tew087V05ZjeoXzlFaLQRNtKASYRenOhNhUYKn5BqHOIpUBi+MAawQJzLI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KyMO2xeb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1731329730; c=relaxed/simple;
+	bh=dXhXfapyUDQEbFeWVi7uYgynRavOsGzrjhod9hhDxkY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S0Fa54yajQgfssGWBtiqOA9+flM1pc901XLNQ56J7JldVSXenkW0BC+J34d/ZfAzuEb0O7x13HVYpWp3EQuFVhf+kGyYoTLgPXnnpz3luy3/GPJp/VUwOc8/NV8lB2Kly2IYOXq38xfP4bqE/XioBaaHkVJkPASHOJ3/z7Lt678=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIvZMQ1+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KyMO2xeb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731329684;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VGJIY1Mn9wrThRttTnQjyrZIyuqbBWl/0J3QrLc0f7s=;
-	b=KyMO2xebSoNMDzC96GwMRcps2fc4PMezA1Oo1GDLpwnS9DFYsrpksfY866KwJW4dbHfZ3c
-	v1YTbCzR60E0OorPqh7dcYJ0Ob4LZqdKdevkLt/8l/PNmhOxfnT84ObQ6gzYwnw2k1Nx0v
-	7qpXDgS833VaIteD7YjWKciuuP6ur1s=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-M_ie9a5bONq6en-47Kfa8A-1; Mon, 11 Nov 2024 07:54:43 -0500
-X-MC-Unique: M_ie9a5bONq6en-47Kfa8A-1
-X-Mimecast-MFC-AGG-ID: M_ie9a5bONq6en-47Kfa8A
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2fb60277fb2so25752351fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 04:54:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731329682; x=1731934482;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VGJIY1Mn9wrThRttTnQjyrZIyuqbBWl/0J3QrLc0f7s=;
-        b=Bq4l4YIMmN29hmKdlFPPK4BXOANJRTBZKrxoWE72OdNvpUtk+wyoOxkcm3EG0Foz+o
-         rE935z7aQx6SHTG5tlwue+anC4cI1K0WQdBttCIcCeJ/vCfMrkSBbQlJAbOOi54la5HG
-         HyJ9rd3rQbdLEtP+jK809wl9lLaVF/5AJAQuuBKKhEh0fmqOFxKLVeb7dno8HT8XCT/1
-         akjXYM2asmRaQGM4oP4p6txtrrzsjCgPqcrHvHOE6dkV708Q8o7IZadQAgiAUQo4Xp4e
-         xM2/5eScsInGQwnYGw760gvt4nQVRdsGhTuu3TUxqE1RGuyfWwIW9uisb3WGaIsEG8Dz
-         w4/g==
-X-Gm-Message-State: AOJu0YyM9Ihfb3ntSifnexCTnd1Ew5i91dx7GOssuleuFiY90ooKC70n
-	DLx6MrmzQcGyYaojsx0gOAq/jOtCi2CeB7P3rIXEi69X6ILD1dtfH7hMwTsdsaCt6UJhah/3wAs
-	SEaJ23oaSEGO2YHEYPJUM8VUfJW2jsy5wSmRLJpL0Wlq6krJ2khDuhbrclvEw+Lzf
-X-Received: by 2002:a2e:be10:0:b0:2fb:5a7e:5046 with SMTP id 38308e7fff4ca-2ff2021ed2amr57814441fa.9.1731329682109;
-        Mon, 11 Nov 2024 04:54:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF3gvsEZP1OVMvi0JGBENB8sCvLn6IS0ADa1To719q3AyqjQGL+gSn21IXi9REjcUewzTIIkg==
-X-Received: by 2002:a2e:be10:0:b0:2fb:5a7e:5046 with SMTP id 38308e7fff4ca-2ff2021ed2amr57814291fa.9.1731329681690;
-        Mon, 11 Nov 2024 04:54:41 -0800 (PST)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ff178e03f6sm16496331fa.12.2024.11.11.04.54.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Nov 2024 04:54:41 -0800 (PST)
-Message-ID: <d1859acb-de5d-4068-9704-9e3df405e9c7@redhat.com>
-Date: Mon, 11 Nov 2024 14:54:41 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIvZMQ1+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BA0C4CED7;
+	Mon, 11 Nov 2024 12:55:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731329729;
+	bh=dXhXfapyUDQEbFeWVi7uYgynRavOsGzrjhod9hhDxkY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LIvZMQ1+ZxGKBGMRP3Rw7AgZJwq3RNhIu2v5NCRqven9DYtLt3xJgwV0vK1nwD15y
+	 cefuR3F9tfxoGS/1hKbSicwwwz5RSv7pJW0dJowBWAHO13LmUYTWvMlU6ifQcUXGtE
+	 S5Hy5ukEAL6+pVXYg1LfwlyoVijfc0tPv1o/b96RhjzB3HG7OQypcfFcDo6b5Lok4D
+	 wUIeQ3R5umgEuXXhLfFFbWOI8YwKMFbvRwOHjWq2Z0ljwVY2LH32iHaOoxw1AVFd+6
+	 vGR1+3YIvZSyQmV9tHjcsTMoI+5gLh+Yo+efTPDfHsQpVBKEu41swiIFin3b3r3M36
+	 YoQPNK8nvyCsA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>,  <aliceryhl@google.com>,
+  <daniel.almeida@collabora.com>,  <dakr@redhat.com>,
+  <airlied@redhat.com>,  <miguel.ojeda.sandonis@gmail.com>,
+  <wedsonaf@gmail.com>,  <a.hindborg@samsung.com>
+Subject: Re: [PATCH v4 2/2] rust: add dma coherent allocator abstraction.
+In-Reply-To: <20241105104726.3111058-3-abdiel.janulgue@gmail.com> (Abdiel
+	Janulgue's message of "Tue, 05 Nov 2024 12:46:57 +0200")
+References: <20241105104726.3111058-1-abdiel.janulgue@gmail.com>
+	<8jTLfoUiWkunCHYeNi0cgz1kZH1a8JrtKeW2Y9GRS1AgEZmt1dercUTHHJN54C0FPjtjUTyXpIjDFoF0hofx2A==@protonmail.internalid>
+	<20241105104726.3111058-3-abdiel.janulgue@gmail.com>
+Date: Mon, 11 Nov 2024 13:55:16 +0100
+Message-ID: <87v7wurkuj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Add dma coherent allocator abstraction
-To: Andreas Hindborg <a.hindborg@kernel.org>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- dakr@redhat.com, airlied@redhat.com, miguel.ojeda.sandonis@gmail.com,
- wedsonaf@gmail.com
-References: <gOYx0SWgtHGMFdeca-cxwYWFvr0hwCWCLCyLndrSSh8p9dU1wFSDL3ssAL-zaCfEbUyQ49dpsn8XaGfSamF-Sw==@protonmail.internalid>
- <20241023113309.1724992-1-abdiel.janulgue@gmail.com>
- <874j4et1af.fsf@kernel.org>
-From: Abdiel Janulgue <abdiel@redhat.com>
-In-Reply-To: <874j4et1af.fsf@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: xYJ0SHclzvbfQjlcL1nuvq6W33MJPKAtdLe-3fMqynU_1731329682
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+
+"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
+
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver.
+>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/dma.rs              | 169 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  3 files changed, 171 insertions(+)
+>  create mode 100644 rust/kernel/dma.rs
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index a80783fcbe04..3ff2abbfaef6 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -10,6 +10,7 @@
+>  #include <linux/blk-mq.h>
+>  #include <linux/blk_types.h>
+>  #include <linux/blkdev.h>
+> +#include <linux/dma-mapping.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/firmware.h>
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> new file mode 100644
+> index 000000000000..3311fc99e5df
+> --- /dev/null
+> +++ b/rust/kernel/dma.rs
+> @@ -0,0 +1,169 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Direct memory access (DMA).
+> +//!
+> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    device::Device,
+> +    error::code::*,
+> +    error::Result,
+> +    types::ARef,
+> +    transmute::{AsBytes, FromBytes},
+> +};
+> +
+> +/// Abstraction of dma_alloc_coherent
+> +///
+> +/// # Invariants
+> +///
+> +/// For the lifetime of an instance of CoherentAllocation, the cpu address is a valid pointer
+> +/// to an allocated region of consistent memory and we hold a reference to the device.
+> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+> +    dev: ARef<Device>,
+> +    dma_handle: bindings::dma_addr_t,
+> +    count: usize,
+> +    cpu_addr: *mut T,
+> +}
+> +
+> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
+> +    /// Allocates a region of `size_of::<T> * count` of consistent memory.
+> +    ///
+> +    /// Returns a CoherentAllocation object which contains a pointer to the allocated region
+> +    /// (in the processor's virtual address space) and the device address which can be
+> +    /// given to the device as the DMA address base of the region. The region is released once
+> +    /// [`CoherentAllocation`] is dropped.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::device::Device;
+> +    /// use kernel::dma::CoherentAllocation;
+> +    ///
+> +    /// # fn dox(dev: &Device) -> Result<()> {
+> +    /// let c: CoherentAllocation<u64> = CoherentAllocation::alloc_coherent(dev, 4, GFP_KERNEL)?;
+> +    /// # Ok(()) }
+> +    /// ```
+> +    pub fn alloc_coherent(
+> +        dev: &Device,
+> +        count: usize,
+> +        flags: kernel::alloc::Flags,
+> +    ) -> Result<CoherentAllocation<T>> {
+> +        let t_size = core::mem::size_of::<T>();
+> +        if t_size == 0 {
+> +            return Err(EINVAL)
+> +        }
+
+Can this be a `build_assert!()`?
+
+> +
+> +        let size = count.checked_mul(t_size).ok_or(EOVERFLOW)?;
+> +        let mut dma_handle = 0;
+> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+> +        // We ensure that we catch the failure on this function and throw an ENOMEM
+> +        let ret = unsafe {
+> +            bindings::dma_alloc_attrs(
+> +                dev.as_raw(),
+> +                size,
+> +                &mut dma_handle, flags.as_raw(),
+> +                0,
+> +            )
+> +        };
+> +        if ret.is_null() {
+> +            return Err(ENOMEM)
+> +        }
+> +
+
+I think we need an `// Invariant:` block here. See [1] for an example.
+
+> +        Ok(Self {
+> +            dev: dev.into(),
+> +            dma_handle,
+> +            count,
+> +            cpu_addr: ret as _,
+
+Please use an explicit cast here.
+
+> +        })
+> +    }
+> +
+> +    /// Reads a value on a location specified by index.
+> +    pub fn read(&self, index: usize) -> Result<T>
+> +    where
+> +        T: Copy
+> +    {
+> +        if let Some(val) = self.cpu_buf().get(index) {
+> +            Ok(*val)
+> +        } else {
+> +            Err(EINVAL)
+> +        }
+> +    }
+> +
+> +    /// Write a value on the memory location specified by index.
+> +    pub fn write(&mut self, index: usize, value: &T) -> Result
+> +    where
+> +        T: Copy,
+> +    {
+> +        if let Some(elem) = self.cpu_buf_mut().get_mut(index) {
+> +            *elem = *value;
+> +            Ok(())
+> +        } else {
+> +            Err(EINVAL)
+> +        }
+> +    }
+> +
+> +    /// Performs a read and then a write of a value on a location specified by index.
+> +    pub fn read_write(&mut self, index: usize, value: &T) -> Result<T>
+> +    where
+> +        T: Copy,
+> +    {
+> +        if let Some(elem) = self.cpu_buf_mut().get_mut(index) {
+> +            let val = *elem;
+> +            *elem = *value;
+> +            Ok(val)
+> +        } else {
+> +            Err(EINVAL)
+> +        }
+> +    }
+> +
+> +    /// Returns the base address to the allocated region and the dma handle.
+> +    /// Caller takes ownership of returned resources.
+> +    pub fn into_parts(self) -> (usize, bindings::dma_addr_t) {
+> +        let ret = (self.cpu_addr as _, self.dma_handle);
+> +        core::mem::forget(self);
+> +        ret
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's virtual address space.
+> +    pub fn start_ptr(&self) -> *const T {
+> +        self.cpu_addr as _
+
+Please use an explicit cast (ptr::cast, ptr::cast_mut, ptr::cast_const).
+
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's virtual address space as
+> +    /// a mutable pointer.
+> +    pub fn start_ptr_mut(&mut self) -> *mut T {
+> +        self.cpu_addr
+> +    }
+> +
+> +    /// Returns a DMA handle which may given to the device as the DMA address base of
+> +    /// the region.
+> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
+> +        self.dma_handle
+> +    }
+> +
+> +    fn cpu_buf(&self) -> &[T]
+
+I think someone suggested elsewhere to make the slice publicly
+available. Is there any reason not to make this and the `mut` version
+public?
+
+> +    {
+> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
+> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
+> +    }
+> +
+> +    fn cpu_buf_mut(&mut self) -> &mut [T]
+> +    {
+> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
+> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+
+But you are handing out an exclusive reference, so valid for reads is
+not enough.
 
 
-On 11/11/2024 14:14, Andreas Hindborg wrote:
-> "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
-> 
->> This series adds support for the dma coherent allocator. This is based
->> on code developed by Andreas Hindborg for the rnvme driver.
-> 
-> I was not the original author, I just rebased the patches for a few years. I
-> believe Wedson was the original author. I also did not add my signed-off-by to
-> this.
-> 
-
-My apologies for the mix-up, but thanks for the clarification. Will fix 
-this in next iteration.
-
-Kind regards,
-Abdiel
+Best regards,
+Andreas Hindborg
 
 
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/sync/arc.rs?h=v6.12-rc7#n200
 
