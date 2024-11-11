@@ -1,84 +1,97 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3630014F126
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 13:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AAB18BBA8
+	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 13:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731333269; cv=none; b=mEBIaJpjP8i/ki0jn6ZhOwjUwS45SbNb2/QQUmzhmEzl1jMK7kAOqt9Orh6qEXo+eY00VnkDvv1Z7ztsMdmR29wvw96/cCeMeB3X3H587xh0/XxH4N7mNxarmCwONazzPh/iKny18IplCXJMO8g9fOJO+drCrm59dRN2w0Cy3O4=
+	t=1731333557; cv=none; b=Wn1xhtyQqVwX7XcxwlOtIuWe/j09ilqW1IQucgevOud92JmLJpu8cRzbrs7FHgQVu5VdCLKmNP8R5ni3yGAa0BVh4HMVb7lR8Cn5tisY8XgMAOhQRiawK3gJkDfHMptaPivOWUWkZ8bwPwippM+Uf40KIGv1FbuDMiMvrpowzlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731333269; c=relaxed/simple;
-	bh=5Vjbgx7ixgONb8LShSrJxqI9bfz6j30HYJI67+/7lG0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SkLG+e21G53WYguNhwS7NiWQlstAwLM/RHjXbTT2BzShn1SzTlwQO70LZS1n4AATZ/W0MlRV3mltHJ2G5Mh8wnBiiRGWPTRAOPGcLTEtX7cjkqHHH5BE058czUXOpbU3sqFWJK0tEFyI7CkGSchpXZyLXZ2bOvcrV5xiY7+lGNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n0EDRp8V; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1731333557; c=relaxed/simple;
+	bh=vt9cRyzcleFSCP7sTpT5vaCvrF3bmFoMpQ4eGLjNWAY=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=ZJDLxgC67fYhrYEfFU3QWAPZz5zp0oCs5vpK1CQTtUQgo9KmdG4aL3hMEmrBXZQpDr1evSC0sHfLD3Ye7gNQk/yP4kilc2IcjKNfhwx4mmwUna/XinZAudZ1y3PUZ1tWvHRM/jXnCAEfZtxHEykBgkfjJZfjXhA4iM7G+UW5ifQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=JnGhwKW3; arc=none smtp.client-ip=203.205.221.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n0EDRp8V"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7ee4c57b037so3254045a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 05:54:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731333267; x=1731938067; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Vjbgx7ixgONb8LShSrJxqI9bfz6j30HYJI67+/7lG0=;
-        b=n0EDRp8VXJNNKa0wHDUs1iTrmWpaU1R1mrMAsW3UMrQMSjU/Gu9kK/PoGUkdmDsDUy
-         3l+XL2I3B4LPPJ+6q0bUhqNayVWPZvbgQgd9UoP4bnJ2dCLHYl1fZewpWBA9nMaxs9/Z
-         qaxwF+lrFpE8rUOxaeURh4W8J57+283lhdJfXhphkNM8v/ZOWuYLvZCfkUGqJAFN6Wqm
-         mS/u9IGi9jWGJejxUQimQ2gQkG4m29IqJMskBsHNaVD1wWx9AePFkxJkcBIzpG2gcQNX
-         19kxXARIeq6wNzstdjJneQiSaoZ8ktlFF2acldHvI5S5pVRcv2wR5MNqBJJTjMktK85+
-         AhrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731333267; x=1731938067;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5Vjbgx7ixgONb8LShSrJxqI9bfz6j30HYJI67+/7lG0=;
-        b=RAHHBf5RJsnM10VWQNP1FJQEmK6qsgauFr88GeUcof4O5Qes0+JO+RLj4EFPEzYuAb
-         NAE8LOsN+moGq7Xq4geOXLwKPiwtS3JaV/yuIk7bjaF6Z8+kb23S3+Fv9H7wvtU051f2
-         7CxL7EmYv+YTQVHUwxAI7woQrgEWvqyNhHqdUknHI7l4gs9Ft0I3lihl5hNniQ/IahLG
-         E4caNGdWvlP05pnb/+MFHONhIfQp5t/TCxhFvdTwlOP/p0j6bs3K9AOXy/MtpvUSqSqa
-         qVsilK1dQfnxb0NDCDahRTlXYW1FKHlS6numO5YIX1pMic145TDC9LW5qKsjhY4+XAjT
-         gmqw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8+S615L4X598cRe3qJb2F7G+sZansrz1m7mvmADMy1/y8PW0zORrL41/aCZXtz9xQ9iPDZcn70qThxI1VTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZ+hNCvF/bQM9P0GYu5/a1A8tDmzariduI5j+3QP4jJPK+5K4H
-	Hm3TRoWISsaOMNUrlTxdThR9JmsEAqzt+eJCYQ+urCp/KLQhTLhYh9sLPYsvbpojcfyze46vTp4
-	dCoSipkkZJReOtC5lxJ+qrbQ9Xs4YPc0liYfh
-X-Google-Smtp-Source: AGHT+IGeAW+Yv/wO9lwFsK6rnkz5dzZNVJlKI88KA6w3uJ72SSct9zJH2xDx9tQ5lGqYmVWQwXJ9VeNlLGP9aLnpJ4s=
-X-Received: by 2002:a17:90b:2250:b0:2e2:da81:40cb with SMTP id
- 98e67ed59e1d1-2e9b16e27efmr17962190a91.6.1731333267242; Mon, 11 Nov 2024
- 05:54:27 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="JnGhwKW3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1731333246; bh=/wpv3wVw/temWpTqr/O2SUzl5YcA8AwLTSQyHVEuj4Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JnGhwKW3EPNoweczMMmDJZg2Um4FOdCpzktuB6XV5UzjgYMqhW1qDgjBHXWEqkQv4
+	 tLWlmGsqb5oLD6mFBCfSjR/dDmZef3RQlJc3DZUBpVE0TjeOmgQchQJxbrOEPRaVow
+	 O0gpQxIjeAW6FcmeFcKqa7Z2MoWH1O2+F/maEnrc=
+Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.bbrouter ([124.240.52.202])
+	by newxmesmtplogicsvrsza36-0.qq.com (NewEsmtp) with SMTP
+	id CE6160B9; Mon, 11 Nov 2024 21:51:38 +0800
+X-QQ-mid: xmsmtpt1731333098ti8llpy2u
+Message-ID: <tencent_1FC0BC283DA65DD81A8A14EEF25563934E05@qq.com>
+X-QQ-XMAILINFO: N7h1OCCDntujuOVB48/Os71waQQ/Fwg0VAiUeuBAln/TgB+fCYyqfmGUA2fzyA
+	 tOjTf+/8oSPBEEMkMboO5iUeSoDkPC/dmZPigaF4IJMZ35w1RTN8eFYVLz7cF61DpiTkWI5qnII6
+	 sx8bsJ07fBfDuefhAfuStuHRRJlPITv3Ur1qc+8sgx3oJ6or93c2Q7smY4GOxqwkmel2i9XWJsN2
+	 KOGGykUNCw602yb49S+C7DI+Xvo8rCDOaZTaaZi1WaBu2JHoKkMwdCa7QHtdhCkGIvxUBfJMX7As
+	 bJdr9+8BQBDfU52j2qBHJM0RHD6byuBn3kLNnVEHz6xYAMBGzI5B8Okf3/WeSF/TkRn6CDIbiClF
+	 pY/zuZaYmm5juzi5ekNNdWM5ugZHRleujOTo9VBvLzaUZTVXKspKsYGBF/PIOUWvH4Jk2IAtfUio
+	 cF1sVjWe4QUmjHkf92OZlzSSCQnv9Pb3JijOBBGw8N+r+fFOMUgJx0Zc71HMzgsX8/MxN5PbCZjX
+	 jrKWZ7yzh75ti3F7kqylCxFoER2ZdJbTj/Hr4FMI1mOPeo3vz1df0uQkCem8MzzAaDJDiHMHe5UN
+	 vdtuMQ/+veOmSHueY0W1KS9C/WPz8Pvlz/mWvh/5CR+x7zBaHUyIKv3v7mizGW6eMwp0dZSmE/Kd
+	 Ua2CQJh0Kh6Pf+ln9PAMmucrynq2/Rd5tOu8VeV8kcDNYWEDUe6jNaDg5MoyVE7iI1dLjAL/lBAB
+	 t6GAe7OheDvF7HrjyN8kl7uNTqklG2SZdH8kAcqdLXMtU7PZoqsXSgaa2fuXM+ObxRN8/Ls9pYpp
+	 RsndXtfE7Xk/xFRwL/4Z9e9x9bKx7Uvqy1BR8uGP8FHFwpuwm7JlzOUTvkTH+ll16qHEl2FHstNG
+	 DstqLOWTQhPypAyspfsLCHMP3wGiSnbOCtCuBr85vSI7Etgd5HU25uqUaNlUoAhpzcZDkXoF6OVC
+	 z/d9NHbWPRqtXNizJqARHnoHOF5NPaKhENiJVG+Fjsc97Mg7f/HNrCI8ve/vhvvP0ff4gJAXgiLp
+	 5oyutuiw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From: Guangbo Cui <2407018371@qq.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Guangbo Cui <2407018371@qq.com>
+Subject: [PATCH v5 2/2] rust: align Debug implementation for Box with Display
+Date: Mon, 11 Nov 2024 21:51:27 +0800
+X-OQ-MSGID: <20241111135126.1508726-1-2407018371@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <tencent_2AD25C6A6898D3A598CBA54BB6AF59BB900A@qq.com>
+References: <tencent_2AD25C6A6898D3A598CBA54BB6AF59BB900A@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_2AD25C6A6898D3A598CBA54BB6AF59BB900A@qq.com> <tencent_1FC0BC283DA65DD81A8A14EEF25563934E05@qq.com>
-In-Reply-To: <tencent_1FC0BC283DA65DD81A8A14EEF25563934E05@qq.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 11 Nov 2024 14:54:11 +0100
-Message-ID: <CAH5fLghPWwPQVtMjz=x9XgnKKhyv6ASGFpt2VLb1Gb4YpGnRMQ@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] rust: align Debug implementation for Box with Display
-To: Guangbo Cui <2407018371@qq.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 11, 2024 at 2:53=E2=80=AFPM Guangbo Cui <2407018371@qq.com> wro=
-te:
->
-> Ensure consistency between `Debug` and `Display` for `Box` by
-> updating `Debug` to match the new `Display` style.
->
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Guangbo Cui <2407018371@qq.com>
+Ensure consistency between `Debug` and `Display` for `Box` by
+updating `Debug` to match the new `Display` style.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Guangbo Cui <2407018371@qq.com>
+---
+ rust/kernel/alloc/kbox.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index a496a866d..49c24727f 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -443,7 +443,7 @@ impl<T, A> fmt::Debug for Box<T, A>
+     A: Allocator,
+ {
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+-        fmt::Debug::fmt(&**self, f)
++        <T as fmt::Debug>::fmt(&**self, f)
+     }
+ }
+ 
+-- 
+2.34.1
+
