@@ -1,105 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560471BC9E2;
-	Mon, 11 Nov 2024 22:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2539B156F5E;
+	Mon, 11 Nov 2024 22:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731362897; cv=none; b=LrI9bKfN6iNIUbOsynp+h6MoUCbsNehXP5WgmZGN0e0Yxy+CDH8jB7RtymQZ63fOwz7HBZsvChv/soaWVxKToBEU2VdIJRUlggA4PQkjWf70O/KIAKW14Q2dTFKKKHkrIkV9GHeKTltYt7eJa4Ibcgu2CvXR149upD3QcLpfZW4=
+	t=1731365513; cv=none; b=TWIwXZAnyFxip3bJVNJECy+xGzw2T7D9LVev/gdrc8Q2z03HzZkTw7SFpKQGRs1nKlxRmjr/COpjIBIcQtjD78aBFb6i1NxJN2U5UAlpMiLL3g9yizuyqVgM0ZAP0ml2QopAiebltVlXjLXiSJcZzUFZlTp0JyLXK1PTaC21J04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731362897; c=relaxed/simple;
-	bh=IzWYI+IYnI0IBX47UP23OrbRespa5zMschuKkcxwO5I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dJe2KwsRkjR1QkPwi3vwXEGG7KGYCvDmKigFbkRybx3SloqWXiaE0QO2R+UANooTb+sxn5eSU/LQsXdSwEIsWx7kLhcddgRXnS7HH1jk3k4HHpTKyKwtPfTUWG3H2DJXfOHeEPFqw35WmGYti3JsTdLPIUuQCdjYOpTl64LZK34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQjDgDO2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731365513; c=relaxed/simple;
+	bh=sJ4Soy4X8jXcqT/MKWvjDRJdwDeELmOTBVoKIYInFdo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n+MVJclVv0IIx07HwcJkZntIJ+unJ9CIAYmHxlruSx+kaqo09mwxeMvVSRC1meaHykofDXQMs3OX0pQ8O1+NR3Lgrz1bWPxEzPJizhxRMIX8MJiknYF2Q7vS0IiTk9yCpsMxYYsoBXfB9MgTHVK3CP5UhwOcP4H6AYyBcPDZpow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OMmgLN2v; arc=none smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQjDgDO2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF06C4CECF;
-	Mon, 11 Nov 2024 22:08:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731362896;
-	bh=IzWYI+IYnI0IBX47UP23OrbRespa5zMschuKkcxwO5I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=CQjDgDO2C4+qsKgBOb8WwvjFr8dHIJbWfbrAu9L4E7lGDD+PM0g0UOUGHo25WeCvG
-	 HssWPsQlpiGQXwaLWSmulQFZAbymdL0Hx1qzkmQd8mMx04EYx/SimX0yhiJZl+2zpz
-	 cYjoDUc48tBa9tK+LA7lfYwaRVDulRQsLCy1GQR7H/oqVUbaBhUz2btdvtX7W55HKa
-	 d0SDkuY9xSJEyZkPYjOGEmvOnwH78VzQAhlntllsrxh7Xi3Am/ihrqmzHqeh0YhB1r
-	 PaYm24Liumj/U9gVV3Kjv/kqBQOT3t4eNE/ciIZ/mm0Etk31HHG97x/C8HeXniPFn4
-	 jACpLlZcGTW9g==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	patches@lists.linux.dev,
-	"Stephen Rothwell" <sfr@canb.auug.org.au>,
-	"Linux Next Mailing List" <linux-next@vger.kernel.org>
-Subject: [PATCH v2] samples: rust: fix `rust_print` build making it a combined module
-Date: Mon, 11 Nov 2024 23:08:05 +0100
-Message-ID: <20241111220805.708889-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OMmgLN2v"
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-84fdf96b31aso1838504241.2;
+        Mon, 11 Nov 2024 14:51:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731365511; x=1731970311; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KQl50ASVKori1aU7G1WY6tJUmNCetIqIxTMQTgNJ8kg=;
+        b=OMmgLN2vXhV+FYaWvmenKxpoeFDGwoQFBGioXwwP1ajCw+M2u9F66b3PDJ+OU49HQp
+         7qIDMlidbwHZq+UMdMgIRtAVN8AmfjlfvaN4mz8BkAjjqUAdYBfvLX++lsYlFYWxlzIs
+         OnCkmZKBPtiKl0rM3eulZr0oQEtgTBkBD4vifeYtphQyru5JtMnz3NFwIIWtbpnLh3QX
+         4u7nq8XE1lz9+OJaoh+UazAwX3Z3NxWHJo7bjdm1zucKcmR0BJQMnAGeIiWOpb6u1NUr
+         t7GtWPN+aqW7mBOu6LaM196KKwi8typqIoCj4D3g8wzTDZZpi0huTq1CoOrjVTaLRiPu
+         Qzow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731365511; x=1731970311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KQl50ASVKori1aU7G1WY6tJUmNCetIqIxTMQTgNJ8kg=;
+        b=Mst/c3M/+vyYzm1wfx4OTd7/HCIxqk6yN5qVpdYlVgwCHdUGNMCtLvzchDj/Tq1DC/
+         D/cqIGJpuSm3sWfCCZwE70Y+eSe7uB1g11B6kLZ8VAd+hDdb7XaKtsqXhuz/GHxSm6bB
+         LJky0Cwd2aJ+zcFinNzD1ABuXbFJsaDKDYhyDLnCypajFoLWfeeYFdcKPN+0NUMtvf96
+         HmApl485SILuf5HXtW2Ymp/ut3RfC4nlwPFhhqroitkIbar3SMJpgI7eBP6dSdpPWTHj
+         9FMBQHWtJ0h89NV99MBAb5y+jSAkft6Vtr3QvUojRnAt/IYNsmK4jxAZCVZUZFHRcaOG
+         Hu7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWsc07J58p60nAGV5fU+Z0jbxXd/RX4e2zfvicpWEMZLEJZSaAqL/bY/0FGGi9g3QM2MYm9wK2QrUEjhWk=@vger.kernel.org, AJvYcCXs8JoCr53v1O+tt4iubGfCTE4VK71HITen7G7TfkeCSYpI4lh7M/tM+507mfSq3gZd53y/Sz9VtnCRpC154bw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8JiJMfMb571S9dyhiYyN0mZSvL/qOVGatUMtKnkNGChg1y2Er
+	7d9/8XsSLPwvfwbl/LEyVp3NxT9LSuN1VmdA5fur8jQPD8uXy0pCQOgCZ1YLfvUh2yJk0d7S8fQ
+	2Slpb0r0hO0A6QXgQ+ijRPD4v744=
+X-Google-Smtp-Source: AGHT+IE2YGxxbqCK2DC6cCxuCjY72oZoTCCw7zs/q3dmYzS3MCOQAzruXEf69l3b2YytZ3hreigJPJMD2tEq3F3u0RM=
+X-Received: by 2002:a05:6102:38ca:b0:4a5:b159:8557 with SMTP id
+ ada2fe7eead31-4ac29776538mr502334137.4.1731365511017; Mon, 11 Nov 2024
+ 14:51:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241111112615.179133-1-alistair@alistair23.me>
+ <x6OyXuGQi1xeknAX_pjcl17BOpxRM6OGtLWGhGOH4LUgghJaP29a4ebzCT21QdfxBb88PwZCc2U7zizrTTSzVg==@protonmail.internalid>
+ <20241111112615.179133-2-alistair@alistair23.me> <87cyj2t2l1.fsf@kernel.org>
+In-Reply-To: <87cyj2t2l1.fsf@kernel.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 12 Nov 2024 08:51:25 +1000
+Message-ID: <CAKmqyKM5eOM=+vmvF8t8Um=Cjtx3ykhx9BRibQhDB_mWF2tKGA@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] rust: bindings: Support some inline static functions
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alistair Francis <alistair@alistair23.me>, linux-kernel@vger.kernel.org, 
+	boqun.feng@gmail.com, me@kloenk.dev, benno.lossin@proton.me, 
+	tmgross@umich.edu, aliceryhl@google.com, gary@garyguo.net, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, alex.gaynor@gmail.com, 
+	alistair.francis@wdc.com, bjorn3_gh@protonmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The `rust_print` module, when built as a module, fails to build with:
+On Mon, Nov 11, 2024 at 9:47=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> "Alistair Francis" <alistair@alistair23.me> writes:
+>
+> > The kernel includes a large number of static inline functions that are
+> > defined in header files. One example is the crypto_shash_descsize()
+> > function which is defined in hash.h as
+> >
+> > static inline unsigned int crypto_shash_descsize(struct crypto_shash *t=
+fm)
+> > {
+> >       return tfm->descsize;
+> > }
+> >
+> > bindgen is currently unable to generate bindings to these functions as
+> > they are not publically exposed (they are static after all).
+>
+> Very cool!
+>
+> What does this mean for our minimum bindgen version? Is the feature safe
 
-    ERROR: modpost: missing MODULE_LICENSE() in samples/rust/rust_print_events.o
-    ERROR: modpost: "__tracepoint_rust_sample_loaded" [samples/rust/rust_print.ko] undefined!
-    ERROR: modpost: "rust_do_trace_rust_sample_loaded" [samples/rust/rust_print.ko] undefined!
+There are no changes to the minimum bindgen version :)
 
-Fix it by building it as a combined one.
+The next release of bindgen will support it without the experimental
+flag [1], but 0.65.1 and newer will all work.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20241108152149.28459a72@canb.auug.org.au/
-Fixes: 91d39024e1b0 ("rust: samples: add tracepoint to Rust sample")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-v2:
-  - Instead of renaming the module name, rename the main source file.
-    This avoids changing other places (e.g. Kconfig) and, most
-    importantly, minimizes the impact to developers/users (e.g. CIs
-    out there).
+> to use in our current required version of 0.65.1? Did the feature change
+> in significant ways between 0.65.1 and whatever version it will be
+> stable in?
 
-v1: https://lore.kernel.org/rust-for-linux/20241109165520.1461400-1-ojeda@kernel.org/
+There are no breaking changes in the changelog that I can find. There
+are improvements to support more functions, but as we use an
+allow-list that doesn't affect us.
 
- samples/rust/Makefile                              | 4 +++-
- samples/rust/{rust_print.rs => rust_print_main.rs} | 0
- 2 files changed, 3 insertions(+), 1 deletion(-)
- rename samples/rust/{rust_print.rs => rust_print_main.rs} (100%)
+Eventually when the minimum bindgen is updated we can remove the
+experimental flag, but otherwise it should work with everything newer
+than 0.65.
 
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index f29280ec4820..c1a5c1655395 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -2,6 +2,8 @@
- ccflags-y += -I$(src)				# needed for trace events
+1: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md?plain=
+=3D1#L219
 
- obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
--obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o rust_print_events.o
-+obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-+
-+rust_print-y := rust_print_main.o rust_print_events.o
+>
+>
+> > diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functi=
+ons
+> > new file mode 100644
+> > index 000000000000..1f24360daeb3
+> > --- /dev/null
+> > +++ b/rust/bindgen_static_functions
+> > @@ -0,0 +1,6 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +# Don't generate structs
+> > +--blocklist-type '.*'
+> > +
+> > +--allowlist-function blk_mq_rq_to_pdu
+>
+> Should this be moved to the "Remove blk helper" patch?
 
- subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print_main.rs
-similarity index 100%
-rename from samples/rust/rust_print.rs
-rename to samples/rust/rust_print_main.rs
+I need a function here, otherwise nothing is generated and it fails to
+build. As this would be added in the next patch anyway I just added it
+here to maintain bisectability.
 
-base-commit: 91d39024e1b02914cc5e2dbc137908e29b269ce4
---
-2.47.0
+Alistair
+
+>
+>
+> Best regards,
+> Andreas Hindborg
+>
+>
