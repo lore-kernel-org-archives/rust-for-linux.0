@@ -1,55 +1,55 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2539B156F5E;
-	Mon, 11 Nov 2024 22:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24C58468;
+	Mon, 11 Nov 2024 22:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731365513; cv=none; b=TWIwXZAnyFxip3bJVNJECy+xGzw2T7D9LVev/gdrc8Q2z03HzZkTw7SFpKQGRs1nKlxRmjr/COpjIBIcQtjD78aBFb6i1NxJN2U5UAlpMiLL3g9yizuyqVgM0ZAP0ml2QopAiebltVlXjLXiSJcZzUFZlTp0JyLXK1PTaC21J04=
+	t=1731365916; cv=none; b=jmebbjqBui+/RyLIPEfRu21x6xhItYqnFeGvHtDRqBg2h+4jgbUTbw0dYjmmsAGTHe3eUMsHdotEYrrrs0ttf+jTmsfu4FTDpx2Wht9Z26ZLDrgZFw2+UprkLCpWK5crNduSpXaLePM6Em0qo9t8KlhMS645AoZDzK+/znG1kQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731365513; c=relaxed/simple;
-	bh=sJ4Soy4X8jXcqT/MKWvjDRJdwDeELmOTBVoKIYInFdo=;
+	s=arc-20240116; t=1731365916; c=relaxed/simple;
+	bh=QBxO2beGb702TUptZzPVEp3r/vThbAYJ4Humv9sdi/I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n+MVJclVv0IIx07HwcJkZntIJ+unJ9CIAYmHxlruSx+kaqo09mwxeMvVSRC1meaHykofDXQMs3OX0pQ8O1+NR3Lgrz1bWPxEzPJizhxRMIX8MJiknYF2Q7vS0IiTk9yCpsMxYYsoBXfB9MgTHVK3CP5UhwOcP4H6AYyBcPDZpow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OMmgLN2v; arc=none smtp.client-ip=209.85.222.46
+	 To:Cc:Content-Type; b=pmEyMOchdvjTgD1eD+z0zqnUb23SCZ/FfomsYamaom4kgqd3lpN658+gdCYLY5p2QejKZKqbSV/FrbdZ6xN7QYywTEuzZ+k69pPdWcSBnonPCeICii+QbkqZEJ8JbIHnaGhaoCVx9FfNuFvxrza1HIXAfF6I9BwarCpyDT+B2tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TkRD84Ud; arc=none smtp.client-ip=209.85.222.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OMmgLN2v"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-84fdf96b31aso1838504241.2;
-        Mon, 11 Nov 2024 14:51:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TkRD84Ud"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-85054107836so1811738241.3;
+        Mon, 11 Nov 2024 14:58:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731365511; x=1731970311; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731365913; x=1731970713; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KQl50ASVKori1aU7G1WY6tJUmNCetIqIxTMQTgNJ8kg=;
-        b=OMmgLN2vXhV+FYaWvmenKxpoeFDGwoQFBGioXwwP1ajCw+M2u9F66b3PDJ+OU49HQp
-         7qIDMlidbwHZq+UMdMgIRtAVN8AmfjlfvaN4mz8BkAjjqUAdYBfvLX++lsYlFYWxlzIs
-         OnCkmZKBPtiKl0rM3eulZr0oQEtgTBkBD4vifeYtphQyru5JtMnz3NFwIIWtbpnLh3QX
-         4u7nq8XE1lz9+OJaoh+UazAwX3Z3NxWHJo7bjdm1zucKcmR0BJQMnAGeIiWOpb6u1NUr
-         t7GtWPN+aqW7mBOu6LaM196KKwi8typqIoCj4D3g8wzTDZZpi0huTq1CoOrjVTaLRiPu
-         Qzow==
+        bh=xsifnW581PltcYhZ2uCG2F+RlDUiyCr2zolEtVcEoyc=;
+        b=TkRD84UdU0ZpyD/x8quqw0HGkUjavxhwzp5JfKHC6c9WCeAG/wlM/vQj9czWq69rfy
+         2JhZ4+c5NvePTVAS+NBrEN4MDeBI8Y8KN4xzlH828fC4AbNpruciq0be5QLdywr9eddk
+         v3++aKq6rv5FZ+clPNxNmB6y7oSLdQYTb5ozG91DyOs+aRLZUCi171Bus6Jq/vIJy3Vz
+         mjO1l1Bi+4YQ7/EV9wV9GVtIA3s4pLYrnUeIX9l7IerQdRA14kllh1yLg7Ba0UdcoR8U
+         f3tfZ6PEUvkk9uXJLpwnrGCrqoZdbebE5f7FGK0OvtrYjpwq/CE17QjVsm/7BlztMj1O
+         /Gtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731365511; x=1731970311;
+        d=1e100.net; s=20230601; t=1731365913; x=1731970713;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KQl50ASVKori1aU7G1WY6tJUmNCetIqIxTMQTgNJ8kg=;
-        b=Mst/c3M/+vyYzm1wfx4OTd7/HCIxqk6yN5qVpdYlVgwCHdUGNMCtLvzchDj/Tq1DC/
-         D/cqIGJpuSm3sWfCCZwE70Y+eSe7uB1g11B6kLZ8VAd+hDdb7XaKtsqXhuz/GHxSm6bB
-         LJky0Cwd2aJ+zcFinNzD1ABuXbFJsaDKDYhyDLnCypajFoLWfeeYFdcKPN+0NUMtvf96
-         HmApl485SILuf5HXtW2Ymp/ut3RfC4nlwPFhhqroitkIbar3SMJpgI7eBP6dSdpPWTHj
-         9FMBQHWtJ0h89NV99MBAb5y+jSAkft6Vtr3QvUojRnAt/IYNsmK4jxAZCVZUZFHRcaOG
-         Hu7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWsc07J58p60nAGV5fU+Z0jbxXd/RX4e2zfvicpWEMZLEJZSaAqL/bY/0FGGi9g3QM2MYm9wK2QrUEjhWk=@vger.kernel.org, AJvYcCXs8JoCr53v1O+tt4iubGfCTE4VK71HITen7G7TfkeCSYpI4lh7M/tM+507mfSq3gZd53y/Sz9VtnCRpC154bw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8JiJMfMb571S9dyhiYyN0mZSvL/qOVGatUMtKnkNGChg1y2Er
-	7d9/8XsSLPwvfwbl/LEyVp3NxT9LSuN1VmdA5fur8jQPD8uXy0pCQOgCZ1YLfvUh2yJk0d7S8fQ
-	2Slpb0r0hO0A6QXgQ+ijRPD4v744=
-X-Google-Smtp-Source: AGHT+IE2YGxxbqCK2DC6cCxuCjY72oZoTCCw7zs/q3dmYzS3MCOQAzruXEf69l3b2YytZ3hreigJPJMD2tEq3F3u0RM=
-X-Received: by 2002:a05:6102:38ca:b0:4a5:b159:8557 with SMTP id
- ada2fe7eead31-4ac29776538mr502334137.4.1731365511017; Mon, 11 Nov 2024
- 14:51:51 -0800 (PST)
+        bh=xsifnW581PltcYhZ2uCG2F+RlDUiyCr2zolEtVcEoyc=;
+        b=kOD004x9NASi2mQFaXijfM4zyiQSnek3Tz7mdacVL5yXPuYQgKsHT6U7xdVpt8XiEB
+         3tColHlsQ1UCVM6kS5hqIpy5a3ysvtS6yT7eNU5zGArxN4npUz4qFGpxOg2ifDzCkEKj
+         pHfUSh/QsrayWE7FSwg5ZhiiV1mi35R0v71bC3qW8p9swY8UAIul7lmyLlda9wVYyF1S
+         7sUzgasq+mNEaoASNYDyKUFE9xlHkmxUBlFIntGynTiChOUZ4hRH7n4m5Ynu5RnebEqm
+         EicPsHgQnJSbM2gd3QeBWLC5ZeNxUe6gD0fu238QH53rPCNphCjF29KYtyfrL9bqohoL
+         AtYw==
+X-Forwarded-Encrypted: i=1; AJvYcCUa8zjSywTIS/cnkCeaT1zgfLzW3bVhnBdZUANcqbNkX+arx6vUvTJanc/V/EhDc/mT4rssXJM7KzwbP4SN1CQ=@vger.kernel.org, AJvYcCW0gGR4Uh37oflJhfiCNsYSwJh8b2g4B6AZayYZPnSuVEsSxkpSOJr5VL1qTmbxFCtSkZ6eVs5DnZcBUTY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaE/LO2I+60wiE8utgbmyMrMJPQ29WJBe50vRvuaPo8hczhFrl
+	JZL2KEvmsfJCFlHb6SMHuTYV6zuXI7oqg7NSDmvnRyeLDoOHJuRVPEpQvjnrX+50dXlV9gbVmjY
+	aGoh0EcxT1QZNIDtQNnrR3YPiRNM=
+X-Google-Smtp-Source: AGHT+IEWRoi6tBvIXIEAjCCEv9bkVAcC3LAGFzr1vnQaJGYyNdNQOe6AwRKFYXd6fAfHpioMGj8lz6HF3NUuhu9k0jg=
+X-Received: by 2002:a05:6102:38c7:b0:4a3:ac2b:bfff with SMTP id
+ ada2fe7eead31-4aae16623d6mr12871748137.22.1731365913427; Mon, 11 Nov 2024
+ 14:58:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,11 +58,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241111112615.179133-1-alistair@alistair23.me>
  <x6OyXuGQi1xeknAX_pjcl17BOpxRM6OGtLWGhGOH4LUgghJaP29a4ebzCT21QdfxBb88PwZCc2U7zizrTTSzVg==@protonmail.internalid>
- <20241111112615.179133-2-alistair@alistair23.me> <87cyj2t2l1.fsf@kernel.org>
-In-Reply-To: <87cyj2t2l1.fsf@kernel.org>
+ <20241111112615.179133-2-alistair@alistair23.me> <878qtqt1n4.fsf@kernel.org>
+In-Reply-To: <878qtqt1n4.fsf@kernel.org>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 12 Nov 2024 08:51:25 +1000
-Message-ID: <CAKmqyKM5eOM=+vmvF8t8Um=Cjtx3ykhx9BRibQhDB_mWF2tKGA@mail.gmail.com>
+Date: Tue, 12 Nov 2024 08:58:07 +1000
+Message-ID: <CAKmqyKNjjELzVbWgBHaHr8N1XnOJHk-U6RfLyb-FbTJ7h9jPoA@mail.gmail.com>
 Subject: Re: [PATCH v3 01/11] rust: bindings: Support some inline static functions
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Alistair Francis <alistair@alistair23.me>, linux-kernel@vger.kernel.org, 
@@ -73,73 +73,45 @@ Cc: Alistair Francis <alistair@alistair23.me>, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 11, 2024 at 9:47=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Mon, Nov 11, 2024 at 10:07=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
 >
 > "Alistair Francis" <alistair@alistair23.me> writes:
 >
-> > The kernel includes a large number of static inline functions that are
-> > defined in header files. One example is the crypto_shash_descsize()
-> > function which is defined in hash.h as
-> >
-> > static inline unsigned int crypto_shash_descsize(struct crypto_shash *t=
-fm)
-> > {
-> >       return tfm->descsize;
-> > }
-> >
-> > bindgen is currently unable to generate bindings to these functions as
-> > they are not publically exposed (they are static after all).
+> <cut>
 >
-> Very cool!
+> > diff --git a/rust/exports.c b/rust/exports.c
+> > index 587f0e776aba..288958d2ebea 100644
+> > --- a/rust/exports.c
+> > +++ b/rust/exports.c
+> > @@ -18,6 +18,7 @@
+> >  #include "exports_core_generated.h"
+> >  #include "exports_helpers_generated.h"
+> >  #include "exports_bindings_generated.h"
+> > +#include "exports_bindings_static_generated.h"
 >
-> What does this mean for our minimum bindgen version? Is the feature safe
+> Generating `exports_bindings_static_generated.h` depends on `exports.o`,
+> which depends on `exports.c`. Does this not create chicken-egg kind of
+> problem?
 
-There are no changes to the minimum bindgen version :)
+It is a bit confusing as there are a few levels of autogeneration, but
+Make happily handles it.
 
-The next release of bindgen will support it without the experimental
-flag [1], but 0.65.1 and newer will all work.
+`exports.c` depends on `exports_bindings_static_generated.h`
 
-> to use in our current required version of 0.65.1? Did the feature change
-> in significant ways between 0.65.1 and whatever version it will be
-> stable in?
+But `exports_bindings_static_generated.h` depends on `extern.o`
+(extern not exports).
 
-There are no breaking changes in the changelog that I can find. There
-are improvements to support more functions, but as we use an
-allow-list that doesn't affect us.
+`extern.o` then depends on `extern.c`
 
-Eventually when the minimum bindgen is updated we can remove the
-experimental flag, but otherwise it should work with everything newer
-than 0.65.
+`extern.c` then depends on `bindings_generated_static.rs`, which is
+generated by bindgen.
 
-1: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md?plain=
-=3D1#L219
-
->
->
-> > diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functi=
-ons
-> > new file mode 100644
-> > index 000000000000..1f24360daeb3
-> > --- /dev/null
-> > +++ b/rust/bindgen_static_functions
-> > @@ -0,0 +1,6 @@
-> > +# SPDX-License-Identifier: GPL-2.0
-> > +
-> > +# Don't generate structs
-> > +--blocklist-type '.*'
-> > +
-> > +--allowlist-function blk_mq_rq_to_pdu
->
-> Should this be moved to the "Remove blk helper" patch?
-
-I need a function here, otherwise nothing is generated and it fails to
-build. As this would be added in the next patch anyway I just added it
-here to maintain bisectability.
+So there isn't a chick-egg problem and this happily builds from a clean tre=
+e.
 
 Alistair
 
->
 >
 > Best regards,
 > Andreas Hindborg
