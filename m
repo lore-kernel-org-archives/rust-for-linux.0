@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB40A139578;
-	Mon, 11 Nov 2024 11:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854D515539A;
+	Mon, 11 Nov 2024 12:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731325636; cv=none; b=D0TyxCJvIfYUoNHRDsoaQv3cLUbpiKS/9tkfz5V/Win4B/CnEDqe/6HRqZ8kT5C99Hhy+7FYQxisflepdWN0DO+CreyUw7++SbKs3BELyAdSFRVo463fctRikNRKMdFLgPSFx2F6EQYQY47FCDzADJ20TSMf7s3PZnlPeonc/Dc=
+	t=1731326842; cv=none; b=tW6bJKI563OP3LBrP8UFsv+lib5uM+PDHYAg5f8TpyoInE1oQqWFGooHn9b3ng1r5iQr59KBgkF7xOPjE+t9NBlFs0ATael9QZuPAGFFbnWTLZzFL1yySFUEnoZJzUNemxi00kBsi/ysvOqUtTBrtWSKdWCJgvLIoCzqYfzsPlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731325636; c=relaxed/simple;
-	bh=ahzrlY6OwFk0VzvSBw1IShk2Bx/oulWv8n9Ybo9astE=;
+	s=arc-20240116; t=1731326842; c=relaxed/simple;
+	bh=Aby8kL7QLP4bhaOzikdtXuKtq+0cyWv1UxhuOdpDHF4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ngkvr03R22wK/CXHGXVi7hv2a+4O166c2dBbr1or8m/07SwZpg2D5zivM45vIm+8bJuoYUovXiSNrNit9gt9hXpXsVlP8rjsYT739T+u7h01G0bdxrNBtrXSTY16zQKWllJKk6Hh60v315PK9b0YsQCtiMVFU/4Pb+tGoftzj5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vBCvF9nI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=gWtKzdRFGxjtnVtOGFem+rDLGTmV0+l2B4mThqOFu0uPVjtJYVAGjQdUXWbV6XCxz096KNpY35FZgosKf8EmFKpWNk12A0dtDK4tcR65KAVvuFnablBWL11KQXck6HQAmdW/8y2w1RnQkkaxo5xsPTpyuEqMzpc5n+BCRRC4Xt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ir6vrS64; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vBCvF9nI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53716C4CECF;
-	Mon, 11 Nov 2024 11:47:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ir6vrS64"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E309C4CECF;
+	Mon, 11 Nov 2024 12:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731325636;
-	bh=ahzrlY6OwFk0VzvSBw1IShk2Bx/oulWv8n9Ybo9astE=;
+	s=k20201202; t=1731326842;
+	bh=Aby8kL7QLP4bhaOzikdtXuKtq+0cyWv1UxhuOdpDHF4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=vBCvF9nISBDR4GE7OpYrsQxoh/b5Hw/U0yiDJecB5a5nbThfVLjRXS/sxJ15stMOl
-	 J6617r5XRtxmJ9iNfFCppV6hsPcjfHndaJ7yvTGUdcHYIVdJjB8VVnsCGBiHAv6N8n
-	 OK3emS4THJgtEorejJoTlt9ogmGx/Cf5iurWQgv8bytnxIyv9w7S6mOAKSlqbJvQKZ
-	 7uvKLyDMNxTsT1FQax3TnmK2TtT6kzKQi1piHHeuVyHR+4iM8/d+2ZT9uXEm5UFCeL
-	 5wQGFqJPQk9SUdE7E2xabA/hsIWPMhEkSGBvE7ptccmMKO3FsVqdB3LScG/DpyRT3/
-	 mqWwif0CWLIzA==
+	b=Ir6vrS64DQVWfBVy4M+uW9KilWVA9GWJSkvqBFCkr5jJKDzW/HGNlFf6PM9u9nuvd
+	 ZzrwuMz5W/zfvCDxzwJpRJtTp6z7Je4GirZ+lfaw+wVRcH6D1Thmna9gPRPucTsjl8
+	 HfBpDsbmPE310MPVjXpA/9mvlh3s3JnsquGWcN6D2c5EjmdSc0bXgHeZNYMBaajcMT
+	 aSQfRBKJ4leehP0RJWfiyJEtNG07MwKoe9BawMBQ9cKqbn1jLhkrtaPZ+20YbGYlsz
+	 /tPvnIwopsxDPbuCiU5mNzGXWB1BAnGGZMhRb5t2/ebXZN96KndpWWmOYVv3x8CEpj
+	 pJFPns9C2+IDA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Alistair Francis" <alistair@alistair23.me>
 Cc: <linux-kernel@vger.kernel.org>,  <boqun.feng@gmail.com>,
@@ -41,8 +41,8 @@ In-Reply-To: <20241111112615.179133-2-alistair@alistair23.me> (Alistair
 References: <20241111112615.179133-1-alistair@alistair23.me>
 	<x6OyXuGQi1xeknAX_pjcl17BOpxRM6OGtLWGhGOH4LUgghJaP29a4ebzCT21QdfxBb88PwZCc2U7zizrTTSzVg==@protonmail.internalid>
 	<20241111112615.179133-2-alistair@alistair23.me>
-Date: Mon, 11 Nov 2024 12:46:50 +0100
-Message-ID: <87cyj2t2l1.fsf@kernel.org>
+Date: Mon, 11 Nov 2024 13:07:11 +0100
+Message-ID: <878qtqt1n4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,41 +53,21 @@ Content-Type: text/plain
 
 "Alistair Francis" <alistair@alistair23.me> writes:
 
-> The kernel includes a large number of static inline functions that are
-> defined in header files. One example is the crypto_shash_descsize()
-> function which is defined in hash.h as
->
-> static inline unsigned int crypto_shash_descsize(struct crypto_shash *tfm)
-> {
-> 	return tfm->descsize;
-> }
->
-> bindgen is currently unable to generate bindings to these functions as
-> they are not publically exposed (they are static after all).
+<cut>
 
-Very cool!
+> diff --git a/rust/exports.c b/rust/exports.c
+> index 587f0e776aba..288958d2ebea 100644
+> --- a/rust/exports.c
+> +++ b/rust/exports.c
+> @@ -18,6 +18,7 @@
+>  #include "exports_core_generated.h"
+>  #include "exports_helpers_generated.h"
+>  #include "exports_bindings_generated.h"
+> +#include "exports_bindings_static_generated.h"
 
-What does this mean for our minimum bindgen version? Is the feature safe
-to use in our current required version of 0.65.1? Did the feature change
-in significant ways between 0.65.1 and whatever version it will be
-stable in?
-
-
-> diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functions
-> new file mode 100644
-> index 000000000000..1f24360daeb3
-> --- /dev/null
-> +++ b/rust/bindgen_static_functions
-> @@ -0,0 +1,6 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +# Don't generate structs
-> +--blocklist-type '.*'
-> +
-> +--allowlist-function blk_mq_rq_to_pdu
-
-Should this be moved to the "Remove blk helper" patch?
-
+Generating `exports_bindings_static_generated.h` depends on `exports.o`,
+which depends on `exports.c`. Does this not create chicken-egg kind of
+problem?
 
 Best regards,
 Andreas Hindborg
