@@ -1,48 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854D515539A;
-	Mon, 11 Nov 2024 12:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E328055C29;
+	Mon, 11 Nov 2024 12:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731326842; cv=none; b=tW6bJKI563OP3LBrP8UFsv+lib5uM+PDHYAg5f8TpyoInE1oQqWFGooHn9b3ng1r5iQr59KBgkF7xOPjE+t9NBlFs0ATael9QZuPAGFFbnWTLZzFL1yySFUEnoZJzUNemxi00kBsi/ysvOqUtTBrtWSKdWCJgvLIoCzqYfzsPlE=
+	t=1731328215; cv=none; b=OFH0OMIOb20YUFo3VzE7dJgmcbwHMxY6Ba8CT1EqLtwWU3uKl8DShOF78b7y6GPPRYqXxFh9u78CkVV7GoSTo7t8NbUPhOjnJVsT0fdlTdiyeq7FvoRneK9VEaw29hqcwXkGGdfJLQx4qYUgxRbHf56x+OgglpN6lDAMvZ43HHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731326842; c=relaxed/simple;
-	bh=Aby8kL7QLP4bhaOzikdtXuKtq+0cyWv1UxhuOdpDHF4=;
+	s=arc-20240116; t=1731328215; c=relaxed/simple;
+	bh=1EQ72/xXKMzO8c3aOGw5ISYdpzMgvllLBlkGNTaGA8Y=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gWtKzdRFGxjtnVtOGFem+rDLGTmV0+l2B4mThqOFu0uPVjtJYVAGjQdUXWbV6XCxz096KNpY35FZgosKf8EmFKpWNk12A0dtDK4tcR65KAVvuFnablBWL11KQXck6HQAmdW/8y2w1RnQkkaxo5xsPTpyuEqMzpc5n+BCRRC4Xt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ir6vrS64; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ZSOngQVcpxBlMuy9IhOtPZOXtyKJWYgmKUHy/b53kMLVK1bCbG/mZzP78IkQPwJgW7BQlCZycDDD2FYLatuEpGjAqErOTcNWCDKgZLz0LMjRDViKqTkG6cF+I+qZAgdrCC+qvawC5kWstKKJu72h4ntMq0OZn7qqOTKW1oVJ3ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h0RwYjuu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ir6vrS64"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E309C4CECF;
-	Mon, 11 Nov 2024 12:07:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h0RwYjuu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD01C4CED5;
+	Mon, 11 Nov 2024 12:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731326842;
-	bh=Aby8kL7QLP4bhaOzikdtXuKtq+0cyWv1UxhuOdpDHF4=;
+	s=k20201202; t=1731328214;
+	bh=1EQ72/xXKMzO8c3aOGw5ISYdpzMgvllLBlkGNTaGA8Y=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Ir6vrS64DQVWfBVy4M+uW9KilWVA9GWJSkvqBFCkr5jJKDzW/HGNlFf6PM9u9nuvd
-	 ZzrwuMz5W/zfvCDxzwJpRJtTp6z7Je4GirZ+lfaw+wVRcH6D1Thmna9gPRPucTsjl8
-	 HfBpDsbmPE310MPVjXpA/9mvlh3s3JnsquGWcN6D2c5EjmdSc0bXgHeZNYMBaajcMT
-	 aSQfRBKJ4leehP0RJWfiyJEtNG07MwKoe9BawMBQ9cKqbn1jLhkrtaPZ+20YbGYlsz
-	 /tPvnIwopsxDPbuCiU5mNzGXWB1BAnGGZMhRb5t2/ebXZN96KndpWWmOYVv3x8CEpj
-	 pJFPns9C2+IDA==
+	b=h0RwYjuuno1d5+Uzi8y5LDbxlnP6UDV1OYCR0cePnTQZyd6sJsuQxbU2m0A6Q6A57
+	 lDD+XlsDMQT3hKob/m62dlVg/5G79wytKBa/u0oTGU2XQ/8vhcRUSlou/YRAMj6EyB
+	 lWbW+YfW4UBxVgAHJnU6fejKKwzr6ZyadAYSQY+rdBd2LSmeIGwOA+cCTzsWM/tKiY
+	 879OOoKo4X0ZLjgF5jQ7yGQuvEgOPgxYZ7TCdfFR/6UkTheWEqZURKMSWNboQADZ5X
+	 4yq+pELdvczmkDZOSBaeU0ZFzt3iXlZ9Y7nS+WNLQw/m21EwpEUfVFlDolQdJvcOjx
+	 NaSAPpN8a48Dg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alistair Francis" <alistair@alistair23.me>
-Cc: <linux-kernel@vger.kernel.org>,  <boqun.feng@gmail.com>,
-  <me@kloenk.dev>,  <benno.lossin@proton.me>,  <tmgross@umich.edu>,
-  <aliceryhl@google.com>,  <gary@garyguo.net>,  <ojeda@kernel.org>,
-  <rust-for-linux@vger.kernel.org>,  <alex.gaynor@gmail.com>,
-  <alistair.francis@wdc.com>,  <bjorn3_gh@protonmail.com>,
-  <alistair23@gmail.com>
-Subject: Re: [PATCH v3 01/11] rust: bindings: Support some inline static
- functions
-In-Reply-To: <20241111112615.179133-2-alistair@alistair23.me> (Alistair
-	Francis's message of "Mon, 11 Nov 2024 21:26:05 +1000")
-References: <20241111112615.179133-1-alistair@alistair23.me>
-	<x6OyXuGQi1xeknAX_pjcl17BOpxRM6OGtLWGhGOH4LUgghJaP29a4ebzCT21QdfxBb88PwZCc2U7zizrTTSzVg==@protonmail.internalid>
-	<20241111112615.179133-2-alistair@alistair23.me>
-Date: Mon, 11 Nov 2024 13:07:11 +0100
-Message-ID: <878qtqt1n4.fsf@kernel.org>
+To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <dakr@redhat.com>,  <airlied@redhat.com>,
+  <miguel.ojeda.sandonis@gmail.com>,  <wedsonaf@gmail.com>
+Subject: Re: [PATCH 0/2] Add dma coherent allocator abstraction
+In-Reply-To: <20241023113309.1724992-1-abdiel.janulgue@gmail.com> (Abdiel
+	Janulgue's message of "Wed, 23 Oct 2024 14:32:49 +0300")
+References: <gOYx0SWgtHGMFdeca-cxwYWFvr0hwCWCLCyLndrSSh8p9dU1wFSDL3ssAL-zaCfEbUyQ49dpsn8XaGfSamF-Sw==@protonmail.internalid>
+	<20241023113309.1724992-1-abdiel.janulgue@gmail.com>
+Date: Mon, 11 Nov 2024 13:14:48 +0100
+Message-ID: <874j4et1af.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,25 +46,18 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Alistair Francis" <alistair@alistair23.me> writes:
+"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
 
-<cut>
+> This series adds support for the dma coherent allocator. This is based
+> on code developed by Andreas Hindborg for the rnvme driver.
 
-> diff --git a/rust/exports.c b/rust/exports.c
-> index 587f0e776aba..288958d2ebea 100644
-> --- a/rust/exports.c
-> +++ b/rust/exports.c
-> @@ -18,6 +18,7 @@
->  #include "exports_core_generated.h"
->  #include "exports_helpers_generated.h"
->  #include "exports_bindings_generated.h"
-> +#include "exports_bindings_static_generated.h"
+I was not the original author, I just rebased the patches for a few years. I
+believe Wedson was the original author. I also did not add my signed-off-by to
+this.
 
-Generating `exports_bindings_static_generated.h` depends on `exports.o`,
-which depends on `exports.c`. Does this not create chicken-egg kind of
-problem?
 
 Best regards,
 Andreas Hindborg
+
 
 
