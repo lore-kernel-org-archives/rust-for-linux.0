@@ -1,127 +1,160 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF52D8468
-	for <rust-for-linux@vger.kernel.org>; Mon, 11 Nov 2024 00:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5057932C8E;
+	Mon, 11 Nov 2024 04:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731284089; cv=none; b=r70U75a2HKfcB2xY/Xa1PFlMFSN7vmmz7oiqI++jRDRauKpV2oILpdZghRjj8SmRYuQvuX9iymKXvVop9xzfu9+LQlV4YquhQFno3ljsXUFxIScXqWY6+vlEk8Qb8QcPoO4SYyRPoFr9cX9mzLaGFi+EILKQV7KRbLDwBERdGEo=
+	t=1731299126; cv=none; b=Im9NrV/MnCpeCN5sb252pUOFU7gioxhqXFatiM826sm8bSqXsnZASZ2ul35jfpZQqbXbejxiI4o+6rLHNq9Np6uXBUnXz+mOPdlwgmAAc0N8qAvNY1gv+yB6pCzM+y5fzGJzz2Imzgu5VnG8eRofFioIDx8dF6mge/MnaoSjZXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731284089; c=relaxed/simple;
-	bh=0PTQP4iqpWQASKNqt16+7RMv/XrOvlYLi8JcrtLScGE=;
+	s=arc-20240116; t=1731299126; c=relaxed/simple;
+	bh=/t9Jwe4HDPD7YywpIuV3Lcf7kzdchTAFNEHbjmGCk70=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oo9/aFzq2Vmis77i2zx8gKDwqpr/hUb3E52+B5EbDvGuXXsiuKULwFDrvwEttQYsoVV+90XazZ2/itJC0fdMj3NK7gTrNg+ahCinL/vMn8RojPMEBmMFuEyPn9UUyEVDGC1muixztyx9/ssvqxfCCoImSQrde21glj3zNjJ830I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+oRGSO6; arc=none smtp.client-ip=209.85.215.178
+	 To:Cc:Content-Type; b=h7e8hai4ro/bDgzJTv3qQ5zW3BIYay07M9QPZeRxRdIOrwWHqD2jRWj8zVtt9zSBoofZ3/ouJiJ74hAmZa6XjxLpCiT++yVqvRl7wruilfJ1Ej9Sj3w3VT190A2JyPSG/yg8yzcvfWcsr5N+/thzAdH6mO7qD93nVVmNo3zWtto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mtKUR4H3; arc=none smtp.client-ip=209.85.222.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+oRGSO6"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7eadb7f77e8so595787a12.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 10 Nov 2024 16:14:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mtKUR4H3"
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-85019a60523so1319488241.1;
+        Sun, 10 Nov 2024 20:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731284087; x=1731888887; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731299124; x=1731903924; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ih5JYXWavgas/s9nMJVKSsKj0cyvJmn1AKIe0WV35bs=;
-        b=j+oRGSO6OOfhGxHAFmrVzZLPC+sjaxB3uZSEfIFMysFD7NQWBjk34Cfy8bD+kVxpOl
-         xj3seBJIoVl4DYSakMijODoCqWLij45Crgpt3EGC6HMAP2ikuA3mVDGFvclynE1ytNTd
-         HYS2oMT1rIqjm5sF412083y59vIJmAs1iMA3XHVAjQdC0rS8dzfvadYiuljHFT1xe9yK
-         btZFCJcikEYWJbVeMkJ7Z9x7Xw2W2wUi51l3ajb+ddrARuxe3/X9ReHhyo7LhL5yeWLR
-         TOGg4eijrHVCnsfOYncNOZQX3A3yZTSKKEJo/RVmpYj1NgiZ7DCvW41txZbkMsn3mPVu
-         0UTA==
+        bh=S8zRUOdWrERuNjp0I0POAgNLhU+Cck87wCOaDfviZXU=;
+        b=mtKUR4H3J8+qWGfXECScVYp58ty4kwmY1CtLPdnVwiOI4NNw1XbBFgg4wg3jjd80er
+         DT2IxSp+wdtHcViXzAtSUdujOkxlSn4/vp5+Tn3U/HRjAudCX+U6yGkZcVSWk3eLeMxt
+         /6+yJH61vfIj+15I3MQW4vGrZgMzGygmhuqVZjzq6F/045bVwJwGGfvHp4hq3JswoAQv
+         Tghfra2cD2T4c8/m1b4rYpBhfqu9Tr3UT51yq8YaVEQ/vHHXvF/tsn7kdgw6VoXO8VA8
+         Z3OyRPp41/yKHi1iTpTo/hWgz/ABa5NaGG2KMw8G6HnQfWBcBavxvEIu4uQekK+fKQzm
+         n1fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731284087; x=1731888887;
+        d=1e100.net; s=20230601; t=1731299124; x=1731903924;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ih5JYXWavgas/s9nMJVKSsKj0cyvJmn1AKIe0WV35bs=;
-        b=EtfzECOdnFsGVHN6jVDJey0AzKhI5EeRi3oD6jdQsbVjNlGvsOxsZtfnjD89vHLSRy
-         uQkSX/lFVW5gOSrAR4+iKhYxK2ZcNn3vg7HTevR+90FpJiE8PkOTHk8MgXA1EKWd0f0e
-         qEEoj2zjjyefBkTQcDdbBFQPhF/3RHZ/wzBWQoNbt5bQQtGYoUvAd64dJPN8wUYgZoKu
-         50SIuuLv+mYmuZL92bZHPZkw5WG5FDaOVfQil9OeZDF01K8543+S9f73TyyrP2Tua6wx
-         teN4NFm93QgE43f8YePsK5SoCKl0HB2n3AdvuKXVZkYnwCcoopP0iKqDfdBcxjCVf6zO
-         SIag==
-X-Forwarded-Encrypted: i=1; AJvYcCUETRvZV/GYKbnggmLC60o7KiRPzCDz/s9lcHRdnhKLPMnklMU4bzybC3xXui4vBOHyHpD/eTaao6fZ8A4Rag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylxwqKBXpsUM0XACUjZfrdKZ9ccHVPtlmLfpMCMZkSm93wyhb5
-	iR3jzaX9/bIEEIJSHv2OXjlm7VniGZZwW+vw8COIckDo3azJ8blDPWla6Y/7NJBCTJdU5zHBi/T
-	5dDJWL1KRziaEHlbYEsz80OydCNo=
-X-Google-Smtp-Source: AGHT+IFZLBFWoDLvGfkK6JJv887IeqryRcOSJhkPD8nKIRbZLasb8uavQbzaOGhuqQei20eQ7PgvQI7+UZnO8kViw5o=
-X-Received: by 2002:a17:90b:1e0f:b0:2e2:da69:e3fa with SMTP id
- 98e67ed59e1d1-2e9b167fe26mr6082944a91.2.1731284087174; Sun, 10 Nov 2024
- 16:14:47 -0800 (PST)
+        bh=S8zRUOdWrERuNjp0I0POAgNLhU+Cck87wCOaDfviZXU=;
+        b=Mh4TbxnfFKc6p0z+WLgnQwBb5ATUqZQB6QKqG8/RPk34RmdR0C73i98LMVcEwEXHq+
+         Hfl1x+NVH402BDnS3HUyQEng4UFfCN/WR0s3TSCot2w8TQ9VhflmyWDmf2g9x0ROGlR/
+         CfQf7kXj/lcaRZc5BNNmsxiVepxBrxU5zZtMqIvxIsV/mQaBLfs7RWKORkzQgD16bkPo
+         KA0/jIXwBh+CykKaBerwuckC/DJKGwKPM8h5ueiCSLKfKEkKgNs9Ds/6yd5yLWmVLmBB
+         lYBbnBTTrZtDsAvQ/0xPZH9QwuNCc07xCwRntigVkQnVUHwvJ4GzGHqozVZpQFwgRzNU
+         Avgw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1bH+D6ycO9HXIoYEisCKcJB9jt2c29edknsEKTQ0dlK2Kg1dqRcJtY9Rdi/3CCLfVyuA9cO6b01UYkls=@vger.kernel.org, AJvYcCVX4Sqwj2cbXruIgdncUBtm+RKzAHAq64oOA/NFqs7LcmYchthYWD0UGdE0mUz2i6i47v5J/i66LgRfAWDlMyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSUdD43Vs/qzUGoxpLHHO6DGrKu8I/dgU3kSIFiqT/R9r/PHUz
+	tgFCbSZ/DrdLSy9C4YVVT1aoMTCdzU1hPLhTnndFWt7v1i2I9uJBsPU8WlSYWELvCW6jjGIJuSo
+	CHSmofPctdivUU/R6mEseMR9HAvY=
+X-Google-Smtp-Source: AGHT+IHgqpCSv9vxe5BM0IPr3cZ2CK7j60+QQ750UXGr6jWobuGCnI4gA52uY7OemrTZ6r40bXtP+8sH2vqiiBU0FwM=
+X-Received: by 2002:a05:6102:418e:b0:4a4:72f0:794a with SMTP id
+ ada2fe7eead31-4aae13bd940mr10018436137.13.1731299124081; Sun, 10 Nov 2024
+ 20:25:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913213041.395655-1-gary@garyguo.net>
-In-Reply-To: <20240913213041.395655-1-gary@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 11 Nov 2024 01:14:35 +0100
-Message-ID: <CANiq72=1djBKMQS27smB+fMcY1ktWZDRLeUQPJy3hOuJ+Ju5gQ@mail.gmail.com>
-Subject: Re: [PATCH 0/5] use custom FFI integer types
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+References: <20241108031012.335203-1-alistair.francis@wdc.com>
+ <20241108031012.335203-5-alistair.francis@wdc.com> <900683ff-568e-4f63-a8c7-31271bd83988@de.bosch.com>
+In-Reply-To: <900683ff-568e-4f63-a8c7-31271bd83988@de.bosch.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 11 Nov 2024 14:24:58 +1000
+Message-ID: <CAKmqyKPS0b6VYKthsV-dC=XqNvkz_5N5On8-X76tx8U0T6iV_g@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] rust: helpers: Remove kunit helper
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: a.hindborg@kernel.org, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	alistair.francis@wdc.com, rust-for-linux@vger.kernel.org, me@kloenk.dev, 
+	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu, 
+	linux-kernel@vger.kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org, 
+	gary@garyguo.net
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 11:32=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Fri, Nov 8, 2024 at 4:01=E2=80=AFPM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
 >
-> This patch series aim to reduce the unnecessary type casts needed in
-> Rust code doing FFI calls.
+> Hi Alistair,
 >
-> With this series, we can ensure:
->
-> * `size_t` is mapped to usize. Currently this is mostly true except for
->   C builtin functions, which gets translated by bindgen to c_ulong/c_uint=
+> On 08.11.2024 04:10, Alistair Francis wrote:
+> > Now that we support wrap-static-fns we no longer need the custom helper=
 .
+> >
+> > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> > ---
+> >   rust/bindgen_static_functions | 2 ++
+> >   rust/helpers/helpers.c        | 1 -
+> >   rust/helpers/kunit.c          | 8 --------
+> >   3 files changed, 2 insertions(+), 9 deletions(-)
+> >   delete mode 100644 rust/helpers/kunit.c
+> >
+> > diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functi=
+ons
+> > index 0269efa83c61..b4032d277e72 100644
+> > --- a/rust/bindgen_static_functions
+> > +++ b/rust/bindgen_static_functions
+> > @@ -9,3 +9,5 @@
+> >   --allowlist-function ERR_PTR
+> >   --allowlist-function IS_ERR
+> >   --allowlist-function PTR_ERR
+> > +
+> > +--allowlist-function kunit_get_current_test
+> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> > index e089ecdf091f..60b3fdc5c2de 100644
+> > --- a/rust/helpers/helpers.c
+> > +++ b/rust/helpers/helpers.c
+> > @@ -10,7 +10,6 @@
+> >   #include "bug.c"
+> >   #include "build_assert.c"
+> >   #include "build_bug.c"
+> > -#include "kunit.c"
+> >   #include "mutex.c"
+> >   #include "page.c"
+> >   #include "rbtree.c"
+> > diff --git a/rust/helpers/kunit.c b/rust/helpers/kunit.c
+> > deleted file mode 100644
+> > index b85a4d394c11..000000000000
+> > --- a/rust/helpers/kunit.c
+> > +++ /dev/null
+> > @@ -1,8 +0,0 @@
+> > -// SPDX-License-Identifier: GPL-2.0
+> > -
+> > -#include <kunit/test-bug.h>
+> > -
+> > -struct kunit *rust_helper_kunit_get_current_test(void)
+> > -{
+> > -     return kunit_get_current_test();
+> > -}
 >
-> * `__kernel_size_t` is mapped to usize. Currently this is mapped to
->   c_ulong/c_uint.
+> Could you check this? I don't get kunit_get_current_test() in the
+> resulting bindings/bindings_generated_static.rs and
+> exports_bindings_static_generated.h. So with CONFIG_KUNIT and
+> CONFIG_RUST_KERNEL_DOCTESTS being enabled (not sure if both are required
+> ;) ) I get dozens of errors due to that missing:
 >
-> * `unsigned long` is mapped to usize. Currently this is mapped by Rust
->   libcore to either u32 or u64.
+> error[E0425]: cannot find function `kunit_get_current_test` in crate
+> `$crate::bindings`
 >
-> * `char` is mapped to `u8`. Currently this is mapped by Rust libcore to
->   either i8 or u8.
+> Reverting only this 4/11 and keeping all other patches of this series
+> makes my kernel build fine, though :)
+
+Thanks for testing! I was missing a "#include <kunit/test-bug.h>"
+
 >
-> After this series, FFI code needs to use `kernel::ffi` types instead of
-> `core::ffi`.
+>
+> Btw, do we want/need an update of the documentation?
+>
+> https://docs.kernel.org/rust/general-information.html#bindings
 
-Applied to `rust-next` -- thanks everyone!
+Good point, fixed in v3.
 
-Gary: please double-check if you have time!
+Alistair
 
-    [ Trevor asked: "I wonder how reliable this behavior is. Maybe bindgen
-      could do a better job controlling this, is there an open issue?".
-
-      Gary replied: ..."apparently this is indeed the suggested approach in
-      https://github.com/rust-lang/rust-bindgen/issues/1770". - Miguel ]
-
-    [ Formatted comment. - Miguel ]
-
-    [ Formatted comment. - Miguel ]
-
-    [ Added `rustdoc`, `rusttest` and KUnit tests support. Rebased on top o=
-f
-      `rust-next` (e.g. migrated more `core::ffi` cases). Reworded crate
-      docs slightly and formatted. - Miguel ]
-
-    [ Moved `uaccess` changes from the next commit, since they were
-      irrefutable patterns that Rust >=3D 1.82.0 warns about. Reworded
-      slightly and reformatted a few documentation comments. Rebased on
-      top of `rust-next`. - Miguel ]
-
-    [ Moved `uaccess` changes to the previous commit, since they were
-      irrefutable patterns that Rust >=3D 1.82.0 warns about. Removed a
-      couple casts that now use `c""` literals. Rebased on top of
-      `rust-next`. - Miguel ]
-
-Cheers,
-Miguel
+>
+> Thanks
+>
+> Dirk
+>
+> P.S.: Many thanks for rebasing against rust-next!
+>
