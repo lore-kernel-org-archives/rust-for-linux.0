@@ -1,221 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2043.outbound.protection.outlook.com [40.107.241.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7664720494F;
-	Tue, 12 Nov 2024 04:09:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731384561; cv=none; b=UIf0MFSM76uamdbiyDHYb17L3Uvk/1PG4kTtqyoI887IqWewCayksd8SsZGUFL1Lbc2laW6UYG4MBOr6/SkivmiWXoDK4ZWMma6ERkGw1jv+7YTDgKMmqASpyUnQcOovX0Bepi5HpiAANi8/FXq150RHLq9wbU5eAFohXqoIyUo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731384561; c=relaxed/simple;
-	bh=pR0BtV89O5c28HlJXTslOQmSq8i0VdMQqs5jp/cnj4M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EZ+PO2hECXLNpL1y9OJDOrdblEPkvJkZWPeaQjB0JWM4d0zQCQdbPSA5WZ7obRHBLWyDXel76iWK/kGvjGEpszqxvfybWWuvNiUh9zSXjNysL7mfbvC/vI3JpkEpjCwd61b2bD3Fu5lOJcVOvexurRB83P1iKje6pPcMBMrLIRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWMa90aM; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211A25234;
+	Tue, 12 Nov 2024 05:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731389735; cv=fail; b=ug19M060H9vEv+6HJOEY92fAagfwhxYlKO5wG5GG9VBkP/h/pZ/zMRGVVvcS9vhSMToIOQRRNSr15hmdtqaFp7tkniQNaz/39pTf7rL/IWwBx0dlAik8EewYdrbfsD3xCrhUzmVJBshHP85CQkpCrvePS3awNrpoZmDYdcqxLmM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731389735; c=relaxed/simple;
+	bh=Yl8XSdIZ+55B5uDueEJWP/OwPmAvK8Ho0PnQcbJ+MNU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rRVvpl1Spzkt4docCaLL8HXjrDguqqm6GACKv5QVo+e8m/dFOnFbNdAAle5JYlOWvxmjApJ3GPSBfC+5mPOhaq39pqBCHoMFtGcwtByP7ssmh1Zn/bSefYXhTLdPXTERuxeqztlysj/P0NDf+uZv+vSmGS+diutwIAjk9EkFjaU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=IgCRbKvh; arc=fail smtp.client-ip=40.107.241.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWMa90aM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6EAC4AF09;
-	Tue, 12 Nov 2024 04:09:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731384561;
-	bh=pR0BtV89O5c28HlJXTslOQmSq8i0VdMQqs5jp/cnj4M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eWMa90aM8vmXm3QDmMl7620F2UhYvu7a6kfzejmyc+ZsWSOU2KND7KWoXmAEyW6RZ
-	 tlqXMNrWThUaB+pyOstes05Jevr/4rfWHADdNxVMXrRDMaYGzcfSgUFG3H95VSrvOo
-	 AXuo4cYVPEBVVoh+64JGORTU4dldDEKvKCXFF5e5fykR5tYhK7BFgCo9YZiJjqIov+
-	 7JM8VH0Snux9uCnCdEXibzYa2D3NRY/RoSoW9ze0XjuL+Uv64seT2hF2zC/qBGdmcS
-	 TjnUMjJAD2hV4S6Bt3o68aq+W42276DtW5jr9W05naxj/SVDLi/cRY2AY3txoZx6t3
-	 cdfpdbWXDte5Q==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fb388e64b0so46833881fa.0;
-        Mon, 11 Nov 2024 20:09:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUpjJrzQX/cBoBPWZywmlYR9NR0Ft1NdXDLzFczDXwatIoz/rKJxmWhF1ESlg4XA5jhDnNvObEISxF16S46QQ==@vger.kernel.org, AJvYcCUwgLHeIIlKSs66SOfW+OFyEkLZOpK5S7tQSpHSDmyoZv3YeSIkl+uw4zZm4GlsExRPfA49+mOXI0Deaa8=@vger.kernel.org, AJvYcCVgXwncbS88Up1LWyKVVYUsKTGfr5ZVj4YfmjIcJygGChiLsn1kZpVC2x281Eny1Tp1Rl6Xsab66kWUXpPD@vger.kernel.org, AJvYcCWUyc2XVh4egDLGUfZdv9SKZwMvdKaRXieU1PuDW8JrjeZDa64ckprndrIJP77Gfdh06WkI2pRBm5W+BvbE9rQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIw3QQUvrSVGwiL03rg5pKNyEH7usenoXMf2dUJVN6jSKk7nPi
-	5i7DGmy7J1Y7yXgUtR8dzFLygwUkm/4ReYADsu9OZqBjBCVrwG3ZzrWGgu2tjlxkz8/6YumojiC
-	WYu/t/MyicGroAaRlYtAi8nU7NFQ=
-X-Google-Smtp-Source: AGHT+IHCz5Kq6glWndE0YFj2o5thdpPMvoFZsNuNTIzXPJG19tiU0tqQWVzQvxPj8BIf5QDsKUvqgDusa+OmiJvxhUw=
-X-Received: by 2002:a05:651c:198a:b0:2fb:4c5c:3f7d with SMTP id
- 38308e7fff4ca-2ff426972bemr5425751fa.5.1731384559779; Mon, 11 Nov 2024
- 20:09:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="IgCRbKvh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VTGDh/Z4NF3yGg7NWobsINFl7GSQHluWusreDtkcJJHV9pvwPZ9/kpks67VVloPluKmALTnU28c0QHwJ+WaIYMk0teHFUeuAQbB6Zv1QOgOy+tNkogLjzoajRcUK1J/7UOfFHUzbpJWkjfF61Vo9rkXmM5erUa9epaPAobD+zapbZBopRm9r09EknnoU2ierB/GihwlxofT+Cx+d17yv279CN0JmfYTfKjl57EvMruxo+LeQ+k5or1PPvOENda96ZA308dqa4VB4O727e2mVsnLtlyk/0zeJgmXJ+BqJIYku2v0AuDTioDUTuqKCDqdFkjwdqg/05/SOm+WxRVG4Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tbvxHvoZ1NFwbQnurLqzU9jJ63X65704hWawsgWcVDo=;
+ b=CNmFPqAQpO+K2iCCHU3J3fKDepzzh/CLGE3q3lsa3Vry0GQswcdwciyF8X5DoxSYZqtDA9RH4ko7Z/xEYQuiSgEpbRXtkzaE2OFppki+VFI2cVnae7gz1Eu7cUn+IAfKMB9+D7+f4tmmvcc16rgwJ9fJhWRFEpBg82DClsjnbInX9yxHC0z6S3dkTYtUc25JczMVkUx7LrxjWoIzBQpjhNLW+Lsy5UuFCfuF7M6/LRqLm0sfXVkfSIfhkdt77/QrRd1eUJGmylJiOzESfzTWek0YYW6O83LNXC0cdPjOlOXA+MoBaqc2TTiUaIqxSx9VxFGWID3NIqZ2XXk/8friWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tbvxHvoZ1NFwbQnurLqzU9jJ63X65704hWawsgWcVDo=;
+ b=IgCRbKvhnZwgPwKeY1yXkcw69U3PltcKJ0EEwJyLkKSfF1Rvydz0HOMx5KmCZxbVqv9faGVJNbcr35TNUDrB+da2fuyqNGWgFQNI3/f7smehe0nP4hJeBsVPgOiBN7Ib06BvH9MHezIOhoKjjxagTTIenplwW5M6qXgt/NYv5POEHTj5t7NF6vlyeBK51YbQbAp0rJhkFgPJCQk46tXQLVpgzYHlw5P0gYpLFIpua7CffMmfO0sQfbP3LkWtS+so/Cu29/p/GdjQhBGEyuUXpHc/hg0vEqboxaqtM9bXD5ZJXUvFs2TAa07i3uPowDkhAzhWtZIeuRhH1YAyoFXVxw==
+Received: from AS4P195CA0009.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:5e2::17)
+ by DU4PR10MB8997.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:56c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.16; Tue, 12 Nov
+ 2024 05:35:26 +0000
+Received: from AM3PEPF00009B9C.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5e2:cafe::21) by AS4P195CA0009.outlook.office365.com
+ (2603:10a6:20b:5e2::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.29 via Frontend
+ Transport; Tue, 12 Nov 2024 05:35:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ AM3PEPF00009B9C.mail.protection.outlook.com (10.167.16.21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8158.14 via Frontend Transport; Tue, 12 Nov 2024 05:35:26 +0000
+Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 12 Nov
+ 2024 06:35:26 +0100
+Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2000.de.bosch.com
+ (10.139.217.201) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 12 Nov
+ 2024 06:35:25 +0100
+Message-ID: <2c8f1d58-e90e-4ba1-92e3-44e24040ac92@de.bosch.com>
+Date: Tue, 12 Nov 2024 06:35:19 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030170106.1501763-21-samitolvanen@google.com> <20241030170106.1501763-39-samitolvanen@google.com>
-In-Reply-To: <20241030170106.1501763-39-samitolvanen@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 12 Nov 2024 13:08:43 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR9c+EEsOvPPn4qSq3gAFskYOXVd=dg8O+bKeeC-HMifw@mail.gmail.com>
-Message-ID: <CAK7LNAR9c+EEsOvPPn4qSq3gAFskYOXVd=dg8O+bKeeC-HMifw@mail.gmail.com>
-Subject: Re: [PATCH v5 18/19] kbuild: Add gendwarfksyms as an alternative to genksyms
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 00/11] rust: bindings: Auto-generate inline static
+ functions
+To: Andreas Hindborg <a.hindborg@kernel.org>
+CC: Alistair Francis <alistair@alistair23.me>, <linux-kernel@vger.kernel.org>,
+	<boqun.feng@gmail.com>, <me@kloenk.dev>, <benno.lossin@proton.me>,
+	<tmgross@umich.edu>, <aliceryhl@google.com>, <gary@garyguo.net>,
+	<ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
+	<alex.gaynor@gmail.com>, <alistair.francis@wdc.com>,
+	<bjorn3_gh@protonmail.com>, <alistair23@gmail.com>
+References: <20241111112615.179133-1-alistair@alistair23.me>
+ <bR_L15e11CHC0AS4d41vkbo-whYRfTKoU_htcjK8F_inG0Y5HQslqOWHOLBeNTCYqsgSqOtHXeoOj4ifT5ndJA==@protonmail.internalid>
+ <9369b621-47d1-4967-8a68-874bb602deeb@de.bosch.com>
+ <87msi5swsj.fsf@kernel.org>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <87msi5swsj.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009B9C:EE_|DU4PR10MB8997:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2d8363b-b7fe-4d3c-b86e-08dd02dbd003
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d2ttNEJmcXBsNGFJclZtM0xuS0VXODR0cVpkYk9rT0txck5GR3ZaRGlIZUlh?=
+ =?utf-8?B?bTRrYjhRMGFaRW1OK253SjhDaDhuNDdVUGVYSmtoaEkydkV4ZUNWYmVXQlVL?=
+ =?utf-8?B?MG5KYVZPWC9ETWV6VDZGcTVHVmc2MCtpRy9ab0NxUnNaeUxsclI2K2dyRXVx?=
+ =?utf-8?B?YXJlRkpTc1F2MGFrc0NBbmNwN0gwclNVNUV0SEpoWkJ3cGxIQmM3R09abkZm?=
+ =?utf-8?B?QlhoNTEzSzB4blJQNFpubEs4YXRNa1RJaWo2UW5JZkgwVEJKYWtjVFcrbmNa?=
+ =?utf-8?B?djBCVk1xc016OGdNcXVqMGc4U3pHL1ZEYTBFRGtGRzNmNEkra2ZZelY1Vk5a?=
+ =?utf-8?B?dVk2NFFtQTBaYXNIQ0QxZ08vcnRFU1NwNmYrS2FoOE8wK0gyYnpjbjlLV2Rn?=
+ =?utf-8?B?TTNyU0RUNWJqSTJ5Z0NyNk9YMG9HZEplY1NMUXNha09uT1VzT1hjbzY2ekUv?=
+ =?utf-8?B?YmRTVkdWbkxPZ0VsK2tOMmtWdFljZUF5amhzTFN1aHRvMWNHV3pwSFBFTzhF?=
+ =?utf-8?B?YnNrY1JMbzVGU3kwS0ovTEUxYmM5dEtvZXlaUU1GMCtSQmV4dFYxUGRMeHdj?=
+ =?utf-8?B?bmxoRGJhckpJZmdzZEYySTZKZ1grMm9Wem8yeUlPQ1RRM1NLWlh0NmdpeWxk?=
+ =?utf-8?B?dG13V1NRZWFZR2xSL1RpVEcwRzlramQ0WWpnaWVRQktGbEYxckQ2YmZvelNh?=
+ =?utf-8?B?OTBzb1FOSXlGa0tIc1lDemE3MDZPNkdJZDFKRlp2SkpMa1dpUndvUEpmWEs3?=
+ =?utf-8?B?TjJkMk5STElnc3BqNmk5YUZpYytJS3V0SjdsdVBUbG0vT09wNEdBTUxRN2hw?=
+ =?utf-8?B?T0M5SFloRm9uZE5hV1ZnbEFNMVpKcDFTN0lRTmRaRWxIK0d2RkxmOENiUU1V?=
+ =?utf-8?B?N3J5dCtOK2lqTHh4ZmJwWjdmRmpXdGFpRTl1MEVjZHM5TE5YVzhJMGc2MVdv?=
+ =?utf-8?B?dFVvR0J4TGNyM0F6em1uTWFrSzIrMTZRV1dNRWFFS3V0a3pFRmhVaFRCRUN6?=
+ =?utf-8?B?UzFDbk4zMUhZS2N5MStFb3ZvMU5ZeS9rN0ZpbktMWnlQOTNSMG1ZbU5MVFhW?=
+ =?utf-8?B?NWJvbmlVUEQ0eWNaTXFYYS9oM05xaURLTm9GdGdpTlBsOEltZFpkNHdaTTQ0?=
+ =?utf-8?B?NmJGWXM0aGk2c2JJRnNpQjZYaGFzS2FmS0xvbXFuU3BSd0NIb1ozV09hZm10?=
+ =?utf-8?B?VHFjVnRoaWdVTXBhNXo4b0NUSXZPbHBqRk9IcUJFODVjWW9KTUppdDNIZTlV?=
+ =?utf-8?B?RllQM3dZaWJrOS9yTGRvbGMzT1RDZ003L3RzQks4SmJJSkhQSDdDZEV2SEdM?=
+ =?utf-8?B?SjczSGx2clVLL3pBa09FMlA3MzgxWW9NR1E2TUF5T2x4bEMvRVJNZTJBNmlW?=
+ =?utf-8?B?bi80cDM5SFluK0l3L0VQcHpneGZoUlRCV1cvd2ppOUJmeWxIRDUzMnU0anMw?=
+ =?utf-8?B?SldJNzh2VUVGUVNhMWNTSzduMnpVY1hBdG9nKzZxV3FsSlkzRkNhMzV3Z0Z6?=
+ =?utf-8?B?N1E3WkJsOUI2WVB4RXNjaWY0bHcrdmF6UHRiR2FiU3NJOTFlcTVsV1d4Y0RV?=
+ =?utf-8?B?aHNRMmlHTm1ucnh1WVpaNXF3bEpUV0tTTThkTDBRY3RVTitUYTlFVk9NRlQx?=
+ =?utf-8?B?UEsvNGRWUm5IUWw2K09nY0N5bHJuV05qVExBanIvNmdlNGJPZndBQTBBYk5I?=
+ =?utf-8?B?WW1mV2Fjc3hJQysrTkdHbkNrMEFaTE1sdUFib3BhTVIycFIrMUExYjNwUEZs?=
+ =?utf-8?B?ZlNVcThhbzJVMjl4cHViVjdoRW9jd3BKMnhFZUY0Q29kR2FodDc1dzlTL2Nq?=
+ =?utf-8?B?cTdSc2xUalJaYndZT09xcERMU0E1NDdrT0xTOTZtSkFPc2RPQkZZY2pidXR3?=
+ =?utf-8?B?Zzh6a2todXZIQUx6MWZwYTd0bDI3eFM0WE41NXArSnZFckE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 05:35:26.6695
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2d8363b-b7fe-4d3c-b86e-08dd02dbd003
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF00009B9C.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR10MB8997
 
-On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@google.=
-com> wrote:
->
-> When MODVERSIONS is enabled, allow selecting gendwarfksyms as the
-> implementation, but default to genksyms.
->
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> Acked-by: Neal Gompa <neal@gompa.dev>
-> ---
->  kernel/module/Kconfig  | 25 ++++++++++++++++++++++++-
->  scripts/Makefile       |  2 +-
->  scripts/Makefile.build | 41 +++++++++++++++++++++++++++++++++--------
->  3 files changed, 58 insertions(+), 10 deletions(-)
->
-> diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
-> index f9e5f82fa88b..e6b2427e5c19 100644
-> --- a/kernel/module/Kconfig
-> +++ b/kernel/module/Kconfig
-> @@ -169,13 +169,36 @@ config MODVERSIONS
->           make them incompatible with the kernel you are running.  If
->           unsure, say N.
->
-> +choice
-> +       prompt "Module versioning implementation"
-> +       depends on MODVERSIONS
-> +       default GENKSYMS
-> +       help
-> +         Select the tool used to calculate symbol versions for modules.
-> +
-> +         If unsure, select GENKSYMS.
-> +
-> +config GENKSYMS
-> +       bool "genksyms (from source code)"
-> +       help
-> +         Calculate symbol versions from pre-processed source code using
-> +         genksyms.
-> +
-> +         If unsure, say Y.
-> +
->  config GENDWARFKSYMS
-> -       bool
-> +       bool "gendwarfksyms (from debugging information)"
->         depends on DEBUG_INFO
->         # Requires full debugging information, split DWARF not supported.
->         depends on !DEBUG_INFO_REDUCED && !DEBUG_INFO_SPLIT
->         # Requires ELF object files.
->         depends on !LTO
-> +       help
-> +         Calculate symbol versions from DWARF debugging information usin=
-g
-> +         gendwarfksyms. Requires DEBUG_INFO to be enabled.
-> +
-> +         If unsure, say N.
-> +endchoice
->
->  config ASM_MODVERSIONS
->         bool
-> diff --git a/scripts/Makefile b/scripts/Makefile
-> index d7fec46d38c0..8533f4498885 100644
-> --- a/scripts/Makefile
-> +++ b/scripts/Makefile
-> @@ -53,7 +53,7 @@ hostprogs +=3D unifdef
->  targets +=3D module.lds
->
->  subdir-$(CONFIG_GCC_PLUGINS) +=3D gcc-plugins
-> -subdir-$(CONFIG_MODVERSIONS) +=3D genksyms
-> +subdir-$(CONFIG_GENKSYMS) +=3D genksyms
->  subdir-$(CONFIG_GENDWARFKSYMS) +=3D gendwarfksyms
->  subdir-$(CONFIG_SECURITY_SELINUX) +=3D selinux
->  subdir-$(CONFIG_SECURITY_IPE) +=3D ipe
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 8f423a1faf50..d2a0440cdb79 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -107,18 +107,31 @@ cmd_cpp_i_c       =3D $(CPP) $(c_flags) -o $@ $<
->  $(obj)/%.i: $(obj)/%.c FORCE
->         $(call if_changed_dep,cpp_i_c)
->
-> +getexportsymbols =3D $(NM) $(1) | sed -n 's/.* __export_symbol_\(.*\)/$(=
-2)/p'
-> +
-> +gendwarfksyms =3D scripts/gendwarfksyms/gendwarfksyms    \
-> +       $(if $(1), --symtypes $(2))                     \
-> +       $(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable)
-> +
->  genksyms =3D scripts/genksyms/genksyms           \
->         $(if $(1), -T $(2))                     \
->         $(if $(KBUILD_PRESERVE), -p)            \
->         -r $(or $(wildcard $(2:.symtypes=3D.symref)), /dev/null)
->
->  # These mirror gensymtypes_S and co below, keep them in synch.
-> +ifdef CONFIG_GENDWARFKSYMS
-> +symtypes_dep_c =3D $(obj)/%.o
-> +cmd_gensymtypes_c =3D $(if $(skip_gendwarfksyms),,       \
-> +       $(call getexportsymbols,$(2:.symtypes=3D.o),\1) | \
-> +       $(gendwarfksyms) $(2:.symtypes=3D.o))
-> +else
->  cmd_gensymtypes_c =3D $(CPP) -D__GENKSYMS__ $(c_flags) $< | $(genksyms)
-> +endif # CONFIG_GENDWARFKSYMS
->
->  quiet_cmd_cc_symtypes_c =3D SYM $(quiet_modtag) $@
->        cmd_cc_symtypes_c =3D $(call cmd_gensymtypes_c,true,$@) >/dev/null
->
-> -$(obj)/%.symtypes : $(obj)/%.c FORCE
-> +$(obj)/%.symtypes : $(obj)/%.c $(symtypes_dep_c) FORCE
->         $(call cmd,cc_symtypes_c)
->
->  # LLVM assembly
-> @@ -314,19 +327,31 @@ $(obj)/%.ll: $(obj)/%.rs FORCE
->  # This is convoluted. The .S file must first be preprocessed to run guar=
-ds and
->  # expand names, then the resulting exports must be constructed into plai=
-n
->  # EXPORT_SYMBOL(symbol); to build our dummy C file, and that gets prepro=
-cessed
-> -# to make the genksyms input.
-> +# to make the genksyms input or compiled into an object for gendwarfksym=
-s.
->  #
->  # These mirror gensymtypes_c and co above, keep them in synch.
-> -cmd_gensymtypes_S =3D                                                   =
-      \
-> -   { echo "\#include <linux/kernel.h>" ;                                =
-    \
-> -     echo "\#include <asm/asm-prototypes.h>" ;                          =
-    \
-> -     $(NM) $@ | sed -n 's/.* __export_symbol_\(.*\)/EXPORT_SYMBOL(\1);/p=
-' ; } | \
-> -    $(CPP) -D__GENKSYMS__ $(c_flags) -xc - | $(genksyms)
-> +getasmexports =3D                                                       =
-         \
-> +   { echo "\#include <linux/kernel.h>" ;                               \
-> +     echo "\#include <linux/string.h>" ;                               \
-> +     echo "\#include <asm/asm-prototypes.h>" ;                         \
-> +     $(call getexportsymbols,$(2:.symtypes=3D.o),EXPORT_SYMBOL(\1);) ; }
-> +
-> +ifdef CONFIG_GENDWARFKSYMS
-> +cmd_gensymtypes_S =3D                                                   =
- \
-> +       $(getasmexports) |                                              \
-> +       $(CC) $(c_flags) -c -o $(2:.symtypes=3D.gendwarfksyms.o) -xc -;  =
- \
-> +       $(call getexportsymbols,$(2:.symtypes=3D.o),\1) |                =
- \
-> +       $(gendwarfksyms) $(2:.symtypes=3D.gendwarfksyms.o)
+Hi Andreas,
+
+On 11.11.2024 14:51, Andreas Hindborg wrote:
+> "Dirk Behme" <dirk.behme@de.bosch.com> writes:
+> 
+>>
+>> It builds for me now and the htmldocs were built as well.
+>>
+>> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+> 
+> Does it build for you if you have a clean tree?
 
 
-I do not want to see crazy suffix replacements like this.
-
-I decided to delete this.
-https://lore.kernel.org/linux-kbuild/20241111171753.2917697-2-masahiroy@ker=
-nel.org/T/#u
+Yes, it builds fine on top of recent rust-next [1] [2].
 
 
+> I think there is a
+> dependency issue in the makefile, as indicated in another email.
 
---=20
-Best Regards
-Masahiro Yamada
+
+Please have a look to Alistair's explanation:
+
+https://lore.kernel.org/rust-for-linux/CAKmqyKNjjELzVbWgBHaHr8N1XnOJHk-U6RfLyb-FbTJ7h9jPoA@mail.gmail.com/
+
+Best regards
+
+Dirk
+
+
+[1]
+
+795e3d43d83a5 rust: helpers: Remove uaccess helpers
+0071ccb890a3f rust: helpers: Remove some task helpers
+9881077429443 rust: helpers: Remove some spinlock helpers
+495b561ce78b9 rust: helpers: Remove signal helper
+48107d1e5cc61 rust: helpers: Remove some refcount helpers
+621903d5c46eb rust: helpers: Remove rbtree helper
+d1484aaea0fcd rust: helpers: Remove some page helpers
+941df485c6631 rust: helpers: Remove kunit helper
+f62ea696e0114 rust: helpers: Remove err helper
+6f59d029873ac rust: helpers: Remove blk helper
+c093c35fb693a rust: bindings: Support some inline static functions
+74949fc30c7a0 x86/defconfig: Enable Rust
+d072acda4862f (rust-next) rust: use custom FFI integer types
+...
+
+[2]
+
+/ # uname -a
+Linux (none) 6.12.0-rc2-00090-g795e3d43d83a #3 SMP PREEMPT_DYNAMIC Tue 
+Nov 12 06:28:23 CET 2024 x86_64 GNU/Linux
+
