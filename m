@@ -1,104 +1,106 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1DD23B0;
-	Tue, 12 Nov 2024 00:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DEB2038BA;
+	Tue, 12 Nov 2024 04:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731369770; cv=none; b=aikwEU4i6F+43mnbA95mBPVl09RdRhDjFk0OSmyXBgX8JzTVIdEA+O5MxMQKA6ww0XZDGY8HIrngOjPEE3qDsP8PSIbvpmJOGXy5hqDfvkwllSV2pzoGMFynAHklIPHv+JrNi2GityhqrBwOxbyJsquC1pSh9FctnqMZ11GqmdM=
+	t=1731384364; cv=none; b=Nb34lfNHGvnPRflQTewyy3HozSqRipuRyitIxmzKubfDKc0PiNuVO4OVqymny7OhHkwjdcP/t24Qsab/m3wm77kzUhppt3ajbptnZCcNnDFjEwa2QTrxs+rzAHQMZU8+gABYvrjTfDmjJ9Rx4YmF0FiYFlsS0xeSequ1ib7qxGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731369770; c=relaxed/simple;
-	bh=hqloVGNAQjeRy3aNvXaBMc6qYPHQUDKZaczGU0KY8tU=;
+	s=arc-20240116; t=1731384364; c=relaxed/simple;
+	bh=FHke1KQcD8QEibCAXGq1prANLtcdE3Qip9NGZ8so138=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oeg5LMfi9eoxLUUdr6Li/FZut3tHZzmj1oH50wPbP6urdvwtHCyPkJB43kjApdvkdpfvQdnq28DkYU9u7Z6067tXFaRi3zAGD6pKxHn+5R7iLZOCfLjtPNVm4hsPAk/dEX8wF1XyqS6CYSIHk65DzbvggjDn8ypHuwbAvQFhWQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eGATuDiy; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=UenylDrgpgjFXOCgLSvzlmd2x/++tICZQkpzv7b3VbARKJ+CMuA5s3dV+J84w+DM1Qnt/GbQB/++ZH/aobS+zjHMQHamlkEXqWS1MIP9NVPvaXsaoXqnPu6/YCo4qOqDqtiJsJFECJJ7aiKYt1uVm/vPlyAUWKoiCAHSWS3OOQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNBgoJHA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eGATuDiy"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e56750bb13so16420a91.2;
-        Mon, 11 Nov 2024 16:02:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731369768; x=1731974568; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hqloVGNAQjeRy3aNvXaBMc6qYPHQUDKZaczGU0KY8tU=;
-        b=eGATuDiyhMcuu+DNF4jQzItZfvX0z6MWdZjEYhLmR5822i1e0/+biRJXgHM4/UFZ5q
-         gZ+TtIoGYUzZMC7qqegTEPkb8w75KvX/HB8P6h1UTpBW0ULgVJpFsBm4ocw0dGlgyGz4
-         W5u4Hq/OrVOB6wEUMBB2X+TcizOB9QjcIWFaLFtfOKWCKyw9xWe6bbJNQ2AINVli9/EI
-         TCivJV3tcRJ88fthTbXnBoQdRFOInurTz+GfqS7NJhDyakBfhNzF0AA7qvS4hUduFJ82
-         4Vk+9IAsCpgAo9YGTw38+8LdeqWCNzow0VreH26ZJ3/VnQJZff722O8qalpE3KVdUOCv
-         kzHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731369768; x=1731974568;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hqloVGNAQjeRy3aNvXaBMc6qYPHQUDKZaczGU0KY8tU=;
-        b=oZDwqHYykeGSo6KRz26+3mvqwpwLhFkAvvAuJSGjCEMmXQCOF03yBgoFGvHlpnNQgw
-         fQ+qJhXJvMfw8mAOJlC7lQqwyul0/iOTk61kVOjgAB3FTecRihUONmf6WVPP0uWYGHzA
-         4cOqfkUpylx2VLtjXzo4DePGn/vaUyWX6IaIMURvnxT5JhH7EH4Zfqj4MeZ3YG1PEsm6
-         5a9QzDKuXZODtfFgKCo/smEXs4osZMFdkcAX5GwDnSUjyeHgISqJvqjVv9/4KqumufiS
-         ft/DPOkfoRqnJDHhKysCaTgKBZCH9BU04RujgKT3/JEWm12f/XA81HynUYyztS8uxwIx
-         kyOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUytWp8+HlSOxE8vpMW2AtQlgZsWaeBHwo+IYCIh9MpAFpML3sTnR2w8wr1IDK86Z9z5Nohe/njPXxTXNnoa2E=@vger.kernel.org, AJvYcCW4btlqz6QD+odHgShhNfcF7+nSJvXx0Ju3R7i+SUH8Km/8tjBO0a/CRZWCV9oTSqPnRiIBs0n2OYJsq8A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMaNmh8F4xEvBFGNgF3rjdZql3mwG4je7xICwizHlKdyyPmGsU
-	5UZg15Y4dheJnAWOjirEa1+EkgHdLQyQQXlym1uVUMkqBBuEWvAy2oOpIuZvZ/AHgaL5ZtUVOCV
-	xd85Bv8xMSkRAUL1JLQBc+pC2ShQ=
-X-Google-Smtp-Source: AGHT+IEaeVek+DtuJhFBlBEsv/iQ29u1BBc5XYRdORi1jyNVutViGIojkMBIO12N4a2Xzr5iWx3M9tNpMthyQldKOwo=
-X-Received: by 2002:a17:903:2a8b:b0:20c:d8d8:226f with SMTP id
- d9443c01a7336-2118357541dmr80056325ad.12.1731369768540; Mon, 11 Nov 2024
- 16:02:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNBgoJHA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B53C4CEDF;
+	Tue, 12 Nov 2024 04:06:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731384363;
+	bh=FHke1KQcD8QEibCAXGq1prANLtcdE3Qip9NGZ8so138=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZNBgoJHA5wNXMNUg4ZyDtVJvytVDggGjakai+NsKjE0ReEkscttntk9VX7BxIbVMV
+	 fxLGj9TqkVKzwWWAzV4m2N5m88UmWWPelrFG07R5YjVgTyvStLJGX1pDx3Tkbokh8w
+	 9bIUeQ+ZZkPMBLz3uESazlqU6/8zyt4NoMj9/mvBMcOjZytXiR9QVyvbW9mXyz6FL2
+	 ab14YpfFFrd7BZ4q91LGn7JZAmJ38GYhSzNL2hQ6Nj4b3ujJ6pLa6OWnbDBQJ/Pu/r
+	 EAgOz1gS2mpc3R6OEydFWaqVWOEzvpEtodT6jlnW1yid76Gf5EJLQps8aeF9TpZ8xq
+	 yurKCto9PRbbw==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fb559b0b00so41988091fa.0;
+        Mon, 11 Nov 2024 20:06:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU3dCKsvVPf6R/cnOnITmn8V39EsTy3wIANjusanJHtLeI4zNoFraBLXYHDF4CwaSMoc1vr2TSZ2vOx3c1U1w==@vger.kernel.org, AJvYcCV4DMYH5Jr8IB7BKhjq4R7D2kNb8/S+5PUaqGtdtdEqYmfzmFoxmcZx+ZY75bgz0V5hPpeG7esZdVHOdG4=@vger.kernel.org, AJvYcCWaHes3ZkyttVnKVtYzK6WEN5sPUleLUAL2MMp5a4EUJ4U4rRb1piGJrketAV1QZ1ZFpbqqIkQ/1T0kIic6woU=@vger.kernel.org, AJvYcCWfQCoN/iR2gWDMjQZfQTCSQPq8mRLHpu/eNFaK6FQ2ST6Kn103B4rmyWzqAu4r4NVu1w9bLKovwUJDbA43@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyyowl4PtYQJt8aWBygIYmPZigYdPwY4FLjyp/itmU8l4hu2Ywp
+	ckKLrrbPN/dcXqMl56070x6Ugup5oqiwuyqlmVCUD/Fy7hIj9zIv2DtGW1+UJYZyErx5HhK+KSJ
+	6Qrt/UvdgxoWJiofIrsmf5gdmmaA=
+X-Google-Smtp-Source: AGHT+IFaRU5m6t+1lg1Mo1HuXiGTzkpRRzVCu43z16mgHhFLkoiREKNarCRpBVHxgtf18ImVdw8EvH+O6j07/ZYcwMM=
+X-Received: by 2002:a05:651c:988:b0:2fb:8df3:2291 with SMTP id
+ 38308e7fff4ca-2ff2016d246mr72169041fa.16.1731384362113; Mon, 11 Nov 2024
+ 20:06:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241110-borrow-mut-v4-0-053976068215@gmail.com>
- <20241110-borrow-mut-v4-6-053976068215@gmail.com> <CAJ-ks9mSu0Wivnsn605ZTFHiYqK4VEhURO-7rj5jFAwSxJsABg@mail.gmail.com>
- <CAH5fLghAJFbCaOF8YPKJaKow3RdPXAqRvkJ7Ua5Mo5LcFo2WbA@mail.gmail.com> <CAJ-ks9mnGvcsCZUjyjkYUSNSAv3004rtFcczBA-Wo58w-L+-vA@mail.gmail.com>
-In-Reply-To: <CAJ-ks9mnGvcsCZUjyjkYUSNSAv3004rtFcczBA-Wo58w-L+-vA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 12 Nov 2024 01:02:36 +0100
-Message-ID: <CANiq72mVe+geqsXAwrR+OdJ=H9DTb2Oxm5r+JWrawYz5O=fV=Q@mail.gmail.com>
-Subject: Re: [PATCH v4 6/6] rust: add improved version of `ForeignOwnable::borrow_mut`
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+References: <20241030170106.1501763-21-samitolvanen@google.com> <20241030170106.1501763-22-samitolvanen@google.com>
+In-Reply-To: <20241030170106.1501763-22-samitolvanen@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 12 Nov 2024 13:05:26 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
+Message-ID: <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
+Subject: Re: [PATCH v5 01/19] scripts: move genksyms crc32 implementation to a
+ common include
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 11, 2024 at 5:22=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
 >
-> My reading of that discussion is that the new `crate::ffi` module
-> isn't going anywhere, it's just the later patches that diverge the
-> types that might be dropped for now and taken later.
+> To avoid duplication between host programs, move the crc32 code to a
+> shared header file.
 
-Yeah, that was my plan, and I ended up with that.
 
-However, we still need to see how it actually goes -- we will see tomorrow.
+Only the motivation to use this long table is to keep compatibility
+between genksyms and gendwarfksyms.
+I do not think this should be exposed to other programs.
 
-> In my case though I have a hard conflict as the patch introducing
-> `crate::ffi` and this series touch the same lines so I think a rebase
-> is unavoidable.
 
-If there are conflicts, then a new version is usually welcome, unless
-the conflict is small or trivial (i.e. sometimes maintainers may do
-the rebase for you and other adjustments -- a new version may not be
-worth it, and it depends on the maintainer).
+If you avoid the code duplication, you can do
 
-In this case, please wait a few days to see if you get more feedback,
-and meanwhile the linux-next issue will be resolved one way or
-another, so you can use whatever is in rust-next by then.
+// scripts/gendwarfksyms/crc.c
+#include "../genksyms/crc.c"
 
-Thanks!
 
-Cheers,
-Miguel
+
+
+
+>
+> Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> Acked-by: Neal Gompa <neal@gompa.dev>
+
+Does this Ack add any value?
+
+Acked-by is meaningful only when it is given by someone who
+maintains the relevant area or has established a reputation.
+
+$ git grep "Neal Gompa"
+$ git shortlog -n -s | grep "Neal Gompa"
+     2 Neal Gompa
+
+His Ack feels more like "I like it" rather than a qualified endorsement.
+
+
+
+--
+Best Regards
+Masahiro Yamada
