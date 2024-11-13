@@ -1,66 +1,67 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F45317FAC2
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 23:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1B8186287
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 23:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731540461; cv=none; b=So7PZHWgaoGmK7xxW/kzVRHfFGm8m3758FqoRfKQbu9K6AhlJBUEak7zdu+sDkexSPZHbc6GTTp+h3lHhmrxIUKKqaFI/GvsHQn8aSFCLD9cs1qT7uvqca/uMpjKKqtXHfzSWJ5UyQkay+zxlWRhtEuyInY+IjPeyTpTxnSEdD0=
+	t=1731540649; cv=none; b=YVj8YbLS8QsPzH2QbVop2bpjHPJrNHLLqAOIey/Zyq4qcVdjhEvkz1g6xRfKzmiYD8goZY6BUx2a8SIaryw8myNmuR/XMQWFx7hxdmHeKC7Q9QUCsydNZD2Lo/89r6k4PI6QX5rr3rvsJ5VtaRJV94fcJjveHVizXkQLPhGkeE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731540461; c=relaxed/simple;
-	bh=zkil+yd7z4k2/6g9Z2agBOxXEi8+TRoEKsillZ3R7lU=;
+	s=arc-20240116; t=1731540649; c=relaxed/simple;
+	bh=99KewVBt++qpMt8v2RhS3TRssPBB28zRgf/vjEZHnMI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gDtVu3hKYljweWE1evwhlF/K5cnkJ2OdBhV+7xX3rVkF9Dt6Q36lJGoEDw0IpMAYK4s4S9TxY1AxDhJFLZkzundrACqZdEE7ikHEm8V7RihjV0CHTTSdo+O52QJ6GWwS9/JkSU/AMkdJrxcZrTIj8PpPMJ2hy3nng00UROFUSs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OJmJdwTN; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=uJtSneq+MtFFyv+vJGkxX2HIdLPvdN89qr3o9rP7uWq9TB8NoQIilXNWabCvm9vf/dPHnP9GqsbTh43qTw3PfkqLHsTOC8g8xC0RsJuMn4lIuM5qU94ZGibA5g1h7cINiItafknE04DEg6Bg/f+YG09IKnAGYTP9Gwi3r27iwsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d0xV56ki; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OJmJdwTN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d0xV56ki"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731540457;
+	s=mimecast20190719; t=1731540646;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KexKSMohlbSgwU3qi0l2UZkWCmE+cjx4mo9DoVi6gj4=;
-	b=OJmJdwTNMO64GTC84/YPVRTK7YtDakVwy0vegMOR8bpu3kecFCbtwMyMW224A5cMVCg9ml
-	/dj1UfB2hSvdiOpeHExqAAFpjvDzGrEje0iuuBCkBmGIsO6pxEXrgjHnZ7rR41ECJam5Tt
-	GSLV+qHIn+2PkWmDGOUehMkCi5Hg5F0=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=TgBaeTx5M6EJ7qZis+dTEtQinAbUOAuD30bHqrwNN4Q=;
+	b=d0xV56kisqXxmyoqR1dLKsU8a0DbRTjDEpBpmcJAs28Ld/IAj8Q6ycHlL/IHDOe4vnPf2f
+	D5XwZUzGg1r/Mt3PkyybAr7ed4O6RhvqZKA4qyEUgrwS3xGFchhpHUkJmsIUS7A0G6ESUo
+	odU4ABN1h1xcHa54FslQEo7bStiZ6fQ=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-378-hg7ZYqQLNg-99CguHEWTmA-1; Wed, 13 Nov 2024 18:27:36 -0500
-X-MC-Unique: hg7ZYqQLNg-99CguHEWTmA-1
-X-Mimecast-MFC-AGG-ID: hg7ZYqQLNg-99CguHEWTmA
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6d38310949cso124040246d6.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 15:27:36 -0800 (PST)
+ us-mta-381-0UFyfr97OlepPsc_5AxcLA-1; Wed, 13 Nov 2024 18:30:45 -0500
+X-MC-Unique: 0UFyfr97OlepPsc_5AxcLA-1
+X-Mimecast-MFC-AGG-ID: 0UFyfr97OlepPsc_5AxcLA
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b1786fe413so990449985a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 15:30:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731540455; x=1732145255;
+        d=1e100.net; s=20230601; t=1731540645; x=1732145445;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KexKSMohlbSgwU3qi0l2UZkWCmE+cjx4mo9DoVi6gj4=;
-        b=kSc7sZSxVAowg/Z+Bwlzlh9q4fPSqrFWYZxNAHenQVQ6/T7vXNTslgjGQGj6qxke7N
-         6L+Bva6LSFB3F3eBcdgzHE+VGid7Lid9zoslGRtE4eKkwq9aZrADyx5PwzGQ7YvhXpqb
-         3a7Y7HERsjat5HmVrDz1Z1DeG3EQs+ziXs/aAIWHJqYHsTIz/ji/MKt51t472ZPnG7H8
-         f3cpy6ic+tCvE2KRrP/b3dH4+QV9X6lkAtnVMMpoUdcjyCwFL9DvdRtikCpDL2wBhGNw
-         3zEFvHCYnQjpgM0LDEI5gInJG0CztCyxVhURyIE8qv3A7VhMg05PWRtjyE6scu9QIFeB
-         fI9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWpNZ6U/7tJlpCJiVt3qbI8W9loa39WLPDeADgtOFDF4Pk7r6SuYnygJnJ9aM8boRTaQu5iSWjthNhHkDlMug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBbHV9AUI8khCKFy6IQVtE/v+JIXGHt1pZ3XxyvTR//AD9/Cws
-	CGyMKmBr8cIgIcB9Gqn7xBe3sOU5LPLpiqDzXU4i5X5QmoyQCvBN+Z5wvJOaPBisCl4woX72PSf
-	UIvb69fldlB9T6eQc9j7TwBJZ50QBVj3gRcc4T2NBSOAEajExiOnLnDAoLZsjc9CQ
-X-Received: by 2002:a05:6214:498e:b0:6cb:e7eb:fcf0 with SMTP id 6a1803df08f44-6d39e1a5315mr315758136d6.33.1731540455488;
-        Wed, 13 Nov 2024 15:27:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFVLnptB/dhw3wLfS7PcbVPElMnFy+mtWMSPIimP0igliKYUo9GNzFB8Ho20fJzezAMTfwgiQ==
-X-Received: by 2002:a05:6214:498e:b0:6cb:e7eb:fcf0 with SMTP id 6a1803df08f44-6d39e1a5315mr315757946d6.33.1731540455202;
-        Wed, 13 Nov 2024 15:27:35 -0800 (PST)
+        bh=TgBaeTx5M6EJ7qZis+dTEtQinAbUOAuD30bHqrwNN4Q=;
+        b=Pj/lsFlvwrJhRoV4kWz2BwhUxngkMwBzWwgyRofPjyXL0gwv0etIqIqrFi9XjPugdK
+         upBxF07grluMtxQvuJsSTxNthuSauViEwxbT59bel60xN7OOk7BOB4Hdp6Q3rB4hFggP
+         j49c8353su1J/N1uCfZAC/XCdmoqTqgsmIsSlCerjdR2uQHno5Epi4lfTE/g8mc2528I
+         0O6XQ4iYY2ae++HmDJ/yM25yXCbIxkDMBtcCaWIkfSWo/bv3DPzwTINd901FA+n5EL9l
+         vMoL3i9pd/hxgzvknNNiyzE/Dywrq6YSFzSU1rJJTdZwM5zbdDfvNpA4LwQryfTlE6ZL
+         i4ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrKWlkZh25OqG/Tw5MG/+LZ6u4TSdvPpa/FYbgJ99yswukD5Q13ePu6zmXwzZp34+oLGFmyoNPfxBzFcg+VA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGb80bvAkn6VQBXcPQ7W4jV4DhkzZxFFuC1bHcovIfLN1068ed
+	2M8za9W9e1IiWOloy88jMCPJiFKIdekyudJlNUmQkF2EBY2gBMnzXE2Y8AfM2ZXEagdabuUvHrO
+	eClY/LhMSMP4jMIyot76gAvdbmLMfSx6I14yFyod1FTylM5WQ0EKJMUKfZW4JwEjD
+X-Received: by 2002:a05:620a:191b:b0:7a9:9fb6:64e4 with SMTP id af79cd13be357-7b331f2bd62mr2455075585a.51.1731540644912;
+        Wed, 13 Nov 2024 15:30:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFQ485kOxRfx7mgFoEFzAO4aP3CKgdvYqKC5Kc/hhN1//WxdL5gLrYaROfKFVEPh1gpUxcH0A==
+X-Received: by 2002:a05:620a:191b:b0:7a9:9fb6:64e4 with SMTP id af79cd13be357-7b331f2bd62mr2455073685a.51.1731540644556;
+        Wed, 13 Nov 2024 15:30:44 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32ac8aaa7sm740313985a.68.2024.11.13.15.27.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32acebe2csm740679485a.115.2024.11.13.15.30.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 15:27:34 -0800 (PST)
-Message-ID: <3a94c12f91964c5c89476bb2376a7489ccc0d154.camel@redhat.com>
-Subject: Re: [PATCH v3 06/13] rust: hrtimer: add `UnsafeTimerPointer`
+        Wed, 13 Nov 2024 15:30:43 -0800 (PST)
+Message-ID: <4a1ee5fff788d6624234f7e6df992406952ddb1d.camel@redhat.com>
+Subject: Re: [PATCH v3 07/13] rust: hrtimer: implement `UnsafeTimerPointer`
+ for `Pin<&T>`
 From: Lyude Paul <lyude@redhat.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
  <ojeda@kernel.org>,  Anna-Maria Behnsen <anna-maria@linutronix.de>,
@@ -71,10 +72,10 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>, Alice
  Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 13 Nov 2024 18:27:32 -0500
-In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-6-59a75cbb44da@kernel.org>
+Date: Wed, 13 Nov 2024 18:30:42 -0500
+In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-7-59a75cbb44da@kernel.org>
 References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
-	 <20241017-hrtimer-v3-v6-12-rc2-v3-6-59a75cbb44da@kernel.org>
+	 <20241017-hrtimer-v3-v6-12-rc2-v3-7-59a75cbb44da@kernel.org>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40)
 Precedence: bulk
@@ -84,77 +85,156 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wWTnMmxB0tHKJCwUgFbU4QoSYSud97RoFl9F0O4q6cE_1731540455
+X-Mimecast-MFC-PROC-ID: gwKTF99d5pehOa6H3ndS-skLvqp7YLgWCtF5587Q8ZY_1731540645
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, 2024-10-17 at 15:04 +0200, Andreas Hindborg wrote:
-> Add a trait to allow unsafely queuing stack allocated timers.
+> Allow pinned references to structs that contain a `Timer` node to be
+> scheduled with the `hrtimer` subsystem.
 >=20
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  rust/kernel/hrtimer.rs | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+>  rust/kernel/hrtimer.rs     |  1 +
+>  rust/kernel/hrtimer/pin.rs | 97 ++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  2 files changed, 98 insertions(+)
 >=20
 > diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
-> index eeed2afd501b64b94d57cc658616659e28785078..e97d7b8ec63ce6c9ac3fe9522=
-192a28fba78b8ba 100644
+> index e97d7b8ec63ce6c9ac3fe9522192a28fba78b8ba..ceedf330a803ec2db7ff6c257=
+13ae48e2fd1f4ca 100644
 > --- a/rust/kernel/hrtimer.rs
 > +++ b/rust/kernel/hrtimer.rs
-> @@ -151,6 +151,39 @@ pub trait TimerPointer: Sync + Sized {
->      fn start(self, expires: Ktime) -> Self::TimerHandle;
+> @@ -362,3 +362,4 @@ unsafe fn raw_get_timer(ptr: *const Self) ->
 >  }
 > =20
-> +/// Unsafe version of [`TimerPointer`] for situations where leaking the
-> +/// `TimerHandle` returned by `start` would be unsound. This is the case=
- for
-> +/// stack allocated timers.
-> +///
-> +/// Typical implementers are pinned references such as [`Pin<&T>].
-
-Missing a `
-
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers of this trait must ensure that instances of types imple=
-menting
-> +/// [`UnsafeTimerPointer`] outlives any associated [`TimerPointer::Timer=
-Handle`]
-> +/// instances.
-> +///
-> +/// [`Pin<&T>`]: Box
-> +pub unsafe trait UnsafeTimerPointer: Sync + Sized {
-> +    /// A handle representing a running timer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// If the timer is running, or if the timer callback is executing w=
-hen the
-> +    /// handle is dropped, the drop method of `TimerHandle` must not ret=
-urn
-> +    /// until the timer is stopped and the callback has completed.
-> +    type TimerHandle: TimerHandle;
+>  mod arc;
+> +mod pin;
+> diff --git a/rust/kernel/hrtimer/pin.rs b/rust/kernel/hrtimer/pin.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..a2c1dbd5e48b668cc3dc540c5=
+fd5514f5331d968
+> --- /dev/null
+> +++ b/rust/kernel/hrtimer/pin.rs
+> @@ -0,0 +1,97 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +    /// Start the timer after `expires` time units. If the timer was alr=
-eady
-> +    /// running, it is restarted at the new expiry time.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Caller promises keep the timer structure alive until the timer i=
-s dead.
-> +    /// Caller can ensure this by not leaking the returned `Self::TimerH=
-andle`.
-> +    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle;
+> +use super::HasTimer;
+> +use super::RawTimerCallback;
+> +use super::Timer;
+> +use super::TimerCallback;
+> +use super::TimerHandle;
+> +use super::UnsafeTimerPointer;
+> +use crate::time::Ktime;
+> +use core::pin::Pin;
+> +
+> +/// A handle for a `Pin<&HasTimer>`. When the handle exists, the timer m=
+ight be
+> +/// running.
+> +pub struct PinTimerHandle<'a, U>
+> +where
+> +    U: HasTimer<U>,
+> +{
+> +    pub(crate) inner: Pin<&'a U>,
 > +}
 > +
->  /// Implemented by [`TimerPointer`] implementers to give the C timer cal=
-lback a
->  /// function to call.
->  // This is split from `TimerPointer` to make it easier to specify trait =
-bounds.
+> +// SAFETY: We cancel the timer when the handle is dropped. The implement=
+ation of
+> +// the `cancel` method will block if the timer handler is running.
+> +unsafe impl<'a, U> TimerHandle for PinTimerHandle<'a, U>
+> +where
+> +    U: HasTimer<U>,
+> +{
+> +    fn cancel(&mut self) -> bool {
+> +        let self_ptr =3D self.inner.get_ref() as *const U;
+> +
+> +        // SAFETY: As we got `self_ptr` from a reference above, it must =
+point to
+> +        // a valid `U`.
+> +        let timer_ptr =3D unsafe { <U as HasTimer<U>>::raw_get_timer(sel=
+f_ptr) };
+> +
+> +        // SAFETY: As `timer_ptr` is derived from a reference, it must p=
+oint to
+> +        // a valid and initialized `Timer`.
+> +        unsafe { Timer::<U>::raw_cancel(timer_ptr) }
+> +    }
+> +}
+> +
+> +impl<'a, U> Drop for PinTimerHandle<'a, U>
+> +where
+> +    U: HasTimer<U>,
+> +{
+> +    fn drop(&mut self) {
+> +        self.cancel();
+> +    }
+> +}
+> +
+> +// SAFETY: We capture the lifetime of `Self` when we create a `PinTimerH=
+andle`,
+> +// so `Self` will outlive the handle.
+> +unsafe impl<'a, U> UnsafeTimerPointer for Pin<&'a U>
+> +where
+> +    U: Send + Sync,
+> +    U: HasTimer<U>,
+> +    U: TimerCallback<CallbackTarget<'a> =3D Self>,
+> +{
+> +    type TimerHandle =3D PinTimerHandle<'a, U>;
+> +
+> +    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle {
+> +        use core::ops::Deref;
+
+I'm sure this is valid but this seems like a strange place to put a module =
+use
+(also - do we ever actually need to import Deref explicitly? It should alwa=
+ys
+be imported)
+
+> +
+> +        // Cast to pointer
+> +        let self_ptr =3D self.deref() as *const U;
+> +
+> +        // SAFETY: As we derive `self_ptr` from a reference above, it mu=
+st point
+> +        // to a valid `U`.
+> +        unsafe { U::start(self_ptr, expires) };
+> +
+> +        PinTimerHandle { inner: self }
+> +    }
+> +}
+> +
+> +impl<'a, U> RawTimerCallback for Pin<&'a U>
+> +where
+> +    U: HasTimer<U>,
+> +    U: TimerCallback<CallbackTarget<'a> =3D Self>,
+> +    U: TimerCallback<CallbackTargetParameter<'a> =3D Self>,
+> +{
+> +    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::h=
+rtimer_restart {
+> +        // `Timer` is `repr(C)`
+> +        let timer_ptr =3D ptr as *mut Timer<U>;
+> +
+> +        // SAFETY: By the safety requirement of this function, `timer_pt=
+r`
+> +        // points to a `Timer<U>` contained in an `U`.
+> +        let receiver_ptr =3D unsafe { U::timer_container_of(timer_ptr) }=
+;
+> +
+> +        // SAFETY: By the safety requirement of this function, `timer_pt=
+r`
+> +        // points to a `Timer<U>` contained in an `U`.
+> +        let receiver_ref =3D unsafe { &*receiver_ptr };
+> +
+> +        // SAFETY: `receiver_ref` only exists as pinned, so it is safe t=
+o pin it
+> +        // here.
+> +        let receiver_pin =3D unsafe { Pin::new_unchecked(receiver_ref) }=
+;
+> +
+> +        U::run(receiver_pin).into()
+> +    }
+> +}
 >=20
 
 --=20
