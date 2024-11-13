@@ -1,66 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5898717DFE9
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 23:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2390218C021
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 23:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731541059; cv=none; b=nAVSMM6mN2DkKPxPgm2bZAsAPSUkqblwttV4WP+PMMwVNv/wTUuzMmtwwxFyVUH7Kq6x7klhiOU/NiwEk2KnXyVzgfnyQMopG+KyuRSZ+hT98+4bo5lZcX1h3Is8oQAtMcsuVWjaxo9jaGLjflGCOeky8aYZFQxDvvk6Q0Rnvf8=
+	t=1731541199; cv=none; b=SsemBx+TrSNeIWR1vrIpawPdZ2ZuJFdT9YzciB5aAAcRBO0PNPiClWbaEhoRgfU2U2sFUpX+vOYPahm0S+F+hRmnh67o2BTd2sKkvvzmWrO/Vqf0iGdQLYa/k+CPlk2EbF0U6OlWE3tTMmL46c/0oiXINN88lGuzllPvt1LB9T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731541059; c=relaxed/simple;
-	bh=7Ez+wFKFAFZ4hbpRAQHUDlqnLA975pKiWuVutcamlqU=;
+	s=arc-20240116; t=1731541199; c=relaxed/simple;
+	bh=GeCIFUffOXk+LI++FqD/ATEkJx0TyBQRn/igA4AR2ZI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WhjEprGbxBrWDg6g9a8HK/BWOpRdA2Pa5II/Bt/8eJk7HH+cO7Iu+yN3/47WRPYxN+wbO9KXpK1onUM9Y61jmlkgHVntv2flZs9CbHtweHq9spvEI8aPip5YH3paGIdW9dggZP4MdlDck4LUYfHiXSyV4d32yCMjAMnyf8ZEeI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VX7MXqNz; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=MDJ3gY0cBiIVeUj09NyQiZM6EyvKSgWlT0I2Ac00sk+/0opETnN+I8JkZlB7bH5A9VbiFnk0B0pFK489pNqkRyc1QJjCmLo4fA9lZy3s4/Wp/r8/lCYtg8Vgbak/TU+now/ImE0qKzQSVlfUF6ZlkNlL4uZ7ZJ5Z8RGe4UrbuWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YbAZyXhB; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VX7MXqNz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YbAZyXhB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1731541056;
+	s=mimecast20190719; t=1731541197;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8KqYgxJDhZfyvRhClBUwVG5LSiSriYmymIpTe4AQ8ec=;
-	b=VX7MXqNz23IqtpowEADXbY/dtJbXjL2592J80klAzJyPzWHrneE9DboVu6q9rxlP8HelPf
-	032KTKA5YbiKI/OVkyPiVqu+0NOYhL0j4TCJnWn8NK0uflyBE46f9MvGt6GFl1kLO3urk5
-	UDMYj6vMZQNSI52hepab/r0YrCMmGo8=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZdkMpPYFxXbDJvB1PoVRj7/65ysMSl1fMDYX/sCwzCs=;
+	b=YbAZyXhBVIOmMI4ccHWtQenDqg5v+HEkU+vfH6t6bhEFOicpjVnLnhEwdLhaHypSxmNXkx
+	RZu3KPN7kkOQhk/QE6jVRtqwLeyfnY6OV53CNOjQ1BclDcX5hBKVxA2DTriwavt97YmiJ6
+	V+eBL4NoQXWu9uE939nv0W8jMpOq9qw=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-fsX_FPRtOOm8tLzoYWzs0A-1; Wed, 13 Nov 2024 18:37:35 -0500
-X-MC-Unique: fsX_FPRtOOm8tLzoYWzs0A-1
-X-Mimecast-MFC-AGG-ID: fsX_FPRtOOm8tLzoYWzs0A
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-460dd04feecso176201cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 15:37:35 -0800 (PST)
+ us-mta-350-kz6OpwQJOk-Cti0eAuNopQ-1; Wed, 13 Nov 2024 18:39:56 -0500
+X-MC-Unique: kz6OpwQJOk-Cti0eAuNopQ-1
+X-Mimecast-MFC-AGG-ID: kz6OpwQJOk-Cti0eAuNopQ
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7b14f5ca413so1072469585a.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 15:39:56 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731541055; x=1732145855;
+        d=1e100.net; s=20230601; t=1731541195; x=1732145995;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8KqYgxJDhZfyvRhClBUwVG5LSiSriYmymIpTe4AQ8ec=;
-        b=LyanB6qf/hcsGucczqlnEoQg5Ob0VTPYBq2O0DrvrJyJCv5IsurQrB3TYi0lO4k0gP
-         3CghNJgynKhmKImFqIpyvvHHud4wxbPDd5tgoXRq8L7d8tB+9+WloZpB62z2z0o1mOwT
-         k/ExsTS5FxnYO3lxAf4S0NsUbL1DYa6c6qkBYX0tLLGpJAfkRe8hkBa6WUSs6A3eSK6w
-         QxNkKb4YhVTVL8Poc7H5wLJqiOVTFyRTgvIQCh2IZunKDGxS5C7i5vuKPWHytjFuESVD
-         BeeWU8DuvhKAp7aMOAYxmjHD6gBYm6Gmyipm7FJSSOPvJPAjGvn200kA++5DCH30NDgl
-         5pJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNGBsxtIK6/4v5c1RaOO1i6Y9YFIEdHM4LZvQ2mTPnTJZEbZ4M31m1f7GJtKpnXDy7p8G5D7Gj685ibTp8Kg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMuEKBm4bnhp3xjDLvE8YtQUKl7Dbgob78iv3GR+nkY9gZSK4w
-	LuRoBjtyAr5cGVdwr/EFOGTJY7BaLYgimAzoNw+gGof3bRfd8WmHo4kMBWGVYNwvA0adsduxiDt
-	stcpANVw/9XKfrFGzc9SmGtbb1pGLM3QnNDS7ezxASov3BRQtMizHGTlQ44ek5z2d
-X-Received: by 2002:ac8:5782:0:b0:462:c473:94ee with SMTP id d75a77b69052e-4634b55c4dfmr60518571cf.49.1731541054693;
-        Wed, 13 Nov 2024 15:37:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEAJvjJIv4ESOBYiQuT4sA3eXcDKMZQV5YxKZ6Nc0d2LCJXUW8p4B3UNH7gLEhxFSkzlyKSHw==
-X-Received: by 2002:ac8:5782:0:b0:462:c473:94ee with SMTP id d75a77b69052e-4634b55c4dfmr60518281cf.49.1731541054283;
-        Wed, 13 Nov 2024 15:37:34 -0800 (PST)
+        bh=ZdkMpPYFxXbDJvB1PoVRj7/65ysMSl1fMDYX/sCwzCs=;
+        b=gleijjjHBto/GnnCyr+ZujuEhAI16ddAMBbU1cl5yX0X7YZH3VL5g2+m7WlIcyF+fC
+         GAaTc+bqiVoLSfNlQZtnBD/vih9d0a3T9voRfsCCORxDytV0umBB33XjntRAf5xUe4qj
+         VDJHi5NQ6UXH56mAo/LMShlnSbfD80fXMIWCpXmANq2MFN0Hz3FibV606xUd/LMybfnL
+         uT4xHtlPIumty4pMzJvzLJzkISLCIfXQWot7zHY+wwTpO6wRHYDJo9jBb/H+EEx3nls1
+         F3xywk5G2heMSrb+fFsOTcGd+krx8SDQTvvQEBMugc/VmnCnGmLFAvf5o3xfkghH8kJg
+         FPFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKyo/0v319qJc80giDEw8AsNjg+rfjksGduAURXeCiBZ/OXU5zMJSFLQpuZ8fGp6r0/6XOCo8XGca2nk8MwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3JKQMdSIUtA74BWyYe5aNToVpQhiDZgeKQyk2VSvBYgSpv5PJ
+	3Tq8cZ3Fw8XRkU9ph+8y40/e0hrHuYcO0f6qCUxnXZ3fSqMr4o9A2ANy52H16vMZtZGVGG4fqMv
+	LTEeR5MaBobaVuORFEYnBAiYQUr0gFBT46YVSAScV23wvTlx51xzhUWOtngoHJwZr
+X-Received: by 2002:a05:620a:372c:b0:7b1:1d74:6b87 with SMTP id af79cd13be357-7b35c1802fcmr8609285a.58.1731541195580;
+        Wed, 13 Nov 2024 15:39:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IENJndLT4eULRqfg24X90RFETobSiScVnYzjVGSfouNOSv/PtMFdrsG8F5TA4811494V0AC6w==
+X-Received: by 2002:a05:620a:372c:b0:7b1:1d74:6b87 with SMTP id af79cd13be357-7b35c1802fcmr8606185a.58.1731541195205;
+        Wed, 13 Nov 2024 15:39:55 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ff4771ebsm94096911cf.50.2024.11.13.15.37.32
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b32ac54d4fsm740723585a.46.2024.11.13.15.39.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 15:37:33 -0800 (PST)
-Message-ID: <f27dfef8aa3d184382a6573ddde8d89a2d688f24.camel@redhat.com>
-Subject: Re: [PATCH v3 11/13] rust: hrtimer: add `TimerMode`
+        Wed, 13 Nov 2024 15:39:54 -0800 (PST)
+Message-ID: <8fa20279fe8067602fbb106329a0f7d9c4146b3b.camel@redhat.com>
+Subject: Re: [PATCH v3 00/13] hrtimer Rust API
 From: Lyude Paul <lyude@redhat.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
  <ojeda@kernel.org>,  Anna-Maria Behnsen <anna-maria@linutronix.de>,
@@ -71,10 +71,9 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>, Alice
  Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 13 Nov 2024 18:37:31 -0500
-In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-11-59a75cbb44da@kernel.org>
+Date: Wed, 13 Nov 2024 18:39:53 -0500
+In-Reply-To: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
 References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
-	 <20241017-hrtimer-v3-v6-12-rc2-v3-11-59a75cbb44da@kernel.org>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40)
 Precedence: bulk
@@ -84,189 +83,107 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 40eEPXf5dIZ1mnwzoyDnuKPjrYq_78rBj8wj-k3rQDQ_1731541055
+X-Mimecast-MFC-PROC-ID: JZWFG2Ra8BdwWxJYHGFRO55qTHDDvl4FGEufygK-kjQ_1731541195
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+With the comments I left addressed:
+
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+
+(I'll have to rereview it soon when you rebase I assume, but I have a rebas=
+ed
+version locally (can send to you if you want) so I know the changes won't b=
+e
+too difficult ;)
+
 On Thu, 2024-10-17 at 15:04 +0200, Andreas Hindborg wrote:
-> Allow selection of timer mode by passing a `TimerMode` variant to
-> `Timer::new`.
+> This series adds support for using the `hrtimer` subsystem from Rust code=
+.
 >=20
+> This version adds support for timer mode and clock source configuration d=
+uring
+> timer initialization. Examples and functionality to execute closures at t=
+imer
+> expiration has been removed, as these depend on either atomics [3] or
+> `SpinLockIrq` [4], which are still being worked on.
+>=20
+> This series is a dependency for unmerged features of the Rust null block =
+driver
+> [1], and for rkvms [2].
+>=20
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.gi=
+t/log/?h=3Drnull-v6.11-rc2 [1]
+> Link: https://gitlab.freedesktop.org/lyudess/linux/-/tree/rvkms-wip [2]
+> Link: https://lore.kernel.org/rust-for-linux/20240612223025.1158537-1-boq=
+un.feng@gmail.com/ [3]
+> Link: https://lore.kernel.org/rust-for-linux/20240916213025.477225-1-lyud=
+e@redhat.com/ [4]
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  rust/kernel/hrtimer.rs | 88 ++++++++++++++++++++++++++++++++++++++++++++=
-+++---
->  1 file changed, 84 insertions(+), 4 deletions(-)
+> Changes in v3:
+> - support timer mode selection
+> - support clock source selection
+> - eliminate `Arc::clone_from_raw` in favor of using `ArcBorrow`
+> - make `Arc::as_ptr` an associated method
+> - update safety requirement for `ArcBorrow::from_raw`
+> - remove examples (pending `SpinLockIrq` and `CondVar` patches)
+> - remove `start_function` (v2 `schedule_function`, pending `SpinLockIrq` =
+and `CondVar` patches)
+> - change function naming from schedule/armed to start/running
+> - add vocabulary to documentation
+> - update safety comment in `Arc::as_ptr`
+> - Link to v2: https://lore.kernel.org/r/20240917222739.1298275-1-a.hindbo=
+rg@kernel.org
 >=20
-> diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
-> index 2c1573e19576de93afc959d71e94173e2c1ed715..1674d1dcba39cc7ab82e1f189=
-002afa365ee9341 100644
-> --- a/rust/kernel/hrtimer.rs
-> +++ b/rust/kernel/hrtimer.rs
-> @@ -38,12 +38,13 @@
->  /// # Invariants
->  ///
->  /// * `self.timer` is initialized by `bindings::hrtimer_init`.
-> -#[repr(transparent)]
->  #[pin_data]
->  #[repr(C)]
->  pub struct Timer<U> {
->      #[pin]
->      timer: Opaque<bindings::hrtimer>,
-> +    // This field goes away when `bindings::hrtimer_setup` is added.
-> +    mode: TimerMode,
->      _t: PhantomData<U>,
->  }
-> =20
-> @@ -56,7 +57,7 @@ unsafe impl<U> Sync for Timer<U> {}
-> =20
->  impl<T> Timer<T> {
->      /// Return an initializer for a new timer instance.
-> -    pub fn new() -> impl PinInit<Self>
-> +    pub fn new(mode: TimerMode) -> impl PinInit<Self>
->      where
->          T: TimerCallback,
->      {
-> @@ -70,7 +71,7 @@ pub fn new() -> impl PinInit<Self>
->                      bindings::hrtimer_init(
->                          place,
->                          bindings::CLOCK_MONOTONIC as i32,
-> -                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
-> +                        mode.into(),
->                      );
->                  }
-> =20
-> @@ -83,6 +84,7 @@ pub fn new() -> impl PinInit<Self>
->                  // exclusive access.
->                  unsafe { core::ptr::write(function, Some(T::CallbackTarg=
-et::run)) };
->              }),
-> +            mode: mode,
->              _t: PhantomData,
->          })
->      }
-> @@ -330,7 +332,7 @@ unsafe fn start(self_ptr: *const Self, expires: Ktime=
-) {
->                  Self::c_timer_ptr(self_ptr).cast_mut(),
->                  expires.to_ns(),
->                  0,
-> -                bindings::hrtimer_mode_HRTIMER_MODE_REL,
-> +                (*Self::raw_get_timer(self_ptr)).mode.into(),
->              );
->          }
->      }
-> @@ -362,6 +364,84 @@ fn from(value: TimerRestart) -> Self {
->      }
->  }
-> =20
-> +/// Operational mode of [`Timer`].
-> +#[derive(Clone, Copy)]
-> +pub enum TimerMode {
-> +    /// Timer expires at the given expiration time.
-> +    Absolute,
-> +    /// Timer expires after the given expiration time interpreted as a d=
-uration from now.
-> +    Relative,
-> +    /// Timer does not move between CPU cores.
-> +    Pinned,
-> +    /// Timer handler is executed in soft irq context.
-> +    Soft,
-> +    /// Timer handler is executed in hard irq context.
-> +    Hard,
-> +    /// Timer expires at the given expiration time.
-> +    /// Timer does not move between CPU cores.
-> +    AbsolutePinned,
-> +    /// Timer expires after the given expiration time interpreted as a d=
-uration from now.
-> +    /// Timer does not move between CPU cores.
-> +    RelativePinned,
-> +    /// Timer expires at the given expiration time.
-> +    /// Timer handler is executed in soft irq context.
-> +    AbsoluteSoft,
-> +    /// Timer expires after the given expiration time interpreted as a d=
-uration from now.
-> +    /// Timer handler is executed in soft irq context.
-> +    RelativeSoft,
-> +    /// Timer expires at the given expiration time.
-> +    /// Timer does not move between CPU cores.
-> +    /// Timer handler is executed in soft irq context.
-> +    AbsolutePinnedSoft,
-> +    /// Timer expires after the given expiration time interpreted as a d=
-uration from now.
-> +    /// Timer does not move between CPU cores.
-> +    /// Timer handler is executed in soft irq context.
-> +    RelativePinnedSoft,
-> +    /// Timer expires at the given expiration time.
-> +    /// Timer handler is executed in hard irq context.
-> +    AbsoluteHard,
-> +    /// Timer expires after the given expiration time interpreted as a d=
-uration from now.
-> +    /// Timer handler is executed in hard irq context.
-> +    RelativeHard,
-> +    /// Timer expires at the given expiration time.
-> +    /// Timer does not move between CPU cores.
-> +    /// Timer handler is executed in hard irq context.
-> +    AbsolutePinnedHard,
-> +    /// Timer expires after the given expiration time interpreted as a d=
-uration from now.
-> +    /// Timer does not move between CPU cores.
-> +    /// Timer handler is executed in hard irq context.
-> +    RelativePinnedHard,
-> +}
-> +
-> +impl From<TimerMode> for bindings::hrtimer_mode {
-> +    fn from(value: TimerMode) -> Self {
-> +        use bindings::*;
-> +        match value {
-> +            TimerMode::Absolute =3D> hrtimer_mode_HRTIMER_MODE_ABS,
-> +            TimerMode::Relative =3D> hrtimer_mode_HRTIMER_MODE_REL,
-> +            TimerMode::Pinned =3D> hrtimer_mode_HRTIMER_MODE_PINNED,
-> +            TimerMode::Soft =3D> hrtimer_mode_HRTIMER_MODE_SOFT,
-> +            TimerMode::Hard =3D> hrtimer_mode_HRTIMER_MODE_HARD,
-> +            TimerMode::AbsolutePinned =3D> hrtimer_mode_HRTIMER_MODE_ABS=
-_PINNED,
-> +            TimerMode::RelativePinned =3D> hrtimer_mode_HRTIMER_MODE_REL=
-_PINNED,
-> +            TimerMode::AbsoluteSoft =3D> hrtimer_mode_HRTIMER_MODE_ABS_S=
-OFT,
-> +            TimerMode::RelativeSoft =3D> hrtimer_mode_HRTIMER_MODE_REL_S=
-OFT,
-> +            TimerMode::AbsolutePinnedSoft =3D> hrtimer_mode_HRTIMER_MODE=
-_ABS_PINNED_SOFT,
-> +            TimerMode::RelativePinnedSoft =3D> hrtimer_mode_HRTIMER_MODE=
-_REL_PINNED_SOFT,
-> +            TimerMode::AbsoluteHard =3D> hrtimer_mode_HRTIMER_MODE_ABS_H=
-ARD,
-> +            TimerMode::RelativeHard =3D> hrtimer_mode_HRTIMER_MODE_REL_H=
-ARD,
-> +            TimerMode::AbsolutePinnedHard =3D> hrtimer_mode_HRTIMER_MODE=
-_ABS_PINNED_HARD,
-> +            TimerMode::RelativePinnedHard =3D> hrtimer_mode_HRTIMER_MODE=
-_REL_PINNED_HARD,
-> +        }
-> +    }
-> +}
-
-Are we sure we actually need to explicitly convert it like this? You should=
- be
-able to use #[repr(=E2=80=A6)] to indicate that the enum is the same type a=
-s the
-actual C constant, and then we can just assign the value of each C constant=
- as
-the discriminant for each enum value in TimerMode.
-
-> +
-> +impl From<TimerMode> for u64 {
-> +    fn from(value: TimerMode) -> Self {
-> +        Into::<bindings::hrtimer_mode>::into(value) as u64
-> +    }
-> +}
-> +
->  /// Use to implement the [`HasTimer<T>`] trait.
->  ///
->  /// See [`module`] documentation for an example.
+> Changes in v2:
+> - use a handle to own the timer callback target
+> - add ability to for callback to reschedule timer
+> - improve `impl_has_timer` to allow generics
+> - add support for stack allocated timers
+> - add support for scheduling closures
+> - use `Ktime` for setting expiration
+> - use `CondVar` instead of `AtomicBool` in examples
+> - rebase on 6.11
+> - improve documentation
+> - Link to v1: https://lore.kernel.org/r/20240425094634.262674-1-nmi@metas=
+pace.dk
 >=20
+> ---
+> Andreas Hindborg (12):
+>       rust: hrtimer: introduce hrtimer support
+>       rust: sync: add `Arc::as_ptr`
+>       rust: hrtimer: implement `TimerPointer` for `Arc`
+>       rust: hrtimer: allow timer restart from timer handler
+>       rust: hrtimer: add `UnsafeTimerPointer`
+>       rust: hrtimer: implement `UnsafeTimerPointer` for `Pin<&T>`
+>       rust: hrtimer: implement `UnsafeTimerPointer` for `Pin<&mut T>`
+>       rust: hrtimer: add `hrtimer::ScopedTimerPointer`
+>       rust: hrtimer: implement `TimerPointer` for `Pin<Box<T>>`
+>       rust: hrtimer: add `TimerMode`
+>       rust: hrtimer: add clocksource selection through `ClockSource`
+>       rust: hrtimer: add maintainer entry
+>=20
+> Lyude Paul (1):
+>       rust: time: Add Ktime::from_ns()
+>=20
+>  MAINTAINERS                    |  10 +
+>  rust/kernel/hrtimer.rs         | 530 +++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/hrtimer/arc.rs     |  87 +++++++
+>  rust/kernel/hrtimer/pin.rs     |  97 ++++++++
+>  rust/kernel/hrtimer/pin_mut.rs |  99 ++++++++
+>  rust/kernel/hrtimer/tbox.rs    |  95 ++++++++
+>  rust/kernel/lib.rs             |   1 +
+>  rust/kernel/sync/arc.rs        |  13 +-
+>  rust/kernel/time.rs            |   8 +
+>  9 files changed, 938 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+> change-id: 20241017-hrtimer-v3-v6-12-rc2-215dc6b169bf
+>=20
+> Best regards,
 
 --=20
 Cheers,
