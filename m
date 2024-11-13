@@ -1,105 +1,131 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538802AD04;
-	Wed, 13 Nov 2024 17:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B152E1494DD
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 17:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731519937; cv=none; b=nBVR6sDNlNB7FV7tfOqB97Vyr7KJMMbf+OLsPs07gyar/AOsSIV3Ah4HTgEhS/qZ1AkutQKPDPruF2HuCX6UO2WbIl1PknkDQLL3G7ta6uF3TeTGg8h8ZX9qTBQPDLwHjh0BXmGJsBa/R/dpvVu4hjrdbw9+ZsBIK+vluy2S0hc=
+	t=1731520134; cv=none; b=W+7WE/b7IwviZkNFrNU8+rcRVFyHe8fsxAorLQ9Qw1H10nOoWlvDOdlDlgf8lnsufhLaAhqgicW9Q6Bo3AfdEUjhGTPZmMw7qCovkogvlZz0fRJA/7WQH4sPamWw7UJVYQOc4NospiZiAwPVd3Wp84HTDnH44IQheNAg88Nkegw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731519937; c=relaxed/simple;
-	bh=ouU8nt3JsXlK78zj5uuwL+vjo5Uce23CbeGxmbr8B9U=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kVeEkShVuYBrgrm1F9XXkBnT3dbnK+uZpvel+FCLHvr8mAn4XB/b9uc1CuvbG/uP+78uTBlBV+0LvkvjMSGFjy9UG3SPbjth8BBp2+lr85zQ2Y+/Rrt3zpuiC4+76FWQZ79UeETbmlffEXSImhqAwlXrUOhXUd9CuULDKJWhBCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=YDmPfawC; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1731520134; c=relaxed/simple;
+	bh=2vvecHebovoeGzhdxA64vP0FIVcZsrzn6/S2UuTdzUQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YEMWnNsZV6gB76EgqqMzlwxS+IBsV/3YyP76q1qFgDVGkbHiI5tDQTAYHk0zw8Bk+Q49gRbleYzdBNxCxxO3xAiPTqwnWxs1DXvchXhaCXQyPrMHfVP2Mk9DyZm8v/byu1lw8ilzlJCvivRWbNR1PjjOneppqfndvG3E0DI4MFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q5agB2me; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="YDmPfawC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1731519928; x=1731779128;
-	bh=qDkledNX1dxRvLVNlPVfDD+QPBH5mY67kbum7HJWB1Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=YDmPfawCaoWGBXmqGK5KGNw/r5lK9U5otzQE1fRqahIxUf+POVqG4f39EkE4jxyK/
-	 oTZVwxTmOUwKSNZXyI+smlrwqPefcxxxZvhItphUUgPgTJAd2C649ZBeWBE/M/D7sb
-	 QJrVmIZNB3nU5sQbwekBA7FPhRzWkbl54SfnFK7N08ee3RnJEVq5S+07XyJ0A3zTNX
-	 MsnLGn/+IARfE+/ptCZr29KFp+kEf9zF/RY6WEVgP1J1pAxvQX6dJHxpjj47dvswyM
-	 antIUwLS+ZvgopIhBaYnRt25hN3nmP8ux+isSXPbrv8xeiq13n6a+1EkPTKleIJh/v
-	 ds2ysnSY+1Enw==
-Date: Wed, 13 Nov 2024 17:45:22 +0000
-To: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH net] rust: net::phy scope ThisModule usage in the module_phy_driver macro
-Message-ID: <20241113174438.327414-3-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 991b5249b217713fec86a807ffc22bea6c61dfff
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q5agB2me"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5c932b47552so9050a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Nov 2024 09:48:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1731520131; x=1732124931; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ut09l0p4ejZD65rK22Do5DdJADgIGvLTdDvLpb35Lpg=;
+        b=q5agB2mexx2fJ5p1z3Xx8YR2q/Zt3BQwdxy3HYl87xBtWPT1NCrsUcJwV6KeCrgi82
+         WmYboHZe532UOtuz5eBh3dBn7+H62L9QIzWHI4ugSiHfSY/Cp4JfVBTEzpMdo6VBc0OJ
+         nokiwrPS/IYH2YvLIe2RLaINnfd9xlryIEZi4OEEEHZOmmHIvrGY+4gIlj9vS49nQHdO
+         7RrXs/TA3AeBBd9p0iNXut3YiDw6reUo5V41UaqgTPgnm0YPZoWox3Zm7N2USLs9B42M
+         fZgUNn0qA1J0AgtmWtf9UD/hhLfAqbq2jTNX6NFMzM2LgmE3au5sZc16sLkg6VXvJ9KW
+         uG4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731520131; x=1732124931;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ut09l0p4ejZD65rK22Do5DdJADgIGvLTdDvLpb35Lpg=;
+        b=UHZguDdezMcaIb9YAhJV+acMNVLtDKL+46wJjB3hOWtAMphNX/lGuspWGxIS8Fa5O8
+         qSVd+GW4oNthFMgJRah/v2nqfCp2TKEKgglwxB6xzpzr8lBIFjUC2DNtUMSZNbAThQWz
+         kEgeW9WHlINL+gllXPHAOOBDOwUdZvBwjfknIf4s1fcrx9RHf7C1dzujuDb1hxzcdGZ3
+         AjTnzfdZVzxXpaUCdwdSjToPUb9G8jxJJNtM1mAeVuxW/1E/UY0hfAt8tsQOtPsMQuZj
+         HScvPhP+Jalb8SQSs2jPJlhX3NQfzBj4lkKjKvqc1f/jRuMVX0HhH/wZbIh0EvVA6gmw
+         F2Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3a8BqvZS5Gj7GGkYC0HH5zw6LN3uL9IV1DDcE5JCBoRQtMNGNuLl+aKjFz8Krr6wgrzDFA34RRPIfgrEqKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9fBeFNbnA5tDec0Mlc0LpEFqJf5BY1FDzVwne1xdLo8ktgtrQ
+	U8MqU3hVNWO78TFvyQBHZKuSr2HsKHTbhoRtLMUYBbY5ZUy/T4GMpqGoK15mYkt12RZJcvCQnTt
+	yIbqTB801JaEmo7H/RfICDcjfrQMjWhuN4fm4
+X-Gm-Gg: ASbGncuVRpyGtMgzeYFv/0WGovAOCViTQL0O+IfASUJgNvX6Zd37oTw3I1NixrXGOsf
+	maQA0mFcgDyHLbzSEmHJSU4bebu7h
+X-Google-Smtp-Source: AGHT+IF+3cQN9o21cQiIysZAB4NJwFjVHmftEWZ1JWnUJZdbBdxTB+kUQux093XqXmTqkJPQ2rghtkSNf6aJlDPPoDk=
+X-Received: by 2002:a05:6402:886:b0:5cf:7145:be96 with SMTP id
+ 4fb4d7f45d1cf-5cf7145bfa8mr145258a12.2.1731520130908; Wed, 13 Nov 2024
+ 09:48:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20241030170106.1501763-21-samitolvanen@google.com>
+ <20241030170106.1501763-39-samitolvanen@google.com> <CAK7LNAR9c+EEsOvPPn4qSq3gAFskYOXVd=dg8O+bKeeC-HMifw@mail.gmail.com>
+In-Reply-To: <CAK7LNAR9c+EEsOvPPn4qSq3gAFskYOXVd=dg8O+bKeeC-HMifw@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 13 Nov 2024 09:48:13 -0800
+Message-ID: <CABCJKudWUBE2ZboktcBEykBReor4T1Cf8dfRCWJYEryoT81OEQ@mail.gmail.com>
+Subject: Re: [PATCH v5 18/19] kbuild: Add gendwarfksyms as an alternative to genksyms
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Similar to the use of $crate::Module, ThisModule should be referred to as
-$crate::ThisModule in the macro evaluation. The reason the macro previously
-did not cause any errors is because all the users of the macro would use
-kernel::prelude::*, bringing ThisModule into scope.
+Hi Masahiro,
 
-Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
----
+On Mon, Nov 11, 2024 at 8:09=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@googl=
+e.com> wrote:
+> >
+> >  # These mirror gensymtypes_c and co above, keep them in synch.
+> > -cmd_gensymtypes_S =3D                                                 =
+        \
+> > -   { echo "\#include <linux/kernel.h>" ;                              =
+      \
+> > -     echo "\#include <asm/asm-prototypes.h>" ;                        =
+      \
+> > -     $(NM) $@ | sed -n 's/.* __export_symbol_\(.*\)/EXPORT_SYMBOL(\1);=
+/p' ; } | \
+> > -    $(CPP) -D__GENKSYMS__ $(c_flags) -xc - | $(genksyms)
+> > +getasmexports =3D                                                     =
+           \
+> > +   { echo "\#include <linux/kernel.h>" ;                              =
+ \
+> > +     echo "\#include <linux/string.h>" ;                              =
+ \
+> > +     echo "\#include <asm/asm-prototypes.h>" ;                        =
+ \
+> > +     $(call getexportsymbols,$(2:.symtypes=3D.o),EXPORT_SYMBOL(\1);) ;=
+ }
+> > +
+> > +ifdef CONFIG_GENDWARFKSYMS
+> > +cmd_gensymtypes_S =3D                                                 =
+   \
+> > +       $(getasmexports) |                                             =
+ \
+> > +       $(CC) $(c_flags) -c -o $(2:.symtypes=3D.gendwarfksyms.o) -xc -;=
+   \
+> > +       $(call getexportsymbols,$(2:.symtypes=3D.o),\1) |              =
+   \
+> > +       $(gendwarfksyms) $(2:.symtypes=3D.gendwarfksyms.o)
+>
+>
+> I do not want to see crazy suffix replacements like this.
 
-Notes:
-    How I came up with this change:
-   =20
-    I was working on my own rust bindings and rust driver when I compared m=
-y
-    macro_rule to the one used for module_phy_driver. I noticed, if I made =
-a
-    driver that does not use kernel::prelude::*, that the ThisModule type
-    identifier used in the macro would cause an error without being scoped =
-in
-    the macro_rule. I believe the correct implementation for the macro is o=
-ne
-    where the types used are correctly expanded with needed scopes.
+Yeah, I agree. It does get a bit ugly.
 
- rust/kernel/net/phy.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> I decided to delete this.
+> https://lore.kernel.org/linux-kbuild/20241111171753.2917697-2-masahiroy@k=
+ernel.org/T/#u
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 910ce867480a..80f9f571b88c 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
- ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
- ///
- ///     impl ::kernel::Module for Module {
--///         fn init(module: &'static ThisModule) -> Result<Self> {
-+///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self>=
- {
- ///             let drivers =3D unsafe { &mut DRIVERS };
- ///             let mut reg =3D ::kernel::net::phy::Registration::register=
-(
- ///                 module,
-@@ -899,7 +899,7 @@ struct Module {
-                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
-=20
-             impl $crate::Module for Module {
--                fn init(module: &'static ThisModule) -> Result<Self> {
-+                fn init(module: &'static $crate::ThisModule) -> Result<Sel=
-f> {
-                     // SAFETY: The anonymous constant guarantees that nobo=
-dy else can access
-                     // the `DRIVERS` static. The array is used only in the=
- C side.
-                     let drivers =3D unsafe { &mut DRIVERS };
+Cool, thanks! I'll rebase v6 on top of your patch.
 
-base-commit: 73af53d82076bbe184d9ece9e14b0dc8599e6055
---=20
-2.44.1
-
-
+Sami
