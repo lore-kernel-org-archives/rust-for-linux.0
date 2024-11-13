@@ -1,114 +1,105 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AB8111AD;
-	Wed, 13 Nov 2024 14:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538802AD04;
+	Wed, 13 Nov 2024 17:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731506733; cv=none; b=e5z5WzQX/bMom7LflIQ7AWF7ZRz0t91Wiun5+jY/4hvWBfHNL7qL8edc7WuTF0RQwDVpI/VDtkTaZEIWqfHfM/LEF3pmTx9oY3w6sE0mSyjT41SofFAQ7+eyc/p1jPAVMONrCM8LJuQHJxcZBmpzjHO4j8CJ/Vmpx0aFSDu7Xus=
+	t=1731519937; cv=none; b=nBVR6sDNlNB7FV7tfOqB97Vyr7KJMMbf+OLsPs07gyar/AOsSIV3Ah4HTgEhS/qZ1AkutQKPDPruF2HuCX6UO2WbIl1PknkDQLL3G7ta6uF3TeTGg8h8ZX9qTBQPDLwHjh0BXmGJsBa/R/dpvVu4hjrdbw9+ZsBIK+vluy2S0hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731506733; c=relaxed/simple;
-	bh=Dwk+Mvw8oy2pzMvGconGALpUIJPJ0NRNk9ltXBNzyBA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=alysnGX1TJ9CdC3QbiAQSMB9qemij7lPxPccAT+5xaCbdd2rtDKk0LJuwGCAfJP5WZf8HKOqCP3FTWlZAu1GglX2ySzeGJu9PwZUZYye8Vslc2ie80ooxdGC9w0cCFkDMpWfJZ4XMc6SavGcvI0AV5bEK8RvxlTIldapCfsJwNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5ceca0ec4e7so8797287a12.0;
-        Wed, 13 Nov 2024 06:05:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731506729; x=1732111529;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2UoOpmCzIkTmid4vVTvx8gmwHFbkz8avA1Uo6ylZh+s=;
-        b=IhoI+fOn1QPBddlvqUdYC4o6k+j+ClV02WbkLd6dc9cs8MSdoAEQWC1XSFGLZynZp8
-         luPx0/25IPjngYomheGGBoFLH6pIAnOerjVCZnb3YvZed4mBHBYCdWXt4EuWjmeIpRci
-         2P73s4m5KsvC9CuLaEjnqGCjWbhkfz0TOF7/ATT0psQ46HhyJwDMva7HENBZgHmPE6at
-         ggXI9ExGXK3rbP4OD0as24zLVjjNNk73lE2vE0BuUDqTc78WW2XZFPl964mLG66vJVzy
-         cqYqjoAB2jQPsd3B/I5TLkxByRGz+wQxUGVi/K6wxM9wRA1ZzM2oBdPHDBrJlIADQ69d
-         Y59A==
-X-Forwarded-Encrypted: i=1; AJvYcCVeMFX8sAAaOWSew7IuWz2RnF9WWcIdKprpljT7lyWDemyUvdnfpjZi6MgJhsTfPK2YAkpC9SjZZIngbYJarFA=@vger.kernel.org, AJvYcCWzCpVujRpFgPQM+IEjiYs9VMTVcx94QFeTedI5BnwrirPRbqmP55QeZADnk1gu4tnZPwhmYCXDTIsN4m0qaQ==@vger.kernel.org, AJvYcCXIv68aKFu1KAq+fDyjsivWRgOLgbx/VzOKIO9RLGEmh6jy+wnSBn+om4fNTGl7m247Cvh19//8KSZNiWs=@vger.kernel.org, AJvYcCXRSbpe/zFi0uAqbnb4xpvl3IkQtNbV3qULULRTkJ8TtD7b8Bjo1MrKZISaGpoo+Y88Nrsx2MFLoBfiFzbd@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIU0j3ghEdTNwhIz2QsKJ9e060R/AO8RGhaCJL1tnmW9ngsI7X
-	D3BGczpGtRRDUczupiHXSnRzvaLQz7txyMMXp/CXWn2YYE5TuBGaEPTqLShc1Vs=
-X-Google-Smtp-Source: AGHT+IEdJ3/FggsGznhvLtDR0CZYGaWLecHY86x3Alz75Z7AIrEvKCvY15pNcP5MPZW3WAEYNjaidA==
-X-Received: by 2002:a05:6402:13c8:b0:5cf:4183:6127 with SMTP id 4fb4d7f45d1cf-5cf41838077mr7822050a12.2.1731506728887;
-        Wed, 13 Nov 2024 06:05:28 -0800 (PST)
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com. [209.85.218.53])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cf03b5d763sm7201711a12.7.2024.11.13.06.05.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Nov 2024 06:05:27 -0800 (PST)
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9ec86a67feso1206764966b.1;
-        Wed, 13 Nov 2024 06:05:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUAYLRjkiRinVIuFhMTn6pTz28XFOLTy1yIrtFeCyFNAcIMK/1m+c5HaIWF3crj7G93L92ZdiXtTYy6qOV3Xmw=@vger.kernel.org, AJvYcCUBxQh9uro9oAH36HO64SRt9Wqt15wXAWH3Dt0EQ4AODUhIwqlXkax2ma8iMmOtq0hypOdS8DpIbJ5wjb2C@vger.kernel.org, AJvYcCWDof/NuyRjbgmgF/b6waoKDftY4n2DnuV4mrskeCuhkNMdwAKhaDJbIqLlXOkIQhwthybilLAvPIiJwGp9VA==@vger.kernel.org, AJvYcCXmIsIO6s9tNJPoNAGWu/UGa9LY/S/Q9lHzmdP4P1FODNauWZmUQ3f7ny0+pQ932pym/Vy59WPAgmcDr0w=@vger.kernel.org
-X-Received: by 2002:a17:906:c14d:b0:a99:f67c:2314 with SMTP id
- a640c23a62f3a-a9eeff44998mr1843487666b.35.1731506727364; Wed, 13 Nov 2024
- 06:05:27 -0800 (PST)
+	s=arc-20240116; t=1731519937; c=relaxed/simple;
+	bh=ouU8nt3JsXlK78zj5uuwL+vjo5Uce23CbeGxmbr8B9U=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=kVeEkShVuYBrgrm1F9XXkBnT3dbnK+uZpvel+FCLHvr8mAn4XB/b9uc1CuvbG/uP+78uTBlBV+0LvkvjMSGFjy9UG3SPbjth8BBp2+lr85zQ2Y+/Rrt3zpuiC4+76FWQZ79UeETbmlffEXSImhqAwlXrUOhXUd9CuULDKJWhBCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=YDmPfawC; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="YDmPfawC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1731519928; x=1731779128;
+	bh=qDkledNX1dxRvLVNlPVfDD+QPBH5mY67kbum7HJWB1Q=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=YDmPfawCaoWGBXmqGK5KGNw/r5lK9U5otzQE1fRqahIxUf+POVqG4f39EkE4jxyK/
+	 oTZVwxTmOUwKSNZXyI+smlrwqPefcxxxZvhItphUUgPgTJAd2C649ZBeWBE/M/D7sb
+	 QJrVmIZNB3nU5sQbwekBA7FPhRzWkbl54SfnFK7N08ee3RnJEVq5S+07XyJ0A3zTNX
+	 MsnLGn/+IARfE+/ptCZr29KFp+kEf9zF/RY6WEVgP1J1pAxvQX6dJHxpjj47dvswyM
+	 antIUwLS+ZvgopIhBaYnRt25hN3nmP8ux+isSXPbrv8xeiq13n6a+1EkPTKleIJh/v
+	 ds2ysnSY+1Enw==
+Date: Wed, 13 Nov 2024 17:45:22 +0000
+To: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Subject: [PATCH net] rust: net::phy scope ThisModule usage in the module_phy_driver macro
+Message-ID: <20241113174438.327414-3-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 991b5249b217713fec86a807ffc22bea6c61dfff
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030170106.1501763-21-samitolvanen@google.com>
- <20241030170106.1501763-22-samitolvanen@google.com> <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
-In-Reply-To: <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
-From: Neal Gompa <neal@gompa.dev>
-Date: Wed, 13 Nov 2024 09:04:51 -0500
-X-Gmail-Original-Message-ID: <CAEg-Je_o-e3Sc0vNJpF+3eG3sZvV-f2zrCdubRAvPSLzVdyd5Q@mail.gmail.com>
-Message-ID: <CAEg-Je_o-e3Sc0vNJpF+3eG3sZvV-f2zrCdubRAvPSLzVdyd5Q@mail.gmail.com>
-Subject: Re: [PATCH v5 01/19] scripts: move genksyms crc32 implementation to a
- common include
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 11, 2024 at 11:06=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.=
-org> wrote:
->
-> On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@googl=
-e.com> wrote:
-> >
-> > Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
-> > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> > Acked-by: Neal Gompa <neal@gompa.dev>
->
-> Does this Ack add any value?
->
-> Acked-by is meaningful only when it is given by someone who
-> maintains the relevant area or has established a reputation.
->
-> $ git grep "Neal Gompa"
-> $ git shortlog -n -s | grep "Neal Gompa"
->      2 Neal Gompa
->
-> His Ack feels more like "I like it" rather than a qualified endorsement.
->
+Similar to the use of $crate::Module, ThisModule should be referred to as
+$crate::ThisModule in the macro evaluation. The reason the macro previously
+did not cause any errors is because all the users of the macro would use
+kernel::prelude::*, bringing ThisModule into scope.
 
-I am going to be one of the primary consumers of this code as the
-Fedora Asahi kernel maintainer and have been driving Rust enablement
-in the Fedora Linux kernel (and eventually the RHEL kernel). I have
-tested and looked over the patches from that lens.
+Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+---
 
-While I might not be well-known here, I am known by the Rust for
-Linux folks, as well as the filesystem folks (since those are the main
-places I tend to frequent). I am also a member of the Asahi Linux team.
+Notes:
+    How I came up with this change:
+   =20
+    I was working on my own rust bindings and rust driver when I compared m=
+y
+    macro_rule to the one used for module_phy_driver. I noticed, if I made =
+a
+    driver that does not use kernel::prelude::*, that the ThisModule type
+    identifier used in the macro would cause an error without being scoped =
+in
+    the macro_rule. I believe the correct implementation for the macro is o=
+ne
+    where the types used are correctly expanded with needed scopes.
 
-I've been engaging with the Linux kernel community directly in some
-fashion for nearly a decade. Unfortunately, most of that isn't in the
-form of commits directly to the Linux kernel, though.
+ rust/kernel/net/phy.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 910ce867480a..80f9f571b88c 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
+ ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
+ ///
+ ///     impl ::kernel::Module for Module {
+-///         fn init(module: &'static ThisModule) -> Result<Self> {
++///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self>=
+ {
+ ///             let drivers =3D unsafe { &mut DRIVERS };
+ ///             let mut reg =3D ::kernel::net::phy::Registration::register=
+(
+ ///                 module,
+@@ -899,7 +899,7 @@ struct Module {
+                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
+=20
+             impl $crate::Module for Module {
+-                fn init(module: &'static ThisModule) -> Result<Self> {
++                fn init(module: &'static $crate::ThisModule) -> Result<Sel=
+f> {
+                     // SAFETY: The anonymous constant guarantees that nobo=
+dy else can access
+                     // the `DRIVERS` static. The array is used only in the=
+ C side.
+                     let drivers =3D unsafe { &mut DRIVERS };
+
+base-commit: 73af53d82076bbe184d9ece9e14b0dc8599e6055
+--=20
+2.44.1
 
 
-
-
---
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
