@@ -1,190 +1,139 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551982B2D7;
-	Thu, 14 Nov 2024 00:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEBE1CCEE0;
+	Thu, 14 Nov 2024 01:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731545864; cv=none; b=qz0RJEOv4oMOcnjeU9OH8RhQR86NLhaupaiX63leI/C+GCl1syKQMXj9ejblyfql9gVMSiUh/yhRHw+kubk8yiC/Y0pwoh4Jc7FpymYrwvyCaiIAiLtWgTKuNt7dpS+HgAbGikUmsW0RsVUdl0LD8GfYzv7NEJ+pnRRGPfOcw0s=
+	t=1731546574; cv=none; b=TVYFaI2DF9j9lDTdyihAFjAwBjEQuxfct8r6I95hexcvs0LP3paUab3ZUF27qMkC0pOOEruyqbaBbQagkpXHgRRwelyqHy/47bZTpxoF5EH/ZvS8I/RPXQAC/3yjp7ULxRGMkJVkh+XG7fvsL3h011YkaHHADHmrDPFLTXNsC5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731545864; c=relaxed/simple;
-	bh=WjC01+sS6nKTi7io9kauOjUhdDFeBAC7nscRHge7Vs0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZ20Ys3Z5T0gC8eyHqxdtgLxfKbOoZORPGxsPuZXyo2ZIqgOihF9w7ZIw1bJWRYS8uGCn9fDIRnQq57Yu5PPxUriDbLkHQze6m/G1Ez6/igKRWAfGLiZDT+3JUhImvSbWbcoY2k9a5ULwVBCfvbFTYbAo5w4Z8mkarDJVJQhtlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=l8tasvGm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fNjGWWU1; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="l8tasvGm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fNjGWWU1"
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfout.stl.internal (Postfix) with ESMTP id F13DC11400AC;
-	Wed, 13 Nov 2024 19:57:41 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Wed, 13 Nov 2024 19:57:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1731545861; x=
-	1731632261; bh=+cKsHqUdRIqVh7tWBD/bK/cAI6O3Bzd18FXNBICgPtk=; b=l
-	8tasvGmgCTw5hQX6fWvxRwJLvEDSSBSGnUYGRiGjK1vp4k2VAlVTkyFcvLOKY9qy
-	FaXYA7R7lCD8lOqcwNerKhOr2uiHQweRLeJBBaGGnrIK2m5xglFUrFe6NVwZ+bAr
-	AfwHmMIjJ7yBVLzSMMk9T1WY8K9Yo+t28cRLy9aZY34ekWdZbqvcIhbzrAlYF2fL
-	w3GeeSEj96fjGYpXKuf7HPlQd54Wwotu8HD7G8Rqgx03xMI25PfdUUPfeStgkhT0
-	INEdR7xIX/B1yQRTogVBScfq9JPlgj8l+3GjQUxk7KTe6t98jOxd6NEpVc0TI7dV
-	ooYMUTRzV1pdD7et8GisA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1731545861; x=1731632261; bh=+
-	cKsHqUdRIqVh7tWBD/bK/cAI6O3Bzd18FXNBICgPtk=; b=fNjGWWU1iN9ZHk43O
-	Hks6z+3cOYVcXAjpniPMvOc3hZAvqdgk9fNLHJwXpn12e7d/CUXazibwUc7m8ME7
-	WVQPDmYIlAiuxTH/p50g2iMisnfd2GJPwwQf8cZepZ10iNL/oHX6VV/OklEKDeuj
-	Vk8pPugHpTEgnxc80eMO3/Tqr2WawbGRJ0U0qsyFy3thfXIjUClRAQkubiniz2Tc
-	Zm54dOA4K3f1rORJylKgm1CShI1ULsM5PMk7rTji6De/ojHFSOQfqzcYLTTXD7Ly
-	mu/UJ+nn9r6QJVHCOkdf4LScZ6Lk6cKcG4UbzCJ/wTCjpPPjk3iDtiWlbLnGHbyf
-	oj91g==
-X-ME-Sender: <xms:BUs1Z-Lap-l1rchG5AGJfVquaRUyRiPDLISQ7awOZMQ4EyDz485IGg>
-    <xme:BUs1Z2JabVcgna0cVtvOJ7UKWLXljMVOWEICIEpi9GaWvUPGMcbxlOMGxp-LAFQPQ
-    c_nx4SNZfCCmoDSvxk>
-X-ME-Received: <xmr:BUs1Z-vfe74kNm-Xjb1K4geZrVpBghzWPENl7ZgHPCrvk6JioOZloEgcxxNfc3xpSzW13Kl12zRA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvddugddvkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecu
-    hfhrohhmpeetlhhishhtrghirhcuhfhrrghntghishcuoegrlhhishhtrghirhesrghlih
-    hsthgrihhrvdefrdhmvgeqnecuggftrfgrthhtvghrnhepiedtfeekteelvdelveevueeu
-    jeffuefguedvteekveejjeeutedufeethffgheehnecuvehluhhsthgvrhfuihiivgepud
-    enucfrrghrrghmpehmrghilhhfrhhomheprghlihhsthgrihhrsegrlhhishhtrghirhdv
-    fedrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepsg
-    hoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhgvsehklhhovghn
-    khdruggvvhdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlhhitggvrhihhhhlse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopegrlhhishhtrghirhdrfhhrrghntghishes
-    figutgdrtghomh
-X-ME-Proxy: <xmx:BUs1ZzblcuH1WFB3A_o7oUUu2GRqoLf3RFMSD7IkiYJ3hcoeRzWZEA>
-    <xmx:BUs1Z1bg5ZWSHSd4afgYGahn3lkDdcRx9MDAV3W1TO2G6TczBjsFrA>
-    <xmx:BUs1Z_BknD4ua4OA_QGZfi8PI-RJd_WQHgmuDfprX8sEIR-o2zc8sA>
-    <xmx:BUs1Z7YrJMs0oUg85J9DXY7dH1qpvN0xaF6ovCYP1mybjs7YhSDjpw>
-    <xmx:BUs1Z9LWXYP7ZEKXluYIZ2frCnbllkqIjdqkRwrFDt7rf8LbCGqexqBH>
-Feedback-ID: ifd214418:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 13 Nov 2024 19:57:37 -0500 (EST)
-From: Alistair Francis <alistair@alistair23.me>
-To: linux-kernel@vger.kernel.org,
-	benno.lossin@proton.me,
-	boqun.feng@gmail.com,
-	me@kloenk.dev,
-	alex.gaynor@gmail.com,
-	a.hindborg@kernel.org,
-	gary@garyguo.net,
-	aliceryhl@google.com,
-	alistair.francis@wdc.com,
-	bjorn3_gh@protonmail.com,
-	tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org,
-	ojeda@kernel.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair@alistair23.me>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH v4 11/11] rust: helpers: Remove uaccess helpers
-Date: Thu, 14 Nov 2024 10:56:31 +1000
-Message-ID: <20241114005631.818440-12-alistair@alistair23.me>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241114005631.818440-1-alistair@alistair23.me>
-References: <20241114005631.818440-1-alistair@alistair23.me>
+	s=arc-20240116; t=1731546574; c=relaxed/simple;
+	bh=4dBnu6yXq+K0Mi0c+uAajHja4UE4d0nABKzZl+smMfw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QPNEsXjWwBu2Vc5xynxXTZeUXugtINfx5XCD8swTErFotskcZIouLlS8GYNtJJfe2IHBfIuaRviNxOpNynSOhRmgXZyBf0tMkIoiIvzm+JoA5IaVQFcDcBTcMiTMNZg0dhDlfLJx0POahMEA7sP0Gj61fw9p3SpeLyiC2oxfeBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539fb49c64aso73334e87.0;
+        Wed, 13 Nov 2024 17:09:32 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731546570; x=1732151370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=poZXREh8ime1SzzkUl+eZQKKgwvGXn8BXWEpCPeefZg=;
+        b=mU86A2N49MlMdzEHaaz5SmN7IgUU4u6Ks46VUc6D4rEFwbFBroInT53mTCHN4AqmFB
+         s6e1mkT8FJdV3JhE/a9Mld+EhlbOVW5UUBHV3YoNEjSNqjbrxTf2Kmp4UTj+SDGXBYTQ
+         VHC9CnKEL3AKWXJMUthe5xTVsPJLewCXjsFRrofeuI3OzSTQMn9UzCn+jWaYftYSwsZP
+         eus0kT3rYjOCThUf3fXqIKylBvkgvfrh2G8dB7gSPaX5N8uFPHWjvReV2aCWRPhFtIQT
+         kSczfdeP1cMVeCG0c0oBprgeiHaCNhVbUXTKW3RUCRqJlPjXz4BEVkmdHCxgqigt+bIS
+         mRMg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKRQchfiDb6bdz/V50uon9/BKQqOeLuADB+w2lAsZmy6Mz+4mfZIGLHll2XKS4t0zNdpjMLGO9dUaX6rF1ROo=@vger.kernel.org, AJvYcCVu6M/7T6Tv8qZLb/QOULSSyDoooBYDid8S4TMvcY6D7QgxItSf5L+voK7cTO5+lTIHpNzDwiFqJYo7G95XgQ==@vger.kernel.org, AJvYcCXcRHiIUq54GcD79eoLEjE9mMU5rRFi1IkQeTk8gWzPxBZlO0dZi28nIgjABrSWkv5uyTH4VBlSAcLa9S2P@vger.kernel.org, AJvYcCXiE8NxH/la0wylfGcsyintCWZkRvt0+HPEXMCSUGlge8zWXAp+iJDSOym+bOZ1L1axlUIfc3IDzO2A/v8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJ2LVBFOSoD6aDsUzZcQ7au/kwMJee6TG9a+y+JWN3azY+dRIZ
+	77C1W+CKAnxfMMEqNpOoQ3FxJX8innYDXPCVBeOMxCSIifr7hXXGwOIY3sM3aQ4GqQ==
+X-Google-Smtp-Source: AGHT+IFg2ulbEahV6fcZy9QQvfeb2d4TR4fvLjExiGL18iXsp/dreHuH87gojPMBSaV4e49oENcR0g==
+X-Received: by 2002:a05:6512:114c:b0:53d:a2da:d396 with SMTP id 2adb3069b0e04-53da5c3eb3amr231136e87.23.1731546570341;
+        Wed, 13 Nov 2024 17:09:30 -0800 (PST)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53da6500ed8sm9564e87.90.2024.11.13.17.09.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Nov 2024 17:09:28 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fb51e00c05so1146921fa.0;
+        Wed, 13 Nov 2024 17:09:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWBXNIEL/mIT4eKJZ6sOJJK4W003238SM+AF3bJo1b/kEisGVDslJbtaEZtKsTI7Z/1/AmjHt966RFP5SS0eQ==@vger.kernel.org, AJvYcCWLN5P2VVKU8IKR4/SKGdi+rdVI1WfHN9SGerY2L7SzH39+ALsiqkjl/weHdtGzYeer7IE5O3IoJh7xXJvV9jI=@vger.kernel.org, AJvYcCXEWYvLeh5mZS497AyD4y67ZwShY9Vqai8tXSU5GUB2DvUEa1oNusGMQ6cr6lB4oOOGOB+OYCCJ1XdDcJs=@vger.kernel.org, AJvYcCXuWLtT9gtkiI17CAp/HwKTBea2sT+829erSCgl/d7Ivh/1AzdCXM7A4DMNnaZqVKjoQFRxvjti4x//Yi5c@vger.kernel.org
+X-Received: by 2002:a05:651c:503:b0:2fb:3960:9667 with SMTP id
+ 38308e7fff4ca-2ff59027c97mr1506281fa.14.1731546568430; Wed, 13 Nov 2024
+ 17:09:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241030170106.1501763-21-samitolvanen@google.com>
+ <20241030170106.1501763-22-samitolvanen@google.com> <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
+ <CAEg-Je_o-e3Sc0vNJpF+3eG3sZvV-f2zrCdubRAvPSLzVdyd5Q@mail.gmail.com> <ZzT_ZSNAmeloDjLT@bombadil.infradead.org>
+In-Reply-To: <ZzT_ZSNAmeloDjLT@bombadil.infradead.org>
+From: Neal Gompa <neal@gompa.dev>
+Date: Wed, 13 Nov 2024 20:08:51 -0500
+X-Gmail-Original-Message-ID: <CAEg-Je9yJh4teQeix4N9BF85JhkQMPHLAz2dnBrM1MLbBjO1iA@mail.gmail.com>
+Message-ID: <CAEg-Je9yJh4teQeix4N9BF85JhkQMPHLAz2dnBrM1MLbBjO1iA@mail.gmail.com>
+Subject: Re: [PATCH v5 01/19] scripts: move genksyms crc32 implementation to a
+ common include
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that we support wrap-static-fns we no longer need the custom helper.
+On Wed, Nov 13, 2024 at 2:35=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org=
+> wrote:
+>
+> On Wed, Nov 13, 2024 at 09:04:51AM -0500, Neal Gompa wrote:
+> > On Mon, Nov 11, 2024 at 11:06=E2=80=AFPM Masahiro Yamada <masahiroy@ker=
+nel.org> wrote:
+> > >
+> > > On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@g=
+oogle.com> wrote:
+> > > >
+> > > > Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+> > > > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> > > > Acked-by: Neal Gompa <neal@gompa.dev>
+> > >
+> > > Does this Ack add any value?
+> > >
+> > > Acked-by is meaningful only when it is given by someone who
+> > > maintains the relevant area or has established a reputation.
+> > >
+> > > $ git grep "Neal Gompa"
+> > > $ git shortlog -n -s | grep "Neal Gompa"
+> > >      2 Neal Gompa
+> > >
+> > > His Ack feels more like "I like it" rather than a qualified endorseme=
+nt.
+> > >
+> >
+> > I have tested and looked over the patches from that lens.
+>
+> The tests you did, what exaclty was tested?
+>
+> If it was to just ensure no regressions, then that information is
+> useful too, and with that you can just provide: Tested-by.
+>
+> But actual details of what you test are useful. We now also have
+> automation of tests for modules, and expanding test coverage on that is
+> always welcomed too [0] [1] [2], so far we have 0 Rust coverage.
+>
 
-Signed-off-by: Alistair Francis <alistair@alistair23.me>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
----
- rust/bindgen_static_functions   |  3 +++
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/helpers.c          |  6 ++----
- rust/helpers/uaccess.c          | 15 ---------------
- 4 files changed, 6 insertions(+), 19 deletions(-)
- delete mode 100644 rust/helpers/uaccess.c
+I tested that I could turn on MODVERSIONS with the relevant patch
+series, and get symbol expressions out of it. I didn't go very far
+into it, because I didn't want to invest in reworking the kernel
+symbol dependency generator for RPM packaged kernels to leverage this
+until after it is finally merged. But it worked as described, even if
+none of our kernel packaging infrastructure is adapted for it yet.
 
-diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functions
-index 8bc291a7a799..ec48ad2e8c78 100644
---- a/rust/bindgen_static_functions
-+++ b/rust/bindgen_static_functions
-@@ -27,3 +27,6 @@
- 
- --allowlist-function get_task_struct
- --allowlist-function put_task_struct
-+
-+--allowlist-function copy_from_user
-+--allowlist-function copy_to_user
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 63b78a833303..7847b2b3090b 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -24,6 +24,7 @@
- #include <linux/sched/signal.h>
- #include <linux/sched/task.h>
- #include <linux/slab.h>
-+#include <linux/uaccess.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index ebe3a85c7210..42c28222f6c2 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -1,8 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * Non-trivial C macros cannot be used in Rust. Similarly, inlined C functions
-- * cannot be called either. This file explicitly creates functions ("helpers")
-- * that wrap those so that they can be called from Rust.
-+ * Non-trivial C macros cannot be used in Rust. This file explicitly creates
-+ * functions ("helpers") that wrap those so that they can be called from Rust.
-  *
-  * Sorted alphabetically.
-  */
-@@ -16,7 +15,6 @@
- #include "slab.c"
- #include "spinlock.c"
- #include "task.c"
--#include "uaccess.c"
- #include "vmalloc.c"
- #include "wait.c"
- #include "workqueue.c"
-diff --git a/rust/helpers/uaccess.c b/rust/helpers/uaccess.c
-deleted file mode 100644
-index f49076f813cd..000000000000
---- a/rust/helpers/uaccess.c
-+++ /dev/null
-@@ -1,15 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--#include <linux/uaccess.h>
--
--unsigned long rust_helper_copy_from_user(void *to, const void __user *from,
--					 unsigned long n)
--{
--	return copy_from_user(to, from, n);
--}
--
--unsigned long rust_helper_copy_to_user(void __user *to, const void *from,
--				       unsigned long n)
--{
--	return copy_to_user(to, from, n);
--}
--- 
-2.47.0
+To be honest, I considered sending both Acked-by and Tested-by, but I
+figured Acked-by would be sufficient given that I have also looked
+over the code as well and thought it was reasonable.
 
+Strictly speaking, we don't really use MODVERSIONS in Fedora, it's a
+CentOS/RHEL thing. But, pushing this forward helps make Rust
+enablement for Fedora easier because the Fedora kernel is managed
+through the ARK project, which is mostly oriented around the needs of
+the RHEL kernel team. And CentOS Hyperscale (which I am also part of
+and maintain a kernel for) does have MODVERSIONS on and I would like
+to be able to start enabling Rust stuff there (particularly Asahi
+code, as that's currently the main interesting thing in Rust to use).
+
+
+
+
+--
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
