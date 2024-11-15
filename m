@@ -1,130 +1,192 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC5F1714A5
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Nov 2024 19:42:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5611C13C9A3;
+	Fri, 15 Nov 2024 05:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731613371; cv=none; b=emWqYyVA57pBrze1kOILD/S/ugjabwidEdbfTDSvxUJ3cMOas9TZ+3Pd13II1RrVw+zI+5cG6IUA8H4+M00RIByYsNcRTaG2jAGbaO9uoD5Yh8+XCTJjrtVrsrqSXWS1tstNq0MmyPbNSxwFJPnYhZNuQXWfJZS4HidCwS9aR1A=
+	t=1731649590; cv=none; b=Ihqpb31kRfh9sbeQ/P4WFQnu0a/rkjAhpSv5DFfFqTDoHWSXsCZmBbH70ASQ+SsCjy4ztZj1sSUCWpbAzAnV9Pgeee7pETB9vaTILFEcTXQXgGlosukWOd1/ivgqBxPAWZ0osI6NwP2ReXEopfeeRfTHwEzJKrdTkPtpkcxxasA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731613371; c=relaxed/simple;
-	bh=XuDO2xPfXsCRFX6nWnNUamQS3cWhfIy96RMkTMVmWDI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J1kT3U7CvvJlZCLpKyuMzhog0taLDoDBzJJFvKAQCv3Ow2106gZT7Ox7DMvk9d8J6Yhm8axlCnwk+AiEAnX9SWXK/BYGBno4z/ulVps8MIihMebilPQZarQjKuIzgd5XEHb8OnkvReUexexIv9K4iRDFhalRoNKJ8UKw/65szOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=0U62Ihpj; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1731649590; c=relaxed/simple;
+	bh=g+TWxp8r0cFE9e5Yx0soVZGR0BkCsV6nwR/mjiL69EE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=cW1wHEhsUK2D+A7fLgSgmRJj5Onspmi0PeNbICaJ/3eOByFHmfKU9gjozPpsC96B3yx/N2R2hY+/I7JCvuwo7hNiA3RPKb9X2rIt5jAbpTkPBwSdD2JXMDrMNMEt0D+fzJUBt+F/eWps4olT1p9fOwkOMuYR7SbagfT8V9kVTVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=IJe8p6gb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cBnMliZx; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="0U62Ihpj"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2958ddf99a7so873995fac.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 14 Nov 2024 11:42:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1731613368; x=1732218168; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vr7zna5CY0mtOPbR1MI4f56Ig1ycRAEcLIEKVOcAXDU=;
-        b=0U62IhpjBJkJ8jhnp6PerzMO1yKTUf+kBJ+MX4jnAlkB3Xv9FH0hDBSct3JEZ/sRbT
-         bSa46vv1CF/366VFsP1WvK56vQd5liLBgMUQYKE+PHMlKsBupb5F7/foIlC60Xe+Wqjb
-         xxTURQNi05QKuCgEgQM2Hk65S8FoufTlzMlzWVGrLJAPUxnolCyxM5yrX34NISKnTr5W
-         nIoLFVAQ2xwGJxOLQ7iuTs4wAgxdAlkGKycj0z52nyzA/RqoLHnQOQBfiKtQRRhlLI6P
-         KNURSEPOR2ubiU5upDppXrjWDTMzTN22WapjuLzYI5VcrxvlDeBRQ2hlvOGZ8D8gu7/K
-         GgyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731613368; x=1732218168;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vr7zna5CY0mtOPbR1MI4f56Ig1ycRAEcLIEKVOcAXDU=;
-        b=AAEiaWHHaZx9607rMlxytn5hfBevxntMUGuqy+Hv0OhxOIuPhGL51R8MMUclpADXlA
-         DGz2xpiPQhq6hGwtAr4dW/44e9xLzSXU15g2Ow1tZOhUbG57utDDqLIVL5AMQ8f+doji
-         RFUihymkciDcVxZianBmvQZx+VBrNV3gkWuex/yLmYorOlmcDHif/7rgzkcdV4fo6xmi
-         cGf9FEDnIdKFzzY7iQ5qIdzsw5aAvgexihN8snctaF5NbwMqEdVBREJfMQCq02zxoEXJ
-         m48q25pBr8k6GGXAIwsdo2jvAyXcapTyVswMyTWWlXJF21/08rWBI/YXbb99CvnOebxH
-         ZuPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPu8NeyKrn21WbANBIjWHeY9l4F7cY8Yx9x4HSfAGcdzxwgUmGSnu5xMRD/gEaC1En4Pnz6BQZ390pib4a4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQXwRbBfB2vukOG/62B8PW2pur2pH4mVJIr1hvdnFL4fqefg9y
-	vG/yUe12J/wEl2NpTGInROxnYlKOoNMNraPxQQA1dAntBk7s4fQoDPZv793pUPaEVSY1IgsYvGe
-	YDeUY2L/Bg+yqFyQrtwPEQ8OmNHu2aFeWGbbu+g==
-X-Google-Smtp-Source: AGHT+IE7IAszo2Ofcnb5CJApfslfrhebe6+KotkqD26HLMaoSZwcrxBcDHRhGqne+dneeGlSCF9wiByuzGKGCgAJvsM=
-X-Received: by 2002:a05:6870:829e:b0:260:eb3a:1be with SMTP id
- 586e51a60fabf-295602604f4mr22426537fac.34.1731613367891; Thu, 14 Nov 2024
- 11:42:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="IJe8p6gb";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cBnMliZx"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfout.stl.internal (Postfix) with ESMTP id 8A45B11400C6;
+	Fri, 15 Nov 2024 00:46:25 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Fri, 15 Nov 2024 00:46:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:message-id:mime-version
+	:reply-to:subject:subject:to:to; s=fm3; t=1731649585; x=
+	1731735985; bh=sqvoc3APmGB5tb6niPFOzLw3Iq4+7kJyzp+d/Tks6Kc=; b=I
+	Je8p6gbq3nvB9BgRC5f4A1pfTDvNvVuF0aJxtTcqli/PZYLXzX3oD4m0L72SOrOa
+	+lmvcTCpKlqCimzJjUuZPmx0M8/c1V09dQKcxT/w5jTTyP3rRlHSgS4bTzXwENdr
+	R6fB7aqJh8IcswWbAhmy7cMpgfyXxchWQjTrkGKq/rKJWTzyahigEvmsf9lX2+9u
+	5dbgWcuImUleSslV5SB5/1VNrXx491TSlvnrglzzJRnJdxe36TAcVgbbx/75ZUY3
+	T+vMowkKT/pynqsdfwT8Wk9u95dZYMx9FNwBTxCmIhxr2DCF8Bl/iKhZZBeTHpvN
+	2vwnHbuHTx6fuRX5U4NPA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1731649585; x=1731735985; bh=sqvoc3APmGB5tb6niPFOzLw3Iq4+
+	7kJyzp+d/Tks6Kc=; b=cBnMliZxbkCwPPbmV5tc2uyjB/Bdkj6HL77752R0hCsw
+	7L3WagOmJCuw1EC5CmvUecrrruu4mmg1jqgeWBwKdcyvat/bEGiQyzqEyTZS2KPZ
+	F5HfHbB8yiphSZxHuwnlT3FpZV8Kl/A3PH/RXlRccM7caJJ0VMnarEpY6GN/gDNg
+	4jW6JEH5g3s8pFYJYdnar71m5VtRkM7G5OI9376Q25jQObJUo7gI4TH/N2i8NhwC
+	p2ungSsAdB3V/lOI1QuJb+BPLoIx5j2OqQ4lQY9QKKO0MfGhiZ4VIc3am40bYGMJ
+	NVTyVYICo7sw9mwt7mzaFVhIKkO6QfmWyDvC7t5btw==
+X-ME-Sender: <xms:MOA2Z_EuOdSl_QSkyeNpNuVbLRExs8zTkOF2A5lxoRi_yLwgXW-XBg>
+    <xme:MOA2Z8Wep0iIb1VGpmqoLZjbREDv4ODx5ZOcyI1KTA7Af_sHq1sstfv_7wbrvNV-C
+    c-7Y88CbNJ1TaYBqII>
+X-ME-Received: <xmr:MOA2ZxLw_7LraFrDT_zK3UQoZ6jbju_IPz9i9CRHMc3wog1L1ELUYVAzwJzr1J0L3pbpbOOh0hzE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvdefgdekhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhephffvvefuff
+    fkofgtggfgsehtkeertdertdejnecuhfhrohhmpeetlhhishhtrghirhcuhfhrrghntghi
+    shcuoegrlhhishhtrghirhesrghlihhsthgrihhrvdefrdhmvgeqnecuggftrfgrthhtvg
+    hrnhepieekleektdfhveeludegleefuefffefhfeeuiedthefgheehveeuheekieejjeek
+    necuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpdgumhhtfh
+    drohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhm
+    pegrlhhishhtrghirhesrghlihhsthgrihhrvdefrdhmvgdpnhgspghrtghpthhtohepvd
+    dtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehluhhkrghsseifuhhnnhgvrhdr
+    uggvpdhrtghpthhtohepjhhonhgrthhhrghnrdgtrghmvghrohhnsehhuhgrfigvihdrtg
+    homhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhn
+    rdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtph
+    htthhopehlihhnuhigqdhptghisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqtgiglhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    gsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
+X-ME-Proxy: <xmx:MOA2Z9HPJFoawqiA_3Tcl0tHN80FJ4Wls83zKgLhXGUJOaa-Ayg-zw>
+    <xmx:MOA2Z1UGUoOuaMUf2Lii_IPOctHlJjFlI1d41zIMja9ojTSz3mfTcQ>
+    <xmx:MOA2Z4Os36g_a0ZgMAx7qfbrJ7nQNKJRPQQF9Y58ukunVTaxBbjQ4Q>
+    <xmx:MOA2Z023m_GzIsIg5iDQbnu8LSCcukDYYqu_cstNZ9bn3HOksPgcgg>
+    <xmx:MeA2Zy1Kqoj4SDh1UXfs18B-ac3YT_oMCaqwehV03Lkuakw5fkFkyw1M>
+Feedback-ID: ifd214418:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 Nov 2024 00:46:18 -0500 (EST)
+From: Alistair Francis <alistair@alistair23.me>
+To: lukas@wunner.de,
+	Jonathan.Cameron@huawei.com,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	akpm@linux-foundation.org,
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
+	linux-cxl@vger.kernel.org
+Cc: bjorn3_gh@protonmail.com,
+	ojeda@kernel.org,
+	tmgross@umich.edu,
+	boqun.feng@gmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	wilfred.mallawa@wdc.com,
+	alistair23@gmail.com,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	aliceryhl@google.com,
+	Alistair Francis <alistair@alistair23.me>
+Subject: [RFC 0/6] lib: Rust implementation of SPDM
+Date: Fri, 15 Nov 2024 15:46:10 +1000
+Message-ID: <20241115054616.1226735-1-alistair@alistair23.me>
+X-Mailer: git-send-email 2.47.0
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105114819.14051-1-guilhermev2huehue@gmail.com>
-In-Reply-To: <20241105114819.14051-1-guilhermev2huehue@gmail.com>
-From: Daniel Sedlak <daniel@sedlak.dev>
-Date: Thu, 14 Nov 2024 20:42:37 +0100
-Message-ID: <CAMFZ4eRZd0DDUZ_4+kEsaSGonDjv5HGrAc+0YbQyBuD5ZGXJPA@mail.gmail.com>
-Subject: Re: [PATCH] rust-next: make from_errno use try_from_errno
-To: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello Guilherme,
-I believe you need to send a new patch as a `v2` instead of pushing
-changes to this patch.
-Also in your commit message, I believe you should only write `rust:`
-instead of `rust-next:`
-see other patches in the mailing list.
+Security Protocols and Data Models (SPDM) [1] is used for authentication,
+attestation and key exchange. SPDM is generally used over a range of
+transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
 
-On 11/5/24 12:48 PM, Guilherme Augusto Martins da Silva wrote:
+From the kernels perspective SPDM is used to authenticate and attest devices.
+In this threat model a device is considered untrusted until it can be verified
+by the kernel and userspace using SPDM. As such SPDM data is untrusted data
+that can be mallicious.
 
-Modified the from_errno function to use try_from_errno to reduce code
-duplication while still maintaning all existing behavior and error
-handling and also reduces unsafe code.
+The SPDM specification is also complex, with the 1.2.1 spec being almost 200
+pages and the 1.3.0 spec being almost 250 pages long.
 
-Co-developed-by: Daniel Sedlak <daniel@sedlak.dev>
-Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
-Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.=
-com>
-Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1125
----
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 7cd3bbab52f2..077f95cbb6ae 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -101,19 +101,17 @@ impl Error {
-     /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
-     /// be returned in such a case.
-     pub fn from_errno(errno: core::ffi::c_int) -> Error {
--        if errno < -(bindings::MAX_ERRNO as i32) || errno >=3D 0 {
--            // TODO: Make it a `WARN_ONCE` once available.
--            crate::pr_warn!(
--                "attempted to create `Error` with out of range `errno`: {}=
-",
--                errno
--            );
--            return code::EINVAL;
-+        match Error::try_from_errno(errno) {
-+            Some(error) =3D> error,
-+            None =3D> {
-+                // TODO: Make it a `WARN_ONCE` once available.
-+                crate::pr_warn!(
-+                    "attempted to create `Error` with out of range
-`errno`: {}",
-+                    errno
-+                );
-+                code::EINVAL
-+            }
-         }
+As such we have the kernel parsing untrusted responses from a complex
+specification, which sounds like a possible exploit vector.
 
-This is highly opinionated so do what satisfy you, but I believe the
-`if let =E2=80=A6 else =E2=80=A6` pattern is better,
-because of the indentation and less lines changed, see my previous
-patch: https://lore.kernel.org/rust-for-linux/20241104185135.18974-1-daniel=
-@sedlak.dev/.
+As such this series implements a SPDM requester in Rust.
 
--
--        // INVARIANT: The check above ensures the type invariant
--        // will hold.
--        // SAFETY: `errno` is checked above to be in a valid range.
--        unsafe { Error::from_errno_unchecked(errno) }
-     }
+This is very similar to Lukas' implementation [2]. This series applies on top
+of Lukas' tree [3] and is heavily based on Lukas' work. At build time a user can
+choose to use either the Rust of the C SPDM implementation. The two are
+interchangable, although you can only use one at a time.
+
+To help with maintaining compatibility it's designed in a way to match Lukas'
+design and the state struct stores the same information, although in a Rust
+struct instead of the original C one.
+
+The Rust implementation currently supports less features, but my end goal
+is to consolidate to a single Rust implementation eventually. That will
+probably have to wait until Rust in the kernel is no longer experimental
+as SPDM is looking to be an important feature to support for all platforms.
+
+This series is based on the latest rust-next tree.
+
+This seris depends on the Untrusted abstraction work [4].
+
+This seris also depends on the recent bindgen support for static inlines  [5].
+
+The entire tree can be seen here: https://github.com/alistair23/linux/tree/alistair/spdm-rust
+
+based-on: https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
+based-on: https://lore.kernel.org/rust-for-linux/20240925205244.873020-1-benno.lossin@proton.me/
+based-on: https://lore.kernel.org/all/20241114005631.818440-1-alistair@alistair23.me/
+
+1: https://www.dmtf.org/standards/spdm
+2: https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
+3: https://github.com/l1k/linux/commits/spdm-future/
+4: https://lore.kernel.org/rust-for-linux/20240925205244.873020-1-benno.lossin@proton.me/
+5: https://lore.kernel.org/all/20241114005631.818440-1-alistair@alistair23.me/
+
+Alistair Francis (6):
+  rust: bindings: Support SPDM bindings
+  drivers: pci: Change CONFIG_SPDM to a dependency
+  lib: rspdm: Initial commit of Rust SPDM
+  lib: rspdm: Support SPDM get_version
+  lib: rspdm: Support SPDM get_capabilities
+  lib: rspdm: Support SPDM negotiate_algorithms
+
+ MAINTAINERS                     |   6 +
+ drivers/pci/Kconfig             |   2 +-
+ lib/Kconfig                     |  47 ++-
+ lib/Makefile                    |   1 +
+ lib/rspdm/Makefile              |  11 +
+ lib/rspdm/consts.rs             | 123 +++++++
+ lib/rspdm/lib.rs                | 146 +++++++++
+ lib/rspdm/req-sysfs.c           | 174 ++++++++++
+ lib/rspdm/state.rs              | 556 ++++++++++++++++++++++++++++++++
+ lib/rspdm/sysfs.rs              |  27 ++
+ lib/rspdm/validator.rs          | 301 +++++++++++++++++
+ rust/bindgen_static_functions   |   4 +
+ rust/bindings/bindings_helper.h |   2 +
+ 13 files changed, 1384 insertions(+), 16 deletions(-)
+ create mode 100644 lib/rspdm/Makefile
+ create mode 100644 lib/rspdm/consts.rs
+ create mode 100644 lib/rspdm/lib.rs
+ create mode 100644 lib/rspdm/req-sysfs.c
+ create mode 100644 lib/rspdm/state.rs
+ create mode 100644 lib/rspdm/sysfs.rs
+ create mode 100644 lib/rspdm/validator.rs
+
+-- 
+2.47.0
+
