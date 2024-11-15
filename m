@@ -1,626 +1,371 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2075.outbound.protection.outlook.com [40.107.22.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8021F186E27;
-	Fri, 15 Nov 2024 05:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731649630; cv=none; b=TIFcXDbA2NkDRSqVxNUlCvbcKnyvYncE3RQQ8iHdPMTqp2xT5W09oVhHpwgY8OAkZRlEwzCq86Q4QizaytscW4BTjJG574DGbM7X2ZQfbd2eF4cbMuUXkmun11UW6RetefHDRGWeIg+3uwqyg7UI/1wTGVXfTxteB5KoBdOZwVI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731649630; c=relaxed/simple;
-	bh=5F+hLvDs4A8FN9CMtRg9LRjXnhwzqS8Prz1T2799WjQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMQtmA0oMUhkknsKgA38mKNByolJby+IVQG/Vs6U0CziS4mH4E9v0Nix69F78Ly4esjmGZbAaUMb11/ec98VIzyMCPZcxiFJoFNaJxWwtbwWdEb+TKeX2MLH1XHiuhsVbCw++nLS3HckI42+6OF5jeMtToLW0sBUJuJhfHoFWS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=J/NU06tg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kmlVrc0e; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45443BBEB;
+	Fri, 15 Nov 2024 06:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731652811; cv=fail; b=fZhZXcRjKb2VNN6l7r3XxgrtggTLFv8mKJmwFoWGvDBJUSDD7nwG/Vg6hlhrQ2pd9AFxRAbfcCUazGBky2VueUbR1BEiHyfWxQJ0jSiZWkPz++kc3QXLjwOdfdFUwcE371fgLSDgm8/eUvshcBSgSUYXh5zBV7HBm13BqQtgAZo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731652811; c=relaxed/simple;
+	bh=sAnzgxY1QbANmHLsBmV1WWfK1I/WbJogV8y41qHH3hA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jmq7UqpXQdZJBVJK6Qvj2bXWG5WN+nzideFEsJJ20SXNJExeKESlQLcX9I9Juf1NFRvNr5FdEwWSWmn/JowMuYZxaUiaEaqCPLTrjAZthRho0qLEwOStRj3xPPp5QHoheiKLiWk8S9k6sMiJ/eRYg3oFuEE+9mpNJzD1LOtQhaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=lAIakeUv; arc=fail smtp.client-ip=40.107.22.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="J/NU06tg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kmlVrc0e"
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id EB17E114017F;
-	Fri, 15 Nov 2024 00:47:06 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Fri, 15 Nov 2024 00:47:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1731649626; x=
-	1731736026; bh=UZJLlsXnBcXHAy1DLry3lTh/JADdKw2bOg5zY1Fzbm0=; b=J
-	/NU06tg8nxpITnXAeDcsn+PJxXw+EuMHAcyQjXLZR7kVRvc0AiBhKWpm9fCr4OrW
-	ECP9ITZRTuovyRdgmLPEpn64HLVJWW0OEQEKGQ488mzHtPrYd/5hhkNyZJgtU1K4
-	YIt6qoiQt8RXdxAr7iH72tmyxV4DcogN3eMVEgXsphugUGHSbfDPQATBzvdqBt78
-	myf7xIoMNySaTKN0TIVIgzeuW8UXaiUZwDOd5QeE7CMJnB2t+Umrd8KdwuqaRFu6
-	XZaX3mtPKcH1yF55hj/1sQgLFiWcNu6URF2Zhq7ZBdPIR36VcowRlxWPVNZDoe0P
-	Rr6KAV4+XSinBM+fJ5usw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1731649626; x=1731736026; bh=U
-	ZJLlsXnBcXHAy1DLry3lTh/JADdKw2bOg5zY1Fzbm0=; b=kmlVrc0eEQ2Ibbhiu
-	BHu+IFJGhmDhShPaRgoBwTaRKGXUzSj5kdJD7lO4CvXJXmKXav+nZ8kj8Aq4xURa
-	2K0vclOtBXglfWNMVc2/GiHWCdcvUZG7OyqquCioqplII8GG1oTP6M1kLlhOTCkd
-	uaVUc+xTpv4kO63yjkvJB64cCbp3+QlbrWGm4qxVGCe0sVc92/n0cE8nSDuEcd8i
-	tRytBGd59VWfTTJW+1zDdM1SGOeKrpzXMBGV1Y6PS4an25/CvtVvQXPOCWgGkCrp
-	0H9Ri8p9U1dKtt++edBSWsjFgtFEaKbGtuGU2ZnMInZJt3Dp9LNS88FjI3ckPfCp
-	neKPA==
-X-ME-Sender: <xms:WuA2Zw2jqPMTLVgWXPALH5IDNJfQDRtmUtMNou4sL1buPYrzBy0hEQ>
-    <xme:WuA2Z7E2PR-FYjHNSDu3totLzpmD_umOAqA6U7wp9NwCtC6cl_ELi48iBbWYsa3NX
-    SMJiuueFCULMJ0Vpwk>
-X-ME-Received: <xmr:WuA2Z46nvyz09TMtYo_z6UzdcDESzCgfT2VgFMM2rY8U5hOhcCmhUu2hwFCaHDQpizVCvv5FlLb1>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvdefgdekhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhephffvvefuff
-    fkofgjfhgggfestdekredtredttdenucfhrhhomheptehlihhsthgrihhrucfhrhgrnhgt
-    ihhsuceorghlihhsthgrihhrsegrlhhishhtrghirhdvfedrmhgvqeenucggtffrrghtth
-    gvrhhnpeegteeffedugfeuhfelgfffkeekieelleeileehgeekgeehjedvleekieethffg
-    vdenucffohhmrghinhepsggrshgvpghhrghshhgprghlghgpnhgrmhgvrdgrshdpshhhrg
-    hshhdrmhgrphdpsggrshgvpggrshihmhgpshgvlhdrthhopdgsrghsvggphhgrshhhpghs
-    vghlrdhtohdpmhgvrghsuhhrvghmvghnthgphhgrshhhpggrlhhgohdrthhonecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihhsthgrihhr
-    segrlhhishhtrghirhdvfedrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmh
-    htphhouhhtpdhrtghpthhtoheplhhukhgrshesfihunhhnvghrrdguvgdprhgtphhtthho
-    pehjohhnrghthhgrnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhmpdhrtghpthhtoh
-    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphht
-    thhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhinhhugi
-    dqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgt
-    gihlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghjohhrnhefpghghh
-    esphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:WuA2Z51X7x0ID-_G7CX1Y7qRicn1yWUuzr67ODSzmsmcKP11FJaVDQ>
-    <xmx:WuA2ZzEgn-7-eODKYOB140qKTcrHv4UheMp954FNLkzNNmW36Ti4JA>
-    <xmx:WuA2Zy9Xvzx6xWMGP_H2B4xIYh28IJ-opeIckCaBRZ7L6_0V5bWB_g>
-    <xmx:WuA2Z4nqvVkvUjIZrk7PuVhWdLGr3lgtSMFj0nTG75FeRvQGI6OZJg>
-    <xmx:WuA2Z-lPNpMeEonubU8jLh71ywW8UfpR4JJx6CEmVpKeiwsCSk5BtFJH>
-Feedback-ID: ifd214418:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 15 Nov 2024 00:47:01 -0500 (EST)
-From: Alistair Francis <alistair@alistair23.me>
-To: lukas@wunner.de,
-	Jonathan.Cameron@huawei.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	akpm@linux-foundation.org,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org,
-	linux-cxl@vger.kernel.org
-Cc: bjorn3_gh@protonmail.com,
-	ojeda@kernel.org,
-	tmgross@umich.edu,
-	boqun.feng@gmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	wilfred.mallawa@wdc.com,
-	alistair23@gmail.com,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	aliceryhl@google.com,
-	Alistair Francis <alistair@alistair23.me>
-Subject: [RFC 6/6] lib: rspdm: Support SPDM negotiate_algorithms
-Date: Fri, 15 Nov 2024 15:46:16 +1000
-Message-ID: <20241115054616.1226735-7-alistair@alistair23.me>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115054616.1226735-1-alistair@alistair23.me>
-References: <20241115054616.1226735-1-alistair@alistair23.me>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="lAIakeUv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IdYyzCPgRJFZcygTsaDwXBD/ri7GwXKsht2IBNNzAflu481brAytlF7tceLBIhlouNZKCTPbf9ts1Fn4rhKkyvfmWXOUD5b8BDcT4qDJsO9ocXUdwb4ObjZg7uYFL9LQCz/fOHnepzO1Go4eQOiLR++4hgaCn6Gc+r8Jr4PNvsm6tN9MPjG/kp3wpsrwUCQxGFi6j3xk7mAxv9CNSO/fPba0aUGoWGbHFNt1q3Qz3DfCeZNz+ZtotcW0sqdHMb2Jfk/C9V4W5iRfV0jQ7S1Quq4hLJ3aX4pE4ctXzA2OEj9dHRTtGC0vYzKmj/7LX3E/skJCcvJg38Tka9sOo0xejA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6oCbPMkfsjZj6A6ARqdwXeRZiaVSKiy28DAYrDgdpeI=;
+ b=CRUdSnWaQL+JiL3Po0pdf347CpfMZNxkfU0INqsHMHA1Kf8lUtHdL+pw+OAhp5PtTeMKFt5lLpQrzegDfYe0Lvtwpm30lFFUbLqU+oyolF4JgJFtILZS0KAMCJ2Ri0bwPtq+MxOu2/LXE5HuYZrGXOWzl9m7hfEZqN/IY+jGRv4KmLKTANo2sg2TswpuDju8K2vLF4AGrSMeIhOijCVzsYtM170UUzXKTAHJUuDpTevintuD9/oXoaMiCg2+rjgF4D5LgfDOe58QnMK6xcmiMEfs0Z7WO72HmiHo+7H90CRpIsM10JfNQe+Zcboac5qlkBkCA6QudtSlQFDqvcIygw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6oCbPMkfsjZj6A6ARqdwXeRZiaVSKiy28DAYrDgdpeI=;
+ b=lAIakeUvd/oNgmw8khRnioagNmle9WSGqFkla1wA0xpDfXhM/DZmA9eii/uKfYt8KSPsWKstOgXGoE28Y/OcDimZj0ZNhAnVrMppQO4epIBAKHKPRwCLID1cUqoT5cFNeuqfJKpiHi+UKFKVuVVWOTLwRT0sy1fqePoQj3xRAN3QEG3CUe7KuGC0WGwLyO/FTQ9buQFB9e0kGOtzFsiGrg/Nuu4usxr6V++VriCLq1VySW/mW298NRNRImZRr7ripayuUxxQIDQFsKgTWeh72o7/x/mJIFY+mhEerw8QKklc+aL6JA9+r27y1rb8Vhj02MelOOdGMPxStZBbAr5ubA==
+Received: from DU7P195CA0025.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:54d::30)
+ by PAWPR10MB7675.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:358::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.18; Fri, 15 Nov
+ 2024 06:40:03 +0000
+Received: from DB1PEPF000509F0.eurprd03.prod.outlook.com
+ (2603:10a6:10:54d:cafe::13) by DU7P195CA0025.outlook.office365.com
+ (2603:10a6:10:54d::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.17 via Frontend
+ Transport; Fri, 15 Nov 2024 06:40:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB1PEPF000509F0.mail.protection.outlook.com (10.167.242.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8158.14 via Frontend Transport; Fri, 15 Nov 2024 06:40:03 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.13; Fri, 15 Nov
+ 2024 07:40:03 +0100
+Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
+ (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.43; Fri, 15 Nov
+ 2024 07:40:02 +0100
+Message-ID: <217eee6f-2085-4b6e-b363-96c8d6962060@de.bosch.com>
+Date: Fri, 15 Nov 2024 07:39:56 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH RFC 2/3] rust: Add bindings for device properties
+To: Rob Herring <robh@kernel.org>, Dirk Behme <dirk.behme@gmail.com>
+CC: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda
+	<miguel.ojeda.sandonis@gmail.com>, Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+	<alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+References: <20241025-rust-platform-dev-v1-0-0df8dcf7c20b@kernel.org>
+ <20241025-rust-platform-dev-v1-2-0df8dcf7c20b@kernel.org>
+ <CAH5fLgjhiLUYPgTt_Ks+L-zhWaQG5-Yjm-Y3tfh2b2+PzT=bLg@mail.gmail.com>
+ <CAL_JsqJWPR-Q=vsxSvD7V9_v=+om5mRuW9yYNqfavVRUwH9JFw@mail.gmail.com>
+ <CAH5fLgiXPZqKpWSSNdx-Ww-E9h2tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com>
+ <CANiq72kaidDJ=81+kibMNr9jNxg467HjOm9C_4G7WRvaiddGvg@mail.gmail.com>
+ <CAL_Jsq+T6T_3p2C62U3v4aSjm_oc-Ycjxi_ckF0ufh=JJDz=rg@mail.gmail.com>
+ <CAH5fLggCDiKUu_dvJZeJr8UD5RvUpqRJbdYKf1F3_MvCdOVK6g@mail.gmail.com>
+ <CAL_JsqL+b-f5K24qTxyA09c_QPeb07s4Hb=s1VqrdksBB4BQ=Q@mail.gmail.com>
+ <79c47555-c9e9-4ff6-8c43-c7c26a91afd4@gmail.com>
+ <CAL_JsqJkkUk6AoAdgfVHROk=wpRo0En=gi7zwXe6S7LUEsdocQ@mail.gmail.com>
+Content-Language: de-DE
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <CAL_JsqJkkUk6AoAdgfVHROk=wpRo0En=gi7zwXe6S7LUEsdocQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509F0:EE_|PAWPR10MB7675:EE_
+X-MS-Office365-Filtering-Correlation-Id: 682f261d-93df-4110-c8bb-08dd05405617
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|82310400026|7416014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Rmx2VTRpL05GaXk4K1A2dWpmN0U3UTlCeGtnVDY0YWRBdC9ldTRvMFpkTWxp?=
+ =?utf-8?B?UGRaNW5PTEsxYWVYN1VPWXlla1RlenJUdzRMTkZFV05GMk1XdWF0bGVLZDAy?=
+ =?utf-8?B?ZEFOYlFRLzNzUzhHNHpCd3pnY3hnUzQwaFdOZFRxUjRwZ1pyb0tMTUV1WnlN?=
+ =?utf-8?B?ZCsweUhiSUh4ZUNQRmlTVEduSU96UkxmQjlhQ3gxU1QzS3VXYTJWR0ZhbjVv?=
+ =?utf-8?B?SGwvdzZHR1VaVEk2cDlkYlo5a0VrUkdUbWJzT2NOcS90S2tqa0ljRW9yNlRM?=
+ =?utf-8?B?R1NtNXY5RkdGTktFOVJ3TXg1S09CUEtXaW1XY0IvY2VlazRCMmM3SFBnLzFy?=
+ =?utf-8?B?V3IzcDE5Sk5UOWxvODFSNThDQnJPcnFzblA2Nyt2dEhadXNNYS8wankyaGRV?=
+ =?utf-8?B?ODROTVR1My9mcUVQQzBiR0ppQkxWVUIwZG5WVlBHUUswOUZMWVAvcGw0VWh3?=
+ =?utf-8?B?YnA2dWZQak51cDd3ZjdIcjhTNlJxelB3T3V4dUU2dUxITmRNWVpLZDVaOHh5?=
+ =?utf-8?B?V3psakNoT0dzbjNvdzFBNkMzODYzSFpENktXdjBjWUlZQkxSK2k2UG9UVU9T?=
+ =?utf-8?B?M0dvUkdsNTNGOUZralhpMzFYMFIxS280SVVzUGZHUDU0dEdia2FERTVFeVcw?=
+ =?utf-8?B?NjVOTHUxOUNldlIyaEIzRTUxSkttR01hTHpaejZNNjFVK1VHcTZmelZuNTFp?=
+ =?utf-8?B?VStXbmpBbXJiaUR5ZTBnNkgxeXp3b1ZDajAwcUhRRFlwbTA3VVVUdVhMS1Ux?=
+ =?utf-8?B?L1dlZ2JGMVRGbjh5dmhnT3V5Vk1ONENUZHQrb3FBa1VkNy93cnhHZHJRcnRO?=
+ =?utf-8?B?TDBlMzRLQS9HalQrUy9WMlVxeWNCQW14c2IzTEJuRkVHZU9WSFNyTEw4WC9i?=
+ =?utf-8?B?MW9sbzdQK1V4OVJMUXJrZkZrQnpFc2hGOFQxTTdkQTBJb2hWSXVIY1lEbjRu?=
+ =?utf-8?B?N2Y0K2FDU2phb09TZ294dldsckp4S3hxOVFTK3FDSFJkaEw3cnV0M0RnQm1o?=
+ =?utf-8?B?NTBXaWVNcnB5SHFpSEI1bUVrNzBWSDgxOStYK0xKWW9pSkJyU3dNUFV0Nnhx?=
+ =?utf-8?B?MW5TYy8rV0FpNHRNOFJDWU5mU09tUWNuakxGbFR0ZGY2VnN1Tlk1UWtBZ2VJ?=
+ =?utf-8?B?VW5lOUo5U2owQW4yT01FYkI5bGsyY1lYd3FCa1lBL1ZvdnlDQ0wrL1VxZFc2?=
+ =?utf-8?B?RkxCbEdra09rRGpJeUtiN0wwdk93UlZIRG81UEw3aEV0am9TcnFDUW5mNHBJ?=
+ =?utf-8?B?OUFsS0ZMRnJBYlJEdjhrTUN6NGtwK05kNjdyak5KeDZjckpDOGNHRlNaYXc2?=
+ =?utf-8?B?dDNuSTRSczVVUk5mWmZFSzB4NXluc3JoUmtna3o3d3FVN1pDSXR5dzJaaCsy?=
+ =?utf-8?B?RUxWdlRFTndYN2ExWldCRURsSUxncm1SRXpaQjZndzdlT2JEaTMvaWsxYm9S?=
+ =?utf-8?B?MWVJdkU0ZWd0ZTNYYmxwaVBOdHJCMzFIekNqeWlqNzdzSEpSdTExWk80Q2xP?=
+ =?utf-8?B?N2xrQjJuSmEyKzU4ZXdqYTRxdU1ueEVEcytGRWlGL0lPSzVmSVJ6UWs1NHox?=
+ =?utf-8?B?SWxTWnRGemdSS0F2NGFVVFNDVGpOMHB5a0RPZHAxNmtCUi8zd0hEcTRNWW1W?=
+ =?utf-8?B?ZjJXTDZvOUZrK1FoLzlBSkV6M3NwN2YwallLRCtZZ21Dc3BuL1VhbW1QeDRi?=
+ =?utf-8?B?MjRGbHpzd2paWUQvWEJzYzhkZHZjanpUbGpJSDFMTFoxRDBCU3RpZTFqQ1hR?=
+ =?utf-8?B?aEZTNkxBQ0JvVXFMaXM0TTAzenhlUC9zbVFjcEVEZFRicS9MR1NOWUROQjlw?=
+ =?utf-8?Q?R2KRnxch1ofoR2qpGDt71ZbJHLsOTZhdLhQbc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(7416014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2024 06:40:03.5986
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 682f261d-93df-4110-c8bb-08dd05405617
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509F0.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR10MB7675
 
-Support the NEGOTIATE_ALGORITHMS SPDM command.
+Hi Rob,
 
-Signed-off-by: Alistair Francis <alistair@alistair23.me>
----
- lib/rspdm/consts.rs             |  53 ++++++++
- lib/rspdm/lib.rs                |   4 +
- lib/rspdm/state.rs              | 225 +++++++++++++++++++++++++++++++-
- lib/rspdm/validator.rs          | 110 +++++++++++++++-
- rust/bindgen_static_functions   |   4 +
- rust/bindings/bindings_helper.h |   1 +
- 6 files changed, 392 insertions(+), 5 deletions(-)
+On 30/10/2024 17:47, Rob Herring wrote:
+> On Wed, Oct 30, 2024 at 11:03 AM Dirk Behme <dirk.behme@gmail.com> wrote:
+>>
+>> On 30.10.24 15:05, Rob Herring wrote:
+>>> On Wed, Oct 30, 2024 at 3:15 AM Alice Ryhl <aliceryhl@google.com> wrote:
+>>>>
+>>>> On Tue, Oct 29, 2024 at 8:35 PM Rob Herring <robh@kernel.org> wrote:
+>>>>>
+>>>>> On Tue, Oct 29, 2024 at 1:57 PM Miguel Ojeda
+>>>>> <miguel.ojeda.sandonis@gmail.com> wrote:
+>>>>>>
+>>>>>> On Tue, Oct 29, 2024 at 7:48 PM Alice Ryhl <aliceryhl@google.com> wrote:
+>>>>>>>
+>>>>>>> One option is to define a trait for integers:
+>>>>>
+>>>>> Yeah, but that doesn't feel like something I should do here. I imagine
+>>>>> other things might need the same thing. Perhaps the bindings for
+>>>>> readb/readw/readl for example. And essentially the crate:num already
+>>>>> has the trait I need. Shouldn't the kernel mirror that? I recall
+>>>>> seeing some topic of including crates in the kernel?
+>>>>
+>>>> You can design the trait to look similar to traits in external crates.
+>>>> We did that for FromBytes/AsBytes.
+>>>>
+>>>> I assume you're referring to the PrimInt trait [1]? That trait doesn't
+>>>> really let you get rid of the catch-all case, and it's not even
+>>>> unreachable due to the u128 type.
+>>>
+>>> It was num::Integer which seems to be similar.
+>>>
+>>>>
+>>>> [1]: https://docs.rs/num-traits/0.2.19/num_traits/int/trait.PrimInt.html
+>>>>
+>>>>>> +1, one more thing to consider is whether it makes sense to define a
+>>>>>> DT-only trait that holds all the types that can be a device property
+>>>>>> (like `bool` too, not just the `Integer`s).
+>>>>>>
+>>>>>> Then we can avoid e.g. `property_read_bool` and simply do it in `property_read`.
+>>>>>
+>>>>> Is there no way to say must have traitA or traitB?
+>>>>
+>>>> No. What should it do if you pass it something that implements both traits?
+>>>>
+>>>> If you want a single function name, you'll need one trait.
+>>>
+>>> I'm not sure I want that actually.
+>>>
+>>> DT boolean is a bit special. A property not present is false.
+>>> Everything else is true. For example, 'prop = <0>' or 'prop =
+>>> "string"' are both true. I'm moving things in the kernel to be
+>>> stricter so that those cases are errors. I recently introduced
+>>> (of|device)_property_present() for that reason. There's no type
+>>> information stored in DT.  At the DT level, it's all just byte arrays.
+>>> However, we now have all the type information for properties within
+>>> the schema. So eventually, I want to use that to warn on accessing
+>>> properties with the wrong type.
+>>>
+>>> For example, I think I don't want this to work:
+>>>
+>>> if dev.property_read(c_str!("test,i16-array"))? {
+>>>      // do something
+>>> }
+>>>
+>>> But instead have:
+>>>
+>>> if dev.property_present(c_str!("test,i16-array")) {
+>>>      // do something
+>>> }
+>>
+>> I think we have "optional" properties which can be there (== true) or
+>> not (== false). Let's assume for this example "test,i16-array" is such
+>> kind of "optional" property. With what you gave above we need two
+>> device tree accesses, then? One to check if it is there and one to
+>> read the data:
+> 
+> Yes, lots of properties are optional especially since any new property
+> added has to be because the DT is an ABI.
+> 
+>> let mut array = <empty_marker>;
+>> if dev.property_present(c_str!("test,i16-array")) {
+>>      array = dev.property_read(c_str!("test,i16-array"))?;
+>> }
+>>
+>> ?
+>>
+>> Instead of these two accesses, I was thinking to use the error
+>> property_read() will return if the optional property is not there to
+>> just do one access:
+>>
+>> let mut array = <empty_marker>;
+>> if let Ok(val) = dev.property_read(c_str!("test,i16-array")) {
+>>         array = val;
+>> }
+>>
+>> (and ignore the error case as its irrelvant in the optional case)
+>>
+>> Have I missed anything?
+> 
+> If you grep "_property_present", most if not all calls never need the
+> data. When you need the data, you read it and test for EINVAL if you
+> want to handle "not present". The overhead of parsing the data is not
+> nothing, so I think it is better to provide both.
+> 
+> The typical pattern in the C code is:
+> 
+> u32 val = DEFAULT_VALUE;
+> of_property_read_u32(node, "a-property", &val);
+> 
+> // val is now either the read property or the default. If the property
+> is required, then the error code needs to be checked.
+> 
+> Maybe we should have:
+> 
+> let val: u32 = dev.property_read_optional(c_str!("test,i16-array"),
+> DEFAULT_VALUE);
+> 
+> Or looks like Option<> could be used here?:
+> 
+> let val: u32 = dev.property_read(c_str!("test,i16-array"),
+> Option<DEFAULT_VALUE>);
+> 
+> One thing I'd like to improve is having fewer driver error messages
+> and a printk for a missing required property is a common one. We have
+> APIs like clk_get and clk_get_optional (which parse firmware
+> properties). The difference is the former prints an error message on
+> error case and the latter is silent.
+Maybe something like [1]?
 
-diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
-index d60f8302f389..a1218874a524 100644
---- a/lib/rspdm/consts.rs
-+++ b/lib/rspdm/consts.rs
-@@ -65,6 +65,59 @@ pub(crate) enum SpdmErrorCode {
- 
- pub(crate) const SPDM_CERT_CAP: u32 = 1 << 1;
- pub(crate) const SPDM_CHAL_CAP: u32 = 1 << 2;
-+pub(crate) const SPDM_MEAS_CAP_MASK: u32 = 3 << 3;
-+pub(crate) const SPDM_KEY_EX_CAP: u32 = 1 << 9;
- 
- pub(crate) const SPDM_REQ_CAPS: u32 = SPDM_CERT_CAP | SPDM_CHAL_CAP;
- pub(crate) const SPDM_RSP_MIN_CAPS: u32 = SPDM_CERT_CAP | SPDM_CHAL_CAP;
+It uses 'None' for mandatory properties and 'Some(<default>)' for 
+optional properties. And gives an error only in case of a missing 
+manadatory property.
+
+Best regards
+
+Dirk
+
+[1]
+
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 4161e7534018a..d97ec2d13a0ba 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -214,12 +214,26 @@ pub fn property_match_string(&self, name: &CStr, 
+match_str: &CStr) -> Result<usi
+
+      /// Returns firmware property `name` scalar value
+      ///
++    /// Option is None: The property is assumed to be mandatory and an 
+error
++    /// is returned if it is not found.
++    /// Option is Some(default): The property is optional and the 
+passed default
++    /// value is returned if it is not found.
++    ///
+      /// Valid types are i8, u8, i16, u16, i32, u32, i64, u64
+-    pub fn property_read<T: Copy>(&self, name: &CStr) -> Result<T> {
++    pub fn property_read<T: Copy>(&self, name: &CStr, default: 
+Option<T>) -> Result<T> {
+          let mut val: [T; 1] = unsafe { core::mem::zeroed() };
+
+-        Self::_property_read_array(&self, name, &mut val)?;
+-        Ok(val[0])
++        match Self::_property_read_array(&self, name, &mut val) {
++            Ok(()) => return Ok(val[0]),
++            Err(e) => match default {
++                Some(default) => return Ok(default),
++                None => {
++                    dev_err!(self, "Failed to read mandatory property 
+'{}' with error {}\n",
++                             name, e.to_errno());
++                    Err(e)
++                }
++            },
++        }
+      }
+
+      /// Returns firmware property `name` array values
+diff --git a/samples/rust/rust_driver_platform.rs 
+b/samples/rust/rust_driver_platform.rs
+index 95c2908068623..f8fe0f554183d 100644
+--- a/samples/rust/rust_driver_platform.rs
++++ b/samples/rust/rust_driver_platform.rs
+@@ -50,10 +50,21 @@ fn probe(pdev: &mut platform::Device, info: 
+Option<&Self::IdInfo>) -> Result<Pin
+          let prop = dev.property_read_bool(c_str!("test,bool-prop"));
+          dev_info!(dev, "bool prop is {}\n", prop);
+
+-        let _prop = dev.property_read::<u32>(c_str!("test,u32-prop"))?;
+-        let prop: u32 = dev.property_read(c_str!("test,u32-prop"))?;
++        let _prop = dev.property_read::<u32>(c_str!("test,u32-prop"), 
+None)?;
++        let prop: u32 = dev.property_read(c_str!("test,u32-prop"), None)?;
+          dev_info!(dev, "'test,u32-prop' is {:#x}\n", prop);
+
++        // Assume 'test,u32-optional' is an optional property which 
+does not exist.
++        let prop: u32 = dev.property_read(c_str!("test,u32-optional"), 
+Some(0xdb))?;
++        // Should print the default 0xdb and give no error.
++        dev_info!(dev, "'test,u32-optional' default is {:#x}\n", prop);
 +
-+pub(crate) const SPDM_NEGOTIATE_ALGS: u8 = 0xe3;
-+
-+pub(crate) const SPDM_MEAS_SPEC_DMTF: u8 = 1 << 0;
-+
-+pub(crate) const SPDM_ASYM_RSASSA_2048: u32 = 1 << 0;
-+pub(crate) const _SPDM_ASYM_RSAPSS_2048: u32 = 1 << 1;
-+pub(crate) const SPDM_ASYM_RSASSA_3072: u32 = 1 << 2;
-+pub(crate) const _SPDM_ASYM_RSAPSS_3072: u32 = 1 << 3;
-+pub(crate) const SPDM_ASYM_ECDSA_ECC_NIST_P256: u32 = 1 << 4;
-+pub(crate) const SPDM_ASYM_RSASSA_4096: u32 = 1 << 5;
-+pub(crate) const _SPDM_ASYM_RSAPSS_4096: u32 = 1 << 6;
-+pub(crate) const SPDM_ASYM_ECDSA_ECC_NIST_P384: u32 = 1 << 7;
-+pub(crate) const SPDM_ASYM_ECDSA_ECC_NIST_P521: u32 = 1 << 8;
-+pub(crate) const _SPDM_ASYM_SM2_ECC_SM2_P256: u32 = 1 << 9;
-+pub(crate) const _SPDM_ASYM_EDDSA_ED25519: u32 = 1 << 10;
-+pub(crate) const _SPDM_ASYM_EDDSA_ED448: u32 = 1 << 11;
-+
-+pub(crate) const SPDM_HASH_SHA_256: u32 = 1 << 0;
-+pub(crate) const SPDM_HASH_SHA_384: u32 = 1 << 1;
-+pub(crate) const SPDM_HASH_SHA_512: u32 = 1 << 2;
-+
-+#[cfg(CONFIG_CRYPTO_RSA)]
-+pub(crate) const SPDM_ASYM_RSA: u32 =
-+    SPDM_ASYM_RSASSA_2048 | SPDM_ASYM_RSASSA_3072 | SPDM_ASYM_RSASSA_4096;
-+#[cfg(not(CONFIG_CRYPTO_RSA))]
-+pub(crate) const SPDM_ASYM_RSA: u32 = 0;
-+
-+#[cfg(CONFIG_CRYPTO_ECDSA)]
-+pub(crate) const SPDM_ASYM_ECDSA: u32 =
-+    SPDM_ASYM_ECDSA_ECC_NIST_P256 | SPDM_ASYM_ECDSA_ECC_NIST_P384 | SPDM_ASYM_ECDSA_ECC_NIST_P521;
-+#[cfg(not(CONFIG_CRYPTO_ECDSA))]
-+pub(crate) const SPDM_ASYM_ECDSA: u32 = 0;
-+
-+#[cfg(CONFIG_CRYPTO_SHA256)]
-+pub(crate) const SPDM_HASH_SHA2_256: u32 = SPDM_HASH_SHA_256;
-+#[cfg(not(CONFIG_CRYPTO_SHA256))]
-+pub(crate) const SPDM_HASH_SHA2_256: u32 = 0;
-+
-+#[cfg(CONFIG_CRYPTO_SHA512)]
-+pub(crate) const SPDM_HASH_SHA2_384_512: u32 = SPDM_HASH_SHA_384 | SPDM_HASH_SHA_512;
-+#[cfg(not(CONFIG_CRYPTO_SHA512))]
-+pub(crate) const SPDM_HASH_SHA2_384_512: u32 = 0;
-+
-+pub(crate) const SPDM_ASYM_ALGOS: u32 = SPDM_ASYM_RSA | SPDM_ASYM_ECDSA;
-+pub(crate) const SPDM_HASH_ALGOS: u32 = SPDM_HASH_SHA2_256 | SPDM_HASH_SHA2_384_512;
-+
-+/* Maximum number of ReqAlgStructs sent by this implementation */
-+// pub(crate) const SPDM_MAX_REQ_ALG_STRUCT: usize = 4;
-+
-+pub(crate) const SPDM_OPAQUE_DATA_FMT_GENERAL: u8 = 1 << 1;
-diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-index bbd755854acd..89be29f1b5dd 100644
---- a/lib/rspdm/lib.rs
-+++ b/lib/rspdm/lib.rs
-@@ -115,6 +115,10 @@
-         return e.to_errno() as c_int;
-     }
- 
-+    if let Err(e) = state.negotiate_algs() {
-+        return e.to_errno() as c_int;
-+    }
-+
-     0
- }
- 
-diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-index 05a7faf17d47..80027bbde673 100644
---- a/lib/rspdm/state.rs
-+++ b/lib/rspdm/state.rs
-@@ -12,16 +12,22 @@
- use kernel::{
-     bindings,
-     error::{code::EINVAL, to_result, Error},
-+    str::CStr,
-     validate::Untrusted,
- };
- 
- use crate::consts::{
--    SpdmErrorCode, SPDM_CTEXPONENT, SPDM_ERROR, SPDM_GET_CAPABILITIES, SPDM_GET_VERSION,
--    SPDM_GET_VERSION_LEN, SPDM_MAX_VER, SPDM_MIN_DATA_TRANSFER_SIZE, SPDM_MIN_VER, SPDM_REQ,
--    SPDM_REQ_CAPS, SPDM_RSP_MIN_CAPS, SPDM_VER_10, SPDM_VER_11, SPDM_VER_12,
-+    SpdmErrorCode, SPDM_ASYM_ALGOS, SPDM_ASYM_ECDSA_ECC_NIST_P256, SPDM_ASYM_ECDSA_ECC_NIST_P384,
-+    SPDM_ASYM_ECDSA_ECC_NIST_P521, SPDM_ASYM_RSASSA_2048, SPDM_ASYM_RSASSA_3072,
-+    SPDM_ASYM_RSASSA_4096, SPDM_CTEXPONENT, SPDM_ERROR, SPDM_GET_CAPABILITIES, SPDM_GET_VERSION,
-+    SPDM_GET_VERSION_LEN, SPDM_HASH_ALGOS, SPDM_HASH_SHA_256, SPDM_HASH_SHA_384, SPDM_HASH_SHA_512,
-+    SPDM_KEY_EX_CAP, SPDM_MAX_VER, SPDM_MEAS_CAP_MASK, SPDM_MEAS_SPEC_DMTF,
-+    SPDM_MIN_DATA_TRANSFER_SIZE, SPDM_MIN_VER, SPDM_NEGOTIATE_ALGS, SPDM_OPAQUE_DATA_FMT_GENERAL,
-+    SPDM_REQ, SPDM_REQ_CAPS, SPDM_RSP_MIN_CAPS, SPDM_VER_10, SPDM_VER_11, SPDM_VER_12,
- };
- use crate::validator::{
--    GetCapabilitiesReq, GetCapabilitiesRsp, GetVersionReq, GetVersionRsp, SpdmErrorRsp, SpdmHeader,
-+    GetCapabilitiesReq, GetCapabilitiesRsp, GetVersionReq, GetVersionRsp, NegotiateAlgsReq,
-+    NegotiateAlgsRsp, RegAlg, SpdmErrorRsp, SpdmHeader,
- };
- 
- /// The current SPDM session state for a device. Based on the
-@@ -40,6 +46,28 @@
- ///  Negotiated during GET_VERSION exchange.
- /// @rsp_caps: Cached capabilities of responder.
- ///  Received during GET_CAPABILITIES exchange.
-+/// @base_asym_alg: Asymmetric key algorithm for signature verification of
-+///  CHALLENGE_AUTH and MEASUREMENTS messages.
-+///  Selected by responder during NEGOTIATE_ALGORITHMS exchange.
-+/// @base_hash_alg: Hash algorithm for signature verification of
-+///  CHALLENGE_AUTH and MEASUREMENTS messages.
-+///  Selected by responder during NEGOTIATE_ALGORITHMS exchange.
-+/// @meas_hash_alg: Hash algorithm for measurement blocks.
-+///  Selected by responder during NEGOTIATE_ALGORITHMS exchange.
-+/// @base_asym_enc: Human-readable name of @base_asym_alg's signature encoding.
-+///  Passed to crypto subsystem when calling verify_signature().
-+/// @sig_len: Signature length of @base_asym_alg (in bytes).
-+///  S or SigLen in SPDM specification.
-+/// @base_hash_alg_name: Human-readable name of @base_hash_alg.
-+///  Passed to crypto subsystem when calling crypto_alloc_shash() and
-+///  verify_signature().
-+/// @base_hash_alg_name: Human-readable name of @base_hash_alg.
-+///  Passed to crypto subsystem when calling crypto_alloc_shash() and
-+///  verify_signature().
-+/// @shash: Synchronous hash handle for @base_hash_alg computation.
-+/// @desc: Synchronous hash context for @base_hash_alg computation.
-+/// @hash_len: Hash length of @base_hash_alg (in bytes).
-+///  H in SPDM specification.
- ///
- /// @authenticated: Whether device was authenticated successfully.
- #[allow(dead_code)]
-@@ -54,6 +82,19 @@ pub struct SpdmState {
-     /* Negotiated state */
-     pub(crate) version: u8,
-     pub(crate) rsp_caps: u32,
-+    pub(crate) base_asym_alg: u32,
-+    pub(crate) base_hash_alg: u32,
-+    pub(crate) meas_hash_alg: u32,
-+
-+    /* Signature algorithm */
-+    base_asym_enc: &'static CStr,
-+    sig_len: usize,
-+
-+    /* Hash algorithm */
-+    base_hash_alg_name: &'static CStr,
-+    shash: Option<*mut bindings::crypto_shash>,
-+    desc: Option<&'static mut bindings::shash_desc>,
-+    hash_len: usize,
- 
-     pub(crate) authenticated: bool,
- }
-@@ -76,6 +117,15 @@ pub(crate) fn new(
-             validate,
-             version: SPDM_MIN_VER,
-             rsp_caps: 0,
-+            base_asym_alg: 0,
-+            base_hash_alg: 0,
-+            meas_hash_alg: 0,
-+            base_asym_enc: unsafe { CStr::from_bytes_with_nul_unchecked(b"\0") },
-+            sig_len: 0,
-+            base_hash_alg_name: unsafe { CStr::from_bytes_with_nul_unchecked(b"\0") },
-+            shash: None,
-+            desc: None,
-+            hash_len: 0,
-             authenticated: false,
-         }
-     }
-@@ -336,4 +386,171 @@ pub(crate) fn get_capabilities(&mut self) -> Result<(), Error> {
- 
-         Ok(())
-     }
-+
-+    fn update_response_algs(&mut self) -> Result<(), Error> {
-+        match self.base_asym_alg {
-+            SPDM_ASYM_RSASSA_2048 => {
-+                self.sig_len = 256;
-+                self.base_asym_enc = CStr::from_bytes_with_nul(b"pkcs1\0")?;
-+            }
-+            SPDM_ASYM_RSASSA_3072 => {
-+                self.sig_len = 384;
-+                self.base_asym_enc = CStr::from_bytes_with_nul(b"pkcs1\0")?;
-+            }
-+            SPDM_ASYM_RSASSA_4096 => {
-+                self.sig_len = 512;
-+                self.base_asym_enc = CStr::from_bytes_with_nul(b"pkcs1\0")?;
-+            }
-+            SPDM_ASYM_ECDSA_ECC_NIST_P256 => {
-+                self.sig_len = 64;
-+                self.base_asym_enc = CStr::from_bytes_with_nul(b"p1363\0")?;
-+            }
-+            SPDM_ASYM_ECDSA_ECC_NIST_P384 => {
-+                self.sig_len = 96;
-+                self.base_asym_enc = CStr::from_bytes_with_nul(b"p1363\0")?;
-+            }
-+            SPDM_ASYM_ECDSA_ECC_NIST_P521 => {
-+                self.sig_len = 132;
-+                self.base_asym_enc = CStr::from_bytes_with_nul(b"p1363\0")?;
-+            }
-+            _ => {
-+                pr_err!("Unknown asym algorithm\n");
-+                return Err(EINVAL);
-+            }
++        // Assume 'test,u32-mandatory' is a mandatory property which 
+does not exist.
++        // Should print an error (but ignore it in this example).
++        match dev.property_read::<u32>(c_str!("test,u32-mandatory"), 
+None) {
++            _ => (),
 +        }
 +
-+        match self.base_hash_alg {
-+            SPDM_HASH_SHA_256 => {
-+                self.base_hash_alg_name = CStr::from_bytes_with_nul(b"sha256\0")?;
-+            }
-+            SPDM_HASH_SHA_384 => {
-+                self.base_hash_alg_name = CStr::from_bytes_with_nul(b"sha384\0")?;
-+            }
-+            SPDM_HASH_SHA_512 => {
-+                self.base_hash_alg_name = CStr::from_bytes_with_nul(b"sha512\0")?;
-+            }
-+            _ => {
-+                pr_err!("Unknown hash algorithm\n");
-+                return Err(EINVAL);
-+            }
-+        }
-+
-+        /*
-+         * shash and desc allocations are reused for subsequent measurement
-+         * retrieval, hence are not freed until spdm_reset().
-+         */
-+        let shash =
-+            unsafe { bindings::crypto_alloc_shash(self.base_hash_alg_name.as_char_ptr(), 0, 0) };
-+        if shash.is_null() {
-+            return Err(ENOMEM);
-+        }
-+
-+        let desc_len = core::mem::size_of::<bindings::shash_desc>()
-+            + unsafe { bindings::crypto_shash_descsize(shash) } as usize;
-+        self.shash = Some(shash);
-+
-+        let mut desc_vec: KVec<u8> = KVec::with_capacity(desc_len, GFP_KERNEL)?;
-+        // SAFETY: `desc_vec` is `desc_len` long
-+        let desc_buf = unsafe { from_raw_parts_mut(desc_vec.as_mut_ptr(), desc_len) };
-+
-+        let desc = unsafe {
-+            core::mem::transmute::<*mut c_void, &mut bindings::shash_desc>(
-+                desc_buf.as_mut_ptr() as *mut c_void
-+            )
-+        };
-+        desc.tfm = shash;
-+
-+        self.desc = Some(desc);
-+
-+        /* Used frequently to compute offsets, so cache H */
-+        self.shash.map(|shash| {
-+            self.hash_len = unsafe { bindings::crypto_shash_digestsize(shash) as usize };
-+        });
-+
-+        if let Some(desc) = &mut self.desc {
-+            unsafe {
-+                to_result(bindings::crypto_shash_init(
-+                    *desc as *mut bindings::shash_desc,
-+                ))
-+            }
-+        } else {
-+            Err(ENOMEM)
-+        }
-+    }
-+
-+    pub(crate) fn negotiate_algs(&mut self) -> Result<(), Error> {
-+        let mut request = NegotiateAlgsReq::default();
-+        let reg_alg_entries = 0;
-+
-+        request.version = self.version;
-+        request.code = SPDM_NEGOTIATE_ALGS;
-+        request.measurement_specification = SPDM_MEAS_SPEC_DMTF;
-+        request.base_asym_algo = SPDM_ASYM_ALGOS.to_le();
-+        request.base_hash_algo = SPDM_HASH_ALGOS.to_le();
-+
-+        if self.version >= SPDM_VER_12 && (self.rsp_caps & SPDM_KEY_EX_CAP) == SPDM_KEY_EX_CAP {
-+            request.other_params_support = SPDM_OPAQUE_DATA_FMT_GENERAL;
-+        }
-+
-+        let req_sz = core::mem::size_of::<NegotiateAlgsReq>()
-+            + core::mem::size_of::<RegAlg>() * reg_alg_entries;
-+        let rsp_sz = core::mem::size_of::<NegotiateAlgsRsp>()
-+            + core::mem::size_of::<RegAlg>() * reg_alg_entries;
-+
-+        request.length = req_sz as u16;
-+        request.param1 = reg_alg_entries as u8;
-+
-+        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-+        let request_buf = unsafe { from_raw_parts_mut(&mut request as *mut _ as *mut u8, req_sz) };
-+
-+        let mut response_vec: KVec<u8> = KVec::with_capacity(rsp_sz, GFP_KERNEL)?;
-+        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-+        let response_buf = unsafe { from_raw_parts_mut(response_vec.as_mut_ptr(), rsp_sz) };
-+
-+        let rc = self.spdm_exchange(request_buf, response_buf)?;
-+
-+        if rc < (rsp_sz as i32) {
-+            pr_err!("Truncated capabilities response\n");
-+            to_result(-(bindings::EIO as i32))?;
-+        }
-+
-+        // SAFETY: `rc` bytes where inserted to the raw pointer by spdm_exchange
-+        unsafe { response_vec.set_len(rc as usize) };
-+
-+        let response: &mut NegotiateAlgsRsp =
-+            Untrusted::new_mut(&mut response_vec).validate_mut()?;
-+
-+        self.base_asym_alg = response.base_asym_sel;
-+        self.base_hash_alg = response.base_hash_sel;
-+        self.meas_hash_alg = response.measurement_hash_algo;
-+
-+        if self.base_asym_alg & SPDM_ASYM_ALGOS == 0 || self.base_hash_alg & SPDM_HASH_ALGOS == 0 {
-+            pr_err!("No common supported algorithms\n");
-+            to_result(-(bindings::EPROTO as i32))?;
-+        }
-+
-+        // /* Responder shall select exactly 1 alg (SPDM 1.0.0 table 14) */
-+        if self.base_asym_alg.count_ones() != 1
-+            || self.base_hash_alg.count_ones() != 1
-+            || response.ext_asym_sel_count != 0
-+            || response.ext_hash_sel_count != 0
-+            || response.param1 > request.param1
-+            || response.other_params_sel != request.other_params_support
-+        {
-+            pr_err!("Malformed algorithms response\n");
-+            to_result(-(bindings::EPROTO as i32))?;
-+        }
-+
-+        if self.rsp_caps & SPDM_MEAS_CAP_MASK == SPDM_MEAS_CAP_MASK
-+            && (self.meas_hash_alg.count_ones() != 1
-+                || response.measurement_specification_sel != SPDM_MEAS_SPEC_DMTF)
-+        {
-+            pr_err!("Malformed algorithms response\n");
-+            to_result(-(bindings::EPROTO as i32))?;
-+        }
-+
-+        self.update_response_algs()?;
-+
-+        Ok(())
-+    }
- }
-diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
-index cc998e70f235..5f64870e18d2 100644
---- a/lib/rspdm/validator.rs
-+++ b/lib/rspdm/validator.rs
-@@ -6,7 +6,7 @@
- //!
- //! Copyright (C) 2024 Western Digital
- 
--use crate::bindings::{__IncompleteArrayField, __le16};
-+use crate::bindings::{__IncompleteArrayField, __le16, __le32};
- use crate::consts::SpdmErrorCode;
- use core::mem;
- use kernel::prelude::*;
-@@ -191,3 +191,111 @@ fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Self, Self::Err>
-         Ok(rsp)
-     }
- }
-+
-+#[repr(C, packed)]
-+pub(crate) struct RegAlg {
-+    pub(crate) alg_type: u8,
-+    pub(crate) alg_count: u8,
-+    pub(crate) alg_supported: u16,
-+    pub(crate) alg_external: __IncompleteArrayField<__le32>,
-+}
-+
-+#[repr(C, packed)]
-+pub(crate) struct NegotiateAlgsReq {
-+    pub(crate) version: u8,
-+    pub(crate) code: u8,
-+    pub(crate) param1: u8,
-+    pub(crate) param2: u8,
-+
-+    pub(crate) length: u16,
-+    pub(crate) measurement_specification: u8,
-+    pub(crate) other_params_support: u8,
-+
-+    pub(crate) base_asym_algo: u32,
-+    pub(crate) base_hash_algo: u32,
-+
-+    reserved1: [u8; 12],
-+
-+    pub(crate) ext_asym_count: u8,
-+    pub(crate) ext_hash_count: u8,
-+    reserved2: u8,
-+    pub(crate) mel_specification: u8,
-+
-+    pub(crate) ext_asym: __IncompleteArrayField<__le32>,
-+    pub(crate) ext_hash: __IncompleteArrayField<__le32>,
-+    pub(crate) req_alg_struct: __IncompleteArrayField<RegAlg>,
-+}
-+
-+impl Default for NegotiateAlgsReq {
-+    fn default() -> Self {
-+        NegotiateAlgsReq {
-+            version: 0,
-+            code: 0,
-+            param1: 0,
-+            param2: 0,
-+            length: 0,
-+            measurement_specification: 0,
-+            other_params_support: 0,
-+            base_asym_algo: 0,
-+            base_hash_algo: 0,
-+            reserved1: [0u8; 12],
-+            ext_asym_count: 0,
-+            ext_hash_count: 0,
-+            reserved2: 0,
-+            mel_specification: 0,
-+            ext_asym: __IncompleteArrayField::new(),
-+            ext_hash: __IncompleteArrayField::new(),
-+            req_alg_struct: __IncompleteArrayField::new(),
-+        }
-+    }
-+}
-+
-+#[repr(C, packed)]
-+pub(crate) struct NegotiateAlgsRsp {
-+    pub(crate) version: u8,
-+    pub(crate) code: u8,
-+    pub(crate) param1: u8,
-+    pub(crate) param2: u8,
-+
-+    pub(crate) length: u16,
-+    pub(crate) measurement_specification_sel: u8,
-+    pub(crate) other_params_sel: u8,
-+
-+    pub(crate) measurement_hash_algo: u32,
-+    pub(crate) base_asym_sel: u32,
-+    pub(crate) base_hash_sel: u32,
-+
-+    reserved1: [u8; 11],
-+
-+    pub(crate) mel_specification_sel: u8,
-+    pub(crate) ext_asym_sel_count: u8,
-+    pub(crate) ext_hash_sel_count: u8,
-+    reserved2: [u8; 2],
-+
-+    pub(crate) ext_asym: __IncompleteArrayField<__le32>,
-+    pub(crate) ext_hash: __IncompleteArrayField<__le32>,
-+    pub(crate) req_alg_struct: __IncompleteArrayField<RegAlg>,
-+}
-+
-+impl Validate<&mut Unvalidated<KVec<u8>>> for &mut NegotiateAlgsRsp {
-+    type Err = Error;
-+
-+    fn validate(unvalidated: &mut Unvalidated<KVec<u8>>) -> Result<Self, Self::Err> {
-+        let raw = unvalidated.raw_mut();
-+        if raw.len() < mem::size_of::<NegotiateAlgsRsp>() {
-+            return Err(EINVAL);
-+        }
-+
-+        let ptr = raw.as_mut_ptr();
-+        // CAST: `NegotiateAlgsRsp` only contains integers and has `repr(C)`.
-+        let ptr = ptr.cast::<NegotiateAlgsRsp>();
-+        // SAFETY: `ptr` came from a reference and the cast above is valid.
-+        let rsp: &mut NegotiateAlgsRsp = unsafe { &mut *ptr };
-+
-+        rsp.base_asym_sel = rsp.base_asym_sel.to_le();
-+        rsp.base_hash_sel = rsp.base_hash_sel.to_le();
-+        rsp.measurement_hash_algo = rsp.measurement_hash_algo.to_le();
-+
-+        Ok(rsp)
-+    }
-+}
-diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functions
-index ec48ad2e8c78..617316ce1925 100644
---- a/rust/bindgen_static_functions
-+++ b/rust/bindgen_static_functions
-@@ -30,3 +30,7 @@
- 
- --allowlist-function copy_from_user
- --allowlist-function copy_to_user
-+
-+--allowlist-function crypto_shash_descsize
-+--allowlist-function crypto_shash_init
-+--allowlist-function crypto_shash_digestsize
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 8283e6a79ac9..c2f6b9a471bc 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -6,6 +6,7 @@
-  * Sorted alphabetically.
-  */
- 
-+#include <crypto/hash.h>
- #include <kunit/test.h>
- #include <linux/blk-mq.h>
- #include <linux/blk_types.h>
--- 
-2.47.0
+          let prop: [i16; 4] = 
+dev.property_read_array(c_str!("test,i16-array"))?;
+          dev_info!(dev, "'test,i16-array' is {:?}\n", prop);
+          dev_info!(
+
+
 
