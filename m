@@ -1,183 +1,79 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3654C15573A;
-	Fri, 15 Nov 2024 17:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC50171658;
+	Fri, 15 Nov 2024 17:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731690952; cv=none; b=cs+QxDjQnAbYVlPj88oCKX0iolNNvc/vG2RpMiW8BfhQei84je73v2ShhHYqOyua8KA7dIBjlZITvQvQmyg9R9bWH/PVoAxEznkZahN04RyyRUPo+hHbREC7YCXgQbYAaR2JfPEZYuupEyxICthnqWAbP6fSzMl64oi1Ehh3L/0=
+	t=1731693228; cv=none; b=NfymJ2Pc1TVyMKNHrA9PiH4YTsAJwxJJKxnEb1eVq75ppKISd8Woq0FP3P9Sjwzlp/7tO6z0oLGIz+mOAJMaZ2v2Y3hrpVZYic7ZUgAdpA2DFGWdIvPL7sKwca8G2eyPcvoqQlzyQSDQQK4zdxLU0ic5/EV44YIv+lZvvJbA/T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731690952; c=relaxed/simple;
-	bh=5MnfwGwjjZ5e3fIepXk3xCVSfgNw+NvODegrk9C883E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rb20zSPWS45CaWW92JrQq07dIW/l7evwraYc/jzkOm1geXeTBVRkPK/KmyQOP9sKTxCghZD5dzv9kuxv+Wwu8Axq7sImkGf3XafkFohe/9so9KabMgWZdAs9fsMuiAR0FyrLOfxEphN4/5OdzJmTUBwjem6q1473fbocMGkzWVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J59Euu/g; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731693228; c=relaxed/simple;
+	bh=rYI8EaYodfdmH37kAApuPQ41T6bd+YLA/SYg6lziQSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QdPBaMUUMBHn+1IaC4SV5eK/aLv1lBLUVOWxFPRmz4E8sSzBbPkynQGRRU+zBA0lttGvHxvRAiFJ7qimNY4LkjZtE+if2zg1Ct1S6vYRLXTcJGgLZBEtM3BawB02LaRhLLErQdxeYaNr+J/ViDmuDtpy7/9+OKQIxWOLTjykbhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PX9jIUTe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J59Euu/g"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2e9ecb67701so303349a91.1;
-        Fri, 15 Nov 2024 09:15:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731690950; x=1732295750; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BwEDCmCjDAFPLessQ1VxzKc/71Q2iWV02aJqLKUeeu8=;
-        b=J59Euu/glW/c2OAo+cyEYK+gtMxkpHiVLtd5Eb1uOc/qGrhAPIp1LSFQ84MArrmxmK
-         HHXegIkVUSsgWGW29OBrFXg1mr8A+EIb7zmrbQLxnIloj5rWpX7zCoT33r1UNFgxAEno
-         uM0OSOz77QSVmUkjA7zEOOJU4EKrd4qRFgqXRIUgnyjJbvlTeZKhHDUXkwKrOWZMVhIO
-         BinPMsSvivVV6e6Ww6vkeVz2zbpZ64Ch+VjXZGq++yNSSby6WNGV1wsvgj3FpT1YjYpP
-         SwFJXf55SUogCUGdJLg/FMVhY9y+v/De3TZEM4OeSWh4PX8r7O9BMzgW0g42QLfhzi23
-         xt9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731690950; x=1732295750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BwEDCmCjDAFPLessQ1VxzKc/71Q2iWV02aJqLKUeeu8=;
-        b=e0X+YQB6ckIVkwmkeOqEutxyOYnq/N1imW+KgnRMcsLNUiu2KedX/YKIA+R7CzpojR
-         Pct9nIMMpmwEOp5JxZB5W7Jnq4nCIcyOJ5wSs6TdozkLcjcAObgsgxGN0cQwcx/NiM9j
-         qA33Y4mTOhE99qwJb5ve1ii5lOLxgy5YW2P2s6AJJB8mnZ6RrkuHmVSMdhgSe74BBSWm
-         xvXSz7WEVI1rgfOxdSizmT/7OxIM73BylrSL3YNx2WZ+wL5pU+J2coYHi2Nlku35d5dp
-         Xw05SVu6veOCtChVBYIqmz6j96snA/Ka7li/DBRDaSGjzE8GCPDniF2A+pfeCHunXAKN
-         kSMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU74ZsfOXf2JHpmRhIZ6cFvQc2106rKFRxd3QqpGPD9AwCEp6MbrvXeurwzEVoGwZ0OXa0PXsjwekFhtFEL@vger.kernel.org, AJvYcCVq3dIubsi2ti3u73Zo3tZvrk+Jwb5A71FS8+ioN31Eswgl1Cov7AgJ2JliOFcURu2P8G14cT4gOMM=@vger.kernel.org, AJvYcCWxw4+bUvb+LNt+LIR9W0x7yJcKWy5qViyyNpk3bLwd+Acv6jXbNIxds/z6o+Yl4yYuRMeUtTUis3NQ@vger.kernel.org, AJvYcCXayCpZIC7HP0SljoWJ/BNd8rXUJ4eslzvBPP7ZPmNdVGpGbolc9M+1H4pNRBcGjzRqOasdQy5USsxAYW9wYpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2Hh8epHaCDdlJ15OPpbojIZcExXv23DLntsWS2EADP65Aeu/O
-	y3GrleMT3xTgnuicJoEuYz+UpB2kc/OkNKaHf2EitRT3Z1oOBXJ6K3m3FY4B0lXUuiEPojMj5U6
-	jz5zZYJWV9D+amfzWZgApMVv2JE8=
-X-Gm-Gg: ASbGnctpYznuc+kj2pnCk/9TREK80b+yugDCrXSsiF7Vl7CqTtwURbVpm6JptOzdp1s
-	nSRJ6nOL4B52YZ8DXMcKunevDRiEsHQ==
-X-Google-Smtp-Source: AGHT+IEMA27ToWetHcKHOD4q2Ez8uWpsjU80vnlXvxOsubs0bToSiqQ3t/nzHMIQrl7xRONsJLIJF1jxXEKP5JlZ0mo=
-X-Received: by 2002:a17:90b:1a91:b0:2e2:abab:c456 with SMTP id
- 98e67ed59e1d1-2ea154c3e0dmr1848576a91.1.1731690950377; Fri, 15 Nov 2024
- 09:15:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PX9jIUTe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF801C4CECF;
+	Fri, 15 Nov 2024 17:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731693227;
+	bh=rYI8EaYodfdmH37kAApuPQ41T6bd+YLA/SYg6lziQSA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=PX9jIUTe7ymC63rKfXezkcocPgtH59QMjSU241aSWkZOl//7yF0Ub7KI6o104yvQw
+	 7/wlAdTO6o5bKlKfvNvkaDa39yUEqjr3FkeOin5SybrEn9Y7TPpMpTdOMQG6VSE2pu
+	 onij9pAsYR+P5GHw9NtQsMUlP+xAi4qz7axuo9jvWKCJWdlkhktWsSyVfY74xKG0G5
+	 jMLhEGgDrUlxNPfAN3DDVWYglgnHtC0+MKPvqvcwetXjUvCXx7HShpZxqnSAmox0az
+	 y7XYWiPhipHcJjjMjU1qTOxKbEyJDfzqWCsn9Wn81u1I/WxdWHjvwsAXJ6F37bJOlI
+	 uiRQCmiN5rQPg==
+Date: Fri, 15 Nov 2024 11:53:46 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Alistair Francis <alistair@alistair23.me>
+Cc: lukas@wunner.de, Jonathan.Cameron@huawei.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	akpm@linux-foundation.org, bhelgaas@google.com,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	bjorn3_gh@protonmail.com, ojeda@kernel.org, tmgross@umich.edu,
+	boqun.feng@gmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+	wilfred.mallawa@wdc.com, alistair23@gmail.com,
+	alex.gaynor@gmail.com, gary@garyguo.net, aliceryhl@google.com
+Subject: Re: [RFC 1/6] rust: bindings: Support SPDM bindings
+Message-ID: <20241115175346.GA2045933@bhelgaas>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115054616.1226735-1-alistair@alistair23.me> <20241115054616.1226735-4-alistair@alistair23.me>
-In-Reply-To: <20241115054616.1226735-4-alistair@alistair23.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 15 Nov 2024 18:15:38 +0100
-Message-ID: <CANiq72=3p50vyA5MsqZD6_Ma53DSLyrqyKYUwH9o-+Bq=REaQQ@mail.gmail.com>
-Subject: Re: [RFC 3/6] lib: rspdm: Initial commit of Rust SPDM
-To: Alistair Francis <alistair@alistair23.me>
-Cc: lukas@wunner.de, Jonathan.Cameron@huawei.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, akpm@linux-foundation.org, 
-	bhelgaas@google.com, linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	bjorn3_gh@protonmail.com, ojeda@kernel.org, tmgross@umich.edu, 
-	boqun.feng@gmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
-	wilfred.mallawa@wdc.com, alistair23@gmail.com, alex.gaynor@gmail.com, 
-	gary@garyguo.net, aliceryhl@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115054616.1226735-2-alistair@alistair23.me>
 
-Hi Alistair,
+On Fri, Nov 15, 2024 at 03:46:11PM +1000, Alistair Francis wrote:
+> In preparation for a Rust SPDM library we need to include the SPDM
+> functions in the Rust bindings.
+> 
+> Signed-off-by: Alistair Francis <alistair@alistair23.me>
+> ---
+>  rust/bindings/bindings_helper.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 7847b2b3090b..8283e6a79ac9 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -24,6 +24,7 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/sched/task.h>
+>  #include <linux/slab.h>
+> +#include <linux/spdm.h>
 
-It is nice to see more Rust, thanks!
+Usually an additional #include goes in the same patch that makes use
+of the new .h file.  Maybe there's a different convention in rust/?
 
-Some quick consistency nits I noticed for future non-RFC versions (I
-didn't check the code). Some apply in several cases.
-
-On Fri, Nov 15, 2024 at 6:46=E2=80=AFAM Alistair Francis <alistair@alistair=
-23.me> wrote:
->
-> +#[allow(dead_code)]
-
-It may be possible to use `expect` here instead of `allow` -- e.g. if
-it does not depend on conditional compilation.
-
-Also, later in the series, is it used? (I imagine it is a temporary
-`allow`? If so, please delete it when you introduce the first use.
-`expect` can help here to not forget to delete it.
-
-> +#[repr(u8)]
-
-It is probably a good idea to mention why it needs this `repr`. I
-imagine it is related to `SpdmErrorRsp` being `packed` and so on, but
-it wouldn't hurt documenting it.
-
-> +    InvalidRequest =3D 0x01,
-
-Please feel free to ignore this one (especially if the idea is to
-replace the C implementation eventually, or to just showcase how it
-would look like if the C one was removed), but one idea here would be
-to pick the values from a common C header? i.e. moving that `enum` to
-its own header that both use.
-
-> +//! Top level library, including C compatible public functions to be cal=
-led
-> +//! from other subsytems.
-
-Typo.
-
-> +/// spdm_create() - Allocate SPDM session
-
-I think these are copied from the C one, so it is fine for the RFC,
-but the subsystem ends up accepting this, then please use the usual
-Markdown style of the rest of the Rust code, instead of kernel-doc
-style. While we don't render the docs of these just yet, we will start
-doing it at some point, and e.g. IDEs may do so too. Even if we
-didn't, the comments could be copied into other docs at some point, so
-it is always useful to have them formatted properly.
-
-> +    /* Negotiated state */
-> +    pub(crate) version: u8,
-
-Please use `//`.
-
-> +                bindings::EINVAL
-> +            }
-> +        };
-> +
-> +        to_result(-(ret as i32))
-
-These are errors you create directly, so you can do directly e.g.
-`Err(EINVAL)`, i.e. please avoid `bindings::`.
-
-> +        let length =3D unsafe {
-
-Missing `SAFETY` comment.
-
-If you based this on top of `rust-next` as you noted in the cover
-letter, you should be getting a warning under `CLIPPY=3D1`. There may be
-other cleanups under `CLIPPY=3D1` if you weren't using it so far.
-
-> +            return Ok(length); /* Truncated response is handled by calle=
-rs */
-
-Please use `//` for comments.
-
-> +// SPDX-License-Identifier: GPL-2.0
-
-New line between SPDX and the crate docs.
-
-> +//! Rust implementation of the DMTF Security Protocol and Data Model (SP=
-DM)
-> +//! https://www.dmtf.org/dsp/DSP0274
-
-This should be a link (using <>) or a link for the "DMTF Security
-Protocol and Data Model (SPDM)" text.
-
-> +//! Rust sysfs helper functions
-
-This should be the title, at the top. In Rust the first paragraph
-(which typically should be short, e.g. a single line) is considered
-the "short description"  and used e.g. for lists.
-
-> +//! Copyright (C) 2024 Western Digital
-
-This should be a comment (likely near the SPDX), rather than part of
-the documentation -- see e.g. how it is done in `rust/kernel/list.rs`.
-
-> +pub unsafe extern "C" fn rust_authenticated_show(
-
-`unsafe` functions should have a `# Safety` section.
-
-Thanks again!
-
-Cheers,
-Miguel
+>  #include <linux/uaccess.h>
+>  #include <linux/wait.h>
+>  #include <linux/workqueue.h>
+> -- 
+> 2.47.0
+> 
