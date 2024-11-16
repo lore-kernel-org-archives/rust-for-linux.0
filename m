@@ -1,101 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B182F2D;
-	Sat, 16 Nov 2024 18:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA418A95A
+	for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 19:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731780964; cv=none; b=OzDO9g4ZYw0iNPcHwZIZGna7Tj3eFUT+uIV5JpXvonCwcqPr9+vL77mdqujANvOe7aMFXZSNyzOLFjY5wk2FLnxSIuusaEu1Wt8UvA8DR3mZtQRgPW7OYZzJTm3dOv+eAjU/vFFZVL7YRw1/kwICQkzrEe1tUUAvEQOVzlCspUA=
+	t=1731786001; cv=none; b=YZU/CK5UAVue+3lZzhMmIaj7lVZkeuJmwxLFNp9AqcCGUay996wDJhlCuZ1c7P/5whzkxXLsiLFnGXca6YjyEKUMua9rJmMUVMvuvnV7HGuTfgSkUFekaBc+nV0JHZ3hqIpZwisQMe+klz7UeOvH/YUtqJX2ovlWhrIEpy+zQ8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731780964; c=relaxed/simple;
-	bh=hp00ADXUMPrO5AFnJKlG+wHf5P6FWUNDJvSujqeDGTo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QGdWD9nT3bFnFUYc02qE805jrOj0a8p2jkILI7bQdRPB69gBwYvLoAROuEGWgVtQRkqCp6R7RgdOf87rFSlbSNEaHaaJSsyjWC5NxNwvRl4NoTPbZdobkJweZjLLs/hjBuzkLxZDIK9Xrdr+k23yyCBHkdB+dK5quRhs83UjWO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/tOe8MG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731786001; c=relaxed/simple;
+	bh=VWdZsBUcCcp1RRVON2L4cvOonEMB/ZiaN9vxxoYQZJk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nvzqedZB2VXec704uPfIFIAkbvJkTgGOmyVetG+jAOkwaj79GFVz6iCLAlhxRNuelFlYCHUHS+dumzUOcMkkWUbvvr35ck9LNHjNkxeOTzB9qkEhWCZ1gYkvDHuf+N4xiCcLfDBvgNcxjDnizUdCRZhD0UBzrcFI7BNmeW+M264=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDKQV5Y7; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/tOe8MG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9354FC4CEC3;
-	Sat, 16 Nov 2024 18:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731780964;
-	bh=hp00ADXUMPrO5AFnJKlG+wHf5P6FWUNDJvSujqeDGTo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=I/tOe8MGuPYGJK9WVSxbJ0NHHH1rVfDl4ykAZkmCBsWuH6ScTB46m1uqDvhFeVb59
-	 d5AvuiKMQ/N4y4SrneERb1G1XC6N6eIvZYcd7Goi0xr+npsyM8VOdqQnnVxiO2AG34
-	 Dpk9mIFR1iMeGvvMZwFRZuIdOIoaonpGggdO7io4m0qArfwDszCeJNhT2e20ghqnhU
-	 7wqV+Wv/w8SRoIon0i1h1+aspgi9lgHweQJNKJIV8QBxrWtZ2iwj1UEtnYe5IpKXSH
-	 YTop4ej2CFerywuvdmSg4imb7wepINOeF7WMV7SZWrN6uE8Aw9jG3yeZSjEnXrwmp9
-	 S1KSv676S6kIQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: allow `clippy::needless_lifetimes`
-Date: Sat, 16 Nov 2024 19:15:37 +0100
-Message-ID: <20241116181538.369355-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDKQV5Y7"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2e9ecb67701so409856a91.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 11:39:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731785998; x=1732390798; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9WUokCSu7O8r+MPPotMBkpz8+WJYsiJsRY6W8ABw9RE=;
+        b=RDKQV5Y787YlDMmabSSw0PwWDwdWsYOroLuLk8C1zfYMaqnpCJt1TUKDJyvAqCoPtA
+         6rlF96r2hAn6gWRLnZ28e1QqlVpXimEDOj47zEx0vjUGfzGRUg2kXKASF+CyRAfnsj+R
+         0p+716MnI5+d2gS+pGOoNGCwSghEqe0xg+tVFUf2Jt1pFkZ7Eea+D7XVwOkLQl5Xysv7
+         3ntf19WM6wvehhtP6lII+XNoR/Qh69zdtt19Ts4n+Ka5I/GPki2+hu7KFyeXoIVhT5Z2
+         DyTFdG04LbHz33mRu5S5SIZ6nc7OAVXrvQHedZbhFChBTA/Eq7ryCgzMbVIVkdAIdLVH
+         YkbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731785998; x=1732390798;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9WUokCSu7O8r+MPPotMBkpz8+WJYsiJsRY6W8ABw9RE=;
+        b=Eh2lG0+Ewi62voY6yGlz9n9A1MGcnEz5PiFA2yS+dMM1Id5OGLOKsdGajBn9dkvP4e
+         rXbyHifXXeYpku0gWoay572004k7QHI8fh9ANKy49Pa3J+ezkdM1HT5lnZQ6qL3DhZK0
+         S8n2H3XnTD1zWmQXet0svHRtqZm7jZk40OPNaEPWAtKi2X53/umP688WZc6AuBMVGprb
+         2/Z7lzZVRukd5xKoikmrb0aFsaKR6ImVKF1Ei07zyBIeEGUWgbcnayOdcbiWUggrCF90
+         huCsMWW5285rLaZgyDvMazi2pyo8kSk3H1QWobAqQg3EbknzNT7/V8caGgbXLuF6LOn8
+         +HDQ==
+X-Gm-Message-State: AOJu0YxL6IScFNjOAJbiaFVHlvW+ciq+0/Tcptb2/zpbCY3LlbdnsDqq
+	ak04OwsJRq6WZJuI9b1v5t3YgqT8gK3GFTh5P9pFO3n53h7TQ+jvSVfuehIPFXAaCuAH0Gjvu3w
+	k/CLedeZeQ2Iln+BDy9zmijglwkdukwYm
+X-Gm-Gg: ASbGncvA2EJJuuZTJUfODOn/TE5Ie34ZvPdDGVlKA47pbWx1RoyzfqxHXE03OSqzhEC
+	A6JorqpCLsM/LcEpfwr7HJg7MJhpArg==
+X-Google-Smtp-Source: AGHT+IHfysDLXcetuRvp3v2sk2rFvgPZkQmJDbuBhf3HHjv3oQ6WXMKoiDgGAx5/9l6yiewUyDk+bfWWfduFYX/mnSU=
+X-Received: by 2002:a17:90b:3145:b0:2e5:5a58:630 with SMTP id
+ 98e67ed59e1d1-2ea15578e6cmr3803822a91.5.1731785998220; Sat, 16 Nov 2024
+ 11:39:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241115214907.191454-1-kernel@mandragore.io>
+In-Reply-To: <20241115214907.191454-1-kernel@mandragore.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 16 Nov 2024 20:39:45 +0100
+Message-ID: <CANiq72keVxpkDzP_7wshRR=wPubdchbf3HFA132JYca8m+HnAw@mail.gmail.com>
+Subject: Re: [PATCH] rust: add safety comment in rust_fmt_argument
+To: Konstantin Andrikopoulos <kernel@mandragore.io>
+Cc: rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In beta Clippy (i.e. Rust 1.83.0), the `needless_lifetimes` lint has
-been extended [1] to suggest eliding `impl` lifetimes, e.g.
+On Fri, Nov 15, 2024 at 11:11=E2=80=AFPM Konstantin Andrikopoulos
+<kernel@mandragore.io> wrote:
+>
+> The function rust_fmt_argument derefernces a c_void pointer, and thus it
+> needs an unsafe block. The safety comment for that block was missing.
 
-    error: the following explicit lifetimes could be elided: 'a
-    --> rust/kernel/list.rs:647:6
-        |
-    647 | impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
-        |      ^^                                                                  ^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
-        = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
-    help: elide the lifetimes
-        |
-    647 - impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
-    647 + impl<T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'_, T, ID> {}
+Typo -- `scripts/checkpatch.pl` has a `--codespell` option that may help.
 
-A possibility would have been to clean them -- the RFC patch [2] did
-this, while asking if we wanted these cleanups. There is an open issue
-[3] in Clippy about being able to differentiate some of the new cases,
-e.g. those that do not involve introducing `'_`. Thus it seems others
-feel similarly.
+In addition, I would avoid the `c_void` mention, since it sounds like
+the reason it is unsafe is because it is void in particular (and
+anyway it is not true that we dereference a void pointer -- we cast it
+first).
 
-Thus, for the time being, we decided to `allow` the lint.
+> Part of Rust-for-Linux#351.
 
-Link: https://github.com/rust-lang/rust-clippy/pull/13286 [1]
-Link: https://lore.kernel.org/rust-for-linux/20241012231300.397010-1-ojeda@kernel.org/ [2]
-Link: https://github.com/rust-lang/rust-clippy/issues/13514 [3]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+This should typically be a Link tag, e.g.
 
-diff --git a/Makefile b/Makefile
-index a9e723cb0596..00a444603fb1 100644
---- a/Makefile
-+++ b/Makefile
-@@ -456,6 +456,7 @@ export rust_common_flags := --edition=2021 \
- 			    -Wclippy::mut_mut \
- 			    -Wclippy::needless_bitwise_bool \
- 			    -Wclippy::needless_continue \
-+			    -Aclippy::needless_lifetimes \
- 			    -Wclippy::no_mangle_with_rust_abi \
- 			    -Wclippy::undocumented_unsafe_blocks \
- 			    -Wclippy::unnecessary_safety_comment \
+Link: https://...
 
-base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
--- 
-2.47.0
+In addition, while it is not critical, the issue suggests adding a
+"Suggested-by:" tag too (these issues are a good way to learn how
+these tags work).
 
+> +    // SAFETY: The Rust contract guarantees that `ptr` is a valid pointe=
+r to a `fmt::Arguments` struct.
+>      let _ =3D w.write_fmt(unsafe { *(ptr as *const fmt::Arguments<'_>) }=
+);
+
+Which Rust contract guarantees that? I guess perhaps you adapted the
+message above that mentions "C contract" and/or you may be referring
+to what is done in `call_printk`? I think we should be more explicit
+here, and justify how the pointer ends up being a valid pointer to
+`Arguments`. In other words, please try to explain how that happens.
+
+Finally, please Cc the maintainers and reviewers in v2
+(https://rust-for-linux.com/contributing#submitting-patches has a
+couple lines you may want to use for that).
+
+Thanks for the patch!
+
+Cheers,
+Miguel
