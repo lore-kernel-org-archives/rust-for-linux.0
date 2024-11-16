@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B69101E6;
-	Sat, 16 Nov 2024 14:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5BA18052;
+	Sat, 16 Nov 2024 15:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731768666; cv=none; b=jJWFAT5XQzzsJWMgt1KU+F88t1+rYpszZecC6LvrN0ovBaCCTxvQgnHe7d1EvCWyq16GkL8LFIh23ypNuw+xJCiyoOC3ir81S2yxu6dBKu1DbNTDCgdk1O1RnlpVHBNqzk+cvbghtHtWNX8jZKjBsqBNuSrPvUtX+HorxZYX3ZU=
+	t=1731772064; cv=none; b=f8B/Uyj4B8ZOtKaoUSYUy9GrvqtkoGPmSCSgF1whwjgdLlNFIjf3TSrtCsG97ttDg+QbOV9gEHvcY6dHVgui6XXULa5SAndVa2vu3BDHR+emHNMZeyk7/U1uTZw+R1PZgDnkHpyWolBVgwIac0iJpCZ61hQzQZT81p5Xa/O/1L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731768666; c=relaxed/simple;
-	bh=49swYbXZyCUFCxRBsY8/lcKTq8X7PXyiOkldN8Pn+GU=;
+	s=arc-20240116; t=1731772064; c=relaxed/simple;
+	bh=M49TRIBAVxrm/P8SCFGwuYjCl0z57oQDk6m2q50Svuc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L7Iqd7qO3xedkCZnfzD5J5A1L6RcO1EU3Qo/LrwhIoqe2HL5T5XGumQIMBQ5nkiT/xZean0SXbQJyaIB6VmM7R+ueOlmM3+iMsjUdB+SbSN4guPkRbTHSha4rXAHRmb3Th3SZP5sCV0Wy2Y80+lJ3uZmr8qTPG8UR2hce255L/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1saYiDhn; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=EGPfhn0pedsecLqqrDcK1leVECTHjfGEt7WoOLkAa+k2+J8HyKvqrO759edPT18anLybPYDYFFTYxiBbUPUCvjFHYfGP0qtEmRmIZPqRyyT7gO1ay5g2z23qPMTj3TnyZSOrLy7RUO15bOWjOQUXaRVs+Zg53+3yNRyibHhPWAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5zVHCkT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1saYiDhn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58604C4CEC3;
-	Sat, 16 Nov 2024 14:51:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731768665;
-	bh=49swYbXZyCUFCxRBsY8/lcKTq8X7PXyiOkldN8Pn+GU=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5zVHCkT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2B9C4CED2;
+	Sat, 16 Nov 2024 15:47:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731772063;
+	bh=M49TRIBAVxrm/P8SCFGwuYjCl0z57oQDk6m2q50Svuc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1saYiDhnMeah99PwQuyAMKCP3uxNovFduDoB7sHzLKLdLp668trq9+eGI9fR5Ct6L
-	 1YlF7vD/y1zf2x9m062yD42XIETcWn3/RqVzv6ZyAAYZICYPnWAtdfX/qfR/SXyqOK
-	 2QX1J+X36McH1zCjP0xRmHI8SscHaPMPZ91Oj1t0=
-Date: Sat, 16 Nov 2024 15:50:42 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Janne Grunau <j@jannau.net>
-Cc: Danilo Krummrich <dakr@kernel.org>, rafael@kernel.org,
-	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com,
-	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
-	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com,
-	lyude@redhat.com, robh@kernel.org, daniel.almeida@collabora.com,
-	saravanak@google.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH v3 00/16] Device / Driver PCI / Platform Rust abstractions
-Message-ID: <2024111656-entrust-wincing-0c84@gregkh>
-References: <20241022213221.2383-1-dakr@kernel.org>
- <20241116143240.GA1490760@robin.jannau.net>
+	b=u5zVHCkTZaYCMKKFM1HCFdYbMaSkcG538fSL09v7tLe9+8FqvMykEUHwYf3Io4U+G
+	 DkDHiM7vnKfgiyrZ51ogcqFviuK0aWXuh0tHMNe644GvKq3yl44B2iUKpRVppd+YMJ
+	 sbm7r/12eT9rUqPV7x+NpU2BvpU2UTaJy1H3cQ6m0yd3RahjJtL50sFDQOA+sWde7d
+	 +94/bH7fvAQ3jwb/0BlFiP4GT4sFi1SwL7CV4qn/wrxAxl8ekGYZMrsiTPVVapCDRh
+	 aRPq5VIY3vxVjtQFf9WwAwEDP7FE2hAKM1lVODFmXRIBnThkdDMlU71alyvBlXzX6K
+	 yvjo8DwMKzWMQ==
+Date: Sat, 16 Nov 2024 16:47:37 +0100
+From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+	linux-leds@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH 1/2] rust: LED abstraction
+Message-ID: <snsf4cc6valp5ovrrbjv7fefxtkthifsis5el4teajzwjhmv4x@ghxovfdqkhop>
+References: <20241009105759.579579-1-me@kloenk.dev>
+ <20241009105759.579579-2-me@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,44 +48,102 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241116143240.GA1490760@robin.jannau.net>
+In-Reply-To: <20241009105759.579579-2-me@kloenk.dev>
 
-On Sat, Nov 16, 2024 at 03:32:40PM +0100, Janne Grunau wrote:
-> On Tue, Oct 22, 2024 at 11:31:37PM +0200, Danilo Krummrich wrote:
-> > This patch series implements the necessary Rust abstractions to implement
-> > device drivers in Rust.
-> > 
-> > This includes some basic generalizations for driver registration, handling of ID
-> > tables, MMIO operations and device resource handling.
-> > 
-> > Those generalizations are used to implement device driver support for two
-> > busses, the PCI and platfrom bus (with OF IDs) in order to provide some evidence
-> > that the generalizations work as intended.
-> > 
-> > The patch series also includes two patches adding two driver samples, one PCI
-> > driver and one platform driver.
-> > 
-> > The PCI bits are motivated by the Nova driver project [1], but are used by at
-> > least one more OOT driver (rnvme [2]).
-> > 
-> > The platform bits, besides adding some more evidence to the base abstractions,
-> > are required by a few more OOT drivers aiming at going upstream, i.e. rvkms [3],
-> > cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
-> 
-> A rebase of the asahi driver onto this series still probes the platform
-> device and the driver works as expected.
-> 
-> Feel free to add
-> Tested-by: Janne Grunau <j@jannau>
-> 
-> We plan to import this series for the Asahi Linux downstream kernel
-> starting with v6.12 and replace the old rust-for-linux Device/Driver
-> abstractions with this.
+On Wed, Oct 09, 2024 at 12:57:58PM +0200, Fiona Behrens wrote:
 
-Great!  I'll wait for the next respin of this as it seems there's been a
-lot of review already, and I've taken some of the patches already, so
-odds are after 6.13-rc1 is out the series can get a lot smaller.
+> +/// Color of an LED.
+> +#[derive(Copy, Clone)]
+> +pub enum Color {
+> +    /// White
+> +    White,
+> +    /// Red
+> +    Red,
+> +    /// Green
+> +    Green,
+> +    /// Blue
+> +    Blue,
+> +    /// Amber
+> +    Amber,
+> +    /// Violet
+> +    Violet,
+> +    /// Yellow
+> +    Yellow,
+> +    /// Purple
+> +    Purple,
+> +    /// Orange
+> +    Orange,
+> +    /// Pink
+> +    Pink,
+> +    /// Cyan
+> +    Cyan,
+> +    /// Lime
+> +    Lime,
 
-thanks,
+Why these repetitions?
 
-greg k-h
+> +impl TryFrom<u32> for Color {
+> +    type Error = Error;
+> +
+> +    fn try_from(value: u32) -> Result<Self, Self::Error> {
+> +        Ok(match value {
+> +            bindings::LED_COLOR_ID_WHITE => Color::White,
+> +            bindings::LED_COLOR_ID_RED => Color::Red,
+> +            bindings::LED_COLOR_ID_GREEN => Color::Green,
+> +            bindings::LED_COLOR_ID_BLUE => Color::Blue,
+> +            bindings::LED_COLOR_ID_AMBER => Color::Amber,
+> +            bindings::LED_COLOR_ID_VIOLET => Color::Violet,
+> +            bindings::LED_COLOR_ID_YELLOW => Color::Yellow,
+> +            bindings::LED_COLOR_ID_PURPLE => Color::Purple,
+> +            bindings::LED_COLOR_ID_ORANGE => Color::Orange,
+> +            bindings::LED_COLOR_ID_PINK => Color::Pink,
+> +            bindings::LED_COLOR_ID_CYAN => Color::Cyan,
+> +            bindings::LED_COLOR_ID_LIME => Color::Lime,
+> +            bindings::LED_COLOR_ID_IR => Color::IR,
+> +            bindings::LED_COLOR_ID_MULTI => Color::Multi,
+> +            bindings::LED_COLOR_ID_RGB => Color::RGB,
+> +            _ => return Err(EINVAL),
+> +        })
+> +    }
+> +}
+
+How does Rust compile these? If these constants compile to the same
+numeric values, i.e. if
+  LED_COLOR_ID_AMBER == Color::Amber,
+will the compiler compile away the function?
+
+How do enums work in Rust?
+
+> +impl<'a, T> Led<T>
+
+offtopic, what is 'a ? What does the ' mean? Is impl<> something like
+template in c++?
+
+> +where
+> +    T: Operations + 'a,
+
+What does + mean here?
+
+> +/// LED brightness.
+> +#[derive(Debug, Copy, Clone)]
+> +pub enum Brightness {
+> +    /// LED off.
+> +    Off,
+> +    /// Led set to the given value.
+> +    On(NonZeroU8),
+> +}
+> +
+> +impl Brightness {
+> +    /// Half LED brightness
+> +    // SAFETY: constant value non zero
+> +    pub const HALF: Self = Self::On(unsafe { NonZeroU8::new_unchecked(127) });
+> +    /// Full LED brightness.
+> +    pub const FULL: Self = Self::On(NonZeroU8::MAX);
+
+These LED_OFF, LED_ON, LED_HALF and LED_FULL are deprecated constants
+that should not be used anymore. enum led_brightness will be either
+uint8_t or usigned int in the future.
+
+Is it possible to not infect Rust with these deprecated constants?
+
+Marek
