@@ -1,112 +1,95 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DA418A95A
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 19:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE04D17BB0F
+	for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 19:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731786001; cv=none; b=YZU/CK5UAVue+3lZzhMmIaj7lVZkeuJmwxLFNp9AqcCGUay996wDJhlCuZ1c7P/5whzkxXLsiLFnGXca6YjyEKUMua9rJmMUVMvuvnV7HGuTfgSkUFekaBc+nV0JHZ3hqIpZwisQMe+klz7UeOvH/YUtqJX2ovlWhrIEpy+zQ8k=
+	t=1731786760; cv=none; b=Xto7f8/5aDWa63kC7xIbqC5cFnMrBreFNBspWEJJXRV1tVP+Fxox4vJWimKaaKr0bkhszt+S6O9nylMvZN3yde/Zv3kwugxl+V1vfji34ePgRosjXQm2w3xny7NBHY/l0TRZtxGXGvnNgFXkckIIL/txYk3CYJPSrQYHpBBDVmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731786001; c=relaxed/simple;
-	bh=VWdZsBUcCcp1RRVON2L4cvOonEMB/ZiaN9vxxoYQZJk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nvzqedZB2VXec704uPfIFIAkbvJkTgGOmyVetG+jAOkwaj79GFVz6iCLAlhxRNuelFlYCHUHS+dumzUOcMkkWUbvvr35ck9LNHjNkxeOTzB9qkEhWCZ1gYkvDHuf+N4xiCcLfDBvgNcxjDnizUdCRZhD0UBzrcFI7BNmeW+M264=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDKQV5Y7; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731786760; c=relaxed/simple;
+	bh=tHmUvjC0aUS50+biYPNpIJwVrsA12puSjE/KHlUYpR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nnsvh7X5WjyZg8lC5pfzJCf7lrEsodNGozt0HCMJ/1ceCCmFKlByI4VZjIKEpmP/ByV+y1OJWPoEt+NcfP7701KWs2a4OvmCX8Q0lM0IEWARW2WyKkRLOidxE+we1uNLq8h6D/zxJBHs3tEf/XrmWxPsuE+iV1gcBmTwWrXwCAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=xHhmtzVL; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDKQV5Y7"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2e9ecb67701so409856a91.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 11:39:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="xHhmtzVL"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4314f38d274so11410285e9.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 11:52:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731785998; x=1732390798; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9WUokCSu7O8r+MPPotMBkpz8+WJYsiJsRY6W8ABw9RE=;
-        b=RDKQV5Y787YlDMmabSSw0PwWDwdWsYOroLuLk8C1zfYMaqnpCJt1TUKDJyvAqCoPtA
-         6rlF96r2hAn6gWRLnZ28e1QqlVpXimEDOj47zEx0vjUGfzGRUg2kXKASF+CyRAfnsj+R
-         0p+716MnI5+d2gS+pGOoNGCwSghEqe0xg+tVFUf2Jt1pFkZ7Eea+D7XVwOkLQl5Xysv7
-         3ntf19WM6wvehhtP6lII+XNoR/Qh69zdtt19Ts4n+Ka5I/GPki2+hu7KFyeXoIVhT5Z2
-         DyTFdG04LbHz33mRu5S5SIZ6nc7OAVXrvQHedZbhFChBTA/Eq7ryCgzMbVIVkdAIdLVH
-         YkbQ==
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1731786756; x=1732391556; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6kPLunjS6K1500GPj94GMW6fuYXDmSo/OmsEFPQM9Os=;
+        b=xHhmtzVLaRzF/PMgJAXPNGEsJHtY0Z8DsSaDGeFtXaeOSxmiKIlGAWrhqnXFh0LO14
+         IwlafwjBGHyKabzaLZKgOJiugqfqn91J9l5XopiN92fZsrvDCex4oKEwQKLyxpf5LMXB
+         626x9CNxZfBdYHy6T0vuXL0IfErVDj0owtHH5R0ygG/O8dbwuzvwfQGc9sTvkdJ0SZIl
+         2dzQRBuzk07SYW1jn5UbX6NdjY2ORX+5Y3+hX6w1TGp9cdjdlpjZJDnwft5XbQUM8msJ
+         e4UanSCtuOT4+HiWJpOqauNJ4nyEIr4U6tmvK0V46h+QSC6hMFXEiazMOR+3lDEbVh+W
+         gXHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731785998; x=1732390798;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9WUokCSu7O8r+MPPotMBkpz8+WJYsiJsRY6W8ABw9RE=;
-        b=Eh2lG0+Ewi62voY6yGlz9n9A1MGcnEz5PiFA2yS+dMM1Id5OGLOKsdGajBn9dkvP4e
-         rXbyHifXXeYpku0gWoay572004k7QHI8fh9ANKy49Pa3J+ezkdM1HT5lnZQ6qL3DhZK0
-         S8n2H3XnTD1zWmQXet0svHRtqZm7jZk40OPNaEPWAtKi2X53/umP688WZc6AuBMVGprb
-         2/Z7lzZVRukd5xKoikmrb0aFsaKR6ImVKF1Ei07zyBIeEGUWgbcnayOdcbiWUggrCF90
-         huCsMWW5285rLaZgyDvMazi2pyo8kSk3H1QWobAqQg3EbknzNT7/V8caGgbXLuF6LOn8
-         +HDQ==
-X-Gm-Message-State: AOJu0YxL6IScFNjOAJbiaFVHlvW+ciq+0/Tcptb2/zpbCY3LlbdnsDqq
-	ak04OwsJRq6WZJuI9b1v5t3YgqT8gK3GFTh5P9pFO3n53h7TQ+jvSVfuehIPFXAaCuAH0Gjvu3w
-	k/CLedeZeQ2Iln+BDy9zmijglwkdukwYm
-X-Gm-Gg: ASbGncvA2EJJuuZTJUfODOn/TE5Ie34ZvPdDGVlKA47pbWx1RoyzfqxHXE03OSqzhEC
-	A6JorqpCLsM/LcEpfwr7HJg7MJhpArg==
-X-Google-Smtp-Source: AGHT+IHfysDLXcetuRvp3v2sk2rFvgPZkQmJDbuBhf3HHjv3oQ6WXMKoiDgGAx5/9l6yiewUyDk+bfWWfduFYX/mnSU=
-X-Received: by 2002:a17:90b:3145:b0:2e5:5a58:630 with SMTP id
- 98e67ed59e1d1-2ea15578e6cmr3803822a91.5.1731785998220; Sat, 16 Nov 2024
- 11:39:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731786756; x=1732391556;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6kPLunjS6K1500GPj94GMW6fuYXDmSo/OmsEFPQM9Os=;
+        b=ZZvmnbLP8yZVj2jnK2JHNYC4KsZ/6Q38vmUd3sGoBnQOCnBCsRjHkJFcjR72KS0ilU
+         yuPzyfpaqhzBHlvjoIgwftAzX4nzVom4k2puqYgKkZuI73UWL9wxE+Rkailza00PNK8d
+         XTlvIpyMc8QrzrZweKLq+LZ10imw3+0ZNOfUVpL/yyT4grFWvT1TakjKBO7xY6Q9XSgg
+         g3RIQWfqHwAk4fNMw+GbqqfwC6IP8MkJHniCydcXF/m+kTtgb3GeqFCtvy7RYr/ihlrY
+         I8FhH2oF5GPjnMpg2/WcC3bYZScSkdEMX3XDkJHZ8W4gHPZNJ4UgS/7Re81NsiBxfXt6
+         +brA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3xlh8nRSeySGP+Vb4g4F0NyRD4sKenxAoh1huo65qGdHCvZ/mqFc3BhqbmlBJDXNmOSSCvwFIHyDSB9XmSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi5mIDhq4bt7rIdr7QSQvEpDci+is/+J9D+EaOIYWzi++RiGxk
+	a5uhgO+dgCyYJ8jo+MTef0XPEPk7J9WBQVgUmq8vwDgHDGk3g4sW5tWm9bJrclW1FmhY9TVHwAn
+	zOqQ=
+X-Google-Smtp-Source: AGHT+IG1+bKsmNbdX2TogengPN0AZmV3C1JYjSIo+xQskWkIJTgqqNmp4wOpGAOaI0hv5jRXLup9ig==
+X-Received: by 2002:a05:600c:1da5:b0:431:5c7b:e939 with SMTP id 5b1f17b1804b1-432df74fdedmr72221935e9.18.1731786755862;
+        Sat, 16 Nov 2024 11:52:35 -0800 (PST)
+Received: from mordor.lan ([95.85.217.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da27fcb4sm102846905e9.23.2024.11.16.11.52.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2024 11:52:35 -0800 (PST)
+From: Daniel Sedlak <daniel@sedlak.dev>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Daniel Sedlak <daniel@sedlak.dev>
+Subject: [PATCH 0/2] Replace unwraps in doctests with graceful handling
+Date: Sat, 16 Nov 2024 20:46:16 +0100
+Message-ID: <20241116195221.373332-1-daniel@sedlak.dev>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115214907.191454-1-kernel@mandragore.io>
-In-Reply-To: <20241115214907.191454-1-kernel@mandragore.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 16 Nov 2024 20:39:45 +0100
-Message-ID: <CANiq72keVxpkDzP_7wshRR=wPubdchbf3HFA132JYca8m+HnAw@mail.gmail.com>
-Subject: Re: [PATCH] rust: add safety comment in rust_fmt_argument
-To: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 15, 2024 at 11:11=E2=80=AFPM Konstantin Andrikopoulos
-<kernel@mandragore.io> wrote:
->
-> The function rust_fmt_argument derefernces a c_void pointer, and thus it
-> needs an unsafe block. The safety comment for that block was missing.
+There are multiple occurrences where we use unwraps (or other panickable behavior)
+within documentation tests. In the following patches, I try to replace at least some
+of the occurrences with graceful handling. I haven't touched the rest (yet),
+since I am unsure whether we will all agree on this. If we agree on the handling
+I can submit them in v2 or as a follow patches.
 
-Typo -- `scripts/checkpatch.pl` has a `--codespell` option that may help.
+Daniel Sedlak (2):
+  rust: kernel: init: replace unwraps with the question mark operators
+  rust: kernel: rbtree: replace unwraps with functional programming
+    paradigms
 
-In addition, I would avoid the `c_void` mention, since it sounds like
-the reason it is unsafe is because it is void in particular (and
-anyway it is not true that we dereference a void pointer -- we cast it
-first).
+ rust/kernel/init.rs   |  6 ++--
+ rust/kernel/rbtree.rs | 78 ++++++++++++++++++++++---------------------
+ 2 files changed, 44 insertions(+), 40 deletions(-)
 
-> Part of Rust-for-Linux#351.
+-- 
+2.47.0
 
-This should typically be a Link tag, e.g.
-
-Link: https://...
-
-In addition, while it is not critical, the issue suggests adding a
-"Suggested-by:" tag too (these issues are a good way to learn how
-these tags work).
-
-> +    // SAFETY: The Rust contract guarantees that `ptr` is a valid pointe=
-r to a `fmt::Arguments` struct.
->      let _ =3D w.write_fmt(unsafe { *(ptr as *const fmt::Arguments<'_>) }=
-);
-
-Which Rust contract guarantees that? I guess perhaps you adapted the
-message above that mentions "C contract" and/or you may be referring
-to what is done in `call_printk`? I think we should be more explicit
-here, and justify how the pointer ends up being a valid pointer to
-`Arguments`. In other words, please try to explain how that happens.
-
-Finally, please Cc the maintainers and reviewers in v2
-(https://rust-for-linux.com/contributing#submitting-patches has a
-couple lines you may want to use for that).
-
-Thanks for the patch!
-
-Cheers,
-Miguel
