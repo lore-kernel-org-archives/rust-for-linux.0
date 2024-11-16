@@ -1,55 +1,55 @@
 Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B7F191F91
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 19:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D701953B0
+	for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 19:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731786762; cv=none; b=Z9OVVR1vwAsZwxKTQQzyf+uj1ZdaXLQxzBf7Xm2XLP40Lhe2iId03XIAYec+Z3anlKrcEfMu/bHTjmzf92Z5xuYvjPgsKT4EoITorRIZIqK4vSBhGSD0sxMzpYj+vrEqdAqPUhcBm8pCuHVQqzj6ixw61c+vv+DBnfAEHpoucsA=
+	t=1731786762; cv=none; b=qIlkE8nLYPnc5IazdSlEoi80Bxh9HUsv/FCdSWYCZr6r4/DKWG2qwdMiJK+lQrV323H4i60LDuDzVYpvlKcQzGSsAVxkKO2CRGtUL7v2v3B+TCza1qB+Vu4qee/ZTdtR3uPXBsKe+QnqyS1JrbJPWBmX+sA/Krkk5I6yrSMlx/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731786762; c=relaxed/simple;
-	bh=IbyNCVlr+pUYPq/QluXQhltzdkvVNx9OgXhrqpA+hlM=;
+	bh=aSg1sT2DdVXcoiJEN9ITY94if0PR9BvNxMcJUvH0fT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g14sfNfy52JhZRqR9ympH3rsJmizGr2lPwrtTeEsbaFYNea1MCw5Hqivfv/cGR3z1MVFHQyPiGuwmzcuTGYsxWYU29O5iCYr4HS3zfxNMEMl3aQFAD6khMVesU6587WTrSvN4EU1uNSH+NTHeJ/SYUJ+3CTyPwQ718ndPnr0CWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=LoICD/rw; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=hUfzLhZV+YQ5BcAwiyem5gadsbcEjkdKylkhMh+zzNx2bPIZrk5HYalvX+QPcer7nPINCXtCAq0MJLh+bezX2Fy9HNJeC2L40iowhI2cau/xA76diznaX/6KKYxD91fLQvxXeKpxkkvx8eiZWdocr46gRV/n3iJlqr8EgH3xM20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=bH6IKhuX; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="LoICD/rw"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315baa51d8so15647145e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 11:52:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="bH6IKhuX"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-431695fa98bso23581255e9.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 16 Nov 2024 11:52:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1731786757; x=1732391557; darn=vger.kernel.org;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1731786759; x=1732391559; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vfMu5DtG1mWSN15sff/1/SqGqqAyWbyF59+g7Oztrts=;
-        b=LoICD/rwmmmdqhbJvvujci6PfMgwjQr9rgo33Q7NOND4EBqOd2SVZfa8rws1uh7mI9
-         8lBuAdt9HvAUSwDV3FJJrYv7RvbYMJXfZ4HrVLKGmZDojRroTxrt7FZP2mUNXJQ4VWhD
-         487TAbdmSQpTBBUbnOeihiy5HQK57j0IgGzUgHPBOk4eGZ5Ek1hiAbubbh158ywoX9Km
-         qgMxBilDyk4XuF3GLD7dLa0wzhkqNp1uSQuxawIrrdh74ZTYXFnIoFjPMKeEETBCzbp6
-         UB1LFwH8mLO+xQZO8AYz3YL6DO+J41EQ/mn+wZPs/5R1uatDkhwBceg9/ddQiTnPs0Y2
-         gmVg==
+        bh=ip5pQscRbbdQVewQRGx05s1AlqAOiXm83mKhGdPSZss=;
+        b=bH6IKhuXjmYoKsS9lVrbjzJCJ6prG1yNW3qjd2Ch5vEMRh9CWVvbofP47PTlJ6Cftk
+         p9bDvEgIXyuoWNNjtDo3KMnD1vIjA1Ye+6E8AJxdIxqTlnakn6+SU1pCf8/rRpULhl6l
+         JHhMws/Ho9plS5qQdT1NfWW2zw5TKL0oxG3+WXjpVV1ndMMBOwbyu1fUCWBNM2BvWH8e
+         +UQG2xEi28yLG7alBJnKXQ6Pa3EjqoUA2GAJPngA2A8kwcY2jpZG8Xcq+YR6PBv8nGQv
+         AYWav3gXnK7LYW8437hq4dTUKIN0JY+XzQ46mOBeyuQa5OIW3j8eMXSUplAe4hoch9Jy
+         rDGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731786757; x=1732391557;
+        d=1e100.net; s=20230601; t=1731786759; x=1732391559;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vfMu5DtG1mWSN15sff/1/SqGqqAyWbyF59+g7Oztrts=;
-        b=wFcPQ6SLDVUIRjfJqPOR1kxOV1jRRh+NvQJuvqvPnpS7s43Ky08YpwCeyFZlMzRXzK
-         jU1eRNFSotnXDlQmsE7ysrm/B8aFnEzgtVWN19DS8yYhR+qaJD86ZpMpSmBql9kOzSP7
-         ZpQ5gSrD6x9VAZTE1r0bc27L5U6hZHLsipEcEixXxHd+TSAuEvCJB0l2W7Aj3E9oqUSV
-         3JdjuwEjAalU/t8MZLRASo0W5mSM4FcW9iflHEHzQqdTPJ1hh/ArgC3YV8pTu7ywAzUa
-         jo8c1Ri93TKfRhh/8DFZcx+cngASQNVjS32vs4TzWQgBvI5ZSmjbxCS5EzDGn5PJOZIP
-         oR6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWtQUbWX6lzDLxNN1N2piTI8sc2+i2PmzROMHfV1OXMTP5/DCjIp8A2g+Rugp4ay4N5ba1ap+qWN7lgOSel8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEll4KGsQC4YQJtinK1bxATGw6HcmLPekAtsBKbMcyDC3i+2oN
-	sLvE3Y1DZecAxo7C7+bYO35+y7wUSlUKAgOsyLLLClJ2/7h/JpCoT3wrbR/MNaY=
-X-Google-Smtp-Source: AGHT+IGw+lDen8mxyVGE3pmgcoYoDONPdtwM9MY4yzpYhTD6Ne4Sq/JoP/RAD2kLDAptvjImji+38g==
-X-Received: by 2002:a05:600c:3b2a:b0:431:6153:a246 with SMTP id 5b1f17b1804b1-432df726227mr61614255e9.13.1731786757477;
-        Sat, 16 Nov 2024 11:52:37 -0800 (PST)
+        bh=ip5pQscRbbdQVewQRGx05s1AlqAOiXm83mKhGdPSZss=;
+        b=FiYVpXTNM3/HyvDxwltOt2SfNobKQoMyJaWnB8G3bjuQ2s7gORhS7/TCWAN0MYTMxG
+         +raO2sTmQ+z/EXmruxhQLECCMQElRZj2dGKzGBh2zRBpvetqVNWdUJQb61Jv+ej9iR3o
+         7cHauTzazHRQKunkJoodVHX1KI/vrS7p+b6jFXv/eDgJHThXIybeRxQ9N+ePXL3zo68C
+         dQoMuOpWsUL7g0ySOYvOCRSJ4nvawX9qULxOY14W+QzJvSPPrEzJmeLLvk2UOKc69V6+
+         5/H5MOCHiGcmMLWGYNjVV1q24yxoW5k0Mc4CJFanFVqUwGyVN4Sye9RAccNuaWKXjgZc
+         Y7Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUoLB5gY+m2B4Qlx48ko0Bk/IP4PVl6nMid9cl0Xa/A1Q0dq3yYvvrrx7vpdGFYtHG4zkabM9elULn+MWHGdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoERP0JpfuFk8dUmJQvK3DOLmnkbPYXqOwvIlaE8SWLb8ftno/
+	d7/2FiN2cIzqZht/5xkXTa8ZAsqOcKzCTZafedIm7imvhUIQf2IqpGHlITSp0kI=
+X-Google-Smtp-Source: AGHT+IF3l8CNuJFRLLnYmXo45yg15BgX7s6cSiY8UBYJDcLP3+wBpXUM3GHvOGepJu9/6HCQJwI86Q==
+X-Received: by 2002:a05:600c:4f10:b0:431:5c1c:71b6 with SMTP id 5b1f17b1804b1-432df74c8f1mr70941445e9.17.1731786759038;
+        Sat, 16 Nov 2024 11:52:39 -0800 (PST)
 Received: from mordor.lan ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da27fcb4sm102846905e9.23.2024.11.16.11.52.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da27fcb4sm102846905e9.23.2024.11.16.11.52.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sat, 16 Nov 2024 11:52:37 -0800 (PST)
 From: Daniel Sedlak <daniel@sedlak.dev>
@@ -64,9 +64,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org,
 	Daniel Sedlak <daniel@sedlak.dev>
-Subject: [PATCH 1/2] rust: kernel: init: replace unwraps with the question mark operators
-Date: Sat, 16 Nov 2024 20:46:17 +0100
-Message-ID: <20241116195221.373332-2-daniel@sedlak.dev>
+Subject: [PATCH 2/2] rust: kernel: rbtree: replace unwraps with functional programming paradigms
+Date: Sat, 16 Nov 2024 20:46:18 +0100
+Message-ID: <20241116195221.373332-3-daniel@sedlak.dev>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241116195221.373332-1-daniel@sedlak.dev>
 References: <20241116195221.373332-1-daniel@sedlak.dev>
@@ -82,35 +82,173 @@ Link: https://lore.kernel.org/rust-for-linux/CANiq72nsK1D4NuQ1U7NqMWoYjXkqQSj4Qu
 Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
 ---
- rust/kernel/init.rs | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ rust/kernel/rbtree.rs | 78 ++++++++++++++++++++++---------------------
+ 1 file changed, 40 insertions(+), 38 deletions(-)
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 347049df556b..81d69d22090c 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -1076,8 +1076,9 @@ pub fn uninit<T, E>() -> impl Init<MaybeUninit<T>, E> {
- /// ```rust
- /// use kernel::{alloc::KBox, error::Error, init::init_array_from_fn};
- /// let array: KBox<[usize; 1_000]> =
--///     KBox::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL).unwrap();
-+///     KBox::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL)?;
- /// assert_eq!(array.len(), 1_000);
-+/// # Ok::<(), Error>(())
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index cb4415a12258..3b1436ab0ac3 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -36,17 +36,17 @@
+ ///
+ /// // Check the nodes we just inserted.
+ /// {
+-///     assert_eq!(tree.get(&10).unwrap(), &100);
+-///     assert_eq!(tree.get(&20).unwrap(), &200);
+-///     assert_eq!(tree.get(&30).unwrap(), &300);
++///     assert_eq!(tree.get(&10), Some(&100));
++///     assert_eq!(tree.get(&20), Some(&200));
++///     assert_eq!(tree.get(&30), Some(&300));
+ /// }
+ ///
+ /// // Iterate over the nodes we just inserted.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&10, &100));
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
+-///     assert_eq!(iter.next().unwrap(), (&30, &300));
++///     assert_eq!(iter.next(), Some((&10, &100)));
++///     assert_eq!(iter.next(), Some((&20, &200)));
++///     assert_eq!(iter.next(), Some((&30, &300)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+@@ -61,21 +61,23 @@
+ /// // Check that the tree reflects the replacement.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&10, &1000));
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
+-///     assert_eq!(iter.next().unwrap(), (&30, &300));
++///     assert_eq!(iter.next(), Some((&10, &1000)));
++///     assert_eq!(iter.next(), Some((&20, &200)));
++///     assert_eq!(iter.next(), Some((&30, &300)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+ /// // Change the value of one of the elements.
+-/// *tree.get_mut(&30).unwrap() = 3000;
++/// if let Some(element) = tree.get_mut(&30) {
++///     *element = 3000;
++/// }
+ ///
+ /// // Check that the tree reflects the update.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&10, &1000));
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
+-///     assert_eq!(iter.next().unwrap(), (&30, &3000));
++///     assert_eq!(iter.next(), Some((&10, &1000)));
++///     assert_eq!(iter.next(), Some((&20, &200)));
++///     assert_eq!(iter.next(), Some((&30, &3000)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+@@ -85,8 +87,8 @@
+ /// // Check that the tree reflects the removal.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
+-///     assert_eq!(iter.next().unwrap(), (&30, &3000));
++///     assert_eq!(iter.next(), Some((&20, &200)));
++///     assert_eq!(iter.next(), Some((&30, &3000)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+@@ -128,20 +130,20 @@
+ /// // Check the nodes we just inserted.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&10, &100));
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
+-///     assert_eq!(iter.next().unwrap(), (&30, &300));
++///     assert_eq!(iter.next(), Some((&10, &100)));
++///     assert_eq!(iter.next(), Some((&20, &200)));
++///     assert_eq!(iter.next(), Some((&30, &300)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+ /// // Remove a node, getting back ownership of it.
+-/// let existing = tree.remove(&30).unwrap();
++/// let existing = tree.remove(&30);
+ ///
+ /// // Check that the tree reflects the removal.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&10, &100));
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
++///     assert_eq!(iter.next(), Some((&10, &100)));
++///     assert_eq!(iter.next(), Some((&20, &200)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+@@ -155,9 +157,9 @@
+ /// // Check that the tree reflect the new insertion.
+ /// {
+ ///     let mut iter = tree.iter();
+-///     assert_eq!(iter.next().unwrap(), (&10, &100));
+-///     assert_eq!(iter.next().unwrap(), (&15, &150));
+-///     assert_eq!(iter.next().unwrap(), (&20, &200));
++///     assert_eq!(iter.next(), Some((&10, &100)));
++///     assert_eq!(iter.next(), Some((&15, &150)));
++///     assert_eq!(iter.next(), Some((&20, &200)));
+ ///     assert!(iter.next().is_none());
+ /// }
+ ///
+@@ -677,7 +679,7 @@ fn drop(&mut self) {
+ /// Nodes adjacent to the current node can also be removed.
+ ///
  /// ```
- pub fn init_array_from_fn<I, const N: usize, T, E>(
-     mut make_init: impl FnMut(usize) -> I,
-@@ -1120,8 +1121,9 @@ pub fn init_array_from_fn<I, const N: usize, T, E>(
- /// ```rust
- /// use kernel::{sync::{Arc, Mutex}, init::pin_init_array_from_fn, new_mutex};
- /// let array: Arc<[Mutex<usize>; 1_000]> =
--///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i)), GFP_KERNEL).unwrap();
-+///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i)), GFP_KERNEL)?;
- /// assert_eq!(array.len(), 1_000);
-+/// # Ok::<(), Error>(())
- /// ```
- pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
-     mut make_init: impl FnMut(usize) -> I,
+-/// use kernel::{alloc::flags, rbtree::RBTree};
++/// use kernel::{alloc::flags, rbtree::{RBTree, RBTreeNode, Cursor}};
+ ///
+ /// // Create a new tree.
+ /// let mut tree = RBTree::new();
+@@ -688,31 +690,31 @@ fn drop(&mut self) {
+ /// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
+ ///
+ /// // Get a cursor to the first element.
+-/// let mut cursor = tree.cursor_front().unwrap();
+-/// let mut current = cursor.current();
+-/// assert_eq!(current, (&10, &100));
++/// let mut cursor = tree.cursor_front();
++/// let mut current = cursor.as_ref().map(Cursor::current);
++/// assert_eq!(current, Some((&10, &100)));
+ ///
+ /// // Calling `remove_prev` from the first element returns [`None`].
+-/// assert!(cursor.remove_prev().is_none());
++/// assert!(cursor.as_mut().map(Cursor::remove_prev).flatten().is_none());
+ ///
+ /// // Get a cursor to the last element.
+-/// cursor = tree.cursor_back().unwrap();
+-/// current = cursor.current();
+-/// assert_eq!(current, (&30, &300));
++/// cursor = tree.cursor_back();
++/// current = cursor.as_ref().map(Cursor::current);
++/// assert_eq!(current, Some((&30, &300)));
+ ///
+ /// // Calling `remove_prev` removes and returns the middle element.
+-/// assert_eq!(cursor.remove_prev().unwrap().to_key_value(), (20, 200));
++/// assert_eq!(cursor.as_mut().map(Cursor::remove_prev).flatten().map(RBTreeNode::to_key_value), Some((20, 200)));
+ ///
+ /// // Calling `remove_next` from the last element returns [`None`].
+-/// assert!(cursor.remove_next().is_none());
++/// assert!(cursor.as_mut().map(Cursor::remove_next).flatten().is_none());
+ ///
+ /// // Move to the first element
+-/// cursor = cursor.move_prev().unwrap();
+-/// current = cursor.current();
+-/// assert_eq!(current, (&10, &100));
++/// cursor = cursor.map(Cursor::move_prev).flatten();
++/// current = cursor.as_ref().map(Cursor::current);
++/// assert_eq!(current, Some((&10, &100)));
+ ///
+ /// // Calling `remove_next` removes and returns the last element.
+-/// assert_eq!(cursor.remove_next().unwrap().to_key_value(), (30, 300));
++/// assert_eq!(cursor.as_mut().map(Cursor::remove_next).flatten().map(RBTreeNode::to_key_value), Some((30, 300)));
+ ///
+ /// # Ok::<(), Error>(())
+ ///
 -- 
 2.47.0
 
