@@ -1,98 +1,117 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BEB17BB6;
-	Sun, 17 Nov 2024 20:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFF91DDA3C;
+	Sun, 17 Nov 2024 23:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731876576; cv=none; b=XDdh1nrCNoY4u0lhOzFwQ3n2hTM0RNqcCH3QZKmt6Bo8pZlhI+vl0faNDukijIKMm/MGoIroOLyfZcKwO87+JLDGBJq4uPwoMySYeYrfNUwoWMkzkLKz8ghwq6Z5tAJOdEb0TE1y1UvO1/919O/ZwMH3sZLdKD7kcUA3gxN3vXQ=
+	t=1731887259; cv=none; b=Gf06lv8ieXDgSsK5pM97op15atFqNpxA09gxAcTqToPpadrzfXxCSHTWzF3HFwaGsgzgErkyvNkZkpOh0ntgIXlDIav15WFP9uJQUGh32FhGWkSEAheOVt8vU2kHN/fr4y/F32lXX9SScmLTdN7FS3sW7JEftYVlzXXd0hLZlmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731876576; c=relaxed/simple;
-	bh=RUh5Z//qokD1EHed93XgS2G8TkaYHQNEYjVLmW0YjxM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cEWy1dFHdnSJBDow4OWOBHXvIlf4zqGl3XNNBDnHUfK3vRdb0VW+FRDtXIczSxcGIGX7RVG4jy5lbOyWazAu04lTKQiSo3VWC7Cjp5JGoKMG6pC0eF30caHMe+xBB9nI8v6RJHSx3uDfnJYfHsrIkJgOGwYTiqu9qK5jHb1l8eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z7XEhU1l; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731887259; c=relaxed/simple;
+	bh=P1BsP1cGK94H5aphr+CmIL8Z4amP2D/fjFOsmEmkSAs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q60EsTowmDO4WMh12A9FhP3/3qJ1mXTciyHt22wdk5Ovg3RzVWpSPtmpwNBzaN/muml+pLL1tktUISM6stRcluvHGHoeF+UBNZSJlPQizf8PDvZ9bK5HNHUYANKh9WT8cw2DQqUyxEZisSj4ghmI2F9IedA+L4YlTdI3E1RK7aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cISYT6ZU; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z7XEhU1l"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7ea7e2204d1so701481a12.0;
-        Sun, 17 Nov 2024 12:49:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731876574; x=1732481374; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RUh5Z//qokD1EHed93XgS2G8TkaYHQNEYjVLmW0YjxM=;
-        b=Z7XEhU1lurFbpxD3J1NmXo1zQygGnI1sUIAPnSimYSj20g89N7HvHc9m4mquqMtoPn
-         eIRwY0g8JQ68KXhq1+k0vLmyv8ypWI4z8siFtjx+FiveUivfiNqqHblbZEmpqJZ2CNTv
-         wgzl9zddLjguUN+FayiMYKfr+lUNSWKlNOY/j5YEXAd0cN+mEiXi3YqHz2sbXhiOo4Kk
-         HWM5StygeUKjW7uIgNRBnhO+vkwycOuV2rm4CzRAlAnd/fdkxytBXSq5JMt7GQxgWPhP
-         LLeLfPeR/BTX/jOG6xKkGIQRDNHFU4o4+2WRCEfvM1Ll/E8tiYaU5HmxWYj7dlaf87eY
-         JwQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731876574; x=1732481374;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RUh5Z//qokD1EHed93XgS2G8TkaYHQNEYjVLmW0YjxM=;
-        b=qyOs2VydB44nzpD74dKDN4ERZMW3aS2Fvy0ZrbYAFnXsq5N7aFXUmL8IkLXbgSBURH
-         vTvx5vwpsvZxgA/TsUfJSvyDqcQnp7kM5/flXdFtYcz2L/0sgWUuW3Y/n4SMXZ8ZJqlK
-         WjbrrwzUAtZqwe9ArKuZfBWJ9sjOaIUUvPHW2zDRxfsznSqas/rGfTh3TmJYn9ne5abi
-         4oG+WBusa2t617CMEs0p+ZPqm3CvAYWDq8pX9uD7N21dzx0fFk+7xMIl0kGlalXl6XJg
-         nY4qXi73TDomgvqmPKZIjosXpz+g0u1IWpa1+k9vXroj12tizylB8lkv6xnbjWPaXAAi
-         mMhA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXeaK6tbpSdzF1PxMD52tMHMG/GYNlyLs+ToBzntLU1cfOV19fmE/D35cR0q/hSY4v7QyqY7dVlh1mnw==@vger.kernel.org, AJvYcCWW2CogxfEiCg2eDRZX3TgJE1BTXzXeyWOROHLSr6vChX0nrJHUeEII/3Z8PwtX41jOhiF/uLjq@vger.kernel.org, AJvYcCXAQQz0cJwJyjVGWmWmBStt+ErV3Lp8pGZnkJOIcUfQlpE8EQS+ZH7Mw4g2Tk8dALuwaIyOTPtQPZQ6xNneRkA=@vger.kernel.org, AJvYcCXEf1ASePbWuOk7KGze2gHRuytdZhZDBXXJuppcQYljDvoDyb//UKin8ibpi773vORMb+c261v7LDaCJzjv@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6CVCoH8qjeZDdIe5MEYCN4WfJwBAb++Ko0grWoHVapi0mGozx
-	XgeqaF5kCVQeB+r/yiNSHNiK6kH9ToaeKycCbKAQVBM4K2clGb2G5VDNeJ8wLb24e/jbyXhIidx
-	0PRsnxb7SgGVAcUrasl9IdoyfMxY=
-X-Google-Smtp-Source: AGHT+IG9vm4VgRwNRukE21UZzKhSxM8wQwmAjdt8NVMeFerxL1QCjKVJKSenujzwCjqlLkK4hlmk87d9BqlykZMHd7w=
-X-Received: by 2002:a17:90a:e70c:b0:2ea:47f1:79d3 with SMTP id
- 98e67ed59e1d1-2ea47f18194mr2098649a91.6.1731876574192; Sun, 17 Nov 2024
- 12:49:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cISYT6ZU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731887259; x=1763423259;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P1BsP1cGK94H5aphr+CmIL8Z4amP2D/fjFOsmEmkSAs=;
+  b=cISYT6ZUl9xBnoVuzfPGhEEqRwe+fkay/ZQT5NHFywLx1UwwHEMt2QRC
+   RwhI4PjlkHeqwBsi0SirRnQawhOuuWz9cdFx/c6uqvVdSovy1JFKHyrlQ
+   bnmGmlDKMzFPpq+/2v975tP+qSAOdGmROC1y21uYwCkMtvAmAex2zsFyM
+   v4YrEPd7WiAMehFi94Tb40EyxoA64nJe1GJiv6hPlG8/TxZcEF7muTjW+
+   NQLtU9Ub99Z2iMJX5J5P2COWBVf+LTutYQy9JJMcL4d4QrFwRwtVjGR4Y
+   cy06pAW1BsL34HCHdyp9oQjYzvJw+QSXB23LiBz8LR1HKTh+u3sgUROPV
+   Q==;
+X-CSE-ConnectionGUID: 0R/LjNjBQUG4/bYeEAKbVA==
+X-CSE-MsgGUID: L0BbL33nTGisIv3p+5gxKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="35598071"
+X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
+   d="scan'208";a="35598071"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2024 15:47:38 -0800
+X-CSE-ConnectionGUID: y9QjnJUARW+Pfju8B/fzmQ==
+X-CSE-MsgGUID: IRZPKmHYQ56Dn9+mpxT1Dw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
+   d="scan'208";a="112357128"
+Received: from lkp-server01.sh.intel.com (HELO 1e3cc1889ffb) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 17 Nov 2024 15:47:31 -0800
+Received: from kbuild by 1e3cc1889ffb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tCozI-00027l-2K;
+	Sun, 17 Nov 2024 23:47:28 +0000
+Date: Mon, 18 Nov 2024 07:46:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH v6 6/7] rust: Add read_poll_timeout functions
+Message-ID: <202411180733.UATVgVuv-lkp@intel.com>
+References: <20241114070234.116329-7-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in> <3721a7b2-4a8f-478c-bbeb-fdf22ded44c9@lunn.ch>
-In-Reply-To: <3721a7b2-4a8f-478c-bbeb-fdf22ded44c9@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 17 Nov 2024 21:49:20 +0100
-Message-ID: <CANiq72kk0gsC8gohDT9aqY6r4E+pxNC6=+v8hZqthbaqzrFhLg@mail.gmail.com>
-Subject: Re: [PATCH] rust: simplify Result<()> uses
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: manas18244@iiitd.ac.in, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Trevor Gross <tmgross@umich.edu>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241114070234.116329-7-fujita.tomonori@gmail.com>
 
-On Sun, Nov 17, 2024 at 7:26=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> Please split these patches up per subsystem, and submit them
-> individually to the appropriate subsystems.
+Hi FUJITA,
 
-That is good advice, although if you and block are Ok with an Acked-by
-(assuming a good v2), we could do that too.
+kernel test robot noticed the following build errors:
 
-Manas: I forgot to mention in the issue that this could be a good case
-for a `checkpatch.pl` check (I added it now). It would be great if you
-could add that in a different (and possibly independent) patch.
+[auto build test ERROR on 228ad72e7660e99821fd430a04ac31d7f8fe9fc4]
 
-Of course, it is not a requirement, but it would be a nice opportunity
-to contribute something extra related to this :)
+url:    https://github.com/intel-lab-lkp/linux/commits/FUJITA-Tomonori/rust-time-Add-PartialEq-Eq-PartialOrd-Ord-trait-to-Ktime/20241114-151340
+base:   228ad72e7660e99821fd430a04ac31d7f8fe9fc4
+patch link:    https://lore.kernel.org/r/20241114070234.116329-7-fujita.tomonori%40gmail.com
+patch subject: [PATCH v6 6/7] rust: Add read_poll_timeout functions
+config: um-randconfig-002-20241117 (https://download.01.org/0day-ci/archive/20241118/202411180733.UATVgVuv-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241118/202411180733.UATVgVuv-lkp@intel.com/reproduce)
 
-Thanks!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411180733.UATVgVuv-lkp@intel.com/
 
-Cheers,
-Miguel
+All errors (new ones prefixed by >>):
+
+>> error[E0433]: failed to resolve: use of undeclared type `KBox`
+   --> rust/doctests_kernel_generated.rs:1821:12
+   |
+   1821 | let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
+   |            ^^^^
+   |            |
+   |            use of undeclared type `KBox`
+   |            help: a struct with a similar name exists: `Box`
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [m]:
+   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
