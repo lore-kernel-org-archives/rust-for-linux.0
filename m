@@ -1,101 +1,164 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E35176FB0
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Nov 2024 14:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E7C8831;
+	Sun, 17 Nov 2024 15:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731854737; cv=none; b=r/jVH7qCQo7FEWi/LxWYaMk53bPS0WfT0njelaHr5j5IzqSbD6MivTvQCAf5yYspX/VvywfLrvNppcxpoYY2CNKn+a77Lmiw9twQfy2SnyR5BHyOhvY7pTVKpzF7JoYSatD7mWPBEXMRpNRolHYNRfkm1ZREZboqwZKfn7oc53U=
+	t=1731856310; cv=none; b=iwgwxOh69tWBA4Sc/ZMcAD/q24b7PT5bH8h0M1aoy0PnvVCqk/nkn11k/GjkmXZdsYXIsyme9Te7nL/VcpjNAYhIymiuvyrLiOflto2PUJMX2v+K8HH/uyEGTpWjL7m0pHKmueX+yS4OPbWNTGV0jx/3xDlAsvjzWYiLqUweV3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731854737; c=relaxed/simple;
-	bh=us9oQw7E/wsjDX6uaZJ4VPtVHSSPuc56nqvcDjnbBzU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J9vhwykHGPfjmWfzWZA5J9BJnK2wwekG7GFxEFG76S4ZqkoPHJ4xKLb/9mJC+1n/BB+uAMRCx1xpA7Ufv0MShVSPTB1qtWX40KVgUUgiVb74VUQcUw7e+bIuYQ2gpidQ1+Dr5qm0SZFuszPfHY+AFhYbXWJJ3fECgUqYPsZn7mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QynzSJ9U; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731856310; c=relaxed/simple;
+	bh=YoWEgbjfpT0pRKmM5sLM3OnhUgtNHURpAF5a1fG7oDs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=J/nGchVtusGuiLxHruCY2CcWGqWFNhN/EvvZSHjgmsbsDYc3RtP8nyN4ULmtaoRAR89OICicrayUvU4cwRCXI9Ftp/gJXpM/8IAMcFzCt4g7a5DDPEsRXuq7hPoJ/oYyhkpB3j2miT4bQCjH/oYBfkPtMQuP6fwFvTZe/JWjEbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3N+T/Vs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QynzSJ9U"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7ede26dc527so707391a12.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 Nov 2024 06:45:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731854735; x=1732459535; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=us9oQw7E/wsjDX6uaZJ4VPtVHSSPuc56nqvcDjnbBzU=;
-        b=QynzSJ9UoBPxnYnuthOivzS5NyTAmFKXh7t07YBKUsKz5jegs9EK6knqKyeGerJrBY
-         lU3WmvkbuQrh3ruaqHwNt944Z45EbEWJyyWYRSVqPVXxfTbQC1rohOS+Nz96hA7sU54+
-         MTWPnpyIoOotLjM5oT/7VwbKESv/EiW4YmVpP2ZWG+a4JX9aXFd3kjiW5OoYAEr4t5wQ
-         SrqMYzN2G7HJn4NJ+e8bTzIzN0sgG2FIDcaO4qamINCuRaixRCqEcRxjq+u3epzudjwB
-         5aOeXTUgpVv+tGkvqhANRFeDiTnkpvXmhvmnvtRiucBMWIDx0u5p+BfZwSrQIlqqOKOx
-         EqFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731854735; x=1732459535;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=us9oQw7E/wsjDX6uaZJ4VPtVHSSPuc56nqvcDjnbBzU=;
-        b=v7/AkK2wA1eJQxFJWrxcH4FJD4USWR6ctwAH6jbQTeP/BeZoZf60w8UeSzqaAKVCwN
-         aqvAzUqv8AtEv7yDit1wtqmdVDc2jElAyWe+xVFZ80eOv5UDsUSxVZzIdIYGAkYAam8p
-         amjtCaQwy9LkhvSOhn8XsGNwUWgqBtF9q2kaoRaq+JrhqxOv4m23TmOLG6GaAMWFLY6d
-         n2rxMtJIsBSmWt3Bbad2lo9TWHtGyn4+Tqy8Ue0/14FDk3pR0mmMnc4uZHDdzwYP4arb
-         vs6DnxPZrNQfE3Zjm+9m+Uly9CvCJvssTzvEAmKg8Bzs85hKEFwNr6MINYidqGIXjCyl
-         rldg==
-X-Gm-Message-State: AOJu0YxzNtsEpY81CgOiaByD+AOr+zwZZK+QuVMIV0cCKbe8mnO4/ZR3
-	lUY+6EcXH2LQjQFPZKU9xXpxMd1piM4zHs53Pt7d1+0fD/henO1eFB3ltihu7IK5IHxmiVBMlqa
-	KsFyxEZFPKhJAsXojTZns/a6jqyyjN7roWxk=
-X-Google-Smtp-Source: AGHT+IGhRM2fIgF4TpmUi6q0QJqbBl9eWQWQEIHnJrnrWDolHSPI9lHAlvzuwPRdbEjtwD5aEGKvylt6S/38TvNm2hk=
-X-Received: by 2002:a17:90b:3803:b0:2e2:a60f:289e with SMTP id
- 98e67ed59e1d1-2ea151f4782mr4582418a91.0.1731854734958; Sun, 17 Nov 2024
- 06:45:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3N+T/Vs"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 69DB0C4CECD;
+	Sun, 17 Nov 2024 15:11:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731856309;
+	bh=YoWEgbjfpT0pRKmM5sLM3OnhUgtNHURpAF5a1fG7oDs=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=E3N+T/Vs1LKBInl2ZXVI2j7Y1XIEiy3wAHvkLbMOkWst2Jsv0VjBfHu7BnIH2XFuH
+	 s09dnZ5QzmNf7OH+zXAGztFzgpUAXASstIgtIlEPHl58miSuq2iu4IJPGoOgKouPoY
+	 R37/pCb4ugofjQTdfZFwBtCNA6m0ne9QoZMsnbbkI41vR+L7FTIjq5as1rj5ek0nIC
+	 aTY88Hwwx7ZmdDt9+Pj2FIyT8CiXlqTykOZaPnT2nulvqSksN0aiFaxvaEVXfp6TAr
+	 C45hcOUXdd/bH9yYgNlO0d3tGHxob5S5ldyMOYobN7a1ez9uh6R6OMxqWv9KdqeOFC
+	 ge1TSPp2eY93g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B14BD68BEF;
+	Sun, 17 Nov 2024 15:11:49 +0000 (UTC)
+From: Manas via B4 Relay <devnull+manas18244.iiitd.ac.in@kernel.org>
+Date: Sun, 17 Nov 2024 20:41:47 +0530
+Subject: [PATCH] rust: simplify Result<()> uses
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115214907.191454-1-kernel@mandragore.io> <CANiq72keVxpkDzP_7wshRR=wPubdchbf3HFA132JYca8m+HnAw@mail.gmail.com>
- <wsskxUFiMp-P7-uPh7962QXxwSUviSMoGb9I8NIJo_O4t4ACDvEpDUQJjE1FzMaD__ZMJsoaKpPA3SHq7Re_ogxAa-3pDlHiWpuT6LLFzmM=@mandragore.io>
-In-Reply-To: <wsskxUFiMp-P7-uPh7962QXxwSUviSMoGb9I8NIJo_O4t4ACDvEpDUQJjE1FzMaD__ZMJsoaKpPA3SHq7Re_ogxAa-3pDlHiWpuT6LLFzmM=@mandragore.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 17 Nov 2024 15:45:23 +0100
-Message-ID: <CANiq72mGgvAT8BzFj3eKz_3xeQno9o5g6aPcKruPs4G4jxVCWQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: add safety comment in rust_fmt_argument
-To: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in>
+X-B4-Tracking: v=1; b=H4sIALIHOmcC/x3MQQqAIBBA0avIrBM0grKrRAuxsQbKwqkoxLsnL
+ d/i/wSMkZChFwki3sS0hwJdCXCLDTNKmoqhVnWjtW4l03as5F8Zka/1lM5OprNeGeUMlOqI6On
+ 5j8OY8weuNWvsYQAAAA==
+X-Change-ID: 20241117-simplify-result-cad98af090c9
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, 
+ Anup Sharma <anupnewsmail@gmail.com>, netdev@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-block@vger.kernel.org, Manas <manas18244@iiitd.ac.in>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731856307; l=3582;
+ i=manas18244@iiitd.ac.in; s=20240813; h=from:subject:message-id;
+ bh=9wh8APnbE+xtYBBHViec799odh7ToNYbNtboBILuiv4=;
+ b=KwKDJLX1CAhKLCiNJsRH41q4RnVX6JT2IaF2iIN5gA1wqesEONanU83urTsIDlPG8AdssXWZ4
+ jXKYUpk51h+ByiaQUvylhQUgWs6/9BfIElhdayxeAi1xSAwLjz9xKIc
+X-Developer-Key: i=manas18244@iiitd.ac.in; a=ed25519;
+ pk=pXNEDKd3qTkQe9vsJtBGT9hrfOR7Dph1rfX5ig2AAoM=
+X-Endpoint-Received: by B4 Relay for manas18244@iiitd.ac.in/20240813 with
+ auth_id=196
+X-Original-From: Manas <manas18244@iiitd.ac.in>
+Reply-To: manas18244@iiitd.ac.in
 
-On Sun, Nov 17, 2024 at 3:22=E2=80=AFPM Konstantin Andrikopoulos
-<kernel@mandragore.io> wrote:
->
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA512
->
-> Thanks for the comments! It seems I missed some simple stuff but I am tak=
-ing notes for future reference!
+From: Manas <manas18244@iiitd.ac.in>
 
-You're welcome!
+This patch replaces `Result<()>` with `Result`.
 
-By the way, applying your patch with `b4` keeps the PGP part -- I
-would suggest `git send-email` or `b4` to send patches instead.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1128
+Signed-off-by: Manas <manas18244@iiitd.ac.in>
+---
+ drivers/net/phy/qt2025.rs        | 2 +-
+ rust/kernel/block/mq/gen_disk.rs | 2 +-
+ rust/kernel/uaccess.rs           | 2 +-
+ rust/macros/lib.rs               | 6 +++---
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-> Yes I was mainly trying to match the style of the existing comment since =
-I wasn't sure how verbose I should get. And I agree that we can be more exp=
-licit. I am not sure _where_ we should be explicit though. I am new to the =
-project so this might have been discussed already. It might be best to docu=
-ment the contract somewhere (possibly a module level docstring?). Then be e=
-xplicit in each caller site on how the contract is upheld. And in rust_fmt_=
-arguments we should simply be able to claim that %pA requires a pointer to =
-a valid fmt::Arguments struct so it is ok to cast and deref.
+diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+index 1ab065798175b4f54c5f2fd6c871ba2942c48bf1..25c12a02baa255d3d5952e729a890b3ccfe78606 100644
+--- a/drivers/net/phy/qt2025.rs
++++ b/drivers/net/phy/qt2025.rs
+@@ -39,7 +39,7 @@ impl Driver for PhyQT2025 {
+     const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
+     const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043a400);
+ 
+-    fn probe(dev: &mut phy::Device) -> Result<()> {
++    fn probe(dev: &mut phy::Device) -> Result {
+         // Check the hardware revision code.
+         // Only 0x3b works with this driver and firmware.
+         let hw_rev = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 708125dce96a934f32caab44d5e6cff14c4321a9..798c4ae0bdedd58221b5851a630c0e1052e0face 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -45,7 +45,7 @@ pub fn rotational(mut self, rotational: bool) -> Self {
+ 
+     /// Validate block size by verifying that it is between 512 and `PAGE_SIZE`,
+     /// and that it is a power of two.
+-    fn validate_block_size(size: u32) -> Result<()> {
++    fn validate_block_size(size: u32) -> Result {
+         if !(512..=bindings::PAGE_SIZE as u32).contains(&size) || !size.is_power_of_two() {
+             Err(error::code::EINVAL)
+         } else {
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index 05b0b8d13b10da731af62be03e1c2c13ced3f706..7c21304344ccd943816e38119a5be2ccf8d8e154 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -49,7 +49,7 @@
+ /// use kernel::error::Result;
+ /// use kernel::uaccess::{UserPtr, UserSlice};
+ ///
+-/// fn bytes_add_one(uptr: UserPtr, len: usize) -> Result<()> {
++/// fn bytes_add_one(uptr: UserPtr, len: usize) -> Result {
+ ///     let (read, mut write) = UserSlice::new(uptr, len).reader_writer();
+ ///
+ ///     let mut buf = KVec::new();
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 4ab94e44adfe3206faad159e81417ea41a35815b..463920353ca9c408f5d69e2626c13a173bae98d7 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -144,11 +144,11 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ /// // Declares a `#[vtable]` trait
+ /// #[vtable]
+ /// pub trait Operations: Send + Sync + Sized {
+-///     fn foo(&self) -> Result<()> {
++///     fn foo(&self) -> Result {
+ ///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+ ///     }
+ ///
+-///     fn bar(&self) -> Result<()> {
++///     fn bar(&self) -> Result {
+ ///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+ ///     }
+ /// }
+@@ -158,7 +158,7 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ /// // Implements the `#[vtable]` trait
+ /// #[vtable]
+ /// impl Operations for Foo {
+-///     fn foo(&self) -> Result<()> {
++///     fn foo(&self) -> Result {
+ /// #        Err(EINVAL)
+ ///         // ...
+ ///     }
 
-Please feel free to remove the `#[expect(clippy::missing_safety_doc)]`
-line to add safety preconditions (that `expect` is meant as a `TODO`
-too). You may also want to clean up the `// SAFETY` comment in
-`call_printk*` since they are related.
+---
+base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+change-id: 20241117-simplify-result-cad98af090c9
 
-Thanks!
+Best regards,
+-- 
+Manas <manas18244@iiitd.ac.in>
 
-Cheers,
-Miguel
+
