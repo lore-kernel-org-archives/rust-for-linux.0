@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4443919ABCB;
-	Mon, 18 Nov 2024 13:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADBC19C560;
+	Mon, 18 Nov 2024 13:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731935539; cv=none; b=BPGw8fHRyQ+AcTVpb/yfMXDoOia5RkZvw8adY2T4+RoMdx20yn1O9enzjaGSc3G+L0qyDY38DmriiVQyex/yyA9QCiVCDeKyZ6D5kqp92vduhje7zQkrGQKyfHKb2PCtdo2bFnAhBPQAxSDdG+JThHdHgvNtZ4IpUvFmbLinm/U=
+	t=1731935539; cv=none; b=BD3QxXr7/3egC1S0PVcNGCIHinLhQ1Vp9yHwyp50tOU14V3xxyHLyfkg115kJvLw5DIkNkqy2aYGtEYwwR3xiBp4rKHLotKU4X4hodxRxkrPwKUr8L1LxEPJjTQgH8YxM5Dy4+Zut4cBpLkM2mdOoVE2/9IEvz+kJuFwBePM3oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731935539; c=relaxed/simple;
-	bh=WmVgkz0KTZN8na8N+JVCaFWKKPWLYbasqjQVdB8DB5U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Y6a9qV5fjfBE47cmAh9QtKYyWlQdY8elPlweZ9la83AbVrarzx1vRZl2cac7s7UkOhTJ3uJMF2Fnu9rpa00FJcSnIhZrKxNyFkr91VWm7Fc5HyjYZ4QLZXjs3hkQW1PmQJkCOZA77gTIYLI3Gk8QZ+evwbEAKCCVOV00Pl5Uhho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LP/qL+2l; arc=none smtp.client-ip=10.30.226.201
+	bh=FMYxsf9lW6S6RnGgoIzzxMAtqiexE0hgvQ7nmRbtYa0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=c4w1fLol0A3LPeI4v4YMCh6fXiY0auwBASiO2QN2yagNcInN61oNV3FEoGdZyxoAQf1Ije3S4YjRoieOzO4gohBErtJUiCUQoFw2aJ4dpnvcqR2s2/xKSoElbe9YDTbtRGtV8tLVOrp5bcR0JX3lZLgbzMWku6Pz5Yo6ra2EiKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2NdPL96; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LP/qL+2l"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C70A8C4CECC;
-	Mon, 18 Nov 2024 13:12:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2NdPL96"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B1A9C4CEDB;
+	Mon, 18 Nov 2024 13:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731935538;
-	bh=WmVgkz0KTZN8na8N+JVCaFWKKPWLYbasqjQVdB8DB5U=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=LP/qL+2lfi/zbVVNNr0bAj+T1gDAnDi1DBew1sI7oiWN5BAK8sZY0l65P5HhilE/C
-	 5hAz+KafY56n3VNWSz/XYyg8JIgAUZjoFCg1AmHEn43dDwHoZeGB8EsJXSS1ZzvCTy
-	 XqLguAAewLyTm+EcXLACOZF5+S/+4Wx0ZbQPv8zVgMUtg432RYo4kStZvTZDYuWpg6
-	 OaE5MmAXoSB0PPWnP3Ju2URFP/9MQ08i6KT4JgNLvEA+X95JmiPbcYLdiW3XKPZq33
-	 R6ZE0SWQdF8UzUc1PEUPU/k8GFMsinLHPa3FLEmlQcOeTTPAZ8OxeASsLeK9dVy2nk
-	 9+wyGMb1ZiPiA==
+	s=k20201202; t=1731935539;
+	bh=FMYxsf9lW6S6RnGgoIzzxMAtqiexE0hgvQ7nmRbtYa0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=E2NdPL96N7hBepjMCkhxM0AL2B4PLOEqN/aNFY/y8RRmbP/A+5FH0S/rLekuJuxdh
+	 liTgkR9/iTZGaRg0Jatm5CFJ8+N/JwJYQfRlGFtocgsSAo4lPo4u7QBoZdIOYnwGVv
+	 1LAQB/142i42wbzxWnyzFsPyFc4u2U9spnTkgrJ1rV/9N7mvrb50WoFQGhzClcNR65
+	 J27bSJNi4rltnpHHBbfZgZ0SO9ZdQyK3HNFjUXkobiAi/xpVNTjpK6O5XDZq7fGdVQ
+	 BSM81mzWzJ9ed5c5xMPUldmZsjK3FPLPOCco1pWoEtdpTCEVlR1eU1rHL7FIPEF2Pb
+	 UPT2JUxHCCgzA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B06C2D4921D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0886D49221;
 	Mon, 18 Nov 2024 13:12:18 +0000 (UTC)
 From: Manas via B4 Relay <devnull+manas18244.iiitd.ac.in@kernel.org>
-Subject: [PATCH v2 0/3] rust: simplify Result<()> uses
-Date: Mon, 18 Nov 2024 18:42:16 +0530
-Message-Id: <20241118-simplify-result-v2-0-9d280ada516d@iiitd.ac.in>
+Date: Mon, 18 Nov 2024 18:42:19 +0530
+Subject: [PATCH v2 3/3] rust: macros: simplify Result<()> in function
+ returns
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADA9O2cC/3WNOw6DMBAFr4K2jpHX+Zoq94go/A0rEUC2YwUh3
- z0OfcoZ6c3bILpALkLXbBBcpkjzVEEcGjCDmp6Oka0MgosTIl5ZpNcykl9ZcPE9JmaUlTflueR
- GQl0twXn67MVHX3mgmOaw7gcZf/Z/KyNDdtYctRVHri76TkTJtsq0NEFfSvkC3CcBmbAAAAA=
-X-Change-ID: 20241117-simplify-result-cad98af090c9
+Message-Id: <20241118-simplify-result-v2-3-9d280ada516d@iiitd.ac.in>
+References: <20241118-simplify-result-v2-0-9d280ada516d@iiitd.ac.in>
+In-Reply-To: <20241118-simplify-result-v2-0-9d280ada516d@iiitd.ac.in>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
  Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
  Heiner Kallweit <hkallweit1@gmail.com>, 
@@ -60,11 +60,11 @@ Cc: Shuah Khan <skhan@linuxfoundation.org>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-block@vger.kernel.org, Manas <manas18244@iiitd.ac.in>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731935537; l=1033;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731935537; l=1346;
  i=manas18244@iiitd.ac.in; s=20240813; h=from:subject:message-id;
- bh=WmVgkz0KTZN8na8N+JVCaFWKKPWLYbasqjQVdB8DB5U=;
- b=W00j64SL9Dv1dPccbNFTCfQ84f/jDzQt98GYrhDhY0xUqx+f7zICm4a6ZSQ3LBA6Y8J51Kc8A
- cPZHxJjjyADDedbj0d7qJIBqoPCG3Z0/5kyJlzuBkArhquRYEAjYfYg
+ bh=kLuPLhtQy03UFJsMApFTqciq/nC1ofEukNt3vnOoNoI=;
+ b=KjPfrmtej3yw3CTY13ra2gZyIs0M3OVKKGBxb/WuQ26KVNSQ8jxdoeTy/4O1E/z7OwgmMlaKm
+ YHkOTrdtbjeBkAQtbugCM/fRAPIUhlZA5WBglQU13RUz1Og+7nVTHNK
 X-Developer-Key: i=manas18244@iiitd.ac.in; a=ed25519;
  pk=pXNEDKd3qTkQe9vsJtBGT9hrfOR7Dph1rfX5ig2AAoM=
 X-Endpoint-Received: by B4 Relay for manas18244@iiitd.ac.in/20240813 with
@@ -72,33 +72,47 @@ X-Endpoint-Received: by B4 Relay for manas18244@iiitd.ac.in/20240813 with
 X-Original-From: Manas <manas18244@iiitd.ac.in>
 Reply-To: manas18244@iiitd.ac.in
 
+From: Manas <manas18244@iiitd.ac.in>
+
+Functions foo and bar in doctests return `Result<()>` type. This type
+can be simply written as `Result` as default type parameters are unit
+`()` and `Error` types. This also keeps the usage of `Result`
+consistent.
+
 Signed-off-by: Manas <manas18244@iiitd.ac.in>
 ---
-Changes in v2:
-- rust: split patches according to various subsystems
-- rust: add rationale for change
-- qt2025: removed qt2025 patch from this series and sent it separately
-  to netdev subsystem
-  Link to qt2025 patch:
-  https://lore.kernel.org/netdev/20241118-simplify-result-qt2025-v1-1-f2d9cef17fca@iiitd.ac.in/
-- Link to v1: https://lore.kernel.org/r/20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in
+ rust/macros/lib.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
----
-Manas (3):
-      rust: block: simplify Result<()> in validate_block_size return
-      rust: uaccess: simplify Result<()> in bytes_add_one return
-      rust: macros: simplify Result<()> in function returns
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 4ab94e44adfe3206faad159e81417ea41a35815b..463920353ca9c408f5d69e2626c13a173bae98d7 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -144,11 +144,11 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ /// // Declares a `#[vtable]` trait
+ /// #[vtable]
+ /// pub trait Operations: Send + Sync + Sized {
+-///     fn foo(&self) -> Result<()> {
++///     fn foo(&self) -> Result {
+ ///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+ ///     }
+ ///
+-///     fn bar(&self) -> Result<()> {
++///     fn bar(&self) -> Result {
+ ///         kernel::build_error(VTABLE_DEFAULT_ERROR)
+ ///     }
+ /// }
+@@ -158,7 +158,7 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ /// // Implements the `#[vtable]` trait
+ /// #[vtable]
+ /// impl Operations for Foo {
+-///     fn foo(&self) -> Result<()> {
++///     fn foo(&self) -> Result {
+ /// #        Err(EINVAL)
+ ///         // ...
+ ///     }
 
- rust/kernel/block/mq/gen_disk.rs | 2 +-
- rust/kernel/uaccess.rs           | 2 +-
- rust/macros/lib.rs               | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
----
-base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
-change-id: 20241117-simplify-result-cad98af090c9
-
-Best regards,
 -- 
-Manas <manas18244@iiitd.ac.in>
+2.47.0
 
 
