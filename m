@@ -1,117 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFF91DDA3C;
-	Sun, 17 Nov 2024 23:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ED0A55
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 00:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731887259; cv=none; b=Gf06lv8ieXDgSsK5pM97op15atFqNpxA09gxAcTqToPpadrzfXxCSHTWzF3HFwaGsgzgErkyvNkZkpOh0ntgIXlDIav15WFP9uJQUGh32FhGWkSEAheOVt8vU2kHN/fr4y/F32lXX9SScmLTdN7FS3sW7JEftYVlzXXd0hLZlmo=
+	t=1731888709; cv=none; b=JPrrlJaK+QMcIVxUi7nLbxjsJ1f8uAWO7b5pI6i+K681agxD3GSt/ct4tZHpFHwR2vF0tIXokcO8JJxRH6PyzbiGffW2a1XtB3kTtKWESk6TpmxtwJDMNvegVGgG5f2I5G3H5qikFzfZ5Gts+FdDYo0SPlPnnVB9FEhzu9rq8L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731887259; c=relaxed/simple;
-	bh=P1BsP1cGK94H5aphr+CmIL8Z4amP2D/fjFOsmEmkSAs=;
+	s=arc-20240116; t=1731888709; c=relaxed/simple;
+	bh=SoiSwSD49lv0IM/8lxFpHyYRjD/sbJDFjhrLAiQDzxk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q60EsTowmDO4WMh12A9FhP3/3qJ1mXTciyHt22wdk5Ovg3RzVWpSPtmpwNBzaN/muml+pLL1tktUISM6stRcluvHGHoeF+UBNZSJlPQizf8PDvZ9bK5HNHUYANKh9WT8cw2DQqUyxEZisSj4ghmI2F9IedA+L4YlTdI3E1RK7aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cISYT6ZU; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=SNJishSRWvjujpqjxW1fnd7eJVj2Tqhu1Yl41zHH8qDKqAl1f4iMiuai0PDlasVMYVd224kTZ64rnHvV57FcoGXfanI6/67Ewa5jawE5q6fjx4Sd2uv8JLU+d3rVeeLYMGvLPjD4KMG2ro9BHe6a6DBEBzXaBb30fxhvzXlHILQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in; spf=pass smtp.mailfrom=iiitd.ac.in; dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.b=Gu4Zuf19; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iiitd.ac.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cISYT6ZU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731887259; x=1763423259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=P1BsP1cGK94H5aphr+CmIL8Z4amP2D/fjFOsmEmkSAs=;
-  b=cISYT6ZUl9xBnoVuzfPGhEEqRwe+fkay/ZQT5NHFywLx1UwwHEMt2QRC
-   RwhI4PjlkHeqwBsi0SirRnQawhOuuWz9cdFx/c6uqvVdSovy1JFKHyrlQ
-   bnmGmlDKMzFPpq+/2v975tP+qSAOdGmROC1y21uYwCkMtvAmAex2zsFyM
-   v4YrEPd7WiAMehFi94Tb40EyxoA64nJe1GJiv6hPlG8/TxZcEF7muTjW+
-   NQLtU9Ub99Z2iMJX5J5P2COWBVf+LTutYQy9JJMcL4d4QrFwRwtVjGR4Y
-   cy06pAW1BsL34HCHdyp9oQjYzvJw+QSXB23LiBz8LR1HKTh+u3sgUROPV
-   Q==;
-X-CSE-ConnectionGUID: 0R/LjNjBQUG4/bYeEAKbVA==
-X-CSE-MsgGUID: L0BbL33nTGisIv3p+5gxKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="35598071"
-X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
-   d="scan'208";a="35598071"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2024 15:47:38 -0800
-X-CSE-ConnectionGUID: y9QjnJUARW+Pfju8B/fzmQ==
-X-CSE-MsgGUID: IRZPKmHYQ56Dn9+mpxT1Dw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,162,1728975600"; 
-   d="scan'208";a="112357128"
-Received: from lkp-server01.sh.intel.com (HELO 1e3cc1889ffb) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 17 Nov 2024 15:47:31 -0800
-Received: from kbuild by 1e3cc1889ffb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tCozI-00027l-2K;
-	Sun, 17 Nov 2024 23:47:28 +0000
-Date: Mon, 18 Nov 2024 07:46:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v6 6/7] rust: Add read_poll_timeout functions
-Message-ID: <202411180733.UATVgVuv-lkp@intel.com>
-References: <20241114070234.116329-7-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.b="Gu4Zuf19"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20ce65c8e13so25499855ad.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Nov 2024 16:11:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=iiitd.ac.in; s=google; t=1731888706; x=1732493506; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fzm439oR2uLsNkSgKqi/IwHWxPKHwC9Szch4YmaJqco=;
+        b=Gu4Zuf19xD7wEZztbR94q9cks+9MwBC71zPvxPDdrh91SvmD1TW5//EWdkhWfSV4tC
+         EekkYtEBNvtuqCCsl9jb+VhWBuZyc/BB/iGuLL0Hxz0n/sXWmhsxs/HQdqKv446+ahll
+         pJWcgm+8EHF8HJefDiZNP85jc9MrUvnNJU7Yk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731888706; x=1732493506;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fzm439oR2uLsNkSgKqi/IwHWxPKHwC9Szch4YmaJqco=;
+        b=NU+Y/WJqrmRYzWm8C6ffxlbhq4LK0nok2Ey8vDFm1KoEjpq9gIjLcjTud+0dlDmQn0
+         H1U7QIaGv+Htbc6y4V7+v9gkh0PLPSG3zzzNRbtZmgqTLu15PUkYdvx2AxDY0/HsP6dP
+         epwk3NspA9RIS3LpYau5qsALQG6z3QWfLA1EJZ0PzYr34XyZSMbrJyNuoltHPM2rwYb1
+         qWEdv3ROcECWljMHcbJMhRXYG+rmzxiEraA04rr+2vWf8kd35ABWHcUKUqtznah2f4GE
+         LJ+UKVCV4sbWLmDB0LOI4PsaIJ/aNa2LcoLV8nLcWObtlGj5a4KwOln/ZX4nth1bYLJR
+         2giQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDFiqRiMX5T/OtTKR006WuE8PlYChPPHmwXaejnMBW/0z4WaxiNgBebhOMNLPB2bSLLe2dOsuIfbWXoCG7xw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTSAtzLD8jt+jFbPvN7N6inYvD/F17uREpjTACv4GMDVnEmvQQ
+	dJ+W/rbWU3hO0U96fDxwRwL2CZH/0EzR+YEZTZ0R12vbBoY1sg3Vwo8v4+FetMk=
+X-Google-Smtp-Source: AGHT+IEWvPNXF0LNjE2M13xB8ELSPmICXmcw9ZU6urY/s0XrAzOHzNs7phP0Ghc42LEvoQ5pq6eqTA==
+X-Received: by 2002:a17:903:11cd:b0:20c:ecd8:d0af with SMTP id d9443c01a7336-211d0d5eea4mr149867975ad.9.1731888706270;
+        Sun, 17 Nov 2024 16:11:46 -0800 (PST)
+Received: from fedora ([103.3.204.127])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211f6769057sm26344825ad.206.2024.11.17.16.11.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Nov 2024 16:11:45 -0800 (PST)
+Date: Mon, 18 Nov 2024 05:41:32 +0530
+From: Manas <manas18244@iiitd.ac.in>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Alice Ryhl <aliceryhl@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Anup Sharma <anupnewsmail@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Subject: Re: [PATCH] rust: simplify Result<()> uses
+Message-ID: <q5xmd3g65jr4lmnio72pcpmkmvlha3u2q3fohe2wxlclw64adv@wjon44dqnn7e>
+References: <20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in>
+ <3721a7b2-4a8f-478c-bbeb-fdf22ded44c9@lunn.ch>
+ <CANiq72kk0gsC8gohDT9aqY6r4E+pxNC6=+v8hZqthbaqzrFhLg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20241114070234.116329-7-fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kk0gsC8gohDT9aqY6r4E+pxNC6=+v8hZqthbaqzrFhLg@mail.gmail.com>
 
-Hi FUJITA,
+On 17.11.2024 21:49, Miguel Ojeda wrote:
+>On Sun, Nov 17, 2024 at 7:26 PM Andrew Lunn <andrew@lunn.ch> wrote:
+>>
+>> Please split these patches up per subsystem, and submit them
+>> individually to the appropriate subsystems.
+>
+>That is good advice, although if you and block are Ok with an Acked-by
+>(assuming a good v2), we could do that too.
+>
+>Manas: I forgot to mention in the issue that this could be a good case
+>for a `checkpatch.pl` check (I added it now). It would be great if you
+>could add that in a different (and possibly independent) patch.
+>
+>Of course, it is not a requirement, but it would be a nice opportunity
+>to contribute something extra related to this :)
+>
 
-kernel test robot noticed the following build errors:
+On 17.11.2024 18:56, Russell King (Oracle) wrote:
+>On Sun, Nov 17, 2024 at 07:25:48PM +0100, Andrew Lunn wrote:
+>> On Sun, Nov 17, 2024 at 08:41:47PM +0530, Manas via B4 Relay wrote:
+>> > From: Manas <manas18244@iiitd.ac.in>
+>> >
+>> > This patch replaces `Result<()>` with `Result`.
+>> >
+>> > Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+>> > Link: https://github.com/Rust-for-Linux/linux/issues/1128
+>> > Signed-off-by: Manas <manas18244@iiitd.ac.in>
+>> > ---
+>> >  drivers/net/phy/qt2025.rs        | 2 +-
+>> >  rust/kernel/block/mq/gen_disk.rs | 2 +-
+>> >  rust/kernel/uaccess.rs           | 2 +-
+>> >  rust/macros/lib.rs               | 6 +++---
+>>
+>> Please split these patches up per subsystem, and submit them
+>> individually to the appropriate subsystems.
+>
+>In addition, it would be good if the commit stated the rationale for
+>the change, rather than what the change is (which we can see from the
+>patch itself.)
+>
 
-[auto build test ERROR on 228ad72e7660e99821fd430a04ac31d7f8fe9fc4]
+Thanks Andrew, Rusell and Miguel for the feedback.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/FUJITA-Tomonori/rust-time-Add-PartialEq-Eq-PartialOrd-Ord-trait-to-Ktime/20241114-151340
-base:   228ad72e7660e99821fd430a04ac31d7f8fe9fc4
-patch link:    https://lore.kernel.org/r/20241114070234.116329-7-fujita.tomonori%40gmail.com
-patch subject: [PATCH v6 6/7] rust: Add read_poll_timeout functions
-config: um-randconfig-002-20241117 (https://download.01.org/0day-ci/archive/20241118/202411180733.UATVgVuv-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241118/202411180733.UATVgVuv-lkp@intel.com/reproduce)
+Russell: I will edit the commit message to say something like, use the
+standard way of `Result<()>` which is `Result` and keep things consistent wrt
+other parts of codebase.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411180733.UATVgVuv-lkp@intel.com/
+Andrew, Miguel:
 
-All errors (new ones prefixed by >>):
+I can split it in the following subsystems:
 
->> error[E0433]: failed to resolve: use of undeclared type `KBox`
-   --> rust/doctests_kernel_generated.rs:1821:12
-   |
-   1821 | let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
-   |            ^^^^
-   |            |
-   |            use of undeclared type `KBox`
-   |            help: a struct with a similar name exists: `Box`
+   rust: block:
+   rust: uaccess:
+   rust: macros:
+   net: phy: qt2025:
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=y]
+Should I do a patch series for first three, and put an individual patch for
+qt2025?
+
+Also, I can work on the checkpatch.pl after this.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Manas
