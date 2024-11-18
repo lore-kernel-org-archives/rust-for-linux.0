@@ -1,98 +1,119 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3106A19E99A;
-	Mon, 18 Nov 2024 16:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61DC1B393F;
+	Mon, 18 Nov 2024 16:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731947390; cv=none; b=Jka5ZkdOBuLcBkJDpTe2+RE7nelBx0tt+XlH7BLXPoiASCkIpk6CD6RVsP5Cw60wuLSwpX9hIWkmKa/0QOn1LHzjkVQzUY38oViz74v8NEs2ap/LB06cC3DwQm/PjOmm+l330QgjvR1xORXS3ABP+3JliKd392/++mKZPN2EDoo=
+	t=1731947623; cv=none; b=cESgO9qX7ZyWu13ItMyVkv4iaYAQj+mMKYyJlsYkwpNedYjaZ7GvRYgcSJN17aDWFbB/5upCBtdU0eOQg66A05VLTQSzztlTy83blE25rgkCtwXtYmgyohlZMqLTcfa+7atqYbQ2QBXj3jQwuyYemaBsPZd3zWgnS0r291uV/Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731947390; c=relaxed/simple;
-	bh=/IuGvX934B9ntktwpmpQf50Bvp9bujrEwlob8aX4gFk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZSM5uINSumO2DhINdYKYS0mOoE2ec3Facuot3nQ2Hgmxt2wOe+tsjZ0Eqqe1ZLdo3nQMlEz4xfUKZ4t+4wiGrzzZ+JXU4q/lTLHsO0exalf/gOaY2cXdwexSK2IepCsi+CW2oF/doR1vLmIrbvQ6mXvW9kWROQIHEm10tFqMprQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mu3PI/GH; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1731947623; c=relaxed/simple;
+	bh=DX4r4DTcpTy0ZjOcxMBvzc0rx2DdiUiYOwlxIr7v6J0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qfFJi22tJFyh1h2IWpwOCxgoAhLs2o+YucvrJDT0bEF9qHLWmqrFr4iZZiLj72j6a/VwRg3khmuNIYr4ClKqM35EdHhIrRnzMTgHUQb/qr524kOOn35MSUlvXiiQFoXYF0WgBXTP5tpth8+AFFfyXZnkVr66ZXtZt/6n0++4SQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nNVVrFiP; arc=none smtp.client-ip=209.85.222.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mu3PI/GH"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7f4424576a2so428486a12.3;
-        Mon, 18 Nov 2024 08:29:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nNVVrFiP"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b1434b00a2so178737985a.0;
+        Mon, 18 Nov 2024 08:33:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731947388; x=1732552188; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/IuGvX934B9ntktwpmpQf50Bvp9bujrEwlob8aX4gFk=;
-        b=mu3PI/GHduKRrUG83xZv6WMiMGuOFDzWwp4Y946odoa4xMfXzSmD52eZbnUBzhMfEv
-         peHAFnmf63nPX7m8upJb3M+md3PlTA0QEszRN8gZ9o2wT7RcPJTPqWGYJxh/KQciXmBd
-         +Jga10DVYrBpeAIYzSNFPeVkf8WkOxUI17pO/H9MSvpbTSIO9tw+QGvKvCG6pfBkRXru
-         Zt5abm5P5SHLnTPVPEtKUHqdJguLltmyKrpO5KLAMuigTxGfQFrVRkLOtFweFM6UU7lc
-         pNbm/67fUZa1mJBXC7nXGsI8UXGTIYPkZq/VeNXaTL5cgyOssqQB9fn2rjUoDwR3f5bH
-         wjOQ==
+        d=gmail.com; s=20230601; t=1731947620; x=1732552420; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9DybuQx5d3+bgyJ9oEn2gWX7xPyv7WQdEkAa4DLURDs=;
+        b=nNVVrFiPW0lyxzIkBD0LbUpxclhm66AUffQfFn5yxWsLwUr+8E+Wwd7GRKXqjLHj0Y
+         UfB/WXLOMeQYIHdldMWdZNbB+2oyX6VgzvcuLz/KAVPqBlj8i2E/tvR339aMnDwUXY/T
+         WIHFRGM1OTbLha4RBpHUfaI9/8EV0VP+7O7sUYB8l3oxCst8fLiBm0etY5GtDoaeA/B+
+         lgjw1EfkYeEbu6p6hY2HkPWdWUzm8GkKghXlOkgNlMs+aTbYBAki+0jXHPGlsqT8fe2c
+         kQZFBITc0/1yNxZ/z5CtfxDocjTotdGVUJ7VTsMe/cAn7sQnK4Mv1Taa9XwmGGyim5by
+         4Tvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731947388; x=1732552188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/IuGvX934B9ntktwpmpQf50Bvp9bujrEwlob8aX4gFk=;
-        b=hWX5VI4Weq3T9YF4p1rcvcvt/3P3eEKthyAqzauzUbEPnJFKSc4xUIuIe3PaUUqlaE
-         5IiMQokfbRdJTY2uxegxAKry/qrQS1TkBOAa8grraBNpAyqlnR7PySi8rIah16lW6YrJ
-         OR6akeUsoOWwXHiM20sqZVZUptSoINXySHSK/nnI0lFkmQsc2L0jXK3wSULsskoMMXUN
-         Im0VGI0Yo6RKCOUYzV6iO9nO6uRDpmxIWWzpmeFgiCu/fYIqT9TpRKW7fZVbMGpfApIa
-         zuesDf0IWkdwaQ50OPJLQ86gSEFZPtiwUrQsJwgBA12oYCwqRLesBvODklFEDzPr8qQm
-         j1EA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQEUl/lqTbO2dWgeVojKZXI1Ot8W5wkco7+eciboFSftAR49h1s4GvFlYJFYzwjcpvLO32ic25liFT2YW++YE=@vger.kernel.org, AJvYcCVahdkMtH1a2x0s8BowzImiFOT8DESShoZFu3mlERrjgSOLxEtcxM62SyrKTYt4U00VfXhnkOM0+9InCqiN@vger.kernel.org, AJvYcCVjdSyFJ6rmyBRT+4AKU+1jJzcg2aM4jH2g1irYNUbaaA/pxojJq/Yv629aKeFXuP/r2G5PJrJg14Y63g==@vger.kernel.org, AJvYcCXHXW2+kpbynqn8OOlDvUCp0YwK08Gm6AfWkSYhhyqL4kkACDZLRfBBv3wcbCCLYjDC8XaqKo5H@vger.kernel.org
-X-Gm-Message-State: AOJu0YydCS75opMktsJSlavEL84zbq5drKv1hzFK/G/KZh1LisAm4zPm
-	l3ObNiYx4oPXP7PkgDPIHwoVSN8HszYdWEvui2ryYoLrrj59oj9hEnmcTF5eq4fg+UCwrUfOx3t
-	bv6sD2HhVdLLyKyBbGa+cUiaUQ4Q=
-X-Gm-Gg: ASbGncuo8fyqZLGXoIcjvyRGHz/GCy9em7gwriv9//hhIz2TFRxvi40l6OIpFztppY4
-	DF7wAP7OmeeS/wHXx4LJBmpcCr59Y9g==
-X-Google-Smtp-Source: AGHT+IFFrt+Sl9eXEXIzQhYlIVxSnSAKPMA48uxmhAI0AXrK3LjIIBiLv3RqJUM/lxOmAB4vBLH5ZUVQrEteSlCnbT0=
-X-Received: by 2002:a17:90b:2d90:b0:2ea:580f:6c0c with SMTP id
- 98e67ed59e1d1-2ea580f6cb9mr2939503a91.1.1731947388186; Mon, 18 Nov 2024
- 08:29:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731947620; x=1732552420;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9DybuQx5d3+bgyJ9oEn2gWX7xPyv7WQdEkAa4DLURDs=;
+        b=MQG1B4hqaWuV2cSDkS5A1/QMvz4QfHyRhtDuw8AfSfyNEuhe9IBls6Dt6aJph/rQYz
+         I7mJfe/uL1LKNDMOFo9LMl0wyxKj70Sl/BG3tp4pjIc0oYhQ3zg1H9P3BVAXbJS5f7Ql
+         KURllzrFZBpkop4qDpg3wJH7Oq/Qnfit/W9lbH9uta7Kc3Fa4RuDZBjx84mEe3dPUD31
+         VaIJJxQA2n0jNySaA8ZwhCKi4ooK+Ix4ZjXb/BrIKZTBTwETMrkImRp13tkjg4oVy++G
+         rAXeKzW6QC89zz8wG4IKFKcaxteYmhV+xWDEOhZ8UUVc6aWfBNxthSH52wLTSTg10EWf
+         5eIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQKLlsae2HGASX6vBshSkUJe0+S4EiU/rDalFEmjfI6e8p9tT8DCRPsKWNjEYkZKUGzjvM2QswPeL74ZM=@vger.kernel.org, AJvYcCVpL8IIUSH3sgbH3PyyzEI/+05qPh0txWIhtxlg71vklGfvnXuL/XNR6vnNsG6353Vx7MSpv8PROEo74DYx+T4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIfKCyc0hXXBb5QnV+KzPg5HIMA4yy8zpfsL5Si7I0QbCAun6v
+	dirDAU9RX9FrY0nSVAsJhXmsrNwa4Lvru0FCvFKDhswP2AycnXXs
+X-Google-Smtp-Source: AGHT+IGNxiAzkwhQ6JQgPd+SlepmHDLfpb7r81O61a4tjhmMNKgcYN7v9jKylr1KF3/4ZTel+lPgog==
+X-Received: by 2002:a05:620a:1a8c:b0:7ae:d2d0:190d with SMTP id af79cd13be357-7b3622eb041mr1823163885a.32.1731947619562;
+        Mon, 18 Nov 2024 08:33:39 -0800 (PST)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2620:10d:c091:600::1:35ca])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b37a8a9fdesm1804185a.124.2024.11.18.08.33.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 08:33:39 -0800 (PST)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH v9 0/2] rust: xarray: Add a minimal abstraction for XArray
+Date: Mon, 18 Nov 2024 11:33:34 -0500
+Message-Id: <20241118-rust-xarray-bindings-v9-0-3219cdb53685@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118-simplify-result-v2-0-9d280ada516d@iiitd.ac.in>
- <20241118-simplify-result-v2-1-9d280ada516d@iiitd.ac.in> <CANiq72=o56xxJLEo7VL=-wUfKa7jZ75Tg3rRHv+CHg9jaxqRQA@mail.gmail.com>
- <oc2pslg33lfkwpjeho2trjltrg6nw2plxizvb7dq3gvlzkme6t@eauzzfnizzqu>
-In-Reply-To: <oc2pslg33lfkwpjeho2trjltrg6nw2plxizvb7dq3gvlzkme6t@eauzzfnizzqu>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Nov 2024 17:29:36 +0100
-Message-ID: <CANiq72mcGs61PPDi2FHiqDtdNc7R8-G7R4R35zK=CVCRTQdWwQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: block: simplify Result<()> in
- validate_block_size return
-To: Manas <manas18244@iiitd.ac.in>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAF5sO2cC/0WOQW7DIBBFr2Kx7kQwBtt41XtUWQAZHKTYpIOdJ
+ opy99CmajcjvZH+07uLQpyoiLG5C6ZLKikvFexbI8LRLRNBOlQWKFEriRJ4KytcHbO7gU/LIS1
+ TAU/RKK002m4QdXpmiun6o/3YV46cZ1iPTO5PJltpsTUW+53qBqsMIMzBLe70niZ3Sm4X8vzrY
+ vrcatn6Ev6Hjc0rq5XgM3P+gnlboTdRDSoSRR3Gi/l2eFcIqm9O69h47GQbBxcGVL0PxkYT+oi
+ 6furR2HrrrQ1e7B+PJyMVdIsgAQAA
+X-Change-ID: 20241020-rust-xarray-bindings-bef514142968
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Mon, Nov 18, 2024 at 3:22=E2=80=AFPM Manas <manas18244@iiitd.ac.in> wrot=
-e:
->
-> Actually, "Manas" is my __official__ name.
+This is a reimagining relative to earlier versions[0] by Asahi Lina and
+Maíra Canal.
 
-I didn't say otherwise (nor I meant to offend, I apologize if that is the c=
-ase).
+It is needed to support rust-binder, though this version only provides
+enough machinery to support rnull.
 
-I worded my comment that way because a "known identity" does not need
-to be an official/legal/birth name, e.g. some contributors prefer to
-use a nickname, and that is perfectly fine too.
+Link: https://lore.kernel.org/rust-for-linux/20240309235927.168915-2-mcanal@igalia.com/ [0]
+---
+Tamir Duberstein (2):
+      rust: types: add `ForeignOwnable::PointedTo`
+      rust: xarray: Add an abstraction for XArray
 
-Cheers,
-Miguel
+ rust/bindings/bindings_helper.h |   6 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/xarray.c           |  28 +++++
+ rust/kernel/alloc.rs            |   5 +
+ rust/kernel/alloc/kbox.rs       |  38 +++---
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/sync/arc.rs         |  21 ++--
+ rust/kernel/types.rs            |  46 ++++---
+ rust/kernel/xarray.rs           | 259 ++++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 363 insertions(+), 42 deletions(-)
+---
+base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+change-id: 20241020-rust-xarray-bindings-bef514142968
+prerequisite-change-id: 20241030-borrow-mut-75f181feef4c:v5
+prerequisite-patch-id: f801fb31bb4f202b3327f5fdb50d3018e25347d1
+prerequisite-patch-id: b57aa4f44b238d4cb80f00276a188d9ba0c743cc
+prerequisite-patch-id: 2387ec5af1cc03614d3dff5a95cefcd243befd65
+prerequisite-patch-id: 8de2f688833d4d16eece062c5b6937a95a6a0e8b
+prerequisite-patch-id: 7f845443f373f975a888f01c3761fe8aa04b8a3c
+prerequisite-patch-id: 5a9856c7363b33f0adfe8658e076b35abf960d23
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
