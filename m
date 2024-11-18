@@ -1,163 +1,159 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AC61E5728
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 21:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAB8158DAC;
+	Mon, 18 Nov 2024 22:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731967130; cv=none; b=tLKrXubHHTOeLlGAxn0/PSbVuooPjuNhuPSXd65iSk3Cg7uTYNnYkYfwLiSLQBB/bk4KbkedzyalRuT47Ya7IW5k25Ep7UQrm2kVjoF/YJ/kPlupYyziXx4MA/kxfUGH8sg1P5LNwXxuHtWFGFjCKCLf4Byh3KPs1z9UlxWoDKM=
+	t=1731968336; cv=none; b=p0pWKxdk/JKEH6fvnY28WpSii04B7pBCZw6PmFyZehWyX6z15Rl76pAnXyMkNouXBQrsedlYJ+0crZlIWwjHw8u5SETnIyanzdaaAxzNUIggp2383U+WjKjoW4BSM2SXAc1p1vZXnT1VSR3khMrCQhvB8HTd36DI27nE2WA0kyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731967130; c=relaxed/simple;
-	bh=hQkH15gr6Qgm2KoVe/ThQVUD4flOHdtYi2Q7pTwd0MQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NOztBeL3dk/f7irexRzVJkh6UrqNDOJwjMqkhNmLXq5L0v5ZD33v79SOWOSpQAT4NUBcOOo5dducLwZMXTwPyUz7vYh2qAqxNM9+LRFrGe63gzzHfnPkP41aoDFQg5Zgai3cfJ+qt3uCPC0/5Yg10XDhXcaIlVOhXn4Hn75zQ6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YCwFGM4m; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1731968336; c=relaxed/simple;
+	bh=94Md2Bbdg2uJ/1C8DXzJpKoyTMxBfehGgIwyiwleNFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fPBrpkfMtggM/z0jt2pUgRE//THshMzYVZC8x07JlB3XAS1wekooGJWpaRPgN7NoEaSkQtVGGgz7jcYktAtys4whfxjNQW7VLpj0ZL5mggBfypyzij6We2mkisfg1JT6oYR3wWToLh0vU53/Kl3bpMvyOk07w1KY1xZGOVcQKQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHWviz50; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YCwFGM4m"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5cf6f5d4939so791a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 13:58:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHWviz50"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b157c9ad12so14837285a.1;
+        Mon, 18 Nov 2024 14:18:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731967127; x=1732571927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1731968334; x=1732573134; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZQ3Et6WIBdQ7sud4i/NonpGyXfau4X1TNW+PUgugafE=;
-        b=YCwFGM4m7dm3zFbfStEWvyaCFaFZgAlEnsbWu0wmvgKiX3fe9zlLm1kZwFEwV+Y7q/
-         crJtP3SJxgkueA8WSOKJrQIztfNl6bxSkwKeJvsVh0iA61LK0rsBcohX1jJhvdneuxvN
-         /JFSN23ZmIszzCTZL+nvL4lxcm/2fAI+LK17pHRid03SQFt3q63VmmkkbI+0rejeoaW8
-         uXawDrsKcpcfBip21IbCPgpMygCAEMCqEMCfPoxlmnLiUQGU6suyP8I71Zgo8TKnWikf
-         6Uais1OpfOsGBQQQfOpbIOIx+/02IIGLk70py3jHHlQAJ+Hpt3Bm5bakqdoZ96pTz05s
-         d63g==
+        bh=cdl+PoGf0HmpGeKu+Tb56R/ClTlR2kQttntRDnLIb7I=;
+        b=FHWviz50b6+C35O5eM8c5Y3YODy+O2RnSMKk1P7Uyzc6w883n5SzCXsTxsubX8I5A2
+         CXdjz5YNMMtLJKJt3Ysum0kC6O8UcxnkSCCrY9f5U1AbhpipQ6TUDzpQzJjLOjvqB9xl
+         iKLKuMpnxVykqdkgrQVQHQQXsKi1emETridLnFVi+w8/JsoV9BSpReLW3YADbNOTJYE5
+         r1VjYL7qVIzFFz9gG7Aq7zbXMywfhR0QRYDlJT9U4lgtbMzot7JqCaLF/z2Ov07E2g89
+         Q4NJ8KW1SKmK4gsin7fAJl1s0S0QZbLHz15waXUACdf7kWRQ7q2MfCybR2oDOK2c+sXS
+         DfMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731967127; x=1732571927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1731968334; x=1732573134;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZQ3Et6WIBdQ7sud4i/NonpGyXfau4X1TNW+PUgugafE=;
-        b=jC4Zvu+LBMRvLrjdOOmuUuyF8Xy7xTLboM5nKL1TRejms2P8D40xVrdS9oibGb8WeK
-         XmLkW/c9wNKp7H7lUWn0bubBfHA80sxM3qqo44Ss3sOngoDvjKaokoBNtkObSaEYc9P6
-         nHhqI91D6DVsEBBpOl22FHIDP1rhoWp5ul5pVXLshxJmB9Eb1F1SMbjGPAAXWvAoAQXG
-         JscDWF23ifXUI60uDgxh93V+TL10TWEEQIKC7Lbfwue+4uDTpbaeURs6HveZ5MvBbTGN
-         heSdFsvdt9s3dRAjAWVMkSjUO9iq+5sDxYLj881E+fcpgAnSjQULhUolnyWheBgwEvwx
-         hDQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXUcS2YuJ6Ir0dC4qtSq3u33z0ChlhCxhD7rDCtgYk8YC50ooSA4+l0fuu3P5UN/ANX9uFyZkLym709aCgSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOdInGBg0abP9OsemL0NjKJf6JqVxg9lc6PQvdxOK99fpfEjo2
-	BV7EJdBWgpheenH7IwLfS1IgkINBNf9+wRDxIiH25wzUL4wRm4vT1Rlb3bZwKMVmSiUfE3URE/l
-	I6zYPbQvrmp3Xc6cQ64cg9sDH75lC2swq3EAR
-X-Gm-Gg: ASbGnctPxexW6gaImqVxtQmL7ttKmc69TLGYHryTKmrekU+ce2aAsiL/JcSTE6zFpKj
-	F2sWuz7w4KeJCKonTyxMPOcb73gun41PBQUpMMKjaAyIIh52TtDeoLfH7sxA=
-X-Google-Smtp-Source: AGHT+IED/n5r3VjG+Ri+3OnSZ0XSX0QLyw7ggJKkFG+u6FSu0srLpXwOc/cszXrN20qB0TpblSw7+zX2Fd7l9uwnoW4=
-X-Received: by 2002:a05:6402:50c6:b0:5cf:deaf:ac2 with SMTP id
- 4fb4d7f45d1cf-5cfdec1bb2cmr23256a12.2.1731967126565; Mon, 18 Nov 2024
- 13:58:46 -0800 (PST)
+        bh=cdl+PoGf0HmpGeKu+Tb56R/ClTlR2kQttntRDnLIb7I=;
+        b=pSLNKGrZtBklgsyg+6VciwTOmwYctGC0kk0f7Yflel5eo5y0PMqYPCbATi9fxl0Mky
+         D8Nk5lR/SFwewdPHPiTXHctRaxm2Ze1HZeO0xg82DYTNicu4NF1adIggIHXvTcEmvZbj
+         6rYpBo7NEnvjWBqtlTAFKKx/IkEz9LZg956oyhZ546/aQzY+1aSsCXhqbPQE89fElNG4
+         ygH5tAzRQL2YadoEYD2Czq3ItnS9Ko3d7tXKcq3Rc7XR8Z2YQnNbANT9vmEvsNuJ0ARg
+         pfGb0wPjuxWIGuAgysESrvvSU2Uo+DlzlxjIzMn4PDbP0GxuENF+WeCH9cCWLNtnnefg
+         ONKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaNLcMRWSh3z6poq0Dv0u1SX0dgkNbrev0PImTIZYOXWc5HJKp21oqAJQoWT+oY2l0eNCSm+TSgl+eelw=@vger.kernel.org, AJvYcCWmvvmWLALOmihvK2zL32iJx0d6lLHx6VUdvuGegmqX4ZX86EhUV2EasWDBsNQ4luUL2FJxyPRQVtWcEpk/XYw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwowN7L5NLQQJv8gtNrvQS1HdDx6qhlmv3Blsh4YJr0VRRJ7jV
+	F3WlNwtUjJgVg+X9WdugNNKsuNuntFhLYgHMRt140W1DrwkP2/hbe9DHFg==
+X-Google-Smtp-Source: AGHT+IHyG5J2Avt5/hIxZwJRsRm/OHmF8fSepmAnvcQZIldqSDkhpyqZGQjOXYBb6tg5brtBYC7+1Q==
+X-Received: by 2002:a05:620a:319f:b0:7a9:b9c6:ab4d with SMTP id af79cd13be357-7b36236620dmr1773169685a.51.1731968333945;
+        Mon, 18 Nov 2024 14:18:53 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46392b9b2besm3635661cf.10.2024.11.18.14.18.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 14:18:53 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7E6461200043;
+	Mon, 18 Nov 2024 17:18:52 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 18 Nov 2024 17:18:52 -0500
+X-ME-Sender: <xms:TL07ZxVnuA_8uQ9Y6os94HW2gDLKMM3WuxDNi0WrPidZDtqE16PpbQ>
+    <xme:TL07ZxnecuMM9g2KW4IY6JRpc4XlNaYnUrGdQG0kHxxGphNr-iDxac6zECZ6hhI7t
+    XWPsOgA36Ik99_knQ>
+X-ME-Received: <xmr:TL07Z9Ze329j1BZbquhombh2SBtuWqc2YhwFCXR_2K_KgEpm6ceZX7TGdKVrAg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfedtgdduheejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehtrghmihhrugesghhmrghilhdrtghomhdprh
+    gtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurges
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilh
+    drtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthho
+    pegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvg
+    hnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggs
+    ohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
+    hglhgvrdgtohhm
+X-ME-Proxy: <xmx:TL07Z0URe5dmgu4wFSeiqFJ_m8Fa7_5Sa5aSRLSIsBmsdxX3NYzD3Q>
+    <xmx:TL07Z7kcyg5-WDEoqkoxLiSSbPipR8HezoyUe9pQ6-Jh1Ip91gGXbA>
+    <xmx:TL07ZxcNT0tMWD8D14rPoWFDinohLnD2Qp3lwdyyMiymPB8uZs2pqw>
+    <xmx:TL07Z1HOPIw7bHmStErFC816kfZiq-a6OIleD0BabuJbOSYU4cxBeg>
+    <xmx:TL07Z1lrndDsE4JlMDz0nhzYnZ3G13lZHzbmPR8nETnkKvkEUK7OB8jU>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 18 Nov 2024 17:18:51 -0500 (EST)
+Date: Mon, 18 Nov 2024 14:18:51 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 2/2] rust: xarray: Add an abstraction for XArray
+Message-ID: <Zzu9SzkDoq_1YQnJ@tardis.local>
+References: <20241118-rust-xarray-bindings-v9-0-3219cdb53685@gmail.com>
+ <20241118-rust-xarray-bindings-v9-2-3219cdb53685@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030170106.1501763-21-samitolvanen@google.com>
- <20241030170106.1501763-22-samitolvanen@google.com> <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
- <CABCJKueVjP8V-=3Ehi4QvQzg1FZh2unyVMDzSJ_vJ_E5EE+gLg@mail.gmail.com> <CAK7LNARVK1ZpGXZVTAynuo7CDjgB4uT5bQzcGiWseZfaEu7Tvw@mail.gmail.com>
-In-Reply-To: <CAK7LNARVK1ZpGXZVTAynuo7CDjgB4uT5bQzcGiWseZfaEu7Tvw@mail.gmail.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Mon, 18 Nov 2024 21:58:09 +0000
-Message-ID: <CABCJKufVpx4dsr7A44qA0ydwTEx+3Qy_OMx9Ch6OKa4nzvRj2g@mail.gmail.com>
-Subject: Re: [PATCH v5 01/19] scripts: move genksyms crc32 implementation to a
- common include
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241118-rust-xarray-bindings-v9-2-3219cdb53685@gmail.com>
 
-Hi,
+On Mon, Nov 18, 2024 at 11:33:36AM -0500, Tamir Duberstein wrote:
+[...]
+> +
+> +/// A lock guard.
+> +///
+> +/// The lock is unlocked when the guard goes out of scope.
+> +#[must_use = "the lock unlocks immediately when the guard is unused"]
+> +pub struct Guard<'a, T: ForeignOwnable> {
+> +    xa: &'a XArray<T>,
+> +}
 
-On Sat, Nov 16, 2024 at 9:09=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> On Thu, Nov 14, 2024 at 2:54=E2=80=AFAM Sami Tolvanen <samitolvanen@googl=
-e.com> wrote:
-> >
-> > Hi,
-> >
-> > On Mon, Nov 11, 2024 at 8:06=E2=80=AFPM Masahiro Yamada <masahiroy@kern=
-el.org> wrote:
-> > >
-> > > On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvanen@g=
-oogle.com> wrote:
-> > > >
-> > > > To avoid duplication between host programs, move the crc32 code to =
-a
-> > > > shared header file.
-> > >
-> > >
-> > > Only the motivation to use this long table is to keep compatibility
-> > > between genksyms and gendwarfksyms.
-> > > I do not think this should be exposed to other programs.
-> > >
-> > >
-> > > If you avoid the code duplication, you can do
-> > >
-> > > // scripts/gendwarfksyms/crc.c
-> > > #include "../genksyms/crc.c"
-> >
-> > Sure, that sounds reasonable. I'll change this in the next version.
->
->
-> BTW, is it necessary to share the same crc function
-> between genksyms and gendwarfksyms?
->
-> If CONFIG_GENKSYMS and CONFIG_GENDWARFKSYMS
-> were able to produce the same CRC, it would be a good motivation
-> to share the same function.
-> However, as far as I tested, gendwarfksyms generates different CRC values=
-.
->
-> When a distro migrates to CONFIG_GENDWARFKSYMS,
-> the new kernel cannot load old modules built with CONFIG_GENKSYMS.
+`Guard` would be `Send` if `XArray<T>` is `Sync`, however, it's
+incorrect since `Guard` represents an xa_lock() held, and that's a
+spin_lock, so cannot be dropped on another thread/context. `Guard`
+should probably be marked as `!Send`. Or am I missing something subtle
+here?
 
-No, it's not necessary to use the exact same function, this was just
-to avoid adding more external dependencies.
+Regards,
+Boqun
 
-> So, there is no need to share the old code.
-> Another solution might be to use crc32() provided by zlib, for example.
-> It requires another external library, but this already depends on
-> libdw and libelf.
-
-Makes sense. I'll switch to the zlib implementation in v6.
-
-> > > > Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
-> > > > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> > > > Acked-by: Neal Gompa <neal@gompa.dev>
-> > >
-> > > Does this Ack add any value?
-> > >
-> > > Acked-by is meaningful only when it is given by someone who
-> > > maintains the relevant area or has established a reputation.
-> > >
-> > > $ git grep "Neal Gompa"
-> > > $ git shortlog -n -s | grep "Neal Gompa"
-> > >      2 Neal Gompa
-> > >
-> > > His Ack feels more like "I like it" rather than a qualified endorseme=
-nt.
-> >
-> > Like Neal explained, an Ack from a potential user of this feature
-> > seemed relevant, but if you don't think it's meaningful, I can
-> > certainly drop it.
->
-> Tested-by is more suitable if he wants to leave something.
-
-Ack. Neal, I'll drop the acks from v6, but if you end up testing that
-series, please feel free to add your Tested-by.
-
-Sami
+> +
+> +impl<T: ForeignOwnable> Drop for Guard<'_, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: `self.xa.xa` is always valid by the type invariant.
+> +        //
+> +        // SAFETY: The caller holds the lock, so it is safe to unlock it.
+> +        unsafe { bindings::xa_unlock(self.xa.xa.get()) };
+> +    }
+> +}
+> +
+[...]
+> +// SAFETY: It is safe to send `XArray<T>` to another thread when the underlying `T` is `Send`
+> +// because XArray is thread-safe and all mutation operations are synchronized.
+> +unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
+> +
+> +// SAFETY: It is safe to send `&XArray<T>` to another thread when the underlying `T` is `Sync`
+> +// because it effectively means sharing `&T` (which is safe because `T` is `Sync`). Additionally,
+> +// `T` is `Send` because XArray is thread-safe and all mutation operations are internally locked.
+> +unsafe impl<T: ForeignOwnable + Send + Sync> Sync for XArray<T> {}
+> 
+> -- 
+> 2.47.0
+> 
+> 
