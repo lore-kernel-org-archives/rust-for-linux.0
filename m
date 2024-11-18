@@ -1,93 +1,111 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7988F1BD9C3;
-	Mon, 18 Nov 2024 16:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8191BBBFE
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 16:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731945948; cv=none; b=Nh92x8hKhYmwoCXn0WHDg8lDMg9Y1hjYaWsb36jh0QRxnt8iPvIiWex8ztdwsa6wONLXqHwR7aS58CglCWHa0DfmwSEpl4Q0Enra2UkTYsPVoZm+Ql0watZUJ1LjGY3vTRQzI7cVi27MttRLFosWZfkwXNssKO9p1HZOR7ajjS8=
+	t=1731946206; cv=none; b=GaycAyY7gOv14tST4pMnhWrVsZK5zA4ocyzZzJiaOWZlnwgQr+rLfm3V3aDo91+C/07bfyUPbzNGzdwszJ9wyDI4oBJKN403qsLFVU7xN7o7JF3r320vC6ST8ED3UF62gNeEHO01OhrOGvhzCBtOaBon6d+m/2zb1UdIZ71k4Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731945948; c=relaxed/simple;
-	bh=k44zIQ0S4MFwyQTY6IZW4xAiVOSmjLBV0+3wLzd1ukU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YpIdsD4EHmM5FRiQ+x+6km6ODUozJVQ5AlW4bn6l7LfxYtKJQSqyMPB6NJvo/rD3V6rLJhIGjoKIDuY2EfZkS8yedYVJCSAZrMZ+JiCWZK8D7ZfUdEkxjiTMmee8y5YRDmlKPuKsix1mYGbyUZV32yFVRxjIlTQIdnMy4fW/bJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLli5seL; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1731946206; c=relaxed/simple;
+	bh=QfPXYHL5fsdkIoYd0xVznS8WD1LBbFDqzny4ASgLKbY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ccbVm92pVcQkJpGBI3Kdhdmq5qWyQR0lD6zPRHzGPpd53rMt9F9HQ1X0u90Cn4sIeN+/HJBaWKlkINS2JLBSmA2nBJkPmddufQjtCIbT3rkDx4XsqjHve7yoXabl01WQ1WeFXUmdheFafOfXguOazfcGa9SQCSaTCd4HvToFUIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=kT4Vfeyj; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLli5seL"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7ee36621734so774346a12.3;
-        Mon, 18 Nov 2024 08:05:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="kT4Vfeyj"
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5ebc0dbc566so2005451eaf.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 08:10:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731945947; x=1732550747; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k44zIQ0S4MFwyQTY6IZW4xAiVOSmjLBV0+3wLzd1ukU=;
-        b=LLli5seLjiuXCAh3/gmLAEF9+avTX6hxMq2XXYz/5ftLyfQyuJC15pp4aTtufZxVaN
-         MJJvdHpX6rw+bLXhj0DfpG8mjZxi+3/nVlAaxfBX6314dtl7S6XQKUxQ7SFMxF35xb4z
-         5h6c8ZArcxC4YHMhPd0jAeq6kfQZ82Uj0xVct0GRX14nA7sQH1Npvb56V/1PT5zgMgBG
-         2rUXl9LIb4F8NA9acwA/sj8UO8xyT4FqWa2A0uApxJVpDU5oeP9cR9zFkshQ+9Di8waO
-         WGRc5zAEIGIpuFkSB4+xi//EDUNZnvziPelWu28jPhH0pZPd1b2Gg32roNDOD9R/v4FD
-         uPiA==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1731946203; x=1732551003; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nEQPAT/nZnphZ6rlK9fU/8h4DP7I7h6rQ06FLczHMWs=;
+        b=kT4VfeyjDq2hCSc49aJrxb/3/ICQKZs6xx5e/vL8xTGZWjMlcHNC9/e0kbUECv3h0T
+         +cuuysC88gtsxqoM0WXgpIGE9TNRFjwo75tqNVRldkEvF7TLksaO59Mp7/HhlUq7UU3n
+         Rshp9A1IgKsM3XZADnTFgpHBoj+kVUsBGW8byq2V8HB2Tk2YNT7q6ta4bB0zyoF6aQgC
+         sNaVMoITA5GVPVx1+XZIN52ATzc+I25GBvJBnyedzQi1MvWAA4Yth7RtuOhXCjhw4I9d
+         KttJNal6oRolNDWRxxxkpfmOUX56rwyR6z3AVK6YstOgilx7+LuEIMKPykxS9AZCFrIK
+         yN4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731945947; x=1732550747;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k44zIQ0S4MFwyQTY6IZW4xAiVOSmjLBV0+3wLzd1ukU=;
-        b=pOLdzd6KuOlkjdutLH4DG3oBTeW3qAYwhAxqaqMJdsfL4pGJ4EhCteDStj5x5wNuz0
-         04GM/kLrenoL7MtKU/m1NKtJgXyS11YY5hOF2jrf3ZhxM3D8yn+6krz/AmZc44KdZtO9
-         Mnp9oQToqN3+yGPDUTqH7Z8SjbWQbHn0LUxAsE8OFRQf7KG0LcZEUAaZEh61na2/z0Y8
-         4pMtoItdl82qcGWobnaB8+ld4XqPGUMYNtmhXabnaXfiYgu41YtXgeIly6Eb48oJsGx5
-         igSMB+Rgtc1dzP3jsozTDYtJrknU2qaYRBQ+/TvVvx1PnFTuk1M497dtAoCGWvFycM7a
-         uH7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUxXzwiNKZrWejy6k00Oea/VlOfkEd+xtdNcrpYQK69fc1HeZu0FFdldy3x6oT4+0iGftaw3Ib0aT+HzQQ=@vger.kernel.org, AJvYcCXXN3Srm13ria3oCKrq55pWU6ENyJ0M4tfyG7vuS51hi/lAAzQFn/2TAVqNB2cwiV41s3y3eYsFlGwX1DJo+Rw=@vger.kernel.org, AJvYcCXxD/bTSOQk7tUn0eFk83rpHTNZmmt2/Add6pPJqoFtMgsb43iWyCkre3kEoPHfDxYnd3VWdzgL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyrf9UADxAVMCFGHDYbvq4AliK5KT+2gKTIhVXQbeJdNRuef4dI
-	0MH91n0P6Do/tWXFw7ycSk0LDvD3wpmgYhwEIRlIDkEPGsxOmHR3AqtXQSot5Og19urfLYYe3gT
-	fuAGypvFoEgsoU5k982FWKMzaoPs=
-X-Google-Smtp-Source: AGHT+IG6S0sFFkoTAiVrefbp6oMfjC8RUwZjjcfme6xYZ4N6NBZUd2AdnNdpwM3Ebrm1W/5HvpkaOSQrxgVW4ICIC8E=
-X-Received: by 2002:a17:90a:e7c2:b0:2ea:509b:c871 with SMTP id
- 98e67ed59e1d1-2ea509bcad4mr3444540a91.6.1731945946604; Mon, 18 Nov 2024
- 08:05:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1731946203; x=1732551003;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nEQPAT/nZnphZ6rlK9fU/8h4DP7I7h6rQ06FLczHMWs=;
+        b=C9bfijEFRJat5nqI6VdhuC4wUPnjIaGf/IXrB+92Y5mBbjFyNSbebZa0O98GxZnuPD
+         NurAmJsQWhn6muFq1Wr/jTAbpMvIOgU7B80BosC9nMLHnR1+qeiPKwAme9/oS/psgj2N
+         pOfUiL+n0w8V03LnWSvWwY9yqXnm/0/99IleTRgnZIDSbyZJwL93I2X3XikkwOAJlB7D
+         R0sr08iviXEEUCte01ObPDwQa6YOffwwVD/TUTE/xPA0QlatQSxHFefAPxaNS/4MWQKM
+         INxq71bRzHV+JBwaETE2tX1iBYkQm+8Q+pHR2kFs+no11kZSMosWQ6qL5CKbr/by05N+
+         glzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbiKgZT5yeWl6Omrkx8kqT49dR1HQysW1RQqL2bktS+E15EBHrZ9I53VoqjUJtmxPQy14YZ8n8w5NhaFFKrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6Sx6ucCh7152KyW99gnNLS/hz7v6PDDJhuCo+gRMxXgFsqs1u
+	GWIuip0LOuKosHzqWY04GBnRgtmagNFSikf+22zIpTg7xjyEh8yUmgYCs1w35/8=
+X-Google-Smtp-Source: AGHT+IHhbH8HnsWWc2oM5+X6l6Jxm01cBB+zT4adkJw5m0vc06zcpCay0UFQ6Bdl2zk+kGL7rOU9RA==
+X-Received: by 2002:a05:6820:2018:b0:5ee:bb2:bdd4 with SMTP id 006d021491bc7-5eeab294512mr9840034eaf.1.1731946203194;
+        Mon, 18 Nov 2024 08:10:03 -0800 (PST)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71a78214f08sm2768949a34.70.2024.11.18.08.10.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Nov 2024 08:10:02 -0800 (PST)
+Message-ID: <db75c787-8deb-4522-b4f7-ab26b164fce5@kernel.dk>
+Date: Mon, 18 Nov 2024 09:10:00 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118-simplify-result-qt2025-v2-1-af1bcff5d101@iiitd.ac.in>
-In-Reply-To: <20241118-simplify-result-qt2025-v2-1-af1bcff5d101@iiitd.ac.in>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 18 Nov 2024 17:05:34 +0100
-Message-ID: <CANiq72n_ERNd4=n1r6MOhOzii-EG6ie84tk4M8rg9zYXus-J7w@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: phy: qt2025: simplify Result<()> in
- probe return
-To: manas18244@iiitd.ac.in
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] rust: block: simplify Result<()> in
+ validate_block_size return
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, manas18244@iiitd.ac.in
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma
+ <anupnewsmail@gmail.com>, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org
+References: <20241118-simplify-result-v3-0-6b1566a77eab@iiitd.ac.in>
+ <20241118-simplify-result-v3-1-6b1566a77eab@iiitd.ac.in>
+ <CANiq72mzCSmLG0_Vqu=sCO7TBPzXtea3HPw5TjT_gYKEh7_1NA@mail.gmail.com>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <CANiq72mzCSmLG0_Vqu=sCO7TBPzXtea3HPw5TjT_gYKEh7_1NA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 18, 2024 at 3:30=E2=80=AFPM Manas via B4 Relay
-<devnull+manas18244.iiitd.ac.in@kernel.org> wrote:
->
-> From: Manas <manas18244@iiitd.ac.in>
->
-> probe returns a `Result<()>` type, which can be simplified as `Result`,
-> due to default type parameters being unit `()` and `Error` types. This
-> maintains a consistent usage of `Result` throughout codebase.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1128
-> Signed-off-by: Manas <manas18244@iiitd.ac.in>
+On 11/18/24 9:05 AM, Miguel Ojeda wrote:
+> On Mon, Nov 18, 2024 at 3:37?PM Manas via B4 Relay
+> <devnull+manas18244.iiitd.ac.in@kernel.org> wrote:
+>>
+>> From: Manas <manas18244@iiitd.ac.in>
+>>
+>> `Result` is used in place of `Result<()>` because the default type
+>> parameters are unit `()` and `Error` types, which are automatically
+>> inferred. Thus keep the usage consistent throughout codebase.
+>>
+>> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+>> Link: https://github.com/Rust-for-Linux/linux/issues/1128
+>> Signed-off-by: Manas <manas18244@iiitd.ac.in>
+> 
+> If block wants to pick this one up independently:
+> 
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+I can grab it.
 
-Cheers,
-Miguel
+-- 
+Jens Axboe
