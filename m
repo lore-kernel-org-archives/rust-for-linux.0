@@ -1,119 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEB21B6CFC;
-	Mon, 18 Nov 2024 14:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7385E20309
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 14:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731940620; cv=none; b=Y9W0Qv7U//cd7c9cPFzpn5gBPh99b/I1NiFzcIujWPyfargG3OnxfYwGNcdXuwg3WHFkvxGk6DsWCZK8ub/hTHL/f+zLmE3kegUPcjPyvAd7L5ED/wZlMW4TqSUiDnS6UR0GkZB7RWCS5dplFrluJ7Gpg+o7IrLo5z2G8XJWZV4=
+	t=1731941093; cv=none; b=C7HTWpNSkVEpgsix0Jp44x09nyLzghf7+vQ5GyTkNPCFuKgx5zqLgl4qvX5PH19JX/dnWJ+l53M1xz2Gq9bIZt69LuCV1Qmqx8MsQswxBLd92NVEaInCos1vpM5ufdhQ508JgZbHj6yNvwxTq/CL9life21H3XZh1yGUH+CmE2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731940620; c=relaxed/simple;
-	bh=1C5xQW7WAmLfa3yWt5eppmcy13VdQvDCpoa+yQ2xw68=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uYWxqpq3/mclCj6dn5dX9iafTBsRoKAeF4C4HC8cB4rnoB51RDJtMqgVZ/p0ZwP5c2QVHGk8n8Ob/EQbRCmgTsqL+CQ+qR2OGXcWYLVlpUhmwAjPr7Wbay4T06s5aVxcgV8raPG9eETOR7bwY5T+Dfq9Cl6qLOsjqqLWTNaDHEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTlrgu1h; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731941093; c=relaxed/simple;
+	bh=E0cAa2aNq6Mc7yw5zkRWWjXMUlqp1v5EgXEorunS1QY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ldH5Qmz84SD7ICEQWeq0es4YU+jZsn+3ueRn3TEGMhVlzaSEJ9TBc5vE0i2jLwYs975wbqdJo9KqGcKKGjaTpi12wiXA1umo6DnSW7kqanS6LRQl7H5sW42zWE8JOboYqQ9Z7x9pyKfPH+C/XW/UdPSh99uAvoM2cR4xQKRDdtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in; spf=pass smtp.mailfrom=iiitd.ac.in; dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.b=T0jkDmOT; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iiitd.ac.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iiitd.ac.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTlrgu1h"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2786CC4CEDE;
-	Mon, 18 Nov 2024 14:37:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731940620;
-	bh=1C5xQW7WAmLfa3yWt5eppmcy13VdQvDCpoa+yQ2xw68=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RTlrgu1hpr0/ND4l7SsMNABskDLfpGcS364kqlO/5OBKd1RcpIZ48p3OZNiuigYtt
-	 U5yy5Wz3Q1lhjHM0GlU9GyDEZU0ft6hswf51WqE0O50u+U4m0d16D+EZaTDJXTfRLG
-	 2TzMNfoU/KiCklIqDYEv5hHDQCYLCmD6aQk+XuLJbyNmjIBlNHJqJbZXQNs/u0O0R2
-	 XbCZT8z5/haCskqctngH/STuOd9yOkepJn7dT0jaYv31oqkF1ZoUjXikhda+x+2vVP
-	 RYhgpJ6vlJApVR3YJ0t1l5QXZtPTAx70gD2unxtxptNdCnkdZyXpRICId9zttt+Oc/
-	 3Uvym7zbWBfJA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17EBFD4922D;
-	Mon, 18 Nov 2024 14:37:00 +0000 (UTC)
-From: Manas via B4 Relay <devnull+manas18244.iiitd.ac.in@kernel.org>
-Date: Mon, 18 Nov 2024 20:07:00 +0530
-Subject: [PATCH v3 3/3] rust: macros: simplify Result<()> in function
- returns
+	dkim=pass (1024-bit key) header.d=iiitd.ac.in header.i=@iiitd.ac.in header.b="T0jkDmOT"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20c803787abso33634375ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 06:44:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=iiitd.ac.in; s=google; t=1731941091; x=1732545891; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JYWwOYLcwcPP+A/83kJ8ifuFWs5RtxL5hdw+gOPjj8M=;
+        b=T0jkDmOTqWaqDsstYAdmCyLpKnWj/BTEYdEohJl+hYC2ba33kPcgXgy0e6rSgZuZDg
+         SeYuCeXgUnf4AyEmN/LdWDD86hIKu698fkFVRjM0FeyHy3PgvV6ZObDIAzSbVlTH14Aj
+         sttgjxN2pJezfa5RlCbQy9PJvXbb2h8mZwabk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731941091; x=1732545891;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JYWwOYLcwcPP+A/83kJ8ifuFWs5RtxL5hdw+gOPjj8M=;
+        b=rE0RL6eFhGCZ7GcI84RckOYV+1KVQLiXvL322YgZ7LQZgMGZuGoon/V6bHD6YlgOXb
+         jFR558FSNSmfuePwf+GmQhTySSGBH4/xBbkIuz4nbqYdW9NuvrHZWDFRFbLqJJVWO4kY
+         s6OKxmffDyitHE3DzHktBS0ukROpeXYDzco0vk9G0sPPKeibRmW9ts8uax+7yysqqVTt
+         o6nqrEA18rQ+G+MGALUUEO8L6FcJJtUXbb/2Bwrqike7SW9FezoY5RxUPbJv4en2wBK5
+         Qjjw+H3VYVOyO3+kQLmr3zN1+gGNaTpGwApgNXD7MO/9FEzzD3Y+wk6m5RmN733IOxuj
+         U09g==
+X-Forwarded-Encrypted: i=1; AJvYcCUKy3Fpdcaj+VsNI4S+27ddjsLNACS578bLEh3m4BZkybRvhairdDQ+7jbKF1jejFxIbKp8GlVbWjMK4+BIfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrF+Pm1HQwzmPNE/DDre1Fw36UpGHqYCOcc1GdZmkSZYXyBG9I
+	RbH5ixgmBSBf+xdSynO0P/pYuxuZYg8DRDuksJhBeXlXmvm9144rXy7s31tryIo=
+X-Google-Smtp-Source: AGHT+IEZJC6qrfmQYXudfPY0b39hKgIq9lvIgiYMOg8ih4+/Gb88ayPiRHQN3KIh8gpc/eYlLUmo4g==
+X-Received: by 2002:a17:902:7445:b0:212:3f13:d4bc with SMTP id d9443c01a7336-2123f13d691mr14557005ad.27.1731941090785;
+        Mon, 18 Nov 2024 06:44:50 -0800 (PST)
+Received: from fedora ([103.3.204.127])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211ff3cdd34sm34581735ad.103.2024.11.18.06.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 06:44:50 -0800 (PST)
+Date: Mon, 18 Nov 2024 20:14:37 +0530
+From: Manas <manas18244@iiitd.ac.in>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Alice Ryhl <aliceryhl@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Anup Sharma <anupnewsmail@gmail.com>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Subject: Re: [PATCH] rust: simplify Result<()> uses
+Message-ID: <efp4og5bzb4by33m3kn3nuj2tbntsddxvhrfi7fkanfampd2ao@xt5dmffq77w5>
+References: <20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in>
+ <3721a7b2-4a8f-478c-bbeb-fdf22ded44c9@lunn.ch>
+ <CANiq72kk0gsC8gohDT9aqY6r4E+pxNC6=+v8hZqthbaqzrFhLg@mail.gmail.com>
+ <q5xmd3g65jr4lmnio72pcpmkmvlha3u2q3fohe2wxlclw64adv@wjon44dqnn7e>
+ <ea0ee999-06ad-40d7-9118-695859fa9afd@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241118-simplify-result-v3-3-6b1566a77eab@iiitd.ac.in>
-References: <20241118-simplify-result-v3-0-6b1566a77eab@iiitd.ac.in>
-In-Reply-To: <20241118-simplify-result-v3-0-6b1566a77eab@iiitd.ac.in>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, 
- Anup Sharma <anupnewsmail@gmail.com>, netdev@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-block@vger.kernel.org, Manas <manas18244@iiitd.ac.in>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1731940618; l=1445;
- i=manas18244@iiitd.ac.in; s=20240813; h=from:subject:message-id;
- bh=NTTuXPWy5AUeqCEPojOUwO8gX5t/CAh+3ZZpchSjGSw=;
- b=TvZk+POq6esMzkJ39tL4CXbkwnxgKtAKjrW1VbhsNzlmzrcikgodE1xGSsj5SBJ+2ZWv8+42z
- ALzxsGbc1aoAJxPiSudyRmYmI22IvW9BpJV5IlEEHGn2VbgFrdfC6y+
-X-Developer-Key: i=manas18244@iiitd.ac.in; a=ed25519;
- pk=pXNEDKd3qTkQe9vsJtBGT9hrfOR7Dph1rfX5ig2AAoM=
-X-Endpoint-Received: by B4 Relay for manas18244@iiitd.ac.in/20240813 with
- auth_id=196
-X-Original-From: Manas <manas18244@iiitd.ac.in>
-Reply-To: manas18244@iiitd.ac.in
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <ea0ee999-06ad-40d7-9118-695859fa9afd@lunn.ch>
 
-From: Manas <manas18244@iiitd.ac.in>
+On 18.11.2024 14:29, Andrew Lunn wrote:
+>> Andrew, Miguel:
+>>
+>> I can split it in the following subsystems:
+>>
+>>   rust: block:
+>>   rust: uaccess:
+>>   rust: macros:
+>>   net: phy: qt2025:
+>>
+>> Should I do a patch series for first three, and put an individual patch for
+>> qt2025?
+>
+>qt2025 should be an individual patch. How active is the block
+>Maintainer with Rust patches? It might be he also wants an individual
+>patch.
+>
+Last commit in block was in September. I haven't heard any objections from
+Andreas.
 
-Functions foo and bar in doctests return `Result<()>` type. This type
-can be simply written as `Result` as default type parameters are unit
-`()` and `Error` types. Thus keep the usage of `Result` consistent.
-
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1128
-Signed-off-by: Manas <manas18244@iiitd.ac.in>
----
- rust/macros/lib.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 4ab94e44adfe3206faad159e81417ea41a35815b..463920353ca9c408f5d69e2626c13a173bae98d7 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -144,11 +144,11 @@ pub fn module(ts: TokenStream) -> TokenStream {
- /// // Declares a `#[vtable]` trait
- /// #[vtable]
- /// pub trait Operations: Send + Sync + Sized {
--///     fn foo(&self) -> Result<()> {
-+///     fn foo(&self) -> Result {
- ///         kernel::build_error(VTABLE_DEFAULT_ERROR)
- ///     }
- ///
--///     fn bar(&self) -> Result<()> {
-+///     fn bar(&self) -> Result {
- ///         kernel::build_error(VTABLE_DEFAULT_ERROR)
- ///     }
- /// }
-@@ -158,7 +158,7 @@ pub fn module(ts: TokenStream) -> TokenStream {
- /// // Implements the `#[vtable]` trait
- /// #[vtable]
- /// impl Operations for Foo {
--///     fn foo(&self) -> Result<()> {
-+///     fn foo(&self) -> Result {
- /// #        Err(EINVAL)
- ///         // ...
- ///     }
+>Please also note that the merge window just opened, so no patches will
+>be accepted for the next two weeks.
+>
+>	Andrew
 
 -- 
-2.47.0
-
-
+Manas
