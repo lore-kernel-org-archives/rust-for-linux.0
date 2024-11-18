@@ -1,136 +1,96 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D3C3BBF2
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Nov 2024 03:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711A2153836;
+	Mon, 18 Nov 2024 09:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731899682; cv=none; b=XP9FKP6d2UhmLt4Xeyu913Nt/apRjILcjy93cYIVRc0KvLN4vajSCC6iuFbjp4yD26evBdYrkTRrwS+CS5vGi8p+wDolZx0LuHXaPMrlFpEYtGMF+i3dfc0PIA95KtOhx4pl0A2LLKq38Mtthv8s2cduD/WadmtdIPoGJS/xsg0=
+	t=1731920958; cv=none; b=SuSiLriHRK/KW5xdvDsB8R4nON46U4DL2dRu2Sr6gCJRkyXE0x8TQ5odToXUE2wwTzwkBVtoDTaoCV4qSO141U2xOBd3HKoFV2p30/oHgEoDRLryeu7fRmQ/2toapSQf/FHOOYmmT3FwpPetB0pEuxby8R3NOro2SeWMi+pbd6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731899682; c=relaxed/simple;
-	bh=XY59ISUptXRYCSU+AJy0JeZAWMP3TegwoYy9OZbTJcQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fB8aufkNLN78ie7cEOEiUYC+hl/MUEyp6HY7eG0Gnb+5PqFu8o31fTM/EMZVDl16434A0Zo49E/9CDxE7vfJ1SZJvuN9H2nHPXNW3VMkf46QhcsvJVCYDFMk/9CY7bLtXymToQSofuNdURBA9qmzabf9D//uyTX3qsasz0MCY9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io; spf=pass smtp.mailfrom=mandragore.io; dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b=KklW9vbH; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandragore.io
+	s=arc-20240116; t=1731920958; c=relaxed/simple;
+	bh=YWLswSe7WZP9b/xSFZ5CYmi1IPuOZDQasiG6yEaMH7c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kPATJDQxnuDqq3HIird9NgfoYm62/XskzLCsn4tSnMO4OVudE8bHxyAoqhIkmBQHN/wSysTzBmPyu79ILaIpctipU+/Ipeq+HgwQ9xlsk3rCxvJmWXecPA1qCmgpBaWZzuDpiW/S7x9DnrG/gElmsY5c6VUY72o0XxfZRor7oYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SrHKJxVR; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b="KklW9vbH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandragore.io;
-	s=protonmail3; t=1731899663; x=1732158863;
-	bh=62TybkuSsITuOtLWbZvJVVtVVcWCmH06iOofM9IW8TY=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=KklW9vbH14Hqav1ZC8nch2PCPhGQDwrGKZjKOntGe2lk3/04+6Gp3Pr0/sJKUnKYv
-	 EmspG3UEJHJSFOSDCBkItOYK9LA/CldD4YDqjW2QO2g35L5A9lFJjLBNMzAq1aU3Xp
-	 KkRqFEuvuUWw0nm5ntcjk0ZMTGqQm8Ei08mP60ErxRGBmoZC+v0pjspRIs7Fiv1zoi
-	 iMIJHgGY99W7n0Yddw+joFa27DAeOO9AY6rfY+8bQqo55NItVRguGYec4eC4JIxaJf
-	 TZfKxJbUj74Daoosz8uEYVySY66+Mpzf4o2ZEG7Z/XayyKohCMkfdKx2cmbHPNTqdX
-	 hsml6bouSBBTA==
-Date: Mon, 18 Nov 2024 03:14:17 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-From: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, Konstantin Andrikopoulos <kernel@mandragore.io>
-Subject: [PATCH v2] rust: add safety comment in rust_fmt_argument
-Message-ID: <20241118031225.38080-1-kernel@mandragore.io>
-Feedback-ID: 125704292:user:proton
-X-Pm-Message-ID: c088e9fbd7d4fdb7671a51df9d216056bcc90b55
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SrHKJxVR"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-211f6e1c865so3390455ad.3;
+        Mon, 18 Nov 2024 01:09:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731920956; x=1732525756; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YWLswSe7WZP9b/xSFZ5CYmi1IPuOZDQasiG6yEaMH7c=;
+        b=SrHKJxVR7m3oU7mRrxp5tp8195/a4J6qbqwx0P9bQd7Knry67ARKGLZGc/ChpUs4J6
+         qbYAKwJe+9+JZFRVNcFJ/S9ph2QAMq/XIf8m1GH44EqLZ9IpZ1m+FY4m8sqjT/TJiVih
+         m4zIzrUnyDn3S5JK3/VfiltW7ATbAkEdTzOQhNNQl9g9+pRjckhBP2e3u/edPQTbx7Pm
+         oeONCrxqOzYtmBj2ABTN8bCWRqFEKWOcj2qANX1O6CSz2HBCvCJ7gW4we0xqHCSDoWI9
+         XB0WWn5e1VC+mblw1PtkIx4Hs0Uu7lulKxRKtkdkw2WmDnVcvOCKIYdJgjV/+FgLemR7
+         TWDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731920956; x=1732525756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YWLswSe7WZP9b/xSFZ5CYmi1IPuOZDQasiG6yEaMH7c=;
+        b=Y3h4G0aZ+M1822mX2CQnmJj6hrMKc3c+GkYktG5vi22ZmN1qlWwhO7iZhU2XvJaiOw
+         MplHCo1w5DOvwUy1d6AJtRT86Oi8fnc4F/giGvOB1HPSgw9hhFtds5ZJX+Km/5Hyvs6o
+         uLIs29bX95fquM5WwnrkJFoj8sxvotohmb4XRtEJyWk4mmt2K/noD/UdFDhV6dIi24pi
+         o165Gcz96ImiNP87qAd7Ev+H30mA91fLfKgLibk+Mk9UJKLcCcqYXGivQfmcJ2IZp4ot
+         5PXxhaVyxrTkhwUDN+Vid5QYDnDHeVB+yHSUOfqINjL9s4gtMFrjJezqf33njBTsC2wr
+         jTBA==
+X-Forwarded-Encrypted: i=1; AJvYcCU03h+yQ9j8YpWkmc8W/CafvKWk+WILvJJTyP9Ct2F7jMFVVjlBbNJMujOaiJPN9g+hHMuf0XjcVY3PzpoEfDw=@vger.kernel.org, AJvYcCVanOkH3CTEMcQgtBeinFSjgUD0dNL6pOwxSvXtVjaj1G9vanx+aBBQk02FkRyBPL0UTVSFU9/CWDyhsw==@vger.kernel.org, AJvYcCWlKh5mnQg1gyTrHyPTM/lF+rBEf0GIBcDWXfuyWUK+E0NsU71JpoVkwwvSYcZ54LdVXmZKSkN4@vger.kernel.org, AJvYcCXUk5TAd4YxOB+1GmpcWssfhQ7NDa7hbAnwfpNGVJWe22VyhqCSP+xbgHSS+UhhBFMY3+R5YugdmxcDJdCx@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ0azNHph2gIIKIoqeTklXIexz+vGkdviQnAuJO8a9t/Q79ft4
+	u36DAp9xjSJRcmz4185sMqRUcBBZ3s7SoWYbCvosccudJMdIa+EqGLR+8Rsd3Kr48xnwXWYVlCM
+	UzB/4TYAEVGb8/xha6cfDprKAVzQ=
+X-Google-Smtp-Source: AGHT+IFpWfv5PIcWHbtZu/kn7bRyyJbKbZRumMvg1pEzQh+tSLDv2nY2KMHanrDXfZai+jdjAHxB8cHLncAz8ePurYk=
+X-Received: by 2002:a17:90b:1e50:b0:2ea:715b:72ba with SMTP id
+ 98e67ed59e1d1-2ea715b7581mr1460462a91.9.1731920955682; Mon, 18 Nov 2024
+ 01:09:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20241117-simplify-result-v1-1-5b01bd230a6b@iiitd.ac.in>
+ <3721a7b2-4a8f-478c-bbeb-fdf22ded44c9@lunn.ch> <CANiq72kk0gsC8gohDT9aqY6r4E+pxNC6=+v8hZqthbaqzrFhLg@mail.gmail.com>
+ <q5xmd3g65jr4lmnio72pcpmkmvlha3u2q3fohe2wxlclw64adv@wjon44dqnn7e>
+ <CANiq72kQJw4=qBEPwykrWBsqmycwS+mR27OE2dTPQd3tKjx-Tw@mail.gmail.com> <5qtqdzljvzly5onzhfdq63fzcqcj26ybktm2cgomijpnfnyrbj@ln2kbp73csf6>
+In-Reply-To: <5qtqdzljvzly5onzhfdq63fzcqcj26ybktm2cgomijpnfnyrbj@ln2kbp73csf6>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 18 Nov 2024 10:09:03 +0100
+Message-ID: <CANiq72koO_gdhP_5hzNz5AH-JQNoAzpszpeVR_BV14Nw-OWhzw@mail.gmail.com>
+Subject: Re: [PATCH] rust: simplify Result<()> uses
+To: Manas <manas18244@iiitd.ac.in>
+Cc: Andrew Lunn <andrew@lunn.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-The function rust_fmt_argument dereferences a pointer, and thus it
-needs an unsafe block. The safety comment for that block was missing.
+On Mon, Nov 18, 2024 at 2:12=E2=80=AFAM Manas <manas18244@iiitd.ac.in> wrot=
+e:
+>
+> Yes.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/351.
+I was asking because the kernel does not accept anonymous
+contributions, so when someone uses a single (common, I think?) word
+as their identity, it may not be enough to find the contributor again
+in the future if the email changes.
 
-Signed-off-by: Konstantin Andrikopoulos <kernel@mandragore.io>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/kernel/print.rs | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+Thanks!
 
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index a28077a7cb30..57a4fc48bbcd 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -13,8 +13,27 @@
-=20
- use crate::str::RawFormatter;
-=20
--// Called from `vsprintf` with format specifier `%pA`.
--#[expect(clippy::missing_safety_doc)]
-+/// Handles the `%pA` format specifier.
-+///
-+/// This function is called by [`vsprintf`] when it encounters a `%pA` for=
-mat specifier in a
-+/// format string. `ptr` points to the corresponding argument, `buf` point=
-s to a buffer to hold
-+/// the formatted argument, and `end` points at the buffer's end.
-+///
-+/// `rust_fmt_argument` treats `ptr` as a pointer to a [`core::fmt::Argume=
-nts`], which it formats,
-+/// and writes the result to `buf`.
-+///
-+/// It returns the address after the last byte it has written in `buf`.
-+///
-+/// # Safety
-+///
-+/// `buf` and `end` must follow the requirements of [`RawFormatter`]. `ptr=
-` must be valid for
-+/// reading a [`core::fmt::Arguments`].
-+///
-+/// `vsprintf` guarantees that `buf` and `end` will uphold their requireme=
-nts. However, it will
-+/// just forward the argument that corresponds to `%pA`. Callers that prov=
-ide format strings must
-+/// guarantee that arguments which correspond to `%pA` are valid pointers.
-+///
-+/// [`vsprintf`]: srctree/lib/vsprintf.c
- #[no_mangle]
- unsafe extern "C" fn rust_fmt_argument(
-     buf: *mut c_char,
-@@ -24,7 +43,8 @@
-     use fmt::Write;
-     // SAFETY: The C contract guarantees that `buf` is valid if it's less =
-than `end`.
-     let mut w =3D unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast())=
- };
--    // SAFETY: TODO.
-+    // SAFETY: The safety preconditions require that `ptr` is a valid poin=
-ter to a `fmt::Arguments`
-+    // struct.
-     let _ =3D w.write_fmt(unsafe { *(ptr as *const fmt::Arguments<'_>) });
-     w.pos().cast()
- }
-@@ -104,7 +124,8 @@ pub unsafe fn call_printk(
- ) {
-     // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
--    // SAFETY: TODO.
-+    // SAFETY: The format string and the module name are valid to pass to =
-`_printk` as required
-+    // by the preconditions. Additionally we pass a pointer to a valid `fm=
-t::Arguments` struct.
-     unsafe {
-         bindings::_printk(
-             format_string.as_ptr() as _,
-@@ -124,7 +145,7 @@ pub unsafe fn call_printk(
- pub fn call_printk_cont(args: fmt::Arguments<'_>) {
-     // `_printk` does not seem to fail in any path.
-     //
--    // SAFETY: The format string is fixed.
-+    // SAFETY: The format string is fixed and we pass a valid pointer to a=
- `fmt::Arguments`.
-     #[cfg(CONFIG_PRINTK)]
-     unsafe {
-         bindings::_printk(
---=20
-2.47.0
-
-
+Cheers,
+Miguel
