@@ -1,92 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6159519415E;
-	Mon, 18 Nov 2024 10:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAD71E49B;
+	Mon, 18 Nov 2024 13:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731926045; cv=none; b=IbAITGgkEgT97tB6LZfT3RynS66BFsps/PddHTziERMgXuO2MJVMzvMOU1/R6xX3aYzjKUyRB1fHYjX9/xBKbvNZnI0A6OH0aIoYMfRbeBbLeDmUDSmMfD7AyTbrN9Gz0v5Ml7PVlibMPXX+QH3iSs1LnTlUe/nwtsM5RGbgDfY=
+	t=1731935383; cv=none; b=Xyrm15qg1GRYWDxFrxD/u1qY6eXv6/unul9OxYZ6noP7AV/pB2MQNKsXg3Yzsfu8WtsVW7m7kK2DNzHE5JeGRlNZKPBo7Wl4VVZHsaqP5ntLUa/U5nAlIvnac2enUllKErUuHfBLAE0IRv89uN67m4kT9Imi8k1XTaBHp/sbV6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731926045; c=relaxed/simple;
-	bh=E4ANi0ufgkTOjdoIU/sCeV7rHrR5kvtRV1MyqV1mUDY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Uva8pqzcEqm43xDzIH5pPXya5itjtg41iXkjfRAR93Ae1zXXvUesO6V2VKhnpsflposxmIGNgMCKbN6KGwjhbRG70wMS7DpXmzt2ZQJeKIZloM2IqSL+4bp09iyMKvHiRc643MgAwL7SB4zZESOeBceQB7v+mgIBH7bnOVzl/Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKVcCoaW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731935383; c=relaxed/simple;
+	bh=cQo4iAMdE75Iju1hmRvTp8v+SSIrunOvBCkb1Gi4F2E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ULOrakvaSX5HZN20FCEln7b/Ba45ENh8AyaEdhe5HmiZdaYadkNNdd1JU8XpPd4j7OtNwRptq4Te9wF7DfaE8N2TvG2R2fcBPyPGyfYqt8mKFWb6enbgtDW3fSfZweNOD5Ptg44KJkGBiq9QqXJjbqjvPGUMLWhyaJP+okezZok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOCS299h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKVcCoaW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D959C4CED0;
-	Mon, 18 Nov 2024 10:34:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOCS299h"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B8AA0C4CECC;
+	Mon, 18 Nov 2024 13:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731926045;
-	bh=E4ANi0ufgkTOjdoIU/sCeV7rHrR5kvtRV1MyqV1mUDY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CKVcCoaW0+LwwAQP0QtWiZqKOv13GcFbv5Jvvq2gqVdtQ8eMzb9MaoJ6QVMgc8MPH
-	 wxsesKDt15OMeEEZCx31Reg7r9qgGM5HYhKDwmwq/mSUzPQFoxt2eYZCHeLOMw6IQf
-	 9xIzcDIUS2X6Lo0YVIbuZwBKGQxoT9lc2jThDQwKoOjzkDn86Sfr9cmBD7Ay/yhdsH
-	 velqfBuXZMGJry10NkP7XAFSn53GURIzwRyld0aT4ZvA1dbEMfLadbWYfwXjJeGTnM
-	 MuwByiLoMOyls+EDlpUzE97RPVdbfT9ARznF//CNS0Qu8P9MhK/B6kbNHl/6Z7VXsp
-	 etqJcDuX937ug==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <patches@lists.linux.dev>
-Subject: Re: [PATCH] rust: allow `clippy::needless_lifetimes`
-In-Reply-To: <20241116181538.369355-1-ojeda@kernel.org> (Miguel Ojeda's
-	message of "Sat, 16 Nov 2024 19:15:37 +0100")
-References: <EFX-31VoeCMlETFeBCV5AsLQH8mV4szc26gB1uEEnYvF2z6YRevjYkQV7KZpoyoVFkoukFyYBc35hVpVzivEvg==@protonmail.internalid>
-	<20241116181538.369355-1-ojeda@kernel.org>
-Date: Mon, 18 Nov 2024 11:26:29 +0100
-Message-ID: <87mshw6dnu.fsf@kernel.org>
+	s=k20201202; t=1731935381;
+	bh=cQo4iAMdE75Iju1hmRvTp8v+SSIrunOvBCkb1Gi4F2E=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=hOCS299hs+zrZICivNdsbZn90+4ryiqcy4A6IfFKQqJdNjPqtuc0b6nXQIyZ+QTtD
+	 2r0f1E2Nd/Khv/yzP5CAXaMdGVEPvs2Ea5BTJIEaa16kp+d80+LLHcFAhXNugG3ucL
+	 XKjE4/5l8q3Lv7IFd5YcRzN7Yb/MAp/SRR+O7z1TveTepu0m/EEzxLGf2D8gWi1pIz
+	 5GxPzS2p+XfSDm9UvYSB1exFSKSTcTVrYDRuWdLjY0gEbokm8qvTrozBo0cLFLiaPb
+	 iePIowrO8kUZ0VLTPlEnTMA9fMhaW+pLy2zrAQof2HJ3XKYdCBVuNC++j+JdemNLJv
+	 v+SJDxhTNJrcA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A46AED4921E;
+	Mon, 18 Nov 2024 13:09:41 +0000 (UTC)
+From: Manas via B4 Relay <devnull+manas18244.iiitd.ac.in@kernel.org>
+Date: Mon, 18 Nov 2024 18:39:34 +0530
+Subject: [PATCH net-next] net: phy: qt2025: simplify Result<()> in probe
+ return
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241118-simplify-result-qt2025-v1-1-f2d9cef17fca@iiitd.ac.in>
+X-B4-Tracking: v=1; b=H4sIAI48O2cC/x2MSwqDQBAFryK9tsH2A+pVgouoz6RBRzM9EUW8e
+ 4Ysi6LqIoNXGLXJRR67mq4ugqQJDe+ne4F1jEx5lpciUrPpss06nexh3znwJ0RVsfR904w1qgI
+ DxXjzmPT4jx/kENjhCNTd9w9rgZsTcgAAAA==
+X-Change-ID: 20241118-simplify-result-qt2025-1bb99d8e53ec
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, 
+ Anup Sharma <anupnewsmail@gmail.com>, netdev@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Manas <manas18244@iiitd.ac.in>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1731935374; l=1232;
+ i=manas18244@iiitd.ac.in; s=20240813; h=from:subject:message-id;
+ bh=b+u/enFxPC2OQb24qeuinsUzhoPbbFPNjp30yv8A78E=;
+ b=VVCd959mHl3fdAs00yFofntkbHvAfCQ2XltcauKLxVDNZfmtVWdVj1Nm4rF9y767uXY4UvSAY
+ qf/QRFW7KT3CjzzeOo61XIcbXoEmUYDUqLjvqyWWmeNhZuE4CwcHlJT
+X-Developer-Key: i=manas18244@iiitd.ac.in; a=ed25519;
+ pk=pXNEDKd3qTkQe9vsJtBGT9hrfOR7Dph1rfX5ig2AAoM=
+X-Endpoint-Received: by B4 Relay for manas18244@iiitd.ac.in/20240813 with
+ auth_id=196
+X-Original-From: Manas <manas18244@iiitd.ac.in>
+Reply-To: manas18244@iiitd.ac.in
 
-"Miguel Ojeda" <ojeda@kernel.org> writes:
+From: Manas <manas18244@iiitd.ac.in>
 
-> In beta Clippy (i.e. Rust 1.83.0), the `needless_lifetimes` lint has
-> been extended [1] to suggest eliding `impl` lifetimes, e.g.
->
->     error: the following explicit lifetimes could be elided: 'a
->     --> rust/kernel/list.rs:647:6
->         |
->     647 | impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
->         |      ^^                                                                  ^^
->         |
->         = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
->         = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
->         = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
->     help: elide the lifetimes
->         |
->     647 - impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
->     647 + impl<T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'_, T, ID> {}
->
-> A possibility would have been to clean them -- the RFC patch [2] did
-> this, while asking if we wanted these cleanups. There is an open issue
-> [3] in Clippy about being able to differentiate some of the new cases,
-> e.g. those that do not involve introducing `'_`. Thus it seems others
-> feel similarly.
->
-> Thus, for the time being, we decided to `allow` the lint.
->
-> Link: https://github.com/rust-lang/rust-clippy/pull/13286 [1]
-> Link: https://lore.kernel.org/rust-for-linux/20241012231300.397010-1-ojeda@kernel.org/ [2]
-> Link: https://github.com/rust-lang/rust-clippy/issues/13514 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
+probe returns a `Result<()>` type, which can be simplified as `Result`,
+due to default type parameters being unit `()` and `Error` types. This
+maintains a consistent usage of `Result` throughout codebase.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Manas <manas18244@iiitd.ac.in>
+---
+ drivers/net/phy/qt2025.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+index 1ab065798175b4f54c5f2fd6c871ba2942c48bf1..25c12a02baa255d3d5952e729a890b3ccfe78606 100644
+--- a/drivers/net/phy/qt2025.rs
++++ b/drivers/net/phy/qt2025.rs
+@@ -39,7 +39,7 @@ impl Driver for PhyQT2025 {
+     const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
+     const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043a400);
+ 
+-    fn probe(dev: &mut phy::Device) -> Result<()> {
++    fn probe(dev: &mut phy::Device) -> Result {
+         // Check the hardware revision code.
+         // Only 0x3b works with this driver and firmware.
+         let hw_rev = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+
+---
+base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+change-id: 20241118-simplify-result-qt2025-1bb99d8e53ec
 
 Best regards,
-Andreas Hindborg
+-- 
+Manas <manas18244@iiitd.ac.in>
 
 
