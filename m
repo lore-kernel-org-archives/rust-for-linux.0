@@ -1,55 +1,55 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9401CCB59;
-	Tue, 19 Nov 2024 14:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E0F1D0E28;
+	Tue, 19 Nov 2024 16:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732026304; cv=none; b=Yp8QyhZxVPyrE588v5CuHz3ckUo9fJJLTiComQTBSCG43rUz8l+ugYS1uSL9/v+AhHzLDyHRjPoisSN1b3EhNSmwScTSWbLNHsQseSEYAmhPfynfkl+FMs/IrkUK1jD9QXoo6Q/Fv5ssHJ+IlG/23c7mB82lRNozocCvV5EcrFM=
+	t=1732033465; cv=none; b=YExf25QW74SBkit3azy8/h27NGIcllOEYYkultBNDeRASXyjfsDshqaW8jUMb1R0xKMhZnT8Gezhk8+49pHga2zpujLIAGBvq5whD1JQ2wR1YZqJfVJY14rEsQiG+s0SWRzeHc65sRYMYimNjnHzwTcxD6H3gPANqqKEIOsQwqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732026304; c=relaxed/simple;
-	bh=f9+ZXpPOPig3xx8es3Ad+e/idZjq8WPG824uifMLItg=;
+	s=arc-20240116; t=1732033465; c=relaxed/simple;
+	bh=loOXpF5Y232SZZdnxI41SkdXDzuLWWE5iEeYT2x9Z90=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nzF3W4IIjb3k1eO29nRGUE8CpXpQ1r8XQfb+yx/fYFXUJr++kigvoQk6hTnu37yOerpbF4MR42XDlD7B9N3oKgmYxRv7/Ry8m2zYn2tecFzsW7fCgq4Nr0sP9clAabfhYuNpD3H2/uCsNgTjQqzBRN2eOM2WKhpb+fbZdBkjfdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m8qr3mDF; arc=none smtp.client-ip=209.85.208.176
+	 To:Cc:Content-Type; b=O2417yWY8XSQPevMP3710f3gUvmwM6nosef/uZk7HKxrB/bPou10EjxHUJzJmfDoDGnz2leflkm8w9GGVGukA93gBrUMrkO8OFnJVrz/V7gpD0zzXU8MQPEdg9EY0IhDde69zFtlaStNnZLu0QeS1PWLLwJ8WrW92XTzlMcJy1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdK/IrHm; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m8qr3mDF"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2ff64e5d31bso10628331fa.0;
-        Tue, 19 Nov 2024 06:25:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdK/IrHm"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2fb561f273eso55053391fa.2;
+        Tue, 19 Nov 2024 08:24:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732026301; x=1732631101; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732033462; x=1732638262; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f9+ZXpPOPig3xx8es3Ad+e/idZjq8WPG824uifMLItg=;
-        b=m8qr3mDFWZvr9q+xpkmP9fl26CXvleVS8EQeCNMg+95u0vy2DT/fVKigO0C7f4U2Xj
-         uC2poptA/4eaKFfUpLh07u4EiiTZjtkVSjFTCEIdUf82ZHmXnt7cyQnhi3YXbLrFn0kk
-         b9sX3kT4vlmZ80dJH3UZGSl9VL3orI78Q2dOG34ArQ23R3yjxQyYlfu3MWPCr712zE00
-         91uR2gqDHm2vv4rQMvgOtTIUTBwkzDa1MvUM0p7aTmQeFkA+hOj+TBxLeMoFM0SohOxu
-         hQGJxptnlfunSgR9Hpcz1Y/3tOahgw9/G3pNDFlHyJNWP52sNJWn6QtnxlVYlw0in+rS
-         DwpQ==
+        bh=F0Rn78o+aVfOenb2VUkNF9b/q2fBCMoQpYU4wkrifyc=;
+        b=ZdK/IrHmPTX4hFe2hOEvA5WMJniZ901xU34ruXF3/2UoDc7zyW04CJY9Rh3t2nub2r
+         1c0CLzJnE6gjJgcEAaU5fmLMYQVIAJtPkpRkR/FujUVUkFK/jZvso2bbLF96Jxj8tnW5
+         alfKanYHC9rohAw3zTvzDS9lL1pUKBRW5h6GlPaONQBHCspVPmFTVpqrzL/UBfih/xO1
+         +QVdtADtQpEPvzp1RIuBP9qNB6aN2FsedGWQmlIKJZFRUOUXiJK3X73WjPxTjJHR68D0
+         /nVi5lH1lHO1bsrcdWpn4qsSb1o2u2vIIQ3LvFsQmFS3aufI9SDb5W7R+iGGMtkZvCMk
+         iyow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732026301; x=1732631101;
+        d=1e100.net; s=20230601; t=1732033462; x=1732638262;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f9+ZXpPOPig3xx8es3Ad+e/idZjq8WPG824uifMLItg=;
-        b=asj+o4WyiQKZ4mhdCZXjoMOElFctw4349c1KkXcJkUrXkG61BU9IJAppS/YgW635Bx
-         cbUkMUOoFoY4Kxr1LZ4gO1xDA7gQAFghE4zY1sC6/OEPK2N2iyOdb7ZRIBpiKYkF9vFQ
-         l3baw19XHmZiScM6sW9b+nkG/EpiJ86hxhVRaW+9iv5FROS6V3MBpt6Z1/aMrGMzpg38
-         YpSdec3Z8OASUkah4sbeze8fjQyqVVqquQ4zvaxlwIy4W+KDb1MutyUQVfULnwRQvTEU
-         mCq7FfomX+7GZ7eH2bIpVs1WJQVLc/6NauUmbvjlLK3WO+pbksS9uBR9Wgwpd1i4VUmv
-         FiBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUa0wR9OOTnSRkiq5tzB0P7REjyxY5/MHg3NCpgUfKthnu/IMfbC4e7wsPQ/mmBzyM1IZmomB0Viqw+ELs=@vger.kernel.org, AJvYcCWcv9Tk+tZpEcwxNQRMawdhuTsbkQYaAcnf8TOGzHYFlvLvnckb60tU+SS97nyEMIjpnnzIej76ShMANPlLTHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdNBq23ju4EqjeyQcdeY/XzpjI+iBX0QcewaGXvCkZQi+IfhRd
-	AYAzk8BmM73LJChLpNMYbQtwehJNUSPKWW9/uWvzsOS6s/8+0UT3Y+TUbjAVpu4c956ph6Y6ktZ
-	HO1mD2V93c57Jv4zrsVJaBAZOpdg=
-X-Google-Smtp-Source: AGHT+IGDQuZvYxpeBWOu0zWh0kgnWDlKHJRMUgF7I3RbprVTCPL0DLTqlOu8A9d7MCZlQoLSdVAaq3cVsJv5vAu1cfw=
-X-Received: by 2002:a2e:bd0a:0:b0:2f9:cc40:6afe with SMTP id
- 38308e7fff4ca-2ff6090e9c2mr77071141fa.14.1732026301218; Tue, 19 Nov 2024
- 06:25:01 -0800 (PST)
+        bh=F0Rn78o+aVfOenb2VUkNF9b/q2fBCMoQpYU4wkrifyc=;
+        b=HLkl0S8trh5ZNrygpEAYl1YfFTGGt3Sq8+6odD6ikw4gQXT1RvfbshA+tvguG9YuzA
+         OvBjx03gOlfOBjKKDEpsTFENMiWgW0A2eZtMcPEFIlS1OiLepD1DzYxd0Qml/YMSO+oa
+         gBPJareZh4xalrosw9iD2/emOb8bn36bWmDiRNiOMT9uWT/mV4NDSHH/bckYk85gqANr
+         I4dUmlZqNuHNO7LMy1Ham2HaA6MGUhDELyDcQrO7x+X2Tq0Q3L59uP9jA0JW2ybgs1nm
+         pGfyCpXDCl04/vEsHQgObtp3DOhiH0tDy0abV7bL6Wp0CglXDAtzoNVice63YCpjjkBm
+         jGxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUlThsHtLRU90swtyrUqvBWNKuEEGVjUxkdW04kKpp2G9LcHlZErBXwEocc2DOOL5o4HeJ/8FbjgTHP8+8=@vger.kernel.org, AJvYcCW1AXEkTx/yX/sJ1LtXrx1OGlCTpn/xWOFq1CwKdG4HuYcBB4xoOC6mbgrQa+W1N6u1VBNDXcwFhc7t4JocGNw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJlcvc6stb8zdGGF+0V6Pnylnh95bwLSKtIdbxdFBKtbyErdjs
+	jQ5oK2lgxzirbsnTwdEstVIumC1mUBPCBBcWPVOWo/gDm4ltR4wHFfXfFX2bTXIl2IsESsD88Jy
+	H7Q22VpKo+Se+loyJiaLCsaft49M=
+X-Google-Smtp-Source: AGHT+IE8ZXvQ+lgNiDNkEq7bX9iBCWO22T30Y5+iMtJNYZU65OgxffLIrgm7+TslFy8ZwCpR5ifRXvUAI3Pcy87LZmQ=
+X-Received: by 2002:a05:651c:e08:b0:2ff:7a4f:e770 with SMTP id
+ 38308e7fff4ca-2ff7a4febaamr28494071fa.31.1732033461415; Tue, 19 Nov 2024
+ 08:24:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,29 +57,44 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241118-rust-xarray-bindings-v9-0-3219cdb53685@gmail.com>
- <CANiq72=13uaXS+mptTiQZ7OLpyO_=r7-06cXEujFqtej=150YQ@mail.gmail.com>
- <CAJ-ks9nqcrOhOSuw+fN9+871W4YEs_rwRJehm=mnAx+M_v8Pqw@mail.gmail.com>
- <b4c1e64b-daef-4181-a3fb-98b4ab3a9c1e@igalia.com> <962f49a8-0d0c-4a1d-836f-e12c0f621917@asahilina.net>
- <CAJ-ks9mVHLC5EpiEp5t1=vNfDqPnn3bmYMgPRYr=K6DvRn0GgA@mail.gmail.com>
-In-Reply-To: <CAJ-ks9mVHLC5EpiEp5t1=vNfDqPnn3bmYMgPRYr=K6DvRn0GgA@mail.gmail.com>
+ <20241118-rust-xarray-bindings-v9-2-3219cdb53685@gmail.com> <Zzu9SzkDoq_1YQnJ@tardis.local>
+In-Reply-To: <Zzu9SzkDoq_1YQnJ@tardis.local>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 19 Nov 2024 09:24:25 -0500
-Message-ID: <CAJ-ks9nd_sMQ5KwOLMtbRwa=eA1snC8Ne=OR_oDf9974MUs8pA@mail.gmail.com>
-Subject: Re: [PATCH v9 0/2] rust: xarray: Add a minimal abstraction for XArray
-To: Asahi Lina <lina@asahilina.net>
-Cc: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 19 Nov 2024 11:23:45 -0500
+Message-ID: <CAJ-ks9mKArX37VzhcyymDoE-MsNxNcO8VvP4n3Xu1mdfOKiuag@mail.gmail.com>
+Subject: Re: [PATCH v9 2/2] rust: xarray: Add an abstraction for XArray
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 19, 2024 at 9:21=E2=80=AFAM Tamir Duberstein <tamird@gmail.com>=
- wrote:
-> Ah yes - will add in v2.
+On Mon, Nov 18, 2024 at 5:18=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Mon, Nov 18, 2024 at 11:33:36AM -0500, Tamir Duberstein wrote:
+> [...]
+> > +
+> > +/// A lock guard.
+> > +///
+> > +/// The lock is unlocked when the guard goes out of scope.
+> > +#[must_use =3D "the lock unlocks immediately when the guard is unused"=
+]
+> > +pub struct Guard<'a, T: ForeignOwnable> {
+> > +    xa: &'a XArray<T>,
+> > +}
+>
+> `Guard` would be `Send` if `XArray<T>` is `Sync`, however, it's
+> incorrect since `Guard` represents an xa_lock() held, and that's a
+> spin_lock, so cannot be dropped on another thread/context. `Guard`
+> should probably be marked as `!Send`. Or am I missing something subtle
+> here?
 
-Err, I meant v10.
+I didn't know about this requirement, thanks for calling it out. I
+have added `_not_send: PhantomData<*mut ()>` in v10.
