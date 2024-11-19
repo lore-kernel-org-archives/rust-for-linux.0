@@ -1,192 +1,85 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6002914A60C
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 21:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032D81D5155
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 23:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732052297; cv=none; b=Xlbuv8Uy0yWdC9Mfmh4sOr0ez+AzxhtRgz+0QJsEaKeTPNjTfAKgWgIyEPCYjTqL7CaTVaUKNiOyWBEJPwnZwmbA+HZ8+6KPjpMQ1CjxSeuio+x/I+WcYG2Hy6ULr2PYE2He6KRHH7KG9NqKgzP1BnEkdIAIuO7bqsHibIRXvtw=
+	t=1732057923; cv=none; b=KhKSNpefAAdFiG0CSnnoZ1V/k94ZFgQvq4jh0w+eAzAhJMVMoEK2FPJAsF7vq9uc3ExXJDg4GRjTfGbG3vvI8w8VhtmWYjC3V24cDwxaBJUMXGPgxLwaBCtRhFVwCVa+VMR1h5lY6BjEO0RBqK54kWvOiycszWyAZI0cfq+7q5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732052297; c=relaxed/simple;
-	bh=Zd2QB6z5/nO/5q32zOMmJULah0pVbTKjUr9QlGKD+V4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uALHS6ATqPd0dVCes62hSojgvZqkkje9zjbYnRixVKRaJM5l946PS+tsmWEzqkQe+eqoR380b7H+ySUg3Gg4aNiVfPXG3r10I/uPDSEU6bEkSms+vVepiwIaWSrJFruBxofyRjER7wG47VkLvjgoq2AaFFqQ4zNj7dprOAckhh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=riOe9kTP; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1732057923; c=relaxed/simple;
+	bh=H6zFyPLJsQs0C1j4owdm0akaGy8YbNOzRJtp7SdaLB4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aAl+h86VbknCjaMFNSOU56s7evBVuOL0DdY+TzrH/vDxejRcOb6I3fVRGszgoiYLaKjE3Id4+bXv33Sb2V0H7xuEaxWsv56w7XxKOryRjRsq/rYWUZfrTWteNszsorKuQ1bSOXoVZQc7gQZ6CYeyI2t1Jd/RInY34sEZQOovzQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TjeI27Cl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="riOe9kTP"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5cfc264b8b6so16965a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 13:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732052293; x=1732657093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KHaLTJLv2qMAaXUVhzeSonG7VLA1CIIMmtCZ7ax6TDw=;
-        b=riOe9kTPt2Z4CGEcbASPouoXwaiHTuSrqylopYOwFm2ooik3fCWEN5wQ7CFc4BpHi1
-         Z09pMsnCRkkEtbwCNA309i5p3KGGGAAPvse4M5K6q8EC8W1Prq6kyI12w0J/ruevidYC
-         lJTWrfCwgZu/Vo8WjsutqlgwruYRy3MFheM1PCrWzoAHiBcsG//++wjvnf/U4QRdPMTr
-         1RjAlbdldv64NIOOrSdf1eOu3jMnYQQSbdWPIVo1x95LEWAeIiel/z8cIBaPrXtY66wz
-         iaKmmmsINe2jLKDJGhpqkTbFfkGe5EHL5MHcMmwNBbD6x7xNSXJbWMbJEA6qS1Ml6uet
-         CneQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732052293; x=1732657093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KHaLTJLv2qMAaXUVhzeSonG7VLA1CIIMmtCZ7ax6TDw=;
-        b=aJcNBrrwS6omNu4f49oUP4VJLQV9gTbRAEHyuoGNJYhov8nwi2HZWx/mKESRfarfjj
-         NtWMwFZS7J6ql6v+pyHYSuVEMtABOsjPrRlKnyXoDJsfgMpLUidgaUlWZzG5GSpanan7
-         /Fw9icl8m6wNBZnvLbtX+MideHDoPHaApylRNRuEZ218f3ub5vOPLqjH/DFMgHIFwP8Y
-         CiCgicUzvj2sjFMqkZUqep0Gye0lQyj80+HbzmEZWhlu3oEqaJ2i6VPhrADfxjPX6s/i
-         D1dZvTrEcZYwW54IsZtHiCULvsRD4R9BGh8zswA+RokvhWDapVU+s6pUPDQeaJUKoQQw
-         sUAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyl2n095UhtpQAubUa9ty5Zl+9AnZGklhfBM0hyIMMTbMJE4YjRhIluykBH6D1Dr/CfXcH+jbBUrnyXvyKVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTCQqweB7VixijMQN1Zc1R6QhRoUUaURas+nqo6vVcXVQQgQDo
-	1ii9af21Jqvj/ubyY2Gp3k4tohLvdQaCOfrb797L/sbGI4WdyBUMI95cy0VHzc+329DLXKqd39A
-	s44gmd14NNH0kuCPOZMR5w0cJ17o1D84NdhcU
-X-Gm-Gg: ASbGncv1kEfLSpLXkIGqWX1JtlH9DtGG/YDKS6g8p0Yz04bH/qEDECJy03+0/q3I6a0
-	MAtQ8/p14oG2YO3T0GQQPzx+ruH0VQxMmpaxiI/jH6D4xyFJy3j1YZ8qsgQ2+Ig==
-X-Google-Smtp-Source: AGHT+IEu1TvsuhTaj4Y+Akxvvr6wi40qDULQBNFY0mTnIT/+3AaCJ0gDLLAcrNpIwNcwmpaw1b+off/DTHI6qwyqUP8=
-X-Received: by 2002:a05:6402:b3a:b0:5cf:f20c:bdf0 with SMTP id
- 4fb4d7f45d1cf-5cff4314190mr20664a12.4.1732052292462; Tue, 19 Nov 2024
- 13:38:12 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TjeI27Cl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732057920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bi/Aj0IsGtjX57Y2W6moM2xOST0I2AXVDNrA9rXUiVc=;
+	b=TjeI27ClVSbJAyZubV/1R/OF9vj3OW9Y3K/uqUOxWQn4DXizGYHywC+dLdgJ+Y5yGR4VPO
+	g+CU+SjXoCsu6yfRpTeSorZdrfVh+w47E3kKnAwUfRG3N9AGFoSEGU/z3HX5/+O0M6q+5A
+	kEXQa/lDU2ccPEoa2UXe6bK8JHMUuYM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-202-qCUTvLsGMA2Zz6mW51UGYw-1; Tue,
+ 19 Nov 2024 18:11:54 -0500
+X-MC-Unique: qCUTvLsGMA2Zz6mW51UGYw-1
+X-Mimecast-MFC-AGG-ID: qCUTvLsGMA2Zz6mW51UGYw
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E2DFA1956083;
+	Tue, 19 Nov 2024 23:11:51 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.23])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BBB6B30000DF;
+	Tue, 19 Nov 2024 23:11:49 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH v4 0/2] rust: Add Lock::from_raw() and expose Guard::new()
+Date: Tue, 19 Nov 2024 18:11:02 -0500
+Message-ID: <20241119231146.2298971-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030170106.1501763-21-samitolvanen@google.com>
- <20241030170106.1501763-22-samitolvanen@google.com> <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
- <CABCJKueVjP8V-=3Ehi4QvQzg1FZh2unyVMDzSJ_vJ_E5EE+gLg@mail.gmail.com>
- <CAK7LNARVK1ZpGXZVTAynuo7CDjgB4uT5bQzcGiWseZfaEu7Tvw@mail.gmail.com>
- <CABCJKufVpx4dsr7A44qA0ydwTEx+3Qy_OMx9Ch6OKa4nzvRj2g@mail.gmail.com> <20241119204829.GA1926309@frogsfrogsfrogs>
-In-Reply-To: <20241119204829.GA1926309@frogsfrogsfrogs>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Tue, 19 Nov 2024 13:37:35 -0800
-Message-ID: <CABCJKue+n2V5vua2=Hwc1SXBdkmdLBD7ac8imt5HO1bsy7s9dw@mail.gmail.com>
-Subject: Re: [PATCH v5 01/19] scripts: move genksyms crc32 implementation to a
- common include
-To: "Darrick J. Wong" <djwong@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Darrick,
+This is the third version of a small patch series to introduce
+interfaces for working with locks that we've acquired from raw C
+pointers, something that is quite useful for bindings like the rust
+bindings - where there's a number of interfaces protected by BFLs, or
+which require the implementation of callbacks that are known to occur
+under lock.
 
-On Tue, Nov 19, 2024 at 12:48=E2=80=AFPM Darrick J. Wong <djwong@kernel.org=
-> wrote:
->
-> On Mon, Nov 18, 2024 at 09:58:09PM +0000, Sami Tolvanen wrote:
-> > Hi,
-> >
-> > On Sat, Nov 16, 2024 at 9:09=E2=80=AFAM Masahiro Yamada <masahiroy@kern=
-el.org> wrote:
-> > >
-> > > On Thu, Nov 14, 2024 at 2:54=E2=80=AFAM Sami Tolvanen <samitolvanen@g=
-oogle.com> wrote:
-> > > >
-> > > > Hi,
-> > > >
-> > > > On Mon, Nov 11, 2024 at 8:06=E2=80=AFPM Masahiro Yamada <masahiroy@=
-kernel.org> wrote:
-> > > > >
-> > > > > On Thu, Oct 31, 2024 at 2:01=E2=80=AFAM Sami Tolvanen <samitolvan=
-en@google.com> wrote:
-> > > > > >
-> > > > > > To avoid duplication between host programs, move the crc32 code=
- to a
-> > > > > > shared header file.
-> > > > >
-> > > > >
-> > > > > Only the motivation to use this long table is to keep compatibili=
-ty
-> > > > > between genksyms and gendwarfksyms.
-> > > > > I do not think this should be exposed to other programs.
-> > > > >
-> > > > >
-> > > > > If you avoid the code duplication, you can do
-> > > > >
-> > > > > // scripts/gendwarfksyms/crc.c
-> > > > > #include "../genksyms/crc.c"
-> > > >
-> > > > Sure, that sounds reasonable. I'll change this in the next version.
-> > >
-> > >
-> > > BTW, is it necessary to share the same crc function
-> > > between genksyms and gendwarfksyms?
-> > >
-> > > If CONFIG_GENKSYMS and CONFIG_GENDWARFKSYMS
-> > > were able to produce the same CRC, it would be a good motivation
-> > > to share the same function.
-> > > However, as far as I tested, gendwarfksyms generates different CRC va=
-lues.
->
-> crc32() is operating on different data, right?  CONFIG_GENDWARFKSYMS
-> computes a crc of the DWARF data, whereas CONFIG_GENKSYMS computes a crc
-> of a magic string from ... the source code, right?  Hence the crcs will
-> never match?
+Lyude Paul (2):
+  rust: sync: Add Lock::from_raw() for Lock<(), B>
+  rust: sync: Make Guard::new() public
 
-Correct, they will never match.
+ rust/kernel/sync/lock.rs | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-> > > > > > Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
-> > > > > > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> > > > > > Acked-by: Neal Gompa <neal@gompa.dev>
-> > > > >
-> > > > > Does this Ack add any value?
-> > > > >
-> > > > > Acked-by is meaningful only when it is given by someone who
-> > > > > maintains the relevant area or has established a reputation.
-> > > > >
-> > > > > $ git grep "Neal Gompa"
-> > > > > $ git shortlog -n -s | grep "Neal Gompa"
-> > > > >      2 Neal Gompa
-> > > > >
-> > > > > His Ack feels more like "I like it" rather than a qualified endor=
-sement.
-> > > >
-> > > > Like Neal explained, an Ack from a potential user of this feature
-> > > > seemed relevant, but if you don't think it's meaningful, I can
-> > > > certainly drop it.
-> > >
-> > > Tested-by is more suitable if he wants to leave something.
-> >
-> > Ack. Neal, I'll drop the acks from v6, but if you end up testing that
-> > series, please feel free to add your Tested-by.
->
-> Just my 2 cents, but it seems rude to me to *remove* an Ack from an
-> existing patchset on the grounds that person doesn't appear often in the
-> kernel log.  "We won't hire you for this entry level job because you
-> don't have experience" etc.
->
-> Also, wouldn't Neal be one of the people shepherding this change into
-> distro kernels?  He seems to show up somewhat frequently in the Fedora
-> and SUSE ecosystems.
->
-> Is the problem here that you all think "Acked-by" isn't appropriate from
-> someone who isn't a subsystem maintainer, but the kernel doesn't seem to
-> have a tag for "downstream consumer of this change says they're willing
-> to put their name on the line for this"?
 
-I certainly appreciate Neal's input, but I don't have a strong opinion
-about which tag is appropriate. The documentation seems to suggest
-that Acked-by is _often_ used by maintainers and focuses on that use
-case, but doesn't explicitly rule out other folks acking patches
-either:
+base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+-- 
+2.47.0
 
-https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-b=
-y-cc-and-co-developed-by
-
-Perhaps Greg, or someone else with more experience with the nuances of
-acking, can clarify the policy in this situation?
-
-Sami
