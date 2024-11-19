@@ -1,60 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97E4C2C9;
-	Tue, 19 Nov 2024 03:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B7414883F;
+	Tue, 19 Nov 2024 04:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731985580; cv=none; b=P7pVwqxOuGt5y020IBP9mTCcIKb3gzcUDyQB7SJ0qM5KP/GY0t+2dXxaelXweNEOgK/8y4wReQuI07D0f0C8+LGKQsig8tLF9Icp0jMojsYbgR25T3wOzNrhTxDoGZPPqJTGq78K/U5wQkwCKuIvA1JtFytS6s7rAuTgAAPhRYQ=
+	t=1731990323; cv=none; b=KcCW+LYzYPNGPmtMccMxES6Aux9dj+CSqr7mhYIOwk6304JdNZwERJXSuxrL2+9Fso95fnJFLcV2/ql/h818t1zr4Yzi0P0SFrWnFF05F8hLYUc93e0YV5o6hNmKnEGPw/8oI8JrmIshcqFbpXe81emc4cFdrSFJlc58s5J5l7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731985580; c=relaxed/simple;
-	bh=ZFh8d7e1KJXfSxhw1u6k7njlwVEal78ah60HtzMn0fs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mUFPeNy+HKmFSK4uIVTBMmygcl81SSLkTx/EJobDzykJ4Op27uxHahPfGUDN1tioYOQ55DFfBmiDR1svsWKyyykwnPOUM1XZdy7s/TgVE6haNfqSvEU9mHyjKDNtv4adMhm0YKMFkdyPEQO/TTCcORELAgtAh9iSfGBsT14WhNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SgfqhXwp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731990323; c=relaxed/simple;
+	bh=ZRevxrcorG7DNt0MLGoUwVY4NqN3vTro8V2wy1v5q54=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a+CXNjvTUaIKmNdI3berxgaaJsNuA1fyyDHEeMyDzXsHXP+yDS5xE03XF/mRJqdlT3suZqeJVObNoJrknZhqh80SWhXGS3BzkynbdFZH5AtrLQytvQbTQYP34oJ2XAqUXI3e1LLbuUEpRjV8kA8EUT44KKiyQG2ZTM5JIgRrdUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hc0gzeO6; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SgfqhXwp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBB3C4CECF;
-	Tue, 19 Nov 2024 03:06:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731985577;
-	bh=ZFh8d7e1KJXfSxhw1u6k7njlwVEal78ah60HtzMn0fs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SgfqhXwprt9DoJrZEk/vD0l84p1yH4uOa2IrWPQylZhZuPI7LSz8PcDZJVDuWIaRq
-	 GJxR8d3ZKYCuZQYfKHPtVX46Fgz+YI4XUxiZHTMcxSq6uzds/BCy1rUM2EpZ1uISDF
-	 wOVC603adkZghCq1J4QP31wkBiAiNTaj74ySu0tF9nlJGRcAG2HFkHLfPYqMz0//gp
-	 Jh0ZAofrrTBBkiPFal+pykB0KB6WgZNp1ZnplMzB3m0ga29hiZ9XRYQcsmLfV7D5Aq
-	 uE5eqOmGAma+Orv3uZAzoyvDDy2xWecmcTeZCMzulBclEj5gwbRw/MCICgCLP47VRU
-	 u33WqamQ3xu8g==
-Date: Mon, 18 Nov 2024 19:06:15 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Manas via B4 Relay <devnull+manas18244.iiitd.ac.in@kernel.org>
-Cc: manas18244@iiitd.ac.in, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Trevor Gross <tmgross@umich.edu>, Andrew Lunn <andrew@lunn.ch>, Heiner
- Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Anup Sharma <anupnewsmail@gmail.com>,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH net-next v2] net: phy: qt2025: simplify Result<()> in
- probe return
-Message-ID: <20241118190615.350072d5@kernel.org>
-In-Reply-To: <20241118-simplify-result-qt2025-v2-1-af1bcff5d101@iiitd.ac.in>
-References: <20241118-simplify-result-qt2025-v2-1-af1bcff5d101@iiitd.ac.in>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hc0gzeO6"
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-856e82a32bcso2142580241.1;
+        Mon, 18 Nov 2024 20:25:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731990321; x=1732595121; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lj0tB5qWB5eBVnJSIKjBHXelqo6byuXYMX77lezcMMw=;
+        b=Hc0gzeO6lTcdKzvajaOtzBnl9UcdxXPM0sMN6u2LRWWDOKzsrzayAYAEXvaebMfQrg
+         TB6stQgNhIf1odW/tjfiCxuHzuymOj9qlXe8U8vD7tzgte+EhobnRK9rKbIX2fhDtCdv
+         HK5BSLn3P22Xpr9nXyXCTQ8dhyhAKX9LgbNHc3X/HiamtVv+k+quC59rVpn/ptgarxVw
+         nQCk+ChjC0YRRZjv5B12PwMTul2NhekAP43gseWE+FhW3NZJ6R6qxdlS5zBgZ8wLMfAd
+         LyYDaN638g9/yZXFSPKX148j5O1g2OoByO1r2DaGpED6Q/3QibwcQOnHgkEuZYyUOwo5
+         9sYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731990321; x=1732595121;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Lj0tB5qWB5eBVnJSIKjBHXelqo6byuXYMX77lezcMMw=;
+        b=Ur2RSNhK2KpP8eO+S9A12C0zn7YY36r7dA6l9eLh/d3tdDLG7QISM2qNgtoovGHNuW
+         KEgvnyu52EMPAl6NsW5cm8jFtpHGi4XNb4xbedTC3Q2YFQUx3IOMA24C93CAE+YNiVYn
+         cC2Hu2G2Z86Gbwsl3lWsN3bOMVgqP+aTfF8Rf1GtDPUW7XrquJCs8+cRlMqGWtsFN5rE
+         SkzIcwSqieZ09neMNUyFjOhWwY/XeuLyhurxoRnjcK9Uk0nsjTgBiHagFuyywZlZmcTw
+         sPJBxDXR1NGmyd3kluS4nEYkFUuV9a+dIaql5HRciFlJwoh5mmEDMlu2KBnfwy1G21z4
+         5nAg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5c38jZZ/DCbeO0sYwucuVLmR7E5dCFHrh7Pwyu/MCXfgCHclrb0yjnwNrz/dfk6D4zY9lXDOEe1GfqY7P@vger.kernel.org, AJvYcCUdMNhXJJDZ9PbXrSxDvFw4ucbmESDGaigUbeLWBDpX2/iYvQFF52sQcswzBaB8KoUVyueTj/njgL1quT79RrY=@vger.kernel.org, AJvYcCVO1Usxthi44BPnVqiFO8MG03Rcx6+dlHyiRWfAKmqDcVa+9+xILc1LuZHPSmO9JiqPEpBSAMCknEg=@vger.kernel.org, AJvYcCWeFm5KRrHYjaCoPge6n2EQWEnJ61H8kQHezAH0oPhfQEg35OuE+80Pukm3HYf3sQBwZZAm9eeiLDlu@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+8Kz4EiEHJ1ffaxx6k2KyW5dtswaodNzqioayGFxFqsRRU8vK
+	Z13TBVGkUXjOiRxoDbArp3QeYbM4KVYcARSMP5An1yBPKkGOetjkE7CXi6b1FpBJyvcMZn/O1Xc
+	eJw810SBh41jMIGEbMdqeUDxS0Gg=
+X-Google-Smtp-Source: AGHT+IG9cYL7X7lQrZvN9juAb1bSQkn5t3vl1U1eQFOkiscnlC3aPmlnuxF/hD8Suf18QUYmbd0PyLVmnPwfdDEyxqE=
+X-Received: by 2002:a05:6102:e12:b0:4a4:6fde:d1c5 with SMTP id
+ ada2fe7eead31-4ad62b4da71mr15033196137.12.1731990320763; Mon, 18 Nov 2024
+ 20:25:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20241115054616.1226735-1-alistair@alistair23.me>
+ <20241115054616.1226735-4-alistair@alistair23.me> <6737d101993ba_5c832943d@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <6737d101993ba_5c832943d@dwillia2-xfh.jf.intel.com.notmuch>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 19 Nov 2024 14:24:54 +1000
+Message-ID: <CAKmqyKPXo1KdTSVsEZSUt4Fj8gaWgg8XJzf6E+FsuaeMOdFv1w@mail.gmail.com>
+Subject: Re: [RFC 3/6] lib: rspdm: Initial commit of Rust SPDM
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Alistair Francis <alistair@alistair23.me>, lukas@wunner.de, Jonathan.Cameron@huawei.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	akpm@linux-foundation.org, bhelgaas@google.com, linux-pci@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, bjorn3_gh@protonmail.com, ojeda@kernel.org, 
+	tmgross@umich.edu, boqun.feng@gmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, wilfred.mallawa@wdc.com, alex.gaynor@gmail.com, 
+	gary@garyguo.net, aliceryhl@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 18 Nov 2024 20:00:36 +0530 Manas via B4 Relay wrote:
-> Signed-off-by: Manas <manas18244@iiitd.ac.in>
+On Sat, Nov 16, 2024 at 8:54=E2=80=AFAM Dan Williams <dan.j.williams@intel.=
+com> wrote:
+>
+> Alistair Francis wrote:
+> > This is the initial commit of the Rust SPDM library. It is based on and
+> > compatible with the C SPDM library in the kernel (lib/spdm).
+> >
+> > Signed-off-by: Alistair Francis <alistair@alistair23.me>
+> [..]
+> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+> > index 690a2a38cb52..744d35d28dc7 100644
+> > --- a/drivers/pci/Kconfig
+> > +++ b/drivers/pci/Kconfig
+> > @@ -128,7 +128,7 @@ config PCI_CMA
+> >       select CRYPTO_SHA256
+> >       select CRYPTO_SHA512
+> >       select PCI_DOE
+> > -     depends on SPDM
+> > +     depends on SPDM || RSPDM
+> >       help
+> >         Authenticate devices on enumeration per PCIe r6.2 sec 6.31.
+> >         A PCI DOE mailbox is used as transport for DMTF SPDM based
+> > diff --git a/lib/Kconfig b/lib/Kconfig
+> > index 4db9bc8e29f8..a47650a6757c 100644
+> > --- a/lib/Kconfig
+> > +++ b/lib/Kconfig
+> > @@ -754,6 +754,23 @@ config SPDM
+> >         in .config.  Drivers selecting SPDM therefore need to also sele=
+ct
+> >         any algorithms they deem mandatory.
+> >
+> > +config RSPDM
+> > +     bool "Rust SPDM"
+> > +     select CRYPTO
+> > +     select KEYS
+> > +     select ASYMMETRIC_KEY_TYPE
+> > +     select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+> > +     select X509_CERTIFICATE_PARSER
+> > +     depends on SPDM =3D "n"
+>
+> I trust these last 2 diff hunks never actually go upstream, right? I.e.
+> if the kernel has no SPDM today it should not plan to carry 2
+> implementations just for language differences.
+>
+> I am not sure if that is already the plan, but the cover letter seemed
+> ambiguous with its "maintaining compatibility" statement. On one hand,
+> that does not make sense when this is brand new upstream code (i.e. C
+> version is not even in linux-next), and there are no chances for
+> regressions. Just embrace the attempt to be a Rust library for C
+> consumers or otherwise help the C version along.
+>
+> However, if "maintain compatibility" means "make it easy for the
+> work-in-progress C-effort to switch dependencies", then that makes
+> sense and is worth clarifying in the next posting.
 
-The Signed-off-by tag has legal implications, please use your full
-name.
--- 
-pw-bot: cr
+It is ambiguous, because I'm not really sure what the best approach is.
+
+I think everyone agrees SPDM in the kernel is the way to go and there
+is a work in progress C implementation.
+
+I think that SPDM is the exact type of library that would be great to
+be written in Rust. My only worry is that Rust in the kernel is still
+experimental. I don't want to have a Rust SPDM implementation that
+isn't used or enabled by default because Rust is still experimental,
+hence the option of supporting the C or the Rust implementation.
+
+If a Rust only implementation is acceptable, then I'm happy to switch
+this series to "make it easy for the work-in-progress C-effort to
+switch dependencies". At which point I can continue to support more
+SPDM features here and work on a better userspace interface as
+discussed at Plumbers.
+
+Alistair
