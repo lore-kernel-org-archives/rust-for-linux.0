@@ -1,95 +1,114 @@
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9371B85D4;
-	Tue, 19 Nov 2024 11:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040C11C304A;
+	Tue, 19 Nov 2024 11:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732014720; cv=none; b=MuahesvDfAIavGwht8SJ4VcCtG3hmDvwkTztTqBDBa50hEhlnLqXIKBRfvvwY4NpbwKYhM1Oy4QTYSxeuc1xD/K4hCyiF89+5+4z6M3ipuRjy5g3RGIipEuXmEjaE+aPG8A5zNbi+L1O0Tq1uhPYHeiL96TWR0A4XQ8cbsZ7/aU=
+	t=1732015480; cv=none; b=fvJPIBED9ymtuLbLAgHXN/cAnwMvR7cPM7dOxOrUlc+cHHe3RyfwMvuP4yUxGHsEk4Ly8Ljt7UPUHa/x+oFbS3bLM2ZtRPDFHcWkrfgKQBTi+ZzHokwYgMit/huwsIB27tKT495u8oBMDXvZXJpf5nzNGo8tfScRFuFO8wpXYlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732014720; c=relaxed/simple;
-	bh=opfdVcLWrXjbNH0zo9xJb83W6Msg4MYneaM5kZTDw7k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ciR4VtcFww7JumL1VJp4R5l9unKHhki4At9tBdDzilZ4/0JKqGmwf9NqHWxW5KBt82oHBlZ/GNj/G9FCcdQRHftTXdtcjmUrpjYf5ijXqBk8lLdWE3wVvwovWCx9oQHavhyL3U/FhY1sE3dI7KyEvjI9LVjnC9lqsZ2Lhw2vndA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=b21qqKEq; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1732015480; c=relaxed/simple;
+	bh=YgMBOr0XLQpnahcOPOvgyUA0SRqbAjxYOGbBsqCYwtw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CMTWtBn0u9zhLMo72gIR5uss0Q5TaY+4ByeDH+v9CQJSZl3rccjvxKzMvimuCr3HBwOUf5+Mh03SOnfOAxZn5XIe7p7cpD6eAV0y/LpbeDQCVMZDkQ1i7mSDa80Yn2eW23ky07gtnd/nEfWpHvBYtdLVL9jWboZOWuS2RadurjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVCzBgRH; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="b21qqKEq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7HMTsr4ioPCyI0+QIXCcLwBMJLvvA8QCbV5ReQFuxF4=; b=b21qqKEq+pY+nszMGYKxplvLEv
-	DZ/D3QnQsf/KL2lJYNT5lSjv+LOQjE03wdvFd37QTL51u0/zfjbJ+YUxQQAvpjY0ZGtxDVfAJcISa
-	LSPf1nHxJWMv7WksUbSYbYeYaBL1HMJfe2bfkk8lSmOq14t48v0OXtrVdflgl5Wfkshit1iBOgLJf
-	0RqXe5cOATFQdO7RXdOuu5EckBO94vy5NfOqXHlJrf9nqgAr55msfhLjhOWLLutyoipd1/vrpoYoN
-	vwn4/qfqxLff3U28o0YpyEU4KXNgAVMJ2poAg4m9Er7a18cRtWUaxlVV5Kog/ldL4JlmAOM0XyTpR
-	4cbrRuPA==;
-Received: from [187.36.213.55] (helo=[192.168.1.103])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1tDM8s-008y76-KN; Tue, 19 Nov 2024 12:11:34 +0100
-Message-ID: <b4c1e64b-daef-4181-a3fb-98b4ab3a9c1e@igalia.com>
-Date: Tue, 19 Nov 2024 08:11:24 -0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVCzBgRH"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53a007743e7so4627106e87.1;
+        Tue, 19 Nov 2024 03:24:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732015477; x=1732620277; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=07UtVhho8S0D2lzIwJjoCBta99cPoEpopuv+zk6Kseg=;
+        b=QVCzBgRHZi6Tj9jFaLSmVdZ++p5OcpGHw7OoGCY9dqS1gKLz0Voa4YgB8Rr0tRRxJz
+         CTj4RLh9QQ8PATNERluWvf1NPYMvpxpVjrXS/ymnmAzfGbpykH4TnpPbFX+iK1DcdhPz
+         XE/xC5uTblK4r9xUgn3bbYpj4OGVX0epEIwJOijNUCh0RrMD23d5lTzvKuZavvVM0rta
+         y+GkuNx/vQP6/VTzAtxfwA106fXZyowlF3vWpR4UdFvOqe8efBdt/GGowmzkDeSaB1/i
+         MW8SjSA+QiFAIPIU0DJqtGq+0mXZpmlEElWqqeGWyjT1TlbLLu8sCQ5RoIPC5PiCGcam
+         DN2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732015477; x=1732620277;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=07UtVhho8S0D2lzIwJjoCBta99cPoEpopuv+zk6Kseg=;
+        b=c5G1XK6Tb5zjbf/VBsvyJ3fgw1eBDV4SHYAJVRl9TYY6TvvBKN8YZXyXdNzdV4MyXN
+         dtrksNPz715kdnR/73A95tc1A1yrHg6GTBtfjSbiAH7Td1Jd4pcpkb5Gd1227yFhkZXa
+         wbwswwU5BGxn51ksc3esR7k0zxQJ9b0A8z4guHk54f4vJ9qOHt3fqHZbubVzdi18BRNL
+         wr2YlMikBLUaNfO7wtohweahiGi/xkLGpyq5P5Y+UIEmstw5OWoL/Npnj0ADdd1KWTRU
+         U4ZPMz9K9wz9PeduhREii+VSe5DXQJGOCQeO/luhLXWs6BBhpIa/iiAptm934Gy6wA6I
+         qfIw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9+J1rGbm+IOeE6Td0fWG1eF/eUgbXUaM2RA07DhtIVfiewxHe3Vv1H5fi2iyZLTzp1TSXXzcHmotnyFA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHNKg+eHMcD1OTSu7JaSn49ozPb31oCVryFq4ro6xiR70VBDM3
+	iw/RVTznb9+E4HhnmO0JzBTNJOlwKcomnuos5JUxa/kh4BTojMZf+YA1yw==
+X-Google-Smtp-Source: AGHT+IFEwgH/qQqqDW3K0M0FjTVj+zPROO31piqFvXey9OYFgWbWJSTuDaFf+mL2sb7FYhUVnuzmtA==
+X-Received: by 2002:a05:6512:3c83:b0:539:e94d:2d3d with SMTP id 2adb3069b0e04-53dab295fa3mr7165890e87.7.1732015476785;
+        Tue, 19 Nov 2024 03:24:36 -0800 (PST)
+Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd478279sm271899e87.232.2024.11.19.03.24.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2024 03:24:35 -0800 (PST)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kernel@vger.kernel.org (open list),
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org (open list:MEMORY MANAGEMENT),
+	airlied@redhat.com,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH v3 0/2] rust: page: Add support for existing struct page mappings
+Date: Tue, 19 Nov 2024 13:24:01 +0200
+Message-ID: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/2] rust: xarray: Add a minimal abstraction for XArray
-To: Tamir Duberstein <tamird@gmail.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241118-rust-xarray-bindings-v9-0-3219cdb53685@gmail.com>
- <CANiq72=13uaXS+mptTiQZ7OLpyO_=r7-06cXEujFqtej=150YQ@mail.gmail.com>
- <CAJ-ks9nqcrOhOSuw+fN9+871W4YEs_rwRJehm=mnAx+M_v8Pqw@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-In-Reply-To: <CAJ-ks9nqcrOhOSuw+fN9+871W4YEs_rwRJehm=mnAx+M_v8Pqw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Tamir & Miguel,
+This series aims to add support for pages that are not constructed by an
+instance of the rust Page abstraction, for example those returned by
+vmalloc_to_page() or virt_to_page().
 
-On 18/11/24 14:02, Tamir Duberstein wrote:
-> On Mon, Nov 18, 2024 at 11:52 AM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
->>
->> On Mon, Nov 18, 2024 at 5:33 PM Tamir Duberstein <tamird@gmail.com> wrote:
->>>
->>> This is a reimagining relative to earlier versions[0] by Asahi Lina and
->>> Maíra Canal.
->>
->> Maíra's latest version has both of them listed as co-authors in the
->> main patch -- how close is this to that version? (I see some bits that
->> look fairly similar)
->>
->> Thanks!
->>
->> Cheers,
->> Miguel
-> 
-> It's fairly different, and I discussed with both of them - we agreed
-> that Co-developed-by would not be appropriate.
+Changes sinve v3:
+- Use the struct page's reference count to decide when to free the
+  allocation (Alice Ryhl, Boqun Feng).
+- Make Page::page_slice_to_page handle virt_to_page cases as well
+  (Danilo Krummrich).
+- Link to v2: https://lore.kernel.org/lkml/20241022224832.1505432-1-abdiel.janulgue@gmail.com/
 
-I still agree that a Co-developed-by isn't appropriate, but I believe
-that it would be fair to mention me and Lina on the commit message.
+Changes since v2:
+- Use Owned and Ownable types for constructing Page as suggested in
+  instad of using ptr::read().
+- Link to v1: https://lore.kernel.org/rust-for-linux/20241007202752.3096472-1-abdiel.janulgue@gmail.com/
 
-Best Regards,
-- Maíra
+Abdiel Janulgue (2):
+  rust: page: use the page's reference count to decide when to free the
+    allocation
+  rust: page: Extend support to existing struct page mappings
 
-> 
-> Thanks!
-> Tamir
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/page.c             |  20 +++++
+ rust/kernel/page.rs             | 135 ++++++++++++++++++++++++++++----
+ 3 files changed, 142 insertions(+), 14 deletions(-)
+
+
+base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+-- 
+2.43.0
 
