@@ -1,149 +1,154 @@
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B7414883F;
-	Tue, 19 Nov 2024 04:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC221BD9FE
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 10:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731990323; cv=none; b=KcCW+LYzYPNGPmtMccMxES6Aux9dj+CSqr7mhYIOwk6304JdNZwERJXSuxrL2+9Fso95fnJFLcV2/ql/h818t1zr4Yzi0P0SFrWnFF05F8hLYUc93e0YV5o6hNmKnEGPw/8oI8JrmIshcqFbpXe81emc4cFdrSFJlc58s5J5l7s=
+	t=1732011081; cv=none; b=Gb33y/LbuCZTEMI3aVqpgGNUcXHQOPwAKqtaAQ1vqFPJMmjbseEFIn5Fk7SFb3fjvV8eVY6nT3EFZXoN0BqQbukTKOo5lX6CPTWYwCDt9wcinkolVfMeMgoCEnXH7ZDEPrdHNckEo03l1LlyKOWOc6j8yJdPuZAEtPcpoSWqqdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731990323; c=relaxed/simple;
-	bh=ZRevxrcorG7DNt0MLGoUwVY4NqN3vTro8V2wy1v5q54=;
+	s=arc-20240116; t=1732011081; c=relaxed/simple;
+	bh=X/JMDAnNRv+tEobjnb5IhECr5UNDTKRmUVyZ+47rpEE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a+CXNjvTUaIKmNdI3berxgaaJsNuA1fyyDHEeMyDzXsHXP+yDS5xE03XF/mRJqdlT3suZqeJVObNoJrknZhqh80SWhXGS3BzkynbdFZH5AtrLQytvQbTQYP34oJ2XAqUXI3e1LLbuUEpRjV8kA8EUT44KKiyQG2ZTM5JIgRrdUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hc0gzeO6; arc=none smtp.client-ip=209.85.222.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=dqRSZVA2OKpQI3sgxDU7eGpJaAhF88e3O86qkSuNKauM84luqtc5wqF7RSbuejcrFYg0H9jIt33VMwfC7Q38oSOKF+kPYfSPNVWgbQr6DIBdCZazub8fVJwNo+furbjqU5rCqG+P4DWR1EtfT7hpG78GSK1m6NKngT8HFPIWMCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YSESYrin; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hc0gzeO6"
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-856e82a32bcso2142580241.1;
-        Mon, 18 Nov 2024 20:25:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YSESYrin"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-382026ba43eso3299282f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 02:11:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731990321; x=1732595121; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732011078; x=1732615878; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Lj0tB5qWB5eBVnJSIKjBHXelqo6byuXYMX77lezcMMw=;
-        b=Hc0gzeO6lTcdKzvajaOtzBnl9UcdxXPM0sMN6u2LRWWDOKzsrzayAYAEXvaebMfQrg
-         TB6stQgNhIf1odW/tjfiCxuHzuymOj9qlXe8U8vD7tzgte+EhobnRK9rKbIX2fhDtCdv
-         HK5BSLn3P22Xpr9nXyXCTQ8dhyhAKX9LgbNHc3X/HiamtVv+k+quC59rVpn/ptgarxVw
-         nQCk+ChjC0YRRZjv5B12PwMTul2NhekAP43gseWE+FhW3NZJ6R6qxdlS5zBgZ8wLMfAd
-         LyYDaN638g9/yZXFSPKX148j5O1g2OoByO1r2DaGpED6Q/3QibwcQOnHgkEuZYyUOwo5
-         9sYw==
+        bh=sjxWMlI+sGw29mp15heJ5stcixtjNQJfb/Gxm0cRymw=;
+        b=YSESYrinfQVJ9t0rkTnXN+r2TrKGImQG2tFSz+JfRC4pFD+9SluUfBDGH/g+tgFkiu
+         gIgE/N1nQJKYPCQOwehg4jrLLPMWiX6ZTd9y4ObsfBb1p5vvE+IV+J1rf6XsoRuizMi7
+         6HTyhzepmy49lVucpceCHQEHEBQahp61stsard54BYUBguG2rWMePhdgRjy0YJ6w3cuh
+         APmUi+spggvB3VU36r4LQkOCNUfpz2OgsKCxbK31G5vHz/fc0pjlIfBaMcZdTaFl+eLt
+         r8boBTKohjnLnKwdOuN3qxUbBDqJdf5mX+vHebW9eT01aqIEJNsbaaIBRYeVEH98+V0+
+         NnjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731990321; x=1732595121;
+        d=1e100.net; s=20230601; t=1732011078; x=1732615878;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Lj0tB5qWB5eBVnJSIKjBHXelqo6byuXYMX77lezcMMw=;
-        b=Ur2RSNhK2KpP8eO+S9A12C0zn7YY36r7dA6l9eLh/d3tdDLG7QISM2qNgtoovGHNuW
-         KEgvnyu52EMPAl6NsW5cm8jFtpHGi4XNb4xbedTC3Q2YFQUx3IOMA24C93CAE+YNiVYn
-         cC2Hu2G2Z86Gbwsl3lWsN3bOMVgqP+aTfF8Rf1GtDPUW7XrquJCs8+cRlMqGWtsFN5rE
-         SkzIcwSqieZ09neMNUyFjOhWwY/XeuLyhurxoRnjcK9Uk0nsjTgBiHagFuyywZlZmcTw
-         sPJBxDXR1NGmyd3kluS4nEYkFUuV9a+dIaql5HRciFlJwoh5mmEDMlu2KBnfwy1G21z4
-         5nAg==
-X-Forwarded-Encrypted: i=1; AJvYcCU5c38jZZ/DCbeO0sYwucuVLmR7E5dCFHrh7Pwyu/MCXfgCHclrb0yjnwNrz/dfk6D4zY9lXDOEe1GfqY7P@vger.kernel.org, AJvYcCUdMNhXJJDZ9PbXrSxDvFw4ucbmESDGaigUbeLWBDpX2/iYvQFF52sQcswzBaB8KoUVyueTj/njgL1quT79RrY=@vger.kernel.org, AJvYcCVO1Usxthi44BPnVqiFO8MG03Rcx6+dlHyiRWfAKmqDcVa+9+xILc1LuZHPSmO9JiqPEpBSAMCknEg=@vger.kernel.org, AJvYcCWeFm5KRrHYjaCoPge6n2EQWEnJ61H8kQHezAH0oPhfQEg35OuE+80Pukm3HYf3sQBwZZAm9eeiLDlu@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+8Kz4EiEHJ1ffaxx6k2KyW5dtswaodNzqioayGFxFqsRRU8vK
-	Z13TBVGkUXjOiRxoDbArp3QeYbM4KVYcARSMP5An1yBPKkGOetjkE7CXi6b1FpBJyvcMZn/O1Xc
-	eJw810SBh41jMIGEbMdqeUDxS0Gg=
-X-Google-Smtp-Source: AGHT+IG9cYL7X7lQrZvN9juAb1bSQkn5t3vl1U1eQFOkiscnlC3aPmlnuxF/hD8Suf18QUYmbd0PyLVmnPwfdDEyxqE=
-X-Received: by 2002:a05:6102:e12:b0:4a4:6fde:d1c5 with SMTP id
- ada2fe7eead31-4ad62b4da71mr15033196137.12.1731990320763; Mon, 18 Nov 2024
- 20:25:20 -0800 (PST)
+        bh=sjxWMlI+sGw29mp15heJ5stcixtjNQJfb/Gxm0cRymw=;
+        b=FQpekqkG5uXdL8lAG/uOSELUzFBnqBYtclAUUZZPt8lTbLnI9Etig7roGmEUmw9v7p
+         BBgAlKH7PBu+GnEH4jix+4Yljh2UoEn3mAfty/vwwoZDqAlYF4Dz3hamayby2cosCb5B
+         ywOQ2P91bAp9TzhKESm4E5zpXvuVE7v+jzZGhcuszI/qn+80MxtOZAMLn7QsQq0XNxil
+         YIuYuKpUwnB+BmBn5Komg/xd7lCoLLs5r2ZLeBI7WDI229xq5Pff5NkcHPcHrA4pNqBo
+         rBNvYvsasmbAFXWFbZYlI0DzNSggkeyKqRTRZYqE9uYe1X0nWFqZfHbzjR/nrR1EMzoP
+         1Zzw==
+X-Gm-Message-State: AOJu0YwBn6Jcvi5tl/L4pUI6cmUYX13w3GcNpfSmbvxh8gcZi1I66hXV
+	SHtsiRQYjZjjZjOlXLEpnm+dRb6Lk8doJvbROXeULlYpr51/fNHJ4WmM9Stb8sCsuleu90i9MgI
+	1ettwcsWsNZGnJxeO2yF39/V0P0HLzYsWaTLA
+X-Google-Smtp-Source: AGHT+IH9lD/Ywn8tfvstbL0te8l3MKKUD/KX5SCLKSAxrVuCTgNj6Oj2PjX/hN9uU8WPM9+N29Tys2btS7zE8xcBZAE=
+X-Received: by 2002:a05:6000:1566:b0:382:498a:9cf5 with SMTP id
+ ffacd0b85a97d-382498aa1d5mr4666513f8f.14.1732011078085; Tue, 19 Nov 2024
+ 02:11:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115054616.1226735-1-alistair@alistair23.me>
- <20241115054616.1226735-4-alistair@alistair23.me> <6737d101993ba_5c832943d@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <6737d101993ba_5c832943d@dwillia2-xfh.jf.intel.com.notmuch>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 19 Nov 2024 14:24:54 +1000
-Message-ID: <CAKmqyKPXo1KdTSVsEZSUt4Fj8gaWgg8XJzf6E+FsuaeMOdFv1w@mail.gmail.com>
-Subject: Re: [RFC 3/6] lib: rspdm: Initial commit of Rust SPDM
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Alistair Francis <alistair@alistair23.me>, lukas@wunner.de, Jonathan.Cameron@huawei.com, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	akpm@linux-foundation.org, bhelgaas@google.com, linux-pci@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, bjorn3_gh@protonmail.com, ojeda@kernel.org, 
-	tmgross@umich.edu, boqun.feng@gmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, wilfred.mallawa@wdc.com, alex.gaynor@gmail.com, 
-	gary@garyguo.net, aliceryhl@google.com
+References: <CABgObfZSCA9uvSOXuDx8mvD1-gkcfeZxQQ5CVyx294Fy4Q1EgQ@mail.gmail.com>
+In-Reply-To: <CABgObfZSCA9uvSOXuDx8mvD1-gkcfeZxQQ5CVyx294Fy4Q1EgQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 19 Nov 2024 11:11:06 +0100
+Message-ID: <CAH5fLgg7Sq4QDFP3iU981Txuda885mZdaUa0CRtgjrZBbyPBnw@mail.gmail.com>
+Subject: Re: pinned_init vs. miri?
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, y86-dev@protonmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 16, 2024 at 8:54=E2=80=AFAM Dan Williams <dan.j.williams@intel.=
-com> wrote:
+On Tue, Nov 5, 2024 at 1:50=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
 >
-> Alistair Francis wrote:
-> > This is the initial commit of the Rust SPDM library. It is based on and
-> > compatible with the C SPDM library in the kernel (lib/spdm).
-> >
-> > Signed-off-by: Alistair Francis <alistair@alistair23.me>
-> [..]
-> > diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> > index 690a2a38cb52..744d35d28dc7 100644
-> > --- a/drivers/pci/Kconfig
-> > +++ b/drivers/pci/Kconfig
-> > @@ -128,7 +128,7 @@ config PCI_CMA
-> >       select CRYPTO_SHA256
-> >       select CRYPTO_SHA512
-> >       select PCI_DOE
-> > -     depends on SPDM
-> > +     depends on SPDM || RSPDM
-> >       help
-> >         Authenticate devices on enumeration per PCIe r6.2 sec 6.31.
-> >         A PCI DOE mailbox is used as transport for DMTF SPDM based
-> > diff --git a/lib/Kconfig b/lib/Kconfig
-> > index 4db9bc8e29f8..a47650a6757c 100644
-> > --- a/lib/Kconfig
-> > +++ b/lib/Kconfig
-> > @@ -754,6 +754,23 @@ config SPDM
-> >         in .config.  Drivers selecting SPDM therefore need to also sele=
-ct
-> >         any algorithms they deem mandatory.
-> >
-> > +config RSPDM
-> > +     bool "Rust SPDM"
-> > +     select CRYPTO
-> > +     select KEYS
-> > +     select ASYMMETRIC_KEY_TYPE
-> > +     select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-> > +     select X509_CERTIFICATE_PARSER
-> > +     depends on SPDM =3D "n"
+> Hi all,
 >
-> I trust these last 2 diff hunks never actually go upstream, right? I.e.
-> if the kernel has no SPDM today it should not plan to carry 2
-> implementations just for language differences.
+> tl;dr: while trying to learn more about pinned_init, I tried running a
+> simple example through miri, and I found out that it breaks.
 >
-> I am not sure if that is already the plan, but the cover letter seemed
-> ambiguous with its "maintaining compatibility" statement. On one hand,
-> that does not make sense when this is brand new upstream code (i.e. C
-> version is not even in linux-next), and there are no chances for
-> regressions. Just embrace the attempt to be a Rust library for C
-> consumers or otherwise help the C version along.
+> The attached Rust code mimics a C component that calls a series of
+> callbacks with a void * opaque argument; plus Rust bindings for it,
+> that use pin_init!() to place a pointer to self in the opaque
+> argument.
 >
-> However, if "maintain compatibility" means "make it easy for the
-> work-in-progress C-effort to switch dependencies", then that makes
-> sense and is worth clarifying in the next posting.
+> The use of pin_init! is pretty simple, the only notable thing is that
+> in main() I "inlined" Box::pin_init() to clarify the miri output.
+>
+> When I try to run this under miri, I get the following:
+>
+> error: Undefined Behavior: trying to retag from <1750> for SharedReadOnly
+> permission at alloc877[0x0], but that tag does not exist in the borrow st=
+ack
+> for this location
+>    --> src/main.rs:25:37
+>     |
+> 25  |         let owner: &'a T =3D unsafe { &*opaque.cast_const().cast::<=
+T>() };
+>     |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^
+>     |                                     |
+>     |                                     trying to retag from <1750>
+> for SharedReadOnly
+> permission at alloc877[0x0], but that tag does not exist in the borrow st=
+ack
+> for this location
+>     |                                     this error occurs as part of
+> retag at alloc877[0x0..0x20]
+>     |
+> help: <1750> was created by a SharedReadWrite retag at offsets [0x0..0x20=
+]
+>    --> src/main.rs:99:16
+>     |
+> 99  |     let slot =3D backend.as_mut_ptr();
+>     |                ^^^^^^^^^^^^^^^^^^^^
+> help: <1750> was later invalidated at offsets [0x0..0x20] by a Unique ret=
+ag
+>    --> src/main.rs:101:32
+>     |
+> 101 |     let mut backend =3D unsafe { backend.assume_init() };
+>     |                                ^^^^^^^
+>
+>
+> In other words, the pointer to the Box<MaybeUninit<PrintlnLogger>>,
+> which was stored to be used later as the opaque pointer, became
+> invalid when assume_init() changed the box to a Box<PrintlnLogger>. It
+> is then invalid to dereference it.
+>
+> The cause of this is basically that assume_init() consumes the
+> MaybeUninit<>; which also means that the same thing happens with
+> std::mem::forget(), Box::leak() or Box::into_raw().
+>
+> This is not _that_ surprising in the end, but I was wondering if it is
+> a fundamental incompatibility between the stacked borrows model and
+> interior pointers, or if there are ways to fix it (I can't think of
+> any).
+>
+> To test the attached pinned_init.rs, stick it as src/main.rs with a
+> Cargo.toml file like this:
+>
+> [package]
+> name =3D "logger"
+> version =3D "0.1.0"
+> edition =3D "2021"
+>
+> [dependencies]
+> pinned-init =3D "0.0"
+>
+> and compile/run it with nightly Rust.
+>
+> Thanks,
+>
+> Paolo
 
-It is ambiguous, because I'm not really sure what the best approach is.
+You need to mark the type `!Unpin` so that `Box`/`&mut` are not
+considered unique, which avoids breaking the provenance.
 
-I think everyone agrees SPDM in the kernel is the way to go and there
-is a work in progress C implementation.
-
-I think that SPDM is the exact type of library that would be great to
-be written in Rust. My only worry is that Rust in the kernel is still
-experimental. I don't want to have a Rust SPDM implementation that
-isn't used or enabled by default because Rust is still experimental,
-hence the option of supporting the C or the Rust implementation.
-
-If a Rust only implementation is acceptable, then I'm happy to switch
-this series to "make it easy for the work-in-progress C-effort to
-switch dependencies". At which point I can continue to support more
-SPDM features here and work on a better userspace interface as
-discussed at Plumbers.
-
-Alistair
+Alice
