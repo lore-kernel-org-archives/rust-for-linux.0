@@ -1,244 +1,137 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D0A1C761C;
-	Tue, 19 Nov 2024 11:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DD71CACE7
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 11:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732015486; cv=none; b=uYm+ZJ3JZh3OTcPs855KJS4gjNw/BcprA1nh1PiDmDmEEgG9uIyxbzkUhtOeDopyEx7AvGjIH8pAMJu5CBSa4DNIdEtjYVai4zYMovrK1ggbyiGLnDEpZuEbHH6qzrYq+wl84NreNfnpf9MF/PV7SKK92UE4wC0hMCuMosN+8u0=
+	t=1732016766; cv=none; b=CGmBTb/3cFvUEO5914VHcLfvVDD/KJW6uhQI/Chzwe2p2zxgupOFYhcFjB4XUo/8n3fdcNuOJvOHh2ekS/gcG79gyf+x4V9DrC9hnpb84TalWrRudmeRLTfiGmhUFdlpkSnGLUAKg7OO6/TVztcSzL9WMDDJP/BIQG1TCfhFUVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732015486; c=relaxed/simple;
-	bh=hCtDuutp78iLtmROwjXb1QaB1d1QC/MDZD6AHGd5tjQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clTlSvJMDxk0ermtmiAnQC5jF6Ih6rZRDRQMyTrRPpn8rX+RgoC0VB4gWnT5Um8rF0kAtyISHn2tHMDof1yQlgUdmodHfHBeGISMd9hyKGJcaMxI35ibAVpzfy7cW2TwhFmhkIm627GCREROsQ5BmOYNkDiL84VbhGlec86wgr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BATn507I; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732016766; c=relaxed/simple;
+	bh=gKLHoCFkMAORHYx5wuI4s2ZofCwMpO14Clkah9l9+3U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LTRqnc1Ezalzcq3C/odkSiCm/KwmWPtDqcwd6OlpHTFtugcKU+qDRo61u0USUjbabkqBhya85VXfsoF6NI8S7i+K/M/e+WHjxvxdmBIRfwjxyxOrw50XrpIxfsynERtdqH5TypCqP5rsqKxGJkwW1gBM3Rs96LT2dJt++K7KkZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FhuqP7EP; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BATn507I"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53da3b911b9so4752007e87.2;
-        Tue, 19 Nov 2024 03:24:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FhuqP7EP"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-431695fa98bso6780365e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 03:46:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732015483; x=1732620283; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1732016763; x=1732621563; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YSlE2AobDBjXj75h9dVNPb0c+CAMh4Q+j+w/qWySOZo=;
-        b=BATn507IVRRvKM4vh6SpG9weus2GCaTzmSnX0KyhL51vcrEhQ154QiILBsYeywmJTH
-         KwmPCNZxtnwW/4kIXMBy78NAFlh2hsUwaB30cKTPY4ECIDr3x4IACnwjA9BQbwzTmVXK
-         CcPDSAY+Gh/YEHeVnK6Z/hPvxTTVDgQSWLW9LvgFMnqXOt9Fdt+Ctk77umjxgqe22P5E
-         CYG22Ekuxh9oW/63ZGlyciSG7WNkEzw7ZmZbG1ss47UJDBJuGdZ4ocsD6MxRwVMhQJWP
-         v4nWo4lPl0xxJiUq93J1pIsh/Kc4XUH474g+RfwrY2/kpss1WjJz7cgVm2RRBZGsqCat
-         yK8Q==
+        bh=JKFNFU0TxSRVfbmDrokfeS6Zi7x7KpPj06RucnV2NPE=;
+        b=FhuqP7EPPESBm3wpXEDUX5SZuSsMvKtmcoLFBuW9Z1C6ubIwcqwzdgqR9jV5t4BfHb
+         ri5ckHrM91comSN4/COqCvygjk/p3EmZcYOCM7PK8kACWaC/OGx8IYsxE85JXlynpSm0
+         CsWkchA/yxu0UuZpFDf2xwbWMPkd2ptLrf6sEhYc7YnCObAccIdOY9l0bc61d52vo7k1
+         cRs8YOgOXeUGwCrpiWZD6rnywiDhMvcBafXEo9D5+k4UMBolPjvPpeQnE5nZdIi5VX/e
+         tQ6GhwuxN9wXS93VGvhoikhlzQYeJqsFeqr4bwx8RjY6N3eUoeKUkNFeGdmJENbEgBBB
+         Cwuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732015483; x=1732620283;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1732016763; x=1732621563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YSlE2AobDBjXj75h9dVNPb0c+CAMh4Q+j+w/qWySOZo=;
-        b=l+MmDjvZ2jS3uWCfVEGX6OUtqsRNU/iWBuZyIvQ6Ect04B328R2AMRbb6NbZpTg3Yd
-         0wCxrLUOYb0AJCQD1CJ9e+Apjm9P9jt20QZxZ0hYvZ6cQprvW0500eKV7VPGBKMvJCus
-         3qDvITSj5Gmh3T31AUtd8n+dlnWtnApZneqoxXh6FzqSZyRVXKfd4CkIrr7NGArh5K0f
-         FU42Ulo1Hd+b87a6Yhf4jc7YyhldRsK00ZuuleIHWZHhcwakFrN1Z31ZpuNJ+EW8yOKY
-         00T3EZZWCdiaFHGQoFox0MlQi5g/HHGfultwmq/7xJcoWBHdueeKucIDiQeMQ6jL/xlm
-         bVGg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOqvqVlm4H66qpiJoQn0nl9ZKzr2/buKwSEdt8tS5148JQtga5htoHvYIDd+t52khp3XXmi0+ROBRiAAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMvskRlZCAS6O++arjjnvtAzFQCKXB4kso5ovVwVhYiJEHr6NZ
-	uikhhMWyaCYpdUDCFJts4Q8Mp1mrNoJgJemeupensfeGbSG/xXH21QbEJw==
-X-Google-Smtp-Source: AGHT+IHClMNtG+d6fxlDY8MwP736UMKm9XCqQoUw9TgnQS0hL5N5cc0pjQHQFoHV43cUof90JEBn9w==
-X-Received: by 2002:a05:6512:3b86:b0:53d:a24b:db0f with SMTP id 2adb3069b0e04-53dab3c50b3mr6607291e87.57.1732015482420;
-        Tue, 19 Nov 2024 03:24:42 -0800 (PST)
-Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd478279sm271899e87.232.2024.11.19.03.24.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Nov 2024 03:24:41 -0800 (PST)
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org (open list),
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT),
-	airlied@redhat.com,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v3 2/2] rust: page: Extend support to existing struct page mappings
-Date: Tue, 19 Nov 2024 13:24:03 +0200
-Message-ID: <20241119112408.779243-3-abdiel.janulgue@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
-References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
+        bh=JKFNFU0TxSRVfbmDrokfeS6Zi7x7KpPj06RucnV2NPE=;
+        b=qyjXkKSPz19lH2asKpXmQORi3u2YCo3yln/eQf9QjcRWk1N1exdKLBxfgLGmKYWz14
+         OOOPjvPaEL5odhuB5mkWy+vmIUc/Qf8nFY7vqZyXqMRHOnw1vjnKJDfoqBLVArrSXWTD
+         Kxqtflfg4YCfxapFvTLV57k+KmJuuLZ3yxk10PTSj2eTw04z3gnRC+/bh8JtPoMgWniL
+         py6S6CIj2eXKfaryctROe1FHSY8qN86alvQ1rDj2jDH5gDmEFpvVL1HU5DeiMXeRObOI
+         RV64qY+bCcRdBBOnAzkpJ2oMnLTHRkzB+ItFf4heyIIKD53g+Hwm2JC1ZROE8q6Dl2py
+         Muzg==
+X-Gm-Message-State: AOJu0YwsPHCKyAF7aUTiQFvxMRovtl93FHYXEUBqFDWB33wAX2h+wtQ/
+	iSlhAAyQt0+FRVKTn7ihlBVa8gJYmHyYQ0iZle9AluTLdqXfTfyzAleNnt1hgoTSWatzpDe4c0f
+	0lB6GgNBKIboF4wZ4uVl5yLaZ3ZUb+3RIP/6K
+X-Google-Smtp-Source: AGHT+IGWejOR/TW8BG5tkq5cCrc9rUhPCdGE3X60q4JttnjZIq//FJLWmLVDtvwmRo/TQwBKnG0iQu0TvUX5ulQrW8I=
+X-Received: by 2002:a05:6000:1887:b0:382:44e0:c5e9 with SMTP id
+ ffacd0b85a97d-38244e0ca0fmr6477944f8f.25.1732016763336; Tue, 19 Nov 2024
+ 03:46:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241119112408.779243-1-abdiel.janulgue@gmail.com> <20241119112408.779243-2-abdiel.janulgue@gmail.com>
+In-Reply-To: <20241119112408.779243-2-abdiel.janulgue@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 19 Nov 2024 12:45:51 +0100
+Message-ID: <CAH5fLgj_BW22yopAdOLpSQaK97eeUAQb4jfn=KgOqNgCJ4CsqQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: page: use the page's reference count to
+ decide when to free the allocation
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>, 
+	open list <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Extend Page to support pages that are not allocated by the constructor,
-for example, those returned by vmalloc_to_page() or virt_to_page().
-Since we don't own those pages we shouldn't Drop them either. Hence we
-take advantage of the switch to Opaque so we can cast to a Page pointer
-from a struct page pointer and be able to retrieve the reference on an
-existing struct page mapping. In this case no destructor will be called
-since we are not instantiating a new Page instance.
+On Tue, Nov 19, 2024 at 12:24=E2=80=AFPM Abdiel Janulgue
+<abdiel.janulgue@gmail.com> wrote:
+>
+> Ensure pages returned by the constructor are always reference counted.
+> This requires that we replace the page pointer wrapper with Opaque instea=
+d
+> of NonNull to make it possible to cast to a Page pointer from a raw struc=
+t
+> page pointer which is needed to create an ARef instance.
+>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 
-The new page_slice_to_page wrapper ensures that it explicity accepts
-only page-sized chunks.
+> -/// A pointer to a page that owns the page allocation.
+> +/// A pointer to a reference-counted page.
+>  ///
+>  /// # Invariants
+>  ///
+> -/// The pointer is valid, and has ownership over the page.
+> +/// The pointer is valid.
+> +#[repr(transparent)]
+>  pub struct Page {
+> -    page: NonNull<bindings::page>,
+> +    page: Opaque<bindings::page>,
 
-Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
----
- rust/helpers/page.c | 10 +++++
- rust/kernel/page.rs | 97 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 106 insertions(+), 1 deletion(-)
+With this change, Page is no longer a pointer, nor does it contain a
+pointer. The documentation should be updated to reflect this.
 
-diff --git a/rust/helpers/page.c b/rust/helpers/page.c
-index 48d4481c1e33..784563924b83 100644
---- a/rust/helpers/page.c
-+++ b/rust/helpers/page.c
-@@ -27,3 +27,13 @@ void rust_helper_get_page(struct page *page)
- {
- 	get_page(page);
- }
-+
-+struct page *rust_helper_virt_to_page(const void *kaddr)
-+{
-+	return virt_to_page(kaddr);
-+}
-+
-+bool rust_helper_virt_addr_valid(const void *kaddr)
-+{
-+	return virt_addr_valid(kaddr);
-+}
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index fdf7ee203597..d0a896f53afb 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -3,7 +3,7 @@
- //! Kernel page allocation and management.
- 
- use crate::{
--    alloc::{AllocError, Flags},
-+    alloc::{AllocError, Allocator, Flags, VVec, KVec, KVVec, Vec, flags::*},
-     bindings,
-     error::code::*,
-     error::Result,
-@@ -87,6 +87,49 @@ pub fn alloc_page(flags: Flags) -> Result<ARef<Self>, AllocError> {
-         Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(ptr)) })
-     }
- 
-+    /// Create a page object from a buffer which is associated with an existing C `struct page`.
-+    ///
-+    /// This function ensures it takes a page-sized buffer as represented by `PageSlice`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::page::*;
-+    ///
-+    /// let somedata: [u8; PAGE_SIZE * 2] = [0; PAGE_SIZE * 2];
-+    /// let buf: &[u8] = &somedata;
-+    /// let pages: VVec<PageSlice> = buf.try_into()?;
-+    /// let page = Page::page_slice_to_page(&pages[0])?;
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn page_slice_to_page<'a>(page: &PageSlice) -> Result<&'a Self>
-+    {
-+        let ptr: *const core::ffi::c_void = page.0.as_ptr() as _;
-+        if ptr.is_null() {
-+            return Err(EINVAL)
-+        }
-+        // SAFETY: We've checked that `ptr` is non-null, hence it's safe to call this method.
-+        let page = if unsafe { bindings::is_vmalloc_addr(ptr) } {
-+            // SAFETY: We've checked that `ptr` is non-null and within the vmalloc range, hence
-+            // it's safe to call this method.
-+            unsafe { bindings::vmalloc_to_page(ptr) }
-+        // SAFETY: We've checked that `ptr` is non-null, hence it's safe to call this method.
-+        } else if unsafe { bindings::virt_addr_valid(ptr) } {
-+            // SAFETY: We've checked that `ptr` is non-null and a valid virtual address, hence
-+            // it's safe to call this method.
-+            unsafe { bindings::virt_to_page(ptr) }
-+        } else {
-+            ptr::null_mut()
-+        };
-+        if page.is_null() {
-+            return Err(EINVAL);
-+        }
-+        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::page`.
-+        // SAFETY: We just successfully retrieved an existing `bindings::page`, therefore
-+        // dereferencing the page pointer is valid.
-+        Ok(unsafe { &*page.cast() })
-+    }
-+
-     /// Returns a raw pointer to the page.
-     pub fn as_ptr(&self) -> *mut bindings::page {
-         self.page.get()
-@@ -270,3 +313,55 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-         unsafe { bindings::put_page(obj.cast().as_ptr()) }
-     }
- }
-+
-+/// A page-aligned, page-sized object.
-+///
-+/// This is used for convenience to convert a large buffer into an array of page-sized chunks
-+/// allocated with the kernel's allocators which can then be used in the
-+/// `Page::page_slice_to_page` wrapper.
-+///
-+// FIXME: This should be `PAGE_SIZE`, but the compiler rejects everything except a literal
-+// integer argument for the `repr(align)` attribute.
-+#[repr(align(4096))]
-+pub struct PageSlice([u8; PAGE_SIZE]);
-+
-+fn to_vec_with_allocator<A: Allocator>(val: &[u8]) -> Result<Vec<PageSlice, A>, AllocError> {
-+    let mut k = Vec::<PageSlice, A>::new();
-+    let pages = page_align(val.len()) >> PAGE_SHIFT;
-+    match k.reserve(pages, GFP_KERNEL) {
-+        Ok(()) => {
-+            // SAFETY: from above, the length should be equal to the vector's capacity
-+            unsafe { k.set_len(pages); }
-+            // SAFETY: src buffer sized val.len() does not overlap with dst buffer since
-+            // the dst buffer's size is val.len() padded up to a multiple of PAGE_SIZE.
-+            unsafe { ptr::copy_nonoverlapping(val.as_ptr(), k.as_mut_ptr() as *mut u8,
-+                                              val.len()) };
-+            Ok(k)
-+        },
-+        Err(_) => Err(AllocError),
-+    }
-+}
-+
-+impl TryFrom<&[u8]> for VVec<PageSlice> {
-+    type Error = AllocError;
-+
-+    fn try_from(val: &[u8]) -> Result<Self, AllocError> {
-+        to_vec_with_allocator(val)
-+    }
-+}
-+
-+impl TryFrom<&[u8]> for KVec<PageSlice> {
-+    type Error = AllocError;
-+
-+    fn try_from(val: &[u8]) -> Result<Self, AllocError> {
-+        to_vec_with_allocator(val)
-+    }
-+}
-+
-+impl TryFrom<&[u8]> for KVVec<PageSlice> {
-+    type Error = AllocError;
-+
-+    fn try_from(val: &[u8]) -> Result<Self, AllocError> {
-+        to_vec_with_allocator(val)
-+    }
-+}
--- 
-2.43.0
+>  // SAFETY: Pages have no logic that relies on them staying on a given th=
+read, so moving them across
+> @@ -71,19 +73,23 @@ impl Page {
+>      /// let page =3D Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
+>      /// # Ok(()) }
+>      /// ```
+> -    pub fn alloc_page(flags: Flags) -> Result<Self, AllocError> {
+> +    pub fn alloc_page(flags: Flags) -> Result<ARef<Self>, AllocError> {
+>          // SAFETY: Depending on the value of `gfp_flags`, this call may =
+sleep. Other than that, it
+>          // is always safe to call this method.
+>          let page =3D unsafe { bindings::alloc_pages(flags.as_raw(), 0) }=
+;
+> -        let page =3D NonNull::new(page).ok_or(AllocError)?;
+> -        // INVARIANT: We just successfully allocated a page, so we now h=
+ave ownership of the newly
+> -        // allocated page. We transfer that ownership to the new `Page` =
+object.
+> -        Ok(Self { page })
+> +        if page.is_null() {
+> +            return Err(AllocError);
+> +        }
+> +        // CAST: Self` is a `repr(transparent)` wrapper around `bindings=
+::page`.
+> +        let ptr =3D page.cast::<Self>();
+> +        // INVARIANT: We just successfully allocated a page, ptr points =
+to the new `Page` object.
+> +        // SAFETY: According to invariant above ptr is valid.
+> +        Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(ptr)) })
 
+Why did you change the null check? You should be able to avoid
+changing anything but the last line.
+
+Alice
