@@ -1,85 +1,163 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E904214831D
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 19:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D372149C7A;
+	Tue, 19 Nov 2024 20:48:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732045335; cv=none; b=WM32TbPnn/x3axfC/G/8rzKgWwBzgqaTsQ3tJ5Pg6lDlMtziR+Flhv4zkSIe9hjCoRZipohX79lrTdcCdt/tbyg+Hy+s6ox84gDTXl/wPGG0SJx6dyyaKu0NDurHbYLiyNWe8dCJmq/CBSohX9oijNv+bdlvtAu1IL223KtNq4s=
+	t=1732049312; cv=none; b=TzfdD1/rZ45XClB2GFMDwLWvw0lZ7DZP/kPed++p9ExIuM+u9bXK/T9Qrin0BmUK5/wVfaaEtpxzK9bSX5p215fmv4cpBxWGFK+V+Gb5ex1QPh0Hrn9VFVrRBWyDgjMMkNvjyh9fYhuN0+zMIigLe0dfVI13vCuPqP7+duJC/tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732045335; c=relaxed/simple;
-	bh=qShgXToZ9Kv+9awX1uh3xmO5JncsgTOxALxM0XJgV70=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FlXRHd9klmcB6XzCbVfZUyoF1Gj5YRvpNsk9Ul7O3kM/E77bX5sd+PVlwyooKlpHcwCM8aMeWN7wGpghSY2Q1/D3g8+di9O4VjUYd1uJVxaQs8ihYO/i17aMdgtlwbJstjo4eI5raDZMopO12nVt5ifVTvgUlIsYxTFt/zOT2fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FiDDDmeK; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1732049312; c=relaxed/simple;
+	bh=vahBI6bpELdMwDIw7a2qG/3RIAxR5+JhRyStJfSfnQw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XpUJT4+HI+o+k7NEk6aMphVLrJP6TAOo28V9Z7l9ielfJ5RGqlDRusLMTGU3qVrfeQ6egR0VjStnByC+c9sim/3PBzhXg8kp8qH8TFpBEMpVUCb4l2JxAsDrXy5hkRqzO//Ht+1f1fdMIXuVABGwSZLuEPiqzXbCNphK7gqbwys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHYzFeaw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FiDDDmeK"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-382423f4082so991177f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 11:42:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732045332; x=1732650132; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qShgXToZ9Kv+9awX1uh3xmO5JncsgTOxALxM0XJgV70=;
-        b=FiDDDmeKOP8nk+qP3rvBUc7UamxSHQNkgwMQUNAcLNGO1ZN8+9KHcH8GJ72npK11pI
-         SNgs5zNh85sYJOe1hoHeLVapY4PpGgBzOX3DZ+MTzdIYcgZMO9DMiMZbtLd51L2sQGDP
-         +exMaz8B1zocQxWu8hPwbKH/U5ST1Z2i6oEaMggLSOoo2X0h4UV91feeNhe9copE+0JA
-         Yfqy9S4HYqUPhNTU+1ZzkeYMiSxVVB6Dx5tATPevRCw7j2Oc6sWSxPRCPMqamk1D+XrR
-         Usnr43pE6kuv2GhAK3G7PtzNEC6M9HKt9xP3f6+vzAVL5qXveV3eN1+wuEiDiiKXVtGC
-         Pp/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732045332; x=1732650132;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qShgXToZ9Kv+9awX1uh3xmO5JncsgTOxALxM0XJgV70=;
-        b=o4PcSXl9lGjo6ORxg6tGSTSr3vPg/UkeipxPvvZYiINLREcKYkhVSgyonvsvX4L+zo
-         ntEITy3XwRP+c5erWMnur1TQokw2euA2LcG85B88mXqsynsgNCXsR7C1RT+b/v+jit79
-         f60LClrZf92G4IjGwH8/mB2/XxqNRk07JRFruqXeA7It0HlDHOzlxz3k8g370887VNNo
-         Y3sgbohCUyw1I97MCeWSoNEIOZOOnm4DcDToROpTVkl6+itxIkybtOAniW1kaJggw3No
-         iszY3ytT1AvQwEG8uUM34l5j30LYZdqgARrzg5FERsdlmqY6J7vXWmQ3oNALd8k88BzN
-         9K3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWYg0rviEmv5Nm3ptDWStOEkggG3IXIkgwDZdoxmvgHur6a/qcrfgo5i/SMZGAc+wr49YhKhj4Myudvag5CEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlIBQ+JLqAjoCrPLN5Sq5mr2+SmhUOH1t3KdAh4DyOhD09NPf0
-	PW4mN2KQSCKxabxzmxSRca3TcR023euMFP0kdnQl7Kjbwis2GZA2eafRFjyjEOizss4QiEX4QL3
-	Ww4N7tW+viCvePxqVYTpx/NdenCVAXS7Jpd7G
-X-Google-Smtp-Source: AGHT+IGfvVyk+K2tq+NUrFIVIGCjpJv5rRw0B153zlb+IG7XqIXALW+gRbwkVZCPjDeKDVk6bT1rTsSz471gdL/t1K0=
-X-Received: by 2002:a5d:64c8:0:b0:382:3afd:126a with SMTP id
- ffacd0b85a97d-38254b0211amr34976f8f.35.1732045331878; Tue, 19 Nov 2024
- 11:42:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHYzFeaw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBB9C4CECF;
+	Tue, 19 Nov 2024 20:48:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732049312;
+	bh=vahBI6bpELdMwDIw7a2qG/3RIAxR5+JhRyStJfSfnQw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kHYzFeawIOkDNoR+JcjvAScu9PDU5sGaL+/bf2hI2i1828FaNPSzdHh7ePQZZc5xP
+	 NVqIZsuMxwZqLfE5MVGCHquXXjLVzo9IiKcW9mcpDdeP3FBfsNI3EFfPDei/YidEoh
+	 ryMK3cCUTrPHh8yHoM7FoVh5K1+qkPH3W4ElLI96CtmiSLnTTRZaukti2hI5JMyIQJ
+	 9GihzCKQ9MYEP0h33ayk5GBufNhlvgiAbuVqd2/w30cOHK50L06xiJvccimyn9Obgi
+	 c90zcauD15EldMFJ4hFqH/EDL57vCmz9tIzWiB9qHy4shHKgZO5MNuQRpmBtzuFF4x
+	 wCHzb/sXoxvcQ==
+Date: Tue, 19 Nov 2024 12:48:29 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Asahi Linux <asahi@lists.linux.dev>,
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 01/19] scripts: move genksyms crc32 implementation to
+ a common include
+Message-ID: <20241119204829.GA1926309@frogsfrogsfrogs>
+References: <20241030170106.1501763-21-samitolvanen@google.com>
+ <20241030170106.1501763-22-samitolvanen@google.com>
+ <CAK7LNAShVzrE6uhXxZ7HepKhmOJYsZeigq6w19jRN3OH-T_Jyg@mail.gmail.com>
+ <CABCJKueVjP8V-=3Ehi4QvQzg1FZh2unyVMDzSJ_vJ_E5EE+gLg@mail.gmail.com>
+ <CAK7LNARVK1ZpGXZVTAynuo7CDjgB4uT5bQzcGiWseZfaEu7Tvw@mail.gmail.com>
+ <CABCJKufVpx4dsr7A44qA0ydwTEx+3Qy_OMx9Ch6OKa4nzvRj2g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118031225.38080-1-kernel@mandragore.io>
-In-Reply-To: <20241118031225.38080-1-kernel@mandragore.io>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 19 Nov 2024 20:41:59 +0100
-Message-ID: <CAH5fLgj+nTpjhVazCyPnj5u9pjeY3MMiLeMKw4UVcvvhUJ_apw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: add safety comment in rust_fmt_argument
-To: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABCJKufVpx4dsr7A44qA0ydwTEx+3Qy_OMx9Ch6OKa4nzvRj2g@mail.gmail.com>
 
-On Mon, Nov 18, 2024 at 4:14=E2=80=AFAM Konstantin Andrikopoulos
-<kernel@mandragore.io> wrote:
->
-> The function rust_fmt_argument dereferences a pointer, and thus it
-> needs an unsafe block. The safety comment for that block was missing.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/351.
->
-> Signed-off-by: Konstantin Andrikopoulos <kernel@mandragore.io>
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+On Mon, Nov 18, 2024 at 09:58:09PM +0000, Sami Tolvanen wrote:
+> Hi,
+> 
+> On Sat, Nov 16, 2024 at 9:09 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > On Thu, Nov 14, 2024 at 2:54 AM Sami Tolvanen <samitolvanen@google.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > On Mon, Nov 11, 2024 at 8:06 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> > > >
+> > > > On Thu, Oct 31, 2024 at 2:01 AM Sami Tolvanen <samitolvanen@google.com> wrote:
+> > > > >
+> > > > > To avoid duplication between host programs, move the crc32 code to a
+> > > > > shared header file.
+> > > >
+> > > >
+> > > > Only the motivation to use this long table is to keep compatibility
+> > > > between genksyms and gendwarfksyms.
+> > > > I do not think this should be exposed to other programs.
+> > > >
+> > > >
+> > > > If you avoid the code duplication, you can do
+> > > >
+> > > > // scripts/gendwarfksyms/crc.c
+> > > > #include "../genksyms/crc.c"
+> > >
+> > > Sure, that sounds reasonable. I'll change this in the next version.
+> >
+> >
+> > BTW, is it necessary to share the same crc function
+> > between genksyms and gendwarfksyms?
+> >
+> > If CONFIG_GENKSYMS and CONFIG_GENDWARFKSYMS
+> > were able to produce the same CRC, it would be a good motivation
+> > to share the same function.
+> > However, as far as I tested, gendwarfksyms generates different CRC values.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+crc32() is operating on different data, right?  CONFIG_GENDWARFKSYMS
+computes a crc of the DWARF data, whereas CONFIG_GENKSYMS computes a crc
+of a magic string from ... the source code, right?  Hence the crcs will
+never match?
+
+> > When a distro migrates to CONFIG_GENDWARFKSYMS,
+> > the new kernel cannot load old modules built with CONFIG_GENKSYMS.
+> 
+> No, it's not necessary to use the exact same function, this was just
+> to avoid adding more external dependencies.
+> 
+> > So, there is no need to share the old code.
+> > Another solution might be to use crc32() provided by zlib, for example.
+> > It requires another external library, but this already depends on
+> > libdw and libelf.
+> 
+> Makes sense. I'll switch to the zlib implementation in v6.
+> 
+> > > > > Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+> > > > > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> > > > > Acked-by: Neal Gompa <neal@gompa.dev>
+> > > >
+> > > > Does this Ack add any value?
+> > > >
+> > > > Acked-by is meaningful only when it is given by someone who
+> > > > maintains the relevant area or has established a reputation.
+> > > >
+> > > > $ git grep "Neal Gompa"
+> > > > $ git shortlog -n -s | grep "Neal Gompa"
+> > > >      2 Neal Gompa
+> > > >
+> > > > His Ack feels more like "I like it" rather than a qualified endorsement.
+> > >
+> > > Like Neal explained, an Ack from a potential user of this feature
+> > > seemed relevant, but if you don't think it's meaningful, I can
+> > > certainly drop it.
+> >
+> > Tested-by is more suitable if he wants to leave something.
+> 
+> Ack. Neal, I'll drop the acks from v6, but if you end up testing that
+> series, please feel free to add your Tested-by.
+
+Just my 2 cents, but it seems rude to me to *remove* an Ack from an
+existing patchset on the grounds that person doesn't appear often in the
+kernel log.  "We won't hire you for this entry level job because you
+don't have experience" etc.
+
+Also, wouldn't Neal be one of the people shepherding this change into
+distro kernels?  He seems to show up somewhat frequently in the Fedora
+and SUSE ecosystems.
+
+Is the problem here that you all think "Acked-by" isn't appropriate from
+someone who isn't a subsystem maintainer, but the kernel doesn't seem to
+have a tag for "downstream consumer of this change says they're willing
+to put their name on the line for this"?
+
+Maybe should we go full Parks and Rec:
+Not-Against-You-On-This-One: Neal Gompa <neal@gompa.dev>
+
+--D
