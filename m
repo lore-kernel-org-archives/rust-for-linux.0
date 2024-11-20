@@ -1,188 +1,225 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E32E1CEAA7;
-	Wed, 20 Nov 2024 22:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD841AAE00;
+	Wed, 20 Nov 2024 23:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732143405; cv=none; b=BCr/NyuYb+Gb0FvfxKquwm9GkKE0isjTrEKDERitv/hd/TLUpISuPl29gBLLBZKzfAcc6rD41H6cgS1z20Vs4bWZ4SuoT9Aa+AamRxHb8J8iB3wXUcj42YznTc5A5t9bxlM6SRtwN96UQsnZbwRAUBqyjjVuh+7pGG3SFcfPo7Y=
+	t=1732146839; cv=none; b=RwhYdqy6gSYPpVO5aSewrqpq7iPwKNMkophjgpNTr4gJxRN59lsckFCC0m19U0yXsBymWtOiDf0dvuOaJj5h9Zi7tAqMiVW4mfVjeEEvC/J4jo0pe8JakciHS60zOOAuLOKDx0QDtpfUPmHWSEKB7onlxhpiyZGbOWAoLdje35E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732143405; c=relaxed/simple;
-	bh=mThbCVsQUikN0Qj55mhMtmameID94x2xR0dsg6JSMug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W2uL48tZlL32ZJoHAvamg5NoZkkubYTIz2GbaQxym9uhdYS7/LDrII7dH/MMtfPvvQ5WpeGcE3Jr46SzN213I997tLAJlzKRZBfuML+XCtlOV8VDElJjMEj3ToMJtdi2pWn+jQuTXLE15X8t+Bkvrla2kY86cWtwzAckat9cn6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWk8ijDO; arc=none smtp.client-ip=209.85.167.41
+	s=arc-20240116; t=1732146839; c=relaxed/simple;
+	bh=SCmcvuIheMdrqxRBtfm8qhsnL2EvmxNhk2r6rErGX8c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OHwD8K+rVm+Rut6tLGT0GGs1xAGa4mZGRHRkkl9d0L1ppxsvZrIQIv/9iX2QBfX8GA7tzXJDWAcmOSLSNVTk6G6huLtNn91AmODFC+pkta40bfeYZDbNR8XyvSy9Lj0fKKwzgQZcS+njSXg0/DerCAOUXW8PixBrFBetxyfjqJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z6LHhTRy; arc=none smtp.client-ip=209.85.221.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWk8ijDO"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53da22c5863so288933e87.0;
-        Wed, 20 Nov 2024 14:56:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z6LHhTRy"
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-514e4f09145so35025e0c.3;
+        Wed, 20 Nov 2024 15:53:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732143401; x=1732748201; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ro93jIqOY0loyc53cQE01JI74xq0pgbp0jULr1LtQ5A=;
-        b=gWk8ijDOZrQnx1r0rKMJMoNniJYLB5GeD1Z8ZL6TS5QVkNWRYBkomMwQqjocMNvadq
-         SuToN1yMKeUT5KctRMRVqkDVIoV9wRlSCiDHiC6vyGvnRJW4HH2V++xJh3ePVOXl2DnJ
-         Y0PBqTxef7wagmdU5Ta8Ge1QFZPRqhFnTKMhh21mdiSqMHnnm5mUrtK+TbE90S+KXt5H
-         dHlitx34mPFRbgm3kr+xb/so2sAfDKJCeW9tixOKIIekkP9kVELwROmP/wZatb5Lyxnl
-         +MH65XQNN6D+3FZugqqGNTjoojyMeNOBpQ5loWus0Sk8Z6W5MQR7k0OpAOvLcVLCYsIq
-         wYMw==
+        d=gmail.com; s=20230601; t=1732146836; x=1732751636; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HwR9U7++o+mwGKw/TgQh51JacKaxEXIG/HrcadPO/PU=;
+        b=Z6LHhTRygdiZ3vs/L8TxIgTOhmHX/BHcGSk0eqQLgWJxlr7uUyKMVkgwmTj5TCcx26
+         259Aty7486ChmT8AJ29lzMQOoNdNO7K8B2svMgqmihGYzp2MPsB1ZugVFc0YZ1Lb4S/Q
+         NohEdqrCuW9ZpHIYRY8F4zaUqK89HdWjiI6B6FuDmizeP2/urNdGjHrZdl+wN+p6JjQT
+         KnHt0t+LEhT56Ryi0r9NoDoEM/SUF6GF6Hgec3P9w63+a/lrSX/Sv5ZfjVXpBr1uqWEf
+         yGmr122pNgamyjK8csiw74Ay+tE6hinPj+jZay3NDfbIuoFy1FShNnoMaNnc/O4BvvAA
+         TOqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732143401; x=1732748201;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ro93jIqOY0loyc53cQE01JI74xq0pgbp0jULr1LtQ5A=;
-        b=h+VCZO0dRUvGpRBzjLhCRebADeRPsbIzaDifwtiXHg/B9l3rCzwA40TB1fhfIjam7p
-         RI20B1S8bjouY2MBUlxrA5wFe54M7bWjlPjYQ5iEX/qtrJYaYbc/Ba+omMPjPmg9FpdH
-         P/fJE1opJtMoUtbo8CtkKw+yJ2bXgsBsFSeUNlU6Tm3nuJqj+aw6P+oVOd0JJYyj5KMu
-         xZ5xpmLjQzuLhO6I3f7kUNNcoTGbFm7TlaToPcQU5lVvKmd2gg76fJidsZ3hh5aUJVkM
-         lLn5vCuMiAnhEYgOt/sRWGxLo45NqA/UKW/7dWcphmNRJWUeApALyZ3v9g+R7zcjxYJP
-         mvoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDw6JZsPJ17OFAnjaZNwWGHShuHlI7k70Yvt+wypzaYGAW0+V066enHCKQ2x184Wq3+L6FapFg0Y1HimA=@vger.kernel.org, AJvYcCXsfQFYXE9G+KpNl68+f3Eh9SzDh35CK9Sl7Vrl1wzLHHhQA7ohWajZHU0K41e1Zn3xLY1HfX/FW5h9za1tc3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo4VUtH42OCekTeivGEaAcOBBHie/qkZOGvIt2kn9XzZnjp/+w
-	1F8Wf2sD+3/VD2NnPTlTBpe6Kwvz/WgNzT27Iyua7526zaRSomya
-X-Google-Smtp-Source: AGHT+IF/5dP9tu2MCNl0giVhpvfxpp+VR6EDt2BSIi+BHBODzFNFCogG8QaW7BLqsCAzbPFydNBiXA==
-X-Received: by 2002:a05:6512:b81:b0:53d:a5c8:aaa6 with SMTP id 2adb3069b0e04-53dc1339b3fmr1922610e87.13.1732143401364;
-        Wed, 20 Nov 2024 14:56:41 -0800 (PST)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd3ee4a3sm775318e87.12.2024.11.20.14.56.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Nov 2024 14:56:40 -0800 (PST)
-Message-ID: <98a46b27-c4bb-4540-8f75-f176c3f2fae1@gmail.com>
-Date: Thu, 21 Nov 2024 00:56:38 +0200
+        d=1e100.net; s=20230601; t=1732146836; x=1732751636;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HwR9U7++o+mwGKw/TgQh51JacKaxEXIG/HrcadPO/PU=;
+        b=BLo8gEEmTs833ERfKw/ykHF8E2xB9Jw9SJCS1NuJs96pLE5QGdCNyuNtkm+puzk/ID
+         BIJhJ+i602iFcUvTGurQFk3HywuVLRRLxjWMZwUjK4dNVY/J09VgrYxGWjP+BOuq66s7
+         h69t7X6KewOsS6crWlH6OIlfjV+z/YSrPHZLtBXwCzQhP6nFLoMp2R3lFX5S/OF35JI0
+         qFpQXhYAnYQE3CzNzJreaqKLBnRB1dShYpFrgxS92DNjwGiQN/2K08uM7vcBscptn/yA
+         bndelyRGIe01EbNMjoB/qktjQfSShlP/5IaRALzG4crmZRNrAQ9Li4jR0zSzyBDale8q
+         xI0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVHB2C0wSa/Y3Sjefq7sn5OLiaU3DgORYqEY5YPpW2b3MORolu9ZGf24ZrbKdgrKqjtxyx37hKNuRNT1jM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEeu3S5w+bUbSHANg47DQCSkkiaVFMVFroZ3w8OYAojIFIMSuY
+	zs94i0IqHmbHeiZVSWS6pVtJ3/3jmJU+tz8hQk64WG1444LRK/6E
+X-Google-Smtp-Source: AGHT+IGZ1+lggK4vm6e7kRaF2aXi4U4XPaXDudfx+O7uR+OgVOv1SrpR7JPPN2u4Rzr4dadzt7olRw==
+X-Received: by 2002:a05:6102:3e1a:b0:4ad:6367:c7d8 with SMTP id ada2fe7eead31-4adaf5d480dmr5700216137.20.1732146836500;
+        Wed, 20 Nov 2024 15:53:56 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d4380f39aasm16250566d6.66.2024.11.20.15.53.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Nov 2024 15:53:56 -0800 (PST)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1ACC51200043;
+	Wed, 20 Nov 2024 18:53:55 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Wed, 20 Nov 2024 18:53:55 -0500
+X-ME-Sender: <xms:k3Y-Z18KCSNKos1WaMYLhar_eGC0ScqRrPVJFjSEIr-9qgSxQE2Zfw>
+    <xme:k3Y-Z5vgtENpQDmVSX34iOICLoTpp76jjgSEQFKqxwkeLXxJdGFIF6-o78DSU1yuJ
+    NqnSowx_ZE0_qh7DA>
+X-ME-Received: <xmr:k3Y-ZzA8E8bmtnrvZeoxDDOd6SjPrEOPxvxeEVG8VSn2detQdomTWD5D6ZE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeehgdduhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homheqnecuggftrfgrthhtvghrnheptdehhfffhefguedvffegudegtddvhedtueetuefh
+    gffhueeuudekgeevfeduteeinecuffhomhgrihhnpehgvghtrdhmrghpnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhm
+    thhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvd
+    dqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhn
+    sggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhihuh
+    guvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhig
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
+    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomh
+    dprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhho
+    rhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhord
+    hlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrghes
+    khgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:k3Y-Z5csZ__ynPowgA-bAgaFd_iyAYdnqWjfJJwd3fcnZpWgYTkyAg>
+    <xmx:k3Y-Z6Nqdbq_McNtQkVZ1leqJYSuw8SIT2ZlS7pCjmbK4Ma1CKt9GQ>
+    <xmx:k3Y-Z7l19wrjSFa6UBBc-dC8cSJzxXgAkr6CPvrk8vtlye3negcRdA>
+    <xmx:k3Y-Z0vnSmaZyTN26xA5TbRQCCe_I42Zo7wzgiMeudcyC82aB0Co9g>
+    <xmx:k3Y-Z8uphiWkymJfSjY92m4wBvDSpeQRzpmLj4-t467bVP70RtAqFXkb>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 Nov 2024 18:53:54 -0500 (EST)
+Date: Wed, 20 Nov 2024 15:53:52 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Filipe Xavier <felipe_life@live.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH 1/3] rust: sync: Add Lock::is_locked()
+Message-ID: <Zz52kNp4_jRxBv_G@tardis.local>
+References: <20241120223442.2491136-1-lyude@redhat.com>
+ <20241120223442.2491136-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page
- mappings
-To: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
-References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
- <Zz1sHZLruF5sv7JT@casper.infradead.org>
- <CAH5fLgiyHGQJxLxigvZDHPJ84s1fw_OXtdhGTd0pv_X3bCZUgA@mail.gmail.com>
- <Zz4MQO79vVFhgfJZ@tardis.local> <Zz4WFnyTWUDPsH4m@casper.infradead.org>
- <Zz4boXyYpdx4q35I@tardis.local>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <Zz4boXyYpdx4q35I@tardis.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241120223442.2491136-2-lyude@redhat.com>
 
-On 20/11/2024 19:25, Boqun Feng wrote:
-> On Wed, Nov 20, 2024 at 05:02:14PM +0000, Matthew Wilcox wrote:
->> On Wed, Nov 20, 2024 at 08:20:16AM -0800, Boqun Feng wrote:
->>> On Wed, Nov 20, 2024 at 10:10:44AM +0100, Alice Ryhl wrote:
->>>> On Wed, Nov 20, 2024 at 5:57 AM Matthew Wilcox <willy@infradead.org> wrote:
->>>>>
->>>>> On Tue, Nov 19, 2024 at 01:24:01PM +0200, Abdiel Janulgue wrote:
->>>>>> This series aims to add support for pages that are not constructed by an
->>>>>> instance of the rust Page abstraction, for example those returned by
->>>>>> vmalloc_to_page() or virt_to_page().
->>>>>>
->>>>>> Changes sinve v3:
->>>>>> - Use the struct page's reference count to decide when to free the
->>>>>>    allocation (Alice Ryhl, Boqun Feng).
->>>>>
->>>>> Bleh, this is going to be "exciting".  We're in the middle of a multi-year
->>>>> project to remove refcounts from struct page.  The lifetime of a page
->>>>> will be controlled by the memdesc that it belongs to.  Some of those
->>>>> memdescs will have refcounts, but others will not.
->>>>>
->>>
->>> One question: will the page that doesn't have refcounts has an exclusive
->>> owner? I.e. there is one owner that's responsible to free the page and
->>> make sure other references to the page get properly invalidated (maybe
->>> via RCU?)
->>
->> It's up to the owner of the page how they want to manage freeing it.
->> They can use a refcount (folios will still have a refcount, for example),
->> or they can know when there are no more users of the page (eg slab knows
->> when all objects in a slab are freed).  RCU is a possibility, but would
->> be quite unusual I would think.  The model I'm looking for here is that
->> 'page' is too low-level an object to have its own lifecycle; it's always
->> defined by a higher level object.
->>
+On Wed, Nov 20, 2024 at 05:30:41PM -0500, Lyude Paul wrote:
+> Now that we've added a Lock::from_raw() function and exposed Guard::new(),
+> it would be good to actually add the ability to assert the current state
+> of a lock to ensure correctness for unsafe code using these functions.
 > 
-> Ok, that makes sense. That's actually aligned with the direction we are
-> heading in this patch: make `struct Page` itself independent on how the
-> lifetime is maintained. Conceptually, say we can define folio in pure
-> Rust, it could be:
+> To do so, let's add Lock::is_locked() which simply returns whether or not a
+> Lock is acquired. We'll use this in the next few commits to add some debug
+> assertions.
 > 
->      struct Folio {
->          head: Page, /* or a union of page */
-> 	...
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  rust/helpers/spinlock.c           |  5 +++++
+>  rust/kernel/sync/lock.rs          | 18 ++++++++++++++++++
+>  rust/kernel/sync/lock/mutex.rs    |  5 +++++
+>  rust/kernel/sync/lock/spinlock.rs |  5 +++++
+>  4 files changed, 33 insertions(+)
+> 
+> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> index b7b0945e8b3cb..90216a69e3ea1 100644
+> --- a/rust/helpers/spinlock.c
+> +++ b/rust/helpers/spinlock.c
+> @@ -26,3 +26,8 @@ int rust_helper_spin_trylock(spinlock_t *lock)
+>  {
+>  	return spin_trylock(lock);
+>  }
+> +
+> +bool rust_helper_spin_is_locked(spinlock_t *lock)
+> +{
+> +	return spin_is_locked(lock);
+> +}
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 139f17f2ec86b..542f846ac02b2 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -85,6 +85,13 @@ unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
+>          // SAFETY: The safety requirements ensure that the lock is initialised.
+>          *guard_state = unsafe { Self::lock(ptr) };
 >      }
-> 
-> and we can `impl AlwaysRefcounted for Folio`, which implies there is a
-> refcount inside. And we can also have a `Foo` being:
-> 
->      struct Foo {
->          inner: Page,
+> +
+> +    /// Returns whether or not the lock is currently acquired.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that `ptr` is a valid initialised pointer to this lock type.
+> +    unsafe fn is_locked(ptr: *mut Self::State) -> bool;
+>  }
+>  
+>  /// A mutual exclusion primitive.
+> @@ -170,6 +177,17 @@ pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+>          // that `init` was called.
+>          unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(self, state)) }
 >      }
-> 
-> which doesn't implement `AlwaysRefcounted`, and that suggests a
-> different way the page lifetime will be maintained.
-> 
->>>>> We don't have a fully formed destination yet, so I can't give you a
->>>>> definite answer to a lot of questions.  Obviously I don't want to hold
->>>>> up the Rust project in any way, but I need to know that what we're trying
->>>>> to do will be expressible in Rust.
->>>>>
->>>>> Can we avoid referring to a page's refcount?
->>>>
->>>> I don't think this patch needs the refcount at all, and the previous
->>>> version did not expose it. This came out of the advice to use put_page
->>>> over free_page. Does this mean that we should switch to put_page but
->>>> not use get_page?
->>
->> Did I advise using put_page() over free_page()?  I hope I didn't say
-> 
-> We have some off-list discussion about free_page() doesn't always free
-> the page if you could remember.
-> 
->> that.  I don't see a reason why binder needs to refcount its pages (nor
->> use a mapcount on them), but I don't fully understand binder so maybe
->> it does need a refcount.
-> 
-> I don't think binder needs it either, but I think Abdiel here has a
-> different usage than binder.
-> 
->>
->>> I think the point is finding the exact lifetime model for pages, if it's
->>> not a simple refcounting, then what it is? Besides, we can still
->>> represent refcounting pages with `struct Page` and other pages with a
->>> different type name. So as far as I can see, this patch is OK for now.
->>
->> I don't want Page to have a refcount.  If you need something with a
->> refcount, it needs to be called something else.
-> 
-> So if I understand correctly, what Abdiel needs here is a way to convert
-> a virtual address to the corresponding page, would it make sense to just
-> use folio in this case? Abdiel, what's the operation you are going to
-> call on the page you get?
+> +
+> +    /// Return whether or not the lock is currently acquired.
+> +    ///
+> +    /// Keep in mind that this function is inherently racy: a lock could immediately be acquired or
+> +    /// released after this function returns. As such, the return value from this function should be
+> +    /// treated as a snapshot for debugging purposes.
 
-Yes that's basically it. The goal here is represent those existing 
-struct page within this rust Page abstraction but at the same time to 
-avoid taking over its ownership.
-
-Boqun, Alice, should we reconsider Ownable and Owned trait again? :)
+Then why don't we use the function provided by lockdep? I.e.
+lockdep_is_held() and its friends?
 
 Regards,
-Abdiel
+Boqun
+
+> +    pub fn is_locked(&self) -> bool {
+
+> +        // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+> +        // that `init` was called.
+> +        unsafe { B::is_locked(self.state.get()) }
+> +    }
+>  }
+>  
+>  /// A lock guard.
+> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+> index 0e946ebefce12..f21b1f14cbe1b 100644
+> --- a/rust/kernel/sync/lock/mutex.rs
+> +++ b/rust/kernel/sync/lock/mutex.rs
+> @@ -126,4 +126,9 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+>              None
+>          }
+>      }
+> +
+> +    unsafe fn is_locked(ptr: *mut Self::State) -> bool {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+> +        unsafe { bindings::mutex_is_locked(ptr) }
+> +    }
+>  }
+> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+> index 9f4d128bed983..cfccf5e900b80 100644
+> --- a/rust/kernel/sync/lock/spinlock.rs
+> +++ b/rust/kernel/sync/lock/spinlock.rs
+> @@ -125,4 +125,9 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+>              None
+>          }
+>      }
+> +
+> +    unsafe fn is_locked(ptr: *mut Self::State) -> bool {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+> +        unsafe { bindings::spin_is_locked(ptr) }
+> +    }
+>  }
+> -- 
+> 2.47.0
+> 
