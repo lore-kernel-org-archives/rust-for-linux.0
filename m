@@ -1,134 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5C71C1F0B
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Nov 2024 22:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014751D0947;
+	Wed, 20 Nov 2024 22:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732142117; cv=none; b=iqVT/+PWy1msPWgYrf2NTgdL4hmZ7e1JKe6E+FizdfffYPEvz9o/t6g8BGGD4IsXr5+VqRTcgeymOenzC1+Da/sTGfu9I4idycJoFZw/SP0Akn5dEtCmcmujP4D2MU/Vp5ayeYo7iCu4o1v5diOdhvhyuWXTNT73azeVcS3UeIQ=
+	t=1732143383; cv=none; b=L4JKEqckTQRuyRVEVf1DUQ8R0neACs853PbNEGuQIoX+Jjp9AI9lk5ZlueDRPa3mt4T1tdUR75C72uxqtASJe1IGefB5zPjMq88LQi5ssGkEwhs9cZelsyemPpiQZnDokoW+aWe8xDc7+IRyHzZgm2jqZbXl0RMBCSlgra8wFg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732142117; c=relaxed/simple;
-	bh=2oOh1nTY41cvATmIAlO+1LRQLtQSWc2a2JycbyTdgZo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cMnw4AI7Yh2aUuvHDeI1GsS6rpKeQbmcxJypdPkxZBvd+pgm8DXuIyc/kD0Bn23lsIXK6TVJ/dscpBwKUJQoWfUuMKZjBcAOKxjco3iC0q6Bnob1mk9nmsOPxvmaYigDyGSKwrXetX8Ej3Iw7f9LyEBu3yXlerrIjFxsUOeHGy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gkJ6U1bd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732143383; c=relaxed/simple;
+	bh=L5JPavDv6jkOs8+4SL1iJB89HN6ikbiWc++GnD2aw9w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HVfhtW5UouQLaY/MfdhG165Ew4D5JA7lfzG7vFt3Bj3w6jyStBIheTA4ljY4pCiq/Jyp36cBI+vPBFAklY9mTPa7QS11D+x85LkWL2zagwm+uyYljTomXXCTSBWfUPb/zygQr4PxHF4PVzWI2sRrW6tLNMyR9OTTKFoUXkB/qg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCPP6AdY; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gkJ6U1bd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732142115;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xy6wj28XSU6G9iFcG9lOwNtV5S2Gmt1xXPacba/a7Ek=;
-	b=gkJ6U1bdiVEd4sGBlR4EkuhunltXp3i+TV6nWe+sdi4rUDEAPXCB4VUs63EkKakiwjZumr
-	fxndBKmVp3GKPZAQSSHn0sMPBDXWEQAq8KWv2Gp7v6nL9SLLrRXtziRKCbrCJ1rKsOQrbo
-	936gk9GZST/UtbS4k3/45Yh1jjKEJzs=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-269-f5nkY8HrPt2H34TZ8dItYA-1; Wed,
- 20 Nov 2024 17:35:14 -0500
-X-MC-Unique: f5nkY8HrPt2H34TZ8dItYA-1
-X-Mimecast-MFC-AGG-ID: f5nkY8HrPt2H34TZ8dItYA
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 283E419560B0;
-	Wed, 20 Nov 2024 22:35:12 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.88.12])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B86C719560A3;
-	Wed, 20 Nov 2024 22:35:03 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Filipe Xavier <felipe_life@live.com>
-Subject: [PATCH 3/3] rust: sync: Add Guard::new_unchecked()
-Date: Wed, 20 Nov 2024 17:30:43 -0500
-Message-ID: <20241120223442.2491136-4-lyude@redhat.com>
-In-Reply-To: <20241120223442.2491136-1-lyude@redhat.com>
-References: <20241120223442.2491136-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCPP6AdY"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53da3b911b9so260191e87.2;
+        Wed, 20 Nov 2024 14:56:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732143379; x=1732748179; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EDe+ut7FU4NjsmyCYmZbNnNl7UOa9iCRRrQvfMKje+E=;
+        b=NCPP6AdYLIXtvQgzSwK2Nc6iMviR2hMYUizmdQEGIbXEhtMr7ZVtGNUXYrsPYzlGwU
+         6644cvNRZnNWbDPzsGMRprdATzQIyVepY59w6c1sqJNDKWWZITdjCIWRUWEBLXPoe1eq
+         ucUS9Ol8WkGVt3bKr1yJ47J6vwvF0RbyCqbMlRrrcnZ44WFe5Xb6EiH13eafanf+BEgE
+         HyfgJTANWASit4ZVdC/vhrPEEiVVyUD5tXfVmq2RSywC8Kv9y8PTr5VoCuAzJoUnyKzJ
+         eyFi2PIGnCKh3RBxyu1jJA/moIuB01PjFMXa8CzpXGHmanmGcTzTS/FN3j4edvEOjj69
+         71WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732143379; x=1732748179;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EDe+ut7FU4NjsmyCYmZbNnNl7UOa9iCRRrQvfMKje+E=;
+        b=oLrUExB/2vK/TFJpOqeqTYu3AaTALLJEq7Is8b5tEGq6AqMoYg8CzbnINypA/MgfCq
+         yC31EtpIKY29V5TFzkTHwWx0CP0mMR6fRHpY6n3m2iIi5Y8QH8ySGwiiSCUB31im10CN
+         i8/QPBmeBtVZwqqjI4KkurnY8cjettRzNup9tOrQtpR2l1eKBoTMY5To1Jbq3up6E6Jo
+         S8rJ/5RH8LSqcyoG0t7cbjGpNywBFdx6wIXBPA7e6TJ2shabpvVDh7agcpfqM/DTSP9b
+         GxP8Eq+ZVzek6gV6Jon88mmVdnr+qv3Q7ImSmth8xSIqTL5b1dynMszhnLuMucA6g2j+
+         JMYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUTxuNu4+vP9Hxrmbs1k08OnGYWrwdC4YrGKezndRr2nQM7t5eSApvsF3sovf4MXCl2nle0a48DSWSeKRg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx/8d9PLnKr3uZW0VVWRo+viEp/sp15B48DxCD7Q3GGu/Mispl
+	DbQPBgBJyOXbig45No+xIAxI8+8Zk72xscU4Gtu8e7lV3fwH4j/b
+X-Google-Smtp-Source: AGHT+IEPWWHE/H8MR95ODYZ/MAqZO2vFJWEoMmaT8xgsBQiNCOjdaFjg85Aupur+Yw0QashfxHHKHg==
+X-Received: by 2002:a19:8c1b:0:b0:539:f953:2da7 with SMTP id 2adb3069b0e04-53dc136df2amr1696512e87.50.1732143378777;
+        Wed, 20 Nov 2024 14:56:18 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd4723ffsm777283e87.193.2024.11.20.14.56.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Nov 2024 14:56:17 -0800 (PST)
+Message-ID: <43a07c04-2985-4999-b6d6-732794906a36@gmail.com>
+Date: Thu, 21 Nov 2024 00:56:15 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] rust: page: Extend support to existing struct page
+ mappings
+To: Jann Horn <jannh@google.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
+References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
+ <20241119112408.779243-3-abdiel.janulgue@gmail.com>
+ <CAG48ez3fjXG1Zi=V8yte9ZgSkDVeJiQV6xau7FHocTiTMw0d=w@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CAG48ez3fjXG1Zi=V8yte9ZgSkDVeJiQV6xau7FHocTiTMw0d=w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Asserting is_locked() for unsafe Guard::new() calls is quite useful for
-verifying safety for callers outside the lock module. But in the lock
-module, it's a bit unnecessary and a potential performance hit for safe
-rust code. Mainly because it implies all safe lock acquisitions in rust
-will have to run this debug assertion.
+Hi,
 
-So, let's split out Guard::new() by adding a Guard::new_unchecked()
-function that skips this debug assertion. Of course, we leave this function
-as private and note that it is only ever intended for use in this specific
-module.
+Thanks for the feedback.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/sync/lock.rs | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+On 19/11/2024 19:07, Jann Horn wrote:
+>> +    pub fn page_slice_to_page<'a>(page: &PageSlice) -> Result<&'a Self>
+> 
+> Sorry, can you explain to me what the semantics of this are? Does this
+> create a Page reference that is not lifetime-bound to the PageSlice?
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 0a7f2ed767423..2fd4b665ffc9a 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -166,7 +166,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-         // that `init` was called.
-         let state = unsafe { B::lock(self.state.get()) };
-         // SAFETY: The lock was just acquired.
--        unsafe { Guard::new(self, state) }
-+        unsafe { Guard::new_unchecked(self, state) }
-     }
- 
-     /// Tries to acquire the lock.
-@@ -175,7 +175,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-         // that `init` was called.
--        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(self, state)) }
-+        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new_unchecked(self, state)) }
-     }
- 
-     /// Return whether or not the lock is currently acquired.
-@@ -255,6 +255,19 @@ impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-     pub unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
-         debug_assert!(lock.is_locked());
- 
-+        // SAFETY: Our safety requirements fulfill the requirements of this function.
-+        unsafe { Self::new_unchecked(lock, state) }
-+    }
-+
-+    /// Constructs a new immutable lock guard without assertions.
-+    ///
-+    /// Unlike [`Guard::new`], this function does not run a debug assertion to ensure the lock has
-+    /// been acquired. It should only be used in this module.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that it owns the lock.
-+    unsafe fn new_unchecked(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
-         Self {
-             lock,
-             state,
--- 
-2.47.0
+This creates a Page reference that is tied to the lifetime of the `C 
+struct page` behind the PageSlice buffer. Basically, it's just a cast 
+from the struct page pointer and does not own that resource.
 
+>> +fn to_vec_with_allocator<A: Allocator>(val: &[u8]) -> Result<Vec<PageSlice, A>, AllocError> {
+> Do I understand correctly that this can be used to create a kmalloc
+> allocation whose pages can then basically be passed to
+> page_slice_to_page()?
+> 
+> FYI, the page refcount does not protect against UAF of slab
+> allocations through new slab allocations of the same size. In other
+> words: The slab allocator can internally recycle memory without going
+> through the page allocator, and the slab allocator itself does not
+> care about page refcounts.
+> 
+> If the Page returned from calling page_slice_to_page() on the slab
+> memory pages returned from to_vec_with_allocator() is purely usable as
+> a borrow and there is no way to later grab a refcounted reference to
+> it or pass it into a C function that assumes it can grab a reference
+> to the page, I guess that works. 
+
+Yes, I think that is the intent. I appreciate your help in pointing out 
+the issues with using refcounts in slab memory pages. As you can see, 
+page_slice_to_page() only returns a Page reference (not a refcounted 
+Page). Hopefully that addresses your concern?
+
+Regards,
+Abdiel
