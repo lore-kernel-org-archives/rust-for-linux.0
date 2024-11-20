@@ -1,99 +1,82 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336471D63DC
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Nov 2024 23:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C93F9C5;
+	Wed, 20 Nov 2024 04:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732057926; cv=none; b=g4cXcnqIMKFACh5pX2phbPZNh/G+mM6YmmArkEIMfcGQ4CuomAmujphxYKgLtSWCdqW5+DImdX6vQ0+kp2+bMMzhbZI/VMz1HhIPfK5GKJfHlLOAE+nMCXN72P9eQ8LbGQtJxBdwWPh8lJIfwNE5xgmKcaxXnFWMkXarCXRF/8s=
+	t=1732078628; cv=none; b=fh+KkiiW/sTTiG1it4j+DpZdyZc1L7IWwtpakIPJVlw08iqpQnhga1KKW4TO6U7+2F/B2ELBx7r85s1rGN/0aXfrFBe60+HvB240L8q8dyt3jmilwOkE6cvzOQ3ik96PDGy4zXbkf+LvBv0VMPJCfzeyvxqbHAuSgNfqTWO7YWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732057926; c=relaxed/simple;
-	bh=gPr2XVwTvpeMGoGKKjy1o51c1OdPhbUKPI0zWGhZTCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0PSOkf+frT4UGgQCPxvLHJzy8vTO2W3iCmYTMPVw7QaHXQj9efd7Kzwz6FTnUaVGjuaEKyOUjIniXfU4XhjGgLu14Ht+nqDFcAMblGTC5N7sH/1K/NnbaWq4E77WE3ZazC7hdUslb72Gi+R6ciFZBJpJzWTCQSuAFV0J3tNvCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fKce88l6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732078628; c=relaxed/simple;
+	bh=in9rf0KMkbvGfFzwgRKs4N5iiZNsbwTbxmK2iORJtDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=krPrBqbauaN3Zm8N7lVk+Uuajq3C1UsVLSkFEE4ij94iY7sPpK5E9ntqLNkc0wum7jBADouBlwZExwjnAYkjLhKmJ8LcB+5e4dX9maHsXhmkK9RyvtFmhJvlA2lItImewlp+b72ezlBciZz/tjqxR8sN2PnHWOsPjcBwEdQJmZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=seo2NImb; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fKce88l6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732057924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=we497OO4sE4VwaggdPe1vay+83PO5OaOAYCik3HBUv8=;
-	b=fKce88l6ko19zWZ4z3owVcW42cmdi9v24+DKl4/pLALnR+IhW52pdBOI4HHz1NBoiIl1C5
-	8UNfhTpzUBelFedTF4gdQ3h/jhHxsRFkvhG3KYkJIUlm+gI03LYwUTBb8kNLnlgmfXqmxF
-	21SsDy16AV2sEtDXO8Lv48HnNDHQc44=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-103-Ctp0QUDxNAaeQxlaH8BMmA-1; Tue,
- 19 Nov 2024 18:12:02 -0500
-X-MC-Unique: Ctp0QUDxNAaeQxlaH8BMmA-1
-X-Mimecast-MFC-AGG-ID: Ctp0QUDxNAaeQxlaH8BMmA
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B5721956088;
-	Tue, 19 Nov 2024 23:11:58 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.88.23])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 27ED130000DF;
-	Tue, 19 Nov 2024 23:11:56 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="seo2NImb"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=I/P/E1mTF7l9r/I4oklTVyXLlBinMJv55qNUKb4iWuk=; b=seo2NImbxcoGX+KPaqpLm0bG8+
+	vr4+60f/7XdGWo4oVr90gmbg6Oo08eBACGBx6VqY3JvoGXpZGOXcKtgpHWotI7Kj1QS6RcA+UBBU4
+	+POSQd0+qVHYw3jiXk5wIrZ29JyT6jHBSMSIZi+dc5OPIm+kexGu8Eb6TcS8wthF6GAojmG/zVqsY
+	TJHk/Z1FaT7EeL8OJCzBZI/7EqopxbOkPA51IwCvyNR74/Y/9pemqP+HtRWCqLceYrQ+A6N0kph4c
+	c+rC+cLNsIe7heVneM/VObsBnts5ikDErerl/tky89iRc09kRX15XDempZPPGt2djVmkLv9KExWqq
+	P4FdK3tw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tDclx-00000004rno-3GHX;
+	Wed, 20 Nov 2024 04:57:01 +0000
+Date: Wed, 20 Nov 2024 04:57:01 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Valentin Obst <kernel@valentinobst.de>,
-	Filipe Xavier <felipe_life@live.com>
-Subject: [PATCH v4 2/2] rust: sync: Make Guard::new() public
-Date: Tue, 19 Nov 2024 18:11:04 -0500
-Message-ID: <20241119231146.2298971-3-lyude@redhat.com>
-In-Reply-To: <20241119231146.2298971-1-lyude@redhat.com>
-References: <20241119231146.2298971-1-lyude@redhat.com>
+	open list <linux-kernel@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+	airlied@redhat.com
+Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page
+ mappings
+Message-ID: <Zz1sHZLruF5sv7JT@casper.infradead.org>
+References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
 
-Since we added a Lock::from_raw() function previously, it makes sense to
-also introduce an interface for creating a Guard from a reference to a Lock
-for instances where we've derived the Lock from a raw pointer and know that
-the lock is already acquired, something we do in the KMS API.
+On Tue, Nov 19, 2024 at 01:24:01PM +0200, Abdiel Janulgue wrote:
+> This series aims to add support for pages that are not constructed by an
+> instance of the rust Page abstraction, for example those returned by
+> vmalloc_to_page() or virt_to_page().
+> 
+> Changes sinve v3:
+> - Use the struct page's reference count to decide when to free the
+>   allocation (Alice Ryhl, Boqun Feng).
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/sync/lock.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Bleh, this is going to be "exciting".  We're in the middle of a multi-year
+project to remove refcounts from struct page.  The lifetime of a page
+will be controlled by the memdesc that it belongs to.  Some of those
+memdescs will have refcounts, but others will not.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index ea65f84b76f8e..139f17f2ec86b 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -229,7 +229,7 @@ impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-     /// # Safety
-     ///
-     /// The caller must ensure that it owns the lock.
--    pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
-+    pub unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
-         Self {
-             lock,
-             state,
--- 
-2.47.0
+We don't have a fully formed destination yet, so I can't give you a
+definite answer to a lot of questions.  Obviously I don't want to hold
+up the Rust project in any way, but I need to know that what we're trying
+to do will be expressible in Rust.
 
+Can we avoid referring to a page's refcount?
