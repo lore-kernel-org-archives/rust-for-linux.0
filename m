@@ -1,60 +1,60 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902FA1A2574;
-	Wed, 20 Nov 2024 11:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2B21A7265;
+	Wed, 20 Nov 2024 11:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732103182; cv=none; b=VGWc3W4aG65X2RBF80B6LlGONShXOHJTVKo6m3z/RO+NUL9diOM7tKDV3Hpz5KpsVgenWocXBWG4+UOjozdj9xHzjrJYpCJh6F4UEfaGFERR4m2RnlO6ys66KNfmdACA6A+ai2DbHVogWUh0ohg72bv0oaJv3HXNY1Yz/EJDCOA=
+	t=1732103183; cv=none; b=rpUoRr2sZUDibqEIZ1pXVW8gfT/nxbp7Zv3/W//AxkM97UVAippXTOo3jm432x0owIXAQrIcb5YFceBGHocyR34WPbSrewE1U46f0YXtBLr6AnHA9ErByGkHAptyGcZpKiDDBdt6uGlFHhT7FuL96nICbSsBLhCeujx1e3nBp18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732103182; c=relaxed/simple;
-	bh=vAXIWL5Tm5HEkpTkeRvs/PY9xzGMkmxPQXPP5BPzwao=;
+	s=arc-20240116; t=1732103183; c=relaxed/simple;
+	bh=akhMarqEAGs2r0ixu78494NfI3AtdtjayQYRt4CjG88=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FY+mks2Pizg2v1b2WpUgqVus0Vd5yOlN4aMQGA8WBElTyJCmQXLNns8xd/3rqt4ac8ByU87EVfHgJ2gZRwaNrNCPR9QBlNKjJcxn1Vp9J8uffs95hMFP4shKHnFzjXo31ZMwWmpURypAdazqCnN2PuT2MhgHd43S0o53JN+BhOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j4qSMobI; arc=none smtp.client-ip=209.85.128.171
+	 In-Reply-To:To:Cc; b=KkqqQRqYvsONTsB2HFQSpXDUwbCS24i77LI8vZ629nlqaZwKE/BYk84jIj8Q4ofzXMD73ZDWmaPezolfjn1vYgfMbWQ3LanqZsesoWrAhoh3xeFds0jBBnJaBU7Kt5uXwPmoej2lskEAUDCOKoVv5CejaeZIJHsByA18YjmQ8e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g5x3M8S/; arc=none smtp.client-ip=209.85.219.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j4qSMobI"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6ee9b571665so29640027b3.2;
-        Wed, 20 Nov 2024 03:46:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g5x3M8S/"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6d41d46162eso19192056d6.0;
+        Wed, 20 Nov 2024 03:46:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732103177; x=1732707977; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732103180; x=1732707980; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=X50QSvdQW6opJ3/PyTKFvmBHXrn62CTGlZAsB4b1Dnk=;
-        b=j4qSMobIc7Zd2lAFSZmrsP5h8kq8fy21ToBwvT4Jumiejhk3POj2EuFRaXc7OdbmTb
-         OYL5CfWRlYhTOhxviW8GJUQzcyA1pOmTULJEH89Z3b2x12+WXXjDNF2+g0Q2rTmuJMaR
-         IqoGO0sZnhEY/AzrH+J/e/dJ5q+SeWk8wXr6xkmSE6O6CI1ImqSE4fneOQ9bGJGWAt48
-         HC2lQbm37mjAv6wladRGIXpUMlZN2PEJ/9FYkVtQT3lXUcz1H0hrkmvZYRPIHTkp0zDH
-         EwkGg2iLvr7DhoEv4zuYnOs0wl1PH0vZSVj5HyrLavGOZLQneBFtWk4CFXyvlaLPWV77
-         I/WA==
+        bh=5PwKabn9mlzVsv9jDUI6+PuwLrpvjcn+d7aup2iIUyE=;
+        b=g5x3M8S/2zxdzNqsKhUxKNq5OhIlA6le6bZ6Fip9CcTKxQqDxwd3H7Teu57GAc9oG+
+         NmnODjEhYce7hQsRlQayaae62P+DSI2OCqRBVob8WD2K+Ra4BgZM/LRv8H2Jbic0eke0
+         vL+uYS4G30Sxf77lPSpatIkVB+LHGIrWLZqB9Cf0JkIMTk5x8znb59pTLQXTexX0xdry
+         a93O6cTzComf4o/k9AN/6Cr/qKLNLhZKXHwAsbZiNXbFsGJwze94J1+7XsNl3JyyiO5G
+         Vyol6Ejs/I2jj7ec2p7ZdA8lGTPp0sTtEAEZLEL2/f54mRkJRGXGoFN48xE6CWCjc9mC
+         4smA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732103177; x=1732707977;
+        d=1e100.net; s=20230601; t=1732103180; x=1732707980;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X50QSvdQW6opJ3/PyTKFvmBHXrn62CTGlZAsB4b1Dnk=;
-        b=JUEBa6AZDZMTn8SJ1HFJkZLtpAADGIoBxe5SkHPYfimFDuRPPS8sNrbhZ/LDGZgyjV
-         SvvvUMO12oiUrQFpWO/AQlkIbBoNc/F1yAjo+izt82XjACeW+lwB54VflwUvwFpE4/Fw
-         b4Yfw59bR3JPVmd5x4OkZQvMDN4uWRA7r4lbkyQwCTFFkyJosPkyAWfPdc2OqFOOAO8v
-         OQyBzmRaePdn1lgUGVGncvRulonWC8ywAJM6mhS7MRHjutJG5/jcA5pdaplGtqMNRqIi
-         xBGcHh07DLlipLWJfRE9Xu7hdWzX8vHipqwqqjpZykIDL9z7gWQUuzsLlrKSL8sEeBlK
-         DUkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX15g8oypuXtvCtuvX2wfPYX75+9neilajtbL4fx3ANedJ+FymK5aRaTcjYb+5UdCqWSEomWWLfija4HsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy12KrfmhsTaDdmFlu/reyEKy7JaRDl61e9PlxYHLDKOtELyZte
-	BzYeY80O27pfFjntevAbdWSPVXMB/2fTYwgytO/niOW5nugwrF5g
-X-Google-Smtp-Source: AGHT+IGM1Q0T3oM/qQch/jNqcAddd9VPHjOd0zxV+/Z2ATQZmth5lo+0Pfigdkr0Qk8OdPGptqYFQA==
-X-Received: by 2002:a05:690c:9987:b0:6ee:a89e:af3b with SMTP id 00721157ae682-6eebd141e35mr28682117b3.9.1732103177396;
-        Wed, 20 Nov 2024 03:46:17 -0800 (PST)
+        bh=5PwKabn9mlzVsv9jDUI6+PuwLrpvjcn+d7aup2iIUyE=;
+        b=K55XZceqiwKOsgatOfUgT102zjrupCHR7mnWVk0SRvKogGfo+kOSph7mwn1V/OVLEx
+         kUizQNAxBA0t9AisaUeBSCXiy+ZbWaETsMOZPhO1AVsIuAFjNOqOYVt6EBtlsDx5PG7r
+         FNJUo9JL1niJuvyGxvyw1Ah9cIoDn2QJ9E6kH3Fj6709skKRS03GOlMhidLyRqHl8cMG
+         uZsHOnmoQQ+hpXG7xmLRTYco37ARMmAUEPwfTFK2kWsKSUwtJM77Z8uvR72lZtEYcSD8
+         zWXpcR2vX1heMh3BpkmnsiGDSnxxM1Evnw/v1LJNkNca1qf2e6/mLgGT/WkYhMT8J7XC
+         1Mag==
+X-Forwarded-Encrypted: i=1; AJvYcCVCAeZwUfoqwhdweF3Oj9PEj3SmEZEGZtSEnb1bYQqtvZGcdwweBwAEN8Dg3HtTK2n4vQDfP4hzKTDQVKs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziKi/edSBGgFuF6FN1VGdp0Bgbh7YPE9nMWB7zBN3uIPW2AylA
+	WQ6TDJp8/VAmla0bRP3eBsdssLy+HtBOHkvgrlXzALTZcpQsd5uu
+X-Google-Smtp-Source: AGHT+IEjkLvjpxcldh0B1LlHeA+ZV6tzfkCqXOkEyNLzsS6AVw2cEL9Qe2YHPAjXVazcSJW7ctOMKg==
+X-Received: by 2002:a05:6214:2127:b0:6d4:586:6291 with SMTP id 6a1803df08f44-6d437825009mr40752366d6.25.1732103180512;
+        Wed, 20 Nov 2024 03:46:20 -0800 (PST)
 Received: from tamirs-macbook-pro.local ([2600:4041:5be7:7c00:8dca:61d2:c8fb:a544])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d4380b6390sm9705696d6.5.2024.11.20.03.46.15
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d4380b6390sm9705696d6.5.2024.11.20.03.46.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 03:46:16 -0800 (PST)
+        Wed, 20 Nov 2024 03:46:19 -0800 (PST)
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 20 Nov 2024 06:46:00 -0500
-Subject: [PATCH v6 1/6] rust: arc: use `NonNull::new_unchecked`
+Date: Wed, 20 Nov 2024 06:46:02 -0500
+Subject: [PATCH v6 3/6] rust: arc: split unsafe block, add missing comment
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241120-borrow-mut-v6-1-80dbadd00951@gmail.com>
+Message-Id: <20241120-borrow-mut-v6-3-80dbadd00951@gmail.com>
 References: <20241120-borrow-mut-v6-0-80dbadd00951@gmail.com>
 In-Reply-To: <20241120-borrow-mut-v6-0-80dbadd00951@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -76,50 +76,36 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
 
-There is no need to check (and panic on violations of) the safety
-requirements on `ForeignOwnable` functions. Avoiding the check is
-consistent with the implementation of `ForeignOwnable` for `Box`.
+The new SAFETY comment style is taken from existing comments in `deref`
+and `drop.
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- rust/kernel/sync/arc.rs | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ rust/kernel/sync/arc.rs | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index fa4509406ee909ca0677b78d5ece966089ce6366..b4e492dd712137c7c39e3de3d39c0c833944828c 100644
+index 50645660a9c33cb121ee1b2469003b325000d840..a11f267ce5d40b987f1f3c459271e5317ea0bae8 100644
 --- a/rust/kernel/sync/arc.rs
 +++ b/rust/kernel/sync/arc.rs
-@@ -337,9 +337,9 @@ fn into_foreign(self) -> *const crate::ffi::c_void {
-     }
+@@ -377,10 +377,14 @@ fn as_ref(&self) -> &T {
  
-     unsafe fn borrow<'a>(ptr: *const crate::ffi::c_void) -> ArcBorrow<'a, T> {
--        // By the safety requirement of this function, we know that `ptr` came from
--        // a previous call to `Arc::into_foreign`.
--        let inner = NonNull::new(ptr as *mut ArcInner<T>).unwrap();
-+        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-+        // call to `Self::into_foreign`.
-+        let inner = unsafe { NonNull::new_unchecked(ptr as *mut ArcInner<T>) };
- 
-         // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
-         // for the lifetime of the returned value.
-@@ -347,10 +347,14 @@ unsafe fn borrow<'a>(ptr: *const crate::ffi::c_void) -> ArcBorrow<'a, T> {
-     }
- 
-     unsafe fn from_foreign(ptr: *const crate::ffi::c_void) -> Self {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-+        // call to `Self::into_foreign`.
-+        let inner = unsafe { NonNull::new_unchecked(ptr as *mut ArcInner<T>) };
+ impl<T: ?Sized> Clone for Arc<T> {
+     fn clone(&self) -> Self {
++        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
++        // safe to dereference it.
++        let refcount = unsafe { self.ptr.as_ref() }.refcount.get();
 +
-         // SAFETY: By the safety requirement of this function, we know that `ptr` came from
-         // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
-         // holds a reference count increment that is transferrable to us.
--        unsafe { Self::from_inner(NonNull::new(ptr as _).unwrap()) }
-+        unsafe { Self::from_inner(inner) }
-     }
- }
+         // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot overflow to zero.
+         // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+         // safe to increment the refcount.
+-        unsafe { bindings::refcount_inc(self.ptr.as_ref().refcount.get()) };
++        unsafe { bindings::refcount_inc(refcount) };
  
+         // SAFETY: We just incremented the refcount. This increment is now owned by the new `Arc`.
+         unsafe { Self::from_inner(self.ptr) }
 
 -- 
 2.47.0
