@@ -1,61 +1,59 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DA21AB6CD;
-	Wed, 20 Nov 2024 11:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FF61865E1;
+	Wed, 20 Nov 2024 11:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732103190; cv=none; b=LoF+4jLuRqoytaj/ohuFQoTVX5tqScvfm/1i9IEi2NUQv4hdSzLU1BWsUsFXWeBz9M19os+wkLzZuvGiJuhw3hrTPY5QL8RBiZmCA/hNb7HHWN5Nq/uHH9KkLlFB6hQPvKOIbekqG6IOpS7OttrvccJKJXfKg04LkHzHnKu837o=
+	t=1732103305; cv=none; b=kfBWDSli9FDSKxyVjoRCxzDZHvQ2V33ZAD/YDfAqHGNRUdHdPNh3Yy0wjOc1q92BC1OMpHR87DG4nusfAXPczS9ER6G4hyO2STTZD0+hCYHrcgLIH3Nt8XsduWwuzBV/hTIFxIBNz40BztJJeI0vHDzRAPruURl5Kb+9yFhL8h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732103190; c=relaxed/simple;
-	bh=eriiqR6Dqx15OewfJ6/J7anxwKEo1pQayQbYfxnaSrI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T4BFQCm/55RcENv/IG7Q640sbveHgc6vbPjsckVma89MGu3YybvZTdrr4EqQd0QsfTiKxPdaNkwngaJgjsgO7GqoP8LS310x0WT7ve/3xfDLHK7v7kre4uyMylWSFUC+dEDRAj3dtdGGrifQFSObLhoDaY+qwz8eb881yQ2ln1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NNwM/mbA; arc=none smtp.client-ip=209.85.167.174
+	s=arc-20240116; t=1732103305; c=relaxed/simple;
+	bh=+qHsMyYa5ga5W7go+25pgFKVZKXM6N2UCRbEAqEPe7U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=E9DYeg01T9erSwpDCxWiEZqsEX5QhFPzVRxYuX0u/bQHfgq9VDpnNeZkSkPcxlWg6Nj7jXnwvOIvJ7IOia24c/jcnnMDq020yCWtJsCjUNSLEjeBG22c86VTaxTmwqNzdMviBjN3AwlIaSpPQ2EwF5c7/jNh9FDlujtGK6thEjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MoXHyusm; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NNwM/mbA"
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3e600add5dcso1672838b6e.2;
-        Wed, 20 Nov 2024 03:46:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MoXHyusm"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b155da5b0cso421696685a.2;
+        Wed, 20 Nov 2024 03:48:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732103186; x=1732707986; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SONU16xHBNjBt4uYb6vytstSCR1xGbZXHyoVwR4jlYI=;
-        b=NNwM/mbAb07sAmPxXw/1kAUXGil68JaQBwYrK9b/v+7UKo/DgA4715aRMqu1OXxEiL
-         YaruwWcGQ+tlZjNOftnKuSO9/5u0aKYAfmAH57/QOn+Wgx2NIDx3Ux1Bs3aCk27ciXSJ
-         BqlrdzeC5BmsNVK+yQDrPigIij0vmdT+qGx5L13IbjeCYdKO/fxdswtc3N+QdeHYq2ML
-         VLGVFe+12bLR+fjXI/wFrJrOI3Fc6hhn3GtUa+pq8EHzKNYhYz3r1Jm9tzWwqR7ZQhBX
-         LugpFMLPiy3qBwhHqERNuJl/61EvMpnrCtRLvMrGqWSVR6337DRNKnYmv0WFwvTyy7K4
-         O4tg==
+        d=gmail.com; s=20230601; t=1732103301; x=1732708101; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ln+Bql7CaJQeNEHAFJhf6sdKI/U/LNT6WuLJuDWawMQ=;
+        b=MoXHyusmlLYzQB/9U7ssJgePIfRLBM3/IIcRGdaGxmkm0EIfXddWPccUScf7vG0xFS
+         YVvxoOU7zZOk1vPPWCXZohqWitYxJgNgCjhb58E5AzZGXqDOdEK3+LtHtEJqKoMZbFzK
+         1WBh0Dzrz9QFnzlpb0ATrldhXTwiPodAeCmcAph4yHie/Nu2i97jL6To2ReHBh5DkDAP
+         3dEKFRTc8GBmjT7lzhgKlU0AECx7Mlx+WObjKJ6GomCNCuE6wYRZS3pkBfCWCQiY3wRE
+         NCkKq5MEQPRObNjI4NpuJ9AwWpoiRbkeQrh2OmqcNR6wJtAQUejYUroAE5zwWGZgEci9
+         RrjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732103186; x=1732707986;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SONU16xHBNjBt4uYb6vytstSCR1xGbZXHyoVwR4jlYI=;
-        b=emlwJdVDQNta3s5fSsaPPs2B45kbuZBouBT56TdkM6KnPezFL4YCHa8PPQ90s1H6Z1
-         h0Nmnpmh0spyVL+XjloIV7Vg7JmQDL1pgmM1pTWtaUUdLq+Eq6msLp07xkj9n00vLjSZ
-         E4rtJy8cGXzaxPvU9tNJI1OSn8y2H79Iljg9WMPMsHJ/AaMRfDQ5f919v0oB9hneRVoQ
-         +R+r4xgXvSQPUz9t8jaYc5VmMp1Mwplo88YIWUDApd8ZWGx/kCNefj6DQMuIFzj+JlIj
-         70o7JXR8XF8fkuK5KbK4k6I9UNt/6Pf4tPbqCeAU3In/usTBfZW54kXcq2CbES2c5OHB
-         SYHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXLp4vnpGl6EulX1kU9oeNedIBFX8mXsqel42csmAUjmODPuSjTFkZl9lSIeGsUeqst5vrtSotKBlCGAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1LAQd59fGVQg6QrghmfEV0oVP+9q/oAmcHqVVSZMd8eQLsQXX
-	IOglQEzkLFkfbpyM6ljsqB7Z5a6Ye6CM+MN5r7/HanjpYpXOZGx7
-X-Google-Smtp-Source: AGHT+IE1D+e4Yva8zfTtR1PCBPexgWEfjfKtCs0QNMiVx5PMkxksQjm/JmzzEjUuPaG7Xtt8wPQVvg==
-X-Received: by 2002:a05:6808:318f:b0:3e7:b7f8:f9ac with SMTP id 5614622812f47-3e7eb6cb78dmr2586532b6e.12.1732103185836;
-        Wed, 20 Nov 2024 03:46:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732103301; x=1732708101;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ln+Bql7CaJQeNEHAFJhf6sdKI/U/LNT6WuLJuDWawMQ=;
+        b=CRy+Iv1tZM6xUrNEx8b6Jf+Sp48iZrHBnorn37mAX1E8aZEGBy4uk7jlRaN6+9xuPj
+         ivIHSPmAMJyWmcgnxLNpvr25C7zxWMEsNSup7ZfI27uRMw7afz5QG6OQuClVNbVWYQ/W
+         AO9JvZHP977SjlK/honOWYZGreUlSlQOaf0YH2i0gP9OoO1COMa5Q5k1mxuPRvm8Yqih
+         e5ziIbn6cVjaSNJR+KqfkHqXHjJfVxpA0eZdEUt/wihKHb/QMLoPFCQWO6z8N2qoRs0Q
+         WyY9sAz2pBw4Ogdm3s7BiwlHeoAP05BvrfkVcKMqhfz3QiiuJjiyE6pfVGsCZWLXZ2x4
+         8YDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWjT7vGqtoB4TaVguBYcfosnvZMTVybgkxa7I90Mo/ZDVJodiyL52litJWNIIQAdF0Cd7MB7nkIk3Xzb7oM3D0=@vger.kernel.org, AJvYcCWpXOEXL0qKhWt1AxVy1eXSWxlfHdSVKLvfod90Yt6nqisiotqq3dvB7hcGpfYaTjyRCcXd2lut8oa8M9M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzydxTrouKUm3zXgsD+OwOcqSBWcHa+TSH4WNskK2C2PS0eIljT
+	P6gwvNAsvQG0eVCtQfDTsBHQQN0XAIqUHk/U4aUV78UosO4eOCLh
+X-Google-Smtp-Source: AGHT+IGoKIUIqLZCKk4xG3F2e+/en0lVJXkKzvIVrOUREeewVcXD69PM1uF5oMnNicgi0eBHo82x4w==
+X-Received: by 2002:a05:620a:448a:b0:7b1:b252:4381 with SMTP id af79cd13be357-7b42ee73dc5mr274947285a.37.1732103301070;
+        Wed, 20 Nov 2024 03:48:21 -0800 (PST)
 Received: from tamirs-macbook-pro.local ([2600:4041:5be7:7c00:8dca:61d2:c8fb:a544])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d4380b6390sm9705696d6.5.2024.11.20.03.46.23
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b479d46e3esm85640885a.29.2024.11.20.03.48.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 03:46:24 -0800 (PST)
+        Wed, 20 Nov 2024 03:48:20 -0800 (PST)
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 20 Nov 2024 06:46:05 -0500
-Subject: [PATCH v6 6/6] rust: add improved version of
- `ForeignOwnable::borrow_mut`
+Subject: [PATCH v10 0/2] rust: xarray: Add a minimal abstraction for XArray
+Date: Wed, 20 Nov 2024 06:48:16 -0500
+Message-Id: <20241120-rust-xarray-bindings-v10-0-a25b2b0bf582@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,259 +61,69 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241120-borrow-mut-v6-6-80dbadd00951@gmail.com>
-References: <20241120-borrow-mut-v6-0-80dbadd00951@gmail.com>
-In-Reply-To: <20241120-borrow-mut-v6-0-80dbadd00951@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAIHMPWcC/22QQW6DMBBFr4K87kQeY2PMKveoshiDDZYCtDbQR
+ BF3r0OqdtPljDTvv/kPllwMLrGmeLDotpDCPOUB+VvB2oGm3kHo8oIJLiRywSGuaYEbxUh3sGH
+ qwtQnsM4rlCiFqWqWTz+i8+F2cN8vefZxHmEZoqNfGC+5EaUyQp+wqg0qEDC2NNH1HHq6Bjq18
+ /jDiu5zzWrLC/gn1hQvrZKDnWOcv2BcF9DKY43eOS/bZqueDEvJQeaNYWkKrZBrrogkep2T21p
+ 21pbaVMpLIzw35ATXmj3Nh5CWOd6PgjZzxB+ZiPX/VWwGOJQCTdtZVVa1OvcjhevxzWXf92/xA
+ 2fTcwEAAA==
+X-Change-ID: 20241020-rust-xarray-bindings-bef514142968
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <benno.lossin@proton.me>, 
  Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>, 
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+ Trevor Gross <tmgross@umich.edu>
+Cc: =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, 
+ Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
 
-From: Alice Ryhl <aliceryhl@google.com>
+This is a reimagining relative to earlier versions[0] by Asahi Lina and
+Maíra Canal.
 
-Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-that was intended to provide mutable access to the inner value. However,
-the method accidentally made it possible to change the address of the
-object being modified, which usually isn't what we want. (And when we
-want that, it can be done by calling `from_foreign` and `into_foreign`,
-like how the old `borrow_mut` was implemented.)
+It is needed to support rust-binder, though this version only provides
+enough machinery to support rnull.
 
-In this patch, we introduce an alternate definition of `borrow_mut` that
-solves the previous problem. Conceptually, given a pointer type `P` that
-implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-kind of access as an `&mut P` would, except that it does not let you
-change the pointer `P` itself.
-
-This is analogous to how the existing `borrow` method provides the same
-kind of access to the inner value as an `&P`.
-
-Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-immutable access to the inner `T`. This is because mutable references
-assume exclusive access, but there might be other handles to the same
-reference counted value, so the access isn't exclusive. The `Arc` type
-implements this by making `borrow_mut` return the same type as `borrow`.
-
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Link: https://lore.kernel.org/rust-for-linux/20240309235927.168915-2-mcanal@igalia.com/ [0]
 ---
- rust/kernel/alloc/kbox.rs | 21 ++++++++++++++
- rust/kernel/sync/arc.rs   |  7 +++++
- rust/kernel/types.rs      | 71 ++++++++++++++++++++++++++++++++++++++---------
- 3 files changed, 86 insertions(+), 13 deletions(-)
+Changes in v10:
+- Guard::get takes &self instead of &mut self. (Andreas Hindborg)
+- Guard is !Send. (Boqun Feng)
+- Add Inspired-by tags. (Maíra Canal and Asahi Lina)
+- Rebase on linux-next, use NotThreadSafe. (Alice Ryhl)
+- Link to v9: https://lore.kernel.org/r/20241118-rust-xarray-bindings-v9-0-3219cdb53685@gmail.com
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index e00c14053efbfb08d053e0f0b11247fa25d9d516..4ffc4e1b22b2b7c2ea8e8ed5b7f7a8534625249f 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -354,6 +354,7 @@ impl<T: 'static, A> ForeignOwnable for Box<T, A>
-     A: Allocator,
- {
-     type Borrowed<'a> = &'a T;
-+    type BorrowedMut<'a> = &'a mut T;
- 
-     fn into_foreign(self) -> *mut crate::ffi::c_void {
-         Box::into_raw(self).cast()
-@@ -370,6 +371,13 @@ unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> &'a T {
-         // immutable for the duration of 'a.
-         unsafe { &*ptr.cast() }
-     }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> &'a mut T {
-+        let ptr = ptr.cast();
-+        // SAFETY: The safety requirements of this method ensure that the pointer is valid and that
-+        // nothing else will access the value for the duration of 'a.
-+        unsafe { &mut *ptr }
-+    }
- }
- 
- impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
-@@ -377,6 +385,7 @@ impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
-     A: Allocator,
- {
-     type Borrowed<'a> = Pin<&'a T>;
-+    type BorrowedMut<'a> = Pin<&'a mut T>;
- 
-     fn into_foreign(self) -> *mut crate::ffi::c_void {
-         // SAFETY: We are still treating the box as pinned.
-@@ -399,6 +408,18 @@ unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> Pin<&'a T> {
-         // SAFETY: This pointer originates from a `Pin<Box<T>>`.
-         unsafe { Pin::new_unchecked(r) }
-     }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> Pin<&'a mut T> {
-+        let ptr = ptr.cast();
-+        // SAFETY: The safety requirements for this function ensure that the object is still alive,
-+        // so it is safe to dereference the raw pointer.
-+        // The safety requirements of `from_foreign` also ensure that the object remains alive for
-+        // the lifetime of the returned value.
-+        let r = unsafe { &mut *ptr };
-+
-+        // SAFETY: This pointer originates from a `Pin<Box<T>>`.
-+        unsafe { Pin::new_unchecked(r) }
-+    }
- }
- 
- impl<T, A> Deref for Box<T, A>
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 1d26c309d21db53f1fc769562c2afb4e881c3b5b..eb5cd8b360a3507a527978aaf96dbc3a80d4ae2c 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -332,6 +332,7 @@ pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
- 
- impl<T: 'static> ForeignOwnable for Arc<T> {
-     type Borrowed<'a> = ArcBorrow<'a, T>;
-+    type BorrowedMut<'a> = Self::Borrowed<'a>;
- 
-     fn into_foreign(self) -> *mut crate::ffi::c_void {
-         ManuallyDrop::new(self).ptr.as_ptr().cast()
-@@ -357,6 +358,12 @@ unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> ArcBorrow<'a, T> {
-         // for the lifetime of the returned value.
-         unsafe { ArcBorrow::new(inner) }
-     }
-+
-+    unsafe fn borrow_mut<'a>(ptr: *mut core::ffi::c_void) -> ArcBorrow<'a, T> {
-+        // SAFETY: The safety requirements for `borrow_mut` are a superset of the safety
-+        // requirements for `borrow`.
-+        unsafe { Self::borrow(ptr) }
-+    }
- }
- 
- impl<T: ?Sized> Deref for Arc<T> {
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index af316e291908123407f08c665c91113a666fc593..0dfaf45a755c7ce702027918e5fd3e97c407fda4 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -19,26 +19,33 @@
- /// This trait is meant to be used in cases when Rust objects are stored in C objects and
- /// eventually "freed" back to Rust.
- pub trait ForeignOwnable: Sized {
--    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
--    /// [`ForeignOwnable::from_foreign`].
-+    /// Type used to immutably borrow a value that is currently foreign-owned.
-     type Borrowed<'a>;
- 
-+    /// Type used to mutably borrow a value that is currently foreign-owned.
-+    type BorrowedMut<'a>;
-+
-     /// Converts a Rust-owned object to a foreign-owned one.
-     ///
-     /// The foreign representation is a pointer to void. There are no guarantees for this pointer.
-     /// For example, it might be invalid, dangling or pointing to uninitialized memory. Using it in
--    /// any way except for [`ForeignOwnable::from_foreign`], [`ForeignOwnable::borrow`],
--    /// [`ForeignOwnable::try_from_foreign`] can result in undefined behavior.
-+    /// any way except for [`from_foreign`], [`try_from_foreign`], [`borrow`], or [`borrow_mut`] can
-+    /// result in undefined behavior.
-+    ///
-+    /// [`from_foreign`]: Self::from_foreign
-+    /// [`try_from_foreign`]: Self::try_from_foreign
-+    /// [`borrow`]: Self::borrow
-+    /// [`borrow_mut`]: Self::borrow_mut
-     fn into_foreign(self) -> *mut crate::ffi::c_void;
- 
-     /// Converts a foreign-owned object back to a Rust-owned one.
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
--    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
--    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] for
--    /// this object must have been dropped.
-+    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and it
-+    /// must not be passed to `from_foreign` more than once.
-+    ///
-+    /// [`into_foreign`]: Self::into_foreign
-     unsafe fn from_foreign(ptr: *mut crate::ffi::c_void) -> Self;
- 
-     /// Tries to convert a foreign-owned object back to a Rust-owned one.
-@@ -48,8 +55,9 @@ pub trait ForeignOwnable: Sized {
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must either be null or satisfy the safety requirements for
--    /// [`ForeignOwnable::from_foreign`].
-+    /// `ptr` must either be null or satisfy the safety requirements for [`from_foreign`].
-+    ///
-+    /// [`from_foreign`]: Self::from_foreign
-     unsafe fn try_from_foreign(ptr: *mut crate::ffi::c_void) -> Option<Self> {
-         if ptr.is_null() {
-             None
-@@ -60,17 +68,53 @@ unsafe fn try_from_foreign(ptr: *mut crate::ffi::c_void) -> Option<Self> {
-         }
-     }
- 
--    /// Borrows a foreign-owned object.
-+    /// Borrows a foreign-owned object immutably.
-+    ///
-+    /// This method provides a way to access a foreign-owned value from Rust immutably. It provides
-+    /// you with exactly the same abilities as an `&Self` when the value is Rust-owned.
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
--    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-+    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
-+    /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
-+    /// the lifetime 'a.
-+    ///
-+    /// [`into_foreign`]: Self::into_foreign
-+    /// [`from_foreign`]: Self::from_foreign
-     unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> Self::Borrowed<'a>;
-+
-+    /// Borrows a foreign-owned object mutably.
-+    ///
-+    /// This method provides a way to access a foreign-owned value from Rust mutably. It provides
-+    /// you with exactly the same abilities as an `&mut Self` when the value is Rust-owned, except
-+    /// that the address of the object must not be changed.
-+    ///
-+    /// Note that for types like [`Arc`], an `&mut Arc<T>` only gives you immutable access to the
-+    /// inner value, so this method also only provides immutable access in that case.
-+    ///
-+    /// In the case of `Box<T>`, this method gives you the ability to modify the inner `T`, but it
-+    /// does not let you change the box itself. That is, you cannot change which allocation the box
-+    /// points at.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
-+    /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
-+    /// the lifetime 'a.
-+    ///
-+    /// The lifetime 'a must not overlap with the lifetime of any other call to [`borrow`] or
-+    /// `borrow_mut` on the same object.
-+    ///
-+    /// [`into_foreign`]: Self::into_foreign
-+    /// [`from_foreign`]: Self::from_foreign
-+    /// [`borrow`]: Self::borrow
-+    /// [`Arc`]: crate::sync::Arc
-+    unsafe fn borrow_mut<'a>(ptr: *mut crate::ffi::c_void) -> Self::BorrowedMut<'a>;
- }
- 
- impl ForeignOwnable for () {
-     type Borrowed<'a> = ();
-+    type BorrowedMut<'a> = ();
- 
-     fn into_foreign(self) -> *mut crate::ffi::c_void {
-         core::ptr::NonNull::dangling().as_ptr()
-@@ -79,6 +123,7 @@ fn into_foreign(self) -> *mut crate::ffi::c_void {
-     unsafe fn from_foreign(_: *mut crate::ffi::c_void) -> Self {}
- 
-     unsafe fn borrow<'a>(_: *mut crate::ffi::c_void) -> Self::Borrowed<'a> {}
-+    unsafe fn borrow_mut<'a>(_: *mut crate::ffi::c_void) -> Self::BorrowedMut<'a> {}
- }
- 
- /// Runs a cleanup function/closure when dropped.
+---
+Tamir Duberstein (2):
+      rust: types: add `ForeignOwnable::PointedTo`
+      rust: xarray: Add an abstraction for XArray
 
+ rust/bindings/bindings_helper.h |   6 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/xarray.c           |  28 +++++
+ rust/kernel/alloc.rs            |   5 +
+ rust/kernel/alloc/kbox.rs       |  38 +++---
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/miscdevice.rs       |   6 +-
+ rust/kernel/sync/arc.rs         |  21 ++--
+ rust/kernel/types.rs            |  46 ++++---
+ rust/kernel/xarray.rs           | 266 ++++++++++++++++++++++++++++++++++++++++
+ 10 files changed, 373 insertions(+), 45 deletions(-)
+---
+base-commit: 7510705aa41f7891c84dbb37965f492f09ae2077
+change-id: 20241020-rust-xarray-bindings-bef514142968
+prerequisite-change-id: 20241030-borrow-mut-75f181feef4c:v6
+prerequisite-patch-id: f801fb31bb4f202b3327f5fdb50d3018e25347d1
+prerequisite-patch-id: b57aa4f44b238d4cb80f00276a188d9ba0c743cc
+prerequisite-patch-id: 2387ec5af1cc03614d3dff5a95cefcd243befd65
+prerequisite-patch-id: 75e26dd500888d9a27f8eac3d8304eab8d75c366
+prerequisite-patch-id: 7f845443f373f975a888f01c3761fe8aa04b8a3c
+prerequisite-patch-id: 5a9856c7363b33f0adfe8658e076b35abf960d23
+
+Best regards,
 -- 
-2.47.0
+Tamir Duberstein <tamird@gmail.com>
 
