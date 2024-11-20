@@ -1,94 +1,94 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD841AAE00;
-	Wed, 20 Nov 2024 23:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9627447;
+	Wed, 20 Nov 2024 23:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732146839; cv=none; b=RwhYdqy6gSYPpVO5aSewrqpq7iPwKNMkophjgpNTr4gJxRN59lsckFCC0m19U0yXsBymWtOiDf0dvuOaJj5h9Zi7tAqMiVW4mfVjeEEvC/J4jo0pe8JakciHS60zOOAuLOKDx0QDtpfUPmHWSEKB7onlxhpiyZGbOWAoLdje35E=
+	t=1732147193; cv=none; b=ley3F+M7a2CTsxOv/YqIoem2RfB03DZKLCn1r7PB1RkZxSCPL78zscz53+mTb8L93iyQewBxo36+gIfX7SEkLJ7eDsMsx902IO/KwxAccDKm67kii52OFK1FetCKNy1JyuFP+vuRfJaYS8gba616NG6TFJ+jLpD00Ka6W9H97o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732146839; c=relaxed/simple;
-	bh=SCmcvuIheMdrqxRBtfm8qhsnL2EvmxNhk2r6rErGX8c=;
+	s=arc-20240116; t=1732147193; c=relaxed/simple;
+	bh=q2ocIH2ula1OWdc0zmaBfNWPMeIEANSIqkA8myM+gug=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OHwD8K+rVm+Rut6tLGT0GGs1xAGa4mZGRHRkkl9d0L1ppxsvZrIQIv/9iX2QBfX8GA7tzXJDWAcmOSLSNVTk6G6huLtNn91AmODFC+pkta40bfeYZDbNR8XyvSy9Lj0fKKwzgQZcS+njSXg0/DerCAOUXW8PixBrFBetxyfjqJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z6LHhTRy; arc=none smtp.client-ip=209.85.221.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=qQOK9SFtC6bBJBy22hn4Ev9wnkpafoJE7+5gqSR3Fj0EAWGc+uUGcXVO0ZaeFPMUKOmOppOH4vcpdUd6TrBXpgTcT02tcn6gSrorvq66ZpSh66No7nG3BZK+mOOM78606cuOuNUbgb7K/uKjWSQ4yrM5d3bbPXT6TBkcmsgwJks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fsfVnhpQ; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z6LHhTRy"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-514e4f09145so35025e0c.3;
-        Wed, 20 Nov 2024 15:53:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fsfVnhpQ"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7b35b1ca0c2so156646485a.0;
+        Wed, 20 Nov 2024 15:59:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732146836; x=1732751636; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732147190; x=1732751990; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HwR9U7++o+mwGKw/TgQh51JacKaxEXIG/HrcadPO/PU=;
-        b=Z6LHhTRygdiZ3vs/L8TxIgTOhmHX/BHcGSk0eqQLgWJxlr7uUyKMVkgwmTj5TCcx26
-         259Aty7486ChmT8AJ29lzMQOoNdNO7K8B2svMgqmihGYzp2MPsB1ZugVFc0YZ1Lb4S/Q
-         NohEdqrCuW9ZpHIYRY8F4zaUqK89HdWjiI6B6FuDmizeP2/urNdGjHrZdl+wN+p6JjQT
-         KnHt0t+LEhT56Ryi0r9NoDoEM/SUF6GF6Hgec3P9w63+a/lrSX/Sv5ZfjVXpBr1uqWEf
-         yGmr122pNgamyjK8csiw74Ay+tE6hinPj+jZay3NDfbIuoFy1FShNnoMaNnc/O4BvvAA
-         TOqw==
+        bh=LiDKYv75GgV/NsxkesfcH4JoxEJ3+bc5qnzdoPtFQC0=;
+        b=fsfVnhpQ+ECSO/3sjrGygOxS8sK+02/JZHxycChuHdfWb4wsQZNk+zbAN3aSoA7ej0
+         mpWiqxMmg7WuRvpidz+J2uKyHoK2Sv0qcnkLBjXY3tOwICjAMgqW67miXU/oD0TCCBtI
+         fjmVKIu4hPJZZjB8n9TB5WcotGvMrInp34+B2f5V2wZ2S1cRKLPS4uG4KRUaC3kMWqt/
+         VIPULggK7S1PaYM6VOXgCPS0dMvDUg3h2fUTOIpvqmFGl7vMtrEf3H8VFCVRv/eUtIkB
+         WDpZO1zxNZiNQE7f3TPlejO9Bla72Nl5HtlXJU8GLfbn3LB7rf+cJTsR5M9azDlN9j3L
+         8afA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732146836; x=1732751636;
+        d=1e100.net; s=20230601; t=1732147190; x=1732751990;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HwR9U7++o+mwGKw/TgQh51JacKaxEXIG/HrcadPO/PU=;
-        b=BLo8gEEmTs833ERfKw/ykHF8E2xB9Jw9SJCS1NuJs96pLE5QGdCNyuNtkm+puzk/ID
-         BIJhJ+i602iFcUvTGurQFk3HywuVLRRLxjWMZwUjK4dNVY/J09VgrYxGWjP+BOuq66s7
-         h69t7X6KewOsS6crWlH6OIlfjV+z/YSrPHZLtBXwCzQhP6nFLoMp2R3lFX5S/OF35JI0
-         qFpQXhYAnYQE3CzNzJreaqKLBnRB1dShYpFrgxS92DNjwGiQN/2K08uM7vcBscptn/yA
-         bndelyRGIe01EbNMjoB/qktjQfSShlP/5IaRALzG4crmZRNrAQ9Li4jR0zSzyBDale8q
-         xI0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVHB2C0wSa/Y3Sjefq7sn5OLiaU3DgORYqEY5YPpW2b3MORolu9ZGf24ZrbKdgrKqjtxyx37hKNuRNT1jM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEeu3S5w+bUbSHANg47DQCSkkiaVFMVFroZ3w8OYAojIFIMSuY
-	zs94i0IqHmbHeiZVSWS6pVtJ3/3jmJU+tz8hQk64WG1444LRK/6E
-X-Google-Smtp-Source: AGHT+IGZ1+lggK4vm6e7kRaF2aXi4U4XPaXDudfx+O7uR+OgVOv1SrpR7JPPN2u4Rzr4dadzt7olRw==
-X-Received: by 2002:a05:6102:3e1a:b0:4ad:6367:c7d8 with SMTP id ada2fe7eead31-4adaf5d480dmr5700216137.20.1732146836500;
-        Wed, 20 Nov 2024 15:53:56 -0800 (PST)
+        bh=LiDKYv75GgV/NsxkesfcH4JoxEJ3+bc5qnzdoPtFQC0=;
+        b=Y22rLW7naQGIaYGp6W/eo5ZY1ViQLlMoIZlMMuYsNG3uuURhQh6TUs03+kNmwImghT
+         PA6iZl4BnNiLpxAXsC/JoA6yTJMZgqtOlJ6wej+wme+Eth4AS9WvMwTUObTDDWLgTdDz
+         E0MFgVNHtUdWx4UAdgKn1xEHUnQhWCkBp67eC8CjbwMDZozMOn5c3/BuksJ69CvhltCs
+         wrYJpnBl+pv9W9y6Yf29VRtTRV60Z4P6YnMrQM4tapoGC1EOLOPB0B7vWb9Tt+L4fEDO
+         8259/rrS3c/WVL8mgX6+tbiSxfOIoTKa8zyHsk3U/ROBtpfXD/i/izH3wSIKBk1MSX6g
+         i8MA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5w+M0GFAIZGjJUQHBlmgG/HsobXkCDerEh4NaHb6uL8LcJBwaMOxJv0JHF8/FIRndAOXAo2ZMaV2woz8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdcKjm/0yphPQqOzkbbe3CiiCSpFh7AGk5eggOWDv0io5y6j2Y
+	7PFQM3k0Lftd8EdGZ3g5i1XrsTXxLMAXHbVHneKCGCkkA72ixARj
+X-Google-Smtp-Source: AGHT+IFwFBHPNAKhsZINjwPWb3KUDRyyCblHk5G5jgvR7nmgKyOKsTrTo8fE8bxViP7nQSMZSlfV5A==
+X-Received: by 2002:a05:6214:5183:b0:6d4:1613:be3e with SMTP id 6a1803df08f44-6d442479230mr22725326d6.22.1732147190387;
+        Wed, 20 Nov 2024 15:59:50 -0800 (PST)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d4380f39aasm16250566d6.66.2024.11.20.15.53.55
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d43812af82sm16238126d6.90.2024.11.20.15.59.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 15:53:56 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1ACC51200043;
-	Wed, 20 Nov 2024 18:53:55 -0500 (EST)
+        Wed, 20 Nov 2024 15:59:49 -0800 (PST)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 70274120006E;
+	Wed, 20 Nov 2024 18:59:49 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 20 Nov 2024 18:53:55 -0500
-X-ME-Sender: <xms:k3Y-Z18KCSNKos1WaMYLhar_eGC0ScqRrPVJFjSEIr-9qgSxQE2Zfw>
-    <xme:k3Y-Z5vgtENpQDmVSX34iOICLoTpp76jjgSEQFKqxwkeLXxJdGFIF6-o78DSU1yuJ
-    NqnSowx_ZE0_qh7DA>
-X-ME-Received: <xmr:k3Y-ZzA8E8bmtnrvZeoxDDOd6SjPrEOPxvxeEVG8VSn2detQdomTWD5D6ZE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeehgdduhecutefuodetggdotefrodftvf
+  by phl-compute-10.internal (MEProxy); Wed, 20 Nov 2024 18:59:49 -0500
+X-ME-Sender: <xms:9Xc-Z7RyqdmsPtUWMDLIb7-iyk3xBIC6d6g873EAkuO6x9UkMabmYQ>
+    <xme:9Xc-Z8yqGQiIDYIx1YCpTbBDjAKwzZtS_xe4zmAfp7QE9TI5MWExTv6lwhhlhUWGn
+    c0YZeRbxfB9_YXHnA>
+X-ME-Received: <xmr:9Xc-Zw1Z0dX91m7A7Dr8ddJK_f9IAKa3KG7vJYHiHMF1rXWYg63_OOJADmQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeehgdduiecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
     tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
     hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
     hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homheqnecuggftrfgrthhtvghrnheptdehhfffhefguedvffegudegtddvhedtueetuefh
-    gffhueeuudekgeevfeduteeinecuffhomhgrihhnpehgvghtrdhmrghpnecuvehluhhsth
-    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhm
-    thhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvd
-    dqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhn
-    sggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhihuh
-    guvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhig
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomh
-    dprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhho
-    rhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhord
-    hlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrghes
-    khgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:k3Y-Z5csZ__ynPowgA-bAgaFd_iyAYdnqWjfJJwd3fcnZpWgYTkyAg>
-    <xmx:k3Y-Z6Nqdbq_McNtQkVZ1leqJYSuw8SIT2ZlS7pCjmbK4Ma1CKt9GQ>
-    <xmx:k3Y-Z7l19wrjSFa6UBBc-dC8cSJzxXgAkr6CPvrk8vtlye3negcRdA>
-    <xmx:k3Y-Z0vnSmaZyTN26xA5TbRQCCe_I42Zo7wzgiMeudcyC82aB0Co9g>
-    <xmx:k3Y-Z8uphiWkymJfSjY92m4wBvDSpeQRzpmLj4-t467bVP70RtAqFXkb>
+    homheqnecuggftrfgrthhtvghrnhepgfevueeguedvvdehkeefteffveehvdfhueekveeh
+    vdehjeduheduleevhfffleevnecuffhomhgrihhnpegrtghquhhirhgvugdrshgrfhgvth
+    ihnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsgho
+    qhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqd
+    dujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihm
+    vgdrnhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhf
+    ohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhj
+    vggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgt
+    phhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtth
+    hopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhh
+    ihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:9Xc-Z7AEBMMvvo4pj66qwhX8_QJQL8czx79x1p3r9IGYZaVsyCDPgA>
+    <xmx:9Xc-Z0jjb9PWjJtXBmvDphKSC5ssCdDROIxaR0p3QNITRJouorYd8w>
+    <xmx:9Xc-Z_oRHQRsI0Di831t7iRCssVN5pPr_DPPd5W8rqIWPev7TdhEGQ>
+    <xmx:9Xc-Z_jUnK_4BDJPV0XxjNSBJvvEl2s84ntkTJjH6epsFIee_asq-w>
+    <xmx:9Xc-Z3RKbhqJ4prfK-rdn1Gdz1ePYcv_6VL4hkIYSJQCzmar7JeIHmEL>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 20 Nov 2024 18:53:54 -0500 (EST)
-Date: Wed, 20 Nov 2024 15:53:52 -0800
+ 20 Nov 2024 18:59:48 -0500 (EST)
+Date: Wed, 20 Nov 2024 15:59:47 -0800
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Lyude Paul <lyude@redhat.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -98,16 +98,14 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Filipe Xavier <felipe_life@live.com>,
 	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
 	Valentin Obst <kernel@valentinobst.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 1/3] rust: sync: Add Lock::is_locked()
-Message-ID: <Zz52kNp4_jRxBv_G@tardis.local>
+	Filipe Xavier <felipe_life@live.com>
+Subject: Re: [PATCH 2/3] rust: sync: Assert Lock::is_locked in Guard::new for
+ debug builds
+Message-ID: <Zz5384uaZdsL306c@tardis.local>
 References: <20241120223442.2491136-1-lyude@redhat.com>
- <20241120223442.2491136-2-lyude@redhat.com>
+ <20241120223442.2491136-3-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -116,110 +114,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241120223442.2491136-2-lyude@redhat.com>
+In-Reply-To: <20241120223442.2491136-3-lyude@redhat.com>
 
-On Wed, Nov 20, 2024 at 05:30:41PM -0500, Lyude Paul wrote:
-> Now that we've added a Lock::from_raw() function and exposed Guard::new(),
-> it would be good to actually add the ability to assert the current state
-> of a lock to ensure correctness for unsafe code using these functions.
-> 
-> To do so, let's add Lock::is_locked() which simply returns whether or not a
-> Lock is acquired. We'll use this in the next few commits to add some debug
-> assertions.
+On Wed, Nov 20, 2024 at 05:30:42PM -0500, Lyude Paul wrote:
+> Since we're allowing code to unsafely claim that it's acquired a lock
+> let's use the new Lock::is_locked() function so that when debug assertions
+> are enabled, we can verify that the lock has actually been acquired.
 > 
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
->  rust/helpers/spinlock.c           |  5 +++++
->  rust/kernel/sync/lock.rs          | 18 ++++++++++++++++++
->  rust/kernel/sync/lock/mutex.rs    |  5 +++++
->  rust/kernel/sync/lock/spinlock.rs |  5 +++++
->  4 files changed, 33 insertions(+)
+>  rust/kernel/sync/lock.rs | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> index b7b0945e8b3cb..90216a69e3ea1 100644
-> --- a/rust/helpers/spinlock.c
-> +++ b/rust/helpers/spinlock.c
-> @@ -26,3 +26,8 @@ int rust_helper_spin_trylock(spinlock_t *lock)
->  {
->  	return spin_trylock(lock);
->  }
-> +
-> +bool rust_helper_spin_is_locked(spinlock_t *lock)
-> +{
-> +	return spin_is_locked(lock);
-> +}
 > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 139f17f2ec86b..542f846ac02b2 100644
+> index 542f846ac02b2..0a7f2ed767423 100644
 > --- a/rust/kernel/sync/lock.rs
 > +++ b/rust/kernel/sync/lock.rs
-> @@ -85,6 +85,13 @@ unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
->          // SAFETY: The safety requirements ensure that the lock is initialised.
->          *guard_state = unsafe { Self::lock(ptr) };
->      }
-> +
-> +    /// Returns whether or not the lock is currently acquired.
+> @@ -244,10 +244,17 @@ fn drop(&mut self) {
+>  impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+>      /// Constructs a new immutable lock guard.
+>      ///
+> +    /// # Panics
 > +    ///
-> +    /// # Safety
+> +    /// This function will panic if debug assertions are enabled and `lock` is not actually
+> +    /// acquired.
 > +    ///
-> +    /// Callers must ensure that `ptr` is a valid initialised pointer to this lock type.
-> +    unsafe fn is_locked(ptr: *mut Self::State) -> bool;
->  }
->  
->  /// A mutual exclusion primitive.
-> @@ -170,6 +177,17 @@ pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
->          // that `init` was called.
->          unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(self, state)) }
->      }
-> +
-> +    /// Return whether or not the lock is currently acquired.
-> +    ///
-> +    /// Keep in mind that this function is inherently racy: a lock could immediately be acquired or
-> +    /// released after this function returns. As such, the return value from this function should be
-> +    /// treated as a snapshot for debugging purposes.
+>      /// # Safety
+>      ///
+>      /// The caller must ensure that it owns the lock.
+>      pub unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
+> +        debug_assert!(lock.is_locked());
 
-Then why don't we use the function provided by lockdep? I.e.
-lockdep_is_held() and its friends?
+You should just use lockdep_assert_held() here, and there's no need for
+new_unchecked().
 
 Regards,
 Boqun
 
-> +    pub fn is_locked(&self) -> bool {
-
-> +        // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-> +        // that `init` was called.
-> +        unsafe { B::is_locked(self.state.get()) }
-> +    }
->  }
->  
->  /// A lock guard.
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-> index 0e946ebefce12..f21b1f14cbe1b 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -126,4 +126,9 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
->              None
->          }
->      }
 > +
-> +    unsafe fn is_locked(ptr: *mut Self::State) -> bool {
-> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-> +        unsafe { bindings::mutex_is_locked(ptr) }
-> +    }
->  }
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index 9f4d128bed983..cfccf5e900b80 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -125,4 +125,9 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
->              None
->          }
->      }
-> +
-> +    unsafe fn is_locked(ptr: *mut Self::State) -> bool {
-> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-> +        unsafe { bindings::spin_is_locked(ptr) }
-> +    }
->  }
+>          Self {
+>              lock,
+>              state,
 > -- 
 > 2.47.0
 > 
