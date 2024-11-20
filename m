@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F02B155303;
-	Wed, 20 Nov 2024 15:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4020514B077;
+	Wed, 20 Nov 2024 15:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732117935; cv=none; b=pDHSF4a0jt33h3AlFBE1P2b6QdpD26XTWY17JDyJcDS/v0C7/I7jEQvUV7c517T+2iK7VZXp/Pd6iAQPQdc6mkk8diveKKn6vjwaPlWxYSzmrloZdniboMzz08dcxVSccvKhVG2sLxriKVNJII3s59d/p673E7z4UjiLjMLNdPs=
+	t=1732118337; cv=none; b=dlJwcxrwSXet5DEsrDYUHnUshgqT3cBeTD2890fDMgljcJ6cKN7vdLAbWS6DTsHGyTQdtiJAeJm+wiYS/M7wNwHhEjYqSvqWw1Go2uyRD+XjN0v2e9gpa17wMOQUke5YEeAJrfD85HORygUwb83BNHvArGwcxISBiIoJqFhqdlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732117935; c=relaxed/simple;
-	bh=n8TDtoDD+tY39h2LivsDQa4bXgXGn/UExsse2WuBgxw=;
+	s=arc-20240116; t=1732118337; c=relaxed/simple;
+	bh=PBO+6ywj2PcgEksLd2QnUclp4cCButUpCEqwidE/yfE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=URaKp4b5FR2fLI+rusoyft3JIVWIFSVbipOQqK2gWLNw7bDXrCPZlKGXLu61ifP1big6YUn/+91QVToGxuQjoHGCZ6oeLfQ4ruWCeYLaiWo+kSWLaLH0CsLgg50+RzKLIowvhnVxDHsaCk68Fsis8lTKh45wIM06T7cGdrc3wd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrbMvjyx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=MBrg1ej5jnZHiWm9n/DNjCEfLLMVLs4CHARci3Q7uji91x1OIBnkQeJUTtzcT+RleeCtONEfGAlgREic1XxGLIgZLRXl0MmA73/qiskZ7ikjCxdab64IjOuUbHaG3KsZYfAqJxidBHrO+TP29RPIrgUfyNdwxnBBW+NF7IjDeMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UAdDTUaJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrbMvjyx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89423C4CED1;
-	Wed, 20 Nov 2024 15:52:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UAdDTUaJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC64C4CECD;
+	Wed, 20 Nov 2024 15:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732117934;
-	bh=n8TDtoDD+tY39h2LivsDQa4bXgXGn/UExsse2WuBgxw=;
+	s=k20201202; t=1732118336;
+	bh=PBO+6ywj2PcgEksLd2QnUclp4cCButUpCEqwidE/yfE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=PrbMvjyxDM0sLc5hnKcDHnO4ldyXvy9h29JWu1Pgh9oqJOF1JIA+nkhFgYZtcaXIA
-	 P7fHGCvAlliXsixRsqDLhEBu65Lt7gvkk3jGkeBEIdbMjWQlrgjxGJHFm1ZnWCzhUB
-	 /1bu0ZcxSZ5pY0Jt5ZXtroa1xwI3ailVJgRqWFfbvOXGZd44XHgQZIwoVE0FP9mfH8
-	 2ObtxV7yKQBkDs7AMbEFoF334ML+3JHBdViNBv+8tfQvY6icik5ROHs17Iug+YeYCu
-	 15oxCIbbMFF5Q4YMQ3+jPYR7K6g5NF5FkhPfyOQ62gObIUFSQmaRzV6eQdMDF3Hu2c
-	 F9B8a2DoN/o8A==
+	b=UAdDTUaJvZ8iVJrkMsWXcRaIIhFDT4qOfS+nRrPbQc0r8wUFLbg7i9MJve+ldQdOg
+	 MFS3yzaYbnQy3Ymlnbux4JDHJ592hPmMuEVPysq5PJPvX2G00+wFqDNgsmyTqviESh
+	 1Kr3fh1NEoqxtz1gmEwDR1C1Qa3AcgTXvocRBNb+U1yJS6DzJvEChscM8I68TTpUJJ
+	 oGv9O+/J+sZ+1ZBFtM/tcg0MgkEWTmXIOV6jzTRGq9SmkKy7sS6Z5JrYVtZFw1My01
+	 YUjTJtS4suVGGnKNlldCDn/l+iioZg1eVINnQh2I4vuqzBPQArcRUqsRlcnSlb6nFG
+	 VGfHbP4v9cOQA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Lyude Paul" <lyude@redhat.com>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
@@ -37,15 +37,14 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
  Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
   "Trevor Gross" <tmgross@umich.edu>,  <rust-for-linux@vger.kernel.org>,
   <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 06/13] rust: hrtimer: add `UnsafeTimerPointer`
-In-Reply-To: <3a94c12f91964c5c89476bb2376a7489ccc0d154.camel@redhat.com>
-	(Lyude Paul's message of "Wed, 13 Nov 2024 18:27:32 -0500")
+Subject: Re: [PATCH v3 00/13] hrtimer Rust API
+In-Reply-To: <8fa20279fe8067602fbb106329a0f7d9c4146b3b.camel@redhat.com>
+	(Lyude Paul's message of "Wed, 13 Nov 2024 18:39:53 -0500")
 References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
-	<20241017-hrtimer-v3-v6-12-rc2-v3-6-59a75cbb44da@kernel.org>
-	<BODmd-cUvAXxw85e-6--Q9NlnO46gnUA1rG7m0h_FlQun_CcEYHCLMHV8VhjTkF1Cv5rAtridN3PNhqip0mBFw==@protonmail.internalid>
-	<3a94c12f91964c5c89476bb2376a7489ccc0d154.camel@redhat.com>
-Date: Wed, 20 Nov 2024 16:25:07 +0100
-Message-ID: <87zflu2ai4.fsf@kernel.org>
+	<KuX-uY44Td6jpb3dtlR-S5Eo-KEFXad0UorWcwaspcNfH75QUPklyMfQmAsCPuLVV3PM3iNrDKdXJNhyzZm4cQ==@protonmail.internalid>
+	<8fa20279fe8067602fbb106329a0f7d9c4146b3b.camel@redhat.com>
+Date: Wed, 20 Nov 2024 16:58:42 +0100
+Message-ID: <87msht3nil.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,35 +55,21 @@ Content-Type: text/plain
 
 "Lyude Paul" <lyude@redhat.com> writes:
 
-> On Thu, 2024-10-17 at 15:04 +0200, Andreas Hindborg wrote:
->> Add a trait to allow unsafely queuing stack allocated timers.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/hrtimer.rs | 33 +++++++++++++++++++++++++++++++++
->>  1 file changed, 33 insertions(+)
->>
->> diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
->> index eeed2afd501b64b94d57cc658616659e28785078..e97d7b8ec63ce6c9ac3fe9522192a28fba78b8ba 100644
->> --- a/rust/kernel/hrtimer.rs
->> +++ b/rust/kernel/hrtimer.rs
->> @@ -151,6 +151,39 @@ pub trait TimerPointer: Sync + Sized {
->>      fn start(self, expires: Ktime) -> Self::TimerHandle;
->>  }
->>
->> +/// Unsafe version of [`TimerPointer`] for situations where leaking the
->> +/// `TimerHandle` returned by `start` would be unsound. This is the case for
->> +/// stack allocated timers.
->> +///
->> +/// Typical implementers are pinned references such as [`Pin<&T>].
+> With the comments I left addressed:
 >
-> Missing a `
+> Reviewed-by: Lyude Paul <lyude@redhat.com>
 
-Thanks! I wonder why this is not caught when building the docs.
+Thanks for the review!
+
+> (I'll have to rereview it soon when you rebase I assume, but I have a rebased
+> version locally (can send to you if you want) so I know the changes won't be
+> too difficult ;)
+
+I did not rebase on the new C API yet actually, but I will very soon.
+
 
 
 Best regards,
 Andreas Hindborg
-
 
 
