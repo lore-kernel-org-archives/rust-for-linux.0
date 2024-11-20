@@ -1,109 +1,94 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E00149C42
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Nov 2024 09:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4BC4EB45
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Nov 2024 11:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732093860; cv=none; b=Nzf5N77WP5J4R2GLfzSK2k6gNbpOb0KPtxthHVZZVIxmbB8nKTwCxVWbrTKi1K0xKqXTs8SdvgkNeBU/BSvE49X/KWLWOPmSYQI/J8872SXc2YL1ZeGWU01NfXnD6DMzBvedyO4l6f5cVgVIknq9ZbPs/sS+6g8c5m3TcoBz63k=
+	t=1732103154; cv=none; b=ssAKLOAJkixYVJnx6mqzgRgPy0yWN2RoiZgY5Hw65eH/XY7Yv6cwBbGHqKIsEyArx+ZnVgpobjlfW/UF/9x8o1KmJECVrmkxnbElabBg+hJFuiv7esikOUTd2Bn2wGUlXIY5IIiJtE1iDG9wKiGHhirjU7d3xLKxIVthkHp7EPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732093860; c=relaxed/simple;
-	bh=2no53dCj7JDkx0sffNAY9g9WwHKzK1IG3PuUNiLugXs=;
+	s=arc-20240116; t=1732103154; c=relaxed/simple;
+	bh=OVoaJhAUm36FVp7AVK49tAGEAdPEa01g2tlHYG5cyUw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EV8BffQ3mqvk/KvOWknyWrH4hAl95wvBf31FVwhKxy6Hf0b36XGS3D7pbmKqoitBlSt+g9AO5QfjMlUbcXUQXtcOrXi2F7BkYinIHbLQ5nMNBy0cKsTun53kQP/MBf0sSge/wUHHBVmC6oLn2i6mbmP0iStJyMgJoNOUiTlRMTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1ZcN5P/d; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=mw4n0oHJLqeUT33y0YcJY8xdfJ3gvEUKMwcYBv8BVOulFDjDELWa1DvqJZ1yVt55l7xx2kv/xwgXOP0PaWDnc0eo0+ltcAS54qUFQQbOXzbRSKu5rtVSNxwbfVwJppKRMb4JjS2FxNvidorqoBrwUeqiRZcRYdl1tLtC41kqV+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aoa2thBk; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1ZcN5P/d"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-382456c6597so1261394f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 20 Nov 2024 01:10:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aoa2thBk"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb5111747cso53469051fa.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Nov 2024 03:45:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732093857; x=1732698657; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732103151; x=1732707951; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=taQfAO7UsVPf+OWP/Z17Mad9ERlkGUab/JxNPFh1DDw=;
-        b=1ZcN5P/dIlsPuRy1B4z9zDEzl/tWj/u0DLBSF/8kZq/ufHPscXw4TzGK4hap17tf+1
-         ZyqLZfED06bvMNkYMf4TcBELgGHyIIrgIJYYcIaA6NiSQ2VmapW13ozQyuWOYRs6s6L5
-         5wKIGE6Swa7k0LizqBOy/KyThT3ZmBAxx2kF2gryFqvqet+xEy7+Pa2u7AJS+QJirOq4
-         /Yr9WLowxirJdXOr4kFI2qKR8OQQv30lWj8brsE4ot9RAEgt4a48+GYvIonHYBPZ/HP1
-         QRGXOVgVEQMRmA+RCT4c4b/3sgMEy9fJPBWkgK/PTEtrTem+M/ZcwyM824efmtT//HYU
-         /kHw==
+        bh=OVoaJhAUm36FVp7AVK49tAGEAdPEa01g2tlHYG5cyUw=;
+        b=Aoa2thBkMaV06iQIAQh59vxkALuahXEmILaqgGW7HDDuj/PwLD63ONMHisPel7ERau
+         iYptZ49Z9YXDTpzY4uYIjiqareM1BgY4ntJZ1DcuDCaLTbthHhdSwCLnlG84wwDLWuB1
+         UXuPPE74W9eqoddgIWaDCBIIJpVSSbCQFO3E11RL3TO2mpziWFE5M75WP00RAN1o8I1N
+         7Bdu7MAiT39y7oYUhuY5rHlUQaJpkl+G2WFJSZPqT/NnXgyWhBlDhk4Wrk6L0sonhH9S
+         L+tCFQ7x1McK5jlvqHilDe2pToqUgEW22l1pqFJspkiWEKLM8E8p6qJd5owlAfvKAkC1
+         pl+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732093857; x=1732698657;
+        d=1e100.net; s=20230601; t=1732103151; x=1732707951;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=taQfAO7UsVPf+OWP/Z17Mad9ERlkGUab/JxNPFh1DDw=;
-        b=w6mTiCaG4S0iRV1L/P9DkRqVSZeCx1QHN33fkdl9FuosgHkXuHR1z/gyPyOETYsVe5
-         Y66bgLyPFdY0mfdHcJ/iP4zSZdCeFxU4Vr23jUqgrmPVG3qKLcCoJInh0HuUIpv12JAd
-         1l7X9By73PKyJke3ssxvi8gbQRJx2Dz0uptM6E5BSIfFdMaH96+PisAyvW3r6DRp4V4W
-         GhrpdKq+kn4wdjEEuR9PHCWLRQIDtMc/G0HSC5l9i8ro+mNByKLkasoIsQiz9w8C/1MV
-         M4TyLIPIn/0o0RUAQ/PD+i5kylj2Shqu4C/zn1uYAAPY+J5mpR5h3H8viY2A5gm6GplW
-         ZvcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVq2OvrvYLL7pOPNNajUsOXQLWRhaavnwa6lHXLkPzy0caZTtqx+PVEBN6UnkaWc3Qcd5P/wtocOof7kO1IHg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFX5mTxBD9XBnkr044VLkJLJ6wPwiBiqFEywv+8a+kvVl9W/oy
-	b3k+3Xs9iOrXopO2+rfEAfNJrxl5EsGIIBXU+Ee//MXw5r4/RhrcHu/RFS2JDauHZAq8o2gfQCN
-	cT7Y5mYsxRQ9YR1x7FURBm+izNppIc5rxWNQ0
-X-Google-Smtp-Source: AGHT+IE0Qr6c8zEO0W+zjaOi3AJMKcjk7pnHmZj3Gs9w6cUneUNmZHuNKxDnfUxGyGK7KDV6BRIx3PXwyrLZUoiGnjo=
-X-Received: by 2002:a5d:47c4:0:b0:382:499a:dc6d with SMTP id
- ffacd0b85a97d-38254b24de7mr1265757f8f.55.1732093857168; Wed, 20 Nov 2024
- 01:10:57 -0800 (PST)
+        bh=OVoaJhAUm36FVp7AVK49tAGEAdPEa01g2tlHYG5cyUw=;
+        b=bKl1TNzkmhA/D6H/i10616BHHOlQxULWnuBd/I/Ua+hQNHQ6+1oD0318HTGSv2k1g4
+         hid/MYXiwUyuSv2gUr2U5RN2+XrafHuwrqCF9d9BFZy1o93HA5EH/e6XJnTKOSAEUSc0
+         hrUzv9bZ+R9YLDIb4LfsrKX8DL8Dift0L/1JY7vKBDAjrhltrQxh0uXCwxyUF1F7wyGT
+         nDpx9K8rHPyeerc7JwJAoVEZ0Zicj9b7VNXuQFNY5brZOxyiltmuwEKbWmknPvZDIGbb
+         nAPFRI5GM3JsjqgoM11rCjLARWDyny9dDnApsKQtHHKG9N3qcTS2OSjLCqrBFl5FIjuq
+         zBJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVj3Vgue029USwIh3IwCAaSa0lQc7yMy2hZuh+DJKjcbsBmN37nmpDyKZ+3jdezpvwP/pU+Z9vJ1FMUIMm6Lg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE9ZaPnvlj+u6D1T8w3r4y33A2Di0gvt7ju4tSv6tUw2XsNMcx
+	WTLHen7XkpQeSH41ei/7pmJzGoWR9FAu5NZI/1SiBjCVoJ2Qe8W4tIYf+xlRhQJU/5ZTCQfQpOK
+	WcpCpHDsip2oNZkwBTGH3AN0wvzk=
+X-Google-Smtp-Source: AGHT+IFUI1tjMrh0Xftgop3LEQZdRBN54ts8dBHGpmRJQp090zmwn9WZ8o0v6wh93G+H4YmrDgYGrw7HKIlVqbG/MxY=
+X-Received: by 2002:a05:651c:154c:b0:2fb:6027:7c0a with SMTP id
+ 38308e7fff4ca-2ff8db66029mr16716071fa.8.1732103150821; Wed, 20 Nov 2024
+ 03:45:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241119112408.779243-1-abdiel.janulgue@gmail.com> <Zz1sHZLruF5sv7JT@casper.infradead.org>
-In-Reply-To: <Zz1sHZLruF5sv7JT@casper.infradead.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 20 Nov 2024 10:10:44 +0100
-Message-ID: <CAH5fLgiyHGQJxLxigvZDHPJ84s1fw_OXtdhGTd0pv_X3bCZUgA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page mappings
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+References: <20241119192715.38282-1-daniel@sedlak.dev> <20241119192715.38282-4-daniel@sedlak.dev>
+In-Reply-To: <20241119192715.38282-4-daniel@sedlak.dev>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 20 Nov 2024 06:45:14 -0500
+Message-ID: <CAJ-ks9k=AX4POpBwH0vCxAa9szRQMRT=SD_FjhVSuMPSoYiWFg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] rust: kernel: page: remove unnecessary helper
+ function from doctest
+To: Daniel Sedlak <daniel@sedlak.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Dirk Behme <dirk.behme@de.bosch.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 20, 2024 at 5:57=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
+On Tue, Nov 19, 2024 at 3:01=E2=80=AFPM Daniel Sedlak <daniel@sedlak.dev> w=
+rote:
 >
-> On Tue, Nov 19, 2024 at 01:24:01PM +0200, Abdiel Janulgue wrote:
-> > This series aims to add support for pages that are not constructed by a=
-n
-> > instance of the rust Page abstraction, for example those returned by
-> > vmalloc_to_page() or virt_to_page().
-> >
-> > Changes sinve v3:
-> > - Use the struct page's reference count to decide when to free the
-> >   allocation (Alice Ryhl, Boqun Feng).
->
-> Bleh, this is going to be "exciting".  We're in the middle of a multi-yea=
-r
-> project to remove refcounts from struct page.  The lifetime of a page
-> will be controlled by the memdesc that it belongs to.  Some of those
-> memdescs will have refcounts, but others will not.
->
-> We don't have a fully formed destination yet, so I can't give you a
-> definite answer to a lot of questions.  Obviously I don't want to hold
-> up the Rust project in any way, but I need to know that what we're trying
-> to do will be expressible in Rust.
->
-> Can we avoid referring to a page's refcount?
+> Doctest in the `page.rs` contained helper function `dox` which acted
+> as a wrapper for using the `?` operator. However, this is not needed
+> because doctests are implicitly wrapper in function see [1].
 
-I don't think this patch needs the refcount at all, and the previous
-version did not expose it. This came out of the advice to use put_page
-over free_page. Does this mean that we should switch to put_page but
-not use get_page?
+Typo: s/wrapper in/wrapped in a/
 
-Alice
+> [1]: https://doc.rust-lang.org/rustdoc/write-documentation/documentation-=
+tests.html#using--in-doc-tests
+>
+> Link: https://lore.kernel.org/rust-for-linux/459782fe-afca-4fe6-8ffb-ba7c=
+7886de0a@de.bosch.com/
+> Suggested-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off: Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
