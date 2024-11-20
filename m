@@ -1,59 +1,59 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014751D0947;
-	Wed, 20 Nov 2024 22:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E32E1CEAA7;
+	Wed, 20 Nov 2024 22:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732143383; cv=none; b=L4JKEqckTQRuyRVEVf1DUQ8R0neACs853PbNEGuQIoX+Jjp9AI9lk5ZlueDRPa3mt4T1tdUR75C72uxqtASJe1IGefB5zPjMq88LQi5ssGkEwhs9cZelsyemPpiQZnDokoW+aWe8xDc7+IRyHzZgm2jqZbXl0RMBCSlgra8wFg4=
+	t=1732143405; cv=none; b=BCr/NyuYb+Gb0FvfxKquwm9GkKE0isjTrEKDERitv/hd/TLUpISuPl29gBLLBZKzfAcc6rD41H6cgS1z20Vs4bWZ4SuoT9Aa+AamRxHb8J8iB3wXUcj42YznTc5A5t9bxlM6SRtwN96UQsnZbwRAUBqyjjVuh+7pGG3SFcfPo7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732143383; c=relaxed/simple;
-	bh=L5JPavDv6jkOs8+4SL1iJB89HN6ikbiWc++GnD2aw9w=;
+	s=arc-20240116; t=1732143405; c=relaxed/simple;
+	bh=mThbCVsQUikN0Qj55mhMtmameID94x2xR0dsg6JSMug=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HVfhtW5UouQLaY/MfdhG165Ew4D5JA7lfzG7vFt3Bj3w6jyStBIheTA4ljY4pCiq/Jyp36cBI+vPBFAklY9mTPa7QS11D+x85LkWL2zagwm+uyYljTomXXCTSBWfUPb/zygQr4PxHF4PVzWI2sRrW6tLNMyR9OTTKFoUXkB/qg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCPP6AdY; arc=none smtp.client-ip=209.85.167.52
+	 In-Reply-To:Content-Type; b=W2uL48tZlL32ZJoHAvamg5NoZkkubYTIz2GbaQxym9uhdYS7/LDrII7dH/MMtfPvvQ5WpeGcE3Jr46SzN213I997tLAJlzKRZBfuML+XCtlOV8VDElJjMEj3ToMJtdi2pWn+jQuTXLE15X8t+Bkvrla2kY86cWtwzAckat9cn6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWk8ijDO; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCPP6AdY"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53da3b911b9so260191e87.2;
-        Wed, 20 Nov 2024 14:56:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWk8ijDO"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53da22c5863so288933e87.0;
+        Wed, 20 Nov 2024 14:56:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732143379; x=1732748179; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732143401; x=1732748201; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=EDe+ut7FU4NjsmyCYmZbNnNl7UOa9iCRRrQvfMKje+E=;
-        b=NCPP6AdYLIXtvQgzSwK2Nc6iMviR2hMYUizmdQEGIbXEhtMr7ZVtGNUXYrsPYzlGwU
-         6644cvNRZnNWbDPzsGMRprdATzQIyVepY59w6c1sqJNDKWWZITdjCIWRUWEBLXPoe1eq
-         ucUS9Ol8WkGVt3bKr1yJ47J6vwvF0RbyCqbMlRrrcnZ44WFe5Xb6EiH13eafanf+BEgE
-         HyfgJTANWASit4ZVdC/vhrPEEiVVyUD5tXfVmq2RSywC8Kv9y8PTr5VoCuAzJoUnyKzJ
-         eyFi2PIGnCKh3RBxyu1jJA/moIuB01PjFMXa8CzpXGHmanmGcTzTS/FN3j4edvEOjj69
-         71WQ==
+        bh=Ro93jIqOY0loyc53cQE01JI74xq0pgbp0jULr1LtQ5A=;
+        b=gWk8ijDOZrQnx1r0rKMJMoNniJYLB5GeD1Z8ZL6TS5QVkNWRYBkomMwQqjocMNvadq
+         SuToN1yMKeUT5KctRMRVqkDVIoV9wRlSCiDHiC6vyGvnRJW4HH2V++xJh3ePVOXl2DnJ
+         Y0PBqTxef7wagmdU5Ta8Ge1QFZPRqhFnTKMhh21mdiSqMHnnm5mUrtK+TbE90S+KXt5H
+         dHlitx34mPFRbgm3kr+xb/so2sAfDKJCeW9tixOKIIekkP9kVELwROmP/wZatb5Lyxnl
+         +MH65XQNN6D+3FZugqqGNTjoojyMeNOBpQ5loWus0Sk8Z6W5MQR7k0OpAOvLcVLCYsIq
+         wYMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732143379; x=1732748179;
+        d=1e100.net; s=20230601; t=1732143401; x=1732748201;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EDe+ut7FU4NjsmyCYmZbNnNl7UOa9iCRRrQvfMKje+E=;
-        b=oLrUExB/2vK/TFJpOqeqTYu3AaTALLJEq7Is8b5tEGq6AqMoYg8CzbnINypA/MgfCq
-         yC31EtpIKY29V5TFzkTHwWx0CP0mMR6fRHpY6n3m2iIi5Y8QH8ySGwiiSCUB31im10CN
-         i8/QPBmeBtVZwqqjI4KkurnY8cjettRzNup9tOrQtpR2l1eKBoTMY5To1Jbq3up6E6Jo
-         S8rJ/5RH8LSqcyoG0t7cbjGpNywBFdx6wIXBPA7e6TJ2shabpvVDh7agcpfqM/DTSP9b
-         GxP8Eq+ZVzek6gV6Jon88mmVdnr+qv3Q7ImSmth8xSIqTL5b1dynMszhnLuMucA6g2j+
-         JMYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTxuNu4+vP9Hxrmbs1k08OnGYWrwdC4YrGKezndRr2nQM7t5eSApvsF3sovf4MXCl2nle0a48DSWSeKRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx/8d9PLnKr3uZW0VVWRo+viEp/sp15B48DxCD7Q3GGu/Mispl
-	DbQPBgBJyOXbig45No+xIAxI8+8Zk72xscU4Gtu8e7lV3fwH4j/b
-X-Google-Smtp-Source: AGHT+IEPWWHE/H8MR95ODYZ/MAqZO2vFJWEoMmaT8xgsBQiNCOjdaFjg85Aupur+Yw0QashfxHHKHg==
-X-Received: by 2002:a19:8c1b:0:b0:539:f953:2da7 with SMTP id 2adb3069b0e04-53dc136df2amr1696512e87.50.1732143378777;
-        Wed, 20 Nov 2024 14:56:18 -0800 (PST)
+        bh=Ro93jIqOY0loyc53cQE01JI74xq0pgbp0jULr1LtQ5A=;
+        b=h+VCZO0dRUvGpRBzjLhCRebADeRPsbIzaDifwtiXHg/B9l3rCzwA40TB1fhfIjam7p
+         RI20B1S8bjouY2MBUlxrA5wFe54M7bWjlPjYQ5iEX/qtrJYaYbc/Ba+omMPjPmg9FpdH
+         P/fJE1opJtMoUtbo8CtkKw+yJ2bXgsBsFSeUNlU6Tm3nuJqj+aw6P+oVOd0JJYyj5KMu
+         xZ5xpmLjQzuLhO6I3f7kUNNcoTGbFm7TlaToPcQU5lVvKmd2gg76fJidsZ3hh5aUJVkM
+         lLn5vCuMiAnhEYgOt/sRWGxLo45NqA/UKW/7dWcphmNRJWUeApALyZ3v9g+R7zcjxYJP
+         mvoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDw6JZsPJ17OFAnjaZNwWGHShuHlI7k70Yvt+wypzaYGAW0+V066enHCKQ2x184Wq3+L6FapFg0Y1HimA=@vger.kernel.org, AJvYcCXsfQFYXE9G+KpNl68+f3Eh9SzDh35CK9Sl7Vrl1wzLHHhQA7ohWajZHU0K41e1Zn3xLY1HfX/FW5h9za1tc3s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo4VUtH42OCekTeivGEaAcOBBHie/qkZOGvIt2kn9XzZnjp/+w
+	1F8Wf2sD+3/VD2NnPTlTBpe6Kwvz/WgNzT27Iyua7526zaRSomya
+X-Google-Smtp-Source: AGHT+IF/5dP9tu2MCNl0giVhpvfxpp+VR6EDt2BSIi+BHBODzFNFCogG8QaW7BLqsCAzbPFydNBiXA==
+X-Received: by 2002:a05:6512:b81:b0:53d:a5c8:aaa6 with SMTP id 2adb3069b0e04-53dc1339b3fmr1922610e87.13.1732143401364;
+        Wed, 20 Nov 2024 14:56:41 -0800 (PST)
 Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd4723ffsm777283e87.193.2024.11.20.14.56.16
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dbd3ee4a3sm775318e87.12.2024.11.20.14.56.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Nov 2024 14:56:17 -0800 (PST)
-Message-ID: <43a07c04-2985-4999-b6d6-732794906a36@gmail.com>
-Date: Thu, 21 Nov 2024 00:56:15 +0200
+        Wed, 20 Nov 2024 14:56:40 -0800 (PST)
+Message-ID: <98a46b27-c4bb-4540-8f75-f176c3f2fae1@gmail.com>
+Date: Thu, 21 Nov 2024 00:56:38 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,64 +61,128 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] rust: page: Extend support to existing struct page
+Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page
  mappings
-To: Jann Horn <jannh@google.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+To: Boqun Feng <boqun.feng@gmail.com>, Matthew Wilcox <willy@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Valentin Obst <kernel@valentinobst.de>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
  open list <linux-kernel@vger.kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
 References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
- <20241119112408.779243-3-abdiel.janulgue@gmail.com>
- <CAG48ez3fjXG1Zi=V8yte9ZgSkDVeJiQV6xau7FHocTiTMw0d=w@mail.gmail.com>
+ <Zz1sHZLruF5sv7JT@casper.infradead.org>
+ <CAH5fLgiyHGQJxLxigvZDHPJ84s1fw_OXtdhGTd0pv_X3bCZUgA@mail.gmail.com>
+ <Zz4MQO79vVFhgfJZ@tardis.local> <Zz4WFnyTWUDPsH4m@casper.infradead.org>
+ <Zz4boXyYpdx4q35I@tardis.local>
 Content-Language: en-US
 From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <CAG48ez3fjXG1Zi=V8yte9ZgSkDVeJiQV6xau7FHocTiTMw0d=w@mail.gmail.com>
+In-Reply-To: <Zz4boXyYpdx4q35I@tardis.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-Thanks for the feedback.
-
-On 19/11/2024 19:07, Jann Horn wrote:
->> +    pub fn page_slice_to_page<'a>(page: &PageSlice) -> Result<&'a Self>
+On 20/11/2024 19:25, Boqun Feng wrote:
+> On Wed, Nov 20, 2024 at 05:02:14PM +0000, Matthew Wilcox wrote:
+>> On Wed, Nov 20, 2024 at 08:20:16AM -0800, Boqun Feng wrote:
+>>> On Wed, Nov 20, 2024 at 10:10:44AM +0100, Alice Ryhl wrote:
+>>>> On Wed, Nov 20, 2024 at 5:57 AM Matthew Wilcox <willy@infradead.org> wrote:
+>>>>>
+>>>>> On Tue, Nov 19, 2024 at 01:24:01PM +0200, Abdiel Janulgue wrote:
+>>>>>> This series aims to add support for pages that are not constructed by an
+>>>>>> instance of the rust Page abstraction, for example those returned by
+>>>>>> vmalloc_to_page() or virt_to_page().
+>>>>>>
+>>>>>> Changes sinve v3:
+>>>>>> - Use the struct page's reference count to decide when to free the
+>>>>>>    allocation (Alice Ryhl, Boqun Feng).
+>>>>>
+>>>>> Bleh, this is going to be "exciting".  We're in the middle of a multi-year
+>>>>> project to remove refcounts from struct page.  The lifetime of a page
+>>>>> will be controlled by the memdesc that it belongs to.  Some of those
+>>>>> memdescs will have refcounts, but others will not.
+>>>>>
+>>>
+>>> One question: will the page that doesn't have refcounts has an exclusive
+>>> owner? I.e. there is one owner that's responsible to free the page and
+>>> make sure other references to the page get properly invalidated (maybe
+>>> via RCU?)
+>>
+>> It's up to the owner of the page how they want to manage freeing it.
+>> They can use a refcount (folios will still have a refcount, for example),
+>> or they can know when there are no more users of the page (eg slab knows
+>> when all objects in a slab are freed).  RCU is a possibility, but would
+>> be quite unusual I would think.  The model I'm looking for here is that
+>> 'page' is too low-level an object to have its own lifecycle; it's always
+>> defined by a higher level object.
+>>
 > 
-> Sorry, can you explain to me what the semantics of this are? Does this
-> create a Page reference that is not lifetime-bound to the PageSlice?
-
-This creates a Page reference that is tied to the lifetime of the `C 
-struct page` behind the PageSlice buffer. Basically, it's just a cast 
-from the struct page pointer and does not own that resource.
-
->> +fn to_vec_with_allocator<A: Allocator>(val: &[u8]) -> Result<Vec<PageSlice, A>, AllocError> {
-> Do I understand correctly that this can be used to create a kmalloc
-> allocation whose pages can then basically be passed to
-> page_slice_to_page()?
+> Ok, that makes sense. That's actually aligned with the direction we are
+> heading in this patch: make `struct Page` itself independent on how the
+> lifetime is maintained. Conceptually, say we can define folio in pure
+> Rust, it could be:
 > 
-> FYI, the page refcount does not protect against UAF of slab
-> allocations through new slab allocations of the same size. In other
-> words: The slab allocator can internally recycle memory without going
-> through the page allocator, and the slab allocator itself does not
-> care about page refcounts.
+>      struct Folio {
+>          head: Page, /* or a union of page */
+> 	...
+>      }
 > 
-> If the Page returned from calling page_slice_to_page() on the slab
-> memory pages returned from to_vec_with_allocator() is purely usable as
-> a borrow and there is no way to later grab a refcounted reference to
-> it or pass it into a C function that assumes it can grab a reference
-> to the page, I guess that works. 
+> and we can `impl AlwaysRefcounted for Folio`, which implies there is a
+> refcount inside. And we can also have a `Foo` being:
+> 
+>      struct Foo {
+>          inner: Page,
+>      }
+> 
+> which doesn't implement `AlwaysRefcounted`, and that suggests a
+> different way the page lifetime will be maintained.
+> 
+>>>>> We don't have a fully formed destination yet, so I can't give you a
+>>>>> definite answer to a lot of questions.  Obviously I don't want to hold
+>>>>> up the Rust project in any way, but I need to know that what we're trying
+>>>>> to do will be expressible in Rust.
+>>>>>
+>>>>> Can we avoid referring to a page's refcount?
+>>>>
+>>>> I don't think this patch needs the refcount at all, and the previous
+>>>> version did not expose it. This came out of the advice to use put_page
+>>>> over free_page. Does this mean that we should switch to put_page but
+>>>> not use get_page?
+>>
+>> Did I advise using put_page() over free_page()?  I hope I didn't say
+> 
+> We have some off-list discussion about free_page() doesn't always free
+> the page if you could remember.
+> 
+>> that.  I don't see a reason why binder needs to refcount its pages (nor
+>> use a mapcount on them), but I don't fully understand binder so maybe
+>> it does need a refcount.
+> 
+> I don't think binder needs it either, but I think Abdiel here has a
+> different usage than binder.
+> 
+>>
+>>> I think the point is finding the exact lifetime model for pages, if it's
+>>> not a simple refcounting, then what it is? Besides, we can still
+>>> represent refcounting pages with `struct Page` and other pages with a
+>>> different type name. So as far as I can see, this patch is OK for now.
+>>
+>> I don't want Page to have a refcount.  If you need something with a
+>> refcount, it needs to be called something else.
+> 
+> So if I understand correctly, what Abdiel needs here is a way to convert
+> a virtual address to the corresponding page, would it make sense to just
+> use folio in this case? Abdiel, what's the operation you are going to
+> call on the page you get?
 
-Yes, I think that is the intent. I appreciate your help in pointing out 
-the issues with using refcounts in slab memory pages. As you can see, 
-page_slice_to_page() only returns a Page reference (not a refcounted 
-Page). Hopefully that addresses your concern?
+Yes that's basically it. The goal here is represent those existing 
+struct page within this rust Page abstraction but at the same time to 
+avoid taking over its ownership.
+
+Boqun, Alice, should we reconsider Ownable and Owned trait again? :)
 
 Regards,
 Abdiel
