@@ -1,236 +1,139 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8751C8773
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 21:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306021DC05D;
+	Thu, 21 Nov 2024 22:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732225902; cv=none; b=Sxi5xXyauzjlUJN4Hdwq3j3xHIUs7JRYRvb0SvXM4xOyyhTdtbJq26aIeowgQR8rCuP+gJCsOX1HHj6lQYwhiLXnFWiyx/073l41J87f1nRmUeIWWWXYetiINYJN0KGfuG0pzmyMC7A10p0Csmoihz9RbcvXfLcy4HAfpw9uboo=
+	t=1732226491; cv=none; b=Z9nyh5umpJw+jAAutAF8YmjVV1in7TQ104eePfguQFGuxDxJ7mUKgWHORZ09z1OThzkyX9xZ3zKYcdjjOEWfoWK77RMXNbkNZTie8nrLwspWv4fkSxyj4vyWEb2zDIsgAhfw0ylWBckmS2DBb2r9v+aZQJfpoFx0b86Pb/3rcEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732225902; c=relaxed/simple;
-	bh=CUHno2R/nqM+vBmK7dZ3xoXb1J1KeGJmhbGs1sQeZCk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vv4jtXAHnndR7MlkvLcZ03h6Zapheu9YGpkCpFwXsoy7NO9wLNfvX4cGpTAgsa9ISuxGco6OoTuX3qbyDRMN4/Rnj1GsqTtRhXD8yTJjgsuh0jA83nG9rFqp7H/bAflP1NXWFtKBy8KwggDbZjcc+lmjT8Hliey55pg148S6OtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kEIqPTG1; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1732226491; c=relaxed/simple;
+	bh=pqEyDF5LLO1VwH1MXzcryDaT3vlXiFcbp4M1sDFbPsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N2bcK2xuiuOQF/mWrBro7h6Ukn4Vh/HNToW3UgkTyLOMFUjDYPdkZo3uqgr0kc6T0RZVr3Is+W+IZrGIeg8B17zZXgrWF+HmUz+CLpFOL1yggfeJM3PNayHTLPYw90S7kioA44C4XYRTrdCTUxc2iK7fn0CD/CgVuLq7kAei8ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kXfaX916; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kEIqPTG1"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5cfc18d5259so907a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 13:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732225899; x=1732830699; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PHKKmDtuZBsmU0fuCBMeHOOxdDx2/H6XhfP9M3Cqc2M=;
-        b=kEIqPTG1CrpRFE7rljT36R+QGJJRvQbOsXgc6y6bNvGCNHni43f3mM3MT6Oc7/s63H
-         zLjcfQ57L6CaYZi5lyWy6SYSmmgt/u6ZU5qWC99X6XuONXmJCcqbM4HpDPEUeKQ2gmxX
-         BRrTaZBlnVGBdJ1vywdy7Y724MycmflrwQn8ljQ4zJrZ2+/JwOdgknsLMm44FhFZrTiR
-         TXT54MhQyjlQiqG+rBU/DxTx8bMaxzgJ1Mkoc04ULDAV4b3kgjDNpwvSEDsoBm9kW6+W
-         urLgndy088FSRM8FzgOSji1mzdsQMf9NJFARM5Jz+hpDYVBELN+CWPGwc21M50kwU1fm
-         b2og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732225899; x=1732830699;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PHKKmDtuZBsmU0fuCBMeHOOxdDx2/H6XhfP9M3Cqc2M=;
-        b=XaPBbm5tqreFwCPhCMcVfWAyWKoiiZWdZAVibK83MVEefkS/Yda9jiuN4n3aTwxnTZ
-         Zof4cFCdJEHjq7On5ITS6zSVRpHTp3WD/6aEvWvuOqgFSwE6YsoIRfmYWApsPl8LhcPw
-         TSKcPEM27VpTK/QHMUOMM0ik1ErkeAXyZ5ta1V/Z87MqKgXoS9L4ZJUzMhaxEmnXrgE0
-         iy2+/fS+WIYb3JhyqFseHNA8H/rKMQTkqZzVcW3Z3aEvR2mGDYxT2EYJvDa5DyBLCE0j
-         aCNApJB0URHEKQPzxFY0W6RKFnHdyZJRIjK7j7k8KfeXuIStG+CDHGOUY/3YTnt/LgrO
-         iu8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVBxLoRrxj42+ZOPLYB0GnPD0Or6Kht+Adygc7kPgZLWgfkOqDRK7LWdYQl4rELpCGCGNO+Jjrig1SniMRytQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo/nuoaZBTxcPerPInYe1Ji0wJn96C1M7PZfuTye0ykc2ZIyTm
-	W69zNrPFcKMiPfQ+yX/eAqDWD5yyrmPi/gzi49BLlitQ77RmvGnaEY0JY08WjXpYq4AQDGvmx0u
-	Aaok8yXUXxjcnLQI5wSe49o8JC8DojIUH/sDO
-X-Gm-Gg: ASbGncuQz3FNcBuGOilR781juvHSH5jBjAVGOj0s/cd5ERmJl1g/ztCillcsAqoX36N
-	UOqH9bKH7xWzAv7fmk2qscMDUe4N+zqulG93t5hd1TYhCWUhrFi4xtsCAwm2/grWn
-X-Google-Smtp-Source: AGHT+IHZXqsbw6LTrWSKQk3j6sgwFD4xI5UHXnS7pvVevPPLF9iib3NRzS9gCFTmnjvbHI8Vhd+KqI0rHViR8+rmNRI=
-X-Received: by 2002:aa7:d6cd:0:b0:5cf:bd9a:41ec with SMTP id
- 4fb4d7f45d1cf-5d01dcbf0c4mr18135a12.2.1732225899042; Thu, 21 Nov 2024
- 13:51:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kXfaX916"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=OElOW/ym0iS6wv612P7RpAETtR98Co4NnCdEquW2kPI=; b=kXfaX916eTmUA8NIJkVhCtVOj9
+	6/ZNIImqz2m3g+qE4BcfIGRDfrlySGNVRElRXrnE+/ONgXWXilGEVrMOcFnIyBMd9ClOfVocOQmQL
+	eS9U6riV8LMWsruPnyXth28UhQAl1tE25R3UghuB43etl8byhT3QIlQ4RfkGCe2aXcMcafDILpkk0
+	Ia4q5UTtAGCON/jH9YRRO6A+2sdgVymtGnT9V9z5rovnwMOkjqY/v2U2ao1gtrcKmwa7GVSot6qIB
+	3GdMIWds0oIqKblJ5iicpvC06OQmnwbuq1hSgOWUEyVJTuBh2MdTJoTZ1g65+s3NnCKBNY3MoQMqh
+	Qewqq69A==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tEFEp-00000006re3-21QZ;
+	Thu, 21 Nov 2024 22:01:23 +0000
+Date: Thu, 21 Nov 2024 22:01:23 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+	airlied@redhat.com, Kairui Song <ryncsn@gmail.com>
+Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page
+ mappings
+Message-ID: <Zz-ts0s3jHsNP73f@casper.infradead.org>
+References: <Zz1sHZLruF5sv7JT@casper.infradead.org>
+ <CAH5fLgiyHGQJxLxigvZDHPJ84s1fw_OXtdhGTd0pv_X3bCZUgA@mail.gmail.com>
+ <Zz4MQO79vVFhgfJZ@tardis.local>
+ <Zz4WFnyTWUDPsH4m@casper.infradead.org>
+ <Zz4boXyYpdx4q35I@tardis.local>
+ <98a46b27-c4bb-4540-8f75-f176c3f2fae1@gmail.com>
+ <Zz59qgqKruqnouTl@tardis.local>
+ <650846e4-b6a0-472d-a14e-4357d20faadb@gmail.com>
+ <Zz-FtcjNm0TVH5v9@tardis.local>
+ <Zz-GHlkhrz35w2YN@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org> <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
- <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org> <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
- <ZyrRYUD0K1f7SwWg@bombadil.infradead.org> <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
- <Zy1BVXgnT72Jt_HE@bombadil.infradead.org>
-In-Reply-To: <Zy1BVXgnT72Jt_HE@bombadil.infradead.org>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Thu, 21 Nov 2024 13:51:26 -0800
-Message-ID: <CAGSQo03nq5tnqyp8eDZYA7CbjUPZeKs+A33oeSw3znTO9GRF_g@mail.gmail.com>
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, Lucas De Marchi <lucas.de.marchi@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: multipart/mixed; boundary="000000000000638ddf062773456e"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zz-GHlkhrz35w2YN@tardis.local>
 
---000000000000638ddf062773456e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Nov 21, 2024 at 11:12:30AM -0800, Boqun Feng wrote:
+> On Thu, Nov 21, 2024 at 11:30:13AM +0200, Abdiel Janulgue wrote:
+> > Hi Boqun, Matthew:
+> > 
+> > On 21/11/2024 02:24, Boqun Feng wrote:
+> > > > > So if I understand correctly, what Abdiel needs here is a way to convert
+> > > > > a virtual address to the corresponding page, would it make sense to just
+> > > > > use folio in this case? Abdiel, what's the operation you are going to
+> > > > > call on the page you get?
+> > > > 
+> > > > Yes that's basically it. The goal here is represent those existing struct
+> > > > page within this rust Page abstraction but at the same time to avoid taking
+> > > > over its ownership.
+> > > > 
+> > > > Boqun, Alice, should we reconsider Ownable and Owned trait again? :)
+> > > > 
+> > > 
+> > > Could you use folio in your case? If so, we can provide a simple binding
+> > > for folio which should be `AlwaysRefcounted`, and re-investigate how
+> > > page should be wrapped.
+> > > 
+> > 
+> > I'm not sure. Is there a way to get the struct folio from a vmalloc'd
+> > address, e.g vmalloc_to_folio()?
+> > 
+> 
+> I think you can use page_folio(vmalloc_to_page(..)) to get the folio,
+> but one thing to notice is that folio is guaranteed to be a non-tail
+> page, so if you want to do something later for the particular page (if
+> it's a tail page), you will need to know the offset of the that page in
+> folio. You can do something like below:
 
-On Thu, Nov 7, 2024 at 2:38=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org>=
- wrote:
->
-> On Wed, Nov 06, 2024 at 02:19:38PM -0800, Matthew Maurer wrote:
-> > >
-> > > > If booted against an old kernel, it will
-> > > > behave as though there is no modversions information.
-> > >
-> > > Huh? This I don't get. If you have the new libkmod and boot
-> > > an old kernel, that should just not break becauase well, long
-> > > symbols were not ever supported properly anyway, so no regression.
-> >
-> > Specifically, if you set NO_BASIC_MODVERSIONS, build a module, and
-> > then load said module with a kernel *before* EXTENDED_MODVERSIONS
-> > existed, it will see no modversion info on the module to check. This
-> > will be true regardless of symbol length.
->
-> Isn't that just the same as disabling modverisons?
->
-> If you select modversions, you get the options to choose:
->
->   - old modversions
->   - old modversions + extended modversions
->   - extended modversions only
+This is one of those things which will work today, but will stop
+working in the future, and anyway will only appear to work for some
+users.
 
-Yes, what I'm pointing out is that kernels before the introduction of
-extended modversions will not know how to read extended modversions,
-and so they will treat modules with *only* extended modversions as
-though they have no modversions.
+For example, both vmalloc and slab allocations do not use the refcount
+on the struct page for anything.  eg this will be a UAF (please excuse
+me writing in C):
 
->
-> > > I'm not quite sure I understood your last comment here though,
-> > > can you clarify what you meant?
-> > >
-> > > Anyway, so now that this is all cleared up, the next question I have
-> > > is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
-> > > userspace requirements aren't large at all, what actual benefits does
-> > > using this new extended mod versions have? Why wouldn't a distro end
-> > > up preferring this for say a future release for all modules?
-> >
-> > I think a distro will end up preferring using this for all modules,
-> > but was intending to put both in for a transitional period until the
-> > new format was more accepted.
->
-> The only thing left I think to test is the impact at runtime, and the
-> only thing I can think of is first we use find_symbol() on resolve_symbol=
-()
-> which it took me a while to review and realize that this just uses a
-> completely different ELF section, the the ksymtab sections which are spli=
-t up
-> between the old and the gpl section. But after that we use check_version(=
-).
-> I suspect the major overhead here is in find_symbol() and that's in no wa=
-y shape
-> or form affected by your changes, and I also suspect that since the
-> way you implemented for_each_modversion_info_ext() is just *one* search
-> there shouldn't be any penalty here at all. Given it took *me* a while
-> to review all this, I think it would be good for you to also expand your
-> cover letter to be crystal clear on these expectations to users and
-> developers and if anything expand on the Kconfig / and add documentation
-> if we don't document any of this.
+	char *a = kmalloc(256, GFP_KERNEL);
+	struct page *page = get_page(virt_to_page(a));
+	char *b = page_address(page) + offset_in_page(a);
+	// a and b will now have the same bit pattern
+	kfree(a);
+	*b = 1;
 
-I can add a commit extending modules.rst, but it's not clear to me
-what piece was surprising here - the existing MODVERSIONS format is
-*also* in a separate section. Nothing written in the "Module
-Versioning" section has been invalidated that I can see.
+Once you've called kfree(), slab is entitled to hand that memory out
+to any other user of kmalloc().  This might actually work to protect
+vmalloc() memory from going away under you, but I intend to change
+vmalloc so that it won't work (nothing to do with this patch series,
+rather an approach to make vmalloc more efficient).
 
-Things I could think to add:
+One reason you're confused today is that we have a temporary ambiguity
+around what "folio" actually means.  The original definition (ie mine) was
+simply that it was a non-tail page.  We're moving towards the definition
+Johannes wanted, which is that it's only the memdesc for anonymous &
+file-backed memory [1].  So while vmalloc_to_folio() makes sense under
+the original definition, it's an absurdity under the new definition.
 
-* Summary of the internal data format (seems odd, since the previous
-one isn't here, and I'd think that an implementation detail anyways)
-* A warning about the effects of NO_BASIC_MODVERSIONS (probably better
-in Kconfig, isn't in the current changeset because the flag isn't
-there)
+So, Abdiel, why are you trying to add this?  What are you actually
+trying to accomplish in terms of "I am writing a device driver for XXX
+and I need to ..."?  You've been very evasive up to now.
 
->
-> I'd still like to see you guys test all this with the new TEST_KALLSYMS.
-
-I've attached the results of running TEST_KALLSYMS - it appears to be
-irrelevant to performance, as you expected.
-
->
->   Luis
-
---000000000000638ddf062773456e
-Content-Type: application/octet-stream; name=extended-log
-Content-Disposition: attachment; filename=extended-log
-Content-Transfer-Encoding: base64
-Content-ID: <f_m3rujd550>
-X-Attachment-Id: f_m3rujd550
-
-VEFQIHZlcnNpb24gMTMKMS4uMQojIHRpbWVvdXQgc2V0IHRvIDQ1CiMgc2VsZnRlc3RzOiBtb2R1
-bGU6IGZpbmRfc3ltYm9sLnNoCiMKIyAgUGVyZm9ybWFuY2UgY291bnRlciBzdGF0cyBmb3IgJy9z
-YmluL21vZHByb2JlIHRlc3Rfa2FsbHN5bXNfYic6CiMKIyAgICAgICAgICAgMjg4OTgwMzIgbnMg
-ICBkdXJhdGlvbl90aW1lCiMgICAgICAgICAgICAyMzY2MDAwIG5zICAgdXNlcl90aW1lCiMgICAg
-ICAgICAgICAgICAgMjA3ICAgICAgcGFnZS1mYXVsdHMKIwojICAgICAgICAwLjAyMDA4NTk5MSBz
-ZWNvbmRzIHRpbWUgZWxhcHNlZAojCiMgICAgICAgIDAuMDAyMzY2MDAwIHNlY29uZHMgdXNlcgoj
-ICAgICAgICAwLjAwMDAwMDAwMCBzZWNvbmRzIHN5cwojCiMKIwojICBQZXJmb3JtYW5jZSBjb3Vu
-dGVyIHN0YXRzIGZvciAnL3NiaW4vbW9kcHJvYmUgdGVzdF9rYWxsc3ltc19iJzoKIwojICAgICAg
-ICAgICAyNTMzMzY0MCBucyAgIGR1cmF0aW9uX3RpbWUKIyAgICAgICAgICAgICAgMzIwMDAgbnMg
-ICB1c2VyX3RpbWUKIyAgICAgICAgICAgIDIzNTcwMDAgbnMgICBzeXN0ZW1fdGltZQojICAgICAg
-ICAgICAgICAgIDIwNyAgICAgIHBhZ2UtZmF1bHRzCiMKIyAgICAgICAgMC4wMjQwODM5NTcgc2Vj
-b25kcyB0aW1lIGVsYXBzZWQKIwojICAgICAgICAwLjAwMDAzMjAwMCBzZWNvbmRzIHVzZXIKIyAg
-ICAgICAgMC4wMDIzNTcwMDAgc2Vjb25kcyBzeXMKIwojCiMKIyAgUGVyZm9ybWFuY2UgY291bnRl
-ciBzdGF0cyBmb3IgJy9zYmluL21vZHByb2JlIHRlc3Rfa2FsbHN5bXNfYic6CiMKIyAgICAgICAg
-ICAgMjUzOTg2MDAgbnMgICBkdXJhdGlvbl90aW1lCiMgICAgICAgICAgICAgIDMwMDAwIG5zICAg
-dXNlcl90aW1lCiMgICAgICAgICAgICAyMjY5MDAwIG5zICAgc3lzdGVtX3RpbWUKIyAgICAgICAg
-ICAgICAgICAyMDggICAgICBwYWdlLWZhdWx0cwojCiMgICAgICAgIDAuMDI0MDk1MjA0IHNlY29u
-ZHMgdGltZSBlbGFwc2VkCiMKIyAgICAgICAgMC4wMDAwMzAwMDAgc2Vjb25kcyB1c2VyCiMgICAg
-ICAgIDAuMDAyMjY5MDAwIHNlY29uZHMgc3lzCiMKIwpvayAxIHNlbGZ0ZXN0czogbW9kdWxlOiBm
-aW5kX3N5bWJvbC5zaAovc2VsZnRlc3RzICMgemNhdCAvcHJvYy9jb25maWcuZ3ogfCBncmVwIEVY
-VEVOREVECiMgQ09ORklHX1g4Nl9FWFRFTkRFRF9QTEFURk9STSBpcyBub3Qgc2V0CkNPTkZJR19F
-WFRFTkRFRF9NT0RWRVJTSU9OUz15CiMgQ09ORklHX05FVENPTlNPTEVfRVhURU5ERURfTE9HIGlz
-IG5vdCBzZXQKQ09ORklHX1NFUklBTF84MjUwX0VYVEVOREVEPXkKL3NlbGZ0ZXN0cyAjCg==
---000000000000638ddf062773456e
-Content-Type: application/octet-stream; name=noextend-log
-Content-Disposition: attachment; filename=noextend-log
-Content-Transfer-Encoding: base64
-Content-ID: <f_m3rujd5y1>
-X-Attachment-Id: f_m3rujd5y1
-
-VEFQIHZlcnNpb24gMTMKMS4uMQojIHRpbWVvdXQgc2V0IHRvIDQ1CiMgc2VsZnRlc3RzOiBtb2R1
-bGU6IGZpbmRfc3ltYm9sLnNoCiMKIyAgUGVyZm9ybWFuY2UgY291bnRlciBzdGF0cyBmb3IgJy9z
-YmluL21vZHByb2JlIHRlc3Rfa2FsbHN5bXNfYic6CiMKIyAgICAgICAgICAgMzA0NzczNDggbnMg
-ICBkdXJhdGlvbl90aW1lCiMgICAgICAgICAgICAyNDk0MDAwIG5zICAgdXNlcl90aW1lCiMgICAg
-ICAgICAgICAgICAgMjA2ICAgICAgcGFnZS1mYXVsdHMKIwojICAgICAgICAwLjAyNDA3ODUyNyBz
-ZWNvbmRzIHRpbWUgZWxhcHNlZAojCiMgICAgICAgIDAuMDAyNDk0MDAwIHNlY29uZHMgdXNlcgoj
-ICAgICAgICAwLjAwMDAwMDAwMCBzZWNvbmRzIHN5cwojCiMKIwojICBQZXJmb3JtYW5jZSBjb3Vu
-dGVyIHN0YXRzIGZvciAnL3NiaW4vbW9kcHJvYmUgdGVzdF9rYWxsc3ltc19iJzoKIwojICAgICAg
-ICAgICAyNTI2NDM4NSBucyAgIGR1cmF0aW9uX3RpbWUKIyAgICAgICAgICAgICAgMzQwMDAgbnMg
-ICB1c2VyX3RpbWUKIyAgICAgICAgICAgIDIzNTEwMDAgbnMgICBzeXN0ZW1fdGltZQojICAgICAg
-ICAgICAgICAgIDIwNyAgICAgIHBhZ2UtZmF1bHRzCiMKIyAgICAgICAgMC4wMjQwODE5ODAgc2Vj
-b25kcyB0aW1lIGVsYXBzZWQKIwojICAgICAgICAwLjAwMDAzNDAwMCBzZWNvbmRzIHVzZXIKIyAg
-ICAgICAgMC4wMDIzNTEwMDAgc2Vjb25kcyBzeXMKIwojCiMKIyAgUGVyZm9ybWFuY2UgY291bnRl
-ciBzdGF0cyBmb3IgJy9zYmluL21vZHByb2JlIHRlc3Rfa2FsbHN5bXNfYic6CiMKIyAgICAgICAg
-ICAgMjUzMDA2NDQgbnMgICBkdXJhdGlvbl90aW1lCiMgICAgICAgICAgICAgIDMzMDAwIG5zICAg
-dXNlcl90aW1lCiMgICAgICAgICAgICAyMzA3MDAwIG5zICAgc3lzdGVtX3RpbWUKIyAgICAgICAg
-ICAgICAgICAyMDcgICAgICBwYWdlLWZhdWx0cwojCiMgICAgICAgIDAuMDI0MTA5NDA5IHNlY29u
-ZHMgdGltZSBlbGFwc2VkCiMKIyAgICAgICAgMC4wMDAwMzMwMDAgc2Vjb25kcyB1c2VyCiMgICAg
-ICAgIDAuMDAyMzA3MDAwIHNlY29uZHMgc3lzCiMKIwpvayAxIHNlbGZ0ZXN0czogbW9kdWxlOiBm
-aW5kX3N5bWJvbC5zaAovc2VsZnRlc3RzICMgemNhdCAvcHJvYy9jb25maWcuZ3ogfCBncmVwIEVY
-VEVORAojIENPTkZJR19YODZfRVhURU5ERURfUExBVEZPUk0gaXMgbm90IHNldAojIENPTkZJR19F
-WFRFTkRFRF9NT0RWRVJTSU9OUyBpcyBub3Qgc2V0CiMgQ09ORklHX05FVENPTlNPTEVfRVhURU5E
-RURfTE9HIGlzIG5vdCBzZXQKQ09ORklHX1NFUklBTF84MjUwX0VYVEVOREVEPXkKL3NlbGZ0ZXN0
-cyAjCgo=
---000000000000638ddf062773456e--
+[1] Actually Johannes wants to split them apart even further so that
+anon & file memory have different types, and we may yet get there.
+One step at a time.
