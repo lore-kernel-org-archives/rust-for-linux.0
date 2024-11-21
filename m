@@ -1,421 +1,418 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592641DFDA7
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 20:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214EB1D04A0
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 21:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732221790; cv=none; b=uq9jjDm6s82bi1xsb0cyCAxefVAZqJO/2n/7ahKbSWGsA3fiMFjzGME8fZvOPKMKZ6YWuaddZTanufQ/U/gTtCcSTDSKwKDo0nNFmwPspBJ1SbRy+sO/pF4XOasHv1iMw5WM456cQc99qNZclVmneNaDVF5m4d4xFGHKM2DQsPY=
+	t=1732225558; cv=none; b=OewY5jx7iQ3Vao27oe+/dug+2HyHvCo/TEc0Uzsui6wT3wOLl4cvLWs+LSPzZtuwKM76MklV+BRiUP686rA8+DGE6qeUgIw5Cd6QBXfP4Vz495pmkNnakbyfCIDTVBt/DIPa+RZmq39Dlz5e4iEtg6NbwaoMHvb/AHiA0bqBcV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732221790; c=relaxed/simple;
-	bh=zW7908MQu2FtNUVy2Cx6yEPpWxLbyw7Hr6NCDOhP/to=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=M27rAeSyXU45ACldW20IAUZmZ9y47Axf51HSwvHP85N4hDzRRt61pqlKsNDF88Y8VvAxNOB1EL/Ny9YFu8P5cSzldRlum8ehZD+zSp6Zf3oEe78M9CDAjeJhyXRrH+q0XuDbulDzJi/MO/ng62YHuH58VcmaU5cgvnn9JqKo9rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yW1qtGNi; arc=none smtp.client-ip=209.85.215.202
+	s=arc-20240116; t=1732225558; c=relaxed/simple;
+	bh=JENSaX7lT8JwqZ8seiloLZvg9LwcSqfEWqLr5zZP490=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cP7d4ccUsAPVPA61LLWKM8pMSnes3nuTuMD0b5kzKdEdunjRXqQDXeQhT6KyZ7AW31e54vPA0mmPjJYKAPckhMc/GfAT8o8D9AmCDzb6vQEx3zPXCVtsEMMI8AJWWGvU7J988engUyuXaLIx0gnwWJX2FAIpojbSr+5xZr92kZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oaj9FRSc; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yW1qtGNi"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7fbc5b711bcso565345a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 12:43:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oaj9FRSc"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71e52582cf8so1094509b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 13:45:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732221787; x=1732826587; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qGwjZnzxYsO+I8a1Rm02akWiDmIevBjaewf7s2sRAbk=;
-        b=yW1qtGNiFQBIivV0ZUwrwQYPsXasmfxiXPtOuzXfdblRjuJ9SZ7yjiOrSaf3X5T48R
-         V2BFJl7GX1TtDNq28sGRQxa4/N1ezL8y/dJbLxYHpIn0r66DdeVJHwWG4xTRGFVKZV5H
-         O/feoi396wCCba1elg7xtBR/1WRO/Uz+4FZLVE1lFLT1vhPgInwPN4ZKp9fwm+8GL+11
-         9N37/6jHTTbXfCstkv7W0knzI+MoCzYGG5S+V72lEjMm8eYwB1D34N/EJBO98CPYuByH
-         EsU/yVUm3aZxmNpPyKAI6ZXGpjuCLRaIINZqQvmzO0tRJ8CsEH44+OPfdC4d2HcTYADR
-         6csQ==
+        d=google.com; s=20230601; t=1732225555; x=1732830355; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P4a8oWPSly7lypmnYWn7HyCF8FEhlYXGucolUoN3Di8=;
+        b=Oaj9FRScefgPlf+2AykXqs/k9sE5uxLWTA/KbZPuKomUlmFKenaRJVTa+zK3DB8dU6
+         BK7yUHBAfE4iRC5Xe87Ub/XI1K5CImGktYthCL0oKoJAauGdqZrF7sfJnU3sUIVU0b85
+         s9imXpn0Kppoo77+qqmViJHCOEoi0sYq7sk0euJ8l/Oi7Kh9n0WoAtMwgq0dNI1IBAQJ
+         2yXEwlQrWoVSULj/HsZVNdvcNz9kTDZn3fk9LLD9SH7L7gD7gGSfLX6sfaSFETujJ4ou
+         yh44tSgQkKm/CTSXxdmH4uLCYAov/R4WA+24hlKmmGcURFovhpAvLXJy1EbU6EZbGvpp
+         zBrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732221787; x=1732826587;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qGwjZnzxYsO+I8a1Rm02akWiDmIevBjaewf7s2sRAbk=;
-        b=R+6m4lK/VJRJspQ6RfyWRb91iFWZkDOzkHIBJG0bJTIqn8yCrDDFMGYl4ARh0oYErf
-         sGy7Gl8d558nqQvwFkrEdsBLAGEHHnsLgngvKC2jy2qMfYD+OiTfIWWcDadecVWiNkyN
-         AOuwzRPrjKNMHdHeQkZTrQZYJJ2JGHHTMshjqmNWXtepnoPMiKbWy4sUPJROsdOlmgUa
-         SO0iwCT87edazjeowpPkxUHCI6CWFOPjtVN+aF4VGFM3W4ey6o4i2B5N/2aI9ZUoOaMv
-         0K5rPbaSvFsul9A1RS9NxgzzomvV7E6du0fYaHhA60I4shfLt4EZsbmWG+ScWQFGiw4w
-         Iqag==
-X-Forwarded-Encrypted: i=1; AJvYcCUTqmpYou5+Ka+knwHbGGWhxwxFW8iDWtskoQ7aHV8h9+XEMfD4lLly8QveBxjq5Gw1zRoC24zobzQ6HNaVZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy53u4gaK6gZ2AB0I/jyie/yit3S54LUVEjJwotci8xDoTceqKy
-	g+iOGFFMt7FTHO7dNA+CSj+FSfmUx8zwSuaIMohdmM1auDiLunqRKqMCSDQi+rQ3lLkxjTCkzAj
-	y/TR5xdYVJwawLz7qncXwkxFObQ==
-X-Google-Smtp-Source: AGHT+IE3IxQ3cOARO0M97W7yu9tXaYeWL9jdgIb1dFEltrt1+1/yhEFtSG0hqz6HzV9bQmSbVOsshG7ru3OpVYZGEUo=
-X-Received: from samitolvanen.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:4f92])
- (user=samitolvanen job=sendgmr) by 2002:a65:4003:0:b0:7db:497:6cea with SMTP
- id 41be03b00d2f7-7fbccad9410mr305a12.6.1732221786696; Thu, 21 Nov 2024
- 12:43:06 -0800 (PST)
-Date: Thu, 21 Nov 2024 20:42:39 +0000
-In-Reply-To: <20241121204220.2378181-20-samitolvanen@google.com>
+        d=1e100.net; s=20230601; t=1732225555; x=1732830355;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P4a8oWPSly7lypmnYWn7HyCF8FEhlYXGucolUoN3Di8=;
+        b=WmDPQx93u2LEntUdLS1J8GwIitsnlP7fpENQ8XKJJdec6LvWhhojcFg1YXRHL1/jQR
+         Z3zXFRWJ/11PvKrMkh3vYXk279SM+n1EpkVu1rD9klQnHfjk8JegIYqlHyXjlDiF2yci
+         JslXZ9GW+txVPEIC0+kS1N6dySAH31/i9gRGzZl3ZhSBJzXXxY/ExOo4/VBH3NIC+GX5
+         UD1Zy+pfnREIsgVFycaMOq2nFsH9GnnJmPsCX5tJYVLJwFF54eB/yD7XcVBUTpfLpC32
+         cHP1Iq0unQJ4PEtTiTlHadIZAoehRGbfzaiRR2bGEvJdkh2Ef22KldRfbm08qgCsiKvm
+         W68w==
+X-Forwarded-Encrypted: i=1; AJvYcCVNnEd9NlF2/a5vSLgv4TAG03glY/2MlSOxt6Z3+JxNnx3o2P1z146W648t3J7hmfN+Eawv0q1b+ucZryw0gA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOKc4sxESR8GXp7oZvhFmKFI3Xy8+BNGkr6RzDkf+jk7bkeg5H
+	ddo/w+k9hD/Pl5EIotShR5HS1wtve8GVTwwitNPiD0Efu+C3ofSHxqIiHMr29/LLXSP/QAgYcGR
+	8ZINGPY2VGXrtPa4s+a4DilEsCA8irQdWGX0O
+X-Gm-Gg: ASbGncv4f73R+HMCknTQJJR1mZO6aIgHOZpDSHc+H2VRyKn+VXNAmX6KQ89pLnke093
+	IXVaus371wTFWmWh/EutnYB7m8VIuL3sB
+X-Google-Smtp-Source: AGHT+IFj3ewzHS7CHSwnlpSbvZE0LyO+Qo7rO/sZNb0D2NaUQuJLy6NLIzQ400cfoImivcwpiS5/Vd/gS8PpEgCzqsE=
+X-Received: by 2002:a05:6a00:13a8:b0:71e:1b6d:5a94 with SMTP id
+ d2e1a72fcca58-724df3c81f9mr800143b3a.5.1732225554847; Thu, 21 Nov 2024
+ 13:45:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241121204220.2378181-20-samitolvanen@google.com>
-X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13479; i=samitolvanen@google.com;
- h=from:subject; bh=zW7908MQu2FtNUVy2Cx6yEPpWxLbyw7Hr6NCDOhP/to=;
- b=owGbwMvMwCEWxa662nLh8irG02pJDOn2s820ub6vNVw5Y0HlKsd1DypKbY2nhHDPl98ka2Qak
- 58b/Nygo5SFQYyDQVZMkaXl6+qtu787pb76XCQBM4eVCWQIAxenAExkviQjwyJ+DUfhpbvinvXL
- dF6ouf9iseJ0SfuzDhNKNq+d9qd49ieG/0lXTu1Yt7zN7Hk/c8qqOr/6NEWZmRd+XGOUPhPz/rp DPR8A
-X-Mailer: git-send-email 2.47.0.371.ga323438b13-goog
-Message-ID: <20241121204220.2378181-38-samitolvanen@google.com>
-Subject: [PATCH v6 18/18] Documentation/kbuild: Add DWARF module versioning
-From: Sami Tolvanen <samitolvanen@google.com>
-To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
-	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
-	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
+MIME-Version: 1.0
+References: <20241117195923.222145-1-sergio.collado@gmail.com>
+In-Reply-To: <20241117195923.222145-1-sergio.collado@gmail.com>
+From: Rae Moar <rmoar@google.com>
+Date: Thu, 21 Nov 2024 16:45:42 -0500
+Message-ID: <CA+GJov6Ks6tLCeZLs2_8yPEgGgNs1FfPM=xTNbmmQND=U+z8rA@mail.gmail.com>
+Subject: Re: [PATCH v5] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Dave Hansen <dave.hansen@linuax.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, 
+	linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org, 
+	ricardo.marliere@suse.com, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add documentation for gendwarfksyms changes, and the kABI stability
-features that can be useful for distributions even though they're not
-used in mainline kernels.
+On Sun, Nov 17, 2024 at 2:59=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+> in the reference [1]. This patch adds kunit test suite to check the longe=
+st
+> symbol length. These tests verify that the longest symbol length defined
+> is supported.
+>
+> This test can also help other efforts for longer symbol length,
+> like [2].
+>
+> The test suite defines two symbols, one with the longest length defined,
+> and other one whit the longest length defined +1. In the test suite
+> there are four tests, three positive and one negative.
+>
+> The first and third tests, verify that functions with names of the create=
+d
+> symbols, can be called or not.
+>
+> The second and fourth tests, verify that the symbols are created (or
+> not) in the kernel symbol table.
+>
+> [1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+> [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org=
+/
+>
+> Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/504
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
----
- Documentation/kbuild/gendwarfksyms.rst | 308 +++++++++++++++++++++++++
- Documentation/kbuild/index.rst         |   1 +
- 2 files changed, 309 insertions(+)
- create mode 100644 Documentation/kbuild/gendwarfksyms.rst
+Hello!
 
-diff --git a/Documentation/kbuild/gendwarfksyms.rst b/Documentation/kbuild/gendwarfksyms.rst
-new file mode 100644
-index 000000000000..7725d7f57131
---- /dev/null
-+++ b/Documentation/kbuild/gendwarfksyms.rst
-@@ -0,0 +1,308 @@
-+=======================
-+DWARF module versioning
-+=======================
-+
-+1. Introduction
-+===============
-+
-+When CONFIG_MODVERSIONS is enabled, symbol versions for modules
-+are typically calculated from preprocessed source code using the
-+**genksyms** tool.  However, this is incompatible with languages such
-+as Rust, where the source code has insufficient information about
-+the resulting ABI. With CONFIG_GENDWARFKSYMS (and CONFIG_DEBUG_INFO)
-+selected, **gendwarfksyms** is used instead to calculate symbol versions
-+from the DWARF debugging information, which contains the necessary
-+details about the final module ABI.
-+
-+1.1. Usage
-+==========
-+
-+gendwarfksyms accepts a list of object files on the command line, and a
-+list of symbol names (one per line) in standard input::
-+
-+        Usage: gendwarfksyms [options] elf-object-file ... < symbol-list
-+
-+        Options:
-+          -d, --debug          Print debugging information
-+              --dump-dies      Dump DWARF DIE contents
-+              --dump-die-map   Print debugging information about die_map changes
-+              --dump-types     Dump type strings
-+              --dump-versions  Dump expanded type strings used for symbol versions
-+          -s, --stable         Support kABI stability features
-+          -T, --symtypes file  Write a symtypes file
-+          -h, --help           Print this message
-+
-+
-+2. Type information availability
-+================================
-+
-+While symbols are typically exported in the same translation unit (TU)
-+where they're defined, it's also perfectly fine for a TU to export
-+external symbols. For example, this is done when calculating symbol
-+versions for exports in stand-alone assembly code.
-+
-+To ensure the compiler emits the necessary DWARF type information in the
-+TU where symbols are actually exported, gendwarfksyms adds a pointer
-+to exported symbols in the `EXPORT_SYMBOL()` macro using the following
-+macro::
-+
-+        #define __GENDWARFKSYMS_EXPORT(sym)                             \
-+                static typeof(sym) *__gendwarfksyms_ptr_##sym __used    \
-+                        __section(".discard.gendwarfksyms") = &sym;
-+
-+
-+When a symbol pointer is found in DWARF, gendwarfksyms can use its
-+type for calculating symbol versions even if the symbol is defined
-+elsewhere. The name of the symbol pointer is expected to start with
-+`__gendwarfksyms_ptr_`, followed by the name of the exported symbol.
-+
-+3. Symtypes output format
-+=========================
-+
-+Similarly to genksyms, gendwarfksyms supports writing a symtypes
-+file for each processed object that contain types for exported
-+symbols and each referenced type that was used in calculating symbol
-+versions. These files can be useful when trying to determine what
-+exactly caused symbol versions to change between builds. To generate
-+symtypes files during a kernel build, set `KBUILD_SYMTYPES=1`.
-+
-+Matching the existing format, the first column of each line contains
-+either a type reference or a symbol name. Type references have a
-+one-letter prefix followed by "#" and the name of the type. Four
-+reference types are supported::
-+
-+        e#<type> = enum
-+        s#<type> = struct
-+        t#<type> = typedef
-+        u#<type> = union
-+
-+Type names with spaces in them are wrapped in single quotes, e.g.::
-+
-+        s#'core::result::Result<u8, core::num::error::ParseIntError>'
-+
-+The rest of the line contains a type string. Unlike with genksyms that
-+produces C-style type strings, gendwarfksyms uses the same simple parsed
-+DWARF format produced by **--dump-dies**, but with type references
-+instead of fully expanded strings.
-+
-+4. Maintaining a stable kABI
-+============================
-+
-+Distribution maintainers often need the ability to make ABI compatible
-+changes to kernel data structures due to LTS updates or backports. Using
-+the traditional `#ifndef __GENKSYMS__` to hide these changes from symbol
-+versioning won't work when processing object files. To support this
-+use case, gendwarfksyms provides kABI stability features designed to
-+hide changes that won't affect the ABI when calculating versions. These
-+features are all gated behind the **--stable** command line flag and are
-+not used in the mainline kernel. To use stable features during a kernel
-+build, set `KBUILD_GENDWARFKSYMS_STABLE=1`.
-+
-+Examples for using these features are provided in the
-+**scripts/gendwarfksyms/examples** directory, including helper macros
-+for source code annotation. Note that as these features are only used to
-+transform the inputs for symbol versioning, the user is responsible for
-+ensuring that their changes actually won't break the ABI.
-+
-+4.1. kABI rules
-+===============
-+
-+kABI rules allow distributions to fine-tune certain parts
-+of gendwarfksyms output and thus control how symbol
-+versions are calculated. These rules are defined in the
-+`.discard.gendwarfksyms.kabi_rules` section of the object file and
-+consist of simple null-terminated strings with the following structure::
-+
-+	version\0type\0target\0value\0
-+
-+This string sequence is repeated as many times as needed to express all
-+the rules. The fields are as follows:
-+
-+- `version`: Ensures backward compatibility for future changes to the
-+  structure. Currently expected to be "1".
-+- `type`: Indicates the type of rule being applied.
-+- `target`: Specifies the target of the rule, typically the fully
-+  qualified name of the DWARF Debugging Information Entry (DIE).
-+- `value`: Provides rule-specific data.
-+
-+The following helper macro, for example, can be used to specify rules
-+in the source code::
-+
-+	#define __KABI_RULE(hint, target, value)                             \
-+		static const char __PASTE(__gendwarfksyms_rule_,             \
-+					  __COUNTER__)[] __used __aligned(1) \
-+			__section(".discard.gendwarfksyms.kabi_rules") =     \
-+				"1\0" #hint "\0" #target "\0" #value
-+
-+
-+Currently, only the rules discussed in this section are supported, but
-+the format is extensible enough to allow further rules to be added as
-+need arises.
-+
-+4.1.1. Managing definition visibility
-+=====================================
-+
-+A declaration can change into a full definition when additional includes
-+are pulled into the translation unit. This changes the versions of any
-+symbol that references the type even if the ABI remains unchanged. As
-+it may not be possible to drop includes without breaking the build, the
-+`declonly` rule can be used to specify a type as declaration-only, even
-+if the debugging information contains the full definition.
-+
-+The rule fields are expected to be as follows:
-+
-+- `type`: "declonly"
-+- `target`: The fully qualified name of the target data structure
-+  (as shown in **--dump-dies** output).
-+- `value`: This field is ignored.
-+
-+Using the `__KABI_RULE` macro, this rule can be defined as::
-+
-+	#define KABI_DECLONLY(fqn) __KABI_RULE(declonly, fqn, )
-+
-+Example usage::
-+
-+	struct s {
-+		/* definition */
-+	};
-+
-+	KABI_DECLONLY(s);
-+
-+4.1.2. Adding enumerators
-+=========================
-+
-+For enums, all enumerators and their values are included in calculating
-+symbol versions, which becomes a problem if we later need to add more
-+enumerators without changing symbol versions. The `enumerator_ignore`
-+rule allows us to hide named enumerators from the input.
-+
-+The rule fields are expected to be as follows:
-+
-+- `type`: "enumerator_ignore"
-+- `target`: The fully qualified name of the target enum
-+  (as shown in **--dump-dies** output) and the name of the
-+  enumerator field separated by a space.
-+- `value`: This field is ignored.
-+
-+Using the `__KABI_RULE` macro, this rule can be defined as::
-+
-+	#define KABI_ENUMERATOR_IGNORE(fqn, field) \
-+		__KABI_RULE(enumerator_ignore, fqn field, )
-+
-+Example usage::
-+
-+	enum e {
-+		A, B, C, D,
-+	};
-+
-+	KABI_ENUMERATOR_IGNORE(e, B);
-+	KABI_ENUMERATOR_IGNORE(e, C);
-+
-+If the enum additionally includes an end marker and new values must
-+be added in the middle, we may need to use the old value for the last
-+enumerator when calculating versions. The `enumerator_value` rule allows
-+us to override the value of an enumerator for version calculation:
-+
-+- `type`: "enumerator_value"
-+- `target`: The fully qualified name of the target enum
-+  (as shown in **--dump-dies** output) and the name of the
-+  enumerator field separated by a space.
-+- `value`: Integer value used for the field.
-+
-+Using the `__KABI_RULE` macro, this rule can be defined as::
-+
-+	#define KABI_ENUMERATOR_VALUE(fqn, field, value) \
-+		__KABI_RULE(enumerator_value, fqn field, value)
-+
-+Example usage::
-+
-+	enum e {
-+		A, B, C, LAST,
-+	};
-+
-+	KABI_ENUMERATOR_IGNORE(e, C);
-+	KABI_ENUMERATOR_VALUE(e, LAST, 2);
-+
-+4.3. Adding structure members
-+=============================
-+
-+Perhaps the most common ABI compatible changeis adding a member to a
-+kernel data structure. When changes to a structure are anticipated,
-+distribution maintainers can pre-emptively reserve space in the
-+structure and take it into use later without breaking the ABI. If
-+changes are needed to data structures without reserved space, existing
-+alignment holes can potentially be used instead. While kABI rules could
-+be added for these type of changes, using unions is typically a more
-+natural method. This section describes gendwarfksyms support for using
-+reserved space in data structures and hiding members that don't change
-+the ABI when calculating symbol versions.
-+
-+4.3.1. Reserving space and replacing members
-+============================================
-+
-+Space is typically reserved for later use by appending integer types, or
-+arrays, to the end of the data structure, but any type can be used. Each
-+reserved member needs a unique name, but as the actual purpose is usually
-+not known at the time the space is reserved, for convenience, names that
-+start with `__kabi_` are left out when calculating symbol versions::
-+
-+        struct s {
-+                long a;
-+                long __kabi_reserved_0; /* reserved for future use */
-+        };
-+
-+The reserved space can be taken into use by wrapping the member in a
-+union, which includes the original type and the replacement member::
-+
-+        struct s {
-+                long a;
-+                union {
-+                        long __kabi_reserved_0; /* original type */
-+                        struct b b; /* replaced field */
-+                };
-+        };
-+
-+If the `__kabi_` naming scheme was used when reserving space, the name
-+of the first member of the union must start with `__kabi_reserved`. This
-+ensures the original type is used when calculating versions, but the name
-+is again left out. The rest of the union is ignored.
-+
-+If we're replacing a member that doesn't follow this naming convention,
-+we also need to preserve the original name to avoid changing versions,
-+which we can do by changing the first union member's name to start with
-+`__kabi_renamed` followed by the original name.
-+
-+The examples include `KABI_(RESERVE|USE|REPLACE)*` macros that help
-+simplify the process and also ensure the replacement member is correctly
-+aligned and its size won't exceed the reserved space.
-+
-+4.3.2. Hiding members
-+=====================
-+
-+Predicting which structures will require changes during the support
-+timeframe isn't always possible, in which case one might have to resort
-+to placing new members into existing alignment holes::
-+
-+        struct s {
-+                int a;
-+                /* a 4-byte alignment hole */
-+                unsigned long b;
-+        };
-+
-+
-+While this won't change the size of the data structure, one needs to
-+be able to hide the added members from symbol versioning. Similarly
-+to reserved fields, this can be accomplished by wrapping the added
-+member to a union where one of the fields has a name starting with
-+`__kabi_ignored`::
-+
-+        struct s {
-+                int a;
-+                union {
-+                        char __kabi_ignored_0;
-+                        int n;
-+                };
-+                unsigned long b;
-+        };
-+
-+With **--stable**, both versions produce the same symbol version.
-diff --git a/Documentation/kbuild/index.rst b/Documentation/kbuild/index.rst
-index cee2f99f734b..e82af05cd652 100644
---- a/Documentation/kbuild/index.rst
-+++ b/Documentation/kbuild/index.rst
-@@ -21,6 +21,7 @@ Kernel Build System
-     reproducible-builds
-     gcc-plugins
-     llvm
-+    gendwarfksyms
- 
- .. only::  subproject and html
- 
--- 
-2.47.0.371.ga323438b13-goog
+This patch is passing tests when it is built-in but it is failing when
+I run it as a module.
 
+Here is the result when run as a module with "modprobe longest_symbol_kunit=
+":
+
+[   30.446570] KTAP version 1
+[   30.446826] 1..1
+[   30.453560]     KTAP version 1
+[   30.453785]     # Subtest: longest-symbol
+[   30.454376]     # module: longest_symbol_kunit
+[   30.457622]     1..4
+[   30.463765]     ok 1 test_longest_symbol
+[   30.471805]     # test_longest_symbol_kallsyms: test_longest_symbol
+kallsyms: kprobe registered
+[   30.478995]     ok 2 test_longest_symbol_kallsyms
+[   30.479735]     ok 3 test_longest_symbol_plus1
+[   30.596269]     # test_longest_symbol_plus1_kallsyms:
+test_longest_symbol_plus1 kallsyms: kprobe registered
+[   30.602564]     # test_longest_symbol_plus1_kallsyms: EXPECTATION
+FAILED at lib/longest_symbol_kunit.c:106
+[   30.602564]     Expected longest_sym_plus1 =3D=3D ((void *)0), but
+[   30.602564]         longest_sym_plus1 =3D=3D ffffffffc01313e0
+[   30.602564]         ((void *)0) =3D=3D 0000000000000000
+[   30.603924]     not ok 4 test_longest_symbol_plus1_kallsyms
+[   30.606305] # longest-symbol: pass:3 fail:1 skip:0 total:4
+[   30.606669] # Totals: pass:3 fail:1 skip:0 total:4
+[   30.608618] not ok 1 longest-symbol
+
+Seems the symbol name is found when run as modules?
+
+Thanks!
+-Rae
+
+> ---
+> V1 -> V2: corrected CI tests. Added fix proposed at [3]
+>
+> [3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12=
+bb834d01ed1ebdcae12ef5f2add342077
+> ---
+> V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTHOR()
+> ---
+> V3 -> V4: add x86 mantainers, add new reference.
+> ---
+> V4 -> V5: fixed typo, added improved description
+>
+> The test execution shoud result in something like:
+>
+> ```
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D longest-symbol (=
+4 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] [PASSED] test_longest_symbol
+> [20:04:35] [PASSED] test_longest_symbol_kallsyms
+> [20:04:35] [PASSED] test_longest_symbol_plus1
+> [20:04:35] [PASSED] test_longest_symbol_plus1_kallsyms
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] l=
+ongest-symbol =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] Testing complete. Ran 4 tests: passed: 4
+> ```
+>
+> But also there are two warnings like:
+>
+> ```
+> Symbol snnnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7n=
+nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnnng1h2i3j4k=
+5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnng1h2i3j4k5l6m7ng1h2i3=
+j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnnnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nn=
+g1h2i3j4k5l6m7ng1h2i3j4k5l6m7nnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6=
+m7ng1h2i3j4k5l6m7nnnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4=
+k5l6m7nnng1h2i3j4k5l6m7ng1h2i3j4k5l6m7nng1h2i3j4k5l6m7ng1h2i3j4k5l6m7ne too=
+ long for kallsyms (512 >=3D 512).
+> Please increase KSYM_NAME_LEN both in kernel and kallsyms.c
+> ```
+>
+> Because the tests try to generate simbols of the same length as
+> KSYM_NAME_LEN. This is the expected outcome, as defined:
+> https://lore.kernel.org/all/20131023130753.GO29695@two.firstfloor.org/
+>
+> ---
+>  arch/x86/tools/insn_decoder_test.c |   3 +-
+>  lib/Kconfig.debug                  |   9 +++
+>  lib/Makefile                       |   2 +
+>  lib/longest_symbol_kunit.c         | 125 +++++++++++++++++++++++++++++
+>  4 files changed, 138 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/longest_symbol_kunit.c
+>
+> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_dec=
+oder_test.c
+> index 472540aeabc2..3bde35ea4188 100644
+> --- a/arch/x86/tools/insn_decoder_test.c
+> +++ b/arch/x86/tools/insn_decoder_test.c
+> @@ -10,6 +10,7 @@
+>  #include <assert.h>
+>  #include <unistd.h>
+>  #include <stdarg.h>
+> +#include <linux/kallsysms.h>
+>
+>  #define unlikely(cond) (cond)
+>
+> @@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
+>         }
+>  }
+>
+> -#define BUFSIZE 256
+> +#define BUFSIZE (256 + KSYM_NAME_LEN)
+>
+>  int main(int argc, char **argv)
+>  {
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 7312ae7c3cc5..1f3059176637 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -2820,6 +2820,15 @@ config FORTIFY_KUNIT_TEST
+>           by the str*() and mem*() family of functions. For testing runti=
+me
+>           traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
+>
+> +config LONGEST_SYM_KUNIT_TEST
+> +       tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
+> +       depends on KUNIT && KPROBES
+> +       default KUNIT_ALL_TESTS
+> +       help
+> +         Tests the longest symbol possible
+> +
+> +         If unsure, say N.
+> +
+>  config HW_BREAKPOINT_KUNIT_TEST
+>         bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TE=
+STS
+>         depends on HAVE_HW_BREAKPOINT
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 773adf88af41..fc878e716825 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -389,6 +389,8 @@ CFLAGS_fortify_kunit.o +=3D $(DISABLE_STRUCTLEAK_PLUG=
+IN)
+>  obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
+>  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+>  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+> +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
+> +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-pr=
+ototypes)
+>
+>  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+>
+> diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+> new file mode 100644
+> index 000000000000..ebd26eedbf7b
+> --- /dev/null
+> +++ b/lib/longest_symbol_kunit.c
+> @@ -0,0 +1,125 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Test the longest symbol length. Execute with:
+> + *  ./tools/testing/kunit/kunit.py run longest-symbol
+> + *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add CONFI=
+G_MODULES=3Dy
+> + *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLANG=3D=
+n
+> + *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <kunit/test.h>
+> +#include <linux/stringify.h>
+> +#include <linux/kprobes.h>
+> +#include <linux/kallsyms.h>
+> +
+> +#define DI(name) s##name##name
+> +#define DDI(name) DI(n##name##name)
+> +#define DDDI(name) DDI(n##name##name)
+> +#define DDDDI(name) DDDI(n##name##name)
+> +#define DDDDDI(name) DDDDI(n##name##name)
+> +
+> +#define PLUS1(name) __PASTE(name, e)
+> +
+> +/*Generate a symbol whose name length is 511 */
+> +#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
+> +
+> +/*Generate a symbol whose name length is 512 */
+> +#define LONGEST_SYM_NAME_PLUS1 PLUS1(LONGEST_SYM_NAME)
+> +
+> +#define RETURN_LONGEST_SYM 0xAAAAA
+> +#define RETURN_LONGEST_SYM_PLUS1 0x55555
+> +
+> +noinline int LONGEST_SYM_NAME(void);
+> +noinline int LONGEST_SYM_NAME(void)
+> +{
+> +       return RETURN_LONGEST_SYM;
+> +}
+> +
+> +noinline int LONGEST_SYM_NAME_PLUS1(void);
+> +noinline int LONGEST_SYM_NAME_PLUS1(void)
+> +{
+> +       return RETURN_LONGEST_SYM_PLUS1;
+> +}
+> +
+> +_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) =3D=3D KSYM_NAME_LE=
+N,
+> +"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
+> +__stringify(KSYM_NAME) ", but found: "
+> +__stringify(sizeof(LONGEST_SYM_NAME)));
+> +
+> +static void test_longest_symbol(struct kunit *test)
+> +{
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
+> +};
+> +
+> +static void test_longest_symbol_kallsyms(struct kunit *test)
+> +{
+> +       unsigned long (*kallsyms_lookup_name)(const char *name);
+> +       static int (*longest_sym)(void);
+> +
+> +       struct kprobe kp =3D {
+> +               .symbol_name =3D "kallsyms_lookup_name",
+> +       };
+> +
+> +       if (register_kprobe(&kp) < 0) {
+> +               pr_info("%s: kprobe not registered\n", __func__);
+> +               KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe n=
+ot registered\n");
+> +               return;
+> +       }
+> +
+> +       kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered=
+\n");
+> +       kallsyms_lookup_name =3D (unsigned long (*)(const char *name))kp.=
+addr;
+> +       unregister_kprobe(&kp);
+> +
+> +       longest_sym =3D
+> +               (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAM=
+E));
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
+> +};
+> +
+> +static void test_longest_symbol_plus1(struct kunit *test)
+> +{
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM_PLUS1, LONGEST_SYM_NAME_=
+PLUS1());
+> +};
+> +
+> +static void test_longest_symbol_plus1_kallsyms(struct kunit *test)
+> +{
+> +       unsigned long (*kallsyms_lookup_name)(const char *name);
+> +       static int (*longest_sym_plus1)(void);
+> +
+> +       struct kprobe kp =3D {
+> +               .symbol_name =3D "kallsyms_lookup_name",
+> +       };
+> +
+> +       if (register_kprobe(&kp) < 0) {
+> +               pr_info("%s: kprobe not registered\n", __func__);
+> +               KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe n=
+ot registered\n");
+> +               return;
+> +       }
+> +
+> +       kunit_warn(test, "test_longest_symbol_plus1 kallsyms: kprobe regi=
+stered\n");
+> +       kallsyms_lookup_name =3D (unsigned long (*)(const char *name))kp.=
+addr;
+> +       unregister_kprobe(&kp);
+> +
+> +       longest_sym_plus1 =3D
+> +               (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAM=
+E_PLUS1));
+> +       KUNIT_EXPECT_NULL(test, longest_sym_plus1);
+> +};
+> +
+> +static struct kunit_case longest_symbol_test_cases[] =3D {
+> +       KUNIT_CASE(test_longest_symbol),
+> +       KUNIT_CASE(test_longest_symbol_kallsyms),
+> +       KUNIT_CASE(test_longest_symbol_plus1),
+> +       KUNIT_CASE(test_longest_symbol_plus1_kallsyms),
+> +       {}
+> +};
+> +
+> +static struct kunit_suite longest_symbol_test_suite =3D {
+> +       .name =3D "longest-symbol",
+> +       .test_cases =3D longest_symbol_test_cases,
+> +};
+> +kunit_test_suite(longest_symbol_test_suite);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("Test the longest symbol length");
+> +MODULE_AUTHOR("Sergio Gonz=C3=A1lez Collado");
+> --
+> 2.39.2
+>
+> --
+> You received this message because you are subscribed to the Google Groups=
+ "KUnit Development" group.
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to kunit-dev+unsubscribe@googlegroups.com.
+> To view this discussion visit https://groups.google.com/d/msgid/kunit-dev=
+/20241117195923.222145-1-sergio.collado%40gmail.com.
