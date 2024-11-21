@@ -1,171 +1,265 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2086.outbound.protection.outlook.com [40.92.21.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55403169AE4
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732184834; cv=fail; b=VPQ4cqz2RGKPDZ0dK8SxsceqgMgKejM/WijTnEsYKjii5wpSr/w+eKAv/Lw02L43mWk7J3rg4H4M31+asTEZ18ysOAx2OIbnH6ZUWyKSiNowFMCKGGlX3q7BdrvNq6yl6xtJj0D0dllvom+Zy4OEzpYi3aDYvBqtHJNBj3iD9aU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732184834; c=relaxed/simple;
-	bh=F/SF3eIAkjiIa4r6UAqcnMhcskqRWCND6f+Yu6hH5OE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fEjgJo6VICtOJnyfNY+1N5BRnC+uscKcz+dx80eFwX4345N2BuamToiLtY50q48sXyBA/eAewFJrHJxlpUMNLbmefiBMGDSPQqvdynOUDuU09WGX44+brYYaOKnjjeza90zpGn5OcYKblGdPygf19wyyWfQzwehP/yVBM9Kf7ao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=llU9EjM2; arc=fail smtp.client-ip=40.92.21.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F6B1CD209
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732185525; cv=none; b=i+rPKkDQzZgcEaLLsbS8mdcabWCiDjOMWybCaIl0KISYnv3QxSH9d+ZQZACLtn9HrxZBl9CZDcEeo87EJHCQf2GAfo+Nr+jVrxHUT5j42/zSy1+2XTw/533eV43KIziUhchZrYNf2JfXht5YKQ2e4wXyORf7MafWzgAbCgl4MSM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732185525; c=relaxed/simple;
+	bh=vp3VGL7tickCp/AxyyI05CAA0XadUYs0FF+9ilokDbY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EurkVmY6i7AWvpElAJMexV25ZntUGZBGB2AuPlU8+xuzFeJul5I2wJsMml2Hyvjgu8/v8vJ4YxsVFIsaU7QUNY4QmFr4Z52bSmOYRttsClp/FyrwM1cFy+VxIIZb0bBltQ7cnLNYG9enaRS2LBun7H1mLzMFr5sixjnKFgpwFNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DxCpHUf+; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="llU9EjM2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PdRREr2jzI0dhbvRwvG9qjqd37mCQFgfXgtA7ApDD6mDLitcqcA1bMvJgN1Z95X9MHlMvnUsmjomt/wW5jykI/uIaWBRqXPlFWhJrm9UDG4MdfSYgNPmdcKJxCIS57dNylSwz7O9loRfmAr3EMoDQ0A9UuAztv2jhqmiWSFxoy2+XdGcdbuu/vKRlM9AUL8F0jwKz8gIzblbK0YPCiR6WADAvKhFtvDKfqswqLU72bpfHW2WApTjdd3/q+oUsSmqnWzh1Hnec+gjyaTz9ANSH3ruAJLtqretlQx2RU6CcAb+3DcAKPJOq8WSjM5FQYrUr1e2rglrTxxvvkFkZAuBrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F/SF3eIAkjiIa4r6UAqcnMhcskqRWCND6f+Yu6hH5OE=;
- b=YYeye3fi4ZwH8N19lqNpWNYcgDFjcz1Y540/qa58NlHoe2mkmQL1g12JTWk7ijS0e927ezjG1byn6uD4U5jZYwPvUdNY3utovNc6AIv1k+oxUDVm9EXLE0y6bjD3AQfL2cfQbxENxgk5pIODD61p2Uk/QjuH9387IeO0YvKBZnxuynUpwJw68Kh/X/GestHOijxgyWqXz5K2JjEVvFtJtkE1bbUT6gAZQ2L/+9k5dC5QMccH9juTeL614TSOJbBCWsO0e9Izf8cgNRsoICr1lxUwEHIGNHHs+J2we0KVL9nFHyNWmIpneNN5sJp0cqAS47N+ZS5pbCeO/uT2ds2row==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F/SF3eIAkjiIa4r6UAqcnMhcskqRWCND6f+Yu6hH5OE=;
- b=llU9EjM2yVVYO/Lkybs0/N/iYtqoeKMAxCtYFlD5WHNDofZwFS+oJdQkZM2MDzRzDUW0fn4tZAvbI0tM6dR4A66S8qPUoIKhmSyx9hJeiWN4iSFDE30NsNuVzbA5ngq8noyFXPmpuqcyQBKVzlQFlyPINkt9zFgOxoiFR4MPbpzAtvqpGm82K3E2vda4lrctoG55wK6rQV7t1tSueN8d1KE8bBz6Zc0KTp7BOIJwZM2FhBzIpfx1hfJyH5Q/SxuyOdt/ZaM9KbRV1nRrgkvIeB6EM4JnH+C0+qBrdeognBECIQD6rAKZqjD7he9B8NHo4jwUPI7ji+J06PsBNksD9g==
-Received: from BL0PR02MB4914.namprd02.prod.outlook.com (2603:10b6:208:53::23)
- by CH0PR02MB8105.namprd02.prod.outlook.com (2603:10b6:610:10a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Thu, 21 Nov
- 2024 10:27:10 +0000
-Received: from BL0PR02MB4914.namprd02.prod.outlook.com
- ([fe80::906b:d00a:2d95:d089]) by BL0PR02MB4914.namprd02.prod.outlook.com
- ([fe80::906b:d00a:2d95:d089%3]) with mapi id 15.20.8158.021; Thu, 21 Nov 2024
- 10:27:10 +0000
-From: Filipe Xavier <felipe_life@live.com>
-To: Lyude Paul <lyude@redhat.com>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>
-CC: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Martin
- Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst
-	<kernel@valentinobst.de>
-Subject: RE: [PATCH v4 1/2] rust: sync: Add Lock::from_raw() for Lock<(), B>
-Thread-Topic: [PATCH v4 1/2] rust: sync: Add Lock::from_raw() for Lock<(), B>
-Thread-Index: AQHbOth2ckXrGvqb4E2yghJsPsXed7LBiYv3
-Date: Thu, 21 Nov 2024 10:27:09 +0000
-Message-ID:
- <BL0PR02MB49149575B8A82816C1C7D63BE9222@BL0PR02MB4914.namprd02.prod.outlook.com>
-References: <20241119231146.2298971-1-lyude@redhat.com>
- <20241119231146.2298971-2-lyude@redhat.com>
-In-Reply-To: <20241119231146.2298971-2-lyude@redhat.com>
-Accept-Language: pt-BR, en-US
-Content-Language: pt-BR
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL0PR02MB4914:EE_|CH0PR02MB8105:EE_
-x-ms-office365-filtering-correlation-id: 59c87f16-e2eb-423c-d040-08dd0a170e71
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8060799006|461199028|15030799003|8062599003|19110799003|7092599003|15080799006|440099028|4302099013|3412199025|102099032|10035399004|1602099012;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ZDNNV2VHUXM1Q3plemFVcDVGYVBvK2VhTExyTkdJTWkzR0xNaUZjN05OZlI1?=
- =?utf-8?B?QXpac0RFenk3czlQSzZhTjRINnpKZkJpVmpHdFRmblBFaXZKV1ZMdTd2TFdL?=
- =?utf-8?B?QzQrVFNISzNaRThYSXBXcERlZ0g1Zzd0WCsrQWc4clJqT0ZNbmVKWGlqVkRp?=
- =?utf-8?B?K2xIK1MwME5PV2RXRzVGUW5ZMWlCRjkybE8wNGJNM3NQV1pGNmtlOTdSU1Yr?=
- =?utf-8?B?L0RLNGZuZ1hxdDk1QzRLc0VKSkJsTi9QbXlUejMzMGVHY3hJVGFrUWd4WitR?=
- =?utf-8?B?ZzkxK3ZqdUFhdllYamZhdWZlM0FwS05nK2RTODYwZWRxSjlodmVDRU1Ba0dk?=
- =?utf-8?B?eUpCbGkvckk0QTNOVnBxSGxLVXI2Ylg1bFJTTys4a1NYVzlXakUzRks4UkdC?=
- =?utf-8?B?cktNS1FvelVmWFNGQXFnQWlhQmpBcWw5YjQzdGIyc0kxNStIMEg3MnJrRlhi?=
- =?utf-8?B?TnpTSm1zSTBLOE5acHo5SGczUEU5NWRPZjFEdjVGakdKN21NZjFZUlpWYVhu?=
- =?utf-8?B?aHcwekx6bUpXU1ora2M0em4yRTVKenlWYzA5OE1DTktNWmw4Ujhrb0g1UmVn?=
- =?utf-8?B?TjVNRE45WjVnTzVzeXZaaUJjSUZGWDFEbzNWOThtek9Ia3hIR1NLSVZXZDNw?=
- =?utf-8?B?UTh0Nzd1SmlzV1VpM2UwSjZkVmpWeFhRb0tGajR0TzFQQng4Vk9wU2gyRmoz?=
- =?utf-8?B?cnlnTHhlSkw3RWxKU0FoKzRuOWtpai9wRzVwNXQzVW1lTU8vcmo3dUZjZmsw?=
- =?utf-8?B?VXBkdXFpekMzaGRpY213enJDUXBCU0lZZGVCMUNQeWxmWDV6Q1ByVWJtTlMz?=
- =?utf-8?B?NlBuRmVzdjRrU0pmaU13cHRQaTE3RE1SQ0c4N2w3K05mQlFzMGJkSDlPbUNT?=
- =?utf-8?B?Mk9VV2tJeW0yQ1MyQmxlWmxCRlhGYmorKzlybU8zcWtxRzBaNnJEVFZPVm9M?=
- =?utf-8?B?SEIxWnQxak1vSUYzTTBBdmo0UGY5WlY4cSttU3lhVlZ5SzA5SmdmZThQMkFD?=
- =?utf-8?B?cU9OUUpzQkdva1lmWVh2dC9EcHRzQ252SldlYkFNT2FIRWNJcmxGOHRGcnM3?=
- =?utf-8?B?aXQ3cFJBUTR5VVFhZjNvR1IyNkQwZ0dvMUZNQkhJSTdpVkhFL1V3ZlRFVUhI?=
- =?utf-8?B?d3FDdjE4MkVZWjc2UXFtSUFBczNrdjZINklwaVNLU242cDhlREEzVERWUDEr?=
- =?utf-8?B?bW9sZ1F4Y1VVcWF3MnIzY0VTY2RncHJTanFveDFVTzZjZmwyS1ZxS2RwdmFi?=
- =?utf-8?B?MjBtMk5GaFdqOW90TjVkL0VPZTBodWphR1Z4VmhRczNXN0NWNlUwU3ovK05k?=
- =?utf-8?B?MmsvSjFpNTNuZVNSRjQ3bUxTVUF2alZ5T3lqR05zUTNJdTFyZEpRNUZUMnZS?=
- =?utf-8?B?VEo5SlZvVzJrbllxekNoSy93b3M2STFES3NzZDJ1eTgrMGJGYVJvc012NklX?=
- =?utf-8?B?RTRhck1RU0pMUWtlNjRDbjhPQ0ZrY2NqSVpjRUtQRGd0Ym1jNVZCb2JiNzQz?=
- =?utf-8?B?Y0orL1FKT1BUQUI4bGt5dFYxamJndHZCa1FDVTJpQllCYnRROEhEelpSei9w?=
- =?utf-8?Q?j1JCdaVQD7/qtj/SDAugoJdJgxMGe3fJZ+Qge0SZ86qlBH?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?dWdsVkF2NVVla3Y5aFZMZmpaMlZtQldZRGtROUhqb2lKY281SUhJS1hXaXhm?=
- =?utf-8?B?U2JHWjBFOHQ4NGg4TVFnbmR6WUVVUVNOWFpNcU5KN2tJNFh1V3EvTW9oYy9p?=
- =?utf-8?B?YjB5cTBnNnNycjF1TU5mL0QwZDdIYzRaUkxONEJKMmt3RWN3WkI2NmRTVnV1?=
- =?utf-8?B?RnNuSlZjTTRIV05EU1dMYWNtZFhUYlNiZWNhUEJXRWZ5bjhPbEpxWkRNVm45?=
- =?utf-8?B?S1ZZdGRxS1lzUUc2N1dDT3hIc2lNa21qQ042L29ZRmNpVkdJaXFhem54N1VO?=
- =?utf-8?B?YlJrU09hS2NER2hyZUVYd0tPeTZkbHJnUVdmWDdwSFRuNklsUHhzaTBTR0li?=
- =?utf-8?B?TEh1ekVzOEt4RHFkQ2N1UndHSXk2U1ZTdEVGTzN0RTZvTFJldGE1dFlockhm?=
- =?utf-8?B?N3V4SUZvZVhyRGlaKzkyRmJtY3FoWVU5QnJ5dGgrbVJXdzhQS0ZBU09Xa1ZV?=
- =?utf-8?B?TVBwM29BcVYxcUJZM2ExZVhINDI3Zmp4Ui9WdUlkL3Vuc2lLMTRkcElFWURj?=
- =?utf-8?B?LzNpRlZyOFd5eU5VSnRtdXhBZHpRKzg1VFU4K1lFUmQ4MmNoRkxkb2lrbXh0?=
- =?utf-8?B?T0MvUWw1VzhkUTdjc0V3Z1NXMVh4dHo2NC9KaGU4b3ZJR0pRU3UyazI1Q3p0?=
- =?utf-8?B?VVp0QlFBRXFiRThVRm02VlhhR2M2NmIvWGtDbUQvOUlQdUgzYXFJOVNDelFO?=
- =?utf-8?B?MTRJeFRWSFl5bVEwV3A5L3hHSnNaTlF2emxiTkxlWEZFWUNLU1BoNUcxdkl1?=
- =?utf-8?B?WjF0M2s0R05PV2diSXJYMWtaRFRDb2cyNGNhODBMckVQQnpxNktkTzBNcjB3?=
- =?utf-8?B?UmpwalB6eWE0TWZQSmR1bTMvV2ZiVlBQVVN5dGhUTVZyUVplZEZxeTIxdGdZ?=
- =?utf-8?B?MTM5SlEyZC9JUWRCRURKRkgwbEtWYzVDaDc4OHBCbzBCbUVjWGRjRDROTjlh?=
- =?utf-8?B?bjZycUNNQ0Z5ditrTWZPMWF3T1QwWjFiVXpPS3ZzV0pwTzZQMk5BeHdqbjBz?=
- =?utf-8?B?dzNBdXNqNmY3SitkUEpDRDRBZloybzRzWDZ3NFFTYnhVSmliMUJjbnQ3OEJI?=
- =?utf-8?B?eEwrUVVOVDdveVRRdGVxL2hvWFVMZENwWHNwQnVrWm1IZW5jSFZjT2t4allJ?=
- =?utf-8?B?Tm9wazN4S3JNeXNZOHRhY0lRSmU2K1J6R1ZWQ3JwanJKclI5QVNVT1VoYm9M?=
- =?utf-8?B?SWhqS0tpVHBHdjJUaW5hemgvQ1BLc2l6T2IxMVZ1WGxQb0xWc2xYdzNuUUVu?=
- =?utf-8?B?citUa2s3SEVWS2YwSjhaRHVnU0cyazQ2azhlRTQ5SkY1TlExYWJjZjJHK2Rw?=
- =?utf-8?B?NGwzTFpxTVA1N3Zxa0tjT1BMRk5VSFF1ZmN6VTJDOEgwMkJxNG9UY1Vha25N?=
- =?utf-8?B?SlBmRUdIcnZPdUFKMUoxbm5KRWprbTV6MGowZVRBR0sxWFUvdk5LSjhFQkdx?=
- =?utf-8?B?U2YwTnlXNXNLWkFJZk1CNGgraWo4NnJadDZzZEJmM0JjNFN1SXdWRGNaWmVi?=
- =?utf-8?B?emUxYXIvZW4xNnNtWW0wc2h6VENWYnZEdG9uamNEd05SRXAvS0syYysxdHlL?=
- =?utf-8?B?TXhUSHIvRXl3V3BxN2lzSVpNRFRCWVNnTUxFeElnNWcybU9rYnZSdkFyRW1w?=
- =?utf-8?B?ZXllTWV0VElEZEthckVHc2FNeVRoZzVCMUg3VHlSMUdKQTFnTWgrZ3JzU3h1?=
- =?utf-8?B?UWNDQ2lkd2tmK3JYdXlxakl2MEtvYjN5UkpHUVpXS0xQNUdGVkEzc3NJUFJt?=
- =?utf-8?Q?5WVQ33vD1MLDfRx9l0=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DxCpHUf+"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-382442b7d9aso627722f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 02:38:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1732185521; x=1732790321; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=arZzzZcZ/LicC2e7GiApVwWtVcvvhGlrT9lVaNGL8IU=;
+        b=DxCpHUf+FnaL0BQy2snW4r33282iu+evk07YKkSe8Ia7X+5nYzHPm8aME+nUvHPYwV
+         Xj3o7AOhuxCXvgTt0yBaaczbtLPqRb9U1WQsfvLsoelblkor5A/YrkqNlvp3mw/43bPD
+         rNkgWshapORvOMrVLfJB4AjynEy2ilco43urjw9rgo/XwSyMvb/BwvWTcKvfErWcyJeL
+         G9jXKqfV7Sf6I4zOI7yVJgdVF7FP5HvuIOMQOvVsg2Rgx4f23Vw2C2tS+xElNRLpEV/6
+         zSgGjRldkBmWZHasxUfc0jO5ma1MhWgMO3BNAj01m3izmjqQK3XlBvdh/d3e/1wNoAN+
+         wFKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732185521; x=1732790321;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=arZzzZcZ/LicC2e7GiApVwWtVcvvhGlrT9lVaNGL8IU=;
+        b=GSJIv+e8Zs87NyBiJwOj6PqmJyoSZqlolt4Jdoa30fcyOgHbDo1P7g/RVLo7XhKa6u
+         Q3R1xm2P5En2DiFWXzPLWFWolCaM8NSazdMQr6JyUGz8EzMgJSi/yUjWQIQEgOOj3WLJ
+         31XTbBQRVDLdj9UM02K/rkWLiWJXYLaIoR72MoqUO0B0TcrcJ4vZP7rO0wYlNaqcarh6
+         LTsUU7P5NUJUxnnD4fdvOiNpTZgz3IREnDyqz2FEJ+Wn7F5n0BMFk3UEGnlAQJPqCMWK
+         BH7eu5HwC3aKLBh1Xwpw/3kJit759xX67wgGKBtmzZOAbMyRKo9CCnk+bmt+BMjG3NkN
+         xcmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvqsu12Kzkim5I3oZFL7nCxAekWJFonkzcvJIrX7THhYV2/CtRuNvcLKbjsv8hpdqLRAnvSGUZdaikt1c2Gw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyutWiua6+/04S4XgrtlnEC78UNIafKSBIns36sRN2i8UfDmTRV
+	BMEElf+OwzH8R/T31PGEQnQ5WvYt80lZz36CuhuVVr555q9YIZEHi26WVz2irvg/lEFsEcKtaDF
+	97faSqv8/BSoBeJzlHtcF4P5GeLv7oQKCxRMA
+X-Gm-Gg: ASbGncsu0lxJv9RIUkBLkVWNjPD244UjVG+pCwOD1bWd7fwvWuyI6YRnnoNoT3Ggh/+
+	93FyD/DWZzVaOLOd0Xp78Mkw4WOB5jvjOQNJ1P8lTAmFdsD30T+u5BCWt9a6Yqg==
+X-Google-Smtp-Source: AGHT+IFKTxfTP/8V3NQnXKNt4YPbwdTYjvzZyWn+f6dBturud/k7FjFa3YKKktaiCpaNOinmPJqBmsBuDnracNpZ2O8=
+X-Received: by 2002:a05:6000:178a:b0:382:59c1:ccdf with SMTP id
+ ffacd0b85a97d-38259c1ccecmr2210664f8f.46.1732185521340; Thu, 21 Nov 2024
+ 02:38:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-0f88b.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR02MB4914.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59c87f16-e2eb-423c-d040-08dd0a170e71
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2024 10:27:09.8976
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR02MB8105
+References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-3-eb31425da66b@google.com>
+ <e5660b41-c1df-47f1-83fa-c243805f74cf@lucifer.local>
+In-Reply-To: <e5660b41-c1df-47f1-83fa-c243805f74cf@lucifer.local>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 21 Nov 2024 11:38:29 +0100
+Message-ID: <CAH5fLgjsk_t=tQdAkB6O3cCDZQp2TC=uSB3EUsY_4qDegpVEYw@mail.gmail.com>
+Subject: Re: [PATCH v8 3/7] mm: rust: add vm_insert_page
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gV2VkLCBOb3YgMjAsIDIwMjQgYXQgMTI6MTHigK9BTSBMeXVkZSBQYXVsIDxseXVkZUByZWRo
-YXQuY29tPiB3cm90ZToKPgo+IFRoZSBLTVMgYmluZGluZ3MgKCBodHRwczovL3BhdGNod29yay5m
-cmVlZGVza3RvcC5vcmcvc2VyaWVzLzEzMTUyMi8gKSBoYXZlCj4gYSBmZXcgYmluZGluZ3MgdGhh
-dCByZXF1aXJlIG1hbnVhbGx5IGFjcXVpcmluZyBzcGVjaWZpYyBsb2NrcyBiZWZvcmUKPiBjYWxs
-aW5nIGNlcnRhaW4gZnVuY3Rpb25zLiBBdCB0aGUgbW9tZW50IHRob3VnaCwgdGhlIG9ubHkgd2F5
-IG9mIGFjcXVpcmluZwo+IHRoZXNlIGxvY2tzIGluIGJpbmRpbmdzIGlzIHRvIHNpbXBseSBjYWxs
-IHRoZSBDIGxvY2tpbmcgZnVuY3Rpb25zIGRpcmVjdGx5Cj4gLSBzaW5jZSBzYWlkIGxvY2tzIGFy
-ZSBub3QgYWNxdWlyZWQgb24gdGhlIHJ1c3Qgc2lkZSBvZiB0aGluZ3MuCj4KPiBIb3dldmVyIC0g
-aWYgd2UgYWRkIGAjW3JlcHIoQyldYCB0byBgTG9jazwoKSwgQj5gLCB0aGVuIGdpdmVuIGAoKWAg
-aXMgYSBaU1QKPiAtIGBMb2NrPCgpLCBCPmAgYmVjb21lcyBlcXVpdmFsZW50IGluIGRhdGEgbGF5
-b3V0IHRvIGl0cyBpbm5lciBgQjo6U3RhdGVgCj4gdHlwZS4gU2luY2UgbG9ja3MgaW4gQyBkb24n
-dCBoYXZlIGRhdGEgZXhwbGljaXRseSBhc3NvY2lhdGVkIHdpdGggdGhlbQo+IGFueXdheSwgd2Ug
-Y2FuIHRha2UgYWR2YW50YWdlIG9mIHRoaXMgdG8gYWRkIGEgYExvY2s6OmZyb21fcmF3KClgIGZ1
-bmN0aW9uCj4gdGhhdCBjYW4gdHJhbnNsYXRlIGEgcmF3IHBvaW50ZXIgdG8gYEI6OlN0YXRlYCBp
-bnRvIGl0cyBwcm9wZXIgYExvY2s8KCksCj4gQj5gIGVxdWl2YWxlbnQuIFRoaXMgbGV0cyB1cyBz
-aW1wbHkgYWNxdWlyZSBhIHJlZmVyZW5jZSB0byB0aGUgbG9jayBpbgo+IHF1ZXN0aW9uIGFuZCB3
-b3JrIHdpdGggaXQgbGlrZSBpdCB3YXMgaW5pdGlhbGl6ZWQgb24gdGhlIHJ1c3Qgc2lkZSBvZgo+
-IHRoaW5ncywgYWxsb3dpbmcgdXMgdG8gdXNlIGxlc3MgdW5zYWZlIGNvZGUgdG8gaW1wbGVtZW50
-IGJpbmRpbmdzIHdpdGggbG9jawo+IHJlcXVpcmVtZW50cy4KPgo+IFNpZ25lZC1vZmYtYnk6IEx5
-dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+CgpSZXZpZXdlZC1ieTogRmlsaXBlIFhhdmllciA8
-ZmVsaXBlX2xpZmVAbGl2ZS5jb20+
+On Wed, Nov 20, 2024 at 8:20=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Wed, Nov 20, 2024 at 02:49:57PM +0000, Alice Ryhl wrote:
+> > The vm_insert_page method is only usable on vmas with the VM_MIXEDMAP
+> > flag, so we introduce a new type to keep track of such vmas.
+>
+> Worth mentioning that it can be used for VMAs without this flag set, but =
+if
+> so we must hold a _write_ lock to be able to do so, so it can update the
+> flag itself, however we intend only to use it with VMAs which already hav=
+e
+> this flag set.
+
+I got the impression from Jann that the automatically-set-VM_MIXEDMAP
+thing should only be used during mmap, and that VM_MIXEDMAP should not
+get set after initialization even with a write lock?
+https://lore.kernel.org/all/CAG48ez3gXicVYXiPsQDmYuPSsKMbES2KRQDk+0ANWSS0zD=
+kqSw@mail.gmail.com/
+
+> > The approach used in this patch assumes that we will not need to encode
+> > many flag combinations in the type. I don't think we need to encode mor=
+e
+> > than VM_MIXEDMAP and VM_PFNMAP as things are now. However, if that
+> > becomes necessary, using generic parameters in a single type would scal=
+e
+> > better as the number of flags increases.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/mm/virt.rs | 68 ++++++++++++++++++++++++++++++++++++++++++=
++++++++-
+> >  1 file changed, 67 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> > index 1e755dca46dd..de7f2338810a 100644
+> > --- a/rust/kernel/mm/virt.rs
+> > +++ b/rust/kernel/mm/virt.rs
+> > @@ -4,7 +4,14 @@
+> >
+> >  //! Virtual memory.
+> >
+> > -use crate::{bindings, types::Opaque};
+> > +use crate::{
+> > +    bindings,
+> > +    error::{to_result, Result},
+> > +    page::Page,
+> > +    types::Opaque,
+> > +};
+> > +
+> > +use core::ops::Deref;
+> >
+> >  /// A wrapper for the kernel's `struct vm_area_struct` with read acces=
+s.
+> >  ///
+> > @@ -80,6 +87,65 @@ pub fn zap_page_range_single(&self, address: usize, =
+size: usize) {
+> >              )
+> >          };
+> >      }
+> > +
+> > +    /// Check whether the `VM_MIXEDMAP` flag is set.
+> > +    #[inline]
+> > +    pub fn check_mixedmap(&self) -> Option<&VmAreaMixedMap> {
+>
+> Nitty + a little bikesheddy (this may be my mistake as I am unfamiliar wi=
+th
+> rust idioms also) but shouldn't this be 'as_mixedmap_vma()' or something?
+
+You're probably right that this name is more consistent with Rust
+naming conventions. :)
+
+> > +        if self.flags() & flags::MIXEDMAP !=3D 0 {
+> > +            // SAFETY: We just checked that `VM_MIXEDMAP` is set. All =
+other requirements are
+> > +            // satisfied by the type invariants of `VmAreaRef`.
+> > +            Some(unsafe { VmAreaMixedMap::from_raw(self.as_ptr()) })
+> > +        } else {
+> > +            None
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +/// A wrapper for the kernel's `struct vm_area_struct` with read acces=
+s and `VM_MIXEDMAP` set.
+> > +///
+> > +/// It represents an area of virtual memory.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The caller must hold the mmap read lock or the vma read lock. The =
+`VM_MIXEDMAP` flag must be
+> > +/// set.
+> > +#[repr(transparent)]
+> > +pub struct VmAreaMixedMap {
+> > +    vma: VmAreaRef,
+> > +}
+> > +
+> > +// Make all `VmAreaRef` methods available on `VmAreaMixedMap`.
+> > +impl Deref for VmAreaMixedMap {
+> > +    type Target =3D VmAreaRef;
+> > +
+> > +    #[inline]
+> > +    fn deref(&self) -> &VmAreaRef {
+> > +        &self.vma
+> > +    }
+> > +}
+>
+> Ah OK, thinking back to the 'impl Deref' from the other patch, I guess th=
+is
+> allows you to deref VmAreaMixedMap as a VmAreaRef, does it all sort of
+> automagically merge methods for you as if they were mix-ins then?
+
+Yeah, I use it to "merge" the method sets to avoid duplication.
+
+The main limitation is that you can only deref to one other type, so
+you can't have "diamond inheritance".
+
+> > +impl VmAreaMixedMap {
+> > +    /// Access a virtual memory area given a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that `vma` is valid for the duration of 'a=
+, and that the mmap read lock
+> > +    /// (or stronger) is held for at least the duration of 'a. The `VM=
+_MIXEDMAP` flag must be set.
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -=
+> &'a Self {
+> > +        // SAFETY: The caller ensures that the invariants are satisfie=
+d for the duration of 'a.
+> > +        unsafe { &*vma.cast() }
+> > +    }
+> > +
+> > +    /// Maps a single page at the given address within the virtual mem=
+ory area.
+> > +    ///
+> > +    /// This operation does not take ownership of the page.
+> > +    #[inline]
+> > +    pub fn vm_insert_page(&self, address: usize, page: &Page) -> Resul=
+t {
+>
+> I'm guessing this 'Result' type encodes 0 vs. -Exxx error codes?
+
+In this particular case, yes.
+
+More generally, Result is a discriminated union containing either
+Ok(val) for success or Err(err) with some error type. But the default
+success type is the unit type () and the default error type is
+kernel::error::Error which corresponds to errno numbers.
+
+In this case, the compiler is clever enough to not use a discriminated
+union and instead represents Ok(()) as 0 and Err(err) as just the
+negative errno. This works since kernel::error::Error uses NonZeroI32
+as its only field (as of 6.13).
+
+> > +        // SAFETY: The caller has read access and has verified that `V=
+M_MIXEDMAP` is set. The page
+> > +        // is order 0. The address is checked on the C side so it can =
+take any value.
+> > +        to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), add=
+ress as _, page.as_ptr()) })
+> > +    }
+> >  }
+>
+> It's really nice to abstract this as a seprate type and then to know its
+> methods only apply in known circumstances... I guess in future we can use
+> clever generic types when it comes to combinations of characteristics tha=
+t
+> would otherwise result in a combinatorial explosion?
+
+Yeah, so the alternate approach I mention in the commit message would
+be to have something like this:
+
+struct VmAreaRef<const MIXEDMAP: bool, const PFNMAP: bool, const
+MAYWRITE: bool> { ... }
+
+listing all the flags we care about. This way, we get 2^3 different
+types by writing just one.
+
+(There are a few different variations on how to do this, instead of
+bools, we may want to allow three options: true, false, unknown.)
+
+Alice
