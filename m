@@ -1,70 +1,70 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECC41E52D
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 11:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ADF1CB316
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 11:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732189192; cv=none; b=ieEYDU/SHduftesvlnMFpc14e/lALOfYJg7aFto/YIAaFL5aCqudESnLVzTJBTtd6crVE/ANPzHJ1ywZsHtz9zOOck0KyDKBmLCmpqeLyGAl/FkmpEjgNue2XMofrp4M7SQ70ZTlOYD6KLUzt2mqkg/NoDScuQpjqrE/t+AmCIY=
+	t=1732189669; cv=none; b=W2lbMSJ5yBebVbHih5YDpSJ1hMpMHpP5lYi3yR+8JkO1wmuG3A/BPJd4ttgLZ/UrdlzG2rY1n80VGejPe1kc0FcKdeGiBJDM+NPGoJ7WaSYnIkXkWwtWLNJvC0Ew0BbOnuBTgOAYsr71/eD+cbccJvxTOi2HQOCAWoPRJ06WVak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732189192; c=relaxed/simple;
-	bh=U9v+K6sJOOG6x+RFfN+V0Si4bcR0z6pz+6B8md76rd8=;
+	s=arc-20240116; t=1732189669; c=relaxed/simple;
+	bh=6WQGbQJFRQkmsMW9o3BIxKhVWrxKGjsC0JK9++AZxok=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LOEx0OE9cgzzpnpKca2URci9Pu1q1CDWgFGQvTN8d5yvGXMSAosIfv7q5J0DdcF4oRpy/X9nmlBfsD8/5881FM9q8Qn0jZXyqj5DnTmfqIShDgJzWmZ/qOzkh5pDMEjtFclP42FgCQ75ukhxLvZoGUe6ZSoFGF5YXzbCFUe57gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BYzmFeM4; arc=none smtp.client-ip=209.85.221.43
+	 To:Cc:Content-Type; b=JHczA3DJ2ALCW8BT+kzsAuSra5ahJ6uJ3nPKWq57SIV2NPW0t/EvJkfPV8/sGxpS/4oADpxGqcuoBnNn8A99ZfloNXWG7C2oM2yuZNSqnqZo8WHNQDSkMYuLy/aHIpWxve9oDAiVHwE5g1PIP4RfG/gJTs+KMz+PL6Vh/JJ1uNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EAMPMI9h; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BYzmFeM4"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-382376fcc4fso448972f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 03:39:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EAMPMI9h"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-432d86a3085so6633315e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 03:47:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732189189; x=1732793989; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732189666; x=1732794466; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2IZyw4FOcZ6R/V4mnMHgpIhe+XP7mjUrhnLeyIz/iRg=;
-        b=BYzmFeM468ryeUt8P7KEyeA1lUTodlyL0qC5KvLydrMZm020b8jJhu6MO3C9FtXkKi
-         zLU5JG5RWXvXb2wHC6s1ZWQhgPNlz6OpOkIFOoQpaZ+czaz5r0wZEMmCx7YV9zpknheC
-         PZw1ZA0S5x/xX3Sd/VWQNss8SiHQTfQJ69Ojtn+e+tkBYpiI24L/fXTdGUSB9TOiB/yj
-         ehV92xYuUx0a+Uyp4uncsyJRz3imYbMMxLfBCUTElx8M1UuQ+0hHZhM70vDEMsaoyAR2
-         +p6KOCbe9TGxdg540BE/Tdy4iZ2BEH2E5cJNlVcRVyqT4QyySuZq6dacRW72Qg2W/50w
-         Ol5w==
+        bh=s7Jpx3h5F/wBA3xOhCxThURBB82AusRTtrT4gd5tWfo=;
+        b=EAMPMI9hHeFjxscVOgSUhci81s01hrcHhgmOhD/kcvNkaHuc0vOc+zp+Mab3qZ/921
+         QO4MSxPY6jcnfLVd1LgyfDFkoZyoo0TngyHJU1gntDtZvqJ8Rd0aFsSlTzceQv9+cjZd
+         Xuzm/+SZSs86254DZpYDxH/9YzH/5KUNlfwNCGLtZ1U7rYhBfi2MUieVrI77hpVcI3dW
+         EMH4o6+cjYpiyIAe9BWBCcSK6onkZs/slnLVCdoldRlr+1zWWrlKFqHr4iDpOVbUe/RY
+         X7muI5aKg8YTyr1sYfo+1P5WJ849p43qjc3gWywzqhYXcnaaoZvzbhr0+S07Ooy4jQUa
+         s95g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732189189; x=1732793989;
+        d=1e100.net; s=20230601; t=1732189666; x=1732794466;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2IZyw4FOcZ6R/V4mnMHgpIhe+XP7mjUrhnLeyIz/iRg=;
-        b=HFd/DFgzr7bdGNakPidhh8qoaJumOgMmhnbc0nZKjxwhEYzey95z32N77IwogJTVLu
-         bO9i2JGT+FdicnUmBpShZiQ693Ht92YihTjaMkp2oj03gSmz36T4sfVttQuiNkSEvEYv
-         CURshzC0OU1oBTSEI+PyLEWcI4O1JgxjICzjufM7VMHL6AANFcYEWb+Dh0qFWoZDi8e5
-         ImouGXKnovp8+6zAUkc5HklHdbNItgRs8MuIAYMyElh4srRbcv4ddaF9ltxEDmVAP+jx
-         l8oT6RNLaBbhB2B+wwunxOqLraVMYP0CsakY4R4cGnbyuUky/dUlAkVFQx03LDc5zM9L
-         xcDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPaXnEb5t2KRYCTch1tIZwwEy0UBdCwMOHEy358tzYyk60xlC/FGFL/t7ndGS6+KjiA2/da7G1XtXPLIiTYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze8biXIPgjTISI4azt0N2NM6xdSYwSiBeq0Zm00h1LmG0ycWoj
-	ccJQMioopO8rDtAvzt35jPZ5ij3gU3453lorBLoxnQgb3pZERz+vVo9IQP0GgtFitrPMggz9sZk
-	laD/xNMf6dUx6hkYIjSznK/O9OK/pLdXLFXL4
-X-Gm-Gg: ASbGncvrZoJc41u2GMG4suKCF5b3/FkJeYXWMOLFQGxhIn44DG7ImM+RHnqzif0Nvn8
-	GE5z+EYftTdFG/xrLk71UKiGgnK/YBU7LNqpNuMJxyZS2eIm14cfFm5vZGhdTqw==
-X-Google-Smtp-Source: AGHT+IHOUT5TK9qW8nVjhNy0VpEtuheP882P7CKZcuAtr3r08tu4OVDN35SCuTs2d/vi/YNbZK0QGKu6hwSa17GxWlo=
-X-Received: by 2002:a5d:47af:0:b0:382:44e0:c5e9 with SMTP id
- ffacd0b85a97d-38254af9c4fmr4724755f8f.25.1732189189300; Thu, 21 Nov 2024
- 03:39:49 -0800 (PST)
+        bh=s7Jpx3h5F/wBA3xOhCxThURBB82AusRTtrT4gd5tWfo=;
+        b=YnWiENu02xDcNEHTCv3NnK+w7L4sOM1PBtv7ySNykXsCVwSVU2qAPPdI8G10nU6oH4
+         Je4yayA/VBcCq+QvNodr/iMmgtPtglWYp295lbxpsr7uoHzDbgT0x3s/jOYKGeQWBpr7
+         ilB9V9bX/U0W1ca8YnOxwqXfFtOkLuT9fcDXok43id3THL8PnKxcD+umEWAx0UWzBJ77
+         FXIJlS/Sjcujvbl84e43noNis0/F4A5ua39mbtfaiBW1nhpimo+926ejVMGf1qXJh94k
+         +LlfCN4/L6o4Aojf3R8ex3rB9fQyKbNY853qtUvx/U30j591jZ8BP2crNjYfbfesX1Gl
+         CKyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmiB2CN2J+NK2r00BNZNQY8cZVI2k1mt2XvXTTDbbIhYNkHw6tMjPPJ+nOZYY5Xw5M1EoPRstGA5huZRxwzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe3We60n09JnzSHnafEM7Na+dcSsn6oUTHnmJF4TMCCM/L2olU
+	UBqzo/bx3koR9SUY4gAdRlVagGG7ToYG3KreuxHBqp/8ijPJgKq1A7hy3D20Kfb+gi2/wUy3RBJ
+	f3zkZqVkh2Mbs1E1P54BWzAQ5+Z2jck92MM0E
+X-Gm-Gg: ASbGncvIEZ0eRY4L6HKah66tlZ1h7ratbDPsxN8WtI/xpvmmzY9GEx1KKeiQWaAnYrQ
+	mCR/sRHDTXHz7+mJgIiAmpgoOiPun9Az7cOPkKpDMl4ESdk33mQhmDGVbcUTgmA==
+X-Google-Smtp-Source: AGHT+IErqV0V+AJ2UHRmioWLhU5OsHABPh0+c+ZumlE3zmUVhcVOjKRjYxRx69HpUK6hUBWpEgTlIcHN/WLV9AwIu0M=
+X-Received: by 2002:a05:600c:3514:b0:431:47d4:19c7 with SMTP id
+ 5b1f17b1804b1-433489814a4mr60730235e9.3.1732189665908; Thu, 21 Nov 2024
+ 03:47:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-5-eb31425da66b@google.com>
- <5762ab92-3091-46cf-9565-f59cf917b470@lucifer.local>
-In-Reply-To: <5762ab92-3091-46cf-9565-f59cf917b470@lucifer.local>
+References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-6-eb31425da66b@google.com>
+ <8755851f-de55-4411-9a8a-80ff69f35905@lucifer.local>
+In-Reply-To: <8755851f-de55-4411-9a8a-80ff69f35905@lucifer.local>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Nov 2024 12:39:37 +0100
-Message-ID: <CAH5fLgjDfSL+7XB28sYmq4e40yxBv97h7jQPs=9Qe4+_3f1FRw@mail.gmail.com>
-Subject: Re: [PATCH v8 5/7] mm: rust: add mmput_async support
+Date: Thu, 21 Nov 2024 12:47:33 +0100
+Message-ID: <CAH5fLgiEjxN14K3QLnfxE-HFes_DmjtGSa9tJxOVJhLOv4sSEA@mail.gmail.com>
+Subject: Re: [PATCH v8 6/7] mm: rust: add VmAreaNew
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
@@ -78,57 +78,161 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 20, 2024 at 8:47=E2=80=AFPM Lorenzo Stoakes
+On Wed, Nov 20, 2024 at 9:02=E2=80=AFPM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
 >
-> On Wed, Nov 20, 2024 at 02:49:59PM +0000, Alice Ryhl wrote:
-> > Adds an MmWithUserAsync type that uses mmput_async when dropped but is
-> > otherwise identical to MmWithUser. This has to be done using a separate
-> > type because the thing we are changing is the destructor.
+> On Wed, Nov 20, 2024 at 02:50:00PM +0000, Alice Ryhl wrote:
+> > When setting up a new vma in an mmap call, you have a bunch of extra
+> > permissions that you normally don't have. This introduces a new
+> > VmAreaNew type that is used for this case.
+>
+> Hm I'm confused by what you mean here. What permissions do you mean?
+
+I just mean that there are additional things you can do, e.g. you can
+set VM_MIXEDMAP.
+
+> Is this to abstract a VMA as passed by f_op->mmap()? I think it would be
+> better to explicitly say this if so.
+
+Yeah, the VmAreaNew type is specifically for f_op->mmap(). I'll be
+more explicit about that.
+
+> > To avoid setting invalid flag values, the methods for clearing
+> > VM_MAYWRITE and similar involve a check of VM_WRITE, and return an erro=
+r
+> > if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
+> > the return value results in a compilation error because the `Result`
+> > type is marked #[must_use].
+>
+> This is nice.
+>
+> Though note that, it is explicitly not permitted to permit writability fo=
+r
+> a VMA that previously had it disallowed, and we explicitly WARN_ON() this
+> now. Concretely that means a VMA where !(vma->vm_flags & VM_MAYWRITE), yo=
+u
+> must not vma->vm_flags |=3D VM_MAYWRITE.
+
+Got it. The API here doesn't allow that, but good to know we can't add
+it in the future.
+
+> > For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
+> > we add a VM_PFNMAP method, we will need some way to prevent you from
+> > setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
+>
+> Yes this would be unwise.
+>
+> An aside here - really you should _only_ change flags in this hook (perha=
+ps
+> of course also initialising vma->vm_private_data state), trying to change
+> anything _core_ here would be deeply dangerous.
+>
+> We are far too permissive with this right now, and it's something we want
+> to try ideally to limit in the future.
+
+The previous version just had a function called "set_flags" that could
+be used to set any flags you want. Given Jann's feedback, I had
+restricted it to only allow certain flag changes.
+
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/mm/virt.rs | 169 +++++++++++++++++++++++++++++++++++++++++=
++++++++-
+> >  1 file changed, 168 insertions(+), 1 deletion(-)
 > >
-> > Rust Binder needs this to avoid a certain deadlock. See commit
-> > 9a9ab0d96362 ("binder: fix race between mmput() and do_exit()") for
-> > details. It's also needed in the shrinker to avoid cleaning up the mm i=
-n
-> > the shrinker's context.
->
-> Oh Lord, I didn't even know this existed... I see it was (re-)added in co=
-mmit
-> a1b2289cef92 ("android: binder: drop lru lock in isolate callback") back =
-in 2017
-> so quite a history of being necessary for binder.
->
-> I see mmdrop_async(), I guess that's not needed for anything binder-ish? =
-A quick
-> look in the code suggests this is invoked in free_signal_struct() and is =
-there
-> due to some softirq stuff on x86... so yeah I guess not :)
-
-I didn't know it was so binder-specific. I assumed it would be a
-relatively common use-case.
-
-> >  // These methods are safe to call even if `mm_users` is zero.
-> >  impl Mm {
-> >      /// Call `mmgrab` on `current.mm`.
-> > @@ -171,6 +213,13 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::m=
-m_struct) -> &'a MmWithUser {
-> >          unsafe { &*ptr.cast() }
+> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> > index de7f2338810a..22aff8e77854 100644
+> > --- a/rust/kernel/mm/virt.rs
+> > +++ b/rust/kernel/mm/virt.rs
+> > @@ -6,7 +6,7 @@
+> >
+> >  use crate::{
+> >      bindings,
+> > -    error::{to_result, Result},
+> > +    error::{code::EINVAL, to_result, Result},
+> >      page::Page,
+> >      types::Opaque,
+> >  };
+> > @@ -148,6 +148,173 @@ pub fn vm_insert_page(&self, address: usize, page=
+: &Page) -> Result {
 > >      }
+> >  }
 > >
-> > +    /// Use `mmput_async` when dropping this refcount.
+> > +/// A builder for setting up a vma in an `mmap` call.
+>
+> Would be better to explicitly reference the struct file_operations->mmap(=
+)
+> hook and to say that we should only be updating flags and vm_private_data
+> here (though perhaps not worth mentioning _that_ if not explicitly expose=
+d
+> by your interface).
+
+I guess also vm_ops?
+
+> I'm guessing fields are, unless a setter/builder is established, immutabl=
+e?
+
+If you have a mutable reference, you can always modify fields. When
+you don't want that, fields are made private.
+
+> > +    /// Internal method for updating the vma flags.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// This must not be used to set the flags to an invalid value.
 > > +    #[inline]
-> > +    pub fn use_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsy=
-nc> {
+> > +    unsafe fn update_flags(&self, set: vm_flags_t, unset: vm_flags_t) =
+{
+> > +        let mut flags =3D self.flags();
+> > +        flags |=3D set;
+> > +        flags &=3D !unset;
+> > +
+> > +        // SAFETY: This is not a data race: the vma is undergoing init=
+ial setup, so it's not yet
+> > +        // shared. Additionally, `VmAreaNew` is `!Sync`, so it cannot =
+be used to write in parallel.
+> > +        // The caller promises that this does not set the flags to an =
+invalid value.
+> > +        unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags =3D flags =
+};
 >
-> Again, nitty, but I wonder if this should be as_xxx()?
+> Hm not sure if this is correct. We explicitly maintain a union in struct =
+vm_area_struct as:
 >
-> But I guess this makes sense too.
+>         union {
+>                 const vm_flags_t vm_flags;
+>                 vm_flags_t __private __vm_flags;
+>         };
+>
+> Where vma->vm_flags is const, and then use helpers like vm_flags_init() t=
+o
+> set them, which also do things like assert locks (though not in the init
+> case, of course).
+>
+> So erally we should at least be updating __vm_flags here, though I'm not
+> sure how bindgen treats it?
 
-In this case, the as_ prefix is incorrect because this is an owned ->
-owned conversion. See the API guidelines:
-https://rust-lang.github.io/api-guidelines/naming.html#ad-hoc-conversions-f=
-ollow-as_-to_-into_-conventions-c-conv
+I don't think using vm_flags vs __vm_flags changes anything on the
+Rust side. The modifications are happening unsafely through a raw
+pointer to something inside Opaque, so Rust isn't going to care about
+stuff like your const annotation; it's unsafe either way.
 
-If we wish to use a prefix, the correct prefix is into_.
+I'll update this to use __vm_flags instead.
+
+> > +    /// Try to clear the `VM_MAYREAD` flag, failing if `VM_READ` is se=
+t.
+> > +    ///
+> > +    /// This flag indicates whether userspace is allowed to make this =
+vma readable with
+> > +    /// `mprotect()`.
+> > +    #[inline]
+> > +    pub fn try_clear_mayread(&self) -> Result {
+> > +        if self.get_read() {
+> > +            return Err(EINVAL);
+> > +        }
+>
+> This is quite nice! Strong(er) typing for the win, again :>)
+
+:)
 
 Alice
