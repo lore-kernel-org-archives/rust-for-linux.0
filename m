@@ -1,191 +1,725 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2065.outbound.protection.outlook.com [40.107.21.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42AB126C05
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 09:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732182146; cv=fail; b=D8AcaIgObtn74BNnnaqnGYcLWIvISOtNyGB2teIgh9eYP9pFhrLy4YwOoFO11j7JHRsiNd8+owtftLKKOs/6e1J3hkOgXrNQ9AXp5oxNFsOO5VGxlNnxZmZapRnh9TK8mEjJEJ8w52imRBe/WSbbDxSsTmAQMdfmHjHk6jsOhwc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732182146; c=relaxed/simple;
-	bh=z7P76/R7vOt5K9liaCIorh2IWLV0t3jUXhYnbLcQcgE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=blrFTtm01KuwSlaYXvcAotHqBLkqUwuljcSQcNM7M8C4XGM9MR3orHVOgE2B/n7KiBFaR7ajH+DxJojnJ+RflbpfYcljSuQbR9vfObgZAiWi91TmgsaDYBc2GgwCHYGBfRYR750XU+Qq1LrbknY6b2tlKXtwT6eafZFq31zSnss=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk; spf=pass smtp.mailfrom=prevas.dk; dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b=AP3O87yG; arc=fail smtp.client-ip=40.107.21.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prevas.dk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FBA158D87
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 09:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732182748; cv=none; b=jXfcivLaGCm2GBrynGJrPZEJvw2osqV20GnAAGkf701eXfOHjviLJqsN7Mz3FV7C969me+5N9lpRkCHNqDLkyIAPdFf6xwuiU9iyfDEwNsGhd6YPca0mUwlSXjuvUh90Ge2wcGcRj2N3Rzo/4Tu7icnZg3s9qcKku88rtaLmnfw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732182748; c=relaxed/simple;
+	bh=hYI3Fe90H9LAddlEQlijXiqoskgY3nldnugpXl1GViE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MX3M6KrvXymmBwYehWjbOfiMk5KxChLXwOBVU6p7t18lXzRFtwX3z3FVJXkJeIB7UVkqz4NqhZ6ljfep6w1pypPHCHLnapxBw9vvFxuO70/1E0HLEbYYlUJ4EXh+JG40UcAHKANsIrfNYRSQ2xmdgDOSbtPNP7yD2+4WK8NTJV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CuHtuEdW; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b="AP3O87yG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GKlXbHWPHrvfIz2BJE52givQC1RKEFLuJopPR+/IjmfBuu6BDjCioKUQNuqgwXi45WN42y9e2c6/VoiiCcrdKxmmV9GyT01+ouWsFYuicDi61og4m8wYZBs8zMoxp5hEiRguElrs0aBEzlJ10vx+nOJHjjHn+1zHP3Txy6O0oGJIqr8lebFZPUxC7FP+wOMBN7f8XGd3qzQ1PAFEy7Gx+664VnT80a9ogoKNOql8gBCb6uZnfBUywU9NBKN8L+9nZR21M9sNrKYALXcZWaep/uIpga8O0gIEOuSUKovPpbPR1Rte0AiWJ5AspZhNZfrB33GUtGHVRaPGpxq2frFrBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JGNgE1aIQDoLqx1DNiMUcS7fptBEUyUTpfzETI4v0X4=;
- b=Y567MNvKDsvKJL/zTAf+HSrPuewO6spQ4eIRsm5BrTwU+mhKdbsYAN45hlPCEN2B1OTBKFlLYifeTSN0MsZHj0C0yOXTp3YbiVl16FHqK10k8mtMqevWFEBoe+CPwSe3U38ZCYn3hV0qMv4zHxRVNTz5X4yllM+ndPZcrhMr/boUQIKTvTPev/HeblcoQsDRpme9vBSabjuA/4wBAETLp5m+X0h/gd+UTej/4mILQw+Xe+bVx9oEblIxiilMSalD1iEGBzBLXfBMTpyL0x1FIBVgFu1mjq5Ok35YqKJdOblxCU5gxjpBQSTrL9gBHS/4twOSe/iaL9jEfA0+oE0vtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
- dkim=pass header.d=prevas.dk; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JGNgE1aIQDoLqx1DNiMUcS7fptBEUyUTpfzETI4v0X4=;
- b=AP3O87yGiTLK0OFJkghYnO8jDPQewpjPZ/AFSNHeUdyZ59KO9Eh0WRcJLmbW7gXTxKeKb0+qTfW4ZOKveRd6+8GpS4IuL/0SjcVRgM0Xg18VWbIOqswNi/Y+6uhNPd239hh7bc9hM1YMV09nzxv455MdKSM1+82aS1/TF9VVxb4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=prevas.dk;
-Received: from DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:41::17)
- by PR3PR10MB3850.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:4f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.14; Thu, 21 Nov
- 2024 09:42:16 +0000
-Received: from DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::7e2c:5309:f792:ded4]) by DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::7e2c:5309:f792:ded4%5]) with mapi id 15.20.8182.004; Thu, 21 Nov 2024
- 09:42:16 +0000
-From: Rasmus Villemoes <ravi@prevas.dk>
-To: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
- <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: add safety comment in rust_fmt_argument
-In-Reply-To: <20241118031225.38080-1-kernel@mandragore.io> (Konstantin
-	Andrikopoulos's message of "Mon, 18 Nov 2024 03:14:17 +0000")
-References: <20241118031225.38080-1-kernel@mandragore.io>
-Date: Thu, 21 Nov 2024 10:42:23 +0100
-Message-ID: <87ed34ly80.fsf@prevas.dk>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-Content-Type: text/plain
-X-ClientProxiedBy: MM0P280CA0051.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::35) To DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:10:41::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CuHtuEdW"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-382442b7d9aso589922f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 01:52:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1732182743; x=1732787543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bTBWOwGZXjE8ga3DQF6sB2opa7IGPizFg1SgL/vf2OM=;
+        b=CuHtuEdWXV2MC51JgzdQvvn0ePf2MwOQPAeHRxUTQwyFSDD3FlcVguL5GLiG9YoGKw
+         MOzd0I6+j50gzIJnyPuAyczGQPJHNb+6jGQiHg5iATQSV8pwiiJfkoBw59/G/WnpY/hH
+         yQc5VsbFhqF5Cm+C075qnRd+/YLBvmCqmrre+3K5nSTyOXMrj6PodRGK3uL3OP28hjTf
+         SdknGnPVz8OAG1ujGv3+yy6qfgMjXaw/REF6CeLGtzCbU5UZGr3KWrtsdG1MS8dmVVFT
+         jX9gCBbYZ56LQ7+ORKZFfCDdvt1p5d/B15uJbKl/P4nuKFlr1WVsxWiuTG/OF1mSwyad
+         v3cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732182743; x=1732787543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bTBWOwGZXjE8ga3DQF6sB2opa7IGPizFg1SgL/vf2OM=;
+        b=UYCFTBvcq551OmjmUc/UmoufmbiC1yWMgSklJVTRSwktrTRDTV8+xRzWFG0mbHDszQ
+         fWfZQsHj8d7xam+FFGfd8EUB7UZTFDU5POfVDSfmVj5iuRj/zOm1k3qD85cYdKKIDFfC
+         unPZW9GUgpEc4eMEatHEB6q9yw4wruvZSkx6GcxdneT0juBVPh2XYglkPZ5g+uxc/41g
+         sXsaS5Cqdkott9KYBfFx0pt1dg8jErI7tx7j/oujeAdfoX13kZ9X3bAA+J9zRz8ddXro
+         0/m3QJPEQR++egDDv/+hpnAR1b5OMkPXASDU8hoI6ryQJiFb/9WuyF5h2iRCOH7qxWvr
+         5oIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOFjuI2g0rcMDdX+uVsmV3CBjBkaec1C4UXvVl7cZs+1/JgHbUd4qQZxqrGwczcCMtLHvULjqA6zt19NlRbQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw79z3YmlA6jnNLj9fNN0PpJ9v7vpKH0MOMAZDSRVGxPhTDpb+O
+	LpfOhPtm6zeS0lV9he9JoNGb1NwOXQK4s4PczvoAOXWug4K+F7J/sHuv37Q4TfdfMbft4iYvo1m
+	yrFsgGfFZ4I7YXq+RAUT1mFq5TFWiAocDvMBA
+X-Gm-Gg: ASbGncs1S4/boPVycx3gzs6fmbjViJp5E7o72PffsEybLGsTJL+pX3fxa9wlDdqorfY
+	D8NSUcQpF4a/hnVr1qp6C8uAgjSRdFmE1XuGkFEL2PMEooFYs7/9seezPWVazrg==
+X-Google-Smtp-Source: AGHT+IFRDM9zgYI7PpWvm/L6eR+CyCzkGhRP2rQe+oWfJhPeIwpQkyur4SUQpHd//2z4ia4wRuKzD42aTVJpkYLYiKQ=
+X-Received: by 2002:a5d:6d8d:0:b0:382:3afd:1273 with SMTP id
+ ffacd0b85a97d-38254afa4f2mr4875903f8f.30.1732182742505; Thu, 21 Nov 2024
+ 01:52:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR10MB2475:EE_|PR3PR10MB3850:EE_
-X-MS-Office365-Filtering-Correlation-Id: 686e9d5e-429c-4000-4f77-08dd0a10c8dc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wIV0LH5z76lLRA/gDWQqPJLEQC30/oPxmqAqF65ajq63LYTMTvVKzeatlaSo?=
- =?us-ascii?Q?bJstY1RO3kZGoSrLl4LBAj39DpS+0Iw5cnHeAPywJS2Blj1t2Hlj9UGrz7Lw?=
- =?us-ascii?Q?iaCC7S9gp9C2D+bgQIJJuYKjrHHHmlAsotUyQv246ZEbFFkA1d6QIh2PtfMX?=
- =?us-ascii?Q?btK7dyMgZMWVUAVz/6xBVQVmWl/qwXPZPh0VSXtFmC1QD1q5ifHr6CaZ18xN?=
- =?us-ascii?Q?D/pnUOmezzLGxjWE3PgR4yV83WELETdN7vQFpiWzNCrFHwAiRSEh38B8KAjz?=
- =?us-ascii?Q?RDgsl1WpTs2fdqh23r/CXRIs7KXv1Pp4mDWTAY4+IGR2KJGuXlmfgAd6S3Mg?=
- =?us-ascii?Q?HM+7Iv3QrZiry6bri0i1BegjpCX8UlHX8Uv0hLdfM8OpUDanHoDb39/8zseG?=
- =?us-ascii?Q?IVAiYDV7Tyqnnp1FYMFfXPWlqfqxWFyNrBKSu4FHZdLCHOraytUXHWCXUoaL?=
- =?us-ascii?Q?KYjlLa+kkqv/00IrWiT0s0CUqW89S3xzm4qJfhzREpgKzTgzEoaGF84jeFmU?=
- =?us-ascii?Q?tT1ct6/lQNBjs3Y82q+gKMOWV5FAJeVhIGYvrBacmcWYoKhLAdM7V+hXyFxS?=
- =?us-ascii?Q?Nw8kNGoFWBBdu9xcu/U7y9CLqkTayO3MlZKidWNIBdKkD1HPuIXd8Bny0KJc?=
- =?us-ascii?Q?UbnZSmfeOVbpXaXAUhQeTPCcq7toR+R/k/r9sRPTHbeGtB754ib7nQYIBe2o?=
- =?us-ascii?Q?DPl+TDjUO4TUunfgxRhRzf4y4UBXkrnjzbDnS9zvXQQMg5XrcAR+K+mu4Urw?=
- =?us-ascii?Q?O/uCY0V443HX8xWTmkBMWsXuUMReJZn18UfQNoT7FqmYtDMRW1mT05lrtXBB?=
- =?us-ascii?Q?G8t5K1hSCbQ/kHMSPIV5pmR6Dd4D/eNr0WOczIJtQ/D8UAoEqN6pHVunelit?=
- =?us-ascii?Q?zxmsQh4ZutkUZzmE/BNxPmj+oFWFkBHWehwSNeTc9euUunhfYCN1iMjxfxsy?=
- =?us-ascii?Q?y/epBn0B0le6Z4wFrkJ/8LY+Wnxkd/TfZmuTOPLS7bHCI5tZajC3GuIM6Zp4?=
- =?us-ascii?Q?XfchNzlPTp1JpPPyv2FBfsGNYRDm1Xft6ak+DLVFQYeCC2RA/M4/Rqexjyzu?=
- =?us-ascii?Q?CRoL5T5F1DxOo4D4aInphVsYc+pQmMlNYRI9nTfhIkIhJ6CRPidot63J5xsu?=
- =?us-ascii?Q?pbeVpItG8nkqq5shAahoGRAoTZQkzs/bOhLaB0KKsfIl0r7G5Cx1UAtsp/+f?=
- =?us-ascii?Q?eSD3BhdqgXUMGi9ALLjP2Xj7+hdJdKKjMGVOGu+sq8jSSk7eymm/cN1Blc/t?=
- =?us-ascii?Q?mayVHM3D0J++NMFDnhfpBg4tj8lki3hfL9xQAOxl0oGTj6WCh45y9gEnlCBF?=
- =?us-ascii?Q?tlyHPMurA9/H67Apn+XJNZpFvpi5v5nZhXPy+Vq6k+7yQNUMpj2kWzeifPD1?=
- =?us-ascii?Q?5Ygzrhw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?di1bk64/Yd7TGmUNh73e1sAk3E0HXCy6hGKKXL/35OKhD+GA5lr2Ok/dQ1Q/?=
- =?us-ascii?Q?dipTCiyRf8FBCW4p1Y1adMaX292clK8FqjeFZsfqk+vo98pvhyDZ3wcA7/sN?=
- =?us-ascii?Q?V1n/bRZZUlVmEiBtUg04YSh49rE9yDjFCjAEidZ4dX14SFAotuzsUH8kWTLL?=
- =?us-ascii?Q?bfd1RuCrorkrbZzA3kcQEaQ7/vrDUU9jQgEMlcKClK8S+IapPC6QIx2FKbHk?=
- =?us-ascii?Q?HGl/uuLUma21G6DYf+5nZtgUc4nhyC6Km6nm3DlsXStnMzmPmk9FHSdqorLg?=
- =?us-ascii?Q?f4FjzTDqxaSlQvtUWMGP9lwdjThr31lHT1SUut25lckl17otVZNHbvCKGpCs?=
- =?us-ascii?Q?cKHuAswSpNhvO7lrVIkU2vTqZoBmUDHhR02f7dwGnSz/m83eFzikLZAkEoCT?=
- =?us-ascii?Q?Yp6UN2GKWi/KwB0CEl9AO1IlZS2CZJ2987PEEVZ8CW9qtjk7Mh2DlPNC4r35?=
- =?us-ascii?Q?MPX/cuRZmma3e6JQBL0yC7Hilu0I8AGrRGEnV/8UuY/4zFwP8/uzazNqQRp7?=
- =?us-ascii?Q?IXdP2WqcZ6nwTAK9T0RGu0q4DBudfYWNzr6wrUidbrmfCKSGk6DabQXg/7hS?=
- =?us-ascii?Q?8YlnW0sQZMCAp2W8bbWLnym5Q4lXyJwn7dGPwNyhNFasMnYcQjH1rmrngIHW?=
- =?us-ascii?Q?Lniquj4BqFZFRBxdlsOwhlQPSb2EvJRNtsK1NnnO1XLO+w9Lfp3fgDVyxKuX?=
- =?us-ascii?Q?tGqGpN9haWEQyXuzPmtgVR1uRQxFR88lwR7gzY6Pr0OOAE3n/J6YS3rkKSLJ?=
- =?us-ascii?Q?kmVaFsnxzRIflZiR0Cd57MSlJG6IG3i9L8d547Pd/1rqhFaNyOWsNeqVP0P/?=
- =?us-ascii?Q?bnHNL35xEO1GQNkDLEBD5k6/O0pIf/ScYAlFjARLz2E5et3ryy8UZXP/yOUL?=
- =?us-ascii?Q?xCi8vtGJieUY9AbFHuGw5rGrkxJcvT4nwflxiwV3EBFUyNgdk61GutFXgQEx?=
- =?us-ascii?Q?ePy04zsikNck39/t+zhVhkXv5l9ZwLP4YWs9hssQRRtUe/z2LMLX/Vxgp9ds?=
- =?us-ascii?Q?dVJz/Nrjwvt9nPRgUHVtQ5OJysU50p3oG6SFE81YcfLHe0V2bZHlxkY2sTG3?=
- =?us-ascii?Q?ora+iv6ux9P9oCSAQd/OP9FRvhBcx3klRd9JRwtHzqBQGxEj7qrgr2IfR6pl?=
- =?us-ascii?Q?cXevG35UOBvZThM10YDOwyEfyWn7SU2F9MG2XqJqWKjM5451zZkWcIeuHpoM?=
- =?us-ascii?Q?rvtUBcq2LLU0sEHwx1C8IqPZlJiT+OLgt/zvXgr+Rjs6UAp+w6vvrkr+Tu3o?=
- =?us-ascii?Q?9aQhJ5kmiq02TJbIpH0yr441rL2qQ4FrsOYgkq1T86xHxMylZNsG8txHm+RZ?=
- =?us-ascii?Q?kySS9EJMqSlbu3S11szfYgonP/3wkSTGtcCr6c15C48kEmVs7uP2RBUtQCCV?=
- =?us-ascii?Q?bg602xT3gzMQfu4MF3JIV2YlrIuYimetAPTV2k3O1xvWFrsILGLLIedKc6dC?=
- =?us-ascii?Q?XzefJ3SPb5hDc6/64jB0dgNmdDcBurqrb8HIo0F+LEPnjiaMdRd4F6ZW+bqJ?=
- =?us-ascii?Q?gf5qebddQt7ASN88hyI4nyj+kmI+wkWjnaGyRaaxRUczYYK8KNj0EZ9RPNWW?=
- =?us-ascii?Q?ANHe3T85Y8VN97EQyQJgQqCqGFOOT6Lw5nW0uoxnfMk3rnIh0orV1s3flhJW?=
- =?us-ascii?Q?Tg=3D=3D?=
-X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-Network-Message-Id: 686e9d5e-429c-4000-4f77-08dd0a10c8dc
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR10MB2475.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2024 09:42:16.8292
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XUxpUVgQv9EQNnzb9jV6j/B+PJLuvST23sUbvxD9YaHflCSoGG0A4NkYiGSKJmzuJrWyK/2eDcrlVGw0/QJw7LYRSKHjq87omDHw5s9dj74=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR10MB3850
+References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-1-eb31425da66b@google.com>
+ <0c6f4dbb-ff09-439c-b736-35568c1450cc@lucifer.local>
+In-Reply-To: <0c6f4dbb-ff09-439c-b736-35568c1450cc@lucifer.local>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 21 Nov 2024 10:52:09 +0100
+Message-ID: <CAH5fLgi5xbL=L-Mz_u64sA1QGLtxOgEvG_y4aJV2_mfy4iCxyg@mail.gmail.com>
+Subject: Re: [PATCH v8 1/7] mm: rust: add abstraction for struct mm_struct
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 18 2024, Konstantin Andrikopoulos <kernel@mandragore.io> wrote:
-
-> The function rust_fmt_argument dereferences a pointer, and thus it
-> needs an unsafe block. The safety comment for that block was missing.
+On Wed, Nov 20, 2024 at 7:13=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
->  
-> -// Called from `vsprintf` with format specifier `%pA`.
-> -#[expect(clippy::missing_safety_doc)]
-> +/// Handles the `%pA` format specifier.
-> +///
-> +/// This function is called by [`vsprintf`] when it encounters a
-> `%pA` format specifier in a
+> On Wed, Nov 20, 2024 at 02:49:55PM +0000, Alice Ryhl wrote:
+> > These abstractions allow you to reference a `struct mm_struct` using
+> > both mmgrab and mmget refcounts. This is done using two Rust types:
+> >
+> > * Mm - represents an mm_struct where you don't know anything about the
+> >   value of mm_users.
+> > * MmWithUser - represents an mm_struct where you know at compile time
+> >   that mm_users is non-zero.
+> >
+> > This allows us to encode in the type system whether a method requires
+> > that mm_users is non-zero or not. For instance, you can always call
+> > `mmget_not_zero` but you can only call `mmap_read_lock` when mm_users i=
+s
+> > non-zero.
+>
+> It's kind of interesting to represent these things this way, I like the
+> self-documenting element of that.
+>
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> So obviously I'm not a rust person (yet... yet :) so from my side I can
+> only look at things from an mm perspective conceptually. To avoid boring
+> everyone I won't repeat this and instead you can take it as read.
+>
+> I will obviously inevitably ask a TON of questions as a result of not bei=
+ng
+> a rust person so, bear with me...
+>
+> > ---
+> >  rust/helpers/helpers.c |   1 +
+> >  rust/helpers/mm.c      |  39 +++++++++
+> >  rust/kernel/lib.rs     |   1 +
+> >  rust/kernel/mm.rs      | 219 +++++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  4 files changed, 260 insertions(+)
+> >
+> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> > index 20a0c69d5cc7..60a488eb4efe 100644
+> > --- a/rust/helpers/helpers.c
+> > +++ b/rust/helpers/helpers.c
+> > @@ -13,6 +13,7 @@
+> >  #include "build_bug.c"
+> >  #include "err.c"
+> >  #include "kunit.c"
+> > +#include "mm.c"
+> >  #include "mutex.c"
+> >  #include "page.c"
+> >  #include "rbtree.c"
+> > diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+> > new file mode 100644
+> > index 000000000000..7201747a5d31
+> > --- /dev/null
+> > +++ b/rust/helpers/mm.c
+> > @@ -0,0 +1,39 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/mm.h>
+> > +#include <linux/sched/mm.h>
+> > +
+> > +void rust_helper_mmgrab(struct mm_struct *mm)
+> > +{
+> > +     mmgrab(mm);
+> > +}
+> > +
+> > +void rust_helper_mmdrop(struct mm_struct *mm)
+> > +{
+> > +     mmdrop(mm);
+> > +}
+> > +
+> > +void rust_helper_mmget(struct mm_struct *mm)
+> > +{
+> > +     mmget(mm);
+> > +}
+> > +
+> > +bool rust_helper_mmget_not_zero(struct mm_struct *mm)
+> > +{
+> > +     return mmget_not_zero(mm);
+> > +}
+> > +
+> > +void rust_helper_mmap_read_lock(struct mm_struct *mm)
+> > +{
+> > +     mmap_read_lock(mm);
+> > +}
+> > +
+> > +bool rust_helper_mmap_read_trylock(struct mm_struct *mm)
+> > +{
+> > +     return mmap_read_trylock(mm);
+> > +}
+> > +
+> > +void rust_helper_mmap_read_unlock(struct mm_struct *mm)
+> > +{
+> > +     mmap_read_unlock(mm);
+> > +}
+>
+> I guess at this point we're only interested in reading?
 
-Nit: The file implementing this is vsprintf.c, but the actual workhorse
-is vsnprintf() (note the n); all other *printf() variants are wrappers
-around that, and I'm pretty sure no code path called from Rust ends up
-passing through sprintf() or vsprintf(). Yes, I see that the original
-code said vsprintf, but please fix while here.
+Yeah. The write lock would be very similar.
 
-> +/// format string. `ptr` points to the corresponding argument, `buf` points to a buffer to hold
-> +/// the formatted argument, and `end` points at the buffer's end.
-> +///
-> +/// `rust_fmt_argument` treats `ptr` as a pointer to a [`core::fmt::Arguments`], which it formats,
-> +/// and writes the result to `buf`.
-> +///
-> +/// It returns the address after the last byte it has written in `buf`.
-> +///
-> +/// # Safety
-> +///
-> +/// `buf` and `end` must follow the requirements of [`RawFormatter`]. `ptr` must be valid for
-> +/// reading a [`core::fmt::Arguments`].
-> +///
-> +/// `vsprintf` guarantees that `buf` and `end` will uphold their
-> requirements. However, it will
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 66f5cde7f322..cc1963510cdf 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -43,6 +43,7 @@
+> >  pub mod kunit;
+> >  pub mod list;
+> >  pub mod miscdevice;
+> > +pub mod mm;
+> >  #[cfg(CONFIG_NET)]
+> >  pub mod net;
+> >  pub mod page;
+> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> > new file mode 100644
+> > index 000000000000..84cba581edaa
+> > --- /dev/null
+> > +++ b/rust/kernel/mm.rs
+> > @@ -0,0 +1,219 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2024 Google LLC.
+> > +
+> > +//! Memory management.
+> > +//!
+> > +//! C header: [`include/linux/mm.h`](srctree/include/linux/mm.h)
+> > +
+> > +use crate::{
+> > +    bindings,
+> > +    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
+> > +};
+> > +use core::{ops::Deref, ptr::NonNull};
+> > +
+> > +/// A wrapper for the kernel's `struct mm_struct`.
+> > +///
+> > +/// Since `mm_users` may be zero, the associated address space may not=
+ exist anymore. You can use
+> > +/// [`mmget_not_zero`] to be able to access the address space.
+> > +///
+> > +/// The `ARef<Mm>` smart pointer holds an `mmgrab` refcount. Its destr=
+uctor may sleep.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// Values of this type are always refcounted using `mmgrab`.
+> > +///
+> > +/// [`mmget_not_zero`]: Mm::mmget_not_zero
+> > +#[repr(transparent)]
+> > +pub struct Mm {
+> > +    mm: Opaque<bindings::mm_struct>,
+> > +}
+>
+> Does this tie this type to the C struct mm_struct type?
+>
+> Does 'Opaque' mean it is a pointer to a type which is 'opaque' in the sen=
+se
+> that rust can't see into its internals?
 
-Same here.
+This declaration defines a Rust type called Mm which has the same
+size, alignment, and contents as `struct mm_struct`. The purpose of
+Opaque is to tell Rust that it can't assume anything about the
+contents at all; we do that to leave it up to C.
 
-> +/// just forward the argument that corresponds to `%pA`. Callers that provide format strings must
-> +/// guarantee that arguments which correspond to `%pA` are valid pointers.
-> +///
-> +/// [`vsprintf`]: srctree/lib/vsprintf.c
+For example, normally if you have an immutable reference &i32, then
+Rust is going to assume that the contents behind the reference are in
+fact immutable. Opaque turns that off, meaning that an `&Opaque<i32>`
+is allowed to reference an integer as it gets modified. It makes all
+access to the contents unsafe, though.
 
-Same here (the filename is correct).
+Note that Opaque is *not* a pointer type. We're going to be dealing
+with types like &Mm or ARef<Mm> where &_ and ARef<_> are two different
+kinds of pointers.
 
-Rasmus
+> > +// SAFETY: It is safe to call `mmdrop` on another thread than where `m=
+mgrab` was called.
+> > +unsafe impl Send for Mm {}
+> > +// SAFETY: All methods on `Mm` can be called in parallel from several =
+threads.
+> > +unsafe impl Sync for Mm {}
+> > +
+> > +// SAFETY: By the type invariants, this type is always refcounted.
+> > +unsafe impl AlwaysRefCounted for Mm {
+> > +    #[inline]
+> > +    fn inc_ref(&self) {
+> > +        // SAFETY: The pointer is valid since self is a reference.
+> > +        unsafe { bindings::mmgrab(self.as_raw()) };
+> > +    }
+> > +
+> > +    #[inline]
+> > +    unsafe fn dec_ref(obj: NonNull<Self>) {
+> > +        // SAFETY: The caller is giving up their refcount.
+> > +        unsafe { bindings::mmdrop(obj.cast().as_ptr()) };
+> > +    }
+> > +}
+>
+> Under what circumstances would these be taken? Same question for MmWthUse=
+r.
+
+This makes `Mm` compatible with the pointer type called ARef<_>. This
+pointer type is used to represent ownership of a refcount. So whenever
+a variable of type ARef<_> goes out of scope, the refcount is
+decremented, and whenever an ARef<_> is cloned, the refcount is
+incremented.
+
+The way this works is that ARef<_> is implemented to use the
+AlwaysRefCounted trait to understand how to manipulate the count. Only
+types that implement the trait with an impl block like above can be
+used with ARef<_>.
+
+> > +
+> > +/// A wrapper for the kernel's `struct mm_struct`.
+> > +///
+> > +/// This type is like [`Mm`], but with non-zero `mm_users`. It can onl=
+y be used when `mm_users` can
+> > +/// be proven to be non-zero at compile-time, usually because the rele=
+vant code holds an `mmget`
+> > +/// refcount. It can be used to access the associated address space.
+> > +///
+> > +/// The `ARef<MmWithUser>` smart pointer holds an `mmget` refcount. It=
+s destructor may sleep.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// Values of this type are always refcounted using `mmget`. The value=
+ of `mm_users` is non-zero.
+> > +#[repr(transparent)]
+> > +pub struct MmWithUser {
+> > +    mm: Mm,
+> > +}
+>
+> Why does Mm have this as a Opaque<bindings::mm_struct> and this sort of
+> nests it?
+>
+> Does this somehow amount to the same thing, or would you probably never
+> actually reference this mm field?
+
+It amounts to the same thing as Opaque<bindings::mm_struct>.
+
+> > +// SAFETY: It is safe to call `mmput` on another thread than where `mm=
+get` was called.
+> > +unsafe impl Send for MmWithUser {}
+> > +// SAFETY: All methods on `MmWithUser` can be called in parallel from =
+several threads.
+> > +unsafe impl Sync for MmWithUser {}
+> > +
+> > +// SAFETY: By the type invariants, this type is always refcounted.
+> > +unsafe impl AlwaysRefCounted for MmWithUser {
+> > +    #[inline]
+> > +    fn inc_ref(&self) {
+> > +        // SAFETY: The pointer is valid since self is a reference.
+> > +        unsafe { bindings::mmget(self.as_raw()) };
+> > +    }
+> > +
+> > +    #[inline]
+> > +    unsafe fn dec_ref(obj: NonNull<Self>) {
+> > +        // SAFETY: The caller is giving up their refcount.
+> > +        unsafe { bindings::mmput(obj.cast().as_ptr()) };
+> > +    }
+>
+> Hm, why is it we mmget(self.as_raw()) but mmput(obj.cast().as_ptr())?
+
+There's one assumption about references that Opaque doesn't turn off:
+The memory behind the reference must not get deallocated while the
+reference exists. We can't use a reference in dec_ref because the
+memory might get deallocated during the call to dec_ref.
+
+> Also I guess relatedly, why does one refer to &self and the other as a
+> NonNull<Self>?
+
+Writing `&self` means that the "self parameter" has type `&Self`,
+which in this case is the same as `&MmWithUser`.
+
+The type `NonNull<Self>` is the same as `NonNull<MmWithUser>`. The
+NonNull type is a raw pointer that can't be null. Other than the
+non-null requirement, nothing is assumed about the raw pointer.
+
+> I'm guessing as a non-rust person a 'reference' is like a C++ reference i=
+n
+> the sense that (well it is _assumed_ in C++ anyway) it acts like a pointe=
+r
+> for the type which should never not be there, but we need .as_raw() to ge=
+t
+> the raw C pointer?
+
+Yeah, Rust references come with an assumption that the object is not
+deallocated while the reference exists.
+
+The .as_raw() call converts from &MmWithUser to `*mut
+bindings::mm_struct`. So note that it not only converts from reference
+to raw pointer, but it also changes the target type from MmWithUser to
+bindings::mm_struct.
+
+> And I guess in the dec_ref() case we need the .cast().as_ptr() because ob=
+j
+> 'boxes' around self (I guess equivalent to 'this' in C++ kinda)
+> guaranteeing that it can provide non-null pointer to the current object?
+
+Well, the thing that is equivalent to "this" would be "self".
+
+> > +// Make all `Mm` methods available on `MmWithUser`.
+> > +impl Deref for MmWithUser {
+> > +    type Target =3D Mm;
+> > +
+> > +    #[inline]
+> > +    fn deref(&self) -> &Mm {
+> > +        &self.mm
+> > +    }
+> > +}
+>
+> I rubber ducked myself a bit on this, so I guess this makes it possible t=
+o
+> dereference the object, and it
+
+It lets you transparently obtain an &Mm from an &MmWithUser, making
+all Mm methods available on MmWithUser.
+
+> > +// These methods are safe to call even if `mm_users` is zero.
+> > +impl Mm {
+> > +    /// Call `mmgrab` on `current.mm`.
+> > +    #[inline]
+> > +    pub fn mmgrab_current() -> Option<ARef<Mm>> {
+> > +        // SAFETY: It's safe to get the `mm` field from current.
+> > +        let mm =3D unsafe {
+> > +            let current =3D bindings::get_current();
+> > +            (*current).mm
+> > +        };
+>
+> I don't see an equivalent means of obtaining mm from current for
+> MmWithUser, is that intentional, would there be another means of obtainin=
+g
+> an mm? (perhaps via vma->vm_mm I guess?)
+>
+> An aside -->
+>
+> If we're grabbing from current, and this is non-NULL (i.e. not a kernel
+> thread), this is kinda MmWithUser to _start out_ with, but I guess if
+> you're grabbing the current one you might not expect it.
+>
+> I guess one thing I want to point out (maybe here is wrong place) is that
+> the usual way of interacting with current->mm is that we do _not_ increme=
+nt
+> mm->mm_count, mm->mm_users or any refernce count, as while we are in the
+> kernel portion of the task, we are guaranteed the mm and the backing
+> virtual address space will stick around.
+>
+> With reference to MmWithUser, in fact, if you look up users of
+> mmget()/mmput() it is pretty rare to do that.
+>
+> So ideally we'd avoid doing this if we could (though having the semantics
+> of grabbing a reference if we were to copy the object somehow again or ho=
+ld
+> its state or something would be nice).
+>
+> I guess this might actually be tricky in rust, because we'd probably need
+> to somehow express the current task's lifetime and tie this to that
+> and... yeah.
+>
+> <-- aside
+
+Ah, yeah, I guess this API is incomplete. We could have an API that
+lets you obtain an &MmWithUser instead. Then, if the user wants to
+increment the refcount, they can manually convert that into an
+ARef<Mm> or ARef<MmWithUser>.
+
+It's true that it's slightly tricky to express in Rust, but it's
+possible. We already have a way to get a &Task pointing at current.
+
+
+> > +
+> > +        if mm.is_null() {
+> > +            return None;
+> > +        }
+> > +
+> > +        // SAFETY: The value of `current->mm` is guaranteed to be null=
+ or a valid `mm_struct`. We
+> > +        // just checked that it's not null. Furthermore, the returned =
+`&Mm` is valid only for the
+> > +        // duration of this function, and `current->mm` will stay vali=
+d for that long.
+> > +        let mm =3D unsafe { Mm::from_raw(mm) };
+>
+> Hm does mm now reference something with a different type, as in before it
+> was a 'raw' pointer or such, and now it's a reference to an Mm right?
+
+Yes ... this is using shadowing to change the type of the variable.
+It's actually rather common in Rust.
+
+The former mm variable had type `*mut bindings::mm_struct`. The latter
+mm variable has type `&Mm`.
+
+> Also I guess the 'duration of this function' is because we put this in th=
+e
+> 'Aref' smart pointer which kinda takes over the lifetime of the reference
+> by wrapping it right?
+
+Yeah, basically, the lifetime gets inferred from how we use it.
+
+> I mean I'm not a rust person so actually I have no business _commenting_ =
+on
+> this :P as this may very well be idiomatic rust, but I'm just curious abo=
+ut
+> this.
+>
+> It's nitty but I feel like maybe we're somewhat overloading 'mm's here a
+> bit though? As we have our wrapped Mm type and then an internal raw mm
+> type. On the other hand, it's hard to now have horribly awkward and
+> confusing naming here I guess, and perhaps this is fine.
+>
+> Not a big deal though!
+>
+> > +
+> > +        // This increments the refcount using `mmgrab`.
+> > +        Some(ARef::from(mm))
+>
+> So I get that Some() means this is like a discriminated union or such,
+> where we can return None (as above) or Some, which contains the value is =
+of
+> type ARef<Mm>. And I guess this moves the 'lifetime' of mm which was
+> previously with the function into that of the ARef<>?
+
+Yes, Some() is normally a discriminated union, but in this particular
+case since ARef uses a NonNull pointer for its only field, the
+compiler is smart enough to represent None as a null pointer instead
+of using a discriminated union with a separate tag.
+
+As for the "lifetime" of the `mm`, that's not really the lifetime of
+the mm_struct. Rather, it's the duration for which the &Mm reference
+is assumed to be valid for. That lifetime ends right after the
+ARef::from call, because that's our last use of the &Mm.
+
+> Does the ARef<> 'just know' to use the AlwaysRefCounted methods?
+
+Yep! See e.g. the destructor of ARef:
+
+impl<T: AlwaysRefCounted> Drop for ARef<T> {
+    fn drop(&mut self) {
+        unsafe { T::dec_ref(self.ptr) };
+    }
+}
+
+Due to the `T: AlwaysRefCounted`, the type `T` must be a type that
+implements the `AlwaysRefCounted` trait, and the compiler is able to
+resolve T::dec_ref based on that.
+
+> > +    }
+> > +
+> > +    /// Returns a raw pointer to the inner `mm_struct`.
+> > +    #[inline]
+> > +    pub fn as_raw(&self) -> *mut bindings::mm_struct {
+> > +        self.mm.get()
+> > +    }
+>
+> I guess this .get() method is on the Opaque<> object and returns a raw pt=
+r?
+
+Yes, it just creates a raw pointer.
+
+> > +    /// Obtain a reference from a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must ensure that `ptr` points at an `mm_struct`, an=
+d that it is not deallocated
+> > +    /// during the lifetime 'a.
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a=
+ Mm {
+>
+> I'm guessing this funny 'a syntax, based on the comment, refers to the
+> lifetime of the object?
+
+It's a lifetime, but not necessarily the lifetime of the object.
+Rather, it's the maximum duration in which the reference is assumed to
+be valid. It must not be longer than the lifetime of the mm_struct of
+course, but it's usually going to be much shorter than the lifetime of
+the mm_struct.
+
+> > +        // SAFETY: Caller promises that the pointer is valid for 'a. L=
+ayouts are compatible due to
+> > +        // repr(transparent).
+>
+> God I love these SAFETY comments (I mean actually, sorry I realise it's
+> almost impossible to convey 'not sarcastically, actually' in text form
+> :). Is that something that gets parsed somewhere, or a convention or?
+>
+> I like that there is a discipline of expressing under what circumstances =
+we
+> are permitted to reference things.
+
+They don't get parsed anywhere, except that not using a SAFETY comment
+at all is a compilation warning.
+
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +
+> > +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
+> > +    #[inline]
+> > +    pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
+>
+> I actually kinda love that this takes an mm and guarantees that you get a=
+n
+> MmWithUser out of it which is implied by the fact this succeeds.
+>
+> However as to the point above, I'm concerned that this might be seen as
+> 'the way' to access an mm, i.e. mm.mmgrab_current().mmget_not_zero() or
+> something.
+>
+> Whereas, the usual way of referencing current->mm is to not increment any
+> reference counts at all (assuming what you are doing resides in the same
+> lifetime as the task).
+>
+> Obviously if you step outside of that lifetime, then you _do_ have to pin
+> the mm (nearly always you want to grab rather than get though in that
+> circumstance).
+
+I can add a way to obtain an &MmWithUser from current without
+incrementing the refcount.
+
+> > +        // SAFETY: The pointer is valid since self is a reference.
+> > +        let success =3D unsafe { bindings::mmget_not_zero(self.as_raw(=
+)) };
+> > +
+> > +        if success {
+> > +            // SAFETY: We just created an `mmget` refcount.
+> > +            Some(unsafe { ARef::from_raw(NonNull::new_unchecked(self.a=
+s_raw().cast())) })
+>
+> When you do this, does it cause the reference count to increment, or does
+> it assume it's already at 1?
+
+This uses `from_raw` which by convention never increments the
+refcount. Semantically we're taking ownership of the increment
+performed by bindings::mmget_not_zero.
+
+> > +        } else {
+> > +            None
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +// These methods require `mm_users` to be non-zero.
+> > +impl MmWithUser {
+> > +    /// Obtain a reference from a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must ensure that `ptr` points at an `mm_struct`, an=
+d that `mm_users` remains
+> > +    /// non-zero for the duration of the lifetime 'a.
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a=
+ MmWithUser {
+> > +        // SAFETY: Caller promises that the pointer is valid for 'a. T=
+he layout is compatible due
+> > +        // to repr(transparent).
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+>
+> I guess this is another means by which you can get the mm. I'd say an
+> equivalent for getting from current is highly relevant.
+
+This lets you write MmWithUser::from_raw in unsafe code.
+
+> > +
+> > +    /// Lock the mmap read lock.
+> > +    #[inline]
+> > +    pub fn mmap_read_lock(&self) -> MmapReadGuard<'_> {
+> > +        // SAFETY: The pointer is valid since self is a reference.
+> > +        unsafe { bindings::mmap_read_lock(self.as_raw()) };
+> > +
+> > +        // INVARIANT: We just acquired the read lock.
+> > +        MmapReadGuard {
+> > +            mm: self,
+> > +            _nts: NotThreadSafe,
+>
+> I'm sure this is a rusty thing, but curious as to why this is like that?
+> What is '_nts', etc.?
+
+_nts is the name of a field. The NotThreadSafe type has size zero, so
+it doesn't exist in the compiled code. It exists only to mark that the
+MmapReadGuard cannot be transferred across thread boundaries.
+
+> > +        }
+> > +    }
+> > +
+> > +    /// Try to lock the mmap read lock.
+> > +    #[inline]
+> > +    pub fn mmap_read_trylock(&self) -> Option<MmapReadGuard<'_>> {
+> > +        // SAFETY: The pointer is valid since self is a reference.
+> > +        let success =3D unsafe { bindings::mmap_read_trylock(self.as_r=
+aw()) };
+> > +
+> > +        if success {
+> > +            // INVARIANT: We just acquired the read lock.
+> > +            Some(MmapReadGuard {
+> > +                mm: self,
+> > +                _nts: NotThreadSafe,
+> > +            })
+> > +        } else {
+> > +            None
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +/// A guard for the mmap read lock.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// This `MmapReadGuard` guard owns the mmap read lock.
+> > +pub struct MmapReadGuard<'a> {
+> > +    mm: &'a MmWithUser,
+> > +    // `mmap_read_lock` and `mmap_read_unlock` must be called on the s=
+ame thread
+> > +    _nts: NotThreadSafe,
+> > +}
+> > +
+> > +impl Drop for MmapReadGuard<'_> {
+> > +    #[inline]
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: We hold the read lock by the type invariants.
+> > +        unsafe { bindings::mmap_read_unlock(self.mm.as_raw()) };
+> > +    }
+> > +}
+>
+> Ah that's nice, an actual guard for it :) I'm guessing the fact this
+> implements the guard implies that you _must_ hold the lock first right?
+
+Yeah so this code runs when a variable of type MmapReadGuard goes out
+of scope. We don't provide any way to obtain an MmapReadGuard without
+locking the mmap read guard.
+
+> >
+> > --
+> > 2.47.0.371.ga323438b13-goog
+> >
+>
+> Sorry for the numerous questions, I'm afraid there'll be a lot of this fo=
+r
+> rust stuff for the time being. Perhaps advent of code will help improve
+> things on the rust front for me ;)
+
+Thanks for all the excellent questions!
+
+Alice
