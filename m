@@ -1,71 +1,71 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F6B1CD209
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051F11D0B83
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732185525; cv=none; b=i+rPKkDQzZgcEaLLsbS8mdcabWCiDjOMWybCaIl0KISYnv3QxSH9d+ZQZACLtn9HrxZBl9CZDcEeo87EJHCQf2GAfo+Nr+jVrxHUT5j42/zSy1+2XTw/533eV43KIziUhchZrYNf2JfXht5YKQ2e4wXyORf7MafWzgAbCgl4MSM=
+	t=1732185908; cv=none; b=Ps0zYKLWvB+2+cirtX/bZskAe4OZQH3dPvjrF49pe9nrnHuVRpioZlmMmBOpvWxQ1SdMyWuIoJsb7YDvSk4Luj+3BZElxfpG+LTPwRNttwinVd1HyIx25EUV3+VhIEaJ6mZO5ELv+T+umrhFB6JsNeDFFsirxPndKldgWZq3I70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732185525; c=relaxed/simple;
-	bh=vp3VGL7tickCp/AxyyI05CAA0XadUYs0FF+9ilokDbY=;
+	s=arc-20240116; t=1732185908; c=relaxed/simple;
+	bh=CwIShjUsfcnOqesiDbb35NKm4hTygyydM61hfALVz0c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EurkVmY6i7AWvpElAJMexV25ZntUGZBGB2AuPlU8+xuzFeJul5I2wJsMml2Hyvjgu8/v8vJ4YxsVFIsaU7QUNY4QmFr4Z52bSmOYRttsClp/FyrwM1cFy+VxIIZb0bBltQ7cnLNYG9enaRS2LBun7H1mLzMFr5sixjnKFgpwFNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DxCpHUf+; arc=none smtp.client-ip=209.85.221.43
+	 To:Cc:Content-Type; b=A3hEraUsrd+FTzcz6WQKUrhqqLsdM0wScb79NJ4lVMNKwS9IlZRWv7t2uT4VNntKUt2/4QPBCbAWh2lznYkuv2aaK1/9zzHPa/OGYUCHJRYu2kCs5WHXMb4iyNjB0KOLlN4S0K3v8tH2MJa/uSLTpziAIDJqPIWuso5vVLUWyHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xAVtialq; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DxCpHUf+"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-382442b7d9aso627722f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 02:38:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xAVtialq"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-37ed3bd6114so445402f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 02:45:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732185521; x=1732790321; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732185904; x=1732790704; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=arZzzZcZ/LicC2e7GiApVwWtVcvvhGlrT9lVaNGL8IU=;
-        b=DxCpHUf+FnaL0BQy2snW4r33282iu+evk07YKkSe8Ia7X+5nYzHPm8aME+nUvHPYwV
-         Xj3o7AOhuxCXvgTt0yBaaczbtLPqRb9U1WQsfvLsoelblkor5A/YrkqNlvp3mw/43bPD
-         rNkgWshapORvOMrVLfJB4AjynEy2ilco43urjw9rgo/XwSyMvb/BwvWTcKvfErWcyJeL
-         G9jXKqfV7Sf6I4zOI7yVJgdVF7FP5HvuIOMQOvVsg2Rgx4f23Vw2C2tS+xElNRLpEV/6
-         zSgGjRldkBmWZHasxUfc0jO5ma1MhWgMO3BNAj01m3izmjqQK3XlBvdh/d3e/1wNoAN+
-         wFKw==
+        bh=xK4Cfg9DlwufnPePVmxDaoaAvTYsonxko5dLjDtr1k8=;
+        b=xAVtialqQzD68QZEOQHJDmZf3qmHqdQ8bp91F5fe9qhXoRabP9C70i6mCgXZKyXqOt
+         ydh/Rg/x/4d0A1kbEJesdDir49SzkB6aYTqTek+xekz64Q4r7sgM+yFq5uKTV8gGXWXw
+         xAswTAL09qpNQBqNc9DSBQHNiiHl1Dyckrpy7tShGYvLSb+uRlOZk+1zAb+ZmhTMnj2M
+         /r4cM726rD6tkwMwI9sjR4C4wGGlSe9bzCGA6Lgye3hT3ejgq2clB8UjdrBN8rmo65KO
+         /a37wCnbi+TkIr13jcF2vOZirZ+OqtYCKlOilCzL15IjMO9g9SCsEnq8XckO8H02wMBP
+         gCbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732185521; x=1732790321;
+        d=1e100.net; s=20230601; t=1732185904; x=1732790704;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=arZzzZcZ/LicC2e7GiApVwWtVcvvhGlrT9lVaNGL8IU=;
-        b=GSJIv+e8Zs87NyBiJwOj6PqmJyoSZqlolt4Jdoa30fcyOgHbDo1P7g/RVLo7XhKa6u
-         Q3R1xm2P5En2DiFWXzPLWFWolCaM8NSazdMQr6JyUGz8EzMgJSi/yUjWQIQEgOOj3WLJ
-         31XTbBQRVDLdj9UM02K/rkWLiWJXYLaIoR72MoqUO0B0TcrcJ4vZP7rO0wYlNaqcarh6
-         LTsUU7P5NUJUxnnD4fdvOiNpTZgz3IREnDyqz2FEJ+Wn7F5n0BMFk3UEGnlAQJPqCMWK
-         BH7eu5HwC3aKLBh1Xwpw/3kJit759xX67wgGKBtmzZOAbMyRKo9CCnk+bmt+BMjG3NkN
-         xcmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvqsu12Kzkim5I3oZFL7nCxAekWJFonkzcvJIrX7THhYV2/CtRuNvcLKbjsv8hpdqLRAnvSGUZdaikt1c2Gw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyutWiua6+/04S4XgrtlnEC78UNIafKSBIns36sRN2i8UfDmTRV
-	BMEElf+OwzH8R/T31PGEQnQ5WvYt80lZz36CuhuVVr555q9YIZEHi26WVz2irvg/lEFsEcKtaDF
-	97faSqv8/BSoBeJzlHtcF4P5GeLv7oQKCxRMA
-X-Gm-Gg: ASbGncsu0lxJv9RIUkBLkVWNjPD244UjVG+pCwOD1bWd7fwvWuyI6YRnnoNoT3Ggh/+
-	93FyD/DWZzVaOLOd0Xp78Mkw4WOB5jvjOQNJ1P8lTAmFdsD30T+u5BCWt9a6Yqg==
-X-Google-Smtp-Source: AGHT+IFKTxfTP/8V3NQnXKNt4YPbwdTYjvzZyWn+f6dBturud/k7FjFa3YKKktaiCpaNOinmPJqBmsBuDnracNpZ2O8=
-X-Received: by 2002:a05:6000:178a:b0:382:59c1:ccdf with SMTP id
- ffacd0b85a97d-38259c1ccecmr2210664f8f.46.1732185521340; Thu, 21 Nov 2024
- 02:38:41 -0800 (PST)
+        bh=xK4Cfg9DlwufnPePVmxDaoaAvTYsonxko5dLjDtr1k8=;
+        b=mdnINloQIrJ5MG+rpWdAUf6V172gWrmS6SqoAKpAkD7zZZncSELkxW3JVQYdIzuVaW
+         bDz9+SVEBTBO8iSBMqTGJIi2X8j1qt1XvECCcW4jqq9ZB+qgKAvDc8LahOa99OihZmO4
+         zJh1f/4IPioIqNncHUeZSQAzwVqBUu2P26zy8u8usW/ow6Z43xtVxxEnvE2WOFhGkqd2
+         pnH+DGaSZCiIQuZlKg12AQMglVQfE2r/IhAHTCRZMP8OIkkaf5lwXiBDEasOCXP7UIyK
+         bEMnAcMISn8JOtJRAlb6RXRdknR/Aov5Wpe+qVpPY4NKRNKFIQK3wIw+Xj2IUyuf3lqt
+         jZAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVB9merw7NaIaf9N12XJXqB3a2rxSyVg1RD+WZViHM/1lJx/Pp8cAw4Em8/rZLnYCA68J8Gmof6arxJKCFBxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfDcbbDWhrnlse1dVlZ5z8qa4Om92NqZVXeH44fxTUyhapfbBo
+	snC3Y2y9My9MaMB0vVHS6VpujYAdYlURe0vlCjvyNGorVQX9/vAnfXsvwk/FqrrE3kaXhI9QRwk
+	Jrswex3Ctb65z+5kwH4p0LEhiMlxKbjhVxmYt
+X-Gm-Gg: ASbGncvl8nWwgf+Va229UZAQz0UcnhMEzCwfasrbDqfNI0b8h7+VC4d+CunHtftJ8lv
+	1u0vBNcEKwzxJvtkCE5aXU520tXpbB0Jfn7Giv7OLK8/fga+E9PIPNnn3D0jKsQ==
+X-Google-Smtp-Source: AGHT+IFNLFXfFTPNcf0Jy6eL0FhPoWe5bssVRl6BmWr16Rlaom5gN2QQBv1a2lad6azAjMDYL8YEC8lFmavr2ot49Tw=
+X-Received: by 2002:a5d:5f86:0:b0:382:5393:43cf with SMTP id
+ ffacd0b85a97d-38254af6394mr4794445f8f.13.1732185904176; Thu, 21 Nov 2024
+ 02:45:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-3-eb31425da66b@google.com>
- <e5660b41-c1df-47f1-83fa-c243805f74cf@lucifer.local>
-In-Reply-To: <e5660b41-c1df-47f1-83fa-c243805f74cf@lucifer.local>
+References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-4-eb31425da66b@google.com>
+ <40be19b0-4c32-4554-a01f-649c12f889da@lucifer.local>
+In-Reply-To: <40be19b0-4c32-4554-a01f-649c12f889da@lucifer.local>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Nov 2024 11:38:29 +0100
-Message-ID: <CAH5fLgjsk_t=tQdAkB6O3cCDZQp2TC=uSB3EUsY_4qDegpVEYw@mail.gmail.com>
-Subject: Re: [PATCH v8 3/7] mm: rust: add vm_insert_page
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>
+Date: Thu, 21 Nov 2024 11:44:52 +0100
+Message-ID: <CAH5fLggw4Ca59-AA+ArHYD0QrKH8cGd_i0EN83MnYYZK1bmTGQ@mail.gmail.com>
+Subject: Re: [PATCH v8 4/7] mm: rust: add lock_vma_under_rcu
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -78,188 +78,112 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 20, 2024 at 8:20=E2=80=AFPM Lorenzo Stoakes
+On Wed, Nov 20, 2024 at 8:29=E2=80=AFPM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
 >
-> On Wed, Nov 20, 2024 at 02:49:57PM +0000, Alice Ryhl wrote:
-> > The vm_insert_page method is only usable on vmas with the VM_MIXEDMAP
-> > flag, so we introduce a new type to keep track of such vmas.
+> On Wed, Nov 20, 2024 at 02:49:58PM +0000, Alice Ryhl wrote:
+> > All of Rust Binder's existing calls to `vm_insert_page` could be
+> > optimized to first attempt to use `lock_vma_under_rcu`. This patch
+> > provides an abstraction to enable that.
 >
-> Worth mentioning that it can be used for VMAs without this flag set, but =
-if
-> so we must hold a _write_ lock to be able to do so, so it can update the
-> flag itself, however we intend only to use it with VMAs which already hav=
-e
-> this flag set.
-
-I got the impression from Jann that the automatically-set-VM_MIXEDMAP
-thing should only be used during mmap, and that VM_MIXEDMAP should not
-get set after initialization even with a write lock?
-https://lore.kernel.org/all/CAG48ez3gXicVYXiPsQDmYuPSsKMbES2KRQDk+0ANWSS0zD=
-kqSw@mail.gmail.com/
-
-> > The approach used in this patch assumes that we will not need to encode
-> > many flag combinations in the type. I don't think we need to encode mor=
-e
-> > than VM_MIXEDMAP and VM_PFNMAP as things are now. However, if that
-> > becomes necessary, using generic parameters in a single type would scal=
-e
-> > better as the number of flags increases.
+> I think there should be a blurb about what the VMA locks are, how they av=
+oid
+> contention on the mmap read lock etc. before talking about a use case (th=
+ough
+> it's useful to mention the motivating reason!)
+>
 > >
 > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > > ---
-> >  rust/kernel/mm/virt.rs | 68 ++++++++++++++++++++++++++++++++++++++++++=
-+++++++-
-> >  1 file changed, 67 insertions(+), 1 deletion(-)
+> >  rust/helpers/mm.c |  5 +++++
+> >  rust/kernel/mm.rs | 56 +++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  2 files changed, 61 insertions(+)
 > >
-> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> > index 1e755dca46dd..de7f2338810a 100644
-> > --- a/rust/kernel/mm/virt.rs
-> > +++ b/rust/kernel/mm/virt.rs
-> > @@ -4,7 +4,14 @@
-> >
-> >  //! Virtual memory.
-> >
-> > -use crate::{bindings, types::Opaque};
-> > +use crate::{
-> > +    bindings,
-> > +    error::{to_result, Result},
-> > +    page::Page,
-> > +    types::Opaque,
-> > +};
-> > +
-> > +use core::ops::Deref;
-> >
-> >  /// A wrapper for the kernel's `struct vm_area_struct` with read acces=
-s.
-> >  ///
-> > @@ -80,6 +87,65 @@ pub fn zap_page_range_single(&self, address: usize, =
-size: usize) {
-> >              )
-> >          };
-> >      }
-> > +
-> > +    /// Check whether the `VM_MIXEDMAP` flag is set.
-> > +    #[inline]
-> > +    pub fn check_mixedmap(&self) -> Option<&VmAreaMixedMap> {
->
-> Nitty + a little bikesheddy (this may be my mistake as I am unfamiliar wi=
-th
-> rust idioms also) but shouldn't this be 'as_mixedmap_vma()' or something?
-
-You're probably right that this name is more consistent with Rust
-naming conventions. :)
-
-> > +        if self.flags() & flags::MIXEDMAP !=3D 0 {
-> > +            // SAFETY: We just checked that `VM_MIXEDMAP` is set. All =
-other requirements are
-> > +            // satisfied by the type invariants of `VmAreaRef`.
-> > +            Some(unsafe { VmAreaMixedMap::from_raw(self.as_ptr()) })
-> > +        } else {
-> > +            None
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// A wrapper for the kernel's `struct vm_area_struct` with read acces=
-s and `VM_MIXEDMAP` set.
-> > +///
-> > +/// It represents an area of virtual memory.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The caller must hold the mmap read lock or the vma read lock. The =
-`VM_MIXEDMAP` flag must be
-> > +/// set.
-> > +#[repr(transparent)]
-> > +pub struct VmAreaMixedMap {
-> > +    vma: VmAreaRef,
-> > +}
-> > +
-> > +// Make all `VmAreaRef` methods available on `VmAreaMixedMap`.
-> > +impl Deref for VmAreaMixedMap {
-> > +    type Target =3D VmAreaRef;
-> > +
-> > +    #[inline]
-> > +    fn deref(&self) -> &VmAreaRef {
-> > +        &self.vma
-> > +    }
-> > +}
->
-> Ah OK, thinking back to the 'impl Deref' from the other patch, I guess th=
-is
-> allows you to deref VmAreaMixedMap as a VmAreaRef, does it all sort of
-> automagically merge methods for you as if they were mix-ins then?
-
-Yeah, I use it to "merge" the method sets to avoid duplication.
-
-The main limitation is that you can only deref to one other type, so
-you can't have "diamond inheritance".
-
-> > +impl VmAreaMixedMap {
-> > +    /// Access a virtual memory area given a raw pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `vma` is valid for the duration of 'a=
-, and that the mmap read lock
-> > +    /// (or stronger) is held for at least the duration of 'a. The `VM=
-_MIXEDMAP` flag must be set.
-> > +    #[inline]
-> > +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -=
-> &'a Self {
-> > +        // SAFETY: The caller ensures that the invariants are satisfie=
-d for the duration of 'a.
-> > +        unsafe { &*vma.cast() }
-> > +    }
-> > +
-> > +    /// Maps a single page at the given address within the virtual mem=
-ory area.
-> > +    ///
-> > +    /// This operation does not take ownership of the page.
-> > +    #[inline]
-> > +    pub fn vm_insert_page(&self, address: usize, page: &Page) -> Resul=
-t {
->
-> I'm guessing this 'Result' type encodes 0 vs. -Exxx error codes?
-
-In this particular case, yes.
-
-More generally, Result is a discriminated union containing either
-Ok(val) for success or Err(err) with some error type. But the default
-success type is the unit type () and the default error type is
-kernel::error::Error which corresponds to errno numbers.
-
-In this case, the compiler is clever enough to not use a discriminated
-union and instead represents Ok(()) as 0 and Err(err) as just the
-negative errno. This works since kernel::error::Error uses NonZeroI32
-as its only field (as of 6.13).
-
-> > +        // SAFETY: The caller has read access and has verified that `V=
-M_MIXEDMAP` is set. The page
-> > +        // is order 0. The address is checked on the C side so it can =
-take any value.
-> > +        to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), add=
-ress as _, page.as_ptr()) })
-> > +    }
+> > diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+> > index 7b72eb065a3e..81b510c96fd2 100644
+> > --- a/rust/helpers/mm.c
+> > +++ b/rust/helpers/mm.c
+> > @@ -43,3 +43,8 @@ struct vm_area_struct *rust_helper_vma_lookup(struct =
+mm_struct *mm,
+> >  {
+> >       return vma_lookup(mm, addr);
 > >  }
+> > +
+> > +void rust_helper_vma_end_read(struct vm_area_struct *vma)
+> > +{
+> > +     vma_end_read(vma);
+> > +}
+> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> > index ace8e7d57afe..a15acb546f68 100644
+> > --- a/rust/kernel/mm.rs
+> > +++ b/rust/kernel/mm.rs
+> > @@ -13,6 +13,7 @@
+> >  use core::{ops::Deref, ptr::NonNull};
+> >
+> >  pub mod virt;
+> > +use virt::VmAreaRef;
+> >
+> >  /// A wrapper for the kernel's `struct mm_struct`.
+> >  ///
+> > @@ -170,6 +171,32 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::m=
+m_struct) -> &'a MmWithUser {
+> >          unsafe { &*ptr.cast() }
+> >      }
+> >
+> > +    /// Try to lock the vma read lock under rcu.
 >
-> It's really nice to abstract this as a seprate type and then to know its
-> methods only apply in known circumstances... I guess in future we can use
-> clever generic types when it comes to combinations of characteristics tha=
-t
-> would otherwise result in a combinatorial explosion?
+> This reads oddly, I'd say 'try to acquire the VMA read lock'. It's not re=
+ally
+> necessary to mention RCU here I'd say, as while lock_vma_under_rcu() acqu=
+ires
+> the RCU lock in order to try to get the VMA read lock, it releases it aft=
+erwards
+> and you hold the VMA read luck until you are done with it and don't need =
+to hold
+> an RCU lock.
+>
+> A reader might otherwise be confused and think an RCU read lock is requir=
+ed to
+> be held throughout too which isn't the case (this is maybe a critique of =
+the
+> name of the function too, sorry Suren :P).
+>
+> > +    /// If this operation fails, the vma may still exist. In that case=
+, you should take the mmap
+> > +    /// read lock and try to use `vma_lookup` instead.
+>
+> This also reads oddly, you're more likely (assuming you are not arbitrari=
+ly
+> trying to acquire a lock on an address likely to be unmapped soon) to hav=
+e
+> failed due to lock contention.
+>
+> So I'd say 'this is an optimistic try lock operation, so it may fail, in =
+which
+> case you should fall back to taking the mmap read lock'.
+>
+> I'm not sure it's necessary to reference vma_lookup() either, especially =
+as in
+> future versions of this code we might want to use a VMA iterator instead.
 
-Yeah, so the alternate approach I mention in the commit message would
-be to have something like this:
+Thanks for the doc suggestions, they sound great.
 
-struct VmAreaRef<const MIXEDMAP: bool, const PFNMAP: bool, const
-MAYWRITE: bool> { ... }
+> > +    ///
+> > +    /// When per-vma locks are disabled, this always returns `None`.
+> > +    #[inline]
+> > +    pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaRea=
+dGuard<'_>> {
+>
+> Ah I love having lock guards available... Something I miss from C++ :>)
 
-listing all the flags we care about. This way, we get 2^3 different
-types by writing just one.
+I've heard that C is starting to get lock guards recently!
 
-(There are a few different variations on how to do this, instead of
-bools, we may want to allow three options: true, false, unknown.)
+> > +        #[cfg(CONFIG_PER_VMA_LOCK)]
+>
+> Ah interesting, so we have an abstraction for kernel config operations!
+
+Yeah, it's basically an #ifdef, but the block must still parse even if
+the config is disabled.
 
 Alice
