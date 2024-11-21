@@ -1,535 +1,171 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2086.outbound.protection.outlook.com [40.92.21.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D7C1D2F6D
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732184637; cv=none; b=KupmPox5c64xgKXPDytHlqJNO4Uvw7kNT673Xv25kmGTya7gRFVd9p2xI1Cp0QK1LjBG1hmz+CdAVh6T4XYASd3fliUhjq6e0MUlkuhFMprKAimtzioyg2HjqLqzp6ZiExzndKN0KKVbPfWHV847U6vqty1XuSqaWH5u+szgEYw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732184637; c=relaxed/simple;
-	bh=r2vqhBLadvtHBUeCOMSUP+L28dC5F+GcWemMdh8ESS8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N8vU59maGCqWTMTwtE7/90VnyxlcSGdO+xS7BkLa+t9kfj8Pic/qMSnBexYdEw7LP3K89Awuk6wHsNukQlPQXHlEu6BbPNM9J0rY3fUP2eGOprPXf24jnTxzNJ8bUhkE8S6nTOJyaRYY/D44LF3xx40yiaDdyoNhZxb2/HeKJjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1IJt4/oU; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55403169AE4
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732184834; cv=fail; b=VPQ4cqz2RGKPDZ0dK8SxsceqgMgKejM/WijTnEsYKjii5wpSr/w+eKAv/Lw02L43mWk7J3rg4H4M31+asTEZ18ysOAx2OIbnH6ZUWyKSiNowFMCKGGlX3q7BdrvNq6yl6xtJj0D0dllvom+Zy4OEzpYi3aDYvBqtHJNBj3iD9aU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732184834; c=relaxed/simple;
+	bh=F/SF3eIAkjiIa4r6UAqcnMhcskqRWCND6f+Yu6hH5OE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fEjgJo6VICtOJnyfNY+1N5BRnC+uscKcz+dx80eFwX4345N2BuamToiLtY50q48sXyBA/eAewFJrHJxlpUMNLbmefiBMGDSPQqvdynOUDuU09WGX44+brYYaOKnjjeza90zpGn5OcYKblGdPygf19wyyWfQzwehP/yVBM9Kf7ao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=llU9EjM2; arc=fail smtp.client-ip=40.92.21.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1IJt4/oU"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso6047205e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 02:23:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732184632; x=1732789432; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OlhoxgSKcYll6Lv3NUhKYXSAfrSERdcOsWs5wudsJzM=;
-        b=1IJt4/oURHIkt3f9NLMswOyZBXsVUMTN8AIacbfwLPaQjD8zEYwWT3AcLZyL25tcxB
-         ffQel3/4stRwM8kTHa/m4VOPhvZLacqOjs6NpspFQVCHlFJ2RMWjd4QIn3NpMpxWs516
-         Z7ylQV0MTUnwH8I8t6tz8sutRJtZ/dxPsmhW/ohu1dyUBn6UYfy9pRSIGrLztOvuPtz2
-         c9Qa/lZmbCQcffnLJ6ZriAwfonyatlZ9Isunrc90qNliRvFa9yU5CTqeHpvR73kQQvtZ
-         6ER5Nd9P1WaSqRca8phDQ87aq2OJiX2AQMfo3HVM4WNICQ15CUbR3MONRGgBPa56RrlB
-         vRlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732184632; x=1732789432;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OlhoxgSKcYll6Lv3NUhKYXSAfrSERdcOsWs5wudsJzM=;
-        b=HivIV7Yg5IFujeX8zz67nt4G2yhJVZ/pitd6S2JWReyiMTFw++jUkNEaW37Gb8NgEF
-         k+5zpa3+ditiLsTuvy89fq6VTnaHhbah5BR/e8OeD1EoHd56crjBF6sguqDuwD7eju+u
-         wdG1+8iQm+GeDfzBbYakT2XjryvVjmyKTur3aSxoaUosFltuuMR8wFlggnLTtpjbYiDU
-         C15/nlV94u6mDala2SYuuB2RO5EuZcwmfTFD+MYueMpP9A1QNgTTMSDziXIr/XruJ88Q
-         OH+t1Z2B5jvFTn9YVmMsN89EB63jGw5jnjamxbs6VUyzfKf7oAI5ND9Tu0xCR4b8r4Jr
-         X5Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ+ip0uiyEt033mWoaHQO+ENyA7puen4C43jv9udXHijXl68Fk+x0RJ24K5E2qEjqzehx9uTsiTPnfphT4ZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMeWD26WBM4Lrc7BK8iM/UnKYy+UBs0tK5LUgBqNjXZDdJ2VqS
-	2bhEPDgUuPA+MAvEH5rMzZIC+Fmn/3sDDjCtmdFPaSItzXO4y+vJ5WpNquNPFQGfZF9OlPWKMJy
-	64uyyDZcZvBBX1ksIYHWGG2K12Nsscy5Cuot/
-X-Gm-Gg: ASbGncv+0oiUiz+RxiykZ+gEmUhWz2l7Sp/46Ji6LVlBTPA/jiS+GTLn6p9UncAf9hB
-	YB8olHkohmc+RYUJi8IJR/apEpptb3qFEvsxLQE8IFJFxd3q0lMlJsmUrozv9Fg==
-X-Google-Smtp-Source: AGHT+IHg4W/WUKGS8b99/9IFak+Ih4XgWQHTn4uE6zc4bD/TotmtUxHVl01wgBvUz//vn3WMdD++hod39LRNOsPPkVw=
-X-Received: by 2002:a05:600c:b8a:b0:431:52a3:d9d9 with SMTP id
- 5b1f17b1804b1-43348904026mr58688315e9.0.1732184631834; Thu, 21 Nov 2024
- 02:23:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="llU9EjM2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PdRREr2jzI0dhbvRwvG9qjqd37mCQFgfXgtA7ApDD6mDLitcqcA1bMvJgN1Z95X9MHlMvnUsmjomt/wW5jykI/uIaWBRqXPlFWhJrm9UDG4MdfSYgNPmdcKJxCIS57dNylSwz7O9loRfmAr3EMoDQ0A9UuAztv2jhqmiWSFxoy2+XdGcdbuu/vKRlM9AUL8F0jwKz8gIzblbK0YPCiR6WADAvKhFtvDKfqswqLU72bpfHW2WApTjdd3/q+oUsSmqnWzh1Hnec+gjyaTz9ANSH3ruAJLtqretlQx2RU6CcAb+3DcAKPJOq8WSjM5FQYrUr1e2rglrTxxvvkFkZAuBrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F/SF3eIAkjiIa4r6UAqcnMhcskqRWCND6f+Yu6hH5OE=;
+ b=YYeye3fi4ZwH8N19lqNpWNYcgDFjcz1Y540/qa58NlHoe2mkmQL1g12JTWk7ijS0e927ezjG1byn6uD4U5jZYwPvUdNY3utovNc6AIv1k+oxUDVm9EXLE0y6bjD3AQfL2cfQbxENxgk5pIODD61p2Uk/QjuH9387IeO0YvKBZnxuynUpwJw68Kh/X/GestHOijxgyWqXz5K2JjEVvFtJtkE1bbUT6gAZQ2L/+9k5dC5QMccH9juTeL614TSOJbBCWsO0e9Izf8cgNRsoICr1lxUwEHIGNHHs+J2we0KVL9nFHyNWmIpneNN5sJp0cqAS47N+ZS5pbCeO/uT2ds2row==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F/SF3eIAkjiIa4r6UAqcnMhcskqRWCND6f+Yu6hH5OE=;
+ b=llU9EjM2yVVYO/Lkybs0/N/iYtqoeKMAxCtYFlD5WHNDofZwFS+oJdQkZM2MDzRzDUW0fn4tZAvbI0tM6dR4A66S8qPUoIKhmSyx9hJeiWN4iSFDE30NsNuVzbA5ngq8noyFXPmpuqcyQBKVzlQFlyPINkt9zFgOxoiFR4MPbpzAtvqpGm82K3E2vda4lrctoG55wK6rQV7t1tSueN8d1KE8bBz6Zc0KTp7BOIJwZM2FhBzIpfx1hfJyH5Q/SxuyOdt/ZaM9KbRV1nRrgkvIeB6EM4JnH+C0+qBrdeognBECIQD6rAKZqjD7he9B8NHo4jwUPI7ji+J06PsBNksD9g==
+Received: from BL0PR02MB4914.namprd02.prod.outlook.com (2603:10b6:208:53::23)
+ by CH0PR02MB8105.namprd02.prod.outlook.com (2603:10b6:610:10a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Thu, 21 Nov
+ 2024 10:27:10 +0000
+Received: from BL0PR02MB4914.namprd02.prod.outlook.com
+ ([fe80::906b:d00a:2d95:d089]) by BL0PR02MB4914.namprd02.prod.outlook.com
+ ([fe80::906b:d00a:2d95:d089%3]) with mapi id 15.20.8158.021; Thu, 21 Nov 2024
+ 10:27:10 +0000
+From: Filipe Xavier <felipe_life@live.com>
+To: Lyude Paul <lyude@redhat.com>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>
+CC: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Martin
+ Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst
+	<kernel@valentinobst.de>
+Subject: RE: [PATCH v4 1/2] rust: sync: Add Lock::from_raw() for Lock<(), B>
+Thread-Topic: [PATCH v4 1/2] rust: sync: Add Lock::from_raw() for Lock<(), B>
+Thread-Index: AQHbOth2ckXrGvqb4E2yghJsPsXed7LBiYv3
+Date: Thu, 21 Nov 2024 10:27:09 +0000
+Message-ID:
+ <BL0PR02MB49149575B8A82816C1C7D63BE9222@BL0PR02MB4914.namprd02.prod.outlook.com>
+References: <20241119231146.2298971-1-lyude@redhat.com>
+ <20241119231146.2298971-2-lyude@redhat.com>
+In-Reply-To: <20241119231146.2298971-2-lyude@redhat.com>
+Accept-Language: pt-BR, en-US
+Content-Language: pt-BR
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL0PR02MB4914:EE_|CH0PR02MB8105:EE_
+x-ms-office365-filtering-correlation-id: 59c87f16-e2eb-423c-d040-08dd0a170e71
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8060799006|461199028|15030799003|8062599003|19110799003|7092599003|15080799006|440099028|4302099013|3412199025|102099032|10035399004|1602099012;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?ZDNNV2VHUXM1Q3plemFVcDVGYVBvK2VhTExyTkdJTWkzR0xNaUZjN05OZlI1?=
+ =?utf-8?B?QXpac0RFenk3czlQSzZhTjRINnpKZkJpVmpHdFRmblBFaXZKV1ZMdTd2TFdL?=
+ =?utf-8?B?QzQrVFNISzNaRThYSXBXcERlZ0g1Zzd0WCsrQWc4clJqT0ZNbmVKWGlqVkRp?=
+ =?utf-8?B?K2xIK1MwME5PV2RXRzVGUW5ZMWlCRjkybE8wNGJNM3NQV1pGNmtlOTdSU1Yr?=
+ =?utf-8?B?L0RLNGZuZ1hxdDk1QzRLc0VKSkJsTi9QbXlUejMzMGVHY3hJVGFrUWd4WitR?=
+ =?utf-8?B?ZzkxK3ZqdUFhdllYamZhdWZlM0FwS05nK2RTODYwZWRxSjlodmVDRU1Ba0dk?=
+ =?utf-8?B?eUpCbGkvckk0QTNOVnBxSGxLVXI2Ylg1bFJTTys4a1NYVzlXakUzRks4UkdC?=
+ =?utf-8?B?cktNS1FvelVmWFNGQXFnQWlhQmpBcWw5YjQzdGIyc0kxNStIMEg3MnJrRlhi?=
+ =?utf-8?B?TnpTSm1zSTBLOE5acHo5SGczUEU5NWRPZjFEdjVGakdKN21NZjFZUlpWYVhu?=
+ =?utf-8?B?aHcwekx6bUpXU1ora2M0em4yRTVKenlWYzA5OE1DTktNWmw4Ujhrb0g1UmVn?=
+ =?utf-8?B?TjVNRE45WjVnTzVzeXZaaUJjSUZGWDFEbzNWOThtek9Ia3hIR1NLSVZXZDNw?=
+ =?utf-8?B?UTh0Nzd1SmlzV1VpM2UwSjZkVmpWeFhRb0tGajR0TzFQQng4Vk9wU2gyRmoz?=
+ =?utf-8?B?cnlnTHhlSkw3RWxKU0FoKzRuOWtpai9wRzVwNXQzVW1lTU8vcmo3dUZjZmsw?=
+ =?utf-8?B?VXBkdXFpekMzaGRpY213enJDUXBCU0lZZGVCMUNQeWxmWDV6Q1ByVWJtTlMz?=
+ =?utf-8?B?NlBuRmVzdjRrU0pmaU13cHRQaTE3RE1SQ0c4N2w3K05mQlFzMGJkSDlPbUNT?=
+ =?utf-8?B?Mk9VV2tJeW0yQ1MyQmxlWmxCRlhGYmorKzlybU8zcWtxRzBaNnJEVFZPVm9M?=
+ =?utf-8?B?SEIxWnQxak1vSUYzTTBBdmo0UGY5WlY4cSttU3lhVlZ5SzA5SmdmZThQMkFD?=
+ =?utf-8?B?cU9OUUpzQkdva1lmWVh2dC9EcHRzQ252SldlYkFNT2FIRWNJcmxGOHRGcnM3?=
+ =?utf-8?B?aXQ3cFJBUTR5VVFhZjNvR1IyNkQwZ0dvMUZNQkhJSTdpVkhFL1V3ZlRFVUhI?=
+ =?utf-8?B?d3FDdjE4MkVZWjc2UXFtSUFBczNrdjZINklwaVNLU242cDhlREEzVERWUDEr?=
+ =?utf-8?B?bW9sZ1F4Y1VVcWF3MnIzY0VTY2RncHJTanFveDFVTzZjZmwyS1ZxS2RwdmFi?=
+ =?utf-8?B?MjBtMk5GaFdqOW90TjVkL0VPZTBodWphR1Z4VmhRczNXN0NWNlUwU3ovK05k?=
+ =?utf-8?B?MmsvSjFpNTNuZVNSRjQ3bUxTVUF2alZ5T3lqR05zUTNJdTFyZEpRNUZUMnZS?=
+ =?utf-8?B?VEo5SlZvVzJrbllxekNoSy93b3M2STFES3NzZDJ1eTgrMGJGYVJvc012NklX?=
+ =?utf-8?B?RTRhck1RU0pMUWtlNjRDbjhPQ0ZrY2NqSVpjRUtQRGd0Ym1jNVZCb2JiNzQz?=
+ =?utf-8?B?Y0orL1FKT1BUQUI4bGt5dFYxamJndHZCa1FDVTJpQllCYnRROEhEelpSei9w?=
+ =?utf-8?Q?j1JCdaVQD7/qtj/SDAugoJdJgxMGe3fJZ+Qge0SZ86qlBH?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?dWdsVkF2NVVla3Y5aFZMZmpaMlZtQldZRGtROUhqb2lKY281SUhJS1hXaXhm?=
+ =?utf-8?B?U2JHWjBFOHQ4NGg4TVFnbmR6WUVVUVNOWFpNcU5KN2tJNFh1V3EvTW9oYy9p?=
+ =?utf-8?B?YjB5cTBnNnNycjF1TU5mL0QwZDdIYzRaUkxONEJKMmt3RWN3WkI2NmRTVnV1?=
+ =?utf-8?B?RnNuSlZjTTRIV05EU1dMYWNtZFhUYlNiZWNhUEJXRWZ5bjhPbEpxWkRNVm45?=
+ =?utf-8?B?S1ZZdGRxS1lzUUc2N1dDT3hIc2lNa21qQ042L29ZRmNpVkdJaXFhem54N1VO?=
+ =?utf-8?B?YlJrU09hS2NER2hyZUVYd0tPeTZkbHJnUVdmWDdwSFRuNklsUHhzaTBTR0li?=
+ =?utf-8?B?TEh1ekVzOEt4RHFkQ2N1UndHSXk2U1ZTdEVGTzN0RTZvTFJldGE1dFlockhm?=
+ =?utf-8?B?N3V4SUZvZVhyRGlaKzkyRmJtY3FoWVU5QnJ5dGgrbVJXdzhQS0ZBU09Xa1ZV?=
+ =?utf-8?B?TVBwM29BcVYxcUJZM2ExZVhINDI3Zmp4Ui9WdUlkL3Vuc2lLMTRkcElFWURj?=
+ =?utf-8?B?LzNpRlZyOFd5eU5VSnRtdXhBZHpRKzg1VFU4K1lFUmQ4MmNoRkxkb2lrbXh0?=
+ =?utf-8?B?T0MvUWw1VzhkUTdjc0V3Z1NXMVh4dHo2NC9KaGU4b3ZJR0pRU3UyazI1Q3p0?=
+ =?utf-8?B?VVp0QlFBRXFiRThVRm02VlhhR2M2NmIvWGtDbUQvOUlQdUgzYXFJOVNDelFO?=
+ =?utf-8?B?MTRJeFRWSFl5bVEwV3A5L3hHSnNaTlF2emxiTkxlWEZFWUNLU1BoNUcxdkl1?=
+ =?utf-8?B?WjF0M2s0R05PV2diSXJYMWtaRFRDb2cyNGNhODBMckVQQnpxNktkTzBNcjB3?=
+ =?utf-8?B?UmpwalB6eWE0TWZQSmR1bTMvV2ZiVlBQVVN5dGhUTVZyUVplZEZxeTIxdGdZ?=
+ =?utf-8?B?MTM5SlEyZC9JUWRCRURKRkgwbEtWYzVDaDc4OHBCbzBCbUVjWGRjRDROTjlh?=
+ =?utf-8?B?bjZycUNNQ0Z5ditrTWZPMWF3T1QwWjFiVXpPS3ZzV0pwTzZQMk5BeHdqbjBz?=
+ =?utf-8?B?dzNBdXNqNmY3SitkUEpDRDRBZloybzRzWDZ3NFFTYnhVSmliMUJjbnQ3OEJI?=
+ =?utf-8?B?eEwrUVVOVDdveVRRdGVxL2hvWFVMZENwWHNwQnVrWm1IZW5jSFZjT2t4allJ?=
+ =?utf-8?B?Tm9wazN4S3JNeXNZOHRhY0lRSmU2K1J6R1ZWQ3JwanJKclI5QVNVT1VoYm9M?=
+ =?utf-8?B?SWhqS0tpVHBHdjJUaW5hemgvQ1BLc2l6T2IxMVZ1WGxQb0xWc2xYdzNuUUVu?=
+ =?utf-8?B?citUa2s3SEVWS2YwSjhaRHVnU0cyazQ2azhlRTQ5SkY1TlExYWJjZjJHK2Rw?=
+ =?utf-8?B?NGwzTFpxTVA1N3Zxa0tjT1BMRk5VSFF1ZmN6VTJDOEgwMkJxNG9UY1Vha25N?=
+ =?utf-8?B?SlBmRUdIcnZPdUFKMUoxbm5KRWprbTV6MGowZVRBR0sxWFUvdk5LSjhFQkdx?=
+ =?utf-8?B?U2YwTnlXNXNLWkFJZk1CNGgraWo4NnJadDZzZEJmM0JjNFN1SXdWRGNaWmVi?=
+ =?utf-8?B?emUxYXIvZW4xNnNtWW0wc2h6VENWYnZEdG9uamNEd05SRXAvS0syYysxdHlL?=
+ =?utf-8?B?TXhUSHIvRXl3V3BxN2lzSVpNRFRCWVNnTUxFeElnNWcybU9rYnZSdkFyRW1w?=
+ =?utf-8?B?ZXllTWV0VElEZEthckVHc2FNeVRoZzVCMUg3VHlSMUdKQTFnTWgrZ3JzU3h1?=
+ =?utf-8?B?UWNDQ2lkd2tmK3JYdXlxakl2MEtvYjN5UkpHUVpXS0xQNUdGVkEzc3NJUFJt?=
+ =?utf-8?Q?5WVQ33vD1MLDfRx9l0=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-2-eb31425da66b@google.com>
- <c26a63a3-0f1e-467d-b24f-3963e5e4e13d@lucifer.local>
-In-Reply-To: <c26a63a3-0f1e-467d-b24f-3963e5e4e13d@lucifer.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Nov 2024 11:23:39 +0100
-Message-ID: <CAH5fLghdeBvbtC+aPq0mSr1io+DUt-J54zYagys63cK-4tictQ@mail.gmail.com>
-Subject: Re: [PATCH v8 2/7] mm: rust: add vm_area_struct methods that require
- read access
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-0f88b.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR02MB4914.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59c87f16-e2eb-423c-d040-08dd0a170e71
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2024 10:27:09.8976
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR02MB8105
 
-On Wed, Nov 20, 2024 at 8:07=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Wed, Nov 20, 2024 at 02:49:56PM +0000, Alice Ryhl wrote:
-> > This adds a type called VmAreaRef which is used when referencing a vma
-> > that you have read access to. Here, read access means that you hold
-> > either the mmap read lock or the vma read lock (or stronger).
->
-> This is pure nit and not important but...
->
-> I know we screwed up naming in mm, with the god awful vm_area_struct (we
-> abbreviate, for 2 letters, get bored, stop abbreviating, but throw in a
-> struct for a laugh) or 'VMA', but I wonder if this would be better as
-> VmaRef? Then again that's kinda terrible too.
->
-> Sorry about that. I mean this isn't hugely important + ultimately _our
-> fault_.
->
-> VirtualMemoryAreaRef is worse... VirtMemAreaRef? OK. Maybe VMAreaRef is t=
-he
-> least bad...
-
-Happy to use whichever name you prefer. :)
-
-> > Additionally, a vma_lookup method is added to the mmap read guard, whic=
-h
-> > enables you to obtain a &VmAreaRef in safe Rust code.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/helpers/mm.c      |   6 ++
-> >  rust/kernel/mm.rs      |  21 ++++++
-> >  rust/kernel/mm/virt.rs | 171 +++++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  3 files changed, 198 insertions(+)
-> >
-> > diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
-> > index 7201747a5d31..7b72eb065a3e 100644
-> > --- a/rust/helpers/mm.c
-> > +++ b/rust/helpers/mm.c
-> > @@ -37,3 +37,9 @@ void rust_helper_mmap_read_unlock(struct mm_struct *m=
-m)
-> >  {
-> >       mmap_read_unlock(mm);
-> >  }
-> > +
-> > +struct vm_area_struct *rust_helper_vma_lookup(struct mm_struct *mm,
-> > +                                           unsigned long addr)
-> > +{
-> > +     return vma_lookup(mm, addr);
-> > +}
->
-> I wonder whether we want to abstract some of the VMA iterator stuff,
-> because it's inefficient to look up VMAs by doing this each time if you a=
-re
-> looking at, for instance, adjacent VMAs.
->
-> But perhaps reasonable to defer doing that to later work?
-
-Yeah, that should probably be deferred. Binder only has one vma per
-mm, so iteration is not useful.
-
-> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-> > index 84cba581edaa..ace8e7d57afe 100644
-> > --- a/rust/kernel/mm.rs
-> > +++ b/rust/kernel/mm.rs
-> > @@ -12,6 +12,8 @@
-> >  };
-> >  use core::{ops::Deref, ptr::NonNull};
-> >
-> > +pub mod virt;
-> > +
-> >  /// A wrapper for the kernel's `struct mm_struct`.
-> >  ///
-> >  /// Since `mm_users` may be zero, the associated address space may not=
- exist anymore. You can use
-> > @@ -210,6 +212,25 @@ pub struct MmapReadGuard<'a> {
-> >      _nts: NotThreadSafe,
-> >  }
-> >
-> > +impl<'a> MmapReadGuard<'a> {
-> > +    /// Look up a vma at the given address.
-> > +    #[inline]
-> > +    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmAreaR=
-ef> {
->
-> Kind of lovely to have functions under the read guard and then knowing th=
-at
-> hey - we must hold the read lock to be able to do this.
->
-> Imagine, a programming language with actual types... :P
-
-:)
-
-> > +        // SAFETY: We hold a reference to the mm, so the pointer must =
-be valid. Any value is okay
-> > +        // for `vma_addr`.
-> > +        let vma =3D unsafe { bindings::vma_lookup(self.mm.as_raw(), vm=
-a_addr as _) };
->
-> Why do we say 'as _' here?
-
-This is an integer cast where the target type of the cast is inferred
-by the compiler. It will go away once this lands:
-https://lore.kernel.org/rust-for-linux/20240913213041.395655-1-gary@garyguo=
-.net/
-
-> > +
-> > +        if vma.is_null() {
-> > +            None
-> > +        } else {
-> > +            // SAFETY: We just checked that a vma was found, so the po=
-inter is valid. Furthermore,
-> > +            // the returned area will borrow from this read lock guard=
-, so it can only be used
-> > +            // while the mmap read lock is still held.
->
-> Lovely!
->
-> > +            unsafe { Some(virt::VmAreaRef::from_raw(vma)) }
-> > +        }
-> > +    }
-> > +}
-> > +
-> >  impl Drop for MmapReadGuard<'_> {
-> >      #[inline]
-> >      fn drop(&mut self) {
-> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> > new file mode 100644
-> > index 000000000000..1e755dca46dd
-> > --- /dev/null
-> > +++ b/rust/kernel/mm/virt.rs
-> > @@ -0,0 +1,171 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +// Copyright (C) 2024 Google LLC.
-> > +
-> > +//! Virtual memory.
->
-> Trivial rust q again but does this result in a heading in generated docs =
-or
-> something?
-
-Yes, this becomes module documentation. Check out:
-https://rust.docs.kernel.org/kernel/
-or try out `make LLVM=3D1 rustdoc`
-
-> > +use crate::{bindings, types::Opaque};
-> > +
-> > +/// A wrapper for the kernel's `struct vm_area_struct` with read acces=
-s.
-> > +///
-> > +/// It represents an area of virtual memory.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The caller must hold the mmap read lock or the vma read lock.
->
-> Might be worth mentioning here that you have yet to abstract the vma lock=
-?
-
-I do that in the next patch.
-
-> > +#[repr(transparent)]
-> > +pub struct VmAreaRef {
-> > +    vma: Opaque<bindings::vm_area_struct>,
-> > +}
-> > +
-> > +// Methods you can call when holding the mmap or vma read lock (or str=
-ong). They must be usable no
-> > +// matter what the vma flags are.
->
-> typo: 'or strong' -> 'or stronger'.
->
-> Nitty, but perhaps say 'Methods must be usable' rather than 'they' to be
-> totally clear.
-
-Will reword.
-
-> > +impl VmAreaRef {
-> > +    /// Access a virtual memory area given a raw pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `vma` is valid for the duration of 'a=
-, and that the mmap read lock
-> > +    /// (or stronger) is held for at least the duration of 'a.
->
-> Well, VMA locks make this more complicated, in that we can just hold a VM=
-A
-> lock. But again, perhaps worth doing this incrementally and just talk abo=
-ut
-> mmap locks to start with.
->
-> However since we reference VMA locks elsewhere, we should reference them
-> here (and probably worth mentioning that they are not yet abstracted).
-
-Oh I forgot to update this, it should say "mmap or vma read lock".
-
-> > +    #[inline]
-> > +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -=
-> &'a Self {
-> > +        // SAFETY: The caller ensures that the invariants are satisfie=
-d for the duration of 'a.
-> > +        unsafe { &*vma.cast() }
-> > +    }
-> > +
-> > +    /// Returns a raw pointer to this area.
-> > +    #[inline]
-> > +    pub fn as_ptr(&self) -> *mut bindings::vm_area_struct {
-> > +        self.vma.get()
-> > +    }
-> > +
-> > +    /// Returns the flags associated with the virtual memory area.
-> > +    ///
-> > +    /// The possible flags are a combination of the constants in [`fla=
-gs`].
-> > +    #[inline]
-> > +    pub fn flags(&self) -> vm_flags_t {
-> > +        // SAFETY: By the type invariants, the caller holds at least t=
-he mmap read lock, so this
-> > +        // access is not a data race.
-> > +        unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags as _ }
->
-> Hm what's up with this __bindgen_anon_N stuff?
-
-Whenever you have a `struct { ... }` or `union { ... }` in the middle
-of a struct, bindgen generates additional types for them because Rust
-doesn't have a direct equivalent.
-
-> > +    }
-> > +
-> > +    /// Returns the start address of the virtual memory area.
-> > +    #[inline]
-> > +    pub fn start(&self) -> usize {
->
-> Is usize guranteed to be equivalent to unsigned long?
-
-They are guaranteed to have the same size, yes.
-
-But again, right now `unsigned long` is being translated to whichever
-one of u32 or u64 has the same size as usize, instead of just being
-translated to usize. Thus the annoying casts. We can get rid of them
-as soon as
-https://lore.kernel.org/rust-for-linux/20240913213041.395655-1-gary@garyguo=
-.net/
-lands.
-
-> > +        // SAFETY: By the type invariants, the caller holds at least t=
-he mmap read lock, so this
-> > +        // access is not a data race.
-> > +        unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm=
-_start as _ }
-> > +    }
-> > +
-> > +    /// Returns the end address of the virtual memory area.
->
-> Worth mentioning that it's an _exclusive_ end.
-
-Sure, I'll add that.
-
-> > +    #[inline]
-> > +    pub fn end(&self) -> usize {
-> > +        // SAFETY: By the type invariants, the caller holds at least t=
-he mmap read lock, so this
-> > +        // access is not a data race.
-> > +        unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm=
-_end as _ }
-> > +    }
-> > +
-> > +    /// Unmap pages in the given page range.
->
-> This needs some more description, as 'unmapping' pages is unfortunately a=
-n
-> overloaded term in the kernel and this very much might confuse people as
-> opposed to e.g. munmap()'ing a range.
->
-> I'd say something like 'clear page table mappings for the range at the le=
-af
-> level, leaving all other page tables intact, freeing any memory reference=
-d
-> by the VMA in this range (anonymous memory is completely freed, file-back=
-ed
-> memory has its reference count on page cache folio's dropped, any dirty
-> data will still be written back to disk as usual)'.
-
-Sure, will add that to the docs.
-
-> > +    #[inline]
-> > +    pub fn zap_page_range_single(&self, address: usize, size: usize) {
-> > +        // SAFETY: By the type invariants, the caller has read access =
-to this VMA, which is
-> > +        // sufficient for this method call. This method has no require=
-ments on the vma flags. Any
-> > +        // value of `address` and `size` is allowed.
-> > +        unsafe {
-> > +            bindings::zap_page_range_single(
->
-> Hm weirdly I see this in rust/bindings/bindings_generated.rs but not in
-> rust/helpers/mm.c is this intended?
->
-> Is this meant to be generated _from_ somewhere? Is something missing for
-> that?
-
-The bindings_generated.rs file is generated at built-time from C
-headers. The zap_page_range_single is a real function, not a fake
-static inline header-only function, so bindgen is able to generate it
-without anything in rust/helpers.
-
-> > +                self.as_ptr(),
-> > +                address as _,
-> > +                size as _,
-> > +                core::ptr::null_mut(),
-> > +            )
-> > +        };
-> > +    }
-> > +}
-> > +
-> > +/// The integer type used for vma flags.
-> > +#[doc(inline)]
-> > +pub use bindings::vm_flags_t;
->
-> Where do you declare this type?
-
-It's declared in include/linux/mm_types.h
-
-> > +
-> > +/// All possible flags for [`VmAreaRef`].
->
-> Well you've not specified all as they're some speciailist ones and ones
-> that depend on config flags, so maybe worth just saying 'core' flags?
-
-Sure.
-
-> > +pub mod flags {
->
-> Pure rust noobie question (again...) but what is a 'mod'?
-
-It's a module.
-
-> > +    use super::vm_flags_t;
-> > +    use crate::bindings;
-> > +
-> > +    /// No flags are set.
-> > +    pub const NONE: vm_flags_t =3D bindings::VM_NONE as _;
->
-> This is strictly not a flag, as is the 0 value (and is used 'cleverly' in
-> kernel code when we have flags that are defined under some circumstances
-> but not others, where we can then assign these values to VM_NONE if not
-> available, ensuring all |=3D ... operations are no-ops and all &
-> ... expressions evaluate to false) but I guess it doesn't matter all too
-> much right?
-
-Ultimately it's just a bunch of integer constants. We can include or
-exclude whichever ones we prefer.
-
-> > +    /// Mapping allows reads.
-> > +    pub const READ: vm_flags_t =3D bindings::VM_READ as _;
-> > +
-> > +    /// Mapping allows writes.
-> > +    pub const WRITE: vm_flags_t =3D bindings::VM_WRITE as _;
-> > +
-> > +    /// Mapping allows execution.
-> > +    pub const EXEC: vm_flags_t =3D bindings::VM_EXEC as _;
-> > +
-> > +    /// Mapping is shared.
-> > +    pub const SHARED: vm_flags_t =3D bindings::VM_SHARED as _;
-> > +
-> > +    /// Mapping may be updated to allow reads.
-> > +    pub const MAYREAD: vm_flags_t =3D bindings::VM_MAYREAD as _;
-> > +
-> > +    /// Mapping may be updated to allow writes.
-> > +    pub const MAYWRITE: vm_flags_t =3D bindings::VM_MAYWRITE as _;
-> > +
-> > +    /// Mapping may be updated to allow execution.
-> > +    pub const MAYEXEC: vm_flags_t =3D bindings::VM_MAYEXEC as _;
-> > +
-> > +    /// Mapping may be updated to be shared.
-> > +    pub const MAYSHARE: vm_flags_t =3D bindings::VM_MAYSHARE as _;
-> > +
-> > +    /// Page-ranges managed without `struct page`, just pure PFN.
-> > +    pub const PFNMAP: vm_flags_t =3D bindings::VM_PFNMAP as _;
-> > +
-> > +    /// Memory mapped I/O or similar.
-> > +    pub const IO: vm_flags_t =3D bindings::VM_IO as _;
-> > +
-> > +    /// Do not copy this vma on fork.
-> > +    pub const DONTCOPY: vm_flags_t =3D bindings::VM_DONTCOPY as _;
-> > +
-> > +    /// Cannot expand with mremap().
-> > +    pub const DONTEXPAND: vm_flags_t =3D bindings::VM_DONTEXPAND as _;
-> > +
-> > +    /// Lock the pages covered when they are faulted in.
-> > +    pub const LOCKONFAULT: vm_flags_t =3D bindings::VM_LOCKONFAULT as =
-_;
-> > +
-> > +    /// Is a VM accounted object.
-> > +    pub const ACCOUNT: vm_flags_t =3D bindings::VM_ACCOUNT as _;
-> > +
-> > +    /// should the VM suppress accounting.
-> > +    pub const NORESERVE: vm_flags_t =3D bindings::VM_NORESERVE as _;
-> > +
-> > +    /// Huge TLB Page VM.
-> > +    pub const HUGETLB: vm_flags_t =3D bindings::VM_HUGETLB as _;
-> > +
-> > +    /// Synchronous page faults.
->
-> Might be worth mentioning that this is DAX-specific only.
-
-Will add.
-
-> > +    pub const SYNC: vm_flags_t =3D bindings::VM_SYNC as _;
-> > +
-> > +    /// Architecture-specific flag.
-> > +    pub const ARCH_1: vm_flags_t =3D bindings::VM_ARCH_1 as _;
-> > +
-> > +    /// Wipe VMA contents in child..
->
-> Typo '..' - also probably worth saying 'wipe VMA contents in child on
-> fork'.
-
-Will add.
-
-> > +    pub const WIPEONFORK: vm_flags_t =3D bindings::VM_WIPEONFORK as _;
-> > +
-> > +    /// Do not include in the core dump.
-> > +    pub const DONTDUMP: vm_flags_t =3D bindings::VM_DONTDUMP as _;
-> > +
-> > +    /// Not soft dirty clean area.
-> > +    pub const SOFTDIRTY: vm_flags_t =3D bindings::VM_SOFTDIRTY as _;
-> > +
-> > +    /// Can contain `struct page` and pure PFN pages.
-> > +    pub const MIXEDMAP: vm_flags_t =3D bindings::VM_MIXEDMAP as _;
-> > +
-> > +    /// MADV_HUGEPAGE marked this vma.
-> > +    pub const HUGEPAGE: vm_flags_t =3D bindings::VM_HUGEPAGE as _;
-> > +
-> > +    /// MADV_NOHUGEPAGE marked this vma.
-> > +    pub const NOHUGEPAGE: vm_flags_t =3D bindings::VM_NOHUGEPAGE as _;
-> > +
-> > +    /// KSM may merge identical pages.
-> > +    pub const MERGEABLE: vm_flags_t =3D bindings::VM_MERGEABLE as _;
-> > +}
-> >
->
-> I'd say these comments are a bit sparse and need more detail, but they ar=
-e
-> literally comments from include/linux/mm.h and therefore,  again, our fau=
-lt
-> so this is fine :)
-
-Happy to add more if you tell me what you'd like to see. ;)
-
-Alice
+T24gV2VkLCBOb3YgMjAsIDIwMjQgYXQgMTI6MTHigK9BTSBMeXVkZSBQYXVsIDxseXVkZUByZWRo
+YXQuY29tPiB3cm90ZToKPgo+IFRoZSBLTVMgYmluZGluZ3MgKCBodHRwczovL3BhdGNod29yay5m
+cmVlZGVza3RvcC5vcmcvc2VyaWVzLzEzMTUyMi8gKSBoYXZlCj4gYSBmZXcgYmluZGluZ3MgdGhh
+dCByZXF1aXJlIG1hbnVhbGx5IGFjcXVpcmluZyBzcGVjaWZpYyBsb2NrcyBiZWZvcmUKPiBjYWxs
+aW5nIGNlcnRhaW4gZnVuY3Rpb25zLiBBdCB0aGUgbW9tZW50IHRob3VnaCwgdGhlIG9ubHkgd2F5
+IG9mIGFjcXVpcmluZwo+IHRoZXNlIGxvY2tzIGluIGJpbmRpbmdzIGlzIHRvIHNpbXBseSBjYWxs
+IHRoZSBDIGxvY2tpbmcgZnVuY3Rpb25zIGRpcmVjdGx5Cj4gLSBzaW5jZSBzYWlkIGxvY2tzIGFy
+ZSBub3QgYWNxdWlyZWQgb24gdGhlIHJ1c3Qgc2lkZSBvZiB0aGluZ3MuCj4KPiBIb3dldmVyIC0g
+aWYgd2UgYWRkIGAjW3JlcHIoQyldYCB0byBgTG9jazwoKSwgQj5gLCB0aGVuIGdpdmVuIGAoKWAg
+aXMgYSBaU1QKPiAtIGBMb2NrPCgpLCBCPmAgYmVjb21lcyBlcXVpdmFsZW50IGluIGRhdGEgbGF5
+b3V0IHRvIGl0cyBpbm5lciBgQjo6U3RhdGVgCj4gdHlwZS4gU2luY2UgbG9ja3MgaW4gQyBkb24n
+dCBoYXZlIGRhdGEgZXhwbGljaXRseSBhc3NvY2lhdGVkIHdpdGggdGhlbQo+IGFueXdheSwgd2Ug
+Y2FuIHRha2UgYWR2YW50YWdlIG9mIHRoaXMgdG8gYWRkIGEgYExvY2s6OmZyb21fcmF3KClgIGZ1
+bmN0aW9uCj4gdGhhdCBjYW4gdHJhbnNsYXRlIGEgcmF3IHBvaW50ZXIgdG8gYEI6OlN0YXRlYCBp
+bnRvIGl0cyBwcm9wZXIgYExvY2s8KCksCj4gQj5gIGVxdWl2YWxlbnQuIFRoaXMgbGV0cyB1cyBz
+aW1wbHkgYWNxdWlyZSBhIHJlZmVyZW5jZSB0byB0aGUgbG9jayBpbgo+IHF1ZXN0aW9uIGFuZCB3
+b3JrIHdpdGggaXQgbGlrZSBpdCB3YXMgaW5pdGlhbGl6ZWQgb24gdGhlIHJ1c3Qgc2lkZSBvZgo+
+IHRoaW5ncywgYWxsb3dpbmcgdXMgdG8gdXNlIGxlc3MgdW5zYWZlIGNvZGUgdG8gaW1wbGVtZW50
+IGJpbmRpbmdzIHdpdGggbG9jawo+IHJlcXVpcmVtZW50cy4KPgo+IFNpZ25lZC1vZmYtYnk6IEx5
+dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+CgpSZXZpZXdlZC1ieTogRmlsaXBlIFhhdmllciA8
+ZmVsaXBlX2xpZmVAbGl2ZS5jb20+
