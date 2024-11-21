@@ -1,304 +1,283 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80461B0F0C;
-	Thu, 21 Nov 2024 13:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732194701; cv=fail; b=H/iAoLv7x8MqpEcA+JCDwfuJ1ECvg+H7ypjyQK/QdU9xk1T9E7cIQ/XDi9g6sFgOPFqydeTdajFKGP+3JG57RhGVu5Xn3iiIrVavjI9XbDhSXm8VaP9GjpwFjWCPxzN8agOaCcFDZImqVrlA/6VGuM/DErKhGAE/vAOFj0yWefs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732194701; c=relaxed/simple;
-	bh=Q2RiYH034da/JExgqVI2jniQydGtFRE13PlzncR3P6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SwVGaZ9V0pAFNNYzPlOnZ+scz7O8+LFanYzDafFmAIsgXBs8Q4dKh00UyeLnFgTG6WRREdT4ozGam6rjfpfJl3ttDM2YK1AWgxdpaMgVHTuU7nOvItwgE6y+kCWY+VSHOY+vf3FZznArlz3mpPHrvCw84qQR99x5hR1Trv8BVzk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=g49WW1sa; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=nSsjEMcz; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB6D4B5C1
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 14:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732199761; cv=none; b=RHbKNglBZYGlaYVtv3m7BvuVCt0UQBR66ttJtpp0tA/cnuu0ZxTigELteWs96CEkI3DVj98Oz0ANBIp4VtAdZLsMIAjEbvnVNTca64vvNbWB7dlSY6w1gCpmsqKE/gA0mjYmiL7SoMgIu+aJT5oG+wGkRpf/QXoqe+caudGvbfU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732199761; c=relaxed/simple;
+	bh=4HmDa/fZXe+n4G4QHZj1HexfrYZ1rPKO6UZrkY1Amgs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a39/s+coW9Bogy6QbIifWxrz8GMkLCReobd/W/lOmeKr4+Jcbn5yHxhdVYKQ8mmBk2AUJEI8jQdQfjx8cQ4b3QMxEsvIR143yuFagmL4xVswau3YkgRd1kdwtR43wiIfHhycqqkka5+pUdqkm0gNeI2Fay8gA/h/v94gHAX9sqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mvkzSvL1; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="g49WW1sa";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="nSsjEMcz"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ALCtdx6028948;
-	Thu, 21 Nov 2024 13:11:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=jClsrkTGT1HtWZfRhMIp34UkG9DjQ+cZ+EO+hqwAR1Q=; b=
-	g49WW1saezIwfD8e/OKOp/tj/K3UME7w0ab7nxKHv+W+zoyuQumamZtWKZBgH6Fh
-	siWsBB85JUCzPq/TgX1lbxTrQdkmY4vOhcZHxpJcjzQKP/FcWUxNtAX5RxpXKz05
-	7o9qaFaKxxXcstoUZE8gpfSJeXFNxYQpoGJsQXNnE6kz9yx6MCGueiLxTzIr37a/
-	8NiwCduYueK7ACUyK5hwCekuhWEvWmUqFuIyPot4iwqJXDEnOxJ0cSQ4KEZztG9B
-	AkoCltG4SZWfyzvNmNcH759NYfYz/jrhuTEuR2k4qlw/+BLqiCKxY8ZIR7TbABxY
-	Bt/s0SF7Doh3Leobt7Za4A==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42xhtc9m7t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Nov 2024 13:11:10 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4ALC0ifl009754;
-	Thu, 21 Nov 2024 13:11:09 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 42xhubsqhg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Nov 2024 13:11:09 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HGH6pZfGjJCdp9kdcVdQNf904eKGbycvEFWEx6MmkM8ucEzscSEhV1Co7mUq4uF1W3wECqNVcloX9mIEfg8zpBi4hjKubJx/Fi9VKpEoMrnFgi6Ohr1kP4sq/gk/t+IuRPQgPWFihrzG3IexDZiQi4hZSBwPpq/7z0ol2SFMUxvN6JEpZPmyaAlijJlBMHWtzdyiID54KATX38GnyBCvEJgAgPPQkMiXRl28vaP8dKYelM71OWAnE90xd2QVwXW1BKBquok2b/BV5H6d6QdzsqW4Dew5w0GAc97YOB/DO+BsRs8IQKQLrl+DygX/8yY7PUnvvvcBaYYxRSr8/5EGHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jClsrkTGT1HtWZfRhMIp34UkG9DjQ+cZ+EO+hqwAR1Q=;
- b=OaASwJJ7g9RgXkmgZsQxUdrN6hyS3D54pMrvF9dpwhS+oo1COuU8d9eqeewJ5ER++Ln1PLoLFHYgSh9MAjmH2xXCz17M0GH9UXqJY615VBV/8m2LHT8SKyqFqTV935MgSr7OnmQ43owBuBvzsInhgTZcvhn0Qr2wgJqg19oB6J8i2AwOiczi0v+2vWjtU41YP8KlLCmVHD2vicSnDwb+cPPRB2ULHCE6bk6nOJNOZJaPZmDjDMctYv9N7jR5LNz1VmK8kFDJBJ9CW1FcdBaQIaymTfsweSVXED6w4HpGTPI6qyU984oOKC3t5nWn3nQPiHy7rj8WJmL7pKkLYKbJQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mvkzSvL1"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4316cce103dso11316625e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 06:35:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jClsrkTGT1HtWZfRhMIp34UkG9DjQ+cZ+EO+hqwAR1Q=;
- b=nSsjEMczXu5xnsmpm6fwFSoG45AjI/6H1oenXNsQF6pkKro4RGpyYCWWe78UN5USNifvYDfBzKvn4sUREX1YgMHn4X/8qdWNq3uJjwzdzgcj8yYCHDd6C49RMjScV75xYmWDmEJ/qQ1vhtmVSZSM1n/rMXKYBtsvr4llapZ/nmw=
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com (2603:10b6:a03:14f::25)
- by IA1PR10MB6267.namprd10.prod.outlook.com (2603:10b6:208:3a1::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24; Thu, 21 Nov
- 2024 13:11:04 +0000
-Received: from BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9]) by BYAPR10MB3366.namprd10.prod.outlook.com
- ([fe80::baf2:dff1:d471:1c9%7]) with mapi id 15.20.8158.023; Thu, 21 Nov 2024
- 13:11:04 +0000
-Date: Thu, 21 Nov 2024 13:11:01 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-        Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-        Andreas Hindborg <a.hindborg@kernel.org>
-Subject: Re: [PATCH v8 7/7] rust: miscdevice: add mmap support
-Message-ID: <6a8b01a7-0088-4635-a542-cb1a8146ecfa@lucifer.local>
-References: <20241120-vma-v8-0-eb31425da66b@google.com>
- <20241120-vma-v8-7-eb31425da66b@google.com>
- <bd95657f-0fcf-4c13-a02a-d7293aa5f5ea@lucifer.local>
- <CAH5fLgjz7nd2DfqKJfDKFpODJ_TUMP1omN+7DqTnpqTNrXTC6g@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjz7nd2DfqKJfDKFpODJ_TUMP1omN+7DqTnpqTNrXTC6g@mail.gmail.com>
-X-ClientProxiedBy: LO4P123CA0100.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:191::15) To BYAPR10MB3366.namprd10.prod.outlook.com
- (2603:10b6:a03:14f::25)
+        d=google.com; s=20230601; t=1732199758; x=1732804558; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZsVy0uy+Xfrlo3kE7Fo9CxxMEZ/R7tSBkr5imkd6cwo=;
+        b=mvkzSvL1pQfsx1Ss2SYgOU6hjVkcXSaQe3am1GyFTk/hvRnh+g8J13kY6JNHFHMXHS
+         d0buxqC8cN0otGBjx2d5tY64mCsETYIR0JiPs2j67CdRpPhIcgaEiBjnzU89Z1+BEj6r
+         hxX5p6gUsV0o8wV4VlZRNA6i5IXZbX2hqJIwPQ33D3mLjsdBvnYyCXxnpAkWelO/3o4t
+         Wpn0LlgKGQ/6ln7sA0KdKAtr4hyOnGmTWLxkjnGINeWckhMyRyPPTRch6TdP692qXwby
+         FLJPjGcy7JsuhvMZhCtPyEiIjJMrSzuqO7Bb6fz6jmCT1I/PEzFxkp7BjObGLkp318Vs
+         SIxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732199758; x=1732804558;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZsVy0uy+Xfrlo3kE7Fo9CxxMEZ/R7tSBkr5imkd6cwo=;
+        b=MhGpFrYb25sLOSewLlhd9UIBDxUjv+V5oB8jjfX9pvxtDmNWXntm6VBjKpN6QlMvfH
+         f2eqxusdJVs6LwG0Yompp6KeT91vdCARtKj5RC3jQrlgND5QO01ejz9RTuZVuV0Ne7EZ
+         YtaagH07oLyyKhIpOog2A1+yyQ2oRDHyskKf8VEQ3niigopA6sos2D66EcJgTBvLxGtu
+         umCT/1oBwsJUQDcjRSBRTpZszUVlG15rB4UugCU0MV2DKARYVj2fiyq049YNhs0pwUPr
+         vkBYCr1ieBqtYmkCF5AY92FxecZd7+pq2Il6LhHQe8j6u/Y/4hvYGPzQVfpJGopYAou+
+         F3wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMZCoO1GxjxBgxmTz2DC6P1YdpR/2Y/GyyrUVEF7pVBhGdgHJOmxKFIAHI3rhDXd+24hDutbK19FOTtwJvtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6YhNaW4r1sOOhtQfKAO9uiiy2WY4vRqA0dtud3vyMDEK2h52S
+	WHCRUCgdZOZKDvTPQ0uxMrNff9j1lZKqbmF7WS2B8K97Kh15Eziwp7CiKN7R+66c0wm4LiVlyek
+	yUWfrQFazHwEt/oItM5b6T+oMi8VxmZcgOiNY
+X-Gm-Gg: ASbGncuDHsJWcHS55IBpBOAsp/0A4HKIfuRZd0wnTZb1WW39axsd7QDW3D/eD74bVxT
+	+hx1jxm7JuZ1MSVqDS2PbcraIG/9TndwfENgjQjAEhdSg9OxigfgTZKGWvh2Ang==
+X-Google-Smtp-Source: AGHT+IHJLA9duB6XIUDG0QrZybh6MZxkzXN8hB3iai9ICokuoepRojYUjEIhCq5VjfNQLrg3URF3G8FMaA2ucsNyiZE=
+X-Received: by 2002:a5d:6487:0:b0:382:46a2:3788 with SMTP id
+ ffacd0b85a97d-38254af9fd3mr5469204f8f.25.1732199757644; Thu, 21 Nov 2024
+ 06:35:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB3366:EE_|IA1PR10MB6267:EE_
-X-MS-Office365-Filtering-Correlation-Id: 185577ca-e052-4757-b9e5-08dd0a2df43a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YnNlTkp1a2hHZGkyRmtNUGJiVklBL3FPcis0Nlp5Z3ZpRTEybWVvUjRCcGZN?=
- =?utf-8?B?UWczWFdFMGtEWENGQVFoaUVpVVFqcFBOS2t5MDltdVozMC9pbGd4VWhGajlQ?=
- =?utf-8?B?RHdvQ2VXT3p3ano5ZXZzVVh3SVdNaFQyZG9PRFM3RHBzWG1qME1xTG5YQXFX?=
- =?utf-8?B?VDhjVUVYWVFNbFJDckl4cWErS000RXhVODRrcGRYMkNKUVhldGJoWFN2cXJY?=
- =?utf-8?B?S3oyVXBjZnora0VJS0FLeUFnc1Q4djdwZm5ZekRSRlFOaFdYZ3ZWazc4MWZC?=
- =?utf-8?B?eDNsaDVNcitIZUNHOWVnT2dHYVYwTFMyb2xrSnc4dzRnUi9vcXplNmNNQnd4?=
- =?utf-8?B?SkFOQVBLc0R4Mk5VSDZKOFNtQnNBNStjMjZtMWFVU3d6VzVqa1RJTERKMTN2?=
- =?utf-8?B?NUdjYkpBMm1Xb29iZWoyVTlMaEpJaEpvd015c2pvSXN5bkhyUElCUFZYY3FP?=
- =?utf-8?B?L0RlM3BZdldTR1pRM2ZLNm9paDFlbzIwa2Y4bldCaTNpNVIrRktaamVsYkpi?=
- =?utf-8?B?MHlCR0I1bkhLZXBJUzlGZFdSU2g0T3cxc1ZYbXR4OVNETHg4TFBjeXJjSXlq?=
- =?utf-8?B?bXNNaWp5dkdONWVKNlAzTEttRytEZmpKZldSbTFRQ0dSa0V2M2M2MGQ5NUNo?=
- =?utf-8?B?b3RGREVOTDYvY2JmZnVnWUU4K2ZHVmVpdUhoK3ZHR2ZHdzhvWmNXa0d1ZFdN?=
- =?utf-8?B?bTVzOGZtYlV3d3VjU01YTStKR3NBS0wwZjJqT080bVE1ZnZmaW90R3hoNTBw?=
- =?utf-8?B?K1dvdXJVRytzc0FQOXBCN1NIQ1BpSkpLYkl1WklCaDVxRVZyOTdBd1ZCeXpN?=
- =?utf-8?B?VW5scXIyRHkwbjFYTDJXUTB5VXdnNE9LSmE5WjZFUERtS0dUaCtIejZlUTFu?=
- =?utf-8?B?MG5PeVVYVC9JbXYranRHOU9mTUV1ZjBPdFArdUkvK3Z4VzRWN01UNjcrWWhC?=
- =?utf-8?B?cW40SitFSkM1REhmOGNWdmtmZmRHTytEWGxVTDhaWkYrNDQ5MkszeEJlaytv?=
- =?utf-8?B?c2xuMkdoQWZQYTN3Vi80aEM2Tkc3RzN2aEM1ZnJMSHhnRE5yc25FS2ord3Fp?=
- =?utf-8?B?dE1OT3hkLzhiT2pwVWlSUHd0dHVUWVc1aDVRaHc5d3JDQ3pIbGRPV3BKamVW?=
- =?utf-8?B?cjdSZ2pSRkwrR3BuN1BtVzFzMmNJU2xMekdyRjlQclJIcFpIZ2FYUmVJVHJi?=
- =?utf-8?B?TlgwdkxZMldtbUlWL3M3SEhmUW9MNnJVVWlLZHlpQWNwN2dQMWN5cTJkanp6?=
- =?utf-8?B?VlM0bTM1eE9IWUhIdzJJeWxxY0lXRXNHZjZ1QVN0bnR5K3FJTU41MFdCTDI2?=
- =?utf-8?B?S0VKb2pYblJrVjhpYlBiMzVPWjFLR1JtVXovTGVDQTZyL2tiL0tzcm1pSlF6?=
- =?utf-8?B?d2VkT2I2bVVXd2xwREI0Wk96ZC9RbGZESFVkMXcwV3JLbUs4c053K2lVVVZ5?=
- =?utf-8?B?QTJTbUVKVzVXTUtka1liK2tjYUMyWEVrOEdYQ0VYRy9sZ2hNTmQvSDI2enli?=
- =?utf-8?B?UnMvMW9DMW1vY0tsT1gxakxtS05aaEtJc1ZvVEtlc290MFRlcDBxMUxJY1dz?=
- =?utf-8?B?ZUttZSt1WE9naFFXcWFEMGpoRFova3BBeWZZSUQyWnhmN25jWXVMT2cvSWFG?=
- =?utf-8?B?MnhzZ0E0M1FIV1JMVWt6R2dsVmM3UFh1K3ZLWTVhbUFDQW9wV2Y2SGJaZVBL?=
- =?utf-8?B?SHp2ZnVOTCtDandRYnpkU3FpckFGMzJRenp4TXllazlKanFTWlYxZWUwdFJN?=
- =?utf-8?Q?NIUsrLtvFccA3MNju1QeY+3H1gjyTz2fFGKnWky?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3366.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y3M1ZTdCVlZhcmwrd285ZytNd3VjcTgyMURYam1kWWkzdXl3amVQYVBFVzJ6?=
- =?utf-8?B?cDJiaEN3NEFDQWt4ZkM5Rlp4eDVvSkE2WGJVaHRVdXlseFpidnhlWUE4TCtI?=
- =?utf-8?B?QWdza3B1d3RmWVB4THhyYStiU05kYzNHV2V4ek9WdGxoc0o4VnV6K2pTNk54?=
- =?utf-8?B?TjdJL2FCM0JGM0cvbzIwOXdBcjd5NlVQU2crSFVnOGlQVUFkdmZ0WXFnZUlI?=
- =?utf-8?B?bnNEZVBRdXdRWUlEVkFsVGhzNWcwVnJuSWtQeHBYMThJeEJiNStzcGdHV1Fi?=
- =?utf-8?B?ZUltOVpvdSt3Nk5tOCtUY1FLak10c3J1UDVhR1hoazRlb3pabUFkWURFakZo?=
- =?utf-8?B?WHUzZWtCNnYzR09CNHJNK1ZGRi9BV25JUXdadTBTMi9CQ0U1U2luMHg1WGt1?=
- =?utf-8?B?U2krbTFpTjB0N0N5a0twditvWEdsVDIwem9uWFFUSEJKVVhTOWIyWnJrOHZO?=
- =?utf-8?B?bkRXcjFyY2pESWEyZ0F6TytvTFNNOHh3b0JJVWlHZGgyS3JJVDVrbFQwcldx?=
- =?utf-8?B?NkJXU2lkRTNXaUhhdEp3V3F6ZUQ0dm5GTTFnb3FJNVFJZnFqZnA4WWdSV3dw?=
- =?utf-8?B?K2hzVW4zU1FYMU96OEFsRnludUFzQjVkdnc3a3lHbUNQVURENXYzbzZ6NFdq?=
- =?utf-8?B?eUFaKy9DMWtlclp1bS9UZjlYMmJldW9yU2FTUlM2WXlxU1FhZVFEODMyNi9T?=
- =?utf-8?B?SWpmcmxzU1ZBVkRpNkJUcmZWck54R1ZVbzF1OHhmUWs2UWx0cDllTHRZOVFm?=
- =?utf-8?B?ckdrQlFzWkxCbktVUElXa0VyYklEMkxoK0VyakY1VTVzbjg3MGR2Q2wzSk1I?=
- =?utf-8?B?ZUY0QXZFZWdiSmp4MEFWWjY1TjNkQnozSmZUL05UbWZtUlBFM2JNMTI3S1E2?=
- =?utf-8?B?YWpTZG00bVU5dERhWHR5RlVHMkwxdGt2RzRxWW8rSGpRU2tYV2ZycnRvUWtG?=
- =?utf-8?B?NnVwTnRYRkNBWmI4Yld6ZEtXRzYvNjE4KzliTDJGTnlWeXk1STMrYUVxSWVL?=
- =?utf-8?B?bXJoenlJbDRVMzRxY1piV0JoUlZvTUV4UzZEcEJrTHVFVUtZdDhGaEpGdk9L?=
- =?utf-8?B?cUorU3RmUUQyZ2tBWWVpQ1VKd2VPSDJzd3YwSFE1d3JCZitHN2RpTVNvem1x?=
- =?utf-8?B?RUZKUUtESG8xd1E5TGdUUXNFTS9RUWJrTXlZWVJpbURpcjdXWk9LOWw1M1RT?=
- =?utf-8?B?UE4zVWJWOGNHem9KalRBUEZmdy9jeTZ1ZWNjRjZXZ2xXa0Z4cmFkdFNDT0Qx?=
- =?utf-8?B?TDU4KzlkdUpaT0txNzJMMUR4MElBUzhwb3ZqSVZ0WFFzejFsYzhURGJWTlI5?=
- =?utf-8?B?YjFEUDRjaC9hWkI3YnB4Rlo0cUtsRmQ3bWlHbUZWZzVBaGdMNC83amE3c0hV?=
- =?utf-8?B?STFsaHdHRnZWQTNPY2NWaVlhV25GaVJXS2puRVFjdThBbUZtRVlreFBKbC9m?=
- =?utf-8?B?VS8wMHFiNGh6ZDJtYXpjQUV5NENqbm9RclQyZ1E3WHpXRTNqR2c1Z29IaVB4?=
- =?utf-8?B?NnVjcWFyV3RFSWZKUFFnaEUrUUpwb3N3c2w2SGF1bXFTUHJRMVpSeGxBQWNn?=
- =?utf-8?B?QUZBZzVkT0N6MWo2czdMMzhkdXNPNnZ2R1p2bGlTWHlWZTcrUnVyUWJYMHlQ?=
- =?utf-8?B?RTVkM1lUb3g3YWU2bWpDUHZtUCtJTFlvbG84a3I0WXpDSSs1UXkzZ2hUT2Iv?=
- =?utf-8?B?Ny85VE5YNDU3TnNNcXF4Ti9WYWtLUVhIWFJLMi8vb1lXQjNlK2IrWEtRWXlw?=
- =?utf-8?B?ZG96TnJOekN6T0VyY1NWMXo2a3Y4M2UzdWtBMk5Fbm1DUHVuUU9kUWNvQSs3?=
- =?utf-8?B?aTF5cFpGUVF3RGc2ekJxSk1va0FtL2RiYk9ZMGx4NDYzT1F2eitTeDJUSkU0?=
- =?utf-8?B?U1FwdDlzcE1MbnZvYjhlQ25iUVlvRDVIWlpEZGhyUWNWZEFhMHZsN0V5MGx4?=
- =?utf-8?B?VjVVVksrMHZYSU9zTUFJekpDUmtTZ0NuV0xwWUhjR0xOekNHbjRERFVFank4?=
- =?utf-8?B?MkxXekdyRE0vZU1DYmIydkYxeDc4SS9xdUdldGRQNWRhdXF3MXcwa2RpS3B6?=
- =?utf-8?B?TXFaenhDaWFEWEpmWWR6QXFMSVVEK1B6ZmZaMTRTY2phSkRSYWRkN1ozRUxC?=
- =?utf-8?B?MVIram92VEU0TjFKZTNmdGRXdG5tMnF4RVZNYTliTkhTVFArTEo5NWhKR2VN?=
- =?utf-8?B?VFE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	BfSE4x2v238jV0NY574bJ5N+SSXngl2Kef8IUBXffxooslFwMGXFBV2dUkvf9ZqXGT2bS5UXLpQNfDlvF6QDOXGQxFlx/kZTbc8Q98FmMfFHWzPO0oKhvPCB6nXImcXcS0u+EdMsZvp0/oJfmjGzpPmU0KndyY2zPzrVUtTJixqMOSxWaJOAHpVh1kh/7uId/U0Eg8Gg0nB/lkdKpvQs9/gDjrdjHExjqUuhoN/OSqerUrgffJy0nBlx8nmzQlpDy8xZOclA446UYMGoO/iD7uGJvUcj3W7CFAjGMzPP7ryu2kA0IYVsMGZlmDVrxf6gWvGln/hf12+Anr3+1Gu2+z7pFhKXTKiyP9ROEHwIpXkNK0D1OpdUXsxHV9G+9yubZPGcdT/NYHGcfuv+hKk39R1XuJmfzU6VQ3tjv28LBtF5XNVZTqo+wzZpqe6IOwH/0I4o+qGHFMmIzoUIEZpkJ2SvPJem7ie+oM48q9gK55K8WPNa5jOya1CTzn+vJWJ84FWH7+1wS3kTsUzcf+IEEvaaFi92lKhG7szShRqkVNOt9dU6MdxMsfn0+SmEMJu+6GCszr/CyDnkQuUqgzltOP7CY0Qf1fMGu092T+AdeH0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 185577ca-e052-4757-b9e5-08dd0a2df43a
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3366.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2024 13:11:04.6157
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EHb/OwSTNde9RcmHHnRO0nTK+SwPwOnKr2CmQ9V+AkqQXZccbtbePbTqcS1tn1ye5NNHx99+GLV9OMBdQVw281Z5nWcR2/EbhZ8JBNB7QpA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6267
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-11-21_09,2024-11-21_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- suspectscore=0 adultscore=0 bulkscore=0 mlxscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2411210102
-X-Proofpoint-GUID: grltO0Pa5riJdH5fQgsqWwP4--e0WIXp
-X-Proofpoint-ORIG-GUID: grltO0Pa5riJdH5fQgsqWwP4--e0WIXp
+References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-1-eb31425da66b@google.com>
+ <0c6f4dbb-ff09-439c-b736-35568c1450cc@lucifer.local> <CAH5fLgi5xbL=L-Mz_u64sA1QGLtxOgEvG_y4aJV2_mfy4iCxyg@mail.gmail.com>
+ <5a06280b-955d-41e1-8ab5-0b766ec7d7ac@lucifer.local>
+In-Reply-To: <5a06280b-955d-41e1-8ab5-0b766ec7d7ac@lucifer.local>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 21 Nov 2024 15:35:45 +0100
+Message-ID: <CAH5fLghNpbwteZMo7Lb81rg3yoxFs9ZbykSwgnnJZnpBuddCNA@mail.gmail.com>
+Subject: Re: [PATCH v8 1/7] mm: rust: add abstraction for struct mm_struct
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 21, 2024 at 11:08:05AM +0100, Alice Ryhl wrote:
-> On Wed, Nov 20, 2024 at 9:07 PM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > On Wed, Nov 20, 2024 at 02:50:01PM +0000, Alice Ryhl wrote:
-> > > Using the vma support introduced by the previous commit, introduce mmap
-> > > support for miscdevices. The mmap call is given a vma that is undergoing
-> > > initial setup, so the VmAreaNew type is used.
-> >
-> > Again, I'd be explicit about the VMA being passed to a struct
-> > file_operations->mmap() hook on mmap. Otherwise this seems super vague to
-> > me!
+On Thu, Nov 21, 2024 at 1:37=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> I wasn't sure if vmas could be constructed in any context other than
-> mmap. Will reword.
-
-Thanks.
-
+> I'm generally fine with this patch (other than rust specifics which I lea=
+ve
+> to the rust experts), however I'm a little concerned about us taking
+> reference counts when we don't need to so this is something I'd like to s=
+ee
+> addressed for v9 or, at least to be confident we're not doing this in the
+> binder code unnecessarily.
 >
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Thanks!
 
-_Definitely_ need the commit msg update above, but other than this from mm side
-looks reasonable, so:
+The refcount increment is *not* unnecessary in Binder. For the C
+equivalent, see the implementation of `binder_alloc_init`. It's used
+because Binder will access the mm of the recipient from the sender's
+scope, so it must hold on to an mm_struct reference.
 
-Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-
-> > > ---
-> > >  rust/kernel/miscdevice.rs | 28 ++++++++++++++++++++++++++++
-> > >  1 file changed, 28 insertions(+)
+> > > > +/// [`mmget_not_zero`]: Mm::mmget_not_zero
+> > > > +#[repr(transparent)]
+> > > > +pub struct Mm {
+> > > > +    mm: Opaque<bindings::mm_struct>,
+> > > > +}
 > > >
-> > > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > > index 7e2a79b3ae26..4e4b9476e092 100644
-> > > --- a/rust/kernel/miscdevice.rs
-> > > +++ b/rust/kernel/miscdevice.rs
-> > > @@ -11,6 +11,7 @@
-> > >  use crate::{
-> > >      bindings,
-> > >      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-> > > +    mm::virt::VmAreaNew,
-> > >      prelude::*,
-> > >      str::CStr,
-> > >      types::{ForeignOwnable, Opaque},
-> > > @@ -110,6 +111,11 @@ fn release(device: Self::Ptr) {
-> > >          drop(device);
-> > >      }
+> > > Does this tie this type to the C struct mm_struct type?
 > > >
-> > > +    /// Handle for mmap.
-> > > +    fn mmap(_device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>, _vma: &VmAreaNew) -> Result {
+> > > Does 'Opaque' mean it is a pointer to a type which is 'opaque' in the=
+ sense
+> > > that rust can't see into its internals?
 > >
-> > You will have to help me with this :) ForeignOwnable, Borrowed<'_>, _vma I'm a
-> > bit lost here!
->
-> When you implement the Miscdevice for your own type, you write a block
-> like this one:
->
-> impl Miscdevice for MyType {
->     type Ptr = Arc<MyType>;
->     ...
-> }
->
-> Here Arc is a pointer type (very similar to ARef) that represents
-> ownership over a refcount to a refcounted value.
->
-> In this case:
-> * Self refers to MyType.
-> * Self::Ptr refers to Arc<MyType>
-> * <Self::Ptr as ForeignOwnable>::Borrowed<'_> refers to ArcBorrow<MyType>
->
-> The last step is resolved to ArcBorrow<MyType> because of this impl
-> block in rust/kernel/sync/arc.rs:
->
-> impl<T: 'static> ForeignOwnable for Arc<T> {
->     type Borrowed<'a> = ArcBorrow<'a, T>;
->     ...
-> }
->
-> Note that Self::Ptr is short-hand for <Self as Miscdevice>::Ptr.
-
-Thanks!
-
->
-> > > +        kernel::build_error(VTABLE_DEFAULT_ERROR)
+> > This declaration defines a Rust type called Mm which has the same
+> > size, alignment, and contents as `struct mm_struct`. The purpose of
+> > Opaque is to tell Rust that it can't assume anything about the
+> > contents at all; we do that to leave it up to C.
 > >
-> > What is this? Is this not yet implemented or something, and this is a
-> > placeholder or something?
+> > For example, normally if you have an immutable reference &i32, then
+> > Rust is going to assume that the contents behind the reference are in
+> > fact immutable. Opaque turns that off, meaning that an `&Opaque<i32>`
+> > is allowed to reference an integer as it gets modified. It makes all
+> > access to the contents unsafe, though.
+> >
+> > Note that Opaque is *not* a pointer type. We're going to be dealing
+> > with types like &Mm or ARef<Mm> where &_ and ARef<_> are two different
+> > kinds of pointers.
 >
-> It's a build-time assertion that this function is dead-code eliminated.
->
-> There are two cases:
-> * Either the driver does not override mmap. In this case, we store a
-> null pointer in the fops table.
-> * Or the driver overrides mmap with their own implementation. In this
-> case, we store a function pointer to whichever implementation they
-> provided.
-> In neither case is the above function present anywhere in the final executable.
+> OK so when you reference Mm.mm that is in effect referencing the struct
+> mm_struct object rather than a pointer to a struct mm_struct? and
 
-Ah nice, zero-cost stuff.
+Yes.
 
+> > > > +// SAFETY: By the type invariants, this type is always refcounted.
+> > > > +unsafe impl AlwaysRefCounted for Mm {
+> > > > +    #[inline]
+> > > > +    fn inc_ref(&self) {
+> > > > +        // SAFETY: The pointer is valid since self is a reference.
+> > > > +        unsafe { bindings::mmgrab(self.as_raw()) };
+> > > > +    }
+> > > > +
+> > > > +    #[inline]
+> > > > +    unsafe fn dec_ref(obj: NonNull<Self>) {
+> > > > +        // SAFETY: The caller is giving up their refcount.
+> > > > +        unsafe { bindings::mmdrop(obj.cast().as_ptr()) };
+> > > > +    }
+> > > > +}
+> > >
+> > > Under what circumstances would these be taken? Same question for MmWt=
+hUser.
+> >
+> > This makes `Mm` compatible with the pointer type called ARef<_>. This
+> > pointer type is used to represent ownership of a refcount. So whenever
+> > a variable of type ARef<_> goes out of scope, the refcount is
+> > decremented, and whenever an ARef<_> is cloned, the refcount is
+> > incremented.
+> >
+> > The way this works is that ARef<_> is implemented to use the
+> > AlwaysRefCounted trait to understand how to manipulate the count. Only
+> > types that implement the trait with an impl block like above can be
+> > used with ARef<_>.
 >
-> Alice
+> OK so when you first instantiate an ARef<_> you don't increment the
+> reference count, only if it is cloned from there on in?
+
+Well it depends on which ARef constructor you are using. But the uses
+of ARef::from_raw do not increment the count.
+
+> > > > +// These methods are safe to call even if `mm_users` is zero.
+> > > > +impl Mm {
+> > > > +    /// Call `mmgrab` on `current.mm`.
+> > > > +    #[inline]
+> > > > +    pub fn mmgrab_current() -> Option<ARef<Mm>> {
+> > > > +        // SAFETY: It's safe to get the `mm` field from current.
+> > > > +        let mm =3D unsafe {
+> > > > +            let current =3D bindings::get_current();
+> > > > +            (*current).mm
+> > > > +        };
+> > >
+> > > I don't see an equivalent means of obtaining mm from current for
+> > > MmWithUser, is that intentional, would there be another means of obta=
+ining
+> > > an mm? (perhaps via vma->vm_mm I guess?)
+> > >
+> > > An aside -->
+> > >
+> > > If we're grabbing from current, and this is non-NULL (i.e. not a kern=
+el
+> > > thread), this is kinda MmWithUser to _start out_ with, but I guess if
+> > > you're grabbing the current one you might not expect it.
+> > >
+> > > I guess one thing I want to point out (maybe here is wrong place) is =
+that
+> > > the usual way of interacting with current->mm is that we do _not_ inc=
+rement
+> > > mm->mm_count, mm->mm_users or any refernce count, as while we are in =
+the
+> > > kernel portion of the task, we are guaranteed the mm and the backing
+> > > virtual address space will stick around.
+> > >
+> > > With reference to MmWithUser, in fact, if you look up users of
+> > > mmget()/mmput() it is pretty rare to do that.
+> > >
+> > > So ideally we'd avoid doing this if we could (though having the seman=
+tics
+> > > of grabbing a reference if we were to copy the object somehow again o=
+r hold
+> > > its state or something would be nice).
+> > >
+> > > I guess this might actually be tricky in rust, because we'd probably =
+need
+> > > to somehow express the current task's lifetime and tie this to that
+> > > and... yeah.
+> > >
+> > > <-- aside
+> >
+> > Ah, yeah, I guess this API is incomplete. We could have an API that
+> > lets you obtain an &MmWithUser instead. Then, if the user wants to
+> > increment the refcount, they can manually convert that into an
+> > ARef<Mm> or ARef<MmWithUser>.
+> >
+> > It's true that it's slightly tricky to express in Rust, but it's
+> > possible. We already have a way to get a &Task pointing at current.
+>
+> Yeah, but I think we should do this incrementally as I want this initial
+> series to merge first, after which we can tweak things.
+
+Rest assured that the API can be written to not automatically
+increment the refcount when accessing current. That's just binder's
+case.
+
+> > > > +        unsafe { &*ptr.cast() }
+> > > > +    }
+> > > > +
+> > > > +    /// Calls `mmget_not_zero` and returns a handle if it succeeds=
+.
+> > > > +    #[inline]
+> > > > +    pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
+> > >
+> > > I actually kinda love that this takes an mm and guarantees that you g=
+et an
+> > > MmWithUser out of it which is implied by the fact this succeeds.
+> > >
+> > > However as to the point above, I'm concerned that this might be seen =
+as
+> > > 'the way' to access an mm, i.e. mm.mmgrab_current().mmget_not_zero() =
+or
+> > > something.
+> > >
+> > > Whereas, the usual way of referencing current->mm is to not increment=
+ any
+> > > reference counts at all (assuming what you are doing resides in the s=
+ame
+> > > lifetime as the task).
+> > >
+> > > Obviously if you step outside of that lifetime, then you _do_ have to=
+ pin
+> > > the mm (nearly always you want to grab rather than get though in that
+> > > circumstance).
+> >
+> > I can add a way to obtain an &MmWithUser from current without
+> > incrementing the refcount.
+>
+> Yeah, I feel like we definitely need this.
+>
+> However we'd need to _not_ drop the refcount when it goes out of scope to=
+o
+> in this case.
+>
+> I'm not sure how you'd express that, however.
+
+The way you express that is by giving the user a &Mm or &MmWithUser
+instead of giving the user an ARef<Mm> or ARef<MmWithUser>. Using a
+normal reference implies that you don't have ownership over the
+refcount, and the reference has no destructor when it goes out of
+scope. The only slightly tricky piece is tying the lifetime of that
+reference to the scope of the current task, but this is a problem with
+a known solution.
+
+For more on this, see the discussion on the various versions of
+Christian's PidNamespace series:
+https://lore.kernel.org/rust-for-linux/20241002-brauner-rust-pid_namespace-=
+v5-1-a90e70d44fde@kernel.org/
+
+Alice
