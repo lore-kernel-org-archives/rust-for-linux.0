@@ -1,68 +1,71 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248C55FEED
-	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D7C1D2F6D
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 10:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732183701; cv=none; b=mXYstfnrntqrfj6WdqDZ1l0mHYFWQwojj8tY6+jINjCm6ZHLLgqFRUUdErEBIkEVDf57K3N7bQZPUEbRq46dgd5jDZLIkgzZ2fvRE0MqMmtglaIm9mnHOrWkucBwkDmucvx2aQPZ5xkGhH2qSCcJP+c1xrrxfweIkjtC/pzUwNU=
+	t=1732184637; cv=none; b=KupmPox5c64xgKXPDytHlqJNO4Uvw7kNT673Xv25kmGTya7gRFVd9p2xI1Cp0QK1LjBG1hmz+CdAVh6T4XYASd3fliUhjq6e0MUlkuhFMprKAimtzioyg2HjqLqzp6ZiExzndKN0KKVbPfWHV847U6vqty1XuSqaWH5u+szgEYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732183701; c=relaxed/simple;
-	bh=yBbdsApvfHb/NGOGR5y/qA9wfZsvXHVzSmYceufkpJ4=;
+	s=arc-20240116; t=1732184637; c=relaxed/simple;
+	bh=r2vqhBLadvtHBUeCOMSUP+L28dC5F+GcWemMdh8ESS8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BqHVhHlbHncq3EyKeaJbULbSmMivUOAVMaYXdIvVkNebopsXfBHihuImqhX4P1fLKnOu+7yoQWdLPho+pSfJtEnBFLNSherxKaT0uH7J6fw/UjmBeljBsCWGY8G7UOlLZj1xf72m5dATyrDLO0fpPN9ZjENpfD1NC5Bq3u88Kas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vpoOriIc; arc=none smtp.client-ip=209.85.221.52
+	 To:Cc:Content-Type; b=N8vU59maGCqWTMTwtE7/90VnyxlcSGdO+xS7BkLa+t9kfj8Pic/qMSnBexYdEw7LP3K89Awuk6wHsNukQlPQXHlEu6BbPNM9J0rY3fUP2eGOprPXf24jnTxzNJ8bUhkE8S6nTOJyaRYY/D44LF3xx40yiaDdyoNhZxb2/HeKJjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1IJt4/oU; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vpoOriIc"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3825c05cc90so247538f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 02:08:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1IJt4/oU"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso6047205e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 21 Nov 2024 02:23:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732183697; x=1732788497; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732184632; x=1732789432; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fuqAwFP3qXJbhgF+m94fzJxlivQXEpF5fDoudxVSxdg=;
-        b=vpoOriIc0J3hEVW4viNZwu753akxblUz/Ji6IGGnPVbn7Ln7mJNZ4pZ/bdMpHUquSq
-         2ZYwClmrniQ4+QWUOJsxDgwBMpovjsLr8Nriq8jYImW+9Mt2aF0Oyl1nDL1Hy2aWdwrs
-         CJ17cvqXwp2DKOQ7FI0GouyGmhGvGASXfKPXviTztHuMId9rIXjiTzaxLInZ0hPSdFa8
-         6Yi/E61ORXXuW3ZbOfXoecVgqCOMqHxZ0nTuiK4OTIx5dzN36PzwAGbzJ8Oxr24rLJX3
-         sM+f6Ap6lWeIWmVr1nv4PaWk3hVDzC69f6JJEy6rtatbknbVDa9ZWA3osU7AKLggu5nV
-         Rz7w==
+        bh=OlhoxgSKcYll6Lv3NUhKYXSAfrSERdcOsWs5wudsJzM=;
+        b=1IJt4/oURHIkt3f9NLMswOyZBXsVUMTN8AIacbfwLPaQjD8zEYwWT3AcLZyL25tcxB
+         ffQel3/4stRwM8kTHa/m4VOPhvZLacqOjs6NpspFQVCHlFJ2RMWjd4QIn3NpMpxWs516
+         Z7ylQV0MTUnwH8I8t6tz8sutRJtZ/dxPsmhW/ohu1dyUBn6UYfy9pRSIGrLztOvuPtz2
+         c9Qa/lZmbCQcffnLJ6ZriAwfonyatlZ9Isunrc90qNliRvFa9yU5CTqeHpvR73kQQvtZ
+         6ER5Nd9P1WaSqRca8phDQ87aq2OJiX2AQMfo3HVM4WNICQ15CUbR3MONRGgBPa56RrlB
+         vRlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732183697; x=1732788497;
+        d=1e100.net; s=20230601; t=1732184632; x=1732789432;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fuqAwFP3qXJbhgF+m94fzJxlivQXEpF5fDoudxVSxdg=;
-        b=hJou/7y0pn6kgc2AqlQmt5hTuq59gf9B418Ne0a0rimSyuSaf8sj7tjAyeGllYUg5o
-         WSUpNz5a6uWQvtosWkA32/TfBl3XjK3fUoAJGbVjWDuQ32nPHgcvcYSeTN6ko6oudMtM
-         PLxqPxlGtDVP/AxCVwGWRbLr7Qe90YdYKNP6AzbEtkCQWXTbeSSxmOtHSZUZYQcycP6S
-         ELocC68zFHkyNeyLTp09fmfCcFPU4TKZcloJhcjbvT25ySoBV4jzQTPa6DkR3S3dUcGE
-         ea1oCcJazVaax1G+d6o/Ca6UxJiBsQHEbsMhCgRaOUrdTVdK6LpmZ+Xo5STJmUeJGK9l
-         yYUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVRkoONJGmQNKRgN9qIqkmaZhtm3H1HjueQrfZ187TzrN1taDX+hvuWWp2aTzFIqqKtPaFH+rA9DRvvZkpQ1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ7GS8t2/sP4aivUmkhDsCnufUMDIPl5ngytKkNJ62/bvQMhZA
-	SMasg89aRjg39hHNgqCF0wz5u7XLEG6yImOMGKvYC9+wGkGs/8QKnHoKhErlrvIpFqoQk+MeTXA
-	YefsuL9xqAu4QCG4+rlDjXgji2vjEl4O+LUo8
-X-Google-Smtp-Source: AGHT+IGfL/ASasP7Bf+YpdHopthl9ENVqGb52IIvzrlZxcW0+1CQTsIidejsTxMVAFwQUIeUIXHTNsPRRrhQUzoCXzM=
-X-Received: by 2002:a5d:64c2:0:b0:382:4b5c:418c with SMTP id
- ffacd0b85a97d-38254b20878mr5116380f8f.55.1732183697395; Thu, 21 Nov 2024
- 02:08:17 -0800 (PST)
+        bh=OlhoxgSKcYll6Lv3NUhKYXSAfrSERdcOsWs5wudsJzM=;
+        b=HivIV7Yg5IFujeX8zz67nt4G2yhJVZ/pitd6S2JWReyiMTFw++jUkNEaW37Gb8NgEF
+         k+5zpa3+ditiLsTuvy89fq6VTnaHhbah5BR/e8OeD1EoHd56crjBF6sguqDuwD7eju+u
+         wdG1+8iQm+GeDfzBbYakT2XjryvVjmyKTur3aSxoaUosFltuuMR8wFlggnLTtpjbYiDU
+         C15/nlV94u6mDala2SYuuB2RO5EuZcwmfTFD+MYueMpP9A1QNgTTMSDziXIr/XruJ88Q
+         OH+t1Z2B5jvFTn9YVmMsN89EB63jGw5jnjamxbs6VUyzfKf7oAI5ND9Tu0xCR4b8r4Jr
+         X5Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ+ip0uiyEt033mWoaHQO+ENyA7puen4C43jv9udXHijXl68Fk+x0RJ24K5E2qEjqzehx9uTsiTPnfphT4ZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMeWD26WBM4Lrc7BK8iM/UnKYy+UBs0tK5LUgBqNjXZDdJ2VqS
+	2bhEPDgUuPA+MAvEH5rMzZIC+Fmn/3sDDjCtmdFPaSItzXO4y+vJ5WpNquNPFQGfZF9OlPWKMJy
+	64uyyDZcZvBBX1ksIYHWGG2K12Nsscy5Cuot/
+X-Gm-Gg: ASbGncv+0oiUiz+RxiykZ+gEmUhWz2l7Sp/46Ji6LVlBTPA/jiS+GTLn6p9UncAf9hB
+	YB8olHkohmc+RYUJi8IJR/apEpptb3qFEvsxLQE8IFJFxd3q0lMlJsmUrozv9Fg==
+X-Google-Smtp-Source: AGHT+IHg4W/WUKGS8b99/9IFak+Ih4XgWQHTn4uE6zc4bD/TotmtUxHVl01wgBvUz//vn3WMdD++hod39LRNOsPPkVw=
+X-Received: by 2002:a05:600c:b8a:b0:431:52a3:d9d9 with SMTP id
+ 5b1f17b1804b1-43348904026mr58688315e9.0.1732184631834; Thu, 21 Nov 2024
+ 02:23:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-7-eb31425da66b@google.com>
- <bd95657f-0fcf-4c13-a02a-d7293aa5f5ea@lucifer.local>
-In-Reply-To: <bd95657f-0fcf-4c13-a02a-d7293aa5f5ea@lucifer.local>
+References: <20241120-vma-v8-0-eb31425da66b@google.com> <20241120-vma-v8-2-eb31425da66b@google.com>
+ <c26a63a3-0f1e-467d-b24f-3963e5e4e13d@lucifer.local>
+In-Reply-To: <c26a63a3-0f1e-467d-b24f-3963e5e4e13d@lucifer.local>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 21 Nov 2024 11:08:05 +0100
-Message-ID: <CAH5fLgjz7nd2DfqKJfDKFpODJ_TUMP1omN+7DqTnpqTNrXTC6g@mail.gmail.com>
-Subject: Re: [PATCH v8 7/7] rust: miscdevice: add mmap support
+Date: Thu, 21 Nov 2024 11:23:39 +0100
+Message-ID: <CAH5fLghdeBvbtC+aPq0mSr1io+DUt-J54zYagys63cK-4tictQ@mail.gmail.com>
+Subject: Re: [PATCH v8 2/7] mm: rust: add vm_area_struct methods that require
+ read access
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
@@ -76,91 +79,457 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 20, 2024 at 9:07=E2=80=AFPM Lorenzo Stoakes
+On Wed, Nov 20, 2024 at 8:07=E2=80=AFPM Lorenzo Stoakes
 <lorenzo.stoakes@oracle.com> wrote:
 >
-> On Wed, Nov 20, 2024 at 02:50:01PM +0000, Alice Ryhl wrote:
-> > Using the vma support introduced by the previous commit, introduce mmap
-> > support for miscdevices. The mmap call is given a vma that is undergoin=
-g
-> > initial setup, so the VmAreaNew type is used.
+> On Wed, Nov 20, 2024 at 02:49:56PM +0000, Alice Ryhl wrote:
+> > This adds a type called VmAreaRef which is used when referencing a vma
+> > that you have read access to. Here, read access means that you hold
+> > either the mmap read lock or the vma read lock (or stronger).
 >
-> Again, I'd be explicit about the VMA being passed to a struct
-> file_operations->mmap() hook on mmap. Otherwise this seems super vague to
-> me!
+> This is pure nit and not important but...
+>
+> I know we screwed up naming in mm, with the god awful vm_area_struct (we
+> abbreviate, for 2 letters, get bored, stop abbreviating, but throw in a
+> struct for a laugh) or 'VMA', but I wonder if this would be better as
+> VmaRef? Then again that's kinda terrible too.
+>
+> Sorry about that. I mean this isn't hugely important + ultimately _our
+> fault_.
+>
+> VirtualMemoryAreaRef is worse... VirtMemAreaRef? OK. Maybe VMAreaRef is t=
+he
+> least bad...
 
-I wasn't sure if vmas could be constructed in any context other than
-mmap. Will reword.
+Happy to use whichever name you prefer. :)
 
+> > Additionally, a vma_lookup method is added to the mmap read guard, whic=
+h
+> > enables you to obtain a &VmAreaRef in safe Rust code.
+> >
 > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > > ---
-> >  rust/kernel/miscdevice.rs | 28 ++++++++++++++++++++++++++++
-> >  1 file changed, 28 insertions(+)
+> >  rust/helpers/mm.c      |   6 ++
+> >  rust/kernel/mm.rs      |  21 ++++++
+> >  rust/kernel/mm/virt.rs | 171 +++++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  3 files changed, 198 insertions(+)
 > >
-> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > index 7e2a79b3ae26..4e4b9476e092 100644
-> > --- a/rust/kernel/miscdevice.rs
-> > +++ b/rust/kernel/miscdevice.rs
-> > @@ -11,6 +11,7 @@
-> >  use crate::{
-> >      bindings,
-> >      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-> > +    mm::virt::VmAreaNew,
-> >      prelude::*,
-> >      str::CStr,
-> >      types::{ForeignOwnable, Opaque},
-> > @@ -110,6 +111,11 @@ fn release(device: Self::Ptr) {
-> >          drop(device);
-> >      }
+> > diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+> > index 7201747a5d31..7b72eb065a3e 100644
+> > --- a/rust/helpers/mm.c
+> > +++ b/rust/helpers/mm.c
+> > @@ -37,3 +37,9 @@ void rust_helper_mmap_read_unlock(struct mm_struct *m=
+m)
+> >  {
+> >       mmap_read_unlock(mm);
+> >  }
+> > +
+> > +struct vm_area_struct *rust_helper_vma_lookup(struct mm_struct *mm,
+> > +                                           unsigned long addr)
+> > +{
+> > +     return vma_lookup(mm, addr);
+> > +}
+>
+> I wonder whether we want to abstract some of the VMA iterator stuff,
+> because it's inefficient to look up VMAs by doing this each time if you a=
+re
+> looking at, for instance, adjacent VMAs.
+>
+> But perhaps reasonable to defer doing that to later work?
+
+Yeah, that should probably be deferred. Binder only has one vma per
+mm, so iteration is not useful.
+
+> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> > index 84cba581edaa..ace8e7d57afe 100644
+> > --- a/rust/kernel/mm.rs
+> > +++ b/rust/kernel/mm.rs
+> > @@ -12,6 +12,8 @@
+> >  };
+> >  use core::{ops::Deref, ptr::NonNull};
 > >
-> > +    /// Handle for mmap.
-> > +    fn mmap(_device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>, _vma=
-: &VmAreaNew) -> Result {
+> > +pub mod virt;
+> > +
+> >  /// A wrapper for the kernel's `struct mm_struct`.
+> >  ///
+> >  /// Since `mm_users` may be zero, the associated address space may not=
+ exist anymore. You can use
+> > @@ -210,6 +212,25 @@ pub struct MmapReadGuard<'a> {
+> >      _nts: NotThreadSafe,
+> >  }
+> >
+> > +impl<'a> MmapReadGuard<'a> {
+> > +    /// Look up a vma at the given address.
+> > +    #[inline]
+> > +    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmAreaR=
+ef> {
 >
-> You will have to help me with this :) ForeignOwnable, Borrowed<'_>, _vma =
-I'm a
-> bit lost here!
-
-When you implement the Miscdevice for your own type, you write a block
-like this one:
-
-impl Miscdevice for MyType {
-    type Ptr =3D Arc<MyType>;
-    ...
-}
-
-Here Arc is a pointer type (very similar to ARef) that represents
-ownership over a refcount to a refcounted value.
-
-In this case:
-* Self refers to MyType.
-* Self::Ptr refers to Arc<MyType>
-* <Self::Ptr as ForeignOwnable>::Borrowed<'_> refers to ArcBorrow<MyType>
-
-The last step is resolved to ArcBorrow<MyType> because of this impl
-block in rust/kernel/sync/arc.rs:
-
-impl<T: 'static> ForeignOwnable for Arc<T> {
-    type Borrowed<'a> =3D ArcBorrow<'a, T>;
-    ...
-}
-
-Note that Self::Ptr is short-hand for <Self as Miscdevice>::Ptr.
-
-> > +        kernel::build_error(VTABLE_DEFAULT_ERROR)
+> Kind of lovely to have functions under the read guard and then knowing th=
+at
+> hey - we must hold the read lock to be able to do this.
 >
-> What is this? Is this not yet implemented or something, and this is a
-> placeholder or something?
+> Imagine, a programming language with actual types... :P
 
-It's a build-time assertion that this function is dead-code eliminated.
+:)
 
-There are two cases:
-* Either the driver does not override mmap. In this case, we store a
-null pointer in the fops table.
-* Or the driver overrides mmap with their own implementation. In this
-case, we store a function pointer to whichever implementation they
-provided.
-In neither case is the above function present anywhere in the final executa=
-ble.
+> > +        // SAFETY: We hold a reference to the mm, so the pointer must =
+be valid. Any value is okay
+> > +        // for `vma_addr`.
+> > +        let vma =3D unsafe { bindings::vma_lookup(self.mm.as_raw(), vm=
+a_addr as _) };
+>
+> Why do we say 'as _' here?
+
+This is an integer cast where the target type of the cast is inferred
+by the compiler. It will go away once this lands:
+https://lore.kernel.org/rust-for-linux/20240913213041.395655-1-gary@garyguo=
+.net/
+
+> > +
+> > +        if vma.is_null() {
+> > +            None
+> > +        } else {
+> > +            // SAFETY: We just checked that a vma was found, so the po=
+inter is valid. Furthermore,
+> > +            // the returned area will borrow from this read lock guard=
+, so it can only be used
+> > +            // while the mmap read lock is still held.
+>
+> Lovely!
+>
+> > +            unsafe { Some(virt::VmAreaRef::from_raw(vma)) }
+> > +        }
+> > +    }
+> > +}
+> > +
+> >  impl Drop for MmapReadGuard<'_> {
+> >      #[inline]
+> >      fn drop(&mut self) {
+> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> > new file mode 100644
+> > index 000000000000..1e755dca46dd
+> > --- /dev/null
+> > +++ b/rust/kernel/mm/virt.rs
+> > @@ -0,0 +1,171 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2024 Google LLC.
+> > +
+> > +//! Virtual memory.
+>
+> Trivial rust q again but does this result in a heading in generated docs =
+or
+> something?
+
+Yes, this becomes module documentation. Check out:
+https://rust.docs.kernel.org/kernel/
+or try out `make LLVM=3D1 rustdoc`
+
+> > +use crate::{bindings, types::Opaque};
+> > +
+> > +/// A wrapper for the kernel's `struct vm_area_struct` with read acces=
+s.
+> > +///
+> > +/// It represents an area of virtual memory.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The caller must hold the mmap read lock or the vma read lock.
+>
+> Might be worth mentioning here that you have yet to abstract the vma lock=
+?
+
+I do that in the next patch.
+
+> > +#[repr(transparent)]
+> > +pub struct VmAreaRef {
+> > +    vma: Opaque<bindings::vm_area_struct>,
+> > +}
+> > +
+> > +// Methods you can call when holding the mmap or vma read lock (or str=
+ong). They must be usable no
+> > +// matter what the vma flags are.
+>
+> typo: 'or strong' -> 'or stronger'.
+>
+> Nitty, but perhaps say 'Methods must be usable' rather than 'they' to be
+> totally clear.
+
+Will reword.
+
+> > +impl VmAreaRef {
+> > +    /// Access a virtual memory area given a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that `vma` is valid for the duration of 'a=
+, and that the mmap read lock
+> > +    /// (or stronger) is held for at least the duration of 'a.
+>
+> Well, VMA locks make this more complicated, in that we can just hold a VM=
+A
+> lock. But again, perhaps worth doing this incrementally and just talk abo=
+ut
+> mmap locks to start with.
+>
+> However since we reference VMA locks elsewhere, we should reference them
+> here (and probably worth mentioning that they are not yet abstracted).
+
+Oh I forgot to update this, it should say "mmap or vma read lock".
+
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -=
+> &'a Self {
+> > +        // SAFETY: The caller ensures that the invariants are satisfie=
+d for the duration of 'a.
+> > +        unsafe { &*vma.cast() }
+> > +    }
+> > +
+> > +    /// Returns a raw pointer to this area.
+> > +    #[inline]
+> > +    pub fn as_ptr(&self) -> *mut bindings::vm_area_struct {
+> > +        self.vma.get()
+> > +    }
+> > +
+> > +    /// Returns the flags associated with the virtual memory area.
+> > +    ///
+> > +    /// The possible flags are a combination of the constants in [`fla=
+gs`].
+> > +    #[inline]
+> > +    pub fn flags(&self) -> vm_flags_t {
+> > +        // SAFETY: By the type invariants, the caller holds at least t=
+he mmap read lock, so this
+> > +        // access is not a data race.
+> > +        unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags as _ }
+>
+> Hm what's up with this __bindgen_anon_N stuff?
+
+Whenever you have a `struct { ... }` or `union { ... }` in the middle
+of a struct, bindgen generates additional types for them because Rust
+doesn't have a direct equivalent.
+
+> > +    }
+> > +
+> > +    /// Returns the start address of the virtual memory area.
+> > +    #[inline]
+> > +    pub fn start(&self) -> usize {
+>
+> Is usize guranteed to be equivalent to unsigned long?
+
+They are guaranteed to have the same size, yes.
+
+But again, right now `unsigned long` is being translated to whichever
+one of u32 or u64 has the same size as usize, instead of just being
+translated to usize. Thus the annoying casts. We can get rid of them
+as soon as
+https://lore.kernel.org/rust-for-linux/20240913213041.395655-1-gary@garyguo=
+.net/
+lands.
+
+> > +        // SAFETY: By the type invariants, the caller holds at least t=
+he mmap read lock, so this
+> > +        // access is not a data race.
+> > +        unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm=
+_start as _ }
+> > +    }
+> > +
+> > +    /// Returns the end address of the virtual memory area.
+>
+> Worth mentioning that it's an _exclusive_ end.
+
+Sure, I'll add that.
+
+> > +    #[inline]
+> > +    pub fn end(&self) -> usize {
+> > +        // SAFETY: By the type invariants, the caller holds at least t=
+he mmap read lock, so this
+> > +        // access is not a data race.
+> > +        unsafe { (*self.as_ptr()).__bindgen_anon_1.__bindgen_anon_1.vm=
+_end as _ }
+> > +    }
+> > +
+> > +    /// Unmap pages in the given page range.
+>
+> This needs some more description, as 'unmapping' pages is unfortunately a=
+n
+> overloaded term in the kernel and this very much might confuse people as
+> opposed to e.g. munmap()'ing a range.
+>
+> I'd say something like 'clear page table mappings for the range at the le=
+af
+> level, leaving all other page tables intact, freeing any memory reference=
+d
+> by the VMA in this range (anonymous memory is completely freed, file-back=
+ed
+> memory has its reference count on page cache folio's dropped, any dirty
+> data will still be written back to disk as usual)'.
+
+Sure, will add that to the docs.
+
+> > +    #[inline]
+> > +    pub fn zap_page_range_single(&self, address: usize, size: usize) {
+> > +        // SAFETY: By the type invariants, the caller has read access =
+to this VMA, which is
+> > +        // sufficient for this method call. This method has no require=
+ments on the vma flags. Any
+> > +        // value of `address` and `size` is allowed.
+> > +        unsafe {
+> > +            bindings::zap_page_range_single(
+>
+> Hm weirdly I see this in rust/bindings/bindings_generated.rs but not in
+> rust/helpers/mm.c is this intended?
+>
+> Is this meant to be generated _from_ somewhere? Is something missing for
+> that?
+
+The bindings_generated.rs file is generated at built-time from C
+headers. The zap_page_range_single is a real function, not a fake
+static inline header-only function, so bindgen is able to generate it
+without anything in rust/helpers.
+
+> > +                self.as_ptr(),
+> > +                address as _,
+> > +                size as _,
+> > +                core::ptr::null_mut(),
+> > +            )
+> > +        };
+> > +    }
+> > +}
+> > +
+> > +/// The integer type used for vma flags.
+> > +#[doc(inline)]
+> > +pub use bindings::vm_flags_t;
+>
+> Where do you declare this type?
+
+It's declared in include/linux/mm_types.h
+
+> > +
+> > +/// All possible flags for [`VmAreaRef`].
+>
+> Well you've not specified all as they're some speciailist ones and ones
+> that depend on config flags, so maybe worth just saying 'core' flags?
+
+Sure.
+
+> > +pub mod flags {
+>
+> Pure rust noobie question (again...) but what is a 'mod'?
+
+It's a module.
+
+> > +    use super::vm_flags_t;
+> > +    use crate::bindings;
+> > +
+> > +    /// No flags are set.
+> > +    pub const NONE: vm_flags_t =3D bindings::VM_NONE as _;
+>
+> This is strictly not a flag, as is the 0 value (and is used 'cleverly' in
+> kernel code when we have flags that are defined under some circumstances
+> but not others, where we can then assign these values to VM_NONE if not
+> available, ensuring all |=3D ... operations are no-ops and all &
+> ... expressions evaluate to false) but I guess it doesn't matter all too
+> much right?
+
+Ultimately it's just a bunch of integer constants. We can include or
+exclude whichever ones we prefer.
+
+> > +    /// Mapping allows reads.
+> > +    pub const READ: vm_flags_t =3D bindings::VM_READ as _;
+> > +
+> > +    /// Mapping allows writes.
+> > +    pub const WRITE: vm_flags_t =3D bindings::VM_WRITE as _;
+> > +
+> > +    /// Mapping allows execution.
+> > +    pub const EXEC: vm_flags_t =3D bindings::VM_EXEC as _;
+> > +
+> > +    /// Mapping is shared.
+> > +    pub const SHARED: vm_flags_t =3D bindings::VM_SHARED as _;
+> > +
+> > +    /// Mapping may be updated to allow reads.
+> > +    pub const MAYREAD: vm_flags_t =3D bindings::VM_MAYREAD as _;
+> > +
+> > +    /// Mapping may be updated to allow writes.
+> > +    pub const MAYWRITE: vm_flags_t =3D bindings::VM_MAYWRITE as _;
+> > +
+> > +    /// Mapping may be updated to allow execution.
+> > +    pub const MAYEXEC: vm_flags_t =3D bindings::VM_MAYEXEC as _;
+> > +
+> > +    /// Mapping may be updated to be shared.
+> > +    pub const MAYSHARE: vm_flags_t =3D bindings::VM_MAYSHARE as _;
+> > +
+> > +    /// Page-ranges managed without `struct page`, just pure PFN.
+> > +    pub const PFNMAP: vm_flags_t =3D bindings::VM_PFNMAP as _;
+> > +
+> > +    /// Memory mapped I/O or similar.
+> > +    pub const IO: vm_flags_t =3D bindings::VM_IO as _;
+> > +
+> > +    /// Do not copy this vma on fork.
+> > +    pub const DONTCOPY: vm_flags_t =3D bindings::VM_DONTCOPY as _;
+> > +
+> > +    /// Cannot expand with mremap().
+> > +    pub const DONTEXPAND: vm_flags_t =3D bindings::VM_DONTEXPAND as _;
+> > +
+> > +    /// Lock the pages covered when they are faulted in.
+> > +    pub const LOCKONFAULT: vm_flags_t =3D bindings::VM_LOCKONFAULT as =
+_;
+> > +
+> > +    /// Is a VM accounted object.
+> > +    pub const ACCOUNT: vm_flags_t =3D bindings::VM_ACCOUNT as _;
+> > +
+> > +    /// should the VM suppress accounting.
+> > +    pub const NORESERVE: vm_flags_t =3D bindings::VM_NORESERVE as _;
+> > +
+> > +    /// Huge TLB Page VM.
+> > +    pub const HUGETLB: vm_flags_t =3D bindings::VM_HUGETLB as _;
+> > +
+> > +    /// Synchronous page faults.
+>
+> Might be worth mentioning that this is DAX-specific only.
+
+Will add.
+
+> > +    pub const SYNC: vm_flags_t =3D bindings::VM_SYNC as _;
+> > +
+> > +    /// Architecture-specific flag.
+> > +    pub const ARCH_1: vm_flags_t =3D bindings::VM_ARCH_1 as _;
+> > +
+> > +    /// Wipe VMA contents in child..
+>
+> Typo '..' - also probably worth saying 'wipe VMA contents in child on
+> fork'.
+
+Will add.
+
+> > +    pub const WIPEONFORK: vm_flags_t =3D bindings::VM_WIPEONFORK as _;
+> > +
+> > +    /// Do not include in the core dump.
+> > +    pub const DONTDUMP: vm_flags_t =3D bindings::VM_DONTDUMP as _;
+> > +
+> > +    /// Not soft dirty clean area.
+> > +    pub const SOFTDIRTY: vm_flags_t =3D bindings::VM_SOFTDIRTY as _;
+> > +
+> > +    /// Can contain `struct page` and pure PFN pages.
+> > +    pub const MIXEDMAP: vm_flags_t =3D bindings::VM_MIXEDMAP as _;
+> > +
+> > +    /// MADV_HUGEPAGE marked this vma.
+> > +    pub const HUGEPAGE: vm_flags_t =3D bindings::VM_HUGEPAGE as _;
+> > +
+> > +    /// MADV_NOHUGEPAGE marked this vma.
+> > +    pub const NOHUGEPAGE: vm_flags_t =3D bindings::VM_NOHUGEPAGE as _;
+> > +
+> > +    /// KSM may merge identical pages.
+> > +    pub const MERGEABLE: vm_flags_t =3D bindings::VM_MERGEABLE as _;
+> > +}
+> >
+>
+> I'd say these comments are a bit sparse and need more detail, but they ar=
+e
+> literally comments from include/linux/mm.h and therefore,  again, our fau=
+lt
+> so this is fine :)
+
+Happy to add more if you tell me what you'd like to see. ;)
 
 Alice
