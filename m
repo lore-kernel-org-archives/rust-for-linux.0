@@ -1,139 +1,72 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.corporacle.pl (mail.corporacle.pl [80.211.129.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3763156F3F;
-	Fri, 22 Nov 2024 08:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF9818C020
+	for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 08:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.211.129.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732264605; cv=none; b=CyyoCnGDCd2Y+0lUM4pNjBWneOk3TXeVn4oDjDQghGWthuRtqSR/UAWBw+3aqZehJV8hD4CJeuUT24HRIpz2zxetgTKVyIs7eiR4JOt9jKZ8zbwMPwJU+FxGrY6BTfsvlEpAtStTs3uF3b5E8dajEhzZIi3W9NJRW8FHm/sYa7E=
+	t=1732265122; cv=none; b=OqWq0BQjaN5QA6DNOMj+JbjhTLxg8hvtOEPJsfQQo0zTudEyajFGXEUCrgJ//+I9JK7fDEg1X4adhjkF7p+Mba99KZ/e+swPDK6qOfezN8o1oGXyW6pWTiYD11lUw8wI4caYh+HsdbnnJZlVUxgxOiqox7VWcClOtfyFxQXZgog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732264605; c=relaxed/simple;
-	bh=vFW0IJ0LFbR2xrz/HIKuVD0t8pgr0vzXqGnWzS7nRwk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jGA5xwNKu7eVwK9Xh4ZVCkT4lurv6yqKjos3+DyipDcAuqixzP+51/eHPha04x/7MUxBg10X0sH3Qm+IAerp7WPpcWQhsHf4XNgA/EyQKF12JDgyYiQgaeMk+WJLi/tVBnXtbGTUkNFiSssdGmBEnD/cruHYPacwbrjCtpQwNAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBgAOS1V; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732265122; c=relaxed/simple;
+	bh=3jvBg+xgGNSqfcF/OVHqLnm9UmTAlYeXKQIdcLxVgzc=;
+	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=rSLJDUmzP6GZ0Rs4ZEqQndeyE3aTH7CYXA26cVp/DqRxYJhhVaIRh6vimmK5jirLaNQOcwFZXsyN4Sx8HYBqpjNIThYC+NMbzalNJC1AEVJeYZ15Nao7jbL/TZEimCIPZWeD0hmqS7W88z5ZxX/be/eHkgfmMsyxtdQEEzsXuc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=corporacle.pl; spf=pass smtp.mailfrom=corporacle.pl; dkim=pass (2048-bit key) header.d=corporacle.pl header.i=@corporacle.pl header.b=F97PHiP8; arc=none smtp.client-ip=80.211.129.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=corporacle.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corporacle.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBgAOS1V"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53d9ff92ee9so2069170e87.1;
-        Fri, 22 Nov 2024 00:36:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732264602; x=1732869402; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MBEAvvG9TOvTtZsp475mYKKe/GTMGyWrpHVozBadszo=;
-        b=DBgAOS1VQPg3W1HatePsVFYaR0sUJl7e5uDd7DPw80dQYE0UppCUHCFrsAojKgW50D
-         Bdu1gPEHD7PU00vyDvTAZeEH5XI/6OODr9kEqp6csQClfBLCVzC1dzh3VcO8/GO7QV9J
-         gr+fjRzV+j8KR+TCpiq5phmnfUJmC50dqL9JtilMuose62epnKQVRjWN0t1lzYLRJB2q
-         TAx/Qnvc5/mc3pU/5PeaDoEfYAHZe+3RTPC9s9wCjW2msziKm0YuSjU0HwOt/PUXwhue
-         i/6wnx51m+yq4jSl7MCYe6a05qS0Btt62Oi5xX6LPCFGPi3pdGB7uG5YRBtikAGUmEV+
-         ubtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732264602; x=1732869402;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MBEAvvG9TOvTtZsp475mYKKe/GTMGyWrpHVozBadszo=;
-        b=cATa28w66EZwKaKQCe/isjNiZPaPLiQ7vKP3Ww9Q1gLHQlneiMf+oPh3mKXfRYy6Mr
-         w+aOFJAKvlXsxD8x0IgaKVLe/CZcoy4NvGPbxQgGFUYuPx69f5G12Z9qPyAwn4Qg7l7o
-         rWaDbcY600cVHBjXzKTsevKCDrGAXQQJwi09TCjrXXpZjDaKuufwAF+hQSDJO6PA/Xco
-         cpxoe+DQNcUKd7dAbcz9a7nfg8CFfnLwbsgY6HwJhSrYuWrVYGmA0OYtU4rZI29+x6a8
-         YvWuGhtBjWRI1e+CBb5G3/OVsfgJ4Cd8Koq6SVlS8IWWSOX3k5iHUQmV/clflYsq9Ust
-         vx/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXGsUrhbq9YHymPlfVfE+yhx3yBx7yEByJ7CADux5ynHlFzCcqG9QHowxJ+3DFQB66EieQMescg6aHVUHA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzb+viayfwYNqyFmi0gWCgn4b78gxHG1B+qL/LSOzgTxFVUgA2
-	RoDJXRm214mbLPNyOniiF7maf0DkguJ5B+CfJpRFdRpM/1kyRtoF
-X-Gm-Gg: ASbGnctteahKp0WzFa5UdM30mEwxCiM0WqVsalwHaQG6DJMVCAQFHxODELbdCKj8TGi
-	BCoKgp+ItM1MWSv7h7SUNCNlTO7zhgCMc21X5iaGuXYni6u1CQlVsk5wKtvJobzYKVTve3tfc8Y
-	5lHz+Wxlyvz1nB6RFJPaOI0MHz9rmJK6srBhS1SYbt+YKyxCRXsGaeaIChHWRE61Fao8deI0zLS
-	PJ/N83CFRPW2Ui2/WrGMD13fzSJnc4gxzKEmt6FSIW0P9lfGNw87qJTU6X8RuyRIQ9g04ScXZJF
-	7QCQyiAPJOwfYjrytjxQ
-X-Google-Smtp-Source: AGHT+IGdwiR49anO91g2/YPv1iIkpUxFpZJxQBmEsHcwqIfap5HF3A+oVH1AnEJU7mnuAizghBvzdg==
-X-Received: by 2002:a05:6512:1cc:b0:53d:cd25:4a61 with SMTP id 2adb3069b0e04-53dd39b15e0mr811640e87.42.1732264601474;
-        Fri, 22 Nov 2024 00:36:41 -0800 (PST)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dd24811b0sm289272e87.162.2024.11.22.00.36.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Nov 2024 00:36:40 -0800 (PST)
-Message-ID: <f0052c1d-ce36-447c-af1f-db12940f6cc1@gmail.com>
-Date: Fri, 22 Nov 2024 10:36:39 +0200
+	dkim=pass (2048-bit key) header.d=corporacle.pl header.i=@corporacle.pl header.b="F97PHiP8"
+Received: by mail.corporacle.pl (Postfix, from userid 1002)
+	id AE41283C30; Fri, 22 Nov 2024 09:35:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corporacle.pl;
+	s=mail; t=1732264591;
+	bh=3jvBg+xgGNSqfcF/OVHqLnm9UmTAlYeXKQIdcLxVgzc=;
+	h=Date:From:To:Subject:From;
+	b=F97PHiP85Y75AJ/orT0XK0Qp8lJIVDiDX/1xgdno8owItqPi4CRcV+0ZJTei0GeQK
+	 sHXuoE6mw1UPb2BLx8u1zZEr1gH58Hi0vTkxFGTB7XdHyXphFlWKXbvu+sb81HPwCq
+	 pFMpPlcb99u8qf3o10UWCRAA/wkPJgRXbSQ/eL+24odk0/6Dd1/6omh6IHC3LbHTWq
+	 ydSwiQMwigsuGY6KjqhTFEuJi8qaAxomZHrD2IqMnJbWsPPYPrxqIJYKZN+EGqRwI6
+	 iH9Gq14PT574ZO3zrYNNLkh4haK4QHgZufV06qE7OLTkLT/wjeq3GFhWFWQYaZt86a
+	 NcLbqDxcYFCkQ==
+Received: by mail.corporacle.pl for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 08:35:09 GMT
+Message-ID: <20241122084500-0.1.bn.1bmwo.0.fcbfeu8m9q@corporacle.pl>
+Date: Fri, 22 Nov 2024 08:35:09 GMT
+From: "Zuzanna Chaber" <zuzanna.chaber@corporacle.pl>
+To: <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Zamro=C5=BCenie_ceny_energii?=
+X-Mailer: mail.corporacle.pl
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] rust: page: Extend support to existing struct page
- mappings
-To: Alice Ryhl <aliceryhl@google.com>, Jann Horn <jannh@google.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
-References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
- <20241119112408.779243-3-abdiel.janulgue@gmail.com>
- <CAG48ez3fjXG1Zi=V8yte9ZgSkDVeJiQV6xau7FHocTiTMw0d=w@mail.gmail.com>
- <43a07c04-2985-4999-b6d6-732794906a36@gmail.com>
- <CAG48ez1uzoEcsFG7Tsfj2WCXor9-mhffoWO8VFoit3j_mUC7-A@mail.gmail.com>
- <CAH5fLghUb8dEV9GVtJj497cJ5sp4Gg7=qeijfnV_w4BNd70qxg@mail.gmail.com>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <CAH5fLghUb8dEV9GVtJj497cJ5sp4Gg7=qeijfnV_w4BNd70qxg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/11/2024 09:55, Alice Ryhl wrote:
-> On Thu, Nov 21, 2024 at 9:18 PM Jann Horn <jannh@google.com> wrote:
->>
->> On Wed, Nov 20, 2024 at 11:56 PM Abdiel Janulgue
->> <abdiel.janulgue@gmail.com> wrote:
->>> On 19/11/2024 19:07, Jann Horn wrote:
->>>>> +    pub fn page_slice_to_page<'a>(page: &PageSlice) -> Result<&'a Self>
->>>>
->>>> Sorry, can you explain to me what the semantics of this are? Does this
->>>> create a Page reference that is not lifetime-bound to the PageSlice?
->>>
->>> This creates a Page reference that is tied to the lifetime of the `C
->>> struct page` behind the PageSlice buffer. Basically, it's just a cast
->>> from the struct page pointer and does not own that resource.
->>
->> How is the Page reference tied to the lifetime of the C "struct page"?
->>
->> I asked some Rust experts to explain to me what this method signature
->> expands to, and they added the following to the Rust docs:
->>
->> https://github.com/rust-lang/reference/blob/master/src/lifetime-elision.md
->> ```
->> fn other_args1<'a>(arg: &str) -> &'a str;             // elided
->> fn other_args2<'a, 'b>(arg: &'b str) -> &'a str;      // expanded
->> ```
->>
->> Basically, my understanding is that since you are explicitly
->> specifying that the result should have lifetime 'a, but you are not
->> specifying the lifetime of the parameter, the parameter is given a
->> separate, unrelated lifetime by the compiler? Am I misunderstanding
->> how this works, or is that a typo in the method signature?
-> 
-> No, you are correct. The signature is wrong and lets the caller pick
-> any lifetime they want, with no relation to the lifetime of the
-> underlying `struct page`.
+Dzie=C5=84 dobry,=20
 
-But that could be put in the invariant that the PageSlice buffer must 
-last at least the lifetime `'a`?
+czy planuj=C4=85 Pa=C5=84stwo optymalizacj=C4=99 koszt=C3=B3w energii ele=
+ktrycznej w swojej firmie?
 
-> 
->  From a C perspective, what are the lifetime requirements of vmalloc_to_page?
-> 
+Chcieliby=C5=9Bmy przedstawi=C4=87 nasz=C4=85 ofert=C4=99 XPOT, kt=C3=B3r=
+a mo=C5=BCe przynie=C5=9B=C4=87 znacz=C4=85ce oszcz=C4=99dno=C5=9Bci. Ju=C5=
+=BC od teraz, mog=C4=85 Pa=C5=84stwo uzyska=C4=87 cen=C4=99 ni=C5=BCsz=C4=
+=85 o 40,9% w stosunku do obecnej ceny ustawowej.=20
 
-If I'm not mistaken, that should be the lifetime of the vmalloc'd buffer 
-right?
+Nasza propozycja obejmuje lata 2024, 2025 i 2026, a start wsp=C3=B3=C5=82=
+pracy jest mo=C5=BCliwy od zaraz. Gwarantujemy elastyczne warunki umowy (=
+3-6-9-12 miesi=C4=99cy), zapewniaj=C4=85c minimum formalno=C5=9Bci.
 
+Jeste=C5=9Bmy pionierem w sprzeda=C5=BCy energii w cenach RDN wed=C5=82ug=
+ TGE dla ka=C5=BCdej grupy taryfowej. Przez ca=C5=82y okres trwania umowy=
+ zapewniamy Pa=C5=84stwu dedykowanego opiekuna, a ca=C5=82y proces Zmiany=
+ Sprzedawcy i wszelkie formalno=C5=9Bci realizujemy za Klient=C3=B3w. =20
+
+Ch=C4=99tnie porozmawiam o tym, jak mo=C5=BCemy wsp=C3=B3lnie zrealizowa=C4=
+=87 Pa=C5=84stwa cele energetyczne.
+
+Prosz=C4=99 o wiadomo=C5=9B=C4=87 w przypadku zainteresowania.=20
+
+
+Pozdrawiam
+Zuzanna Chaber
