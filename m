@@ -1,157 +1,224 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B929A5
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 18:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DF364A8F;
+	Fri, 22 Nov 2024 19:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732301485; cv=none; b=KLeAUp00m50ihbxfnYL1d0smW4Zh+l/F6jyLuJSycuUcfY9b1LQ6JUaY5fWYh4iwWzCUAvaBEBHH+xWie6hBvEjTHAd7QPw5c83QynlVMQ4a+j8ayQR2zOZxLgyYXPaSw7Mq8XjCwF/dQliyNQmStiiYuhLxMk1UX7ZsYGciCKM=
+	t=1732303041; cv=none; b=G5rbYtOMPS2W0NsQStYSoPzjPQZ5nWtmfxp0y9bQi/VVMju4iiudz2NNN4Ed0yg5kgALUwVKQrJ2nRRk33vPlelUJsi/43x6ECve21DEPsYzRygpsTVec0uuaDV5Jk2+yIcDvR379KbkJ4gkE8MmSlApwe/DbYxarzKPY3RlG2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732301485; c=relaxed/simple;
-	bh=EDdjp3Lg+51DL8S+jI088MEBG3Mx8anTybv8AsR/tQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pxGx6lIcmZyLTGjP21wwMyezZVlPhsacXjCcX+V/+oSmXf1iMpi6HZYWZHXDN2fqZ55MgHEzMztT1HN0/x14e0w9yR9NqjWmrtIz7qv8wP//Rhxs8XYt7Ln+JeXpD9q1Rs3lP7BrpMu7xTh6Ll+MCVK3WSzpZ6yP1N70u15NHwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0UFb3Q3; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1732303041; c=relaxed/simple;
+	bh=QNhcd5PqohHJAkYGy+7DoXt8NxXZD0nmlHPGy43myHY=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eYoWthhHCCYXad7Ce75UODkeKWwv9RDthlt+jkz+x6an3sdUYR/Pm+7HqgbG8TR1TB1rbq6dS4c09CTHh/Y8KBz2HWGp1cl29eO1jFInuiJBiNPlUsaw/70IEM93QpnBQgyRA3pKZdOGiJSKII8C7uujeyaVTCtHmxEfztE/PJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdJb8nn3; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0UFb3Q3"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-431695fa98bso19984155e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 10:51:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdJb8nn3"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6d4241457b7so14102796d6.2;
+        Fri, 22 Nov 2024 11:17:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732301482; x=1732906282; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gpPPN3R1McXWozDvHX/daHUfjmdWOz+ThDGU7hiahks=;
-        b=H0UFb3Q3t2LHnSdHH8OUHPEsb3O3cmnA9PehJ/eDmVBOLEWyaJHFff4nrJQuWjnEeX
-         pl1YKwmfEdKtkRdnBqctjYwSFVBCnesTL42eWyQnxHdOJ2daaH4troRrOlwXU9q7AbRD
-         yzE7VSl2QT8FMClrxYIaZ+kZgW4mHsTn3efA2QEso8JnPlzr4EYmXodY6at8IeJb4jd9
-         XYuS0htA4wqvW5eX1fz9lqRQB0x/10nUybx5PjaIpQNNrJwL8LZf/TvVIDIJywCaKqfO
-         jnxTkxKHsX20KxW43DwxyUaPRRH5nlBIM96Gn5ouDHMCEvzOXoEVdD389FFxxJmWIXqE
-         89ew==
+        d=gmail.com; s=20230601; t=1732303039; x=1732907839; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:feedback-id
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Epssg2UejcAoGOvobTdJvf0gOa9HRphNulF2J5a7SI=;
+        b=ZdJb8nn3e6yswMw/x8K/LhUAeJdu/+aDYEcu2Z8snEVymeuSjj1TE7yq/4RF62iNNK
+         nsU2LsI/MhCzu3ygRjbhNm89GFwU9Wfltxger9m/jfmE716fA7W9hBr+GFgrz5SN4F6K
+         qlnUd08w2JlbT0coOQGLqVHGyrb+It2FT9Mo+wiFYpSKUyQBwHRKFLidPJDJdXYMNnYz
+         uVvhxEsFKq0ZkPv2XGEZ1ZNfnGyx63QS8J+tpFhalSQJianHVb9TymSfk58WcZYERzNU
+         lgadlxKtaqJ//w7szQKOYqLfe3xX9NJu0qgg2y23bvZPxGIZ2hSeI6gkUD1kId7KsP1t
+         6L9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732301482; x=1732906282;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gpPPN3R1McXWozDvHX/daHUfjmdWOz+ThDGU7hiahks=;
-        b=Ye8QvwguYWilOFnt0V7PINeLOb6T5ku1sOvoMyh0R1xjCq9sSLTcEofOVOEehsoQVZ
-         vyRetMTKi6dHLixlbY0hj4nCgusTyxx/41RF8pKuc2CZIcAh6kWp2C0IsljqLKHUTZ8b
-         2Ta1TJ6A/lyjBD06kxxBRww1nIAt8JMM0aQOMAf5RP0h2hecY/zI1/QIH5g8ubU80vnX
-         lxxgZp8KXwNy3ZSGuyXWcp29WRDfNv7uoQLn+S6QHOvEAPNBxrbRUUJWmuhTQzNL8uHW
-         FyKaurl4R1FvvSg46pI4l+Diip39ivLJIZDPbYZi3Kc6GcgyACoLFK4oqgs9LFk+UgJK
-         4iOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXkNc40HA/R8EjSlZmBbT3ONuZ2eI0yng653JbHAxH59AbwV8Evs8DulZtWTcPSPTvrsR0wtcAwMYDnUnLgXQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgGy1gzIlj179bcQgo17xqPPw8sgNQcdL7fCc6JmrAwJr9waPb
-	yDYdvG+mJOR+PzxKkn4Bb+2qwqu92bzkbyM2eO+pVeYhq7jWXueWkaLHgzHEghfS2qxSB1KsWVi
-	gszGfyi2DYCWpkjEXvhyWHhXv/ajjKWuYRVIj
-X-Gm-Gg: ASbGncvurutdMcDRVr58fUbRy351iL0hK2656+iahOSJ/01j+STckl8l3bWPzytfNwE
-	+GJuK2E6EON0+9+jMGIsvikKug88sbsgS
-X-Google-Smtp-Source: AGHT+IG60MHKWjpS7HL7BdSocFUswkPE6VjI5QZYufrqTtnaXwwR0eY35AZS63m+jOBxtRcZRh13iR5ORrpJEqRMoRU=
-X-Received: by 2002:a05:600c:1f88:b0:431:60d0:9088 with SMTP id
- 5b1f17b1804b1-433ce426feamr37670195e9.13.1732301482043; Fri, 22 Nov 2024
- 10:51:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732303039; x=1732907839;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:feedback-id
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0Epssg2UejcAoGOvobTdJvf0gOa9HRphNulF2J5a7SI=;
+        b=ALhXP2wzFtTeVfrkmXQ98k0r1C+b+q5rBik6FASgjhKVrt7v6QkWeKMNYWGAADpumL
+         f83tfok/o0m6F2xpemxN+Ao5j5FZiFG6xxYYzFrh7mwoGPMnoq5jYGz679/Sz6sxcApu
+         7qfLc/TLhlEobHipxIqIrqSYSmzNSo+n+8k8FnDtYXIZpt0J5f2hykz00ECWbephpOz/
+         YVWezpUqhER4N1h3hIoMgL5SMMF+haRRNd/mnCD+VhueuVhL1YAyubIhDTUtbGiA42Uj
+         v68Ak+2/K78sshVJgWk6RMZkByHXeSWsDH+h3Qruae5TKmuRQ05cnyPDh1xFWd0iXOoa
+         fH3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUeNX/3nnM5cY5/smNtfZi5JxHwqxDhco4386ypfoUkKUnpDaquy+yuQYdv29iiW/gGWiaIoUcGM9El8cs=@vger.kernel.org, AJvYcCVuXYT3WjnGTu905rjE9mldSqJL8IrEWgPqLNu2zbRdIptB1TEXm5gmTrT+wUWfvHuY+6sT1E+FrHuOdU9lnOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywRN1ZfdTv0WE8wMLpqtD261DX4AQEU8RyaXELKHrLDdStV9+y
+	/esosj+W2y4P/bn+i5FhHgPNJFSn6snu3ZnDzSrUVvdGxBrS2cPI
+X-Gm-Gg: ASbGncsXuRtaSOrSpuyP71ETZXXkhZGYnYpGPudBnokH/8ard2l7lI/DH8h3sJsGQA3
+	pmKBN5xpwlqNDXwM3fkhmhJ3nu1ksB51fXASG60zNiwx6aKq7TEmxB+RAyFnKf0xFedya3Xf0WG
+	zqDs7wxUWDqBZToh15zb2IYYS07jJ43RhQSGciFF+RmRlULacP0oVqcw4EPmjJzYoFTIx1gGhRN
+	oiCL0RifgvnP630bygi4wIcRwc5fBVX75O1wyYg3FHPnx48RI7scfLMhzyeZnjqcp4ULZBPnQYg
+	HK8ph2ryKpLML4vvdzuCqWLhE1+MM1O63KmjcvYK
+X-Google-Smtp-Source: AGHT+IEXXmkmiV/IARZzBCM/RUYMbge0XmQ5IKPMwVUZ/euEELlOMiYB0fF0xQSOST8Tf1/a8m2nxg==
+X-Received: by 2002:ad4:5aa7:0:b0:6d4:f14:eb99 with SMTP id 6a1803df08f44-6d45137933fmr56465506d6.45.1732303039166;
+        Fri, 22 Nov 2024 11:17:19 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451b61c88sm13228766d6.121.2024.11.22.11.17.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Nov 2024 11:17:18 -0800 (PST)
+Message-ID: <6740d8be.050a0220.30b282.4f2e@mx.google.com>
+X-Google-Original-Message-ID: <Z0DYuxG8H6aO4eWM@winterfell.>
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0B142120006D;
+	Fri, 22 Nov 2024 14:17:18 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Fri, 22 Nov 2024 14:17:18 -0500
+X-ME-Sender: <xms:vdhAZ9mc3Apla49gtI_eyLcQMK65b0sVzr72rGshiJu8w8qBfYpinA>
+    <xme:vdhAZ43a2-J7zbnDRKUefWViKX-0rNTwcnGR0vAysgbb961TE4CXnevrGOLsXDkER
+    _V08IxwDGK8uUeclA>
+X-ME-Received: <xmr:vdhAZzoUU9XyG1hhlNCZsFdXj8SzLlJsFtoQIpGIxKe1XgjJFlbBpNUdBA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrfeelgdelkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeen
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeevueeuteeifeekhedtveelgfevheeuhfduffej
+    jeffudeihfevffefleeuffefgeenucffohhmrghinhepmhhmihhfmhhmrdhishenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
+    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
+    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
+    vgdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    grlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorh
+    hgpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhm
+    pdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgiipdhrtghpthhtohepjhhhuhgssg
+    grrhgusehnvhhiughirgdrtghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthes
+    ohhrrggtlhgvrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurg
+    htihhonhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurght
+    ihhonhdrohhrgh
+X-ME-Proxy: <xmx:vdhAZ9kk56507uZ5_ZPH0i5iAFPFcoiEMOblPKctoPLB6Y5EvuYmng>
+    <xmx:vdhAZ71q1YW_CI1AtZKWiByTUxla-Y6LNk06goZLrRFgoDqtThI57w>
+    <xmx:vdhAZ8vc5oYBtt_QTDUk4Ivhss9mxp8YZf2tAV5huXbrgp6sr8qE9g>
+    <xmx:vdhAZ_X1a-LEOW_qYPoU--9PNsMTt6s0oT1lKIpkCBI67gXZuHI2xw>
+    <xmx:vthAZy2kfqMui_znVSe5nQPDHIpgIp4Tqdw5UqQWAFA6cR1_3q5Sil-J>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 Nov 2024 14:17:17 -0500 (EST)
+Date: Fri, 22 Nov 2024 11:17:15 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v9 8/8] task: rust: rework how current is accessed
+References: <20241122-vma-v9-0-7127bfcdd54e@google.com>
+ <20241122-vma-v9-8-7127bfcdd54e@google.com>
+ <6740c786.050a0220.31315a.5363@mx.google.com>
+ <CAH5fLgiiCgcPRkdeGX7LJcaGN5Y5E=zWOXuwqo+GU-tTt63PzA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-8-7127bfcdd54e@google.com>
- <44ef7154-0f38-46c0-b87d-e598b146f4a4@lucifer.local>
-In-Reply-To: <44ef7154-0f38-46c0-b87d-e598b146f4a4@lucifer.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 22 Nov 2024 19:51:10 +0100
-Message-ID: <CAH5fLgifW+x6d8S42Gz5p0jEXVC7MGKQAygUXL5VWzgrxP2Uxg@mail.gmail.com>
-Subject: Re: [PATCH v9 8/8] task: rust: rework how current is accessed
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgiiCgcPRkdeGX7LJcaGN5Y5E=zWOXuwqo+GU-tTt63PzA@mail.gmail.com>
 
-On Fri, Nov 22, 2024 at 6:55=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Fri, Nov 22, 2024 at 03:40:33PM +0000, Alice Ryhl wrote:
-> > Introduce a new type called `CurrentTask` that lets you perform various
-> > operations that are only safe on the `current` task. Use the new type t=
-o
-> > provide a way to access the current mm without incrementing its
-> > refcount.
->
-> Nice!
->
+On Fri, Nov 22, 2024 at 07:48:16PM +0100, Alice Ryhl wrote:
+> On Fri, Nov 22, 2024 at 7:03 PM Boqun Feng <boqun.feng@gmail.com> wrote:
 > >
-> > With this change, you can write stuff such as
+> > On Fri, Nov 22, 2024 at 03:40:33PM +0000, Alice Ryhl wrote:
+> > > +/// Represents a [`Task`] obtained from the `current` global.
+> > > +///
+> > > +/// This type exists to provide more efficient operations that are only valid on the current task.
+> > > +/// For example, to retrieve the pid-namespace of a task, you must use rcu protection unless it is
+> > > +/// the current task.
+> > > +///
+> > > +/// # Invariants
+> > > +///
+> > > +/// Must be equal to `current` of some thread that is currently running somewhere.
+> > > +pub struct CurrentTask(Task);
+> > > +
 > >
-> >       let vma =3D current!().mm().lock_vma_under_rcu(addr);
+> > I think you need to make `CurrentTask` `!Sync`, right? Otherwise, other
+> > threads can access the shared reference of a `CurrentTask` and the ->mm
+> > field. I'm thinking if we have a scoped thread/workqueue support in the
+> > future:
 > >
-> > without incrementing any refcounts.
+> >         let task = current!();
+> >         Workqueue::scoped(|s| {
+> >             s.spawn(|| {
+> >                 let mm = task.mm();
+> >                 // do something with the mm
+> >             });
+> >         });
+> 
+> I don't think this is a problem? As long as a thread exists somewhere
+> with `current` being equal to the task, we should be fine?
+> 
+
+I think I had a misunderstanding on what you meant by "operations
+that are only valid on the current task", you mean these operations can
+be run by other threads, but it has to be *on* a task_struct that's
+"currently running", right? BTW, you probably want to reword a bit,
+because the "current" task may be blocked, so technically it's not
+"running".
+
+Basically, the operations that `CurrentTask` have are the methods that
+are safe to call (even on a different thread) for the "current" task, as
+long as it exists (not dead or exited). In that definition, not being
+`Sync` is fine.
+
+But I have to admit I'm a bit worried that people may be confused, and
+add new methods that can be only run by the current thread in the
+future.
+
+> > > +impl CurrentTask {
+> > > +    /// Access the address space of this task.
+> > > +    ///
+> > > +    /// To increment the refcount of the referenced `mm`, you can use `ARef::from`.
+> > > +    #[inline]
+> > > +    pub fn mm(&self) -> Option<&MmWithUser> {
 > >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> On assumption that the problem you reference with the rust imports is
-> corrected in v10, and that what you are doing with current_raw() is
-> sensible, then:
->
-> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->
-> Thanks!
->
-> > ---
-> > Reviewers: Does accessing task->mm on a non-current task require rcu
-> > protection?
->
-> Hm I am not actually sure, but it seems like you probably do, and I would=
- say
-> you need the task lock right?
->
-> Looking at find_lock_task_mm() as used by the oomk for instance suggests =
-as much.
+> > Hmm... similar issue, `MmWithUser` is `Sync`.
+> 
+> What is the problem with that?
+> 
 
-Okay, sounds complicated. I'm not going to bother with that right now.
+It should be no problem under your definition of `CurrentTask`.
 
-> >  /// The type of process identifiers (PIDs).
-> >  type Pid =3D bindings::pid_t;
+Regards,
+Boqun
+
+> > > +        let mm = unsafe { (*self.as_ptr()).mm };
+> > > +
+> > > +        if mm.is_null() {
+> > > +            None
+> > > +        } else {
+> > > +            // SAFETY: If `current->mm` is non-null, then it references a valid mm with a non-zero
+> > > +            // value of `mm_users`. The returned `&MmWithUser` borrows from `CurrentTask`, so the
+> > > +            // `&MmWithUser` cannot escape the current task, meaning `mm_users` can't reach zero
+> > > +            // while the reference is still live.
 > >
-> > @@ -121,27 +141,25 @@ pub fn current_raw() -> *mut bindings::task_struc=
-t {
-> >      /// # Safety
-> >      ///
-> >      /// Callers must ensure that the returned object doesn't outlive t=
-he current task/thread.
-> > -    pub unsafe fn current() -> impl Deref<Target =3D Task> {
-> > -        struct TaskRef<'a> {
-> > -            task: &'a Task,
-> > -            _not_send: NotThreadSafe,
-> > +    pub unsafe fn current() -> impl Deref<Target =3D CurrentTask> {
-> > +        struct TaskRef {
-> > +            task: *const CurrentTask,
-> >          }
->
-> Why do we drop the NotThreadSafe bit here? And it seems like the 'a lifet=
-ime
-> stuff has gone too?
->
-> I'm guessing the lifetime stuff is because of the SAFETY comment below ab=
-out
-> assumptions about lifetime?
-
-I dropped the lifetime because it's not doing anything. As for NotThreadSaf=
-e:
-
-1. See thread with Boqun.
-2. Raw pointers are already considered not thread safe by default, so
-the *const CurrentTask field has the same effect.
-
-Alice
+> > Regards,
+> > Boqun
+> >
+> > > +            Some(unsafe { MmWithUser::from_raw(mm) })
+> > > +        }
+> > > +    }
+> > > +}
+> > > +
+> > >  // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+> > >  unsafe impl crate::types::AlwaysRefCounted for Task {
+> > >      fn inc_ref(&self) {
+> > >
+> > > --
+> > > 2.47.0.371.ga323438b13-goog
+> > >
