@@ -1,144 +1,107 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6327D18BC22
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 08:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49010171088;
+	Fri, 22 Nov 2024 12:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732265424; cv=none; b=OWr0vnaErz59Xkg2IRE+VvuDTg+Wcs9/X/lGpYTR5M5KHK0VwtbAaWccnZ4wE/ivgP54GfZq3LOOvnyAZyVnflNGI3O/TnV6DWE13UnHU126jFLmbVGh+LNJtD5nVPSnNNO4H4lhQogTVwN/hs4nXitudFsbjGa8plcJesrVTUw=
+	t=1732279000; cv=none; b=KcZsmsb8R1yidCoY1TDnN9QH+g6xyISqcVw/qDhxXse83/RxeQuc9HmjE6zv0X8SU0YKRGRnDQY998LRNGaA94U1aj0ozIQUimyHx521mJhdvi38l8G70Ewx3kNECe3z/B7/lmraRizlwOsyo0Dhf87OSjQz91TqwM05oHb51tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732265424; c=relaxed/simple;
-	bh=Kak5wLuuHaVOP0U907HYm5hiYqDYH9HgnC+M3zG1i00=;
+	s=arc-20240116; t=1732279000; c=relaxed/simple;
+	bh=VT5wHf731wbh8njvzCjsMOSHE3tDpULOk8zBvrcr68M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LHfWzAzohOkY3wb8unU1AauoHMhdCVWYdH189/uwC53OCedZTsY7NuDW2xZeqUBODwz5XQm8Y404UtDdciS+lnf/44ca/Pah2b3lFfbSMKcGi0XndC0tKYWbOu4KL7q9W5Gish1H3ptp1tfWv/lPbeEKMhDmeVLjBXo7YgismJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vpN4gUqt; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=TZ+FP5IF5VU2MjVtV17kufgvMBgGKIlOvaOg/dPg4JtU3lY1YoNO7Km6GkDrCl//Qe6oRbMAshSRouH64oR4BEe6XxmtU1h3AAjzIXWYw/2ENWUavjMiAFfakcLCOhXggxBFHSk1n9isnIQuhZuApB4Xla13ZcRhvbsL97T9Qcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kjdC2Sbb; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vpN4gUqt"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ea2bf25dc8so1587080a91.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 00:50:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kjdC2Sbb"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ea4c418488so259671a91.3;
+        Fri, 22 Nov 2024 04:36:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732265422; x=1732870222; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732278998; x=1732883798; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w8+9nnoYbf1UxcWWZ8IBCVQZ3ux5jExiFpmdjlIQbp0=;
-        b=vpN4gUqtNBZxMz+BCxB4GkyEmBchZsTXe+6ijIXwhKipG4Dgnzjgh7dd4xctMxCPPg
-         mrezVnwAOXvaXApPQZdNVJLwqa8sewMXELsrR2WTaDSATx+xgh/4LDbYIC4zl16rKakG
-         Ghn5f7REkTasQ0T8zkclEdhCTTTms07IiUUo4VzCFxr2Vy8SVttbs7wMGMTgTqJemGzo
-         HzC9y7L1vhjJZI3nA+Y/1Q3wd0oJFiIjJMvbciBXdMT1De/qxp60o4HBOOhFxbzv9O9j
-         nUZS7OfEicRk9R5g78WDTVfnUAKYJlPeUBkKO3fhN1Sts6qt3ttQR/oBmZIMu9uITU7J
-         Z4Xw==
+        bh=F27MCrwLjZ+dSHo8EUEX3qsIzyan2TOuBGm997yug5U=;
+        b=kjdC2SbbIp9G9EIy7lpCb2RvmGY37XxTufpV+5lDQj4h30cmCbp6RWESGCDOVrvNW5
+         0a5UNdRxKzHxm7xftEmheTcCONgt9A557qCF58yy1u9lSp4kfQh2reM7eRAwamYabinr
+         s++VgjqU+hfAIK/5kIznlxHjjQmmqCeoBSwcW+LAGgQryzCrEykMN6gLlxrKr/kmpzF7
+         xHt4YdPBMtTBC4ljh3RDHwrpeNBsRE293zR4JRTs33X3O71Eh9tRjw23KJbWUkL/5D3K
+         tWLc40YJk9x2UjzNiscQw/of2P8mYwi0jrKU/QUngNvgVYMALpZJQymsYvDlTri5pcpb
+         iELg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732265422; x=1732870222;
+        d=1e100.net; s=20230601; t=1732278998; x=1732883798;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=w8+9nnoYbf1UxcWWZ8IBCVQZ3ux5jExiFpmdjlIQbp0=;
-        b=cWWXWySIKsFBFAaQnfEEjXOTgQGsnw4b01pNjIovEjk8Y7EjeCTIx046Wht2d/hxT6
-         cWrQ4dSyAxcls1CQZ0iDICMayLBOFKIkpa+F3Az+kStDoSCtmFHYojtuaszed3GgYCYi
-         zxrLO7pjxAcTSx/f4xBCEEEwelSi9eX/Z0Jo8lBlXO8YLJoD2hOwLK2P5ccldy531JQ5
-         A747/hZR/TQLtioZcSjaM6IVVbqtMJwJZWWEBLQcOawpvpHXF0YnsPHlrC25fSrIJsIP
-         sRz2yYOQCI3vPQFHW7ryfkOqMKUaAzRvbIQCy5C0itzduDjkIi/BYrZte2gaoZ7nl6eR
-         /WTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWonIwDZLWohw8N9M7VLP0Nj2TO7yZhKKSMl4NihyYKMr/hA5KHhvZOInAITqR6MH7N0+Muevg9NeRyt6wOIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+s8dFftolYkhLaSHMDgMOWMQ4XaxUyivTxZzIgXB8Mmji0WcG
-	3WMMvU7mEI7kvZDIJvkm2mb/RuCtInTIdsmcnu7mrQdYclPuOYNkDsO2010R0Fuh+rmnYpVb/QU
-	IxFFIeqWBSIMuaW5xG4ToEiIMR5SFU7A9bDk/dla2O2yjF4P8AyCC
-X-Gm-Gg: ASbGncsvQfLojji2ID8xXd+riKrdPpe4EgZ8Jonl76rqLa9pzP5gcrGt15md6KzWwCi
-	duBXRzsJyneqpJG6zGxPYBBGbkt0RiGmq
-X-Google-Smtp-Source: AGHT+IERZ9lNFuDAeT7H4I2JX5gC9cNIWkhL8/VD4BkcdPi2aQdqVypnRfvRtA9Uv8ewZgtJ3R72MEjmWswSyzndUqI=
-X-Received: by 2002:a17:90a:d40b:b0:2ea:5dcf:6f5d with SMTP id
- 98e67ed59e1d1-2eb0e528054mr2472713a91.16.1732265422368; Fri, 22 Nov 2024
- 00:50:22 -0800 (PST)
+        bh=F27MCrwLjZ+dSHo8EUEX3qsIzyan2TOuBGm997yug5U=;
+        b=S4Cgwe0kQH4dgSRjGVkCPZYBB47twAJkFdho5eglu2yYW2wONKVztbk51F0YGI+34x
+         gOfdwWw7YaVZBazAN0eVqnLxRMMaz7VcDSACzsTqXdNBQP3Jt+6VTUgplEcU93QPpC3K
+         BfIyEenUQo3gUalxuhxebZ+VWa8Qi1LOtxQwOeYBt8IJxgs0ybS9krwvQNA/cTm4UZ11
+         C92M0l0YsYvlpBioh54iztslU6n8+lkI19JPy+xPJEbjaNWm6Y8KEykBWlDZ/Tv67OMR
+         HS3wqssnZBelzXyJylg3e10WRWtzsExoMpgvaVE4PyLSgCWGQcW5f3+dmx6Xwp7eCNua
+         mauA==
+X-Forwarded-Encrypted: i=1; AJvYcCUM1QDYgRCV+6gr7087FfhoFig9ZvjNXCmz0yTmRL4p5YQyX/qDq+oZdgdHnosIJ1VLR6yITuixX/PfGWY=@vger.kernel.org, AJvYcCWSgmrdMMpxO0imHgcntT/jrFTxxI3ZzAgH6q4V6dhs3D065JRN7WzjEz4OjxJBS8K9ckqbvm5vENPBuHkWxs8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+VhTvzGs6Bfjn/4TwooTnOpnKIu9+a2ZQBpCr2MX9CePUL2GJ
+	++zsgYcAY5YHr6s/26Sr2QAEwVm+2oAWxsAtBILV2cqqQ6oSwTndElD+sYC4EMDB5V59mcTAzIr
+	XJXByhF351zghg5wtHmf4QhcyShQ=
+X-Gm-Gg: ASbGnctAvlcU/xO31J9ULj+i8gBpSDmdkS3Xr10BriIUKKqlGeFsj9C8KVZ6HdxieZO
+	VAu8AezMYdKQbWZG8ViTqIGtX4f+CAwA=
+X-Google-Smtp-Source: AGHT+IHhPCO0vdeIxqGWd0XUwtfa2VOzJMpx56irGG05LdsS2/MOHh+aFlR7WLGo0brL0o/+4ejLZuodz+cvLBwIkag=
+X-Received: by 2002:a17:90b:4f44:b0:2ea:956b:deab with SMTP id
+ 98e67ed59e1d1-2eb0e87f52fmr1444049a91.4.1732278998474; Fri, 22 Nov 2024
+ 04:36:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
- <20241119112408.779243-3-abdiel.janulgue@gmail.com> <CAG48ez3fjXG1Zi=V8yte9ZgSkDVeJiQV6xau7FHocTiTMw0d=w@mail.gmail.com>
- <43a07c04-2985-4999-b6d6-732794906a36@gmail.com> <CAG48ez1uzoEcsFG7Tsfj2WCXor9-mhffoWO8VFoit3j_mUC7-A@mail.gmail.com>
- <CAH5fLghUb8dEV9GVtJj497cJ5sp4Gg7=qeijfnV_w4BNd70qxg@mail.gmail.com> <f0052c1d-ce36-447c-af1f-db12940f6cc1@gmail.com>
-In-Reply-To: <f0052c1d-ce36-447c-af1f-db12940f6cc1@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 22 Nov 2024 09:50:09 +0100
-Message-ID: <CAH5fLgjk7UV6URZAK7_37iqXUKTUsfnaBj7bLZVJ91bkieOZvw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: page: Extend support to existing struct page mappings
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: Jann Horn <jannh@google.com>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
+ <20241017-hrtimer-v3-v6-12-rc2-v3-4-59a75cbb44da@kernel.org>
+ <25I5c2B_KkmqpaLqb6jsZyMd9WMhQbTaIKyUYY5cKa8bvR7--HvRiXJ_5cDiyde31tnivT5_C_5IJ6XvLqCusA==@protonmail.internalid>
+ <73814ac7e363af44ae6e410f101feb75e94244ef.camel@redhat.com> <874j423p7r.fsf@kernel.org>
+In-Reply-To: <874j423p7r.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 22 Nov 2024 13:36:25 +0100
+Message-ID: <CANiq72mkBufEV43HcZZVKB=1UDxOrpweFxeZJBXt6U0=vPMsdg@mail.gmail.com>
+Subject: Re: [PATCH v3 04/13] rust: hrtimer: implement `TimerPointer` for `Arc`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>, 
-	open list <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 22, 2024 at 9:36=E2=80=AFAM Abdiel Janulgue
-<abdiel.janulgue@gmail.com> wrote:
+On Wed, Nov 20, 2024 at 4:52=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> On 22/11/2024 09:55, Alice Ryhl wrote:
-> > On Thu, Nov 21, 2024 at 9:18=E2=80=AFPM Jann Horn <jannh@google.com> wr=
-ote:
-> >>
-> >> On Wed, Nov 20, 2024 at 11:56=E2=80=AFPM Abdiel Janulgue
-> >> <abdiel.janulgue@gmail.com> wrote:
-> >>> On 19/11/2024 19:07, Jann Horn wrote:
-> >>>>> +    pub fn page_slice_to_page<'a>(page: &PageSlice) -> Result<&'a =
-Self>
-> >>>>
-> >>>> Sorry, can you explain to me what the semantics of this are? Does th=
-is
-> >>>> create a Page reference that is not lifetime-bound to the PageSlice?
-> >>>
-> >>> This creates a Page reference that is tied to the lifetime of the `C
-> >>> struct page` behind the PageSlice buffer. Basically, it's just a cast
-> >>> from the struct page pointer and does not own that resource.
-> >>
-> >> How is the Page reference tied to the lifetime of the C "struct page"?
-> >>
-> >> I asked some Rust experts to explain to me what this method signature
-> >> expands to, and they added the following to the Rust docs:
-> >>
-> >> https://github.com/rust-lang/reference/blob/master/src/lifetime-elisio=
-n.md
-> >> ```
-> >> fn other_args1<'a>(arg: &str) -> &'a str;             // elided
-> >> fn other_args2<'a, 'b>(arg: &'b str) -> &'a str;      // expanded
-> >> ```
-> >>
-> >> Basically, my understanding is that since you are explicitly
-> >> specifying that the result should have lifetime 'a, but you are not
-> >> specifying the lifetime of the parameter, the parameter is given a
-> >> separate, unrelated lifetime by the compiler? Am I misunderstanding
-> >> how this works, or is that a typo in the method signature?
-> >
-> > No, you are correct. The signature is wrong and lets the caller pick
-> > any lifetime they want, with no relation to the lifetime of the
-> > underlying `struct page`.
+> No particular reason. It is often easier to rebase things around when
+> they are on their own line.
 >
-> But that could be put in the invariant that the PageSlice buffer must
-> last at least the lifetime `'a`?
->
-> >
-> >  From a C perspective, what are the lifetime requirements of vmalloc_to=
-_page?
-> >
->
-> If I'm not mistaken, that should be the lifetime of the vmalloc'd buffer
-> right?
+> Are there any code guidelines to follow on this?
 
-It seems to me that the signature should look like this:
+Not yet -- we have a mixture of styles, though we typically don't go
+to the item-level like in this patch, and instead have done it closer
+to the "Crate" or "Module" styles.
 
-fn vmalloc_to_page(vec: &VVec<PageSlice>, i: usize) -> &Page
+Ideally we would automate at least to some degree, but currently the
+relevant `rustfmt` options are unstable:
 
-This way, by providing the VVec, you can only use it with memory that
-really comes from a vmalloc call.
+    https://rust-lang.github.io/rustfmt/#imports_indent
+    https://rust-lang.github.io/rustfmt/#imports_layout
+    https://rust-lang.github.io/rustfmt/#imports_granularity
+    https://rust-lang.github.io/rustfmt/#group_imports
 
-Alice
+I agree that deciding on one style would be nice (especially if it is
+reasonable to expect that the style would be eventually supported by
+`rustfmt`).
+
+Cheers,
+Miguel
