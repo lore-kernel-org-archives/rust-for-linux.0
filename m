@@ -1,122 +1,123 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C860226AF6
-	for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 15:54:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732290853; cv=none; b=h91fU2/Cmv3savIdtb925K4Yr4g/QZyfvu7iA6Yi1TqD1FLCkxUzmfjvlNytq260OkXndfvg5dGEMiLO14oJ6MnSyEZgJqMpRgsT/0gVqiJLYJ1IO4j7EhBYFoiUnnEIZnjyyJYv4nNjf6hNR/R3E853kQPBLBWm38dqNfL3YKw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732290853; c=relaxed/simple;
-	bh=QVq5KFgL/UUdZVEO72cnRHkBo+D4+LvJLmuOecN8AIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gh2cdYlaL9IHfLihdA8RVDEFR8RtxVvbQinSzeiVC57GcA7LdFjOGalc/d9v4AnwQfwCJDP/grC/HFjbHSWOMxhOt0NjOJKo/wRG7vjax+rrZaWx+QLG0JXyBWURlZdci3qe57GUp/BdyPR2uxebty7MiNV6MbXsEo0RNWxC9+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3ezGqiQZ; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D24F1DE3A8;
+	Fri, 22 Nov 2024 16:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732292697; cv=pass; b=fkI3TQK8COUIHF66TBNcE0Z5FuLsq5Xu/2zZEDddGmIduM/u8zhFdeprKWoGkh0WmmBqeRCbqci64ZwThlTc0tk1d923RsyN7S0ZrpW4JVPdrSMCtX+awLK0AtHcXorzKd5QlNMaZXH1YTw3bEWtmrSXB3IxZNOTcj3l1lMUh1E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732292697; c=relaxed/simple;
+	bh=5JxRY6pS1gCRI0YnUGZ+sjsxWOB6b+YCqATava4zccA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=KY2nDbIWm0oYof0x8aNYO/pCzQdp/UAUCbHMa1sCztcW2fZyvu6jYHbcLguJZXiNtPnBEnhZx8pwZorKmXi1M1n2R9h1uTc67bOGeq6nXhdtnVdoa1khCVu6aYEAIjAgDcuIJTrgb+LlNyBqn08m74GzQZVNiKT+d1bRIbVvuJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Yl+NEqgD; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3ezGqiQZ"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38231f84dccso1577163f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Nov 2024 07:54:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732290850; x=1732895650; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aHBTAP93QaIBDXulWGODeivaCePNLj+7NuQRGSnsUCI=;
-        b=3ezGqiQZW6neci7zy/DKcacep2NFwEUOp2ISc1VmFvij8A0+HaWCTaUsZsWi0iiO9B
-         +m87lv/+NSPIkladkCJIYp1ru1odYNiOE41umI1Vt20K+T+TlsPjfO99b+A/+JaykcmX
-         ep7zP84+ffmctu2r3n2o2w9IXxXoYr3AnR9jH4epfRmGrycTOoZ2dXuUED7YvyynFu6U
-         aNxDH7OTcnDZoNYOcsgfHZgXQ4sas6oY28xsL1LfnkgrPsrDw5xxHiXcDZbBumYK1lyh
-         df3+eSnwTaFTNb4qWAVUAu9OeyhJW26bH/hEuGVGPeeUbCgyboilN2LTotgqdTnTki1q
-         mHig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732290850; x=1732895650;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aHBTAP93QaIBDXulWGODeivaCePNLj+7NuQRGSnsUCI=;
-        b=e2yK99FFRC7UrMfY1POshNvVE1rI2YdzHnTgVC0Ex1EKfeCyJlxuvO0Z/bPjDpmlCj
-         lqykHLu0bycUjs0A3rWshZhwkSTXv4pcDM8agW9Qx40Cdc95zKrZf5DoM6TDGU+L3Q/K
-         FfUH6SXWWO+jo/SzFh16xkM3zJg8iROUGuS/RpmExul7vKyuRIcQRKtcRag64w54ZJCE
-         fbGuhxAdwwATiqEp4Md42bevU9123EJ5WSfk5M714uh+2272OvhwdpgHdMJ1vNnziKXU
-         v4PI/LveysEclkiGxa1xznXNPNkbZAA5x6iL7YYGaq1dShmyoTY0380agBrKh+/0+tai
-         sDvg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+cBenWur6kK3GdikrMlBWXep9LYmejj0Man0gxtSAY4ZrYlDevlNN8l3DVF3RnL46bHo9/b4kTTLcOjXBxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiIhCRaU4uNKRS+ECgEKrgs7+u2UE89OcV+Q2fK347uKsWdg6t
-	7C2yuoGIVg5OD1O/DN8UaOrXWoVeP5iySRx9FtkrKbMyKLJpXfSH1XcNAf2q42nqHGBk5mp3jTM
-	vuqPrHvTjTi1BQyLZEC5Uf36BZnDgqHNtkIhA
-X-Gm-Gg: ASbGncspawzy99Q5fq3h7BcxrbPonAlIKuc16vrvuKpgRkbIGda4Ffva0ILyxpvloYz
-	5mYKX19igTTGwgTxXvPGLo9H4x3zWPdNv
-X-Google-Smtp-Source: AGHT+IEcuG0i0OmqqiSqqKVO0WuWikpbjy8X2Ivl9jcnoCFeKPdNRQPrawD+zGaNnWE7FPTBKZ3WMQbtEUO3d5UYyj0=
-X-Received: by 2002:a05:6000:184e:b0:382:2242:7a8 with SMTP id
- ffacd0b85a97d-38260bcb00cmr3039059f8f.40.1732290850040; Fri, 22 Nov 2024
- 07:54:10 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Yl+NEqgD"
+ARC-Seal: i=1; a=rsa-sha256; t=1732292664; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=HxoxQGkYNiq67+sV+NsTiaZff7Zg+zFHVeeikn6ZRJeph8oNg/gIkY42Mcq5ZxBF/LOYhDTyorUNrUyKDz8HcMnuUGhi9clE/2j1XZgF57jpT7bJJO+obFZWmVoZ5XwgmVfiAuNblNtuJZEUIgJxlZtqjq0qnD1CXeXLfwdrVpA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732292664; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=s4UP/Kic/pY1S+vv571Oz/mPT/MmsOkVJZEmMiRT78Y=; 
+	b=cCRLEsTnxi36H7G9/COrHVIwQW7Zstk59HEuw1JDsBnoq1fJS6LQX6YRwVE34cJIV3xxq5BHkYS6e3SD0/ftMlOo/z3F/cS72LDIZz3BYwIZ0qIpLsn2xYctj27Nq5nBNdTCm5tEMkQzSiClogQIHa6grZXIIKlU8fGMNAGVTqc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732292664;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=s4UP/Kic/pY1S+vv571Oz/mPT/MmsOkVJZEmMiRT78Y=;
+	b=Yl+NEqgDsE7fynFExs9ilzDRbX1sdwAq7f+cv5YimZ0L3Rv4C7bjF3g8MBL2vYbr
+	0nccwe8BcXXc258SbUJhgQKN9fSjakrtTf7BVLKnH1JaMGo/efUbgl/hmIxvcaOlhfJ
+	1jgwqRreu6soS06KcKbNkm5XNmw2w9t4YW1gFfNY=
+Received: by mx.zohomail.com with SMTPS id 1732292662078941.2613947204142;
+	Fri, 22 Nov 2024 08:24:22 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-8-7127bfcdd54e@google.com>
-In-Reply-To: <20241122-vma-v9-8-7127bfcdd54e@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 22 Nov 2024 16:53:58 +0100
-Message-ID: <CAH5fLgguMwp=jfSG=BSDWxCVO7cd2MQVfLsFLH2byDBJVZbOfg@mail.gmail.com>
-Subject: Re: [PATCH v9 8/8] task: rust: rework how current is accessed
-To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v3 04/13] rust: hrtimer: implement `TimerPointer` for
+ `Arc`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CANiq72mkBufEV43HcZZVKB=1UDxOrpweFxeZJBXt6U0=vPMsdg@mail.gmail.com>
+Date: Fri, 22 Nov 2024 13:24:04 -0300
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+ Lyude Paul <lyude@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <4D006430-A78E-476C-BC59-AE3F2BC24584@collabora.com>
+References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
+ <20241017-hrtimer-v3-v6-12-rc2-v3-4-59a75cbb44da@kernel.org>
+ <25I5c2B_KkmqpaLqb6jsZyMd9WMhQbTaIKyUYY5cKa8bvR7--HvRiXJ_5cDiyde31tnivT5_C_5IJ6XvLqCusA==@protonmail.internalid>
+ <73814ac7e363af44ae6e410f101feb75e94244ef.camel@redhat.com>
+ <874j423p7r.fsf@kernel.org>
+ <CANiq72mkBufEV43HcZZVKB=1UDxOrpweFxeZJBXt6U0=vPMsdg@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-On Fri, Nov 22, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> Introduce a new type called `CurrentTask` that lets you perform various
-> operations that are only safe on the `current` task. Use the new type to
-> provide a way to access the current mm without incrementing its
-> refcount.
->
-> With this change, you can write stuff such as
->
->         let vma =3D current!().mm().lock_vma_under_rcu(addr);
->
-> without incrementing any refcounts.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Hi everyone,
 
-Oh, that's awkward, I was testing this change using a config file that
-was missing CONFIG_RUST=3Dy, so it didn't compile the code at all. You
-need the following imports for this to work:
+> On 22 Nov 2024, at 09:36, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>=20
+> On Wed, Nov 20, 2024 at 4:52=E2=80=AFPM Andreas Hindborg =
+<a.hindborg@kernel.org> wrote:
+>>=20
+>> No particular reason. It is often easier to rebase things around when
+>> they are on their own line.
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 103d235eb844..60659076997a 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -7,7 +7,8 @@
- use crate::{
-     bindings,
-     ffi::{c_int, c_long, c_uint},
--    types::{NotThreadSafe, Opaque},
-+    mm::MmWithUser,
-+    types::Opaque,
- };
- use core::{
-     cmp::{Eq, PartialEq},
+I do agree. You get way fewer conflicts this way.
 
-Otherwise the code should be correct. You can fetch the tree with this fixe=
-d at:
-https://github.com/Darksonn/linux/commits/b4/vma/
+IMHO, imports_granularity=3Ditem and group_imports=3DStdExternalCrate =
+would make things
+a bit more tidy.
 
-I'll fix it in the next version, but I will wait for review before I send t=
-hat.
+>>=20
+>> Are there any code guidelines to follow on this?
+>=20
+> Not yet -- we have a mixture of styles, though we typically don't go
+> to the item-level like in this patch, and instead have done it closer
+> to the "Crate" or "Module" styles.
+>=20
+> Ideally we would automate at least to some degree, but currently the
+> relevant `rustfmt` options are unstable:
+>=20
+>    https://rust-lang.github.io/rustfmt/#imports_indent
+>    https://rust-lang.github.io/rustfmt/#imports_layout
+>    https://rust-lang.github.io/rustfmt/#imports_granularity
+>    https://rust-lang.github.io/rustfmt/#group_imports
 
-Alice
+This is a bit unfortunate indeed.
+
+>=20
+> I agree that deciding on one style would be nice (especially if it is
+> reasonable to expect that the style would be eventually supported by
+> `rustfmt`).
+>=20
+> Cheers,
+> Miguel
+>=20
+
+=E2=80=94 Daniel
+
