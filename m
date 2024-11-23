@@ -1,70 +1,96 @@
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9299C2309A9
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 21:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171AA139D1B;
+	Sat, 23 Nov 2024 22:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732399022; cv=none; b=HdjWI0QDNn2a+nKe0adomGlkqnJzoITnkIREHfxAgoMKMwWiQRKw+3y88BOu8mi6RFEs0Vy60AzYZrFq1sBZ6ua9jNH6wdF6uEr/eMPPV+/rnKC0XhaFmC9ihbbx2M3ZclpTvraUQEfrDmbFQF6y8Sp224u/UXTm679YttcEALI=
+	t=1732400650; cv=none; b=tdxkT8q0DrDDBdKlPvaXhnK/t5joYRgLF/dPpJuUcH6TYWKDBGhm20sQ9+XoBO/7o/s8PBdgHvWKgBGyc7lOhslTl/61eBvcdRaJB2oRoTeTWe892LIA4CtzIPHBef6lt/1RxjpskcLpx+fxHWZS9cSj6OfL0T6wgor2U1IKFo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732399022; c=relaxed/simple;
-	bh=sS9Wk7Ic4C9TsRdcOlXtgwbS5ak7x6qas9H7ov7MmTg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OpJL1t066ze6qMoYZV7Tda0lRu4hSVSpPF9NM/pyHjj6h9ZFM/lODym7UAhsZLYi9Yd1LkXRsoBaL1AimL+QXT2NyYUEUlY7JqLSCCPSQlPvNA8orRUZOAlIkhaqpzuL9TMpB8mjgGYLdBJCrw8veME5b9VgOpNUHNYgJoWFPnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io; spf=pass smtp.mailfrom=mandragore.io; dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b=c1QLe6of; arc=none smtp.client-ip=185.70.43.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandragore.io
+	s=arc-20240116; t=1732400650; c=relaxed/simple;
+	bh=0cceid9Jq8v7gT0R89WcHt7ECqajY1qVimASQaSFABY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r4KSpd5zp/4toIcxFJuilyDFj6Tkn07l8Z5DfkuaMpmKH6g26mCJOiwT2+z0acInjJV8FJbxzOAunBzivnp8tEVqyMFZLj/Ns+XsY8B4zK77++eS2kue8zIP7qXJYcF1l2Z/jasLhErW7TGYxNmaJ3TieSwQqAIL96k8FtoQzBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGn6Y5S7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b="c1QLe6of"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandragore.io;
-	s=protonmail3; t=1732399010; x=1732658210;
-	bh=sS9Wk7Ic4C9TsRdcOlXtgwbS5ak7x6qas9H7ov7MmTg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=c1QLe6ofIJvlmSFcSs2s2AiY8qEK+eYcGs5o9yH8cRh/TCfZU7nD+5UgXW4KjZAMH
-	 MjJ0j5d8kEVqiKNCOUpukOMHh0LjCZjx5YqAzSSMDiJglTWNQCNGu8b8HyWOigelp4
-	 lUhCwMnSDU6ZLMA7bCEsHAgioEsYJM2alTQMWwM1S/3vYHayDedXaugGeSVbtDUwQb
-	 fagOMPL4ltsXh+sN9h10jMNpo+PgkChcYyzZcVWcflRVzrfz0N8fkbuhc2S4Pp/hlH
-	 mJImlQM+5yR/r3Bi3JbPkGGCaxRuVQYSe1VzX5RIEHh/3/Q92nc4hE40QD1HZ/baun
-	 HQb9AVDu9/qPQ==
-Date: Sat, 23 Nov 2024 21:56:46 +0000
-To: Rasmus Villemoes <ravi@prevas.dk>
-From: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: add safety comment in rust_fmt_argument
-Message-ID: <caEePXpz3dyKABs5ReUO5NGlpbqf98_Aw_8tz9ADE6c1c8hYp523uGk7l9EcfSD0u-YLtozTD4wwgLEytbzzm6gnd3r6jQeXqr0Fo3YEYtM=@mandragore.io>
-In-Reply-To: <87ed34ly80.fsf@prevas.dk>
-References: <20241118031225.38080-1-kernel@mandragore.io> <87ed34ly80.fsf@prevas.dk>
-Feedback-ID: 125704292:user:proton
-X-Pm-Message-ID: b25e1e53015c71da5d14de3d1f397ee7eeb29c7b
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGn6Y5S7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD253C4CECD;
+	Sat, 23 Nov 2024 22:24:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732400649;
+	bh=0cceid9Jq8v7gT0R89WcHt7ECqajY1qVimASQaSFABY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gGn6Y5S7FkIrpS+YMFGWtLN5XCUfK6ahd24hW52dLwi9psh856GI7gUuFRBvuHI60
+	 BPHrQhJVrmKsbi1+1ZHvuTJI221AbJIDr8GEWiYJLvOV9ZAukHWH2mQRUC2pe2zfC7
+	 i5FjJqbKUscomDl3oiTU1dCXWVfgo/ka9rgeQth1IhHeuUHZrx/EYjg3YHWRfATjU7
+	 j+hXJWszVmajxEcs7g9Sy1v3ZJT2UKcfXPNxhFGHnNBATxPb3z8M/h71mZ3tFXVfwD
+	 B5OYCjU+QkmqDbQOiSbZw4X3qASd+7mpv9fNzJPkojYA/q7y6W9LnS2ExzbDNhmSBp
+	 HPwJLgqgLkE0Q==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [RFC PATCH] rust: give Clippy the minimum supported Rust version
+Date: Sat, 23 Nov 2024 23:23:45 +0100
+Message-ID: <20241123222345.346976-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thursday, November 21st, 2024 at 10:42 AM, Rasmus Villemoes <ravi@prevas=
-.dk> wrote:
+Clippy's lints may avoid emitting a suggestion to use a language or
+library feature that is not supported by the minimum supported version,
+if given by the `msrv` field in the configuration file.
 
-> Nit: The file implementing this is vsprintf.c, but the actual workhorse
-> is vsnprintf() (note the n); all other *printf() variants are wrappers
-> around that, and I'm pretty sure no code path called from Rust ends up
-> passing through sprintf() or vsprintf(). Yes, I see that the original
-> code said vsprintf, but please fix while here.
->
+For instance, Clippy should not suggest using `let ... else` in a lint
+if the MSRV did not implement that syntax.
 
-Thanks for the comments! Going through the code again, I see that
-rust_fmt_argument is directly called from the pointer function in vsprintf.=
-c
+If the MSRV is not provided, Clippy will assume all features are available.
 
-But pointer is not only called from vsnprintf. It is also called in
-vbin_printf and bstr_printf. Should this be reflected in rust_fmt_argument'=
-s
-documentation, or are these functions unreachable from rust code?
+Thus enable it with the minimum Rust version the kernel supports.
 
-Perhaps the docs should just mention pointer()? Maybe the original comment
-used "vsprintf" to refer collectively to all these functions?
+Note that there is currently a small disadvantage in doing so: since
+we still use unstable features that nevertheless work in the range
+of versions we support (e.g. `#[expect(...)]`), we lose suggestions
+for those. However, over time we will stop using unstable features
+(especially language and library ones) as it is our goal, thus, in the
+end, we will want to have the `msrv` set.
+
+Rust is also considering adding a similar feature in `rustc` too, which
+we should probably enable if it becomes available [2].
+
+Link: https://github.com/rust-lang/rust-clippy/blob/8298da72e7b81fa30c515631b40fc4c0845948cb/clippy_utils/src/msrvs.rs#L20 [1]
+Link: https://github.com/rust-lang/compiler-team/issues/772 [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ .clippy.toml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/.clippy.toml b/.clippy.toml
+index e4c4eef10b28..815c94732ed7 100644
+--- a/.clippy.toml
++++ b/.clippy.toml
+@@ -1,5 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
++msrv = "1.78.0"
++
+ check-private-items = true
+ 
+ disallowed-macros = [
+
+base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+-- 
+2.47.0
+
