@@ -1,69 +1,69 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7EC171C9
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 13:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2E18641
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 13:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732369050; cv=none; b=LQYXPNw9idrA7pcEEsxVkeiK72Jb2EVxNPDqBKBcw8oEMIhLxnwRrSRVCbLJjctjh2vkKBnAlknUUxY4xDjKBaPgeq8XpPS3OFAr8fgOxzE7zSY8QNfoQBZaIYE9P/diIEh+yz57pbIiawC8NsdQsH/L4xTifJZRqw5qjjtZVSs=
+	t=1732369521; cv=none; b=II1+/HkAbxX1rufNk8UURA4DY8ZOYfvcNIWKGCKYPlgPrx4RkhM+U925UOGe+VMqZj/JYkWvTS9salpCrjDwRG6L03qo+UgjAcMp3sZQ/pmvrZj5KIhVohro/hjFfXHzb5jGaEhZ8kh4n/Awga1de0GTKKAqXJWSpSMNrNbyJPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732369050; c=relaxed/simple;
-	bh=n4o3ET/5/v0XgXEhLTm9t6I21PimgpUc367DYz67UCw=;
+	s=arc-20240116; t=1732369521; c=relaxed/simple;
+	bh=65DYwv3ug/l0bzHXqqLa9HT99Wp5s7/lb6e4adHNBUU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g4X2FgtqQT1PSiw2Xsm9e0g7sfJUvEESvYb9mpN0ek95+drzHD42GGpR/7FJRj0u4rdp1H2/t70wBB5RYj7IJuNiZ8sZUE6OOdONAnl71Pbz/u0IxL4GUfDExF/pgAR1bZEJ7Uc0SKoi6F/6mdvx/uxoYaFtWdt3Oq5FCyem3z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ath179ID; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=tBbxTtx/TYrMvUtI7ZKvoora0SOFsaOh36+NaH0FIcQ+WQkFzxoVS3u4DPNnei1AHhtNdoaXQewV5ZdgCkZip/S1PCVqLnkmw8xzhtmM1OfnxGSiC987UDP4rDETs/WNEhSm6ohNtm+O6nBL5V8+M8ZN9GAqn8SvX6i9AbFxA80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z934biIj; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ath179ID"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ea456f1029so178238a91.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 05:37:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z934biIj"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7fbcb11ceddso315832a12.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 05:45:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732369048; x=1732973848; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732369518; x=1732974318; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n4o3ET/5/v0XgXEhLTm9t6I21PimgpUc367DYz67UCw=;
-        b=Ath179IDPKQ9Y6FKdnhxTnsWA03wjJ6AwvfaChAFGaSGQUmInjvcZRhTn9jSUNCNt1
-         YQabqIzvTxn2mex3KnW0VYavlWi9NCTGVd9X7ztP8vGoJxo8MZkHDVq6SsrJhpzlxDqK
-         1CSd8MuSE89swtkrR8KZINMLjCD9pVImL/6AUiN5KPvY3q0LVyko3QrZfYQZUwDbF5mf
-         New91SsuMHTqWTMJhn5wZ9Uw1B9gL5EaY0pM/kfyUEeomWoXmQYsXLuCEhbLUw5f7S1R
-         bryCTw1Ts8bXj/JUur4gC3Dz2h+bCYlKSbWlJ3vdFwb7bb2hjlN2pTrcL3kL1ANHDbat
-         3H7Q==
+        bh=f5+pD9c96sZLTAIB5z74aDI2ro1YAgWbn7XsD+lOFeA=;
+        b=Z934biIjD5j2SU+E3TeSLCUoAxLmkjvaW9blC6JPW6c6tlMaukdpLd1hdSTLXkSplU
+         ltxRMzMnwC/2YyHYqybEmlh9xqKQ3lXmSJO/OYIIXp8bIvIIrNWmSWLfU3Acb64YSOXz
+         cSPR6/dUjvlTMz8Dzzewq9DWpeyUF+qnLA2jThVgS9sC6/ooR0ji0nuYh7TDaiylmrVE
+         yu7n7EnngeBIcCc9cIBJ2YXJeO82yACUKokh3BjH/KZbukhhSIlDJXXCZcrdEP8uwV99
+         D1zAauPOsGSQt6d9F6Rw6jCQs1L25nlKFAPjQwV4E4YgVnDk5oOMi5rczoveLoJsjVq9
+         4Obw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732369048; x=1732973848;
+        d=1e100.net; s=20230601; t=1732369518; x=1732974318;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n4o3ET/5/v0XgXEhLTm9t6I21PimgpUc367DYz67UCw=;
-        b=ObwsaBZQRQp0ha9c5nUke17VXfxJusyEWo5hQ6m0BA08EMesoEnLB18CZl1FlFDdlo
-         t9j8MNYpIbihlOKsccGALgHBHig0i8iyjEfNlgxmyrCxkg1nI3Yvqf67P3eHCsH063CU
-         Q2g3Wm8i0z1z4okl84j4quKNA/UMubxLCP5Ey1sV5C+h1apnlikz2ftcPDGY+KG9Bsuw
-         +H9q4QbF8xE8oUJM5axUzKAfjfQ0JVVb9ucnDMOnr+yzrBpGwl5LumBoyZMytgMdGdyA
-         b4bnVN1QSWBBub860GsimlYTIaV4dRsaHk4ktpDShtRFYFOVwMyvaqScK710r5Ou62XN
-         38wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZuyXO9zXDyoAya66PWZn6WWFn24Bvrk8vdpvJTK2dcbi5gDoHOJf9KJSCvkA7Un0z1QgUL99jbT2TDtzWhQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNjgg7XLhxW2ZdWwyBIaYnrA4MipDlNnrn3r7rmVNLzECb+BHT
-	4slISM/cDs0E+9WQ1ASzUiC0VALjs036gvGtrW9QdQt6iqE3ppFoHkDQfpJ/gAiGSK+JVLnmQno
-	/SfP0IVLejMsM6SifN4gD6tYVIV0=
-X-Gm-Gg: ASbGnct6oJ4vNp2GtcEcXqLe31OMIw/S4uAG+n9ZUmzLuZYsCFu3l3Jedw/MGiUPpA+
-	CqgWffSrOMXQGa9SoApkH4q3aT63h7w==
-X-Google-Smtp-Source: AGHT+IH7LvAB45/lx8tG6Zk7GfAg5fBCOZt8RbDCqz7oZe4nfDv7cDMBVFPsuiAVm7cEFmMp9sFcFogH3bpGYXKgrgE=
-X-Received: by 2002:a17:90b:2250:b0:2ea:47f1:79d3 with SMTP id
- 98e67ed59e1d1-2eb0e89c251mr3205216a91.6.1732369048066; Sat, 23 Nov 2024
- 05:37:28 -0800 (PST)
+        bh=f5+pD9c96sZLTAIB5z74aDI2ro1YAgWbn7XsD+lOFeA=;
+        b=sQfnth+LlKwTuDhD0yMF4RE8FcwDkKLhJ4/X3lX2932xtgx9PvdGRpPjNM00OfWLBR
+         axYySntcRLpIQbBF/sU83wvRi4P8QrT6MWGvhzuDkX8MOsBx/tLbIMcD6ZFHdH1aDphb
+         gueoAIXtbNFBArzA7proOmrCxu5sJyg78ciNhwDTuTtKmpFas21hszUCt0AqnMgqKZ/i
+         A9hKHgF7B8/5WkqqOzH++npOre4LLSlFfiJg7FicWVFfK03E+0HW1OsIZE9O6FMROiSm
+         KHmtj30vABNAL3QNrtg8EzFu9OKOiPPl1DSRCfH6yvJl+c2lfHHJ9owIBMp89YOHRQ7T
+         lAmw==
+X-Forwarded-Encrypted: i=1; AJvYcCX++l+owFFhGE3snfypLbfCZul47eUi4dSQPmdEVf4MLt6yR6aRXRUx31pYBVCrXKfbDbq+BhUJyyCmfD9LfQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDVxZ5CqVW6zUX3Xb3Khuc3SOu9EzNMKK41ZN3VrCYifBryXto
+	OevaP8B7SWYz7DCBgPLCmpydQMD4dm/8FIs+zPta3iFNowR59Ik+QdkHK0vP1eZ9SkD52/aA536
+	bFPa58LWeYYCAbgkocjx3y/9A8qo=
+X-Gm-Gg: ASbGncs45StzSjEybreaCLaw62ENqu64AsciieJBw7ok9LTNxk7XV22HxY+0ZBHTsLG
+	JWqM76iVH1HKCzutvqibiOgdxOz2urQ==
+X-Google-Smtp-Source: AGHT+IGB96AuwJA6oVqTUNpGiXSAqEWmG5OLNXHr22zzf1bOj+x/OZb0SPf3Yk0bE5amiAqHVQJYLgQDwPtAROyIDeA=
+X-Received: by 2002:a17:90b:38ca:b0:2ea:c2d3:a079 with SMTP id
+ 98e67ed59e1d1-2eb0e22ce05mr3678048a91.3.1732369518033; Sat, 23 Nov 2024
+ 05:45:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123104857.49385-1-daniel@sedlak.dev>
-In-Reply-To: <20241123104857.49385-1-daniel@sedlak.dev>
+References: <20241123104857.49385-1-daniel@sedlak.dev> <20241123104857.49385-2-daniel@sedlak.dev>
+In-Reply-To: <20241123104857.49385-2-daniel@sedlak.dev>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 23 Nov 2024 14:37:16 +0100
-Message-ID: <CANiq72m94-w5Qx1PB+zDCVOZaFK52U85TCWkFDP8ka0kknMtig@mail.gmail.com>
-Subject: Re: [PATCH v3 0/1] make `from_errno` use `try_from_errno`
+Date: Sat, 23 Nov 2024 14:45:06 +0100
+Message-ID: <CANiq72=YeDPnj==btj+4ZxrUub1kLB_vgHVVQ5RygivSP_m=uw@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: error: modify `from_errno` to use `try_from_errno`
 To: Daniel Sedlak <daniel@sedlak.dev>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -77,23 +77,36 @@ Content-Transfer-Encoding: quoted-printable
 On Sat, Nov 23, 2024 at 11:49=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> =
 wrote:
 >
-> Currently, there are three patches for this issue. There was a race condi=
-tion between
-> me [1] and Guilherme [2] because we both picked it up as a "good first is=
-sue" without
-> knowing that one of us had started working on it. We both agreed that one=
- of us would
-> be the main author and the other one would be noted in "Codeveloped-by." =
-However,
-> Guilherme has kept radio silence since [3]. So, I am resubmitting the pat=
-ch, which
-> builds on top of [3].
+> Modify the from_errno function to use try_from_errno to
+> reduce code duplication while still maintaining all existing
+> behavior and error handling and also reduces unsafe code.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1125
+> Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
+> Co-developed-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gm=
+ail.com>
+> Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmai=
+l.com>
+> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
 
-Sounds good, thanks!
+Usually, when you have a cover letter, the title of the patch would
+have been "[PATCH v3 1/1]", to indicate there was a cover letter. Did
+`git format-patch` not generate it?
 
-(By the way, if you have a single patch, you can avoid a cover letter
-to simplify by writing this right below the first `---` line in the
-patch.)
+It is not important, of course, but I thought I would mention it in
+case it helps.
+
+> +    pub fn from_errno(errno: core::ffi::c_int) -> Error {
+> +        if let Some(error) =3D Self::try_from_errno(errno) {
+> +            error
+> +        } else {
+
+`let ... else` would work here, but given we just return the `error`
+rather than having a long function afterwards, it is true it does not
+really help.
+
+Thanks for the patch to both Guilherme and you, and for navigating the
+race condition on submitting it!
 
 Cheers,
 Miguel
