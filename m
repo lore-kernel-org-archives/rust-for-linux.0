@@ -1,59 +1,61 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E9515FD01
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 09:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D17716FF44
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 09:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732355440; cv=none; b=JxVcjOdUpNRue/0Lgb1gWFhhIvS8bCDI4PgqQtNac9SdlxjgbK6BV8MqIOv5875cnvtQbOqQF7gTSyou0iCNh5YhckrAyu0LH/OOuIW+rwA9INPFwqvoy3IMN+AxE4KgYLdA6Y5B7MMQgcsNFrLQi8Ya8q9rSVaBFfU+Oplry7c=
+	t=1732355441; cv=none; b=Up69Lzwkeho2bHAJSzRkMyDoo264T2j9SL3L/V6spN3Q0wJ3Z6MA++8iAT7sEsGgBr/rNRZOBFPrwdZk0UMPPyvJDNf0e3ukUUt5KbWaiNIp6EwKi+aTIguwTmogTMmZNH1x1qRQ9mYHgDEdSADN2Hl+LrLWjMbDvtt6rSq1pcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732355440; c=relaxed/simple;
-	bh=xM8XGlD4m00gT8LnHMKcqEFnZuCF/Xh3HBofdULu1C4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GSI14LKiYHohVQoHfByPH5HtHe/uCg69QDUCISQ1Hf5dRMKEHyVc8Ex6tpFKZ8fby+Onnp6Z9dZQPnrZFyzkZha9D5c1RgGiNCotQY3ctt4OfoLMCB8n97m5p93rCUM3Cq15Yy038lWoGhwnvzoTN7+YAnUlspaN7UMrcgtyask=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=2edE2zhb; arc=none smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1732355441; c=relaxed/simple;
+	bh=SRiP3n15qooOFZWg5xLnUkjZLAeC3efqKWwpTwF6rLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SxzB1dVdzD8aIC4xXuCJxntAJbfcZS5DS89Ml6W65oQSuxKfHTr3oPxs5UWWHU7LgA7xL4vme+2Ff2CBCkPzfy0K8QbPj2rfndXiu9UEZOExUidpNfjBCoO8P/ENIgZXDKRIkl+baS52oyf0ex7R4QZISMSPLsBnpB2IFJXrnpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=GS0fexm5; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="2edE2zhb"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5ced377447bso3712276a12.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 01:50:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="GS0fexm5"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5cfddc94c83so3529896a12.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 01:50:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732355437; x=1732960237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=okF1HNNj4G2KLPkFyMq8ZAw1P4QOFUzANjitSL64PFs=;
-        b=2edE2zhbzqqclqcpstxtmmQstJy0zQ9m38n9C8dAOOQZnDSmArIzwB+7q+b2c2Ay6/
-         Z8c1id0y3MBy19SmNgf4cMCvMoa6xOoQ94mVTLn2qAw9D/odtp2JIHkjkXU0dmGft/1R
-         Pyt8nHhlIaXPRmayrKNJ1MmQxFHGl8TFpelYgDWuo3Hk7y3LRoUGqQKBQWCBkXki9AZl
-         nHCBXiwJswbElPepG6zwQVoKXydJJgAfT4P2sG8+KKZ+MYSU14weH/EEOwaF7htjT8r/
-         JGSq87Nlp54RDPRE3NuYA2twe4s/C6xzcDlavOev5vbCqdPA7S5tL2bbcg8LvzngYMPK
-         GH2w==
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732355438; x=1732960238; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pXnCDWRQwhX+72UPQl79xPSO4w/gNRm5H1gNcEYnhfE=;
+        b=GS0fexm5ySzKzeoB3/hpmrcQNASrBcwQ7Ez811bPapFPrz+FFBAn2H+GuV4gt4ymPN
+         dFwcbhQXRw+4JJ/3+d3OOVPWk8XVKTVKv/rIZGELnRCXUgDFKkwP0jSoErIqxe0vjQVh
+         wwNeMVPH4z5TexiSvDg+ert9YVEK5jfpRMmfqM2KzJm1YzGF3IhERQe0s9DnPYl79sMr
+         QF51/wZPKue5pCWryUPU/wgIDR/7XFUpoSj1TYSmSVBW6Yeblwpcf7e0isxkAO16DLAs
+         gr7GJHijxvxKE3cQjHZSPQ4ueb7QN3nxnfFuftCiP7xcGI2NtoysOqWCcKfre76janTx
+         HRAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732355437; x=1732960237;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=okF1HNNj4G2KLPkFyMq8ZAw1P4QOFUzANjitSL64PFs=;
-        b=CgGtS0oEAQBw3N9B3Kjy6rD3w8p4XF9dUvSd8JfzP1y+Sm7NxizaQ/j57UKiZPC2zr
-         vgklZ3GD65xep8J/2pyFMBugB52m1gDSkwLFnkqisIxdT/bZSGumcHcTHvKLxvBmr3Ep
-         VVmKEB5O9tBiQeYNmq3ShiZ72e50mGEjNb/d6W9RqwHsasS4xNIs5Rmprz4NAF3DsYYE
-         cNpvLKV0Lt5H9Xhyf/uuokSSY0Np7P2fUr9RRKs2O3ATdrWc4aE5KbgoKYqhbXZDFf1U
-         NhJxKXa8xBmlS01kvzph0XXnwL/RdFLFfM3lRFFouTiKZmdL0rF6g5rxmifYy/SiDs1b
-         30YA==
-X-Forwarded-Encrypted: i=1; AJvYcCUL2VisE2I9AodjUnbM1prWK2DfD22QtlKEeRfpivqbrCxQ/pxqB45vOX1Kx4hSshqyvfJb6p/tOrkkk6WUPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4mmZ7YALJZxNERLKjk8KhoL9Xcg1PqkSleMFY5z3scpETgr5B
-	An826dCUzCz6sabQ6ffgR+3odK70IgXoXHN1lOeht5r1s3/K/jx/qD4RGqPYxFI=
-X-Gm-Gg: ASbGncvgTUD4oLlI4wfB4zpfBXh2P/dr0FZhC9TdcVBuIyQ83CiA73HKDKWs8gV1mq/
-	CF4DIgnZEMyoqZWW2gmcxWzBsnTCTyO2hfX9m9s3VcaCn/aNO2RGjKp+fqCDjsYV1liLZJJlqaN
-	lq/LRUfLBEWiM4zVrOf9swPR+nM3YUwH25D8eLcYO8106U9s5Td+Htr5xa7sd1k6HGaRTTH60Wv
-	TivJRiHFFKA6B98Z+ZfR24Nf5MnagXSekbMu+Jqcu8=
-X-Google-Smtp-Source: AGHT+IG4zLmLKX3ywh9qzk+WuinoaBdC11SZcLqPvb+Qh0+VN9VguIfFuPtrfElqz/9AHLXMzfg7HQ==
-X-Received: by 2002:a05:6402:40c5:b0:5cf:ae1f:84e5 with SMTP id 4fb4d7f45d1cf-5d0205c9471mr4474782a12.3.1732355436681;
-        Sat, 23 Nov 2024 01:50:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732355438; x=1732960238;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pXnCDWRQwhX+72UPQl79xPSO4w/gNRm5H1gNcEYnhfE=;
+        b=MHVZYqz48x109djcM5G2rNDV0XoRCewFNLfM1+NPxyhE95adfE8yrYAdy/TEsercKU
+         HDSotJpGxAHRg5G15xkFW9BuUA6eEmrSsnNb8hVKOaxOLBK5gFqgajdNQF0B0wgABnSv
+         aD1D4Jau5B6bMi4/AOL7EMc14qKBKLGmRX4jLnwCho1JfiOO9NofBHK9yzIPixDFE85R
+         zP1GVo8IW8GniQFWE629PIP8dUvj7M66wZKnSD8uYe2v4Zs9tzl7uyNbfo2yK/aHwxzP
+         ivFbCWlSMQli/wozz1mSj0rbZgbHw0aUaFtubJEYj0zSHFBH8JHJBuOqjIaP1b9D+bIT
+         7sUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdkvH6s8Ii6LHr1Im+nY5nxprW3LcdzcB6U2B9nBwYipkHKcpGNHwwFxIDFu4LraM7B3J62jOvlZmcqh8Tbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVEyTYXm+93+Plnv5jUbgKSN6hq/8EZW98JMXySe4CHbMP+e2D
+	J4q5kITVMcMNgrvUWphMQeZBYRz0EoFYBxmjZXlFQ6rv3/uymY4SAEHrWoXznIE=
+X-Gm-Gg: ASbGncvNIvhs2T+ybIovKtdZkzqhiPLQex+jUKCVvUk9vOV6zj05Y8YSh9HW/qhksAw
+	M0xN3lWCUD07UWc2mEyu3xoWznAnFVlChwScvQi2ewdqDkvGgCnTXD9zDAvImOglDIOhdTo27Y0
+	bMR8/12GjPjHNK778By7A6tyOyCdVUuvdY1UFeDTBh60OdZb1b6HxpI896rFkdHTP2d//aHk74p
+	rLlL4cfdwSCSjFy9sKTCFymasEUr9422ZV0R4oZ5N4=
+X-Google-Smtp-Source: AGHT+IGtcuYMIUUWJ6eJPHvFs81uyykzxtQnloBl06TEtahrvF8Lp2FB6hbuRr0tnun6f/F1rWeY3w==
+X-Received: by 2002:a05:6402:2682:b0:5cf:be01:d7e8 with SMTP id 4fb4d7f45d1cf-5d020798b89mr4873762a12.23.1732355437759;
+        Sat, 23 Nov 2024 01:50:37 -0800 (PST)
 Received: from mordor.lan ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d41af39sm1806918a12.82.2024.11.23.01.50.34
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d41af39sm1806918a12.82.2024.11.23.01.50.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Nov 2024 01:50:35 -0800 (PST)
+        Sat, 23 Nov 2024 01:50:37 -0800 (PST)
 From: Daniel Sedlak <daniel@sedlak.dev>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>
@@ -67,10 +69,12 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	Tamir Duberstein <tamird@gmail.com>,
 	Daniel Sedlak <daniel@sedlak.dev>
-Subject: [PATCH v3 0/4] Replace unwraps in doctests with graceful handling
-Date: Sat, 23 Nov 2024 10:50:27 +0100
-Message-ID: <20241123095033.41240-1-daniel@sedlak.dev>
+Subject: [PATCH v3 1/4] rust: kernel: init: replace unwraps with the question mark operators
+Date: Sat, 23 Nov 2024 10:50:28 +0100
+Message-ID: <20241123095033.41240-2-daniel@sedlak.dev>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241123095033.41240-1-daniel@sedlak.dev>
+References: <20241123095033.41240-1-daniel@sedlak.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,36 +83,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In the following patches, I touch on error handling in the documentation
-tests/examples. There are multiple occurrences of unwraps which can be
-replaced by a question mark operator which should simplify the code.
-Also, people typically tend to copy & paste code from the examples
-(citation needed). If we leave the unwraps there, I think we can convey
-the wrong impression, that it is OK to use unwraps unless the programmer
-has a really good reason to use them.
+Use `?` operator in the doctest. Since it is in the examples,
+using unwraps can convey a wrong impression that unwrapping is
+safe behavior, thus this patch removes this unwrapping.
 
-Changes since v2:
-- Fix typos in commit messages
-- Remove unused import
+Link: https://lore.kernel.org/rust-for-linux/CANiq72nsK1D4NuQ1U7NqMWoYjXkqQSj4QuUEL98OmFbq022Z9A@mail.gmail.com/
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+---
+ rust/kernel/init.rs | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Changes since RFC/v1:
-- Remove opinionated changes from `rust/kernel/rbtree.rs`.
-- Run clippy
-- Add description to each commit message body with rationale.
-- Link to RFC/v1: https://lore.kernel.org/rust-for-linux/20241116195221.373332-1-daniel@sedlak.dev/
-
-Daniel Sedlak (4):
-  rust: kernel: init: replace unwraps with the question mark operators
-  rust: kernel: rbtree: remove unwrap in asserts
-  rust: kernel: page: remove unnecessary helper function from doctest
-  rust: kernel: str: replace unwraps with the question mark operators
-
- rust/kernel/init.rs   |  6 ++++--
- rust/kernel/page.rs   |  6 ++----
- rust/kernel/rbtree.rs | 46 +++++++++++++++++++++----------------------
- rust/kernel/str.rs    | 28 +++++++++++++++-----------
- 4 files changed, 46 insertions(+), 40 deletions(-)
-
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 347049df556b..81d69d22090c 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1076,8 +1076,9 @@ pub fn uninit<T, E>() -> impl Init<MaybeUninit<T>, E> {
+ /// ```rust
+ /// use kernel::{alloc::KBox, error::Error, init::init_array_from_fn};
+ /// let array: KBox<[usize; 1_000]> =
+-///     KBox::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL).unwrap();
++///     KBox::init::<Error>(init_array_from_fn(|i| i), GFP_KERNEL)?;
+ /// assert_eq!(array.len(), 1_000);
++/// # Ok::<(), Error>(())
+ /// ```
+ pub fn init_array_from_fn<I, const N: usize, T, E>(
+     mut make_init: impl FnMut(usize) -> I,
+@@ -1120,8 +1121,9 @@ pub fn init_array_from_fn<I, const N: usize, T, E>(
+ /// ```rust
+ /// use kernel::{sync::{Arc, Mutex}, init::pin_init_array_from_fn, new_mutex};
+ /// let array: Arc<[Mutex<usize>; 1_000]> =
+-///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i)), GFP_KERNEL).unwrap();
++///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i)), GFP_KERNEL)?;
+ /// assert_eq!(array.len(), 1_000);
++/// # Ok::<(), Error>(())
+ /// ```
+ pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
+     mut make_init: impl FnMut(usize) -> I,
 -- 
 2.47.0
 
