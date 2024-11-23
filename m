@@ -1,93 +1,43 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941BB433AB;
-	Sat, 23 Nov 2024 21:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9299C2309A9
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 21:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732398930; cv=none; b=gn1umexq+jS9xTa0O68vhz2ft0XRM4cSTt5VI5iUv+/94Y4+O508sbm1c22pB+7Y7XWZRMb4L1JEp7ek9G+r/ifs30yxTE58iKer5VHTOvjZvVGfp02q/rYZyey/LlgpcQVinMmMX+f3xGrxgAE3EUCSZlBVH4XcgkXY/7FUARE=
+	t=1732399022; cv=none; b=HdjWI0QDNn2a+nKe0adomGlkqnJzoITnkIREHfxAgoMKMwWiQRKw+3y88BOu8mi6RFEs0Vy60AzYZrFq1sBZ6ua9jNH6wdF6uEr/eMPPV+/rnKC0XhaFmC9ihbbx2M3ZclpTvraUQEfrDmbFQF6y8Sp224u/UXTm679YttcEALI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732398930; c=relaxed/simple;
-	bh=Zm0X8fq4YUcxLOenPGPNsE5Ecb98VxC895SXkjIgr44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rhKmFE35fHEPOC17CB1a6fgsJUBWqXaJ0pWsQ4zeX4kjplG3Oot3yTBj7l2oX6QqlDZMuRxNS6DgCZjkxTSIpRSyI90eAeiWpsmBkFqYlbn4Sbn3eH2D/0+m+bkCbjOfFL7v9I3bnRzc3evUkvSYUrzMgmjxxJdPP0Yf3LaJABw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=wqNEyzw0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RYdH079U; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+	s=arc-20240116; t=1732399022; c=relaxed/simple;
+	bh=sS9Wk7Ic4C9TsRdcOlXtgwbS5ak7x6qas9H7ov7MmTg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OpJL1t066ze6qMoYZV7Tda0lRu4hSVSpPF9NM/pyHjj6h9ZFM/lODym7UAhsZLYi9Yd1LkXRsoBaL1AimL+QXT2NyYUEUlY7JqLSCCPSQlPvNA8orRUZOAlIkhaqpzuL9TMpB8mjgGYLdBJCrw8veME5b9VgOpNUHNYgJoWFPnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io; spf=pass smtp.mailfrom=mandragore.io; dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b=c1QLe6of; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandragore.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="wqNEyzw0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RYdH079U"
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 483202540133;
-	Sat, 23 Nov 2024 16:55:26 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Sat, 23 Nov 2024 16:55:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1732398926; x=1732485326; bh=E5wILRT4AS
-	8VZN9JFqdkKAhXm0BT9f0VwX4OKcgHv2Q=; b=wqNEyzw0IGshKMb3jr9mmAOa7y
-	ovdK3Wg7pmz0BVQUTSp4Y8M7ukRDgxBUHD8MS2ZvtEL3EluaXKC3nuQ7K958+KrO
-	0Z2mXXkO/hapDA9KP0rQ/miriax4iHUgzcYZzRfnh0f0new2wVirk27w4Y4Zm8bo
-	pXF/plgMjq3njCkDuiY1lJCl+qA5jwCulQFTN0cne+D5fbbgHWp90WOceGdSyQF3
-	7hW9YyATWamP3nQOCPyCeqJnAa3CIqjKIyHzuxIMgsw/C8gIkztf22N5EzLDG/Nv
-	xhacPAy/L7XeImCZX/EXCYZMd1MAhwrRBP0Cg5W8iYWjxtkz3ldhj45Ui3jg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1732398926; x=1732485326; bh=E5wILRT4AS8VZN9JFqdkKAhXm0BT9f0VwX4
-	OKcgHv2Q=; b=RYdH079Ux8/0wIiszDS0lHQY10umfcpdOudMPSnYO0Emd6ljim9
-	HC4Tbt7FZpQjawXpI7OFNkGREL0gtOnh8YaZ7hLXQwhNgA6hZzr3q1YH7AH3XTId
-	WEizw+ZYAjkMqFLlvQGSr08+jR/NwhGO6kln1kZRfSp08Nw8tTClaitl0nObSO7U
-	UMsb12q3fDPbBE3/eY/IL3EJIwURrF8aI6CD8QJ+L8ZDMt5Y7j8fh3e0W3J1aEVH
-	tQIhE/nllzeVOU2Jrvdr7A+yqs17zvaSYbSq04t8YowhjLUx63KSp/mPp3MViHmg
-	XHb50SAPWSh5xYQph7IigHdj+1xZnTKsoOQ==
-X-ME-Sender: <xms:TU9CZ6sS_h2A8V8NTFibpB4xxKQEiojrrXrWkwIxo67FNNmLr1lfxQ>
-    <xme:TU9CZ_ewjdFMUOyNma7pt-BF1kQj4Fky1Y_eJ9GY8Xs1AlPZ-TkG-r_mIl4Afoy9c
-    hhmQBGpYlqtUS8B7zA>
-X-ME-Received: <xmr:TU9CZ1ybZtPkd6Wx7GgvQ_mzWbEX9yjWiatUZA700QY1cbaVyXwKL-p0g7VbviagmWXVNs3533FGAVBG9pzZXsj5XSc8RLxAnp4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrgedugdduheefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtjeen
-    ucfhrhhomheplfgrnhhnvgcuifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenuc
-    ggtffrrghtthgvrhhnpefgvdffveelgedujeeffeehheekheelheefgfejffeftedugeet
-    hfeuudefheefteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtohepudegpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhinhgrsegrshgrhhhilhhinhgrrdhnvghtpdhrtghpthhtohepohhjvggurges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilh
-    drtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgt
-    phhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfe
-    gpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhs
-    shhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrh
-    hnvghlrdhorhhg
-X-ME-Proxy: <xmx:TU9CZ1M6-Hcw9LD1QEA52hymW5RJm7jHaJaNuN9UyugI3MbWer3aGg>
-    <xmx:TU9CZ68r3xM-SWO0ElPHjIv2JXKztc90SwEjDk9iAXXEA5yDWmhnrA>
-    <xmx:TU9CZ9Vvf392EhsSHltcmUPwSR_864JBCcR8Rlo9kX89grIJGufhig>
-    <xmx:TU9CZzeNtQjT3nhfYTSbPxffLtDUHPediC5wqhdGmUEyPmg5H-Mk8A>
-    <xmx:Tk9CZ-VJgvmhx-rnAme-EEJ_ujk0coWlR-pwKamfAdEPQjMKHn9q2hL1>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 23 Nov 2024 16:55:24 -0500 (EST)
-Date: Sat, 23 Nov 2024 22:55:22 +0100
-From: Janne Grunau <j@jannau.net>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev
-Subject: Re: [PATCH] rust: alloc: Fix `ArrayLayout` allocations
-Message-ID: <20241123215522.GB2171629@robin.jannau.net>
-References: <20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net>
- <Z0I2Q_vGErIQ0xdn@pollux.localdomain>
+	dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b="c1QLe6of"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandragore.io;
+	s=protonmail3; t=1732399010; x=1732658210;
+	bh=sS9Wk7Ic4C9TsRdcOlXtgwbS5ak7x6qas9H7ov7MmTg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=c1QLe6ofIJvlmSFcSs2s2AiY8qEK+eYcGs5o9yH8cRh/TCfZU7nD+5UgXW4KjZAMH
+	 MjJ0j5d8kEVqiKNCOUpukOMHh0LjCZjx5YqAzSSMDiJglTWNQCNGu8b8HyWOigelp4
+	 lUhCwMnSDU6ZLMA7bCEsHAgioEsYJM2alTQMWwM1S/3vYHayDedXaugGeSVbtDUwQb
+	 fagOMPL4ltsXh+sN9h10jMNpo+PgkChcYyzZcVWcflRVzrfz0N8fkbuhc2S4Pp/hlH
+	 mJImlQM+5yR/r3Bi3JbPkGGCaxRuVQYSe1VzX5RIEHh/3/Q92nc4hE40QD1HZ/baun
+	 HQb9AVDu9/qPQ==
+Date: Sat, 23 Nov 2024 21:56:46 +0000
+To: Rasmus Villemoes <ravi@prevas.dk>
+From: Konstantin Andrikopoulos <kernel@mandragore.io>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add safety comment in rust_fmt_argument
+Message-ID: <caEePXpz3dyKABs5ReUO5NGlpbqf98_Aw_8tz9ADE6c1c8hYp523uGk7l9EcfSD0u-YLtozTD4wwgLEytbzzm6gnd3r6jQeXqr0Fo3YEYtM=@mandragore.io>
+In-Reply-To: <87ed34ly80.fsf@prevas.dk>
+References: <20241118031225.38080-1-kernel@mandragore.io> <87ed34ly80.fsf@prevas.dk>
+Feedback-ID: 125704292:user:proton
+X-Pm-Message-ID: b25e1e53015c71da5d14de3d1f397ee7eeb29c7b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -95,35 +45,26 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Z0I2Q_vGErIQ0xdn@pollux.localdomain>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 23, 2024 at 09:08:35PM +0100, Danilo Krummrich wrote:
-> On Sat, Nov 23, 2024 at 07:29:38PM +0900, Asahi Lina wrote:
-> > We were accidentally allocating a layout for the *square* of the object
-> > size due to a variable shadowing mishap.
-> > 
-> > Fixes memory bloat and page allocation failures in drm/asahi.
-> > 
-> > Reported-by: Janne Grunau <j@jannau.net>
-> > Fixes: 9e7bbfa18276 ("rust: alloc: introduce `ArrayLayout`")
-> > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> 
-> Good catch!
-> 
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> 
-> (I'm just back from moving and just starting to catch up on what was going on
-> in the last few weeks.)
-> 
-> Is this related to the performance regression that has been observed by Andreas?
-> Or did it turn out to be a false positive?
+On Thursday, November 21st, 2024 at 10:42 AM, Rasmus Villemoes <ravi@prevas=
+.dk> wrote:
 
-No idea. We noticed KVec allocation errors with page order 4 to 8 under
-memory pressure which weren't observed with the previous allocator (or at
-least not that easily).
+> Nit: The file implementing this is vsprintf.c, but the actual workhorse
+> is vsnprintf() (note the n); all other *printf() variants are wrappers
+> around that, and I'm pretty sure no code path called from Rust ends up
+> passing through sprintf() or vsprintf(). Yes, I see that the original
+> code said vsprintf, but please fix while here.
+>
 
-I haven't noticed performance regressions with asahi's usage. glmark2
-score was roughly at the expected value.
+Thanks for the comments! Going through the code again, I see that
+rust_fmt_argument is directly called from the pointer function in vsprintf.=
+c
 
-Janne
+But pointer is not only called from vsnprintf. It is also called in
+vbin_printf and bstr_printf. Should this be reflected in rust_fmt_argument'=
+s
+documentation, or are these functions unreachable from rust code?
+
+Perhaps the docs should just mention pointer()? Maybe the original comment
+used "vsprintf" to refer collectively to all these functions?
