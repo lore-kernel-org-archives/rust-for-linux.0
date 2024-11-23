@@ -1,59 +1,61 @@
 Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F6918C015
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 10:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BDF18C34C
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 10:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732358981; cv=none; b=SQIKMXJEMZsaWikmpqS5UmcZ+IkjquZ/X24UGqVRBz5yCEciL9QmxuRjYV6qzMPQMHj5wAmC+rY8y6dvUV9p5MUiBw0+F8zU/e7JEBgVAI4yf5JpU5u37mmPW4hVhTCszluON6Kc5mNFumLEt+f4iEZvIc85Tw/zVtBs0GQMCJE=
+	t=1732358982; cv=none; b=nJrA9OE1R9SX0GCGx5gD0sEq7g/voqXSeL/b6c1ot1+EraBrybRzfeCiK3BXRAPJB91gYULan0OImMi/IjpqscrQmS2ATG7y4M7hwG/z0iSj7PgsxdjrczKdQiIqR11VZbrZWpIKZ+CiIqwzNAuSJEfK40z18mkeAqaJuk3b4dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732358981; c=relaxed/simple;
-	bh=l5e/fedUXXgZbt7j8yrNuQFGz5WJDB8IIUFqB3GH9iQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nlekyRxz/F4i8pqtzCZatiKkC6CqyGpv7+DmqPb/gHaQgTssyNrE2/Yqk/I2H5VoP8KWclotKxT5nFemAMspxzTx7QJ/O4FBL7OLeXp0fjm6oo3liLqr1AlP+i6r5iAAFKs8QDMUdu58WbMZY1dbfPr2W5VYkk1bHcBfGGTK6RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=AbCaEDhd; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1732358982; c=relaxed/simple;
+	bh=4LQngUM9wFi6GnxYds/BQLZswpcp+UNeKo0wQuumWEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LHJBRizZnx4u85RCmSdZdd6wkIYpvTKgOcbIL6no2ryjFy2RDkVPYFWJLZUdbOKwDKTBCLvcZs7NJ1O2FvjksjXP5Cal+tqtwiprd3bDcnNbVqvLokRFAybxvOws/Jj3Wpb/T9Gu+iuoUnPsPMnv3BEUC5aJCubh2aMUlPH7Vt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=ahm/zLiE; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="AbCaEDhd"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cffb4ff85eso3939166a12.2
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="ahm/zLiE"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cfbeed072dso3582992a12.3
         for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 02:49:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732358978; x=1732963778; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uztOev9Br2eCEGcAQuyqESkApKB8AQu9zJnJsYYwll8=;
-        b=AbCaEDhdgX4/ofKFthfXADClwA7WijaofB8CJtU2jvCoH808ym9t8WZyVLh64fpZKl
-         +EIxkzUfFFhiz8gsPfYE4LL9btwJ1gSH75IDxn6AcU6wNYNvMQLT9ynn+/z9ovtJSQU8
-         J3hCye61dHrmzBZNVBJRil90ZY5L2K2Hpsq6PvBTrLQ4k+2W9atY10wIYT2RGz2X1XWL
-         XqjN3L3Z8iXiel7D4KK1UoIZ8CYfPATSYBlfbi6YCJBeJGKHEe5dE+xBCr3OmjGWj1xV
-         tjUb8aNtcupA3Izr4Ivtiqz904jGsorEyqfWW/0Bxbbdd+XXqSCgzkzXvUHibw0VzJ+8
-         M9qw==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lMUHGCrmsLFv1U2x7NsltZJCyHZkjoqPOaFXcyq4cj0=;
+        b=ahm/zLiExCNyHsNZXR483F7L+ix7mOcC8/iYenunJ23GwJspvbcC0oFeTEJuAm95rA
+         YpUsv9N4rrdGjq5H1wJLY2phOmSqq33XjVjlPIqwpCIadOD8Gs1E2MGZL+6Lgi1993My
+         bOXLNKHs6N8WYuXi8BG7+91l7JsIMNza++sj5JS77DrMCCaxWCNfahIZx8nK4gbsbeJK
+         oTKNrZZcu9CseHPZtwviGccQC/oLxvFVx/6GQzCW52q3RFJw2lmZ+Mb5b6TX5S3szgFR
+         zADMq8uBLRu7+AJdlFxNpu3aKatbnN7CR1qoSBN7uwa6OSRDGYDq++Svf/aDLiFYrQ6w
+         EdOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1732358978; x=1732963778;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uztOev9Br2eCEGcAQuyqESkApKB8AQu9zJnJsYYwll8=;
-        b=n4sM/m+UrP52hFN4Gsar/WMDFkrD9LAT/i901gbm00Rh21WJxcOqJEDFOwwCkuH3zw
-         2lD3XM7MXz9gDTnSNY+kSsd5t3fnD6mFpwW6Ux7DyDhueOMhlcxdReo7E1rt7uG7COYD
-         xcqVolJz6WGSz+WW9pFeoO3OMkpvIXaoU2i5Sdu+VW2EGNgZ/NX6Vg36f4SOKzUcj+ru
-         Cc/xi1iNoC+fNZ3/9C9Va/YkbR8yD//jRT0NDF0/x5iRORuXQvSMhsjg54sVJEd55F/C
-         duqySfM4Hku2q8rDx9XznY8Zs3GX+Ulg+FHO3eeyBgJLM++1eWR4Nv1sP+UwSUmavo2m
-         NkTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVU7yOevJtg6EyzVIOleOJZi1qW0kdIPLn04H+oYMjZNc0kf9H+CH+Rv/wpSSIhADD4iOQnb3SDsiQplTnZZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOhYLl17ORMUb4M8nvOghrWW8+3EfYxHEhSOXC4nsIQE5zuTdG
-	HJaO0A1ecjU1kbRSUyN6Xb6FDEmcnhShr7ZqbRzHe9YUQt+7tBmoCgwQN0bKqwA=
-X-Gm-Gg: ASbGnctgwZQHFKwLI+NRK5n3+w6VcLwjGMxpUfsRrNFehREQU+T5Bf68y59fVHSvpd6
-	/gRASPEb3jbQRADrXulG0OYvK6+I421blV1jH6Pes9u39/XUNA5m7UU6uE0PvbBxBedtSHvWAXl
-	qUfmFnTivhuv7ulBsyqHsZlqTSDCDTL4xnusrgnbsCc3ZhNcKrOgRp9Rvn9sZou5RCyENDAzj2E
-	G0z8D3EsBo03HFNuJneBGzxz9EpF+5rsC8B4J/ZxsU=
-X-Google-Smtp-Source: AGHT+IEowTRfjPgSf6+BcjqDNR6ElDZtkK0zV6UDtGGt0Pl/n6iynJ5chusjbRcJVEf30s249BpcsQ==
-X-Received: by 2002:a05:6402:35c8:b0:5ce:af48:c2cc with SMTP id 4fb4d7f45d1cf-5d0206944b1mr5359582a12.27.1732358977818;
-        Sat, 23 Nov 2024 02:49:37 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lMUHGCrmsLFv1U2x7NsltZJCyHZkjoqPOaFXcyq4cj0=;
+        b=nvis5x1SEhLpepa/e3w/WfhxAEZcjcfIakjR0wCF6FpyV0g91W6VFe+Vfmm0u5LsYZ
+         pNu0kan57Jh6aRJJj52LKxzIUzc2FGRIWc+vW6EazWnKYxyD6m+VW7Z2soRzLYi+a3RG
+         1LY8Mf31eQHrrdfikp6Lb9VVAPR/ANb+gGNEhcjV3pRrq2Jvqncowy0NpkMWAqzUTm8P
+         WRAoTxPIlm/XSKezFr9GX6TkGilT0QH51yu020HbmY46QwVZlQ7B9yB7wPa0BhYt59+4
+         FILn6Zi6kZLV95OcWKtn0R2N53Vn6gd0/bSiFW5qZWPkj4ni/A4rfrMkxpjC8TbDlqaA
+         vYyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWGBhc0cjB1iVjmgN2O4J5yz++aG6wEXmEdmctYIRwOSiySQLKKcfuGT++m9RuZdmPaVJxZlLP3f1lDKQpkGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyr4roJwD5ajC5RRSdbNd2yEdS9HAlFpOsbaOGwXGWSUus9DX8d
+	HaIo+2W9HIbf52zyLmwCYSQWTaSWohfWxXdftGspngpL9jVFkIqr9XQpOm/Ne0U=
+X-Gm-Gg: ASbGncslWIZkB7tqk2Fz1FVw/x+sUN5AOSKNm/TVM/J2gh0j8UaV3HE1kwFSeuMsIU5
+	DAZ1tRWEWSrxIGQ8IpVw8Z1wBb7uJ4efhPH6wNStS+ELB/gWySBRMDcl3gbSJcts/LnJSrSzZ6u
+	0MEIuGHnyjDIdM/4Uzyifvtcj8QjaPtJLQuWIl6P2QntvJopTyAstn6fOXjdwRTB+IUoF6wuTPA
+	Obaz/42NXQSskxyNSv4VHVtlQbIIqESgPcgiQ2KW2w=
+X-Google-Smtp-Source: AGHT+IFPAukvqgTP27aWhHysmSsGBh5a6b146R4ApA7i0cI93t2imMl5PFX5WXhF8Sb0ZbEWVk2ayA==
+X-Received: by 2002:a05:6402:2807:b0:5cf:bfab:f0ca with SMTP id 4fb4d7f45d1cf-5d0207c2db3mr4094624a12.32.1732358978622;
+        Sat, 23 Nov 2024 02:49:38 -0800 (PST)
 Received: from mordor.lan ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d3b0fc1sm1908463a12.28.2024.11.23.02.49.36
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d3b0fc1sm1908463a12.28.2024.11.23.02.49.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Nov 2024 02:49:37 -0800 (PST)
+        Sat, 23 Nov 2024 02:49:38 -0800 (PST)
 From: Daniel Sedlak <daniel@sedlak.dev>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>
@@ -67,10 +69,12 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>,
 	Daniel Sedlak <daniel@sedlak.dev>
-Subject: [PATCH v3 0/1] make `from_errno` use `try_from_errno`
-Date: Sat, 23 Nov 2024 11:48:56 +0100
-Message-ID: <20241123104857.49385-1-daniel@sedlak.dev>
+Subject: [PATCH v3] rust: error: modify `from_errno` to use `try_from_errno`
+Date: Sat, 23 Nov 2024 11:48:57 +0100
+Message-ID: <20241123104857.49385-2-daniel@sedlak.dev>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241123104857.49385-1-daniel@sedlak.dev>
+References: <20241123104857.49385-1-daniel@sedlak.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,23 +83,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, there are three patches for this issue. There was a race condition between
-me [1] and Guilherme [2] because we both picked it up as a "good first issue" without
-knowing that one of us had started working on it. We both agreed that one of us would
-be the main author and the other one would be noted in "Codeveloped-by." However,
-Guilherme has kept radio silence since [3]. So, I am resubmitting the patch, which
-builds on top of [3]. 
+Modify the from_errno function to use try_from_errno to
+reduce code duplication while still maintaining all existing
+behavior and error handling and also reduces unsafe code.
 
-Link: https://lore.kernel.org/rust-for-linux/20241104185135.18974-1-daniel@sedlak.dev/ [1]
-Link: https://lore.kernel.org/rust-for-linux/20241104200014.12996-1-guilhermev2huehue@gmail.com/ [2]
-Link: https://lore.kernel.org/rust-for-linux/20241105114819.14051-1-guilhermev2huehue@gmail.com/ [3]
-
-Daniel Sedlak (1):
-  rust: error: modify `from_errno` to use `try_from_errno`
-
+Link: https://github.com/Rust-for-Linux/linux/issues/1125
+Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
+Co-developed-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+---
  rust/kernel/error.rs | 13 +++++--------
  1 file changed, 5 insertions(+), 8 deletions(-)
 
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 52c502432447..236b3e4719e6 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -100,20 +100,17 @@ impl Error {
+     ///
+     /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
+     /// be returned in such a case.
+-    pub fn from_errno(errno: crate::ffi::c_int) -> Error {
+-        if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
++    pub fn from_errno(errno: core::ffi::c_int) -> Error {
++        if let Some(error) = Self::try_from_errno(errno) {
++            error
++        } else {
+             // TODO: Make it a `WARN_ONCE` once available.
+             crate::pr_warn!(
+                 "attempted to create `Error` with out of range `errno`: {}",
+                 errno
+             );
+-            return code::EINVAL;
++            code::EINVAL
+         }
+-
+-        // INVARIANT: The check above ensures the type invariant
+-        // will hold.
+-        // SAFETY: `errno` is checked above to be in a valid range.
+-        unsafe { Error::from_errno_unchecked(errno) }
+     }
+ 
+     /// Creates an [`Error`] from a kernel error code.
 -- 
 2.47.0
 
