@@ -1,92 +1,99 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D11862A
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 19:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623D3EADC;
+	Sat, 23 Nov 2024 20:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732389179; cv=none; b=f+vLCALvTjjAEo4wasj8rAWM72tzAkJSImjSim+YnSD7i5UHEUQpoQchvIk/GcTj2QrnAfnY+RK4N4tiXY5MEZGcpakg2608anReoCDoaiGPdAYWNyLutvFQ8qhC9TG8klmR5cvoARLK6tgf/iAAn0yO7rhhXeLqqMAZSA0YkXo=
+	t=1732392520; cv=none; b=i0TgB+PzhZ7HyKddXbWlr3iSsD9aDOlS7DcfOynsbjw2nv0ssZ2zIniZs9uvGlm8bw7LF+cVBNNKVUHTkX3wUxzQ9fE8r1edeLbQ++8eJ3fhqwWaZ5LPrbG08gAEVfeJ1UX4tq/vIa9UA5r/yVXa32/TP1O7sOqXsf9yMKEMLZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732389179; c=relaxed/simple;
-	bh=lUmiM4GQsFH8U+Bldng6hoodakaDO1ThQv3dahisVQE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R7wv23zsseQ3k7LVwKeBN18t68whyrRPEOev5jL9WThaLF0Rng5tzxWJnxxj/iVfkAg9No3O/ld8I4+cDtal4VCCku6X1+f9bthaQY1CGgLwDTh4FfPtecdgmspjKVbMSe9F2XNUwoU/I0Kxw5XAOOFFV8pXTH5XudkkybIF708=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k3OrGd+6; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732392520; c=relaxed/simple;
+	bh=gfVpRsZjNItxoPS+78RWdge/qIyHkEylHh0Tg/HMZiM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nfzkjihbygr/expuH0sfFIMTkyCzytxgm1wz6GrJqgV8sQfh7xQ461IhYWyxnMmUXt3Dpb/SR5tJODYk5Shv+l0XBaIcl7kPzM+JuB7fApnLgOZN8Q5R/D0qlWZcLBedaVO53AqlhITzA5rq0HF6UTV5flUwo1JIwG4LryI8s8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOZ1ZFRG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k3OrGd+6"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ea2820efacso393717a91.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 11:12:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732389177; x=1732993977; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lUmiM4GQsFH8U+Bldng6hoodakaDO1ThQv3dahisVQE=;
-        b=k3OrGd+61jL0WlSOQkEdA3F+Jue8vpCEFh/fpddVkME/rSKSlylI5Mhkeeif5SjZYo
-         W6DwJWwcNxFfPqpMCifMXjn9g7ZoDrJpAuERku0yi2Huhggtn69613bHmhuZpMjvNIjx
-         /IfdFqry/nAtAQmY/VCY+Zxxpd+RyJhh/UF7/STyzDM7IABH1yUcWLTRcQOldgArnZdY
-         t6Pqzod3I+2S2RM1Ya6ntTpszqziXexCtk2vqsx6YeUCN91NqfzHoB19N3RyJEjFNPAQ
-         GXC0Ee3BEu9+mWy5T3BzC37Sw1vEgWw5Gf7iZOys+tq/p+Yl+4zHFB5FG2euBLRXzvmz
-         n/Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732389177; x=1732993977;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lUmiM4GQsFH8U+Bldng6hoodakaDO1ThQv3dahisVQE=;
-        b=fns44FhxadRAijAwxLdXuJPXuG36lAgRBOP+ldKN+b3PF9aZ5yhI7cm60EnBpA+EQI
-         6DkUKypGQ+pGzxuk15iQwdTOSjEt0bXeEn3cyu29WACtemv5RoHYEH4zGGD1t31uCcj7
-         /Ps2DmBYTMPwMfkqo1ZeOSbe15Dcr2Ez+IiBR5HWpyGkWlKUsLS6LiUDcMI7I22pjQpS
-         I3KO6JRXO7GPYB4AY8bHOrW+czL/zIbeCOxj3E77sICTMIPIUiPNCWmaUjco+d/+toZs
-         I9n7/azf5dl/PZwxRQgPvbVzpGnAUVfqa9d5d4m3iNN2qqCVu23gAV8BjdueRzdjCzmQ
-         j19A==
-X-Forwarded-Encrypted: i=1; AJvYcCXQOIysVd1z51fisQ+ieENY+x9Pb4Xoy9henV9mCsZTaSq/HElIni+2W88S8QvNvUI9VlLLMuOQ04yL4J/q3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdQsYwNRx+yvxcUo9n9QmmQpLqys/3jcXPcSt/EnhnFsn6/5Ir
-	CfznBRx93MwedDfxKNoR+6zeegve5SFpn/gIWOsaa9gfX/WgJRQfVuZ2FSlT1g82Ju36zsqzGHv
-	4ApDdSAnc9OxpBtFCg+07yCU4btd2ZXU8
-X-Gm-Gg: ASbGncvfuTaWoT2BlDybFE2fJJesvAKg5ZP3nZsBv5zqLMPynO/0rKCWXLl4QoavQBh
-	F4/OfwnYQsSVrA61m3Rr4HE3iOV30yw==
-X-Google-Smtp-Source: AGHT+IHHhnqFKMKYrbzJUPJTcBeRVZGbllxzvA+i7s7Y6HIEbSNXyXgPTyvnLe2RDCTQTd/SS22dmQqzlmuq7DE8hXE=
-X-Received: by 2002:a17:90b:3c08:b0:2eb:12ee:cf0b with SMTP id
- 98e67ed59e1d1-2eb12eecfb3mr3524511a91.1.1732389177565; Sat, 23 Nov 2024
- 11:12:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOZ1ZFRG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3656C4CECD;
+	Sat, 23 Nov 2024 20:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732392519;
+	bh=gfVpRsZjNItxoPS+78RWdge/qIyHkEylHh0Tg/HMZiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dOZ1ZFRGuRdFs4lQ5AzhvMHaW+xaM2ETie691pW+7rAqjoUXLnHNiJGC8OeNZyoNm
+	 uG4fg3Jptq6XkcTL7a60KYJHGJJrfqXSsmA4VsjelYZVWsD+lPvVV1u4oVs1yJdXYk
+	 62SDqd/NxNpSzaCyRzK3TzEC6fv1fFoN1HKPXEL4ph2YaWXJ+RobZ/7Zt0K6t98iQa
+	 MjiSXCDoizLE+VcZD1tPQoOFLyzfsXkXUAUlx7TzLzswseFw/H0jMTtht8f4Sz2LX1
+	 ceweDBUEwD4Fu8m85OvTD0FChiSpUXHXpdYy6352t4Tg8zwExMUbVe4I192Vc4VhKi
+	 SfgSpToXX2E0w==
+Date: Sat, 23 Nov 2024 21:08:35 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Asahi Lina <lina@asahilina.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Janne Grunau <j@jannau.net>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH] rust: alloc: Fix `ArrayLayout` allocations
+Message-ID: <Z0I2Q_vGErIQ0xdn@pollux.localdomain>
+References: <20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123104857.49385-1-daniel@sedlak.dev> <20241123104857.49385-2-daniel@sedlak.dev>
- <CANiq72=YeDPnj==btj+4ZxrUub1kLB_vgHVVQ5RygivSP_m=uw@mail.gmail.com> <9d29f9f8-f1b7-4c8a-b43b-9f98bceeada1@sedlak.dev>
-In-Reply-To: <9d29f9f8-f1b7-4c8a-b43b-9f98bceeada1@sedlak.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 23 Nov 2024 20:12:44 +0100
-Message-ID: <CANiq72mZWEuBfHhX7MgM0-38PA_hA3aSNV47DLuFnVX1Z43nWg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: error: modify `from_errno` to use `try_from_errno`
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net>
 
-On Sat, Nov 23, 2024 at 8:08=E2=80=AFPM Daniel Sedlak <daniel@sedlak.dev> w=
-rote:
->
-> Ops, I may used wrong series of commands, and this slipped away. Should
-> I resend the patch with correct numbering?
->
-> Thank you for the feedback and tip. Should I dig more into this and try
-> to improve it more?
+On Sat, Nov 23, 2024 at 07:29:38PM +0900, Asahi Lina wrote:
+> We were accidentally allocating a layout for the *square* of the object
+> size due to a variable shadowing mishap.
+> 
+> Fixes memory bloat and page allocation failures in drm/asahi.
+> 
+> Reported-by: Janne Grunau <j@jannau.net>
+> Fixes: 9e7bbfa18276 ("rust: alloc: introduce `ArrayLayout`")
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 
-No, no worries, it is all fine :)
+Good catch!
 
-Thanks!
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-Cheers,
-Miguel
+(I'm just back from moving and just starting to catch up on what was going on
+in the last few weeks.)
+
+Is this related to the performance regression that has been observed by Andreas?
+Or did it turn out to be a false positive?
+
+- Danilo
+
+> ---
+>  rust/kernel/alloc/layout.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
+> index 7e0c2f46157b772248450a77ff445091e17fdfd7..4b3cd7fdc816c158e63ac74014cbfc0794547e81 100644
+> --- a/rust/kernel/alloc/layout.rs
+> +++ b/rust/kernel/alloc/layout.rs
+> @@ -45,7 +45,7 @@ pub const fn empty() -> Self {
+>      /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
+>      pub const fn new(len: usize) -> Result<Self, LayoutError> {
+>          match len.checked_mul(core::mem::size_of::<T>()) {
+> -            Some(len) if len <= ISIZE_MAX => {
+> +            Some(size) if size <= ISIZE_MAX => {
+>                  // INVARIANT: We checked above that `len * size_of::<T>() <= isize::MAX`.
+>                  Ok(Self {
+>                      len,
+> 
+> ---
+> base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+> change-id: 20241123-rust-fix-arraylayout-0b1009d89fb7
+> 
+> Cheers,
+> ~~ Lina
+> 
