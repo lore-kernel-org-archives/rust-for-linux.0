@@ -1,112 +1,97 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2E18641
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 13:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F171D545;
+	Sat, 23 Nov 2024 16:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732369521; cv=none; b=II1+/HkAbxX1rufNk8UURA4DY8ZOYfvcNIWKGCKYPlgPrx4RkhM+U925UOGe+VMqZj/JYkWvTS9salpCrjDwRG6L03qo+UgjAcMp3sZQ/pmvrZj5KIhVohro/hjFfXHzb5jGaEhZ8kh4n/Awga1de0GTKKAqXJWSpSMNrNbyJPc=
+	t=1732378458; cv=none; b=RV6tL8XwWb56t41901dzMVdXsRoYIue3eY6OyAHNsBsbr6hhQ2M8w97fVa6Jqevaix3UwfuVzA5ciuYCVuP8pas/H8EXyHwXai1t49dE1swDtXGwV5jOVP/+sYDGMh4JMme+cyfI7XisAv/KXdUhJFMcuFEQ8ENAJHYepIzybaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732369521; c=relaxed/simple;
-	bh=65DYwv3ug/l0bzHXqqLa9HT99Wp5s7/lb6e4adHNBUU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tBbxTtx/TYrMvUtI7ZKvoora0SOFsaOh36+NaH0FIcQ+WQkFzxoVS3u4DPNnei1AHhtNdoaXQewV5ZdgCkZip/S1PCVqLnkmw8xzhtmM1OfnxGSiC987UDP4rDETs/WNEhSm6ohNtm+O6nBL5V8+M8ZN9GAqn8SvX6i9AbFxA80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z934biIj; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z934biIj"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7fbcb11ceddso315832a12.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 23 Nov 2024 05:45:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732369518; x=1732974318; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f5+pD9c96sZLTAIB5z74aDI2ro1YAgWbn7XsD+lOFeA=;
-        b=Z934biIjD5j2SU+E3TeSLCUoAxLmkjvaW9blC6JPW6c6tlMaukdpLd1hdSTLXkSplU
-         ltxRMzMnwC/2YyHYqybEmlh9xqKQ3lXmSJO/OYIIXp8bIvIIrNWmSWLfU3Acb64YSOXz
-         cSPR6/dUjvlTMz8Dzzewq9DWpeyUF+qnLA2jThVgS9sC6/ooR0ji0nuYh7TDaiylmrVE
-         yu7n7EnngeBIcCc9cIBJ2YXJeO82yACUKokh3BjH/KZbukhhSIlDJXXCZcrdEP8uwV99
-         D1zAauPOsGSQt6d9F6Rw6jCQs1L25nlKFAPjQwV4E4YgVnDk5oOMi5rczoveLoJsjVq9
-         4Obw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732369518; x=1732974318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f5+pD9c96sZLTAIB5z74aDI2ro1YAgWbn7XsD+lOFeA=;
-        b=sQfnth+LlKwTuDhD0yMF4RE8FcwDkKLhJ4/X3lX2932xtgx9PvdGRpPjNM00OfWLBR
-         axYySntcRLpIQbBF/sU83wvRi4P8QrT6MWGvhzuDkX8MOsBx/tLbIMcD6ZFHdH1aDphb
-         gueoAIXtbNFBArzA7proOmrCxu5sJyg78ciNhwDTuTtKmpFas21hszUCt0AqnMgqKZ/i
-         A9hKHgF7B8/5WkqqOzH++npOre4LLSlFfiJg7FicWVFfK03E+0HW1OsIZE9O6FMROiSm
-         KHmtj30vABNAL3QNrtg8EzFu9OKOiPPl1DSRCfH6yvJl+c2lfHHJ9owIBMp89YOHRQ7T
-         lAmw==
-X-Forwarded-Encrypted: i=1; AJvYcCX++l+owFFhGE3snfypLbfCZul47eUi4dSQPmdEVf4MLt6yR6aRXRUx31pYBVCrXKfbDbq+BhUJyyCmfD9LfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDVxZ5CqVW6zUX3Xb3Khuc3SOu9EzNMKK41ZN3VrCYifBryXto
-	OevaP8B7SWYz7DCBgPLCmpydQMD4dm/8FIs+zPta3iFNowR59Ik+QdkHK0vP1eZ9SkD52/aA536
-	bFPa58LWeYYCAbgkocjx3y/9A8qo=
-X-Gm-Gg: ASbGncs45StzSjEybreaCLaw62ENqu64AsciieJBw7ok9LTNxk7XV22HxY+0ZBHTsLG
-	JWqM76iVH1HKCzutvqibiOgdxOz2urQ==
-X-Google-Smtp-Source: AGHT+IGB96AuwJA6oVqTUNpGiXSAqEWmG5OLNXHr22zzf1bOj+x/OZb0SPf3Yk0bE5amiAqHVQJYLgQDwPtAROyIDeA=
-X-Received: by 2002:a17:90b:38ca:b0:2ea:c2d3:a079 with SMTP id
- 98e67ed59e1d1-2eb0e22ce05mr3678048a91.3.1732369518033; Sat, 23 Nov 2024
- 05:45:18 -0800 (PST)
+	s=arc-20240116; t=1732378458; c=relaxed/simple;
+	bh=HRvM1IslAbrTkck5NoxkGSQcBIsd+bujipNjiBqdrcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MJWCe+Hcy2+mc53ITYell0leFmR7+d4ENF9iMt1TqqznQDQEV393x7Ak4D4UXCbt2Q4dE1eQWpgpfvQHV0l94VUt0clD+kFlHC2+lYb6rg9GzLBRbm05Tk2fxp0HlYlD5H0rtvnS3KpXHodrRi8VKzxK5/CLJ4dM5xaBlZBOBdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id A1EF330000950;
+	Sat, 23 Nov 2024 17:14:05 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8B6903CEA09; Sat, 23 Nov 2024 17:14:05 +0100 (CET)
+Date: Sat, 23 Nov 2024 17:14:05 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Alistair Francis <alistair@alistair23.me>, Jonathan.Cameron@huawei.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	akpm@linux-foundation.org, bhelgaas@google.com,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	bjorn3_gh@protonmail.com, ojeda@kernel.org, tmgross@umich.edu,
+	boqun.feng@gmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+	wilfred.mallawa@wdc.com, alistair23@gmail.com,
+	alex.gaynor@gmail.com, gary@garyguo.net, aliceryhl@google.com
+Subject: Re: [RFC 3/6] lib: rspdm: Initial commit of Rust SPDM
+Message-ID: <Z0H_TYOPegVrkM9o@wunner.de>
+References: <20241115054616.1226735-4-alistair@alistair23.me>
+ <20241122173104.GA2432309@bhelgaas>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123104857.49385-1-daniel@sedlak.dev> <20241123104857.49385-2-daniel@sedlak.dev>
-In-Reply-To: <20241123104857.49385-2-daniel@sedlak.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 23 Nov 2024 14:45:06 +0100
-Message-ID: <CANiq72=YeDPnj==btj+4ZxrUub1kLB_vgHVVQ5RygivSP_m=uw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: error: modify `from_errno` to use `try_from_errno`
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241122173104.GA2432309@bhelgaas>
 
-On Sat, Nov 23, 2024 at 11:49=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> =
-wrote:
->
-> Modify the from_errno function to use try_from_errno to
-> reduce code duplication while still maintaining all existing
-> behavior and error handling and also reduces unsafe code.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1125
-> Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
-> Co-developed-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gm=
-ail.com>
-> Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmai=
-l.com>
-> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+On Fri, Nov 22, 2024 at 11:31:04AM -0600, Bjorn Helgaas wrote:
+> On Fri, Nov 15, 2024 at 03:46:13PM +1000, Alistair Francis wrote:
+> > +++ b/lib/Kconfig
+> > @@ -754,6 +754,23 @@ config SPDM
+> >  	  in .config.  Drivers selecting SPDM therefore need to also select
+> >  	  any algorithms they deem mandatory.
+> >  
+> > +config RSPDM
+> > +	bool "Rust SPDM"
+> > +	select CRYPTO
+> > +	select KEYS
+> > +	select ASYMMETRIC_KEY_TYPE
+> > +	select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+> > +	select X509_CERTIFICATE_PARSER
+> > +	depends on SPDM = "n"
+> > +	help
+> > +	  The Rust implementation of the Security Protocol and Data Model (SPDM)
+> > +	  allows for device authentication, measurement, key exchange and
+> > +	  encrypted sessions.
+> > +
+> > +	  Crypto algorithms negotiated with SPDM are limited to those enabled
+> > +	  in .config.  Drivers selecting SPDM therefore need to also select
+> > +	  any algorithms they deem mandatory.
+> 
+> Maybe this (and config SPDM) should be tweaked to mention drivers that
+> *depend* on SPDM or RSPDM, since they no longer use "select"?
+> 
+> PCI_CMA, which currently depends on SPDM, doesn't really look like a
+> "driver", so maybe it should say "users of SPDM" or "features
+> depending on SPDM" or something?
 
-Usually, when you have a cover letter, the title of the patch would
-have been "[PATCH v3 1/1]", to indicate there was a cover letter. Did
-`git format-patch` not generate it?
+I anticipate that the SPDM library will eventually be used by at least
+two actual drivers:  NVMe and an x86 platform driver for Intel SDSi
+(Software Defined Silicon).  SCSI and ATA may follow suit.
 
-It is not important, of course, but I thought I would mention it in
-case it helps.
+Thus, although the PCI core may be the first user, the majority of
+users will likely be actual drivers, which is why I've used that
+term in the help text.
 
-> +    pub fn from_errno(errno: core::ffi::c_int) -> Error {
-> +        if let Some(error) =3D Self::try_from_errno(errno) {
-> +            error
-> +        } else {
+Referring to "users" instead of "drivers" may be misunderstood as
+users in the sense of people using the kernel.  In particular because
+the help text is seen by such users.  The terms "subsystems" or "features"
+don't seem to be as clear as "drivers" IMO.
 
-`let ... else` would work here, but given we just return the `error`
-rather than having a long function afterwards, it is true it does not
-really help.
+Thanks,
 
-Thanks for the patch to both Guilherme and you, and for navigating the
-race condition on submitting it!
-
-Cheers,
-Miguel
+Lukas
