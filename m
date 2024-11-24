@@ -1,95 +1,90 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517FC166F29;
-	Sun, 24 Nov 2024 15:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F896F06D;
+	Sun, 24 Nov 2024 23:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732460842; cv=none; b=iaEJSqqgWyayFJxCO3PxEKkRYkka2p6QkL4YI092jK9oAVzOQd04DTCwASMCG/sUcXVvAH0G0tt/BMJnB8sz+aP7Aiuy+4F8MF+orQUdwqdu+mYtD+127qFjwQexRkut1ljGZldHxJX+QWZKsqsiD+82gwP7dfQ1E/R25naJ5E0=
+	t=1732492553; cv=none; b=iI9VKiSCnnIMXU6NorLfm1dLCRZeYn/pEZxC92LJpOREGO98c7nDC+PFkbBBJ/ni80P5GzzpNC7s6U4Im/Q5SCP0dnSY+1/Hq9MnJ3FpNE+JizhrQX/vbol/KWtYdLhV7PE7vt42cQjndTo6ynbzhp5UKtFAXxcHNn72hKjBDm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732460842; c=relaxed/simple;
-	bh=29MJ8sYwFKcFWGk8rIN1r6kbK05u7kw1662rEDQQqNU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=eLDf7Jeu1FlxppStkNshT9ZS6oZ06T0DeP94+950xGm5bH8jA/A2ogQS681VNopmRjEMDrEb1S8v2yaHCkeAnzC/+AjNaqUHZ/cL1cWYgF6J+nkKSEPT3Wx9b2bXRkuhzLj4Xa3JEB0BFgFtN2SZSt66WJDdor2C+9292OWhlCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gNTG+nBf; arc=none smtp.client-ip=209.85.219.176
+	s=arc-20240116; t=1732492553; c=relaxed/simple;
+	bh=ahIJZ5ejiMwN/JQi1QRVHKcYWH3Zh8Fe+Ycej3jmRV0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DnpBTORh63Vv0rKTuTJUrqlDb23cmZgnsoptnArSkXkfE25wP11bCif37Ed9sq4xIV51N+Mvdm4UL7aB3fp6L9HFKcxGyAZrloG7g9Muf/iUdC4+LX1g9GxHxg6WlhBAYqoQbEUftlE/pbH3K1S8BFxyYuTRWXfzezPdjX71e0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iC9DmIkN; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gNTG+nBf"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e382e549918so3034694276.2;
-        Sun, 24 Nov 2024 07:07:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iC9DmIkN"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ea4e97ca43so651905a91.0;
+        Sun, 24 Nov 2024 15:55:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732460840; x=1733065640; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7vDoUwVk54/2HDm8WhQ/hokgEo26iQk0+d75grJPQqM=;
-        b=gNTG+nBf/7mWSlIoeZhuZjoIJm1h4JnUOBXw2K/D177zJGKjeUuWJ+WMNnjKIT72/L
-         66ML+2oubaqPRo8nFLHBeIAYJPUMR8Nful0AZOj0E5ShSeMqkRPtrwvX9bHWcNC0O/WG
-         wSSnHakEvkOxQY3Iu+ktbLLHQCmY1IhMlJo8wf5pKDv062C/yYlz6H7pxulYe6GlW7wt
-         VA44kdICyzkFrhz4WXHWXHYU1TIBcsugIAZBI7fhzbfPkPVk/+lApYHvyqdnPKRjcMis
-         DeA3SKS69YFYdYOuG12bC82fMDU00VOlub3j1RvOcDbp+7YggsxMb/N8lDdJ9on2b39z
-         0z1Q==
+        d=gmail.com; s=20230601; t=1732492551; x=1733097351; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ahIJZ5ejiMwN/JQi1QRVHKcYWH3Zh8Fe+Ycej3jmRV0=;
+        b=iC9DmIkNOxrrYI2U5r2oeT8pbP0caWBEARca4QkVeB05MRKca38CxKBYOxFHgKRKQg
+         PIJfcJxIXM7rbwHeDar5E6YfzfSKi0/5BPPpFHIgx6YVkWKOinM8vuuABTUHjgyjY7wt
+         KhNBvB+hz5DhlB0KBkvpg+IRQzbBwGWrAqIKOeQzBG1urgkKrvvlknVV2/1deHTpUVTR
+         0Wa8EbLxpvOZFViVmG5pl6tCMdIqCeXWNxayTqRLEX0TOewRfiJA1QmU4dXGIJLAayIT
+         YsEilPbx7poplE/dimHPSFAvAgovww29BjfDjCLW551xseTvoQuBOyz3dN79liCG1/Zt
+         Dpnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732460840; x=1733065640;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7vDoUwVk54/2HDm8WhQ/hokgEo26iQk0+d75grJPQqM=;
-        b=t4WPyD/W6QvsU/P+9apKvScIfpTExPuouyuC71ofxrBf7+Y5RvTo6Gq4d/iRl+ECO8
-         d+PPbLOpCyYsr9Xx0d/N4HOyIHO7H7/OTPnOFyj543614EdLaYkekEikjHHC2rPullJX
-         NjypnSu6Hray7kJH2y1irvILrJDQ96fHG+k6AovRQLN4oA/mAS45JlD76pFjQVHmZf3u
-         AU0fh6oiR0q9zhsY42uO5RJUPO5kKdZsuTZXi8xIG3s1y6WZ5j1Rq8IfElIkMDnIaap+
-         QoS1GVAxM3LViOJyGDoooLYwan5DtAGUJ5ykWTVUd4mhRj5v5jWlWCnyk9MXuR8kA4vT
-         ZzMg==
-X-Forwarded-Encrypted: i=1; AJvYcCVR5TdwtPq5cHo6NuvNskMPczyeU8fBqccJgDNZKjnScliEHGDsUqNQSVWSJs+G3ivW1kQ5ZSA7z3NQ@vger.kernel.org, AJvYcCVWwc/hRhCjE1hrKTBER/D3KoQzu69ZIXykfoVavc1wQtDFmXBTA9pBz+M+Dg4hl9J4O6SuBppeQEOs@vger.kernel.org, AJvYcCXYCspAFGosILqMpfcwhgn3xTqdKsz37TqVh+KJ8+2KiDB5g0f/qZMtrHiA6zET2M85DquEVMUe4qhr/Lvx@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTzp7qhMERmp3k0PbfoY74yggt9yprwD3UBwgreiJKmMFwYKWt
-	UwO581FJJPUI89myMARENRCLCavmV1MvIs8UzObdMZ7wL9rswQbzulO1WciVhViSwaSnHrsiMTM
-	ifYjyv+Tm4ggEIcmpNa/8S2P6G2E=
-X-Gm-Gg: ASbGncs7CtnowAKs/kNesSbyb3+e50th9gfgNF8PU6G35AQ3CPLsYiEsR09uORUJueI
-	v0WtxYzrnihqSExsXgFM27kHFSS0DdH1E
-X-Google-Smtp-Source: AGHT+IG9ahPQQV57NbUiEfytAhXwmIMWj+E8j9L72G0f1AQV4HUtOjvOrCGoOaHQeT99p4rPqWI5dxAo1AKm9fZH/sA=
-X-Received: by 2002:a05:6902:1b06:b0:e38:c692:14a8 with SMTP id
- 3f1490d57ef6-e38f8bf0a9amr8723492276.44.1732460840164; Sun, 24 Nov 2024
- 07:07:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732492551; x=1733097351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ahIJZ5ejiMwN/JQi1QRVHKcYWH3Zh8Fe+Ycej3jmRV0=;
+        b=QUtVAicrpCZxwdUKb9PqDt0qURoW2LErm85d2AYPrHN42o24KZt0ogdEPIJJlmeU/V
+         GxTAF4YxtW3R8Bc1th+iLQUbBisSn2STgHwQxHH2j+d9uLZqRe11uM7N4whZQaaV3MHU
+         UFUs3kHvpsIg4BOp87DERsy6igwJl+6AQotW5H9p8WFwmgIsQnrnQLcCj7hzPYhAUJA5
+         RNnWW64NN1Oz0dt442X1N6PGWHdFgg1dmSLaRWlYxJTQZBHx+JPVrcaA5bdrvJYsLfFK
+         tqt+uMw382gm9EgRDVQOS2neiLmnlu4WYXHUSLZYrxH7AwefsgpqyTqCGXMBVfwl4BOX
+         kWiA==
+X-Forwarded-Encrypted: i=1; AJvYcCX63W48AaP0V+X/dnQFKPl0xX6nPk7SFqEv1Bt1syExfZ+Q8yefs76iLhzrUEFfiwXrV7lmnf2OJgVtmdI=@vger.kernel.org, AJvYcCXAneRKcCn+t2MwJc8zdb3AJGF4rGvUtAJAP31JjmHcN4SG8nYSQPPsPGmJzILCgiQPLLls8hegIoX6LmN85SU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRY6Mhb2v1BI7LLh0ZtQfHm1VnwtremE0ghg/k9bKKdN6DB1pF
+	3gdN+WKOLJcU+XV9AKEfstHVDVSAM7I3usFhegsP3QI+fphX+sMF7nnIlB5cfA9/Jq9HhYEtlSB
+	oURgjHKeygO7SlY4JElKI54aquQw=
+X-Gm-Gg: ASbGncv6zdKZEb9T5+QYhFv7iZvOJ14l/WoSXgkQHNmzkZmFClLwdW+wtUMmN35kk9B
+	aYSd+svLse/ll377UnHJlxlCKJwYWzg==
+X-Google-Smtp-Source: AGHT+IE0GVGXq6FAVz/1ZUH7H5yK+sxF6g6rGaYnxrsAhuXE3bPolOfAEBR2JrYP4HASDtXdNgIzJ9T+bA3QL/2iIhQ=
+X-Received: by 2002:a17:90b:1b51:b0:2ea:580f:6c0c with SMTP id
+ 98e67ed59e1d1-2eb0e024be7mr6003360a91.1.1732492551429; Sun, 24 Nov 2024
+ 15:55:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Sasha Finkelstein <fnkl.kernel@gmail.com>
-Date: Sun, 24 Nov 2024 16:07:09 +0100
-Message-ID: <CAMT+MTTiimUvH7=T-zHsGAU0cDSYcyJL9p_jWNE3K+JKaxQ-Aw@mail.gmail.com>
-Subject: Re: [PATCH v3 05/16] rust: implement `IdArray`, `IdTable` and `RawDeviceId`
-To: Danilo Krummrich <dakr@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org, 
-	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com, 
-	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com, 
-	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com, 
-	lyude@redhat.com, Rob Herring <robh@kernel.org>, daniel.almeida@collabora.com, 
-	saravanak@google.com
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Fabien Parent <fabien.parent@linaro.org>
+References: <20241116181538.369355-1-ojeda@kernel.org> <CAH5fLgjU3BUU4nu6LscYKHTtZ8WSChXvf391v5v=xNK_2w7nrw@mail.gmail.com>
+In-Reply-To: <CAH5fLgjU3BUU4nu6LscYKHTtZ8WSChXvf391v5v=xNK_2w7nrw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Nov 2024 00:55:37 +0100
+Message-ID: <CANiq72mSo9aq9Wu0WemVRsC2XXDKvw2D=rTAXg5eUF3g+yHO1g@mail.gmail.com>
+Subject: Re: [PATCH] rust: allow `clippy::needless_lifetimes`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/22/24 23:31, Danilo Krummrich wrote:
-+
-+/// Create device table alias for modpost.
-+#[macro_export]
-+macro_rules! module_device_table {
-+    ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
-+        #[rustfmt::skip]
-+        #[export_name =
-+            concat!("__mod_", $table_type, "__",
-stringify!($table_name), "_device_table")
-+        ]
-+        static $module_table_name: [core::mem::MaybeUninit<u8>;
-$table_name.raw_ids().size()] =
-+            unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
-+    };
-+}
+On Mon, Nov 18, 2024 at 10:51=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> Does this need any backports to keep old kernels warning-free on new comp=
+ilers?
 
-This needs a cfg(MODULE) or similar, otherwise it is impossible to
-build multiple modules
-into the kernel. (See
-https://github.com/AsahiLinux/linux/commit/b63a09090638ff92993c450132387a77e1e68c9a)
++1, for stable, yeah, if we want to keep it Clippy-clean (which I
+think we should, especially given it is straightforward). I will send
+it.
+
+For the LTSs, which only support a single compiler, there is no need.
+
+Cheers,
+Miguel
