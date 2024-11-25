@@ -1,93 +1,104 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3753B1514CC;
-	Sun, 24 Nov 2024 23:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3E51372;
+	Mon, 25 Nov 2024 00:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732492589; cv=none; b=due0YoR96nYJ5P/Z4zBVimIqMekiiN6XIdnOKi1jfaqUZUxVy54dpFitRtYrT6s7u8dZR8zHwuVjrBfBSvmHsns9MitcEvkpZR78tslw3YMFKwlBtAcsiM5JV4aJ6gnth+T+bKW7ZKjazOuM/kLlrxHCeC59/Odk41ke2ccZAGI=
+	t=1732494423; cv=none; b=nqHdVsA8JoF8MjTH/uut/Z2aIHw3/6bPZ/tUKzVSF/pb8zfocnKjoLetwpVho4+V1iihLET42a1N63ch0/hGGMbHHD1cD1yi2SpFh29Nd0BvHRO5XeHG9oqTru2izV4/ampnMWsBjmCyHDJ4oj7NkKRMc2zThmn2I05XSFx207Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732492589; c=relaxed/simple;
-	bh=5XsI2dnv37mBv+p+BtUHDZFriUnNCf9wr1yXZXeXyFQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A0bCd+kcDNUHtUWlAcMXc93aRBiHuCytJyiVC2aCvNiJ/BushLcoUa6vTJBH/sLZxDJF1hsjlCN+2BPzCn0uWUqefDB+B31DLV32Hjqitbg0TpWRxPAB2Nl1uYwXsi6SOziRyAm/ccYCvV/2n7mJXSve4zQMd3So6Hn+L8AUM3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCW5SK6y; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732494423; c=relaxed/simple;
+	bh=KH0/XG5YyrgvJxmq7f9f7f5+Q8jUHpb97a+ADgUrfbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GKhAw19xLfnPWJTvBF3Xr33wXl7ThK7keWfXu82tttdjhaBvjyg4KO46K2L+q0vHE7bNQ94KJ/oV3mPu4ZeKbW7gZJ0+ONy8tBL5v+ATRyrG/z2YR2kyqo70EiwXjFMucBatJZLK/nQwpLN3ITbP6B64wT9SA2YU4r9E5WtKcpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqPde7mu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCW5SK6y"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ea4c418488so649950a91.3;
-        Sun, 24 Nov 2024 15:56:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732492585; x=1733097385; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5XsI2dnv37mBv+p+BtUHDZFriUnNCf9wr1yXZXeXyFQ=;
-        b=LCW5SK6y3b9s6DFatw2Kg4xF43X2JmIuYJR6JRUwJY1Rpm1E4t/aCzo3jsX/btJs8b
-         23V/0YE/Okx7CkJbLl2YAej4hZD8dOGUDa4h4SiIwPvUuVbyJ/rmj2VCYImNLxa2DeSu
-         tT8VuEQ4qvGsaYxJvEx46yIHgtJxRgJOZBWU6fIKOEZnP4bRTBt4Eq29lGbNuIy0oer4
-         weL7bGJ6BcCfzxMINehQlMs4Owe9h7h7cPIVCkVgPBQNSdxeviFLdoFnwgOyopQ4dCMl
-         t/hVTP8zJNQjLQUYZhqW83+7DBATwWJn2W1y6pdC3DrxT76ybN3UfQUfp/dVyUwKFiqw
-         8HfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732492585; x=1733097385;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5XsI2dnv37mBv+p+BtUHDZFriUnNCf9wr1yXZXeXyFQ=;
-        b=t3O15BwmM6VXo3fvDVEy+IEaj48FyEwuYyGsq8BrRMrEPkS0bd5fMEqp0pfeYt3a2s
-         NFdiAZfXd7DCIy7Gzl0Zho+u6+iRoJD8TqV/iEKKFAtIUDfpRXG9/Dqn+udlrAEt2Ehx
-         m8rNk5f4udw+TvF0/Xcc+cG6wNI1Z9ULXUXJ3FkVwgzLqnFU/CsZBiBcuVhGWSNisdN1
-         wBHsvMlnMw+FTjn+jkLyGSq3W+8XyAo1A7onVLOTt/1XvUuyfgBoe8l+FpiSJCJxvf2K
-         Si+lL3Dp7Y+j7M8fL7jh+7BpCjXSOP0ULaL1DYVsZcguqU9OSnln6PmvftBQd6ngm493
-         ReWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWzb+K9QNKh8Ln8EmIbXB7zN+mO6VvZpy/47f1QiCLafSAu7tRFhuGd2FmKbqkXwD7/nGV6LZgT8WR8us=@vger.kernel.org, AJvYcCW1r9JQMw44Pxoo+dQN3ur6QzljIHKxbYlen3X9+kKJ/sF47KRnC0qLXO+vmL2wFKt8Sh73k9FrOp9Ms/np8aE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+Xmi1vFHUU3sBdbfHPZqy7xxLuK0lJYt5tYFU4RblItIWsveD
-	+vyQJln97NlTfKh/3hHDCgj0zgFyWpe8QjxX3Dr5yTCSEbLch3m9PIs2r8uu/ujgH3XDbsCHo+V
-	MXYLP/ql9BZphwhLge49rO80x4XQ=
-X-Gm-Gg: ASbGncvuFWza7V0CNoEbfeVhXgxOg5rsW1G0YvZYv8Yu9rHjzgmIdAhaTjWbHfzqKxO
-	sxE/gJDNBZLsUvs3Uj/reqcNTS+5fzQ==
-X-Google-Smtp-Source: AGHT+IEI7GYwhVxYuokBXCBQbL5ucki1Qy1so2aGi+FFVysnEyTiRPfnjOrI8Gl0mVt194WhWC3goLNn9vaUL4FIULo=
-X-Received: by 2002:a17:90b:4f44:b0:2ea:956b:deab with SMTP id
- 98e67ed59e1d1-2eb0e87f52fmr6103731a91.4.1732492585588; Sun, 24 Nov 2024
- 15:56:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqPde7mu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6C6C4CECC;
+	Mon, 25 Nov 2024 00:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732494422;
+	bh=KH0/XG5YyrgvJxmq7f9f7f5+Q8jUHpb97a+ADgUrfbQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gqPde7muw2FZPO4kyvIRn4JVYJJszSwAl0+IWemtSJRWWstcTCk8Bp+sJmbyRtJEs
+	 nAMGGHMXKgeOjjDMGbBwlBiwGH/6Tx3zYewxsCAEdlTNu8cD8rktJanw28Imm4EIor
+	 pnchuQLB9U/gzScMUF/x1i9tNLfwDy/u7eEdy299tLz/KbHPHq6Y8VgjMSgDdxrwmP
+	 rMYhZ3gb8ShuLfyoN2Fz8/JbHpwehvBBcqijGMigMvB6d0N6KtUvTV6O5SYkAuf6n+
+	 OZIHMeiX7YdeTt5wd6auxL18f7u9/hGCcjPd7E/WGDE5b4w908F7GiZ6tQhXHHnLQY
+	 7fmFAoTtI4CGg==
+Date: Sun, 24 Nov 2024 16:27:00 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Rahul Rameshbabu <sergeantsagara@protonmail.com>,
+ rust-for-linux@vger.kernel.org
+Cc: netdev@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Andrew
+ Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net] rust: net::phy scope ThisModule usage in the
+ module_phy_driver macro
+Message-ID: <20241124162700.4ec4b6ce@kernel.org>
+In-Reply-To: <20241113174438.327414-3-sergeantsagara@protonmail.com>
+References: <20241113174438.327414-3-sergeantsagara@protonmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net>
-In-Reply-To: <20241123-rust-fix-arraylayout-v1-1-197e64c95bd4@asahilina.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 25 Nov 2024 00:56:12 +0100
-Message-ID: <CANiq72=bYXd+Rx4tTmoUPeSMCuPsmrNWzX6fnBR+siULzK4t1A@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: Fix `ArrayLayout` allocations
-To: Asahi Lina <lina@asahilina.net>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Janne Grunau <j@jannau.net>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Nov 23, 2024 at 11:30=E2=80=AFAM Asahi Lina <lina@asahilina.net> wr=
-ote:
->
-> We were accidentally allocating a layout for the *square* of the object
-> size due to a variable shadowing mishap.
->
-> Fixes memory bloat and page allocation failures in drm/asahi.
->
-> Reported-by: Janne Grunau <j@jannau.net>
-> Fixes: 9e7bbfa18276 ("rust: alloc: introduce `ArrayLayout`")
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
+On Wed, 13 Nov 2024 17:45:22 +0000 Rahul Rameshbabu wrote:
+> Similar to the use of $crate::Module, ThisModule should be referred to as
+> $crate::ThisModule in the macro evaluation. The reason the macro previously
+> did not cause any errors is because all the users of the macro would use
+> kernel::prelude::*, bringing ThisModule into scope.
 
-Applied to `rust-next` -- thanks everyone!
+You say "previously", does it mean there are no in-tree users where
+this could cause bugs? If so no Fixes tag necessary..
 
-Cheers,
-Miguel
+> Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
+> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+> ---
+> 
+> Notes:
+>     How I came up with this change:
+>     
+>     I was working on my own rust bindings and rust driver when I compared my
+>     macro_rule to the one used for module_phy_driver. I noticed, if I made a
+>     driver that does not use kernel::prelude::*, that the ThisModule type
+>     identifier used in the macro would cause an error without being scoped in
+>     the macro_rule. I believe the correct implementation for the macro is one
+>     where the types used are correctly expanded with needed scopes.
+
+Rust experts, does the patch itself make sense?
+
+> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+> index 910ce867480a..80f9f571b88c 100644
+> --- a/rust/kernel/net/phy.rs
+> +++ b/rust/kernel/net/phy.rs
+> @@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
+>  ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
+>  ///
+>  ///     impl ::kernel::Module for Module {
+> -///         fn init(module: &'static ThisModule) -> Result<Self> {
+> +///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self> {
+>  ///             let drivers = unsafe { &mut DRIVERS };
+>  ///             let mut reg = ::kernel::net::phy::Registration::register(
+>  ///                 module,
+> @@ -899,7 +899,7 @@ struct Module {
+>                  [$($crate::net::phy::create_phy_driver::<$driver>()),+];
+>  
+>              impl $crate::Module for Module {
+> -                fn init(module: &'static ThisModule) -> Result<Self> {
+> +                fn init(module: &'static $crate::ThisModule) -> Result<Self> {
+>                      // SAFETY: The anonymous constant guarantees that nobody else can access
+>                      // the `DRIVERS` static. The array is used only in the C side.
+>                      let drivers = unsafe { &mut DRIVERS };
+> 
+> base-commit: 73af53d82076bbe184d9ece9e14b0dc8599e6055
+
