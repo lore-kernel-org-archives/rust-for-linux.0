@@ -1,97 +1,105 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1787198A32;
-	Mon, 25 Nov 2024 11:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495B010F7
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 11:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732533944; cv=none; b=aMhw65XTAQ1LumGfCB7qVtoo44p3y3Jj9aCNA3SYhrPnwzHPCB9lrGueftWxZDGfzuUlfa1f7nctjp8ev363JEbCdxu7Of5Dp2ohV6AqQJjNDZUg+OdhDCw/cMVfzXuC9ANZu5jVOR3WHG0yO8DfW4igbQ3kY/IVK/M3k+l3ijw=
+	t=1732534298; cv=none; b=rSIoUEhe4fL54+d83d+mYPKPwNTAQ4piIuV5F54lNEKxy93gyde8DY6SQ1keXAqtYC0m6xH0wgzUiE4yDKkMd2M2pMPdvC3+52/iiECtPtYJsDFc0Ye1D1Vokuc7AmbX6a6WgeIR70MxWCLOTrAsvdY4Amc9GC2MuAsL8ohDmQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732533944; c=relaxed/simple;
-	bh=5iMQqINixsurBU8fcFSasigeM1BFuQKrZ7zJw0q7rxU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hCDCJcTkd86DNN4QV9xM3k2dvGOz5DsNXbbJRoOWfbhoBTfFylVEXP05gV+9dwXDVFNiaYIxfP7PQ4eryEP0Ze84Exg/TlI3lP2rWgUwv3xGAW8WRXX+DHx2ewFprLd+6kbU1P3seF61KLD+aFDr3MEGl5o3X3/dgXw8Ead4pkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=ibq9vWSI; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+	s=arc-20240116; t=1732534298; c=relaxed/simple;
+	bh=ILIVn2WWp4C6OWM+ctTCqHnnJVEdLwOSDJAp+AS7gDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fb1VBZskH7fbJp8+hbXS422yBNmhWz4VZXvno/s/XVwdP4NrA4UmLRdhhz8URLpYQ7QiFPt/AOD6JWVtUzFIEX1kZox6IocKE6lJFdqC939hEIFQrVrbqpmS0tundkgCzoOxBwzyo1uZ2DsMX9xG9inBHvqS0GmcKefztDEVaLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=B7eyT1qY; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="ibq9vWSI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1732533935;
-	bh=GEwWZpkSTwqkvb7sbAxuL/F3C5T2lgJTaLKpD4NJ67s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ibq9vWSIkcvH3dVNxoDUbmcfbmw9gOTfu7vLdfVcW9ngaj4FXizoh3F73wHquZUQW
-	 A6GAdiQISb3502sWECC/O/vKtjQ+j5iAQzNAKpI/OSqzBpKu+2kOoZ85QH9j8tKiXG
-	 j0Gt+bvBJILy+G0DpQyq9xbaSD/N71qWWtuvFk0OBielTvVxvNYNblTQ/7HdhzSIp4
-	 okDL5RYCU2YpNO5qqFwTmg/FdB2tDeTlh7uZdcvta0HazRG1uNpWpYo26FBtxhncq1
-	 NQ64prFmd/qc4XwOayVfEdQ8CjKjOoI7PLm/e4UER4Cx6Q5kQCBY3+BnF2vMwZ9dve
-	 3hDyEZuMmKd6g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xxk0B3vybz4xcr;
-	Mon, 25 Nov 2024 22:25:30 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Matthew Maurer <mmaurer@google.com>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu
- <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, Daniel
- Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Jonathan Corbet
- <corbet@lwn.net>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, Matthew Maurer
- <mmaurer@google.com>
-Subject: Re: [PATCH v10 1/5] modules: Support extended MODVERSIONS info
-In-Reply-To: <20241123-extended-modversions-v10-1-0fa754ffdee3@google.com>
-References: <20241123-extended-modversions-v10-0-0fa754ffdee3@google.com>
- <20241123-extended-modversions-v10-1-0fa754ffdee3@google.com>
-Date: Mon, 25 Nov 2024 22:25:31 +1100
-Message-ID: <87mshntv10.fsf@mpe.ellerman.id.au>
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="B7eyT1qY"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5ceb03aaddeso6044612a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 03:31:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732534293; x=1733139093; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6SJ38ce5tn0Fxk14OTp0L+1fb6LfP6hxY0gY3dvSom0=;
+        b=B7eyT1qYvwKL3RTvH/nWouByncQhvgGSZLbuqSM7PU+R3XAanT0fHg9lwtRDWpjlhi
+         KDpzZe/8LUKZYRj44+0tqgzrN4bhjBh4opmAQsI4vyBj7XB2VY8ge8wb3lVEPVbF0yJ/
+         2oDixc7vqEpGsarg8cKsYC6FmrNfunWYahWNsGx1hCYYW03TNTdh2zwoOI0pCgdmd5Z7
+         A+IumMut6QnD9246rtRn7gExl3OYnXXVwzb44PloCrDm+YcZBEnBmpNB5SZVi/jOpM4v
+         lI52hSs/XPlZFpYgaRiyTvtZQJqVRAyE1PS33CK3uKaHF8NcZmCjZXYN8DBazxL5nmbG
+         33mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732534293; x=1733139093;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6SJ38ce5tn0Fxk14OTp0L+1fb6LfP6hxY0gY3dvSom0=;
+        b=kLNhqId30qg/rrvKQvRpoY129R3KGFYcdHeRi66ojV9tMSMYjAJ2aLequhH1Ga7lp8
+         s6Myid4bh7XFBnzUqAlM9ElLBKn++htHadThMWwBVikvq3lB65uU1DEK8lBNhTutA7Km
+         3PC1nFSa0saCn05xZdmMlY70/nDApgIlzL+DAo7OPDsIKO0BofsC25BzhAsuuYGG1vzA
+         PbwN0geQyJWXI/jYkuqntQrg1SMaFzD9mL1BOniKhn3nCW8eLaIbS4cGLbyQJVgS08fE
+         EgNWUFL+99pVF8Dkxpr8GsZok0Bgkk6MPsdw1XNha8auHIJaYeUBk1rmGdw25blsFftA
+         AUdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNAQzDNdgGOekUmaHxocbE46sh1FYPmZO8mVYHVZk3JRdxHz7LaTyH9Xl1nClyPhQPblQNIf62qGcXZBuNdw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxvm7/3VChwbnEVe4hPD1jh7IIrf8ffm2S/ns2OwqRd4WTwk/VZ
+	PO5csvAt2NeZxfF5OPRj60JiLtXpgm/vrNApSzWRLbV88lbf0K1uE80Dmw9mdyM=
+X-Gm-Gg: ASbGnct5YXfbP7xejbci4wee8wPxPmyg6Casro9F2Ugd9FJpi6VDaTldwJrc2HSYCN2
+	XNpHBQkjLPOVDQxrzvh6+k8D/lIO1s/ZqhjFFHoZ7f30O60MPqV2B5089cPaL40cRlZydeJIS9s
+	3CKSde2Zz3WGwIqrxAJP/HVBbfdcezKMWO8q5WHr2oFDl0rHzaXq/a153jZg066JFkzEqCAZU77
+	NYoHyDXyMQPqWoRNkT2n5Bh6jzrfxJIekO6b2U1LJBCBhvlE1EeXmEklTJz
+X-Google-Smtp-Source: AGHT+IGVQi/do5CMnyA0mWSbyTfsOq40lvfRiLeQwrXHZtfO71h6GNrlNg8QoYlDJ0BbCU/Bp73urw==
+X-Received: by 2002:a05:6402:28a4:b0:5d0:214b:8f80 with SMTP id 4fb4d7f45d1cf-5d0214b8fffmr8993104a12.21.1732534293095;
+        Mon, 25 Nov 2024 03:31:33 -0800 (PST)
+Received: from [10.0.5.28] (remote.cdn77.com. [95.168.203.222])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d3c0044sm4049961a12.48.2024.11.25.03.31.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Nov 2024 03:31:31 -0800 (PST)
+Message-ID: <e83d6617-ef4e-478a-a274-766b0834ccb7@sedlak.dev>
+Date: Mon, 25 Nov 2024 12:31:30 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rust: error: modify `from_errno` to use
+ `try_from_errno`
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org,
+ Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+References: <20241123104857.49385-1-daniel@sedlak.dev>
+ <20241123104857.49385-2-daniel@sedlak.dev>
+ <CAH5fLgjEnugoWErZn2ssE-x0eQW+SyuNFsL=_AwKtV0oQS0ewQ@mail.gmail.com>
+ <CANiq72kJpQBUTEkEyNgSt4iYe6dDcAvCkR82A4ZSGeEiEdkuwg@mail.gmail.com>
+Content-Language: en-US
+From: Daniel Sedlak <daniel@sedlak.dev>
+In-Reply-To: <CANiq72kJpQBUTEkEyNgSt4iYe6dDcAvCkR82A4ZSGeEiEdkuwg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Matthew Maurer <mmaurer@google.com> writes:
-> Adds a new format for MODVERSIONS which stores each field in a separate
-> ELF section. This initially adds support for variable length names, but
-> could later be used to add additional fields to MODVERSIONS in a
-> backwards compatible way if needed. Any new fields will be ignored by
-> old user tooling, unlike the current format where user tooling cannot
-> tolerate adjustments to the format (for example making the name field
-> longer).
->
-> Since PPC munges its version records to strip leading dots, we reproduce
-> the munging for the new format. Other architectures do not appear to
-> have architecture-specific usage of this information.
->
-> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  arch/powerpc/kernel/module_64.c | 24 ++++++++++-
->  kernel/module/internal.h        | 11 +++++
->  kernel/module/main.c            | 92 +++++++++++++++++++++++++++++++++++++----
->  kernel/module/version.c         | 45 ++++++++++++++++++++
->  4 files changed, 162 insertions(+), 10 deletions(-)
 
-I already acked version 8, which AFAICS is identical to this version
-(for this patch at least).
 
-Not sure if you dropped my ack on purpose, but here have another one :)
+On 11/25/24 10:27 AM, Miguel Ojeda wrote:
+> On Mon, Nov 25, 2024 at 10:01 AM Alice Ryhl <aliceryhl@google.com> wrote:
+>>
+>> This changes crate::ffi to core::ffi, but the correct thing is to use
+>> crate::ffi.
+> 
+> Indeed, this seems to come from a bad rebase on top of the latest `rust-next`.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+You are right, I was developing this on top of `rust-next`. I get it 
+that I should be developing on top of `rust-dev` right? If yes, should I 
+also include the base commit id because of possible conflicts?
+> 
+> Cheers,
+> Miguel
 
-cheers
