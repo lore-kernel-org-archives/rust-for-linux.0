@@ -1,88 +1,100 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7714D18FDDF
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 09:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995B819007F
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 09:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732526864; cv=none; b=HtyrlAwbMQ59H0bClIoGec2SnQL/X09zP5RLFv3exEZHMNyBx/JNgJdWTf3lKoahxHLIzmc0M5Om8aiBv7Mr0diwpEGEb2d206Q9KTwEzLEfQ8FQ44EiLCp/ROWT0SvQ3AkIQi8k/TWJ9ipECk+plHQmcB4sUKsrUj5kRj6YOiI=
+	t=1732527184; cv=none; b=CCWccBCUasTIJRHQ4sXk+nXyT3EaYQbDS88nt3hPnJJiSE+NU/ob12K9X3Gmtu1WJeHse6Que6Dn5P6PYEbYuqJxOoSMFler4qWlbGk4ksjM6RQth026HoyAvmRXly1knb85iZVmA6vU9NCsBpRGUB+PYDQyrHFJvQonIZfD1eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732526864; c=relaxed/simple;
-	bh=fdrXGbbLkguNEtW9op/8JLyy+pmiGPiK7QChw8Jh1IU=;
+	s=arc-20240116; t=1732527184; c=relaxed/simple;
+	bh=iJhCiDk4FV6a8jhD1x9FdWaVImExu0N+arblA6KpRYw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PGOCBb4AQqJKP+tWEgYpGtnbN0I68f3dbX263v7f4+dC4hrqcCtSSFVuioGwjaqm932M7CwApL2lyMN914a5wgKgIwGpeLA2O81Fwjzxb9FlVcbReQWEmvB4iwFKtCp92i4jVscpHZJnGfN0WjqzpedFGDpVJtlRUyh0firaU5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dh3c4fxU; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=HJ8DKy/ITnPed46+7lJ8LQ044W5gxBRtn8swKCcBCpSBiBxk3mQPBa+8sy9jVZJmOWlHW9DDfulQKG0/d8CUwYExy/W3VWg/CqqWYHS827x0W7r8yAriw0iwESoRs4yGvI84V138lUPcu1SSRX8cx5dB0jBT4P7yD7HJUZjcGL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xpPWtEfN; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dh3c4fxU"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2edbe217f00so236826a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 01:27:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xpPWtEfN"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-382423f4082so2972788f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 01:33:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732526863; x=1733131663; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732527181; x=1733131981; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fdrXGbbLkguNEtW9op/8JLyy+pmiGPiK7QChw8Jh1IU=;
-        b=Dh3c4fxUphV4ITkEW3wdl04TmBql7gsa6zmYAueNaAoDpFPRY5HxZm1jqJphquKS5u
-         wzAGs6ehQA6BikMK4yoiIPQao3LO/9vQBEc4rnsEfExJbqaBXm8kbRSuOJz2rqewUibv
-         wTSuI0+IcsGwzjJyN9aPy5Ih5X1TrDMOeRsdP+N+pdwSmwfin8q3B0yWIqJBW/ZmSyxC
-         CtgQ3K6vWMvbv//K/Jks2iupknZmB19KQCn/A7HaYh1ozrjUvBzmgK1bZnXCc1wc8Q56
-         5LKXLQAZZAix0hg5a4qZKBNOnO6rq0hs0KBy2QExdLB2YWnZ84cPIoT34cRXYex7J0Jp
-         nDxQ==
+        bh=iJhCiDk4FV6a8jhD1x9FdWaVImExu0N+arblA6KpRYw=;
+        b=xpPWtEfNNIMIc/BxU2o/JUCYznhRLaFtwbHSuXHN15ZjDjF5YmwazW6QrzFJ+qNNWm
+         LNm0wpPGZdWkaf2Qm49D6sJppByb2ErHouhJDGn/RDsN0VJZ+Wtfz8a0EL5EXr+4W9cI
+         dfjsvTGTN+o/9KGfIE4pB1I+hAFA76HFDQB/tNcQUb14EN3sZGzyuxL2fiEEmmiNsQ8/
+         RNZuYCMcU+jNYmWPiWHZJHxOWTWLMf8bSP/AqcpsMWdW8Zo1I8ooU5TGPjdoRuJfAdz6
+         NbdmQa+2ywHl6hMXS8IgckChGjljc2GMO+Ln6w5F4BUgKA7h+bmr5oatBt4VwLA8Z+mZ
+         pEkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732526863; x=1733131663;
+        d=1e100.net; s=20230601; t=1732527181; x=1733131981;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fdrXGbbLkguNEtW9op/8JLyy+pmiGPiK7QChw8Jh1IU=;
-        b=jgdCydBJMpNjZVCIbGF/yV/ir4gzQaKiuy/USEgWsr+mpsCLaTGuS5BeWD+SH/wCdB
-         XdoDe2PY9n7or19EvuCJ+l481OV92PAekpiWuwpEDnlIpNRnwjXcgNvMZgR3VO31nbu/
-         7Pq9vaAxvMzbQz4eGaAT13GWfFkKuPWSkt0sxZgyG0KohwydkTkVTv7bJa5y88VM7exM
-         +NoPx+rzJhA8qMtP2bsMdUcxEUbYqt6YSMV6luSP053nuiPlmEOVvrf/aDMwgPfpy+Wn
-         RXyDIBPKrNuroRd96pYgWH7mEOK7ud1XEwJ6fnqwXyBhPtIOPseJ4jYRqifIwnLhp5uz
-         JmIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmIUbgWSe3Y2pxZyxwW+NkyfejRGMG/W6cncxFMM9thvNwuYtee2cYYILdCvNWqV/TtSKHWUF38VxDM9KHOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLpR9KKh9ydt0xnRNhW9S1AtZTzDMeLy3d1DU3rso5ItGQ5ZB5
-	o3la9dOCFlAkW0kitm6R3cstRvuL9Bv7+N+kpL0MApoBfQK4KGBCwjYZzNF5+2/kcnZTHwbzIxv
-	ZzPM7dUMbv2GxG3be2Dg9f/gjrpE=
-X-Gm-Gg: ASbGncsG1X7VGxy1udBdkqKgVA78aDoJlnKJJHiZsHHIiwPN1tMW/x14jCzj5xL9tZv
-	e4143ZFJThoss8hbb3JeMGPw82XjIDSQ=
-X-Google-Smtp-Source: AGHT+IGnpLzZ8gQvPxCHTzWWxDsRXPzMmTK7FEhdEmjN9BJOIYe+REco2EPnoMYl9c2jXxUVbPyhlbvM9ayGXFcYpwM=
-X-Received: by 2002:a17:90b:8e:b0:2ea:b0f9:ff46 with SMTP id
- 98e67ed59e1d1-2eb0e855c57mr6329110a91.4.1732526862677; Mon, 25 Nov 2024
- 01:27:42 -0800 (PST)
+        bh=iJhCiDk4FV6a8jhD1x9FdWaVImExu0N+arblA6KpRYw=;
+        b=lwnscrl7iiackUoRkEMu0TGqFodlnLOKgVTnI1fqk0Xj+gOYa+oM/38M/LQmq1/bXr
+         EEoqXaAZyUev6d0XjbaT+V6t1My2PFAPEM6fWmXiFoj31jxs4tO1wmxMckiezadlmH7m
+         UlfeUiVpDIsMDWQMayNKpLchCrAQftXuASFatrBoZO1fqxV1NPVRJFWy4+jg/VTeODiI
+         v/TGYQYWEt7W8tDqs5/MYCY7jMA6zjYBjalCbXrrB2xC7hGMku6Yi0bHd4pe5t79RvOs
+         rAL9Jc95sisg49/XsFfJUZAeEns3LcJktYUqCOU+1M+4SydKRMzucDa9eGEmIeFk7jGp
+         UYJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMW17kQsIBbJ8rY+0SCDjmxvMPIJ2ZX3vqPDWdofH29KcXb8M7EfpqVvzDD5e1aRJLmmdeKnd1jR/gmcdRKA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdg1bdVmV45m5msUj7mJZZQFswc2cXKiT64fbvP6Uv9sDJfY4o
+	/XMTciKDNsn3dcc1TK9PdSoSP3dPxhbpWaELw0uwMl7Pz6IJl7cN3h1eIB7qRHoGU7AQYw5uJBy
+	bIyRfOIyiDo/Zg1E/tMckdhFLgeBYLhLC+9Zl
+X-Gm-Gg: ASbGncumDxexu8+H/MTotHeA3U+eED3OPDpzD3Bkhtbo94m8ALYNcfkyNvKi/ad/Bpi
+	BdzIqX2IDATmpy+60DRu1AX4767Go5SKYK60jhYZnwnWhmwZm6EjUOgRK1H6FmQ==
+X-Google-Smtp-Source: AGHT+IHk2ePzXk7rFVIBNN5xp9LHxdFZTmA+UEnsClr0r4H+EBABd5CJ17K9erfSX4yaztpTHbj05WlX4/9ds8MqiC4=
+X-Received: by 2002:a5d:6484:0:b0:382:4ab4:b428 with SMTP id
+ ffacd0b85a97d-38260b452famr8130184f8f.8.1732527179739; Mon, 25 Nov 2024
+ 01:32:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123104857.49385-1-daniel@sedlak.dev> <20241123104857.49385-2-daniel@sedlak.dev>
- <CAH5fLgjEnugoWErZn2ssE-x0eQW+SyuNFsL=_AwKtV0oQS0ewQ@mail.gmail.com>
-In-Reply-To: <CAH5fLgjEnugoWErZn2ssE-x0eQW+SyuNFsL=_AwKtV0oQS0ewQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 25 Nov 2024 10:27:29 +0100
-Message-ID: <CANiq72kJpQBUTEkEyNgSt4iYe6dDcAvCkR82A4ZSGeEiEdkuwg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: error: modify `from_errno` to use `try_from_errno`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Daniel Sedlak <daniel@sedlak.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
+References: <20241123222849.350287-1-ojeda@kernel.org> <20241123222849.350287-2-ojeda@kernel.org>
+ <CAH5fLggK_uL0izyDogqdxqp+UEiDbMW555zgS6jk=gw3n07f6A@mail.gmail.com> <CANiq72nKgj0n84Q76FSsPSeaupwgEKBT0GQbO8m-KHKZb103gg@mail.gmail.com>
+In-Reply-To: <CANiq72nKgj0n84Q76FSsPSeaupwgEKBT0GQbO8m-KHKZb103gg@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 25 Nov 2024 10:32:47 +0100
+Message-ID: <CAH5fLgiUwnNE9fP8SFOBY1OeKDhb8NGPSRjSxQaL5fAYb7nAWQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: kernel: move `build_error` hidden function to
+ prevent mistakes
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 25, 2024 at 10:01=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Mon, Nov 25, 2024 at 10:23=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> This changes crate::ffi to core::ffi, but the correct thing is to use
-> crate::ffi.
+> On Mon, Nov 25, 2024 at 10:14=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > You could also put #![doc(hidden)] at the top of build_assert.rs to
+> > simplify the lib.rs list. Not sure what is best.
+>
+> Yeah, not sure. We used outer attributes for the rest of
+> `doc(hidden)`s, including in the same file, so it is probably best to
+> keep it consistent, unless we decide to move all to inner ones.
 
-Indeed, this seems to come from a bad rebase on top of the latest `rust-nex=
-t`.
+It might actually make sense to move all of them, I think. I find that
+they make the list difficult to edit.
 
-Cheers,
-Miguel
+But feel free to pick whichever one you prefer for this change. My RB
+applies with or without it :)
+
+Alice
