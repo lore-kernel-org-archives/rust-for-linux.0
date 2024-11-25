@@ -1,125 +1,103 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9613B1AC448
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 15:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ADC17C61;
+	Mon, 25 Nov 2024 15:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732548897; cv=none; b=VRhb4Q0sgZeOU7lSaGI4FaEoiRqFOkPZ65HGtdnf1jYFY8JMdQKUKS83WihbvVca/Fy/xhNoXMuNK/LlwRBEGADmGcBQ3SXJOCoIOtxm3sA3kDc5rbnmt6RXCRDRvDgq1q7jOo7LcrVRINbgwMLII9Cxqdmrcr6Gt+ZUlGHfORs=
+	t=1732548927; cv=none; b=gFbiWa5e48VbbT1L0GA48KXhgPcWSoj9Ou5mO2mYg1ZT2FkccDkZolsxzGVpW4wpPFHakagepJaO790WVxuuU4zgk6L6AE6Lk6Y18NnKXHSN/jGT/1GLxvOen/+JnxKvpZM9PA8r2bsKHjToOppXr8q5ciAeF+Jy5Evg9j09ETI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732548897; c=relaxed/simple;
-	bh=rEFJdZSwH2wd+21uchAY2/iTR59ZVMr1M18odRCoI1Q=;
+	s=arc-20240116; t=1732548927; c=relaxed/simple;
+	bh=RO4UaaG86ysoQ5kt3jhvQ9LY+rvkNSghUUtEW4dO6Uk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B71MX8/6m4HYYFs+7DkzbsaJdNhHliOMyl+miYVolE7+2/b46E3LNUKg3eHlGKXcOtmnswH7A/hrhFK8m6NbXda2sMS628JxPWDLXFTGCDaM7tiKKm0TABnUUjziQMZrWTsF/jeWz5tvUWAs4Z5OcWSnCtm8To2v5oaEHJMMzvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JCQPbVr7; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=LWoVDN5I5fWbKfmAeloIxLz0OcWwkOql/xCTQS0DPoicCftGrZxHs/fyJJTT+NnUUJzrVGCfVSeHHpkdoVeWPDfAJ3nyJLJNfokCo4IfAbzt+kRK/dHWrPr2pOAStjicpaei1buyDmLSzn7z+/FAJvGbYFoNE25536CzNj0QgMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cu7UO2hA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JCQPbVr7"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d027dc53ccso12786a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 07:34:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732548894; x=1733153694; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rEFJdZSwH2wd+21uchAY2/iTR59ZVMr1M18odRCoI1Q=;
-        b=JCQPbVr7wnofDau/L49eky1TxDcaQzWk4/fmNrAn47ts2yPZ7AHYovhP1cmdp7ar1G
-         TVycJ+46WnLlHgtt61tvuvUs/YqVszj7JKYQOAI233EXVZCtQV8DLT/1rCocUcWWXPMN
-         vyRmKGpRpXyXXQt0Gx/6p1zptJO8UAdetj53gxzEzLZqgfAyx7xlVJlCblanL0uf6xQa
-         8oYIMtGX4wId93qwALyi9dnGDy0J9b3udeO59b0ASLqo9Lk03BhmhVD1KhRwak1OusxW
-         cYZS4iT6xkG1KROp1sIXKcThABf8+/rpy6Vh73Kh/HohjKAAztsSLA4VI95RnOZzPhgY
-         pUPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732548894; x=1733153694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rEFJdZSwH2wd+21uchAY2/iTR59ZVMr1M18odRCoI1Q=;
-        b=VkLWjSpHM0rinHwQy255dKcEg75xTIgq69Du91re0q6ou7mccZvwEz/i2dKkw9YVea
-         UZO3wMW38RI+NTCceSq0g2VdIcHmrY0x9nIIR084riXr6tp5DAXLcbKAkKi3iU8jFRF9
-         ObwqovkZnZBILIBFwAMrgiiIERsOFo1mnwh5zfon+V5RbMAXDahxM7N+R0i3mIFwO/2b
-         vcyQCKLclzvpGzmQCOcMn8sqTJPuwisCfsFVlIeEwJu97BvAKf4k0NX3ncZe6Eh2TSjc
-         k91wKZhlYpglC09dhmuVbUJKLPpABAmnFnRjuxVsB43H87OqSh0R0LQV9IwuwL1jyYng
-         LJvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWGWreSmkBMXKZhU8ljVzsSK+X6cHisDezYwwDUldvZsMLxsfBbNbctjjfdLDQJgfAUUYTY83bdwYfrQkz6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyy87o0pCxLwDG5J8lCWtiRvW4jE7tWCBxU1gMwt3F2Jz0M1Fpb
-	WAkOLfnsFETQe/3IkG6pouu9e37SWjrk2KnkIKkUfXURfzaRk5zPfQsNH9XRf3uRfCMtNUk99m3
-	p7yFRsvuNpb5LT2HMqOvE1fdZSFW1PeVjwkws
-X-Gm-Gg: ASbGncv0B6p0yb3iXQWErdu/iSuBXAMMEFZzXgetVl8E1mQ4NeVp7lOzZCIQ9mynbO8
-	n5ddgNxJldvGdByNNwpughZfPXAhQXGYg
-X-Google-Smtp-Source: AGHT+IE62Erf6kbiue7Q5RpwnMVj1FvBBMrksPcQ0CAHn5mGwDMlww3cSZdxQ5Drpgle+KMsT0aQiif1LekyY7uoXNo=
-X-Received: by 2002:aa7:c504:0:b0:5d0:3dcc:16bb with SMTP id
- 4fb4d7f45d1cf-5d03dcc1934mr98711a12.4.1732548893632; Mon, 25 Nov 2024
- 07:34:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cu7UO2hA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA39C4CED2;
+	Mon, 25 Nov 2024 15:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732548927;
+	bh=RO4UaaG86ysoQ5kt3jhvQ9LY+rvkNSghUUtEW4dO6Uk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=cu7UO2hAawAMgys63vgxFqvid8CGxnOBpeF5zqKD75ipm9RcCqYqmBDyA3y1yzWz2
+	 uBza/TgQE2eqDF0awEJtm2AuvC062SXKc2Hf27ofhX2Qk8n1YtKi0foL0SKy3orWZ/
+	 T8ad0EHHPc+O1t+HyuauUNW5PIw192wjZpKkraVyIOF6zDkgyNkeGC5VEs/WW0jfTD
+	 zPF6tX3AnE3rJH4fLaNj/ti/2toHJjA53y2n3cV9qU0Yn9M0o//oeguMk4g9W3Lp5z
+	 mSmCJ8OtACimP0Qugy7spgEXJIvB4vIOt0SKJPuuN4VvtGFLjbicfMa53rCD4EiiJM
+	 x4bPJedrBpPug==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6e34339d41bso39746607b3.0;
+        Mon, 25 Nov 2024 07:35:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVrlHJAkZbfcRJxkBYKEelQv7VKVZhZ3c3PRpF4hedI4UZoOMHn5kkozizFRjTRXFI60k8ItzeNtavXtSFf@vger.kernel.org, AJvYcCWIOrmm8CprTfM9BCbVi3i4bimtqzl62OdSeFQcf/izt7ZygJz1aSmWJpBktwveKV4vyYSmSBBX6NTmk0mLY0w=@vger.kernel.org, AJvYcCWeV+T9r2VqgtjBaYL28D8yDZkrkxgrSBaIgu94fQBcBKoVy9ZXvdcgs2br1ETrmWvRmRb4Oda1Cp+f@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHyUetUWWxMnJpsNoEBwztLqs0Vgk3WSO71aatw6cW6SIepx2U
+	2fbYgIq1P+gRI22n7QXJ5AqP/Gw2LGSlBp6n+5aoOr5cGr3kCxesAxegKuUVjKT7Xjc6vo6uDoR
+	kRGKr6ZgDOoqIlYsyxTLGCCOlBQ==
+X-Google-Smtp-Source: AGHT+IG1igmpPYF9DcvPDDPoOxl+MozNJNta0jFl1JCIDe3nLaC6Vt7Jsy5B39O9iWSNcHNPGUQQ2POfxwG9o9AvSmU=
+X-Received: by 2002:a05:6902:2b8f:b0:e28:f3e7:d92b with SMTP id
+ 3f1490d57ef6-e38f8b4eec1mr11115382276.24.1732548926321; Mon, 25 Nov 2024
+ 07:35:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241121204220.2378181-20-samitolvanen@google.com>
- <CAEg-Je-h4NitWb2ErFGCOqt0KQfXuyKWLhpnNHCdRzZdxi018Q@mail.gmail.com> <CANiq72m4fea15Z0fFZauz8N2madkBJ0G7Dc094OwoajnXmROOA@mail.gmail.com>
-In-Reply-To: <CANiq72m4fea15Z0fFZauz8N2madkBJ0G7Dc094OwoajnXmROOA@mail.gmail.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Mon, 25 Nov 2024 17:34:17 +0200
-Message-ID: <CABCJKudozEhZXLZVxVixsO5YuZg0nOEmgo3=vMyhcrEw+6Xo5w@mail.gmail.com>
-Subject: Re: [PATCH v6 00/18] Implement DWARF modversions
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Neal Gompa <neal@gompa.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	"Darrick J. Wong" <djwong@kernel.org>, Donald Zickus <dzickus@redhat.com>
+References: <20241122081257.1776925-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20241122081257.1776925-1-dirk.behme@de.bosch.com>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 25 Nov 2024 09:35:15 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ-cFq4jyFDnCWKy1b+7pNt8Tb11QF8vGoMb2G_4=dpBw@mail.gmail.com>
+Message-ID: <CAL_JsqJ-cFq4jyFDnCWKy1b+7pNt8Tb11QF8vGoMb2G_4=dpBw@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 1/1] rust: Add bindings for device properties
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 25, 2024 at 4:41=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Fri, Nov 22, 2024 at 2:13=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> On Mon, Nov 25, 2024 at 2:29=E2=80=AFPM Neal Gompa <neal@gompa.dev> wrote=
-:
-> >
-> > As my Acked-by was removed, I'm sorry to say that there is no point
-> > for me to provide feedback since it is unwanted.
-> >
-> > I hope it lands soon, but I also hope the people here who decided that
-> > a person's efforts aren't worth recording because they don't
-> > personally know them should reflect on this too. It's a good way to
-> > keep people from coming into the community for the long term.
+> From: "Rob Herring (Arm)" <robh@kernel.org>
 >
-> Hopefully this reply helps -- apologies to anyone if I am overstepping.
+> The device property API is a firmware agnostic API for reading
+> properties from firmware (DT/ACPI) devices nodes and swnodes.
 >
-> On one side, it is true that Acked-by is typically used by people that
-> is responsible for the code one way or another, because the tag is
-> meant for them to acknowledge they are OK with the change going in,
-> and so I can see the argument that restricting it for that purpose
-> only may help avoid confusion later on reading the log.
+> While the C API takes a pointer to a caller allocated variable/buffer,
+> the rust API is designed to return a value and can be used in struct
+> initialization. Rust generics are also utilized to support different
+> sizes of properties (e.g. u8, u16, u32).
 >
-> On the other hand, someone being willing to put their name on a patch
-> is very valuable, whoever they are, and whatever the tag name is.
-> Moreover, it is also true that, Acked-by may be used here in a "as a
-> key user downstream, this looks reasonable and satisfies our needs"
-> sense.
+> To build and run the Examples as `rustdoc` tests the kernel Kconfig
+> options `CONFIG_OF` and `CONFIG_OF_UNITTEST` need to be enabled
+> additionally. Besides the default `rustdoc` test options
+> `CONFIG_KUNIT` and `CONFIG_RUST_KERNEL_DOCTESTS`. This even works
+> on non-ARM architectures as a test device tree is built into the
+> kernel, then.
 >
-> Finally, sometimes new tags are invented on the fly because there is
-> no good fit, too.
+> The Integer trait is proposed by Alic Ryhl [1].
 >
-> Either way, I don't think anyone wanted to disregard your efforts or
-> to be rude to you in particular, but rather wanted to keep tags usage
-> aligned to how they view them or how they use them in their subsystem.
-> The Tested-by was still wanted, so I doubt their goal was to remove
-> you from the log or to make you feel unwelcomed.
+> Link: https://lore.kernel.org/rust-for-linux/CAH5fLgiXPZqKpWSSNdx-Ww-E9h2=
+tOLcF3_8Y4C_JQ0eU8EMwFw@mail.gmail.com/ [1]
+> Co-developed-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>
+> This is an update of Rob's initial patch
 
-Thank you for putting this more eloquently than I could, Miguel. Neal,
-I do appreciate your feedback, and I'm sorry if I didn't make it clear
-enough in my previous emails. I would very much welcome your
-Tested-by, or another suitable tag that's acceptable to both you and
-Masahiro.
+I have my own updates on it based on the discussion. It's a bit
+different because I've reworked the C API to better mesh with Rust
+needs. I just haven't sent it out because I've been busy with other
+things and it's the merge window.
 
-Sami
+You asked me if I was going to work on this and I did. If you want to
+do it, just say so. I'm always happy for less work.
+
+Rob
