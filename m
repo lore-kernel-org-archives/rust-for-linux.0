@@ -1,90 +1,103 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDDA18B476
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 09:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B0C1531E8
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 09:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732526155; cv=none; b=DNeoG0poHL+ZgFYvH0eBW2uce2nDNmqSRZ/TlZcrzn5/jXNmJw8JNJx4gFUbrHSrWf0bMGX3YwmF2UC6qtMNDsIgXzY25TjKwVdEkKgf/VFPr8Ur/ym85urJHgsD4ISjL4lr8Uq/0ZtOm1++0BlhGD2wtVDHt6exqeuPyMlduR8=
+	t=1732526527; cv=none; b=gITvd4ss4AtdQXhxlFkotW/MK/uGbx8FgVrLjrK0YkdXkvYWkUoNV7xi+YgBf3ncAUfrdQbjY2g4EaYfaTI7P0T8RoowLmxmTYBR03cQcJ0xXR1a+qKw+WzpOCrnf41kAHgbyJkghDD65veM/QthfyDfoqMxlD/9Leb2yGeA/O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732526155; c=relaxed/simple;
-	bh=0ha3COx0DHOj8uxVj0+IXNOyCOzZMIKeCo7cSFiOZo0=;
+	s=arc-20240116; t=1732526527; c=relaxed/simple;
+	bh=FCYlpekwLX29y1babPtkl5hhwfzqAWLF9A3oe2+5id0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WOjZ+biqMWfCtT5u2y5hygCAClvL23Bv2cqKc5kn24P1NyZbx+JA+LrYD2UXNBU87LTwvtz2mJT/agBa+wgMlA5O05smFZ/GblIzgpywUQq2gKX++YjOo/wyNJ0AwmYXFNYgRSnni0uU7nXfHq9/qLE66Tf02McACCDsHhGBy48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y8xcS+tT; arc=none smtp.client-ip=209.85.221.49
+	 To:Cc:Content-Type; b=NlZlykeWxF14QFBIRpqoePFimmE0i6gNBEhuANHwuMGF10v7Bxb2VAUVktxfg0+GA50YmxSzWJQNtuzLk0tDwffNJXVEYP9M4atr8GWAsCu9IDrRXKdWvNR5S9woIEipYi+rH4HUyONY6lnSGEsJ4kGNHX/Sh42Xc/kkLR0n9Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L/QApVvC; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y8xcS+tT"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38231e9d518so2750565f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 01:15:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L/QApVvC"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5cfc18d5259so7529a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 01:22:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732526152; x=1733130952; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732526524; x=1733131324; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0ha3COx0DHOj8uxVj0+IXNOyCOzZMIKeCo7cSFiOZo0=;
-        b=Y8xcS+tTTWlf9/6R6RcIHXDyFyLx0NYP3v7Qp6LDlZunXveUB+nNcRMOOfqG46QacO
-         ZJ1W6+WVTekrxD/lQNa11Zbi/JXVsDCXDKCK6yoyavqdXqXdsAUDl2VnEIzLD37Wj8Pt
-         GEm22mlGlq8ivVDu0ituahMFRO063vyyqE0QWCo/RavTB3ELTaLIRAXvignghtCUiNh3
-         3QSgcbiYVtmOQIyxm4zFXtCaX6H4BF5z12TbaxeLaeT0xeLV9u3ZJm8O/FXnNqBVqNwA
-         Z3S7E6HBzLA9MD0Y18ePo5gKdixPMhbCQTqhQPAjYpdwFHyKaTRqQQj4uN5MmMiPYDGJ
-         OszA==
+        bh=FCYlpekwLX29y1babPtkl5hhwfzqAWLF9A3oe2+5id0=;
+        b=L/QApVvCl2TEfZGYYEfTC3A1hQNfZH2vjBTq86eD/zjHUJ54iRzh51xj3aYuIKBuUv
+         YHUejdIuGeK4KTPZ4p4MVGpV9KX1wfCemqd0ciGNreYL8at1hJVYiDvamxYmz96qz0GL
+         sDXHtdhWoEK/iGnani5i3vzGP+qpSQVXE6HxYedijsvrLlstYYhLxPxNPvUlaFkPfqmt
+         zEhRnIwbUXq43jiXU2o+hdZBEAueRG1pjOSQoLf3R5bNjJVU4MGLhUzse2juThQKgsiC
+         mkXMThFP1UqRsiIJmzr8IvZFvEYXtfvSqLgPWNGY/dclfQbUKAf/SBjZlglyKAYLSE4c
+         wdgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732526152; x=1733130952;
+        d=1e100.net; s=20230601; t=1732526524; x=1733131324;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0ha3COx0DHOj8uxVj0+IXNOyCOzZMIKeCo7cSFiOZo0=;
-        b=SH5Wqnolv9saMy5IseYQgKrvOJgrNEor0MmbI/lUxPQEb46STvuKVuk5JV0UtNUahA
-         xm1oT/BiTsdTz5K6CMWjrEHkFi2RN13B5rwN/mfNPlxf9a3ZbMffjiQpaZoKDcPwuLCt
-         rL2R/gfgBBYh4qcsMC/bDiPG8VuybVrdyQBQOTxjiDK/q7Zu4A/9tc3qCa/E9SuVwL7l
-         lJIUdz32JcUBqjmdmp83xGamFTgSos87XMWI91iVf99uc/Bp/kiv8en9qAc8AE0/LLGo
-         YhVe6/IvoBCsynh/hr9LRhEz2ybPNUHnxIWU97AOC47kr3+Y4zSfz5lXSZe0tWFEkM33
-         WoWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXRDJzgcSBfqazX11p0i5d6dHzGo6EmB4UHr1xQJA5ExRvbigtMpL/5ME6fvK4rtyBu9Vq6tW+bKwT96E5/fA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI8qCMYNS1Y4F4kzJNMhsUehWUq9IR6ZBPDeTf3lP8ufa1SX89
-	8HRj07VTL2FSidx4GJ26NBwbW2FM8o69mbVKVi0OCfIapq6+yX1vvbGqX2CIjRxDBQh3d7jUFUl
-	bCBx2827B9Ex/XUiGUZyPFzhI/ak1ffiB/fL1
-X-Gm-Gg: ASbGncuAo3Ad05uclZHfGQCtLMtMaSbX2djC7mBIZCg3t7+UqZGhLMD1RBpCfQBVwAw
-	YmxxTIJAmgIkxnXD24QOKv4h4a3ftG0T4vjY1r23mB7/STEVQL880pdor9jiH2Q==
-X-Google-Smtp-Source: AGHT+IH8NglVha/cRO2EUsWas5pT6+KPbdrlOa1Qfc0/+y2Ov2H+tjMFSpQ12N28tn+7P/9GBO4emIZVFBM59ocV130=
-X-Received: by 2002:a05:6000:1fab:b0:382:4a15:6928 with SMTP id
- ffacd0b85a97d-38260b5715fmr10344321f8f.14.1732526152020; Mon, 25 Nov 2024
- 01:15:52 -0800 (PST)
+        bh=FCYlpekwLX29y1babPtkl5hhwfzqAWLF9A3oe2+5id0=;
+        b=koGLpws/ka72hK9GYSZs/35eVv+wQtf35TCR3NCDAEDr65I5qPn4Fn9hMw27JJ2gyz
+         d48jO7yjXbWf2xvQhJJPRqBfXjrZyXA0CaghZSrDY4VqkmoLU5JCXFoIRTLtdDBxuI8e
+         f0xzYaUAeLPad25ajAgeChrHFc+XWqK6T8SYr8ZHd+GbuXO8US0TwJSaoF2dZDDNDWqL
+         rwtv9thHz7BLlVoGpj6kBZ6oQpWEi2on4LyiZ4eaKhc6VQt8Dxq4b67R2NvbPeof5+F9
+         qslbXT0bDlFb+Sle1sGLf8mAGuT/aBRuSblEHfoa5pIcrnrEXQtpZ6ih3H340S64fV+p
+         m5Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCV34572AGym1ZciwZ2pG7bF2Z36AYLEg/BYGRwgJAkxdrxLVEJexioZjM0NNAcJPHlN0CPq9+tz82F/qkNqqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOzojgfXBYlouQICYQyaZYkxb3q6wrInmbtlm9nKvWkONtiAt2
+	dUiTlXBuudxHowrkey1RK5X3CHlp2NGsl5eKgyEqnYNBhZGW1qdxTJywvxAm3I2GM3Z+bhBBQGb
+	vMKRfpxDlEC8UNpW/Vp+KZzBFaa0HOMLtTePh
+X-Gm-Gg: ASbGncsmNfuxViEJh1doFyJF/q2v7jaTI4guHvx4aFgM3vHBry6sQnd85+knxyIQ1Nm
+	b4fFhQl1t0DcLwtxNOmE+T2nLc/jeuZ0q
+X-Google-Smtp-Source: AGHT+IEyjVc+w4xYMWK45ReBVdh5zSSYk8/svaq/gH5CeUai6F225gz3gVyn1zbIlnkBPYmtw02u4vkN3IF6RImReBs=
+X-Received: by 2002:a05:6402:1ca2:b0:5d0:3807:bcbd with SMTP id
+ 4fb4d7f45d1cf-5d03807bf0amr89021a12.6.1732526523672; Mon, 25 Nov 2024
+ 01:22:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123222849.350287-1-ojeda@kernel.org> <20241123222849.350287-3-ojeda@kernel.org>
-In-Reply-To: <20241123222849.350287-3-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 25 Nov 2024 10:15:39 +0100
-Message-ID: <CAH5fLgjoC7=gBBnohf4GPLPrk+wpR7P5KMm25EAmTspdTjg=4g@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: add `build_error!` to the prelude
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+References: <20241121204220.2378181-20-samitolvanen@google.com> <CA+icZUX-gf8624z8u+h-W8KeddCruYDng-4vTggNGwC61NzfNA@mail.gmail.com>
+In-Reply-To: <CA+icZUX-gf8624z8u+h-W8KeddCruYDng-4vTggNGwC61NzfNA@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Mon, 25 Nov 2024 11:21:26 +0200
+Message-ID: <CABCJKufb7SLY3j7EqRwFkNbrp22moJ51rDJm8madpUQdOhV9kQ@mail.gmail.com>
+Subject: Re: [PATCH v6 00/18] Implement DWARF modversions
+To: sedat.dilek@gmail.com
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 23, 2024 at 11:29=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> The sibling `build_assert!` is already in the prelude, it makes sense
-> that a "core"/"language" facility like this is part of the prelude and
-> users should not be defining their own one (thus there should be no risk
-> of future name collisions and we would want to be aware of them anyway).
->
-> Thus add `build_error!` into the prelude.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Sedat,
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On Fri, Nov 22, 2024 at 3:51=E2=80=AFAM Sedat Dilek <sedat.dilek@gmail.com>=
+ wrote:
+>
+> Thanks for the update, Sami.
+>
+> What are your plans to get this upstream?
+
+Once everything has been reviewed, I'm suspect it would be up to
+Masahiro to decide if he wants to pick this up.
+
+> Is Linux 6.13 the new development base?
+>
+> Personally, I would like to see a Linux v6.12 LTS version offered.
+
+This version is based on linux-kbuild/for-next, which at the time was
+based on 6.12-rc6, I think. It should apply cleanly to 6.12.
+
+> LTO is not supported - might be worth mentioning this in the
+> documentation patch with some explanations?
+
+Sure, it's probably worthwhile to add a note.
+
+Sami
