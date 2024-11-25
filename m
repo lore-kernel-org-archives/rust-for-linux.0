@@ -1,69 +1,69 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F0B189BAC
-	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 09:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D271A18FC72
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 09:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732525753; cv=none; b=Lbv9kIaQ6oL2MAOg4/MOuV2n3ZnM1b52YAmoI6ve0lir0fc+gXeCNwjAutpkeLXWALJUYyiCrQdDdsI76oBIY0sZ3kLxsE6bpvmLa3j+bPKJQjk979XeD4MNpswMHmfkcE0o/bcujWToPwgvdPIUwAD1dbbZgfmeeKW8ZINeyAI=
+	t=1732525797; cv=none; b=pjvMcK7umG94hiPxlhG2C7V9IAddpforE7vIS9NQvBQdj/Cv4M9qlyHnvwgI2Hu2BokB92fA/9Q9hX2CdszlCapvzcB/U7osI1mwpkffjRhr5+f9Rpl+rz6R8KhN4K4HI29+71iXWlrd14JrLB/alqGLozzL1c5Qq3GqJdZH9bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732525753; c=relaxed/simple;
-	bh=PZjr1Yu0Ay9y016nTeQBXSJo1HOEMk7mulrM8bVslrk=;
+	s=arc-20240116; t=1732525797; c=relaxed/simple;
+	bh=+iYj/LXeXfLCayyBoWgVOM4VHVy9tGibHOMx4/PqDv0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tmhb1vCvQH4ipsvsTMgUPQD/Bt4l3+Oar7RZSPF3MCk/hc4gIkOyX3TZdaApAPW/A7XZ0sHvmrVMinFcqV9IL4z5uObKi9sYFHGTrgbwiDfUJJFUHPL2LAhPfsBJKGmBlo900NuoBDKu+fjFqoDwyjDkPSkPC5IJArB3x2Wkkpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=14odxsV1; arc=none smtp.client-ip=209.85.128.41
+	 To:Cc:Content-Type; b=M3+8ihyYLxKYVh/z31p1f0pJoLmQc/n/7fvDfl6SalG/hmWjVUiaQbuRCzlCpGk0z7ULsHlgDl1+vjZBMHNiWhssx1atTE5PnOoXQ4hSHL8ATQWxqZdYVP21g/4fAmxcM7uIlucqdtkp8ni0CfP7//bjsH0zlQg7T8COKGjK2T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wLNpswc6; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="14odxsV1"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-432d86a3085so38647875e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 01:09:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wLNpswc6"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-382456c6597so3008336f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 01:09:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732525750; x=1733130550; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732525794; x=1733130594; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PZjr1Yu0Ay9y016nTeQBXSJo1HOEMk7mulrM8bVslrk=;
-        b=14odxsV12Kd1R4272NNhsYLdRMyUVb+AZbTQGXjm2xFdeozOl/rlDvFKpgUviGsR+E
-         tFe5xQj1BVvIqIQH1UPFeihUSdj/+X6dzmNLWhfmSRY4qeoL/C5gaDYsfSCLiCBqHbLZ
-         TIMo4h+3+V3o66AEOlVuT+e97ozmp8gOouCPJ+WQLjpvupF25OpnWM2zVDZu0G4f0IhK
-         KM23HsFLgg53i3XqM31uSG9Hvhb1h/eHEdaHozZmMJdIrS4OjPr9PxJ1rLeyP3AMJyKr
-         zdwxmd7ApaQ5xH7bgROPFD95q0wOONlZ+1mHwxCHQtm20l7jjy1snyyPvr9qYZ004U3W
-         l8OA==
+        bh=+iYj/LXeXfLCayyBoWgVOM4VHVy9tGibHOMx4/PqDv0=;
+        b=wLNpswc6TLRa72Gdcjwmz+1mvkzVjYK3fX7Kbic6NhX1xtHXnWnwswD1bU45s8Gn4Y
+         8mSeujVvBXL5V7u2RNv/eSwZZzk16qAkBca1RDo3wRVSB0TeUm75SOL8Esst9K1+3z2v
+         VyT2I398diIgAuxgtBlvQXSpuYm7oDvdKenYcjBHrmaby5Y74g4vk8t/b9oZmUcIY79l
+         hJRUuVPolk5b+6ClJKJReCP+6KnxH/2bkE7OM/sbAQxIWe73//vk0fV8W90Xl3tQeCU9
+         uJH4ih4gCCmkUYYTLuL4sEkQZjAWr21SX7PEYmJ+GGEjw6n2czxKj5JIPKtkbhg5S2kf
+         kBMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732525750; x=1733130550;
+        d=1e100.net; s=20230601; t=1732525794; x=1733130594;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PZjr1Yu0Ay9y016nTeQBXSJo1HOEMk7mulrM8bVslrk=;
-        b=HJ7NZizMwilAE1jPpWLXDjZWADOT7cxQ1gWIXbKmPA7Xh4Dz2Ut25ElYF1tbUNv8nD
-         B7Ez7p4vCnuQEWPP8rPCbDy0t1U0e4AZoHGk56KsaaeM7JMNBOqbd11ziBkrFllJzLe0
-         smvuvHpY5XI3r7ud8HQ+Wi9tr/Z3tufLQ0xUMukoLyXp4qu6WTxEWY7mrDbd8qpjCu8k
-         LKNk+ALxq5Xz1GTEMogphX0kWZKZP2nceAS3oIXPdnLnCxzw77a1yNsIgqEE5tMRT5yH
-         k43mfXk1VQ6bjVWzxIIydanYtrSGF2dgxxLut2FEMR1+kpBXqBgwzUDE+TiTFOD+dwvV
-         eRsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqD5CsdmpHpYIwqsavMTaJUL2pvaVavLRb7QKHhWJmSuogUGRDM4f0a8T+0jlBzHyqFD/qEb8iRvzJDHxkCg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5og68FtX26uF2BvxkZcFPDMHF7ORSRo/WWfZwPGFZPSY5Udbi
-	DnqWP8cLuGLQAaekv8F1/dfhk1KTwBY6UzlsmmP0knM9oNArOPTIJIubn7SkwJmWvKUmtLDP0+e
-	m+SAIJthIT99QCEVuwHxv8gyhiMRXmkivxBP6
-X-Gm-Gg: ASbGncsBdh9/5F3XZdUjq8gisu4+Kw7BKRT1dqmiQQw69Hdxi7fs9VvfvN9ygOXmCAS
-	+q4QBvdEPU1HkAeF7bkrLDXdqz3/IeoTWro1sS6eizUL1ez6taQV7Lk/Mv8uPKA==
-X-Google-Smtp-Source: AGHT+IE7Fba0mueXQruBT2O1+P0k/ZOupdomBzRzh1mSpCPpLePxV1BgowFf14yqcxgVhzpT4h9Z8LLvXCth5luslj0=
-X-Received: by 2002:a05:600c:3aca:b0:431:52f5:f497 with SMTP id
- 5b1f17b1804b1-433ce4253d2mr111486625e9.9.1732525750068; Mon, 25 Nov 2024
- 01:09:10 -0800 (PST)
+        bh=+iYj/LXeXfLCayyBoWgVOM4VHVy9tGibHOMx4/PqDv0=;
+        b=I02ckqajytVSdqStPf6Dai8aFuXfS1E5eF8qfxTWZNKByKIZHnEBbqqe8jL3NK9bM2
+         4vtocp4MKDtEirS2eSX5iQWLjt1hlGF100nSSbsOPlQIbaO/jIQlyeH3xI5XI9VkDAE4
+         NeeZYNE7U61gMHsxXrnsG1Xi1AUEbqYU1FcDXPoJkon15FQublyYxvnuSvb5gJdZz3o3
+         35o1lUgWEKOJIqIAih6ojzCnhHBWNjUt4hvUqMhSHttFmDXEdZJyBWNAZQBb9PWgCe1w
+         sH018MWHzu5YzhvuZXj5H/YVRHofWCWjSzokp8/gFnbvPeFg3vLlrDTiIzw6QIK2tTr7
+         N+zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULiadZtZ0mXPD6rUH97/DIsm4uhc45A2FMPwTP5VP8aHr4rjDoSEdiSIApVbLKjbrOUhHqPlh6Jx/DJnYd9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxcmrZdAnUejSmeCl5WiAdHNq1r4On5xzCpMtdsISYRIF4s+Ji
+	LOsMkuG/QpVB7BGJj2I8Gab1ANN1nYVAzEfdnh5bJjO9ihcEx5FAca6h74jtfU4dLa+jdKGVOuc
+	G99mpUYTUGaU1fQtFVRquy1/NTjf8gg8qBeO4
+X-Gm-Gg: ASbGncsDcd++6k/t9aCAa1Uk2KarFH7e85OB++B/k1I04QKeQJtfF8OrNI+1ZIzc6Wj
+	TzVX1JN1WaVVI4ciBOl86MaHN7QNTBKGIVjtIabEoVnGUFLhtPjSEy33zA3AMew==
+X-Google-Smtp-Source: AGHT+IGUuEuCPmk+t9yOajZz2nGezK7YqZW9Qfb/96OWC3HZfQsiSBJ5BzwP+t8u98N6IXgnX1LVesACO+Kn/Ohc0AA=
+X-Received: by 2002:a05:6000:1aca:b0:382:3210:4de0 with SMTP id
+ ffacd0b85a97d-38260bcba20mr9942093f8f.44.1732525794090; Mon, 25 Nov 2024
+ 01:09:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123180639.260191-1-ojeda@kernel.org>
-In-Reply-To: <20241123180639.260191-1-ojeda@kernel.org>
+References: <20241123222345.346976-1-ojeda@kernel.org>
+In-Reply-To: <20241123222345.346976-1-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 25 Nov 2024 10:08:58 +0100
-Message-ID: <CAH5fLgjdbyFADFZQqjFP0o2eohKjtrbVq_-_d341-TU7aPtw2w@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: run Clippy for `rusttest` code
+Date: Mon, 25 Nov 2024 10:09:42 +0100
+Message-ID: <CAH5fLghVxRbiNTVBF=Xh77gGGTF8K+jtgFFSe5HRSS_76GdttQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: give Clippy the minimum supported Rust version
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -73,19 +73,34 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 23, 2024 at 7:07=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sat, Nov 23, 2024 at 11:24=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> Running Clippy for `rusttest` code is useful to catch issues there too,
-> even if the code is not as critical. In the future, this code may also
-> run in kernelspace and could be copy-pasted. Thus it is useful to keep
-> it under the same standards. For instance, it will now make us add
-> `// SAFETY` comments.
+> Clippy's lints may avoid emitting a suggestion to use a language or
+> library feature that is not supported by the minimum supported version,
+> if given by the `msrv` field in the configuration file.
 >
-> It also makes everything more consistent.
+> For instance, Clippy should not suggest using `let ... else` in a lint
+> if the MSRV did not implement that syntax.
 >
-> Thus clean the few issues spotted by Clippy and start running it.
+> If the MSRV is not provided, Clippy will assume all features are availabl=
+e.
 >
+> Thus enable it with the minimum Rust version the kernel supports.
+>
+> Note that there is currently a small disadvantage in doing so: since
+> we still use unstable features that nevertheless work in the range
+> of versions we support (e.g. `#[expect(...)]`), we lose suggestions
+> for those. However, over time we will stop using unstable features
+> (especially language and library ones) as it is our goal, thus, in the
+> end, we will want to have the `msrv` set.
+>
+> Rust is also considering adding a similar feature in `rustc` too, which
+> we should probably enable if it becomes available [2].
+>
+> Link: https://github.com/rust-lang/rust-clippy/blob/8298da72e7b81fa30c515=
+631b40fc4c0845948cb/clippy_utils/src/msrvs.rs#L20 [1]
+> Link: https://github.com/rust-lang/compiler-team/issues/772 [2]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
