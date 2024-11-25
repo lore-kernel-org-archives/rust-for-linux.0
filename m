@@ -1,95 +1,97 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F090518787F;
-	Mon, 25 Nov 2024 09:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1787198A32;
+	Mon, 25 Nov 2024 11:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732528598; cv=none; b=k1BhlKY69GKH9MB5r7DAm6mj+QA7H7hhx5UQj91HaecE8lWOSfcSnmZ1NwEsD6viIoDC4GzMFSzga5BoY+8/vZFl5Wu8uEyEBH8w6pEaTsaFf4H0nzEFOLF1LDLLIfEev4XR0SIpj4cpTMRKIjIiF8/OYHJ5ugI8Rqwz8UG/Hw8=
+	t=1732533944; cv=none; b=aMhw65XTAQ1LumGfCB7qVtoo44p3y3Jj9aCNA3SYhrPnwzHPCB9lrGueftWxZDGfzuUlfa1f7nctjp8ev363JEbCdxu7Of5Dp2ohV6AqQJjNDZUg+OdhDCw/cMVfzXuC9ANZu5jVOR3WHG0yO8DfW4igbQ3kY/IVK/M3k+l3ijw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732528598; c=relaxed/simple;
-	bh=yYZKNyVxriMi7AV//XVt0PIe+AMXWo5WmgtYsMcdOx0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uURI9XgOi3Y/G0yP0dQPJY2KGQqrKNlx9gIkTF0Q/Edk4Q9iaaXCAqU9p1NoqQGyAHQtxAVrZZ9d+TIFiWmqh2HnjmxbDSf0rxa2YCnVuMroEWmbim+mtt9qflno2o4qXUktKHi7UyLjWBvrssLtowMWRPZk8G/wSZg/Ln6Ce/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/Qw2DBU; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1732533944; c=relaxed/simple;
+	bh=5iMQqINixsurBU8fcFSasigeM1BFuQKrZ7zJw0q7rxU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hCDCJcTkd86DNN4QV9xM3k2dvGOz5DsNXbbJRoOWfbhoBTfFylVEXP05gV+9dwXDVFNiaYIxfP7PQ4eryEP0Ze84Exg/TlI3lP2rWgUwv3xGAW8WRXX+DHx2ewFprLd+6kbU1P3seF61KLD+aFDr3MEGl5o3X3/dgXw8Ead4pkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=ibq9vWSI; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/Qw2DBU"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2e9c1e7268eso655333a91.1;
-        Mon, 25 Nov 2024 01:56:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732528596; x=1733133396; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yYZKNyVxriMi7AV//XVt0PIe+AMXWo5WmgtYsMcdOx0=;
-        b=J/Qw2DBUkZSRM+HcaKQ+Q92st1qqulVexiNRgYCORRAg04ORtUcZkB0ZstP+X2Eh6W
-         8mLOG0WVS14gqWS1wxGc3SBmzBay5lhlskUiAzVZAVzKO63cTIc+aRJ/qNJA0G9HSRZ1
-         Jhs9lDYv6bo9CQS4thUA2uKurx/eJ4bhuoHJ1Tx3ytki4THkzHWsx5J34BgIA44If2yC
-         PKs7oset2eXB8b/vUIAu/IqvlhVUbw4cjg2MdKCcIZXIcTKDbntVRgwvssizWSCtGiyY
-         Mp8pTWqE34XsiQ4Je9+Xfey52aYsY+Q3umEPoTRlUMJ5PrnzXVYHO4jhZXW8UCfzaja0
-         TiRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732528596; x=1733133396;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yYZKNyVxriMi7AV//XVt0PIe+AMXWo5WmgtYsMcdOx0=;
-        b=VywrMb0T1OcxEQnv2lXlzRPCqunD4jLWpD8JomUcDNHmdP+scoQMMp3sWWz9Rx/FT4
-         xc/1/xmFXPqzK0ykFHd7QrlDq0alMlH1wO/4+kya9I0fW964tBZDCiEWgZe5BnzAnc/5
-         pbFrKqoV6swMmgxx2v8oOhskC71JS91Uhmz1GtV92Mtn4Pojkwtdg2gRBjvoXeuP33jY
-         U7coM7ntK1mHdQ+8uPF2wGRkCgE1tpmp50pKy5mcQwuoEHLHwymtKRa8KW0NkhN8Zgue
-         dLDOS5iwXQyhBYvn/FjQ8UL1X8OEIljkwMNdIFbkaPtvOMM+QW0alEzDfbCYD8UU8/xc
-         WkKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkwV9q0a/JwZZQBSE/mN2QUO2kJL7sP9qPpAIYfcSTLXtXSsJq9/76IPk9r3aiahE/y6Eqi8MQ8NXLbqjeNLY=@vger.kernel.org, AJvYcCW2XIm5/5PLyNAb4joFY1YEaky/yOG9hqTY+ze9+dYqtH6jsaPYXt3Ln/PaCu0RNYAYSNLtqT49v3UyLaE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0gFb6XYtdsw3TI1LF9j8bRRvzGdE+yCJXV8GEf+W19oBGuS6A
-	4mn4Q1ABtLsid1FshgntRTg4BZgCZqulcUPB89hMinOkUqSq3fT2xZ6z6CnLf1MU4Jzre2XiiJ2
-	p1hBkLOVvkGVVVYcWgarzWm857Jw=
-X-Gm-Gg: ASbGncu2JpVBt9mUY7EF+e1wuboeWulC5cTCR/IN17ESf+cPi2kecuXypoZPpHlGnap
-	DHU23CJllkeDEvxfj8GoyHwjIrC3/gGE=
-X-Google-Smtp-Source: AGHT+IGaoGwCojAvQSCX3mdAqYlWAsTQexhHed/lggWkPEGb4m+hlgXa8w0huMdKx9oXQMlgU9jzhU5CZCIRge27C4M=
-X-Received: by 2002:a17:90b:3c08:b0:2eb:12ee:cf0b with SMTP id
- 98e67ed59e1d1-2eb12eecfb3mr6003337a91.1.1732528596262; Mon, 25 Nov 2024
- 01:56:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="ibq9vWSI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1732533935;
+	bh=GEwWZpkSTwqkvb7sbAxuL/F3C5T2lgJTaLKpD4NJ67s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ibq9vWSIkcvH3dVNxoDUbmcfbmw9gOTfu7vLdfVcW9ngaj4FXizoh3F73wHquZUQW
+	 A6GAdiQISb3502sWECC/O/vKtjQ+j5iAQzNAKpI/OSqzBpKu+2kOoZ85QH9j8tKiXG
+	 j0Gt+bvBJILy+G0DpQyq9xbaSD/N71qWWtuvFk0OBielTvVxvNYNblTQ/7HdhzSIp4
+	 okDL5RYCU2YpNO5qqFwTmg/FdB2tDeTlh7uZdcvta0HazRG1uNpWpYo26FBtxhncq1
+	 NQ64prFmd/qc4XwOayVfEdQ8CjKjOoI7PLm/e4UER4Cx6Q5kQCBY3+BnF2vMwZ9dve
+	 3hDyEZuMmKd6g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xxk0B3vybz4xcr;
+	Mon, 25 Nov 2024 22:25:30 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Matthew Maurer <mmaurer@google.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu
+ <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, Daniel
+ Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Jonathan Corbet
+ <corbet@lwn.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, Matthew Maurer
+ <mmaurer@google.com>
+Subject: Re: [PATCH v10 1/5] modules: Support extended MODVERSIONS info
+In-Reply-To: <20241123-extended-modversions-v10-1-0fa754ffdee3@google.com>
+References: <20241123-extended-modversions-v10-0-0fa754ffdee3@google.com>
+ <20241123-extended-modversions-v10-1-0fa754ffdee3@google.com>
+Date: Mon, 25 Nov 2024 22:25:31 +1100
+Message-ID: <87mshntv10.fsf@mpe.ellerman.id.au>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123180323.255997-1-ojeda@kernel.org> <CAH5fLggg5f0KpaObVtZc7WaxHjUqbhCDsn5CwnA5-3df2HEjnw@mail.gmail.com>
- <CANiq72moPEL5s0T3ELEDvWiE6Lz5oZv2hZnziV5A60EP65bkkQ@mail.gmail.com> <CAH5fLgjEDXHGLf+fAyzZwGtX+sjuCst6P9Eg_eyLjujd2datYw@mail.gmail.com>
-In-Reply-To: <CAH5fLgjEDXHGLf+fAyzZwGtX+sjuCst6P9Eg_eyLjujd2datYw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 25 Nov 2024 10:56:24 +0100
-Message-ID: <CANiq72migNNeceZ95fJ4fKfOimD9hymdisvpqL0imAnjgVyxHw@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: set `bindgen`'s Rust target version
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Christian Poveda <git@pvdrz.com>, =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Nov 25, 2024 at 10:45=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+Matthew Maurer <mmaurer@google.com> writes:
+> Adds a new format for MODVERSIONS which stores each field in a separate
+> ELF section. This initially adds support for variable length names, but
+> could later be used to add additional fields to MODVERSIONS in a
+> backwards compatible way if needed. Any new fields will be ignored by
+> old user tooling, unlike the current format where user tooling cannot
+> tolerate adjustments to the format (for example making the name field
+> longer).
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Since PPC munges its version records to strip leading dots, we reproduce
+> the munging for the new format. Other architectures do not appear to
+> have architecture-specific usage of this information.
 >
-> Sounds like this might need a backport to 6.12, to prevent issues
-> appearing on the LTS in the future?
+> Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+>  arch/powerpc/kernel/module_64.c | 24 ++++++++++-
+>  kernel/module/internal.h        | 11 +++++
+>  kernel/module/main.c            | 92 +++++++++++++++++++++++++++++++++++++----
+>  kernel/module/version.c         | 45 ++++++++++++++++++++
+>  4 files changed, 162 insertions(+), 10 deletions(-)
 
-Yeah (I am not sure how likely it will be that someone hits the issue
-in an LTS use case, since it requires using a `bindgen` that does not
-exist yet, even in `HEAD`, at the same time as an old enough `rustc`,
-but it is definitely possible, and life will keep surprising us).
+I already acked version 8, which AFAICS is identical to this version
+(for this patch at least).
 
-Thanks!
+Not sure if you dropped my ack on purpose, but here have another one :)
 
-Cheers,
-Miguel
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+cheers
