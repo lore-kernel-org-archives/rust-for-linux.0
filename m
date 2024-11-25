@@ -1,104 +1,105 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED08A1B2186;
-	Mon, 25 Nov 2024 14:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E9F1B3920
+	for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 15:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732546360; cv=none; b=JQ3F00WXyMKDVExJEdSUM0e93nY9Ive5zaTK80F/8bpQbPQ8O1FjEhJv4TdMZR9jbXbUDuBpRIXbp2YeXWvDoqgEOIoskZVFLFMBJydxlD7W/iBmfaViTBWHs473QQFYNjJcOvmUzGhot33247bNEWibCI02lvRzjpc9Vv6lCms=
+	t=1732547018; cv=none; b=qkVL17sUeke1sZax4dVoFvRPnqWTnTjRQo9xIKsgM8jg4VUDvtEvBbc0ygAtwfsPpyudo341i6gxcTnmKVju6lenClXVG1DtLpN1URZjRYo0qL9RGxiqfWktsQajlpTo1evsqE6JNv/ldNSvtYW8/zPuWf0UsWZKckp10y/sbUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732546360; c=relaxed/simple;
-	bh=QVqsjbY2A65/p12XFRQzt9ytvhYNWbSd7slA96gpmFg=;
+	s=arc-20240116; t=1732547018; c=relaxed/simple;
+	bh=vLL5IXWYYv0oLXMKMWKSMN+PqQxzJ7CFHbeVI+QFds4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IkkkMbWqZHlrWTi4FxAQOkcr7ecbh3JnRzCEILm6OOBhBgYqqNa87k8k6taaP9fYboI1ohw1v8mYKbzyVEklz7FQc4TwXxY/Ltc3u1penuvTa5Jlxrsl9Up8N4cw4n79GhUTed675OoPtA4tZ+Ollzf4ltU5GmJsjdZLApt+lUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TRa5pCoU; arc=none smtp.client-ip=209.85.208.170
+	 To:Cc:Content-Type; b=goWQZZGzylK0DH+VOZFZGa78f20cCiwYW+d0hGsId5jLbZSLmKc8d6x5qco9oPldVgAZoAsJ6F1d2EBm4C1OLvVRbVv2ndmjDaNhHHgy3jdtRuEyFuWv+2YsopyGXvVlWmZ2SChIaOXw5QElE4fZYjhQoCTtQMWnp+L5mnY17AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZOr5x2ki; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TRa5pCoU"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2fb388e64b0so49741751fa.0;
-        Mon, 25 Nov 2024 06:52:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZOr5x2ki"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7eadb7f77e8so497938a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 25 Nov 2024 07:03:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732546357; x=1733151157; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732547012; x=1733151812; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QVqsjbY2A65/p12XFRQzt9ytvhYNWbSd7slA96gpmFg=;
-        b=TRa5pCoUBL6M5mwD4/uswtbNtQCg+40g6PUPkvMerJq/XCe856zKmqsJcQ4E900zx1
-         QG4H5sRuXaQD8FhKoA6GxHkzXze03zV1O4P1//cVGBNm2MKot77lNgiLSmEmWP42mpYh
-         AkHKRz9Vm8LwKbVdB5KcEnD2SajvWp69woGy3vBXy5FUFQsnSsbTf08rm7SVqZl/Fcsd
-         ur4cFREZX7o8G0ElPooUGyUTXigDAKRQdrUgPznABUZ5AdDPRtUuv6Gt+cJyh4eg28Qw
-         VJ/dHMQNDKBqSR/S2ulL9SIogE7BixB/iWgCZJDbopbdboOL5GzB8axIKkyngowRnd1B
-         RDXA==
+        bh=vLL5IXWYYv0oLXMKMWKSMN+PqQxzJ7CFHbeVI+QFds4=;
+        b=ZOr5x2kig9PPeHe1kGw2KOdI13bJrXKD9gdylnq10hEqIhP2eeKzBfj0wBJ2OY9Y3t
+         ZgzMhc5hbfwKJXA+05P0fYfSbptOVCPeBQ4FE4s0LUb7ycoTFAYUUczGcIoBgScJFt6c
+         PkBy188DbUK0aH/c2QVMmM8YHV06w9VKdop7M736b863LHAdYSYfXbdJyGslLWXx+zU2
+         BsOC5BNFaquXYB9U3xw3XO0Z6y/8UIMpm5Sk12AkuMpR2yds11kdopkz/voeCIjHIYlJ
+         EeLcJk4q8e0twuPRbrk9OVfyG5DGEnYpYmdqgp149HX9mN4xVMwIo7nBSkzPfb7FknNh
+         hr9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732546357; x=1733151157;
+        d=1e100.net; s=20230601; t=1732547012; x=1733151812;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QVqsjbY2A65/p12XFRQzt9ytvhYNWbSd7slA96gpmFg=;
-        b=BAD/K2acIb9Qe5xoRdbLu1U70Seg/NkzhlO6UDZpcYcZyk5aa2ywMrU3hvTmZvAzt3
-         raBek1PEzEFv6SOBC4Wg6W8ut3RYWuZgE3rOIYukmD19c/VWEbmVcoz6zj/DS3aS3yqV
-         qkx3dzuRW8i4nUU3eTwS433SK5vBiuZZlmRzp77kHX9xSsGlSXzST/1FRcGnPcCLEwQx
-         kbhJ9wINl3FRn9zdK5NRkA8QkHD3udmXo1ZTcYRrSzfz11bEys2kJmKY90jpJxj0Lvtc
-         ZYjYE9JB9C3qdU75CXfcPY2K1+8w74xPh/3EsQ2U88BXOFdLOBb7RkZWAGceyQ8rMdYW
-         ToQw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGghftv00gX+RLuawJ7TCtoAogL3omdAY5xO4S/Mt6uyK7BAUFMqnu8K4SKGviMRlFsLOUsCBTGKunbMc=@vger.kernel.org, AJvYcCXaq4sfksKRV5LypxDrKoVpWBU10OU8ont3ksuHB+jJhfYzTihCeQJRWYRw+Fo1prYjAhR5fG4gGZQt9Zo4LS8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMcNOQoeG2+hAuStJ1Bu0wv6UmgykU0qF6c4/zz2m3ObryHccC
-	nXVnA64w2s1I1BxDONLKyhQ74TIADlvZ3kzgnxry7SHhBuCb5wXsK/Rftgow9QUcC/O94f6V1Lk
-	fX8kejlIqH71CdkJIE69BirfmH3Q4+w==
-X-Gm-Gg: ASbGncuDjd3ZJ0QTKkSxBMaXm8PW/z3dQeYF3/6C3TstwwZSrcT6wSeGZ6H9Q+8+6FZ
-	BZvDjpkoRWmH0zzGxneUZn8HDGJjuDxWEHoSHo2QT02K3d6E=
-X-Google-Smtp-Source: AGHT+IGIxVUnaZzWVoNS0iqledoHLlHjgp7D+/aJV0PR2cDLUIcxUQW6ZxkMGMwoCRPkbd9IyQOiYIay3qCmNCcHvhI=
-X-Received: by 2002:a05:651c:504:b0:2ff:5185:49e2 with SMTP id
- 38308e7fff4ca-2ffa7187ce9mr59652961fa.36.1732546356793; Mon, 25 Nov 2024
- 06:52:36 -0800 (PST)
+        bh=vLL5IXWYYv0oLXMKMWKSMN+PqQxzJ7CFHbeVI+QFds4=;
+        b=brvVAFS6omP7R4GnBTi1o7EL+IMnxh3WizztqmupK7+dRGLmc5q7y+dpqItxc+PB3I
+         4+dWVigD335nqCqmx9PkY16Wev0m5Q6EoNFqDV90nWp0BzGRTdp8YxON5FdnIjcMr0iz
+         IuaEnMi9y2cZAMshnkAQ67+gMGH/MTQVO6eFn/gy4Ir9uNhxMHkdCd2FHNYx4n4xzWzW
+         r+VwQ0VTSXOIuR6eP8K42XR8LZWd2rDfGnJ7q2gGDS55neBN/W/A7r/jsaJQN8v0tATm
+         d/imct7DSKMkTmqigIsI2yv8WSt3vv/AYnvOwdfDDU6Z91TP3zTZ10IyFmhhAPF2Q5jd
+         NobQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaJyuAEY6V3eOlZoJvfMZiTC8whEazANIExSsV/n1ZYwWpQ+ytd3+e+G4NxIe/cjeHhjE63aZZWTrf9qtRKA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzytEHBQgjFUDi6UJXUqAadaGPXg6cR2/Q8yWQzN4HErCESuMM9
+	ocPrDsUBJnjlbVgOCYpr9vglRpPykJEuA5QcPL9gdH0fj+DhzKnPZZeePQoEAvvMaS9zKBgmmXu
+	f6waZ7+J6/a9XJqkzYSkqXfHi8Ws=
+X-Gm-Gg: ASbGnctHSIE3vKW1k7eLzaC3wD5JJs+bWnCWNJI2H6kVwuwveTyTWlV9vKjE+Z7rH8T
+	pTRwZKFrqtPlnpBNjXN9mwWzwreHnMOQ=
+X-Google-Smtp-Source: AGHT+IFSIammyd4SJW9aa96maDFzaFohvezJHNj5xjXggyveCJQPwTAbPZl7X86w1pFmfqBh1ZfMvXNyFeVHAfrk22E=
+X-Received: by 2002:a17:90b:3b47:b0:2ea:47f1:79d3 with SMTP id
+ 98e67ed59e1d1-2ede7e11a32mr184814a91.6.1732547010849; Mon, 25 Nov 2024
+ 07:03:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241120-rust-xarray-bindings-v10-0-a25b2b0bf582@gmail.com>
- <20241120-rust-xarray-bindings-v10-1-a25b2b0bf582@gmail.com> <CAH5fLgjpE7a1jy+W-ZdscrR3D3FrO21iVNd1L-7WY0jGcwQ9mA@mail.gmail.com>
-In-Reply-To: <CAH5fLgjpE7a1jy+W-ZdscrR3D3FrO21iVNd1L-7WY0jGcwQ9mA@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 25 Nov 2024 09:52:00 -0500
-Message-ID: <CAJ-ks9nusk9GAy5myshNVg+w1w_J-awBZqPVupmpjjwuc1Eo-w@mail.gmail.com>
-Subject: Re: [PATCH v10 1/2] rust: types: add `ForeignOwnable::PointedTo`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+References: <20241123104857.49385-1-daniel@sedlak.dev> <20241123104857.49385-2-daniel@sedlak.dev>
+ <CAH5fLgjEnugoWErZn2ssE-x0eQW+SyuNFsL=_AwKtV0oQS0ewQ@mail.gmail.com>
+ <CANiq72kJpQBUTEkEyNgSt4iYe6dDcAvCkR82A4ZSGeEiEdkuwg@mail.gmail.com> <e83d6617-ef4e-478a-a274-766b0834ccb7@sedlak.dev>
+In-Reply-To: <e83d6617-ef4e-478a-a274-766b0834ccb7@sedlak.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 25 Nov 2024 16:03:18 +0100
+Message-ID: <CANiq72=+3wkRt8cQv0VWwV7E0_FrnpxZgb-rYc-LpQHOMX-skA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: error: modify `from_errno` to use `try_from_errno`
+To: Daniel Sedlak <daniel@sedlak.dev>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 25, 2024 at 9:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Mon, Nov 25, 2024 at 12:31=E2=80=AFPM Daniel Sedlak <daniel@sedlak.dev> =
+wrote:
 >
-> On Wed, Nov 20, 2024 at 12:48=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
-om> wrote:
-> >
-> > Allow implementors to specify the foreign pointer type; this exposes
-> > information about the pointed-to type such as its alignment.
-> >
-> > This requires the trait to be `unsafe` since it is now possible for
-> > implementors to break soundness by returning a misaligned pointer.
-> >
-> > Encoding the pointer type in the trait (and avoiding pointer casts)
-> > allows the compiler to check that implementors return the correct
-> > pointer type. This is preferable to directly encoding the alignment in
-> > the trait using a constant as the compiler would be unable to check it.
-> >
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
->
-> I'm not super convinced by this way forward. It introduces more casts
-> to/from c_void in code using it, and forces us to expose internal
-> types such as ArcInner. Does anyone else have thoughts on this?
+> You are right, I was developing this on top of `rust-next`. I get it
+> that I should be developing on top of `rust-dev` right? If yes, should I
 
-It's certainly a trade-off. The alternative (something like exposing
-`const ALIGNMENT: usize`) would nullify the compiler's ability to
-check implementations.
+What I meant is that it seemed like the line changed by `rust-next`
+got overwritten when you resolved the conflict (since that line was
+not a change in your original patch, just part of the context). In
+other words, it seemed to me the mistake happened at rebase time, when
+solving the conflict.
+
+Using `rust-next` is perfectly fine and expected, as Alice mentioned.
+You may also want to use other bases, like a mainline tag, as long as
+you don't require the changes in `rust-next` (e.g. it is a fix that
+will not go through that branch).
+
+> also include the base commit id because of possible conflicts?
+
+Please always include the base commit, it can save a lot of
+time/confusion later on. Sometimes even when it is based on an
+out-of-tree branch it is helpful (as long as it is published and
+mentioned, of course). It can also spot submitting mistakes if nobody
+knows what the hash is :)
+
+Cheers,
+Miguel
