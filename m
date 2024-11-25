@@ -1,104 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3E51372;
-	Mon, 25 Nov 2024 00:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A974E624;
+	Mon, 25 Nov 2024 00:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732494423; cv=none; b=nqHdVsA8JoF8MjTH/uut/Z2aIHw3/6bPZ/tUKzVSF/pb8zfocnKjoLetwpVho4+V1iihLET42a1N63ch0/hGGMbHHD1cD1yi2SpFh29Nd0BvHRO5XeHG9oqTru2izV4/ampnMWsBjmCyHDJ4oj7NkKRMc2zThmn2I05XSFx207Y=
+	t=1732496317; cv=none; b=dkBZQaBkXFRslzon5O91ube8PDHc1fO/OSX42ICSUK72SjugBc6E8NsfTsZeAMBgUVYikSe8r1me6gEtk54WdWVXxrLw3Arny4vOmcaeeEm/v+/641D4zBRFA4NrH+6Jaz7c76pqNpLSOYVKFciJFMl3tBg9qKNTlIuz+hjM4N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732494423; c=relaxed/simple;
-	bh=KH0/XG5YyrgvJxmq7f9f7f5+Q8jUHpb97a+ADgUrfbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GKhAw19xLfnPWJTvBF3Xr33wXl7ThK7keWfXu82tttdjhaBvjyg4KO46K2L+q0vHE7bNQ94KJ/oV3mPu4ZeKbW7gZJ0+ONy8tBL5v+ATRyrG/z2YR2kyqo70EiwXjFMucBatJZLK/nQwpLN3ITbP6B64wT9SA2YU4r9E5WtKcpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqPde7mu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732496317; c=relaxed/simple;
+	bh=sHNxsRUg6n7Yzu2ZeQgRMVMu+LeUSkO2J9kYDWyLjLw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=oKjI4y9HQuLOBhokdwn18f6XJDB34sZScCXNyQ8umGQpRkFM8iRgwPJzj/TmhVvdpVhrcGJZ3Az/0riYEWX9PcETyOEQW9tZcu/mJmYvbvUjOGYaDFGFgBHoFIoej8URfzeG6dxL1DT7msvjrEHjaaWscgyAhT0nE7ExMQi5OrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUZ68LHc; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqPde7mu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6C6C4CECC;
-	Mon, 25 Nov 2024 00:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732494422;
-	bh=KH0/XG5YyrgvJxmq7f9f7f5+Q8jUHpb97a+ADgUrfbQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gqPde7muw2FZPO4kyvIRn4JVYJJszSwAl0+IWemtSJRWWstcTCk8Bp+sJmbyRtJEs
-	 nAMGGHMXKgeOjjDMGbBwlBiwGH/6Tx3zYewxsCAEdlTNu8cD8rktJanw28Imm4EIor
-	 pnchuQLB9U/gzScMUF/x1i9tNLfwDy/u7eEdy299tLz/KbHPHq6Y8VgjMSgDdxrwmP
-	 rMYhZ3gb8ShuLfyoN2Fz8/JbHpwehvBBcqijGMigMvB6d0N6KtUvTV6O5SYkAuf6n+
-	 OZIHMeiX7YdeTt5wd6auxL18f7u9/hGCcjPd7E/WGDE5b4w908F7GiZ6tQhXHHnLQY
-	 7fmFAoTtI4CGg==
-Date: Sun, 24 Nov 2024 16:27:00 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>,
- rust-for-linux@vger.kernel.org
-Cc: netdev@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Andrew
- Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUZ68LHc"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7f71f2b136eso3090426a12.1;
+        Sun, 24 Nov 2024 16:58:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732496315; x=1733101115; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rBQ7gCf6/iupN6KSFuGFeD5+BWky9yGkProoTV97HB0=;
+        b=QUZ68LHcHy3q9PfbEoxzUdMeW/XgT7jsY1hnfIm+LfciW5dOK9F5IyOsFr3kjMla/1
+         XZhhU3bYltdF22AzgXt+hiQm7Zd0/pbH5KKr8GbJOUutdASOx42JbSrpN6SSfhakNMNw
+         rtpnpRPvP9MAoxtoexdMRHagkbgzpQEnhArznDUzqoY5I9Yxmf/JDJU48OxYBK46Lg8h
+         FpWofjGhmKiFo9mF/kICR/7wVhx0bkgFm8VdzLLpihdD0et1U9NqdccRZCkVREQfH+Sg
+         SQl+1SxoUoY/7PH2u4qmUjEGytq0BL7YWWZt5GVKJNgiSbbqyjIgkTBixmakseel4FgH
+         GMRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732496315; x=1733101115;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rBQ7gCf6/iupN6KSFuGFeD5+BWky9yGkProoTV97HB0=;
+        b=F4RIlauoJ+G048SJ9zNvO3+WtXdC3MBHVvANdRyAiMxmrBpGvR45cHFkdhOPZc7woZ
+         MDt2iWgdwCi3OGAaYTGnlkfaQrkBvjkygm2e4s+D2WZwjHkG8ArquFixbdjhA9q9X6Si
+         jn/Qv8gZ1U+7GZEs3zCsJdh9HYjT90nuoic4nC1D8VcsWcav5y065Pgctg2dk/PueIjn
+         CY9o1TSwduxbjpsHkUliD9jittX59YIgmvogBCsM39IVI2Ja02QhenNxvVOGAqJOoyV4
+         jSTBmKUlhJe2eK8pSteFCmq/pAUBlw28Ed43TyJ0D4kHmJKx3X+AONBhNNOgIfBKQsYO
+         zxsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwBQe2k/OEWawteuCOTbAmSK2GeUyxN8AM317qkO4aKgBnSg5O/O0Vur97J/6LHtdfFd8cEvgdD73sHGqsQRg=@vger.kernel.org, AJvYcCV8gRUgQPOM6Orjk9yrasQokfLe4mOvsAtzXcxNgCKgBj8q4M7q8SFlRr672Bz+rSGpzKd2AMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHddIag1kIOotanxo7MZ4mLau+nqEAM1FHVc52mKeCw9pj2TA2
+	B3yRw0MDpkMMcVzCeTP7ecX//ZN4HcDQFzT8s/kFeVPxWAjd/MTfpy/xYJhG
+X-Gm-Gg: ASbGncte1sMAYNytO0E92FZgPsEJAWLNg9jPiPLWXDZt5fWtDEpMaFv/xyNpQmKDn5T
+	7vbkHtRD6xdsPCo+hVx7dyVTQGHNEP+YvaYJ5pucr3rnrcUStuFd06MbmJ61Qgb91FzhoIMNIBq
+	7m0rCtPaQm6RT2nDVeHIxqqSkgt3FC7QU0Vb+cN1kUD3UaYPPEdes+NKTm4qLkAcEr5gIwgrk2W
+	2bxyDgurR6t4M9AwZYjmgCgFugCpR2YuOhhV8RYwtpoPXU19IazyJQFuxzUotzTYHIc6UmXajxQ
+	cwg2sXzYlCvDbf8bh39gBOlQgZDPYQ==
+X-Google-Smtp-Source: AGHT+IG1h4liJrVLEdMPvhubXg/PnmmvYKXXN+rIeZ+vXQzOfxTz4HA284FHBBPymrBfxaQl4Q0ejQ==
+X-Received: by 2002:a05:6a21:33a2:b0:1dc:7d9f:948c with SMTP id adf61e73a8af0-1e09e5ff70dmr18052674637.46.1732496314902;
+        Sun, 24 Nov 2024 16:58:34 -0800 (PST)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de479a94sm5186269b3a.77.2024.11.24.16.58.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2024 16:58:34 -0800 (PST)
+Date: Mon, 25 Nov 2024 09:58:19 +0900 (JST)
+Message-Id: <20241125.095819.2078794726631634489.fujita.tomonori@gmail.com>
+To: kuba@kernel.org
+Cc: sergeantsagara@protonmail.com, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, fujita.tomonori@gmail.com, tmgross@umich.edu,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@kernel.org, aliceryhl@google.com, andrew@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
 Subject: Re: [PATCH net] rust: net::phy scope ThisModule usage in the
  module_phy_driver macro
-Message-ID: <20241124162700.4ec4b6ce@kernel.org>
-In-Reply-To: <20241113174438.327414-3-sergeantsagara@protonmail.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20241124162700.4ec4b6ce@kernel.org>
 References: <20241113174438.327414-3-sergeantsagara@protonmail.com>
+	<20241124162700.4ec4b6ce@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Nov 2024 17:45:22 +0000 Rahul Rameshbabu wrote:
-> Similar to the use of $crate::Module, ThisModule should be referred to as
-> $crate::ThisModule in the macro evaluation. The reason the macro previously
-> did not cause any errors is because all the users of the macro would use
-> kernel::prelude::*, bringing ThisModule into scope.
+On Sun, 24 Nov 2024 16:27:00 -0800
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-You say "previously", does it mean there are no in-tree users where
-this could cause bugs? If so no Fixes tag necessary..
-
-> Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
-> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-> ---
+>> Fixes: 2fe11d5ab35d ("rust: net::phy add module_phy_driver macro")
+>> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+>> ---
+>> 
+>> Notes:
+>>     How I came up with this change:
+>>     
+>>     I was working on my own rust bindings and rust driver when I compared my
+>>     macro_rule to the one used for module_phy_driver. I noticed, if I made a
+>>     driver that does not use kernel::prelude::*, that the ThisModule type
+>>     identifier used in the macro would cause an error without being scoped in
+>>     the macro_rule. I believe the correct implementation for the macro is one
+>>     where the types used are correctly expanded with needed scopes.
 > 
-> Notes:
->     How I came up with this change:
->     
->     I was working on my own rust bindings and rust driver when I compared my
->     macro_rule to the one used for module_phy_driver. I noticed, if I made a
->     driver that does not use kernel::prelude::*, that the ThisModule type
->     identifier used in the macro would cause an error without being scoped in
->     the macro_rule. I believe the correct implementation for the macro is one
->     where the types used are correctly expanded with needed scopes.
+> Rust experts, does the patch itself make sense?
 
-Rust experts, does the patch itself make sense?
-
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 910ce867480a..80f9f571b88c 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -837,7 +837,7 @@ const fn as_int(&self) -> u32 {
->  ///         [::kernel::net::phy::create_phy_driver::<PhySample>()];
->  ///
->  ///     impl ::kernel::Module for Module {
-> -///         fn init(module: &'static ThisModule) -> Result<Self> {
-> +///         fn init(module: &'static ::kernel::ThisModule) -> Result<Self> {
->  ///             let drivers = unsafe { &mut DRIVERS };
->  ///             let mut reg = ::kernel::net::phy::Registration::register(
->  ///                 module,
-> @@ -899,7 +899,7 @@ struct Module {
->                  [$($crate::net::phy::create_phy_driver::<$driver>()),+];
->  
->              impl $crate::Module for Module {
-> -                fn init(module: &'static ThisModule) -> Result<Self> {
-> +                fn init(module: &'static $crate::ThisModule) -> Result<Self> {
->                      // SAFETY: The anonymous constant guarantees that nobody else can access
->                      // the `DRIVERS` static. The array is used only in the C side.
->                      let drivers = unsafe { &mut DRIVERS };
-> 
-> base-commit: 73af53d82076bbe184d9ece9e14b0dc8599e6055
+Looks good to me.
 
