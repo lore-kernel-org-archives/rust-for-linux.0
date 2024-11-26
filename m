@@ -1,93 +1,220 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604C11187;
-	Tue, 26 Nov 2024 16:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C24E1C5799;
+	Tue, 26 Nov 2024 17:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732640401; cv=none; b=GxBy2mUAW0nvOjCKln9gameFRkKIsE5qixuTGFX+J4EBLNR7PdfmzYLuyglLNYcD6OAMTb6i25GVipcl1FnA2Cp8GbPOXIAM4un8JxommoxFB7hnw/QLJ1ck2cFmbyzSCAZe376ZsL7BQECBMMb/hBX11ZNKqHyjdSrka69XTG0=
+	t=1732640877; cv=none; b=e2ZfFv+OQK2U6DTNU2BDR68gn4qdIvHWP3wbf+RWHE+AI56Ue3I1Zn1QPJwnTRkx74f/dbSXQTrg0FDR1DCTzxRkIfgmDfwlgJpvQ0EjZUc77SdG5zLqTrPJ9MDUVmUZW5PTgQ/fvkjmQS4cI94h8/WIPEUMRDzOJE6Tn/Kb+tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732640401; c=relaxed/simple;
-	bh=MtRv4oOaXfK8SLIiralC2PpKvgtDrqnVngZfjWifN7k=;
+	s=arc-20240116; t=1732640877; c=relaxed/simple;
+	bh=pV/9u4I8GzbUzuhef6l8bVcuRWjBHjz/xWKgCklFCCg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LqLy5hmc76fe/cDmm1GDxBMtTYRqhhKvzJ3hLOPjgmACAJHiywnfEferb53vpr7WZ2asfri9mPQlbaviIkKyci+3IYOhlT52XBNFXyvF7g3eRRVrv5P27M10COPryHceLx3renyp9LdjrC9HUS2GMio2Wo/ud11PlwtkYqKs1Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2ZfD/a+; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=qYct4UMQ8X4HyjWguW8+xgcyIe/JR2tjgFpR6LjzMWiBnn0i+iiKgMeX3hwGXCndlTEEIh86tyRKHor+gwr2NaCZA+97uImV9MDO+gWtVjFEQ9BNzE+zZmF+G9SDAH8QnOnMGkfwH/8AWFYTquXWFlA77EDLqXLy78wslhRhDJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xbmu7P3C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2ZfD/a+"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ea501acd25so974899a91.2;
-        Tue, 26 Nov 2024 08:59:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732640399; x=1733245199; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MtRv4oOaXfK8SLIiralC2PpKvgtDrqnVngZfjWifN7k=;
-        b=I2ZfD/a+FYE7UQR8DHpg10LEcumh4TDjteSfUHyZPLkP8V0+iF48nufS8rKDn8fzPu
-         bB6ha247M5B8dP0Iso/4LegIiC/eqQ/KzscIJDh/gor6zSDZ9qXwMpyQXE10aiFtTyzP
-         X4avYwp5/jSV1f/r3LydDZh5IcitGVHGS28nhprTu1S1j/IMkM8dRJRpJj2sRsAKC4rS
-         C5NJEtPythShbKgRwIfFGMaiGr8b7iEFiz3Y1T2aRJsqtwmvbgExn2fs0qrCkPhrLsF9
-         Gl3IP4F2RroaZLrGRq5NscU3mT2fRQqVvnI14szCF270RArWvXHit/tzKMrwR3KmNuM2
-         wiWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732640399; x=1733245199;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MtRv4oOaXfK8SLIiralC2PpKvgtDrqnVngZfjWifN7k=;
-        b=h/uCvSpqxZPz+wp+hExnEyHjegalHEYXGlZai7fV9D8sGKV39OEyclAFNL1vcZm7Al
-         Iyfp2hdPi0b0fvoV8eIKobcNZHEBGbRAX3dv1vS1Ys1jsSdB1oHNPKyCWJCFpGc1ZK3t
-         QuQtLBnEBeyQdYcUzzOwbzU5Mi54Nwro3bC40O/qQIzHJJwdhWuEOCaCb8dDkUI6zcjr
-         h0tKLWoJJcyyk7xZPKCphuZAI4BKPK43qs8GJSyAdzp8xGKXOuV1IdNJj+pl+uMU9y4R
-         Ap6WhtNmmFw2jONU1WpfUg3Xyc2nUDdjhBrkaqJuzhxOj5xuP4QHzi7MQv3pTcz00lUv
-         qyug==
-X-Forwarded-Encrypted: i=1; AJvYcCVah0f9f+DLhLmmvpn6MRj7SZ+yMguQQSRT8j5U2Aoo/tgyVA62aqHyorHVH4pgvwB1GbQv0yHztYC2d3mtxfM=@vger.kernel.org, AJvYcCXNZYMRciBpnPjyGqIcTCU52L8o7BxI171LEs+OgxpGU5GnaKdJRvcCZBHET3HNAcVPqzjuc1Yt9i0NJKc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvHPQi0QTcyCvT+qEHxVW4+JAYeZCwkDDSHqkRd/X6sw7L005z
-	apbhe/c0UVd1Z7a6w0ZdCAQ8TCsOulCIuYzb/ceGJH5HyNX5AQdhtTgb+5Djj6mZvDR0/lcDtez
-	8it6AwzpokaiPRpcBgEFTml8AOxP87ns4
-X-Gm-Gg: ASbGncukTdReQQpPlpC5Gn2N99lI7C5StWo2vYL2wWXBrhWiQKKr4nRMphFc9hg8H9Y
-	bDKTJRKSwEcXchrLAK8kjh6vCTZiu2WA=
-X-Google-Smtp-Source: AGHT+IEI+qtdaIzBJqZlcFjlRD4+3ro4LBUFICzngU+d2ahdoLPo6qN9okcbJjaWdGONAYbUKMV83McdQFypPctu1gA=
-X-Received: by 2002:a17:90b:1e0c:b0:2ea:9850:b2a with SMTP id
- 98e67ed59e1d1-2ee08e9e84emr2322a91.2.1732640399273; Tue, 26 Nov 2024 08:59:59
- -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xbmu7P3C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C832AC4CEDC;
+	Tue, 26 Nov 2024 17:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732640876;
+	bh=pV/9u4I8GzbUzuhef6l8bVcuRWjBHjz/xWKgCklFCCg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Xbmu7P3CxXdzZ1ojMF1f0tfwsfzxc/67inreyFT4h9ch3TgnJtWBWhOryHi1y42K1
+	 NUodPUWXsr3b0up4YdlJWyS5fqSmHNgZ108i2j3jHzXzHzgZ3Tj2/JEBGb/BN+LaUh
+	 iy1XA0viYqxHdfsKXh2WMWp3hj/CSAnHKVFlfn6X7dzuTmRGAQpc6nQ7DHQwtMadKl
+	 M0F7x2X3YDqcFFbunyt/b6l/sNIsd14pcWD10f84fGKj5trcDL+fSEi2MwBTCHXMUq
+	 rURtg5U3VqJorN95Pna6kLRLgKsGHuFqAEyjYKaRQObGpuz3XOkrDdQ1IRNGVqK9Cz
+	 HGcReODgJ1kGQ==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53dd668c5easo4408167e87.1;
+        Tue, 26 Nov 2024 09:07:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV4XgDaRhDqRpi4m8BrtyZ0xQdWqTOWgs0qxB7QLwqZdT7O8jQAewnJ7q0MwfkhZRw1Lynzno3gjZr5WONY@vger.kernel.org, AJvYcCVWdkVr80Exy6A+rX63AaD0q3mAuSnoF+/y2Upqod9zGHUWO+T1ELlPYGwIWdooZu5eyJ2XoD8i7aO31Uc=@vger.kernel.org, AJvYcCW3td9V9MYCzClJLYis6NWyGyi3QEUtMIN5utwyKgV+JSs4KMbJ8Mhl2GktUYeQLBt982P0/XFOc3KIQedRCw==@vger.kernel.org, AJvYcCXqOwYkJylU9q+zMdC+9SsDTpAMydqGGi4cDX3lSg2ji8nMTgUXopa3zDgxkmUZYBiz/3RtVWnNZW5cO5NMi6E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl9TSDugWpQTHyvpj5I+mDXssGoRGM37c/0pMD+eECON9Ry9tz
+	dAi8SmheHIjklpAQ/0EProE81t/tjZ+HhdJXhsRjdUEybDKnW1TUHcBUNfN5CdeAjKgJYhhH3+P
+	zGJXR9wIKArGOmpr1tqyma9GwZ3w=
+X-Google-Smtp-Source: AGHT+IEsHaKYGw7w+gVoJMAtUh2GgApnKj5MhP1ZudIvdeWbErn4bg7YUAsqfagcTYCCPN44cxsWm6jAxXerxT2y9nk=
+X-Received: by 2002:a05:6512:224f:b0:53d:de87:d82f with SMTP id
+ 2adb3069b0e04-53de8800089mr1246206e87.4.1732640875354; Tue, 26 Nov 2024
+ 09:07:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
-In-Reply-To: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 26 Nov 2024 17:59:46 +0100
-Message-ID: <CANiq72n2Js7gftu+56FYF-eGFmX+VxVW5tEpxF3v9RiBHxM2Vg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] rust: Add pr_*_once macros
-To: jens.korinth@tuta.io
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>, 
-	linux-kernel@vger.kernel.org
+References: <20241121204220.2378181-20-samitolvanen@google.com> <20241121204220.2378181-37-samitolvanen@google.com>
+In-Reply-To: <20241121204220.2378181-37-samitolvanen@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 27 Nov 2024 02:07:17 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQUkMtRmyiovCebrXhrdz2GnUo+0SQMHaCc0evZatohfw@mail.gmail.com>
+Message-ID: <CAK7LNAQUkMtRmyiovCebrXhrdz2GnUo+0SQMHaCc0evZatohfw@mail.gmail.com>
+Subject: Re: [PATCH v6 17/18] kbuild: Add gendwarfksyms as an alternative to genksyms
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 26, 2024 at 5:41=E2=80=AFPM Jens Korinth via B4 Relay
-<devnull+jens.korinth.tuta.io@kernel.org> wrote:
+On Fri, Nov 22, 2024 at 5:43=E2=80=AFAM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
 >
-> Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
+> When MODVERSIONS is enabled, allow selecting gendwarfksyms as the
+> implementation, but default to genksyms.
+>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> ---
+>  kernel/module/Kconfig  | 25 ++++++++++++++++++++++++-
+>  scripts/Makefile       |  2 +-
+>  scripts/Makefile.build | 35 +++++++++++++++++++++++++++++------
+>  3 files changed, 54 insertions(+), 8 deletions(-)
+>
+> diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
+> index f9e5f82fa88b..e6b2427e5c19 100644
+> --- a/kernel/module/Kconfig
+> +++ b/kernel/module/Kconfig
+> @@ -169,13 +169,36 @@ config MODVERSIONS
+>           make them incompatible with the kernel you are running.  If
+>           unsure, say N.
+>
+> +choice
+> +       prompt "Module versioning implementation"
+> +       depends on MODVERSIONS
+> +       default GENKSYMS
 
-I guess these tags are meant to be informative, but just in case, I
-thought I would ask if they are here for some other reason, i.e. if
-you somehow want them to end in the kernel log.
+This is redundant because the first entry is the default.
 
-(It may be less confusing to simply mention in the letter who worked on wha=
-t.)
 
-Cheers,
-Miguel
+
+> +       help
+> +         Select the tool used to calculate symbol versions for modules.
+> +
+> +         If unsure, select GENKSYMS.
+> +
+> +config GENKSYMS
+> +       bool "genksyms (from source code)"
+> +       help
+> +         Calculate symbol versions from pre-processed source code using
+> +         genksyms.
+> +
+> +         If unsure, say Y.
+> +
+>  config GENDWARFKSYMS
+> -       bool
+> +       bool "gendwarfksyms (from debugging information)"
+>         depends on DEBUG_INFO
+>         # Requires full debugging information, split DWARF not supported.
+>         depends on !DEBUG_INFO_REDUCED && !DEBUG_INFO_SPLIT
+>         # Requires ELF object files.
+>         depends on !LTO
+> +       help
+> +         Calculate symbol versions from DWARF debugging information usin=
+g
+> +         gendwarfksyms. Requires DEBUG_INFO to be enabled.
+> +
+> +         If unsure, say N.
+> +endchoice
+>
+>  config ASM_MODVERSIONS
+>         bool
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index d7fec46d38c0..8533f4498885 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -53,7 +53,7 @@ hostprogs +=3D unifdef
+>  targets +=3D module.lds
+>
+>  subdir-$(CONFIG_GCC_PLUGINS) +=3D gcc-plugins
+> -subdir-$(CONFIG_MODVERSIONS) +=3D genksyms
+> +subdir-$(CONFIG_GENKSYMS) +=3D genksyms
+>  subdir-$(CONFIG_GENDWARFKSYMS) +=3D gendwarfksyms
+>  subdir-$(CONFIG_SECURITY_SELINUX) +=3D selinux
+>  subdir-$(CONFIG_SECURITY_IPE) +=3D ipe
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index f41ce2131979..d6b211a7b261 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -107,13 +107,24 @@ cmd_cpp_i_c       =3D $(CPP) $(c_flags) -o $@ $<
+>  $(obj)/%.i: $(obj)/%.c FORCE
+>         $(call if_changed_dep,cpp_i_c)
+>
+> +getexportsymbols =3D $(NM) $@ | sed -n 's/.* __export_symbol_\(.*\)/$(1)=
+/p'
+> +
+> +gendwarfksyms =3D $(objtree)/scripts/gendwarfksyms/gendwarfksyms \
+> +       $(if $(KBUILD_SYMTYPES), --symtypes $(@:.o=3D.symtypes))  \
+> +       $(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable)
+> +
+>  genksyms =3D $(objtree)/scripts/genksyms/genksyms                \
+>         $(if $(KBUILD_SYMTYPES), -T $(@:.o=3D.symtypes))  \
+>         $(if $(KBUILD_PRESERVE), -p)                    \
+>         $(addprefix -r , $(wildcard $(@:.o=3D.symref)))
+>
+>  # These mirror gensymtypes_S and co below, keep them in synch.
+> +ifdef CONFIG_GENDWARFKSYMS
+> +cmd_gensymtypes_c =3D $(if $(skip_gendwarfksyms),,       \
+> +       $(call getexportsymbols,\1) | $(gendwarfksyms) $@)
+> +else
+>  cmd_gensymtypes_c =3D $(CPP) -D__GENKSYMS__ $(c_flags) $< | $(genksyms)
+> +endif # CONFIG_GENDWARFKSYMS
+>
+>  # LLVM assembly
+>  # Generate .ll files from .c
+> @@ -279,14 +290,26 @@ $(obj)/%.ll: $(obj)/%.rs FORCE
+>  # This is convoluted. The .S file must first be preprocessed to run guar=
+ds and
+>  # expand names, then the resulting exports must be constructed into plai=
+n
+>  # EXPORT_SYMBOL(symbol); to build our dummy C file, and that gets prepro=
+cessed
+> -# to make the genksyms input.
+> +# to make the genksyms input or compiled into an object for gendwarfksym=
+s.
+>  #
+>  # These mirror gensymtypes_c and co above, keep them in synch.
+> -cmd_gensymtypes_S =3D                                                   =
+      \
+> -   { echo "\#include <linux/kernel.h>" ;                                =
+    \
+> -     echo "\#include <asm/asm-prototypes.h>" ;                          =
+    \
+> -     $(NM) $@ | sed -n 's/.* __export_symbol_\(.*\)/EXPORT_SYMBOL(\1);/p=
+' ; } | \
+> -    $(CPP) -D__GENKSYMS__ $(c_flags) -xc - | $(genksyms)
+> +getasmexports =3D                                                       =
+         \
+> +   { echo "\#include <linux/kernel.h>" ;                               \
+> +     echo "\#include <linux/string.h>" ;                               \
+> +     echo "\#include <asm/asm-prototypes.h>" ;                         \
+> +     $(call getexportsymbols,EXPORT_SYMBOL(\1);) ; }
+> +
+> +ifdef CONFIG_GENDWARFKSYMS
+> +cmd_gensymtypes_S =3D                                                   =
+ \
+> +       $(getasmexports) |                                              \
+> +       $(CC) $(c_flags) -c -o $(@:.o=3D.gendwarfksyms.o) -xc -;         =
+ \
+> +       $(call getexportsymbols,\1) |                                   \
+> +       $(gendwarfksyms) $(@:.o=3D.gendwarfksyms.o)
+> +else
+> +cmd_gensymtypes_S =3D                                                   =
+ \
+> +       $(getasmexports) |                                              \
+> +       $(CPP) -D__GENKSYMS__ $(c_flags) -xc - | $(genksyms)
+> +endif # CONFIG_GENDWARFKSYMS
+>
+>  quiet_cmd_cpp_s_S =3D CPP $(quiet_modtag) $@
+>  cmd_cpp_s_S       =3D $(CPP) $(a_flags) -o $@ $<
+> --
+> 2.47.0.371.ga323438b13-goog
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
