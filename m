@@ -1,59 +1,53 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E406FBF;
-	Tue, 26 Nov 2024 11:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B14A27442;
+	Tue, 26 Nov 2024 12:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732619660; cv=none; b=ieHt3zO21uLpeZfqqRzAlTw3ngKw1MV2D4uXir1teIxwyH+RxQd6sGfapetTBLCrNqb25ErYZGhd03ihstkhUytjuzvlrwiKDmvhXVPPUB/pcohHpo1/Xpm2fUCkSPFr5EBSXRFj+lmyJ0lHvJbXG1CXSfR8u28u5HrEKpOdGis=
+	t=1732624756; cv=none; b=R2cfYO92f63XU4EbTZlV/Sbd71t6zXVT5QF6mnPpjmwZzri/wSL8uZtaPDw/57EFFT5eqr3LT/xDqUSigpXt2IG4yxaSjEH2yaSN6iJjeT18HR5wZZbCkWX0h70iAZxuCJ4Cl7Sf/zyHeE7IxCshWfESUyOxjCAdJlR9yFTXHpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732619660; c=relaxed/simple;
-	bh=tTe62G9kzjRm7P8y1MeRTnZ/81FyiRVWZnfsaP8nYqk=;
+	s=arc-20240116; t=1732624756; c=relaxed/simple;
+	bh=mYv37OE2DecgbcMq0q2JvxnQqKQgrHopLS4szLMPhro=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JWnkk7F0fatgL8ANSTzMbBY1ZSuPfSkKDkV7wS6kEVR6+vEekWVgfNQSzoSgdcBW9CCe5V2xlzeNqxue+btCWjb/B/vDGKNsCuSgsHlCJH/qdhpkmEbAQtCuznuT8lgX9X4t6/3vK5TvteTg5GrI9CJkk4pCoBCsPGud7XzQtQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FjGN19xZ; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=f8N6oave+/K7bbJWLNsrs3zOiE4TKFqGKkYbmVxSOFT4IPiZhJ7Eoo9KZSvAi8PZj7luy0qs6v7hKd7Std9Ob+xGjWXVU33HzmNQw56Gm7gH+bu4IwlGCC3UIh5NxcwzAmSllDFYThdG7jWIFSl58lMKMV4QdjrIQFbSsf7rYx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSx3YnZF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FjGN19xZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=6f8pASCX3YMZO2HkrOz4zx7oYaQA5EGdeMODBcpzTXw=; b=FjGN19xZujmTaXu+REWzuQ/1n/
-	Z9eYYiyXrGaDTfNAWfVLgs9ff69bEQvs9AtiMSvmeJiOIdoerAq895mtKtzqnmUBWuRESovq5vJvW
-	eAgmdwL9DziyLf1oM871MxBVCHBWv2NPlarcEplzqdO4+rxx3h0tXlxUxkkvojq1sDHQrEblrnBmA
-	vt8t2jPcTHf8F9Gdq04NvvVFoJVGyyp87hxnIF9KGlm6pzItRTTFYeYxPEPpivgstwDm/Rc5Fp55v
-	ltpoGuicmvHaQDkdeZfuZThePOITctYeCVchCJCV2qSju3weRqIkfcVBLNvNjyau17rXdL7IyT5ny
-	6A9+javA==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tFtW8-0000000DSaL-2WRZ;
-	Tue, 26 Nov 2024 11:14:06 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 6821E3002A2; Tue, 26 Nov 2024 12:14:05 +0100 (CET)
-Date: Tue, 26 Nov 2024 12:14:05 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	scott.d.constable@intel.com
-Subject: Re: [PATCH v2 0/2] Rust KCFI support
-Message-ID: <20241126111405.GM38837@noisy.programming.kicks-ass.net>
-References: <20240801-kcfi-v2-0-c93caed3d121@google.com>
- <20241126091934.GP39245@noisy.programming.kicks-ass.net>
- <CAH5fLghmqO8jAuZm5NUOP8Sf1Nzqdk6PXknozSF0oCE00z2pgw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSx3YnZF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55924C4CECF;
+	Tue, 26 Nov 2024 12:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732624756;
+	bh=mYv37OE2DecgbcMq0q2JvxnQqKQgrHopLS4szLMPhro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QSx3YnZFImp3n1I1cPNJF+hEd3oPLAUEogGS/AJ+DUecMoWGBtOvst9AUKC1tyYVp
+	 22sToN2aUViQ9J5UA1HB854ITvkbDXbWtCfpPx4pKGLb5qkGqKrQClsm/8htKh05VE
+	 AxeuVuC4tgM9EmeozEcuuxSO9DfjfbyY29oaeS2lpj25UidXUici9FqSYmTy6bMYSf
+	 ROWrp98amKd15GpfGj+cuTdEcPIF1afn+uzC4YKxhK955jsRqSykYs14/zFGyWt85+
+	 cZXCKRlDNqGpU3KPwoubus0gKREGC9TxoVGJZYqdz60P75fqe3hWvEuG92xOqlTfmm
+	 76IA9Zk8rTGeg==
+Date: Tue, 26 Nov 2024 13:39:08 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
+Message-ID: <Z0XBbLb8NRQg_dek@cassiopeiae>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-16-dakr@kernel.org>
+ <20241022234712.GB1848992-robh@kernel.org>
+ <ZxibWpcswZxz5A07@pollux>
+ <20241023142355.GA623906-robh@kernel.org>
+ <Zx9kR4OhT1pErzEk@pollux>
+ <CAL_JsqLVdoQNSSDCfGcf0wCZE9VQphRhHKANxhpei_UoFzkN9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,23 +57,117 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLghmqO8jAuZm5NUOP8Sf1Nzqdk6PXknozSF0oCE00z2pgw@mail.gmail.com>
+In-Reply-To: <CAL_JsqLVdoQNSSDCfGcf0wCZE9VQphRhHKANxhpei_UoFzkN9g@mail.gmail.com>
 
-On Tue, Nov 26, 2024 at 10:37:13AM +0100, Alice Ryhl wrote:
-> On Tue, Nov 26, 2024 at 10:19 AM Peter Zijlstra <peterz@infradead.org> wrote:
+On Wed, Oct 30, 2024 at 07:23:47AM -0500, Rob Herring wrote:
+> On Mon, Oct 28, 2024 at 5:15 AM Danilo Krummrich <dakr@kernel.org> wrote:
 > >
-> > On Thu, Aug 01, 2024 at 01:35:16PM +0000, Alice Ryhl wrote:
-> > > The control flow integrity (kCFI) sanitizer is an important sanitizer
-> > > that is often used in production. This patch series makes it possible to
-> > > use kCFI and Rust together.
+> > On Wed, Oct 23, 2024 at 09:23:55AM -0500, Rob Herring wrote:
+> > > On Wed, Oct 23, 2024 at 08:44:42AM +0200, Danilo Krummrich wrote:
+> > > > On Tue, Oct 22, 2024 at 06:47:12PM -0500, Rob Herring wrote:
+> > > > > On Tue, Oct 22, 2024 at 11:31:52PM +0200, Danilo Krummrich wrote:
+> > > > > > +///     ]
+> > > > > > +/// );
+> > > > > > +///
+> > > > > > +/// impl platform::Driver for MyDriver {
+> > > > > > +///     type IdInfo = ();
+> > > > > > +///     const ID_TABLE: platform::IdTable<Self::IdInfo> = &OF_TABLE;
+> > > > > > +///
+> > > > > > +///     fn probe(
+> > > > > > +///         _pdev: &mut platform::Device,
+> > > > > > +///         _id_info: Option<&Self::IdInfo>,
+> > > > > > +///     ) -> Result<Pin<KBox<Self>>> {
+> > > > > > +///         Err(ENODEV)
+> > > > > > +///     }
+> > > > > > +/// }
+> > > > > > +///```
+> > > > > > +/// Drivers must implement this trait in order to get a platform driver registered. Please refer to
+> > > > > > +/// the `Adapter` documentation for an example.
+> > > > > > +pub trait Driver {
+> > > > > > +    /// The type holding information about each device id supported by the driver.
+> > > > > > +    ///
+> > > > > > +    /// TODO: Use associated_type_defaults once stabilized:
+> > > > > > +    ///
+> > > > > > +    /// type IdInfo: 'static = ();
+> > > > > > +    type IdInfo: 'static;
+> > > > > > +
+> > > > > > +    /// The table of device ids supported by the driver.
+> > > > > > +    const ID_TABLE: IdTable<Self::IdInfo>;
+> > >
+> > > Another thing. I don't think this is quite right. Well, this part is
+> > > fine, but assigning the DT table to it is not. The underlying C code has
+> > > 2 id tables in struct device_driver (DT and ACPI) and then the bus
+> > > specific one in the struct ${bus}_driver.
 > >
-> > So about this -- there's a proposal for a modification to kCFI here:
+> > The assignment of this table in `Adapter::register` looks like this:
 > >
-> >   https://github.com/llvm/llvm-project/pull/117121
+> > `pdrv.driver.of_match_table = T::ID_TABLE.as_ptr();`
 > >
-> > And Sami notes that this would break this Rust thing. Assuming all the
-> > relevant crabs are present on this thread, could you please comment?
+> > What do you think is wrong with this assignment?
 > 
-> Thanks for sharing this link. I'll leave a comment.
+> Every bus implementation will need the DT and ACPI tables, so they
+> should not be declared and assigned in platform driver code, but in
+> the generic device/driver abstractions just like the underlying C
+> code. The one here should be for platform_device_id. You could put all
+> 3 tables here, but that's going to be a lot of duplication I think.
 
-Thanks!
+That's indeed true. But I'm not sure that at this point we need a generalized
+`Driver` abstraction just for assigning the DT and ACPI tables.
+
+Maybe it's better to do this in a subsequent series?
+
+> 
+> > >
+> > > > > > +
+> > > > > > +    /// Platform driver probe.
+> > > > > > +    ///
+> > > > > > +    /// Called when a new platform device is added or discovered.
+> > > > > > +    /// Implementers should attempt to initialize the device here.
+> > > > > > +    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>>;
+> > > > > > +
+> > > > > > +    /// Find the [`of::DeviceId`] within [`Driver::ID_TABLE`] matching the given [`Device`], if any.
+> > > > > > +    fn of_match_device(pdev: &Device) -> Option<&of::DeviceId> {
+> > > > >
+> > > > > Is this visible to drivers? It shouldn't be.
+> > > >
+> > > > Yeah, I think we should just remove it. Looking at struct of_device_id, it
+> > > > doesn't contain any useful information for a driver. I think when I added this I
+> > > > was a bit in "autopilot" mode from the PCI stuff, where struct pci_device_id is
+> > > > useful to drivers.
+> > >
+> > > TBC, you mean other than *data, right? If so, I agree.
+> >
+> > Yes.
+> >
+> > >
+> > > The DT type and name fields are pretty much legacy, so I don't think the
+> > > rust bindings need to worry about them until someone converts Sparc and
+> > > PowerMac drivers to rust (i.e. never).
+> > >
+> > > I would guess the PCI cases might be questionable, too. Like DT, drivers
+> > > may be accessing the table fields, but that's not best practice. All the
+> > > match fields are stored in pci_dev, so why get them from the match
+> > > table?
+> >
+> > Fair question, I'd like to forward it to Greg. IIRC, he explicitly requested to
+> > make the corresponding struct pci_device_id available in probe() at Kangrejos.
+> 
+> Which table gets passed in though? Is the IdInfo parameter generic and
+> can be platform_device_id, of_device_id or acpi_device_id? Not sure if
+> that's possible in rust or not.
+
+Not sure I can follow you here.
+
+The `IdInfo` parameter is of a type given by the driver for driver specific data
+for a certain ID table entry.
+
+It's analogue to resolving `pci_device_id::driver_data` in C.
+
+> 
+> PCI is the exception, not the rule here, in that it only matches with
+> pci_device_id. At least I think that is the case currently, but it is
+> entirely possible we may want to do ACPI/DT matching like every other
+> bus. There are cases where PCI devices are described in DT.
+> 
+> Rob
+> 
