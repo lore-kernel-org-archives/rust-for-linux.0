@@ -1,112 +1,466 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373262940D;
-	Tue, 26 Nov 2024 03:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEBD19CC3C
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 08:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732593086; cv=none; b=q8XO6fafax5L8LjWWr7D4FUeKpE/bach8Eg9a4/VQqSgBw+7RPX89uyXkqWxdsYPpq6WLSo6nugI0GkHVgoZ6tIw5fbG1fAqNxINnHnBAtlMlJwECZJEbM4jcwzwJ7Adov9A60MiPUFjrOhxnO7kkiXuNCk/ct1Npfmyp/+1aUc=
+	t=1732608357; cv=none; b=PHvkdu06SVXfJ313mktS3885xjSs6BBX02/6oxAgIUV3eKjIB58wRlyNYtO/P+ymsuDlqt2TgOXxrasl5tHnsUkumdzhMBT/tD0OI7TWviVroAbW54VYzByZb/75k0GN5e3JegZrT2e/RBuGoHF5oyy1/2ExwvHeLvI9nzFCLYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732593086; c=relaxed/simple;
-	bh=zMONBQMoYUxKJcmzdRpne6c+qzfU1TZwryMh/qwAkig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=euKcqGIH4TlnUvkIKdWRo9h6UeL19ra+TVObGRS9B5KFW36wn/g20f6IFRG/gJcTm5uPGq5gHsAhOQWBG4IY3NZZXEDUReFD0or2OhT4RlR54gnUDbAFLJ9tor1KBdjdzdTJfGyWn+Hs16KNTcyZX+kSBxPsvVVmtSBRD85VdDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GcbB6cmk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732608357; c=relaxed/simple;
+	bh=+BuN2fML9/ORBK9/jX9FXRH/GiaGtUvxK+aQjAbcdsw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r87SlI7ML6I10FPe9BjMsil1sZAhbGBAfzB2fdTgiSP/mZOmDMXYJPxtMPootRqWG4eNHiK0A+6skZn04yF8HZzPDliMw3MAUjDHq0Tt3hMWjjrXPMJAL2sbL0KsE0qN/3Ku0LjojEpDcT7eu92wxnnnoUq0FnQW5UZSiqqpYrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=JOIrWjQp; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GcbB6cmk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB442C4CECF;
-	Tue, 26 Nov 2024 03:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732593085;
-	bh=zMONBQMoYUxKJcmzdRpne6c+qzfU1TZwryMh/qwAkig=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GcbB6cmkPNgfmPY+L6M4TOdJi1U5I5Mt+1Eh1luEb/wFRjsMhQAJIdwMp43gsQIjk
-	 6tR/K4RyGQEnju0MfVfMPIil1Jqqrc/VUMup/jI/9DwTiyEDtMOYzkAd+BfF3skNLc
-	 j+iZ0HANiYqQ8ADZKa2qX2vS5Lpu/m7AeDCC5JM4die1O2F5zKyBR60xnmHfGkwzna
-	 bh8mNc1tnyNr9wdgselSM5KLOdzQHQdCMDPxFDbvnp5mcfgvvAUEMVcw7eHYhQQ78f
-	 q2K2Y6h7nbnZ6thk36coy/7EKCJCnEXwZuUqxoc63S+ID1SGPHr09wnnuiIYPYbHJn
-	 H8wCzU0eXDb6Q==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-53dded7be84so2804405e87.1;
-        Mon, 25 Nov 2024 19:51:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUJgmHqCG1yHN+37OJ///3NZ0TwllREA8Fwd4dflotA0Jegi/gr8d3s/Y30p/l/qgUsi6GuDYfBOb+C5zSqfg==@vger.kernel.org, AJvYcCVprOPm/J2NtcrNh05SyptVVLWlxMeMxcbgVTXm4/EkxXd557QW0p/bClhkMnwcwOeC05OVt+XPnaSeoXw=@vger.kernel.org, AJvYcCWY86mF58zhikO222FWvTl2KnqePCWua2ycRAjaFjr8yFCzFA/tw6V9dJgUjvu6p8LzsbePS7mRiZXxLsAZylQ=@vger.kernel.org, AJvYcCX/qou4i6R2aBBtibuKnXSX9RKx5gi5F58NLR/lzhqbEoXZ8tDjv0/cTBgwokZJXWM6MNLqVu8NPIxlf0NP@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzGZEEk3dovSHcnO/3sacaXhlNlJJ9HSDa/Y52kMcx2ZJ7JkDD
-	7brqv+s9Xp0TUPpgcFtBrA+2J9jd0FqNvwP/UrpMEzv8nPfdwR0QsXjpSZOweYQxz7DQm3ZKUA7
-	jS6vajWEb9uqskZlBQZ7DY++J/6s=
-X-Google-Smtp-Source: AGHT+IGfZbCGxLVNWV4gijGeosGJ443DngbeOpxPOn45AImk4jYRfXEGZyQcjNG4hqqjcdHxcChMPYKgSDJiicl7DPQ=
-X-Received: by 2002:a05:6512:e83:b0:53d:df26:b782 with SMTP id
- 2adb3069b0e04-53ddf26b7cbmr3805477e87.31.1732593084382; Mon, 25 Nov 2024
- 19:51:24 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="JOIrWjQp"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53dde1bf977so3013778e87.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 00:05:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1732608353; x=1733213153; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mblk/GqEW9iAij/JyHLpkHC+jT95D7axh/UD6TLm/s0=;
+        b=JOIrWjQpnh0RMBu9V15jkQob3ocvkLODB1eZ9GKVWAZjOXKfk/kXLOBzIX65T749D/
+         4FeURKaEz/WqrGtnackeJl3/27gncbm8USojCIkrQSAF8ZIxKqCgJTq0gOF+ISLp52ZK
+         20r8eJU2RgbNS9xfy0c4nF4eLXF2AnxEnJiGU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732608353; x=1733213153;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mblk/GqEW9iAij/JyHLpkHC+jT95D7axh/UD6TLm/s0=;
+        b=m2WD0gvUFjui9U3IGKcLsbUFSP32UX1wqU0eho6VgcLR1Uvqv98ofvc7+bwSxQLMWs
+         ntbhFwCXbFOvNHY6mLIeCYL25boBScWQvp351/MOmqDN1NCljS9QvqufGR8/R/hgXlC/
+         XbfZuRpAQs62gmQuQoNqD3Tcaq3nZ/y+gMRCaG2Is3OwssUBArpVsTeBvStf2THV4PoD
+         rbe+Lll0V2c9Bhxw6g0MBvQSL20pqQIBrDpBFSoBohCLEdMPwbm5xG3nm+KLzGf7bIk0
+         /OiQ0EZu+yhtsDjXhCq+tv2BGqrgwnnRv5SCVdCeE8CmKlgxE+Gr4fG329NgV9gmYtCF
+         nbaA==
+X-Forwarded-Encrypted: i=1; AJvYcCWgGRQUfdbUphqeLv0qb87JOx3BEUeF1MVMtG6yMAxwGs4jED2oC3H5PgvNoWE9+ba29j809iPIKMY9sJq/CA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW6DxxeNzI6GFPofn8Bz8KJbnJLoFwIayAgndTqQgv9HrYneja
+	MZlidxsBDWmyHDWx/N4f+oTzOA0ClWBt8nAFIE5u3yL+JahphbDPNebFx8B5Ecw=
+X-Gm-Gg: ASbGnctK0SVls/PNnIHV4O9xTY4r6AZwz1a2bvJuJF73lk7QhgZEXOiYpgXWHgt9Bz0
+	XZoZLysYsi4bpo+ya/xzABwDwBTWqphtfFHtxI6k0HFa8TlhB1lNfg3bCR9UkifB8dYAXw91K5u
+	C+tz/DBttuIspFqxMG781LTkey2SQi/gwc4LHNosFrvrxLr1UODtB00PCH9FCnFsJjofYBEvfq5
+	6qFLwKSlQk0zymTTpm3T285UL9xlqc3Vb8cwsZDcYRMj1UKFIqhkln9YHdgPA==
+X-Google-Smtp-Source: AGHT+IHfKuXVgieD6LKSHS0HWASo80sRs8h8JkH0BdlC3e9MCus5LGdQtq0+MN0uzu0A4jgwxoFVZw==
+X-Received: by 2002:ac2:4a64:0:b0:53d:d951:bbfc with SMTP id 2adb3069b0e04-53dd951be49mr5488564e87.55.1732608352995;
+        Tue, 26 Nov 2024 00:05:52 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-433b463ab44sm224359735e9.30.2024.11.26.00.05.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2024 00:05:52 -0800 (PST)
+Date: Tue, 26 Nov 2024 09:05:50 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
+Message-ID: <Z0WBXhyyE4ilLlCE@phenom.ffwll.local>
+Mail-Followup-To: Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+References: <20240925205244.873020-1-benno.lossin@proton.me>
+ <20240925205244.873020-2-benno.lossin@proton.me>
+ <ZvU6JQEN_92nPH4k@phenom.ffwll.local>
+ <254496ac-bc5f-4622-99c4-9e2ada27e069@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241121204220.2378181-20-samitolvanen@google.com>
- <20241121204220.2378181-21-samitolvanen@google.com> <Z0UIdmDHYQtUTR1i@bombadil.infradead.org>
-In-Reply-To: <Z0UIdmDHYQtUTR1i@bombadil.infradead.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 26 Nov 2024 12:50:48 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATK9rSm4AUSneq=aYbADatPL=1eUXuYRChX+WU+zNTyKw@mail.gmail.com>
-Message-ID: <CAK7LNATK9rSm4AUSneq=aYbADatPL=1eUXuYRChX+WU+zNTyKw@mail.gmail.com>
-Subject: Re: [PATCH v6 01/18] tools: Add gendwarfksyms
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
-	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <254496ac-bc5f-4622-99c4-9e2ada27e069@proton.me>
+X-Operating-System: Linux phenom 6.11.6-amd64 
 
-On Tue, Nov 26, 2024 at 8:30=E2=80=AFAM Luis Chamberlain <mcgrof@kernel.org=
-> wrote:
->
-> On Thu, Nov 21, 2024 at 08:42:22PM +0000, Sami Tolvanen wrote:
-> > Add a basic DWARF parser, which uses libdw to traverse the debugging
-> > information in an object file and looks for functions and variables.
-> > In follow-up patches, this will be expanded to produce symbol versions
-> > for CONFIG_MODVERSIONS from DWARF.
-> >
-> > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> > Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-> > ---
-> >  kernel/module/Kconfig                 |   8 ++
-> >  scripts/Makefile                      |   1 +
-> >  scripts/gendwarfksyms/.gitignore      |   2 +
->
-> This doesn't add scripts/gendwarfksyms to MAINTAINERS
-> but then again   scripts/genksyms/ is not there either
-> but it does got to Masahiro.
+Sorry for the super late reply, was absorbed too much with life stuff :-/
 
-scripts/genksyms/ is a very old tool with no maintainer.
+On Mon, Sep 30, 2024 at 02:04:06PM +0000, Benno Lossin wrote:
+> On 26.09.24 12:40, Simona Vetter wrote:
+> > On Wed, Sep 25, 2024 at 08:53:05PM +0000, Benno Lossin wrote:
+> >> +    /// Sets the underlying untrusted value.
+> >> +    ///
+> >> +    /// # Examples
+> >> +    ///
+> >> +    /// ```
+> >> +    /// use kernel::validate::Untrusted;
+> >> +    ///
+> >> +    /// let mut untrusted = Untrusted::new(42);
+> >> +    /// untrusted.write(24);
+> >> +    /// ```
+> >> +    pub fn write(&mut self, value: impl Init<T>) {
+> >> +        let ptr: *mut T = &mut self.0 .0;
+> >> +        // SAFETY: `ptr` came from a mutable reference and the value is overwritten before it is
+> >> +        // read.
+> >> +        unsafe { ptr::drop_in_place(ptr) };
+> >> +        // SAFETY: `ptr` came from a mutable reference and the initializer cannot error.
+> >> +        match unsafe { value.__init(ptr) } {
+> >> +            Ok(()) => {}
+> >> +        }
+> >> +    }
+> > 
+> > So I think this doesn't work for a few reasons:
+> > 
+> > - there's a lot of unsafe both here and when using this (even without
+> >   MaybeUninit), at least if I understand things correctly. And forcing
+> >   unsafe for something that inheritedly does not break any of the rust
+> >   memory safety rules feels silly.
+> > 
+> > - it also looks awkward, because you have the special versions
+> >   write_uninit and write_uninit_slice, and imo if our write isn't good
+> >   enought to just work with abritrary box/container types, it's not good.
+> > 
+> > - it doesn't actually work for one of the main uaccess.rs use-cases beyond
+> >   just enabling the current interface. Example in pseudo-rust:
+> > 
+> >   struct IoctlParams {
+> >       input: u32,
+> >       ouptut: u32,
+> >   }
+> > 
+> >   The thing is that ioctl that use the struct approach like drm does, use
+> >   the same struct if there's both input and output paramterers, and
+> >   furthermore we are not allowed to overwrite the entire struct because
+> >   that breaks ioctl restarting. So the flow is roughly
+> > 
+> >   let userptr : UserSlice;
+> >   let params : Untrusted<IoctlParams>;
+> > 
+> >   userptr.read(params));
+> > 
+> >   // validate params, do something interesting with it params.input
+> > 
+> >   // this is _not_ allowed to overwrite params.input but must leave it
+> >   // unchanged
+> > 
+> >   params.write(|x| { x.output = 42; });
+> > 
+> >   userptr.write(params);
+> > 
+> >   Your current write doesn't allow this case, and I think that's not good
+> >   enough.
+> 
+> I see. One thing that makes this API work better is field projections
+> (it's a rust language feature for which we do have a PoC macro
+> implementation and which I am working on getting into the language):
+> To only overwrite a part of a struct you would do
+> 
+>     params->output.write(42);
+> 
+> The `->` syntax "projects" the `output` field, turning
+> `Untrusted<IoctlParams>` into `Untrusted<u32>`.
+> 
+> I think that this would solve your problem with the API. (we probably
+> need a stop gap solution though until field projections are part of the
+> language).
+> 
+> >   The one I propsed in private does:
+> > 
+> >   Untrusted<T>::write(&mut self, Fn(&mut T)->())
+> > 
+> >   It's not perfect because it allows you to do other stuff than writing,
+> >   but it's still pretty good by limiting any potentially dangerous code to
+> >   the provided closure. And with these of protection apis we need to
+> >   strike the right balance between as much protection as possible while
+> >   still allowing users to get the job done.
+> 
+> Ideally I would like to avoid exposing the value.
+> 
+> >   Now I guess you can do this with your write too using a copy constructor
+> >   approach, but that will result in less efficient code and it's probably
+> >   also too much functional programming design for kernel developers to
+> >   cope with.
+> 
+> Agreed.
+> 
+> >> +
+> >> +    /// Turns a slice of untrusted values into an untrusted slice of values.
+> >> +    pub fn transpose_slice(slice: &[Untrusted<T>]) -> &Untrusted<[T]>
+> >> +    where
+> >> +        T: Sized,
+> >> +    {
+> >> +        let ptr = slice.as_ptr().cast::<T>();
+> >> +        // SAFETY: `ptr` and `len` come from the same slice reference.
+> >> +        let slice = unsafe { slice::from_raw_parts(ptr, slice.len()) };
+> >> +        Untrusted::new_ref(slice)
+> >> +    }
+> >> +
+> >> +    /// Turns a slice of uninitialized, untrusted values into an untrusted slice of uninitialized
+> >> +    /// values.
+> >> +    pub fn transpose_slice_uninit(
+> >> +        slice: &[MaybeUninit<Untrusted<T>>],
+> >> +    ) -> &Untrusted<[MaybeUninit<T>]>
+> > 
+> > So these and some of the related functions to handle slice of box vs box
+> > of slice feel a bit awkward. I think we can do better if we rename
+> > Untrusted and Unvalidated to UntrustedBox and UnvalidatedBox, and then
+> > make Untrusted and Unvalidated traits, with implementations for
+> > UntrustedBox<T>, [Untrusted<T>], and all the others we want.
+> 
+> Hmm that might work for `Untrusted`, I will see how that looks. For
+> `Unvalidated` I am less confident.
+> 
+> > I expect that in the future we'll get more boxes with special semantics
+> > that we want to use together with Untrusted, not just [] and MaybeUninit.
+> > One example would be when the Untrusted data is shared with userspace
+> > (mmap()ed into both kernel and userspace for example for a ringbuffer), in
+> > which case the data is both Untrusted but also SharedUnsafe or whatever
+> > we'll call memory that's fundamentally breaking the rust memory model
+> > because there's no exclusive access (userspace can always do whatever it
+> > feels like), and all access has to go through at least
+> > READ_ONCE/WRITE_ONCE from the C side, or often even full blown atomics.
+> 
+> I don't think that we need to wrap that in `Untrusted`, instead the type
+> representing shared data between kernel and userspace should return
+> `Untrusted<u8>` instead of `u8`.
+> 
+> > And that memory is not MaybeUninit, because we have to initialize it
+> > before userspace can mmap it, for otherwise it's an information leak and
+> > hence security issue.
+> > 
+> > tldr; I think going with traits for Untrusted and Unvalidated here will be
+> > worth it, even if a bit more pain at first. Plus cleaner interfaces.
+> > 
+> >> +    where
+> >> +        T: Sized,
+> >> +    {
+> >> +        let ptr = slice.as_ptr().cast::<MaybeUninit<T>>();
+> >> +        // SAFETY: `ptr` and `len` come from the same mutable slice reference.
+> >> +        let slice = unsafe { slice::from_raw_parts(ptr, slice.len()) };
+> >> +        Untrusted::new_ref(slice)
+> >> +    }
+> 
+> [...]
+> 
+> >> +/// Validates untrusted data.
+> >> +///
+> >> +/// # Examples
+> >> +///
+> >> +/// The simplest way to validate data is to just implement `Validate<&Unvalidated<[u8]>>` for the
+> >> +/// type that you wish to validate:
+> >> +///
+> >> +/// ```
+> >> +/// use kernel::{
+> >> +///     error::{code::EINVAL, Error},
+> >> +///     str::{CStr, CString},
+> >> +///     validate::{Unvalidated, Validate},
+> >> +/// };
+> >> +///
+> >> +/// struct Data {
+> >> +///     flags: u8,
+> >> +///     name: CString,
+> >> +/// }
+> >> +///
+> >> +/// impl Validate<&Unvalidated<[u8]>> for Data {
+> >> +///     type Err = Error;
+> >> +///
+> >> +///     fn validate(unvalidated: &Unvalidated<[u8]>) -> Result<Self, Self::Err> {
+> >> +///         let raw = unvalidated.raw();
+> >> +///         let (&flags, name) = raw.split_first().ok_or(EINVAL)?;
+> >> +///         let name = CStr::from_bytes_with_nul(name)?.to_cstring()?;
+> >> +///         Ok(Data { flags, name })
+> >> +///     }
+> >> +/// }
+> >> +/// ```
+> >> +///
+> >> +/// This approach copies the data and requires allocation. If you want to avoid the allocation and
+> >> +/// copying the data, you can borrow from the input like this:
+> >> +///
+> >> +/// ```
+> >> +/// use kernel::{
+> >> +///     error::{code::EINVAL, Error},
+> >> +///     str::CStr,
+> >> +///     validate::{Unvalidated, Validate},
+> >> +/// };
+> >> +///
+> >> +/// struct Data<'a> {
+> >> +///     flags: u8,
+> >> +///     name: &'a CStr,
+> >> +/// }
+> >> +///
+> >> +/// impl<'a> Validate<&'a Unvalidated<[u8]>> for Data<'a> {
+> >> +///     type Err = Error;
+> >> +///
+> >> +///     fn validate(unvalidated: &'a Unvalidated<[u8]>) -> Result<Self, Self::Err> {
+> >> +///         let raw = unvalidated.raw();
+> >> +///         let (&flags, name) = raw.split_first().ok_or(EINVAL)?;
+> >> +///         let name = CStr::from_bytes_with_nul(name)?;
+> >> +///         Ok(Data { flags, name })
+> >> +///     }
+> >> +/// }
+> >> +/// ```
+> >> +///
+> >> +/// If you need to in-place validate your data, you currently need to resort to `unsafe`:
+> >> +///
+> >> +/// ```
+> >> +/// use kernel::{
+> >> +///     error::{code::EINVAL, Error},
+> >> +///     str::CStr,
+> >> +///     validate::{Unvalidated, Validate},
+> >> +/// };
+> >> +/// use core::mem;
+> >> +///
+> >> +/// // Important: use `repr(C)`, this ensures a linear layout of this type.
+> >> +/// #[repr(C)]
+> >> +/// struct Data {
+> >> +///     version: u8,
+> >> +///     flags: u8,
+> >> +///     _reserved: [u8; 2],
+> >> +///     count: u64,
+> >> +///     // lots of other fields...
+> >> +/// }
+> >> +///
+> >> +/// impl Validate<&Unvalidated<[u8]>> for &Data {
+> >> +///     type Err = Error;
+> >> +///
+> >> +///     fn validate(unvalidated: &Unvalidated<[u8]>) -> Result<Self, Self::Err> {
+> >> +///         let raw = unvalidated.raw();
+> >> +///         if raw.len() < mem::size_of::<Data>() {
+> >> +///             return Err(EINVAL);
+> >> +///         }
+> >> +///         // can only handle version 0
+> >> +///         if raw[0] != 0 {
+> >> +///             return Err(EINVAL);
+> >> +///         }
+> >> +///         // version 0 only uses the lower 4 bits of flags
+> >> +///         if raw[1] & 0xf0 != 0 {
+> >> +///             return Err(EINVAL);
+> >> +///         }
+> >> +///         let ptr = raw.as_ptr();
+> >> +///         // CAST: `Data` only contains integers and has `repr(C)`.
+> >> +///         let ptr = ptr.cast::<Data>();
+> >> +///         // SAFETY: `ptr` came from a reference and the cast above is valid.
+> >> +///         Ok(unsafe { &*ptr })
+> >> +///     }
+> >> +/// }
+> >> +/// ```
+> >> +///
+> >> +/// To be able to modify the parsed data, while still supporting zero-copy, you can implement
+> >> +/// `Validate<&mut Unvalidated<[u8]>>`:
+> >> +///
+> >> +/// ```
+> >> +/// use kernel::{
+> >> +///     error::{code::EINVAL, Error},
+> >> +///     str::CStr,
+> >> +///     validate::{Unvalidated, Validate},
+> >> +/// };
+> >> +/// use core::mem;
+> >> +///
+> >> +/// // Important: use `repr(C)`, this ensures a linear layout of this type.
+> >> +/// #[repr(C)]
+> >> +/// struct Data {
+> >> +///     version: u8,
+> >> +///     flags: u8,
+> >> +///     _reserved: [u8; 2],
+> >> +///     count: u64,
+> >> +///     // lots of other fields...
+> >> +/// }
+> >> +///
+> >> +/// impl Validate<&mut Unvalidated<[u8]>> for &Data {
+> >> +///     type Err = Error;
+> > 
+> > I think we should make that one the default, but not sure that's doable
+> > with associated types instead of generics.
+> 
+> There is the `associated_type_defaults` unstable feature: 
+> https://github.com/rust-lang/rust/issues/29661
+> 
+> But I actually think that we should get away from making the `Error`
+> type the return error of Rust functions. It's much better to have
+> function-specific errors, since they can be more descriptive. In cases
+> where we have to return to userspace or C, sure use the existing
+> `Error`.
 
-It defaults to the maintainer of the scripts/ directory (i.e. me)
+Do you mean a area-specific Error code that only returns the values that
+are actually possible? I fear a bit that that could be a maintenance pain,
+when the C side suddenly returns a new errno value. Or do you mean
+something else.
 
+> > The input parameter should definitely default to the output paramter,
+> > because often they're just exactly the same e.g. when validating ioctl
+> > input structures.
+> 
+> I don't understand what you mean by this? The input parameter has to be
+> some sort of `..Untrusted..` and the output shouldn't have that.
 
+Yeah it needs to be wrapped, but I was wondering whether there's a way to
+make Untrusted<T> default to T as the output. If I remember all my
+thoughts correctly, it's been a month.
 
->
-> Masahiro, should we just add both to KERNEL BUILD and add
-> Sami as a Reviewer to help with gendwarfksyms?
+> > On this version you've also left out the in-place validation (originally
+> > validate_bytes), but we can add that later on when a need arises I guess.
+> > Or do you think it's just not a good idea in general?
+> 
+> This version supports in-place validation, this example and the one
+> above showcase how you would implement `Validate` in that case.
+> 
+> You can then call `.vaildate()` on an `&[mut ]Unvalidated<[u8]>` and you
+> get a `&Data` that borrows from the unvalidated data without copying the
+> data.
 
-I think it is better to have a separate entry for
+Ah I missed that, thanks for explaining.
 
-F:  scripts/gendwarfksyms/
+Cheers, Sima
 
-with Sami as the maintainer.
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> >> +///
+> >> +///     fn validate(unvalidated: &mut Unvalidated<[u8]>) -> Result<Self, Self::Err> {
+> >> +///         let raw = unvalidated.raw_mut();
+> >> +///         if raw.len() < mem::size_of::<Data>() {
+> >> +///             return Err(EINVAL);
+> >> +///         }
+> >> +///         match raw[0] {
+> >> +///             0 => {},
+> >> +///             1 => {
+> >> +///                 // version 1 implicitly sets the first bit.
+> >> +///                 raw[1] |= 1;
+> >> +///             },
+> >> +///             // can only handle version 0 and 1
+> >> +///             _ => return Err(EINVAL),
+> >> +///         }
+> >> +///         // version 0 and 1 only use the lower 4 bits of flags
+> >> +///         if raw[1] & 0xf0 != 0 {
+> >> +///             return Err(EINVAL);
+> >> +///         }
+> >> +///         if raw[1] == 0 {}
+> >> +///         let ptr = raw.as_ptr();
+> >> +///         // CAST: `Data` only contains integers and has `repr(C)`.
+> >> +///         let ptr = ptr.cast::<Data>();
+> >> +///         // SAFETY: `ptr` came from a reference and the cast above is valid.
+> >> +///         Ok(unsafe { &*ptr })
+> >> +///     }
+> >> +/// }
+> >> +/// ```
+> >> +pub trait Validate<I: ValidateInput>: Sized {
+> >> +    /// Validation error.
+> >> +    type Err;
+> >> +
+> >> +    /// Validate the given untrusted data and parse it into the output type.
+> >> +    fn validate(unvalidated: I) -> Result<Self, Self::Err>;
+> >> +}
+> 
 
-
-
-
->
->   Luis
-
-
-
-
---
-Best Regards
-Masahiro Yamada
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
