@@ -1,266 +1,204 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CB71DDC03
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 18:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E2C16F0E8;
+	Tue, 26 Nov 2024 19:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732647467; cv=none; b=clqCV0tQcePJZnHCOXy3U1kImknu0B3iASmzaxFSemytc8tFRYTIr6uzubje4ZnjzZ1Z0R1cVkWBj6xsp7fa4fGiXXFeQUV+dj9wQNlEO47CjLFV1HcyVSxsT1ssShWDrLuR/qd1dPbGWxUZCS4f8+F/XnH60n14pU2iOWJxCyk=
+	t=1732647644; cv=none; b=tZkXlgP8KlcmOk1nUUg2CYWvzyPw4H+U1JErebilFjcrnYdepVQAO2MnGLl22uYDbUp7KSBsTsi1jztNrKAnVMxBgVLB0QQiZPyqYDNQnHj7JNoM7J/cY5xlwmmaVFEJqznIaxsp2KJOya2UX2sL/waeLz0bvPXRdyzYxaQBJpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732647467; c=relaxed/simple;
-	bh=FQdexGUZlaE4KFC2ddg2t0lNwQkVn1TXZdOgt3YQ8z0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FnAOeYYPb9QSoX06ILLpNvMxmb6f49XG464cK6RSUJb93YxrWRB/0DTkCbzvhs9DFXRIts/hM3BCgGKDY+whgsW5NTD6Cj/0bVD9xlkiSuY1xEj82aH0PMb8Kl3pKmzVlaOIRHfxpYmf4p+GJwnyWlUnCNe5Xwok4ICvvFqQAtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=eWFkV+Fj; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1732647644; c=relaxed/simple;
+	bh=ShGtLWnLNTO8dfsK/CLQkx1/jwvnZA4xXxzrEz2kuc8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RGKTTPR4ut2zf4ng/3oVT8ZcDaVFsx8z6NibXicnDYQQIsGrbjkxJ1jRVk2F0HRnJjcv08jjsfTOcVoWqKisfxawvZOJ7Roz5Pyyhg1gK34l6JHvB022qI0KXQZJZIm8wEgnOEVWtD3AdvkFb74rUWbBfBt13DqUu9n3Ftsw2Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eHwP+1gW; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="eWFkV+Fj"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4349fd77b33so20715095e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 10:57:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eHwP+1gW"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2edbe217f00so467263a91.3;
+        Tue, 26 Nov 2024 11:00:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732647463; x=1733252263; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lH+EuN7XG/opD7jydmM6mpYlIbILE0ML+h/J6BW4iZQ=;
-        b=eWFkV+FjJX6XeZ0HBcMg3E9cGdSQwFY+IjsxjkcBg9DjN7AeounDmCV/j0XZ2fUthw
-         H8IXKVeoDK44Pn1KGrtXIa+lenvnJxXRYHc0C+vj24WgGuH3gyxeZBi/15VvVz2uYp5w
-         JNW2ye/srmkJfz5GiBrrbb1ssMMzK+AR/qu3jzauWuHlFPTOKwJCPFbEj+yHLdkgPOyL
-         QdMOdMAIJHgG/jUlDII76Ay8C2s3KAk967v/HnftdYnbFpsLBkHoMqvvBQlyo+p2RiFA
-         9C8eax4SxQ00KZrUKve7ujuxgNrtG0tZCMamBEkrouJLemfEVZtPAX8pfhfAxzM0ggXU
-         a8XQ==
+        d=gmail.com; s=20230601; t=1732647642; x=1733252442; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/1zcxZNwaduhu/+AJ3yyj47HY6AKBwCWFNYHlvADAGQ=;
+        b=eHwP+1gWsiqEozUv/6dIZiD1UUH1OZZaq17fDeJabxa0+trJrvRXZ94UL8nTc6lqER
+         i1ivhnUUFAm+VDlOzIKCSolC7vgQEWJNt7Occ2wxuwEY25iow8IiQwTj+1v0hzPGUiyw
+         qDzAp5QJXLFfVjzaT0MIDg/gkLa76sL/UobmMmemJtDmLEn0JUGqWp0iNUIQQM6DDDyh
+         /Js6WTaFYARkQZ8t9zbYztd7hBBNgyoBM0na+eOrhNsTvXv7tOQF2XLkED2gw4NlYjNn
+         gSBTqo3QpAej9OXZKPO2CDOpK+lXfZ2z0HfAgKVYjazsRy2w1jZBk1JmoAW7urKivn3b
+         KDsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732647463; x=1733252263;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lH+EuN7XG/opD7jydmM6mpYlIbILE0ML+h/J6BW4iZQ=;
-        b=juiXJc1+Db8zBGfBOAgHPJncq1HrlZEuFeatxxw0PRFd2gs9df2fkLhDhCeDlH8rQa
-         HkwpH2iBKz9AziC40n50OmgMO+0YmYN/HhKvYcRKwPUYBUmicXVycO7EVmsfGHhtL5oH
-         LYFXAsXfndEspOx7t66qPD5QAcg5ZXFZAlRfvKW6ObNTwsjfODuW1lykC4lmFLOn7hcC
-         pu8B62ez5mtoxmB13KSZMrqOq3V0p6oLZVXBF+uYVgmR6PCQ5GBNVibWegWJVZ1ZmCiL
-         wS0aY3cje1w9i544sTxl175S8/3NO1hCuk0Bqd874+eemgscK+XGKEFhEFevd9pXP3wn
-         PAOw==
-X-Gm-Message-State: AOJu0YxuioXU+xbpfGqYiNcskE2UkwfHrXYZsCXeMa1NfveHtLS7Igdm
-	9oFD+/28IzQF5eL2GZ1ExGq2hMfnXFlewqlgcKnpnYo27mzYjNyKbwDfUWXPsHk=
-X-Gm-Gg: ASbGncvfaHRWK7ODABF+LQDgGMmqH5njGAtz+b/35knWbimP41/mjkFEgQjuGwLyn86
-	pq2Z8nIpo951hPStFmvwaO2cUSZ0NTWPHlJZmjNmx32C2YhYnSGgiqlEqijfVmzYjY/MGMkrQyC
-	SuVLtFxK4Ztt0VhWERVxXmnDqZsDvd6pOLoTmzySHjqooor5lrGrhwbgB3qZDn+6dUlnCChzGji
-	nw02bMT1nmKJxTkuMBHIHcgh2j7/dULh9rONTXG+DYJe30D8Bk=
-X-Google-Smtp-Source: AGHT+IGqhYhQxwauHfnqcW1RwJZkdzHaoXh+dpbEcywdiTUJgvy/B3VA3nxqbz3Ou/oyHhKC09ewsQ==
-X-Received: by 2002:a5d:6484:0:b0:382:455b:eec6 with SMTP id ffacd0b85a97d-385c6ec0cebmr32663f8f.35.1732647463113;
-        Tue, 26 Nov 2024 10:57:43 -0800 (PST)
-Received: from [192.168.88.249] ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fd04ef5sm13970343f8f.111.2024.11.26.10.57.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Nov 2024 10:57:42 -0800 (PST)
-Message-ID: <230b3602-5d68-4e79-969d-0d2df1fdf033@sedlak.dev>
-Date: Tue, 26 Nov 2024 19:57:40 +0100
+        d=1e100.net; s=20230601; t=1732647642; x=1733252442;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/1zcxZNwaduhu/+AJ3yyj47HY6AKBwCWFNYHlvADAGQ=;
+        b=huc+FVRaOBxQH/BIgRoLEi+3ZPsRDXBIyIf6CBWWJnObwNn45tLFI+aokCV7NETIC8
+         7Wms4MqYCqy5HQ2F/mdQ6IQGA42bgFQgGYF5XLmhvYtGlq5IKNnIwzVP+7ylKMaQsvLC
+         8opu3RAgLNY55RxlFOBgVDKnIJlwAehg/u0qsbwNP4XhRShD7CgTTtq07Hoe6JuigmX+
+         ATI1Zg/VSMSMr2JIgjCnKl6hyjz1bef7Db9axmmIXvFaO2bO5NQADT4dt7iC6FeD6FfY
+         t1cxRFWt+5BA7iN7b5ltR//ua4Mr9MHeJdRMhO7oiMLcN5hB+IRN5ni+GKU9ICoDVWwu
+         Dx1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVHl28/uWrKU6InJzaP1+OWtNX+fL59F1mKcizNuc3kwJxTW8Y64jFzHA3lTkcP1IAgzm0BWYckEN47qFw=@vger.kernel.org, AJvYcCWZmudipcUEx7VEg2oInmRjUj8Nki/zXJZF2yG4acd40awdrBEK9nMpfes/Vlu9+CGvEfALdmxjtO90oAf7vRM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0Nh+yEgwGtSIVeofq9tLTrlX+O0vwRt1k/rQJbxIJvG+PF+Pi
+	ltn8pq2tZSrb3CTMRKrFBoxRuwjzowDsb67eH4P3aPuwOrTgjpF6vAiCKB3yhYo9VSRE/jpZuUF
+	qdCaNMd6WwxRAYbFqCAuo4eUkZyM=
+X-Gm-Gg: ASbGncvg/TqaqbJJL2VBnX/aIOKYfp0twF6roYWYi6/QExLTXcNjyfc+8kBys9Jc0bg
+	JqEbnavbfwlZvfFbNJAYR00KuX7Y1xGk=
+X-Google-Smtp-Source: AGHT+IH8awhBTUFrN4H3TSWDsh28vbzQETnv5D5N9/KNNhHuxQbom05tM/U4o2rBOxGRjYunVVBn9w7CS0gpl9cN6KM=
+X-Received: by 2002:a17:90b:4a06:b0:2eb:12ee:cf0b with SMTP id
+ 98e67ed59e1d1-2ee08e9fab7mr188876a91.1.1732647642238; Tue, 26 Nov 2024
+ 11:00:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] rust: Add `OnceLite` for executing code once
-To: jens.korinth@tuta.io, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Dirk Behme <dirk.behme@gmail.com>, linux-kernel@vger.kernel.org
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
- <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
+References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io> <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io>
 In-Reply-To: <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 Nov 2024 20:00:29 +0100
+Message-ID: <CANiq72kpohLie_23sMQm6h-Cq6wiqqvFfwSsAdi4x760kCisoA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] rust: Add `OnceLite` for executing code once
+To: jens.korinth@tuta.io
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/26/24 5:40 PM, Jens Korinth via B4 Relay wrote:
-> From: Jens Korinth <jens.korinth@tuta.io>
-> 
+On Tue, Nov 26, 2024 at 5:41=E2=80=AFPM Jens Korinth via B4 Relay
+<devnull+jens.korinth.tuta.io@kernel.org> wrote:
+>
 > Similar to `Once` in Rust's standard library, but with the same
 > non-blocking behavior as the kernel's `DO_ONCE_LITE` macro. Abstraction
 > allows easy replacement of the underlying sync mechanisms, see
-> 
-> https://lore.kernel.org/rust-for-linux/20241109-pr_once_macros-v3-0-6beb24e0cac8@tuta.io/.
-> 
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
-> ---
->   rust/kernel/lib.rs       |   1 +
->   rust/kernel/once_lite.rs | 127 +++++++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 128 insertions(+)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index bf8d7f841f9425d19a24f3910929839cfe705c7f..2b0a80435d24f5e168679ec2e25bd68cd970dcdd 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -44,6 +44,7 @@
->   pub mod list;
->   #[cfg(CONFIG_NET)]
->   pub mod net;
-> +pub mod once_lite;
->   pub mod page;
->   pub mod prelude;
->   pub mod print;
-> diff --git a/rust/kernel/once_lite.rs b/rust/kernel/once_lite.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..723c3244fc856fe974ddd33de5415e7ced37f315
-> --- /dev/null
-> +++ b/rust/kernel/once_lite.rs
-> @@ -0,0 +1,127 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! A one-time only global execution primitive.
-> +//!
+>
+> https://lore.kernel.org/rust-for-linux/20241109-pr_once_macros-v3-0-6beb2=
+4e0cac8@tuta.io/.
+
+Nit: you could use a Link tag for this, e.g.
+
+Link: https://lore.kernel.org/rust-for-linux/20241109-pr_once_macros-v3-0-6=
+beb24e0cac8@tuta.io/
+[1]
+
+And then you can refer to it using [1], like "see [1].".
+
 > +//! This primitive is meant to be used to execute code only once. It is
 > +//! similar in design to Rust's
-> +//! [`std::sync:Once`](https://doc.rust-lang.org/std/sync/struct.Once.html),
+> +//! [`std::sync:Once`](https://doc.rust-lang.org/std/sync/struct.Once.ht=
+ml),
+
+In one case you used a shortcut reference link for this -- perhaps you
+could do that here and below.
+
 > +//! but borrowing the non-blocking mechanism used in the kernel's
 > +//! [`DO_ONCE_LITE`] macro.
-> +//!
+
+I would suggest mentioning C here, e.g. C macro, to reduce ambiguity
+(it is true we have just used "kernel's" in some cases).
+
 > +//! An example use case would be to print a message only the first time.
-> +//!
-> +//! [`DO_ONCE_LITE`]: srctree/include/linux/once_lite.h
-> +//!
-> +//! C header: [`include/linux/once_lite.h`](srctree/include/linux/once_lite.h)
-> +//!
-> +//! Reference: <https://doc.rust-lang.org/std/sync/struct.Once.html>
-> +
-> +use core::sync::atomic::{AtomicBool, Ordering::Relaxed};
-> +
+
+Ideally we would mention one or two concrete use cases here, e.g. you
+could grep to see a couple common C use cases.
+
+Also, since we are going to have the `pr_..._once` macros, it may not
+be the best example use case, since the developer would use those
+instead, right?
+
+The docs look well-formatted etc., so thanks for taking the time writing th=
+em :)
+
 > +/// A low-level synchronization primitive for one-time global execution.
-> +///
-> +/// Based on the
-> +/// [`std::sync:Once`](https://doc.rust-lang.org/std/sync/struct.Once.html)
-> +/// interface, but internally equivalent the kernel's [`DO_ONCE_LITE`]
+
+I wonder if we should move part of the docs from the module level here
+to avoid duplication.
+
 > +/// macro. The Rust macro `do_once_lite` replacing it uses `OnceLite`
-> +/// internally.
-> +///
-> +/// [`DO_ONCE_LITE`]: srctree/include/linux/once_lite.h
-> +///
-> +/// # Examples
-> +///
+
+Please link these with intra-doc links.
+
 > +/// ```rust
-The `rust` part should be default value for rustdoc tests, can we please 
-omit that?
-> +/// static START: kernel::once_lite::OnceLite =
+
+You can remove `rust` from this one, like in the others.
+
+> +/// static START: kernel::once_lite::OnceLite =3D
 > +///     kernel::once_lite::OnceLite::new();
-> +///
-> +/// let mut x: i32 = 0;
-> +///
-> +/// START.call_once(|| {
+
+I would have a hidden `use` line to simplify the example -- since we
+are reading the example about this item, it is OK to shorten it here,
+e.g.
+
+    static START: OnceLite =3D OnceLite::new();
+
 > +///   // run initialization here
-> +///   x = 42;
-> +/// });
+
+Please use the usual comment style: "Run initialization here.".
+
 > +/// while !START.is_completed() { /* busy wait */ }
-> +/// assert_eq!(x, 42);
-> +/// ```
-> +///
-> +pub struct OnceLite(AtomicBool, AtomicBool);
-Have you considered it to be implemented like `AtomicU32`? I think™ that 
-one atomic variable is more than enough.
-> +
-> +impl OnceLite {
+
+Hmm... without threads this looks a bit strange.
+
 > +    /// Creates a new `OnceLite` value.
-> +    #[inline(always)]
-> +    pub const fn new() -> Self {
-> +        Self(AtomicBool::new(false), AtomicBool::new(false))
-> +    }
-> +
-> +    /// Performs an initialization routine once and only once. The given
-> +    /// closure will be executed if this is the first time `call_once` has
-> +    /// been called, and otherwise the routine will not be invoked.
-> +    ///
+
+Please use intra-doc links wherever possible.
+
 > +    /// This method will _not_ block the calling thread if another
-> +    /// initialization is currently running. It is _not_ guaranteed that the
-> +    /// initialization routine will have completed by the time the calling
-> +    /// thread continues execution.
-> +    ///
-> +    /// Note that this is different from the guarantees made by
-> +    /// [`std::sync::Once`], but identical to the way the implementation of
-> +    /// the kernel's [`DO_ONCE_LITE_IF`] macro is behaving at the time of
+
+Should we save "does _not_ ... regardless ..."? i.e. it never blocks.
+
+> +    /// [`std::sync::Once`], but identical to the way the implementation=
+ of
+> +    /// the kernel's [`DO_ONCE_LITE_IF`] macro is behaving at the time o=
+f
 > +    /// writing.
-> +    ///
-> +    /// [`std::sync::Once`]: https://doc.rust-lang.org/std/sync/struct.Once.html
-> +    /// [`DO_ONCE_LITE_IF`]: srctree/include/once_lite.h
-> +    #[inline(always)]
-> +    pub fn call_once<F: FnOnce()>(&self, f: F) {
-> +        if !self.0.load(Relaxed) && !self.0.swap(true, Relaxed) {
-> +            f()
-> +        };
-> +        self.1.store(true, Relaxed);
-I think the memory ordering is wrong here. Since it is `Relaxed`, the 
-`self.1` and `self.0` can get reordered during execution. So `self.0` 
-can be false, even though `self.1` will be true. Not on x86, but on 
-architectures with weaker memory models it can happen.
 
-Even the implementation in the Rust std, uses at least 
-`Acquire`/`Release`, where the reordering shouldn't be possible see [1].
+"at the time of writing" is implicit, so we don't need to say it.
 
-[1]: 
-https://github.com/rust-lang/rust/blob/master/library/std/src/sys/sync/once/futex.rs
-> +    }
-> +
-> +    /// Returns `true` if some `call_once` call has completed successfully.
-> +    /// Specifically, `is_completed` will return `false` in the following
-> +    /// situations:
-> +    ///
-> +    /// 1. `call_once()` was not called at all,
-> +    /// 2. `call_once()` was called, but has not yet completed.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```rust
-Also here the `rust` part should be the default value.
-> +    /// static INIT: kernel::once_lite::OnceLite =
-> +    ///     kernel::once_lite::OnceLite::new();
-> +    ///
-> +    /// assert_eq!(INIT.is_completed(), false);
-> +    /// INIT.call_once(|| {
-> +    ///     assert_eq!(INIT.is_completed(), false);
-> +    /// });
-> +    /// assert_eq!(INIT.is_completed(), true);
-> +    /// ```
-> +    #[inline(always)]
-> +    pub fn is_completed(&self) -> bool {
-> +        self.1.load(Relaxed)
-> +    }
-> +}
-> +
+(Of course, it would be nice to have someone making sure we don't get
+out of sync!
+
 > +/// Executes code only once.
-> +///
-> +/// Equivalent to the kernel's [`DO_ONCE_LITE`] macro: Expression is
-> +/// evaluated at most once by the first thread, other threads will not be
-> +/// blocked while executing in first thread, nor are there any guarantees
-> +/// regarding the visibility of side-effects of the called expression.
-> +///
-> +/// [`DO_ONCE_LITE`]: srctree/include/linux/once_lite.h
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let mut x: i32 = 0;
-> +/// kernel::do_once_lite!((||{x = 42;})());
-> +/// ```
-> +#[macro_export]
-> +macro_rules! do_once_lite {
-> +    ($e: expr) => {{
-> +        #[link_section = ".data.once"]
-> +        static ONCE: $crate::once_lite::OnceLite = $crate::once_lite::OnceLite::new();
-> +        ONCE.call_once(|| $e);
-> +    }};
-> +}
-> 
 
-Thanks for working on that!
+"an expression" or "a Rust expression" could perhaps be more precise
+and hints what the argument is (which may help those not accustomed to
+macro signatures).
 
-Daniel
+> +/// kernel::do_once_lite!((||{x =3D 42;})());
 
+Please format the examples if possible. Not a big deal, but it is always ni=
+cer.
+
+Can we add an `assert` here too like in the other examples, so that
+this doubles as a test?
+
+By the way, does this need to be an immediately called closure? i.e.
+the macro takes an expression, can't we do e.g.
+
+    do_once_lite!(x =3D 42);
+
+?
+
+> +        #[link_section =3D ".data.once"]
+> +        static ONCE: $crate::once_lite::OnceLite =3D $crate::once_lite::=
+OnceLite::new();
+
+I let Boqun et al. review the sync parts, but a few questions: Do we
+want/need two `AtomicBool`s? Should the docs for `OnceLite`
+mention/suggest `link_section`? Should we have a macro to declare them
+instead?
+
+By the way, please test with `CLIPPY=3D1`, I got `new_without_default`.
+
+Cheers,
+Miguel
