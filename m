@@ -1,98 +1,94 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3881DFD8E
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 21:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B431ABED8
+	for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 22:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732657888; cv=none; b=j4S1t41FFrKJ3nV2lECWSnaxPQ7FxCIp5ncOskCXFjWx4TPch8H78JqyqwcxxKYP0/KaDZjSMx8FvUvdc0Mj/oAOLasCzItzgo7XzysaNY0S1fYxhQNGuKK+IY85vRNU+jJ7t9crGalCwmy+eepjVoIgOZK1NpOsAmc2AXOrryk=
+	t=1732658881; cv=none; b=uA4i7PZZNKtysG8CWuw4nCIOQy/iBjAh7+EPCpJ3uAZBcztKSGny7hTQPKhm/q3DEKmnx4tT24/qXyd7LLfJn2nY4aITiH+A5LdZoy66CVWC54SntvXrs30Nqrpq66VflWQ7Gi1NTSi6vazo2fvKHZJe3ImJvjNfe8aZzooimx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732657888; c=relaxed/simple;
-	bh=yvlDvtEahYtNUso+6qH92gmUyN3C/oxlbIcZCyFM3B8=;
+	s=arc-20240116; t=1732658881; c=relaxed/simple;
+	bh=IEVN4T2SR215oF5cys4HUFv38ni0R/Gk0dy1IEM6Qvs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sKtEoPunG8RhvsOmYjVQDBpJteW0GF+U1CvoZY4HdQhOBXF7h8aELdpeSCqPjrNFLP0giL3ieYV3x8iFHUxGdqzBicCFfakTffJS0dJLbcf+kiHhzZ5R/gSAKhR87LeSFJtK1IJHGYirp1lf7R5Fa5bnqLI3ujZ9XunABt1yGCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JRLRpqbi; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=NZXZdPrkdXon9Rgk0tX9zv1u6qKs+lbMfa+GjxkYQDPEPZHOYDRYPrkqgfowQ3635nuanuJDbhcIgOlvB4etZeeyWiZlzWJIVJkmXZ2dNwkCDEwwjItn7I5nvWJr7OD9Nv0LcEBFBmJgsgC0m6gLX6DsR3AHYvzOiXv7E26Lqhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WN8qdyQI; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JRLRpqbi"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5cfc18d5259so535a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 13:51:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WN8qdyQI"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5cf6f367f97so7430821a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 14:07:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732657885; x=1733262685; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yvlDvtEahYtNUso+6qH92gmUyN3C/oxlbIcZCyFM3B8=;
-        b=JRLRpqbiqMlXDVn5yw658ha1oEOJYdhN0CjmNFgAFjyWwYftzLG2QtvpRz80ewEdyp
-         XFiIzSe0W2Qjkt60CQRcBHjamJER9yxxRl5e8wYc7Bnaxbr0opT22YRTsx0/3OhWNaIX
-         sZMOxW6dS1bgTKBaTGkzgTamgLnY7yIrB8DpxaZF85DtWdE0xo9xgXJg4EJrZuTqsYLU
-         THt08ZdpUVQySPiaqVsesjJygLxQhhUQeWo077QaW4VJaRDvYeWvVxdY5wJFTysNMe/e
-         fgRyQ76bNqo5pC4LVuJ3SG9vMsv/Dhz5TQvEtak6GHIAqeYWZ/O/Le+MXjPVzuKJj58T
-         fEPA==
+        d=linux-foundation.org; s=google; t=1732658877; x=1733263677; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=51WI1mXkoBmY6OBXkSDIn4mCvqR2Qj99m2Fc3Lfn00c=;
+        b=WN8qdyQIkZWlHjt8OkiXt/nze82y7ArdlBBWUhLlFujEwPHzJdWWrzUkXDSUzlgVWg
+         B3GPO4tOylXuFKT9NRPL2jqczcRmkNXHEwZWbZok0KGtX03PXjT2U/2u3cMeyB5HIRjS
+         Te8oKfaKg59ZJpf9FC+9nEFH+X/Q5SgLEZKAY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732657885; x=1733262685;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yvlDvtEahYtNUso+6qH92gmUyN3C/oxlbIcZCyFM3B8=;
-        b=hqszc7Ue0ILUm9xn0PvcaM8Wz9fP7HpZB63bI8zzlRV8xoQKyWmLSogEU+/0td0NJ4
-         Nu91UFSWkDpkJJzpz9snHYT4gP11eW8vGGHaWXtJDBvBufDQ/rb//6GOGPSr9IOOUAqb
-         zNd2UEHoNyNC/A9dwpJWg3pAHan8awKRYsYchmiaMaROPTx7qzfVFlzp8hHhKsKxbbHg
-         okOfHN0lzbnmcswtZvE63A87AdfWHvYQhOv28yo3JFSTX9doCsCx66WDdnHQPP6XnVDg
-         qsjuAAW6UGEdcOEp6X/goRk3ct87a7ewICPO9ZdEJ7huasLKACq6ydao5Y9bVrTcnfui
-         GEzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjfjaKp9rYuNL+XcKU5a0y/UPCXiURBzVAod9jLH14Qg063svOrkmxcWZEGXb6ER7v5oObLoWAFHe35VfFnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzgl91KU+NuARwdqszQ0AIgtZvqdI4LoUvX+4PXTjSJLzXEbdan
-	yy56yLn3qA+VAQJap8Ot+lwBy9x2dd3lANa6U5mR6SNOQr0PU4LrDq/3d5ufFksAfrKbPLYQcyG
-	paUYy9LPb3IOFa5uNfx6mUB+ZK5/eLW/7Hns+
-X-Gm-Gg: ASbGncuASgQeV+DtpFDnYy6hcdXKHs4ojZZplOcmO87h356NRZ22uPQ5vta8DdS4eXg
-	fEXVkOuVSwrREmcokMsxSYSmTePOSQ3aJwOi3WApYqxEr90JWSKZ30rPwO8A=
-X-Google-Smtp-Source: AGHT+IHYQJvZD1gGExfwDIDFj+tKBXqsEL5uzf01tAJOezpTzJHEU8dGIvX2EzXD8gHsvJpS7xP/SwNGKEiMqDRt/dg=
-X-Received: by 2002:a05:6402:1774:b0:5d0:78d0:f845 with SMTP id
- 4fb4d7f45d1cf-5d081159fccmr23577a12.2.1732657884146; Tue, 26 Nov 2024
- 13:51:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732658877; x=1733263677;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=51WI1mXkoBmY6OBXkSDIn4mCvqR2Qj99m2Fc3Lfn00c=;
+        b=i8sYR/n+QNw8CVo/KomRUpMGdhRhLWK4i7qo7NKmQ0jOcS5rW18Fwg/ZIUTh+cyKjF
+         nksFDVvJMnOZE50efOdUz5xrguc/fQiRlyRDMAIvtXokYo1k3y/3qAj9FGHntL5w8vp+
+         Qn/ZaxgEWrc4hVGcIeyKBTdvjVp2yiwe5i5yrVxFrcpDV8gTecpZZre/86whmpSzI47H
+         kP/aVKxHPWqaKPQD5pa0qrbdp1Ah8niVv7GXgxjQBmcUhw6VcdJTyEQ7kkAoThrWcMhm
+         pCvurWSqFBXwHr6Pulcdz8O3FSdgKJMH4ITqhy8xmPKcvht62IYaiQ9WDImpRz8hOfgL
+         rOUg==
+X-Forwarded-Encrypted: i=1; AJvYcCW76+Zwqi/J3Tsp0XdBtdWQuzuDcFrU5++aT0ceW++IkSUuNesvOCoV2uFwjXvQYHb/+j+as3xmW5twunMUrw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTcYoDT782nsjxzwadUk2eXQHoCAR96pY4izluUDxjQuCcn4u8
+	BBR9FvzinVnA4gqzqJ1OhsnsheingeWF4oJZCecpo+yI/kq65kz8LkSNLKBn+C/dIKFRisqfif5
+	IRnunqg==
+X-Gm-Gg: ASbGncuR+iNJepFwd2XBlqImLRZR0T2Ql/J8Skshok0hvQf8VIf0r5QLl9kFocTGfFl
+	nTyAh0vfewFJU1xmAjjXruF33ZSdmY7T92/sxc+puVX8vS4zEdLvPLMBHz59FdCY0efryCJkE+5
+	BRibDv/7ozLCXhcxCmTdr6RKrhjcP1H3I7kG0iWCBUza3RrExNNB8/f+H5dCSUhh4n43hjP8Srx
+	rl8rzc9nwjnVeYhR9KA/f87ip+YMlKfdY77LmXyavAsCCZlzR+ag3uzcOPL9XVYZcpwxjaUQbBn
+	gXfoKOznt53VX3GXKqKxwm+B
+X-Google-Smtp-Source: AGHT+IHHbufhbu2uSNKSQWKlRyXVGig6FsMuRFVb12fSunOJEMj2MctmW3dHALEzTnxXXvulWrsaJg==
+X-Received: by 2002:a05:6402:43c9:b0:5cf:e3eb:5153 with SMTP id 4fb4d7f45d1cf-5d080bcbf86mr614390a12.16.1732658877370;
+        Tue, 26 Nov 2024 14:07:57 -0800 (PST)
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com. [209.85.218.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d41aea8sm5422015a12.85.2024.11.26.14.07.54
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Nov 2024 14:07:56 -0800 (PST)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a9ec267b879so887253566b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 14:07:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU+874qDMxM245B8kJ8g+nOpjaPItP65IW6TM3QfAOo6PEjVRsdWSPgLrEolKfdab7qSzANM7l2S6Kk1jnpzw==@vger.kernel.org
+X-Received: by 2002:a17:906:2181:b0:aa5:c20:654 with SMTP id
+ a640c23a62f3a-aa581033187mr33996766b.42.1732658874466; Tue, 26 Nov 2024
+ 14:07:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-4-7127bfcdd54e@google.com>
-In-Reply-To: <20241122-vma-v9-4-7127bfcdd54e@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 26 Nov 2024 22:50:48 +0100
-Message-ID: <CAG48ez1MGawv0EVA7ZFgjWi76DRuQax-5PbGqG-msAzqRMkA-w@mail.gmail.com>
-Subject: Re: [PATCH v9 4/8] mm: rust: add lock_vma_under_rcu
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+References: <20241126022500.718070-1-ojeda@kernel.org>
+In-Reply-To: <20241126022500.718070-1-ojeda@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 26 Nov 2024 14:07:38 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgRSWz=5e39P3Xb8FmsD6Qa-_LFBTs1q2m53yrw-yCSzA@mail.gmail.com>
+Message-ID: <CAHk-=wgRSWz=5e39P3Xb8FmsD6Qa-_LFBTs1q2m53yrw-yCSzA@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust for 6.13
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 22, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> Currently, the binder driver always uses the mmap lock to make changes
-> to its vma. Because the mmap lock is global to the process, this can
-> involve significant contention. However, the kernel has a feature called
-> per-vma locks, which can significantly reduce contention. For example,
-> you can take a vma lock in parallel with an mmap write lock. This is
-> important because contention on the mmap lock has been a long-term
-> recurring challenge for the Binder driver.
+On Mon, 25 Nov 2024 at 18:25, Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> This patch introduces support for using `lock_vma_under_rcu` from Rust.
-> The Rust Binder driver will be able to use this to reduce contention on
-> the mmap lock.
->
-> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Conflicts expected with both the vfs ones, trace-rust and char-misc.
+> The conflicts aren't too bad -- the resolutions in -next are fine.
 
-Reviewed-by: Jann Horn <jannh@google.com>
+Well, please humor me. My conflict resolution isn't identical to
+linux-next, and my rust is still very much "monkey see, monkey do", so
+you should most definitely check it out.
+
+           Linus
