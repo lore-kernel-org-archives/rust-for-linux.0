@@ -1,129 +1,347 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369AF1D5ADB
-	for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 17:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732641333; cv=none; b=Vt/av9eOjngUj8KAfYEgNlK8RDX849bCsHMPISuPXV4VLCJpSq2hIKP0jQgFnSiUhlLUB1sYveegPvB5L0/52PXomgP1KWJAsuREGELJse8JMmDZCF71Q4nuIA6n5idtJ6WGR365oYRvkWsTTHDpXMjKIrxoMXQEwTwU3jGNHw8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732641333; c=relaxed/simple;
-	bh=VqAQFe7mntOdBAlVZcfHJCCujSRH2afcpIxBiKlUtXw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kHitv18KGZqsqleyhajzX7uErOMdSl4xxheLDoDriNM88J8nDh06LlF6Y6I4VuQvlI39l4hxY+7OKGZfu++il64C3Aug0qg7HaTMQhWWOg21SwUQ1/T9iB+7nYRMAqx/YUK6oOc7FYmGl+tZpocz/5/PHdW06vF5+XmmaZ6Mm0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d2+fmP8e; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965AB1DCB2B;
+	Tue, 26 Nov 2024 17:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732642928; cv=pass; b=CE9vwapWIaepCPKa4Iw89nOtHUnRpQnDzKL1kNWhdL9TKpr5OKoa//4s8KZvW1ucFKI6/hVjrH5QtJ0qSkW8GBTb+jxkU/CAqz0eVkKPE//BJiKpdmLEG+iZcol9sc3DohjpQtbWLQy/TS0Q+ir3twA1a0czKzb6fbO8yGZjxAw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732642928; c=relaxed/simple;
+	bh=VcRpWYVBqsvODLd2j0NmxlNTKDK1paBpiVl6Wb3+EDQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Mq86NXgUFshz8Nu3OtwCnvsbTACowtM0Sn4RApDf51nseL6U8JvIzk0Sn9yvMXNU6a9WaYkNxdHyStJdmPGOzxMNY7ZeWHN6i2hZv9lYBTnbhUbI5tPwcqXd5eEt5W1rjsgswliKRcJ3htEdt869ehuGOTi1VDjUGBXdbbVodLU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V2WCb+Ql; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d2+fmP8e"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d027dc53ccso11528a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 09:15:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732641329; x=1733246129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dqK5DtYfTpwNTtQIv9zMAjmqjKBcmKak3zeZPF/XA5E=;
-        b=d2+fmP8emIw/mqhYSogXkAeeJUgeVW1eY33MigLxLQNLNIdywRExgAZvipcArV3Utj
-         e4za2on+sBaxouPRUls4+3BPAOlPIyCyg8utqwhAfCxUm6n9NPkjYeLceNP1CEPinLFH
-         lX20F0ZtRX9GSJ8oBOuqOtSCjkQzSl+QWtQiIfz40Ur6e09rl0QzLTBvIAW0bI4lPIl5
-         8Rig9qTNrt74TTkrtDUBqPcHsbADo8+DqKXrsHN+pvUfPmFno8IwNYYa+E581t2sweDl
-         5vXWo2rbSralz+S3ka7+cVjA59uHZgKXa8vL/UnouMuezx1vb9CPV6HthJ7UanIgIGus
-         lRBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732641329; x=1733246129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dqK5DtYfTpwNTtQIv9zMAjmqjKBcmKak3zeZPF/XA5E=;
-        b=CN8YGMqWveixTh2swt9mBzQqzD2pA8RjId9PQ6Zsvvzz5H0HeX7PIGPqXGHPAycCEK
-         gyuL3+CYmWieLkFIXhERrMhXCCPbyYQz+1ST4kbv1jiJR/P1iXqdbV4Aq3hgk0i9ex46
-         J8XOaqauiUoRqu3WQ/3a/H2qD9W1MHtE9DljdADIdKgl8p5c4HPOazrN8NYMuJipJTWo
-         3hqikewQ8pC7SkcsU44MmAaW4KNv6p7IwrFqBGMB/NiRntM+sJqZjzRQDYCjlwg1iiPy
-         J0QZL7jGP+9gqj+HFgup+0FBdbabAic06g++bBudzyJRuUtGKplDScl1caYJh+q39vrS
-         r+lg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtW21KbjTM4XEztqJ9eiM2JPfYDbHM2n4SIdZChWa4JVvlvQOz833W+LRlNjKqwrDRpKOSfFatxK7dr0iYIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwM67YNgYsn9zpqXfexhyBMTyO1ejWJRJpsqLKqV/2jQ+cwVNzc
-	NW5irBW7C3FUtbiis2gWYZG/IrMdgXgJ8mz4TsHfM+uCMoZ+JKN0Hi+oskNceAqzbBjsXyG4Qjr
-	qhtkcIC8BKfnS4ssej0XBxyxrEFQ9m8m3SOGR
-X-Gm-Gg: ASbGnctln98XyuigYzms312xEwLl8csSosNKFHqh9gWeVE9rYS9AAbO6N0uAjrk8QVz
-	dF3eIS0EEHLf8Ko2LDaUBw+pfjaSqqAbc7Hj2ivtfUyliOJlvtT07dsKtDXA=
-X-Google-Smtp-Source: AGHT+IGZRocPcPSEtcuNErKj4DIDiJvXUShdMqtpfNV3ra7ee2dGktWA2YG43z+yQQWKUgLsr0A6/dsgXytzrSe8JgI=
-X-Received: by 2002:a05:6402:282:b0:5d0:6bc0:7706 with SMTP id
- 4fb4d7f45d1cf-5d06c91da98mr93597a12.6.1732641329016; Tue, 26 Nov 2024
- 09:15:29 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V2WCb+Ql"
+ARC-Seal: i=1; a=rsa-sha256; t=1732642873; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=mU8ObQ/OAasMBkzcFvPwQKo4sBO2cC9gkN/zJB906dZtgy4L6dh0j5lIrqsuYhqu6u1KB75AxOkYsb8KNZXALxyyfSiEd6hoEAm6FD8F4M+UwGfl2+zeTyqTtGMjmhY+tjhVKUZ9npGu/rrLqm92JZwKXKMYi2TKiKFh8AVXIuU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732642873; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=AAZ0ziV0Ps+SEYxmzXSmejq4AyrtN53riw5JdtP05F0=; 
+	b=ECae4fssoCytQMK457kvWbYJzVj3z1p/Wm+3kaAe9EPdTNwCoOiGSHM6BkJDNPKrpVP+kvXv5ZLEkjUBqG4T+HZk62lo2U+yvYD9PH283IR84iju4BzDXm8UXfL2GKcObuUK5g/o7r+izamzrDFnRSLyyCGJoLdryYfObcQ7QI0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732642873;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=AAZ0ziV0Ps+SEYxmzXSmejq4AyrtN53riw5JdtP05F0=;
+	b=V2WCb+QlhgmujqFmfJJ01mbCKOmqJTsbtM8Oq44IrsxKyXukcU7ee1jt1hO4TM4S
+	57CCwcpTu8xcheP8z5GYjUhXjwmZsJXeUXlv5w45y6Y0pQfDSESL47PIo6JdnKLYM2/
+	P6O1yMUds34rgkKQCbxoLoZTFN4b20B0tmITeiUY=
+Received: by mx.zohomail.com with SMTPS id 1732642870668244.09361775176467;
+	Tue, 26 Nov 2024 09:41:10 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-8-7127bfcdd54e@google.com>
-In-Reply-To: <20241122-vma-v9-8-7127bfcdd54e@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 26 Nov 2024 18:14:52 +0100
-Message-ID: <CAG48ez09fS1v2gWbOFx+uQd7Lj+z2x3LhL3hfpQzpVHdNJ5UJg@mail.gmail.com>
-Subject: Re: [PATCH v9 8/8] task: rust: rework how current is accessed
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [WIP RFC v2 01/35] WIP: rust/drm: Add fourcc bindings
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240930233257.1189730-2-lyude@redhat.com>
+Date: Tue, 26 Nov 2024 14:40:54 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Danilo Krummrich <dakr@kernel.org>,
+ mcanal@igalia.com,
+ airlied@redhat.com,
+ zhiw@nvidia.com,
+ cjia@nvidia.com,
+ jhubbard@nvidia.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@redhat.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ open list <linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <5A7B3FCB-0A97-4818-9AE4-A1911EA55B90@collabora.com>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-2-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-On Fri, Nov 22, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
-> +impl CurrentTask {
-> +    /// Access the address space of this task.
-> +    ///
-> +    /// To increment the refcount of the referenced `mm`, you can use `A=
-Ref::from`.
-> +    #[inline]
-> +    pub fn mm(&self) -> Option<&MmWithUser> {
-> +        let mm =3D unsafe { (*self.as_ptr()).mm };
+Hi Lyude, sorry for the late review!
+
+> On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> This adds some very basic rust bindings for fourcc. We only have a =
+single
+> format code added for the moment, but this is enough to get a driver
+> registered.
+>=20
+> TODO:
+> * Write up something to automatically generate constants from the =
+fourcc
+>  headers
+
+I assume this is blocked on [0], right?
+
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/bindings/bindings_helper.h |   1 +
+> rust/kernel/drm/fourcc.rs       | 127 ++++++++++++++++++++++++++++++++
+> rust/kernel/drm/mod.rs          |   1 +
+> 3 files changed, 129 insertions(+)
+> create mode 100644 rust/kernel/drm/fourcc.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h =
+b/rust/bindings/bindings_helper.h
+> index b2e05f8c2ee7d..04898f70ef1b8 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -9,6 +9,7 @@
+> #include <drm/drm_device.h>
+> #include <drm/drm_drv.h>
+> #include <drm/drm_file.h>
+> +#include <drm/drm_fourcc.h>
+> #include <drm/drm_gem.h>
+> #include <drm/drm_gem_shmem_helper.h>
+> #include <drm/drm_ioctl.h>
+> diff --git a/rust/kernel/drm/fourcc.rs b/rust/kernel/drm/fourcc.rs
+> new file mode 100644
+> index 0000000000000..b80eba99aa7e4
+> --- /dev/null
+> +++ b/rust/kernel/drm/fourcc.rs
+> @@ -0,0 +1,127 @@
+> +use bindings;
+> +use core::{ops::*, slice, ptr};
 > +
-> +        if mm.is_null() {
-> +            None
-> +        } else {
-> +            // SAFETY: If `current->mm` is non-null, then it references =
-a valid mm with a non-zero
-> +            // value of `mm_users`. The returned `&MmWithUser` borrows f=
-rom `CurrentTask`, so the
-> +            // `&MmWithUser` cannot escape the current task, meaning `mm=
-_users` can't reach zero
-> +            // while the reference is still live.
-> +            Some(unsafe { MmWithUser::from_raw(mm) })
-
-Maybe also add safety comments for these nitpicky details:
-
-kthreads can use kthread_use_mm()/kthread_unuse_mm() to change
-current->mm (which allows kthreads to access arbitrary userspace
-address spaces with copy_from_user/copy_to_user), but as long as you
-can't call into kthread_use_mm()/kthread_unuse_mm() from Rust code,
-this should be correct. If you do want to allow calls into
-kthread_use_mm()/kthread_unuse_mm() later on, you might have to gate
-this on a check for PF_KTHREAD, or something like that.
-
-Binary formats' .load_binary implementations can change current->mm by
-calling begin_new_exec(), but that's not an issue as long as no binary
-format loaders are implemented in Rust.
-
+> +const fn fourcc_code(a: u8, b: u8, c: u8, d: u8) -> u32 {
+> +    (a as u32) | (b as u32) << 8 | (c as u32) << 16 | (d as u32) << =
+24
+> +}
+> +
+> +// TODO: Figure out a more automated way of importing this
+> +pub const XRGB888: u32 =3D fourcc_code(b'X', b'R', b'2', b'4');
+> +
+> +#[derive(Copy, Clone)]
+> +#[repr(C)]
+> +pub struct FormatList<const COUNT: usize> {
+> +    list: [u32; COUNT],
+> +    _sentinel: u32,
+> +}
+> +
+> +impl<const COUNT: usize> FormatList<COUNT> {
+> +    /// Create a new [`FormatList`]
+> +    pub const fn new(list: [u32; COUNT]) -> Self {
+> +        Self {
+> +            list,
+> +            _sentinel: 0
+> +        }
+> +    }
+> +
+> +    /// Returns the number of entries in the list, including the =
+sentinel.
+> +    ///
+> +    /// This is generally only useful for passing [`FormatList`] to C =
+bindings.
+> +    pub const fn raw_len(&self) -> usize {
+> +        COUNT + 1
+> +    }
+> +}
+> +
+> +impl<const COUNT: usize> Deref for FormatList<COUNT> {
+> +    type Target =3D [u32; COUNT];
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.list
+> +    }
+> +}
+> +
+> +impl<const COUNT: usize> DerefMut for FormatList<COUNT> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        &mut self.list
+> +    }
+> +}
+> +
+> +#[derive(Copy, Clone)]
+> +#[repr(C)]
+> +pub struct ModifierList<const COUNT: usize> {
+> +    list: [u64; COUNT],
+> +    _sentinel: u64
+> +}
+> +
+> +impl<const COUNT: usize> ModifierList<COUNT> {
+> +    /// Create a new [`ModifierList`]
+> +    pub const fn new(list: [u64; COUNT]) -> Self {
+> +        Self {
+> +            list,
+> +            _sentinel: 0
 > +        }
 > +    }
 > +}
 > +
->  // SAFETY: The type invariants guarantee that `Task` is always refcounte=
-d.
->  unsafe impl crate::types::AlwaysRefCounted for Task {
->      fn inc_ref(&self) {
->
-> --
-> 2.47.0.371.ga323438b13-goog
->
+> +impl<const COUNT: usize> Deref for ModifierList<COUNT> {
+> +    type Target =3D [u64; COUNT];
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.list
+> +    }
+> +}
+> +
+> +impl<const COUNT: usize> DerefMut for ModifierList<COUNT> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        &mut self.list
+> +    }
+> +}
+> +
+> +#[repr(transparent)]
+> +#[derive(Copy, Clone)]
+> +pub struct FormatInfo {
+> +    inner: bindings::drm_format_info,
+> +}
+> +
+> +impl FormatInfo {
+> +    // SAFETY: `ptr` must point to a valid instance of a =
+`bindings::drm_format_info`
+> +    pub(super) unsafe fn from_raw<'a>(ptr: *const =
+bindings::drm_format_info) -> &'a Self {
+
+I think FormatInfoRef would be more appropriate, since you seem to be =
+creating a reference type (IIUC)
+for a type that can also be owned.
+
+This would be more in line with the GEM [1] patch, for example.
+
+In other words, using `Ref` here will allow for both an owned =
+`FormatInfo` and a `FormatInfoRef<=E2=80=98_>`.
+
+I am not sure about the role of lifetime =E2=80=98a here. If you wanted =
+to tie the lifetime of &Self to that of the pointer,
+this does not do it, specially considering that pointers do not have =
+lifetimes associated with them.
+
+> +        // SAFETY: Our data layout is identical
+> +        unsafe { &*ptr.cast() }
+
+It=E2=80=99s hard to know what is going on with both the reborrow and =
+the cast in the same statement.
+
+I am assuming that cast() is transforming to *Self, and the reborrow to =
+&Self.
+
+To be honest, I dislike this approach. My suggestion here is to rework =
+it to be similar to, e.g., what
+Alice did here for `ShrinkControl` [2].
+
++/// This struct is used to pass information from page reclaim to the =
+shrinkers.
++///
++/// # Invariants
++///
++/// `ptr` has exclusive access to a valid `struct shrink_control`.
++pub struct ShrinkControl<'a> {
++ ptr: NonNull<bindings::shrink_control>,
++ _phantom: PhantomData<&'a bindings::shrink_control>,
++}
++
++impl<'a> ShrinkControl<'a> {
++ /// Create a `ShrinkControl` from a raw pointer.
++ ///
++ /// # Safety
++ ///
++ /// The pointer should point at a valid `shrink_control` for the =
+duration of 'a.
++ pub unsafe fn from_raw(ptr: *mut bindings::shrink_control) -> Self {
++ Self {
++ // SAFETY: Caller promises that this pointer is valid.
++ ptr: unsafe { NonNull::new_unchecked(ptr) },
++ _phantom: PhantomData,
++ }
++ }
+
+Notice the use of PhantomData in her patch.
+
+By the way, Alice, I wonder if we can just use Opaque here?
+
+> +    }
+
+> +
+> +    /// The number of color planes (1 to 3)
+> +    pub const fn num_planes(&self) -> u8 {
+> +        self.inner.num_planes
+> +    }
+> +
+> +    /// Does the format embed an alpha component?
+> +    pub const fn has_alpha(&self) -> bool {
+> +        self.inner.has_alpha
+> +    }
+> +
+> +    /// The total number of components (color planes + alpha channel, =
+if there is one)
+> +    pub const fn num_components(&self) -> u8 {
+> +        self.num_planes() + self.has_alpha() as u8
+> +    }
+> +
+> +    /// Number of bytes per block (per plane), where blocks are =
+defined as a rectangle of pixels
+> +    /// which are stored next to each other in a byte aligned memory =
+region.
+> +    pub fn char_per_block(&self) -> &[u8] {
+> +        // SAFETY: The union we access here is just for descriptive =
+purposes on the C side, both
+> +        // members are identical in data layout
+> +        unsafe { =
+&self.inner.__bindgen_anon_1.char_per_block[..self.num_components() as =
+_] }
+> +    }
+> +}
+> +
+> +impl AsRef<bindings::drm_format_info> for FormatInfo {
+> +    fn as_ref(&self) -> &bindings::drm_format_info {
+> +        &self.inner
+> +    }
+> +}
+> +
+> +impl From<bindings::drm_format_info> for FormatInfo {
+> +    fn from(value: bindings::drm_format_info) -> Self {
+> +        Self { inner: value }
+> +    }
+> +}
+> diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
+> index c44760a1332fa..2c12dbd181997 100644
+> --- a/rust/kernel/drm/mod.rs
+> +++ b/rust/kernel/drm/mod.rs
+> @@ -5,5 +5,6 @@
+> pub mod device;
+> pub mod drv;
+> pub mod file;
+> +pub mod fourcc;
+> pub mod gem;
+> pub mod ioctl;
+> --=20
+> 2.46.1
+
+=E2=80=94 Daniel
+
+[0]: https://github.com/rust-lang/rust-bindgen/issues/753
+
+
+[1]: =
+https://gitlab.freedesktop.org/drm/nova/-/commit/cfd66f531af29e0616c58b4cd=
+4c72770a5ac4081#71321381cbaa87053942373244bffe230e69392a_0_306
+
+[2]: =
+https://lore.kernel.org/rust-for-linux/20241014-shrinker-v2-1-04719efd2342=
+@google.com/
+
+
