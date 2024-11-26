@@ -1,218 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE471D90A2;
-	Tue, 26 Nov 2024 16:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604C11187;
+	Tue, 26 Nov 2024 16:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732639282; cv=none; b=klhVHUyj6k8Nzj0u/zB5L1GpmACKLe0pHLc+DfITFiWYmN87iu0v8ylD3oELVSFQ+V+IDbCGVBGNlA7/BuyWom4tULsjIBw0NnvLkmQevc824CycVJPKAbqQoFUYG50Rln0QGBj4XX/6EWFUKBl9JX8bVS/jquPfIBisVI2nIBc=
+	t=1732640401; cv=none; b=GxBy2mUAW0nvOjCKln9gameFRkKIsE5qixuTGFX+J4EBLNR7PdfmzYLuyglLNYcD6OAMTb6i25GVipcl1FnA2Cp8GbPOXIAM4un8JxommoxFB7hnw/QLJ1ck2cFmbyzSCAZe376ZsL7BQECBMMb/hBX11ZNKqHyjdSrka69XTG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732639282; c=relaxed/simple;
-	bh=GyJvPB50oeV6Zjav6RVFR1Tf8UwuOKhDrMr6u7Po32g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oYcrcB+jEEy6kKPQeANs52wNzlA2cnlUZBn+E/yhb9KRoic+j5ZgCj6dAAnzwPqhI5kSeGm8e4Vfh+B6tcDkl+IUi557yN9mM43dTy+3EDLmp1O8I2+ctHEFrgIbUAjL51xZRZ8q3ciQ4T/IBsX7fpB6o+Scw1huJkxmg9FSjYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mN6ZmX1A; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1732640401; c=relaxed/simple;
+	bh=MtRv4oOaXfK8SLIiralC2PpKvgtDrqnVngZfjWifN7k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LqLy5hmc76fe/cDmm1GDxBMtTYRqhhKvzJ3hLOPjgmACAJHiywnfEferb53vpr7WZ2asfri9mPQlbaviIkKyci+3IYOhlT52XBNFXyvF7g3eRRVrv5P27M10COPryHceLx3renyp9LdjrC9HUS2GMio2Wo/ud11PlwtkYqKs1Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2ZfD/a+; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mN6ZmX1A"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2A8F6C4CED2;
-	Tue, 26 Nov 2024 16:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732639282;
-	bh=GyJvPB50oeV6Zjav6RVFR1Tf8UwuOKhDrMr6u7Po32g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=mN6ZmX1AgacyOiV/TTw3yohx+R0OZFhOpYfzAcIlCb89MnCHa8mwLXRFMih5T3C3r
-	 TWjDK0Z23lSKAeprFemjgavoYFyfIuDyPEX4a92VfBOZomNTwRRVi/vVwT1FxU+wT0
-	 MZgF5dOsK52Og4gQNHyNxkK3UtBl0rCtyIBnggCYOt5f0qKS3g/Hb7lQZSOFVejpyC
-	 ZuE2CZrgQATlYN1ozqgh4iAS7tZmKokjPu+kZFANsuWFkJxJA2gdCE0X9itPaCt2Zs
-	 fA3lKH+zAzKBHYDSECu5PnaPAVY4V8kNoKONuGBNWYOuufo61NuuWJFpnGe0TqRlWT
-	 F5LlqKLOcIndQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19E7FD65523;
-	Tue, 26 Nov 2024 16:41:22 +0000 (UTC)
-From: Jens Korinth via B4 Relay <devnull+jens.korinth.tuta.io@kernel.org>
-Date: Tue, 26 Nov 2024 17:40:58 +0100
-Subject: [PATCH v4 2/3] rust: print: Add pr_*_once macros
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2ZfD/a+"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ea501acd25so974899a91.2;
+        Tue, 26 Nov 2024 08:59:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732640399; x=1733245199; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MtRv4oOaXfK8SLIiralC2PpKvgtDrqnVngZfjWifN7k=;
+        b=I2ZfD/a+FYE7UQR8DHpg10LEcumh4TDjteSfUHyZPLkP8V0+iF48nufS8rKDn8fzPu
+         bB6ha247M5B8dP0Iso/4LegIiC/eqQ/KzscIJDh/gor6zSDZ9qXwMpyQXE10aiFtTyzP
+         X4avYwp5/jSV1f/r3LydDZh5IcitGVHGS28nhprTu1S1j/IMkM8dRJRpJj2sRsAKC4rS
+         C5NJEtPythShbKgRwIfFGMaiGr8b7iEFiz3Y1T2aRJsqtwmvbgExn2fs0qrCkPhrLsF9
+         Gl3IP4F2RroaZLrGRq5NscU3mT2fRQqVvnI14szCF270RArWvXHit/tzKMrwR3KmNuM2
+         wiWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732640399; x=1733245199;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MtRv4oOaXfK8SLIiralC2PpKvgtDrqnVngZfjWifN7k=;
+        b=h/uCvSpqxZPz+wp+hExnEyHjegalHEYXGlZai7fV9D8sGKV39OEyclAFNL1vcZm7Al
+         Iyfp2hdPi0b0fvoV8eIKobcNZHEBGbRAX3dv1vS1Ys1jsSdB1oHNPKyCWJCFpGc1ZK3t
+         QuQtLBnEBeyQdYcUzzOwbzU5Mi54Nwro3bC40O/qQIzHJJwdhWuEOCaCb8dDkUI6zcjr
+         h0tKLWoJJcyyk7xZPKCphuZAI4BKPK43qs8GJSyAdzp8xGKXOuV1IdNJj+pl+uMU9y4R
+         Ap6WhtNmmFw2jONU1WpfUg3Xyc2nUDdjhBrkaqJuzhxOj5xuP4QHzi7MQv3pTcz00lUv
+         qyug==
+X-Forwarded-Encrypted: i=1; AJvYcCVah0f9f+DLhLmmvpn6MRj7SZ+yMguQQSRT8j5U2Aoo/tgyVA62aqHyorHVH4pgvwB1GbQv0yHztYC2d3mtxfM=@vger.kernel.org, AJvYcCXNZYMRciBpnPjyGqIcTCU52L8o7BxI171LEs+OgxpGU5GnaKdJRvcCZBHET3HNAcVPqzjuc1Yt9i0NJKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvHPQi0QTcyCvT+qEHxVW4+JAYeZCwkDDSHqkRd/X6sw7L005z
+	apbhe/c0UVd1Z7a6w0ZdCAQ8TCsOulCIuYzb/ceGJH5HyNX5AQdhtTgb+5Djj6mZvDR0/lcDtez
+	8it6AwzpokaiPRpcBgEFTml8AOxP87ns4
+X-Gm-Gg: ASbGncukTdReQQpPlpC5Gn2N99lI7C5StWo2vYL2wWXBrhWiQKKr4nRMphFc9hg8H9Y
+	bDKTJRKSwEcXchrLAK8kjh6vCTZiu2WA=
+X-Google-Smtp-Source: AGHT+IEI+qtdaIzBJqZlcFjlRD4+3ro4LBUFICzngU+d2ahdoLPo6qN9okcbJjaWdGONAYbUKMV83McdQFypPctu1gA=
+X-Received: by 2002:a17:90b:1e0c:b0:2ea:9850:b2a with SMTP id
+ 98e67ed59e1d1-2ee08e9e84emr2322a91.2.1732640399273; Tue, 26 Nov 2024 08:59:59
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241126-pr_once_macros-v4-2-410b8ca9643e@tuta.io>
 References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
 In-Reply-To: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Dirk Behme <dirk.behme@gmail.com>, linux-kernel@vger.kernel.org, 
- Jens Korinth <jens.korinth@tuta.io>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732639280; l=3758;
- i=jens.korinth@tuta.io; s=20241107; h=from:subject:message-id;
- bh=Pi+Tmcbnb+4nLebSMaz3h/2DQwX44dKuBXxl7dtHrxU=;
- b=tLIDXQVk9Ed81M09wh7vjimTiQV9TibbL4r8ubUEsTiDvfMDIR3+zmbvpDBUW5nYApxTwvgx+
- lAp9Y0e1OxID3HD/0ybydDYrzUf4/YxAqsN4Mz9axHo5itbq+777MOG
-X-Developer-Key: i=jens.korinth@tuta.io; a=ed25519;
- pk=bG0q4Zyj3o4d/r326zKL7ym+/tXzyykcjh+U0M13iyc=
-X-Endpoint-Received: by B4 Relay for jens.korinth@tuta.io/20241107 with
- auth_id=270
-X-Original-From: Jens Korinth <jens.korinth@tuta.io>
-Reply-To: jens.korinth@tuta.io
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 26 Nov 2024 17:59:46 +0100
+Message-ID: <CANiq72n2Js7gftu+56FYF-eGFmX+VxVW5tEpxF3v9RiBHxM2Vg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] rust: Add pr_*_once macros
+To: jens.korinth@tuta.io
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Tue, Nov 26, 2024 at 5:41=E2=80=AFPM Jens Korinth via B4 Relay
+<devnull+jens.korinth.tuta.io@kernel.org> wrote:
+>
+> Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
 
-Add Rust version of pr_[emerg|alert|crit|err|warn|notic|info]_once
-functions, which print a message only once.
+I guess these tags are meant to be informative, but just in case, I
+thought I would ask if they are here for some other reason, i.e. if
+you somehow want them to end in the kernel log.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Signed-off-by: Jens Korinth <jens.korinth@tuta.io>
----
- rust/kernel/print.rs | 126 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 126 insertions(+)
+(It may be less confusing to simply mention in the letter who worked on wha=
+t.)
 
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index a28077a7cb301193dcca293befb096b2dd153202..f354b32684a2b3c6c5d9aca6ef9f68e52c870bcf 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -414,3 +414,129 @@ macro_rules! pr_cont (
-         $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
-     )
- );
-+
-+/// Prints an emergency-level message (level 0) only once.
-+///
-+/// Equivalent to the kernel's [`pr_emerg_once`] macro.
-+///
-+/// [`pr_emerg_once`]: srctree/include/linux/printk.h
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::pr_emerg_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_emerg_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_emerg!($($arg)*))
-+    )
-+);
-+
-+/// Prints an alert-level message (level 1) only once.
-+///
-+/// Equivalent to the kernel's [`pr_alert_once`] macro.
-+///
-+/// [`pr_alert_once`]: srctree/include/linux/printk.h
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::pr_alert_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_alert_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_alert!($($arg)*))
-+    )
-+);
-+
-+/// Prints a critical-level message (level 2) only once.
-+///
-+/// Equivalent to the kernel's [`pr_crit_once`] macro.
-+///
-+/// [`pr_crit_once`]: srctree/include/linux/printk.h
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::pr_crit_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_crit_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_crit!($($arg)*))
-+    )
-+);
-+
-+/// Prints an error-level message (level 3) only once.
-+///
-+/// Equivalent to the kernel's [`pr_err_once`] macro.
-+///
-+/// # Examples
-+///
-+/// [`pr_err_once`]: srctree/include/linux/printk.h
-+///
-+/// ```
-+/// kernel::pr_err_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_err_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_err!($($arg)*))
-+    )
-+);
-+
-+/// Prints a warning-level message (level 4) only once.
-+///
-+/// Equivalent to the kernel's [`pr_warn_once`] macro.
-+///
-+/// [`pr_warn_once`]: srctree/include/linux/printk.h
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::pr_warn_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_warn_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_warn!($($arg)*))
-+    )
-+);
-+
-+/// Prints a notice-level message (level 5) only once.
-+///
-+/// Equivalent to the kernel's [`pr_notice_once`] macro.
-+///
-+/// [`pr_notice_once`]: srctree/include/linux/printk.h
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::pr_notice_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_notice_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_notice!($($arg)*))
-+    )
-+);
-+
-+/// Prints an info-level message (level 6) only once.
-+///
-+/// Equivalent to the kernel's [`pr_info_once`] macro.
-+///
-+/// [`pr_info_once`]: srctree/include/linux/printk.h
-+///
-+/// # Examples
-+///
-+/// ```
-+/// kernel::pr_info_once!("hello {}\n", "there");
-+/// ```
-+#[macro_export]
-+macro_rules! pr_info_once (
-+    ($($arg:tt)*) => (
-+        $crate::do_once_lite!($crate::pr_info!($($arg)*))
-+    )
-+);
-
--- 
-2.47.0
-
-
+Cheers,
+Miguel
