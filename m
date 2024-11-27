@@ -1,119 +1,147 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EADC21A0B
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 04:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3083F1114
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 08:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732681052; cv=none; b=PDG9Fh84ZYvOpiKaQ7aomP1jsy1Qhs5S3latV8MCd6s8EgI0RBn388Cuqt61T39aKApDfCBrNvpcF+410/iUTTbpk/4UQWsKLHLfRasSq5We2bSMmJFvmOstf7mJTOf+QOtg1hpDqJJlYRW/PuyVLdhmOvZFqiEh/B/d/ZDxDrw=
+	t=1732696623; cv=none; b=TF49RjiC/aS/MwpogxqS1nSYg1k5qYIbBdv74u4rR+aa6L4ZagXLRBxC45qREUOWprPO8UpazawxUMvcxY72pU2cffRUhB18pRFVIM7uy/WwkPfg2ajesp6LoQSUENjxp0gp6oSJCYMPGb14lQQiBjPCExuRBX8VvCQGLpJyIns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732681052; c=relaxed/simple;
-	bh=3XeU/4V/Sr4YWgBMd+JGTL2NUBHoyZBYkokHxbYNh0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eevpM1lkZNLilosEoSEu9D1Iw2sPQ6O//C6OQo6gGNEnUR4OsgP7Q2Y4ZSn1rqvtXsVQY/6442ot412XCAeWXnmeH5y5KePdmokZhYDuBqczq3mc6WIm+tpCvfFApiuQ3tTNxp5hFagd5YxK9HFvOL3V69q5YHSyMMWyxcu8cmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=G9fXHMvQ; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1732696623; c=relaxed/simple;
+	bh=g2U1IfQ08m2PGyZEiKk0mTiObuKSmhwTTnTN06IUY80=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Sg78Kfw95vL6K5O+ZTS0VFcWgd1zezCAUTlWTFhJOgyI4Lm4tghyjud/q8M2+QJEwm3PfY/euhL8xJPWDFEEVUrCJEP46E3R45xOwDBZpbYpS/eRZtvbNo/mGW1bhliFRlZQqUSy2U/+sKnEjrm8jIC2zZhy/0FstQvVF2J1xcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=z2K/GRzn; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="G9fXHMvQ"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e38c1ac8e3cso389890276.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 26 Nov 2024 20:17:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="z2K/GRzn"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53da209492cso8269699e87.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 00:37:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1732681049; x=1733285849; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hm7ENvoP6HhdoXpahiQX6CDXmuqD55Pzj7gK8dROaY0=;
-        b=G9fXHMvQBnwDF8bAXx9CjgAeymt6tsUyLAj7a9yJuRWxTbOSF5SX2zLR2TbQf5Cvw1
-         5SWEkvge7ppLKW6YXIbHBGRw+UXUywtiLn4meVjOtK14s77KUTUD6SIhAMGzZ3ncsGVy
-         H832mrPtzv6YkHurVyaBghwUeC9cFhFj68RNKj3+fhXZebkdqH0stRTeli95t3KCGhtd
-         9hmlEigwPRshcCzHDyHv56vtQdIa54ZJrXreFYREzbLro1cExU/U55gihpZ6cIpRn/HZ
-         BO3DgamYCRTeA1IyKqk37GE1VXxImPZzrSX207IVjIzQudPMoRmRWxp1QozKFgAQ4e6L
-         1PDg==
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732696619; x=1733301419; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FfYfEL0hhmOeac7hut/RFezDjxPNxDFZw5/N9awvskA=;
+        b=z2K/GRzna5Zt4Gnn7PovnR9JmiuCPZYZfz9G7UAqYbsFGjPovF2gnpXNqidofwGK8c
+         AmuI2RvY7wSqXs60zERhNo04hjjw+G329AlR8TSfYMzERnugJmQ6SJgRW7Hvjxeoab4x
+         c27/TieDIJyTTj/Y7yO380EMCBAootxikqQUtHC8KT72ahp00TVAiUjdXO5fQ79qbGDq
+         g+EeWRujwWe9m+PNzPtqGCi7IXK8f4al0wNEHZcVqya8f1OMWmilxCri4ZJJPneTq7I4
+         C4AInf2hif73kk49hqauXSarj861O+E2qLpfmBqJZXkx5S/omIJRlvgkTYdWR85CdRBr
+         uaiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732681049; x=1733285849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hm7ENvoP6HhdoXpahiQX6CDXmuqD55Pzj7gK8dROaY0=;
-        b=T0f3nXLWmWe/ZNyZjBfZvCl2Jd+H7/99eoaDYT/8dEyLdWSCY4dsHYtCsDKeCGWAbV
-         12+YEPxcdQ1SPLkB5HFM4qXJmnFD1AVjiYHswQ0g+d/idHLs5hXG3Z7nM52HhEj1earf
-         r/yDTlqefRzPIj+G7qNTBoJ7e6kpWhIYORuvtC8R4nx51IUbQ9EM8oMicEModEFAO3HH
-         CR4m1ZR5kU/MXlnidqzZlhR5rDRMP50FCm11+X0T533QgTHmdO1u/NDlPMaQca6fxYQC
-         74wx95Ikzs7y6CubGrv89jhX9weBcp2FJYAiSYzAPFfcXy0FHsLau6qCtJY6DffRqEZ+
-         Xjuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUqh7j2HctLV7V+fAyGI2hAJBIhwlEdxMDufg+EuRpHAdhuxyciLn4XgtiFE3myinDofWRDHANBY7WXOOg6Gw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhMSl+wc/hyRZ5PtBNh4yFR5QD+AVdU6D7DMZ4apr/kkLOyn1x
-	h4XWn+1zItgDPnFaaKlsQwY3u5CML9gL2Xz0wmJzjTkH3crMNpM72fSs9YP5Fg7+PVMXUU/Wnxj
-	Cvcg+CwDKSNFRPg3sM1NamKceVRHPFN9xkhzD
-X-Gm-Gg: ASbGncuITF9WZV+74+g1xnpx3b6PRXqJi6Z3LRg/ngv2O4qQi2qH2G6M7NUNthlotPl
-	DegxAVhfWxsttwgYK9zX5U6jlOdXmIQ==
-X-Google-Smtp-Source: AGHT+IGXltr9ckprSIGJ0zk8EcAJ0ecH4ajUfDHmT84fEIG+PhA0s/gKfL7agqnI0QojZ8X6EzqtwtUPYNqjUQ4yOIw=
-X-Received: by 2002:a05:6902:1505:b0:e2b:b9bf:f248 with SMTP id
- 3f1490d57ef6-e395af39d32mr1792887276.24.1732681049420; Tue, 26 Nov 2024
- 20:17:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732696619; x=1733301419;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FfYfEL0hhmOeac7hut/RFezDjxPNxDFZw5/N9awvskA=;
+        b=ovgBoFbvYWYDdJItQ8RjxGq7eYVTAOSY/9wT6mHFHTv9JqLiiU5WzofcKadvideiDb
+         l0K/4r+UMwiSWAuX96DDdxVBGx7cTJyN98w8V4ioX/u0qrnf/AnXq4U+zo7Cc6R4KtHc
+         zu8uCASKRcmId3T9LwBJUPALdCkUwWkp8zQe31CUUdDh+N+887mwXPwmrNIrTPXgTZb3
+         fJq/CWywZZbEqgN2huw9NqumMuipgaikvO+Aoj7cDzvB0pAl9fFeSocmVGxhlA1wAVBv
+         DoG8ZCIOsvoxnZFYW3CtwDgc6ayDDbbNz1MuYHhqU2XpvIAQ8W8LNASzDEXgLZGSyXsu
+         OqrA==
+X-Forwarded-Encrypted: i=1; AJvYcCWa2Fv8Jm1YxwnEpL4u3hEml/Y5EMIWZasR8lx2NO/KoMWNyuNFukqn0mku9sSdP55TPVuTkalTxgmKd61N5A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxngeUy9TQC8HV0rrUL0W5dnIQUcu5FL5PpOwIR4cuFY1Oedj7J
+	ovz8Lt9dY1j057nOaCFQIp1mi3Za4tnI0ubttJn+bhT1SwbNsrWsA30NCbgT8uw=
+X-Gm-Gg: ASbGnctErf8g2yTdO7pfBZ64Ax0oyb5D052GgyDfSXZtXvMLkWdnQPo4wbkmoRGJeQ7
+	aDyNRMD05mVTRCzmMrAIYfI2+OJRan+mG/2GWDYi8rd5z+260vSxPpVY+Fg6zV4KJOjl1SAQdHC
+	9Io5tugJ3Fij1JDLtG/01nBX++2j57avj7VZqeNUDfjnDSm7Iaz/wZL6Yy9BE9HcfLtjKTE8ERq
+	QeJchX20jI1Skq77qYWGQoKyR/sqUKgsQ0x00pyUx6tuI0j3UwrUW0VlYJA
+X-Google-Smtp-Source: AGHT+IG3sMF84XPvgz8pLoCLIdG2dlHXM2lXAxoM5/3eyIXVSJbpcsQPSRSV++v9uT631uOC7VhCwg==
+X-Received: by 2002:ac2:5399:0:b0:53d:f1d1:13c5 with SMTP id 2adb3069b0e04-53df1d11418mr362352e87.16.1732696618643;
+        Wed, 27 Nov 2024 00:36:58 -0800 (PST)
+Received: from [10.0.5.28] (remote.cdn77.com. [95.168.203.222])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d3a3f8csm5857861a12.6.2024.11.27.00.36.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Nov 2024 00:36:58 -0800 (PST)
+Message-ID: <10078f6c-ce93-4652-b639-6f9c0ed845c1@sedlak.dev>
+Date: Wed, 27 Nov 2024 09:36:57 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6WyKEzJazDsdk9o5zw@mail.gmail.com>
- <20241101095620.2526421-1-aliceryhl@google.com> <CAHC9VhS5wLQeF4LX67UgUYVG3oViA7CmSZS_kugH+M5J0XS2Vg@mail.gmail.com>
- <CAHC9VhTKzXPja5mLHmqOoTiDm1K8k=vtK+x9Hfa6t-7hpMmwag@mail.gmail.com>
-In-Reply-To: <CAHC9VhTKzXPja5mLHmqOoTiDm1K8k=vtK+x9Hfa6t-7hpMmwag@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 26 Nov 2024 23:17:18 -0500
-Message-ID: <CAHC9VhS=gqq6JuXsvzhsX2qEbDyxsvU_5cmx5dZF17kfb_bpsQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: lsm: replace context+len with lsm_context
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: naresh.kamboju@linaro.org, casey@schaufler-ca.com, 
-	anders.roxell@linaro.org, arnd@arndb.de, brauner@kernel.org, 
-	dan.carpenter@linaro.org, kees@kernel.org, linux-kernel@vger.kernel.org, 
-	lkft-triage@lists.linaro.org, ojeda@kernel.org, regressions@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	lkft@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: add safety comment in workqueue traits
+To: Konstantin Andrikopoulos <kernel@mandragore.io>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ Vangelis Mamalakis <mamalakis@google.com>
+References: <20241127005204.713495-1-kernel@mandragore.io>
+Content-Language: en-US
+From: Daniel Sedlak <daniel@sedlak.dev>
+In-Reply-To: <20241127005204.713495-1-kernel@mandragore.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 1, 2024 at 1:02=E2=80=AFPM Paul Moore <paul@paul-moore.com> wro=
-te:
-> On Fri, Nov 1, 2024 at 12:56=E2=80=AFPM Paul Moore <paul@paul-moore.com> =
-wrote:
-> > On Fri, Nov 1, 2024 at 5:56=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> > >
-> > > This brings the Rust SecurityCtx abstraction [1] up to date with the =
-new
-> > > API where context+len is replaced with an lsm_context [2] struct.
-> > >
-> > > Link: https://lore.kernel.org/r/20240915-alice-file-v10-5-88484f7a3dc=
-f@google.com [1]
-> > > Link: https://lore.kernel.org/r/20241023212158.18718-3-casey@schaufle=
-r-ca.com [2]
-> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > Closes: https://lore.kernel.org/r/CA+G9fYv_Y2tzs+uYhMGtfUK9dSYV2mFr6W=
-yKEzJazDsdk9o5zw@mail.gmail.com
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > >  rust/helpers/security.c |  8 ++++----
-> > >  rust/kernel/security.rs | 38 +++++++++++++++++---------------------
-> > >  2 files changed, 21 insertions(+), 25 deletions(-)
-> >
-> > Thanks Alice.  Would you like me to pull this in via the LSM tree with
-> > the associated LSM changes, or would you prefer to do this some other
-> > way?
-> >
-> > I'm going to merge this into lsm/dev for now so that we fix the issue
-> > in linux-next, but I'm happy to drop it or do something else, let me
-> > know.
->
-> Nevermind, no I'm not, as I don't have the LSM/security rust helpers
-> in the LSM tree as it looks like those aren't in Linus' tree yet.
 
-With all of the dependencies now in Linus' tree, I'm going to merge
-this into lsm/dev-staging so we can get some crude testing done.
-Thanks again :)
 
---=20
-paul-moore.com
+On 11/27/24 1:52 AM, Konstantin Andrikopoulos wrote:
+> Add missing safety comments for the implementation of the unsafe traits
+> WorkItemPointer and RawWorkItem for Arc<T> in workqueue.rs
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/351.
+The link tag should be grouped with other tags.
+> 
+> Signed-off-by: Konstantin Andrikopoulos <kernel@mandragore.io>
+> Co-developed-by: Vangelis Mamalakis <mamalakis@google.com>
+> Signed-off-by: Vangelis Mamalakis <mamalakis@google.com>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+See [1] for example, the ordering of tags do matter. Your signed tag 
+should be the last.
+
+[1]: 
+https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by 
+
+> ---
+>   rust/kernel/workqueue.rs | 18 ++++++++++++++++--
+>   1 file changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 4d1d2062f6eb..fd3e97192ed8 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -519,7 +519,15 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_typ
+>       impl{T} HasWork<Self> for ClosureWork<T> { self.work }
+>   }
+>   
+> -// SAFETY: TODO.
+> +// SAFETY: The `__enqueue` implementation in RawWorkItem uses a `work_struct` initialized with the
+> +// `run` method of this trait as the function pointer because:
+> +//   - `__enqueue` gets the `work_struct` from the `Work` field, using `T::raw_get_work`.
+> +//   - The only safe way to create a `Work` object is through `Work::new`.
+> +//   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_work_with_key`.
+> +//   - Finally `Work` and `RawWorkItem` guarantee that the correct `Work` field
+> +//     will be used because of the ID const generic bound. This makes sure that `T::raw_get_work`
+> +//     uses the correct offset for the `Work` field, and `Work::new` picks the correct
+> +//     implementation of `WorkItemPointer` for `Arc<T>`.
+>   unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
+>   where
+>       T: WorkItem<ID, Pointer = Self>,
+> @@ -537,7 +545,13 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
+>       }
+>   }
+>   
+> -// SAFETY: TODO.
+> +// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the duration of the call to
+> +// the closure because we get it from an `Arc`, which means that the ref count will be at least 1,
+> +// and we don't drop the `Arc` ourselves. If `queue_work_on` returns true, it is further guaranteed
+> +// to be valid until a call to the function pointer in `work_struct` because we leak the memory it
+> +// points to, and only reclaim it if the closure returns false, or in `WorkItemPointer::run`, which
+> +// is what the function pointer in the `work_struct` must be pointing to, according to the safety
+> +// requirements of `WorkItemPointer`.
+>   unsafe impl<T, const ID: u64> RawWorkItem<ID> for Arc<T>
+>   where
+>       T: WorkItem<ID, Pointer = Self>,
+
+Thanks, for working on this!
+
+Daniel
+
