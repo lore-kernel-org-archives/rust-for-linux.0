@@ -1,353 +1,321 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BF41F9AB1
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 16:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732725205; cv=none; b=JVw8XNttFBh/P2cOaU/pWUHN7tyt9M+oePvGqXgaoAL0REnvW9kJSkOdTKHe6O1bBfbsGCDjAE7xGZZcYLI2/k6Hhl/ncYtTaPZLGfjFnZ4+5hLA2Zv4UTZXY99XVur276M1m4lYPdNJssEFUtZ/Z1CrojN4vtgQz4ORIqmh/Mw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732725205; c=relaxed/simple;
-	bh=dBJEBlbmJi3/2Ee4MLUIfjtpSd6MZBjmKse/K4wqfCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=EJ+r9iZmKVMBbcCQf7sevneDLoF6OI749644lGbBNFaPDAZ1CJngPAWGBgZrodem6/kTxSbXr4M1sA2vhj9YAaXlPf2ytaRYLw7MznPgIMwfOkqZY/vSXjTgUW3X612xNYY5mYrWsPOr0bml7/AJOBDM9l0GalMHiiGUWEh4q7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6548C4CECC;
-	Wed, 27 Nov 2024 16:33:24 +0000 (UTC)
-Date: Wed, 27 Nov 2024 11:34:16 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Thomas Gleixner <tglx@linutronix.de>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Miguel Ojeda
- <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] tracing: More updates for 6.13
-Message-ID: <20241127113416.6886b3f0@gandalf.local.home>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B306A3FB8B;
+	Wed, 27 Nov 2024 17:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732727084; cv=pass; b=DF9uCSVoD9alS+1GlTZAPFdp7g2frnwATP4S6YFIef0iPosDHrqyJYJTo9+kQeyGebO48E04jiRwHnqLWtIJ+KBpwAah2cKu5a5ly09a/t+kAY0k5bhKNO8CIUzWFFE8b7Mg4PPkIVFG/kK5fvKwpEq69ZI9r4ADYbXYu3cQWow=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732727084; c=relaxed/simple;
+	bh=qF/d3SSzrTJeW7/DdfqQkC+nMwhPlbF0wIQHyBooUS0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=pHk4PNN+0XDjRs86bto+YBG07ByLc4qSjccuE4GTmQPEjdQRjRlwQBqxzm5qIyY9PBzJQzqgYfvrw6sgh6mCeoPTblEDxwfb4J/9VOZw5ib+bSHNKNsHKwsQCHjOoLK4+XdkDJVb5Oeu/MGCiJHtH9cHKSSUPozpShbpQ4UDrRM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ckZybp51; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ckZybp51"
+ARC-Seal: i=1; a=rsa-sha256; t=1732727037; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=jIF6WcFsa7I0SVmYvBQiGg86iB7nlnV0i/9U4SrBCqUb/xp1zBp7n9E+Upzh8fGkNTRYoihRMBMHVFZWZptABwMwTR30EZhHOvlmQzHgVA5X+eunqI5J8FHTn+h80VrHPffgZh9Jp7QTpgoYDvb5E7acHQPG/1S0jT1m6RbM5Is=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732727037; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ThqB6Cw1Jz5IsPrydDGEs7scPjQXlxcw0xZC/VMUBio=; 
+	b=M47wD+ldu5Rd5vv+QW4ajan+iTOSVOSrCAVqDqFHznuG5htUYvxiCDQH7To6abMlGDtqS7bThh2qxr6BjmONdBVPVWJDiUJ6VmCX+bJ4wtOUy7ubN78hzkXxwEchTmEpuETIZ2NgftXkvXo5EVXHFrGVwtRub8Nvwfg3wBhzeQI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732727037;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=ThqB6Cw1Jz5IsPrydDGEs7scPjQXlxcw0xZC/VMUBio=;
+	b=ckZybp51h0i6ipcllrZLB5l8jXfgjNJzJGy+S71P1LMZkCIlaqu+H+DbvnSG+aGC
+	gtGEe0wy/JIURPNLz0/DNvdvMY7XSnSSklJgKrvSG/aZoH53/fsF54ghsKd6YM6l/9E
+	CL+vcyk/PXb/k1+En7vvaeeZ7o1uxZU/zwOdbK1U=
+Received: by mx.zohomail.com with SMTPS id 1732727035170332.7762190998259;
+	Wed, 27 Nov 2024 09:03:55 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [WIP RFC v2 15/35] WIP: rust: drm/kms: Add OpaquePlane and
+ OpaquePlaneState
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240930233257.1189730-16-lyude@redhat.com>
+Date: Wed, 27 Nov 2024 14:03:39 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Danilo Krummrich <dakr@kernel.org>,
+ mcanal@igalia.com,
+ airlied@redhat.com,
+ zhiw@nvidia.com,
+ cjia@nvidia.com,
+ jhubbard@nvidia.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ open list <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <46A2C748-0EC5-481D-8473-09182C1D44DF@collabora.com>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-16-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
+Hi Lyude,
 
-Linus,
+> On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Same thing as OpaqueCrtc and OpaqueCrtcState, but for plane states =
+now.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+>=20
+> TODO:
+> * Finish adding upcast functions.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/drm/kms/plane.rs | 143 +++++++++++++++++++++++++++++++++++
+> 1 file changed, 143 insertions(+)
+>=20
+> diff --git a/rust/kernel/drm/kms/plane.rs =
+b/rust/kernel/drm/kms/plane.rs
+> index 3040c4546b121..3ace487316d46 100644
+> --- a/rust/kernel/drm/kms/plane.rs
+> +++ b/rust/kernel/drm/kms/plane.rs
+> @@ -217,6 +217,43 @@ pub fn new<'a, 'b: 'a, const FMT_COUNT: usize, =
+const MOD_COUNT: usize>(
+>         // SAFETY: We don't move anything
+>         Ok(unsafe { &*Box::into_raw(Pin::into_inner_unchecked(this)) =
+})
+>     }
+> +
+> +    /// Attempt to convert an [`OpaquePlane`] into a fully qualified =
+[`Plane`].
+> +    ///
+> +    /// This checks if the given [`OpaquePlane`] uses the same =
+[`DriverPlane`] implementation, and
+> +    /// returns the [`OpaquePlane`] as a [`Plane`] object if so.
+> +    pub fn try_from_opaque<'a, D>(opaque: &'a OpaquePlane<D>) -> =
+Option<&'a Self>
+> +    where
+> +        D: KmsDriver,
+> +        T: DriverPlane<Driver =3D D>
+> +    {
+> +        // SAFETY: The vtables for a `Plane` are initialized by the =
+time that we expose `Plane`
+> +        // objects to users, and their values are invariant =
+throughout the lifetime of the device.
+> +        let funcs =3D unsafe { (*opaque.plane.get()).funcs };
+> +
+> +        // SAFETY: We just guaranteed that the opaque plane shares =
+our vtable pointers, which means
+> +        // it must belong to our `DriverPlane` implementation. As =
+well, all `Plane<DriverPlane>`
+> +        // objects start with an identical data layout to =
+`OpaquePlane`
+> +        ptr::eq(funcs, &T::OPS.funcs).then(|| unsafe { =
+mem::transmute(opaque) })
+> +    }
+> +
+> +    /// Convert a [`OpaquePlane`] into its fully qualified [`Plane`].
+> +    ///
+> +    /// This is an infallible version of [`Self::try_from_opaque`]. =
+This function is mainly useful
+> +    /// for drivers where only a single [`DriverPlane`] =
+implementation exists.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// This function will panic if the underlying [`Plane`] which =
+contains the provided
+> +    /// [`OpaquePlane`] does not belong to the same [`DriverPlane`] =
+implementation.
+> +    pub fn from_opaque<'a, D>(opaque: &'a OpaquePlane<D>) -> &'a Self
+> +    where
+> +        D: KmsDriver,
+> +        T: DriverPlane<Driver =3D D>
+> +    {
+> +        Self::try_from_opaque(opaque)
+> +            .expect("Passed OpaquePlane does not share this =
+DriverPlane implementation")
+> +    }
 
-Tracing updates for 6.13:
+I guess the same question from the previous patch applies. If a driver =
+has only a single implementor for
+`DriverPlane`, why should it care about OpaquePlane?
 
-- Add trace flag for NEED_RESCHED_LAZY
+> }
+>=20
+> /// A trait implemented by any type that acts as a [`struct =
+drm_plane`] interface.
+> @@ -275,6 +312,63 @@ unsafe impl<T: DriverPlane> Send for Plane<T> {}
+> // SAFETY: Our interface is thread-safe.
+> unsafe impl<T: DriverPlane> Sync for Plane<T> {}
+>=20
+> +/// A [`struct drm_plane`] without a known [`DriverPlane`] =
+implementation.
+> +///
+> +/// This is mainly for situations where our bindings can't infer the =
+[`DriverPlane`] implementation
+> +/// for a [`struct drm_plane`] automatically. It is identical to =
+[`Plane`], except that it does not
+> +/// provide access to the driver's private data.
+> +///
+> +/// It may be upcasted to a full [`Plane`] using =
+[`Plane::from_opaque`] or
+> +/// [`Plane::try_from_opaque`].
+> +///
+> +/// # Invariants
+> +///
+> +/// - `plane` is initialized for as long as this object is made =
+available to users.
+> +/// - The data layout of this structure is equivalent to [`struct =
+drm_plane`].
+> +///
+> +/// [`struct drm_plane`]: srctree/include/drm/drm_plane.h
+> +#[repr(transparent)]
+> +pub struct OpaquePlane<T: KmsDriver> {
+> +    plane: Opaque<bindings::drm_plane>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: KmsDriver> Sealed for OpaquePlane<T> {}
+> +
+> +impl<T: KmsDriver> AsRawPlane for OpaquePlane<T> {
+> +    type State =3D OpaquePlaneState<T>;
+> +
+> +    fn as_raw(&self) -> *mut bindings::drm_plane {
+> +        self.plane.get()
+> +    }
+> +
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::drm_plane) -> &'a Self =
+{
+> +        // SAFETY: Our data layout is identical to =
+`bindings::drm_plane`
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +}
+> +
+> +impl<T: KmsDriver> ModeObject for OpaquePlane<T> {
+> +    type Driver =3D T;
+> +
+> +    fn drm_dev(&self) -> &Device<Self::Driver> {
+> +        // SAFETY: DRM planes exist for as long as the device does, =
+so this pointer is always valid
+> +        unsafe { Device::borrow((*self.as_raw()).dev) }
+> +    }
+> +
+> +    fn raw_mode_obj(&self) -> *mut bindings::drm_mode_object {
+> +        // SAFETY: We don't expose DRM planes to users before `base` =
+is initialized
+> +        unsafe { &mut ((*self.as_raw()).base) }
+> +    }
+> +}
+> +
+> +// SAFETY: Planes do not have a refcount
+> +unsafe impl<T: KmsDriver> StaticModeObject for OpaquePlane<T> {}
+> +
+> +// SAFETY: Our plane interfaces are guaranteed to be thread-safe
+> +unsafe impl<T: KmsDriver> Send for OpaquePlane<T> {}
+> +unsafe impl<T: KmsDriver> Sync for OpaquePlane<T> {}
+> +
+> /// A trait implemented by any type which can produce a reference to a =
+[`struct drm_plane_state`].
+> ///
+> /// This is implemented internally by DRM.
+> @@ -419,6 +513,55 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+>     }
+> }
+>=20
+> +/// A [`struct drm_plane_state`] without a known [`DriverPlaneState`] =
+implementation.
+> +///
+> +/// This is mainly for situations where our bindings can't infer the =
+[`DriverPlaneState`]
+> +/// implementation for a [`struct drm_plane_state`] automatically. It =
+is identical to [`Plane`],
+> +/// except that it does not provide access to the driver's private =
+data.
+> +///
+> +/// TODO: Add upcast functions
+> +///
+> +/// # Invariants
+> +///
+> +/// - The DRM C API and our interface guarantees that only the user =
+has mutable access to `state`,
+> +///   up until [`drm_atomic_helper_commit_hw_done`] is called. =
+Therefore, `plane` follows rust's
+> +///   data aliasing rules and does not need to be behind an =
+[`Opaque`] type.
+> +/// - `state` is initialized for as long as this object is exposed to =
+users.
+> +/// - The data layout of this structure is identical to [`struct =
+drm_plane_state`].
+> +///
+> +/// [`struct drm_plane_state`]: srctree/include/drm/drm_plane.h
+> +/// [`drm_atomic_helper_commit_hw_done`]: =
+srctree/include/drm/drm_atomic_helper.h
+> +#[repr(transparent)]
+> +pub struct OpaquePlaneState<T: KmsDriver> {
+> +    state: bindings::drm_plane_state,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: KmsDriver> AsRawPlaneState for OpaquePlaneState<T> {
+> +    type Plane =3D OpaquePlane<T>;
+> +}
+> +
+> +impl<T: KmsDriver> private::AsRawPlaneState for OpaquePlaneState<T> {
+> +    fn as_raw(&self) -> &bindings::drm_plane_state {
+> +        &self.state
+> +    }
+> +
+> +    unsafe fn as_raw_mut(&mut self) -> &mut bindings::drm_plane_state =
+{
+> +        &mut self.state
+> +    }
+> +}
+> +
+> +impl<T: KmsDriver> FromRawPlaneState for OpaquePlaneState<T> {
+> +    unsafe fn from_raw<'a>(ptr: *const bindings::drm_plane_state) -> =
+&'a Self {
+> +        // SAFETY: Our data layout is identical to `ptr`
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    unsafe fn from_raw_mut<'a>(ptr: *mut bindings::drm_plane_state) =
+-> &'a mut Self {
+> +        // SAFETY: Our data layout is identical to `ptr`
+> +        unsafe { &mut *ptr.cast() }
+> +    }
+> +}
+> unsafe extern "C" fn plane_destroy_callback<T: DriverPlane>(
+>     plane: *mut bindings::drm_plane
+> ) {
+> --=20
+> 2.46.1
+>=20
 
-  Now that NEED_RESCHED_LAZY is upstream, add it to the status bits of the
-  common_flags. This will now show when the NEED_RESCHED_LAZY flag is set that
-  is used for debugging latency issues in the kernel via a trace.
+Apart for the clarification I asked above, this patch looks good.
 
-- Remove leftover "__idx" variable when SRCU was removed from the tracepoint
-  code
+=E2=80=94 Daniel
 
-- Add rcu_tasks_trace guard
-
-  To add a guard() around the tracepoint code, a rcu_tasks_trace guard needs
-  to be created first.
-
-- Remove __DO_TRACE() macro and just call __DO_TRACE_CALL() directly
-
-  The DO_TRACE() macro has conditional locking depending on what was passed
-  into the macro parameters. As the guts of the macro has been moved to
-  __DO_TRACE_CALL() to handle static call logic, there's no reason to keep
-  the __DO_TRACE() macro around. It is better to just do the locking in
-  place without the conditionals and call __DO_TRACE_CALL() from those
-  locations. The "cond" passed in can also be moved out of that macro.
-  This simplifies the code.
-
-- Remove the "cond" from the system call tracepoint macros
-
-  The "cond" variable was added to allow some tracepoints to check a
-  condition within the static_branch (jump/nop) logic. The system calls do
-  not need this. Removing it simplifies the code.
-
-- Replace scoped_guard() with just guard() in the tracepoint logic
-
-  guard() works just as well as scoped_guard() in the tracepoint logic and
-  the scoped_guard() causes some issues.
-
-[
-  NOTE: The rust tracepoint code added hooks to the same macros that were
-  modified in this pull request. The merge has non-trivial conflicts. I
-  fixed it up in my "for-next" branch in the same repository. That branch
-  was a merge of this branch into the commit where you pulled the rust
-  tracepoint code.
-
-  To be consistent, I kept the rust hooks in the system call macros even
-  though there are currently no Rust system calls. But if one day there is,
-  then this could be useful.
-
-  The rust folks may want to look at that merge too. I ran my normal tests
-  but I don't yet have anything that tests Rust tracepoints.
-]
-
-Please pull the latest trace-v6.13-2 tree, which can be found at:
-
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git
-trace-v6.13-2
-
-Tag SHA1: 6a46d81b2c10dc4fefcc063d9cc5478a66e9e7a2
-Head SHA1: 2bd9b57d04df417f31ef54448477c212fcdd14fc
-
-
-Mathieu Desnoyers (6):
-      tracing: Move it_func[0] comment to the relevant context
-      tracing: Remove __idx variable from __DO_TRACE
-      rcupdate_trace: Define rcu_tasks_trace lock guard
-      tracing: Remove conditional locking from __DO_TRACE()
-      tracing: Remove cond argument from __DECLARE_TRACE_SYSCALL
-      tracing: Use guard() rather than scoped_guard()
-
-Thomas Gleixner (1):
-      tracing: Record task flag NEED_RESCHED_LAZY.
-
-----
- Documentation/trace/ftrace.rst |  4 +++
- include/linux/rcupdate_trace.h |  5 +++
- include/linux/trace_events.h   |  1 +
- include/linux/tracepoint.h     | 70 +++++++++++++++---------------------------
- kernel/trace/trace.c           |  2 ++
- kernel/trace/trace_output.c    | 14 ++++++++-
- 6 files changed, 49 insertions(+), 47 deletions(-)
----------------------------
-diff --git a/Documentation/trace/ftrace.rst b/Documentation/trace/ftrace.rst
-index 74d5bd801b1a..272464bb7c60 100644
---- a/Documentation/trace/ftrace.rst
-+++ b/Documentation/trace/ftrace.rst
-@@ -1033,9 +1033,13 @@ explains which is which.
-   irqs-off: 'd' interrupts are disabled. '.' otherwise.
- 
-   need-resched:
-+	- 'B' all, TIF_NEED_RESCHED, PREEMPT_NEED_RESCHED and TIF_RESCHED_LAZY is set,
- 	- 'N' both TIF_NEED_RESCHED and PREEMPT_NEED_RESCHED is set,
- 	- 'n' only TIF_NEED_RESCHED is set,
- 	- 'p' only PREEMPT_NEED_RESCHED is set,
-+	- 'L' both PREEMPT_NEED_RESCHED and TIF_RESCHED_LAZY is set,
-+	- 'b' both TIF_NEED_RESCHED and TIF_RESCHED_LAZY is set,
-+	- 'l' only TIF_RESCHED_LAZY is set
- 	- '.' otherwise.
- 
-   hardirq/softirq:
-diff --git a/include/linux/rcupdate_trace.h b/include/linux/rcupdate_trace.h
-index eda493200663..e6c44eb428ab 100644
---- a/include/linux/rcupdate_trace.h
-+++ b/include/linux/rcupdate_trace.h
-@@ -10,6 +10,7 @@
- 
- #include <linux/sched.h>
- #include <linux/rcupdate.h>
-+#include <linux/cleanup.h>
- 
- extern struct lockdep_map rcu_trace_lock_map;
- 
-@@ -98,4 +99,8 @@ static inline void rcu_read_lock_trace(void) { BUG(); }
- static inline void rcu_read_unlock_trace(void) { BUG(); }
- #endif /* #ifdef CONFIG_TASKS_TRACE_RCU */
- 
-+DEFINE_LOCK_GUARD_0(rcu_tasks_trace,
-+	rcu_read_lock_trace(),
-+	rcu_read_unlock_trace())
-+
- #endif /* __LINUX_RCUPDATE_TRACE_H */
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 016b29a56c87..2a5df5b62cfc 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -184,6 +184,7 @@ unsigned int tracing_gen_ctx_irq_test(unsigned int irqs_status);
- 
- enum trace_flag_type {
- 	TRACE_FLAG_IRQS_OFF		= 0x01,
-+	TRACE_FLAG_NEED_RESCHED_LAZY	= 0x02,
- 	TRACE_FLAG_NEED_RESCHED		= 0x04,
- 	TRACE_FLAG_HARDIRQ		= 0x08,
- 	TRACE_FLAG_SOFTIRQ		= 0x10,
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 425123e921ac..e398f6e43f61 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -209,36 +209,6 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- #define __DO_TRACE_CALL(name, args)	__traceiter_##name(NULL, args)
- #endif /* CONFIG_HAVE_STATIC_CALL */
- 
--/*
-- * it_func[0] is never NULL because there is at least one element in the array
-- * when the array itself is non NULL.
-- *
-- * With @syscall=0, the tracepoint callback array dereference is
-- * protected by disabling preemption.
-- * With @syscall=1, the tracepoint callback array dereference is
-- * protected by Tasks Trace RCU, which allows probes to handle page
-- * faults.
-- */
--#define __DO_TRACE(name, args, cond, syscall)				\
--	do {								\
--		int __maybe_unused __idx = 0;				\
--									\
--		if (!(cond))						\
--			return;						\
--									\
--		if (syscall)						\
--			rcu_read_lock_trace();				\
--		else							\
--			preempt_disable_notrace();			\
--									\
--		__DO_TRACE_CALL(name, TP_ARGS(args));			\
--									\
--		if (syscall)						\
--			rcu_read_unlock_trace();			\
--		else							\
--			preempt_enable_notrace();			\
--	} while (0)
--
- /*
-  * Make sure the alignment of the structure in the __tracepoints section will
-  * not add unwanted padding between the beginning of the section and the
-@@ -250,7 +220,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
-  * site if it is not watching, as it will need to be active when the
-  * tracepoint is enabled.
-  */
--#define __DECLARE_TRACE_COMMON(name, proto, args, cond, data_proto)	\
-+#define __DECLARE_TRACE_COMMON(name, proto, args, data_proto)		\
- 	extern int __traceiter_##name(data_proto);			\
- 	DECLARE_STATIC_CALL(tp_func_##name, __traceiter_##name);	\
- 	extern struct tracepoint __tracepoint_##name;			\
-@@ -284,29 +254,31 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	}
- 
- #define __DECLARE_TRACE(name, proto, args, cond, data_proto)		\
--	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), cond, PARAMS(data_proto)) \
-+	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), PARAMS(data_proto)) \
- 	static inline void trace_##name(proto)				\
- 	{								\
--		if (static_branch_unlikely(&__tracepoint_##name.key))	\
--			__DO_TRACE(name,				\
--				TP_ARGS(args),				\
--				TP_CONDITION(cond), 0);			\
-+		if (static_branch_unlikely(&__tracepoint_##name.key)) { \
-+			if (cond) {					\
-+				guard(preempt_notrace)();		\
-+				__DO_TRACE_CALL(name, TP_ARGS(args));	\
-+			}						\
-+		}							\
- 		if (IS_ENABLED(CONFIG_LOCKDEP) && (cond)) {		\
- 			WARN_ONCE(!rcu_is_watching(),			\
- 				  "RCU not watching for tracepoint");	\
- 		}							\
- 	}
- 
--#define __DECLARE_TRACE_SYSCALL(name, proto, args, cond, data_proto)	\
--	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), cond, PARAMS(data_proto)) \
-+#define __DECLARE_TRACE_SYSCALL(name, proto, args, data_proto)		\
-+	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), PARAMS(data_proto)) \
- 	static inline void trace_##name(proto)				\
- 	{								\
- 		might_fault();						\
--		if (static_branch_unlikely(&__tracepoint_##name.key))	\
--			__DO_TRACE(name,				\
--				TP_ARGS(args),				\
--				TP_CONDITION(cond), 1);			\
--		if (IS_ENABLED(CONFIG_LOCKDEP) && (cond)) {		\
-+		if (static_branch_unlikely(&__tracepoint_##name.key)) {	\
-+			guard(rcu_tasks_trace)();			\
-+			__DO_TRACE_CALL(name, TP_ARGS(args));		\
-+		}							\
-+		if (IS_ENABLED(CONFIG_LOCKDEP)) {			\
- 			WARN_ONCE(!rcu_is_watching(),			\
- 				  "RCU not watching for tracepoint");	\
- 		}							\
-@@ -316,6 +288,9 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
-  * We have no guarantee that gcc and the linker won't up-align the tracepoint
-  * structures, so we create an array of pointers that will be used for iteration
-  * on the tracepoints.
-+ *
-+ * it_func[0] is never NULL because there is at least one element in the array
-+ * when the array itself is non NULL.
-  */
- #define __DEFINE_TRACE_EXT(_name, _ext, proto, args)			\
- 	static const char __tpstrtab_##_name[]				\
-@@ -386,7 +361,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 
- 
- #else /* !TRACEPOINTS_ENABLED */
--#define __DECLARE_TRACE(name, proto, args, cond, data_proto)		\
-+#define __DECLARE_TRACE_COMMON(name, proto, args, data_proto)		\
- 	static inline void trace_##name(proto)				\
- 	{ }								\
- 	static inline int						\
-@@ -410,7 +385,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 		return false;						\
- 	}
- 
--#define __DECLARE_TRACE_SYSCALL	__DECLARE_TRACE
-+#define __DECLARE_TRACE(name, proto, args, cond, data_proto)		\
-+	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), PARAMS(data_proto))
-+
-+#define __DECLARE_TRACE_SYSCALL(name, proto, args, data_proto)		\
-+	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), PARAMS(data_proto))
- 
- #define DEFINE_TRACE_FN(name, reg, unreg, proto, args)
- #define DEFINE_TRACE_SYSCALL(name, reg, unreg, proto, args)
-@@ -476,7 +455,6 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 
- #define DECLARE_TRACE_SYSCALL(name, proto, args)			\
- 	__DECLARE_TRACE_SYSCALL(name, PARAMS(proto), PARAMS(args),	\
--				cpu_online(raw_smp_processor_id()),	\
- 				PARAMS(void *__data, proto))
- 
- #define TRACE_EVENT_FLAGS(event, flag)
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 3ef047ed9705..be62f0ea1814 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2552,6 +2552,8 @@ unsigned int tracing_gen_ctx_irq_test(unsigned int irqs_status)
- 		trace_flags |= TRACE_FLAG_NEED_RESCHED;
- 	if (test_preempt_need_resched())
- 		trace_flags |= TRACE_FLAG_PREEMPT_RESCHED;
-+	if (IS_ENABLED(CONFIG_ARCH_HAS_PREEMPT_LAZY) && tif_test_bit(TIF_NEED_RESCHED_LAZY))
-+		trace_flags |= TRACE_FLAG_NEED_RESCHED_LAZY;
- 	return (trace_flags << 16) | (min_t(unsigned int, pc & 0xff, 0xf)) |
- 		(min_t(unsigned int, migration_disable_value(), 0xf)) << 4;
- }
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index e08aee34ef63..da748b7cbc4d 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -462,17 +462,29 @@ int trace_print_lat_fmt(struct trace_seq *s, struct trace_entry *entry)
- 		bh_off ? 'b' :
- 		'.';
- 
--	switch (entry->flags & (TRACE_FLAG_NEED_RESCHED |
-+	switch (entry->flags & (TRACE_FLAG_NEED_RESCHED | TRACE_FLAG_NEED_RESCHED_LAZY |
- 				TRACE_FLAG_PREEMPT_RESCHED)) {
-+	case TRACE_FLAG_NEED_RESCHED | TRACE_FLAG_NEED_RESCHED_LAZY | TRACE_FLAG_PREEMPT_RESCHED:
-+		need_resched = 'B';
-+		break;
- 	case TRACE_FLAG_NEED_RESCHED | TRACE_FLAG_PREEMPT_RESCHED:
- 		need_resched = 'N';
- 		break;
-+	case TRACE_FLAG_NEED_RESCHED_LAZY | TRACE_FLAG_PREEMPT_RESCHED:
-+		need_resched = 'L';
-+		break;
-+	case TRACE_FLAG_NEED_RESCHED | TRACE_FLAG_NEED_RESCHED_LAZY:
-+		need_resched = 'b';
-+		break;
- 	case TRACE_FLAG_NEED_RESCHED:
- 		need_resched = 'n';
- 		break;
- 	case TRACE_FLAG_PREEMPT_RESCHED:
- 		need_resched = 'p';
- 		break;
-+	case TRACE_FLAG_NEED_RESCHED_LAZY:
-+		need_resched = 'l';
-+		break;
- 	default:
- 		need_resched = '.';
- 		break;
