@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EAE22F19;
-	Wed, 27 Nov 2024 15:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBE91FF618;
+	Wed, 27 Nov 2024 15:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732719854; cv=pass; b=L43t+a5d6NLw7dvmHg9vl8F8NN/3c58/jYOxmhNDrQLHyjPuQQ9yao978uvTK2ZGq2S9mikVzGTi+zlZhWovPOm09hy9Tw9WFaCzMVQAyZ3UVj/WTHvUZdlB6IIToikaEG2WIcQccm+iVAYqSm2ddw8PD1cZWMM9agjNxxurR1E=
+	t=1732720035; cv=pass; b=W9KftzHPKBspVgC2q4fwkAmBRxa61Ds8+DSDg1uw/1Ut4FVtgZKPaoONi1kMA9LWTs+dQiaWQr5aJR7LrykQyT+9/Awsyb/IjzyvpBjnEBZqyMnXvoz7cuxp7/z7WkqD3M0vJJ5Uaxru9hWKVbHcHlreAWgiRE4n3Q6dFKgtDJs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732719854; c=relaxed/simple;
-	bh=Z4IKFz06Y9RDesPH4CweTGLKX30G2sOGMAK6Acuf7tU=;
+	s=arc-20240116; t=1732720035; c=relaxed/simple;
+	bh=YOVz3exFE0twAFXL1XTpL57NZ1Qev6NpZyh1a9EppP0=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ryMdREe0kgNrlZwuwNEjgurts/hks6Vfc243JIaIoTGg+Iz9RbQbC80wd5TJDHLSvBiBvMvrndnPeGXhApEXxlmrt+rgAU7xumjyxKrPJNAdvzsGBDeZgf3wIKxf6g1F6oclwHmdFzre/q30wcSenqWSfErVsXkuPOngJsFkTEw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=aPOtoNAI; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=dWVx7y22fwItuz6uQcBQyFtOPk+T+AK5gPXMuaWwdHS6/F9LklIb1xz3vAmH9Kx764wXnGsw1EksynPTdTwQuzZTw30dec+oAZ9gSnmZbBKjm1JzNHCdNF3D86nFhERNZT+NJ2qMpHSTrilySZkn5vALtyDZPnDHTllUOZh2pKY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=PzloyXAr; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="aPOtoNAI"
-ARC-Seal: i=1; a=rsa-sha256; t=1732719810; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="PzloyXAr"
+ARC-Seal: i=1; a=rsa-sha256; t=1732719990; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ic+sSeblIlMzNmyx93ijjM1GVdyzE8/eGMi0aumB5MO+91VUZg0htzi62u5hSN9WpJ56wqeFH/UhXH9uj+JQgZgIg6DSxqmf6l+w0lc+wkgHg5CSiD7GK1nfrZE0NzFBfUhTLmQ3xElUHpISB5wpQ7grX701ZMKN6YiGzAGnW7U=
+	b=k9bzAax6RmR5/F5C45GGWZDFpRGAXYP7OeTqFeTTp+4k6UCM64LTAWFLI3tO2vbCxCRMGQN0v3GIPL3/JKCPecW5ts0iRSdV8iQIoBfhfB2TaBeSzPZIuhsIIS7E/i4MEa/t/4pw5hu8qpK9nNRyBDGPkgUNgZWTR1AdyoV5ugE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1732719810; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=FW2BjeUhmf7EpI5P3+7+Tgb5Vu35+00rH6VSDQTpzOs=; 
-	b=gz6heiuUIt8N6kz6ksWOgP1BLJgCM4qQADfmxgNNNk2QR5KLU7/ARiu5O9EK3yVrd54llobMhPzzjsIN0D0cFlePh/vtaxO6QKu0ZuW/X2izzdaBRsWS4N2281B/jCBRKoDrnajn1JSlBXAdw+ucroTXFA9pnxfb2iKB/6zV8uI=
+	t=1732719990; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=cTB8tVP17iTCkKFJEUEvpmnCqtzZZquvxdFQUNiJ0OQ=; 
+	b=XfH9j0lr3L9nX1bzR8topmlg+5dzATMQzgEJ+akN0k25BZVcvVlpNPCi3J/FvD9OpdQCjUzkiEfy6JTQ3s/7zhyPFXa6gBfM+qaUWibnxFKuK14zCifv3bwfN46X0rID2CX4yAXc43i2B/KK58KHiFN5ZbjcVt59oadKD6b4SL8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732719810;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732719990;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=FW2BjeUhmf7EpI5P3+7+Tgb5Vu35+00rH6VSDQTpzOs=;
-	b=aPOtoNAIrmmuzLep4Wzb6pO4kc3Cln6MTfq7VDzbpP1q6Hjt5bMFdi1cZt2ugBcS
-	FcBbo2qKnUZWqm0KB9/ZCoDmoNMp3StxSiWsA+RrE3cdhfAUrAV1rba+TXysScyR7Dv
-	MihD8dBvkVtVtYRv/8dH6K2icKJWl6GQJn+1ZkvY=
-Received: by mx.zohomail.com with SMTPS id 1732719808969656.9652960943769;
-	Wed, 27 Nov 2024 07:03:28 -0800 (PST)
+	bh=cTB8tVP17iTCkKFJEUEvpmnCqtzZZquvxdFQUNiJ0OQ=;
+	b=PzloyXArepdtqElxALV2pCihTwsS1LA36w1rAwZxpgi9tYXVyfzOtePTpdm+oJsK
+	Wt+ynMeCwWW8pXC+l1/BHCvYQPWsLlIkOl/QEOVRxPGDtOYkhVFTNVV43dNCSioXZ1D
+	F9VKH79/u4YA7DLVHlF1prAzTIfiMNu0jBDdGimE=
+Received: by mx.zohomail.com with SMTPS id 1732719989945619.4745434437646;
+	Wed, 27 Nov 2024 07:06:29 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,11 +44,11 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [WIP RFC v2 10/35] rust: drm/kms: Add DriverConnector::get_mode
- callback
+Subject: Re: [WIP RFC v2 11/35] rust: drm/kms: Add
+ ConnectorGuard::add_modes_noedid()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20240930233257.1189730-11-lyude@redhat.com>
-Date: Wed, 27 Nov 2024 12:03:14 -0300
+In-Reply-To: <20240930233257.1189730-12-lyude@redhat.com>
+Date: Wed, 27 Nov 2024 12:06:14 -0300
 Cc: dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  Asahi Lina <lina@asahilina.net>,
@@ -68,11 +68,13 @@ Cc: dri-devel@lists.freedesktop.org,
  Andreas Hindborg <a.hindborg@samsung.com>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@redhat.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
  open list <linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <36E11299-A121-46DB-8F8D-45AC4B99BCE6@collabora.com>
+Message-Id: <C008D12A-C5C0-46A9-81D7-8B544341A80C@collabora.com>
 References: <20240930233257.1189730-1-lyude@redhat.com>
- <20240930233257.1189730-11-lyude@redhat.com>
+ <20240930233257.1189730-12-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.200.121)
 X-ZohoMailClient: External
@@ -81,302 +83,58 @@ Hi Lyude,
 
 > On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> Next up is filling out some of the basic connector hotplugging =
-callbacks -
-> which we'll need for setting up the fbdev helpers for KMS devices. =
-Note
-> that connector hotplugging in DRM follows a BFL scheme: pretty much =
-all
-
-A what scheme?
-
-> probing is protected under the mighty drm_device->mode_config.lock, =
-which
-> of course is a bit counter-intuitive to rust's locking schemes where =
-data
-> is always associated with its lock.
->=20
-> Since that lock is embedded in an FFI type and not a rust type, we =
-need to
-> introduce our own wrapper type that acts as a lock acquisition for =
-this.
-> This brings us to introducing a few new types:
->=20
-> * ModeConfigGuard - the most basic lock guard, as long as this object =
-is
->  alive we are guaranteed to be holding drm_device->mode_config.lock. =
-This
->  object doesn't do much else on its own currently.
-> * ConnectorGuard - an object which corresponds to a specific typed DRM
->  connector. This can only be acquired with a ModeConfigGuard, and will =
-be
->  used to allow calling methods that are only safe to call with
->  drm_device->mode_config.lock held. Since it implements
->  Deref<Target=3DConnector<T>> as well, it can also be used for any =
-other
->  operations that would normally be available on a DRM connector.
->=20
-> And finally, we add the DriverConnector::get_modes() trait method =
-which
-> drivers can use to implement the drm_connector_helper_funcs.get_modes
-> callback. Note that while we make this trait method mandatory, we only =
-do
-> so for the time being since VKMS doesn't do very much with DRM =
-connectors -
-> and as such we have no need yet to implement alternative connector =
-probing
-> schemes outside of get_modes().
+> A simple binding for drm_add_modes_noedid() using the ConnectorGuard =
+type
+> we just added.
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
-> rust/kernel/drm/kms.rs           | 70 ++++++++++++++++++++++++++++++++
-> rust/kernel/drm/kms/connector.rs | 57 ++++++++++++++++++++++++--
-> 2 files changed, 124 insertions(+), 3 deletions(-)
+> rust/bindings/bindings_helper.h  |  2 ++
+> rust/kernel/drm/kms/connector.rs | 11 +++++++++++
+> 2 files changed, 13 insertions(+)
 >=20
-> diff --git a/rust/kernel/drm/kms.rs b/rust/kernel/drm/kms.rs
-> index d5cad598f016f..d74267c78864f 100644
-> --- a/rust/kernel/drm/kms.rs
-> +++ b/rust/kernel/drm/kms.rs
-> @@ -18,6 +18,8 @@
->     types::*,
->     error::to_result,
->     private::Sealed,
-> +    sync::{Mutex, MutexGuard},
-> +    container_of
-> };
-> use core::{
->     ops::Deref,
-> @@ -233,6 +235,21 @@ impl<T, K> KmsDriver for T
->     T: Driver<Kms =3D K>,
->     K: Kms<Driver =3D T> {}
->=20
-> +impl<T: KmsDriver> Device<T> {
-> +    /// Retrieve a pointer to the mode_config mutex
-> +    #[inline]
-> +    pub(crate) fn mode_config_mutex(&self) -> &Mutex<()> {
-> +        // SAFETY: This lock is initialized for as long as =
-`Device<T>` is exposed to users
-> +        unsafe { Mutex::from_raw(&mut =
-(*self.as_raw()).mode_config.mutex) }
-
-Again, a bit hard to understand what=E2=80=99s going on here, since =
-everything is on a single line.
-
-> +    }
-> +
-> +    /// Acquire the [`mode_config.mutex`] for this [`Device`].
-> +    #[inline]
-> +    pub fn mode_config_lock(&self) -> ModeConfigGuard<'_, T> {
-> +        ModeConfigGuard(self.mode_config_mutex().lock(), PhantomData)
-> +    }
-> +}
-> +
-> /// A modesetting object in DRM.
-> ///
-> /// This is any type of object where the underlying C object contains =
-a [`struct drm_mode_object`].
-> @@ -339,3 +356,56 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
->         unsafe { =
-bindings::drm_mode_object_put(obj.as_ref().raw_mode_obj()) }
->     }
-> }
-> +
-> +/// A mode config guard.
-> +///
-> +/// This is an exclusive primitive that represents when =
-[`drm_device.mode_config.mutex`] is held - as
-> +/// some modesetting operations (particularly ones related to =
-[`connectors`](connector)) are still
-> +/// protected under this single lock. The lock will be dropped once =
-this object is dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// - `self.0` is contained within a [`struct drm_mode_config`], =
-which is contained within a
-> +///   [`struct drm_device`].
-> +/// - The [`KmsDriver`] implementation of that [`struct drm_device`] =
-is always `T`.
-> +/// - This type proves that [`drm_device.mode_config.mutex`] is =
-acquired.
-> +///
-> +/// [`struct drm_mode_config`]: (srctree/include/drm/drm_device.h)
-> +/// [`drm_device.mode_config.mutex`]: =
-(srctree/include/drm/drm_device.h)
-> +/// [`struct drm_device`]: (srctree/include/drm/drm_device.h)
-> +pub struct ModeConfigGuard<'a, T: KmsDriver>(MutexGuard<'a, ()>, =
-PhantomData<T>);
-> +
-> +impl<'a, T: KmsDriver> ModeConfigGuard<'a, T> {
-> +    /// Construct a new [`ModeConfigGuard`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that [`drm_device.mode_config.mutex`] =
-is acquired.
-> +    ///
-> +    /// [`drm_device.mode_config.mutex`]: =
-(srctree/include/drm/drm_device.h)
-> +    pub(crate) unsafe fn new(drm: &'a Device<T>) -> Self {
-> +        // SAFETY: Our safety contract fulfills the requirements of =
-`MutexGuard::new()`
-> +        Self(unsafe { MutexGuard::new(drm.mode_config_mutex(), ()) }, =
-PhantomData)
-> +    }
-> +
-> +    /// Return the [`Device`] that this [`ModeConfigGuard`] belongs =
-to.
-> +    pub fn drm_dev(&self) -> &'a Device<T> {
-> +        // SAFETY:
-> +        // - `self` is embedded within a `drm_mode_config` via our =
-type invariants
-> +        // - `self.0.lock` has an equivalent data type to `mutex` via =
-its type invariants.
-> +        let mode_config =3D unsafe { container_of!(self.0.lock, =
-bindings::drm_mode_config, mutex) };
-> +
-> +        // SAFETY: And that `drm_mode_config` lives in a `drm_device` =
-via type invariants.
-> +        unsafe { Device::borrow(container_of!(mode_config, =
-bindings::drm_device, mode_config)) }
-> +    }
-> +
-> +    /// Assert that the given device is the owner of this mode config =
-guard.
-> +    ///
-> +    /// # Panics
-> +    ///
-> +    /// Panics if `dev` is different from the owning device for this =
-mode config guard.
-> +    #[inline]
-> +    pub(crate) fn assert_owner(&self, dev: &Device<T>) {
-> +        assert!(ptr::eq(self.drm_dev(), dev));
-> +    }
-> +}
+> diff --git a/rust/bindings/bindings_helper.h =
+b/rust/bindings/bindings_helper.h
+> index ba1871b05b7fa..7695f11f4363c 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -10,6 +10,7 @@
+> #include <drm/drm_atomic_helper.h>
+> #include <drm/drm_device.h>
+> #include <drm/drm_drv.h>
+> +#include <drm/drm_edid.h>
+> #include <drm/drm_file.h>
+> #include <drm/drm_fourcc.h>
+> #include <drm/drm_fbdev_dma.h>
+> @@ -19,6 +20,7 @@
+> #include <drm/drm_gem_shmem_helper.h>
+> #include <drm/drm_mode_object.h>
+> #include <drm/drm_ioctl.h>
+> +#include <drm/drm_probe_helper.h>
+> #include <kunit/test.h>
+> #include <linux/blk-mq.h>
+> #include <linux/blk_types.h>
 > diff --git a/rust/kernel/drm/kms/connector.rs =
 b/rust/kernel/drm/kms/connector.rs
-> index 54457b327c365..57ab29473c344 100644
+> index 57ab29473c344..7d0f67c3bdaf8 100644
 > --- a/rust/kernel/drm/kms/connector.rs
 > +++ b/rust/kernel/drm/kms/connector.rs
-> @@ -19,7 +19,7 @@
-> use core::{
->     marker::*,
->     ptr::null_mut,
-> -    mem,
-> +    mem::{self, ManuallyDrop},
->     ptr::{self, NonNull, addr_of_mut},
->     ffi::*,
->     ops::*,
-> @@ -28,6 +28,7 @@
-> use super::{
->     ModeObject,
->     RcModeObject,
-> +    ModeConfigGuard,
->     encoder::*,
->     KmsDriver,
-> };
-> @@ -93,7 +94,7 @@ pub trait DriverConnector: Send + Sync + Sized {
->             destroy: Some(connector_destroy_callback::<Self>),
->             force: None,
->             detect: None,
-> -            fill_modes: None,
-> +            fill_modes: =
-Some(bindings::drm_helper_probe_single_connector_modes),
->             debugfs_init: None,
->             oob_hotplug_event: None,
->             atomic_duplicate_state: =
-Some(atomic_duplicate_state_callback::<Self::State>),
-> @@ -101,7 +102,7 @@ pub trait DriverConnector: Send + Sync + Sized {
->         helper_funcs: bindings::drm_connector_helper_funcs {
->             mode_valid: None,
->             atomic_check: None,
-> -            get_modes: None,
-> +            get_modes: Some(get_modes_callback::<Self>),
->             detect_ctx: None,
->             enable_hpd: None,
->             disable_hpd: None,
-> @@ -132,6 +133,12 @@ pub trait DriverConnector: Send + Sync + Sized {
->     ///
->     /// Drivers may use this to instantiate their [`DriverConnector`] =
-object.
->     fn new(device: &Device<Self::Driver>, args: Self::Args) -> impl =
-PinInit<Self, Error>;
-> +
-> +    /// Retrieve a list of available display modes for this =
-[`Connector`].
-> +    fn get_modes<'a>(
-> +        connector: ConnectorGuard<'a, Self>,
-> +        guard: &ModeConfigGuard<'a, Self::Driver>
-> +    ) -> i32;
-> }
->=20
-> /// The generated C vtable for a [`DriverConnector`].
-> @@ -229,6 +236,19 @@ pub fn new(
->         })
+> @@ -378,6 +378,17 @@ fn deref(&self) -> &Self::Target {
 >     }
->=20
-> +    /// Acquire a [`ConnectorGuard`] for this connector from a =
-[`ModeConfigGuard`].
-> +    ///
-> +    /// This verifies using the provided reference that the given =
-guard is actually for the same
-> +    /// device as this connector's parent.
-> +    ///
-> +    /// # Panics
-> +    ///
-> +    /// Panics if `guard` is not a [`ModeConfigGuard`] for this =
-connector's parent [`Device`].
-> +    pub fn guard<'a>(&'a self, guard: &ModeConfigGuard<'a, =
-T::Driver>) -> ConnectorGuard<'a, T> {
-> +        guard.assert_owner(self.drm_dev());
-> +        ConnectorGuard(self)
-> +    }
-> +
->     /// Attach an encoder to this [`Connector`].
->     ///
->     /// TODO: Move this to an `UnregisteredConnector` interface =
-somehow=E2=80=A6
-> @@ -327,6 +347,37 @@ unsafe fn from_raw<'a>(ptr: *mut =
-bindings::drm_connector) -> &'a Self {
->     drop(unsafe { Box::from_raw(connector as *mut Connector<T>) });
 > }
 >=20
-> +unsafe extern "C" fn get_modes_callback<T: DriverConnector>(
-> +    connector: *mut bindings::drm_connector,
-> +) -> c_int {
-> +    // SAFETY: This is safe via `DriverConnector`s type invariants.
-> +    let connector =3D unsafe { Connector::<T>::from_raw(connector) };
-> +
-> +    // SAFETY: This FFI callback is only called while =
-`mode_config.lock` is held
-> +    let guard =3D ManuallyDrop::new(unsafe { =
-ModeConfigGuard::new(connector.drm_dev()) });
-
-I=E2=80=99m confused. Can you explain what this ManuallyDrop is being =
-used for?
-
-> +
-> +    T::get_modes(connector.guard(&guard), &guard)
-> +}
-> +
-> +/// A privileged [`Connector`] obtained while holding a =
-[`ModeConfigGuard`].
-> +///
-> +/// This provides access to various methods for [`Connector`] that =
-must happen under lock, such as
-> +/// setting resolution preferences and adding display modes.
-> +///
-> +/// # Invariants
-> +///
-> +/// Shares the invariants of [`ModeConfigGuard`].
-> +#[derive(Copy, Clone)]
-> +pub struct ConnectorGuard<'a, T: DriverConnector>(&'a Connector<T>);
-> +
-> +impl<T: DriverConnector> Deref for ConnectorGuard<'_, T> {
-> +    type Target =3D Connector<T>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        self.0
+> +impl<'a, T: DriverConnector> ConnectorGuard<'a, T> {
+> +    /// Add modes for a [`ConnectorGuard`] without an EDID.
+> +    ///
+> +    /// Add the specified modes to the connector's mode list up to =
+the given maximum resultion.
+> +    /// Returns how many modes were added.
+> +    pub fn add_modes_noedid(&self, (max_h, max_v): (i32, i32)) -> i32 =
+{
+> +        // SAFETY: We hold the locks required to call this via our =
+type invariants.
+> +        unsafe { bindings::drm_add_modes_noedid(self.as_raw(), max_h, =
+max_v) }
 > +    }
 > +}
 > +
@@ -386,6 +144,8 @@ must happen under lock, such as
 > --=20
 > 2.46.1
 >=20
+
+LGTM.
 
 =E2=80=94 Daniel
 
