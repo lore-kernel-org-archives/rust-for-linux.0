@@ -1,177 +1,130 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail.w14.tutanota.de (mail.w14.tutanota.de [185.205.69.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE70A140E38;
-	Wed, 27 Nov 2024 19:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732736182; cv=pass; b=owusdo2lstf2NGKRWoBHWMoTg0rlU1cJ+2mvf3NIvwoEHwDOCgtRJ+19AwmSEvsjz7iL+atjID83Ab8zZ14xdV2BK99Q1rvSymW5RZzWKlGEOLI8wpAtGangr15YnTm3+o1kwrBnV82GoARd0qWg4wbNGb+AObZVJQTfI42muks=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732736182; c=relaxed/simple;
-	bh=NE388iVPpvaBpvGxTNK1Un0mwqG4BlziEkeChtEvX+Q=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=dTmvmypdnl5zFOBEaFInkun95e+DnIYMOrglpUDXyxPC5bE9B+QcEPvZSVnN7Znq8P6ubjpu8qziiOf1/tYz8kKyW8qUoGToGQfMg9FZKFkPoKQ4zksHmK2QtgH3fScDO8CpQ4ckZXrPbsQYviUCOfQxXPhPVMluyLDGEB0+iKQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=kZK6rJCN; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D681C82D66;
+	Wed, 27 Nov 2024 19:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.205.69.214
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732737130; cv=none; b=WnxySwbRmURufTLghoDBajgUiBaOj5wceygXWThSoUkEBOxYNSPV3qFj6QafjfrDiJmRDgQ4Uytycdgnr5aSLvalCheZe697d+Ej22TE+4mDvgEzf3PLRuNn/UrlrqvKs7K2eYhvc6ChWnv3xw47fQ2kQqgQKMba2OAHS9ebXck=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732737130; c=relaxed/simple;
+	bh=9OXWDCL+ZUm0Rd4Zlgsj1Uw1/4MpCmgYer0oaJua2iU=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=QulnEx7v6xoPTsvPIy57m3P3YdYLJUAOzEUcCvHpCc0AjNcoUrAREPJp7/02CKyQ81WC7ObIPZq4HsXX7gcMuFv25caoOwKFAnJpwXl5/aBx5o1AXD5brLs/ixckLRZ8GCLN+3Svf0+y4D5IzZ0iadOec/mTxgNjVJkKmKcSjBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuta.io; spf=pass smtp.mailfrom=tuta.io; dkim=pass (2048-bit key) header.d=tuta.io header.i=@tuta.io header.b=szzFNdQF; arc=none smtp.client-ip=185.205.69.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuta.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuta.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="kZK6rJCN"
-ARC-Seal: i=1; a=rsa-sha256; t=1732736146; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Y2r6QH9W7W4HwO1pYW0MPKURYgp7zrT5GxK/aMkSb9k1opBCVSduaQ3Y32Tyn95PSN3E4s8fVVvTnJcGetGqiuHbHAdPCncoRoXpHmtoO0N+iYW7j9J9gYQOZbUIBaZcWtbIctY8Mytw7mrPprRJtTTRamjRV3of/0v0uSig0tI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1732736146; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Z8d4w5bTmj38SdaBknN0Buc18AmnCZ/rgUCkilbxcZo=; 
-	b=MR7rCEiqQOElmGaGAmWDx3vjlXYUfdFYOzOdzLBgWdIMCBgD9hVYIYoV1SrSro3j9TYjOS0SrwuCzNvwqPzX0z6xJpzJNk/b//eBNZ0km8OqsSHovt0V/V5NyVQ6fFv5W8Ifc6OjDT4qzZnNhvLbNp6JEMHJOlyyZMi6nBoy4MY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732736146;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=Z8d4w5bTmj38SdaBknN0Buc18AmnCZ/rgUCkilbxcZo=;
-	b=kZK6rJCNZr2dnqjM9TSsLF/iWqz3QjYsHEhfAktU9UOPnRNsUqhRSH7qFt7KoPc4
-	tJq+OhedNH6UqXtxN6YYu65WUbI2m0yhE2IAQTBlh/tBX6xAhCGe6MC73m1Z37vCkEa
-	Rm42k5OEsRIEM3swImwi3wxiRzdtPlPm/r9b+hb8=
-Received: by mx.zohomail.com with SMTPS id 1732736144982179.1544890029311;
-	Wed, 27 Nov 2024 11:35:44 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=tuta.io header.i=@tuta.io header.b="szzFNdQF"
+Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
+	by mail.w14.tutanota.de (Postfix) with ESMTP id BCA363F4D5EE;
+	Wed, 27 Nov 2024 20:46:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732736761;
+	s=s1; d=tuta.io;
+	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
+	bh=9OXWDCL+ZUm0Rd4Zlgsj1Uw1/4MpCmgYer0oaJua2iU=;
+	b=szzFNdQFIfU7RJm/QK/TMQ9Z8aNLzvy0B+Qj/XhaYc/1RnFgDFhoSBKtXhcdqXOL
+	CC5gH2Us1sgnnDLUrD0vXsiaIyyChGBklqbQJaqUfpMF+RJVVmIUHXeoo64WS+xjaIU
+	gUZM62YPPDY+YcAn/Din9uhqQH3zejBor0t3yiA/v2RxONLME6gyCRIdBN6S7S36LEV
+	b/ttKJIG3MHR9f3TFUVffe/XRCvDwxlw+gWKyHy4f8RQfeUqTPs/m7kNuRjx9QEkG6J
+	Z+b9HXWcRBxQtgrt+0/fRyJ4GNLckUskD7C5EAZNAXyLLCl2Q94l8ARPnDySGmIGYY/
+	Wn0AJrib7w==
+Date: Wed, 27 Nov 2024 20:46:01 +0100 (CET)
+From: jens.korinth@tuta.io
+To: Daniel Sedlak <daniel@sedlak.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rust For Linux <rust-for-linux@vger.kernel.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Linux Kernel <linux-kernel@vger.kernel.org>
+Message-ID: <OCj9As8--F-9@tuta.io>
+In-Reply-To: <230b3602-5d68-4e79-969d-0d2df1fdf033@sedlak.dev>
+References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io> <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io> <230b3602-5d68-4e79-969d-0d2df1fdf033@sedlak.dev>
+Subject: Re: [PATCH v4 1/3] rust: Add `OnceLite` for executing code once
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [WIP RFC v2 19/35] WIP: rust: drm/kms: Add OpaqueEncoder
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20240930233257.1189730-20-lyude@redhat.com>
-Date: Wed, 27 Nov 2024 16:35:30 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Asahi Lina <lina@asahilina.net>,
- Danilo Krummrich <dakr@kernel.org>,
- mcanal@igalia.com,
- airlied@redhat.com,
- zhiw@nvidia.com,
- cjia@nvidia.com,
- jhubbard@nvidia.com,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- open list <linux-kernel@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C8281624-85B3-423E-8451-354F4BC16B97@collabora.com>
-References: <20240930233257.1189730-1-lyude@redhat.com>
- <20240930233257.1189730-20-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-ZohoMailClient: External
 
-Hi Lyude,
+> Have you considered it to be implemented like `AtomicU32`? I think=E2=84=
+=A2 that
+> one atomic variable is more than enough.
 
-> On 30 Sep 2024, at 20:10, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> Same thing as OpaquePlane, but for encoders now.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->=20
-> ---
->=20
-> TODO:
-> * Add upcast functions for this
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
-> rust/kernel/drm/kms/encoder.rs | 55 ++++++++++++++++++++++++++++++++++
-> 1 file changed, 55 insertions(+)
->=20
-> diff --git a/rust/kernel/drm/kms/encoder.rs =
-b/rust/kernel/drm/kms/encoder.rs
-> index 3ae597093645e..71fae45d2d651 100644
-> --- a/rust/kernel/drm/kms/encoder.rs
-> +++ b/rust/kernel/drm/kms/encoder.rs
-> @@ -235,6 +235,61 @@ pub fn new<'a, 'b: 'a>(
->     }
-> }
->=20
-> +/// A [`struct drm_encoder`] without a known [`DriverEncoder`] =
-implementation.
-> +///
-> +/// This is mainly for situations where our bindings can't infer the =
-[`DriverEncoder`] implementation
-> +/// for a [`struct drm_encoder`] automatically. It is identical to =
-[`Encoder`], except that it does not
-> +/// provide access to the driver's private data.
-> +///
-> +/// TODO: Add functions for upcasting.
-> +///
-> +/// # Invariants
-> +///
-> +/// Same as [`Encoder`].
-> +#[repr(transparent)]
-> +pub struct OpaqueEncoder<T: KmsDriver> {
-> +    encoder: Opaque<bindings::drm_encoder>,
-> +    _p: PhantomData<T>,
-> +}
-> +
-> +impl<T: KmsDriver> Sealed for OpaqueEncoder<T> {}
-> +
-> +// SAFETY: All of our encoder interfaces are thread-safe
-> +unsafe impl<T: KmsDriver> Send for OpaqueEncoder<T> {}
-> +
-> +// SAFETY: All of our encoder interfaces are thread-safe
-> +unsafe impl<T: KmsDriver> Sync for OpaqueEncoder<T> {}
-> +
-> +impl<T: KmsDriver> ModeObject for OpaqueEncoder<T> {
-> +    type Driver =3D T;
-> +
-> +    fn drm_dev(&self) -> &Device<Self::Driver> {
-> +        // SAFETY: DRM encoders exist for as long as the device does, =
-so this pointer is always
-> +        // valid
-> +        unsafe { Device::borrow((*self.encoder.get()).dev) }
-> +    }
-> +
-> +    fn raw_mode_obj(&self) -> *mut bindings::drm_mode_object {
-> +        // SAFETY: We don't expose Encoder<T> to users before it's =
-initialized, so `base` is always
-> +        // initialized
-> +        unsafe { addr_of_mut!((*self.encoder.get()).base) }
-> +    }
-> +}
-> +
-> +// SAFETY: Encoders do not have a refcount
-> +unsafe impl<T: KmsDriver> StaticModeObject for OpaqueEncoder<T> {}
-> +
-> +impl<T: KmsDriver> AsRawEncoder for OpaqueEncoder<T> {
-> +    fn as_raw(&self) -> *mut bindings::drm_encoder {
-> +        self.encoder.get()
-> +    }
-> +
-> +    unsafe fn from_raw<'a>(ptr: *mut bindings::drm_encoder) -> &'a =
-Self {
-> +        // SAFETY: Our data layout is identical to =
-`bindings::drm_encoder`
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +}
-> +
-> unsafe extern "C" fn encoder_destroy_callback<T: DriverEncoder>(
->     encoder: *mut bindings::drm_encoder
-> ) {
-> --=20
-> 2.46.1
->=20
+Just to clarify - you mean something like this? Nevermind the magic numbers=
+,
+I'd replace them, of course.
 
-No `from_opaque` and `try_from_opaque` like the previous patches?
+diff --git a/rust/kernel/once_lite.rs b/rust/kernel/once_lite.rs
+index 723c3244fc85..0622ecbfced5 100644
+--- a/rust/kernel/once_lite.rs
++++ b/rust/kernel/once_lite.rs
+@@ -16,7 +16,7 @@
+//!
+//! Reference: <https://doc.rust-lang.org/std/sync/struct.Once.html>
+=C2=A0
+-use core::sync::atomic::{AtomicBool, Ordering::Relaxed};
++use core::sync::atomic::{AtomicU32, Ordering::Acquire, Ordering::Relaxed};
+=C2=A0
+/// A low-level synchronization primitive for one-time global execution.
+///
+@@ -44,13 +44,13 @@
+/// assert_eq!(x, 42);
+/// ```
+///
+-pub struct OnceLite(AtomicBool, AtomicBool);
++pub struct OnceLite(AtomicU32);
+=C2=A0
+impl OnceLite {
+=C2=A0=C2=A0=C2=A0=C2=A0 /// Creates a new `OnceLite` value.
+=C2=A0=C2=A0=C2=A0=C2=A0 #[inline(always)]
+=C2=A0=C2=A0=C2=A0=C2=A0 pub const fn new() -> Self {
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self(AtomicBool::new(false), At=
+omicBool::new(false))
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self(AtomicU32::new(0))
+=C2=A0=C2=A0=C2=A0=C2=A0 }
+=C2=A0
+=C2=A0=C2=A0=C2=A0=C2=A0 /// Performs an initialization routine once and on=
+ly once. The given
+@@ -71,10 +71,10 @@ pub const fn new() -> Self {
+=C2=A0=C2=A0=C2=A0=C2=A0 /// [`DO_ONCE_LITE_IF`]: srctree/include/once_lite=
+.h
+=C2=A0=C2=A0=C2=A0=C2=A0 #[inline(always)]
+=C2=A0=C2=A0=C2=A0=C2=A0 pub fn call_once<F: FnOnce()>(&self, f: F) {
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if !self.0.load(Relaxed) && !se=
+lf.0.swap(true, Relaxed) {
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 f()
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if self.0.load(Relaxed) =3D=3D =
+0 && self.0.compare_exchange(0, 1, Acquire, Relaxed) =3D=3D Ok(0) {
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 f();
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.0.=
+store(2, Relaxed);
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.1.store(true, Relaxed);
+=C2=A0=C2=A0=C2=A0=C2=A0 }
+=C2=A0
+=C2=A0=C2=A0=C2=A0=C2=A0 /// Returns `true` if some `call_once` call has co=
+mpleted successfully.
+@@ -98,7 +98,7 @@ pub fn call_once<F: FnOnce()>(&self, f: F) {
+=C2=A0=C2=A0=C2=A0=C2=A0 /// ```
+=C2=A0=C2=A0=C2=A0=C2=A0 #[inline(always)]
+=C2=A0=C2=A0=C2=A0=C2=A0 pub fn is_completed(&self) -> bool {
+-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.1.load(Relaxed)
++=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.0.load(Relaxed) > 1
+=C2=A0=C2=A0=C2=A0=C2=A0 }
+}
 
-=E2=80=94 Daniel=
+> The `rust` part should be default value for rustdoc tests, can we please
+> omit that?
+
+Will do!
+
+Jens
