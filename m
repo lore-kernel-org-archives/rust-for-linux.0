@@ -1,70 +1,70 @@
 Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439601FC7D9
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 12:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76261FA82F
+	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732710964; cv=none; b=Siec6AXqAVdsE3lGSzJaRFcOfjykTIPdS70r4zj52aG9NxuWuLcxgLbOqf2nJsvKdEIqQcjyUbelFjSFSOYwarGLyQmLfSpAzwCcbCx/UYm17tl6xGsy4uk1vaWejqrO/hV8/Z5S81cKBbi1guwneuO55q43KnlzR3W7IyzOT/Y=
+	t=1732711130; cv=none; b=TbFwXjhuvvb/uDuWI7xGHCEpst2n4LSchjgHg52LKwO4oT1VxLNq9sNjV0lRu3Hyuq/rSeJyidaYnPmtHf1AT48qPWzc6+oB2fvAeibscyP50jRoyLp8ta0ajEUcQYv5NbhPcMAQYOWgJw7kgRPoqBHgH0k3awadaG/iA32XkaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732710964; c=relaxed/simple;
-	bh=JYbL2g8guAT8sd0URsVEdQ/eCdsK61c3+OjoQGgYXoQ=;
+	s=arc-20240116; t=1732711130; c=relaxed/simple;
+	bh=1YYaQVcd/H798xCcU6/zkfoT/mGH/vxkiRfRp4k/Kpo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BgxHabp67uzr1benhPCxpDmnKizgcq68pazyS2a8IWzU3uewr1sRYl1FHdJOw+fVdrddVup+6qh578CflIPERSqXZlNqM8MRcOfXahIEVxMfokdHaDn5h1EO9unHhMwJMdIBZIVRqjsj0zQNIRIOpdaYexEl3oXkMAKChgaySPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mSAcu2K8; arc=none smtp.client-ip=209.85.221.44
+	 To:Cc:Content-Type; b=nwkWJ0iBnGbc3uMx6E8BYl51yUL7jwBQHJ0VYO0teqX6l46jUzNV7f7dlVl1SQY78htEHPm4oX6LxwdQhDypK1nKyKXpzn2R8NaZZ7hHD5K5YlvF/exWdWtLPXmujutLJP7YQmhSdykyKIsyV2Cc0AEyE/UVuhhCrRgFHiLn9SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=czKHaq92; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mSAcu2K8"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-382325b0508so4259129f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 04:36:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="czKHaq92"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-382442b7d9aso5106566f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 04:38:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732710961; x=1733315761; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732711127; x=1733315927; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TrzbbClRBZ1yOTU2YN04HTV4UJx3/zhI0vBTZVhTMAw=;
-        b=mSAcu2K8eGTPWbuxojPWEIMfF2fVTTbYbafdmXnyK6N854nyXqj3Fr2oBZ1ds13VNf
-         rTVaEdM+7FuzNim5Gwg6cy4JVOKbBJuEpUlbwV62pqUy49IR6+Qk6bWc9MdtCRpSYWER
-         UAthYoP8/X78wgobZy/+rj20BXee1zr+loKM/D/QYNrvdyni7GXcuYrlr10taJcgMSS6
-         AzwC4QkWE2oRS/c3m36eLFMyj7xG3ZSOND6JsEAogIRDBCDToeCOlpHMSWuxM0g8QI8T
-         AaJQVXIPxACTP/NuxJVF5OIUEZozNAnJ5JWaAbDCHY8DxfYUZG9Cj/9nvvQYyHHSuJmD
-         Ux/A==
+        bh=DHjB0FS8XpctltbckXhibhTVw5p/t9yVHsmxkraO6NE=;
+        b=czKHaq92j6hF5wjIB3dT9vG8nv2j1iMhF+crtgiEilp4cmRT8Vz/hBsybI0BMfJ9G3
+         r1Cbzsk6BJTipBGPzX6oWkfo3ROPciIeFC0CoRTfuH2q9F1ugnaeH4NfZIxsD94f9OlG
+         C4dlkurArBpbdvZF0TXYbdHKFKS8jNydylpeELXydHD38gKASolIzq+Oyx0S8wwOvZfh
+         DL7CAOhA7YjI2IvNqJfe+a6FyvNdOs3f5vf+/Eem7YHfrMhZrS6vlQzSM6c/bgErYJ60
+         fssfodIdC2EKSN6h/wgd4k1w0CoLsHk/+drWpAKxZKUxioMfkRinyKuVJDPkENrU350p
+         ZvvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732710961; x=1733315761;
+        d=1e100.net; s=20230601; t=1732711127; x=1733315927;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TrzbbClRBZ1yOTU2YN04HTV4UJx3/zhI0vBTZVhTMAw=;
-        b=NRSXK52Kh+7Bs5B/6Y0PcUcfi8yg5vYr5OIBBP64OJhJryVmrUOlI9rCZfusMPEiwk
-         D+c4jqnaKYKjHvNOdsB8KBwtVZSx4p8oT7LCwPR/QZkk10AygxtxD/l/pjyPW1T5VStE
-         ig7RwFcixjP1G85KauHmdXwiUFoNo9VcPgKpS1XpKeZYceIRabkW9A8f2oCqmfnaaVAx
-         ZgVQtr0u2XEkkGXwu6idyVnIbIoZFSGS8TOLP4eCqaZnrqEsMedVE8s0uP7Bt2y+9x9S
-         5Lm/Kn9di+EnXYznaIOP87MNHTXVVybhSLwIwKmU0z71+XUiM+vdHdh6nij5u/nzXvXa
-         MUqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWDk59hbkRhqZzWtjoVoA5Ao5552WQIn26PNDFNrwqJHxn/Mx/onswQOx73YwuiEU6W94E26On07lk3ybYn+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOect6Bxdi27+PGMBc5mOUtJJoJ8RQb5xTcx/r1+b8bbGOenLo
-	ztHHs5uON2pLfEYy2vA1041tXV+zVh9E7yYLNAUxMr1+oD5Fz3L/mAMyfoRmrincEZoRWhA5uIf
-	6zTyQMBENJZTX0Bs3bdqotoD5QiDna4AU+3wg
-X-Gm-Gg: ASbGncsNJj9nrVI8Zuco0IBt6enaub3Zrj3YAQwcQs8ZOEtw9gVqKInCCK1hFh1e1fy
-	19ZG3PfomM6985dgL+1x1BZEqKXYiUP0weAgVkL9+mgtIKtFUZD/8WRUi4cuVrQ==
-X-Google-Smtp-Source: AGHT+IEbpjzkgc8IM7OndZI804Me6rzyM6Kjc3mTYT80bhflefRpDQA7MbvAM40NWVN+XmE+Ao7DgeTZqeqNuKDfQlI=
-X-Received: by 2002:a5d:59a6:0:b0:382:31a1:8dc3 with SMTP id
- ffacd0b85a97d-385c6ec0ce0mr2408873f8f.35.1732710961482; Wed, 27 Nov 2024
- 04:36:01 -0800 (PST)
+        bh=DHjB0FS8XpctltbckXhibhTVw5p/t9yVHsmxkraO6NE=;
+        b=RN7Y1E24Fd/RQQ5V/BKAp5m1ZtSaiMWvjZiHQb7Qi25lFB85QLC/nGtiO7swGtbShG
+         ta6/Sn9lU9C4YHwy+FTsP1OEMW52C0IRda2VcYF+QRCnTdlJO4CRPTPsfrj+PSF0bXUW
+         HNSkD6E2egG1H/Cf4chmJgnztzoO7dwp9caY5xn/98+Ki74ijkeTHRjFBqXOtrtabCic
+         gAoRfcQTJ9TyVhVOhGYaEQ7x8V5CDhHeDqqffRsia62zO6FN5zGODuhlpJs93g4Yd/ET
+         kqQwywIHlH+VLogjJwpM/XM4Pooi99wKW9pmwPXdJ5/ztXePxkz0hpG7SqXgDNbXpanz
+         CyLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ2PecWPRN9w2ZEB3qpUgaW98XyCq/L1k4iohTGzgJTonnyxMiWg0ii4Ajn5vP4BlorQRZ4xqJmWaZOnwbOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1oHkZLTANPkr14B46izB8V9+IKypgWtZJ1Zxg3FHrZiuZ+4G6
+	zVE9ZQ8dCN4LCvpe3+yD9puYeQoHc+2T3rFDKq9hdrVUQynhQg12dPTjvtAxIHpfZAOluXBepai
+	KdID6EuaG94bDo9SZJ9fk2ny7VBQoFD6VVAy6
+X-Gm-Gg: ASbGncuj/2Bp93I9cKbLhbR4wgriS0r532BcdMZPi76cadiUh2bjCf+WVsPMsckWbab
+	IxeI4NubhJQrM25XAiOzfBNbnPwHRLQnKDa2NxTh+5V3CTNjQX2tgHmM6ck53Kg==
+X-Google-Smtp-Source: AGHT+IGn2m8yJDcE/Dzz/61f9ciHRrx99d8i4GRYNDch74O8JfcQB+p+RQG8+bfMn1ARySVuPp8Pgo3KGaUZC/Ej4uk=
+X-Received: by 2002:a05:6000:1aca:b0:382:397f:3df5 with SMTP id
+ ffacd0b85a97d-385c6edd4fcmr2071742f8f.38.1732711126964; Wed, 27 Nov 2024
+ 04:38:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-8-7127bfcdd54e@google.com>
- <CAG48ez09fS1v2gWbOFx+uQd7Lj+z2x3LhL3hfpQzpVHdNJ5UJg@mail.gmail.com>
-In-Reply-To: <CAG48ez09fS1v2gWbOFx+uQd7Lj+z2x3LhL3hfpQzpVHdNJ5UJg@mail.gmail.com>
+References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-6-7127bfcdd54e@google.com>
+ <CAG48ez0V5B0ycPuP7eRA-xE88ks8cr+a1MFZC5emv_eAsybNAw@mail.gmail.com>
+In-Reply-To: <CAG48ez0V5B0ycPuP7eRA-xE88ks8cr+a1MFZC5emv_eAsybNAw@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 27 Nov 2024 13:35:49 +0100
-Message-ID: <CAH5fLgiJLP_w9vpuQFszkrUW3V3DyJVGHLv7Q43-Rx9-WSXzyw@mail.gmail.com>
-Subject: Re: [PATCH v9 8/8] task: rust: rework how current is accessed
+Date: Wed, 27 Nov 2024 13:38:35 +0100
+Message-ID: <CAH5fLghFezPeoPD57rXq-jy2wZBO0Bv6nSmU4OA6=hqeuGDVmA@mail.gmail.com>
+Subject: Re: [PATCH v9 6/8] mm: rust: add VmAreaNew for f_ops->mmap()
 To: Jann Horn <jannh@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -79,51 +79,51 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 26, 2024 at 6:15=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+On Tue, Nov 26, 2024 at 10:30=E2=80=AFPM Jann Horn <jannh@google.com> wrote=
+:
 >
 > On Fri, Nov 22, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
  wrote:
-> > +impl CurrentTask {
-> > +    /// Access the address space of this task.
+> > This type will be used when setting up a new vma in an f_ops->mmap()
+> > hook. Using a separate type from VmAreaRef allows us to have a separate
+> > set of operations that you are only able to use during the mmap() hook.
+> > For example, the VM_MIXEDMAP flag must not be changed after the initial
+> > setup that happens during the f_ops->mmap() hook.
+> >
+> > To avoid setting invalid flag values, the methods for clearing
+> > VM_MAYWRITE and similar involve a check of VM_WRITE, and return an erro=
+r
+> > if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
+> > the return value results in a compilation error because the `Result`
+> > type is marked #[must_use].
+> >
+> > For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
+> > we add a VM_PFNMAP method, we will need some way to prevent you from
+> > setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Thanks, this looks really neat!
+>
+> Reviewed-by: Jann Horn <jannh@google.com>
+>
+> > +    /// Set the `VM_IO` flag on this vma.
 > > +    ///
-> > +    /// To increment the refcount of the referenced `mm`, you can use =
-`ARef::from`.
-> > +    #[inline]
-> > +    pub fn mm(&self) -> Option<&MmWithUser> {
-> > +        let mm =3D unsafe { (*self.as_ptr()).mm };
-> > +
-> > +        if mm.is_null() {
-> > +            None
-> > +        } else {
-> > +            // SAFETY: If `current->mm` is non-null, then it reference=
-s a valid mm with a non-zero
-> > +            // value of `mm_users`. The returned `&MmWithUser` borrows=
- from `CurrentTask`, so the
-> > +            // `&MmWithUser` cannot escape the current task, meaning `=
-mm_users` can't reach zero
-> > +            // while the reference is still live.
-> > +            Some(unsafe { MmWithUser::from_raw(mm) })
+> > +    /// This marks the vma as being a memory-mapped I/O region.
 >
-> Maybe also add safety comments for these nitpicky details:
->
-> kthreads can use kthread_use_mm()/kthread_unuse_mm() to change
-> current->mm (which allows kthreads to access arbitrary userspace
-> address spaces with copy_from_user/copy_to_user), but as long as you
-> can't call into kthread_use_mm()/kthread_unuse_mm() from Rust code,
-> this should be correct. If you do want to allow calls into
-> kthread_use_mm()/kthread_unuse_mm() later on, you might have to gate
-> this on a check for PF_KTHREAD, or something like that.
+> nit: VM_IO isn't really exclusively used for MMIO; the header comment
+> says "Memory mapped I/O or similar", while the comment in
+> remap_pfn_range_internal() says "VM_IO tells people not to look at
+> these pages (accesses can have side effects)". But I don't really have
+> a good definition of what VM_IO actually means; so I don't really have
+> a concrete suggestion for what do do here. So my comment isn't very
+> actionable, I guess it's fine to leave this as-is unless someone
+> actually has a good definition...
 
-Huh ... is it possible to use kthread_use_mm() to create a situation
-where current->mm has mm_users equal to zero? If not, then I don't
-think it's a problem.
+I can use this comment?
 
-> Binary formats' .load_binary implementations can change current->mm by
-> calling begin_new_exec(), but that's not an issue as long as no binary
-> format loaders are implemented in Rust.
-
-I think we can allow such loaders by having them involve an unsafe
-operation asserting that you're not holding any references into
-current when you start the new process.
+This is used for memory mapped IO and similar. The flag tells other
+parts of the kernel to not look at the pages. For memory mapped IO
+this is useful as accesses to the pages could have side effects.
 
 Alice
