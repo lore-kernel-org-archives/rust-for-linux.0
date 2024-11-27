@@ -1,143 +1,175 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B53638DC8;
-	Wed, 27 Nov 2024 18:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732731829; cv=none; b=BuMw43xsiCY5zhRJtuLUVOv9KKeejEcS0uH6CC0E1wraCxnBMRjPqBoMNwuGbeONHNWeLkAuHL8mNjYiDCbZYDaDbsiKZn6xwwOnNy9cLMlbVyMCo1mTUf4vO1pb7SyXpoIIKyDQR+ezSbr7uO61YY/0evj4wQnJ5xsm0rAONgE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732731829; c=relaxed/simple;
-	bh=kwLzy/1QA5jeObp8/TyC7hkXyhfeqsy2mMuYb1rzcA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lLE+o1M79VdxMC4GujzsE9TzqcF7B/WyVQYRhXExOX5geHna5yNKFGm3J1/Yb+XBcWFRExnU6TXpOa0V+JzwhFVJX1TG8YOmA7WP/JmC6Lz3FPDjwFFVeWs73B2IAZ82PWkVQ/37c/5hv7lOdy7M2HZP+AqbGhf95fL7cCS+KSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hj6WTMT5; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D4413DBB6;
+	Wed, 27 Nov 2024 19:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732735631; cv=pass; b=LeZQzpydgK1YvUG59KUFRnl7ZeZN5vhW3j0uHhJbga16uwHjhcPeONzwtHzUlUNiYa1b63OFwmG3mEqYVifBpdEh4PIsZWEpCOEC150EuiOvyrEBJ3GtenF6Y8wYm227NVGP3JzLZGmKcJRMu7jNyD9sUA6sAcU0ChRW2302jBo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732735631; c=relaxed/simple;
+	bh=4qYnz5xi5gnh6+HliYXFQsfcuQBxYMMCDlj5gHBNIc0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Y10+UA9siATU1Uf0U6H5vCaNkl5fOvgkf+9ScfGgJH1vD7DVttjWiSE3Gq1/HkVH8R9v1ct0C7mTRVhC2tjKeAPBx85kmjeCbhI0ST7bUGfyBQbGnCc3YY4ibS6dRxa09mbtzFelqrPApRXobo3EOGnCOTTOTSYeu2dczzrcTfw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Li2z0z9T; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hj6WTMT5"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6d42b87aceaso10820826d6.0;
-        Wed, 27 Nov 2024 10:23:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732731827; x=1733336627; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vi1grvlnoKRmNDylmQ4ifR2JBVGeTJZYQ1EP7iQjYr8=;
-        b=hj6WTMT5X0PUHmkJrwjNjnWcwsVyGrfpOWf2ftGVJRuu5GOLmUv7NSp/65ya8m8+Zi
-         ki3nN+Pz3/zT345dXBkYYadyb0+E/InnaQ+IsubOayp9ywXTFwNnjIcbi9Q1Ynr9ixil
-         oUBDHwiY+YBRet7pKpe9/jLET5FJTuBN3WzcO42vKJYT97VAUslHt++DU1Ged6yNDWMv
-         sJnvjvCwwQj06HP+3AzJFQ1s65vZG2wwpIlNAD+922R9uYRY90ASutS6Ygww1ZnhtLFG
-         TCpW0nxrHMxPsS+fJV58zCs6aEnEJyWyOxRSHX3p4dBfV7UbMo5jKynpAjra/9eFjhu/
-         zrlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732731827; x=1733336627;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vi1grvlnoKRmNDylmQ4ifR2JBVGeTJZYQ1EP7iQjYr8=;
-        b=vHXIISl7nHygmvLGgSmgpq4ibIwLWulU3Ws5m3dejFfksixqVOy0Rwg+bcIXDtyeOA
-         N73KbtHP9r/uZoHfDHrxLOVfnLT+7xQU7XqS0aHHEKR0MDi2BQTAg+ki1KjmZmrMS+Lk
-         708GoBH+jFDYdPVdQJA390uEF68q1liSnNeoHZ2rBiDH6bhi82CbO13J74LSzPURSjj+
-         EwIlesBgjtUbGkQqoF97mRe7/T9BEapd51FGQaWOgDsUAm9r+3/W/ktXV4FlwBH3pkNc
-         TtRQaB2Btt9Sk7TyDhdsShbZmwbM2CxaA/9ITeftMxKy6G5vA9bQzL5DPVgC8PCmYixg
-         l/2w==
-X-Forwarded-Encrypted: i=1; AJvYcCV4tBCOzy4asD97mo3n7J6N1rh1dDgGcqxsbwQe0J594J6Cq11D7M7ASqXbs5OmUz3+01wc0VsVaIhf7MM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgoPXxcui7Z0MgrGl4Vm/NFMS3v+FT2aBxZ4r6B/uOFORhgI68
-	Sy2Ep38zyqf6ehUoauw+RdDnd+geV42DN0oPYiv25QULaHtCkhoa
-X-Gm-Gg: ASbGncsASl1SpXVotRFlbgKpMX2hm0gpFqGRV6sNFT4/h6Tf5ZDpuJclhU+cBuGNBhV
-	ZY1JwqQH+1SaABIyTq+VBRNtu6VgAIBfqchghEfh9V4J80JMMGbXC+B73ZdjiQIc4o2yb9WsGi+
-	MNRFtNP9qik20NmuSVdgY8zysQ/Fh4pjKG1UQcmIDtApoMvk6TaJ7PnvGXI7sv2/pfoUOb6G3kJ
-	No4joTA9Tvl/J+/JUnFlXhjo1GB/blG2ORfT4Sdahp06D8ywDcga8GYziSHXTx2x26rFIiYmul2
-	TyUuf2c0Ngl8gpIfeJXgeT29yIh/R0Vc9IQsb7TA
-X-Google-Smtp-Source: AGHT+IEJsy3vkTjRbP6+v+NDuxlib60kx4G8TBCMBmUnfwfI36yqBxOdIvOVQdUUCQv5RYy001PbZg==
-X-Received: by 2002:ad4:5aac:0:b0:6cb:6468:7eb9 with SMTP id 6a1803df08f44-6d8729e9e77mr5254776d6.21.1732731827153;
-        Wed, 27 Nov 2024 10:23:47 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451b6895asm66852826d6.130.2024.11.27.10.23.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 10:23:46 -0800 (PST)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6C56B1200074;
-	Wed, 27 Nov 2024 13:23:46 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Wed, 27 Nov 2024 13:23:46 -0500
-X-ME-Sender: <xms:smNHZwyQjpC6wvvd9Hna4JKA_YSK8XQ0_yLnYknx6s_HyHKaK0S8zQ>
-    <xme:smNHZ0Q5JB2nFuPcLJex0uDydMnPrXdNUkSA0vE125UAYlKCMfgENcEiVE6FMsfjx
-    cylsZzM3B3TSu-Jmw>
-X-ME-Received: <xmr:smNHZyXS760Nv5b4fGyEL6O6JWe0nxIck_7qE1DgsiZ8Cg6BKbCEWcWdizW4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrgeelgddutdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprh
-    gtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegr
-    lhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrg
-    hrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmh
-    gvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:smNHZ-gj6ZouMl3w9cVMLpex6ui5d4D-sKmQTHCVWrZHwgWRpSGmyw>
-    <xmx:smNHZyB-qvG0satoEx_mq3NhECEO_T86mvyu72BFht2ceqnaRfuT9g>
-    <xmx:smNHZ_IPT5mFUBs60vk2_ftRqdafhO7Pi8X1v1B33LtNhhsKXJFYZQ>
-    <xmx:smNHZ5DHslCmLhIRTWV88u7avi2zI6ZBh6LZOrjHhU6ISpimczgRtw>
-    <xmx:smNHZywl29x2SfJEwpktxbBf68T0D0E2mkvY8jfmX-nIT-hFRnma8sKJ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 Nov 2024 13:23:45 -0500 (EST)
-Date: Wed, 27 Nov 2024 10:23:44 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v4 0/2] rust: Add Lock::from_raw() and expose Guard::new()
-Message-ID: <Z0djsId9-YAjbNVd@tardis.local>
-References: <20241119231146.2298971-1-lyude@redhat.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Li2z0z9T"
+ARC-Seal: i=1; a=rsa-sha256; t=1732735584; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=kTsdsC6upmSd6l9rP6fjrCIJTU8U+4weBu0WWXSZJsBh3ncMDkcl0uP+GF+aVS7f8lWclS4y/kVVXXhDrqefu1pZpa0cGwtqrQAsad9IuO7BneMQSu30sLxwtMHlSbV5/qPoQUYR27Esj+E+vv8C3efftJuUd1XS7jv9y4fLNUc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732735584; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=RX2Qxk8Q8vCZMNnquh0zQky0kuIksspy8X4nlKr9Wa4=; 
+	b=RU5OzG5/WYF0rooLuXFku7RZvN8EHAn4OM1AeFXhiTDMvs+0krCDxtCaqTDFZ/4QjsnEN/iJMg0KTm4WdndTj1GpA8FsD0R5cKspa49zADVKuyY50kCaAWQ31zBGbfSBJSqwpdn3MhQMxlRcJlEoKvcljvWvdzorvvngK6p8oRQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732735584;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=RX2Qxk8Q8vCZMNnquh0zQky0kuIksspy8X4nlKr9Wa4=;
+	b=Li2z0z9TF8VTmmVVSPHSTt2M+wJTSea2pPKhQsaG7NSyCGjNOUmq9zqIEKC40vvl
+	ubKC0N8n27ckA2rP0d1XIVEoM4KqqHpGXf7GZs7RW51zDYM9EnpkKQjc5aAcEXX04yM
+	ht/l2gxmk3ReqSzQHyuyr8QHu6udKyJrrOoZ9yfg=
+Received: by mx.zohomail.com with SMTPS id 1732735582329215.8868752125901;
+	Wed, 27 Nov 2024 11:26:22 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241119231146.2298971-1-lyude@redhat.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [WIP RFC v2 16/35] rust: drm/kms: Add RawConnector and
+ RawConnectorState
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240930233257.1189730-17-lyude@redhat.com>
+Date: Wed, 27 Nov 2024 16:26:06 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Danilo Krummrich <dakr@kernel.org>,
+ mcanal@igalia.com,
+ airlied@redhat.com,
+ zhiw@nvidia.com,
+ cjia@nvidia.com,
+ jhubbard@nvidia.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ open list <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B8CBF3CE-1591-4624-816D-9A528B76E1B2@collabora.com>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-17-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-On Tue, Nov 19, 2024 at 06:11:02PM -0500, Lyude Paul wrote:
-> This is the third version of a small patch series to introduce
-> interfaces for working with locks that we've acquired from raw C
-> pointers, something that is quite useful for bindings like the rust
-> bindings - where there's a number of interfaces protected by BFLs, or
-> which require the implementation of callbacks that are known to occur
-> under lock.
-> 
+Hi Lyude,
 
-Queued for future tests and reviews, thanks!
+> On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Now that we have more then one way to refer to connectors, we also =
+want to
 
-Regards,
-Boqun
+nit: typo here, s/then/than
 
-> Lyude Paul (2):
->   rust: sync: Add Lock::from_raw() for Lock<(), B>
->   rust: sync: Make Guard::new() public
-> 
->  rust/kernel/sync/lock.rs | 25 ++++++++++++++++++++++++-
->  1 file changed, 24 insertions(+), 1 deletion(-)
-> 
-> 
-> base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
-> -- 
-> 2.47.0
-> 
+> ensure that any methods which are common to any kind of connector type =
+can
+> be used on all connector representations. This is where RawConnector =
+and
+> RawConnectorState come in: we implement these traits for any type =
+which
+> implements AsRawConnector or AsRawConnectorState respectively.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/drm/kms/connector.rs | 34 ++++++++++++++++++++++++++++++++
+> 1 file changed, 34 insertions(+)
+>=20
+> diff --git a/rust/kernel/drm/kms/connector.rs =
+b/rust/kernel/drm/kms/connector.rs
+> index 98ac7fb781d4e..f62740d7f6469 100644
+> --- a/rust/kernel/drm/kms/connector.rs
+> +++ b/rust/kernel/drm/kms/connector.rs
+> @@ -331,6 +331,27 @@ unsafe fn from_raw<'a>(ptr: *mut =
+bindings::drm_connector) -> &'a Self {
+>     }
+> }
+>=20
+> +/// Common methods available on any type which implements =
+[`AsRawConnector`].
+> +///
+> +/// This is implemented internally by DRM, and provides many of the =
+basic methods for working with
+> +/// connectors.
+> +pub trait RawConnector: AsRawConnector {
+> +    /// Return the index of this DRM connector
+> +    #[inline]
+> +    fn index(&self) -> u32 {
+> +        // SAFETY: The index is initialized by the time we expose DRM =
+connector objects to users,
+> +        // and is invariant throughout the lifetime of the connector
+> +        unsafe { (*self.as_raw()).index }
+> +    }
+> +
+> +    /// Return the bitmask derived from this DRM connector's index
+> +    #[inline]
+> +    fn mask(&self) -> u32 {
+> +        1 << self.index()
+> +    }
+> +}
+> +impl<T: AsRawConnector> RawConnector for T {}
+> +
+> unsafe extern "C" fn connector_destroy_callback<T: DriverConnector>(
+>     connector: *mut bindings::drm_connector,
+> ) {
+> @@ -523,6 +544,19 @@ pub trait FromRawConnectorState: =
+AsRawConnectorState {
+>     unsafe fn from_raw_mut<'a>(ptr: *mut =
+bindings::drm_connector_state) -> &'a mut Self;
+> }
+>=20
+> +/// Common methods available on any type which implements =
+[`AsRawConnectorState`].
+> +///
+> +/// This is implemented internally by DRM, and provides many of the =
+basic methods for working with
+> +/// the atomic state of [`Connector`]s.
+> +pub trait RawConnectorState: AsRawConnectorState {
+> +    fn connector(&self) -> &Self::Connector {
+> +        // SAFETY: This is guaranteed safe by type invariance, and =
+we're guaranteed by DRM that
+> +        // `self.state.connector` points to a valid instance of a =
+`Connector<T>`
+> +        unsafe { =
+Self::Connector::from_raw((*self.as_raw()).connector) }
+> +    }
+> +}
+> +impl<T: AsRawConnectorState> RawConnectorState for T {}
+> +
+> /// The main interface for a [`struct drm_connector_state`].
+> ///
+> /// This type is the main interface for dealing with the atomic state =
+of DRM connectors. In
+> --=20
+> 2.46.1
+>=20
+>=20
+
+LGTM,
+
+=E2=80=94 Daniel
+
