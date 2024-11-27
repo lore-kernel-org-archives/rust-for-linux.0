@@ -1,160 +1,297 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4053438384
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 15:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732722371; cv=none; b=lnMpbII4nj7DUwZLBbzMTEbIw3H8D45BUt3aIyW4fWTW4eL4HRRxSIzu64bAJmY9tv+wZd/OMCrc5Jf+P1+y9HOYvRs4D+6Ol+Ul9GwGuVi7aDdSTNTQcDh2tz+WlU46aAPutvxYq0vGwv9OseV2OxI7Pjs3wE7bHxe5l5MIIWY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732722371; c=relaxed/simple;
-	bh=B+jmqfrWM/EKvpF2u1XZ28ibHwrKj9SwMDV1NimB9CE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b1UyQr1KWZozC8R/u82vB9OKY7CSjYcHNPvmpCIiK14g2z0VKzhJGGp6EU65biVtPYgM/itXIh5lVzhLVHThcXbtGe6ZBN1ckMpFiLWwy8Zotj1bccChhuRo8/eum66SKuO7hmyVT3PrqmA3FJ00rjls1uejSpwhWMpQDmCZ4hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hVymYqjI; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A7F18FDD0;
+	Wed, 27 Nov 2024 15:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732722720; cv=pass; b=uGbCti82FXhB+46K9p8shS8jBYBp9+kD+W0Fz9ivX8i7jHzOAnaJl7NySeqAgwFX5Qmc799Z8+ojiEgckcNJkWCjB+FzmT+A8dxm3xhLv7b6eJYmKLN1U782AFEqGNhyzaRtzfzlVFaF0Z57x9Pov5hefwlli+QWiUc36RunoP8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732722720; c=relaxed/simple;
+	bh=g2OqqfbpoYo70XMjl29p7sCjZrJr/XbYc+OGsBdnq+g=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=cZPshTtQZdYXorNW7oRhb0M/RGNVoRMYqIe9JN5vCYHB4QHGg3uNJo5DN0EkrHqw+4h55L3DC+g+mV3IeZ5QnBK2EWqakH8iWm5lDBKQhdGwfJ/uPh6ZkZUYNNSEnqcCRrHPEr4HADMU0Ib+vNVncWRVl1eEQM9gR3YbI63ycJ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TmQLfqeM; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hVymYqjI"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434a852bb6eso14900665e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 07:46:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732722368; x=1733327168; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PXMPfZWRhjLS8qOrb4f6pSt8s/tpQyEcD7eDM+Hjasg=;
-        b=hVymYqjIqLOzGY2p4xd2AkszAYUFwv8MLg2vaqqb9rlDlJQ4Fd2RNFaGgq6ZR4/dRZ
-         ayaI0UufX/cLNoawkvs+LkvxW96CMAj/zUQuB7PVo5wEeQxY0fj0g8vSDntPr+5VIeAP
-         Vub4J9yRMkmeME+oinV+qQNqjqsa8518Jt6ufi65S7qAag+Mga3ayqsupfYI4ce3KNBd
-         YSg8mvhNoYlUwDxA7z129cPaGDRJgLZjUOXxCFn8W5FxiabLwZvypE8NH571S4hDGgoD
-         WrCwpfgtXbFniEbcZOCHtpF+Yq4EK4UP/tMciq/sske5U4ZK+RYSpKRoek+jmXJ/hGC4
-         pPVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732722368; x=1733327168;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PXMPfZWRhjLS8qOrb4f6pSt8s/tpQyEcD7eDM+Hjasg=;
-        b=eXIjfMV1iGv4sBIAdjTb3zbCEaMgr9mEcgM3bhFBY6CuIyrU8nKMybcaARKHEwlQyB
-         4oVzDQ8H1ZI45X7/4tIEn7hHFPBROTfp3ygJ6jQGmeIemTAoR5hXchAoZ8q+Zxdsfrs9
-         As2xsHkiiMgkRD9rNlkJ5XNld3C7t+mZT7kmI+itIGDh83xg0y6Hg9nhkuqH2WnWsy/B
-         bwuMpoijmvgkOYBLgh4p3BAoY4Q2ZuFofS7OtAGrqR7POeVvz2FnA+jOBekKEL7tNuOl
-         i/O48oQUrepDMGAmpgFiGx2QPRDWoCtB2gt2gjymD3p57GYFu+xwBKc1lyewUoCs5jT7
-         /t1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWnYIAjLEAnW+iJpV1H1ZYgpwPheWORBxk00HVLw3j9oZBslUr5PVEHjNNfBXEifhyK2JWBtXQxOJ0xQplY2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkQ3AJetSabZk7gbiNfiFU6QWvrXMtPxwst3PndLTr3HPjJrkJ
-	iOSv7V4cvDx3hBfnA9Iw4AzhvwGBofsr2qPqXHYcXpwcMA9leUqIjumrhCVQNRCjxZFUdQJLfEq
-	n0/mLt34Be3uS79TmsD3xzfc5aD+415DZOp2Q
-X-Gm-Gg: ASbGncvBg+F7I5hl3rXzDV38n7jV9hxwiSeaXOO1OSWYhUoOVv62/E85wswaQ6Kfg2G
-	fvMUBDkvURqvnnyQZplsejuIGYZyo/Fw0BPGbrUAKF1PVdkvbUHT3fw5aQ21k2g==
-X-Google-Smtp-Source: AGHT+IGDwrFX1rI3+Zmj9OqMkY68rfDsh0lNdwaGAF+wFEhJ3s/r1DcCWW7uJv3M/3bmy6ZbAMIuWWJy0I9D4wbOcPg=
-X-Received: by 2002:a5d:5f85:0:b0:382:49b3:17b2 with SMTP id
- ffacd0b85a97d-385c6ebf0a4mr2729408f8f.33.1732722368392; Wed, 27 Nov 2024
- 07:46:08 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TmQLfqeM"
+ARC-Seal: i=1; a=rsa-sha256; t=1732722686; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=YceCFUfleDVLVuVqNZaZSf4R9oAGEkV/c1LdoG7KsstEbGT0KCBZ9LxGPOif5sZFna0RA8/e+TYrgXy2tA9/qLcVtCMC5OfOWYb9rtZLtppHICU0J5KwB9w0poAvWJv7jwVg3jU/mCLk4np+BK2PgtJoTIwkvx6top3R0MZvuBY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732722686; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7q+DFe+ccil4UuLk4eXxWFKTqHPcG7ZDXacnhP9DcqQ=; 
+	b=moipWZypw3Chzg6E+Os0IPFmC5cVHlWHUodtVWA3tQMECz8Otp6F40btCcd8pTRHcXQgkVZ34K/O8f5IPRHYp/3WkHXXJhxx5+KlsmO8l5LCAyRorkpIRIdCr3RccQ780RcuMOB9VKfRMjiAxQAIrRQrX8DqqMoCz+EOdgDhFw0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732722686;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=7q+DFe+ccil4UuLk4eXxWFKTqHPcG7ZDXacnhP9DcqQ=;
+	b=TmQLfqeM4z6PcWvRm5xeqmXGdaJtX0rtwtMnLS6SyU/DBAocjrtGO4Z5KKyWSya2
+	g7pez23mGKThBR3ALGUjVPdcyGVc1a/Ox+dRrC2X/cnwvxiDh8YJvRIuWGnfvZEvGOH
+	wvkxc3UcBlIXVxONrXUwFQFgu0aSIt+wPD1YWJSA=
+Received: by mx.zohomail.com with SMTPS id 1732722684393678.2520263607371;
+	Wed, 27 Nov 2024 07:51:24 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-2-7127bfcdd54e@google.com>
- <CAG48ez28kzjrvMN66Yp9n+WziPzE5LU_Y320405Q=PoOzdzStg@mail.gmail.com>
- <CAH5fLggh7HeOm8wGZH=hnR+SyPoW8Hik3uy4RodibyjY1UT36w@mail.gmail.com> <CAG48ez0QmQ7s_MmPj3Q9joEvGSkr9DUWoeJ6dvD=6icq+3DwKQ@mail.gmail.com>
-In-Reply-To: <CAG48ez0QmQ7s_MmPj3Q9joEvGSkr9DUWoeJ6dvD=6icq+3DwKQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 27 Nov 2024 16:45:55 +0100
-Message-ID: <CAH5fLgiO3ovUhcaPPukM9KeaDZzA+6CKPH8wNHKFUD4rY_EC=Q@mail.gmail.com>
-Subject: Re: [PATCH v9 2/8] mm: rust: add vm_area_struct methods that require
- read access
-To: Jann Horn <jannh@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [WIP RFC v2 13/35] WIP: rust: drm/kms: Add OpaqueConnector and
+ OpaqueConnectorState
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240930233257.1189730-14-lyude@redhat.com>
+Date: Wed, 27 Nov 2024 12:51:08 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Danilo Krummrich <dakr@kernel.org>,
+ mcanal@igalia.com,
+ airlied@redhat.com,
+ zhiw@nvidia.com,
+ cjia@nvidia.com,
+ jhubbard@nvidia.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ open list <linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <C75763C3-A2A4-410F-934D-582B44A3B550@collabora.com>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-14-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-On Wed, Nov 27, 2024 at 4:41=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
->
-> On Wed, Nov 27, 2024 at 1:01=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> > On Tue, Nov 26, 2024 at 11:10=E2=80=AFPM Jann Horn <jannh@google.com> w=
-rote:
-> > >
-> > > On Fri, Nov 22, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.=
-com> wrote:
-> > > > This adds a type called VmAreaRef which is used when referencing a =
-vma
-> > > > that you have read access to. Here, read access means that you hold
-> > > > either the mmap read lock or the vma read lock (or stronger).
-> > > >
-> > > > Additionally, a vma_lookup method is added to the mmap read guard, =
-which
-> > > > enables you to obtain a &VmAreaRef in safe Rust code.
-> > > >
-> > > > This patch only provides a way to lock the mmap read lock, but a
-> > > > follow-up patch also provides a way to just lock the vma read lock.
-> > > >
-> > > > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits=
-)
-> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > >
-> > > Reviewed-by: Jann Horn <jannh@google.com>
-> >
-> > Thanks!
-> >
-> > > with one comment:
-> > >
-> > > > +    /// Zap pages in the given page range.
-> > > > +    ///
-> > > > +    /// This clears page table mappings for the range at the leaf =
-level, leaving all other page
-> > > > +    /// tables intact, and freeing any memory referenced by the VM=
-A in this range. That is,
-> > > > +    /// anonymous memory is completely freed, file-backed memory h=
-as its reference count on page
-> > > > +    /// cache folio's dropped, any dirty data will still be writte=
-n back to disk as usual.
-> > > > +    #[inline]
-> > > > +    pub fn zap_page_range_single(&self, address: usize, size: usiz=
-e) {
-> > > > +        // SAFETY: By the type invariants, the caller has read acc=
-ess to this VMA, which is
-> > > > +        // sufficient for this method call. This method has no req=
-uirements on the vma flags. Any
-> > > > +        // value of `address` and `size` is allowed.
-> > >
-> > > If we really want to allow any address and size, we might want to add
-> > > an early bailout in zap_page_range_single(). The comment on top of
-> > > zap_page_range_single() currently says "The range must fit into one
-> > > VMA", and it looks like by the point we reach a bailout, we could hav=
-e
-> > > gone through an interval tree walk via
-> > > mmu_notifier_invalidate_range_start()->__mmu_notifier_invalidate_rang=
-e_start()->mn_itree_invalidate()
-> > > for a range that ends before it starts; I don't know how safe that is=
-.
-> >
-> > I could change the comment on zap_page_range_single() to say:
-> >
-> > "The range should be contained within a single VMA. Otherwise an error
-> > is returned."
-> >
-> > And then I can add an overflow check at the top of
-> > zap_page_range_single(). Sounds ok?
->
-> Yes, I think changing the comment like that and adding a check for
-> whether address+size wraps around there addresses this.
+Hi Lyude,
 
-Can there be a page at the top of the address space? If so, I have to
-be a bit careful in the wrap-around check, because it should only fail
-if the addition wraps around *and* the sum is non-zero.
+> On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Since we allow drivers to have multiple implementations of =
+DriverConnector
+> and DriverConnectorState (in C, the equivalent of this is having =
+multiple
+> structs which embed drm_connector) - there are some situations we will =
+run
+> into where it's not possible for us to know the corresponding
+> DriverConnector or DriverConnectorState for a given connector. The =
+most
+> obvious one is iterating through all connectors on a KMS device.
+>=20
+> So, take advantage of the various connector traits we added to =
+introduce
+> OpaqueConnector<> and OpaqueConnectorState<> which both can be used as =
+a
+> DRM connector and connector state respectively without needing to know =
+the
+> corresponding traits.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+>=20
+> TODO:
+> * Add upcast functions for these types
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/drm/kms/connector.rs | 108 +++++++++++++++++++++++++++++++
+> 1 file changed, 108 insertions(+)
+>=20
+> diff --git a/rust/kernel/drm/kms/connector.rs =
+b/rust/kernel/drm/kms/connector.rs
+> index ec842ebc111ae..98ac7fb781d4e 100644
+> --- a/rust/kernel/drm/kms/connector.rs
+> +++ b/rust/kernel/drm/kms/connector.rs
+> @@ -359,6 +359,64 @@ unsafe fn from_raw<'a>(ptr: *mut =
+bindings::drm_connector) -> &'a Self {
+>     T::get_modes(connector.guard(&guard), &guard)
+> }
+>=20
+> +/// A [`struct drm_connector`] without a known [`DriverConnector`] =
+implementation.
+> +///
+> +/// This is mainly for situations where our bindings can't infer the =
+[`DriverConnector`]
+> +/// implementation for a [`struct drm_connector`] automatically. It =
+is identical to [`Connector`],
+> +/// except that it does not provide access to the driver's private =
+data.
+> +///
+> +/// TODO: Add upcast methods for this
 
-Alice
+You mean a way to go from OpaqueConnector to Connector?
+
+> +///
+> +/// # Invariants
+> +///
+> +/// - `connector` is initialized for as long as this object is =
+exposed to users.
+> +/// - The data layout of this type is equivalent to [`struct =
+drm_connector`].
+> +///
+> +/// [`struct drm_connector`]: srctree/include/drm/drm_connector.h
+> +#[repr(transparent)]
+> +pub struct OpaqueConnector<T: KmsDriver> {
+> +    connector: Opaque<bindings::drm_connector>,
+> +    _p: PhantomData<T>
+> +}
+> +
+> +impl<T: KmsDriver> Sealed for OpaqueConnector<T> {}
+> +
+> +impl<T: KmsDriver> AsRawConnector for OpaqueConnector<T> {
+> +    type Driver =3D T;
+> +    type State =3D OpaqueConnectorState<T>;
+> +
+> +    fn as_raw(&self) -> *mut bindings::drm_connector {
+> +        self.connector.get()
+> +    }
+> +
+> +    unsafe fn from_raw<'a>(ptr: *mut bindings::drm_connector) -> &'a =
+Self {
+> +        // SAFETY: Our data layout is identical to =
+`bindings::drm_connector`
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +}
+> +
+> +impl<T: KmsDriver> ModeObject for OpaqueConnector<T> {
+> +    type Driver =3D T;
+> +
+> +    fn drm_dev(&self) -> &Device<Self::Driver> {
+> +        // SAFETY: The parent device for a DRM connector will never =
+outlive the connector, and this
+> +        // pointer is invariant through the lifetime of the connector
+> +        unsafe { Device::borrow((*self.as_raw()).dev) }
+> +    }
+> +
+> +    fn raw_mode_obj(&self) -> *mut bindings::drm_mode_object {
+> +        // SAFETY: We don't expose DRM connectors to users before =
+`base` is initialized
+> +        unsafe { &mut (*self.as_raw()).base }
+> +    }
+> +}
+> +
+> +// SAFETY: Connectors are reference counted mode objects
+> +unsafe impl<T: KmsDriver> RcModeObject for OpaqueConnector<T> {}
+> +
+> +// SAFETY: Our connector interfaces are guaranteed to be thread-safe
+> +unsafe impl<T: KmsDriver> Send for OpaqueConnector<T> {}
+> +unsafe impl<T: KmsDriver> Sync for OpaqueConnector<T> {}
+> +
+> /// A privileged [`Connector`] obtained while holding a =
+[`ModeConfigGuard`].
+> ///
+> /// This provides access to various methods for [`Connector`] that =
+must happen under lock, such as
+> @@ -537,6 +595,56 @@ unsafe fn from_raw_mut<'a>(ptr: *mut =
+bindings::drm_connector_state) -> &'a mut S
+>     }
+> }
+>=20
+> +/// A [`struct drm_connector_state`] without a known =
+[`DriverConnectorState`] implementation.
+> +///
+> +/// This is mainly for situations where our bindings can't infer the =
+[`DriverConnectorState`]
+> +/// implementation for a [`struct drm_connector_state`] =
+automatically. It is identical to
+> +/// [`Connector`], except that it does not provide access to the =
+driver's private data.
+> +///
+> +/// TODO: Add upcast functions
+> +///
+> +/// # Invariants
+> +///
+> +/// - `state` is initialized for as long as this object is exposed to =
+users.
+> +/// - The data layout of this type is identical to [`struct =
+drm_connector_state`].
+> +/// - The DRM C API and our interface guarantees that only the user =
+has mutable access to `state`,
+> +///   up until [`drm_atomic_helper_commit_hw_done`] is called. =
+Therefore, `connector` follows rust's
+> +///   data aliasing rules and does not need to be behind an =
+[`Opaque`] type.
+
+By the way, as you did in a previous commit, I wonder whether it would =
+be better to have the invariants
+in a single place, since I=E2=80=99ve noticed that most of them are =
+quite similar.
+
+Something like =E2=80=9CThe invariants for this type are the same as the =
+ones for Foo=E2=80=9D
+
+This way, if you need to update your design, these will not get out of =
+sync that easily.
+
+> +///
+> +/// [`struct drm_connector_state`]: =
+srctree/include/drm/drm_connector.h
+> +/// [`drm_atomic_helper_commit_hw_done`]: =
+srctree/include/drm/drm_atomic_helper.h
+> +#[repr(transparent)]
+> +pub struct OpaqueConnectorState<T: KmsDriver> {
+> +    state: bindings::drm_connector_state,
+> +    _p: PhantomData<T>
+> +}
+> +
+> +impl<T: KmsDriver> AsRawConnectorState for OpaqueConnectorState<T> {
+> +    type Connector =3D OpaqueConnector<T>;
+> +}
+> +
+> +impl<T: KmsDriver> private::AsRawConnectorState for =
+OpaqueConnectorState<T> {
+> +    fn as_raw(&self) -> &bindings::drm_connector_state {
+> +        &self.state
+> +    }
+> +
+> +    unsafe fn as_raw_mut(&mut self) -> &mut =
+bindings::drm_connector_state {
+> +        &mut self.state
+> +    }
+> +}
+> +
+> +impl<T: KmsDriver> FromRawConnectorState for OpaqueConnectorState<T> =
+{
+> +    unsafe fn from_raw<'a>(ptr: *const bindings::drm_connector_state) =
+-> &'a Self {
+> +        // SAFETY: Our data layout is identical to =
+`bindings::drm_connector_state`
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    unsafe fn from_raw_mut<'a>(ptr: *mut =
+bindings::drm_connector_state) -> &'a mut Self {
+> +        // SAFETY: Our data layout is identical to =
+`bindings::drm_connector_state`
+> +        unsafe { &mut *ptr.cast() }
+> +    }
+> +}
+> +
+> unsafe extern "C" fn atomic_duplicate_state_callback<T: =
+DriverConnectorState>(
+>     connector: *mut bindings::drm_connector
+> ) -> *mut bindings::drm_connector_state
+> --=20
+> 2.46.1
+>=20
+
+This LGTM overall.
+
+=E2=80=94 Daniel
+
