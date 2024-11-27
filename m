@@ -1,113 +1,123 @@
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8C91FCFD9
-	for <rust-for-linux@vger.kernel.org>; Wed, 27 Nov 2024 15:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732720073; cv=none; b=K0nPjFZaa+BUwzvPSB8KYwXwXGG7Q1M0yF4Goms1phPJ1eq7P64pZztvejfOZqt+l0HAdM6DWlp7I3cNHAN2rld1L5/Z11XAcAdIr86u62cRNo9Uao4V/63dFztU5vrgOTlW27MuSx8ZTQ3WAkZTsBSBuDw2B5Vbl0n/3sKmsYU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732720073; c=relaxed/simple;
-	bh=WCYhdDDuNrR4Q21FGWIwzybj14YfaSemI8ISiNSkotk=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=gyU9N4cOQZihLp7ua5rI+h8Jq9M+14nV7+8lQVZ8NbL+sl9TB1d6S87Wp78+437Z0m9F+5HgkGOtd3vzuCTyJgkYIDuxz2cOaBBlpLzcUR+E4DRoLarXKi4gAn88IcFqaCwpIBAlv4EaIGDgq2ieSECJ3yp58lj0I4kd2j/Vvuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io; spf=pass smtp.mailfrom=mandragore.io; dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b=KJHS+sGb; arc=none smtp.client-ip=185.70.43.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandragore.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandragore.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C841046447;
+	Wed, 27 Nov 2024 15:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732720367; cv=pass; b=oe0ALPwk5pH6IADOoFM2rxawllcXgOv7AHaxhjcDcrZIgWivHbw298wqP6n8aGxhJu0N0S7pW4Lo7DaTZyXCUWaxWng43a5bwZGmDLJ6QjB8CP85iPR/V+xziALaohfxuf3IQa6R/0wueSFt+ibJWCACtb2D38ZKyU+v/ikB79E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732720367; c=relaxed/simple;
+	bh=cTFP4XBvlPFpskQQ7HDrMUlZzWRc90xxB4Oix/TjsyA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=mrpKgSeywpIYho/01PvW+9/N2Pcda421y5W8/eRJZ870vmWW/NMh1empDXCyX4/N7ktdjB08xaQYGxBhDx9kyYFXwcFaIpHI6VjSB/AzNTvchgd7efVc9ws4zKQeK96dkO+R8ocKZrXX68G6WymKqra2H5fLFjQwaDR7u9t+HDc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ieXpiEcS; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandragore.io header.i=@mandragore.io header.b="KJHS+sGb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandragore.io;
-	s=protonmail3; t=1732720061; x=1732979261;
-	bh=DAwX+jnpr0nKHKXOog4hr/g5RtrDNCtN/OB0jiDyFa0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=KJHS+sGb4xDCYwvSM6hqMhTdCduFgGoLLHkGMw1f7Mkv35QcoX5qcHV3OqjTTSUpp
-	 1ep2u8n/IkoLNxwThp7oXmmUahyXeIxAIhX9benIhULgzHwUL3dmb9g5NbEx8smuRi
-	 Oi/Eoss0+IQgAktmAPUMC0yD/n/sm1YpU45R616LtricXPMrnXJhwphQFgMkrIZgLE
-	 FdMDd0ErRXfObf/QOMTURC63CqbQD1yelfWAk1ds4831WD2Hyj/PY4zvwIGl1gxF0N
-	 9k+rYxFwPnYFbdcdFIvuU+aUYIabumJT4PHWK2oj+HoNfPcGqv+pQyr9Unhe5fgcwb
-	 GpUNYGJ9v3bkw==
-Date: Wed, 27 Nov 2024 15:07:38 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-From: Konstantin Andrikopoulos <kernel@mandragore.io>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>, Konstantin Andrikopoulos <kernel@mandragore.io>, Vangelis Mamalakis <mamalakis@google.com>
-Subject: [PATCH v2] rust: add safety comment in workqueue traits
-Message-ID: <20241127150643.789033-1-kernel@mandragore.io>
-Feedback-ID: 125704292:user:proton
-X-Pm-Message-ID: 392b1cb239dce4351c1ac62aa968ef9249effa45
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ieXpiEcS"
+ARC-Seal: i=1; a=rsa-sha256; t=1732720334; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Hv2B66P1ZZzQLsRM4f0bELzP8jQfPw0JWer+YSWDiH6PcvtA+tnKEZ0l9Rjpn/4z1BePKH7TIJvG5vmBBTPiUHSk5bI8NbDy4/MnZviy8wnSOlkS6WaTu2oY2WUfNNBiMGB1Fu/Nt7hoV5Wa/8wllCoWG/Ljo9JSFVKQv2k8G7Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732720334; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9L2AiOozzSpLhcSSpRzvu1g03kdBd1tb1vq6nDUVOfs=; 
+	b=GzOgYoj6VWLUSTAURLaPYhVhjMyKuW8lv9T8+kEFk9qhABxvfBCRKlj8vmjvpcCY7Hec4GAoQNV+KCRWRda32z3uYlB/Ps0jur0JJbDd3OzpWHRqow9XzLz3NiUceF6yHA7HJAGjHCZuVDW18PYu5Y9NN2dMo7vujyrbtWTCSI4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732720334;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=9L2AiOozzSpLhcSSpRzvu1g03kdBd1tb1vq6nDUVOfs=;
+	b=ieXpiEcSibL/uVZhZX+SZ1owhsoB0hmJd6MG8WHUue5ksfGLe3869dJUEuTxzMhJ
+	WVgSAUJ45W/hJhLq4pZ4Z6MY2FCchZt4symrOhy1bKNN/Haj19EAlHtSVwHmQM78wjZ
+	aNjLkjpcqi3kedLre07bJlz9P7eTUjGiAxmmbt+8=
+Received: by mx.zohomail.com with SMTPS id 1732720333622129.81615342128612;
+	Wed, 27 Nov 2024 07:12:13 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [WIP RFC v2 12/35] rust: drm/kms: Add
+ ConnectorGuard::set_preferred_mode
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240930233257.1189730-13-lyude@redhat.com>
+Date: Wed, 27 Nov 2024 12:11:58 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Danilo Krummrich <dakr@kernel.org>,
+ mcanal@igalia.com,
+ airlied@redhat.com,
+ zhiw@nvidia.com,
+ cjia@nvidia.com,
+ jhubbard@nvidia.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ open list <linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <D2094DDF-C817-4FB4-9B02-01E0CFDFF039@collabora.com>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-13-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-Add missing safety comments for the implementation of the unsafe traits
-WorkItemPointer and RawWorkItem for Arc<T> in workqueue.rs
+Hi Lyude,
 
-Link: https://github.com/Rust-for-Linux/linux/issues/351.
-Co-developed-by: Vangelis Mamalakis <mamalakis@google.com>
-Signed-off-by: Vangelis Mamalakis <mamalakis@google.com>
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Konstantin Andrikopoulos <kernel@mandragore.io>
----
- rust/kernel/workqueue.rs | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+> On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> Add a wrapper for `drm_set_preferred_mode()` for our new
+> `ConnectorGuard` type so we can set the preferred mode for RVKMS
+> connectors.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/drm/kms/connector.rs | 6 ++++++
+> 1 file changed, 6 insertions(+)
+>=20
+> diff --git a/rust/kernel/drm/kms/connector.rs =
+b/rust/kernel/drm/kms/connector.rs
+> index 7d0f67c3bdaf8..ec842ebc111ae 100644
+> --- a/rust/kernel/drm/kms/connector.rs
+> +++ b/rust/kernel/drm/kms/connector.rs
+> @@ -387,6 +387,12 @@ pub fn add_modes_noedid(&self, (max_h, max_v): =
+(i32, i32)) -> i32 {
+>         // SAFETY: We hold the locks required to call this via our =
+type invariants.
+>         unsafe { bindings::drm_add_modes_noedid(self.as_raw(), max_h, =
+max_v) }
+>     }
+> +
+> +    /// Set the preferred display mode for the underlying =
+[`Connector`].
+> +    pub fn set_preferred_mode(&self, (h_pref, w_pref): (i32, i32)) {
+> +        // SAFETY: We hold the locks required to call this via our =
+type invariants.
+> +        unsafe { bindings::drm_set_preferred_mode(self.as_raw(), =
+h_pref, w_pref) }
+> +    }
+> }
+>=20
+> // SAFETY: DRM expects this struct to be zero-initialized
+> --=20
+> 2.46.1
+>=20
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 4d1d2062f6eb..fd3e97192ed8 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -519,7 +519,15 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate:=
-:workqueue::Work<$work_typ
-     impl{T} HasWork<Self> for ClosureWork<T> { self.work }
- }
-=20
--// SAFETY: TODO.
-+// SAFETY: The `__enqueue` implementation in RawWorkItem uses a `work_stru=
-ct` initialized with the
-+// `run` method of this trait as the function pointer because:
-+//   - `__enqueue` gets the `work_struct` from the `Work` field, using `T:=
-:raw_get_work`.
-+//   - The only safe way to create a `Work` object is through `Work::new`.
-+//   - `Work::new` makes sure that `T::Pointer::run` is passed to `init_wo=
-rk_with_key`.
-+//   - Finally `Work` and `RawWorkItem` guarantee that the correct `Work` =
-field
-+//     will be used because of the ID const generic bound. This makes sure=
- that `T::raw_get_work`
-+//     uses the correct offset for the `Work` field, and `Work::new` picks=
- the correct
-+//     implementation of `WorkItemPointer` for `Arc<T>`.
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
- where
-     T: WorkItem<ID, Pointer =3D Self>,
-@@ -537,7 +545,13 @@ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for =
-Arc<T>
-     }
- }
-=20
--// SAFETY: TODO.
-+// SAFETY: The `work_struct` raw pointer is guaranteed to be valid for the=
- duration of the call to
-+// the closure because we get it from an `Arc`, which means that the ref c=
-ount will be at least 1,
-+// and we don't drop the `Arc` ourselves. If `queue_work_on` returns true,=
- it is further guaranteed
-+// to be valid until a call to the function pointer in `work_struct` becau=
-se we leak the memory it
-+// points to, and only reclaim it if the closure returns false, or in `Wor=
-kItemPointer::run`, which
-+// is what the function pointer in the `work_struct` must be pointing to, =
-according to the safety
-+// requirements of `WorkItemPointer`.
- unsafe impl<T, const ID: u64> RawWorkItem<ID> for Arc<T>
- where
-     T: WorkItem<ID, Pointer =3D Self>,
---=20
-2.47.1
+LGTM
 
-
+=E2=80=94 Daniel=
