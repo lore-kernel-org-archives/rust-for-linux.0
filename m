@@ -1,169 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DB61BE238
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 Nov 2024 16:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576E823D1;
+	Thu, 28 Nov 2024 18:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732812231; cv=none; b=BB5syUvmU7aiG+O6RlxUhX1/Xw5jcZjNKPrpV7+xdYtgLtF21tNkanvJRkK3ScGbhfcEFH6JKyiuy+VD+OYysc+X+kZJCHvEAWFQ/PD22TcL9bIh50sKMbXtp3kQdxUwEnrJUrm5JxqBdu983RN1QYyKfAiI+cvjJzLe4hlQ3u0=
+	t=1732816876; cv=none; b=mnjWRvSJfeW1XADVoo2q+hemgu3o8OKiv4Pz6BGUrw0C0tddgtmd7shP5LyoqL24h5bzfd79iGjg8u0htIyYD3n6OJiL147jSUfi0jSrIxd45xK2TbAyxR7C8s7XKZHpu7kT6gICAaMHyWkQTN6oWWeAdYkWYv46VjclUQ0QASA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732812231; c=relaxed/simple;
-	bh=R7Omu7J6X5LKJ16FM7yNx4t1+DrV5kkPvPh63I4qE54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KbHprDImmL1g+QDq8IQMLya65mD72tORR7CxMDQHtZsG8iZI/ha97/yhm71CgXu8HWJOzDQvE2eSqY1KnrHN2gL/pDqaurdr16sYIPOER9FICddOiNlOoKpL0jSoYhY/QWSBI/CkZ/9SbBLEcTqYR4lsXtYZt41xC8Xb0tE0gSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F3Cf58N5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732816876; c=relaxed/simple;
+	bh=VGzkK9Cx19+Iy7XTjKQudNjexsmrszWcJ1wKOMd4NmI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MQOAn5yj9CsTfdAsEjWL3V4hZSE2pjdIgzX5ICo7VCxJ/ALoBEEoxFiOc/sa/LfAONxkG5rDTGOvmLsBqzeb/gEzVPdu1USf4A50kZWXoZFY4OIfA4INfxKjSaW8Ka5zMxuaCfJlmZ0n8QqCGP17quBWMb/W/+1Xnn3IHrDrcQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HiC8pk6s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F3Cf58N5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732812228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K+3dmbf6C9Y2rlj/QHY9nRJ9DkG1EoefJsooKwPlv10=;
-	b=F3Cf58N5ZhULG0EcMLR7WDcFjruynXIidJkayHdv0P3ayLk+EgjhNbJjM2xzY78p32JGMT
-	0Rexts1Xef3iKJNwEmlLFaFvaEvOADNiHwA7tNjfZOjA5kL3Z3H5qbldIr0qPMo+j3H5Ey
-	pIkMy1wWn3opVQmwo9fyNUHdTjLpyFM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-Ci6tQT5HMZy0OWIIHgvDsA-1; Thu, 28 Nov 2024 11:43:47 -0500
-X-MC-Unique: Ci6tQT5HMZy0OWIIHgvDsA-1
-X-Mimecast-MFC-AGG-ID: Ci6tQT5HMZy0OWIIHgvDsA
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-38243a4ba5fso613584f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 Nov 2024 08:43:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732812226; x=1733417026;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K+3dmbf6C9Y2rlj/QHY9nRJ9DkG1EoefJsooKwPlv10=;
-        b=lzA6e3rCCM9wihr9g0FdBjfrOkBcwWHqno8dRdU59kSwRCyHCvONTeuQD4q4/S9DNk
-         O/uv9WEn4mNkMWH+0q4WmE8UbphW86HvcamWb927DxTYaZKdAgqm+sk7yMX5wsEdApI5
-         FzfO71tpyjJuj1NuVRSuqdP6KzeAE8sWdcMeJNYFlI0eFDSfhecwAN6ccKZw8I3bzDvX
-         AjFpZuTJCLCMGEANqlezerqvBpVOWFrLSBJblklZygTrWx3vNsORYwWupjgpmI71plsb
-         4j0JX4E+5Xi6hlu84EZoQTxqz2zi7HW8rDcajOOq9f38P/MQHPl70ZbyukqWUkkZhHmD
-         8uWA==
-X-Gm-Message-State: AOJu0YwnDMgLDWyxu0ENN//WFx/wjqvFUaiAw4kd3MUgd0YmFY4tUHwm
-	EsI1OfiZoHvIAJcllow13PJ5m9veczXB2jB3WvFEDqfAzTVHuHGnUo0LeeK6MjMsEeYLJG7jJLD
-	Lc3tS2eNwa1QYT0oSM6gd6TEYbZYap01ZRfIH+zEvuMlnFJZ3ljxomTN5S86M5NGG
-X-Gm-Gg: ASbGncuVHH7HDcZ36+5Iz2hG68bgEEuQuycWMVbV9uUeG56YGaTHo8XPxM+tzVGeg2m
-	lFcpMwqkmBvA0eAajrGilR5GVf7W3R8rwwmKZj2WRFBItWfqSB7CZvy3e0QHll1YbzUezbn5I1e
-	EJfoX2ehFwpz6zqGRG6fspsjOyDOSppSonPQKM0eh1VBGDKq5BUU6vqUNQh6FU9UFO/QyWG5lQ6
-	24K/sQA/LKM55ceGHcosMsKd/JkfXjUEVbJbRiMNvUbSeWG2LJIZRQ=
-X-Received: by 2002:a5d:59af:0:b0:37d:4833:38f5 with SMTP id ffacd0b85a97d-385c6ebb8c7mr7364829f8f.30.1732812225937;
-        Thu, 28 Nov 2024 08:43:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFC4BYSXCVnEpYmCQy+9reJYshrH6n+hXcy3RvBypV2jgbG7ijT6BD4xz1XKqt0CRFoaWIVmA==
-X-Received: by 2002:a5d:59af:0:b0:37d:4833:38f5 with SMTP id ffacd0b85a97d-385c6ebb8c7mr7364811f8f.30.1732812225627;
-        Thu, 28 Nov 2024 08:43:45 -0800 (PST)
-Received: from [192.168.10.27] ([151.49.236.146])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385ccd7fec1sm2031756f8f.97.2024.11.28.08.43.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Nov 2024 08:43:45 -0800 (PST)
-Message-ID: <d7f045c1-79df-4592-a116-01874f402de4@redhat.com>
-Date: Thu, 28 Nov 2024 17:43:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HiC8pk6s"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 49D6AC4CECE;
+	Thu, 28 Nov 2024 18:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732816874;
+	bh=VGzkK9Cx19+Iy7XTjKQudNjexsmrszWcJ1wKOMd4NmI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=HiC8pk6sSX+uewaE3GlthXb85b3F6f2rAFw+XikhzwLM3KQtrsp+t1bAB2oK4+jd9
+	 CsiUniYmZoYSxcziFvFPTH0gvq1sPMgYDapnfpYCaPmOT7rm7mI6BRCZt8tLrVXjiS
+	 2KQuEUzFrNIORaT+zYsafva+NGndNYe5fze0bTReXmMq/zlG1gDJ+Nb0yfDHf7enuu
+	 9ONRExsuZuxS8vKAVtDeHSXZPSRTuOG9mxCEl3ocarNVoG8ANPs1x2ZhibaDQyEoUm
+	 G6CU49pxMcDO9hl2mKXdHhJojHVVqaSEESXcC9QlEpC/p4NzKM0/3c0nkM/+h0R63+
+	 pi9nZKuS+9R+g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23848D70DEB;
+	Thu, 28 Nov 2024 18:01:14 +0000 (UTC)
+From: Manas via B4 Relay <devnull+manas18244.iiitd.ac.in@kernel.org>
+Date: Thu, 28 Nov 2024 23:31:01 +0530
+Subject: [PATCH] scripts: checkpatch: add check for simplifying Result<()>
+ in Rust
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] rust: Zeroable: allow struct update syntax outside
- init macros
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- boqun.feng@gmail.com, ojeda@kernel.org, benno.lossin@proton.me,
- axboe@kernel.dk, tmgross@umich.edu, bjorn3_gh@protonmail.com,
- gary@garyguo.net, alex.gaynor@gmail.com, a.hindborg@kernel.org
-References: <20241128141323.481033-1-pbonzini@redhat.com>
- <20241128141323.481033-2-pbonzini@redhat.com>
- <CAH5fLgjJbzAbf5CO3xjHxcThpqju3j0tNdo+QiGupARVmoThYw@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <CAH5fLgjJbzAbf5CO3xjHxcThpqju3j0tNdo+QiGupARVmoThYw@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Awglq85KqHJsMEcfbPw4KZudHRozRktDLF6xz4MtXeQ_1732812226
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241128-add-checkpatch-result-simplify-v1-1-973603191d71@iiitd.ac.in>
+X-B4-Tracking: v=1; b=H4sIANyvSGcC/x3NQQqDMBBA0avIrB0wIZbUqxQXIZk0Q9WGjJaKe
+ HeDy7f5/wChwiQwNAcU+rHwd6lQbQM+ueVNyKEadKeNUrpHFwL6RP6T3eoTFpJtWlF4zhPHHW2
+ gaIx9dMY+oUZyocj/e/Aaz/MCOd8+qXAAAAA=
+X-Change-ID: 20241125-add-checkpatch-result-simplify-8def44860489
+To: Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Joe Perches <joe@perches.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Andy Whitcroft <apw@canonical.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, 
+ Anup Sharma <anupnewsmail@gmail.com>, workflows@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Manas <manas18244@iiitd.ac.in>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732816872; l=2172;
+ i=manas18244@iiitd.ac.in; s=20240813; h=from:subject:message-id;
+ bh=Yhg0Ax2bzUaeocHIPB521o3yw72SKvbWMASGFnH7NM4=;
+ b=7pdOmFPyTmRUpXH4SlrO2kU0eAmnIH4h6ivizmdAaUlwcZXhvpaFmQin5AAFXfxiqwxDAcvQK
+ U27/BjXyUknCyY2ygzRyg/raLgXHDrGZc+SVGtL6d3jgsK4+cVnoyzR
+X-Developer-Key: i=manas18244@iiitd.ac.in; a=ed25519;
+ pk=pXNEDKd3qTkQe9vsJtBGT9hrfOR7Dph1rfX5ig2AAoM=
+X-Endpoint-Received: by B4 Relay for manas18244@iiitd.ac.in/20240813 with
+ auth_id=196
+X-Original-From: Manas <manas18244@iiitd.ac.in>
+Reply-To: manas18244@iiitd.ac.in
 
-On 11/28/24 15:40, Alice Ryhl wrote:
->> The definition of the ZERO constant requires adding a Sized boundary, but
->> this is not a problem either because neither slices nor trait objects
->> are zeroable.
->>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Slices are zeroable. I know they don't implement the trait,
+From: Manas <manas18244@iiitd.ac.in>
 
-Right, I should have used the uppercase "Zeroable" for clarity.
+The type Result<()> can be rewritten simply as Result, as default type
+parameters are unit `()` and `Error` types already. Thus keep usage of
+`Result` consistent throughout codebase.
 
-> but they could implement it, and this could be used to implement e.g.:
-> 
-> pub fn write_zero<T: Zeroed + ?Sized>(value: &mut T) {
->      memset(0, ...);
-> }
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1128
+Not-yet-signed-off-by: Manas <manas18244@iiitd.ac.in>
+---
+Note: The blockage due to my Signed-off-by tag is being resolved in
+private. For now I am adding Not-yet-signed-off-by tag.
+---
+ Documentation/dev-tools/checkpatch.rst | 10 ++++++++++
+ scripts/checkpatch.pl                  |  9 +++++++++
+ 2 files changed, 19 insertions(+)
 
-Yeah, that would be I think
+diff --git a/Documentation/dev-tools/checkpatch.rst b/Documentation/dev-tools/checkpatch.rst
+index abb3ff6820766ee0c29112b256bcc44ce41fffba..7bf1fc7d4d7b490b32b8863365afe12a6732d6c1 100644
+--- a/Documentation/dev-tools/checkpatch.rst
++++ b/Documentation/dev-tools/checkpatch.rst
+@@ -1018,6 +1018,16 @@ Functions and Variables
+ 
+       return bar;
+ 
++  **SIMPLIFIED_RESULT**
++    simplifies Result<()> in Rust codebase as Result because default type
++    parameters are unit and Error types::
++
++      fn foo(x: Result<()>) -> Result<()> {}
++
++    can be rewritten as::
++
++      fn foo(x: Result) -> Result {}
++
+ 
+ Permissions
+ -----------
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 9eed3683ad76caffbbb2418e5dbea7551d374406..ddc943fd4a62d58cee92f8723e7634af4ca69e32 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3574,6 +3574,15 @@ sub process {
+ 			}
+ 		}
+ 
++# Check for Result<()> usage in Rust code
++    if ($realfile =~ /\.rs$/ &&
++        $sline =~ /^\+.*Result<\(\)>/) {
++      $check = 1;
++      if (CHK("SIMPLIFIED_RESULT", "Result<()> can be rewritten simply as Result\n" . $herecurr) && $fix) {
++        $fixed[$fixlinenr] =~ s/Result<\(\)>/Result/g;
++      }
++    }
++
+ # ignore non-hunk lines and lines being removed
+ 		next if (!$hunk_line || $line =~ /^-/);
+ 
 
-     pub fn write_zero<T: Zeroable + ?Sized>(value: &mut T) {
-         unsafe {
-            ptr::write_bytes((value as *mut T).cast::<u8>(), 0,
-                             std::mem::size_of_val(value))
-         }
-     }
+---
+base-commit: 1dc707e647bc919834eff9636c8d00b78c782545
+change-id: 20241125-add-checkpatch-result-simplify-8def44860489
 
-?  And it works for both sized values and slices.  If Zeroable is 
-limited to sized types, I guess you could still do:
+Best regards,
+-- 
+Manas <manas18244@iiitd.ac.in>
 
-     pub fn write_zero_slice<T: Zeroable>(value: &mut [T]) {
-         ptr::write_bytes(value.as_mut_ptr(), 0, value.len())
-     }
-
-So the question is whether the ZERO constant is worthwhile enough, to 
-justify the limitation of the Sized bound (e.g. having separate 
-write_zero and write_zero_slice in the future).
-
-Thanks,
-
-Paolo
 
