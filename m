@@ -1,167 +1,135 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C05145A0F;
-	Thu, 28 Nov 2024 14:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732802792; cv=pass; b=VQ3hGBi5zGp9Eh0v/vgTXc7hnqyOPvig1cvq4BKMhRz+FjBoLBJc3aUepnVrlHDjUir0ObM6Pvv/dNlVSas9345RGYUl66wHLd8Mmevg3wjTp7qNmByUf3VHboaVtfOdSsrsfrW0EBPhAYRjyZ4vRkCGRltmZGEZF3CpWyAgcko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732802792; c=relaxed/simple;
-	bh=lsaXY0lxZ1zQ82A8+HONtt9jHRlMVWP7xWcLVF8MNc0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=EEgezQS4pzjIhBqyiNAwPYqJ5tkIrNzxuZcTlp+0362Daa2Qy4Qn9nwCZ7z70oX6da5AKkVUOmCQU86Nq9oQH/GHMSFpgK9LWZT2nTxoh8Euet3tDqYwEWDg2xTYBVgD4seKc9TqaXWRGDiUuFlOrMxv4FYWlbT/GoxiZBhvIOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=a+xmRzSf; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FAE1AA1FE
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 Nov 2024 14:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732803212; cv=none; b=RCGv2W7y/rDmogfN4M/Qhf6Ezi5/INRPAAStBHH+P0zP2lhadxAU6Humv5HiNx3nplSilueqCHKW5wpS/Ifh9EqCUKJzcJkc3eSRnQj2QqHRkfxLOtaeFtj1n+cmhGVmGwgKHJ21e66uAlfUcL08bom/Y6zzMhhEmzBXwUXMMUA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732803212; c=relaxed/simple;
+	bh=yD5Q5wZvheIwUXY/KFJ7wxZT9LtULBr2qSQmR67OXCA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=R58EOh5PbD5DPzzUptOld6rDar40quAOZgdyC13gL97qJmvsegz0yfOCozu6ACIv10Ej2AvSRYPBMGoTVQjACni0IOK9LhUSMUwpef0UhBbnvoMtuYqFi6oZRJdjz1NKvPHl5hn6aInhhq4v8Qz2Ia20txcsuo7fnTAGERStVL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SHb6eQGa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="a+xmRzSf"
-ARC-Seal: i=1; a=rsa-sha256; t=1732802758; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=oB//s39QD9RHwyTMru2LK6OxjrFwNKSF7XbsDQVNF8392OY9K2eEVYsZFCcYCLlMldp6NRHc2oKeNApeeqficbEXbYLlZA8twmf77SDF5WZcSM9Kgt4KKSNySSXFePa+MG7pXITXMEp2H65L3BVRMYYzJa4bFm6LmY+hkrrcZuU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1732802758; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5zUEiPJ5HRZWwfzDbLTtNuHqL6gztak6PTx5iUX6B3s=; 
-	b=ERj6d3tFnh8OpeA/3lAMDt3AFLLJRk8JAEEGjD4SjdgdzwWO5ZYV07VbS8zFo1TeTEivwz4TBCIFv5sLBNAWySriBRl64BnipT31jetZCo7FPQesIIiAlZ5sW+Lmuw4dByPtGVQxIpBF+1cUaGgKQGwFj/dedVhgevVCtw1vGuM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732802758;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=5zUEiPJ5HRZWwfzDbLTtNuHqL6gztak6PTx5iUX6B3s=;
-	b=a+xmRzSfuV9rujTdieN91apxAv1xzj3RnZT7+Y1E6LekhFWgLwd3AqBhcmUU0prr
-	5VmLTeMm+SoPzY+LMP9Tg5Lp59BryLh7tSSz+PcoMr8jcrYh6PSMkGkv6qqTFXtp5+H
-	4Y0hvVXiGH86ZMpzR1kzJrGGSo+HeSQfzyk+lRFE=
-Received: by mx.zohomail.com with SMTPS id 1732802756921356.23851212628585;
-	Thu, 28 Nov 2024 06:05:56 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SHb6eQGa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732803209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=eFsBZoz/kN/9IvyG8zSeZd+VHQ5VYtjhxgkca3XVrWM=;
+	b=SHb6eQGasYPID++nZi5SdMo0Sw7tssSt65BaYdffrBu+dRBXkopeYT53FTDBya2SPr+vb5
+	V620SEaQem27NqYg5kauXfAJjSHveap8ZbYyROmQgbPy5OKXiz+6D5oZP0nr3fDU5kETJ4
+	sJUXeUiwhhAO6FTSgLIgEH98r+mLPF4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-449-pFLsS6XVOqSRCkuBVZoRzQ-1; Thu, 28 Nov 2024 09:13:28 -0500
+X-MC-Unique: pFLsS6XVOqSRCkuBVZoRzQ-1
+X-Mimecast-MFC-AGG-ID: pFLsS6XVOqSRCkuBVZoRzQ
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-434a51e44d0so6992125e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 28 Nov 2024 06:13:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732803206; x=1733408006;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eFsBZoz/kN/9IvyG8zSeZd+VHQ5VYtjhxgkca3XVrWM=;
+        b=g2E8h21sL8VTEewc09TrzgjpN3IukQWKoTe8NWKIRjqal92HlxgthI8CQUkvvkXthv
+         gRBkiT/uA01P+iqjJruE0sdo9Z+EI4Rnn5VTLX0h/Naia0eJRqjWrGIZ42h5YpkTzyII
+         QUM/AK+Fv85NHg+5o19XnLqdaYHSaZvpblibmc5yywkdQjrZkl4Lr0djqvuzOYWipuJ2
+         TzRaJIuoupunCAYNG7k79SErmouD3M8JrJ7oHSlOT7Z35OOPGfTE7vQhRmWUaG4AebdJ
+         4RIzDjpOqItB9yD5AyMS0rAotLwSiXaIggpw/qoOu0rWju+AEgdDawNb4YU8zAk059Td
+         TuOQ==
+X-Gm-Message-State: AOJu0YxN2AGdzFkRQB6EM6DhjdlnZrfqdMWhNTNBEuyLItM02YjI4+Dx
+	Z/LraqjjKpuk064xBFVNHdM5rr3wfjKvp6BoG+hn1lgCHzG6X02maPEYWNcfQpjomN86iTrFBJ4
+	UdhoqfBlcXzWd2Tdb6EMFuRTBnv7CGiTOeqImKzi+z8tpNINR0iHfnj+pNfQtXgd5bPKo7eiYd2
+	aioDFIRME48oNa4DhlFz+WR0XyzCd//W0ZkfzsjiT+JAIxCHl3
+X-Gm-Gg: ASbGncuMtzIxRASNmcWfDWEoxkCRfPZn1rzFfmLksZ30EXxSCjG6xvRUCwgrDcWKy7i
+	+7xriOrGwmyx1lEq7kryUbghsnATNF8iCS3ZiT5WnRZ+9kMVNOlHP1tMN2px0w+6+iM1hjjmPtL
+	QCdZBR0lPoxv17ENUORM3Tz8gE+en6CSxknx6HtZPYjTbzpxH12Kd63pk3UR6EZrgGjMS5+Bdbu
+	Bdbhkm2PXEqUnavZP2TYYWhn0nzMNFeff6FdYS2tlGggkZdk36+gA==
+X-Received: by 2002:a05:600c:4f8f:b0:434:9fb5:fe04 with SMTP id 5b1f17b1804b1-434a9df0803mr54354475e9.28.1732803206144;
+        Thu, 28 Nov 2024 06:13:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHqoUgC0B/BsNzaSIUqS8QJOqlXUm+jN1vmS7PC6QL4Ag9ticcO21txukzG7GnLpKYtYr5A6g==
+X-Received: by 2002:a05:600c:4f8f:b0:434:9fb5:fe04 with SMTP id 5b1f17b1804b1-434a9df0803mr54354165e9.28.1732803205704;
+        Thu, 28 Nov 2024 06:13:25 -0800 (PST)
+Received: from [192.168.10.3] ([151.49.236.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0d9bc11sm23790635e9.4.2024.11.28.06.13.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Nov 2024 06:13:25 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	benno.lossin@proton.me,
+	axboe@kernel.dk,
+	tmgross@umich.edu,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	gary@garyguo.net,
+	alex.gaynor@gmail.com,
+	a.hindborg@kernel.org
+Subject: [RFC PATCH 0/2] rust: Zeroable: allow struct update syntax outside init macros
+Date: Thu, 28 Nov 2024 15:13:21 +0100
+Message-ID: <20241128141323.481033-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [WIP RFC v2 26/35] WIP: rust: drm/kms: Add
- RawPlaneState::atomic_helper_check()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20240930233257.1189730-27-lyude@redhat.com>
-Date: Thu, 28 Nov 2024 11:04:24 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Asahi Lina <lina@asahilina.net>,
- Danilo Krummrich <dakr@kernel.org>,
- mcanal@igalia.com,
- airlied@redhat.com,
- zhiw@nvidia.com,
- cjia@nvidia.com,
- jhubbard@nvidia.com,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- open list <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7148C7F5-6412-44CB-B92A-4ABAE4A4D5C3@collabora.com>
-References: <20240930233257.1189730-1-lyude@redhat.com>
- <20240930233257.1189730-27-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: uGGinycGamPbFX-wf9gyZ7mK-tE-1o3Ys2hu3CRXfPM_1732803207
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Lyude,
+The Zeroable trait is a marker trait, even though the various init macros
+use a "fake" struct update syntax.  Sometimes, such a struct update
+syntax can be useful even outside the init macros; therefore, this series
+adds an associated const that returns an all-zero instance of a Zeroable type.
 
-> On 30 Sep 2024, at 20:10, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> Add a binding for drm_atomic_helper_check_plane_state(). Since we want =
-to
-> make sure that the user is passing in the new state for a Crtc instead =
-of
-> an old state, we explicitly ask for a reference to a =
-BorrowedCrtcState.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->=20
-> ---
->=20
-> TODO:
-> * Add support for scaling options
+I'm sending this as RFC mostly because the diffstat is not too favorable.
+This is mostly because patch 2 has to keep safety comments above the
+"unsafe trait Zeroable" declarations.  It would be better if the trait
+could be derived automatically, for example via "div rustbindgen" comments
+(not my favorite syntax, and grossly underdocumented; but still).  That
+would also remove "unsafe" altogether.
 
-Can / should this be a separate commit? This would allow this one to go =
-in earlier.
+Nevertheless, it seems to me that this is a small improvement in
+readability of the code that *uses* the structs, and it may be worth
+considering it.
 
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
-> rust/kernel/drm/kms/plane.rs | 25 +++++++++++++++++++++++++
-> 1 file changed, 25 insertions(+)
->=20
-> diff --git a/rust/kernel/drm/kms/plane.rs =
-b/rust/kernel/drm/kms/plane.rs
-> index 4d16d53179fca..cd5167e6441f1 100644
-> --- a/rust/kernel/drm/kms/plane.rs
-> +++ b/rust/kernel/drm/kms/plane.rs
-> @@ -496,6 +496,31 @@ fn crtc<'a, 'b: 'a>(&'a self) -> Option<&'b =
-OpaqueCrtc<<Self::Plane as ModeObjec
->         // SAFETY: This cast is guaranteed safe by `OpaqueCrtc`s =
-invariants.
->         NonNull::new(self.as_raw().crtc).map(|c| unsafe { =
-OpaqueCrtc::from_raw(c.as_ptr()) })
->     }
-> +
-> +    /// Run the atomic check helper for this plane and the given CRTC =
-state
-> +    fn atomic_helper_check<S>(
-> +        &mut self,
-> +        crtc_state: &BorrowedCrtcState<'_, S>,
-> +        can_position: bool,
-> +        can_update_disabled: bool
-> +    ) -> Result
+Another request for comments is whether the "..Zeroable::zeroed()" fake
+struct update syntax used by the init macros should be changed to use
+"..Zeroable::ZERO".  The trait does not reuse the init macro syntax,
+because traits do not support const functions and it can be useful
+to use Zeroable::ZERO in const context.
 
-Some docs on the arguments would be nice IMHO. Things like =
-`can_position` and `can_update_disabled`
-seem a bit opaque.
+Personally I think it's not a problem, and decided to keep the two
+spellings separate: "zeroed()" when working with the Init and PinInit
+traits, and "ZERO" when working with the actual struct.  As far as I can
+see, "..Zeroable::zeroed()" is unused in rust-dev, which makes it trivial
+to switch.
 
-> +    where
-> +        S: FromRawCrtcState,
-> +        S::Crtc: AsRawCrtc<Driver =3D <Self::Plane as =
-ModeObject>::Driver>
-> +    {
-> +        // SAFETY: We're passing the mutable reference from =
-`self.as_raw_mut()` directly to DRM,
-> +        // which is safe.
-> +        to_result(unsafe {
-> +            bindings::drm_atomic_helper_check_plane_state(
-> +                self.as_raw_mut(),
-> +                crtc_state.as_raw(),
-> +                bindings::DRM_PLANE_NO_SCALING as _, // TODO: add =
-parameters for scaling
-> +                bindings::DRM_PLANE_NO_SCALING as _,
+Paolo
 
-No scaling means that you can only select the display=E2=80=99s highest =
-resolution?
 
-> +                can_position,
-> +                can_update_disabled
-> +            )
-> +        })
-> +    }
-> }
-> impl<T: AsRawPlaneState + ?Sized> RawPlaneState for T {}
->=20
-> --=20
-> 2.46.1
->=20
+Paolo Bonzini (2):
+  rust: Zeroable: allow struct update syntax outside init macros
+  rust: block/mq: replace mem::zeroed() with Zeroable trait
 
-Barring the comment above about the docs, this looks good.
+ rust/kernel/block/mq/gen_disk.rs |  8 +++++---
+ rust/kernel/block/mq/tag_set.rs  | 10 ++++++----
+ rust/kernel/init.rs              |  7 ++++++-
+ 3 files changed, 18 insertions(+), 9 deletions(-)
 
-=E2=80=94 Daniel
+-- 
+2.47.0
 
