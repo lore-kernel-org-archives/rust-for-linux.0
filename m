@@ -1,175 +1,205 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385CA13C836;
-	Thu, 28 Nov 2024 05:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732772439; cv=none; b=QXmLBcPa2yV3K0CiN0LQhNI83bGUF5UBmq1FM4llfbdgsSqIgIZc5SqiR3KlJKEpqwA1Z8tPqlzlNZIZHFTNED1qlwhvWcBTkGTaFh5RVmW+ZVI31a5fQsHxQgSlsqp6dDWakMOi+nqgFN0Ch0Jf+2OSxMbAYQrud0mzesrySTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732772439; c=relaxed/simple;
-	bh=1irOa5iMMXRoDzCJXwveBV0OqpPr+P+ur0YtrHr68zY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rXruprDbZH5M3rDv7M/+09dK173zjcDLgPz6DU2ueRNdNfIsHn08/3ngXZN4ZiAcUfof+ynMxOOGHfBmtEdFzGgYDdbF0HWMPDQFKml4p2GvLVtQJuOiucu3tAuBxqUXHfkBMIOyR5gJTaepC3nm5ZaIiyAwwFvS56ZxMelhlHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WLchBLth; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D4A1A9B52;
+	Thu, 28 Nov 2024 13:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732801100; cv=pass; b=e9lEKC640anDVL04q6axv8ePNjITcN6+s8plRxHmf9HYjueWyauC/cAIPjzeqPTz2HSSQMyasFwIEHNoCooPkkurtnZgoSuTZCrnrOwRGx0COZPDdr3TMEPePAwwaaSXYajeY6ETxHnTsqlI5zAfQ9oy6mGuqN2vEsG4EaIW3dI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732801100; c=relaxed/simple;
+	bh=sMli31f5k2R4zuxMzErWTv+JVEyzZe03gFtFRqlczZY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jWzGWZ5W2Q86H4PH6ikZvqswUmgHKwNzn0AjdS6vHUX7mqBC9XYuTdsOjQK+ogZLRP4onFWgotBRS4itfweg8wCpL5NoC7WESOeDsXJQAV+Ww366hAHuh7eU3YAj8CRr/hh/44zYAZRw6KrtCsr2yfAX8hd5ITvdEMM2PasgcZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GEfRPRGV; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WLchBLth"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b666215645so22428585a.0;
-        Wed, 27 Nov 2024 21:40:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732772437; x=1733377237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qe5bljGPbBbJFGGFe8TjhBQ9K3SXU61aSYWBPYS66OQ=;
-        b=WLchBLthFldz3EG2zc/VKR4/ReNkGJdcPCOHzRnPRj3CMQ+AJpITYDIZGJ8EwVssyK
-         Sq8gxa2cDiloOgCXeCbnCa/Bnkc4zwHmXEfK7+S0l9NhhjZSg1FCIdqeZ+OrfW9HHd5C
-         MEPm+nc1CRxN8iclSpED1cAqZGBcKYAyIPkOZBn+ycKMyMyhSnjflZgtWojh3iTiqzk+
-         RTWTA6dCi3VtwB0PfY1v7qce7/2KyeIjVvWCUofnjQKd5AiyKbfbYEUl47WupA6cgOAI
-         vtp5YVTbqZCmiN6dCkrpmwCrKxA+1kb7wCyAIISmwe+a3JG2iArRH2phW0EkK7FBko9z
-         Nc+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732772437; x=1733377237;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qe5bljGPbBbJFGGFe8TjhBQ9K3SXU61aSYWBPYS66OQ=;
-        b=PdG5YhLX8By8DJM9VsDVZKfybHPcU333P3y5k/ghQ9s37bzFOuXEKkwH2ta3iGeAw8
-         if1UgUABifYWgSjBAdcRSBC8NtA+oWj6dATZpmZ4gpFfWIH5eVu+yuiTxBRPzUAEM2Sp
-         dBWqJSNrv2zwoS6+0n6vQiKacwdSpPeSNGaa2vGq/h19o5MBV08Jofc5N60iL7HizDSf
-         E76qgh4cqw6H1dBiJNIrv8n/ziEqupC/PvTyUXQmdXXr+9LdBumsA1+XU0IiEvvliCya
-         q2cw7FLzkjbfoPsicRVfS0FVgLMWrXn5aCPZHKQrvUco4yBbnl/9h4bVwuWhv8lhEqUj
-         CLQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0osCDmgI1bxvDCwgHg9LgjoVL47ruYB3B6XHB6GF+ZzSYvw4ohHeDL+fwFZCo0SVc+I/1RvXo+sYfjdFgOSU=@vger.kernel.org, AJvYcCUf51eDZkImZuutDzanZ9VlJrd6yCxmvrIxLyEvJ4hO4JfDHZYMj7q8SpK3U0R+ALGVez7CyGPgePCopMM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXOksNEQElqVr1nw7r0h3tHyI9jL8FkMnMqnGf4gZrGbwRalBZ
-	6awQywZRtvXYqYRf+ZduK65aS5RE+9lI0A4o8v2u7DCDHqTiKTqf
-X-Gm-Gg: ASbGnctI0ofcNcZSsRCzegFlLNEH4pNd7Oo6Z2agDW9QxLt0bTZOqdCdgli9L3InvAH
-	Fxa0mpfjfPRi86uH94sZuY1URQAL7YgeAP1M4Ad/Pb64dn1d0nAdzBVoa7BlMoPNV8wng2lL4oF
-	8v5RMItsbE3mRrK4JMu7HsbjAmkuRur+xJ6y/gPVxchSsG8p0FwE3oPT+lXCNX1+pAqENzOt5el
-	EzSgzJt+eM+Po9ZzcFK56MDZsYeTsgNKVQoEOSdCNvrCKC0jEVoOpet0+PhU3+Kk0VuQ6CFmVnF
-	eaboWbvJNIFY2zZWF6wxY+WsK15QM4rIfRXY7Z8d
-X-Google-Smtp-Source: AGHT+IF9fs3kli7JcKoMj1NEFNyoAQcN9hkYTEd2oIPST/YfiSLfaOzVILdiwnWjDfqA1wxkx2G25A==
-X-Received: by 2002:a05:620a:260b:b0:7af:daa4:3564 with SMTP id af79cd13be357-7b67c460896mr893254585a.48.1732772437034;
-        Wed, 27 Nov 2024 21:40:37 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6849b7280sm28985085a.102.2024.11.27.21.40.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 21:40:36 -0800 (PST)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 316441200077;
-	Thu, 28 Nov 2024 00:40:36 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Thu, 28 Nov 2024 00:40:36 -0500
-X-ME-Sender: <xms:VAJIZzxJ4MH3XwaS7bcgWwx8IkjFRDb1tb2h3yMbwZqY2oWUbppjXg>
-    <xme:VAJIZ7QykeHZD0Ha-T81OO5DRM1LS02Z3rvny88NRh8dBvaCTCLq0BiEXPG4ajinH
-    J6wj_duY_XkmLPKVg>
-X-ME-Received: <xmr:VAJIZ9WmsEv6e4u__7w0ArILg5jlumsw62qU8xsdXx_Ph0rVKCMFnAxTJ4h5>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrhedtgdekhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecu
-    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homheqnecuggftrfgrthhtvghrnhepgffhffevhffhvdfgjefgkedvlefgkeegveeuheel
-    hfeivdegffejgfetuefgheeinecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
-    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
-    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
-    vgdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhr
-    rgguvggrugdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgr
-    nhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
-    thhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhope
-    gsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvg
-X-ME-Proxy: <xmx:VAJIZ9jSWbc6tGvYh2dv-BbO9t1daE688Va-ARMcqt3gMgq75yxXTg>
-    <xmx:VAJIZ1CaELDWRpguAry1jDFw3MElQYPuiL7th-qpD4FiyPANSdZ_7g>
-    <xmx:VAJIZ2IwXATDAhvrfiTft5VEjwwWB2KXXKPY2yjcSapb-E7RrP8Rjg>
-    <xmx:VAJIZ0A3rrfxSZ9Q6B-Uadm1hCCBHJqOQJJjOK_71S21LGowUJ32vw>
-    <xmx:VAJIZxzTgTKPD3WkufXXHpr8-Jxoy25e4vcouWgRydOiwZk_8h6ITJdu>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 28 Nov 2024 00:40:35 -0500 (EST)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lyude Paul <lyude@redhat.com>,
-	Filipe Xavier <felipe_life@live.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [RFC 5/5] rust: sync: Add SpinLockGuard type alias
-Date: Wed, 27 Nov 2024 21:40:22 -0800
-Message-Id: <20241128054022.19586-6-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241128054022.19586-1-boqun.feng@gmail.com>
-References: <20241128054022.19586-1-boqun.feng@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GEfRPRGV"
+ARC-Seal: i=1; a=rsa-sha256; t=1732801051; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=a4sPCVWFbtmlTYEKygiqDDmLR3oqC0ouqwWk+2601UyvS1wz9M6OYLuXvWbVfSqDOMPjeef9UQUO7qFgCFGRVxFSjZv2jPHej8g9eCWxse5gn8Z2OwuyFjyV/q+LVo6lB8KxYNyHa/uVWcJsENeUnoWtQcGnHr+vVYaiWYmR71c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1732801051; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=8ixZhmmSEhwQiWsN6iV1hHytd5tiR7EWF10aS4cvfPQ=; 
+	b=SYwtNttWo1Ckj8Zwq4KgsSS662BRzAFPOHaMgaLqUIrFGHoto0easJViyDLoHehY0KRWl6tP9t4u9F2Bph0hRIYsq90bH0XpEj0Ku++XSgmNpaQhiWdNJ6cM1T0cwmv3bnlKiPrMMq/zeLKzvNkGgR5heOAhZQ9oIWMpDPyrzOQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732801050;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=8ixZhmmSEhwQiWsN6iV1hHytd5tiR7EWF10aS4cvfPQ=;
+	b=GEfRPRGV3x2CFC/KzNwCDKOd6Jq3n++dy4a6resfcgF9Spii/1gloI20XIub/z8L
+	d7Ui6etrFJdld5QKaWY4Jz4vdb35UoIuXcONmFs6KFCfDPi6o1JmWZRPL+WdACy5Wkh
+	xkXw+GyfebN3uXEkJkE2VO6v9CIy48x+yvTkjFoQ=
+Received: by mx.zohomail.com with SMTPS id 1732801048593235.7251758614393;
+	Thu, 28 Nov 2024 05:37:28 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [WIP RFC v2 21/35] rust: drm/kms: Introduce
+ DriverCrtc::atomic_check()
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240930233257.1189730-22-lyude@redhat.com>
+Date: Thu, 28 Nov 2024 10:37:13 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Danilo Krummrich <dakr@kernel.org>,
+ mcanal@igalia.com,
+ airlied@redhat.com,
+ zhiw@nvidia.com,
+ cjia@nvidia.com,
+ jhubbard@nvidia.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ open list <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <94CA8996-2993-434F-AE98-989D346461FF@collabora.com>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-22-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.200.121)
+X-ZohoMailClient: External
 
-From: Lyude Paul <lyude@redhat.com>
+Hi Lyude,
 
-A simple helper alias for code that needs to deal with Guard types returned
-from SpinLocks.
+> On 30 Sep 2024, at 20:10, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> An optional trait method for implementing a CRTC's atomic state check.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20241120222742.2490495-3-lyude@redhat.com
----
- rust/kernel/sync.rs               | 2 +-
- rust/kernel/sync/lock/spinlock.rs | 8 ++++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+A more thorough explanation like you had in your last patch would be =
+nice here.
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 2721b5c8deda..dffdaad972ce 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -17,7 +17,7 @@
- pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
- pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLockBackend, GlobalLockedBy};
- pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
--pub use lock::spinlock::{new_spinlock, SpinLock};
-+pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
- pub use locked_by::LockedBy;
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 9f4d128bed98..081c0220013b 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -87,6 +87,14 @@ macro_rules! new_spinlock {
- /// A kernel `spinlock_t` lock backend.
- pub struct SpinLockBackend;
- 
-+/// A [`Guard`] acquired from locking a [`SpinLock`].
-+///
-+/// This is simply a type alias for a [`Guard`] returned from locking a [`SpinLock`]. It will unlock
-+/// the [`SpinLock`] upon being dropped.
-+///
-+/// [`Guard`]: super::Guard
-+pub type SpinLockGuard<'a, T> = super::Guard<'a, T, SpinLockBackend>;
-+
- // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
- // default implementation that always calls the same locking method.
- unsafe impl super::Backend for SpinLockBackend {
--- 
-2.39.5 (Apple Git-154)
+By `atomic state check` you mean after the state has been duplicated, =
+and mutated, right?
+
+So it=E2=80=99s the stage where we check whether the hardware can accept =
+the new parameters?
+
+
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/drm/kms/crtc.rs | 46 +++++++++++++++++++++++++++++++++++--
+> 1 file changed, 44 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
+> index 7864540705f76..43c7264402b07 100644
+> --- a/rust/kernel/drm/kms/crtc.rs
+> +++ b/rust/kernel/drm/kms/crtc.rs
+> @@ -27,7 +27,7 @@
+>     marker::*,
+>     ptr::{NonNull, null, null_mut, addr_of_mut, self},
+>     ops::{Deref, DerefMut},
+> -    mem,
+> +    mem::{self, ManuallyDrop},
+> };
+> use macros::vtable;
+>=20
+> @@ -82,7 +82,7 @@ pub trait DriverCrtc: Send + Sync + Sized {
+>         helper_funcs: bindings::drm_crtc_helper_funcs {
+>             atomic_disable: None,
+>             atomic_enable: None,
+> -            atomic_check: None,
+> +            atomic_check: if Self::HAS_ATOMIC_CHECK { =
+Some(atomic_check_callback::<Self>) } else { None },
+>             dpms: None,
+>             commit: None,
+>             prepare: None,
+> @@ -117,6 +117,21 @@ pub trait DriverCrtc: Send + Sync + Sized {
+>     ///
+>     /// Drivers may use this to instantiate their [`DriverCrtc`] =
+object.
+>     fn new(device: &Device<Self::Driver>, args: &Self::Args) -> impl =
+PinInit<Self, Error>;
+> +
+> +    /// The optional [`drm_crtc_helper_funcs.atomic_check`] hook for =
+this crtc.
+> +    ///
+> +    /// Drivers may use this to customize the atomic check phase of =
+their [`Crtc`] objects. The
+> +    /// result of this function determines whether the atomic check =
+passed or failed.
+> +    ///
+> +    /// [`drm_crtc_helper_funcs.atomic_check`]: =
+srctree/include/drm/drm_modeset_helper_vtables.h
+> +    fn atomic_check(
+> +        crtc: &Crtc<Self>,
+> +        old_state: &CrtcState<Self::State>,
+> +        new_state: BorrowedCrtcState<'_, CrtcState<Self::State>>,
+> +        state: &AtomicStateComposer<Self::Driver>
+> +    ) -> Result {
+> +        build_error::build_error("This should not be reachable")
+> +    }
+> }
+>=20
+
+I am confused. If this is optional, why do we have a default =
+implementation with a build_error ?
+
+> /// The generated C vtable for a [`DriverCrtc`].
+> @@ -726,3 +741,30 @@ fn as_raw(&self) -> *mut bindings::drm_crtc_state =
+{
+>         )
+>     };
+> }
+> +
+> +unsafe extern "C" fn atomic_check_callback<T: DriverCrtc>(
+> +    crtc: *mut bindings::drm_crtc,
+> +    state: *mut bindings::drm_atomic_state,
+> +) -> i32 {
+> +    // SAFETY:
+> +    // * We're guaranteed `crtc` is of type `Crtc<T>` via type =
+invariants.
+> +    // * We're guaranteed by DRM that `crtc` is pointing to a valid =
+initialized state.
+> +    let crtc =3D unsafe { Crtc::from_raw(crtc) };
+> +
+> +    // SAFETY: DRM guarantees `state` points to a valid =
+`drm_atomic_state`
+> +    let state =3D unsafe {
+> +        =
+ManuallyDrop::new(AtomicStateComposer::new(NonNull::new_unchecked(state)))=
+
+> +    };
+> +
+
+Some comments on why ManuallyDrop is required here would also be useful. =
+Is it related to the
+use of ManuallyDrop in the preceding patch?
+
+> +    // SAFETY: Since we are in the atomic update callback, we're =
+guaranteed by DRM that both the old
+> +    // and new atomic state are present within `state`
+> +    let (old_state, new_state) =3D unsafe {(
+> +        state.get_old_crtc_state(crtc).unwrap_unchecked(),
+> +        state.get_new_crtc_state(crtc).unwrap_unchecked(),
+> +    )};
+> +
+> +    from_result(|| {
+> +        T::atomic_check(crtc, old_state, new_state, &state)?;
+> +        Ok(0)
+> +    })
+> +}
+> --=20
+> 2.46.1
+>=20
+
+=E2=80=94 Daniel
 
