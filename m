@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFBF1B0F1C;
-	Thu, 28 Nov 2024 14:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB365D8F0;
+	Thu, 28 Nov 2024 14:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732804208; cv=pass; b=QYSYdpNmq8bwWq+G401JGU7uNe1oHRZzavK/5UwBcUQv2uyHqelLzOqCW8cm4y/gW36SiInTEanHDiUQ1fHNqxpZ81YhyOi7C9Auy+V2WqdfL3WFD5IPVlEluKKcCzHIpH1pZdJg47AR9JTaNlMXsaoHAa36UQFKgcy1P/mdU1o=
+	t=1732804366; cv=pass; b=LD9W0odJ6jTReOei73kEKSqLIJE1xnIFaytbwro186AabpMFsonPL+LVkLevrq2f4Xvh1F+OnK5rVOBv4MR/7qR3Cq/TGzXLfwCiNLzzxzZB5NcuOXit/wnWKp5/mGeNULGkT0y3ruMgIuji632ApjsB3Y9Q1oJR/d7Ax01NdY0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732804208; c=relaxed/simple;
-	bh=XHzXBNIpch0n5ki+RPoBM5UiqGnlg+tEwyb+937RF6Y=;
+	s=arc-20240116; t=1732804366; c=relaxed/simple;
+	bh=WNC1qk8g8s0XsYKiv3+GiPxXM/3aHNPx2AHsHYN26l4=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=coPEi2raeRskTMINpka0ytI/FXB+HsG0P0q6nW1WlzzGqo9sVxZWMFDxOFHuN/cwslKezTrqhDwUdpe/lwNTvlPHBZBP5HQDefnkm7WenhVQrPj5rr0IUPl+/6CgApDWf/mwSb0WFexw6sG7lFubiK26qWeYZlCHknJBz36O2Z4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ddJZZXHs; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=MtUvCQDwJnIHvtvXtQMYYlttK4AA6Dct9Wv/ipSSI3AOEjspIjb2Zu5EB1Yx1ZjZIiZ6KBPME0QLmNxlmJWwixchZSUIZeGsJOVES/rFbEv/K55cA+o5V2hiGDLmjZ1nCE3IA6Bck51Qw5RmdidZKMD14KmYFqbR8jEFHCIzb+Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CdD7NmTl; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ddJZZXHs"
-ARC-Seal: i=1; a=rsa-sha256; t=1732804175; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CdD7NmTl"
+ARC-Seal: i=1; a=rsa-sha256; t=1732804333; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=W5/xYku4emSx1qcpNWsy12LZbkUfN+GMf9rKQE+Dzporw3Ajo35wC0MT9FJUM6wyZ7ZuNu0KL5QrB2ERh96EBSCPMDbxmhcEwMNnW0b71sRXD1IQ8KIlVMYLoTawYWmxtQdG7QhowSs2HONpHmN/qJhwMDGMa8c6Li3RoJLnOD0=
+	b=lPOzg+dQ6Ut7xQnwqFaF0fc0bWMILyYV97VxkZs/MryZi/w5hi+oN07trvEXYRNml3sTu1+dfsdOLSMQNa8InZlzOqENHN+j37skhY01mO5O8VRepcSyQuViPbiTWBhivSlzdc8UkfigZ7PueHzd4iZYR+1riqiZHQFI/EB1Kvc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1732804175; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ESdq7+vJq5NINh85EeRXpbCJuG9FayiFw/PgAnZgLEs=; 
-	b=VIkRBhotgG0ZJKVPfUIUglytu4eNDSGs8a7xtuVmCVRl4O2gpMdvDyDET1o2ztYG9n/7hK87m6PrfDV3j/rUku6yikstwYFWnIqGB4xV13bjO2Vvwg+5gzoBxvPiogmzQ92V9gCldZy2RUPJMFjN3MtgEBgtauEVB1Cy3OMnLuQ=
+	t=1732804333; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/Taw2CQT9QcMUAy17zboa+dBaCxiBOPrIgOOMmxKd7M=; 
+	b=F9WPVqZ8O7qEpV88yI+X2K3HrYPVmJZ0aBAS2z9y12Y3OibVvRXO6oYJassA/icx7mO15o+Wffnr5WRX6vmGsgy6N6/T6CmwKSI7Jibyl0br78UFa536kmhH0tjWnmlRK8lvJAvu8U6XKYqvPPpoqAQ1HaoBvK2K7ie0SwxuVFw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732804175;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1732804333;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=ESdq7+vJq5NINh85EeRXpbCJuG9FayiFw/PgAnZgLEs=;
-	b=ddJZZXHspf6q0EUBidd2iL/XwYOY+h2oUpyfDfQ+Vaxrrad88ea00chA04etnd5F
-	gcnB5B4oSBH8iVrpqVHq5cRvfSpU6MlcjHTDRHxfKmgg7BaDZ13MOGdJBSeMdKEFmKZ
-	+aJeai6WpCcHYsNYjmvHlyfV8b108UdnEHfdoqtY=
-Received: by mx.zohomail.com with SMTPS id 1732804173824507.02096353782724;
-	Thu, 28 Nov 2024 06:29:33 -0800 (PST)
+	bh=/Taw2CQT9QcMUAy17zboa+dBaCxiBOPrIgOOMmxKd7M=;
+	b=CdD7NmTlUQ/CSJ+wXfMv7ZaMFrpISTQlqkIu+7X0mS06fcMksc59dnSWn1G2BxbT
+	BQ0xMwbkzFxD/ilkrVQjYsTCWJrQwVjEdInw0cFtkJDnZeBxy1LDQ8O6bL97f61kSWx
+	t58r8ngvyC+QjFXTgKG0RvBxL858bjYQ49jT+hIY=
+Received: by mx.zohomail.com with SMTPS id 1732804332353252.4456748863455;
+	Thu, 28 Nov 2024 06:32:12 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,10 +44,11 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [WIP RFC v2 28/35] rust: drm/kms: Add RawPlane::framebuffer()
+Subject: Re: [WIP RFC v2 29/35] rust: drm/kms: Add DriverCrtc::atomic_begin()
+ and atomic_flush()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20240930233257.1189730-29-lyude@redhat.com>
-Date: Thu, 28 Nov 2024 11:29:18 -0300
+In-Reply-To: <20240930233257.1189730-30-lyude@redhat.com>
+Date: Thu, 28 Nov 2024 11:31:57 -0300
 Cc: dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  Asahi Lina <lina@asahilina.net>,
@@ -69,9 +70,9 @@ Cc: dri-devel@lists.freedesktop.org,
  Trevor Gross <tmgross@umich.edu>,
  open list <linux-kernel@vger.kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <ABEE04BD-5136-4F83-A46D-62595D1D3B9B@collabora.com>
+Message-Id: <A58F7EA7-355A-4001-93EA-653989BE02C1@collabora.com>
 References: <20240930233257.1189730-1-lyude@redhat.com>
- <20240930233257.1189730-29-lyude@redhat.com>
+ <20240930233257.1189730-30-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.200.121)
 X-ZohoMailClient: External
@@ -80,55 +81,142 @@ Hi Lyude,
 
 > On 30 Sep 2024, at 20:10, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> Returns the Framebuffer currently assigned in an atomic plane state.
-
-A bit unrelated to this patch, but can you have more than one =
-framebuffer active?=20
-
-i.e.: for things like overlays, etc
-
+> Optional trait methods for implementing the atomic_begin and =
+atomic_flush
+> callbacks for a CRTC.
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
-> rust/kernel/drm/kms/plane.rs | 8 ++++++++
-> 1 file changed, 8 insertions(+)
+> rust/kernel/drm/kms/crtc.rs | 78 ++++++++++++++++++++++++++++++++++++-
+> 1 file changed, 76 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/rust/kernel/drm/kms/plane.rs =
-b/rust/kernel/drm/kms/plane.rs
-> index cd5167e6441f1..15efa53fda8d3 100644
-> --- a/rust/kernel/drm/kms/plane.rs
-> +++ b/rust/kernel/drm/kms/plane.rs
-> @@ -31,6 +31,7 @@
->     StaticModeObject,
->     atomic::*,
->     crtc::*,
-> +    framebuffer::*,
-> };
->=20
-> /// The main trait for implementing the [`struct drm_plane`] API for =
-[`Plane`]
-> @@ -521,6 +522,13 @@ fn atomic_helper_check<S>(
->             )
->         })
+> diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
+> index ec9b58763dcca..a4e955364bd8c 100644
+> --- a/rust/kernel/drm/kms/crtc.rs
+> +++ b/rust/kernel/drm/kms/crtc.rs
+> @@ -90,8 +90,8 @@ pub trait DriverCrtc: Send + Sync + Sized {
+>             mode_set: None,
+>             mode_valid: None,
+>             mode_fixup: None,
+> -            atomic_begin: None,
+> -            atomic_flush: None,
+> +            atomic_begin: if Self::HAS_ATOMIC_BEGIN { =
+Some(atomic_begin_callback::<Self>) } else { None },
+> +            atomic_flush: if Self::HAS_ATOMIC_FLUSH { =
+Some(atomic_flush_callback::<Self>) } else { None },
+>             mode_set_nofb: None,
+>             mode_set_base: None,
+>             mode_set_base_atomic: None,
+> @@ -132,6 +132,36 @@ fn atomic_check(
+>     ) -> Result {
+>         build_error::build_error("This should not be reachable")
 >     }
 > +
-> +    /// Return the framebuffer currently set for this plane state
-> +    #[inline]
-> +    fn framebuffer(&self) -> Option<&Framebuffer<<Self::Plane as =
-ModeObject>::Driver>> {
-> +        // SAFETY: The layout of Framebuffer<T> is identical to `fb`
-> +        unsafe { self.as_raw().fb.as_ref().map(|fb| =
-Framebuffer::from_raw(fb)) }
+> +    /// The optional [`drm_crtc_helper_funcs.atomic_begin`] hook.
+> +    ///
+> +    /// This hook will be called before a set of [`Plane`] updates =
+are performed for the given
+> +    /// [`Crtc`].
+> +    ///
+> +    /// [`drm_crtc_helper_funcs.atomic_begin`]: =
+srctree/include/drm/drm_modeset_helper_vtables.h
+> +    fn atomic_begin(
+> +        crtc: &Crtc<Self>,
+> +        old_state: &CrtcState<Self::State>,
+> +        new_state: BorrowedCrtcState<'_, CrtcState<Self::State>>,
+> +        state: &AtomicStateMutator<Self::Driver>
+> +    ) {
+> +        build_error::build_error("This should not be reachable")
+> +    }
+> +
+> +    /// The optional [`drm_crtc_helper_funcs.atomic_flush`] hook.
+> +    ///
+> +    /// This hook will be called after a set of [`Plane`] updates are =
+performed for the given
+> +    /// [`Crtc`].
+> +    ///
+> +    /// [`drm_crtc_helper_funcs.atomic_flush`]: =
+srctree/include/drm/drm_modeset_helper_vtables.h
+> +    fn atomic_flush(
+> +        crtc: &Crtc<Self>,
+> +        old_state: &CrtcState<Self::State>,
+> +        new_state: BorrowedCrtcState<'_, CrtcState<Self::State>>,
+> +        state: &AtomicStateMutator<Self::Driver>
+> +    ) {
+> +        build_error::build_error("This should never be reachable")
 > +    }
 > }
-> impl<T: AsRawPlaneState + ?Sized> RawPlaneState for T {}
+
+Same comment here as in the previous patches, i.e.: if this is optional, =
+why do we have a
+default implementation with build_error?
+
 >=20
+> /// The generated C vtable for a [`DriverCrtc`].
+> @@ -776,3 +806,47 @@ fn as_raw(&self) -> *mut bindings::drm_crtc_state =
+{
+>         Ok(0)
+>     })
+> }
+> +
+> +unsafe extern "C" fn atomic_begin_callback<T: DriverCrtc>(
+> +    crtc: *mut bindings::drm_crtc,
+> +    state: *mut bindings::drm_atomic_state,
+> +) {
+> +    // SAFETY:
+> +    // * We're guaranteed `crtc` is of type `Crtc<T>` via type =
+invariants.
+> +    // * We're guaranteed by DRM that `crtc` is pointing to a valid =
+initialized state.
+> +    let crtc =3D unsafe { Crtc::from_raw(crtc) };
+> +
+> +    // SAFETY: We're guaranteed by DRM that `state` points to a valid =
+instance of `drm_atomic_state`
+> +    let state =3D unsafe { =
+AtomicStateMutator::new(NonNull::new_unchecked(state)) };
+> +
+> +    // SAFETY: We're guaranteed by DRM that both the old and new =
+atomic state are present within
+> +    // this `drm_atomic_state`
+> +    let (old_state, new_state) =3D unsafe {(
+> +        state.get_old_crtc_state(crtc).unwrap_unchecked(),
+> +        state.get_new_crtc_state(crtc).unwrap_unchecked(),
+> +    )};
+> +
+> +    T::atomic_begin(crtc, old_state, new_state, &state);
+> +}
+> +
+> +unsafe extern "C" fn atomic_flush_callback<T: DriverCrtc>(
+> +    crtc: *mut bindings::drm_crtc,
+> +    state: *mut bindings::drm_atomic_state,
+> +) {
+> +    // SAFETY:
+> +    // * We're guaranteed `crtc` is of type `Crtc<T>` via type =
+invariants.
+> +    // * We're guaranteed by DRM that `crtc` is pointing to a valid =
+initialized state.
+> +    let crtc =3D unsafe { Crtc::from_raw(crtc) };
+> +
+> +    // SAFETY: We're guaranteed by DRM that `state` points to a valid =
+instance of `drm_atomic_state`
+> +    let state =3D unsafe { =
+AtomicStateMutator::new(NonNull::new_unchecked(state)) };
+> +
+> +    // SAFETY: We're in an atomic flush callback, so we know that =
+both the new and old state are
+> +    // present
+> +    let (old_state, new_state) =3D unsafe {(
+> +        state.get_old_crtc_state(crtc).unwrap_unchecked(),
+> +        state.get_new_crtc_state(crtc).unwrap_unchecked(),
+> +    )};
+> +
+> +    T::atomic_flush(crtc, old_state, new_state, &state);
+> +}
 > --=20
 > 2.46.1
 >=20
 >=20
 
-LGTM
 
 =E2=80=94 Daniel
 
