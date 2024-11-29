@@ -1,161 +1,107 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C591215B0EC
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 08:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E3414F135
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 09:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732868557; cv=none; b=MVi1Kny4w4i8QhCUnPZa6e+fpBPm+v02E+M2JNNWZkbpyejmctWD8F9WTKvL+cD2THEEk0TfD7/K8f4KxPyuCSzqOV11f97UpJ5Yd7sbgLL+NPyyFkpn7qiDxqr2Ri07kvArdVwpZeQAUbCQv0c1i6TzKIyoed6WXL/SPnljBy0=
+	t=1732873005; cv=none; b=I9iOcV4Nw4QbGZ2dH6UUSx4Nc+B7HrsQnFYk2X1BfDg0HioFzff7aleua2x18wNBI3k7wuV19K0/Xju6A2FcWmn+9gL49M5kRHv/X/ek6AMW3OgSr9eOWEKl6EA2FcyTAqjugWR2WVWNppm06rb+Jn9wexX9+ylgSIpYTMHPcSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732868557; c=relaxed/simple;
-	bh=562yHw0XBNbz/d+kvGdxMM55CvOCfYE2YRMXmMQ1hpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FUGXKD8gZZDO2lVfEi6CeGH2WCXAZu/2NZTEK46Harsw2HiqP/rGS+lssFfgIdxSz3u2cXkhYcCWleSewG/MUWmJH/VqEwQvwFp4xYxDGsHcZbxebDAs50rxvpSAKHbS7dkuukF2U5cQWw7S/FMu2ECBveSWjkh5harQpKS9ZB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=fsxw1a3o; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1732873005; c=relaxed/simple;
+	bh=8t3kY5SgJeeomjAp9Nma5rNKtl6laUxXmUpc12ZBpxo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KsULz3eaj89HOAZ+cin7J+C+F71mlt1cbu4ry3QpiZTelt8BnN8IgW7cbPh+QBxNMvPf2SVxcCnAxspbaw9MMeOkWinhVf+KpwginzEVJ+Uuqe3mwiPX2ymkEBZLIhMW+AZgCl92XoUApy4TF1hzsgq4G64EW5jNYC5CoTPjXrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1c+/4LkU; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="fsxw1a3o"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa53a971480so210633366b.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 00:22:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1c+/4LkU"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434ab938e37so10235435e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 01:36:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1732868554; x=1733473354; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bpOpchybQJXD5CvZrpdSs1RBStnGyKaKUM/Uju5sP7Q=;
-        b=fsxw1a3oH0tW/K4dcEKMJlJK+wlIuH5k41HtuDb/J/sybSGf8tCD32eea41z1ueiwY
-         4oJunEtOTK4nxF26enPXohZ1gi4S3bhC9hbHqmiFA8TA83R4v2KIMqZyY6LsnnNl6XsR
-         j+t4/FW490gyxDJHjHM5zmVjs7BNmxsfjJ2Q4US3WjSe34Fpe+TCASLVVbZgsoKUbYwI
-         erIvdxY07GVREpGQuziGv5QqxSO+eCDr9FwvAvq203FbgTC2D1wh6s9goNtge7m5mYNJ
-         o8qvEWZK3aERS4vembs0UY7x9fYQwN6oc6d/qPrj1bPcmiRoVbRSiy4S/zDCWGzeN15O
-         2p7A==
+        d=google.com; s=20230601; t=1732873002; x=1733477802; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JrJ1xpSSydL2yypnHXM9b9Zh7gz+ChkHhnTA/5HLSXw=;
+        b=1c+/4LkU8zn+XV227w/l3A+BPdqO5bHlb8fa6BPhb5pUnoEt4p45UvDX4SI+MarkRD
+         UVww4bXzZ+8kH1CPrIDbq2SBlD7mXNsHLocHZ8wLGs9eTOKupxEkuwSuaW7OWmWr/cZr
+         CzSMRi0d8aUJ6o6pHg8IobxLYdLoKqHvfsnu+1XkqR17v7DczZkPITDXRAvWf9X0dqT2
+         lYOEnfzsR3vp486blgjXhsTXl6FxUnDNov9QujyoIGHI7wqXS74FuHSRrz5/fy1E23DR
+         CLYO2GvKVkSjHkUhfdkAmJWy/Fk6DY7IZycdj+Ev34oQlK3GPcSozBHVrTRMnf8SUt/H
+         K96g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732868554; x=1733473354;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bpOpchybQJXD5CvZrpdSs1RBStnGyKaKUM/Uju5sP7Q=;
-        b=DgUVxLQJKSUB0Mm1AYAh8MOdhrMBEnux4F5w3EXuUqgNsxwFltqVuYGbl8UCYVxjpM
-         KLDYdfVCb76GoAuBCHzxckHt0IkEGr1EZccpa0gu55ANz4fda6XyXN0jshMMtCj6IpQt
-         UYIEyABPf/FhPJaFscwDPa/F16pAqYN5dREpQ5ees4WBVsYC1TG7b0M1bqboW7fWm8OE
-         A5tqe6HExonIJlEVvxUUWw5BCR8mVdx8DHKPz2H4cch7xY3UoJJQEtqzK7hRcm9GbTSx
-         q1at+5TdaVKVB9XIU6EAAL7fX1vMJJ23d0XfPgBJ1wDR1sGk0Ek4rXKuCbIeMFvCp3RL
-         PdmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXp7lrqNYtnPNQbOtrUf5jpXMGBThjn4/tneccbTp8bAQWlvnqkEwk/TKCfhI4QkkcnX47aY7vixOYMRXIMyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwXuR2UsO3/Igx9EqmcH4VuCqV/nE7QINdfE23174LaJ15WUMu
-	Rl6kzkF2cMOaICKKd71+qGLIdTK2mXFd7SZD/Jw4pASqonAOZgWeSCdcljZgLu0=
-X-Gm-Gg: ASbGnctsqUgQzAtIGJwaSAPWX+haC9RxPwm/6gHO9QYps0PS+W0dQplLpUyQmgPj1yh
-	H6JvY4MAHsFfU7dVvvQENCFFUmzHWgrd80bZ12El/Jpuil3bpZIpvFKtf12LN61QDrxbv8pMQyw
-	L/u5fpm8bNNMzWHyiDqS3b8oEKOteWF4H0+PXnqUdYigoTr0C2HVpZD9QIfDXGxR4KfzFVa0t4w
-	82zZv73luYIW5EfnXnXbrFTI99KSh60l6cv+G7YwvWSPWbvpkM=
-X-Google-Smtp-Source: AGHT+IHyI/nqfSxONykSF4kwQGUMItj0mjdcZ+BUKlRUULAfXTeC/1tNq1UOeKpwb/WJV4QJtInbew==
-X-Received: by 2002:a17:907:7751:b0:aa1:f9dc:f9bf with SMTP id a640c23a62f3a-aa580eee484mr832584866b.10.1732868553906;
-        Fri, 29 Nov 2024 00:22:33 -0800 (PST)
-Received: from [192.168.88.249] ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5998e6d7esm148314366b.114.2024.11.29.00.22.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Nov 2024 00:22:33 -0800 (PST)
-Message-ID: <0aa72bdd-7431-49bb-a6b4-e254787db0f1@sedlak.dev>
-Date: Fri, 29 Nov 2024 09:22:32 +0100
+        d=1e100.net; s=20230601; t=1732873002; x=1733477802;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JrJ1xpSSydL2yypnHXM9b9Zh7gz+ChkHhnTA/5HLSXw=;
+        b=Uo28FKSnEs4e6jwCyVk6QOt6Txf8658i0g5Ww1pfgLhTa6rYbARmX61ZhqiGACrpzu
+         3eD2kCGsRPANlli1z2d56yyvzeRCsj/SNxV1xWuC6Hb0n3dLpO3KtWHCJCf3WZBF3Grb
+         kcFz4gIsNwBGyqsr0h+gSi2EVXADcrPDdAk0GJ0WnKP6BsUm2osGUxxBa+Nkzm7CoWqF
+         kz8bWvUepdHkiFwIWwFYPqDALFYiO03xQJQt5Q4ssRyYwOk5aUJQz+sit17Vsq2wZYe9
+         uwROfIiTpivlH2hbFRDPear3TRn6sWBmC5Qal2W4soBQ7e5M/h/SS04eT7PKiuzUil2l
+         tLsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJlwsYMP440ub5tApQKuetAjt7MDsf1Tzdai30+AmMHLsNxf2WXP8KST6HRHi3ZgBVgFoaTGE0G1fllAK4mw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu20x5BBe/jEQDc+M0+Qc32ltDVDxRAIDERGdQUQCt5/5+xy6Q
+	hQmfcItgQapLSTzotGB4uru2EGZq7rbe+IHyeIPFYLLzzg3jvb9iG27CZU4nTW/T/eTf+JwoYdt
+	M4vtdbrVfNOz5jtShhJG7e+jPsYX/t1us0ovukDRnPBO3X8p0S073
+X-Gm-Gg: ASbGncsgrBg4t2DbSTZVTrmbv+ziNhV7DpIEBF0IHiaWvXORjlmKCoDC+mVt9r4P9NY
+	c4RV0LlbWL+gIIaPqjwteDBqnHLQ0emildR3mKqhzxWNLzxQqdNo7Newj15M88g==
+X-Google-Smtp-Source: AGHT+IFk8hpcLI10hK6W3ufJFeLf//pA41J0HZM/7GIaERJK+g9o591EijQd1TALxvLz/eJp//taxS6xk26drXmQRF8=
+X-Received: by 2002:a05:6000:4012:b0:385:e0d6:fb48 with SMTP id
+ ffacd0b85a97d-385e0d6fc5amr230415f8f.7.1732873002128; Fri, 29 Nov 2024
+ 01:36:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] rust: Add `OnceLite` for executing code once
-To: jens.korinth@tuta.io
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Rust For Linux <rust-for-linux@vger.kernel.org>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Dirk Behme <dirk.behme@gmail.com>,
- Linux Kernel <linux-kernel@vger.kernel.org>
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
- <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io>
- <230b3602-5d68-4e79-969d-0d2df1fdf033@sedlak.dev> <OCj9As8--F-9@tuta.io>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <OCj9As8--F-9@tuta.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20241127131941.3444fbd9@gandalf.local.home> <CAHk-=wgwQ5gDdHgN54n8hsm566x5bauNPsdZPXm6uOCFvPA1+Q@mail.gmail.com>
+In-Reply-To: <CAHk-=wgwQ5gDdHgN54n8hsm566x5bauNPsdZPXm6uOCFvPA1+Q@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 29 Nov 2024 10:36:30 +0100
+Message-ID: <CAH5fLgg53QovLfA-C+j+E0FeQ8-gQgG76ZbeCN4-qEJ5KPOQEg@mail.gmail.com>
+Subject: Re: [GIT PULL] tracing: More updates for 6.13
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Nov 28, 2024 at 8:55=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Wed, 27 Nov 2024 at 10:18, Steven Rostedt <rostedt@goodmis.org> wrote:
+> >
+> > [
+> >   NOTE: The rust tracepoint code added hooks to the same macros that we=
+re
+> >   modified in this pull request. The merge has non-trivial conflicts. I
+> >   fixed it up in my "for-next" branch in the same repository. That bran=
+ch
+> >   was a merge of this branch into the commit where you pulled the rust
+> >   tracepoint code.
+>
+> I checked my resolution against yours, and I don't think your
+> resolution is right.
+>
+> You didn't check 'cond' on regular rust tracepoints, and you didn't do
+> any locking on either kind.
+>
+> I've pushed out my resolution, and hopefully rust people can actually
+> test it. I might just be full of it.
+>
+> That said, I also think that the "__rust_do_trace_##name" inline
+> helper should just be renamed to "__trace_##name", and then the
+> regular trace_##name() helper could use that inside the
+> static_branch_unlikely() check. Because that seems to be the only real
+> thing the "rust" version wants - avoiding the static branch
+> infrastructure in favor of whatever rust infrastructure.
 
+The Rust parts look reasonable to me, thanks!
 
-On 11/27/24 8:46 PM, jens.korinth@tuta.io wrote:
->> Have you considered it to be implemented like `AtomicU32`? I think™ that
->> one atomic variable is more than enough.
-> 
-> Just to clarify - you mean something like this? Nevermind the magic numbers,
-> I'd replace them, of course.
-
-Yes, that's what I meant. But as Alice pointed out, you _may_ be able to 
-reduce it to the one AtomicBool.
-
-Daniel
-> 
-> diff --git a/rust/kernel/once_lite.rs b/rust/kernel/once_lite.rs
-> index 723c3244fc85..0622ecbfced5 100644
-> --- a/rust/kernel/once_lite.rs
-> +++ b/rust/kernel/once_lite.rs
-> @@ -16,7 +16,7 @@
-> //!
-> //! Reference: <https://doc.rust-lang.org/std/sync/struct.Once.html>
->   
-> -use core::sync::atomic::{AtomicBool, Ordering::Relaxed};
-> +use core::sync::atomic::{AtomicU32, Ordering::Acquire, Ordering::Relaxed};
->   
-> /// A low-level synchronization primitive for one-time global execution.
-> ///
-> @@ -44,13 +44,13 @@
-> /// assert_eq!(x, 42);
-> /// ```
-> ///
-> -pub struct OnceLite(AtomicBool, AtomicBool);
-> +pub struct OnceLite(AtomicU32);
->   
-> impl OnceLite {
->       /// Creates a new `OnceLite` value.
->       #[inline(always)]
->       pub const fn new() -> Self {
-> -        Self(AtomicBool::new(false), AtomicBool::new(false))
-> +        Self(AtomicU32::new(0))
->       }
->   
->       /// Performs an initialization routine once and only once. The given
-> @@ -71,10 +71,10 @@ pub const fn new() -> Self {
->       /// [`DO_ONCE_LITE_IF`]: srctree/include/once_lite.h
->       #[inline(always)]
->       pub fn call_once<F: FnOnce()>(&self, f: F) {
-> -        if !self.0.load(Relaxed) && !self.0.swap(true, Relaxed) {
-> -            f()
-> +        if self.0.load(Relaxed) == 0 && self.0.compare_exchange(0, 1, Acquire, Relaxed) == Ok(0) {
-> +            f();
-> +            self.0.store(2, Relaxed);
->           };
-> -        self.1.store(true, Relaxed);
->       }
->   
->       /// Returns `true` if some `call_once` call has completed successfully.
-> @@ -98,7 +98,7 @@ pub fn call_once<F: FnOnce()>(&self, f: F) {
->       /// ```
->       #[inline(always)]
->       pub fn is_completed(&self) -> bool {
-> -        self.1.load(Relaxed)
-> +        self.0.load(Relaxed) > 1
->       }
-> }
-> 
->> The `rust` part should be default value for rustdoc tests, can we please
->> omit that?
-> 
-> Will do!
-> 
-> Jens
-
+Alice
