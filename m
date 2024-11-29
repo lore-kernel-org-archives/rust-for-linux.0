@@ -1,154 +1,166 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F74314F135
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 09:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5341A38DD1
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 11:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732873329; cv=none; b=qkQjYDo2aXKAJvquFpx1EqVEncjk+h/mh8kDQVP16Uv7zDmGwMXa8NHprfeCrrnNwyJVGe5Wj2xttHuknl2BMaEX/BCe/6iRgvm9tzcSvfqt+QXXw0azZmC3ioBJIBpa+U/HcIgxIA+dmS/4Dzatdf5Zr7N4a3CPxnFhOJaLzIw=
+	t=1732880666; cv=none; b=afiKc8cl937hkS3QPWOk9hOcw/FU9xUp/W5LTt1xZK940Zx8LuPrzT82Wh6LguKJgSLAry5tLmyKFZhm4kGQlYZ30l6A+hz3+fjs+wZ/OZxpPb3g2GttJ4EPMAzDGwbvoYkZvaiOWRxxNJMGjX/1+ie6sjK9ySgMvHcLlXV8r8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732873329; c=relaxed/simple;
-	bh=xC3TBC3hXDQtRMMLwHaC2Yx9WYQVsimtRWH+4eR5vK0=;
+	s=arc-20240116; t=1732880666; c=relaxed/simple;
+	bh=3sAs6F81cANeFF9ASZzbDRGXFDC2tykN+Iczubr0H60=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O6ihj3hB1SKKNhHVeg+euH5LNOx/MIcT2+4rIXrXwAFtWsRLXbD3Zu02dvu7YLKeIkA7k++155R80wwRv9eqqmcFBQkD1qDaeKxRl9ZJ8bxKmZOR39gfERyXHZEMpmSmHhC4SKQ1acfNJcyQX3Oyw9+R4pphWnZsUqoPBIALAQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0c52VNuO; arc=none smtp.client-ip=209.85.128.54
+	 To:Cc:Content-Type; b=RibWweW80q5T0vq3+J3twXgSatfOmAyh5mEOUQBUKQFpeB4fIOhco2R1sKY2Vt+sIKaJWpdIDRh5oAjW28CWb/ggL1k6ALDa3t/UBRwtRNvwAIxg1Py6SxM2OXcWKDspdYbiXwv4zqYIJgJcu8XUjMu4A3OUAn59yQDNiGZLnUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c6X3XaTz; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0c52VNuO"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4349fd77b33so15093945e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 01:42:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c6X3XaTz"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385deda28b3so360315f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 03:44:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732873325; x=1733478125; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732880663; x=1733485463; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aCya0V2ouJjFIBaqKyJ8rlrVuDCrvVqJzJ78/+Hkl4w=;
-        b=0c52VNuOrPSgIl5S8eXmO+8Vm8/sxzRh1nNOY1qhSK1AiYRTtgIWWQPN9QqQJA8H++
-         FTgT44PTX+BLBxbGQsfKGDduMmarc4kmTmX6Qns5FiaFzK6oiLeqPBrBAf5Wu2a/gM3I
-         839R90fQFGIFkhPZrHlrQpTpZD8H/KDKTaRtmDob1UYYjSCxnGx/ERmDKptQxqAogxlv
-         xFS6lgQNV2l5koAAVwQu3dYTT61hwxbKe3canDAYvoLKkpzU8M/YgV8qnx8q2fC7jNkw
-         VL8YwzE8Ky4JxH6c1amzu4RQ2OaibvNemMwxJjJKv2GhIX3F6xAdccv2Au6ml5HL6cnY
-         gGrQ==
+        bh=OQ73yuMOKPHbjjTrctlmL2Ii8jjSbh3c7dyfWFA6sg0=;
+        b=c6X3XaTz2k7qXCy6idwNn3sylWmxJyflZQFCtVjCPK4TeQ82hybcFQg2jWZJhrnqpj
+         FO73JczbT/xe1RmtmLiXLO6Shfdg5fkXcr7Gk3XhkSiV8qcZWdT4nu9h5933+PSftAU8
+         a53mS/l3WtF74SypxpDZvfYX3THGC7Mju9K39/nthmZ0dXXkBD3dygB2t+NauoPS0g3H
+         1P0LLgmfSjoNn+WT8E3r7OItljgShUF+RwFdBUB0+lV412rFjW8FOKfXptME74+BeLId
+         Gko8HJYgCKTUPfOeLzEpCVVwjUye8SVHamWNjrppXJ2MUKO9zWtG8/SdMMCTf+os6qQP
+         3vrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732873325; x=1733478125;
+        d=1e100.net; s=20230601; t=1732880663; x=1733485463;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aCya0V2ouJjFIBaqKyJ8rlrVuDCrvVqJzJ78/+Hkl4w=;
-        b=IlsLrFwaOToCfTQkujztzmhwZTj9UC2Hr9+Elw4TbIhzrtgOOp5JQg4+sR0VB385/d
-         Kaeq17eXFjOQEpNMY2zbbNPyWrBZ3QdIcU9iLvFHCcVkRPsWSDD241gc87C0OmqZau1N
-         /CThKjaoDUB/crZ7vj8U10451H7XHndeiIyqQPDtbMNFq7py4Ec7/yamILkdZU8YqekF
-         eIMNW0za7Rz0sNflIlEakOoTUdiBbISEcrZ/2HLskdfHq+XN0OnILfblVoaicvCiz2x6
-         4sSUUOQD/sF5R0adRItXr+EMAEUP44w9ba6/4vH7Mkz+VAZoxb1PV0XCRcEk1cLmpJXR
-         En6A==
-X-Gm-Message-State: AOJu0YxouAl7WtaPScEOR05+AeKucvOJjJCzkhTZqyzxfwz/Yi9ogY1l
-	5q97cbWRqK0paVfAnsCP8VfjbZhKab+jf09Lx7dwGrAa80manAWhuJcfu+YmujT+VX+43myoZKs
-	j6Y0I86Ugt+TEcRsw4LrRDhpAGuk7XESK0S+t
-X-Gm-Gg: ASbGncvB3C2+AoOB3cbo9WMg/vlhfZ+5sgBpm6VnMsnn4mNHa9q9sh6BHKw2EDL6gVG
-	goiOfX6iFPpnsSSfcKlwBuXRuBgBHZ3tFLdCttD6VbKIl6GE05+wLv0dqOLQAGg==
-X-Google-Smtp-Source: AGHT+IE9/TgAZVKCU5TDmSXossBwgPrlUoxMO11jrwBXUmpCqnfqprE/r7XZr8dFH04PAocSUQRrR43EoUB/tAuRFhE=
-X-Received: by 2002:a05:600c:5101:b0:434:9dfe:20e6 with SMTP id
- 5b1f17b1804b1-434a9df71c6mr87366995e9.23.1732873325500; Fri, 29 Nov 2024
- 01:42:05 -0800 (PST)
+        bh=OQ73yuMOKPHbjjTrctlmL2Ii8jjSbh3c7dyfWFA6sg0=;
+        b=T8KEvQKGi8WqPIn3NWlMFuAOs6ey6v+deMFBbSWuXhSIbFKuSngxlVwtJfQKfCke4Q
+         SQpQZZ6JvFA4hmtloVFbAJJVGmGUxflDmnpIHX8VVEBBz3+jkaTTkjUHxeITX0GqZzsR
+         1udBBlxdoYAak94s+Rld2vqPrI+I90F+4Gvr0ECkFDB1kvdmUD+Rp1zbO3fHZlKWmslI
+         7u20gm+iCxnIk5YS+Jv1G4Lv3i/FlZRHiMh9m1oDSwMOhyblw/oqc4bp9TFQpWBFS2ET
+         r28xDzQAvSyftqcOWELcDOdxyssS3hVLOdT5r+O+4Hnw6bkfOnPdNL2cC0Tw/jFyrGOS
+         npiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMz2oMCDQwCchoJFJ+PLk3vhPF8MgIuyiCv2+9M/cb5rB6Vm7BlgQWl/C/gHneSNkrvH6n5s1gY3JSCEPJ3A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSn8ddut0Y87ojEzCxQvbu6ghldrZZCM8eLruyeILYhYMfYLxp
+	C4ablhx0Z52Y3XDbu3Hd9AKWNHoKaOcFBkfgkU2nuvT6uA/8G96UgUKPsf5ncvX72CSwMOZP92C
+	5owSfprcvRd+CV7wwvJ5RgoaiQUJPEnatGw7O
+X-Gm-Gg: ASbGncsk/XDBu4xzF7jpruYQxnAjuDChTXoc+Bex5eUjtxlv5e0ICQPe8B/lh89k3oT
+	Wf690eQchlg8v86ejQGFDIealXTzGXcqLlR3RGBZTNqRsIbpDWUKERdvLGP6HXA==
+X-Google-Smtp-Source: AGHT+IGVnUklndpXhdyscMxG8htYeF72cv7+U9W4dYUy8Ks1XP/gpsHYY0FVa0X3H1aDKz7Spt7IggS5LohLKWzjv4I=
+X-Received: by 2002:a05:6000:1547:b0:382:4a8e:b81c with SMTP id
+ ffacd0b85a97d-385c6ec0fefmr10140400f8f.33.1732880662644; Fri, 29 Nov 2024
+ 03:44:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241128141323.481033-1-pbonzini@redhat.com> <20241128141323.481033-3-pbonzini@redhat.com>
-In-Reply-To: <20241128141323.481033-3-pbonzini@redhat.com>
+References: <20241122-vma-v9-0-7127bfcdd54e@google.com> <20241122-vma-v9-2-7127bfcdd54e@google.com>
+ <CAG48ez28kzjrvMN66Yp9n+WziPzE5LU_Y320405Q=PoOzdzStg@mail.gmail.com>
+ <CAH5fLggh7HeOm8wGZH=hnR+SyPoW8Hik3uy4RodibyjY1UT36w@mail.gmail.com> <CAG48ez0QmQ7s_MmPj3Q9joEvGSkr9DUWoeJ6dvD=6icq+3DwKQ@mail.gmail.com>
+In-Reply-To: <CAG48ez0QmQ7s_MmPj3Q9joEvGSkr9DUWoeJ6dvD=6icq+3DwKQ@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 29 Nov 2024 10:41:53 +0100
-Message-ID: <CAH5fLgi9+d6PwZdU23xcF0p+m6mja3Dx8BufiiM-ZgLtDSqQDw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: block/mq: replace mem::zeroed() with Zeroable trait
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	boqun.feng@gmail.com, ojeda@kernel.org, benno.lossin@proton.me, 
-	axboe@kernel.dk, tmgross@umich.edu, bjorn3_gh@protonmail.com, 
-	gary@garyguo.net, alex.gaynor@gmail.com, a.hindborg@kernel.org
+Date: Fri, 29 Nov 2024 12:44:10 +0100
+Message-ID: <CAH5fLgieAEKQt9CyjgFWYQBpy-651SpEU-qoYM2ORtJH9w5=Yg@mail.gmail.com>
+Subject: Re: [PATCH v9 2/8] mm: rust: add vm_area_struct methods that require
+ read access
+To: Jann Horn <jannh@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 28, 2024 at 3:13=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+On Wed, Nov 27, 2024 at 4:41=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+>
+> On Wed, Nov 27, 2024 at 1:01=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
  wrote:
+> > On Tue, Nov 26, 2024 at 11:10=E2=80=AFPM Jann Horn <jannh@google.com> w=
+rote:
+> > >
+> > > On Fri, Nov 22, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.=
+com> wrote:
+> > > > This adds a type called VmAreaRef which is used when referencing a =
+vma
+> > > > that you have read access to. Here, read access means that you hold
+> > > > either the mmap read lock or the vma read lock (or stronger).
+> > > >
+> > > > Additionally, a vma_lookup method is added to the mmap read guard, =
+which
+> > > > enables you to obtain a &VmAreaRef in safe Rust code.
+> > > >
+> > > > This patch only provides a way to lock the mmap read lock, but a
+> > > > follow-up patch also provides a way to just lock the vma read lock.
+> > > >
+> > > > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits=
+)
+> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > >
+> > > Reviewed-by: Jann Horn <jannh@google.com>
+> >
+> > Thanks!
+> >
+> > > with one comment:
+> > >
+> > > > +    /// Zap pages in the given page range.
+> > > > +    ///
+> > > > +    /// This clears page table mappings for the range at the leaf =
+level, leaving all other page
+> > > > +    /// tables intact, and freeing any memory referenced by the VM=
+A in this range. That is,
+> > > > +    /// anonymous memory is completely freed, file-backed memory h=
+as its reference count on page
+> > > > +    /// cache folio's dropped, any dirty data will still be writte=
+n back to disk as usual.
+> > > > +    #[inline]
+> > > > +    pub fn zap_page_range_single(&self, address: usize, size: usiz=
+e) {
+> > > > +        // SAFETY: By the type invariants, the caller has read acc=
+ess to this VMA, which is
+> > > > +        // sufficient for this method call. This method has no req=
+uirements on the vma flags. Any
+> > > > +        // value of `address` and `size` is allowed.
+> > >
+> > > If we really want to allow any address and size, we might want to add
+> > > an early bailout in zap_page_range_single(). The comment on top of
+> > > zap_page_range_single() currently says "The range must fit into one
+> > > VMA", and it looks like by the point we reach a bailout, we could hav=
+e
+> > > gone through an interval tree walk via
+> > > mmu_notifier_invalidate_range_start()->__mmu_notifier_invalidate_rang=
+e_start()->mn_itree_invalidate()
+> > > for a range that ends before it starts; I don't know how safe that is=
+.
+> >
+> > I could change the comment on zap_page_range_single() to say:
+> >
+> > "The range should be contained within a single VMA. Otherwise an error
+> > is returned."
+> >
+> > And then I can add an overflow check at the top of
+> > zap_page_range_single(). Sounds ok?
 >
-> Isolate the unsafety in the declaration of the Zeroable trait, instead of=
- having
-> to use "unsafe" just to declare a struct.  This is more similar to how yo=
-u would
-> use "..Default::default()" (which is also a possibility here, but arguabl=
-y
-> less efficient).
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  rust/kernel/block/mq/gen_disk.rs |  8 +++++---
->  rust/kernel/block/mq/tag_set.rs  | 10 ++++++----
->  2 files changed, 11 insertions(+), 7 deletions(-)
->
-> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_=
-disk.rs
-> index 708125dce96a..65342d065296 100644
-> --- a/rust/kernel/block/mq/gen_disk.rs
-> +++ b/rust/kernel/block/mq/gen_disk.rs
-> @@ -6,7 +6,7 @@
->  //! C header: [`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.h)
->
->  use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
-> -use crate::{bindings, error::from_err_ptr, error::Result, sync::Arc};
-> +use crate::{bindings, error::from_err_ptr, error::Result, init::Zeroable=
-, sync::Arc};
->  use crate::{error, static_lock_class};
->  use core::fmt::{self, Write};
->
-> @@ -31,6 +31,9 @@ fn default() -> Self {
->      }
->  }
->
-> +// SAFETY: `bindings::queue_limits` contains only fields that are valid =
-when zeroed.
-> +unsafe impl Zeroable for bindings::queue_limits {}
-> +
->  impl GenDiskBuilder {
->      /// Create a new instance.
->      pub fn new() -> Self {
-> @@ -93,8 +96,7 @@ pub fn build<T: Operations>(
->          name: fmt::Arguments<'_>,
->          tagset: Arc<TagSet<T>>,
->      ) -> Result<GenDisk<T>> {
-> -        // SAFETY: `bindings::queue_limits` contain only fields that are=
- valid when zeroed.
-> -        let mut lim: bindings::queue_limits =3D unsafe { core::mem::zero=
-ed() };
-> +        let mut lim: bindings::queue_limits =3D Zeroable::ZERO;
->
->          lim.logical_block_size =3D self.logical_block_size;
->          lim.physical_block_size =3D self.physical_block_size;
-> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_s=
-et.rs
-> index f9a1ca655a35..1ff7366ca549 100644
-> --- a/rust/kernel/block/mq/tag_set.rs
-> +++ b/rust/kernel/block/mq/tag_set.rs
-> @@ -10,6 +10,7 @@
->      bindings,
->      block::mq::{operations::OperationsVTable, request::RequestDataWrappe=
-r, Operations},
->      error,
-> +    init::Zeroable,
->      prelude::PinInit,
->      try_pin_init,
->      types::Opaque,
-> @@ -32,6 +33,10 @@ pub struct TagSet<T: Operations> {
->      _p: PhantomData<T>,
->  }
->
-> +// SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
-> +// all are allowed to be 0.
-> +unsafe impl Zeroable for bindings::blk_mq_tag_set {}
+> Yes, I think changing the comment like that and adding a check for
+> whether address+size wraps around there addresses this.
 
-This will have to be reverted if we want to split up the kernel crate
-due to the orphan rule.
+Hmm. Looking at this again now ...
+
+For one, the function returns void so we can at best handle overflow
+by performing a no-op.
+
+Another question is, are we actually okay to call it with ranges
+outside the vma? Does that just no-op or what? Maybe the Rust side
+should just bail out early if the address range is not a subset of the
+vma?
 
 Alice
