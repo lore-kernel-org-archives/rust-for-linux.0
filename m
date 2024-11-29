@@ -1,107 +1,122 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E3414F135
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 09:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01EF38DD1
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 09:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732873005; cv=none; b=I9iOcV4Nw4QbGZ2dH6UUSx4Nc+B7HrsQnFYk2X1BfDg0HioFzff7aleua2x18wNBI3k7wuV19K0/Xju6A2FcWmn+9gL49M5kRHv/X/ek6AMW3OgSr9eOWEKl6EA2FcyTAqjugWR2WVWNppm06rb+Jn9wexX9+ylgSIpYTMHPcSo=
+	t=1732873188; cv=none; b=WLnEavQZWF2zVqZYtiygkIGbv7V0YjkLJuzLkuC9spTSkhwsPLUsIF2b7i4wV0SUjlVCqvitjLPueMIvmtahgEP3ssxujrQXNtKKam14DjBuWhMvAeOdv96dsBV5IYO4cIw22+SsMGlb/67ANRFZ5ujhLsWNFgLJNlJhJl1+ZQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732873005; c=relaxed/simple;
-	bh=8t3kY5SgJeeomjAp9Nma5rNKtl6laUxXmUpc12ZBpxo=;
+	s=arc-20240116; t=1732873188; c=relaxed/simple;
+	bh=L3osPo90oS2YjcMtWFuj0/oOrtLAaDGO//RQeyLR3Lk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KsULz3eaj89HOAZ+cin7J+C+F71mlt1cbu4ry3QpiZTelt8BnN8IgW7cbPh+QBxNMvPf2SVxcCnAxspbaw9MMeOkWinhVf+KpwginzEVJ+Uuqe3mwiPX2ymkEBZLIhMW+AZgCl92XoUApy4TF1hzsgq4G64EW5jNYC5CoTPjXrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1c+/4LkU; arc=none smtp.client-ip=209.85.128.52
+	 To:Cc:Content-Type; b=o4xkBbZhzZfLXgZwuUkVFebkoFXjOXasFB1ZDBivItNUXs7/5QaUpnEYcJUbigOwdozSBKzRMAX00TQY0+koi6aw5X6wffBKG8gFjOZFwcy2L4yxJ6TncaFPGsiUuQeHrmhN2xfay62HzTIa49mEuhbDt1zw+R0HWJiINiGYS9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FSA6j/IE; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1c+/4LkU"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434ab938e37so10235435e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 01:36:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FSA6j/IE"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-385dbf79881so384106f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 01:39:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1732873002; x=1733477802; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1732873185; x=1733477985; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JrJ1xpSSydL2yypnHXM9b9Zh7gz+ChkHhnTA/5HLSXw=;
-        b=1c+/4LkU8zn+XV227w/l3A+BPdqO5bHlb8fa6BPhb5pUnoEt4p45UvDX4SI+MarkRD
-         UVww4bXzZ+8kH1CPrIDbq2SBlD7mXNsHLocHZ8wLGs9eTOKupxEkuwSuaW7OWmWr/cZr
-         CzSMRi0d8aUJ6o6pHg8IobxLYdLoKqHvfsnu+1XkqR17v7DczZkPITDXRAvWf9X0dqT2
-         lYOEnfzsR3vp486blgjXhsTXl6FxUnDNov9QujyoIGHI7wqXS74FuHSRrz5/fy1E23DR
-         CLYO2GvKVkSjHkUhfdkAmJWy/Fk6DY7IZycdj+Ev34oQlK3GPcSozBHVrTRMnf8SUt/H
-         K96g==
+        bh=GT81x1pPOl28Snzb/99o88eoaL2m9foxASU5Of2oJ18=;
+        b=FSA6j/IEvwxRMhTj0gF0JqdsHenqP87bWORKyTMdCtX97/JI2TboHrYORoa/3+v4ca
+         lYrx7WJqJoIkJyl7ylpethKcdCCHaSJMTivNzqP4QhHIP+whYMDDxDKkjtF4wNDCUACC
+         J5N8mH6yB3f8rS2ajAV1NSkHFCJ/y53o0977JH8O1eRJWsKiKmseTfh987HoILXXFvGJ
+         q4WjQ8fnZv4OznDq4/yTUaNI9dd2YRXw4NwjrpSCL97idM7rpnr4oPmp5rs51RjZ9QSp
+         GAfSDY+dswjpaUAXV09YDVSAIP0A2sIuGvJYdrrd7xla2SG94q3gwkjAz/iZrZMUe1Me
+         As0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732873002; x=1733477802;
+        d=1e100.net; s=20230601; t=1732873185; x=1733477985;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JrJ1xpSSydL2yypnHXM9b9Zh7gz+ChkHhnTA/5HLSXw=;
-        b=Uo28FKSnEs4e6jwCyVk6QOt6Txf8658i0g5Ww1pfgLhTa6rYbARmX61ZhqiGACrpzu
-         3eD2kCGsRPANlli1z2d56yyvzeRCsj/SNxV1xWuC6Hb0n3dLpO3KtWHCJCf3WZBF3Grb
-         kcFz4gIsNwBGyqsr0h+gSi2EVXADcrPDdAk0GJ0WnKP6BsUm2osGUxxBa+Nkzm7CoWqF
-         kz8bWvUepdHkiFwIWwFYPqDALFYiO03xQJQt5Q4ssRyYwOk5aUJQz+sit17Vsq2wZYe9
-         uwROfIiTpivlH2hbFRDPear3TRn6sWBmC5Qal2W4soBQ7e5M/h/SS04eT7PKiuzUil2l
-         tLsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJlwsYMP440ub5tApQKuetAjt7MDsf1Tzdai30+AmMHLsNxf2WXP8KST6HRHi3ZgBVgFoaTGE0G1fllAK4mw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu20x5BBe/jEQDc+M0+Qc32ltDVDxRAIDERGdQUQCt5/5+xy6Q
-	hQmfcItgQapLSTzotGB4uru2EGZq7rbe+IHyeIPFYLLzzg3jvb9iG27CZU4nTW/T/eTf+JwoYdt
-	M4vtdbrVfNOz5jtShhJG7e+jPsYX/t1us0ovukDRnPBO3X8p0S073
-X-Gm-Gg: ASbGncsgrBg4t2DbSTZVTrmbv+ziNhV7DpIEBF0IHiaWvXORjlmKCoDC+mVt9r4P9NY
-	c4RV0LlbWL+gIIaPqjwteDBqnHLQ0emildR3mKqhzxWNLzxQqdNo7Newj15M88g==
-X-Google-Smtp-Source: AGHT+IFk8hpcLI10hK6W3ufJFeLf//pA41J0HZM/7GIaERJK+g9o591EijQd1TALxvLz/eJp//taxS6xk26drXmQRF8=
-X-Received: by 2002:a05:6000:4012:b0:385:e0d6:fb48 with SMTP id
- ffacd0b85a97d-385e0d6fc5amr230415f8f.7.1732873002128; Fri, 29 Nov 2024
- 01:36:42 -0800 (PST)
+        bh=GT81x1pPOl28Snzb/99o88eoaL2m9foxASU5Of2oJ18=;
+        b=EFlN/9clc1+8ZtknNJtQK4/Y/mqdYZ++DyY/VIJND4H6Vob29ImHkT2o91kTEWK9gr
+         Sg7amCOMtW5zLWYyN4jaoOn07ju14R5N79gyBY5IDDLhZeLb49XwUJDsXaseTJQKMCMh
+         t+t8RcW8gw30wUdayiS2yng5tfjj7rXDSdt5e29Rk7sxK0T0MeXbHoPykz7vpEoN10Es
+         qfso6mu1kdxR+iwUHCaDHxWNy/v0JYvxyBtInL+AdtjfClfvQZv3QutmYd90ozZBt5SH
+         rTepD+7AA5zVtqnAt9OiW69VvFECjhaDLleYbJY8HqrwHcfTrK+xUxVSf1D9btW9nfcW
+         2tYw==
+X-Gm-Message-State: AOJu0YzJ/8TgEVAYOTps99sbsJPhtEhFLpcw1gGvL4UfSR3l6jRpxzqC
+	w6aPbsNNH10rX70jeMJ96cFU2MutSP437vfnW+dMSHu2Sz8XfvtpBWT4WMJzu7qsmsUIFvNLybu
+	PO1Dr1OQQALbJ4hDuuH15SC7v7XgufrarxOR6
+X-Gm-Gg: ASbGnctFr3yqCZD2GFPbe5CHZEpjmtTnDSymTrMRTgqVFLHd5qHi+4Zkf162N0nOSZr
+	FGGpfxhHGa3P9UNz3au7lknBuxoua6Y8tH0m8bUwJSQNa6ZdCDMlWUjjQPpUOTA==
+X-Google-Smtp-Source: AGHT+IHY54qZUYFh/rP95d81UhUWr1C9OkxG5bJJIM/6YiD8OXmaBDPNhQwhsb79jT1ZPBps/8tz9O4ifcPbEOACApI=
+X-Received: by 2002:a05:6000:1787:b0:382:2386:ceaf with SMTP id
+ ffacd0b85a97d-385cbd89c39mr5852413f8f.27.1732873185258; Fri, 29 Nov 2024
+ 01:39:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241127131941.3444fbd9@gandalf.local.home> <CAHk-=wgwQ5gDdHgN54n8hsm566x5bauNPsdZPXm6uOCFvPA1+Q@mail.gmail.com>
-In-Reply-To: <CAHk-=wgwQ5gDdHgN54n8hsm566x5bauNPsdZPXm6uOCFvPA1+Q@mail.gmail.com>
+References: <20241128141323.481033-1-pbonzini@redhat.com> <20241128141323.481033-2-pbonzini@redhat.com>
+ <CAH5fLgjJbzAbf5CO3xjHxcThpqju3j0tNdo+QiGupARVmoThYw@mail.gmail.com> <d7f045c1-79df-4592-a116-01874f402de4@redhat.com>
+In-Reply-To: <d7f045c1-79df-4592-a116-01874f402de4@redhat.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 29 Nov 2024 10:36:30 +0100
-Message-ID: <CAH5fLgg53QovLfA-C+j+E0FeQ8-gQgG76ZbeCN4-qEJ5KPOQEg@mail.gmail.com>
-Subject: Re: [GIT PULL] tracing: More updates for 6.13
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>
+Date: Fri, 29 Nov 2024 10:39:33 +0100
+Message-ID: <CAH5fLggHKuYT+s=tejnF-N63QOwcsAAeWb+LDLe0uO1sT3bdsg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: Zeroable: allow struct update syntax outside
+ init macros
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	boqun.feng@gmail.com, ojeda@kernel.org, benno.lossin@proton.me, 
+	axboe@kernel.dk, tmgross@umich.edu, bjorn3_gh@protonmail.com, 
+	gary@garyguo.net, alex.gaynor@gmail.com, a.hindborg@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 28, 2024 at 8:55=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Thu, Nov 28, 2024 at 5:43=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
 >
-> On Wed, 27 Nov 2024 at 10:18, Steven Rostedt <rostedt@goodmis.org> wrote:
+> On 11/28/24 15:40, Alice Ryhl wrote:
+> >> The definition of the ZERO constant requires adding a Sized boundary, =
+but
+> >> this is not a problem either because neither slices nor trait objects
+> >> are zeroable.
+> >>
+> >> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > >
-> > [
-> >   NOTE: The rust tracepoint code added hooks to the same macros that we=
-re
-> >   modified in this pull request. The merge has non-trivial conflicts. I
-> >   fixed it up in my "for-next" branch in the same repository. That bran=
-ch
-> >   was a merge of this branch into the commit where you pulled the rust
-> >   tracepoint code.
+> > Slices are zeroable. I know they don't implement the trait,
 >
-> I checked my resolution against yours, and I don't think your
-> resolution is right.
+> Right, I should have used the uppercase "Zeroable" for clarity.
 >
-> You didn't check 'cond' on regular rust tracepoints, and you didn't do
-> any locking on either kind.
+> > but they could implement it, and this could be used to implement e.g.:
+> >
+> > pub fn write_zero<T: Zeroed + ?Sized>(value: &mut T) {
+> >      memset(0, ...);
+> > }
 >
-> I've pushed out my resolution, and hopefully rust people can actually
-> test it. I might just be full of it.
+> Yeah, that would be I think
 >
-> That said, I also think that the "__rust_do_trace_##name" inline
-> helper should just be renamed to "__trace_##name", and then the
-> regular trace_##name() helper could use that inside the
-> static_branch_unlikely() check. Because that seems to be the only real
-> thing the "rust" version wants - avoiding the static branch
-> infrastructure in favor of whatever rust infrastructure.
+>      pub fn write_zero<T: Zeroable + ?Sized>(value: &mut T) {
+>          unsafe {
+>             ptr::write_bytes((value as *mut T).cast::<u8>(), 0,
+>                              std::mem::size_of_val(value))
+>          }
+>      }
+>
+> ?  And it works for both sized values and slices.  If Zeroable is
+> limited to sized types, I guess you could still do:
+>
+>      pub fn write_zero_slice<T: Zeroable>(value: &mut [T]) {
+>          ptr::write_bytes(value.as_mut_ptr(), 0, value.len())
+>      }
+>
+> So the question is whether the ZERO constant is worthwhile enough, to
+> justify the limitation of the Sized bound (e.g. having separate
+> write_zero and write_zero_slice in the future).
 
-The Rust parts look reasonable to me, thanks!
+Why not both?
+
+If you change the constant to a const fn, then you don't have to rule
+out either use-case.
 
 Alice
