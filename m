@@ -1,134 +1,147 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B92165F13
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 23:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58DD184F;
+	Sat, 30 Nov 2024 09:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732923073; cv=none; b=lwiaGfLt1uLefdn7zS8484je9kmZ/8N3Dp4sPcKBNc7Trqos2u+XY3K8SBq3JbfYGKu+6tCFCV0r1GohZG4hJc9cPEpfu4zZjBYWoBWeTkx3tdNlfbic2fXpOb+wkutfxwvjkrRZZig74JW09XiO8/W5SfTCI/cAXPYWpXkMeYM=
+	t=1732958397; cv=none; b=DRfgK/v4ImB4dSuw2g//ZIK9eNya276HHn9vXVMJMgDH5YPpylr5Hoi8r4fP87lqVBgtMBx5KZGQTvb54jLnTiVYmTlcZsVi76p6RYOxtaR6h+6U1pNLZbQNr9I3zQKGWANvfTGGBYEawSVMwmZ6oULTE/NhgEIOwLIFm86jQmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732923073; c=relaxed/simple;
-	bh=TzeLF3QcB3Hf0datyvWeAMYglj1yvT4eY0FnhcZxwBE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DK/t/rK1yjZeHAz+nU+PGQsvWnW4bpk2/0Rm2+1s3vYbyD1alYU5KOMs/3WSgtDVPOy04DM1EVWPAaAjDzU1AMrOQb2LdaLhNcZxeQ07EOZELwWMBEmJQ9SEcSXW+Vxbys54M1LJ01kqsIAgb3FwUAm+0c4da/2kWugGAnG9b0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zr+fQ40d; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1732958397; c=relaxed/simple;
+	bh=6O+AJeFp14s3p2HvhKAk9vTQ2vBF+MrXRpK6RoTeKGg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=daR93i9ySpPmQmC3UwspLW15m/kYeQ4/2Fm2uPDljPiQmy4Q9yeBLnUxX1V5zHT6mUGv5P7MbzXnGsnPhmJ6JaeBl3M3PtO+sfv/UiUBxQRlQNJpCbL8eCrYKzZMKDlZ6wDT9NjGFD/lI2CZnuWf4RJA+O41dmTEhC+My5z0ZBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6EZbDLB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zr+fQ40d"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-434a10588f3so15145565e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 29 Nov 2024 15:31:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732923069; x=1733527869; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Fwf2ZpyKf/ZtBImPmb08+6DmBeOBIjCMYguEVZ/4P84=;
-        b=Zr+fQ40dl0sC1Eh4pSzOJ4uK1FzBZrQ7eWXHmyWD//HEI1FaO48TvjJ0hn06SsPdN2
-         +M4KM5DoS9008fGk2+3P++o6grTTYD0WtYuAv3OtPNnjcPVtex278fkTpqYXU98xRdK+
-         MMLjk0NY+zMqB82VCOHu5dTHTrYv1+zp/fu7T+Iblyghavj+P+K4APDq0HpNfOadctkV
-         MaRUQAaSpMiCVCx6oolbJtxlpWTKQlnSY9talsqG7qpYfbM5ZHJuUv7raXg+XOh8bmNN
-         IoPHD72JPXutfQBiSi8pEUzSTJhbuILtx00Xok0HxQZBitN2OJsUh39RYbKLCmWKjaCi
-         KV3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732923069; x=1733527869;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fwf2ZpyKf/ZtBImPmb08+6DmBeOBIjCMYguEVZ/4P84=;
-        b=sNF/LOwlgB3b+yrz2jhsb5PUotqYK0O14sZh0qzPxUTcdn4EyuLDqKxMvwQFWTXvQa
-         REx1RV+okDCKDZn6otv3JvRxpc0x8pemsliRbzY7fJC1VhK+lFZ9TlgBDe8EfFEbMwO5
-         gfsNhwlpYdtU5YTFMBhYmaXxPo9CH2sEUGEWuFTOhZqWyJo8RSn8p5TaeWbs18zrYX7F
-         dxUPMcEfT/s0D9fV0jKHnV9fZo6Z9hYnAnhWUewKQ4HR+1XMKzpvn7Vv4Ti6MYR2tk+G
-         EbWoymoGvsttunic7bkbBCPSpgpjky8zhAJSUMNol6qpbDh124lZCXZ/X3Fo/S25hfDs
-         vYHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6S4fufM8eLMlc3x20VPyqdeDDIr3OVRC4ah78MdJukPyH90L5zv/ommXbSpWALbRvR6TwH5Pl5oMIqk7AgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztRZduxlEDrWodFqVgswR/5eTSs5Sl77KgZNpPBf+jr8xD1vGR
-	/icRzIk474WOEcruq65d0XFkECcaFy/lgKKSWCtEDJdd0RkBhpdLTgbIN6giUHfyyXO7IxqDFDA
-	e
-X-Gm-Gg: ASbGncu5zlvusLiBge/0utwAQn73i2mTNgisTISx5RodVa+AHCvEJhPg99Q56cq42g5
-	iDBHlsjtOhFbCy21CCjHAmXZthA7yz0EoaHHfgXBZejy7ZzyXtAKR4fnwLEaRpGhSZR7M/jeG5/
-	wky2f3qZW/Zc5gzprf5g2+buNmXPqF8a6hUMkPVpvPNBdVBb5CJcj0FfCJXXx29YQVMUVsJ9bDc
-	lEsQMfn27KaY/0NQYxAC+FfSWScgo3zmEIEOd8JnoF9qFyxbTXqno6dhjAS4UONJRMjqauF/6ZE
-	3/gjRwDZUZE7PMEBF046r5R3
-X-Google-Smtp-Source: AGHT+IEykCxTGZMCKJYW5Uspz4zr6yyrHOVmE4xBgO7Vj/5z1tSmuzot/DIJMWX3+1MAZ8NoNO4Q3A==
-X-Received: by 2002:a05:600c:1ca7:b0:431:5187:28dd with SMTP id 5b1f17b1804b1-434a9df6aedmr110283385e9.28.1732923069512;
-        Fri, 29 Nov 2024 15:31:09 -0800 (PST)
-Received: from ?IPV6:2a01:170:117e:fc:8db4:3ffe:8420:e745? ([2a01:170:117e:fc:8db4:3ffe:8420:e745])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0f7dccasm66191865e9.43.2024.11.29.15.31.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Nov 2024 15:31:08 -0800 (PST)
-Message-ID: <b453017b-d719-4984-91d9-f28d34352d8f@linaro.org>
-Date: Sat, 30 Nov 2024 00:31:07 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6EZbDLB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634BAC4CED3;
+	Sat, 30 Nov 2024 09:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732958397;
+	bh=6O+AJeFp14s3p2HvhKAk9vTQ2vBF+MrXRpK6RoTeKGg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u6EZbDLBTsWhlWoj3VgqctVUaVcjOX2++Gep+hDodU8t3I5sozR6n32JRtzfOzmNO
+	 +UNdgKzgvhHO/j1ckl/R/qEjnL0s9KTsBU5mAnnAl7OwNgHjc4/rpG5kRxCdgMsabg
+	 sLpox9XWv3kWwTjTRrpuQntzpatw/bgVuWN9qFOtX3n6t1MuzQlZqG+zqzwooV8pqe
+	 iDlmEzMUTHOaDv3V/LQEwVqz26b6BtIWS9gdHKSxGMp2ZHuxOxJCikpLWrUo+HZoMO
+	 pShNvrOZghNSiuTWsRilZVxKN/nf98vvdDSCiR2UoeGFBGsWj7V5CuxabS0QpnHY5A
+	 wrGgETW+yPkoA==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53de84e4005so3033054e87.0;
+        Sat, 30 Nov 2024 01:19:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWivI4mKLWZwL6nczhUpXC/ftP08Vfu7JjkMdxCgPl9eyLHIQ/+es66+RNoSVXYI4GCXgh2qyObywIjP64=@vger.kernel.org, AJvYcCXG8hyjeBhdYm+iXYTG9AOq8GBxgzY/XL15/ToXQLhBbImyt5/gvlOofrDIZt17PWClN0IZA7yAY0YGdzZmY7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxymQ2q4T4M9mb47v6ri2JK2yCM7ASQPxl1J99ppgoOwhfrTHgD
+	aHANGgtUZMek9lQOhuvC1Eu/DjFTEVmTgcZHyrHYn8oIy1pnfv5ADnCUSp+tafBJcdu+y2fFVWx
+	zamddKl89ld2lEb5VFY1hYtJo2PM=
+X-Google-Smtp-Source: AGHT+IFDDTkywWGGEiytKg6jJ7ET5HHAhInfeskVEUdneXktYpKQU6M2qWGRPm9/r4qrlI4rUxsnFBOO4Rv1Rc7IJaY=
+X-Received: by 2002:a05:6512:23a2:b0:53d:cd25:4a61 with SMTP id
+ 2adb3069b0e04-53df0108fdbmr8682948e87.42.1732958396015; Sat, 30 Nov 2024
+ 01:19:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/23] kbuild: use absolute path in the generated wrapper
- Makefile
-To: Masahiro Yamada <masahiroy@kernel.org>, linux-kbuild@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas@fjasle.eu>,
- Stephan Gerhold <stephan.gerhold@linaro.org>
-References: <20240917141725.466514-1-masahiroy@kernel.org>
- <20240917141725.466514-22-masahiroy@kernel.org>
-Content-Language: en-US
-From: Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20240917141725.466514-22-masahiroy@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240917141725.466514-1-masahiroy@kernel.org> <20240917141725.466514-22-masahiroy@kernel.org>
+ <b453017b-d719-4984-91d9-f28d34352d8f@linaro.org>
+In-Reply-To: <b453017b-d719-4984-91d9-f28d34352d8f@linaro.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 30 Nov 2024 18:19:19 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATgO-ujY1xOowqmL0Dz03qBsjANx4Zc69aXB0Qbju2-8g@mail.gmail.com>
+Message-ID: <CAK7LNATgO-ujY1xOowqmL0Dz03qBsjANx4Zc69aXB0Qbju2-8g@mail.gmail.com>
+Subject: Re: [PATCH 21/23] kbuild: use absolute path in the generated wrapper Makefile
+To: Caleb Connolly <caleb.connolly@linaro.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Stephan Gerhold <stephan.gerhold@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Masahiro,
+On Sat, Nov 30, 2024 at 8:31=E2=80=AFAM Caleb Connolly
+<caleb.connolly@linaro.org> wrote:
+>
+> Hi Masahiro,
+>
+> On 9/17/24 16:16, Masahiro Yamada wrote:
+> > Keep the consistent behavior when this Makefile is invoked from another
+> > directory.
+>
+> This breaks building in a chroot for me. I usually compile the kernel on
+> my host and then use some tooling to just run the "package" step of an
+> Alpine kernel package definition. See
+>
+> https://wiki.postmarketos.org/wiki/Compiling_kernels_with_envkernel.sh#Pa=
+ckaging_kernels_built_without_envkernel
+>
+> Since this requires mounting the source directory into a chroot, and
+> then symlinking the output directory to the package "src" dir. It relies
+> on the fact that make can be run from the output directory and
+> implicitly relies on the include being relative since the absolute paths
+> don't map inside the chroot.
 
-On 9/17/24 16:16, Masahiro Yamada wrote:
-> Keep the consistent behavior when this Makefile is invoked from another
-> directory.
 
-This breaks building in a chroot for me. I usually compile the kernel on 
-my host and then use some tooling to just run the "package" step of an 
-Alpine kernel package definition. See
+I do not understand what is happening in your workflow, but presumably
+you need to come up with a solution on your end (or in the pmos community).
 
-https://wiki.postmarketos.org/wiki/Compiling_kernels_with_envkernel.sh#Packaging_kernels_built_without_envkernel
+ - Kbuild never promised that $(srctree) is always a relative path.
+   $(srctree) is relative only when building in-tree (srctree=3D.)
+   or when the output directory is a sub-directory of the source tree.
+    (srctree=3D..) For other cases, $(srctree) is an absolute path.
+   Therefore, "include directive with an absolute path" is not something ne=
+w.
 
-Since this requires mounting the source directory into a chroot, and 
-then symlinking the output directory to the package "src" dir. It relies 
-on the fact that make can be run from the output directory and 
-implicitly relies on the include being relative since the absolute paths 
-don't map inside the chroot.
+ - The wrapper Makefile generated in the output directory
+   is a bonus convenience for humans. It is not even required
+   to build the kernel from scripts.
 
-I'm not sure if breakages like this justify a revert, but I noticed this 
-issue in -next the other day and thought it was at least worth reporting.
+Your report seems like a jungle of a chroot and mounts with a symlink.
+I guess it just happened to work, relying on something Kbuild did not suppo=
+rt.
 
-I wouldn't be surprised if other folks with other build systems get 
-bitten by this too.
 
-Kind regards,
-Caleb
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
->   Makefile | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index ce646a6994a6..9f0ba07e8f25 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -643,8 +643,9 @@ ifdef building_out_of_srctree
->   
->   quiet_cmd_makefile = GEN     Makefile
->         cmd_makefile = { \
-> -	echo "\# Automatically generated by $(srctree)/Makefile: don't edit"; \
-> -	echo "include $(srctree)/Makefile"; \
-> +	echo "\# Automatically generated by $(abs_srctree)/Makefile: don't edit"; \
-> +	echo "export KBUILD_OUTPUT = $(CURDIR)"; \
-> +	echo "include $(abs_srctree)/Makefile"; \
->   	} > Makefile
->   
->   outputmakefile:
+>
+> I'm not sure if breakages like this justify a revert, but I noticed this
+> issue in -next the other day and thought it was at least worth reporting.
 
+
+Thanks for the report, but I do not think this is worth a revert
+for the above reasons.
+
+
+> I wouldn't be surprised if other folks with other build systems get
+> bitten by this too.
+>
+> Kind regards,
+> Caleb
+> >
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> > ---
+> >
+> >   Makefile | 5 +++--
+> >   1 file changed, 3 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Makefile b/Makefile
+> > index ce646a6994a6..9f0ba07e8f25 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -643,8 +643,9 @@ ifdef building_out_of_srctree
+> >
+> >   quiet_cmd_makefile =3D GEN     Makefile
+> >         cmd_makefile =3D { \
+> > -     echo "\# Automatically generated by $(srctree)/Makefile: don't ed=
+it"; \
+> > -     echo "include $(srctree)/Makefile"; \
+> > +     echo "\# Automatically generated by $(abs_srctree)/Makefile: don'=
+t edit"; \
+> > +     echo "export KBUILD_OUTPUT =3D $(CURDIR)"; \
+> > +     echo "include $(abs_srctree)/Makefile"; \
+> >       } > Makefile
+> >
+> >   outputmakefile:
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
