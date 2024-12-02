@@ -1,40 +1,63 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2401FF61B;
-	Mon,  2 Dec 2024 12:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF1316EBE9
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Dec 2024 16:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733141009; cv=none; b=oT83ZlrLxPozyQ2f2M0isFb4hLaB9wNyB5OvKxo2/B6rx1/rIM77kPNBQvejYU52fazjC9qMD8y9t5nrHRMUu4K1Q2TJyvaRpt1frfr0xmDj5bdSIiYEyCBpMXjWTc5CSO/OQx+auVtgbtnIryAGUHA1FAr4od+GxKdXGDjfp+o=
+	t=1733155737; cv=none; b=qWiITiDUnZ+0lLmVkeZlL7V51iTXP3pKeB9xWbSNHC40BNuGGfQcQYh1OE4DJXMJ6bYMshOSUanwPhNYSga35V1awpzmr3+vuV+aQPw45B7DT8jcwIfVU81ROxNPUWmRmtx7TzGscy3kGRIFVr4AXtpQYGyCkZdTo7Wpg2+LOYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733141009; c=relaxed/simple;
-	bh=onS7sMEZzhB3hatzLxUuQi9CQ2E6VuzwtA57t/RQsVk=;
+	s=arc-20240116; t=1733155737; c=relaxed/simple;
+	bh=MwB1ACqjAl/x3LNO27/3tM8Pks1XLvEtvtCteP6ruUM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aJf9Jg2EZxTPYNZK/NR2J0OmQoKk1HoIeYQq31t/YDDkWy7u+Yb68Mbz8aPhiYwXpseaZlbsXYs9HQTMO/ne+LXGPVbOvyY1QB2svMEroNcl71+EXublS11WManjPR/L7eq+qK9/6/sDvp95f/kqeZuI4U+Qt9oPeUuEE5wLmQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=f98/YX0L; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
+	 In-Reply-To:Content-Type; b=YQlOXoJ+N5AjveLJa/Ty04rm4l8TYeI8e64Y5VOH2/+Z5GavrVgYOFnQxrRpyCl6a+NNmHmOKfMo7UaEBUKbzt5E1/myd6QcmWJCg9WW30uUGfeqSxtCGaIRFX61enKWBGF9URRV28T8gFZ4AaAz15DPQJgjc+4+wt12ivrwGUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IPd7OWB2; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="f98/YX0L"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: lina@asahilina.net)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 9F3F041F5F;
-	Mon,  2 Dec 2024 12:03:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1733140997;
-	bh=onS7sMEZzhB3hatzLxUuQi9CQ2E6VuzwtA57t/RQsVk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=f98/YX0LZ94SDNc5clXjsqU6GG73u+HVJXUJuZqNU7Epauwq62L8EQQiNcRUkxt8F
-	 K5V0OtD7vncPCPqb3coENjgoyRVcM4KQzwVuG8hPsEK679BhlefNV5jYDr8fGp7vdC
-	 TRHGdKbOmakPZAoLa9yGJcwdWtqTecv/CSEfmH2uhP0yC8V8lW2jYdCFnPabNlmSPD
-	 sVOhxGRt2qz9W8IomGvcQPXCwb8uJexdPknBWPszkJIiPl+8Ay6Rs0IB71JgOSoD62
-	 v+bHMOsY9zwRG2Gwvp4WkNVr96DGy9FK0a5ETeM3BDcUvErfJNLOkYe5O4ae4Q49At
-	 NnygM/rk0Ux3Q==
-Message-ID: <4c58b3b7-0c2a-441d-9b2c-7be65cb39bf2@asahilina.net>
-Date: Mon, 2 Dec 2024 21:03:13 +0900
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IPd7OWB2"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e3621518so1760833f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Dec 2024 08:08:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1733155734; x=1733760534; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Wk9t4gJyThohCN5wH/UWKd/DL3WW9bY6aJcRvcTwW+M=;
+        b=IPd7OWB29gqHQCgvYZIT/dkWVaopbBnsYwjBoQXEiEU3lcqlcS0Skvy4p+n7of2xIU
+         QO2bq484PA4IkL9WnrhnRQv42L2vBYbLV0cabcHqFBC/JiAcT1MXM0rD9KlfGSxZbF+S
+         NruSM1vAoFDAarT662Scyd1/3U1pkULdYQy+4JHkst7vXI/Akde+QVqd1V8P1T7kMRjq
+         y6VlTYTsJUW5IlRCMrwKrBRddxaZhM0EYZQyEGypCC422wHZ1/gZFHTDq+wvJOgLJTaD
+         ozstk65PY+jd1/QKcwhTU4eBoyBjufKSUhuDe8HB28rjNxLecT/WfL3iePyampzVtjeE
+         Ga1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733155734; x=1733760534;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wk9t4gJyThohCN5wH/UWKd/DL3WW9bY6aJcRvcTwW+M=;
+        b=gn7AR4YU3B3BYJxkR4mP7IPidfMbfrbQ/vqZTisZXGr6hGka3oQgl2FmVlY/eUwty1
+         E3wrJ8WHpO7rWI66D5kGx/wibzW2FRwYoB2a0pa7cnMMBbJFBCWUFO6+gTA4hwxweRCW
+         voLUZBi2S7P9Xy9l+UJE7aPfo9gd02pjvWVHSo73Wg3+v3gfeUirQAFqAoguMg4XQEk2
+         p2k9CeVx8z1U0IqzIPdTT7rijL1H2BbSeJMLr18EObWrZf9nvNOhaEWeljHH877YFkr4
+         fxhGrVuU0K52LaFeg452IT1iOspLuCv6Ht29MF7WB15N6tV/ijvoAYQqyxczjeH06NOn
+         saDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmzN2ngtv/suCY1JNgJ0UCAmPbPmdH+MLBnZ/7WkGMpaiaayZE73DZ1DO8SzpDN7Va/wUAO5vy2PUdhj7cdw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfI+WTEPvqBnCgmmA9zw5tmEI2wv2GLd3d2yukedyCYvAq3Dm4
+	7mTuxUFM93iKa7A5xaK6b+qeAs4RrREcPzR/MG0KTlKAbCQjP/PAldc6w1fJMXY=
+X-Gm-Gg: ASbGnctLes98UiOh1JZuWwhV7wurHHQ9YqIX05KVEeuw30RiZmAZ4Uihq0FeCC6TC7M
+	b0Lc165xB1ybd28p/96R0Rgg8mReS7EI9c/iWHhLUT3N2F3iXXT+UGlp6i2DeUSs4AaZroXltB5
+	+xIBoys4uE0AnPfXi8eEsyRe7BbHebDR6GdEbpYnNz9b/BhWBJx169LYK5gqi0vQn8erLbTM+MV
+	jLE+ESUyQeHtsRaSzo+SNB6mKqzJfLJymzvXzPMV5X6m6WW6YZloQ==
+X-Google-Smtp-Source: AGHT+IHdMxsweQVSvkIE89/cartjnOdmknoW4rycIDu/WM156Nv5fZKnY0Cvww8TcwuaRagOlY68cw==
+X-Received: by 2002:a5d:5f46:0:b0:385:fb59:8358 with SMTP id ffacd0b85a97d-385fb598458mr236029f8f.53.1733155732003;
+        Mon, 02 Dec 2024 08:08:52 -0800 (PST)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ccd68c1bsm13165465f8f.84.2024.12.02.08.08.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2024 08:08:51 -0800 (PST)
+Message-ID: <de6b416c-b96a-43aa-ad72-ea365ffbe785@suse.com>
+Date: Mon, 2 Dec 2024 17:08:49 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,105 +65,119 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page
- mappings
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+Subject: Re: [PATCH v6 02/18] gendwarfksyms: Add address matching
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
+ Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+ Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
+ Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
  rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
-References: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
+References: <20241121204220.2378181-20-samitolvanen@google.com>
+ <20241121204220.2378181-22-samitolvanen@google.com>
 Content-Language: en-US
-From: Asahi Lina <lina@asahilina.net>
-In-Reply-To: <20241119112408.779243-1-abdiel.janulgue@gmail.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20241121204220.2378181-22-samitolvanen@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/19/24 8:24 PM, Abdiel Janulgue wrote:
-> This series aims to add support for pages that are not constructed by an
-> instance of the rust Page abstraction, for example those returned by
-> vmalloc_to_page() or virt_to_page().
+On 11/21/24 21:42, Sami Tolvanen wrote:
+> The compiler may choose not to emit type information in DWARF for all
+> aliases, but it's possible for each alias to be exported separately.
+> To ensure we find type information for the aliases as well, read
+> {section, address} tuples from the symbol table and match symbols also
+> by address.
 > 
-> Changes sinve v3:
-> - Use the struct page's reference count to decide when to free the
->   allocation (Alice Ryhl, Boqun Feng).
-> - Make Page::page_slice_to_page handle virt_to_page cases as well
->   (Danilo Krummrich).
-> - Link to v2: https://lore.kernel.org/lkml/20241022224832.1505432-1-abdiel.janulgue@gmail.com/
-> 
-> Changes since v2:
-> - Use Owned and Ownable types for constructing Page as suggested in
->   instad of using ptr::read().
-> - Link to v1: https://lore.kernel.org/rust-for-linux/20241007202752.3096472-1-abdiel.janulgue@gmail.com/
-> 
-> Abdiel Janulgue (2):
->   rust: page: use the page's reference count to decide when to free the
->     allocation
->   rust: page: Extend support to existing struct page mappings
-> 
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers/page.c             |  20 +++++
->  rust/kernel/page.rs             | 135 ++++++++++++++++++++++++++++----
->  3 files changed, 142 insertions(+), 14 deletions(-)
-> 
-> 
-> base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> ---
+[...]
+> @@ -82,6 +118,130 @@ struct symbol *symbol_get(const char *name)
+>  	return sym;
+>  }
+>  
+> +typedef void (*elf_symbol_callback_t)(const char *name, GElf_Sym *sym,
+> +				      Elf32_Word xndx, void *arg);
+> +
+> +static void elf_for_each_global(int fd, elf_symbol_callback_t func, void *arg)
+> +{
+> +	size_t sym_size;
+> +	GElf_Shdr shdr_mem;
+> +	GElf_Shdr *shdr;
+> +	Elf_Data *xndx_data = NULL;
+> +	Elf_Scn *scn;
+> +	Elf *elf;
+> +
+> +	if (elf_version(EV_CURRENT) != EV_CURRENT)
+> +		error("elf_version failed: %s", elf_errmsg(-1));
+> +
+> +	elf = elf_begin(fd, ELF_C_READ_MMAP, NULL);
+> +	if (!elf)
+> +		error("elf_begin failed: %s", elf_errmsg(-1));
+> +
+> +	scn = elf_nextscn(elf, NULL);
+> +
+> +	while (scn) {
+> +		shdr = gelf_getshdr(scn, &shdr_mem);
+> +		if (!shdr)
+> +			error("gelf_getshdr failed: %s", elf_errmsg(-1));
+> +
+> +		if (shdr->sh_type == SHT_SYMTAB_SHNDX) {
+> +			xndx_data = elf_getdata(scn, NULL);
+> +			if (!xndx_data)
+> +				error("elf_getdata failed: %s", elf_errmsg(-1));
+> +			break;
+> +		}
+> +
+> +		scn = elf_nextscn(elf, scn);
+> +	}
+> +
+> +	sym_size = gelf_fsize(elf, ELF_T_SYM, 1, EV_CURRENT);
+> +	scn = elf_nextscn(elf, NULL);
+> +
+> +	while (scn) {
+> +		shdr = gelf_getshdr(scn, &shdr_mem);
+> +		if (!shdr)
+> +			error("gelf_getshdr failed: %s", elf_errmsg(-1));
+> +
+> +		if (shdr->sh_type == SHT_SYMTAB) {
+> +			unsigned int nsyms;
+> +			unsigned int n;
+> +			Elf_Data *data = elf_getdata(scn, NULL);
+> +
+> +			if (!data)
+> +				error("elf_getdata failed: %s", elf_errmsg(-1));
+> +
+> +			if (shdr->sh_entsize != sym_size)
+> +				error("expected sh_entsize (%lu) to be %zu",
+> +				      shdr->sh_entsize, sym_size);
+> +
+> +			nsyms = shdr->sh_size / shdr->sh_entsize;
+> +
+> +			for (n = 1; n < nsyms; ++n) {
+> +				const char *name = NULL;
+> +				Elf32_Word xndx = 0;
+> +				GElf_Sym sym_mem;
+> +				GElf_Sym *sym;
+> +
+> +				sym = gelf_getsymshndx(data, xndx_data, n,
+> +						       &sym_mem, &xndx);
+> +
+> +				if (!sym ||
+> +				    GELF_ST_BIND(sym->st_info) == STB_LOCAL)
+> +					continue;
 
-Just wanted to comment on an upcoming use case I have that will need
-this, to make sure we're aligned. I want to use the page allocator to
-manage GPU page tables (currently done via an io-pgtable patch and
-abstraction but that's going away because it turned out to be too
-intrusive to upstream).
+Doesn't NULL returned by gelf_getsymshndx() indicate an error? If yes
+then I think it should be reported instead of silently skipping the
+symbol.
 
-Since I'm dealing with page tables which are their own tree ownership
-structure, and I don't want to duplicate management of the page life
-cycles, this means I need to be able to:
+With this addressed, feel free to add:
+Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
 
-- Convert a Rust-allocated and owned page *into* its physical address
-(page_to_phys()).
-- Convert a physical address *into* a Rust-allocated and owned page
-(phys_to_page()).
-- Borrow a Rust Page from a physical address (so I can do read/write
-operations on its data without intending to destroy it).
-
-Conceptually, the first two are like ARef::into_raw() and
-ARef::from_raw() (or Box for that matter), while the third would
-basically return a &Page with an arbitrary lifetime (up to the caller to
-enforce the rules). The latter two would be unsafe functions by nature,
-of course.
-
-I think this would work just as well with some kind of Owned/Ownable
-solution. Basically, I just need to be able to express the two concepts
-of "Page owned and allocated by Rust" and "Page borrowed from a physical
-address".
-
-This maps to pagetable management like this:
-- On PT allocation, a Page is allocated, cleared, and turned into its
-physical address (to be populated in the parent PTE or top-level TTB)
-- On PT free, a page physical address is converted back to a Page, its
-PTEs are walked to recursively free child PTs or verify they are empty
-entries for leaf PTs (invariant: no leaf PTEs, all mappings should be
-removed before PT free) and dropped.
-- On PT walk/PTE insertion and removal, a physical address is borrowed
-as a Page, then `Page::with_page_mapped()` is used to perform R/W
-operations on the PTEs contained within.
-
-Tying the lifetime of actual leaf data pages mapped into the page table
-to the page table itself is a higher-level concern that isn't relevant
-here, drm_gpuvm handles that part and those pages are not allocated
-directly via the page allocator, but rather as GEM objects which
-ultimately come from shmem)
-
-(Note: this hardware is always 64-bit without highmem so those concerns
-don't apply here.)
-
-~~ Lina
-
+-- 
+Thanks,
+Petr
