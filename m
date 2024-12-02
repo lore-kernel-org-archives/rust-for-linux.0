@@ -1,122 +1,210 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4B418AEA
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Dec 2024 15:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652241F9432;
+	Mon,  2 Dec 2024 07:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733067468; cv=none; b=qqI8cSUaWfF+gCeZ/30WyrzMQI8Emiv40Tb0iLveB2c7/nyZhAZgQp0y5hvmsexnScl0eMib7LdQ39X/IR9OCjk5hFLk3VnK4LL+LQgR1aOeSBzWP0EVUNYJ8w81iGXVTUhvRlZmE+iMq0tKgZuiEM+yvx+KQJSOkEM67zNjKZo=
+	t=1733123696; cv=none; b=MIVoP29TROjmlrC1RPqV2aJqN/ZMoZaChRz2VbU3nW3Z1/SFSvsPb9Ups+Wh8ij9XjNObhGlSmBg/RWSAPcoSLlb0uHG1xE84K72jAuLr0og0vLHnmKHGOenEifAF8DLwtn6TfT+i+DK67Tvxa0Secfpl5qdML4AEKU1xS17HvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733067468; c=relaxed/simple;
-	bh=6ZXrC4/JlUk7ti0Y8JtIyAZnh6Xgd7N1iPkLDMzrnOo=;
+	s=arc-20240116; t=1733123696; c=relaxed/simple;
+	bh=Ft4O5XSechI9tZyA+jrXC1PDqP2UKsyMc3WO/BX29I4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dJrfObNdIo8/+MSeO0G16iGpoytndmyUHqlkcQZWP6SSWK6hd41o9FMkgtbjK4QPZdkgVGzkzbB5BDLE+f3GVH23LidR9VKGpJZpZKWZCuY50ZcIURV58golDQUn0D8VZwJ52rRmv3HIG6wvb16lgmeeZjeTH8HnVFM+pVhUbzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jrFDOLRD; arc=none smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=Gdw4iTRBP4zeEWHcwazFe2oD2Fz5M3bWsm9DYhsk+ohWGuGwZAJKH+6o5GC+rpwZXqH7JQHywqLbDU6f84dEyHHvpLzWNQ3kylbRYESSQJdFN7ZrTaaivrulV2OKU+fotv6wkbhogo8tq2Kh/E5Xo5AifYZx4GBw6Q+9KA/F7AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zpf2HSiH; arc=none smtp.client-ip=209.85.222.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jrFDOLRD"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ea93311724so369250a91.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Dec 2024 07:37:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zpf2HSiH"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-85b9c456f46so434674241.3;
+        Sun, 01 Dec 2024 23:14:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733067466; x=1733672266; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733123693; x=1733728493; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wrO9vMDUN0Dq6iSTh/s7EQvHs41r1emtkUzWokIshw0=;
-        b=jrFDOLRDjLpbydFW1fqXiiwdQKUCfdhnctoRlr9BQOH7Mc4YykIohgJiRvB+yraMdd
-         iUWXRz9BkL+GxrT9qPJ+GCva+zIa+t5i6Sg/05a19Vlcx0RzW+/jKYB8YLCmFEdmoPBA
-         H+gRd2aCOvM3EJuCCRI9kxvrzEIZ0laWK+/FdYxeg7LHC7UzGXIXJ2xfhW/JKlJAuXDh
-         FVUbHfF2R8QZbO9YbDHWElHqSdFAggd9/hp8z9vEw7FLT6sof0bwtgKnMTNPuO4uKe98
-         0bADRDGxZzvJ4PjcclHf54ZX+SalRGeNsHG0gtEXtW5dqhuByeePfqXcdN6ozKqgK3wp
-         mn7A==
+        bh=uyDQ9j9UHC5BbfNURrbflCNNwGQxDH1l+zeF4L4a4pU=;
+        b=Zpf2HSiHqrDEPzBeADcwhiL9JmOW+JLn6IRqF1aHXOto2G84fp6AwxkptM62Zeuyyi
+         NlUpbFLnE0zux9esdx1JnuESzxaAfYvX0ywUQEt1mjK7RDXLEotJhKh3nHjOvbw6gQ0k
+         pWOgy42kqB0SUZu2Yc9AtxuinC1aibz1NNYKqdaGWHQl/aOnFcOdlI01bgxE3EHoHtOB
+         51pIBQvPPTVoC76J9omOb4REoJi+LtYLUJwoABuv5AInzGc1Ljg/gdu+g/ho9lgq3UXg
+         hMcvRbTjmGWuhqbX4h3phZ7BJXc8/YTSDVDDvIfbu+WUWsnWzCfFuPuKrR+VHGzqGre7
+         r8GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733067466; x=1733672266;
+        d=1e100.net; s=20230601; t=1733123693; x=1733728493;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wrO9vMDUN0Dq6iSTh/s7EQvHs41r1emtkUzWokIshw0=;
-        b=I7uzG85a6ioz3HX4WbXQ8L0LBxdGMl4GmL8xAGie3Y2bEvWd40I1Cd+naeCRIXtC4b
-         Mo+vsgt9exaun1TK+If3XEJIb2quCQPwn5VwEnKzFpxxcOumlNzOj0hEmOHx+5aFtd2x
-         SHD2StWqpebY4FKhB2dYf70vuoltoZoIYKszYJ52094Rtad2AKdSotVgBJVAKMxpuRrg
-         5s4+SnXLSAbzEUmZZCtI67Q4GGFMNwhvGmPKCxBT/khjep4Rsu8ROTC3/RbnjMGWs1/I
-         BDo11lKy+sahu2uNxEbCMW6dvGj5PPlWOTggfYp7vdEooEO280zgvXm4PwSX8gZuMysI
-         UlzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpq31WdXSUG4zIf3vKD8W6ibVGQO2VU6myrkbhzBC3oNnTpsu91b+w2NBq3KASm3SkIQk0XZGuj1dvSq0rSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEuURY3eH6J2KMEegYJQBPQuZnRlfLW0idNyDd6nS7EE4zIO+g
-	V+g3z+x9y0EQk9MJpDCpyc/47GPFqnKV8ANHB8c2diBRsG1iC6u3OLr7N3D74/VbQ1OAk6ods/j
-	9xI4CM9MDuSbhN4hImQQakiKdCi0=
-X-Gm-Gg: ASbGnctpVcdP6l9tNnOVTZDjtS2veym8UV/6NgfXeL2Q6FGYJR8ci3qW9EBta/HMss1
-	gmlQLbVnrrplaG+IlMu43aWFZhBEAcpI=
-X-Google-Smtp-Source: AGHT+IFd4boXfyqAVtLwktVrQUk+GxZGW6vp5gn0EeDIOHf7FonumzOkJjRmtnVlz2dEeVVyp4TlPLE63SL6YZ2Ml/c=
-X-Received: by 2002:a17:90b:1b47:b0:2ee:6563:20b5 with SMTP id
- 98e67ed59e1d1-2ee656323b4mr4954170a91.0.1733067466571; Sun, 01 Dec 2024
- 07:37:46 -0800 (PST)
+        bh=uyDQ9j9UHC5BbfNURrbflCNNwGQxDH1l+zeF4L4a4pU=;
+        b=fPz3o+ogBv2uYJbkHme8iEo7aOP7+JTruoEsVNCAmNTHidF4zmEhZQxKD0NN6mwr/6
+         IrFGEgolJPQALy5VgBesyJydBJVBECS+3/1FicEVwWSS9GcUFNkyFz51Fa/GTfIsUvQi
+         v3vQazmWy8SGWrdThKu2sPuRQk6LACtbOCi6KdFRIi0ia2bGoZgUzNt3HHWfPR7+csT3
+         /9n0zoUqU6/+iJaNvEheCBBCfugLwy1i2Z3g+IyV/QITAXJGTMJPOUWRQ42HeAslg1p7
+         fufWT5PbvTDm+CGfch8+rRPma8QvvifvKX2MyeE9HTdBQt0EbiicVJ4NiEMThZDxg8vF
+         L0/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXzvwXloxOqha6v53oz5X/nbEIg077vCz/HM5OdyFTBsgyrf/caekkeZnclqnLwRVChpBiu5CxmiC+LsSnGPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyERRKkROJ84qNj62nWrRfQIMwl8P7wNR/pzGmUGedHcnt5+gfR
+	YJVCDHmhY5XFF5FBlU2j8b57D2OCIobaCSgH4rLK1XjBEpNHHB4h7Nr/DGwDmzMcUxTZaRYo7Tg
+	x5Lc7fWQjFTU77z7C5gncyXeMem4=
+X-Gm-Gg: ASbGncu4AAmTOFsSWWG9TcvS/Rw8y6ZnBcmvOv2njc1Yxk3xcwz8r0RheHMcQ/smzY/
+	8DNH8jMxUlnMw1K1UznqRJOAXCi2yvqlb
+X-Google-Smtp-Source: AGHT+IHVlLpv+VAr+llG00lYJhexczCgShyMsvZLK7u9hQnwuR36F0LGg3gBqqAopceA7gYdFDFD4CoyoP6KAzUuEMY=
+X-Received: by 2002:a05:6102:290c:b0:4af:5e86:3ff9 with SMTP id
+ ada2fe7eead31-4af5e8640ddmr15879332137.8.1733123693043; Sun, 01 Dec 2024
+ 23:14:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118031225.38080-1-kernel@mandragore.io> <87ed34ly80.fsf@prevas.dk>
- <caEePXpz3dyKABs5ReUO5NGlpbqf98_Aw_8tz9ADE6c1c8hYp523uGk7l9EcfSD0u-YLtozTD4wwgLEytbzzm6gnd3r6jQeXqr0Fo3YEYtM=@mandragore.io>
- <87y116icrx.fsf@prevas.dk>
-In-Reply-To: <87y116icrx.fsf@prevas.dk>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 1 Dec 2024 16:37:34 +0100
-Message-ID: <CANiq72nH7T9b0uLP-QtX6eOZhybQE0TWJfgi-J3dfLcCr-s87w@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: add safety comment in rust_fmt_argument
-To: Rasmus Villemoes <ravi@prevas.dk>, Esteban Blanc <esteban.blanc@epita.fr>
-Cc: Konstantin Andrikopoulos <kernel@mandragore.io>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+References: <20241114005631.818440-1-alistair@alistair23.me>
+In-Reply-To: <20241114005631.818440-1-alistair@alistair23.me>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 2 Dec 2024 16:14:26 +0900
+Message-ID: <CAKmqyKNUYZun4Xsh=nNA5RG51MBdDRO-bx4mW1TdECTeaor4-w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/11] rust: bindings: Auto-generate inline static functions
+To: Alistair Francis <alistair@alistair23.me>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: linux-kernel@vger.kernel.org, benno.lossin@proton.me, boqun.feng@gmail.com, 
+	me@kloenk.dev, alex.gaynor@gmail.com, a.hindborg@kernel.org, gary@garyguo.net, 
+	aliceryhl@google.com, alistair.francis@wdc.com, bjorn3_gh@protonmail.com, 
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org, ojeda@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 26, 2024 at 10:07=E2=80=AFAM Rasmus Villemoes <ravi@prevas.dk> =
-wrote:
+On Thu, Nov 14, 2024 at 9:56=E2=80=AFAM Alistair Francis <alistair@alistair=
+23.me> wrote:
 >
-> That's certainly possible, I didn't think about that possibility. If so,
-> my comments should be ignored :)
+> The kernel includes a large number of static inline functions that are
+> defined in header files. One example is the crypto_shash_descsize()
+> function which is defined in hash.h as
+>
+> ```
+> static inline unsigned int crypto_shash_descsize(struct crypto_shash *tfm=
+)
+> {
+>         return tfm->descsize;
+> }
+> ```
+>
+> bindgen is currently unable to generate bindings to these functions as
+> they are not publically exposed (they are static after all).
+>
+> The Rust code currently uses rust_helper_* functions, such as
+> rust_helper_alloc_pages() for example to call the static inline
+> functions. But this is a hassle as someone needs to write a C helper
+> function.
+>
+> Instead we can use the bindgen wrap-static-fns feature. The feature
+> is marked as experimental, but has recently been promoted to
+> non-experimental (depending on your version of bindgen).
+>
+> By supporting wrap-static-fns we automatically generate a C file called
+> extern.c that exposes the static inline functions, for example like this
+>
+> ```
+> unsigned int crypto_shash_descsize__extern(struct crypto_shash *tfm) { re=
+turn crypto_shash_descsize(tfm); }
+> ```
+>
+> The nice part is that this is auto-generated.
+>
+> We then also get a bindings_generate_static.rs file with the Rust
+> binding, like this
+>
+> ```
+> extern "C" {
+>     #[link_name =3D "crypto_shash_descsize__extern"]
+>     pub fn crypto_shash_descsize(tfm: *mut crypto_shash) -> core::ffi::c_=
+uint;
+> }
+> ```
+>
+> So now we can use the static inline functions just like normal
+> functions.
+>
+> There are a bunch of static inline functions that don't work though, beca=
+use
+> the C compiler fails to build extern.c:
+>  * functions with inline asm generate "operand probably does not match co=
+nstraints"
+>    errors (rip_rel_ptr() for example)
+>  * functions with bit masks (u32_encode_bits() and friends) result in
+>    "call to =E2=80=98__bad_mask=E2=80=99 declared with attribute error: b=
+ad bitfield mask"
+>    errors
+>
+> As well as that any static inline function that calls a function that has=
+ been
+> kconfig-ed out will fail to link as the function being called isn't built
+> (mdio45_ethtool_gset_npage for example)
+>
+> Due to these failures we use a allow-list system (where functions must
+> be manually enabled).
+>
+> This series adds support for bindgen generating wrappers for inline stati=
+cs and
+> then converts the existing helper functions to this new method. This does=
+n't
+> work for C macros, so we can't reamove all of the helper functions, but w=
+e
+> can remove most.
 
-That may have been the case -- this was commit 9e8bd679ecf2 ("Support
-Rust `core::fmt::Argument` in vsprintf") in our old out-of-tree
-branch, which added the docs to `pointer()`.
+Any more comments?
 
-> So I dunno. If the intention is to refer to vsprintf.c as a whole,
-> perhaps it would be better to actually include that .c extension when
-> referring to it, to avoid the ambiguity.
+Alistair
 
-Agreed, it would be better to clearly distinguish between one and the other=
-.
-
-In addition, I would suggest moving the "`vsprintf` guarantees that
-..." out of the `# Safety` section since it is not a precondition, and
-probably reword it to clarify it is talking about particular callers.
-
-In fact, wouldn't it make more sense to move that note to the `//
-SAFETY` comment(s)? Actually, what if we just add it to the C call?
-i.e.
-
-        /* SAFETY: ... */
-        return rust_fmt_argument(buf, end, ptr);
-
-It would be our first `SAFETY` comment outside a Rust file, but I
-think it would be a good time to start doing that.
-
-...now, I actually did a quick grep, and there already are a couple
-`/* SAFETY: ` comments in drivers/rtc/rtc-tps6594.c by Esteban -- that
-was a nice surprise! :)
-
-(Speaking of drivers/rtc/rtc-tps6594.c: I think to follow the usual
-convention those `SAFETY` comments should be on top the block (not
-below) and ideally split for each operation. Also, I think it is not
-up to date (?), e.g. it mentions `TICK(S)_PER_HOUR` but it uses `NANO`
-instead (the other side of the code does use `TICKS_PER_HOUR`))
-
-Thanks!
-
-Cheers,
-Miguel
+>
+> v4:
+>  - Fix out of tree builds
+> v3:
+>  - Change SoB email address to match from address
+>  - Fixup kunit test build failure
+>  - Update Rust binding documentation
+> v2:
+>  - Fixup build failures report by test bots
+>  - Rebase on rust-next (ae7851c29747fa376)
+>
+> Alistair Francis (11):
+>   rust: bindings: Support some inline static functions
+>   rust: helpers: Remove blk helper
+>   rust: helpers: Remove err helper
+>   rust: helpers: Remove kunit helper
+>   rust: helpers: Remove some page helpers
+>   rust: helpers: Remove rbtree helper
+>   rust: helpers: Remove some refcount helpers
+>   rust: helpers: Remove signal helper
+>   rust: helpers: Remove some spinlock helpers
+>   rust: helpers: Remove some task helpers
+>   rust: helpers: Remove uaccess helpers
+>
+>  Documentation/rust/general-information.rst | 10 +++---
+>  rust/.gitignore                            |  2 ++
+>  rust/Makefile                              | 37 ++++++++++++++++++++--
+>  rust/bindgen_static_functions              | 32 +++++++++++++++++++
+>  rust/bindings/bindings_helper.h            |  6 ++++
+>  rust/bindings/lib.rs                       |  4 +++
+>  rust/exports.c                             |  1 +
+>  rust/helpers/blk.c                         | 14 --------
+>  rust/helpers/err.c                         | 18 -----------
+>  rust/helpers/helpers.c                     | 11 ++-----
+>  rust/helpers/kunit.c                       |  8 -----
+>  rust/helpers/page.c                        |  5 ---
+>  rust/helpers/rbtree.c                      |  9 ------
+>  rust/helpers/refcount.c                    | 10 ------
+>  rust/helpers/signal.c                      |  8 -----
+>  rust/helpers/spinlock.c                    | 15 ---------
+>  rust/helpers/task.c                        | 10 ------
+>  rust/helpers/uaccess.c                     | 15 ---------
+>  18 files changed, 87 insertions(+), 128 deletions(-)
+>  create mode 100644 rust/bindgen_static_functions
+>  delete mode 100644 rust/helpers/blk.c
+>  delete mode 100644 rust/helpers/err.c
+>  delete mode 100644 rust/helpers/kunit.c
+>  delete mode 100644 rust/helpers/rbtree.c
+>  delete mode 100644 rust/helpers/signal.c
+>  delete mode 100644 rust/helpers/uaccess.c
+>
+> --
+> 2.47.0
+>
