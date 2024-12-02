@@ -1,174 +1,122 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6271D175D26
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Dec 2024 16:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB8D1DDC34
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Dec 2024 18:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733156069; cv=none; b=c3R6UgND0oId4Q3JXTAhfT8O4h7hK9IgoQntc7BkXeu9QEbsYTPXdmLQke/C5C/7Gbjf0o7XjZTFIged32XrQcryFGZPI3BqHMnCnhdZOhz0GswV+ni5Q4Q0zJUvd+DVMBEsvMcQyEAyMXqtJHD5q5yJzYsl+81f0pU2s4MKgEM=
+	t=1733164119; cv=none; b=MZJAPhXEntw1GhA6ATfyzZQQ6LD7lnmWviqIHmZvf8qgMkYo7QTAMh8h7H4GyMejss5voQAWhG8n37jQV3oLUlNqDiEsgK3WmuE0qBtXP+/H8ShpZ3ibB5Te/N1H2vwF5CnjRisT6XrjXXW9S3Pqx56jvAaiZeguqg6I6TtOjXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733156069; c=relaxed/simple;
-	bh=OwIXuOkl98ecBMfXkAdimvKCgH93U2DB6vsnaTQrIw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SFv8UsgSSS7JImtaxAN86ukzXzLSx1Di3P6Y/LX4J9MxYPHich76fsdnU/5JAwSJBdd0HIn/c13cecqT1TTXIfN1Y47v3BWDkdpRmhVoFu0ijoTqDwGfL2WfoJN54aj5zpV6Omj8wyDbIglBk9PDmXkrGp9z8bzxdPqXqUpc35w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=foiYXTCb; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1733164119; c=relaxed/simple;
+	bh=Hv1hyjWLPTyKqeXm++lG0gxdaqVCmDerWFeed7SdppY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gymdY4AFeywejdeXFRVD/Iv3e/K4/hrA+hO6drbDi/NO6tvM3zoAGxoIVCfwkEY7am51ZjiOc8+r6Je0tadebJF1ttTO/6idZvth3XuYZPjCfLzLs74ggOp+K48vwCvic8M6fOWhPRN/tt0YKIdPkwLqdY7P1CKpRWuTokNE1Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GfQKqXaO; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="foiYXTCb"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434aa472617so37806835e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Dec 2024 08:14:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GfQKqXaO"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ee7c059b97so465498a91.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Dec 2024 10:28:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1733156066; x=1733760866; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JkqtF7gf3rzskqYkgv0SBovnNKd2qwXos1/as7nPpuk=;
-        b=foiYXTCb5ubz5C1P3skEksMF9LdXPe0Kee+UfgBu7IEZBRzEiI53KnK1sXdqfSewho
-         E3PYpFf3M8sM0Mgjr5v3wSkDmb/n/qjqHmkb3WRNN0G2O8JZsNq//1xxu0xbXwvHYuaN
-         m3qQx7scKoI+DRZ5xcuxLTDfdLANkIgEfAloJE6WPnV30UAK0PA+aIYBtRd4kQZuKzIq
-         fe41ql8JZgefHy4jGp03muOGGtlMjRAqmKu5IxSE+XpW9Pw5VIs2UfNiAJCd5xXnTrl4
-         eJjUgH0Fclbx6zUUaXUvuAQ41g0hAxD9UomxC4vN3D5Ky6AIoExAm4tXFzI14vTqE54/
-         0yQw==
+        d=gmail.com; s=20230601; t=1733164117; x=1733768917; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=68U0GG57OCIzDXT5ZoBVlvW0lh9ktBXniUvySDJd3uQ=;
+        b=GfQKqXaOr8fkSLlkMlFJ6e7UMXMllDQrmmQPW2G7a1lxmdirTt+b5MsSjNFKmdSzPZ
+         grD5MCEAS9v0xKrJk+ffGb+XxWaI+rbUuxr1C76ucRGSBD+VvZB0iokd7qWg6a46dIie
+         7qFoCjV4brQHRfl7QrHvo+7N5JSF6vOmmkevi7ZSoT/ksE8pHqg4BEQBJEYBZa9ykiIq
+         tDkODi8r+rS/XhTvcYxnTfKloKqRFlJFMtSGdVIlg2dcDvHbHie0Hrm8PAEvWdXp2z6r
+         s9gD76z7DsmwcuwR8Nmx5ccS6K03egObRwFJhw6D1UW3HNxzaequJUXvn8HQTTBx78UP
+         Gubw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733156066; x=1733760866;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JkqtF7gf3rzskqYkgv0SBovnNKd2qwXos1/as7nPpuk=;
-        b=QINsoxn7hCoytrYlObhs9QM5X1rdnM8vrjKmwA7cT4vHasAFU/yIcIeh7fB3tcHfBA
-         nIvWpaglHoWYAj2WPTDtT8t6+7vphQZQWF42d3WPjcVdNotaw26Vp1pOiawlZ+3uUUau
-         YEnJ4r9koCXYInZ6GKsaU+C08wJLQbgc3zvrcvIHrCu2xrpUc2Fw5HDWByqC2fVBYsdt
-         pCtqm+3/Lh+VMAdnQ67KPsl3VkRUP/G26qvVaNWOTT48fRRa6jfuaJbs9BvJw09Y/aSx
-         VH1Mf2FCycUGtu/tXuyN+RbaGsXqS3dTCX8SpL2UQGsPqM0mzZUVlry5cjAiXDh4qDRw
-         nX0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUqqSBsBQ6PJANUQNYf00euxfjnSi+Bh7KZ/c070eVxGXTcDVpakarxEiPsLjwXHqaXId+awgUMigKfVt4t+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9V5o3lhRW2HtriUQOsQTCR0LhDCqh5oDwuT5n46n5lKuQx4ST
-	UeLhc5rKBSRZ3xpQJUt9YGxNuuTF6CYSmv2DoMwQPAi7VNZk3FcR2GxkZPlARl4=
-X-Gm-Gg: ASbGncua99LWV+sSgoVwi0engapsBQ84dfBqeiy85BfZNs9a9FYWhFdtHuLcRYlZZaA
-	8NWqkghe5GZEiQoogbEyu1t+nJjcjxpPEIlqW7+RIgOpSz8hDJVPWzRRxe/sEuwCiCcnHMO+UG9
-	hsYyKneeBiT+0ivAfdhG5m7QMrdwhsD6gNx1NwQwHBzrMe0K1FCw7IEihtOiFgRn9sdisv9aT+f
-	jSS32bKiI+W0zU0dgVhx8hrKGgVdwlznzdcbJfjh59slhr0CylvsA==
-X-Google-Smtp-Source: AGHT+IFYutETRRcXML+QIddm9XhVvanLL6JGdMr2H3NcnNfxeBujp0ZUmjFwG3N6uzej8qITOTWbNA==
-X-Received: by 2002:a05:600c:5253:b0:434:9e1d:7629 with SMTP id 5b1f17b1804b1-434a9e07911mr188863885e9.33.1733156065599;
-        Mon, 02 Dec 2024 08:14:25 -0800 (PST)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa781200sm187506945e9.25.2024.12.02.08.14.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 08:14:25 -0800 (PST)
-Message-ID: <409987f4-d124-48f7-b49c-dd61a4798bef@suse.com>
-Date: Mon, 2 Dec 2024 17:14:24 +0100
+        d=1e100.net; s=20230601; t=1733164117; x=1733768917;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=68U0GG57OCIzDXT5ZoBVlvW0lh9ktBXniUvySDJd3uQ=;
+        b=OILMX3g2NkLdPvM2O59AbGZBy7N5HfbYrPI604bpzrqpwFAgFOqLSFQODCEX5TuM0n
+         pSbbFN0pr8rHvqBkSSjgdrgGSrOvHu9A3exnI1dIQFozA2/BhrwI0KpS5MPU3hzsk1la
+         5hIWEV8tBSrvJkq0aHramk91x1VqxaS9SB7bTzMH3jmN57Rig0ITRg5dgQ2auBxYQ6tp
+         lHs/wf0AxDqOgp/1S91rf0CSIHvJuulBxiYeAbOive0YRvvZ9BXiN2TYOValWCV1AUKD
+         yxxrjVrR+WSHHO1/OkTGGMMlm7TKRNce/+HvinWzu33ezIQMbB2SFG1mj5tl52wFkayb
+         +VtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpQimvXOU5u+cQAAug210hWwAGfMo2jqr73lgVhwfabwQ9K1d3AgLoJq+hl+y8TQmEWcLyYhEECyASAT9Y1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPrGPf6QParq77LcSFLHkjFBr7SjfyH0UXoKxpKW3S1SN7eFjx
+	ogBti/q/s7mrDLt2k3sJ+/GkliPns97rH2BTejPjhSnXg7ZoqwWO3z3/tPYkG0emh7leF8ZA1mb
+	XYsXJLZQE8gzFldSekl0AuTyKhvgumch2v5k=
+X-Gm-Gg: ASbGncsbWHVlZWz/DgpHr4Jtx1Un7j+1ojtGU2XhlT+BUGIBAxdckKdHdOUhA89jo3c
+	bidfNu2RrHKyZwfVfuHxVFABxmewdM2k=
+X-Google-Smtp-Source: AGHT+IHILNeE2iCCpnPlIhP4PCObPouAaf4DDx7230oiaChSuvjlDGlG+ClJiAkXsAR7aHmqjvk97cy02dzmHKRgJJ4=
+X-Received: by 2002:a17:90b:1a86:b0:2ea:5e0c:2851 with SMTP id
+ 98e67ed59e1d1-2ee08daf6admr12471646a91.0.1733164117342; Mon, 02 Dec 2024
+ 10:28:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 09/18] gendwarfksyms: Limit structure expansion
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>,
- Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
- Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>,
- Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20241121204220.2378181-20-samitolvanen@google.com>
- <20241121204220.2378181-29-samitolvanen@google.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20241121204220.2378181-29-samitolvanen@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241202085758.67319-1-bk@alpico.io>
+In-Reply-To: <20241202085758.67319-1-bk@alpico.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 2 Dec 2024 19:28:25 +0100
+Message-ID: <CANiq72kuNmw5WnGVbiw=UPgcEqKG-Mhj82Ejd4kPgUYbv4kqrw@mail.gmail.com>
+Subject: Re: [PATCH] rust: introduce KVec::pop()
+To: Bernhard Kauer <bk@alpico.io>
+Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/21/24 21:42, Sami Tolvanen wrote:
-> Expand each structure type only once per exported symbol. This
-> is necessary to support self-referential structures, which would
-> otherwise result in infinite recursion, and it's sufficient for
-> catching ABI changes.
-> 
-> Types defined in .c files are opaque to external users and thus
-> cannot affect the ABI. Consider type definitions in .c files to
-> be declarations to prevent opaque types from changing symbol
-> versions.
+On Mon, Dec 2, 2024 at 9:58=E2=80=AFAM Bernhard Kauer <bk@alpico.io> wrote:
+>
+> Provides a simple stack together with push().
+>
+> Signed-off-by: Bernhard Kauer <bk@alpico.io>
 
-Thanks for adding support for skipping types defined in .c files. That
-is a useful feature that genksyms has.
+Thanks for the patch!
 
-I was also recently thinking that it would be great if genksyms could
-skip definitions that are in internal header files, for example,
-kernel/events/internal.h. Perhaps something that could be added in the
-future..
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v =3D KVec::new();
+> +    /// v.push(1, GFP_KERNEL)?;
+> +    /// v.push(2, GFP_KERNEL)?;
+> +    /// assert_eq!(Some(2), v.pop());
+> +    /// assert_eq!(Some(1), v.pop());
+> +    /// assert_eq!(None, v.pop());
+> +    /// assert!(v.is_empty());
+> +    /// ```
 
-I've noted one nit below, but the patch looks sensible to me, feel free
-to use:
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
+We could simplify the example using `kvec!`... Though I see other
+examples in the file using this pattern, so it is OK for this patch.
+Perhaps we could simplify those in another patch series / a "good
+first issue" (unless Danilo was following a particular pattern here).
 
-> @@ -79,6 +80,55 @@ static bool match_export_symbol(struct state *state, Dwarf_Die *die)
->  	return !!state->sym;
->  }
->  
-> +/* DW_AT_decl_file -> struct srcfile */
-> +static struct cache srcfile_cache;
-> +
-> +static bool is_definition_private(Dwarf_Die *die)
-> +{
-> +	Dwarf_Word filenum;
-> +	Dwarf_Files *files;
-> +	Dwarf_Die cudie;
-> +	const char *s;
-> +	int res;
-> +
-> +	/*
-> +	 * Definitions in .c files cannot change the public ABI,
-> +	 * so consider them private.
-> +	 */
-> +	if (!get_udata_attr(die, DW_AT_decl_file, &filenum))
-> +		return false;
-> +
-> +	res = cache_get(&srcfile_cache, filenum);
-> +	if (res >= 0)
-> +		return !!res;
-> +
-> +	if (!dwarf_cu_die(die->cu, &cudie, NULL, NULL, NULL, NULL, NULL, NULL))
-> +		error("dwarf_cu_die failed: '%s'", dwarf_errmsg(-1));
-> +
-> +	if (dwarf_getsrcfiles(&cudie, &files, NULL))
-> +		error("dwarf_getsrcfiles failed: '%s'", dwarf_errmsg(-1));
-> +
-> +	s = dwarf_filesrc(files, filenum, NULL, NULL);
-> +	if (!s)
-> +		error("dwarf_filesrc failed: '%s'", dwarf_errmsg(-1));
-> +
-> +	s = strrchr(s, '.');
-> +	res = s && !strcmp(s, ".c");
-> +	cache_set(&srcfile_cache, filenum, res);
-> +
-> +	return !!res;
-> +}
-> +
-> +static bool is_declaration(Dwarf_Die *die)
-> +{
-> +	bool value;
-> +
-> +	if (get_flag_attr(die, DW_AT_declaration, &value) && value)
-> +		return true;
-> +
-> +	return is_definition_private(die);
-> +}
+If we want this kind of example, I guess we could perhaps interleave a
+push (so that we don't just test adding all and then removing all). Or
+we could just go even simpler and do something like `std`'s `pop`
+does:
 
-Nit: When I read the is_declaration() function in isolation, it is not
-clear to me what determining if a definition is private has to do with
-the type being a declaration. I think this and related logic in
-__process_structure_type() would be easier to follow if the return value
-of is_declaration() was negated and the function renamed, for example,
-to is_kabi_definition().
+    let mut vec =3D vec![1, 2, 3];
+    assert_eq!(vec.pop(), Some(3));
+    assert_eq!(vec, [1, 2]);
 
--- 
-Thanks,
-Petr
+(To be clear, more examples are good as long as they show/test
+something different, so if you have something that would be good to
+test, that is great to add!).
+
+> +        // SAFETY:
+> +        // - `ptr` is valid because there is at least one entry stored.
+
+For single-liners, you don't need a list (please see other `SAFETY` comment=
+s).
+
+You could also ideally mention why that statement is true, e.g. "...
+since the length was just checked above".
+
+Thanks!
+
+Cheers,
+Miguel
