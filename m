@@ -1,112 +1,154 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE68257D
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 08:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E73B257D;
+	Tue,  3 Dec 2024 08:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733215522; cv=none; b=i6fsfQcf2Q73E/cpQ5MKHPamQ41l9xdrWHC4dfyuZSJJhgUm6/dsyBNR7dC/6+7v6xPyLHw9iT645QrRIly4U6EzOpr19JVT44R/nMcQ+mKCllHKlVCAxOQ/LrEYoSH68zncLvk0CnxdAbZxZmgkPTkKHTorTfARQ6COgTsVKQw=
+	t=1733215703; cv=none; b=cln1UL7MgUBkir23zGpf17naAfXwe79p8/aAP+V2hCoBSiEzPvRc92JWwHOwUnvC8ux8MC8oOk9QnzWGHGjKDbQCD+Jo9ntSnSpM8HtpFlke5YvVoSF2HQPxLTGrLgZwKSuqqDgVI6YJExB6RThN4CkYLTSMIUyycUbwLj7arjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733215522; c=relaxed/simple;
-	bh=c8C1kWuh7VkBhdWKkriq2k0sxE9Lb0RWjs3iwzivT2k=;
+	s=arc-20240116; t=1733215703; c=relaxed/simple;
+	bh=WFKzI1fZ+E/odL6blUYCUeXJAWWClEFQFwA8lgkf2Uk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VtPjihgszqXkLsRtJzBFWWBalwnWYp3jroSELdBMwVwROt4Zt/M6XsMUL5+bQ6dq0Tnznn20GFR3RldVV7ESSjitKKpZAYfntyh3YUUC4vxGfxrFER+6R66xzI4eQRz/AAikrUYubbAHI0THIoczHydTs50XUBnOANz4xsOqKmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B7hFpk8C; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=HSWRjAmReFIgTHVWt9wP0Su3lGMwnhXAGGYoCYDLVaPylCMfrh+HOtkjgJCw/+f0wZMFmqEIsQo8ZR6TxZbM+gcqRnmwgcWEy8HBc+Yd5WFq+Sz5ePDfz21iCkZPTGZOpcIv0BqQBrAiB2FH68QcWIkCxAY3uIj4+U4eHTwle+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FfbPudO7; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B7hFpk8C"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e87b25f0so1517918f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Dec 2024 00:45:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FfbPudO7"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7fbbf456a63so311783a12.2;
+        Tue, 03 Dec 2024 00:48:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733215518; x=1733820318; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733215700; x=1733820500; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c8C1kWuh7VkBhdWKkriq2k0sxE9Lb0RWjs3iwzivT2k=;
-        b=B7hFpk8C4oNPj2bItM0IKj6m84V+i57ywPnhhwDvqZVN6WcGUkmcWkEDH1l3vFffCc
-         OQZ97HGseg29C7jyLHLyQ1X1BVSCO7J24f85Psh7QoiOjM5KexmSbwU5nW/s7+eWAQ4R
-         BHKypD7AJhfEnYT5xv7j3HR2ft1cacAPALcy3g8d0dbCPnnuJmExjt7GILJEIK8sD/g+
-         Kg0VCA6XeX1888aBFJv9cYGDs+i89en2w8lE2szWunrZTpBnx4GLgEU2OptAZrq1jFxI
-         1z7SmpjnNaaBMVJzkGyRm5zDWspdsaBVs0W+VYEJJUds0ipwM18wTf3I1AgJqZ+4y3OS
-         7zZA==
+        bh=AOSZZo6COvONJZX2dpnbD1MkQEuc1G+gxCG2m+LKD1g=;
+        b=FfbPudO72vNA3pi7ij21kbrPl099a2dw8UMqW4cwBU8ktjppkktCP5jQYfNXXN2Cqu
+         QXLbijiWFwl3aQiZMylw5o1NuHqooIVxrT4KArg8FXIkvzAR0T+CqoAnjBRt/72lS3oG
+         vHzm9W6WHxAQ6p/mnDCXBe3A3zzC226AF7KujNTeTSASgFhDFTRk7jljGs5+WLZUo6mi
+         AEnSHk/hucjX/SYaXyi+lGFtfdtQ0Btsm2MtEX+wfifTzVDvsWE6LkwjBNQEjzzRmumi
+         pxiUNnuL8xbAbVysJIqCR7n7p5FBYrSzPJ5o1sqVb+oTB8YXNL97BKcjykZHXorie0cD
+         usxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733215518; x=1733820318;
+        d=1e100.net; s=20230601; t=1733215700; x=1733820500;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=c8C1kWuh7VkBhdWKkriq2k0sxE9Lb0RWjs3iwzivT2k=;
-        b=b6ZWExzH44yqcKK/gZNbOXf3OAT+RuRQr/y51LCof3iGg6f4D/NQBgH6wUYMiQWn9E
-         FcNeA9AC0tf1HuzDvONnOGL/5f2JCBD2tvvQc+NeWcaKx5/6AwQ7Gfyf9gPKJ5rttk6m
-         Xl2AIdOPYoH5fcrLIoZwHSKm/B8mjFjlYHbin4sfSg/tL2OPqHuEZOhjNnug5WTgJaF9
-         3wDj1F9zM2Wsmqc+YNdmdzHMG86OJ6tBIgwpfLHdnpHdwZZLtvRQZoCJoXs2gu0CmCpK
-         ZWA3KLwj894GeaMKE28PzicMc706cUj5mV5qLNu5YcTZoSvTgmWxwuKFzDw6nYmZnW1h
-         rOBA==
-X-Gm-Message-State: AOJu0Yz8mY9XaGeZGpHHf6bzHU/nvSym9kXy+bl/dsLPxvmBunv6Q72J
-	r92lR8jzr+U3VbFTTjzdYKJEuKLud0sGe7ROkflMosj1SXxO/jYH0nMcaMZkFGeeDNyVBQSTdbM
-	6w2R+R2XNThkpwwvvkQ6z0EnVxYk8H/L2jkd0
-X-Gm-Gg: ASbGnctkPntlxbE7jdGvLbzaR1DLnvc+pDeos6cz+vVM5KGDOuez5B8ykowo9+Ui1k2
-	TkA2dNse3gE1bl2d59mUwYENh/OAgxQNLstGDUlumWTA/bWLaZCgTPLLc3YT7eQ==
-X-Google-Smtp-Source: AGHT+IF6yStXBLD3p19LEE2ZQjni98XkTH/QBEkCeadPljOkee8Y9siVjogxGpd9BRZznQbSTuRdRTzA/fguIZD3SOU=
-X-Received: by 2002:a05:6000:1847:b0:385:fb40:e571 with SMTP id
- ffacd0b85a97d-385fd969a13mr1157850f8f.6.1733215517878; Tue, 03 Dec 2024
- 00:45:17 -0800 (PST)
+        bh=AOSZZo6COvONJZX2dpnbD1MkQEuc1G+gxCG2m+LKD1g=;
+        b=oze42X6mE/uEPbqaA7NEulFU+bSOC4nvkxVRrBLQDIHhVaMsnRueZdHyUFeYSagdqs
+         o+/xMjZAFnc5PNsiNT8ll0oH7XX64ZTHyBK9/+mbFmWlafuLl1gKdPZPIoJk9mB01Igu
+         m0UGk/lsM7C3gKu5igfB3lRH3/itK99ebrOr/gbsxosas1jsB97ULOATzfVBkkHkDiAd
+         +nw7eDjh+l0XDfMmgYjtOiOR3sky6qkEYgbyJC0ptxWFawTAjlhdUGIdDdahNeNRVDrc
+         cO6VLX2NJ8aTtH7DP3+icYmVRGqh2OGGyVegFduPLA58KDt9NSaddnLRhV/WvxBpWMf3
+         z/wA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPim6CBgzgqybpYnzgJUibg5+jJrqdvQCsqVy8KUy9vejhofgAup4eb2wyd7XO3UinurmdqpLyGzwSi6k=@vger.kernel.org, AJvYcCXjR/KmFTYrqS5UrS0w8KDCvFkX+oVC1lL32ZfIo5ObO7YC0/0zz6HxokVHuWFs6mwNHwxGEpz8tvrQUwu8lHI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMNJ/w1knKOubCA4fnQ1UspTDD5RBLxqJgUnX1+C/l8fcGRp2u
+	z/5nHZOUOp3gTzy6C5TtB1c0pjT7G7b/DMqzOeUMmNLmvFpNtd92OvvReFiGXkp5yI8BkOjnMKg
+	9N89OoWRafUSVgU52FKVjY1+TxwKXJxCUEaY=
+X-Gm-Gg: ASbGnctzIsXh2PpVQ8J8BATw4Pzg3oZBo/16MGJ77c0V59BNeb7b2w6xsY8aOSUmt1p
+	fxSyUxZyu2hUvkBESc5Ftlr1vMAFPXNI=
+X-Google-Smtp-Source: AGHT+IGRdfSSIMxoMmoGcKQ0NDHpV8V+exuQ9YeI+S9wU3oIO/GKPXTP9f4hq+wXOlXUu3x6bprZaQnsqqX6G8k23vI=
+X-Received: by 2002:a17:90b:4a8d:b0:2ea:853a:99e0 with SMTP id
+ 98e67ed59e1d1-2ef0124c9acmr967675a91.5.1733215700158; Tue, 03 Dec 2024
+ 00:48:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241202100948.2416372-1-dingxiangfei2009@gmail.com>
-In-Reply-To: <20241202100948.2416372-1-dingxiangfei2009@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 3 Dec 2024 09:45:05 +0100
-Message-ID: <CAH5fLggS+3K8WHV7mrgTJQhGZMNni5gj9=huQtezc4GK8bk4HA@mail.gmail.com>
-Subject: Re: [PATCH] rust: use derive(CoercePointee) on rustc >= 1.83.0
-To: Xiangfei Ding <dingxiangfei2009@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
-	dingxiangfei2009@protonmail.ch
+References: <20241203051843.291729-1-jtostler1@gmail.com>
+In-Reply-To: <20241203051843.291729-1-jtostler1@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 3 Dec 2024 09:48:07 +0100
+Message-ID: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
+To: jtostler1@gmail.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 2, 2024 at 11:10=E2=80=AFAM Xiangfei Ding
-<dingxiangfei2009@gmail.com> wrote:
+On Tue, Dec 3, 2024 at 6:19=E2=80=AFAM <jtostler1@gmail.com> wrote:
 >
-> The kernel crate relies on both *coerce_unsized*
-> and *dispatch_from_dyn* unstable features.
-> Alice Ryhl has proposed [1] the introduction of
-> the unstable macro `SmartPointer` to reduce such
-> dependence, along with a RFC patch [2].
-> Since Rust 1.81.0 this macro, later renamed to
-> `CoercePointee` at Rust 1.83.0, has been fully
-> implemented with the naming discussion resolved.
+> From: Jimmy Ostler <jtostler1@gmail.com>
 >
-> This feature is now on track to stabilization
-> in the language. In order to do so, we shall start
-> using this macro in the kernel crate to prove the
-> functionality and utility of the macro as
-> the justification of its stabilization.
-
-Commit messages are normally wrapped at 72 chars, but this seems to
-wrap at 50 chars.
-
-> This patch makes this switch in such a way that
-> the crate remains backward compatible with older
-> Rust compiler versions, via the flag
-> *RUST_COERCE_POINTEE*.
+> Added a rustdoc example and Kunit test to the `ArrayLayout` struct's
+> `ArrayLayout::new()` function.
 >
-> A minimal demostration code is added to
-> the *samples/rust/rust_print_main.rs* module.
+> Kunit tests ran using `./tools/testing/kunit/kunit.py run \
+> --make_options LLVM=3D1 \
+> --kconfig_add CONFIG_RUST=3Dy` passed.
 >
-> Link: https://rust-lang.github.io/rfcs/3621-derive-smart-pointer.html [1]
-> Link: https://lore.kernel.org/all/20240823-derive-smart-pointer-v1-1-5376=
-9cd37239@google.com/ [2]
-> Signed-off-by: Xiangfei Ding <dingxiangfei2009@gmail.com>
+> Generated documentation looked as expected.
+>
+> Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1131
 
-Overall looks good.
+Thanks for the patch!
 
-There's a mention of derive(SmartPointer) in the file
-rust/kernel/alloc.rs. It should probably be updated to say
-derive(CoercePointee) instead.
+A few procedural nits: please Cc the maintainers/reviewers, especially
+the main one (Danilo) -- for that, please see
+`scripts/get_maintainer.pl` as well as e.g.
+https://rust-for-linux.com/contributing#submitting-patches for one way
+to generate the arguments.
 
-Alice
+The "Signed-off-by" tag normally would be the last one -- that way
+people see that you added the other two rather than the next person in
+the chain. It is good to mention the tests etc. that you have done,
+although normally for a patch like this it would normally not be
+mentioned (since all patches that add an example need to be tested
+anyway).
+
+Finally, a nit on the commit message: normally they are written in the
+imperative mood.
+
+By the way, the "From:" tag on the top would not need to be there if
+your "From:" in the email headers is configured properly.
+
+>  /// Error when constructing an [`ArrayLayout`].
+> +#[derive(Debug)]
+>  pub struct LayoutError;
+
+Ideally you would mention this change in the commit message too -- it
+is the only non-comment/doc change, after all :) It is also important
+because, in general, so far, we have not been using `expect`.
+
+> +    ///
+> +    ///
+
+Please use a single line.
+
+> +    /// ```rust
+
+You can remove "rust" since it is the default.
+
+> +    /// use kernel::alloc::layout::ArrayLayout;
+
+This line could be hidden -- it is `Self`, after all, so it is not
+adding much for the reader. We are not fully consistent on this yet
+though.
+
+> +    /// let layout =3D ArrayLayout::<i32>::new(15);
+> +    /// assert_eq!(layout.expect("len * size_of::<i32>() does not overfl=
+ow").len(), 15);
+
+See above on `expect`.
+
+Moreover, since it is a test, it is fine to panic, but recently we
+were discussing that examples should ideally show how "real code"
+would be written, thus using `?` etc. instead.
+
+> +    /// let layout =3D ArrayLayout::<i32>::new(isize::MAX as usize);
+
+Perhaps we could consider an example with an smaller argument that
+still overflows, to drive home the multiplication involved. It could
+perhaps be a third one.
+
+Thanks!
+
+Cheers,
+Miguel
