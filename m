@@ -1,57 +1,57 @@
 Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937F71DE8A5;
-	Tue,  3 Dec 2024 15:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768E71F7561;
+	Tue,  3 Dec 2024 16:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241496; cv=none; b=Re1u2NuaGXhYYGZX1kZc9NrWBNvREQ4SxZMHOCTvEICcJDgc+l9GnwDQs7K5apUM2WvQqhtlZm6aqcLJklvmNAy7CXg/ZjiqcuaIsyH+fBRzzwm9/7ABfjF58o+FuhS4qfJAqHYaWa+y/Psi0ZFlR2T6udgRZK/Ms/oNmiY3RgM=
+	t=1733241714; cv=none; b=LIpLKVRIac7J6cMvnHAwJHTGZMmMkle7s0b5C3CDi8iggg5SYt1bHBIBf0l2h3kEJwN/qTJVIdsnMrtHHMolNgjOnXCxCIHh764wUqx+YyREqjZF9cl98v/U/bHlIfK5SOvkhrT+msW2JfKMduafTdAv4hYFVmef+G0cOB4e258=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241496; c=relaxed/simple;
-	bh=UQAYXZTlJVJ80kpIYpUioM7FGTeGoM4MDlESW3IkEWs=;
+	s=arc-20240116; t=1733241714; c=relaxed/simple;
+	bh=HElT2R9P9ig84rKSVqEPmPesnPqPUxhHyF6xTeixoHs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jLf5lqxzWPzshziItS7cFnZpg+dGIcEhCSz77elGYFuNK+isGYfen9HjWWhDCWOj1qIGQ3pzhz89SxS7gGdsy1idfXfhx6dVlVB82gV58X5mHpt5SsSOYjkfI55OYeHUg5/EQzf0ggGLgjVTNXhjR8FD/BwOe5Id645xOIkMbpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WMQP/HPy; arc=none smtp.client-ip=209.85.208.177
+	 To:Cc:Content-Type; b=chLkYBmaPkQUgM50CuZtJAa/3lu95X0RKdUt2E4BvypcHN3MbS3ZCwNw72tqwKOm5hCmWp/etz2b4ZJXcSdTd9IwBzT7VguDwBd4VgdEPIfnXQW8kueMJleFmhpaTQ79SWe019fQRHCzBDF0bi/uent72fcYYLQ1fsL/pchN71g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AQqzOTRF; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WMQP/HPy"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffbfee94d7so47507361fa.3;
-        Tue, 03 Dec 2024 07:58:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AQqzOTRF"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3001490ba93so4100521fa.0;
+        Tue, 03 Dec 2024 08:01:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733241493; x=1733846293; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733241711; x=1733846511; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XByooqmAZSqUAgwg6BsfAtN4ejjPSt/22HI9qzsaKzk=;
-        b=WMQP/HPyplY5UBR3MCVMXGynlSsqRqVTSe0r8nnNcy5pbKMbVREoCGzFbNZS3sf/D8
-         BiXt5SY9WTiVFyWGscH+4oXrJsHu+1vwYPNry9ii0dxDxiUHQJPkuuo+EB82PvLPAnqs
-         095fs9ezJfYiNnnrNsXarcWKaW7YENR1LAzc3vT71PuKjWHzcIqPpkcM2I7TdfwngTP/
-         NNP/NAhphgnFcKyjRKoeYwatVvLXPrHTVhRjqBmO5tcb2t8ZiIpxH2GuVd/3PCt1aNtn
-         QZO1rWGdKtfGsk+HUdrlp3rA+DZNTQStYR6/b0pJ46G867WPsiLSKsEJjP96NbKnaqf3
-         qe/Q==
+        bh=HElT2R9P9ig84rKSVqEPmPesnPqPUxhHyF6xTeixoHs=;
+        b=AQqzOTRF482TEXwtG3zKSAL1tPYuV3SfhURUqFGIN/OtfcPSSYqwYQ9l+QGIrGWxqt
+         cYWBjKi3ebIc1Yxg/Og9hLy3uf5UV3I3CIY1xOE6lSugLsga60kh+4Gge6MLwq4oZxjz
+         U8iedNDXHlmxHh6TvzxfZ8N7XDSEC+DuAtgXE5HJWOvrx8nN6cGwVQzRIk1M8eyhaErg
+         WFAGSimfTb/c3/Pnvdxhbx9eY3acvloVYjAgNSigZZi+TAYUEGhPlMjymnnd+X9C/dbo
+         VOLksKQeA2E6Zd0BWqCd1KckRkVWEyY0CAJb7PK7c5dhn4UrWr3tsE6FmiimD/unaBel
+         ycsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733241493; x=1733846293;
+        d=1e100.net; s=20230601; t=1733241711; x=1733846511;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XByooqmAZSqUAgwg6BsfAtN4ejjPSt/22HI9qzsaKzk=;
-        b=M5orqobEP8qojQlpoQ21vTd4uRnmN2LHiD/Vx4LXqv+83E4xio5mQfHRp4UlABgbmv
-         pY9QssOTRg65GX+Z2etNJQNttZwPXy/psvKrIdjLOSwZOvl/p+QURO55feCN0ajttghm
-         GbXgYy3jq0CLpceRQkwoTMHUhPTON19VqtKSqIN7AkEarOrRZcdDOMltHfekuZEL9a+d
-         UTXRtWNKlU/DdyKvzQcmQQ3V9N4YoOXcHo2n/4eLQCRZsl+ollen6COtTzmMCGoJSRqA
-         alnwo/4byTcIV0Uj1a2WPzjwRGE+sesLLULS9HDj06oAnO4OGV3Xrh330Vd/KdLrXCTp
-         EoKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUzoQnXlA6s1A0N94DXjtdNTpQFA5yDg5btIcOqdEEcF92+3E5TBH+s1QKvqOzD8qtnzR7pJxf6uWpPhE4DkD0=@vger.kernel.org, AJvYcCWmkNfKFf3mMRD03NejGd8WCrEsw4pZg6woI+QnoC6qEmVxQwV7uwMGXjRHEf06IPZ5qnY98asLfsR3Poo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7KuZ+G9nIANrFleiK3ZMH6Vf9MzKt7cych40w1dh997CyzZkZ
-	V79zuKFsaQW6xGQQkop0LGDuF6VU/u//XtIuLFOilCpGfMgYW+oqryVjCceBqDc0zFKR2MxRbAZ
-	ecVTDxKYKb+I58kV6ZxxUcfCEMiQ=
-X-Gm-Gg: ASbGncu6H+G0Jxhl5T39wSKNsxecQwR80gvsA8ttJWhe5ipLQNzg9oqe4VmnyUS/TMi
-	MOfK7yheKVh9xjd4JWqER22hEZGGd/LyIHc5BOsfqjjBsER8=
-X-Google-Smtp-Source: AGHT+IFd2mEOSqhbzbELOwLdOQlAPoc9LwQ8qAEjIE/p75NdBNNzR2juEoM9IRpGpA53+iN4zjbkuQ+i7wO1uHGCQTw=
-X-Received: by 2002:a05:651c:210c:b0:2ff:7a4f:e770 with SMTP id
- 38308e7fff4ca-30014eaa13cmr2973921fa.31.1733241492469; Tue, 03 Dec 2024
- 07:58:12 -0800 (PST)
+        bh=HElT2R9P9ig84rKSVqEPmPesnPqPUxhHyF6xTeixoHs=;
+        b=r+BZGgkf89FfEZ7gKOWVNFBT4bpfsLRlNKf8Dsnclp/dw6AytW4AmjOhqlnQRFVu6M
+         KwN+uA434ySj3cqcIq6NvVmM/w14hn+dQAQIi8McE2XyUFs94AC8pkKADYb4ESN469B6
+         hYjiKggQ7Y++/xbPUqa8jsTCV0xbBB2446+CfjekgoZ78awAjSO8jBnPR1I+BOdm2CAs
+         tu5oSQxFZncWE2IgzHw0cWCD0Taw1Kx/4C1K5D1Tpt1Np8p2Bj5EJmcIYKBINbzrOn0L
+         fGi3lruf+lwCfqTSKAKG79fiFTI3gL+/TzptHZTG+71dt28GPPBZ6NAzAcBMxRmc6tjB
+         zZ6A==
+X-Forwarded-Encrypted: i=1; AJvYcCU7rmx060p2hctmuw6KU/NWDLRh/oQu+2wZ16p1BYpnZkdjt/AvnKfV7JclbWZQDdl07VOa6oN45Q6MO64=@vger.kernel.org, AJvYcCUioEqQjEpalsCXvZOiaFJ20U9mgCNeOQ0bzxmlPlCoGq4B4vhD6Ba1319kXUlbqmdN1dKQVJr7juIKNO76uR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjvOZ+AVSwJXe5xfCIderKIK9UIZAbqRzPnDq2DykjRSCc+A1c
+	QYqC2GT83PsJsopCmqMK7CNGFvwGXwThZOGG0ejeF8dP/RpCrjp157M05uQPEED0bm+T18UGr9/
+	TXODEXI5qN7fcmL7up+n8v5B/MyQ=
+X-Gm-Gg: ASbGncvX6Tpx7jPyfJtoR4LOKHiW5bg8N49abRPdcPCXnTZadfqK0Ie5ZrEzN+xfzOh
+	L1k8J4Q1GalaAXaaBT0kc8aEMF9/WncDu/fTgpPX2bZFkGAE=
+X-Google-Smtp-Source: AGHT+IGZfuPFNffxbLr0xy9VP/0yB1MDOKC+PdAQaAXMR4/7SWNPzO+I8xLTJRMP06lQFnCuMgClits/4WkjTZviTb8=
+X-Received: by 2002:a2e:be8d:0:b0:2ff:cc65:68aa with SMTP id
+ 38308e7fff4ca-30009d07fc6mr20356311fa.31.1733241710177; Tue, 03 Dec 2024
+ 08:01:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,16 +61,17 @@ MIME-Version: 1.0
 References: <20241120-rust-xarray-bindings-v10-0-a25b2b0bf582@gmail.com>
  <20241120-rust-xarray-bindings-v10-2-a25b2b0bf582@gmail.com>
  <CAH5fLgipntMtu7_pdZDZGerGRO499yxDdz2dP=2Bb5FobcykYg@mail.gmail.com>
- <CAJ-ks9kwGi+hhsNUC=Ti3CL8iJ4mEN2vSkoFUnz67Usu+-_P6Q@mail.gmail.com> <CAH5fLgiLPkVwgGiTFYbPTnz1EF8wAjopbBpmK6LpkmVRF+kVZw@mail.gmail.com>
-In-Reply-To: <CAH5fLgiLPkVwgGiTFYbPTnz1EF8wAjopbBpmK6LpkmVRF+kVZw@mail.gmail.com>
+ <CAJ-ks9kwGi+hhsNUC=Ti3CL8iJ4mEN2vSkoFUnz67Usu+-_P6Q@mail.gmail.com> <CANiq72=8kyfRomVijZO-5tW-Ckuf5KshCTYnHt96CSi6PbDkqA@mail.gmail.com>
+In-Reply-To: <CANiq72=8kyfRomVijZO-5tW-Ckuf5KshCTYnHt96CSi6PbDkqA@mail.gmail.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 3 Dec 2024 10:57:36 -0500
-Message-ID: <CAJ-ks9=gJ7O63Hv0VYiB=LV+CjA1iTQGs4-xzkaHWayryw-p6Q@mail.gmail.com>
+Date: Tue, 3 Dec 2024 11:01:13 -0500
+Message-ID: <CAJ-ks9kxkd5bgbDuSwEru7RAmxp5D4HXrJNe-m=2EFm+_Ep9Ag@mail.gmail.com>
 Subject: Re: [PATCH v10 2/2] rust: xarray: Add an abstraction for XArray
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
 	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
@@ -78,112 +79,28 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 3, 2024 at 10:12=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Tue, Dec 3, 2024 at 10:22=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
 > On Tue, Dec 3, 2024 at 4:00=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
 > wrote:
 > >
-> > On Tue, Dec 3, 2024 at 7:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> > >
-> > > On Wed, Nov 20, 2024 at 12:48=E2=80=AFPM Tamir Duberstein <tamird@gma=
-il.com> wrote:
-> > > > +use crate::{
-> > > > +    alloc, bindings, build_assert, build_error,
-> > > > +    error::{Error, Result},
-> > > > +    init::PinInit,
-> > > > +    pin_init,
-> > > > +    types::{ForeignOwnable, NotThreadSafe, Opaque},
-> > > > +};
-> > > > +use core::{iter, marker::PhantomData, mem};
-> > > > +use macros::{pin_data, pinned_drop};
-> > >
-> > > I think these are in crate::prelude.
-> >
 > > I prefer to be explicit, unless there's guidance on this somewhere?
 >
-> I don't think I've ever seen anyone do a direct import from macros.
-
-This exact stanza is also in `rust/kernel/block/mq/tag_set.rs`.
-
-> > > > +    fn iter(&self) -> impl Iterator<Item =3D core::ptr::NonNull<T:=
-:PointedTo>> + '_ {
-> > > > +        // TODO: Remove when https://lore.kernel.org/all/202409132=
-13041.395655-5-gary@garyguo.net/ is applied.
-> > > > +        const MIN: core::ffi::c_ulong =3D core::ffi::c_ulong::MIN;
-> > > > +        const MAX: core::ffi::c_ulong =3D core::ffi::c_ulong::MAX;
-> > >
-> > > Isn't MIN just zero?
-> >
-> > I liked the symmetry, but I could change it if you feel strongly.
+> I like explicitness in general, but do you think there is an advantage
+> for things in the prelude?
 >
-> I commented because I thought it was confusing; I spent some time
-> figuring out whether the integer was signed.
+> I am asking because I am considering adding more things there, e.g. I
+> have a series to be sent to add the `ffi::c_*` types -- having things
+> like those in the prelude reduces the noise in imports that everyone
+> knows about (and that nobody should be tempted to alias anyway), makes
+> things more consistent (because then every use is unqualified vs. the
+> mix we have now) and generally the code looks easier to read to focus
+> on the other things that may be less common.
 
-Alright, will replace with 0.
-
-> > > > +    /// Erases an entry from the array.
-> > > > +    ///
-> > > > +    /// Returns the entry which was previously at the given index.
-> > > > +    pub fn remove(&mut self, index: usize) -> Option<T> {
-> > > > +        // SAFETY: `self.xa.xa` is always valid by the type invari=
-ant.
-> > > > +        //
-> > > > +        // SAFETY: The caller holds the lock.
-> > > > +        let ptr =3D unsafe { bindings::__xa_erase(self.xa.xa.get()=
-, to_index(index)) }.cast();
-> > >
-> > > Two safety comments?
-> >
-> > There are two properties that must be upheld. How would you like to
-> > see it formatted?
->
-> Usually multiple preconditions are listed using a bulleted list:
->
-> // SAFETY:
-> // - `self.xa.xa` is always valid by the type invariant.
-> // - The caller holds the lock.
-
-Thanks for the suggestion, done.
-
-> > > > +        // SAFETY: `ptr` is either NULL or came from `T::into_fore=
-ign`.
-> > > > +        unsafe { T::try_from_foreign(ptr) }
-> > > > +    }
-> > > > +
-> > > > +    /// Stores an entry in the array.
-> > > > +    ///
-> > > > +    /// On success, returns the entry which was previously at the =
-given index.
-> > > > +    ///
-> > > > +    /// On failure, returns the entry which was attempted to be st=
-ored.
-> > >
-> > > I'd like to see documentation about the gfp flags. This may unlock th=
-e
-> > > spinlock temporarily if GFP_KERNEL is used.
-> >
-> > Will add the language from the C documentation: "May drop the lock if
-> > needed to allocate memory, and then reacquire it afterwards."
->
-> SGTM.
->
-> > > > +        // SAFETY: `__xa_store` returns the old entry at this inde=
-x on success or `xa_err` if an
-> > > > +        // error happened.
-> > > > +        match unsafe { bindings::xa_err(old) } {
-> > > > +            0 =3D> {
-> > > > +                let old =3D old.cast();
-> > > > +                // SAFETY: `ptr` is either NULL or came from `T::i=
-nto_foreign`.
-> > > > +                Ok(unsafe { T::try_from_foreign(old) })
-> > >
-> > > It can't be XA_ZERO_ENTRY?
-> >
-> > No it can't. XA_ZERO_ENTRY is never returned from the "normal" API.
-> > XA_ZERO_ENTRY presents as NULL.
->
-> It's probably worth mentioning in the safety comment.
-
-Will do.
+I agree with these goals, but I personally disprefer the prelude
+approach. Probably the most common misuse involves traits in the
+prelude, where importing them can change function call resolution.
+It's very likely that this isn't a problem with the prelude currently,
+but it also doesn't seem to be used consistently everywhere. I don't
+feel very strongly, so if there's a mandate to use it then I'll do so.
