@@ -1,139 +1,112 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F5F1D8A04
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 08:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE68257D
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 08:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733215251; cv=none; b=dR7pDI+cGPmrtpp9mbpXNouxaMfKYE4OtI9DUfkhS8E7UiV2f4cl0toyqNupnbwUGAm/HWZSJaL69Tciezk375i8LvO4tSxE16eJUNAtcrB4orURbNwl9eWZ4z1YVOnXdiqulC+IuLtjJItTk1GDyXt7eNL/XBuzJQ7a7zLcn0I=
+	t=1733215522; cv=none; b=i6fsfQcf2Q73E/cpQ5MKHPamQ41l9xdrWHC4dfyuZSJJhgUm6/dsyBNR7dC/6+7v6xPyLHw9iT645QrRIly4U6EzOpr19JVT44R/nMcQ+mKCllHKlVCAxOQ/LrEYoSH68zncLvk0CnxdAbZxZmgkPTkKHTorTfARQ6COgTsVKQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733215251; c=relaxed/simple;
-	bh=EGkp6ALnrmCcMB4REr8wGZyegO218LZ7b9jNkxkpFoQ=;
+	s=arc-20240116; t=1733215522; c=relaxed/simple;
+	bh=c8C1kWuh7VkBhdWKkriq2k0sxE9Lb0RWjs3iwzivT2k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YSNXpPF4MX6qON5ZQPlmQ1qgXTqsXgLyeqM1feIOavGcRmd3CmyHfnHIIql/67O2rdOmM1yaOb+Mu/htC4ey9lGhNPRRf+6Jx3tzx+kvbWFxhqcZgDuE99tzw+Pg3YHXHnnAODVx59VnI6MoJGM53VX4WmhzlBdn7Ti3V/JKMRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4kG+FsS6; arc=none smtp.client-ip=209.85.221.42
+	 To:Cc:Content-Type; b=VtPjihgszqXkLsRtJzBFWWBalwnWYp3jroSELdBMwVwROt4Zt/M6XsMUL5+bQ6dq0Tnznn20GFR3RldVV7ESSjitKKpZAYfntyh3YUUC4vxGfxrFER+6R66xzI4eQRz/AAikrUYubbAHI0THIoczHydTs50XUBnOANz4xsOqKmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B7hFpk8C; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4kG+FsS6"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-385deda28b3so2391520f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Dec 2024 00:40:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B7hFpk8C"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e87b25f0so1517918f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Dec 2024 00:45:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733215248; x=1733820048; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733215518; x=1733820318; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZXvaSXZSQp98JtpvzelnfpGLU19H6GUhEhWGOsSmGaI=;
-        b=4kG+FsS6OfUulCqtqEMmZ4n1tL1vlu/VCEC5y+Oul16bq+78SarfFRxL7lO5RZ9dk/
-         b0bFJQGQPx0GquOWSMOXIRSwghKVg5HgCkEXTdQpZbKdGDHWA2uZcmTwPKb7nEeCNhbl
-         jAf39Y3JNHzRn57cMLk92xB1EMVpNfgbyLtpahiQ7pRJnbRLG904hhT2qws9kAxot8GW
-         2k5pl0V+tmzbe/+zaNMS/M+h65xe6sK6pEsj2cePcNRRywX+67YqqdX/wXrGjZkDHATn
-         cnuHENwe11+QtLn3ga/4702++tbmA3kdgJDsm+DIXZapf8AEsVJsiMDLJDpYm6GteQfW
-         kfew==
+        bh=c8C1kWuh7VkBhdWKkriq2k0sxE9Lb0RWjs3iwzivT2k=;
+        b=B7hFpk8C4oNPj2bItM0IKj6m84V+i57ywPnhhwDvqZVN6WcGUkmcWkEDH1l3vFffCc
+         OQZ97HGseg29C7jyLHLyQ1X1BVSCO7J24f85Psh7QoiOjM5KexmSbwU5nW/s7+eWAQ4R
+         BHKypD7AJhfEnYT5xv7j3HR2ft1cacAPALcy3g8d0dbCPnnuJmExjt7GILJEIK8sD/g+
+         Kg0VCA6XeX1888aBFJv9cYGDs+i89en2w8lE2szWunrZTpBnx4GLgEU2OptAZrq1jFxI
+         1z7SmpjnNaaBMVJzkGyRm5zDWspdsaBVs0W+VYEJJUds0ipwM18wTf3I1AgJqZ+4y3OS
+         7zZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733215248; x=1733820048;
+        d=1e100.net; s=20230601; t=1733215518; x=1733820318;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZXvaSXZSQp98JtpvzelnfpGLU19H6GUhEhWGOsSmGaI=;
-        b=WHfjOduS1Wgs2eHDjes1a1NCZyqaGCNwKVX/QabudwID93S8Zvm66CbxoM+qLBP6cm
-         ZbT1DiQ7mcHnhVT93pTnjmsl9Qi+2Ata1E52KVSMLAyYhKthWs04LaHrMkt31NAKgnMN
-         0jFJ6gBKVSbONXwzdx/LBVi0nz/Jyx7176xYBxP6HI3/RRL26UEtbyDiogsMwafSF8Qe
-         e9MgEZlyXzEMc5I7zr47yas97ifjJlFwnD7oadFZr2BjdxnzBB2oIhiY5iQTTIycntSr
-         C9ZmQgacaKn3EITqrJnGNzTURygiHjQ1w74Z/uKN2ovTR21wMCQkiUxEqfVmez0yOhxh
-         vbCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLY59AvRZ7RHgUScBrl6Dk6ZRgwFkpowciIIdjf4T8Bmt98F9qNtCOa/uylNBANtmMmwmcn8BzGnNkK+K6gA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI5cjg4T9YhOSIZM3dOHeV63CCUrr9suSgadfvAora6FR74r39
-	+e4oqFCQx0mYiLo1obikEJQhToxpLDPZ7rYYaJRnliooHiw/CqicJSC0pW6VyfFzH/2uYv1sPch
-	Him4Isc8aNqeYiI/5T/aAXL8Fi8pEW2i1M6P0
-X-Gm-Gg: ASbGncsxIX72tRGI+B+zv+ySCbMlpXX/t0RG8siHN5nGSoRUD20cwUhlSKxg1mjKepf
-	D6n/eXaNzqffOVz5GKUHz9GSUAScxHzlXdPdFV3FmBSRo6ojGee8n7dCIkpxa1Q==
-X-Google-Smtp-Source: AGHT+IHMA7f/VR0jv8Ssx7B2GXePwfB3zHTSeldlWunfhIHgIr2+CLb2zNQSn6Or/z/2Iqsl7lprPWRlzJu+87m5EJM=
-X-Received: by 2002:a05:6000:798:b0:385:f44a:a68 with SMTP id
- ffacd0b85a97d-385fd3f29ccmr1628859f8f.35.1733215248064; Tue, 03 Dec 2024
- 00:40:48 -0800 (PST)
+        bh=c8C1kWuh7VkBhdWKkriq2k0sxE9Lb0RWjs3iwzivT2k=;
+        b=b6ZWExzH44yqcKK/gZNbOXf3OAT+RuRQr/y51LCof3iGg6f4D/NQBgH6wUYMiQWn9E
+         FcNeA9AC0tf1HuzDvONnOGL/5f2JCBD2tvvQc+NeWcaKx5/6AwQ7Gfyf9gPKJ5rttk6m
+         Xl2AIdOPYoH5fcrLIoZwHSKm/B8mjFjlYHbin4sfSg/tL2OPqHuEZOhjNnug5WTgJaF9
+         3wDj1F9zM2Wsmqc+YNdmdzHMG86OJ6tBIgwpfLHdnpHdwZZLtvRQZoCJoXs2gu0CmCpK
+         ZWA3KLwj894GeaMKE28PzicMc706cUj5mV5qLNu5YcTZoSvTgmWxwuKFzDw6nYmZnW1h
+         rOBA==
+X-Gm-Message-State: AOJu0Yz8mY9XaGeZGpHHf6bzHU/nvSym9kXy+bl/dsLPxvmBunv6Q72J
+	r92lR8jzr+U3VbFTTjzdYKJEuKLud0sGe7ROkflMosj1SXxO/jYH0nMcaMZkFGeeDNyVBQSTdbM
+	6w2R+R2XNThkpwwvvkQ6z0EnVxYk8H/L2jkd0
+X-Gm-Gg: ASbGnctkPntlxbE7jdGvLbzaR1DLnvc+pDeos6cz+vVM5KGDOuez5B8ykowo9+Ui1k2
+	TkA2dNse3gE1bl2d59mUwYENh/OAgxQNLstGDUlumWTA/bWLaZCgTPLLc3YT7eQ==
+X-Google-Smtp-Source: AGHT+IF6yStXBLD3p19LEE2ZQjni98XkTH/QBEkCeadPljOkee8Y9siVjogxGpd9BRZznQbSTuRdRTzA/fguIZD3SOU=
+X-Received: by 2002:a05:6000:1847:b0:385:fb40:e571 with SMTP id
+ ffacd0b85a97d-385fd969a13mr1157850f8f.6.1733215517878; Tue, 03 Dec 2024
+ 00:45:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203051843.291729-1-jtostler1@gmail.com>
-In-Reply-To: <20241203051843.291729-1-jtostler1@gmail.com>
+References: <20241202100948.2416372-1-dingxiangfei2009@gmail.com>
+In-Reply-To: <20241202100948.2416372-1-dingxiangfei2009@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 3 Dec 2024 09:40:35 +0100
-Message-ID: <CAH5fLgg8PW0P2OKC14Tm_0DTVff9ew+MKajMq4Urecz51Zvc7A@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
-To: jtostler1@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 3 Dec 2024 09:45:05 +0100
+Message-ID: <CAH5fLggS+3K8WHV7mrgTJQhGZMNni5gj9=huQtezc4GK8bk4HA@mail.gmail.com>
+Subject: Re: [PATCH] rust: use derive(CoercePointee) on rustc >= 1.83.0
+To: Xiangfei Ding <dingxiangfei2009@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	dingxiangfei2009@protonmail.ch
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 3, 2024 at 6:19=E2=80=AFAM <jtostler1@gmail.com> wrote:
+On Mon, Dec 2, 2024 at 11:10=E2=80=AFAM Xiangfei Ding
+<dingxiangfei2009@gmail.com> wrote:
 >
-> From: Jimmy Ostler <jtostler1@gmail.com>
+> The kernel crate relies on both *coerce_unsized*
+> and *dispatch_from_dyn* unstable features.
+> Alice Ryhl has proposed [1] the introduction of
+> the unstable macro `SmartPointer` to reduce such
+> dependence, along with a RFC patch [2].
+> Since Rust 1.81.0 this macro, later renamed to
+> `CoercePointee` at Rust 1.83.0, has been fully
+> implemented with the naming discussion resolved.
 >
-> Added a rustdoc example and Kunit test to the `ArrayLayout` struct's
-> `ArrayLayout::new()` function.
->
-> Kunit tests ran using `./tools/testing/kunit/kunit.py run \
-> --make_options LLVM=3D1 \
-> --kconfig_add CONFIG_RUST=3Dy` passed.
->
-> Generated documentation looked as expected.
->
-> Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1131
-> ---
->  rust/kernel/alloc/layout.rs | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
-> index 4b3cd7fdc816..4265f92f8af0 100644
-> --- a/rust/kernel/alloc/layout.rs
-> +++ b/rust/kernel/alloc/layout.rs
-> @@ -7,6 +7,7 @@
->  use core::{alloc::Layout, marker::PhantomData};
->
->  /// Error when constructing an [`ArrayLayout`].
-> +#[derive(Debug)]
->  pub struct LayoutError;
->
->  /// A layout for an array `[T; n]`.
-> @@ -43,6 +44,19 @@ pub const fn empty() -> Self {
->      /// # Errors
->      ///
->      /// When `len * size_of::<T>()` overflows or when `len * size_of::<T=
->() > isize::MAX`.
-> +    ///
-> +    ///
-> +    /// # Examples
+> This feature is now on track to stabilization
+> in the language. In order to do so, we shall start
+> using this macro in the kernel crate to prove the
+> functionality and utility of the macro as
+> the justification of its stabilization.
 
-There should only be one empty line before # Examples, not two.
+Commit messages are normally wrapped at 72 chars, but this seems to
+wrap at 50 chars.
 
-> +    ///
-> +    /// ```rust
-> +    /// use kernel::alloc::layout::ArrayLayout;
-> +    ///
-> +    /// let layout =3D ArrayLayout::<i32>::new(15);
-> +    /// assert_eq!(layout.len(), 15);
+> This patch makes this switch in such a way that
+> the crate remains backward compatible with older
+> Rust compiler versions, via the flag
+> *RUST_COERCE_POINTEE*.
+>
+> A minimal demostration code is added to
+> the *samples/rust/rust_print_main.rs* module.
+>
+> Link: https://rust-lang.github.io/rfcs/3621-derive-smart-pointer.html [1]
+> Link: https://lore.kernel.org/all/20240823-derive-smart-pointer-v1-1-5376=
+9cd37239@google.com/ [2]
+> Signed-off-by: Xiangfei Ding <dingxiangfei2009@gmail.com>
 
-I think it's less confusing to move this expect() to the line before.
-let layout =3D ArrayLayout::<i32>::new(15).expect(...);
+Overall looks good.
 
-> +    ///
-> +    /// let layout =3D ArrayLayout::<i32>::new(isize::MAX as usize);
-> +    /// assert!(layout.is_err());
-> +    /// ```
->      pub const fn new(len: usize) -> Result<Self, LayoutError> {
->          match len.checked_mul(core::mem::size_of::<T>()) {
->              Some(size) if size <=3D ISIZE_MAX =3D> {
->
-> base-commit: 1dc707e647bc919834eff9636c8d00b78c782545
-> --
-> 2.47.1
->
->
+There's a mention of derive(SmartPointer) in the file
+rust/kernel/alloc.rs. It should probably be updated to say
+derive(CoercePointee) instead.
+
+Alice
