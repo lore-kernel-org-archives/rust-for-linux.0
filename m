@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3621DA0F5;
-	Tue,  3 Dec 2024 12:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AB51E573E;
+	Tue,  3 Dec 2024 12:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733228188; cv=none; b=KY3J1baDku8DE5oT6b8vIDiMHlAnAoDVJzt64Xdl/1OTTSgsg2De1t+vvt0i5uQtvK6GkmRD63H8Q6xQAQYZGcfP0ic0oJLI7jTJ2o/eCoiHZ2DwkADudN5z4jcBu6A7oPMuXbdgnmGenjcgAMekHVbCtmZZXeOu2Hx2g4T0UP8=
+	t=1733228192; cv=none; b=RySyGbj5ZEsSPT+2bHp5eOH78/NzgFzXU81l3EBgON8CQGXLt22YmfY5lFhuYf6u1RRKAH9Lnb0w5qzj7wcNyrvW1JFD461t8fEggVpaxxtUDt89jO2FrwaKnoeyuD34XpfUY4cMdtx7FJIbycvZN6RB6HLWBSXdb5Xqw5pnXjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733228188; c=relaxed/simple;
-	bh=isUlziUUDm8p6l2GSvo3LsW2yH5N/hjfEDCKC/qlAYc=;
+	s=arc-20240116; t=1733228192; c=relaxed/simple;
+	bh=/aO6/dZ1qzKrNplUbQzs6rs7FOyIPmNmTkFF3huDRM8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rgNiJ+JJ5RHvH2JdFUyV0u3I2cIRiDueC1Mj447rDyrrQukOQnKZPQKFVL8JES9P92Af4Q/A956ZopQbqUurC8opDBTCdfwGitAImbfiFzHhYs5k+6g0zLwarkk3pvdrEysXv+ZfpbhxddJu1BtzRs31x3OpDzQDeDqGTDFhwbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgmsyFS3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ST4bGISDlEHJPZMU3bY8KuNXCS10ZlXaTFsdghEwl0juo8rcxSLDMSxHSDFZFt4Z/cCcJC0ItQ2SoRdXk93/NJMtmSFfTBcxwHhQuUZOjCrTwnhd6qiJnQUkL2kLX69oC1fmWLbXFXzp2P+gKHehmRoxgL6Of13DzzMB0mxaAQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZlwDeyXf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgmsyFS3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB333C4CECF;
-	Tue,  3 Dec 2024 12:16:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlwDeyXf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7857C4CED6;
+	Tue,  3 Dec 2024 12:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733228187;
-	bh=isUlziUUDm8p6l2GSvo3LsW2yH5N/hjfEDCKC/qlAYc=;
+	s=k20201202; t=1733228191;
+	bh=/aO6/dZ1qzKrNplUbQzs6rs7FOyIPmNmTkFF3huDRM8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=JgmsyFS3MdyM9dfoTKN28z/Dzc/l3v370iyp84EuG6+9i2nbvFuZXvU7srL+x0zKk
-	 qKnNQkZKEr4AxFOf0ewY/2uxnPflKJYG5QV/TFBiRx3j2y4Q3ya93LHetGdkX2wwxT
-	 fAYruFfSqzi4nx1UY1hINsocTHfUSdX2rvcfgArHT66hDEw68dwa3dBkt5IsVpu0Ql
-	 vDDKSsy+ogaxFmGr8K9JKzON1kyR+hDmz5iXmEZzwxzZkVYdHbZg0cAdI6k72unSZF
-	 nFmZQZZ3LEhCH2PgPnBej/WjU2x4EIHLpEsxCOfxmhk2Q0SGIyGDpLKDF5TU5rkiYZ
-	 HzM1M+S8lxVug==
+	b=ZlwDeyXfWtq6PzTnfjAJL1drpPjTilnk3ebUBMckgGl6xMmuxz3V+hYubcXY9B07U
+	 V0Y8LCxfC3jBGS8xyukWtaHgOqGfDhGh3pXkpluHfCupqKNRMymyu7dry9eha/Z93r
+	 c9c7pxZ+5jSsq1GOJeRSzwhVnou3BV72Vj24f75wrovxbBNDMrpgp/XmudbRfur2Vv
+	 FwYeijPJ7sR/dEhm1VZUpiucfSf8XTtgGOaZOXoe2hupqdPjpPYs7HFlNIgcoWqV7J
+	 /SepoBOwZfruMngcbfNMwAvXcsdCxbsNsIdctgx2H5KZrLabDwlQoSxknhurGNeRd6
+	 MIKwCDhY4rgBA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Tamir Duberstein" <tamird@gmail.com>
 Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
@@ -37,58 +37,39 @@ Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
   =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,  "Asahi Lina"
  <lina@asahilina.net>,
   <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v10 2/2] rust: xarray: Add an abstraction for XArray
-In-Reply-To: <20241120-rust-xarray-bindings-v10-2-a25b2b0bf582@gmail.com>
-	(Tamir Duberstein's message of "Wed, 20 Nov 2024 06:48:18 -0500")
+Subject: Re: [PATCH v10 1/2] rust: types: add `ForeignOwnable::PointedTo`
+In-Reply-To: <20241120-rust-xarray-bindings-v10-1-a25b2b0bf582@gmail.com>
+	(Tamir Duberstein's message of "Wed, 20 Nov 2024 06:48:17 -0500")
 References: <20241120-rust-xarray-bindings-v10-0-a25b2b0bf582@gmail.com>
-	<6-QAwX1sgFm2t2PaGbx9Vw6zd35JfTSAuPp7yhzHZwErXXnBaRrz2lr-ACxVU1VnDQdEuDeN8Lv1PZjT6b13UQ==@protonmail.internalid>
-	<20241120-rust-xarray-bindings-v10-2-a25b2b0bf582@gmail.com>
-Date: Tue, 03 Dec 2024 13:16:15 +0100
-Message-ID: <87h67lezcg.fsf@kernel.org>
+	<nR31Ti2MTTrvntU_ZI3ie6K-WF-6Sof9Z_J5GHzpmaMWJROlCvPkgzzVxYa5ZX2nBWZ1xOhCWLOl80OeZ244GQ==@protonmail.internalid>
+	<20241120-rust-xarray-bindings-v10-1-a25b2b0bf582@gmail.com>
+Date: Tue, 03 Dec 2024 12:51:28 +0100
+Message-ID: <87ldwxf0hr.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
 "Tamir Duberstein" <tamird@gmail.com> writes:
 
-> `XArray` is an efficient sparse array of pointers. Add a Rust
-> abstraction for this type.
+> Allow implementors to specify the foreign pointer type; this exposes
+> information about the pointed-to type such as its alignment.
 >
-> This implementation bounds the element type on `ForeignOwnable` and
-> requires explicit locking for all operations. Future work may leverage
-> RCU to enable lockless operation.
+> This requires the trait to be `unsafe` since it is now possible for
+> implementors to break soundness by returning a misaligned pointer.
 >
-> Inspired-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> Inspired-by: Asahi Lina <lina@asahilina.net>
+> Encoding the pointer type in the trait (and avoiding pointer casts)
+> allows the compiler to check that implementors return the correct
+> pointer type. This is preferable to directly encoding the alignment in
+> the trait using a constant as the compiler would be unable to check it.
+>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
 
-[cut]
 
-> +
-> +// SAFETY: It is safe to send `XArray<T>` to another thread when the und=
-erlying `T` is `Send`
-> +// because XArray is thread-safe and all mutation operations are synchro=
-nized.
-> +unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
-> +
-> +// SAFETY: It is safe to send `&XArray<T>` to another thread when the un=
-derlying `T` is `Sync`
-> +// because it effectively means sharing `&T` (which is safe because `T` =
-is `Sync`). Additionally,
-> +// `T` is `Send` because XArray is thread-safe and all mutation operatio=
-ns are internally locked.
-> +unsafe impl<T: ForeignOwnable + Send + Sync> Sync for XArray<T> {}
-
-I don't understand the sentence: "Additionally, `T` is `Send` because XArra=
-y is
- thread-safe and all mutation operations are internally locked.", could
- you elaborate?
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 
 Best regards,
