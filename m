@@ -1,76 +1,86 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A34A1F76C6;
-	Tue,  3 Dec 2024 17:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44A3143759
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 17:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733245421; cv=none; b=HTl+yAIUYpy6OB+0WrVHkkX8R9097RfsJhj+JbIx3F3oA/T0fs7NgeYzf+tp8uNJVjngkBcuZLiA/PL9yTNJWP7tYQRvFrLni4joNyuakj7Ik6DGdoqBTwJT60wgpGkgoV6kRWx0LKFBfVrup759LzMy52vd7BMjTqZjM1D77ao=
+	t=1733245532; cv=none; b=UrxVhO4GWzmPKhvc7Xy3VLN7zRCqkY3PD+pDaIKn9kdI6pJoH4p9iBFS2++SNvOkhgJY3OJejf33V6rtjRshHDf6T9NwzCiHYCHTRwCSFnduJkpV6jjk6TOJ7NN66c7TxnOB7oJU186x/lbRU2caO/BbBzs5FATfA5+IWf1ueuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733245421; c=relaxed/simple;
-	bh=E3hcewTlyOcLTnAf9Eg8o4Sqw/w4ZTAeGgYqxAzO5V4=;
+	s=arc-20240116; t=1733245532; c=relaxed/simple;
+	bh=pFxzie7d4rVdGXxbjGyGR8B9lmpgpdsNPaJXSplW7rU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nRAr5ylI3vG8Ooj6pQRRfOqCOZUH/9kwaGfb3w0YkayQKmlvDQTWFOoe5PBvCAvi5lJXDjjv71UAW+Z33QImKCTFDU8rd65CSRkaY8pzsuvz4cHwiRILpIDnLgfPO0+ZifYJj2uZOqdkGbcPRK6iTsQ7EkKRUKInbIO75gc1meo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iC6s4bFf; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=teYsxkgt1VCEVD34P/va+i4c71c/Z3ZVJkGaJWON8tkUSDMhfouqVhdRxjHqlUd+8cADJgIoXeb3yWWEGnHtW4FT/eAZxbXwghDZ4hR8+WjF9x0FdMv3Txl7D/z5iPBNa9dn1DgSesrDwjtXsHVbsPGksvocKGTlvSzEKDkQVI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y99bTvm+; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iC6s4bFf"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ffa974b2b0so58648681fa.3;
-        Tue, 03 Dec 2024 09:03:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y99bTvm+"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385e1721716so2222625f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Dec 2024 09:05:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733245418; x=1733850218; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=E3hcewTlyOcLTnAf9Eg8o4Sqw/w4ZTAeGgYqxAzO5V4=;
-        b=iC6s4bFfNBm2o/6yh+UtAQsY1UZn09/AmKbc/qhkYBbOT1tI8NJ17aSzOMWMtNpJUr
-         jStdgDaLxL7KOz5FEL4sWFUbyXjHXoadFyL/Qgm9NSxd8KoSy9EuFARWf/BWGI0hjxak
-         tPzpB/CqN5sN3pW3ZulPQdd5rbWa0TW9gQ3OKJTN1AznPR/8lHxlWGN11MPz4gjMBwQY
-         hQ2kYQc2TLZXfF4v+PFSaBQ5kfKH4xfnK19GmH8Zclifh7prFBoLHVWCYjlh3uAH6BR4
-         19LBW6cSG13qh49DYA/gy4TQfQtKi97+H+2MhvJrrG9QfUWmiJwJ+ZbB5XyoN53hebD9
-         ZoqQ==
+        d=google.com; s=20230601; t=1733245529; x=1733850329; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pFxzie7d4rVdGXxbjGyGR8B9lmpgpdsNPaJXSplW7rU=;
+        b=Y99bTvm+CCP20hM2lYv+UEXKrg+RgA/Hbf5KtRjcO4VHE1U6rsiHPMdJWUTqHNUlN5
+         VzbhQdDKuPr6q4fUleh5c/6TXykIDUcMBO+IIcHac15+yKG4CxzWH07jFiJpnFLdQNQW
+         WlbWeXrhGqMOJxWnKpY8RrKvPbnhhdLRbb/4amkLq0rAUDmowYLk0R7aAFUeAfG1eHdw
+         VOu7doNVv/Wif1j88cWpBKiRBq5R62eANlLqcEJ0Q3IkPBjYYcRVyylFH/XgkAy5ovF4
+         73T4iuAIp/x6MxPudba4BEnNY8rMu86J2COWWPzZjhA6Elg3klxZbsXwcbcb3j3GuEno
+         oVTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733245418; x=1733850218;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E3hcewTlyOcLTnAf9Eg8o4Sqw/w4ZTAeGgYqxAzO5V4=;
-        b=efkD7zO0RvpFYIFDkuQTUuYn1TBklBhRc35y2bq/98ysNJT9WRBOIPCUviyoomMGhd
-         qhdT3j7YxuT0HKE/fUYPcGm8GHt+ICwBBVLYH/MEFB8UyVzTBqENCGoqQrPXwCyfiuep
-         i2LzCECqOXXn9J6YIgJ2UDRnE+5uE27A5EP8Dt/87fWoPuwuD6xpu70jixAXf48cdaRe
-         ZamOxlgJvRBZ3KxtUZjyaf2LokM0auY2t1SCHOE1bm4RAPQmZFPwaFxZuUPH+lAdq5rU
-         FCqUY0gc0TElKuY6bdjNBwJQ7i73qqZKr/gVXWyRpBILwvk+tdV8eB+gQZv69TZQobN+
-         I9+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUocg/GmtgmCPtKsj8OzEHoVE6yaaac05jUmdvVBFMI5EXWSOXFmYSwk0/2uNKw+tCGuCHz/XpgS8ShozY/zrs=@vger.kernel.org, AJvYcCWeNa+FSwWQ22V1U8H07esGGRdBc3p0ZUQjlC8HiPicHnhF6J8WblcfSCdGsYN56Q8tmQkr6FBNzay+CxU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUreIT/WwW13rx12arwgy6eIDRJUIBXQtvcmytbh+AGOrEilTD
-	zY5FT9GN8wGs2hqe9rOhbZXO4V5T4znDc3FCj1lcP1ZmGNHe09+lsaKG2AGvGizZmx66qv+1xG8
-	HGrVMB+RcGp+Fa/3GlNYGipUOnwM=
-X-Gm-Gg: ASbGncsusMwnhK6yT01j+Oa9qGZ2nkBb7DjFr42c9T2ag/qRIMog+53U2XstSZLu7Pw
-	lgiDyWud7L9elJC1rAoA/GSVpc4Or0OHkcoL6GuXKgwPaeVk=
-X-Google-Smtp-Source: AGHT+IGraF7fxPX7KiWWaAjJF07+mEgcjdtRuA8A8OQKs6/SdJmHoc4uijFxrFaq3YHrj8cL81iMj7iysm0toJbh5xQ=
-X-Received: by 2002:a05:651c:546:b0:2ff:cfeb:cabd with SMTP id
- 38308e7fff4ca-30009c6cfeemr25991641fa.28.1733245418141; Tue, 03 Dec 2024
- 09:03:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733245529; x=1733850329;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pFxzie7d4rVdGXxbjGyGR8B9lmpgpdsNPaJXSplW7rU=;
+        b=hIj9e1RGPP4mJ0E39X8jEpgtbVKyPmKjFESiZO4endJIGCpUa19HtD6eiTEMLndPqG
+         le2p48TnNy3p56Xf/RbiGn/EUpnp4xzI+4BMV8t3LDvtCV7Oh6MzbJMng+FmaZTubayV
+         lYnHy+l6DQWsO2iw+fvp3JXmxUZjcOHa1ViVB9eabxOUg2+d/MCkKZVnvAK0AgwgHnJM
+         X+uz33zRQ3AgcMwifZiCsqrj8lTHfHDmDLogt7QXtK5FbxZiJONJubnC5nKosJfIWtga
+         ms0sXmLykt77TuGJamFNwHpS8lRRECSD//WqZL8o6n8bfEi52KBAlG2YeISkfJM3bB3s
+         1HxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXw2blKr3wn4vQonuORQ3jpUkWREnkF2X9d9z09rjQM7rtYwwEnl45f7+VztYBDKGValEoob+mMjhWw5Rlr8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAPNhSlwg3fPKs1wrVxcIUQ4b0e3ccqoaJhoDZuaAXvyWP1HCE
+	fM4JY7YdFOMVlzScvsp2wTlEEZoPiEl3mly3pBBD60ye3hDFN4k0EcLKR4PVUSLa0fz5d3gAVDQ
+	jbB6nnPLZqThVraimJ0buvKhDM9p3LA/jTtHL
+X-Gm-Gg: ASbGncuMHZMwaBAXEE2a6yHS94hBCz3MNR+pQGeySpYz6OvOyWPZeOXnEGpl6fwBEFY
+	38DmLAagLXsSxbtZsyQCwfpbTnxWBt8Ex
+X-Google-Smtp-Source: AGHT+IGXpFDNbmsLHw0aFRliY4X3KqTs46pn3woNBu8qT27zr0f/ThXoP5MFbDWCOhrQ154MkA6hCY3nmp/+ijERccc=
+X-Received: by 2002:a5d:47cb:0:b0:385:fb34:d59f with SMTP id
+ ffacd0b85a97d-385fd3c562cmr3339844f8f.11.1733245528976; Tue, 03 Dec 2024
+ 09:05:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105-b4-dylib-host-macos-v6-1-4e66515e6630@gmail.com>
-In-Reply-To: <20241105-b4-dylib-host-macos-v6-1-4e66515e6630@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 3 Dec 2024 12:03:01 -0500
-Message-ID: <CAJ-ks9nbwwtpO6TX3zM2Embag_7RQMfA0iBhtS5TS44wx1iOQQ@mail.gmail.com>
-Subject: Re: [PATCH RESEND v6] rust: use host dylib naming convention
-To: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20241107-simplify-arc-v2-1-7256e638aac1@gmail.com>
+In-Reply-To: <20241107-simplify-arc-v2-1-7256e638aac1@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 3 Dec 2024 18:05:16 +0100
+Message-ID: <CAH5fLgg+O7AxZAHZt7FSuac3b-NaNv4iWOR7=7tDXNBK=nTd4A@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: sync: document `PhantomData` in `Arc`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Gentle bump. How can I move this forward please?
+On Thu, Nov 7, 2024 at 11:36=E2=80=AFAM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> Add a comment explaining the relevant semantics of `PhantomData`. This
+> should help future readers who may, as I did, assume that this field is
+> redundant at first glance.
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
