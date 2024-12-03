@@ -1,154 +1,172 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E73B257D;
-	Tue,  3 Dec 2024 08:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5AE1DE3A2
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 09:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733215703; cv=none; b=cln1UL7MgUBkir23zGpf17naAfXwe79p8/aAP+V2hCoBSiEzPvRc92JWwHOwUnvC8ux8MC8oOk9QnzWGHGjKDbQCD+Jo9ntSnSpM8HtpFlke5YvVoSF2HQPxLTGrLgZwKSuqqDgVI6YJExB6RThN4CkYLTSMIUyycUbwLj7arjo=
+	t=1733216917; cv=none; b=kdlmupOhfyFNyHWOOQN+0nAMjjDIhoak0CSDwmSwI0aNa86OPoItrEu8dNrxkD5FwbXQDKs/vmtptWg43Hp7VO3j/TlxLTu3tZIWB0C7A2wCkc8qQKUEGUDS23D1JEd5TkOkXCSKy6nYTnj4faCCTdIbwD/qgaPQF6EOokPyk78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733215703; c=relaxed/simple;
-	bh=WFKzI1fZ+E/odL6blUYCUeXJAWWClEFQFwA8lgkf2Uk=;
+	s=arc-20240116; t=1733216917; c=relaxed/simple;
+	bh=IK/NZLp7gFIseOlzH1eyJFFhNVM8lpD61ZE4vbOZSvY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HSWRjAmReFIgTHVWt9wP0Su3lGMwnhXAGGYoCYDLVaPylCMfrh+HOtkjgJCw/+f0wZMFmqEIsQo8ZR6TxZbM+gcqRnmwgcWEy8HBc+Yd5WFq+Sz5ePDfz21iCkZPTGZOpcIv0BqQBrAiB2FH68QcWIkCxAY3uIj4+U4eHTwle+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FfbPudO7; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=KN6BUNSAPGxtNBhfz8KpK+mcEn1DzOx637Vzx4IgmCmSLLaY19fqiP3LFFLn8hYPWexsAUeA08GVPtMWgTX0a5m68LNXMM6DJAXFaOUTeTmw7WNJ7DlCzp1KVWQL9/9183hlAUqb/GLr4ggoK3uB/wXviTtOisPGvMmkndB3KEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i1VwqZaf; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FfbPudO7"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7fbbf456a63so311783a12.2;
-        Tue, 03 Dec 2024 00:48:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i1VwqZaf"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385eed29d7fso1465649f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Dec 2024 01:08:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733215700; x=1733820500; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733216913; x=1733821713; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AOSZZo6COvONJZX2dpnbD1MkQEuc1G+gxCG2m+LKD1g=;
-        b=FfbPudO72vNA3pi7ij21kbrPl099a2dw8UMqW4cwBU8ktjppkktCP5jQYfNXXN2Cqu
-         QXLbijiWFwl3aQiZMylw5o1NuHqooIVxrT4KArg8FXIkvzAR0T+CqoAnjBRt/72lS3oG
-         vHzm9W6WHxAQ6p/mnDCXBe3A3zzC226AF7KujNTeTSASgFhDFTRk7jljGs5+WLZUo6mi
-         AEnSHk/hucjX/SYaXyi+lGFtfdtQ0Btsm2MtEX+wfifTzVDvsWE6LkwjBNQEjzzRmumi
-         pxiUNnuL8xbAbVysJIqCR7n7p5FBYrSzPJ5o1sqVb+oTB8YXNL97BKcjykZHXorie0cD
-         usxQ==
+        bh=cFzvdgxxhPyYuZGDVV6pnwFjLTQZ9Vw8KV9E08J3sjM=;
+        b=i1VwqZafGDbrApIQ2kiwsHPSoKqAz3KphDq+Vmd4plF/KiIeHpb/hiLNqXWT79k5a6
+         1UWNv/oFAGANHp33BowwAv6dIUJKJOohEik42kq+kKXc0hQ1MTn9gnj0+9wd9m31VSYn
+         csE+2dGz+0cmSq59KFrOLn4ypdYFCMXRMwT2ZhQjDEbfXh1OIknOww5ZUciK53KGtgOh
+         EiHH1lg9lBqsDJDk5dq6CT9rp5zmy0CncsDh9J9OrwiI0fgWsfOu+sPZ8lAejy3cthWh
+         Cn0eqGbdHL98pOXulP1tY6AXqGDgrscfGg+tSeSYW40J77zQ59rsqrBxng3HVzaU/EWj
+         5COQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733215700; x=1733820500;
+        d=1e100.net; s=20230601; t=1733216913; x=1733821713;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AOSZZo6COvONJZX2dpnbD1MkQEuc1G+gxCG2m+LKD1g=;
-        b=oze42X6mE/uEPbqaA7NEulFU+bSOC4nvkxVRrBLQDIHhVaMsnRueZdHyUFeYSagdqs
-         o+/xMjZAFnc5PNsiNT8ll0oH7XX64ZTHyBK9/+mbFmWlafuLl1gKdPZPIoJk9mB01Igu
-         m0UGk/lsM7C3gKu5igfB3lRH3/itK99ebrOr/gbsxosas1jsB97ULOATzfVBkkHkDiAd
-         +nw7eDjh+l0XDfMmgYjtOiOR3sky6qkEYgbyJC0ptxWFawTAjlhdUGIdDdahNeNRVDrc
-         cO6VLX2NJ8aTtH7DP3+icYmVRGqh2OGGyVegFduPLA58KDt9NSaddnLRhV/WvxBpWMf3
-         z/wA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPim6CBgzgqybpYnzgJUibg5+jJrqdvQCsqVy8KUy9vejhofgAup4eb2wyd7XO3UinurmdqpLyGzwSi6k=@vger.kernel.org, AJvYcCXjR/KmFTYrqS5UrS0w8KDCvFkX+oVC1lL32ZfIo5ObO7YC0/0zz6HxokVHuWFs6mwNHwxGEpz8tvrQUwu8lHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMNJ/w1knKOubCA4fnQ1UspTDD5RBLxqJgUnX1+C/l8fcGRp2u
-	z/5nHZOUOp3gTzy6C5TtB1c0pjT7G7b/DMqzOeUMmNLmvFpNtd92OvvReFiGXkp5yI8BkOjnMKg
-	9N89OoWRafUSVgU52FKVjY1+TxwKXJxCUEaY=
-X-Gm-Gg: ASbGnctzIsXh2PpVQ8J8BATw4Pzg3oZBo/16MGJ77c0V59BNeb7b2w6xsY8aOSUmt1p
-	fxSyUxZyu2hUvkBESc5Ftlr1vMAFPXNI=
-X-Google-Smtp-Source: AGHT+IGRdfSSIMxoMmoGcKQ0NDHpV8V+exuQ9YeI+S9wU3oIO/GKPXTP9f4hq+wXOlXUu3x6bprZaQnsqqX6G8k23vI=
-X-Received: by 2002:a17:90b:4a8d:b0:2ea:853a:99e0 with SMTP id
- 98e67ed59e1d1-2ef0124c9acmr967675a91.5.1733215700158; Tue, 03 Dec 2024
- 00:48:20 -0800 (PST)
+        bh=cFzvdgxxhPyYuZGDVV6pnwFjLTQZ9Vw8KV9E08J3sjM=;
+        b=cws9W2+xuLOghCFtRiYhl2matYlxqab3itukWORGbVLLNRliNIUZZlOipN6rKFhpr7
+         7RIhU2ZloGHtxRKlNHNGDjBJMZXm8uir/MYHAyMVuc1eBPwdmifFO2AiP9b6qhd6KR/H
+         mSy/d61xxCeznV8NPAoO9SFgkF06Ig8Uk42AmyzXoaumnpPCY7eSKfflJT9ROzxBDRJn
+         ClHCBDcio6yF3hdFJq98EnNs8NA6Sj/gMo04DnmBX7OM7dpsztSqtXp5XZZr2mwnrNYe
+         M9yJ6VXyOL5nVkvsB4P5kJnFcAhJrl4388ZuNphTme5XGOFYvbBTDimjANEjfGfNDwn4
+         0X8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWm/DcYiRegpxCeKmBHRdncj52elnZlzKTO6L2s5oauyV4/zeW1Snohzav0prL6Y6aBr6sD3qEcqlIKcRsw5Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfRJSN30Ih8uQ9oy2W30B0gHIxAa8iGIa9DuR2d8lusUEWz6AO
+	ZPgdh1TXUS81i2ac6yvJtrPyh00f05dBlJvjoB8K0ZPHyo+TlvlRi2W7AgMwZicqT77ODwj1nwU
+	eLWv0oBAyrC7tXZgagSPS6mVxJ3aqseHZ+xzj
+X-Gm-Gg: ASbGncvJwg7CyZFWZbXmgceYGMN6iZ7rH/OlH2Hlnm91QghF0cWJhU+5Z4PukqUHpnC
+	N6yvnKujd5HyirOuNlIbV/uyZniGSR1IW84WWyzOZTj0xhkaAZufbcwU+NnfbwA==
+X-Google-Smtp-Source: AGHT+IHhYrDB/wb1xEJctCPoLD5SdDr7fE6pSh9gwJ2FOr50D60Fh2pWUtTRrn/qZKQFAckFbG2l+/EGK8cyVIZsKZI=
+X-Received: by 2002:a5d:47a7:0:b0:382:45db:6a1e with SMTP id
+ ffacd0b85a97d-385fd97edadmr1314617f8f.14.1733216913503; Tue, 03 Dec 2024
+ 01:08:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203051843.291729-1-jtostler1@gmail.com>
-In-Reply-To: <20241203051843.291729-1-jtostler1@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Dec 2024 09:48:07 +0100
-Message-ID: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
-To: jtostler1@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20241119112408.779243-1-abdiel.janulgue@gmail.com> <4c58b3b7-0c2a-441d-9b2c-7be65cb39bf2@asahilina.net>
+In-Reply-To: <4c58b3b7-0c2a-441d-9b2c-7be65cb39bf2@asahilina.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 3 Dec 2024 10:08:21 +0100
+Message-ID: <CAH5fLggE2Ud=2GdrAxsxC-KUoZVQEOFEpjgpSMq_h6dK=Cq1QA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] rust: page: Add support for existing struct page mappings
+To: Asahi Lina <lina@asahilina.net>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Valentin Obst <kernel@valentinobst.de>, 
+	open list <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>, airlied@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 3, 2024 at 6:19=E2=80=AFAM <jtostler1@gmail.com> wrote:
+On Mon, Dec 2, 2024 at 1:03=E2=80=AFPM Asahi Lina <lina@asahilina.net> wrot=
+e:
 >
-> From: Jimmy Ostler <jtostler1@gmail.com>
+> On 11/19/24 8:24 PM, Abdiel Janulgue wrote:
+> > This series aims to add support for pages that are not constructed by a=
+n
+> > instance of the rust Page abstraction, for example those returned by
+> > vmalloc_to_page() or virt_to_page().
+> >
+> > Changes sinve v3:
+> > - Use the struct page's reference count to decide when to free the
+> >   allocation (Alice Ryhl, Boqun Feng).
+> > - Make Page::page_slice_to_page handle virt_to_page cases as well
+> >   (Danilo Krummrich).
+> > - Link to v2: https://lore.kernel.org/lkml/20241022224832.1505432-1-abd=
+iel.janulgue@gmail.com/
+> >
+> > Changes since v2:
+> > - Use Owned and Ownable types for constructing Page as suggested in
+> >   instad of using ptr::read().
+> > - Link to v1: https://lore.kernel.org/rust-for-linux/20241007202752.309=
+6472-1-abdiel.janulgue@gmail.com/
+> >
+> > Abdiel Janulgue (2):
+> >   rust: page: use the page's reference count to decide when to free the
+> >     allocation
+> >   rust: page: Extend support to existing struct page mappings
+> >
+> >  rust/bindings/bindings_helper.h |   1 +
+> >  rust/helpers/page.c             |  20 +++++
+> >  rust/kernel/page.rs             | 135 ++++++++++++++++++++++++++++----
+> >  3 files changed, 142 insertions(+), 14 deletions(-)
+> >
+> >
+> > base-commit: b2603f8ac8217bc59f5c7f248ac248423b9b99cb
 >
-> Added a rustdoc example and Kunit test to the `ArrayLayout` struct's
-> `ArrayLayout::new()` function.
+> Just wanted to comment on an upcoming use case I have that will need
+> this, to make sure we're aligned. I want to use the page allocator to
+> manage GPU page tables (currently done via an io-pgtable patch and
+> abstraction but that's going away because it turned out to be too
+> intrusive to upstream).
 >
-> Kunit tests ran using `./tools/testing/kunit/kunit.py run \
-> --make_options LLVM=3D1 \
-> --kconfig_add CONFIG_RUST=3Dy` passed.
+> Since I'm dealing with page tables which are their own tree ownership
+> structure, and I don't want to duplicate management of the page life
+> cycles, this means I need to be able to:
 >
-> Generated documentation looked as expected.
+> - Convert a Rust-allocated and owned page *into* its physical address
+> (page_to_phys()).
+> - Convert a physical address *into* a Rust-allocated and owned page
+> (phys_to_page()).
+> - Borrow a Rust Page from a physical address (so I can do read/write
+> operations on its data without intending to destroy it).
 >
-> Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1131
+> Conceptually, the first two are like ARef::into_raw() and
+> ARef::from_raw() (or Box for that matter), while the third would
+> basically return a &Page with an arbitrary lifetime (up to the caller to
+> enforce the rules). The latter two would be unsafe functions by nature,
+> of course.
+>
+> I think this would work just as well with some kind of Owned/Ownable
+> solution. Basically, I just need to be able to express the two concepts
+> of "Page owned and allocated by Rust" and "Page borrowed from a physical
+> address".
 
-Thanks for the patch!
+I actually think the Owned/Ownable solution is even better for what
+you need, because having a borrowed reference to the current Page
+abstraction is pretty awkward as it assumes that the page is always
+owned.
 
-A few procedural nits: please Cc the maintainers/reviewers, especially
-the main one (Danilo) -- for that, please see
-`scripts/get_maintainer.pl` as well as e.g.
-https://rust-for-linux.com/contributing#submitting-patches for one way
-to generate the arguments.
+Alice
 
-The "Signed-off-by" tag normally would be the last one -- that way
-people see that you added the other two rather than the next person in
-the chain. It is good to mention the tests etc. that you have done,
-although normally for a patch like this it would normally not be
-mentioned (since all patches that add an example need to be tested
-anyway).
-
-Finally, a nit on the commit message: normally they are written in the
-imperative mood.
-
-By the way, the "From:" tag on the top would not need to be there if
-your "From:" in the email headers is configured properly.
-
->  /// Error when constructing an [`ArrayLayout`].
-> +#[derive(Debug)]
->  pub struct LayoutError;
-
-Ideally you would mention this change in the commit message too -- it
-is the only non-comment/doc change, after all :) It is also important
-because, in general, so far, we have not been using `expect`.
-
-> +    ///
-> +    ///
-
-Please use a single line.
-
-> +    /// ```rust
-
-You can remove "rust" since it is the default.
-
-> +    /// use kernel::alloc::layout::ArrayLayout;
-
-This line could be hidden -- it is `Self`, after all, so it is not
-adding much for the reader. We are not fully consistent on this yet
-though.
-
-> +    /// let layout =3D ArrayLayout::<i32>::new(15);
-> +    /// assert_eq!(layout.expect("len * size_of::<i32>() does not overfl=
-ow").len(), 15);
-
-See above on `expect`.
-
-Moreover, since it is a test, it is fine to panic, but recently we
-were discussing that examples should ideally show how "real code"
-would be written, thus using `?` etc. instead.
-
-> +    /// let layout =3D ArrayLayout::<i32>::new(isize::MAX as usize);
-
-Perhaps we could consider an example with an smaller argument that
-still overflows, to drive home the multiplication involved. It could
-perhaps be a third one.
-
-Thanks!
-
-Cheers,
-Miguel
+> This maps to pagetable management like this:
+> - On PT allocation, a Page is allocated, cleared, and turned into its
+> physical address (to be populated in the parent PTE or top-level TTB)
+> - On PT free, a page physical address is converted back to a Page, its
+> PTEs are walked to recursively free child PTs or verify they are empty
+> entries for leaf PTs (invariant: no leaf PTEs, all mappings should be
+> removed before PT free) and dropped.
+> - On PT walk/PTE insertion and removal, a physical address is borrowed
+> as a Page, then `Page::with_page_mapped()` is used to perform R/W
+> operations on the PTEs contained within.
+>
+> Tying the lifetime of actual leaf data pages mapped into the page table
+> to the page table itself is a higher-level concern that isn't relevant
+> here, drm_gpuvm handles that part and those pages are not allocated
+> directly via the page allocator, but rather as GEM objects which
+> ultimately come from shmem)
+>
+> (Note: this hardware is always 64-bit without highmem so those concerns
+> don't apply here.)
+>
+> ~~ Lina
+>
