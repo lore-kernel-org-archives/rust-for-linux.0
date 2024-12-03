@@ -1,85 +1,117 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F4B1CB9EA
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Dec 2024 18:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320CF17555
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 02:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733164223; cv=none; b=RYdhHgXBbHmbiB7s4DCgWZP8qBhQliVQv2CLnjNEn6XdO3XYwGeX5x6KVPKc8+LvZY3C9EixHpxWzXelZnaIzXLy+FUOvOooSUB+gCKTzjWok+OYKz2p/Pnr4dK4cHLcZ/lEVizGlzKRDeNods2uKoGniIj528hYiLu8Cq5lVsw=
+	t=1733194630; cv=none; b=JS1/STNTkdeMxaJg6fQoTznpazSEuTyc5RcBnKc2N83bwzmmO6NHLxKuX9l0XwG6yrLDpctG/0CHXeO0NzrlXWOMcN19sGPAKug/2XMC53lD+KRWhSdpyDny9goJyIxumo/hTrBSBdWR1WVgKGxG+o4UQT2LVt7Q5xEUTA4IMYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733164223; c=relaxed/simple;
-	bh=GgmZVBBeUurbTkWGSapkRuZfRSTPNsPGz4hhA5lctAY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=byhCP0ROs5N6zB8wv0K+Ceus4jEemGcstyyI0pJU7NFhlxRM0ccwuWeHzc11K4Rk6PDB3lLa6wDEentvsX7JMFzSY76c8z8GhmxuFmtu1wPCGxOZpD+KNz+iowW+qfNr5umNDvxrnQvq3FTum7Utm0rvKTIerx1qSJapizvZRR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WlpykBLN; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733194630; c=relaxed/simple;
+	bh=syFxIHxtNJgeDxHxRvIG0iGkaC5umZ5tr+vQW1iEZME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tw903GZ7zRTdT3uiBdfApk8Va2FOF8HOMwj9Rfvc13glHjChxBeObXCi2kJymvtV9UK1vOOW63l3MxVylH7+8X9SFA3Ik1l0PKH1sxD5nXlQidHXITJi9l+pEaa3IQXpfR6dmuOiAcKIS7YL278OhEopCOQyrO81l6Zf7D7sL4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IaOdO6Of; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WlpykBLN"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2154d8df140so3589525ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Dec 2024 10:30:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733164222; x=1733769022; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GgmZVBBeUurbTkWGSapkRuZfRSTPNsPGz4hhA5lctAY=;
-        b=WlpykBLNbdyQt8I/ghwi9irBduZznSjmdh0tlEAP8g1nlQa5ih8bIqYAdEoFRJ97/J
-         AzSG4M7jB0xUGIgm3YNc7bPlJuAwOtmSiQUPutzJoaUfS/e/zBsSBZU5sEI5P19UvHd7
-         93DSDsAY6gNYWTMUs1MYEstTzesvrhM4k0xqGBGKjHEihmPp2v52Xze8SLxS4fbi1BbU
-         hJNEi7rBPkJoVN18dBidpFGW98QWdmFAgfkWBVNSgz+jFwHS2MbeJeb2W42W2+xWzbcU
-         CbOmZmGUzgCwY/hu85rcUzq+7RaXhSsNDKNmwGq4mpa6QGMshiRBSAJAZUdJsHmamnV/
-         PFDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733164222; x=1733769022;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GgmZVBBeUurbTkWGSapkRuZfRSTPNsPGz4hhA5lctAY=;
-        b=QZxRKb7oq/Cbaod2TVtYmSr4KpZd/LxQw0zeu3MBfmwTZdEhbW2/Qx8IZ9DBlG3hoG
-         CJSxMp8rnoiC6iQ/zWWAEYtA4PAfPXmyfWr/okRq84+HIzpOwZEHMO79mOz7EPzew1SZ
-         Erza71vCAnyCLQgKCEpbVuxY++Uk4TLgBGDaLzx2FeatXif+d4VSkNtn/wMEG8F51Ji/
-         7nOtGyp+nu+xJGGRd3Ww1urAEDEMiRza8wtYoBat5OHSICDBLUgxsT1UFgDQ4VCXBkss
-         nzQkTc5GY8+aBeQ0ordXyDdasghnUAYKRf2r9TB7mQe3L5YUySt+kggJur3WYIOjcwYW
-         KdQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTQjglvwqhIyfjkGeUv4/T6J6nNnh4TboIrTxNVPBNOmOaC8UNEZ/fzR39YIuC9ODVUapi3axdzaIfz9Gm4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLRUyhUlP1WwU6qvhPDf1a83RCrxW5QMd4d7qWClU0A9HmECSq
-	FmJkFqE8LCUiuHrWM22PLW1k+xt4J1GYEgvU31mPMK7wBJ2LT90b7W2bkx8EGfAXQft1Y/sUIoj
-	TmKIXKhrBM8Q5HCkNunc/MiRe6Sk=
-X-Gm-Gg: ASbGncsMR73THtlU0Jpbwo6WS1EJzLvo/L9YdgPu4W0/u5ZMU378yYFB5ukjqzKG5jJ
-	YljaOn4224JRd83nQUWIY6Zh5obqYuuo=
-X-Google-Smtp-Source: AGHT+IEjWv80UrMf9i9dtdJmRcy/9e3EOFRGr+UjIZprebXJbZcgwttaY5ZIQaTPk9tcA9N9RzF8ynOK4JZkAERL0VE=
-X-Received: by 2002:a17:90b:3850:b0:2ee:b665:12b3 with SMTP id
- 98e67ed59e1d1-2eeb66516bemr3277754a91.5.1733164221562; Mon, 02 Dec 2024
- 10:30:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IaOdO6Of"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733194629; x=1764730629;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=syFxIHxtNJgeDxHxRvIG0iGkaC5umZ5tr+vQW1iEZME=;
+  b=IaOdO6Of0I+u3vVPcK4u+qBIEj4l4bOtm232ZdXJtplNFI0H3xui0ouL
+   o3uhw9wvyRDjZM6L56bxjREW+TIP+r0nN8bKohVdH/WZkjP/N1rWArZES
+   2R5rXyX6Ci2FQ664+iEliuFgW2vKdVuMi2uG7WLGEOmjXVevnkSIxBeiG
+   KDSsBVilWjjKWfIsAERuoD/evwydJ8OCqaWYUFxShMYTrEqqIl2lFSch4
+   rsQ7LIBdrYwY7oNF3NdXr3Fbh8rosahIbEjOSNT/O2aR868J/L4to1NcV
+   SOX3d6L2sZsgQd1d/qggJpu5HpQd4Iq3SZgZ7gS/qiDJoZKg5U8bDJSrD
+   w==;
+X-CSE-ConnectionGUID: g0pZUfpIRAS0Oxe2FsNomw==
+X-CSE-MsgGUID: Y0Y0JmaIRSWoqFqAaaP/4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="44001435"
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; 
+   d="scan'208";a="44001435"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 18:57:09 -0800
+X-CSE-ConnectionGUID: IBOa30MVS5OBnVxf6a7gpw==
+X-CSE-MsgGUID: k1UdZNj5RC+qn/mHt8evDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,204,1728975600"; 
+   d="scan'208";a="93206831"
+Received: from lkp-server02.sh.intel.com (HELO 36a1563c48ff) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 02 Dec 2024 18:57:07 -0800
+Received: from kbuild by 36a1563c48ff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tIJ5X-0003CT-0B;
+	Tue, 03 Dec 2024 02:56:43 +0000
+Date: Tue, 3 Dec 2024 10:55:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bernhard Kauer <bk@alpico.io>, Danilo Krummrich <dakr@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, Bernhard Kauer <bk@alpico.io>
+Subject: Re: [PATCH] rust: introduce KVec::pop()
+Message-ID: <202412031055.b3nviKAQ-lkp@intel.com>
+References: <20241202085758.67319-1-bk@alpico.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241202085758.67319-1-bk@alpico.io> <2024120251-plank-rinsing-e63b@gregkh>
- <Z02D7Gg_cuMKPgxQ@mias.mediconcil.de> <Z02KUVQ4GEKPKa_H@pollux>
-In-Reply-To: <Z02KUVQ4GEKPKa_H@pollux>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Dec 2024 19:30:09 +0100
-Message-ID: <CANiq72nyAZO7Yw9ZoYq_=O21C6tPCvjt01NVvGD-bxC4mfBL1w@mail.gmail.com>
-Subject: Re: [PATCH] rust: introduce KVec::pop()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Bernhard Kauer <bk@alpico.io>, Greg KH <gregkh@linuxfoundation.org>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202085758.67319-1-bk@alpico.io>
 
-On Mon, Dec 2, 2024 at 12:00=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> I don't think this is needed. You're providing an example that can be exe=
-cuted
-> as KUnit test already with your patch.
+Hi Bernhard,
 
-Yeah, the example should be good enough for the time being, as long as
-we see an actual user.
+kernel test robot noticed the following build errors:
 
-Cheers,
-Miguel
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on linus/master v6.13-rc1 next-20241128]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Bernhard-Kauer/rust-introduce-KVec-pop/20241202-170049
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20241202085758.67319-1-bk%40alpico.io
+patch subject: [PATCH] rust: introduce KVec::pop()
+config: x86_64-buildonly-randconfig-001-20241203 (https://download.01.org/0day-ci/archive/20241203/202412031055.b3nviKAQ-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241203/202412031055.b3nviKAQ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412031055.b3nviKAQ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0277]: the `?` operator can only be used in a function that returns `Result` or `Option` (or another type that implements `FromResidual`)
+   --> rust/doctests_kernel_generated.rs:752:22
+   |
+   750 | fn main() { #[allow(non_snake_case)] fn _doctest_main__kbuild_src_consumer_rust_kernel_alloc_kvec_rs_309_0() {
+   |                                      ----------------------------------------------------------------------- this function should return `Result` or `Option` to accept `?`
+   751 | let mut v = KVec::new();
+   752 | v.push(1, GFP_KERNEL)?;
+   |                      ^ cannot use the `?` operator in a function that returns `()`
+   |
+   = help: the trait `FromResidual<core::result::Result<Infallible, rust_doctest_kernel_alloc_kbox_rs_4::kernel::alloc::AllocError>>` is not implemented for `()`
+--
+>> error[E0277]: the `?` operator can only be used in a function that returns `Result` or `Option` (or another type that implements `FromResidual`)
+   --> rust/doctests_kernel_generated.rs:753:22
+   |
+   750 | fn main() { #[allow(non_snake_case)] fn _doctest_main__kbuild_src_consumer_rust_kernel_alloc_kvec_rs_309_0() {
+   |                                      ----------------------------------------------------------------------- this function should return `Result` or `Option` to accept `?`
+   ...
+   753 | v.push(2, GFP_KERNEL)?;
+   |                      ^ cannot use the `?` operator in a function that returns `()`
+   |
+   = help: the trait `FromResidual<core::result::Result<Infallible, rust_doctest_kernel_alloc_kbox_rs_4::kernel::alloc::AllocError>>` is not implemented for `()`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
