@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941BA1A8F6E;
-	Wed,  4 Dec 2024 19:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B31A1B4130;
+	Wed,  4 Dec 2024 19:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733339347; cv=pass; b=jZXBax4OhDll4a8CcqvrXYhckQ7PacU8X+De71j9lhzKKlkZap3N0jAeb3P739tVp0ot4Ug506Ho3xJncKicTdMnampEnH6sUBJgVPIdNXH0zNYygxP08UNH59VZfzTGalEKo2+CtUSvAULWjd8ILJ8vyhMo0WMbRNXTkUhYzzk=
+	t=1733340390; cv=pass; b=D/VUz0w5l6IfBkvIH4/ObSyHYwxF+CEGndgMbxcSIDtyBik2ET0BJjw05kS6G5JFWHB4yaZMM11EeAMfi4NMOwNn4Ud+95fW1RAD8UaGdJDs9bdAR5c6DBjmEQQ08fVGXQbehae861MaFvJQklTTwWbnHkx4pwXfDJzd2lHDGaw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733339347; c=relaxed/simple;
-	bh=8yMQMBPDNh7miLRJnVQ+GZCLHZmaTJO7LvPRqau3VA8=;
+	s=arc-20240116; t=1733340390; c=relaxed/simple;
+	bh=h8ARnmfbTqF/cI3q9mowC7+FcZgp77jQGxY5HlVPKMU=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Ia8OymeyaBCN4gCMj6VnaFPnwrD/c/RxRIzARdNfaVvo6XIUJYW1/bNAGCtfLgA/k9qTwUqngdoZsm0cpKKD/hjBhy3KB8rtoDtOAHz355eMkzNShX7WtuLd8YV1gOmF7ndeVxwZhXD0NeC0LTg0bp2tDRa5onDsxaaB4q0FGZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TLNFfKkO; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=ggD6OpOMUy4i7edSTO2d7L/zkm5emzUQhJ/L0/h+2D1YC+JbLgcVBOcfo7MHPIs/g4Rn54Rn8mCjjG/DLFZxEbq5FtwDI0aL6GrQHZo6HUgam2Dap5KUvczm5ADj31m4V18jgHmQNOMIPV1gU8BIQ29hw2r/NBXAcQBOhtdfth0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ew5P/ekN; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TLNFfKkO"
-ARC-Seal: i=1; a=rsa-sha256; t=1733339316; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ew5P/ekN"
+ARC-Seal: i=1; a=rsa-sha256; t=1733340352; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=QsSWQZI/TvaddnoXx/MYb/9Lh/wmef6H30BcfUk1BaAuiMf3EKczYuJEMNBKcdObZH7EaopEkKtJl4uv/JDFqk5+gzcQrcMqD4SXrA32tpHHnEoPPfq93dpcc6FOZfNNIxFCeo0P/BCpSfY4H/VFlDMOU4Wl6xhhJ4A2OUGev6A=
+	b=XIwroMswiSsLiZ3HgtEZFwvaVmvR2N6pBF+Vt2d2mr72R7vZS4r26hLbYVEP3luaxIvZFKAzoBl4mS6kU6XmSHU+IiQcAMnudX1stUDfwSpaezqnhPl5Iw4QCOkeGr0EO92G+qWf9IqmbIuM1kmJJBdspRS4YttURnCbpYcQM9g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1733339316; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=O+vCOyKaol/q4vjTgIGLLkHXjDioz2gyMQBKcVMwTn0=; 
-	b=IFv0tnYmovacfX0cjSwxNbI1oJFGSxw30nR7pXnDWDsVf3L6pGaFU6Fj5tR29sSNPB4cuwUbkUj2GsKMN7VkLmMLtd/7l73S3VexF/r6sjF6cr9EfgJ5l98iVOyBsQwS/hGm/v3ihcZPHj0awMoSjG/2dRiznUdJBvKd47LioXE=
+	t=1733340352; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iXSruM2DtO1V1jXF1qxqYiltGJ6X2Z7W1MHrcYL9i1k=; 
+	b=gwD/aFMIjtpfd//dqdqUQ/HHPSpREM88fwB5DjrWtdA1aGf+VzsEMYYf8ZPWKeEQ/t2eIX/G1p5iOlaQJr79E/Y7h6vDIH0BbDMX2gO7QRfOI6nhtwVVYeJS7xRAqjBYDx4xBgk3RQIUx+YxdRGxn5NVSymwHYIxMV708ajxtKc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733339316;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733340352;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=O+vCOyKaol/q4vjTgIGLLkHXjDioz2gyMQBKcVMwTn0=;
-	b=TLNFfKkO6XnS08DURZN9tgTLEAwOtGt9iyVshW+8QYt6m1o7g8hNrPsD6fWL3M2f
-	d+h8KcW05RxuxXHNvoK1b56vJKNKUss7SAxj+D7Qd5xwt0hvK0HJlngTOv5zPQlMysj
-	ycCoo9eCZoo3ZeqI+o+V7hvHXbN0ZjevZq9kByPA=
-Received: by mx.zohomail.com with SMTPS id 173333931476854.75299437249271;
-	Wed, 4 Dec 2024 11:08:34 -0800 (PST)
+	bh=iXSruM2DtO1V1jXF1qxqYiltGJ6X2Z7W1MHrcYL9i1k=;
+	b=ew5P/ekNO7qTA0tfv9Z+m25DEwH1Nj26NjGlST+5hFfBqXnNJNKPQD1KKw7SlFPD
+	EVCosCCUjrdOvyGVc+BFQXf/qoUhVhRldDC6SsVUK8H5P5Nco1cHyZLPKTZ7UP3X2s8
+	4zXHxa24cGe58pn9k0SLVujgkjz0EmJG+wDa3jfY=
+Received: by mx.zohomail.com with SMTPS id 173334034960492.0857786888331;
+	Wed, 4 Dec 2024 11:25:49 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,268 +44,417 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v5 2/2] rust: add dma coherent allocator abstraction.
+Subject: Re: [PATCH v3 15/16] rust: platform: add basic platform device /
+ driver abstractions
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20241203170752.1834271-3-abdiel.janulgue@gmail.com>
-Date: Wed, 4 Dec 2024 16:08:18 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Wedson Almeida Filho <wedsonaf@google.com>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+In-Reply-To: <20241022213221.2383-16-dakr@kernel.org>
+Date: Wed, 4 Dec 2024 16:25:32 -0300
+Cc: gregkh@linuxfoundation.org,
+ rafael@kernel.org,
+ bhelgaas@google.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,
+ tmgross@umich.edu,
+ a.hindborg@samsung.com,
+ aliceryhl@google.com,
+ airlied@gmail.com,
+ fujita.tomonori@gmail.com,
+ lina@asahilina.net,
+ pstanner@redhat.com,
+ ajanulgu@redhat.com,
+ lyude@redhat.com,
+ robh@kernel.org,
+ saravanak@google.com,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ devicetree@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <AFCEFEB8-3FB1-44E2-A31E-93863E11BF87@collabora.com>
-References: <20241203170752.1834271-1-abdiel.janulgue@gmail.com>
- <20241203170752.1834271-3-abdiel.janulgue@gmail.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Message-Id: <7EA482EF-1D3E-4C3E-A805-4F404758610C@collabora.com>
+References: <20241022213221.2383-1-dakr@kernel.org>
+ <20241022213221.2383-16-dakr@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.200.121)
 X-ZohoMailClient: External
 
-Hi Abdiel,
+Hi Danilo,
 
-> On 3 Dec 2024, at 14:07, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
-wrote:
+> On 22 Oct 2024, at 18:31, Danilo Krummrich <dakr@kernel.org> wrote:
 >=20
-> Add a simple dma coherent allocator rust abstraction. Based on
-> Andreas Hindborg's dma abstractions from the rnvme driver, which
-> was also based on earlier work by Wedson Almeida Filho.
+> Implement the basic platform bus abstractions required to write a =
+basic
+> platform driver. This includes the following data structures:
 >=20
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> The `platform::Driver` trait represents the interface to the driver =
+and
+> provides `pci::Driver::probe` for the driver to implement.
+>=20
+> The `platform::Device` abstraction represents a `struct =
+platform_device`.
+>=20
+> In order to provide the platform bus specific parts to a generic
+> `driver::Registration` the `driver::RegistrationOps` trait is =
+implemented
+> by `platform::Adapter`.
+>=20
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
+> MAINTAINERS                     |   1 +
 > rust/bindings/bindings_helper.h |   1 +
-> rust/kernel/dma.rs              | 136 ++++++++++++++++++++++++++++++++
+> rust/helpers/helpers.c          |   1 +
+> rust/helpers/platform.c         |  13 ++
 > rust/kernel/lib.rs              |   1 +
-> 3 files changed, 138 insertions(+)
-> create mode 100644 rust/kernel/dma.rs
+> rust/kernel/platform.rs         | 217 ++++++++++++++++++++++++++++++++
+> 6 files changed, 234 insertions(+)
+> create mode 100644 rust/helpers/platform.c
+> create mode 100644 rust/kernel/platform.rs
 >=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 87eb9a7869eb..173540375863 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6985,6 +6985,7 @@ F: rust/kernel/device.rs
+> F: rust/kernel/device_id.rs
+> F: rust/kernel/devres.rs
+> F: rust/kernel/driver.rs
+> +F: rust/kernel/platform.rs
+>=20
+> DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+> M: Nishanth Menon <nm@ti.com>
 > diff --git a/rust/bindings/bindings_helper.h =
 b/rust/bindings/bindings_helper.h
-> index 5c4dfe22f41a..49bf713b9bb6 100644
+> index 312f03cbdce9..217c776615b9 100644
 > --- a/rust/bindings/bindings_helper.h
 > +++ b/rust/bindings/bindings_helper.h
-> @@ -11,6 +11,7 @@
-> #include <linux/blk_types.h>
-> #include <linux/blkdev.h>
-> #include <linux/cred.h>
-> +#include <linux/dma-mapping.h>
-> #include <linux/errname.h>
-> #include <linux/ethtool.h>
-> #include <linux/file.h>
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> @@ -18,6 +18,7 @@
+> #include <linux/of_device.h>
+> #include <linux/pci.h>
+> #include <linux/phy.h>
+> +#include <linux/platform_device.h>
+> #include <linux/refcount.h>
+> #include <linux/sched.h>
+> #include <linux/slab.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 8bc6e9735589..663cdc2a45e0 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -17,6 +17,7 @@
+> #include "kunit.c"
+> #include "mutex.c"
+> #include "page.c"
+> +#include "platform.c"
+> #include "pci.c"
+> #include "rbtree.c"
+> #include "rcu.c"
+> diff --git a/rust/helpers/platform.c b/rust/helpers/platform.c
 > new file mode 100644
-> index 000000000000..9279be235fcf
+> index 000000000000..ab9b9f317301
 > --- /dev/null
-> +++ b/rust/kernel/dma.rs
-> @@ -0,0 +1,136 @@
+> +++ b/rust/helpers/platform.c
+> @@ -0,0 +1,13 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Direct memory access (DMA).
+> +#include <linux/platform_device.h>
+> +
+> +void *rust_helper_platform_get_drvdata(const struct platform_device =
+*pdev)
+> +{
+> + return platform_get_drvdata(pdev);
+> +}
+> +
+> +void rust_helper_platform_set_drvdata(struct platform_device *pdev, =
+void *data)
+> +{
+> + platform_set_drvdata(pdev, data);
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 5946f59f1688..9e8dcd6d7c01 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -53,6 +53,7 @@
+> pub mod net;
+> pub mod of;
+> pub mod page;
+> +pub mod platform;
+> pub mod prelude;
+> pub mod print;
+> pub mod rbtree;
+> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> new file mode 100644
+> index 000000000000..addf5356f44f
+> --- /dev/null
+> +++ b/rust/kernel/platform.rs
+> @@ -0,0 +1,217 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for the platform bus.
 > +//!
 > +//! C header: =
-[`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+[`include/linux/platform_device.h`](srctree/include/linux/platform_device.=
+h)
 > +
 > +use crate::{
-> +    bindings,
-> +    build_assert,
-> +    device::Device,
-> +    error::code::*,
-> +    error::Result,
-> +    types::ARef,
-> +    transmute::{AsBytes, FromBytes},
+> +    bindings, container_of, device,
+> +    device_id::RawDeviceId,
+> +    driver,
+> +    error::{to_result, Result},
+> +    of,
+> +    prelude::*,
+> +    str::CStr,
+> +    types::{ARef, ForeignOwnable},
+> +    ThisModule,
 > +};
 > +
-> +/// An abstraction of the `dma_alloc_coherent` API.
+> +/// An adapter for the registration of platform drivers.
+> +pub struct Adapter<T: Driver>(T);
+> +
+> +impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+> +    type RegType =3D bindings::platform_driver;
+> +
+> +    fn register(
+> +        pdrv: &mut Self::RegType,
+> +        name: &'static CStr,
+> +        module: &'static ThisModule,
+> +    ) -> Result {
+> +        pdrv.driver.name =3D name.as_char_ptr();
+> +        pdrv.probe =3D Some(Self::probe_callback);
+> +
+> +        // Both members of this union are identical in data layout =
+and semantics.
+> +        pdrv.__bindgen_anon_1.remove =3D Some(Self::remove_callback);
+> +        pdrv.driver.of_match_table =3D T::ID_TABLE.as_ptr();
+> +
+> +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> +        to_result(unsafe { bindings::__platform_driver_register(pdrv, =
+module.0) })
+> +    }
+> +
+> +    fn unregister(pdrv: &mut Self::RegType) {
+> +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> +        unsafe { bindings::platform_driver_unregister(pdrv) };
+> +    }
+> +}
+> +
+> +impl<T: Driver + 'static> Adapter<T> {
+> +    fn id_info(pdev: &Device) -> Option<&'static T::IdInfo> {
+> +        let table =3D T::ID_TABLE;
+> +        let id =3D T::of_match_device(pdev)?;
+> +
+> +        Some(table.info(id.index()))
+> +    }
+> +
+> +    extern "C" fn probe_callback(pdev: *mut =
+bindings::platform_device) -> core::ffi::c_int {
+> +        // SAFETY: The platform bus only ever calls the probe =
+callback with a valid `pdev`.
+> +        let dev =3D unsafe { device::Device::from_raw(&mut =
+(*pdev).dev) };
+> +        // SAFETY: `dev` is guaranteed to be embedded in a valid =
+`struct platform_device` by the
+> +        // call above.
+> +        let mut pdev =3D unsafe { Device::from_dev(dev) };
+> +
+> +        let info =3D Self::id_info(&pdev);
+> +        match T::probe(&mut pdev, info) {
+> +            Ok(data) =3D> {
+> +                // Let the `struct platform_device` own a reference =
+of the driver's private data.
+> +                // SAFETY: By the type invariant `pdev.as_raw` =
+returns a valid pointer to a
+> +                // `struct platform_device`.
+> +                unsafe { =
+bindings::platform_set_drvdata(pdev.as_raw(), data.into_foreign() as _) =
+};
+> +            }
+> +            Err(err) =3D> return Error::to_errno(err),
+> +        }
+> +
+> +        0
+> +    }
+> +
+> +    extern "C" fn remove_callback(pdev: *mut =
+bindings::platform_device) {
+> +        // SAFETY: `pdev` is a valid pointer to a `struct =
+platform_device`.
+> +        let ptr =3D unsafe { bindings::platform_get_drvdata(pdev) };
+> +
+> +        // SAFETY: `remove_callback` is only ever called after a =
+successful call to
+> +        // `probe_callback`, hence it's guaranteed that `ptr` points =
+to a valid and initialized
+> +        // `KBox<T>` pointer created through `KBox::into_foreign`.
+> +        let _ =3D unsafe { KBox::<T>::from_foreign(ptr) };
+> +    }
+> +}
+> +
+> +/// Declares a kernel module that exposes a single platform driver.
 > +///
-> +/// This is an abstraction around the `dma_alloc_coherent` API which =
-is used to allocate and map
-> +/// large consistent DMA regions.
+> +/// # Examples
 > +///
-> +/// A [`CoherentAllocation`] instance contains a pointer to the =
-allocated region (in the
-> +/// processor's virtual address space) and the device address which =
-can be given to the device
-> +/// as the DMA address base of the region. The region is released =
-once [`CoherentAllocation`]
-> +/// is dropped.
+> +/// ```ignore
+> +/// kernel::module_platform_driver! {
+> +///     type: MyDriver,
+> +///     name: "Module name",
+> +///     author: "Author name",
+> +///     description: "Description",
+> +///     license: "GPL v2",
+> +/// }
+> +/// ```
+> +#[macro_export]
+> +macro_rules! module_platform_driver {
+> +    ($($f:tt)*) =3D> {
+> +        $crate::module_driver!(<T>, $crate::platform::Adapter<T>, { =
+$($f)* });
+> +    };
+> +}
+> +
+> +/// IdTable type for platform drivers.
+> +pub type IdTable<T> =3D &'static dyn =
+kernel::device_id::IdTable<of::DeviceId, T>;
+> +
+> +/// The platform driver trait.
+> +///
+> +/// # Example
+> +///
+> +///```
+> +/// # use kernel::{bindings, c_str, of, platform};
+> +///
+> +/// struct MyDriver;
+> +///
+> +/// kernel::of_device_table!(
+> +///     OF_TABLE,
+> +///     MODULE_OF_TABLE,
+> +///     <MyDriver as platform::Driver>::IdInfo,
+> +///     [
+> +///         (of::DeviceId::new(c_str!("redhat,my-device")), ())
+> +///     ]
+> +/// );
+> +///
+> +/// impl platform::Driver for MyDriver {
+> +///     type IdInfo =3D ();
+> +///     const ID_TABLE: platform::IdTable<Self::IdInfo> =3D =
+&OF_TABLE;
+> +///
+> +///     fn probe(
+> +///         _pdev: &mut platform::Device,
+> +///         _id_info: Option<&Self::IdInfo>,
+> +///     ) -> Result<Pin<KBox<Self>>> {
+> +///         Err(ENODEV)
+> +///     }
+> +/// }
+> +///```
+> +/// Drivers must implement this trait in order to get a platform =
+driver registered. Please refer to
+> +/// the `Adapter` documentation for an example.
+> +pub trait Driver {
+> +    /// The type holding information about each device id supported =
+by the driver.
+> +    ///
+> +    /// TODO: Use associated_type_defaults once stabilized:
+> +    ///
+> +    /// type IdInfo: 'static =3D ();
+> +    type IdInfo: 'static;
+> +
+> +    /// The table of device ids supported by the driver.
+> +    const ID_TABLE: IdTable<Self::IdInfo>;
+> +
+> +    /// Platform driver probe.
+> +    ///
+> +    /// Called when a new platform device is added or discovered.
+> +    /// Implementers should attempt to initialize the device here.
+> +    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -> =
+Result<Pin<KBox<Self>>>;
+> +
+> +    /// Find the [`of::DeviceId`] within [`Driver::ID_TABLE`] =
+matching the given [`Device`], if any.
+> +    fn of_match_device(pdev: &Device) -> Option<&of::DeviceId> {
+> +        let table =3D Self::ID_TABLE;
+> +
+> +        // SAFETY:
+> +        // - `table` has static lifetime, hence it's valid for read,
+> +        // - `dev` is guaranteed to be valid while it's alive, and so =
+is
+> +        //   `pdev.as_dev().as_raw()`.
+> +        let raw_id =3D unsafe { =
+bindings::of_match_device(table.as_ptr(), pdev.as_dev().as_raw()) };
+> +
+> +        if raw_id.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper =
+of `struct of_device_id` and
+> +            // does not add additional invariants, so it's safe to =
+transmute.
+> +            Some(unsafe { &*raw_id.cast::<of::DeviceId>() })
+> +        }
+> +    }
+> +}
+> +
+> +/// The platform device representation.
+> +///
+> +/// A platform device is based on an always reference counted =
+`device:Device` instance. Cloning a
+> +/// platform device, hence, also increments the base device' =
+reference count.
 > +///
 > +/// # Invariants
 > +///
-> +/// For the lifetime of an instance of [`CoherentAllocation`], the =
-cpu address is a valid pointer
-> +/// to an allocated region of consistent memory and we hold a =
-reference to the device.
-> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
-> +    dev: ARef<Device>,
-> +    dma_handle: bindings::dma_addr_t,
-> +    count: usize,
-> +    cpu_addr: *mut T,
-> +}
+> +/// `Device` holds a valid reference of `ARef<device::Device>` whose =
+underlying `struct device` is a
+> +/// member of a `struct platform_device`.
+> +#[derive(Clone)]
+> +pub struct Device(ARef<device::Device>);
 > +
-> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
-> +    /// Allocates a region of `size_of::<T> * count` of consistent =
-memory.
+> +impl Device {
+> +    /// Convert a raw kernel device into a `Device`
 > +    ///
-> +    /// # Examples
+> +    /// # Safety
 > +    ///
-> +    /// ```
-> +    /// use kernel::device::Device;
-> +    /// use kernel::dma::CoherentAllocation;
-> +    ///
-> +    /// # fn test(dev: &Device) -> Result {
-> +    /// let c: CoherentAllocation<u64> =3D =
-CoherentAllocation::alloc_coherent(dev, 4, GFP_KERNEL)?;
-> +    /// # Ok::<(), Error>(()) }
-> +    /// ```
-> +    pub fn alloc_coherent(
-> +        dev: &Device,
-> +        count: usize,
-> +        flags: kernel::alloc::Flags,
-> +    ) -> Result<CoherentAllocation<T>> {
-> +        build_assert!(core::mem::size_of::<T>() > 0,
-> +                      "It doesn't make sense for the allocated type =
-to be a ZST");
-> +
-> +        let size =3D =
-count.checked_mul(core::mem::size_of::<T>()).ok_or(EOVERFLOW)?;
-> +        let mut dma_handle =3D 0;
-> +        // SAFETY: device pointer is guaranteed as valid by invariant =
-on `Device`.
-> +        // We ensure that we catch the failure on this function and =
-throw an ENOMEM
-> +        let ret =3D unsafe {
-> +            bindings::dma_alloc_attrs(
-> +                dev.as_raw(),
-> +                size,
-> +                &mut dma_handle, flags.as_raw(),
-> +                0,
-> +            )
-> +        };
-> +        if ret.is_null() {
-> +            return Err(ENOMEM)
-> +        }
-> +        // INVARIANT: We just successfully allocated a coherent =
-region which is accessible for
-> +        // `count` elements, hence the cpu address is valid. We also =
-hold a refcounted reference
-> +        // to the device.
-> +        Ok(Self {
-> +            dev: dev.into(),
-> +            dma_handle,
-> +            count,
-> +            cpu_addr: ret as *mut T,
-> +        })
+> +    /// `dev` must be an `Aref<device::Device>` whose underlying =
+`bindings::device` is a member of a
+> +    /// `bindings::platform_device`.
+> +    unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
+> +        Self(dev)
 > +    }
 > +
-> +    /// Returns the base address to the allocated region and the dma =
-handle. The caller takes
-> +    /// ownership of the returned resources.
-> +    pub fn into_parts(self) -> (usize, bindings::dma_addr_t) {
-> +        let ret =3D (self.cpu_addr as _, self.dma_handle);
-> +        core::mem::forget(self);
-> +        ret
-> +    }
-> +
-> +    /// Returns the base address to the allocated region in the CPU's =
-virtual address space.
-> +    pub fn start_ptr(&self) -> *const T {
-> +        self.cpu_addr as _
-> +    }
-> +
-> +    /// Returns the base address to the allocated region in the CPU's =
-virtual address space as
-> +    /// a mutable pointer.
-> +    pub fn start_ptr_mut(&mut self) -> *mut T {
-> +        self.cpu_addr
-> +    }
-> +
-> +    /// Returns a DMA handle which may given to the device as the DMA =
-address base of
-> +    /// the region.
-> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
-> +        self.dma_handle
-> +    }
-> +
-> +    /// Returns the CPU-addressable region as a slice.
-> +    pub fn cpu_buf<'a>(&self) -> &'a [T]
+> +    fn as_dev(&self) -> &device::Device {
 
-Why this =E2=80=98a here? Lifetime elision rules should tie the lifetime =
-of the returned slice
-to the lifetime of &self automatically
+This has to be pub, since a platform::Device is at least as useful as a =
+device::Device.
 
-> +    {
-> +        // SAFETY: The pointer is valid due to type invariant on =
-`CoherentAllocation` and
-> +        // is valid for reads for `self.count * size_of::<T>` bytes.
-> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, =
-self.count) }
+IOW: if an API takes &device::Device, there is no reason why someone =
+with a &platform::Device
+shouldn=E2=80=99t be able to call it.
+
+In particular, having this as private makes it impossible for a platform =
+driver to use Abdiel=E2=80=99s DMA allocator at [0].
+
+> +        &self.0
 > +    }
 > +
-> +    /// Performs the same functionality as `cpu_buf`, except that a =
-mutable slice is returned.
-> +    pub fn cpu_buf_mut<'a>(&mut self) -> &'a mut [T]
-
-Same here
-
-> +    {
-> +        // SAFETY: The pointer is valid due to type invariant on =
-`CoherentAllocation` and
-> +        // is valid for reads for `self.count * size_of::<T>` bytes.
-> +        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, =
-self.count) }
+> +    fn as_raw(&self) -> *mut bindings::platform_device {
+> +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer =
+to the `struct device`
+> +        // embedded in `struct platform_device`.
+> +        unsafe { container_of!(self.0.as_raw(), =
+bindings::platform_device, dev) }.cast_mut()
 > +    }
 > +}
 > +
-> +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
-> +    fn drop(&mut self) {
-> +        let size =3D self.count * core::mem::size_of::<T>();
-> +        // SAFETY: the device, cpu address, and the dma handle is =
-valid due to the
-> +        // type invariants on `CoherentAllocation`.
-> +        unsafe { bindings::dma_free_attrs(self.dev.as_raw(), size,
-> +                                          self.cpu_addr as _,
-> +                                          self.dma_handle, 0) }
+> +impl AsRef<device::Device> for Device {
+> +    fn as_ref(&self) -> &device::Device {
+> +        &self.0
 > +    }
 > +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e1065a7551a3..6e90ebf5a130 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -35,6 +35,7 @@
-> mod build_assert;
-> pub mod cred;
-> pub mod device;
-> +pub mod dma;
-> pub mod error;
-> #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
-> pub mod firmware;
 > --=20
-> 2.43.0
+> 2.46.2
 >=20
->=20
-
-
-By the way, I tested this using a slightly modified version of the =
-sample Rust platform driver
-from Danilo=E2=80=99s v3 submission. It=E2=80=99s working as intended :)
-
-With the change above, you can add:
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
 
 =E2=80=94 Daniel
+
+[0]: https://lkml.org/lkml/2024/12/3/1281
 
