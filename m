@@ -1,170 +1,112 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00393FC08;
-	Wed,  4 Dec 2024 01:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CFB4A1A;
+	Wed,  4 Dec 2024 02:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733277435; cv=none; b=GCwU1u5KxkSNScgR1m/OmAHSAe9Tim15xC4j0pWSrvE/s7o4jmnagPXsXIBLpW1mIMJZTqR9oiOsZMlETtDc82ewx6MSQj6TEyTUkbShNNBzpXL8xBAD0ISQa++CYYkSPrW1Kg5FUi1whARJedxBBsUsg5WXag0Uvr3kXH6JgV0=
+	t=1733279417; cv=none; b=OUmUexim3ldBS/viRtKNfBwsD9B5/UG1mtXc+gectXBoA6GIlFtkTI5anMuGYItJVK7Bi6Ud3NnTdyLU/3KxuABO2Qi2wJDkpGIg38UfqRuCgBn+ITWEgRFCADlj4ZCu2BAEN71WaPBniDm1+anqHgCg8ii1LdGvDnRBs2I/bAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733277435; c=relaxed/simple;
-	bh=PX1mmHn/QtMjg2I3xevbnz7ToycK/QmBTCd0l9QaCgo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DnyiYzcXejNqYl7UgcFlld/FoMhYKM/YQNNDctz8+WRbK9shFePYZ8c8Ux8W2zLT0qCM5MmYT4rKsXzuvETFU1Cp4r16/9ZVT5ijsc0xf2bjYrbLUpj/yBET1fHoKgZqLahZXO8a5gvhAw+4SVgWix92ekeSxHAK5OlTcD8BBf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3gB1ifz; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1733279417; c=relaxed/simple;
+	bh=TkML1wd3A6nrijWYmjiPifcOFSF0bOEPG/gMs9sM6uI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aAnuiIAgrB4gloSrq48R211txSq+T1lSP3R5SNGs3OnwyfI3V8nNo7yQfIRyZpyA2Sb+vG+544dkJ/OnkyQekLXv3amVZSOyBXP08Ze2rboAMBMsgLbyhBBOvZrCt3/Y/slXdoVCPLjmtuxa1fkjnAvFGIaOe3Vf3JaKVUukBK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JoHELSPh; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S3gB1ifz"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-215b13e9ccbso22220325ad.0;
-        Tue, 03 Dec 2024 17:57:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JoHELSPh"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21583eec308so4321775ad.1;
+        Tue, 03 Dec 2024 18:30:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733277433; x=1733882233; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1733279415; x=1733884215; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p3191qi+yrf9ggK6zVNjyVofvrDWMeLv8oqbIa7X5iQ=;
-        b=S3gB1ifzPc2fjWGcEunreCD0a/p/NX2ij4fVW+4RMsReLvU5tMellc3gYo1rlIsJkq
-         lINHKkRYQAXigTa3/v22zOkYYgQSRkl+gT6tcx5OnYQsO74+754VX+J5htRZM+4/AlKL
-         V+t+MVy/231qxBIXUPeXhk5LvSHWVoDfO1tcboizIuRXvM3dND7dGfiNweYPCAAr3Q1w
-         pNtX5v3OFyLBzshhF4me0C4mMcMzTYbyJAm4QjwM8S6BOjWfP6/QUurIb2+ea6DcVE+H
-         Xo1fOAqlaq9bF/jc9X3e8XRY4Om0POh86BY9dQQcCoGRBMave1FyyeDpu5EkPTfdiUm3
-         gzaA==
+        bh=TkML1wd3A6nrijWYmjiPifcOFSF0bOEPG/gMs9sM6uI=;
+        b=JoHELSPh+4bSb7rBzqplRl/JPbynIzU+aUl5O9j/Nu0QXTTos89Sse9cnTZlOpo9sl
+         lU1cBxpKNWm0Dk/IqKqR3u2jycsCpfxV8iuAwMRDlPmCn+we8GEvQMUEu7a28qu0EM7C
+         n7jPPuHiPY3uimt5n7Qj6rU9MU3PWLdEK6nD2iHuScPDvlAH7avKKVkDYtrzPGPZrXAL
+         JKPddA3xeU0r3AXwYr5/I8tjxk1UBuH8EQ9/S9yKEt35x7nhBLcDuuSI22tQaQg0CG3Y
+         SdXvR6SWwK8P2c7dICf9d8ol3kwSZTM936OHFCMXum+aF/cGG0QjGnIpgJ53JNw1uFlx
+         2IVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733277433; x=1733882233;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1733279415; x=1733884215;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p3191qi+yrf9ggK6zVNjyVofvrDWMeLv8oqbIa7X5iQ=;
-        b=DT7norpEe5VrmfEc6WIyGMkENs0g3s7RbiGq5KjOBS1lNC2mD5SfL+zag+H1uOv9fs
-         BZmnP7NRXSeRC4yCjF1ub8YTjRgFGa4E3Sc3VtFzObLj97sXoh/BAtP8hSIz5JN7Pe4J
-         U8M1PQ10EKmMcQdonzIDE1ltB41IXDgViMA3UtNGE7fyR+RLGQConw8cUWcC86zdNnK7
-         tcS4W7iLQu+EMgMAxzC+Jbaj8mbrVm0ksj9Jp1eQfykLMTQHoZS20MU4TqL1UmxUpOlj
-         2lzf1LWdeiNBTWsx5sFIJa8zaUphSL3kwOd8xmQrqtAV4AgmLzxgNM25lyjGbXntqthm
-         Tpfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUg2JXH28VcyuumEF8nhi7jLuHit8wWavZfBCIi7l/qwQu2n0ZB+dZSYf/XVe6Z5tFXHfJIOt7Z4oYGkB2Bx8=@vger.kernel.org, AJvYcCVvg+nRG7Md+Z1J7Hzgf49TOJ8S1yuWv5i4HW3u6LYqPEaQLWFZ9FKaUi/yutpCTYCIQQwHljV1CJr7mrs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRHWDZZNYDdGQjpRBUdJyvY+Xmah1s6BkIQuJhZHdPP9vaWr0v
-	OgYhJoU3iY+3DWIfJAlmml4BsS7iH4/+6DH10YRzN8z+zHGZkSWBrZlx4opA
-X-Gm-Gg: ASbGncv91qpslZuSuP4L6T+Mdbhc1J/0SYpO54eEqbIcvtRyaBKLd0ebtWxj00HEyCj
-	jHuddLCnDUt8bo2okeNJ9g1KIMUUueZ4MmIHDzV3jZhLlgiiovvy/4GriESxHiuoEdanDrdYkow
-	koqr97rYrS84WhUAQ8p6VfTTQimbhTWqLykwYZ39JniIxh+RiVxZr3r0pmRaLNEbXgwZz9QI+v7
-	/38gMqQmJOm8F65y+pd7oJpxlXBh+577Lm1t8jyu8+auee0TlCRsEBkDS33UqgPo2XROi0LE0AB
-	A8S402s/4B1ucBR4nYLzX18HRQ3N
-X-Google-Smtp-Source: AGHT+IGWqL11z241WcLN4kNqYdPWBNXYQA1bJwSTWmVM3neN+2CywO6LKUdpn3jBA7M/92Wi+Gn/ZA==
-X-Received: by 2002:a17:902:f70b:b0:215:7287:67c2 with SMTP id d9443c01a7336-215bd15deddmr63921295ad.42.1733277433178;
-        Tue, 03 Dec 2024 17:57:13 -0800 (PST)
-Received: from lordgoatius.clients.willamette.edu ([158.104.202.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2159ebcf60asm37977515ad.108.2024.12.03.17.57.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 17:57:12 -0800 (PST)
-From: jtostler1@gmail.com
-To: miguel.ojeda.sandonis@gmail.com
-Cc: alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	jtostler1@gmail.com,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
-Date: Tue,  3 Dec 2024 17:57:09 -0800
-Message-ID: <20241204015711.635816-1-jtostler1@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
-References: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
+        bh=TkML1wd3A6nrijWYmjiPifcOFSF0bOEPG/gMs9sM6uI=;
+        b=QZ5gETqaXRDHOVqYzf5SoAjetOX+g7PX8QEVIy1xGlaBHDNxm1fwgg2qMiu7BYh54s
+         0WpHFxR3jvDaNvmjgi0GaYUalzDUs3Ns/RmwkaRjqJTB8231JgYrO7AVJ/V5Fye+3tRC
+         AhHtS1l8rPJoIDQJqIjx+0uLxwTR1JON6UDRJjuYnJITxg5CBRiw2y+IvQzB928p3Vwz
+         IFxC2WCXFAnWp2KkbrKdnQBQf95I2Fq/8hmPrSvqUuqZQjQS6NJtkpaOwINA6H3Q2+cJ
+         w2U6j+CXfYrmruHm9m4voySBlkSfyq5RqFP4HChll7etGKIfiFJyfRlDlDOV43gNhzIe
+         5HRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUdOrei1QgSfI9GfNUITqKTIcY6c0VFF24sognbi1d6h6dIBACC6ojjLh6hwqLMUEU4AiEv1rqvf2wc45fWJVs=@vger.kernel.org, AJvYcCXSIztl4yntykbG/8U4Rd6gHmfA36fbfT17IwZRvdCBVNAZKZL96vaolACmRB7rAOnrq2TDQcTbt+yGw8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+ubSokt4jWG25T1+NmnarZRQ85YYVz+lnsYpnQmWotm1g8+lV
+	VQFjlOQkVvL8nxqRUIQisAGR+p8uSLRL2BoufsplIl5GfNCEwI8G2hfAGOoayJ3lp1O0SZra4WJ
+	oml5lwMqVOmyMRlkbNZOVDOkoTyo=
+X-Gm-Gg: ASbGncsBbEi3DIJg/hBebjVRv2mf5sj/B95AO8u7tVXW4xwq9AgTg9eC02dER2Fy3OO
+	v58uhGC/ArZfITISJlz+4xDYWa7x9abI=
+X-Google-Smtp-Source: AGHT+IHic2zv8qoOFI8sT+YJKvRg09ySS7SrTpOeSgPj73Z0B/8oFUixNvGCq60KY4H4WNgnWM/k+1z/WHTamhHqY6A=
+X-Received: by 2002:a17:90b:384e:b0:2ee:a00d:2ef8 with SMTP id
+ 98e67ed59e1d1-2ef0128353fmr2582457a91.8.1733279414987; Tue, 03 Dec 2024
+ 18:30:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
+ <20241204015711.635816-1-jtostler1@gmail.com>
+In-Reply-To: <20241204015711.635816-1-jtostler1@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 4 Dec 2024 03:30:02 +0100
+Message-ID: <CANiq72kT-BEBrbe7LHajc2OcDSfnEAFQ+pu=ko1_KUhbs99x4Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
+To: jtostler1@gmail.com
+Cc: alex.gaynor@gmail.com, boqun.feng@gmail.com, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 3, 2024 at 12:48 AM Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-> Thanks for the patch!
-
-You're welcome! Thank you once again for creating these opportunities!
-
-> A few procedural nits: please Cc the maintainers/reviewers, especially
-> the main one (Danilo) -- for that, please see
-> `scripts/get_maintainer.pl` as well as e.g.
-> https://rust-for-linux.com/contributing#submitting-patches for one way
-> to generate the arguments.
-
-Thanks for the pointer, I've got that fixed up now.
-
-> The "Signed-off-by" tag normally would be the last one -- that way
-> people see that you added the other two rather than the next person in
-> the chain. It is good to mention the tests etc. that you have done,
-> although normally for a patch like this it would normally not be
-> mentioned (since all patches that add an example need to be tested
-> anyway).
-> Finally, a nit on the commit message: normally they are written in the
-> imperative mood.
-
-Looking at the documentation for sending patches it's unclear whether
-the commit message for a v2 of a patch should be modified for cases 
-like this, or the only changes should be the in patch changelogs,
-after the marker line. What would usually be the preferred course of
-action in cases like this?
-
-> >  /// Error when constructing an [`ArrayLayout`].
-> > +#[derive(Debug)]
-> >  pub struct LayoutError;
+On Wed, Dec 4, 2024 at 2:57=E2=80=AFAM <jtostler1@gmail.com> wrote:
 >
-> Ideally you would mention this change in the commit message too -- it
-> is the only non-comment/doc change, after all :) It is also important
-> because, in general, so far, we have not been using `expect`.
-
-Same as above about v2 patch messages. Should I add it to commit, or 
-include that in patch changelogs?
-
-> > +    ///
-> > +    ///
+> Looking at the documentation for sending patches it's unclear whether
+> the commit message for a v2 of a patch should be modified for cases
+> like this, or the only changes should be the in patch changelogs,
+> after the marker line. What would usually be the preferred course of
+> action in cases like this?
 >
-> Please use a single line.
->
-> > +    /// ```rust
->
-> You can remove "rust" since it is the default.
+> Same as above about v2 patch messages. Should I add it to commit, or
+> include that in patch changelogs?
 
-Fixed both of these.
+The changelog between series goes outside the commit, and is meant to
+help reviewers see what you changed (otherwise they would need to run
+e.g. a range diff and visually inspect it). The commits themselves
+should describe the changes in that commit, ignoring what happened in
+other versions, and it is meant for the future to explain what the
+change is and why it was introduced in the tree.
 
-> > +    /// use kernel::alloc::layout::ArrayLayout;
->
-> This line could be hidden -- it is `Self`, after all, so it is not
-> adding much for the reader. We are not fully consistent on this yet
-> though.
+So if you do A in v1 and B in v2, then the commit message of v1 would
+explain A, v2 would explain B, and the changelog v1->v2 for reviewers
+simply states the A->B change (i.e. briefly) so that reviewers know
+what happened.
 
-Done.
+[ Sometimes it is important to explain in the commit message
+nevertheless why an approach like B is better than A, but you would do
+that in order to clarify why B was picked, not just because A happened
+to appear in a previous version because it was tried first and
+discarded. ]
 
-> > +    /// let layout = ArrayLayout::<i32>::new(15);
-> > +    /// assert_eq!(layout.expect("len * size_of::<i32>() does not overflow").len(), 15);
->
-> See above on `expect`.
->
-> Moreover, since it is a test, it is fine to panic, but recently we
-> were discussing that examples should ideally show how "real code"
-> would be written, thus using `?` etc. instead.
+I hope that makes sense!
 
-Changing it to use `?`.
+> I agree, I think adding a third where the length is set to
+> `isize::MAX as usize / 2` illustrates how when `len < isize::MAX`,
+> the overflow can still occur.
 
->
-> > +    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize);
->
-> Perhaps we could consider an example with an smaller argument that
-> still overflows, to drive home the multiplication involved. It could
-> perhaps be a third one.
+Great, thanks!
 
-I agree, I think adding a third where the length is set to
-`isize::MAX as usize / 2` illustrates how when `len < isize::MAX`,
-the overflow can still occur.
-
->
-> Thanks!
->
-> Cheers,
-> Miguel
-
-Thanks,
-Jimmy
+Cheers,
+Miguel
