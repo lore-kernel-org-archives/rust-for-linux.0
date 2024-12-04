@@ -1,112 +1,133 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CFB4A1A;
-	Wed,  4 Dec 2024 02:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1198A1990C4;
+	Wed,  4 Dec 2024 08:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733279417; cv=none; b=OUmUexim3ldBS/viRtKNfBwsD9B5/UG1mtXc+gectXBoA6GIlFtkTI5anMuGYItJVK7Bi6Ud3NnTdyLU/3KxuABO2Qi2wJDkpGIg38UfqRuCgBn+ITWEgRFCADlj4ZCu2BAEN71WaPBniDm1+anqHgCg8ii1LdGvDnRBs2I/bAQ=
+	t=1733301939; cv=none; b=fxutrGNlXD7xTQWPN8ygyciv76Ve8TkU+57Pl659h9u0Mmuve/M2RCI/eqZ8OTC+BQHwVnL2mR4jbsurUreGGmmk8s6dFwL218RQfB0Hw7/XC9QcUaP7HEPq5RhS9eZmxHyhjvqpP0sFWFl1duSx8jQRQhnMEd0EpsFmQp3i9fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733279417; c=relaxed/simple;
-	bh=TkML1wd3A6nrijWYmjiPifcOFSF0bOEPG/gMs9sM6uI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aAnuiIAgrB4gloSrq48R211txSq+T1lSP3R5SNGs3OnwyfI3V8nNo7yQfIRyZpyA2Sb+vG+544dkJ/OnkyQekLXv3amVZSOyBXP08Ze2rboAMBMsgLbyhBBOvZrCt3/Y/slXdoVCPLjmtuxa1fkjnAvFGIaOe3Vf3JaKVUukBK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JoHELSPh; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JoHELSPh"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21583eec308so4321775ad.1;
-        Tue, 03 Dec 2024 18:30:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733279415; x=1733884215; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TkML1wd3A6nrijWYmjiPifcOFSF0bOEPG/gMs9sM6uI=;
-        b=JoHELSPh+4bSb7rBzqplRl/JPbynIzU+aUl5O9j/Nu0QXTTos89Sse9cnTZlOpo9sl
-         lU1cBxpKNWm0Dk/IqKqR3u2jycsCpfxV8iuAwMRDlPmCn+we8GEvQMUEu7a28qu0EM7C
-         n7jPPuHiPY3uimt5n7Qj6rU9MU3PWLdEK6nD2iHuScPDvlAH7avKKVkDYtrzPGPZrXAL
-         JKPddA3xeU0r3AXwYr5/I8tjxk1UBuH8EQ9/S9yKEt35x7nhBLcDuuSI22tQaQg0CG3Y
-         SdXvR6SWwK8P2c7dICf9d8ol3kwSZTM936OHFCMXum+aF/cGG0QjGnIpgJ53JNw1uFlx
-         2IVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733279415; x=1733884215;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TkML1wd3A6nrijWYmjiPifcOFSF0bOEPG/gMs9sM6uI=;
-        b=QZ5gETqaXRDHOVqYzf5SoAjetOX+g7PX8QEVIy1xGlaBHDNxm1fwgg2qMiu7BYh54s
-         0WpHFxR3jvDaNvmjgi0GaYUalzDUs3Ns/RmwkaRjqJTB8231JgYrO7AVJ/V5Fye+3tRC
-         AhHtS1l8rPJoIDQJqIjx+0uLxwTR1JON6UDRJjuYnJITxg5CBRiw2y+IvQzB928p3Vwz
-         IFxC2WCXFAnWp2KkbrKdnQBQf95I2Fq/8hmPrSvqUuqZQjQS6NJtkpaOwINA6H3Q2+cJ
-         w2U6j+CXfYrmruHm9m4voySBlkSfyq5RqFP4HChll7etGKIfiFJyfRlDlDOV43gNhzIe
-         5HRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdOrei1QgSfI9GfNUITqKTIcY6c0VFF24sognbi1d6h6dIBACC6ojjLh6hwqLMUEU4AiEv1rqvf2wc45fWJVs=@vger.kernel.org, AJvYcCXSIztl4yntykbG/8U4Rd6gHmfA36fbfT17IwZRvdCBVNAZKZL96vaolACmRB7rAOnrq2TDQcTbt+yGw8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+ubSokt4jWG25T1+NmnarZRQ85YYVz+lnsYpnQmWotm1g8+lV
-	VQFjlOQkVvL8nxqRUIQisAGR+p8uSLRL2BoufsplIl5GfNCEwI8G2hfAGOoayJ3lp1O0SZra4WJ
-	oml5lwMqVOmyMRlkbNZOVDOkoTyo=
-X-Gm-Gg: ASbGncsBbEi3DIJg/hBebjVRv2mf5sj/B95AO8u7tVXW4xwq9AgTg9eC02dER2Fy3OO
-	v58uhGC/ArZfITISJlz+4xDYWa7x9abI=
-X-Google-Smtp-Source: AGHT+IHic2zv8qoOFI8sT+YJKvRg09ySS7SrTpOeSgPj73Z0B/8oFUixNvGCq60KY4H4WNgnWM/k+1z/WHTamhHqY6A=
-X-Received: by 2002:a17:90b:384e:b0:2ee:a00d:2ef8 with SMTP id
- 98e67ed59e1d1-2ef0128353fmr2582457a91.8.1733279414987; Tue, 03 Dec 2024
- 18:30:14 -0800 (PST)
+	s=arc-20240116; t=1733301939; c=relaxed/simple;
+	bh=cxBWfMZH2U+jwIDZvQvJEXLqWIblgWr8+ybOCIolbnc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=iqCfdbCDvdX5gAhtrbLAt1OCMXMPrW7rVOsfHaskPq9qwKnncgfuPl1W3EDlEp/alK8qGDg2TEm8k6/I0rvt2ALWRcqjszZnmJDUDk32sl8AtpWI95BoLHh1maTzdWrZ+G+A/SK/X92kGVIKd3SFsvKjrgW+mFkB6M6px5GtAc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dugarreau.fr; spf=none smtp.mailfrom=dugarreau.fr; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dugarreau.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dugarreau.fr
+Received: from [127.0.1.1] ([185.116.133.150]) by mrelayeu.kundenserver.de
+ (mreue107 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1M1IRY-1tLW5B02fK-00CGAz; Wed, 04 Dec 2024 09:40:03 +0100
+From: =?utf-8?q?Beno=C3=AEt_du_Garreau?= <benoit@dugarreau.fr>
+Date: Wed, 04 Dec 2024 09:38:39 +0100
+Subject: [PATCH] block: rnull: Initialize the module in place
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
- <20241204015711.635816-1-jtostler1@gmail.com>
-In-Reply-To: <20241204015711.635816-1-jtostler1@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Dec 2024 03:30:02 +0100
-Message-ID: <CANiq72kT-BEBrbe7LHajc2OcDSfnEAFQ+pu=ko1_KUhbs99x4Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
-To: jtostler1@gmail.com
-Cc: alex.gaynor@gmail.com, boqun.feng@gmail.com, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241204-rnull_in_place-v1-1-efe3eafac9fb@dugarreau.fr>
+X-B4-Tracking: v=1; b=H4sIAA4VUGcC/zXM0QrCMAxA0V8ZebaQtRPFXxEZbZdtgRJHOkUY+
+ 3fjwMfzcO8GlZSpwq3ZQOnNlZ9iaE8N5DnKRI4HM3j0XesxOJVXKT1Lv5SYyZ0J0yUM14CYwaJ
+ FaeTPMbw/zClWckmj5Pm3+Xc24BX2/Que9xuTgAAAAA==
+X-Change-ID: 20241203-rnull_in_place-5e0b73d8300c
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_du_Garreau?= <benoit@dugarreau.fr>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733301602; l=2218;
+ i=benoit@dugarreau.fr; s=20241203; h=from:subject:message-id;
+ bh=cxBWfMZH2U+jwIDZvQvJEXLqWIblgWr8+ybOCIolbnc=;
+ b=+hLAeDCGQO4R2Of+/EAJ8WlTlZvIWp6dmrjrTOXGwjmFyMSxS1/HN+XeuTDv6ZRacpw3rbFCj
+ ymEpD2FdCI3Dw6DfvNbh7MRlIUVg2lE1AUCvKuOPV/2jHV+klaQHUzA
+X-Developer-Key: i=benoit@dugarreau.fr; a=ed25519;
+ pk=l4tCZw3UpEkwtwhwsl5BV1HlPvHlXLQQRh96sL21/FU=
+X-Provags-ID: V03:K1:z91Ow9ERORgj5fKYQthmbNT+6lMCY18u9hLuV/E5/6LtiMa4kk4
+ Wf0CXcNkh4cIajEQC8M//B96h5ZFxQgVV05hyJQBSEjqaGX1rW534aHVOVkfaK5t1WAYRsy
+ cnpJGT0zy2DESxKG7j4vy4JozRvow6GF0xGLUmD4N2NvI6VzbB28xXsv1y+yQBzkuk1mGNQ
+ fgr7NQV81+lgXtbcjZ/aw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:/6RFLwCjgX8=;d84qXBJWLhfQt80OPCIh+zxgg+M
+ M6Nv0N+L+GG0waOM00OTFLldTlBKm6+eLpJeepFlDW7pN24TRw59GzlMiSww58WGiGxbV8eg+
+ wNm+DWbcg0J+tgeL7nmxQqEohtBHXZpEx7FnV9DPnvg69hkvzmBWnVJ6Ze/X4HPBkhJeyi+xA
+ cZWEb/LF4Vw18NjUVAhzPG33wF6btEzgqkhF9uGlQl3HGaXEuc5PEm4lMvZegwy+TslhvC79a
+ GqRpWp+7+zUbohGeqQKb52yltN/kRacOtGlLVpTpLGJWxKqPcD7fj1fo5SwVqCkaaBKnve6nZ
+ bMLYtDgEdVFCxtzc8zhTOQAMcWZu2qsJod2sEii2kVW3hroLfXyhJV+yLEMmrdc6/Kn4JgeaZ
+ eIhY/glpwJtukb05JH6y4oQD7ZQSoOOx4yjhD+FwgPIKG5cx36Wcymwzhu14WDGb4jQNbA08O
+ HsL+m/5vsCYGoxj0LI+0Ed7X3X8CHeUidQXN8ZCvoqnWvPDrIPbRzkzXe76kz3HDIL+LIEvgL
+ 1nnV4Nz+53k5QEoTUlihezzBWJD2oMY+7+AYwJ59vug6lO3zMF7yojLsEjWQOON5Y3l1RZT8Q
+ TPtMVve/wJJO7gz56ExFitPMNY6CLthRm3hPCZOvmADVU16nTMbIR8xZgytFsLU6hpaUrXKJ2
+ FZaDWG1jEUI08NHOx4Sd9DkcTFsEc56XbKHygtX8cY+KJv93Hh4Z3o4rEbQQ0dxT3AMTtMD5z
+ h3Rapi1BICvqXRHRYAEYcsHMdQo7vxIg7rIdoQSaB3LUfA6lktGXLss+osaTNPFWq7FUr+1Ib
+ 32CPdyQCqtFUJp5RnymurtjPGwp1xcloeoHo4xbcVmVIcSWQriMmJERaxqNzXWmqwnYs0SokP
+ ZMdVjLYx/+vTjBLAfZboWHGbGvuR2nAcBUp9abo3DV5C//51Eo9FPKqN81AjJ9kQW+9ASFJP+
+ wyiqHOmFtaHaUJYln1/5w+aLOeCuw08wB7LZidz8xQUvFk+qMsBtkDxkO5I1Why/gCrGMoyl5
+ XT/NpeEhS9KZ/VO8HPYaw3vJuia5FJnvdDr6DyG
 
-On Wed, Dec 4, 2024 at 2:57=E2=80=AFAM <jtostler1@gmail.com> wrote:
->
-> Looking at the documentation for sending patches it's unclear whether
-> the commit message for a v2 of a patch should be modified for cases
-> like this, or the only changes should be the in patch changelogs,
-> after the marker line. What would usually be the preferred course of
-> action in cases like this?
->
-> Same as above about v2 patch messages. Should I add it to commit, or
-> include that in patch changelogs?
+Using `InPlaceModule` avoids an allocation and an indirection.
 
-The changelog between series goes outside the commit, and is meant to
-help reviewers see what you changed (otherwise they would need to run
-e.g. a range diff and visually inspect it). The commits themselves
-should describe the changes in that commit, ignoring what happened in
-other versions, and it is meant for the future to explain what the
-change is and why it was introduced in the tree.
+Signed-off-by: Benoît du Garreau <benoit@dugarreau.fr>
+---
+ drivers/block/rnull.rs | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-So if you do A in v1 and B in v2, then the commit message of v1 would
-explain A, v2 would explain B, and the changelog v1->v2 for reviewers
-simply states the A->B change (i.e. briefly) so that reviewers know
-what happened.
+diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
+index 5de7223beb4d5b4224010c86fca826967a019c27..6cdd2589c4621369cd57af66a2b817889321ed15 100644
+--- a/drivers/block/rnull.rs
++++ b/drivers/block/rnull.rs
+@@ -31,25 +31,31 @@
+     license: "GPL v2",
+ }
+ 
++#[pin_data]
+ struct NullBlkModule {
+-    _disk: Pin<KBox<Mutex<GenDisk<NullBlkDevice>>>>,
++    #[pin]
++    _disk: Mutex<GenDisk<NullBlkDevice>>,
+ }
+ 
+-impl kernel::Module for NullBlkModule {
+-    fn init(_module: &'static ThisModule) -> Result<Self> {
++impl kernel::InPlaceModule for NullBlkModule {
++    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         pr_info!("Rust null_blk loaded\n");
+-        let tagset = Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
+ 
+-        let disk = gen_disk::GenDiskBuilder::new()
+-            .capacity_sectors(4096 << 11)
+-            .logical_block_size(4096)?
+-            .physical_block_size(4096)?
+-            .rotational(false)
+-            .build(format_args!("rnullb{}", 0), tagset)?;
++        // Use a immediately-called closure as a stable `try` block
++        let disk = /* try */ (|| {
++            let tagset = Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
+ 
+-        let disk = KBox::pin_init(new_mutex!(disk, "nullb:disk"), flags::GFP_KERNEL)?;
++            gen_disk::GenDiskBuilder::new()
++                .capacity_sectors(4096 << 11)
++                .logical_block_size(4096)?
++                .physical_block_size(4096)?
++                .rotational(false)
++                .build(format_args!("rnullb{}", 0), tagset)
++        })();
+ 
+-        Ok(Self { _disk: disk })
++        try_pin_init!(Self {
++            _disk <- new_mutex!(disk?, "nullb:disk"),
++        })
+     }
+ }
+ 
 
-[ Sometimes it is important to explain in the commit message
-nevertheless why an approach like B is better than A, but you would do
-that in order to clarify why B was picked, not just because A happened
-to appear in a previous version because it was tried first and
-discarded. ]
+---
+base-commit: 4d6f8ba6e0a7b0627b4a559747948ee0d6797a3a
+change-id: 20241203-rnull_in_place-5e0b73d8300c
 
-I hope that makes sense!
+Best regards,
+-- 
+Benoît du Garreau <benoit@dugarreau.fr>
 
-> I agree, I think adding a third where the length is set to
-> `isize::MAX as usize / 2` illustrates how when `len < isize::MAX`,
-> the overflow can still occur.
-
-Great, thanks!
-
-Cheers,
-Miguel
