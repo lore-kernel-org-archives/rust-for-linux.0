@@ -1,140 +1,170 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8C8205AD6
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Dec 2024 23:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00393FC08;
+	Wed,  4 Dec 2024 01:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733268396; cv=none; b=aoFtpf+GKFs++40Ug37ajI71jzjvdcmPnC6u7TPyZd9ZWG/dMYyleSrtC2dW+uNkUX+g380qPMz+er4oPbSVvZ8tzvdBR6yA2sYM3REofXIkYKi2mxbrfgCxAV2aDh/6yr6HNtY3fNyVOUrlhhHsstRGBKrzFReInegRhOkx7Lg=
+	t=1733277435; cv=none; b=GCwU1u5KxkSNScgR1m/OmAHSAe9Tim15xC4j0pWSrvE/s7o4jmnagPXsXIBLpW1mIMJZTqR9oiOsZMlETtDc82ewx6MSQj6TEyTUkbShNNBzpXL8xBAD0ISQa++CYYkSPrW1Kg5FUi1whARJedxBBsUsg5WXag0Uvr3kXH6JgV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733268396; c=relaxed/simple;
-	bh=A+NygRxfATzmDDYl4BW+aoTxyFsALc+e05mYyvBpsWU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZDxxxwjxrH3JAqOOF2Te7KH8gLbBTCQid+radA3Wm1I/Tm7YRJPeo0Z0Jpxc1nAyjdQs5MLHjolpHpUxZNh7puA76sU0quXwHmE1qXyIoePFfO+4n2pBwfo5fMXhCaTA6q+Er63yBBjV15Q7sTbBoI+HKK7YzgsYLPihxGVc1MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g5GZLFX+; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733277435; c=relaxed/simple;
+	bh=PX1mmHn/QtMjg2I3xevbnz7ToycK/QmBTCd0l9QaCgo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DnyiYzcXejNqYl7UgcFlld/FoMhYKM/YQNNDctz8+WRbK9shFePYZ8c8Ux8W2zLT0qCM5MmYT4rKsXzuvETFU1Cp4r16/9ZVT5ijsc0xf2bjYrbLUpj/yBET1fHoKgZqLahZXO8a5gvhAw+4SVgWix92ekeSxHAK5OlTcD8BBf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3gB1ifz; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g5GZLFX+"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d10f713ef0so565388a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Dec 2024 15:26:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S3gB1ifz"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-215b13e9ccbso22220325ad.0;
+        Tue, 03 Dec 2024 17:57:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733268393; x=1733873193; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1733277433; x=1733882233; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h0gsOOV1IK0tbYsC9eBpU6WfUiWf0dqVzzhWYdaHF04=;
-        b=g5GZLFX+dNpdx1YYUJf5LjvBATqDc4vNwiLsd5Vg5f/Q0v1vpIo5LbOagutF6tWpuq
-         6YPnniNdcTWkE0F9Pvnvrnyoz9rQRpLflynsw2tat7MCaNvjdvbRURLlw6ilPDuWJGjM
-         jwltgiwduh6ZCo5qqzKW6ZY9o5YAhNmfK1NZ7+gO96u9qTwIAKxCwQT3n6BFbosUl7NU
-         KJy+Azpyyugs2JXMN6hZZfh1JmHZOlJqSATah+9PVo8y6wgRdTm6n6ssGamQGnEs+vHT
-         4lOi6RHdVh+hafoWNSS7MvnG4IuACOc9ad8h6t6tXTl5T+0V+0QY0DDdQXw4VU8auBjZ
-         kqHQ==
+        bh=p3191qi+yrf9ggK6zVNjyVofvrDWMeLv8oqbIa7X5iQ=;
+        b=S3gB1ifzPc2fjWGcEunreCD0a/p/NX2ij4fVW+4RMsReLvU5tMellc3gYo1rlIsJkq
+         lINHKkRYQAXigTa3/v22zOkYYgQSRkl+gT6tcx5OnYQsO74+754VX+J5htRZM+4/AlKL
+         V+t+MVy/231qxBIXUPeXhk5LvSHWVoDfO1tcboizIuRXvM3dND7dGfiNweYPCAAr3Q1w
+         pNtX5v3OFyLBzshhF4me0C4mMcMzTYbyJAm4QjwM8S6BOjWfP6/QUurIb2+ea6DcVE+H
+         Xo1fOAqlaq9bF/jc9X3e8XRY4Om0POh86BY9dQQcCoGRBMave1FyyeDpu5EkPTfdiUm3
+         gzaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733268393; x=1733873193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1733277433; x=1733882233;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h0gsOOV1IK0tbYsC9eBpU6WfUiWf0dqVzzhWYdaHF04=;
-        b=oGGxxOzx8BkZENoFhxghJssec1bB8WDyZTpp3lD3DHUDEFFhHJ5qAPLJBSjRTXEzoZ
-         kk6P6dK4JmN6jlcKw1z2oqVuAcWfzItPHnIG0vONMy9zGZfcV9pIjkkwXIUWNUCLwhEc
-         bCbAxbpnNPV8VUnHmFLZiVgq45xCNlbcHjA4PX0aRLJ51PB9nmYNVwbGI9ZUuHwBRjte
-         mveFEZNIMTMH0RFsv7a1UuCPzoEAenohCokAOBDXaD16Ov44stTG8zH30TY2x6FJm6VJ
-         5uEmlEZ/D5eVUdY/kTDyrADMele3NxCmjUQrc+S2oDtXWjt2g1rwKUOBzVx/5jQ1U2E0
-         1OnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCwgp0jPY2b/8CVlpwwHx+rBLveyaxxwk3A/QxSDvlkAmhJI3YJiNvmA+d3a0Ulb5u3jUFtzZS9Zoxs1uiJg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4V6oNX/4b2aBn2gaDin1kT4cTHpFfsobqhugLNxxBYC2Ezzol
-	2KLhq9gSeZn4Qr8G5SH3KAkCJybVE2gQQa07szoDE8A3lNdcIqFtpeI9EzYJusov6yXagcDJ+wy
-	hHZa5ptn1U2GY7JVAK44Jtt4wY8in9ZVDyeT6
-X-Gm-Gg: ASbGnctT3+kLP9Ouoqv03HcQKqTntFoQSVPncL0GiO0JrnUndZ8CTHimSNU8sAz5Irw
-	BXa9ktgbbAoktr/x1Y+/QlHd602PXp0t5NjtJVYGA5OV6gTZiUQzEIqS7AD+4ilVI
-X-Google-Smtp-Source: AGHT+IG44HltO60JYgYmVvMEo3QlcFo1P0mYiAAGDSp4Skz4zAxbxt9ZfqfNSvUY79c414MNywqlUX98rVVFvuuFn2Y=
-X-Received: by 2002:a05:6402:1d49:b0:5d0:e9a8:4c96 with SMTP id
- 4fb4d7f45d1cf-5d10c2498d8mr3918350a12.9.1733268392481; Tue, 03 Dec 2024
- 15:26:32 -0800 (PST)
+        bh=p3191qi+yrf9ggK6zVNjyVofvrDWMeLv8oqbIa7X5iQ=;
+        b=DT7norpEe5VrmfEc6WIyGMkENs0g3s7RbiGq5KjOBS1lNC2mD5SfL+zag+H1uOv9fs
+         BZmnP7NRXSeRC4yCjF1ub8YTjRgFGa4E3Sc3VtFzObLj97sXoh/BAtP8hSIz5JN7Pe4J
+         U8M1PQ10EKmMcQdonzIDE1ltB41IXDgViMA3UtNGE7fyR+RLGQConw8cUWcC86zdNnK7
+         tcS4W7iLQu+EMgMAxzC+Jbaj8mbrVm0ksj9Jp1eQfykLMTQHoZS20MU4TqL1UmxUpOlj
+         2lzf1LWdeiNBTWsx5sFIJa8zaUphSL3kwOd8xmQrqtAV4AgmLzxgNM25lyjGbXntqthm
+         Tpfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUg2JXH28VcyuumEF8nhi7jLuHit8wWavZfBCIi7l/qwQu2n0ZB+dZSYf/XVe6Z5tFXHfJIOt7Z4oYGkB2Bx8=@vger.kernel.org, AJvYcCVvg+nRG7Md+Z1J7Hzgf49TOJ8S1yuWv5i4HW3u6LYqPEaQLWFZ9FKaUi/yutpCTYCIQQwHljV1CJr7mrs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRHWDZZNYDdGQjpRBUdJyvY+Xmah1s6BkIQuJhZHdPP9vaWr0v
+	OgYhJoU3iY+3DWIfJAlmml4BsS7iH4/+6DH10YRzN8z+zHGZkSWBrZlx4opA
+X-Gm-Gg: ASbGncv91qpslZuSuP4L6T+Mdbhc1J/0SYpO54eEqbIcvtRyaBKLd0ebtWxj00HEyCj
+	jHuddLCnDUt8bo2okeNJ9g1KIMUUueZ4MmIHDzV3jZhLlgiiovvy/4GriESxHiuoEdanDrdYkow
+	koqr97rYrS84WhUAQ8p6VfTTQimbhTWqLykwYZ39JniIxh+RiVxZr3r0pmRaLNEbXgwZz9QI+v7
+	/38gMqQmJOm8F65y+pd7oJpxlXBh+577Lm1t8jyu8+auee0TlCRsEBkDS33UqgPo2XROi0LE0AB
+	A8S402s/4B1ucBR4nYLzX18HRQ3N
+X-Google-Smtp-Source: AGHT+IGWqL11z241WcLN4kNqYdPWBNXYQA1bJwSTWmVM3neN+2CywO6LKUdpn3jBA7M/92Wi+Gn/ZA==
+X-Received: by 2002:a17:902:f70b:b0:215:7287:67c2 with SMTP id d9443c01a7336-215bd15deddmr63921295ad.42.1733277433178;
+        Tue, 03 Dec 2024 17:57:13 -0800 (PST)
+Received: from lordgoatius.clients.willamette.edu ([158.104.202.234])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2159ebcf60asm37977515ad.108.2024.12.03.17.57.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 17:57:12 -0800 (PST)
+From: jtostler1@gmail.com
+To: miguel.ojeda.sandonis@gmail.com
+Cc: alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	jtostler1@gmail.com,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
+Date: Tue,  3 Dec 2024 17:57:09 -0800
+Message-ID: <20241204015711.635816-1-jtostler1@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
+References: <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112184455.855133-1-ojeda@kernel.org> <CAH5fLghFZTG2X_mYE2yGJwPM31NrJdkA-cpZTCYsdghR8YdY8Q@mail.gmail.com>
-In-Reply-To: <CAH5fLghFZTG2X_mYE2yGJwPM31NrJdkA-cpZTCYsdghR8YdY8Q@mail.gmail.com>
-From: "Hong, Yifan" <elsk@google.com>
-Date: Tue, 3 Dec 2024 15:25:56 -0800
-Message-ID: <CAABy=s1sEzJZBR6Mt+ujFY_SSbU_OgKDtOs0+bxXQhTo9QZtGA@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: add PROCMACROLDFLAGS
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 13, 2024 at 5:34=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Tue, Nov 12, 2024 at 7:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> w=
-rote:
-> >
-> > From: HONG Yifan <elsk@google.com>
-> >
-> > These are flags to be passed when linking proc macros for the Rust
-> > toolchain. If unset, it defaults to $(KBUILD_HOSTLDFLAGS).
-> >
-> > This is needed because the list of flags to link hostprogs is not
-> > necessarily the same as the list of flags used to link libmacros.so.
-> > When we build proc macros, we need the latter, not the former (e.g. whe=
-n
-> > using a Rust compiler binary linked to a different C library than host
-> > programs).
-> >
-> > To distinguish between the two, introduce this new variable to stand
-> > out from KBUILD_HOSTLDFLAGS used to link other host progs.
-> >
-> > Signed-off-by: HONG Yifan <elsk@google.com>
-> > Link: https://lore.kernel.org/r/20241017210430.2401398-2-elsk@google.co=
-m
-> > [ v3:
-> >
-> >   - `export`ed the variable. Otherwise it would not be visible in
-> >     `rust/Makefile`.
->
-> Despite the missing export, the previous version worked for us too.
-> I'm not sure why that is.
+On Tue, Dec 3, 2024 at 12:48 AM Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+> Thanks for the patch!
 
-It happened to pass the build when KBUILD_HOSTLDFLAGS was empty, which
-was the case when it was not exported. But that was definitely not the
-original intention of this patch. Thanks for catching it! I have
-verified that v3 correctly exports the variable to sub-make and still
-works for our case.
+You're welcome! Thank you once again for creating these opportunities!
+
+> A few procedural nits: please Cc the maintainers/reviewers, especially
+> the main one (Danilo) -- for that, please see
+> `scripts/get_maintainer.pl` as well as e.g.
+> https://rust-for-linux.com/contributing#submitting-patches for one way
+> to generate the arguments.
+
+Thanks for the pointer, I've got that fixed up now.
+
+> The "Signed-off-by" tag normally would be the last one -- that way
+> people see that you added the other two rather than the next person in
+> the chain. It is good to mention the tests etc. that you have done,
+> although normally for a patch like this it would normally not be
+> mentioned (since all patches that add an example need to be tested
+> anyway).
+> Finally, a nit on the commit message: normally they are written in the
+> imperative mood.
+
+Looking at the documentation for sending patches it's unclear whether
+the commit message for a v2 of a patch should be modified for cases 
+like this, or the only changes should be the in patch changelogs,
+after the marker line. What would usually be the preferred course of
+action in cases like this?
+
+> >  /// Error when constructing an [`ArrayLayout`].
+> > +#[derive(Debug)]
+> >  pub struct LayoutError;
+>
+> Ideally you would mention this change in the commit message too -- it
+> is the only non-comment/doc change, after all :) It is also important
+> because, in general, so far, we have not been using `expect`.
+
+Same as above about v2 patch messages. Should I add it to commit, or 
+include that in patch changelogs?
+
+> > +    ///
+> > +    ///
+>
+> Please use a single line.
+>
+> > +    /// ```rust
+>
+> You can remove "rust" since it is the default.
+
+Fixed both of these.
+
+> > +    /// use kernel::alloc::layout::ArrayLayout;
+>
+> This line could be hidden -- it is `Self`, after all, so it is not
+> adding much for the reader. We are not fully consistent on this yet
+> though.
+
+Done.
+
+> > +    /// let layout = ArrayLayout::<i32>::new(15);
+> > +    /// assert_eq!(layout.expect("len * size_of::<i32>() does not overflow").len(), 15);
+>
+> See above on `expect`.
+>
+> Moreover, since it is a test, it is fine to panic, but recently we
+> were discussing that examples should ideally show how "real code"
+> would be written, thus using `?` etc. instead.
+
+Changing it to use `?`.
 
 >
-> >   - Removed "additional" from the documentation and commit message,
-> >     since this actually replaces the other flags, unlike other cases.
-> >
-> >   - Added example of use case to documentation and commit message.
-> >     Thanks Alice for the details on what Google needs!
-> >
-> >   - Instead of `HOSTLDFLAGS`, used `KBUILD_HOSTLDFLAGS` as the fallback
-> >     to preserve the previous behavior as much as possible, as discussed
-> >     with Alice/Yifan. Thus moved the variable down too (currently we
-> >     do not modify `KBUILD_HOSTLDFLAGS` elsewhere) and avoided
-> >     mentioning `HOSTLDFLAGS` directly in the documentation.
-> >
-> >   - Fixed documentation header formatting.
-> >
-> >   - Reworded slightly.
-> >
-> >          - Miguel ]
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > +    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize);
 >
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: HONG Yifan <elsk@google.com>
+> Perhaps we could consider an example with an smaller argument that
+> still overflows, to drive home the multiplication involved. It could
+> perhaps be a third one.
+
+I agree, I think adding a third where the length is set to
+`isize::MAX as usize / 2` illustrates how when `len < isize::MAX`,
+the overflow can still occur.
+
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
+
+Thanks,
+Jimmy
