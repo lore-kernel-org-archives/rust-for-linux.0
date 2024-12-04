@@ -1,76 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8B01BBBEE;
-	Wed,  4 Dec 2024 13:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1291C1DFE15;
+	Wed,  4 Dec 2024 13:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733318045; cv=none; b=GxpHy5tISQ9mDUeRppYNukwZsTvcm0D7kF57Q+yjQNkTOj/uH4X37b/YJz0uQqpicsh1HhIlzyhGjA5P/LL7k83L98JmZF25ruhCFlZ0RI17Gwm++tY7aMOY3RcxZaeacAX9xm4Rq7ofIkmdcw9j36YUhKpyft9Me/1lpcAD69M=
+	t=1733319712; cv=none; b=b/nAVHWVQz0Py4VciLjXH8+Bn8CLHhfyhvmCgZRhFPsgnAEWjZThbb1RJ6MS0BGueGCSFuQarfgNlHFX3byE9gzFU2rMANL34opxu9FG5VIII50GWtO1g3AQI6r3CiUw2oDvCPODb+MbQq5IO0Dj+wVqC0TYD4daCNsA53vpahk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733318045; c=relaxed/simple;
-	bh=/c9ieBp+mfvqCEIAj0gRzcGrDmyscQ21iwqRFMJx20M=;
+	s=arc-20240116; t=1733319712; c=relaxed/simple;
+	bh=8YrSi64SILEzk2L3gzAG7q9pm11+7mhNeKqXUDDxahI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Kl7sNTLKAQf/NEHlc02+Ep88I9JrfEL/CrWatcNIN1wOPl5wnqYfh7diCeGPFIQ13D/+IDCS+Ia620Ejp1ouJ1hfKP6pSOnxTFIuytJqhMLEf/F2X9nbV/kCujGP9bNerR1aJV13mv2GuOvTZ0TetSHNsjIk/REKtzs27Ihm5KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qcZ9mY1s; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=S9sShjKXflMgwyb5VM2vHN5J8mLUv17RFyBcD2eJfe5y+kKx4d//l79MjMQrTW9QKQbvs1MiWFj4c0SO68PB7kg2O5w1CBKFkaLonCbsLVEB1uGrhlgH4B9DG3ooYdh1VyvHz/Yoxysjr2if00vmoeZabhiWPpmQR8hWyziRjoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTqDS7VV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qcZ9mY1s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9B7C4CED2;
-	Wed,  4 Dec 2024 13:14:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTqDS7VV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CB0C4CED2;
+	Wed,  4 Dec 2024 13:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733318044;
-	bh=/c9ieBp+mfvqCEIAj0gRzcGrDmyscQ21iwqRFMJx20M=;
+	s=k20201202; t=1733319711;
+	bh=8YrSi64SILEzk2L3gzAG7q9pm11+7mhNeKqXUDDxahI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qcZ9mY1sULYXWAX8IKOBx8AL0CfEL0cwiI5Smbg/7/R7c6F14KAvoTCWKVNVatADp
-	 8LWGFdD6njdEKFmkz/uUGNE13dGsgPvNeaZeFgRcZGoH8x9yFch/0SiuPYk3gVN7OX
-	 RdMZCP/Pwq2NdMphbwDge9mR13opnqs4hhseV72NryYXDCEsHkDce8KlEPIW9eutlp
-	 oFHm0SEpJFw2HHxf/xCugK6Y6DzwuPvTQqjbPc5Clph97clwSp+eL8SrBVf0mQxNwU
-	 VMbhKg5CzqzKbbqHSLMnGyECHD3KDxWg3mw9D7Nc86u/Jgi0bzfqcwFoZ0abbWZs+R
-	 Ysg5W2lch4Fvg==
+	b=hTqDS7VVpaRWPd1BV0c9QaY7XdOB+ajT1wweOYxHOO2/7mYdFmKYWpPwudq/4Cb7G
+	 6k/zVVJQprfeFuKP/Jols+znDHT8Q1UcehN0Y5R9W1VM+kcbf9D/yDKCzZq1JIFJqd
+	 DQZIJkQLzI9IHa+U5tt2kWHRpeSNjIaVhnkIfzENnNvwx12Uja1qM+6xhW02wsh3jc
+	 CVafdPbOhK8AfR8YFXMSXRGc0xCTm1eoRQWKOe8v8ILgkvLxBMTXIimZWFBhX0CNAo
+	 IiBFua61jkCc3ZBBtYMh9dcTtzdNSQ7atXpqRsZa2HNAvD5WUd8Uvn2qPFrkIDNeBm
+	 Ugbx528nA0GRQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alistair Francis" <alistair@alistair23.me>
-Cc: <linux-kernel@vger.kernel.org>,  <benno.lossin@proton.me>,
-  <boqun.feng@gmail.com>,  <me@kloenk.dev>,  <alex.gaynor@gmail.com>,
-  <gary@garyguo.net>,  <aliceryhl@google.com>,  <alistair.francis@wdc.com>,
-  <bjorn3_gh@protonmail.com>,  <tmgross@umich.edu>,
-  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>,
-  <alistair23@gmail.com>
-Subject: Re: [PATCH v4 00/11] rust: bindings: Auto-generate inline static
- functions
-In-Reply-To: <20241114005631.818440-1-alistair@alistair23.me> (Alistair
-	Francis's message of "Thu, 14 Nov 2024 10:56:20 +1000")
-References: <yZdXTg82eCLGHsaNBfAwwYZTGa63yzxI2YXoaTndUyJzyVN60hPrWoeQoXdrrh2hnRIeugFXvrb3nbq2bpD6Ag==@protonmail.internalid>
-	<20241114005631.818440-1-alistair@alistair23.me>
-Date: Wed, 04 Dec 2024 14:13:48 +0100
-Message-ID: <871pynfv5f.fsf@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: "Lyude Paul" <lyude@redhat.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Frederic Weisbecker"
+ <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,  "Alex
+ Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 04/13] rust: hrtimer: implement `TimerPointer` for `Arc`
+In-Reply-To: <CANiq72mkBufEV43HcZZVKB=1UDxOrpweFxeZJBXt6U0=vPMsdg@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Fri, 22 Nov 2024 13:36:25 +0100")
+References: <20241017-hrtimer-v3-v6-12-rc2-v3-0-59a75cbb44da@kernel.org>
+	<20241017-hrtimer-v3-v6-12-rc2-v3-4-59a75cbb44da@kernel.org>
+	<25I5c2B_KkmqpaLqb6jsZyMd9WMhQbTaIKyUYY5cKa8bvR7--HvRiXJ_5cDiyde31tnivT5_C_5IJ6XvLqCusA==@protonmail.internalid>
+	<73814ac7e363af44ae6e410f101feb75e94244ef.camel@redhat.com>
+	<874j423p7r.fsf@kernel.org>
+	<xSW32IhgoSjRIqCoAHtm1UkO4trcAg7QE1-2cite-wE1dNgIJLtZwnRjMGlSP63MaqOqUjXdmiMcOWhedRz4Yg==@protonmail.internalid>
+	<CANiq72mkBufEV43HcZZVKB=1UDxOrpweFxeZJBXt6U0=vPMsdg@mail.gmail.com>
+Date: Wed, 04 Dec 2024 14:41:39 +0100
+Message-ID: <87wmgfefak.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-Hi Alistair,
-
-"Alistair Francis" <alistair@alistair23.me> writes:
+> On Wed, Nov 20, 2024 at 4:52=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> No particular reason. It is often easier to rebase things around when
+>> they are on their own line.
+>>
+>> Are there any code guidelines to follow on this?
 >
-> This series adds support for bindgen generating wrappers for inline statics and
-> then converts the existing helper functions to this new method. This doesn't
-> work for C macros, so we can't reamove all of the helper functions, but we
-> can remove most.
+> Not yet -- we have a mixture of styles, though we typically don't go
+> to the item-level like in this patch, and instead have done it closer
+> to the "Crate" or "Module" styles.
 
-Are you aware of the helper LTO patches by Gary [1]? Can you tell if
-this series will compose with the LTO patches?
+What is the rationale behind this bias? Perhaps we should do a pros/cons
+list before settling on a style.
 
-Also see this Zulip thread for discussion on the LTO patches [2].
+It is arguably easier to merge and rebase when using the `Item` policy.
 
 
 Best regards,
 Andreas Hindborg
 
-
-
-[1] https://github.com/nbdd0121/linux/tree/thin-lto
-[2] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/LTO.20Rust.20modules.20with.20C.20helpers
 
