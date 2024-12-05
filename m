@@ -1,140 +1,264 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DCE217673
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 12:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25584219A7B
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 12:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733402214; cv=none; b=cSiV5dKF1hZSTo8Vm9hNk/5Y2qg82Ye/0xZDyqv/VwAoTHkNTOFYIhq2vwVRB+SB/PKNhr4OV7lzcSMA9r9lH/pmG1IxhkjQcokJ75iUH3t6u+gT5XpqvNN61i+T/e8si6b4EyHSHjAR1kxjYSY/0JlwLVwH2CeWTpofDXRGH84=
+	t=1733403541; cv=none; b=T72bzEuZgktfU2lpA05RqZcI6q15tIY65BEb7OKzgkm3Wd6ImM+Ht685bL3lDB7/EefCZhaftsuMqNbJ2RM7CmV/vC+3iPOArJo8M2t0QUE7kL1I7S5CAnii2dwM1p1VL93h9xybJxko+dvqzsdEuGQ/Wp+nQZ/KZop6WrfX+DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733402214; c=relaxed/simple;
-	bh=7iQZviBWsipCWsckJ1L2w9D6utBoX7XmVaFR1kH1NlM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oTccMZpyDR9CQmefT/zHdGYpqcWu8hf3nVLf8+pOpdWYPv0J/c39JzYyzZpiN+QmvNuW6fbiuqLE0/OV8JK7NtxC+SHHK4kgEMth9o/I3jbi3Q1jTS1GG+8gbK1P1BCHQ3noksO61ILQHWx7cItuT6UAl8d5RqmSCTOPP2MEraA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xuHLzA05; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1733403541; c=relaxed/simple;
+	bh=c4S8Cip503cqeAlaihxldrJBnX65f9gviHBiGOmbxh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qvpECJqgPwxKwuZ1OJ9gB/bcYAcHh5R+wpMUTKTMRXjo6yOn44o1RWYt/3EMbOHP8cMP80/+bQ8tJqKg42BsZd5MEmpK7e+oY93BM7xZZGvR7By60ejYDqKcVqVHsXswEpifdm//kn74OUbWclVSvdg1P0stEZcTmNI5C8IASCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KX2VqDeb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xuHLzA05"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-434a9861222so7583905e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Dec 2024 04:36:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733402211; x=1734007011; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vd2e/+7e53PEmvCulx9h5rdqdJTtvKXM/ReO3/927u8=;
-        b=xuHLzA05P8WkAyqP51U0dAe/HKz9MZDK0M3bXeD1Js6GMNjA2YjpUnwkk/RT41EIHY
-         8LSEt6sE4Cr5juL58Elq4B+xiR8E6c4uXX8TCUm/6zXwOyzUl4MjmyHi9EhPwus1FGzx
-         N364NxEoC42jj4/db/xjUDEc3rSOJIkgk4WoZqSoy7wV4VfSvZCRxe1yjx7cxjELAHqW
-         OSDOr16e5YSK1HApY29pRkcwjdDYx8bg+Im6pKtGnA5uJWNvaloovrwPKySSzIciLHlA
-         3RUbH9dMJ6++sZ5PjBcnR8+XMfDBd/14EtmY2/6b+/cYtdNLDLhAQe9eTeQGYtupfrx6
-         xv6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733402211; x=1734007011;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vd2e/+7e53PEmvCulx9h5rdqdJTtvKXM/ReO3/927u8=;
-        b=cHoDXUDRDHGXkxsDGuEAZnZV6vcQYh1wjOqz5TTehbm5M68XYZ+vQ0BVwaZOI1jReK
-         ZtFNqJQoRY0dMwYqoQEXzvyzRnNxsVGaBH7lzunbXl13w0z/r9v9qqobYGlgWTGdqgDg
-         UOkamXCPaXXVnUaCLLN9TtRNAOGP8FsS+GOivTGIZ6uYP48ve6kRcEepI0kPTC2HSyPd
-         ggShyehK3s1jX3UUJnD1do+5Vw4k7ZlF7MotoZXQyClmLLxiLav4ZrfDP0+VRI3uTtFJ
-         cO0bbAvTMO1pVmjHNYevIkUEfND6Ng+xDP/lLxiUw9Juym/GryEL18czgJ4bGIXWmodK
-         f2Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYziDdBPhUV3uwhcYY7PfOXX9xOim64+GIhLjmRA07wjN2imoroPhohlUX51A9B1AR7zBdrM4gZuoC0gADQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxbzk99qFRFaUoJZBQiudeWxnN5K9NQ688tSnGztYv56qSDk+fx
-	Fr41QSrzEXnrpOkARPZebltzEcIAKNweS/4jAwbDftXyugVTQgSK8lLh3NgLrT6lAGyTdojReHK
-	IkTJxNWz+HCUKyQ==
-X-Google-Smtp-Source: AGHT+IFStT3/JjmB+ZduzLED9m5mcG/6ApdoyjMwuoRZ3NBOmr/f6c52FU11sp9uLvVjDAHF+X0r73Z9cmx8MnQ=
-X-Received: from wmbhi24.prod.google.com ([2002:a05:600c:5358:b0:434:9939:10da])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1a87:b0:385:e4a7:df0a with SMTP id ffacd0b85a97d-385fd436393mr7502559f8f.54.1733402211456;
- Thu, 05 Dec 2024 04:36:51 -0800 (PST)
-Date: Thu, 05 Dec 2024 12:35:51 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KX2VqDeb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733403538;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1ejPSUyE1VwI22socUQfc/dY5FGc0qthNmoqEGE+4rk=;
+	b=KX2VqDebtgm24bVdZe8vJc3sOBzUp15p5uWV2PgUCKrKQtG9ORW9b1S1iG34cDy0ELMEjW
+	B/T+YN5ItchFdHZh4PEnHRqM5+6CSgIj4KB/e+XIhzHrWz9+0xC8kn0eABqh84WD4MA4ko
+	lYVUWdCCqU+fc98SwmJQTH6NHRN+5F4=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-az_aVD5aOOeUSD3aRUB0bw-1; Thu,
+ 05 Dec 2024 07:58:55 -0500
+X-MC-Unique: az_aVD5aOOeUSD3aRUB0bw-1
+X-Mimecast-MFC-AGG-ID: az_aVD5aOOeUSD3aRUB0bw
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E98DC195606B;
+	Thu,  5 Dec 2024 12:58:52 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.194.217])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9EC981956052;
+	Thu,  5 Dec 2024 12:58:49 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH] drm/panic: Better binary encoding in QR code
+Date: Thu,  5 Dec 2024 13:58:36 +0100
+Message-ID: <20241205125841.1646731-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIACeeUWcC/x3MQQqAIBBA0avErBtQqYiuEi3MmWwgKrQiEO+et
- HyL/xNEDsIRhipB4EeiHHuBritwq909o1AxGGUabVSL/raBMF523hjpcMiLpa7XhpSboWRn4EX efzlOOX//X3clYgAAAA==
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2238; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=7iQZviBWsipCWsckJ1L2w9D6utBoX7XmVaFR1kH1NlM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnUZ4ptyh0m08QFCk2CLCvc6ekmeolvC6xwJJmk
- zJyrwSRTHWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ1GeKQAKCRAEWL7uWMY5
- RohGD/9hgHc0FMDO7Bk0Ysves93jeDpXLwhJe5VEfErnuksTCYpblaUxw+xokgWFpQEEHlXs+3z
- wwgc8tMZL4AC3b6OrIQ/kR5sFKKMievvs3kHrHAFnDfDjjEbry+llhUNuhQc/Tk3ZMg1ko39Ica
- lGWpMDJYPzlo175jqz8kotzQGcwPR3HtiOrqM0aZCJDrb7N63O9pl1B7/bnQoFSv3IwmfLrR+Zp
- AmlO7uSbfdLCP7DXtBz8D4QMBpHnFnDl5HYsmNotRyV4yy39VIBkhvjbMkXiz9N72sutjmmI4tt
- fVOp25hNU4r6CfhkdprQJutbzqSiZgUgrETOIhS4XhLMeNg11hh3XbdiYxYrTaIM+WcDu1ZANE9
- jQ5NhZYGsjQ3wmmksy5dahx4s89V98iFVZFbFCknA6ayth9QNIWzy5AM3g7u8cuc2ZrZbgHzVIv
- zI/r4cTiDUYYtKeanAI4NfUJjZ7cctbBabFAeo6nbC4hIJmFY4hxuVHPAlaeQ6DRNqfdDWRCmk8
- 5TAih+8oevM/nDOt2QnavabGy01XIWlw83g2WguxFDBZbD7i3bmQJsjpzY0gFLd7H3d6rt9IMUV
- p8K84SyAsgbOwoNnxbj2qfJaOKw6qZTB0lANW0tjyFbOYzIs+hEivCZoda9g1pzG9eW5R4hydVY c6H3yHRRt1IY54Q==
-X-Mailer: b4 0.13.0
-Message-ID: <20241205-guard-stable-doc-v1-1-a3f8249cf4d4@google.com>
-Subject: [PATCH] rust: sync: document that Guard is not a stable lock guard
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Most locks in the linux kernel are stable, which means that holding the
-lock is sufficient to keep the value from being freed. For example, this
-means that if you acquire a lock on a refcounted value during rcu, then
-you do not need to acquire a refcount to keep it alive past
-rcu_read_unlock().
+The current encoding, is done by converting 13bits of input into 4
+decimal digits, that are then encoded efficiently using the numeric
+encoding of the QR code specification.
+The Fido v2.2 specification [1] uses a similar approach for its
+QR-initiated authentication. The only difference is that it converts
+7 bytes (56bits) of input into 17 decimal digits. The benefit is that
+the algorithm doesn't require to split input bytes into 13bits chunk,
+and the ratio is a bit better.
+This improvement was proposed by Jó Ágila Bitsch in [2].
+drm_panic is still young, and the QR code feature is not widely used,
+so it's still time to switch to a common algorithm, shared with a
+widely used standard.
+I also changed the name of the url parameter, from zl= to z=, so the
+website can keep backward compatibility if needed.
 
-However, the Rust `Guard` type is written in a way where it cannot be
-used with this pattern. One reason for this is the existence of the
-`do_unlocked` method that is used with `Condvar`. The method allows you
-to unlock the lock, run some code, and then reacquire the lock. This
-operation is not okay if the lock itself is what keeps the value alive,
-as it could be freed right after the unlock call.
+[1] https://fidoalliance.org/specs/fido-v2.2-rd-20230321/fido-client-to-authenticator-protocol-v2.2-rd-20230321.html#hybrid-qr-initiated
+[2] https://github.com/kdj0c/panic_report/issues/2
 
-If we want to support stable locks, we'll need a different guard type
-that does not have a `do_unlocked` operation.
-
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 ---
- rust/kernel/sync/lock.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/drm_panic.c     |   2 +-
+ drivers/gpu/drm/drm_panic_qr.rs | 104 ++++++++++----------------------
+ 2 files changed, 32 insertions(+), 74 deletions(-)
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 41dcddac69e2..7eab46d4060a 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -159,6 +159,17 @@ pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
- /// Allows mutual exclusion primitives that implement the [`Backend`] trait to automatically unlock
- /// when a guard goes out of scope. It also provides a safe and convenient way to access the data
- /// protected by the lock.
-+///
-+/// This guard may be released and reacquired with [`do_unlocked`]. Note that this implies that
-+/// this `Guard` type is _not_ stable, that is, holding this lock is not sufficient to keep the
-+/// underlying [`Lock`] alive. That must be done by some other mechanism such as a refcount or
-+/// ownership.
-+///
-+/// # Invariants
-+///
-+/// This `Guard` owns the lock as defined by the [`Backend`] trait.
-+///
-+/// [`do_unlocked`]: Guard::do_unlocked
- #[must_use = "the lock unlocks immediately when the guard is unused"]
- pub struct Guard<'a, T: ?Sized, B: Backend> {
-     pub(crate) lock: &'a Lock<T, B>,
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index 0a9ecc1380d2..d88fd86263f6 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -712,7 +712,7 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
+ 	char *kmsg;
+ 	int max_qr_data_size, url_len;
+ 
+-	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&zl=",
++	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
+ 			   utsname()->machine, utsname()->release);
+ 
+ 	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index 09500cddc009..939240ca8619 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -13,12 +13,13 @@
+ //! The binary data must be a valid URL parameter, so the easiest way is
+ //! to use base64 encoding. But this wastes 25% of data space, so the
+ //! whole stack trace won't fit in the QR code. So instead it encodes
+-//! every 13bits of input into 4 decimal digits, and then uses the
++//! every 7 bytes of input into 17 decimal digits, and then uses the
+ //! efficient numeric encoding, that encode 3 decimal digits into
+-//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
+-//! into 40bits in the QR code, so wasting only 2.5%. And the numbers are
++//! 10bits. This makes 168bits of compressed data into 51 decimal digits,
++//! into 170bits in the QR code, so wasting only 1.17%. And the numbers are
+ //! valid URL parameter, so the website can do the reverse, to get the
+-//! binary data.
++//! binary data. This is the same algorithm used by Fido v2.2 QR-initiated
++//! authentication specification.
+ //!
+ //! Inspired by these 3 projects, all under MIT license:
+ //!
+@@ -26,7 +27,6 @@
+ //! * <https://github.com/erwanvivien/fast_qr>
+ //! * <https://github.com/bjguillot/qr>
+ 
+-use core::cmp;
+ use kernel::str::CStr;
+ 
+ #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
+@@ -296,35 +296,11 @@ fn version_info(&self) -> u32 {
+ /// Padding bytes.
+ const PADDING: [u8; 2] = [236, 17];
+ 
+-/// Get the next 13 bits of data, starting at specified offset (in bits).
+-fn get_next_13b(data: &[u8], offset: usize) -> Option<(u16, usize)> {
+-    if offset < data.len() * 8 {
+-        let size = cmp::min(13, data.len() * 8 - offset);
+-        let byte_off = offset / 8;
+-        let bit_off = offset % 8;
+-        // `b` is 20 at max (`bit_off` <= 7 and `size` <= 13).
+-        let b = (bit_off + size) as u16;
+-
+-        let first_byte = (data[byte_off] << bit_off >> bit_off) as u16;
+-
+-        let number = match b {
+-            0..=8 => first_byte >> (8 - b),
+-            9..=16 => (first_byte << (b - 8)) + (data[byte_off + 1] >> (16 - b)) as u16,
+-            _ => {
+-                (first_byte << (b - 8))
+-                    + ((data[byte_off + 1] as u16) << (b - 16))
+-                    + (data[byte_off + 2] >> (24 - b)) as u16
+-            }
+-        };
+-        Some((number, size))
+-    } else {
+-        None
+-    }
+-}
+-
+ /// Number of bits to encode characters in numeric mode.
+ const NUM_CHARS_BITS: [usize; 4] = [0, 4, 7, 10];
+-const POW10: [u16; 4] = [1, 10, 100, 1000];
++/// Number of decimal digits required to encode n bytes of binary data.
++/// eg: you need 15 decimal digits to fit 6 bytes of binary data.
++const BYTES_TO_DIGITS: [usize; 8] = [0, 3, 5, 8, 10, 13, 15, 17];
+ 
+ enum Segment<'a> {
+     Numeric(&'a [u8]),
+@@ -360,13 +336,9 @@ fn character_count(&self) -> usize {
+         match self {
+             Segment::Binary(data) => data.len(),
+             Segment::Numeric(data) => {
+-                let data_bits = data.len() * 8;
+-                let last_chars = match data_bits % 13 {
+-                    1 => 1,
+-                    k => (k + 1) / 3,
+-                };
+-                // 4 decimal numbers per 13bits + remainder.
+-                4 * (data_bits / 13) + last_chars
++                let last_chars = BYTES_TO_DIGITS[data.len() % 7];
++                // 17 decimal numbers per 7bytes + remainder.
++                17 * (data.len() / 7) + last_chars
+             }
+         }
+     }
+@@ -403,7 +375,7 @@ fn iter(&self) -> SegmentIterator<'_> {
+ struct SegmentIterator<'a> {
+     segment: &'a Segment<'a>,
+     offset: usize,
+-    carry: u16,
++    carry: u64,
+     carry_len: usize,
+ }
+ 
+@@ -422,40 +394,26 @@ fn next(&mut self) -> Option<Self::Item> {
+                 }
+             }
+             Segment::Numeric(data) => {
+-                if self.carry_len == 3 {
+-                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
+-                    self.carry_len = 0;
+-                    self.carry = 0;
+-                    Some(out)
+-                } else if let Some((bits, size)) = get_next_13b(data, self.offset) {
+-                    self.offset += size;
+-                    let new_chars = match size {
+-                        1 => 1,
+-                        k => (k + 1) / 3,
+-                    };
+-                    if self.carry_len + new_chars > 3 {
+-                        self.carry_len = new_chars + self.carry_len - 3;
+-                        let out = (
+-                            self.carry * POW10[new_chars - self.carry_len]
+-                                + bits / POW10[self.carry_len],
+-                            NUM_CHARS_BITS[3],
+-                        );
+-                        self.carry = bits % POW10[self.carry_len];
+-                        Some(out)
+-                    } else {
+-                        let out = (
+-                            self.carry * POW10[new_chars] + bits,
+-                            NUM_CHARS_BITS[self.carry_len + new_chars],
+-                        );
+-                        self.carry_len = 0;
+-                        Some(out)
++                if self.carry_len < 3 && self.offset < data.len() {
++                    let mut buf = [0u8; 8];
++                    let len = 7.min(data.len() - self.offset);
++                    buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
++                    let chunk = u64::from_le_bytes(buf);
++                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
++                    self.carry = chunk + self.carry * pow;
++                    self.offset += len;
++                    self.carry_len += BYTES_TO_DIGITS[len];
++                }
++                match self.carry_len {
++                    0 => None,
++                    len => {
++                        let out_len = 3.min(len);
++                        self.carry_len -= out_len;
++                        let pow = u64::pow(10, self.carry_len as u32);
++                        let out = (self.carry / pow) as u16;
++                        self.carry = self.carry % pow;
++                        Some((out, NUM_CHARS_BITS[out_len]))
+                     }
+-                } else if self.carry_len > 0 {
+-                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
+-                    self.carry_len = 0;
+-                    Some(out)
+-                } else {
+-                    None
+                 }
+             }
+         }
 
----
-base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
-change-id: 20241205-guard-stable-doc-efad6812d0cb
-
-Best regards,
+base-commit: c6eabbab359c156669e10d5dec3e71e80ff09bd2
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.47.1
 
