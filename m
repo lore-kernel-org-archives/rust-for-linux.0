@@ -1,277 +1,160 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3A0239185;
-	Thu,  5 Dec 2024 11:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D591FAC34;
+	Thu,  5 Dec 2024 11:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733398374; cv=none; b=ZyN0Z1keQAd63DxxV/XA4D5uy9l4atzubqPZageBt5TvyH6t9/1i/VCNx85Fzkf4ZjwNYtf/uBSrk8mitIe+1HMZyVIEICaviLnaZDCQYz4lmteyfi1gGRcGWUbMY2njS0ROAwS9Q77DM3g8t3zWrzahcOBQDQIPKKWd2F2lK+k=
+	t=1733398529; cv=none; b=u4AG6fr068nrXnKLmmLcQyoyYcxIhIZD8ngwkVDTgWtD5cljl0qbD1PSMa9udKbieMayBMEZrbM8E4htXux/do2aJ7uLGM0tdkxYIjCmTYRqIQPIjS1hfi5w2UXiZlQzFwF0WSFHMZL9dHynkbtbG+eg043Bx/huQMOj3CYpvaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733398374; c=relaxed/simple;
-	bh=v/VhgNzAUy5yfkyihuvK+jBGhawPzQRWRegqTl//ZtI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/LoKT5bC/qsMqn6Eb7aFSqvr2ceIP/SS4wgQU8Li6Yy5sV7NHxUDFo/QPExceIlHGXNAqhdp83sY6PO73nzQZInu35C1hyhKSj2f8AG/M4ifA45QILVz7WGnIAaYkqGtYw+EL8yhwUtl9jGWFLU01LMJEUptDvZ4/MXapCC/5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fNLC4cDf; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733398529; c=relaxed/simple;
+	bh=jvPCGrHqObr38SBHGilmOh0r7dHyawWF8/PKpw7i7wI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RiEhjIy+xxo57eo3RoHkhJJdidvh2l/eDDUD0lmqmB9WXb/Z6z4x3LloSWJsq8ZNmcZsiZu3e9IJmNQRdbj267mDZILUKUKAGk4Ta8VzuJpD5Mu9OdzjDNEUAZH5bE45+hDPFB2RwS5ksnHXV/xCI4QmckLNuC7Ws+Kl9YGdvdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCP+vdC4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fNLC4cDf"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53df1d1b6e8so785029e87.1;
-        Thu, 05 Dec 2024 03:32:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733398371; x=1734003171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y4w+FNnQU4Gd2oQswt6DB7Qgzf599gU2AT2+6YNQKrw=;
-        b=fNLC4cDfudLfbCCZvaRdjrDwXg5p/0Uai1+3YV3Q/HuLBCzQmCLa44Is5erM+ZltuM
-         2YGyzIrEo3+zYcVRNtPHsJC9aRgoFqzjXG2TbSWlgwFJ6ppGG+IOCrzvmENd7uiiT50e
-         h2y6yjqvN2jJV73IAzWvMBCn6tUgd7t7nJekluyX7srMR7Pd/INyrqdbFDrBzwg5NQVI
-         tmP0bxG22K+ms/vFQfxQZSf1ZsGmVHel5KfckyVp8LC7sP/SjODVAkTpggvB9H3Z1HCv
-         CURiAvnuBmGsVwuB9h2odye+J6m12qANvJGQz32QKZH9na44fSt4ogky9CmNNfjGwPv9
-         YA+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733398371; x=1734003171;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y4w+FNnQU4Gd2oQswt6DB7Qgzf599gU2AT2+6YNQKrw=;
-        b=NeWP1ahgReqbE6PT+t6Katf1bAeKFAW1cly/BvDluIdf1LrKebUIctY3PLPfAPVy1E
-         2IG+H4Fgqdh3cdi3sRUsO8IwePpqTFIsZEYq/dMCvfWpem2jvdbmwECiyjTCXWh52wi+
-         9Q5H9xLUA03+x32FU3GB2gOeaGL6TVkTQP8Yo9Vb9L2XHrOpT0LKZ0c0aaUARpay0v4g
-         B1Fj3O/Om/REHRHHkZrw2Ot89D9lErZRsIgn4wlTvajFM0OraJuoWQNMaVpcKC6FQ1dn
-         kXwiKeWSOcW4fOmhHTkUtob5+gfZ/JTbH60i8r/3imPNpC1GGeIJ6XhmTZwEBTobZBEp
-         g47Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVKkWpH9LVA3qeBcAH4WExRFpBPjxhCBX7OOXKjqgIPXoySIpKPCn/ytfGECDtkpnv8bWUFn5OX7QuiqfA=@vger.kernel.org, AJvYcCW7nztny1z+TvM1v9rN1QMVKZH8xJLb4m8YSNEE4f6ghykmzkrH/B3+gE7Nqnuy7bs5qPEJHhqCzY1IadMAN/E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlHDTbnJApWLuD1p5CxWJmvyzrYXr5J+/kLfzzgFIeFUd+ugdb
-	3oDG9Mh6Aad4U0bUhwWx4NZDVbHGXgKeOrMt120h93JTekZ7Ul3t
-X-Gm-Gg: ASbGncvMPHWKKX50A50xIlYr1QN3xG0MpEdomvwGMIC9TYiXIWbXxkBvjvhy1j58iaz
-	hjvq+k8Q78j+vjc+lxfNrKVh+sJXNrFEtCkeM+0D1QTZU2mJzhJWgU1eARCCb00gPb/rIFpQk7M
-	QsALGn8YWg6nnW56ERoilp2uodPnWUw+389jz1R0Br4PMWEPSwJHrFlwLpZuYSSRqdqSCs5D6ow
-	Z81qNgBELwHgGVZzdFqjuYtvs+iabgYhqUqyJP8fN+8jLm9pZz13MYzzghIYpcW9aqRCWK0sVCr
-	4szYbsX4UwQmwImNpkpj
-X-Google-Smtp-Source: AGHT+IHzbyGee5WIyxIDgwfUDjYSBmtTtthROTbvUuih4hQqRJxGEWMbCyELSJSBDvFxXHkoBFi+/Q==
-X-Received: by 2002:a05:6512:3f22:b0:53e:12ea:f797 with SMTP id 2adb3069b0e04-53e1b8b731cmr2760098e87.42.1733398370489;
-        Thu, 05 Dec 2024 03:32:50 -0800 (PST)
-Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e229744e3sm216136e87.66.2024.12.05.03.32.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 03:32:49 -0800 (PST)
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: daniel.almeida@collabora.com
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCP+vdC4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389CBC4CEDF;
+	Thu,  5 Dec 2024 11:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733398527;
+	bh=jvPCGrHqObr38SBHGilmOh0r7dHyawWF8/PKpw7i7wI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gCP+vdC4RQuVuKxQD/1sPzEN/A8BMURz+RF0p3pfcqGOPFfVe7jEgY0DGSRgKpEPt
+	 /x9xA+dyYuKs6zG7QfLFTzwok0IZclIwtb51WfiuHMN5lir1wwpbatqivgJTXzJOdL
+	 Aw/oN5m3q13qqW9eXIVBj5xphYKSMcnpezMJ3ILtHe2SNRqFDIRryQ48pEYHtZMcMz
+	 m/qeVKdl5YHw1UfdKosvc2nn6EGC8uYhG4GSKzwX8+bOBwO/8dsLiy7ooOu0ED/nCg
+	 z9rowWVy/sBf5Xl4WqIrNMrlvH6fNhoNdonGBPb/KfCGfOuauq33ZqVxZkrULBoZmQ
+	 D0yJhUW+S5lbg==
+Date: Thu, 5 Dec 2024 12:35:21 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jimmy Ostler <jtostler1@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Filipe Xavier <felipe_life@live.com>,
 	Valentin Obst <kernel@valentinobst.de>,
-	rust-for-linux@vger.kernel.org (open list:RUST),
-	linux-kernel@vger.kernel.org (open list),
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	airlied@redhat.com,
-	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v6 2/2] rust: add dma coherent allocator abstraction.
-Date: Thu,  5 Dec 2024 13:32:17 +0200
-Message-ID: <20241205113234.2021442-2-abdiel.janulgue@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241205113234.2021442-1-abdiel.janulgue@gmail.com>
-References: <20241205113234.2021442-1-abdiel.janulgue@gmail.com>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: alloc: Add doctest for `ArrayLayout`
+Message-ID: <Z1GP-QPDFDjS6qLo@cassiopeiae>
+References: <20241205105627.992587-1-jtostler1@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205105627.992587-1-jtostler1@gmail.com>
 
-Add a simple dma coherent allocator rust abstraction. Based on
-Andreas Hindborg's dma abstractions from the rnvme driver, which
-was also based on earlier work by Wedson Almeida Filho.
+Hi Jimmy,
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
----
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/dma.rs              | 136 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   1 +
- 3 files changed, 138 insertions(+)
- create mode 100644 rust/kernel/dma.rs
+Thanks for the patch!
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 5c4dfe22f41a..49bf713b9bb6 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -11,6 +11,7 @@
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
- #include <linux/cred.h>
-+#include <linux/dma-mapping.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
- #include <linux/file.h>
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-new file mode 100644
-index 000000000000..dd725c571ff7
---- /dev/null
-+++ b/rust/kernel/dma.rs
-@@ -0,0 +1,136 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Direct memory access (DMA).
-+//!
-+//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
-+
-+use crate::{
-+    bindings,
-+    build_assert,
-+    device::Device,
-+    error::code::*,
-+    error::Result,
-+    types::ARef,
-+    transmute::{AsBytes, FromBytes},
-+};
-+
-+/// An abstraction of the `dma_alloc_coherent` API.
-+///
-+/// This is an abstraction around the `dma_alloc_coherent` API which is used to allocate and map
-+/// large consistent DMA regions.
-+///
-+/// A [`CoherentAllocation`] instance contains a pointer to the allocated region (in the
-+/// processor's virtual address space) and the device address which can be given to the device
-+/// as the DMA address base of the region. The region is released once [`CoherentAllocation`]
-+/// is dropped.
-+///
-+/// # Invariants
-+///
-+/// For the lifetime of an instance of [`CoherentAllocation`], the cpu address is a valid pointer
-+/// to an allocated region of consistent memory and we hold a reference to the device.
-+pub struct CoherentAllocation<T: AsBytes + FromBytes> {
-+    dev: ARef<Device>,
-+    dma_handle: bindings::dma_addr_t,
-+    count: usize,
-+    cpu_addr: *mut T,
-+}
-+
-+impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
-+    /// Allocates a region of `size_of::<T> * count` of consistent memory.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::device::Device;
-+    /// use kernel::dma::CoherentAllocation;
-+    ///
-+    /// # fn test(dev: &Device) -> Result {
-+    /// let c: CoherentAllocation<u64> = CoherentAllocation::alloc_coherent(dev, 4, GFP_KERNEL)?;
-+    /// # Ok::<(), Error>(()) }
-+    /// ```
-+    pub fn alloc_coherent(
-+        dev: &Device,
-+        count: usize,
-+        flags: kernel::alloc::Flags,
-+    ) -> Result<CoherentAllocation<T>> {
-+        build_assert!(core::mem::size_of::<T>() > 0,
-+                      "It doesn't make sense for the allocated type to be a ZST");
-+
-+        let size = count.checked_mul(core::mem::size_of::<T>()).ok_or(EOVERFLOW)?;
-+        let mut dma_handle = 0;
-+        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-+        // We ensure that we catch the failure on this function and throw an ENOMEM
-+        let ret = unsafe {
-+            bindings::dma_alloc_attrs(
-+                dev.as_raw(),
-+                size,
-+                &mut dma_handle, flags.as_raw(),
-+                0,
-+            )
-+        };
-+        if ret.is_null() {
-+            return Err(ENOMEM)
-+        }
-+        // INVARIANT: We just successfully allocated a coherent region which is accessible for
-+        // `count` elements, hence the cpu address is valid. We also hold a refcounted reference
-+        // to the device.
-+        Ok(Self {
-+            dev: dev.into(),
-+            dma_handle,
-+            count,
-+            cpu_addr: ret as *mut T,
-+        })
-+    }
-+
-+    /// Returns the base address to the allocated region and the dma handle. The caller takes
-+    /// ownership of the returned resources.
-+    pub fn into_parts(self) -> (usize, bindings::dma_addr_t) {
-+        let ret = (self.cpu_addr as _, self.dma_handle);
-+        core::mem::forget(self);
-+        ret
-+    }
-+
-+    /// Returns the base address to the allocated region in the CPU's virtual address space.
-+    pub fn start_ptr(&self) -> *const T {
-+        self.cpu_addr as _
-+    }
-+
-+    /// Returns the base address to the allocated region in the CPU's virtual address space as
-+    /// a mutable pointer.
-+    pub fn start_ptr_mut(&mut self) -> *mut T {
-+        self.cpu_addr
-+    }
-+
-+    /// Returns a DMA handle which may given to the device as the DMA address base of
-+    /// the region.
-+    pub fn dma_handle(&self) -> bindings::dma_addr_t {
-+        self.dma_handle
-+    }
-+
-+    /// Returns the CPU-addressable region as a slice.
-+    pub fn cpu_buf(&self) -> &[T]
-+    {
-+        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
-+        // is valid for reads for `self.count * size_of::<T>` bytes.
-+        unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
-+    }
-+
-+    /// Performs the same functionality as `cpu_buf`, except that a mutable slice is returned.
-+    pub fn cpu_buf_mut(&mut self) -> &mut [T]
-+    {
-+        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
-+        // is valid for reads for `self.count * size_of::<T>` bytes.
-+        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.count) }
-+    }
-+}
-+
-+impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
-+    fn drop(&mut self) {
-+        let size = self.count * core::mem::size_of::<T>();
-+        // SAFETY: the device, cpu address, and the dma handle is valid due to the
-+        // type invariants on `CoherentAllocation`.
-+        unsafe { bindings::dma_free_attrs(self.dev.as_raw(), size,
-+                                          self.cpu_addr as _,
-+                                          self.dma_handle, 0) }
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e1065a7551a3..6e90ebf5a130 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -35,6 +35,7 @@
- mod build_assert;
- pub mod cred;
- pub mod device;
-+pub mod dma;
- pub mod error;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
--- 
-2.43.0
+On Thu, Dec 05, 2024 at 02:56:27AM -0800, Jimmy Ostler wrote:
+> Add a rustdoc example and Kunit test to the `ArrayLayout` struct's
+> `ArrayLayout::new()` function.
+> 
+> Add an implementation of `From<LayoutError> for Error` for the
+> `kernel::alloc::LayoutError`. This is necessary for the new test to
+> compile.
 
+Please split this into a separate patch.
+
+> 
+> Change the `From` implementation on `core::alloc::LayoutError` to avoid
+> collisions with `kernel::alloc::LayoutError`, and modify imports to
+> explicitly import `kernel::alloc::LayoutError` instead.
+> 
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1131
+> Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
+> ---
+> v1: https://lore.kernel.org/lkml/20241203051843.291729-1-jtostler1@gmail.com/T/#u
+> v1 -> v2 changes:
+> - Add third assert where length is smaller but still overflows
+> - Remove rustdoc markdown codeblock languge signifier
+> - Change tests to return results using `?` instead of panic
+> - Remove `#[derive(Debug)]` for `LayoutError`
+> - Add `From<LayoutError> for Error` implementation
+> ---
+>  rust/kernel/alloc/layout.rs | 19 +++++++++++++++++++
+>  rust/kernel/error.rs        | 13 ++++++++++---
+>  2 files changed, 29 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
+> index 4b3cd7fdc816..0e053dcc7941 100644
+> --- a/rust/kernel/alloc/layout.rs
+> +++ b/rust/kernel/alloc/layout.rs
+> @@ -43,6 +43,25 @@ pub const fn empty() -> Self {
+>      /// # Errors
+>      ///
+>      /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// # use kernel::alloc::layout::{ArrayLayout, LayoutError};
+> +    /// let layout = ArrayLayout::<i32>::new(15)?;
+> +    /// assert_eq!(layout.len(), 15);
+> +    ///
+> +    /// // Errors because `len * size_of::<T>()` overflows
+> +    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize);
+> +    /// assert!(layout.is_err());
+> +    ///
+> +    /// // Errors because `len * size_of::<i32>() > isize::MAX`,
+> +    /// // even though `len < isize::MAX`
+> +    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize / 2);
+> +    /// assert!(layout.is_err());
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+>      pub const fn new(len: usize) -> Result<Self, LayoutError> {
+>          match len.checked_mul(core::mem::size_of::<T>()) {
+>              Some(size) if size <= ISIZE_MAX => {
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 52c502432447..ac8526140d7a 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -4,9 +4,10 @@
+>  //!
+>  //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
+>  
+> -use crate::{alloc::AllocError, str::CStr};
+> -
+> -use core::alloc::LayoutError;
+> +use crate::{
+> +    alloc::{layout::LayoutError, AllocError},
+> +    str::CStr,
+> +};
+
+I think this part of the change would be enough, since we don't make use of the
+`From` implementation of `core::alloc::LayoutError` anywhere.
+
+I think we can add it (again), once it's needed.
+
+>  
+>  use core::fmt;
+>  use core::num::NonZeroI32;
+> @@ -223,6 +224,12 @@ fn from(_: LayoutError) -> Error {
+>      }
+>  }
+>  
+> +impl From<core::alloc::LayoutError> for Error {
+> +    fn from(_: core::alloc::LayoutError) -> Error {
+> +        code::ENOMEM
+> +    }
+> +}
+> +
+>  impl From<core::fmt::Error> for Error {
+>      fn from(_: core::fmt::Error) -> Error {
+>          code::EINVAL
+> 
+> base-commit: 1dc707e647bc919834eff9636c8d00b78c782545
+> -- 
+> 2.47.1
+> 
