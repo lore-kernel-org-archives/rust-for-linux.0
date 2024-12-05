@@ -1,264 +1,243 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25584219A7B
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 12:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA817BD6;
+	Thu,  5 Dec 2024 13:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733403541; cv=none; b=T72bzEuZgktfU2lpA05RqZcI6q15tIY65BEb7OKzgkm3Wd6ImM+Ht685bL3lDB7/EefCZhaftsuMqNbJ2RM7CmV/vC+3iPOArJo8M2t0QUE7kL1I7S5CAnii2dwM1p1VL93h9xybJxko+dvqzsdEuGQ/Wp+nQZ/KZop6WrfX+DA=
+	t=1733404048; cv=none; b=QdEka8J5RWAx+bj2/uGV15gtAtWbrFIiHuPxXzM1sx8iVJ+T2uSSgLXPlFj1mgMq0/STi74MAiudU8gj7iLloTlXJaH4rWQUqpndf4cn8A0oftl0rJFz3YMADrNyTioUh4jRW3BxNfzI/WLNJqfH94D6//nHUBsOP4lbzlxhoQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733403541; c=relaxed/simple;
-	bh=c4S8Cip503cqeAlaihxldrJBnX65f9gviHBiGOmbxh4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qvpECJqgPwxKwuZ1OJ9gB/bcYAcHh5R+wpMUTKTMRXjo6yOn44o1RWYt/3EMbOHP8cMP80/+bQ8tJqKg42BsZd5MEmpK7e+oY93BM7xZZGvR7By60ejYDqKcVqVHsXswEpifdm//kn74OUbWclVSvdg1P0stEZcTmNI5C8IASCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KX2VqDeb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KX2VqDeb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733403538;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1ejPSUyE1VwI22socUQfc/dY5FGc0qthNmoqEGE+4rk=;
-	b=KX2VqDebtgm24bVdZe8vJc3sOBzUp15p5uWV2PgUCKrKQtG9ORW9b1S1iG34cDy0ELMEjW
-	B/T+YN5ItchFdHZh4PEnHRqM5+6CSgIj4KB/e+XIhzHrWz9+0xC8kn0eABqh84WD4MA4ko
-	lYVUWdCCqU+fc98SwmJQTH6NHRN+5F4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-214-az_aVD5aOOeUSD3aRUB0bw-1; Thu,
- 05 Dec 2024 07:58:55 -0500
-X-MC-Unique: az_aVD5aOOeUSD3aRUB0bw-1
-X-Mimecast-MFC-AGG-ID: az_aVD5aOOeUSD3aRUB0bw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E98DC195606B;
-	Thu,  5 Dec 2024 12:58:52 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.39.194.217])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9EC981956052;
-	Thu,  5 Dec 2024 12:58:49 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Thomas=20B=C3=B6hler?= <witcher@wiredspace.de>,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH] drm/panic: Better binary encoding in QR code
-Date: Thu,  5 Dec 2024 13:58:36 +0100
-Message-ID: <20241205125841.1646731-1-jfalempe@redhat.com>
+	s=arc-20240116; t=1733404048; c=relaxed/simple;
+	bh=hXQ5wZu61uFc7V4ocZVh1IUQhjIFXGv8g9nffLwiDps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=THsPhpCtA+AAAptobFQPuTvH1R+/Hz3TROQp03/mkid5281LKe2tewdWQ9Wu3dXcucQHdOPUtpf7QLcstliuQ/CVveKMg0gaEoCfADE3O2fvcdJVTJslmwf3vPGXcNPrgo4dicZfbIUnw3ooCqID/RUcop+h4feDiBEe+3V26m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E7741063;
+	Thu,  5 Dec 2024 05:07:52 -0800 (PST)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5E9533F71E;
+	Thu,  5 Dec 2024 05:07:22 -0800 (PST)
+Message-ID: <1c13843f-6929-4bc6-8564-0ec2d964c41d@arm.com>
+Date: Thu, 5 Dec 2024 13:07:14 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] rust: add dma coherent allocator abstraction.
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>, daniel.almeida@collabora.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Valentin Obst <kernel@valentinobst.de>,
+ "open list:RUST" <rust-for-linux@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20241205113234.2021442-1-abdiel.janulgue@gmail.com>
+ <20241205113234.2021442-2-abdiel.janulgue@gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241205113234.2021442-2-abdiel.janulgue@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The current encoding, is done by converting 13bits of input into 4
-decimal digits, that are then encoded efficiently using the numeric
-encoding of the QR code specification.
-The Fido v2.2 specification [1] uses a similar approach for its
-QR-initiated authentication. The only difference is that it converts
-7 bytes (56bits) of input into 17 decimal digits. The benefit is that
-the algorithm doesn't require to split input bytes into 13bits chunk,
-and the ratio is a bit better.
-This improvement was proposed by Jó Ágila Bitsch in [2].
-drm_panic is still young, and the QR code feature is not widely used,
-so it's still time to switch to a common algorithm, shared with a
-widely used standard.
-I also changed the name of the url parameter, from zl= to z=, so the
-website can keep backward compatibility if needed.
+On 05/12/2024 11:32 am, Abdiel Janulgue wrote:
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
+> 
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> ---
+>   rust/bindings/bindings_helper.h |   1 +
+>   rust/kernel/dma.rs              | 136 ++++++++++++++++++++++++++++++++
+>   rust/kernel/lib.rs              |   1 +
+>   3 files changed, 138 insertions(+)
+>   create mode 100644 rust/kernel/dma.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 5c4dfe22f41a..49bf713b9bb6 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -11,6 +11,7 @@
+>   #include <linux/blk_types.h>
+>   #include <linux/blkdev.h>
+>   #include <linux/cred.h>
+> +#include <linux/dma-mapping.h>
+>   #include <linux/errname.h>
+>   #include <linux/ethtool.h>
+>   #include <linux/file.h>
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> new file mode 100644
+> index 000000000000..dd725c571ff7
+> --- /dev/null
+> +++ b/rust/kernel/dma.rs
+> @@ -0,0 +1,136 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Direct memory access (DMA).
+> +//!
+> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    build_assert,
+> +    device::Device,
+> +    error::code::*,
+> +    error::Result,
+> +    types::ARef,
+> +    transmute::{AsBytes, FromBytes},
+> +};
+> +
+> +/// An abstraction of the `dma_alloc_coherent` API.
+> +///
+> +/// This is an abstraction around the `dma_alloc_coherent` API which is used to allocate and map
+> +/// large consistent DMA regions.
+> +///
+> +/// A [`CoherentAllocation`] instance contains a pointer to the allocated region (in the
+> +/// processor's virtual address space) and the device address which can be given to the device
+> +/// as the DMA address base of the region. The region is released once [`CoherentAllocation`]
+> +/// is dropped.
+> +///
+> +/// # Invariants
+> +///
+> +/// For the lifetime of an instance of [`CoherentAllocation`], the cpu address is a valid pointer
+> +/// to an allocated region of consistent memory and we hold a reference to the device.
+> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+> +    dev: ARef<Device>,
+> +    dma_handle: bindings::dma_addr_t,
+> +    count: usize,
+> +    cpu_addr: *mut T,
+> +}
+> +
+> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
+> +    /// Allocates a region of `size_of::<T> * count` of consistent memory.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::device::Device;
+> +    /// use kernel::dma::CoherentAllocation;
+> +    ///
+> +    /// # fn test(dev: &Device) -> Result {
+> +    /// let c: CoherentAllocation<u64> = CoherentAllocation::alloc_coherent(dev, 4, GFP_KERNEL)?;
+> +    /// # Ok::<(), Error>(()) }
+> +    /// ```
+> +    pub fn alloc_coherent(
+> +        dev: &Device,
+> +        count: usize,
+> +        flags: kernel::alloc::Flags,
 
-[1] https://fidoalliance.org/specs/fido-v2.2-rd-20230321/fido-client-to-authenticator-protocol-v2.2-rd-20230321.html#hybrid-qr-initiated
-[2] https://github.com/kdj0c/panic_report/issues/2
+Might it be worth adding at least a placeholder type and argument for 
+"attrs" as well, so there's less churn involved in coming back and 
+adding it later? Or is the intention to have a separate 
+dma_alloc_attrs() constructor for such users?
 
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
----
- drivers/gpu/drm/drm_panic.c     |   2 +-
- drivers/gpu/drm/drm_panic_qr.rs | 104 ++++++++++----------------------
- 2 files changed, 32 insertions(+), 74 deletions(-)
+(I assume adding an mmap method as and when needed won't affect any 
+existing users, so is fine not to worry about right now)
 
-diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
-index 0a9ecc1380d2..d88fd86263f6 100644
---- a/drivers/gpu/drm/drm_panic.c
-+++ b/drivers/gpu/drm/drm_panic.c
-@@ -712,7 +712,7 @@ static int drm_panic_get_qr_code_url(u8 **qr_image)
- 	char *kmsg;
- 	int max_qr_data_size, url_len;
- 
--	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&zl=",
-+	url_len = snprintf(url, sizeof(url), CONFIG_DRM_PANIC_SCREEN_QR_CODE_URL "?a=%s&v=%s&z=",
- 			   utsname()->machine, utsname()->release);
- 
- 	max_qr_data_size = drm_panic_qr_max_data_size(panic_qr_version, url_len);
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index 09500cddc009..939240ca8619 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -13,12 +13,13 @@
- //! The binary data must be a valid URL parameter, so the easiest way is
- //! to use base64 encoding. But this wastes 25% of data space, so the
- //! whole stack trace won't fit in the QR code. So instead it encodes
--//! every 13bits of input into 4 decimal digits, and then uses the
-+//! every 7 bytes of input into 17 decimal digits, and then uses the
- //! efficient numeric encoding, that encode 3 decimal digits into
--//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
--//! into 40bits in the QR code, so wasting only 2.5%. And the numbers are
-+//! 10bits. This makes 168bits of compressed data into 51 decimal digits,
-+//! into 170bits in the QR code, so wasting only 1.17%. And the numbers are
- //! valid URL parameter, so the website can do the reverse, to get the
--//! binary data.
-+//! binary data. This is the same algorithm used by Fido v2.2 QR-initiated
-+//! authentication specification.
- //!
- //! Inspired by these 3 projects, all under MIT license:
- //!
-@@ -26,7 +27,6 @@
- //! * <https://github.com/erwanvivien/fast_qr>
- //! * <https://github.com/bjguillot/qr>
- 
--use core::cmp;
- use kernel::str::CStr;
- 
- #[derive(Debug, Clone, Copy, PartialEq, Eq, Ord, PartialOrd)]
-@@ -296,35 +296,11 @@ fn version_info(&self) -> u32 {
- /// Padding bytes.
- const PADDING: [u8; 2] = [236, 17];
- 
--/// Get the next 13 bits of data, starting at specified offset (in bits).
--fn get_next_13b(data: &[u8], offset: usize) -> Option<(u16, usize)> {
--    if offset < data.len() * 8 {
--        let size = cmp::min(13, data.len() * 8 - offset);
--        let byte_off = offset / 8;
--        let bit_off = offset % 8;
--        // `b` is 20 at max (`bit_off` <= 7 and `size` <= 13).
--        let b = (bit_off + size) as u16;
--
--        let first_byte = (data[byte_off] << bit_off >> bit_off) as u16;
--
--        let number = match b {
--            0..=8 => first_byte >> (8 - b),
--            9..=16 => (first_byte << (b - 8)) + (data[byte_off + 1] >> (16 - b)) as u16,
--            _ => {
--                (first_byte << (b - 8))
--                    + ((data[byte_off + 1] as u16) << (b - 16))
--                    + (data[byte_off + 2] >> (24 - b)) as u16
--            }
--        };
--        Some((number, size))
--    } else {
--        None
--    }
--}
--
- /// Number of bits to encode characters in numeric mode.
- const NUM_CHARS_BITS: [usize; 4] = [0, 4, 7, 10];
--const POW10: [u16; 4] = [1, 10, 100, 1000];
-+/// Number of decimal digits required to encode n bytes of binary data.
-+/// eg: you need 15 decimal digits to fit 6 bytes of binary data.
-+const BYTES_TO_DIGITS: [usize; 8] = [0, 3, 5, 8, 10, 13, 15, 17];
- 
- enum Segment<'a> {
-     Numeric(&'a [u8]),
-@@ -360,13 +336,9 @@ fn character_count(&self) -> usize {
-         match self {
-             Segment::Binary(data) => data.len(),
-             Segment::Numeric(data) => {
--                let data_bits = data.len() * 8;
--                let last_chars = match data_bits % 13 {
--                    1 => 1,
--                    k => (k + 1) / 3,
--                };
--                // 4 decimal numbers per 13bits + remainder.
--                4 * (data_bits / 13) + last_chars
-+                let last_chars = BYTES_TO_DIGITS[data.len() % 7];
-+                // 17 decimal numbers per 7bytes + remainder.
-+                17 * (data.len() / 7) + last_chars
-             }
-         }
-     }
-@@ -403,7 +375,7 @@ fn iter(&self) -> SegmentIterator<'_> {
- struct SegmentIterator<'a> {
-     segment: &'a Segment<'a>,
-     offset: usize,
--    carry: u16,
-+    carry: u64,
-     carry_len: usize,
- }
- 
-@@ -422,40 +394,26 @@ fn next(&mut self) -> Option<Self::Item> {
-                 }
-             }
-             Segment::Numeric(data) => {
--                if self.carry_len == 3 {
--                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
--                    self.carry_len = 0;
--                    self.carry = 0;
--                    Some(out)
--                } else if let Some((bits, size)) = get_next_13b(data, self.offset) {
--                    self.offset += size;
--                    let new_chars = match size {
--                        1 => 1,
--                        k => (k + 1) / 3,
--                    };
--                    if self.carry_len + new_chars > 3 {
--                        self.carry_len = new_chars + self.carry_len - 3;
--                        let out = (
--                            self.carry * POW10[new_chars - self.carry_len]
--                                + bits / POW10[self.carry_len],
--                            NUM_CHARS_BITS[3],
--                        );
--                        self.carry = bits % POW10[self.carry_len];
--                        Some(out)
--                    } else {
--                        let out = (
--                            self.carry * POW10[new_chars] + bits,
--                            NUM_CHARS_BITS[self.carry_len + new_chars],
--                        );
--                        self.carry_len = 0;
--                        Some(out)
-+                if self.carry_len < 3 && self.offset < data.len() {
-+                    let mut buf = [0u8; 8];
-+                    let len = 7.min(data.len() - self.offset);
-+                    buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
-+                    let chunk = u64::from_le_bytes(buf);
-+                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
-+                    self.carry = chunk + self.carry * pow;
-+                    self.offset += len;
-+                    self.carry_len += BYTES_TO_DIGITS[len];
-+                }
-+                match self.carry_len {
-+                    0 => None,
-+                    len => {
-+                        let out_len = 3.min(len);
-+                        self.carry_len -= out_len;
-+                        let pow = u64::pow(10, self.carry_len as u32);
-+                        let out = (self.carry / pow) as u16;
-+                        self.carry = self.carry % pow;
-+                        Some((out, NUM_CHARS_BITS[out_len]))
-                     }
--                } else if self.carry_len > 0 {
--                    let out = (self.carry, NUM_CHARS_BITS[self.carry_len]);
--                    self.carry_len = 0;
--                    Some(out)
--                } else {
--                    None
-                 }
-             }
-         }
+Thanks,
+Robin.
 
-base-commit: c6eabbab359c156669e10d5dec3e71e80ff09bd2
--- 
-2.47.1
-
+> +    ) -> Result<CoherentAllocation<T>> {
+> +        build_assert!(core::mem::size_of::<T>() > 0,
+> +                      "It doesn't make sense for the allocated type to be a ZST");
+> +
+> +        let size = count.checked_mul(core::mem::size_of::<T>()).ok_or(EOVERFLOW)?;
+> +        let mut dma_handle = 0;
+> +        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
+> +        // We ensure that we catch the failure on this function and throw an ENOMEM
+> +        let ret = unsafe {
+> +            bindings::dma_alloc_attrs(
+> +                dev.as_raw(),
+> +                size,
+> +                &mut dma_handle, flags.as_raw(),
+> +                0,
+> +            )
+> +        };
+> +        if ret.is_null() {
+> +            return Err(ENOMEM)
+> +        }
+> +        // INVARIANT: We just successfully allocated a coherent region which is accessible for
+> +        // `count` elements, hence the cpu address is valid. We also hold a refcounted reference
+> +        // to the device.
+> +        Ok(Self {
+> +            dev: dev.into(),
+> +            dma_handle,
+> +            count,
+> +            cpu_addr: ret as *mut T,
+> +        })
+> +    }
+> +
+> +    /// Returns the base address to the allocated region and the dma handle. The caller takes
+> +    /// ownership of the returned resources.
+> +    pub fn into_parts(self) -> (usize, bindings::dma_addr_t) {
+> +        let ret = (self.cpu_addr as _, self.dma_handle);
+> +        core::mem::forget(self);
+> +        ret
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's virtual address space.
+> +    pub fn start_ptr(&self) -> *const T {
+> +        self.cpu_addr as _
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's virtual address space as
+> +    /// a mutable pointer.
+> +    pub fn start_ptr_mut(&mut self) -> *mut T {
+> +        self.cpu_addr
+> +    }
+> +
+> +    /// Returns a DMA handle which may given to the device as the DMA address base of
+> +    /// the region.
+> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
+> +        self.dma_handle
+> +    }
+> +
+> +    /// Returns the CPU-addressable region as a slice.
+> +    pub fn cpu_buf(&self) -> &[T]
+> +    {
+> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
+> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
+> +    }
+> +
+> +    /// Performs the same functionality as `cpu_buf`, except that a mutable slice is returned.
+> +    pub fn cpu_buf_mut(&mut self) -> &mut [T]
+> +    {
+> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
+> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+> +        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.count) }
+> +    }
+> +}
+> +
+> +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
+> +    fn drop(&mut self) {
+> +        let size = self.count * core::mem::size_of::<T>();
+> +        // SAFETY: the device, cpu address, and the dma handle is valid due to the
+> +        // type invariants on `CoherentAllocation`.
+> +        unsafe { bindings::dma_free_attrs(self.dev.as_raw(), size,
+> +                                          self.cpu_addr as _,
+> +                                          self.dma_handle, 0) }
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index e1065a7551a3..6e90ebf5a130 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -35,6 +35,7 @@
+>   mod build_assert;
+>   pub mod cred;
+>   pub mod device;
+> +pub mod dma;
+>   pub mod error;
+>   #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+>   pub mod firmware;
