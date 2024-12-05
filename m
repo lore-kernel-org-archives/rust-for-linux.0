@@ -1,121 +1,214 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1BE1D4607
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 08:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72DC1D514E;
+	Thu,  5 Dec 2024 09:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733388439; cv=none; b=BXVc8sOyEBasUrTt2JRDL0xnUSvAGCOyZ2VMvXSmc3asXr9TPYYElK+XyJ0B7S0AUqLMsOqQAVLL/RKONTHDCaPZj/M2Uh89ghIJmVQ9oRDxhweUtr/U7shAwhvUFdgqe0rS7chsbdJ79B0P+Ac2hbMO9w5ymSUzlb/eQy6ws/c=
+	t=1733389302; cv=none; b=ac8GsZpLAo96aabPsplSnSqhruOnc1aQ4FaBda4SGgQzDZP1Ixxwudu2PHlhf21QP3hgW26t10xqefCZc+unhU9E/aM9WlBO0diq1B8cKAGqNDAUI1QhlKtImOMqmtE4Opzghdt8Es4xQDZXamnFDQ7Hqi8W7UbHkUUPsVNzT5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733388439; c=relaxed/simple;
-	bh=hnsawiAPmNyTaOqVa4N7z88n0Q+3dFHhfhhfTqZFluI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hawb4961stkok2NkGnyWNJHCBP0x9ZGJ8IiySTjQFSfpoPyVtYa+rJQa5QTm0cyEGK9ZIaSPw3K7oMhTf2vC0hTeHrcB3dXAezK1ysEgaTYmmZ0g0kcug4PUk/krIu9z2m8H0wt0XlcU3FokRTRR8A55KYmFuAN4U5k5bu/WuKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bk1/fQHO; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733389302; c=relaxed/simple;
+	bh=SqOFpF/xIFWa64G/l65Y5xWT52AN6HV/RtcNy54LSTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ni9LxmnERt4eb3RmBVaroe8JFLPUdrI1lXV7vNXhFBklP9zwmdMCv3HCYjSzUZzgsyJY8KDavxAyoMFmrQ/KrQe08eWFYxf5F5y6AwFu4eQyBHEkB/iF48+7bDah39y2Y+hIEep/YmsOJPAxoE1I5LVImk7cqnnTw3SzpNLh3NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP2pY5Ia; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bk1/fQHO"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385eaecc213so319076f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Dec 2024 00:47:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733388436; x=1733993236; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hnsawiAPmNyTaOqVa4N7z88n0Q+3dFHhfhhfTqZFluI=;
-        b=bk1/fQHO81uCf2qg67ZAsKLqkDTud3O/Q4tu06veALpsdxHgka4hu2pTMPxbFs+Ith
-         +vRvJoYzVkT7BSLwuXCq2SZlCW7a2V/aCPOiXiD0SLd/TIUJX/27OSpTA7MAtCJxdEhu
-         YB9Y/5C5DiDVMPDyC66wJBHqCVFdxzU2xTyyH1c724NDqxOoBcRK4FWxaIJfFdoDmNAc
-         mtwtH3ihJgdL+wIZRgiufOQYSjZyPDr2QFRlT6fPmxKYakOaIlb2bB6YuV3pl93Y/afM
-         dsCAntmMwb6rF3F+BC2SM7vUkLJkRnCbivqgltDcsf9Zbdm8/DYDeYvJv1pg83pnuh11
-         i9Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733388436; x=1733993236;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hnsawiAPmNyTaOqVa4N7z88n0Q+3dFHhfhhfTqZFluI=;
-        b=vSBkYeCAAu/wxhVcbvrIfZutLuN/pewlCIIUtLxQvhvlGSAcO8WK1ol2wYhxFojdIx
-         DlfHbnfDi3RrZdimG1AhsFZcBu14T9SYsjUyPEGc803MPkuwRGxwBXGPq3nIkeMYjVQO
-         gZT/NqRq+2tj+jSsGYcREWX6q9XRDvL1hRXsbpMs4zDJaq4CZnNbF1P43aTYex7I7I4s
-         rChOCjtaechiab3c9122iLog7PFQKERPPBcl6GP/UprUM8YAFX6HdQY1QoAIg2F53/Jo
-         y/Zg0Qt6K6qpibWww5fi5eHCf6PmOsoAmlDo/kFAfQlh4m9FhNdSpWx/jKoxCCfiZBSS
-         0lrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgQNM4bwY+VmjJVP/QUmdkIORhHHqBOG94xETwWQY2/6RlqIYHdSX1CUYxJnb2vRC+15oRYPNqluXiSgl4wQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw50p+95jjDDg9RuFcWWX7RzluXZX4oa8Vm6J7MLlcIx6qJcAbc
-	iSjMEotI1kKqxaPYQ3RZeXjg6N+ySwRJjUA98LEgcz73gQHrKqnSVA1+TN/wP92+E/YnrwpoNjU
-	CictMKrEWMLc2vQArqZzzEQOojzIsARcrrQIE
-X-Gm-Gg: ASbGncua5dMTviu6/zmVauvIEAgrZPVY4j/X/Acel4BKcxYhYoVr1Z/MQEQAe7A5F7g
-	HpPWo6EPdI2J/Mtpq0825ikNGaujlSNGpNDnJ1gugrKVj7V4/iH03ogQIg3+gAw==
-X-Google-Smtp-Source: AGHT+IGnhellO6UJ4z4u30dAkBaqbxEvnFWZdjtopqXpVvl6L1W8rz2P6jjJGe9/awoSRPYnuNZOTWKmtI+ml0eBTxo=
-X-Received: by 2002:a05:6000:1885:b0:385:fdff:d457 with SMTP id
- ffacd0b85a97d-3861bb7c21amr1569820f8f.13.1733388436297; Thu, 05 Dec 2024
- 00:47:16 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP2pY5Ia"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A13C4CED1;
+	Thu,  5 Dec 2024 09:01:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733389302;
+	bh=SqOFpF/xIFWa64G/l65Y5xWT52AN6HV/RtcNy54LSTk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nP2pY5IaaWdi6f/sn1/5JHelQzCf4/mODdSdNi5D060Vvxyv+zxvGa4K9btKbwdgh
+	 sV6TM3fHXh/Jm8t2rm0eYgpSeaMBcxRzaIrU13JqJXjOUxL+O2GG6bzknCf3dmCwa+
+	 M1sBYcczwBG8b7E2a+yznladbRPGq5vlhKFtj/ps=
+Date: Thu, 5 Dec 2024 10:01:38 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/2] sample: rust_misc_device: Demonstrate additional
+ get/set value functionality
+Message-ID: <2024120517-bright-expire-955e@gregkh>
+References: <20241204174627.1151288-1-lee@kernel.org>
+ <20241204174627.1151288-2-lee@kernel.org>
+ <2024120453-unfunded-oversight-5161@gregkh>
+ <20241205083848.GD7451@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
- <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io> <CAH5fLgj30AmuobugAgzG9vOhSOrk5SqWwguOoNeh3J2fmLRHCA@mail.gmail.com>
- <OCjFF0---F-9@tuta.io> <CAH5fLgj2qHjYj=heYi55qWz7=LxyHeUPyhbgVe0QLjzH0S34bw@mail.gmail.com>
- <ODK_F29--F-9@tuta.io>
-In-Reply-To: <ODK_F29--F-9@tuta.io>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 5 Dec 2024 09:47:03 +0100
-Message-ID: <CAH5fLgiwQzrKG2a3Doj+LYGAna7yJcBO5eTtyMYiBfVZmZSLVw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] rust: Add `OnceLite` for executing code once
-To: jens.korinth@tuta.io
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Rust For Linux <rust-for-linux@vger.kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>, 
-	Linux Kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241205083848.GD7451@google.com>
 
-On Thu, Dec 5, 2024 at 7:49=E2=80=AFAM <jens.korinth@tuta.io> wrote:
->
-> I'm afraid you lost me. You wrote:
->
-> > Using a Once type for this seems like a good idea to me.
->
-> and
->
-> > One advantage of using a Once type is that we can use core::sync::atomi=
-c
-> > until we have working LKMM atomics and then we just swap out the Once
-> > type without having to modify the warn_once abstractions.
->
-> That made sense to me, so I started in this direction. `std::sync::Once`
-> has `is_completed` [1], which made particular sense to implement in my
-> mind to increase the utility of `OnceLite`.
->
-> [1]: https://doc.rust-lang.org/std/sync/struct.Once.html#method.is_comple=
-ted
+On Thu, Dec 05, 2024 at 08:38:48AM +0000, Lee Jones wrote:
+> On Wed, 04 Dec 2024, Greg KH wrote:
+> 
+> > On Wed, Dec 04, 2024 at 05:46:25PM +0000, Lee Jones wrote:
+> > > Expand the complexity of the sample driver by providing the ability to
+> > > get and set an integer.  The value is protected by a mutex.
+> > > 
+> > > Here is a simple userspace program that fully exercises the sample
+> > > driver's capabilities.
+> > > 
+> > > int main() {
+> > >   int value, new_value;
+> > >   int fd, ret;
+> > > 
+> > >   // Open the device file
+> > >   printf("Opening /dev/rust-misc-device for reading and writing\n");
+> > >   fd = open("/dev/rust-misc-device", O_RDWR);
+> > >   if (fd < 0) {
+> > >     perror("open");
+> > >     return errno;
+> > >   }
+> > > 
+> > >   // Make call into driver to say "hello"
+> > >   printf("Calling Hello\n");
+> > >   ret = ioctl(fd, RUST_MISC_DEV_HELLO, NULL);
+> > >   if (ret < 0) {
+> > >     perror("ioctl: Failed to call into Hello");
+> > >     close(fd);
+> > >     return errno;
+> > >   }
+> > > 
+> > >   // Get initial value
+> > >   printf("Fetching initial value\n");
+> > >   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &value);
+> > >   if (ret < 0) {
+> > >     perror("ioctl: Failed to fetch the initial value");
+> > >     close(fd);
+> > >     return errno;
+> > >   }
+> > > 
+> > >   value++;
+> > > 
+> > >   // Set value to something different
+> > >   printf("Submitting new value (%d)\n", value);
+> > >   ret = ioctl(fd, RUST_MISC_DEV_SET_VALUE, &value);
+> > >   if (ret < 0) {
+> > >     perror("ioctl: Failed to submit new value");
+> > >     close(fd);
+> > >     return errno;
+> > >   }
+> > > 
+> > >   // Ensure new value was applied
+> > >   printf("Fetching new value\n");
+> > >   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &new_value);
+> > >   if (ret < 0) {
+> > >     perror("ioctl: Failed to fetch the new value");
+> > >     close(fd);
+> > >     return errno;
+> > >   }
+> > > 
+> > >   if (value != new_value) {
+> > >     printf("Failed: Committed and retrieved values are different (%d - %d)\n", value, new_value);
+> > >     close(fd);
+> > >     return -1;
+> > >   }
+> > > 
+> > >   // Call the unsuccessful ioctl
+> > >   printf("Attempting to call in to an non-existent IOCTL\n");
+> > >   ret = ioctl(fd, RUST_MISC_DEV_FAIL, NULL);
+> > >   if (ret < 0) {
+> > >     perror("ioctl: Succeeded to fail - this was expected");
+> > >   } else {
+> > >     printf("ioctl: Failed to fail\n");
+> > >     close(fd);
+> > >     return -1;
+> > >   }
+> > > 
+> > >   // Close the device file
+> > >   printf("Closing /dev/rust-misc-device\n");
+> > >   close(fd);
+> > > 
+> > >   printf("Success\n");
+> > >   return 0;
+> > > }
+> > > 
+> > > Signed-off-by: Lee Jones <lee@kernel.org>
+> > > ---
+> > >  samples/rust/rust_misc_device.rs | 82 ++++++++++++++++++++++++--------
+> > >  1 file changed, 62 insertions(+), 20 deletions(-)
+> > > 
+> > > diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+> > > index 5f1b69569ef7..9c041497d881 100644
+> > > --- a/samples/rust/rust_misc_device.rs
+> > > +++ b/samples/rust/rust_misc_device.rs
+> > > @@ -2,13 +2,20 @@
+> > >  
+> > >  //! Rust misc device sample.
+> > >  
+> > > +use core::pin::Pin;
+> > > +
+> > >  use kernel::{
+> > >      c_str,
+> > > -    ioctl::_IO,
+> > > +    ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
+> > >      miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
+> > > +    new_mutex,
+> > >      prelude::*,
+> > > +    sync::Mutex,
+> > > +    uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
+> > >  };
+> > >  
+> > > +const RUST_MISC_DEV_GET_VALUE: u32 = _IOR::<i32>('R' as u32, 7);
+> > > +const RUST_MISC_DEV_SET_VALUE: u32 = _IOW::<i32>('R' as u32, 8);
+> > 
+> > Shouldn't this be 'W'?
+> 
+> No, I don't think so.
+> 
+> 'W' doesn't mean 'write'.  It's supposed to be a unique identifier:
+> 
+> 'W'   00-1F  linux/watchdog.h                                        conflict!
+> 'W'   00-1F  linux/wanrouter.h                                       conflict! (pre 3.9)
+> 'W'   00-3F  sound/asound.h                                          conflict!
+> 'W'   40-5F  drivers/pci/switch/switchtec.c
+> 'W'   60-61  linux/watch_queue.h
+> 
+> 'R' isn't registered for this either:
+> 
+> 'R'   00-1F  linux/random.h                                          conflict!
+> 'R'   01     linux/rfkill.h                                          conflict!
+> 'R'   20-2F  linux/trace_mmap.h
+> 'R'   C0-DF  net/bluetooth/rfcomm.h
+> 'R'   E0     uapi/linux/fsl_mc.h
+> 
+> ... but since this is just example code with no real purpose, I'm going
+> to hold short of registering a unique identifier for it.
 
-The stdlib Once type guarantees that when call_once has returned, then
-the closure has finished running *even* if you are not the caller who
-is running the closure. It achieves this by having other callers go to
-sleep until the main caller completes. If we actually want to mirror
-Once, then we should have that logic too, and I really don't think we
-want such complicated logic in our pr_warn_once macro.
+Ah, sorry, I missed that this is the ioctl "name".  As the ptrace people
+will complain, why not use a new one?  Ick, ioctl-number.rst is way out
+of date, but I guess we should carve out one for "sample drivers, do not
+use in anything real" use cases like here.
 
-> > The purpose is to use this for printing once, and printing doesn't need
-> > `is_completed`. We can have another helper for other purposes.
->
-> Why have `OnceLite` then at all, instead of the hidden Rust macro that wa=
-s
-> proposed initially?
+> > > +    fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
+> > > +        let guard = self.inner.lock();
+> > > +
+> > > +        pr_info!("-> Copying data to userspace (value: {})\n", &guard.value);
+> > > +
+> > > +        writer.write::<i32>(&guard.value)?;
+> > 
+> > What happens if it fails, shouldn't your pr_info() happen after this?
+> 
+> If this fails, I need the line in the log to show where it failed.
 
-Well, one advantage is that when Boqun manages to add support for LKMM
-atomics, we can switch them out without having to modify macro code.
-Moving logic out of macro code is usually a good idea. It's also
-possible that there are other user-cases of an OnceLite that doesn't
-have is_completed.
+pr_info() doesn't show file lines from what I remember has that changed?
 
-Alice
+But wait, this is a misc device, you should be using dev_info() and
+friends here, no pr_*() stuff please.
+
+> It says "copying" as in "attempting to copy", rather than "copied".
+
+Fair enough, but if the copy fails, nothing gets printed out, right?
+
+thanks,
+
+greg k-h
