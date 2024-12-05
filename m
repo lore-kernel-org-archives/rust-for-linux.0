@@ -1,208 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C24218EB3;
-	Thu,  5 Dec 2024 14:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD8921A43F;
+	Thu,  5 Dec 2024 14:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733408229; cv=none; b=KIXGTSBJKUfL7CrYPGchgxcE6fZdZL0eqmVm3Qt4zy0zXQYjihart/q5s5o8vIVx/s33u006anEtv5aNRXxP5vsn6PcBd68sDLCfOq6MxYdmiuqUi8iSoXJZqtLZ+JzPtwDsxscJmuBtXmh95ZWTj5avRHMf1DsHpx9eKaOUmsY=
+	t=1733408758; cv=none; b=STLtyC0ZG9RzsRVOlY3cU/4UMi0aesprf00GaA2tqmsDtQPofR1AR6of8t7dmcoxOjcKmERe4QCkwQlS8NJs01lzyeqSl/ryYgUeIAu9jU1qDWxMRhhFYy/RWQk9IKEhH4hIYz22jlz+xnV/ns0KUdmz9PYU+GP5iO3KYGplo5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733408229; c=relaxed/simple;
-	bh=fsQdz0uOY3RAQ4rMNOpTqBJdkc/b5ZHxcuQQNj6yVKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2nL+hPhS285aRURRejP+XCejoxS1DT6ke818fCI03AjOzau0PBD9sA7GAa4vaWa8tSV1sk2oTEW/tVfWE9Bvf4II8vCR5XlB4/r1JNkAwWWVymHK29BpUM6eH9klERA1z4hpSPsEqSr0qYkJ5OHzJZBiUxyrMH5Eds9hOlKhmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nT5X3/xV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733408758; c=relaxed/simple;
+	bh=0qWPKNY/t9iR/pOsdFpN8VpUFDmeBzeQfCckYttTZnw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=isp/VxKtXw6zPecYF3CfPYNpcuwCsqJ2erF17VsxfZmPPY+4v5nYxHKwOVgY+W9i48YxPEHNhRdxOaVSLOwwLdMgL1/SmLCU0mGUm6D0WIKZdk1fxx+qYbcxbLfPC8MtdI/vqasqkAW4fj3eBn+7cUxQR1PNp1J6Vq7rkrbiKqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jOuW3ByD; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nT5X3/xV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2260C4CEDD;
-	Thu,  5 Dec 2024 14:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733408228;
-	bh=fsQdz0uOY3RAQ4rMNOpTqBJdkc/b5ZHxcuQQNj6yVKY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nT5X3/xVaG1myUIf1wLCdym2Y9V3Sf3p5wOv2x9IYsy9XnjjhQrpAVnz/eZPRLY82
-	 BbYpb2ulLUxw4GhSOBuiMffANdbtK6aQyQX1AD3vOYOBv0KVekV0kL0OXXX6s3f7LE
-	 OHLidjzdQScMnvBifMFdth5Abv4Cq0z6KN3kGDQ8eW5MRxOVUZTfB8ut9/OxE1aVQL
-	 c9OrM68JTAN3Csz2VZSPUWZhLvZIsPUmO6rUGyIAELoVytYTZY/A8IiAxJD4csMDut
-	 3WeVutfpdZwQQk8JSbzbaIEatUx1kliJfPxrENxvrlkFI+bymtaDcGjcE7N5FWyKVW
-	 OETqWu4kpSEDg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	tmgross@umich.edu,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	fujita.tomonori@gmail.com,
-	lina@asahilina.net,
-	pstanner@redhat.com,
-	ajanulgu@redhat.com,
-	lyude@redhat.com,
-	robh@kernel.org,
-	daniel.almeida@collabora.com,
-	saravanak@google.com,
-	dirk.behme@de.bosch.com,
-	j@jannau.net,
-	fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v4 13/13] samples: rust: add Rust platform sample driver
-Date: Thu,  5 Dec 2024 15:14:44 +0100
-Message-ID: <20241205141533.111830-14-dakr@kernel.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241205141533.111830-1-dakr@kernel.org>
-References: <20241205141533.111830-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jOuW3ByD"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53dd668c5easo1114801e87.1;
+        Thu, 05 Dec 2024 06:25:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733408755; x=1734013555; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ECr3j+PJPfH3u1FCY8Jwj8p+fy3HgSStYnz6KYhRzjc=;
+        b=jOuW3ByD+E1TOf142TMN17nFPVNYLqhEflcICPw4AZOrMEk5B6r4n6Y1Y18xHTPC8I
+         C3Ji+Icja5SlyCLYGkiM5w5aoPyFqMc8VuPsFn0RuMoZq/vATINW2aJ6ADOTyRq/8aQC
+         Kyg8mEsJIK1r44Iwq0eMJFJh+CY1l26A5SoEsQ7Prw20hX2K4Z4SPYfF98+sxp/IQ4bC
+         aMQc4W7uk/U9ainPs3H4f27dtaqvVnx667UEayL5sQrtC3f9hiPTssKXHPdDTqv7DaIT
+         nsI97E5ImL+bc2Kure4C/4/bt3wX3Z4Xd0yFjK1z0sqG8yYiwDbnYZKsqckEd0OeKmU2
+         owBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733408755; x=1734013555;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ECr3j+PJPfH3u1FCY8Jwj8p+fy3HgSStYnz6KYhRzjc=;
+        b=tOFCQsyIWYE5xUTyR9LPaQqM07bXGSC2XddERVODtQ8yOeEFVgJDb7lNT2Kd7mzzeH
+         bsUjKvXWgj1FfbKi8oWRYnbTkvRyNsOsSNxg1aFtmgi/DImPweLPsoK/xHqRl31HijGE
+         kYTHdnPsJiZ9BsLRGEJyYrKOjXtAv8KaKOyGxGAfDc5FhzX8ROiWEyuIPd/4iJcuClol
+         Z90GD82HdKCzvjl2wjMi4yCLOevdmWJXogkQmyDwHlyiwbUCsCYt4cf1MikDcNOAY/sY
+         hdOMQdG3WDHShMeLVH3vPKrqVYUyocFnd3r2qtej6vjAgx3fxC9OaUd7aDVZ9DlU5u5/
+         O9pA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnQiwOT3+RjKx142r+lNaAzMMfwnOeFNoHZbmWty+Eh+XZU2UQ5VFq5siEQ116/ef5Xvm7Adu1BXnQ9rxYKWQ=@vger.kernel.org, AJvYcCXPCQ+5fh1kqM6Hz7aON9CwZeIKruWjlKxNlbwAojOBD6LeGSHt8rOTSYVsTxPK78W61pS0+ECfnrd6kG8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjwXEaNXi6wZ02W7ZLUZmP7dp9I+0hn4XNzwn2dTmeeNuSiXbs
+	hLAvBcPpwIYmLCN6GzjPNGToCH5tc37wvV4YYzgB7SKHGb0yrgeM9YdmpA==
+X-Gm-Gg: ASbGnctovAIWX1uNq8VKjpb7AvksHTjDMZ5CPmjP7m8ybwvX0eJQ9gruuMJcaxOXVhS
+	HQgr5DiE0KVu5tnmziC5DdwT48cw5hJmInV+RDyzhPt9UrRXxLDgvx6/hz1mBVb3tkYy04aRnoS
+	ct6S4X+QwsCwN6YRVTlpBbpVswK3q2C90pA6yOdQ4eFamAGLBL5D53+x0aKVmDZ7/KToRor1IuZ
+	AvpGeugOoibFFtYOy/i5nnLAofY28RvF9f2uVyZz8rBgl/7sylbbjN6G8UQ4sKk/S7J2eOxb6c7
+	Eb1CeofwGTV6IkmHCajM
+X-Google-Smtp-Source: AGHT+IFzlJ/ndqgl+nEbM84hx+ZYeslhN+ABZV1lIYxXxfYOelqjUzikzeWd4ZSkjTOWIlPz8RbBWA==
+X-Received: by 2002:a05:6512:10cd:b0:53d:f63a:e428 with SMTP id 2adb3069b0e04-53e2192c603mr1207101e87.27.1733408754721;
+        Thu, 05 Dec 2024 06:25:54 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e229c1edcsm261651e87.187.2024.12.05.06.25.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2024 06:25:54 -0800 (PST)
+Message-ID: <c9baa4bb-81db-42ae-98be-d8cb7d57f237@gmail.com>
+Date: Thu, 5 Dec 2024 16:25:53 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] rust: add dma coherent allocator abstraction.
+To: Robin Murphy <robin.murphy@arm.com>, daniel.almeida@collabora.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Valentin Obst <kernel@valentinobst.de>,
+ "open list:RUST" <rust-for-linux@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20241205113234.2021442-1-abdiel.janulgue@gmail.com>
+ <20241205113234.2021442-2-abdiel.janulgue@gmail.com>
+ <1c13843f-6929-4bc6-8564-0ec2d964c41d@arm.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <1c13843f-6929-4bc6-8564-0ec2d964c41d@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Add a sample Rust platform driver illustrating the usage of the platform
-bus abstractions.
+On 05/12/2024 15:07, Robin Murphy wrote:
+>> +    pub fn alloc_coherent(
+>> +        dev: &Device,
+>> +        count: usize,
+>> +        flags: kernel::alloc::Flags,
+> 
+> Might it be worth adding at least a placeholder type and argument for 
+> "attrs" as well, so there's less churn involved in coming back and 
+> adding it later? Or is the intention to have a separate 
+> dma_alloc_attrs() constructor for such users?
+> 
 
-This driver probes through either a match of device / driver name or a
-match within the OF ID table.
+It certainly is possible to include attrs in the constructor using Option:
+```
+     pub fn alloc_coherent(
+         dev: &Device,
+         count: usize,
+         flags: kernel::alloc::Flags,
+         attrs: Option<u64>,
+     ) -> Result<CoherentAllocation<T>> {
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- MAINTAINERS                                  |  1 +
- drivers/of/unittest-data/tests-platform.dtsi |  5 ++
- samples/rust/Kconfig                         | 10 ++++
- samples/rust/Makefile                        |  1 +
- samples/rust/rust_driver_platform.rs         | 49 ++++++++++++++++++++
- 5 files changed, 66 insertions(+)
- create mode 100644 samples/rust/rust_driver_platform.rs
+<cut>
+         let ret = unsafe {
+             bindings::dma_alloc_attrs(
+                 dev.as_raw(),
+                 size,
+                 &mut dma_handle, flags.as_raw(),
+                 attrs.unwrap_or(0),
+             )
+         };
+<cut>
+     }
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 365fc48b7041..ae576c842c51 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7035,6 +7035,7 @@ F:	rust/kernel/device_id.rs
- F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
- F:	rust/kernel/platform.rs
-+F:	samples/rust/rust_driver_platform.rs
- 
- DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
- M:	Nishanth Menon <nm@ti.com>
-diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
-index fa39611071b3..2caaf1c10ee6 100644
---- a/drivers/of/unittest-data/tests-platform.dtsi
-+++ b/drivers/of/unittest-data/tests-platform.dtsi
-@@ -33,6 +33,11 @@ dev@100 {
- 					reg = <0x100>;
- 				};
- 			};
-+
-+			test-device@2 {
-+				compatible = "test,rust-device";
-+				reg = <0x2>;
-+			};
- 		};
- 	};
- };
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index 6d468193cdd8..70126b750426 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -41,6 +41,16 @@ config SAMPLE_RUST_DRIVER_PCI
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_PLATFORM
-+	tristate "Platform Driver"
-+	help
-+	  This option builds the Rust Platform driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_platform.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 2f5b6bdb2fa5..761d13fff018 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -4,6 +4,7 @@ ccflags-y += -I$(src)				# needed for trace events
- obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-new file mode 100644
-index 000000000000..2f0dbbe69e10
---- /dev/null
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust Platform driver sample.
-+
-+use kernel::{c_str, of, platform, prelude::*};
-+
-+struct SampleDriver {
-+    pdev: platform::Device,
-+}
-+
-+struct Info(u32);
-+
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <SampleDriver as platform::Driver>::IdInfo,
-+    [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
-+);
-+
-+impl platform::Driver for SampleDriver {
-+    type IdInfo = Info;
-+    const OF_ID_TABLE: platform::IdTable<Self::IdInfo> = &OF_TABLE;
-+
-+    fn probe(pdev: &mut platform::Device, info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-+        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-+
-+        if let Some(info) = info {
-+            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-+        }
-+
-+        let drvdata = KBox::new(Self { pdev: pdev.clone() }, GFP_KERNEL)?;
-+
-+        Ok(drvdata.into())
-+    }
-+}
-+
-+impl Drop for SampleDriver {
-+    fn drop(&mut self) {
-+        dev_dbg!(self.pdev.as_ref(), "Remove Rust Platform driver sample.\n");
-+    }
-+}
-+
-+kernel::module_platform_driver! {
-+    type: SampleDriver,
-+    name: "rust_driver_platform",
-+    author: "Danilo Krummrich",
-+    description: "Rust Platform driver",
-+    license: "GPL v2",
-+}
--- 
-2.47.0
+```
+So the signature of the constructor could be:
+
+let c = CoherentAllocation::alloc_coherent(dev, 4, GFP_KERNEL, None)?;
+
+Andreas, Miguel, Daniel, any thoughts?
+
+Regards,
+Abdiel
 
