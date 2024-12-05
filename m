@@ -1,301 +1,116 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17C918DF6E
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 11:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8DC1DA0E3;
+	Thu,  5 Dec 2024 11:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733397144; cv=none; b=EKV26ZvASzypjG+Mr+THGx2omPVOqVBjnO6SUR35bId1KwcAVkGJ2CMSrxfneRBaT83elB+ubY3ZaAycTGpFG5AZSfRAlmIsz2ET35bjq+vpxY3GwwCcnB+g4aF6vA3J0KPvRfO3A5RgCBpnhLdG3NmbdSSRwLb5K6kWf9w6tSc=
+	t=1733398374; cv=none; b=XIijtTEQI3iZ3o3sBiIljA4EAPmYQP/E9NkUBcY+fxxOhcLct5Nnktzed+b0BUY1ggqxT/IWYwuezbGowMYMYB12bdzs0w7Ay5WQ+pnempyRTPI5b1hLRPXF7+mzt4ppsDlob1+8DRaH7pFrpS9egA+yin/am0cbrLVMlQuayrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733397144; c=relaxed/simple;
-	bh=1553c8GBH/4wfnZ0wT0Fw0LMf5ayYua+MW/Fu4QXArQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UQftLr8KRpcgqfNRxRnh7zIZGAxbDP4UuDPAFBXV2hYfVWo/xnDaoXNxfYgn5lH+whuaBIUZktyJLl+5LRR5Zib8LS/QXsv2XQEtMDylJGgLEveLKOOCVdxjB5MHtauA9SCVbFGxerBScncD1zpaIOGEG7CxmyanldQrj5OqWMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=aDG/IeYo; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1733398374; c=relaxed/simple;
+	bh=qd4trRUQfQkxS8oc3Uy3RwMq56m56afdLOQIDKV643o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HIkizHSjDD0TG22MaZqI9U9M3AgmVLwR47UBc4ohFApa4KCOpLhA7vkD2OhfrRTNDGpd+02GF8VEHGjE4dOVQgcb8Ftls7RWJ/uZPiiF9ez1h4xwVNaG7TOyx9i+2SeKqws0lfLJTIDLscDwSYc9Ik08U52sDPXpAQCDVAHTc8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+mNrPIg; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="aDG/IeYo"
-From: Fiona Behrens <finn@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1733396794; bh=t/tPblrv4YbP22txyJzf5WADhEAHpktb2m7vi7BZtII=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aDG/IeYonUaNgNz8U+4SEqgFhYhd/VfHDJCE1nyPlmRNdirSbLmmD7ZMhpCE/R/Gk
-	 rm8X2fyF0LGkQ+cc5CmK7Bf7iY7dRhTdWV3ietsgmiCk5uwJQrCINsHXBp0FU9444W
-	 aoX3qBZoJtQ91jbAVjwqjByx1X8eNoiKR9meKewY=
-To: Xiangfei Ding <dingxiangfei2009@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, aliceryhl@google.com, ojeda@kernel.org,
- dingxiangfei2009@protonmail.ch
-Subject: Re: [PATCH v2] rust: use derive(CoercePointee) on rustc >= 1.83.0
-Date: Thu, 05 Dec 2024 12:06:33 +0100
-Message-ID: <CC3F267E-55E2-446E-9926-E9D5BE37F410@kloenk.dev>
-In-Reply-To: <20241203205050.679106-2-dingxiangfei2009@gmail.com>
-References: <CAH5fLggS+3K8WHV7mrgTJQhGZMNni5gj9=huQtezc4GK8bk4HA@mail.gmail.com>
- <20241203205050.679106-1-dingxiangfei2009@gmail.com>
- <20241203205050.679106-2-dingxiangfei2009@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+mNrPIg"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53de7321675so981003e87.2;
+        Thu, 05 Dec 2024 03:32:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733398370; x=1734003170; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhWWNL//qRNhtly2gq08UnOc6Yd7Jys95X1y4ntnJ6o=;
+        b=G+mNrPIgH38LcGOBLS1nb6RYOXfZPdINuiCDmAeBILsLV6YNMhwAepY3VwYcfwpGL2
+         l1LWukWTbARHmryM/tZeqbXf53mOU5eDZ7LtsgFOsv8qy8jEUQNEVaDmOZ+QwlzALc2Q
+         jaZaFHVnS1/qNMvKxEHZPMTuyxfm6sRWN5PiT7ZS6fOMGloAK5gfuqXnShwfJwfnQ3+P
+         +MA/ODUq4wVWuAlaSItK4DjbtW/k5kGMSAcGLss1f1x9fiMktJia21TasofkM79YwFix
+         fHXo16Kay+hqCTmhahhTkX2amqkce5XNIjcVqkuuY3JgNSXjGPu9idp6r6Z4ZaJCYduO
+         fSGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733398370; x=1734003170;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vhWWNL//qRNhtly2gq08UnOc6Yd7Jys95X1y4ntnJ6o=;
+        b=QBeaT6YuSbVz/ibaFoust35+0DVwgtjiTlvG4ukBp9NdgWeWpN1nLWJNG/aRJzNknC
+         AJM13OVau6U3Ozbl1vhIClVBl5o+to85HbnQo1ju3PDF1+9NZ9ymyvK4nK1ig5mgN5XE
+         P7c5eRd5dhO1s2wmKGH7geG3wW2LCP4A3bfz4Tqd+GqZnDrwAL6QBAVTigTg6GUGRY6U
+         LA0DyCGyUUwhpGVYJ1GZY76HejAkKMYJCTyeRap42NZF8QDo/pfVsuPn8md2Km0VkvT5
+         Jd32Q9ywcsCEmFrLmqgmg/S84Um8lfLEtPj5kCJ2tPyBCz15S9g3sD/mmUM2fUhAL0nb
+         NciQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwGBZsyJNd4kskYDBUF6NU2DVOSZj82+VzqyABer3r9CxZRmWRrrUbdX/xlJMT/+dAQBueS4OIihfTEONY+Os=@vger.kernel.org, AJvYcCXYmw9da8OisqdldddtjVSFsa+W9J1RKraWerHih84rkya41oArarJz8hmbCtMTnVngeV9xydCJV9kiGIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoHaVxinn44rF00L6pziZIcMzssenvmb/pJoPdqS4rBIXZ+8qB
+	xxUpyRSZ4SCpmRue7rDBBpefLaQfPcX+QBmdsZX9S1otV/ok5+CK
+X-Gm-Gg: ASbGncv414UG67yyKc4Qy04rmLTINXWeAx2Wjrqj3pHfPw0OhVOTSU1clV6MG22cYGR
+	h4iqCyBdn4ADMRyonm5Sd4IT12FP1HYaUoCRl5j2nfGQlfIdPYSPwUrkcyH/aOHDfKKIvf0GdqD
+	lLnt8nZ869F9IjYsV2v8sJurafbbNfCEVQyzPGIoW0agRCpa1YbNVWiid4R6WEicTNh0Juaq1UC
+	ba/cFGZ+zF8HsrsnXMgGRi7cpY8iBdMN/70ijB66JMg8MN3P8xMJcPCkt8ZcO/sc1VtAQJ+kqsL
+	W/mXcgaMJZWkme2wK4M4
+X-Google-Smtp-Source: AGHT+IGus/e6ZmL7m3QokmKtG/m+9qimhmVc1Ry4PhTBzywCCtWZxD9qMbm6G7bczIlHASdug9tBfA==
+X-Received: by 2002:a05:6512:10ce:b0:53e:21b9:e7ad with SMTP id 2adb3069b0e04-53e21b9e868mr1461214e87.4.1733398369493;
+        Thu, 05 Dec 2024 03:32:49 -0800 (PST)
+Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e229744e3sm216136e87.66.2024.12.05.03.32.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 03:32:48 -0800 (PST)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: daniel.almeida@collabora.com
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Valentin Obst <kernel@valentinobst.de>,
+	rust-for-linux@vger.kernel.org (open list:RUST),
+	linux-kernel@vger.kernel.org (open list),
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	airlied@redhat.com,
+	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH v6 1/2] rust: error: Add EOVERFLOW
+Date: Thu,  5 Dec 2024 13:32:16 +0200
+Message-ID: <20241205113234.2021442-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+Trivial addition for missing EOVERFLOW error. This is used by a
+subsequent patch that might require returning EOVERFLOW as a result
+of `checked_mul`.
 
+Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+---
+ rust/kernel/error.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 3 Dec 2024, at 21:47, Xiangfei Ding wrote:
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 52c502432447..cd57fac7f1f9 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -63,6 +63,7 @@ macro_rules! declare_err {
+     declare_err!(EPIPE, "Broken pipe.");
+     declare_err!(EDOM, "Math argument out of domain of func.");
+     declare_err!(ERANGE, "Math result not representable.");
++    declare_err!(EOVERFLOW, "Value too large for defined data type.");
+     declare_err!(ERESTARTSYS, "Restart the system call.");
+     declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
+     declare_err!(ERESTARTNOHAND, "Restart if no handler.");
 
-> The kernel crate relies on both *coerce_unsized* and *dispatch_from_dyn=
-*
-> unstable features.
-> Alice Ryhl has proposed [1] the introduction of the unstable macro
-> `SmartPointer` to reduce such dependence, along with a RFC patch [2].
-> Since Rust 1.81.0 this macro, later renamed to `CoercePointee` at
-> Rust 1.83.0, has been fully implemented with the naming discussion
-> resolved.
->
-> This feature is now on track to stabilization in the language.
-> In order to do so, we shall start using this macro in the kernel crate
-> to prove the functionality and utility of the macro as the justificatio=
-n
-> of its stabilization.
->
-> This patch makes this switch in such a way that the crate remains
-> backward compatible with older Rust compiler versions,
-> via the flag *RUST_COERCE_POINTEE*.
->
-> A minimal demostration code is added to the
-> *samples/rust/rust_print_main.rs* module.
->
-> Link: https://rust-lang.github.io/rfcs/3621-derive-smart-pointer.html [=
-1]
-> Link: https://lore.kernel.org/all/20240823-derive-smart-pointer-v1-1-53=
-769cd37239@google.com/ [2]
-> Signed-off-by: Xiangfei Ding <dingxiangfei2009@gmail.com>
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+-- 
+2.43.0
 
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-
-> ---
-> Changes in v2:
-> - Apply the new name to the `kernel` crate
-> - Reformat the commit message.
->
->  init/Kconfig                    |  3 +++
->  rust/kernel/alloc.rs            |  2 +-
->  rust/kernel/lib.rs              |  7 ++++---
->  rust/kernel/list/arc.rs         |  9 ++++++---
->  rust/kernel/sync/arc.rs         | 15 +++++++++++----
->  samples/rust/rust_print_main.rs | 15 +++++++++++++++
->  6 files changed, 40 insertions(+), 11 deletions(-)
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index a20e6efd3f0f..eb9b7e24e859 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -1978,6 +1978,9 @@ config RUST
->
->  	  If unsure, say N.
->
-> +config RUST_COERCE_POINTEE
-> +	def_bool y if RUSTC_VERSION >=3D 108300
-> +
->  config RUSTC_VERSION_TEXT
->  	string
->  	depends on RUST
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index f2f7f3a53d29..fc9c9c41cd79 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -123,7 +123,7 @@ pub mod flags {
->  /// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`=
-] functions do not operate on
->  /// an object instance.
->  ///
-> -/// In order to be able to support `#[derive(SmartPointer)]` later on,=
- we need to avoid a design
-> +/// In order to be able to support `#[derive(CoercePointee)]` later on=
-, we need to avoid a design
->  /// that requires an `Allocator` to be instantiated, hence its functio=
-ns must not contain any kind
->  /// of `self` parameter.
->  ///
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 04dbee70d3e6..b665a28d1c12 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -13,11 +13,12 @@
->
->  #![no_std]
->  #![feature(arbitrary_self_types)]
-> -#![feature(coerce_unsized)]
-> -#![feature(dispatch_from_dyn)]
-> +#![cfg_attr(CONFIG_RUST_COERCE_POINTEE, feature(derive_coerce_pointee)=
-)]
-> +#![cfg_attr(not(CONFIG_RUST_COERCE_POINTEE), feature(coerce_unsized))]=
-
-> +#![cfg_attr(not(CONFIG_RUST_COERCE_POINTEE), feature(dispatch_from_dyn=
-))]
-> +#![cfg_attr(not(CONFIG_RUST_COERCE_POINTEE), feature(unsize))]
->  #![feature(inline_const)]
->  #![feature(lint_reasons)]
-> -#![feature(unsize)]
->
->  // Ensure conditional compilation based on the kernel configuration wo=
-rks;
->  // otherwise we may silently break things like initcall handling.
-> diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-> index 3483d8c232c4..f5b3a446eae2 100644
-> --- a/rust/kernel/list/arc.rs
-> +++ b/rust/kernel/list/arc.rs
-> @@ -7,7 +7,7 @@
->  use crate::alloc::{AllocError, Flags};
->  use crate::prelude::*;
->  use crate::sync::{Arc, ArcBorrow, UniqueArc};
-> -use core::marker::{PhantomPinned, Unsize};
-> +use core::marker::PhantomPinned;
->  use core::ops::Deref;
->  use core::pin::Pin;
->  use core::sync::atomic::{AtomicBool, Ordering};
-> @@ -159,6 +159,7 @@ fn try_new_list_arc(&self) -> bool {
->  ///
->  /// [`List`]: crate::list::List
->  #[repr(transparent)]
-> +#[cfg_attr(CONFIG_RUST_COERCE_POINTEE, derive(core::marker::CoercePoin=
-tee))]
->  pub struct ListArc<T, const ID: u64 =3D 0>
->  where
->      T: ListArcSafe<ID> + ?Sized,
-> @@ -443,18 +444,20 @@ fn as_ref(&self) -> &Arc<T> {
->
->  // This is to allow coercion from `ListArc<T>` to `ListArc<U>` if `T` =
-can be converted to the
->  // dynamically-sized type (DST) `U`.
-> +#[cfg(not(CONFIG_RUST_COERCE_POINTEE))]
->  impl<T, U, const ID: u64> core::ops::CoerceUnsized<ListArc<U, ID>> for=
- ListArc<T, ID>
->  where
-> -    T: ListArcSafe<ID> + Unsize<U> + ?Sized,
-> +    T: ListArcSafe<ID> + core::marker::Unsize<U> + ?Sized,
->      U: ListArcSafe<ID> + ?Sized,
->  {
->  }
->
->  // This is to allow `ListArc<U>` to be dispatched on when `ListArc<T>`=
- can be coerced into
->  // `ListArc<U>`.
-> +#[cfg(not(CONFIG_RUST_COERCE_POINTEE))]
->  impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> f=
-or ListArc<T, ID>
->  where
-> -    T: ListArcSafe<ID> + Unsize<U> + ?Sized,
-> +    T: ListArcSafe<ID> + core::marker::Unsize<U> + ?Sized,
->      U: ListArcSafe<ID> + ?Sized,
->  {
->  }
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index fa4509406ee9..bca3d1f1e1b6 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -26,7 +26,7 @@
->  use core::{
->      alloc::Layout,
->      fmt,
-> -    marker::{PhantomData, Unsize},
-> +    marker::PhantomData,
->      mem::{ManuallyDrop, MaybeUninit},
->      ops::{Deref, DerefMut},
->      pin::Pin,
-> @@ -125,6 +125,8 @@
->  /// let coerced: Arc<dyn MyTrait> =3D obj;
->  /// # Ok::<(), Error>(())
->  /// ```
-> +#[repr(transparent)]
-> +#[cfg_attr(CONFIG_RUST_COERCE_POINTEE, derive(core::marker::CoercePoin=
-tee))]
->  pub struct Arc<T: ?Sized> {
->      ptr: NonNull<ArcInner<T>>,
->      _p: PhantomData<ArcInner<T>>,
-> @@ -172,10 +174,12 @@ unsafe fn container_of(ptr: *const T) -> NonNull<=
-ArcInner<T>> {
->
->  // This is to allow coercion from `Arc<T>` to `Arc<U>` if `T` can be c=
-onverted to the
->  // dynamically-sized type (DST) `U`.
-> -impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Arc<U>=
-> for Arc<T> {}
-> +#[cfg(not(CONFIG_RUST_COERCE_POINTEE))]
-> +impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::Coerce=
-Unsized<Arc<U>> for Arc<T> {}
->
->  // This is to allow `Arc<U>` to be dispatched on when `Arc<T>` can be =
-coerced into `Arc<U>`.
-> -impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<Arc<=
-U>> for Arc<T> {}
-> +#[cfg(not(CONFIG_RUST_COERCE_POINTEE))]
-> +impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::Dispat=
-chFromDyn<Arc<U>> for Arc<T> {}
->
->  // SAFETY: It is safe to send `Arc<T>` to another thread when the unde=
-rlying `T` is `Sync` because
->  // it effectively means sharing `&T` (which is safe because `T` is `Sy=
-nc`); additionally, it needs
-> @@ -471,6 +475,8 @@ fn from(item: Pin<UniqueArc<T>>) -> Self {
->  /// obj.as_arc_borrow().use_reference();
->  /// # Ok::<(), Error>(())
->  /// ```
-> +#[repr(transparent)]
-> +#[cfg_attr(CONFIG_RUST_COERCE_POINTEE, derive(core::marker::CoercePoin=
-tee))]
->  pub struct ArcBorrow<'a, T: ?Sized + 'a> {
->      inner: NonNull<ArcInner<T>>,
->      _p: PhantomData<&'a ()>,
-> @@ -478,7 +484,8 @@ pub struct ArcBorrow<'a, T: ?Sized + 'a> {
->
->  // This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow=
-<T>` can be coerced into
->  // `ArcBorrow<U>`.
-> -impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcB=
-orrow<'_, U>>
-> +#[cfg(not(CONFIG_RUST_COERCE_POINTEE))]
-> +impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::Dispat=
-chFromDyn<ArcBorrow<'_, U>>
->      for ArcBorrow<'_, T>
->  {
->  }
-> diff --git a/samples/rust/rust_print_main.rs b/samples/rust/rust_print_=
-main.rs
-> index aed90a6feecf..87cf5321f492 100644
-> --- a/samples/rust/rust_print_main.rs
-> +++ b/samples/rust/rust_print_main.rs
-> @@ -34,6 +34,21 @@ fn arc_print() -> Result {
->      // Uses `dbg` to print, will move `c` (for temporary debugging pur=
-poses).
->      dbg!(c);
->
-> +    {
-> +        use core::fmt::Display;
-> +        fn arc_dyn_print(arc: &Arc<dyn Display>) {
-> +            pr_info!("Arc<dyn Display> says {arc}");
-> +        }
-> +        // `Arc` can be used to delegate dynamic dispatch and the foll=
-owing is an example.
-> +        // Both `i32` and `&str` implements `Display`.
-> +        // This enables us to express a unified behaviour, contract or=
- protocol
-> +        // on both `i32` and `&str` into a single `Arc` type `Arc<dyn =
-Display>`.
-> +        let a_i32_display: Arc<dyn Display> =3D Arc::new(42i32, GFP_KE=
-RNEL)?;
-> +        let a_str_display: Arc<dyn Display> =3D a.clone();
-> +        arc_dyn_print(&a_i32_display);
-> +        arc_dyn_print(&a_str_display);
-> +    }
-> +
->      // Pretty-prints the debug formatting with lower-case hexadecimal =
-integers.
->      pr_info!("{:#x?}", a);
->
-> -- =
-
-> 2.47.1
