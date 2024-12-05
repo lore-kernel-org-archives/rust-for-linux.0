@@ -1,75 +1,106 @@
-Received: from mail.w14.tutanota.de (mail.w14.tutanota.de [185.205.69.214])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E561224B0F;
-	Thu,  5 Dec 2024 19:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.205.69.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34541193;
+	Thu,  5 Dec 2024 20:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733426570; cv=none; b=RYps202q+hbH+kB397+48v/jk62VI81dCQyiKUui2dpUdD5BLbNVU83dHShKU62BITx/bfSQXNEb6jZWd5erEIVgsEBsv27KwGQf1EGKRG5eUlk5JPb6GjfZOxF89gLpOKsWP4T7N0tSVV1Cpd22VBCNsOZHXUo49hQ3URh6Ah4=
+	t=1733430195; cv=none; b=sWp/7nYnlm+rdvjBu0dI2fIXsDeFoPqfvsBYrbg3bEiXaMZK/K/XBUCF+0lu2TeUv9k9vX/B5diXL85nOoJS7yrC97a9YCtC+tRclYbVJ74ctYh9cYY57xlhfbu5v+NooJOFNZsD3rWCauvPnpW2qJsSJH8DpKgzdiLv8XVvVfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733426570; c=relaxed/simple;
-	bh=Ta9ywsfJdQ6Vo9GcVw9UdsJhBf8GeU+PxCzAYoUhaiw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=B5afochU0/mXPscEMpp4ziT4IROa+oxWVIIhRWK6E1UftGGqRGPbt38kD+oGyEWcNt3XosRT56yI0cI/T0DnM6ll+RnwxR0a73xvNXe/eBwgh9y6w5Vt1rHdojA/IbUQsediOo3jc7KfMj7cHNck4qk7eSf7WW0ivgTR6W1hLEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuta.io; spf=pass smtp.mailfrom=tuta.io; dkim=pass (2048-bit key) header.d=tuta.io header.i=@tuta.io header.b=OHLw6czj; arc=none smtp.client-ip=185.205.69.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuta.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuta.io
+	s=arc-20240116; t=1733430195; c=relaxed/simple;
+	bh=ZQc7NSJKN882uTQwwCRETACHGtBZJCvANfM3h3m8DOQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LgAMYi2+307zkdQ/pjhUkIydWqWfUCRqZGUhsy1WuFBBLiFeGAtN3MB7KrzdtBbvdv7dNBKaCUc6/0vVOK5kW75KabD8IJpi5bYWX3nugPeZd/9HIXgu6BHkAwqXyQ5gflBH/a33DKzM+McjNyKOttVy1ojDY1XtzSwcgII53hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=HoMJJviQ; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuta.io header.i=@tuta.io header.b="OHLw6czj"
-Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
-	by mail.w14.tutanota.de (Postfix) with ESMTP id 85753434B591;
-	Thu,  5 Dec 2024 20:22:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733426566;
-	s=s1; d=tuta.io;
-	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
-	bh=Ta9ywsfJdQ6Vo9GcVw9UdsJhBf8GeU+PxCzAYoUhaiw=;
-	b=OHLw6czj0xmx5L9NlIGK42fFoyoKF1TfdRuocBO6cv8+WfqO21MfRpqzW5gFpjgu
-	r4VBJPAiqYV4kLvQTllsUjqZUwb92GWvYJ3yvbssABhdbTG36yC2xUn49KBfgLjfmoN
-	orU/ix3Hy9YHsaY4FmjpipjqKvkF0aJHStk0uXQwVMfAeYPMD28ZRkP99m5sUz1Fqze
-	/c8E6QQRpNDRSg0o96BpfSoig78A9/vlav4Azt+LNJVcg612cJpY6nkD+UQqTFpu7uv
-	OFxZtiyC1DVnRWkShmdXkC+EVQLUwgPfh9F5EXpfUyH2gPwogy7ewgnyYWQKoVmqVkU
-	jvSt1QuNmA==
-Date: Thu, 5 Dec 2024 20:22:46 +0100 (CET)
-From: jens.korinth@tuta.io
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rust For Linux <rust-for-linux@vger.kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Linux Kernel <linux-kernel@vger.kernel.org>
-Message-ID: <ODNG_IK--F-9@tuta.io>
-In-Reply-To: <CANiq72kRiWoo510U8gkLDpyhNi=a1Ps034Dcid5jvLxJnbNRMQ@mail.gmail.com>
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io> <20241126-pr_once_macros-v4-3-410b8ca9643e@tuta.io> <CANiq72m-dY0b7UiBiWOg8g1SFPqLxuhkDdWwNh8g8OBk-Tjz=w@mail.gmail.com> <OCjLJ1h--F-9@tuta.io> <CANiq72=A9=uzSt9DOZBvw3sHwf4vqX2+6MBDKO5FokZUyt1V3A@mail.gmail.com> <ODKVmiV--F-9@tuta.io> <CANiq72kRiWoo510U8gkLDpyhNi=a1Ps034Dcid5jvLxJnbNRMQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] rust: error: Replace pr_warn by pr_warn_once
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="HoMJJviQ"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1733430186; bh=bAbantaMJVIqqDIIM1WewBZ5qc3NDwPXnp4lVgepfAs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HoMJJviQ7l4/0b9uKwTaFOnnCPeCn89j9EsZUBl03XXeGRF504yFDxpRKW3+vQJlK
+	 9iA0lrKR85CPa1tOHEzcX4dSX0EqnHSYD2F79ub4qhsK/OfJ5+aEKp1IW8qSEnAbLb
+	 xuuDfx3DUtzKUcoIpCq0l7Ms3+D5AlkiAgroSkXY=
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] rust: miscdevice: Provide accessor to pull out
+ miscdevice::this_device
+Date: Thu, 05 Dec 2024 21:23:03 +0100
+Message-ID: <F599F062-5519-4DC4-8303-7630BE0B900A@kloenk.dev>
+In-Reply-To: <20241205162531.1883859-2-lee@kernel.org>
+References: <20241205162531.1883859-1-lee@kernel.org>
+ <20241205162531.1883859-2-lee@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> Sorry, I am confused. This is not implementing the `From` trait, it is
-> an inherent implementation.
 
-Hmm, you're right. I assume there is a reason why it doesn't implement
-`From<c_int>` or `TryFrom<c_int>`?
 
-> If what you mean is that this should not be an infallible operation,
-> then we are back at my previous reply, i.e. are you suggesting to
-> remove the method? Could you please clarify, perhaps with an example?
+On 5 Dec 2024, at 17:25, Lee Jones wrote:
 
-Yes, I meant to say it should not be infallible, because, well, it isn't. :)
-I'd probably make `try_from_errno` public and remove `from_errno`.
+> There are situations where a pointer to a `struct device` will become
+> necessary (e.g. for calling into dev_*() functions).  This accessor
+> allows callers to pull this out from the `struct miscdevice`.
+>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> ---
+>  rust/kernel/miscdevice.rs | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> index 7e2a79b3ae26..55340f316006 100644
+> --- a/rust/kernel/miscdevice.rs
+> +++ b/rust/kernel/miscdevice.rs
+> @@ -10,11 +10,13 @@
+>
+>  use crate::{
+>      bindings,
+> +    device::Device,
+>      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+>      prelude::*,
+>      str::CStr,
+>      types::{ForeignOwnable, Opaque},
+>  };
+> +
+>  use core::{
+>      ffi::{c_int, c_long, c_uint, c_ulong},
+>      marker::PhantomData,
+> @@ -84,6 +86,13 @@ pub fn register(opts: MiscDeviceOptions) -> impl Pin=
+Init<Self, Error> {
+>      pub fn as_raw(&self) -> *mut bindings::miscdevice {
+>          self.inner.get()
+>      }
+> +
+> +    /// Returns a pointer to the current Device
 
-If there's no other disadvantage I'd remove `try_from_errno` as well and
-replace it by `TryFrom<c_int>`. Implementing `From<Error> for c_int` may
-also make sense for the other direction?
+I would not call this pointer but rather reference? Pointer is usually as=
+sociated with *mut or *const, and this is a reference to the Device abstr=
+action
 
-Jens
+
+Thanks,
+ - Fiona
+
+> +    pub fn device(&self) -> &Device {
+> +        // SAFETY: This is only accessible after a successful register=
+() which always
+> +        // initialises this_device with a valid device.
+> +        unsafe { Device::as_ref((*self.as_raw()).this_device) }
+> +    }
+>  }
+>
+>  #[pinned_drop]
+> -- =
+
+> 2.47.0.338.g60cca15819-goog
