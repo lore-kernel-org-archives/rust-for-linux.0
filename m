@@ -1,110 +1,140 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E612139C4;
-	Thu,  5 Dec 2024 11:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DCE217673
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 12:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733399771; cv=none; b=T+mX/oK1nYe0BoNzsMBHyg2aq0+KRfpsbdJZnkanxuUMvFPyTqbBx0rHBoybbm5Iw3eOGp3is8uOZ166C4MlC1EAt5xB/Wal93Ivd6vvt2OiKrX1LNYpA4NXv/YWS82UdKJZIBEHEjTizxTaaIWcCZN02AGUjwGE/mdGAngnlGg=
+	t=1733402214; cv=none; b=cSiV5dKF1hZSTo8Vm9hNk/5Y2qg82Ye/0xZDyqv/VwAoTHkNTOFYIhq2vwVRB+SB/PKNhr4OV7lzcSMA9r9lH/pmG1IxhkjQcokJ75iUH3t6u+gT5XpqvNN61i+T/e8si6b4EyHSHjAR1kxjYSY/0JlwLVwH2CeWTpofDXRGH84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733399771; c=relaxed/simple;
-	bh=kCf16RN18cIUR+O9drnAiJS+Y+NFHBMSQAI/3LbxQAU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=saSkRspLEzcvwyZcPizLjjQoftFlZFKRAuDhVptbXK8BrxI+k8R2VEUXCPSwyLe5iVdxRqbu+c8QlKJhCw7BLGZBcpf3YGs6MUUnMpaSpZLkjxzB8mmcwLZk0QmD016B5C9OimmuoQUWVB2CbEqTI9gb1rGBDCkvqRf/xGRdYKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l3fj/fFx; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733402214; c=relaxed/simple;
+	bh=7iQZviBWsipCWsckJ1L2w9D6utBoX7XmVaFR1kH1NlM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oTccMZpyDR9CQmefT/zHdGYpqcWu8hf3nVLf8+pOpdWYPv0J/c39JzYyzZpiN+QmvNuW6fbiuqLE0/OV8JK7NtxC+SHHK4kgEMth9o/I3jbi3Q1jTS1GG+8gbK1P1BCHQ3noksO61ILQHWx7cItuT6UAl8d5RqmSCTOPP2MEraA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xuHLzA05; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l3fj/fFx"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee534d6800so128103a91.2;
-        Thu, 05 Dec 2024 03:56:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xuHLzA05"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-434a9861222so7583905e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Dec 2024 04:36:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733399769; x=1734004569; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NjdbC+3reTIYnarZ7ofLtxbb2zTwaAAm588wYX70/Ak=;
-        b=l3fj/fFxPE3he2obFjEgRU1pPd0Sm2VoyCrNh6DOuQ1MQ1aZ/pCe1Tp5cfuC9Fo3QZ
-         t2gJ3InDe2vx5hy8A1htFavDIea6Gy4vwTNxIyid1IRUGZ3cAai1UfssB/dkwd3IR9+r
-         vNgv78noMtT/wvvQNnRIHG0w9Me5i5HW0tX2ZiNSXBfvZpOo3mJrWqfubBMdAos4kyMv
-         YWlunnTPYKc2W7HXt6zYLlmWpTqG3NARIT8VEL3y+V3ZyQe8HM4acXMHZjgxPlHfeebB
-         Jy1SQ44U2Uzob3gIIwdjKsPvT9y9FQ9nHEFUwYUkrlsy1JiTAnK2yLAtf7K64FJ3ABgq
-         jAOQ==
+        d=google.com; s=20230601; t=1733402211; x=1734007011; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vd2e/+7e53PEmvCulx9h5rdqdJTtvKXM/ReO3/927u8=;
+        b=xuHLzA05P8WkAyqP51U0dAe/HKz9MZDK0M3bXeD1Js6GMNjA2YjpUnwkk/RT41EIHY
+         8LSEt6sE4Cr5juL58Elq4B+xiR8E6c4uXX8TCUm/6zXwOyzUl4MjmyHi9EhPwus1FGzx
+         N364NxEoC42jj4/db/xjUDEc3rSOJIkgk4WoZqSoy7wV4VfSvZCRxe1yjx7cxjELAHqW
+         OSDOr16e5YSK1HApY29pRkcwjdDYx8bg+Im6pKtGnA5uJWNvaloovrwPKySSzIciLHlA
+         3RUbH9dMJ6++sZ5PjBcnR8+XMfDBd/14EtmY2/6b+/cYtdNLDLhAQe9eTeQGYtupfrx6
+         xv6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733399769; x=1734004569;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NjdbC+3reTIYnarZ7ofLtxbb2zTwaAAm588wYX70/Ak=;
-        b=sbwMOSuj/CsFF6eQOaWjUTAC/C4s4kiMcEZ7vec+Zy8aSq1vcU263u3iUJ9ze1FfC1
-         UpvXwLPJULdWUp/BPLt0Zqcnrxi9z9Cr/jhwn/3BY/91d+X+/g03Xl3xcsgoX2h8OdRG
-         O5hWqo7mCJ8X3kOGNW9IKmftVUdhiQHoMvZt1/7wW4/Wye1d1FEsOpWrgxFQJqB/LRM8
-         0n18HqK3QqT75YueGk3+YGiI6c5zHm+2oBaf49gSOwT3J+nwLxbmZOVpb8Vc3qYu8gdA
-         IEF3QXxM14kQlFzCS7bWZ8C3IMGO8gVhr4+G5/rkU+bwi3wCZ1FAH2vqaCSum7JwFQ9h
-         zn6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVwT76lxQMsR+sLfhCDAXsry+npPKbyIrZvaNq9IN3z6pdbonPwUyXN4ZtEdt6uhFFNlr6ff5E2Xyx8kQQFKjc=@vger.kernel.org, AJvYcCWT8ib/e8NPBO7V/NYVZQe2Mv3hYlg6fdd1rYSW9H5kb88EUCxq055OlAwiCsF1XKJP9IcCgsBBZxXrRak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKa6e+EKHZUn4b0U4fRMljb+6YbiapaYZ2vFX2hHktNFAe2Tbs
-	uq1DQpMuaVolrztIiP3+ISP+2DIQSGprqd3j9rTltZSrxfdsOcNW87J4sZy7ObWYHLWyrYIMhB2
-	Xc/Yp54RzVGh6CtgjAbOyJymJOhk=
-X-Gm-Gg: ASbGncu6HzESwxIwEqEGbAsb0iK3mKmyKYlPpLHzBv0pXh+Qfdq6JczPFoApmx39alD
-	Gc8gl+24p4LFF+uhbnzgEbIaMPmmuIRM=
-X-Google-Smtp-Source: AGHT+IHr2MUdRouB0jKjxkgY6ZX0YH1VXID/6Xn+4a0HrJ7Sm6Gnj9dOuOErx+U73MCe7MuNQaX30m2FYfU4J79ENkk=
-X-Received: by 2002:a17:90b:384e:b0:2ee:a00d:2ef8 with SMTP id
- 98e67ed59e1d1-2ef0128353fmr5461030a91.8.1733399768957; Thu, 05 Dec 2024
- 03:56:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733402211; x=1734007011;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vd2e/+7e53PEmvCulx9h5rdqdJTtvKXM/ReO3/927u8=;
+        b=cHoDXUDRDHGXkxsDGuEAZnZV6vcQYh1wjOqz5TTehbm5M68XYZ+vQ0BVwaZOI1jReK
+         ZtFNqJQoRY0dMwYqoQEXzvyzRnNxsVGaBH7lzunbXl13w0z/r9v9qqobYGlgWTGdqgDg
+         UOkamXCPaXXVnUaCLLN9TtRNAOGP8FsS+GOivTGIZ6uYP48ve6kRcEepI0kPTC2HSyPd
+         ggShyehK3s1jX3UUJnD1do+5Vw4k7ZlF7MotoZXQyClmLLxiLav4ZrfDP0+VRI3uTtFJ
+         cO0bbAvTMO1pVmjHNYevIkUEfND6Ng+xDP/lLxiUw9Juym/GryEL18czgJ4bGIXWmodK
+         f2Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYziDdBPhUV3uwhcYY7PfOXX9xOim64+GIhLjmRA07wjN2imoroPhohlUX51A9B1AR7zBdrM4gZuoC0gADQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxbzk99qFRFaUoJZBQiudeWxnN5K9NQ688tSnGztYv56qSDk+fx
+	Fr41QSrzEXnrpOkARPZebltzEcIAKNweS/4jAwbDftXyugVTQgSK8lLh3NgLrT6lAGyTdojReHK
+	IkTJxNWz+HCUKyQ==
+X-Google-Smtp-Source: AGHT+IFStT3/JjmB+ZduzLED9m5mcG/6ApdoyjMwuoRZ3NBOmr/f6c52FU11sp9uLvVjDAHF+X0r73Z9cmx8MnQ=
+X-Received: from wmbhi24.prod.google.com ([2002:a05:600c:5358:b0:434:9939:10da])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1a87:b0:385:e4a7:df0a with SMTP id ffacd0b85a97d-385fd436393mr7502559f8f.54.1733402211456;
+ Thu, 05 Dec 2024 04:36:51 -0800 (PST)
+Date: Thu, 05 Dec 2024 12:35:51 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
- <20241126-pr_once_macros-v4-3-410b8ca9643e@tuta.io> <CANiq72m-dY0b7UiBiWOg8g1SFPqLxuhkDdWwNh8g8OBk-Tjz=w@mail.gmail.com>
- <OCjLJ1h--F-9@tuta.io> <CANiq72=A9=uzSt9DOZBvw3sHwf4vqX2+6MBDKO5FokZUyt1V3A@mail.gmail.com>
- <ODKVmiV--F-9@tuta.io>
-In-Reply-To: <ODKVmiV--F-9@tuta.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 5 Dec 2024 12:55:55 +0100
-Message-ID: <CANiq72kRiWoo510U8gkLDpyhNi=a1Ps034Dcid5jvLxJnbNRMQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] rust: error: Replace pr_warn by pr_warn_once
-To: jens.korinth@tuta.io
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Rust For Linux <rust-for-linux@vger.kernel.org>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>, 
-	Linux Kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIACeeUWcC/x3MQQqAIBBA0avErBtQqYiuEi3MmWwgKrQiEO+et
+ HyL/xNEDsIRhipB4EeiHHuBritwq909o1AxGGUabVSL/raBMF523hjpcMiLpa7XhpSboWRn4EX efzlOOX//X3clYgAAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2238; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=7iQZviBWsipCWsckJ1L2w9D6utBoX7XmVaFR1kH1NlM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnUZ4ptyh0m08QFCk2CLCvc6ekmeolvC6xwJJmk
+ zJyrwSRTHWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ1GeKQAKCRAEWL7uWMY5
+ RohGD/9hgHc0FMDO7Bk0Ysves93jeDpXLwhJe5VEfErnuksTCYpblaUxw+xokgWFpQEEHlXs+3z
+ wwgc8tMZL4AC3b6OrIQ/kR5sFKKMievvs3kHrHAFnDfDjjEbry+llhUNuhQc/Tk3ZMg1ko39Ica
+ lGWpMDJYPzlo175jqz8kotzQGcwPR3HtiOrqM0aZCJDrb7N63O9pl1B7/bnQoFSv3IwmfLrR+Zp
+ AmlO7uSbfdLCP7DXtBz8D4QMBpHnFnDl5HYsmNotRyV4yy39VIBkhvjbMkXiz9N72sutjmmI4tt
+ fVOp25hNU4r6CfhkdprQJutbzqSiZgUgrETOIhS4XhLMeNg11hh3XbdiYxYrTaIM+WcDu1ZANE9
+ jQ5NhZYGsjQ3wmmksy5dahx4s89V98iFVZFbFCknA6ayth9QNIWzy5AM3g7u8cuc2ZrZbgHzVIv
+ zI/r4cTiDUYYtKeanAI4NfUJjZ7cctbBabFAeo6nbC4hIJmFY4hxuVHPAlaeQ6DRNqfdDWRCmk8
+ 5TAih+8oevM/nDOt2QnavabGy01XIWlw83g2WguxFDBZbD7i3bmQJsjpzY0gFLd7H3d6rt9IMUV
+ p8K84SyAsgbOwoNnxbj2qfJaOKw6qZTB0lANW0tjyFbOYzIs+hEivCZoda9g1pzG9eW5R4hydVY c6H3yHRRt1IY54Q==
+X-Mailer: b4 0.13.0
+Message-ID: <20241205-guard-stable-doc-v1-1-a3f8249cf4d4@google.com>
+Subject: [PATCH] rust: sync: document that Guard is not a stable lock guard
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Dec 5, 2024 at 7:30=E2=80=AFAM <jens.korinth@tuta.io> wrote:
->
-> Sorry for the late response, the usual madness at the end of the year is
-> setting in.
+Most locks in the linux kernel are stable, which means that holding the
+lock is sufficient to keep the value from being freed. For example, this
+means that if you acquire a lock on a refcounted value during rcu, then
+you do not need to acquire a refcount to keep it alive past
+rcu_read_unlock().
 
-No worries at all! I know the feeling... :)
+However, the Rust `Guard` type is written in a way where it cannot be
+used with this pattern. One reason for this is the existence of the
+`do_unlocked` method that is used with `Condvar`. The method allows you
+to unlock the lock, run some code, and then reacquire the lock. This
+operation is not okay if the lock itself is what keeps the value alive,
+as it could be freed right after the unlock call.
 
-> I think it should be `TryFrom`. The `std::From` doc [1] says:
->
->     Note: This trait must not fail. The From trait is intended for perfec=
-t
->     conversions. If the conversion can fail or is not perfect, use TryFro=
-m.
->
-> [1]: https://doc.rust-lang.org/std/convert/trait.From.html
+If we want to support stable locks, we'll need a different guard type
+that does not have a `do_unlocked` operation.
 
-Sorry, I am confused. This is not implementing the `From` trait, it is
-an inherent implementation.
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/sync/lock.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-If what you mean is that this should not be an infallible operation,
-then we are back at my previous reply, i.e. are you suggesting to
-remove the method? Could you please clarify, perhaps with an example?
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 41dcddac69e2..7eab46d4060a 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -159,6 +159,17 @@ pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+ /// Allows mutual exclusion primitives that implement the [`Backend`] trait to automatically unlock
+ /// when a guard goes out of scope. It also provides a safe and convenient way to access the data
+ /// protected by the lock.
++///
++/// This guard may be released and reacquired with [`do_unlocked`]. Note that this implies that
++/// this `Guard` type is _not_ stable, that is, holding this lock is not sufficient to keep the
++/// underlying [`Lock`] alive. That must be done by some other mechanism such as a refcount or
++/// ownership.
++///
++/// # Invariants
++///
++/// This `Guard` owns the lock as defined by the [`Backend`] trait.
++///
++/// [`do_unlocked`]: Guard::do_unlocked
+ #[must_use = "the lock unlocks immediately when the guard is unused"]
+ pub struct Guard<'a, T: ?Sized, B: Backend> {
+     pub(crate) lock: &'a Lock<T, B>,
 
-Or are you talking about something completely different?
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241205-guard-stable-doc-efad6812d0cb
 
-Thanks!
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Cheers,
-Miguel
