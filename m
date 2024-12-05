@@ -1,160 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D591FAC34;
-	Thu,  5 Dec 2024 11:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A151DA60D;
+	Thu,  5 Dec 2024 11:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733398529; cv=none; b=u4AG6fr068nrXnKLmmLcQyoyYcxIhIZD8ngwkVDTgWtD5cljl0qbD1PSMa9udKbieMayBMEZrbM8E4htXux/do2aJ7uLGM0tdkxYIjCmTYRqIQPIjS1hfi5w2UXiZlQzFwF0WSFHMZL9dHynkbtbG+eg043Bx/huQMOj3CYpvaM=
+	t=1733398798; cv=none; b=DFDltKK3Qrxcu/oMt2emtRvqjzfOw6ZibPD7UcvcX85+QR3hJvONDXIa2DBk0xYKVe6erWU8dcGA0vTDXzmbodt9Sx50y5Zirg+vo2BGbgqnu98/fDLoPqW8Ivie8ap2dTEbFWKHLSTqzlx0lwLdK3clu6MWzjG1tT5OZ6eb+lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733398529; c=relaxed/simple;
-	bh=jvPCGrHqObr38SBHGilmOh0r7dHyawWF8/PKpw7i7wI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RiEhjIy+xxo57eo3RoHkhJJdidvh2l/eDDUD0lmqmB9WXb/Z6z4x3LloSWJsq8ZNmcZsiZu3e9IJmNQRdbj267mDZILUKUKAGk4Ta8VzuJpD5Mu9OdzjDNEUAZH5bE45+hDPFB2RwS5ksnHXV/xCI4QmckLNuC7Ws+Kl9YGdvdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCP+vdC4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733398798; c=relaxed/simple;
+	bh=oS4kCWnHf5EwueNOBpzfWfyTcUeGswKnxcEx2rRdjYs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pFX3EZ+VTF7NOeiGzpzS/zSP3O2+qtChZw+6dU0GAZ8MTv4j5fHJA7LJpaJOxvbdPYoHXG2sQXQiRVxPj78QxPKbiNob8kIM7KABxlUjDoXpYjN67/2+a7dkYlHuGjr+EcAofKNWV82TdmN4UEdJ4yBOJWBIjikb1b5yOcEHlPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayGAPsCy; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCP+vdC4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389CBC4CEDF;
-	Thu,  5 Dec 2024 11:35:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733398527;
-	bh=jvPCGrHqObr38SBHGilmOh0r7dHyawWF8/PKpw7i7wI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gCP+vdC4RQuVuKxQD/1sPzEN/A8BMURz+RF0p3pfcqGOPFfVe7jEgY0DGSRgKpEPt
-	 /x9xA+dyYuKs6zG7QfLFTzwok0IZclIwtb51WfiuHMN5lir1wwpbatqivgJTXzJOdL
-	 Aw/oN5m3q13qqW9eXIVBj5xphYKSMcnpezMJ3ILtHe2SNRqFDIRryQ48pEYHtZMcMz
-	 m/qeVKdl5YHw1UfdKosvc2nn6EGC8uYhG4GSKzwX8+bOBwO/8dsLiy7ooOu0ED/nCg
-	 z9rowWVy/sBf5Xl4WqIrNMrlvH6fNhoNdonGBPb/KfCGfOuauq33ZqVxZkrULBoZmQ
-	 D0yJhUW+S5lbg==
-Date: Thu, 5 Dec 2024 12:35:21 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Jimmy Ostler <jtostler1@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Filipe Xavier <felipe_life@live.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: alloc: Add doctest for `ArrayLayout`
-Message-ID: <Z1GP-QPDFDjS6qLo@cassiopeiae>
-References: <20241205105627.992587-1-jtostler1@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayGAPsCy"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ee534d6800so125853a91.2;
+        Thu, 05 Dec 2024 03:39:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733398797; x=1734003597; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oS4kCWnHf5EwueNOBpzfWfyTcUeGswKnxcEx2rRdjYs=;
+        b=ayGAPsCydh1O1edPsRPvAXEoNlDlRgawHZtaVaUzBsIfE10tpK8eTjoG7pbqQu49tk
+         i2q9Idl1QwBd7QYmGc5EKPjVSZhc0dM6sbu3UoA4vh1u9HLCJszRGEDh4bWe7vmaeI5b
+         1El05+OPtJZ3vSnFKGmHfkaB1/d4yFM0Hf9vySeB+9Un9ZvfdG5eUJigPQpf3QzvDpUC
+         ZdugoPdadci32AElWu2ABIJXDzn/7fS5GbpJwzm6HpHVn+WkiOP2vgSPG6BElKkCmUXC
+         4nrPJNEosR+hKImqFDgDAsc7tDJIZ8pY2G3SRwHB7YClnqeF5OUbY6ia4CSQt4N6gPQP
+         vjrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733398797; x=1734003597;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oS4kCWnHf5EwueNOBpzfWfyTcUeGswKnxcEx2rRdjYs=;
+        b=XJq+s+RGcdSYv5sGwruDt/ApWO6GpbIV3ZNArE3w0DD8wCzdFHGL0GxmkHVz+/fV8d
+         LE9XMw9ssI2j+M/3Hrka6f00pQYQSEzBExtJDrd8bplqIpshO73xE0j2lxbK/Wo3qapp
+         b6LMUuf59XiXHQAq8mPhmwZOuiaEPm8E/vAAOq0aOUrBVmNVKOSG2auJ+p+5ZA+AX3S5
+         K1NT8zs20FGVlL9WbDBL3fOjbw4+G0bywkbxRM8Hsg/bawnqXtybLg4wzcJKvwtWxtGu
+         gwCv8xqfmnUcB4XlnawfeItPrNFOEUdMJF5F7mcxxEN1HJTyPDhNY/nNcm2VDNQpiwqQ
+         AcIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeNHjAOFd1kwjFe1ht3AFYj+vdMWw+3xukm7pzxqfpQbC6apMhauLFkVAtBNKIefjAJ0i3DfPZDUNMjrnNwz8=@vger.kernel.org, AJvYcCVim6H2UICFPhBtU9uz+ZfTbLLhmXi4qH41ZmL41jO+SbC+gvcKhHbmcMtP+xqxVYgKAnREbFSCT7Urji8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGSCqmrSALbDrmifPYCI3Q3CeqTSniT50SOYwS0Aj2nhm3jCQo
+	V8dmfOHwWol9kk/Wi9p0EhTxGvpa0kXS/4GjBAgVLZ2V8zX2+xHuKBbAzIud3lWqR1K79Abp2Jb
+	+IfjjhXqKufeldNkmj1cg1TlKWms=
+X-Gm-Gg: ASbGnctQ1HHZ0vZhqVFoVb/Sfw1rnc0dQmATzfYEhL8BwsPWKMXhF+8hqhKLc9MkR9/
+	Ty8RBL2GMrVs7izaT7Qu4sAoyC9yLocw=
+X-Google-Smtp-Source: AGHT+IH4p7Cm8F9EDS7fhluaoPIT4x7+TE7xNgkt/fT9wR7xsFO1ShGrXAVrspygEOmKekpV+XoocU5mW7O1QLpo6bM=
+X-Received: by 2002:a17:90b:1b06:b0:2ee:713d:f536 with SMTP id
+ 98e67ed59e1d1-2ef01270cf0mr5337502a91.7.1733398796652; Thu, 05 Dec 2024
+ 03:39:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241205105627.992587-1-jtostler1@gmail.com>
+References: <20241128054022.19586-1-boqun.feng@gmail.com> <20241128054022.19586-2-boqun.feng@gmail.com>
+ <a696f18d6eced600972c2aaf1a0f9ae2febeb434.camel@redhat.com> <Z1DDuRp7kIm7Pf-a@boqun-archlinux>
+In-Reply-To: <Z1DDuRp7kIm7Pf-a@boqun-archlinux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Dec 2024 12:39:44 +0100
+Message-ID: <CANiq72=KA205nyWGxaFpuq-FRV9SXsimCsiZAhrsyX9dA37+rA@mail.gmail.com>
+Subject: Re: [RFC 1/5] locking: MAINTAINERS: Start watching Rust locking primitives
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Filipe Xavier <felipe_life@live.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jimmy,
+On Wed, Dec 4, 2024 at 10:04=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> Thanks! Yes, it'll be great to have more people watching this. And thank
+> you for the review and contribution so far, nice job!
 
-Thanks for the patch!
+Indeed -- thanks Lyude!
 
-On Thu, Dec 05, 2024 at 02:56:27AM -0800, Jimmy Ostler wrote:
-> Add a rustdoc example and Kunit test to the `ArrayLayout` struct's
-> `ArrayLayout::new()` function.
-> 
-> Add an implementation of `From<LayoutError> for Error` for the
-> `kernel::alloc::LayoutError`. This is necessary for the new test to
-> compile.
+> I'm currently waiting for both lock maintainers and Rust maintainers
+> opinions on the particular changes on the MAINTAINERS file (for example,
+> maybe they want something similar to "RUST [ALLOC]" entry, i.e. a
+> standalone entry). My plan is to send the PR after everyone is on the
+> same page. And you're welcome to send a patch adding yourself in the
+> entry afterwards.
 
-Please split this into a separate patch.
+Up to you! :)
 
-> 
-> Change the `From` implementation on `core::alloc::LayoutError` to avoid
-> collisions with `kernel::alloc::LayoutError`, and modify imports to
-> explicitly import `kernel::alloc::LayoutError` instead.
-> 
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1131
-> Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
-> ---
-> v1: https://lore.kernel.org/lkml/20241203051843.291729-1-jtostler1@gmail.com/T/#u
-> v1 -> v2 changes:
-> - Add third assert where length is smaller but still overflows
-> - Remove rustdoc markdown codeblock languge signifier
-> - Change tests to return results using `?` instead of panic
-> - Remove `#[derive(Debug)]` for `LayoutError`
-> - Add `From<LayoutError> for Error` implementation
-> ---
->  rust/kernel/alloc/layout.rs | 19 +++++++++++++++++++
->  rust/kernel/error.rs        | 13 ++++++++++---
->  2 files changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
-> index 4b3cd7fdc816..0e053dcc7941 100644
-> --- a/rust/kernel/alloc/layout.rs
-> +++ b/rust/kernel/alloc/layout.rs
-> @@ -43,6 +43,25 @@ pub const fn empty() -> Self {
->      /// # Errors
->      ///
->      /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # use kernel::alloc::layout::{ArrayLayout, LayoutError};
-> +    /// let layout = ArrayLayout::<i32>::new(15)?;
-> +    /// assert_eq!(layout.len(), 15);
-> +    ///
-> +    /// // Errors because `len * size_of::<T>()` overflows
-> +    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize);
-> +    /// assert!(layout.is_err());
-> +    ///
-> +    /// // Errors because `len * size_of::<i32>() > isize::MAX`,
-> +    /// // even though `len < isize::MAX`
-> +    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize / 2);
-> +    /// assert!(layout.is_err());
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
->      pub const fn new(len: usize) -> Result<Self, LayoutError> {
->          match len.checked_mul(core::mem::size_of::<T>()) {
->              Some(size) if size <= ISIZE_MAX => {
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 52c502432447..ac8526140d7a 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -4,9 +4,10 @@
->  //!
->  //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
->  
-> -use crate::{alloc::AllocError, str::CStr};
-> -
-> -use core::alloc::LayoutError;
-> +use crate::{
-> +    alloc::{layout::LayoutError, AllocError},
-> +    str::CStr,
-> +};
+I guess it depends on whether the rest of the locking maintainers want
+to see every patch related to that (which would be great) or not,
+whether you want to have finer-grained control on who gets pinged,
+potentially different "M:" level and so on. For instance, it would
+allow you to have an explicit "L:" for the Rust for Linux list.
 
-I think this part of the change would be enough, since we don't make use of the
-`From` implementation of `core::alloc::LayoutError` anywhere.
+By the way, as a third alternative, you could also consider a
+sub-entry in locking, too, i.e. "LOCKING PRIMITIVES [RUST]" as a
+middle ground, which would allow you to keep routing patches through
+locking but have the benefits of a sub-entry if you need them.
 
-I think we can add it (again), once it's needed.
+Whatever you decide:
 
->  
->  use core::fmt;
->  use core::num::NonZeroI32;
-> @@ -223,6 +224,12 @@ fn from(_: LayoutError) -> Error {
->      }
->  }
->  
-> +impl From<core::alloc::LayoutError> for Error {
-> +    fn from(_: core::alloc::LayoutError) -> Error {
-> +        code::ENOMEM
-> +    }
-> +}
-> +
->  impl From<core::fmt::Error> for Error {
->      fn from(_: core::fmt::Error) -> Error {
->          code::EINVAL
-> 
-> base-commit: 1dc707e647bc919834eff9636c8d00b78c782545
-> -- 
-> 2.47.1
-> 
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
