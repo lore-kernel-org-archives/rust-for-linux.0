@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72DC1D514E;
-	Thu,  5 Dec 2024 09:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A62A36C;
+	Thu,  5 Dec 2024 09:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733389302; cv=none; b=ac8GsZpLAo96aabPsplSnSqhruOnc1aQ4FaBda4SGgQzDZP1Ixxwudu2PHlhf21QP3hgW26t10xqefCZc+unhU9E/aM9WlBO0diq1B8cKAGqNDAUI1QhlKtImOMqmtE4Opzghdt8Es4xQDZXamnFDQ7Hqi8W7UbHkUUPsVNzT5k=
+	t=1733389426; cv=none; b=UgD67ilKzl+i1PA5R8Pg1poNPl7J8Nfzad50pY0Y4zE7datjP+6RrJYgtU9nZWGXZDWaF4uUVVDadvgGjpLEmIy62EJeiXRM2am2/eMrxn3pggvr8rkkb+IwdFqutLGNWAw6SkCy54ncR9icK4AToOOa4huZq5AJ+Np7NTkyVRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733389302; c=relaxed/simple;
-	bh=SqOFpF/xIFWa64G/l65Y5xWT52AN6HV/RtcNy54LSTk=;
+	s=arc-20240116; t=1733389426; c=relaxed/simple;
+	bh=TAElDyhZNMxGhYYwRq9j7GFPppKSqXhmSyeJBBKKtA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ni9LxmnERt4eb3RmBVaroe8JFLPUdrI1lXV7vNXhFBklP9zwmdMCv3HCYjSzUZzgsyJY8KDavxAyoMFmrQ/KrQe08eWFYxf5F5y6AwFu4eQyBHEkB/iF48+7bDah39y2Y+hIEep/YmsOJPAxoE1I5LVImk7cqnnTw3SzpNLh3NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP2pY5Ia; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=KxvXSGhoKHjSI9m7KFRgzRCH+eQWAuGaIfv+cJIQrUl7xvNH+sGZ8nogx5s8s9l0zpuQy2PAZoP/l6y3Wh1DMv3IjwuXBcpEpUR68pWD0g3NXIbTdHhR45ApRZekEuANkHqsckULkmNdo2W9vxxjA7L4y3PGth49Nr8Mz6XMEQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY1PAX2g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP2pY5Ia"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A13C4CED1;
-	Thu,  5 Dec 2024 09:01:41 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NY1PAX2g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8162DC4CED1;
+	Thu,  5 Dec 2024 09:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733389302;
-	bh=SqOFpF/xIFWa64G/l65Y5xWT52AN6HV/RtcNy54LSTk=;
+	s=korg; t=1733389426;
+	bh=TAElDyhZNMxGhYYwRq9j7GFPppKSqXhmSyeJBBKKtA4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nP2pY5IaaWdi6f/sn1/5JHelQzCf4/mODdSdNi5D060Vvxyv+zxvGa4K9btKbwdgh
-	 sV6TM3fHXh/Jm8t2rm0eYgpSeaMBcxRzaIrU13JqJXjOUxL+O2GG6bzknCf3dmCwa+
-	 M1sBYcczwBG8b7E2a+yznladbRPGq5vlhKFtj/ps=
-Date: Thu, 5 Dec 2024 10:01:38 +0100
+	b=NY1PAX2gAwVUHHDJ1FJIKMRxtaCM9H/Wov3jS9TvHZTLa96kO1N9qoOhQyK3d8XRi
+	 LEzaGtlapwT7ZwYSUwb5VFM7wknx6Q3VX0r02PJDO0TwK/x5C5eowNJj3bIKqXK1ma
+	 r8LUXOrkFSVW0vSMfGGoNaO6fdkAhIRGaVKyxz7w=
+Date: Thu, 5 Dec 2024 10:03:42 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Lee Jones <lee@kernel.org>
 Cc: linux-kernel@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
 	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
 	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] sample: rust_misc_device: Demonstrate additional
- get/set value functionality
-Message-ID: <2024120517-bright-expire-955e@gregkh>
+Subject: Re: [PATCH 1/2] samples: rust: Provide example using the new Rust
+ MiscDevice abstraction
+Message-ID: <2024120543-bauble-semicolon-639d@gregkh>
 References: <20241204174627.1151288-1-lee@kernel.org>
- <20241204174627.1151288-2-lee@kernel.org>
- <2024120453-unfunded-oversight-5161@gregkh>
- <20241205083848.GD7451@google.com>
+ <2024120427-scurvy-fidgety-06fc@gregkh>
+ <20241205084101.GE7451@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,169 +44,91 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241205083848.GD7451@google.com>
+In-Reply-To: <20241205084101.GE7451@google.com>
 
-On Thu, Dec 05, 2024 at 08:38:48AM +0000, Lee Jones wrote:
+On Thu, Dec 05, 2024 at 08:41:01AM +0000, Lee Jones wrote:
 > On Wed, 04 Dec 2024, Greg KH wrote:
 > 
-> > On Wed, Dec 04, 2024 at 05:46:25PM +0000, Lee Jones wrote:
-> > > Expand the complexity of the sample driver by providing the ability to
-> > > get and set an integer.  The value is protected by a mutex.
+> > On Wed, Dec 04, 2024 at 05:46:24PM +0000, Lee Jones wrote:
+> > > This sample driver demonstrates the following basic operations:
 > > > 
-> > > Here is a simple userspace program that fully exercises the sample
-> > > driver's capabilities.
-> > > 
-> > > int main() {
-> > >   int value, new_value;
-> > >   int fd, ret;
-> > > 
-> > >   // Open the device file
-> > >   printf("Opening /dev/rust-misc-device for reading and writing\n");
-> > >   fd = open("/dev/rust-misc-device", O_RDWR);
-> > >   if (fd < 0) {
-> > >     perror("open");
-> > >     return errno;
-> > >   }
-> > > 
-> > >   // Make call into driver to say "hello"
-> > >   printf("Calling Hello\n");
-> > >   ret = ioctl(fd, RUST_MISC_DEV_HELLO, NULL);
-> > >   if (ret < 0) {
-> > >     perror("ioctl: Failed to call into Hello");
-> > >     close(fd);
-> > >     return errno;
-> > >   }
-> > > 
-> > >   // Get initial value
-> > >   printf("Fetching initial value\n");
-> > >   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &value);
-> > >   if (ret < 0) {
-> > >     perror("ioctl: Failed to fetch the initial value");
-> > >     close(fd);
-> > >     return errno;
-> > >   }
-> > > 
-> > >   value++;
-> > > 
-> > >   // Set value to something different
-> > >   printf("Submitting new value (%d)\n", value);
-> > >   ret = ioctl(fd, RUST_MISC_DEV_SET_VALUE, &value);
-> > >   if (ret < 0) {
-> > >     perror("ioctl: Failed to submit new value");
-> > >     close(fd);
-> > >     return errno;
-> > >   }
-> > > 
-> > >   // Ensure new value was applied
-> > >   printf("Fetching new value\n");
-> > >   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &new_value);
-> > >   if (ret < 0) {
-> > >     perror("ioctl: Failed to fetch the new value");
-> > >     close(fd);
-> > >     return errno;
-> > >   }
-> > > 
-> > >   if (value != new_value) {
-> > >     printf("Failed: Committed and retrieved values are different (%d - %d)\n", value, new_value);
-> > >     close(fd);
-> > >     return -1;
-> > >   }
-> > > 
-> > >   // Call the unsuccessful ioctl
-> > >   printf("Attempting to call in to an non-existent IOCTL\n");
-> > >   ret = ioctl(fd, RUST_MISC_DEV_FAIL, NULL);
-> > >   if (ret < 0) {
-> > >     perror("ioctl: Succeeded to fail - this was expected");
-> > >   } else {
-> > >     printf("ioctl: Failed to fail\n");
-> > >     close(fd);
-> > >     return -1;
-> > >   }
-> > > 
-> > >   // Close the device file
-> > >   printf("Closing /dev/rust-misc-device\n");
-> > >   close(fd);
-> > > 
-> > >   printf("Success\n");
-> > >   return 0;
-> > > }
+> > > * Register a Misc Device
+> > > * Create /dev/rust-misc-device
+> > > * Open the aforementioned character device
+> > > * Operate on the character device via a simple ioctl()
+> > > * Close the character device
 > > > 
 > > > Signed-off-by: Lee Jones <lee@kernel.org>
 > > > ---
-> > >  samples/rust/rust_misc_device.rs | 82 ++++++++++++++++++++++++--------
-> > >  1 file changed, 62 insertions(+), 20 deletions(-)
+> > >  samples/rust/Kconfig             | 10 ++++
+> > >  samples/rust/Makefile            |  1 +
+> > >  samples/rust/rust_misc_device.rs | 84 ++++++++++++++++++++++++++++++++
+> > >  3 files changed, 95 insertions(+)
+> > >  create mode 100644 samples/rust/rust_misc_device.rs
 > > > 
+> > > diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> > > index b0f74a81c8f9..df384e679901 100644
+> > > --- a/samples/rust/Kconfig
+> > > +++ b/samples/rust/Kconfig
+> > > @@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
+> > >  
+> > >  	  If unsure, say N.
+> > >  
+> > > +config SAMPLE_RUST_MISC_DEVICE
+> > > +	tristate "Misc device"
+> > > +	help
+> > > +	  This option builds the Rust misc device.
+> > > +
+> > > +	  To compile this as a module, choose M here:
+> > > +	  the module will be called rust_misc_device.
+> > > +
+> > > +	  If unsure, say N.
+> > > +
+> > >  config SAMPLE_RUST_PRINT
+> > >  	tristate "Printing macros"
+> > >  	help
+> > > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> > > index c1a5c1655395..ad4b97a98580 100644
+> > > --- a/samples/rust/Makefile
+> > > +++ b/samples/rust/Makefile
+> > > @@ -2,6 +2,7 @@
+> > >  ccflags-y += -I$(src)				# needed for trace events
+> > >  
+> > >  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
+> > > +obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+> > >  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+> > >  
+> > >  rust_print-y := rust_print_main.o rust_print_events.o
 > > > diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-> > > index 5f1b69569ef7..9c041497d881 100644
-> > > --- a/samples/rust/rust_misc_device.rs
+> > > new file mode 100644
+> > > index 000000000000..5f1b69569ef7
+> > > --- /dev/null
 > > > +++ b/samples/rust/rust_misc_device.rs
-> > > @@ -2,13 +2,20 @@
-> > >  
-> > >  //! Rust misc device sample.
-> > >  
-> > > +use core::pin::Pin;
-> > > +
-> > >  use kernel::{
-> > >      c_str,
-> > > -    ioctl::_IO,
-> > > +    ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
-> > >      miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-> > > +    new_mutex,
-> > >      prelude::*,
-> > > +    sync::Mutex,
-> > > +    uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
-> > >  };
-> > >  
-> > > +const RUST_MISC_DEV_GET_VALUE: u32 = _IOR::<i32>('R' as u32, 7);
-> > > +const RUST_MISC_DEV_SET_VALUE: u32 = _IOW::<i32>('R' as u32, 8);
+> > > @@ -0,0 +1,84 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
 > > 
-> > Shouldn't this be 'W'?
+> > Nit, you forgot a copyright line here :)
 > 
-> No, I don't think so.
-> 
-> 'W' doesn't mean 'write'.  It's supposed to be a unique identifier:
-> 
-> 'W'   00-1F  linux/watchdog.h                                        conflict!
-> 'W'   00-1F  linux/wanrouter.h                                       conflict! (pre 3.9)
-> 'W'   00-3F  sound/asound.h                                          conflict!
-> 'W'   40-5F  drivers/pci/switch/switchtec.c
-> 'W'   60-61  linux/watch_queue.h
-> 
-> 'R' isn't registered for this either:
-> 
-> 'R'   00-1F  linux/random.h                                          conflict!
-> 'R'   01     linux/rfkill.h                                          conflict!
-> 'R'   20-2F  linux/trace_mmap.h
-> 'R'   C0-DF  net/bluetooth/rfcomm.h
-> 'R'   E0     uapi/linux/fsl_mc.h
-> 
-> ... but since this is just example code with no real purpose, I'm going
-> to hold short of registering a unique identifier for it.
+> I can add one, but none of the other drivers in this directory has one.
 
-Ah, sorry, I missed that this is the ioctl "name".  As the ptrace people
-will complain, why not use a new one?  Ick, ioctl-number.rst is way out
-of date, but I guess we should carve out one for "sample drivers, do not
-use in anything real" use cases like here.
+I think the copyright owner of this file will appreciate that.  In fact,
+I think it might be required by them :)
 
-> > > +    fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
-> > > +        let guard = self.inner.lock();
-> > > +
-> > > +        pr_info!("-> Copying data to userspace (value: {})\n", &guard.value);
-> > > +
-> > > +        writer.write::<i32>(&guard.value)?;
+> > Anyway, other than the copyright, this looks good to me.
 > > 
-> > What happens if it fails, shouldn't your pr_info() happen after this?
+> > Although we should get the "validate the data" rust patch set in here
+> > soon, so we don't have to go and fix up all users of the miscdev rust
+> > api at once.  Maybe I'll dig that series up over the holiday break if
+> > someone doesn't beat me to it.
 > 
-> If this fails, I need the line in the log to show where it failed.
+> What needs doing?  Do you have a link?
 
-pr_info() doesn't show file lines from what I remember has that changed?
+https://lore.kernel.org/r/20240925205244.873020-1-benno.lossin@proton.me
 
-But wait, this is a misc device, you should be using dev_info() and
-friends here, no pr_*() stuff please.
-
-> It says "copying" as in "attempting to copy", rather than "copied".
-
-Fair enough, but if the copy fails, nothing gets printed out, right?
+But in thinking about it more, this isn't going to work well with misc
+devices as the data is coming from userspace, which already goes through
+the user slice code.  Unless userslice should be marking the data as
+untrusted?  I think that needs to happen as well.
 
 thanks,
 
