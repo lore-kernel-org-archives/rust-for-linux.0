@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715402F29;
-	Thu,  5 Dec 2024 16:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA76C222596;
+	Thu,  5 Dec 2024 16:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733415940; cv=none; b=uAKu5f3WsdRsAN4eUYoXMmj6AOgRKWbNJ04DM/ZVfCYoI1mtnVCNJvc5v6h88n+jC+dorwxpcVR3WPOkWcr3eFNLDmKUGncb7b0W1wvl+sJJNnC+3xVp/8CsYIW/VCcwYKxnvwZcRLB7Ez93khdeb03WQscfAR5qN8yXldh1wvE=
+	t=1733415944; cv=none; b=dRTG3j73kR23xHeR6V7J4P2kkqChsVqS02SVfRJbB8xqTw+JSZ7NOlc2o2qjO+GKkQJkGQz+hquP37Z0y4akEWa62bHuGP1jAiGKlQRSJFF0VvLpQ1cB5nKcivdq+wIqVClz1hBI1y1lxDYJYWzoWapWXu1YlHO7aMjV2zYYizg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733415940; c=relaxed/simple;
-	bh=G4I3QSZ14vomGceI39e4cy972y5DP0f91KtOauJ1dzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SBT+WMURronj1lgmRBTv3AKWxMSrYBdEckPkkS9PAHAe+wvGUr0CXLpvyZFfhIjHZcaSO2u4Xcgv26qWoKL+7ebMazRwl9BT4hta8AWZk74YffSCtxiZK8/2UGJccSrMsP1/LUm3Z2vHFyZzmPfyH2pcDzsSPynft+mmOUWVRyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcysFhAF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733415944; c=relaxed/simple;
+	bh=RZlItOZezRowXOLbsBUld7wmGQAUobHGREmd6YYqaDI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AVpq/wNJasMdWAoe25Rrwwl2+fak2P6l9Yx6M5kgi8CuW8//zjPXizdGbNmadnbAC9+AJp9gfNc0zz2clHEH4Y+izrSKGQ39BPsb8Z8SkxGJjhhrll2wy5c3u3sO0NZnbRpnuMBPwopxojjF7ixkVWUzyy1jj1erSIkGe4yqn/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uX/o4hF0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcysFhAF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BDEC4CED1;
-	Thu,  5 Dec 2024 16:25:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uX/o4hF0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A6EC4CED1;
+	Thu,  5 Dec 2024 16:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733415940;
-	bh=G4I3QSZ14vomGceI39e4cy972y5DP0f91KtOauJ1dzQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HcysFhAFTAvvBPMXCZ8qNzj5bdiHKqpXPA+BlLqhBoYSNVqYIYpMALQZuHjBcNkaK
-	 XFlEmV1K98E1RuwEf8knjq1Y5Y5BAneOLjGzT5VXtpH24eJNHUPVdwNIvox6vFirf7
-	 Qs8g7qNh2GCGzmUjKFFy87mHQat/UBqyD04QGMBBXx7MSOQ2cvT8q77zR2/dlqUqJM
-	 7CnpBRCdoutza93VfOl/cbNeLYdqJwctcinLChaGamUdseO0nx/GMRESFmNkfVluXx
-	 SmeEBiE2UvHCxS3Zmoz3krv4RDxJWx+s/ypVXYLv7r0eGybv25vclUyCdtZ81mrrbb
-	 aZ5Reu31cH2gg==
+	s=k20201202; t=1733415943;
+	bh=RZlItOZezRowXOLbsBUld7wmGQAUobHGREmd6YYqaDI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uX/o4hF0EYnzOMaBpy9lPRR3UJp46Uu6UF2GCVGgUQ9pu7p25jTk9ovNAJ/6g++pV
+	 9J4VyQ5nauNcCpFSJ7ddFZ6+j0qm1IsOQTNSpNPot649yheLFIMKnG1TOG+m+larr7
+	 MPycD2ZLx6TGxgorKizOQcn9wEvOFWfvvfnxH8pJl/Pp9n8FRw797JKaDMfzK3Jr2y
+	 P4xOLxI5U7FKwUO/bpe/BiuWvS1Z9bCOp6tiZ/BtJXYNxe989xvsRntxl9ZVqcojH0
+	 U+impmyLCIsfx9Vfu55szyn9bbYmRCvraWHCqAE3EZ+eiqDyU7iSU4w6aGhb2f94dJ
+	 /rSn1eKYOzMqA==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -40,10 +41,12 @@ Cc: linux-kernel@vger.kernel.org,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 0/5] rust: miscdevice: Provide sample driver using the new MiscDevice bindings
-Date: Thu,  5 Dec 2024 16:25:17 +0000
-Message-ID: <20241205162531.1883859-1-lee@kernel.org>
+Subject: [PATCH v3 1/5] rust: miscdevice: Provide accessor to pull out miscdevice::this_device
+Date: Thu,  5 Dec 2024 16:25:18 +0000
+Message-ID: <20241205162531.1883859-2-lee@kernel.org>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+In-Reply-To: <20241205162531.1883859-1-lee@kernel.org>
+References: <20241205162531.1883859-1-lee@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,30 +55,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It has been suggested that the driver should use dev_info() instead of
-pr_info() however there is currently no scaffolding to successfully pull
-a 'struct device' out from driver data post register().  This is being
-worked on and we will convert this over in due course.
+There are situations where a pointer to a `struct device` will become
+necessary (e.g. for calling into dev_*() functions).  This accessor
+allows callers to pull this out from the `struct miscdevice`.
 
-Lee Jones (5):
-  rust: miscdevice: Provide accessor to pull out miscdevice::this_device
-  Documentation: ioctl-number: Carve out some identifiers for use by
-    sample drivers
-  samples: rust: Provide example using the new Rust MiscDevice
-    abstraction
-  sample: rust_misc_device: Demonstrate additional get/set value
-    functionality
-  MAINTAINERS: Add Rust Misc Sample to MISC entry
+Signed-off-by: Lee Jones <lee@kernel.org>
+---
+ rust/kernel/miscdevice.rs | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- .../userspace-api/ioctl/ioctl-number.rst      |   1 +
- MAINTAINERS                                   |   1 +
- rust/kernel/miscdevice.rs                     |   9 ++
- samples/rust/Kconfig                          |  10 ++
- samples/rust/Makefile                         |   1 +
- samples/rust/rust_misc_device.rs              | 132 ++++++++++++++++++
- 6 files changed, 154 insertions(+)
- create mode 100644 samples/rust/rust_misc_device.rs
-
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index 7e2a79b3ae26..55340f316006 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -10,11 +10,13 @@
+ 
+ use crate::{
+     bindings,
++    device::Device,
+     error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+     prelude::*,
+     str::CStr,
+     types::{ForeignOwnable, Opaque},
+ };
++
+ use core::{
+     ffi::{c_int, c_long, c_uint, c_ulong},
+     marker::PhantomData,
+@@ -84,6 +86,13 @@ pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
+     pub fn as_raw(&self) -> *mut bindings::miscdevice {
+         self.inner.get()
+     }
++
++    /// Returns a pointer to the current Device
++    pub fn device(&self) -> &Device {
++        // SAFETY: This is only accessible after a successful register() which always
++        // initialises this_device with a valid device.
++        unsafe { Device::as_ref((*self.as_raw()).this_device) }
++    }
+ }
+ 
+ #[pinned_drop]
 -- 
 2.47.0.338.g60cca15819-goog
 
