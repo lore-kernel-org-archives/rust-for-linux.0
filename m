@@ -1,213 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2341D358F;
-	Thu,  5 Dec 2024 08:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1BE1D4607
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Dec 2024 08:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733388066; cv=none; b=q+0VL1IBiE+zKAUZZnZGKHN3rt7wO02e4M3OfS7Y1g4G4ZEIyt1uekRcLmAXGhgD76EZ5Ty/ebf2GvJV8NdDRtjdbpH9s9L13wz+uiZOS603QYyeZycYE0/wbpuWyTe88ZFQffIrNU/TxtTTOKnYBBc/6CRo3gg1GJES0gZLHqU=
+	t=1733388439; cv=none; b=BXVc8sOyEBasUrTt2JRDL0xnUSvAGCOyZ2VMvXSmc3asXr9TPYYElK+XyJ0B7S0AUqLMsOqQAVLL/RKONTHDCaPZj/M2Uh89ghIJmVQ9oRDxhweUtr/U7shAwhvUFdgqe0rS7chsbdJ79B0P+Ac2hbMO9w5ymSUzlb/eQy6ws/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733388066; c=relaxed/simple;
-	bh=WYpbDWRtvOOHP+CzCeri9xxwbKUUtMqW3Q/EKdGc6xc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hlNGkh3RyeFb8zkvnKFNjPTLrd+IjxdP4A0fxUHo2IOI8Wb9p+7fwKUybZdOUCgPpZcMm0WC/5VxtH0+uGDTQzZJ46hLAySk33r+RG0kHpKF1yo5m64m86MDA5pVgPdQ1jeVCE8Peu7gYXUAQhd9RvHNp/Tb8IaLPrTnMBGRQ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCP68KFo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733388439; c=relaxed/simple;
+	bh=hnsawiAPmNyTaOqVa4N7z88n0Q+3dFHhfhhfTqZFluI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hawb4961stkok2NkGnyWNJHCBP0x9ZGJ8IiySTjQFSfpoPyVtYa+rJQa5QTm0cyEGK9ZIaSPw3K7oMhTf2vC0hTeHrcB3dXAezK1ysEgaTYmmZ0g0kcug4PUk/krIu9z2m8H0wt0XlcU3FokRTRR8A55KYmFuAN4U5k5bu/WuKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bk1/fQHO; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCP68KFo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7ECC4CED1;
-	Thu,  5 Dec 2024 08:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733388066;
-	bh=WYpbDWRtvOOHP+CzCeri9xxwbKUUtMqW3Q/EKdGc6xc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NCP68KFoAZzpghFtITq6Gd8lUmfrY+TdR5YugXOjvNXMPhjEwStMTHeFM3hrSovLf
-	 y4bWNc3L4Il3BbBH0SLLgQ4gL4uvQDajfYCNdRPAxl4BoaScWSVmtaxm6XTmDB5GZk
-	 /8hgtsixQEoWknOYMrF4/8WGYXf36fzVfeVgrwyZTCc7wDLjkoLu39CcELNH5FpBnw
-	 uyuqWFBVtT5etU8UlB4F4+Cg5rGP2EqoNsY1ciNcxiSUZTzBbR5TzQtPeYZykTd2sV
-	 V4FFQxE+duk+gpo17bJ0oXO+7MpzsffLApceWDRpMWLTNnIBBkN2Wv/ve8+XcMLQre
-	 euQHiMMlx1nrw==
-Date: Thu, 5 Dec 2024 08:41:01 +0000
-From: Lee Jones <lee@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] samples: rust: Provide example using the new Rust
- MiscDevice abstraction
-Message-ID: <20241205084101.GE7451@google.com>
-References: <20241204174627.1151288-1-lee@kernel.org>
- <2024120427-scurvy-fidgety-06fc@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bk1/fQHO"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385eaecc213so319076f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Dec 2024 00:47:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733388436; x=1733993236; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hnsawiAPmNyTaOqVa4N7z88n0Q+3dFHhfhhfTqZFluI=;
+        b=bk1/fQHO81uCf2qg67ZAsKLqkDTud3O/Q4tu06veALpsdxHgka4hu2pTMPxbFs+Ith
+         +vRvJoYzVkT7BSLwuXCq2SZlCW7a2V/aCPOiXiD0SLd/TIUJX/27OSpTA7MAtCJxdEhu
+         YB9Y/5C5DiDVMPDyC66wJBHqCVFdxzU2xTyyH1c724NDqxOoBcRK4FWxaIJfFdoDmNAc
+         mtwtH3ihJgdL+wIZRgiufOQYSjZyPDr2QFRlT6fPmxKYakOaIlb2bB6YuV3pl93Y/afM
+         dsCAntmMwb6rF3F+BC2SM7vUkLJkRnCbivqgltDcsf9Zbdm8/DYDeYvJv1pg83pnuh11
+         i9Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733388436; x=1733993236;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hnsawiAPmNyTaOqVa4N7z88n0Q+3dFHhfhhfTqZFluI=;
+        b=vSBkYeCAAu/wxhVcbvrIfZutLuN/pewlCIIUtLxQvhvlGSAcO8WK1ol2wYhxFojdIx
+         DlfHbnfDi3RrZdimG1AhsFZcBu14T9SYsjUyPEGc803MPkuwRGxwBXGPq3nIkeMYjVQO
+         gZT/NqRq+2tj+jSsGYcREWX6q9XRDvL1hRXsbpMs4zDJaq4CZnNbF1P43aTYex7I7I4s
+         rChOCjtaechiab3c9122iLog7PFQKERPPBcl6GP/UprUM8YAFX6HdQY1QoAIg2F53/Jo
+         y/Zg0Qt6K6qpibWww5fi5eHCf6PmOsoAmlDo/kFAfQlh4m9FhNdSpWx/jKoxCCfiZBSS
+         0lrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVgQNM4bwY+VmjJVP/QUmdkIORhHHqBOG94xETwWQY2/6RlqIYHdSX1CUYxJnb2vRC+15oRYPNqluXiSgl4wQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw50p+95jjDDg9RuFcWWX7RzluXZX4oa8Vm6J7MLlcIx6qJcAbc
+	iSjMEotI1kKqxaPYQ3RZeXjg6N+ySwRJjUA98LEgcz73gQHrKqnSVA1+TN/wP92+E/YnrwpoNjU
+	CictMKrEWMLc2vQArqZzzEQOojzIsARcrrQIE
+X-Gm-Gg: ASbGncua5dMTviu6/zmVauvIEAgrZPVY4j/X/Acel4BKcxYhYoVr1Z/MQEQAe7A5F7g
+	HpPWo6EPdI2J/Mtpq0825ikNGaujlSNGpNDnJ1gugrKVj7V4/iH03ogQIg3+gAw==
+X-Google-Smtp-Source: AGHT+IGnhellO6UJ4z4u30dAkBaqbxEvnFWZdjtopqXpVvl6L1W8rz2P6jjJGe9/awoSRPYnuNZOTWKmtI+ml0eBTxo=
+X-Received: by 2002:a05:6000:1885:b0:385:fdff:d457 with SMTP id
+ ffacd0b85a97d-3861bb7c21amr1569820f8f.13.1733388436297; Thu, 05 Dec 2024
+ 00:47:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024120427-scurvy-fidgety-06fc@gregkh>
+References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
+ <20241126-pr_once_macros-v4-1-410b8ca9643e@tuta.io> <CAH5fLgj30AmuobugAgzG9vOhSOrk5SqWwguOoNeh3J2fmLRHCA@mail.gmail.com>
+ <OCjFF0---F-9@tuta.io> <CAH5fLgj2qHjYj=heYi55qWz7=LxyHeUPyhbgVe0QLjzH0S34bw@mail.gmail.com>
+ <ODK_F29--F-9@tuta.io>
+In-Reply-To: <ODK_F29--F-9@tuta.io>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 5 Dec 2024 09:47:03 +0100
+Message-ID: <CAH5fLgiwQzrKG2a3Doj+LYGAna7yJcBO5eTtyMYiBfVZmZSLVw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] rust: Add `OnceLite` for executing code once
+To: jens.korinth@tuta.io
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Rust For Linux <rust-for-linux@vger.kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Dirk Behme <dirk.behme@gmail.com>, 
+	Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 04 Dec 2024, Greg KH wrote:
+On Thu, Dec 5, 2024 at 7:49=E2=80=AFAM <jens.korinth@tuta.io> wrote:
+>
+> I'm afraid you lost me. You wrote:
+>
+> > Using a Once type for this seems like a good idea to me.
+>
+> and
+>
+> > One advantage of using a Once type is that we can use core::sync::atomi=
+c
+> > until we have working LKMM atomics and then we just swap out the Once
+> > type without having to modify the warn_once abstractions.
+>
+> That made sense to me, so I started in this direction. `std::sync::Once`
+> has `is_completed` [1], which made particular sense to implement in my
+> mind to increase the utility of `OnceLite`.
+>
+> [1]: https://doc.rust-lang.org/std/sync/struct.Once.html#method.is_comple=
+ted
 
-> On Wed, Dec 04, 2024 at 05:46:24PM +0000, Lee Jones wrote:
-> > This sample driver demonstrates the following basic operations:
-> > 
-> > * Register a Misc Device
-> > * Create /dev/rust-misc-device
-> > * Open the aforementioned character device
-> > * Operate on the character device via a simple ioctl()
-> > * Close the character device
-> > 
-> > Signed-off-by: Lee Jones <lee@kernel.org>
-> > ---
-> >  samples/rust/Kconfig             | 10 ++++
-> >  samples/rust/Makefile            |  1 +
-> >  samples/rust/rust_misc_device.rs | 84 ++++++++++++++++++++++++++++++++
-> >  3 files changed, 95 insertions(+)
-> >  create mode 100644 samples/rust/rust_misc_device.rs
-> > 
-> > diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> > index b0f74a81c8f9..df384e679901 100644
-> > --- a/samples/rust/Kconfig
-> > +++ b/samples/rust/Kconfig
-> > @@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
-> >  
-> >  	  If unsure, say N.
-> >  
-> > +config SAMPLE_RUST_MISC_DEVICE
-> > +	tristate "Misc device"
-> > +	help
-> > +	  This option builds the Rust misc device.
-> > +
-> > +	  To compile this as a module, choose M here:
-> > +	  the module will be called rust_misc_device.
-> > +
-> > +	  If unsure, say N.
-> > +
-> >  config SAMPLE_RUST_PRINT
-> >  	tristate "Printing macros"
-> >  	help
-> > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> > index c1a5c1655395..ad4b97a98580 100644
-> > --- a/samples/rust/Makefile
-> > +++ b/samples/rust/Makefile
-> > @@ -2,6 +2,7 @@
-> >  ccflags-y += -I$(src)				# needed for trace events
-> >  
-> >  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
-> > +obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
-> >  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-> >  
-> >  rust_print-y := rust_print_main.o rust_print_events.o
-> > diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-> > new file mode 100644
-> > index 000000000000..5f1b69569ef7
-> > --- /dev/null
-> > +++ b/samples/rust/rust_misc_device.rs
-> > @@ -0,0 +1,84 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> 
-> Nit, you forgot a copyright line here :)
+The stdlib Once type guarantees that when call_once has returned, then
+the closure has finished running *even* if you are not the caller who
+is running the closure. It achieves this by having other callers go to
+sleep until the main caller completes. If we actually want to mirror
+Once, then we should have that logic too, and I really don't think we
+want such complicated logic in our pr_warn_once macro.
 
-I can add one, but none of the other drivers in this directory has one.
+> > The purpose is to use this for printing once, and printing doesn't need
+> > `is_completed`. We can have another helper for other purposes.
+>
+> Why have `OnceLite` then at all, instead of the hidden Rust macro that wa=
+s
+> proposed initially?
 
->> > +
-> > +//! Rust misc device sample.
-> > +
-> > +use kernel::{
-> > +    c_str,
-> > +    ioctl::_IO,
-> > +    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-> > +    prelude::*,
-> > +};
-> > +
-> > +const RUST_MISC_DEV_HELLO: u32 = _IO('R' as u32, 9);
-> > +
-> > +module! {
-> > +    type: RustMiscDeviceModule,
-> > +    name: "rust_misc_device",
-> > +    author: "Lee Jones",
-> > +    description: "Rust misc device sample",
-> > +    license: "GPL",
-> > +}
-> > +
-> > +struct RustMiscDeviceModule {
-> > +    _miscdev: Pin<KBox<MiscDeviceRegistration<RustMiscDevice>>>,
-> > +}
-> > +
-> > +impl kernel::Module for RustMiscDeviceModule {
-> > +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> > +        pr_info!("Initialising Rust Misc Device Sample\n");
-> > +
-> > +        let options = MiscDeviceOptions {
-> > +            name: c_str!("rust-misc-device"),
-> > +        };
-> > +
-> > +        Ok(Self {
-> > +            _miscdev: KBox::pin_init(
-> > +                MiscDeviceRegistration::<RustMiscDevice>::register(options),
-> > +                GFP_KERNEL,
-> > +            )?,
-> > +        })
-> > +    }
-> > +}
-> > +
-> > +struct RustMiscDevice;
-> > +
-> > +impl RustMiscDevice {
-> > +    fn new() -> Self {
-> > +        Self
-> > +    }
-> > +}
-> > +
-> > +#[vtable]
-> > +impl MiscDevice for RustMiscDevice {
-> > +    type Ptr = KBox<Self>;
-> > +
-> > +    fn open() -> Result<KBox<Self>> {
-> > +        pr_info!("Opening Rust Misc Device Sample\n");
-> > +
-> > +        Ok(KBox::new(RustMiscDevice::new(), GFP_KERNEL)?)
-> > +    }
-> > +
-> > +    fn ioctl(
-> > +        _device: <Self::Ptr as kernel::types::ForeignOwnable>::Borrowed<'_>,
-> > +        cmd: u32,
-> > +        _arg: usize,
-> > +    ) -> Result<isize> {
-> > +        pr_info!("IOCTLing Rust Misc Device Sample\n");
-> > +
-> > +        match cmd {
-> > +            RUST_MISC_DEV_HELLO => pr_info!("Hello from the Rust Misc Device\n"),
-> > +            _ => {
-> > +                pr_err!("IOCTL not recognised: {}\n", cmd);
-> > +                return Err(EINVAL);
-> > +            }
-> > +        }
-> > +
-> > +        Ok(0)
-> > +    }
-> > +}
-> > +
-> > +impl Drop for RustMiscDevice {
-> > +    fn drop(&mut self) {
-> > +        pr_info!("Exiting the Rust Misc Device Sample\n");
-> > +    }
-> 
-> Cool!  But no read/write functionality?  :)
+Well, one advantage is that when Boqun manages to add support for LKMM
+atomics, we can switch them out without having to modify macro code.
+Moving logic out of macro code is usually a good idea. It's also
+possible that there are other user-cases of an OnceLite that doesn't
+have is_completed.
 
-Happy to add it subsequently.
-
-> Anyway, other than the copyright, this looks good to me.
-> 
-> Although we should get the "validate the data" rust patch set in here
-> soon, so we don't have to go and fix up all users of the miscdev rust
-> api at once.  Maybe I'll dig that series up over the holiday break if
-> someone doesn't beat me to it.
-
-What needs doing?  Do you have a link?
-
--- 
-Lee Jones [李琼斯]
+Alice
