@@ -1,47 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE851DBB3A;
-	Fri,  6 Dec 2024 07:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DDF1DBB3A;
+	Fri,  6 Dec 2024 07:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733470564; cv=none; b=lja0CyVmYFpDbfkJD2xzTPnXTq4euucEmI2EOs4StUHvKhOyGQ285VAYU7Nn8wGRYiO1KPjmol5/sB7B7SY4lsJA0MhC8nPYVlWihA0jgX4takAawKKGSWRjNfW2NCv7R5R9FtEXnyYsWWlxha8kir+0alkdyd5U8Whktr9qa8U=
+	t=1733470624; cv=none; b=pzM7Jni1yRH+hAKmgzS8l6nFKw+x0aX62eNAP0oVwoGd05DIlOFLZXnYva10gt94YK3iVtaITAOQWbsHuIJWZYgLo00FNAEKvxxu0q8p3CwLz2LufBEQwwhRnMvO4CsdZSg/UFksD6oYnkTrxKW+P8SP2tpV1NC1vVRP2RFO2EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733470564; c=relaxed/simple;
-	bh=GgZaIKYqwHFnub4K6lKDTb/cpONWd1rIk/cClD2yA2U=;
+	s=arc-20240116; t=1733470624; c=relaxed/simple;
+	bh=o8DmKXDpKIzJn/lgSGEBQYxWkbyX1jqY4U0WSssTOAg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RDwWBFTnacaPdK64FOpgFCJEXcacfgXGbbnu5e6QJYy0Il9ZTcMlDfsQ6mvZd9eOWuQe+zOeJslJ2TPmtU9v6vfa9j9Q1RDlNQcFySqd9ynUAEEF1UUgO4mHD5VbB72o4SHmMs5lLafAJ/aS2YubWYLU8ZF0Iaqd/W1wyZf/9W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSUiTVaX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=oW6QdSGXG2lQ0Wa/JgfRyrIOzPTCMb2pVITyHAgebHRRYHutpkpBv05WpYXUOpWZT5It2gXUmnc4j2g/5BXTKI4DFSD5qolOtuWf9FaIDo8QituuPPeEYbQpCuxxfqsvzswdmJ7mdYGqk17T8a++mWOoX9+1janLU4Oigwu/dGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewkFMbSa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSUiTVaX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5C0C4CED1;
-	Fri,  6 Dec 2024 07:36:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewkFMbSa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63C9C4CED1;
+	Fri,  6 Dec 2024 07:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733470563;
-	bh=GgZaIKYqwHFnub4K6lKDTb/cpONWd1rIk/cClD2yA2U=;
+	s=k20201202; t=1733470624;
+	bh=o8DmKXDpKIzJn/lgSGEBQYxWkbyX1jqY4U0WSssTOAg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GSUiTVaX9Q54RW05rss5hrg4ujhMQyVWWb0IB1fW8VvuuxUEO+qbz47/qWV14dbAs
-	 q67Od2tg+CAt9zgle/Nt4ETvW2Ordw6OBFmXdp75wIqEHMrZ+DKyxs+fNz5sw29IrZ
-	 jYRARSgQ4XVnVT82eYDRMXI2r5wvisodODqYRblWQXnc4QP4hYT4MwKvF2eQSD90MW
-	 Y32+Y8pXuPp1RTt800n9EBiya2kuGNh0+4RhHqMuikAkIkkT+yNt9pzTwHjPYY0091
-	 2Wc/A2bp3cdLES1xyMvFjggl+7moDGL9GdYj2uZf3KF7QVT4x6N4Xp+VpgBKREPPf9
-	 7PN/CDCF4Od5A==
-Date: Fri, 6 Dec 2024 07:35:58 +0000
+	b=ewkFMbSa0aZrwqtUjdgaoAEMrVdv1OLz/pg03VvIaxwYqpa8U1hhiUi0Ntc0tZ0wK
+	 kX6mb9svGvPIbhJ9C5rc3TkMbagc43vx/ABnQ3mySTwQjDn8WO3yJpLBgmvGKSIHum
+	 /FlNQSdTOWv497ZNA3/ZQv9jxcvw5XAx6hS4PXqISlH6BsKm3E5k+q+7dIAvZgxhyQ
+	 GMPBZLbur/B3bve9xBnxJ8P2sYAEz3J0QynMLCjEQ9ny0ifVUnPbiWwgQfkB0eK4Wq
+	 ymGPagqLYMic0gZzMyymtVFhwEDhhKQLJBxMSh/4z84epE4omBTwO7FpXP8UpAoVru
+	 gVQwEpPhpZUdg==
+Date: Fri, 6 Dec 2024 07:36:59 +0000
 From: Lee Jones <lee@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v3 3/5] samples: rust: Provide example using the new Rust
  MiscDevice abstraction
-Message-ID: <20241206073558.GH8882@google.com>
+Message-ID: <20241206073659.GI8882@google.com>
 References: <20241205162531.1883859-1-lee@kernel.org>
  <20241205162531.1883859-4-lee@kernel.org>
- <2024120604-diffusive-reach-6c99@gregkh>
- <20241206071430.GC8882@google.com>
- <2024120610-jailbreak-preschool-ff45@gregkh>
+ <2024120642-trend-omnivore-69d3@gregkh>
+ <be74daeb-68af-4e6b-8091-7f9684fe424e@app.fastmail.com>
+ <2024120621-unlisted-unbalance-3220@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,25 +55,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024120610-jailbreak-preschool-ff45@gregkh>
+In-Reply-To: <2024120621-unlisted-unbalance-3220@gregkh>
 
-On Fri, 06 Dec 2024, Greg KH wrote:
+On Fri, 06 Dec 2024, Greg Kroah-Hartman wrote:
 
-> On Fri, Dec 06, 2024 at 07:14:30AM +0000, Lee Jones wrote:
-> > On Fri, 06 Dec 2024, Greg KH wrote:
-> > > > +    fn open() -> Result<KBox<Self>> {
-> > > > +        pr_info!("Opening Rust Misc Device Sample\n");
-> > > 
-> > > I'd prefer this to be dev_info() to start with please.
+> On Fri, Dec 06, 2024 at 07:52:46AM +0100, Arnd Bergmann wrote:
+> > On Fri, Dec 6, 2024, at 07:49, Greg KH wrote:
+> > > On Thu, Dec 05, 2024 at 04:25:20PM +0000, Lee Jones wrote:
+> > >> +
+> > >> +#[vtable]
+> > >> +impl MiscDevice for RustMiscDevice {
+> > >> +    type Ptr = KBox<Self>;
+> > >> +
+> > >> +    fn open() -> Result<KBox<Self>> {
+> > >> +        pr_info!("Opening Rust Misc Device Sample\n");
+> > >> +
+> > >> +        Ok(KBox::new(RustMiscDevice, GFP_KERNEL)?)
+> > >> +    }
+> > >> +
+> > >> +    fn ioctl(
+> > >> +        _device: <Self::Ptr as kernel::types::ForeignOwnable>::Borrowed<'_>,
+> > >> +        cmd: u32,
+> > >> +        _arg: usize,
+> > >> +    ) -> Result<isize> {
+> > >> +        pr_info!("IOCTLing Rust Misc Device Sample\n");
+> > >> +
+> > >> +        match cmd {
+> > >> +            RUST_MISC_DEV_HELLO => pr_info!("Hello from the Rust Misc Device\n"),
+> > >> +            _ => {
+> > >> +                pr_err!("IOCTL not recognised: {}\n", cmd);
+> > >> +                return Err(ENOIOCTLCMD);
+> > >
+> > > To quote errno.h:
+> > > 	These should never be seen by user programs
+> > >
+> > > The correct value here is ENOTTY.
+> > >
+> > > Yeah, fun stuff.  Not intuitive at all, sorry.
 > > 
-> > This is not possible at the moment.  Please see the cover-letter.
+> > That should get handled by vfs_ioctl() converting the
+> > ENOIOCTLCMD to ENOTTY.
 > 
-> Then why make the change to miscdevice.rs if that pointer provided there
-> doesn't work for you here?
+> Ah, I always miss that, for some reason I thought that didn't happen
+> there, but happened in subsystems that did ENOIOCTLCMD for their
+> sub-ioctl handlers.  And yet it's always been that way, nevermind...
+> 
+> Anyway, I always recommend just using ENOTTY to be "safe", the usual way
+> people get this wrong is using EINVAL.
 
-It's half the puzzle to get it working.  We're waiting on the other
-(more complex) part from Alice before we can make use of it.  Would you
-like me to remove it from the set until we have all of the pieces?
+No matter.  I can change it.
 
 -- 
 Lee Jones [李琼斯]
