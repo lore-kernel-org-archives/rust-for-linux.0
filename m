@@ -1,92 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8215046426;
-	Fri,  6 Dec 2024 13:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DD3204096;
+	Fri,  6 Dec 2024 13:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733490631; cv=none; b=eMvG9MCMNKxHhUhHoWI+m/xHhZFy9QPeb7RamcRPVaWO0zhwlgd3lk3hMYQ5nulcx0i2LW5F062z4JliVcJayv5o8BE9ECaYUi0uB6nzaLZb8i15ZfZQSGOe5xKg0rG51FKq0kxKXJg59F8hkU3a+GhcoSjpz01caVNRSEmNPc8=
+	t=1733490904; cv=none; b=tH+YFI0B03L31wxHyPSAVRD0AF6CDv5MMNusFLmJ6N2A3iGwjVfyhqAFXKlZbcnWETAeejkDQH02phP+KSRn/8AhuJxuhUiwlsKiCyJ5bY+iFZ7Eh9uic4zbWHJbMCsqik5EekQtt7CP1fgxVAS80wr940FVRD36tpnEInXQinY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733490631; c=relaxed/simple;
-	bh=lv+yLoUWzU6ZgUk5BaJ7dyYumFSPDEZpbiDsolyCWVA=;
+	s=arc-20240116; t=1733490904; c=relaxed/simple;
+	bh=fQXAU0TQOuPbF2Wa28yRbR1+idMRyEFiJwXxesKJ1j0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sv0QQg1A1sfBzI+kDL2d92Rf4JrbxgVfeEuFKv3r62wmQRPGCIm5pRIhTj3L6DgBudFR7bw/gIIajXEtIvlSjepayc245WdYuDw8Z71qY4Wvwbn/pO+zOBnSTyUR7b4lAl09B+nb2UmvYVS4aeiRQncRfsYmWzocNsBNThUw+qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIOTXNBq; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=LPTNOWuit3Jwx1pbKJK6k7O8meENL+xtSEzApmcRPZq4qzJaQDMefUgCpx2c7DxIoLGFjX3tM9hkG6oDGSmZ4ZMygTZ+oTleBkEJmZZNUhkiPAL9e+dYdbWYTHpL4KY1UTD3z76Ly95Cx5yQpGds/RNeod7aUsaDsDCtaMi5BWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGLKCNQn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIOTXNBq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738C9C4CED1;
-	Fri,  6 Dec 2024 13:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733490631;
-	bh=lv+yLoUWzU6ZgUk5BaJ7dyYumFSPDEZpbiDsolyCWVA=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGLKCNQn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E390C4CED1;
+	Fri,  6 Dec 2024 13:14:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733490903;
+	bh=fQXAU0TQOuPbF2Wa28yRbR1+idMRyEFiJwXxesKJ1j0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hIOTXNBqP1Ux1GLqi0HsJdqy5ctcBq2talRY2vLw+h/kONS9t14fm+lhG+CCq9N2E
-	 SPmSDBekNXmnqZy9SFp2Gdz6WWe7G3qzAVnlINIC7ROzZfi4bR/lj4yRtk6dR+w6rB
-	 DweVFN8ez5t7gCT5fB/v4SxqIj2WnyzOgMw6mIJY=
-Date: Fri, 6 Dec 2024 14:10:27 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lee Jones <lee@kernel.org>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	b=AGLKCNQn0SfQZyJaI4D7NHc6d0xvAn4lKlZtZ44bXy5zdnKtBLtOokjUHIrIS2Cp6
+	 CKb/RdY2mGE61mCK6tKXlU4TheXFYaIvVaSxYW0dnUW5Oaz5fkYU5bHytKu6YDpqfz
+	 KlsXCqvS397O33194VD1X4o43mB0VsV6XltA8yFpgNNPLo3mJs6oa0T6TeS3k+eWN3
+	 xVnMhhnqP2jRXzHor7vik2y4X81093qZda/WZjZnYIxp+Y8NGdp8y7V7x6T71fxA0z
+	 eHhU3aIkEnRpqMOpgSCfe2QoaK8ou1J6kuEbnmi97/4ePuqrze3H78CEq0wBnnV/rt
+	 LVJD1sgom/wTw==
+Date: Fri, 6 Dec 2024 13:14:45 +0000
+From: Lee Jones <lee@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 3/4] sample: rust_misc_device: Demonstrate additional
- get/set value functionality
-Message-ID: <2024120637-handoff-monetary-c2f5@gregkh>
+Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
+ new MiscDevice bindings
+Message-ID: <20241206131445.GE7684@google.com>
 References: <20241206124218.165880-1-lee@kernel.org>
- <20241206124218.165880-4-lee@kernel.org>
- <2024120652-champion-chute-4e74@gregkh>
- <20241206130449.GC7684@google.com>
- <20241206130630.GD7684@google.com>
+ <Z1LzOORuFpO0MXAZ@pollux>
+ <20241206125430.GB7684@google.com>
+ <Z1L2tjNrIa2Q0Awf@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241206130630.GD7684@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z1L2tjNrIa2Q0Awf@pollux>
 
-On Fri, Dec 06, 2024 at 01:06:30PM +0000, Lee Jones wrote:
-> On Fri, 06 Dec 2024, Lee Jones wrote:
-> > On Fri, 06 Dec 2024, Greg KH wrote:
-> > > On Fri, Dec 06, 2024 at 12:42:14PM +0000, Lee Jones wrote:
-> > > > +    fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
-> > > > +        let guard = self.inner.lock();
-> > > > +        let value = guard.value;
-> > > > +
-> > > > +        // Refrain from calling write() on a locked resource
-> > > > +        drop(guard);
-> > > > +
-> > > > +        pr_info!("-> Copying data to userspace (value: {})\n", &value);
-> > > > +
-> > > > +        writer.write::<i32>(&value)?;
-> > > > +        Ok(0)
-> > > > +    }
-> > > 
-> > > I don't understand why you have to drop the mutex before calling
-> > > pr_info() and write (i.e. copy_to_user())?  It's a mutex, not a
-> > > spinlock, so you can hold it over that potentially-sleeping call, right?
-> > > Or is there some other reason why here?
+On Fri, 06 Dec 2024, Danilo Krummrich wrote:
+
+> On Fri, Dec 06, 2024 at 12:54:30PM +0000, Lee Jones wrote:
+> > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
 > > 
-> > This was a request from Alice to demonstrate how to unlock a mutex.
+> > > On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
+> > > > It has been suggested that the driver should use dev_info() instead of
+> > > > pr_info() however there is currently no scaffolding to successfully pull
+> > > > a 'struct device' out from driver data post register().  This is being
+> > > > worked on and we will convert this over in due course.
+> > > 
+> > > I think you're going too fast with this series.
+> > > 
+> > > Please address the comments you receive before sending out new versions.
+> > > 
+> > > Also, please document the changes you have made from one version to the next,
+> > > otherwise it's gonna be very hard to review this.
+> > 
+> > I can add a change log.
+> > 
+> > What comments were missed?
 > 
-> It's common practice to apply guards only around the protected value.
+> I think MiscDevice should ideally use the generic `Registration` type from [1].
+
+How can an in-tree driver use out-of-tree functionality?
+
+> I see that you use `InPlaceModule` now, which is fine. But since this is just a
+> sample, we could probably afford to wait until the generic type lands.
 > 
-> Why would this be different?
+> Also, there was a comment about how we can make use of the `dev_*` macros.
+> 
+> I really think we should fix those before we land a sample driver. It's gonna
+> be hard to explain people later on that they shouldn't do what the example
+> does...
 
-It isn't, it's just that you are implying that the guard has to be
-dropped because of the call to write(), which is confusing.  It's only
-"needed" because you want to guard a single cpu instruction that is
-guaranteed atomic by the processor :)
+We're authoring the sample based on what is available at the moment.
 
-As this is an example driver, documentation is essential, so maybe the
-comment should be:
-	// Drop the mutex as we can now use our local copy
-or something like that.
+There will always be something better / more convenient coming down the
+pipe.  We don't usually put off contributors pending acceptance of
+out-of-tree functionality, sample or otherwise.
 
-thanks,
+As I've already mentioned, I'd be _more than_ happy to keep improving
+this over time as new and improved helpers / infra. arrives.
 
-greg k-h
+> [1] https://lore.kernel.org/rust-for-linux/20241205141533.111830-3-dakr@kernel.org/
+
+-- 
+Lee Jones [李琼斯]
