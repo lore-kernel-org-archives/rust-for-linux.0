@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AA810E6;
-	Fri,  6 Dec 2024 12:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEFF1C6B8;
+	Fri,  6 Dec 2024 12:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733489470; cv=none; b=lcCdrEOqFnkTXp22RVfUGx+tGPUjrLkiZF6ncjgt4bXINcckDC1k9ovO40M5GQEroHsTCn0baVTTTEsU0JXQzI+omIQPC7VL/7ZDZX9PfxlJTEqkh4tISvNX77VSc+a31Ike7wszDochAS/h6TWCNIyglKhzAppCFCQqhWE9DLU=
+	t=1733489683; cv=none; b=TcPJHWRVBMhJEsutN81+rB7L9DIMefcyMkicgJB4yg+aXpV0MssuUBgk8CGlJXT61hvLbdwDrGS3wh7k9FQKV+4hJvXoOFLEeTwq1DWW8omQXTooXoiLJkMYENv1GnlwTtp9qApUHuKJgJePWEjDyxyddqGUZzS3uj/LipnxMZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733489470; c=relaxed/simple;
-	bh=YplR6J/MThyifUE6vHS2ql3sMaD9NOZvm3ASk+xWjIo=;
+	s=arc-20240116; t=1733489683; c=relaxed/simple;
+	bh=zUxAg/YJWuBQqrjFTkVvFGyzoSnJHUOahX51qqmhE4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I7NlAvoMGGu2AIrUPFMafX/EhERmBMbrUSW1hZKgRQiPxpf6czw3UfJybv880X1w+vqAdC+uD80Iu/Slj2Pv0T5bqLMnqDb1hXXgCZXPj2Krf6CleS5nwIZX+FKRijyh37Ruu2wWoSWCZa8O0BHzw6xE2aCULMCuJZfejoPAOV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHBGyYbe; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kr3doGZenOqZitXLoz8Osd/hNJRx1sgYlwKG0/WC5qtc+xcaLlQAGcZhoRK38gWI8dCbvraUjxbnEtenrz5AV74VRlwpY7OVWgQu2LYwjIZliCL+nALkCSVFskegkEYuAecxOsQdA7hlcneYADsFYrsnbfKVw8K4mjnxD8MfvgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGSoF0J1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHBGyYbe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C7CC4CED1;
-	Fri,  6 Dec 2024 12:51:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGSoF0J1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE02C4CED1;
+	Fri,  6 Dec 2024 12:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733489470;
-	bh=YplR6J/MThyifUE6vHS2ql3sMaD9NOZvm3ASk+xWjIo=;
+	s=k20201202; t=1733489683;
+	bh=zUxAg/YJWuBQqrjFTkVvFGyzoSnJHUOahX51qqmhE4k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IHBGyYbeS/X7JE0VaxZhlKc3j2kW8FV67CtKscnXoyExqu+ZCLxlM23AGoyRiC+2a
-	 4eIpILhyWUrNu0JL28LJTXGARNdx8QcEVdaXV30rky7oBpP8h/jevy5IbzFfFcLhgZ
-	 fHK1uPBHI0BA+NPHoSkIS1OSoB16zUno1AVNoS1paHyLzkOHVPLA6No1RXJnzmRW6u
-	 iAYlXnw1QsCRGQX++vZ+vwzCgKOAdSdqQ7xExa0U0CdR3tOFlzikzoRluIscEWn9Ey
-	 esAAl3h4sfE3AVirfdNGZ9dFlgT1LcPthXHOZF3QAn+OJeO0okbcA35LMW34apQcBp
-	 rfw5p8QiC5ZFA==
-Date: Fri, 6 Dec 2024 13:51:04 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Lee Jones <lee@kernel.org>
+	b=cGSoF0J14AOn6PYTcvqDN8BIUQLgkel6EdoDtquIdAchwnjcHZIghYtUBnXMQDoco
+	 XZXvnjKSvXqQsvkuueqGzj+pWuPys7rNvOotHsjyvyFVJSwe06XAXeTkbTquAfniwz
+	 7JBdd30HWnMbHyPDJN+z5fV7aPeFZEI+5cN6GV7zSq4byYOuaG06l0nALPUlTJh2gJ
+	 St9dgTgM5oSNBiW0yLRu+TTPLLoOUBEwE5fXMwLCQ4O1Uy5OEAqoWf14w+/Zq8AQto
+	 tVd1/ghzIMmLwnwCrX/N79xktB/wDT3BJn7XhIcjZ9RKZtc1aZNHXDrMpDtOYfUyev
+	 UxqZ+yUBAfX7A==
+Date: Fri, 6 Dec 2024 12:54:30 +0000
+From: Lee Jones <lee@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
 Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
 	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
@@ -36,53 +36,38 @@ Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
 	rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
  new MiscDevice bindings
-Message-ID: <Z1LzOORuFpO0MXAZ@pollux>
+Message-ID: <20241206125430.GB7684@google.com>
 References: <20241206124218.165880-1-lee@kernel.org>
+ <Z1LzOORuFpO0MXAZ@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241206124218.165880-1-lee@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z1LzOORuFpO0MXAZ@pollux>
 
-On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
-> It has been suggested that the driver should use dev_info() instead of
-> pr_info() however there is currently no scaffolding to successfully pull
-> a 'struct device' out from driver data post register().  This is being
-> worked on and we will convert this over in due course.
+On Fri, 06 Dec 2024, Danilo Krummrich wrote:
 
-I think you're going too fast with this series.
-
-Please address the comments you receive before sending out new versions.
-
-Also, please document the changes you have made from one version to the next,
-otherwise it's gonna be very hard to review this.
-
-Thanks,
-Danilo
-
+> On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
+> > It has been suggested that the driver should use dev_info() instead of
+> > pr_info() however there is currently no scaffolding to successfully pull
+> > a 'struct device' out from driver data post register().  This is being
+> > worked on and we will convert this over in due course.
 > 
-> Lee Jones (4):
->   Documentation: ioctl-number: Carve out some identifiers for use by
->     sample drivers
->   samples: rust: Provide example using the new Rust MiscDevice
->     abstraction
->   sample: rust_misc_device: Demonstrate additional get/set value
->     functionality
->   MAINTAINERS: Add Rust Misc Sample to MISC entry
+> I think you're going too fast with this series.
 > 
->  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
->  MAINTAINERS                                   |   1 +
->  samples/rust/Kconfig                          |  10 ++
->  samples/rust/Makefile                         |   1 +
->  samples/rust/rust_misc_device.rs              | 132 ++++++++++++++++++
->  5 files changed, 145 insertions(+)
->  create mode 100644 samples/rust/rust_misc_device.rs
+> Please address the comments you receive before sending out new versions.
 > 
-> -- 
-> 2.47.0.338.g60cca15819-goog
-> 
-> 
+> Also, please document the changes you have made from one version to the next,
+> otherwise it's gonna be very hard to review this.
+
+I can add a change log.
+
+What comments were missed?
+
+-- 
+Lee Jones [李琼斯]
