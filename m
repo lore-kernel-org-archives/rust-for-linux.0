@@ -1,114 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E4B1B87D6;
-	Fri,  6 Dec 2024 22:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C622C6C3;
+	Fri,  6 Dec 2024 22:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733522776; cv=none; b=LsJFF3cDPlO2bAW9dxCrSVv6sURcbRgb1C8eD3tjP//OATrWvwufzjwXEpUZl/vM/ePt01qaU+eIJDbIISCKxQwpFUgVdN2fMQP/C5v8AriFSGQsSryzQLlnM6FKDXF/wnKppxMmbFmM2K8MaMT+daszShXRJHKc9uk7gL1etKI=
+	t=1733524958; cv=none; b=idj3W4mRVSWVGgRMtDSgCFbtNGcLQHCuqDEIFaCrgOmEJOpphT2fkhmz9Lu+QxvYU/bVfTktBDbQna0TGLVDiyrTJbjtONr9Conq/1iG4CnLMnz9BPLHso2LYDf2iejl/8dx2nankOVcdAnFRVIq5HsdL4BuiDklPDZ0p9fdSUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733522776; c=relaxed/simple;
-	bh=+dNj1CoVpM81sbl1XakslMW0j842w/mtXHSFKE6yxyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=osi6oIdWClH3rr/pm2UppHPvBRhbM6A213f4rRazJ/T6YhEu5jtWG5bZQyl9X73dprz7x0ZEHXHuBY0rgisSMX7a0acMTFKcPPJMqxOmVezE+LjeCKdNO95qVUxdFxi22V+w6IJ9Tvp5GYXJQ2ZH/yesu5q9qNR1Mwa3p9F9dHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgrRyGvz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733524958; c=relaxed/simple;
+	bh=M2pQrx0Zxdfzn5dIXjJR2h2zCQni1Hrbon2Xgsz3qpQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ah8/aLzR74RabAnXHLVStG/0frnee0LoXUVxW7P+QoxwHegfD6VD19Me9OVbSrYx+YO7z5EIrKm7BMKCgsPwq9XzI8W6jmJpdwnxQpKwR9cD7E45NDY5iny7h51wtt/NWsXbQjjSK9NhaY8SxB8dcjOeqHSF2b6utacCrQxvfEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KIznDt0F; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgrRyGvz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43A7C4CEDE;
-	Fri,  6 Dec 2024 22:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733522775;
-	bh=+dNj1CoVpM81sbl1XakslMW0j842w/mtXHSFKE6yxyY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WgrRyGvzbUTInjjm2bwjvvqmyTsOD71iuXcTcqQKNf9ZRTe4yIbyWT+aUWa6pdJWV
-	 QOb8/vVlCMEaHdh9bhKMce3yTj4ofkRPlYQ208aH3w3bv/OhIkJa6Y8o9V9/Bbkm5P
-	 qV2FO2m8B/m62YaxhjQYVnmUd/cXkNvjn8P80I9R1UX2mNQgIDUNvAYgjZyIA8lvh5
-	 cYTeO5ZV8OvtSac3J43WGGAbQMIe9+8JOr7WhaDBItQqL78GHHaFF21dQvchcmDz5s
-	 YwPuneDhhxQMw1t4OPz4LstCDR2+vZMnUvN98RKtfVPB67OFuBKcbPRXrUS6lR/e9f
-	 U8YUaqyStqIcg==
-Date: Fri, 6 Dec 2024 22:06:09 +0000
-From: Lee Jones <lee@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
- new MiscDevice bindings
-Message-ID: <20241206220609.GA6126@google.com>
-References: <20241206124218.165880-1-lee@kernel.org>
- <Z1LzOORuFpO0MXAZ@pollux>
- <20241206125430.GB7684@google.com>
- <Z1L2tjNrIa2Q0Awf@pollux>
- <20241206131445.GE7684@google.com>
- <Z1L9dLyLRmLcwMne@pollux>
- <20241206164918.GA6336@google.com>
- <Z1NCcGOwarDhU8GB@pollux>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KIznDt0F"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ef6ee55225so137100a91.0;
+        Fri, 06 Dec 2024 14:42:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733524956; x=1734129756; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gsnbuIPYfeBdRy1SDZEK7y34MrfhKqG3TLLpG8cZXiQ=;
+        b=KIznDt0FAxVoDyjnHU1eOmEKpsWR5Tozwc4Fh2ewT3bvAYYHyf3AfNmmFlD6Z/88Or
+         vAUuO+8M114PM+c8cfoxo2JHg3iis4lcrRerQdn7GlnqG+FQVWkoxDAuTaBKYJRJ8KPa
+         HMW9p5u3ZZWlImCzY23XhiqQVPCA2HpcI2HuDP1qdNVAAB6pB6jqlOdOg8sWuOf/Y5f+
+         XwIreVEOFBO27PgyUtMIFsDr1724PxE4reDzZ3qgut+9oosz3/oSSGJdJeT7Hki65NlG
+         lC+x6sJbY9AS6hAh8l0YE0zt8uzLl14U0BAbpVS75gcKTvGiM+l/ODC8XW/kRI3969eA
+         SQew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733524956; x=1734129756;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gsnbuIPYfeBdRy1SDZEK7y34MrfhKqG3TLLpG8cZXiQ=;
+        b=DvyL/t6YFhEOP4ovFK0Bq0uT0bXDVQSd5TGA291yz3wcG1U7enbOOzyDOgI7ZBh2eu
+         ERNFxSyp0DgcdyXsjZIEOq1/79HbQ7+a9U9pUsHlcKeCpz0UaLlUKoSBHTn88/cPTOJf
+         lG/rOxJ+3Qn335L+FqropS0wnj+x3YxbD7Fqppi0nJouvibG76r86CDGBdoprsPfYR3U
+         NGo9dVrvSVwH5olN3tKhpJmUKCBS9v7S/q+9WI+6H4tiUcJYWqgujG+ibxwIiD1aAKXY
+         w/R25Q8jbQz9SumqfPcrdw9muujwd8BBmM3DqnwKPSOaHeOjqDEYOsosr/N+XdTMn8Je
+         5A+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUtUb5TXni5tHNY1U1PNaIfDI+wkYYmtfneutYP/1ut6k49mzQpUd7fR6xBbm5DFh1oMOzkUiuVr+GGLOlRWmc=@vger.kernel.org, AJvYcCWWWBwuIEKbnDkHAe6/PK1dAvZ0VDlgkZKQNLkWzAy5LqCuXCUZ2n6I9YoHhxAvNQO6XxroSOCzN7WybaI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsnU3q3FO8oakoU2tjyNWYQA5gTPD538aeXNLPzQOdEiwXDaQe
+	MXJ4PBrcq9OGZP3wuD9nzfzjgvkXZckEIAbCwGW8WdvkpJSo+L6TlbNDgmggpUlS/Aip13llby9
+	V+0Vohd7izic12r/lMikklEDooHA=
+X-Gm-Gg: ASbGnctsfW8eatXUtxJLlbDY4CpFoyTNpfLpbOCGpGHmygW8IXkVEZ3qs8Snll0Bfo0
+	Nlw4CswKC2g3LuHiJzzXwo7C8YPKBFCg=
+X-Google-Smtp-Source: AGHT+IH+7qgcaJhI7tLEith6fGepZEdgrwl1mT/d6IlaO4lR2WvUrJl4izuR/DxUXvND5D+aDPteyWPEwlqOYk387cY=
+X-Received: by 2002:a17:90b:38cd:b0:2ea:c2d3:a079 with SMTP id
+ 98e67ed59e1d1-2ef69949ac6mr2675447a91.3.1733524956383; Fri, 06 Dec 2024
+ 14:42:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z1NCcGOwarDhU8GB@pollux>
+References: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
+ <20241206211905.444952-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20241206211905.444952-1-trintaeoitogc@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 6 Dec 2024 23:42:24 +0100
+Message-ID: <CANiq72mH+t0-4Vz1O2dXts8rUzkW9XT2enz+KERbuXe+SokvCg@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: add authors
+To: guilherme giacomo simoes <trintaeoitogc@gmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	fujita.tomonori@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, rust-for-linux@vger.kernel.org, tahbertschinger@gmail.com, 
+	tmgross@umich.edu, walmeida@microsoft.com, wcampbell1995@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 06 Dec 2024, Danilo Krummrich wrote:
+On Fri, Dec 6, 2024 at 10:19=E2=80=AFPM guilherme giacomo simoes
+<trintaeoitogc@gmail.com> wrote:
+>
+> And how in the first option I would need found all modules that have the =
+author
+> tags and I would need change the code (from `author: "author"` to `author=
+:
+> ["author"])`, I was think that is the best don't change in a thing that i=
+s
+> already work well.
 
-> On Fri, Dec 06, 2024 at 04:49:18PM +0000, Lee Jones wrote:
-> > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
-> > > > > Also, there was a comment about how we can make use of the `dev_*` macros.
-> > > > > 
-> > > > > I really think we should fix those before we land a sample driver. It's gonna
-> > > > > be hard to explain people later on that they shouldn't do what the example
-> > > > > does...
-> > > > 
-> > > > We're authoring the sample based on what is available at the moment.
-> > > 
-> > > Well, for this I have to disagree, not being able to use the `dev_*` macros is
-> > > simply meaning that the abstraction is incomplete (in this aspect).
-> > > 
-> > > I don't see the need to land a sample driver that tells the user to do the wrong
-> > > thing, i.e. use the `pr_*` macros.
-> > > 
-> > > As Alice mentioned, you can get the miscdevice pointer from the file private
-> > > data in open() and then make it accessible in the other fops hooks. If we go for
-> > > this solution it will change the callbacks of `MiscDevice` and maybe even some
-> > > other architectural aspects.
-> > > 
-> > > This needs to be addressed first.
-> > 
-> > The issue about ever growing dependencies _can_ be that authors have
-> > other priorities and are slow to turn things around, which may end up
-> > with nothing being accepted and contributors getting frustrated.
-> 
-> I would share your argumentation if
-> 
-> 1) we'd talk about a real driver, where people are actually waiting for,
-> 2) it'd be about a new feature, performance improvement, etc.
-> 
-> What we have here is different:
-> 
-> You wrote a sample implementation for a new and just landed abstraction that
-> reveals a shortcoming. (Which is great, because it means the sample already
-> served an important purpose.)
-> 
-> IMHO, the consequence should not be to merge the sample as is anyways, because
-> another purpose of the sample implementation is to tell people "look, this is
-> exactly how it should look like, please do it the same way".
-> 
-> Instead, we should fix the shortcoming, adjust the sample implementation and
-> merge it then.
-> 
-> Just to make it clear, for a real driver I think it would be reasonable to just
-> go ahead, but for a sample that should educate, we should fix things first.
+I understand what you mean, but changing a few existing lines here and
+there is fine. There aren't that many modules out there. If we are
+going to change this, then the best time is now. Backporting should
+not be too bad either.
 
-Provided that we stay within certain tolerances, I don't see any of
-what you've said as particularly unreasonable.  I'll have an out-of-band
-chat with Alice on Monday with a view to conjuring up a game plan.
+In any case, in general, I would focus in deciding what we want to end
+up with, and then we can discuss how to get there (assuming there was
+a problem getting there).
 
--- 
-Lee Jones [李琼斯]
+> - Accepting several "author" fields and append them all into a list.
+> because in the modules the developers would need a several author field i=
+f the
+> module is development for several author. And the module! macro would gro=
+w a lot.
+> Like:
+>   author: guilherme,
+>   author: miguel,
+>   author: another_poor_developer,
+>   ....
+
+Sorry, I am not sure I understand what you mean. Yes, the idea of this
+option is to repeat one line per author, but that is not a big deal: C
+modules do that already.
+
+> I make this change because, the for() would need repeat for the alias and=
+ for
+> the authors and for avoid unnecessary code repetition I create the
+> emit_arr_str() function.
+
+In general, it is best to mention it in the commit message or, even
+better, do the cleanup in another patch. Having said that, I am not
+sure I would introduce the function -- we are not really saving lines
+and it is yet one more function to read.
+
+Thanks!
+
+Cheers,
+Miguel
