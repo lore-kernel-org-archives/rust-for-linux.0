@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A37192B76;
-	Fri,  6 Dec 2024 19:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257BC192B76;
+	Fri,  6 Dec 2024 19:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733513715; cv=none; b=NI03eAe8YARcbEKQhmQhXhgUJqK7MPSJrSFlGfkAH9Htr3vPppivYMnMj2gAPO/OTG3+uk7lSSkNdDcA093NyHo+0Gq8egIUlvQn6/5VcWeyKhBy4fJdq2vpNPuJOKXcLRu6PLGmdA3fqae9Qtq8sbv1SUUfz63Fia7lWLsm86U=
+	t=1733513719; cv=none; b=AusVU1nEHpFDqOSJYCI1SRK8WxAIFryOQU05pmXlT/VZwKwWo+HXcQt9cSGQw3bUlllP/BRjOrgvNPF4QpZcBM5UEitLSXI/s5bh2OrM1rMMWNT1MxYtRiqdQA3OhBTuG92a79sDfu/+skbaR0RkH0bEHnZYfMgPnJKESTKWKJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733513715; c=relaxed/simple;
-	bh=6xLEbR0EIB8Nn0LgnN+aKPyBmaJP6NyFspAESdf3mNM=;
+	s=arc-20240116; t=1733513719; c=relaxed/simple;
+	bh=3cmQwvQmcHFuleBZ0JcLoMCUVXuHR5HSrNoO4gZjqeY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rS3oqXKEvKcnzZmYf0RVNcs10cy85rGxHZRadGK1gqfKP/Rzrfiq6x5x3IjbI5Eh8YwVmBW8vMCPiqeGqw+iWOov0GIfd/vBH6g1H6biPETmqFg9xm4VncLCMBi7+41GIl4W3wkrpS9lsimEpQb5rqNVuCcGMyVj27HavvxVu8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9ObnEFJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=jZjSfcG1UK9sVFiSyM7J1k8NpjJ0t0eIooMvNMSp8pwBLf0HLvuhoNVnd72IpiITTkGTsAWsUi55J8u7p5di+fn2KIkTKKiMY5qBx9rzu7bW1CLIMBrzkwi0RKHNbB4zWxqC9vZXGNNHbt2Kem2vZB1h1LeJ0OuSzFH0egkAAUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=goxFHOQ5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9ObnEFJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0A0C4CED1;
-	Fri,  6 Dec 2024 19:35:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="goxFHOQ5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A71C4CEDD;
+	Fri,  6 Dec 2024 19:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733513714;
-	bh=6xLEbR0EIB8Nn0LgnN+aKPyBmaJP6NyFspAESdf3mNM=;
+	s=k20201202; t=1733513718;
+	bh=3cmQwvQmcHFuleBZ0JcLoMCUVXuHR5HSrNoO4gZjqeY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=l9ObnEFJr0DlDWafnqrUCs0s4pYo9sP/F6Xm1ofs2vUGmneEuf9zPG0XCCioNORQC
-	 4X32/ZfGlf444ffh59oDK0pTEaziyzoPtipKw56MKGEFk6zWyw+AltHPrsWqwbRWRY
-	 Rv0gK0Bm1rlsgGhJPgjIGWZSOhZFHp+lnpPWxtKsv0QwkhfaT5HFT1LQGnGTGrt3Qq
-	 fycuitNrQf9jCQ4z6H/PPyU6HWnzHRt0rW9x2O4jSO4yiFxSoneHgjKLVu1oO3vNTF
-	 PqHLHshwSIt31VxUREn8Ja7qWsopngh+Huth46p/EsQx2QuaFK7b1lZBw8gM8A5sGY
-	 xyrf/jKO/Ntxw==
+	b=goxFHOQ5bauugRte1mV+UzgamMX0/6GN0K0qFgLeyhlYB8TwrhowAQhxnHGertMie
+	 /nJ286ZjYn5T/XfAUndGYjXanvbc61l9O/KGQl9rcI7PTPkOzG6HZVYCsVMkJBci8I
+	 euZonUCYAKMEbEiaa0xNjDd0Wh4+qM0Wv5N+yy1FBfZmJLGag6ZbW6rKDFfmbXNzW2
+	 bclKbGc+kM59ybRFGzSsqUQbKZs0t8SRpjPSmxoRxQ1McbY6LapfLZnpt5mA+DeCGh
+	 dlhF/3rebGrLwXVnQKy6dtwVtXw0Cov7YAxWfxTkF1ezPiQmT7SlHUj/3uMmjG81zn
+	 tVhef9QEM7L8w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 06 Dec 2024 20:33:02 +0100
-Subject: [PATCH v4 10/14] rust: alloc: add `Box::into_pin`
+Date: Fri, 06 Dec 2024 20:33:06 +0100
+Subject: [PATCH v4 14/14] rust: hrtimer: add maintainer entry
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241206-hrtimer-v3-v6-12-rc2-v4-10-6cb8c3673682@kernel.org>
+Message-Id: <20241206-hrtimer-v3-v6-12-rc2-v4-14-6cb8c3673682@kernel.org>
 References: <20241206-hrtimer-v3-v6-12-rc2-v4-0-6cb8c3673682@kernel.org>
 In-Reply-To: <20241206-hrtimer-v3-v6-12-rc2-v4-0-6cb8c3673682@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, 
@@ -52,56 +52,58 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1332; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=6xLEbR0EIB8Nn0LgnN+aKPyBmaJP6NyFspAESdf3mNM=;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=985; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=3cmQwvQmcHFuleBZ0JcLoMCUVXuHR5HSrNoO4gZjqeY=;
  b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
- mtvWTNjQnl5WmlBR2RUVVhHSitJZ3dHNEx1TEZzTTR1c1RNZmc4CjJjNnhkS1RjdTJEQVJyWW5h
- MEorM0lrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKblUxRnh
- BQW9KRU9HNEdqNTVLR04zMmdNUC9pQk5qTm9FME5nLzJnbnZyaWlCNDBqalpTcVFid3NZcWRLUg
- pLbDh6bEszT0UwQjBCTDM4eU02YXNiYjhXYlJqdVZDU0hVQ0ZFWEVYNTNvUm5hU2QvRU1oMWVWQ
- lNLcE5qZmR0CjEyMllKcmpJQlRGNjdyYkR2NzlkLzlncVNhTlRONTBOQ0NhNmowUHEwN1U1OG0x
- UHlMdFpEVmwvek1HQmV3QkIKMjcrUi9jMlZBM1FpSXNJUWpHYnFHVkcrRDlrVjZGaVo4Mmc1Z1B
- aZEhBRHp1MnZzRmlUSWNucmJGZjh0Nm5vMwphRURlaUM3c0d6SXNPL09seXQ0WU5mSzdxWHlKcl
- VXT08vRTJBM05mZ0doRzQzalZzcGZhMUo2NFhtVTlwN0FVClNrcytPZGY0cFVneWJjL0VMUy9Qd
- Uk4MGVRWEtCS29vSzFlTWQ2WmQ1cFc4Y09xQ1cvbm01cUlTQ3FEQThuQlYKRkQzbXlnSU5DbXFN
- NjhaMTBCL3ppYldHMjc3Tm54T2F4eWNWTlhMT0MzRjBZMnM3QmZma1NHU1hYbHpNTENVVApTWFN
- UZWdpRWYxUWlYRUhwVGxlM3hCUS9WK0RTbU8rVmhhVEVHSEZqd0JiaDdpcVlpaFN1Z2wvenJKci
- tvNG5XCjQ2QWRWenRVcWtia3lTRGdYeElrUVF2NzdSS0l2RldTdU9ISVh6UGwzODFkT1ZKNkdpV
- HNrY2pydVZocnhLZk4KaTE2U0tqSEwvWTFPcWdCTTZ3eGdXY2FTZXZrMWtTcENDKzNZd0FLNHUy
- WnY3aHgzNmZ1TndRRkh4cjdwcUpxLwplNzVSQXdSWUNEbElNUFRlUVM0YlNUOWc4TlR2MmM0SmR
- yNVRFc0g3MmUveFpMZ1lodmxuZ3dYYjVIZlYydmJoCkNheUh6TWlrRXlNdDlRPT0KPTFLV24KLS
+ mtvWTNjQnl5WmlBR2RUVVhYWFJpdGFvRFZJWXROb2YyYmxySzN1CkhhYyt4REZyQnh1ZzN3Mnhh
+ QUt0YjRrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKblUxRjF
+ BQW9KRU9HNEdqNTVLR04zQlU4UC9pYVpsdXY3RW5JQ2QwN1BESmtWT3RITTVRSDdVc2tuWm5ycA
+ pWZ2tXOGRPZEF2U1FSTVJ2bmY3eElMSk0zd2swRXEvNld6eWRnRHhqTjJjMkVYWWE3MWxjWllwM
+ DhGeHRDMGd4CjhpRkEzdkRybitLUDB5RXNnWXFEQk5USllaQ2tJSDRmQStWMktEalMrNzN1T2lK
+ RTR5TE8vYlBEWUFNQ3lteFQKR0l6bzJIY0dRV2dXWWxOYzRFanVaSWpCSnhCWmlsdXAySjY4akN
+ zWW8xYmVMZXkxYnhXNkpGV20vYmxlSVlycApwYk1najd1MERMR0o4Yng4Z3dUNFo2d1VCU1ZkQU
+ YySnVvbzVEaGFxR2RpcmFld0FpYlRCMWkyeTdwT0VEeHlCCkVxY05kUVZnV1N2NHEzUytTZ2VMc
+ HNvd3ZOMW9nMW1ycE9YK1lPc2xwY05ERlFqcGxIemtpL1pveWhNTmF1SEQKTFVuS040cmFQcTZs
+ ZXc5UnFXS09rbnV5WStDUklJZVdzd2JYVWd5SjVKbm93SFpjQ2FHWEJxZlluMlV1d2djSApVYVl
+ JYUt3TXlmNzVoNHVYcmQycVhXQzZxQXNEcmk0SE1DRUtZTFZWQlQyU09hWURHMkRNeG9ncDFieD
+ lVZDFPCk9teklsaG5EYzBoT28zR2ZxbER4M24wSFZEeG9OR2ZBR1hQaXBwU0JTQ0ZkYjVQK0UrK
+ 1ZjU2dyTDdkNGFhN0MKZ25kWFZRTXNKK3U2QTZMUjZmc1BvTEtmRDVTVVAraWFjTzNRZ3YzdG9D
+ VHNHZk5SbTZNZVZNWFV1UUl1MzcyeQpMMXRQdGlweEtMakViS0tJaHcxSUNNQTFqUHJQMUdGMWF
+ iRm9pMFBvb09BTXpJUEQ3OHNETWZtSTFuK0ovMG0xCnFycjhnMmxWZFRvaDBRPT0KPWp5S2IKLS
  0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add an associated function to convert a `Box<T>` into a `Pin<Box<T>>`.
+Add Andreas Hindborg as maintainer for Rust `hrtimer` abstractions. Also
+add Boqun Feng as reviewer.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
 ---
- rust/kernel/alloc/kbox.rs | 10 ++++++++++
+ MAINTAINERS | 10 ++++++++++
  1 file changed, 10 insertions(+)
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 9ce414361c2c6dd8eea09b11041f6c307cbc7864..1a993ec8602b37041c192458d8b6acff30769a04 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -245,6 +245,16 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
-         Ok(Self::new(x, flags)?.into())
-     }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1e930c7a58b13d8bbe6bf133ba7b36aa24c2b5e0..4b29b00f740bcb24d25dbcf45f265eea6b4cd980 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10251,6 +10251,16 @@ F:	kernel/time/timer_list.c
+ F:	kernel/time/timer_migration.*
+ F:	tools/testing/selftests/timers/
  
-+    /// Convert a [`Box<T,A>`] to a [`Pin<Box<T,A>>`]. If `T` does not implement
-+    /// [`Unpin`], then `x` will be pinned in memory and can't be moved.
-+    pub fn into_pin(boxed: Self) -> Pin<Self> {
-+        // SAFETY: `Self` is guaranteed to be the only pointer to the boxed
-+        // value. Thus, if `T: !Unpin`, `T` is guaranteed to stay pinned; there
-+        // is no way to get rid of the `Pin` and move out of the returned
-+        // `Pin<Box<T>>`.
-+        unsafe { Pin::new_unchecked(boxed) }
-+    }
++HIGH-RESOLUTION TIMERS [RUST]
++M:	Andreas Hindborg <a.hindborg@kernel.org>
++R:	Boqun Feng <boqun.feng@gmail.com>
++L:	rust-for-linux@vger.kernel.org
++S:	Supported
++W:	https://rust-for-linux.com
++B:	https://github.com/Rust-for-Linux/linux/issues
++F:	rust/kernel/hrtimer.rs
++F:	rust/kernel/hrtimer/
 +
-     /// Forgets the contents (does not run the destructor), but keeps the allocation.
-     fn forget_contents(this: Self) -> Box<MaybeUninit<T>, A> {
-         let ptr = Self::into_raw(this);
+ HIGH-SPEED SCC DRIVER FOR AX.25
+ L:	linux-hams@vger.kernel.org
+ S:	Orphan
 
 -- 
 2.46.0
