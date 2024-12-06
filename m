@@ -1,51 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209E1205AA4;
-	Fri,  6 Dec 2024 12:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AA810E6;
+	Fri,  6 Dec 2024 12:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733488991; cv=none; b=uzaD8uO8Knb/eWMCQfD+jMvNg8grIc1H01ihjMuJYhfEi9BZP/+kO6EMmzjy5i/0zGO4zBRB6+i1LUKsYNzqx8gl6eUv7LEUAnVaxHygCLviYLrj/Jw2NtYs+VLc69VnjMMB1D/sI2lBx3gGwME1oWVAUc7M3hwlX+xq4fHn4ZQ=
+	t=1733489470; cv=none; b=lcCdrEOqFnkTXp22RVfUGx+tGPUjrLkiZF6ncjgt4bXINcckDC1k9ovO40M5GQEroHsTCn0baVTTTEsU0JXQzI+omIQPC7VL/7ZDZX9PfxlJTEqkh4tISvNX77VSc+a31Ike7wszDochAS/h6TWCNIyglKhzAppCFCQqhWE9DLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733488991; c=relaxed/simple;
-	bh=23hCTKG960bDy1N3PIz21oRrK0JViO+CB1Bwjy/jA8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhYvcbVFAZ2nSXCGhQPbHMnEsxEe1nx1mib+xNKGug6pqeufukMvTBCkL/eWt9fcsw9pP1DsZ2De1dWA2NIOSU7DHWUKm3fcnbL0HaYE5So/3Rt4XNHl3x7wKgIvg93XSFQ1qARP7TMC+GNfrZPJNQZsHMbc86inNyd08Fsn1SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uUWI8MlY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733489470; c=relaxed/simple;
+	bh=YplR6J/MThyifUE6vHS2ql3sMaD9NOZvm3ASk+xWjIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I7NlAvoMGGu2AIrUPFMafX/EhERmBMbrUSW1hZKgRQiPxpf6czw3UfJybv880X1w+vqAdC+uD80Iu/Slj2Pv0T5bqLMnqDb1hXXgCZXPj2Krf6CleS5nwIZX+FKRijyh37Ruu2wWoSWCZa8O0BHzw6xE2aCULMCuJZfejoPAOV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHBGyYbe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uUWI8MlY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60902C4CEDE;
-	Fri,  6 Dec 2024 12:43:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHBGyYbe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C7CC4CED1;
+	Fri,  6 Dec 2024 12:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733488990;
-	bh=23hCTKG960bDy1N3PIz21oRrK0JViO+CB1Bwjy/jA8g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUWI8MlYsFA0UXCwm8yUHYPTk3+YpBbhNl7Vh1wI/2pcqRpMPkgcJ/LSMno42pqiV
-	 iXPCzmbWIPH7YmtbsUSvB9reopFyllrssS+2wA2oQgIzZz4BAA+s7AuXP2h8+IhO9P
-	 nS0jNq06FYTejopL75f/4ehR5Cci6vTyvHG194Y/ug/sFwjvJW7181YyuX9TdmY35j
-	 ljSSJwBqF0IuAK/bfaumxJ8HKmtNzLB6rtuXihknjiBT2S8s2XkxoYs7T0mMCooy5k
-	 fZMCDbfh0EOMrHAOe50IXluSZRJ4+lXWkUogKo0Ux3FFpRUOMO/L0lipbOLVLcW/sI
-	 qo5Ao3cM7MmnQ==
-From: Lee Jones <lee@kernel.org>
-To: lee@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
+	s=k20201202; t=1733489470;
+	bh=YplR6J/MThyifUE6vHS2ql3sMaD9NOZvm3ASk+xWjIo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IHBGyYbeS/X7JE0VaxZhlKc3j2kW8FV67CtKscnXoyExqu+ZCLxlM23AGoyRiC+2a
+	 4eIpILhyWUrNu0JL28LJTXGARNdx8QcEVdaXV30rky7oBpP8h/jevy5IbzFfFcLhgZ
+	 fHK1uPBHI0BA+NPHoSkIS1OSoB16zUno1AVNoS1paHyLzkOHVPLA6No1RXJnzmRW6u
+	 iAYlXnw1QsCRGQX++vZ+vwzCgKOAdSdqQ7xExa0U0CdR3tOFlzikzoRluIscEWn9Ey
+	 esAAl3h4sfE3AVirfdNGZ9dFlgT1LcPthXHOZF3QAn+OJeO0okbcA35LMW34apQcBp
+	 rfw5p8QiC5ZFA==
+Date: Fri, 6 Dec 2024 13:51:04 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v5 4/4] MAINTAINERS: Add Rust Misc Sample to MISC entry
-Date: Fri,  6 Dec 2024 12:42:15 +0000
-Message-ID: <20241206124218.165880-5-lee@kernel.org>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-In-Reply-To: <20241206124218.165880-1-lee@kernel.org>
+Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
+ new MiscDevice bindings
+Message-ID: <Z1LzOORuFpO0MXAZ@pollux>
 References: <20241206124218.165880-1-lee@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -53,25 +44,45 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241206124218.165880-1-lee@kernel.org>
 
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
+> It has been suggested that the driver should use dev_info() instead of
+> pr_info() however there is currently no scaffolding to successfully pull
+> a 'struct device' out from driver data post register().  This is being
+> worked on and we will convert this over in due course.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 21f855fe468b..ea5f7c628235 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5328,6 +5328,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
- F:	drivers/char/
- F:	drivers/misc/
- F:	include/linux/miscdevice.h
-+F:	samples/rust/rust_misc_device.rs
- X:	drivers/char/agp/
- X:	drivers/char/hw_random/
- X:	drivers/char/ipmi/
--- 
-2.47.0.338.g60cca15819-goog
+I think you're going too fast with this series.
 
+Please address the comments you receive before sending out new versions.
+
+Also, please document the changes you have made from one version to the next,
+otherwise it's gonna be very hard to review this.
+
+Thanks,
+Danilo
+
+> 
+> Lee Jones (4):
+>   Documentation: ioctl-number: Carve out some identifiers for use by
+>     sample drivers
+>   samples: rust: Provide example using the new Rust MiscDevice
+>     abstraction
+>   sample: rust_misc_device: Demonstrate additional get/set value
+>     functionality
+>   MAINTAINERS: Add Rust Misc Sample to MISC entry
+> 
+>  .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+>  MAINTAINERS                                   |   1 +
+>  samples/rust/Kconfig                          |  10 ++
+>  samples/rust/Makefile                         |   1 +
+>  samples/rust/rust_misc_device.rs              | 132 ++++++++++++++++++
+>  5 files changed, 145 insertions(+)
+>  create mode 100644 samples/rust/rust_misc_device.rs
+> 
+> -- 
+> 2.47.0.338.g60cca15819-goog
+> 
+> 
