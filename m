@@ -1,79 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3821A1FF61F;
-	Fri,  6 Dec 2024 12:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ECD2036FA;
+	Fri,  6 Dec 2024 12:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733486775; cv=none; b=YqKjGedhvJjFDPH7Jd4CMpN1gD4+p1JzQZdmwtGt+91SQTCEoBlKLhb1hBs3EwKhTs7xJzEg0V2epy1EYSotg9yufW46bKVUh63akzP7EKhmYhRUHMIwnDxCzop8bv8qjAHPSJjW7hV7UCMIP4sCoHE9LJCGTkXLpcC6eGLU4bw=
+	t=1733488960; cv=none; b=S+fCORMGwG7DzvsrN41OPLH3+NHlNkfEWrUcWS99xKQUtwu3oS+YfifQhTSlPtWzu17odt4jiU+NpCkirvl9aYw439OQaun5wtMns3B4JegtpL7Fl3mVjSzO5URLzbBk8X1yFjeaeQrVRLTfpVUwuQ4fvNeVoFrIOpHszCkZk5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733486775; c=relaxed/simple;
-	bh=hUjOwJTuLD9amS/2AEHKCka2+TmTRJbtNhQsY1rW9d4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QsOVK8zb+qxORA8rvU346P2plMNCGHDgsOACC6J88EdN4M+1MsjzB7gRaFVtf3J37Q6i+ZnKcn+9M1Yn8nBa2mI+VHK2up6BdUaNOjheiT9I8xt/mOx1xkleRN1FL+tqusPNqvUtaQFJCc/SFBHxuKHrQnal64G5tay9YamBJPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMLYyAE6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733488960; c=relaxed/simple;
+	bh=Fzuiw4te3yb1kYEXXRZexllf/Un+NGqelHJC0fK5Kl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IvNyarvJiVwEcK/lSlTiOhXSd0LB4i1b3S0OM/i72tn1ZCj+z80Lee0qbTXSnOYJxkcjjXn5JrAGVBNgGSYcUMLlixcJR9vwSF2X+xj9PkV5qnsMWE3+cVY3u31Ee03XN+yLN4PIYd3hZLOIKniIGmeTGFxEX4hs7nGI60wtD1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bou0jqvF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMLYyAE6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D64CC4CED1;
-	Fri,  6 Dec 2024 12:05:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bou0jqvF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF87C4CED1;
+	Fri,  6 Dec 2024 12:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733486775;
-	bh=hUjOwJTuLD9amS/2AEHKCka2+TmTRJbtNhQsY1rW9d4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mMLYyAE6U69K1JSJRdUfmNjU+xbIqyEokMQxgJtE0OjR293Ryl0E5MCWOyKT86kc6
-	 l4cIgt1JL7hSaOj/EdYkNKrPV0EMYxjtzBfBRSh5HqXRFGV6iF3DQcQiZCcKAJHXHb
-	 mo9LfHlLZgF0N+rz+lQMOO40C4DOGNxxi2ON+XpZkW9+M5a75th6IQGZFyY21A7dMq
-	 KLSP3LNUAP8W0rzDbvydx6zbHdtoR6plLwZsxX/OOKBJrZQNfgQfKDBr3yFT//qy+J
-	 +SI/CLyg8WFnHPhObcs+3a5BjSCp5AuyviqzWr3NdfLpsWtneyZrZKW1aeNuZXoU7S
-	 gDv8p96mQvRoA==
-Date: Fri, 6 Dec 2024 12:05:42 +0000
+	s=k20201202; t=1733488959;
+	bh=Fzuiw4te3yb1kYEXXRZexllf/Un+NGqelHJC0fK5Kl0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Bou0jqvFFHsMC3IB7dqaASxthM4zE4XlcU/BoS4tiZg7nWiqmHwMHrXuZo+OVmS/O
+	 aTvOqM1RYPSTZ74dFs5cNMuVISRYY+3UmGbBdtmCJP2nDiHP+UvmqfjdbeHIEDOMQe
+	 lxyZ1Q5CsLGOYsSoshs8z8BzhBxMFXTVgJ2NSlINgAi9RdzEYs5gxmOcxOGm+CYtVR
+	 GuUtyaPoAFqI4RhiAJHyULVedpMSjlMb725avNML56hFYcecxvFYwmNLwxf8LANPxU
+	 qM9jSGgxn/TWVjD9hCr80c0rGbvKZbNHyG9KvOUcDVKC3r7CeS+NGdJE4htdrQ7t7H
+	 ijv1LCbZnhBDA==
 From: Lee Jones <lee@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+To: lee@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] rust: miscdevice: Provide accessor to pull out
- miscdevice::this_device
-Message-ID: <20241206120542.GA7684@google.com>
-References: <20241206090515.752267-1-lee@kernel.org>
- <20241206090515.752267-3-lee@kernel.org>
- <CANiq72=e=pNXYGN_=_R_g1UkxTPhdWc+izb0i=7_V+aAzD1c7w@mail.gmail.com>
+Subject: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the new MiscDevice bindings
+Date: Fri,  6 Dec 2024 12:42:11 +0000
+Message-ID: <20241206124218.165880-1-lee@kernel.org>
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=e=pNXYGN_=_R_g1UkxTPhdWc+izb0i=7_V+aAzD1c7w@mail.gmail.com>
 
-On Fri, 06 Dec 2024, Miguel Ojeda wrote:
+It has been suggested that the driver should use dev_info() instead of
+pr_info() however there is currently no scaffolding to successfully pull
+a 'struct device' out from driver data post register().  This is being
+worked on and we will convert this over in due course.
 
-> On Fri, Dec 6, 2024 at 10:05 AM Lee Jones <lee@kernel.org> wrote:
-> >
-> > +    /// Returns a pointer to the current Device
-> 
-> Nit: please use intra-doc links wherever possible (if not possible,
-> please at least format type names as code). We also end sentences with
-> periods in docs and comments. So e.g.:
-> 
->     /// Returns a pointer to the current [`Device`].
-> 
-> There was a comment about this line in the previous version, v3, but
-> there does not seem to be a change. But then again, the title of this
-> patch is v3 and not v4 -- not sure what happened here.
+Lee Jones (4):
+  Documentation: ioctl-number: Carve out some identifiers for use by
+    sample drivers
+  samples: rust: Provide example using the new Rust MiscDevice
+    abstraction
+  sample: rust_misc_device: Demonstrate additional get/set value
+    functionality
+  MAINTAINERS: Add Rust Misc Sample to MISC entry
 
-This patch should no longer be part of the set after v3.
-
-Looks like v3 was still in the output folder so was sent again with v4
-by mistake.  My tooling usually strips out old versions, so I'm not sure
-what went wrong specifically.
-
-Thanks for the comment style tips.  I'll make the changes.
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ MAINTAINERS                                   |   1 +
+ samples/rust/Kconfig                          |  10 ++
+ samples/rust/Makefile                         |   1 +
+ samples/rust/rust_misc_device.rs              | 132 ++++++++++++++++++
+ 5 files changed, 145 insertions(+)
+ create mode 100644 samples/rust/rust_misc_device.rs
 
 -- 
-Lee Jones [李琼斯]
+2.47.0.338.g60cca15819-goog
+
