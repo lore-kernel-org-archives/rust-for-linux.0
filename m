@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25E11FCD11;
-	Fri,  6 Dec 2024 13:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39111F8EFF;
+	Fri,  6 Dec 2024 13:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733491049; cv=none; b=qjVocgZKnNFP47QIpugsp3nLouLldz5dBwjBFqW3coOBn2hqXLoSKtNpCFAa/J65n+NuSlRauTfy85nJP2rpslY/TgRoG8ZJl0M4Vx9Fuu+9cO5EcvhxGWNVqqrZv/wBi0nD/nEk3HSwgRHDgBCw6xYUJdJ0WCXXY1vnOD2l1fk=
+	t=1733492090; cv=none; b=B69mPJZviZco6osrk/kp1CvRbfMh19eYF+2YGLVMnkO83Msriu7aT0RWB/FzfsB73uYDiR6I6LK09WrA26nYc72ZOUHj3HF6GU3wOLrx9ybJ2qrwMT6a/r9Y/auJqaJATogbNjgQsbkxQskA3sl77xhW+nWUqv6XRKe93ElCWg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733491049; c=relaxed/simple;
-	bh=JSxJ/A3qBbdoVQTY0FusBl+IExWoxTKF+CRs14VxLrU=;
+	s=arc-20240116; t=1733492090; c=relaxed/simple;
+	bh=Px5F81YeNSqDirNFTRpLwRGatcJ/pFI3iw494vD741Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Si8zzi/YcdKq8hIo1GiMW0JonnR0SGeJyM4TNY2U/dwM8+aA1qRiOwZ6RA0qpdEtKa8UrHig8gSaYtM+pih6ZuNJUOsW1NSnjN7kaJ2oY3zy865lDNoqBtVsOKpYXWc+v6PjtLqNHbRbMEwJRif4OnwByq0n4WcAmP34JfzMKAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fky88nM3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=srpTewrmWW4W16JRPjJ0G/O3kBa9C3ooTiG7oDCkwfQyXMeF66ZHFKmDmHQggBSD8amYS1f0wMKNrbvW4FJ7m+9GDCzbD8N9JddgPAcxBROpBBMU0F5lmh8S+SS/KdB64Ej6+gtIan4N3TMJAUuoOLx6HT7+n23N8wwKzN60dX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ooyj1zpO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fky88nM3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431E6C4CED1;
-	Fri,  6 Dec 2024 13:17:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ooyj1zpO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48163C4CED1;
+	Fri,  6 Dec 2024 13:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733491049;
-	bh=JSxJ/A3qBbdoVQTY0FusBl+IExWoxTKF+CRs14VxLrU=;
+	s=k20201202; t=1733492090;
+	bh=Px5F81YeNSqDirNFTRpLwRGatcJ/pFI3iw494vD741Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fky88nM3uTjGKEdfnwzBY4SZ1Pz7d9YUi6vczbDEwEfGBO7y1bt/EgkBA1mD/ZBiy
-	 c/hHz1jFv3i0MKOnx3EQzGhzEOat4pT6YyW5aabfJhK3X/PqSlFByw0ZJUTY+Hd61X
-	 rKTedQSpfNIvVcNwSz+fS7cNVD4z2grHpYG6MUNjB1XLYs2MBt5udZ84eGyXLBDRXD
-	 XYAP5xcAg9gpiRj5GqOy4bYC2+Nlt7yBZItwk4Er12cI3j8AcTIMXi1Pl0TOKKP8fP
-	 +0TTDUyfu+/Mi4aHY0b6HI1hh3xbP6QKM2ykLYlrc9mr+LMtKk1WRQZQgAUDAbNz7r
-	 9huA+sxnmW1Ag==
-Date: Fri, 6 Dec 2024 13:17:16 +0000
-From: Lee Jones <lee@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	b=Ooyj1zpOSC03qSu9+IRNJIhD217uuJIM8YELkts+lBdAOTw7BcD/5UqCJeYavhS6h
+	 fjB29kCgAvSCYzvlvU7x+8bNfT46UM4nGbStNmSscA2xdqHfLyk8R/6RAbQlfap1E4
+	 aGZSgalOHQrEpC7RnBzHjWayiX8tYaC4HVQ1jEexwWX2vKhE0oqeIDxkUcBiddt3yi
+	 biHDIcZKP6YBYEoOHIBWJ0wbIOTNrdeNr30Qd5D42qclzlY+2/s1wWC87zbbrdyuKT
+	 9ftjYWc0xWM/rCTotS0CWF9nF5qqKwsERL9PU6yFwGrHefhUC1nx+1MLLzdcjMvZG4
+	 YsNMD1le/TWIA==
+Date: Fri, 6 Dec 2024 14:34:44 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 3/4] sample: rust_misc_device: Demonstrate additional
- get/set value functionality
-Message-ID: <20241206131716.GF7684@google.com>
+Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
+ new MiscDevice bindings
+Message-ID: <Z1L9dLyLRmLcwMne@pollux>
 References: <20241206124218.165880-1-lee@kernel.org>
- <20241206124218.165880-4-lee@kernel.org>
- <2024120652-champion-chute-4e74@gregkh>
- <20241206130449.GC7684@google.com>
- <20241206130630.GD7684@google.com>
- <2024120637-handoff-monetary-c2f5@gregkh>
+ <Z1LzOORuFpO0MXAZ@pollux>
+ <20241206125430.GB7684@google.com>
+ <Z1L2tjNrIa2Q0Awf@pollux>
+ <20241206131445.GE7684@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,51 +51,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024120637-handoff-monetary-c2f5@gregkh>
+In-Reply-To: <20241206131445.GE7684@google.com>
 
-On Fri, 06 Dec 2024, Greg KH wrote:
-
-> On Fri, Dec 06, 2024 at 01:06:30PM +0000, Lee Jones wrote:
-> > On Fri, 06 Dec 2024, Lee Jones wrote:
-> > > On Fri, 06 Dec 2024, Greg KH wrote:
-> > > > On Fri, Dec 06, 2024 at 12:42:14PM +0000, Lee Jones wrote:
-> > > > > +    fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
-> > > > > +        let guard = self.inner.lock();
-> > > > > +        let value = guard.value;
-> > > > > +
-> > > > > +        // Refrain from calling write() on a locked resource
-> > > > > +        drop(guard);
-> > > > > +
-> > > > > +        pr_info!("-> Copying data to userspace (value: {})\n", &value);
-> > > > > +
-> > > > > +        writer.write::<i32>(&value)?;
-> > > > > +        Ok(0)
-> > > > > +    }
-> > > > 
-> > > > I don't understand why you have to drop the mutex before calling
-> > > > pr_info() and write (i.e. copy_to_user())?  It's a mutex, not a
-> > > > spinlock, so you can hold it over that potentially-sleeping call, right?
-> > > > Or is there some other reason why here?
+On Fri, Dec 06, 2024 at 01:14:45PM +0000, Lee Jones wrote:
+> On Fri, 06 Dec 2024, Danilo Krummrich wrote:
+> 
+> > On Fri, Dec 06, 2024 at 12:54:30PM +0000, Lee Jones wrote:
+> > > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
 > > > 
-> > > This was a request from Alice to demonstrate how to unlock a mutex.
+> > > > On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
+> > > > > It has been suggested that the driver should use dev_info() instead of
+> > > > > pr_info() however there is currently no scaffolding to successfully pull
+> > > > > a 'struct device' out from driver data post register().  This is being
+> > > > > worked on and we will convert this over in due course.
+> > > > 
+> > > > I think you're going too fast with this series.
+> > > > 
+> > > > Please address the comments you receive before sending out new versions.
+> > > > 
+> > > > Also, please document the changes you have made from one version to the next,
+> > > > otherwise it's gonna be very hard to review this.
+> > > 
+> > > I can add a change log.
+> > > 
+> > > What comments were missed?
 > > 
-> > It's common practice to apply guards only around the protected value.
+> > I think MiscDevice should ideally use the generic `Registration` type from [1].
+> 
+> How can an in-tree driver use out-of-tree functionality?
+
+AFAICT, this sample module is in the exact same stage as the generic device / driver
+infrastructure.
+
+Both are on the mailing list in discussion for inclusion into the kernel.
+Labeling one as in-tree and the other one as out-of-tree is clearly misleading.
+
+I'm just saying it would be good to align this. If the sample driver is time
+critical, I have no problem if you go ahead with the current
+`MiscDeviceRegistration` and `InPlaceModule`, but again, why not align it from
+the get-go?
+
+> 
+> > I see that you use `InPlaceModule` now, which is fine. But since this is just a
+> > sample, we could probably afford to wait until the generic type lands.
 > > 
-> > Why would this be different?
+> > Also, there was a comment about how we can make use of the `dev_*` macros.
+> > 
+> > I really think we should fix those before we land a sample driver. It's gonna
+> > be hard to explain people later on that they shouldn't do what the example
+> > does...
 > 
-> It isn't, it's just that you are implying that the guard has to be
-> dropped because of the call to write(), which is confusing.  It's only
-> "needed" because you want to guard a single cpu instruction that is
-> guaranteed atomic by the processor :)
+> We're authoring the sample based on what is available at the moment.
+
+Well, for this I have to disagree, not being able to use the `dev_*` macros is
+simply meaning that the abstraction is incomplete (in this aspect).
+
+I don't see the need to land a sample driver that tells the user to do the wrong
+thing, i.e. use the `pr_*` macros.
+
+As Alice mentioned, you can get the miscdevice pointer from the file private
+data in open() and then make it accessible in the other fops hooks. If we go for
+this solution it will change the callbacks of `MiscDevice` and maybe even some
+other architectural aspects.
+
+This needs to be addressed first.
+
 > 
-> As this is an example driver, documentation is essential, so maybe the
-> comment should be:
-> 	// Drop the mutex as we can now use our local copy
-> or something like that.
+> There will always be something better / more convenient coming down the
+> pipe.  We don't usually put off contributors pending acceptance of
+> out-of-tree functionality, sample or otherwise.
 
-Sounds reasonable.
+No one asks for this here. But if the example reveals shortcomings, we shouldn't
+promote them as example.
 
-I've ran out of time this week.  I'll take another peek next week.
-
--- 
-Lee Jones [李琼斯]
+> 
+> As I've already mentioned, I'd be _more than_ happy to keep improving
+> this over time as new and improved helpers / infra. arrives.
+> 
+> > [1] https://lore.kernel.org/rust-for-linux/20241205141533.111830-3-dakr@kernel.org/
+> 
+> -- 
+> Lee Jones [李琼斯]
