@@ -1,101 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8324DBE46;
-	Fri,  6 Dec 2024 07:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C348BE46;
+	Fri,  6 Dec 2024 07:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733468617; cv=none; b=NIOqzS/M1/q/dFHJFY+v80b6eu60CUvUXZdlxRQm2NdjCF3TtpT1um8mVh+cSoDaE3qclR9MKibVCHVQ0vaatphRlwo6srhsS0unH6fkyFZOLm8bb00ar4TRAxMuP33nT+fUVUFH4RaA6N7xtIFJ1QOFj8AYH8rTc4vdvomPB2I=
+	t=1733468841; cv=none; b=dpRvJRla5ogmeROW1hjLNKgV8fASYx4O4uDaKMxzUd5ZGYx/hKCJ4GqSe18n1AhfR2103CmzSoGx+VBJmKIYEKgquQKF9IyJEU7U9ATS4+eiaQcD0S16p64+XNLqSJIkasC7fZARmR8ZliLiomRTRNz88HBsO+tBTcqS/U0l3JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733468617; c=relaxed/simple;
-	bh=4ZYBIwbL1Q/vZCwgV+w1mJqrN3fQLc89x91fNVIEaXY=;
+	s=arc-20240116; t=1733468841; c=relaxed/simple;
+	bh=Kma65pEbBAXgpytClGfAo6zPwV/27ffn+38OeWl3KE8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oETVQASk0U8sH3KFuxcUip8voEQ6mDgoO18MRc9NH6pZ8XkUfKBAmU0iTDu6M2IdvucuHGdBXsLZ4TnCT3UWSBTBEaZws4f2uIrlEfdN1AcWM1LZAnksXgNbVJK8Qh3VJtUsiXUyfUCXkBhyyMJtAkkoTN67JlvRj7ebOUf166I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoVE+gSa; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=PDLOPyBLW26Y+OQsP/1DppHUNfrR3+rk7afHIIDdhn/VlRIT9Ohiiig0QKs0EGVPo11EzrXylDEawzRvpLHCXOBfAcabD4yjMcIACcwFlVYNoLsmTiO/12H0vJ1AxEi15vkZWfU/2MGevnn0unM1KHBBGna/pqMy1IbIHm8jzWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B05J4ban; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoVE+gSa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77842C4CED1;
-	Fri,  6 Dec 2024 07:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733468617;
-	bh=4ZYBIwbL1Q/vZCwgV+w1mJqrN3fQLc89x91fNVIEaXY=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B05J4ban"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7EBC4CED1;
+	Fri,  6 Dec 2024 07:07:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733468841;
+	bh=Kma65pEbBAXgpytClGfAo6zPwV/27ffn+38OeWl3KE8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UoVE+gSaOfwIFcABkPjqj5tmPNXTPk9p5o0ZOs0iEPjeY38k8zsjigLShWUjQh6vK
-	 Hja42M/CvRw3llFbHxu4tXn0OWJMHX/V7N6nt8mWOI0q3iB3HM7fhEtf550YAWYyTj
-	 1sLlnVSQb0grlZRwF/+dY6TQOjKdZ9R3IGomLzWk=
-Date: Fri, 6 Dec 2024 08:03:34 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	b=B05J4banqMzo8vVKysDoksx9/JphhLfj51T4CfXyNIdzxZHuC0ignV/TE6NrlH4LZ
+	 F+ryZ/F++tg/usD6G0JPMWnrxRc+YjdKM5HArUUuKc0InpO8/AKpBByX7bdbrTNOYP
+	 l60MtUOtpKxVFShEPCoN+ysLkUx4cReGGZBecaIeXPWhWw3XWUXt5sMnBgQ1ZzhZO+
+	 hH7A9gCiaoIydwofVvPUcI48wLi6VOo8Qz4PqxiUl/Eas3BBvsbhYkmdXnSBj/TMfg
+	 nVtjgLVlMWLFt6Hr1noQSn3tNeeQYYuijEXlsyAR6QV1Nn4C920Kz0eJ2HM/2Y3aSx
+	 5VdlEd2Gvv2KA==
+Date: Fri, 6 Dec 2024 07:07:15 +0000
+From: Lee Jones <lee@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 3/5] samples: rust: Provide example using the new Rust
- MiscDevice abstraction
-Message-ID: <2024120621-unlisted-unbalance-3220@gregkh>
+Subject: Re: [PATCH v3 5/5] MAINTAINERS: Add Rust Misc Sample to MISC entry
+Message-ID: <20241206070715.GA8882@google.com>
 References: <20241205162531.1883859-1-lee@kernel.org>
- <20241205162531.1883859-4-lee@kernel.org>
- <2024120642-trend-omnivore-69d3@gregkh>
- <be74daeb-68af-4e6b-8091-7f9684fe424e@app.fastmail.com>
+ <20241205162531.1883859-6-lee@kernel.org>
+ <2024120617-directory-tiring-56e7@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <be74daeb-68af-4e6b-8091-7f9684fe424e@app.fastmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024120617-directory-tiring-56e7@gregkh>
 
-On Fri, Dec 06, 2024 at 07:52:46AM +0100, Arnd Bergmann wrote:
-> On Fri, Dec 6, 2024, at 07:49, Greg KH wrote:
-> > On Thu, Dec 05, 2024 at 04:25:20PM +0000, Lee Jones wrote:
-> >> +
-> >> +#[vtable]
-> >> +impl MiscDevice for RustMiscDevice {
-> >> +    type Ptr = KBox<Self>;
-> >> +
-> >> +    fn open() -> Result<KBox<Self>> {
-> >> +        pr_info!("Opening Rust Misc Device Sample\n");
-> >> +
-> >> +        Ok(KBox::new(RustMiscDevice, GFP_KERNEL)?)
-> >> +    }
-> >> +
-> >> +    fn ioctl(
-> >> +        _device: <Self::Ptr as kernel::types::ForeignOwnable>::Borrowed<'_>,
-> >> +        cmd: u32,
-> >> +        _arg: usize,
-> >> +    ) -> Result<isize> {
-> >> +        pr_info!("IOCTLing Rust Misc Device Sample\n");
-> >> +
-> >> +        match cmd {
-> >> +            RUST_MISC_DEV_HELLO => pr_info!("Hello from the Rust Misc Device\n"),
-> >> +            _ => {
-> >> +                pr_err!("IOCTL not recognised: {}\n", cmd);
-> >> +                return Err(ENOIOCTLCMD);
-> >
-> > To quote errno.h:
-> > 	These should never be seen by user programs
-> >
-> > The correct value here is ENOTTY.
-> >
-> > Yeah, fun stuff.  Not intuitive at all, sorry.
+On Fri, 06 Dec 2024, Greg KH wrote:
+
+> On Thu, Dec 05, 2024 at 04:25:22PM +0000, Lee Jones wrote:
+> > Signed-off-by: Lee Jones <lee@kernel.org>
 > 
-> That should get handled by vfs_ioctl() converting the
-> ENOIOCTLCMD to ENOTTY.
+> You know I can't take changelog entries without any text :(
 
-Ah, I always miss that, for some reason I thought that didn't happen
-there, but happened in subsystems that did ENOIOCTLCMD for their
-sub-ioctl handlers.  And yet it's always been that way, nevermind...
+What more is there to say?  Okay, I'll work something out.
 
-Anyway, I always recommend just using ENOTTY to be "safe", the usual way
-people get this wrong is using EINVAL.
+> > ---
+> >  MAINTAINERS | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 21f855fe468b..ea5f7c628235 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -5328,6 +5328,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+> >  F:	drivers/char/
+> >  F:	drivers/misc/
+> >  F:	include/linux/miscdevice.h
+> > +F:	samples/rust/rust_misc_device.rs
+> 
+> Nice, you are signing me up to maintain it for 20+ years?
 
-thanks,
+It's fine if you don't want it.
 
-greg k-h
+So either I can create a new entry with Alice (with permission of
+course) and I as maintainers or just leave it as the default catch-call
+of samples/rust/ which is already covered by 'RUST'.
+
+-- 
+Lee Jones [李琼斯]
