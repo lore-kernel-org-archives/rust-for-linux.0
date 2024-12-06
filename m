@@ -1,127 +1,147 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256661C54B4;
-	Fri,  6 Dec 2024 20:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678C822B0BB;
+	Fri,  6 Dec 2024 21:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733516281; cv=none; b=Nvakk+4w5xEhWF+zpIUZRfU3uWNd4jptAxA/ccGNMoFGePOZ04X2TXwZiIt9BWi5ZKilwQLsG59GDxIzjHOVyUwKdQMd94v0iDd1r8RrlYFDN9bx+CroYMbzqDnGfO/jDNOOsjiRNPeZtE9Wf65JBExwqkw53BNoTHMfvGkYdXk=
+	t=1733519959; cv=none; b=MV4ll5TQLh0922IENzN2/4tR1Yzz5M/SCbTw9PhI8g8nvwSRab1WC6wPmktCWt0NUwFImVkSPtZfdIZ2GQDoS6AAeGo1KFg0SLOR5NbshrbiUrVehCvmhD580jG3jdpYUqr53pBdb7QwNhV8Hc26WVboZw4kYQbh5OwOQDIu7ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733516281; c=relaxed/simple;
-	bh=s0HpYL83/GsXpoQAd4zXeFovL9tM+YARNGIodtERH10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KXb5xZS2xkb/4ovZPvvT9RVNvr7/FMN+tlBJ0tHE63DUi4Qs+90pyZbA3HSsYNA4IX37QpCvRkCFd649QY8hj6DIqWV/Qp7571cLdW8GGmrKbgACYL3v3xfiEGRG7qOraQY+EK22qJzUH3wtLFUnVjzQnD/0ybLE9Ntcvj7dT2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VPvsHXC1; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1733519959; c=relaxed/simple;
+	bh=TMpQbpHCvEIU/l3xCqo8t3qBhUVdQ/GwMV8fy1ObTco=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=H/xUDTtw88poB8p+L+bKkSJKwKBg2BMoV60SoWPcgTcAFPtrGfSyXMGpQbZHFURbsE3ACciqxqEYDY1SkNNiXtZ9n9zJhCCHSYO1lmrH/rj3FT8DJcnXB5kntvHy4KUUy6oeMrmz5RxWIj3C276EOW80IYj2ZtXEZOpqAN9RpO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0b5ok/b; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VPvsHXC1"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee4b72d4d8so271040a91.3;
-        Fri, 06 Dec 2024 12:17:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0b5ok/b"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-215936688aeso23854365ad.1;
+        Fri, 06 Dec 2024 13:19:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733516279; x=1734121079; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1733519957; x=1734124757; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7KRjwlLeLlZr1Cq9mFs2/9O3gungZ1VFkbVziUGY7TE=;
-        b=VPvsHXC1YYSekTjauCuymKa8E8v+NMruMtwZY1xtU7UadN3F3SfXv2TMJxNUZ9DPOQ
-         SyYMbHWZ+pLrPlecdo/3e/mwAIAJEngi+FoMu6yQIfaoXOZwVvActJPN2hcOIsLzZypL
-         V33+dIIS3MNRG7CzHrxX3aE3Yc1VS/hwDgXLSkCZ9sLHh3zO3AAm1vVqklDMn4f+9wKO
-         SKO5kuaajdDZvVbBYWm9Eowjiko/Vl/3SJ9mA9EfZDxZwhTaVOHrV6zvn10qWYyClKiQ
-         /Li0KYEIoPaosFgNDKAHPAA90fTryUUGhcdl0yl4OrQb0SzJCZO0LEPNEdXclpkTZl29
-         QYmg==
+        bh=j2zSIblMbayK4/kRTuxvLRY9FgToqz2lgeW7frRWffI=;
+        b=b0b5ok/bLR9AMmyTCpfmGCN7avlTECO/H2zJD4JGXAmC56dwaeDLMuUgTHMBXFeE5o
+         cpUva9iFIjNnQabuvmj9xRuOmMNe5OfUIdev9IMa+T00KoxfA/0SMUW8c46hnDN49eha
+         j2Bipxej7ei90pPIB1HuTMxgADT++AW5jVtpGxUa4vQwRAbYVxabPd+pntYhesHUk2Z3
+         tfhgCnk6ZwAZ/fQXIVVgwtzNNMQnSGXTOg/gaZmKiKMuNLmpMWrPHmO7MBLk8BsDmG7g
+         dpoduCFJp6iXlgzKWSztN1hkJsw/6Wx9GFra9fRImMotKxVr9lvxCc9Fj3uscYyp1uX1
+         zHkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733516279; x=1734121079;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1733519957; x=1734124757;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7KRjwlLeLlZr1Cq9mFs2/9O3gungZ1VFkbVziUGY7TE=;
-        b=KfXF3Ylh6PClsLtBIlt0oWqImjXS06q7R33xbH8RkR9arM6ASPUMK41gZ1F8NX8Xax
-         +wNwGnsYvHa3OXRHpGYg4AVHuhBqHqbnmwY8/kj3JsSikEf58g4oDLguvs/bzijEbl20
-         MSg7aiZPARq5CK1aW6lTcMxnY9wj+j9L0R3b8fXPhmnW64/Hwsmb4Vlj/NX1PA8kfAsd
-         z0YkyIhzL+8eQc1l1yznOe82TRA6Wb1fI9WsHDDAqAIFUt1zXVZNwDy3ulbmglvcHRyn
-         7+m4vz1B5cKmHxE24SVljnrq7pc8e4VNGSvJVUF1tGNldxmad74osZQiJ4twaf1UAsPn
-         ACUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbGDzl4E8td752RbH3sNzhAgHP5Tesai8oDJm1JYLGe+lXDd0eNrFUuZ59cVvcnN3pc/mqH0wo4KnDneE=@vger.kernel.org, AJvYcCXF/LSdjWCuz8Ve/nTDfGRwfglBijw2hn67dxBmIVKTPrlF9ciuWBZ0ESTFzbMC1k0jV2VLJVsuJsq4TJki1Ts=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhJzFplPzJxp/kccVNhsu4O3Ypp1J67kSTgQZbTfi/dFLwu+n5
-	pWiyDildYsN1mZBaknqelpwE+PlzC7qawsFMzhOQNFjQ7XL8wqsM2nk4ta2q1+XMA5gOActCAED
-	Z7gxGoupDtINB4wfie7bi4ZdwIko=
-X-Gm-Gg: ASbGncs4qKhvJ3ls7kFrE8jvTZpjHjx4vx/JLZzP3+Lidm1qYJJFcVIWM9P3XFFeNaS
-	ACoQjIFcMczwIKZRigZwCss4R2Fq+3I4=
-X-Google-Smtp-Source: AGHT+IGm2S89yMWdzllIN3KD3GHl6K/aWMHBG/4F5iX4Szq8LnCRxkaO0PidxAGvOd+E6Sdmt9W/y+wpSmKZkmX3A34=
-X-Received: by 2002:a17:90b:1b50:b0:2ee:d372:91bd with SMTP id
- 98e67ed59e1d1-2ef69462652mr2464471a91.2.1733516279307; Fri, 06 Dec 2024
- 12:17:59 -0800 (PST)
+        bh=j2zSIblMbayK4/kRTuxvLRY9FgToqz2lgeW7frRWffI=;
+        b=N4aEgI8tm+aPqVbxNWMETw3m4QJQhGK7t6WUzr2RgBj2eibs6FxQVl3JRehxKebDRn
+         SDRziMs083EkDMR1Njy1MCx2LkikRAuH+U89FxNjrFFQ4QvX6HujLJefHTLViKDFzSdH
+         Q/iNalJY/mhSgRk205KppQPwU8Lqb5G6G2MFZVQKWLkaD1VObrBWnpRgfrLCwf/YfXJy
+         A8LDpyjUyeZr0X6JllIdnIUEyybjhpS6fV4h5LFNJDzfyWIMjrJZEuFZQfRxpkRuaNJk
+         3QEbLmMxJoTBmZadfzlUrjtL+OecTat/DoYHHkS10ymvOUASi7k+mBvEl9/HpbsmnNoQ
+         boUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWho0Tpdui/s0/ZgRnc8P5nzvI0EQ7onYiD9hIfWM6zwFM+ecrHQW81V6vxZO3RM3Nq8wRqLxQcG4ZLy4=@vger.kernel.org, AJvYcCXxa2hMcrPDIYMBuyB//zZebXkMubwZx6ErlHcbFKpmQ7L4Gpkbwf9zlyE4WX3JNCStBfiCpaLQvjNCatjeoQI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjEEHLgpowD9+fHaFn5t8KDoKIJ21hb4QE1ytvGBBhBoKsSKLK
+	mSYT78d9LWkRSlVdWNYR3LSCaogCQuWLu51OXFKzqUrX/5w1ZaGc
+X-Gm-Gg: ASbGncv94ZRzMDzgoMQaDZY0RoZx6qQZ9Job+vPYMUNAxWJGVR52Osect1uLxCVM9qJ
+	2hcv1gqz5EQAzWDK4lGbwnU13kh06ekVS8eqAsjvKnuP8ZMCkxHfIm3BfGoLtn021S+wB6SbVDa
+	u8xnujY86B76xcrBKNBWg1CyBPkW991WiCDYebM/ogJpScHfEwaX68nA/GlPUlWDcXeT6QX9FqJ
+	/CzxYl/3p3UjNJVzlQJk39yw5RaiZh35foNCJY6t8ErxTH9bcaSwoZT
+X-Google-Smtp-Source: AGHT+IGYnxmO7iIqvaAYhhb7BNLq0dvZ/w6AQQRAyQf2isqLaDe/8WChO3Tvvhl2ShMg3Wp36cwTqg==
+X-Received: by 2002:a17:903:230e:b0:215:b8b6:d2ea with SMTP id d9443c01a7336-21614d442e3mr71734785ad.15.1733519956594;
+        Fri, 06 Dec 2024 13:19:16 -0800 (PST)
+Received: from linuxsimoes.. ([177.21.143.14])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8efa1acsm31951425ad.126.2024.12.06.13.19.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 13:19:16 -0800 (PST)
+From: guilherme giacomo simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tahbertschinger@gmail.com,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com,
+	wcampbell1995@gmail.com
+Subject: Re: [PATCH] rust: macros: add authors
+Date: Fri,  6 Dec 2024 18:19:05 -0300
+Message-Id: <20241206211905.444952-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
+References: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206192244.443486-1-trintaeoitogc@gmail.com>
-In-Reply-To: <20241206192244.443486-1-trintaeoitogc@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 6 Dec 2024 21:17:47 +0100
-Message-ID: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
-Subject: Re: [PATCH] [PATCH] rust: macros: add authors
-To: guilherme giacomo simoes <trintaeoitogc@gmail.com>, Wayne Campbell <wcampbell1995@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	walmeida@microsoft.com, fujita.tomonori@gmail.com, tahbertschinger@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 6, 2024 at 8:22=E2=80=AFPM guilherme giacomo simoes
-<trintaeoitogc@gmail.com> wrote:
->
-> The module is only accepted to have a single author. If the module needs
-> more than one author, you cannot define this in the module creating
-> flow.
-> Add another key in the module stream that accepts a string array with
-> authors.
-> Author and authors keys cannot coexist, so add a check that if the
-> module authors addss these two keys, throw a panic!
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrotes: 
+> There are several ways we could do this:
+> 
+>   - A single field, that only accepts a list.
+> 
+>   - A single field that accepts both a string or a list.
+> 
+>   - Two fields like this (that cannot coexist).
+> 
+>   - Accepting several "author" fields and append them all into a list.
 
-Thanks for the patch!
+I maked this change like this way because in my thoughts I just thought about:
+- A single field, that only accepts a list.
+- Two fields (author and authors).
 
-There are several ways we could do this:
+And how in the first option I would need found all modules that have the author
+tags and I would need change the code (from `author: "author"` to `author:
+["author"])`, I was think that is the best don't change in a thing that is
+already work well. And this is why I choose the second option "Two field". And
+if the new developers need include two or more authors, he can make this since
+now.
 
-  - A single field, that only accepts a list.
+But now, that you put the option "A single field that accepts both a string or
+a list" for me this make sense too. I think that the A single field that
+accepts both a string  or a list, and two fields (author and authors) is the
+two best options. 
+I don't like the options:
+- A single field, that only accepts a list. 
+Because we need found all module
+that use the author and change his implementation.
 
-  - A single field that accepts both a string or a list.
+- Accepting several "author" fields and append them all into a list. 
+because in the modules the developers would need a several author field if the 
+module is development for several author. And the module! macro would grow a lot. 
+Like:
+  author: guilherme, 
+  author: miguel, 
+  author: another_poor_developer, 
+  .... 
 
-  - Two fields like this (that cannot coexist).
 
-  - Accepting several "author" fields and append them all into a list.
+> > -        for alias in aliases {
+> > -            modinfo.emit("alias", &alias);
+> > -        }
+> > +        modinfo.emit_arr_str("alias", &aliases);
+> 
+> Spurious change? Or am I missing something?
+I make this change because, the for() would need repeat for the alias and for
+the authors and for avoid unnecessary code repetition I create the
+emit_arr_str() function.
 
-Any thoughts on what is best? Could you please describe why you picked
-the one you picked? (Ideally in the commit message). For instance, the
-first one is e.g. what Cargo does and is the simplest, though slightly
-annoying in the most common case of a single author. I wouldn't mind
-it though, since this is likely copy-pasted from file to file anyway.
-
-In addition, there was a PR [1] by Wayne (Cc'd) that implemented the
-first approach, but it was never sent to the list. I pinged in the
-GitHub issue too.
-
-[1] https://github.com/Rust-for-Linux/linux/pull/904
-
-> Signed-off-by: guilherme giacomo simoes <trintaeoitogc@gmail.com>
-
-Ideally add (before the Signed-off-by) a Link: and Suggested-by: tag.
-
-> -        for alias in aliases {
-> -            modinfo.emit("alias", &alias);
-> -        }
-> +        modinfo.emit_arr_str("alias", &aliases);
-
-Spurious change? Or am I missing something?
-
-Also, this patch should update the documentation of the macro.
-
-Finally, the title has an extra "[PATCH]" prefix.
-
-Cheers,
-Miguel
+> In addition, there was a PR [1] by Wayne (Cc'd) that implemented the first
+> approach, but it was never sent to the list. I pinged in the GitHub issue
+> too.
+.. 
+> Also, this patch should update the documentation of the macro.
+About this, I will sent a v2 PATCH with this informations
