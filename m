@@ -1,131 +1,201 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158FB1B4122;
-	Fri,  6 Dec 2024 08:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE011E2617;
+	Fri,  6 Dec 2024 09:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733475335; cv=none; b=pZjgCTcDlDTpr0qE/fIW36HI3ByakIS2pEJJdFKnCiQsXaRiWG6ptfqnCxtGNI3uMnrMjcTyA0sfM/L3PGbjn5uY9RjOqafyGDd9tDI9aMVfbRHJL6SbBMWaszhv8SJsH5YgaN6O2M0l1zDk6Q8UxARbUgWVq1igVtrXdCeFWIE=
+	t=1733475721; cv=none; b=YJFGbab34V1i8yXyE24onS/Evaf4qUjIl9BUGqU8XVbXJiaq6lV4xVBJB/jYbMDkDmcet8QbN37WtIJaKTOcMnm2gWOVmwbOh2CTf4nIhi5HUoio6Q8W36+DCT/KODwBcU3Jc5GRdlGHpch0fHK4Z/2MSJOWrgbrbD4d6sTakGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733475335; c=relaxed/simple;
-	bh=L6yN7mD5rKVPN+tUKvRk9yYl6zI+0cfg0Z1YEPW68Ys=;
+	s=arc-20240116; t=1733475721; c=relaxed/simple;
+	bh=XWD3YWdZXUE2SZt16mOKszuwLSOfo+1lXG/AOJzR51Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CReMah4i+VtaL37FOSJm1v1sAdvTCZhU/HhvwwWkx/En4qyf1x9waynpVLZdnBRWvwuYZ6SHZ7Xuk6PRRdboRAcW+8WASLE3Lg9Wl+fDO18661jIfE+Q0g2ZoNBzO22rwqXTUELvD1mfGss2ajVl1+RT627Tevv7efGwk7mRfqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UuGPlh5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLWJQUJ7NrxmMoh8NaAPSNOTClOEcu8oEWfu0MT5EC55P+zHngIsgGq6lTk2fDlp6LFXsiOgWrDT+j3x+u36jY3HiYwLqOk2a5KxgJDUfeg/f2W/nYXvq/KRMtJqxEc+7SVjlMxfQxEVcWI8/DQq1a8nz2VVjwMCvcnm9WP6Eu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aujXnEVL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UuGPlh5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7C2C4CED1;
-	Fri,  6 Dec 2024 08:55:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733475333;
-	bh=L6yN7mD5rKVPN+tUKvRk9yYl6zI+0cfg0Z1YEPW68Ys=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aujXnEVL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A82C4CEDF;
+	Fri,  6 Dec 2024 09:01:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733475720;
+	bh=XWD3YWdZXUE2SZt16mOKszuwLSOfo+1lXG/AOJzR51Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2UuGPlh5lVMkaJBzRw92Ro+VgeHLMjpc0xzpHzY4GGFBtTFgfbdUkTOaATmlUihTx
-	 CSKYse/KRWJUv/5C3hYmoZo/SzUU1fdy2iB/huG9QvHhr+oshcYkDrmeTZVkOEFrKw
-	 yhUj26SuCe39/PVN4g9mu/lv8jz9WT5OOm/tZGKA=
-Date: Fri, 6 Dec 2024 09:55:29 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, arnd@arndb.de,
+	b=aujXnEVLRamWYUKSNF0HSFX25gxTeSm2xe3+A4k6Wmv7MfvN4Pz2AbaeLlco0nuHo
+	 inrGBt/qQZRuL3RJhgaI08Ow6j794+h3EiHR8NDk5HpQeCwYcGs1faONQxyMgjBu8i
+	 b50vrlphiFAeVm0e1EfF2BB7FXYaD6nWxNmnr/ArOBaQVehUW6LTRYeZn++xdi5ZHn
+	 oxGSZJeDvVSWxhpteg/A2M8G7ymdPWy3JXPaf1ApieG16HmhvnUQ4RQzEm/X7na3TP
+	 KPb8+l1Y7YPDyVZlluDdDiUCOifzbPAsp1drMc17e4ABtM1pH32D+91yNy99njyJ+Q
+	 yLh1jRi7sGWQA==
+Date: Fri, 6 Dec 2024 10:01:54 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
 	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, tmgross@umich.edu,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] rust: miscdevice: Provide sample driver using the
- new MiscDevice bindings
-Message-ID: <2024120609-stamina-slit-5a84@gregkh>
+Subject: Re: [PATCH v3 3/5] samples: rust: Provide example using the new Rust
+ MiscDevice abstraction
+Message-ID: <Z1K9gk3Mel4h98gA@pollux>
 References: <20241205162531.1883859-1-lee@kernel.org>
- <2024120632-hardwired-hardhead-1906@gregkh>
- <20241206074443.GJ8882@google.com>
- <2024120622-unvalued-wriggle-7942@gregkh>
- <CAH5fLgj6rqVbGHrU4008fvO60fJdRWoE2SvW7nc9njPUFuzJ_A@mail.gmail.com>
- <2024120615-concert-oven-66f1@gregkh>
- <CAH5fLgjb9UaFGB0fQn4hO5oWySkNdY0ZJDUaNTgiEBYu6wG5BQ@mail.gmail.com>
+ <20241205162531.1883859-4-lee@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjb9UaFGB0fQn4hO5oWySkNdY0ZJDUaNTgiEBYu6wG5BQ@mail.gmail.com>
+In-Reply-To: <20241205162531.1883859-4-lee@kernel.org>
 
-On Fri, Dec 06, 2024 at 09:51:55AM +0100, Alice Ryhl wrote:
-> On Fri, Dec 6, 2024 at 9:44 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Fri, Dec 06, 2024 at 09:31:28AM +0100, Alice Ryhl wrote:
-> > > On Fri, Dec 6, 2024 at 9:11 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Fri, Dec 06, 2024 at 07:44:43AM +0000, Lee Jones wrote:
-> > > > > On Fri, 06 Dec 2024, Greg KH wrote:
-> > > > >
-> > > > > > On Thu, Dec 05, 2024 at 04:25:17PM +0000, Lee Jones wrote:
-> > > > > > > It has been suggested that the driver should use dev_info() instead of
-> > > > > > > pr_info() however there is currently no scaffolding to successfully pull
-> > > > > > > a 'struct device' out from driver data post register().  This is being
-> > > > > > > worked on and we will convert this over in due course.
-> > > > > >
-> > > > > > But the miscdevice.rs change provides this to you, right?  Or if not,
-> > > > > > why not?
-> > > > >
-> > > > > This does allow us to pull the 'struct device *` out from `struct
-> > > > > miscdevice`; however, since this resides in MiscDeviceRegistration,
-> > > > > which we lose access to after .init, we have no means to call it.
-> > > > >
-> > > > > Alice is going to work on a way to use ThisModule to get the
-> > > > > MiscDeviceRegistration reference back from anywhere in the module. Until
-> > > > > that piece lands, we can't call MiscDeviceRegistration::device() outside
-> > > > > of RustMiscDeviceModule.
-> > > >
-> > > > That seems crazy, as ThisModule shouldn't be dealing with a static misc
-> > > > device, what happens for dynamically created ones like all
-> > > > normal/sane/non-example drivers do?  This should "just" be a dynamic
-> > > > object that is NOT tied to the module object, or worst case, a "static"
-> > > > structure that is tied to the module I guess?
-> > > >
-> > > > Anyway, I'll let you all work it out, good luck!
-> > >
-> > > If you store it somewhere else, you're probably okay. The current
-> > > place is just hard to access.
-> > >
-> > > The problem is that the Rust module abstractions generate a global
-> > > variable that holds an RustMiscDeviceModule which is initialized in
-> > > init_module() and destroyed in cleanup_module(). To have safe access
-> > > to this global, we need to ensure that you access it only between
-> > > init_module() and cleanup_module(). For loadable modules, the
-> > > try_module_get() logic seems perfect, so in Miscdevice::open we have a
-> > > file pointer, which implies that the fs infrastructure took a refcount
-> > > on fops->owner, which it can only do once init_module() is done.
-> > >
-> > > Unfortunately, this doesn't translate to built-in modules since the
-> > > owner pointer is just null, and try_module_get performs no checks at
-> > > all.
-> > >
-> > > Also, I'm realizing now that try_module_get() succeeds even if `state
-> > > == MODULE_STATE_COMING`. :(
-> > >
-> > > So in conclusion, I don't know of any way to provide safe access to
-> > > the global RustMiscDeviceModule value.
-> >
-> > Odd.  How is this any different than what is going to happen for
-> > platform or other drivers of any other type?  Sometimes they want to
-> > only create one single "static" object and register it with the bus they
-> > are assigned to.
-> >
-> > Do we need to have a RuscMiscDevice object somewhere instead that
-> > doesn't care about the module logic at all?  And then just use a
-> > "normal" rust module object to create a single instance of that which
-> > the misc binding will handle?
+On Thu, Dec 05, 2024 at 04:25:20PM +0000, Lee Jones wrote:
+> This sample driver demonstrates the following basic operations:
 > 
-> Actually, I guess we can access the miscdevice in open via the pointer
-> that misc_open() stashes into the file private data. We don't have to
-> go through the global variable.
+> * Register a Misc Device
+> * Create /dev/rust-misc-device
+> * Open the aforementioned character device
+> * Operate on the character device via a simple ioctl()
+> * Close the character device
+> 
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> ---
+>  samples/rust/Kconfig             | 10 ++++
+>  samples/rust/Makefile            |  1 +
+>  samples/rust/rust_misc_device.rs | 80 ++++++++++++++++++++++++++++++++
+>  3 files changed, 91 insertions(+)
+>  create mode 100644 samples/rust/rust_misc_device.rs
+> 
+> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> index b0f74a81c8f9..df384e679901 100644
+> --- a/samples/rust/Kconfig
+> +++ b/samples/rust/Kconfig
+> @@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
+>  
+>  	  If unsure, say N.
+>  
+> +config SAMPLE_RUST_MISC_DEVICE
+> +	tristate "Misc device"
+> +	help
+> +	  This option builds the Rust misc device.
+> +
+> +	  To compile this as a module, choose M here:
+> +	  the module will be called rust_misc_device.
+> +
+> +	  If unsure, say N.
+> +
+>  config SAMPLE_RUST_PRINT
+>  	tristate "Printing macros"
+>  	help
+> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> index c1a5c1655395..ad4b97a98580 100644
+> --- a/samples/rust/Makefile
+> +++ b/samples/rust/Makefile
+> @@ -2,6 +2,7 @@
+>  ccflags-y += -I$(src)				# needed for trace events
+>  
+>  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
+> +obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+>  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+>  
+>  rust_print-y := rust_print_main.o rust_print_events.o
+> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+> new file mode 100644
+> index 000000000000..f50925713f1a
+> --- /dev/null
+> +++ b/samples/rust/rust_misc_device.rs
+> @@ -0,0 +1,80 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Rust misc device sample.
+> +
+> +use kernel::{
+> +    c_str,
+> +    ioctl::_IO,
+> +    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
+> +    prelude::*,
+> +};
+> +
+> +const RUST_MISC_DEV_HELLO: u32 = _IO('R' as u32, 9);
+> +
+> +module! {
+> +    type: RustMiscDeviceModule,
+> +    name: "rust_misc_device",
+> +    author: "Lee Jones",
+> +    description: "Rust misc device sample",
+> +    license: "GPL",
+> +}
+> +
+> +struct RustMiscDeviceModule {
+> +    _miscdev: Pin<KBox<MiscDeviceRegistration<RustMiscDevice>>>,
 
-Ah, nice, that's how a "normal" misc device should be doing this, so
-yes, that sounds good!
+Why do we add examples where we ask people to allocate those structures with
+kmalloc()?
 
-thanks,
+`MiscDevice` should switch to the generic `Registration` type in [1] and use
+`InPlaceModule`, such that those structures land in the .data section of the
+binary.
 
-greg k-h
+[1] https://lore.kernel.org/rust-for-linux/20241205141533.111830-3-dakr@kernel.org/
+
+> +}
+> +
+> +impl kernel::Module for RustMiscDeviceModule {
+> +    fn init(_module: &'static ThisModule) -> Result<Self> {
+> +        pr_info!("Initialising Rust Misc Device Sample\n");
+> +
+> +        let options = MiscDeviceOptions {
+> +            name: c_str!("rust-misc-device"),
+> +        };
+> +
+> +        Ok(Self {
+> +            _miscdev: KBox::pin_init(
+> +                MiscDeviceRegistration::<RustMiscDevice>::register(options),
+> +                GFP_KERNEL,
+> +            )?,
+> +        })
+> +    }
+> +}
+> +
+> +struct RustMiscDevice;
+> +
+> +#[vtable]
+> +impl MiscDevice for RustMiscDevice {
+> +    type Ptr = KBox<Self>;
+> +
+> +    fn open() -> Result<KBox<Self>> {
+> +        pr_info!("Opening Rust Misc Device Sample\n");
+> +
+> +        Ok(KBox::new(RustMiscDevice, GFP_KERNEL)?)
+> +    }
+> +
+> +    fn ioctl(
+> +        _device: <Self::Ptr as kernel::types::ForeignOwnable>::Borrowed<'_>,
+> +        cmd: u32,
+> +        _arg: usize,
+> +    ) -> Result<isize> {
+> +        pr_info!("IOCTLing Rust Misc Device Sample\n");
+> +
+> +        match cmd {
+> +            RUST_MISC_DEV_HELLO => pr_info!("Hello from the Rust Misc Device\n"),
+> +            _ => {
+> +                pr_err!("IOCTL not recognised: {}\n", cmd);
+> +                return Err(ENOIOCTLCMD);
+> +            }
+> +        }
+> +
+> +        Ok(0)
+> +    }
+> +}
+> +
+> +impl Drop for RustMiscDevice {
+> +    fn drop(&mut self) {
+> +        pr_info!("Exiting the Rust Misc Device Sample\n");
+> +    }
+> +}
+> -- 
+> 2.47.0.338.g60cca15819-goog
+> 
+> 
