@@ -1,202 +1,122 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381842206AC;
-	Fri,  6 Dec 2024 19:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134DF192B76;
+	Fri,  6 Dec 2024 19:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733512978; cv=none; b=iROsmvUnqI5J52AJSvfBeQsq2TxFTc6Sg10Y2COs9dOXL6Cl4WvfGZ6yIqLCLC+HgFfQEN/Wu2spzU7eJmPzXY659T2HGV+CeGsjsjYJ5mVp+zZx3nllNJczgVhGWf7RRN8oz0Ay54Qcg6U0Z4lw/jYOd8BbJa0wzDJib73O95w=
+	t=1733513707; cv=none; b=Fpji0XtzwRVQGh3wxQE4rWBuOUmM/veXu97WxGGIUF6kqUM+usV+I2UUCfqmaZ2TuO29nVK0GVLXG63VgH2el6dKGEuuZQndglOuylkaTkk76MPQ4Xqm8/4jxl0LEoKDkfeDsL6iEsiP+p9JDGhnsP2hRlAsWs6mTp/tm6DLNu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733512978; c=relaxed/simple;
-	bh=ebPrHFVB3LsRQR1YXL7aeovncI3L/MNGFI6QBNUFgeM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DmQ22X2skgJ82riTXrjlPXwmsjNuN7yp3UnJWxoozHzASQUmZOh17DVgU/zuVnEtQ8id3jY0PqvdzBCrL6ssPMJZfSeK5ACSLtDXVm+nNHNhUGBlWvGbb/GgwF7aBoplHzMWmwVyPEjVHyNMDANJ3U6p3/BYiTiYwtSj2jx3djs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JjnODlLV; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733513707; c=relaxed/simple;
+	bh=lDPl01izmHRdpX/4BbDdhKpVVoE+jqsdSqSjquB7akA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lRAyBq0YJhJ/2RhxxhtTGwyJUq+Ol56SJjeJVk8YjNB+cRZwgK+apYmNC9xWbfika0bpV1smfyx2boGfhR9lVCBQ3NHNFtSSTLsj4ihD5qXBh5Km0dUJHar1+4xONxn62jYQIoeeqowE24LVCUui04+Ng2keclPzmpj5Xmwv5aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uD4jVU35; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JjnODlLV"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7fc88476a02so2274409a12.2;
-        Fri, 06 Dec 2024 11:22:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733512976; x=1734117776; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8idulI7k7enDyu+lEvRXSqg2AbC0967lekgmFvYpzpM=;
-        b=JjnODlLVITHWqj36+8ROrIB460vBd7Fo4P5setiABAsaxip2un80f0kniSNBRIICX7
-         Y39UQg45MWZ+19qjm2m+ukgDyfAhVMzRFEvF7U1hRrPMu2nilk0qmPD0nCfg5UsihfLz
-         K5GUgsY+gxTfXWBKq9So6ktJEudIRpCSgbkOCP1m7HsSrPmtf+pX2b6IxIe6XnWXcOFY
-         e9/ddsq/nosj4gZ6zEmHaAJa8OZOwE/MaBYUYTJemS2LNli6/jDFfBmEWa6192aD5UAK
-         DWPkfdnAAGgzenAYWukZCeNqPadXa5hkpynZeW0qbg2dye/q9BKPxKYIvj25FvB8M78J
-         QXow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733512976; x=1734117776;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8idulI7k7enDyu+lEvRXSqg2AbC0967lekgmFvYpzpM=;
-        b=hc2nog2fpbRg5tuERSpwPfE7bw1IWzw9HaDjYF0IEwif0ANYiNey2qyjKykK9jMQa9
-         Urkfjggv5hfhm4ZhMcflTlx6gIA9fKTKM0JJNePjrPE5gi9ItMIbe65Ld6yY1Ju/XcCu
-         AFjLbzgY7E/8E9HO+oPOstZqG7Ca5K8oRHmJCr227qcl9xH2yFr7RrhFzKbFm38M+IoP
-         +N2cyr+0u8c9eAr8MGYOWwqPI0bzuQ9u0c9ugelIdj36SHT0kaiOtl+fcAGe/7t+eyo5
-         PPRf7hMbuEngEGW5ypRZjeQ7q33cQDQ8GifFrPDRQX9PlU7LdwWfizeBvFKucv7Amvgp
-         U1mw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBc5LCOtBR+yEaDH4d1NQxe23LWTym1mEm4wbq/V4vIrM1kQnzAeUzxpnaKMARrsxqQXAUZk16M2BzSPvYTzk=@vger.kernel.org, AJvYcCWjpuqYWIgEd0N1E9q+0KUfKf92ygmvc701sycaPXv4eR3Ty2MPkkPolrGECebH9xylWzmoFUfvLiXk1HA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfkkxWEWJz66IvwMgz1cJTBvz2rg7D/gjYFnWRWlAZ3cd9QFva
-	c7VtthVPGN9gmfAuSEW/1j5hBdY4c+V3qGpx8wTrWI9UP3xRzY9B
-X-Gm-Gg: ASbGncsJBYj8UJTvGslN4Gf0kDUm1Oqo8uok8D8HuntuaJP98o17pJku9A4YqwuH+w7
-	1BtEbZQmrf9ekPZBeHhmiA6xHX+bppb6iffTw7q2XjSuG7CWS+6MzsTkd/Ur+x914xLElrZv2me
-	y9464C4kJCq8sUO/6DHcdkDN7Jn6yHMdFXKKoU2mJMW9el4WVH3Q5Z4Agi64CmOjOwuTACyt380
-	aVMAKZK9mqRz/NpttbHXW/jrLEAfhGDdbsnbtOH3t8WyRsMFFyO3wXG
-X-Google-Smtp-Source: AGHT+IGEr9Q8CrKLOtiAnkHNOdh/DQVamnfvqZIvJ8UXxKzuAsa66jz6m3vsvWKI0u/G9smaLiJZEw==
-X-Received: by 2002:a05:6a21:3284:b0:1db:f603:4f2a with SMTP id adf61e73a8af0-1e1870bca20mr5152489637.14.1733512975129;
-        Fri, 06 Dec 2024 11:22:55 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.143.14])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd156ee2b5sm3377712a12.36.2024.12.06.11.22.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 11:22:54 -0800 (PST)
-From: guilherme giacomo simoes <trintaeoitogc@gmail.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	walmeida@microsoft.com,
-	fujita.tomonori@gmail.com,
-	tahbertschinger@gmail.com
-Cc: guilherme giacomo simoes <trintaeoitogc@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] [PATCH] rust: macros: add authors
-Date: Fri,  6 Dec 2024 16:22:44 -0300
-Message-Id: <20241206192244.443486-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uD4jVU35"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009B0C4CED1;
+	Fri,  6 Dec 2024 19:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733513705;
+	bh=lDPl01izmHRdpX/4BbDdhKpVVoE+jqsdSqSjquB7akA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=uD4jVU35ESf/s1A+zsxTylVGmnky49Vg9Cf9lMerF58jOsCkJu0MPqKeL7Dm8a5/w
+	 uSM0o0a8vmT8LHeNHnHn3vhZ0BpnhWP3vARhpCge07jYgnBfha/BNWKTVKZOeBlGVI
+	 PdrKPspTCPgroBPaJNL/Ih694+WTOKpWbl4kAUEhDY6egUltvZOf7/eHYvPT2hWYSb
+	 qBRxZ11BZ/6NUGdAhD271tD7DIfnPfcAz9HOFN0f87YmzRiL2nnop+jJleUN137XsY
+	 VAgh52kogyv7El4bS0LO+80YWxUYsWO3yFO9bP33C/J//BaTqai3UXPaSWgP8WcIR5
+	 MZxekVXMPEBhQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 06 Dec 2024 20:32:55 +0100
+Subject: [PATCH v4 03/14] rust: sync: add `Arc::as_ptr`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241206-hrtimer-v3-v6-12-rc2-v4-3-6cb8c3673682@kernel.org>
+References: <20241206-hrtimer-v3-v6-12-rc2-v4-0-6cb8c3673682@kernel.org>
+In-Reply-To: <20241206-hrtimer-v3-v6-12-rc2-v4-0-6cb8c3673682@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1772; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=lDPl01izmHRdpX/4BbDdhKpVVoE+jqsdSqSjquB7akA=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
+ mtvWTNjQnl5WmlBR2RUVVdzZWRubjNRZlNIRk45cnNLcFpKbHpFClRuVmtXY0FGQWNYRVN0bmNJ
+ dUdld0lrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKblUxRnJ
+ BQW9KRU9HNEdqNTVLR04zakUwUUFKOERaQVVucjg2cmhCUnBMR3NiYis0aE5UWloyb1VqM1U2Zg
+ pVR0ZPRW92V2ZSb0djdWZpRWdzTVR0M3M3ZEdxSXlEWHZiUEhVNzZwWWdBTkdncm9wZm8wRzNIZ
+ DVvS213TWlkCkxWa1hjL2FYbTFVK0FjQWl2VHpNaElXQkdvU3FST3hJTjEwMTZRekplNjFQSHV2
+ cXBKd2FydEdaeitwdG8wVlAKMHh0RU16cFBUeWo2SU9lcHRMTjFraENESTNsWDJMclFpSGc1S2l
+ ycTAxbVpheUttSEQ4OTVvVEU3NHpEWVNDcQowL2h4OFVuQjJJY0lCMGlnMGxYMTJKSERjK0NmQX
+ hSbkNoeWd4V0V3SEszRWtnaGo2dDRaQVdOcnpncUh6SVBIClI5S2xzYkZCajBXdFJkSmtwOWx6c
+ UZlcVZ5YmMweHdNdHRWUlpmQTl5QVNJbWs3QWRQVlVtK05HNGtTMHdxemUKTDJwTS9lQkN4UjNJ
+ UnVGM2hVdi94azhIbVF0T2xoVHQvNDVRbzArZDlhUzE2bTZuQmRGcGdjYWwxWDlEYzQrVgpHUmp
+ 3Rlp5bkhjUUhwYnBCcFRBYTJNaDdVMVdhSzR3VmgxZXd3eW1wMDFtTXZCS3ptNHROZExNSTZuY3
+ BPdlV4CnVOWXMxdmVpZklRa2VETWgwaWNId295WE56THVENE8yUUk2MTFnbVBYdjJENW5OV0dBR
+ kptUnBnaURzKzlHMWQKdDhKY09GUnQxSjNmTGZaRXYrSFIrRXZLc3RHZkhUd3dpVEdpS2NZUWha
+ QW1nN2tUbzlmcmtxQVZHTjJhaDVaTwo5QU12d1RwcmFLQ3RzWGQ5RndQbkYyUGN0a0tlVzNkTWt
+ 2ODM1RCtqYS9BQ1pQcXpXbHVaZVcyWFJGY3RGTHYzClNjV1FKNld3Z25Za2N3PT0KPTdCcCsKLS
+ 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-The module is only accepted to have a single author. If the module needs
-more than one author, you cannot define this in the module creating
-flow.
-Add another key in the module stream that accepts a string array with
-authors.
-Author and authors keys cannot coexist, so add a check that if the
-module authors addss these two keys, throw a panic!
+Add a method to get a pointer to the data contained in an `Arc`.
 
-Signed-off-by: guilherme giacomo simoes <trintaeoitogc@gmail.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/macros/module.rs | 43 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 40 insertions(+), 3 deletions(-)
+ rust/kernel/sync/arc.rs | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 2587f41b0d39..a6965354824f 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -83,6 +83,12 @@ fn emit_only_loadable(&mut self, field: &str, content: &str) {
-         self.emit_base(field, content, false)
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index fa4509406ee909ca0677b78d5ece966089ce6366..3d6111ddb007285b26eca2177a412033f4ac5dcb 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -233,6 +233,15 @@ pub fn into_raw(self) -> *const T {
+         unsafe { core::ptr::addr_of!((*ptr).data) }
      }
  
-+    fn emit_arr_str(&mut self, field: &str, arr_content: &Vec<String>) {
-+        for content in arr_content {
-+            self.emit(field, content);
-+        }
++    /// Return a raw pointer to the data in this arc.
++    pub fn as_ptr(this: &Self) -> *const T {
++        let ptr = this.ptr.as_ptr();
++
++        // SAFETY: As `ptr` points to a valid allocation of type `ArcInner`,
++        // field projection to `data`is within bounds of the allocation.
++        unsafe { core::ptr::addr_of!((*ptr).data) }
 +    }
 +
-     fn emit(&mut self, field: &str, content: &str) {
-         self.emit_only_builtin(field, content);
-         self.emit_only_loadable(field, content);
-@@ -95,12 +101,30 @@ struct ModuleInfo {
-     license: String,
-     name: String,
-     author: Option<String>,
-+    authors: Option<Vec<String>>,
-     description: Option<String>,
-     alias: Option<Vec<String>>,
-     firmware: Option<Vec<String>>,
- }
- 
- impl ModuleInfo {
-+    fn coexist(arr: &mut Vec<String>, cannot_coexist: &[&str]) -> bool {
-+        let mut found: bool = false;
-+
-+        for cc in cannot_coexist {
-+
-+            for key in &mut *arr {
-+                if cc == key {
-+                    if found {
-+                        return true;
-+                    }
-+                    found = true;
-+                }
-+            }
-+        }
-+        return false;
-+    }
-+
-     fn parse(it: &mut token_stream::IntoIter) -> Self {
-         let mut info = ModuleInfo::default();
- 
-@@ -108,6 +132,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-             "type",
-             "name",
-             "author",
-+            "authors",
-             "description",
-             "license",
-             "alias",
-@@ -136,6 +161,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-                 "type" => info.type_ = expect_ident(it),
-                 "name" => info.name = expect_string_ascii(it),
-                 "author" => info.author = Some(expect_string(it)),
-+                "authors" => info.authors = Some(expect_string_array(it)),
-                 "description" => info.description = Some(expect_string(it)),
-                 "license" => info.license = expect_string_ascii(it),
-                 "alias" => info.alias = Some(expect_string_array(it)),
-@@ -153,6 +179,16 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
- 
-         expect_end(it);
- 
-+        const CANNOT_COEXIST: &[&[&str]] = &[
-+            &["author", "authors"]
-+        ];
-+
-+        for cannot_coexist in CANNOT_COEXIST {
-+            if Self::coexist(&mut seen_keys, cannot_coexist) {
-+                panic!("keys {:?} coexist", cannot_coexist);
-+            }
-+        }
-+
-         for key in REQUIRED_KEYS {
-             if !seen_keys.iter().any(|e| e == key) {
-                 panic!("Missing required key \"{}\".", key);
-@@ -183,6 +219,9 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-     let info = ModuleInfo::parse(&mut it);
- 
-     let mut modinfo = ModInfoBuilder::new(info.name.as_ref());
-+    if let Some(authors) = info.authors {
-+        modinfo.emit_arr_str("author", &authors);
-+    }
-     if let Some(author) = info.author {
-         modinfo.emit("author", &author);
+     /// Recreates an [`Arc`] instance previously deconstructed via [`Arc::into_raw`].
+     ///
+     /// # Safety
+@@ -508,11 +517,11 @@ unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
      }
-@@ -191,9 +230,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-     }
-     modinfo.emit("license", &info.license);
-     if let Some(aliases) = info.alias {
--        for alias in aliases {
--            modinfo.emit("alias", &alias);
--        }
-+        modinfo.emit_arr_str("alias", &aliases);
-     }
-     if let Some(firmware) = info.firmware {
-         for fw in firmware {
+ 
+     /// Creates an [`ArcBorrow`] to an [`Arc`] that has previously been deconstructed with
+-    /// [`Arc::into_raw`].
++    /// [`Arc::into_raw`] or [`Arc::as_ptr`].
+     ///
+     /// # Safety
+     ///
+-    /// * The provided pointer must originate from a call to [`Arc::into_raw`].
++    /// * The provided pointer must originate from a call to [`Arc::into_raw`] or [`Arc::as_ptr`].
+     /// * For the duration of the lifetime annotated on this `ArcBorrow`, the reference count must
+     ///   not hit zero.
+     /// * For the duration of the lifetime annotated on this `ArcBorrow`, there must not be a
+
 -- 
-2.34.1
+2.46.0
+
 
