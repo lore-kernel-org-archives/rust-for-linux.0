@@ -1,95 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594261C548A;
-	Fri,  6 Dec 2024 20:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256661C54B4;
+	Fri,  6 Dec 2024 20:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733516248; cv=none; b=nW9dm0AKgj4LVVSlCuqx0vrXh7QL37ihPlCCAytwRkJESKwvdJd4TMo7VOh62u4IzAlImjHf2wtYxB3O+RnUL9+G/vNqQwlvCNL36TfGo4mpHcXDgD/dcKCQtCw52qGCY79ApXnhYtKtL6AeTPObVOUUqGNfffSHrdue5+xhrhk=
+	t=1733516281; cv=none; b=Nvakk+4w5xEhWF+zpIUZRfU3uWNd4jptAxA/ccGNMoFGePOZ04X2TXwZiIt9BWi5ZKilwQLsG59GDxIzjHOVyUwKdQMd94v0iDd1r8RrlYFDN9bx+CroYMbzqDnGfO/jDNOOsjiRNPeZtE9Wf65JBExwqkw53BNoTHMfvGkYdXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733516248; c=relaxed/simple;
-	bh=KDmwUVqmo5/GFM8WAK/kNQMfrXHTIB5cC1zlRdTJc/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GATE4vJV0DEph0D9eiFeEKQftt6F1Cb5LF+EK2hTgF7QgO2ByltTiTx4VbD+xLVynxQ4ik3dI+5mkHS/62iIGkCbEXo5Ffl6hSTHQCbkAf3IQZgLh9G1U0rUqZhnp5e5go3B4UbEOPDSLU5NFSaViTwhsSKLFLmysr0dY0qjWx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e47uUW0U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733516281; c=relaxed/simple;
+	bh=s0HpYL83/GsXpoQAd4zXeFovL9tM+YARNGIodtERH10=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KXb5xZS2xkb/4ovZPvvT9RVNvr7/FMN+tlBJ0tHE63DUi4Qs+90pyZbA3HSsYNA4IX37QpCvRkCFd649QY8hj6DIqWV/Qp7571cLdW8GGmrKbgACYL3v3xfiEGRG7qOraQY+EK22qJzUH3wtLFUnVjzQnD/0ybLE9Ntcvj7dT2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VPvsHXC1; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e47uUW0U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEE0C4CED1;
-	Fri,  6 Dec 2024 20:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733516248;
-	bh=KDmwUVqmo5/GFM8WAK/kNQMfrXHTIB5cC1zlRdTJc/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e47uUW0UqS3wwJhEvQuMssxn7vLOOo9MFRzyUrWWMAMpYOHgnEwM2fnS2TgLb9+P0
-	 8osQZqyVyUDLRVHvwZ5EnBV4Xo44PZH1TGY+8A44/PrL32B8K/M3UaNS9yY1y/EUin
-	 fGGSKlZ4aRwux3o7DIVRMbYbqlqoVk23GaYHVYcvCK7UqhVD9hSy9ddlYE7TWaZeBR
-	 HUeUK6jfpr/4/pkZfqv00b+o9clWmHl+u1zOEs7S4u7hSzn/BOkHZkepEaaZGX6Wwf
-	 EuXMnna6ktOa5fH0tN1QhgwkvH2aewTEuN/BuCtXYKpPON+kIlwOifQL2akhlyUXTu
-	 2eISW1FRkVHdg==
-Date: Fri, 6 Dec 2024 21:17:21 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 10/14] rust: alloc: add `Box::into_pin`
-Message-ID: <Z1Nb0dQvO0GKlMmb@pollux>
-References: <20241206-hrtimer-v3-v6-12-rc2-v4-0-6cb8c3673682@kernel.org>
- <20241206-hrtimer-v3-v6-12-rc2-v4-10-6cb8c3673682@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VPvsHXC1"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee4b72d4d8so271040a91.3;
+        Fri, 06 Dec 2024 12:17:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733516279; x=1734121079; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7KRjwlLeLlZr1Cq9mFs2/9O3gungZ1VFkbVziUGY7TE=;
+        b=VPvsHXC1YYSekTjauCuymKa8E8v+NMruMtwZY1xtU7UadN3F3SfXv2TMJxNUZ9DPOQ
+         SyYMbHWZ+pLrPlecdo/3e/mwAIAJEngi+FoMu6yQIfaoXOZwVvActJPN2hcOIsLzZypL
+         V33+dIIS3MNRG7CzHrxX3aE3Yc1VS/hwDgXLSkCZ9sLHh3zO3AAm1vVqklDMn4f+9wKO
+         SKO5kuaajdDZvVbBYWm9Eowjiko/Vl/3SJ9mA9EfZDxZwhTaVOHrV6zvn10qWYyClKiQ
+         /Li0KYEIoPaosFgNDKAHPAA90fTryUUGhcdl0yl4OrQb0SzJCZO0LEPNEdXclpkTZl29
+         QYmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733516279; x=1734121079;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7KRjwlLeLlZr1Cq9mFs2/9O3gungZ1VFkbVziUGY7TE=;
+        b=KfXF3Ylh6PClsLtBIlt0oWqImjXS06q7R33xbH8RkR9arM6ASPUMK41gZ1F8NX8Xax
+         +wNwGnsYvHa3OXRHpGYg4AVHuhBqHqbnmwY8/kj3JsSikEf58g4oDLguvs/bzijEbl20
+         MSg7aiZPARq5CK1aW6lTcMxnY9wj+j9L0R3b8fXPhmnW64/Hwsmb4Vlj/NX1PA8kfAsd
+         z0YkyIhzL+8eQc1l1yznOe82TRA6Wb1fI9WsHDDAqAIFUt1zXVZNwDy3ulbmglvcHRyn
+         7+m4vz1B5cKmHxE24SVljnrq7pc8e4VNGSvJVUF1tGNldxmad74osZQiJ4twaf1UAsPn
+         ACUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWbGDzl4E8td752RbH3sNzhAgHP5Tesai8oDJm1JYLGe+lXDd0eNrFUuZ59cVvcnN3pc/mqH0wo4KnDneE=@vger.kernel.org, AJvYcCXF/LSdjWCuz8Ve/nTDfGRwfglBijw2hn67dxBmIVKTPrlF9ciuWBZ0ESTFzbMC1k0jV2VLJVsuJsq4TJki1Ts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhJzFplPzJxp/kccVNhsu4O3Ypp1J67kSTgQZbTfi/dFLwu+n5
+	pWiyDildYsN1mZBaknqelpwE+PlzC7qawsFMzhOQNFjQ7XL8wqsM2nk4ta2q1+XMA5gOActCAED
+	Z7gxGoupDtINB4wfie7bi4ZdwIko=
+X-Gm-Gg: ASbGncs4qKhvJ3ls7kFrE8jvTZpjHjx4vx/JLZzP3+Lidm1qYJJFcVIWM9P3XFFeNaS
+	ACoQjIFcMczwIKZRigZwCss4R2Fq+3I4=
+X-Google-Smtp-Source: AGHT+IGm2S89yMWdzllIN3KD3GHl6K/aWMHBG/4F5iX4Szq8LnCRxkaO0PidxAGvOd+E6Sdmt9W/y+wpSmKZkmX3A34=
+X-Received: by 2002:a17:90b:1b50:b0:2ee:d372:91bd with SMTP id
+ 98e67ed59e1d1-2ef69462652mr2464471a91.2.1733516279307; Fri, 06 Dec 2024
+ 12:17:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241206-hrtimer-v3-v6-12-rc2-v4-10-6cb8c3673682@kernel.org>
+References: <20241206192244.443486-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20241206192244.443486-1-trintaeoitogc@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 6 Dec 2024 21:17:47 +0100
+Message-ID: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
+Subject: Re: [PATCH] [PATCH] rust: macros: add authors
+To: guilherme giacomo simoes <trintaeoitogc@gmail.com>, Wayne Campbell <wcampbell1995@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	walmeida@microsoft.com, fujita.tomonori@gmail.com, tahbertschinger@gmail.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 06, 2024 at 08:33:02PM +0100, Andreas Hindborg wrote:
-> Add an associated function to convert a `Box<T>` into a `Pin<Box<T>>`.
+On Fri, Dec 6, 2024 at 8:22=E2=80=AFPM guilherme giacomo simoes
+<trintaeoitogc@gmail.com> wrote:
+>
+> The module is only accepted to have a single author. If the module needs
+> more than one author, you cannot define this in the module creating
+> flow.
+> Add another key in the module stream that accepts a string array with
+> authors.
+> Author and authors keys cannot coexist, so add a check that if the
+> module authors addss these two keys, throw a panic!
 
-What do you need this function for?
+Thanks for the patch!
 
-There is an `impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>` already.
+There are several ways we could do this:
 
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/alloc/kbox.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index 9ce414361c2c6dd8eea09b11041f6c307cbc7864..1a993ec8602b37041c192458d8b6acff30769a04 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -245,6 +245,16 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
->          Ok(Self::new(x, flags)?.into())
->      }
->  
-> +    /// Convert a [`Box<T,A>`] to a [`Pin<Box<T,A>>`]. If `T` does not implement
-> +    /// [`Unpin`], then `x` will be pinned in memory and can't be moved.
-> +    pub fn into_pin(boxed: Self) -> Pin<Self> {
-> +        // SAFETY: `Self` is guaranteed to be the only pointer to the boxed
-> +        // value. Thus, if `T: !Unpin`, `T` is guaranteed to stay pinned; there
-> +        // is no way to get rid of the `Pin` and move out of the returned
-> +        // `Pin<Box<T>>`.
-> +        unsafe { Pin::new_unchecked(boxed) }
-> +    }
-> +
->      /// Forgets the contents (does not run the destructor), but keeps the allocation.
->      fn forget_contents(this: Self) -> Box<MaybeUninit<T>, A> {
->          let ptr = Self::into_raw(this);
-> 
-> -- 
-> 2.46.0
-> 
-> 
+  - A single field, that only accepts a list.
+
+  - A single field that accepts both a string or a list.
+
+  - Two fields like this (that cannot coexist).
+
+  - Accepting several "author" fields and append them all into a list.
+
+Any thoughts on what is best? Could you please describe why you picked
+the one you picked? (Ideally in the commit message). For instance, the
+first one is e.g. what Cargo does and is the simplest, though slightly
+annoying in the most common case of a single author. I wouldn't mind
+it though, since this is likely copy-pasted from file to file anyway.
+
+In addition, there was a PR [1] by Wayne (Cc'd) that implemented the
+first approach, but it was never sent to the list. I pinged in the
+GitHub issue too.
+
+[1] https://github.com/Rust-for-Linux/linux/pull/904
+
+> Signed-off-by: guilherme giacomo simoes <trintaeoitogc@gmail.com>
+
+Ideally add (before the Signed-off-by) a Link: and Suggested-by: tag.
+
+> -        for alias in aliases {
+> -            modinfo.emit("alias", &alias);
+> -        }
+> +        modinfo.emit_arr_str("alias", &aliases);
+
+Spurious change? Or am I missing something?
+
+Also, this patch should update the documentation of the macro.
+
+Finally, the title has an extra "[PATCH]" prefix.
+
+Cheers,
+Miguel
