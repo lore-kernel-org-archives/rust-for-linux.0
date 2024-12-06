@@ -1,31 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8D22036E4;
-	Fri,  6 Dec 2024 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F34320011B;
+	Fri,  6 Dec 2024 13:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733489982; cv=none; b=IFpIXCcwzedbPj2wpecgHRChR3Js3Utng+TbLMORF/noNrqPwZxZhynyvbk8lEKlAoKaq9JZWqK1OhbA8Dwch/wGoQTh8Z2YUSS2ZxjJkQF2FT7aJOrogGSPfseSFmgP0evQ1T6LMoK7IEgmVehoa5Rl77My4aE6eH1Np57NtPQ=
+	t=1733490301; cv=none; b=oY7PkdUcviTJwRMQY5Y5ugB1lKz2GtA3tq/EQp4Y8gfZ9VjBtokziKdewVJEqYj/ZL4AL+ZQ7YsfDvYf4yeNplQVfh9jjVsgeou7LYNpQFZlZmtyk+ar4TplUz/KOty0a4kljMan91RIA8MeevV61EEQXmSHwQAP6oKW2yUhdh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733489982; c=relaxed/simple;
-	bh=UF4I+tj8Zhz/GyVj1iMZmiB5VFexRnDSD3TF58n0NqQ=;
+	s=arc-20240116; t=1733490301; c=relaxed/simple;
+	bh=zlKdLM8kapGyhcJuH9MTKHeJKLM2/vVDSC6MxPiGEg8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VYbIAAkK8cKuIkCkWs3AD77jEX3yISDFOyuzy7CgoN+NtT+RvGHLbSTAbKlnGCqm2wZmo2usI1dH1JsdQuh9J4JpLxr6pQvfLG0bLDl9SAMMr11PoqZzvH/F4XRoXO9WC/uS3qZpktCc2NttZGCrI6jcQ5W0JzKqoECczyvmnHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXbEovWX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XgdQN4yETXUluPMyxloLH6bJfihNvmi9SF8umAMarlBmXX1MmnvRQqryQCvT6AwDAXKd2qb9DL0aLbsx0WmnGhVfraqNH0lpBlnWcdxZ3Vi1xFy9xT0ejPJKr69sSwPhj/1WSV9ux6fKgwU3/ExMUumdkymRfbnU4Zel6nt/Tro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgHTO4hf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXbEovWX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FB7C4CED1;
-	Fri,  6 Dec 2024 12:59:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733489981;
-	bh=UF4I+tj8Zhz/GyVj1iMZmiB5VFexRnDSD3TF58n0NqQ=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgHTO4hf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0474EC4CED1;
+	Fri,  6 Dec 2024 13:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733490300;
+	bh=zlKdLM8kapGyhcJuH9MTKHeJKLM2/vVDSC6MxPiGEg8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wXbEovWXDq5KORfTZ/bsLDx7fVgftmEZDJVxGWL/haDUYu9ZfONSqtfBr2D4DKasl
-	 Av/BwFEgsbje6etg+YqB3Vfhh5LI7cZ0ssEvYfRseY9RAtX3/urwgplj7UzxOMekLJ
-	 qTvYPhEIHJMJY3PA1ulwlkCGEqTn40h7QjMHlXSQ=
-Date: Fri, 6 Dec 2024 13:59:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lee Jones <lee@kernel.org>
+	b=NgHTO4hf+tmyf5sQ7sH+6p+J7BMii9YChE+cl8iCEJXjCn7VbdS1jQS9KY/th/MfU
+	 YvMcFkW6HMWnnjyKYUW4K5teIFHC7MCZSLK6KyvMyGercqdRvy1h89Y4IfahjShr9Z
+	 LqT8laaR14xQ0+L1VtTfx2aF5xuky59VXLKesl+CozODSgoIPwDylWBoTGmlVX/8P5
+	 gXyRVgNoW6hg2Aq+AIMBsXa4zl/a5ceNvmitkYrzXqb+WWiQIU9Gw/WLnSM3m5Zrx2
+	 Ln0BpgsEnSxcQiVjDSAC/gHN3r40TNws9XSaL1M47Du7g7A5iT+bKvTkCXi4RQYGqq
+	 WGjGeRZH/jIhQ==
+Date: Fri, 6 Dec 2024 13:04:49 +0000
+From: Lee Jones <lee@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, ojeda@kernel.org,
 	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
@@ -33,46 +36,53 @@ Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v5 3/4] sample: rust_misc_device: Demonstrate additional
  get/set value functionality
-Message-ID: <2024120652-champion-chute-4e74@gregkh>
+Message-ID: <20241206130449.GC7684@google.com>
 References: <20241206124218.165880-1-lee@kernel.org>
  <20241206124218.165880-4-lee@kernel.org>
+ <2024120652-champion-chute-4e74@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241206124218.165880-4-lee@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024120652-champion-chute-4e74@gregkh>
 
-On Fri, Dec 06, 2024 at 12:42:14PM +0000, Lee Jones wrote:
-> Expand the complexity of the sample driver by providing the ability to
-> get and set an integer.  The value is protected by a mutex.
+On Fri, 06 Dec 2024, Greg KH wrote:
+
+> On Fri, Dec 06, 2024 at 12:42:14PM +0000, Lee Jones wrote:
+> > Expand the complexity of the sample driver by providing the ability to
+> > get and set an integer.  The value is protected by a mutex.
+> > 
+> > Here is a simple userspace program that fully exercises the sample
+> > driver's capabilities.
 > 
-> Here is a simple userspace program that fully exercises the sample
-> driver's capabilities.
+> nit, subject line should have "samples" not "sample" :)
 
-nit, subject line should have "samples" not "sample" :)
+Ack.
 
-> +    fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
-> +        let guard = self.inner.lock();
-> +        let value = guard.value;
-> +
-> +        // Refrain from calling write() on a locked resource
-> +        drop(guard);
-> +
-> +        pr_info!("-> Copying data to userspace (value: {})\n", &value);
-> +
-> +        writer.write::<i32>(&value)?;
-> +        Ok(0)
-> +    }
+> > +    fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
+> > +        let guard = self.inner.lock();
+> > +        let value = guard.value;
+> > +
+> > +        // Refrain from calling write() on a locked resource
+> > +        drop(guard);
+> > +
+> > +        pr_info!("-> Copying data to userspace (value: {})\n", &value);
+> > +
+> > +        writer.write::<i32>(&value)?;
+> > +        Ok(0)
+> > +    }
+> 
+> I don't understand why you have to drop the mutex before calling
+> pr_info() and write (i.e. copy_to_user())?  It's a mutex, not a
+> spinlock, so you can hold it over that potentially-sleeping call, right?
+> Or is there some other reason why here?
 
-I don't understand why you have to drop the mutex before calling
-pr_info() and write (i.e. copy_to_user())?  It's a mutex, not a
-spinlock, so you can hold it over that potentially-sleeping call, right?
-Or is there some other reason why here?
+This was a request from Alice to demonstrate how to unlock a mutex.
 
-thanks,
-
-greg k-h
+-- 
+Lee Jones [李琼斯]
