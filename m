@@ -1,120 +1,146 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECE118FDAA
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Dec 2024 15:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047B220627F;
+	Fri,  6 Dec 2024 16:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498744; cv=none; b=WXiebyeq5iADjayjVSsdi3HcaUStjV+uae2LbBqSSXjGvWwJUKONkDIS8CcmHJYkohsM0Y7ZhfAT3Y5eo7T8Kt3mJ2/xP6krwvf+MIzpABnvDVijDHHfpo59jD8L9KW46rZxfRnrvlDTttSGduW0NTppVAvmCAXlAbq3j/o9t1Y=
+	t=1733503765; cv=none; b=W8hJBP2D8k0PCZWIq7NDqDfgftf0ZumHB8fRsvxwOkjhQhM53fufwCRgNOM3G8uWrFmwjMzguSV6a3kEdtDaR8rD5PuVKAdLxpr9h9ftZiNeszMsuxlr6zeU6SL/34u8hhIt1JXZGML9Wg6sByk+5DNYGgZVDCeGyJ1yIGqkCaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498744; c=relaxed/simple;
-	bh=YtRCwn0L0reKz/PCsHk5nYbtcK1nUJk/nFphVP0N18Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cGMv44UF+YuegWgcM8zC7bl/Fqap3aVt7iXd2CVAEI1wIhRpoHCJl5GuvF0vVmMuOYpbalc3GJvCsQOPe6pLaBUaXbW57ix1p8P8qCSya6c71j69LvlJrRpVoWN+BaYmamV4pN1Pjp7eHvGybXOWolXIINIVV0dnWUdMDPMNv3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+Hd4VsO; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733503765; c=relaxed/simple;
+	bh=UeKtN2BtVxO2wPZowv8deGBv035MOLPP/4qWZm6tNEc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQLZZsejtLvwZi4yEP5X9Rg8cAO2o4+uCPMfZ7L7z10otMmhjqVmBIyDil078ghe/dQOSwsiFHc/QjgxJz1CkFWfC7USgb7AWa/pokPt1P7gOZ8WKj7CD/qOHttTf3fc9kAVSxmtQRWbVIAfZYOZcD4rumBBGvcdFnDiTnCTv7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAEPZfD1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+Hd4VsO"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e27c75f4so1723519f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Dec 2024 07:25:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733498740; x=1734103540; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sUl66/2q9Es7IH83i2VHQcZCXL2FkKLSft77+kwSp+4=;
-        b=W+Hd4VsO8QYMsHWI6lgX0bOf9MvToZO1wmKypyeyzqNlGIU5wPpkE6/mRL3zhqJrEX
-         vq1OPjZvD59KBakJvYfEGD0S82DHYSA3L9qblK3VYtrxnkYNkY5bXWudEYxgnDIzKTj7
-         y4OwiHR3NL8r8zfFDlZY1WzKXOKjBtSkfcsQ/dlWdjGXghZSJqG4RRkOk+aps7rk18pH
-         g0RRAvENYeaMxTsWMTYb4lI5R5oobOaXND/GT4lWv66K/Df3FuAggmcPb5d2V7HcILEQ
-         AdbFFPX0y7B0DrF3bCfNQ0T7swqEQrSprGgV2noVfFfXOXnCq+5QIRMOgvbeeymwfqJ9
-         iG2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733498740; x=1734103540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sUl66/2q9Es7IH83i2VHQcZCXL2FkKLSft77+kwSp+4=;
-        b=ci6tzBH6l9E6+jIoEt453PGQ/J37qr1V8OLADxeu54Z1kfLPZDgJQE8M17BTNcOYyn
-         lRB2OIfdPQqfGtcS4u3yUZi4fbSx771XTvPpH4UBHNJROgdnxTh2y5cvDWUR9CBpFvPE
-         pQbCrq9K1u7v3L6EvYHyO1rElm4gF/lbQ14gMttFEmintM47w8Zd8zgUugAN7uxksinh
-         EQc3bStqeKLK6AZWWfK1acFPDfvCL4Ba2f0FXoTAfffc5HXoa3UmLvMmU5RlCZwj+vV4
-         E3i3j82GqInqI62TK5DbtbJn9FaSFMZ6UBF9mYVtlk98+HU0YTiIOBZkiqud/rfD52ao
-         0LVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwaATIHms1pBMNnrep1OqYdwMlyakciBstUKSRclDWrDn/q7d7FHbfI4xvX21BPbx0iLmcsmTD65ctruy8Jw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUcGksx8qAg6dOtr2viP06VQgIeoGZyzM6eIideLi/B+UjV/fW
-	r1Bmf6EgurUVlyIc1CTqf7HdqvsIRjec06dEzVDjZeZlk7gsW5KkBCRfSOnDVzFrbZd/NAsqsbY
-	3UOaLJTN2Gl2gNsJnyGgG18hU/vQX7ITesUlO
-X-Gm-Gg: ASbGncsGG6eVNx9ViPcyFTTh7mwRuaw/Yss5gTpa5QoG3obpFspfcPUFsjl1rOZkn1P
-	kL8J2czcf8KRIJujZelaHZU17wOAJTAmy
-X-Google-Smtp-Source: AGHT+IFYizkoJZbVBGz6vm2wzIGh1sKlEnG59vyrJhpEUKD4My3ZUK6cpeBmwJvlu/MBEgYOtQCHyJ9kZroLKgAnFK0=
-X-Received: by 2002:a05:6000:1886:b0:386:3327:9d07 with SMTP id
- ffacd0b85a97d-38633279daemr57136f8f.54.1733498740410; Fri, 06 Dec 2024
- 07:25:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAEPZfD1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2A7C4CEDE;
+	Fri,  6 Dec 2024 16:49:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733503764;
+	bh=UeKtN2BtVxO2wPZowv8deGBv035MOLPP/4qWZm6tNEc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gAEPZfD1MWRpDXbqvn2g1pA7KTG4zriOSMOp1tTDC6/23O/z5t9YkqWh+kHWvOGNn
+	 PRsxVIlJL9u8CEFKpHLeXaGIRyHsR3KIn5AFslVEPmPQkraVkvYGIR090fLOgd6Y0A
+	 oSc01N1bGBZIe6jfjbccoPQqT7clgP/+kYZqF8FKB0DeN8t5AXTOb2BOrsMaIr63Hc
+	 xlaLfQZkxvMDbD7l/cbKW0zQ6QEmgHiQfBuBqYN0rt/ApAOQZ1S921Jt1oLB06/CB7
+	 tNqzBlRSPTOy61L6nO4f9RL4VuRW67NtRaovCUbSL4gwTkcpY4YNKUcC4QcnEU2Sg+
+	 gFnEbKgL1L58w==
+Date: Fri, 6 Dec 2024 16:49:18 +0000
+From: Lee Jones <lee@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
+ new MiscDevice bindings
+Message-ID: <20241206164918.GA6336@google.com>
+References: <20241206124218.165880-1-lee@kernel.org>
+ <Z1LzOORuFpO0MXAZ@pollux>
+ <20241206125430.GB7684@google.com>
+ <Z1L2tjNrIa2Q0Awf@pollux>
+ <20241206131445.GE7684@google.com>
+ <Z1L9dLyLRmLcwMne@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241205141533.111830-1-dakr@kernel.org> <20241205141533.111830-9-dakr@kernel.org>
-In-Reply-To: <20241205141533.111830-9-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 6 Dec 2024 16:25:28 +0100
-Message-ID: <CAH5fLggWOkut0O+28NVYBSF2CTpHXe9Thb3rhXoRZo5e9zFjzw@mail.gmail.com>
-Subject: Re: [PATCH v4 08/13] rust: pci: add basic PCI device / driver abstractions
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
-	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
-	j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z1L9dLyLRmLcwMne@pollux>
 
-On Thu, Dec 5, 2024 at 3:16=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> Implement the basic PCI abstractions required to write a basic PCI
-> driver. This includes the following data structures:
->
-> The `pci::Driver` trait represents the interface to the driver and
-> provides `pci::Driver::probe` for the driver to implement.
->
-> The `pci::Device` abstraction represents a `struct pci_dev` and provides
-> abstractions for common functions, such as `pci::Device::set_master`.
->
-> In order to provide the PCI specific parts to a generic
-> `driver::Registration` the `driver::RegistrationOps` trait is implemented
-> by `pci::Adapter`.
->
-> `pci::DeviceId` implements PCI device IDs based on the generic
-> `device_id::RawDevceId` abstraction.
->
-> Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> +impl<T: Driver + 'static> Adapter<T> {
-> +    extern "C" fn probe_callback(
-> +        pdev: *mut bindings::pci_dev,
-> +        id: *const bindings::pci_device_id,
-> +    ) -> core::ffi::c_int {
-> +        // SAFETY: The PCI bus only ever calls the probe callback with a=
- valid pointer to a
-> +        // `struct pci_dev`.
-> +        let dev =3D unsafe { device::Device::get_device(&mut (*pdev).dev=
-) };
+On Fri, 06 Dec 2024, Danilo Krummrich wrote:
 
-It shouldn't be necessary to increment the refcount here.
+> On Fri, Dec 06, 2024 at 01:14:45PM +0000, Lee Jones wrote:
+> > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
+> > 
+> > > On Fri, Dec 06, 2024 at 12:54:30PM +0000, Lee Jones wrote:
+> > > > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
+> > > > 
+> > > > > On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
+> > > > > > It has been suggested that the driver should use dev_info() instead of
+> > > > > > pr_info() however there is currently no scaffolding to successfully pull
+> > > > > > a 'struct device' out from driver data post register().  This is being
+> > > > > > worked on and we will convert this over in due course.
+> > > > > 
+> > > > > I think you're going too fast with this series.
+> > > > > 
+> > > > > Please address the comments you receive before sending out new versions.
+> > > > > 
+> > > > > Also, please document the changes you have made from one version to the next,
+> > > > > otherwise it's gonna be very hard to review this.
+> > > > 
+> > > > I can add a change log.
+> > > > 
+> > > > What comments were missed?
+> > > 
+> > > I think MiscDevice should ideally use the generic `Registration` type from [1].
+> > 
+> > How can an in-tree driver use out-of-tree functionality?
+> 
+> AFAICT, this sample module is in the exact same stage as the generic device / driver
+> infrastructure.
+> 
+> Both are on the mailing list in discussion for inclusion into the kernel.
+> Labeling one as in-tree and the other one as out-of-tree is clearly misleading.
 
-Also, the mutable reference is illegal because it references a C type
-without a Opaque wrapper. Please use the addr_of_mut! macro instead of
-a mutable reference.
+If I was saying that, I'd agree with you.
 
-Alice
+I was asking how MiscDevice (in-tree) could use Registration (out-of-free).
+
+> I'm just saying it would be good to align this. If the sample driver is time
+> critical, I have no problem if you go ahead with the current
+> `MiscDeviceRegistration` and `InPlaceModule`, but again, why not align it from
+> the get-go?
+
+Because it's not available yet. :)
+
+> > > I see that you use `InPlaceModule` now, which is fine. But since this is just a
+> > > sample, we could probably afford to wait until the generic type lands.
+> > > 
+> > > Also, there was a comment about how we can make use of the `dev_*` macros.
+> > > 
+> > > I really think we should fix those before we land a sample driver. It's gonna
+> > > be hard to explain people later on that they shouldn't do what the example
+> > > does...
+> > 
+> > We're authoring the sample based on what is available at the moment.
+> 
+> Well, for this I have to disagree, not being able to use the `dev_*` macros is
+> simply meaning that the abstraction is incomplete (in this aspect).
+> 
+> I don't see the need to land a sample driver that tells the user to do the wrong
+> thing, i.e. use the `pr_*` macros.
+> 
+> As Alice mentioned, you can get the miscdevice pointer from the file private
+> data in open() and then make it accessible in the other fops hooks. If we go for
+> this solution it will change the callbacks of `MiscDevice` and maybe even some
+> other architectural aspects.
+> 
+> This needs to be addressed first.
+
+The issue about ever growing dependencies _can_ be that authors have
+other priorities and are slow to turn things around, which may end up
+with nothing being accepted and contributors getting frustrated.
+
+However, taking into consideration how swift Alice is with these things,
+I'd be happy to wait for this part if people are insistent.
+
+> > There will always be something better / more convenient coming down the
+> > pipe.  We don't usually put off contributors pending acceptance of
+> > out-of-tree functionality, sample or otherwise.
+> 
+> No one asks for this here. But if the example reveals shortcomings, we shouldn't
+> promote them as example.
+
+IMHO it's reasonable for the sample to represent the current status of
+the frameworks in use.  As advancements / adaptions are introduced we
+can use them to continually improve the example.
+
+-- 
+Lee Jones [李琼斯]
