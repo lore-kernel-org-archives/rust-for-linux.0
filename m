@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82CB1F5403;
-	Fri,  6 Dec 2024 09:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13001F8AFD;
+	Fri,  6 Dec 2024 09:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733475940; cv=none; b=g6+/rE0lhEE2PfiDOxManDQ8l+XPQ/1aLsdM/o9SUDvEp7MaZ37eB+dC7D32mpvO/CNTFxbvY950Y+H/RSWWUd1irCUJPcjLjZ3j4GG+yj5piENjuzePYcWGe7Ti3XpitOS8z279U4R/wb00hiXbUsu+/upqGsvdTd4uCsEaA+4=
+	t=1733475943; cv=none; b=KMVSS+nj129Y7OL+8nnTgUPEGZrFOBr2jaz/n3LzuyFs+MGyX81r+uvnaf0yHVtMlz4ouDzJ1uGOXzoxlYNDmutiskXyicA7U0s+myacE9rjns460C8negEQvE9PGG/2ct3BVMGWXbCAFy6Uc4ClOvbM53b/FCJfZ1N3OsoH8FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733475940; c=relaxed/simple;
-	bh=22NZyA5YVkMQ03pXUXXdocb9WXBGnORT9AlGZhxewK4=;
+	s=arc-20240116; t=1733475943; c=relaxed/simple;
+	bh=/vGNwkuzJwrok7OwiHWU6wXKpr+MGQsYZDS7oxldDSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htz6+3f+Igyc4JkRMO+KrqyEbmjacMPMhRm0c1ROLD9ZuIGPhqRvFcvJnRCsB1xCPltPc5rO70oGGUzjCIFM73Zl9zwNkz9vF8V5wl4b/4AjhN3FNmOXmXZCayM2shj5SXX/jOdFzOrq+AqHPHGr8vDhb0oWfRiFFqcH/vNlhXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DT3H8cV3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Vbw/+4Nrjl6PgxAfZBgejrNhvUr5wOSLrZo6jgZhjG0CNgTieFsWiEn0/MmL2waCA+qYvR+zPIm5yRbsxru2SsQn/34WT9E9UmFqIXXaKw1mfuD02HzNQTKyj0/UzENEqw4FBu/1yJyaZ/cs077k4JZ3z2aTkPq+gozdQ4evqH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNT1yTKh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DT3H8cV3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40DDC4CEDF;
-	Fri,  6 Dec 2024 09:05:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNT1yTKh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40A7C4CEDD;
+	Fri,  6 Dec 2024 09:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733475940;
-	bh=22NZyA5YVkMQ03pXUXXdocb9WXBGnORT9AlGZhxewK4=;
+	s=k20201202; t=1733475943;
+	bh=/vGNwkuzJwrok7OwiHWU6wXKpr+MGQsYZDS7oxldDSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DT3H8cV3Moh7Exfxq4M978tHqv6qDn/2afPk84yQLdD7ypRQDppTKPcj7rOABjvjI
-	 mXYQAPUNe5lJWLZV8bsoZ1GlgJAD6cbDdVKHW46fwRlXqbgEjfEBwN0oxGYmlpIlOm
-	 UQMVCK/Of9JIMa2CNuoEqQxqGSbMeLGcUxLcJwOSQN3s07TSdMvr5LmENOpcFNTCcC
-	 W9peqv9HfqnHOTOLbRJXyTRIp2eZyDGqkCJxC5p7hj/GA4ZKlAcCmk4oQ88lAGweGq
-	 cipHGYhTPzg/SMhPCG+iKXukLYiowptznwKvsrpnSfi+6VG8u/NrOTlGWsOl2138Ub
-	 TC0AfyJA5oW6g==
+	b=ZNT1yTKhmoK5Bln6Fk9kNGFSKx562INp9fUkT10gscUkP7ILGKB5OcizGbloWxSbZ
+	 km5ZkEzFdx/1RrTGBZ118hIdEYl4BgD44O97P6lYp6YGqgmGX0fDUPo0RrOJOE0E77
+	 JjS1TEWt7ah3iN78hPfqYs29DHW8e8TSsUeUAqe/xZ7FrBxwTIhnO9YBAdgMkUcksE
+	 RRdjfZDcM69q7uBzbqyg7+b3lGEtWR2jt+qYZCHoScrRCRopENrq1HGZhHLTXDrAtT
+	 bWnzFKiV6Gi7+FbxP6krNlnjWsxT4SYeAoJ4KE5bom28ytcVmPvPqnC0L1AE1MisvE
+	 KEYG9gRfp36cA==
 From: Lee Jones <lee@kernel.org>
 To: lee@kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: linux-kernel@vger.kernel.org,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 2/5] Documentation: ioctl-number: Carve out some identifiers for use by sample drivers
-Date: Fri,  6 Dec 2024 09:05:05 +0000
-Message-ID: <20241206090515.752267-4-lee@kernel.org>
+Subject: [PATCH v4 2/4] samples: rust: Provide example using the new Rust MiscDevice abstraction
+Date: Fri,  6 Dec 2024 09:05:06 +0000
+Message-ID: <20241206090515.752267-5-lee@kernel.org>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
 In-Reply-To: <20241206090515.752267-1-lee@kernel.org>
 References: <20241206090515.752267-1-lee@kernel.org>
@@ -55,29 +55,141 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-32 IDs should be plenty (at yet, not too greedy) since a lot of sample
-drivers will use their own subsystem allocations.
+This sample driver demonstrates the following basic operations:
 
-Sample drivers predominately reside in <KERNEL_ROOT>/samples, but there
-should be no issue with in-place example drivers using them.
+* Register a Misc Device
+* Create /dev/rust-misc-device
+* Provide open call-back for the aforementioned character device
+* Operate on the character device via a simple ioctl()
+* Provide close call-back for the character device
 
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- Documentation/userspace-api/ioctl/ioctl-number.rst | 1 +
- 1 file changed, 1 insertion(+)
+ samples/rust/Kconfig             | 10 ++++
+ samples/rust/Makefile            |  1 +
+ samples/rust/rust_misc_device.rs | 80 ++++++++++++++++++++++++++++++++
+ 3 files changed, 91 insertions(+)
+ create mode 100644 samples/rust/rust_misc_device.rs
 
-diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-index 243f1f1b554a..dc4bc0cab69f 100644
---- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -311,6 +311,7 @@ Code  Seq#    Include File                                           Comments
-                                                                      <mailto:oe@port.de>
- 'z'   10-4F  drivers/s390/crypto/zcrypt_api.h                        conflict!
- '|'   00-7F  linux/media.h
-+'|'   80-9F  samples/                                                Any sample and example drivers
- 0x80  00-1F  linux/fb.h
- 0x81  00-1F  linux/vduse.h
- 0x89  00-06  arch/x86/include/asm/sockios.h
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index b0f74a81c8f9..df384e679901 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_MISC_DEVICE
++	tristate "Misc device"
++	help
++	  This option builds the Rust misc device.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_misc_device.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_PRINT
+ 	tristate "Printing macros"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index c1a5c1655395..ad4b97a98580 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -2,6 +2,7 @@
+ ccflags-y += -I$(src)				# needed for trace events
+ 
+ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
++obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+new file mode 100644
+index 000000000000..3837532d259e
+--- /dev/null
++++ b/samples/rust/rust_misc_device.rs
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2024 Google LLC.
++
++//! Rust misc device sample.
++
++use kernel::{
++    c_str,
++    ioctl::_IO,
++    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
++    prelude::*,
++};
++
++const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 9);
++
++module! {
++    type: RustMiscDeviceModule,
++    name: "rust_misc_device",
++    author: "Lee Jones",
++    description: "Rust misc device sample",
++    license: "GPL",
++}
++
++struct RustMiscDeviceModule {
++    _miscdev: Pin<KBox<MiscDeviceRegistration<RustMiscDevice>>>,
++}
++
++impl kernel::Module for RustMiscDeviceModule {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Initialising Rust Misc Device Sample\n");
++
++        let options = MiscDeviceOptions {
++            name: c_str!("rust-misc-device"),
++        };
++
++        Ok(Self {
++            _miscdev: KBox::pin_init(
++                MiscDeviceRegistration::<RustMiscDevice>::register(options),
++                GFP_KERNEL,
++            )?,
++        })
++    }
++}
++
++struct RustMiscDevice;
++
++#[vtable]
++impl MiscDevice for RustMiscDevice {
++    type Ptr = KBox<Self>;
++
++    fn open() -> Result<KBox<Self>> {
++        pr_info!("Opening Rust Misc Device Sample\n");
++
++        Ok(KBox::new(RustMiscDevice, GFP_KERNEL)?)
++    }
++
++    fn ioctl(
++        _device: <Self::Ptr as kernel::types::ForeignOwnable>::Borrowed<'_>,
++        cmd: u32,
++        _arg: usize,
++    ) -> Result<isize> {
++        pr_info!("IOCTLing Rust Misc Device Sample\n");
++
++        match cmd {
++            RUST_MISC_DEV_HELLO => pr_info!("Hello from the Rust Misc Device\n"),
++            _ => {
++                pr_err!("IOCTL not recognised: {}\n", cmd);
++                return Err(ENOTTY);
++            }
++        }
++
++        Ok(0)
++    }
++}
++
++impl Drop for RustMiscDevice {
++    fn drop(&mut self) {
++        pr_info!("Exiting the Rust Misc Device Sample\n");
++    }
++}
 -- 
 2.47.0.338.g60cca15819-goog
 
