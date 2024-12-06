@@ -1,241 +1,105 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993151EF097
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Dec 2024 09:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFD61DB361
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Dec 2024 09:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733478040; cv=none; b=s2zVANe7Hq3o8NeWQ1vCPym7pPHWvlVKR7JTYGNYl9iPctsmy6eDzw2h6BIGeeseTIh4RdyIlQjKb1Ge/pqVVappo1fRiL6LFZwqh5ZvWMVYBAJ5jVPu0D5u+29vBGmsVTijtLY6cbKhoHENwzKSgdlRMtltuym+g7xfMoWd1iY=
+	t=1733478999; cv=none; b=OMOtWoMCQ7xCcoiyQN8n+OlfWeEg69MeK3Z8kQt/9UpBaEgYHFPY81UNX0vRoMTZGkMORWjDjUYIswrmfnMqHJTPvD+NelbW6IOS6Dhtuuz2hFe/MCdAP4cTJ14wv3rHyDzBLCWIlVHqvhl8/ELUkxaS/sCrSgM9jDWEMx71unk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733478040; c=relaxed/simple;
-	bh=TWS54qtWOUt4tbtkhVNM5u8s8m+lfvjSfdulgwfehLA=;
+	s=arc-20240116; t=1733478999; c=relaxed/simple;
+	bh=u3Nn3XfNE9X4wSjorElnFa3+gGBNUsIrTN62x6Dkdmc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IhZ9bNIaVSqY6g+RC7rLDyKEx5jsXoNK4hv2N3qNdHcPGkArmV3hXjJwI39h4BeHQY016rpuXu4vs2mJt8Jt9qhlUKvjOzq6KxqsoXbDeMVo/0EWOzhBSd2J+0Vt5KRnVxHwJ1SRCf+0n4XwJ2zlAoZN7JZZRatiAIe94+l/vFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EVoth1r+; arc=none smtp.client-ip=209.85.128.51
+	 To:Cc:Content-Type; b=ddBRlGg/WhaQJ7jTYCvJe2H2ggHJUojn8iJ+6zTID0xPle7X3B6wgUOhiMhYrifL0TJCelsR8Jt8T6T4p9WulGElQ7NWYuHmRVP+pLzwmOfTyPd/tApEolWPYOh6UWf0J64tv0LeVEnuJ7DB8lVJHMl5YYdEW5JtEbfI+q/yP3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mvi/fczv; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EVoth1r+"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4349f160d62so12912675e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Dec 2024 01:40:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mvi/fczv"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37ed3bd6114so811897f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Dec 2024 01:56:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733478036; x=1734082836; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733478996; x=1734083796; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=roDsf5JZ69Vb0EVMiFOCplKdqH1R39suO8gspINBAFY=;
-        b=EVoth1r+EngQHyeBKzqdF2ba4dNWoeWjblIfn+14BjwS66sBNHaZ8DiYRoDrvrRmNj
-         wQliKUTfzWAk0ZK/0/4klWu1qQhY0OszO5LciQYmCkCmoMyLaGRKqzadAE0gKVPN/4Yn
-         CbGPdlDx01xphe4bWdi3e6W5CCGh+8DBLGiYrjBUM8mWkFSfxORWOhLpW2TgZ8qsvm6+
-         BT0Zu/Ax+ZVIOIq9dg8pwm/dX+HAB6hKL8uxrCD+g5aEDkoeS+kpXvSl0O8eJih7oxEn
-         +n7Gtp/lbWozq5PEl63o9ychjckhj46sNvpoK0EQNDdQuq5ZcnlL65xOxCbVj5nQxY8Y
-         8BqA==
+        bh=u3Nn3XfNE9X4wSjorElnFa3+gGBNUsIrTN62x6Dkdmc=;
+        b=Mvi/fczvDqI7p0tveM6oOnlu0HCVz+gQfYYaJG7AX4U+z4pSKT+J9ocVHWae92wVQU
+         YZboBIyHCELqHRawzntQ3+e6Y668hwEpq0rXwi2qjIvqZB524n449bvxjujaL7PAU0tS
+         Y+vLaGaIsBsOR3es1RxFMXjY8qISihdQslaRQKpyXo5S6r4UyB6gcu9msLD/+y7cfUBH
+         OZ6z6rOW7iKq5lqC7jUhRe4JAUtNgXvKqNmM1azpcxVgfv8B0bLUtcFqk9mooyQbjFTh
+         4ElQMU8U6qN9e9rI6rh49DF73HRnQJrvDkfZSDTo9PmdAF4h00vMV16q0CV9AbS0xXWK
+         Pbug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733478036; x=1734082836;
+        d=1e100.net; s=20230601; t=1733478996; x=1734083796;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=roDsf5JZ69Vb0EVMiFOCplKdqH1R39suO8gspINBAFY=;
-        b=JFx5u32gQb+KLqGDGQ+WOSCLrgbqXKQUe21KXe69HaLNPwUcgwvwmWL/F6REYFGOUf
-         LKR0xGbRen2jPwhmF66ym1m6ol/QQecFmTfwRwjqnSb3RAbP+tS8ShiaT17CmODCHgK8
-         VQ1sPdnt8jjuK5v9G1jtkXoxsQkgCGyDcSFufgzZNDCqcYTG5Ovk7VyDK5SVEXnAh81R
-         yLhakdQsgRJ3mSJEsVS2GQ1Ue7Is6bCqMCpiOWut88RAsmv5/KVig4QH++9DP4lXCEFa
-         EDUCHVOz1rx//EK9j+BiPJwtnU6PryRjeip/cBCa56KP/JY6pil5sIY1pQu307i1UFin
-         Z1HA==
-X-Forwarded-Encrypted: i=1; AJvYcCUG8slql2gg0z1bzEkPpIdQX807OyYI1QgNaOVrVaV/T/LDmObN0iy7//M5uUlmMv5o6qa8OkItZsEuZbChEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPx5lbRI3mgDMbda0NBaFZFJcesW4M/G1jTycbEZo1uSRZ8AT2
-	ITh1wJ59TyaX+v5BbwIz7SAwuYuKNm1GDJ0T9edzcVjwPH5n6O1gV/VkzTrBaYEUFOD4ZS8w0va
-	kH6rlEkf+KTY5GmGoVzUZtxS9QKeAlqw3Z7mi
-X-Gm-Gg: ASbGnctmOn3kIX4hnFhRdIogAQwjc8XpH9wGjgt/rAFqz1vy5o1pvf9qNoqi76YflNn
-	kS66CDwItHL8+7p/UIIZOu3vP6mUlpPLZ
-X-Google-Smtp-Source: AGHT+IFsWWSvAWLzPdhJb+M+fGJXNYBcqly8mjWF2TdF0iIoCLduCHfJWFjNVoFpOFvhxKnrXSbxSDlzlgGS+l5y3wE=
-X-Received: by 2002:a05:600c:450b:b0:434:a7b6:10e9 with SMTP id
- 5b1f17b1804b1-434ddeb9b73mr22189395e9.17.1733478035843; Fri, 06 Dec 2024
- 01:40:35 -0800 (PST)
+        bh=u3Nn3XfNE9X4wSjorElnFa3+gGBNUsIrTN62x6Dkdmc=;
+        b=ooOga/ue4Ph4GUxeLHiyw3yWs1T9GVcJN27gzgLaMYgQX2mssbxMqUxyZq5zX2+XQp
+         oDFR9UlGVAclqYPPRaQJjjW2n5WkRoriXWMZ0lZyIT9PxMp/KG8dFC4gbmQ4LN0EIiOw
+         SRGYcqPpjhOikFsTGmJUYoPmD3fgRXjAAlzOgAKvIyKd2CsQyxI/9F44LCIFVvX+GjEr
+         /JGoWmhB/xrNsp0wEc7t9wO3d7S9Bd2UCh4pSHDUQTrWfKaWD+pG5G2iBx8M4FzZSgsH
+         I7G338hjz8OfGl092wST1dy1Mn874Da4exHEwxrxVKVaqFkyr4XkU0//K0IIZXJtm+bT
+         Yiuw==
+X-Forwarded-Encrypted: i=1; AJvYcCW+aNJ4mvNbOJj7myHBfeA/ySovH4/ZfWNKQIs8l6hS6Z0mfwFKRuyGJOx0BEcmHnCmEEG2nmzn/WEy+fhu/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8AnQpwlapCTKq8o9ht+Su9Vl+SDSO2IfzCYDH4MZZo3g+4cI9
+	pujrfdv3r4bArK/NQBZFVdSOPf/v98sho3EoF9c+a0CTkHzxOub5AFe6z+MSs7WqrguIkKAb7pJ
+	7P4qyY/QQFWObvnX0J3M3NOhefg2Y/XTTdqsw
+X-Gm-Gg: ASbGnctb7A32FcyrCzBsN9MfvG1jBtLOmKdTzZmmTRY19nGQoGzwL4oQjgLN/wlIOZP
+	fJ3d5GYRxj4iNwJsar4bdX9na9TRjSjB2
+X-Google-Smtp-Source: AGHT+IEI4ugE5yUlz80Raoztir4esrVQ6dVrTvSFsQiYh6O9FXPRsxE4M7zyfVQ/uimtw7elOU/aRG/pDrBA/rN2s2E=
+X-Received: by 2002:a05:6000:1565:b0:385:df73:2f3a with SMTP id
+ ffacd0b85a97d-3862b3516aemr1476984f8f.14.1733478995645; Fri, 06 Dec 2024
+ 01:56:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206090515.752267-1-lee@kernel.org> <20241206090515.752267-5-lee@kernel.org>
- <Z1LD42UsCvtAhluY@pollux>
-In-Reply-To: <Z1LD42UsCvtAhluY@pollux>
+References: <20241205-guard-stable-doc-v1-1-a3f8249cf4d4@google.com> <Z1HuNaDAiKV7L9ea@boqun-archlinux>
+In-Reply-To: <Z1HuNaDAiKV7L9ea@boqun-archlinux>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 6 Dec 2024 10:40:23 +0100
-Message-ID: <CAH5fLghS+foEe7mFVDpr+AbHkQmdkx-EH0jnq2SzH+rYQPiS2A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] samples: rust: Provide example using the new Rust
- MiscDevice abstraction
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, arnd@arndb.de, 
-	gregkh@linuxfoundation.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
-	rust-for-linux@vger.kernel.org
+Date: Fri, 6 Dec 2024 10:56:23 +0100
+Message-ID: <CAH5fLgi8N6bdke1o_uTvYsYfwH1KhsY4wTGmFpc43Mi_U6+KWg@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: document that Guard is not a stable lock guard
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 6, 2024 at 10:29=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Thu, Dec 5, 2024 at 7:18=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
+ote:
 >
-> On Fri, Dec 06, 2024 at 09:05:06AM +0000, Lee Jones wrote:
-> > This sample driver demonstrates the following basic operations:
+> On Thu, Dec 05, 2024 at 12:35:51PM +0000, Alice Ryhl wrote:
+> > Most locks in the linux kernel are stable, which means that holding the
+> > lock is sufficient to keep the value from being freed. For example, thi=
+s
+> > means that if you acquire a lock on a refcounted value during rcu, then
+> > you do not need to acquire a refcount to keep it alive past
+> > rcu_read_unlock().
 > >
-> > * Register a Misc Device
-> > * Create /dev/rust-misc-device
-> > * Provide open call-back for the aforementioned character device
-> > * Operate on the character device via a simple ioctl()
-> > * Provide close call-back for the character device
+> > However, the Rust `Guard` type is written in a way where it cannot be
+> > used with this pattern. One reason for this is the existence of the
+> > `do_unlocked` method that is used with `Condvar`. The method allows you
+> > to unlock the lock, run some code, and then reacquire the lock. This
+> > operation is not okay if the lock itself is what keeps the value alive,
+> > as it could be freed right after the unlock call.
 > >
-> > Signed-off-by: Lee Jones <lee@kernel.org>
-> > ---
-> >  samples/rust/Kconfig             | 10 ++++
-> >  samples/rust/Makefile            |  1 +
-> >  samples/rust/rust_misc_device.rs | 80 ++++++++++++++++++++++++++++++++
-> >  3 files changed, 91 insertions(+)
-> >  create mode 100644 samples/rust/rust_misc_device.rs
-> >
-> > diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> > index b0f74a81c8f9..df384e679901 100644
-> > --- a/samples/rust/Kconfig
-> > +++ b/samples/rust/Kconfig
-> > @@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
-> >
-> >         If unsure, say N.
-> >
-> > +config SAMPLE_RUST_MISC_DEVICE
-> > +     tristate "Misc device"
-> > +     help
-> > +       This option builds the Rust misc device.
-> > +
-> > +       To compile this as a module, choose M here:
-> > +       the module will be called rust_misc_device.
-> > +
-> > +       If unsure, say N.
-> > +
-> >  config SAMPLE_RUST_PRINT
-> >       tristate "Printing macros"
-> >       help
-> > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> > index c1a5c1655395..ad4b97a98580 100644
-> > --- a/samples/rust/Makefile
-> > +++ b/samples/rust/Makefile
-> > @@ -2,6 +2,7 @@
-> >  ccflags-y +=3D -I$(src)                                # needed for tr=
-ace events
-> >
-> >  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)            +=3D rust_minimal.o
-> > +obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)                +=3D rust_misc_de=
-vice.o
-> >  obj-$(CONFIG_SAMPLE_RUST_PRINT)                      +=3D rust_print.o
-> >
-> >  rust_print-y :=3D rust_print_main.o rust_print_events.o
-> > diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_=
-device.rs
-> > new file mode 100644
-> > index 000000000000..3837532d259e
-> > --- /dev/null
-> > +++ b/samples/rust/rust_misc_device.rs
-> > @@ -0,0 +1,80 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +// Copyright (C) 2024 Google LLC.
-> > +
-> > +//! Rust misc device sample.
-> > +
-> > +use kernel::{
-> > +    c_str,
-> > +    ioctl::_IO,
-> > +    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration=
-},
-> > +    prelude::*,
-> > +};
-> > +
-> > +const RUST_MISC_DEV_HELLO: u32 =3D _IO('|' as u32, 9);
-> > +
-> > +module! {
-> > +    type: RustMiscDeviceModule,
-> > +    name: "rust_misc_device",
-> > +    author: "Lee Jones",
-> > +    description: "Rust misc device sample",
-> > +    license: "GPL",
-> > +}
-> > +
-> > +struct RustMiscDeviceModule {
-> > +    _miscdev: Pin<KBox<MiscDeviceRegistration<RustMiscDevice>>>,
-> > +}
-> > +
-> > +impl kernel::Module for RustMiscDeviceModule {
-> > +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> > +        pr_info!("Initialising Rust Misc Device Sample\n");
-> > +
-> > +        let options =3D MiscDeviceOptions {
-> > +            name: c_str!("rust-misc-device"),
-> > +        };
-> > +
-> > +        Ok(Self {
-> > +            _miscdev: KBox::pin_init(
-> > +                MiscDeviceRegistration::<RustMiscDevice>::register(opt=
-ions),
-> > +                GFP_KERNEL,
-> > +            )?,
-> > +        })
 >
-> Since this v4 was sent just when I was commenting on v3:
->
-> Why do we add examples where we ask people to allocate those structures w=
-ith
-> kmalloc()?
->
-> `MiscDevice` should switch to the generic `Registration` type in [1] and =
-use
-> `InPlaceModule`, such that those structures land in the .data section of =
-the
-> binary.
->
-> [1] https://lore.kernel.org/rust-for-linux/20241205141533.111830-3-dakr@k=
-ernel.org/
->
-> > +    }
-> > +}
-> > +
-> > +struct RustMiscDevice;
-> > +
-> > +#[vtable]
-> > +impl MiscDevice for RustMiscDevice {
-> > +    type Ptr =3D KBox<Self>;
-> > +
-> > +    fn open() -> Result<KBox<Self>> {
-> > +        pr_info!("Opening Rust Misc Device Sample\n");
->
-> This should be `dev_info!`, but I see why you don't have access to the de=
-vice
-> structure here...
->
-> @Greg: How do miscdev drivers do this in C? I looked at a couple of them,=
- but
-> all of those seem to use pr_* macros. They can't get the device pointer f=
-rom
-> the inode or file pointer.
->
-> However, C drivers could refer to the struct miscdevice directly since it=
-'s
-> almost always a static variable in the file scope.
->
-> In Rust we do the static allocation part with `InPlaceModule` as mentione=
-d
-> above. However, this still doesn't let us refer to the underlying struct
-> miscdevice.
->
-> This all would be much cleaner if there'd be a "fake" probe() callback fo=
-r a
-> struct miscdevice. This way we could perfectly align the miscdevice abstr=
-action
-> with the abstractions for all other drivers, such as PCI, platform, etc.
+> Hmm... but `Guard` holds a reference to the corresponding `Lock`. How
+> could this happen? Do you have an example?
 
-It turns out that the file private data is a pointer to the `struct
-miscdevice` in fops->open(), so we can access it in open. To access it
-in other fops hooks, we need to take a refcount on the device in open
-and stash it.
+Well it can't. The reference is yet another reason that Guard can't be
+used for stable locking.
+
+This doc change arises out of me needing a stable lock for something.
 
 Alice
