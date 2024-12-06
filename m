@@ -1,48 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047B220627F;
-	Fri,  6 Dec 2024 16:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2CF2206A5;
+	Fri,  6 Dec 2024 18:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733503765; cv=none; b=W8hJBP2D8k0PCZWIq7NDqDfgftf0ZumHB8fRsvxwOkjhQhM53fufwCRgNOM3G8uWrFmwjMzguSV6a3kEdtDaR8rD5PuVKAdLxpr9h9ftZiNeszMsuxlr6zeU6SL/34u8hhIt1JXZGML9Wg6sByk+5DNYGgZVDCeGyJ1yIGqkCaQ=
+	t=1733508833; cv=none; b=U2n+ujvvh1vwPqPQ+1tnpOekgYPKB/sPs1U8zhNOeY/CNI+ICXRiRkw2PRnFy1iXNQ+memriJF+gxdDlPtFd7djkW2BxkZu5BkXg+lnGLBkgLfh3EidunjjYYJDksjRk0KEYuC7EFBIoQY0fdwpGvvVqj3ULc2PUW5KSXX1G81g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733503765; c=relaxed/simple;
-	bh=UeKtN2BtVxO2wPZowv8deGBv035MOLPP/4qWZm6tNEc=;
+	s=arc-20240116; t=1733508833; c=relaxed/simple;
+	bh=4ErpPL5RKiuQcrZig3s30EOBUc46OyFFUZ5BpiI6s8o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sQLZZsejtLvwZi4yEP5X9Rg8cAO2o4+uCPMfZ7L7z10otMmhjqVmBIyDil078ghe/dQOSwsiFHc/QjgxJz1CkFWfC7USgb7AWa/pokPt1P7gOZ8WKj7CD/qOHttTf3fc9kAVSxmtQRWbVIAfZYOZcD4rumBBGvcdFnDiTnCTv7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAEPZfD1; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=msG4UhoqzhaFHT6nJ5+kqfBYHeUTbTRyvS9OxWSsklk0YWtg7LMRwZvYLhg6gCAuDp2bhAT/c0rK81RoZdqNWj1rJVFjE+AWk3z3Jwsd4NhPzj112YLJDTI6cqoASOl6QFhbACwAY01Cpq+gptuFLkppdzmodJwtLq1lc9EFkqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4PjlxcM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAEPZfD1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2A7C4CEDE;
-	Fri,  6 Dec 2024 16:49:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4PjlxcM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C22AC4CED1;
+	Fri,  6 Dec 2024 18:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733503764;
-	bh=UeKtN2BtVxO2wPZowv8deGBv035MOLPP/4qWZm6tNEc=;
+	s=k20201202; t=1733508833;
+	bh=4ErpPL5RKiuQcrZig3s30EOBUc46OyFFUZ5BpiI6s8o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gAEPZfD1MWRpDXbqvn2g1pA7KTG4zriOSMOp1tTDC6/23O/z5t9YkqWh+kHWvOGNn
-	 PRsxVIlJL9u8CEFKpHLeXaGIRyHsR3KIn5AFslVEPmPQkraVkvYGIR090fLOgd6Y0A
-	 oSc01N1bGBZIe6jfjbccoPQqT7clgP/+kYZqF8FKB0DeN8t5AXTOb2BOrsMaIr63Hc
-	 xlaLfQZkxvMDbD7l/cbKW0zQ6QEmgHiQfBuBqYN0rt/ApAOQZ1S921Jt1oLB06/CB7
-	 tNqzBlRSPTOy61L6nO4f9RL4VuRW67NtRaovCUbSL4gwTkcpY4YNKUcC4QcnEU2Sg+
-	 gFnEbKgL1L58w==
-Date: Fri, 6 Dec 2024 16:49:18 +0000
-From: Lee Jones <lee@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	b=A4PjlxcM/00JWSrZoVgU3sB06/hOdBzdPnD7f9XxmB7V5nTh+GKuLcLeohWkkS8zb
+	 Ex7oNt/TVBFXPiol8NQvZTVCIK3za2UIDXdDm2rnptZPAozPPbXDouB9au8bzMB5yb
+	 1gwhfo6rweiVkR4rqk6qRcab8wa77+CBPyLnMc3F889xvkvsfJrSZ/0h0Ca56ol0wG
+	 TgxLvQHNJgh7WTzW8a28TMD0bHpqVvs2ILHV7BKg3msMDBqLXAIl1SuFTixoMrqG++
+	 GKi/T4oaOUqr+fWf3fVFZ5QbhwhrYNwP/xuzMvKs018iNNiR2FoV2s+D3b3/Ds/xp6
+	 lu9HpaDJel0hg==
+Date: Fri, 6 Dec 2024 19:13:44 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] rust: miscdevice: Provide sample driver using the
- new MiscDevice bindings
-Message-ID: <20241206164918.GA6336@google.com>
-References: <20241206124218.165880-1-lee@kernel.org>
- <Z1LzOORuFpO0MXAZ@pollux>
- <20241206125430.GB7684@google.com>
- <Z1L2tjNrIa2Q0Awf@pollux>
- <20241206131445.GE7684@google.com>
- <Z1L9dLyLRmLcwMne@pollux>
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Subject: Re: [PATCH v4 02/13] rust: implement generic driver registration
+Message-ID: <Z1M-2J1wtLwEhz8D@pollux>
+References: <20241205141533.111830-1-dakr@kernel.org>
+ <20241205141533.111830-3-dakr@kernel.org>
+ <CAH5fLghRVFAb06YYfUbuyuR1pOK0cHzGk6A25c5hX3CyvMm+sw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,95 +55,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z1L9dLyLRmLcwMne@pollux>
+In-Reply-To: <CAH5fLghRVFAb06YYfUbuyuR1pOK0cHzGk6A25c5hX3CyvMm+sw@mail.gmail.com>
 
-On Fri, 06 Dec 2024, Danilo Krummrich wrote:
-
-> On Fri, Dec 06, 2024 at 01:14:45PM +0000, Lee Jones wrote:
-> > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
-> > 
-> > > On Fri, Dec 06, 2024 at 12:54:30PM +0000, Lee Jones wrote:
-> > > > On Fri, 06 Dec 2024, Danilo Krummrich wrote:
-> > > > 
-> > > > > On Fri, Dec 06, 2024 at 12:42:11PM +0000, Lee Jones wrote:
-> > > > > > It has been suggested that the driver should use dev_info() instead of
-> > > > > > pr_info() however there is currently no scaffolding to successfully pull
-> > > > > > a 'struct device' out from driver data post register().  This is being
-> > > > > > worked on and we will convert this over in due course.
-> > > > > 
-> > > > > I think you're going too fast with this series.
-> > > > > 
-> > > > > Please address the comments you receive before sending out new versions.
-> > > > > 
-> > > > > Also, please document the changes you have made from one version to the next,
-> > > > > otherwise it's gonna be very hard to review this.
-> > > > 
-> > > > I can add a change log.
-> > > > 
-> > > > What comments were missed?
-> > > 
-> > > I think MiscDevice should ideally use the generic `Registration` type from [1].
-> > 
-> > How can an in-tree driver use out-of-tree functionality?
+On Fri, Dec 06, 2024 at 02:57:19PM +0100, Alice Ryhl wrote:
+> On Thu, Dec 5, 2024 at 3:16 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > Implement the generic `Registration` type and the `DriverOps` trait.
+> >
+> > The `Registration` structure is the common type that represents a driver
+> > registration and is typically bound to the lifetime of a module. However,
+> > it doesn't implement actual calls to the kernel's driver core to register
+> > drivers itself.
+> >
+> > Instead the `DriverOps` trait is provided to subsystems, which have to
+> > implement `DriverOps::register` and `DrvierOps::unregister`. Subsystems
 > 
-> AFAICT, this sample module is in the exact same stage as the generic device / driver
-> infrastructure.
+> typo
 > 
-> Both are on the mailing list in discussion for inclusion into the kernel.
-> Labeling one as in-tree and the other one as out-of-tree is clearly misleading.
-
-If I was saying that, I'd agree with you.
-
-I was asking how MiscDevice (in-tree) could use Registration (out-of-free).
-
-> I'm just saying it would be good to align this. If the sample driver is time
-> critical, I have no problem if you go ahead with the current
-> `MiscDeviceRegistration` and `InPlaceModule`, but again, why not align it from
-> the get-go?
-
-Because it's not available yet. :)
-
-> > > I see that you use `InPlaceModule` now, which is fine. But since this is just a
-> > > sample, we could probably afford to wait until the generic type lands.
-> > > 
-> > > Also, there was a comment about how we can make use of the `dev_*` macros.
-> > > 
-> > > I really think we should fix those before we land a sample driver. It's gonna
-> > > be hard to explain people later on that they shouldn't do what the example
-> > > does...
-> > 
-> > We're authoring the sample based on what is available at the moment.
+> > have to provide an implementation for both of those methods where the
+> > subsystem specific variants to register / unregister a driver have to
+> > implemented.
+> >
+> > For instance, the PCI subsystem would call __pci_register_driver() from
+> > `DriverOps::register` and pci_unregister_driver() from
+> > `DrvierOps::unregister`.
+> >
+> > Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > 
-> Well, for this I have to disagree, not being able to use the `dev_*` macros is
-> simply meaning that the abstraction is incomplete (in this aspect).
+> [...]
 > 
-> I don't see the need to land a sample driver that tells the user to do the wrong
-> thing, i.e. use the `pr_*` macros.
+> > +/// The [`RegistrationOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform,
+> > +/// Amba, etc.) to provide the corresponding subsystem specific implementation to register /
+> > +/// unregister a driver of the particular type (`RegType`).
+> > +///
+> > +/// For instance, the PCI subsystem would set `RegType` to `bindings::pci_driver` and call
+> > +/// `bindings::__pci_register_driver` from `RegistrationOps::register` and
+> > +/// `bindings::pci_unregister_driver` from `RegistrationOps::unregister`.
+> > +pub trait RegistrationOps {
+> > +    /// The type that holds information about the registration. This is typically a struct defined
+> > +    /// by the C portion of the kernel.
+> > +    type RegType: Default;
 > 
-> As Alice mentioned, you can get the miscdevice pointer from the file private
-> data in open() and then make it accessible in the other fops hooks. If we go for
-> this solution it will change the callbacks of `MiscDevice` and maybe even some
-> other architectural aspects.
+> This Default implementation doesn't seem useful. You initialize it and
+
+I think it is -- `RegType` is always the raw bindings:: type and in
+`Registration::new` in `Opaque::try_ffi_init` we call
+`ptr.write(T::RegType::default())` for - since `RegType` is a raw bindings::
+type - zero initialization.
+
+> then `register` calls a C function to initialize it. Having `register`
+> return an `impl PinInit` seems like it would work better here.
+
+This would work as well, but it would effectively move the common code from
+`Registration::new` to the bus specific type.
+
+I think it's quite nice that the bus specific code does not need to care about
+messing with `try_pin_init`, `Opaque::try_ffi_init`, zero initialization, etc.,
+but just needs to assign the relevant fields and call register.
+
 > 
-> This needs to be addressed first.
-
-The issue about ever growing dependencies _can_ be that authors have
-other priorities and are slow to turn things around, which may end up
-with nothing being accepted and contributors getting frustrated.
-
-However, taking into consideration how swift Alice is with these things,
-I'd be happy to wait for this part if people are insistent.
-
-> > There will always be something better / more convenient coming down the
-> > pipe.  We don't usually put off contributors pending acceptance of
-> > out-of-tree functionality, sample or otherwise.
+> > +    /// Registers a driver.
+> > +    ///
+> > +    /// On success, `reg` must remain pinned and valid until the matching call to
+> > +    /// [`RegistrationOps::unregister`].
+> > +    fn register(
+> > +        reg: &mut Self::RegType,
 > 
-> No one asks for this here. But if the example reveals shortcomings, we shouldn't
-> promote them as example.
+> If the intent is that RegType is going to be the raw bindings:: type,
+> then this isn't going to work because you're creating &mut references
+> to the raw type without a Opaque wrapper in between.
 
-IMHO it's reasonable for the sample to represent the current status of
-the frameworks in use.  As advancements / adaptions are introduced we
-can use them to continually improve the example.
+True, that seems unsound. Since this is called from when the corresponding
+`Opaque` wrapper is created, I think we need to fall back to a raw pointer then
+and make `register` and `unregister` unsafe.
 
--- 
-Lee Jones [李琼斯]
+I don't think that too big of a deal though, since those two should never be
+called from anywhere else than `Registration:new` or `Registration::drop`.
+
+> 
+> > +        name: &'static CStr,
+> > +        module: &'static ThisModule,
+> > +    ) -> Result;
+> > +
+> > +    /// Unregisters a driver previously registered with [`RegistrationOps::register`].
+> > +    fn unregister(reg: &mut Self::RegType);
+> 
+> I believe this handles pinning incorrectly. You can't hand out &mut
+> references to pinned values.
+
+Same as above.
+
+> 
+> Alice
