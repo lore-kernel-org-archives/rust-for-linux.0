@@ -1,177 +1,121 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0882CAB;
-	Sat,  7 Dec 2024 01:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1466A22C6C2;
+	Sat,  7 Dec 2024 01:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733535465; cv=none; b=YEm17We6ocW/ak/xpLvmrPrwmqBvMgRj8WmvuEdPxg9WbvWffrFbbuhJRbWx1FnriEySyq7VJdlFZtN2CtIViKc8a3mJ2HQJu1C08z8wOrhFTSA35i0u5l8HQuc/M9uWvY6yKisPylz/Mp1VP4yUi1jRTpn/LUpcOJVNf8fvMvo=
+	t=1733536054; cv=none; b=sq/vjTSh5sGyblQ7gou5DIxPl7Kyco3hPkD9/N2EqdRHoT3ZHwGa6uO1/DWtO8x02Uz45EGbU5p/OgtKeHASVsNDsk1LOuCLp66/PK76Sw0BHABk/k9K1xqjoTpi2mZDr3zOwuBW48zd/t3FFDNk8FyjZq+PEMhaRTIonqD1OlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733535465; c=relaxed/simple;
-	bh=/0t6h5qZGBxEMwWnlGqKXSqLaAajCkGzTcCexy7o/9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGsMOuzBKqkkDp1Mu/9HG/sv2sUXi8ZwuzThwAyXxaUQqGd9rTG/Ejo5ROgGpbF6mpLEFhSwk2U9Xk4qiX5cSNU7Dgii9vu+ss2CPDuFIvCdcUq0GLiDntBy8aoIGcSBQnH+YmRC3I9+7wrVBPHF29JuDG04UWrIzfNbbhAqrXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MI8U9Hx8; arc=none smtp.client-ip=209.85.215.176
+	s=arc-20240116; t=1733536054; c=relaxed/simple;
+	bh=E/P+N9rN4Hsu0eqpO0B/IqbdTsgnh0yi0Wz2LnKFW78=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RdOjYykFUKA4V4ocTUP+tfsoX+JO1OH94TzYC827oxzWHpwB1ChqIyhHhP5QAns0Fxsre9r/clNviC5qjKN5thqf2t5r0uYqtssGtVoh3C2q9hUQ8a5ZuSyUGwIQXRlvZTjlDWkPgnl6vSzhK+kIWnYkAT7yUOJRGAr/ckaipOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I1sTJUSh; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MI8U9Hx8"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7e9e38dd5f1so2206288a12.0;
-        Fri, 06 Dec 2024 17:37:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I1sTJUSh"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2e56750bb0dso1966858a91.0;
+        Fri, 06 Dec 2024 17:47:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733535463; x=1734140263; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733536052; x=1734140852; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=imJSuHRPRBE6YfDMYMKrQ6pZ3Ojs7qrzBdRNSgqW+Uo=;
-        b=MI8U9Hx8j0ao1qPPHlfKxH9GCm1YFCeRPGn70DCjsqmIRmJp66uTiX0Ic8EIB3a7BT
-         B42Bs6ykN4I8qnLpvY0iHZ4KR3vCodQDlLOcCovyLndrHJs3vHHUvZ3zjsG1TxUQ9lXC
-         AeBrGI8PXQNIPKPV3mhwztRjCRGhA7lKNNJYGDxPNANzVB7rwVKKLW1LwPPu/0lGL9N3
-         XOnQKrWVOAIEJj7usJiuy/D+4iIgiga0VDmbNb51uTN4r66lTuATvkfPaFU2FF3yLFFn
-         TBKnt1eWNlYYJXtBBcJF29MlSW4/pcMwoouVbMGmlVckBN3LQ/h/3fgVcsHcQ/ulecyf
-         TE0g==
+        bh=TgHtr5pWGGRR+jZUfnbrT3BOVfL8KeizVzO2nNQCJN4=;
+        b=I1sTJUShyo2O/705WXoIY0yVX4PBDYwJIoguLMyqJVU+TXl2HRvixRR2odO1d99N5Z
+         W1Rqwux86r/jxcZ6VwkXNoaTInZWFjVXKUqN0uCP6NDJcJjcqZekD27AA/rOVy6IaxTg
+         RmmYo9wRmws88KvW6IA4fpKDU7zJ9wOWUONXHqL+sO/hX8nDrsv3zF5SYwK8pNEpnS1q
+         /RpkA3Vg4owJvNCqJ83lXN4oZUhlE+rXmcu/n0pIXiqEvQ4vVmTqEKCdIKmi+zhpYkFF
+         9lmPadfW7R7TSwd+TzsRgi2cMEDIBtqwif03flEQ9M0CpR31j0pX8HwgwEwKQCTpmsk1
+         Azeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733535463; x=1734140263;
+        d=1e100.net; s=20230601; t=1733536052; x=1734140852;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=imJSuHRPRBE6YfDMYMKrQ6pZ3Ojs7qrzBdRNSgqW+Uo=;
-        b=eqFC3s87M84g9PEyl/0ned0by7V+uQ0T5akxP12ERwHry06LmFT1hCrFQRY9r1DGnR
-         PAK+xWgV9vzeEsTpjxNc1ISiBSeq1RgrlwHRrkFZZ04s8Ly0vZSoFR5L/p7puvK7vRe5
-         PhRhAwTTxNYSPMnuaC3FwWl+ift+eB/tUThkWQ8VJlUTQVd4BoDChSNc8jg1iZf3jzRf
-         BVs/4sYV70Jgo3zN8ivWGOfhf9VY0w4pY9f086PsxtnwIc0XEdjxs0zfjvJU9t1yw40J
-         QZnJzxFLXyq8Q8LBddAa1bI8A4/hnGM5opHGhaT5k6UYX+ZCa3kLoOQc1pKDqfP+5ZJ9
-         3nCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrsCP3X4aeQp+BBk4+ZgZSbv2AuIC5qVAHoCtKQ591aOV0pTFuRk8YL27HNHIJWMZ/nVpoUI9K4KQ/f3RSXOQ=@vger.kernel.org, AJvYcCXgSs3sfR71IqCcTearlNCHbY1LscJpaAp8lCkFIFPXO6t6b9XWiXEmivAO7KbrQfPDZZ1fQTWQ7gw6Knc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpFvMBWPW2RiWtd1Xtp0jzeZ773XeluXSQMYrUGNNnozfLxyB6
-	awFzFTSqJzth8f98lvOXDwFpcal+doyKmWfzfqX94OLOrLK8aGpbhX+Dk0G3
-X-Gm-Gg: ASbGncs4yIKbF3meDDz3BDAh3hL4ZN/OmvjorMqpmUKhVpFCuHWvLRU71iV0CHouEWt
-	sIm3TQOAP3l4lVhExRgo60G1C6lGhYpK2l828w4YkYuDduZJm2akHmKYvvEWghKbb7RMMl0Ww3c
-	W/SVDwnpVpE0nn6II0pSF1Dr0raeEHFa6cphV5GzfNl4n0BfnvIPn+RJLzVvEqCbXtEBNVDF2ky
-	5y0me1C5n0MJRGG90GRuNfHKoABosPZk/hAHl6gXxSwOe6Xm5/MkhE3HhCVSCKmLo8661DIh+WO
-	XYuxEYxOGx18oqP0UCyIheZ9s0Va
-X-Google-Smtp-Source: AGHT+IG7baZNA4xPcAkDMuxW5yrTyC0HKpWTfswaF6d4+BjwR69ntaEyFjfdn2T9mHWiPOz4suawqw==
-X-Received: by 2002:a05:6a21:1349:b0:1db:f0af:2277 with SMTP id adf61e73a8af0-1e187141ac3mr7275533637.38.1733535462606;
-        Fri, 06 Dec 2024 17:37:42 -0800 (PST)
-Received: from lordgoatius.clients.willamette.edu ([158.104.202.234])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725ceb7c02dsm254032b3a.136.2024.12.06.17.37.41
+        bh=TgHtr5pWGGRR+jZUfnbrT3BOVfL8KeizVzO2nNQCJN4=;
+        b=rWA1aMi2wGq+iHxtQf8s6vlWaEHWjRZ/7mJ24wnzNGZefJNIRxJdGe+JotIyWs/pKq
+         W0/ygmp5CwcGfi0KMxiltLIY0N93HRuNXnIEfkVMe4+LlmCqzK9YD2nihKiL4VSEbqDI
+         agNjdk4BIp4D1XIYgONAOrifs/DNA+niXjL7pSPm1ScyMhZARp38rANwvlL6LUNFQDYa
+         U1GSNuiaX6FuhuDzweGta13vpln47O29g7upvQhB86PWKJCPao3uswKakK3PB9Y4mIec
+         ZlTBRlTJE/gpjuQjKsSj6JLhMa3e44xxAOzH8pd+ZDO/r2bpT4zehi4TdPmwUkQCOfqU
+         4vpg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMeX7OOy7qNcki6Gb1KLcsbh/0WESbKxD1vNORqL+4GG9AlHDiYHSWdyb6edkFsaqGXMmpl1wDCKqKZe42lQQ=@vger.kernel.org, AJvYcCXQKF2r+UUuV/rU7WzwwUIzEm0KzoPENuzrUMvGxWVzRr6eZVpqDe4tfnOZ307OrskLGcoVHDa+f6NIBb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRizxtTVhkYp966qLb7cwtfmpgo+0eocIlyPiDotwL4CGUQHK5
+	McGEhi/y45mI8Zi9e57rMx+OAP12GjBBFBI6PZLR3GWh1nnyCJcR
+X-Gm-Gg: ASbGnct1FzR8frAHK8Btt2oDP7Rjcw/D6odH8CTTyWfSJ7jKIB8cM4K/VddNM8SBjcw
+	zEWzut0dF0QMt6kMAoMv2cdNiP1GD0iS2UE5KSTz+aZV0WEroIYeHka8YxS1PWvEAuYdc0KCLBS
+	7uCqbCStHFQb+b0TNtdUy1QB3MVdo/kMpcDAfOUs6yJgoXCR5rPYDb6QBNQcKSZGr4Nv+kUJJXe
+	0rZh5wDkffAeQS5iQtyaubjg/BJRRnHSv5Nw6MgscPJT+G9kU1kwMqD
+X-Google-Smtp-Source: AGHT+IEGHAg1ibsSlrOOu+e3pKfAzWmb36a8jTaYREBpiNfaRKIwRlM0m4BQj/fE7teEmrJlncc8Yg==
+X-Received: by 2002:a17:90b:3803:b0:2ee:8e75:4aeb with SMTP id 98e67ed59e1d1-2ef6a6b84f2mr9232610a91.17.1733536052070;
+        Fri, 06 Dec 2024 17:47:32 -0800 (PST)
+Received: from linuxsimoes.. ([177.21.143.14])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eeffb6035esm5047192a91.0.2024.12.06.17.47.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 17:37:42 -0800 (PST)
-From: Jimmy Ostler <jtostler1@gmail.com>
-To: dakr@kernel.org
+        Fri, 06 Dec 2024 17:47:31 -0800 (PST)
+From: guilherme giacomo simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
 Cc: a.hindborg@kernel.org,
 	alex.gaynor@gmail.com,
 	aliceryhl@google.com,
 	benno.lossin@proton.me,
 	bjorn3_gh@protonmail.com,
 	boqun.feng@gmail.com,
-	felipe_life@live.com,
+	fujita.tomonori@gmail.com,
 	gary@garyguo.net,
-	jtostler1@gmail.com,
-	kernel@valentinobst.de,
 	linux-kernel@vger.kernel.org,
 	ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH v2] rust: alloc: Add doctest for `ArrayLayout`
-Date: Fri,  6 Dec 2024 17:37:38 -0800
-Message-ID: <20241207013741.351172-1-jtostler1@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <Z1LYjiwaE8iDPj3H@pollux>
-References: <Z1LYjiwaE8iDPj3H@pollux>
+	tahbertschinger@gmail.com,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com,
+	wcampbell1995@gmail.com
+Subject: Re: [PATCH] rust: macros: add authors
+Date: Fri,  6 Dec 2024 22:47:10 -0300
+Message-Id: <20241207014710.447144-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
+References: <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 6, 2024 at 2:57 AM Danilo Krummrich <dakr@kernel.org> wrote:
->
-> On Thu, Dec 05, 2024 at 03:04:28PM -0800, Jimmy Ostler wrote:
-> > On Thu, Dec 5, 2024 at 3:35 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > > Hi Jimmy,
-> > >
-> > > Thanks for the patch!
-> > >
-> > > On Thu, Dec 05, 2024 at 02:56:27AM -0800, Jimmy Ostler wrote:
-> > > > Add a rustdoc example and Kunit test to the `ArrayLayout` struct's
-> > > > `ArrayLayout::new()` function.
-> > > >
-> > > > Add an implementation of `From<LayoutError> for Error` for the
-> > > > `kernel::alloc::LayoutError`. This is necessary for the new test to
-> > > > compile.
-> > >
-> > > Please split this into a separate patch.
-> >
-> > Got it, the next version will be split into separate patches.
-> >
-> > > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > > > index 52c502432447..ac8526140d7a 100644
-> > > > --- a/rust/kernel/error.rs
-> > > > +++ b/rust/kernel/error.rs
-> > > > @@ -4,9 +4,10 @@
-> > > >  //!
-> > > >  //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
-> > > >
-> > > > -use crate::{alloc::AllocError, str::CStr};
-> > > > -
-> > > > -use core::alloc::LayoutError;
-> > > > +use crate::{
-> > > > +    alloc::{layout::LayoutError, AllocError},
-> > > > +    str::CStr,
-> > > > +};
-> > >
-> > > I think this part of the change would be enough, since we don't make use of the
-> > > `From` implementation of `core::alloc::LayoutError` anywhere.
-> > >
-> > > I think we can add it (again), once it's needed.
-> >
-> > Okay, that makes sense. It is still used in the documentation for the
-> > macro `stack_try_pin_init`, and it is hidden and not used as a test, but
-> > it would probably be prudent to change that for consistency, as
-> > `Box::new` no longer returns `core::alloc::AllocError`.
->
-> It seems you're confusing `LayoutError` and `AllocError` here.
->
-> This is about the former. But you're right that `AllocError` can be fixed up in
-> a few places too.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrotes:
+> I understand what you mean, but changing a few existing lines here and
+> there is fine. There aren't that many modules out there. If we are
+> going to change this, then the best time is now. Backporting should
+> not be too bad either.
+Yeah, in the truth, don't have file a lot for changes.
 
-Oops, you're totally right, I noticed it when grepping through error 
-types in documentation, and mixed them up.
+> Sorry, I am not sure I understand what you mean. Yes, the idea of this
+> option is to repeat one line per author, but that is not a big deal: C
+> modules do that already.
+I understand that in the C side is already this way, but maybe we have a better
+way for make this.
 
-> Do you plan to send a patch for this as well?
+I'm think about this, and for me, the less the developer need a think about
+"what field I need use in this problem" is better. This is not because is really
+difficult think about "I need use author or authors", but if we can avoid, I
+think that is better. 
 
-Yes, I've already got a fix for that locally.
+Well .. that said, after your tips, I change my mind and how we don't have file
+a lot for change the type authors, maybe the better way is a unique field
+called "authors" and this should ever be array. 
 
-> > I can add that into the v3 patchset, unless there's some reason we
-> > should leave it.
-> >
-> > > >
-> > > >  use core::fmt;
-> > > >  use core::num::NonZeroI32;
-> > > > @@ -223,6 +224,12 @@ fn from(_: LayoutError) -> Error {
-> > > >      }
-> > > >  }
-> > > >
-> > > > +impl From<core::alloc::LayoutError> for Error {
-> > > > +    fn from(_: core::alloc::LayoutError) -> Error {
-> > > > +        code::ENOMEM
-> > > > +    }
-> > > > +}
-> > > > +
-> > > >  impl From<core::fmt::Error> for Error {
-> > > >      fn from(_: core::fmt::Error) -> Error {
-> > > >          code::EINVAL
-> > > >
-> > > > base-commit: 1dc707e647bc919834eff9636c8d00b78c782545
-> > > > --
-> > > > 2.47.1
-> > > >
-> >
-> > Thanks!
-> >
-> > Jimmy Ostler
+If my module have a unique author, so `authors: ["author"]`, if the module have
+two or more authors, so `authors: ["author_1", "author_2", "author_n"]`. With
+this way, the module developers just have a one way to declare the author of
+module. Don't have different fields, don't have different types. Have a only
+one way for declare the authors of module.  
+
+Thoughts? 
+You think that we need open a chat in zulipchat for this, and collect more
+opinions?
