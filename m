@@ -1,128 +1,100 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8353422C6FE;
-	Sat,  7 Dec 2024 16:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36921E885;
+	Sat,  7 Dec 2024 17:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733587634; cv=none; b=mAkqS+WE7ApjRf9Yf5e7fi85csntMz4LSNKEspDlP9zcBP1le0LodiDrXVXyAJyIMe70NaoqJIJceON+kUIUldM8GgbJZ02xCVorBvluepZHjSwtaAEhgB953zkvo3beaXn2T5sVKcW2VFvLZwNo8wH5kwXEnlU5t6qjywrdA0U=
+	t=1733593014; cv=none; b=UYy+wBaf5vEmmWTPvhWEeoej5k1f+Ep1R1m2veflk8jxDDNkufC0Pn8dpMuxeLhEauc6o9QqUAIULGRng3kZgJ1ouh77Nm9V2ZG7hhxcWns02pVvIyVwYiFVV+PP0g2agUv95wCdW/M4qjJiRBEaFYb4bvCnT3fULunxUwB6oFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733587634; c=relaxed/simple;
-	bh=M+PTMrxiViwzOgLRhLrAI6GS8S+3PjsEetlUe/HJIIk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=o66gr6o/dpwV+GHXEWSrNJD+DHI4WOo8fDrHUBuqiHYvSYzXZDZrneV5d6Hwu3CJD7gGi60fcnTLHJuFwGXtFhLp32qkiGXRxCSIslNvkmIpZLIrJ2HPdweCwD7fYYrZLCtPVH7K7gCg1RoBPqqXxJ//QKfj01APBY/bbAzcToI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DKVF/a1M; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733593014; c=relaxed/simple;
+	bh=HXQMatuQjoBSRT4KfGjYzRE+8IcDuZDzHozZhWD1sok=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lQbtwjiOjAIyJpGul3sQcaA4SIsCdEuBf+hX7EXLwg/pWZnZpJavuPCNZ2///xdWfJ6bTvh7uMjGpAQ6WFemK7DvYey8y5fJKPpkqjHc9q4YV/yRYZ3HMMagmDZjddp4qBU82SNNo3FywYZX7ZM9+PD/g1tSqjpim8kYnuA2Zj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMaTT/uF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DKVF/a1M"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7251331e756so3318694b3a.3;
-        Sat, 07 Dec 2024 08:07:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733587633; x=1734192433; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g859wMeIF9KNYMteuI4kyvHlQIAJnovF7UVR8hZbt9I=;
-        b=DKVF/a1M6JU19PSSOKsnx2wudoHMOOoB8CNGYl/KQYJTZZ5vWb52VTVKvLJuPy1p9F
-         UE9Zq4X/GLryw+Z52sRT8suQL5+b1R+WW9Cq8Pwo5fNcJbTzonfd/y9ZK/13ufQV63qi
-         LHdunsb+zqmNTl+K/1HxPMq+ftEm9frD6ax+VNKh9mSK2Rsa8H0q7TVr78GTkdIAFciO
-         9VawMkRuco0H0QLsX760NGEDOF8TPN5sEotAVjtfSaph386zc2RCdpsRaUecU6QMKl5Z
-         6fm3xHzPxRgeBnzhIU4nrggpFTW7ABwxw17FLzb3EBY0/YM8AP/53INGRTCgt59xmBcx
-         k8GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733587633; x=1734192433;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g859wMeIF9KNYMteuI4kyvHlQIAJnovF7UVR8hZbt9I=;
-        b=ETD7yfjD28R9ig9bRtIVMNzhHz7A5JvhFNfV0mTZ0xGMzO/MANAyXysCARMxPbavyr
-         ol/2vgr+tcKF29+zzZcgxWvlVz+1h8eeJ9jurRhQowyn+wN49WIFjqQF3JjXXt4+P25b
-         5X6DQ93EHbdnvbJGOs3uvebW2m1wVivn/XtbLxoKzBZXSPD6vaHrqDz0mhKcWnFOclpq
-         xWALWAubuBaXpejHDqoqjAlAL2S93HCXAMUInehpBsK0Scg7S62tdvv0+FHO30dCYwFl
-         q1qod6mVZaQJBIU89HU2JLLnqZciew1TK3WvoinHeNBM4oRZWDEw2GZOX2vlLCW5uzwI
-         VWcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVID9SGMBafT4bl+m97KfdKsMaiQ4rqQIT/lnaRh9gCIaU7YwCbEqBBETgXifwlq77qzOhfgQfqfo3/V6WDpbo=@vger.kernel.org, AJvYcCVuciEjWrMdAqRxAv1nBJPqk3nHx38Gr747klLQteNC3SXLrKqENHXV3Lg/bX82X+apTaHGhCUzfbWQdEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ349t3vkUrik74/9yEOsebyuidh+RebJ8eQM+y7rAdasNM+mF
-	YSN8ga/wRmMDDYwQL7+LXS6llxywWeYz2SmbHsEE6QnUfLmE1Au3
-X-Gm-Gg: ASbGncsBbkkX0k2xUHOCDKenB/DpEpjPpMTZeidnAzuD2PQAhNF1xlmXpM5KTSX3bR9
-	HuDSyLJKa+s2HW1CA6QJMCDQKV1jNcsZAH+8K7+CqHCqrsc0DQyH4XLnS7ck5+DUX5kHlJo23V0
-	2/u8bHxVUWe8wKrFvtDnBIUrX3UlwFHIz9quWojco5bz638Vk3yCt9kUMpbWiLAin8GgIEWkO6i
-	n19LfbsXWrL1c63MJLkiOSfoKj5kCl/+gphEYQD1/cO7liQUd+QbFaO
-X-Google-Smtp-Source: AGHT+IGynfywcTLLgMC4Efclc9q2iwS5FtGtPBFCfNKfQzfsqrE2qYlYchQ1vQzyQbVT5cbqIzv2lg==
-X-Received: by 2002:a05:6a00:4f81:b0:725:8b00:167e with SMTP id d2e1a72fcca58-725b8177ed5mr11222451b3a.16.1733587632683;
-        Sat, 07 Dec 2024 08:07:12 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.143.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725e2388d37sm82627b3a.73.2024.12.07.08.07.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Dec 2024 08:07:12 -0800 (PST)
-From: guilherme giacomo simoes <trintaeoitogc@gmail.com>
-To: daniel@sedlak.dev
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tahbertschinger@gmail.com,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com,
-	wcampbell1995@gmail.com
-Subject: Re: [PATCH] rust: macros: add authors
-Date: Sat,  7 Dec 2024 13:07:03 -0300
-Message-Id: <20241207160703.55846-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <30ddfc7f-4b13-4caf-8859-2cd2e72ef878@sedlak.dev>
-References: <30ddfc7f-4b13-4caf-8859-2cd2e72ef878@sedlak.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMaTT/uF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE333C4CECD;
+	Sat,  7 Dec 2024 17:36:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733593013;
+	bh=HXQMatuQjoBSRT4KfGjYzRE+8IcDuZDzHozZhWD1sok=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MMaTT/uFByeC2KuJFJmoc0rCL9kpu1IMqZGTogdr9eAyu/bBo+R4/WV4aQ+vxzs+g
+	 ZEpf2MXp4wuPdWkIjU80b6FaiiKCIkruuN/0frnk+bL1PK5yDIC//HaHLHzrgnMPch
+	 8sdah4eumO9xuIfwKhFWtcc1X9slcZpZpobXq5RZMV2CjYPD20rTXVD/10N00r2ww4
+	 1mXAl3rdUiSqv+mloiXZBL4d7k0a1Z84STuy2cocq6Ls+jUhszUrYTUtpHXImwv41/
+	 R5CgZmgebn2RE9eq0HLLdbvRhdGXc1f3nc8V2QjgW00i651/JLfFzJFzPK/j4WLRGW
+	 N6mcIFREXDalA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Guangbo Cui" <2407018371@qq.com>
+Cc: <alex.gaynor@gmail.com>,  <aliceryhl@google.com>,
+  <anna-maria@linutronix.de>,  <benno.lossin@proton.me>,
+  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
+  <frederic@kernel.org>,  <gary@garyguo.net>,
+  <linux-kernel@vger.kernel.org>,  <lyude@redhat.com>,  <ojeda@kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  <tglx@linutronix.de>,
+  <tmgross@umich.edu>
+Subject: Re: [PATCH v4 02/14] rust: hrtimer: introduce hrtimer support
+In-Reply-To: <tencent_4237DDAC9DC29A9774F0F24D438C0ED31C05@qq.com> (Guangbo
+	Cui's message of "Sat, 07 Dec 2024 22:35:54 +0800")
+References: <20241206-hrtimer-v3-v6-12-rc2-v4-2-6cb8c3673682@kernel.org>
+	<tmL-yhuAhBzpYcPmWBdsjQYKx9M0gIyF4wfwrRA36zzhI_E-w0rZiJmA_Y68oBXPVAi6YwPepy3YIqAsBang9A==@protonmail.internalid>
+	<tencent_4237DDAC9DC29A9774F0F24D438C0ED31C05@qq.com>
+Date: Sat, 07 Dec 2024 18:36:39 +0100
+Message-ID: <87o71ne6oo.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Daniel Sedlak <daniel@sedlak.dev> wrote:
-> Since module is a macro, if we would allow syntax in the macro like:
-> 
-> 	authors: ["author1", "author2", ...]
-> 
-> I think we could fight with the code formatting, because when it comes 
-> to the rust macros, rustfmt is often very confused and we could end up 
-> with variations like:
-> 
-> 	authors: ["author1", "author2",
-> 			"author3"]
-> 
-> or
-> 
-> 	authors: [
-> 		   "author1",
-> 		   "author2",
-> 		  ]
-> 
-> and rustfmt would be totally ok with both of them.
-It seems to me that the rustfmt.toml in the kernel, don't have a max width for
-line. Are you sure that the rustfmt would broke the line for big enough lines?
+"Guangbo Cui" <2407018371@qq.com> writes:
 
-> I think accepting several "author" fields is the best one because it 
-> mirrors the C API, where in C when you want to specify more authors you 
-> just repeat the MODULE_AUTHOR("author<N>") macro.
-If you (daniel and miguel) are ok with repeat the `author` field and think that
-this is the better option I is happy to make this change. 
+>> +#[macro_export]
+>> +macro_rules! impl_has_timer {
+>> +    (
+>> +        impl$({$($generics:tt)*})?
+>> +            HasTimer<$timer_type:ty>
+>> +            for $self:ty
+>> +        { self.$field:ident }
+>> +        $($rest:tt)*
+>> +    ) =3D> {
+>> +        // SAFETY: This implementation of `raw_get_timer` only compiles=
+ if the
+>> +        // field has the right type.
+>> +        unsafe impl$(<$($generics)*>)? $crate::time::hrtimer::HasTimer<=
+$timer_type> for $self {
+>> +            const OFFSET: usize =3D ::core::mem::offset_of!(Self, $fiel=
+d) as usize;
+>> +
+>> +            #[inline]
+>> +            unsafe fn raw_get_timer(ptr: *const Self) ->
+>> +                *const $crate::::time::hrtimer::Timer<$timer_type>
+>
+> Hi Andreas, an extra `::` here.
 
-I was run the follow command:
-grep -rwo 'MODULE_AUTHOR' . | awk -F: '{count[$1]++} END {for (file in count) if (count[file] > 1) print file, count[file]}' | sort -k2 -n > res
-for found the modules with more than one MODULE_AUTHOR.
-I see that the maximum of MODULE_AUTHOR that is contains in a module is 11. The
-marjority have 2 MODULE_AUTHOR. Maybe, repeat the `author` field, is don't a
-bad idea.
+One of these days I hope to have refined my workflow to a degree that
+would prevent things like this. I thought I was there, but not yet it
+seems. Thanks for spotting.
 
-Thoughs?
+I _did_ actually fix this, but the fix was hiding in a commit with test
+code that did not make it in to the series =F0=9F=A4=A6 And when ran my scr=
+ipt to
+make sure all the commits build, this macro was no longer invoked and
+the typo was hiding.
+
+For reference, I am holding the examples back until we get either a
+spinlock/condvar combo that can work in irq disabled context, or atomics
+that work with LKMM.
+
+Best regards,
+Andreas Hindborg
+
+
+
+
+
