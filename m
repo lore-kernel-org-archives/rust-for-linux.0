@@ -1,111 +1,177 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214ADDDAB
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Dec 2024 01:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0882CAB;
+	Sat,  7 Dec 2024 01:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733534054; cv=none; b=nGiWEgn4zaJudL5ShfSlRe7hdR51RKd0W5h5aCo/IsMF5GDUBnzjHKwATCOcRYO9QuBJxWAGDaXMMRXMRLvdyZ/dvzIuLVkbLpZeiTvCXdaAm0Ugob3XWBwR5QHtksofNy8NMwTW19WitqTb9z+hgKQy69hqmsDSTenYjVXFIQc=
+	t=1733535465; cv=none; b=YEm17We6ocW/ak/xpLvmrPrwmqBvMgRj8WmvuEdPxg9WbvWffrFbbuhJRbWx1FnriEySyq7VJdlFZtN2CtIViKc8a3mJ2HQJu1C08z8wOrhFTSA35i0u5l8HQuc/M9uWvY6yKisPylz/Mp1VP4yUi1jRTpn/LUpcOJVNf8fvMvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733534054; c=relaxed/simple;
-	bh=1UDNfOgAXHiNS1laqsuNcIe0CfMA9SfD/bj3xh3ULE4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UWYrTdd5eDdvjJ1Rd2REeFJpiVuK8d1obX7X1y/kGgQpNRLZkkf/vsbXSyawp2CAqSp4mgW7EWj5AG3KKnUoVPa3AGOE53QVRV6b+WVA2hG2UHW2SQcns57nWIdc7S6FG9Kxu5QLDU0uQbqr7WNH36UwWEzT4itMjpDGaK+QgZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dz8iq5f9; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1733535465; c=relaxed/simple;
+	bh=/0t6h5qZGBxEMwWnlGqKXSqLaAajCkGzTcCexy7o/9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cGsMOuzBKqkkDp1Mu/9HG/sv2sUXi8ZwuzThwAyXxaUQqGd9rTG/Ejo5ROgGpbF6mpLEFhSwk2U9Xk4qiX5cSNU7Dgii9vu+ss2CPDuFIvCdcUq0GLiDntBy8aoIGcSBQnH+YmRC3I9+7wrVBPHF29JuDG04UWrIzfNbbhAqrXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MI8U9Hx8; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dz8iq5f9"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-385dbf79881so2317516f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Dec 2024 17:14:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MI8U9Hx8"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7e9e38dd5f1so2206288a12.0;
+        Fri, 06 Dec 2024 17:37:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733534051; x=1734138851; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kc4i0kJQLOWcBEfKkh0Mird9pq2rATpCYMpyHBDNC9Q=;
-        b=Dz8iq5f9DSBrGG+VSu3ISHBYgs7VrSh10cEknSughBmoHAmqiComy73O9E+KtcNV66
-         eSLlY/QcZYW8PqmEpNVZNhhl6tHLg6g0MVtK47aFlsWGzoPoXH3x91GpySNxbaIh/tQK
-         IkY4ODuUmmOMkT5Hl6O31YsxsV6YJDuFk8Pvlg/QDL4NUqXLwQYunbkksLiuja6CVjVm
-         pq3b0dGgIGf5C8OKuXEZfkbxUkcLBjW09dbTd3PVEWlIsCLqRTxz8R3XPGK4M4HwAyIN
-         jO/DFNH20FpkAGwHRv8NCS8NqaoTRrjJIPIgxUyIkBv3gtD9X1GuPKVbIaoePw+RWO3w
-         yyPA==
+        d=gmail.com; s=20230601; t=1733535463; x=1734140263; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=imJSuHRPRBE6YfDMYMKrQ6pZ3Ojs7qrzBdRNSgqW+Uo=;
+        b=MI8U9Hx8j0ao1qPPHlfKxH9GCm1YFCeRPGn70DCjsqmIRmJp66uTiX0Ic8EIB3a7BT
+         B42Bs6ykN4I8qnLpvY0iHZ4KR3vCodQDlLOcCovyLndrHJs3vHHUvZ3zjsG1TxUQ9lXC
+         AeBrGI8PXQNIPKPV3mhwztRjCRGhA7lKNNJYGDxPNANzVB7rwVKKLW1LwPPu/0lGL9N3
+         XOnQKrWVOAIEJj7usJiuy/D+4iIgiga0VDmbNb51uTN4r66lTuATvkfPaFU2FF3yLFFn
+         TBKnt1eWNlYYJXtBBcJF29MlSW4/pcMwoouVbMGmlVckBN3LQ/h/3fgVcsHcQ/ulecyf
+         TE0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733534051; x=1734138851;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kc4i0kJQLOWcBEfKkh0Mird9pq2rATpCYMpyHBDNC9Q=;
-        b=diAu/03KlUXUs3BTX/Zs1bjXw+fi3DcQJ3N1alKnS5M0NXS/h50E96kOp2SjXmQa80
-         kge5/F4XSKYGCIbVa3OkZ8jkirdsU0XvWwwKXbZM3kE4vMDHoLvCv9bpL/wPgR450kmd
-         JXhw2jd/LrTkUf38LUDsq46ftP4WfpL2dQXTewrYWDz+N5bfyHAfLxSe1jDj2C0o8OAl
-         3hSzCILLy2h/tBymp2Bu/tWe5V5anxyrDON0v3lendou0xKpbeN+SxVC1YsxiC0qn1zC
-         Jr3mDqII4qoHKZCOFjqakGnJpjjIT8Fi7pjWPPNoIrSRTT951OyJEb9FrsekXuRlgjxO
-         i6lg==
-X-Forwarded-Encrypted: i=1; AJvYcCXerG0Jt0hbhBl0qu1DMz/MzzZ4FXnpjfl+ehv8pUvJm5bBBrDtZ4Tnhh9GGEoAckS6l4SjyGMtt/9QPRN1nA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP8ccmdUWE7N/GZqM73l56I3GmfZeqwVGbmspAzEwDD3bPp6aU
-	ci76zw0yYqrsMEz3jfPV4QY/jljh1zzjl8cPbszvad7O9B7cPGxuoG0uxX77MdmM6hOCxRugYBa
-	CYRMvKrJ6tD9C6mzBDtfdi+YZm4+IfHwQYMOAWg==
-X-Gm-Gg: ASbGnctKuN4seOCjTJMw4l9lj+l0d0zJhwcViLokgqmYKG1gtVZ7cGl/xptUSY51qgo
-	xDbLpIUvjs96wMRN1PF+iCi+3d3JklPVX94uTPN7S6tPu3yiXiFtsPXnq88jE8qI=
-X-Google-Smtp-Source: AGHT+IEXUUe0fWZt4pPEQxVTHw6twtVV/mHWiQX4ajOGKuM43alY918V0NbCArXqqS7AFHkv/75t0ILgA7HTIDbSd1o=
-X-Received: by 2002:a05:6000:42c7:b0:386:2e8c:e26d with SMTP id
- ffacd0b85a97d-3862e8ce40emr1978498f8f.0.1733534051301; Fri, 06 Dec 2024
- 17:14:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733535463; x=1734140263;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=imJSuHRPRBE6YfDMYMKrQ6pZ3Ojs7qrzBdRNSgqW+Uo=;
+        b=eqFC3s87M84g9PEyl/0ned0by7V+uQ0T5akxP12ERwHry06LmFT1hCrFQRY9r1DGnR
+         PAK+xWgV9vzeEsTpjxNc1ISiBSeq1RgrlwHRrkFZZ04s8Ly0vZSoFR5L/p7puvK7vRe5
+         PhRhAwTTxNYSPMnuaC3FwWl+ift+eB/tUThkWQ8VJlUTQVd4BoDChSNc8jg1iZf3jzRf
+         BVs/4sYV70Jgo3zN8ivWGOfhf9VY0w4pY9f086PsxtnwIc0XEdjxs0zfjvJU9t1yw40J
+         QZnJzxFLXyq8Q8LBddAa1bI8A4/hnGM5opHGhaT5k6UYX+ZCa3kLoOQc1pKDqfP+5ZJ9
+         3nCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrsCP3X4aeQp+BBk4+ZgZSbv2AuIC5qVAHoCtKQ591aOV0pTFuRk8YL27HNHIJWMZ/nVpoUI9K4KQ/f3RSXOQ=@vger.kernel.org, AJvYcCXgSs3sfR71IqCcTearlNCHbY1LscJpaAp8lCkFIFPXO6t6b9XWiXEmivAO7KbrQfPDZZ1fQTWQ7gw6Knc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpFvMBWPW2RiWtd1Xtp0jzeZ773XeluXSQMYrUGNNnozfLxyB6
+	awFzFTSqJzth8f98lvOXDwFpcal+doyKmWfzfqX94OLOrLK8aGpbhX+Dk0G3
+X-Gm-Gg: ASbGncs4yIKbF3meDDz3BDAh3hL4ZN/OmvjorMqpmUKhVpFCuHWvLRU71iV0CHouEWt
+	sIm3TQOAP3l4lVhExRgo60G1C6lGhYpK2l828w4YkYuDduZJm2akHmKYvvEWghKbb7RMMl0Ww3c
+	W/SVDwnpVpE0nn6II0pSF1Dr0raeEHFa6cphV5GzfNl4n0BfnvIPn+RJLzVvEqCbXtEBNVDF2ky
+	5y0me1C5n0MJRGG90GRuNfHKoABosPZk/hAHl6gXxSwOe6Xm5/MkhE3HhCVSCKmLo8661DIh+WO
+	XYuxEYxOGx18oqP0UCyIheZ9s0Va
+X-Google-Smtp-Source: AGHT+IG7baZNA4xPcAkDMuxW5yrTyC0HKpWTfswaF6d4+BjwR69ntaEyFjfdn2T9mHWiPOz4suawqw==
+X-Received: by 2002:a05:6a21:1349:b0:1db:f0af:2277 with SMTP id adf61e73a8af0-1e187141ac3mr7275533637.38.1733535462606;
+        Fri, 06 Dec 2024 17:37:42 -0800 (PST)
+Received: from lordgoatius.clients.willamette.edu ([158.104.202.234])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725ceb7c02dsm254032b3a.136.2024.12.06.17.37.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 17:37:42 -0800 (PST)
+From: Jimmy Ostler <jtostler1@gmail.com>
+To: dakr@kernel.org
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	felipe_life@live.com,
+	gary@garyguo.net,
+	jtostler1@gmail.com,
+	kernel@valentinobst.de,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v2] rust: alloc: Add doctest for `ArrayLayout`
+Date: Fri,  6 Dec 2024 17:37:38 -0800
+Message-ID: <20241207013741.351172-1-jtostler1@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <Z1LYjiwaE8iDPj3H@pollux>
+References: <Z1LYjiwaE8iDPj3H@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241205141533.111830-1-dakr@kernel.org> <20241205141533.111830-4-dakr@kernel.org>
-In-Reply-To: <20241205141533.111830-4-dakr@kernel.org>
-From: Fabien Parent <fabien.parent@linaro.org>
-Date: Fri, 6 Dec 2024 17:14:00 -0800
-Message-ID: <CAPFo5VJ9=VAghiUGbzPjDDdG8tg6xNQaRtBduHk8R70jktPQNg@mail.gmail.com>
-Subject: Re: [PATCH v4 03/13] rust: implement `IdArray`, `IdTable` and `RawDeviceId`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com, 
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
-	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
-	j@jannau.net, chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Danilo,
+On Fri, Dec 6, 2024 at 2:57 AM Danilo Krummrich <dakr@kernel.org> wrote:
+>
+> On Thu, Dec 05, 2024 at 03:04:28PM -0800, Jimmy Ostler wrote:
+> > On Thu, Dec 5, 2024 at 3:35 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > > Hi Jimmy,
+> > >
+> > > Thanks for the patch!
+> > >
+> > > On Thu, Dec 05, 2024 at 02:56:27AM -0800, Jimmy Ostler wrote:
+> > > > Add a rustdoc example and Kunit test to the `ArrayLayout` struct's
+> > > > `ArrayLayout::new()` function.
+> > > >
+> > > > Add an implementation of `From<LayoutError> for Error` for the
+> > > > `kernel::alloc::LayoutError`. This is necessary for the new test to
+> > > > compile.
+> > >
+> > > Please split this into a separate patch.
+> >
+> > Got it, the next version will be split into separate patches.
+> >
+> > > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > > > index 52c502432447..ac8526140d7a 100644
+> > > > --- a/rust/kernel/error.rs
+> > > > +++ b/rust/kernel/error.rs
+> > > > @@ -4,9 +4,10 @@
+> > > >  //!
+> > > >  //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
+> > > >
+> > > > -use crate::{alloc::AllocError, str::CStr};
+> > > > -
+> > > > -use core::alloc::LayoutError;
+> > > > +use crate::{
+> > > > +    alloc::{layout::LayoutError, AllocError},
+> > > > +    str::CStr,
+> > > > +};
+> > >
+> > > I think this part of the change would be enough, since we don't make use of the
+> > > `From` implementation of `core::alloc::LayoutError` anywhere.
+> > >
+> > > I think we can add it (again), once it's needed.
+> >
+> > Okay, that makes sense. It is still used in the documentation for the
+> > macro `stack_try_pin_init`, and it is hidden and not used as a test, but
+> > it would probably be prudent to change that for consistency, as
+> > `Box::new` no longer returns `core::alloc::AllocError`.
+>
+> It seems you're confusing `LayoutError` and `AllocError` here.
+>
+> This is about the former. But you're right that `AllocError` can be fixed up in
+> a few places too.
 
-> +/// Create device table alias for modpost.
-> +#[macro_export]
-> +macro_rules! module_device_table {
-> +    ($table_type: literal, $module_table_name:ident, $table_name:ident) => {
-> +        #[rustfmt::skip]
-> +        #[export_name =
-> +            concat!("__mod_", $table_type,
-> +                    "__", module_path!(),
-> +                    "_", line!(),
-> +                    "_", stringify!($table_name),
-> +                    "_device_table")
+Oops, you're totally right, I noticed it when grepping through error 
+types in documentation, and mixed them up.
 
-This doesn't work on top of v6.13-rc1. The alias symbol name has been
-renamed by commit 054a9cd395a7 (modpost: rename alias
-symbol for MODULE_DEVICE_TABLE())
+> Do you plan to send a patch for this as well?
 
-I applied the following change to make it work again:
--            concat!("__mod_", $table_type,
-+            concat!("__mod_device_table__", $table_type,
-                     "__", module_path!(),
-                     "_", line!(),
--                    "_", stringify!($table_name),
--                    "_device_table")
-+                    "_", stringify!($table_name))
+Yes, I've already got a fix for that locally.
 
-
-> +        ]
-> +        static $module_table_name: [core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
-> +            unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
-> +    };
-> +}
+> > I can add that into the v3 patchset, unless there's some reason we
+> > should leave it.
+> >
+> > > >
+> > > >  use core::fmt;
+> > > >  use core::num::NonZeroI32;
+> > > > @@ -223,6 +224,12 @@ fn from(_: LayoutError) -> Error {
+> > > >      }
+> > > >  }
+> > > >
+> > > > +impl From<core::alloc::LayoutError> for Error {
+> > > > +    fn from(_: core::alloc::LayoutError) -> Error {
+> > > > +        code::ENOMEM
+> > > > +    }
+> > > > +}
+> > > > +
+> > > >  impl From<core::fmt::Error> for Error {
+> > > >      fn from(_: core::fmt::Error) -> Error {
+> > > >          code::EINVAL
+> > > >
+> > > > base-commit: 1dc707e647bc919834eff9636c8d00b78c782545
+> > > > --
+> > > > 2.47.1
+> > > >
+> >
+> > Thanks!
+> >
+> > Jimmy Ostler
