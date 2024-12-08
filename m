@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0320A139566
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0421E4A3C
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733665456; cv=none; b=Wj9sNOgtmA+h/5AEAq0Wv6+mpHrGuiDH22peqFWnY5ljxX4zgE6Y4MiYNdOzIuXm8UfSa3b9QdzRK0QyRmp49D5UeIA/+luqkj1zSD3NzdXB6OcROpvbBmYVA5TKQIXe2eYHG1BHj54Yqyp7MoilYS8YL9UEvqRAZDA84yonoHE=
+	t=1733665654; cv=none; b=IoZtoBbAII9XLkomL3sxs9eneNqFhOkThEvxEmw5/ZBbbXCi59roX8S9yYQ51Vn4ao2GGFrDFJp+TeYC/a64zq2Lkj8ENW/wYLtKskVdpqRU76U27gCr7UDcyWCuoxsVMklRp0msDRrdS6XcxBuOq+yuh8k5l+TXJbvAJfx8Vh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733665456; c=relaxed/simple;
-	bh=OpakwC+AxKeq8UXNkKWGakEU/Xc/8sQzPrpu64E5QRo=;
+	s=arc-20240116; t=1733665654; c=relaxed/simple;
+	bh=/Kdo92l4f0E/sVMftFoOWfKDBUoY8BZPpCapNapoQ8I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nmg5fdvxPg0UOu0tiuC0CsK/09heQ364EyVZN2c25zPVje06gu6iyWdQTT2OpIKbFuiCJRDiM/KeBPbqA2q76LjmJ90uJBsWixjqgY3TGKxK7+if3e7cBQGnsxT7NrmjVhnWZQiKvRMIhXUwSQtHNEt3cTUaeu5G/W5XPYILDj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWQ18+vy; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GomMZlSrlXmHIOkJe36oba95S7pRjpSCPVae0MfLjWPhYc8olgUY+qD20g0QkYt5AxUZsrxafUpdQM0XFZPJCQCIketag+KKfgf+MLCMpx4LtbSnVPsSPq8rTbufktTyvBkDSyrwydZBiZjB9wKkKxaNVlK/KhSU2Zb2HlfYiA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcAd+5YP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWQ18+vy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF85DC4CED2;
-	Sun,  8 Dec 2024 13:44:13 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcAd+5YP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BC5C4CED2;
+	Sun,  8 Dec 2024 13:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733665454;
-	bh=OpakwC+AxKeq8UXNkKWGakEU/Xc/8sQzPrpu64E5QRo=;
+	s=korg; t=1733665653;
+	bh=/Kdo92l4f0E/sVMftFoOWfKDBUoY8BZPpCapNapoQ8I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AWQ18+vyqHNjsp1qrcllbBsMaBNCIdzgVFGdfdteY7GFxx6GYS/b91TjDVg7cLTjr
-	 alQI/WHG1D7umDBhh3z5eBHFnuM482DX65pILkwyO6EjKBjl3ykfS6tVshq+CWRwA8
-	 bJLkNS8V3JVuyKSix5U+uJhLI1ItYpEBn1DwpajY=
-Date: Sun, 8 Dec 2024 14:43:39 +0100
+	b=FcAd+5YPf98ykXTxX5a/pA+7frOyDzwkugajpU4w/ERu2v2LymAH8KMjSGvAurDPa
+	 NVw+NeR+4TMsMagOasJvJca84BxRyXT26K6Uy25GAVK7raqWjlDkuYmcf4aoKpEWYm
+	 PFSbth10jX3rxv1aswvET1/YuC4v4I8z9D1iIS3Y=
+Date: Sun, 8 Dec 2024 14:46:58 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Daniel Sedlak <daniel@sedlak.dev>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -33,10 +33,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 2/3] rust: kernel: kobject: basic sysfs implementation
-Message-ID: <2024120849-mumbling-lucrative-006d@gregkh>
+Subject: Re: [RFC PATCH 3/3] samples: rust: add kobject sample
+Message-ID: <2024120851-thesaurus-monsoon-443b@gregkh>
 References: <20241208131545.386897-1-daniel@sedlak.dev>
- <20241208131545.386897-3-daniel@sedlak.dev>
+ <20241208131545.386897-4-daniel@sedlak.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,237 +45,86 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241208131545.386897-3-daniel@sedlak.dev>
+In-Reply-To: <20241208131545.386897-4-daniel@sedlak.dev>
 
-On Sun, Dec 08, 2024 at 02:15:44PM +0100, Daniel Sedlak wrote:
-> Implement initial support for interacting with sysfs
-> via kobject API from the Rust world. Rust for now does
-> not expose any debug interface or interface for tuning
-> knobs of the kernel module. Sysfs is used for exporting
-> relevant debugging metrics or it can be used for
-> tuning module configuration in the runtime (apart from
-> module parameters).
+On Sun, Dec 08, 2024 at 02:15:45PM +0100, Daniel Sedlak wrote:
+> Add basic example using the kobject API using Rust.
+> The example is similar to the already existing
+> examples samples/kobject/{kobject-example.c,kset-example.c}.
 
-sysfs is NOT for debugging, it's for system parameters of devices or
-other things.
+No, please no.  let's not have "raw kobjects in rust" even be an example
+of something that is a good idea to use...
 
-debugfs is for debugging, if you want debugging interfaces, use that
-please!
+That being said:
 
-> This patch builds on a prior work [1] by Martin RR, which
-> is listed in the old patch registry [2]. However the [1]
-> seems to be only focused on exposing devices to the sysfs,
-> where this patch tries to be more broad, not only specific
-> to the devices.
-> 
-> Link: https://github.com/YakoYakoYokuYoku/linux/commits/sysfs-support [1]
-> Link: https://github.com/tgross35/RFL-patch-registry [2]
-> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
-> ---
->  rust/kernel/kobject.rs | 271 +++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs     |   2 +
->  2 files changed, 273 insertions(+)
->  create mode 100644 rust/kernel/kobject.rs
-> 
-> diff --git a/rust/kernel/kobject.rs b/rust/kernel/kobject.rs
-> new file mode 100644
-> index 000000000000..9fcc026c83db
+> +config SAMPLE_RUST_KOBJECT
+> +	bool "Build kobject example in Rust"
+> +	help
+> +	  This config option allows to build kobject
+> +	  exampel written in Rust.
+
+spelling check :)
+
+And wrap your lines at a longer length please.
+
+> index 000000000000..90db937dea5a
 > --- /dev/null
-> +++ b/rust/kernel/kobject.rs
-> @@ -0,0 +1,271 @@
+> +++ b/samples/rust/kobject_example.rs
+> @@ -0,0 +1,66 @@
 > +// SPDX-License-Identifier: GPL-2.0
-> +// TODO: Add unsafe doc documentation.
-> +#![allow(clippy::undocumented_unsafe_blocks, clippy::missing_safety_doc)]
 > +
-> +//! KObject wrappers.
-> +//!
-> +//! TODO: Write more
-> +
-> +use bindings::PAGE_SIZE;
-> +use core::marker::PhantomData;
-> +use core::marker::PhantomPinned;
-> +use core::mem;
-> +use core::ptr;
-> +use kernel::c_str;
-> +use kernel::container_of;
-> +use kernel::error::code::*;
-> +use kernel::prelude::*;
-> +use kernel::str::{CStr, CString};
-> +use kernel::types::Mode;
-> +use kernel::types::Opaque;
-> +
-> +/// Reference to the subsystems from the non Rust world.
-> +pub mod subsystems {
-> +    use super::DynamicKObject;
-> +
-> +    macro_rules! declare_kobject {
-> +        ($name:tt, $subsystem_ptr:expr, $($doc:expr),+) => {
-> +            $(
-> +            #[doc = $doc]
-> +            )*
-> +            pub static $name: DynamicKObject = DynamicKObject {
-> +                pointer: kernel::types::Opaque::new(
-> +                    core::ptr::addr_of!($subsystem_ptr).cast_mut(),
-> +                ),
-> +            };
-> +        };
-> +    }
-> +
-> +    declare_kobject!(
-> +        FIRMWARE_KOBJECT,
-> +        bindings::firmware_kobj,
-> +        "Firmware subsystem dynamic KObject."
-> +    );
-> +    declare_kobject!(
-> +        KERNEL_KOBJECT,
-> +        bindings::kernel_kobj,
-> +        "Kernel subsystem dynamic KObject."
-> +    );
-> +    declare_kobject!(
-> +        MM_KOBJECT,
-> +        bindings::mm_kobj,
-> +        "Memory management subsystem dynamic KObject."
-> +    );
-> +    declare_kobject!(
-> +        POWER_KOBJECT,
-> +        bindings::power_kobj,
-> +        "Power subsystem dynamic KObject."
-> +    );
+> +//! Rust example using kobjects.
 
-Please don't export these unless you have a real user.  I doubt rust
-code will be placing stuff in the power of mm kobjects (and if so, the
-maintainers of those subsystems MUST review that.)  Same for the other
-kobjects as well.
+No copyright?   No authorship?
 
+> +use kernel::{
+> +    c_str,
+> +    kobject::{subsystems, KObject, KObjectTextAttribute},
+> +    prelude::*,
+> +    str::CString,
+> +};
 > +
-> +    // TODO: Add rests of the exported Kobjects.
+> +module! {
+> +    type: RustKObject,
+> +    name: "rust_kobject",
+> +    author: "Rust for Linux Contributors",
+
+No taking ownership of this?  I REALLY want someone to own this if it
+ever happens, so that they can handle all of the fallout over time with
+it :)
+
+> +    license: "GPL",
 > +}
 > +
-> +/// DynamicKObject is same as [`KObject`], however it does not have any state.
-> +pub struct DynamicKObject {
-
-Why the funny name, why not just Kobject?
-
-> +    // The bindings export `extern static *mut bindings::kobejct`, however
-> +    // we need to have double pointer because rustc complains with
-> +    // `could not evaluate static initializer`.
-> +    pointer: Opaque<*mut *mut bindings::kobject>,
+> +struct RustKObject {
+> +    // This kobject may be referenced later by other parts of code to update
+> +    // the values stored within [`MyKObject`].
+> +    _kobject: Pin<KBox<KObject<MyKObject>>>,
 > +}
 > +
-> +unsafe impl Send for DynamicKObject {}
-> +unsafe impl Sync for DynamicKObject {}
-
-All kobjects should be dynamic, so why is this needed?
-
-Yes, a few are not, but I really really really do not want any rust code
-to follow the mistakes of C code where that happens if at all possible.
-Let's take the chance to fix the mistakes of our youth when we can.
-
-> +/// KObject represent wrapper structure enables interaction with
-> +/// the sysfs, where the KObject represents directory.
-> +///
-> +/// TODO: Add examples?
-> +pub struct KObject<K> {
-
-Why the "O"?
-
-> +    data: K,
-> +    pointer: Opaque<bindings::kobject>,
-> +
-> +    // Struct must be `!Unpin`, because kobject pointer is self referential.
-> +    _m: PhantomPinned,
-> +}
-
-So that's all?  Where is the kobject_get() call?
-
-> +impl<K> Drop for KObject<K> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: This KObject holds a valid reference, because it was allocated
-> +        // through kobject API.
-> +        unsafe { bindings::kobject_put(self.pointer.get()) }
-> +    }
+> +/// Sample KObject state which creates directory in the `/sys/kernel/my_kobject`.
+> +#[derive(Default)]
+> +pub struct MyKObject {
+> +    text: Option<CString>,
 > +}
 > +
-> +#[doc(hidden)]
-> +struct KObjTypeVTable;
-> +#[doc(hidden)]
-> +impl KObjTypeVTable {
-> +    unsafe extern "C" fn release_callback(kobj: *mut bindings::kobject) {
-> +        unsafe { bindings::kfree(kobj.cast()) }
-> +    }
+> +/// Attribute of the [`MyKObject`], creates file in the `/sys/kernel/my_kobject/my-text`.
+> +/// Where `show()` is triggered when read is called and `store()` is called
+> +/// when new data are written.
+> +pub struct MyKObjectAttribute;
+> +#[vtable]
+> +impl KObjectTextAttribute<MyKObject> for MyKObjectAttribute {
+> +    const NAME: &'static CStr = c_str!("my-text");
 > +
-> +    pub(crate) const KOBJ_TYPE: bindings::kobj_type = bindings::kobj_type {
-> +        release: Some(Self::release_callback),
+> +    /// Called for example by `cat /sys/kernel/my_kobject/my-text`.
+> +    fn show(this: &mut MyKObject) -> Result<CString> {
+> +        if let Some(text) = &this.text {
+> +            CString::try_from_fmt(fmt!("Text that was stored: '{text:?}'\n"))
+> +        } else {
+> +            CString::try_from_fmt(fmt!("No one stored anything yet, value {}.\n", this.value))
 
-Note, release callbacks are REQUIRED for a kobject, can we enforce that
-here somehow?
-
-> +        sysfs_ops: ptr::addr_of!(bindings::kobj_sysfs_ops),
-
-Why would you allow access to a kobject's sysfs_ops?  What needs that?
-
-> +        ..unsafe { mem::zeroed() }
-
-What does this do?
-
-> +    };
-> +
-> +    pub(crate) fn kobj_type(&self) -> &'static bindings::kobj_type {
-> +        &Self::KOBJ_TYPE
-> +    }
-> +}
-> +
-> +unsafe impl<K> Send for KObject<K> where K: Send {}
-> +unsafe impl<K> Sync for KObject<K> where K: Sync {}
-> +
-> +impl<K> KObject<K> {
-> +    /// Attaches KObject to the sysfs root.
-> +    pub fn new_in_root(name: CString, data: K) -> Result<Pin<KBox<Self>>> {
-> +        Self::new(name, ptr::null_mut(), data)
-> +    }
-
-Please never create a kobject in sysfs's root.  Let's let C code only do
-that for now.  If this does come up in the future, talk to me and we can
-reconsider it.
-
-> +    /// Attaches new KObject to the sysfs with specified KObject parent.
-> +    pub fn new_with_kobject_parent<L>(
-> +        name: CString,
-> +        parent: &KObject<L>,
-> +        data: K,
-> +    ) -> Result<Pin<KBox<Self>>> {
-> +        Self::new(name, parent.pointer.get(), data)
-> +    }
-
-Where is the parent dropped?  And these function names are not matching
-up with the C api, why not?
-
-> +
-> +    /// Attaches new KObject to the sysfs with specified **dynamic** KObject parent.
-
-All kobjects are dynamic.  If not, please point them out to me (hint, I
-know a few but we really should fix them.)
-
-> +    pub fn new_with_dynamic_kobject_parent(
-
-You should never know, or care, about the lifetyle/cycle of your parent
-kobject, so why need two different functions?
-
-I'm going to stop here, let's see a real example please.  Wrapping a
-kobject is only a last-resort for me, I really want to see proper users
-of the in-kernel apis we have already before resorting to "raw"
-kobjects.
-
-Note, the one big offender right now is filesystems, and I will push to
-finally get a "real" filesystem kobject api created so that filesystems
-in rust do NOT have to deal with raw kobjects, but can instead use a
-correct api instead, which will prevent all of the current problems that
-filesystems have when dealing with raw kobjects (see the mailing list
-archives for loads of examples of this.)
-
-Also, a final nit, why didn't you cc: the kobject maintainer on all of
-this?  You're lucky I'm on the rust mailing list and happened to noice
-this series to hopefully save you some time :)
+Wouldn't this also happen if the text was ""?  If not, why isn't an
+empty string the default to start with?
 
 thanks,
 
