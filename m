@@ -1,111 +1,91 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5927D1586FE
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 20:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035A381AF
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 21:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733691024; cv=none; b=NfzTdI3Jn1tad2IPpqqMMjarYt5qJNDu0OHCMFizCXkQDSfqwugcEzBOjgJ5YsuDnDsLA+hSGHWGaLzgjpyz8nvoaNMNzooRvra5YMy28U09djUWpMgCHci7hfAURC2GOMdVTh/LOCnxJlBW3IdibE8Ee4wlhQZfFw0sNETUhPI=
+	t=1733693330; cv=none; b=GeOaz+mbE8Sr3Wo/PO/b7bwrivCUmW1bwIk5tmly+c3c1ek/1EjZ2/0ntYJfyErNWukITSx8+XrH2vETOHseaB1nfVni2PyNYpYSg6JZVYiEv7qEKMkH1/2QiysjFsp2WvaDB+viP0RmfKRSzJOWLiqRC0Ssf8pAQ96KY2403rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733691024; c=relaxed/simple;
-	bh=+TQZRSSVKhMpauU2fZaRG5OGPCfKvL0ERn4X+X83ils=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kne21yqP0E4u5Cd6IW+XwOei7PVVvKUKdCflQ5sD55VAH8UiuH32lS/PBBIRRvQRAt2B+Hld4iqwmeCwcfLt6CWpX7/LqYt/GrUO6td7Axz7KlTpM6BssvPC7zJ5s3Z1mzew7xzKAlTkgwFXvFM2M60d1Fa5VlFKmeBYkjisKRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZNDIYvKe; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1733693330; c=relaxed/simple;
+	bh=VbprFhfTDX1Glc+UUn8abmNPsCZhmWLVw2Qa8TrzMEc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mse6kimbO5magtKwRb8+0Qmvw4DNM0p55XN7QPTsXkv3WtEY2e+l+SWzA2PwpO43oSo8EzQFbvH9sXDxvoeZJSjWjYNN2xcW1jF4Vevo5J+CCllHEejGsZCjd1L1CY4XA+x1Nt05a4mSGPSveBCYgqaWoZBwYpb474wH0243N00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJma+KcK; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZNDIYvKe"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-215a7e487bfso30393815ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 12:50:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJma+KcK"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2e9c1e7268eso681057a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 13:28:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733691022; x=1734295822; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1733693328; x=1734298128; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GkD+FMt/cRWdIAgCEDxyVz5HUntKZt/jMtSlunJtxCQ=;
-        b=ZNDIYvKeTDg/klqwojnPYpRRdGGNfXAJiMao3jftZxFbcwAoyoniD9IbKzglRdmJl/
-         u2I0mvgPsg4cKCi2lv1RubB0BK026BCcr3MJLs2OVBqZnmauxigJEZ1G0ECfs363GvQh
-         2ASxaZwAJCbOdv4tUEY1wTEi+hu9RcXLXXMpSUYEsF5CFwoP6cayGzNjVX3DTrlm4YeE
-         FcYqXcybDGOa8Sz5Cg+IMyDeKCJMZa41GdabnaTM428MuUsEYvvWnwnCgg3F9zQwFneG
-         NwHstwmJfxuVPj2Tov4f1fv6wfVI4HdF9CcgQ0g13AniF4tInoXbkid4gUuLKPivSgF1
-         7P8w==
+        bh=VbprFhfTDX1Glc+UUn8abmNPsCZhmWLVw2Qa8TrzMEc=;
+        b=SJma+KcKZr3FjZb2SYHjdFBrGv9YKbwPD6Hu1U/Z7gtNpXng0fxGaDhTnBQWIPmbbh
+         nxf2uyqGlXeWS1ayiwzW8RKzz1cAPi2G7c8UhOcpQWi1S+1BW88EBylPNobMXhoJDcvd
+         aJHegjW0s7+mDa3inkKDjBWqzxFe0v0wDfaqI9x0Wd3LXfuAC6LRVl/xMDzDbaru1ajB
+         5QVht28eBYtY6XOdKTP5A+8gCJWiLPZr5w3biNybbjzjGXBuYT504OgivO2xExdQsDEy
+         HsOGgTNb/Trpytp6TAE5hClAycDtJrJ4N5EY0Iz8IEkzD7g91TNEsWxC8uHbyTjVJHaP
+         FEdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733691022; x=1734295822;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1733693328; x=1734298128;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GkD+FMt/cRWdIAgCEDxyVz5HUntKZt/jMtSlunJtxCQ=;
-        b=W9u2TGTWu9tQZHBzag9/T8no7D1tqRdRCflnVUVghcWc+oA38GoWEVvyIfBwKaVapE
-         Pr7+3uXFgYF5W3h492Njlt8wfoTM1zFNB96j1XUv+YMy9hysICDgM3dyB9PtRkDi1dRc
-         Gvh8UC6aRuTJ8+81C2lcjpbkcekfTDrjcPXCKZziwSUH9gDCAhmKOzwkX4REdxmvrnhO
-         OnmjuDhoBFAAQGHYD5FRN2RPe8T9jggL+jMng3Hhx7G2YvpAkVBKH7sylOoHPJ/SiDL3
-         u8OxXcL38rpCAzEuyeHzlaWiX3EY8qQHL3OYPo2RO0ZCkPA+/1US7JbeJnvAM83OC67I
-         2QWw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7DOGB+nQBzzYnvdqxnGIp0rSs7aFFGl0Cmq+ED/utNfPUzs049ZJtZNubucDTh3DovzqdUlMpgzEmpaDF0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1Jhv9dZq9jtbG/bMsVezbpaz4BDpOiwvQ/6OxM7M2GpsoN+2o
-	5Iqf1tVswjttPdBMOc+jzknBq5qsnr9TrISbpAyl4w08+Lx5vPoM
-X-Gm-Gg: ASbGncvaRKxuybpjCzZqe49MAHdKnQV179fW8I58xv9koD+5suERm8NXuQPHCyfYrA1
-	e/WRc5UbvOn2lBcD6/Da4HvMnyThBqG8ajLnEGdK5938P9ykB1M2NJURhjhmEv5fbCk4H6PrX+T
-	3oC8c23Z8agugPD9GA7yBWNmOKfN42Lha1ze+GvU9kQXKepwGrQNn2YOWXcgdBRm8LI0pH0X15Q
-	Bxhb3qStATO0rQTKDHwmATbSCn/+Z4+Gpyx/BjR9MrkhRixvtyglZJSzBSqSA==
-X-Google-Smtp-Source: AGHT+IEIimT/JtDzJI1ot6LuvWbMc8bvHY2TrKze3dCis1kt7y9uCwhYmAEplPv3q6R2PqrBed4Fog==
-X-Received: by 2002:a17:902:e548:b0:215:7faa:ece2 with SMTP id d9443c01a7336-21614dcd852mr167824285ad.35.1733691022545;
-        Sun, 08 Dec 2024 12:50:22 -0800 (PST)
-Received: from localhost.localdomain ([73.109.132.56])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2161fd39ddcsm38587815ad.86.2024.12.08.12.50.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Dec 2024 12:50:22 -0800 (PST)
-From: Jason Devers <dev.json2@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	Jason Devers <dev.json2@gmail.com>,
-	Alice Ryhl <alice@ryhl.io>
-Subject: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
-Date: Sun,  8 Dec 2024 15:50:18 -0500
-Message-ID: <20241208205018.52930-1-dev.json2@gmail.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <Z1X7ZO0wd5XEFFvC@tardis.local>
-References: <Z1X7ZO0wd5XEFFvC@tardis.local>
+        bh=VbprFhfTDX1Glc+UUn8abmNPsCZhmWLVw2Qa8TrzMEc=;
+        b=Jtb0vvaLLffzOXAS34yal/YtqGnRi/tmHhAagTKBj8t33PwrmksgqWHoZv5rwWJbwv
+         t65hNN4+M0ypPsaPfq/fUIgSI7/VuhC0SOOh+ccTNkKI0es0Pep2Z0GHZnhWVrkbG8MD
+         FIEC7kR74p+ikUeo067d6tNQuAkEGhazGeP4Koes7M2bVNKkM44oEBGhpzWtfvXfNTcz
+         8s9feD/50iKEx7LEUFDS2i6GC25DIuWQdCkW0/XkTh6JWtdiHxU+OUTIQdM59csU9MP2
+         Frq56/ke+dwm2If9PC+i9BTOAP927lkc98lvQYBxeE2tkN4weg27hVEWp2OmpE/DEH8I
+         eN1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUpeUNt6A7atwp+3kp1G8VhCnVnpR99zGmKv9YyfB+n9Ir170+zNqhtx5tM24Y0CFWKYUjeEpb0bhvtGuVRCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynELMiKF050Qb0MjJ8/W1nDuEixSUaDd9bapgFFxHHOKNgZvK7
+	yOXSvZZ6HEQlCk6MG2ML3c5RCfXtwPAleu9YL2GGfWRxuoJ+YP66Va+RMZWI24CbU2bKSI6N/aj
+	sDsOeEuRLrUjXsa+Gd9Nr7xdfgEo=
+X-Gm-Gg: ASbGncvy1cOc79O2VDTzm29cra2wygIbHzvZZS2mXU3DR8ZKn/Gp/vk6NlYyOg2Fnmw
+	d5dKMFDM0mixJOJ1+1G34diwoeBVeWic=
+X-Google-Smtp-Source: AGHT+IEPeq33F7hIIQOzK5fw7xOdeXHKATIn6UUAkSyLKiv/Mj1oIA+9RCqU52AvE1pCo/VcqMy6q+SuRsAcUmT9CKs=
+X-Received: by 2002:a17:90b:1d0b:b0:2ee:35a1:c291 with SMTP id
+ 98e67ed59e1d1-2ef6a7bf43bmr6454554a91.3.1733693328365; Sun, 08 Dec 2024
+ 13:28:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241208184834.50212-1-dev.json2@gmail.com> <Z1XvdgQOzx3A4LSf@tardis.local>
+ <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
+In-Reply-To: <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 8 Dec 2024 22:28:36 +0100
+Message-ID: <CANiq72kLbusVz56bvfmC_YY=6+CbLxv9SOkMynF84dR5mtdukw@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
+To: jos <dev.json2@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <alice@ryhl.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
-currently does not issue a warning if the return value is unused.
-To avoid potential bugs, the `#[must_use]` annotation is added to ensure proper usage.
+On Sun, Dec 8, 2024 at 8:40=E2=80=AFPM jos <dev.json2@gmail.com> wrote:
+>
+> How I understand the issue arises when the result of `Lock::try_lock` is =
+called and its return value can be ignored, the lock is never acquired, and=
+ no guard is created.
 
-Suggested-by: Alice Ryhl <alice@ryhl.io>
-Link: https://github.com/Rust-for-Linux/linux/issues/1133
-Signed-off-by: Jason Devers <dev.json2@gmail.com>
----
- rust/kernel/sync/lock.rs | 1 +
- 1 file changed, 1 insertion(+)
+I may be misunderstanding what you are trying to say, but the guard is
+created, and the lock is acquired.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 41dcddac69e2..f7d355c5d90a 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -147,6 +147,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-     /// Tries to acquire the lock.
-     ///
-     /// Returns a guard that can be used to access the data protected by the lock if successful.
-+    #[must_use = "if unused, leading to an empty critical section"]
-     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-         // that `init` was called.
--- 
-2.44.2
+So the issue is that someone does not keep the guard around, so the
+guard is dropped right away and so the critical section is empty.
 
+Cheers,
+Miguel
