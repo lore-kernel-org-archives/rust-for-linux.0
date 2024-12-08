@@ -1,190 +1,220 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB62922318
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 19:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3668946B8
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 20:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733687005; cv=none; b=FiJW85CYyaUVzlowMJNF/KSeuGXeIKsMYEbC07B0BWD7T+EQ7n1zWLRDruQOc6RTNO0NBSECrgYC77b6PCwkaEY/YgOl0UZw/Xqw8UCm3RD3s0H/76IFT4RdllPfRjdyHVNnrtRsfLEjQP5GlLxfLur71ERIvmlBLhy9uaycx+o=
+	t=1733688169; cv=none; b=tzCVia5ldiZvbXEOxoVOSE1I9tYhoL7iBKt26IHvM9evk47L8OUqVBzJl2UwUeBuqPTCf6aZjTQ/IiwJ0lZLTNmMaCvZ/tpg0Go13dKwR/hXGgrcQ04qE6q8M3YOdPfaEJKA3gvjpvXnU5IADyZDe+7787Q4oHeUfY+ddwmjJf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733687005; c=relaxed/simple;
-	bh=kTK9vhO9tDd8yy0etx/tIJK5IiJZ21yUrfNQ6pQl+SE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZGZLboHCz8eT3SMuK7af6jvy37cHuNSuSfUv4EBXNB7S7bj7ulnZdHusRBh6BM1xvtMbpstUx2ojBhx8+Mz+whjTwhCDekyhdQVCuPDGGRQNBWjanmTGkoE0RHsWMUJqG0SWyl72jGwZUnnXV6y8mwL80BWZUjNWzaY1qlIZZ5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9CrVYcY; arc=none smtp.client-ip=209.85.128.170
+	s=arc-20240116; t=1733688169; c=relaxed/simple;
+	bh=gz6PCo4Tt0zAFnKMZJsdpK12HiUr8GTkiN22/buzjAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JWHm7EuFC/OrDrqgmF7u7pNHldHMz+DDnwMfE9Tbx0IswVxowwCxrTgUUAGoTeIiZ/rUSL14YhVV9D8zcOwiemuknV3DibAv2q9NYAi7xP3rlSmw/UA0tCD+0QLsd34D06mOSFtLD7jg/bjC5ahaEUyAKviEEHWop0yXu6pT9c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0gZHQDp; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9CrVYcY"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6f00da6232bso3352327b3.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 11:43:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0gZHQDp"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7b678da9310so323409085a.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 12:02:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733687003; x=1734291803; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CQR0xYt66UO5eK55iKkJVM8U/DkxHvnWzf/92yZJBwA=;
-        b=m9CrVYcYjA0h+mrw7svjmeSwRQPz8wGWojLc03PdUQlsdMT8AtvKQrhNcLmc+3YVj/
-         C3bfJNlDxV9PLi65MWO5g/aHO9sO17EXImHvJf3E2Bc7oBFwuwB3/8rIWIybm4L3jJfk
-         J6EHnr2Le71n1acClfc3nYKtBI9Jga2A6DuMUJKQMeYZwrqolQT+oSiPFwuTh0H+Bsby
-         yj7nQ22CxivkQXNyoghR4PZpB1Vtv8EJMx9NgDQ5mBRXX7XyjTB6QgQXzWaDkBP6Rdur
-         Gwv6Qk4zZEcCOHTiRbQIkWqWcWYYOGbd5R8AYjR6wZlREAKbsGRs5o4gxE0rPJ2Ub4Hv
-         NbYA==
+        d=gmail.com; s=20230601; t=1733688167; x=1734292967; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=eV7IX/xmEIYt4sjsSR266zBqR8r8eLy+4Mrz22uamn8=;
+        b=W0gZHQDpWfgk95oGnnzc9JfrLhXI/cxH/2hv60UQkp0HRgIn1NhZ4JqrxGzccnG734
+         nd9VtKgLe7U1dtFRYIn55pE36XxWqTkEoYfNF4leCDUghgpfw8mB1jN99Gu5FGJQfEWh
+         0FbznZO4NXxN6fqLUhVlQY9aX4M0CW2lv0Bfap5Q1/DsYUhCEM/2EE/izRaafqGdv7OT
+         fxM4TTkyVr4C+RSqzHIS7uoB5WiFd9WMntSUiTgpNFk6RQijyhbWw4WreYMIIh/+/QLt
+         pfWcg8mpX8StA8seykWQP9IKLibDAl0Sg2n41SaPsz4Ty64aDB7q8rfYA5e8WJ1B3efm
+         IQNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733687003; x=1734291803;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CQR0xYt66UO5eK55iKkJVM8U/DkxHvnWzf/92yZJBwA=;
-        b=Jb/gBLzi4QnSCJvkbLJZAWgz2WwJALqpU/culU9+AeoQ/DVKH7KUbyx1PJD3/EAOM/
-         wS4SiJg3/j/x2ukIk1n/J1dcfbMrYcy6xw48QrcMRbVopPawQPCmEuRqEQBbaRN6dj8d
-         Ls2PqAbFQJvRt0FAvuOr7CGUC7s3LJ7QyaW18bLqTsAJ1oA+yiIPE24AIg6PKMVbEWTd
-         LP5mV+TuBM/lucBlUyfDNt+2GB+IX6ydz0DnkQUXve17EGk+zhDwFVlnNUdAF4Bzozss
-         OWi+8BWhsY+GsEt5wEdClnynrcovDCjBl/6afUcJUHx+odflB4dYrWXLMDBPCw9pVAqT
-         FI/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXuo2sTZiNngvNfplC8bwY4+xijiczAlul8SfjdSZyGQD2jsrfry8M5sGxFa/EI9sE67Zb9QbzsfkGPGEEE1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw54vcxIltpVHh/cfejKv2aR6ZwUxPm5WE+yLIS+GPnFYCFyI3Q
-	aFa7g4PP82u27Zvr8EotwiUTXT1WLuobUMvcjuN/z5iDkX5kQS9bFSrMESAmO2fcyEzuzjhdG/v
-	W6hrqEaY9sElpDR/E552JqBq4zZI=
-X-Gm-Gg: ASbGncs6dnnerLFSjQu8xxpDEDwn5i9CRaslcMUlOzUYECcWHLFZx5WHQ2por/o8RUK
-	LB23c31HZ1LXvSHNdZAaLI77aHxHpEh8=
-X-Google-Smtp-Source: AGHT+IEfw+8jmxkI5/19HuZyfuvyq3JPupAvyPUvZkwayka05/cwGOcLUGVtOrEOMju06IkT03OJuAh2W3VrT11zgRY=
-X-Received: by 2002:a05:690c:4c13:b0:6ee:4275:5a1c with SMTP id
- 00721157ae682-6efe3c6f71fmr96785597b3.30.1733687002910; Sun, 08 Dec 2024
- 11:43:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733688167; x=1734292967;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eV7IX/xmEIYt4sjsSR266zBqR8r8eLy+4Mrz22uamn8=;
+        b=mZVx2i0fz4K1eJuvgUiyzOxoADtZbOV/G09bIE9CfnqCtC3AK7siGdaD8oTj3EYh8+
+         nrAnVBXokmWPYBH0ZgdUaDf9luZsiVWH87R4wclwER6CwcASsJgfbWI2X3ZTsP7Pu1CG
+         WOqF/vnskpdkM5fS1M4G4aRcANtJaYERbIBn7TFmJdYCaWNjx5XAvNqTVbmpsgnt7KwT
+         FJlPrkqjSCHk73LPLxOIa4c3Ol/M0pGka7Q6jpE4L5M+GzAnhEZ/jrYEafMUiW5eg7lP
+         8YLEXF/ekyvICW89SyJxAbLXxohEJNRiqAz7pEvcHmY1a8L88+70QovhF3cccQ9vTf9p
+         OMvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsDxhW7ZzvpgDAQxp75fsWipexOGOrvaHQf2BlYYWGfsgYl/vijjujH/w5MMvYPiLQv958pvGzJMpX3t2gyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMgwGziGPk/A4ikwzBdrO74hx+sBcaf/vTN7kVC8hGMg7Vxfuf
+	za5f+oHTBym99tusSSq1SRrlpvW6p5hv47OVKSH3aLIE0g2qGPWd
+X-Gm-Gg: ASbGnctjSZMElwAXO3XqwveVUVvjgDD1D4vgwttrJZIUTx82Cvjhl1QRi1f4pwb/2EV
+	bQCnCDtKd8u2XtlXk008Qq9MgJ4y2fd7EOjtDk+Uz/9HO6wSDUgJe+wKpTMgQdLAwkkUf6aHJGL
+	BhsTIDZu5x7+PZR9QxwsTTNbbJcW3sTamwWMzOvEBbV2TiiRd/c/bDpqIcXR2/8kuSqG9JI5aGK
+	6t5l/R4K4PpEYMBT8GU+q9SDg/Jyq4dcfaPwonN0Bohqj4MdhnUkntQmdsPhFvNnyFCt3Q+TAXk
+	yglpxVzo0Rg15XESGrzVfnMJeTkUQADR0qBo0tzM
+X-Google-Smtp-Source: AGHT+IGb98MtFNOXGCv+JKvMr16utrZ1Hnc04TK3kZ4FPsdcqNOM/qL+JDI1MWmoMCNM1vSEPN4sYA==
+X-Received: by 2002:a05:620a:24c2:b0:7b6:d70a:86d6 with SMTP id af79cd13be357-7b6d70a8803mr171455385a.36.1733688166924;
+        Sun, 08 Dec 2024 12:02:46 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6b5a9ffacsm372633285a.114.2024.12.08.12.02.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Dec 2024 12:02:46 -0800 (PST)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CD2321200043;
+	Sun,  8 Dec 2024 15:02:45 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Sun, 08 Dec 2024 15:02:45 -0500
+X-ME-Sender: <xms:ZftVZ_T0j-XNYHPk0ef3MWpk2XZyCIgD5cX1__b14njb3Qdel-W4PQ>
+    <xme:ZftVZwygRMVECOMz8ORBcZpxgST1hkaNTWLC-ej0NuFX9aCwlckKLR0tkd_BzkVir
+    TTgdHU9ZBhRcSKTdw>
+X-ME-Received: <xmr:ZftVZ01Fc5BWnCvl3vvhhXWWMvCl8v7SQiX6uw9XsZHYsrO4PuXh2AumC6NM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrjeefgddufeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepgeekgeettdelffekfedtveelueeiudevjeeg
+    ieekvdegkedufeetfeeiiedvueelnecuffhomhgrihhnpehgihhthhhusgdrtghomhenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopeguvghvrdhjshhonhdvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurges
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilh
+    drtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthho
+    pegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvg
+    hnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggs
+    ohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
+    hglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:ZftVZ_AbN_9-jtBFsmRdr1B5CS5uzv7mqCfZ2sMPNfLyQI-94Kyv8A>
+    <xmx:ZftVZ4hJFEvGnsM-ij1ip64O-UeK8TDCVhaAV2vE5BKCE6bUaVEUmQ>
+    <xmx:ZftVZzob-muTzpIvGEvGsiKW7Yt36pgt9UX-2bgv7N7nH5txVeoSGQ>
+    <xmx:ZftVZzhFCYbQHW8XNVU4mEX7k3omf4BH6BoOMOyIB-Apx7LI5_NRuw>
+    <xmx:ZftVZ7SVc85guRByOPUW_KmMzInL_ZxqDSIIs2PfUJhsg8gjXBJbRDvW>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 8 Dec 2024 15:02:45 -0500 (EST)
+Date: Sun, 8 Dec 2024 12:02:44 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: jos <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, Alice Ryhl <alice@ryhl.io>
+Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
+Message-ID: <Z1X7ZO0wd5XEFFvC@tardis.local>
+References: <20241208184834.50212-1-dev.json2@gmail.com>
+ <Z1XvdgQOzx3A4LSf@tardis.local>
+ <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241208184834.50212-1-dev.json2@gmail.com> <Z1XvdgQOzx3A4LSf@tardis.local>
- <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
-From: jos <dev.json2@gmail.com>
-Date: Sun, 8 Dec 2024 11:43:12 -0800
-Message-ID: <CAOJvc-aPx0eS9rTKnJgKTyKHU+EtgfUVYno2oKTJUP7UqDhu9w@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <alice@ryhl.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Boqun,
-
-Thank you for the feedback, I am new to kernel development and
-appreciate the response.
-
-To answer your question(s):
-
-> I don't think not having `#[must_use]` will result in the locking being
-> unlocked immediately, do you have an example?
-
-You're correct that the absence of `#[must_use]` itself does not
-directly result in the lock being unlocked immediately, my mistake.
-
-How I understand the issue arises when the result of `Lock::try_lock`
-is called and its return value can be ignored, the lock is never
-acquired, and no guard is created. Making the caller assume the lock
-was successfully acquired and proceeding with operations as if the
-data is safely protected, e.g. calling `lock.try_lock()` and
-proceeding with critical section code.
-
-The use of the `#[must_use]` macro annotation will ensure the caller
-cannot silently ignore its return value.
-
-I believe the annotation can be revised to:
-`#[must_use =3D "if unused, return value may be unhandled, leading to
-potential race conditions"]` ?
-
-But would love to hear your thoughts and suggestions!
-
-Best,
-Jason
-
-
-On Sun, Dec 8, 2024 at 11:40=E2=80=AFAM jos <dev.json2@gmail.com> wrote:
->
+On Sun, Dec 08, 2024 at 11:40:04AM -0800, jos wrote:
 > Hi Boqun,
->
-> Thank you for the feedback, I am new to kernel development and appreciate=
- the response.
->
+> 
+> Thank you for the feedback, I am new to kernel development and appreciate
+> the response.
+> 
 > To answer your question(s):
->
+> 
 > > I don't think not having `#[must_use]` will result in the locking being
 > > unlocked immediately, do you have an example?
->
-> You're correct that the absence of `#[must_use]` itself does not directly=
- result in the lock being unlocked immediately, my mistake.
->
-> How I understand the issue arises when the result of `Lock::try_lock` is =
-called and its return value can be ignored, the lock is never acquired, and=
- no guard is created. Making the caller assume the lock was successfully ac=
-quired and proceeding with operations as if the data is safely protected, e=
-.g. calling `lock.try_lock()` and proceeding with critical section code.
->
-> The use of the `#[must_use]` macro annotation will ensure the caller cann=
-ot silently ignore its return value. I believe the annotation can be revise=
-d to:
-> `#[must_use =3D "if unused, return value may be unhandled, leading to pot=
-ential race conditions"]` ?
->
+> 
+> You're correct that the absence of `#[must_use]` itself does not directly
+> result in the lock being unlocked immediately, my mistake.
+> 
+> How I understand the issue arises when the result of `Lock::try_lock` is
+> called and its return value can be ignored, the lock is never acquired, and
+> no guard is created. Making the caller assume the lock was successfully
+> acquired and proceeding with operations as if the data is safely protected,
+> e.g. calling `lock.try_lock()` and proceeding with critical section code.
+> 
+
+Well, in most cases, locking is data-oriented, i.e. you have to have the
+`Guard` to access locked data, so the "issue" you mention could not
+happen. Besides, it's relatively easy to "get around" `#[must_use]` by
+doing:
+
+	let _ = l.try_lock()?;
+
+Overall, `#[must_use]` here should be the tool to avoid some code that
+obviously doesn't make sense (like acquring and releasing lock without
+any code in between), rather than silver bullets for a serious safety
+issue. So I think you should reword the commit log to reflect this.
+
+> The use of the `#[must_use]` macro annotation will ensure the caller cannot
+> silently ignore its return value. I believe the annotation can be revised
+> to:
+> `#[must_use = "if unused, return value may be unhandled, leading to
+> potential race conditions"]` ?
+> 
+
+I would just say "if unused, leading to an empty critical section", i.e.
+it's bad but not a correct-or-wrong issue. Does this make sense?
+
+Regards,
+Boqun
+
 > But would love to hear your thoughts?
->
+> 
 > Best,
 > Jason
->
-> On Sun, Dec 8, 2024 at 11:11=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com>=
- wrote:
->>
->> Hi Jason,
->>
->> Thanks for the patch.
->>
->> On Sun, Dec 08, 2024 at 01:48:34PM -0500, Jason Devers wrote:
->> > The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
->> > currently does not issue a warning if the return value is unused. This
->> > could result in the lock being unlocked immediately, which is unsafe
->>
->> I don't think not having `#[must_use]` will result in the locking being
->> unlocked immediately, do you have an example?
->>
->> > and unintended. This patch adds a `#[must_use]` annotation to
->>
->> Are you sure this is unsafe? Again do you have an example showing this?
->>
->> Regards,
->> Boqun
->>
->> > `Lock::try_lock` to prevent this.
->> >
->> > Suggested-by: Alice Ryhl <alice@ryhl.io>
->> > Link: https://github.com/Rust-for-Linux/linux/issues/1133
->> > Signed-off-by: Jason Devers <dev.json2@gmail.com>
->> > ---
->> >  rust/kernel/sync/lock.rs | 1 +
->> >  1 file changed, 1 insertion(+)
->> >
->> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
->> > index 41dcddac69e2..f6a5e83ff685 100644
->> > --- a/rust/kernel/sync/lock.rs
->> > +++ b/rust/kernel/sync/lock.rs
->> > @@ -147,6 +147,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
->> >      /// Tries to acquire the lock.
->> >      ///
->> >      /// Returns a guard that can be used to access the data protected=
- by the lock if successful.
->> > +    #[must_use =3D "if unused, the lock will be immediately unlocked"=
-]
->> >      pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
->> >          // SAFETY: The constructor of the type calls `init`, so the e=
-xistence of the object proves
->> >          // that `init` was called.
->> > --
->> > 2.44.2
->> >
+> 
+> On Sun, Dec 8, 2024 at 11:11 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+> 
+> > Hi Jason,
+> >
+> > Thanks for the patch.
+> >
+> > On Sun, Dec 08, 2024 at 01:48:34PM -0500, Jason Devers wrote:
+> > > The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> > > currently does not issue a warning if the return value is unused. This
+> > > could result in the lock being unlocked immediately, which is unsafe
+> >
+> > I don't think not having `#[must_use]` will result in the locking being
+> > unlocked immediately, do you have an example?
+> >
+> > > and unintended. This patch adds a `#[must_use]` annotation to
+> >
+> > Are you sure this is unsafe? Again do you have an example showing this?
+> >
+> > Regards,
+> > Boqun
+> >
+> > > `Lock::try_lock` to prevent this.
+> > >
+> > > Suggested-by: Alice Ryhl <alice@ryhl.io>
+> > > Link: https://github.com/Rust-for-Linux/linux/issues/1133
+> > > Signed-off-by: Jason Devers <dev.json2@gmail.com>
+> > > ---
+> > >  rust/kernel/sync/lock.rs | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > > index 41dcddac69e2..f6a5e83ff685 100644
+> > > --- a/rust/kernel/sync/lock.rs
+> > > +++ b/rust/kernel/sync/lock.rs
+> > > @@ -147,6 +147,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+> > >      /// Tries to acquire the lock.
+> > >      ///
+> > >      /// Returns a guard that can be used to access the data protected
+> > by the lock if successful.
+> > > +    #[must_use = "if unused, the lock will be immediately unlocked"]
+> > >      pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+> > >          // SAFETY: The constructor of the type calls `init`, so the
+> > existence of the object proves
+> > >          // that `init` was called.
+> > > --
+> > > 2.44.2
+> > >
+> >
