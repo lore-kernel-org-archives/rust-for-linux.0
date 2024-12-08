@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0421E4A3C
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859513B2B6
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733665654; cv=none; b=IoZtoBbAII9XLkomL3sxs9eneNqFhOkThEvxEmw5/ZBbbXCi59roX8S9yYQ51Vn4ao2GGFrDFJp+TeYC/a64zq2Lkj8ENW/wYLtKskVdpqRU76U27gCr7UDcyWCuoxsVMklRp0msDRrdS6XcxBuOq+yuh8k5l+TXJbvAJfx8Vh0=
+	t=1733666213; cv=none; b=VqKf7rpBVfWPGjqJidDTQ5K3v1Oolo4x3FuPEsz+pOkUm5xhKOqmyJ9ccfsQwFXkGkPi4S8uLhIweTjXvwZ+MXnkR+kOlEDwOo6bbrJ9aPBoHQl0LBPsvt5uRuZIMPi3Jd6UGt6fvVeLCnh2sMQtypawlGCz9vkXRZvEmQQxvFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733665654; c=relaxed/simple;
-	bh=/Kdo92l4f0E/sVMftFoOWfKDBUoY8BZPpCapNapoQ8I=;
+	s=arc-20240116; t=1733666213; c=relaxed/simple;
+	bh=/VahnDBTY/YZyFdn8LC/kCtZXXLc89ClwsT68tW0tBY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GomMZlSrlXmHIOkJe36oba95S7pRjpSCPVae0MfLjWPhYc8olgUY+qD20g0QkYt5AxUZsrxafUpdQM0XFZPJCQCIketag+KKfgf+MLCMpx4LtbSnVPsSPq8rTbufktTyvBkDSyrwydZBiZjB9wKkKxaNVlK/KhSU2Zb2HlfYiA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcAd+5YP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VsTUUxs2mt8kkyqC4r5IeNzVVUrKHh9bGj18LcOtumFwnZC9u03+mUhIOxfI+tv2kUw2hgAVq8RBebLBhMn4R/cOMxY2CPL+e18bJXE/HyjC6HXXkrPL78fuNrYQ1xGdxJbd77fZdBBYb8vr7FdKf0lxlxz5pFWx9cZD9XQmvZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHPUzzD9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcAd+5YP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BC5C4CED2;
-	Sun,  8 Dec 2024 13:47:32 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHPUzzD9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69157C4CED2;
+	Sun,  8 Dec 2024 13:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733665653;
-	bh=/Kdo92l4f0E/sVMftFoOWfKDBUoY8BZPpCapNapoQ8I=;
+	s=korg; t=1733666213;
+	bh=/VahnDBTY/YZyFdn8LC/kCtZXXLc89ClwsT68tW0tBY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FcAd+5YPf98ykXTxX5a/pA+7frOyDzwkugajpU4w/ERu2v2LymAH8KMjSGvAurDPa
-	 NVw+NeR+4TMsMagOasJvJca84BxRyXT26K6Uy25GAVK7raqWjlDkuYmcf4aoKpEWYm
-	 PFSbth10jX3rxv1aswvET1/YuC4v4I8z9D1iIS3Y=
-Date: Sun, 8 Dec 2024 14:46:58 +0100
+	b=KHPUzzD933jG0ZEgCZeL4U4Qo+UagHx7anoIQUrjpM2iKKv5LBj7bIWcHDjhvafdN
+	 remdHmABP3lvdeWka9jQOksfUemrGWXW8MFyxXifQERM+nz68S6ZfkkH9pAKN8pX75
+	 9rCP+VsX/Xir+5ByZlL50+uBSajZmod08R/3nR9o=
+Date: Sun, 8 Dec 2024 14:56:17 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Daniel Sedlak <daniel@sedlak.dev>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -33,10 +33,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 3/3] samples: rust: add kobject sample
-Message-ID: <2024120851-thesaurus-monsoon-443b@gregkh>
+Subject: Re: [RFC PATCH 2/3] rust: kernel: kobject: basic sysfs implementation
+Message-ID: <2024120805-header-mantra-50fc@gregkh>
 References: <20241208131545.386897-1-daniel@sedlak.dev>
- <20241208131545.386897-4-daniel@sedlak.dev>
+ <20241208131545.386897-3-daniel@sedlak.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,86 +45,95 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241208131545.386897-4-daniel@sedlak.dev>
+In-Reply-To: <20241208131545.386897-3-daniel@sedlak.dev>
 
-On Sun, Dec 08, 2024 at 02:15:45PM +0100, Daniel Sedlak wrote:
-> Add basic example using the kobject API using Rust.
-> The example is similar to the already existing
-> examples samples/kobject/{kobject-example.c,kset-example.c}.
+Some more review after I saw your examples:
 
-No, please no.  let's not have "raw kobjects in rust" even be an example
-of something that is a good idea to use...
+On Sun, Dec 08, 2024 at 02:15:44PM +0100, Daniel Sedlak wrote:
+> +/// Attribute represents a file in a directory.
 
-That being said:
+Not always, but sometimes, be careful here :)
 
-> +config SAMPLE_RUST_KOBJECT
-> +	bool "Build kobject example in Rust"
-> +	help
-> +	  This config option allows to build kobject
-> +	  exampel written in Rust.
-
-spelling check :)
-
-And wrap your lines at a longer length please.
-
-> index 000000000000..90db937dea5a
-> --- /dev/null
-> +++ b/samples/rust/kobject_example.rs
-> @@ -0,0 +1,66 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +#[macros::vtable]
+> +pub trait KObjectTextAttribute<K>
+> +where
+> +    Self: Sized,
+> +{
+> +    /// File permissions.
+> +    const MODE: Mode = Mode::from_u16(0o777);
 > +
-> +//! Rust example using kobjects.
+> +    /// Name of the file in the sysfs.
+> +    const NAME: &'static CStr;
 
-No copyright?   No authorship?
+No.  Well yes.   Kind of.  Why aren't you wrapping "struct attribute"
+here instead?
 
-> +use kernel::{
-> +    c_str,
-> +    kobject::{subsystems, KObject, KObjectTextAttribute},
-> +    prelude::*,
-> +    str::CString,
-> +};
 > +
-> +module! {
-> +    type: RustKObject,
-> +    name: "rust_kobject",
-> +    author: "Rust for Linux Contributors",
+> +    /// Gets called when the read is called on the file.
+> +    fn show(this: &mut K) -> Result<CString> {
+> +        let _ = this;
+> +        Err(EIO)
+> +    }
+> +
+> +    /// Gets called when the write is called on the file.
+> +    fn store(this: &mut K, input: &CStr) -> Result {
+> +        let _ = this;
+> +        let _ = input;
+> +        Err(EIO)
+> +    }
 
-No taking ownership of this?  I REALLY want someone to own this if it
-ever happens, so that they can handle all of the fallout over time with
-it :)
+I see you called this "Text" attribute, but yet that's not what the
+kernel calls them in the C side.  Again, let's not create multiple names
+for the same thing as that's going to cause nothing but headaches for
+decades as most of us flit from both C and Rust constantly.
 
-> +    license: "GPL",
+Naming matters, be consistent.
+
+Also, attributes in the kernel do NOT have show/store functions by
+default.  The "wrapper" attribute type has them.  So again, be very
+careful here.
+
+sysfs/kobjects are tricky and slippery and take advantage of some crazy
+things in C (i.e. object structure layouts and looney casts "just
+because we know what we are doing".)  Representing this in rust is also
+going to have those same types of issues, so watch out.  You simplified
+it all here, but note that the C side is complex for real reasons (i.e.
+we started out simple, and then got complex to solve real problems.)  Be
+aware of our history here first please and don't make the same mistakes
+we did in our youth, you have the benifit of learning from how foolish
+we were back then :)
+
 > +}
 > +
-> +struct RustKObject {
-> +    // This kobject may be referenced later by other parts of code to update
-> +    // the values stored within [`MyKObject`].
-> +    _kobject: Pin<KBox<KObject<MyKObject>>>,
-> +}
-> +
-> +/// Sample KObject state which creates directory in the `/sys/kernel/my_kobject`.
-> +#[derive(Default)]
-> +pub struct MyKObject {
-> +    text: Option<CString>,
-> +}
-> +
-> +/// Attribute of the [`MyKObject`], creates file in the `/sys/kernel/my_kobject/my-text`.
-> +/// Where `show()` is triggered when read is called and `store()` is called
-> +/// when new data are written.
-> +pub struct MyKObjectAttribute;
-> +#[vtable]
-> +impl KObjectTextAttribute<MyKObject> for MyKObjectAttribute {
-> +    const NAME: &'static CStr = c_str!("my-text");
-> +
-> +    /// Called for example by `cat /sys/kernel/my_kobject/my-text`.
-> +    fn show(this: &mut MyKObject) -> Result<CString> {
-> +        if let Some(text) = &this.text {
-> +            CString::try_from_fmt(fmt!("Text that was stored: '{text:?}'\n"))
-> +        } else {
-> +            CString::try_from_fmt(fmt!("No one stored anything yet, value {}.\n", this.value))
+> +#[doc(hidden)]
+> +struct TextAttributeVTable<K, A: KObjectTextAttribute<K>>(PhantomData<(A, K)>);
+> +#[doc(hidden)]
+> +impl<K, A: KObjectTextAttribute<K>> TextAttributeVTable<K, A> {
+> +    #[doc(hidden)]
+> +    const fn new() -> Self {
+> +        Self(PhantomData)
+> +    }
+> +    unsafe extern "C" fn show_callback(
+> +        kobj: *mut bindings::kobject,
+> +        _attr: *mut bindings::kobj_attribute,
+> +        buf: *mut core::ffi::c_char,
+> +    ) -> isize {
+> +        match A::show(
+> +            &mut unsafe { &mut *container_of!(kobj, KObject<K>, pointer).cast_mut() }.data,
+> +        ) {
+> +            Ok(cstring) => unsafe {
+> +                bindings::sized_strscpy(buf.cast(), cstring.as_char_ptr(), PAGE_SIZE)
+> +            },
+> +            Err(error) => error.to_errno() as isize,
+> +        }
+> +    }
 
-Wouldn't this also happen if the text was ""?  If not, why isn't an
-empty string the default to start with?
+You should ALWAYS call sysfs_emit() when printing out data (for a
+variety of reasons).  Here you are hard-coding the PAGE_SIZE reference
+of the buffer that the kobject core gave you, are you SURE that is
+always going to work?  Please just use the apis the C code gives you and
+don't attempt to re-write them (again, learn from our mistakes of the
+past...
 
 thanks,
 
