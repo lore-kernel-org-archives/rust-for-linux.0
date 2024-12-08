@@ -1,60 +1,59 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA3F78276
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16542145B25
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733663760; cv=none; b=q9RsbMZgf4IVTKh61GX5tju8qQFfzjvgbHbBNF9Gh48OYgPSXyl1l4ldbqKVd8psrIjr7imNqkFokRjl0MNr5Vu1sRkEuwu/bhrf8nVsFOorKdbbSwfCXL8CyrpJrB7J0x2UZ8p2czgyAqJbtiolqazr1JTVsmos1aUVA/y9uNE=
+	t=1733663762; cv=none; b=nSISoCGQxtb0sbgtdN+QheVle4EDsRfUNfthrR7m2G5WkhhiN5Nstgf3rUcsTbKIIpNsDtUCoBuy+K0OREazMcBdMppBKNmTDwvcdYCnL1++i9r9LA92RBXmhs1tVkwGCFE61l929h8L8bwoDNXfUavFp3+oPG3/1N00KlOTvfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733663760; c=relaxed/simple;
-	bh=9SulVlQ0LNsWx/q+yqRhps8KnFDASFn5tAh4umgXgFk=;
+	s=arc-20240116; t=1733663762; c=relaxed/simple;
+	bh=0oLjgeB/cJcae2SbRH3nR+1jA849GCwjr4vfbgfSI0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7PL5oVjqJ2cdTMqdj1/Jur+HpUOZ5lt8yugXv6GcYySJKn2i5kKnjLMczRX5iUiikrsuvQx8wGqTuq5y31g0KR9xRRLRbfZ8eBx73qkP8OLL6HBcr6W5WVqJHv4K8QNS1sj7RDlHfVh+hY6VBEl/KVgwl690n+HbOGotejfZuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=qU+sBSFM; arc=none smtp.client-ip=209.85.218.49
+	 MIME-Version; b=iLlT7o7w1whfMN5szFm+LSyQNGEIqQdupSYo4mSkQRkLUseRKQn3akuCbWbUGoCmfAbLfADpVMsWGQmVyuKVHf+N66L9vYX2xzeMcSE5hiXngxNZq4ZYud2S7g46yATyxGuP4q0QSpI2DvV/pHUi9vYhShc271gSCouD+ibPuos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=Ckvy9IKt; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="qU+sBSFM"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso600032666b.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 05:15:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="Ckvy9IKt"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5d3d2a30afcso2701743a12.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 05:15:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1733663756; x=1734268556; darn=vger.kernel.org;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1733663758; x=1734268558; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p+IZWuqREO3G3z6KHadyzAvNCEvHpv5YJ2RDB7ujqmE=;
-        b=qU+sBSFMy8d2MUnVMcHvPGIOOAjDhYFggfN7v5DxUXPv+TY0CxER4jdyEq/xI1gw6r
-         hZrIEsAizo+HyHvFK8t4rApxU7zAeP4BpGDd/Y3JY3tDWhygW3cG6dSS2czjxWp8kPSj
-         0SlQCZGQru0ckn+jH6OOPDY/0JHiL3LZiWTjzClgQV7EhmhO5n7GAqTY9QkAoVSVetXG
-         5G5E7F4FKvCZJoPiZBqrpDMqdsvMLy78qveCQd4uCRyCRSOsM1rHezGkvuphP8StL4am
-         KMxdLJF59Yi0Bv/djevFFn5icE5Eri8SVURsN4wDFYLSF4nq5Z0SNGRVXU9B2sPYKxw7
-         OM6Q==
+        bh=60jpBfK0tyVrO7NCZJKuTJXHbrEC8lr3GIi+TiMo5FM=;
+        b=Ckvy9IKtDlLa2avkZEY5yT45PjGda6pfuONnKCHvhqwMB5Y7QozCzvM6GH7ijpYlqq
+         0ZA0y5tlMZQAre53eQM1HmOWClCWYHyvxGkWppumj2U4KnJeafny6woO+Of5rG4d7LFS
+         PXMfnqmwTj782Jr22K9Q9uzYBYsHRoW7x2NAitsUufc7cWxwFpg1EQIW6/7m5S2glEVt
+         w2LWaq8PUHdD804izWn7In6LM1VFA9hOMawVn7UGJZtC5mfkLsi5PZB6kLcIIHFagljA
+         +2SO2NkYd9i+/J0EMGM7De6+ha3jo/3LhGWJJcJKqZSOVKbz1n649odZTRwvgJqPcRRC
+         x+Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733663756; x=1734268556;
+        d=1e100.net; s=20230601; t=1733663758; x=1734268558;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p+IZWuqREO3G3z6KHadyzAvNCEvHpv5YJ2RDB7ujqmE=;
-        b=jjHQcCzv8xxC3E0I5VW8m7Fns74tGS8ceYFqbBOOuLqY0ibLvX4j2R/MFyOM5zZO3d
-         cBuCdcQ6Rd+pxqlxNAegJbPVU4Ni2OhPbQZAZ0V5i+jshROVfrx9DUMPOgoIZ+Xlc7Nr
-         sR3NzR4z6TXnJi4vVTmlcp6GnWwYpUsRJp4I3mBdXcwSj9LPc0sY7XpM5OEnNMWDMn1I
-         KUPbO5/WnlcAYpNaVyv7jZXgBrK0KEB2jBHHqVE5Os2QeCi3yW6buK8U9besjCjBH7vA
-         F6Q9uBc75vErjv9uXmePUiZ3N1NBIoyBx0QVfIIoSov7A4kXnSUS7QBS2XMRVIHJlAYr
-         DEZg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/rpPSXRuhjuK+F26dsY5NhE3zDTiNmiXBP98QK+4I4ltDvniIE3zwJKpRRp6pZGHdR9O4ve1DhGKjzvNn8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOvbw70zONpja1ywK5ZRZK3YlSzXMYDjupGihokkxaqJ+7Y5Jo
-	JGbIcuvSwzaCMhizbzou3d175WTJXwZ7si+Uf5yTzUVNvdcHc9XwF1cLYnXqlgkurIsk61TTYAq
-	/ogg=
-X-Gm-Gg: ASbGncvL3aEQlvElpT7MgpS/piNsENrRBeIN5YX4lD7/Y7jVmsIP1GlTDFy1mPWZr+b
-	wPueHqKnTi9nNCGOJvmRL5tywhiBmbUeV0KOEBvCJP9dlyw5c85dP2rTSuA2GmblmMJ3AuZK7SY
-	l3u51k6RdmCq3gjxBloD1VYcG3Rm7yFZ12v3B6cH2lrfPynsdI3tr91frYkgIqGlkikOUk0Vpfp
-	1gjG4wNX4hLTNOyc9ktUWzo9mLIebrT3FVSdmeukGY=
-X-Google-Smtp-Source: AGHT+IHnkE9S49cN4Pb7q9UN+kiZJ6tVbwihz4my1W8JUsxNbcOy9L+8HBjDhvuOmFehWp1PU9Msmw==
-X-Received: by 2002:a17:907:9516:b0:aa6:4671:ddeb with SMTP id a640c23a62f3a-aa646721751mr627674066b.22.1733663756507;
-        Sun, 08 Dec 2024 05:15:56 -0800 (PST)
+        bh=60jpBfK0tyVrO7NCZJKuTJXHbrEC8lr3GIi+TiMo5FM=;
+        b=ZbCFoVwx2/RhKl6mtKPwoWT8reChQSepXu1zFbNGS1VrYsZGVGVnOODjS1Jrz+AUFi
+         5sUlqwQ3OhNicjWfjWB7nYjlFm9yu8i/2KFJdWlzLCFxzlY+lDox+MXaW7cEHmPA0bdN
+         ++ijLQeEzVRGLn+t0X1035Iht7wU3x3AbhV0d0h+75mgCfYuVwLTTWJ+sc1+m2+PUO0O
+         NEMzI7ZAhRokzgRr+oXvUlw/BSlkWoc7pf+trK4oo5AUUMPWpkYZxfKxiphDhuH5Mpjv
+         OZgDUjC0LQIJoPmwZXoDUvyxrez+XjmaAKc3tJsFNFJ5dGwzZ6JHItl2VOLGJLH/6Pz4
+         Q/MA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQxQZc4+XxS6U/LLpqKoxDgXDu4Cnoahzg5Taoyl3TYWy54XcYVuW6W/n7aRPtjnggQUEyoKKo8xj2wgSYSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUqwzzsGR1H3P752oKa+EUOnKialH+qJWSwSoj9s5teUNGm+Xp
+	GhHk3kd5m8N0TB6etLJxq+N3TR2Veq3174Lb9IdPbAQ+unpUB3f6Xtp7tWFzdEg=
+X-Gm-Gg: ASbGnctv2cyMe5MGKbPJdfSKGZsWDhTaibUv5a1MpcJ7PDKq+1YYOfSPrgxEhvHZDWq
+	1bwqVZ81yJBUKb4ktrqnydaN38h03Nz+nLDNo8fZdrDMVIu/eMRPBCrJg0JlMVMh0pvGpcyIIcS
+	uigt3x21dDCQffkhrJynqBB2P+RnQ/7sfyM6Op94R5zFHLb6S4Y/6UQf8MiOVkqiU4omptNHcvf
+	MzlqQSbapRqU0tcQvNgBT7b9TNguEZsjR2IGjPSAC0=
+X-Google-Smtp-Source: AGHT+IH77ui/wx6w4CER+5pt8Pmu9+0AJn+r6KefZ2b9N36pylYm3Kbz9yOySN0GG2PrIu9WCCa7nQ==
+X-Received: by 2002:a17:906:9d2:b0:aa6:8520:718b with SMTP id a640c23a62f3a-aa68520738emr56489366b.56.1733663758090;
+        Sun, 08 Dec 2024 05:15:58 -0800 (PST)
 Received: from mordor.lan ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e96c19sm529078966b.42.2024.12.08.05.15.55
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e96c19sm529078966b.42.2024.12.08.05.15.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 08 Dec 2024 05:15:56 -0800 (PST)
 From: Daniel Sedlak <daniel@sedlak.dev>
@@ -69,9 +68,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org,
 	Daniel Sedlak <daniel@sedlak.dev>
-Subject: [RFC PATCH 1/3] rust: kernel: types: add mode wrapper
-Date: Sun,  8 Dec 2024 14:15:43 +0100
-Message-ID: <20241208131545.386897-2-daniel@sedlak.dev>
+Subject: [RFC PATCH 2/3] rust: kernel: kobject: basic sysfs implementation
+Date: Sun,  8 Dec 2024 14:15:44 +0100
+Message-ID: <20241208131545.386897-3-daniel@sedlak.dev>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241208131545.386897-1-daniel@sedlak.dev>
 References: <20241208131545.386897-1-daniel@sedlak.dev>
@@ -83,39 +82,319 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add rust variant for representing file mode. This is needed
-in order to set file permissions.
+Implement initial support for interacting with sysfs
+via kobject API from the Rust world. Rust for now does
+not expose any debug interface or interface for tuning
+knobs of the kernel module. Sysfs is used for exporting
+relevant debugging metrics or it can be used for
+tuning module configuration in the runtime (apart from
+module parameters).
 
+This patch builds on a prior work [1] by Martin RR, which
+is listed in the old patch registry [2]. However the [1]
+seems to be only focused on exposing devices to the sysfs,
+where this patch tries to be more broad, not only specific
+to the devices.
+
+Link: https://github.com/YakoYakoYokuYoku/linux/commits/sysfs-support [1]
+Link: https://github.com/tgross35/RFL-patch-registry [2]
 Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
 ---
- rust/kernel/types.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ rust/kernel/kobject.rs | 271 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs     |   2 +
+ 2 files changed, 273 insertions(+)
+ create mode 100644 rust/kernel/kobject.rs
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index ec6457bb3084..35ac2898433a 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -517,3 +517,20 @@ pub enum Either<L, R> {
- /// [`NotThreadSafe`]: type@NotThreadSafe
- #[allow(non_upper_case_globals)]
- pub const NotThreadSafe: NotThreadSafe = PhantomData;
+diff --git a/rust/kernel/kobject.rs b/rust/kernel/kobject.rs
+new file mode 100644
+index 000000000000..9fcc026c83db
+--- /dev/null
++++ b/rust/kernel/kobject.rs
+@@ -0,0 +1,271 @@
++// SPDX-License-Identifier: GPL-2.0
++// TODO: Add unsafe doc documentation.
++#![allow(clippy::undocumented_unsafe_blocks, clippy::missing_safety_doc)]
 +
-+/// Mode represents file permissions.
-+///
-+/// TODO: add link to header files.
-+pub struct Mode(bindings::umode_t);
++//! KObject wrappers.
++//!
++//! TODO: Write more
 +
-+impl Mode {
-+    /// Creates [`Mode`] from the number.
-+    pub const fn from_u16(num: u16) -> Self {
-+        Self(num)
++use bindings::PAGE_SIZE;
++use core::marker::PhantomData;
++use core::marker::PhantomPinned;
++use core::mem;
++use core::ptr;
++use kernel::c_str;
++use kernel::container_of;
++use kernel::error::code::*;
++use kernel::prelude::*;
++use kernel::str::{CStr, CString};
++use kernel::types::Mode;
++use kernel::types::Opaque;
++
++/// Reference to the subsystems from the non Rust world.
++pub mod subsystems {
++    use super::DynamicKObject;
++
++    macro_rules! declare_kobject {
++        ($name:tt, $subsystem_ptr:expr, $($doc:expr),+) => {
++            $(
++            #[doc = $doc]
++            )*
++            pub static $name: DynamicKObject = DynamicKObject {
++                pointer: kernel::types::Opaque::new(
++                    core::ptr::addr_of!($subsystem_ptr).cast_mut(),
++                ),
++            };
++        };
 +    }
 +
-+    /// Returns [`Mode`] as an number.
-+    pub const fn as_u16(&self) -> u16 {
-+        self.0
++    declare_kobject!(
++        FIRMWARE_KOBJECT,
++        bindings::firmware_kobj,
++        "Firmware subsystem dynamic KObject."
++    );
++    declare_kobject!(
++        KERNEL_KOBJECT,
++        bindings::kernel_kobj,
++        "Kernel subsystem dynamic KObject."
++    );
++    declare_kobject!(
++        MM_KOBJECT,
++        bindings::mm_kobj,
++        "Memory management subsystem dynamic KObject."
++    );
++    declare_kobject!(
++        POWER_KOBJECT,
++        bindings::power_kobj,
++        "Power subsystem dynamic KObject."
++    );
++
++    // TODO: Add rests of the exported Kobjects.
++}
++
++/// DynamicKObject is same as [`KObject`], however it does not have any state.
++pub struct DynamicKObject {
++    // The bindings export `extern static *mut bindings::kobejct`, however
++    // we need to have double pointer because rustc complains with
++    // `could not evaluate static initializer`.
++    pointer: Opaque<*mut *mut bindings::kobject>,
++}
++
++unsafe impl Send for DynamicKObject {}
++unsafe impl Sync for DynamicKObject {}
++
++/// KObject represent wrapper structure enables interaction with
++/// the sysfs, where the KObject represents directory.
++///
++/// TODO: Add examples?
++pub struct KObject<K> {
++    data: K,
++    pointer: Opaque<bindings::kobject>,
++
++    // Struct must be `!Unpin`, because kobject pointer is self referential.
++    _m: PhantomPinned,
++}
++
++impl<K> Drop for KObject<K> {
++    fn drop(&mut self) {
++        // SAFETY: This KObject holds a valid reference, because it was allocated
++        // through kobject API.
++        unsafe { bindings::kobject_put(self.pointer.get()) }
 +    }
 +}
++
++#[doc(hidden)]
++struct KObjTypeVTable;
++#[doc(hidden)]
++impl KObjTypeVTable {
++    unsafe extern "C" fn release_callback(kobj: *mut bindings::kobject) {
++        unsafe { bindings::kfree(kobj.cast()) }
++    }
++
++    pub(crate) const KOBJ_TYPE: bindings::kobj_type = bindings::kobj_type {
++        release: Some(Self::release_callback),
++        sysfs_ops: ptr::addr_of!(bindings::kobj_sysfs_ops),
++        ..unsafe { mem::zeroed() }
++    };
++
++    pub(crate) fn kobj_type(&self) -> &'static bindings::kobj_type {
++        &Self::KOBJ_TYPE
++    }
++}
++
++unsafe impl<K> Send for KObject<K> where K: Send {}
++unsafe impl<K> Sync for KObject<K> where K: Sync {}
++
++impl<K> KObject<K> {
++    /// Attaches KObject to the sysfs root.
++    pub fn new_in_root(name: CString, data: K) -> Result<Pin<KBox<Self>>> {
++        Self::new(name, ptr::null_mut(), data)
++    }
++
++    /// Attaches new KObject to the sysfs with specified KObject parent.
++    pub fn new_with_kobject_parent<L>(
++        name: CString,
++        parent: &KObject<L>,
++        data: K,
++    ) -> Result<Pin<KBox<Self>>> {
++        Self::new(name, parent.pointer.get(), data)
++    }
++
++    /// Attaches new KObject to the sysfs with specified **dynamic** KObject parent.
++    pub fn new_with_dynamic_kobject_parent(
++        name: CString,
++        parent: &DynamicKObject,
++        data: K,
++    ) -> Result<Pin<KBox<Self>>> {
++        Self::new(name, unsafe { **parent.pointer.get() }, data)
++    }
++
++    fn new(name: CString, parent: *mut bindings::kobject, data: K) -> Result<Pin<KBox<Self>>> {
++        let this = KBox::pin(
++            Self {
++                pointer: Opaque::new(unsafe { mem::zeroed() }),
++                data,
++                _m: PhantomPinned,
++            },
++            GFP_KERNEL,
++        )?;
++
++        let code = unsafe {
++            bindings::kobject_init_and_add(
++                this.pointer.get(),
++                KObjTypeVTable.kobj_type(),
++                parent,
++                c_str!("%s").as_char_ptr(),
++                name.as_char_ptr(),
++            )
++        };
++        if code < 0 {
++            return Err(Error::from_errno(code));
++        }
++
++        // TODO: Not sure whether we must check for return code of `kobject_uevent`.
++        unsafe {
++            // We are  responsible for sending uevent that kobject was added to the system.
++            bindings::kobject_uevent(this.pointer.get(), bindings::kobject_action_KOBJ_ADD)
++        };
++
++        Ok(this)
++    }
++
++    /// Creates a file for a given KObject.
++    pub fn add_attribute<A: KObjectTextAttribute<K>>(
++        self: &mut Pin<KBox<KObject<K>>>,
++        attribute: A,
++    ) -> Result<()> {
++        let vtable = TextAttributeVTable::<K, A>::new();
++        // TODO: Can we use it later?
++        let _ = attribute;
++
++        let code = unsafe {
++            bindings::sysfs_create_file_ns(
++                self.pointer.get(),
++                ptr::addr_of!(*vtable.attr()) as *const bindings::attribute,
++                ptr::null(),
++            )
++        };
++
++        if code == 0 {
++            Ok(())
++        } else {
++            Err(kernel::error::Error::from_errno(code))
++        }
++    }
++}
++
++/// Attribute represents a file in a directory.
++#[macros::vtable]
++pub trait KObjectTextAttribute<K>
++where
++    Self: Sized,
++{
++    /// File permissions.
++    const MODE: Mode = Mode::from_u16(0o777);
++
++    /// Name of the file in the sysfs.
++    const NAME: &'static CStr;
++
++    /// Gets called when the read is called on the file.
++    fn show(this: &mut K) -> Result<CString> {
++        let _ = this;
++        Err(EIO)
++    }
++
++    /// Gets called when the write is called on the file.
++    fn store(this: &mut K, input: &CStr) -> Result {
++        let _ = this;
++        let _ = input;
++        Err(EIO)
++    }
++}
++
++#[doc(hidden)]
++struct TextAttributeVTable<K, A: KObjectTextAttribute<K>>(PhantomData<(A, K)>);
++#[doc(hidden)]
++impl<K, A: KObjectTextAttribute<K>> TextAttributeVTable<K, A> {
++    #[doc(hidden)]
++    const fn new() -> Self {
++        Self(PhantomData)
++    }
++    unsafe extern "C" fn show_callback(
++        kobj: *mut bindings::kobject,
++        _attr: *mut bindings::kobj_attribute,
++        buf: *mut core::ffi::c_char,
++    ) -> isize {
++        match A::show(
++            &mut unsafe { &mut *container_of!(kobj, KObject<K>, pointer).cast_mut() }.data,
++        ) {
++            Ok(cstring) => unsafe {
++                bindings::sized_strscpy(buf.cast(), cstring.as_char_ptr(), PAGE_SIZE)
++            },
++            Err(error) => error.to_errno() as isize,
++        }
++    }
++    unsafe extern "C" fn store_callback(
++        kobj: *mut bindings::kobject,
++        _attr: *mut bindings::kobj_attribute,
++        buf: *const core::ffi::c_char,
++        count: usize,
++    ) -> isize {
++        match A::store(
++            &mut unsafe { &mut *container_of!(kobj, KObject<K>, pointer).cast_mut() }.data,
++            unsafe { kernel::str::CStr::from_char_ptr(buf) },
++        ) {
++            Ok(()) => count as isize,
++            Err(error) => error.to_errno() as isize,
++        }
++    }
++    pub(crate) const ATTR: bindings::kobj_attribute = bindings::kobj_attribute {
++        attr: bindings::attribute {
++            name: A::NAME.as_char_ptr(),
++            mode: A::MODE.as_u16(),
++        },
++        show: Some(Self::show_callback),
++        store: Some(Self::store_callback),
++    };
++
++    const fn attr(&self) -> &'static bindings::kobj_attribute {
++        &TextAttributeVTable::<K, A>::ATTR
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index e1065a7551a3..f2a921ff38b1 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -42,6 +42,8 @@
+ pub mod init;
+ pub mod ioctl;
+ pub mod jump_label;
++#[cfg(CONFIG_SYSFS)]
++pub mod kobject;
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
+ pub mod list;
 -- 
 2.47.1
 
