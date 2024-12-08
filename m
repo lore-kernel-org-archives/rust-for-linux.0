@@ -1,140 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859513B2B6
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A987314373F
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 18:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733666213; cv=none; b=VqKf7rpBVfWPGjqJidDTQ5K3v1Oolo4x3FuPEsz+pOkUm5xhKOqmyJ9ccfsQwFXkGkPi4S8uLhIweTjXvwZ+MXnkR+kOlEDwOo6bbrJ9aPBoHQl0LBPsvt5uRuZIMPi3Jd6UGt6fvVeLCnh2sMQtypawlGCz9vkXRZvEmQQxvFw=
+	t=1733683757; cv=none; b=oQ1qPgdHR7kyFbEjouK3Pdcn9xFkVFneDS5izDRYi4QGAJ2+O5Asl4zUQNDLvEYVC4QAlYLR1MZgR7mn7pXnMsJl598WME2Eub0qONeK8JW8OlHuhyhFg2cFcTLh4+wlj+hpNYK3bfBDyVYFgu04FBpHK8Skvm6nkwCWgfk+97E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733666213; c=relaxed/simple;
-	bh=/VahnDBTY/YZyFdn8LC/kCtZXXLc89ClwsT68tW0tBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VsTUUxs2mt8kkyqC4r5IeNzVVUrKHh9bGj18LcOtumFwnZC9u03+mUhIOxfI+tv2kUw2hgAVq8RBebLBhMn4R/cOMxY2CPL+e18bJXE/HyjC6HXXkrPL78fuNrYQ1xGdxJbd77fZdBBYb8vr7FdKf0lxlxz5pFWx9cZD9XQmvZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHPUzzD9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733683757; c=relaxed/simple;
+	bh=sH8XBhEYN6e3sgIwcS7OIfbs0ulTw4gsWBmddpP8zoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fV7z/hKI75XR9zndHB8EMH6ffKJOxDtinXPQO2/Mzk4fBqNW+PX4CdMehAAqu2F4+clhYoMWrQ1ywyVIondIkJx1gk84G8W0euSCTjK7ZL9QHdTUm10p3JWIlqips6wuGTw83BaKLEFEB3snhGe6SozvWf7VrbkwuZPp1BVA1E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iQmPia7Z; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHPUzzD9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69157C4CED2;
-	Sun,  8 Dec 2024 13:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733666213;
-	bh=/VahnDBTY/YZyFdn8LC/kCtZXXLc89ClwsT68tW0tBY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KHPUzzD933jG0ZEgCZeL4U4Qo+UagHx7anoIQUrjpM2iKKv5LBj7bIWcHDjhvafdN
-	 remdHmABP3lvdeWka9jQOksfUemrGWXW8MFyxXifQERM+nz68S6ZfkkH9pAKN8pX75
-	 9rCP+VsX/Xir+5ByZlL50+uBSajZmod08R/3nR9o=
-Date: Sun, 8 Dec 2024 14:56:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iQmPia7Z"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-725dc290c00so538311b3a.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 10:49:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733683755; x=1734288555; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MwCIqVmDpigQHbmtbLY85AInnMDU4G8wioyfdFnU2W0=;
+        b=iQmPia7ZVCuiyqMYrtWf2UB4V5YYjEWQ89z2pofOydrNCdUXYn2g/lth/5wXcKebzN
+         I4yMEgN63mlfIP8R8KXuurzYL1WNNVXhnBQGj0r391Oh+al9X+eowvdtPUprXxe9HQjb
+         PpOlqSlvsZYmDHFmj9xlcLRZXq/P1bsH8ZZRm6cdwJsfF/2R73OVq1C/X07x+HFUkCdB
+         mg0+7QWGHQ8zoCGH70WdrzgUebj7DoUbgQPjChUYI5v0gEomVttASa20vBLnLEMx+QbH
+         UhO4Q7MZ+IqPONl+FGlsZmGipBt3qfsTna4HLpaDf6Joxz6tQiIYtBHuB6UeR5O5ilNL
+         WXxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733683755; x=1734288555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MwCIqVmDpigQHbmtbLY85AInnMDU4G8wioyfdFnU2W0=;
+        b=Hh/QQmJPA8ctJQLCwnYrcisv0EPVVzeg3hWXod9C7jyzDzDF7L+H6ah2b2Zsjg+FqY
+         niPPCYgLL+WKtHVsuXQSeBGkHRh4xsTMigfi1EEb5juK1nPKWSn+XSXdKbKMxWU/t+l/
+         KIV6xd/qcffVPanMh7yqSoizy/06Hhs/1UoISlzhPZJtftFi5U3yD/KhsLn3DTF8G5xY
+         YFSYfqzm85ifRcd+KDk7972czJQjIptrBJ+2geWzswi/85rJ5jFE/gTDNfIvwxbodvuZ
+         ekcysiBTI8eSXBT5G8K+yHuzCefTw5zExc1U6Sh0bgLm+pZxJB1YNl/9v3PFtH2FsIHo
+         8soA==
+X-Forwarded-Encrypted: i=1; AJvYcCV59SWcy+jwXX2lpLNKyNe/51vFdj3IzTKaF7TdKhEoIrxnHwQMIDbJemHjroZgPGxLDbknY+1EKr2EChzgeA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9ph3Kt019ANqKvN1KyG+octPHp2qQNPM1RUKqTb0z2OlXHNMd
+	Qcq5QAAlKwvpZaZrulvlDMo8aPwNk+cdJOUB3vguiEjemHku3USa
+X-Gm-Gg: ASbGncuaWE2GzDR+M0U3UM39fJ+TCCl9CYHxk7kKEE0BKiQp9KHhBVTneNH8d7flYJq
+	VT4tvGhBw0t1AcktMdbHLieT3pJn+2rVziofwOWTQkDThs1sHZmb8pMaRZoP05MhcEWaLO+kpa2
+	WaErdWF/V6rlUl9d6vQcaey/MvgamKCmxQIgzPkPY6HmLje85hrKtLqGYbWsIOm65K0qWg4EkFj
+	G6yPcvhSJmUNmgFtT10DDRBpGwXN1YhhoBWrZ8j+IlR8couk89fxFiOB7zUXQ==
+X-Google-Smtp-Source: AGHT+IHR6NhZpiK3gNYs6LuCizWteYP1vHw70sad0+70rGcHK1FHqeWkApDMxaEazQKibJFGvlHPSw==
+X-Received: by 2002:a17:903:2303:b0:20c:6bff:fcb1 with SMTP id d9443c01a7336-21610821558mr149053195ad.1.1733683754782;
+        Sun, 08 Dec 2024 10:49:14 -0800 (PST)
+Received: from localhost.localdomain ([73.109.132.56])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21649ad2bb0sm7175475ad.254.2024.12.08.10.49.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Dec 2024 10:49:14 -0800 (PST)
+From: Jason Devers <dev.json2@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 2/3] rust: kernel: kobject: basic sysfs implementation
-Message-ID: <2024120805-header-mantra-50fc@gregkh>
-References: <20241208131545.386897-1-daniel@sedlak.dev>
- <20241208131545.386897-3-daniel@sedlak.dev>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Jason Devers <dev.json2@gmail.com>,
+	Alice Ryhl <alice@ryhl.io>
+Subject: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
+Date: Sun,  8 Dec 2024 13:48:34 -0500
+Message-ID: <20241208184834.50212-1-dev.json2@gmail.com>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241208131545.386897-3-daniel@sedlak.dev>
+Content-Transfer-Encoding: 8bit
 
-Some more review after I saw your examples:
+The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+currently does not issue a warning if the return value is unused. This
+could result in the lock being unlocked immediately, which is unsafe
+and unintended. This patch adds a `#[must_use]` annotation to
+`Lock::try_lock` to prevent this.
 
-On Sun, Dec 08, 2024 at 02:15:44PM +0100, Daniel Sedlak wrote:
-> +/// Attribute represents a file in a directory.
+Suggested-by: Alice Ryhl <alice@ryhl.io>
+Link: https://github.com/Rust-for-Linux/linux/issues/1133
+Signed-off-by: Jason Devers <dev.json2@gmail.com>
+---
+ rust/kernel/sync/lock.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Not always, but sometimes, be careful here :)
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 41dcddac69e2..f6a5e83ff685 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -147,6 +147,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+     /// Tries to acquire the lock.
+     ///
+     /// Returns a guard that can be used to access the data protected by the lock if successful.
++    #[must_use = "if unused, the lock will be immediately unlocked"]
+     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+         // that `init` was called.
+-- 
+2.44.2
 
-> +#[macros::vtable]
-> +pub trait KObjectTextAttribute<K>
-> +where
-> +    Self: Sized,
-> +{
-> +    /// File permissions.
-> +    const MODE: Mode = Mode::from_u16(0o777);
-> +
-> +    /// Name of the file in the sysfs.
-> +    const NAME: &'static CStr;
-
-No.  Well yes.   Kind of.  Why aren't you wrapping "struct attribute"
-here instead?
-
-> +
-> +    /// Gets called when the read is called on the file.
-> +    fn show(this: &mut K) -> Result<CString> {
-> +        let _ = this;
-> +        Err(EIO)
-> +    }
-> +
-> +    /// Gets called when the write is called on the file.
-> +    fn store(this: &mut K, input: &CStr) -> Result {
-> +        let _ = this;
-> +        let _ = input;
-> +        Err(EIO)
-> +    }
-
-I see you called this "Text" attribute, but yet that's not what the
-kernel calls them in the C side.  Again, let's not create multiple names
-for the same thing as that's going to cause nothing but headaches for
-decades as most of us flit from both C and Rust constantly.
-
-Naming matters, be consistent.
-
-Also, attributes in the kernel do NOT have show/store functions by
-default.  The "wrapper" attribute type has them.  So again, be very
-careful here.
-
-sysfs/kobjects are tricky and slippery and take advantage of some crazy
-things in C (i.e. object structure layouts and looney casts "just
-because we know what we are doing".)  Representing this in rust is also
-going to have those same types of issues, so watch out.  You simplified
-it all here, but note that the C side is complex for real reasons (i.e.
-we started out simple, and then got complex to solve real problems.)  Be
-aware of our history here first please and don't make the same mistakes
-we did in our youth, you have the benifit of learning from how foolish
-we were back then :)
-
-> +}
-> +
-> +#[doc(hidden)]
-> +struct TextAttributeVTable<K, A: KObjectTextAttribute<K>>(PhantomData<(A, K)>);
-> +#[doc(hidden)]
-> +impl<K, A: KObjectTextAttribute<K>> TextAttributeVTable<K, A> {
-> +    #[doc(hidden)]
-> +    const fn new() -> Self {
-> +        Self(PhantomData)
-> +    }
-> +    unsafe extern "C" fn show_callback(
-> +        kobj: *mut bindings::kobject,
-> +        _attr: *mut bindings::kobj_attribute,
-> +        buf: *mut core::ffi::c_char,
-> +    ) -> isize {
-> +        match A::show(
-> +            &mut unsafe { &mut *container_of!(kobj, KObject<K>, pointer).cast_mut() }.data,
-> +        ) {
-> +            Ok(cstring) => unsafe {
-> +                bindings::sized_strscpy(buf.cast(), cstring.as_char_ptr(), PAGE_SIZE)
-> +            },
-> +            Err(error) => error.to_errno() as isize,
-> +        }
-> +    }
-
-You should ALWAYS call sysfs_emit() when printing out data (for a
-variety of reasons).  Here you are hard-coding the PAGE_SIZE reference
-of the buffer that the kobject core gave you, are you SURE that is
-always going to work?  Please just use the apis the C code gives you and
-don't attempt to re-write them (again, learn from our mistakes of the
-past...
-
-thanks,
-
-greg k-h
