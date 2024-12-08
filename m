@@ -1,73 +1,72 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5035A381AF
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 21:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E091246B8
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 21:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733693330; cv=none; b=GeOaz+mbE8Sr3Wo/PO/b7bwrivCUmW1bwIk5tmly+c3c1ek/1EjZ2/0ntYJfyErNWukITSx8+XrH2vETOHseaB1nfVni2PyNYpYSg6JZVYiEv7qEKMkH1/2QiysjFsp2WvaDB+viP0RmfKRSzJOWLiqRC0Ssf8pAQ96KY2403rE=
+	t=1733695099; cv=none; b=dl2xH76XmIBNIWRp5afek/YV5t2wRxvslf4Msv3IPXVxjMacjuSjdT6FYjFXzPvynHUKLKfvkLEdYymUGN8wvTKj93w2JUJGsAbKFNu8nDZgcq6DjfLAWhz5CxhVLNL4+DwJS5brzAmK2mJEWX0qn4MDHZU2RdVrzeXRfYixYws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733693330; c=relaxed/simple;
-	bh=VbprFhfTDX1Glc+UUn8abmNPsCZhmWLVw2Qa8TrzMEc=;
+	s=arc-20240116; t=1733695099; c=relaxed/simple;
+	bh=0L0K5Zd8wAgLn9YSjmPcUaD02Ps+SrN2lIXWxExPO+o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mse6kimbO5magtKwRb8+0Qmvw4DNM0p55XN7QPTsXkv3WtEY2e+l+SWzA2PwpO43oSo8EzQFbvH9sXDxvoeZJSjWjYNN2xcW1jF4Vevo5J+CCllHEejGsZCjd1L1CY4XA+x1Nt05a4mSGPSveBCYgqaWoZBwYpb474wH0243N00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJma+KcK; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=FpguHCyQxYvNkk2wHJNcx9XZP0HrEVVRHeWL5m4YglimaU0mKr1R8zVUcGiW1+/NWkFDl5IQq6QQaBCUe6+mncdSzckSrTp2b3fEbwCE0wknb++6ljtBtCENwi/oEW61CONj8Zdnz3kxW6ypoJlVVIZzW1l87XWzXGlGHttAn4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LJTnvqAb; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJma+KcK"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2e9c1e7268eso681057a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 13:28:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LJTnvqAb"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30227c56b11so857061fa.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 13:58:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733693328; x=1734298128; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733695096; x=1734299896; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VbprFhfTDX1Glc+UUn8abmNPsCZhmWLVw2Qa8TrzMEc=;
-        b=SJma+KcKZr3FjZb2SYHjdFBrGv9YKbwPD6Hu1U/Z7gtNpXng0fxGaDhTnBQWIPmbbh
-         nxf2uyqGlXeWS1ayiwzW8RKzz1cAPi2G7c8UhOcpQWi1S+1BW88EBylPNobMXhoJDcvd
-         aJHegjW0s7+mDa3inkKDjBWqzxFe0v0wDfaqI9x0Wd3LXfuAC6LRVl/xMDzDbaru1ajB
-         5QVht28eBYtY6XOdKTP5A+8gCJWiLPZr5w3biNybbjzjGXBuYT504OgivO2xExdQsDEy
-         HsOGgTNb/Trpytp6TAE5hClAycDtJrJ4N5EY0Iz8IEkzD7g91TNEsWxC8uHbyTjVJHaP
-         FEdw==
+        bh=0L0K5Zd8wAgLn9YSjmPcUaD02Ps+SrN2lIXWxExPO+o=;
+        b=LJTnvqAb7P5XifkY82OL1VY6bYHcFyMm7MICBR9oW/hj7XI83sM+veGymyWBvlp7lq
+         uySEEdPknREhO9GXAxXJ+aIHZn8+yUzujnHqgxXnpXO4cGoaBs2hKrC7w9lvWC4Gdzl7
+         U1Xg6Jb7adXjqNgZaEmBRntT/9PaOfLqTF9fe6mrgmRTf2C23gVD9EQoUzAtJjntg/ob
+         vvAUB4xbU8He2b2Mfo87VIwLPpNpmi5saqLRypHVKgNVxdCwQa07byidS9k8exS8Zc/d
+         gi9ITlZ49KeOMRlz9ZoAQb4QFlYDG+S6W3MvF8eIkFL02bviJxjBhgfVTT37T9L3fLRc
+         rRwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733693328; x=1734298128;
+        d=1e100.net; s=20230601; t=1733695096; x=1734299896;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VbprFhfTDX1Glc+UUn8abmNPsCZhmWLVw2Qa8TrzMEc=;
-        b=Jtb0vvaLLffzOXAS34yal/YtqGnRi/tmHhAagTKBj8t33PwrmksgqWHoZv5rwWJbwv
-         t65hNN4+M0ypPsaPfq/fUIgSI7/VuhC0SOOh+ccTNkKI0es0Pep2Z0GHZnhWVrkbG8MD
-         FIEC7kR74p+ikUeo067d6tNQuAkEGhazGeP4Koes7M2bVNKkM44oEBGhpzWtfvXfNTcz
-         8s9feD/50iKEx7LEUFDS2i6GC25DIuWQdCkW0/XkTh6JWtdiHxU+OUTIQdM59csU9MP2
-         Frq56/ke+dwm2If9PC+i9BTOAP927lkc98lvQYBxeE2tkN4weg27hVEWp2OmpE/DEH8I
-         eN1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUpeUNt6A7atwp+3kp1G8VhCnVnpR99zGmKv9YyfB+n9Ir170+zNqhtx5tM24Y0CFWKYUjeEpb0bhvtGuVRCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YynELMiKF050Qb0MjJ8/W1nDuEixSUaDd9bapgFFxHHOKNgZvK7
-	yOXSvZZ6HEQlCk6MG2ML3c5RCfXtwPAleu9YL2GGfWRxuoJ+YP66Va+RMZWI24CbU2bKSI6N/aj
-	sDsOeEuRLrUjXsa+Gd9Nr7xdfgEo=
-X-Gm-Gg: ASbGncvy1cOc79O2VDTzm29cra2wygIbHzvZZS2mXU3DR8ZKn/Gp/vk6NlYyOg2Fnmw
-	d5dKMFDM0mixJOJ1+1G34diwoeBVeWic=
-X-Google-Smtp-Source: AGHT+IEPeq33F7hIIQOzK5fw7xOdeXHKATIn6UUAkSyLKiv/Mj1oIA+9RCqU52AvE1pCo/VcqMy6q+SuRsAcUmT9CKs=
-X-Received: by 2002:a17:90b:1d0b:b0:2ee:35a1:c291 with SMTP id
- 98e67ed59e1d1-2ef6a7bf43bmr6454554a91.3.1733693328365; Sun, 08 Dec 2024
- 13:28:48 -0800 (PST)
+        bh=0L0K5Zd8wAgLn9YSjmPcUaD02Ps+SrN2lIXWxExPO+o=;
+        b=XCf3R8LJ8Z/zdo3pshZczDGirq67UJwc7nrwfwNYXqPaxgOCLAbvL7Qa9t7+P/6lGC
+         3Rc5/CmHvdF4nqHLxvPZR6lyOdtXf8NaDJSq9IHEoST7P5RPa2NkTAYyopi8p4y3LbPV
+         /XeC9+IW6OJ1Lj+UXceoNFCzKBZDxUGxcPHDreptdRf3I0NrDbNXfWyRh+JMzqTPuUTZ
+         827yvIeDGykxB+nNsGAVWJQwpYrDQgQOUtP3/SIQJC2hHCIDOBtX5XBHvGLwxzz5aQqe
+         MUjRNt52iLU6oI2TGPqwT60jYMTCHDf+jPMc17f4UqZjG5QFW2FWFb2BwPPhd7Qf7kDW
+         Dpnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvVRJmF1tIdZv7dfQo40NgHMp2CIDcHC18u1KRj+7rx1yclrojb7mfDkN8Ksx1I2DdNxkh4zUENyeU9+m7iA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGqLYDy3MiuOtIBtwmb+ecDK+k7/jGDQ9YyYNdm8qaplMk3oLG
+	rhllONWI+/wOa++CahE0UA713daNphRutwvIeNx6KznYfqTrEvsqq3xxPtu4H4VuRsmJOrIZ5n5
+	2r4QNIL8VZOSY85zwL79oqBrfjPY=
+X-Gm-Gg: ASbGnctulIN7ex1l6vVx1X/frTEnB4rTlO1z0vbnCK9em5XNMr9CgO/HusFevOFEHkE
+	VAHz1p5OFtaEjui7wwEDLE8PvC0HKo5lgbKm6PLLqGcY9+FFNJqDoXG70+wFSzphj
+X-Google-Smtp-Source: AGHT+IG7FEVZFQ+9BES2XdxcY9NaC2NNcIFw/vzBBF8OAWwdpbYD5IxCSVjopbaX2DnG6kaRd+MK7hX8ZZbb4tMkmEE=
+X-Received: by 2002:a05:651c:887:b0:302:2598:dec1 with SMTP id
+ 38308e7fff4ca-3022598e321mr2554141fa.19.1733695095722; Sun, 08 Dec 2024
+ 13:58:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241208184834.50212-1-dev.json2@gmail.com> <Z1XvdgQOzx3A4LSf@tardis.local>
- <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
-In-Reply-To: <CAOJvc-bi6ym6ZMAbDSh4H_L6LQXoTs8oNY07SZ1crzXxY9BodQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 8 Dec 2024 22:28:36 +0100
-Message-ID: <CANiq72kLbusVz56bvfmC_YY=6+CbLxv9SOkMynF84dR5mtdukw@mail.gmail.com>
+References: <Z1X7ZO0wd5XEFFvC@tardis.local> <20241208205018.52930-1-dev.json2@gmail.com>
+In-Reply-To: <20241208205018.52930-1-dev.json2@gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Sun, 8 Dec 2024 16:57:39 -0500
+Message-ID: <CAJ-ks9k-b01ohLZDARpxx+s+cOFYqpfojOgU_0Pdp_0-MO_QiA@mail.gmail.com>
 Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
-To: jos <dev.json2@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Jason Devers <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
@@ -75,17 +74,16 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 8, 2024 at 8:40=E2=80=AFPM jos <dev.json2@gmail.com> wrote:
+On Sun, Dec 8, 2024 at 3:50=E2=80=AFPM Jason Devers <dev.json2@gmail.com> w=
+rote:
 >
-> How I understand the issue arises when the result of `Lock::try_lock` is =
-called and its return value can be ignored, the lock is never acquired, and=
- no guard is created.
+> The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> currently does not issue a warning if the return value is unused.
+> To avoid potential bugs, the `#[must_use]` annotation is added to ensure =
+proper usage.
 
-I may be misunderstanding what you are trying to say, but the guard is
-created, and the lock is acquired.
-
-So the issue is that someone does not keep the guard around, so the
-guard is dropped right away and so the critical section is empty.
-
-Cheers,
-Miguel
+It'd be great to mention in this message (and perhaps in the code)
+that the reason this annotation is necessary is that `Option<T>` is
+not `#[must_use]` regardless of `T` being `#[must_use]`. It might also
+be handy to leave a breadcrumb pointing to
+https://github.com/rust-lang/rust/issues/71368.
