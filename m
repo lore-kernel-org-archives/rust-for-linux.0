@@ -1,59 +1,62 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D105A4D5
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA3F78276
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Dec 2024 13:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733663760; cv=none; b=E7iKbpd8lfd0qdbv2Is89oHvUUoVrBsirSQPFwhJFjo/xCOdkhG65n8n0HBUtW9W2g00e7G/OjLhPgKNv4YVIwBCkXoZMaMlnu8Cli39wIHhS41xQxYenGEcZZRc6uKMi9DxSrivbg7+LtpRsbBE4FDTfhvAZZXOmZjR+YvTulA=
+	t=1733663760; cv=none; b=q9RsbMZgf4IVTKh61GX5tju8qQFfzjvgbHbBNF9Gh48OYgPSXyl1l4ldbqKVd8psrIjr7imNqkFokRjl0MNr5Vu1sRkEuwu/bhrf8nVsFOorKdbbSwfCXL8CyrpJrB7J0x2UZ8p2czgyAqJbtiolqazr1JTVsmos1aUVA/y9uNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733663760; c=relaxed/simple;
-	bh=OK+t3GChPUsuapCE5XzaNht0SWq3dZ0OAxE+5xsKkd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UZPTNZLMSFMCLLmFhHAtKEnECvgH4GqxJLpnDg+dbKesmzsSL82OTo7+w0gqHj0WaJAyuMiBslslmmpDyKMoSzq1eP1KR7wtUnIP70/2t3roOEGPgGh8DuVmkIxjcCxlwdSFflM0IFUh6BBeFXCauS5xt9PurYVfuepP7hGcJEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=JO+L8Dyk; arc=none smtp.client-ip=209.85.218.44
+	bh=9SulVlQ0LNsWx/q+yqRhps8KnFDASFn5tAh4umgXgFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=H7PL5oVjqJ2cdTMqdj1/Jur+HpUOZ5lt8yugXv6GcYySJKn2i5kKnjLMczRX5iUiikrsuvQx8wGqTuq5y31g0KR9xRRLRbfZ8eBx73qkP8OLL6HBcr6W5WVqJHv4K8QNS1sj7RDlHfVh+hY6VBEl/KVgwl690n+HbOGotejfZuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=qU+sBSFM; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="JO+L8Dyk"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa5ec8d6f64so393991366b.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 05:15:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="qU+sBSFM"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso600032666b.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 05:15:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1733663756; x=1734268556; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y8VwGD/eWi1bPEhBByF6NXOsDE0WmfR95GgjInLF4gw=;
-        b=JO+L8DykddWbHam9L+3DwvvytGovbADNN7DM2Dl0oBow5bct7XQaLHFjMtW2TicT/X
-         wJ7AGN8IcM+vUxft3ruKqd1PQGryNhtzpY5rr2OFdsVc6uDqeg1YXF/EMbYZP5j22+Fu
-         pV9gckF/T0cgQf+orCQyBmdzo3sAYfFIqb9pKACB+zfFmuF498jmMyTETUyLKT14ihLT
-         jftjjI3k73pqihEub7kd1MGcscbEvP1euszjHbjTpwgtMZ+1PiTjviMJnSngW5i9k4LH
-         KNyjUVaR6sgUVIQcvedQx5xGYuAYZlNSnvJNQq44dkfNVQZkcyYp7WxDobJtO9G0vglV
-         q5EQ==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p+IZWuqREO3G3z6KHadyzAvNCEvHpv5YJ2RDB7ujqmE=;
+        b=qU+sBSFMy8d2MUnVMcHvPGIOOAjDhYFggfN7v5DxUXPv+TY0CxER4jdyEq/xI1gw6r
+         hZrIEsAizo+HyHvFK8t4rApxU7zAeP4BpGDd/Y3JY3tDWhygW3cG6dSS2czjxWp8kPSj
+         0SlQCZGQru0ckn+jH6OOPDY/0JHiL3LZiWTjzClgQV7EhmhO5n7GAqTY9QkAoVSVetXG
+         5G5E7F4FKvCZJoPiZBqrpDMqdsvMLy78qveCQd4uCRyCRSOsM1rHezGkvuphP8StL4am
+         KMxdLJF59Yi0Bv/djevFFn5icE5Eri8SVURsN4wDFYLSF4nq5Z0SNGRVXU9B2sPYKxw7
+         OM6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1733663756; x=1734268556;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y8VwGD/eWi1bPEhBByF6NXOsDE0WmfR95GgjInLF4gw=;
-        b=gnaULqAPTJGBU6nWGtjUE+ROagi4dN2drjHkuye/lg1ovP7K22j93rMOeYcC0vK45Q
-         tk+q1poKmvKAO1CsVb9oGSzcPZckjai5q4gHxFgcYhM15jJ7B27qQUvcUkokXmIuzJUg
-         6NAZ5mEhS9H62trX23uvycOApg7D5+VF876h7KBTh0TrXvKQygdzMSxFEkQLW49Upg7/
-         OYCkVh/W5z0aNzVY1RGdGsDx5tm2X777T95i3aVWsgkVpBtOFAfz+iYoeH020h4wz+ri
-         sj7eK1dkb//kUK/DcVEWVZIDjxfkVX5c760Nur3YBLgM0b2FlxTxgTtRhR/SOmwIf4qn
-         qC1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVA5kC4nS07rsFHICpVKqxj5brwvb4r1b88mIUB+jqk7KMcyIqVurjQzk3FjqbShA945eeH7PjCGAqblL/yXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDjc64KLo/1m02z77i49b2VLNuTFgZAAzdzdtMJi5jfBsN9lkx
-	2dj8a4v84gubsOdkbiCJrWrXu7FQSEPuNDe6cY1+Sx4DvvZTSHuYRyoRMlb5ExY=
-X-Gm-Gg: ASbGncuDxVKgy6xY5/F/tczZ/I1sMRPPUGDwSy7qXO7U0VS0dYVkLUWuZNsS8wbtLiX
-	ZJVEgCCuHrxKsKx+DYhajlY5Kw3rj4132Y99s6mCwGko6CcdScjGMLRj7oSpDZcfjxD7BxWgbp1
-	ljUA8XPV6roPHJJgnfVWELL/BSTOuPzCuYMrctmfumcxk5OuVZOlyD8WE8Qycg8EBs5uEeGkKEV
-	8SEzjrhUbHnKFHdvSXZG4m+j7qRUd7h+N/cT33hlTo=
-X-Google-Smtp-Source: AGHT+IFhUqHMmdTFbhl4tAmm67CExcTpb828ejxQnZeZ3AZXuBa1rHTinUnDv2E7FFrkDaXy5arFZA==
-X-Received: by 2002:a05:6402:458b:b0:5d2:7199:ac2 with SMTP id 4fb4d7f45d1cf-5d3be661af9mr22793704a12.2.1733663755742;
-        Sun, 08 Dec 2024 05:15:55 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p+IZWuqREO3G3z6KHadyzAvNCEvHpv5YJ2RDB7ujqmE=;
+        b=jjHQcCzv8xxC3E0I5VW8m7Fns74tGS8ceYFqbBOOuLqY0ibLvX4j2R/MFyOM5zZO3d
+         cBuCdcQ6Rd+pxqlxNAegJbPVU4Ni2OhPbQZAZ0V5i+jshROVfrx9DUMPOgoIZ+Xlc7Nr
+         sR3NzR4z6TXnJi4vVTmlcp6GnWwYpUsRJp4I3mBdXcwSj9LPc0sY7XpM5OEnNMWDMn1I
+         KUPbO5/WnlcAYpNaVyv7jZXgBrK0KEB2jBHHqVE5Os2QeCi3yW6buK8U9besjCjBH7vA
+         F6Q9uBc75vErjv9uXmePUiZ3N1NBIoyBx0QVfIIoSov7A4kXnSUS7QBS2XMRVIHJlAYr
+         DEZg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/rpPSXRuhjuK+F26dsY5NhE3zDTiNmiXBP98QK+4I4ltDvniIE3zwJKpRRp6pZGHdR9O4ve1DhGKjzvNn8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOvbw70zONpja1ywK5ZRZK3YlSzXMYDjupGihokkxaqJ+7Y5Jo
+	JGbIcuvSwzaCMhizbzou3d175WTJXwZ7si+Uf5yTzUVNvdcHc9XwF1cLYnXqlgkurIsk61TTYAq
+	/ogg=
+X-Gm-Gg: ASbGncvL3aEQlvElpT7MgpS/piNsENrRBeIN5YX4lD7/Y7jVmsIP1GlTDFy1mPWZr+b
+	wPueHqKnTi9nNCGOJvmRL5tywhiBmbUeV0KOEBvCJP9dlyw5c85dP2rTSuA2GmblmMJ3AuZK7SY
+	l3u51k6RdmCq3gjxBloD1VYcG3Rm7yFZ12v3B6cH2lrfPynsdI3tr91frYkgIqGlkikOUk0Vpfp
+	1gjG4wNX4hLTNOyc9ktUWzo9mLIebrT3FVSdmeukGY=
+X-Google-Smtp-Source: AGHT+IHnkE9S49cN4Pb7q9UN+kiZJ6tVbwihz4my1W8JUsxNbcOy9L+8HBjDhvuOmFehWp1PU9Msmw==
+X-Received: by 2002:a17:907:9516:b0:aa6:4671:ddeb with SMTP id a640c23a62f3a-aa646721751mr627674066b.22.1733663756507;
+        Sun, 08 Dec 2024 05:15:56 -0800 (PST)
 Received: from mordor.lan ([95.85.217.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e96c19sm529078966b.42.2024.12.08.05.15.54
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e96c19sm529078966b.42.2024.12.08.05.15.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Dec 2024 05:15:55 -0800 (PST)
+        Sun, 08 Dec 2024 05:15:56 -0800 (PST)
 From: Daniel Sedlak <daniel@sedlak.dev>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>
@@ -66,10 +69,12 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org,
 	Daniel Sedlak <daniel@sedlak.dev>
-Subject: [RFC PATCH 0/3] rust abstractions for interacting with sysfs
-Date: Sun,  8 Dec 2024 14:15:42 +0100
-Message-ID: <20241208131545.386897-1-daniel@sedlak.dev>
+Subject: [RFC PATCH 1/3] rust: kernel: types: add mode wrapper
+Date: Sun,  8 Dec 2024 14:15:43 +0100
+Message-ID: <20241208131545.386897-2-daniel@sedlak.dev>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241208131545.386897-1-daniel@sedlak.dev>
+References: <20241208131545.386897-1-daniel@sedlak.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,42 +83,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
-For now, there are no facilities for the Rust side to tune modules written
-in Rust in runtime or for just simple debug output/statistics from
-the module. For exactly this purpose, the C has the sysfs. In this
-patch series, I implemented a minimal sysfs wrapper utilizing kobject API.
+Add rust variant for representing file mode. This is needed
+in order to set file permissions.
 
-I would like to collect your thoughts on whether:
-  - Do we want something like this in the rust part of the kernel?
-  - Do we want to support all sysfs capabilities?
+Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+---
+ rust/kernel/types.rs | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-I implemented a sample to present the API I have chosen for the Rust part.
-It is a straightforward example that does not represent all capabilities
-of the sysfs. The documentation will be potentially improved, but I would
-like to first settle the abstractions.
-
-Thank you
-
-Daniel
-
-Daniel Sedlak (3):
-  rust: kernel: types: add mode wrapper
-  rust: kernel: kobject: basic sysfs implementation
-  samples: rust: add kobject sample
-
- rust/kernel/kobject.rs          | 271 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   2 +
- rust/kernel/types.rs            |  17 ++
- samples/rust/Kconfig            |   8 +
- samples/rust/Makefile           |   1 +
- samples/rust/kobject_example.rs |  66 ++++++++
- 6 files changed, 365 insertions(+)
- create mode 100644 rust/kernel/kobject.rs
- create mode 100644 samples/rust/kobject_example.rs
-
-
-base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index ec6457bb3084..35ac2898433a 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -517,3 +517,20 @@ pub enum Either<L, R> {
+ /// [`NotThreadSafe`]: type@NotThreadSafe
+ #[allow(non_upper_case_globals)]
+ pub const NotThreadSafe: NotThreadSafe = PhantomData;
++
++/// Mode represents file permissions.
++///
++/// TODO: add link to header files.
++pub struct Mode(bindings::umode_t);
++
++impl Mode {
++    /// Creates [`Mode`] from the number.
++    pub const fn from_u16(num: u16) -> Self {
++        Self(num)
++    }
++
++    /// Returns [`Mode`] as an number.
++    pub const fn as_u16(&self) -> u16 {
++        self.0
++    }
++}
 -- 
 2.47.1
 
