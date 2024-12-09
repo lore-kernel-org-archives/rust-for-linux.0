@@ -1,160 +1,134 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58523233D6E
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 12:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510B8230D23;
+	Mon,  9 Dec 2024 12:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733748840; cv=none; b=aX87oAZ8bPaGsvlrbhmjoYnJ4JaevMtYJvkdEjLNiy0/ik6Q/vd0FRFIjuLPG8Qf5rwKy6ge69iVKpNhY2K7YETMnLgBFvOmLJBT/DSQSg4s14EByP8qMR7aBBcMPD0bM7uSmt/uEMXnGAtaLY+xjZNCKgczY0D55E2o4OpgqMI=
+	t=1733748931; cv=none; b=rvY62uQ6Eu6CqnNgizZzuLS/BuF7MZT7fSMp99+vy4QB+IbAsXr3KzV6RTqZ1MXysioIyA/ufWuAy+bcrXUVxGSodkA8Y72lToySe+v7oHmENQSoh7cZa75qo7LaDQobMoJ63uiPN1rGSzLH0OYGu7tz7B5KcCDMcQH7NECgaqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733748840; c=relaxed/simple;
-	bh=obrx4jcL33/kWWozeiQoPtk4e9tIpEL93T5ZUqbYrio=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r79kISx0lEfcnK9vYza/heuP3ybhnIagaS4/RryFoKW/EbAzBrFJ1fF/b0b3+NGRLTe2ue6I8ejnENQryaGD2/KbubBR44dVM2tugS89QDxNmvxgLXsq7K3o+z5PKRoG0YP3fff7BJeGZgozSiz90wmV3V9eBYbK+I+uCwHsnVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3FZ4li0/; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733748931; c=relaxed/simple;
+	bh=SI85qI4aYVhNTkWpJ+X2AtUKzXDM9U1usOBZ8go22GU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NYJgNvwpirh3uW4T4c/NSSjxQE8R3TDtnFYuYqkxco6McrAUI34JmhvQaAhtRPuIhKmSWIxACojH0gmlCjIvvAhR7KoZeK/w3kaSlGOfZKVr5ovoeULoERosUG3ZJfGlt+8NnxJ/Arpd+zBcDakQfyT1gJZC4v2274/kDS0ES7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TyvItAdt; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3FZ4li0/"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-434acf1f9abso42150665e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 04:53:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TyvItAdt"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-725f4025e25so448796b3a.1;
+        Mon, 09 Dec 2024 04:55:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733748837; x=1734353637; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1733748929; x=1734353729; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2i5SAc+98oEk5ukKLfbKKuEDIk6TYm+EWYT8/y8W4Ek=;
-        b=3FZ4li0/55aH3CrZCdfucHt8WkJ6v3B8qR+cN5e5jX4/kiSNs+T9y8huMEF83yuDWw
-         GtLP/lsLZyNilGuVNxJ9Wq9bP2vPzRfvpKaNQMpMKSa4KlRiq6PBNcNsNEAbEtj5v836
-         fWgMaqhw00D2bQrOyN+ZSmeSLq0wY+n9JatwogOlVO3oM8y2tx2SCI7yya0A9GJ10pSR
-         iHxQtpAptd2hM5zX8R7uCDKFfUUH2XRVxOc9/An75ZWzkrAJ0Q3bv3n/VaNGGDHq4QvO
-         8AFac53t04t2m8g5ajPHKHrTZMs/0s4jqESFslh6HEPYDRNRj0lL6fAQ4dBYeDip7M5y
-         za7A==
+        bh=Hlm+0UDjIRRqTSMlzzjiAUEABuynPVGrbkA9eGipCa8=;
+        b=TyvItAdtbMwd6zZu5xo8LuznaIT245EPOqJL0qMKQDZfnGQndaTF7QlycnM2ppgHz8
+         Z4o7+8CC4i4y6zy4kyIb3jfd2i5/7kPQq69IH8egkT8S0fi15SV8gG0hsCmWVpZ+r8Nx
+         UiFrHF51r9TM835Qy9VmFamM1aXnFZmFtGDOKjbd/DqWGPHWfGkZ0CMCKuYRe9m/ps5n
+         nYwHHiX50ujr1BvcycwIJpKEl/LBGDpPxEfVX/Rg2DmRif21d83CKKVnzEgul27zGUUx
+         6D3xcx8401XleTLEAtk4wcBeF7G/iae9teNDO0lcIpTCFHU0zJPPzWsxEyzS/MfaqfC6
+         SfxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733748837; x=1734353637;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1733748929; x=1734353729;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2i5SAc+98oEk5ukKLfbKKuEDIk6TYm+EWYT8/y8W4Ek=;
-        b=kWEnGZkDlOqsrcv4j9bHRwYWhIl1e9IftwTnHE70yu22iOxSktt87mi3tnDjWBcf2Y
-         c9+FFwflQhwqYhHgndHq1kWfDii2uz/3Pkr0kPwJtyI4tCCstrQ7p1QlC8DZJ63pVrLR
-         vF5bESWyn4UgVDb2vl9vVn3JoeS/+O0ydXtUTzzRQMPL3tFytwheFDB/geyAmViCO+q0
-         LGO0oESoGNDUvxIyMxKvGeLtHwWOMvTKd2Eqm3DFRR5vDxypdwDUDw4CxVbpEbBxQt+Z
-         deWWqztqQ82dsi4+oc2Lru02DYaxlZaSW4/lAjdQgBk4FzjVj9vdp8cxuMaCLnpdI/ma
-         D3lA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0w4IQ4BVq6vhkjFDpIhg/sNUygo8hg7Jvd5DweTqUVD2OIyoAgXso7zwnPAyYYBmOcwe4LPfZ2Zn6/6u2QQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZDsoJz13NMtff1e44Y7b2cVu8UOGwGLPz5ZsEp3DeIXwpomKq
-	SDC57LhtDX/GlyiP8WsjIBuMKzO6h4h2UGtJkVkzGDIzsdYhxKOKn0HJs0UuOwNyu1AahrXYd0e
-	mLNwNhtsaABfuLty6dpBHV/Y6w7jv9Z9AbnZv
-X-Gm-Gg: ASbGncstRusz0z7lLoXRLEw2dTjT+cmzrJPOH+HKcwrqL81GnIW3UIWqf1FDWUtDb4H
-	2PxGXhF1umpHKFIfDFvsq7p/zDGXM8lQjdBtl1N4NQzYPEAAds4zPZpyBazo4xw==
-X-Google-Smtp-Source: AGHT+IEuEI+4Zj+0nladgNqpgiOV2r8smTtTysfeQSoMAfpfFTFz6wYeGiz3rgawD6ECY00uZeOog1XRL6/cxhViFl4=
-X-Received: by 2002:a05:600c:4f85:b0:434:a1d3:a306 with SMTP id
- 5b1f17b1804b1-434fff30c48mr3250905e9.5.1733748836596; Mon, 09 Dec 2024
- 04:53:56 -0800 (PST)
+        bh=Hlm+0UDjIRRqTSMlzzjiAUEABuynPVGrbkA9eGipCa8=;
+        b=roPLBGSRheODGJycELtxln8eF5odLdrcvyJvhTXdXrakDUP4uxfxidv05OHpFffvHS
+         NgnKQHHZSrZ9hoJuYfm7OFLlr8g8OAMKlTcmivzBGOiw+Zr0RXX8Jq/u5pDPU+Kk0ql8
+         6GUYo6h0RdwQ1Z365Yqrf60BChnr2BllMgO8IsjwXpV/m/1ddmlGI+tdeyAbthxu8ypn
+         ny/FnY0VTR8PHLto2EwXvNoxI0Lf1cgkNfVkOgUmzt4dmMBLFg1cK8pPMsxa0A783Mnj
+         UNagLZj85LMqHnsMR77B0HLxmq2bctdoWWAAjf/GePaRcyW7cKDzdaluFP0oP7BganfQ
+         Lirg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfASgOogqgXj/NCbtDqRwhw/rp9gCZxLOo+jLE80H6cLpmCO80BMvqF6urvFAUwiD7IkYaiB66I+7h6DpKvSg=@vger.kernel.org, AJvYcCXLE9EcrIRqj1nqfSWBnq2D4XQhESh6j24WHzm+A+Mp5F2ofaoUE3zwfNFyDWq4U6fmh1BxWuv27dGF+Nw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEBKmD59tnIRJgMT8C4NYs8ByXkCXi4erE5Hi1wdojC0q27rbM
+	pRXjJ/n4iZwFvt6LEfmCGaeMNo0F4xJOFBGgiXH76nWtdR3h+/Kp
+X-Gm-Gg: ASbGncvgJrJtNJrvyZCCM94MD7ivl5Rnaqs0aWQZSYVmNawhUZgLv3VD+RkvskIksse
+	ItQvA5yt8IGZJtfmAFdqsS+AKqAn9SzxqYBCLtRozAlt4wdLXI6+kqR3tzC+gUczhwOzgrlyWMZ
+	SaxZ/JmI5fGOwKRZlF/NGnp2tm6apjKtOgN3oLcWfqrW/4xWUAbJ02C6/neKRJN5lr/U7Y+RpX/
+	TF5AtbOzE7vSUqxcwcQe4C6PuIYyksQHgv/FaiVggLJRcfClaDXkimo
+X-Google-Smtp-Source: AGHT+IEacy22mT4e64ZXJ4WAg97dV3C+p2p0yUemPXEWoIje0nsDx/jq9iYUBnzOsbhqr7dspojk3g==
+X-Received: by 2002:a05:6a00:4b03:b0:725:456e:76e with SMTP id d2e1a72fcca58-725b80feb59mr20056668b3a.6.1733748929407;
+        Mon, 09 Dec 2024 04:55:29 -0800 (PST)
+Received: from linuxsimoes.. ([177.21.143.14])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725c9ef18a2sm4462148b3a.86.2024.12.09.04.55.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 04:55:29 -0800 (PST)
+From: guilherme giacomo simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	daniel@sedlak.dev,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tahbertschinger@gmail.com,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	walmeida@microsoft.com,
+	wcampbell1995@gmail.com
+Subject: Re: [PATCH] rust: macros: add authors
+Date: Mon,  9 Dec 2024 09:55:20 -0300
+Message-Id: <20241209125520.414960-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72mh2_QhHcE65-t+6UEEqe+9XwGQ3gJ1CCQpZ6r3HOcokQ@mail.gmail.com>
+References: <CANiq72mh2_QhHcE65-t+6UEEqe+9XwGQ3gJ1CCQpZ6r3HOcokQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
- <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
- <2024120925-express-unmasked-76b4@gregkh> <CAH5fLgigt1SL0qyRwvFe77YqpzEXzKOOrCpNfpb1qLT1gW7S+g@mail.gmail.com>
- <2024120954-boring-skeptic-ad16@gregkh> <CAH5fLgh7LsuO86tbPyLTAjHWJyU5rGdj+Ycphn0mH7Qjv8urPA@mail.gmail.com>
- <2024120908-anemic-previous-3db9@gregkh> <CAH5fLgjO50OsNb7sYd8fY4VNoHOzX40w3oH-24uqkuL3Ga4iVQ@mail.gmail.com>
- <2024120939-aide-epidermal-076e@gregkh>
-In-Reply-To: <2024120939-aide-epidermal-076e@gregkh>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 9 Dec 2024 13:53:42 +0100
-Message-ID: <CAH5fLggWavvdOyH5MEqa56_Ga87V1x0dV9kThUXoV-c=nBiVYg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice`
- from fops->open()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 9, 2024 at 1:08=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Dec 09, 2024 at 01:00:05PM +0100, Alice Ryhl wrote:
-> > On Mon, Dec 9, 2024 at 12:53=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Mon, Dec 09, 2024 at 12:38:32PM +0100, Alice Ryhl wrote:
-> > > > On Mon, Dec 9, 2024 at 12:10=E2=80=AFPM Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Mon, Dec 09, 2024 at 11:50:57AM +0100, Alice Ryhl wrote:
-> > > > > > On Mon, Dec 9, 2024 at 9:48=E2=80=AFAM Greg Kroah-Hartman
-> > > > > > <gregkh@linuxfoundation.org> wrote:
-> > > > > > >
-> > > > > > > On Mon, Dec 09, 2024 at 07:27:47AM +0000, Alice Ryhl wrote:
-> > > > > > > > Providing access to the underlying `struct miscdevice` is u=
-seful for
-> > > > > > > > various reasons. For example, this allows you access the mi=
-scdevice's
-> > > > > > > > internal `struct device` for use with the `dev_*` printing =
-macros.
-> > > > > > > >
-> > > > > > > > Note that since the underlying `struct miscdevice` could ge=
-t freed at
-> > > > > > > > any point after the fops->open() call, only the open call i=
-s given
-> > > > > > > > access to it. To print from other calls, they should take a=
- refcount on
-> > > > > > > > the device to keep it alive.
-> > > > > > >
-> > > > > > > The lifespan of the miscdevice is at least from open until cl=
-ose, so
-> > > > > > > it's safe for at least then (i.e. read/write/ioctl/etc.)
-> > > > > >
-> > > > > > How is that enforced? What happens if I call misc_deregister wh=
-ile
-> > > > > > there are open fds?
-> > > > >
-> > > > > You shouldn't be able to do that as the code that would be callin=
-g
-> > > > > misc_deregister() (i.e. in a module unload path) would not work b=
-ecause
-> > > > > the module reference count is incremented at this point in time d=
-ue to
-> > > > > the file operation module reference.
-> > > >
-> > > > Oh .. so misc_deregister must only be called when the module is bei=
-ng unloaded?
-> > >
-> > > Traditionally yes, that's when it is called.  Do you see it happening=
- in
-> > > any other place in the kernel today?
-> >
-> > I had not looked, but I know that Binder allows dynamically creating
-> > and removing its devices at runtime. It happens to be the case that
-> > this is only supported when binderfs is used, which is when it doesn't
-> > use miscdevice, so technically Binder does not call misc_deregister()
-> > outside of module unload, but following its example it's not hard to
-> > imagine that such removals could happen.
->
-> That's why those are files and not misc devices :)
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+> Yeah, that is a good point. There are hundreds of drivers with 2+
+> authors, so this could indeed be an issue eventually.
+> 
+> Having said that, we already have e.g. the `alias` and `firmware` keys
+> that take a list, so I think we already have the potential issue, thus
+> being consistent in our use of lists sounds simpler (unless we are
+> discussing migrating those away too).
+> 
+> We could also try to mitigate the formatting issue via e.g.
+> `checkpatch.pl` if needed.
+It is true, we already have the formatting problem with `alias` and `firmware`
+fields.
+If we will follow this logic (doing equal in C side repeating fields), maybe we
+can end have the lines a lot for modules that have a `alias` a lot, or
+`firmaware` a lot. Two example about this is the `sound/oao/fabrics/layout.c`
+that have the 38 MODULE_ALIAS and `drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c` that
+have 77 MODULE_FIRMWARE.
 
-I grepped for misc_deregister and the first driver I looked at is
-drivers/misc/bcm-vk which seems to allow dynamic deregistration if the
-pci device is removed.
+Maybe, have something like:
+	authors: ["author", "author", "author", "author", 
+		"author", "author", "author", "author", "author"]
 
-Another tricky path is error cleanup in its probe function.
-Technically, if probe fails after registering the misc device, there's
-a brief moment where you could open the miscdevice before it gets
-removed in the cleanup path, which seems to me that it could lead to
-UAF?
+and having a check on checkpath.pl doesn't seem like a bad idea. Because for me
+it's better than:
 
-Or is there something I'm missing?
+	author: "author",
+	author: "author",
+	author: "author",
+	author: "author",
+	author: "author",
+	author: "author",
+	author: "author",
+	author: "author",
+	author: "author"
 
+due to the fact that we spend more time scrolling the screen code than
+programming.
 
-Alice
+But I don't sure. 
+
+Thanks and regards,
+Guilherme
