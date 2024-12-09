@@ -1,63 +1,63 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4322E13775E
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 16:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080BC7F48C
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 16:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733760770; cv=none; b=g68X2LB3Fn82dtFOiDdYRolUPXpbKESm4YOc6+rngORaO6cvusRbsFEhpaS5vEqH088hBniZiys44l1ZKyUWPcu7oJVUzhsmqGvcUfxSauUhLLlP3V4A7nzG2r4bnrt2M03ivW8+KZWXg7GnsjeorlVA1hXJILhcvDuRTl3bd6Q=
+	t=1733761186; cv=none; b=lffIOQ5CsTh7Xy78qfA7AQCKa4bt/s6pBQdKu4Y9FvMNuTCE0zhm1eQpf+KpnVJMCqejnZLjXMJpShgrcqEoP3w0XWWuPhCuwmxueKKHG7Fk71a8os5FpnPaGRJSySVGroSTbwigxwGqfezaYzKCkPuCqTwFHXXL0IPQux3cQY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733760770; c=relaxed/simple;
-	bh=9ix5CNt4eIacexTKkXwItlI4QcExjjLwAtTLMk29cM0=;
+	s=arc-20240116; t=1733761186; c=relaxed/simple;
+	bh=8FLzNsyB3fptWxLXTIAybz+auJ+xxGgjPufYt3zW0Cw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bpRZ16pA9VO6UyWdsLkDqpcUPyQjeGou4ENM7wUHbDptn5mpVEDWCyYXzTYMogdKgsljv2RpDNNqX2CZI3mZQ9FvLfXQDr7cyVWDKbCIuNBn1pXfo8YinWTdyYhgTo02UupoZKWoeyVW3y/yLH6VwSvq69/ZovQie3GNqsvQILA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=n68hkbtd; arc=none smtp.client-ip=209.85.218.48
+	 In-Reply-To:Content-Type; b=VtemHN8BF2JkqPp1JdQ9tR/Yb/JkYHnJ4ieckqbxE5LJtwnDAtijj17xq3i7XaW6hw3V+QvBU/cl0sHFDyc14RY/I6TkK1+3dNaR6BKt/c8X1pN421PhmXuEGUo9g4yhSHCQwQ2hOpjiXVMrWWk70wXuHhjKZGzO8obOVoX8TJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=V555ovhG; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="n68hkbtd"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa642e45241so604429066b.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 08:12:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="V555ovhG"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso825602766b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 08:19:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1733760766; x=1734365566; darn=vger.kernel.org;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1733761182; x=1734365982; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9+R/N71w0KKNwVT/f+TarFu8rMgMX00BIWZhkzyv+9k=;
-        b=n68hkbtdcLt+2mw+hMcYIymEQaSmfn/af5aiHbbE/PzNXBURfrW2TgZ0gcXwhpd9+W
-         7cCCtqJAbfPlwJtkENxbwdzX3rrZfKzynfQqsvo3QtAnI9FBPNkn4yf7+u8zh26cBYFL
-         IQNKNE+uZr/Uubgj4VZ238kJLJUPJkDU6vEYevaoVRG9fuAonTMIt2gG/qZW4tgfjvNv
-         CnKwCYI1VrfomSR5BavoZMSXKMtbaES2pPZ5eypH1Ab3k6+vQxuOWBq3FGeKAlnTxPNk
-         Ie0bXcjN26ucPr9DYI4hHAWfrLaaUHV9UNFnM5d9bRWrW6KReIVqARhEJwAAwlY+zBvK
-         Zv1w==
+        bh=NripXMxSvofQNxvS/QURB9raKTMdjSDqrrLZd9tIawk=;
+        b=V555ovhGqfyXo7awkS+9xsKpex3V9SFeQD6qw0f6bk71L2lVslhOQSiQoHxdUtGfuv
+         PYCAubMbVIMFpvpCRLLx1iFewRielNuppqkpoY8wN/mo6hNtIH5y7AZ8ViCwmtFYuytd
+         qpCvk/nTVkkI6ab0iGjgeSGbuVxoTK2K91PCsqNC4/QvIFV159enwGFSD9xUZZgCkhG6
+         zt6XeT8NQxP2Z2aT0jyzgci8gPz7AvrcaHf7KEoUxVKngmhRKnkazb4mrP8cVPBa/GSp
+         zLrK+80KbgGXDhQMJP7uVreGepWoEWS7ZVTmBJFjiXYcnNq2iT46kwURm6dnH7jVYoxs
+         tszQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733760766; x=1734365566;
+        d=1e100.net; s=20230601; t=1733761182; x=1734365982;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9+R/N71w0KKNwVT/f+TarFu8rMgMX00BIWZhkzyv+9k=;
-        b=GwvzvXZbcN/Tm/38ZSJE5qimLgd+1rw1jo8CCuFppXsIkRbDkEzkKX1TdPps5vvlDz
-         32ALHNLC6PhyiTmL3XOz/7l2Cz+024pL9JqLSrEeIxue9JrCdsq2Un0cSNwptvdTu61T
-         8so+nQYXbV3McdYgIThUE9FIONyYdCjNZgCixCFo77sqiEe7rvGuSr1XAPE+xqLpA4y9
-         p8ZsGWZ362QvQER05V9LyiGtTyjpRVjz1ezyUEh1wCDUU+yLjGltE/2MhxSTvyYxNv/X
-         6PT8drnVCgkaVSG15J54rug/LLzK+pc0Izrh78lXAjjvG2lqEnsDl6plNe1fL3Aymftj
-         tDsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhejONUczmQYyaaeSZx8oWrEc/p5Rzw3mJM8LUj1Msv2lSmiJftJdty9vHhI3LJp06kKXgJngbSYLEaNQFhA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyz12iJUViS0aAoUbQ0zByBXCEBee+SEW+PvFWri8E6OZqxSXBs
-	Eb000Bt0QvdDC2Oiv14aDZcjVdJvf/1xneAG3dqygUuEHs8VE29SCrneQdjWiVA=
-X-Gm-Gg: ASbGnct/8Gnj7qlnYiaNvnonaAfrE/oTKEjpEzlCjdZ0BXy9CDS/dCIsbQFhWAdd0qL
-	AoSCfdEDHlRnxDmotqKrT/IqC/ijQjCXWRsGAndaZxDUMsG9gmNPfg5uAQJObI4TzcjG0CNTecV
-	DpjrPUuZkxJow069IR3zzOIlawt93dvTJIxFsYITGSlhnpZLm7ADfynd9ipUy+Bu3O+AHHd05Up
-	YyB4fX4qv+c560hZE27/oeUVgu4rf1LzvN/QuEbW0+PSpsNWIDYS+Lcchic
-X-Google-Smtp-Source: AGHT+IE4lFs79HCDGFnVN+Y4TEOhJ2vsSpkjg/YZzY1tYY9h6fwgf8E1cNpCxAR9AOP8w4kf8Cn+3w==
-X-Received: by 2002:a17:907:7854:b0:aa6:18b6:310e with SMTP id a640c23a62f3a-aa69ce346a9mr110385866b.38.1733760766278;
-        Mon, 09 Dec 2024 08:12:46 -0800 (PST)
+        bh=NripXMxSvofQNxvS/QURB9raKTMdjSDqrrLZd9tIawk=;
+        b=CLDYAk7ks5SITxns+3tJym1M1YXiRL+c3CB5SF9AGCo/VJ+U+F5V2MzbjGEm3SvQaX
+         LgV6XCx82WcBTZAwwLlrBTUYIFTER3YyipCMAh3oysjvufOaSXzZiaLQMEx4LLCmTOTv
+         IqCICUsuSuTg76Cj+c/b3AYbudGRMrwLVTE/AHihUfoK8XpR5O4aQmkLkN0d2GfWeLlt
+         orI+9ecFmkucAWJpauzRWdcouZQYawfYgoRR1iqVygkDH/7oC9vk/m662Xgaq1R88CkP
+         2oAcyMAJbWl6E3Udczv3apGx2rHCEhGZpYIDxZeIm7VV5jcRI+drXugeEQel9+qv+ASd
+         uXiw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8zLSey5akOAnHugyHLg3dDtmdwrZ0kJCyK7txo1EniyIz4SP3AhfzKmpJ1CnJ8qZEFt0JbzvsYo85oOY9SA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfKUOw105eymZGZk07FbIFr5qq5OGF1ZWItmejtZBmFEl1qLhR
+	FdVCNfzJJ1geF/K8NV004bQFTP3H6kcbV/m7JuHQYcT0KahB8C+DuioC6odwX28=
+X-Gm-Gg: ASbGnctgbi6yORVn0P2JAJteFw3GjuYWpOFSYh1S60XymSIJadMUa8QkLAZMMbGgZTh
+	RM+7GHCpcAHGSyGYdOThX5C90Wf1CQUsRGr8ZWiPvwOBenUupwqMve5vCswAlvbslqfWgwLqU+S
+	fZxZVcVDN1bo7pdzqhVHqfa95q8AoFQpz9HKGG3p93mIJpFaO4J0jqTyuYp2cVxD/rOkkXH+pJd
+	bPE7Q8o2ou6AEauXkM8G3CdTq7sEudwXRn/xxR0G1Max4XmFA3I8M32WWYQ
+X-Google-Smtp-Source: AGHT+IHNBjPC/5NF4BJrwWxv+J7UAuVC7WqIakAYaAn2fbKEP/W6Lt7zHXOLiWPmouujnYObj88/Mg==
+X-Received: by 2002:a17:906:3103:b0:aa6:6f90:d51b with SMTP id a640c23a62f3a-aa69cd29f25mr109731266b.10.1733761182154;
+        Mon, 09 Dec 2024 08:19:42 -0800 (PST)
 Received: from [10.0.5.28] (remote.cdn77.com. [95.168.203.222])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa673e7a132sm290633166b.11.2024.12.09.08.12.45
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6801060e4sm228571766b.158.2024.12.09.08.19.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Dec 2024 08:12:45 -0800 (PST)
-Message-ID: <dab64690-ec96-4980-81e7-aae87b53dc02@sedlak.dev>
-Date: Mon, 9 Dec 2024 17:12:44 +0100
+        Mon, 09 Dec 2024 08:19:41 -0800 (PST)
+Message-ID: <2f9e7c85-37db-4fda-a30c-7b0e6e6a88e9@sedlak.dev>
+Date: Mon, 9 Dec 2024 17:19:41 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,40 +65,46 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] rust abstractions for interacting with sysfs
-To: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [RFC PATCH 1/3] rust: kernel: types: add mode wrapper
+To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org
 References: <20241208131545.386897-1-daniel@sedlak.dev>
- <2024120851-drowsily-anymore-52f7@gregkh>
+ <20241208131545.386897-2-daniel@sedlak.dev>
+ <CAH5fLgjny4mZRdhSG3DS-GKPTfQB0pg_5sTroAw13wR-d_BhSg@mail.gmail.com>
 Content-Language: en-US
 From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <2024120851-drowsily-anymore-52f7@gregkh>
+In-Reply-To: <CAH5fLgjny4mZRdhSG3DS-GKPTfQB0pg_5sTroAw13wR-d_BhSg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 
-On 12/8/24 2:34 PM, Greg KH wrote:
 
->> I implemented a sample to present the API I have chosen for the Rust part.
->> It is a straightforward example that does not represent all capabilities
->> of the sysfs. The documentation will be potentially improved, but I would
->> like to first settle the abstractions.
+On 12/9/24 8:21 AM, Alice Ryhl wrote:
+> On Sun, Dec 8, 2024 at 2:15 PM Daniel Sedlak <daniel@sedlak.dev> wrote:
+>>
+>> Add rust variant for representing file mode. This is needed
+>> in order to set file permissions.
+>>
+>> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+>> ---
+>>   rust/kernel/types.rs | 17 +++++++++++++++++
+>>   1 file changed, 17 insertions(+)
+>>
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index ec6457bb3084..35ac2898433a 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
 > 
-> What exactly do you want to represent in sysfs here?  Start with that
-> and we can work backwards to say what types of bindings are needed.
+> Perhaps this should be defined in rust/kernel/fs.rs?
 
-Great question, I should have started with that earlier. Lets say I 
-wrote a module that attaches some hooks to kernel function calls and the 
-module does some accounting on that. What is the correct way to expose 
-the statistics from that module? From my point of view this module does 
-not fit into any subsystem already defined in `/sys/`, and procfs should 
-be abandoned. Should I use debugfs for that?
-
-Thank you for your feedback
+Yes, likely it is a better place. I was somewhat surprised, that we have 
+dedicated `kernel/fs.rs` file with all that flags, but none of them 
+regarding the permissions, so I thought that it was on purpose missing.
 
 Daniel
+
