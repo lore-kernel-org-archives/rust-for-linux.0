@@ -1,95 +1,147 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B54821765E
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 10:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE16217643;
+	Mon,  9 Dec 2024 10:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733741060; cv=none; b=kM20LdW2rKPGZzGy+u8pn7rUd4Pgz/ALofic2VfVVnH1wSZ5jZiPdIixQdUyp8akYsqWtrM4M+tDOI+ZJoWaV5BxZCbGnjLNNiHi2oDo4lAjoBIwfXSi5whlwtGvGZ2OJFnLAd5gBuc/A9K9eczFTXNtP8xPhO7vnKVyiv6Lrww=
+	t=1733741069; cv=none; b=bVOS+dWWVYwjM6ckctSh0/S2AuQsFP6S3Qmou9zQh46UITpU7F+oFrem69srrLInhUhpOVR78ud3Lq4tu6+y9B5JV3nq5yLug+QeYtsy7jck4gq69U0GfPj2cPnKP12QLGYKSGvjkdcgVXBD0FlCOi49ec60hsNFpprsMQIZV1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733741060; c=relaxed/simple;
-	bh=6BqBE5aFm4ewSSXypyzZzTAT8ClVBUtCqUHdDBItBdU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pwiBHuQBLVh6F0z8HOE/FQTBLqoxz2oisYn+uKu/6WcbvTIzfHIIRRqZe5/HCh09ivKzQBlmmihl20aXps7EuZfA3Yis3FirU1zW2BZYVCgWtxUcFFYCbsfZnYYCwPNxID3aJOF8Vtg7AAKtxctaw8s7rTQ6yZ13BEfoxDcVzas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vPvN8Enp; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733741069; c=relaxed/simple;
+	bh=RDbbth+yBn5BvjrE9s3O5WT4459T0tfMcTs5CZI6T3I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=losHxgKzEX0ZdlLh/Lb8qYmPXGK+wJqoWXeiOgxZeNXPOT5Jl2qctLeZkfjNXNCZ5gUZDcpiScsQF9jmWlMht1CZp47hxzg/fO7YoueWx5LMjamV27Dd0o1InafDgyL96l439Pug9Xu4IvjHB/FJV/LXEXwLBf/rhGOky2AHkys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkHQAPky; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vPvN8Enp"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4349f160d62so27692575e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 02:44:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733741057; x=1734345857; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6BqBE5aFm4ewSSXypyzZzTAT8ClVBUtCqUHdDBItBdU=;
-        b=vPvN8EnpVNA5rc8qqkxAJtara8E4ZuJGvWUGneyLKIwD7jB7bidxhK8j8g2D/p/D/J
-         uuJeOHoYpEJ6+pndgXVi3QOco4xlP32gd7Ic1vuKYTIO5gazrU27HaG6qCucTdl+IWJ9
-         pkC47s2qo3K9wDjxlOX1sCB4fk3LtXY7Tu/sIC1JX3n8hHPmewCkm8b6FYt71iZ5kB8f
-         SYF8n4KpLw3P1iZZmEchE40vzj1/ziU91MYpAIJaIO1TtUQnyhNC+BMGYYkN0tzcRqbg
-         oB9UPSJNHsZCPZFlRIMORvEeTuKJptggfjvG56Uv3KqidFU9k74PlGpBGAHqLfZiApew
-         1zQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733741057; x=1734345857;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6BqBE5aFm4ewSSXypyzZzTAT8ClVBUtCqUHdDBItBdU=;
-        b=eWcuZfkLAi8EgZ2+IFeXeWT2prepMGVaaLuvRdU3BpffC0z9sVSO2FTWLWvjUe6YZu
-         YIoYjV0NptVuYDaw9Jjto+EnDwnsCO5ez0807kiypU3ETYGikafFzv2IG5SKykwc1KxN
-         KV3V1KmmaGXkoKwwNz9GGhhaS2PTPbwnoyv/tI972S1FregIjdR48njoRX7PwCt1UOab
-         ytpwhLo7mH5jmniPkgSVwmTsFjfBF40R/OofKiouynsb9AzqdXeKCxiaf0tjB+F7r3td
-         Qukp1XbcnokRBmW74Q7GuDcXVc3Iu43eUK9Buinc8b5LwUDuK4pvIQAGYMHRh1knew5r
-         ctgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWB12h1NyHuc6KyJ0NIcXpoHgBU6yFcc6m30h1HfqInEGZuaT8maQ0oTYVoIJenSTEyvEzArkd4BbichcomUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq981mytOpyE7KEdig5CJHQ9E/7iWe3CoS2k2piKIy93r5T4AG
-	SzA6kX8ELJGO3rMhICY2mnDhxBu5lSe4X8C8jsgOrBqWgy0QHZ4uAQFfsnAVT3dyKyyjBIZCNbR
-	YMKz1EEYJToccEtrm895sdwDQvdQdaFk9yRtF
-X-Gm-Gg: ASbGnctkr7dbvBgRc27NpvaxPy2BKAs0ER+5U4kDUyim19NxhL3Jkx5XazCf4EyEJoI
-	jygnpW1px3+mpFJOlkloPLzzoJRUX3dQxOVvrsKvNTOP0D82pq5maDw6E+7Ny
-X-Google-Smtp-Source: AGHT+IEtz09n9EgbFd7plwXSP8yb6/Yeh+KMUJh3CuOljqy6eQuyvRHTd05ms9lQNLPlGEDxjngHLcH/n7gSBSV505Y=
-X-Received: by 2002:a7b:c8cc:0:b0:434:f0df:a14 with SMTP id
- 5b1f17b1804b1-434f0df0c1fmr47702465e9.2.1733741057349; Mon, 09 Dec 2024
- 02:44:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkHQAPky"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACA8C4CEDE;
+	Mon,  9 Dec 2024 10:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733741068;
+	bh=RDbbth+yBn5BvjrE9s3O5WT4459T0tfMcTs5CZI6T3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IkHQAPky5XFsoEhxxhzvx4NQA4Zi03nZwRA5vXjG/THm/vSuGVc2Y+rTvyR+TxxBl
+	 TZbLyLj5i+VRaHLSiu87xSBX0wr/F3BSQDkXibfS8S27TNOcB2zAgWUeNufoimxlSk
+	 ZgPUXplgwv6DtbVfkWr/dsiySw7Wi8vOhVw2m+Qh1iI186omzL+2tRX43ppYeVBWw4
+	 V03GQIxvznpTm8bgNzb8FnxyTzIjETkUDUepvb234vV5uLoiQJkHNFrxFyv7DUBbtk
+	 cBHKd+oNpwAaeUYQt58uMhiHhSXlXmrAFitMfgmOwOmzbWhlU/Q/7LpCaK81We3Xfc
+	 KIb43Y7d+nUCQ==
+Date: Mon, 9 Dec 2024 11:44:19 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 08/13] rust: pci: add basic PCI device / driver
+ abstractions
+Message-ID: <Z1bKA5efDYxd8sTC@pollux.localdomain>
+References: <20241205141533.111830-1-dakr@kernel.org>
+ <20241205141533.111830-9-dakr@kernel.org>
+ <CAH5fLgh6qgQ=SBn17biSRbqO8pNtSEq=5fDY3iuGzbuf2Aqjeg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com> <2024120936-tarnish-chafe-bd25@gregkh>
-In-Reply-To: <2024120936-tarnish-chafe-bd25@gregkh>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 9 Dec 2024 11:44:04 +0100
-Message-ID: <CAH5fLghxiX8PjJH3s+xcXpJTD_XLuKKEjRM2dOqXkX7n7PoQ6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Additional miscdevice fops parameters
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgh6qgQ=SBn17biSRbqO8pNtSEq=5fDY3iuGzbuf2Aqjeg@mail.gmail.com>
 
-On Mon, Dec 9, 2024 at 9:43=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Dec 09, 2024 at 07:27:45AM +0000, Alice Ryhl wrote:
-> > This could not land with the base miscdevice abstractions due to the
-> > dependency on File.
->
-> So these should go through my char/misc branch now, right?
+On Fri, Dec 06, 2024 at 03:01:18PM +0100, Alice Ryhl wrote:
+> On Thu, Dec 5, 2024 at 3:16 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > Implement the basic PCI abstractions required to write a basic PCI
+> > driver. This includes the following data structures:
+> >
+> > The `pci::Driver` trait represents the interface to the driver and
+> > provides `pci::Driver::probe` for the driver to implement.
+> >
+> > The `pci::Device` abstraction represents a `struct pci_dev` and provides
+> > abstractions for common functions, such as `pci::Device::set_master`.
+> >
+> > In order to provide the PCI specific parts to a generic
+> > `driver::Registration` the `driver::RegistrationOps` trait is implemented
+> > by `pci::Adapter`.
+> >
+> > `pci::DeviceId` implements PCI device IDs based on the generic
+> > `device_id::RawDevceId` abstraction.
+> >
+> > Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> > +/// The PCI device representation.
+> > +///
+> > +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
+> > +/// device, hence, also increments the base device' reference count.
+> > +#[derive(Clone)]
+> > +pub struct Device(ARef<device::Device>);
+> 
+> It seems more natural for this to be a wrapper around
+> `Opaque<bindings::pci_dev>`. Then you can have both &Device and
+> ARef<Device> depending on whether you want to hold a refcount or not.
 
-Yes, that would be great, thanks!
+Yeah, but then every bus device has to re-implement the refcount dance we
+already have in `device::Device` for the underlying base `struct device`.
 
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> No need to sign off on patch 0/X :)
+I forgot to mention this in my previous reply to Boqun, but we even documented
+it this way in `device::Device` [1].
 
-That's just the default when using b4 to send series.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/device.rs#n28
 
-Alice
+> 
+> Alice
+> 
+> > +impl Device {
+> > +    /// Create a PCI Device instance from an existing `device::Device`.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
+> > +    /// a `bindings::pci_dev`.
+> > +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
+> > +        Self(dev)
+> > +    }
+> > +
+> > +    fn as_raw(&self) -> *mut bindings::pci_dev {
+> > +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
+> > +        // embedded in `struct pci_dev`.
+> > +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
+> > +    }
+> > +
+> > +    /// Enable memory resources for this device.
+> > +    pub fn enable_device_mem(&self) -> Result {
+> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> > +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
+> > +        if ret != 0 {
+> > +            Err(Error::from_errno(ret))
+> > +        } else {
+> > +            Ok(())
+> > +        }
+> > +    }
+> > +
+> > +    /// Enable bus-mastering for this device.
+> > +    pub fn set_master(&self) {
+> > +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> > +        unsafe { bindings::pci_set_master(self.as_raw()) };
+> > +    }
+> > +}
+> > +
+> > +impl AsRef<device::Device> for Device {
+> > +    fn as_ref(&self) -> &device::Device {
+> > +        &self.0
+> > +    }
+> > +}
+> > --
+> > 2.47.0
+> >
