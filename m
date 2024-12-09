@@ -1,127 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA462248A1;
-	Mon,  9 Dec 2024 11:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1EA1F931
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 11:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733745184; cv=none; b=BKDp9StoSZv2Dh0vNZnTnk4JVKn9d3fftbReQFByP2V+kHErNN8bACiMxAO66TYZgY0iars3v0KC2Rm2N2JdmlP36/zbRE6fGrt/1IovvCmBOKYptJVdnYncjXr+kByhhNzh50DrMuexyZ8pdx4Wu0/HKzaC6KmgjXTVMc2atrA=
+	t=1733745489; cv=none; b=IFxpuJ7wuxpSHmE3qWpfIsuwMBtTIRMxcrO2rGeBiLlIvBswGqLjXXZPVpWXwYS1Eow4k4iy0A2btgQwHX62kmBu5v/S/wDnLMhcE0AzFscVzYmJMnqQyw+Geysws1vP0VkKZsm7P3WSCnS3zZLxd51BNrg5R3lGAgdYKF2iwlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733745184; c=relaxed/simple;
-	bh=VEEB2A5ayIjGM7EoTOAUoJSPbnrhtAhuLBCL5VEQ0Q0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qnvIkTVzv6d+FRxlhy1vySX9MLHCQhpGV9Y6oaq80QbFu9OOxmfVRB3P/7sn0dsQTFIWelmfA061EAMkgbYST+G85u8DxQtdP/+3X6B0Jp5b0ndhMqr7WngWr1NtpyrhitNeLPt0SoDdFtUA8cmcNZAObPQvyJLuNkc+1nKM2I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPOTAUsD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733745489; c=relaxed/simple;
+	bh=Injq0ic2zq7l/C3nBoXE8epOqswcUlw+UPMoQYPHk4I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gANq1wRGU7XAXPFTf2DXaKIMA8ad9nLrU/9JJTRDhp7QRu/OQALQ9CyHNZYbI6ViXrDjUo4n23nCQb9lfMVLu10PA4XNKiqOG/n9gGZHwaGOLdOV1GVA+0Eq4oNIvALkVRHFH6ToFGpnr4BSfNR7N1BMt0EpIUUkxLkg7SiZ4SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RYjhsqpA; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPOTAUsD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E611C4CEEB;
-	Mon,  9 Dec 2024 11:53:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733745183;
-	bh=VEEB2A5ayIjGM7EoTOAUoJSPbnrhtAhuLBCL5VEQ0Q0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vPOTAUsDObEqavBD3e1A/7cXbFb+pu4w8Y2ZzBPHhYXceWM/KqQK/aQghRMvXWqYc
-	 QaEfqw3hwI+xd5gTWfajy6pFqkn93vj85GqskNfoQTx5pyGUqoZQXWBg2g3TV3XvNw
-	 TXrarP03FmmJ3tf6TU5yj9mg+V1KRZj/fal4ayFY=
-Date: Mon, 9 Dec 2024 12:53:00 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice`
- from fops->open()
-Message-ID: <2024120908-anemic-previous-3db9@gregkh>
-References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
- <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
- <2024120925-express-unmasked-76b4@gregkh>
- <CAH5fLgigt1SL0qyRwvFe77YqpzEXzKOOrCpNfpb1qLT1gW7S+g@mail.gmail.com>
- <2024120954-boring-skeptic-ad16@gregkh>
- <CAH5fLgh7LsuO86tbPyLTAjHWJyU5rGdj+Ycphn0mH7Qjv8urPA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RYjhsqpA"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ee94a2d8d0so653778a91.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 03:58:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733745488; x=1734350288; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JQ83LJ9CRvB7xfZb9hAy4il+2weRX41oHS90MBfSDFg=;
+        b=RYjhsqpAl76P5DpeMkdE4P/1lXswNSiC/zbZqpQSBKq1xMkPP7tSGT6PXEFxUkNcYq
+         leutJbjxMvGKWjFBML74JuZC3Cps8j7a1WuXXhh8KvkpZemBUviGNKClAdS8K5RbdZbw
+         LWRgLFbnuOo13VIw5xJ2Vg3gA1pn+NRrNe6hwfUtN+ajUhzVj0kJF0jdYnTbe3PFQ51l
+         nU5kWpWxXmObMeu7uo7OMsjSCEH5zvrbMwl563DHrZUteRiPrfYV6GxZiXvlxAOuAaZM
+         qEhd/K3sG4DN/cJEkZxqHcMLzXg78EPo7v+sDXR9I6lWz1C0Kwk0fid0F8+KlngQzZ2x
+         ASSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733745488; x=1734350288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JQ83LJ9CRvB7xfZb9hAy4il+2weRX41oHS90MBfSDFg=;
+        b=KD3YMAPwkd9BNpGUTZlSePjrhL6RaC+6alNAryPqoruXzsNPGvgAE8w+3TtuzImg9t
+         ypahzCTjF+qu2VBvMj6VVhMQMeQnClrGrqiC3FlRoNP0Hg6hWrIgOF1JzTSrSKQHkGv5
+         nh1SrrGb9/1lxp/DmDj57a0uW4l2Z8+vsBm744R5qLcGMIl4L0m0aPiGTB95cGcMjnEW
+         Y1hB/l6wjDWAKfAzoV01u8cJw2ZtowwYaUPhX6Vdihy5IbyU4pHbMrpXRJNNTrtci3pG
+         RgSR4GiaKB+LKbPZiOoz4w+ZAqbQzAGNz+JfPIGBAUL649DWtwEJTc/Gpi222hknufWU
+         padg==
+X-Forwarded-Encrypted: i=1; AJvYcCUapoTxTFnbQbEQYiStUn8/M25iHDHSHz0F9z/fDkCmUlJgj4i47dsqKxgaGxxBkquSVnjodYzITWMMaldu7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc124uyqhKCYMqh1fhgUhZ5KkvJw5g7BKI8mKYv296u5sCHN12
+	O7Zvq95/PSxfbCXe1f6KU1uFMmulesltgPlTN28dHROqMF4m0NeFiHPShUGxFdXGOzrCMMtaix2
+	PkVmBKKOfrMRsgiP6R39iHEURpys=
+X-Gm-Gg: ASbGncvcQX0gBTb4uj8rnYy6VYoS/ycOggq4ZrdSCYf4kvUbsW+6FfVuRtFe/IytEZw
+	wbFc3QpyKs4XoG2xfjd9aOLod1HFBdwY=
+X-Google-Smtp-Source: AGHT+IEWy/hoNlM+P2A7OEz0ONtz3jitn+CvoTdKJ71AabbQTQ7t8W8tNUrU95tq2zePuV0WzMg1Vgqx9iBnsV3EOKM=
+X-Received: by 2002:a17:90b:1b50:b0:2ee:d372:91bd with SMTP id
+ 98e67ed59e1d1-2ef69462652mr7143602a91.2.1733745487843; Mon, 09 Dec 2024
+ 03:58:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgh7LsuO86tbPyLTAjHWJyU5rGdj+Ycphn0mH7Qjv8urPA@mail.gmail.com>
+References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+ <20241208222623.54714-1-dev.json2@gmail.com>
+In-Reply-To: <20241208222623.54714-1-dev.json2@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Dec 2024 12:57:55 +0100
+Message-ID: <CANiq72=F1WCFbU6XuZNtXj97eQ7Pd9kh4sxVMyZVkJv4Eedbpg@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
+To: Jason Devers <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <alice@ryhl.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 09, 2024 at 12:38:32PM +0100, Alice Ryhl wrote:
-> On Mon, Dec 9, 2024 at 12:10 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Mon, Dec 09, 2024 at 11:50:57AM +0100, Alice Ryhl wrote:
-> > > On Mon, Dec 9, 2024 at 9:48 AM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Mon, Dec 09, 2024 at 07:27:47AM +0000, Alice Ryhl wrote:
-> > > > > Providing access to the underlying `struct miscdevice` is useful for
-> > > > > various reasons. For example, this allows you access the miscdevice's
-> > > > > internal `struct device` for use with the `dev_*` printing macros.
-> > > > >
-> > > > > Note that since the underlying `struct miscdevice` could get freed at
-> > > > > any point after the fops->open() call, only the open call is given
-> > > > > access to it. To print from other calls, they should take a refcount on
-> > > > > the device to keep it alive.
-> > > >
-> > > > The lifespan of the miscdevice is at least from open until close, so
-> > > > it's safe for at least then (i.e. read/write/ioctl/etc.)
-> > >
-> > > How is that enforced? What happens if I call misc_deregister while
-> > > there are open fds?
-> >
-> > You shouldn't be able to do that as the code that would be calling
-> > misc_deregister() (i.e. in a module unload path) would not work because
-> > the module reference count is incremented at this point in time due to
-> > the file operation module reference.
-> 
-> Oh .. so misc_deregister must only be called when the module is being unloaded?
+On Sun, Dec 8, 2024 at 11:26=E2=80=AFPM Jason Devers <dev.json2@gmail.com> =
+wrote:
+>
+> The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> currently does not issue a warning if the return value is unused.
+> To avoid potential bugs, the `#[must_use]` annotation is added to ensure =
+proper usage.
+>
+> Note that `T` is `#[must_use]` but `Option<T>` is not.
+> For more context, see: https://github.com/rust-lang/rust/issues/71368.
+>
+> Suggested-by: Alice Ryhl <alice@ryhl.io>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1133
+> Signed-off-by: Jason Devers <dev.json2@gmail.com>
 
-Traditionally yes, that's when it is called.  Do you see it happening in
-any other place in the kernel today?
+Please use the version option of `format-patch`, e.g. `-v4`, when you
+send new versions, so that they are tagged as such. Otherwise, all the
+patches look like they are the first version, which is confusing for
+tooling (and people :)
 
-> > Wait, we are plumbing in the module owner logic here, right?  That
-> > should be in the file operations structure.
-> 
-> Right ... it's missing but I will add it.
+Also, in general, it is best to wait a day or two to give people a
+chance to review your patches, so that you do not need to accumulate
+too many versions.
+
+> +    #[must_use =3D "if unused, leading to an empty critical section"]
+
+I am not a native speaker, but this sounds a bit strange. Is it
+written like this due to how it gets "rendered" by the compiler later
+on?
 
 Thanks!
 
-> > Yeah, it's a horrid hack, and one day we will put "real" revoke logic in
-> > here to detach the misc device from the file operations if this were to
-> > happen.  It's a very very common anti-pattern that many subsystems have
-> > that is a bug that we all have been talking about for a very very long
-> > time.  Wolfram even has a plan for how to fix it all up (see his Japan
-> > LinuxCon talk from 2 years ago), but I don't think anyone is doing the
-> > work on it :(
-> >
-> > The media and drm layers have internal hacks/work-arounds to try to
-> > handle this issue, but luckily for us, the odds of a misc device being
-> > dynamically removed from the system is pretty low.
-> >
-> > Once / if ever, we get the revoke type logic implemented, then we can
-> > apply that to the misc device code and follow it through to the rust
-> > side if needed.
-> 
-> If dynamically deregistering is not safe, then we need to change the
-> Rust abstractions to prevent it.
-
-Dynamically deregistering is not unsafe, it's just that I don't think
-you will physically ever have the misc_deregister() path called if a
-file handle is open.  Same should be the case for rust code, it should
-"just work" without any extra code to do so.
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
