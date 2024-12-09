@@ -1,112 +1,63 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE6621364;
-	Mon,  9 Dec 2024 18:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E3C184556;
+	Mon,  9 Dec 2024 20:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733769052; cv=none; b=tmltfSiee2t4JGlwFAe7Z8MmZ3wVMgRsOMtBpcZbDqBwhyo2jriMWbqpL25fDm21FTR6PE+H3kPM8eHv6UEPaQDnz+YfHc9d/E0sYgGpU1qEjiOv6oGIBEgFGxMw7TtxiuuscX7Glh8zeEFUF3xcjTXVS8bccHzjqqW/AXjvi+E=
+	t=1733774771; cv=none; b=TotLV9SSr9aZSAn/rmzgligv9T7lb4sxSkMrCB4wGGy1fzaZX0fMvANkrydIU7T8qI5UHvQ6zi89pBldgniw4vVNBlbaDkfwR8cZa9igQPGXlmzpqJsbAODhjykZ0/02lgrbOWAmZe6r/31AxzTmvO7pYVZSL7dGVJO43bwW430=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733769052; c=relaxed/simple;
-	bh=UtEoHt2xQyF3sPBxmQA/6pu1gDGg2GJJyyZjJgZ3j3A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oFU28LdIDRgKmjTQBETI1TLsSte2/cmhfT3tLgg3nWO5hyQpw7Xvh6pd+45K4FiqxOVEd9e9tebuCaDUqJWK70qqu7pwhFc+nTsc+W1ccRttMuHBG2Sjx0yTF4ue3FHBuNP6Gq+RZ+ua8Fh/UNby4cE4t156hCmHLF8FjNsw18g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HLbCCM7j; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733774771; c=relaxed/simple;
+	bh=a0KqQJNhivR6oD5B0cFa+tQPszc4KiL2GOSXUov4z/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KA/kqnaFP0yOTess7LmbGA5sTuziOhP/CQcip9cOQAgedqoTEp+EiSEpC46jvesDxuDNH9sdzAXBHvsj0F29dDMbEw7XxT+VTvFgYIAqXBirquhD0NmF9p23OqMRJwU1hX75FoajjjuH2JUut7jAjPAv2/4xvaMILsGZ1fVMib0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4Mn37YJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HLbCCM7j"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ef05d0ef18so828832a91.0;
-        Mon, 09 Dec 2024 10:30:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733769050; x=1734373850; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qZhnISB9e+p8LIlAWs7kKYcT0D8jAeuxPpbppONh4HE=;
-        b=HLbCCM7jWMQJZ14/yKcgKl5ODHJ6phu1XtQ8tx71rhgkktpwuuHcJKf3e1mkBCk9RB
-         8u7P9xzZbhQ2Uz9d6uyEhBHnf/GBwg9GG/Nhse2J88ByEGlMuhehHmF2HdnOChpcCfb2
-         Br0Nj8Z7eO6TsWsSLsp9P1+cIijyqXm/BBsQT780bXjL3rNnpWAbPJJsfBMl2lBPhtus
-         8MHfKQs5jgZNbHibvi4Xp4ph7DbAGDbSuF82j5YzArhttH4nGpy3DYfyMNpiIu6IL4zH
-         iexSbDV69SuvreJ74wpfTPxvSoHGZCUeNoDBHrXLvZskbW0ycWjO730TRJp5l3KzU4ut
-         Lcfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733769050; x=1734373850;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qZhnISB9e+p8LIlAWs7kKYcT0D8jAeuxPpbppONh4HE=;
-        b=P/ADQ8QfzhXf5ZpbATJA9pfE7RyU+4f77J8uJwfuS+4EQJ5z+8L9oU7690HTk5eq4e
-         Lhp2SKIsvw787hGmEdt20VMcRoE6mwus5ZUA8H2q/h1NxPXPWR8GK1Ysex+JChCEYFxL
-         OFLY+V+/wSEj8QeU/qyYB9A6Fg+SvHItMlt9nMUwFL8USFlCOmX/3eOASp0pi0wF21BW
-         qNsVqm7MO8wO7NDDL361/JPOuuPD4c4q/EWSn/hb+BWd3K1oDsPpNaFUuYMM0rCnLZ/H
-         Lp9PMvranadrT/7mIHAYHVI2NQVtQukBdtCP0q9kNerTKLjdEaRlFfHx6lk6dAeQffYy
-         syxg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTxq69jW0AbyL8gcLbbndOb4P3+L+Soobvpj5+jxDIa1gu4QEKsFmM2w9QwQ+yK5qbxUSCA6a3avqlXftq@vger.kernel.org, AJvYcCUlEX/+ritI9B2lCkoQNyAZz9UDMnlkmGtiVd3LLAHv1iIVknv0cV5vKw6hMj6DVb1Hy++JIiOgJykBGa7hJmc=@vger.kernel.org, AJvYcCVQRiciiqwWSqefdOWbo8U7qUuwxjqsmH6JXH/QZmQzY/nBlO2zVt4KAHMM5XX7bzKiEu6R+ZWEnQquuXSI@vger.kernel.org, AJvYcCWDTkywKfnTX0GZiJ/3rJCYE6/gXPXIu/Ala16t5hPak1aTh/Me1GVUOwGs+KYOQ8YPiTg7tOYQ6vg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztU1mWj4xqg5n0PlvYGHCAsE0dQYOV2sgyN4MdotueAY2TF834
-	PwYr7lVn9zN2yoNjdllIvIQ1JpWiaFwdlKQmMgKzdSUd5lXoeeA+pzNn9/0nBgqMhE1gy42wgN0
-	gjqiehmUK39ao7glppyfFLWyXpZ7Oj21Ga2M=
-X-Gm-Gg: ASbGncv6rS4W5UcoDqb0ZWW7A5qzL/nZiVhiCMGBwA8J5yViGhocMbsiEt9N2YDBM+t
-	YxqwtNx6mHzQ9y37G61P/DmXtFFCjEKQ=
-X-Google-Smtp-Source: AGHT+IHXd62Kq2IM6B/3wDXQaXYXPWyVI2DbKc6JGiQupW7Zabp+03AxeWDUcTymkWmsVdt4rdTUsTHa35eFJAllHQU=
-X-Received: by 2002:a17:90b:1e08:b0:2ee:cbc9:d50b with SMTP id
- 98e67ed59e1d1-2efd4a1266dmr308170a91.4.1733769050254; Mon, 09 Dec 2024
- 10:30:50 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4Mn37YJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35F8C4CED1;
+	Mon,  9 Dec 2024 20:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733774771;
+	bh=a0KqQJNhivR6oD5B0cFa+tQPszc4KiL2GOSXUov4z/w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A4Mn37YJEk6WkQgOJvA3m57XIUuVAKWssukXMrvqMgzrWBXSSmb440bOWGPWu0JXN
+	 kuJkOWo1aLn5mxQd31WIDjWzxVt74pXjv8yghUDdIvROAm98Uz7d/UWF69PfQpoBGH
+	 mbUAIjz2Uph6lpzo8hgcmQV6Q4h3p8UJBZNiHyRg=
+Date: Mon, 9 Dec 2024 15:06:07 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] Additional miscdevice fops parameters
+Message-ID: <tnndwacgkkqdljfqfroel77zufvhw7zpwoe5hnw4pa4pi4fw3n@jszn35kpp4d2>
+References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
+ <2024120936-tarnish-chafe-bd25@gregkh>
+ <CAH5fLghxiX8PjJH3s+xcXpJTD_XLuKKEjRM2dOqXkX7n7PoQ6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112184455.855133-1-ojeda@kernel.org>
-In-Reply-To: <20241112184455.855133-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Dec 2024 19:30:37 +0100
-Message-ID: <CANiq72=BvnriScFay8SpLNe9mNhjvGsBJ9W9UtdzU_6v_i+woA@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: add PROCMACROLDFLAGS
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, HONG Yifan <elsk@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAH5fLghxiX8PjJH3s+xcXpJTD_XLuKKEjRM2dOqXkX7n7PoQ6Q@mail.gmail.com>
 
-On Tue, Nov 12, 2024 at 7:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
->   - Removed "additional" from the documentation and commit message,
->     since this actually replaces the other flags, unlike other cases.
+On Mon, Dec 09, 2024 at 11:44:04AM +0100, Alice Ryhl wrote:
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> >
+> > No need to sign off on patch 0/X :)
+> 
+> That's just the default when using b4 to send series.
 
-Some news regarding this: we asked upstream Rust about supporting
-overriding all flags (including e.g. `--edition`, `--target` and
-`--sysroot`) and apparently this was already accepted via an MCP
-(thanks Oli Scherer for the pointer!):
+Some subsystems use cover letters as merge commit messages, which is why we
+put the Signed-off-by there by default. Those subsystems that don't use this
+workflow can just ignore it (or switch to using the "b4 shazam -M" workflow
+themselves, which has its perks).
 
-    https://github.com/rust-lang/compiler-team/issues/731
-
-So, in the future, `rustc` will likely get support for this. Thus it
-may be best to go with an "additional" approach (rather than
-"replace"), so that this environment variable works the same way as
-the rest.
-
-We can do that by simply waiting until `rustc` implements it and we
-upgrade the minimum, or by implementing a workaround on our side
-meanwhile. For instance, something simple like:
-
-    $(filter-out --target=3D%,$(s)) $(lastword $(filter --target=3D%,$(s)))
-
-would be probably enough to cover Android's use case since we use the
-syntax with `=3D` elsewhere rather than with a space -- the equal sign
-plays well with Make's string functions. We can also add other flags
-if needed.
-
-I will send a v4 unless someone thinks it is a bad idea.
-
-Cheers,
-Miguel
+-K
