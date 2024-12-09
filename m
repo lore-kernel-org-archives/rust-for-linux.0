@@ -1,149 +1,129 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF608215079
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 07:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8932C21481D
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 07:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733729277; cv=none; b=rmg1nDa3m3cMquoDeFKtT+DsZK6jP2rP+ZuqIb3OZE31FenCmWNJvlByZ8241+13wzYZ8uzQU5TLUJ7IOnv7UfJFJ2Vyc7VHs1Sl5C4zA/yBIgbxJ/ius6RZiUDqzBhB6YT65GoyVfBT5IeQPXtH7++VCl4K9uLbvvHyfu7m46I=
+	t=1733729807; cv=none; b=N/p0UR3N18m8T69cn1TrfqvgojnBP/UY8fDUJsynTM6xqJ0hM4bhIL1m6ZE+VITgM+s8HEFO66FkiPuy9G1L1HUlIxja8Rpj1f+rduDRSyD1ZGHqfUEaLV5XphrhMKHDo6K31t5FHAQ8V+8u3IKh+SAzh6cEK0sPkEtwdQl5md0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733729277; c=relaxed/simple;
-	bh=FWr1r4ozOgDQM//rzpJtuNZonQdDYCyJwDGoBu/nO3g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hxyc0mDb6P+dbXEPN7YlH4JH7ptrYo5CJkx/iHXrA6QaRP8pY0uQRhVEEru1qIMKvGWapzEW8VgdMcGqt16iZ0v93HW9gXcOSk9itCMQkcmFRD0tutnDQLekV4ES5DNOa+h+PAsnSYQk3vuB89QUnqbSV+G6f7kGaLpB97uWdEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eewrZq4X; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1733729807; c=relaxed/simple;
+	bh=Eow1A3UqYqThjdoagWgl0tu/rHAYK+9F3Z/d72DfdY0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fD7gu3AZHVwVp+i7vHNRX/sIybRT936VWXDTiyy6M5liKTAJ3IE9uWQjzvuWtAK9+9nlfqpUYav1bk4Fld+F8t2a3vrqC84VnEU2mhmxi4crMsuP0MR5GC1+GZ/VYbWHmj4cM4Lcd3rUKf6BqFzr+K4U7fpnOq74oSHT0a6LGfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KO04uUyK; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eewrZq4X"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-385e4a759e6so2330789f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 23:27:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KO04uUyK"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-434b3e32e9dso44896025e9.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 23:36:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733729274; x=1734334074; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4XPOCESBsP0vZv1p3EyO3nbPR+4ED4LDct2uLEPo3zM=;
-        b=eewrZq4XXgwyfTZV+aY7SaMRFMUDnPAUaUU/GkxMRavWzRpEsOcOc86SlCb+HFGxkn
-         1whA5wmUAwhGxzgxtn6gyau/sl8eteN26gCme7DpWv29YXhU2GBajLy2sf0n8AZTw5et
-         iQipwDgkI7urJUYFtVKatdjv5pS1s448KIksXdcUFDer2FTygMrRj+dPZFJV/+HEL2TM
-         2fsdy6xXs/lJ8H2o+h1iiM3aIrT/iUQwvcD0vah7YMZCv8dzk3BeWUgufRmClk5g7fdx
-         neRQabyqwnXDLv3R+le56mDmHZWSBfexD6nQV4HNhzjjCgRXRZSElYooqjil8VKntq7b
-         VAUw==
+        d=google.com; s=20230601; t=1733729804; x=1734334604; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Eow1A3UqYqThjdoagWgl0tu/rHAYK+9F3Z/d72DfdY0=;
+        b=KO04uUyKe1vU+mgJYE9YOPiIoZrnHugv+KfTiDFatnQCpaTWQfzrOneg/jfVgdONb6
+         SJ0HLEFARWFDLkc9To63cb+u4EoPC3SrzHUrrp25m/CHPo0ToL21hR74DSckK7OTcERG
+         RR+/Spe8b+5YqxF5WIlQamO1q1M3YWRmRxM3kwsUNU0hemWG20tamuF5YwO3KPHrjAig
+         XDi+busyOJ5z2A/ewU5DJ9vvaJg/UtS+n++JRyNl2b6Fbdi3AfaIm8mZYkfFmLvk072r
+         HonmLrp4IcqBxC0RQHyczO+hF4F1GLTnykkWwSpNBOzBeXlLirVbGHI0MlWp/0gPZdUn
+         ca2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733729274; x=1734334074;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4XPOCESBsP0vZv1p3EyO3nbPR+4ED4LDct2uLEPo3zM=;
-        b=EAys4Hcpgr7CiRQLtB3SZc8qCytDHCV0Mffrbb8OZmGhnGQqDaSQyGbDZ3tOk2f1bn
-         IbfK6MuJW2Ce3Rc8AhLQ6DEtFZMhLTFMon9rgbgs8hmnfOJLvfYqouXdPE/SJgQ48yRg
-         2GELdbOcEii3kQxYOeE9B9gQYAYLKJgixdNZ5+k1zaABJT7KND/kf5NB0P82RTSEYNYi
-         901IjY/wBGBBaN1XW6Ouj9cMHRl4Bp3eAsXSOIleXFlT/x9iBN18xmaf965tHgr63HY6
-         cweZsTXfvA+JuzTBHF5fhzXw3LS4x17d0p6u04t2IoGjX2VPxqGrPcu2S8yjiCQ6B8mZ
-         OOQA==
-X-Forwarded-Encrypted: i=1; AJvYcCXY/YS8OJC0dtLk2Ath3l25a6cqEVLk0//BydzioXDVmQB3EHt3xnihmKDyCcpHD7if32OnoffG2kZJhZmXNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnSkCYsmnYvUClioHLyvTiovCTRdD/QLBRFuXGHyoneeLRmEKW
-	hUdno7/y83KlXUwNJHwBglUPoIDickBU94zfOyO6z2qoTQih5Xx8/DrihgM7zRUKAHpY636vwpB
-	DODSM4OGuEY779A==
-X-Google-Smtp-Source: AGHT+IE+8n+YNaesbwQgkF7DuZhPvB/qUurkVyjBccXautnlKjRjbmYOfixA2dZ4HsDJ8MCVrCjM+1C8pCdaZw0=
-X-Received: from wmbjx11.prod.google.com ([2002:a05:600c:578b:b0:434:a0d3:2d57])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1886:b0:386:32ea:e70d with SMTP id ffacd0b85a97d-38632eae7d6mr5955297f8f.50.1733729274252;
- Sun, 08 Dec 2024 23:27:54 -0800 (PST)
-Date: Mon, 09 Dec 2024 07:27:47 +0000
-In-Reply-To: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
+        d=1e100.net; s=20230601; t=1733729804; x=1734334604;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Eow1A3UqYqThjdoagWgl0tu/rHAYK+9F3Z/d72DfdY0=;
+        b=tU/K6VHNCfsTwSzC04WBCnK9smmcDFTezbpl8WF9aIB450MqktVsFlAdCmXgc929cp
+         7nkOUh2wnwy/qQK+mIUdh2RFENCbULQV5z78VjOv7LmrSXU+LtX6a3ts5dEG6L5orL/e
+         J6E/LsETflrKpAN6HcRejSoza7lJyAzCbpXi/jgUUwNFH9t91/tuz+dJ/iM+BX5tNVdo
+         JE846U1F4GYKkLkYkWrQMLxX79AjzcN3otTMHyeP6SdElkoCMKYp1IKBCly1CNFvvsp2
+         ES9wtmqhZKtRoG00bC3JjoujcQyoBYMRARFHZvpSdiC9LwcSJ4TS9tKE52d9/y+nXwl3
+         DvRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUrhgdbzje9OLo0QZ8EeEfwE4zhix+e/tFAJSWhTNNRK1zCBE3NhNrA+Uw2j45YoQd0NGzWG2EQpnawtcCTIg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkcZcNqTJMSoUCfN3lu1lR6++alEGYhhD2ZQe6ZGiuZN2UH5pA
+	FCZ8jhssQlPB6Rd59Gs9n2pHSPUFpU6NUfYlWEpmymKE1+v9imxJdD16sH/r5H4qa1gVdh5jez4
+	iCUAqtFqOKASrdCsrnuu8l2yXDktC96FuSsC/
+X-Gm-Gg: ASbGncuGfrZGDIjx40slmZ5kJ4bmT6FSTTJ2bx4ZTNfqJXLwVkf+/NWOuy2wnBcxjVQ
+	WqnJ6TEdLj+48EfPDjBj0NUQn1iWVt5jf
+X-Google-Smtp-Source: AGHT+IFujKfDJOcy9yYEksS7z9CXaHLBiMMHj9w2VyqSiy4+fyNmfmR44YIzzWHVls5xpOqmJdeFNNEW2Un39PkqnLI=
+X-Received: by 2002:a05:6000:a14:b0:385:f0c9:4b66 with SMTP id
+ ffacd0b85a97d-3862b39b9b4mr10063061f8f.33.1733729803863; Sun, 08 Dec 2024
+ 23:36:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2748; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=FWr1r4ozOgDQM//rzpJtuNZonQdDYCyJwDGoBu/nO3g=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnVpvzczpItN+OHuxwE7AplYvqF8F4ygxK71kpY
- +1momvuEi+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ1ab8wAKCRAEWL7uWMY5
- Rq80D/0fW3WTcWRksYkWcUvY/qViSnYfrUeKeXWmxAEGqeMdv7TEkHhe/uF8uSrsQOZoXhJvNpk
- 2mHN0Ei5SXxfGjXp66h332dEJ6/H5BXQIKJRH5rQkVXH7LoqyiZzykJ2RxTmWz1mDrWQ99D1+9u
- BGvPNAOYM2kRp1FYHlKJXcTJCz1Ay6GCwyq+vC5qSbDyIFemehOFdIW5NfToeZcvop67DbMa/Mv
- 70/vrALK/EqMXa4Or0xhYPS8wQKV82vRgwLjLWCt3GQzhN9OGnfw74ymRNlsgXpdJBK2anhExW0
- xeq9RDGLw/g+KI7WGzk07iK2zFQB3zto2KmVZblwZJquHekcD/X6F+k1npnt0AQFP6xmmerQfXh
- R3U7qIDzdyW0KhOz6SCSINL39hzMkihYtY0y3S2Q9iKIKFPOsDYZccN4/SU/s/7Db6hRb9xb+79
- KaHUjM8WWND6V4biwumgn+Wn8d9lnB2uOAVyIrgBf34fUCFSM1o1aDQafg+e2CyNOlEo6jybPq7
- Uvm+oDmSLf/mjnC1x46YAbMGGzPYYmz2pXLxiFrWlO2RfUM8rEZ/DhWTW0NxXnCvJMyKVDYCLJe
- IKWpfxj5s9l79z9S5xpVQT88ol0DADaNNYPQsQ1h7i3bvl9gk5icUYQ4oM5j8aJS7A68Y9uKFEV QLmXlkBJJFxY93w==
-X-Mailer: b4 0.13.0
-Message-ID: <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
-Subject: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice` from fops->open()
+MIME-Version: 1.0
+References: <20241205-guard-stable-doc-v1-1-a3f8249cf4d4@google.com>
+ <Z1HuNaDAiKV7L9ea@boqun-archlinux> <CAH5fLgi8N6bdke1o_uTvYsYfwH1KhsY4wTGmFpc43Mi_U6+KWg@mail.gmail.com>
+ <Z1NCQiGRopuS-Uc8@tardis.local>
+In-Reply-To: <Z1NCQiGRopuS-Uc8@tardis.local>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Mon, 9 Dec 2024 08:36:31 +0100
+Message-ID: <CAH5fLgiTRkCoNKFPCVo8EQTSw8xf_JeVGWVQAgYYAWZk72_H-Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: document that Guard is not a stable lock guard
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Providing access to the underlying `struct miscdevice` is useful for
-various reasons. For example, this allows you access the miscdevice's
-internal `struct device` for use with the `dev_*` printing macros.
+On Fri, Dec 6, 2024 at 7:28=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
+ote:
+>
+> On Fri, Dec 06, 2024 at 10:56:23AM +0100, Alice Ryhl wrote:
+> > On Thu, Dec 5, 2024 at 7:18=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com=
+> wrote:
+> > >
+> > > On Thu, Dec 05, 2024 at 12:35:51PM +0000, Alice Ryhl wrote:
+> > > > Most locks in the linux kernel are stable, which means that holding=
+ the
+> > > > lock is sufficient to keep the value from being freed. For example,=
+ this
+> > > > means that if you acquire a lock on a refcounted value during rcu, =
+then
+> > > > you do not need to acquire a refcount to keep it alive past
+> > > > rcu_read_unlock().
+> > > >
+> > > > However, the Rust `Guard` type is written in a way where it cannot =
+be
+> > > > used with this pattern. One reason for this is the existence of the
+> > > > `do_unlocked` method that is used with `Condvar`. The method allows=
+ you
+> > > > to unlock the lock, run some code, and then reacquire the lock. Thi=
+s
+> > > > operation is not okay if the lock itself is what keeps the value al=
+ive,
+> > > > as it could be freed right after the unlock call.
+> > > >
+> > >
+> > > Hmm... but `Guard` holds a reference to the corresponding `Lock`. How
+> > > could this happen? Do you have an example?
+> >
+> > Well it can't. The reference is yet another reason that Guard can't be
+> > used for stable locking.
+> >
+> > This doc change arises out of me needing a stable lock for something.
+> >
+>
+> Maybe it's better to put together this patch and the stable locking you
+> are working on? It's better for reviewing in that way.
 
-Note that since the underlying `struct miscdevice` could get freed at
-any point after the fops->open() call, only the open call is given
-access to it. To print from other calls, they should take a refcount on
-the device to keep it alive.
+I'm not sure when that will happen.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/miscdevice.rs | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index 0cb79676c139..c5af1d5ec4be 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -104,7 +104,7 @@ pub trait MiscDevice {
-     /// Called when the misc device is opened.
-     ///
-     /// The returned pointer will be stored as the private data for the file.
--    fn open(_file: &File) -> Result<Self::Ptr>;
-+    fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Result<Self::Ptr>;
- 
-     /// Called when the misc device is released.
-     fn release(device: Self::Ptr, _file: &File) {
-@@ -190,14 +190,27 @@ impl<T: MiscDevice> VtableHelper<T> {
-         return ret;
-     }
- 
-+    // SAFETY: The opwn call of a file can access the private data.
-+    let misc_ptr = unsafe { (*file).private_data };
-+    // SAFETY: This is a miscdevice, so `misc_open()` set the private data to a pointer to the
-+    // associated `struct miscdevice` before calling into this method. Furthermore, `misc_open()`
-+    // ensures that the miscdevice can't be unregistered and freed during this call to `fops_open`.
-+    let misc = unsafe { &*misc_ptr.cast::<MiscDeviceRegistration<T>>() };
-+
-     // SAFETY:
--    // * The file is valid for the duration of this call.
-+    // * The file is valid for the duration of the `T::open` call.
-     // * There is no active fdget_pos region on the file on this thread.
--    let ptr = match T::open(unsafe { File::from_raw_file(file) }) {
-+    let file = unsafe { File::from_raw_file(file) };
-+
-+    let ptr = match T::open(file, misc) {
-         Ok(ptr) => ptr,
-         Err(err) => return err.to_errno(),
-     };
- 
-+    // This overwrites the private data from above. It makes sense to not hold on to the misc
-+    // pointer since the `struct miscdevice` can get unregistered as soon as we return from this
-+    // call, so the misc pointer might be dangling on future file operations.
-+    //
-     // SAFETY: The open call of a file owns the private data.
-     unsafe { (*file).private_data = ptr.into_foreign().cast_mut() };
- 
-
--- 
-2.47.1.545.g3c1d2e2a6a-goog
-
+> I can see what a "stable lock' means, but want to make sure we change
+> the doc to reflect the exact requirement of a stable lock.
+>
+> Regards,
+> Boqun
+>
+> > Alice
