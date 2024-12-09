@@ -1,116 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA8579C4;
-	Mon,  9 Dec 2024 04:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3C3214A9A
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 07:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733716810; cv=none; b=mJrkH5Gg8pBvPiBAbwOY04DkvaV9tpKMXaLGIr/golOqQnti/MfL75Jq6UM5C4Psf4ZtYU5uQt5B5wZ1KQImbUbtbpzCCocgXG3OVXRHDFCP8NPHfh+ZYt00NfeEWP2UwWGFg/OGuknFBTXsbi3RHiaiJVf9c5HMgVHydz2NjoQ=
+	t=1733728300; cv=none; b=bbSI6kV6agFwM4QiVzFCTLHZ05k34SDFolqMwErmzDVBwV3ffUBcDsSYMws26nQ22vNoHuzIAaJkwNTkfdHLP+KrUyGrPWUXiejcIhN5yQD80EsZtFzXgv/JzdJhLsz16gxah9k22pPHp8VWQk3XDFTAjjc2a+2c0D2NAKYOxX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733716810; c=relaxed/simple;
-	bh=SKExWa1EiW94BLNQGCMH3ghkp+II8fMxh3AXLcVxkJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tty8tRduVzhfCbNMSaZTduWDIoV7hH9rIJOzVmSuINbvX2TR1TttCbu6CaE5iAoTuetf1rYvJRioYRV0GjbMZGjgAu7TQe8mJtPhw7p0nviCoaWDu/OvdnKgrz8Ojth35C01TU1Nh9JZHA8qdzWBU4wa7lJrTOe+S6rI2URSrkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Utn89jLV; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1733728300; c=relaxed/simple;
+	bh=adU/8bZpopKi73H3sBB9VDjIy/l6bgTLEkenxjVfTX4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lIrD5Mol5VRU1lZOdt+gVLwurEXW+gaT3MFjwmO1rWj6NNsIAqnkFbN1PPy81EGOdC/qdpGTE8JZVHsskSPff5UftKY2CFXRqkNKeefJu9qQATDlhyLDXHwS3LDKvG10hoNFDyKp5Cb8qyvqWhjpkF0oVUyk043Lw46GustuxNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=peI5Mesz; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Utn89jLV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733716809; x=1765252809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SKExWa1EiW94BLNQGCMH3ghkp+II8fMxh3AXLcVxkJ0=;
-  b=Utn89jLVojeS5jt2FDoEbcw5QdZ7r9NxVJ6EgfxP31B/CXPq4zANxtFW
-   OxIrN+3VaHElnba/MDbKL5zS5vf7DGSIrkGL3yEVKb3Qf8iDTK4rxQUpm
-   a73eMI1BkF5W5/9r4FRBS6SR7W/daZ+znqCASVAa4NxZWlpMgQb5CVzo/
-   PTNWXyhsc3mnpbCFX4XfSu4ZHaZ++a6b7oZ2cPpuxc82PQr7vjwnCOjpc
-   UtxmnkJgP0M24ikJ6uKRCA/g7VOmHRDuaiYEnRTu8oH5wZZaOdhrXh0pe
-   q0McPhv01qTyITZefzfh9rkIaJij6+qay62Id4W7z0a+PQFn/fXnUEBo1
-   g==;
-X-CSE-ConnectionGUID: z6S7ASUMS0uRzxOQlLKXgQ==
-X-CSE-MsgGUID: FfNQie71ROSrIR7woMubNQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="21589709"
-X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; 
-   d="scan'208";a="21589709"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 20:00:07 -0800
-X-CSE-ConnectionGUID: rDwz0puNRKq2iS3sN4FiEQ==
-X-CSE-MsgGUID: T+xgINyBRHKCLt1NKyx6fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,218,1728975600"; 
-   d="scan'208";a="125839274"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Dec 2024 20:00:03 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tKUwD-0003ll-1G;
-	Mon, 09 Dec 2024 04:00:01 +0000
-Date: Mon, 9 Dec 2024 11:59:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: guilherme giacomo simoes <trintaeoitogc@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	walmeida@microsoft.com, fujita.tomonori@gmail.com,
-	tahbertschinger@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	guilherme giacomo simoes <trintaeoitogc@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [PATCH] rust: macros: add authors
-Message-ID: <202412070956.2hbXpu7r-lkp@intel.com>
-References: <20241206192244.443486-1-trintaeoitogc@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="peI5Mesz"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38632b8ae71so1457293f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Dec 2024 23:11:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733728297; x=1734333097; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=adU/8bZpopKi73H3sBB9VDjIy/l6bgTLEkenxjVfTX4=;
+        b=peI5MeszNu5sjJGW04Mva5gHt2vLTgplwOA8UYaftsUGxzX0WbX6aVZ93D7CP8FKcn
+         jCh1TPYVmrydr8iwHUNAnDOSazl3ObGi5K4kgTwwjW4k5usDdHqDwq9Y6nduC6wwUbNC
+         tqINmlsJ8ULWOcNGDy40DCguNTJ5ci6sURIWiZopUWqOLIGinRbKyURIHd00URiemxt2
+         onoRXg7tpMfYijf186cAp3zG3A6AUV5VMAWrMQ8GAg15BfmVnvCAwXGAnpe7RbpNLn/y
+         1Vhj7iDMuec5oBmJ4bCizXLcYaOM+yhe8ff2iOeOw8BhgA0l/MaMyMI2w4HBpwZQ2xN6
+         wDZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733728297; x=1734333097;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=adU/8bZpopKi73H3sBB9VDjIy/l6bgTLEkenxjVfTX4=;
+        b=fqI5LjVF12LQCHzxjW8nncI/RNGv9ykDKsYikJoHDGpRr48ldvLBcXB7GHtQPYpK28
+         IFa6LZwHb+HdOohWDCkh2oPj2eyzc9FafSjghS4c0jr5eP0iAktUfnZ4dfi7kAPvcUq2
+         Qz/1lOR0h7XSDUM+3fOwY7sv1REfl7xWUGdnXKCb/pUU/JhpOUIkOTyrwtmcr3dNxCeU
+         LJ5NXxw4K3c/eq+CFCv1V0z404amCemndwqh37vKsr/rVjtXyUwl/xjlAkpFJyxXwbFS
+         cNgH2b0tv/wAFCDsabX3D34iZox5G89AkRyhCNGgIPqd/jeG5RGZgH78qp0sM9P8aHgR
+         4fgg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCYlwnlzARI8lkOfdu9IhwEfkw0I4t8h/w5VQMeP7a0HRULqK2lpr9LtvMKbHPeR3gZCIxMasRW2iO7AeVOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV8ggJVxLoEpLVIkoT3Qjw5ZA2fp4gW5crdQhq6lYlrbG2fCPG
+	dg3pP9YpTVCPjQqm9gYTdEserS8vRls1BpdKqjAo6NXX87033udfQAF4btmX0vFjhSfQv/6SYuJ
+	TOSV+wB0TAddLx4k5DnlIFL8JikRTekDaUB1M
+X-Gm-Gg: ASbGncupj4c1EzEkr+ZgAmrPOBebuWL7E81VpgDjGRrOplCaWOrDBbg9DvY6ItGdYva
+	yC/qxapwJwm+qASY3vonQI40odafnQLGj
+X-Google-Smtp-Source: AGHT+IH4xdphgiXLSi6Aqna0qnMFGutHgbB0ZRbG1H9r2X10yVwu1dA+PdtAter9+Hnz2XcMwCjlWLTLN45hXb4NEqM=
+X-Received: by 2002:a5d:5f8c:0:b0:385:e37a:2a58 with SMTP id
+ ffacd0b85a97d-3862b33d115mr9163936f8f.1.1733728296974; Sun, 08 Dec 2024
+ 23:11:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241206192244.443486-1-trintaeoitogc@gmail.com>
+References: <20241208184834.50212-1-dev.json2@gmail.com>
+In-Reply-To: <20241208184834.50212-1-dev.json2@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 9 Dec 2024 08:11:23 +0100
+Message-ID: <CAH5fLghjR4fctjoLT9Zom3drNMQ6vdE9hUTnZZ4Ms1qQHGFe=A@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
+To: Jason Devers <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <alice@ryhl.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi guilherme,
+On Sun, Dec 8, 2024 at 7:49=E2=80=AFPM Jason Devers <dev.json2@gmail.com> w=
+rote:
+>
+> The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> currently does not issue a warning if the return value is unused. This
+> could result in the lock being unlocked immediately, which is unsafe
+> and unintended. This patch adds a `#[must_use]` annotation to
+> `Lock::try_lock` to prevent this.
 
-kernel test robot noticed the following build warnings:
+I agree that "unsafe" is the wrong word here. We can just say "which
+is probably not what the user intended".
 
-[auto build test WARNING on rust/rust-next]
-[also build test WARNING on linus/master v6.13-rc1 next-20241206]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Suggested-by: Alice Ryhl <alice@ryhl.io>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/guilherme-giacomo-simoes/rust-macros-add-authors/20241207-032454
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20241206192244.443486-1-trintaeoitogc%40gmail.com
-patch subject: [PATCH] [PATCH] rust: macros: add authors
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20241207/202412070956.2hbXpu7r-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241207/202412070956.2hbXpu7r-lkp@intel.com/reproduce)
+I use aliceryhl@google.com for kernel contributions.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412070956.2hbXpu7r-lkp@intel.com/
+> Link: https://github.com/Rust-for-Linux/linux/issues/1133
+> Signed-off-by: Jason Devers <dev.json2@gmail.com>
 
-All warnings (new ones prefixed by >>):
+Overall looks good to me! You may add:
 
->> warning: unneeded `return` statement
-   --> rust/macros/module.rs:125:9
-   |
-   125 |         return false;
-   |         ^^^^^^^^^^^^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
-   = note: `-W clippy::needless-return` implied by `-W clippy::all`
-   = help: to override `-W clippy::all` add `#[allow(clippy::needless_return)]`
-   help: remove `return`
-   |
-   125 -         return false;
-   125 +         false
-   |
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
