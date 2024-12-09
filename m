@@ -1,57 +1,57 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8110921E084
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 11:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F352321E0B2
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 11:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733744179; cv=none; b=XjRYXSE1EFOy1bdBa7mbSq3ZamRvqXgas+AC92sNFNGAHxsr4Aye+H8lhpwMYFqYdDAGPAk8K5ORbCCVoWPr0oXtAB9INRVNFNfgIzKWUq4O2oIAKp6HhhTtlCKKcH5rSKx+Ipt7PbgWy0z/yBsJX6yGMBT1MvLcxaQyI1lTCoM=
+	t=1733744328; cv=none; b=kJsrAm65678wYpybUOnj2JqiJumJMPfwSjDe5TJLak2R0Mh7of6P5nttSJErx2CCyKFa19DX6zT6H9dOKHYz28VqxK8M2N+XOXhovK27U5+FeQ5xyI1zBIEvemT0KlIVE58pj2MByCTEJ5Glc61DEfWfT4XPN6Rs31HWfPv3MnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733744179; c=relaxed/simple;
-	bh=SksebqPHbFrnpTRu15e2F8a43erNfWstAn/0eo/cgNU=;
+	s=arc-20240116; t=1733744328; c=relaxed/simple;
+	bh=TIQOHvlPe7EaliHf+oU8rkKxEUJHqdGAQhL9uCvZsKw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZryU98GtxUMQqCpVy6NsDDqZvCH9BIDUCbs5Az5aAE3ssl8FGKxNKIZL939tUfDNYGFVxb3drO7jpzQQxijsBGwykj4OSxleJDwlvsa31+13RpgnfW/UlKisx9xEaZpJNtusTFPIyoqWb6+HBgRabYdsnDpJizZvzPOBO5NrLpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rvA2xkqE; arc=none smtp.client-ip=209.85.221.54
+	 To:Cc:Content-Type; b=VC/mnoDmeU4+Wy1wKdf6y/fqbXlsF1w43OKEod1xHOU5JRWpQuaRp1dZN5OTJE4WYgT8O2WbSMzGksJPkk6AWybnZviASa4shu6UKXNXaLKcXNrdI5q4fqoA+etac0QGKmnFisVKd0Y6IHdxLDSY7lyFUBd4ihHctOEIHvDIlQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UOs7hffk; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rvA2xkqE"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-385ed7f6605so1839230f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 03:36:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UOs7hffk"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-385ed7f6605so1840543f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 03:38:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733744175; x=1734348975; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733744325; x=1734349125; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GyaNKCdC5ol0B97FxkqNYLrH8cbNI4oEIWwfBDcavIE=;
-        b=rvA2xkqE7ijVT2Vm9EAQiYVVokEpuW5RW5a2VFrgZ6t0kC0/8g1eZlq+pFiLy1Dfh2
-         LAJEynEjRio+8BJcAsKqxVAFouO6lITolg5euva4l3XirwtxlALU2yqAOLew6rhncprG
-         clq1rW3Fngb/S9h78M/Du36GDXYQyeJHIy7IYrNqY4PvFoGz0nH9eEk/R27oy3Tq+0+3
-         x3U7iSbWvOMzCrcCjaoUd9nivE7p4HRp6/VfJBQV8tpOIdky77X8w/t4+32YxLhUKqFw
-         FHZ0IGU9NtH5hh/vRJ36BRz7k+kiiBAr/nfZ1lYdsbpBmUpC/V9KnXFsWwfWyQy+CCX0
-         LBLg==
+        bh=gkFF8qREOWmj8BwHObK5LagoNCyflkty6l96N/dPuUI=;
+        b=UOs7hffkovZGiMSkM205ON6ZP7ylG70vN/J52M4awSAV0S0rYs4af0gihIp/v8CM4n
+         sUxhuiW/yRaBc41iMokloOwgLiy7yx1ri+sA+YhRXzoPx37N3uDpFcmmqh/VeYUeVinC
+         u9CdNR+THc3TJk4BBLQDb5ojHQlGAsKB9VPC9zecPv3+PNzFcHHKiWAgqMuDN8sOXImI
+         zrPonLwaxsglvQMCXSTgnBENxZnBrt9AHe3PeYzjqPD0xWoKgRXWTMekYkELIsyjBmtA
+         V3f4Ssxkykf1C1J1jPu5KI5GjwwC1uCQtkoayfGsAptKBIMQKCVFB6Lmm7Xe/2u9jljY
+         dskQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733744175; x=1734348975;
+        d=1e100.net; s=20230601; t=1733744325; x=1734349125;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GyaNKCdC5ol0B97FxkqNYLrH8cbNI4oEIWwfBDcavIE=;
-        b=XPodSfumB2iWyXKuRAuXrnsCK7HdQER5Q6AM+yccAHhsFtVZXxqzxVoCHs9Qx+lwdR
-         IHhmibFBTTPEvydNT4hNDUrBA3WopWLrRTPa4u4KQLa6QErlP5LCz9QPNGtOerA8R9RS
-         6BfevfR07w/lUxHrNOuYUj4pX1inmw844UV1e/7XbadleqbLJimy8mfRcMGtGEGLcwYZ
-         IfssS/j4MSjtz39oAM8w+yHYe8D7XbfbtSry/+19GUlhjE7CUHWIAEpZXXMkqSuaQdCw
-         3suTnxVpETkqXuIOv//lrbcfCNxzr6fzYJNok+6cIA5rMopc/f6BpKHP+pLTG9u/JqI6
-         WOzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVuNukzk3mU3t5FwrB1pG2SeqL0HvOfKQWPu2JDiSv1LkMRcyWJxJ+i/jmUU0mZ83UkZg93uKFjYxEAzB0P8A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmM62zH+FSMwnzRp7hkv7kGrmRLiNsDlkR4XHq3L0kc7YMkMX+
-	03Zp0Bq5W6ReRqnsmd+L+2PS/uq1sDi6bYwUEIJciCaRc+Q/4v12A1jq5tmUya0WxGvkpX+1S7j
-	8fPmhWrb6O30yO0nYi7esUasSyFNSmP1eFimj
-X-Gm-Gg: ASbGncvaqIEp22jh10PiKKCiIRykIzbpM9jyEo4+ewPvjJDkG0RsFfI1yc99F3O6c6Z
-	wskvzNxXGmesZNAjXTEdWzb4L5Y5Fn59h5o8ze87MO41p2KvGWczGaiE4hLFb
-X-Google-Smtp-Source: AGHT+IFt14hQvbQibGO8JqBL9INOqCOe4nHDDcUGogdrqehlLvZ5tZgZseDFFJiRhCnpS3xMoTF0HsvEgAbu/Jk7u+Y=
-X-Received: by 2002:a5d:6da8:0:b0:385:e5d8:3ef1 with SMTP id
- ffacd0b85a97d-3862b3d5c1emr9642939f8f.44.1733744174841; Mon, 09 Dec 2024
- 03:36:14 -0800 (PST)
+        bh=gkFF8qREOWmj8BwHObK5LagoNCyflkty6l96N/dPuUI=;
+        b=tDqW38Oo3SDoBftBmbzHWcO6n19IoNzhFYypgMuEHPTNKOrjySHuGiBuMLN6pKbaxT
+         aT/oKB7HRsct3HE9+Fc8Sf6/srEP4YNJFLjvE6YJqQw7FHlddPnUYdlMh/DMEEb+mXlE
+         KvThVufSog//uysslr1EMPV5Py2BBzuWulKewXiRqIj/fbHt7Mei811ZSZnK5GcZAxGV
+         7f2jg5sSEB4/xiUTRfD2/NjtYzyr4IwxYEOuI3IwOBaJ5JOozCbRlX26kNyxM7bDfdm/
+         FUyvA3wZyHQdwKDgdHjPiVvEZR3b7BT3P32Onh0dBSnIdikvKPiFfB4tPQeuggoXfZv6
+         hVjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVMP/HtEQIuym8iLbFxWurAi0Xr3J4SVaePBBxnQ/vGqCIhyM2ciNF9kqTetjwdgEhmLmLOTmpUdv3gX20cQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFYwQXZdXOPHUIs1wv9rJYoXqPDrls8GZ3TSlnvgXHUaqBQMfi
+	bc1UZ1c53yXVGKJXJqYr/lsBliacOvMJWgBoBmfVmdH8gk7/SXKbs4WDqOemETctcuMWgRGbH2A
+	TQnUMNeiB9pnOTz2NQtda5U14Hl7SY9Op/iSH
+X-Gm-Gg: ASbGnctcjzJvJ3fC8eF6p+u2vwKmJKJ0NspJXkkLPXFQ78fCQhRARNL8vUEX2jWmru7
+	AZ9f9vT/ktYvlJQjM40VnG7i/t3bO/XajVKTKSC0t/3VS0Gn1hxdkETfUSzlb
+X-Google-Smtp-Source: AGHT+IHn8seJRcLF6izN+Y5EGQwWjRMYR7lzRrioW8o6E6jaM1e1rAvz6kVtJykoRdXO1RIQPifWBV23kwAXF0wNSYo=
+X-Received: by 2002:a5d:64ce:0:b0:385:edb7:69ba with SMTP id
+ ffacd0b85a97d-3862b335324mr10793035f8f.1.1733744325101; Mon, 09 Dec 2024
+ 03:38:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,81 +59,83 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
- <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com> <Z1bPYb0nDcUN7SKK@pollux.localdomain>
-In-Reply-To: <Z1bPYb0nDcUN7SKK@pollux.localdomain>
+ <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
+ <2024120925-express-unmasked-76b4@gregkh> <CAH5fLgigt1SL0qyRwvFe77YqpzEXzKOOrCpNfpb1qLT1gW7S+g@mail.gmail.com>
+ <2024120954-boring-skeptic-ad16@gregkh>
+In-Reply-To: <2024120954-boring-skeptic-ad16@gregkh>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 9 Dec 2024 12:36:03 +0100
-Message-ID: <CAH5fLgjAp8Bz=ke93qaha1pFacgAyppOinVn8pdMkT5R05CAAA@mail.gmail.com>
+Date: Mon, 9 Dec 2024 12:38:32 +0100
+Message-ID: <CAH5fLgh7LsuO86tbPyLTAjHWJyU5rGdj+Ycphn0mH7Qjv8urPA@mail.gmail.com>
 Subject: Re: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice`
  from fops->open()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 9, 2024 at 12:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Mon, Dec 9, 2024 at 12:10=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Mon, Dec 09, 2024 at 07:27:47AM +0000, Alice Ryhl wrote:
-> > Providing access to the underlying `struct miscdevice` is useful for
-> > various reasons. For example, this allows you access the miscdevice's
-> > internal `struct device` for use with the `dev_*` printing macros.
+> On Mon, Dec 09, 2024 at 11:50:57AM +0100, Alice Ryhl wrote:
+> > On Mon, Dec 9, 2024 at 9:48=E2=80=AFAM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Mon, Dec 09, 2024 at 07:27:47AM +0000, Alice Ryhl wrote:
+> > > > Providing access to the underlying `struct miscdevice` is useful fo=
+r
+> > > > various reasons. For example, this allows you access the miscdevice=
+'s
+> > > > internal `struct device` for use with the `dev_*` printing macros.
+> > > >
+> > > > Note that since the underlying `struct miscdevice` could get freed =
+at
+> > > > any point after the fops->open() call, only the open call is given
+> > > > access to it. To print from other calls, they should take a refcoun=
+t on
+> > > > the device to keep it alive.
+> > >
+> > > The lifespan of the miscdevice is at least from open until close, so
+> > > it's safe for at least then (i.e. read/write/ioctl/etc.)
 > >
-> > Note that since the underlying `struct miscdevice` could get freed at
-> > any point after the fops->open() call, only the open call is given
-> > access to it. To print from other calls, they should take a refcount on
-> > the device to keep it alive.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/miscdevice.rs | 19 ++++++++++++++++---
-> >  1 file changed, 16 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > index 0cb79676c139..c5af1d5ec4be 100644
-> > --- a/rust/kernel/miscdevice.rs
-> > +++ b/rust/kernel/miscdevice.rs
-> > @@ -104,7 +104,7 @@ pub trait MiscDevice {
-> >      /// Called when the misc device is opened.
-> >      ///
-> >      /// The returned pointer will be stored as the private data for th=
-e file.
-> > -    fn open(_file: &File) -> Result<Self::Ptr>;
-> > +    fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Res=
-ult<Self::Ptr>;
+> > How is that enforced? What happens if I call misc_deregister while
+> > there are open fds?
 >
-> How is the user of this abstraction supposed to access the underlying str=
-uct
-> miscdevice e.g. from other fops? AFAICS, there is no way for the user to =
-store a
-> device pointer / reference in their driver private data.
+> You shouldn't be able to do that as the code that would be calling
+> misc_deregister() (i.e. in a module unload path) would not work because
+> the module reference count is incremented at this point in time due to
+> the file operation module reference.
 
-I had assumed that the miscdevice does not necessarily live long
-enough for that to be okay ... but if it does we can change it. See
-other thread with Greg.
+Oh .. so misc_deregister must only be called when the module is being unloa=
+ded?
 
-> I also think it's a bit weird to pass the registration structure in open(=
-) to
-> access the device.
+> Wait, we are plumbing in the module owner logic here, right?  That
+> should be in the file operations structure.
+
+Right ... it's missing but I will add it.
+
+> Yeah, it's a horrid hack, and one day we will put "real" revoke logic in
+> here to detach the misc device from the file operations if this were to
+> happen.  It's a very very common anti-pattern that many subsystems have
+> that is a bug that we all have been talking about for a very very long
+> time.  Wolfram even has a plan for how to fix it all up (see his Japan
+> LinuxCon talk from 2 years ago), but I don't think anyone is doing the
+> work on it :(
 >
-> I think we need an actual representation of a struct miscdevice, i.e.
-> `misc::Device`.
+> The media and drm layers have internal hacks/work-arounds to try to
+> handle this issue, but luckily for us, the odds of a misc device being
+> dynamically removed from the system is pretty low.
+>
+> Once / if ever, we get the revoke type logic implemented, then we can
+> apply that to the misc device code and follow it through to the rust
+> side if needed.
 
-It sounds like we can just rename `MiscDeviceRegistration` to `Device`.
-
-> We can discuss whether we want to implement it like I implemented `pci::D=
-evice`
-> and `platform::Device`, i.e. as an `ARef<device::Device>` or if we do it =
-like
-> you proposed, but I think things should be aligned.
-
-Let's figure out the lifetime of `struct miscdevice` first ...
+If dynamically deregistering is not safe, then we need to change the
+Rust abstractions to prevent it.
 
 Alice
