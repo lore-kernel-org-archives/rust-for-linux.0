@@ -1,134 +1,145 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510B8230D23;
-	Mon,  9 Dec 2024 12:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334BD1ACEBC;
+	Mon,  9 Dec 2024 13:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733748931; cv=none; b=rvY62uQ6Eu6CqnNgizZzuLS/BuF7MZT7fSMp99+vy4QB+IbAsXr3KzV6RTqZ1MXysioIyA/ufWuAy+bcrXUVxGSodkA8Y72lToySe+v7oHmENQSoh7cZa75qo7LaDQobMoJ63uiPN1rGSzLH0OYGu7tz7B5KcCDMcQH7NECgaqs=
+	t=1733750035; cv=none; b=jRxaPPFoBALZnbXziNEqgcB/9cxZMpCn4J+L86zcxAoZfKWtCiGRiSqXacrDr6uNKSc8T7FZh4/DswAnRwyZw3uPf2oqH38q3URAJLD7FE6ox9MK+M2ZAf/8Dn53B7uVKE/xF5lC50RjLfJw7xI8do0ub7RaDF4UzoEZjlva94U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733748931; c=relaxed/simple;
-	bh=SI85qI4aYVhNTkWpJ+X2AtUKzXDM9U1usOBZ8go22GU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NYJgNvwpirh3uW4T4c/NSSjxQE8R3TDtnFYuYqkxco6McrAUI34JmhvQaAhtRPuIhKmSWIxACojH0gmlCjIvvAhR7KoZeK/w3kaSlGOfZKVr5ovoeULoERosUG3ZJfGlt+8NnxJ/Arpd+zBcDakQfyT1gJZC4v2274/kDS0ES7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TyvItAdt; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733750035; c=relaxed/simple;
+	bh=/pLbobhPgRwpQTExS0Co3JYQTpmYSbS0pBR+Oa1Jik0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gcjmR+vzylEpp/AZ+ICAcGClTBJ3kI364mHi4+xDCHtu6N523I+wnHXdJS4CB/NDAsCcwFjPPdheRq6gR6EMw/rqfFqW64CXuTFN7ionyx6s8LFgOZ6tTuM497YIYnbzOA78Lh+k9sUlk7FawDf3JDm/7E4U7GvZSWTRdIhLwtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tX4f0JYM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TyvItAdt"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-725f4025e25so448796b3a.1;
-        Mon, 09 Dec 2024 04:55:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733748929; x=1734353729; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hlm+0UDjIRRqTSMlzzjiAUEABuynPVGrbkA9eGipCa8=;
-        b=TyvItAdtbMwd6zZu5xo8LuznaIT245EPOqJL0qMKQDZfnGQndaTF7QlycnM2ppgHz8
-         Z4o7+8CC4i4y6zy4kyIb3jfd2i5/7kPQq69IH8egkT8S0fi15SV8gG0hsCmWVpZ+r8Nx
-         UiFrHF51r9TM835Qy9VmFamM1aXnFZmFtGDOKjbd/DqWGPHWfGkZ0CMCKuYRe9m/ps5n
-         nYwHHiX50ujr1BvcycwIJpKEl/LBGDpPxEfVX/Rg2DmRif21d83CKKVnzEgul27zGUUx
-         6D3xcx8401XleTLEAtk4wcBeF7G/iae9teNDO0lcIpTCFHU0zJPPzWsxEyzS/MfaqfC6
-         SfxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733748929; x=1734353729;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hlm+0UDjIRRqTSMlzzjiAUEABuynPVGrbkA9eGipCa8=;
-        b=roPLBGSRheODGJycELtxln8eF5odLdrcvyJvhTXdXrakDUP4uxfxidv05OHpFffvHS
-         NgnKQHHZSrZ9hoJuYfm7OFLlr8g8OAMKlTcmivzBGOiw+Zr0RXX8Jq/u5pDPU+Kk0ql8
-         6GUYo6h0RdwQ1Z365Yqrf60BChnr2BllMgO8IsjwXpV/m/1ddmlGI+tdeyAbthxu8ypn
-         ny/FnY0VTR8PHLto2EwXvNoxI0Lf1cgkNfVkOgUmzt4dmMBLFg1cK8pPMsxa0A783Mnj
-         UNagLZj85LMqHnsMR77B0HLxmq2bctdoWWAAjf/GePaRcyW7cKDzdaluFP0oP7BganfQ
-         Lirg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfASgOogqgXj/NCbtDqRwhw/rp9gCZxLOo+jLE80H6cLpmCO80BMvqF6urvFAUwiD7IkYaiB66I+7h6DpKvSg=@vger.kernel.org, AJvYcCXLE9EcrIRqj1nqfSWBnq2D4XQhESh6j24WHzm+A+Mp5F2ofaoUE3zwfNFyDWq4U6fmh1BxWuv27dGF+Nw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEBKmD59tnIRJgMT8C4NYs8ByXkCXi4erE5Hi1wdojC0q27rbM
-	pRXjJ/n4iZwFvt6LEfmCGaeMNo0F4xJOFBGgiXH76nWtdR3h+/Kp
-X-Gm-Gg: ASbGncvgJrJtNJrvyZCCM94MD7ivl5Rnaqs0aWQZSYVmNawhUZgLv3VD+RkvskIksse
-	ItQvA5yt8IGZJtfmAFdqsS+AKqAn9SzxqYBCLtRozAlt4wdLXI6+kqR3tzC+gUczhwOzgrlyWMZ
-	SaxZ/JmI5fGOwKRZlF/NGnp2tm6apjKtOgN3oLcWfqrW/4xWUAbJ02C6/neKRJN5lr/U7Y+RpX/
-	TF5AtbOzE7vSUqxcwcQe4C6PuIYyksQHgv/FaiVggLJRcfClaDXkimo
-X-Google-Smtp-Source: AGHT+IEacy22mT4e64ZXJ4WAg97dV3C+p2p0yUemPXEWoIje0nsDx/jq9iYUBnzOsbhqr7dspojk3g==
-X-Received: by 2002:a05:6a00:4b03:b0:725:456e:76e with SMTP id d2e1a72fcca58-725b80feb59mr20056668b3a.6.1733748929407;
-        Mon, 09 Dec 2024 04:55:29 -0800 (PST)
-Received: from linuxsimoes.. ([177.21.143.14])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725c9ef18a2sm4462148b3a.86.2024.12.09.04.55.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 04:55:29 -0800 (PST)
-From: guilherme giacomo simoes <trintaeoitogc@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	daniel@sedlak.dev,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tahbertschinger@gmail.com,
-	tmgross@umich.edu,
-	trintaeoitogc@gmail.com,
-	walmeida@microsoft.com,
-	wcampbell1995@gmail.com
-Subject: Re: [PATCH] rust: macros: add authors
-Date: Mon,  9 Dec 2024 09:55:20 -0300
-Message-Id: <20241209125520.414960-1-trintaeoitogc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CANiq72mh2_QhHcE65-t+6UEEqe+9XwGQ3gJ1CCQpZ6r3HOcokQ@mail.gmail.com>
-References: <CANiq72mh2_QhHcE65-t+6UEEqe+9XwGQ3gJ1CCQpZ6r3HOcokQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tX4f0JYM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D741C4CED1;
+	Mon,  9 Dec 2024 13:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733750034;
+	bh=/pLbobhPgRwpQTExS0Co3JYQTpmYSbS0pBR+Oa1Jik0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tX4f0JYMWMcAfg+5Xf5gSfL4U6D1sHmBhuBxPkK0F8kz4gs7x1K/GTRf9TnrtKmuu
+	 k1pV6if/LPH+lM2XeicnniPHMJCYnyf3CgjZ+Cfhy+2ZqBSSd/hMt8Z/8HyQYjmgf4
+	 2nJKQf1i5jMQNlRmVWkG1TbHf4wMC4iflHcZ0sZ0=
+Date: Mon, 9 Dec 2024 14:13:50 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice`
+ from fops->open()
+Message-ID: <2024120951-botanist-exhale-4845@gregkh>
+References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
+ <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
+ <2024120925-express-unmasked-76b4@gregkh>
+ <CAH5fLgigt1SL0qyRwvFe77YqpzEXzKOOrCpNfpb1qLT1gW7S+g@mail.gmail.com>
+ <2024120954-boring-skeptic-ad16@gregkh>
+ <CAH5fLgh7LsuO86tbPyLTAjHWJyU5rGdj+Ycphn0mH7Qjv8urPA@mail.gmail.com>
+ <2024120908-anemic-previous-3db9@gregkh>
+ <CAH5fLgjO50OsNb7sYd8fY4VNoHOzX40w3oH-24uqkuL3Ga4iVQ@mail.gmail.com>
+ <2024120939-aide-epidermal-076e@gregkh>
+ <CAH5fLggWavvdOyH5MEqa56_Ga87V1x0dV9kThUXoV-c=nBiVYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLggWavvdOyH5MEqa56_Ga87V1x0dV9kThUXoV-c=nBiVYg@mail.gmail.com>
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-> Yeah, that is a good point. There are hundreds of drivers with 2+
-> authors, so this could indeed be an issue eventually.
+On Mon, Dec 09, 2024 at 01:53:42PM +0100, Alice Ryhl wrote:
+> On Mon, Dec 9, 2024 at 1:08 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Dec 09, 2024 at 01:00:05PM +0100, Alice Ryhl wrote:
+> > > On Mon, Dec 9, 2024 at 12:53 PM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Mon, Dec 09, 2024 at 12:38:32PM +0100, Alice Ryhl wrote:
+> > > > > On Mon, Dec 9, 2024 at 12:10 PM Greg Kroah-Hartman
+> > > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > On Mon, Dec 09, 2024 at 11:50:57AM +0100, Alice Ryhl wrote:
+> > > > > > > On Mon, Dec 9, 2024 at 9:48 AM Greg Kroah-Hartman
+> > > > > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > > > >
+> > > > > > > > On Mon, Dec 09, 2024 at 07:27:47AM +0000, Alice Ryhl wrote:
+> > > > > > > > > Providing access to the underlying `struct miscdevice` is useful for
+> > > > > > > > > various reasons. For example, this allows you access the miscdevice's
+> > > > > > > > > internal `struct device` for use with the `dev_*` printing macros.
+> > > > > > > > >
+> > > > > > > > > Note that since the underlying `struct miscdevice` could get freed at
+> > > > > > > > > any point after the fops->open() call, only the open call is given
+> > > > > > > > > access to it. To print from other calls, they should take a refcount on
+> > > > > > > > > the device to keep it alive.
+> > > > > > > >
+> > > > > > > > The lifespan of the miscdevice is at least from open until close, so
+> > > > > > > > it's safe for at least then (i.e. read/write/ioctl/etc.)
+> > > > > > >
+> > > > > > > How is that enforced? What happens if I call misc_deregister while
+> > > > > > > there are open fds?
+> > > > > >
+> > > > > > You shouldn't be able to do that as the code that would be calling
+> > > > > > misc_deregister() (i.e. in a module unload path) would not work because
+> > > > > > the module reference count is incremented at this point in time due to
+> > > > > > the file operation module reference.
+> > > > >
+> > > > > Oh .. so misc_deregister must only be called when the module is being unloaded?
+> > > >
+> > > > Traditionally yes, that's when it is called.  Do you see it happening in
+> > > > any other place in the kernel today?
+> > >
+> > > I had not looked, but I know that Binder allows dynamically creating
+> > > and removing its devices at runtime. It happens to be the case that
+> > > this is only supported when binderfs is used, which is when it doesn't
+> > > use miscdevice, so technically Binder does not call misc_deregister()
+> > > outside of module unload, but following its example it's not hard to
+> > > imagine that such removals could happen.
+> >
+> > That's why those are files and not misc devices :)
 > 
-> Having said that, we already have e.g. the `alias` and `firmware` keys
-> that take a list, so I think we already have the potential issue, thus
-> being consistent in our use of lists sounds simpler (unless we are
-> discussing migrating those away too).
+> I grepped for misc_deregister and the first driver I looked at is
+> drivers/misc/bcm-vk which seems to allow dynamic deregistration if the
+> pci device is removed.
+
+Ah, yeah, that's going to get messy and will be a problem if someone has
+the file open then.
+
+> Another tricky path is error cleanup in its probe function.
+> Technically, if probe fails after registering the misc device, there's
+> a brief moment where you could open the miscdevice before it gets
+> removed in the cleanup path, which seems to me that it could lead to
+> UAF?
 > 
-> We could also try to mitigate the formatting issue via e.g.
-> `checkpatch.pl` if needed.
-It is true, we already have the formatting problem with `alias` and `firmware`
-fields.
-If we will follow this logic (doing equal in C side repeating fields), maybe we
-can end have the lines a lot for modules that have a `alias` a lot, or
-`firmaware` a lot. Two example about this is the `sound/oao/fabrics/layout.c`
-that have the 38 MODULE_ALIAS and `drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c` that
-have 77 MODULE_FIRMWARE.
+> Or is there something I'm missing?
 
-Maybe, have something like:
-	authors: ["author", "author", "author", "author", 
-		"author", "author", "author", "author", "author"]
+Nope, that too is a window of a problem, luckily you "should" only
+register the misc device after you know the device is safe to use as
+once it is registered, it could be used so it "should" be the last thing
+you do in probe.
 
-and having a check on checkpath.pl doesn't seem like a bad idea. Because for me
-it's better than:
+So yes, you are right, and we do know about these issues (again see the
+talk I mentioned and some previous ones for many years at plumbers
+conferences by different people.)  It's just up to someone to do the
+work to fix them.
 
-	author: "author",
-	author: "author",
-	author: "author",
-	author: "author",
-	author: "author",
-	author: "author",
-	author: "author",
-	author: "author",
-	author: "author"
+If you think we can prevent the race in the rust side, wonderful, I'm
+all for that being a valid fix.
 
-due to the fact that we spend more time scrolling the screen code than
-programming.
+thanks,
 
-But I don't sure. 
-
-Thanks and regards,
-Guilherme
+greg k-h
