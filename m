@@ -1,92 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDCA3597B
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 16:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72CD14F9E2
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 17:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733762288; cv=none; b=TC9P+wSYvaOKnT6vm6iAPMR4HTXaGKl/0zI7LbNT3OY6Aqog+dj85FwQWyC5CgYJ3YbRbcyNIaHijYf9q3MUdY2+mXMkmM4Kg8JJQkoU1a4DBMm2M1k8dTcgsgATXFqVomXFBWVcxxqu1lKtMYDiOYW4/hEPyF0XwL/JkkY5zds=
+	t=1733764186; cv=none; b=mv9OJClyJ7oUUOd7a6FaB/Gj3Ic60RzLVG043sRO4uffHv5KLUxGaFt2Zk+FyR58zNL0VRnGzmjxlwbAyQqyA1uZyHcabzD66ejJtldy+xQ1rLjP2co2GRmSU0v/kFv5AMf0LdeZ4ebIsIEAAvEw2f+TDQcFfXFrKlnPRJ080TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733762288; c=relaxed/simple;
-	bh=xeuCxbmRavI8KLbWHJTI/n1oat/t1DTH2amnkL/h/Xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TsY8yRrv553lfJZsSRz0xgdGduhqVtYK+N+i1XwWvtgqdTCeXdgPv3S1TNo6TNx7tQfX7skohR+cF8toyX4oPNyLcWdQff2D3BM7caC4gYvW5KdQJ8oKLhbKPQDjMKVUCL/tlPzJJc+BruULyobYouXNLNFwbMH1f5g5KDiTwWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQeSXUt1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733764186; c=relaxed/simple;
+	bh=IxldwZyWmjuvlyEN/qWnV3PW0F6+cjUAqPUPOOibocI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 Cc:Content-Type; b=DcRuUeAtmS1WwU37/TFKcq0DvHw4wLBXkcSMphlyocWu0jULqT21Ln59VnqsXbaYMrnQXEp03i2sHQtp08COpCZxgyBWTgNFqN37Lr7i/Z5z0nnWitQgMaG1ZKmYxuwVa3d8lVCiXlqhhqRMoMemfTIHlUfnRbIX7mjXuACPSSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QetRFMGC; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQeSXUt1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A96AC4CED1;
-	Mon,  9 Dec 2024 16:38:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733762287;
-	bh=xeuCxbmRavI8KLbWHJTI/n1oat/t1DTH2amnkL/h/Xg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fQeSXUt1AnGn+xxUcpP5n/Y62pgZ5PYbqCvmddga7mHW1402pLZEOw2so2wSPNIwU
-	 gMCRo6EMK5HMC3TuiMNEsOK1mf1zmqtiJIliY20lKJXGw5879eL/4K8W5Qe2Yw+vmG
-	 0hMCqOKuVj+eU7V+/H5N0fFUZ7dRE3fLuqjeWyOo=
-Date: Mon, 9 Dec 2024 17:38:04 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] rust abstractions for interacting with sysfs
-Message-ID: <2024120958-antihero-slideshow-e30b@gregkh>
-References: <20241208131545.386897-1-daniel@sedlak.dev>
- <2024120851-drowsily-anymore-52f7@gregkh>
- <dab64690-ec96-4980-81e7-aae87b53dc02@sedlak.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QetRFMGC"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6eff0f3306fso19247407b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 09:09:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733764183; x=1734368983; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q3HuezRHPFMlkaEOsevzJT1yDSMBG/XxB5dMFT9DqOQ=;
+        b=QetRFMGCZEqygNE0FYMczCOaqmfwsg7PtjRckKzG8Zq46/Ogx/S/hOkeGXzVnC5713
+         UYugfr04EJyuRul/SWCO//DiGXvZy3Edwd6zpr6zopIZcN6JA+OwzbRthpUhdFvnWVtJ
+         6ywie1dOhQ2SD//JOsiFhA5TPyexBzSnzym3nnDxGxAZFObY2hSpagYYNoFA1lJzxIeN
+         cSHo9n4CEWOSxXK+8OtTyXZAI1bVyseCFwVR8M2JNh5x8x67Ho91E0+rlTJBLOTQ4Mdt
+         mCMI8fZF2ZorC1RxHuES6uUeZT+Asa+FY6ugx70G+KUnpJGkooU50eVbPEr99ouzdLuB
+         Y4DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733764183; x=1734368983;
+        h=content-transfer-encoding:cc:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q3HuezRHPFMlkaEOsevzJT1yDSMBG/XxB5dMFT9DqOQ=;
+        b=U/2xq2sFLy4ajnV8pmWj26B92kMQpARKu+dGVoyCkihZ1dchfvRbNE1CaInhu0taMC
+         OPZBAS1xVrhSWP8jn+sbzf1cZ5Z2gmV8myJXw84j8jtBcw2H9qSkPT0mjFoEsFRRmnwM
+         KHxpuHu2MbHMurq367d9U/XQcZtOEVoL4RcvFM9Jz1CW5f5AIqp4jypVdPuEtyx1Jwiz
+         5Erh3V+aNGikbWnJs+8x/sh6dJ74odueyaR4qrYN1HNR6BpkTfdM2cB+/3wr0RrPtga8
+         XVO6QtANTHfjeVVdWscHZ8xAQSSenmiTpO0BD+uo+C+PdYa5t2rDl1LRcNa6Ii5BURcv
+         B2Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBZxY2T+CFPIlHbMViRrsSLbjKoLuXnMZ2f+Rg0/TJ6Izndoa6bJ3A1/pM//NVhpwuX60XWMHXpZulhylHSg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs/M/3pP/esNpM4+83BpE7vO3ah9MdvnGM4mFVRb8RbIu1FSPV
+	LP+KfMXd80IpyxYzxvP/XxKgoqI3pM86beIMUqwaT/gxyKCweb/uqNBRDwjZencRnBxXiCzFtHI
+	s7ZC8eAFf6bBq6J5jjb67KeiCzFk=
+X-Gm-Gg: ASbGncse3aiHKcqXCcVGLueMsgNyZKHUR32wPNdqrO3TS0GkjSfSgA0az/bvMgwz+td
+	lDCzGefmETM77OVgU0jdPtV/dSg6gKPQKfv+JkKd2oAvYUiylkEHCI9XT4BRb
+X-Received: by 2002:a05:690c:6103:b0:6e3:37a7:8a98 with SMTP id
+ 00721157ae682-6f022e840d5mt14396447b3.14.1733764183700; Mon, 09 Dec 2024
+ 09:09:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dab64690-ec96-4980-81e7-aae87b53dc02@sedlak.dev>
+References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+ <20241208222623.54714-1-dev.json2@gmail.com> <CANiq72=F1WCFbU6XuZNtXj97eQ7Pd9kh4sxVMyZVkJv4Eedbpg@mail.gmail.com>
+In-Reply-To: <CANiq72=F1WCFbU6XuZNtXj97eQ7Pd9kh4sxVMyZVkJv4Eedbpg@mail.gmail.com>
+From: jos <dev.json2@gmail.com>
+Date: Mon, 9 Dec 2024 09:09:31 -0800
+Message-ID: <CAOJvc-b0HiRUs7SEGcCbk+T+G_PDW9cKaoy4TbLLdm5FsERYyQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: add #[must_use] to Lock::try_lock
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Boris Chen <boris.chen.czy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 09, 2024 at 05:12:44PM +0100, Daniel Sedlak wrote:
-> 
-> On 12/8/24 2:34 PM, Greg KH wrote:
-> 
-> > > I implemented a sample to present the API I have chosen for the Rust part.
-> > > It is a straightforward example that does not represent all capabilities
-> > > of the sysfs. The documentation will be potentially improved, but I would
-> > > like to first settle the abstractions.
-> > 
-> > What exactly do you want to represent in sysfs here?  Start with that
-> > and we can work backwards to say what types of bindings are needed.
-> 
-> Great question, I should have started with that earlier. Lets say I wrote a
-> module that attaches some hooks to kernel function calls and the module does
-> some accounting on that.
+> I use aliceryhl@google.com for kernel contributions.
 
-Modules do not add hooks to function calls :)
+Sorry about this, I will update with the correct email!
 
-> What is the correct way to expose the statistics
-> from that module?
+> Please use the version option of `format-patch`, e.g. `-v4`, when you
+> send new versions, so that they are tagged as such. Otherwise, all the
+> patches look like they are the first version, which is confusing for
+> tooling (and people :)
 
-debugfs.
+> Also, in general, it is best to wait a day or two to give people a
+> chance to review your patches, so that you do not need to accumulate
+> too many versions.
 
-> From my point of view this module does not fit into any
-> subsystem already defined in `/sys/`, and procfs should be abandoned. Should
-> I use debugfs for that?
+Will do! I really appreciate the patience and feedback, please
+continue doing so :)
 
-As it sounds like you are attempting to be a "security module", just use
-securityfs instead.
+> +    #[must_use =3D "if unused, leading to an empty critical section"]
 
-And really, don't hook function calls, or if you must, just use ebpf and
-the functionality it provides (all the stats you could ask for!)  No
-need to write a kernel module at all.
+> I am not a native speaker, but this sounds a bit strange. Is it
+> written like this due to how it gets "rendered" by the compiler later
+> on?
 
-sysfs is for drivers and the devices they bind to (and devices that do
-not have drivers) and sometimes filesystems and occasionally memory
-stuff as well (mm is really just a driver for memory).  Don't use it for
-things it is not designed for (i.e. module-wide things.)
+I agree this sounds a bit strange, perhaps it would sound more proper to sa=
+y:
 
-thanks,
+`#[must_use =3D "if unused, leads to an empty critical section"]`
 
-greg k-h
+Will give it some time to receive more thoughts before sending an
+updated version.
+
+Thanks,
+Jason
+
+
+On Mon, Dec 9, 2024 at 3:58=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Sun, Dec 8, 2024 at 11:26=E2=80=AFPM Jason Devers <dev.json2@gmail.com=
+> wrote:
+> >
+> > The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> > currently does not issue a warning if the return value is unused.
+> > To avoid potential bugs, the `#[must_use]` annotation is added to ensur=
+e proper usage.
+> >
+> > Note that `T` is `#[must_use]` but `Option<T>` is not.
+> > For more context, see: https://github.com/rust-lang/rust/issues/71368.
+> >
+> > Suggested-by: Alice Ryhl <alice@ryhl.io>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1133
+> > Signed-off-by: Jason Devers <dev.json2@gmail.com>
+>
+> Please use the version option of `format-patch`, e.g. `-v4`, when you
+> send new versions, so that they are tagged as such. Otherwise, all the
+> patches look like they are the first version, which is confusing for
+> tooling (and people :)
+>
+> Also, in general, it is best to wait a day or two to give people a
+> chance to review your patches, so that you do not need to accumulate
+> too many versions.
+>
+> > +    #[must_use =3D "if unused, leading to an empty critical section"]
+>
+> I am not a native speaker, but this sounds a bit strange. Is it
+> written like this due to how it gets "rendered" by the compiler later
+> on?
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
