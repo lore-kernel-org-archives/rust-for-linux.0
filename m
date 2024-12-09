@@ -1,87 +1,95 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0622A14F12D;
-	Mon,  9 Dec 2024 10:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55582165E2;
+	Mon,  9 Dec 2024 10:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733739583; cv=none; b=inIZqvfSRdmrZvliNYlJVBAaeSMU3FADn7b1JARED48CIgXvou1sTCJg03M3ErMqUc1+kKB0AdFft1I6I5VXfrxfT51TmBYYDwlcYECpdlSsumsQu6E5+FWLw3CAPGx2/tG6M9Dj+jfBJfbDpyPQRDyqdb1RkZ8FmxL0a9TLRuc=
+	t=1733739943; cv=none; b=PnJtLEyF+1RT0eimtsNjslKkIZ3/A+Nnu33trx5+7DFm1SUpS0WmYX/q8oEBZMcLKooQz87pDNwP5y4lqdPVa9YU0GIcQkmJFwg09YvzyhuKWlxWWjPUsF/H3q+JS1rjyaPvmlzw24OLbtDWLcCK/kFcZvibxi6+41ax+b8F/d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733739583; c=relaxed/simple;
-	bh=z1wSWDjvMJFRWSRQOJKagKS6SuLXHk6TSVtxoyaDLyg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tlnFRMgUnJkf/NkfNJhL+DcSjaiNOXwWGFBCJL0Xh6bsBwu+NkSFxpRuBGWLLe6o03Ml/ld1kPjVPg8cugJj7C80L5TWjN+qKztxxI22JCmj67ScAFBr92eJTcaFHStURORgw0saYgiir5xF4a6BnG07IwTulFpXHzT8UVpBGgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J20+ecBk; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733739943; c=relaxed/simple;
+	bh=Zac91wHIWu5I5fVoSqr4mhSSxozctAkrU6nEfurb/FA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gT3/O0g1RgIK2wOlKrkNIa5HjWMvc9Hts28VV+n9x8wl4yhXTHp48kqSiHIGGwwxzBw3rNzYskmUP3Io91vU2UCGRDTn+TTOSSCChukxq+B9m0xbXVVt2RQlLdZXkcVfDGo7f0qIqm9bWGcfOr4Teu7WWps6adfRoIMVucYTkwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olaINdmd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J20+ecBk"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ee7c059b97so745433a91.0;
-        Mon, 09 Dec 2024 02:19:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733739581; x=1734344381; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z1wSWDjvMJFRWSRQOJKagKS6SuLXHk6TSVtxoyaDLyg=;
-        b=J20+ecBkTWqF4ZwC4mR4PWd2as962Drm0kjoU83Se9Kc8L5ANcC1Sw/X0W6xWAlyOQ
-         OoE2ehtLNvBrEek/McN701I7OZvyRjN6+CCkWTObmBNuGSJNksIR8N5qjUuloBfWUw64
-         8y7/5Lz0y4RmVXoLCN34ulG0LMza3leiY0rC+0ouWhEdB6qHRMjvoatB8M5UFCBL+/C9
-         xLPKkj4eG/Moo1YDK7V2JoBO25rvfy5nDr+g7n5Jr/2jLqTnshHiw9Mpa0Upv8Zz9wES
-         3w3nd7NfWw6sAq92QcecOb00sgPeDknbUjK8bVFNYGO50C7on2hiOHeaMIb1SW92S8Gy
-         YVNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733739581; x=1734344381;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z1wSWDjvMJFRWSRQOJKagKS6SuLXHk6TSVtxoyaDLyg=;
-        b=JteDCYbS3sXnPWjPABHg7WX3XF/OyvQxx2xpedz2chC/EUkOQkVrAeVjjCpbfnV1p5
-         KJPoBkamEdWb+t9NDtJaN3bnbeDBF+wqfYkxx6psYiK+UiB1Ocf3MIoGsDD6RxBscP6J
-         qb8RdpNun62ZXot0vlC9OE5Yb+CnpUg4LiwfUc1VOXj3zfwVrjgRrsegS5l/upn4FUnQ
-         oBfIGP9luyQKqtWbRFxNDQvuvhGpVvK/sUWCe/9VRECr9l0783zcBf9qAL79I6ugEbhH
-         AW+0PKlWBDZsAKdm3XnwuudhX6QF9ShvKlrX1jPtaozHCr7jb6gx0hf/ohVcBMQ8q4Xe
-         czKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4U5/14IQe86Ff8/yMaZoePBfxi62c2yiE0eGz68OjuhorLCIE41iCMkhXOXqxV8YtIZq2c6gDjkM1iNj/W1w=@vger.kernel.org, AJvYcCUi6DCOpKgh9N+Vp9hg6f/EPJ2zSw707ENlhknI/FkFBB5wmhIgRQ38t+xNwfF0xtR/Xy9Q2sG9V0nvx0Mn@vger.kernel.org, AJvYcCWIKNwgdz8beTCZp/oLvNXa+azw6q4Fw3GMx/E4lhQTWKZaY8h27DkC9AQDW1Mk+iYNFdDHfE0LC3TwlNi9@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgQHmoxJW1f2eLjyOVNMjjk83LcKrfltua3A8C/x3ZXl4tIi1E
-	yJtVTsxNt6jhH1YeBo9XADGHdbrEMK8JERvfvqtR2W33D8W2nqoIxBSAON8yjRE9ShV1MOiIVVS
-	ArCgQb+rKbdAtJd8V6qNcYbXjf1k=
-X-Gm-Gg: ASbGncsNPEKwvDXKXD7Lzk5UNGWdGgXTlZkxV6U6NmT95uw7NaPBBBMi+kzGTKJU5TW
-	7ImfI5oJ6frnHeklxwnOctBGa1gHTxEA=
-X-Google-Smtp-Source: AGHT+IGMIpXimekxtcimU3/MT89KqPhZCEAdgz9ycTU7negk90TO9t5x+Ov4Ejos3dt75c4Yz8vP8cp7Ssa8XnKv7x0=
-X-Received: by 2002:a17:90b:4a8d:b0:2ea:853a:99e0 with SMTP id
- 98e67ed59e1d1-2ef6ab104bamr7545327a91.5.1733739581228; Mon, 09 Dec 2024
- 02:19:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olaINdmd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBF0C4CED1;
+	Mon,  9 Dec 2024 10:25:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733739942;
+	bh=Zac91wHIWu5I5fVoSqr4mhSSxozctAkrU6nEfurb/FA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=olaINdmdg3SukWAmCa0FJm3x3Hggl44iy+XmhYtH6tVuLl4MVKpfLz8p1QrnhoPCr
+	 JtrOARYh9r/BkPyXM3Yv3XAvTt4Hpa/RSF8DQmCTAaI3buf31452D6vGkVIriW6uTe
+	 i7OAedooY4XjKfghVM4s+DxLuaNwZansBc1ki2D6YSLjRScPUFGoTSMmhxVnlKE3FP
+	 5ZnN9xpyIKn7tNvtxQVGmGn6eAokBU1ls7dHHRJzt900/Jy0u3YU04UDe5wvUnLuQe
+	 PmNl6VwKJyvLUWrSEKbK4idszT0hbr94IdUm5pEFyvOFzq92TouyyxWeQskVjAEQf+
+	 tgfXFm4G3CZOg==
+Date: Mon, 9 Dec 2024 11:25:35 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 10/14] rust: alloc: add `Box::into_pin`
+Message-ID: <Z1bFn1uvu5M-2H9l@pollux.localdomain>
+References: <20241206-hrtimer-v3-v6-12-rc2-v4-0-6cb8c3673682@kernel.org>
+ <20241206-hrtimer-v3-v6-12-rc2-v4-10-6cb8c3673682@kernel.org>
+ <BAT3INRKXEYrKMKrPQO7CCEMcwAUeqxMVpEXTwr0bSEtnG28BQbBs3q8gwhSkpJPFO2yGCqUflc7cCxOfSFsmA==@protonmail.internalid>
+ <Z1Nb0dQvO0GKlMmb@pollux>
+ <87ser0ec7l.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com> <2024120936-tarnish-chafe-bd25@gregkh>
-In-Reply-To: <2024120936-tarnish-chafe-bd25@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Dec 2024 11:19:28 +0100
-Message-ID: <CANiq72mw4A7PG3Gu6T50u+U3gbUFd=82WL557NUo-7jkQf1xPw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Additional miscdevice fops parameters
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ser0ec7l.fsf@kernel.org>
 
-On Mon, Dec 9, 2024 at 9:43=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> So these should go through my char/misc branch now, right?
+On Fri, Dec 06, 2024 at 10:25:02PM +0100, Andreas Hindborg wrote:
+> "Danilo Krummrich" <dakr@kernel.org> writes:
+> 
+> > On Fri, Dec 06, 2024 at 08:33:02PM +0100, Andreas Hindborg wrote:
+> >> Add an associated function to convert a `Box<T>` into a `Pin<Box<T>>`.
+> >
+> > What do you need this function for?
+> >
+> > There is an `impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>` already.
+> >
+> 
+> I didn't realize, but that could work as well. I was rebasing this
+> series from before we did our own `Box`, and rust `Box` has this method,
+> which I was using.
+> 
+> At any rate, I think it would make sense to have `into_pin` as well as
+> the `From` impl, to match the standard library. We could always
+> implement one in terms of the other.
 
-That would be ideal, yeah -- thanks!
+I'm not against that -- one of my earlier allocator series actually even had
+this function. However, the feedback was to rather not have it at the time.
 
-Cheers,
-Miguel
+As mentioned, I'm still fine with including this function though.
+
+Please implement `ìnto_pin` using the existing `From` trait for the next
+iteration.
+
+- Danilo
+
+> 
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
