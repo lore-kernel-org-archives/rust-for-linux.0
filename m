@@ -1,72 +1,72 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B751B043D;
-	Mon,  9 Dec 2024 14:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107581E9B2F
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 14:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733755429; cv=none; b=Ko3sAs+Nap7chyHp9OAUOckU7wDISYFgNaBXM5korXhw10eQpxVeCeu2n68IV6tbJk4Mwl0zFGDnHw9t5sDlz6tOr3w8Padkf8lDjy6W2M6lMhMdosBRR5kS6clmethcF2pxDtjkvmjG8fVda/D/ndfUNFCm0jkJM/ZDFXJqYo4=
+	t=1733756169; cv=none; b=TPPVxnm8v0XdDUHnO6IkeLqCFK8kFR7cE+azj7k1eNCWoGKOta5qsQbxBOp3VFSbk+rtsHYI16Dnl75pS8Uydyvl3xH9toLjScEK5SceyqmdUDcIbzLRntYom+X/onSteUQMpAgljJD5YhG08HfyqTmn0UMFnZKTz2MAj7SBrnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733755429; c=relaxed/simple;
-	bh=0HAPuOO8MalcKud6f/kbs/l+xIbPS+Al7Xt8OGAWeP0=;
+	s=arc-20240116; t=1733756169; c=relaxed/simple;
+	bh=irPKs7vww4Wp5DHwFQWJhvy65Z/tKYjeF2LU3WM9bV0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dACAJqZxnRdR3ogPUSGZejjR7CJ+QoYaW2H2OjF/S+BPVkHuakaT7p8toEYC6e+UhUyepmg5+un/I41918GpMQaiOrnV7w/ykMFhwALev2pbpomY2QaD0l4ysDwvGyr0FLNhqAEk3JUs1gTOw9ZjOysoA+9ul4JekNn+JnHJxYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJBADEKf; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnMErwyDwlk5JhClEVhawm8IzBFYWBtfl+ZHlWX7TkgIiRZxspESiNoElnW2cXS7bL+uR14jXBRUfTnKqedushsnkSWX06eF+1EkcGE3ilSKNynrxtfv4XQMEpHjoQIBTv7cT4q2iwGsMF4iqyfk48QWmB/FrZffoUldx5sOkkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=gP/HYed8; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJBADEKf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733755427; x=1765291427;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0HAPuOO8MalcKud6f/kbs/l+xIbPS+Al7Xt8OGAWeP0=;
-  b=OJBADEKfeM1q+8SjtmYVUdeTiUY6d9FVS9tNdDRtpcjUR+R4+QLwr5Ow
-   8Ag6+AdaXE9FI9xVY7VtBmzEQs3UkAyzgGepVhEYrGxNH0oGIFjLE58Ox
-   NWu0NAd5txBIqd3HGn7jpbv4kEGh4Ds97zSINM8riyoRzr7+kTGp/yodn
-   WUxwpXVqtb/1nbsn+Y9XoYEoQyLjQvAIlgHPm1lsZBCYDc8BtZr+zjfT+
-   7PwWHQfOBYTRH7panTdNsdfOq0V+ucDSfocwQVMkVeyToin4TdcdfpJD3
-   Trrwt7oAJEt9t3bX0waO/Eh9VcmehTTxoF5bWuqfmG0F6yii07b8X6HBO
-   A==;
-X-CSE-ConnectionGUID: G1Rim8zGTJmlc8NurBIV4A==
-X-CSE-MsgGUID: JKtIlhciRIOpLDUwQpEagw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34182557"
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="34182557"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 06:43:46 -0800
-X-CSE-ConnectionGUID: TQZ+7GCGR4WylI8cc3kfoA==
-X-CSE-MsgGUID: vvrb9beIR8eRoB/r0s+zgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
-   d="scan'208";a="94790455"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Dec 2024 06:43:41 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tKez5-0004Sn-0p;
-	Mon, 09 Dec 2024 14:43:39 +0000
-Date: Mon, 9 Dec 2024 22:42:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="gP/HYed8"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434a83c6b01so29369295e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 06:56:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1733756166; x=1734360966; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FhI6hMAqJvHiDFIKccG4+dMiyyLUeutIS+OQMFFz58=;
+        b=gP/HYed8a77ZxIriGfiFIf1jB+JG5KH/VAAwCfxhzzxebNX4TjZTUAMxPqNmewdKLJ
+         WqeE8ftAQNIIS1XPGCLa0bRJWl037BbDip14VZkrmcXZ5fLGgRfN55leaEEcL4rdIfdd
+         SFMyTUdQ/9BH2/I1vCDMEsoEapMVq8LrfKQ74=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733756166; x=1734360966;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0FhI6hMAqJvHiDFIKccG4+dMiyyLUeutIS+OQMFFz58=;
+        b=LpKxb5oNfwX25TycFP1RyOsIcCTygT5DPCpWVu6d4ozeIS5fdZ8qce48S5h7UiDIDE
+         Jx9bRbqPYtwkEc3BSWIVzgreqDCi89BVovVff4NQ/01tIRqlYnpBU16DDT5nVNrhT7rm
+         DEp7cKOW3SQVxcuPIwElkR3AOIvbhqUj/1UQp7xZuF88Z3p5DxoecKeDPAyRZ26zb2gT
+         lBeBi901lOtbVG396Z3CanAC0uyh/eeCjuGyos5NTg87DmQW/BlbmeaUyBWq7gnvDb2H
+         mmK2SMYNskgczmpTLJUDncCZW9pbinoqc4ZI64a0L22j9eITWrIjjmFef4B9TE1T+0jb
+         sWwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTtqgmDNOcAJ4ffbNzjydIAFt9lzJkI28XoxfgXzrsl0r+SZu8BSPA0z8IaAGGel440x5DBgkA9tVF3Cff9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynxH+oF06s3VaAWmGRwOxLpRL3G6XjNZFDai1F3y+KGabX+ZGC
+	tuPQWZeX80NEgUwWqP+Mc/8MhMhfZ6Q+R4grE7oRIYFQFHXCLutvgUzKJzR9as0=
+X-Gm-Gg: ASbGncvgB/KmJkoZpJuu6nEZIoUOWE0CqjqmcjQNhuL0Wab/rTAbCJQe81/HxYHfdeV
+	d+FXfoqvQDs2D37PAkKKB1uY/1vIR5PhA296vAelF/URFsy4IKxXC14wwT0E8VmCe2O4KWbv0WD
+	rBfEOLLu5MfDAaDicOpCNbV66YN2jnKi/HD2BeuiLhR8aQoNds0oFykAtonncY31bEcYYtAmG2M
+	gCv5uKrRpvwwO3meiwA1pmuXyxk7nfU/LWAH44p9EqGzElCXouTBqJG/tV9Cg==
+X-Google-Smtp-Source: AGHT+IHlyvTt8nZuozeEetYYMkZ9Tu//20YJAjUPgmqNVSL1YLm6l1SmhmE+cCyZjqZQJNpjJeimzA==
+X-Received: by 2002:a05:600c:1554:b0:434:a07d:b709 with SMTP id 5b1f17b1804b1-434fffd7955mr6890705e9.29.1733756164612;
+        Mon, 09 Dec 2024 06:56:04 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d52cbefasm195585265e9.43.2024.12.09.06.56.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 06:56:04 -0800 (PST)
+Date: Mon, 9 Dec 2024 15:56:01 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice`
- from fops->open()
-Message-ID: <202412092214.P4acQ6Rn-lkp@intel.com>
-References: <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] Untrusted Data Abstraction
+Message-ID: <Z1cFAaQ3TtRVoeKo@phenom.ffwll.local>
+References: <20240925205244.873020-1-benno.lossin@proton.me>
+ <2024120512-tuition-overcome-0939@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,131 +75,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
+In-Reply-To: <2024120512-tuition-overcome-0939@gregkh>
+X-Operating-System: Linux phenom 6.11.6-amd64 
 
-Hi Alice,
+On Thu, Dec 05, 2024 at 10:06:19AM +0100, Greg KH wrote:
+> On Wed, Sep 25, 2024 at 08:52:57PM +0000, Benno Lossin wrote:
+> > Enable marking certain data as untrusted. For example data coming from
+> > userspace, hardware or any other external data source.
+> > 
+> > This idea originates from a discussion with Greg at Kangrejos. As far as I
+> > understand the rationale, it is to prevent accidentally reading untrusted data
+> > and using it for *logic* within the kernel. For example reading the length from
+> > the hardware and not validating that it isn't too big. This is a big source for
+> > logic bugs that later turn into vulnerabilities.
+> > 
+> > The API introduced in this series is not a silver bullet, users are still able
+> > to access the untrusted value (otherwise how would they be able to validate
+> > it?). But it provides additional guardrails to remind users that they ought to
+> > validate the value before using it.
+> > 
+> > There are still some things to iron out on the Rust side:
+> > - allow better handling of `Untrusted<T>`, for example allow comparing
+> >   `Untrusted<[u8]>` for equality (we should do this via a trait extending
+> >   `PartialEq`)
+> > - rebase this on Gary's patch to enable arbitrary self types.
+> > - get more feedback as to what `Untrusted` should make available
+> > 
+> > In this version I removed the API showcase using tarfs. I did this,
+> > because I have added the API to `uaccess.rs`. Also, this version
+> > requires [1] to compile the doctests.
+> > 
+> > [1]: https://lore.kernel.org/rust-for-linux/DM4PR14MB7276E6948E67B3B23D8EA847E9652@DM4PR14MB7276.namprd14.prod.outlook.com/
+> 
+> This patch series just came up again (well, to be fair I mentioned it),
+> so I was curious as to what the status of it was?
 
-kernel test robot noticed the following build errors:
+I kinda dropped the ball a bit the last weeks :-/
 
-[auto build test ERROR on 40384c840ea1944d7c5a392e8975ed088ecf0b37]
+> Also, I think we need to add this to the userslice stuff to mark all
+> data coming from userspace as untrusted, so tieing that in soon would be
+> good so we don't have to churn a lot of existing code that ends up being
+> merged soon (i.e. misc drivers).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust-miscdevice-access-file-in-fops/20241209-153054
-base:   40384c840ea1944d7c5a392e8975ed088ecf0b37
-patch link:    https://lore.kernel.org/r/20241209-miscdevice-file-param-v2-2-83ece27e9ff6%40google.com
-patch subject: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice` from fops->open()
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20241209/202412092214.P4acQ6Rn-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241209/202412092214.P4acQ6Rn-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412092214.P4acQ6Rn-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:21:
-   In file included from include/linux/mm.h:2223:
-   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   505 |                            item];
-   |                            ~~~~
-   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   512 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-   |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   525 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   4 warnings generated.
-   ***
-   *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang >= 19.1
-   *** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),
-   *** unless patched (like Debian's).
-   ***   Your bindgen version:  0.65.1
-   ***   Your libclang version: 19.1.3
-   ***
-   ***
-   *** Please see Documentation/rust/quick-start.rst for details
-   *** on how to set up the Rust support.
-   ***
-   In file included from rust/helpers/helpers.c:10:
-   In file included from rust/helpers/blk.c:3:
-   In file included from include/linux/blk-mq.h:5:
-   In file included from include/linux/blkdev.h:9:
-   In file included from include/linux/blk_types.h:10:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:8:
-   In file included from include/linux/cacheflush.h:5:
-   In file included from arch/x86/include/asm/cacheflush.h:5:
-   In file included from include/linux/mm.h:2223:
-   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   505 |                            item];
-   |                            ~~~~
-   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   512 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-   |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-   525 |                            NR_VM_NUMA_EVENT_ITEMS +
-   |                            ~~~~~~~~~~~~~~~~~~~~~~
-   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   4 warnings generated.
-   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-   clang diag: include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
->> error[E0277]: the size for values of type `Self` cannot be known at compilation time
-   --> rust/kernel/miscdevice.rs:107:35
-   |
-   107 |     fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Result<Self::Ptr>;
-   |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ doesn't have a size known at compile-time
-   |
-   note: required by an implicit `Sized` bound in `MiscDeviceRegistration`
-   --> rust/kernel/miscdevice.rs:52:35
-   |
-   52  | pub struct MiscDeviceRegistration<T> {
-   |                                   ^ required by the implicit `Sized` requirement on this type parameter in `MiscDeviceRegistration`
-   help: consider further restricting `Self`
-   |
-   107 |     fn open(_file: &File, _misc: &MiscDeviceRegistration<Self>) -> Result<Self::Ptr> where Self: Sized;
-   |                                                                                      +++++++++++++++++
-   help: consider relaxing the implicit `Sized` restriction
-   |
-   52  | pub struct MiscDeviceRegistration<T: ?Sized> {
-   |                                    ++++++++
---
->> error[E0609]: no field `private_data` on type `File`
-   --> rust/kernel/miscdevice.rs:215:22
-   |
-   215 |     unsafe { (*file).private_data = ptr.into_foreign().cast_mut() };
-   |                      ^^^^^^^^^^^^ unknown field
-
+Yeah I agree that's going to be the main entry point for untrusted data.
+-Sima
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
