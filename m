@@ -1,141 +1,111 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F352321E0B2
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Dec 2024 11:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74421F931;
+	Mon,  9 Dec 2024 11:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733744328; cv=none; b=kJsrAm65678wYpybUOnj2JqiJumJMPfwSjDe5TJLak2R0Mh7of6P5nttSJErx2CCyKFa19DX6zT6H9dOKHYz28VqxK8M2N+XOXhovK27U5+FeQ5xyI1zBIEvemT0KlIVE58pj2MByCTEJ5Glc61DEfWfT4XPN6Rs31HWfPv3MnE=
+	t=1733744881; cv=none; b=RXwz3MyhVWf/915xqKniDY44XFs9HoGZsIzqYJcHU1IwR0csVeQ3CfqKoXYWzcpZK4E9SpsFeegZLro+ndnRxhh6woHJyHxhufxkxQp4Ao3Q/OMFBwMui+Qp3lQroSJR6Sw8gVJllveFtY13eivtg+Z7UgH2iQK4FOSYqOzTE0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733744328; c=relaxed/simple;
-	bh=TIQOHvlPe7EaliHf+oU8rkKxEUJHqdGAQhL9uCvZsKw=;
+	s=arc-20240116; t=1733744881; c=relaxed/simple;
+	bh=sGAse8iE4lO8igztrgki0CsNHhYhXN7gLNtCUgD7z+4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VC/mnoDmeU4+Wy1wKdf6y/fqbXlsF1w43OKEod1xHOU5JRWpQuaRp1dZN5OTJE4WYgT8O2WbSMzGksJPkk6AWybnZviASa4shu6UKXNXaLKcXNrdI5q4fqoA+etac0QGKmnFisVKd0Y6IHdxLDSY7lyFUBd4ihHctOEIHvDIlQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UOs7hffk; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=BpI6y2citfU61jaSUeBdBOZW4UDWYbU3D8bHg0wD6JAbGiKSCzxAKFhF5vD+xrageufnWVDBtvJgyZQgZvx5nLD4HcO3YDu7v0Az2JzVfRik2KvXdFtb/H6n/oOqdYnvkrZ8CK+8k5lbU+AJENP6oNAW5gQzbvi3r39+v+R59VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ha7hgykx; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UOs7hffk"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-385ed7f6605so1840543f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 03:38:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ha7hgykx"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ee4b72d4d8so652440a91.3;
+        Mon, 09 Dec 2024 03:47:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733744325; x=1734349125; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733744879; x=1734349679; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gkFF8qREOWmj8BwHObK5LagoNCyflkty6l96N/dPuUI=;
-        b=UOs7hffkovZGiMSkM205ON6ZP7ylG70vN/J52M4awSAV0S0rYs4af0gihIp/v8CM4n
-         sUxhuiW/yRaBc41iMokloOwgLiy7yx1ri+sA+YhRXzoPx37N3uDpFcmmqh/VeYUeVinC
-         u9CdNR+THc3TJk4BBLQDb5ojHQlGAsKB9VPC9zecPv3+PNzFcHHKiWAgqMuDN8sOXImI
-         zrPonLwaxsglvQMCXSTgnBENxZnBrt9AHe3PeYzjqPD0xWoKgRXWTMekYkELIsyjBmtA
-         V3f4Ssxkykf1C1J1jPu5KI5GjwwC1uCQtkoayfGsAptKBIMQKCVFB6Lmm7Xe/2u9jljY
-         dskQ==
+        bh=EHnRfRL33JY+SgOza+omObtcVl8TYmseJZ6d8dTduFc=;
+        b=Ha7hgykxe5+K/5ac22P14/6Dmsci4xTbop5sjKpZfjMTX7NcOLwcrEl0mHwa1W6vC8
+         IQnXLYGxfjysbGXjW4d1MzQfjZUK5S9gMMLvWNVkavHUHTSWBi6xjSX8+2cpQYF8lAJM
+         4kvjkw3GrQ3mSwjQfG76Vqb8GyZyInvEd9/Bwq+0Rodl4trOZD/iHoIc0ZISon9jj04t
+         jMYZlT18UoztBEJjfK+qCbJ9QrZOa4rjeFOdFVn0pvfirQi3Ue0nn+t7iTWYLih3GFBj
+         qsVnbvQhJZXDN6/feb6AVxrIYRpVVatHRnKt56k7hKnMZK+sidYYbjUWkQua+rUaMn2h
+         Stvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733744325; x=1734349125;
+        d=1e100.net; s=20230601; t=1733744879; x=1734349679;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gkFF8qREOWmj8BwHObK5LagoNCyflkty6l96N/dPuUI=;
-        b=tDqW38Oo3SDoBftBmbzHWcO6n19IoNzhFYypgMuEHPTNKOrjySHuGiBuMLN6pKbaxT
-         aT/oKB7HRsct3HE9+Fc8Sf6/srEP4YNJFLjvE6YJqQw7FHlddPnUYdlMh/DMEEb+mXlE
-         KvThVufSog//uysslr1EMPV5Py2BBzuWulKewXiRqIj/fbHt7Mei811ZSZnK5GcZAxGV
-         7f2jg5sSEB4/xiUTRfD2/NjtYzyr4IwxYEOuI3IwOBaJ5JOozCbRlX26kNyxM7bDfdm/
-         FUyvA3wZyHQdwKDgdHjPiVvEZR3b7BT3P32Onh0dBSnIdikvKPiFfB4tPQeuggoXfZv6
-         hVjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVMP/HtEQIuym8iLbFxWurAi0Xr3J4SVaePBBxnQ/vGqCIhyM2ciNF9kqTetjwdgEhmLmLOTmpUdv3gX20cQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFYwQXZdXOPHUIs1wv9rJYoXqPDrls8GZ3TSlnvgXHUaqBQMfi
-	bc1UZ1c53yXVGKJXJqYr/lsBliacOvMJWgBoBmfVmdH8gk7/SXKbs4WDqOemETctcuMWgRGbH2A
-	TQnUMNeiB9pnOTz2NQtda5U14Hl7SY9Op/iSH
-X-Gm-Gg: ASbGnctcjzJvJ3fC8eF6p+u2vwKmJKJ0NspJXkkLPXFQ78fCQhRARNL8vUEX2jWmru7
-	AZ9f9vT/ktYvlJQjM40VnG7i/t3bO/XajVKTKSC0t/3VS0Gn1hxdkETfUSzlb
-X-Google-Smtp-Source: AGHT+IHn8seJRcLF6izN+Y5EGQwWjRMYR7lzRrioW8o6E6jaM1e1rAvz6kVtJykoRdXO1RIQPifWBV23kwAXF0wNSYo=
-X-Received: by 2002:a5d:64ce:0:b0:385:edb7:69ba with SMTP id
- ffacd0b85a97d-3862b335324mr10793035f8f.1.1733744325101; Mon, 09 Dec 2024
- 03:38:45 -0800 (PST)
+        bh=EHnRfRL33JY+SgOza+omObtcVl8TYmseJZ6d8dTduFc=;
+        b=dHQmGkLtfT/bEIHs+kGKjNUOLLIkhaXpX6M86K/mI+TbYtLqCNAepjk/712vX5XW6S
+         wOH8eedwpwQOp0AuZ5OR/8wzQJwmakxA3b1tpdcEVX1QvtQUAMokYqVQsK9YzSK7VqQL
+         FOjibzGKgF/f25qT2ZFdPf0NX2EncXYjc269NjimBfSvGCHhWcbiO978dktMpNbQlS+N
+         ECCtmnFXFU6t0qxcv8ESMqxiwk+QdoCWzkui32EQ/GGT5+tAYHZxIzsPFGd+x/82SVRn
+         xNjJ+irAm7wnBP1Qlyt4J/INrae8/ZAv2zc4BBaAY6A/fkAKdlYhEiyhLC5JKO0YCasR
+         92kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCQox7bHPsoe/wBehY7FX+9TrPNJAVS8jSvmFdzAYB3F1K5O9FkREq5STS8wMjn7PHhV+LT6H0zL7NYvo=@vger.kernel.org, AJvYcCVvVEsvnNcqt6FTY1wnV2Z0mj5H1GLA6phvXndliLqxQkPhpG0W6bnNGzcyiwooXkMkCxzDmfJUKLSI4jxmpfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBqBklUSu9WgGorlx5lwtrSUv0iloK+NnSuBQZ10eqF52B1vNi
+	72Wc0pb5QwGHC2jelC6/1WNAfw3LrzWdFmWRpJiK9FDFiGkT5O7Ef73DBCGwboSPHaFU++h90DW
+	WpPO+RajtdQSEGN5sJsIwpPRVqPo=
+X-Gm-Gg: ASbGncvOr40s8ZwX3X6OoFS1KpnVRY8d0iV1GwCjmesXDOt773b20JvKdzGEmyhLJ3H
+	uY6DVcqKgcEyUwMFUEQMi9GC+4yRUY/A=
+X-Google-Smtp-Source: AGHT+IH5C5Rb0zbqHMVD4gazrlgtxXrtT8gxWz3ZbGytElL6YCPuhtwuZYmAVcaff3/PeqBswyUvShra1yLUzDEv0J0=
+X-Received: by 2002:a17:90b:4f8c:b0:2ee:d9f2:2acd with SMTP id
+ 98e67ed59e1d1-2ef6ab273a8mr7147109a91.6.1733744879050; Mon, 09 Dec 2024
+ 03:47:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com>
- <20241209-miscdevice-file-param-v2-2-83ece27e9ff6@google.com>
- <2024120925-express-unmasked-76b4@gregkh> <CAH5fLgigt1SL0qyRwvFe77YqpzEXzKOOrCpNfpb1qLT1gW7S+g@mail.gmail.com>
- <2024120954-boring-skeptic-ad16@gregkh>
-In-Reply-To: <2024120954-boring-skeptic-ad16@gregkh>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 9 Dec 2024 12:38:32 +0100
-Message-ID: <CAH5fLgh7LsuO86tbPyLTAjHWJyU5rGdj+Ycphn0mH7Qjv8urPA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: miscdevice: access the `struct miscdevice`
- from fops->open()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20241206192244.443486-1-trintaeoitogc@gmail.com>
+ <CANiq72neo_RtANWJu_GW5LxsR5KWxriS1L8nsXkNn7ioiaEQKQ@mail.gmail.com> <30ddfc7f-4b13-4caf-8859-2cd2e72ef878@sedlak.dev>
+In-Reply-To: <30ddfc7f-4b13-4caf-8859-2cd2e72ef878@sedlak.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Dec 2024 12:47:46 +0100
+Message-ID: <CANiq72mh2_QhHcE65-t+6UEEqe+9XwGQ3gJ1CCQpZ6r3HOcokQ@mail.gmail.com>
+Subject: Re: [PATCH] [PATCH] rust: macros: add authors
+To: Daniel Sedlak <daniel@sedlak.dev>
+Cc: guilherme giacomo simoes <trintaeoitogc@gmail.com>, Wayne Campbell <wcampbell1995@gmail.com>, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, walmeida@microsoft.com, 
+	fujita.tomonori@gmail.com, tahbertschinger@gmail.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 9, 2024 at 12:10=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Sat, Dec 7, 2024 at 11:15=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> w=
+rote:
 >
-> On Mon, Dec 09, 2024 at 11:50:57AM +0100, Alice Ryhl wrote:
-> > On Mon, Dec 9, 2024 at 9:48=E2=80=AFAM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Mon, Dec 09, 2024 at 07:27:47AM +0000, Alice Ryhl wrote:
-> > > > Providing access to the underlying `struct miscdevice` is useful fo=
-r
-> > > > various reasons. For example, this allows you access the miscdevice=
-'s
-> > > > internal `struct device` for use with the `dev_*` printing macros.
-> > > >
-> > > > Note that since the underlying `struct miscdevice` could get freed =
-at
-> > > > any point after the fops->open() call, only the open call is given
-> > > > access to it. To print from other calls, they should take a refcoun=
-t on
-> > > > the device to keep it alive.
-> > >
-> > > The lifespan of the miscdevice is at least from open until close, so
-> > > it's safe for at least then (i.e. read/write/ioctl/etc.)
-> >
-> > How is that enforced? What happens if I call misc_deregister while
-> > there are open fds?
+> I think we could fight with the code formatting, because when it comes
+> to the rust macros, rustfmt is often very confused and we could end up
+> with variations like:
 >
-> You shouldn't be able to do that as the code that would be calling
-> misc_deregister() (i.e. in a module unload path) would not work because
-> the module reference count is incremented at this point in time due to
-> the file operation module reference.
-
-Oh .. so misc_deregister must only be called when the module is being unloa=
-ded?
-
-> Wait, we are plumbing in the module owner logic here, right?  That
-> should be in the file operations structure.
-
-Right ... it's missing but I will add it.
-
-> Yeah, it's a horrid hack, and one day we will put "real" revoke logic in
-> here to detach the misc device from the file operations if this were to
-> happen.  It's a very very common anti-pattern that many subsystems have
-> that is a bug that we all have been talking about for a very very long
-> time.  Wolfram even has a plan for how to fix it all up (see his Japan
-> LinuxCon talk from 2 years ago), but I don't think anyone is doing the
-> work on it :(
+>         authors: ["author1", "author2",
+>                         "author3"]
 >
-> The media and drm layers have internal hacks/work-arounds to try to
-> handle this issue, but luckily for us, the odds of a misc device being
-> dynamically removed from the system is pretty low.
+> or
 >
-> Once / if ever, we get the revoke type logic implemented, then we can
-> apply that to the misc device code and follow it through to the rust
-> side if needed.
+>         authors: [
+>                    "author1",
+>                    "author2",
+>                   ]
+>
+> and rustfmt would be totally ok with both of them.
 
-If dynamically deregistering is not safe, then we need to change the
-Rust abstractions to prevent it.
+Yeah, that is a good point. There are hundreds of drivers with 2+
+authors, so this could indeed be an issue eventually.
 
-Alice
+Having said that, we already have e.g. the `alias` and `firmware` keys
+that take a list, so I think we already have the potential issue, thus
+being consistent in our use of lists sounds simpler (unless we are
+discussing migrating those away too).
+
+We could also try to mitigate the formatting issue via e.g.
+`checkpatch.pl` if needed.
+
+Thanks!
+
+Cheers,
+Miguel
