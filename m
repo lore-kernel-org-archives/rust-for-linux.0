@@ -1,107 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C11C19A288;
-	Mon,  9 Dec 2024 21:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DF146B8;
+	Mon,  9 Dec 2024 21:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733779557; cv=none; b=XiphJ3qIykhY4u5a1e6+MivtKGc4D3RuJ0DPFJvZQfaHF250BkNJ+7niknDRi1dwfNWBlDR/nQ7Ym6x0sOuOB7zbcA1GChdfkHCdLsqGWAnjyPAaq8RNhgP1+KvBGFbZL0Mo7QHm8OqRyUCZBcWXY+RH0iNgBj3xpOYv5tx4jT8=
+	t=1733780080; cv=none; b=N4T/6gU5q3jaT12TwDG8KzaOLfr6S8tJQTX1vC7ncA8Z1iFepeq+cCeiyVjVQjvAgcsnvcKeT3RF5LLy7lIG72aHPDtSVkQ11SmvKrtAEFOe7iPGhUNQsTIVoS/7peMFFqPCw/S/IBWtjcID8sUyRaN/xPIEOObAi3Tn20m/dS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733779557; c=relaxed/simple;
-	bh=IgOP2GAy7Xl+KBtgFiCSBdEWbWEt3lp2v9OABCv/c/A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KpjqSJNBHyX0Movt9InFfgJPkY1coEchknogM8EIpv+Jxp+z5wq6bAl1edqKjVNPbjUx0dyo6JuhiOVtHvnV7qNOMCtDIdKp/okJqTMKr/GqXrmNRLM7VT1Rr+Up991RSAifeT3ebCWv4O8jWyjvqBmhQeZaainVk5Q7JciJMzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6G48uLC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733780080; c=relaxed/simple;
+	bh=OaYQyqSw0Hl4TdR7kpLFuBM+r+JH3hSzeR26/EtUU3I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aGMQmTow4fI1d3+Si+oeT11offuImgmrTu/DIjbKoKD23uvm0yGcINUPPonYzTtkSnYWgKBMdRuhPzZb6StTKpbZxwF4xLB/EWG81gcep+1G2SdzOAsQO1lnKRSAuapsEzRyNukpnE9YR3A+8XGztMdRZe+NRqChlUuOE+FV98Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNenawyu; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6G48uLC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BF9C4CEE1;
-	Mon,  9 Dec 2024 21:25:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733779557;
-	bh=IgOP2GAy7Xl+KBtgFiCSBdEWbWEt3lp2v9OABCv/c/A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Q6G48uLCNrTxVSxhI0A5GkCxKyXsxvboG2S26UtMxm755Kw7ZJVj0rhq1q4l6rBwk
-	 NidictF/SaXgDubbOMjHFb0SGzgdL4f0XXXK/GzJuuz+8M5ZXyTq7eVzGUdIoUiLk1
-	 8JxA8/v6unHzbteEVPzX3yLQzIinELf7+SSv+BTlvE7aVoLS/7TBvoQAL45tkR+2tf
-	 RwwuBaM4jw8ouiAyfEtcQHQqACsQXE+IP2mPMypePlsuM0lcxU41e3Aa8HGQi6Yvbf
-	 7GN18s3cPTWUiamANO5wyiN0pCsC9QZL0cnnMeCGqk970ov41Fb8u9QruTJBZ6Wi+5
-	 /16jZ+cnANVUA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: document `bindgen` 0.71.0 regression
-Date: Mon,  9 Dec 2024 22:25:44 +0100
-Message-ID: <20241209212544.1977065-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNenawyu"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ee6d0a57acso501144a91.1;
+        Mon, 09 Dec 2024 13:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733780078; x=1734384878; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OaYQyqSw0Hl4TdR7kpLFuBM+r+JH3hSzeR26/EtUU3I=;
+        b=cNenawyujPIW1tDmx3q9mfecfhHIdvEb1rb86hj0y+zeuLpm9AJzlhI6WWIQnHWeQj
+         mb+XGxQOVxbXxvelY7a0oPBFWBu9IN7jpudPoe/K6/WjfwBJCci6k8ikR1eO3b7PyvLL
+         pm5N4vj5uOcXL1ffxzoy1Hrz1buKzA6T1OgICHtVNqD9bdnCw/bVKSjVeYeN8uFDliwM
+         w56plvhZwZFcUXPzmr9vWJOSye2m73wCC8H8PxKcJ/Ko8meQuEl9AJdnhd1BnY0NbFOt
+         uOBPcQlG0t8S1mgvD150rG2tsxEFWAKeUGzFb4sKNpTts6BcNpB8OdImkNyvvNB/T5Qg
+         Mq0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733780078; x=1734384878;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OaYQyqSw0Hl4TdR7kpLFuBM+r+JH3hSzeR26/EtUU3I=;
+        b=FF/Vc0uy8x+yYCz99poIomox4JxYQmG4Y84P6eXi+4cretNTb4pEq7AaRv9j9hyXDO
+         X9ANUzBmTvMaR3dMicZ+7KCLSF2o0EupgTFcO+JJgTkkCKMbzEVlHcvkcXob6De1T3YV
+         pa6qP6SoxSJutEGPms1yp035XfwtEHfdN6F0nfhnQH7svHgiOXpsZ0shX0FflJWbr8rf
+         oRM3lk5J1Cl+tbC0333Dsi14wrrvGDvr61sQZgU2+EAkJMenJKW9N3tBri8zIkhnZD2s
+         RrfuBn2H3qM+WiOQjiu+BurTqTB8fqxenIr1R9Kah03IGhBjkGBQOjA4dPbAnZL49DDa
+         wfKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCy4bdkzTDHiT01LWLq2bRYcWbr+X9cCkL9OjKENSJiz2kge5Gj2oM9MZ4MhCSNsV+IXD+nv9C7PFPoeZcWg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxrL/Les1Rwkiuf2MVU2FvdaMtMZdYoZZUymYT848363LgGLPf
+	NdxG3RJltdUQ/TVQRAoq57rBDcvL3ty2CgeFmcos4lO05mZ7Xnaq0BZkhQh95xiS6m8shQNovU+
+	nO+PsTzggGe49QiE33BNAHgTqseU=
+X-Gm-Gg: ASbGnct5mFARRO4+owkRMJqIgFX5Z0y720IFPMgR1yqLNaFl6rkIDxfCLszT7hhNYLr
+	5BTQ3hVh1ENaEfd/FD95kX+0QKSlIyQsvTFg=
+X-Google-Smtp-Source: AGHT+IFEaU5HiJqABSjJ+nt1HjHP8vFmJLaWaM25RE9Mv7RG0zgDuLJrlxJnTg2lSTjKdUeTBLDxdiS095LsBHvt7sA=
+X-Received: by 2002:a17:90b:3a89:b0:2ea:5e0c:2844 with SMTP id
+ 98e67ed59e1d1-2efd4a12662mr605031a91.5.1733780078068; Mon, 09 Dec 2024
+ 13:34:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241204174627.1151288-1-lee@kernel.org> <20241204174627.1151288-2-lee@kernel.org>
+In-Reply-To: <20241204174627.1151288-2-lee@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Dec 2024 22:34:25 +0100
+Message-ID: <CANiq72mr=J8j+g4Sc9OQEKsxBHxBNaAAB62wvXwb-Aa5kTAUJA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] sample: rust_misc_device: Demonstrate additional
+ get/set value functionality
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org, gregkh@linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-`bindgen` 0.71.0 regressed [1] on the "`--version` requires header"
-issue which appared in 0.69.0 first [2] and was fixed in 0.69.1. It has
-been fixed again in 0.71.1 [3].
+On Wed, Dec 4, 2024 at 6:46=E2=80=AFPM Lee Jones <lee@kernel.org> wrote:
+>
+> Here is a simple userspace program that fully exercises the sample
+> driver's capabilities.
 
-Thus document it so that, when we upgrade the minimum past 0.69.0 in the
-future, we do not forget that we cannot remove the workaround until we
-arrive at 0.71.1 at least.
+Before I forget: one idea would be nice to get this program into an
+actual file so that people can easily give it a try. Or maybe as a
+```c ...``` code block in the docs.
 
-Link: https://github.com/rust-lang/rust-bindgen/issues/3039 [1]
-Link: https://github.com/rust-lang/rust-bindgen/issues/2677 [2]
-Link: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md#v0711-2024-12-09 [3]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- init/Kconfig                 | 6 ++++--
- scripts/rust_is_available.sh | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+Thanks!
 
-diff --git a/init/Kconfig b/init/Kconfig
-index a20e6efd3f0f..e8d2b5128f87 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1989,8 +1989,10 @@ config BINDGEN_VERSION_TEXT
- 	string
- 	depends on RUST
- 	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
--	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
--	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
-+	# (https://github.com/rust-lang/rust-bindgen/pull/2678) and 0.71.0
-+	# (https://github.com/rust-lang/rust-bindgen/pull/3040). It can be removed
-+	# when the minimum version is upgraded past the latter (0.69.1 and 0.71.1
-+	# both fixed the issue).
- 	default "$(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null)"
- 
- #
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 93c0ef7fb3fb..d2323de0692c 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -123,8 +123,10 @@ fi
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
- #
- # The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
--# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
--# the minimum version is upgraded past that (0.69.1 already fixed the issue).
-+# (https://github.com/rust-lang/rust-bindgen/pull/2678) and 0.71.0
-+# (https://github.com/rust-lang/rust-bindgen/pull/3040). It can be removed when
-+# the minimum version is upgraded past the latter (0.69.1 and 0.71.1 both fixed
-+# the issue).
- rust_bindings_generator_output=$( \
- 	LC_ALL=C "$BINDGEN" --version workaround-for-0.69.0 2>/dev/null
- ) || rust_bindings_generator_code=$?
-
-base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
--- 
-2.47.1
-
+Cheers,
+Miguel
