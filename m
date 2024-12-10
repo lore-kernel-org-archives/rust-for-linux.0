@@ -1,42 +1,41 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A06E1DC997
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 10:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BB023DEB5;
+	Tue, 10 Dec 2024 10:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733825651; cv=none; b=n607dWU/HopPFAqhc62Alk8Spfx60bRn8Ci1AbsuiNgpIzmMscVgMI9+jcc72q0eQaKxY1pItGS8XLq3+iDFZ2HZWaGWBR6gA8XHcRROU7E31e3Nd6Iq9EGn8x3rCPujqdXvLCbV8dsIvadIlM6/bO2KI+Wa0hhSfb0exLqg4Kc=
+	t=1733825930; cv=none; b=bQ9P00Q6vTqXYdY4yOKA0HH6LZ/A6y2i+SemXAq82OIizSoy/+GSRX8poLmzcDUUAD8wvboer+lNInhIEBpk1d8f5W04XGngRcLLpBMZ6s0XkQ5ILx5CqRQWBBYVsNKHHuUDdtgEFYSSO1cEOF1wUvZeGNlMmJ7mHkuFkJlkHMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733825651; c=relaxed/simple;
-	bh=HKFGUhgaRKP679wcEN34Ghy1oFB9oYj5KEsxLweN8XM=;
+	s=arc-20240116; t=1733825930; c=relaxed/simple;
+	bh=Nj05O/ueN/PMCm5p4N1zDixMdHIiDU9Yqel2bHGFdQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GxeC89rzoWmJJr/5HSar5z9/2AvTGMi05eQ3uz1Dvq4gCelCnmUWQHPJMPdPjyGdD6eyW90CNC//iQ3p3Pry6BZ+l6JEG7C0iCrPL6SLcHWixqN9qJxV9Be6BZhvTRLsxiFqQNHwTTjqBBBYrCwfHrN+3TNxRBDHUQ9SJqfCzMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=rlBr8HWH; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=WBRnNJADJO05k9h23wUr7gD84H17DV+xChSbhcnZF3pDSvYxPwRz1OnmGCbpdp5uVxKVkITwP7nO45/Uq0fU/xzG0OWazimzu6iUKT+GAxw0haNuQ44jqIDSjDQIRI8CZcB2LZLFlphm3nys753JfRNvKil7zgQCTbSBsQ9JTa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=tCjew8Fl; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="rlBr8HWH"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="tCjew8Fl"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1733825635; bh=bqZsaelg2+R3Z12tHTTvUBHECNy5IttnXHMYVGwI6Vc=;
+	t=1733825925; bh=znw9RaPDGdZv374XX1ZIqQi1J1m6y/QWq9gDvavyvQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rlBr8HWHIcUJ4qPXzGxrHWpJYpSh/uffiBq7u3C9jNrGRjpeWVQo7ybLCWoNnoZhc
-	 vrWqWbpNSmFfGmbGz/4tEA1ZDxHAZ0g8RqVONOlLwMuU/pT3r3QEyCSeF7Ew6b7mSZ
-	 pH+O+khbvuaJDpzAqxTl9mvPUQvL1kOsZKoNoLDw=
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	b=tCjew8FlvciVZ73tkgrEjFvkxLIG2ETPTuX2yUH6sOfN9PSvC/Tj9w/ZjDjk7QETX
+	 eFXJZTRjtazxAW6uSvCx1t6pspw3r7pCn2C9ufb13O6B8PagnPxSEm081u5WfaRxbr
+	 InakM2F118yzlooG9tYTT1g/rsaFukzUYyXlHNmY=
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
-Subject: Re: [PATCH v4] rust: error: modify `from_errno` to use
- `try_from_errno`
-Date: Tue, 10 Dec 2024 11:13:54 +0100
-Message-ID: <F3F6EC59-A4AE-4137-80C2-9048CA0EF33D@kloenk.dev>
-In-Reply-To: <20241207112445.55502-1-daniel@sedlak.dev>
-References: <20241207112445.55502-1-daniel@sedlak.dev>
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: document `bindgen` 0.71.0 regression
+Date: Tue, 10 Dec 2024 11:18:44 +0100
+Message-ID: <AE7176FF-D196-4199-AA8C-B16FBC31B417@kloenk.dev>
+In-Reply-To: <20241209212544.1977065-1-ojeda@kernel.org>
+References: <20241209212544.1977065-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,87 +47,80 @@ Content-Transfer-Encoding: quoted-printable
 
 
 
-On 7 Dec 2024, at 12:24, Daniel Sedlak wrote:
+On 9 Dec 2024, at 22:25, Miguel Ojeda wrote:
 
-> Modify the from_errno function to use try_from_errno to
-> reduce code duplication while still maintaining all existing
-> behavior and error handling and also reduces unsafe code.
+> `bindgen` 0.71.0 regressed [1] on the "`--version` requires header"
+> issue which appared in 0.69.0 first [2] and was fixed in 0.69.1. It has=
+
+> been fixed again in 0.71.1 [3].
 >
-> Link: https://github.com/Rust-for-Linux/linux/issues/1125
-> Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
-> Co-developed-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@=
-gmail.com>
-> Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gm=
-ail.com>
-> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+> Thus document it so that, when we upgrade the minimum past 0.69.0 in th=
+e
+> future, we do not forget that we cannot remove the workaround until we
+> arrive at 0.71.1 at least.
+>
+> Link: https://github.com/rust-lang/rust-bindgen/issues/3039 [1]
+> Link: https://github.com/rust-lang/rust-bindgen/issues/2677 [2]
+> Link: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md#=
+v0711-2024-12-09 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
 > ---
-> v3 -> v4:
->      - Now everything should be rebased correctly.
->      - Link to previous version [4]
+>  init/Kconfig                 | 6 ++++--
+>  scripts/rust_is_available.sh | 6 ++++--
+>  2 files changed, 8 insertions(+), 4 deletions(-)
 >
-> v1 -> v3:
+> diff --git a/init/Kconfig b/init/Kconfig
+> index a20e6efd3f0f..e8d2b5128f87 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1989,8 +1989,10 @@ config BINDGEN_VERSION_TEXT
+>  	string
+>  	depends on RUST
+>  	# The dummy parameter `workaround-for-0.69.0` is required to support =
+0.69.0
+> -	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be re=
+moved when
+> -	# the minimum version is upgraded past that (0.69.1 already fixed the=
+ issue).
+> +	# (https://github.com/rust-lang/rust-bindgen/pull/2678) and 0.71.0
+> +	# (https://github.com/rust-lang/rust-bindgen/pull/3040). It can be re=
+moved
+> +	# when the minimum version is upgraded past the latter (0.69.1 and 0.=
+71.1
+> +	# both fixed the issue).
+>  	default "$(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/nu=
+ll)"
 >
-> Currently, there are three patches for this issue. There was a race con=
-dition between
-> me [1] and Guilherme [2] because we both picked it up as a "good first =
-issue" without
-> knowing that one of us had started working on it. We both agreed that o=
-ne of us would
-> be the main author and the other one would be noted in "Codeveloped-by.=
-" However,
-> Guilherme has kept radio silence since [3]. So, I am resubmitting the p=
-atch, which
-> builds on top of [3].
+>  #
+> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.s=
+h
+> index 93c0ef7fb3fb..d2323de0692c 100755
+> --- a/scripts/rust_is_available.sh
+> +++ b/scripts/rust_is_available.sh
+> @@ -123,8 +123,10 @@ fi
+>  # Non-stable and distributions' versions may have a version suffix, e.=
+g. `-dev`.
+>  #
+>  # The dummy parameter `workaround-for-0.69.0` is required to support 0=
+=2E69.0
+> -# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be rem=
+oved when
+> -# the minimum version is upgraded past that (0.69.1 already fixed the =
+issue).
+> +# (https://github.com/rust-lang/rust-bindgen/pull/2678) and 0.71.0
+> +# (https://github.com/rust-lang/rust-bindgen/pull/3040). It can be rem=
+oved when
+> +# the minimum version is upgraded past the latter (0.69.1 and 0.71.1 b=
+oth fixed
+> +# the issue).
+>  rust_bindings_generator_output=3D$( \
+>  	LC_ALL=3DC "$BINDGEN" --version workaround-for-0.69.0 2>/dev/null
+>  ) || rust_bindings_generator_code=3D$?
 >
-> Link: https://lore.kernel.org/rust-for-linux/20241104185135.18974-1-dan=
-iel@sedlak.dev/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/20241104200014.12996-1-gui=
-lhermev2huehue@gmail.com/ [2]
-> Link: https://lore.kernel.org/rust-for-linux/20241105114819.14051-1-gui=
-lhermev2huehue@gmail.com/ [3]
-> Link: https://lore.kernel.org/rust-for-linux/20241123104857.49385-1-dan=
-iel@sedlak.dev/ [4]
->
->  rust/kernel/error.rs | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
->
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 52c502432447..9b508f10c211 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -101,19 +101,16 @@ impl Error {
->      /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
->      /// be returned in such a case.
->      pub fn from_errno(errno: crate::ffi::c_int) -> Error {
-> -        if errno < -(bindings::MAX_ERRNO as i32) || errno >=3D 0 {
-> +        if let Some(error) =3D Self::try_from_errno(errno) {
-> +            error
-> +        } else {
->              // TODO: Make it a `WARN_ONCE` once available.
->              crate::pr_warn!(
->                  "attempted to create `Error` with out of range `errno`=
-: {}",
->                  errno
->              );
-> -            return code::EINVAL;
-> +            code::EINVAL
->          }
-> -
-> -        // INVARIANT: The check above ensures the type invariant
-> -        // will hold.
-> -        // SAFETY: `errno` is checked above to be in a valid range.
-> -        unsafe { Error::from_errno_unchecked(errno) }
->      }
->
->      /// Creates an [`Error`] from a kernel error code.
->
-> ---
-> base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
->
-> Daniel
+> base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
 > -- =
 
 > 2.47.1
