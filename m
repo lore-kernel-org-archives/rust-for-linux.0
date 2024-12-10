@@ -1,169 +1,161 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7423410E5;
-	Tue, 10 Dec 2024 00:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F290029A5;
+	Tue, 10 Dec 2024 00:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733789375; cv=none; b=LKNJxnMir/ImvOrASYq8vgKzJudsGm7SfZKPpdrQd3paw566U8S8SforsgZTVrYoGF8DSGl+Pbj4Z81hznkbEtIUm4GQRla/pNBc7WspzcD1thZAdwvWvCF77e/N3zTe1CpQrc5q5/HFGz0v9143ZA5DwTl7mHjojwGnkVlloqs=
+	t=1733789953; cv=none; b=S+lbvNLpIQgoPLVU0hLe9TI76dHcMY5SjtpZd8e7Y8kNapSXZpilWPhbC572UNZLzV2InQvVrGvE1LtA5t+SWXFn0EKVST6dZ9HXJFM4J3NXzHRcMIN5tqDJu1uXHne+KgIdqXfcW1karaK4qY8sQ0d0pVHZ9h+P24+v7GgKCwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733789375; c=relaxed/simple;
-	bh=RCOVJWgFhXT6DmylXTsI1S6NIDyGF9sD4+HqK8vNzXU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DBQIecx2On42vrwj+oZI5KQVPNw5C1bwS6cVLuP/N939UboZFKaFH2B1L4fxTw7kX7gbeuZp8J15RAhiKGLpB81jg2sq0CeVZV2crq5Ffc4rRolbLESPQAfYU5ptSsaZ0FZ/jkIS8JiHMWa5Vk2bRVXh3ErrARB1GWkeGQ6GVaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AnSvDcoH; arc=none smtp.client-ip=209.85.216.49
+	s=arc-20240116; t=1733789953; c=relaxed/simple;
+	bh=+dWai1xx8b2AwAgDP3O1hmszP+7eXk+xWu+a5qgwJ6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YbjwM6ChfDB9KGsR1Sgk8iZn31lz+gkO1zgS7uIzRdeUSx/YS1fzuWtbXvCfQgLI8NbpgacMl7KmEHcmJjpIPpp9Fnzct1o3pR5KkZ2xurr9J5ycUnUhuQUkhO+jrRSWt12Uy2wPZ29E8iU/oKnk7BZb+wm6Nr45VoLXn+ZRDxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0UiLFrc; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AnSvDcoH"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ee8ecb721dso869764a91.3;
-        Mon, 09 Dec 2024 16:09:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0UiLFrc"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-725f4623df7so1243649b3a.2;
+        Mon, 09 Dec 2024 16:19:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733789370; x=1734394170; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bqf9Pw5ygFqNWLQdG8eH/zSqStheh4qMrd/FdN0cEGA=;
-        b=AnSvDcoHo6Zqc4tPIJLzPyFHDLH9R/n8npwXiWjpM/lK2ujYEvYMuXVrUSva6kG3tl
-         tClhpbjJz6ugBysxMAzvJ3KlL8GpUYCM3GINbHD1hBMDLP+M3pI5nD+uXKMd0vCtjFcO
-         eK+KEs0XuAm/BTRDJ34DSYoVaGz0gI8+0tZRxlcKvUZvpGtn0DRT+KMhDgmUkAVQXm1z
-         8q78+3B4O/9qw88RKTb4th29YPGPvSbHIy+t7Vbfn4B3/MWxRO1zx6zO46/qAAzgQqd9
-         RMoU0gboOe3Ze8kEvJyBdebDBLqvrEHZOZmtvPNxffNdtse9zRpW84LK7uYHPx9+pBVN
-         Zy7Q==
+        d=gmail.com; s=20230601; t=1733789951; x=1734394751; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yyn8QNTH7wqJjjw/QfPOjCU2TP5ahhHLckRiqYVzfDY=;
+        b=i0UiLFrcpPwVMz9Kr8RG87V5K3mqyVOS9Le3k+YHcO0b7E7BPNwK14XGo7nMfYhL4S
+         5aQJWdcDeArML+9BBVIDywy+Go+W+af+lafb36P5GJqGslJwCuyhbLn4AljotKj6T76W
+         4QGvBggEoCcy8gq0UWmGqPMJhhsL7NL3YnAq7JnNiDBlJ0E1LznpphWyu6ICvm+CQbqO
+         aOmwAOragqfCyx1DSy8v0BhLzeaLFVTg33HFb8bafDGvWTcTNFF8oT8fcMIQu23qLjAE
+         TR4GKwfFM3c0le3w+TGifA3dLURIanZTxwMYNEyINVX8VPIU95cTP7wok41NkA3cNs8z
+         QbVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733789370; x=1734394170;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bqf9Pw5ygFqNWLQdG8eH/zSqStheh4qMrd/FdN0cEGA=;
-        b=UFoXeg04YhbM/X6aR6nz7O1tn+CTgv7AD3woi9XQK3/HxxajeFLV+O+kLo6kIUkGEl
-         J9GTYHm5x0e9gym+zl4JVSo/KAUL2nUo6PYbHkYxKCb8CUQznaNn3PczRGQrCgkl8j3n
-         xRN7WQ05iJ9lLN11XvLrBwKVWRXR19BCqRqlTiL9zvgbnawHymAG7Z1cVJw7nArQst+v
-         6uNv0csNyUmN//IsHZ8SiTzYE9Hpcs7nZi0XO10fhFyUAD4vHIllQr2lzweFIbmfsXXQ
-         ZnT8qpqvujxDgQS/FrkKqNiRitX6HnpNHtDTG5WHUuC7+lV8opiI8OqsNFM/Reaxhh2f
-         p3ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVlqo5djkdg2JhvrM/NofWHs0Wy4ykJxAJcAu5DmSabPZk5eIEL3nS2jEUU2JLrdd2klkXOXjmsWmB9in7QNv0=@vger.kernel.org, AJvYcCVvk5faDX8lNGxZbXWhCWQWiaoUbTAJg4XbKQhxSnMhezjavZ4rmwdiDwS1GILkMRvUpcedToKeOk3WrF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg15pt0/rq62lBAZByAPAaDT7eNrAaEQ2UgY5c0c5nmjSxUqkR
-	nMh6gmDJVQzRazlTrFR9tTaeZGaYx9AcudN0uCqZsdHh8zHd4zztbn+LY4YJDXhqRKkea1pHvGT
-	cpLXlZKgjgvqvgi024ZlUCYcauuFBQJDnKDg=
-X-Gm-Gg: ASbGnctVCGPaP+CZT9Q2jSEObRwoE/V2YyUF50rwwBYa4+np1ueaDHpL1q+/JQ+uvma
-	pBADmPTkKLHiLlwBy/pMRzcA37NAzdHJ4E/o=
-X-Google-Smtp-Source: AGHT+IH0533Z0lG1cmsFMSYTQgHR047SqSc1dGT+SjioNScy/dOIbt6nmvrmg4TjnlVulh/A/8MXVpm+7Nk8kFeG7Q8=
-X-Received: by 2002:a17:90b:1b42:b0:2ee:6563:20b5 with SMTP id
- 98e67ed59e1d1-2efd454dfb2mr887964a91.0.1733789369748; Mon, 09 Dec 2024
- 16:09:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733789951; x=1734394751;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yyn8QNTH7wqJjjw/QfPOjCU2TP5ahhHLckRiqYVzfDY=;
+        b=YjnKLJGG6em8N8OlpEARkU7J7ZJuKM9BTL9V+qKPfs3VYIE2w/in5LZ2PGv3AA6cpz
+         uFvnB9vu/kn2JojRXUP5z2bCPCnw2My/o+lupng+bNMCSxEM/HCmilfy3njLH29KAApo
+         E3lPZSocpx2cH3exUWUP29/AeppyHcLMSwI5deIAJD9EYsxsK7PEkiA8qSy1hH1lyrMc
+         CR/4W8Qh+jtvFMjs3MwG5Dt7nix/hXGip+EW0kdUwQXjNHXPzt2uayBvcVrcu5cZE3i/
+         a3Efk4RbEniBrpHWpw7tRxuARtc24Q2AozOaJEy8WtuoZvZVbrkLKMFdj3ggjlftRIe0
+         73EA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2wiHyEpGEMRSgW57d3qx468tzRyDKn54GlfcSfXBeWpNwJJLxMR+Hz5U2O4G0A8wy8vlPt5PtxfYlffOGng==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxibrxwcfL6vR3Pu29P9MoctZwgAmkdn/wtBj4WFw8YDKUoeALo
+	Z4H1XtPUNJYzB0AcI0Cea09/mGgdKtGVD6ihPgonjEyGdZ+KAPyGUEmQ/RTi
+X-Gm-Gg: ASbGnctoPVo3k+1vUnbTzZMHqp9ctLU3CT87VToTRjb7d49l30L7KY9UwVExcqIgc0P
+	kbi/eAp5kpO61T4yQHn3IIEeQiu/BW9eX7BcpzLUVGWOX09rxHifx2L9r8DwLEmZWhf8vAR8Pk9
+	ijd5qVNhDDpPgenpxldH8LtbVWF9lOkj2u+h4QYXdF9jsyaFaDkV+ZHgtVvL0MsQnjnnQ2Sn1Y7
+	Yvk+tgI2Q36gn3h529pmzuBniY5UpG0Y8MWq1H4/xruVUCA7wFU5/DGfUa560nLZSpPI0wTFrBz
+	axp9mUO2t3ef1aZ/H8+dF9XRlaIZ
+X-Google-Smtp-Source: AGHT+IEdFPEBCVbMfoJezZOTVqCwhcFvYK07D7Yq/Bkx4KQFK9L3M9HsZHOxAW7D+XoXG/7mHHQLwg==
+X-Received: by 2002:a05:6a00:928b:b0:725:9f02:489a with SMTP id d2e1a72fcca58-7273cb72984mr3417048b3a.17.1733789950934;
+        Mon, 09 Dec 2024 16:19:10 -0800 (PST)
+Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725f1fba027sm2005005b3a.3.2024.12.09.16.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 16:19:10 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: x86@kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	peterz@infradead.org,
+	hpa@zytor.com,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	tangyouling@loongson.cn,
+	hejinyang@loongson.cn,
+	yangtiezhu@loongson.cn,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Subject: [PATCH v1 0/5] rust: Add bug/warn abstractions
+Date: Tue, 10 Dec 2024 09:17:56 +0900
+Message-ID: <20241210001802.228725-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123180323.255997-1-ojeda@kernel.org>
-In-Reply-To: <20241123180323.255997-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Dec 2024 01:09:17 +0100
-Message-ID: <CANiq72kTX5o2rs=A51keKQiV=6fT0sN+FjWygL4=ddytnNM8Cg@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: set `bindgen`'s Rust target version
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Christian Poveda <git@pvdrz.com>, =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 23, 2024 at 7:03=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Each `bindgen` release may upgrade the list of Rust targets. For instance=
-,
-> currently, in their master branch [1], the latest ones are:
->
->     Nightly =3D> {
->         vectorcall_abi: #124485,
->         ptr_metadata: #81513,
->         layout_for_ptr: #69835,
->     },
->     Stable_1_77(77) =3D> { offset_of: #106655 },
->     Stable_1_73(73) =3D> { thiscall_abi: #42202 },
->     Stable_1_71(71) =3D> { c_unwind_abi: #106075 },
->     Stable_1_68(68) =3D> { abi_efiapi: #105795 },
->
-> By default, the highest stable release in their list is used, and users
-> are expected to set one if they need to support older Rust versions
-> (e.g. see [2]).
->
-> Thus, over time, new Rust features are used by default, and at some
-> point, it is likely that `bindgen` will emit Rust code that requires a
-> Rust version higher than our minimum (or perhaps enabling an unstable
-> feature). Currently, there is no problem because the maximum they have,
-> as seen above, is Rust 1.77.0, and our current minimum is Rust 1.78.0.
->
-> Therefore, set a Rust target explicitly now to prevent going forward in
-> time too much and thus getting potential build failures at some point.
->
-> Since we also support a minimum `bindgen` version, and since `bindgen`
-> does not support passing unknown Rust target versions, we need to use
-> the list of our minimum `bindgen` version, rather than the latest. So,
-> since `bindgen` 0.65.1 had this list [3], we need to use Rust 1.68.0:
->
->     /// Rust stable 1.64
->     ///  * `core_ffi_c` ([Tracking issue](https://github.com/rust-lang/ru=
-st/issues/94501))
->     =3D> Stable_1_64 =3D> 1.64;
->     /// Rust stable 1.68
->     ///  * `abi_efiapi` calling convention ([Tracking issue](https://gith=
-ub.com/rust-lang/rust/issues/65815))
->     =3D> Stable_1_68 =3D> 1.68;
->     /// Nightly rust
->     ///  * `thiscall` calling convention ([Tracking issue](https://github=
-.com/rust-lang/rust/issues/42202))
->     ///  * `vectorcall` calling convention (no tracking issue)
->     ///  * `c_unwind` calling convention ([Tracking issue](https://github=
-.com/rust-lang/rust/issues/74990))
->     =3D> Nightly =3D> nightly;
->
->     ...
->
->     /// Latest stable release of Rust
->     pub const LATEST_STABLE_RUST: RustTarget =3D RustTarget::Stable_1_68;
->
-> Thus add the `--rust-target 1.68` parameter. Add a comment as well
-> explaining this.
->
-> An alternative would be to use the currently running (i.e. actual) `rustc=
-`
-> and `bindgen` versions to pick a "better" Rust target version. However,
-> that would introduce more moving parts depending on the user setup and
-> is also more complex to implement.
->
-> Cc: Christian Poveda <git@pvdrz.com>
-> Cc: Emilio Cobos =C3=81lvarez <emilio@crisal.io>
-> Link: https://github.com/rust-lang/rust-bindgen/blob/21c60f473f4e824d4aa9=
-b2b508056320d474b110/bindgen/features.rs#L97-L105 [1]
-> Link: https://github.com/rust-lang/rust-bindgen/issues/2960 [2]
-> Link: https://github.com/rust-lang/rust-bindgen/blob/7d243056d335fdc4537f=
-7bca73c06d01aae24ddc/bindgen/features.rs#L131-L150 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This patchset adds warn_on and warn_on_once macros with the bug/warn
+abstraction.
 
-Applied to `rust-fixes` -- thanks!
+Wrapping C's BUG/WARN macros does not work the same way on
+architectures that support Rust (x86, RISC-V, ARM64, LoongArch). Rust
+code needs to directly execute the same assembly code used on the C
+side. To avoid duplicating the assembly code, this approach mirrors
+what the static branch code does: it dynamically generates the
+assembly code for Rust using the C preprocessor.
 
-I added the following note to the commit message and added a small
-sentence to the comment too:
+The 1st to 4th patches export the BUG/WARN assembly code for Rust on
+each architecture, with no functional changes on the C side. The
+changes for x86 and RISC-V are straightforward. However, the ARM64 and
+LoongArch assembly code are designed differently; they are used by
+both C inline assembly and assembly code. As a result, sharing this
+code with Rust is complicated.
 
-    Starting with `bindgen` 0.71.0 [4], we will be able to set any future
-    Rust version instead, i.e. we will be able to set here our minimum
-    supported Rust version. Christian implemented it [5] after seeing this
-    patch. Thanks!
+The last patch adds the bug abstraction. Seems that an unused named
+argument in Rust inline assembly can't be allowed so we need multiple
+#[cfg].
 
-I also queued it for stable:
+This has been tested on x86, ARM64, and RISC-V (QEMU), with only a
+compile test performed for LoongArch.
 
-    Cc: stable@vger.kernel.org # needed for 6.12.y; unneeded for
-6.6.y; do not apply to 6.1.y
-    Fixes: c844fa64a2d4 ("rust: start supporting several `bindgen` versions=
-")
+The assembly code can be used for both BUG and WARN, but currently
+only supports warn_on and warn_on_once. I will work on the remaining
+functionality after this abstraction is merged.
 
-Cheers,
-Miguel
+
+FUJITA Tomonori (5):
+  x86/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  riscv/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  arm64/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with
+    Rust
+  loongarch/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing
+    with Rust
+  rust: Add warn_on and warn_on_once
+
+ arch/arm64/include/asm/asm-bug.h              |  31 ++++-
+ arch/loongarch/include/asm/bug.h              |  31 ++++-
+ arch/riscv/include/asm/bug.h                  |  35 +++--
+ arch/x86/include/asm/bug.h                    |  51 ++++---
+ rust/Makefile                                 |   8 ++
+ rust/kernel/.gitignore                        |   2 +
+ rust/kernel/bug.rs                            | 131 ++++++++++++++++++
+ rust/kernel/generated_arch_reachable_asm.rs.S |   7 +
+ rust/kernel/generated_arch_warn_asm.rs.S      |   7 +
+ rust/kernel/lib.rs                            |   1 +
+ 10 files changed, 255 insertions(+), 49 deletions(-)
+ create mode 100644 rust/kernel/bug.rs
+ create mode 100644 rust/kernel/generated_arch_reachable_asm.rs.S
+ create mode 100644 rust/kernel/generated_arch_warn_asm.rs.S
+
+
+base-commit: 7503345ac5f5e82fd9a36d6e6b447c016376403a
+-- 
+2.43.0
+
