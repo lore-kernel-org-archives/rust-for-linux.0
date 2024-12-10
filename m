@@ -1,149 +1,263 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5074F17580
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 00:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45EC172BD5;
+	Tue, 10 Dec 2024 07:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733791884; cv=none; b=FG2jl/umSMCeS2RAshemRx63JjKnBrG7+WTiOKVH8BHugZxokVzGNiUs8gFM2P+zthTxUClPGw6GnWkSwEvyl25rGnhWfC6VXs4ESjYniUfFYjwF3bmqt9SBwSVzovFaHWMfESg1CYZvYijSoFuBbsL2+nxQvQILW2dZoXwbIag=
+	t=1733816828; cv=none; b=HJVvtSQHaxgWicjY03aDKJ6QFAAbnHl5okS+pDoa03UtXYKN+aN7OWn6knsIO6qgw1K6zklZ2TPJ37rYZdERp4tGJ2hDteWjKrEn1l+6p51r5b97CZxveTQmpiKbpG4pfJoumwVui5p9VZxudKoR9x7Go6NWATUDL0MNXSgXwOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733791884; c=relaxed/simple;
-	bh=nEfEp69NvTTxONDAy+/5voS/7ePa27UpEn4sAPc0fxE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t8hkZgIwCX6bvxRrVgt6q1L7+8PRwcgVO4hJ2WdSAUixRF+N2F3QL5oEPzaAfRlnlHcGrS3mHNX8bFkSanvICcc5Yk0eqa6YHDQxUS6TQ8Z1arH1xBUKENetI383aOyBmRyyC7ha9QMmq6kghvJ1md/68SdRg2WmYL5u34YVMDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QF2qhLTh; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1733816828; c=relaxed/simple;
+	bh=F9fylD2jsc17wp8pFzXmIUwAs+7aQ7ODDoAVqLh4MZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KfATqOvQ152TArEvSMlCD3EBWYXFBCrMGt0vDGhTEsah0kuBhn+HnRhVtQ/4xSX5yF+2V2ggihVfnJmEg/FGCqoi8JVq64wNarAM+BQZ8wtvgvJJjEUpt5rpeAQbhXipMYGY8X9W+D3ICCVkosHyrUWxw+W5gRflWfY9Xbm3tE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvDwKrsE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QF2qhLTh"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6d89dc50927so34199946d6.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Dec 2024 16:51:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733791881; x=1734396681; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n0h2b9mjtuI2QArXe16Gccc3cHk96ybHu37fBVSwW9M=;
-        b=QF2qhLTh2ATkD/B72CwX3vipG65Liimb2ulJW2P/FPBPTy/rPQWBPVCV4HRtR/Shdz
-         VuuGf3iDzxutnB+rbNE83UCiqHYJLleqwiSMjf5px4YuMZ4fn26hcItpB2l4tm7MzFCP
-         W++8gfDNxwkkpq3slSxhIlhB1+2nYIwma6SGSCUchFqcrkVGei7K1eCdAMtjlginR/kR
-         ijDjIi2X35nfCPFaigXv8UnPk5EJgfqa9t7S1jQ8DcgM15KgId6DsfiKHOe6Me8WQog+
-         UYJjsfYeQUiBYEPt1iiUzE37YCkjKkgMW1U76Q5XCxPkuNDUL7jq+gplJDkoUo5CSWsX
-         lDIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733791881; x=1734396681;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n0h2b9mjtuI2QArXe16Gccc3cHk96ybHu37fBVSwW9M=;
-        b=rCR7etsHlsIKtg8PxVOFc/alZAxUXRo0fgzvJDIsBt4MRGW+aS7GRA+A5nOGBEi03I
-         m5gFs8oGnHNcJvtvUQTMqmEWQ8g7n1KFtRiQHYBCK/aAWr0UfywMEMz7dV7X1+Fy1kVv
-         aGAiufA307/v4T+n51mlw9xsyemyrsCVjH9kIHDp/xGhZ+L1n94yxcKqeoOEy77Pxprb
-         AIibt4BlzMWKPuP+gEoOJWUaWqfpnUSIyyQTN5IbTfqA63ZYufBob/2DblXd94eZo1fa
-         5gB5R2Mje4nYRB2scgiXOA7ojQxxFBkmC3UMy69qcifPYnhpMQrthyD05/PTBZsXIC8D
-         9e1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWsfxppCr8Fjh/9bQVpcbs7Ur2mXSnetpcPl8bHiTidWkhe0qMHkmCmmjvxUBTETwT+yo3Z3RxSzfGx8hv3Kg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO1nhNcO/eIcIvSF0Vt8ts5H7JLPnZBdlx9v4Hb7zTdz9/tMCp
-	mi8WPP0KELb7+xyjeJMnFWXnMLPvbr1dRvDlf31bLxtcwRJMUUlHpZpfMIYyizLqg2uHae6ZP2h
-	pa3IZhqUQVBdON5U7uPAcSdOHI7qCSHHRjl5p
-X-Gm-Gg: ASbGncsy2yMmXA1USPOTkAMa+o4hbqeeCD2Dzhhs5y6rJNbGfYmXRx4IyRucI46MkXO
-	5U0frdpmcYjt31TDiWGrjvH2Ln3PjUg2YBQDl/FIW5RQjbhNL3xLy6eUvPxbLydEHinQ=
-X-Google-Smtp-Source: AGHT+IEv6tYwzZCcY/GOnNZgDCbTNuvBneF8FHhUJ+RFI7vCCo2P0NeWoE+7XRtH4l48ug99YpLfJjAiat491cNQKC4=
-X-Received: by 2002:a05:6214:c8b:b0:6d8:b2f2:bcb8 with SMTP id
- 6a1803df08f44-6d91e2f23c5mr42708296d6.8.1733791881156; Mon, 09 Dec 2024
- 16:51:21 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvDwKrsE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94CDC4CED6;
+	Tue, 10 Dec 2024 07:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733816826;
+	bh=F9fylD2jsc17wp8pFzXmIUwAs+7aQ7ODDoAVqLh4MZk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UvDwKrsEcogxDYdCEiglfx4I8jpqVva5uswZixExaMCN6z8b9XAoXq7X+Rlk2YfK/
+	 ESEMU0Bjq59A590tmXF2qEdEsHKeDO8unbNCHPNMfZSiz/DgXACn+PJNrnA6MBjGuv
+	 mlyQawat4Vkovncjl8PvGrXjE/jSe3nRSXBPiSQ0=
+Date: Tue, 10 Dec 2024 08:46:29 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, rafael@kernel.org,
+	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com,
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
+	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, daniel.almeida@collabora.com,
+	saravanak@google.com, dirk.behme@de.bosch.com, j@jannau.net,
+	fabien.parent@linaro.org, chrisi.schrefl@gmail.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 12/13] rust: platform: add basic platform device /
+ driver abstractions
+Message-ID: <2024121014-rage-sneak-1b25@gregkh>
+References: <20241205141533.111830-1-dakr@kernel.org>
+ <20241205141533.111830-13-dakr@kernel.org>
+ <20241209223706.GF938291-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241112184455.855133-1-ojeda@kernel.org> <CANiq72=BvnriScFay8SpLNe9mNhjvGsBJ9W9UtdzU_6v_i+woA@mail.gmail.com>
-In-Reply-To: <CANiq72=BvnriScFay8SpLNe9mNhjvGsBJ9W9UtdzU_6v_i+woA@mail.gmail.com>
-From: "Hong, Yifan" <elsk@google.com>
-Date: Mon, 9 Dec 2024 16:50:45 -0800
-Message-ID: <CAABy=s12gOZadhYC+=6=TbbyN9j5L0B19ZLSGR_VFEdt1jhwEA@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: add PROCMACROLDFLAGS
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241209223706.GF938291-robh@kernel.org>
 
-On Mon, Dec 9, 2024 at 10:30=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Nov 12, 2024 at 7:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> w=
-rote:
-> >
-> >   - Removed "additional" from the documentation and commit message,
-> >     since this actually replaces the other flags, unlike other cases.
->
-> Some news regarding this: we asked upstream Rust about supporting
-> overriding all flags (including e.g. `--edition`, `--target` and
-> `--sysroot`) and apparently this was already accepted via an MCP
-> (thanks Oli Scherer for the pointer!):
->
->     https://github.com/rust-lang/compiler-team/issues/731
->
-> So, in the future, `rustc` will likely get support for this. Thus it
-> may be best to go with an "additional" approach (rather than
-> "replace"), so that this environment variable works the same way as
-> the rest.
->
-> We can do that by simply waiting until `rustc` implements it and we
-> upgrade the minimum, or by implementing a workaround on our side
-> meanwhile. For instance, something simple like:
->
->     $(filter-out --target=3D%,$(s)) $(lastword $(filter --target=3D%,$(s)=
-))
->
-> would be probably enough to cover Android's use case since we use the
-> syntax with `=3D` elsewhere rather than with a space -- the equal sign
-> plays well with Make's string functions. We can also add other flags
-> if needed.
+On Mon, Dec 09, 2024 at 04:37:06PM -0600, Rob Herring wrote:
+> On Thu, Dec 05, 2024 at 03:14:43PM +0100, Danilo Krummrich wrote:
+> > Implement the basic platform bus abstractions required to write a basic
+> > platform driver. This includes the following data structures:
+> > 
+> > The `platform::Driver` trait represents the interface to the driver and
+> > provides `pci::Driver::probe` for the driver to implement.
+> > 
+> > The `platform::Device` abstraction represents a `struct platform_device`.
+> > 
+> > In order to provide the platform bus specific parts to a generic
+> > `driver::Registration` the `driver::RegistrationOps` trait is implemented
+> > by `platform::Adapter`.
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  MAINTAINERS                     |   1 +
+> >  rust/bindings/bindings_helper.h |   2 +
+> >  rust/helpers/helpers.c          |   1 +
+> >  rust/helpers/platform.c         |  13 ++
+> >  rust/kernel/lib.rs              |   1 +
+> >  rust/kernel/platform.rs         | 222 ++++++++++++++++++++++++++++++++
+> >  6 files changed, 240 insertions(+)
+> >  create mode 100644 rust/helpers/platform.c
+> >  create mode 100644 rust/kernel/platform.rs
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 7d6bb4b15d2c..365fc48b7041 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -7034,6 +7034,7 @@ F:	rust/kernel/device.rs
+> >  F:	rust/kernel/device_id.rs
+> >  F:	rust/kernel/devres.rs
+> >  F:	rust/kernel/driver.rs
+> > +F:	rust/kernel/platform.rs
+> >  
+> >  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+> >  M:	Nishanth Menon <nm@ti.com>
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> > index 6d7a68e2ecb7..e9fdceb568b8 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -20,9 +20,11 @@
+> >  #include <linux/jump_label.h>
+> >  #include <linux/mdio.h>
+> >  #include <linux/miscdevice.h>
+> > +#include <linux/of_device.h>
+> >  #include <linux/pci.h>
+> >  #include <linux/phy.h>
+> >  #include <linux/pid_namespace.h>
+> > +#include <linux/platform_device.h>
+> >  #include <linux/poll.h>
+> >  #include <linux/refcount.h>
+> >  #include <linux/sched.h>
+> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> > index 3fda33cd42d4..0640b7e115be 100644
+> > --- a/rust/helpers/helpers.c
+> > +++ b/rust/helpers/helpers.c
+> > @@ -20,6 +20,7 @@
+> >  #include "kunit.c"
+> >  #include "mutex.c"
+> >  #include "page.c"
+> > +#include "platform.c"
+> >  #include "pci.c"
+> >  #include "pid_namespace.c"
+> >  #include "rbtree.c"
+> > diff --git a/rust/helpers/platform.c b/rust/helpers/platform.c
+> > new file mode 100644
+> > index 000000000000..ab9b9f317301
+> > --- /dev/null
+> > +++ b/rust/helpers/platform.c
+> > @@ -0,0 +1,13 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/platform_device.h>
+> > +
+> > +void *rust_helper_platform_get_drvdata(const struct platform_device *pdev)
+> > +{
+> > +	return platform_get_drvdata(pdev);
+> > +}
+> > +
+> > +void rust_helper_platform_set_drvdata(struct platform_device *pdev, void *data)
+> > +{
+> > +	platform_set_drvdata(pdev, data);
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 7a0e4c82ad0c..cc8f48aa162b 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -59,6 +59,7 @@
+> >  pub mod of;
+> >  pub mod page;
+> >  pub mod pid_namespace;
+> > +pub mod platform;
+> >  pub mod prelude;
+> >  pub mod print;
+> >  pub mod rbtree;
+> > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> > new file mode 100644
+> > index 000000000000..868cfddb75a2
+> > --- /dev/null
+> > +++ b/rust/kernel/platform.rs
+> > @@ -0,0 +1,222 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Abstractions for the platform bus.
+> > +//!
+> > +//! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
+> > +
+> > +use crate::{
+> > +    bindings, container_of, device, driver,
+> > +    error::{to_result, Result},
+> > +    of,
+> > +    prelude::*,
+> > +    str::CStr,
+> > +    types::{ARef, ForeignOwnable},
+> > +    ThisModule,
+> > +};
+> > +
+> > +/// An adapter for the registration of platform drivers.
+> > +pub struct Adapter<T: Driver>(T);
+> > +
+> > +impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+> > +    type RegType = bindings::platform_driver;
+> > +
+> > +    fn register(
+> > +        pdrv: &mut Self::RegType,
+> > +        name: &'static CStr,
+> > +        module: &'static ThisModule,
+> > +    ) -> Result {
+> > +        pdrv.driver.name = name.as_char_ptr();
+> > +        pdrv.probe = Some(Self::probe_callback);
+> > +
+> > +        // Both members of this union are identical in data layout and semantics.
+> > +        pdrv.__bindgen_anon_1.remove = Some(Self::remove_callback);
+> > +        pdrv.driver.of_match_table = T::OF_ID_TABLE.as_ptr();
+> > +
+> > +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> > +        to_result(unsafe { bindings::__platform_driver_register(pdrv, module.0) })
+> > +    }
+> > +
+> > +    fn unregister(pdrv: &mut Self::RegType) {
+> > +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+> > +        unsafe { bindings::platform_driver_unregister(pdrv) };
+> > +    }
+> > +}
+> > +
+> > +impl<T: Driver + 'static> Adapter<T> {
+> > +    #[cfg(CONFIG_OF)]
+> > +    fn of_id_info(pdev: &Device) -> Option<&'static T::IdInfo> {
+> > +        let table = T::OF_ID_TABLE;
+> > +
+> > +        // SAFETY:
+> > +        // - `table` has static lifetime, hence it's valid for read,
+> > +        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
+> > +        let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), pdev.as_ref().as_raw()) };
+> > +
+> > +        if raw_id.is_null() {
+> > +            None
+> > +        } else {
+> > +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
+> > +            // does not add additional invariants, so it's safe to transmute.
+> > +            let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
+> > +
+> > +            Some(table.info(<of::DeviceId as crate::device_id::RawDeviceId>::index(id)))
+> > +        }
+> > +    }
+> > +
+> > +    #[cfg(not(CONFIG_OF))]
+> > +    fn of_id_info(_pdev: &Device) -> Option<&'static T::IdInfo> {
+> > +        None
+> > +    }
+> > +
+> > +    // Try to retrieve an `IdInfo` from any of the ID tables; if we can't find one for a particular
+> > +    // table, it means we don't have a match in there. If we don't match any of the ID tables, it
+> > +    // means we were matched by name.
+> > +    fn id_info(pdev: &Device) -> Option<&'static T::IdInfo> {
+> > +        let id = Self::of_id_info(pdev);
+> > +        if id.is_some() {
+> > +            return id;
+> > +        }
+> > +
+> > +        None
+> > +    }
+> 
+> These methods are going to have to be duplicated by every bus type which 
+> can do DT matching (and later ACPI). Can't this be moved to be part of 
+> the common Driver trait.
+> 
+> 
+> I'll say it again for Greg to comment (doubtful he will look at v3 
+> again). Really, I think we should also align the probe method interface 
+> across bus types. That means getting rid of the 'id' in the PCI probe 
+> (or add it for everyone). Most drivers never need it. The typical case 
+> is needing nothing or the matched data. In a quick scan[1], there's 
+> only a handful of cases. So I think probe should match the common 
+> scenario and make retrieving the id match explicit if needed.
 
-My original intention was to have PROCMACROLDFLAGS to be a completely
-separate thing. That was partially why I used an $(or) there. This was
-because "the list of flags to link hostprogs is not necessarily the
-same as the list of flags used to link libmacros.so" (see commit
-message). The fallback to HOSTLDFLAGS was just to be backwards
-compatible so existing users don't get surprises.
+If there's a way for the probe callback to get access to the id that
+caused it to match, then it's fine with me to remove it.  But is that
+possible?  Many many drivers encode "stuff" in the id that the driver
+needs to know (quirks, functions, etc.)
 
-In details, here's what Android does with V3 of the patch, roughly:
+If that's not possible, then it needs to stay.
 
-HOSTLDFLAGS=3D
-    -L<paths>... -fuse-ld=3Dlld --rtlib=3Dcompiler-rt
---sysroot=3D<musl_sysroot> -Wl,-rpath,<paths>
-PROCMACROLDFLAGS=3D
-    -fuse-ld=3Dlld --rtlib=3Dcompiler-rt --sysroot=3D<glibc_sysroot>
+thanks,
 
-With https://github.com/rust-lang/compiler-team/issues/731 fixed and
-this idea of appending flags, our --sysroot flag should be able to be
-properly overridden. But the -L and -Wl,-rpath's remains, and could
-potentially be disturbing.
-
-The reason for this difference is that we build hostprogs like
-sign-file, fixdep, etc. with prebuilt libraries (e.g. sign-file needs
-libcrypto, etc.) that were built against a prebuilt musl libc. On the
-other hand, the Rust toolchain we are using was built against glibc,
-and won't need these -L and -Wl,-rpath flags for the libraries.
-
-So if I understand what you mean correctly, with this:
-  KBUILD_PROCMACROLDFLAGS :=3D $(HOSTLDFLAGS) $(PROCMACROLDFLAGS)
-Android might need a separate mechanism (another variable?) to filter
-out our -L/-Wl,-rpath from HOSTLDFLAGS. (Dumb question: We can't take
--L/-Wl,-rpath away by prepending/appending more flags, right?)
-
->
-> I will send a v4 unless someone thinks it is a bad idea.
->
-> Cheers,
-> Miguel
+greg k-h
