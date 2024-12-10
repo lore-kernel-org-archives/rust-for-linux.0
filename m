@@ -1,280 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF17210F6C;
-	Tue, 10 Dec 2024 09:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131C778F2D
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 09:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733823256; cv=none; b=oa8c/obZYZvxlzmHWFKeS8iBa7HwrlkxrzC/dHk0g6A09AZOr7XhKn563E5ANxE7vWyboQDua0yX7llNjHRlDYNDW0iqDxvIXvKLbf23mKUzIGXAyFjKc9tmlkIs7v7lm+ty+ku8RY4xMvXiSUfQ85pkQ3mjPs9QPkFR9oThDTo=
+	t=1733823560; cv=none; b=gFP2cor4l+Ww8npRTrWURDMXVeWNIYmMMK+Vnd0wwQ9EOLdEmB5MhZRa2pWw4w84aZU8jA4chAst4u8l2SB4C1qqWgGr4i4IRT0lKvM9GPH9imDW5U9bpUbJ8rqxAaTq162yL45lSA8H10xtF8GmcjBgaVbu/Lg+Site2M97msY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733823256; c=relaxed/simple;
-	bh=fSyc22kn9CnPVb3Hnnnmh/D1sKYPGOS4sLStStjP948=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OsiTxuS1F4yeq1dLs0JP//Rl/oHOYe1tPJU11yZHxiOqHWFNO8RVe7ANV9AIYfOMf3GPMdd4WkYQO8lYbmomXTlR+It29EtrP+qwi8GWm/JcboN6gsPSrYUjVFRAaqA0v2PooC31I5gI5MD4qw88r+ZzuyQL9M0Jx1wRx9Uv58g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvj/jKmt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733823560; c=relaxed/simple;
+	bh=ScMGOj9NvVYHIEuh2EMhPYNXIIl1JsNTzX4GNPfWpHY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=imKvTHG+iX4biNSwv2G55eBwJGdby0/DDVBnEu6BpEOQpMui6gOOeCderLUYvAacOEDlKZwoeJFZZfNL5yTdElkymN9cyqAMm8bxDC9GK447klfj1Z3IhiWAtgmgL3Qt4pvw8rXO8DyIHQ52nNmDC9NClsH8DEhaUxP5C2/Bp0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lPVwIVCb; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvj/jKmt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BC1C4CED6;
-	Tue, 10 Dec 2024 09:34:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733823255;
-	bh=fSyc22kn9CnPVb3Hnnnmh/D1sKYPGOS4sLStStjP948=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uvj/jKmt9VZgDRudKliyIkdhykwyISf1FUNTY0tYDbU54OjCq2YEo2o6xokJ55LIE
-	 7LThJXrjHInDm8dDRm2oMhJz1jvFXnsvLIYsUxpypg5/WqLKJt4bJqlVqQezebWSbh
-	 WojhbXyvRS5U4lkulkUQynMO+sOwirEhPuRsuqMnKX9ycju9JwDeLtQtwacc4Rsx9b
-	 dl+HSNlFoRMueJ6WqjfB/NpCVJ6cIwnStMRiMGL6qkugIIkqcamDdV8kyrbEM5J2AZ
-	 BltVIMNldXxKaHqQ4j6bYh/xmeyCGfVDYUcylrNxoEjMLceZI/LKZU6icyVKFpXiy8
-	 vqAiHLlJktUkg==
-Date: Tue, 10 Dec 2024 10:34:07 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Rob Herring <robh@kernel.org>, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 12/13] rust: platform: add basic platform device /
- driver abstractions
-Message-ID: <Z1gLD_dZy0XHZ68V@pollux>
-References: <20241205141533.111830-1-dakr@kernel.org>
- <20241205141533.111830-13-dakr@kernel.org>
- <20241209223706.GF938291-robh@kernel.org>
- <2024121014-rage-sneak-1b25@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lPVwIVCb"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-385fdff9db5so2350457f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 01:39:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733823557; x=1734428357; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nr3PYh2OMnbrkzV3RK+j9vm2ovz3TsnwUxy3N3fNCtk=;
+        b=lPVwIVCbj7Gl8mbj2kguByswIJLJQIUTs8CKcm/uVUHB3q2oT1F+FqxErkoqUQVw9C
+         KUswblgXUXaUnNjitVdixvHdZIfLpizfuTJvy9kclBGYSu09pYksIPuSPuPP4G6B4TMj
+         ShqB9h6AeSKDWqT+sQkHw2p1Myoilk7fU50szTCIvnB3AdnNkgreAuN4abEUZi+t/ZNw
+         ZO0n6PvyX/5XUVtC6seoCjI31YDRbrHUJ/YObCh93V97vfl6w6siKW2nt50Fl/aqbdiH
+         d73AnTbo5AHlK/EaAOpGceQOwpTrJCvkyrUuhv5tWkgwykzae4Dt/dXce/OwqlbfFefH
+         HX2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733823557; x=1734428357;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nr3PYh2OMnbrkzV3RK+j9vm2ovz3TsnwUxy3N3fNCtk=;
+        b=f8u5VQL1Lfy6//PO4o66bD+eTQJ6rAE9zyEpnvZOg9KTVVxKFVidOhm++WItqRYb8O
+         +Bt5XHdyHMiVOOqYGwmnWIrbtzeX4sz7p7OvTVhxmk79bbxkCTbX5ZV5VobCI+3+9+Ul
+         +BqZA+HBawvoaGQTTedvItmJ5x4IRonGBKilFAWjvMWD4wSRa7UZ/gn6KnIx7pdI+Mx7
+         EBRW+eNtv2nSuGy/LCF90MuVA7668cinoGEmW50MiR/+UNnXP28RFJI9ZWJEdPfprYaK
+         ruwDhQnfREv4stsG/Xc+SXmbNWC31bpzVaAI3IEYt6rbWA3JMbZfS0ckxHMpMyV2UNQj
+         RBnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOm/NfWvBDOyDEX2INgP/sfTb8zpCnMXVFHaq7yFeU6nfVvto62KmlSuVE6Od6SiGs6yf/LYLiTx/Y0WZyMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCcJ3RkCSnKxCE6Yz9IyYGJSrQHf8h6ooPMpozdNcYV+5RXdRw
+	y5nLm9AXTv4PyaAhnNclpykq5bHxL9vuWd9D1fq6WEZPKy+hQ95O1KZk+2E8g/MpBpwl9IuYkgW
+	SsJVPAhghh1xKMQ==
+X-Google-Smtp-Source: AGHT+IGXgtsVDIqdlMtZuNz/BFrutSDKkP6rnHU8K1Xb049vnHZYgJbHmqCy8DfoFipuzNsVfnQ7SYuHeQM4SrU=
+X-Received: from wmbjq10.prod.google.com ([2002:a05:600c:55ca:b0:434:a1af:5d39])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:64e6:0:b0:385:f220:f798 with SMTP id ffacd0b85a97d-386453d269dmr2633050f8f.6.1733823557548;
+ Tue, 10 Dec 2024 01:39:17 -0800 (PST)
+Date: Tue, 10 Dec 2024 09:38:59 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024121014-rage-sneak-1b25@gregkh>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADMMWGcC/4XNQQ6DIBAF0KsY1qWBUQG76j2aLggMSqJioCFtj
+ HcvumoXTTOrP/nzZiUJo8dELtVKImaffJhLqE8VMYOee6TelkyAQcOB1XTyydhSNEidH5EuOuq
+ JttZJJ1sluNWk3C4RnX8e7u1e8uDTI8TX8SbzfftPzJyWsUIAdFI1il37EPoRzyZMZCczfDLdL wYoo6pGgyCxc058Mdu2vQFCgTquAgEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1443; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ScMGOj9NvVYHIEuh2EMhPYNXIIl1JsNTzX4GNPfWpHY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnWAw9BGWYF8JSAVWKirAtkHDQZtG8fkgkgywr/
+ OHhrEXHW92JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ1gMPQAKCRAEWL7uWMY5
+ RjS3D/9sBv8qCTU7ggpOVF+ha7vEdMGhvv6FjulBTDe689GMKZvjNedkStg3f8olCn4FPrX8Vqu
+ hI+SfsQB2a9+3vpDHDuLVeUZhbcBVeXSdTAIZm44kLWHNaMg8XNxjreoN/Zqh47JzhdVj/YW6Vu
+ kdL3qNak6Xju0t905+DoBTPG9PDKTC+Cufxxq8jrmbt353nq47iZWZ+Kqh9sYuLIm9tkstJyjWU
+ DLpNkALpqvD+Y12vmc8W2jokBni99sZgy1/XwnuvSolSZanqGmHkrLFo2ZlS/98fohMnXfZIp/8
+ GNB60keTEfVQvByia5vZ6Rq05Eop3IH36qHWx8Oexgx3sON+2D//qPsGGmWI1Y96NS28pbcZJ30
+ XjerSCVbbb3vC+ZqRUteOIg4BHODf/06uydw9vcKQT4Ddhp4WuRqakU/++4TwqQclYeGcBdeKVR
+ rAarQJt8ka7BZX/tHWHsW63HHn1WgcgAuyg8zJSqM7rotv5GlyX51wJEuUr0Nw19Sk2ei82W5xH
+ 5bsiF+equ9bYom/h6AwJDZ0kVWAth1lnC3/InWn6r9EjOxlLm0Og+lWno2Ura9skZGax5oCSIfG
+ S32MHAs3I7Hxqzf6DUOCvIVSI8XYHIQZgnnJ7S7MpGSwnrj3tXNE17iE97lefx+ynsQZFWk0IiU 7L79fF+7zglI5aA==
+X-Mailer: b4 0.13.0
+Message-ID: <20241210-miscdevice-file-param-v3-0-b2a79b666dc5@google.com>
+Subject: [PATCH v3 0/3] Additional miscdevice fops parameters
+From: Alice Ryhl <aliceryhl@google.com>
+To: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Lee Jones <lee@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Dec 10, 2024 at 08:46:29AM +0100, Greg KH wrote:
-> On Mon, Dec 09, 2024 at 04:37:06PM -0600, Rob Herring wrote:
-> > On Thu, Dec 05, 2024 at 03:14:43PM +0100, Danilo Krummrich wrote:
-> > > Implement the basic platform bus abstractions required to write a basic
-> > > platform driver. This includes the following data structures:
-> > > 
-> > > The `platform::Driver` trait represents the interface to the driver and
-> > > provides `pci::Driver::probe` for the driver to implement.
-> > > 
-> > > The `platform::Device` abstraction represents a `struct platform_device`.
-> > > 
-> > > In order to provide the platform bus specific parts to a generic
-> > > `driver::Registration` the `driver::RegistrationOps` trait is implemented
-> > > by `platform::Adapter`.
-> > > 
-> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > ---
-> > >  MAINTAINERS                     |   1 +
-> > >  rust/bindings/bindings_helper.h |   2 +
-> > >  rust/helpers/helpers.c          |   1 +
-> > >  rust/helpers/platform.c         |  13 ++
-> > >  rust/kernel/lib.rs              |   1 +
-> > >  rust/kernel/platform.rs         | 222 ++++++++++++++++++++++++++++++++
-> > >  6 files changed, 240 insertions(+)
-> > >  create mode 100644 rust/helpers/platform.c
-> > >  create mode 100644 rust/kernel/platform.rs
-> > > 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 7d6bb4b15d2c..365fc48b7041 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -7034,6 +7034,7 @@ F:	rust/kernel/device.rs
-> > >  F:	rust/kernel/device_id.rs
-> > >  F:	rust/kernel/devres.rs
-> > >  F:	rust/kernel/driver.rs
-> > > +F:	rust/kernel/platform.rs
-> > >  
-> > >  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
-> > >  M:	Nishanth Menon <nm@ti.com>
-> > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > > index 6d7a68e2ecb7..e9fdceb568b8 100644
-> > > --- a/rust/bindings/bindings_helper.h
-> > > +++ b/rust/bindings/bindings_helper.h
-> > > @@ -20,9 +20,11 @@
-> > >  #include <linux/jump_label.h>
-> > >  #include <linux/mdio.h>
-> > >  #include <linux/miscdevice.h>
-> > > +#include <linux/of_device.h>
-> > >  #include <linux/pci.h>
-> > >  #include <linux/phy.h>
-> > >  #include <linux/pid_namespace.h>
-> > > +#include <linux/platform_device.h>
-> > >  #include <linux/poll.h>
-> > >  #include <linux/refcount.h>
-> > >  #include <linux/sched.h>
-> > > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > > index 3fda33cd42d4..0640b7e115be 100644
-> > > --- a/rust/helpers/helpers.c
-> > > +++ b/rust/helpers/helpers.c
-> > > @@ -20,6 +20,7 @@
-> > >  #include "kunit.c"
-> > >  #include "mutex.c"
-> > >  #include "page.c"
-> > > +#include "platform.c"
-> > >  #include "pci.c"
-> > >  #include "pid_namespace.c"
-> > >  #include "rbtree.c"
-> > > diff --git a/rust/helpers/platform.c b/rust/helpers/platform.c
-> > > new file mode 100644
-> > > index 000000000000..ab9b9f317301
-> > > --- /dev/null
-> > > +++ b/rust/helpers/platform.c
-> > > @@ -0,0 +1,13 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +#include <linux/platform_device.h>
-> > > +
-> > > +void *rust_helper_platform_get_drvdata(const struct platform_device *pdev)
-> > > +{
-> > > +	return platform_get_drvdata(pdev);
-> > > +}
-> > > +
-> > > +void rust_helper_platform_set_drvdata(struct platform_device *pdev, void *data)
-> > > +{
-> > > +	platform_set_drvdata(pdev, data);
-> > > +}
-> > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > > index 7a0e4c82ad0c..cc8f48aa162b 100644
-> > > --- a/rust/kernel/lib.rs
-> > > +++ b/rust/kernel/lib.rs
-> > > @@ -59,6 +59,7 @@
-> > >  pub mod of;
-> > >  pub mod page;
-> > >  pub mod pid_namespace;
-> > > +pub mod platform;
-> > >  pub mod prelude;
-> > >  pub mod print;
-> > >  pub mod rbtree;
-> > > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> > > new file mode 100644
-> > > index 000000000000..868cfddb75a2
-> > > --- /dev/null
-> > > +++ b/rust/kernel/platform.rs
-> > > @@ -0,0 +1,222 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +//! Abstractions for the platform bus.
-> > > +//!
-> > > +//! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
-> > > +
-> > > +use crate::{
-> > > +    bindings, container_of, device, driver,
-> > > +    error::{to_result, Result},
-> > > +    of,
-> > > +    prelude::*,
-> > > +    str::CStr,
-> > > +    types::{ARef, ForeignOwnable},
-> > > +    ThisModule,
-> > > +};
-> > > +
-> > > +/// An adapter for the registration of platform drivers.
-> > > +pub struct Adapter<T: Driver>(T);
-> > > +
-> > > +impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
-> > > +    type RegType = bindings::platform_driver;
-> > > +
-> > > +    fn register(
-> > > +        pdrv: &mut Self::RegType,
-> > > +        name: &'static CStr,
-> > > +        module: &'static ThisModule,
-> > > +    ) -> Result {
-> > > +        pdrv.driver.name = name.as_char_ptr();
-> > > +        pdrv.probe = Some(Self::probe_callback);
-> > > +
-> > > +        // Both members of this union are identical in data layout and semantics.
-> > > +        pdrv.__bindgen_anon_1.remove = Some(Self::remove_callback);
-> > > +        pdrv.driver.of_match_table = T::OF_ID_TABLE.as_ptr();
-> > > +
-> > > +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-> > > +        to_result(unsafe { bindings::__platform_driver_register(pdrv, module.0) })
-> > > +    }
-> > > +
-> > > +    fn unregister(pdrv: &mut Self::RegType) {
-> > > +        // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-> > > +        unsafe { bindings::platform_driver_unregister(pdrv) };
-> > > +    }
-> > > +}
-> > > +
-> > > +impl<T: Driver + 'static> Adapter<T> {
-> > > +    #[cfg(CONFIG_OF)]
-> > > +    fn of_id_info(pdev: &Device) -> Option<&'static T::IdInfo> {
-> > > +        let table = T::OF_ID_TABLE;
-> > > +
-> > > +        // SAFETY:
-> > > +        // - `table` has static lifetime, hence it's valid for read,
-> > > +        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-> > > +        let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), pdev.as_ref().as_raw()) };
-> > > +
-> > > +        if raw_id.is_null() {
-> > > +            None
-> > > +        } else {
-> > > +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-> > > +            // does not add additional invariants, so it's safe to transmute.
-> > > +            let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
-> > > +
-> > > +            Some(table.info(<of::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-> > > +        }
-> > > +    }
-> > > +
-> > > +    #[cfg(not(CONFIG_OF))]
-> > > +    fn of_id_info(_pdev: &Device) -> Option<&'static T::IdInfo> {
-> > > +        None
-> > > +    }
-> > > +
-> > > +    // Try to retrieve an `IdInfo` from any of the ID tables; if we can't find one for a particular
-> > > +    // table, it means we don't have a match in there. If we don't match any of the ID tables, it
-> > > +    // means we were matched by name.
-> > > +    fn id_info(pdev: &Device) -> Option<&'static T::IdInfo> {
-> > > +        let id = Self::of_id_info(pdev);
-> > > +        if id.is_some() {
-> > > +            return id;
-> > > +        }
-> > > +
-> > > +        None
-> > > +    }
-> > 
-> > These methods are going to have to be duplicated by every bus type which 
-> > can do DT matching (and later ACPI). Can't this be moved to be part of 
-> > the common Driver trait.
-> > 
-> > 
-> > I'll say it again for Greg to comment (doubtful he will look at v3 
-> > again). Really, I think we should also align the probe method interface 
-> > across bus types. That means getting rid of the 'id' in the PCI probe 
-> > (or add it for everyone). Most drivers never need it. The typical case 
-> > is needing nothing or the matched data. In a quick scan[1], there's 
-> > only a handful of cases. So I think probe should match the common 
-> > scenario and make retrieving the id match explicit if needed.
-> 
-> If there's a way for the probe callback to get access to the id that
-> caused it to match, then it's fine with me to remove it.  But is that
-> possible?  Many many drivers encode "stuff" in the id that the driver
-> needs to know (quirks, functions, etc.)
+This could not land with the base miscdevice abstractions due to the
+dependency on File.
 
-The signature would be
+The last two patches enable you to use the `dev_*` macros to print
+messages in miscdevice drivers.
 
-`fn probe(dev: &mut Device, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>`
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Fix build error in fops->open() patch.
+- Improve wording of some comments in fops->open() patch.
+- Update commit message with more info on why `struct miscdevice` is
+  only made available in fops->open() and not other hooks.
+- Include Lee's device accessor patch, since it's a needed component to
+  use the `dev_*` printing macros with miscdevice.
+- Link to v2: https://lore.kernel.org/r/20241209-miscdevice-file-param-v2-0-83ece27e9ff6@google.com
 
-where `id_info` is the driver private data.
+Changes in v2:
+- Access the `struct miscdevice` from fops->open().
+- Link to v1: https://lore.kernel.org/r/20241203-miscdevice-file-param-v1-1-1d6622978480@google.com
 
-The other fields of struct pci_device_id should also be available from struct
-pci_dev`, i.e. `dev`; just need to add the corresponding accessors for it.
+---
+Alice Ryhl (2):
+      rust: miscdevice: access file in fops
+      rust: miscdevice: access the `struct miscdevice` from fops->open()
 
-- Danilo
+Lee Jones (1):
+      rust: miscdevice: Provide accessor to pull out miscdevice::this_device
 
-> 
-> If that's not possible, then it needs to stay.
-> 
-> thanks,
-> 
-> greg k-h
+ rust/kernel/miscdevice.rs | 66 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 55 insertions(+), 11 deletions(-)
+---
+base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
+change-id: 20241203-miscdevice-file-param-5df7f75861da
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
