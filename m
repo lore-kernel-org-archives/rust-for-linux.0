@@ -1,122 +1,169 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7477719D092;
-	Mon,  9 Dec 2024 23:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7423410E5;
+	Tue, 10 Dec 2024 00:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733788673; cv=none; b=nZi448QeKkp3G81ep7qnU2SEQ1cXYvUSDJTYdsUgNTbAeB5wDcf7KXVYYz6L/xAvQaTg1baIbDXu1fAoWfIB4jWrUh6wOD0PiTbpg62qNjTjRl7pYDfGpf++acIgCQ2/fVStKzW2Dq03Qt0zbBX34LObXjLpRffOs8boIVqiwAU=
+	t=1733789375; cv=none; b=LKNJxnMir/ImvOrASYq8vgKzJudsGm7SfZKPpdrQd3paw566U8S8SforsgZTVrYoGF8DSGl+Pbj4Z81hznkbEtIUm4GQRla/pNBc7WspzcD1thZAdwvWvCF77e/N3zTe1CpQrc5q5/HFGz0v9143ZA5DwTl7mHjojwGnkVlloqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733788673; c=relaxed/simple;
-	bh=hpjEp/oF11sseU/xRny9xwf0vbjS/bPeeP7YWy3KZTY=;
+	s=arc-20240116; t=1733789375; c=relaxed/simple;
+	bh=RCOVJWgFhXT6DmylXTsI1S6NIDyGF9sD4+HqK8vNzXU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YzeIot76pSoq8/dWc177QMroAHFpKZ6PbAVemIugDs7XNwLq/TwHm/ayQ/kfHR3ykxkg/wNQOhgg9h/vR/aXQRyEOFYBdtI+vk+cc53hmZsaMiweXI55+brhYlRQfuzcdnf1XplCgpzxjzqO4dvQfQCWC9es6hSrpw0cnuqIKmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fK0y7uxZ; arc=none smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=DBQIecx2On42vrwj+oZI5KQVPNw5C1bwS6cVLuP/N939UboZFKaFH2B1L4fxTw7kX7gbeuZp8J15RAhiKGLpB81jg2sq0CeVZV2crq5Ffc4rRolbLESPQAfYU5ptSsaZ0FZ/jkIS8JiHMWa5Vk2bRVXh3ErrARB1GWkeGQ6GVaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AnSvDcoH; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fK0y7uxZ"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ee8ecb721dso868182a91.3;
-        Mon, 09 Dec 2024 15:57:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AnSvDcoH"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ee8ecb721dso869764a91.3;
+        Mon, 09 Dec 2024 16:09:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733788672; x=1734393472; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733789370; x=1734394170; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rHPxJ7hPLFpQidTl4ZL+eTNzMYzt1IS2TVSHXzTpC5c=;
-        b=fK0y7uxZ80QpR/+SJPmLvsyGJXHoiFihwNQYhO234bkT3rygZuTIHT0V7dzbk1FdFC
-         jczqEXj92HPOBovJdBKcfWEWER+HL3SLJfSNjMojuuTYW63dX1zDLwT1CAjmPFfnnZaC
-         S8/fxOWE3Xs5To3S2hPYzLDPo1b1mTCHEwL4STqBzLmlVvLTBU0TPMBjl+wqrTe4oc2n
-         ntC2IBeiU0KNRCfBkVrJo0G2sjTpvdLAoRuUBLNeWtYbde64rU8wR0UVKep5fXRmlABw
-         VEdk6bi8/D3x9qhbibUVRz5tB2ccvryPN0929jVO1d65twUxW86uEUXfVL0CxThOVYi5
-         1IUw==
+        bh=Bqf9Pw5ygFqNWLQdG8eH/zSqStheh4qMrd/FdN0cEGA=;
+        b=AnSvDcoHo6Zqc4tPIJLzPyFHDLH9R/n8npwXiWjpM/lK2ujYEvYMuXVrUSva6kG3tl
+         tClhpbjJz6ugBysxMAzvJ3KlL8GpUYCM3GINbHD1hBMDLP+M3pI5nD+uXKMd0vCtjFcO
+         eK+KEs0XuAm/BTRDJ34DSYoVaGz0gI8+0tZRxlcKvUZvpGtn0DRT+KMhDgmUkAVQXm1z
+         8q78+3B4O/9qw88RKTb4th29YPGPvSbHIy+t7Vbfn4B3/MWxRO1zx6zO46/qAAzgQqd9
+         RMoU0gboOe3Ze8kEvJyBdebDBLqvrEHZOZmtvPNxffNdtse9zRpW84LK7uYHPx9+pBVN
+         Zy7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733788672; x=1734393472;
+        d=1e100.net; s=20230601; t=1733789370; x=1734394170;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rHPxJ7hPLFpQidTl4ZL+eTNzMYzt1IS2TVSHXzTpC5c=;
-        b=f656TT2WQUEYfS6bBae1LZklQKxjAl/4cAMkh5liKNpW6dcaCOTjf9FZbcZaiLecNW
-         n8S2kOvWyQZ/fbtF08MtLnGMEK/oP4TK6FfXh5dpHXf/XLW7gJ6sE/MlmbH3i7OXc5i2
-         To3C7UMbk6VAywLTmSHJflyN/9NPO7L0fUDKLgKwtTduqL9nC81lxmtMn8UnGvSNVRgg
-         dU8iXs7ur204Ly8BEQbQ+UbJN2hUubuJ5miZ+wYkJb8o3m09cNsfXduvzMI3fTgiviLN
-         IQvgtVvohldqrgrqTHTy3jR+Wm3/l0Om5OZlYUOW5mtexYbl0S70/1JAPulq3F5sZtp/
-         Fxdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwOcXQmIVWgVAxYQMOkn9fMIjDGcPfsee47aWctyUnk7U1Fj43KQ7O6AFmxidnnMxmC6rrCw5nx2WKY4Y=@vger.kernel.org, AJvYcCW/Z79iSjl9MlBTgzALzqk78kQmCJtP9xuadBe5XNL8nJBpQ7noT3PESFreqdb4i3OJIRCqzA3c@vger.kernel.org, AJvYcCWLWfDZO6Fx4lXaacP1FC7t3c1jyiJEry8RdCdXS0dJlPDMh3q6ITzhxUXvzqctRfPdzf2FpDIdtT4YHu6F604=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4ZeK9Lh/RrUQXTRhctD0g+lj04GA4eqoDEaWXgzZ3w35mT08T
-	+QgBWqK7LLIIhytKOrlpnH3YVONoqp9QPzIAs7GAm/LFPgpxRGI4s1f1xNRn4SF2j+0iZBuK6y4
-	Dm/eXt616il+fuW5xtcXYELoAyf8=
-X-Gm-Gg: ASbGncu2JOWLnKUEXbwmFrNbB0fPEZ10kGlptUkW1NuWMdEzeiK+VkfR0n6qNHe4l9a
-	z/6B4mIVLWfNuj2iOoZ009ePQbIEZ5ycyUr8=
-X-Google-Smtp-Source: AGHT+IFA3lV2vvANGAr/q1J0rO42UgmCv9jlCFJWKSe4+sKE0L6emUcGAjynzPESeucKuAY0Wly56Rz8xKK+eETDnTw=
-X-Received: by 2002:a17:90b:1a88:b0:2ee:b665:12c2 with SMTP id
- 98e67ed59e1d1-2efd472eba2mr848875a91.2.1733788671803; Mon, 09 Dec 2024
- 15:57:51 -0800 (PST)
+        bh=Bqf9Pw5ygFqNWLQdG8eH/zSqStheh4qMrd/FdN0cEGA=;
+        b=UFoXeg04YhbM/X6aR6nz7O1tn+CTgv7AD3woi9XQK3/HxxajeFLV+O+kLo6kIUkGEl
+         J9GTYHm5x0e9gym+zl4JVSo/KAUL2nUo6PYbHkYxKCb8CUQznaNn3PczRGQrCgkl8j3n
+         xRN7WQ05iJ9lLN11XvLrBwKVWRXR19BCqRqlTiL9zvgbnawHymAG7Z1cVJw7nArQst+v
+         6uNv0csNyUmN//IsHZ8SiTzYE9Hpcs7nZi0XO10fhFyUAD4vHIllQr2lzweFIbmfsXXQ
+         ZnT8qpqvujxDgQS/FrkKqNiRitX6HnpNHtDTG5WHUuC7+lV8opiI8OqsNFM/Reaxhh2f
+         p3ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVlqo5djkdg2JhvrM/NofWHs0Wy4ykJxAJcAu5DmSabPZk5eIEL3nS2jEUU2JLrdd2klkXOXjmsWmB9in7QNv0=@vger.kernel.org, AJvYcCVvk5faDX8lNGxZbXWhCWQWiaoUbTAJg4XbKQhxSnMhezjavZ4rmwdiDwS1GILkMRvUpcedToKeOk3WrF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg15pt0/rq62lBAZByAPAaDT7eNrAaEQ2UgY5c0c5nmjSxUqkR
+	nMh6gmDJVQzRazlTrFR9tTaeZGaYx9AcudN0uCqZsdHh8zHd4zztbn+LY4YJDXhqRKkea1pHvGT
+	cpLXlZKgjgvqvgi024ZlUCYcauuFBQJDnKDg=
+X-Gm-Gg: ASbGnctVCGPaP+CZT9Q2jSEObRwoE/V2YyUF50rwwBYa4+np1ueaDHpL1q+/JQ+uvma
+	pBADmPTkKLHiLlwBy/pMRzcA37NAzdHJ4E/o=
+X-Google-Smtp-Source: AGHT+IH0533Z0lG1cmsFMSYTQgHR047SqSc1dGT+SjioNScy/dOIbt6nmvrmg4TjnlVulh/A/8MXVpm+7Nk8kFeG7Q8=
+X-Received: by 2002:a17:90b:1b42:b0:2ee:6563:20b5 with SMTP id
+ 98e67ed59e1d1-2efd454dfb2mr887964a91.0.1733789369748; Mon, 09 Dec 2024
+ 16:09:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241125233332.697497-1-ojeda@kernel.org>
-In-Reply-To: <20241125233332.697497-1-ojeda@kernel.org>
+References: <20241123180323.255997-1-ojeda@kernel.org>
+In-Reply-To: <20241123180323.255997-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Dec 2024 00:57:39 +0100
-Message-ID: <CANiq72=gRDr658wi=PbEcwTM7oEdmBU2Fr=wKw9eq2kEbrjWHQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/panic: remove spurious empty line to clean warning
+Date: Tue, 10 Dec 2024 01:09:17 +0100
+Message-ID: <CANiq72kTX5o2rs=A51keKQiV=6fT0sN+FjWygL4=ddytnNM8Cg@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: set `bindgen`'s Rust target version
 To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, stable@vger.kernel.org
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Christian Poveda <git@pvdrz.com>, =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 26, 2024 at 12:33=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Sat, Nov 23, 2024 at 7:03=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Clippy in the upcoming Rust 1.83.0 spots a spurious empty line since the
-> `clippy::empty_line_after_doc_comments` warning is now enabled by default
-> given it is part of the `suspicious` group [1]:
+> Each `bindgen` release may upgrade the list of Rust targets. For instance=
+,
+> currently, in their master branch [1], the latest ones are:
 >
->     error: empty line after doc comment
->        --> drivers/gpu/drm/drm_panic_qr.rs:931:1
->         |
->     931 | / /// They must remain valid for the duration of the function c=
-all.
->     932 | |
->         | |_
->     933 |   #[no_mangle]
->     934 | / pub unsafe extern "C" fn drm_panic_qr_generate(
->     935 | |     url: *const i8,
->     936 | |     data: *mut u8,
->     937 | |     data_len: usize,
->     ...   |
->     940 | |     tmp_size: usize,
->     941 | | ) -> u8 {
->         | |_______- the comment documents this function
->         |
->         =3D help: for further information visit https://rust-lang.github.=
-io/rust-clippy/master/index.html#empty_line_after_doc_comments
->         =3D note: `-D clippy::empty-line-after-doc-comments` implied by `=
--D warnings`
->         =3D help: to override `-D warnings` add `#[allow(clippy::empty_li=
-ne_after_doc_comments)]`
->         =3D help: if the empty line is unintentional remove it
+>     Nightly =3D> {
+>         vectorcall_abi: #124485,
+>         ptr_metadata: #81513,
+>         layout_for_ptr: #69835,
+>     },
+>     Stable_1_77(77) =3D> { offset_of: #106655 },
+>     Stable_1_73(73) =3D> { thiscall_abi: #42202 },
+>     Stable_1_71(71) =3D> { c_unwind_abi: #106075 },
+>     Stable_1_68(68) =3D> { abi_efiapi: #105795 },
 >
-> Thus remove the empty line.
+> By default, the highest stable release in their list is used, and users
+> are expected to set one if they need to support older Rust versions
+> (e.g. see [2]).
 >
-> Cc: stable@vger.kernel.org
-> Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-> Link: https://github.com/rust-lang/rust-clippy/pull/13091 [1]
+> Thus, over time, new Rust features are used by default, and at some
+> point, it is likely that `bindgen` will emit Rust code that requires a
+> Rust version higher than our minimum (or perhaps enabling an unstable
+> feature). Currently, there is no problem because the maximum they have,
+> as seen above, is Rust 1.77.0, and our current minimum is Rust 1.78.0.
+>
+> Therefore, set a Rust target explicitly now to prevent going forward in
+> time too much and thus getting potential build failures at some point.
+>
+> Since we also support a minimum `bindgen` version, and since `bindgen`
+> does not support passing unknown Rust target versions, we need to use
+> the list of our minimum `bindgen` version, rather than the latest. So,
+> since `bindgen` 0.65.1 had this list [3], we need to use Rust 1.68.0:
+>
+>     /// Rust stable 1.64
+>     ///  * `core_ffi_c` ([Tracking issue](https://github.com/rust-lang/ru=
+st/issues/94501))
+>     =3D> Stable_1_64 =3D> 1.64;
+>     /// Rust stable 1.68
+>     ///  * `abi_efiapi` calling convention ([Tracking issue](https://gith=
+ub.com/rust-lang/rust/issues/65815))
+>     =3D> Stable_1_68 =3D> 1.68;
+>     /// Nightly rust
+>     ///  * `thiscall` calling convention ([Tracking issue](https://github=
+.com/rust-lang/rust/issues/42202))
+>     ///  * `vectorcall` calling convention (no tracking issue)
+>     ///  * `c_unwind` calling convention ([Tracking issue](https://github=
+.com/rust-lang/rust/issues/74990))
+>     =3D> Nightly =3D> nightly;
+>
+>     ...
+>
+>     /// Latest stable release of Rust
+>     pub const LATEST_STABLE_RUST: RustTarget =3D RustTarget::Stable_1_68;
+>
+> Thus add the `--rust-target 1.68` parameter. Add a comment as well
+> explaining this.
+>
+> An alternative would be to use the currently running (i.e. actual) `rustc=
+`
+> and `bindgen` versions to pick a "better" Rust target version. However,
+> that would introduce more moving parts depending on the user setup and
+> is also more complex to implement.
+>
+> Cc: Christian Poveda <git@pvdrz.com>
+> Cc: Emilio Cobos =C3=81lvarez <emilio@crisal.io>
+> Link: https://github.com/rust-lang/rust-bindgen/blob/21c60f473f4e824d4aa9=
+b2b508056320d474b110/bindgen/features.rs#L97-L105 [1]
+> Link: https://github.com/rust-lang/rust-bindgen/issues/2960 [2]
+> Link: https://github.com/rust-lang/rust-bindgen/blob/7d243056d335fdc4537f=
+7bca73c06d01aae24ddc/bindgen/features.rs#L131-L150 [3]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Applied to `rust-fixes` -- thanks!
+
+I added the following note to the commit message and added a small
+sentence to the comment too:
+
+    Starting with `bindgen` 0.71.0 [4], we will be able to set any future
+    Rust version instead, i.e. we will be able to set here our minimum
+    supported Rust version. Christian implemented it [5] after seeing this
+    patch. Thanks!
+
+I also queued it for stable:
+
+    Cc: stable@vger.kernel.org # needed for 6.12.y; unneeded for
+6.6.y; do not apply to 6.1.y
+    Fixes: c844fa64a2d4 ("rust: start supporting several `bindgen` versions=
+")
 
 Cheers,
 Miguel
