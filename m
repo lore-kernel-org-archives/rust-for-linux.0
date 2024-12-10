@@ -1,132 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507EA230D21;
-	Tue, 10 Dec 2024 10:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A54210F53
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 10:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733827704; cv=none; b=EMtsEiSsj/NcM1RPAluA6zZkIBrZpopx3mTkDmy7T4dgD8crnvwR3jxQEZqhBbkrZ//+xWhrnF7AOKAY+1i5058+AUkvLL0qWIMWIAmOaw3/ecbFwMqRdsQlQrHReJ/oQpx4aV7uTL003HnR/A+agByVRIB7pKf4mJG0S86ppkI=
+	t=1733828149; cv=none; b=A60az3jcCD660trbuYPhTGXVHBIMHtCUiUNqOetb99fbt8zjP2P+z1alVTqrh2sRBOswq7u4dnydtkarmhqjEZbOOuscuXWnlimCwQLvYZAeVEMyUvaXsrDNzUkME0/UtBpsiM6Jq++a7qVBo7cUoDZf0vr07EJp8FU7oCZfIuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733827704; c=relaxed/simple;
-	bh=nDEcLzOXkw5lDX1vPhdxB5fFLH1KL7iUs8wX2ih2tvI=;
+	s=arc-20240116; t=1733828149; c=relaxed/simple;
+	bh=dfXHaZApg1kAp8ngob6EwNugQ82l0HdC7g+rjbDHgZQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OAVlBVE7JiBP0wDetJkHxM07qXRQTM7RVpUnPXxYXdq0Cx51BBIHX8qQnLTEIQRHHrs9JM1xaz0bxo7/NhNgY6BJjWKrdLIZ7YgkSKK40KSY4kPpWs29CZ/vNwfm1cHivV0QH5hv18Qhm0K2BQLZUa9naITGQaveppTnSq8iuFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khrfeY23; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=jqoIoLK9f+F54so1Gu3QPC60FC93x43NwEdR4QqwKD5whOJVNvyMO6/VX8glTenrheubK7rx6N3z73c1xraCgMU8BT80rd0ex2VRCpz+5mGB438uvkzAwNa64kiQ0K1j1s5fjaBsxmol49yFTLFBWa1SEPPVXonE0SoDH4FfRiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hc7oKrvn; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khrfeY23"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA52BC4CED6;
-	Tue, 10 Dec 2024 10:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733827703;
-	bh=nDEcLzOXkw5lDX1vPhdxB5fFLH1KL7iUs8wX2ih2tvI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=khrfeY232VZNe+Zz7igj6gnKawg7RnD2KJjau1MMQCbFq7lbQIAczSbhz7Xt3QnyT
-	 Rg/9Wv23m+8V0b3tafIcBSW26C5me8vnKe4jQnjO4RcAB2zE3vbRazKDw+6nzZzR8S
-	 s+LTNC8T88yhBeEKCRx5p+pBhAAdK02bYPttYFNVOAm/yDhi3o3Vg1Q0RWDQMPkYAn
-	 InlRagMfYZQt3t5RrvXoY8uqCmSB3G6xKxHY1S3YVCAMZRhwMkABdF5HccCtaR/Xxg
-	 77+Q0Zp0MJT20Qe+VKRjdlMtg952QuekItNEcwDVCeO68aHEp3Q/gSswOspyBicPbz
-	 bT/ujdWzemnAg==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5401c52000dso2260369e87.3;
-        Tue, 10 Dec 2024 02:48:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVwhxGA9uX8MFIm5jUDGsu7vBkk7Gb11usLDRoI8U1HVaqhmQ8HOfsns/2K18qrjPMQnAPFQCHtRVSEi18=@vger.kernel.org, AJvYcCWGem+qLibcYrGbhDjk95nJBKP6wQElEvD9uEZsORvgu6kBihkh2/ig0weg9gGWdgN584M8gw1deSwhN3z+Zd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXkQbZSO2QzOgOdiMlfbqJeYZWudXZhKsVfWxwUt2jMnBpubrC
-	9xAzJSub31mBnlAMJ+o3gX98UjfQH1Dx8J5o62smnayXHcRh5EEGMsjhbCK0V0fyPhstB5y5jyO
-	E0TtGSh+6KFM0D5YRCJ4yVlWi/5Y=
-X-Google-Smtp-Source: AGHT+IG+NBDQ+Wr2u+Ka9B5mjOl9WuBsaKYe1AoAeVspIENEADbvb4snVH0SrUJ7CXgH2/wrBk+9ssaNF1V3JZNVpC0=
-X-Received: by 2002:a05:6512:23a4:b0:53e:3a01:cf45 with SMTP id
- 2adb3069b0e04-53e3a01d067mr3740331e87.13.1733827701466; Tue, 10 Dec 2024
- 02:48:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hc7oKrvn"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-435005192d1so10820425e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 02:55:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733828146; x=1734432946; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dfXHaZApg1kAp8ngob6EwNugQ82l0HdC7g+rjbDHgZQ=;
+        b=Hc7oKrvnBTfMx1RQpq+fCnTOZlg0i9ATA2CqHmUpeNxhieXk7wOk9Gw3Ri3lgcrH+s
+         /1wVD0iUIYF9oBI7ILjegYUwaWkPvNYqvZFCQFrudjwxLo2botBNKIB+XBcwzjO8jnwl
+         2L9YRaN1+t7i/l6kZQExjq8S5kMyxGn+GDnsrJmReDJpkaico/uZvHDhkfV+F0rlfJOI
+         cKSHFp1QDOyYi1VSjIxzR0b536+8Gh5K9Ug8n3mwzid0pfsouG3yKTdBSQjywmlyOgt2
+         eE+RyOoMy/4VBvQIsU9HlfDwobRVFBlhw3qeRoujWLWo9mECA2ygXCyAWtjDT0ht1AeW
+         iULw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733828146; x=1734432946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dfXHaZApg1kAp8ngob6EwNugQ82l0HdC7g+rjbDHgZQ=;
+        b=WEGzIw5icizuH0+cVnYkePM8+EycUsMxuu5F9gJ+Wt6DIYUY+uxAhIJvum1IahUmVL
+         yl5pRrRN8B5o4ngj51x0crbLTRDyTr5WXaREhUwDq/pbUy0peEWUItnwGjnwK0hQ4X/7
+         rE4DX58pQKVyzGw1GZHReFvYOGG8N+5EXeBzNAXmJ+99xCDuohZu0mEGbEVwlLFWT2BI
+         2d2zY2TDEx1k03CcqlZC6f0ado88RvL8gk2rryfiruMIwyyKxJP/TFky8o4Nk0rvEuPp
+         Ny2besOUgFk7LQ2/PjJ5qIGxF618X7V4ByYCsJTXVFA4XpfD9EtdiR48JBZY/EHN2Eum
+         gLYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVEukFgHxXrPamWwFRpNYbzDoExy0srXNU75VbdNUJhJAgbYb8QMPz9b3/7K04j93UliKXziC7woNnhUYPikg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4JWKHKmeoIiu5lkRPVBgJ96oVOxq1Lhefue4Dm3LAXoKV3dig
+	YaNA1Djj615oV8sr100Bt+qIPp7+YaoaP8/dr2ngRRtFhTg1YP61RiOOO3LIqeguV0g5UaenCRp
+	ahhSLwNAYn77m06bNDVnepV8U+NZvCwypErsx
+X-Gm-Gg: ASbGncvBPck2ytQoee0QsDyhwLNIqMSipIM4+sku2UPmHPqSfO3fn1ijtF+CAmNbmvP
+	EpQRXok0+YdzPPCRMXVc70UOsTlVYWwMcf3u/7IoMiYN7DPI5X/wFJqCFSpx7Qbn8pQ==
+X-Google-Smtp-Source: AGHT+IG0Y9INJmMgnj5Aq1qmzA2XI8kCQB+a+xINu5oEbG4VnKvTmmuaC9cO2DZywjG71233iorWGqYcrsutxnOfz+M=
+X-Received: by 2002:a5d:64c6:0:b0:386:3213:5b9b with SMTP id
+ ffacd0b85a97d-38632136068mr10993724f8f.43.1733828145989; Tue, 10 Dec 2024
+ 02:55:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241110013649.34903-1-masahiroy@kernel.org> <20241110013649.34903-6-masahiroy@kernel.org>
- <82FA2E02-05A5-4297-B364-9D7D89001D9D@linux.dev> <1116D946-05F3-4463-A61F-DE221F258A3F@linux.dev>
-In-Reply-To: <1116D946-05F3-4463-A61F-DE221F258A3F@linux.dev>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 10 Dec 2024 19:47:45 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQ1MvB_wXa6F8aZB_srrLTQupRXNsz6Rav27fyjznXZJQ@mail.gmail.com>
-Message-ID: <CAK7LNAQ1MvB_wXa6F8aZB_srrLTQupRXNsz6Rav27fyjznXZJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/11] kbuild: change working directory to external
- module directory with M=
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, cocci@inria.fr
+References: <20241205141533.111830-1-dakr@kernel.org> <20241205141533.111830-9-dakr@kernel.org>
+ <CAH5fLgh6qgQ=SBn17biSRbqO8pNtSEq=5fDY3iuGzbuf2Aqjeg@mail.gmail.com> <Z1bKA5efDYxd8sTC@pollux.localdomain>
+In-Reply-To: <Z1bKA5efDYxd8sTC@pollux.localdomain>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 10 Dec 2024 11:55:33 +0100
+Message-ID: <CAH5fLgixvBWSf-3WDRj=Mxtn4ArQLqdKqMF0aSxyC6xVNPfTFQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/13] rust: pci: add basic PCI device / driver abstractions
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
+	j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 9, 2024 at 10:56=E2=80=AFPM Thorsten Blum <thorsten.blum@linux.=
-dev> wrote:
+On Mon, Dec 9, 2024 at 11:44=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
 >
-> On 9. Dec 2024, at 14:46, Thorsten Blum wrote:
-> > On 10. Nov 2024, at 02:34, Masahiro Yamada wrote:
-> >>
-> >> Currently, Kbuild always operates in the output directory of the kerne=
-l,
-> >> even when building external modules. This increases the risk of extern=
-al
-> >> module Makefiles attempting to write to the kernel directory.
-> >>
-> >> This commit switches the working directory to the external module
-> >> directory, allowing the removal of the $(KBUILD_EXTMOD)/ prefix from
-> >> some build artifacts.
-> >>
-> >> The command for building external modules maintains backward
-> >> compatibility, but Makefiles that rely on working in the kernel
-> >> directory may break. In such cases, $(objtree) and $(srctree) should
-> >> be used to refer to the output and source directories of the kernel.
-> >>
-> >> The appearance of the build log will change as follows:
-> >>
-> >> [Before]
-> >>
-> >> $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
-> >> make: Entering directory '/path/to/my/linux'
-> >>   CC [M]  /path/to/my/externel/module/helloworld.o
-> >>   MODPOST /path/to/my/externel/module/Module.symvers
-> >>   CC [M]  /path/to/my/externel/module/helloworld.mod.o
-> >>   CC [M]  /path/to/my/externel/module/.module-common.o
-> >>   LD [M]  /path/to/my/externel/module/helloworld.ko
-> >> make: Leaving directory '/path/to/my/linux'
-> >>
-> >> [After]
-> >>
-> >> $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
-> >> make: Entering directory '/path/to/my/linux'
-> >> make[1]: Entering directory '/path/to/my/externel/module'
-> >>   CC [M]  helloworld.o
-> >>   MODPOST Module.symvers
-> >>   CC [M]  helloworld.mod.o
-> >>   CC [M]  .module-common.o
-> >>   LD [M]  helloworld.ko
-> >> make[1]: Leaving directory '/path/to/my/externel/module'
-> >> make: Leaving directory '/path/to/my/linux'
-> >>
-> >> Printing "Entering directory" twice is cumbersome. This will be
-> >> addressed later.
-> >>
-> >> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> >> ---
+> On Fri, Dec 06, 2024 at 03:01:18PM +0100, Alice Ryhl wrote:
+> > On Thu, Dec 5, 2024 at 3:16=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+> > >
+> > > Implement the basic PCI abstractions required to write a basic PCI
+> > > driver. This includes the following data structures:
+> > >
+> > > The `pci::Driver` trait represents the interface to the driver and
+> > > provides `pci::Driver::probe` for the driver to implement.
+> > >
+> > > The `pci::Device` abstraction represents a `struct pci_dev` and provi=
+des
+> > > abstractions for common functions, such as `pci::Device::set_master`.
+> > >
+> > > In order to provide the PCI specific parts to a generic
+> > > `driver::Registration` the `driver::RegistrationOps` trait is impleme=
+nted
+> > > by `pci::Adapter`.
+> > >
+> > > `pci::DeviceId` implements PCI device IDs based on the generic
+> > > `device_id::RawDevceId` abstraction.
+> > >
+> > > Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > >
-> > Hi Masahiro,
+> > > +/// The PCI device representation.
+> > > +///
+> > > +/// A PCI device is based on an always reference counted `device:Dev=
+ice` instance. Cloning a PCI
+> > > +/// device, hence, also increments the base device' reference count.
+> > > +#[derive(Clone)]
+> > > +pub struct Device(ARef<device::Device>);
 > >
-> > I get the following error since this patch is in master, but only when
-> > using COCCI=3D in combination with M=3D<relative or absolute path>.
-> >
-> > It works when I either use COCCI=3D or M=3D, but not with both.
+> > It seems more natural for this to be a wrapper around
+> > `Opaque<bindings::pci_dev>`. Then you can have both &Device and
+> > ARef<Device> depending on whether you want to hold a refcount or not.
 >
-> Using the absolute path of the cocci script fixes my problem, but this
-> used to work with relative paths too.
+> Yeah, but then every bus device has to re-implement the refcount dance we
+> already have in `device::Device` for the underlying base `struct device`.
 >
-> $ make coccicheck COCCI=3D$(pwd)/scripts/coccinelle/misc/flexible_array.c=
-occi M=3Darch/
+> I forgot to mention this in my previous reply to Boqun, but we even docum=
+ented
+> it this way in `device::Device` [1].
+>
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/rust/kernel/device.rs#n28
 
-M=3D looks a bit weird for the upstream code, but
-I think using the absolute path is the right thing to do.
+We could perhaps write a derive macro for AlwaysRefCounted that
+delegates to the inner type? That way, we can have the best of both
+worlds.
 
-
---=20
-Best Regards
-Masahiro Yamada
+Alice
