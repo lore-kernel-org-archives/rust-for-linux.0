@@ -1,167 +1,158 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF2F22332E
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 11:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BA72080F0;
+	Tue, 10 Dec 2024 11:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733828811; cv=none; b=O3++lX71fJBG70gQfEKKUlyoICpBWgw61x1pd8Fty9zbEo2W7Uu+04Eoaj9dhrrLLHBCxO8nyiiQcmy/l127DeZxqsZXBejq9EEONSkaBQf4wIVErkVRFoHfxRPgeQfknY/gRprQTnvClQEsgTQVCYevI12nFdwNkswHDhMGlHQ=
+	t=1733829750; cv=none; b=V5W+MVO1E+eZ1vtv84wWLcz9VpYxF0QG48P3HQZslWFXEERLioFRSBHJoMOJFkRstpB717YyTvJw7nn8xmEbQ3/+PXL/aFS8nqKkS3JTREtJ2L4U1Z5pvoFfTv3qS9jroKp5UK3imlhoRw3W7jzTDyibbMRtEB+LQ3oC4eoQ2v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733828811; c=relaxed/simple;
-	bh=0gidoGIG0z2WaGCB3NApHeDNViXG+QD8VmOG+MOZf48=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gvadjfzhzNMcsZ4ogwssNxHqO6eB6FsR53QMQFaYKajGIQARYCpXxvTn2+3KzTSq/sFXvghGjIQDVXMrzJnJEOFz8C2WSxBWLd09yvS0tLx/JYtmrxndV92P9Di3gE7aAkiOPLQbeyAeFWeFSXypmBrwQW3wBOa61SKj/PzELhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bgDmFAfH; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1733829750; c=relaxed/simple;
+	bh=V+ILprZMKU3hTxlx44PlWoIeIjwa2pZmntXV2SS84oE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lyzRmWLFqa76L2mojfTySmRxVVsu7dKTvYWWzfz6KKdsuX3OgC+jbDZ9K1IXzKdMqagyiz5qrPNnAVG9Eusn9tjbdbxpZ8Fc+afH1u7GmV7vd0QEwySV/4XGbrabvx3O4U4Wfx1Bo7tvXz1cQqCeGRdNpleg0MUESA1BpHDCqgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArgRMC69; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bgDmFAfH"
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1733828806;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v8sRqjoiiHcRkTpsPK0hRKSOh3L/dg4EGVpik/b50qU=;
-	b=bgDmFAfHIsHzr0y+kzyxvkRUR1idbJIAeTQN+jNTwl0/hSDFc6j1XsDcCuSlL/quNH8wyU
-	zxlgmPchLnMrRiNKIvU/X4DtRwDw1tePXYqQZW9UkuQZlWc9u5P4FsnekV4FdACKQt+EaL
-	ihH9trlpV79zWoJnOiip+yYEUkCvtnI=
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ArgRMC69"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee8ecb721dso953612a91.3;
+        Tue, 10 Dec 2024 03:22:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733829748; x=1734434548; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SgG0y341Sck02mPUDWmT12vY0FvtCZ22l4JyW9IBLow=;
+        b=ArgRMC69LwRA9rYAi1786wsRS1EW9wFnQAuBzmVVFuMMwnCFVb6uF5jggkVjFVaizl
+         1xH4l9URC5ZyWP7XylQ4RE88GRCwfN/1nINdociPBRphrbm/WQAC/MSJtG3jY+2ydWQV
+         ZgkNAXehAdCnBzuOaIThAV+UYUU1rqW9P7Wc5EcwT2kGyEnnyAiZXtBB21onoaAO64Pd
+         84mZsYYaGTr6kVXfGOFT70XpWA023l7dPcsgbFVnq2dS4n+cX1CW6f1AUZtbIIHw20Xn
+         6zvpsB7/CVo89bug8eW4C9J7Mm4PAgX3LTcdGH1pf2vSwyqmVzJhh+Q+9c5o8gS5NRar
+         Qrzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733829748; x=1734434548;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SgG0y341Sck02mPUDWmT12vY0FvtCZ22l4JyW9IBLow=;
+        b=YVEdwySvnZbywCTBQHKLpAYiv4ZaFOCfhmEfkcZpCZYheCHFQ5yid/Wy5n8rSrbawm
+         MqIsr/1wWp8WS45/WWUO3T1n5yLLpWAPIEcDw8vnJalulVjqlZt+DrPOnzPoMZsTMbad
+         2pJF+hrwOvnwyU0GHnCD/rSGSMPy9XKynHVK1jKtHUIEsxrf+QfZuiooYEcQL+6qwcPT
+         tH5mPLKzxEhKw9k0Pn+K1xuTfbsI4DvMUplSD/3YnSxR/XhAAa7+GIF75UokHit1Keo+
+         Rtq3iIhdebjcQLCf5+68YJxkZ6APqsMM+tiexrcPE0zaOWTtGv65S5dU1QK/GQHkFm3h
+         xPIg==
+X-Forwarded-Encrypted: i=1; AJvYcCV1FuQbU3yiRcx1BvzgV7zCvK2zCKIU0zA5x1JDkEflmidYsNvJlsDMpxeps20IArse4xT0wVm5w4b+Q4o=@vger.kernel.org, AJvYcCWtKBQuNmNJZxXto+fbR2bFg074gF0ctikpA/+CNdy4l+d8ENnvaXbMJL5+mbeUl+JcIGdLQGW2QUHfbuJnC+8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrDX0RQ+xJmDxqsVlO0qKAT5Suph6i3VBNaEIyI/4j1ifXsVAu
+	DNqygbDqa9tByQ2xMJ8/pliSKTu8kaZysx/AMhXha4lG6CAf+zENQq/ICIi0eFiA8AmgWmDJ0Lq
+	Ct8irj+Q0PVFPCcMkeZVYRx1gLvY=
+X-Gm-Gg: ASbGncsHXU+0aLoq3LY9iBI1WxXPJJvJE5sx9kOgCfRYAFUGwYHVXySUoI4XK3B1+mE
+	P9MUNrCLR6N5TJ/SUnXwNgGXrXg1MDNZntEE=
+X-Google-Smtp-Source: AGHT+IHN1GBS4IwSD9SxPBjx4NqXatH277WbNemrsELKNmm0wInRfz/RKQEIi2WuTdsL/tVB5b6oso9v+BlE4j3qmeo=
+X-Received: by 2002:a17:90b:1e08:b0:2ee:cbc9:d50b with SMTP id
+ 98e67ed59e1d1-2efd4a1266dmr1879889a91.4.1733829748304; Tue, 10 Dec 2024
+ 03:22:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
-Subject: Re: [PATCH v2 05/11] kbuild: change working directory to external
- module directory with M=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <CAK7LNAQ1MvB_wXa6F8aZB_srrLTQupRXNsz6Rav27fyjznXZJQ@mail.gmail.com>
-Date: Tue, 10 Dec 2024 12:06:32 +0100
-Cc: linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- cocci@inria.fr
+MIME-Version: 1.0
+References: <20241203051843.291729-1-jtostler1@gmail.com> <CANiq72ksaJcpjHi8=vuWLTLLfik9smaqY9oJXjwtieXgJ6Gy9Q@mail.gmail.com>
+ <6c1ccd07-1a42-43bb-9162-0d6401db72fc@de.bosch.com>
+In-Reply-To: <6c1ccd07-1a42-43bb-9162-0d6401db72fc@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Dec 2024 12:22:16 +0100
+Message-ID: <CANiq72keOdXy0LFKk9SzYWwSjiD710v=hQO4xi+5E4xNALa6cA@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: Add doctest for `ArrayLayout`
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: jtostler1@gmail.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <838D0FCD-EA9C-46C8-BCA7-FECFD3DC04D8@linux.dev>
-References: <20241110013649.34903-1-masahiroy@kernel.org>
- <20241110013649.34903-6-masahiroy@kernel.org>
- <82FA2E02-05A5-4297-B364-9D7D89001D9D@linux.dev>
- <1116D946-05F3-4463-A61F-DE221F258A3F@linux.dev>
- <CAK7LNAQ1MvB_wXa6F8aZB_srrLTQupRXNsz6Rav27fyjznXZJQ@mail.gmail.com>
-To: Masahiro Yamada <masahiroy@kernel.org>
-X-Migadu-Flow: FLOW_OUT
 
-On 10. Dec 2024, at 11:47, Masahiro Yamada wrote:
-> On Mon, Dec 9, 2024 at 10:56=E2=80=AFPM Thorsten Blum wrote:
->> On 9. Dec 2024, at 14:46, Thorsten Blum wrote:
->>> On 10. Nov 2024, at 02:34, Masahiro Yamada wrote:
->>>>=20
->>>> Currently, Kbuild always operates in the output directory of the =
-kernel,
->>>> even when building external modules. This increases the risk of =
-external
->>>> module Makefiles attempting to write to the kernel directory.
->>>>=20
->>>> This commit switches the working directory to the external module
->>>> directory, allowing the removal of the $(KBUILD_EXTMOD)/ prefix =
-from
->>>> some build artifacts.
->>>>=20
->>>> The command for building external modules maintains backward
->>>> compatibility, but Makefiles that rely on working in the kernel
->>>> directory may break. In such cases, $(objtree) and $(srctree) =
-should
->>>> be used to refer to the output and source directories of the =
-kernel.
->>>>=20
->>>> The appearance of the build log will change as follows:
->>>>=20
->>>> [Before]
->>>>=20
->>>> $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
->>>> make: Entering directory '/path/to/my/linux'
->>>> CC [M]  /path/to/my/externel/module/helloworld.o
->>>> MODPOST /path/to/my/externel/module/Module.symvers
->>>> CC [M]  /path/to/my/externel/module/helloworld.mod.o
->>>> CC [M]  /path/to/my/externel/module/.module-common.o
->>>> LD [M]  /path/to/my/externel/module/helloworld.ko
->>>> make: Leaving directory '/path/to/my/linux'
->>>>=20
->>>> [After]
->>>>=20
->>>> $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
->>>> make: Entering directory '/path/to/my/linux'
->>>> make[1]: Entering directory '/path/to/my/externel/module'
->>>> CC [M]  helloworld.o
->>>> MODPOST Module.symvers
->>>> CC [M]  helloworld.mod.o
->>>> CC [M]  .module-common.o
->>>> LD [M]  helloworld.ko
->>>> make[1]: Leaving directory '/path/to/my/externel/module'
->>>> make: Leaving directory '/path/to/my/linux'
->>>>=20
->>>> Printing "Entering directory" twice is cumbersome. This will be
->>>> addressed later.
->>>>=20
->>>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->>>> ---
->>>=20
->>> Hi Masahiro,
->>>=20
->>> I get the following error since this patch is in master, but only =
-when
->>> using COCCI=3D in combination with M=3D<relative or absolute path>.
->>>=20
->>> It works when I either use COCCI=3D or M=3D, but not with both.
->>=20
->> Using the absolute path of the cocci script fixes my problem, but =
-this
->> used to work with relative paths too.
->>=20
->> $ make coccicheck =
-COCCI=3D$(pwd)/scripts/coccinelle/misc/flexible_array.cocci M=3Darch/
->=20
-> M=3D looks a bit weird for the upstream code, but
-> I think using the absolute path is the right thing to do.
+On Wed, Dec 4, 2024 at 12:57=E2=80=AFPM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
+>
+> Slightly off-topic here, but should we try to document that somehow?
+>
+> What's about something like [1] below? If it is ok, I can make a proper
+> patch for it :)
 
-The documentation[1] uses M=3D and also COCCI=3D with relative paths and
-some of the examples don't work anymore.
+Sure, please send it! :)
 
-Could you try this one?
+(In general, I think we should avoid repeating "general Rust
+knowledge", but as long as there is kernel-specific content, like your
+paragraphs below, then it is good to have.)
 
-```
-export COCCI=3Dscripts/coccinelle/misc/irqf_oneshot.cocci
-make coccicheck DEBUG_FILE=3D"err.log" MODE=3Dreport SPFLAGS=3D"--profile =
---show-trying" M=3D./drivers/mfd
-```
+> +``Error`` as its error type.
 
-I get this:
+I see this first part comes from the `Result` docs we have, right? I
+think the rest makes sense in Doc/ as you have it; on the other hand,
+we try to avoid duplication. We could perhaps move everything to the
+`Result` (or `kernel::error` module) docs, and just link it from Doc/
+-- that would give us the ability to easily have intra-doc links on
+the methods like `unwrap()` and to test the examples.
 
-$ export COCCI=3Dscripts/coccinelle/misc/irqf_oneshot.cocci
-$ make coccicheck DEBUG_FILE=3D"err.log" MODE=3Dreport =
-SPFLAGS=3D"--profile --show-trying" M=3D./drivers/mfd
-make[1]: Entering directory '/home/fedora/linux/drivers/mfd'
+(I noticed because I was about to suggest linking/qualifying the type
+above, but if we had it in the code docs, we would already get that
+for free.)
 
-Please check for false positives in the output before submitting a =
-patch.
-When using "patch" mode, carefully review the patch before submitting =
-it.
+> +The ``?``-operator versus ``unwrap(``) and ``expect()``
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +Calling a function that returns ``Result`` needs the caller to handle
+> +the returned ``Result``.
 
-grep: scripts/coccinelle/misc/irqf_oneshot.cocci: No such file or =
-directory
-grep: scripts/coccinelle/misc/irqf_oneshot.cocci: No such file or =
-directory
-coccicheck failed
-make[2]: *** [/home/fedora/linux/Makefile:2089: coccicheck] Error 2
-make[1]: *** [/home/fedora/linux/Makefile:251: __sub-make] Error 2
-make[1]: Leaving directory '/home/fedora/linux/drivers/mfd'
-make: *** [Makefile:251: __sub-make] Error 2
+A (kernel-specific) example could help here, even if "abstract", e.g.:
 
-Thanks,
-Thorsten
+    fn f() -> Result {
+        if ... {
+            return Err(EINVAL);
+        }
 
-[1] https://www.kernel.org/doc/html/latest/dev-tools/coccinelle.html
+        Ok(())
+    }
 
+This immediately maps to the usual approach in C code. In fact, you
+could add the C equivalent here for comparison.
+
+Perhaps even give another abstract one where kernel C would need
+`goto` to cleanup.
+
+> +This can be done "manually" by using  ``match``. Using ``match`` to deco=
+de
+> +the ``Result`` is similar to C where all the return value decoding and t=
+he
+> +error handling is done explicitly by writing handling code for each
+> +error to cover. Using ``match`` the error and success handling can be
+> implemented
+> +in all detail as required.
+
+Another one would be great here too, so that they see the verbosity vs. `?`=
+.
+
+> +Instead of the verbose ``match`` the ``?``-operator or
+> ``unwrap()``/``expect()``
+> +can be used to handle the ``Result`` "automatically". However, in the
+> kernel
+> +context, the usage of ``unwrap()`` or ``expect()`` has a side effect
+> which is often
+> +not wanted: The ``panic!`` called when using ``unwrap()`` or
+> ``expect()``. While the
+> +console output from ``panic!`` is nice and quite helpful for debugging
+> the error,
+> +stopping the whole Linux system due to the kernel panic is often not
+> desired.
+
+Perhaps link to any relevant C side docs here.
+
+Perhaps we could also mention briefly other approaches used sometimes,
+e.g. `unwrap_or()` and `unwrap_unchecked()`, ideally linking to the
+Rust book or similar.
+
+Thanks!
+
+Cheers,
+Miguel
