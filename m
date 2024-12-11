@@ -1,115 +1,147 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB7F4FA
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 02:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7F3C148;
+	Wed, 11 Dec 2024 02:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733882734; cv=none; b=bUFJc5G+PfEZXBWssNaKbXSK1IZqewe1l3S1Yojm3zMvZaXndg1nIqsCqT6feINMzu14kXXjxhjAQ/0wcMgbPEOGm4tRF9HIlg4BFosSi9qTVcEhsB410PPpDXqli2Od7JoIa8z2VXSxButKKkJCorThDHue9TXN3q8a10lXsb4=
+	t=1733884649; cv=none; b=IXMLYFAuqml7VXAhsWRyISPYNdgOX77cEUhvuYU3lMHNjAePNZJjaXHfYgriv9GOhWeY4XTRUR4RSz10cw3qt72sTKHBDyzFp5Yoqv8TwIpYqhfKa58edYbus/WAYuO3FEXg1snrsaGf8wAJVFTXuOCFjECLcgiGFw+2ES0EGnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733882734; c=relaxed/simple;
-	bh=zwOPh6L4wAZKEn1MN4nlYZUeF6se+MyrXwjKZYmzvNs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bE/7ce7/2m2DkXZUc5ZB3x8am7jcKo9x9/9bB+II1g061Kxq+WacfyNDBUACFoO9uVCnRDnaaO40QbUADzwdSwN8TtzHRIll5yDfVvF5lES6UJWcfLNw0Hx5MLI83cKRXa4ojkkjgqE/px7ZL+/HqPJd1+e/w0XaTwwG03q2mF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jvmKEuFn; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733884649; c=relaxed/simple;
+	bh=DUGkTeY3nF0d2mRRcn/oCpk/z0595BnJpRO/MgGaiaQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jdHGRwHUBFoyrdyIvaR64F/gGAiV6FMq1eHcrKxQlTQkDp2OPfeiAbymXqCtp5jrcK0Zeg10WMGObnZcbgcMgQjDc1l68s4MzbxIe+kum4mnr/dm1O8X3K9Khh0YjSndiJfcnruUwRYQeToeOq5yCUqEI49dX7fFRfpkbdjcLYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDZQ5TfR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jvmKEuFn"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-725ef0397aeso2533538b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Dec 2024 18:05:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733882732; x=1734487532; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F5GnSENPSB6pdczR3q0r2fT1dwaOE9L01riJX8p9Jqw=;
-        b=jvmKEuFnJc55vmenqjw3fDTSPr9nxF0hJTPP+Acwsws+umanizfj9HTKTyhhHCK0HT
-         5BYpx74ITIH10HjUiXvdFEoR08IyhOfm52ejgaVkNOZcywo2hurLacF03qgSfRx2bSW7
-         sp+GXeLeBI2zOz9h0tJIkYB/axWjcXShgTvE7QGNbvYmByVo6Gw3yBNkkG8tIQH5yQY6
-         61x+Gi3O/BEzylhb59yInYcMTznixwxuuCQHNynyo1sIy2Qoi5Qqgpa+YsNH3Vov902I
-         FoK5GGX/V1Sv0vkjJ2lzooTEws5YPfcwpBis3KDWIPP6MFPvmL1iLll9Xpaadj4wSKz0
-         FBdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733882732; x=1734487532;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F5GnSENPSB6pdczR3q0r2fT1dwaOE9L01riJX8p9Jqw=;
-        b=vQiFpoVyy9i6wQxMBTObzZXXHfczs9HS1AnuKpTmGANKetpOXKZw99tLWxg4VDUr76
-         BkL47HgUpew+koHdk8LvEhhXbftSfglqG4mNc/slBR5n8PiqWH/4vmyPEqnSStHWKNah
-         UNW+eqirUFZPGUcHrxcE5Rk3YCXxK73ePrPPEVdkdSxCXw2BMnV+1NxS3j/PF3lGZQdT
-         CLmLZVtfV1naYq+iMw3U2bbYWfP1/yldm93BzvJfia3aHmRn/TDYTQ2Z+Q6hNmIlWwQt
-         MwZIE46S1CJHv9BrgPkujbSlI7Em7CrcxbuNsCjnkiRWn14h2kBZuLyorDlWFFG2xbXf
-         StTg==
-X-Forwarded-Encrypted: i=1; AJvYcCUD63rMrPyvtrHh5oUvnJFakA2XCKBEm4ky4zAzUETJm2RV9bFQUA238d4NHm3t8kF1qz2Nr0huivN8Y2YcJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZEDafqrf2GdTU/qSO2weNabiF3+a7J3GwUObWL/amlmO/sTN/
-	MyvcEt2Y+jp59mbsldaSgnk4lDHrB2Mlfa5mSqoaSNkzAIawo90R
-X-Gm-Gg: ASbGncuj6UK+sJtCjaFj5GdOsxBXqm3IWEZMZw/etiksoYXPuFvHuOeQttdXtWZuNZM
-	9fMmxcv6JIAZryv+UIkn1+WTFLnMaCmYXfYbfejBnbr+4+DauskJ9a1gPydv7h1xJBlXKjvR563
-	TPbioxXm9I0PTZNsfMbJDW6s785sJX7ZfYLBBuLshA6brwW53493GTFMcY4VHcuJRCZQ4Oi1XD2
-	+fqzgDYw53P3aWbfLdlL8WOy0JWVVWsD1tphpq11EVxnpwAsrR0mwFaiFsA/+PNiA==
-X-Google-Smtp-Source: AGHT+IGygoymb+X9yhdVGMWOYS346bmYt3v+7ZQVghB7Jm80S3wbUTiIE3ks8WHEEgI0i0HDCQFTRw==
-X-Received: by 2002:a05:6a20:cf83:b0:1e1:a07f:9679 with SMTP id adf61e73a8af0-1e1c124a789mr2411396637.4.1733882731988;
-        Tue, 10 Dec 2024 18:05:31 -0800 (PST)
-Received: from localhost.localdomain ([73.109.132.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd313f0ffbsm6946674a12.82.2024.12.10.18.05.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 18:05:31 -0800 (PST)
-From: Jason Devers <dev.json2@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	boris.chen.czy@gmail.com,
-	Jason Devers <dev.json2@gmail.com>
-Subject: [PATCH v4] rust: sync: add #[must_use] to Lock::try_lock
-Date: Tue, 10 Dec 2024 21:05:07 -0500
-Message-ID: <20241211020507.103687-1-dev.json2@gmail.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
-References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDZQ5TfR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE954C4CEDD;
+	Wed, 11 Dec 2024 02:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733884646;
+	bh=DUGkTeY3nF0d2mRRcn/oCpk/z0595BnJpRO/MgGaiaQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=aDZQ5TfR+4C1PqenyMh1oqQju/YOUFkb6ygJR8YzB1WOKjmo5tNGwigXcPSvQ/h6U
+	 1l8VaztRWGNz/QuhI5AiGWRL9ShooogOqFidV1X9FsEWUdB9gFhhFfUsY1FxsZ0ArV
+	 9nkUs/lWqYZnPBxZDoela9CTfLYqZulfpsh4EzsucipTznBMjCSwFGuuZbqqlClvuC
+	 5Z6cK/PE8uOBKYHnY3bTvNXfwEU6xQhSvywHILzhTvYtK6Xkjj+PpGWVUaIFRW+myo
+	 QgAULhYb8nApF6Rq+lsFsVkTxoNeboVwvyiJFZ7wWiqrAPytThVw/N20D7G1qp0yGj
+	 QdRSm4/ciAUzg==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-540254357c8so1569796e87.1;
+        Tue, 10 Dec 2024 18:37:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVaAPszQoGTFO7URlq1eiYq5Ng3zsLYx4rUQwGBxIhQxVYaxt5LvlRjHKYDWtvgsKLefO+n6KgN950qKHY=@vger.kernel.org, AJvYcCXg2F7NaTSz3sJHzre9dtT4YS0lj02Pi/2z+E7krPSSfGOaxIFRwOqZ3J0dAG89nnAsIDOdTAsaPlfUJMNiAsw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUBWtDWdgwF/gCSUZJT6x3aNN/WN0UwLmTNP6q+afA/wkwV9DJ
+	XRgsmPhmeWizN4CydXase6cmtK37+BgEzMKbnsOXCE/wZeM0rYN/rq4cneUQh7uvmfuKrgML4SM
+	X/xyoGx4/wg4+1VWdASKOLId7g8I=
+X-Google-Smtp-Source: AGHT+IHisRqzbuD8pT7SfEVDcme2Sdu/LmQSV5wOJ2448T01ybCZo4dCmRJBHcF7WEz49Yxqox0CwmVDEgAWJqSqBAA=
+X-Received: by 2002:a05:6512:108f:b0:53e:12dc:e805 with SMTP id
+ 2adb3069b0e04-5402a5ff555mr264802e87.45.1733884645446; Tue, 10 Dec 2024
+ 18:37:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241110013649.34903-1-masahiroy@kernel.org> <20241110013649.34903-6-masahiroy@kernel.org>
+ <82FA2E02-05A5-4297-B364-9D7D89001D9D@linux.dev> <1116D946-05F3-4463-A61F-DE221F258A3F@linux.dev>
+ <CAK7LNAQ1MvB_wXa6F8aZB_srrLTQupRXNsz6Rav27fyjznXZJQ@mail.gmail.com> <838D0FCD-EA9C-46C8-BCA7-FECFD3DC04D8@linux.dev>
+In-Reply-To: <838D0FCD-EA9C-46C8-BCA7-FECFD3DC04D8@linux.dev>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Wed, 11 Dec 2024 11:36:48 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARi9t1mtUAW=X7bxiR_xWzaXX+Tq4dd8FfXW+LSm6o=ww@mail.gmail.com>
+Message-ID: <CAK7LNARi9t1mtUAW=X7bxiR_xWzaXX+Tq4dd8FfXW+LSm6o=ww@mail.gmail.com>
+Subject: Re: [PATCH v2 05/11] kbuild: change working directory to external
+ module directory with M=
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, cocci@inria.fr
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
-currently does not issue a warning if the return value is unused.
-To avoid potential bugs, the `#[must_use]` annotation is added to ensure proper usage.
+On Tue, Dec 10, 2024 at 8:06=E2=80=AFPM Thorsten Blum <thorsten.blum@linux.=
+dev> wrote:
+>
+> On 10. Dec 2024, at 11:47, Masahiro Yamada wrote:
+> > On Mon, Dec 9, 2024 at 10:56=E2=80=AFPM Thorsten Blum wrote:
+> >> On 9. Dec 2024, at 14:46, Thorsten Blum wrote:
+> >>> On 10. Nov 2024, at 02:34, Masahiro Yamada wrote:
+> >>>>
+> >>>> Currently, Kbuild always operates in the output directory of the ker=
+nel,
+> >>>> even when building external modules. This increases the risk of exte=
+rnal
+> >>>> module Makefiles attempting to write to the kernel directory.
+> >>>>
+> >>>> This commit switches the working directory to the external module
+> >>>> directory, allowing the removal of the $(KBUILD_EXTMOD)/ prefix from
+> >>>> some build artifacts.
+> >>>>
+> >>>> The command for building external modules maintains backward
+> >>>> compatibility, but Makefiles that rely on working in the kernel
+> >>>> directory may break. In such cases, $(objtree) and $(srctree) should
+> >>>> be used to refer to the output and source directories of the kernel.
+> >>>>
+> >>>> The appearance of the build log will change as follows:
+> >>>>
+> >>>> [Before]
+> >>>>
+> >>>> $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
+> >>>> make: Entering directory '/path/to/my/linux'
+> >>>> CC [M]  /path/to/my/externel/module/helloworld.o
+> >>>> MODPOST /path/to/my/externel/module/Module.symvers
+> >>>> CC [M]  /path/to/my/externel/module/helloworld.mod.o
+> >>>> CC [M]  /path/to/my/externel/module/.module-common.o
+> >>>> LD [M]  /path/to/my/externel/module/helloworld.ko
+> >>>> make: Leaving directory '/path/to/my/linux'
+> >>>>
+> >>>> [After]
+> >>>>
+> >>>> $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
+> >>>> make: Entering directory '/path/to/my/linux'
+> >>>> make[1]: Entering directory '/path/to/my/externel/module'
+> >>>> CC [M]  helloworld.o
+> >>>> MODPOST Module.symvers
+> >>>> CC [M]  helloworld.mod.o
+> >>>> CC [M]  .module-common.o
+> >>>> LD [M]  helloworld.ko
+> >>>> make[1]: Leaving directory '/path/to/my/externel/module'
+> >>>> make: Leaving directory '/path/to/my/linux'
+> >>>>
+> >>>> Printing "Entering directory" twice is cumbersome. This will be
+> >>>> addressed later.
+> >>>>
+> >>>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> >>>> ---
+> >>>
+> >>> Hi Masahiro,
+> >>>
+> >>> I get the following error since this patch is in master, but only whe=
+n
+> >>> using COCCI=3D in combination with M=3D<relative or absolute path>.
+> >>>
+> >>> It works when I either use COCCI=3D or M=3D, but not with both.
+> >>
+> >> Using the absolute path of the cocci script fixes my problem, but this
+> >> used to work with relative paths too.
+> >>
+> >> $ make coccicheck COCCI=3D$(pwd)/scripts/coccinelle/misc/flexible_arra=
+y.cocci M=3Darch/
+> >
+> > M=3D looks a bit weird for the upstream code, but
+> > I think using the absolute path is the right thing to do.
+>
+> The documentation[1] uses M=3D and also COCCI=3D with relative paths and
+> some of the examples don't work anymore.
 
-Note that `T` is `#[must_use]` but `Option<T>` is not.
-For more context, see: https://github.com/rust-lang/rust/issues/71368.
+I know.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/1133
-Signed-off-by: Jason Devers <dev.json2@gmail.com>
----
- rust/kernel/sync/lock.rs | 2 ++
- 1 file changed, 2 insertions(+)
+This is what cocci people hoped to work.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 41dcddac69e2..39f8c07d2287 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -147,6 +147,8 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-     /// Tries to acquire the lock.
-     ///
-     /// Returns a guard that can be used to access the data protected by the lock if successful.
-+    /// Note that `T` is `#[must_use]` but `Option<T>` is not.
-+    #[must_use = "if unused, leads to an empty critical section"]
-     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-         // that `init` was called.
--- 
-2.44.2
+If something is broken in coccicheck, it must be fixed.
 
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
