@@ -1,150 +1,187 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594BC148;
-	Wed, 11 Dec 2024 02:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3042AE90;
+	Wed, 11 Dec 2024 04:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733884806; cv=none; b=J40hRDRo44ncXBaltv1246l9N/KLHdvk6Nvavgihg8axUxLbZgu4DV7eTCOU7inIg3aCe6FwOlzOwP9ux44FqoqFOpE3T2FFU2j3u2oqvZ7eidHZMmvoV2O0vN4Vd78+uAlpKqhulEIBiRhCGx/RjLXIXxojvcvdFWir9uepgM4=
+	t=1733890775; cv=none; b=NB3YZpkG9IgN06We+WasJKP1cPQH1jiJ6Z6UuGEfjUVA3/JSUZzKNBtAFCV+GTzk7gdzPDiiB9cMK0gThVA53AqSKJNAoxPhPvIFBbx0kcYFwQigNArPyCMv+iZmlj6ROGuzuVhCjAIkABC1G402Aga/xg68vvXSHjGWGivCp1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733884806; c=relaxed/simple;
-	bh=rUN6+1EcdrSc29o0r+g71abVsqJjIdoI6ULiRDI6x/A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h0VK8ZUlscht+EIoUvn85C97E2ooHJyV/XWJIQArQuASJQq1d1qJT/3NkoqdhS7bXM5Fb3XV5F91ItDa+XO3t7CkGqlJbtZxlF8QVty3MYyaFQNjV1PmPCIWQtw7FVC3SRv9tEp9qqKqbPb/hSy4nyQ75SXBtkHd0n7Agg0CAsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWCGyPWa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733890775; c=relaxed/simple;
+	bh=C32hIFQ3Gfh9PhB3jChte3FH0hDXjjDORJiNlEbV5hE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F4gY92cnG942iqODIKzTNAUiKRa0VY/b+LGQSut8ZAiC044d8h+pyl4vVOoySPYgDJpCDD43rS4VRTnBfb5NgcPI+cRlD+yUMgX+XtCVdKH8Q56BxLbQZ3oEKoyAbwAY5Gre/rGzq3jkefAOpdAq1kHGFBrZAcuCv+IPz5vQKMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJ8MLIR0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWCGyPWa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F87C4CED6;
-	Wed, 11 Dec 2024 02:40:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJ8MLIR0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845F0C4CED2;
+	Wed, 11 Dec 2024 04:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733884805;
-	bh=rUN6+1EcdrSc29o0r+g71abVsqJjIdoI6ULiRDI6x/A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MWCGyPWaSXDCTdWpb3EGz7nA//n219Cp04RJc56oc8qvZbq/qNAorRu8LZIoXRdCV
-	 mEkI84TzxLxZwurnv8XI13FfZV/PC1lBlEqnvIbQJzhiiZKiqePua/+RhvQZWDGpfF
-	 BBxo01jiltQJILqBZS1xQ0hTZ48D/RmysDYjZbOByg/EF6+NV2EnlqWxZTvST0XKyh
-	 X53/zshwqiN98s+ujdKevHcQ3tXIXj6OO913jpjcg4c2N5El9vCmGqOGO7jZy+q5Od
-	 M/TeefTCdQviUkgsjC5TWXp3zD5E4ruQq+ma1dMONTET6d72bAjMe4y/aB+R0v9aJa
-	 qZdmnhG0aivQg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30227c56b11so23861551fa.3;
-        Tue, 10 Dec 2024 18:40:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUioUo5PCrJlZakmv6zN6mED5Z2ouhTXrinrRsc8JRfa+aBE8lXXa9PwTXM2Tl4wauo2M0vqGbycf3OShs=@vger.kernel.org, AJvYcCV6mT/OduvdwJg1rmWvkjT+tH7MSQxbM+YUinQMAtDUGRral1pSWZo1e/0KCNzkkNtlELT/Es5zkJiPvlE=@vger.kernel.org, AJvYcCXrbrnshlxvcr18esuukGAMGw2vmhfCrXNlng6jFYLMEVBoE1sWcvQvTrZPmc0KhelE1gfIDbPG+QX/gKXiyis=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3yZyXLbLJ72PlLRJ9DDzgyLqjblVYVOLGgUhJAgudYsMDZ9TJ
-	xaCIUJdqScZdNugn5OXyj25a9JLUN7jiZupLnQ36U2eb8UzOQzSs29imD6earu523ICp79mpmmh
-	t061IASYI3BGK8fVS6BDjYnt9bFU=
-X-Google-Smtp-Source: AGHT+IHxGpnB/myKvlJsuWzHOTwl8yjs6e6CcOHIGoQ3+14Q2O5vvCXnxMip8nROElsib4NPrDvqxoKteTG3GissR3A=
-X-Received: by 2002:a05:651c:1582:b0:300:360b:bc36 with SMTP id
- 38308e7fff4ca-30240d52cb2mr4501801fa.23.1733884804055; Tue, 10 Dec 2024
- 18:40:04 -0800 (PST)
+	s=k20201202; t=1733890775;
+	bh=C32hIFQ3Gfh9PhB3jChte3FH0hDXjjDORJiNlEbV5hE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JJ8MLIR0CTwqHxwJxamypw1b1Jj5WZfI7UnyPLqu6PE57z1AaQJfyNPJq6dnG6Oez
+	 /YLKEJg3UvN1Q0EGkOauLQ4ug0r2VUzoWEwBIlKIJ+0V8WRuh8lhej+0pS2XUFqEpz
+	 KQTygoyTSr4ykcwR2rK8f3x6umawGrG9DKr47d6DCK7w4IF1Gvh2q7XWu/zucw5VHD
+	 ow/E3EKgkZRPlPPloiVWzX9MMkxI0LOE2goQUQ7yo8fhQLkS/BaIliQPUKtwCLxQz8
+	 CUnw0PSLaT5/BC+Do2UpS6PkIfxPb1pPxNxlnGcKMOveD6tLziMU8EBFvpZb/stFNi
+	 ZHCmzFrJ7Dbrw==
+Date: Tue, 10 Dec 2024 20:19:33 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Neal Gompa <neal@gompa.dev>, Sami Tolvanen <samitolvanen@google.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Asahi Linux <asahi@lists.linux.dev>,
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Donald Zickus <dzickus@redhat.com>
+Subject: Re: [PATCH v6 00/18] Implement DWARF modversions
+Message-ID: <Z1kS1Y8_aUQc83tb@bombadil.infradead.org>
+References: <20241121204220.2378181-20-samitolvanen@google.com>
+ <CAEg-Je-h4NitWb2ErFGCOqt0KQfXuyKWLhpnNHCdRzZdxi018Q@mail.gmail.com>
+ <CANiq72m4fea15Z0fFZauz8N2madkBJ0G7Dc094OwoajnXmROOA@mail.gmail.com>
+ <CABCJKudozEhZXLZVxVixsO5YuZg0nOEmgo3=vMyhcrEw+6Xo5w@mail.gmail.com>
+ <CAEg-Je-58WxKXOFEDBWmZDpt8E+SaRq+kK7ZnfMER2qtnKUD=w@mail.gmail.com>
+ <CAK7LNATR0epWogDDDOnAvBJyypdgY-CPsi_mUehOWsvphg4LSA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241110013649.34903-1-masahiroy@kernel.org> <20241110013649.34903-6-masahiroy@kernel.org>
- <bdd5ff13-ec66-4ab6-985a-1fe433e85f91@nvidia.com>
-In-Reply-To: <bdd5ff13-ec66-4ab6-985a-1fe433e85f91@nvidia.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 11 Dec 2024 11:39:27 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATgL=vOr37+XfF7du+_ak5yKgXYyNNNTEQdVvy5J2MMyA@mail.gmail.com>
-Message-ID: <CAK7LNATgL=vOr37+XfF7du+_ak5yKgXYyNNNTEQdVvy5J2MMyA@mail.gmail.com>
-Subject: Re: [PATCH v2 05/11] kbuild: change working directory to external
- module directory with M=
-To: Jon Hunter <jonathanh@nvidia.com>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, cocci@inria.fr, 
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK7LNATR0epWogDDDOnAvBJyypdgY-CPsi_mUehOWsvphg4LSA@mail.gmail.com>
 
-On Wed, Dec 11, 2024 at 12:34=E2=80=AFAM Jon Hunter <jonathanh@nvidia.com> =
-wrote:
->
-> Hi Masahiro,
->
-> On 10/11/2024 01:34, Masahiro Yamada wrote:
-> > Currently, Kbuild always operates in the output directory of the kernel=
-,
-> > even when building external modules. This increases the risk of externa=
-l
-> > module Makefiles attempting to write to the kernel directory.
+On Tue, Dec 10, 2024 at 11:27:06PM +0900, Masahiro Yamada wrote:
+> On Tue, Dec 10, 2024 at 9:42 PM Neal Gompa <neal@gompa.dev> wrote:
 > >
-> > This commit switches the working directory to the external module
-> > directory, allowing the removal of the $(KBUILD_EXTMOD)/ prefix from
-> > some build artifacts.
+> > On Mon, Nov 25, 2024 at 10:34 AM Sami Tolvanen <samitolvanen@google.com> wrote:
+> > >
+> > > On Mon, Nov 25, 2024 at 4:41 PM Miguel Ojeda
+> > > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > > >
+> > > > On Mon, Nov 25, 2024 at 2:29 PM Neal Gompa <neal@gompa.dev> wrote:
+> > > > >
+> > > > > As my Acked-by was removed, I'm sorry to say that there is no point
+> > > > > for me to provide feedback since it is unwanted.
+> > > > >
+> > > > > I hope it lands soon, but I also hope the people here who decided that
+> > > > > a person's efforts aren't worth recording because they don't
+> > > > > personally know them should reflect on this too. It's a good way to
+> > > > > keep people from coming into the community for the long term.
+> > > >
+> > > > Hopefully this reply helps -- apologies to anyone if I am overstepping.
+> > > >
+> > > > On one side, it is true that Acked-by is typically used by people that
+> > > > is responsible for the code one way or another, because the tag is
+> > > > meant for them to acknowledge they are OK with the change going in,
+> > > > and so I can see the argument that restricting it for that purpose
+> > > > only may help avoid confusion later on reading the log.
+> > > >
+> > > > On the other hand, someone being willing to put their name on a patch
+> > > > is very valuable, whoever they are, and whatever the tag name is.
+> > > > Moreover, it is also true that, Acked-by may be used here in a "as a
+> > > > key user downstream, this looks reasonable and satisfies our needs"
+> > > > sense.
+> > > >
+> > > > Finally, sometimes new tags are invented on the fly because there is
+> > > > no good fit, too.
+> > > >
+> > > > Either way, I don't think anyone wanted to disregard your efforts or
+> > > > to be rude to you in particular, but rather wanted to keep tags usage
+> > > > aligned to how they view them or how they use them in their subsystem.
+> > > > The Tested-by was still wanted, so I doubt their goal was to remove
+> > > > you from the log or to make you feel unwelcomed.
+> > >
+> > > Thank you for putting this more eloquently than I could, Miguel. Neal,
+> > > I do appreciate your feedback, and I'm sorry if I didn't make it clear
+> > > enough in my previous emails. I would very much welcome your
+> > > Tested-by, or another suitable tag that's acceptable to both you and
+> > > Masahiro.
+> > >
 > >
-> > The command for building external modules maintains backward
-> > compatibility, but Makefiles that rely on working in the kernel
-> > directory may break. In such cases, $(objtree) and $(srctree) should
-> > be used to refer to the output and source directories of the kernel.
+> > Honestly, I don't think it's worth it if my tag is going to be
+> > stripped simply because someone thinks I'm "unqualified". If you want
+> > more people participating in these things, doing stuff like that is
+> > definitely not the way to do it. It's not like people haven't had a
+> > chance to know me or even just look me up to know I'm not just blowing
+> > smoke. I definitely feel like I'm being disregarded. :(
 > >
-> > The appearance of the build log will change as follows:
-> >
-> > [Before]
-> >
-> >    $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
-> >    make: Entering directory '/path/to/my/linux'
-> >      CC [M]  /path/to/my/externel/module/helloworld.o
-> >      MODPOST /path/to/my/externel/module/Module.symvers
-> >      CC [M]  /path/to/my/externel/module/helloworld.mod.o
-> >      CC [M]  /path/to/my/externel/module/.module-common.o
-> >      LD [M]  /path/to/my/externel/module/helloworld.ko
-> >    make: Leaving directory '/path/to/my/linux'
-> >
-> > [After]
-> >
-> >    $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
-> >    make: Entering directory '/path/to/my/linux'
-> >    make[1]: Entering directory '/path/to/my/externel/module'
-> >      CC [M]  helloworld.o
-> >      MODPOST Module.symvers
-> >      CC [M]  helloworld.mod.o
-> >      CC [M]  .module-common.o
-> >      LD [M]  helloworld.ko
-> >    make[1]: Leaving directory '/path/to/my/externel/module'
-> >    make: Leaving directory '/path/to/my/linux'
-> >
-> > Printing "Entering directory" twice is cumbersome. This will be
-> > addressed later.
-> >
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->
->
-> Since this change I have been observing the following build error when
-> building an external module ...
->
->   MODPOST Module.symvers
-> ERROR: modpost: drivers/gpu/host1x/host1x: 'host1x_device_init' exported
->      twice. Previous export was in drivers/gpu/host1x/host1x.ko
-> ERROR: modpost: drivers/gpu/host1x/host1x: 'host1x_device_exit' exported
->      twice. Previous export was in drivers/gpu/host1x/host1x.ko
->
-> Now host1x is an upstream driver, but I have a local copy that using to
-> stage development changes (and avoid polluting the upstream driver).
-> Plus I can swap between which version I am using on a live system.
->
-> What I noticed is that previously the Modules.symvers for the external
-> module had the full path of the external module for the name. However,
-> now the name is just the relative path and in this case
-> 'drivers/gpu/host1x/host1x'. Hence, this clashes with the in-kernel
-> driver and we get the 'exported twice' error.
->
-> I have been looking to see if there is a way to fix this because it has
-> been a useful feature to override an upstream driver with a locally
-> modified version.
+> > The sole reason I didn't give a Reviewed-by or Tested-by is that I
+> > didn't want to do any integration work to validate it beyond the
+> > basics, which would have meant dipping into the Red Hat kernel symbol
+> > tracking infrastructure. I don't have time for that right now. If
+> > someone else does, they can be my guest. I just don't feel comfortable
+> > giving either without *actually* going that far.
+> 
+> 
+> If you provided a Reviewed-by and/or Tested-by tag, they would not be stripped.
+> 
+> I would not say you are unqualified in terms of skills or abilities.
+> However, this is not how the Acked-by tag is typically used.
+> As Miguel mentioned, "Acked-by-User" or "Acked-by: # As primary user"
+> could be an option, but I am not sure if they would gain
+> sufficient consensus.
+> 
+> Code reviews and tests are always appreciated.
+> The Reviewed-by and Tested-by tags are open to everyone.
+> 
+> If you are uncomfortable with a Reviewed-by or Tested-by tag,
+> I cannot think of any other alternatives.
 
+I think we just need to update docs that Acked-by is a *tool* mechanism
+to help maintainers in their quest to find sanity in determining if a
+patch is ready.
 
-I do not know how to reproduce it.
+Clearly, if I don't know a contributor and they send an Acked-by, it
+does not matter if was Donald Knuth (CS algorithmic lord), or John
+Grisham (author of intense legal drama books), what really is of value
+to the maintainer is the the qualitative appreciation over the
+maintainer's own perception of the value of that Acked-by is going to
+help the maintainer own's dreadful quest to find sanity in a review
+process in answering if a patch series is ready.
 
-  if (s && (!external_module || s->module->is_vmlinux || s->module =3D=3D m=
-od)) {
+An unknown developer to a maintainer, as qualified as they may be, could
+provide an Acked-by, but the utlitiarian value is completely subjective
+to the domain of review and so up to the maintainer's own critique. The
+value in Acked-by is in helping the maintainer. There is a hidden
+context of trust of behind the appreciation of maintainer's value of
+a simple Acked-by.
 
-is not checking the module path at all.
-I do not understand why it was affected.
+A series of Reviewed-by tags over time on a subsystem can help a
+maintainer appreciate the value of a future Acked-by by the same
+developer. In fact the *more utilitrarian appreciation* for a maintainer
+will be how often said reviewer is helping find *bugs* in previous patch
+series, not how many Reviewed-by tags or Acked-by tags they use. The act
+of finding real issues and thinking critically about the big picture
+over and over of on different patchsets can help a maintainer garner
+confidence in future Reviewed-by tags from the developer. Helping a
+maintainer review patchsets and get authors to fix issues until it is
+mind numbingly clear the patchset is ready is a way to help a maintainer
+appreciate future Reviewed-by or Acked-by tags from that developer.
 
+Since anyone can also provide a Tested-by, it does not mean that there
+cannot also be subjective association to it as well. A Tested-by a reporter
+of a complex regression is of most value. A Tested-by a random new developer
+for the same complex regression may be meaningless to that same maintainer
+unless the same original reporter also conirms the issues of a
+regression are fixed.
 
+Keeping a tag is not too important as well, we sometimes loose them even
+for developers engaging daily, what is more important is *helping the
+maintainer* on their quest to ensure proper state of affairs of the
+patchset and to remain sane.
 
---=20
-Best Regards
-Masahiro Yamada
+  Luis
