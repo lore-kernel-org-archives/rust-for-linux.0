@@ -1,147 +1,112 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575421D5ADD
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 08:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1DF1BCA0E
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 09:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733906597; cv=none; b=DeTlXehDpicEssBYnS2/d+BXgPZGdFXOiO7Cvt7OXPI8kgdekYliYcFRmtT/3QoK2UJl7BNBBmmW84ZfPDV+030G+caqBSsERf4RUmHBjXObzU9WBF2sq1nPydL7bU+0oOFzn/mnKlBKWX7ch/GdJj378nnzynY54Lfl5H1j4ag=
+	t=1733908646; cv=none; b=l+a+jrT8C/OInEdH7p5k97R3iNHQlksbY1i2guZROkEVfBJt4mgiCJSsegH8Sjno6/LG2H3G5leNbdGdGzWNCW/1HGzMop3LrocQJPtwuQoL4HxKuWeKIc2S32V0FrXQAejs9mIdbsHNnz6pFfV2n1n0YFBKn5qTqRa1ArqeT98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733906597; c=relaxed/simple;
-	bh=E+6hicwdN2qZVg3hca/JtaXyTtyPi20GrborVG3YtZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=syko8wj1AxZ3qKi1nW7i1xHj3DFx9jQ7lU5e9bpq+SjsWtlzc1hzerYSOqMMvFhns5i4DhbDzbbm6dOn+O5zxX2nOlY33uaBc2MAOnT6LhJ18JSleeKCLyAn+UtYGv1RHml34xRlopfWXIgTrwttjQ+DzjXQWIH6Me3Q8I4AZfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Xf+mOKfP; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1733908646; c=relaxed/simple;
+	bh=KXnRs6c/+0+W5NsqPbnJXSN30wa2+Zpa4g0seWgmQW4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ifXCiHHYby7h2NRY+jfzP5reTlZ0Uu5EbMsO1uqFB16wsTyyWTCQ5KoU96/6GY01mVHQcT0gIoaZhcK+S5EULmPey0CSI63CYFmSy0AMaEIZm5aqln0Xz2gRVxh45VBtUUdyzwZCCytWfVX4BsvpfxwpDThLl/NNrLycUsgAZgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WhFLtS/x; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Xf+mOKfP"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434a2033562so55972585e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 00:43:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WhFLtS/x"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3862b364538so246217f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 01:17:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1733906594; x=1734511394; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eDl8Jb1frNHxOgKdgBmezzKCSNHw67jaTRZ7H3Dd+tA=;
-        b=Xf+mOKfPvS5p0ZhSBByjp0EM6ub1vRfuR1lWlmnjA/SeSreleavtg4mgf5utPbce4z
-         uTcdsZ43uWMbPGFp9eeq8uFMkg3c20RbeICPpzQYoV5AXQG2zMnmOOQyFs60efVtuFB5
-         DP0qWBHkcEQ53jm91htLgkh2Y1tORpa097HNk=
+        d=google.com; s=20230601; t=1733908643; x=1734513443; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9qAmFS9OuRYNzUrEfP9v5FUQNDR6q7wH3T3JyyuCOoc=;
+        b=WhFLtS/xse1hyhVTW9zEHXNfReTCfDJkfsLySHIf6MP+SERfpuPnJsUcxfZRo/3PJD
+         +NtFrN6dVSeRfLO2+rn5LLUl9GkY0Cw0eANfC7epEa+ChFjmH2MOOEVr0QjUp4sD2Wof
+         DYmijB9sHC1X8BdBFyFQoEIckpv9daA9raMLaVrjMwbPSg3Uro0DXiOOQ5E87MwYR1CB
+         8JOqYWZhi1Nn8Ey/vB9167x62MLdYS3Ja+lye2zCUjN0w9meuTlHU6du9XT27BypnuXn
+         6chh3oOcQSeUVHvrrgDXzTTSs+ChEkBjdpY2NJoEAvLbd16JJQqDSqbRcRfPyt21QNkf
+         qHqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733906594; x=1734511394;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eDl8Jb1frNHxOgKdgBmezzKCSNHw67jaTRZ7H3Dd+tA=;
-        b=A0bBq56efyj0O0u35ZDIsnlkzum0icqzeMhSIFpSTsBAFx7DaO6I3Cl8Msmyr3J2a5
-         OE63DUe506a2iQSd3KPmCv4gSGzfqgPxydLliLlmH35hTHZXBYGK21jnY7gkOEoNb/P+
-         follKpM36Ctir/+sE5ZE1uxzCgwdjttrOBnP8MI319waUfDkffEp+kZTzK38lNAnU67h
-         qrvwsyf9bULO2vxH3KPR1SPqqZbGHxtW4c2wJ2mDFVv/PmewwnSD+l0qBMs4CZ6FKz+9
-         fs1ThYeA2Uo/WeEYnM9rVcf5HLA9nhMJJsxEaLXAThCYQ4PDCYJVgjnIWbgWt/NCVahn
-         th4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXjAite+0hJagNFi0lI/Y55nDKtscOWMHU/jlhz9OiCqnoYcR6+00OsZQV7wcgidXQ/ISbJNM4YHXeWaDXyuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjoQEIrj+gnoEhd8aV6Sm4zxNUNPMV89IycQHGHXmxbMD1NSoY
-	uAF9pOqFEBPPmkE0t5I81WGnYbWHrLLegQarwjQxuIY4mWKTm094P5h1Y8VBCGU=
-X-Gm-Gg: ASbGncvQNoMruiFXzSenzBnxKA9H4rNDpQmbNllYU3Nr1V63AEAU0BEuwnte/90ed8/
-	z7Gi/gJq1rgnM4UUF1xa5q6xlZ0+qEzdAQult1pS5Wq7EhdM04xG2lZpdVlfJ36Hsy0OuF/j+I+
-	VBgb4hYo0DAricqOIBp9uBNykh3V8KGePC0khzysXgB1FVnokE3ToHQtCeG/2ZpCmfsPtcLVyLt
-	N3i/sgNtd09t9jxshzj8y3PZlrYduADfZiE68jLkFBMdnywV9uhgzUYrxysLMb2mg==
-X-Google-Smtp-Source: AGHT+IEC5s1ABwh+QmwDOLYC0yNnP/Duuq98w6DzbDd3sOm9WXsmU9pvk2PMVd0L51eFeLkr3RWVKw==
-X-Received: by 2002:a05:600c:8718:b0:436:aaf:7eb9 with SMTP id 5b1f17b1804b1-4361c429eaamr11213005e9.20.1733906593293;
-        Wed, 11 Dec 2024 00:43:13 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da119abbsm222094855e9.43.2024.12.11.00.43.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Dec 2024 00:43:12 -0800 (PST)
-Date: Wed, 11 Dec 2024 09:43:10 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@kernel.org>,
-	mcanal@igalia.com, airlied@redhat.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [WIP RFC v2 05/35] rust: drm/kms: Add bindings for drm_connector
-Message-ID: <Z1lQnhKmH39C7Erl@phenom.ffwll.local>
-Mail-Followup-To: Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@kernel.org>,
-	mcanal@igalia.com, airlied@redhat.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20240930233257.1189730-1-lyude@redhat.com>
- <20240930233257.1189730-6-lyude@redhat.com>
- <02A84CFD-BE91-40E6-995C-4E81A8DAB92C@collabora.com>
- <7b57940a3987532963ce5fbd3a999665c17611ab.camel@redhat.com>
+        d=1e100.net; s=20230601; t=1733908643; x=1734513443;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9qAmFS9OuRYNzUrEfP9v5FUQNDR6q7wH3T3JyyuCOoc=;
+        b=ttHlSCQiH5HJ6fHmmm7gMNhBAiRjKVA/nFdce00uOTycuHkhqSi0nGvb+lhN5n7IMs
+         3dJnvV5KD+97bGR/dSt98e1nZRW6kpl2RoslN6Z/ZcvBbX8i/lxGEsFgYILLP0kJ5+G0
+         kwX33HKDB9gTIDrikugNj4WJhkj8rKpuPlFDEn19JehFPDRq/B9PHl+MzBkr9ClDu333
+         JalNPKxvmMSWAAvSIfalmiX0TDZOksAYibhVfhOKOZaz/ariwbqYys83d1dYLCjS31f6
+         lIP2yg2fM4hHDnIs1bbcBTc1Htu+Y8Me9Gcn5uFFcmFhxeEv0v+9kZzl747ftWvxJwhS
+         5oCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUk7vwh7y61WL0IwhiCX6/ZkHmq9NJ8X/epcHarLqAspVBi2VdXwApbEPVA0JHUu6oRXR7HQTWiC18pmc5Ouw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrT/MnRqmuqhtFl86cQ6i2QF68oy8lSE9iV4UMiF+G9myhFRvh
+	gpe7rfjkGfT52npg26YqfCV0QzYTHJ4jo14BeifrmAbBrbivJc35RqI9GXzalc9mcULNqyaqfFN
+	XImzcGvaa1nsqc0gQma/QxJ1H+FoPY/EQSoGr
+X-Gm-Gg: ASbGncsT7acpexxACvw9mrMk+2agEvfaspBBovVHTgGYMiBwDSfYWJd9Uh735G8ddQL
+	I+llfK/Z1GDZkfqPw2KTpyA7mkx2XPVrFX+Ro/7cjaBrxwFkKMs20C2KxhvTY5KAkWg==
+X-Google-Smtp-Source: AGHT+IEx+tmkolKmM+a69ZpAHvw/20jKyI14hK/hltzn25Hn5cLq6dwep4+c3hi4L/1G2oyXHIPpQJwIxjjwG/OiDcE=
+X-Received: by 2002:a05:6000:4027:b0:382:45db:6a1e with SMTP id
+ ffacd0b85a97d-3864deb511fmr1164059f8f.14.1733908643013; Wed, 11 Dec 2024
+ 01:17:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7b57940a3987532963ce5fbd3a999665c17611ab.camel@redhat.com>
-X-Operating-System: Linux phenom 6.11.6-amd64 
+References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+ <20241211020507.103687-1-dev.json2@gmail.com>
+In-Reply-To: <20241211020507.103687-1-dev.json2@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 11 Dec 2024 10:17:10 +0100
+Message-ID: <CAH5fLggicAOYVafSxBXSu0MvVpFEp-qhctbyRcd69HMg9xLcog@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: sync: add #[must_use] to Lock::try_lock
+To: Jason Devers <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	boris.chen.czy@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 10, 2024 at 06:41:52PM -0500, Lyude Paul wrote:
-> On Tue, 2024-11-26 at 18:25 -0300, Daniel Almeida wrote:
-> > Hi Lyude,
-> > 
-> > > On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
-> > > 
-> > > +
-> > > +impl<T: DriverConnector> Connector<T> {
-> > > +    /// Construct a new [`Connector`].
-> > > +    ///
-> > > +    /// A driver may use this to create new [`Connector`] objects.
-> > > +    ///
-> > > +    /// TODO: Add a way to handle creating connectors after device registration. Also, that's why we
-> > > +    /// don't ask for a UnregisteredKms device here.
-> > 
-> > Can you elaborate? We can try to help if you describe this a bit better :)
-> 
-> oh - totally forgot to respond to this!
-> 
-> So: out of all of the mode objects, Connectors are a bit special. They can
-> actually be created and destroyed after registration (hence why they have a
-> refcount). This is not terribly difficult to handle before registration, the
-> complication comes after registration - where we'll likely need to split
-> Connector into two different types:
-> 
-> UnregisteredConnector
-> 
-> Connector
-> 
-> Where you have to sacrifice the UnregisteredConnector to get to the Connector
-> object. I don't think this will actually be too difficult to implement, I just
-> didn't get around to it yet because there were so many other open questions I
-> had about the design here in general.
+On Wed, Dec 11, 2024 at 3:05=E2=80=AFAM Jason Devers <dev.json2@gmail.com> =
+wrote:
+>
+> The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> currently does not issue a warning if the return value is unused.
+> To avoid potential bugs, the `#[must_use]` annotation is added to ensure =
+proper usage.
+>
+> Note that `T` is `#[must_use]` but `Option<T>` is not.
+> For more context, see: https://github.com/rust-lang/rust/issues/71368.
+>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1133
+> Signed-off-by: Jason Devers <dev.json2@gmail.com>
+> ---
+>  rust/kernel/sync/lock.rs | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 41dcddac69e2..39f8c07d2287 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -147,6 +147,8 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+>      /// Tries to acquire the lock.
+>      ///
+>      /// Returns a guard that can be used to access the data protected by=
+ the lock if successful.
+> +    /// Note that `T` is `#[must_use]` but `Option<T>` is not.
+> +    #[must_use =3D "if unused, leads to an empty critical section"]
 
-For connnnector lifetime fun please also see Imre's patches for fixing
-some races around mst hotplug. At least on the C side I think we will
-split connectors into dynamic and static ones, to be able to handle things
-correctly. It's a bit a mess unfortuantely.
--Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Can't we use the same warning message as Guard?
+
+#[must_use =3D "the lock unlocks immediately when the guard is unused"]
+
+Alice
