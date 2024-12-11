@@ -1,154 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B81D8DFE;
-	Wed, 11 Dec 2024 21:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B79C1F0E50;
+	Wed, 11 Dec 2024 22:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733953771; cv=none; b=WhGUzHfTP2fFNnSSaa7OYLLOtMJ+0SWoQby4pqGXPtQoxR2vU1boW9Hlmo7b8IYC1Q8QIqvsMz67VtfvUcGyP+vvNa5ZOAISqIvwqjzAiKB/XBR8qA6gxf7mkOZNmi+a+Vg2+8f/mF+dsiRsPmHpo89I2fhmMi3P0KARphDRXCo=
+	t=1733956333; cv=none; b=o8mSu+BqJPxJD9NVYXcP15AKTpz5f5G4iG+d35yaCpsz9zNJGqU1+nhpMIuS/BykDL2uGrbh46dVjk4Al7tiFavpnCbnRz7eowgp7crw0H4neAnA1G/9yd6gQw8UqbJ6CLewIQdrYvpXVIqZWfAqi7LFZY0XthS1pBsyxRIZRSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733953771; c=relaxed/simple;
-	bh=LMgevCQ5N/CnT/QEPN2NC0QGREgKKkesG5Lwe03JUPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ONpZVYbXQWtfs1McnxtbI+rHA1ybArrodSZIvajkZA0cjAzcnEELO7ki/N7zfmclyC9unk/J/NpWMK2OpFVil85OKvQbGV9Xjw/S25YiLJu8/nLj7akTh+3yBK8dbONg8kTp960G4lpvmJhcLnbZ1ag/iC8yCfY5tBl6ZwnwwcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IS7zsrRJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733956333; c=relaxed/simple;
+	bh=SEo/hZdGOI1Q/CSoVxc2NHBSSqNSaH3b4tjYopKGg5Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=orDytnAGeb/8fM9FyJKi/DGo+pVosASWts2g5UXuDykr0MPL37bs56LG8b7OsZcuJQ91xLfto/AyO1CW6F6Mb0b1XwA1hXOqLpTYG952i7+0YQ1PyR/v0GuiRimJvKF5JlJs8cw3dU7kM7wPZ8K7sygSAlEDwdcU1b177R+5HKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taXi5zli; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IS7zsrRJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D80EC4CED2;
-	Wed, 11 Dec 2024 21:49:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taXi5zli"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3484BC4CED3;
+	Wed, 11 Dec 2024 22:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733953770;
-	bh=LMgevCQ5N/CnT/QEPN2NC0QGREgKKkesG5Lwe03JUPg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IS7zsrRJ2pfoHUC8c1Htiiw5DGSrXlMutxWMdKVpdbs4dC460extVwes5E7HboSAk
-	 bQZNPQ3U24FJ5iUJVAyBlsxQ+E6YhQ4H16/wYyq0nNrwn5d+WqCSySV7+QK9j6dGhH
-	 wXHW/27gRxO12lR6rYfisLpsepqUn05c/wie4DfzqsUfLD2pignQaRrbW7TGIkAE2j
-	 Lq+SOALtN6BqsDFQpHC31DV03CrzqqtSpLRK61Md95YY9zi3lfnsEybsXBt/4p/Wl0
-	 pfvf342edeqsRPNxcXy2pejVvXMrssRz7m7EA9TVHSqMbXBHySdahw1px0Ve97ZMuu
-	 cvaJnMrDS8Nfw==
-Date: Wed, 11 Dec 2024 22:49:24 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: platform: add Io support
-Message-ID: <Z1oI5JwExd1stnT-@pollux.localdomain>
-References: <20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com>
- <Z1nbsNyOBvFTL1-6@pollux.localdomain>
- <A3F6B6C6-33B3-4522-8240-15421F240D3A@collabora.com>
+	s=k20201202; t=1733956333;
+	bh=SEo/hZdGOI1Q/CSoVxc2NHBSSqNSaH3b4tjYopKGg5Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=taXi5zliiFN3KW6tUo9STN8RrcaQwTguLWUw7vOA+mWtVIl/lOqyfp7tYIS/4F3zV
+	 SrlDbBAQw0pq/i+m3XA8S2V5RKELeBAQDrM9ZlzmC5W2t3P2/1WtHs4/RSCdUgq8dQ
+	 mlxsg6YPQmJkBgFPWopn0EvLsIRByEfTZmh5jsblEZTrZHF1YBr1gHB4u8SC/ZnwYc
+	 JJmrOPumN6Bq+UlMa1Yy/gqSPnI2DNXR7U5+yK9MuW0ITZJZ/qhOwGYGwKr3anAyP3
+	 KUBLzQdsNExdAOK6/2U41j0zEPH/NAHyaJyJUiYyz7Ml3I0TkGmyIhQT3WGrG4Z/r4
+	 v9nQIb5qf2Bkg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D1D380A965;
+	Wed, 11 Dec 2024 22:32:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A3F6B6C6-33B3-4522-8240-15421F240D3A@collabora.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v12 0/5] Tracepoints and static branch in Rust
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <173395634899.1729195.7492083712432982213.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Dec 2024 22:32:28 +0000
+References: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
+In-Reply-To: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-riscv@lists.infradead.org, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, peterz@infradead.org, jpoimboe@kernel.org,
+ jbaron@akamai.com, ardb@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+ linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, arnd@arndb.de, linux-arch@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, ubizjak@gmail.com, catalin.marinas@arm.com,
+ will@kernel.org, maz@kernel.org, oliver.upton@linux.dev,
+ mark.rutland@arm.com, ryan.roberts@arm.com, tabba@google.com,
+ linux-arm-kernel@lists.infradead.org, paul.walmsley@sifive.com,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, apatel@ventanamicro.com,
+ ajones@ventanamicro.com, alexghiti@rivosinc.com, conor.dooley@microchip.com,
+ samuel.holland@sifive.com, chenhuacai@kernel.org, kernel@xen0n.name,
+ maobibo@loongson.cn, yangtiezhu@loongson.cn, akpm@linux-foundation.org,
+ zhaotianrui@loongson.cn, loongarch@lists.linux.dev, cmllamas@google.com,
+ palmer@rivosinc.com
 
-On Wed, Dec 11, 2024 at 06:00:31PM -0300, Daniel Almeida wrote:
-> Hi Danilo,
-> 
-> > On 11 Dec 2024, at 15:36, Danilo Krummrich <dakr@kernel.org> wrote:
-> >> +///
-> >> +///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
-> >> +///     // the `Devres` makes sure that the resource is still valid.
-> >> +///     let data = iomem.try_access().ok_or(ENODEV)?.readl(offset);
-> >> +///
-> >> +///     iomem.try_access().ok_or(ENODEV)?.writel(data, offset);
-> >> +///
-> >> +///     // Unlike `ioremap_resource_sized`, here the size of the memory region
-> >> +///     // is not known at compile time, so only the `try_read*` and `try_write*`
-> >> +///     // family of functions are exposed, leading to runtime checks on every
-> >> +///     // access.
-> >> +///     let iomem = pdev.ioremap_resource(0, None)?;
-> >> +///
-> >> +///     let data = iomem.try_access().ok_or(ENODEV)?.try_readl(offset)?;
-> >> +///
-> >> +///     iomem.try_access().ok_or(ENODEV)?.try_writel(data, offset)?;
-> >> +///
-> >> +///     # Ok::<(), Error>(())
-> >> +/// }
-> >> +/// ```
-> >> +///
-> >> +pub struct IoMem<const SIZE: usize = 0> {
-> >> +    io: IoRaw<SIZE>,
-> >> +    res_start: u64,
-> >> +    exclusive: bool,
-> >> +}
-> > 
-> > I think both the `Resource` and `IoMem` implementation do not belong into
-> > platform.rs. Neither of those depends on any platform bus structures. They're
-> > only used by platform structures.
-> > 
-> > I think we should move this into files under rust/kernel/io/ and create separate
-> > commits out of this one.
-> 
-> Just to be clear, one commit with the boilerplate to create rust/kernel/io, and another one with
-> kernel::io::Resource and kernel::io::IoMem?
+Hello:
 
-I don't think there will be much boilerplate. I was thinking of one for
-io/resource.rs and one for io/mem.rs. Does that make sense?
+This series was applied to riscv/linux.git (fixes)
+by Steven Rostedt (Google) <rostedt@goodmis.org>:
 
+On Wed, 30 Oct 2024 16:04:23 +0000 you wrote:
+> An important part of a production ready Linux kernel driver is
+> tracepoints. So to write production ready Linux kernel drivers in Rust,
+> we must be able to call tracepoints from Rust code. This patch series
+> adds support for calling tracepoints declared in C from Rust.
 > 
-> > 
-> >> +
-> >> +impl<const SIZE: usize> IoMem<SIZE> {
-> >> +    /// Creates a new `IoMem` instance.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// The caller must ensure that `IoMem` does not outlive the device it is
-> >> +    /// associated with, usually by wrapping the `IoMem` in a `Devres`.
-> > 
-> > More precisely, `Devres` revokes when the device is unbound from the matched
-> > driver, i.e. the driver should not be able to control the device anymore. This
-> > may be much earlier than when the device disappears.
-> > 
-> >> +    unsafe fn new(resource: &Resource<'_>, exclusive: bool) -> Result<Self> {
-> >> +        let size = resource.size();
-> >> +        if size == 0 {
-> >> +            return Err(ENOMEM);
-> >> +        }
-> >> +
-> >> +        let res_start = resource.start();
-> >> +
-> >> +        // SAFETY:
-> >> +        // - `res_start` and `size` are read from a presumably valid `struct resource`.
-> >> +        // - `size` is known not to be zero at this point.
-> >> +        // - `resource.name()` returns a valid C string.
-> >> +        let mem_region =
-> >> +            unsafe { bindings::request_mem_region(res_start, size, resource.name().as_char_ptr()) };
-> > 
-> > This should only be called if exclusive == true, right?
+> This series includes a patch that adds a user of tracepoints to the
+> rust_print sample. Please see that sample for details on what is needed
+> to use this feature in Rust code.
 > 
-> Yes (oops)
-> 
-> > 
-> > Btw. what's the use-case for non-exclusive access? Shouldn't we rather support
-> > partial exclusive mappings?
-> 
-> Rob pointed out that lots of drivers do not call `request_mem_region` in his review for v2, which
-> Is why I added support for non-exclusive access.
-> 
-> What do you mean by `partial exclusive mappings` ?
+> [...]
 
-I was assuming that the reason for non-exclusive access would be that a single
-resource contains multiple hardware interfaces, hence multiple mappings.
+Here is the summary with links:
+  - [v12,1/5] rust: add static_branch_unlikely for static_key_false
+    https://git.kernel.org/riscv/c/6e59bcc9c8ad
+  - [v12,2/5] rust: add tracepoint support
+    https://git.kernel.org/riscv/c/ad37bcd965fd
+  - [v12,3/5] rust: samples: add tracepoint to Rust sample
+    https://git.kernel.org/riscv/c/91d39024e1b0
+  - [v12,4/5] jump_label: adjust inline asm to be consistent
+    https://git.kernel.org/riscv/c/aecaf181651c
+  - [v12,5/5] rust: add arch_static_branch
+    https://git.kernel.org/riscv/c/169484ab6677
 
-If we allow partial mappings of the resource and make them exclusive instead it
-would be a better solution IMHO.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-But this presumes that we don't need non-exclusive access for different reasons.
 
-If not for the reason of having multiple hardware interfaces in the same
-resource, which reasons do we have (in Rust) to have multiple mappings of the
-same thing?
