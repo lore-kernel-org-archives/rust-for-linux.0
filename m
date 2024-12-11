@@ -1,148 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A331BD4E4;
-	Wed, 11 Dec 2024 08:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575421D5ADD
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 08:43:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733906516; cv=none; b=b4jqviexZpSifzOa6wO8ZWHndF8XbdDk2hv03sej+AayjD+csb9H5y1FvFFqHYQAbfwB5FvPLUph/12sRKSxyHkskBTkk/bXIetGPdMd/YwU2nZHQC6xXBJkRlj+H1yOOoRXwlm4Um26trc8Ns5K20/40idaGh36J8ijPVKkPDI=
+	t=1733906597; cv=none; b=DeTlXehDpicEssBYnS2/d+BXgPZGdFXOiO7Cvt7OXPI8kgdekYliYcFRmtT/3QoK2UJl7BNBBmmW84ZfPDV+030G+caqBSsERf4RUmHBjXObzU9WBF2sq1nPydL7bU+0oOFzn/mnKlBKWX7ch/GdJj378nnzynY54Lfl5H1j4ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733906516; c=relaxed/simple;
-	bh=11k4EF5OtV96AkBGLTd+hH0qKo61NlPe3GiJ6SKgOkU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XyGMluO+xu4uB2eIZWwgBTvOIgWn6PBcYDf4LsbPLmH3QwHXFNdMOB0XEf5URR/qiUHoVKDoQffEAcMdtHJjUzhWJqlYeyi8k/W/Tbq5s0ikx+8eNtYx84+Lzr4gzZ9b3YSimURK/uwfL1ScD2faVN+jRY6sxblRc0yfD8Rn17E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pm8GQBRy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733906597; c=relaxed/simple;
+	bh=E+6hicwdN2qZVg3hca/JtaXyTtyPi20GrborVG3YtZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=syko8wj1AxZ3qKi1nW7i1xHj3DFx9jQ7lU5e9bpq+SjsWtlzc1hzerYSOqMMvFhns5i4DhbDzbbm6dOn+O5zxX2nOlY33uaBc2MAOnT6LhJ18JSleeKCLyAn+UtYGv1RHml34xRlopfWXIgTrwttjQ+DzjXQWIH6Me3Q8I4AZfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Xf+mOKfP; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pm8GQBRy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FFAC4CEE1;
-	Wed, 11 Dec 2024 08:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733906516;
-	bh=11k4EF5OtV96AkBGLTd+hH0qKo61NlPe3GiJ6SKgOkU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pm8GQBRyxvJBdkrJvB5xqnkaQDK3pQH87o2d08mKRohKRhHeZREIXkL0k4nqUt2cm
-	 hPk5xQc3DdC83EUlt0uuVyRLixOlSM/eq/88PsXvN7dVJqm/xljHvKMIBC1C/gFBHQ
-	 P8aJVl5g1ko3s6+ndoUJmGaN+L+ce0g8sKQS3+1C6YhCPXYds31oE4aUehqq1aqt3U
-	 rq15OYEnt6oohrzKUah8SL1L/YUO6y2qYlI1J5WAyK9LQzlpbzO/tP8WJBI/FgEn3F
-	 ndJ1ytAS7pYHzrUy+wcnCubZp+bJEiXgPYiWJqv5+94lJqn7J9A9Qwoszdch4dNaPq
-	 LIrJbvVowJqtg==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9a977d6cc7so955746466b.3;
-        Wed, 11 Dec 2024 00:41:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWrmH5PyNGAUJ9E7Q1hffraD3d4d1cVxZE1h/2x3P2P/oSDQe747wKKxtq5wGKfYjTP3TdVXMN2M44lL7KMbA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNBCv8+90s21HZREtXLDY5yqNAWHl6R1OCent4yI9Pa94RjyyM
-	MELYxmp4s1g8YYzf1L9a0US7+o6AHTRCvhE/2XB8yyh/Fcs78xn3WeZKr0Ri1NrCU0UlXH7TjiX
-	+VpoV9OtYIgJDDlQdmIK7bmoruLg=
-X-Google-Smtp-Source: AGHT+IGBqIIVL8M8gd1swf2r/NXYFCJNyY0lS3KZFrZ3efUdXDZaZlzPpq5HkoxLe8d8jwzVBsIy563EXgXKfOfsJeo=
-X-Received: by 2002:a05:6402:2105:b0:5d0:cfad:f71 with SMTP id
- 4fb4d7f45d1cf-5d43316510amr4128041a12.32.1733906514580; Wed, 11 Dec 2024
- 00:41:54 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Xf+mOKfP"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434a2033562so55972585e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 00:43:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1733906594; x=1734511394; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eDl8Jb1frNHxOgKdgBmezzKCSNHw67jaTRZ7H3Dd+tA=;
+        b=Xf+mOKfPvS5p0ZhSBByjp0EM6ub1vRfuR1lWlmnjA/SeSreleavtg4mgf5utPbce4z
+         uTcdsZ43uWMbPGFp9eeq8uFMkg3c20RbeICPpzQYoV5AXQG2zMnmOOQyFs60efVtuFB5
+         DP0qWBHkcEQ53jm91htLgkh2Y1tORpa097HNk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733906594; x=1734511394;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eDl8Jb1frNHxOgKdgBmezzKCSNHw67jaTRZ7H3Dd+tA=;
+        b=A0bBq56efyj0O0u35ZDIsnlkzum0icqzeMhSIFpSTsBAFx7DaO6I3Cl8Msmyr3J2a5
+         OE63DUe506a2iQSd3KPmCv4gSGzfqgPxydLliLlmH35hTHZXBYGK21jnY7gkOEoNb/P+
+         follKpM36Ctir/+sE5ZE1uxzCgwdjttrOBnP8MI319waUfDkffEp+kZTzK38lNAnU67h
+         qrvwsyf9bULO2vxH3KPR1SPqqZbGHxtW4c2wJ2mDFVv/PmewwnSD+l0qBMs4CZ6FKz+9
+         fs1ThYeA2Uo/WeEYnM9rVcf5HLA9nhMJJsxEaLXAThCYQ4PDCYJVgjnIWbgWt/NCVahn
+         th4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXjAite+0hJagNFi0lI/Y55nDKtscOWMHU/jlhz9OiCqnoYcR6+00OsZQV7wcgidXQ/ISbJNM4YHXeWaDXyuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjoQEIrj+gnoEhd8aV6Sm4zxNUNPMV89IycQHGHXmxbMD1NSoY
+	uAF9pOqFEBPPmkE0t5I81WGnYbWHrLLegQarwjQxuIY4mWKTm094P5h1Y8VBCGU=
+X-Gm-Gg: ASbGncvQNoMruiFXzSenzBnxKA9H4rNDpQmbNllYU3Nr1V63AEAU0BEuwnte/90ed8/
+	z7Gi/gJq1rgnM4UUF1xa5q6xlZ0+qEzdAQult1pS5Wq7EhdM04xG2lZpdVlfJ36Hsy0OuF/j+I+
+	VBgb4hYo0DAricqOIBp9uBNykh3V8KGePC0khzysXgB1FVnokE3ToHQtCeG/2ZpCmfsPtcLVyLt
+	N3i/sgNtd09t9jxshzj8y3PZlrYduADfZiE68jLkFBMdnywV9uhgzUYrxysLMb2mg==
+X-Google-Smtp-Source: AGHT+IEC5s1ABwh+QmwDOLYC0yNnP/Duuq98w6DzbDd3sOm9WXsmU9pvk2PMVd0L51eFeLkr3RWVKw==
+X-Received: by 2002:a05:600c:8718:b0:436:aaf:7eb9 with SMTP id 5b1f17b1804b1-4361c429eaamr11213005e9.20.1733906593293;
+        Wed, 11 Dec 2024 00:43:13 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da119abbsm222094855e9.43.2024.12.11.00.43.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2024 00:43:12 -0800 (PST)
+Date: Wed, 11 Dec 2024 09:43:10 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@kernel.org>,
+	mcanal@igalia.com, airlied@redhat.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [WIP RFC v2 05/35] rust: drm/kms: Add bindings for drm_connector
+Message-ID: <Z1lQnhKmH39C7Erl@phenom.ffwll.local>
+Mail-Followup-To: Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@kernel.org>,
+	mcanal@igalia.com, airlied@redhat.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	open list <linux-kernel@vger.kernel.org>
+References: <20240930233257.1189730-1-lyude@redhat.com>
+ <20240930233257.1189730-6-lyude@redhat.com>
+ <02A84CFD-BE91-40E6-995C-4E81A8DAB92C@collabora.com>
+ <7b57940a3987532963ce5fbd3a999665c17611ab.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210001802.228725-1-fujita.tomonori@gmail.com> <20241210001802.228725-5-fujita.tomonori@gmail.com>
-In-Reply-To: <20241210001802.228725-5-fujita.tomonori@gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 11 Dec 2024 16:41:42 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7BxE7xeA982Pr4PFxgfNpgXs6H4OZ2LydmYAtYjvYNaw@mail.gmail.com>
-Message-ID: <CAAhV-H7BxE7xeA982Pr4PFxgfNpgXs6H4OZ2LydmYAtYjvYNaw@mail.gmail.com>
-Subject: Re: [PATCH v1 4/5] loongarch/bug: Add ARCH_WARN_ASM macro for
- BUG/WARN asm code sharing with Rust
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	x86@kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	catalin.marinas@arm.com, will@kernel.org, kernel@xen0n.name, 
-	tangyouling@loongson.cn, hejinyang@loongson.cn, yangtiezhu@loongson.cn, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7b57940a3987532963ce5fbd3a999665c17611ab.camel@redhat.com>
+X-Operating-System: Linux phenom 6.11.6-amd64 
 
-Hi, FUJITA,
+On Tue, Dec 10, 2024 at 06:41:52PM -0500, Lyude Paul wrote:
+> On Tue, 2024-11-26 at 18:25 -0300, Daniel Almeida wrote:
+> > Hi Lyude,
+> > 
+> > > On 30 Sep 2024, at 20:09, Lyude Paul <lyude@redhat.com> wrote:
+> > > 
+> > > +
+> > > +impl<T: DriverConnector> Connector<T> {
+> > > +    /// Construct a new [`Connector`].
+> > > +    ///
+> > > +    /// A driver may use this to create new [`Connector`] objects.
+> > > +    ///
+> > > +    /// TODO: Add a way to handle creating connectors after device registration. Also, that's why we
+> > > +    /// don't ask for a UnregisteredKms device here.
+> > 
+> > Can you elaborate? We can try to help if you describe this a bit better :)
+> 
+> oh - totally forgot to respond to this!
+> 
+> So: out of all of the mode objects, Connectors are a bit special. They can
+> actually be created and destroyed after registration (hence why they have a
+> refcount). This is not terribly difficult to handle before registration, the
+> complication comes after registration - where we'll likely need to split
+> Connector into two different types:
+> 
+> UnregisteredConnector
+> 
+> Connector
+> 
+> Where you have to sacrifice the UnregisteredConnector to get to the Connector
+> object. I don't think this will actually be too difficult to implement, I just
+> didn't get around to it yet because there were so many other open questions I
+> had about the design here in general.
 
-On Tue, Dec 10, 2024 at 8:19=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Add new ARCH_WARN_ASM macro for BUG/WARN assembly code sharing with
-> Rust to avoid the duplication.
->
-> No functional changes.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  arch/loongarch/include/asm/bug.h | 31 ++++++++++++++++++++++++++++---
->  1 file changed, 28 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/loongarch/include/asm/bug.h b/arch/loongarch/include/as=
-m/bug.h
-> index 08388876ade4..2343c4226595 100644
-> --- a/arch/loongarch/include/asm/bug.h
-> +++ b/arch/loongarch/include/asm/bug.h
-> @@ -21,14 +21,21 @@
->  #ifndef CONFIG_GENERIC_BUG
->  #define __BUG_ENTRY(flags)
->  #else
-> -#define __BUG_ENTRY(flags)                                     \
-> +
-> +#define __BUG_ENTRY_START                                      \
->                 .pushsection __bug_table, "aw";                 \
->                 .align 2;                                       \
->         10000:  .long 10001f - .;                               \
-> -               _BUGVERBOSE_LOCATION(__FILE__, __LINE__)        \
-> -               .short flags;                                   \
-> +
-> +#define __BUG_ENTRY_END                                                \
->                 .popsection;                                    \
->         10001:
-> +
-> +#define __BUG_ENTRY(flags)                                     \
-> +               __BUG_ENTRY_START                       \
-> +               _BUGVERBOSE_LOCATION(__FILE__, __LINE__)        \
-> +               .short flags;                                   \
-> +               __BUG_ENTRY_END
->  #endif
->
->  #define ASM_BUG_FLAGS(flags)                                   \
-> @@ -55,6 +62,24 @@ do {                                                  =
-       \
->         unreachable();                                          \
->  } while (0)
->
-> +#ifdef CONFIG_DEBUG_BUGVERBOSE
-> +#define __BUG_LOCATION_STRING(file, line)              \
-> +               ".long " file "- .;"                    \
-> +               ".short " line ";"
-> +#else
-> +#define __BUG_LOCATION_STRING(_file, _line)
-> +#endif
-Can we use file and line instead of _file and _line, which is the same
-as the CONFIG_DEBUG_BUGVERBOSE case?
-
-> +
-> +#define __BUG_ENTRY_STRING(file, line, flags)          \
-> +               __stringify(__BUG_ENTRY_START)          \
-> +               __BUG_LOCATION_STRING(file, line)       \
-> +               ".short " flags ";"                     \
-> +               __stringify(__BUG_ENTRY_END)
-> +
-> +#define ARCH_WARN_ASM(file, line, flags, size)         \
-> +       __BUG_ENTRY_STRING(file, line, flags)           \
-> +       __stringify(break BRK_BUG) ";"
-> +
-Can we use the same indentation in this file?
-
-Huacai
-
->  #define HAVE_ARCH_BUG
->
->  #include <asm-generic/bug.h>
-> --
-> 2.43.0
->
+For connnnector lifetime fun please also see Imre's patches for fixing
+some races around mst hotplug. At least on the C side I think we will
+split connectors into dynamic and static ones, to be able to handle things
+correctly. It's a bit a mess unfortuantely.
+-Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
