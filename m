@@ -1,46 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ED71FF1CD;
-	Wed, 11 Dec 2024 18:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7723B207A34;
+	Wed, 11 Dec 2024 18:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733942199; cv=none; b=Ng4RbpK245TcjJw9F7Yw8uJQlAsyx1rG8HQUZS15axMkAjzDQm3ki1QRiJegSr/qjKEiObbAlBhWxXEhhQSX6f7u/xbVCGEKk8pfZD5WgOv8Q+gtQ+iEJpgjujs10+vxzYVnCzN/O/mDgwGjEYACGktZjDmeraqnMwbd5ILaNTY=
+	t=1733942523; cv=none; b=o5/5DCM3qzxGt84qGwc+UZ7GDKykwIVOCpZR4aZ3IUf3h98L5MfOaLTnMhXjmtqtNHnjfP3aCk5sIrkNA9sp2QttpqZOhtKKl2hbyw3quFqv69Ulk8/TnVG/hLsoTh5cX/nnv3LOT4rxQ8d7SobCWZnGbfgceriU7JZuWIt5xAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733942199; c=relaxed/simple;
-	bh=LuWmLcx5vq5WvlLXI5ObCsjhMC9aP3LnKptYLgR/QjM=;
+	s=arc-20240116; t=1733942523; c=relaxed/simple;
+	bh=P6Zqt9EBguAsy0QK6OqMLSoBgBEED67sXUZoGZN8OLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RpAukjtZPUDqiM2/OU2xAX0IEmlatjM0OEZSy4iGBQkv+Qz/aRFiKvTa9EoS0fN6s609HaXq/o/ppS4KB7n/KjTFEWki9yP+8PhxxC9foYURDW5tHJmn5j9IIq8+3Jv8iHn/TpaURXZn2aGKh4y3iEHamzHhk9KkjMeU/wI6yHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTbQMN57; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=k3e99N3uDoQ3e8CgIbADM2duX42vD6YndEiZ04WjxSxFl9rKExx3/3AsdIir9CkuyekOWL5jT7tj5y2KR2RnBwbxauiTa61NEvf222S9jtxoWVCsig7LO3pOpyur5mygsdV83rXrytBzIfrjwCbnLMV00+CGG0BnCCQu2MLiOno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H//pCWUO; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTbQMN57"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A908AC4CED4;
-	Wed, 11 Dec 2024 18:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733942198;
-	bh=LuWmLcx5vq5WvlLXI5ObCsjhMC9aP3LnKptYLgR/QjM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UTbQMN57eM9jPLK5WxX/DenyV7BnYSaVUJM1OwuyKX/M59g2plJ3cftFpOkj2bx9c
-	 y6NxnXQDwRa8Nmp7NvZQurr7QBfRGH/kbhLSUxP2MZcjQPIuQu7NvjvUoFh+mBPcZD
-	 JNSiH5qtA3PkkhM2qQHNaKA6Pv7PABfpXPpXlxli7XBK75KokzCr0A+t4n+5o8TU59
-	 IrrRAVCj/PLvRux0CL9o42bLd6QdtQZBy4k5ToLMOIxqZZrFMPGPT9lgULhGPTegWz
-	 PRslDFKFU/M66B7sx335ocxZRHUVazNK3hdYQJ+giTW/aLY5qIjeDQBiI6LEtWs/kd
-	 HSTwwp/pLdb4A==
-Date: Wed, 11 Dec 2024 19:36:32 +0100
-From: Danilo Krummrich <dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H//pCWUO"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6d842280932so95864516d6.2;
+        Wed, 11 Dec 2024 10:42:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733942520; x=1734547320; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7POS2HNyDzdQglLSIJljahkbyhOjDBfJTnFRbmL6CP4=;
+        b=H//pCWUODM/U24IldSTaHuJZ8ZHPRs9cxbzqoie2Jolp/ga0jEY6R1GN/gG/lQsHnx
+         Di/TNYOz/dhQXRipSk47v763ez3lEfmSGCZNQ2jnKXU7F5dKg3psw9gcJTcJaTuHzbms
+         sTsSez86XAWe+tEpraOHpr2vVy2uz6g3LgwiRQhpF2LPYMoBkB4HfPu5QQDlAmWVy+lT
+         4f/7KEzniPjva95hxdPLUYEtUdN+N6CnOzZk61E4Z5zgpGZaVzIrT5ZcqvvSYVYlsDaA
+         gRsJhHP8ne2qQCF30BBbdgvCdaj9JSnC9QAIfssQ9hmdpzRPldugEjO/cQry8pxSBCqM
+         ++cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733942520; x=1734547320;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7POS2HNyDzdQglLSIJljahkbyhOjDBfJTnFRbmL6CP4=;
+        b=c5Uooi7cu95olgkbQvwi2EErW5k3UnMMBrjxiwlXBlt2QIZFPpPYLS9x3pxapb9Jt2
+         fWpcqp4097a03f3M35Bvh6+SP0fjETqo58CrSTF7IanygzDIiZwqI6SUPPuiy19KB/ZC
+         Lq9tPSwdSsh/HNUzBn6KsZL9I9MMbmhvi5ZeStPQU0ARoefAcXYKqQl+25MV4pblqC5K
+         /FLqmGRnubr6hZeXVqlnLL5pWgw8eINh9Mu4s4s29ixTUk6/QNS/kPLAX7Ps/GIVWsAI
+         /KygkdrYG9r0KHxDG8ySmMs4f3sf0TWx57IL1Ld3bZY307zMnosEclIQC7iQzbABn3EV
+         ArGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxALXcGKJeSF5/BdwVIWK7bnkFGJTkk7IRcW4h/9Md7gPtYflmbrdBJk63G4CiJovCjpnB8Qdx0o1Xz8vLkQg=@vger.kernel.org, AJvYcCXlFJ1MTyIjWoRx6WNg8I8RDYcH2j9fcFhLTtv0UQnVJYeBXc5Aehz7ykBwJIq/k3nwKbdAIS7rq7yEAQ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfStCz0VEj6YzLQ7Db85koGwxeFzBeKwjPrJRwuWgIgArcIGXY
+	RzrC8EucpIRh6ohOlCyWoN8C7hS38d0+ixEG3A5mYCCkjnciJP84
+X-Gm-Gg: ASbGnctecRkkvP0oqJwUByWQaB820+EJlyE3OD+xhIH8Jv7U7tr+WkvX6EFwIZwvXfy
+	p7SbNUUDDRsdtdtn+gUYtM/RUgmcUzGCfAWc/0kK5FjrHLt7NFSPL+0wW8O9ezWz0yHrriNN2Nw
+	cKwicC2FS+dVeDB+Mo7BufJzrA5NJuGLXEtissaGAWSKZDZY7N0zmbSj2p/l09uIRmE8OmhdyBX
+	+7sBhYcD9B/RaQcqzbbI7IVAmoD/LDhfGDqkOJB3672c804p4XjupKs0UT/8u0zejKzPFKIJdaC
+	53OnnSNFsxRTWE7yVptHKAlYry0LUHDJdeETkh+Q/XAr
+X-Google-Smtp-Source: AGHT+IHMyJGYmQ1o7dSx0a0YpE9ihgCFSLwdWdxYsRK+uBY1wPmxPqnhXnXQgYtOaEkFiRAUOMWu0w==
+X-Received: by 2002:a05:6214:2405:b0:6d8:8f3d:4d82 with SMTP id 6a1803df08f44-6dae3990d1dmr5299516d6.46.1733942519704;
+        Wed, 11 Dec 2024 10:41:59 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8da9fdf24sm72936436d6.75.2024.12.11.10.41.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2024 10:41:59 -0800 (PST)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A83FE1200066;
+	Wed, 11 Dec 2024 13:41:58 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 11 Dec 2024 13:41:58 -0500
+X-ME-Sender: <xms:9txZZ3oa1k7ddcTHJenHOw4fAojzYydShR0n0Y3eqJLzKDs6FMAU_Q>
+    <xme:9txZZxr-YGl4V42UOLcf_FE7dm02C5Lbj7ErilMJYst2FjjSsaxelkpXbkbbMtL9Y
+    Cd3aIg_mRxGk_lyaw>
+X-ME-Received: <xmr:9txZZ0Pl78VaVwF3xuJ2cUtHtSNvblRr87j2PtSpeYHxsqUZGxogMGONCTbh>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkedtgdduudehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeefheeufffftdeludeuueeugeevhfduvdeufeet
+    feehfeeuvedutdegueelueehffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhinh
+    hnvghrrdgrshenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvge
+    ehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhm
+    sehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpoh
+    huthdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdr
+    tghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehg
+    rghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmh
+    grihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdr
+    mhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhg
+    rhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:9txZZ647xof0hA0ljLtHAzAf-i7qsP3dCtXLukETsgg_E7VFKy-ceQ>
+    <xmx:9txZZ26BsQ2IzZJuR5qpWsXrjmcHqCSJh7acp-Zi1R02O1-48D_nvA>
+    <xmx:9txZZyiMK4WYJlkB4ctf6tTH-tvvbWuaVwlPmhleRbk10W1ZSKgxAA>
+    <xmx:9txZZ44u9CqxUNZR3NrXpIoR3fT0Ib2yjWP9brrxJk8fuA4lOkpTkg>
+    <xmx:9txZZ1IzZMNziqJYvwc4ayRu21DChn_thA9PkSgkxwH30OijhmeI7Q3x>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Dec 2024 13:41:57 -0500 (EST)
+Date: Wed, 11 Dec 2024 10:41:56 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Boris Brezillon <boris.brezillon@collabora.com>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3] rust: platform: add Io support
-Message-ID: <Z1nbsNyOBvFTL1-6@pollux.localdomain>
+Message-ID: <Z1nc9PFim58ClxtY@tardis.local>
 References: <20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -251,6 +319,19 @@ On Wed, Dec 11, 2024 at 02:51:56PM -0300, Daniel Almeida wrote:
 > +    inner: NonNull<bindings::resource>,
 > +    _phantom: PhantomData<&'a bindings::resource>,
 > +}
+
+Please don't introduce arbitrary reference/smart-pointer types. If you
+follow what Alice suggested, this should be a:
+
+	pub struct Resource(Opaque<bindings::resource>);
+
+and you can replace all the `Resource<'a>` in this patch with a `&'a
+Resource` after making the above definition. See
+`kernel::device::Device` as an example.
+
+Regards,
+Boqun
+
 > +
 > +impl<'a> Resource<'a> {
 > +    /// Returns the size of the resource.
@@ -289,10 +370,6 @@ On Wed, Dec 11, 2024 at 02:51:56PM -0300, Daniel Almeida wrote:
 > +///     // If the size is known at compile time, use `ioremap_resource_sized`.
 > +///     // No runtime checks will apply when reading and writing.
 > +///     let iomem = pdev.ioremap_resource_sized::<42>(0, None)?;
-
-This doesn't seem to match the API introduced by this patch. I assume you forgot
-to update the example code?
-
 > +///
 > +///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
 > +///     // the `Devres` makes sure that the resource is still valid.
@@ -319,14 +396,6 @@ to update the example code?
 > +    res_start: u64,
 > +    exclusive: bool,
 > +}
-
-I think both the `Resource` and `IoMem` implementation do not belong into
-platform.rs. Neither of those depends on any platform bus structures. They're
-only used by platform structures.
-
-I think we should move this into files under rust/kernel/io/ and create separate
-commits out of this one.
-
 > +
 > +impl<const SIZE: usize> IoMem<SIZE> {
 > +    /// Creates a new `IoMem` instance.
@@ -335,11 +404,6 @@ commits out of this one.
 > +    ///
 > +    /// The caller must ensure that `IoMem` does not outlive the device it is
 > +    /// associated with, usually by wrapping the `IoMem` in a `Devres`.
-
-More precisely, `Devres` revokes when the device is unbound from the matched
-driver, i.e. the driver should not be able to control the device anymore. This
-may be much earlier than when the device disappears.
-
 > +    unsafe fn new(resource: &Resource<'_>, exclusive: bool) -> Result<Self> {
 > +        let size = resource.size();
 > +        if size == 0 {
@@ -354,12 +418,6 @@ may be much earlier than when the device disappears.
 > +        // - `resource.name()` returns a valid C string.
 > +        let mem_region =
 > +            unsafe { bindings::request_mem_region(res_start, size, resource.name().as_char_ptr()) };
-
-This should only be called if exclusive == true, right?
-
-Btw. what's the use-case for non-exclusive access? Shouldn't we rather support
-partial exclusive mappings?
-
 > +
 > +        if mem_region.is_null() {
 > +            return Err(EBUSY);
@@ -408,10 +466,6 @@ partial exclusive mappings?
 > +    fn deref(&self) -> &Self::Target {
 > +        // SAFETY: `addr` is guaranteed to be the start of a valid I/O mapped memory region of
 > +        // size `maxsize` given the initialization in `Self::new`.
-
-I think it'd be cleaner to have this as an invariant section in the
-documentation of `IoMem` and then refer to that.
-
 > +        unsafe { Io::from_raw(&self.io) }
 > +    }
 > +}
