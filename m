@@ -1,75 +1,76 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4136416F0CF
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 14:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0DB246342
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 14:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733928264; cv=none; b=TUQS9hzjLM7WwKnAiNuXr6DxG8j9bR1vUPAnl9iNcBoLq44fmQAQZCsy8fd1IODshoRrzrUPv5GmlE0Z40yXMU4DTLzSqXmNaNNlbMSPcCOd55ROZpKGrl2ye8q262eRzvzklFTr//z3tnP9OlMS3SmyG1J6Ij07XwwimxSuTHA=
+	t=1733928371; cv=none; b=VGk2GeWVlWIMZFJ3DazSTBftOPiwx+ZPIclIJv/WidEZmsWgKHvOT2b95oFl11OyIt1wnkt6kcsDY7NQ6XcF5xhdIvBdwjAU/npBcwt56erhhQwzyOsEV+pc1GhHL1XT7wi9jmh/KrQ1e5C3R1pidKpl+wGbbjy2EgGFcbR1nx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733928264; c=relaxed/simple;
-	bh=o4dtZ3I4++4HRe+Qi1IdeT9fyDM3ommz8s/pS/6mX/Y=;
+	s=arc-20240116; t=1733928371; c=relaxed/simple;
+	bh=hQXNzo3YYXIGb+U0LwiMJsQWn00dDZC3pOaGkXS6WV4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=envUl2yDsVn9kd5tIOkbsW1HrRcAgx5Di23efSUhmXI45GJfl2QPmeXA5sLqgRXMfg67Q9CQnPh5+iIExKHrY3XfJEqrbgIdgfMt6U4Ngx4AV5tYYFxhoisX/WtnKsjXFx80QxF4eVo84sW56fPFFe1XDC+Yuqz+MNuSv3SRZio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZaWMgy2X; arc=none smtp.client-ip=209.85.128.51
+	 To:Cc:Content-Type; b=Yks4AZg113Ok0QYAC8TBmU6nuFMzafuHkri4MmK4X/Kq6P5Q8o4yfcca6tMHAkVSfEHw1s2s0C3gAPEaBwHRK1mdyej9QzGalZsX1m/lZm/U2b//fDGWzb+P0bAcHe/TbhI+KTEcA9zXMPW7rtOmirsJnMlEpuEvdu1kYn8taHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rq/PSI3n; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZaWMgy2X"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434a766b475so65306045e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 06:44:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rq/PSI3n"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-434a742481aso58713275e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 06:46:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733928260; x=1734533060; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733928368; x=1734533168; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o4dtZ3I4++4HRe+Qi1IdeT9fyDM3ommz8s/pS/6mX/Y=;
-        b=ZaWMgy2XH+G1TGRWFeyR3zWGS1ZNDdi3mIlbAYrceNRwjf1bRKuXEq0yZK3174pXp+
-         f4NQfn5z17eWnIyRl8FiD3cz3zF6aM8IRALrPcnS0vdlEJ5FtQpIS1s3UQkV4tYZOMH1
-         jjvllQDpa2KwnV7TQzBs3WPmh2VtCO31cL+lWZ8sWrEFbtoJ4h1H3idN9TRmh2XKJg/y
-         pMhaLDJss63kBHf5iwiPaItptJQyaI1llInhvNAQYZodpKAs447YOrfb7zFGQiu7TZzq
-         xRdZpDbHRt/EZ8C8nF0un9zMlMHdzzF1DP3wNfbuo21Vl9LvedVRX6QBikZ6cTCn3rwp
-         GZdA==
+        bh=yIM3tjvqjBXsdeMXPCxUx4fKCuQFSNEkzfrtEz+uAQE=;
+        b=Rq/PSI3nwvgvZN25l+vQb3+v4axdiTYwUuXPJREGE6+6g/4MJmul3p190MwmfjPfav
+         xwt6KND6iiLyfp+eB5ebvlTXaxViTDpvD6fXsqz2XInUajmrQ3OBwxh97VLi6kWI/ACs
+         8fbKnVmUvtSI6miNpV476KR+NsEVReT2Dcw79EOw9KW6JYULe8PJNYJjGn9tJKYE1go5
+         kQEr2GsBU44anYRLx5BBB22YN1DikpS6pEX1a4L74V4uwt6hE1sFEi0EYalPkgw1LGrA
+         pBMhjCHsY2S459RnJUPGtpBIUJvJp25CCQkqcSG6ogRrfkhbsV7gK350EGwxWAbmRowV
+         J28Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733928260; x=1734533060;
+        d=1e100.net; s=20230601; t=1733928368; x=1734533168;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o4dtZ3I4++4HRe+Qi1IdeT9fyDM3ommz8s/pS/6mX/Y=;
-        b=gwioXZnKgz/RxyOlu+lDOsG6AvTKcG+kUqjZVCWYgdb32byUxgx6KdsoUxritdVi9u
-         oW/lzWrwQUJdFz0l08upE072XyJpu/bq7BV3ktV/zrKJA8okccqaoV0EzXbU+lUIrA4j
-         8C0PiwPvKsxaiSNGouc5WcEw22wsO/nln6zyx1L6zYEGlts4vL2oFVucCR2xpK7CNOUd
-         QE8scbkISkTdpRReEdL6W8fBSgII1mbO5+Wm8rtbuMqRwe/sctoUl01MiLIrPaS6ixTI
-         cBxQc/4dOS5FBUoFKrftipze/2tlQAhviOFBfmA7SJixNW9zzH8/lPz2N/0PNvmxGxGj
-         IDkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUibQuAs9MWVs5yFIbN+9+tfyflpUl5xMC+VOt18o6ekd5shgOYGB+8ShmZiXYhRGzpgbUYKXIcY4sM5B2cdQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV2AlntIwjrU26LEgzK21lyamCtLnMIcdG/+Kk05+xIpPMwZQO
-	XF8tsUXweSarTlIp4lZvQu/190Eh2cQaj1sRbtHgItULqc+YxRVxc+IiNS0TbO/Y2W2JEEMJtG5
-	qbziEs4YJ6Oj5h0DV0DclXgTXnz1dZ84xZvFQ
-X-Gm-Gg: ASbGncsKjsWFujQvGZFCfv4ursLbBpBoFFeh1MnujYz/PJf1jnPSc5naB7YMN5F2v3C
-	55sroaAoz2QDYJBt0WsF3C2jCl5wipLWiBmAeZwj1e0KM3RjIh8LVPY1IVGX6ik+FoQ==
-X-Google-Smtp-Source: AGHT+IF1Q4xI/J9HWTvNdMoBulSeGhZD2fHXeX+ZiLhQ0oCPOrSMYhTnFaag5cAKAMEuEzK0Jrm/373HpSaoFjzPukE=
-X-Received: by 2002:a05:6000:178b:b0:385:faaa:9d1d with SMTP id
- ffacd0b85a97d-3864cea04aamr2980508f8f.35.1733928260519; Wed, 11 Dec 2024
- 06:44:20 -0800 (PST)
+        bh=yIM3tjvqjBXsdeMXPCxUx4fKCuQFSNEkzfrtEz+uAQE=;
+        b=Plz3G7uEZSpr7cX7PzaOy5+hMkI6rnD70qOeylDl5ToC3p0VxNH9ChLeuCj8yccIIu
+         j2VQYUUQwtz6iOtHwzy0/y8oQDO+zRvm/QOZQ5ghAGs5Jg2gLrII+xvwDWtZWPMAbYwg
+         qEbESSM4e3YbCqugYhwMyhc894NFp/c5lyyXNj9G5wI3KzPwUd22Z1HprQmveTTL7Qna
+         OcjAmS2lHgeh4MOGnNNGBiEyjEle5UcCY2e8JR1TsLvRsofqjSobqKkaR2XsM7TsBV2v
+         8YtqxJO63qF+VKhss7luYl8HA7k+JlITGWjIMO+N421l+dfg0yPR21UIKGupX19bCNoI
+         b7+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXl4O1ol4xfJbRRwuGTphCg7OMZPBsUblLhmAVmcuzOi+YikfUl1CncvigywVQavXmpVBKBoCpSNJL/MCk3hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7yDcRhZYIu5HUInhounnZ/JPhch1OdIr93ULbwnjjtqAZFTJl
+	2gnGsArKzQujwwjnrsW/LHsFW9aEdSgofiB2bW8+Voy3W6iS5p2sI5vw2lkICZ0w2l9qJKl2UeJ
+	avjz0wiRFyXMgKv9yrWsbU2DpTAjN5odkdMiY
+X-Gm-Gg: ASbGncuFHapQdxcAXyu1tPrmD5ONy+WKpGzwTthF+SEpZFzZnqw7tl3kPEt1aG01QFn
+	sT2+OhosJ4anvawM01/mB1Ofkg4989QNJSGuTfot5PR5KaFbfoCIzrpmxU+ipBmXgzg==
+X-Google-Smtp-Source: AGHT+IHCVQlnpKeO+7li6U9/tvmg7UYB+zAluD5gIYTSG7lO5NmS1Ncyz+GySvI5UHOLsyPseBu7ol909J7MBfzKkUU=
+X-Received: by 2002:a5d:64a1:0:b0:385:ed1e:2105 with SMTP id
+ ffacd0b85a97d-3864ce5f9b2mr2891188f8f.26.1733928367647; Wed, 11 Dec 2024
+ 06:46:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241205141533.111830-1-dakr@kernel.org> <20241205141533.111830-9-dakr@kernel.org>
- <CAH5fLgh6qgQ=SBn17biSRbqO8pNtSEq=5fDY3iuGzbuf2Aqjeg@mail.gmail.com>
- <Z1bKA5efDYxd8sTC@pollux.localdomain> <CAH5fLgixvBWSf-3WDRj=Mxtn4ArQLqdKqMF0aSxyC6xVNPfTFQ@mail.gmail.com>
- <Z1jC7NnmwidLPT9Z@pollux> <CAH5fLgg=fvQOVL-FH72BFtv-5r_e35=esNir9itG_29am_5Sng@mail.gmail.com>
- <Z1midaMMA1xBgBrg@cassiopeiae>
-In-Reply-To: <Z1midaMMA1xBgBrg@cassiopeiae>
+References: <20241210224947.23804-2-dakr@kernel.org> <2024121112-gala-skincare-c85e@gregkh>
+ <2024121111-acquire-jarring-71af@gregkh> <2024121128-mutt-twice-acda@gregkh>
+ <2024121131-carnival-cash-8c5f@gregkh> <Z1mEAPlSXA9c282i@cassiopeiae>
+ <Z1mG14DMoIzh6xtj@cassiopeiae> <2024121109-ample-retrain-bde0@gregkh>
+ <Z1mUG8ruFkPhVZwj@cassiopeiae> <CAH5fLgh3rwS1sFmrhx3zCaSBbAJfhJTV_kbyCVX6BhvnBZ+cQA@mail.gmail.com>
+ <Z1mh2rPC3ZOjg-pO@cassiopeiae>
+In-Reply-To: <Z1mh2rPC3ZOjg-pO@cassiopeiae>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 11 Dec 2024 15:44:08 +0100
-Message-ID: <CAH5fLghuk9tQxHSNOPUW14+tO=WWFCCSfQbcTHhEdGOCQC2+LQ@mail.gmail.com>
-Subject: Re: [PATCH v4 08/13] rust: pci: add basic PCI device / driver abstractions
+Date: Wed, 11 Dec 2024 15:45:53 +0100
+Message-ID: <CAH5fLgjg82x5EiWa1BTC7DpbhteBm5Or8XtpLAL0hQz+huXMCw@mail.gmail.com>
+Subject: Re: [PATCH v5 01/16] rust: pass module name to `Module::init`
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org, bhelgaas@google.com, 
 	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
 	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
@@ -82,90 +83,138 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 3:32=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+On Wed, Dec 11, 2024 at 3:29=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
 wrote:
 >
-> On Wed, Dec 11, 2024 at 02:06:50PM +0100, Alice Ryhl wrote:
-> > On Tue, Dec 10, 2024 at 11:38=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
-org> wrote:
+> On Wed, Dec 11, 2024 at 02:34:54PM +0100, Alice Ryhl wrote:
+> > On Wed, Dec 11, 2024 at 2:31=E2=80=AFPM Danilo Krummrich <dakr@kernel.o=
+rg> wrote:
 > > >
-> > > On Tue, Dec 10, 2024 at 11:55:33AM +0100, Alice Ryhl wrote:
-> > > > On Mon, Dec 9, 2024 at 11:44=E2=80=AFAM Danilo Krummrich <dakr@kern=
-el.org> wrote:
-> > > > >
-> > > > > On Fri, Dec 06, 2024 at 03:01:18PM +0100, Alice Ryhl wrote:
-> > > > > > On Thu, Dec 5, 2024 at 3:16=E2=80=AFPM Danilo Krummrich <dakr@k=
-ernel.org> wrote:
+> > > On Wed, Dec 11, 2024 at 02:14:37PM +0100, Greg KH wrote:
+> > > > On Wed, Dec 11, 2024 at 01:34:31PM +0100, Danilo Krummrich wrote:
+> > > > > On Wed, Dec 11, 2024 at 01:22:33PM +0100, Danilo Krummrich wrote:
+> > > > > > On Wed, Dec 11, 2024 at 12:05:10PM +0100, Greg KH wrote:
+> > > > > > > On Wed, Dec 11, 2024 at 11:59:54AM +0100, Greg KH wrote:
+> > > > > > > > On Wed, Dec 11, 2024 at 11:48:23AM +0100, Greg KH wrote:
+> > > > > > > > > On Wed, Dec 11, 2024 at 11:45:20AM +0100, Greg KH wrote:
+> > > > > > > > > > On Tue, Dec 10, 2024 at 11:46:28PM +0100, Danilo Krummr=
+ich wrote:
+> > > > > > > > > > > In a subsequent patch we introduce the `Registration`=
+ abstraction used
+> > > > > > > > > > > to register driver structures. Some subsystems requir=
+e the module name on
+> > > > > > > > > > > driver registration (e.g. PCI in __pci_register_drive=
+r()), hence pass
+> > > > > > > > > > > the module name to `Module::init`.
+> > > > > > > > > >
+> > > > > > > > > > Nit, we don't need the NAME of the PCI driver (well, we=
+ do like it, but
+> > > > > > > > > > that's not the real thing), we want the pointer to the =
+module structure
+> > > > > > > > > > in the register_driver call.
+> > > > > > > > > >
+> > > > > > > > > > Does this provide for that?  I'm thinking it does, but =
+it's not the
+> > > > > > > > > > "name" that is the issue here.
+> > > > > > > > >
+> > > > > > > > > Wait, no, you really do want the name, don't you.  You re=
+fer to
+> > > > > > > > > "module.0" to get the module structure pointer (if I'm re=
+ading the code
+> > > > > > > > > right), but as you have that pointer already, why can't y=
+ou just use
+> > > > > > > > > module->name there as well as you have a pointer to a val=
+id module
+> > > > > > > > > structure that has the name already embedded in it.
+> > > > > > > >
+> > > > > > > > In digging further, it's used by the pci code to call into =
+lower layers,
+> > > > > > > > but why it's using a different string other than the module=
+ name string
+> > > > > > > > is beyond me.  Looks like this goes way back before git was=
+ around, and
+> > > > > > > > odds are it's my fault for something I wrote a long time ag=
+o.
+> > > > > > > >
+> > > > > > > > I'll see if I can just change the driver core to not need a=
+ name at all,
+> > > > > > > > and pull it from the module which would make all of this go=
+ away in the
+> > > > > > > > end.  Odds are something will break but who knows...
 > > > > > > >
-> > > > > > > Implement the basic PCI abstractions required to write a basi=
-c PCI
-> > > > > > > driver. This includes the following data structures:
+> > > > > > > Nope, things break, the "name" is there to handle built-in mo=
+dules (as
+> > > > > > > the module pointer will be NULL.)
 > > > > > > >
-> > > > > > > The `pci::Driver` trait represents the interface to the drive=
-r and
-> > > > > > > provides `pci::Driver::probe` for the driver to implement.
-> > > > > > >
-> > > > > > > The `pci::Device` abstraction represents a `struct pci_dev` a=
-nd provides
-> > > > > > > abstractions for common functions, such as `pci::Device::set_=
-master`.
-> > > > > > >
-> > > > > > > In order to provide the PCI specific parts to a generic
-> > > > > > > `driver::Registration` the `driver::RegistrationOps` trait is=
- implemented
-> > > > > > > by `pci::Adapter`.
-> > > > > > >
-> > > > > > > `pci::DeviceId` implements PCI device IDs based on the generi=
-c
-> > > > > > > `device_id::RawDevceId` abstraction.
-> > > > > > >
-> > > > > > > Co-developed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > > > > > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > > > > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > > > > > So what you really want is not the module->name (as I don't t=
+hink that
+> > > > > > > will be set), but you want KBUILD_MODNAME which the build sys=
+tem sets.
 > > > > > >
-> > > > > > > +/// The PCI device representation.
-> > > > > > > +///
-> > > > > > > +/// A PCI device is based on an always reference counted `de=
-vice:Device` instance. Cloning a PCI
-> > > > > > > +/// device, hence, also increments the base device' referenc=
-e count.
-> > > > > > > +#[derive(Clone)]
-> > > > > > > +pub struct Device(ARef<device::Device>);
+> > > > > > That's correct, and the reason why I pass through this name arg=
+ument.
 > > > > > >
-> > > > > > It seems more natural for this to be a wrapper around
-> > > > > > `Opaque<bindings::pci_dev>`. Then you can have both &Device and
-> > > > > > ARef<Device> depending on whether you want to hold a refcount o=
-r not.
+> > > > > > Sorry I wasn't able to reply earlier to save you some time.
+> > > > > >
+> > > > > > > You shouldn't need to pass the name through all of the subsys=
+tems here,
+> > > > > > > just rely on the build system instead.
+> > > > > > >
+> > > > > > > Or does the Rust side not have KBUILD_MODNAME?
+> > > > > >
+> > > > > > AFAIK, it doesn't (or didn't have at the time I wrote the patch=
+).
+> > > > > >
+> > > > > > @Miguel: Can we access KBUILD_MODNAME conveniently?
 > > > > >
-> > > > > Yeah, but then every bus device has to re-implement the refcount =
-dance we
-> > > > > already have in `device::Device` for the underlying base `struct =
-device`.
+> > > > > Actually, I now remember there was another reason why I pass it t=
+hrough in
+> > > > > `Module::init`.
 > > > > >
-> > > > > I forgot to mention this in my previous reply to Boqun, but we ev=
-en documented
-> > > > > it this way in `device::Device` [1].
-> > > > >
-> > > > > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linu=
-x.git/tree/rust/kernel/device.rs#n28
+> > > > > Even if we had env!(KBUILD_MODNAME) already, I'd want to use it f=
+rom the bus
+> > > > > abstraction code, e.g. rust/kernel/pci.rs. But since this is gene=
+ric code, it
+> > > > > won't get the KBUILD_MODNAME from the module that is using the bu=
+s abstraction.
 > > > >
-> > > > We could perhaps write a derive macro for AlwaysRefCounted that
-> > > > delegates to the inner type? That way, we can have the best of both
-> > > > worlds.
+> > > > Rust can't do that in a macro somehow that all pci rust drivers can=
+ pull
+> > > > from?
 > > >
-> > > Sounds interesting, how exactly would this work?
+> > > The problem is that register / unregister is encapsulated within meth=
+ods of the
+> > > abstraction types. So the C macro trick (while generally possible) is=
+n't
+> > > applicable.
 > > >
-> > > (I'll already send out a v5, but let's keep discussing this.)
+> > > I think we could avoid having an additional `name` parameter in `Modu=
+le::init`,
+> > > but it would still need to be the driver resolving `env!(KBUILD_MODNA=
+ME)`
+> > > passing it into the bus abstraction.
+> > >
+> > > However, similar to what Alice suggested in another thread, we could =
+include
+> > > this step in the `module_*_driver!` macros.
+> > >
+> > > Modules that don't use this convenience macro would need to do it by =
+hand
+> > > though. But that's probably not that big a deal.
 > >
-> > Well, the derive macro could assume that the refcount is manipulated
-> > in the same way as the inner type does it. I admit that the idea is
-> > not fully formed, but if we can avoid wrapping ARef, that would be
-> > ideal.
+> > I think we can do it in the core `module!` macro that everyone has to u=
+se.
 >
-> If we can get this to work, I agree it's a good solution.
->
-> What do you think about making this a follow up of this series?
+> How? The `module!` macro does not know about the registration instances w=
+ithin
+> the module structure.
 
-I'm fine with it being a follow-up.
+You could have the module! macro emit something along these lines:
+
+impl ModuleName for {type_} {
+    const NAME: &'static CStr =3D c_str!(env!("KBUILD_MODNAME"));
+}
+
+Then you can do `<Self as ModuleName>::NAME` to obtain the name elsewhere.
 
 Alice
