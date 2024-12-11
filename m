@@ -1,102 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B79C1F0E50;
-	Wed, 11 Dec 2024 22:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3D21C1F22;
+	Wed, 11 Dec 2024 23:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733956333; cv=none; b=o8mSu+BqJPxJD9NVYXcP15AKTpz5f5G4iG+d35yaCpsz9zNJGqU1+nhpMIuS/BykDL2uGrbh46dVjk4Al7tiFavpnCbnRz7eowgp7crw0H4neAnA1G/9yd6gQw8UqbJ6CLewIQdrYvpXVIqZWfAqi7LFZY0XthS1pBsyxRIZRSU=
+	t=1733959017; cv=none; b=dG5L22K6n7lODEYP88e8ucNeBysgySYnHA8XjprP2E3zBrwxIkcrkMj0Q/LrCpQK9X4yEurJfZQ1btVKR1KB3izLctsd825MLoCQCZ3CC/qCM9kIdIb19VDSM2N3ecSJuMBde2vkJECbYIQbk4sntzTS4VAVY1cHI8RKuFzgUeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733956333; c=relaxed/simple;
-	bh=SEo/hZdGOI1Q/CSoVxc2NHBSSqNSaH3b4tjYopKGg5Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=orDytnAGeb/8fM9FyJKi/DGo+pVosASWts2g5UXuDykr0MPL37bs56LG8b7OsZcuJQ91xLfto/AyO1CW6F6Mb0b1XwA1hXOqLpTYG952i7+0YQ1PyR/v0GuiRimJvKF5JlJs8cw3dU7kM7wPZ8K7sygSAlEDwdcU1b177R+5HKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taXi5zli; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733959017; c=relaxed/simple;
+	bh=i6ZrtWtzAyOy8gdWcoPcDlt/eQnm2NOjmoi9dL7VXZg=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=TryxdLnwcf6HdwpISRx5IFlI0p3VxszMaYzGzkuPvvD/OkIzE9X6HlM8LP8MMyCWBz+ddz0ShLfFjS0QLV22neCREotFrXgNktUcK+2RGg2r3XoBCev3HVcwgfbUKMvNsPMsWut+R/iyD/chIHO+1pC/w+ixdmzpIS8Pk6tyIXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=evwN6Vh4; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taXi5zli"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3484BC4CED3;
-	Wed, 11 Dec 2024 22:32:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733956333;
-	bh=SEo/hZdGOI1Q/CSoVxc2NHBSSqNSaH3b4tjYopKGg5Q=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=taXi5zliiFN3KW6tUo9STN8RrcaQwTguLWUw7vOA+mWtVIl/lOqyfp7tYIS/4F3zV
-	 SrlDbBAQw0pq/i+m3XA8S2V5RKELeBAQDrM9ZlzmC5W2t3P2/1WtHs4/RSCdUgq8dQ
-	 mlxsg6YPQmJkBgFPWopn0EvLsIRByEfTZmh5jsblEZTrZHF1YBr1gHB4u8SC/ZnwYc
-	 JJmrOPumN6Bq+UlMa1Yy/gqSPnI2DNXR7U5+yK9MuW0ITZJZ/qhOwGYGwKr3anAyP3
-	 KUBLzQdsNExdAOK6/2U41j0zEPH/NAHyaJyJUiYyz7Ml3I0TkGmyIhQT3WGrG4Z/r4
-	 v9nQIb5qf2Bkg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D1D380A965;
-	Wed, 11 Dec 2024 22:32:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="evwN6Vh4"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-725ee6f56b4so6823b3a.3;
+        Wed, 11 Dec 2024 15:16:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733959015; x=1734563815; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ShXp0MbnAr4ggsRDnYhR5uR6lsM/ajKdCXbVIq5oTug=;
+        b=evwN6Vh469dg39IHRL9DPDwqhccKWfnjIlcb2ISW4iq1WVX72nCZVYEPviq+Zim1AP
+         vcQyU047XnfAcUZ/DOgeQeVnAtbj/dmn803f2aMcpqlA4Qu6e3KJp7RQRxep8LHzw0GA
+         F1yblHUqU6iPv1tPORf+rk+wL92EVKOcuz7zwpMkAfIojQX4w1syVpitIjfxjDXzka2b
+         Zagm3oZOBtTVfatmeKV1YHPc2PRwltsmT5ed/8u7bt/dO9wCFzuBcOtsqjeFu1g2geSr
+         zfKlrC+9W9tjUdy3LAF2Eind1ni5rqGhTT0CVlg6ruMfwjuhQFHI/hhNazDZfwIXtuRR
+         kIjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733959015; x=1734563815;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ShXp0MbnAr4ggsRDnYhR5uR6lsM/ajKdCXbVIq5oTug=;
+        b=KnQKfXY7GeoabsebjDy1R35976KBrGnASflhqDf2OwGCchvkCtzYEelhSiLz3XvdS2
+         FI1spw0KAglqVbTvGG1XDu0dTsz9I3ndZBLiBXgElif0mvt0TjtONP2X13Dq8FsmJUS5
+         WAeVhH3FA3R9h9Bh+UjPR52ldjsu3/uJrbSEcAlYG7qPDpkqC+Psq+3erlXeI+iH+H8H
+         aeCJOCVBCNGY1YNyO5YYJQCLf9nJI7sujXTWYna5byQDnM6KWAIU9cEu2BBGCgO8XtNj
+         1x53h0qh1wamv0M0zxgShSDq60V3alsyvMzU6RiLDFO7ozFXvtwFakroVHJEDgE3rCw3
+         Kl0A==
+X-Forwarded-Encrypted: i=1; AJvYcCU+nO3/hRJCWYvd2xrIOKekG8JpgPrrvAFUTnvBmM446hv0a2Jv8yyxJbU+6icgd8hsCbSehS77mdTNycU=@vger.kernel.org, AJvYcCXLtjE/KwOK8o+OIljvapR/Q2bfmUcWBG0EAvvSoID/lVkYd07ARKOXvG855Vy5dhD0JO4JXEg+JRtG5xKUKY0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwshQ8E9WEHjRSoXBfOyvhtqwGE4Sddnw28tJFV8ld5pAZ3488Z
+	rXCMq4q+yHmE5fqa5gqEq3271zKdp0NWO/kE8NZcHewzj5HezxsR
+X-Gm-Gg: ASbGncsQ2Kr39zgteRJk0v3yYGg6ox7fnRaUmxpkjee7ANS+GuWjtMe2Od/oWz0uB1h
+	M0cL6wJI6cVZsCesdBr6O+kGaeHkPoKCt6hrOTVCIu5ntZtVr+p4Rt8zLoyfSPKU9BwdZUX4Wkq
+	PbcdBbAOQivkEnGrZ6dglonYcrEYl6GbTe6H2dMbOehFLWJojPoh/Xl3nXKgQ0hfRWaRFn/j++n
+	b8VCLOzQfs6UQnj2B91p4Fpee9oGXbSqfata2TOjwzOfkctEuYdJZkYzcRuwjzzba45K6DCpFDI
+	ZW5OcrtJN+UWCNfmzzrGVwuuxzt0unOAzALM
+X-Google-Smtp-Source: AGHT+IHiOZwkIkfA6zUyxiG0lm10+eI/mHdViFN+Pz4GPmJYmGkPLqez5E4FZA5uA6Zaeh8N3oG8TQ==
+X-Received: by 2002:a05:6a00:92a6:b0:725:f18a:da42 with SMTP id d2e1a72fcca58-728fa9bf4abmr1705891b3a.2.1733959015026;
+        Wed, 11 Dec 2024 15:16:55 -0800 (PST)
+Received: from localhost (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725cf238777sm8304590b3a.47.2024.12.11.15.16.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2024 15:16:54 -0800 (PST)
+Date: Thu, 12 Dec 2024 08:16:39 +0900 (JST)
+Message-Id: <20241212.081639.1353664129364117890.fujita.tomonori@gmail.com>
+To: chenhuacai@kernel.org
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+ hpa@zytor.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, catalin.marinas@arm.com, will@kernel.org,
+ kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn,
+ yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu
+Subject: Re: [PATCH v1 4/5] loongarch/bug: Add ARCH_WARN_ASM macro for
+ BUG/WARN asm code sharing with Rust
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAAhV-H7BxE7xeA982Pr4PFxgfNpgXs6H4OZ2LydmYAtYjvYNaw@mail.gmail.com>
+References: <20241210001802.228725-1-fujita.tomonori@gmail.com>
+	<20241210001802.228725-5-fujita.tomonori@gmail.com>
+	<CAAhV-H7BxE7xeA982Pr4PFxgfNpgXs6H4OZ2LydmYAtYjvYNaw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v12 0/5] Tracepoints and static branch in Rust
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <173395634899.1729195.7492083712432982213.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Dec 2024 22:32:28 +0000
-References: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
-In-Reply-To: <20241030-tracepoint-v12-0-eec7f0f8ad22@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-riscv@lists.infradead.org, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, peterz@infradead.org, jpoimboe@kernel.org,
- jbaron@akamai.com, ardb@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
- linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, arnd@arndb.de, linux-arch@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, ubizjak@gmail.com, catalin.marinas@arm.com,
- will@kernel.org, maz@kernel.org, oliver.upton@linux.dev,
- mark.rutland@arm.com, ryan.roberts@arm.com, tabba@google.com,
- linux-arm-kernel@lists.infradead.org, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, apatel@ventanamicro.com,
- ajones@ventanamicro.com, alexghiti@rivosinc.com, conor.dooley@microchip.com,
- samuel.holland@sifive.com, chenhuacai@kernel.org, kernel@xen0n.name,
- maobibo@loongson.cn, yangtiezhu@loongson.cn, akpm@linux-foundation.org,
- zhaotianrui@loongson.cn, loongarch@lists.linux.dev, cmllamas@google.com,
- palmer@rivosinc.com
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Wed, 11 Dec 2024 16:41:42 +0800
+Huacai Chen <chenhuacai@kernel.org> wrote:
 
-This series was applied to riscv/linux.git (fixes)
-by Steven Rostedt (Google) <rostedt@goodmis.org>:
+>> +#ifdef CONFIG_DEBUG_BUGVERBOSE
+>> +#define __BUG_LOCATION_STRING(file, line)              \
+>> +               ".long " file "- .;"                    \
+>> +               ".short " line ";"
+>> +#else
+>> +#define __BUG_LOCATION_STRING(_file, _line)
+>> +#endif
+> Can we use file and line instead of _file and _line, which is the same
+> as the CONFIG_DEBUG_BUGVERBOSE case?
 
-On Wed, 30 Oct 2024 16:04:23 +0000 you wrote:
-> An important part of a production ready Linux kernel driver is
-> tracepoints. So to write production ready Linux kernel drivers in Rust,
-> we must be able to call tracepoints from Rust code. This patch series
-> adds support for calling tracepoints declared in C from Rust.
-> 
-> This series includes a patch that adds a user of tracepoints to the
-> rust_print sample. Please see that sample for details on what is needed
-> to use this feature in Rust code.
-> 
-> [...]
+Of course, I'll fix in v2. I should have done that.
 
-Here is the summary with links:
-  - [v12,1/5] rust: add static_branch_unlikely for static_key_false
-    https://git.kernel.org/riscv/c/6e59bcc9c8ad
-  - [v12,2/5] rust: add tracepoint support
-    https://git.kernel.org/riscv/c/ad37bcd965fd
-  - [v12,3/5] rust: samples: add tracepoint to Rust sample
-    https://git.kernel.org/riscv/c/91d39024e1b0
-  - [v12,4/5] jump_label: adjust inline asm to be consistent
-    https://git.kernel.org/riscv/c/aecaf181651c
-  - [v12,5/5] rust: add arch_static_branch
-    https://git.kernel.org/riscv/c/169484ab6677
+>> +
+>> +#define __BUG_ENTRY_STRING(file, line, flags)          \
+>> +               __stringify(__BUG_ENTRY_START)          \
+>> +               __BUG_LOCATION_STRING(file, line)       \
+>> +               ".short " flags ";"                     \
+>> +               __stringify(__BUG_ENTRY_END)
+>> +
+>> +#define ARCH_WARN_ASM(file, line, flags, size)         \
+>> +       __BUG_ENTRY_STRING(file, line, flags)           \
+>> +       __stringify(break BRK_BUG) ";"
+>> +
+> Can we use the same indentation in this file?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Oops, I'll fix in v2.
 
-
+Thanks!
