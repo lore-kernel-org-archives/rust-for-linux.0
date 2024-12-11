@@ -1,90 +1,92 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46E223369A
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 09:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CACC236F9D
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 09:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733908711; cv=none; b=V1FpOLPHkBZKh2nWmwOESryiJlebpeBEu0/tT6wicPqyQSim3TRCVDFQvbO6eI7+eLlYyTXHQ2dZIQM3evozfBdIunM3Ol8B2/5L7ZM2MuYO3jMfouGSgLj7zZZl/7WwzMQmF1Jkla5B/8oybFg8qo3RNRrrn3GNWaGlosg5dzo=
+	t=1733910354; cv=none; b=Te9umCdX/OfVCeuDwMA+ks99WWgun3vaNYTt1NHdQp7I4aL70agNoo963zmjMm1M6GEn/f/nzFtpyC89p/LY8JQAbsf8oSFjVncq6/95ukNUIMXeeII+V0IMUc6I8hsL5+PNaJiUvIlCUy7pesP3VRIcFnYQq1FKl2C/asJzmD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733908711; c=relaxed/simple;
-	bh=3vHYlP+vndcNXuZOI6XprGkQpKc6n1GhE/RqwAQGt1M=;
+	s=arc-20240116; t=1733910354; c=relaxed/simple;
+	bh=GgI7Qf8LeBjM62ZS9/FTzM3C8yo2onDSYj2hOz2qcbQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dTHzHnfj6pzLVN76coj2XMKrP/CERpcCQpSREa9Ri4qvlV4u8f3CVg1DqRjysEADU1tvk7XqNhN4C1G2AhEfrSTdf1iIU257uquu+uE0fBQVUd3501wXBWSo1J1Aa1Tx24zMzeVB7GpybbWFi1tkot7SLwTF+dJiTxmuO+DTya0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ap6NNcZV; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=hlJ+RrfiX139epbTCKLwxu9/sV5n7A4u52jiQHqduOW6b24bfTTm/lPwh72d4SCAmKB0lQDuWXseyBYq3ai+xwJyaznc16puUuJwUWk6jQ6/cjGl9EWVNOI5V2RtEinuu1x5O/23/r11pCYJxUUKFB+dED4saWLQ5Slf/Dkm498=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aKE/qWJ5; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ap6NNcZV"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-385e06af753so2848108f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 01:18:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aKE/qWJ5"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee94a2d8d0so944538a91.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 01:45:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733908702; x=1734513502; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733910352; x=1734515152; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3vHYlP+vndcNXuZOI6XprGkQpKc6n1GhE/RqwAQGt1M=;
-        b=ap6NNcZVR9tEdDFafFXVp8tZwW1IbPCjW6gAJOCL8T2Yeu/XM7u5+iMinmN9oD5r2L
-         0JNFgDECbdlm/XEY5pAJoB9z4mqPISbUVMQKv/9DVRX7eDN1PSHbQv7ukZCGhwVrme5U
-         qwDjtLamHKHP9xUVzThABInaLbgV+AEeDJ/4W5w32lD/9Sa6O/JFwBy1PvRWdoymYbhj
-         mhF6yt2jvO7nY0lBqA62zvDTUS4EGXyMIcXpNwEMmkr7h6q2iIuHoUgq5xvdj2pTUJiX
-         QkKEbmjFe8ilJ3apuPAu1lH7zLbnyi9ZTiIaSZD0D+F9Q6cxpmlfgGfe9rGdTyGgzR3H
-         7UuQ==
+        bh=YcYAePYXGk/deTF1tf+u3fLU/5TSiQrSiSppSJ9134A=;
+        b=aKE/qWJ5FgWt0jdsnpCJaSacgVMd9MpsGIOc158P4M46rIstInCotCpgeS63sNgvJ5
+         IdZ6DBIpC2a0sbgJ7aEUZHttnZd5CuNxYP9ib3jGBeYUSwlIDW/slHzLgGWS6OrMB/zV
+         7IIiIbcLiNrjMf5tKHzGaMeVwt4SfYAEDPj/5y2V/pGiHNjmTUduCMWb1qFKv2e3sGM+
+         ud1e41dtBPf1qangdpOsOUT6XEUZ5+IkqMv763D8vEHVeasjvqfGrUDJx3v2zkzvZ9Yn
+         dYELO1n5QtwLfoRx5K8oiQFl62U/5I46xft+pJL2opfGBsV3dyZ7BQwftUGqGprNlNph
+         E2XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733908702; x=1734513502;
+        d=1e100.net; s=20230601; t=1733910352; x=1734515152;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3vHYlP+vndcNXuZOI6XprGkQpKc6n1GhE/RqwAQGt1M=;
-        b=tWV/7C5cgu8HBw78o5azwxfTxjJXW8ghwGO1aiT6xWdQri9nW0+B/Wd+HXLnpEBYfd
-         0gvD6Uo/VJQ+ZnyWR1z7e/1p1Dl2ojsGzGCCwBxapRwbzD8w8UuyQAj6aX+1FRZ22G4O
-         GUZcpaT3MNNYaICbl5nyhy9MuKMid6aB2cHmZhfFhri6ftRoj6tjfoSKxp1hm7vy0Tkg
-         KsRdf2E96atO3ESlltsSmy/OapeSgJGGWZTufX9qFwGOK/I/+N2D8doLpE92MMhBlz3w
-         RHG4MybQMGXRjeaPAgxOESHU/UQhZlT9jOdnZcXKHgp+f9/vSW9nIOeU+pNb2V0joCqM
-         7tXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWSWahdXnuqzk2pEZORLfrm5AltOhZ9l7nFGupUtyChHN0Nuivg7zGkwZ1TVzRnZsP7YVAczZtuI4G0wtLmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4dfRR/AYSJdS+EqSg0msmfQL74jFNdtlxOP104QhFDE7p8Fxa
-	NtfaR+OPmAI+Sux376gRs6XFkCuGFhThvRnfWfOq25FU/ynm7lBOFa3WCEGMRRb/lDlf3UMqR9x
-	Ki+zrD7P/fUll46jy0SGG6MsfHB+b4mrCc/p8
-X-Gm-Gg: ASbGncuXI2ljUH0ku5aTgCmmqg0AR0lrG/Z6b9sjOaEEHzHP+x+kQEEg2MlBUY06GxB
-	y02ubNcuJV2Yrpkut/f6/aK+lmgJMbYcCwUCtgRpapzk4xWjuvWE/qojUg6VUBbKfqg==
-X-Google-Smtp-Source: AGHT+IGXlwylyC3zJtiNHL0Jm3c9KPPDvqnLEc6f8/awzTY/st7wW/grsH5pHA1x0LnLhySjtkPO/7zB4NO4hs7+tfc=
-X-Received: by 2002:a05:6000:18ae:b0:385:e961:6589 with SMTP id
- ffacd0b85a97d-3864ce96d45mr1556644f8f.20.1733908701835; Wed, 11 Dec 2024
- 01:18:21 -0800 (PST)
+        bh=YcYAePYXGk/deTF1tf+u3fLU/5TSiQrSiSppSJ9134A=;
+        b=o+zsMuI0DBJcwyBC+2rIlz1rzw9YSd5Lrh0P3EUT71PkvN4FnDrkjrp0LTb9qbTdG1
+         vmdl8hsAZU/MU9fBgP/G/c1gc/XNwVvqrLlHwjYZ4RW3qfN2fNyqB9TgXW72szG8meoU
+         KmZXF5l55fY2bXpb/l4GQCdGKo7HVXvkQXnFlFaVpaGSBIObHpnu0avrmGQ48ptepJuq
+         /fOhLyR2mmqhY+VO2V0uS1muBU2K2NWtYp6oKYWuegQPzQUy+X1ZIofL1ftIdoFF8Ng9
+         9nXR4wfsND0N1jVDd/5pyFCkE1m5SePWoo54jfBBRuVn0xh4EOWD6Px++lcXUHjuYeqP
+         nxwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXwLANII41oF+V8RLEAIGQnBbRJNwkmJID4RYMqx3mNmXQu6EEKbTqrXKO04AUpRR5OtgSCvPHdnAv8qjympQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNEZLTdicZn0cPwuOkdR6q/5yArW9T91qb7ZzSIkU4yScwq0K1
+	btOgxgrqRvT537RZblHQG96gOojO8g7tTZGybQkUBM8VFzP4yh9y0gZJl3gRoFpD8oK1y8Fhc12
+	XTLFeqsCG2qsuKWR6PakpGNQx2h4=
+X-Gm-Gg: ASbGncu1RujHwSalpAjnAILZmzQhIoc7Hk7ZgU850WKNakzf0afUbrvNejdUPv4rgD+
+	nuv4laBmsMjkRa4YlJbcjABmg+aZP253ssj4Knw==
+X-Google-Smtp-Source: AGHT+IELeMASbJYX3j19XK5spM7luVVaTeu67inhEk2FbFSm2FdsGKeUerWwXWp++eJ7DbYBdSVE2u30jT1EH9z+Jbs=
+X-Received: by 2002:a17:90a:e7ce:b0:2ea:956b:deab with SMTP id
+ 98e67ed59e1d1-2f1280318ddmr1371837a91.4.1733910352236; Wed, 11 Dec 2024
+ 01:45:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210224947.23804-1-dakr@kernel.org> <20241210224947.23804-6-dakr@kernel.org>
-In-Reply-To: <20241210224947.23804-6-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 11 Dec 2024 10:18:08 +0100
-Message-ID: <CAH5fLgjWGRCzy9WXVd=ggi5=R6e8Z12bq8yYwAQLxLMH-uObMQ@mail.gmail.com>
-Subject: Re: [PATCH v5 05/16] rust: types: add `Opaque::pin_init`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	tmgross@umich.edu, a.hindborg@samsung.com, airlied@gmail.com, 
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
-	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
-	j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
+References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+ <20241211020507.103687-1-dev.json2@gmail.com>
+In-Reply-To: <20241211020507.103687-1-dev.json2@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 11 Dec 2024 10:45:39 +0100
+Message-ID: <CANiq72nxqdZzD-TtZbnHOdmMxMkXuafquWpsHOeW5rWFJbhKZA@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: sync: add #[must_use] to Lock::try_lock
+To: Jason Devers <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	boris.chen.czy@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 10, 2024 at 11:50=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
+On Wed, Dec 11, 2024 at 3:05=E2=80=AFAM Jason Devers <dev.json2@gmail.com> =
+wrote:
 >
-> Analogous to `Opaque::new` add `Opaque::pin_init`, which instead of a
-> value `T` takes a `PinInit<T>` and returns a `PinInit<Opaque<T>>`.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> +    /// Note that `T` is `#[must_use]` but `Option<T>` is not.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Should this be a comment, i.e. `//`, rather than part of the documentation?
+
+I would also reword to explain the "what", not just "why", e.g. something l=
+ike:
+
+    // `Option<T>` is not `#[must_use]` even if `T` is, thus the
+attribute is needed here.
+
+Cheers,
+Miguel
