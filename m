@@ -1,88 +1,178 @@
-Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CD723692A;
-	Wed, 11 Dec 2024 14:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716624964F;
+	Wed, 11 Dec 2024 14:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733926145; cv=none; b=fbMR+MBSv4kWTV814Bo8E2vbD0xJwOxKYdAhFeLL9A7WvqPE80jD148sYDdrXEtJBhiKVoEe6e6bt/aD+E5i4YP4iUyTMxqQ9hH2CgS6tQ8J15XQHfFrw88Bog2nEX54kpE/ePX1ELDIOPKhfDDOYPG8QJighiGDEaoXjZXTHg4=
+	t=1733926922; cv=none; b=uaMocOYEJyCTnpL9XyDW3nmXGMSsIbS3fY6nGwjSvsn1LyTrnjNyuObf9oYFvw+TNs+PoxpqVOIvAswW/Rkz2/qHOhObZ9C1sHhWEWxig4E07cIC3LvvZASugZQ76Yeb5OKSydlqfxtqDZKjt4co4p1VdytO5qU6oBqzHPL1hI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733926145; c=relaxed/simple;
-	bh=UwZCp54eb/+4kEFaokpoh9DVzhZfjWZQTTCKH1CwyxQ=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dk/T+brYrP2UU/4x5vqN3nHGLkkQWLTsJX1qHDxW2qHaB0VHKOn7KdMXbAt39w9TCcQGoXXZFWp4En+LEhQ9Ty/deB2YDwFWr3ZdSxBoUD2DgocOE+PL8uzIHrCUIKR4N7SkMfHd+oGsmilx/YTLYilIk9WYOYG42w3ljEJkPMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Z6SyTGKq; arc=none smtp.client-ip=203.205.221.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1733926922; c=relaxed/simple;
+	bh=MjK2FiZNeIRH+yBGl3k+zxdugMavQGT4yR9b1LTRVnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oKQ/gG1hC35wl8R/Cn47GydwIBIVDFsrhXqvGee5dvXWFVXSmeTsJYA/F19TajzRX8xmpvMyf5ru7oDL8QSUH7Bj5zwK0mhuAD3bgvdNioNnzwknt4RyBskambnrav3j2AJlNblZE6VLR7uhtHuEAbiwpkyiPvX4b6D/clDaFnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5ikTHj0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Z6SyTGKq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1733925830; bh=GV/PffgiRhk7TTiNDAMw/6C+sGFhBffZzyUrbe1OAJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Z6SyTGKqaOcfCkBX1A8P5Ty/Z+hqs+8t6FtxACa95s9V9yguAbugpdI9By94HuTnq
-	 DmlgjV3InKPKkDXi0ehCAPHjQt/TmZf0604BRdqC5opO6SGpEilPS1kl0DrOdza5QW
-	 pSU///jI1WKyl8q+st7UGlMo0Dv/xRZU25CQEX3o=
-Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020 ([124.240.55.41])
-	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
-	id E6A1C4F3; Wed, 11 Dec 2024 21:57:42 +0800
-X-QQ-mid: xmsmtpt1733925462t7if6hf4c
-Message-ID: <tencent_C3D31BDA67AD3F485B2E4D3498E930CD9F09@qq.com>
-X-QQ-XMAILINFO: M1JY6XCfJolWm27/3V1TyRgFW0HHQOl9GdLTb8+8plyiqbGBKIIUdNXwX5J2bO
-	 bVxr+nvVjYbwh+76V2pfUU+qZ8sNfxXb3NW+osft6NjorCaVsTnh0I8CkYh44noRqXZLoe0+l+Iv
-	 ihou4/J7VvLIEGNLgEfcgv/10KnljCcSC3InF+o8XPjO7dBEmzT6JsuNer/89R8IdSaVb4DokQFo
-	 wYQTVRMAibeBheAjk+OMlG9GPPB90CtWdclMze9WMlvBmFx18DqErBMEdMAMl6C1clu9heunZjZC
-	 R6brjfmX0W/Mw/k0jExStdDnLH3eEJMSzia0ZhAAyS6uCrfMHR8cYh8vZxiyPo4MdameAfnQxso9
-	 eRBkB5kx0PoKxwHxXUC71tfGfRTcT89DSCvI70BccQfXW0OQyYwf+j4PvTviNYIm8dlgfxYd+vio
-	 kkfxkJmcutBDhFkShBVjnephJ7hBDNFvOmlLOYQyYA6O3UgLDLDbuzv8J0rKgIwKBu0ZYO+qDeQ8
-	 qOthiqxWEV0FvixXBPfkANRyxbV2FuvangimrgQ9fauYKoKY6gr31C1BB8uWrs1f/rjhZ/NXamkQ
-	 Hn90hs9BlCzBq9SqLcJ2JTJ6muriwFMkWKRxlFef+R5B5VoRri2/juLVOjr91FCxLoLLICD1CGeS
-	 s4IDl0GRVTKnR6UnlCNRi8qvmkii7c/vYLQIRoe1WlQFAG6MOo6fu3L+jsquQ0UKZZMl7xqCNRkJ
-	 QadjQbnDMbURiyvEpGELbWdIRnNzAxrWXsMgaAy/Uf+1kyniiN7H+nzaN60abJcAcWizYtxF2g6o
-	 psthqMcadsh0fiCI+Mrd6JWXaArGhTfFDm4GVOH2ZGX3v31G0ra1XNuswfoKCrEF/1RQPFrJHNe3
-	 9+vfwB2wQOCrR4WyhteNVrPgir4CfGQPtyTe6l/UzxgztqJwH6j4+fsgHNSAaxJZ3GeQwtUcqB7W
-	 q5hYgBeoDg7BsJGBPL7AbQhDYKqK5EaX8XSNRSX+Y=
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-Date: Wed, 11 Dec 2024 21:57:42 +0800
-From: Guangbo Cui <2407018371@qq.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] Add UIO (Userspace I/O) device rust abstraction
-X-OQ-MSGID: <Z1maVqm36mCGO8Sl@jckeep-Lenovo-XiaoXinAir-14IIL-2020>
-References: <tencent_6FBA3773CF74B276166B63D292CB2E8D3D07@qq.com>
- <2024121150-stretch-password-2179@gregkh>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5ikTHj0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D26C4CED2;
+	Wed, 11 Dec 2024 14:21:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733926922;
+	bh=MjK2FiZNeIRH+yBGl3k+zxdugMavQGT4yR9b1LTRVnM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W5ikTHj0wp6OTJATSb6dZCehhHCiY5n/1M9RH0Dh9Xd7wK22g0phzJ7GXuNj8flcN
+	 qTmO85UKGSitM1EKuzEvRUwvrmULtUs5cToeil6HI3ZY1+dTDg96Wq1B+BwsD6S45N
+	 jR23A/CZIx0sJaObAvgj2CRDOy8Gm55JO6p1JsOvUYJvF+YXHLrJCAkmk50tunElto
+	 ZNdJPCccukwxSXhfwl0uxUlUMPh5w/znOUGkMw3uLit93Tm2V+Yl5wilHXy0qQ4Q8a
+	 zt7WO6jSD1DvYlw331sf2Gh/cMpucjmm3giVHOWQSpos9YA6EY8ToTrCb1vfRRrbJg
+	 aph6aQDWL5VhQ==
+Date: Wed, 11 Dec 2024 15:21:53 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 01/16] rust: pass module name to `Module::init`
+Message-ID: <Z1mgATmU2WgYwCGZ@cassiopeiae>
+References: <20241210224947.23804-2-dakr@kernel.org>
+ <2024121112-gala-skincare-c85e@gregkh>
+ <2024121111-acquire-jarring-71af@gregkh>
+ <2024121128-mutt-twice-acda@gregkh>
+ <2024121131-carnival-cash-8c5f@gregkh>
+ <Z1mEAPlSXA9c282i@cassiopeiae>
+ <Z1mG14DMoIzh6xtj@cassiopeiae>
+ <2024121109-ample-retrain-bde0@gregkh>
+ <Z1mUG8ruFkPhVZwj@cassiopeiae>
+ <2024121121-gimmick-etching-40fb@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024121150-stretch-password-2179@gregkh>
+In-Reply-To: <2024121121-gimmick-etching-40fb@gregkh>
 
-> Very cool!  But can we also see this with a "real" UIO driver as well?
+On Wed, Dec 11, 2024 at 02:45:14PM +0100, Greg KH wrote:
+> On Wed, Dec 11, 2024 at 02:31:07PM +0100, Danilo Krummrich wrote:
+> > On Wed, Dec 11, 2024 at 02:14:37PM +0100, Greg KH wrote:
+> > > On Wed, Dec 11, 2024 at 01:34:31PM +0100, Danilo Krummrich wrote:
+> > > > On Wed, Dec 11, 2024 at 01:22:33PM +0100, Danilo Krummrich wrote:
+> > > > > On Wed, Dec 11, 2024 at 12:05:10PM +0100, Greg KH wrote:
+> > > > > > On Wed, Dec 11, 2024 at 11:59:54AM +0100, Greg KH wrote:
+> > > > > > > On Wed, Dec 11, 2024 at 11:48:23AM +0100, Greg KH wrote:
+> > > > > > > > On Wed, Dec 11, 2024 at 11:45:20AM +0100, Greg KH wrote:
+> > > > > > > > > On Tue, Dec 10, 2024 at 11:46:28PM +0100, Danilo Krummrich wrote:
+> > > > > > > > > > In a subsequent patch we introduce the `Registration` abstraction used
+> > > > > > > > > > to register driver structures. Some subsystems require the module name on
+> > > > > > > > > > driver registration (e.g. PCI in __pci_register_driver()), hence pass
+> > > > > > > > > > the module name to `Module::init`.
+> > > > > > > > > 
+> > > > > > > > > Nit, we don't need the NAME of the PCI driver (well, we do like it, but
+> > > > > > > > > that's not the real thing), we want the pointer to the module structure
+> > > > > > > > > in the register_driver call.
+> > > > > > > > > 
+> > > > > > > > > Does this provide for that?  I'm thinking it does, but it's not the
+> > > > > > > > > "name" that is the issue here.
+> > > > > > > > 
+> > > > > > > > Wait, no, you really do want the name, don't you.  You refer to
+> > > > > > > > "module.0" to get the module structure pointer (if I'm reading the code
+> > > > > > > > right), but as you have that pointer already, why can't you just use
+> > > > > > > > module->name there as well as you have a pointer to a valid module
+> > > > > > > > structure that has the name already embedded in it.
+> > > > > > > 
+> > > > > > > In digging further, it's used by the pci code to call into lower layers,
+> > > > > > > but why it's using a different string other than the module name string
+> > > > > > > is beyond me.  Looks like this goes way back before git was around, and
+> > > > > > > odds are it's my fault for something I wrote a long time ago.
+> > > > > > > 
+> > > > > > > I'll see if I can just change the driver core to not need a name at all,
+> > > > > > > and pull it from the module which would make all of this go away in the
+> > > > > > > end.  Odds are something will break but who knows...
+> > > > > > 
+> > > > > > Nope, things break, the "name" is there to handle built-in modules (as
+> > > > > > the module pointer will be NULL.)
+> > > > > > 
+> > > > > > So what you really want is not the module->name (as I don't think that
+> > > > > > will be set), but you want KBUILD_MODNAME which the build system sets.
+> > > > > 
+> > > > > That's correct, and the reason why I pass through this name argument.
+> > > > > 
+> > > > > Sorry I wasn't able to reply earlier to save you some time.
+> > > > > 
+> > > > > > You shouldn't need to pass the name through all of the subsystems here,
+> > > > > > just rely on the build system instead.
+> > > > > > 
+> > > > > > Or does the Rust side not have KBUILD_MODNAME?
+> > > > > 
+> > > > > AFAIK, it doesn't (or didn't have at the time I wrote the patch).
+> > > > > 
+> > > > > @Miguel: Can we access KBUILD_MODNAME conveniently?
+> > > > 
+> > > > Actually, I now remember there was another reason why I pass it through in
+> > > > `Module::init`.
+> > > > 
+> > > > Even if we had env!(KBUILD_MODNAME) already, I'd want to use it from the bus
+> > > > abstraction code, e.g. rust/kernel/pci.rs. But since this is generic code, it
+> > > > won't get the KBUILD_MODNAME from the module that is using the bus abstraction.
+> > > 
+> > > Rust can't do that in a macro somehow that all pci rust drivers can pull
+> > > from?
+> > 
+> > The problem is that register / unregister is encapsulated within methods of the
+> > abstraction types. So the C macro trick (while generally possible) isn't
+> > applicable.
+> 
+> Really?  You can't have something in a required "register()" type function?
+> Something for when the driver "instance" is created as part of
+> pci::Driver?  You do that today in your sample driver for the id table:
+> 	const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> 
+> Something else called DRIVER_NAME that you could then set:
+> 	const DRIVER_NAME: env!(KBUILD_MODNAME);
 
-Sure, I will look for a suitable UIO driver to start with. I’ve been quite
-busy recently and might not have enough time to dedicate to it, but I will
-continue working on it.
+Sure, that's possible. But that means that the driver has to set it explicitly
+-- even when e.g. module_pci_driver! is used.
 
-> Heck, even a conversion of something "simple" like the uio_dfl.c or
-> uio_cif.c would be nice to see (you have to do this on top of the
-> platform or pci rust bindings, see the list for the most recent round of
-> them).  Seeing how this will be used is kind of key to ensure that we
-> know the bindings work properly.
+In C you don't have that, because there it's implicit within the
+pci_register_driver() macro. (Regardless of whether it's a single module for a
+single driver or multiple drivers per module.)
 
-Yes, this patch is on the top of the latest platform rust bindings. 
+Anyways, like I mentioned, given that we have `env!(KBUILD_MODNAME)` (which we
+still need to add), there are other options to make it work similarly, e.g. add
+a parameter to `pci::Adapter` and bake this into `module_pci_driver!`.
 
-Best regards,
-Guangbo Cui
+For this particular option, it would mean that for modules registering multiple
+drivers a corresponding name would need to be passed explicitly.
 
+> 
+> Also, I think you will want this for when a single module registers
+> multiple drivers which I think can happen at times, so you could
+> manually override the DRIVER_NAME field.
+
+My proposal above would provide this option, but do we care? In C no one ever
+changes the name. There is zero users of __pci_register_driver(), everyone uses
+pci_register_driver() where the name is just KBUILD_MODNAME. Same for
+__platform_driver_register().
+
+> 
+> And if DRIVER_NAME doesn't get set, well, you just don't get the module
+> symlink in sysfs, just like what happens today if you don't provide that
+> field (but for PCI drivers, the .h file does it automatically for you.)
+> 
+> Anyway, this is a driver issue, NOT a module issue, so having to "plumb"
+> the module name all the way down through this really isn't the best
+> abstraction to do here from what I can tell.
+> 
+> thanks,
+> 
+> greg k-h
