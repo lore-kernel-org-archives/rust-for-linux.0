@@ -1,92 +1,183 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CACC236F9D
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 09:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176A71EC4C5
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 09:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733910354; cv=none; b=Te9umCdX/OfVCeuDwMA+ks99WWgun3vaNYTt1NHdQp7I4aL70agNoo963zmjMm1M6GEn/f/nzFtpyC89p/LY8JQAbsf8oSFjVncq6/95ukNUIMXeeII+V0IMUc6I8hsL5+PNaJiUvIlCUy7pesP3VRIcFnYQq1FKl2C/asJzmD8=
+	t=1733910522; cv=none; b=jaC+5LtFmliR8ZCSrHo3Yo4yBjV8/hceqYox5Mfiz8I49RCbJce9htP5stw/VgSPK5b/Q2WP6LriAQguWqLWQRVCvyaGn8ltcw9w7hEbHDYn4KO+y6S4IFl3zrKFU6FlEHrIVjpi7n+A6SgrK9REA0z/QDrHbN0RjV9rufssdcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733910354; c=relaxed/simple;
-	bh=GgI7Qf8LeBjM62ZS9/FTzM3C8yo2onDSYj2hOz2qcbQ=;
+	s=arc-20240116; t=1733910522; c=relaxed/simple;
+	bh=ZKaxjHmeS7EBCn4efUXAggiPsRojJiDnotoal15ttGg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hlJ+RrfiX139epbTCKLwxu9/sV5n7A4u52jiQHqduOW6b24bfTTm/lPwh72d4SCAmKB0lQDuWXseyBYq3ai+xwJyaznc16puUuJwUWk6jQ6/cjGl9EWVNOI5V2RtEinuu1x5O/23/r11pCYJxUUKFB+dED4saWLQ5Slf/Dkm498=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aKE/qWJ5; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=SnUQ8CKlbg5x6O1wPOSwCz4eMPrUbXlooDQN/1wVT1C1tx2r3o8Jm0+ULPoNrg2YWE6ar7oddmaGodo2qI0HHOMwajaWXuT+CkuiXC+2efRu6hBD45fGPVfXz5Qhe7UNZD4s9eRiK982Go7Ns+nnb5vXUY2a01JXhVpVby8fINM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=edyLe1FQ; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aKE/qWJ5"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ee94a2d8d0so944538a91.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 01:45:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="edyLe1FQ"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3862f32a33eso2170776f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 01:48:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733910352; x=1734515152; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733910519; x=1734515319; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YcYAePYXGk/deTF1tf+u3fLU/5TSiQrSiSppSJ9134A=;
-        b=aKE/qWJ5FgWt0jdsnpCJaSacgVMd9MpsGIOc158P4M46rIstInCotCpgeS63sNgvJ5
-         IdZ6DBIpC2a0sbgJ7aEUZHttnZd5CuNxYP9ib3jGBeYUSwlIDW/slHzLgGWS6OrMB/zV
-         7IIiIbcLiNrjMf5tKHzGaMeVwt4SfYAEDPj/5y2V/pGiHNjmTUduCMWb1qFKv2e3sGM+
-         ud1e41dtBPf1qangdpOsOUT6XEUZ5+IkqMv763D8vEHVeasjvqfGrUDJx3v2zkzvZ9Yn
-         dYELO1n5QtwLfoRx5K8oiQFl62U/5I46xft+pJL2opfGBsV3dyZ7BQwftUGqGprNlNph
-         E2XQ==
+        bh=OPkuDVmQ8I0bPStjeQByqCDXTekXQdwOcRMPaf2EPFY=;
+        b=edyLe1FQq3AnZlpeY1UASTnu/MEy3sHd/DrwDQvAssz1EZpCbZa14hxw4nRdAcXMxC
+         Jkb05wyAFXkZv4QnDghirz7G8GMQx2A8MTq5xfEoAMTyr8qf5gCJ1X6FbXI5yPtu20B6
+         u4BXun0pdqVQZCqtlTjEEFd5ru58Fp//Nhc0GzjK4zPerqWZMjL5P03tMZEbRDbjLT4j
+         bkz8F4pwn79yMkho1DgDZC5cd8Hf/t38LhkkpnSY+bktmf25TNFEu19wve4ROf7qTylp
+         c2JgGtInPnykvPOtWL+ve3NLA5WFfGPFZsDhDxq25dzNB0ZRKiAyTPKw0f4K9tY2hwmW
+         KM8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733910352; x=1734515152;
+        d=1e100.net; s=20230601; t=1733910519; x=1734515319;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YcYAePYXGk/deTF1tf+u3fLU/5TSiQrSiSppSJ9134A=;
-        b=o+zsMuI0DBJcwyBC+2rIlz1rzw9YSd5Lrh0P3EUT71PkvN4FnDrkjrp0LTb9qbTdG1
-         vmdl8hsAZU/MU9fBgP/G/c1gc/XNwVvqrLlHwjYZ4RW3qfN2fNyqB9TgXW72szG8meoU
-         KmZXF5l55fY2bXpb/l4GQCdGKo7HVXvkQXnFlFaVpaGSBIObHpnu0avrmGQ48ptepJuq
-         /fOhLyR2mmqhY+VO2V0uS1muBU2K2NWtYp6oKYWuegQPzQUy+X1ZIofL1ftIdoFF8Ng9
-         9nXR4wfsND0N1jVDd/5pyFCkE1m5SePWoo54jfBBRuVn0xh4EOWD6Px++lcXUHjuYeqP
-         nxwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwLANII41oF+V8RLEAIGQnBbRJNwkmJID4RYMqx3mNmXQu6EEKbTqrXKO04AUpRR5OtgSCvPHdnAv8qjympQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNEZLTdicZn0cPwuOkdR6q/5yArW9T91qb7ZzSIkU4yScwq0K1
-	btOgxgrqRvT537RZblHQG96gOojO8g7tTZGybQkUBM8VFzP4yh9y0gZJl3gRoFpD8oK1y8Fhc12
-	XTLFeqsCG2qsuKWR6PakpGNQx2h4=
-X-Gm-Gg: ASbGncu1RujHwSalpAjnAILZmzQhIoc7Hk7ZgU850WKNakzf0afUbrvNejdUPv4rgD+
-	nuv4laBmsMjkRa4YlJbcjABmg+aZP253ssj4Knw==
-X-Google-Smtp-Source: AGHT+IELeMASbJYX3j19XK5spM7luVVaTeu67inhEk2FbFSm2FdsGKeUerWwXWp++eJ7DbYBdSVE2u30jT1EH9z+Jbs=
-X-Received: by 2002:a17:90a:e7ce:b0:2ea:956b:deab with SMTP id
- 98e67ed59e1d1-2f1280318ddmr1371837a91.4.1733910352236; Wed, 11 Dec 2024
- 01:45:52 -0800 (PST)
+        bh=OPkuDVmQ8I0bPStjeQByqCDXTekXQdwOcRMPaf2EPFY=;
+        b=e2bYcraeHAdDI/xyR21ucJWuUJF0nFyo9uyfeoXhb0I9IyhpToTJvR707GSjRRrlh5
+         DuZCo9cTcmiTtx3924dGjaQ87EM3RiaahMeNiDsoojX8yESYGfQEdWlMOHfTNtHy0zJx
+         XqhtWff7UzeAmLLVE8BS6a0OHLUUMf8f+seBI/EmeZ6lTxSLcoCyOhxeeYioNQMS2zHu
+         3hrCccVgGRvNIk9nX9ChdDa2GLmx3HJAFhhvYt4fsn0M+BrXDUG4TyEbdPp6DRjJXKsJ
+         U4TbqIggY7JKd3mL9hTSD0GymzKtiTsQXiuPy7xYR3lEWnUoMUK1sBbEZ2L3INBJ8qdw
+         Hbdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXyA03ZWkq361zkGV30mBbTe8hXJhZz+Pvep2NOSRJqMfPzxV2HA0bZMEIsz4bs9KCbFxOQyr+VF/8Ezl8QeA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA9aCayaej1uUxbjzOWBDuocAMMywLvM6UolYvAyMYNLehKIC7
+	cUtk8AElT+pwT2IvfmwfbCr3wO74ugy2OC4+4ofaglo6Esh0nHEX+XO+yckJSNSr9Q+zrcRXYXs
+	zFv5AkolOGArXo4OvOf8Jk9M2jZ8pM+q7nKMh
+X-Gm-Gg: ASbGncvvNogbbRwdEJCcoRewsqQmx9EZijWDwr0cZPqw4Nc2PS4IkZUyJzsVHS5cpEg
+	AXd63mF24/uLvmtTbHtY0bl78s0szQnXSQr0BydaO4wI86o7L2LBubP1K53+N2Xqt4g==
+X-Google-Smtp-Source: AGHT+IGgLsoa3jV2scUrxGJs3M3c7OjkCrlHZsyu8jTWcAJIYLV9qXmSt5/Cg8qsliTSfr6/wIq7uJuo1wJlePE++No=
+X-Received: by 2002:a05:6000:410f:b0:385:f2a2:50df with SMTP id
+ ffacd0b85a97d-3864cea200amr1277675f8f.27.1733910519359; Wed, 11 Dec 2024
+ 01:48:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
- <20241211020507.103687-1-dev.json2@gmail.com>
-In-Reply-To: <20241211020507.103687-1-dev.json2@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Dec 2024 10:45:39 +0100
-Message-ID: <CANiq72nxqdZzD-TtZbnHOdmMxMkXuafquWpsHOeW5rWFJbhKZA@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: sync: add #[must_use] to Lock::try_lock
-To: Jason Devers <dev.json2@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	boris.chen.czy@gmail.com
+References: <20241210001802.228725-1-fujita.tomonori@gmail.com>
+ <20241210001802.228725-6-fujita.tomonori@gmail.com> <CAH5fLgiShKMGo6AYWM-4S8JK+iDA+tUfz9uxkns82g0nLW--NQ@mail.gmail.com>
+ <20241211.094054.1429837669366274024.fujita.tomonori@gmail.com>
+In-Reply-To: <20241211.094054.1429837669366274024.fujita.tomonori@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 11 Dec 2024 10:48:27 +0100
+Message-ID: <CAH5fLgj9rBOrcQa193RpuA708CFK1ojMqhmiNWF7dbyNFPJcJA@mail.gmail.com>
+Subject: Re: [PATCH v1 5/5] rust: Add warn_on and warn_on_once
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	x86@kernel.org, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
+	kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn, 
+	yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 3:05=E2=80=AFAM Jason Devers <dev.json2@gmail.com> =
-wrote:
+On Wed, Dec 11, 2024 at 1:41=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> +    /// Note that `T` is `#[must_use]` but `Option<T>` is not.
+> On Tue, 10 Dec 2024 10:05:07 +0100
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>
+> > On Tue, Dec 10, 2024 at 1:19=E2=80=AFAM FUJITA Tomonori
+> > <fujita.tomonori@gmail.com> wrote:
+> >>
+> >> Add warn_on and warn_on_once macros. Wrapping the C's WARN_* and BUG_*
+> >> macros doesn't work so this uses the assembly code exported by the C
+> >> side via ARCH_WARN_ASM macro. Like the static branch code, this
+> >> generates the assembly code for rust dynamically by using the C
+> >> preprocessor.
+> >>
+> >> file()! macro doesn't work for the Rust inline assembly in the same
+> >> way as __FILE__ for the C inline assembly. So the code to handle a
+> >> file name is different from the C assembly code (similar to the
+> >> arm64/loongarch assembly).
+> >>
+> >> ASM_REACHABLE definition works in the same way to get objtool's
+> >> reachable asm code. The architectures which use objtool (x86 and
+> >> loongarch) needs it.
+> >>
+> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> >
+> >> +#[macro_export]
+> >> +#[doc(hidden)]
+> >> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
+> >> +#[cfg(any(target_arch =3D "x86_64", target_arch =3D "riscv64"))]
+> >
+> >> +#[macro_export]
+> >> +#[doc(hidden)]
+> >> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
+> >> +#[cfg(any(target_arch =3D "aarch64", target_arch =3D "loongarch64"))]
+> >
+> > What's the reason for this arch-specific code? The file!()/line!()
+> > invocations? Could they be passed as an argument to the asm instead so
+> > that we don't need target_arch cfgs? I understand that they don't work
+> > exactly the same way, but maybe it could still work?
+>
+> Because of "error: named argument never used" in Rust inline assembly:
+>
+> All the archs define ARCH_WARN_ASM macro in the same way:
+>
+> #define ARCH_WARN_ASM(file, line, flags, size)
+>
+> However, only x86 and risc-v asm code use the size argument. Without
+> the cfgs, I'll get the following on arm64/loongarch:
+>
+> error: named argument never used
+>   --> /home/fujita/git/linux-rust/drivers/block/rnull.rs:54:9
+>    |
+> 54 |         warn_on!(true);
+>    |         ^^^^^^^^^^^^^^ named argument never used
+>    |
+>    =3D help: if this argument is intentionally unused, consider using it =
+in an asm comment: `"/* {size} */"`
+>    =3D note: this error originates in the macro `$crate::warn_flags` whic=
+h comes from the expansion of the macro `warn_on` (in Nightly builds, run w=
+ith -Z macro-backtrace for more info)
+>
+>
+> Any way to make the compiler to ignore this?
 
-Should this be a comment, i.e. `//`, rather than part of the documentation?
+The error message suggests adding an asm comment. Does that not work?
 
-I would also reword to explain the "what", not just "why", e.g. something l=
-ike:
+You could even add the comment unconditionally on the Rust side. It's
+not like the comment hurts on the platforms that *do* use the size
+parameter.
 
-    // `Option<T>` is not `#[must_use]` even if `T` is, thus the
-attribute is needed here.
+> >> +#[macro_export]
+> >> +#[doc(hidden)]
+> >> +#[cfg(all(CONFIG_BUG, CONFIG_UML))]
+> >> +macro_rules! warn_flags {
+> >> +    ($flags:expr) =3D> {
+> >> +        // SAFETY: Just an FFI call.
+> >> +        unsafe {
+> >> +            $crate::bindings::warn_slowpath_fmt(
+> >> +                $crate::c_str!(::core::file!()).as_ptr() as *const ::=
+core::ffi::c_char,
+> >> +                line!() as i32,
+> >> +                $flags as u32,
+> >> +                ::core::ptr::null() as *const ::core::ffi::c_char,
+> >
+> > I wonder if this could be written to utilize Location::caller()
+> > instead so that `#[track_caller]` works?
+>
+> You meant that we could make warn_flags() function instead of macro
+> with Location::caller()?
+>
+> If so, we need to add cfgs to warn_on and warn_on_once because both macro
+> and function of warn_flags are necessary?
 
-Cheers,
-Miguel
+Well, I'm not sure! I don't know if it's feasible at all, since using
+Location::caller() would mean that the file/line is not a compile-time
+constant. But if we can, then I think #[track_caller] support would be
+nice.
+
+Alice
