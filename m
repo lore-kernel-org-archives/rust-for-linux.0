@@ -1,238 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D2E24634E;
-	Wed, 11 Dec 2024 15:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4BD24634B
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 17:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733932403; cv=none; b=S7JilSw025y/UqiNjg02se65Qw6Pd2kAYcM9nGO17PZTg02jHrpylkSJ5ksDuTPFZSnpQBH4YZfm2YZ6xAxeRyAitmLroSlE+6LPCIfZ9uuv5MTt3IgnavnbglAqxi4cfwnRgrVYrbBv21zqm1qaoZPiP4RKIEWhXPGIqRHxRwU=
+	t=1733936746; cv=none; b=IUPv3akRH37CW4IDcJlnyRR9UW/GSwBqzVAzRExRdrYwVTbLZwxK4J/r97NHx3vSCH+iz2vK/0LaW12St8/NThiXshA7vglJzpcBPATagdkeA0vXuWlauJt4djXwvyFw5UZzEbxqy7FS9o2iqhzoEJ26KSLUS0KmEvvYEleazPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733932403; c=relaxed/simple;
-	bh=Xf9pkpj+OOoGDWyTa83q1js4ws59KtaknEJy5HUnyhY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CyrKdd1gW50TqWiQRHgslENEt02DeL0eDDlrzfwYv2+fTgTgiZytPoZcsU2gcEPZrYgqYADbK3qjimNaI4pI1/mloKZcMt8poUlV/OyKXeXPBhX1qop0LuDktaUOi9H7FgH8IQ6/3K9HhzB2KSdrh6ZADtEsyMRnfzORW/E8mDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZFW0GL8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1733936746; c=relaxed/simple;
+	bh=ePy1A7cWbZusdxSFAOTOyj9lF0UotDEIMy2djGwgCxE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Li8lasuwkBZWbsXW2afClmRyJmZFVBrIWySIllftrRYEuX5W/yTNLG1vHBKLhCES33mfRgQZZxKqxQ6EynQ0PHpVzyG2s3eNBxGGqIXNkT8j9eaOEUXIL4E0Mt6vJlxvkBwFf+0H9I3f8/4P0R/6CaOLFY19C4lulz9fJs+1H/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S2gkZSOw; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZFW0GL8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D569C4CED2;
-	Wed, 11 Dec 2024 15:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733932403;
-	bh=Xf9pkpj+OOoGDWyTa83q1js4ws59KtaknEJy5HUnyhY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XZFW0GL8G5zvIXKQT3lApChzuGj//5rn2C1mTsf2UtvH09UtHdhQDxYbWWWJZZJEU
-	 p1r7QSjwpevPZ3VU2rhoCL7b04G+QkoZ8tKDyP8r7nkuRusoIpxTlANaanpDYrYyst
-	 UND8aEHqiKWNlpSTMz1f03ShpwAXj4ex3OAfd3ciN0+7pxW+Fq5vcrNLdxY1NPykvi
-	 VY2ukeWcvjkf2vs7xpoTfBEdPtlJLFgG6eBE8O/4HOErnOrexiOc9DYw7YnS3KVOfm
-	 CHar9teWFRD5pOLhKbrfgJMLNkus9AaVIuzG6jpY2CgBJtXnXYzQ+uV8mmbOqek9sE
-	 WIqeVMuZj/RCg==
-Date: Wed, 11 Dec 2024 16:53:14 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, rafael@kernel.org,
-	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, tmgross@umich.edu, a.hindborg@samsung.com,
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	robh@kernel.org, daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 01/16] rust: pass module name to `Module::init`
-Message-ID: <Z1m1amdXlRvbB8rg@cassiopeiae>
-References: <2024121109-ample-retrain-bde0@gregkh>
- <Z1mUG8ruFkPhVZwj@cassiopeiae>
- <CAH5fLgh3rwS1sFmrhx3zCaSBbAJfhJTV_kbyCVX6BhvnBZ+cQA@mail.gmail.com>
- <Z1mh2rPC3ZOjg-pO@cassiopeiae>
- <CAH5fLgjg82x5EiWa1BTC7DpbhteBm5Or8XtpLAL0hQz+huXMCw@mail.gmail.com>
- <Z1mnFoap_AnPPNfu@cassiopeiae>
- <CAH5fLgiyGjhpVDNkRHtYhk7jY0oJZmPYx3TJRnBvpt1H+-6Y-g@mail.gmail.com>
- <Z1mpvRDnlZN9Mc5o@cassiopeiae>
- <CAH5fLghuM-mNF3CvwWLAwg5F-Kyrjeu_J+zJFrZ1=yqGL85eeA@mail.gmail.com>
- <Z1mxepQse0m66x1v@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S2gkZSOw"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6ef60e500d7so47685477b3.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Dec 2024 09:05:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733936743; x=1734541543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9pj/eNcgFBMMfrop9h5elSlXNykpIvukWbNjOYdZZ7E=;
+        b=S2gkZSOw8w0i1A4/FgSaxPZaEqi5uAWmyhX2QIgefvqpC7hk6pNLO8Dj7a2/KdgJZo
+         9pVlf9qM8GuRJK7p7ewVBUd3+71ZhPiHm+6BPxe0q1InUKGxDbP5mg5yBcoRZkV0QoPN
+         3YM/2TVDw+UAaNA/aOzfAp5nLlFgFcEq0SZUx9L3d492GCSNB6VRTCGyhfPtNyckKbLG
+         EuPCiYgVRoTKYysCAF0td3cZXkRjn1mD1GxHxS7bKE+nsdyZBpIU7Em4nhR117829CQS
+         L5yRlZ9GPDOMc/RdQ4Sal6VXS6Xy0Z3C5qgSHrbxQn4s/VMTBOWltf8PrWtBHtAoUnYI
+         cKGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733936743; x=1734541543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9pj/eNcgFBMMfrop9h5elSlXNykpIvukWbNjOYdZZ7E=;
+        b=gEMUGeVdnq+HoVuFWnO+il/ldt5t8rB+/93QR8xYLIFT+Urw6KnVlachZTg8YSX0Rp
+         caSADZMvNOhyu1SLo8TR7TnV4F3+pSJ0eL37dq7RI1tkc4jT6ASA2APp45zRFVpDQ7jf
+         MaN2PZwly7fCECy1uU1TSOTv4qTx9pI3OAKNWBAiLuhhtRgxlDx2t1NIfCGaPBIUaYCe
+         TA2p7429EO4vxozSg6EvZ32MJta3Tl4G/FnSMi51oBB7I3OvLGJ7VSL9LyGcjdmCcVgY
+         TrT/0BfmlWWriuvE+ZdGf7jozgzYoTY/34snx+hCABMSaggNsj1bCloplpqjeA7Pndvf
+         T99w==
+X-Forwarded-Encrypted: i=1; AJvYcCUaGwSl7YaXQb+cmN5F0vw9aXFPVEQuQPsOeaOBaTBkMp2cwJQxJxIq3scelKEdEcZ8KDT6EZ2EIzHZgMN3/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2F3v0hEqJSUKt9jVi4nY4yIXRhuOnBFzlyeKoDRInodFmmT1W
+	qUA9/6g6uRfgQdbykIL1JsFLikXD+h9QEHJMdn9xLQbQSAai7VBXj+Z2rfxLXFPdG9wMCqpiQ/L
+	tNuay2hvuf5phiBe5YCjkkTJukHk=
+X-Gm-Gg: ASbGncvkWdz/1CfLyxNdKQr2mMyxfeALoX6BDPVQRNG6g6qvddBF2NYGFsj+jZrUPw0
+	eqNCKnnK4Bep16CR9sINe8EcZo6rwZyzT62OYAowUCgFcA/s2fsCCVTbhQN5kBuBCWGg=
+X-Google-Smtp-Source: AGHT+IEsmpNhBhWdbJSs4BOKd/3tSGKRS0WlHIdRFj8k8N+aUT82tq40c7WZxi4mtAWPDOyMmMCDVZ8N0q+hw2vnwr4=
+X-Received: by 2002:a05:6902:110b:b0:e38:8263:7990 with SMTP id
+ 3f1490d57ef6-e3da2aa8ff0mr143609276.48.1733936743628; Wed, 11 Dec 2024
+ 09:05:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z1mxepQse0m66x1v@cassiopeiae>
+References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+ <20241211020507.103687-1-dev.json2@gmail.com> <CANiq72nxqdZzD-TtZbnHOdmMxMkXuafquWpsHOeW5rWFJbhKZA@mail.gmail.com>
+In-Reply-To: <CANiq72nxqdZzD-TtZbnHOdmMxMkXuafquWpsHOeW5rWFJbhKZA@mail.gmail.com>
+From: jos <dev.json2@gmail.com>
+Date: Wed, 11 Dec 2024 09:05:32 -0800
+Message-ID: <CAOJvc-aJJoUh-YSNwWX21vT4O8tuLSOVb10w=WUV7cFcPJvf9g@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: sync: add #[must_use] to Lock::try_lock
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	boris.chen.czy@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 11, 2024 at 04:36:35PM +0100, Danilo Krummrich wrote:
-> On Wed, Dec 11, 2024 at 04:15:19PM +0100, Alice Ryhl wrote:
-> > On Wed, Dec 11, 2024 at 4:03 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> > >
-> > > On Wed, Dec 11, 2024 at 03:55:47PM +0100, Alice Ryhl wrote:
-> > > > On Wed, Dec 11, 2024 at 3:52 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> > > > >
-> > > > > On Wed, Dec 11, 2024 at 03:45:53PM +0100, Alice Ryhl wrote:
-> > > > > > On Wed, Dec 11, 2024 at 3:29 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> > > > > > >
-> > > > > > > On Wed, Dec 11, 2024 at 02:34:54PM +0100, Alice Ryhl wrote:
-> > > > > > > > On Wed, Dec 11, 2024 at 2:31 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> > > > > > > > >
-> > > > > > > > > On Wed, Dec 11, 2024 at 02:14:37PM +0100, Greg KH wrote:
-> > > > > > > > > > On Wed, Dec 11, 2024 at 01:34:31PM +0100, Danilo Krummrich wrote:
-> > > > > > > > > > > On Wed, Dec 11, 2024 at 01:22:33PM +0100, Danilo Krummrich wrote:
-> > > > > > > > > > > > On Wed, Dec 11, 2024 at 12:05:10PM +0100, Greg KH wrote:
-> > > > > > > > > > > > > On Wed, Dec 11, 2024 at 11:59:54AM +0100, Greg KH wrote:
-> > > > > > > > > > > > > > On Wed, Dec 11, 2024 at 11:48:23AM +0100, Greg KH wrote:
-> > > > > > > > > > > > > > > On Wed, Dec 11, 2024 at 11:45:20AM +0100, Greg KH wrote:
-> > > > > > > > > > > > > > > > On Tue, Dec 10, 2024 at 11:46:28PM +0100, Danilo Krummrich wrote:
-> > > > > > > > > > > > > > > > > In a subsequent patch we introduce the `Registration` abstraction used
-> > > > > > > > > > > > > > > > > to register driver structures. Some subsystems require the module name on
-> > > > > > > > > > > > > > > > > driver registration (e.g. PCI in __pci_register_driver()), hence pass
-> > > > > > > > > > > > > > > > > the module name to `Module::init`.
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > Nit, we don't need the NAME of the PCI driver (well, we do like it, but
-> > > > > > > > > > > > > > > > that's not the real thing), we want the pointer to the module structure
-> > > > > > > > > > > > > > > > in the register_driver call.
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > Does this provide for that?  I'm thinking it does, but it's not the
-> > > > > > > > > > > > > > > > "name" that is the issue here.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > Wait, no, you really do want the name, don't you.  You refer to
-> > > > > > > > > > > > > > > "module.0" to get the module structure pointer (if I'm reading the code
-> > > > > > > > > > > > > > > right), but as you have that pointer already, why can't you just use
-> > > > > > > > > > > > > > > module->name there as well as you have a pointer to a valid module
-> > > > > > > > > > > > > > > structure that has the name already embedded in it.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > In digging further, it's used by the pci code to call into lower layers,
-> > > > > > > > > > > > > > but why it's using a different string other than the module name string
-> > > > > > > > > > > > > > is beyond me.  Looks like this goes way back before git was around, and
-> > > > > > > > > > > > > > odds are it's my fault for something I wrote a long time ago.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > I'll see if I can just change the driver core to not need a name at all,
-> > > > > > > > > > > > > > and pull it from the module which would make all of this go away in the
-> > > > > > > > > > > > > > end.  Odds are something will break but who knows...
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Nope, things break, the "name" is there to handle built-in modules (as
-> > > > > > > > > > > > > the module pointer will be NULL.)
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > So what you really want is not the module->name (as I don't think that
-> > > > > > > > > > > > > will be set), but you want KBUILD_MODNAME which the build system sets.
-> > > > > > > > > > > >
-> > > > > > > > > > > > That's correct, and the reason why I pass through this name argument.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Sorry I wasn't able to reply earlier to save you some time.
-> > > > > > > > > > > >
-> > > > > > > > > > > > > You shouldn't need to pass the name through all of the subsystems here,
-> > > > > > > > > > > > > just rely on the build system instead.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > Or does the Rust side not have KBUILD_MODNAME?
-> > > > > > > > > > > >
-> > > > > > > > > > > > AFAIK, it doesn't (or didn't have at the time I wrote the patch).
-> > > > > > > > > > > >
-> > > > > > > > > > > > @Miguel: Can we access KBUILD_MODNAME conveniently?
-> > > > > > > > > > >
-> > > > > > > > > > > Actually, I now remember there was another reason why I pass it through in
-> > > > > > > > > > > `Module::init`.
-> > > > > > > > > > >
-> > > > > > > > > > > Even if we had env!(KBUILD_MODNAME) already, I'd want to use it from the bus
-> > > > > > > > > > > abstraction code, e.g. rust/kernel/pci.rs. But since this is generic code, it
-> > > > > > > > > > > won't get the KBUILD_MODNAME from the module that is using the bus abstraction.
-> > > > > > > > > >
-> > > > > > > > > > Rust can't do that in a macro somehow that all pci rust drivers can pull
-> > > > > > > > > > from?
-> > > > > > > > >
-> > > > > > > > > The problem is that register / unregister is encapsulated within methods of the
-> > > > > > > > > abstraction types. So the C macro trick (while generally possible) isn't
-> > > > > > > > > applicable.
-> > > > > > > > >
-> > > > > > > > > I think we could avoid having an additional `name` parameter in `Module::init`,
-> > > > > > > > > but it would still need to be the driver resolving `env!(KBUILD_MODNAME)`
-> > > > > > > > > passing it into the bus abstraction.
-> > > > > > > > >
-> > > > > > > > > However, similar to what Alice suggested in another thread, we could include
-> > > > > > > > > this step in the `module_*_driver!` macros.
-> > > > > > > > >
-> > > > > > > > > Modules that don't use this convenience macro would need to do it by hand
-> > > > > > > > > though. But that's probably not that big a deal.
-> > > > > > > >
-> > > > > > > > I think we can do it in the core `module!` macro that everyone has to use.
-> > > > > > >
-> > > > > > > How? The `module!` macro does not know about the registration instances within
-> > > > > > > the module structure.
-> > > > > >
-> > > > > > You could have the module! macro emit something along these lines:
-> > > > > >
-> > > > > > impl ModuleName for {type_} {
-> > > > > >     const NAME: &'static CStr = c_str!(env!("KBUILD_MODNAME"));
-> > > > > > }
-> > > > > >
-> > > > > > Then you can do `<Self as ModuleName>::NAME` to obtain the name elsewhere.
-> > > > >
-> > > > > Where {type_} would need to be the driver's `Driver` structure?
-> > > > >
-> > > > > We'd then need to define the bus adapter as:
-> > > > >
-> > > > > `pub struct Adapter<T: Driver + ModuleName>(T)`
-> > > > >
-> > > > > But the question stands I guess, how would the module macro know {type_}?
-> > > >
-> > > > If you look at the macro implementation in rust/macros/module.rs you
-> > > > will find many uses of {type_} throughout the expansion. It's whatever
-> > > > is passed to the macro using the `type:` argument.
-> > >
-> > > Oh, I see. So, this means that module / driver author would still need to create
-> > > the "connection" by listing the correspong driver types in the module! macro,
-> > > right?
-> > 
-> > I'm not sure what you mean. I'm *not* suggesting any changes to the
-> > interface of module! or module_*_driver!.
-> 
-> Huh! Seems like we're talking past each other than. Maybe we can briefly
-> discuss it in today's call?
+> Can't we use the same warning message as Guard?
 
-I think I figured out the confusion.
+> #[must_use =3D "the lock unlocks immediately when the guard is unused"]
 
-The {type_} in the module macro is the thing that implements the `Module` or
-`InPlaceModule` trait. However, that's *not* the driver type that is embedded in
-the bus adapter.
+That is what I originally had in my first patch and how I understood
+the annotation should be phrased, but @Boqun Feng maybe you can chime
+in with your input?
 
-For instance, what we have is:
+>> +    /// Note that `T` is `#[must_use]` but `Option<T>` is not.
+>
+> Should this be a comment, i.e. `//`, rather than part of the documentatio=
+n?
 
-```
-struct MyDriver;
+Agreed, after reading more documentation conventions
+(https://github.com/rust-lang/rfcs/blob/master/text/1574-more-api-documenta=
+tion-conventions.md),
+this should not be part of the rustdocs.
 
-struct MyModule {
-   _driver: Registration<pci::Adapter<MyDriver>,
-};
+> I would also reword to explain the "what", not just "why", e.g. something=
+ like:
+>
+>    // `Option<T>` is not `#[must_use]` even if `T` is, thus the
+> attribute is needed here.
 
-impl pci::Driver for MyDriver { ... }
+Thank you for the insight, I can see how there is missing clarity in
+the current comment, will update in the next patch.
 
-impl InPlaceModule for MyModule { ... }
+Thanks,
+Jason
 
-module! {
-   type: MyModule,
-   ...
-}
-```
 
-This means `module!` would generate:
-
-`impl ModuleName for MyModule { ... }`
-
-But this doesn't help, because `pci::Adapter` doesn't know about `MyModule`, but
-only about `MyDriver`.
-
-Do I miss anything?
-
-> 
-> > 
-> > > If so, I think it'd be better to do it in the `module_*_driver!` macro and let
-> > > people implement the trait by hand for modules with multiple drivers (which
-> > > should be pretty rare).
-> > >
-> > > The reason is that I think that otherwise we're probably encoding too much
-> > > semantics into the `module!` macro that isn't obvious and people need to
-> > > understand.
-> > >
-> > > >
-> > > >
-> > > > Alice
+On Wed, Dec 11, 2024 at 1:45=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Dec 11, 2024 at 3:05=E2=80=AFAM Jason Devers <dev.json2@gmail.com=
+> wrote:
+> >
+> > +    /// Note that `T` is `#[must_use]` but `Option<T>` is not.
+>
+> Should this be a comment, i.e. `//`, rather than part of the documentatio=
+n?
+>
+> I would also reword to explain the "what", not just "why", e.g. something=
+ like:
+>
+>     // `Option<T>` is not `#[must_use]` even if `T` is, thus the
+> attribute is needed here.
+>
+> Cheers,
+> Miguel
