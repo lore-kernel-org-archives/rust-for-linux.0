@@ -1,93 +1,172 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76E4238E27;
-	Wed, 11 Dec 2024 11:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57498211A04;
+	Wed, 11 Dec 2024 11:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733917301; cv=none; b=iiY0sC1cgRoXf+Y1eVClBafnDod3WdkGkBbiglOvtnhx2Y5DnpnOmFB1K7wjfcoCCH5DmpZOl6q9oJslrOwLquOzuH0ULAxtULv6KjDcbvDIy66BrXmbbnueFu2IBN0ziGFqM6MviR7dWkPeH1jXMyO1Tz172IrKgzeKctYrkAA=
+	t=1733918223; cv=none; b=b5iKCeO6hRpfMJ0JogXlDkz/3ofCKX2u9sJw87e14rqU3P9NDymDtLv7AaB1qGhmTrBVLSL+OCYFjy41YZK4qT1ivZ45xPrT81iG6OkSuZdqHiiR7Hpo7q+VdW+4ujzzOazgEMUEVV+1ggG3V5Bs7M6AKI2a0bOEgIpxLZYsul0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733917301; c=relaxed/simple;
-	bh=1mhHRf1Ma1uEypkWhhQBKWHLQA7xnihYcYLQFZydAQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eAkC2Z52Ym8XQuvo9YHo6n6f8Y+AiZ+1ocB8C9Hr20qTCAjwLmBlWrGZjRgd6gYzChZiUr3eMlsYJC+YCPnTrcoZIx9F7Z5EuTg4shwDP3y51j9PVQN1/MulSqC1KnlUp0ZekOSzndrqY5JbkgahEniLJOGzqjvY/HWEEKO2EU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iWj+zK/a; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733918223; c=relaxed/simple;
+	bh=6Qml5Us7FcPtXdADtLX3fKVw9uCBrm4Ero459Rct8mY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DgxELI2zyGvv/zBLWxKtG524wCj0yH/NsQ9BuKfG2Mo23vw0obOdzm9ZyuAgmEE0EAJJvY6D36/UiBL4LjdcHktJsapTXtt2Xpz00PpxQ6Umnz88ZOPOC1I6czr9yvhsDaeSdg/ntVJRkfivbFXa1L0bHcJEGe9SDHs9wF4KW3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ch988awG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iWj+zK/a"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ee8ecb721dso1140609a91.3;
-        Wed, 11 Dec 2024 03:41:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733917299; x=1734522099; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O/+snhFpulgjg/b9milrZ1XE3OxDySVi/UqtwUb6x78=;
-        b=iWj+zK/axtl3hChs+3pl73aN08aM+BmeMawWCKn5AZWLJPzkbFMy3v1EBL5ZA6EZN1
-         aiOuoCuTOPDtnhNYmfOMYO0h2d+1sIQe+qs6gnkHMkElTknR8iSeAJroVXQlqtLU9YTP
-         UL//dPtXF0/tiRM6217biYnRE2Y6iR395puHi+zEJxBFopziWnFAqmQPTL5n6FydImIH
-         oD84+6LdJRo5E5NxK+Ys7coU8xVi5Y+CvZvaHfKTje08nbPtoMaa5Rdx40ngdgJ2OKgO
-         CJQUs43UVseJcNMqvncnTwe+8a3/ytDsSb8TOc8InWJbT3H6RB1c2Iun39/EfaUvyb/z
-         pg7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733917299; x=1734522099;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O/+snhFpulgjg/b9milrZ1XE3OxDySVi/UqtwUb6x78=;
-        b=JOX1lAnz16gAJRHnZInOjXdkDnZA+WNtY/4IW6EY1eXwkMJwu0dhZbPtG8MyRBNLiP
-         M6rGlpKzkmI8pkOzwQ2iO7o/eWX0co4XDeGG8faJtQpokJKeoeR3kKGzPfkoMpYqnSOS
-         KzTNTKwN4/yD3xnYOz/gyif5VGycCFxuDXETWmLgFBi+DLpN0oGB0HiOWdt+rwohinmS
-         lXrNFXFR5peh1SMEXYV1Do47VYZpZKw7rDIjU6Zq/IlwWVEdDqJu6XBlHrE9BE3FKf/m
-         yMowzhJYVSDm5FhbD7I58IjSCpLaWd/+4qfOiJb1qD5FoTIV1Cc9PMoHisOwOfnI1sHY
-         ECNA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxOFz5NdvogZSJ5Ln9E4TdRgaBDYEOAwYtoxvWUWYyVSNh4ha+7+wZL2SVHtzgpiOllKeaQjUIj3xb8L6H81o=@vger.kernel.org, AJvYcCWgw7KpWqirLVOAq0kHLauji86C3p2JHnfdeLCSzWS3UkOoGBJtPA28OVo3vVnvomAcBugkvo7pscrM6JWu@vger.kernel.org, AJvYcCWyxiu8vZqMPh4tc4meZN7qBfsJtlHB1u2oKHbhiPQxMrTn/ORvcLLab5uSNhaRm3kVzr2lDNzffaIT@vger.kernel.org, AJvYcCXfLMkUidy12xM6utmiA3TnJNxZy4oz7ouxqNLY+RBRcJIhOBhvo3kxAkZYEdJc1SlBg46I0grRljco@vger.kernel.org
-X-Gm-Message-State: AOJu0YziuVeC0YU3C/NDqw3DQNbck7h3IdYs2jHaUSgzvjkWpsxNqjXD
-	qMGnfPmkbq2rIUHCHtZ+YFr9f36/exlbsewVQVYwbLhX1BlBQaK/qds8PffKA0CDe22cdIGPB/3
-	hgNfRPapoJBC44ij/KoEW97MfALw=
-X-Gm-Gg: ASbGncs8ZvST444CMCkWcaym6k4O+2fo+t5kbg3+BNwg4D9WrB9uGupFqHJWSlwf+3B
-	ZHr+A2ySD3/RON54rXZ22Vf4zlxY75NpDnYc=
-X-Google-Smtp-Source: AGHT+IHaaP1PLWt8qXFf6NILDDcKKeQTWVOrXdIHgPTZI1P4nTIGd0AzO5ffZ4lvYAVw4J6pFlGFuJKgHZ4K79IvwiQ=
-X-Received: by 2002:a17:90b:1a92:b0:2ee:35a1:c291 with SMTP id
- 98e67ed59e1d1-2f127fbeba0mr1510079a91.3.1733917299136; Wed, 11 Dec 2024
- 03:41:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ch988awG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0164C4CED2;
+	Wed, 11 Dec 2024 11:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733918222;
+	bh=6Qml5Us7FcPtXdADtLX3fKVw9uCBrm4Ero459Rct8mY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ch988awGmOLD86fsfrnQM/mFaaHEJLPM8kucybjM6KID4Cm3TMqOsdFlAqw4MIKrV
+	 Xu8fby/eEuHMdV4JErP/9t4I8v2LE/OdTPXi8ztpXIM07PZZe87WJHoLY2iG1BB7hG
+	 UUTBprGwBqtFD4cAT/XZUGRPGk2653MMH7DY0t1VeiIbHXAmn3UBIcEISPl1g4PFJI
+	 j290gz+diBlcFLqOJbS10GxD1oGsqQhvGG3tZOCy5+zkpGQ5l/rct2Q/6F4J8Z1W9u
+	 GArkR8Q0AA0IJFXXvMBbzKen/lrowlKhQqn+LrCZCGbbIQQjjn5qOAXKDM58tO7Msb
+	 DOasjzmYMeFHA==
+Date: Wed, 11 Dec 2024 11:56:51 +0000
+From: Lee Jones <lee@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] rust: miscdevice: access file in fops
+Message-ID: <20241211115651.GB7139@google.com>
+References: <20241210-miscdevice-file-param-v3-0-b2a79b666dc5@google.com>
+ <20241210-miscdevice-file-param-v3-1-b2a79b666dc5@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210224947.23804-1-dakr@kernel.org> <20241210224947.23804-2-dakr@kernel.org>
- <2024121112-gala-skincare-c85e@gregkh> <2024121111-acquire-jarring-71af@gregkh>
- <2024121128-mutt-twice-acda@gregkh> <2024121131-carnival-cash-8c5f@gregkh>
-In-Reply-To: <2024121131-carnival-cash-8c5f@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Dec 2024 12:41:26 +0100
-Message-ID: <CANiq72nMkzHLb9gi_i6RbQYkzP-1W5QbtGVx+z1f8nfp3y_CwQ@mail.gmail.com>
-Subject: Re: [PATCH v5 01/16] rust: pass module name to `Module::init`
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, rafael@kernel.org, bhelgaas@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com, 
-	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
-	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
-	j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241210-miscdevice-file-param-v3-1-b2a79b666dc5@google.com>
 
-On Wed, Dec 11, 2024 at 12:05=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> Or does the Rust side not have KBUILD_MODNAME?
+On Tue, 10 Dec 2024, Alice Ryhl wrote:
 
-We can definitely give access to it at compile-time with e.g. `env!`:
+> This allows fops to access information about the underlying struct file
+> for the miscdevice. For example, the Binder driver needs to inspect the
+> O_NONBLOCK flag inside the fops->ioctl() hook.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/miscdevice.rs | 31 +++++++++++++++++++++++++------
+>  1 file changed, 25 insertions(+), 6 deletions(-)
 
-    pr_info!("{}\n", env!("KBUILD_MODNAME"));
+Reviewed-by: Lee Jones <lee@kernel.org>
 
-Cheers,
-Miguel
+> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> index 7e2a79b3ae26..0cb79676c139 100644
+> --- a/rust/kernel/miscdevice.rs
+> +++ b/rust/kernel/miscdevice.rs
+> @@ -11,6 +11,7 @@
+>  use crate::{
+>      bindings,
+>      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+> +    fs::File,
+>      prelude::*,
+>      str::CStr,
+>      types::{ForeignOwnable, Opaque},
+> @@ -103,10 +104,10 @@ pub trait MiscDevice {
+>      /// Called when the misc device is opened.
+>      ///
+>      /// The returned pointer will be stored as the private data for the file.
+> -    fn open() -> Result<Self::Ptr>;
+> +    fn open(_file: &File) -> Result<Self::Ptr>;
+>  
+>      /// Called when the misc device is released.
+> -    fn release(device: Self::Ptr) {
+> +    fn release(device: Self::Ptr, _file: &File) {
+>          drop(device);
+>      }
+>  
+> @@ -117,6 +118,7 @@ fn release(device: Self::Ptr) {
+>      /// [`kernel::ioctl`]: mod@crate::ioctl
+>      fn ioctl(
+>          _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+> +        _file: &File,
+>          _cmd: u32,
+>          _arg: usize,
+>      ) -> Result<isize> {
+> @@ -133,6 +135,7 @@ fn ioctl(
+>      #[cfg(CONFIG_COMPAT)]
+>      fn compat_ioctl(
+>          _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+> +        _file: &File,
+>          _cmd: u32,
+>          _arg: usize,
+>      ) -> Result<isize> {
+> @@ -187,7 +190,10 @@ impl<T: MiscDevice> VtableHelper<T> {
+>          return ret;
+>      }
+>  
+> -    let ptr = match T::open() {
+> +    // SAFETY:
+> +    // * The file is valid for the duration of this call.
+> +    // * There is no active fdget_pos region on the file on this thread.
+> +    let ptr = match T::open(unsafe { File::from_raw_file(file) }) {
+>          Ok(ptr) => ptr,
+>          Err(err) => return err.to_errno(),
+>      };
+> @@ -211,7 +217,10 @@ impl<T: MiscDevice> VtableHelper<T> {
+>      // SAFETY: The release call of a file owns the private data.
+>      let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
+>  
+> -    T::release(ptr);
+> +    // SAFETY:
+> +    // * The file is valid for the duration of this call.
+> +    // * There is no active fdget_pos region on the file on this thread.
+> +    T::release(ptr, unsafe { File::from_raw_file(file) });
+>  
+>      0
+>  }
+> @@ -229,7 +238,12 @@ impl<T: MiscDevice> VtableHelper<T> {
+>      // SAFETY: Ioctl calls can borrow the private data of the file.
+>      let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+>  
+> -    match T::ioctl(device, cmd, arg as usize) {
+> +    // SAFETY:
+> +    // * The file is valid for the duration of this call.
+> +    // * There is no active fdget_pos region on the file on this thread.
+> +    let file = unsafe { File::from_raw_file(file) };
+> +
+> +    match T::ioctl(device, file, cmd, arg as usize) {
+>          Ok(ret) => ret as c_long,
+>          Err(err) => err.to_errno() as c_long,
+>      }
+> @@ -249,7 +263,12 @@ impl<T: MiscDevice> VtableHelper<T> {
+>      // SAFETY: Ioctl calls can borrow the private data of the file.
+>      let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+>  
+> -    match T::compat_ioctl(device, cmd, arg as usize) {
+> +    // SAFETY:
+> +    // * The file is valid for the duration of this call.
+> +    // * There is no active fdget_pos region on the file on this thread.
+> +    let file = unsafe { File::from_raw_file(file) };
+> +
+> +    match T::compat_ioctl(device, file, cmd, arg as usize) {
+>          Ok(ret) => ret as c_long,
+>          Err(err) => err.to_errno() as c_long,
+>      }
+> 
+> -- 
+> 2.47.1.613.gc27f4b7a9f-goog
+> 
+
+-- 
+Lee Jones [李琼斯]
