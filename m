@@ -1,115 +1,211 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665CF22331B
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Dec 2024 15:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E418A222D4A;
+	Thu, 12 Dec 2024 15:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018481; cv=none; b=WMWdfgNBnbfffoL6VMsv9WsEp1EeEsNfiKGnF+BjuG6auh+XsGEln7+bsjj86wgK8Jg5OenXm201ynx/8VGN5U27xIFU9Ocjv46FGHID0XqWM0Zu3zCuNTqhdAiaPLtc2BMBFrfnxbnrHMjJ3hh+vog6nJPZ0ku15bGcr930+O8=
+	t=1734018598; cv=none; b=DYjZunlQkXokCqmlKo8VEhEeHKpGCRBm8CrRIjp/Yb+Wn1kWnugOjvnWCZb67yVLGEA4a14EIE6Ky+fb8z7R5Gn7RZrwF9U0jTG3v5rD1UHkzJ3ZomNZXCdg2bBhnUjNn7lokiI8CcubRuU7NNxH/4iNjMixkyhamgIbIa8ezCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018481; c=relaxed/simple;
-	bh=3WYdMQkhckrDwTHO2KC2eMO0/yGt7G8S5Rf6vGsaWZ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPpejjAQ7ID1RX+fo3ksRhze3JcQQV3pC82YA+dRHhtD32nQMjDwlvTzUY8kCF1nVtnAf6/4Cj97dzhIOHYqhhCh8Cus5NH44eUp0aSxiy2FswsDLEXIclkjMYks0GbitGEboGm1ca2AgfBm//F9EM/JSsWW//ryJssKNV8fQG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hL46ElQQ; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734018598; c=relaxed/simple;
+	bh=htv+UPiuxFH5l75rnUXHTUNj6KGcw1im7Z97ayXbG/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aAXUYsI122ofeCXq316pbLq44HlKo7uw/KhsXM9Qy9IaCvc/84QWglAPAH4anoC62fyP+pE9D7B8IJcOqirwGZoUEfMGs97x+qHkAEPLG0P+5ldUXpNzyB1FvGT4G1rf42law5KMQteDAOCrhSW/rFl3FiLyE/crTd2h80PJc18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyXGlV9V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hL46ElQQ"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-725ee27e905so957795b3a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Dec 2024 07:48:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734018479; x=1734623279; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FUI5yEgTd4WX9VhXN6l/5iAt8DorYvvUuTlDkNuiq+M=;
-        b=hL46ElQQB6Q1VKcyl3ye/IZDecJiXn/D8B5ikM8HRAl251LfacTWMyqAzXiDmm6mbD
-         w71Ty5dn9nSMyvCBIohPZByKDZQzLG7Y76C+RXlkPhLSywf+NDq+IZyEFnfPkgbgtU+u
-         6aFLGV6ChCi6qJMgwWYbi1n3V/Wqs4wwqhtdBnusP04YeVfL0NJqHYbKYMBU7dmgUZH5
-         sBWqhQP7leF9WS8gZNiD/6nN7APccflm8anlB23So98PsKJmfS4Im+fawtVVt0QTmXUn
-         K4zIGO8q/jkOiGuZL0vmKVNego2AZGxnqWguk/ELfz+mcJItFBsA9ZXMVtszl8qNXMvU
-         w12g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734018479; x=1734623279;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FUI5yEgTd4WX9VhXN6l/5iAt8DorYvvUuTlDkNuiq+M=;
-        b=nih+AHMKywohoqAezJVyDP9plnLRQT2hRiUI04x3h5Ein/uCH54hGJWMy/YLB1qnXP
-         Y4lQoCeVlHiJFi1NaO3uvEu4D1A4HiFA53Be7o+HRpcNw9S47FRId2rBUzQylTb/e3h5
-         lpKrb77Xvs3Ytv0TrWUw8NKEoz5Yttpif53ElbRaZH82cpV6bvmk1yLarQ3yBmkoCe3r
-         1mfsxn0HgjEBWIt72Xk/2lDGnwd6Mmii7VfQblWVvHAVOgPUlqG3zWr9sR+efYduMvZ/
-         qNhHXefUF/ni+22k7SelTfA2Jl9SMF8QHAfruN+q9dMW5kzoGMG7lSicu19cTO90HROq
-         Bedw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEDoxVs122lkkcVr5V9bXzjNxk2O7AXXgrCqVjF2cyivAybVMBlp6gy3GHEq7i6mU7At7e8lCsDWbmYyN23Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxknim10azIfBF9s50rZRRST7EVnihd8ITvnul9lm6Mr4BjtG5Y
-	Zi8V9I2Mz/3UJPxGCB/bL+qBuou9Gqv1GMWrusoj29dX7hUOsvV2
-X-Gm-Gg: ASbGncv9EpnVhJlP19T0TV3oojbbpKs4WotbaRYoF977lBoQk0EEEiDzZHm0PIVHI7R
-	GJlgrAXuCTUOh1V5th3PQfMuyiSeQUXw8cW6e7Oj5oRjXRCJ7j1rQfrgZZ4de998XhvxqKQWfj9
-	MHlVt+jp0Wx1NYPrlWVRALwIHv8Aq5u+678hPT0dX1bZ7sY9TbIjuufdwCUxeF1N4h3RueqqzKG
-	5Vyhb0oZ3+tSzzKl8BtnbuT+lQ2YJhOQsL44Moe8h+LK1ckDwqRhlTSbxXM/g7VfKbI
-X-Google-Smtp-Source: AGHT+IG6hegoIO8ucMbj5OAK/JFqawTbXgW+cUDhWhKA6/EiaVvEv4jd1KJ6V2gI4AabQbvarnAurw==
-X-Received: by 2002:a05:6a00:cd1:b0:729:49a:2da6 with SMTP id d2e1a72fcca58-7290698039cmr907296b3a.3.1734018479596;
-        Thu, 12 Dec 2024 07:47:59 -0800 (PST)
-Received: from localhost.localdomain ([73.109.132.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7273c38502csm5814460b3a.5.2024.12.12.07.47.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 07:47:59 -0800 (PST)
-From: Jason Devers <dev.json2@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	boris.chen.czy@gmail.com,
-	Jason Devers <dev.json2@gmail.com>
-Subject: [PATCH v6] rust: sync: add #[must_use] to Lock::try_lock
-Date: Thu, 12 Dec 2024 10:47:53 -0500
-Message-ID: <20241212154753.139563-1-dev.json2@gmail.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
-References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyXGlV9V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF53CC4CEDF;
+	Thu, 12 Dec 2024 15:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734018597;
+	bh=htv+UPiuxFH5l75rnUXHTUNj6KGcw1im7Z97ayXbG/U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DyXGlV9Vn8wlOexZkTcy223Q18awPcPgYx5ZzmT4EBKM240MJ/+ituocvDsDxMNBp
+	 4xwfHWhaTpgEMJWMxDHEcTVce0P/w6RUd3B20NV8zNXxNPI+UYgiF/tendoxqNTTJM
+	 d9vflwHPch2Ug/8zBkQ3pJWHpV3v0L5P6GN7SSQ/ccI3sUNE4KmoixrwHbprxx7E1h
+	 maG+2IFhxSmsETe/1oe2+XXNRv1x3ZpF//WrkVlI03W3hPM8Km12ozcUEGsM/Ca/Ii
+	 WYE0hVGDtIrwhQfzw18GWGXrqsV9kxVBfxhDDp7zblqor9AOaKctOBLggtH5C4ajNE
+	 POKdAH+snE/+g==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ffa49f623cso7733291fa.1;
+        Thu, 12 Dec 2024 07:49:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU/efqqzOwvhOYON+vLJwiu3Li7iD7OiGvZfCMcEx+PO8xKl9j2GDZbGKzk/ibY5AHcLhSCAwV4Rb0tB9P6MGQ=@vger.kernel.org, AJvYcCUVKiG1t8yHqDTwCMMAqtqCQoUa1AAcMJ/Lojzddm97cq0b4GiE4tlW6jy+7vk0wk+tQFI3bh1HH7G0KuU=@vger.kernel.org, AJvYcCWCQB+Vdokd1Wihk0XCdcqAYszIAamKuen/3E5BZoTs5pdIEEHqIq3CwlVCmth3EW5uyxC5Sul+b/sjmfw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yymk1Ws0bs715/sfi80Iq70gV/Eq6awfwKG1QkQNxuS6wfeMDQq
+	AqLA5PjmfsuXo6CJOR7y5pLODrTGivBe9BNNaWRuf49zU/DreduJ1TOA47IZDGz6AFldSfn/lcL
+	4p88qBNfhYfc+e71ffkOzGynSuqo=
+X-Google-Smtp-Source: AGHT+IHmrKLcaLYW/lzhCLoUQyw/UlgK8Yt9mn+tMxhedsH8J/pZYJ7bPWpqt83lK+884t/Y0Jonc8vuqh39q6arPdE=
+X-Received: by 2002:a2e:2c15:0:b0:2fa:d2c3:a7e8 with SMTP id
+ 38308e7fff4ca-30251e0f3f8mr2145091fa.13.1734018596433; Thu, 12 Dec 2024
+ 07:49:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241110013649.34903-1-masahiroy@kernel.org> <20241110013649.34903-6-masahiroy@kernel.org>
+ <bdd5ff13-ec66-4ab6-985a-1fe433e85f91@nvidia.com> <CAK7LNATgL=vOr37+XfF7du+_ak5yKgXYyNNNTEQdVvy5J2MMyA@mail.gmail.com>
+ <b20db4db-afb4-4f58-bc01-ae1250abc8b0@nvidia.com> <CAK7LNATzdVrvmqm2wYHojVhNEiBNTaz6+4xgGBJwFixDvL=TMA@mail.gmail.com>
+ <eb21a546-a19c-40df-b821-bbba80f19a3d@nvidia.com>
+In-Reply-To: <eb21a546-a19c-40df-b821-bbba80f19a3d@nvidia.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Fri, 13 Dec 2024 00:49:20 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASzvkKgC+1-O+X2wchR6=Zc2raOc4Sb5YPMp_-AbhcpBg@mail.gmail.com>
+Message-ID: <CAK7LNASzvkKgC+1-O+X2wchR6=Zc2raOc4Sb5YPMp_-AbhcpBg@mail.gmail.com>
+Subject: Re: [PATCH v2 05/11] kbuild: change working directory to external
+ module directory with M=
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, cocci@inria.fr, 
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
-currently does not issue a warning if the return value is unused.
-To avoid potential bugs, the `#[must_use]` annotation is added to ensure proper usage.
+On Thu, Dec 12, 2024 at 3:00=E2=80=AFPM Jon Hunter <jonathanh@nvidia.com> w=
+rote:
+>
+>
+> On 12/12/2024 02:08, Masahiro Yamada wrote:
+> > On Wed, Dec 11, 2024 at 9:21=E2=80=AFPM Jon Hunter <jonathanh@nvidia.co=
+m> wrote:
+> >>
+> >>
+> >> On 11/12/2024 02:39, Masahiro Yamada wrote:
+> >>> On Wed, Dec 11, 2024 at 12:34=E2=80=AFAM Jon Hunter <jonathanh@nvidia=
+.com> wrote:
+> >>>>
+> >>>> Hi Masahiro,
+> >>>>
+> >>>> On 10/11/2024 01:34, Masahiro Yamada wrote:
+> >>>>> Currently, Kbuild always operates in the output directory of the ke=
+rnel,
+> >>>>> even when building external modules. This increases the risk of ext=
+ernal
+> >>>>> module Makefiles attempting to write to the kernel directory.
+> >>>>>
+> >>>>> This commit switches the working directory to the external module
+> >>>>> directory, allowing the removal of the $(KBUILD_EXTMOD)/ prefix fro=
+m
+> >>>>> some build artifacts.
+> >>>>>
+> >>>>> The command for building external modules maintains backward
+> >>>>> compatibility, but Makefiles that rely on working in the kernel
+> >>>>> directory may break. In such cases, $(objtree) and $(srctree) shoul=
+d
+> >>>>> be used to refer to the output and source directories of the kernel=
+.
+> >>>>>
+> >>>>> The appearance of the build log will change as follows:
+> >>>>>
+> >>>>> [Before]
+> >>>>>
+> >>>>>      $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
+> >>>>>      make: Entering directory '/path/to/my/linux'
+> >>>>>        CC [M]  /path/to/my/externel/module/helloworld.o
+> >>>>>        MODPOST /path/to/my/externel/module/Module.symvers
+> >>>>>        CC [M]  /path/to/my/externel/module/helloworld.mod.o
+> >>>>>        CC [M]  /path/to/my/externel/module/.module-common.o
+> >>>>>        LD [M]  /path/to/my/externel/module/helloworld.ko
+> >>>>>      make: Leaving directory '/path/to/my/linux'
+> >>>>>
+> >>>>> [After]
+> >>>>>
+> >>>>>      $ make -C /path/to/my/linux M=3D/path/to/my/externel/module
+> >>>>>      make: Entering directory '/path/to/my/linux'
+> >>>>>      make[1]: Entering directory '/path/to/my/externel/module'
+> >>>>>        CC [M]  helloworld.o
+> >>>>>        MODPOST Module.symvers
+> >>>>>        CC [M]  helloworld.mod.o
+> >>>>>        CC [M]  .module-common.o
+> >>>>>        LD [M]  helloworld.ko
+> >>>>>      make[1]: Leaving directory '/path/to/my/externel/module'
+> >>>>>      make: Leaving directory '/path/to/my/linux'
+> >>>>>
+> >>>>> Printing "Entering directory" twice is cumbersome. This will be
+> >>>>> addressed later.
+> >>>>>
+> >>>>> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> >>>>
+> >>>>
+> >>>> Since this change I have been observing the following build error wh=
+en
+> >>>> building an external module ...
+> >>>>
+> >>>>     MODPOST Module.symvers
+> >>>> ERROR: modpost: drivers/gpu/host1x/host1x: 'host1x_device_init' expo=
+rted
+> >>>>        twice. Previous export was in drivers/gpu/host1x/host1x.ko
+> >>>> ERROR: modpost: drivers/gpu/host1x/host1x: 'host1x_device_exit' expo=
+rted
+> >>>>        twice. Previous export was in drivers/gpu/host1x/host1x.ko
+> >>>>
+> >>>> Now host1x is an upstream driver, but I have a local copy that using=
+ to
+> >>>> stage development changes (and avoid polluting the upstream driver).
+> >>>> Plus I can swap between which version I am using on a live system.
+> >>>>
+> >>>> What I noticed is that previously the Modules.symvers for the extern=
+al
+> >>>> module had the full path of the external module for the name. Howeve=
+r,
+> >>>> now the name is just the relative path and in this case
+> >>>> 'drivers/gpu/host1x/host1x'. Hence, this clashes with the in-kernel
+> >>>> driver and we get the 'exported twice' error.
+> >>>>
+> >>>> I have been looking to see if there is a way to fix this because it =
+has
+> >>>> been a useful feature to override an upstream driver with a locally
+> >>>> modified version.
+> >>>
+> >>>
+> >>> I do not know how to reproduce it.
+> >>>
+> >>>     if (s && (!external_module || s->module->is_vmlinux || s->module =
+=3D=3D mod)) {
+> >>>
+> >>> is not checking the module path at all.
+> >>> I do not understand why it was affected.
+> >>
+> >>
+> >> So this is not explicitly checking the path, but comparing the content=
+s
+> >> of the Module.symvers before and after this change for the external
+> >> module I see ...
+> >>
+> >> $ grep -r host1x_device_init Module.symvers
+> >> 0x00000000      host1x_device_init      /absolute/path/to/drivers/gpu/=
+host1x/host1x        EXPORT_SYMBOL
+> >>
+> >> And now I see ...
+> >>
+> >> $ grep -r host1x_device_init Module.symvers
+> >> 0x00000000      host1x_device_init      drivers/gpu/host1x/host1x  EXP=
+ORT_SYMBOL
+> >>
+> >> So the problem is that now there is no longer an absolute path in the
+> >> external modules Module.symvers and so conflicts with the kernel's.
+> >>
+> >> Does that make sense?
+> >
+> >
+> > As I said, I do not know how to reproduce it.
+> >
+> > Please provide the steps to reproduce it.
+>
+> Got it! The steps would be ...
+>
+> 1. Create an external module by copying using an existing upstream
+>     driver (such as host1x).
+> 2. Create a new external module that uses the external module from step
+>     1 and uses KBUILD_EXTRA_SYMBOLS to reference the Module.symvers for
+>     the driver in step 1.
+>
+> Thanks!
+> Jon
 
-Note that `T` is `#[must_use]` but `Option<T>` is not.
-For more context, see: https://github.com/rust-lang/rust/issues/71368.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/1133
-Signed-off-by: Jason Devers <dev.json2@gmail.com>
----
- rust/kernel/sync/lock.rs | 2 ++
- 1 file changed, 2 insertions(+)
+OK, now I understand, and posted a patch.
+Thanks.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 41dcddac69e2..aacc227536cb 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -147,6 +147,8 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-     /// Tries to acquire the lock.
-     ///
-     /// Returns a guard that can be used to access the data protected by the lock if successful.
-+    // `Option<T>` is not `#[must_use]` even if `T` is, thus the attribute is needed here.
-+    #[must_use = "if unused, the lock will be immediately unlocked"]
-     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-         // that `init` was called.
--- 
-2.44.2
-
+--=20
+Best Regards
+Masahiro Yamada
