@@ -1,111 +1,184 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53B52101A3;
-	Thu, 12 Dec 2024 10:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4332221146F
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Dec 2024 10:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733998012; cv=none; b=m8i8Tea4wgzF2YRmXJqVC+PS9pCQ2tNOOkFY8mTdHYJ8S0+hgc+9fmTA+2odxjId1AtekbOon9bOQffh+RNnct9P4zcp3KniFjFKX5UiDPlN+MDT291FcBK7cqzVQ6wWvNkWE6fihjwwym1XYAiYA47+Lc79/PPok2rnkJukHjg=
+	t=1734000699; cv=none; b=CZxuWA1OYeBnPxiqiJfKuXlSJ7Aao7HclBgO/ZQq7dRQo1RrsWtDiZsR+L3SwFzT5ZsuMzDVH/oRc/fricTSwzU8iTYvXVPXCb8ZVd2BFyaBPJR6E7YjR2BI8l1eiDg9hiPiFvzli9aFJTayg5toXd3wivZ4TDXDPQJ+oGlZ4sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733998012; c=relaxed/simple;
-	bh=//z0nlF9Ten2G/5k5BiYmvGlZ4CfbVMsXAvyUocRS+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tCVv32KfRXq6/VwIFoJ6ByGLE2DaXvp4GdUDhQHfXhkKXqn8G4dmfUirsubZg3PYcXzxMh0n2/JNsKukma15ITjMZY2BwiOkizprKsWZv6KgS+nun/iF4gijXIv/yODE5kFVZfsbqlaZgJ5+eRqxLXSgxdwz8PeLwkud0xZ9SYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DNzJ76fr; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1734000699; c=relaxed/simple;
+	bh=r8PedwbATslMjHn8HdkHK7/SPqYwOBI7VaWxxuig9FE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RHB5TQ8uMIqfDGU2eeT/3RLk/a9cs9DR7K5a62m1dAz/fL5YWqg/CPpsFRsDa+X0DGLAX7X6CIsuCCajPsn+0AAT2fMwatIdKtm92X1q7XGiDrFx2YhD+Pj2sOy67mzM/Usl/FbHAOmz+ooOTL45dfolBVVrc5gNy7sYINV9atI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sav9PnrJ; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DNzJ76fr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=oXW1NldzuCyEVJq6d3ZfUBAHkkt0UUL63vAbkA+kcA8=; b=DNzJ76frGJSJ7yoYrnnjT4vFsV
-	QKWsJ01Q5Y7nzkJUveiAMxzxv7J7TBYzR2HE+Hp1Tvnybywx4FWMDz8dQ2ilFERpoog5xtlV7LlxA
-	Mjg4c4N+rZRUa2kSqWTn6LMEhcnPSSN6g/Jp33xZ9LyKWamQeKpsFd4agOTPcGzXAeUrbJykfjtFy
-	24TGCQdar/ZtAe7uJJhy9aZ4SVOtOD2MBc2mB+Z6/JEZwR8cH7NXRDBRee6juYzDCgxxHEspvI/mF
-	JnFEsftq0+pO99mECD68Nqe4bdb9DPluJdPXIpqzg4sX+ww79lYn4WsvzfQBMJ600slrYigX8bC86
-	nhdKRpfg==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLg5i-00000004t05-2Xkb;
-	Thu, 12 Dec 2024 10:06:42 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id D0D52300230; Thu, 12 Dec 2024 11:06:41 +0100 (CET)
-Date: Thu, 12 Dec 2024 11:06:41 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lyude Paul <lyude@redhat.com>, Filipe Xavier <felipe_life@live.com>
-Subject: Re: [RFC 1/5] locking: MAINTAINERS: Start watching Rust locking
- primitives
-Message-ID: <20241212100641.GW21636@noisy.programming.kicks-ass.net>
-References: <20241128054022.19586-1-boqun.feng@gmail.com>
- <20241128054022.19586-2-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sav9PnrJ"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361dc6322fso2918765e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Dec 2024 02:51:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734000695; x=1734605495; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rtpsjC48mE/nmTjT+Q7/MwVuoD24o44fCuhvsg4pi50=;
+        b=sav9PnrJNBwmfEgRCNJBkS1L2H6Dkv1gJFXcd0QcZV3XczZJSQBOcjyyH1PWWnzth8
+         X6wh6yv2dJVaPM56v55qUMWZ4zJhym6NhmImyD9wAcAhkzUrXK6HaOSbC5N0A7kiq1mb
+         xYB38FlKaUI+tkGZy41ZfXiS1RfS5HxANFaeSQfz27T3SKxlne80Wb3HUqZSLHlXMnKk
+         t3Ch4eCLeX2YTah4oRyjjRKzhrCpovzYTpQKrJZW0yGxpFY46FfQ2cgCzHlV1GPhq4zf
+         UJhGWwhXuPMvb0OGhloM6gNEl2qfJQuD0cFDyjJ9gNUr+XnDusBOyYTkWswNl/aPgS6Q
+         P4XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734000695; x=1734605495;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rtpsjC48mE/nmTjT+Q7/MwVuoD24o44fCuhvsg4pi50=;
+        b=rl82btGWuk5Gez2+WMDc6IWIsPW6SYwM3rxkXTvzv0VkZxY23AN+5E3sRoJUopMtfE
+         jCKwH7T4LWDPBIs3aybxfj2fUcMAzi+hWwxRobVZbmF2LCIEK/CfRQ8t7yQ41UQeGxgq
+         HLpQBo79wpEcfS+7Ya38t0fqKhY8XLcVP/rAtq+QuOIcgZydRLUWMz7qptXGXMnzZlqS
+         70v3pu9by5vv0Zgh4mK6Cim1PpVyPoK/aQ2EoU0tK2YzMKrk91Bdfop4GOVKSXth65o0
+         NgEnzP68LZnyHYRF9F+AK8u2glnwNAF+mi5C5E7GHSFnUSmROBHY9A1FTz5ujzRUnqgv
+         wHwQ==
+X-Gm-Message-State: AOJu0YzJAcomeZf9MjwPfRKXo3ZC0ZZXBCmRh02hweerfy0mrk+7w6Yd
+	9A6P6um6vsz8Qi76CnkZVcTGoJV/9nB35fPXfLprzvquB/9tgxAVF3Sk/Tf3rsDpcVXixiod46Y
+	2ugi+lyYb2KOSoWf2GieX6Hlsu/YfBIEhRKAi1xqHjiAZ1CgfUVJ9CHIjWA==
+X-Gm-Gg: ASbGncvu/cxmFego8yv+CT9nmamJO7muSePDPzlHN7s4xSzc58JAoFPu5q5BVv0Yiio
+	yWSC2jhtvqqOJp8316HaheIhfkkSEX9qxq7hZghSo+oPwzp1uBn0b8AwuzRAxQD1OZnms
+X-Google-Smtp-Source: AGHT+IHyygeSxJyNs1AB/t8h2oWE3zrmWEnc+tMnMhN05YyXp5Tg5F9O0X+SggrM6je5HiwFGxlS9nrxUkLK1wXEwpM=
+X-Received: by 2002:a05:600c:5101:b0:434:a1d3:a331 with SMTP id
+ 5b1f17b1804b1-4361c3e2350mr42431505e9.22.1734000695440; Thu, 12 Dec 2024
+ 02:51:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241128054022.19586-2-boqun.feng@gmail.com>
+References: <20241101060237.1185533-1-boqun.feng@gmail.com> <20241101060237.1185533-3-boqun.feng@gmail.com>
+In-Reply-To: <20241101060237.1185533-3-boqun.feng@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 12 Dec 2024 11:51:23 +0100
+Message-ID: <CAH5fLghYjcb-mpR_rr2aC_W8rRb6g8jCFxgky7iEqVgmpHjf=Q@mail.gmail.com>
+Subject: Re: [RFC v2 02/13] rust: sync: Add basic atomic operation mapping framework
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	llvm@lists.linux.dev, lkmm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, 
+	Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, 
+	Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
+	Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, 
+	linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
+	Trevor Gross <tmgross@umich.edu>, dakr@redhat.com, 
+	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 27, 2024 at 09:40:18PM -0800, Boqun Feng wrote:
-> It makes sense to add Rust locking primitives under the watch of general
-> locking primitives maintainers. This will encourage more reviews and
-> find potential issues earlier. Hence add related Rust files into the
-> LOCKING PRIMITIVES entry in MAINTAINERS.
-> 
-> While we are at it, change the role of myself into the maintainer of
-> LOCKDEP and RUST to reflect my responsibility for the corresponding
-> code.
-> 
+On Fri, Nov 1, 2024 at 7:03=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> wr=
+ote:
+>
+> Preparation for generic atomic implementation. To unify the
+> ipmlementation of a generic method over `i32` and `i64`, the C side
+> atomic methods need to be grouped so that in a generic method, they can
+> be referred as <type>::<method>, otherwise their parameters and return
+> value are different between `i32` and `i64`, which would require using
+> `transmute()` to unify the type into a `T`.
+>
+> Introduce `AtomicIpml` to represent a basic type in Rust that has the
+> direct mapping to an atomic implementation from C. This trait is sealed,
+> and currently only `i32` and `i64` ipml this.
+
+There seems to be quite a few instances of "impl" spelled as "ipml" here.
+
+> Further, different methods are put into different `*Ops` trait groups,
+> and this is for the future when smaller types like `i8`/`i16` are
+> supported but only with a limited set of API (e.g. only set(), load(),
+> xchg() and cmpxchg(), no add() or sub() etc).
+>
+> While the atomic mod is introduced, documentation is also added for
+> memory models and data races.
+>
+> Also bump my role to the maintainer of ATOMIC INFRASTRUCTURE to reflect
+> my responsiblity on the Rust atomic mod.
+>
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-
-This seems fine with me; thanks for taking that up Boqun. I'm assuming
-this whole series is aimed at the rust tree, in which case:
-
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-
 > ---
->  MAINTAINERS | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
+>  MAINTAINERS                    |   4 +-
+>  rust/kernel/sync.rs            |   1 +
+>  rust/kernel/sync/atomic.rs     |  19 ++++
+>  rust/kernel/sync/atomic/ops.rs | 199 +++++++++++++++++++++++++++++++++
+>  4 files changed, 222 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/kernel/sync/atomic.rs
+>  create mode 100644 rust/kernel/sync/atomic/ops.rs
+>
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 443217066eb9..3a6a193fad99 100644
+> index b77f4495dcf4..e09471027a63 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -13351,8 +13351,8 @@ LOCKING PRIMITIVES
->  M:	Peter Zijlstra <peterz@infradead.org>
->  M:	Ingo Molnar <mingo@redhat.com>
->  M:	Will Deacon <will@kernel.org>
-> +M:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
->  R:	Waiman Long <longman@redhat.com>
-> -R:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP)
->  L:	linux-kernel@vger.kernel.org
->  S:	Maintained
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
-> @@ -13366,6 +13366,11 @@ F:	include/linux/seqlock.h
->  F:	include/linux/spinlock*.h
->  F:	kernel/locking/
->  F:	lib/locking*.[ch]
-> +F:	rust/helpers/mutex.c
-> +F:	rust/helpers/spinlock.c
-> +F:	rust/kernel/sync/lock.rs
-> +F:	rust/kernel/sync/lock/
-> +F:	rust/kernel/sync/locked_by.rs
->  X:	kernel/locking/locktorture.c
->  
->  LOGICAL DISK MANAGER SUPPORT (LDM, Windows 2000/XP/Vista Dynamic Disks)
-> -- 
-> 2.39.5 (Apple Git-154)
-> 
+> @@ -3635,7 +3635,7 @@ F:        drivers/input/touchscreen/atmel_mxt_ts.c
+>  ATOMIC INFRASTRUCTURE
+>  M:     Will Deacon <will@kernel.org>
+>  M:     Peter Zijlstra <peterz@infradead.org>
+> -R:     Boqun Feng <boqun.feng@gmail.com>
+> +M:     Boqun Feng <boqun.feng@gmail.com>
+>  R:     Mark Rutland <mark.rutland@arm.com>
+>  L:     linux-kernel@vger.kernel.org
+>  S:     Maintained
+> @@ -3644,6 +3644,8 @@ F:        arch/*/include/asm/atomic*.h
+>  F:     include/*/atomic*.h
+>  F:     include/linux/refcount.h
+>  F:     scripts/atomic/
+> +F:     rust/kernel/sync/atomic.rs
+> +F:     rust/kernel/sync/atomic/
+
+This is why mod.rs files are superior :)
+
+> @@ -0,0 +1,19 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Atomic primitives.
+> +//!
+> +//! These primitives have the same semantics as their C counterparts: an=
+d the precise definitions of
+> +//! semantics can be found at [`LKMM`]. Note that Linux Kernel Memory (C=
+onsistency) Model is the
+> +//! only model for Rust code in kernel, and Rust's own atomics should be=
+ avoided.
+> +//!
+> +//! # Data races
+> +//!
+> +//! [`LKMM`] atomics have different rules regarding data races:
+> +//!
+> +//! - A normal read doesn't data-race with an atomic read.
+
+This was fixed:
+https://github.com/rust-lang/rust/pull/128778
+
+> +mod private {
+> +    /// Sealed trait marker to disable customized impls on atomic implem=
+entation traits.
+> +    pub trait Sealed {}
+> +}
+
+Just make the trait unsafe?
+
+Alice
