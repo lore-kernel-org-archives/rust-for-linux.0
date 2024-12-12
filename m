@@ -1,123 +1,161 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747331EEE6;
-	Thu, 12 Dec 2024 13:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1369A209F5F
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Dec 2024 13:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734008507; cv=none; b=F01DTXIoLA0QBQ5XftU8d/jmV0ghrKubKw+T2n7xH7fZ7RhPNqHbxtplUdlP0dxppPKe9RHX4RiGS6elawXy3LyN2xnuNAU2w0zurmipu0aQyF3XIAJd9+T+Fde60Kifmluqzc98thqdhABcRQ6u2pvd18Dbg/M4BmwybKGYnvs=
+	t=1734009171; cv=none; b=mYTCimWf9sTpfv1AbCgKiYTBjFN9gudVXo1wRflCs2xXymJCM1GbwOa6TaHOVyv+ue0mZK9W4eQCcy42T7EnNBxkWrpbUigWRPS398KkFxS/8FbKFsi7lbHWMcwAa4XdM8+rFkMY19BusHLBCgm7Y6Zh5rb0NtdfPLjaTQf/bvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734008507; c=relaxed/simple;
-	bh=Pn+HV+sRlLumfNM4ihppFPs/L/KEiADaCK8PIzifXw8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lpMKiWUc8nMXd5TBIZq0Turc8iBXALDYhgX7qp6mq2PZG+/Y1u8NKp2BxtFFgz+Ws/YhGu+dqfw0WhrkknMB4XgdvF4lwocFYyMV7TgVkpOj8ycM1RBYEPZYYIVGFt4Z2Dedbxg7idTbXTsscws7fkuuIo6AkbM+v0DD11o/Fwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HGHRQ0Nn; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734009171; c=relaxed/simple;
+	bh=pPPWX8Ivwy/gV0ty75BIy0qQGhmfgM1RmE/XDdVKt8U=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oBuLNwftgKFBee9/f2ST8zfoRedX1T7boaf54bt4sdXMvbc/YRzikJXt+VK18qPZ22QVsSyTnhPgC9G2ZKDCkU0TlCf+eJPiraYQHUnra3z7WjigPUxdnwdeM9PzSndq3I0mkUciBZ6cA6aZ9kahUl4l/jTB9elfuuGgxIF7+uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1bW2rhya; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HGHRQ0Nn"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-728f1525565so665714b3a.1;
-        Thu, 12 Dec 2024 05:01:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1bW2rhya"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4361b090d23so3757675e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Dec 2024 05:12:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734008505; x=1734613305; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yTZmgfgObbQLBSvoK4M5Ynsni5KYn/weRAsN8CypaP0=;
-        b=HGHRQ0Nn/0mJUAVfUPZTMPJd/nnRRP+jh3tXcQ9YjVMLPxutqMp+ph7tCugWzvPDmk
-         4Jyc2eDbJp1BXxk06iGdHjNg0YSm6e/irU/BdZsdvPhsDD3IZDwDB1RhlNsEbDT4un7n
-         /aUWqpgrh38SdZLClNdmXO3aeVIiytcT/tPrphDAhVu/eSVcshqkst31CMsQqeJtTX7D
-         9Mozz6NzIRpJDCcI9/dfN5C98RlHDduJFm8quCu80VmiD42twEt8K1htBKWE2+cPNn6f
-         vA5jQkjJadJq7FWSaYshW9LCt5+JdRiqhAjpUVoayPwRV/XICn6Lvt7NZt7nDnfwYD3F
-         k0pw==
+        d=google.com; s=20230601; t=1734009166; x=1734613966; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NxSuGPEUP4LGoJOZXmNeFLCDtdbxnqDmxNJo3hcCyNU=;
+        b=1bW2rhyaLQJcZvinBZBocgLtwNUd3DgBFVZO72qi3sDmF+0hE8pZ9yz+65hOrzIhZ5
+         rRQd5GEPsjspa7ayuE4xbuntAaKocs1waTZTQqwlOMImyYgG5sMucR2xndcMYp43dMb4
+         8YbISEFnucMNIdwDBVBtCSTj6tg1pVfUE5m0mYaHhdaACwmGnzCivZGkpgVTEOjlwF0w
+         X1oypEfoBqokb+W7ii1TNbQQ5BvdMlVRgjDUK3ixpaYc8sfI676ltMCFLFPTQm58E8wm
+         XwhOliyDpBjy0MlC/5I6vASXg8q7+0yxvjL07iXtBwTzUXW/Rg88Klk7VL92DnquEdTG
+         iLlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734008505; x=1734613305;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yTZmgfgObbQLBSvoK4M5Ynsni5KYn/weRAsN8CypaP0=;
-        b=v7wVj0tVfQJu4eSsV3zaCvY/riZrnTvqnpRPYOsOdUjC25YGJdSqcW26HG1mUZDDRy
-         xIH6sAMUgQCa739HJNvq3K9E0Qftu+EW2axpH39e4X+8d74lWqK84HtKYGhNnHfGUCxQ
-         sevMzC/Y6ZMhlJPppSbzQ+HDS6sZZEKAv3ZIjqUSoe0v/8U5cqsSlI1RlOsce+aWl8DH
-         1YTUtr65PGM5RXShHCeDNOxB73C03bA4jCk4HGV4KmATq5rH+wGreKTFML3pKztFqhQh
-         YHCQvc10a1QXnEMx9bT0o52/5G0fBTA/rY0VyH33vCY+ACFR8NnqY/xLbwdGzR0GZtWI
-         L79A==
-X-Forwarded-Encrypted: i=1; AJvYcCUa2bu9TUC3z/R3xpnv/yXU/pRkIiqRKr+7gpNIUN69EMS2Q+eP4h7Uv2IpJKiGfwlUacxIQ4KWBRHiuHsShw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsyYtaQdh0ju3ecj8/3WoIicnEWlWlrpNrRGGPSn7F+Gepxudj
-	N/F2cu6G5L0YWwMyb/Uqnbz0nf3/NIX9GI/PlQZttSnjqI7XwgnOFppjPNdx
-X-Gm-Gg: ASbGncuIy3dRMKzLxkG8VSWRNaovHPemIP6xWbdUqj3ynOZ7s1SiMSJM2TYxO5KQ5Q3
-	D34aD5nXM1B+yG5VglNZkFx868K9GzD9BwrO4EOJtqENpuRdM4wgYRbjP+nQgD/+G6SnJpwgWxi
-	hrBAvtScqZr9HkuoOnBUFNLRK2OKHuwSY02pS4WBug+hCaV5pYWLqpFLIMQkPAbI2+UqSZmy1hW
-	xfvKRXeFaXUckl3QKOvV9NtBtIuEZeRYoNsCQolbEC9ALFBRuwvYBrw/dUoejSZbQO1QMVny+YA
-	GcujqYw/bNrzmithGPnJxZu3fmpK4g0=
-X-Google-Smtp-Source: AGHT+IEMCWGjuoxGsheINT+mZjeEt7qQZNNo6pjSk2L/xFc76UOs0z0LX1SSC9EqafV6J0XSNzs4Jg==
-X-Received: by 2002:a05:6a20:12c1:b0:1e0:e07f:2f01 with SMTP id adf61e73a8af0-1e1da9e211dmr362937637.0.1734008505404;
-        Thu, 12 Dec 2024 05:01:45 -0800 (PST)
-Received: from mew.. (p4007189-ipxg22601hodogaya.kanagawa.ocn.ne.jp. [180.53.81.189])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725d7cdb38fsm9176500b3a.110.2024.12.12.05.01.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 05:01:45 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	tmgross@umich.edu,
-	aliceryhl@google.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com
-Subject: [PATCH net v2] rust: net::phy fix module autoloading
-Date: Thu, 12 Dec 2024 22:00:15 +0900
-Message-ID: <20241212130015.238863-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1734009166; x=1734613966;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NxSuGPEUP4LGoJOZXmNeFLCDtdbxnqDmxNJo3hcCyNU=;
+        b=E0b5i3VIkFfc3DuesAhYUEOQZlAWnh89rN7nb3P8a+2DBCzp/iGGzlBeyBIwY+rDBw
+         nhAgDcohQMxDUhdw51oYQxeMAmzam+vqxp/ymSy4u+B25HZvwZdhKRmLF//uQ2ZKZmQG
+         WGWzN0wxvM6ZoXu1PHBl8W4mPcO9NHJ3CI63CDC/lw99DgA7MksxZPXHnAIqfW/cqBOg
+         xVJF2sd1G06ACWaqTBHH03yvHbCLfpH15REH1P8d03pxgqyoEVl4BP/feILo8G9wQqbQ
+         fzvTrmHBaSun37imt3C+FhyILTXPPc1mSoAxMXJ7HsW37uwDIJwmnRYENQ91xDEgIxEC
+         PKiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZyrBAlXIGzuhqvHQ7bFXBaJYWCYl5GEP0T7GLQJL5M9KD/qVuUi7Yik7bEUn1im6Xllah4mXJw/45Xkcpkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrvsPRoaz0Ikd+ZMKB7Q1Wwfqp0c953lTc+S8Hhok93VShT9go
+	4mWOOu2cTJjq8VbHCBZGKo70ke2ILdtUZcVQCxS8pGurO5ohHdFElRKup5/4q5d4Wvvnikx2sXH
+	bGV7iE6e0P1gl8w==
+X-Google-Smtp-Source: AGHT+IH7UrSbTZN32BOx/05eHD1pdfafDslL/a9FKykKJ3ljqCd1tCecl999iQwnPEAm1PM6/DHtB7MRoBx7ReQ=
+X-Received: from wmpe39.prod.google.com ([2002:a05:600c:4ba7:b0:42c:bfc2:aa72])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:83c9:b0:434:f270:a513 with SMTP id 5b1f17b1804b1-4361c4011d4mr50051315e9.29.1734009166642;
+ Thu, 12 Dec 2024 05:12:46 -0800 (PST)
+Date: Thu, 12 Dec 2024 13:12:37 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3030; i=aliceryhl@google.com;
+ h=from:subject; bh=pPPWX8Ivwy/gV0ty75BIy0qQGhmfgM1RmE/XDdVKt8U=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnWuB6x0lQJd/Xt6RpUUS60L1VWB5rtefkWy4Qx
+ x7GTJ1d9fqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ1rgegAKCRAEWL7uWMY5
+ RlDlEACJpkq1ieFKxKefZcE02/A6D2POl4XhDtXPCUbRv0LwB1npNJPz1adDpL5XnZRjCUHtjm9
+ AmB3qS3xEJ0g+qBQ5s8p8ndri8gROxUdNQ9YMKf6dZer9a05hWrwUUYf5MNMjCiNdlZR+paZyOF
+ 941DkiaIBBdRyg+rZvyJYadqjYhYMcK439Aj7YFyelyCSl+k+jr9WH96NAIlnQIg377Ys4uu8Br
+ 5MYeie8SSjOtDfOi/vFfLZ2q9fzTVmQspQm6zXbR7TrKn41tHpL0lypfW35HY0WOxAHbwAyL569
+ MByT8GZ76KL/p8Tmi2tJghvnaHEPGMzbJALdz1JFNShutatc6AAEiGCmxkC0omPsuSNxX2GMlmV
+ L+trhDeql+LHVcoD31X8s/eF8rwIwEik+yPQtBHci5IZgQ/G5kX7tfXu4FuTINY7T9h6TIxvAuV
+ nk9zA7p7/rckaVXtRFYVnxZlCUE83omOoCoGh+l9y+MeNxQzrRaHldBHfaRFRlW2aMIanTBeuFR
+ lszvgSG4FthjEAbydv+bohXhRZJ+IT99/qfj7hzbIueUAkYwgXSaZwCqgZXTSonlzUrCYlXAd0H
+ YaqRK8InTyUVMD1tmua/iC84JMly4iwzBOfLNSGDbpuydVzkHQNj89x675oV+yWbHzGypr1jmKE +snT2nC7oVzpT6w==
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241212131237.1988409-1-aliceryhl@google.com>
+Subject: [PATCH] tracepoint: reduce duplication of __DO_TRACE_CALL
+From: Alice Ryhl <aliceryhl@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The alias symbol name was renamed. Adjust module_phy_driver macro to
-create the proper symbol name to fix module autoloading.
+The logic for invoking __DO_TRACE_CALL was extracted to a static inline
+function called __rust_do_trace_##name so that Rust can call it
+directly. This logic does not include the static branch, to avoid a
+function call when the tracepoint is disabled.
 
-Fixes: 054a9cd395a7 ("modpost: rename alias symbol for MODULE_DEVICE_TABLE()")
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Since the C code needs to perform the same logic after checking the
+static key, this logic is currently duplicated. Thus, remove this
+duplication by having C call the static inline function too.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/net/phy.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/tracepoint.h | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index b89c681d97c0..2fbfb6a94c11 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -860,7 +860,7 @@ const fn as_int(&self) -> u32 {
- /// ];
- /// #[cfg(MODULE)]
- /// #[no_mangle]
--/// static __mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; 2] = _DEVICE_TABLE;
-+/// static __mod_device_table__mdio__phydev: [::kernel::bindings::mdio_device_id; 2] = _DEVICE_TABLE;
- /// ```
- #[macro_export]
- macro_rules! module_phy_driver {
-@@ -883,7 +883,7 @@ macro_rules! module_phy_driver {
+diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
+index 76d9055b2cff..a351763e6965 100644
+--- a/include/linux/tracepoint.h
++++ b/include/linux/tracepoint.h
+@@ -218,7 +218,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+ #define __DEFINE_RUST_DO_TRACE(name, proto, args)			\
+ 	notrace void rust_do_trace_##name(proto)			\
+ 	{								\
+-		__rust_do_trace_##name(args);				\
++		__do_trace_##name(args);				\
+ 	}
  
-         #[cfg(MODULE)]
-         #[no_mangle]
--        static __mod_mdio__phydev_device_table: [$crate::bindings::mdio_device_id;
-+        static __mod_device_table__mdio__phydev: [$crate::bindings::mdio_device_id;
-             $crate::module_phy_driver!(@count_devices $($dev),+) + 1] = _DEVICE_TABLE;
-     };
+ /*
+@@ -268,41 +268,35 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
  
+ #define __DECLARE_TRACE(name, proto, args, cond, data_proto)		\
+ 	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), PARAMS(data_proto)) \
+-	static inline void __rust_do_trace_##name(proto)		\
++	static inline void __do_trace_##name(proto)			\
+ 	{								\
+ 		if (cond) {						\
+ 			guard(preempt_notrace)();			\
+ 			__DO_TRACE_CALL(name, TP_ARGS(args));		\
+ 		}							\
+ 	}								\
+ 	static inline void trace_##name(proto)				\
+ 	{								\
+-		if (static_branch_unlikely(&__tracepoint_##name.key)) { \
+-			if (cond) {					\
+-				guard(preempt_notrace)();		\
+-				__DO_TRACE_CALL(name, TP_ARGS(args));	\
+-			}						\
+-		}							\
++		if (static_branch_unlikely(&__tracepoint_##name.key))	\
++			__do_trace_##name(args);			\
+ 		if (IS_ENABLED(CONFIG_LOCKDEP) && (cond)) {		\
+ 			WARN_ONCE(!rcu_is_watching(),			\
+ 				  "RCU not watching for tracepoint");	\
+ 		}							\
+ 	}
+ 
+ #define __DECLARE_TRACE_SYSCALL(name, proto, args, data_proto)		\
+ 	__DECLARE_TRACE_COMMON(name, PARAMS(proto), PARAMS(args), PARAMS(data_proto)) \
+-	static inline void __rust_do_trace_##name(proto)		\
++	static inline void __do_trace_##name(proto)			\
+ 	{								\
+ 		guard(rcu_tasks_trace)();				\
+ 		__DO_TRACE_CALL(name, TP_ARGS(args));			\
+ 	}								\
+ 	static inline void trace_##name(proto)				\
+ 	{								\
+ 		might_fault();						\
+-		if (static_branch_unlikely(&__tracepoint_##name.key)) {	\
+-			guard(rcu_tasks_trace)();			\
+-			__DO_TRACE_CALL(name, TP_ARGS(args));		\
+-		}							\
++		if (static_branch_unlikely(&__tracepoint_##name.key))	\
++			__do_trace_##name(args);			\
+ 		if (IS_ENABLED(CONFIG_LOCKDEP)) {			\
+ 			WARN_ONCE(!rcu_is_watching(),			\
+ 				  "RCU not watching for tracepoint");	\
 
-base-commit: 51a00be6a0994da2ba6b4ace3b7a0d9373b4b25e
+base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
 -- 
-2.43.0
+2.47.0.338.g60cca15819-goog
 
