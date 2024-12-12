@@ -1,115 +1,50 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCC522540A;
-	Thu, 12 Dec 2024 16:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B93222D66;
+	Thu, 12 Dec 2024 16:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022281; cv=none; b=GuWUcV+cuProQiC/rBsntk09kkOOMnMpqwdbyAyJak0bBcfe+vp5ie/6MVE4g7cW1H7cZDI7DyS8GSNFD1t/8HZ0UBBfql6fUmKcp+Lf7KupX+fwyMmM5wT8BN6gElM42D4fjWVlKmIPaFsG/jHx93xqhptxCBE4BEdCiGnGADU=
+	t=1734022316; cv=none; b=BR3gzYK8QHBQUyFKPkL61wzc1ehUam8ft7+LDa3UYwdg5FtN4E/wcxwCjOlwKxdMGX9ErED5R0+pW/5rL6FMETm8DgKPeZj4WHRYksEzWiWzOZ80VBoSh6RkMYNAhkVohpChWpFEl/DH/gLdFxTaP735OiuE6ielmYKbz+q43CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022281; c=relaxed/simple;
-	bh=KSS+IEFy50e0gvvz99JkymakuMoeERBgyYU4zHTc+ko=;
+	s=arc-20240116; t=1734022316; c=relaxed/simple;
+	bh=woLv4+bBa3B3N1pK5meg8QxoAoisLOlR0KcLNcIPoSs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mfJzOIoCAlhhHeijXox8qo8zE1Whs9hB0VOxc+oK/v0aH3X7wKtZOPAKjk0PD0oN3QT63X/IQjbUJACtoYRXhY03jMPBPealdwHcXdF0Ic8SuqEbzsjre5MphKqcWR3yPFQ/grWrLhRvwQje59UlccDWjfurPKlc+mE9EnRDmfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VsT1ApKQ; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tMnJS8d1S3fX14hMUBfPXSBuzOBfqMvZE/zvSrwCSNuS7ywFFFri5+i6XeWuxYwJDwC13PAGY5qCFwjL4yWIQIBh2/3cGCUpwbXWzfLFymQX72OpisXMNalToDAqz4mbjzr2d9iZ2OrJw+Y2/LSNfzMTY7vj5HDRGY9Q0G9g4TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huV5/2n1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VsT1ApKQ"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-467a1d43821so2647851cf.1;
-        Thu, 12 Dec 2024 08:51:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734022278; x=1734627078; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q2uH/oXT93NM1ZuZnDKURcaH8gexK7fW6xFoJ7SxlNw=;
-        b=VsT1ApKQ9vYmY8CdLcz4CbpiK6xKcyMYOgKEEvxI87nebo5MlQKUzxHJdqz6q+h0iu
-         Uz39/zq2a1BpYDWsF3R0QePyonz9nG8Xe9lj5OKkoUL0Xqg7LkjFxY8cLaF31AftlV42
-         TOxVkVJfDUKbNCT5edBRHgFg4ieJDVvokW6W1W70nq4pe1dE4iytn0ZDuM/p9BxCwUNJ
-         1NQYePhvz/Qf6neJmtvHtwcGb7h4LidEHeo8i0DCOiwA9l65rnUFXqIM8gqy2RgTt33F
-         K+LY/W/KWb6DD32/Us1/o6R+gF+FMPA9Ls9gl2uz8YXKYdRB5AmNlvHtIcm56ZBISlVF
-         rXWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734022278; x=1734627078;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q2uH/oXT93NM1ZuZnDKURcaH8gexK7fW6xFoJ7SxlNw=;
-        b=adc5Q1NfuuAIeFqf+o0hpg8h8Omg0x8sfXH3Ar9THRBLlMmKr51YHe9ghiN7uAAuBN
-         +GvuXXao0ZrmtB5mznhGjMpgKm48cfQI65IskrhCI+Nrl9unYc04+4cbuIGOpm3FW2rB
-         pXo63b2uqPDm5R8ykrPxGtd4y+JQmdeqyb0ylXe6ppNx5T1jyfaCphyD3bO4OEZo9AJJ
-         OivMewmbOJX4n37w6hsay99MpbxrTO3F4e8NGAmtBEqCgJ3Av+HyGTjOsx47IvO7S9XU
-         mzC9582BphKrPlSmEg8RyDrH6rAxUIu8iLXCeYFIkxVavmIz+XIWhiXfL7BZe54WtYnf
-         IMCg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnKmytjgpjHqPwLTIUtQPWIDBCYeAX2YBstvu7FJYap6CQOrA8FhlJ0aKcbQG4VwkxkVBloAsOhgjowSk=@vger.kernel.org, AJvYcCUvRwhEPWkPSaUdrV2Lk2E/H1bgX6KXOenQkUGZ8Ix6Pv0dGUPYdEQKn9PoMaerUzIFkG4P7AkkScUqLUQkdvc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiCdLYVMGsbdSxPPHBuScd7b8isfTCR9BPR7UbyaxTOQPJgpr0
-	bXTK0G8GBemXjOxJs/jkckWjF1W04WpmNhxdu3RWTOKnLSUPLQrp
-X-Gm-Gg: ASbGncuGBGbgHTn/f77aoRcpEXL9RkG8FOCq4XZRpq1/W3dAfX4H4FaD/5mvIfulpQV
-	hETP3As4AQsd9p6BWDlmnV2tsCtCsESLtucXoMFIRy6vl0bU9VmgIeqZv0Z4c7sa7qOpSbE8Ku9
-	jYx7h6WeHGLP2NBtkwjkozDJcInCs3WSmYWQG+TXeU87rriYArrz+wbQbvcOp1WQn0G8zVyt22F
-	0rrUNz5UyiWPzTXAFQVjvBvxeUvpxi6w91Kz696Fhna6UAQGTrYOyKB822LmCfHvA6DqQbfFmvi
-	tZKgXIRWPkKE2nG3fYT4iBU6HPMyR+YC4ekdEuv/CFdTkUw=
-X-Google-Smtp-Source: AGHT+IGcFkOckWjekUygegUyPeYVGJN8AAndZWjRKIw3VWnBaRLTiSOprpWFD5cSsZMN597+GMue7g==
-X-Received: by 2002:a05:622a:5449:b0:467:517b:90ca with SMTP id d75a77b69052e-467a157fc08mr16734821cf.21.1734022278273;
-        Thu, 12 Dec 2024 08:51:18 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46783eb0d91sm27057931cf.63.2024.12.12.08.51.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 08:51:17 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1F113120006E;
-	Thu, 12 Dec 2024 11:51:17 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Thu, 12 Dec 2024 11:51:17 -0500
-X-ME-Sender: <xms:hBRbZy_5gnI3Mvf-i2IRA_8ZBL3Vg4vX2dVmN_QxO--Hp28WFsqQ5A>
-    <xme:hBRbZytv7i40a8E1JWSGNOway50CcUy8yxW7-GGpqDhd9ugW5ZeK22WNm_oegIHu3
-    jhOniKrPOuZnBsNlQ>
-X-ME-Received: <xmr:hBRbZ4BPavBcnWU_Yn86qAMRWt_Ic7yi-m_S4XXAIt-j67uklCrpJbRi_uo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkeehgdeludcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
-    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdethedu
-    udejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
-    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
-    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
-    vgdpnhgspghrtghpthhtohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehmihhnghhosehr
-    vgguhhgrthdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgr
-    nhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
-    thhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhope
-    gsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvg
-X-ME-Proxy: <xmx:hRRbZ6dFlG-mfuSED6mbuoa1eIpGu-cPEOSj7QUOZXiTt-bHPRuNvg>
-    <xmx:hRRbZ3N27fwevAvJc6lbiSE1_BGltGk3O2EbZkgqjUIS-X7DeACNcA>
-    <xmx:hRRbZ0ldcXatNXxIIy3RG-f1ZqBhpXmWIC0Ym46IskbXl5DCR7btXQ>
-    <xmx:hRRbZ5vf_QcXF3KV_J0GdT27DmwIoC77ccz_HPxLMMNiE9I6N4Uklg>
-    <xmx:hRRbZ9tDkhP1YY4jjExeqKoPut0ga7qm1nnFm8HtmkMuQNJdYHJJNsuC>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Dec 2024 11:51:16 -0500 (EST)
-Date: Thu, 12 Dec 2024 08:51:10 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huV5/2n1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6653C4CECE;
+	Thu, 12 Dec 2024 16:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734022316;
+	bh=woLv4+bBa3B3N1pK5meg8QxoAoisLOlR0KcLNcIPoSs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=huV5/2n1xrfwVgXexkLe+nnYsmZZAKGoF61GTT8T8BrsBIj5Jzgw0pNwxwd89+ivr
+	 d6x4ybi/TFdwd4SzBnO0aoxHfu/ZJzKsKAAbVLSwB4ITtRxredF9T5/kxBv2XsrjB0
+	 KdqzlOPkPYKf7RBB98XGMACnoJ2kBz481YmlgmugEyeoCgjmtusJEBwTjyj2qnFvdK
+	 LLZjalCDCFvn8AtcYQRAAMQnl0R/b3y3ewHSnkZAmNzHgg+ztth9m+sXeCiBR0xzWW
+	 4MeRVGu+JhxY2bGGEU0feqxokU9rHxv6y8L7LJLWLnnOjXANvcQsjM06/QhWu+wDr4
+	 R8Zf9TKd5WvWg==
+Date: Thu, 12 Dec 2024 10:51:54 -0600
+From: Rob Herring <robh@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lyude Paul <lyude@redhat.com>, Filipe Xavier <felipe_life@live.com>
-Subject: Re: [RFC 1/5] locking: MAINTAINERS: Start watching Rust locking
- primitives
-Message-ID: <Z1sUfudkQzZLdLiX@boqun-archlinux>
-References: <20241128054022.19586-1-boqun.feng@gmail.com>
- <20241128054022.19586-2-boqun.feng@gmail.com>
- <20241212100641.GW21636@noisy.programming.kicks-ass.net>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: platform: add Io support
+Message-ID: <20241212165154.GA2473511-robh@kernel.org>
+References: <20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com>
+ <Z1nbsNyOBvFTL1-6@pollux.localdomain>
+ <A3F6B6C6-33B3-4522-8240-15421F240D3A@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,70 +53,144 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241212100641.GW21636@noisy.programming.kicks-ass.net>
+In-Reply-To: <A3F6B6C6-33B3-4522-8240-15421F240D3A@collabora.com>
 
-On Thu, Dec 12, 2024 at 11:06:41AM +0100, Peter Zijlstra wrote:
-> On Wed, Nov 27, 2024 at 09:40:18PM -0800, Boqun Feng wrote:
-> > It makes sense to add Rust locking primitives under the watch of general
-> > locking primitives maintainers. This will encourage more reviews and
-> > find potential issues earlier. Hence add related Rust files into the
-> > LOCKING PRIMITIVES entry in MAINTAINERS.
-> > 
-> > While we are at it, change the role of myself into the maintainer of
-> > LOCKDEP and RUST to reflect my responsibility for the corresponding
-> > code.
-> > 
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+On Wed, Dec 11, 2024 at 06:00:31PM -0300, Daniel Almeida wrote:
+> Hi Danilo,
 > 
-> This seems fine with me; thanks for taking that up Boqun. I'm assuming
-> this whole series is aimed at the rust tree, in which case:
-> 
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> 
-
-Thanks! Actually I'm planning to combine this series into my upcoming PR
-to tip, the PR candidate is something like:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/log/?h=lockdep-for-tip
-
-(I still need a few days to catch up with other locking patches, so
-probably after -rc3)
-
-Would this (targeting tip/locking/core) work for you?
-
-Regards,
-Boqun
-
-> > ---
-> >  MAINTAINERS | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > On 11 Dec 2024, at 15:36, Danilo Krummrich <dakr@kernel.org> wrote:
 > > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 443217066eb9..3a6a193fad99 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -13351,8 +13351,8 @@ LOCKING PRIMITIVES
-> >  M:	Peter Zijlstra <peterz@infradead.org>
-> >  M:	Ingo Molnar <mingo@redhat.com>
-> >  M:	Will Deacon <will@kernel.org>
-> > +M:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
-> >  R:	Waiman Long <longman@redhat.com>
-> > -R:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP)
-> >  L:	linux-kernel@vger.kernel.org
-> >  S:	Maintained
-> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
-> > @@ -13366,6 +13366,11 @@ F:	include/linux/seqlock.h
-> >  F:	include/linux/spinlock*.h
-> >  F:	kernel/locking/
-> >  F:	lib/locking*.[ch]
-> > +F:	rust/helpers/mutex.c
-> > +F:	rust/helpers/spinlock.c
-> > +F:	rust/kernel/sync/lock.rs
-> > +F:	rust/kernel/sync/lock/
-> > +F:	rust/kernel/sync/locked_by.rs
-> >  X:	kernel/locking/locktorture.c
-> >  
-> >  LOGICAL DISK MANAGER SUPPORT (LDM, Windows 2000/XP/Vista Dynamic Disks)
-> > -- 
-> > 2.39.5 (Apple Git-154)
+> > On Wed, Dec 11, 2024 at 02:51:56PM -0300, Daniel Almeida wrote:
+> >> Add support for iomem regions by providing a struct IoMem abstraction
+> >> for the platform bus. This will request a memory region and remap it
+> >> into a kernel virtual address using ioremap(). The underlying reads and
+> >> writes are performed by struct Io, which can be derived from the IoRaw
+> >> embedded in platform::IoMem.
+> >> 
+> >> This is the equivalent of pci::Bar for the platform bus.
+> >> 
+> >> Memory-mapped I/O devices are common, and this patch offers a way to
+> >> program them in Rust, usually by reading and writing to their
+> >> memory-mapped register set.
+> >> 
+> >> Both sized and unsized versions are exposed. Sized allocations use
+> >> `ioremap_resource_sized` and specify their size at compile time. Reading
+> >> and writing to IoMem is infallible in this case and no extra runtime
+> >> checks are performed. Unsized allocations have to check the offset
+> >> against the regions's max length at runtime and so return Result.
+> >> 
+> >> Lastly, like pci::Bar, platform::IoMem uses the Devres abstraction to
+> >> revoke access to the region if the device is unbound or the underlying
+> >> resource goes out of scope.
+> >> 
+> >> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> >> ---
+> >> The PCI/Platform abstractions are in-flight and can be found at:
+> >> 
+> >> https://lore.kernel.org/rust-for-linux/20241210224947.23804-1-dakr@kernel.org/
+> >> ---
+> >> Changes in v3:
+> >> - Rebased on top of v5 for the PCI/Platform abstractions
+> >> - platform_get_resource is now called only once when calling ioremap
+> >> - Introduced a platform::Resource type, which is bound to the lifetime of the
+> >>  platform Device 
+> >> - Allow retrieving resources from the platform device either by index or
+> >>  name
+> >> - Make request_mem_region() optional
+> >> - Use resource.name() in request_mem_region
+> >> - Reword the example to remove an unaligned, out-of-bounds offset
+> >> - Update the safety requirements of platform::IoMem
+> >> 
+> >> Changes in v2:
+> >> - reworked the commit message
+> >> - added missing request_mem_region call (Thanks Alice, Danilo)
+> >> - IoMem::new() now takes the platform::Device, the resource number and
+> >>  the name, instead of an address and a size (thanks, Danilo)
+> >> - Added a new example for both sized and unsized versions of IoMem.
+> >> - Compiled the examples using kunit.py (thanks for the tip, Alice!)
+> >> - Removed instances of `foo as _`. All `as` casts now spell out the actual
+> >>  type.
+> >> - Now compiling with CLIPPY=1 (I realized I had forgotten, sorry)
+> >> - Rebased on top of rust-next to check for any warnings given the new
+> >>  unsafe lints.
+> >> ---
+> >> rust/bindings/bindings_helper.h |   1 +
+> >> rust/helpers/io.c               |  17 ++++
+> >> rust/kernel/platform.rs         | 209 +++++++++++++++++++++++++++++++++++++++-
+> >> 3 files changed, 226 insertions(+), 1 deletion(-)
+
+[...]
+
+> >> +    unsafe fn new(resource: &Resource<'_>, exclusive: bool) -> Result<Self> {
+> >> +        let size = resource.size();
+> >> +        if size == 0 {
+> >> +            return Err(ENOMEM);
+> >> +        }
+> >> +
+> >> +        let res_start = resource.start();
+> >> +
+> >> +        // SAFETY:
+> >> +        // - `res_start` and `size` are read from a presumably valid `struct resource`.
+> >> +        // - `size` is known not to be zero at this point.
+> >> +        // - `resource.name()` returns a valid C string.
+> >> +        let mem_region =
+> >> +            unsafe { bindings::request_mem_region(res_start, size, resource.name().as_char_ptr()) };
 > > 
+> > This should only be called if exclusive == true, right?
+> 
+> Yes (oops)
+> 
+> > 
+> > Btw. what's the use-case for non-exclusive access? Shouldn't we rather support
+> > partial exclusive mappings?
+> 
+> Rob pointed out that lots of drivers do not call `request_mem_region` in his review for v2, which
+> Is why I added support for non-exclusive access.
+> 
+> What do you mean by `partial exclusive mappings` ?
+
+I dug into the history of this some and I may be misremembering where 
+the problem is exactly. The issue for DT is we can't call 
+platform_device_add() because it calls insert_resource() and that may 
+fail. Now I'm not sure if the drivers in overlapping case have to avoid 
+calling request_mem_region(). I think so...
+
+Here's some relevant commits:
+
+8171d5f7bf26 Revert "of/platform: Use platform_device interface"
+b6d2233f2916 of/platform: Use platform_device interface
+02bbde7849e6 Revert "of: use platform_device_add"
+aac73f34542b of: use platform_device_add
+
+There was another attempt to address this here[1], but I don't think 
+anything ever landed. 
+
+Grant mentioned mpc5200 ethernet and mdio as one example overlapping. 
+Indeed it does:
+
+                ethernet@3000 {
+                        compatible = "fsl,mpc5200-fec";
+                        reg = <0x3000 0x400>;
+                        local-mac-address = [ 00 00 00 00 00 00 ];
+                        interrupts = <2 5 0>;
+                        phy-handle = <&phy0>;
+                };
+
+                mdio@3000 {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        compatible = "fsl,mpc5200-mdio";
+                        reg = <0x3000 0x400>;   // fec range, since we need to setup fec interrupts
+                        interrupts = <2 5 0>;   // these are for "mii command finished", not link changes & co.
+
+                        phy0: ethernet-phy@0 {
+                                reg = <0>;
+                        };
+                };
+
+The FEC driver does request_mem_region(), but the MDIO driver does not.
+
+Rob
+
+[1] https://lore.kernel.org/all/20150607140138.026C4C412C8@trevor.secretlab.ca/
+
