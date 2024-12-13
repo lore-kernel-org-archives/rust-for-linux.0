@@ -1,70 +1,70 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB97954723;
-	Fri, 13 Dec 2024 21:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA2A1C3C1D;
+	Fri, 13 Dec 2024 23:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734125499; cv=none; b=Kku82jMvm9dXTEEndSsVop83lixz62OjEXuHN9wmYKDHDoINV0fhW060+tNr4Fjqg6GC8dnAD8A8J420sjmQcd+qRMIU3T/uSVxrQU5IaEbyKxyDTOU5Bw0rgXAauMqL+dmmCGo6/AnVxR6k1av8/xGeex+ujnCnTmpalE/X4+E=
+	t=1734132179; cv=none; b=lW8UvPhhSlK2kjvbs7qNURqS33J+FrLx7SmUXWIZtuCn/0S1r57UIbYCkNzA6UuTXxLoR7l9rNQhsAiaaTf3yYM/S1y/yT2Gs9zblV4C3WYyQ/PRGUZHqfiiuK2zRbF46uDZR4U9lw7eRCjjUDC5tyJoFUeem8M5VvrOp0J2ncU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734125499; c=relaxed/simple;
-	bh=Tdw2S2HmeIZB1fPjjTmnH9JydpkyJAzun0VieOPlFNo=;
+	s=arc-20240116; t=1734132179; c=relaxed/simple;
+	bh=V6nLkJ+6VLZgE10ewA3liyVk+k3+WLQV8J7Rp4RqhFM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kAI6b7mcBD7aqKLF9WZBPmPGfGeSihbpbjmp2ociE1zRvQbj4uhWWgi5mqLU59F/2M7yTy83C5C1zKyvt+6081nh+1PHv8H9PoK0sX4wI1+DuzAkueKTNN9eE2JmMe1+LwfQ7zmfVcHobSp0Dq7qA2OSf580rTe+NavHuTJSlqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1aKSwA0; arc=none smtp.client-ip=209.85.216.44
+	 To:Cc:Content-Type; b=T/BpWCre1AB4KmnbRQVWp6KaogGT19yBC0lxT0uz4m+T8bq8FUP1IQD0Zi+/XsvRcVSSj0QUUbC9EJGQ7FncK24EnkS78eq7E7wW6e4tN2IvX4DggZBTh0dU45UagDxYylmVF2GWBnHOZXyl9xmO73I5d6ILdJEoO9I/Nldww/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g3PYQe+1; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1aKSwA0"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ef9f17cb7eso232651a91.0;
-        Fri, 13 Dec 2024 13:31:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g3PYQe+1"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso21751191fa.0;
+        Fri, 13 Dec 2024 15:22:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734125497; x=1734730297; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734132176; x=1734736976; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Tdw2S2HmeIZB1fPjjTmnH9JydpkyJAzun0VieOPlFNo=;
-        b=d1aKSwA0rO3dQNSTWc5B3M0G4Csg4jUiidpm0lJboIKFGxTH9k1K1l+D/gTxczk8sM
-         2MmGv8lSD5GS9/AlBBStGjXON50hMHw9RRHNNzEYrmbEYu4JDhF/DgPKIQcHZFE2Uv4y
-         PE9C8uX2NR/S5HDvAn9wTqAUoSQDucdj4I6dfaqno/LwTSliL39P/Au16ApyLL8ykOSq
-         4NIswuF0sYLsGKoQqe9Vo7lWxGvWVbUqlDHnDd/gRbjGB8YCilBS5N/hKPdCC49izdKK
-         OdEi9bZg4b0AhRaodMtvF+FvHoDwJQ6GZETwpINIW8KesKXWZyjN64zZnlpBJv0c+vLJ
-         dT0g==
+        bh=V6nLkJ+6VLZgE10ewA3liyVk+k3+WLQV8J7Rp4RqhFM=;
+        b=g3PYQe+1Rugf6f3Dk75wGz7ECU8CEhWuKiKj/P/necg10GhTlUuGiRT53gEtfwqhCD
+         OkoyDm8DGXmNsoGUgMWYc3GE3CZV+nfNtGFea6ZvXpQXBBLv0CcjjP+x9anooBqKZxgR
+         s1XJmDRJAOQYhrNL045sg1rsbjIDOUcDSVW/yJGF6mZFkMd2tRQC1DZ7TDje9uxMKn/c
+         1u9dhTSUfaAi9POQCmy1ZqgLFyPkAh7W02MTPFoJ/sfnQc0mVdaT8WQxqr6FlQUJaqmj
+         EqdLSE2AgWuwLUagBimMdTHOdvn7ETNGF8XaX5XMMgj1cddORepBscFzsJ9X18/qTQO7
+         3KZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734125497; x=1734730297;
+        d=1e100.net; s=20230601; t=1734132176; x=1734736976;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Tdw2S2HmeIZB1fPjjTmnH9JydpkyJAzun0VieOPlFNo=;
-        b=YrWzAB7WZFKunfPoO/VhF6eaGzICRV+RiubGFn0hRL3Fes4nH8mWmijpCA3DahkRYd
-         pGEYIvt9DbcP+JVNYxPZHAj9UVunYPp168CYLopmQEXX4a8LYVZ3YuXaaN21ArRAI8Iw
-         5NWoxA3MpmWMxfMnQR9lE6n/UBw8YN73Jeq/YJbrs7z9o53lgYLF8cYp1oBeB5ebMN0w
-         ogf0lo5TzCjBHQ36s2xOWKrfuLtaEgxCywk7rKwgfKI2U+XcOIQcCZZKBRwGHWvjp5/H
-         kNswNjo4t372aEyEzAY5xICxi01WLomJjaDDzTqejiZl8v141krcewMI1sT4V63WXRly
-         +pwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAtXBOOv3moZ6CyMUdoaaFGa8D+5NZ0bS2znbS5MyFWG7g5rPiG0CRHkm33XXaD0d64ehVkvGQGusadqpC@vger.kernel.org, AJvYcCUF14QD3hhpidpsyvng+xTa2XV2ZYfPgTeSj67HumgZMA2q/KjkI0n3BCGO5wH6BZygD9H2uVDO+N0/8TDo@vger.kernel.org, AJvYcCXudyKY4sYqHxSZyCGxRKdJ2Sq+sc6TIF9RVUOmkJZBW90WL8Em7ZlNFu82ovFnxC3uV/u89yn7IL9VEHXRCoo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymGUED5LE1Fny9Nhta7tBkmCsOVepZP7lT8G3QBf4VsiMuQdTx
-	URvfyiN25jxjny8RzsSnavyk/kI70K3vXGV/PCZ9Aho4ubuww1RAypmzu0hq6UUBENiPsH62Ei4
-	QmtrQmMFY0N8+DOaa1E5s8bl8YJU=
-X-Gm-Gg: ASbGnctIa9s/d+586N3kWt/boHyTn8eijc5MfKGkaGMVULqwdE6vw+M3J7T4lbxMR+0
-	8jqxdL3ZZNpUyYaIuuldKZjtAcIc2OwTGV3Ax5Q==
-X-Google-Smtp-Source: AGHT+IFAVtty0UeHnEGnlZsztA5jzL61zW87GyiPaG1bFFzVRUydVVjtvNrAd5rpNqsjXrWI5NKPgcs8EQ7RO8nCblI=
-X-Received: by 2002:a17:90b:224c:b0:2ee:ab27:f28b with SMTP id
- 98e67ed59e1d1-2f2901ac1a9mr2377553a91.7.1734125495683; Fri, 13 Dec 2024
- 13:31:35 -0800 (PST)
+        bh=V6nLkJ+6VLZgE10ewA3liyVk+k3+WLQV8J7Rp4RqhFM=;
+        b=KiBpTnJqGdx/5DCiMXc0K00KSrDA4/Kefnkud9dKJmC1XF9q02WubD5L/HSNX84CQf
+         Ozg0MTrkCerUwSfeoIg2vE1RM2rqLQnm44YQa06ZwkvX3yiNoEJzRqhfkOQsI3ZSwXFB
+         9OG2h6JlxTddCa6PehuhtcNE4ALpZB26AFDo/V/gD4fp8ieacUMfuIjG9DPUiGks3fE5
+         pVM4FAW92YGmdMi+xW4+f/namF5L86XMU/t360Ml9IStOO1VUb7esNftzTctgfmczDCe
+         TNGL9XGU0H4y6cD7T76/pb0TmBZ3Fy0uJefqFia/pZdAxxD1WGbLx7e2ahXM8uc+JIE3
+         QWuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCcw6nUl8q3gkG3tY47D8iIv5pSH6ZhF+qGt9Dxf7LfJmUJ+1c3CphJiDDJ0YX/wI51raAR4ZANKZDZtoSv2c=@vger.kernel.org, AJvYcCUCn2BQmXpmy5jJX0fae0cet5ZjggBkdsTZHB2Xaf9Ia2hs1n7A3XOCV7yoiOYlYoxgx0FHf40CY5sV44+i@vger.kernel.org, AJvYcCUt2kc8JeTqKtnBaBrVeO4erejV4seaV4+c1ApiPsgm6Vm2nKxN8ZD5KPABkE10ocpNxXA3jp2+NCGLFq2c@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+RHYn2eHhSb60LrnbmZe26fmIH5vhrr6S+ccoSWFNrtvv9+yi
+	QWhF9/HEcSytDkeQpoPROlpvsz+ly92rJLa9Nvi+9/lzZR/lru0XLVlObH+o/Vu4mOHEL9LqKf5
+	X+7MlEAryk5/D44mDL2NLvxs+bpk=
+X-Gm-Gg: ASbGncu7CQhNvgfbO07iXalVj5ArEoy1typnMeTBGYR670p0LOYb5arTlWwBuCBDsgl
+	ODmRIi8eIopkKos1D6AfxshoVOHpoUzlK8PaDJdIWlj53PSHbSg8j7tnch35ei3LweNreI0qQ
+X-Google-Smtp-Source: AGHT+IFmY1TQVEvLWSJ44CGLliUIslxwkoSHnsNknATRCm7EAtso74d0C01/m7J1p1lYFVNhIQmLcOp/vl+O02BqnY4=
+X-Received: by 2002:a05:651c:1582:b0:2fb:54d7:71b5 with SMTP id
+ 38308e7fff4ca-30254462636mr16865741fa.22.1734132176158; Fri, 13 Dec 2024
+ 15:22:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241213-rust-xarray-bindings-v13-0-8655164e624f@gmail.com>
-In-Reply-To: <20241213-rust-xarray-bindings-v13-0-8655164e624f@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 13 Dec 2024 22:31:22 +0100
-Message-ID: <CANiq72mUoDFZuJZsfEbodXtXsVoHAXRDO27gBES3=uAOGZ6kfw@mail.gmail.com>
+References: <20241213-rust-xarray-bindings-v13-0-8655164e624f@gmail.com> <CANiq72mUoDFZuJZsfEbodXtXsVoHAXRDO27gBES3=uAOGZ6kfw@mail.gmail.com>
+In-Reply-To: <CANiq72mUoDFZuJZsfEbodXtXsVoHAXRDO27gBES3=uAOGZ6kfw@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 13 Dec 2024 18:22:20 -0500
+Message-ID: <CAJ-ks9kSWw+txqFOrh4fGUfPb2zQ8rDSgUo0HLMGMUG=EThO-Q@mail.gmail.com>
 Subject: Re: [PATCH v13 0/2] rust: xarray: Add a minimal abstraction for XArray
-To: Tamir Duberstein <tamird@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -76,19 +76,23 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 13, 2024 at 9:02=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+On Fri, Dec 13, 2024 at 4:31=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Changes in v13:
-> - Replace `bool::then` with `if`. (Miguel Ojeda)
-> - Replace `match` with `let` + `if`. (Miguel Ojeda)
+> On Fri, Dec 13, 2024 at 9:02=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+> >
+> > Changes in v13:
+> > - Replace `bool::then` with `if`. (Miguel Ojeda)
+> > - Replace `match` with `let` + `if`. (Miguel Ojeda)
+>
+> Personally, I would also use the early return style in both of these,
+> like in C.
 
-Personally, I would also use the early return style in both of these,
-like in C. I think you may also omit the parenthesis in the first one.
+My personal preference is to leave it as-is as the return keyword
+isn't used anywhere in this file at the moment. I don't mind you
+changing it if/when applying, though.
 
-(No need for a new version just for this)
+> I think you may also omit the parenthesis in the first one.
 
-Thanks!
-
-Cheers,
-Miguel
+Oops, you're right.
