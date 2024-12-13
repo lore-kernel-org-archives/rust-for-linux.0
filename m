@@ -1,98 +1,417 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB331E04B6;
-	Fri, 13 Dec 2024 14:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB211E0DE5
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 14:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734099809; cv=none; b=aG8ltZGd+FJWuOWkAIiwd11rC3aGA1JM5tKMafmj9vgs4pjm11iL4TsWj86D1QuRrEoXZGrIETMB3ecu5XiH/u3hPahId27NFwKvfIn+n78IsZVUKuir+S17XKrggcg09AVDAfDXgqPBPBX09en6M47STXJy8tsqHqOD404+/W4=
+	t=1734100086; cv=none; b=jOUsv6Wuv9U1sKX36+Fh4XW+5vjtLWoRCG7jh5LkTPx8XuwmElUCGDJQeTA7A6to8jrEMxsad3ovXLuba7H90JSxcXQeuNxUiUu05wydd9ewq5ozGAuP5xF4iCkLNq60tuh8P8T8sBFCt9/sbl78AqSXJi6PEJEL27Rg0xk5Tco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734099809; c=relaxed/simple;
-	bh=8Fu+2xNetoe5kq0Vd5HTWdZxa6W/2sXw3vvL/j7EZeA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rA6ObvCBPF8Dj6NGh5metscqSAqoeJ/OhfIU+DryyuHPKsrPnu3Sc8U84vxmC/cDBk1ecPc2NM/VdSup447Zk3RuXI+jjxXISrzOrVvxEbAKGflNwAQn02VfnO+vJEfU1szuX+PGo05nsWRQAY8fB0M1t8cQr0BuAYU1Hg46zNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0LO00IQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734100086; c=relaxed/simple;
+	bh=ScH4bkyCInfcqH/0+qEtAbv/AjGhsPAQ1SUF/Cjb9YI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K5TaKpmqB1Yx4znaTZVw0L15WOMLZugcE4hyRXPEleMm3e/hUGEs+6o0zqqus4hP6GuUnWpS0IF+1R/xLOHl/4gTd2ciiHXja+HdfrsbliX5yMCyUqWcc65sZenh46PheVtQSSAMGBJA7Eo65j3SlU3ts76nyx8snA4m9SBm0Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MP9BQji9; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0LO00IQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC1EC4CED0;
-	Fri, 13 Dec 2024 14:23:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734099809;
-	bh=8Fu+2xNetoe5kq0Vd5HTWdZxa6W/2sXw3vvL/j7EZeA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F0LO00IQ92nt2/SayGrbigp//QGiEbsj6v58OLj3oBeHWYWinaf1KN+XPsogLfvdZ
-	 LHHzioO/adpphmO+vK/ENgTNK6XZtMTH4uMNrFOHvS/yad/UknOKvHf2MrAEFoD7uL
-	 9C3bJ+3EGDJkW7l6zoy8NDBbOHZqWzxDVDejv9Ew=
-Date: Fri, 13 Dec 2024 15:23:24 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Trevor Gross <tmgross@umich.edu>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
- parameter support
-Message-ID: <2024121309-lethargic-ended-5f99@gregkh>
-References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
- <4Dsa69UGULRGsMbRbwOJNp_puyfsSSFt1QTcYU9AL4azd8vbfEFFtc7YNSsGegc40AfCZqVqZETfxg4TggUlSw==@protonmail.internalid>
- <2024121324-overdue-giggly-bdb8@gregkh>
- <87frmrepo5.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MP9BQji9"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3862d16b4f5so1206473f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 06:28:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734100083; x=1734704883; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T/9jU9AnB7Y5dYh4ffQBQ6JeOp1AoI63hdNnuWCSoNA=;
+        b=MP9BQji9V4CK3GxlANQ/hB028EiQ0oRkfk2scx21ad4vNGSNW4Z1ii19Kps9kpkPSK
+         u4wYc585gI5nqFcQGn1zYiV66Fh8DUSmO5kTFRod6sxsRXcsW0/o1Q2FrBdJP3eC4iYR
+         kjXUC/wC8QIxy7PvMZAQPcfVwAt8CG66Mc86VCawZT6FW0UQdZ8BtFgJbzCjxXW4Kz/r
+         2WL0iEd6+3aXyyrQptbuVsLH7r6zweIHt7fdBzYQetx/3oQLUM1TUp5pugmkAndHIn0K
+         AybvqaG8nG6/hAKbO6dtOkElMRqmafpyp71HaS3XbmsnPqhc084jYxHFhrcLtBdzPocU
+         4mBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734100083; x=1734704883;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T/9jU9AnB7Y5dYh4ffQBQ6JeOp1AoI63hdNnuWCSoNA=;
+        b=i92tbcEr8UNirAy2LqDB0sBpIy0BUaJlAw0HIXusiBAihDrsQIqqANvQWV10njYXXV
+         kkS52JGobWrf3GeL+YYiHBfY6UsCzaChzUsR8tvYveMCUm7JRrmWIpk03e9+lG/MsXKL
+         KBN1zx1jyZG1FX2qFyS8hSxEzJUnzoDG3RnCFtQr5K+z+YLdOgXNC5RCUl1gC1Z0CfqI
+         RqZJRShPlRIoQFQmJHLyCmxtKCRGqH2gn6wfxCQMvKnCJbWvhg6jjVpYY+eRcF4ZUp0H
+         PpfNNoR7rAiM9JEkd1OUnu/3EzLlLX1DytKHEPaA/9K7sHu6NnMud/zIKLooeOcOk2V3
+         ogOg==
+X-Gm-Message-State: AOJu0YxV+25NV3aeEt4THtLy93EkisURF+zPv8HEFVPl/5OEEh8N5uPe
+	feH6pSaZiH44csjGADC4lE7t54BiSt3Exayv6+gKc4LmPmZGl4hxGKlEmEGNaA+V0/7FrYdt3X9
+	x/axxcfprl1PFAitzjGJH7tHAfPgLeVWL3242UZffa3OIcCiIYi6ws0g=
+X-Gm-Gg: ASbGnctMi4dikLvl4Szww8+8rr/c6CJrcDExC5RZulUBwJQYA++PxDn7vr8SOwGtnq1
+	SMM/9Cr3UcIhJb8+TZFE7RUiwOIRcjqbZarDq48M=
+X-Google-Smtp-Source: AGHT+IHpuwhh+BOjtWh9TTURUYd+INUTVwzHOO8kzcIpj83VSOLQU675nZWAUPvOOhDAxG33KNAJUML62XldUOxxc5Q=
+X-Received: by 2002:a05:6000:785:b0:386:3327:4f21 with SMTP id
+ ffacd0b85a97d-388c3a8f4a9mr2131234f8f.27.1734100081554; Fri, 13 Dec 2024
+ 06:28:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87frmrepo5.fsf@kernel.org>
+References: <20241210221603.3174929-1-abdiel.janulgue@gmail.com> <20241210221603.3174929-3-abdiel.janulgue@gmail.com>
+In-Reply-To: <20241210221603.3174929-3-abdiel.janulgue@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 13 Dec 2024 15:27:48 +0100
+Message-ID: <CAH5fLgjO-GbB85dDdxLSSWY74cUn8-Lt-yaRGkUVxb-E8YaO2Q@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] rust: add dma coherent allocator abstraction.
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Valentin Obst <kernel@valentinobst.de>, open list <linux-kernel@vger.kernel.org>, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>, Daniel Almeida <daniel.almeida@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 13, 2024 at 01:24:42PM +0100, Andreas Hindborg wrote:
-> "Greg KH" <gregkh@linuxfoundation.org> writes:
-> 
-> > On Fri, Dec 13, 2024 at 12:30:45PM +0100, Andreas Hindborg wrote:
-> >> This series extends the `module!` macro with support module parameters.
-> >
-> > Eeek, why?
-> >
-> > Module parameters are from the 1990's, back when we had no idea what we
-> > were doing and thought that a simple "one variable for a driver that
-> > controls multiple devices" was somehow a valid solution :)
-> >
-> > Please only really add module parameters if you can prove that you
-> > actually need a module parameter.
-> 
-> I really need module parameters to make rust null block feature
-> compatible with C null block.
+On Tue, Dec 10, 2024 at 11:16=E2=80=AFPM Abdiel Janulgue
+<abdiel.janulgue@gmail.com> wrote:
+>
+> Add a simple dma coherent allocator rust abstraction. Based on
+> Andreas Hindborg's dma abstractions from the rnvme driver, which
+> was also based on earlier work by Wedson Almeida Filho.
+>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/dma.rs              | 223 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  3 files changed, 225 insertions(+)
+>  create mode 100644 rust/kernel/dma.rs
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 5c4dfe22f41a..49bf713b9bb6 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -11,6 +11,7 @@
+>  #include <linux/blk_types.h>
+>  #include <linux/blkdev.h>
+>  #include <linux/cred.h>
+> +#include <linux/dma-mapping.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/file.h>
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> new file mode 100644
+> index 000000000000..29ae744d6f2b
+> --- /dev/null
+> +++ b/rust/kernel/dma.rs
+> @@ -0,0 +1,223 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Direct memory access (DMA).
+> +//!
+> +//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-=
+mapping.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    build_assert,
+> +    device::Device,
+> +    error::code::*,
+> +    error::Result,
+> +    types::ARef,
+> +    transmute::{AsBytes, FromBytes},
+> +};
+> +
+> +/// Possible attributes associated with a DMA mapping.
+> +///
+> +/// They can be combined with the operators `|`, `&`, and `!`.
+> +///
+> +/// Values can be used from the [`attrs`] module.
+> +#[derive(Clone, Copy, PartialEq)]
+> +pub struct Attribs(u32);
+> +
+> +impl Attribs {
+> +    /// Get the raw representation of this attribute.
+> +    pub(crate) fn as_raw(self) -> u64 {
+> +        self.0.into()
+> +    }
+> +
+> +    /// Check whether `flags` is contained in `self`.
+> +    pub fn contains(self, flags: Attribs) -> bool {
+> +        (self & flags) =3D=3D flags
+> +    }
+> +}
+> +
+> +impl core::ops::BitOr for Attribs {
+> +    type Output =3D Self;
+> +    fn bitor(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 | rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::BitAnd for Attribs {
+> +    type Output =3D Self;
+> +    fn bitand(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 & rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::Not for Attribs {
+> +    type Output =3D Self;
+> +    fn not(self) -> Self::Output {
+> +        Self(!self.0)
+> +    }
+> +}
+> +
+> +/// DMA mapping attrributes.
+> +pub mod attrs {
+> +    use super::Attribs;
+> +
+> +    /// Specifies that reads and writes to the mapping may be weakly ord=
+ered, that is that reads
+> +    /// and writes may pass each other.
+> +    pub const DMA_ATTR_WEAK_ORDERING: Attribs =3D Attribs(bindings::DMA_=
+ATTR_WEAK_ORDERING);
+> +
+> +    /// Specifies that writes to the mapping may be buffered to improve =
+performance.
+> +    pub const DMA_ATTR_WRITE_COMBINE: Attribs =3D Attribs(bindings::DMA_=
+ATTR_WRITE_COMBINE);
+> +
+> +    /// Lets the platform to avoid creating a kernel virtual mapping for=
+ the allocated buffer.
+> +    pub const DMA_ATTR_NO_KERNEL_MAPPING: Attribs =3D Attribs(bindings::=
+DMA_ATTR_NO_KERNEL_MAPPING);
+> +
+> +    /// Allows platform code to skip synchronization of the CPU cache fo=
+r the given buffer assuming
+> +    /// that it has been already transferred to 'device' domain.
+> +    pub const DMA_ATTR_SKIP_CPU_SYNC: Attribs =3D Attribs(bindings::DMA_=
+ATTR_SKIP_CPU_SYNC);
+> +
+> +    /// Forces contiguous allocation of the buffer in physical memory.
+> +    pub const DMA_ATTR_FORCE_CONTIGUOUS: Attribs =3D Attribs(bindings::D=
+MA_ATTR_FORCE_CONTIGUOUS);
+> +
+> +    /// This is a hint to the DMA-mapping subsystem that it's probably n=
+ot worth the time to try
+> +    /// to allocate memory to in a way that gives better TLB efficiency.
+> +    pub const DMA_ATTR_ALLOC_SINGLE_PAGES: Attribs =3D Attribs(bindings:=
+:DMA_ATTR_ALLOC_SINGLE_PAGES);
+> +
+> +    /// This tells the DMA-mapping subsystem to suppress allocation fail=
+ure reports (similarly to
+> +    /// __GFP_NOWARN).
+> +    pub const DMA_ATTR_NO_WARN: Attribs =3D Attribs(bindings::DMA_ATTR_N=
+O_WARN);
+> +
+> +    /// Used to indicate that the buffer is fully accessible at an eleva=
+ted privilege level (and
+> +    /// ideally inaccessible or at least read-only at lesser-privileged =
+levels).
+> +    pub const DMA_ATTR_PRIVILEGED: Attribs =3D Attribs(bindings::DMA_ATT=
+R_PRIVILEGED);
+> +}
+> +
+> +/// An abstraction of the `dma_alloc_coherent` API.
+> +///
+> +/// This is an abstraction around the `dma_alloc_coherent` API which is =
+used to allocate and map
+> +/// large consistent DMA regions.
+> +///
+> +/// A [`CoherentAllocation`] instance contains a pointer to the allocate=
+d region (in the
+> +/// processor's virtual address space) and the device address which can =
+be given to the device
+> +/// as the DMA address base of the region. The region is released once [=
+`CoherentAllocation`]
+> +/// is dropped.
+> +///
+> +/// # Invariants
+> +///
+> +/// For the lifetime of an instance of [`CoherentAllocation`], the cpu a=
+ddress is a valid pointer
+> +/// to an allocated region of consistent memory and we hold a reference =
+to the device.
+> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+> +    dev: ARef<Device>,
+> +    dma_handle: bindings::dma_addr_t,
+> +    count: usize,
+> +    cpu_addr: *mut T,
+> +    dma_attrs: Attribs,
+> +}
+> +
+> +impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
+> +    /// Allocates a region of `size_of::<T> * count` of consistent memor=
+y.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::device::Device;
+> +    /// use kernel::dma::{attrs::*, CoherentAllocation};
+> +    ///
+> +    /// # fn test(dev: &Device) -> Result {
+> +    /// let c: CoherentAllocation<u64> =3D CoherentAllocation::alloc_att=
+rs(dev, 4, GFP_KERNEL,
+> +    ///                                                                 =
+ DMA_ATTR_NO_WARN)?;
+> +    /// # Ok::<(), Error>(()) }
+> +    /// ```
+> +    pub fn alloc_attrs(
+> +        dev: &Device,
+> +        count: usize,
+> +        gfp_flags: kernel::alloc::Flags,
+> +        dma_attrs: Attribs,
+> +    ) -> Result<CoherentAllocation<T>> {
+> +        build_assert!(core::mem::size_of::<T>() > 0,
+> +                      "It doesn't make sense for the allocated type to b=
+e a ZST");
+> +
+> +        let size =3D count.checked_mul(core::mem::size_of::<T>()).ok_or(=
+EOVERFLOW)?;
+> +        let mut dma_handle =3D 0;
+> +        // SAFETY: device pointer is guaranteed as valid by invariant on=
+ `Device`.
+> +        // We ensure that we catch the failure on this function and thro=
+w an ENOMEM
+> +        let ret =3D unsafe {
+> +            bindings::dma_alloc_attrs(
+> +                dev.as_raw(),
+> +                size,
+> +                &mut dma_handle, gfp_flags.as_raw(),
+> +                dma_attrs.as_raw(),
+> +            )
+> +        };
+> +        if ret.is_null() {
+> +            return Err(ENOMEM)
+> +        }
+> +        // INVARIANT: We just successfully allocated a coherent region w=
+hich is accessible for
+> +        // `count` elements, hence the cpu address is valid. We also hol=
+d a refcounted reference
+> +        // to the device.
+> +        Ok(Self {
+> +            dev: dev.into(),
+> +            dma_handle,
+> +            count,
+> +            cpu_addr: ret as *mut T,
+> +            dma_attrs,
+> +        })
+> +    }
+> +
+> +    /// Performs the same functionality as `alloc_attrs`, except the `dm=
+a_attrs` is 0 by default.
+> +    pub fn alloc_coherent(dev: &Device,
+> +                          count: usize,
+> +                          gfp_flags: kernel::alloc::Flags) -> Result<Coh=
+erentAllocation<T>> {
+> +        CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attribs(0=
+))
+> +    }
 
-Is that a requirement?  That wasn't documented here :(
+Please run rustfmt.
 
-You should have put the user of these apis in the series as you have
-that code already in the tree, right?
+> +    /// Returns the base address to the allocated region and the dma han=
+dle. The caller takes
+> +    /// ownership of the returned resources.
+> +    pub fn into_parts(self) -> (usize, bindings::dma_addr_t) {
+> +        let ret =3D (self.cpu_addr as _, self.dma_handle);
+> +        core::mem::forget(self);
+> +        ret
+> +    }
 
-> Let's not block interfacing parts of the kernel because we decided that
-> the way we (well not me, I was not around) did things in the 80's was
-> less than stellar. I mean, we would get nowhere.
+Not only does this skip the destructor of `dma_free_attrs`. It also
+skips the destructor of fields including the `dev` field. Did you
+intend to leave the refcount on `struct device` without decrementing
+it?
 
-On the contrary, if we don't learn from our past mistakes, we will
-constantly keep making them and prevent others from "doing the right
-thing" by default.
+> +    /// Returns the base address to the allocated region in the CPU's vi=
+rtual address space.
+> +    pub fn start_ptr(&self) -> *const T {
+> +        self.cpu_addr as _
 
-I would strongly prefer that any driver not have any module parameters
-at all, as drivers don't work properly that way (again, they need to
-handle multiple devices, which does not work for a module parameter.)
+This conversion happens without needing a cast.
 
-That's why we created sysfs, configfs, and lots of other things, to
-learn from our past mistakes.
+> +    }
+> +
+> +    /// Returns the base address to the allocated region in the CPU's vi=
+rtual address space as
+> +    /// a mutable pointer.
+> +    pub fn start_ptr_mut(&mut self) -> *mut T {
+> +        self.cpu_addr
+> +    }
+> +
+> +    /// Returns a DMA handle which may given to the device as the DMA ad=
+dress base of
+> +    /// the region.
+> +    pub fn dma_handle(&self) -> bindings::dma_addr_t {
+> +        self.dma_handle
+> +    }
+> +
+> +    /// Returns the CPU-addressable region as a slice.
+> +    pub fn cpu_buf(&self) -> &[T]
+> +    {
+> +        // SAFETY: The pointer is valid due to type invariant on `Cohere=
+ntAllocation` and
+> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) =
+}
 
-thanks,
+Immutable slices require that the data does not change while the
+reference is live. Is that the case? If so, your safety comment should
+explain that.
 
-greg k-h
+> +    }
+> +
+> +    /// Performs the same functionality as `cpu_buf`, except that a muta=
+ble slice is returned.
+> +    pub fn cpu_buf_mut(&mut self) -> &mut [T]
+> +    {
+> +        // SAFETY: The pointer is valid due to type invariant on `Cohere=
+ntAllocation` and
+> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+> +        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.cou=
+nt) }
+
+Mutable slices require that the data is not written to *or read* by
+anybody else while the reference is live. Is that the case? If so,
+your safety comment should explain that.
+
+> +    }
+> +}
+> +
+> +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
+> +    fn drop(&mut self) {
+> +        let size =3D self.count * core::mem::size_of::<T>();
+> +        // SAFETY: the device, cpu address, and the dma handle is valid =
+due to the
+> +        // type invariants on `CoherentAllocation`.
+> +        unsafe { bindings::dma_free_attrs(self.dev.as_raw(), size,
+> +                                          self.cpu_addr as _,
+> +                                          self.dma_handle,
+> +                                          self.dma_attrs.as_raw(),) }
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index e1065a7551a3..6e90ebf5a130 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -35,6 +35,7 @@
+>  mod build_assert;
+>  pub mod cred;
+>  pub mod device;
+> +pub mod dma;
+>  pub mod error;
+>  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+>  pub mod firmware;
+> --
+> 2.43.0
+>
