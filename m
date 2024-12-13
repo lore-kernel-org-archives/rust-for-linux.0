@@ -1,57 +1,57 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A581A4F2F
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 08:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF231A8F81
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 08:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734077450; cv=none; b=dG4YpeS3enHU9RRLJqVbTKSGwJa+ANx0w/HUDYLpeOYM1jvYwU4VDF7pEkOlzi6rcaQMOakZ+KDXcrdidorROKhGXHBxarAK07RQ591dgcBDvTP0Kqto2U6M4+ZVEO8+HDQEED3yMry/WQb7y5F6e4DdakZuuFX+MwNyVs8YMOI=
+	t=1734077454; cv=none; b=gnB5q+02C4AWNUYfTV7jDYS6NfnXO5xz9gDf3cK7ldYNBTjBWWdW64whP/BB/3wogBxIR2FkHuG0ii7+BESYvT+uWoFB/FfF938CSIFyzo3SCTPCGUho++9STDTW7OKy3eYGUTOH5SXQ9y5n1oRfE/k8GE+CpJkAhT3fWT2Vthg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734077450; c=relaxed/simple;
-	bh=z3WxWku3En1g2Q9vLxqxNomd35j6zMJzJtZtnxG9FvY=;
+	s=arc-20240116; t=1734077454; c=relaxed/simple;
+	bh=7/nW0ckfgKpJRW919MG005R3p7WpMPh+JsAFJlKqdJc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a+1pr+Tv6lihgN69YUomDlqFqM6yJovWBwNIJOeJENBchw5KthpiKnE3qqr86xV8PMVq33WPhZ3FJWCCvzMwPoT3IPb0tUah6uRr5akX2+k3IJT7kjTI3gQLLtGLYR/pVPUFNnnLGaQgjC4cJro5sMpi8qqcKpyM7r4R5/A3eQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MZs+az0W; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=EQhD/U0Vn1/em822tbE6wK5Ri9p5AF7+fvkYPS9udmxc89XN5zzaGdqB6rA3dBSlUzsDMRC51jGwOuzQM1XKLqK3M4DWhuWUPMRphnmgQcmie9zGcw8UR8o864/y+MMISE9RodcTWr1VeuA/sGB9osHJdc0zkbpOr44eS0AUBTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RfkoC/Ns; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MZs+az0W"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-728e4e30163so1225446b3a.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 00:10:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RfkoC/Ns"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7ee3c2a2188so1160597a12.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 00:10:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734077447; x=1734682247; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1734077452; x=1734682252; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EutDnAY7mwrSXgsBtbyoYyBKsUYR7YsmiVo+T3wjJHs=;
-        b=MZs+az0WHesd9OtvK8Q/QLYoBPGL1o/02cnPKIC9DO6qvvsqqwooei40fTyoCL8Utk
-         0pMrOH71PU1FylBDJBfjWAW29tSf69S0g9PUkQMPsrRXrerrSRlDu/6zzXV1vqd1VLfc
-         DJU1TacFNGXkgFJMre1W/qX3QRKBvEl6PzNdMk4cykzkYSEvA4yFbxEXXgVBIy65E+r8
-         j9aSNLI/l+VFQe+omxab56Bqi7Jr12YvcZMTaXLcx8hCcLvgEVhfAGv6VF6wX+ZZ5kUb
-         3hfson0LjsSrWw/fa+hW8devxXouyC/qfNcmV76GDXjy/Jvt9i8Po/j/v2NPgofbxR2n
-         fwHA==
+        bh=Z8EsYYrfTRnHJ854mShX5sHUQzRetRLmknKNMm7CO4o=;
+        b=RfkoC/NsOwvjgKfgEWsXHi/pqhMK7TNrnoquBYjNjVq/z6i105w9p9/a7czNenw6x1
+         0/yvbWDB3ohEIAis+EGVC0f+8GEyVOswHWxZDrfdGARNPeUA+FhIBMepsivUiAy/JDKS
+         ZUx48AfJB39IcbREXlUgQYyCUQre5unvKlgXMZKTySHIYtyfLUNd5D34/jSbU/6Vi0nb
+         StRgAAaaMgW9WyIu2IiRCxSmFt0JfHIQc0/K7vU4c77Ls3ZCn5bscM/1/221/V7eUcVA
+         Yx4sBVMdZiKDet0ees3kcy5T0N9QBfsdAsdvF0w/LgZOiL0Hybcmc6hBJRh/Gi4nLXVz
+         MYRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734077447; x=1734682247;
+        d=1e100.net; s=20230601; t=1734077452; x=1734682252;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=EutDnAY7mwrSXgsBtbyoYyBKsUYR7YsmiVo+T3wjJHs=;
-        b=ONJc5JV9dSAmZezvAH2TDCGd3imYnI7F9En/81JOB2HOUYUuGKSKvEqeE/Pu4QuoeU
-         mWAz8gpV6xi8Ztw0laLosBUzqeHwJ6tmgxWhqSCqBeIelWF4ClNSj32IJBNly0nQMdW4
-         Yw4ZxnO7DqKUYMp0XWNis8VWCxCPp+L3Va2Cvds1sfyM+DvBF0AwdsOgawHnHkEBhovr
-         CGxD7hK/WaQKPgT5qeznMB2UKac2QXSKECDPl2wjJRRN5bWtwHbGCT8kD1WGGg24VBb0
-         MN1DyWY2p81A+dz9Glo8PHVM+lv4x7OQY3Jme1XwhRW4jTaeYROuY5+gEfaW43CzOSex
-         Eq2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVPtKpJsJ9JuTS37136b+Q2S0mAQBCGPIv6hES+OBpq1yQHv0bLPFZi3dxHwXI+zm/hnS+0sOUOkDloMvIhLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/dPqLilpNDCcUJ6qw7pbXIFw030ofODz5+diCefoGEL2vSPR+
-	P/VJ442/ZOpNZJG4m3fGeFgUrl062fGX7VtJUUlpGzYVUkpPzdMPpvlSAoq28Z7ObVceBZ7wnW8
-	h/mouekDLsg==
-X-Google-Smtp-Source: AGHT+IGDiY8+0N79pRvt65uYS7KXWtzJASUKFTVyKWuq0+4SJtuOiujR82grnuUCLr/wzeFvwfC2q2i8AfacvQ==
-X-Received: from pgbcz4.prod.google.com ([2002:a05:6a02:2304:b0:7fd:3f0e:ce05])
+        bh=Z8EsYYrfTRnHJ854mShX5sHUQzRetRLmknKNMm7CO4o=;
+        b=CX8li/nTvhgAjPaRr8zPxUvIzOQqNmLfQ1wHotfnxo3KKd0ZzJNBWADdtLM9HvVTQ4
+         00qqFaYs7fBr5NfjzCqV7s16KS4kP9OwNtQglHyo6CM1ONeMBaFOsJCxI7w7cGtgvreY
+         yNzCX/o2t2bG5wGUpccvpoYxMh8YHTI9t84cQCMdoYH5pzqkABbjjPl6q4G2UMEDlnWb
+         V33Ukvj8xuPmJcuaWe/UVQXL01Sd4oZ4YYbEsBfqBBRdCyKs81S0eaKJ6W01V8c30MJv
+         v0zaVn/OCdoNRF6EqrVfnP1tOWSZq2mxPIblMN9PBdrKiM1wsoIGfv8kWiMsk0ne4rbV
+         m75Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU/ptCxeLZVToJigrU2djh4YTYN4VDrjFRdO1dNVZWE6dUNR1wxJt3l2LAi8QjmrDeU6iK21ze61LlfpZifOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx8M3b3WtccOT9tVZOch30GtUXKv/jwW+y79mYL42pPj9XagQp
+	vm4bXBzUhLhc/W6d16bNIIHg4HWaGyS6n7087FsOQtT+IsH3l4dD8ERUPoxNi5eVzWg+Um2nUB9
+	utS1jbWBFwA==
+X-Google-Smtp-Source: AGHT+IE4RG7hSV/cz72bXiXtWdIby/pWoMf5BmapVhhbDHIU0hrQVgg+nN9QGWLHgEq4UDHHiuUYijsgmssyvw==
+X-Received: from pfud22.prod.google.com ([2002:a05:6a00:10d6:b0:725:eb13:8be8])
  (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6da5:b0:1e1:ae68:d900 with SMTP id adf61e73a8af0-1e1dfd61f20mr2903081637.22.1734077447635;
- Fri, 13 Dec 2024 00:10:47 -0800 (PST)
-Date: Fri, 13 Dec 2024 16:10:30 +0800
+ 2002:a05:6a21:6da1:b0:1e1:a48f:1246 with SMTP id adf61e73a8af0-1e1dfe6170dmr2191944637.45.1734077452231;
+ Fri, 13 Dec 2024 00:10:52 -0800 (PST)
+Date: Fri, 13 Dec 2024 16:10:31 +0800
 In-Reply-To: <20241213081035.2069066-1-davidgow@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241213081035.2069066-1-davidgow@google.com>
 X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20241213081035.2069066-2-davidgow@google.com>
-Subject: [PATCH v5 1/3] rust: kunit: add KUnit case and suite macros
+Message-ID: <20241213081035.2069066-3-davidgow@google.com>
+Subject: [PATCH v5 2/3] rust: macros: add macro to easily run KUnit tests
 From: David Gow <davidgow@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, 
 	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
@@ -78,211 +78,358 @@ Content-Transfer-Encoding: quoted-printable
 
 From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
 
-Add a couple of Rust const functions and macros to allow to develop
-KUnit tests without relying on generated C code:
+Add a new procedural macro (`#[kunit_tests(kunit_test_suit_name)]`) to
+run KUnit tests using a user-space like syntax.
 
- - The `kunit_unsafe_test_suite!` Rust macro is similar to the
-   `kunit_test_suite` C macro. It requires a NULL-terminated array of
-   test cases (see below).
- - The `kunit_case` Rust function is similar to the `KUNIT_CASE` C macro.
-   It generates as case from the name and function.
- - The `kunit_case_null` Rust function generates a NULL test case, which
-   is to be used as delimiter in `kunit_test_suite!`.
+The macro, that should be used on modules, transforms every `#[test]`
+in a `kunit_case!` and adds a `kunit_unsafe_test_suite!` registering
+all of them.
 
-While these functions and macros can be used on their own, a future
-patch will introduce=C2=A0another macro to create KUnit tests using a
-user-space like syntax.
+The only difference with user-space tests is that instead of using
+`#[cfg(test)]`, `#[kunit_tests(kunit_test_suit_name)]` is used.
 
+Note that `#[cfg(CONFIG_KUNIT)]` is added so the test module is not
+compiled when `CONFIG_KUNIT` is set to `n`.
+
+Reviewed-by: David Gow <davidgow@google.com>
 Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
-Co-developed-by: Matt Gilbride <mattgilbride@google.com>
-Signed-off-by: Matt Gilbride <mattgilbride@google.com>
-Co-developed-by: David Gow <davidgow@google.com>
+Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: David Gow <davidgow@google.com>
 ---
-
 Changes since v4:
-https://lore.kernel.org/linux-kselftest/20241101064505.3820737-2-davidgow@g=
+https://lore.kernel.org/linux-kselftest/20241101064505.3820737-3-davidgow@g=
 oogle.com/
 - Rebased against 6.13-rc1
-- Allowed an unused_unsafe warning after the behaviour of addr_of_mut!()
-  changed in Rust 1.82. (Thanks Boqun, Miguel)
-- Fix a couple of minor rustfmt issues which were triggering checkpatch
-  warnings.
+- "Expect" that the sample assert_eq!(1+1, 2) produces a clippy warning
+  due to a redundant assertion. (Thanks Boqun, Miguel)
 
 Changes since v3:
-https://lore.kernel.org/linux-kselftest/20241030045719.3085147-4-davidgow@g=
+https://lore.kernel.org/linux-kselftest/20241030045719.3085147-6-davidgow@g=
 oogle.com/
-- The kunit_unsafe_test_suite!() macro now panic!s if the suite name is
-  too long, triggering a compile error. (Thanks, Alice!)
+- The #[kunit_tests()] macro now preserves span information, so
+  errors can be better reported. (Thanks, Boqun!)
+- The example test has been replaced to no longer use assert_eq!() with
+  a constant bool argument (which triggered a clippy warning now we
+  have the span info). It now checks 1 + 1 =3D=3D 2, to match the C example=
+.
+  - (The in_kunit_test() test in the next patch uses assert!() to check
+    a bool, so having something different here seemed to make a better
+    example.)
 
 Changes since v2:
-https://lore.kernel.org/linux-kselftest/20241029092422.2884505-2-davidgow@g=
+https://lore.kernel.org/linux-kselftest/20241029092422.2884505-3-davidgow@g=
 oogle.com/
-- The kunit_unsafe_test_suite!() macro will truncate the name of the
-  suite if it is too long. (Thanks Alice!)
-- We no longer needlessly use UnsafeCell<> in
-  kunit_unsafe_test_suite!(). (Thanks Alice!)
+- Include missing rust/macros/kunit.rs file from v2. (Thanks Boqun!)
+- The proc macro now emits an error if the suite name is too long.
 
 Changes since v1:
-https://lore.kernel.org/lkml/20230720-rustbind-v1-1-c80db349e3b5@google.com=
+https://lore.kernel.org/lkml/20230720-rustbind-v1-2-c80db349e3b5@google.com=
 /
-- Rebase on top of rust-next
-- As a result, KUnit attributes are new set. These are hardcoded to the
-  defaults of "normal" speed and no module name.
-- Split the kunit_case!() macro into two const functions, kunit_case()
-  and kunit_case_null() (for the NULL terminator).
+- Rebased on top of rust-next
+- Make use of the new const functions, rather than the kunit_case!()
+  macro.
 
 ---
- rust/kernel/kunit.rs | 118 +++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs   |   1 +
- 2 files changed, 119 insertions(+)
+ MAINTAINERS          |   1 +
+ rust/kernel/kunit.rs |  16 ++++-
+ rust/macros/kunit.rs | 168 +++++++++++++++++++++++++++++++++++++++++++
+ rust/macros/lib.rs   |  29 ++++++++
+ 4 files changed, 213 insertions(+), 1 deletion(-)
+ create mode 100644 rust/macros/kunit.rs
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e6e71b05710b..cbe5a99eefea 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12562,6 +12562,7 @@ F:	Documentation/dev-tools/kunit/
+ F:	include/kunit/
+ F:	lib/kunit/
+ F:	rust/kernel/kunit.rs
++F:	rust/macros/kunit.rs
+ F:	scripts/rustdoc_test_*
+ F:	tools/testing/kunit/
+=20
 diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 824da0e9738a..5003282cb4c4 100644
+index 5003282cb4c4..a92f12da77d5 100644
 --- a/rust/kernel/kunit.rs
 +++ b/rust/kernel/kunit.rs
-@@ -161,3 +161,121 @@ macro_rules! kunit_assert_eq {
-         $crate::kunit_assert!($name, $file, $diff, $left =3D=3D $right);
-     }};
+@@ -40,6 +40,8 @@ pub fn info(args: fmt::Arguments<'_>) {
+     }
+ }
+=20
++use macros::kunit_tests;
++
+ /// Asserts that a boolean expression is `true` at runtime.
+ ///
+ /// Public but hidden since it should only be used from generated tests.
+@@ -272,10 +274,22 @@ macro_rules! kunit_unsafe_test_suite {
+                 };
+=20
+             #[used]
++            #[allow(unused_unsafe)]
+             #[link_section =3D ".kunit_test_suites"]
+             static mut KUNIT_TEST_SUITE_ENTRY: *const $crate::bindings::ku=
+nit_suite =3D
+                 // SAFETY: `KUNIT_TEST_SUITE` is static.
+-                unsafe { core::ptr::addr_of_mut!(KUNIT_TEST_SUITE) };
++                unsafe {
++                    core::ptr::addr_of_mut!(KUNIT_TEST_SUITE)
++                };
+         };
+     };
  }
 +
-+/// Represents an individual test case.
-+///
-+/// The test case should have the signature
-+/// `unsafe extern "C" fn test_case(test: *mut crate::bindings::kunit)`.
-+///
-+/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list of=
- test cases.
-+/// Use `kunit_case_null` to generate such a delimeter.
-+const fn kunit_case(
-+    name: &'static kernel::str::CStr,
-+    run_case: unsafe extern "C" fn(*mut kernel::bindings::kunit),
-+) -> kernel::bindings::kunit_case {
-+    kernel::bindings::kunit_case {
-+        run_case: Some(run_case),
-+        name: name.as_char_ptr(),
-+        attr: kernel::bindings::kunit_attributes {
-+            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
-+        },
-+        generate_params: None,
-+        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
-+        module_name: core::ptr::null_mut(),
-+        log: core::ptr::null_mut(),
++#[kunit_tests(rust_kernel_kunit)]
++mod tests {
++    #[test]
++    fn rust_test_kunit_example_test() {
++        #![expect(clippy::eq_op)]
++        assert_eq!(1 + 1, 2);
 +    }
 +}
+diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+new file mode 100644
+index 000000000000..c421ff65f7f9
+--- /dev/null
++++ b/rust/macros/kunit.rs
+@@ -0,0 +1,168 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+/// Represents the NULL test case delimiter.
-+///
-+/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list of=
- test cases. This
-+/// function retuns such a delimiter.
-+const fn kunit_case_null() -> kernel::bindings::kunit_case {
-+    kernel::bindings::kunit_case {
-+        run_case: None,
-+        name: core::ptr::null_mut(),
-+        generate_params: None,
-+        attr: kernel::bindings::kunit_attributes {
-+            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
-+        },
-+        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
-+        module_name: core::ptr::null_mut(),
-+        log: core::ptr::null_mut(),
++//! Procedural macro to run KUnit tests using a user-space like syntax.
++//!
++//! Copyright (c) 2023 Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
++
++use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
++use std::fmt::Write;
++
++pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStre=
+am {
++    if attr.to_string().is_empty() {
++        panic!("Missing test name in #[kunit_tests(test_name)] macro")
 +    }
-+}
 +
-+/// Registers a KUnit test suite.
++    if attr.to_string().as_bytes().len() > 255 {
++        panic!("The test suite name `{}` exceeds the maximum length of 255=
+ bytes.", attr)
++    }
++
++    let mut tokens: Vec<_> =3D ts.into_iter().collect();
++
++    // Scan for the "mod" keyword.
++    tokens
++        .iter()
++        .find_map(|token| match token {
++            TokenTree::Ident(ident) =3D> match ident.to_string().as_str() =
+{
++                "mod" =3D> Some(true),
++                _ =3D> None,
++            },
++            _ =3D> None,
++        })
++        .expect("#[kunit_tests(test_name)] attribute should only be applie=
+d to modules");
++
++    // Retrieve the main body. The main body should be the last token tree=
+.
++    let body =3D match tokens.pop() {
++        Some(TokenTree::Group(group)) if group.delimiter() =3D=3D Delimite=
+r::Brace =3D> group,
++        _ =3D> panic!("cannot locate main body of module"),
++    };
++
++    // Get the functions set as tests. Search for `[test]` -> `fn`.
++    let mut body_it =3D body.stream().into_iter();
++    let mut tests =3D Vec::new();
++    while let Some(token) =3D body_it.next() {
++        match token {
++            TokenTree::Group(ident) if ident.to_string() =3D=3D "[test]" =
+=3D> match body_it.next() {
++                Some(TokenTree::Ident(ident)) if ident.to_string() =3D=3D =
+"fn" =3D> {
++                    let test_name =3D match body_it.next() {
++                        Some(TokenTree::Ident(ident)) =3D> ident.to_string=
+(),
++                        _ =3D> continue,
++                    };
++                    tests.push(test_name);
++                }
++                _ =3D> continue,
++            },
++            _ =3D> (),
++        }
++    }
++
++    // Add `#[cfg(CONFIG_KUNIT)]` before the module declaration.
++    let config_kunit =3D "#[cfg(CONFIG_KUNIT)]".to_owned().parse().unwrap(=
+);
++    tokens.insert(
++        0,
++        TokenTree::Group(Group::new(Delimiter::None, config_kunit)),
++    );
++
++    // Generate the test KUnit test suite and a test case for each `#[test=
+]`.
++    // The code generated for the following test module:
++    //
++    // ```
++    // #[kunit_tests(kunit_test_suit_name)]
++    // mod tests {
++    //     #[test]
++    //     fn foo() {
++    //         assert_eq!(1, 1);
++    //     }
++    //
++    //     #[test]
++    //     fn bar() {
++    //         assert_eq!(2, 2);
++    //     }
++    // ```
++    //
++    // Looks like:
++    //
++    // ```
++    // unsafe extern "C" fn kunit_rust_wrapper_foo(_test: *mut kernel::bin=
+dings::kunit) {
++    //     foo();
++    // }
++    // static mut KUNIT_CASE_FOO: kernel::bindings::kunit_case =3D
++    //     kernel::kunit::kunit_case(foo, kunit_rust_wrapper_foo);
++    //
++    // unsafe extern "C" fn kunit_rust_wrapper_bar(_test: * mut kernel::bi=
+ndings::kunit) {
++    //     bar();
++    // }
++    // static mut KUNIT_CASE_BAR: kernel::bindings::kunit_case =3D
++    //     kernel::kunit::kunit_case(bar, kunit_rust_wrapper_bar);
++    //
++    // static mut KUNIT_CASE_NULL: kernel::bindings::kunit_case =3D kernel=
+::kunit::kunit_case_null();
++    //
++    // static mut TEST_CASES : &mut[kernel::bindings::kunit_case] =3D unsa=
+fe {
++    //     &mut [KUNIT_CASE_FOO, KUNIT_CASE_BAR, KUNIT_CASE_NULL]
++    // };
++    //
++    // kernel::kunit_unsafe_test_suite!(kunit_test_suit_name, TEST_CASES);
++    // ```
++    let mut kunit_macros =3D "".to_owned();
++    let mut test_cases =3D "".to_owned();
++    for test in tests {
++        let kunit_wrapper_fn_name =3D format!("kunit_rust_wrapper_{}", tes=
+t);
++        let kunit_case_name =3D format!("KUNIT_CASE_{}", test.to_uppercase=
+());
++        let kunit_wrapper =3D format!(
++            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit=
+) {{ {}(); }}",
++            kunit_wrapper_fn_name, test
++        );
++        let kunit_case =3D format!(
++            "static mut {}: kernel::bindings::kunit_case =3D kernel::kunit=
+::kunit_case(kernel::c_str!(\"{}\"), {});",
++            kunit_case_name, test, kunit_wrapper_fn_name
++        );
++        writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
++        writeln!(kunit_macros, "{kunit_case}").unwrap();
++        writeln!(test_cases, "{kunit_case_name},").unwrap();
++    }
++
++    writeln!(
++        kunit_macros,
++        "static mut KUNIT_CASE_NULL: kernel::bindings::kunit_case =3D kern=
+el::kunit::kunit_case_null();"
++    )
++    .unwrap();
++
++    writeln!(
++        kunit_macros,
++        "static mut TEST_CASES : &mut[kernel::bindings::kunit_case] =3D un=
+safe {{ &mut[{test_cases} KUNIT_CASE_NULL] }};"
++    )
++    .unwrap();
++
++    writeln!(
++        kunit_macros,
++        "kernel::kunit_unsafe_test_suite!({attr}, TEST_CASES);"
++    )
++    .unwrap();
++
++    // Remove the `#[test]` macros.
++    // We do this at a token level, in order to preserve span information.
++    let mut new_body =3D vec![];
++    let mut body_it =3D body.stream().into_iter();
++
++    while let Some(token) =3D body_it.next() {
++        match token {
++            TokenTree::Punct(ref c) if c.as_char() =3D=3D '#' =3D> {
++                match body_it.next() {
++                    Some(TokenTree::Group(group)) if group.to_string() =3D=
+=3D "[test]" =3D> (),
++                    Some(next) =3D> { new_body.extend([token, next]); },
++                    _ =3D> { new_body.push(token); },
++                }
++            },
++            _ =3D> { new_body.push(token); },
++        }
++    }
++
++    let mut new_body =3D TokenStream::from_iter(new_body);
++    new_body.extend::<TokenStream>(kunit_macros.parse().unwrap());
++
++    tokens.push(TokenTree::Group(Group::new(
++        Delimiter::Brace,
++        new_body
++    )));
++
++    tokens.into_iter().collect()
++}
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 4ab94e44adfe..beff19cc6d16 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -10,6 +10,7 @@
+ mod quote;
+ mod concat_idents;
+ mod helpers;
++mod kunit;
+ mod module;
+ mod paste;
+ mod pin_data;
+@@ -492,3 +493,31 @@ pub fn paste(input: TokenStream) -> TokenStream {
+ pub fn derive_zeroable(input: TokenStream) -> TokenStream {
+     zeroable::derive(input)
+ }
++
++/// Registers a KUnit test suite and its test cases using a user-space lik=
+e syntax.
 +///
-+/// # Safety
-+///
-+/// `test_cases` must be a NULL terminated array of test cases.
++/// This macro should be used on modules. If `CONFIG_KUNIT` (in `.config`)=
+ is `n`, the target module
++/// is ignored.
 +///
 +/// # Examples
 +///
 +/// ```ignore
-+/// unsafe extern "C" fn test_fn(_test: *mut crate::bindings::kunit) {
-+///     let actual =3D 1 + 1;
-+///     let expected =3D 2;
-+///     assert_eq!(actual, expected);
-+/// }
++/// # use macros::kunit_tests;
 +///
-+/// static mut KUNIT_TEST_CASE: crate::bindings::kunit_case =3D crate::kun=
-it_case(name, test_fn);
-+/// static mut KUNIT_NULL_CASE: crate::bindings::kunit_case =3D crate::kun=
-it_case_null();
-+/// static mut KUNIT_TEST_CASES: &mut[crate::bindings::kunit_case] =3D uns=
-afe {
-+///     &mut[KUNIT_TEST_CASE, KUNIT_NULL_CASE]
-+/// };
-+/// crate::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
++/// #[kunit_tests(kunit_test_suit_name)]
++/// mod tests {
++///     #[test]
++///     fn foo() {
++///         assert_eq!(1, 1);
++///     }
++///
++///     #[test]
++///     fn bar() {
++///         assert_eq!(2, 2);
++///     }
++/// }
 +/// ```
-+#[macro_export]
-+macro_rules! kunit_unsafe_test_suite {
-+    ($name:ident, $test_cases:ident) =3D> {
-+        const _: () =3D {
-+            static KUNIT_TEST_SUITE_NAME: [i8; 256] =3D {
-+                let name_u8 =3D core::stringify!($name).as_bytes();
-+                let mut ret =3D [0; 256];
-+
-+                if name_u8.len() > 255 {
-+                    panic!(concat!(
-+                        "The test suite name `",
-+                        core::stringify!($name),
-+                        "` exceeds the maximum length of 255 bytes."
-+                    ));
-+                }
-+
-+                let mut i =3D 0;
-+                while i < name_u8.len() {
-+                    ret[i] =3D name_u8[i] as i8;
-+                    i +=3D 1;
-+                }
-+
-+                ret
-+            };
-+
-+            static mut KUNIT_TEST_SUITE: $crate::bindings::kunit_suite =3D
-+                $crate::bindings::kunit_suite {
-+                    name: KUNIT_TEST_SUITE_NAME,
-+                    // SAFETY: User is expected to pass a correct `test_ca=
-ses`, hence this macro
-+                    // named 'unsafe'.
-+                    test_cases: unsafe { $test_cases.as_mut_ptr() },
-+                    suite_init: None,
-+                    suite_exit: None,
-+                    init: None,
-+                    exit: None,
-+                    attr: $crate::bindings::kunit_attributes {
-+                        speed: $crate::bindings::kunit_speed_KUNIT_SPEED_N=
-ORMAL,
-+                    },
-+                    status_comment: [0; 256usize],
-+                    debugfs: core::ptr::null_mut(),
-+                    log: core::ptr::null_mut(),
-+                    suite_init_err: 0,
-+                    is_init: false,
-+                };
-+
-+            #[used]
-+            #[link_section =3D ".kunit_test_suites"]
-+            static mut KUNIT_TEST_SUITE_ENTRY: *const $crate::bindings::ku=
-nit_suite =3D
-+                // SAFETY: `KUNIT_TEST_SUITE` is static.
-+                unsafe { core::ptr::addr_of_mut!(KUNIT_TEST_SUITE) };
-+        };
-+    };
++#[proc_macro_attribute]
++pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
++    kunit::kunit_tests(attr, ts)
 +}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e1065a7551a3..02a70c5ad8ee 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -18,6 +18,7 @@
- #![feature(inline_const)]
- #![feature(lint_reasons)]
- #![feature(unsize)]
-+#![feature(const_mut_refs)]
-=20
- // Ensure conditional compilation based on the kernel configuration works;
- // otherwise we may silently break things like initcall handling.
 --=20
 2.47.1.613.gc27f4b7a9f-goog
 
