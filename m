@@ -1,122 +1,85 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D22538DE1
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 13:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9B717548;
+	Fri, 13 Dec 2024 13:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734097255; cv=none; b=mnZ/Wk4bov++MTuXI6BDNacvUnaVE0E/P58iIBntlbY0fzE8TkROeIGbCye7aEpFnytnkFK8tn34jm7p8U8WpDWmkPyPhYGJLl0lWN2mXiec5lsWKeVCTMF/u4KlPhaEoLGIOHi86LaHzOh5ujrnS4qBFTxKvvjTg824hdmtNJ8=
+	t=1734097660; cv=none; b=VuE4FsA7cZ3aClO1rOKMVbvB30O00CTnLvfl8iOlHKKOUfmJ2wYqNGC/rXoWPgotqhUmZB6SwiWacURWxO5rOx0NaJ2Sni84JZcDCkGZ9XhvjgAEFUqQrbBv60betCv7J2sdSXLs9QqhQ7ge9av0w1k9FX5HzzME1BeiXUANeqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734097255; c=relaxed/simple;
-	bh=6BOuUIc5npUiQopcZE5cuoM0QROOgdxco8qfJx9ocYc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q7d+Tg63wLFI1eBWcSQs8RUohbo37g8U0nJTYvpfWQun8DkD+6aebyMDURqKDHfQ0yq2DEwPEB8RIl20hl1GOXscO5ZP2S2F+PuqMQ+5be1EuHBEil7VT9iiI+gQ7bTd+aqkCtGWa7BpBwd7nE8TPU5Lg1hK90OhiG8U7IrtYDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pmmdk4ka; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1734097660; c=relaxed/simple;
+	bh=VIMig2II2mNgjbylAE+qGc7rd0TqLWtlscaZ2SC+AiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UGETnX6vH5mr8msNGNfYIM6SJXXyr14GiJQDgDY/0KAEm+AkWNUm1qPpyuEFvcdfl5DrLfyji2nvoaVryGP1J1c1m8E3vybaFh6KhG8hSXbpthKajk6H/9T2a5X13LGBSe3xPEF0rW356PbrBCyVZdEWR+cYi8l/9cqraY57tW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gboqsmsw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pmmdk4ka"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-434f80457a4so17619525e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 05:40:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734097251; x=1734702051; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wnJdGj8IRCH6wN+1P7eGmBTzbr2q1/CwaJHQOUXIuXA=;
-        b=pmmdk4ka+e4nXjCqO8SbRIe1BwFWdDNe+xEQ85WEazISXkdMv8cEFm1hE1sSqmhHfx
-         dvk1V0wRyihrCU3p2pH4q7Z3ZcgmypsNtfYUsBNc9569yQOrN03+GUld8IjcM1/Zjexe
-         JcHqrhVPKT+4bkbSOynlnujCxFokOLRW6RzJ9lZOl8bpx9ZjrWsfiIWnCYuG0TK8fmZC
-         Ga9puJjzUpvr/YDSa6NU7tMLuP1UabEsQ4m2PJPt3pwxsIWtyybMawT7ISEc8Q1cnaF+
-         aN3DimpkrdLOysA+KsTPQiTePfU9unESszhJNkU5esXzMGIPi7A53g4vM64FvZpMZqgw
-         kBmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734097251; x=1734702051;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wnJdGj8IRCH6wN+1P7eGmBTzbr2q1/CwaJHQOUXIuXA=;
-        b=tWgOG4qxHmMAz+90dxA17Tl1iX5AAA0+9c76JSdebNlk+kuWw4vSye58RdPdqF1A/+
-         HU4rYK4dU2Fe1xxyyG5nGHQdhVwUAKDI72BJh9OWcKlJyS5WXn4ifOJQ+hWXpNjRtdWM
-         0NZ2AYHIhV3vSwxQLh2jougBZmrvxHteO66cRVoea6VhZ5BjK/wz5YH6nMAywanKqTGm
-         bq648MAAjZiczLlJY/uGQgOHMhU5xur+GI8NWboC70eMfsLwXKvGMrllwH0OQ2hny+aZ
-         VjNesktM+UKQyEP5EibYOLZCUzrlhQP65hHbky2KdlDjwRhWh5dsMAYdGoc+ERnbOXQN
-         NJGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgO7dTeHr+Q35eVgz+yVIuP/Ze/87nAt/VtOIz7N3W/8JfKv6RnTNGtX5OxaBLn+UFFJyVKCta//mgcPdOkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykTccZ9MsLLsgxg8UOmH61EauCHzs3DhsenyWV7oGfcFxzAiWc
-	HnCDrSk2MVoxGVE7D/dmMJ5nXNj4y/fguYI0iCSeeAQSZJHqlIxF9sH6YtpeFyo6K4Vez7dvb4q
-	bPqshx6PCalIra4DYyCPrg79puwdi3cXrHx0Z
-X-Gm-Gg: ASbGncuzJHwzUrMzRll538WPS2p2PVb+TZDRNRbFc4kDWA+mSjSEpouR9SnTECu+rA0
-	cx+VrV1FoxSjIUXudMH8aLhDbxHtK9UObu2FswOk=
-X-Google-Smtp-Source: AGHT+IFpwXyaMsDUR1OnzTsQN9vE6i77r98xrJD0Rz0VjFRoXav5Ec9rNnu/HRcQPgMHzFvhoDZVZBy4mlujW19ixCA=
-X-Received: by 2002:a05:6000:1543:b0:386:2e8c:e26d with SMTP id
- ffacd0b85a97d-3878840808emr6014625f8f.0.1734097251425; Fri, 13 Dec 2024
- 05:40:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gboqsmsw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FE2C4CED0;
+	Fri, 13 Dec 2024 13:47:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734097659;
+	bh=VIMig2II2mNgjbylAE+qGc7rd0TqLWtlscaZ2SC+AiM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GboqsmswPX2ALN4uAHgrk8022juznHmZ8HVfND+VEO3hsYtLBujxfkYQ1VZruCAzi
+	 PyxuMw2TZCRWLSh7riBqDROtX1JF+qAvoQg8tSgAMuzQwoY3e5lYQEnUM7J4TqnUyQ
+	 JJy2IF96FAt8e7EeykuBQBgLuSfMOHpRzP/LlahlFUZAHkZTNacelm/o0RGi5i+901
+	 rwqjVblG5/QkkmrBmGSeQJo/tlnK/Xl+0YI2EDt7KiNWues0Wx3BEAGJEE/qeOKV/v
+	 XjFUgxwZFM1dNVAz3muHgKB3g0Lsyo01T6WwHuYgtHUo8PO0BmS/ExBCPbte1OkCEP
+	 KXxzA8d56G29A==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v6 0/5] rust: miscdevice: Provide sample driver using the new MiscDevice bindings
+Date: Fri, 13 Dec 2024 13:47:05 +0000
+Message-ID: <20241213134715.601415-1-lee@kernel.org>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com> <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
-In-Reply-To: <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 13 Dec 2024 14:40:39 +0100
-Message-ID: <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
-Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 12, 2024 at 9:31=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> `XArray` is an efficient sparse array of pointers. Add a Rust
-> abstraction for this type.
->
-> This implementation bounds the element type on `ForeignOwnable` and
-> requires explicit locking for all operations. Future work may leverage
-> RCU to enable lockless operation.
->
-> Inspired-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> Inspired-by: Asahi Lina <lina@asahilina.net>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+This set depends on Alice's most recent MiscDevice changes:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+https://lore.kernel.org/all/20241210-miscdevice-file-param-v3-0-b2a79b666dc5@google.com/
 
-This code looks okay to me, though I have one comment below:
+Changelog v5 -> v6:
+ - pr_info() to dev_info() conversion (based on Alice's new set)
+ - Moved the example C program from the commit message to the file comments
+ - Changed mutex-drop commentary
 
-> +        // SAFETY: `self.xa` is always valid by the type invariant.
-> +        iter::once(unsafe {
-> +            bindings::xa_find(self.xa.get(), &mut index, MAX, bindings::=
-XA_PRESENT)
-> +        })
-> +        .chain(iter::from_fn(move || {
-> +            // SAFETY: `self.xa` is always valid by the type invariant.
-> +            Some(unsafe {
-> +                bindings::xa_find_after(self.xa.get(), &mut index, MAX, =
-bindings::XA_PRESENT)
-> +            })
-> +        }))
-> +        .map_while(|ptr| NonNull::new(ptr.cast()))
+Lee Jones (5):
+  Documentation: ioctl-number: Carve out some identifiers for use by
+    sample drivers
+  samples: rust: Provide example using the new Rust MiscDevice
+    abstraction
+  samples: rust_misc_device: Demonstrate additional get/set value
+    functionality
+  MAINTAINERS: Add Rust Misc Sample to MISC entry
+  samples: rust_misc_device: Provide an example C program to exercise
+    functionality
 
-> +        // SAFETY: `self.xa` is always valid by the type invariant.
-> +        (unsafe { bindings::xa_trylock(self.xa.get()) } !=3D 0).then(|| =
-Guard {
-> +            xa: self,
-> +            _not_send: NotThreadSafe,
-> +        })
+ .../userspace-api/ioctl/ioctl-number.rst      |   1 +
+ MAINTAINERS                                   |   1 +
+ samples/rust/Kconfig                          |  10 +
+ samples/rust/Makefile                         |   1 +
+ samples/rust/rust_misc_device.rs              | 238 ++++++++++++++++++
+ 5 files changed, 251 insertions(+)
+ create mode 100644 samples/rust/rust_misc_device.rs
 
-This coding style is pretty far in the functional programming camp
-compared to the rest of Rust code in the kernel. I tend to stick with
-a more imperative style to be more familiar to C folks.
+-- 
+2.47.1.613.gc27f4b7a9f-goog
 
-Alice
