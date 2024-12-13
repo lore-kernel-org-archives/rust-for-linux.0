@@ -1,87 +1,78 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592DD1E47BD;
-	Fri, 13 Dec 2024 16:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F06D15573A;
+	Fri, 13 Dec 2024 16:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734107124; cv=none; b=WCDyT/0U1nQ0ZfaBctwjfaiyJXPOnubGqGDA7riJt9vS8iBePXuMAc+JWa239+RfuNVOc8qCNPQ2w1X6BKbAupKyecvwAQwTlcxHtvta1Ybn/JjoLL2syglXG+aXfnaaO2wmHgBneAYvF+dtH4c6pOxR6uBsQ5pEI74kClyP94Q=
+	t=1734108002; cv=none; b=WT7GDLVLoy3rRXKfC8I0ldha8wR8bpW4iN4+qqLY/QCn9Bu9rdekR0O1slOWTt1ju+3JZoCEol3eaEQu4REiloLBtZco2P7KrkqcXwwB13TXi3eujrZWrwd/opQFw8tQilQDtZ/J5lzl421lUFxARyPDwx0TZOkmu/fLM4KGDeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734107124; c=relaxed/simple;
-	bh=utTGiUY2KFTz5GWPj+z9ni89H11QDVeYdPSg/6nfzkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LW6FrztdUOqucfgsNF2MDhnwcYawYGrM88RvVntK7Rv4xwD+7iaZMQrNvzY4ZXffE2n3RLpGglU3Q5y77htQo6pZZUOrlwQeFaTfNbTSHiK6MXNQr0OczmGbwr0nbZATM2HXsHPOQcjt7fja4FJpD+a37yzgAsZbLBqBDin0iKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAHV/BsJ; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734108002; c=relaxed/simple;
+	bh=sjqCMbMJc98MevvBnx5a00VZZWLis91KiqX5KkIFSWE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fDztGXFC2URvoQigpD8z3urhVzvaRksQn5q1jnmNGaKE/uZy9JbKIbTqCbQeAErH9Gee1suixn0HtzBnbxP9a9ANiXniKl12IMJ6Zf7FTspfrwlvbQAvIJ0Kb15bPRBSXA+LnTAIqL/3CFlc0YxvSVWYu5RVcQVOEvCsxmKcD0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBQuaRs+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAHV/BsJ"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffa49f623cso21291201fa.1;
-        Fri, 13 Dec 2024 08:25:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734107120; x=1734711920; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=utTGiUY2KFTz5GWPj+z9ni89H11QDVeYdPSg/6nfzkQ=;
-        b=FAHV/BsJFtXfbXqzL5rWlmTV1qhFNyEDZBxugyMbKKMOjvvE0O0sCXyACoZ8yNh4oL
-         OKVzRw68bnEDODiz2baEHi4kVfqBP1CjoaAB6gxiupFvYSS0DuXAHfscHvI4J8f+DyPT
-         Rgo28Jh+PlU4i/vdw5cbHSd21cKvngub+dxyXzoMysQs8QrK6oaIWOh6AlgfRaxng7v8
-         e2oLw7PaWOBgR21TBHUn7k3XU7oRYiwnTZPjd2w8Lbc+goIuptPNWEZEb9kjrzANNlF5
-         Uzu3dCIoDBWCsBGnjPB5HooOqyTgKbwgnpl1qGsAmJmzmF5Au1Vj0A4QgPJuOyMCNaH2
-         K9Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734107120; x=1734711920;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=utTGiUY2KFTz5GWPj+z9ni89H11QDVeYdPSg/6nfzkQ=;
-        b=BZBgIMPbHmFLAUafu46sgkAyI31Z8QRXfrh/astjL1L4YS7lEJ8AqKrHBrbjvaOL8I
-         N1Zg92fRlJaWQEizLU2qhcPA0LHuPl7D1IZIjjQ/xFGbf2IrcOOLUBhxk3ze5Iw/ru5A
-         KyKguUIqktKNGvMk5q1g+/1tCCQgU9uyCtHPudq+CZiDOuKK10CmGdD4g0EbmShlVYq+
-         IG1ZE6dUBiBM77PZmodMAn4+An7Bk5o4qtykVzWFiC8zuuczKRVKf2BAWqaS/JQBYx5m
-         enKfOdnRzf/VWaypss3xPaDNhzrPsSobz7+EAPocqj6fwz2cha+8XFOunx5MIpGXXbf2
-         bj9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVN+ikmeFAuGuzrcCHoWQYlIvNddZUbu6jtsZQsNqRUtJ/rtyaN4fvbJCtwT1AsvcDv1Pne68v7JfBOmiP0hAk=@vger.kernel.org, AJvYcCVWM8z87SqPceZhgFW63MiZqhF1i4o9CifjytaGRm5itTOGlmKvhZ3O9s7jOL5W4sTy1i6x4SUFCJnZYVI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAlLw/f04phoBN6f/O6tpN+1P1nNePRphmM8oL4/KSlT9UAYcm
-	GgwVYPu7hdwht7MBuftMNlxoSjMhJwKv386oTeARDtU52wHnhE6IJpdyMo0tR/vi9R5toPn+EfL
-	2j5E+yagLMDDLa3Nk6Xl60ngMsNA=
-X-Gm-Gg: ASbGnctePXgkuwM21ucmIqcnJUvh2gkjzdyOLjyysd/qR74ByQ6fdR/OVNDbSFJ9dun
-	EzeEdfcyjBfuF/QUbNDFiDEIaUpx7h6UKtepYpvR+iX31NwkDs3lhSw==
-X-Google-Smtp-Source: AGHT+IG6+Z/vc7PfFQuJAFc69iMoTu2hkHUqC+2mW132HdtWerzfD+W5ZppSHbn0aM8OBx1kcQpyrVtjci4763bp12k=
-X-Received: by 2002:a05:651c:1546:b0:300:7f87:a65 with SMTP id
- 38308e7fff4ca-302544cc311mr12540091fa.35.1734107120081; Fri, 13 Dec 2024
- 08:25:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBQuaRs+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C026C4CED0;
+	Fri, 13 Dec 2024 16:39:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734108001;
+	bh=sjqCMbMJc98MevvBnx5a00VZZWLis91KiqX5KkIFSWE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XBQuaRs+fnbfszjUfkl5I/oxgRtN2Y2P2Iww6E7kpEXRNhkK8N0ZDlE/nty6FaxzM
+	 g2nxiy1jlYDnjDmLLZvZNoHItnVz0x9fFoTVdLWkGwx+4KbEKuUbyOKuKwhV9nRDW6
+	 JaxRwdphO6DEbhs0Vir9Dhq/xjQR2NzkRPDrZO5w6iYFpu+tEO+78lnyAE8vhLTEO5
+	 Aix5gB7T+JDT4nr8ar9Os/88x1nMyfsa5Wnp0cVw1Q0HVd1Ot/n/S3e0bt/gg19Fph
+	 o7JB4L55PmfIpKGsUaV30TULP5ewoV0XFAJj6rIPvtVfYtGskVowE2bg/NI8cmhOpT
+	 Eqz8CcVz2G2XQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
+  =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,  "Asahi Lina"
+ <lina@asahilina.net>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
+In-Reply-To: <CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
+ (Tamir
+	Duberstein's message of "Fri, 13 Dec 2024 11:24:44 -0500")
+References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com>
+	<20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
+	<CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
+	<L-1MAJJDE02BClBz6dbLWTKAz6RM33gupqt5fPEyX9tYoW43aDrrH4oY-OerHc17mpVTgy6j4e6_EauQQY8Viw==@protonmail.internalid>
+	<CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
+Date: Fri, 13 Dec 2024 17:39:51 +0100
+Message-ID: <87pllvczag.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com>
- <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com> <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
-In-Reply-To: <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 13 Dec 2024 11:24:44 -0500
-Message-ID: <CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
-Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 13, 2024 at 8:40=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This coding style is pretty far in the functional programming camp
-> compared to the rest of Rust code in the kernel. I tend to stick with
-> a more imperative style to be more familiar to C folks.
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-That's a fair assessment, but it's a subjective area -- Andreas was
-fond of the approach (in a preview review).
+> On Fri, Dec 13, 2024 at 8:40=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+>>
+>> This coding style is pretty far in the functional programming camp
+>> compared to the rest of Rust code in the kernel. I tend to stick with
+>> a more imperative style to be more familiar to C folks.
+>
+> That's a fair assessment, but it's a subjective area -- Andreas was
+> fond of the approach (in a preview review).
+
+I am! Let's not restrict ourselves to a subset of rust that mimics a
+language invented 40 years ago.
+
+Best regards,
+Andreas Hindborg
+
+
