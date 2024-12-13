@@ -1,127 +1,123 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3431DFDB8;
-	Fri, 13 Dec 2024 15:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186924A21;
+	Fri, 13 Dec 2024 15:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734103710; cv=none; b=L9a7GM7FOzw3wbDCHtJjlTurPdyhtadLBEkPli1Px966Hsoj3AdybewAtYoOKwxFb0o7kxp0wEiyGmD3IhxyZjF8v6gnVA3EARWGbbDdAfD3iWSN9LJ+dYcjjU9tkVb7bZI/jKY4kkd1mim8yw5yLcFT28bb+KVGEerArffd+mg=
+	t=1734104322; cv=none; b=D0QeL6hnqKwtDpR//ROr74JHfE5CCZo/aQUTZczIcDZQ9+s4hFBJpDGVJXNighJPkjuB20rz4lCs2CBnIB3cABR4BxI0xiLY7PAHyfjSUn4zl2zUVneJJOlOEUFrrFJCZ3kGZxiDaR1OJrB91I65NZC7TI6w38+6JWonwhCT2po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734103710; c=relaxed/simple;
-	bh=S6ngcvffWreb1pIBx+eV1GL9aDoASQZY3lV3XiCaRC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ab+v6t4m7ncxbLriVwNVaO3VAlmrnAujLdfDLaNAlGBg8uY7G4Bwkh1Wwz6kvoZWlA0lr/YqzXJ+vpMAfag6qXzFGkzoSQKIZHPw0nQg0GuMk32w/pqlk76UDA50razQiADgpjfPapCtjBS4yzWyhaLmWpgmzbkZIxo4dh8ef5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DF551480;
-	Fri, 13 Dec 2024 07:28:50 -0800 (PST)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CDD083F720;
-	Fri, 13 Dec 2024 07:28:19 -0800 (PST)
-Message-ID: <b7130ae2-6314-41d9-bda2-d875b22463bb@arm.com>
-Date: Fri, 13 Dec 2024 15:28:18 +0000
+	s=arc-20240116; t=1734104322; c=relaxed/simple;
+	bh=TtiwPZnc3uU5RWhUI34AYaSZu4sDmkVKjXOgaG/22rI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VaMPw411G7TnUoR0d3Aq+efoc9+IzCVXEsVMdYFPY1auRy7gSLTCov6KmNb8aPgpGVUfQTow+gJbenASVbaQF2hqIlcnK0JXraHE54DuENnoeZwiFD5camDWsbcecvHxNfpNDnrE+Na9YxaB1SUc8Qg7yqd2TUgCQbIS/nETwnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+IUII5/; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+IUII5/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D688BC4CED0;
+	Fri, 13 Dec 2024 15:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734104321;
+	bh=TtiwPZnc3uU5RWhUI34AYaSZu4sDmkVKjXOgaG/22rI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=T+IUII5/1JTeyOp7rVWdv3iLnpqyRq17m04K01cWcG6yhg+T45WsLQDziS/ux0IYY
+	 QyNh4pei4I+QKRaEL3GlB1EZtAbQMGThU1TckhIHzQg586aLMl2ZvDt1j5FR4tWYeG
+	 0pe57rYM+5goUdu8FaIuZKh/yxitFZ4E2H3bUdJPHsNB1kUIUdNWFMbmiM+xt6ciVm
+	 15kXXTXlIvboZpNJ/D7dlfHdarmycEYDgz7PBUFHFURGQ+eqdLgsgHRErWbH6/IIHV
+	 5rmE1plnscvDSWCxuKzh0RX2FWnYuQfQIkZbwmGFREKRMd3X9Lz2u2xCWqLQaQE+DE
+	 Y2Ea2TfawSkgg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
+ <nathan@kernel.org>,  "Nicolas Schier" <nicolas@fjasle.eu>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>
+Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
+ parameter support
+In-Reply-To: <2024121309-lethargic-ended-5f99@gregkh> (Greg KH's message of
+	"Fri, 13 Dec 2024 15:23:24 +0100")
+References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
+	<4Dsa69UGULRGsMbRbwOJNp_puyfsSSFt1QTcYU9AL4azd8vbfEFFtc7YNSsGegc40AfCZqVqZETfxg4TggUlSw==@protonmail.internalid>
+	<2024121324-overdue-giggly-bdb8@gregkh> <87frmrepo5.fsf@kernel.org>
+	<I0v8YGJe3e1ex1oF3mki-7QKimYLCJHnBy6g1taHgoOFvpNmQSrSnsMGJyGS064pGJsJDsTsei-pInFRz5INWA==@protonmail.internalid>
+	<2024121309-lethargic-ended-5f99@gregkh>
+Date: Fri, 13 Dec 2024 16:38:30 +0100
+Message-ID: <87ttb7d24p.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] rust: add dma coherent allocator abstraction.
-To: Daniel Almeida <daniel.almeida@collabora.com>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-References: <20241210221603.3174929-1-abdiel.janulgue@gmail.com>
- <20241210221603.3174929-3-abdiel.janulgue@gmail.com>
- <CAH5fLgjO-GbB85dDdxLSSWY74cUn8-Lt-yaRGkUVxb-E8YaO2Q@mail.gmail.com>
- <0F719804-2AD3-4C4E-A98C-2862295990BA@collabora.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <0F719804-2AD3-4C4E-A98C-2862295990BA@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 13/12/2024 2:47 pm, Daniel Almeida wrote:
-[...]
->>> +    /// Returns the CPU-addressable region as a slice.
->>> +    pub fn cpu_buf(&self) -> &[T]
->>> +    {
->>> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
->>> +        // is valid for reads for `self.count * size_of::<T>` bytes.
->>> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
->>
->> Immutable slices require that the data does not change while the
->> reference is live. Is that the case? If so, your safety comment should
->> explain that.
->>
->>> +    }
->>> +
->>> +    /// Performs the same functionality as `cpu_buf`, except that a mutable slice is returned.
->>> +    pub fn cpu_buf_mut(&mut self) -> &mut [T]
->>> +    {
->>> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
->>> +        // is valid for reads for `self.count * size_of::<T>` bytes.
->>> +        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.count) }
->>
->> Mutable slices require that the data is not written to *or read* by
->> anybody else while the reference is live. Is that the case? If so,
->> your safety comment should explain that.
->>
-> 
-> The buffer will probably be shared between the CPU and some hardware device, since this is the
-> point of the dma mapping API.
-> 
-> It’s up to the caller to ensure that no hardware operations that involve the buffer are currently taking
-> place while the slices above are alive.
+"Greg KH" <gregkh@linuxfoundation.org> writes:
 
-Hmm, that sounds troublesome... the nature of coherent allocations is 
-that both CPU and device may access them at any time, and you can 
-definitely expect ringbuffer-style usage models where a CPU is writing 
-to part of the buffer while the device is reading/writing another part, 
-but also cases where a CPU needs to poll for a device write to a 
-particular location.
+> On Fri, Dec 13, 2024 at 01:24:42PM +0100, Andreas Hindborg wrote:
+>> "Greg KH" <gregkh@linuxfoundation.org> writes:
+>>
+>> > On Fri, Dec 13, 2024 at 12:30:45PM +0100, Andreas Hindborg wrote:
+>> >> This series extends the `module!` macro with support module parameters.
+>> >
+>> > Eeek, why?
+>> >
+>> > Module parameters are from the 1990's, back when we had no idea what we
+>> > were doing and thought that a simple "one variable for a driver that
+>> > controls multiple devices" was somehow a valid solution :)
+>> >
+>> > Please only really add module parameters if you can prove that you
+>> > actually need a module parameter.
+>>
+>> I really need module parameters to make rust null block feature
+>> compatible with C null block.
+>
+> Is that a requirement?  That wasn't documented here :(
+>
+> You should have put the user of these apis in the series as you have
+> that code already in the tree, right?
 
-Thanks,
-Robin.
+Sorry, my mistake. I'm trying to build a rust implementation of C
+null_blk, and one the bits I need for that is module parameters.
 
-> I think that adding that as a safety requirement to `cpu_buf` and `cpu_buf_mut` will be sufficient.
-> 
->>> +    }
->>> +}
->>> +
->>> +impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
->>> +    fn drop(&mut self) {
->>> +        let size = self.count * core::mem::size_of::<T>();
->>> +        // SAFETY: the device, cpu address, and the dma handle is valid due to the
->>> +        // type invariants on `CoherentAllocation`.
->>> +        unsafe { bindings::dma_free_attrs(self.dev.as_raw(), size,
->>> +                                          self.cpu_addr as _,
->>> +                                          self.dma_handle,
->>> +                                          self.dma_attrs.as_raw(),) }
->>> +    }
->>> +}
->>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
->>> index e1065a7551a3..6e90ebf5a130 100644
->>> --- a/rust/kernel/lib.rs
->>> +++ b/rust/kernel/lib.rs
->>> @@ -35,6 +35,7 @@
->>> mod build_assert;
->>> pub mod cred;
->>> pub mod device;
->>> +pub mod dma;
->>> pub mod error;
->>> #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
->>> pub mod firmware;
->>> —
->>> 2.43.0
-> 
-> — Daniel
+>
+>> Let's not block interfacing parts of the kernel because we decided that
+>> the way we (well not me, I was not around) did things in the 80's was
+>> less than stellar. I mean, we would get nowhere.
+>
+> On the contrary, if we don't learn from our past mistakes, we will
+> constantly keep making them and prevent others from "doing the right
+> thing" by default.
+>
+> I would strongly prefer that any driver not have any module parameters
+> at all, as drivers don't work properly that way (again, they need to
+> handle multiple devices, which does not work for a module parameter.)
+>
+> That's why we created sysfs, configfs, and lots of other things, to
+> learn from our past mistakes.
+
+OK. I understand. It makes sense even :) I wish I knew that this was a
+thing before I spent spare cycles fixing this up for v3 though.
+
+I'm not getting a clear reading on the following, perhaps you can
+clarify:
+
+ - Is the community aligned on dropping module parameters for all new
+   drivers?
+   - If so, was this decided upon at some point or is this a fluid
+     decision that is just manifesting now?
+ - Does this ban of module parameters also cover cases where backwards
+   compatibility is desirable?
+ - Can we merge this so I can move forward at my current projected
+   course, or should I plan on dealing with not having this available?
+
+Best regards,
+Andreas Hindborg
+
+
+
