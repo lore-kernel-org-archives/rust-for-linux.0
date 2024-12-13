@@ -1,194 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFC01DFE2C;
-	Fri, 13 Dec 2024 13:17:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D22538DE1
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 13:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734095852; cv=none; b=brtiuB++8kPL3IpNoxmZ5Hja41bNYaCDs2NB4Gbh4tWzxszOXIGxWgUQyyPWgoezSa7tK3pW/emYtxOdV8yyKT0FlB0FAddWfc45YJVr3qC2+Ob+VYYuBWYsb2KizXGbLvL1XCAwSw4dmRcPPDldFBsauSEd5x8Rmlvw8XzUnRg=
+	t=1734097255; cv=none; b=mnZ/Wk4bov++MTuXI6BDNacvUnaVE0E/P58iIBntlbY0fzE8TkROeIGbCye7aEpFnytnkFK8tn34jm7p8U8WpDWmkPyPhYGJLl0lWN2mXiec5lsWKeVCTMF/u4KlPhaEoLGIOHi86LaHzOh5ujrnS4qBFTxKvvjTg824hdmtNJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734095852; c=relaxed/simple;
-	bh=tMXE95FfkjhkdFZo7cyuYKKGbHS/ZBxnfSxNp0VgYiM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tAyR6rsg/+AbD0VYUJA5pi5tkR8o+RAvGjeyWx2iAIZiyROVVihvaEmJVUMDoNAZemRQDip019aJrkbLHSV81Es5WssG9pPzbMzmZLVqUUfzSmUuEx0ZyLmk3lYfrkgB/vYbCEv9kxZqOdDCBfSvpb+N/2XZwSGJ3RJaVpwoGoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCYKX/MI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734097255; c=relaxed/simple;
+	bh=6BOuUIc5npUiQopcZE5cuoM0QROOgdxco8qfJx9ocYc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q7d+Tg63wLFI1eBWcSQs8RUohbo37g8U0nJTYvpfWQun8DkD+6aebyMDURqKDHfQ0yq2DEwPEB8RIl20hl1GOXscO5ZP2S2F+PuqMQ+5be1EuHBEil7VT9iiI+gQ7bTd+aqkCtGWa7BpBwd7nE8TPU5Lg1hK90OhiG8U7IrtYDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pmmdk4ka; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCYKX/MI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993E2C4CED7;
-	Fri, 13 Dec 2024 13:17:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734095852;
-	bh=tMXE95FfkjhkdFZo7cyuYKKGbHS/ZBxnfSxNp0VgYiM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CCYKX/MIgky9byQK2GGKBUqrXedQcPRVdNhargwyBMeHFzUYdgB21qQtUqIblJpcH
-	 E9AtC7MMji5y7iia648qfhnNAX4pFRB1vWiJaa0kPcBkt/v4/3H8ufGKKNYrT0rUu3
-	 ZwnYSJyYlS04s0lQzGHQ6paXpFinQiHsF4qWtM/xdj8KMd/2E+caNRX5LI4MLVqMbB
-	 4km1suW1AgZq8hAL6vePKSYbP7uN/Tk97t0EHg75I0ttm6/NCcHjX62+1ltQQI9NRJ
-	 i24K+fLC5dul7ZWRDSPmwQKbUkDA127dGrvz9Z44YSuwRxA59d5ZYA6EhB+1tYJMBc
-	 5tFjklHYM8tcA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
- <nathan@kernel.org>,  "Nicolas Schier" <nicolas@fjasle.eu>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] rust: add parameter support to the `module!` macro
-In-Reply-To: <CANiq72kb2ocNuE6n32vr4xCkZhZN0uPuCN3SFA1+Q5L+Ma4ByQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Fri, 13 Dec 2024 13:54:14 +0100")
-References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
-	<20241213-module-params-v3-v3-4-485a015ac2cf@kernel.org>
-	<pw5PzA4YGsu7j6ET_-OYE2oq9l7ixtTTGhHtxMxmMP5ggHxLrjzMkNMvcMVjGPhu7FpBb2duDD3bRbtMJZZHIw==@protonmail.internalid>
-	<CANiq72kb2ocNuE6n32vr4xCkZhZN0uPuCN3SFA1+Q5L+Ma4ByQ@mail.gmail.com>
-Date: Fri, 13 Dec 2024 14:17:19 +0100
-Message-ID: <87y10jd8o0.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pmmdk4ka"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-434f80457a4so17619525e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 05:40:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734097251; x=1734702051; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wnJdGj8IRCH6wN+1P7eGmBTzbr2q1/CwaJHQOUXIuXA=;
+        b=pmmdk4ka+e4nXjCqO8SbRIe1BwFWdDNe+xEQ85WEazISXkdMv8cEFm1hE1sSqmhHfx
+         dvk1V0wRyihrCU3p2pH4q7Z3ZcgmypsNtfYUsBNc9569yQOrN03+GUld8IjcM1/Zjexe
+         JcHqrhVPKT+4bkbSOynlnujCxFokOLRW6RzJ9lZOl8bpx9ZjrWsfiIWnCYuG0TK8fmZC
+         Ga9puJjzUpvr/YDSa6NU7tMLuP1UabEsQ4m2PJPt3pwxsIWtyybMawT7ISEc8Q1cnaF+
+         aN3DimpkrdLOysA+KsTPQiTePfU9unESszhJNkU5esXzMGIPi7A53g4vM64FvZpMZqgw
+         kBmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734097251; x=1734702051;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wnJdGj8IRCH6wN+1P7eGmBTzbr2q1/CwaJHQOUXIuXA=;
+        b=tWgOG4qxHmMAz+90dxA17Tl1iX5AAA0+9c76JSdebNlk+kuWw4vSye58RdPdqF1A/+
+         HU4rYK4dU2Fe1xxyyG5nGHQdhVwUAKDI72BJh9OWcKlJyS5WXn4ifOJQ+hWXpNjRtdWM
+         0NZ2AYHIhV3vSwxQLh2jougBZmrvxHteO66cRVoea6VhZ5BjK/wz5YH6nMAywanKqTGm
+         bq648MAAjZiczLlJY/uGQgOHMhU5xur+GI8NWboC70eMfsLwXKvGMrllwH0OQ2hny+aZ
+         VjNesktM+UKQyEP5EibYOLZCUzrlhQP65hHbky2KdlDjwRhWh5dsMAYdGoc+ERnbOXQN
+         NJGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUgO7dTeHr+Q35eVgz+yVIuP/Ze/87nAt/VtOIz7N3W/8JfKv6RnTNGtX5OxaBLn+UFFJyVKCta//mgcPdOkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YykTccZ9MsLLsgxg8UOmH61EauCHzs3DhsenyWV7oGfcFxzAiWc
+	HnCDrSk2MVoxGVE7D/dmMJ5nXNj4y/fguYI0iCSeeAQSZJHqlIxF9sH6YtpeFyo6K4Vez7dvb4q
+	bPqshx6PCalIra4DYyCPrg79puwdi3cXrHx0Z
+X-Gm-Gg: ASbGncuzJHwzUrMzRll538WPS2p2PVb+TZDRNRbFc4kDWA+mSjSEpouR9SnTECu+rA0
+	cx+VrV1FoxSjIUXudMH8aLhDbxHtK9UObu2FswOk=
+X-Google-Smtp-Source: AGHT+IFpwXyaMsDUR1OnzTsQN9vE6i77r98xrJD0Rz0VjFRoXav5Ec9rNnu/HRcQPgMHzFvhoDZVZBy4mlujW19ixCA=
+X-Received: by 2002:a05:6000:1543:b0:386:2e8c:e26d with SMTP id
+ ffacd0b85a97d-3878840808emr6014625f8f.0.1734097251425; Fri, 13 Dec 2024
+ 05:40:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com> <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
+In-Reply-To: <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 13 Dec 2024 14:40:39 +0100
+Message-ID: <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
+Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
-
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
-
-> On Fri, Dec 13, 2024 at 12:33=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
->>
->> +#![feature(sync_unsafe_cell)]
+On Thu, Dec 12, 2024 at 9:31=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> Please mention this in the commit message, the status of the feature
-> and justify the addition.
-
-I forgot, thanks for pointing that out. Following the discussion of v2
-of this series I can understand that `mut static` is discouraged and
-scheduled for removal. Interior mutability via `SyncUnsafeCell` provides
-the same functionality and it is my understanding that this feature is
-on track to be stabilized.
-
+> `XArray` is an efficient sparse array of pointers. Add a Rust
+> abstraction for this type.
 >
->> +//! C header: [`include/linux/moduleparam.h`](../../../include/linux/mo=
-duleparam.h)
+> This implementation bounds the element type on `ForeignOwnable` and
+> requires explicit locking for all operations. Future work may leverage
+> RCU to enable lockless operation.
 >
-> Please use `srctree`.
+> Inspired-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Inspired-by: Asahi Lina <lina@asahilina.net>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Ok.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
->
->> +/// Newtype to make `bindings::kernel_param` `Sync`.
->
-> Please add intra-doc links where applicable, e.g. `Sync` here.
+This code looks okay to me, though I have one comment below:
 
-Will do.
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        iter::once(unsafe {
+> +            bindings::xa_find(self.xa.get(), &mut index, MAX, bindings::=
+XA_PRESENT)
+> +        })
+> +        .chain(iter::from_fn(move || {
+> +            // SAFETY: `self.xa` is always valid by the type invariant.
+> +            Some(unsafe {
+> +                bindings::xa_find_after(self.xa.get(), &mut index, MAX, =
+bindings::XA_PRESENT)
+> +            })
+> +        }))
+> +        .map_while(|ptr| NonNull::new(ptr.cast()))
 
->
->> +unsafe extern "C" fn set_param<T>(
->> +    val: *const core::ffi::c_char,
->> +    param: *const crate::bindings::kernel_param,
->> +) -> core::ffi::c_int
->> +where
->> +    T: ModuleParam,
->> +{
->> +    // NOTE: If we start supporting arguments without values, val _is_ =
-allowed
->> +    // to be null here.
->> +    assert!(!val.is_null());
->
-> Should this return an error instead?
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        (unsafe { bindings::xa_trylock(self.xa.get()) } !=3D 0).then(|| =
+Guard {
+> +            xa: self,
+> +            _not_send: NotThreadSafe,
+> +        })
 
-Not sure. `val` being null not supposed to happen in the current
-configuration. It should be an unreachable state. So BUG is the right thing?
+This coding style is pretty far in the functional programming camp
+compared to the rest of Rust code in the kernel. I tend to stick with
+a more imperative style to be more familiar to C folks.
 
->
->> +/// Write a string representation of the current parameter value to `bu=
-f`.
->> +///
->> +/// # Safety
->> +///
->> +/// Must not be called.
->> +///
->> +/// # Note
->> +///
->> +/// This should not be called as we declare all parameters as read only.
->> +#[allow(clippy::extra_unused_type_parameters)]
->> +unsafe extern "C" fn get_param<T>(
->> +    _buf: *mut core::ffi::c_char,
->> +    _param: *const crate::bindings::kernel_param,
->> +) -> core::ffi::c_int
->> +where
->> +    T: ModuleParam,
->> +{
->> +    unreachable!("Parameters are not readable");
->> +}
->
-> Do we need this? Can't the `ops` callback be `null`?
-
-Not in the current configuration. The parameters can only be declared
-"read only". It should be impossible for anyone to call this function.
-
->
->> +/// The `arg` field of `param` must be an initialized instance of `Self=
-`.
->
-> `Self`?
-
-That whole line is wrong, thanks for spotting. It should read "`arg` must
-be an initialized instance of `T`. This function takes ownership of
-the `T` pointed to by `arg`.".
-
->
->> +/// Generate a static [`kernel_param_ops`](../../../include/linux/modul=
-eparam.h) struct.
->
-> `srctree`.
-
-=F0=9F=91=8D
-
->
->> +/// Parse a token stream of the form `expected_name: "value",` and retu=
-rn the
->> +/// string in the position of "value". Panics on parse error.
->
-> `# Panics` section.
-
-Ok.
-
->
->> +/// `type` may be one of
->> +///
->> +/// - `i8`
->> +/// - `u8`
->> +/// - `i8`
->> +/// - `u8`
->> +/// - `i16`
->> +/// - `u16`
->> +/// - `i32`
->> +/// - `u32`
->> +/// - `i64`
->> +/// - `u64`
->> +/// - `isize`
->> +/// - `usize`
->
-> Can these be intra-doc links?
-
-Yes!
-
-
-Thanks for the comments!
-
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Alice
