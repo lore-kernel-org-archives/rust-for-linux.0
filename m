@@ -1,53 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F06D15573A;
-	Fri, 13 Dec 2024 16:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5C01EBA07;
+	Fri, 13 Dec 2024 16:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734108002; cv=none; b=WT7GDLVLoy3rRXKfC8I0ldha8wR8bpW4iN4+qqLY/QCn9Bu9rdekR0O1slOWTt1ju+3JZoCEol3eaEQu4REiloLBtZco2P7KrkqcXwwB13TXi3eujrZWrwd/opQFw8tQilQDtZ/J5lzl421lUFxARyPDwx0TZOkmu/fLM4KGDeI=
+	t=1734108472; cv=none; b=ZGbcX0Us3mzAg0KINdbrSLIsr1rT/5I2Q8goTmwELWU5By5OZ7D9S01C3nY9GA3FxOPQNhZupi8QVUe1W+QFlfhJq83IOBjmH1MxQoLQuShUDSmlxrBSy8UAwdvfMpXqFaXW21zOLuuulYcpsPHb1ZS+ZkUe6Om9sewph3cOEBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734108002; c=relaxed/simple;
-	bh=sjqCMbMJc98MevvBnx5a00VZZWLis91KiqX5KkIFSWE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fDztGXFC2URvoQigpD8z3urhVzvaRksQn5q1jnmNGaKE/uZy9JbKIbTqCbQeAErH9Gee1suixn0HtzBnbxP9a9ANiXniKl12IMJ6Zf7FTspfrwlvbQAvIJ0Kb15bPRBSXA+LnTAIqL/3CFlc0YxvSVWYu5RVcQVOEvCsxmKcD0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBQuaRs+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734108472; c=relaxed/simple;
+	bh=CHtiSnoz+W4eMdUcxoqR2xMXRNGeM2tWEi1FfdMt/pc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cM8Zqnn8r/I40O6/vp10nGbEAdUIpMaqB5h5Sfr4WyrvkMoiPE2B8J03BLiVScJCK7qBxkH1f1nUGBsfaDcBHugUBxQ0M10JrTQHNdDK8+13jpkbfPzxzEzvlko5l8/kMZXirtAbJd91+lqonif1jTcU01HgP5oUT0h9NNS3Qk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EL0V0rrO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBQuaRs+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C026C4CED0;
-	Fri, 13 Dec 2024 16:39:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EL0V0rrO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C54EC4CED0;
+	Fri, 13 Dec 2024 16:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734108001;
-	bh=sjqCMbMJc98MevvBnx5a00VZZWLis91KiqX5KkIFSWE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XBQuaRs+fnbfszjUfkl5I/oxgRtN2Y2P2Iww6E7kpEXRNhkK8N0ZDlE/nty6FaxzM
-	 g2nxiy1jlYDnjDmLLZvZNoHItnVz0x9fFoTVdLWkGwx+4KbEKuUbyOKuKwhV9nRDW6
-	 JaxRwdphO6DEbhs0Vir9Dhq/xjQR2NzkRPDrZO5w6iYFpu+tEO+78lnyAE8vhLTEO5
-	 Aix5gB7T+JDT4nr8ar9Os/88x1nMyfsa5Wnp0cVw1Q0HVd1Ot/n/S3e0bt/gg19Fph
-	 o7JB4L55PmfIpKGsUaV30TULP5ewoV0XFAJj6rIPvtVfYtGskVowE2bg/NI8cmhOpT
-	 Eqz8CcVz2G2XQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
-  =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,  "Asahi Lina"
- <lina@asahilina.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
-In-Reply-To: <CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
- (Tamir
-	Duberstein's message of "Fri, 13 Dec 2024 11:24:44 -0500")
-References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com>
-	<20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
-	<CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
-	<L-1MAJJDE02BClBz6dbLWTKAz6RM33gupqt5fPEyX9tYoW43aDrrH4oY-OerHc17mpVTgy6j4e6_EauQQY8Viw==@protonmail.internalid>
-	<CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
-Date: Fri, 13 Dec 2024 17:39:51 +0100
-Message-ID: <87pllvczag.fsf@kernel.org>
+	s=k20201202; t=1734108471;
+	bh=CHtiSnoz+W4eMdUcxoqR2xMXRNGeM2tWEi1FfdMt/pc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EL0V0rrOrfA75N76g2pAVzHro37q/XgT96Seta1QS1+b2GJh4ek26a98ggveHLtZv
+	 SPyV2E2chbBJfUNsg4ofppZ4w32PAoYPmzwT7Opc44qc4qmacORGbGXPgjDYsJINTN
+	 0N4p0vALr0H43K06cMf6zQjuCWfvupXNlQM95nSTJVsTB7IewG9104l9sM2L/1EYiM
+	 AW/pG8KRqy2KRC/Ckxzy37K+31Rbou7evAH3lO6k6A0H2JVKSl8lIloQid6HluWEPt
+	 2QpSqglBCFtm6qWC0U9RFtr2ZlwqAdjWG3vCuObHw18SXJ/GtWschlL2J+iUw/1veX
+	 x4rzlbd9Kekjg==
+Date: Fri, 13 Dec 2024 16:47:45 +0000
+From: Lee Jones <lee@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] rust: miscdevice: access the `struct miscdevice`
+ from fops->open()
+Message-ID: <20241213164745.GC2418536@google.com>
+References: <20241210-miscdevice-file-param-v3-0-b2a79b666dc5@google.com>
+ <20241210-miscdevice-file-param-v3-2-b2a79b666dc5@google.com>
+ <20241211115717.GC7139@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,24 +55,34 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241211115717.GC7139@google.com>
 
-"Tamir Duberstein" <tamird@gmail.com> writes:
+On Wed, 11 Dec 2024, Lee Jones wrote:
 
-> On Fri, Dec 13, 2024 at 8:40=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
->>
->> This coding style is pretty far in the functional programming camp
->> compared to the rest of Rust code in the kernel. I tend to stick with
->> a more imperative style to be more familiar to C folks.
->
-> That's a fair assessment, but it's a subjective area -- Andreas was
-> fond of the approach (in a preview review).
+> On Tue, 10 Dec 2024, Alice Ryhl wrote:
+> 
+> > Providing access to the underlying `struct miscdevice` is useful for
+> > various reasons. For example, this allows you access the miscdevice's
+> > internal `struct device` for use with the `dev_*` printing macros.
+> > 
+> > Note that since the underlying `struct miscdevice` could get freed at
+> > any point after the fops->open() call (if misc_deregister is called),
+> > only the open call is given access to it. To use `dev_*` printing macros
+> > from other fops hooks, take a refcount on `miscdevice->this_device` to
+> > keep it alive. See the linked thread for further discussion on the
+> > lifetime of `struct miscdevice`.
+> > 
+> > Link: https://lore.kernel.org/r/2024120951-botanist-exhale-4845@gregkh
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/miscdevice.rs | 30 ++++++++++++++++++++++--------
+> >  1 file changed, 22 insertions(+), 8 deletions(-)
+> 
+> Reviewed-by: Lee Jones <lee@kernel.org>
 
-I am! Let's not restrict ourselves to a subset of rust that mimics a
-language invented 40 years ago.
+Tested-by: Lee Jones <lee@kernel.org>
 
-Best regards,
-Andreas Hindborg
-
-
+-- 
+Lee Jones [李琼斯]
