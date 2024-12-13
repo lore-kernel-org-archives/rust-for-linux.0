@@ -1,57 +1,57 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CE11E25F8;
-	Fri, 13 Dec 2024 17:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA16618452C;
+	Fri, 13 Dec 2024 17:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734110696; cv=none; b=Uj846mjf5LA3PrId1ZV90qUd23K2t2h7pPggq9iqzNbSDIxmCUjwqbTc+d3dgb93RJ340lQA7PSVbvmTOne3FBOF9jMGf+ddmpVUdBo4UUgmrMtYeDsq7+zLql5Pfm+KK84hZKNhy32he3fR6gQOkdIqw7HwyCdMo6wXkXzIsIE=
+	t=1734112533; cv=none; b=jsbe3hUHejgpP4NFOf0e61jM9RXMSdKKQYFt6fEViKpoLLuv/cWVssQUXEOF8ht/FuzQTQogM4iB8m/WmCW4Mnp728Ma+iyn7CiH0EhKeDkIbQDZqPkU3MHUUpfdUjmvInMwFnM7BeT8bW7w9lRQ7DJqRi+sZBmwWECMFOlB338=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734110696; c=relaxed/simple;
-	bh=XeiDdqn+E6wo5Zj4adHw30JgRPe0PPB0gjeoDHKjNcM=;
+	s=arc-20240116; t=1734112533; c=relaxed/simple;
+	bh=p3OV3cxpvnjrKQbEtfJHlYZ3wSxRsZqXX/eSALSX55g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LtmQhQlN9XXXHWUEXDH666VkqBFyoQGH/m9O39bSIbPXnLzhuLrBSzl8IFIuI/MoJgvHMl9LKlf5GWUxm45P3CX5QM8CIp3/SG7n/vjyIOUB0CyU32grswF+mazFV0Bh/SfxPUy4ugIJ51dUejz+/WsicUq2wVWSgxegZbdlfxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jsQx3+cm; arc=none smtp.client-ip=209.85.215.179
+	 To:Cc:Content-Type; b=cOz8LZa19NVBqGoVmCmvM0SXtsXzbQ4bOgq2aHOLslQr/owc9iNcfHewRWdy1iAnZtc5szf3BAVqXe1e88jlxHDvBRDnuRw0y0T7cZvtVcDMkKz2bRkpzhRTTSfQaeDLSeMaPkptuq9knKzaEJ/K14bY/4qUAnOFDn9CoA5EPwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZNiODeu; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jsQx3+cm"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7feffc649efso269376a12.0;
-        Fri, 13 Dec 2024 09:24:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZNiODeu"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2ffa8df8850so19429821fa.3;
+        Fri, 13 Dec 2024 09:55:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734110694; x=1734715494; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734112530; x=1734717330; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XeiDdqn+E6wo5Zj4adHw30JgRPe0PPB0gjeoDHKjNcM=;
-        b=jsQx3+cm2ZyaVfqdOEKeRL5KaLs6xMs+dMJJPxZM0f/ZP3XoMAb6N4982IRi+5zpZj
-         qAqgYjnHANI90S2k5YbMcecWvLGGy3hrhHJ0+1uSoakDQR2bfMagZ2BmWH73HQKZJT0V
-         5hbx2Tcga73pLHzog+NQS+mkf/grMvPok+8XqBsxrvVZusnrUTgQlqm1Yre0BmC9gEZL
-         ZSo0mQaOzYzATNZ/P/yXZV5ys+U1YoFItQzhVDOmr9Y49wau9B27UBQcUMMjWGJ0UIuj
-         cwxLA/US+UcaDbEP+vQVQIfct2Vr99/KSL1ZdXHEjQvsHePHD+G/Qtryn9gvbcQF6J7F
-         StvA==
+        bh=p3OV3cxpvnjrKQbEtfJHlYZ3wSxRsZqXX/eSALSX55g=;
+        b=YZNiODeu67CuFoNcehiHndAkyD5ZQV5ELjQkaTgPWN9VPlgH5JR3MLlaOKWX3l2gZL
+         J5h0kBf0HjKGxfQIkW29DTcD90MHXpyRGxZ6SASc2CUg0pDrdU+SYEYP3PfcyWFvz20V
+         dlEFygDfuFSwNV01V4+rZiX1t7imeUkZ9aYHAi0KE6AyISzCT4C4ZUOr2Z5XTRp56LUm
+         Ge7f/ucGqjKtFOY/itg75Boi+0PXHGm4JbfypxBG5AtJNuj/3DxiNIQdZ1OFdi4DaFDp
+         ai3Wo7E4qQ7pTlpRQrzfdddm197nYMYEqkJEbBvoYBM4vVmdw3T82T4HAZB9/3pW18eN
+         1u0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734110694; x=1734715494;
+        d=1e100.net; s=20230601; t=1734112530; x=1734717330;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XeiDdqn+E6wo5Zj4adHw30JgRPe0PPB0gjeoDHKjNcM=;
-        b=fZvjGAttyhhn1fD1X/qmBeXJB1rv1YbqsbRCasrdHSnZtb/6f8Awhn+1kf02gZPsSq
-         bB15/eHgz1ov2xZLhDBW0yLWFfmrj7kFS4jOatJsbXS1FA0ojU9OxA0Ztu6nvnJysBeo
-         gRMGfXdqY1Jway1GyrTbX622Lm6alnzmICwtvVxTvXlq8RJcLvmo2E5Mr14gjCZpeBH1
-         6oOe0u3A71TRcrJZsOnGRyX+tBhoAXCsuPAnOiDdzEYgENlRDzPcDfH+dZJ18dlyVyYR
-         87UCy+sWyFfm87+/vOf1dqS7REVykH+tsCu1qKFJKmFBqhqoy5yp+6/hqaSL1GCndV8l
-         LAUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWctYNLEu50vE9Ng2+oAQEQ+VjNzNV0JF37e7aWPLgM1FzFr/lHcpAFzFyFZOlpdhm1O1WBBFNASl39nt4=@vger.kernel.org, AJvYcCXlKAUgybSI5MHz+9kfUSVxqeWAyeu7vwyQETGk0Qzri2GmVzLntOWlRWEhZKhK1xYYDZIAO8rWbyvKRSPf1mM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBtRJ32h7qXAQJ+KJX/yQu5aFBDOnImn2OeqTS5FdUW8Y+nqxQ
-	SiX8Wm7SA6WCsQeapYH1FxdK6eAn7BR80HqW3mRkh5Am3KZoMg11ddlMCrQkgaKy9GKDkvT6lSl
-	RChZq9lbcQSPNSIRkZndo/Y5Kn2U=
-X-Gm-Gg: ASbGncuGu/Ma4PIam6mv2Yo5+/V0vAOig8VMJD+wZugELGlw6hqd5ZMmkD4Ozy40wwO
-	gQeic146tp6JCJ4Zi+CfuGK12GG1nQSFCnyNEsQ==
-X-Google-Smtp-Source: AGHT+IGJDBsQSAoNDr28Rh9mkCMbo3opglsMqk0ofcgse3NQSRh901z/GPMRdSedrBwDu3neIE41tH70DQARrmyRk9k=
-X-Received: by 2002:a17:90b:4ccc:b0:2ee:a558:b6bf with SMTP id
- 98e67ed59e1d1-2f2904b6227mr2018495a91.8.1734110693892; Fri, 13 Dec 2024
- 09:24:53 -0800 (PST)
+        bh=p3OV3cxpvnjrKQbEtfJHlYZ3wSxRsZqXX/eSALSX55g=;
+        b=NLhM8swBkD7+xcaeShyBwZXrM+8pIkNfWl1XLKMR7DNtDCKliPJh+olfep6mrusHm4
+         fb2OCoq404zTNqBJl2dg3rnyRphRl3URdqM1mo5mgHvVOG46VTdMfKjfX5ozTt5b5rzX
+         UmGpl2u8t83t5t7UCcCVoUyH7K4fiw+ornydOEIs552E0JnSbP5EIwL3dOYJCS6EH3mc
+         bRPQYjeS96QbNXZzBnA5EcmZCsYjlWUPdy9Pn2cU2CeP1Xs7fF4q8mp8g1m8lryu08WT
+         Z13ROSKucRIGEO++fMMtHRbgTo2Tp9oy+4MivRx5cSLUTHMs5Eo7HZyNsL17x6qXLE8B
+         RdyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0Oewo2j9JRTN9Df+tXQiuUio1HZGvO+XmebofjjmI1zkZ/aFs6GxGYvDuZZQ6y/CB2S9Igd5uiHpjQ0k=@vger.kernel.org, AJvYcCWDwiW36NkEaQdVdl07N8Ppo36kTCJVAv4cMZMnxRVW67W8Rbus+/7mpm5wlebg5b5TJ1tKMTQvwy5yFLTwML8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDIAuZiLH9FIBS6dXwDixmKMFEVgLZOgUF3ihatTZVu7Nf35xV
+	0AmpNRAUQHzWsUJtixsyqORnf9vzoarTNff9ohjL4R07mmOZviLdTrDADymJd7bcJYLnIbNUILt
+	doku5hjV9p4fLTSE/3RF44lKyI04=
+X-Gm-Gg: ASbGncs453++kQ/k/8r/RlQn7ykknDfOOC/6dXKlZNeObxwrEZzGLzQXAioql8uYyFR
+	1FNKpnrkqGpQCxtoqvOlX/oDBv8cOlQcyyJf97kjFw33Ro9qi0xF+7w==
+X-Google-Smtp-Source: AGHT+IFOywdTPEna0dez64m8puagTHvJTv82BKhxxmX+nDi2aRCk3GbHibUmf+7Qe+loChT0PkI+fkfyjIPQBHUFP70=
+X-Received: by 2002:a05:651c:2115:b0:302:48fd:6922 with SMTP id
+ 38308e7fff4ca-302545b769emr12303521fa.37.1734112529590; Fri, 13 Dec 2024
+ 09:55:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,14 +62,15 @@ References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com>
  <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com>
  <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
  <L-1MAJJDE02BClBz6dbLWTKAz6RM33gupqt5fPEyX9tYoW43aDrrH4oY-OerHc17mpVTgy6j4e6_EauQQY8Viw==@protonmail.internalid>
- <CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com> <87pllvczag.fsf@kernel.org>
-In-Reply-To: <87pllvczag.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 13 Dec 2024 18:24:40 +0100
-Message-ID: <CANiq72kEk5y=As6rOSe6V7w7AV3qg7u3Dd+PKtwWzzDEi1a1RA@mail.gmail.com>
+ <CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
+ <87pllvczag.fsf@kernel.org> <CANiq72kEk5y=As6rOSe6V7w7AV3qg7u3Dd+PKtwWzzDEi1a1RA@mail.gmail.com>
+In-Reply-To: <CANiq72kEk5y=As6rOSe6V7w7AV3qg7u3Dd+PKtwWzzDEi1a1RA@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 13 Dec 2024 12:54:53 -0500
+Message-ID: <CAJ-ks9=_nO292bvG=ir1o8dLvc=MGdT__m0pU48-qn6YdwSJVQ@mail.gmail.com>
 Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
 	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -80,18 +81,17 @@ Cc: Tamir Duberstein <tamird@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 13, 2024 at 5:40=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Fri, Dec 13, 2024 at 12:24=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> I am! Let's not restrict ourselves to a subset of rust that mimics a
-> language invented 40 years ago.
+> It is also advantageous for the submitter, because one wants reviewers
+> to have the easiest time possible reading your code, and reviewers
+> will be, in some cases, new to Rust.
 
-It is not about restricting ourselves to a subset, it is about picking
-something that is more readable for the majority of readers.
+Implicit in this statement is the assumption that while new to Rust,
+those reviewers will not be new to C.
 
-It is also advantageous for the submitter, because one wants reviewers
-to have the easiest time possible reading your code, and reviewers
-will be, in some cases, new to Rust.
-
-Cheers,
-Miguel
+Anyway, I'm not emotionally attached to this style. Would you prefer I
+rewrite it using loops and conditionals? Whatever helps this land, I
+will do.
+Tamir
