@@ -1,101 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93892F24;
-	Fri, 13 Dec 2024 16:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592DD1E47BD;
+	Fri, 13 Dec 2024 16:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734105950; cv=none; b=fLuUvnZmzl1tvA8uvl00pdogbn88B3fpxbvXOo35DktpVfYfPf3ksljFX5hnihKk7iExgx3ALzjQByTvjt0EhW2GKpvbFJkC1XI0m3ks1gd/8/DP/5VTBCX269QpNnat3DSXmysu/xrfdPgX65Q8TUrHk9bhiOmKQB+0fj+b0e0=
+	t=1734107124; cv=none; b=WCDyT/0U1nQ0ZfaBctwjfaiyJXPOnubGqGDA7riJt9vS8iBePXuMAc+JWa239+RfuNVOc8qCNPQ2w1X6BKbAupKyecvwAQwTlcxHtvta1Ybn/JjoLL2syglXG+aXfnaaO2wmHgBneAYvF+dtH4c6pOxR6uBsQ5pEI74kClyP94Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734105950; c=relaxed/simple;
-	bh=3rLYhkJv0wVJDWqO6nVaBxFOTIIEYFwOow4rYd0GBLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xv4OQIaH6pMA/tLHscW8AsjYZnKzV79EJleopdF7oJUzmd/QZHhsXTNVv9JZsuC2D12h4d2//pjkIXxCAZiVByGaoSued5AFB9wdhNMRR+dSh1bnlf9r2m9XhF8H+FaHiN5FUTBafGVlpYB2GbX3t2evJrTM6EpE/dn77JwiIL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGWClciV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734107124; c=relaxed/simple;
+	bh=utTGiUY2KFTz5GWPj+z9ni89H11QDVeYdPSg/6nfzkQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LW6FrztdUOqucfgsNF2MDhnwcYawYGrM88RvVntK7Rv4xwD+7iaZMQrNvzY4ZXffE2n3RLpGglU3Q5y77htQo6pZZUOrlwQeFaTfNbTSHiK6MXNQr0OczmGbwr0nbZATM2HXsHPOQcjt7fja4FJpD+a37yzgAsZbLBqBDin0iKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAHV/BsJ; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGWClciV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD807C4CED0;
-	Fri, 13 Dec 2024 16:05:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734105949;
-	bh=3rLYhkJv0wVJDWqO6nVaBxFOTIIEYFwOow4rYd0GBLw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yGWClciVgeYIl2KzDKW70FLfuIP1W6yrjsJbm9mocK4RlUs+SZdrgFuYesG+CG2Ve
-	 bWudWvdTbhC1A7XTWIGDsA3yQnSFWKABNwYd1KvqsmWiBEN0dmMI4F0/ZdFXeZiJrk
-	 BX8oyMUlnIOsch9MlwdyKQMHv+x/lLRZDNDPzn6M=
-Date: Fri, 13 Dec 2024 17:05:46 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Trevor Gross <tmgross@umich.edu>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
- parameter support
-Message-ID: <2024121344-excusably-resurrect-d01a@gregkh>
-References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
- <4Dsa69UGULRGsMbRbwOJNp_puyfsSSFt1QTcYU9AL4azd8vbfEFFtc7YNSsGegc40AfCZqVqZETfxg4TggUlSw==@protonmail.internalid>
- <2024121324-overdue-giggly-bdb8@gregkh>
- <87frmrepo5.fsf@kernel.org>
- <I0v8YGJe3e1ex1oF3mki-7QKimYLCJHnBy6g1taHgoOFvpNmQSrSnsMGJyGS064pGJsJDsTsei-pInFRz5INWA==@protonmail.internalid>
- <2024121309-lethargic-ended-5f99@gregkh>
- <87ttb7d24p.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAHV/BsJ"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffa49f623cso21291201fa.1;
+        Fri, 13 Dec 2024 08:25:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734107120; x=1734711920; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=utTGiUY2KFTz5GWPj+z9ni89H11QDVeYdPSg/6nfzkQ=;
+        b=FAHV/BsJFtXfbXqzL5rWlmTV1qhFNyEDZBxugyMbKKMOjvvE0O0sCXyACoZ8yNh4oL
+         OKVzRw68bnEDODiz2baEHi4kVfqBP1CjoaAB6gxiupFvYSS0DuXAHfscHvI4J8f+DyPT
+         Rgo28Jh+PlU4i/vdw5cbHSd21cKvngub+dxyXzoMysQs8QrK6oaIWOh6AlgfRaxng7v8
+         e2oLw7PaWOBgR21TBHUn7k3XU7oRYiwnTZPjd2w8Lbc+goIuptPNWEZEb9kjrzANNlF5
+         Uzu3dCIoDBWCsBGnjPB5HooOqyTgKbwgnpl1qGsAmJmzmF5Au1Vj0A4QgPJuOyMCNaH2
+         K9Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734107120; x=1734711920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=utTGiUY2KFTz5GWPj+z9ni89H11QDVeYdPSg/6nfzkQ=;
+        b=BZBgIMPbHmFLAUafu46sgkAyI31Z8QRXfrh/astjL1L4YS7lEJ8AqKrHBrbjvaOL8I
+         N1Zg92fRlJaWQEizLU2qhcPA0LHuPl7D1IZIjjQ/xFGbf2IrcOOLUBhxk3ze5Iw/ru5A
+         KyKguUIqktKNGvMk5q1g+/1tCCQgU9uyCtHPudq+CZiDOuKK10CmGdD4g0EbmShlVYq+
+         IG1ZE6dUBiBM77PZmodMAn4+An7Bk5o4qtykVzWFiC8zuuczKRVKf2BAWqaS/JQBYx5m
+         enKfOdnRzf/VWaypss3xPaDNhzrPsSobz7+EAPocqj6fwz2cha+8XFOunx5MIpGXXbf2
+         bj9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVN+ikmeFAuGuzrcCHoWQYlIvNddZUbu6jtsZQsNqRUtJ/rtyaN4fvbJCtwT1AsvcDv1Pne68v7JfBOmiP0hAk=@vger.kernel.org, AJvYcCVWM8z87SqPceZhgFW63MiZqhF1i4o9CifjytaGRm5itTOGlmKvhZ3O9s7jOL5W4sTy1i6x4SUFCJnZYVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAlLw/f04phoBN6f/O6tpN+1P1nNePRphmM8oL4/KSlT9UAYcm
+	GgwVYPu7hdwht7MBuftMNlxoSjMhJwKv386oTeARDtU52wHnhE6IJpdyMo0tR/vi9R5toPn+EfL
+	2j5E+yagLMDDLa3Nk6Xl60ngMsNA=
+X-Gm-Gg: ASbGnctePXgkuwM21ucmIqcnJUvh2gkjzdyOLjyysd/qR74ByQ6fdR/OVNDbSFJ9dun
+	EzeEdfcyjBfuF/QUbNDFiDEIaUpx7h6UKtepYpvR+iX31NwkDs3lhSw==
+X-Google-Smtp-Source: AGHT+IG6+Z/vc7PfFQuJAFc69iMoTu2hkHUqC+2mW132HdtWerzfD+W5ZppSHbn0aM8OBx1kcQpyrVtjci4763bp12k=
+X-Received: by 2002:a05:651c:1546:b0:300:7f87:a65 with SMTP id
+ 38308e7fff4ca-302544cc311mr12540091fa.35.1734107120081; Fri, 13 Dec 2024
+ 08:25:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ttb7d24p.fsf@kernel.org>
+References: <20241212-rust-xarray-bindings-v12-0-59ab9b1f4d2e@gmail.com>
+ <20241212-rust-xarray-bindings-v12-2-59ab9b1f4d2e@gmail.com> <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
+In-Reply-To: <CAH5fLggwK0LXAsBnP3FtFHCnEzzBNNZfsCy3iJ6w=nT07CHgVg@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 13 Dec 2024 11:24:44 -0500
+Message-ID: <CAJ-ks9mTEcRg6=ZiYFX3ebHSYgMwTv692ufUdTCoA1vX5E1nNg@mail.gmail.com>
+Subject: Re: [PATCH v12 2/2] rust: xarray: Add an abstraction for XArray
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 13, 2024 at 04:38:30PM +0100, Andreas Hindborg wrote:
-> "Greg KH" <gregkh@linuxfoundation.org> writes:
-> > On Fri, Dec 13, 2024 at 01:24:42PM +0100, Andreas Hindborg wrote:
-> >> "Greg KH" <gregkh@linuxfoundation.org> writes:
-> >> > On Fri, Dec 13, 2024 at 12:30:45PM +0100, Andreas Hindborg wrote:
-> I'm not getting a clear reading on the following, perhaps you can
-> clarify:
-> 
->  - Is the community aligned on dropping module parameters for all new
->    drivers?
->    - If so, was this decided upon at some point or is this a fluid
->      decision that is just manifesting now?
+On Fri, Dec 13, 2024 at 8:40=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> This coding style is pretty far in the functional programming camp
+> compared to the rest of Rust code in the kernel. I tend to stick with
+> a more imperative style to be more familiar to C folks.
 
-It's something that I've been saying in review comments of drivers for
-many many years now.  Again, it was one of the main reasons we created
-configfs and sysfs all those decades ago, because module parameters just
-do not work properly for drivers in almost all cases.
-
->  - Does this ban of module parameters also cover cases where backwards
->    compatibility is desirable?
-
-No, we don't break existing kernel features, but if you are writing a
-new driver, don't add them and then there's no compatibility issue.
-
-We don't normally allow "rewrites" of drivers, but if we do, yes, you
-would have to implement the old features if needed.
-
-As you just seem to want to write an "example" block driver, no need to
-add the module option there, just do it right this time in how to
-properly configure things.
-
->  - Can we merge this so I can move forward at my current projected
->    course, or should I plan on dealing with not having this available?
-
-We generally do not want to merge apis without any real users, as it's
-hard to justify them, right?  Also, we don't even know if they work
-properly or not.
-
-thanks,
-
-greg k-h
+That's a fair assessment, but it's a subjective area -- Andreas was
+fond of the approach (in a preview review).
