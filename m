@@ -1,123 +1,210 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4275C1372;
-	Fri, 13 Dec 2024 07:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78D1192D70
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 08:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734073580; cv=none; b=BthLqh2yXwYO/yehbwAAen7XrVjEMzTntbzMM/uazQk2WYnuR+ubsSp5DeHDSdiKFjleXgVJITI2kD+d86CFBCeTBUfy4UxO8pOXVOv7rl1sbZl/LsVBlc9xYGiV8R1e8zYPrT/CVC7sH2vITGAA2mOBgZ61lVjB4we4d3f6iww=
+	t=1734077445; cv=none; b=azhEGYKZ9WxQlUe1x9cyf1ToSKk0BUBrc9WtKniw5DT8M0Dzn36Py7kTPPTB0Dg+oZOAPT7a5mqheInPk9fEcaKsaStMr1+7DgY/kIFtE6gmREA2uhZ1Mo+nmj3Se9ZRLAQaVuxj9tMtrGqL3Z2AeyQqx2+m+rqS5JpCHtKXpiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734073580; c=relaxed/simple;
-	bh=9XnvVYl+YZ24uJZB1nNo0oLCc3tEoJXLzFdrQlqruV8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W1gIoYbqhR7Ii+Fb0jt/pGLZOvnXJwSFgjd5rGDT2xESSeM3mNc1ygaVEcBkY2X7U/ovUyvfTmS/uLNzWhPo7BwdHp0zyw6NWqSqEXMjuAhmAVFNY2Sh55U05k4VdTIZNAnNBnEGlJhHVXND120NHH2CVo/br+sRN13yXmzWkRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GWHuvmh1; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734077445; c=relaxed/simple;
+	bh=gxKp9OWZ1E4bCe3ugvVAK3mWxjhZvuxJxLwyBzRtgA4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=A+te0XrYpht6rDRLDF0XMsW7/KOh1Q380nmOvqgq+UPms+VlkkynOXEd4WcJNpVcGX6YkcGSG4WJnEEltA30c9XBvgzX6Ecd3+cpIn5xjbVc/in0ivC9ZDCpF1oY9L7tGoibadxZVEnqTk0T/VZp9q2LDMbgLeAZF+0OIdAVF1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ymP8Ub48; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GWHuvmh1"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-aa68d0b9e7bso263244766b.3;
-        Thu, 12 Dec 2024 23:06:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ymP8Ub48"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-20d15285c87so18826325ad.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Dec 2024 00:10:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734073575; x=1734678375; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zxrQwrMDRX39hUvqMvsuz8UTw88tsq0nhYKLS4FpEXc=;
-        b=GWHuvmh1RUdZHF1XGUijnMqCz0CupU/mH/bHmbUSdXx3plUIShWnIvtKIhWg06l/3p
-         4jjOE8QkB12IDLY5IFrMiWnN36r1r2VCHm0dMJJooKKk8rFW+VSmln8RB4nipD07US+k
-         KxZjBjbSgH9RBlvrn6ZNiP2yDBrqOaSzKpy47mYpKqs7o2+g3mNBrw6kVU36WrZe61ww
-         rCuiZ2qGJGP4tHRMJn3HYPys4lXbPlfX8SzW8pREYSxvE4Gp7270dfgOQ9H3xHz5/fpS
-         BPIUGa9vbAjnvnEuBUuJndRqUOraPN9JJeAAeCIDf6QfVJFFvErYmCqARyY0g8VUyy3C
-         QOAw==
+        d=google.com; s=20230601; t=1734077443; x=1734682243; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rgsXvM3UIer1JGcfauEdf6Z3rvghq4bsXhkaui6/Vxw=;
+        b=ymP8Ub48CNKvZ+FivJvbLOd4LzfG5txNhiJhK6DbCujIBO3stkVobn4Cq3FrM6lj0t
+         Fy11kdnO0fbxtJgWBFiLkmQ1GT5BliMROcm9hhdRtrCQ+VC2oN2v2HvpqR2xk251X7TK
+         7Q0xOAFSjSKnH4tdr93ENp1OxKVhbqSRJ48Yhpja4qtZb2YCzi6Ze+0WSPMLgi0DDNuZ
+         hTfTrCuMmzKHl04V5dViuflWRTK8an7e4wLprwY/2Q8jz8m12sfOoBgv90gikgf092hR
+         KvlAstL9598I9slo9Om8WbrF9KKrcwNtPCQEaGikRVYctlK5BwqeAViyFglj+Wbogua+
+         uIHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734073575; x=1734678375;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zxrQwrMDRX39hUvqMvsuz8UTw88tsq0nhYKLS4FpEXc=;
-        b=Vhp3PLeRzJYTB0YVutNkRAjYV/FDaMBN4P3gTmyPBDj5BGxxADO10PBSQT/BH+X5XE
-         123mJpl6T5sNV4RJmFXH17zaeiUqYUnvQvmJHB+XEoSypha9FbQfmXkwqSvG1xMwqZv3
-         yVeY47UsFA4wLnstMS7s3+PIGvmVV4QfacA14tZJDuI9oYl6JWSt3IhJdz4JHtn/3wJs
-         Tb+avWJ9sjPP3D7jpUIQE4gDx7GG98cz+N9ji7orU1QuLU+F8ZIj3MqR76FgAzPWUKsJ
-         5Hyq8/PnBuc0zRBeevXChLEau6sc0BZYk5Ucwe4otjPwVfrWxtRdVBCsoXpTLcQdsz19
-         wg6w==
-X-Forwarded-Encrypted: i=1; AJvYcCU0NSTGBUksVKxgtaBZLvl+S9PiOD1x9HFvu/nlw5y/OsO6frEV4EDrXOs2uueDXDOpLUf+@vger.kernel.org, AJvYcCVQAiUBT6xkDcPdDhXEph+6bbZ6+uwsSn2fp2MJKSKgPkrLwG0wvzbjTBeV5duFIM7680P8Eid+ffNs@vger.kernel.org, AJvYcCVo60E2Lj8oD73OwEZkIhYSOWbbC0B/Hx7mF/t9j0an8eJgwML2k6s2baI8PdYG9DPB4bEEuq2QnqNNGlMQ@vger.kernel.org, AJvYcCXtctm6F//BoL9A04NE5tK+poqKLpwzZIDfinqerYprNH3Yu7zRwW0mEqtdjpuvTKrWzvsuCUQEpfD0@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQjrNwzos72EJfJDSe4ZWEx0te7g1fYQBX81f0WFLp53SCA0WI
-	LtQBaGyz115I7Pmo/tieU+B6J8N33rcqPcZAFpL5UKWXk6N7yzuH
-X-Gm-Gg: ASbGnctXwUdW2VnoaBtTfUCyeZMcNgnV5myvBQu2jKbyuKHRW4KmDyMEKVX3/aZ20LC
-	uZ78bG/v8SIMwBS2H45C36S0cw8H80fCzIGIn4NrPDyNSl3vbKusdPxY29Of973qZWUJhdICeJC
-	9fhXBHtkUdH2gxoT5X7asI699niF0dFLlYhvHtBcVkXKCDkhIwyVuZrPQA42JkpWyFRM0vGFV81
-	7CTJMj1cEkmhtj/+B9QUzrBNbq4J0mcXaNvUXXj/cLpdoy/SHahEdnbTsPGyNQWroVj4umueAXr
-	iBc0IKsdu5k228FC2ena68r0p9wKK2OExQsV0AY0m06vYF8EMotpOTzajqdFZr+FMnMs6Em/Csi
-	BawChY2cuTIAE
-X-Google-Smtp-Source: AGHT+IHFJ+kRGpSorLtHc8TbJrTe4EAI6jr1TsoG5rRi6v2qDv0r5gf2yVynewdjhGrIVYCgXoTJJg==
-X-Received: by 2002:a17:906:6a04:b0:aa6:800a:1295 with SMTP id a640c23a62f3a-aab778d9d9cmr155786966b.5.1734073575257;
-        Thu, 12 Dec 2024 23:06:15 -0800 (PST)
-Received: from ?IPV6:2003:df:bf0d:b400:9583:b351:67da:b15e? (p200300dfbf0db4009583b35167dab15e.dip0.t-ipconnect.de. [2003:df:bf0d:b400:9583:b351:67da:b15e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa685b6cf77sm687526266b.83.2024.12.12.23.06.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Dec 2024 23:06:14 -0800 (PST)
-Message-ID: <00dd07c9-21a6-4515-9b62-351c6aff2d1b@gmail.com>
-Date: Fri, 13 Dec 2024 08:06:13 +0100
+        d=1e100.net; s=20230601; t=1734077443; x=1734682243;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rgsXvM3UIer1JGcfauEdf6Z3rvghq4bsXhkaui6/Vxw=;
+        b=Ud2ex2Imi8aAyCG9NZc26zCtAXdqu7PBXTIa2lU+0ueTXyz3AyMipl/Nqm4Y5eHxH/
+         8N0LiymaR/3ATJ82E/G0Pjf+xmkrQ2tmoi2nRJB64HSZvXpHRGV3R5VEsq7fcR67IUnw
+         hicd6xfUQkcqLZA5fSSilUUs7tGXrhLm33DrWb/xUu5OWscSYo5i9ggT/lp72icmuKG0
+         p3PrJWhlGGSuHgSEsDGapQThY/WI6vVWRmaU4GtJCNVK5QcPkohMNFB5fyPEBwIN/94U
+         itulqjRFINZ2QdvbQ7UrDRdcT19muT1zgFwdkhSBR7jdv2EOu4TpOg9Tr+s2mdPs+g7l
+         Ja0g==
+X-Forwarded-Encrypted: i=1; AJvYcCV5MGqeggvWx//pi4lJ4E8cbDzGcCxvqMqEKzGiLF3gxQ4MTHgrIY3Tz8T1m/IMbLmXMMRoRG1i7StBLe+bvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhxaXxLjp71jKOimbVKM2k2nltnz6y4gJ9vL6uz2dSMybqszAT
+	0fkV9su6EaAPUulj9srU9ik1o4c5iBr37uOtz7JCQXIkpMkDntDabvvd8qDbiQLZ5skd+QBnTgK
+	nv2wq8E02Yg==
+X-Google-Smtp-Source: AGHT+IHDu3GVbZ1pnH0VuSdBAIf2UY7StTwtEWlT5mWvGAfTV/jztnEqSKPuIq36u4YTTsz2rnXWppJalLEdnA==
+X-Received: from plbjx6.prod.google.com ([2002:a17:903:1386:b0:215:5322:d126])
+ (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:ce01:b0:215:50fb:ae4a with SMTP id d9443c01a7336-218928bc06bmr30106525ad.0.1734077443036;
+ Fri, 13 Dec 2024 00:10:43 -0800 (PST)
+Date: Fri, 13 Dec 2024 16:10:29 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/16] Device / Driver PCI / Platform Rust abstractions
-To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
- rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
- a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
- fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
- daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com,
- j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com,
- paulmck@kernel.org
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, devicetree@vger.kernel.org, rcu@vger.kernel.org
-References: <20241212163357.35934-1-dakr@kernel.org>
-Content-Language: de-AT-frami, en-US
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20241212163357.35934-1-dakr@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241213081035.2069066-1-davidgow@google.com>
+Subject: [PATCH v5 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+From: David Gow <davidgow@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, 
+	"=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, Rae Moar <rmoar@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Matt Gilbride <mattgilbride@google.com>
+Cc: David Gow <davidgow@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12.12.24 17:33, Danilo Krummrich wrote:
-> This patch series implements the necessary Rust abstractions to implement
-> device drivers in Rust.
-> 
-> This includes some basic generalizations for driver registration, handling of ID
-> tables, MMIO operations and device resource handling.
-> 
-> Those generalizations are used to implement device driver support for two
-> busses, the PCI and platform bus (with OF IDs) in order to provide some evidence
-> that the generalizations work as intended.
-> 
-> The patch series also includes two patches adding two driver samples, one PCI
-> driver and one platform driver.
-> 
-> The PCI bits are motivated by the Nova driver project [1], but are used by at
-> least one more OOT driver (rnvme [2]).
-> 
-> The platform bits, besides adding some more evidence to the base abstractions,
-> are required by a few more OOT drivers aiming at going upstream, i.e. rvkms [3],
-> cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
-> 
-> The patches of this series can also be [7], [8] and [9].
+Hi all,
 
-With v6.13-rc2 and Fabien's regmap/regulator/I2C on top I gave it a
-try on x86 with qemu. Additionally cross compiled for arm64 and will
-try it on real hardware once I have it available. But previous
-versions of this series have been fine on that, already. No issues
-observed for running the samples and for the examples/KUnit. So:
+v5 here is a small set of fixes and a rebase of the previous versions.
+If there are no major issues, I'd like to land this soon so it can be
+used and tested ready for 6.14.
 
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+This series was originally written by Jos=C3=A9 Exp=C3=B3sito, and has been
+modified and updated by Matt Gilbride and myself. The original version
+can be found here:
+https://github.com/Rust-for-Linux/linux/pull/950
 
-Many thanks!
+Add support for writing KUnit tests in Rust. While Rust doctests are
+already converted to KUnit tests and run, they're really better suited
+for examples, rather than as first-class unit tests.
 
-Dirk
+This series implements a series of direct Rust bindings for KUnit tests,
+as well as a new macro which allows KUnit tests to be written using a
+close variant of normal Rust unit test syntax. The only change required
+is replacing '#[cfg(test)]' with '#[kunit_tests(kunit_test_suite_name)]'
+
+An example test would look like:
+	#[kunit_tests(rust_kernel_hid_driver)]
+	mod tests {
+	    use super::*;
+	    use crate::{c_str, driver, hid, prelude::*};
+	    use core::ptr;
+
+	    struct SimpleTestDriver;
+	    impl Driver for SimpleTestDriver {
+	        type Data =3D ();
+	    }
+
+	    #[test]
+	    fn rust_test_hid_driver_adapter() {
+	        let mut hid =3D bindings::hid_driver::default();
+	        let name =3D c_str!("SimpleTestDriver");
+	        static MODULE: ThisModule =3D unsafe { ThisModule::from_ptr(ptr::n=
+ull_mut()) };
+
+        	let res =3D unsafe {
+	            <hid::Adapter<SimpleTestDriver> as driver::DriverOps>::registe=
+r(&mut hid, name, &MODULE)
+	        };
+	        assert_eq!(res, Err(ENODEV)); // The mock returns -19
+	    }
+	}
+
+
+Please give this a go, and make sure I haven't broken it! There's almost
+certainly a lot of improvements which can be made -- and there's a fair
+case to be made for replacing some of this with generated C code which
+can use the C macros -- but this is hopefully an adequate implementation
+for now, and the interface can (with luck) remain the same even if the
+implementation changes.
+
+A few small notable missing features:
+- Attributes (like the speed of a test) are hardcoded to the default
+  value.
+- Similarly, the module name attribute is hardcoded to NULL. In C, we
+  use the KBUILD_MODNAME macro, but I couldn't find a way to use this
+  from Rust which wasn't more ugly than just disabling it.
+- Assertions are not automatically rewritten to use KUnit assertions.
+
+---
+
+Changes since v4:
+https://lore.kernel.org/linux-kselftest/20241101064505.3820737-1-davidgow@g=
+oogle.com/
+- Rebased against 6.13-rc1
+- Allowed an unused_unsafe warning after the behaviour of addr_of_mut!()
+  changed in Rust 1.82. (Thanks Boqun, Miguel)
+- "Expect" that the sample assert_eq!(1+1, 2) produces a clippy warning
+  due to a redundant assertion. (Thanks Boqun, Miguel)
+- Fix some missing safety comments, and remove some unneeded 'unsafe'
+  blocks. (Thanks Boqun)
+- Fix a couple of minor rustfmt issues which were triggering checkpatch
+  warnings.
+
+Changes since v3:
+https://lore.kernel.org/linux-kselftest/20241030045719.3085147-2-davidgow@g=
+oogle.com/T/
+- The kunit_unsafe_test_suite!() macro now panic!s if the suite name is
+  too long, triggering a compile error. (Thanks, Alice!)
+- The #[kunit_tests()] macro now preserves span information, so
+  errors can be better reported. (Thanks, Boqun!)
+- The example tests have been updated to no longer use assert_eq!() with
+  a constant bool argument (which triggered a clippy warning now we
+  have the span info).
+
+Changes since v2:
+https://lore.kernel.org/linux-kselftest/20241029092422.2884505-1-davidgow@g=
+oogle.com/T/
+- Include missing rust/macros/kunit.rs file from v2. (Thanks Boqun!)
+- The kunit_unsafe_test_suite!() macro will truncate the name of the
+  suite if it is too long. (Thanks Alice!)
+- The proc macro now emits an error if the suite name is too long.
+- We no longer needlessly use UnsafeCell<> in
+  kunit_unsafe_test_suite!(). (Thanks Alice!)
+
+Changes since v1:
+https://lore.kernel.org/lkml/20230720-rustbind-v1-0-c80db349e3b5@google.com=
+/T/
+- Rebase on top of the latest rust-next (commit 718c4069896c)
+- Make kunit_case a const fn, rather than a macro (Thanks Boqun)
+- As a result, the null terminator is now created with
+  kernel::kunit::kunit_case_null()
+- Use the C kunit_get_current_test() function to implement
+  in_kunit_test(), rather than re-implementing it (less efficiently)
+  ourselves.
+
+Changes since the GitHub PR:
+- Rebased on top of kselftest/kunit
+- Add const_mut_refs feature
+  This may conflict with https://lore.kernel.org/lkml/20230503090708.252431=
+0-6-nmi@metaspace.dk/
+- Add rust/macros/kunit.rs to the KUnit MAINTAINERS entry
+
+---
+
+Jos=C3=A9 Exp=C3=B3sito (3):
+  rust: kunit: add KUnit case and suite macros
+  rust: macros: add macro to easily run KUnit tests
+  rust: kunit: allow to know if we are in a test
+
+ MAINTAINERS          |   1 +
+ rust/kernel/kunit.rs | 207 +++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs   |   1 +
+ rust/macros/kunit.rs | 168 +++++++++++++++++++++++++++++++++++
+ rust/macros/lib.rs   |  29 ++++++
+ 5 files changed, 406 insertions(+)
+ create mode 100644 rust/macros/kunit.rs
+
+--=20
+2.47.1.613.gc27f4b7a9f-goog
+
