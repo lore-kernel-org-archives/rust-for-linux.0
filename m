@@ -1,94 +1,63 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0797192B75
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Dec 2024 16:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B92138DE1;
+	Sat, 14 Dec 2024 17:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734195566; cv=none; b=SuPhDqk4yQQlMp14if36VeUoC5wWMEpaay7+Gxa+ngfoJcaBOdfTawN3QqSZpLc5imsF7n2vHN8v+XHdBp6YqndLUtQF0fxoPntNZQW6nZZdihCSaEgxpeIaIR2lwMS20iMN3IaCIQB3KRcdwv2Sha55XVMeMCvjaEePe5vBlh4=
+	t=1734195959; cv=none; b=EkM8jOQolfHv3tUDpTQIlX9rbsqFao8Ldh0RKLbBG4O6qllM0VDYOkCTRlglyeUx+iYIf84eRP6fz2QrAlRirOuRM+RC6Rpzufu6eHNrSVJKYDgQ8ABui9tLPuqQus01BTF8MS3FGAbSzOcfIlzSrUa+PwQStWU/l3iZ1ge+7Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734195566; c=relaxed/simple;
-	bh=VpwhmVuFREzWXVXH8gnnNco4qEiGRJv9gM39JCdSzBY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=on4sEEdx6EjHUucdjiV14ahDadpMWLMgbBJXELHgmYk2XY5YG+mBPXOyZ7nAFp6lYupQDy5VZmnVj9T3tsUd9fto/ej8QBJGU2wdu3d5jkhOorHdocVHoRS1cgd36tZYbw07oB6uayODAgB0AibgqxLiIHWmpDoAAK07o1707U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RmCaU2Tg; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1734195959; c=relaxed/simple;
+	bh=+DCu4r5mxOtfxGHi64zlIxjM5Cmhhr81L4L4/oQ+g7M=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=O4WQGK4x83WhWsHN+o17nANAv9Va/ElnCFkaoUvGTSgkVGtlN5teTFtkwI+/40aWp5QO6pwQwcVeXV3Kf9uQ2EcGTB0CWiof0/9tLLe9nfJwW/0FzhlSVzE39PkOdiq+eA39H4aM0K34gmAWxf1/QA69i1oeM+iJ5pQLQjNTNw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRZws376; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RmCaU2Tg"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9ec267b879so443806266b.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Dec 2024 08:59:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1734195563; x=1734800363; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UQ6dwpHnhWlqcuUvdCT/LS27IX2tWCaBK6lJ5BI2H/E=;
-        b=RmCaU2Tg5lZLvfiEvZqpFyXTBHzpbg3XGsu563/fhZbzlYVM4Kv71JI2uV1QineC9H
-         e9iKRhf+T9iBdz0cgCd9hbZyk7ghfTDr3GPEMwtjnbLcmEIzUe1/79sg3c9ct81BGN1Q
-         lE++Gbk334D0/Ap6AGJXK/kHqQJ0XzR2+0crA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734195563; x=1734800363;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UQ6dwpHnhWlqcuUvdCT/LS27IX2tWCaBK6lJ5BI2H/E=;
-        b=Xp+FwAcIV4xCK8wohwD/6amkfWNZk9oBJ0WDjKZbxqkJ2gEQSJYaQHyWwiG5KnBIvp
-         oG7cqg9DcRKAkVbsNNnsGQJGgLtBzXlR2VgxkR7lPxKTYm+fyfxxKfWYrqLeHr05gpAH
-         FBXIBx3miHOaTNFPQHvePTa/8a9qHDFfY5tDyArY5YYc3T4UrxGWJ2+HWeZrvckepeF+
-         wDwouJGpN0S8FAEkQXsRwv7ya9IdxvHSAZcpbLWSe+Zh2qdKG4NKY7rxt/uhs/wR2Rwt
-         BThzqAgZd0IR51aLodu2HrPpW/uK229/82WEq6tNJ/0iLth4a6iKZxLBsVKN3IPtskeY
-         yuhA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZAi3mKgt5+VPTMz0oeCJ5bw6He5ax/S9l2H7rMHv0U2vU3Esibqw9CW9lG55MYHnprP5d88Lo7gHqZSNUNA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/EOyKZfJynoWaDUYn3+l9ne/yA8Y3dtCRJI2ZKVV5BVdLMPdZ
-	F0niuisfb1PdYvt4bCnADgBJxiUYm2SL/dEeOhDqbvmbgwcqqnkWW+fbLvl6h6W1J1XNUL9MJ1k
-	kxu4=
-X-Gm-Gg: ASbGncvRSKvEffDz541PCFqyB1GNzxW4/avrfSn7HBjuhga60cMZDoZp0IafR0ni/c4
-	7OqnodEMECDlBSzRrRcixgTueX9c8ykWowzfkSCO1LkZO9T6OeVczipDQw91ENTc8uqhKwLQQae
-	kypaEnIE/M6vTcksBLdg9H941xTQtcysDFj8klxyl+eyMhWcUsOKvqc+T0VkKSL6pO5BE0/DdM5
-	VCvRHK9tmNr0ypcmtnde6EONGF+Dkv+hFGrAxUYD12ijEa85WpYwhCnysP/qgsLDhmlh2o8Z9ej
-	v3pg761B/ASGPTtDk6jpFNU1bJmbrOw=
-X-Google-Smtp-Source: AGHT+IGzRZiPGEvpWYPxDnbxHJN5FRI+w7gvmWsAClV82gwg3G9fhqNDxKkLObeWrVSiYMw7shwOVg==
-X-Received: by 2002:a17:907:6e87:b0:aa6:a966:da12 with SMTP id a640c23a62f3a-aab779b050fmr712800166b.29.1734195562888;
-        Sat, 14 Dec 2024 08:59:22 -0800 (PST)
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com. [209.85.218.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aab960681a4sm113243366b.54.2024.12.14.08.59.22
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 Dec 2024 08:59:22 -0800 (PST)
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa6a618981eso437125266b.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Dec 2024 08:59:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWksUaYt8MyO0NauDZ+kDGNmSW8iJRcrxlqH+51VnkW14RwNOv5TuED5wP0nTWBqvgxhx7VZGXBY3Nn4ec5rw==@vger.kernel.org
-X-Received: by 2002:a17:907:2d20:b0:aa6:b5d8:d5c4 with SMTP id
- a640c23a62f3a-aab77909d77mr776435366b.17.1734195561732; Sat, 14 Dec 2024
- 08:59:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRZws376"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5196CC4CED1;
+	Sat, 14 Dec 2024 17:05:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734195959;
+	bh=+DCu4r5mxOtfxGHi64zlIxjM5Cmhhr81L4L4/oQ+g7M=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=YRZws376nO0ZpnReD7qdYWWizXxxKp2fwmzDoCMUCsU68N9NzR3QUa3PUjdpR//R6
+	 NoK2Cf6502cvl6dMRc2QXkIl8JnOgvWfqi4lJvMTuOfDCEdIXXyXfC3s+dsDHdHBIu
+	 x7w6bzibIB1k/3MY8ByiTkEatJgpLfAqaCDoN1OA3EzgfBWCnfdK7GT2EByt9c7lnU
+	 7IAVCbePJntjBzDj65KvPDTxQLi21MDFA5nEmRX38n4MztGP+uFfo7EfYeFXgr+UQI
+	 GnVk2cRD+lNuha6xIESX6rpob4ILMTGre1FYyvxdJG8ptZPLxJ+zs2Fsagi1SBzjRM
+	 eOHCvjy/4GfdQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34D45380A959;
+	Sat, 14 Dec 2024 17:06:17 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 6.13
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20241214065217.195385-1-ojeda@kernel.org>
+References: <20241214065217.195385-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20241214065217.195385-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.13
+X-PR-Tracked-Commit-Id: 7a5f93ea5862da91488975acaa0c7abd508f192b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7824850768aafe0e69ec6586900cc5c1dac94fe3
+Message-Id: <173419597590.3359607.8070490146368872321.pr-tracker-bot@kernel.org>
+Date: Sat, 14 Dec 2024 17:06:15 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241214065217.195385-1-ojeda@kernel.org> <CAHk-=wgXdJswe7JWZ2G6m11rL4Yxatrz_iFBKpqCO5xHPwMyJA@mail.gmail.com>
-In-Reply-To: <CAHk-=wgXdJswe7JWZ2G6m11rL4Yxatrz_iFBKpqCO5xHPwMyJA@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 14 Dec 2024 08:59:04 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiHC9ATW72NVqM64kFjcO9BhMR+Hh1oLJrn0PZ7xcK3LA@mail.gmail.com>
-Message-ID: <CAHk-=wiHC9ATW72NVqM64kFjcO9BhMR+Hh1oLJrn0PZ7xcK3LA@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust fixes for 6.13
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 14 Dec 2024 at 08:54, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> Hmm. Is it just me, or has github become almost unusably slow lately?
+The pull request you sent on Sat, 14 Dec 2024 07:52:17 +0100:
 
-Just to clarify: it did end up working in the end. But even an empty
-pull - when I retried the pull after merging - took two and a half
-minutes.
+> https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.13
 
-                 Linus
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7824850768aafe0e69ec6586900cc5c1dac94fe3
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
