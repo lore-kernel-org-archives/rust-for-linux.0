@@ -1,98 +1,103 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA2A1C3C1D;
-	Fri, 13 Dec 2024 23:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCABA522F;
+	Sat, 14 Dec 2024 06:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734132179; cv=none; b=lW8UvPhhSlK2kjvbs7qNURqS33J+FrLx7SmUXWIZtuCn/0S1r57UIbYCkNzA6UuTXxLoR7l9rNQhsAiaaTf3yYM/S1y/yT2Gs9zblV4C3WYyQ/PRGUZHqfiiuK2zRbF46uDZR4U9lw7eRCjjUDC5tyJoFUeem8M5VvrOp0J2ncU=
+	t=1734158120; cv=none; b=SKoZYpm3Kecde9wpzwSLQo83f8gfeOpNvmGx4/BGMqSNABb3czOyvRA65D9QicHZKoSnNxowyFro0PiJNto5LawweT9+uOYUg1bVhX1tbvOL8lrcD5UL46KA89RsAfTVYohu5fRfhmR0EWqCE+Ezs+ezk5XbcY1+dKxop2tQI4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734132179; c=relaxed/simple;
-	bh=V6nLkJ+6VLZgE10ewA3liyVk+k3+WLQV8J7Rp4RqhFM=;
+	s=arc-20240116; t=1734158120; c=relaxed/simple;
+	bh=zFKziE+ipoVbd2wXkCULZt2X9OhiD1E2pZBMKUsBaRE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T/BpWCre1AB4KmnbRQVWp6KaogGT19yBC0lxT0uz4m+T8bq8FUP1IQD0Zi+/XsvRcVSSj0QUUbC9EJGQ7FncK24EnkS78eq7E7wW6e4tN2IvX4DggZBTh0dU45UagDxYylmVF2GWBnHOZXyl9xmO73I5d6ILdJEoO9I/Nldww/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g3PYQe+1; arc=none smtp.client-ip=209.85.208.177
+	 To:Cc:Content-Type; b=V8mjN1CNWctk1jTVtQtSvPF69y+GrrzqaXdGISBtnbWno4erADIor403v1IdCFb33090Q9wEBxv5hCkpWTdYyTsIQTG4UXvP3aZ0Ri4F4p5c4M+yO+8bvrD8Lli4R0tCirckojKkuPdvCjz0Evw8tj1OmVkOx/BRFlviDW35nco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HJhCI6I+; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g3PYQe+1"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3003d7ca01cso21751191fa.0;
-        Fri, 13 Dec 2024 15:22:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HJhCI6I+"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21634417587so3608295ad.3;
+        Fri, 13 Dec 2024 22:35:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734132176; x=1734736976; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734158118; x=1734762918; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V6nLkJ+6VLZgE10ewA3liyVk+k3+WLQV8J7Rp4RqhFM=;
-        b=g3PYQe+1Rugf6f3Dk75wGz7ECU8CEhWuKiKj/P/necg10GhTlUuGiRT53gEtfwqhCD
-         OkoyDm8DGXmNsoGUgMWYc3GE3CZV+nfNtGFea6ZvXpQXBBLv0CcjjP+x9anooBqKZxgR
-         s1XJmDRJAOQYhrNL045sg1rsbjIDOUcDSVW/yJGF6mZFkMd2tRQC1DZ7TDje9uxMKn/c
-         1u9dhTSUfaAi9POQCmy1ZqgLFyPkAh7W02MTPFoJ/sfnQc0mVdaT8WQxqr6FlQUJaqmj
-         EqdLSE2AgWuwLUagBimMdTHOdvn7ETNGF8XaX5XMMgj1cddORepBscFzsJ9X18/qTQO7
-         3KZQ==
+        bh=czn2tePC66dPj1Yi7rQxNU6WF4uHph8JSF5w70bMmx4=;
+        b=HJhCI6I+eYj7UBSe6Sdc+JtOeJxml081SY6EGSqBfMuABO9XwUqb2P7+mj5l6fRrrY
+         4cGbvLqVt7OzSYVan63Oj+UhmThDziXPc00ZpsyP4A2K76O8cmIhZcFQ7VCBiCbzxjsH
+         nYZcBJdumLl8EN2bZYPS018RBEZNZ8n7xuMVpQVQl846U2w4WH+f9W9WiPYJRrKUivjT
+         9cq6SRh0dXSxH+I0CtHiEN/ktksmCXupeF/ZUYK8tf27KunkaJttNMygCcfeNrW+9L6T
+         0gud3BMzy4YabKwer+7/JQ5A09N9dXxcGTeGYLg5h+XZ/oiKN28j9ScU3zpQvCQMaJtj
+         FTYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734132176; x=1734736976;
+        d=1e100.net; s=20230601; t=1734158118; x=1734762918;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V6nLkJ+6VLZgE10ewA3liyVk+k3+WLQV8J7Rp4RqhFM=;
-        b=KiBpTnJqGdx/5DCiMXc0K00KSrDA4/Kefnkud9dKJmC1XF9q02WubD5L/HSNX84CQf
-         Ozg0MTrkCerUwSfeoIg2vE1RM2rqLQnm44YQa06ZwkvX3yiNoEJzRqhfkOQsI3ZSwXFB
-         9OG2h6JlxTddCa6PehuhtcNE4ALpZB26AFDo/V/gD4fp8ieacUMfuIjG9DPUiGks3fE5
-         pVM4FAW92YGmdMi+xW4+f/namF5L86XMU/t360Ml9IStOO1VUb7esNftzTctgfmczDCe
-         TNGL9XGU0H4y6cD7T76/pb0TmBZ3Fy0uJefqFia/pZdAxxD1WGbLx7e2ahXM8uc+JIE3
-         QWuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCcw6nUl8q3gkG3tY47D8iIv5pSH6ZhF+qGt9Dxf7LfJmUJ+1c3CphJiDDJ0YX/wI51raAR4ZANKZDZtoSv2c=@vger.kernel.org, AJvYcCUCn2BQmXpmy5jJX0fae0cet5ZjggBkdsTZHB2Xaf9Ia2hs1n7A3XOCV7yoiOYlYoxgx0FHf40CY5sV44+i@vger.kernel.org, AJvYcCUt2kc8JeTqKtnBaBrVeO4erejV4seaV4+c1ApiPsgm6Vm2nKxN8ZD5KPABkE10ocpNxXA3jp2+NCGLFq2c@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+RHYn2eHhSb60LrnbmZe26fmIH5vhrr6S+ccoSWFNrtvv9+yi
-	QWhF9/HEcSytDkeQpoPROlpvsz+ly92rJLa9Nvi+9/lzZR/lru0XLVlObH+o/Vu4mOHEL9LqKf5
-	X+7MlEAryk5/D44mDL2NLvxs+bpk=
-X-Gm-Gg: ASbGncu7CQhNvgfbO07iXalVj5ArEoy1typnMeTBGYR670p0LOYb5arTlWwBuCBDsgl
-	ODmRIi8eIopkKos1D6AfxshoVOHpoUzlK8PaDJdIWlj53PSHbSg8j7tnch35ei3LweNreI0qQ
-X-Google-Smtp-Source: AGHT+IFmY1TQVEvLWSJ44CGLliUIslxwkoSHnsNknATRCm7EAtso74d0C01/m7J1p1lYFVNhIQmLcOp/vl+O02BqnY4=
-X-Received: by 2002:a05:651c:1582:b0:2fb:54d7:71b5 with SMTP id
- 38308e7fff4ca-30254462636mr16865741fa.22.1734132176158; Fri, 13 Dec 2024
- 15:22:56 -0800 (PST)
+        bh=czn2tePC66dPj1Yi7rQxNU6WF4uHph8JSF5w70bMmx4=;
+        b=vA72Uvb/UWj51/zcpIv3uXKQphKTk00VufuDoI0Kj2Xlyvf+cjLF3Bk7sbS5TtUDFI
+         kAnNl3lpATOfBTw3PjGPqtsNP4MmrGnXJ2f8R11UjTWY5IourgXUxG0SOHs0QrhTASVr
+         Gv/M9zjlcWIVfAD2+QjceqEai3cI7fuy4CfZ9abCK3zIz6AuvMjxFrSDCNmL2hylLzKg
+         kO386TIYR6aepcV3n1YZoVhStO5ue4abQ84B5nrORLC/CUibHpwBTnakZ0vwlCwqx0yT
+         KhoyI7gBA+hcLZEMvHYNfTPsRgIoyhBdXv0dBcB3wYLvNihyeKOfiRV/TwVf8eC1g8A/
+         18bg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHeKfsk58gp5rbZV4xHGpvi6jsUb82NHifTF294PpjM8jBpEuieg62T0JtBNkgZ/ItGQuhqavUpShRUNQ=@vger.kernel.org, AJvYcCX7IvRf5vTNGsq7TXnx+JkbJKk37ApfcF9xewqBsM59KDIXsKp0Soy8Rm3D8xIn/+9AiZ0bCTMqKB3cdRWZPRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJIyUwMR4lOJBoAbu8yxVlP+zxpR8hgFwSWOS4QAYpA437tdab
+	NU7U06s8U6AsMqWjpw8kfnzb2uYqGpfpm1CfQ+rildF7Buiya4EtjSTJBilbSx26IyBo9JrLYSH
+	dBKZM5fq2mXzbEKNIAug9NimiATMWRsrZ
+X-Gm-Gg: ASbGncuLiPcyzD/KCHIZbrW/z/dumVR0hanKAsytiAC6e0Nd9VtiqZm9SKpcBcD0RMt
+	j8XQczgfJvvmsmqutqBVPrGgU+DYr44m2yOrn7w==
+X-Google-Smtp-Source: AGHT+IH6zwBEOjsZhIdW1ZC/oKRUJnDIyzp5DRFpEUSyWKCG353lhiAS0MKdqsbFxiMXrFEbfuVTq3Go37U1wJDNgKY=
+X-Received: by 2002:a17:902:ce8c:b0:215:8d29:af0b with SMTP id
+ d9443c01a7336-21892a47c21mr30163265ad.14.1734158118104; Fri, 13 Dec 2024
+ 22:35:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241213-rust-xarray-bindings-v13-0-8655164e624f@gmail.com> <CANiq72mUoDFZuJZsfEbodXtXsVoHAXRDO27gBES3=uAOGZ6kfw@mail.gmail.com>
-In-Reply-To: <CANiq72mUoDFZuJZsfEbodXtXsVoHAXRDO27gBES3=uAOGZ6kfw@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 13 Dec 2024 18:22:20 -0500
-Message-ID: <CAJ-ks9kSWw+txqFOrh4fGUfPb2zQ8rDSgUo0HLMGMUG=EThO-Q@mail.gmail.com>
-Subject: Re: [PATCH v13 0/2] rust: xarray: Add a minimal abstraction for XArray
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+References: <20241123180323.255997-1-ojeda@kernel.org> <CANiq72kTX5o2rs=A51keKQiV=6fT0sN+FjWygL4=ddytnNM8Cg@mail.gmail.com>
+In-Reply-To: <CANiq72kTX5o2rs=A51keKQiV=6fT0sN+FjWygL4=ddytnNM8Cg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 14 Dec 2024 07:35:06 +0100
+Message-ID: <CANiq72kDuaT5082br3PBHmD5xxPpWGD1q-ro_p0DWb+ai4ZywA@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: set `bindgen`'s Rust target version
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Matthew Wilcox <willy@infradead.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Christian Poveda <git@pvdrz.com>, =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 13, 2024 at 4:31=E2=80=AFPM Miguel Ojeda
+On Tue, Dec 10, 2024 at 1:09=E2=80=AFAM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Fri, Dec 13, 2024 at 9:02=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > Changes in v13:
-> > - Replace `bool::then` with `if`. (Miguel Ojeda)
-> > - Replace `match` with `let` + `if`. (Miguel Ojeda)
+> Applied to `rust-fixes` -- thanks!
 >
-> Personally, I would also use the early return style in both of these,
-> like in C.
+> I added the following note to the commit message and added a small
+> sentence to the comment too:
+>
+>     Starting with `bindgen` 0.71.0 [4], we will be able to set any future
+>     Rust version instead, i.e. we will be able to set here our minimum
+>     supported Rust version. Christian implemented it [5] after seeing thi=
+s
+>     patch. Thanks!
+>
+> I also queued it for stable:
+>
+>     Cc: stable@vger.kernel.org # needed for 6.12.y; unneeded for
+> 6.6.y; do not apply to 6.1.y
+>     Fixes: c844fa64a2d4 ("rust: start supporting several `bindgen` versio=
+ns")
 
-My personal preference is to leave it as-is as the return keyword
-isn't used anywhere in this file at the moment. I don't mind you
-changing it if/when applying, though.
+This is now also needed to support `bindgen` >=3D 0.71.0 and higher
+together with `rustc` < 1.82.0, since a week ago `bindgen`'s release
+started using `unsafe extern` blocks.
 
-> I think you may also omit the parenthesis in the first one.
-
-Oops, you're right.
+Cheers,
+Miguel
