@@ -1,63 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B92138DE1;
-	Sat, 14 Dec 2024 17:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDB12E62B;
+	Sat, 14 Dec 2024 17:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.96.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734195959; cv=none; b=EkM8jOQolfHv3tUDpTQIlX9rbsqFao8Ldh0RKLbBG4O6qllM0VDYOkCTRlglyeUx+iYIf84eRP6fz2QrAlRirOuRM+RC6Rpzufu6eHNrSVJKYDgQ8ABui9tLPuqQus01BTF8MS3FGAbSzOcfIlzSrUa+PwQStWU/l3iZ1ge+7Ew=
+	t=1734196196; cv=none; b=IomSm2C51SvKz5cWRNcXACggAboTOUbn4hRVMh9JKbSPqdCRRo4BoaoVEPe8zuw5ITpnVBfN5bNCjaM7YQWIwXt9JMK4hTCBkETw1Kzdqfzc8WvwXGNv1XSUWXyJjX1tNYLiaOgCniU+IISqdNx/z0VM/mKckBTZQajokCE1uv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734195959; c=relaxed/simple;
-	bh=+DCu4r5mxOtfxGHi64zlIxjM5Cmhhr81L4L4/oQ+g7M=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=O4WQGK4x83WhWsHN+o17nANAv9Va/ElnCFkaoUvGTSgkVGtlN5teTFtkwI+/40aWp5QO6pwQwcVeXV3Kf9uQ2EcGTB0CWiof0/9tLLe9nfJwW/0FzhlSVzE39PkOdiq+eA39H4aM0K34gmAWxf1/QA69i1oeM+iJ5pQLQjNTNw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRZws376; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRZws376"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5196CC4CED1;
-	Sat, 14 Dec 2024 17:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734195959;
-	bh=+DCu4r5mxOtfxGHi64zlIxjM5Cmhhr81L4L4/oQ+g7M=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=YRZws376nO0ZpnReD7qdYWWizXxxKp2fwmzDoCMUCsU68N9NzR3QUa3PUjdpR//R6
-	 NoK2Cf6502cvl6dMRc2QXkIl8JnOgvWfqi4lJvMTuOfDCEdIXXyXfC3s+dsDHdHBIu
-	 x7w6bzibIB1k/3MY8ByiTkEatJgpLfAqaCDoN1OA3EzgfBWCnfdK7GT2EByt9c7lnU
-	 7IAVCbePJntjBzDj65KvPDTxQLi21MDFA5nEmRX38n4MztGP+uFfo7EfYeFXgr+UQI
-	 GnVk2cRD+lNuha6xIESX6rpob4ILMTGre1FYyvxdJG8ptZPLxJ+zs2Fsagi1SBzjRM
-	 eOHCvjy/4GfdQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34D45380A959;
-	Sat, 14 Dec 2024 17:06:17 +0000 (UTC)
+	s=arc-20240116; t=1734196196; c=relaxed/simple;
+	bh=sVoEF06w0uwW668Gd/gZop7mzXj5pAnHzHScpumaj/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GedKHtfGLtPw7OxuG2SIx/WZbCwDnJ+p1Kv1IvlEVtg3LnHc5clWdf6pttcQbuqSWc3aZyZZ7nyfpmKtVSk8/XAhe0CBTCAM7PWMfn4aqfe8edvuP/WCA2V4URY1NA3SE9xC+lVR1YWqzfJvbLlWIPB6+eV0ezpLwHCgB58qKMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; arc=none smtp.client-ip=163.172.96.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=1wt.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1wt.eu
+Received: (from willy@localhost)
+	by pcw.home.local (8.15.2/8.15.2/Submit) id 4BEH9TZ8013015;
+	Sat, 14 Dec 2024 18:09:29 +0100
+Date: Sat, 14 Dec 2024 18:09:29 +0100
+From: Willy Tarreau <w@1wt.eu>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [GIT PULL] Rust fixes for 6.13
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20241214065217.195385-1-ojeda@kernel.org>
+Message-ID: <20241214170929.GA12917@1wt.eu>
 References: <20241214065217.195385-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20241214065217.195385-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.13
-X-PR-Tracked-Commit-Id: 7a5f93ea5862da91488975acaa0c7abd508f192b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 7824850768aafe0e69ec6586900cc5c1dac94fe3
-Message-Id: <173419597590.3359607.8070490146368872321.pr-tracker-bot@kernel.org>
-Date: Sat, 14 Dec 2024 17:06:15 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+ <CAHk-=wgXdJswe7JWZ2G6m11rL4Yxatrz_iFBKpqCO5xHPwMyJA@mail.gmail.com>
+ <CAHk-=wiHC9ATW72NVqM64kFjcO9BhMR+Hh1oLJrn0PZ7xcK3LA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiHC9ATW72NVqM64kFjcO9BhMR+Hh1oLJrn0PZ7xcK3LA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-The pull request you sent on Sat, 14 Dec 2024 07:52:17 +0100:
+On Sat, Dec 14, 2024 at 08:59:04AM -0800, Linus Torvalds wrote:
+> On Sat, 14 Dec 2024 at 08:54, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> >
+> > Hmm. Is it just me, or has github become almost unusably slow lately?
+> 
+> Just to clarify: it did end up working in the end. But even an empty
+> pull - when I retried the pull after merging - took two and a half
+> minutes.
 
-> https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.13
+Same here trying from your github mirror. It took 30s before even
+starting the transfer of a few objects but the transfer itself was
+fast. Probably a transient backend issue.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/7824850768aafe0e69ec6586900cc5c1dac94fe3
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Willy
