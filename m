@@ -1,47 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7291D374FF;
-	Sun, 15 Dec 2024 12:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDE8175BF
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Dec 2024 20:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734265549; cv=none; b=TS7uYObb248iYo/H6PNclwGTTcZPHElLFGTJr+bXjHsEkhzwt0MTzudOsA9uUTqDYf2+hYAsqv5jfJrSh7s3cvxuB7CKIldyIukCXhkxxYfBkbXPLy2pyPsw3VQMkG7eeORrb38Md1Zc+18/6pia7EBvIln77OtwlqEJmz/2XHM=
+	t=1734293106; cv=none; b=UanKungt35+hCPin+W5vY6nGZQqtgDO0942L23XdDmWvmf6dexcPei+MYhE7Ti9rEXAHzQMDY3kwJLZiwDMX8ZnCmaXWZ+JnD7RQPL7AW2fc7tuccNOJueQ2jE7ig/VMUSv4FZCUI49OovSB2sbidpOMFGYC8745N7fLD2abwd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734265549; c=relaxed/simple;
-	bh=KeOD3KNWOuUH038iG87RRDiwd2G8jPvxj6Ojj9isRjo=;
+	s=arc-20240116; t=1734293106; c=relaxed/simple;
+	bh=3i3k/RfSdfNauo283P075fOQ8dFKl0tQ45bqOsX2YMw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVl5nTavdaIffYuPc4aiH3yUWn6uCK5a6Bc2UVBhFwxn8C4UPnHcFgQDrpEX35QmFNlMXusXTDv7OjbrTUFpI3o5I+TLMRIMK0mUhz61MiwSD2fd9HLPIz0JxC0ovNMf7NFPGJxSr6vGb06Z7xjvcnGM98jyrrC00Zii5xruXY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFCMzPLl; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HNO5xM/WjBIF7QDD2mT3ntXvvnyaCE9NsCz5POV7bH7c68PM6jwwGUvIr9BQ2rrAn63pugnKgaqX2rmtOAi5vaoIom051qxTObuPHQaTaov+ouWW9RNaRi2yzkYmjKZr4+fRraIW15oGYtqHzQ0BY2qfUsXAC2G4lm6r2q0570Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mEXVyNkw; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFCMzPLl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBA2C4CECE;
-	Sun, 15 Dec 2024 12:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734265549;
-	bh=KeOD3KNWOuUH038iG87RRDiwd2G8jPvxj6Ojj9isRjo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LFCMzPLlSGq3cXbaKzaIADY7zM4/V0Yzq5KX/RJH0D059aW+paCYrO2dM0u+y7eSG
-	 e1fOFxga6xYxIOD4TOH/IrCWV8/nw7cSm57I9AfMHl+R5gkHv0cmhBDgiDSmL3lEwQ
-	 hoqgBDP2cVJ9tgPLfdByh578vSc2fS/77l54VkjM=
-Date: Sun, 15 Dec 2024 13:25:45 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, paulmck@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v6 15/16] samples: rust: add Rust platform sample driver
-Message-ID: <2024121550-palpitate-exhume-348c@gregkh>
-References: <20241212163357.35934-1-dakr@kernel.org>
- <20241212163357.35934-16-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mEXVyNkw"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6dcc42b5e30so32903176d6.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 15 Dec 2024 12:05:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734293104; x=1734897904; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2gZT12jRK6wac2ep7eV6NJ4XZ+3e3+Gku4PwhW2hLRY=;
+        b=mEXVyNkwMI3ZZuc7BGLP7EXdAtgWIyd+WJ4n6kUhNtkiMfbrWWQ6vPsDDeWoXeCu0g
+         h9nDN6SrRu7emYt9+Ij3SDpUu7tC4/k1D4Ooz3ufFc20pB4tMpzvW3rvBoquyP+1K/KR
+         HhhetmUOX6nCatTSM7tUmDfp12kmKOjlB9AYQHW3JRkUnGJv5eqoPAYp5OwHOGhlLdyG
+         ugWMvkl0PWJmPjRpXpotebIt8IQrFh7lmglO1QAUzuKTOhYRLtIsFNQIiadFseZlibWi
+         q/wOxyWAyWQ1sxc6brEqqH+mx77yayeVZvk1+q0dgPcv5JGY1QmMkEtnj+fLBrPpbpxI
+         dJ0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734293104; x=1734897904;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2gZT12jRK6wac2ep7eV6NJ4XZ+3e3+Gku4PwhW2hLRY=;
+        b=kSAUyFVW3GTfPu5c628G/yZNtx8jHCCaFht+dqjkL30LhdNEsHW2/dTyqdClLN8ak9
+         9uh3fYYT6/DbRlUGm8J9sJ1K4SKLJ2vZiZhYV4rvdBwYNbSXG/gq0ydk9izvfa9p6tD5
+         xnmOknfvVvKDqx/P8/c/LJNmqGrg+2tefTEXbRvuaPvplM+GDruQZ2hlJ2TjvRZ2/Kpv
+         5ga5drnu2JeQX0A5S9PNniaJgIr9+zQuZj2gjyhCsXvWIihQfjfaILBhpCJwOEs5s+Vx
+         3E8AJFp0wGphQf6irEnBCSAj29x2W0wF/FJ5EAce7xnJqWZgikZk/Zo+b4Pq1lht4xQ1
+         5jmg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhiCsDsXUGHG8m14rHnXSyb8umJlfiRuDBPJPHenDFmMFZlu17UPtGTGYPB9ndXCvQGplTsYoc2yhiYU5GSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoPGh/oRrC5DIfOhUCgb2OVGmng806ZT5O1HLfTuCgsRDCH1t6
+	9WxHfYTq5KjLc3jZ1rR9XOt027EtPoBXZFrss9MMe+4G2fLoAc7a
+X-Gm-Gg: ASbGncuv2SQgVfUbTRqo7di52H3QPhsr62acBpbUnQIuycD0K7sITXgiSKwNc9tZZFV
+	v7gJlehiW4zn0BA9REibKh19mm/3sQFVc1YMMQ/QxYbnHtTzKoBFBJUnWYBOz2aLHo+jaIoHs2r
+	Kz79XI9KVlk0TPprb2v/YYTZIHirfOqYvY9uNNUZppW2BbLXY7OIND6or8UN1G/+qmuK9Te1kXn
+	bV3ArkyR5ZfXAArps5JgDv+SH3nNBJmjblgAy22u6WzSh7CKU2mF8hJ0iF72T6jlDedPoPJI/YB
+	LCw3aec9GGl6QA/jjy7V8yzYPhpZEktSYO6VOp6Tj7v7trE=
+X-Google-Smtp-Source: AGHT+IEyKF7Au9ptWA3NIA9DCowlN6p3qaKBT0pF0ywOPBQ08mcSoEZUNTSyO88CnuY5eRYqNB1BQA==
+X-Received: by 2002:ad4:4eaf:0:b0:6d8:8e16:7c29 with SMTP id 6a1803df08f44-6dc8ca55871mr187336776d6.14.1734293103677;
+        Sun, 15 Dec 2024 12:05:03 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dccd38078fsm19384896d6.119.2024.12.15.12.05.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Dec 2024 12:05:03 -0800 (PST)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CD67F1200066;
+	Sun, 15 Dec 2024 15:05:02 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Sun, 15 Dec 2024 15:05:02 -0500
+X-ME-Sender: <xms:bjZfZ5R9qnjKwL2h7QWqpWGr1iwm7qMtPGL7zU7J9kPLCdypsPl9SA>
+    <xme:bjZfZyyM0PFXkqMrnXEItvBTLPiranQNmDDdteEKEdTcKzvdL3em-3fZmBchJHUt9
+    HATmiSmPLPaae82Gw>
+X-ME-Received: <xmr:bjZfZ-2Oq6ua51RejpdKZq80lJQ-Xa89Evz-T6lzV7V5jKldCzK6xc1ManOo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrledugddufedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeetgedujeejudehveekteetfeefhfffheetgfeu
+    gfetffekieetiedtudehgfffgfenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvg
+    hrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
+    fhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeile
+    dvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgt
+    ohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmth
+    hpohhuthdprhgtphhtthhopeguvghvrdhjshhonhdvsehgmhgrihhlrdgtohhmpdhrtghp
+    thhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrg
+    ihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
+    nhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
+    dprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphht
+    thhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlih
+    gtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhm
+    ihgthhdrvgguuh
+X-ME-Proxy: <xmx:bjZfZxA11McLxhiZPCTYtnIq4KzIBU98OabqKoWu7Xdn4C60w5rz-Q>
+    <xmx:bjZfZyi8CsRo1kN9m0SwemvOyOcCQ5eakJMJH7YMlSDP7hZReHuaEg>
+    <xmx:bjZfZ1qpZMOcEXIXsKg8nioIQMmX3epJxFhiALXxwuZEjVcuEDtgzA>
+    <xmx:bjZfZ9iImD_43H8zMw-KG77aND5vbouxGBT9ZF4rPot0bMEAbMklGg>
+    <xmx:bjZfZ9QgtZ6vaefl7jFZDCYMMt5RT_5F_Q5h2d5Flyf4SuNYJwd4eNTN>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 15 Dec 2024 15:05:02 -0500 (EST)
+Date: Sun, 15 Dec 2024 12:05:01 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Jason Devers <dev.json2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, boris.chen.czy@gmail.com
+Subject: Re: [PATCH v6] rust: sync: add #[must_use] to Lock::try_lock
+Message-ID: <Z182bbTgdGPEAb01@tardis.local>
+References: <CAOJvc-b4NXuVKkxCvfKQ4=COBE0YzLAgrgQfYmtu2Suk_1779Q@mail.gmail.com>
+ <20241212154753.139563-1-dev.json2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,148 +115,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241212163357.35934-16-dakr@kernel.org>
+In-Reply-To: <20241212154753.139563-1-dev.json2@gmail.com>
 
-On Thu, Dec 12, 2024 at 05:33:46PM +0100, Danilo Krummrich wrote:
-> Add a sample Rust platform driver illustrating the usage of the platform
-> bus abstractions.
+Hi Jason,
+
+On Thu, Dec 12, 2024 at 10:47:53AM -0500, Jason Devers wrote:
+> The `Lock::try_lock` function returns an `Option<Guard<...>>`, but it
+> currently does not issue a warning if the return value is unused.
+> To avoid potential bugs, the `#[must_use]` annotation is added to ensure proper usage.
 > 
-> This driver probes through either a match of device / driver name or a
-> match within the OF ID table.
+> Note that `T` is `#[must_use]` but `Option<T>` is not.
+> For more context, see: https://github.com/rust-lang/rust/issues/71368.
 > 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1133
+
+I think you could add Alice's Reviewed-by from the previous version:
+
+	https://lore.kernel.org/rust-for-linux/CAH5fLghjR4fctjoLT9Zom3drNMQ6vdE9hUTnZZ4Ms1qQHGFe=A@mail.gmail.com/
+
+or you have any reason that you need another "Reviewed-by" tag?
+
+(No need to send a new version, I'm just making sure you and Alice both
+agree the "Reviewed-by" tag still applies to this patch.)
+
+Regards,
+Boqun
+
+> Signed-off-by: Jason Devers <dev.json2@gmail.com>
 > ---
->  MAINTAINERS                                  |  1 +
->  drivers/of/unittest-data/tests-platform.dtsi |  5 ++
->  samples/rust/Kconfig                         | 10 ++++
->  samples/rust/Makefile                        |  1 +
->  samples/rust/rust_driver_platform.rs         | 49 ++++++++++++++++++++
->  5 files changed, 66 insertions(+)
->  create mode 100644 samples/rust/rust_driver_platform.rs
+>  rust/kernel/sync/lock.rs | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fec876068c40..95bd7dc88ad8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7037,6 +7037,7 @@ F:	rust/kernel/device_id.rs
->  F:	rust/kernel/devres.rs
->  F:	rust/kernel/driver.rs
->  F:	rust/kernel/platform.rs
-> +F:	samples/rust/rust_driver_platform.rs
->  
->  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
->  M:	Nishanth Menon <nm@ti.com>
-> diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
-> index fa39611071b3..2caaf1c10ee6 100644
-> --- a/drivers/of/unittest-data/tests-platform.dtsi
-> +++ b/drivers/of/unittest-data/tests-platform.dtsi
-> @@ -33,6 +33,11 @@ dev@100 {
->  					reg = <0x100>;
->  				};
->  			};
-> +
-> +			test-device@2 {
-> +				compatible = "test,rust-device";
-> +				reg = <0x2>;
-> +			};
->  		};
->  	};
->  };
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index 6d468193cdd8..70126b750426 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -41,6 +41,16 @@ config SAMPLE_RUST_DRIVER_PCI
->  
->  	  If unsure, say N.
->  
-> +config SAMPLE_RUST_DRIVER_PLATFORM
-> +	tristate "Platform Driver"
-> +	help
-> +	  This option builds the Rust Platform driver sample.
-> +
-> +	  To compile this as a module, choose M here:
-> +	  the module will be called rust_driver_platform.
-> +
-> +	  If unsure, say N.
-> +
->  config SAMPLE_RUST_HOSTPROGS
->  	bool "Host programs"
->  	help
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index 2f5b6bdb2fa5..761d13fff018 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -4,6 +4,7 @@ ccflags-y += -I$(src)				# needed for trace events
->  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
->  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
->  obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
-> +obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
->  
->  rust_print-y := rust_print_main.o rust_print_events.o
->  
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> new file mode 100644
-> index 000000000000..8120609e2940
-> --- /dev/null
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -0,0 +1,49 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust Platform driver sample.
-
-Nit, I think your employer will want a copyright line on these, but hey,
-I could be wrong!  Your call...
-
-> +use kernel::{c_str, of, platform, prelude::*};
-> +
-> +struct SampleDriver {
-> +    pdev: platform::Device,
-> +}
-> +
-> +struct Info(u32);
-> +
-> +kernel::of_device_table!(
-> +    OF_TABLE,
-> +    MODULE_OF_TABLE,
-> +    <SampleDriver as platform::Driver>::IdInfo,
-> +    [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
-> +);
-> +
-> +impl platform::Driver for SampleDriver {
-> +    type IdInfo = Info;
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-> +
-> +    fn probe(pdev: &mut platform::Device, info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-> +        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-> +
-> +        if let Some(info) = info {
-> +            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-> +        }
-> +
-> +        let drvdata = KBox::new(Self { pdev: pdev.clone() }, GFP_KERNEL)?;
-> +
-> +        Ok(drvdata.into())
-> +    }
-> +}
-> +
-> +impl Drop for SampleDriver {
-> +    fn drop(&mut self) {
-> +        dev_dbg!(self.pdev.as_ref(), "Remove Rust Platform driver sample.\n");
-> +    }
-> +}
-> +
-> +kernel::module_platform_driver! {
-> +    type: SampleDriver,
-> +    name: "rust_driver_platform",
-> +    author: "Danilo Krummrich",
-> +    description: "Rust Platform driver",
-> +    license: "GPL v2",
-> +}
-
-That is almost too simple.  Seriously nice work, let's wait a few days
-for some others to review the series and I'll be glad to apply it to my
-tree!
-
-greg k-h
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index 41dcddac69e2..aacc227536cb 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -147,6 +147,8 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+>      /// Tries to acquire the lock.
+>      ///
+>      /// Returns a guard that can be used to access the data protected by the lock if successful.
+> +    // `Option<T>` is not `#[must_use]` even if `T` is, thus the attribute is needed here.
+> +    #[must_use = "if unused, the lock will be immediately unlocked"]
+>      pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+>          // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+>          // that `init` was called.
+> -- 
+> 2.44.2
+> 
