@@ -1,145 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3E4BA49;
-	Mon, 16 Dec 2024 09:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D02C2010EF;
+	Mon, 16 Dec 2024 10:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734342724; cv=none; b=qgsRe6na9mwHxiLRo5yq3fBg/P/t+e9HJVxIA84HePthBxnvamwvoFnLnJx4MpmYmvAAFXdq0Ko8IEnz97gVsFkgBjqNvGqU91mR/fKalM1DP4jqr5NRlndKXb+KD/pVcZt52A3TiwrOaedQfK4Ugc5q/3VNKKRIDWhnMcaSncc=
+	t=1734344596; cv=none; b=ejJCqf8684p/iQg8uVcMnS4OTuZOOPHx+w20QFe/KgSBC9CpDlvictf6VJDsN/crB8Wa//9GwQmXqU7MeWmqT/0syoiQeG9IpwGaFAZtjQWooxU6or4PaSKw3k6wxtYahgDthHluFwncMWo0eKFr4Oi27Koc7WYWNE4F7ZaQnDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734342724; c=relaxed/simple;
-	bh=ZImkITQq9aZIEvUzKyzvuMqnIX250ElPakbMtndY+64=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ob9zH4c0QH7p7dDz0rWl+HshfAIMLId/aMyx5uK1ItI8gj95eDAn9PYk5JSpAgueIr8R+N7rn500guX0GvmMjN1oUGoQrdKP6953/G6CtBF0kh3kox1bZvN/iphf3gPJlCflDgH0y4oUjjRSSHph1SmFtgNzoVELc5FiP+m/DGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b00WoHXW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734344596; c=relaxed/simple;
+	bh=X7hz73YZMAuspL4ZSWRJS0L8v8iep2zqFRz8Exthqjo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TbzJyOKQRsXY3suCMXUQjrLVE4c0mcPbXU054dETwswm2lQxe85TidW3Q+ttIu8EOeQIalQFMIe9Axhzk0D16mx6sNLIeME04O/oBj23V2XHDF0U1QqKR+oQPlrcQMa9Tx0jQEtfhHdpQ67TZlWk92CzRI8jeLRtRY1k5kP5RAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q1gj1C2M; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b00WoHXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFE6C4CED0;
-	Mon, 16 Dec 2024 09:52:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734342724;
-	bh=ZImkITQq9aZIEvUzKyzvuMqnIX250ElPakbMtndY+64=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=b00WoHXWt28DE5XFiBqSH/4oFk+zD4PYduAd3jKeNCqDzJLgSPsJ/hNvasDg3Cv8a
-	 XQLVQqEV3OHkFHyKb6bYHpU2g3BeY5g4kgVrMvb92VDU1u7zl+/szQajO3JL0eYuXG
-	 gzFOWFr/1i0d3vfoICFBr3AXfraL+AwL/42h4ARoGlOdP1sKP5a2NNZ/EiDwqpotYN
-	 RAfnOSZa7J5Y4IAweWsLaINsBSkVSAwmgLuBkGS+plyV0XwBNKXGnuqQs4MUlC+82Y
-	 Tet57HInF0eO3amDF8A0HMKmRagCOMRI3dxQTXuMmw50NMsSldFuVX5XWLa2/X9b5V
-	 hS52qwKdlUujg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
- <nathan@kernel.org>,  "Nicolas Schier" <nicolas@fjasle.eu>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
- parameter support
-In-Reply-To: <2024121344-excusably-resurrect-d01a@gregkh> (Greg KH's message
-	of "Fri, 13 Dec 2024 17:05:46 +0100")
-References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
-	<4Dsa69UGULRGsMbRbwOJNp_puyfsSSFt1QTcYU9AL4azd8vbfEFFtc7YNSsGegc40AfCZqVqZETfxg4TggUlSw==@protonmail.internalid>
-	<2024121324-overdue-giggly-bdb8@gregkh> <87frmrepo5.fsf@kernel.org>
-	<I0v8YGJe3e1ex1oF3mki-7QKimYLCJHnBy6g1taHgoOFvpNmQSrSnsMGJyGS064pGJsJDsTsei-pInFRz5INWA==@protonmail.internalid>
-	<2024121309-lethargic-ended-5f99@gregkh> <87ttb7d24p.fsf@kernel.org>
-	<hmmCwoNftQc5Mj4BLjFC2qTABem8CvuXSx3ucXzjIfQSwLjULmZgsw7vpq3Zxy0kk5H3Zjpz-vd4d7E1sb4LHw==@protonmail.internalid>
-	<2024121344-excusably-resurrect-d01a@gregkh>
-Date: Mon, 16 Dec 2024 10:51:53 +0100
-Message-ID: <87h674c5vq.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q1gj1C2M"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53e28cf55cdso3533904e87.3;
+        Mon, 16 Dec 2024 02:23:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734344592; x=1734949392; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wQgc2lLILX6zWYW2cp2uo7oeDGv90xpnmmiFLnRu7LI=;
+        b=Q1gj1C2MAa2xcJMSYElPG6IT19L60mIN4DUdfLMAL+pu2xRwWJ1WPPcNlZB6QEB4Rw
+         F5aV9p8Tsb15RZ873cYi6RU6iBLhoQOSCHknKfTdRdUqxhNccJfluhwA05C2kF/yherW
+         fBadFQilqtMkeDlXBjXgyzujeb9dCiv1ZYAzylGV2Z8+iiFrEyPMpBh50aIA1u6W7HOd
+         prSLX8D6YOg3u8htgCvsYtmuKe6DhkYs85H5ay3ves2Dq4/k9bo8+pb+yO//LHpO62ZF
+         0CsMH/bMEVMpSqhh7EttFA2Y0dz7y8zIguq2yhosIebPbe51OzsZ824ooLWOAyq60YDI
+         G8tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734344592; x=1734949392;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wQgc2lLILX6zWYW2cp2uo7oeDGv90xpnmmiFLnRu7LI=;
+        b=fK38Z3nbbIupfuoAFLxev5HqEk9BPC7o2Ks7ezLKMwfy4tI++qrXRU6vUpLsjqRhrs
+         DGntwiFCwk3A5lklh9hNyIAtSBc0OlRZYfM2DcR0Zrnr0ewuxGAL/RVSEVULSxOeehBS
+         tEwhM9c0sNfkS0yqENIk+qU7WBpe4x/FVLcfuJINSN+9Ojr7e5KADusrr6XEfL/0rdA8
+         lC5iZIFq4lVWUzp1rocWSQLsHWbpllPoLkz1pZwStC+nJ2Yas0ekrJu3VA6ALf6V1L8i
+         gyYkpFQkj4+twm/frVJugIHZmRvh/vDD5vhItnOwc2S6jhi5DkDV11uBO40dTYKcPjNS
+         p9ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVHX3guEKzmhcA2dYk9E4WVaMyYXKx3LDHLgW7otgmzwFP/oH6exdY49AsmErIaoG0bZwnw5lTJMRQ3ibQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxM8l/86Ke4fQq3ZpgxPIrdK7c60m5F0sblhfvT8yJxM2fax0mQ
+	62nCAuARDJlk1oqY1fZ4137XPVtA/dwMQoYF7jwpkWJLur0ZSn3T
+X-Gm-Gg: ASbGncuoGegFXJZxqnQk0s3wXhzqHlCOE7Q/BBSKjW0BurU+/vOw6hIN1uFQ2Vzu3q1
+	4WpJWLAazX4LR2aLtzOaVySebmg7I5e4l+Zb354Y2/t3zb0k073Wis3MYS95YTYLfFbRfKrISCC
+	CTX9rm+ptmCvsbTzJafio7phkyRffjDBGLxXS2lhf91+O855wNvd6SDl/+T08G2HLmz/yb28Lq4
+	Srw/4Bn1oP5DiBHdthC+YRdFwTzHzM+wEYyLgCqVMdMrVZ9wkA2ZcqLOQhQqREPhhkw8JjMgSP8
+	jr9ISOmYgJlC0FW8HBFr5wPwT2o=
+X-Google-Smtp-Source: AGHT+IHUeir8mWJDMubLNBEwRE0TOe2jZjlVnj5E+6MVDLPtwfdQnftnTctkqu2Of/4M9kA/fowwPQ==
+X-Received: by 2002:a05:6512:3096:b0:540:5253:9669 with SMTP id 2adb3069b0e04-54090568080mr4056809e87.32.1734344591920;
+        Mon, 16 Dec 2024 02:23:11 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54120b9f3basm789880e87.15.2024.12.16.02.23.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Dec 2024 02:23:10 -0800 (PST)
+Message-ID: <f340e2c9-a794-4ea9-8b1a-53496765e769@gmail.com>
+Date: Mon, 16 Dec 2024 12:23:08 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/2] rust: add dma coherent allocator abstraction.
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20241210221603.3174929-1-abdiel.janulgue@gmail.com>
+ <20241210221603.3174929-3-abdiel.janulgue@gmail.com>
+ <CAH5fLgjO-GbB85dDdxLSSWY74cUn8-Lt-yaRGkUVxb-E8YaO2Q@mail.gmail.com>
+ <0F719804-2AD3-4C4E-A98C-2862295990BA@collabora.com>
+ <b7130ae2-6314-41d9-bda2-d875b22463bb@arm.com>
+ <263C49EB-5A5D-4DF4-B80A-A39E6CE58851@collabora.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <263C49EB-5A5D-4DF4-B80A-A39E6CE58851@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-"Greg KH" <gregkh@linuxfoundation.org> writes:
 
-> On Fri, Dec 13, 2024 at 04:38:30PM +0100, Andreas Hindborg wrote:
->> "Greg KH" <gregkh@linuxfoundation.org> writes:
->> > On Fri, Dec 13, 2024 at 01:24:42PM +0100, Andreas Hindborg wrote:
->> >> "Greg KH" <gregkh@linuxfoundation.org> writes:
->> >> > On Fri, Dec 13, 2024 at 12:30:45PM +0100, Andreas Hindborg wrote:
->> I'm not getting a clear reading on the following, perhaps you can
->> clarify:
+
+On 13/12/2024 21:08, Daniel Almeida wrote:
+> Hi Robin,
+> 
+>> On 13 Dec 2024, at 12:28, Robin Murphy <robin.murphy@arm.com> wrote:
 >>
->>  - Is the community aligned on dropping module parameters for all new
->>    drivers?
->>    - If so, was this decided upon at some point or is this a fluid
->>      decision that is just manifesting now?
->
-> It's something that I've been saying in review comments of drivers for
-> many many years now.  Again, it was one of the main reasons we created
-> configfs and sysfs all those decades ago, because module parameters just
-> do not work properly for drivers in almost all cases.
+>> On 13/12/2024 2:47 pm, Daniel Almeida wrote:
+>> [...]
+>>>>> +    /// Returns the CPU-addressable region as a slice.
+>>>>> +    pub fn cpu_buf(&self) -> &[T]
+>>>>> +    {
+>>>>> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
+>>>>> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+>>>>> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, self.count) }
+>>>>
+>>>> Immutable slices require that the data does not change while the
+>>>> reference is live. Is that the case? If so, your safety comment should
+>>>> explain that.
+>>>>
+>>>>> +    }
+>>>>> +
+>>>>> +    /// Performs the same functionality as `cpu_buf`, except that a mutable slice is returned.
+>>>>> +    pub fn cpu_buf_mut(&mut self) -> &mut [T]
+>>>>> +    {
+>>>>> +        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation` and
+>>>>> +        // is valid for reads for `self.count * size_of::<T>` bytes.
+>>>>> +        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, self.count) }
+>>>>
+>>>> Mutable slices require that the data is not written to *or read* by
+>>>> anybody else while the reference is live. Is that the case? If so,
+>>>> your safety comment should explain that.
+>>>>
+>>> The buffer will probably be shared between the CPU and some hardware device, since this is the
+>>> point of the dma mapping API.
+>>> It’s up to the caller to ensure that no hardware operations that involve the buffer are currently taking
+>>> place while the slices above are alive.
+>>
+>> Hmm, that sounds troublesome... the nature of coherent allocations is that both CPU and device may access them at any time, and you can definitely expect ringbuffer-style usage models where a CPU is writing to part of the buffer while the device is reading/writing another part, but also cases where a CPU needs to poll for a device write to a particular location.
+>>
+> 
+> Ok, I had based my answer on some other drivers I’ve worked on in the past where the approach I cited would work.
+> 
+> I can see it not working for what you described, though.
+> 
+> This is a bit unfortunate, because it means we are back to square one, i.e.: back to read() and write() functions and
+> to the bound on `Copy`. That’s because, no matter how you try to dress this, there is no way to give safe and direct access
+> to the underlying memory if you can’t avoid situations where both the CPU and the device will be accessing the memory
+> at the same time.
+> 
 
-Thinking a bit about this - are you sure there are no situations where
-module parameters is actually the right choice? I could imagine deeply
-embedded deployments, potentially with all required modules linked in to
-a static kernel image. It is probably desirable to be able to pass
-configuration to the modules via the kernel command line in this
-situation. If not for configuration in the field, then for a development
-situation.
+This is unfortunate indeed. Thanks Alice for pointing out the 
+limitations of slice.
 
-Surely there are also situations in regular PC setups where it is
-desirable to pass configuration data to a module, so that it is
-available at load time. With configfs, module initialization becomes a
-two stage process of first loading and then configuring. That is not
-always what you would want.
+Btw, do we have any other concerns in going back to plain old raw 
+pointers instead? i.e.,
 
-Since module parameters actually do show up in sysfs as writable
-entries, when the right flags are passed, they do feel very similar to
-sysfs/configfs for simple use cases. What are the reasons they should
-not be usable for these simple use cases?
+     pub fn read(&self, index: usize) -> Result<T> {
+         if index >= self.count {
+             return Err(EINVAL);
+         }
 
->
->>  - Does this ban of module parameters also cover cases where backwards
->>    compatibility is desirable?
->
-> No, we don't break existing kernel features, but if you are writing a
-> new driver, don't add them and then there's no compatibility issue.
->
-> We don't normally allow "rewrites" of drivers, but if we do, yes, you
-> would have to implement the old features if needed.
->
-> As you just seem to want to write an "example" block driver, no need to
-> add the module option there, just do it right this time in how to
-> properly configure things.
->
->>  - Can we merge this so I can move forward at my current projected
->>    course, or should I plan on dealing with not having this available?
->
-> We generally do not want to merge apis without any real users, as it's
-> hard to justify them, right?  Also, we don't even know if they work
-> properly or not.
+         let ptr = self.cpu_addr.wrapping_add(index);
+         // SAFETY: We just checked that the index is within bounds.
+         Ok(unsafe { ptr.read() })
+     }
 
-While null_blk is just a piece of testing infrastructure that you would
-not deploy in a production environment, it is still a "real user". I am
-sure we can agree on the importance of testing.
+     pub fn write(&self, index: usize, value: &T) -> Result
+     where
+         T: Copy,
+     {
+         if index >= self.count {
+             return Err(EINVAL);
+         }
 
-The exercise I am undertaking is to produce a drop in replacement of the
-existing C null_blk driver. If all goes well, we are considering to swap
-the C implementation for the Rust implementation in X number of years.
-Granted - a lot of things have to fall into place for that to happen,
-but that is the plan. This plan does not really work well if the two
-modules do not have the same interface.
+         let ptr = self.cpu_addr.wrapping_add(index);
+         // SAFETY: We just checked that the index is within bounds.
+         unsafe { ptr.write(*value) };
+         Ok(())
+     }
 
-I understand that you would like to phase out module parameters, but I
-don't think blocking their use from Rust is the right way to go about
-that task. If you really feel that module parameters have no place in
-new drivers, I would suggest that to be part of review process for each
-individual new driver - not at the stage of enabling module parameters
-for Rust in general.
+> I guess the only improvement that could be made over the approach used for v2 is to at least use copy_nonoverlapping
+> instead, 
 
+You mean introduce something like read_raw(dst: *mut u8,...) and 
+write_raw(&self, src: *const u8,...)?
 
-Best regards,
-Andreas Hindborg
-
-
-
+Regards,
+Abdiel
