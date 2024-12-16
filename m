@@ -1,63 +1,63 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E10205AAF
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Dec 2024 13:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9741B205E31
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Dec 2024 14:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734355539; cv=none; b=qJrx7fMxRpEvrRafhU32JLIvPQPohB3O2DJZGzpGfF8uw0orTaL9aSsR+qX6Rw80PjMBuu/RgJpoVCsWPB6cizwnUb+NrLv4sAVYTdPsGBkJyTQyM4CvciY4k8AiB0JrLGb/v/kei0smQ7Z2bgJihZxlQiZ8keSxG7496TG4lyo=
+	t=1734360198; cv=none; b=Guh1/zmmjCSH/mwPMwcEQfXCvsGkM2/mgqFT4GLfpnQLh94IIl2Y8a28wzJlDCLUmaYa0RkroApYzSPTIthWT32IvOE24NdBFQxhvKZt2N+xWSaasPEoI+F4313+7/BYHCRSP+EUPEPxCo/ATq6Y8ouR4EQbulTsIAXvth/Vujg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734355539; c=relaxed/simple;
-	bh=NndeOH6sd65ORicRkF+Jky+H97Q2/FBkQEok6InkZT0=;
+	s=arc-20240116; t=1734360198; c=relaxed/simple;
+	bh=vid6eL2+9lF17Od0L9ytahZMwPP7rZ9zJw0QfkIJvkw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TJ2spYz6mRepW8WzpF08VO5Oe9gS8D3vOgFTI8biaV+cuz1LGyqB6WQ0G8ygpnwbvBMaS1QXqOSrC5QpWENCl4ozl74okxA2oHV38FDZS3aoh9+RJwy78SbfXtVS5gZLc0+ObAeC5RI2BYcYpATBlWLfVEzwmO8ikg7B2R7LNuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EUpcv9Jh; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=WA/zgoK9fYYoIrO0MrIfIxA1LwV0ZLcWlde0aJy7XbG3EE7Zsww9e59Gi6vfru59xThVtqssc0zbyPR8Ne1OoOQW/n+LMZef45WechyZGrT0sAzKXkSyf2kTMSRtdQXuCMh82AhsibqL50jxrYkowHF1j79k+FCFmMf0JzAHpnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=AZtqCNaA; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EUpcv9Jh"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso4449273f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Dec 2024 05:25:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="AZtqCNaA"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2167141dfa1so34241985ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Dec 2024 06:43:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1734355536; x=1734960336; darn=vger.kernel.org;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1734360195; x=1734964995; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=STePF4alhOUCMJb60WwslpIUy0epmImIHj5n/B736B8=;
-        b=EUpcv9JhDG+2+g4LGiJBH1hjfimm5Q0kzVNJbo3NAy1yLnwroXqbQ0NS/QZp5EYQVV
-         /5ImGO+ypVik5s8CR5Vcas9g9zsw8KiGgkktNCkfbrVT30JlWJRm9JScQfidsojKDP6F
-         LyqMVkm8eXmX87BJzpX5OFKwwtXff544hFQJS57sNf3lS6PQqdZwViSyNgKWRHDwq0ZR
-         MLC0oapa2oLutHV2lmPGbmwHMklOpIvP2sXkAK1dLPzoPodLhxemY1HBI/g7W0KhqPCM
-         HAJtOW1vcBxejpgdrTVniY212gDzGYMNv5gNiB1JYwHGtNVuSIMr1GVxc/Gvq8XdaJiP
-         /rLg==
+        bh=cmrCxqpDqjESJ70QFxTBBLdJXAN7riBEqPMzA//neTs=;
+        b=AZtqCNaA/Z0SYtsDC+ARqA8ngylWvfVuCm4l/ErosMiGE+oEkeJOp3h6+UlhgQknn7
+         b1uDWcXd+oqzCOtyOYWTC0TlOg5rlfPK0cN8ItwErecLdOfr2TrXYAJXXHskyoxnfs3l
+         9mUCx/BCYspbEY+GMFcxGEsncWocHWh6hoZ8XJmxMsIs3913LnmEjuhLoRywme2HCQ/J
+         e1M1eOuyMdmdoCpqlKO1/tKmD5KK77ObrcntN51Fft1k59SwVjE0gYaX3Z2gnKXDIeSe
+         hxkFb8m4Q4VXoOfoTgppoN3KgDjaGnh86lQhWSqMGJ4TdP5aDi6j88SnEqA/FsWAc0cD
+         d+LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734355536; x=1734960336;
+        d=1e100.net; s=20230601; t=1734360195; x=1734964995;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=STePF4alhOUCMJb60WwslpIUy0epmImIHj5n/B736B8=;
-        b=TkKyRWqWhmC0G3KCUE/ZeiUIQFKXQ8AN1B0PXo9yUX4dpMYIe5h3vlxRQ/LZGCdPIe
-         55nq0a9bntAeXRFjv6cRqWbu785zuu3j3h9l73QiiA8ROln2a6je6VJMSKsTxDMY453R
-         51HdrpYCc6gNMJLueUSr4MMXRypC6GVqzmSz8VVz1j+qcluYOwlOoocZ+dqeFjH3v2m3
-         /9BzYBt5AVH6aZct232jVhZs5TP8aToiqEzuDlGTn9ZC/71b4W7C7ZPeXLwqaShOTTGR
-         ihNcQ3muagEddBh9JIC6zeoqbyBfXOdM5w2ajomL2O8L7DFdhDE6KaWIceXMis5yj7QQ
-         +JrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHcFSTg1b5zV8HdvlABxjSTmDVizCTgBGy8WH94NqdAq74RcuipK/lsYeIq7nxxkZm3WQR51Z2cY6MjBeHFQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLSxySFFFB4t9w3kpbDaGPkus6dFyCXLJ1sulAob51oEU1K7G3
-	Eotw1ytuxgxEi6H8mjpzzNbrVMHphf693XXGUU+Hpg2V2FK085Od5IWEiH0DffA=
-X-Gm-Gg: ASbGncuwKgSyDRtFg9m61XBv/43hdwm2S0W8NmXvC7zrAjMdabz4pmdDZPdvrgXmI1C
-	i0uD3a8KPZ4+taXc49NvO7efRjvTBPItCTAHPY7kMuzNOlBHD08UGowTpvGjmc7b9noYVuBF8Jb
-	xqsNB+/KIWNfo88TnR8OpI9/FrRUXLTN1Vwfo0B+Ye6X0pwUYbpTjGLJ8LgwJkNYimQPlbLxc/+
-	I9GHv7TAguJGKEZg7kKrUimuh7z/7gB8XkxrVz50JD9jURK8coSsDakXZCe
-X-Google-Smtp-Source: AGHT+IGqoSYH/VA6fKloW87cFzqLGeD30iZmGbWZZas/HuP1gKITI6KUoUpWyXXkXirFAcpa9znGog==
-X-Received: by 2002:adf:eec3:0:b0:388:c75d:be97 with SMTP id ffacd0b85a97d-388c75dbeaamr7310161f8f.11.1734355535593;
-        Mon, 16 Dec 2024 05:25:35 -0800 (PST)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c804a34fsm8253045f8f.76.2024.12.16.05.25.34
+        bh=cmrCxqpDqjESJ70QFxTBBLdJXAN7riBEqPMzA//neTs=;
+        b=Y1KqP3q3c0TORyatBJyGSzuUYsogDaK8cRc6Z0fqcP8CvMjBM1LuuYImOJNii1KPyy
+         /8GMHZTDSxiyeiGCVXeIWW0QdtFQTKmm0RujMCBDfSWBLD2nl3LBs1/aNxarvBlnnSgh
+         6NZmcc0QqBMTlWNx9lIsuPxwJWXB2dXBinFFh7oOULIeRecfHnOeIAH9F0Xglh0ajcB2
+         J1M6rSdapBeec3dYt/Kz6giA59/hJfCMNZaC/rTVO2PrWk3MJEQbXOvysTKeL6ssfgH4
+         i8ehZsVruO3KuywnmFpK1/CXxh6LbYIrs2EZWe9CZwnoIH3v+DLPiStqbSBYDzqHGH+k
+         7STg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4vV2YlUQ1kcaEcoefggSv5CX9YZ5uFjQoCxxxe16B69EdByT5IGo1rktfvDMCb7ANkbQeoaueWZJ7ALa6dQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf7PjVRwRP7luEvicQPKUcX2BtWfpnXrn2x6LmpcGaowiJExSA
+	/RXDcz8c7DRePdseJJ9ic3TPmHD68yqy47rOEdCcAhMvJex0+Cjf7GpjdsVPshg=
+X-Gm-Gg: ASbGncvYnZMZE/4mMuzDXvQtz5OEjTtyej0Xds+g4OvgVEhoBIjuhqJWYDZBfHwtFvH
+	t8xByB45MWsOqw4ctkrsgE6cMOoTxChoHnzrKwJ6DZKgQ5hMqmI0cAMddjeOD6zyeqA5f2Gq27s
+	NFY4NHkimfs6xCSTI58WAzOtMi/5EoPzDrXsKd3Rs/aMao1/JQzPwKVJaUp6zDGAOqzy8xNwSGh
+	LLmvQlNxUV9m7noJld8xoUagrtStCwken6yMbTJbr7GQgcDdYkcjw==
+X-Google-Smtp-Source: AGHT+IHnVO9LhhiLRU5ZRt5v3Hbaaa13fz1HBag4AymzRth1YKtvqbofDh9Crx+RLV4GTPXrrpUfPg==
+X-Received: by 2002:a17:902:f607:b0:215:98e7:9b1 with SMTP id d9443c01a7336-21893b53528mr185076855ad.5.1734360195579;
+        Mon, 16 Dec 2024 06:43:15 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1db7976sm43700335ad.53.2024.12.16.06.43.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Dec 2024 05:25:35 -0800 (PST)
-Message-ID: <e522ec59-6ee6-4c11-8a4f-91a683e6435c@suse.com>
-Date: Mon, 16 Dec 2024 14:25:33 +0100
+        Mon, 16 Dec 2024 06:43:14 -0800 (PST)
+Message-ID: <8e1b5c5e-52ae-4332-a49c-990add7611f6@kernel.dk>
+Date: Mon, 16 Dec 2024 07:43:12 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,79 +65,61 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 4/5] Documentation/kbuild: Document storage of symbol
- information
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
- <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
+ parameter support
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20241123-extended-modversions-v10-0-0fa754ffdee3@google.com>
- <20241123-extended-modversions-v10-4-0fa754ffdee3@google.com>
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org
+References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
+ <4Dsa69UGULRGsMbRbwOJNp_puyfsSSFt1QTcYU9AL4azd8vbfEFFtc7YNSsGegc40AfCZqVqZETfxg4TggUlSw==@protonmail.internalid>
+ <2024121324-overdue-giggly-bdb8@gregkh> <87frmrepo5.fsf@kernel.org>
+ <I0v8YGJe3e1ex1oF3mki-7QKimYLCJHnBy6g1taHgoOFvpNmQSrSnsMGJyGS064pGJsJDsTsei-pInFRz5INWA==@protonmail.internalid>
+ <2024121309-lethargic-ended-5f99@gregkh> <87ttb7d24p.fsf@kernel.org>
+ <hmmCwoNftQc5Mj4BLjFC2qTABem8CvuXSx3ucXzjIfQSwLjULmZgsw7vpq3Zxy0kk5H3Zjpz-vd4d7E1sb4LHw==@protonmail.internalid>
+ <2024121344-excusably-resurrect-d01a@gregkh> <87h674c5vq.fsf@kernel.org>
+ <UW-ATumT4L-13ZXX-lO1inQGeZK7VgQWNAHE3688ulGj-rvzxWkUdrmnAUlufI1W5-9d6vzH3TXZ4VOmYh9wxA==@protonmail.internalid>
+ <2024121646-shelve-series-5319@gregkh> <877c7zbx2u.fsf@kernel.org>
 Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20241123-extended-modversions-v10-4-0fa754ffdee3@google.com>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <877c7zbx2u.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/23/24 03:42, Matthew Maurer wrote:
-> Document where exported and imported symbols are kept, format options,
-> and limitations.
+On 12/16/24 6:02 AM, Andreas Hindborg wrote:
+>>> I understand that you would like to phase out module parameters, but I
+>>> don't think blocking their use from Rust is the right way to go about
+>>> that task. If you really feel that module parameters have no place in
+>>> new drivers, I would suggest that to be part of review process for each
+>>> individual new driver - not at the stage of enabling module parameters
+>>> for Rust in general.
+>>
+>> I'm saying that module parameters do NOT belong in a driver, which is
+>> what you are wanting to do here.  And as for adding new apis, please
+>> only do so when you have a real user, I don't see a real user for module
+>> parameters in rust just yet.  If that changes, I'll reconsider my stance :)
 > 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  Documentation/kbuild/modules.rst | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+> I guess we disagree about what is "real" and what is not.
 > 
-> diff --git a/Documentation/kbuild/modules.rst b/Documentation/kbuild/modules.rst
-> index 101de236cd0c9abe1f5684d80063ff3f9a7fc673..c32e3ed67cd26070f6929f6ad98c4308a1ab71f8 100644
-> --- a/Documentation/kbuild/modules.rst
-> +++ b/Documentation/kbuild/modules.rst
-> @@ -423,6 +423,26 @@ Symbols From the Kernel (vmlinux + modules)
->  	1) It lists all exported symbols from vmlinux and all modules.
->  	2) It lists the CRC if CONFIG_MODVERSIONS is enabled.
->  
-> +Version Information Formats
-> +---------------------------
-> +
-> +	Exported symbols have information stored in __ksymtab or __ksymtab_gpl
-> +	sections. Symbol names and namespaces are stored in __kstrtab and
-> +	__kstrtabns respectively, using a format similar to the string table
-> +	used for ELF. If CONFIG_MODVERSIONS is enabled, the CRCs corresponding
-> +	to exported symbols will be added to the __kcrctab or __kcrctab_gpl.
+> In my view, null_blk is real, it is used by real people to do real work.
+> They get real annoyed when the interface for their real tools change -
+> thus making it more difficult to do this experiment.
 
-The second sentence should be that symbol names and namespaces of
-exported symbols are both stored in the __ksymtab_strings section.
+I'd have to agree with that - yes, null_blk doesn't host any real
+applications, but it is the backbone of a lot of testing that blktests
+and others do. Hence it's very real in that sense, and the rust version
+of null_blk should provide and mimic how the C version works for ease of
+testing.
 
-> +
-> +	If CONFIG_BASIC_MODVERSIONS is enabled (default with
-> +	CONFIG_MODVERSIONS), imported symbols will have their symbol name and
-> +	CRC stored in the __versions section of the importing module. This
-> +	mode only supports symbols of length up to 64 bytes.
-> +
-> +	If CONFIG_EXTENDED_MODVERSIONS is enabled (required to enable both
-> +	CONFIG_MODVERSIONS and CONFIG_RUST at the same time), imported symbols
-> +	will have their symbol name recorded in the __version_ext_names
-> +	section as a series of concatenated, null-terminated strings. CRCs for
-> +	these symbols will be recorded in the __version_ext_crcs section.
-> +
->  Symbols and External Modules
->  ----------------------------
->  
-> 
+If this was a new driver where no prior art exists in terms of users and
+API, then I'd certainly agree with Greg. But that's not the case here.
 
 -- 
-Thanks,
-Petr
+Jens Axboe
