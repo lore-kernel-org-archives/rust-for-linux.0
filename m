@@ -1,132 +1,201 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E3C204595;
-	Mon, 16 Dec 2024 11:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2215E204C3A;
+	Mon, 16 Dec 2024 12:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734349430; cv=none; b=ZcJZAIRVYOAKyYN2QVhXXxWwhYzZFZpSC3zI5J9SDBEiKnXq27jQ4RzWoVub2bysTnOy52PYAOP6sHkn0/AuKcBOZKBsb+5kHLHNeG9GDViaVnKqZC7x7H5s1IKYUyd8C22CaamajSku8ZQXf8jvBV/JxHW7O2/u7A2li3eUKnI=
+	t=1734351018; cv=none; b=coghqzoN8KQBhlYaGThVn1bYx2l+lXeJCjfoCx+7zBt0cPfuK48EDJIYPixinShuz6AATolzjgshGIicOHhAydZ+oa3p4XAMGUUU038p3RBIkLaIAGl9yt1v2ErwaZxd4s/ttR6gD+pyF7zVIxW8qPLhxdIz/ENNWTdjKH3mRVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734349430; c=relaxed/simple;
-	bh=+LEGVFBSxypDm/FSzGeDaE+twdIyDmd1Fh+q4tlS6Y8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IgBkRSuFCQ3C14DHGhKPXgrRPlZPqVE1+sLD7cod5rXRMLd6GAfqpWxIsC09Fpyljhp9ne7Fs84Yk2SEm1Ec5aoCSHHQKer/BvVH5u36AtsJU3eLDRGnPJewF4vOkHGoPbmKwhDKASR9F/X9vhJnU/My5q50Vo3H7qGj03Kliro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=ghpk8Kob; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NK+Ddy1N; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
+	s=arc-20240116; t=1734351018; c=relaxed/simple;
+	bh=LdSIFjD47tQgAxT9afpdkg48p86bnJwIHfThv+l32Lo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VH8uKU3thfAxYPXnhEES3/qyPpDaG7UHkKH84JvaEcvNSX5BDGG1gV5eWUMYE/ShHhE+3auE/mbMkr3r6jiBHcC4e8PLeG7KXGVu1cV/O3mF1tq7LbIhM7KdWv/LqMb39vrfvBM7L73+89MTGWVlia6BaBLzP8qBJOb8zlmUltA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwolusgn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="ghpk8Kob";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NK+Ddy1N"
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id C3C5111400EE;
-	Mon, 16 Dec 2024 06:43:46 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 16 Dec 2024 06:43:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1734349426;
-	 x=1734435826; bh=z9j4g314qRp+uvtm3fdfTzVHKZRmV/loMgiI78Ackoc=; b=
-	ghpk8KobgVLPbc7IsrAsyDmQOsMeBEwQqSf3AuQXWjbf5mEN5wqkt4uildSaHzY2
-	ImOnEpp9aRJIzg4OIZ0oHa9EMPRloTjD+aBKNtvZXkeEK/TEnfeAQ2N6mgPvSEb6
-	yTWNzxk059KPpBJu+b10glqQEBavp8zlyODzZimjOw5by0Dn4R34VyB0x2NK0kcj
-	11Dj3HC0NfKONUvyQSv/kPbh/n6JEDJ8J5oSJIGmPr5ej8E67AeFel6sX506AjLE
-	OyOLfrpH9KnDACRrRTANml/ffsJb78Rvi5LPLmauyCJhShh25+inuSJpiJLaNcPD
-	m728cBWV85ptG/32ZNCnxQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734349426; x=
-	1734435826; bh=z9j4g314qRp+uvtm3fdfTzVHKZRmV/loMgiI78Ackoc=; b=N
-	K+Ddy1NT4cM1vbgmmixSquCJTvWakS8jZ2cgIeSnfjEnoy/sWc5cUZ8tXnQZQLN+
-	v+ut5m6y9EttwNjo1hMBGwIogdWh2qiKDRlbCu7FwZ9fVuSYKTOn5x1+pOsr66xX
-	WE8NqGKiGsfhfWWECmmZOwroYRxKb7ev18NVW2Woo9D/gJV3B5vxor3EMo2xpB1w
-	5jI4zGEoJYRelNREskVzR1qyx/afVXB/PgMK/b/7/dbOg9AJN4yq2r9Ouhq2OR4t
-	Yqa50V1Umn4h1HtXCWxrpiqzmRb6/81mMiwKc81iG4athZ2/EwJAhgz60sr6UGIS
-	vN7eoTJxVFbJLLaBFRYZw==
-X-ME-Sender: <xms:cRJgZy9yojoLa0pEK0KbDhaKop7EUqK1e3BkHC7SK8eIeGhedJoK9w>
-    <xme:cRJgZyv0Cje8oBIkG9GH7GMPEAMfwvsxvLTdmFwmCwjUCNiARPYVqCb6KhCgbGVv8
-    IVy74jHzu0l6x_hDg>
-X-ME-Received: <xmr:cRJgZ4DwDKCwJc8JiJzW-ZsRTs39im6Tt4vU7UbZx2wjotcr9YFUK4VVgh7fMvGXF9Bn_uyvQyGyeMy5p-i7VtdPvlWrXAU68Coj>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleefgdefudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeen
-    ucfhrhhomheptehlihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecugg
-    ftrfgrthhtvghrnhepfefguefgtdeghfeuieduffejhfevueehueehkedvteefgfehhedt
-    ffdutdfgudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homheprghlihgtvgesrhihhhhlrdhiohdpnhgspghrtghpthhtohepvdefpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthht
-    ohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlhiesihhnfh
-    hrrgguvggrugdrohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghsseho
-    rhgrtghlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgesshhushgvrdgtiidprhgtph
-    htthhopehjhhhusggsrghrugesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplhhirghm
-    rdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinh
-    hugidqfhhouhhnuggrthhiohhnrdhorhhg
-X-ME-Proxy: <xmx:cRJgZ6fSeMAORWITVU0GpWrWM5AkYWcz0mb3oPAbD-sq5nCT4yBxew>
-    <xmx:cRJgZ3N_68B46R30fMj15_eGV3bnNz-u9u5_L1aiUZMzi8gDb2vF1Q>
-    <xmx:cRJgZ0kysXF_2JQMpve0XqkCHIVH0RlpjtwImWG1OaoTdFq_hbPAKg>
-    <xmx:cRJgZ5uQibfxXH8aLLrgjn8expnal7dMV7dZMl7M2btSB1NFtXLBcA>
-    <xmx:chJgZ6NVLJYvPMegkVMs9mGivqIbaW3Ybj7OHW-zy10pr9FTa44fzTYH>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Dec 2024 06:43:40 -0500 (EST)
-Message-ID: <b5009cc4-61a5-4f55-9fb1-ca6ff1163c08@ryhl.io>
-Date: Mon, 16 Dec 2024 12:46:55 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwolusgn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFE3C4CED0;
+	Mon, 16 Dec 2024 12:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734351016;
+	bh=LdSIFjD47tQgAxT9afpdkg48p86bnJwIHfThv+l32Lo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kwolusgnc436/vJQ4fOdagVoRYmUSm63K3JcDfwquIrF9q6Lrjg0KF6bTIIdy0vGX
+	 GVj+raA/6qyNrQg0hF5RoLcN98yPGNGBJuxhJXEhLHYY8sNDbwJ4B7JmhUw3ReMe6u
+	 dRGi2QYOBV5DGEvRyU8PB5DjvPXj+Qy4WSkGRQJ3EzQeJ/za+KafZvsNljFkiE32pz
+	 FrET+PMmBTyo3Jxi5WzRzpcbKoQgrhRe2XZL9EdZ2rfyOkXCnSpAUPpdEtlS74/GIq
+	 4/N60wW+SZMNM463wa7ZUWMvnnDKVv1LdMiwvdUpT0soUiBUXW5Z9E6s8pvpinE9Yq
+	 iLBI2jB/DrNJQ==
+Date: Mon, 16 Dec 2024 13:10:10 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: linux-kernel@vger.kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6 2/5] samples: rust: Provide example using the new Rust
+ MiscDevice abstraction
+Message-ID: <Z2AYoi6QvepL0m0r@cassiopeiae>
+References: <20241213134715.601415-1-lee@kernel.org>
+ <20241213134715.601415-3-lee@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 0/8] Rust support for mm_struct, vm_area_struct, and
- mmap
-To: Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>,
- Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-References: <nGnC07PmUqofHiX7HfZAOCIK1-CPS7DF8kdGhDgJgPts5KYrCrimmovP-4YMVgI7WRmFnGwbdndTtxCfp278cg==@protonmail.internalid>
- <20241211-vma-v11-0-466640428fc3@google.com> <87cyhrdh2w.fsf@kernel.org>
-Content-Language: en-US, da
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <87cyhrdh2w.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241213134715.601415-3-lee@kernel.org>
 
-On 12/16/24 12:04 PM, Andreas Hindborg wrote:
-> Hi Alice,
+On Fri, Dec 13, 2024 at 01:47:07PM +0000, Lee Jones wrote:
+> This sample driver demonstrates the following basic operations:
 > 
-> Applied on top of v6.13-rc2 and tried to build:
+> * Register a Misc Device
+> * Create /dev/rust-misc-device
+> * Provide open call-back for the aforementioned character device
+> * Operate on the character device via a simple ioctl()
+> * Provide close call-back for the character device
 > 
-> error[E0277]: the trait bound `ARef<Task>: From<&CurrentTask>` is not satisfied
->      --> rust/doctests_kernel_generated.rs:6884:22
->       |
-> 6884 |             creator: current!().into(),
->       |                      ^^^^^^^^^^ ---- required by a bound introduced by this call
->       |                      |
->       |                      the trait `From<&CurrentTask>` is not implemented for `ARef<Task>`, which is required by `&CurrentTask: Into<_>`
->       |                      this tail expression is of type `&CurrentTask`
->       |
->       = help: the trait `From<&Task>` is implemented for `ARef<Task>`
->       = help: for that trait implementation, expected `Task`, found `CurrentTask`
->       = note: required for `&CurrentTask` to implement `Into<ARef<Task>>`
-> 
-> error: aborting due to 1 previous error
-Ah, thanks. Looks like a documentation test that needs to be adjusted.
+> Signed-off-by: Lee Jones <lee@kernel.org>
 
-Alice
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+
+> ---
+>  samples/rust/Kconfig             | 10 ++++
+>  samples/rust/Makefile            |  1 +
+>  samples/rust/rust_misc_device.rs | 87 ++++++++++++++++++++++++++++++++
+>  3 files changed, 98 insertions(+)
+>  create mode 100644 samples/rust/rust_misc_device.rs
+> 
+> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> index b0f74a81c8f9..df384e679901 100644
+> --- a/samples/rust/Kconfig
+> +++ b/samples/rust/Kconfig
+> @@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
+>  
+>  	  If unsure, say N.
+>  
+> +config SAMPLE_RUST_MISC_DEVICE
+> +	tristate "Misc device"
+> +	help
+> +	  This option builds the Rust misc device.
+> +
+> +	  To compile this as a module, choose M here:
+> +	  the module will be called rust_misc_device.
+> +
+> +	  If unsure, say N.
+> +
+>  config SAMPLE_RUST_PRINT
+>  	tristate "Printing macros"
+>  	help
+> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> index c1a5c1655395..ad4b97a98580 100644
+> --- a/samples/rust/Makefile
+> +++ b/samples/rust/Makefile
+> @@ -2,6 +2,7 @@
+>  ccflags-y += -I$(src)				# needed for trace events
+>  
+>  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
+> +obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+>  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+>  
+>  rust_print-y := rust_print_main.o rust_print_events.o
+> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+> new file mode 100644
+> index 000000000000..324c3696ae3f
+> --- /dev/null
+> +++ b/samples/rust/rust_misc_device.rs
+> @@ -0,0 +1,87 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Rust misc device sample.
+> +
+> +use kernel::{
+> +    c_str,
+> +    device::Device,
+> +    fs::File,
+> +    ioctl::_IO,
+> +    miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
+> +    prelude::*,
+> +    types::ARef,
+> +};
+> +
+> +const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 0x80);
+> +
+> +module! {
+> +    type: RustMiscDeviceModule,
+> +    name: "rust_misc_device",
+> +    author: "Lee Jones",
+> +    description: "Rust misc device sample",
+> +    license: "GPL",
+> +}
+> +
+> +#[pin_data]
+> +struct RustMiscDeviceModule {
+> +    #[pin]
+> +    _miscdev: MiscDeviceRegistration<RustMiscDevice>,
+> +}
+> +
+> +impl kernel::InPlaceModule for RustMiscDeviceModule {
+> +    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+> +        pr_info!("Initialising Rust Misc Device Sample\n");
+> +
+> +        let options = MiscDeviceOptions {
+> +            name: c_str!("rust-misc-device"),
+> +        };
+> +
+> +        try_pin_init!(Self {
+> +            _miscdev <- MiscDeviceRegistration::register(options),
+> +        })
+> +    }
+> +}
+> +
+> +struct RustMiscDevice {
+> +    dev: ARef<Device>,
+> +}
+> +
+> +#[vtable]
+> +impl MiscDevice for RustMiscDevice {
+> +    type Ptr = KBox<Self>;
+> +
+> +    fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<KBox<Self>> {
+> +        let dev = ARef::from(misc.device());
+> +
+> +        dev_info!(dev, "Opening Rust Misc Device Sample\n");
+> +
+> +        Ok(KBox::new(RustMiscDevice { dev }, GFP_KERNEL)?)
+> +    }
+> +
+> +    fn ioctl(
+> +        me: <Self::Ptr as kernel::types::ForeignOwnable>::Borrowed<'_>,
+> +        _file: &File,
+> +        cmd: u32,
+> +        _arg: usize,
+> +    ) -> Result<isize> {
+> +        dev_info!(me.dev, "IOCTLing Rust Misc Device Sample\n");
+> +
+> +        match cmd {
+> +            RUST_MISC_DEV_HELLO => dev_info!(me.dev, "Hello from the Rust Misc Device\n"),
+> +            _ => {
+> +                dev_err!(me.dev, "-> IOCTL not recognised: {}\n", cmd);
+> +                return Err(ENOTTY);
+> +            }
+> +        }
+> +
+> +        Ok(0)
+> +    }
+> +}
+> +
+> +impl Drop for RustMiscDevice {
+> +    fn drop(&mut self) {
+> +        dev_info!(self.dev, "Exiting the Rust Misc Device Sample\n");
+> +    }
+> +}
+> -- 
+> 2.47.1.613.gc27f4b7a9f-goog
+> 
+> 
