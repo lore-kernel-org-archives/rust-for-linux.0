@@ -1,203 +1,84 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B950200138;
-	Mon, 16 Dec 2024 11:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734346874; cv=pass; b=ZU0JIdUUrXQZrx+uXI7u8ruVKaDAkwZXEFlAFihfyb05y0AB8OQ+CAJ9DOjBb8jGMjoJRZPWs4vMVK8jdFgwp6pEncj+BnaQ7xMQfAo9lmrdoTXuHtcT/SkvTONYG6C2diFpinwR7SbAwYtEF2FuOEz8jg1WUSDeaLiqWhWVC0A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734346874; c=relaxed/simple;
-	bh=5xkg+XoFQcDR4Nj5bHPQrnGb3VP3GtQKKAKjk8PtFws=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=nQhdEXH+oXwkHRZ9KPDFtfvq6zMu0rCSE/CKfOqLhkWReb26odxq77LwmULUjKFKIerpepd6ZM3+7gcrQ8HTR/D3YZCL4xBwXhQCt3gvlXu+Z01aASLM0Z6n7VHAAF9rNSHwgR0yZ0fDOTQeU2vQgVhUqbWl+zRmZNGx7iVbWV4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GqN/uwg3; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CF52040B0;
+	Mon, 16 Dec 2024 11:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734347109; cv=none; b=VD47fLCO9BR5Dbi/SJDOUjSFE3zePuQ6HlFxoqDFD2U3EqlLJYGjjdh8lyKwnfxtUgD1YERmAQJH2F5KvnrhUqqAVb+aCpCCP3OiBtP6krIZmvFCQg3EK7wug8GomJPjKMDPk9111Y8A4GzA70OcAa7o4/1rAiy65S5tnkSPcVA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734347109; c=relaxed/simple;
+	bh=gHGs/YYq62ir4jy8HEmxhcnPeXemMMlQT5Iqw73s42I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XrBePy9iq5M/GmHw0vVuxxC5lUuD2k7G8ueGPB6mVYJkXuG1Am6PTmbxm/f2XYGluUuRTCPpT/LbdhLpjFIld+8g2DhdLygnWwYsZSLQJ4AZBqij9JKxwthU/1a+aBxbOrLK8zaEjimLRcZEtBR/R4kSDqlZt2zHzBgrT/ECSHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSQMmRCE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GqN/uwg3"
-ARC-Seal: i=1; a=rsa-sha256; t=1734346843; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZYlP6MkXJQuAGqB7M8bxK2G2Y66dw7Bvj7yYva62rvYea6pvky/lzA8j3sP1OPEGbVQh0IGDLFlsbN32P8aOocQSXCQPqb8eWwY5vAcAmLoxYKdQSR7U6TrQsxeO8lwmWzVwwi7u8XeBymdtSEB1SHl/W+w5K5ueQrCPCycOX/Q=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1734346843; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=piuy8bLoj7Ex+dtJ8kT5C+iCAk/X82mSA3N2sYjnfsU=; 
-	b=Gg4/pW8w9jW0ITFKHB/NbHRbkJrtVM6fRus1tQREAbwbSkK6rQpcsYW6HAuEw6TveTFd98Coqh9crRsd53v6MqyebLi8vGqUkTslqodfQGde34wLKj1XCOZkUDhhen6kDAD9tKMAFZqoAah1Unt9pQzYZPZKkoT6kOYMCAv3bfs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1734346843;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=piuy8bLoj7Ex+dtJ8kT5C+iCAk/X82mSA3N2sYjnfsU=;
-	b=GqN/uwg3he+FwuubtfKQyUnghKNEboQMAnLD8XaA4XHZKpEq9yr4OovirttgL0Xi
-	NbprxYCNVQO1IL9P85LLC8DZlOdCFLIfwRdGQU4o1fN9MdQSpKqNeVp43rsGRbtII7I
-	zloiMj583cV3QoanT4iShEDTC1GFnNusDC0v5Qb4=
-Received: by mx.zohomail.com with SMTPS id 1734346841633737.7947914694015;
-	Mon, 16 Dec 2024 03:00:41 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSQMmRCE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D5AC4CED0;
+	Mon, 16 Dec 2024 11:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734347108;
+	bh=gHGs/YYq62ir4jy8HEmxhcnPeXemMMlQT5Iqw73s42I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=VSQMmRCEPL5rU2DSy8O36rNVSB2JXos9uQerJcZ4keh5ggdJpI+a+Fy/uox1P5+qJ
+	 gXupG9RoaRt51MIuyifTacwEuUsfIsZTcthJQIDBXMZlo4wErWGaEuCnnUchOg8VWY
+	 LrTLv4kj0tj4djMpE50TV3JEjfs4D9hosVnVimHuXyLlyljFtDT95iRAV1Mq3+YBGb
+	 E44myIopwT7QXLtAtA8Qik51OSc33DpKk473Eq35MG1PjlVk0Ravg3abqwMA47QGJL
+	 boEXxVZCk+jDlgBZZoao6TkmqP3IAZ1vCewY2IgQ6cBOHlXdGkpX8tfnrBLR911T75
+	 gD0AWO/WY+jHQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
+ <willy@infradead.org>,  "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+  "Vlastimil Babka" <vbabka@suse.cz>,  "John Hubbard"
+ <jhubbard@nvidia.com>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+  "Andrew Morton" <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
+  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
+ <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
+ Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
+  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v11 0/8] Rust support for mm_struct, vm_area_struct, and
+ mmap
+In-Reply-To: <20241211-vma-v11-0-466640428fc3@google.com> (Alice Ryhl's
+	message of "Wed, 11 Dec 2024 10:37:04 +0000")
+References: <nGnC07PmUqofHiX7HfZAOCIK1-CPS7DF8kdGhDgJgPts5KYrCrimmovP-4YMVgI7WRmFnGwbdndTtxCfp278cg==@protonmail.internalid>
+	<20241211-vma-v11-0-466640428fc3@google.com>
+Date: Mon, 16 Dec 2024 12:04:39 +0100
+Message-ID: <87cyhrdh2w.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v7 2/2] rust: add dma coherent allocator abstraction.
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <f340e2c9-a794-4ea9-8b1a-53496765e769@gmail.com>
-Date: Mon, 16 Dec 2024 08:00:24 -0300
-Cc: Robin Murphy <robin.murphy@arm.com>,
- Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <216C2A0A-8393-47DC-9A83-0020461512BF@collabora.com>
-References: <20241210221603.3174929-1-abdiel.janulgue@gmail.com>
- <20241210221603.3174929-3-abdiel.janulgue@gmail.com>
- <CAH5fLgjO-GbB85dDdxLSSWY74cUn8-Lt-yaRGkUVxb-E8YaO2Q@mail.gmail.com>
- <0F719804-2AD3-4C4E-A98C-2862295990BA@collabora.com>
- <b7130ae2-6314-41d9-bda2-d875b22463bb@arm.com>
- <263C49EB-5A5D-4DF4-B80A-A39E6CE58851@collabora.com>
- <f340e2c9-a794-4ea9-8b1a-53496765e769@gmail.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-X-Mailer: Apple Mail (2.3826.200.121)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain
+
+Hi Alice,
+
+Applied on top of v6.13-rc2 and tried to build:
+
+error[E0277]: the trait bound `ARef<Task>: From<&CurrentTask>` is not satisfied
+    --> rust/doctests_kernel_generated.rs:6884:22
+     |
+6884 |             creator: current!().into(),
+     |                      ^^^^^^^^^^ ---- required by a bound introduced by this call
+     |                      |
+     |                      the trait `From<&CurrentTask>` is not implemented for `ARef<Task>`, which is required by `&CurrentTask: Into<_>`
+     |                      this tail expression is of type `&CurrentTask`
+     |
+     = help: the trait `From<&Task>` is implemented for `ARef<Task>`
+     = help: for that trait implementation, expected `Task`, found `CurrentTask`
+     = note: required for `&CurrentTask` to implement `Into<ARef<Task>>`
+
+error: aborting due to 1 previous error
 
 
+Best regards,
+Andreas Hindborg
 
-> On 16 Dec 2024, at 07:23, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
-wrote:
->=20
->=20
->=20
-> On 13/12/2024 21:08, Daniel Almeida wrote:
->> Hi Robin,
->>> On 13 Dec 2024, at 12:28, Robin Murphy <robin.murphy@arm.com> wrote:
->>>=20
->>> On 13/12/2024 2:47 pm, Daniel Almeida wrote:
->>> [...]
->>>>>> +    /// Returns the CPU-addressable region as a slice.
->>>>>> +    pub fn cpu_buf(&self) -> &[T]
->>>>>> +    {
->>>>>> +        // SAFETY: The pointer is valid due to type invariant on =
-`CoherentAllocation` and
->>>>>> +        // is valid for reads for `self.count * size_of::<T>` =
-bytes.
->>>>>> +        unsafe { core::slice::from_raw_parts(self.cpu_addr, =
-self.count) }
->>>>>=20
->>>>> Immutable slices require that the data does not change while the
->>>>> reference is live. Is that the case? If so, your safety comment =
-should
->>>>> explain that.
->>>>>=20
->>>>>> +    }
->>>>>> +
->>>>>> +    /// Performs the same functionality as `cpu_buf`, except =
-that a mutable slice is returned.
->>>>>> +    pub fn cpu_buf_mut(&mut self) -> &mut [T]
->>>>>> +    {
->>>>>> +        // SAFETY: The pointer is valid due to type invariant on =
-`CoherentAllocation` and
->>>>>> +        // is valid for reads for `self.count * size_of::<T>` =
-bytes.
->>>>>> +        unsafe { core::slice::from_raw_parts_mut(self.cpu_addr, =
-self.count) }
->>>>>=20
->>>>> Mutable slices require that the data is not written to *or read* =
-by
->>>>> anybody else while the reference is live. Is that the case? If so,
->>>>> your safety comment should explain that.
->>>>>=20
->>>> The buffer will probably be shared between the CPU and some =
-hardware device, since this is the
->>>> point of the dma mapping API.
->>>> It=E2=80=99s up to the caller to ensure that no hardware operations =
-that involve the buffer are currently taking
->>>> place while the slices above are alive.
->>>=20
->>> Hmm, that sounds troublesome... the nature of coherent allocations =
-is that both CPU and device may access them at any time, and you can =
-definitely expect ringbuffer-style usage models where a CPU is writing =
-to part of the buffer while the device is reading/writing another part, =
-but also cases where a CPU needs to poll for a device write to a =
-particular location.
->>>=20
->> Ok, I had based my answer on some other drivers I=E2=80=99ve worked =
-on in the past where the approach I cited would work.
->> I can see it not working for what you described, though.
->> This is a bit unfortunate, because it means we are back to square =
-one, i.e.: back to read() and write() functions and
->> to the bound on `Copy`. That=E2=80=99s because, no matter how you try =
-to dress this, there is no way to give safe and direct access
->> to the underlying memory if you can=E2=80=99t avoid situations where =
-both the CPU and the device will be accessing the memory
->> at the same time.
->=20
-> This is unfortunate indeed. Thanks Alice for pointing out the =
-limitations of slice.
->=20
-> Btw, do we have any other concerns in going back to plain old raw =
-pointers instead? i.e.,
->=20
->    pub fn read(&self, index: usize) -> Result<T> {
->        if index >=3D self.count {
->            return Err(EINVAL);
->        }
->=20
->        let ptr =3D self.cpu_addr.wrapping_add(index);
->        // SAFETY: We just checked that the index is within bounds.
->        Ok(unsafe { ptr.read() })
->    }
->=20
->    pub fn write(&self, index: usize, value: &T) -> Result
->    where
->        T: Copy,
->    {
->        if index >=3D self.count {
->            return Err(EINVAL);
->        }
->=20
->        let ptr =3D self.cpu_addr.wrapping_add(index);
->        // SAFETY: We just checked that the index is within bounds.
->        unsafe { ptr.write(*value) };
->        Ok(())
->    }
->=20
->> I guess the only improvement that could be made over the approach =
-used for v2 is to at least use copy_nonoverlapping
->> instead,=20
->=20
-> You mean introduce something like read_raw(dst: *mut u8,...) and =
-write_raw(&self, src: *const u8,...)?
-
-
-What I mean is that you don=E2=80=99t have to read (and bounds-check) a =
-single index per function call.
-
-Using copy_nonoverlapping lets you read/write multiple values with only =
-a single function call and a
-single check. It=E2=80=99s basically equivalent to a memcpy.
-
-
->=20
-> Regards,
-> Abdiel
 
 
