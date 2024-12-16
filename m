@@ -1,185 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1690A207E1D;
-	Mon, 16 Dec 2024 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89A213AA2B;
+	Mon, 16 Dec 2024 15:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734360691; cv=none; b=T8oO+FcSneMflvs13ET3W1EQA7vbWQ86BioQ9eb+WilQYUwNIXC19toMwMTBwOaEM/F8SS2F0TdedCGF2FIDxWGjVhZU+Vi8Sr6XRDym6zJrV/BDP82YctPWVU9I11RrXGINf9b8CMXyQyMpXzuXFtT9k9Pm/+2cjDnni1HfDPE=
+	t=1734361429; cv=none; b=YSWcsAHbpM0J5157EL2kQE/JqOysPDM3hX6PSLivbgza6/q2QXej7ukB3bRRFq68i3coedBrIHTp54Qc8o6QRtAMSq2wNU9W+Q3SXOEybmW/8K62aCfc95pdGSOcfDk6zG8dyv3/79RVobMKZTPVW0r3cztJ3e06eoiMQgI9n6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734360691; c=relaxed/simple;
-	bh=bA9uLAVZ8BgttLZYWSnIy1R0Ug4OzPSdjjR00xzG6Cs=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=h/of7Ix2ZNHMWyEd6G4Cf4IHHw0JT/h3uZX5LNSs3NIy40wtGJdzOpIFWSH6Gzog78dvor1kCyZC3PmFuGSGD3fc36qXxISxkak9mTWDrcWH9l8Oak1ewEFk/FzricQNGv09ztqfR2sQtGA6kJIq4EUtFAzXJp+R5gCp+diFaNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gydENcCY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734361429; c=relaxed/simple;
+	bh=Ao21RlVy+Dkdya5UZarNG+/GZUOCqYMKVM6kRW374Jc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g8KA7KxRjcr139LCDfS3QuYs0+qj3pB2QrfDNi2YU8fpZq1vK3xdEuckGokKaJLOVV/7tELi4fMmLDEGD12iOgCgbPRofS/OboCyiMvtvMYQrbk4eve8f2hxGqzb3piQQa6bAcdH9sb1Jop1GwuCeeJHR9rwTjXMNVzt4Fxf5wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6fpaikz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gydENcCY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBADC4CED0;
-	Mon, 16 Dec 2024 14:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734360690;
-	bh=bA9uLAVZ8BgttLZYWSnIy1R0Ug4OzPSdjjR00xzG6Cs=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:References:From;
-	b=gydENcCYiqN9nlkfNikBstd+KaAqF32kisCt1UfFdZW2s0aHgbUriurkcQT7Qkgqa
-	 9lsBW9s5YGeCkxfhGtpWCiyT/RcEZWma+y49hL42B14dJETPRJObqW4lhKlOzwUUmG
-	 O/kULJ+mQzUm5uETHYlUckwtZQ2rXgHlab5/kbc+tsMEq+3MFU5nTLPIE2FID/wsxc
-	 ellH5LqAvkHU+4aqwZzcmuLQm9py3GWsCE66HPYLjzOLZb42cePaJHFXEvsaZgT7Ui
-	 6my0w1UlHK84nz8A4wfcS9NoqzWGm2mqoD2SCH9jyuuxDQ/1ZLUvDRfC+sV/MJg6j4
-	 DywA/e7c6mkAA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
- <willy@infradead.org>,  "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
-  "Vlastimil Babka" <vbabka@suse.cz>,  "John Hubbard"
- <jhubbard@nvidia.com>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-  "Andrew Morton" <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
-  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
- <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
- Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "Gary Guo" <gary@garyguo.net>,  =?us-ascii?Q?=3D=3Futf-8=3FQ=3FBj=3DC3?=
- =?us-ascii?Q?=3DB6rn=3F=3D?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v11 3/8] mm: rust: add vm_insert_page
-In-Reply-To: <20241211-vma-v11-3-466640428fc3@google.com> (Alice Ryhl's
-	message of "Wed, 11 Dec 2024 10:37:07 +0000")
-Date: Mon, 16 Dec 2024 13:25:12 +0100
-Message-ID: <87o71bbys7.fsf@kernel.org>
-References: <20241211-vma-v11-0-466640428fc3@google.com>
-	<k0kNBzmNg_c8GHIFyjlyJfEpyRNoAIZZVM1n3zK2kVT1pScUOUpkePSltcN-CfRI2UpS0OIvEG7FBvkHhXYrAQ==@protonmail.internalid>
-	<20241211-vma-v11-3-466640428fc3@google.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6fpaikz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C11C4CED0;
+	Mon, 16 Dec 2024 15:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734361428;
+	bh=Ao21RlVy+Dkdya5UZarNG+/GZUOCqYMKVM6kRW374Jc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A6fpaikzVw1u6ZBr91MwRumQrVZl9oIoleo85mCDTE4o5kyhQKTM4aTqbDUBMajzf
+	 TClbvNEge/vUc0ObBFmUYzTfua5YF2Z4c8dfDLKZrZWoZA/YTFA2QVopNNqsllnjMa
+	 blq4QflBo9uEYwHk5DGferYZwPLnUx86hrOER6Pw=
+Date: Mon, 16 Dec 2024 16:03:07 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Trevor Gross <tmgross@umich.edu>,
+	Adam Bratschi-Kaye <ark.email@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
+ parameter support
+Message-ID: <2024121630-steed-grating-6352@gregkh>
+References: <I0v8YGJe3e1ex1oF3mki-7QKimYLCJHnBy6g1taHgoOFvpNmQSrSnsMGJyGS064pGJsJDsTsei-pInFRz5INWA==@protonmail.internalid>
+ <2024121309-lethargic-ended-5f99@gregkh>
+ <87ttb7d24p.fsf@kernel.org>
+ <hmmCwoNftQc5Mj4BLjFC2qTABem8CvuXSx3ucXzjIfQSwLjULmZgsw7vpq3Zxy0kk5H3Zjpz-vd4d7E1sb4LHw==@protonmail.internalid>
+ <2024121344-excusably-resurrect-d01a@gregkh>
+ <87h674c5vq.fsf@kernel.org>
+ <UW-ATumT4L-13ZXX-lO1inQGeZK7VgQWNAHE3688ulGj-rvzxWkUdrmnAUlufI1W5-9d6vzH3TXZ4VOmYh9wxA==@protonmail.internalid>
+ <2024121646-shelve-series-5319@gregkh>
+ <877c7zbx2u.fsf@kernel.org>
+ <8e1b5c5e-52ae-4332-a49c-990add7611f6@kernel.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8e1b5c5e-52ae-4332-a49c-990add7611f6@kernel.dk>
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On Mon, Dec 16, 2024 at 07:43:12AM -0700, Jens Axboe wrote:
+> On 12/16/24 6:02 AM, Andreas Hindborg wrote:
+> >>> I understand that you would like to phase out module parameters, but I
+> >>> don't think blocking their use from Rust is the right way to go about
+> >>> that task. If you really feel that module parameters have no place in
+> >>> new drivers, I would suggest that to be part of review process for each
+> >>> individual new driver - not at the stage of enabling module parameters
+> >>> for Rust in general.
+> >>
+> >> I'm saying that module parameters do NOT belong in a driver, which is
+> >> what you are wanting to do here.  And as for adding new apis, please
+> >> only do so when you have a real user, I don't see a real user for module
+> >> parameters in rust just yet.  If that changes, I'll reconsider my stance :)
+> > 
+> > I guess we disagree about what is "real" and what is not.
+> > 
+> > In my view, null_blk is real, it is used by real people to do real work.
+> > They get real annoyed when the interface for their real tools change -
+> > thus making it more difficult to do this experiment.
+> 
+> I'd have to agree with that - yes, null_blk doesn't host any real
+> applications, but it is the backbone of a lot of testing that blktests
+> and others do. Hence it's very real in that sense, and the rust version
+> of null_blk should provide and mimic how the C version works for ease of
+> testing.
+> 
+> If this was a new driver where no prior art exists in terms of users and
+> API, then I'd certainly agree with Greg. But that's not the case here.
 
-> The vm_insert_page method is only usable on vmas with the VM_MIXEDMAP
-> flag, so we introduce a new type to keep track of such vmas.
->
-> The approach used in this patch assumes that we will not need to encode
-> many flag combinations in the type. I don't think we need to encode more
-> than VM_MIXEDMAP and VM_PFNMAP as things are now. However, if that
-> becomes necessary, using generic parameters in a single type would scale
-> better as the number of flags increases.
->
-> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/mm/virt.rs | 71 +++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 70 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> index 68c763169cf0..3a23854e14f4 100644
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -4,7 +4,15 @@
->
->  //! Virtual memory.
->
-> -use crate::{bindings, mm::MmWithUser, types::Opaque};
-> +use crate::{
-> +    bindings,
-> +    error::{to_result, Result},
-> +    mm::MmWithUser,
-> +    page::Page,
-> +    types::Opaque,
-> +};
-> +
-> +use core::ops::Deref;
->
->  /// A wrapper for the kernel's `struct vm_area_struct` with read access.
->  ///
-> @@ -100,6 +108,67 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
->              )
->          };
->      }
-> +
-> +    /// Check whether the `VM_MIXEDMAP` flag is set.
+Ok, so are you going to drop the C version and go with the rust version
+if it shows up?  Surely you don't want duplicate drivers for the same
+thing in the tree, right?
 
-Perhaps "Check whether the `VM_MIXEDMAP` flag is set. If so, return
-`Some`, otherwise `None` ?
+thanks,
 
-> +    ///
-> +    /// This can be used to access methods that require `VM_MIXEDMAP` to be set.
-> +    #[inline]
-> +    pub fn as_mixedmap_vma(&self) -> Option<&VmAreaMixedMap> {
-> +        if self.flags() & flags::MIXEDMAP != 0 {
-> +            // SAFETY: We just checked that `VM_MIXEDMAP` is set. All other requirements are
-> +            // satisfied by the type invariants of `VmAreaRef`.
-> +            Some(unsafe { VmAreaMixedMap::from_raw(self.as_ptr()) })
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +}
-> +
-> +/// A wrapper for the kernel's `struct vm_area_struct` with read access and `VM_MIXEDMAP` set.
-> +///
-> +/// It represents an area of virtual memory.
-
-Could we have a link to `VmAreaRef` and explain that this is a
-`VmAreaRef` with an additional requirement?
-
-> +///
-> +/// # Invariants
-> +///
-> +/// The caller must hold the mmap read lock or the vma read lock. The `VM_MIXEDMAP` flag must be
-> +/// set.
-> +#[repr(transparent)]
-> +pub struct VmAreaMixedMap {
-> +    vma: VmAreaRef,
-> +}
-> +
-> +// Make all `VmAreaRef` methods available on `VmAreaMixedMap`.
-> +impl Deref for VmAreaMixedMap {
-> +    type Target = VmAreaRef;
-> +
-> +    #[inline]
-> +    fn deref(&self) -> &VmAreaRef {
-> +        &self.vma
-> +    }
-> +}
-> +
-> +impl VmAreaMixedMap {
-> +    /// Access a virtual memory area given a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `vma` is valid for the duration of 'a, and that the mmap read lock
-> +    /// (or stronger) is held for at least the duration of 'a. The `VM_MIXEDMAP` flag must be set.
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -> &'a Self {
-> +        // SAFETY: The caller ensures that the invariants are satisfied for the duration of 'a.
-> +        unsafe { &*vma.cast() }
-> +    }
-> +
-> +    /// Maps a single page at the given address within the virtual memory area.
-> +    ///
-> +    /// This operation does not take ownership of the page.
-> +    #[inline]
-> +    pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
-> +        // SAFETY: The caller has read access and has verified that `VM_MIXEDMAP` is set. The page
-> +        // is order 0. The address is checked on the C side so it can take any value.
-
-Maybe something like this: "By the type invariant of `Self` caller has read
-access and has verified that `VM_MIXEDMAP` is set. By invariant on
-`Page` the page has order 0."
-
-> +        to_result(unsafe { bindings::vm_insert_page(self.as_ptr(), address as _, page.as_ptr()) })
-> +    }
->  }
->
->  /// The integer type used for vma flags.
-
-
-Best regards,
-Andreas Hindborg
-
-
+greg k-h
