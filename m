@@ -1,65 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3F31E2617
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Dec 2024 23:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59601DF969
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Dec 2024 23:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734478286; cv=none; b=JDHXk2Sed0SqS+DOI+DICiaOT6DCTR4RGMtc4K77tpGkN2r8PGk4J5X/TE+DoGjHYRmkOUkBCHoNBA1hgv3YBTsXn9dNxAEbn6HWGGF3doAG4o3O5aEt77KPAuTzbVXfpUuW6kLwv5TYkMgrMAiWDOsCgXdT5FGf8k3f3yh18gg=
+	t=1734479582; cv=none; b=TbfaK9AcpDzNujFF/1/q6hankIr1UC/uxpQbdcTUQEeOfgUaszQu9k/+84Qmeh1oaYlyVq1s150tfGRyxLrR4HphUPfbsqvzCG1ssZRM/HIrOznFP3PO4KGm76NNEJtQYvJ0frCGwb4J7mDrTbEkdFzPLB6tS5+W9QoZGTno0ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734478286; c=relaxed/simple;
-	bh=QdOd0cXLmdIWBZ8KDXi/EAnoSB9W/2NY1lmWnr2JM58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nVQ/geKrFv73z2eLE6AqMlkaUOo6LdnApd0gUhTkJaIJIQ+gJqEsKJFFXkgrfbjUaGbAlbyDznQMNZX3TxKNm+9TzfJf3Ese86TyPDtCeeuePzxyTTGhr7AVb2CGRdidyfemgV2qMRqZj3eJKdaol7tjO5G+OmAzeGlxvc/BoGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxZaOVAB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734479582; c=relaxed/simple;
+	bh=EkJmFc6CR9j2uvgE47iuIWgx8DbsmlY6+5OXJgtE3wg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YyPkzP5V4H1aCqgnsUkwcnuw4YKE/e9CxUpW4TQkT48FeywVJUuuzTiOF1bLDXzc6UbzWLsMrZ2M2p1nbNySQleiUKErWEqfNWmgk48YYI4uoyhXttiWib3Zj+926NwKoFRs2XMMWlxZmuSIfynM2VYynxLc2yW5UZ4G+m9cfJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hiTgMMUd; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxZaOVAB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAEAC4CED3;
-	Tue, 17 Dec 2024 23:31:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734478285;
-	bh=QdOd0cXLmdIWBZ8KDXi/EAnoSB9W/2NY1lmWnr2JM58=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gxZaOVABEODxLO1L3zzvls206z1WY0+RB/3A5PDueH6//UkuoRjiOeVvZTQOJPlFh
-	 tlOgZYJ2CENM9tGGqt4qZbdKEu60etwd5k9MwRuxZdt4EcaIu4EhMSIaOAeVeq8Rhe
-	 jkMrpMBIF6KwbGKTN7GRxoYQz4wJuqYZ+ixBxUSvkYx+ZtZohroLGIy49fPQY5PWDA
-	 pRIQyDT3fcfUVMvXnjTkFxZUEyFi8NoxozIdsV6Lutyhe533YfUGUcTBIah/PpiBfH
-	 UgKW044qV/buHzuoj4mOASFpsIdxc9HvjJxATLbpcLgZ1RH9Csy+gfDqgpBB8MGfPj
-	 V8aEQ/NLPbUow==
-Date: Tue, 17 Dec 2024 13:31:24 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Dirk Behme <dirk.behme@gmail.com>, rust-for-linux@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v2] rust: workqueue: Enable execution of doctests
-Message-ID: <Z2IJzIkEyxQsxL3A@slm.duckdns.org>
-References: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
- <CANiq72kQAKeafOhh7iYCPMboPTWT+pce0b6ZgJodoyAy7Cj=dA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hiTgMMUd"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-216513f8104so6327085ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Dec 2024 15:53:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734479580; x=1735084380; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=khzqE3t/oBIkmFQVzKV1e2bvtgQpbimTlF/c6UMFETk=;
+        b=hiTgMMUdZN0R2itkYhoILwyoVcejf99lKHjQk9lFIz5LG1pQ0H3QKz16Ln3Oc/WXe9
+         Ls2QxXcoxKmegKexOn7CLMg45zTiO5QvAit/+QEHc4Wxkd1DawbxybCbcE7QzZLjneTb
+         cn+IfdJY3e3mNbjhedUmYGajuG7cN0zD8lTgtygAFZDan6zPGWHbS/HZvcDACNQ6uE6x
+         EzAsxwvjkL8Jywk/Ul4gqke5nO5x9PzCJnAjCb+K1odj/P5cdeJ4kFbCCVbmvdWYZJ9w
+         lrJRR5Ydsg0mMwN6QJfdZfQITsx8HLj9iQCP69pKeR2KSembFKpa2t2KcRjZKMCcmXer
+         w3eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734479580; x=1735084380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=khzqE3t/oBIkmFQVzKV1e2bvtgQpbimTlF/c6UMFETk=;
+        b=hnZ0/IoC/wCEAOizMZ6PkvicxMFQPB5KzfXwORdoMGm2B8rv1UlMaB4bdpWUmq+1+2
+         yOcvIsL3js58vGBAZg/3bE+WRRi5jMxxoyt0jkyJ4mtRGhverWDGSUOlcVJgW0TI/jG6
+         jzOO3Kc0x6T2ImeZeQxkK5tlwKlaJ1kRo2DYC1bAsoRoHX7LODA+hQNRplKa2PLXWiUI
+         juiNc+95mMLGyQN12g6RPRhxjAK/fZyUJnQXvTkVKFOwqoAf6kNy/JkEtvFtyFUfQ3h/
+         ft2OT7yLVUzluCEhncue1LPNCnmP45h4dtwezzSN2zkzvbCsgaEGJ9Ye9vWl28tiZBeG
+         v1Nw==
+X-Gm-Message-State: AOJu0Yy+rPjIhzyVcnwp972jLP2DaDaRGOPprMzEI7Z0vNIlGKjrfd/a
+	6rnJ4lgJ3M5dmhG3aItcZ8D3UKUmsWFfKSPgPejcEO5GqZmSaInxLoO5F8V2yoMa5b5X8cL0s99
+	wG3juUYK9cTtxbBrBK+otX9lwsYQ=
+X-Gm-Gg: ASbGncte5MUt/TmgpG5nbefnWDS4r3I2CSZEWn5SZIJnZr/mkGPE+/bGi5PkPyzm21f
+	lm5pOLRihI/2taw2lUnLkcIu+rFAqYm76fyQQ1Q==
+X-Google-Smtp-Source: AGHT+IEYHO6gQhkvMtVGP01xO8C2qGTeb7ik2LcrBJNyOBNXFB+eIhxvfgmjiaT4jtG0TyDD8aBqyUJJnO2NezU111E=
+X-Received: by 2002:a17:902:e801:b0:215:3862:603a with SMTP id
+ d9443c01a7336-218d723e7b1mr3800165ad.10.1734479580225; Tue, 17 Dec 2024
+ 15:53:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72kQAKeafOhh7iYCPMboPTWT+pce0b6ZgJodoyAy7Cj=dA@mail.gmail.com>
+References: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
+In-Reply-To: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Dec 2024 00:52:47 +0100
+Message-ID: <CANiq72=kHXzaGtcSV3xFkiw_BsorJovjYaNriDWhvXafeZhDxQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: workqueue: Enable execution of doctests
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Tejun Heo <tj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 18, 2024 at 12:23:47AM +0100, Miguel Ojeda wrote:
-> This looks fine to me -- Tejun, are you picking it up? If so, please
-> feel free to add:
-> 
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> Otherwise, if you prefer, I can put it through `rust-next`.
+On Wed, Oct 16, 2024 at 3:35=E2=80=AFPM Dirk Behme <dirk.behme@gmail.com> w=
+rote:
+>
+> Having the Rust doctests enabled these workqueue tests are built but not
+> executed as the final callers of the print_*() functions are missing.
+> Add them.
 
-Acked-by: Tejun Heo <tj@kernel.org>
+Applied to `rust-next` -- thanks everyone!
 
-Please take it through rust-next.
+    [ Reworded slightly. - Miguel ]
 
-Thanks.
-
--- 
-tejun
+Cheers,
+Miguel
