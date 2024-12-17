@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04951F756A;
-	Tue, 17 Dec 2024 15:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19AD1F8906;
+	Tue, 17 Dec 2024 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448789; cv=none; b=EuddusZaHdl58mGuBThJXXAjoRV/KL8Y3elQ9goK7De9FFPqcfFvINFEKXiYvjRGxpfK/6q9CESHS2lRuf+16x4404+w0bBjqJ/SEfDBp9b932VZb/yCWjulGuJoVw2/5XqirHE9ER1ge86l902k68Bw9bQ40uXY3ykb/Rd0M78=
+	t=1734448795; cv=none; b=IyTrmz3AbC+BvaDdS0RYtRfsyR8GatxnwLSFv62j6igzNu8ztqsqh83YCAjSg7gPRWipqpFp/LhZ+OQaAXHJF+44fcgZux22+o5oFSyWcu7Kk9GdGS74wtv4RiREv3xJQgYYc+rTNtb/4mAQSIB0DxuSA6ybsmPOo03uDyli/VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448789; c=relaxed/simple;
-	bh=tQDyXQBkG1q5qjeehMfyrhkTdqTA2BWMVmg+Cs7DewM=;
+	s=arc-20240116; t=1734448795; c=relaxed/simple;
+	bh=9FNldwPp52UQBwi+GTczE3aFsHu8VA7iPdgnD1jtrW0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DiVB460ern+XS1JbzDCBCXRIyHeo1eqCGNWEErdPURaHSVyJuR+IikfgAf6QXGEycu4E3bPO85ZNFOcfs2q0G8fh03CfE5irWYzXekQ18z3XoLU2uqXXR6dBX1LBaPxh3EcnYOeYauyrpTToE4qS/r7R2HbbIlMf8vuUrZklfhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g73mysGz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=kUrL9EwM0i95EeWETriaJoOu+Aad3HT4MDCyO1alrKOwkJWNbEnnKeOuxVKH2ZoWSnZGTskdqGbO9BaFM4aTzryIrATrTvFe7Gx/nyxPn1b/NatP3glXbEUgSF94rTqZ6ssozzTWK/CkPMDHAL78IUDj4SQznkWRF2akcsBnVZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9+aVcZ1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g73mysGz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E98C4CED3;
-	Tue, 17 Dec 2024 15:19:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9+aVcZ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD4EC4CEDD;
+	Tue, 17 Dec 2024 15:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734448789;
-	bh=tQDyXQBkG1q5qjeehMfyrhkTdqTA2BWMVmg+Cs7DewM=;
+	s=k20201202; t=1734448795;
+	bh=9FNldwPp52UQBwi+GTczE3aFsHu8VA7iPdgnD1jtrW0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=g73mysGzY4FlzIF/yXDocP6p6QPDOIltz9Z63FUBi2YT7QjK5dZus0UFra4KHbtcM
-	 h3LLo3OGh7VwAI+dIlVabRGl3x0X9RgBRSQ2hh26IjeJ4CLbzflqqdS1HNEOdR0dgo
-	 4icpWoga0DKPJTDH4L2DVXs0oABe+wcw9V/TqZ441uRGWhdgjQ+u/EZo35Rt7YDN3+
-	 UtKbQPAbR3gG//MUXmbtpJrW4UBIRR7VeCm9a4QiFIL7jyiJddT9qETgPQibICg0DI
-	 LpSQLZ5bBHfTkz7YzeJFl6df1dgOnZVnF7FFGDrIcO3zMqE636PhxkOpBe2FmYdWnO
-	 bf3jhi2oyOwzA==
+	b=m9+aVcZ1ovDl6R4zpRgyYkvsmI7bfhYhHuQW2xFooFv8yfA5uPtswpLUOYOwfoDbo
+	 aERx9mnOwEJ89uF9qHxlAX4TNkcfWqm+UE8JJpLSFRetSz3JGoFrBSihuy5krww46U
+	 bcIjpJGaA0ysJe+zA0LChCqSp/crl5PjygCkjyjy7mwmjTrm9FQiTHu+Y9s8jVBDwC
+	 ctlG2gqQuh2XNs3PnsmUqF8N6viKZEQsfMLMGfPjXfAnGlnq0/VOvcIpsjMgOKBmII
+	 kKgGtDU+aoHOmCWfAAox3tEGL6wxp9w0VeoZETnmmploeUyccsJ+YA0l3lAJltqQDw
+	 q6qqsrjaTuRVA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 17 Dec 2024 16:17:41 +0100
-Subject: [PATCH v5 10/14] rust: alloc: add `Box::into_pin`
+Date: Tue, 17 Dec 2024 16:17:44 +0100
+Subject: [PATCH v5 13/14] rust: hrtimer: add clocksource selection through
+ `ClockSource`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,8 +37,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241217-hrtimer-v3-v6-12-rc2-v5-10-b34c20ac2cb7@kernel.org>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241217-hrtimer-v3-v6-12-rc2-v5-13-b34c20ac2cb7@kernel.org>
 References: <20241217-hrtimer-v3-v6-12-rc2-v5-0-b34c20ac2cb7@kernel.org>
 In-Reply-To: <20241217-hrtimer-v3-v6-12-rc2-v5-0-b34c20ac2cb7@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, 
@@ -54,47 +55,108 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1038; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=tQDyXQBkG1q5qjeehMfyrhkTdqTA2BWMVmg+Cs7DewM=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnYZYa8FW1fCsxZGSXIoOnApX+Ctiyu18dNwdOD
- tIhiDcX7YCJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ2GWGgAKCRDhuBo+eShj
- d1YeD/9iWxBXfT7oNlagXsQrkPOKezGkUUCsvIrHvGRLU4pup1NktEhrtqZ6hxUxxC6X3VLh1P8
- 1rCRAKEZDwdZ2acgwEefH+qhF2ARQ5Jc6JVkBQ2mBH/qSaxniFg/002Klz7FqatgQyIGl8G9MsR
- XNXb6vgPzjx6HUXLKjUwOo4Cb5neHOCjKkwOHbxdW6xAx5OUZTvItv72FyvYBcT/4E2JFZPUbLu
- pn7DxxvgSVNvY2taDG2tYy0GyNRHTNAO1jiC0ir3dQNlsW5dLI2YattkS6iXFR9WfEDiBKjme7E
- yUTsiqXw6xMZ4UhjjC/tq/Z1FtXWEjf83G2w91cV6FGXp7K5/mwAevpqckZTBvoascY/1bC4BXF
- +Gy4fTN7A6Jmyj1pV3EyIYAbGxusbhE4MuyJCxb9iiqllkNedCL4TMq14qSSwoqTBa3q37PH9My
- 6uvhfFx4honW1niDKMJfGSGIbcN6udyONqsggiHwusQZfyJTtZlCvnHZCM1vzIty90Wai9CH8hy
- Sy+87htlJypAkrPsoUqRpcpa6os2k+symoNAMT2dA6fTKWhC9PQpp0VzsLYI4Mtgl03xDIN1CPe
- T/adAoNnoce7KDCKXbwIvDpRKQM/axCNGDulAI90GC76SirDxbabTP+cnT3InwBmDoKQDssbmsg
- jWciMDnZTXhChRg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4032; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=9FNldwPp52UQBwi+GTczE3aFsHu8VA7iPdgnD1jtrW0=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnYZYdUHeHPy30TnlbH6nEd8VUbZrsFXanj9Qou
+ CTWEIZv2GCJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ2GWHQAKCRDhuBo+eShj
+ d3b6D/9hXRtjJyRBMiwgOOzGEUlPaILg+QpYQEqN8KaDw8GR5lSYo2p1VCRJwTRvFu3JHwR3mCd
+ +mPQmeD3XLmPTNTTi8oSTatyPN/R7/0Xks1Yussl8YeckxRyrsKwIzj0fXgdq7wtPyjVNrmlRPk
+ xQMNEv4lmxRMecThEcekC1SiPCkqmq0SvZ6jyyFeXKuVFozMEfmC5KNU91A3bkWlxhn2DpodPlW
+ nhhjADHub/rE107dOT4E/sFdDGNTEHXPRjEZLWoyhLw/+bTQ7prT7IHr7JmO6mi4YSOHHbnsqya
+ rqgAHH6HIfwVqW5/Xh/Df8cuUBoCrIC/gF3Ajwb+iyZHR1j0lWUO6FBVE5bbmvduIh4Vjh/AmZc
+ xwBEGRlgUk+02zdc6RluvYx48BgK2//LbqrALhG5aVrcI/XHrCNtO9Ia8ccs8bpL8GkLjDpbWNp
+ y0LaA4j1i/Z9ubHZdFd2+WYdiB7C+O9f/uX0mKw4VKbrHdVN3c4Ljo+6d7TgCTbqH+Yh9BmvngY
+ Z1VGQGEfbkyhJ3euFtlFuQqg7rOJHoazyCPrcRWBpIBIALp43MydsGXBQ9Y9OAn0VJGycDrjpsA
+ z8H7vrZRS5a4dy4AL9kS/N3qG2bkrAyh5RTyJk9j90P2l6wVklfE2GNQcckoubU82ho1GSPiQEm
+ srd6cOxMC6427tw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add an associated function to convert a `Box<T>` into a `Pin<Box<T>>`.
+Allow selecting a clock source for timers by passing a `ClockSource`
+variant to `Timer::new`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/alloc/kbox.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
+ rust/kernel/time/hrtimer.rs | 52 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 9ce414361c2c6dd8eea09b11041f6c307cbc7864..76f29e2ac085e19871f18653cfddf11d2594682c 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -245,6 +245,12 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
-         Ok(Self::new(x, flags)?.into())
-     }
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 17cf7c1d704d5e900ad4d08e642e02b1e518badf..f9be0fa43c896a09439601bea825e5b17d0e995d 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -57,7 +57,7 @@ unsafe impl<U> Sync for Timer<U> {}
  
-+    /// Convert a [`Box<T,A>`] to a [`Pin<Box<T,A>>`]. If `T` does not implement
-+    /// [`Unpin`], then `x` will be pinned in memory and can't be moved.
-+    pub fn into_pin(boxed: Self) -> Pin<Self> {
-+        boxed.into()
-+    }
+ impl<T> Timer<T> {
+     /// Return an initializer for a new timer instance.
+-    pub fn new(mode: TimerMode) -> impl PinInit<Self>
++    pub fn new(mode: TimerMode, clock: ClockSource) -> impl PinInit<Self>
+     where
+         T: TimerCallback,
+     {
+@@ -71,7 +71,7 @@ pub fn new(mode: TimerMode) -> impl PinInit<Self>
+                     bindings::hrtimer_setup(
+                         place,
+                         Some(T::CallbackTarget::run),
+-                        bindings::CLOCK_MONOTONIC as i32,
++                        clock.into(),
+                         mode.into(),
+                     );
+                 }
+@@ -444,6 +444,54 @@ fn from(value: TimerMode) -> Self {
+     }
+ }
+ 
++/// The clock source to use for a [`Timer`].
++pub enum ClockSource {
++    /// A settable system-wide clock that measures real (i.e., wall-clock) time.
++    /// Setting this clock requires appropriate privileges. This clock is
++    /// affected by discontinuous jumps in the system time (e.g., if the system
++    /// administrator manually changes the clock), and by frequency adjustments
++    /// performed by NTP and similar applications via adjtime(3), adjtimex(2),
++    /// clock_adjtime(2), and ntp_adjtime(3). This clock normally counts the
++    /// number of seconds since 1970-01-01 00:00:00 Coordinated Universal Time
++    /// (UTC) except that it ignores leap seconds; near a leap second it is
++    /// typically adjusted by NTP to stay roughly in sync with UTC.
++    RealTime,
++    /// A nonsettable system-wide clock that represents monotonic time since—as
++    /// described by POSIX—"some unspecified point in the past". On Linux, that
++    /// point corresponds to the number of seconds that the system has been
++    /// running since it was booted.
++    ///
++    /// The CLOCK_MONOTONIC clock is not affected by discontinuous jumps in the
++    /// system time (e.g., if the system administrator manually changes the
++    /// clock), but is affected by frequency adjustments. This clock does not
++    /// count time that the system is suspended.
++    Monotonic,
++    /// A nonsettable system-wide clock that is identical to CLOCK_MONOTONIC,
++    /// except that it also includes any time that the system is suspended. This
++    /// allows applications to get a suspend-aware monotonic clock without
++    /// having to deal with the complications of CLOCK_REALTIME, which may have
++    /// discontinuities if the time is changed using settimeofday(2) or similar.
++    BootTime,
++    /// A nonsettable system-wide clock derived from wall-clock time but
++    /// counting leap seconds. This clock does not experience discontinuities or
++    /// frequency adjustments caused by inserting leap seconds as CLOCK_REALTIME
++    /// does.
++    ///
++    /// The acronym TAI refers to International Atomic Time.
++    TAI,
++}
 +
-     /// Forgets the contents (does not run the destructor), but keeps the allocation.
-     fn forget_contents(this: Self) -> Box<MaybeUninit<T>, A> {
-         let ptr = Self::into_raw(this);
++impl From<ClockSource> for bindings::clockid_t {
++    fn from(value: ClockSource) -> Self {
++        match value {
++            ClockSource::RealTime => bindings::CLOCK_REALTIME as i32,
++            ClockSource::Monotonic => bindings::CLOCK_MONOTONIC as i32,
++            ClockSource::BootTime => bindings::CLOCK_BOOTTIME as i32,
++            ClockSource::TAI => bindings::CLOCK_TAI as i32,
++        }
++    }
++}
++
+ /// Use to implement the [`HasTimer<T>`] trait.
+ ///
+ /// See [`module`] documentation for an example.
 
 -- 
 2.47.0
