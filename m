@@ -1,109 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B4F481B1;
-	Tue, 17 Dec 2024 09:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DED1F12FA;
+	Tue, 17 Dec 2024 12:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734427878; cv=none; b=ne98dj51dF7URqI3CxURQTUVxpYqInQfM9zP3ZGY51lms+AJDr0VSWaUbhYb321RuBXw2U5zktBAKpD8OxHba1Rmy7QntnaimBbvaPRixecgcIh4LVO974udt4Ffyy5vilpfiJhnoaJVw8X755Ud++4BzUMjFB0gvUgFq9t7dxU=
+	t=1734439214; cv=none; b=nR9ngiRJIaiz3EM2zGaYy0YHkQypyTG/1ffFbk1x6u+bEdsDNYQPPw7dlP2RxqjJKuWlcM8GyQ7D9z9EgEPj9zjLCtWXXvnFFKKw3J3avYChaZP5ohLzZYp9v+dlAPBr5h1CTNrcihj+mOAk+2DLty30yQVC3+cSxER9Y5xGgqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734427878; c=relaxed/simple;
-	bh=ervJxKyQZmVDHzYCEh7bR4br9+een6B1D7MUqP8OFoQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UBdhqelzFvzYglUIC5eN3Wkke8IsvgRzSfPVD9092wK5Tz+cR97bgvxe2/hUZMpnW/qwcuVr5kB3yMY+VpB+NIv/Fp4D60P7gh+4iT72eAkNe3qIPVxC5TFPG25cBq2cP8VU1pQ4ZBW56cyMojFZEe6U5A6jZNxw8xxMUJePdiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dbpo9mDe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734439214; c=relaxed/simple;
+	bh=kuP4mugSVFEkML66fr2SZrKUOz6ScKGEefhRFZmpmqU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=O/1g+tROjg+pt5xCI3MrsQYxv7UlrlRp740T8vPWuFoOCWYIxjISCQSV5YcTGoScbINMIdvfbBl2pf+ChOj+ThmM5FANa0SJPlMqluLJOu0clfsbFljHM+rHUps6ilmm/kMywg0Sg4Rw86cfngfpB9lUO27F795Zr/BRxoQxTuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaIEdBiy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dbpo9mDe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FFFC4CEDE;
-	Tue, 17 Dec 2024 09:31:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaIEdBiy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4ED7C4CED3;
+	Tue, 17 Dec 2024 12:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734427877;
-	bh=ervJxKyQZmVDHzYCEh7bR4br9+een6B1D7MUqP8OFoQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Dbpo9mDeoh+GbNtjrusvndCYMBEWAOy60nGCeyZmQxE3yKllcWLkyAyrTVbJXi5iR
-	 g2Cg3DVc/Aqx0g3hgkoFZ5cz2hEov9lerHg2NEqYOtqmS3TCCM80+I1xKckC7EP0f7
-	 PR21PUrg7hI09WpVZUorjWjdqmNR5H8kte58vOFN5R1DnTaOlQIKqU4iB+wGVjY2lh
-	 GT6gOGJxS5GTi2MBjUY1tN4ZQw/iorCyG30PDZdOKAkUXkM2mydvWBEy1W3HR8o5Qy
-	 HtptbJdAbB9y70qc0ZYfQ0BguM+IodOuQvZgo0jm6GrVSCF3HbKVSsjGkWBtwlZUPf
-	 SOZEbM2x9FPSQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Matthew Wilcox"
- <willy@infradead.org>,  "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
-  "Vlastimil Babka" <vbabka@suse.cz>,  "John Hubbard"
- <jhubbard@nvidia.com>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-  "Andrew Morton" <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
-  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
- <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
- Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v11 6/8] mm: rust: add VmAreaNew for f_ops->mmap()
-In-Reply-To: <20241211-vma-v11-6-466640428fc3@google.com> (Alice Ryhl's
-	message of "Wed, 11 Dec 2024 10:37:10 +0000")
-References: <20241211-vma-v11-0-466640428fc3@google.com>
-	<f8bp5f3T5_3_0LpabBpwjSarzhZTp1CbAvcTBI6lHlaKpPAAFiofsNI2iJxK9kuXwnqvTkky9uvpS0rqRpa_RA==@protonmail.internalid>
-	<20241211-vma-v11-6-466640428fc3@google.com>
-Date: Tue, 17 Dec 2024 10:31:00 +0100
-Message-ID: <87zfku8xm3.fsf@kernel.org>
+	s=k20201202; t=1734439213;
+	bh=kuP4mugSVFEkML66fr2SZrKUOz6ScKGEefhRFZmpmqU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=CaIEdBiyh8u+blmWy3bvE6I0x3G2WAoLacIUM8zYtG3k/Ni2gRILYI1oQ9Y1AH+4S
+	 KPy0PsIh7q/iT5OwLzOrilyzGvrIdvuVo2t2G4eoqPF43kOM896P29JEGE/nRwhMMg
+	 vb670Fh/WLYDIJODt7ktTG7Zw+GnUNG/w7CxtjmZhC3qQYFUv/DcFMpeS0zheIp1sz
+	 ZaJJGgeUSojy2ttTzjo37LtOkzlGvMS4gRcHISjucDUHQcrCnnkwl1/U477wcpxBiq
+	 xaEeYEI7inw2V14xNoT2mx5/m1BqDd3YsnzckOj2Vh5VBCo7Vi+b8JuIjbA4q3Ymw/
+	 wiP1M7N5L0Ozg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CA73806656;
+	Tue, 17 Dec 2024 12:40:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] rust: net::phy scope ThisModule usage in the
+ module_phy_driver macro
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173443923101.882122.15033663641815587249.git-patchwork-notify@kernel.org>
+Date: Tue, 17 Dec 2024 12:40:31 +0000
+References: <20241214194242.19505-1-sergeantsagara@protonmail.com>
+In-Reply-To: <20241214194242.19505-1-sergeantsagara@protonmail.com>
+To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ edumazet@google.com, pabeni@redhat.com, kuba@kernel.org, davem@davemloft.net,
+ andrew@lunn.ch, fujita.tomonori@gmail.com, aliceryhl@google.com
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+Hello:
 
-> This type will be used when setting up a new vma in an f_ops->mmap()
-> hook. Using a separate type from VmAreaRef allows us to have a separate
-> set of operations that you are only able to use during the mmap() hook.
-> For example, the VM_MIXEDMAP flag must not be changed after the initial
-> setup that happens during the f_ops->mmap() hook.
->
-> To avoid setting invalid flag values, the methods for clearing
-> VM_MAYWRITE and similar involve a check of VM_WRITE, and return an error
-> if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
-> the return value results in a compilation error because the `Result`
-> type is marked #[must_use].
->
-> For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
-> we add a VM_PFNMAP method, we will need some way to prevent you from
-> setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
->
-> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/mm/virt.rs | 181 ++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 180 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> index 3a23854e14f4..6d9ba56d4f95 100644
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-[cut]
+On Sat, 14 Dec 2024 19:43:06 +0000 you wrote:
+> Similar to the use of $crate::Module, ThisModule should be referred to as
+> $crate::ThisModule in the macro evaluation. The reason the macro previously
+> did not cause any errors is because all the users of the macro would use
+> kernel::prelude::*, bringing ThisModule into scope.
+> 
+> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+> Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> [...]
 
-> +    /// Returns whether `VM_READ` is set.
-> +    ///
-> +    /// This flag indicates whether userspace is mapping this vma as readable.
-> +    #[inline]
-> +    pub fn get_read(&self) -> bool {
-> +        (self.flags() & flags::READ) != 0
-> +    }
+Here is the summary with links:
+  - [net-next,v2] rust: net::phy scope ThisModule usage in the module_phy_driver macro
+    https://git.kernel.org/netdev/net-next/c/d22f955cc2cb
 
-As an afterthought, should we name these getters according to RFC344 [1]
-(remove get_ prefix)?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
-Best regards,
-Andreas Hindborg
-
-
-[1] https://github.com/rust-lang/rfcs/blob/master/text/0344-conventions-galore.md#gettersetter-apis
 
