@@ -1,95 +1,65 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240E81E3DF7
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Dec 2024 23:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3F31E2617
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Dec 2024 23:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734477888; cv=none; b=Tl0FKepL8V/HdSfl77j42ShOc/hM2WyjnMF8cNy1vrgfGDyF1xfqQDyzDoWReV5SJB/XnJHpklw+IR+Q8rbf67I05jWyQzuf9TvDmczXdHjJE6joKt/HGVHiJX8DTocuYxECWtlHgaW7q6Mu0E1LZKtrYN64GBsl7xrjMBYbw4o=
+	t=1734478286; cv=none; b=JDHXk2Sed0SqS+DOI+DICiaOT6DCTR4RGMtc4K77tpGkN2r8PGk4J5X/TE+DoGjHYRmkOUkBCHoNBA1hgv3YBTsXn9dNxAEbn6HWGGF3doAG4o3O5aEt77KPAuTzbVXfpUuW6kLwv5TYkMgrMAiWDOsCgXdT5FGf8k3f3yh18gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734477888; c=relaxed/simple;
-	bh=KvQgfBQ+BVIYcLhIxFbq7YS56mJLCDqbKxqSjD0DUU4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e5XgreG9PPW7Q+uZAEdW72mhgXRkRohoXkrxP4L3UlKahz7cTNfun2iw+iVKsyFHrZA2x8WLPwQ98I7gO8S73C/axRN/lnMJrcytknAVWjQ7rAl0srFci+0g0NMr/dH/xrubcnJbxH/twxTdTvg8fJSYFoDmL9CQIl/cMxbsmnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XfUWcztD; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734478286; c=relaxed/simple;
+	bh=QdOd0cXLmdIWBZ8KDXi/EAnoSB9W/2NY1lmWnr2JM58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nVQ/geKrFv73z2eLE6AqMlkaUOo6LdnApd0gUhTkJaIJIQ+gJqEsKJFFXkgrfbjUaGbAlbyDznQMNZX3TxKNm+9TzfJf3Ese86TyPDtCeeuePzxyTTGhr7AVb2CGRdidyfemgV2qMRqZj3eJKdaol7tjO5G+OmAzeGlxvc/BoGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxZaOVAB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XfUWcztD"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ef79243680so994366a91.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Dec 2024 15:24:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734477886; x=1735082686; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0STln5la/n/UahFCEphTv9re/87M7I0UhdwFNwbd4V8=;
-        b=XfUWcztDR8P5eqOwokTCTVmMRUTEIXWbeZrOQ6bBlqsCKN+XrF00v8uMVu17rd4Qz2
-         OUlr2jYp6ItcBAziHjtzeTf0bkuL9K5tzk3PjOc+/0pmmyGpXAwLzXt386jKdCmdvfF/
-         WyGVaa5vPiwO6GUEvXcpGNUvw+mlPFQ6EXbaOBAUz/v6OC9lxS9OFhyFvPxMf47ieBSc
-         45fV4WDOO6Qhw0x7JD/9lf/3M3Hrh3tjRqZNgrer3qy2kLfJtQqRb2bwBEKWiyJVWRh4
-         qcKajUF4H1JVBDxpuuPE8S4vuJfHaJqpUxhbfJ899/qJEfabTMQ04LFR2ZXt2D84pUyG
-         fwyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734477886; x=1735082686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0STln5la/n/UahFCEphTv9re/87M7I0UhdwFNwbd4V8=;
-        b=UrrvqNkJ2TyzQX+sOtIqB0Pt5MDIhe2x/gPkZ3WgCI0Oe8fIZPot0gk15coshluaE7
-         PJa8JC6XwGL9LI8EP1W9VkRGOljtAXHs6MZ0kpJahzQTnLRexXzIyq6jNHwRhq+WwP1A
-         Mwnpbnasy0jJums9YkCaScBlVLVnvpHCJQKSnuaqE6meQgPyS4oDUHtm4K530xxUz7BE
-         zdyEU3DWcXhQVaHhCVespigQ/57pWgVW0wg61hXekcOKd/6sS0ANCT9dNTIWiADTi3SH
-         K/BYtua6WWkhOfeaRbUq/2Ak7zPDei2uW3G+0LnGHeZjG7yGy9/5Io7g8NmVb30C2obe
-         m1mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRqUTZ9YUD/ZFbKxGNJ/Cr3Dsv42s/DTBW+QxCHpK+jAiD2p5ToK6g8tIbo9PA/Zy8ZHKwdyuq/B0JEIpItg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAUYctrVq8ohZq9XRYmcRGu8/4ImCu8XIQsWf+oAr6IkgNWGem
-	DEEIpUFxZUvwF4luCcg9V8QbvHfVRfHi/JlAeZaJipepK22z2deVhr7fL2/EABXoYCoxs1HAQZt
-	fKcTypLiP9pVXfuCxEY2WTX/zCoI=
-X-Gm-Gg: ASbGnctjBBc9KUqoVqGRPGGdPrHrkoI8s3+QJKAP+aHZX0v2AMmReRRgHg422QLac+/
-	4rPy1VQhIDNxjzBPUPA7kKlQq/VCt52BZkzdeiw==
-X-Google-Smtp-Source: AGHT+IEEttp0cLX2ssP3PuVWlJotPJQWlWgWVpvUglTEy2uhqMGl15CNsnOA6bEtoYhc365QLvnVl07R00TKeCGZdrE=
-X-Received: by 2002:a17:90a:e187:b0:2ee:d4ed:13a7 with SMTP id
- 98e67ed59e1d1-2f2e9378706mr384578a91.7.1734477886387; Tue, 17 Dec 2024
- 15:24:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxZaOVAB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DAEAC4CED3;
+	Tue, 17 Dec 2024 23:31:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734478285;
+	bh=QdOd0cXLmdIWBZ8KDXi/EAnoSB9W/2NY1lmWnr2JM58=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gxZaOVABEODxLO1L3zzvls206z1WY0+RB/3A5PDueH6//UkuoRjiOeVvZTQOJPlFh
+	 tlOgZYJ2CENM9tGGqt4qZbdKEu60etwd5k9MwRuxZdt4EcaIu4EhMSIaOAeVeq8Rhe
+	 jkMrpMBIF6KwbGKTN7GRxoYQz4wJuqYZ+ixBxUSvkYx+ZtZohroLGIy49fPQY5PWDA
+	 pRIQyDT3fcfUVMvXnjTkFxZUEyFi8NoxozIdsV6Lutyhe533YfUGUcTBIah/PpiBfH
+	 UgKW044qV/buHzuoj4mOASFpsIdxc9HvjJxATLbpcLgZ1RH9Csy+gfDqgpBB8MGfPj
+	 V8aEQ/NLPbUow==
+Date: Tue, 17 Dec 2024 13:31:24 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, rust-for-linux@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH v2] rust: workqueue: Enable execution of doctests
+Message-ID: <Z2IJzIkEyxQsxL3A@slm.duckdns.org>
+References: <cb953202-0dbe-4127-8a8e-6a75258c2116@gmail.com>
+ <CANiq72kQAKeafOhh7iYCPMboPTWT+pce0b6ZgJodoyAy7Cj=dA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241207112445.55502-1-daniel@sedlak.dev>
-In-Reply-To: <20241207112445.55502-1-daniel@sedlak.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 18 Dec 2024 00:24:33 +0100
-Message-ID: <CANiq72m6R3yaXO5F1O3PfwX5NSnguChnL2hTJQTVRiUMWGn_yQ@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: error: modify `from_errno` to use `try_from_errno`
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Guilherme Augusto Martins da Silva <guilhermev2huehue@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72kQAKeafOhh7iYCPMboPTWT+pce0b6ZgJodoyAy7Cj=dA@mail.gmail.com>
 
-On Sat, Dec 7, 2024 at 12:25=E2=80=AFPM Daniel Sedlak <daniel@sedlak.dev> w=
-rote:
->
-> Modify the from_errno function to use try_from_errno to
-> reduce code duplication while still maintaining all existing
-> behavior and error handling and also reduces unsafe code.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1125
-> Suggested-by:  Miguel Ojeda <ojeda@kernel.org>
-> Co-developed-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gm=
-ail.com>
-> Signed-off-by: Guilherme Augusto Martins da Silva <guilhermev2huehue@gmai=
-l.com>
-> Signed-off-by: Daniel Sedlak <daniel@sedlak.dev>
+On Wed, Dec 18, 2024 at 12:23:47AM +0100, Miguel Ojeda wrote:
+> This looks fine to me -- Tejun, are you picking it up? If so, please
+> feel free to add:
+> 
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> Otherwise, if you prefer, I can put it through `rust-next`.
 
-Applied to `rust-next` -- thanks everyone!
+Acked-by: Tejun Heo <tj@kernel.org>
 
-Cheers,
-Miguel
+Please take it through rust-next.
+
+Thanks.
+
+-- 
+tejun
