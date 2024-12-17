@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B191F7597;
-	Tue, 17 Dec 2024 15:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAE61F707F;
+	Tue, 17 Dec 2024 15:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734448777; cv=none; b=ri7VmhoDDKwNjCXWavdlYJFin+ebiJz8mD8udKGarjpz2xW5RDT15iXFg4hU9oErCRYJprRf0+9NusOiFK8ezc+UcXsUFtUtUr2z1Cs5MZ+01D4Nel6tsevcmdfR/UWUdP3lsi8apVMB/cFmaCw40o/Ael71Kv/8fiq/jAGYd2A=
+	t=1734448783; cv=none; b=BN5OQM9BL7hGjbLPXDnLpYieRRDZGngqXPxdU8fT/ZPsHmrxxD/dxC/Cu7qM/E3oSh97MkqH5jfY4e6zgWGPzULYb5JjyVdA8rfVlSHVuF22NB2ITU8Gb/8X7hP6UBLM1h1w+scTkTAYMXy4S1UKMhXIjgxfBAge3jVFD9Y5ZWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734448777; c=relaxed/simple;
-	bh=PgyZwM1wmVnFNYZFv0HvXUEMJw1qjAFl5cH9ilxk0H0=;
+	s=arc-20240116; t=1734448783; c=relaxed/simple;
+	bh=AGCwY1Om71mI6/3ZTwWXymP7dzg0hkZbFbkHu2TONUo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cshUgbOBAooN17hllviX/XOPJ4bQyLjiEgOt5gH01aQCvEYrR6/lBLVQGMBDgJ+2cQTZ0LDbuo+oYDsb16WgJvt9gRgL9DTJc3rD3+VyXNHKFhNfVHc5JyEnwNROqulzT4Dh8voMWbKwq5NT8C4TVZ+NKZuXvjQiogvve/TgZ/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdXiYmp/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Zn10bMgSXB0UcOgvShBlYrwhpaT6nXMKap60bv0IBtaZlCD0x/Sw05veM42x4pvz1+IKH2YfEJH6euEGzFN1dRvkf2wCnWTQs2vEC8ryjIefPgAqz9GPej/NV+nOnS4DFZ36vqadrOICwUnCrHs1YiiAtSMvpgPyhNbfLl67dNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGGg3QFN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdXiYmp/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02D1C4CED6;
-	Tue, 17 Dec 2024 15:19:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGGg3QFN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B89FC4CEDE;
+	Tue, 17 Dec 2024 15:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734448777;
-	bh=PgyZwM1wmVnFNYZFv0HvXUEMJw1qjAFl5cH9ilxk0H0=;
+	s=k20201202; t=1734448783;
+	bh=AGCwY1Om71mI6/3ZTwWXymP7dzg0hkZbFbkHu2TONUo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=kdXiYmp/S3GkNrWUmDZDSfHnntNq+MM4bu8mczW66UvayN85iDh7Bn+KpbATfiCNZ
-	 yczGj++oivgj+zR3svAGQpzS0l0Q1wyWJ/CskAIO/uWhW0AQAv4gs8GtMzyOW7fiR1
-	 R4HXqOBEXcy4nu+YoTXzvCIOb9XYO0giSt7bL08IZB6nT5YaepOtuxh3oUJC2HkDGe
-	 uxWhTHjqrOBzKC+LsbF7hX+2nrR7lkrH+Y4kCgPpt5diEHviVINFGi5YrcBHQYFmvi
-	 eHqN9KlwFwlfHyh2Sh5Sr+4ugB1OkRX8t0Ge6cKIwhDY/jbxqtgmZJUbCf2hM2OFL3
-	 9mzFnEk9P6Ehw==
+	b=SGGg3QFNVk5/K9U+VkQM4Vvdg61UVFiRVDW0GLR8HJSWZJwZ7WA/O2asjN/PTKwym
+	 ODMmONGUkS2i87cIZtS4Yzc3fDePHAPp+ASKg0DzhoFRuK5SbCNymWRCoo6agmOx7+
+	 v5esgH736HUtdVdZZBp/UWpox6zahcr1JObJ+rAk/jdH07zAwTbSgcgg0d7SgRoHiR
+	 3V8aEhHj0+TwHhdl/VUFnvscDjDSCh9+EZitNxpwweX48+9kBhKZWTmGrNkk1YRFbI
+	 uz38IShxkzxNAJ+qTGnsfayHZKgIx0hUpEXDQVsd14u6jOTFV7Y+/PYnQVHV5Vj7Ws
+	 2J+xXLjsJuA6g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 17 Dec 2024 16:17:43 +0100
-Subject: [PATCH v5 12/14] rust: hrtimer: add `TimerMode`
+Date: Tue, 17 Dec 2024 16:17:39 +0100
+Subject: [PATCH v5 08/14] rust: hrtimer: implement `UnsafeTimerPointer` for
+ `Pin<&T>`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241217-hrtimer-v3-v6-12-rc2-v5-12-b34c20ac2cb7@kernel.org>
+Message-Id: <20241217-hrtimer-v3-v6-12-rc2-v5-8-b34c20ac2cb7@kernel.org>
 References: <20241217-hrtimer-v3-v6-12-rc2-v5-0-b34c20ac2cb7@kernel.org>
 In-Reply-To: <20241217-hrtimer-v3-v6-12-rc2-v5-0-b34c20ac2cb7@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, 
@@ -54,160 +55,142 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5693; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=PgyZwM1wmVnFNYZFv0HvXUEMJw1qjAFl5cH9ilxk0H0=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnYZYcuvciGdEOtumQPS2SmX9EixXlRvlys19dA
- TWPd+ZSLg2JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ2GWHAAKCRDhuBo+eShj
- d50VD/0Z1mnaHnG27YpYmztMpg4SrnfRn9x9XcUAWXrcbUbNanaYtmr+ZoDIOUc7tU5xC/1R6Uz
- vCB1K6HtdS1Hn34cpUBd/t5ToKLpSe5XHiaEySGrwxLKYLKkGBfZYjVgFElvB8r8oUakL7GFClt
- G9gN78YPhKeklPxID/wSRv0noKYQ9SOEWO7PjHE8dkyBLG/wxntWbsYLRl2EhaHsLImQOlGoUyR
- 5Fh31PQ8FO8Nzu6KwEp67nI+1Nzo10Qpe3Ujj5rHqXKw9Z3+GbL9da2Kgj9cxoDtBXEbaa+yfaK
- Lswx8E44WwRfMTv9BaLoCz7kqGo+tmY8EeOndxawzdAgahJeUlVykUSFEfUW4bk2/dNIkBwCP3e
- wwqNPgfTXluS5Rakt1vikWBvkkJRdE2wY9czrcQ7rjHHhmOysSh2dM2v+abPJIWv1LC5LsIqh9i
- MRWLwvXh6NiEMX7WMSXKnSCCL2KLQGNIIJ/7X+JWuSTE6H494d9txpmHIXxTQm2kXmrc4RZgAi7
- pWUBHk0ZYhvavHr2nayK4+FK7SqBfuo6pIGqjeF6p4hF5cl87rpbXyZUg0EiyEneyLhQFajKamm
- l5tur+PDDwcghLlmP+jDzUI8ADedoTuvtZDlYl8hcLNAxNKATnCTy9w9Q07daZIb5RR+7KkOSo3
- K0/oVZyqlwCuoRA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4022; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=AGCwY1Om71mI6/3ZTwWXymP7dzg0hkZbFbkHu2TONUo=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnYZYYwtCBpF0UKh7xFacK6svSlIP1W/4Uem2wy
+ JnDK0TyvH+JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ2GWGAAKCRDhuBo+eShj
+ d/lkEACfvalN6T5UYMPXsLzwVE9GbPqTgKceSu5/qW3Ql8ujryRhq6/zKMunRSwTJXvuO3vtxM+
+ R79BRWlQMD5kKi7Hzh0swOPRE1+tsHHRtV5gIGZPDa21zoawbtBa87HdCFnE3K2Mizu9QcYBHKq
+ Mp5DU2IYM1WYpsAUbusBLcrUeSeRQT8qG9i9BLR01AtD7GLNwAMdQoz39q9N1FB5/fRrR8U9vin
+ sgzQahZMOvM5jmxMXOW4+OkuB7Dg/Stt8H//5H01uJdb3gpEQ1hUQLZk7Q6YBtmVK6gr55Rx31M
+ hq2C422ycUMKFf2GpeTWVaSpT8TrjWfdR57+7WO9uW1s1+vB6w22nDj3t2eiF/BvCHVetn/psS9
+ J+I5zurw+NsFSoSW5jsaCD69+MjJUxannOxmMf2T8eMtkQkZRLZ/PVX7OxqgZx9mBVf6MYiM+Jb
+ gyoRkakN/MLB22otzn6IIvdy4UfCRb3ilupgg/41iy+EZwbtHUvgVe1QZXKuvms4jrNfdydlYWo
+ /p3zqtbnO9dvoXYfAW9HfJiXQyozITvsnAmUtNAxc2PEnRh3qeJITIrMvVUd3l3SXATwlTvzO6A
+ hg/QPGd8qHvUJvmoEcDiQoeBJ+GeQNiAgbf7wvk5SfvxyBjWn4NrflykHmdjWaHK2rs1/saHTBz
+ Ts3YMaZptsKodmQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Allow selection of timer mode by passing a `TimerMode` variant to
-`Timer::new`.
+Allow pinned references to structs that contain a `Timer` node to be
+scheduled with the `hrtimer` subsystem.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/time/hrtimer.rs | 87 +++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 84 insertions(+), 3 deletions(-)
+ rust/kernel/time/hrtimer.rs     |  1 +
+ rust/kernel/time/hrtimer/pin.rs | 95 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 96 insertions(+)
 
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 46dbf0d7fe30d271a2b76af89cc4e9e18b42a19a..17cf7c1d704d5e900ad4d08e642e02b1e518badf 100644
+index 6b03eb4b42dbd6447728c42949a2f93d736dc3b0..00172cb50ff153ef2b911f5025bdca40b995e825 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -43,6 +43,8 @@
- pub struct Timer<U> {
-     #[pin]
-     timer: Opaque<bindings::hrtimer>,
-+    // This field goes away when `bindings::hrtimer_setup` is added.
-+    mode: TimerMode,
-     _t: PhantomData<U>,
+@@ -396,3 +396,4 @@ unsafe fn raw_get_timer(ptr: *const Self) ->
  }
  
-@@ -55,7 +57,7 @@ unsafe impl<U> Sync for Timer<U> {}
- 
- impl<T> Timer<T> {
-     /// Return an initializer for a new timer instance.
--    pub fn new() -> impl PinInit<Self>
-+    pub fn new(mode: TimerMode) -> impl PinInit<Self>
-     where
-         T: TimerCallback,
-     {
-@@ -70,10 +72,11 @@ pub fn new() -> impl PinInit<Self>
-                         place,
-                         Some(T::CallbackTarget::run),
-                         bindings::CLOCK_MONOTONIC as i32,
--                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
-+                        mode.into(),
-                     );
-                 }
-             }),
-+            mode: mode,
-             _t: PhantomData,
-         })
-     }
-@@ -322,7 +325,7 @@ unsafe fn start(self_ptr: *const Self, expires: Ktime) {
-                 Self::c_timer_ptr(self_ptr).cast_mut(),
-                 expires.to_ns(),
-                 0,
--                bindings::hrtimer_mode_HRTIMER_MODE_REL,
-+                (*Self::raw_get_timer(self_ptr)).mode.into(),
-             );
-         }
-     }
-@@ -363,6 +366,84 @@ fn from(value: TimerRestart) -> Self {
-     }
- }
- 
-+/// Operational mode of [`Timer`].
-+#[derive(Clone, Copy)]
-+pub enum TimerMode {
-+    /// Timer expires at the given expiration time.
-+    Absolute,
-+    /// Timer expires after the given expiration time interpreted as a duration from now.
-+    Relative,
-+    /// Timer does not move between CPU cores.
-+    Pinned,
-+    /// Timer handler is executed in soft irq context.
-+    Soft,
-+    /// Timer handler is executed in hard irq context.
-+    Hard,
-+    /// Timer expires at the given expiration time.
-+    /// Timer does not move between CPU cores.
-+    AbsolutePinned,
-+    /// Timer expires after the given expiration time interpreted as a duration from now.
-+    /// Timer does not move between CPU cores.
-+    RelativePinned,
-+    /// Timer expires at the given expiration time.
-+    /// Timer handler is executed in soft irq context.
-+    AbsoluteSoft,
-+    /// Timer expires after the given expiration time interpreted as a duration from now.
-+    /// Timer handler is executed in soft irq context.
-+    RelativeSoft,
-+    /// Timer expires at the given expiration time.
-+    /// Timer does not move between CPU cores.
-+    /// Timer handler is executed in soft irq context.
-+    AbsolutePinnedSoft,
-+    /// Timer expires after the given expiration time interpreted as a duration from now.
-+    /// Timer does not move between CPU cores.
-+    /// Timer handler is executed in soft irq context.
-+    RelativePinnedSoft,
-+    /// Timer expires at the given expiration time.
-+    /// Timer handler is executed in hard irq context.
-+    AbsoluteHard,
-+    /// Timer expires after the given expiration time interpreted as a duration from now.
-+    /// Timer handler is executed in hard irq context.
-+    RelativeHard,
-+    /// Timer expires at the given expiration time.
-+    /// Timer does not move between CPU cores.
-+    /// Timer handler is executed in hard irq context.
-+    AbsolutePinnedHard,
-+    /// Timer expires after the given expiration time interpreted as a duration from now.
-+    /// Timer does not move between CPU cores.
-+    /// Timer handler is executed in hard irq context.
-+    RelativePinnedHard,
+ mod arc;
++mod pin;
+diff --git a/rust/kernel/time/hrtimer/pin.rs b/rust/kernel/time/hrtimer/pin.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b251f157b2c196a3bde220b12619ce0c0ecce6c
+--- /dev/null
++++ b/rust/kernel/time/hrtimer/pin.rs
+@@ -0,0 +1,95 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use super::HasTimer;
++use super::RawTimerCallback;
++use super::Timer;
++use super::TimerCallback;
++use super::TimerHandle;
++use super::UnsafeTimerPointer;
++use crate::time::Ktime;
++use core::pin::Pin;
++
++/// A handle for a `Pin<&HasTimer>`. When the handle exists, the timer might be
++/// running.
++pub struct PinTimerHandle<'a, U>
++where
++    U: HasTimer<U>,
++{
++    pub(crate) inner: Pin<&'a U>,
 +}
 +
-+impl From<TimerMode> for bindings::hrtimer_mode {
-+    fn from(value: TimerMode) -> Self {
-+        use bindings::*;
-+        match value {
-+            TimerMode::Absolute => hrtimer_mode_HRTIMER_MODE_ABS,
-+            TimerMode::Relative => hrtimer_mode_HRTIMER_MODE_REL,
-+            TimerMode::Pinned => hrtimer_mode_HRTIMER_MODE_PINNED,
-+            TimerMode::Soft => hrtimer_mode_HRTIMER_MODE_SOFT,
-+            TimerMode::Hard => hrtimer_mode_HRTIMER_MODE_HARD,
-+            TimerMode::AbsolutePinned => hrtimer_mode_HRTIMER_MODE_ABS_PINNED,
-+            TimerMode::RelativePinned => hrtimer_mode_HRTIMER_MODE_REL_PINNED,
-+            TimerMode::AbsoluteSoft => hrtimer_mode_HRTIMER_MODE_ABS_SOFT,
-+            TimerMode::RelativeSoft => hrtimer_mode_HRTIMER_MODE_REL_SOFT,
-+            TimerMode::AbsolutePinnedSoft => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_SOFT,
-+            TimerMode::RelativePinnedSoft => hrtimer_mode_HRTIMER_MODE_REL_PINNED_SOFT,
-+            TimerMode::AbsoluteHard => hrtimer_mode_HRTIMER_MODE_ABS_HARD,
-+            TimerMode::RelativeHard => hrtimer_mode_HRTIMER_MODE_REL_HARD,
-+            TimerMode::AbsolutePinnedHard => hrtimer_mode_HRTIMER_MODE_ABS_PINNED_HARD,
-+            TimerMode::RelativePinnedHard => hrtimer_mode_HRTIMER_MODE_REL_PINNED_HARD,
-+        }
++// SAFETY: We cancel the timer when the handle is dropped. The implementation of
++// the `cancel` method will block if the timer handler is running.
++unsafe impl<'a, U> TimerHandle for PinTimerHandle<'a, U>
++where
++    U: HasTimer<U>,
++{
++    fn cancel(&mut self) -> bool {
++        let self_ptr: *const U = self.inner.get_ref();
++
++        // SAFETY: As we got `self_ptr` from a reference above, it must point to
++        // a valid `U`.
++        let timer_ptr = unsafe { <U as HasTimer<U>>::raw_get_timer(self_ptr) };
++
++        // SAFETY: As `timer_ptr` is derived from a reference, it must point to
++        // a valid and initialized `Timer`.
++        unsafe { Timer::<U>::raw_cancel(timer_ptr) }
 +    }
 +}
 +
-+impl From<TimerMode> for u64 {
-+    fn from(value: TimerMode) -> Self {
-+        Into::<bindings::hrtimer_mode>::into(value) as u64
++impl<'a, U> Drop for PinTimerHandle<'a, U>
++where
++    U: HasTimer<U>,
++{
++    fn drop(&mut self) {
++        self.cancel();
 +    }
 +}
 +
- /// Use to implement the [`HasTimer<T>`] trait.
- ///
- /// See [`module`] documentation for an example.
++// SAFETY: We capture the lifetime of `Self` when we create a `PinTimerHandle`,
++// so `Self` will outlive the handle.
++unsafe impl<'a, U> UnsafeTimerPointer for Pin<&'a U>
++where
++    U: Send + Sync,
++    U: HasTimer<U>,
++    U: TimerCallback<CallbackTarget<'a> = Self>,
++{
++    type TimerHandle = PinTimerHandle<'a, U>;
++
++    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle {
++        // Cast to pointer
++        let self_ptr: *const U = <Self as core::ops::Deref>::deref(&self);
++
++        // SAFETY: As we derive `self_ptr` from a reference above, it must point
++        // to a valid `U`.
++        unsafe { U::start(self_ptr, expires) };
++
++        PinTimerHandle { inner: self }
++    }
++}
++
++impl<'a, U> RawTimerCallback for Pin<&'a U>
++where
++    U: HasTimer<U>,
++    U: TimerCallback<CallbackTarget<'a> = Self>,
++    U: TimerCallback<CallbackTargetParameter<'a> = Self>,
++{
++    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
++        // `Timer` is `repr(C)`
++        let timer_ptr = ptr as *mut Timer<U>;
++
++        // SAFETY: By the safety requirement of this function, `timer_ptr`
++        // points to a `Timer<U>` contained in an `U`.
++        let receiver_ptr = unsafe { U::timer_container_of(timer_ptr) };
++
++        // SAFETY: By the safety requirement of this function, `timer_ptr`
++        // points to a `Timer<U>` contained in an `U`.
++        let receiver_ref = unsafe { &*receiver_ptr };
++
++        // SAFETY: `receiver_ref` only exists as pinned, so it is safe to pin it
++        // here.
++        let receiver_pin = unsafe { Pin::new_unchecked(receiver_ref) };
++
++        U::run(receiver_pin).into()
++    }
++}
 
 -- 
 2.47.0
