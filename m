@@ -1,62 +1,62 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96EE156678;
-	Wed, 18 Dec 2024 06:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265D7166F34;
+	Wed, 18 Dec 2024 06:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734502883; cv=none; b=Hvv8qwDEj5EMSGLrJvJHj7GkmxknJscLkg61NmylDCTvIw6H1sXHktE85hcRIKOiffM2qMzSxfNyc8rspKweCufOYic+ZtMa469emGtciGZ1+Dhhu7vBOZg2gSK/4/VKfGwtSyZ+mVMeWpSS+Q7n2DCJcZ6ohs9MXQgtYh1Ke94=
+	t=1734502889; cv=none; b=sJTONHrahupmJm/97Bi12reYTSfAKedbqjhE60h1S+/ADu54oNpBUhFQy6GuUAaaZhHWEOWuG/bH1XAfXhhwjcJNUSEUQGmTMK74A3reA3c0e0rVlxcxzs0b8DLtNHLBzeuB9ektRL2E2ZxQlK4p/P0E8PYjdQiVARpXNOJ0SIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734502883; c=relaxed/simple;
-	bh=/K4eSvI1Ipf4Aur9iVP05PUVjTwf8ShxKmTB6bwov2M=;
+	s=arc-20240116; t=1734502889; c=relaxed/simple;
+	bh=poPMKuxFCyNN+k+FyvPioVRFCtbD9iybhG3EXgL//Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WsLY/TbsU4fd/arxp/VOISz1wvbh+c7ACiQtSXdda6eYkLgK+zUfuzL6NRw8Nj3Eou0ov3Etqj+wDo7E4+EmnTZ3sHylCA8NOjAB5fuEas5K9D8LlWsGS/Nv+r9b7CXvCNMjrpZvTVq4fFnM6GY6jDCDYcZAD/zGUiZJa9tf/rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DRbLC65I; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=M2atBQimv+4EjSod0TF6Tski3hjTx5aoE7OGpxERx9d76ZcrAcDdugCGGecdAmad/AKjmpRGISAeYK2+VrEp2neFscwcg4pEXv8Vg81TvPujLKqYJIrOwuzqIL6ZSMS7yjQA6hlJAFNDIEFo7d06e9na2PFy10PldDaRZ2GiUGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZL8lXwj+; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DRbLC65I"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-728f337a921so6352291b3a.3;
-        Tue, 17 Dec 2024 22:21:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZL8lXwj+"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-725ee27e905so7757952b3a.2;
+        Tue, 17 Dec 2024 22:21:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734502881; x=1735107681; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734502887; x=1735107687; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GaW3Ni06SPvaTbLHs0pbUeHaTTwDPxQuBfccVmzf3vY=;
-        b=DRbLC65IGHr0B2nd5K6XZVcAlANgVoqaZhgNwO5ptv9w8xhp0hGkkVX26SmAamm1h/
-         8pFmtRFEhkthzLjIpG6nrls/hZ5Ub3FJHV8Ih/mfB4uNkGK4fvVTGsDTQqBj3ZBedAJL
-         BLEeoYG3QK85SrDKbH6is2r194woU+aqJFIjV4/Wd2aAIVadAP/Rffu8kwsu7NmZozDY
-         ReJYGcpvm1fhIikQr4ZeUUzkultKzQ0eyRWmJE/uGGiRHsltrqnNo/le+Al91q5V1Ctg
-         5xGU5wC1PVMxwEhkkfHO/ZmymOTIIKRxTVnmb/GHeD1OIEUNHr1kkHELCTndaVo+aMof
-         Q4zQ==
+        bh=bV4HRBWZxkX47QY6JDDMA6tt+8zgh76SAzdokkmEw1Y=;
+        b=ZL8lXwj+81K1eQvaoNcEMSB9FM1prR6MY81IF4z9FcjA6xkyGdsCQ9CSbqV+Szz0dl
+         G2WbWtfopfBYLVdqoZHO3/9T9Np5Ef5LJSor2J7RqyZUPiTQmzlbmegCq1GNkLmJHBIA
+         5qgLlTU9x96GiS6UiznhYGaxvq3hog4ZAlokApgHLzMFo3DHVQTuTSMfanSviginRuon
+         55CtoolBlzShjwnhvslfzPOL3j12hyN2/WHUviox38Nd5FyY/bfhO9+NjW53avBB676R
+         OqVtYn8lbY2MvR+g72+k9hlf8YV3CXKvQg08BEKnArHyR92ThR9C07s7bLhhD4FGcTsN
+         0E0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734502881; x=1735107681;
+        d=1e100.net; s=20230601; t=1734502887; x=1735107687;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GaW3Ni06SPvaTbLHs0pbUeHaTTwDPxQuBfccVmzf3vY=;
-        b=mQ7yigCpdzjakMcDGQrzjGNjFgzMLNkhwkO+XXo+8xulinQ9Q6t1IrjiOUj9RY7Xmy
-         8UIZCZx1hDS2Vzn/oTzK80PL9+dDTpffvQDvjmf1qCzdFlFq9aji/gDi2PdWP1JYIxIG
-         NA24TfWMqLVybHvrEQ872aQUFOOp2yhVaqf6nLBpKutAsMWJ15UWoU56Kpzgn0EmD9v1
-         /xIs7TZ3W3rU2KJh2HG2+lDDEXPh7LsyJFE28+w3wn3qQIo5N9q2/Y/F/bZSlOSAnujq
-         ayAYbcxwo9jeF5SvYcwtJTTnGz+aA0H2YumBxQYcdPFgtK+uijPPCqUuNORxgJH8SaI3
-         z8JA==
-X-Forwarded-Encrypted: i=1; AJvYcCULCpe0kGM75csX/ZA6VXLZtGmIUc8ZKFrJrGjnXpCfWyvfl3/w1VFxI4dopb5ylyesLUp2Uv0aBC+reHYVNw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvyBSMohmxMda4lR2C68KqziGg6X8QU79VrFKg1G2p+t0ok/ZM
-	zXX1EJSWgVsl7k9e0lkduED3KWLO1gSQY+DGuxXaMU2vb7qifHVYhx5yQWEY
-X-Gm-Gg: ASbGnctuG/EknQ9IHVwuDerBc9AnO3wsmPs9JR4hYrNgXgO/H7KcIdxwJE+7wWqcL6j
-	AdMHDhJjA90amyKWAi6QIhSC2EP0vJn9xODeX32M6t+/aFaGHXrpIX9t8XPCiB4cAIy+u2r7QUQ
-	OSLhvVLpcuAR42pEDQTepAb4pQ8QnOayDk6N1eDH19svteCTng3qRuu07/Xd4GnjB70oWKmbUr5
-	ixokOH04b/Dl8KRkVudO/bEs2hWSNB7Oxz5FE1h5U1mdKyeZQbOeBahMM3ghDs92PRylIpO24ZH
-	2VTbeRUGdBGlkT+aYw==
-X-Google-Smtp-Source: AGHT+IEuE5RibS/0PE8QGo2Gm9cyN9hV9VQKXrPoGrTJF/gtHBVwLDycc3gJhMqxVgMQzkxuMYzzBg==
-X-Received: by 2002:a05:6a00:21c6:b0:71e:13ac:d835 with SMTP id d2e1a72fcca58-72a8d26988emr2575186b3a.11.1734502881056;
-        Tue, 17 Dec 2024 22:21:21 -0800 (PST)
+        bh=bV4HRBWZxkX47QY6JDDMA6tt+8zgh76SAzdokkmEw1Y=;
+        b=DRJSB8BlWwJM1wSTXZ6fbcP0LmtE0ZkRAEXnarBtGWCHofn570S5/L/oCTNljngGxh
+         4RMUyD+qXXA33RQf9KiwLPy2e2Lz20LOUUtCpdZdYWu0V4Y3f0qIhtNRM6TqIcTMv0GT
+         Ixe1ZP7WgnIY2/6cM2adhNHDU/pKCENF2QULzAYGVyn8RZhSOWOFBNTH/oEsZtehlkXz
+         D1iF2t7uvJwfUY0gTC6fxtmV6fltWNBrPV4gxltZuv5K6H2MJ/CS3AVce1AUK3YFH3Rb
+         Dk/xE3dbjvfhv3+sKqIf4VuVaha9NEQyAvnqpi6Vqml4oc+/hoDThYuwZMMP50TYJAk1
+         /oeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWd/QlbTR2C9MagQ/Tqx6xb2Mta2G8OgD588ZWHo1+FGqkhu6ji2f7HTyP7p8YSmoOCTxFdzP3uOJuUSMv/MA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydxHEJH+QfRwx5t4BeO00YdwbBhVOfl9/7OIPaREwGR0FLPMzO
+	MIOeuRHReQNkUX21kWOUBJPZByoFr78XGU7nRv/F3ZLv0b2wQDk2oaiOrGLa
+X-Gm-Gg: ASbGncvdLUEPC263pgL26uBYeTP6482YS51QZkKKOHJwWsv/Tl7P7GfbmtYCbhmnlrD
+	RvB6IbghdpQLtMYHSkQ7K43sqmVXw8x0zPDKnVN4JP49ZrWdT63Ta5Q7o00+Cz53DSIgsf+hiJw
+	YCKfIh3ydhazxKZTMv39zH/CtaHMvZsRBj8wPViSzXBOZap4focwTAfz3BKpdN7BuBQdS5VQEF1
+	Spv6dO0IflXeMW5WHXhiPr5ky1QSVDlMZRNJHYoAgBqra16zuF/OhO8qRYVDnve8UGuHxMWFvuB
+	welYKm00w2WZTg6oTA==
+X-Google-Smtp-Source: AGHT+IFlF8vY4Xu+YyeQGqBnLgvAT6KCSD+NGgBHnqg25UXCR6Ho2esifXRrWSvDZ1rmidOkpqKkqw==
+X-Received: by 2002:a05:6a00:2c87:b0:729:597:4fb2 with SMTP id d2e1a72fcca58-72a8cd37353mr3156867b3a.0.1734502887210;
+        Tue, 17 Dec 2024 22:21:27 -0800 (PST)
 Received: from snail23.. (p7659208-ipoefx.ipoe.ocn.ne.jp. [221.188.16.207])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72918ad5bc5sm7987806b3a.69.2024.12.17.22.21.15
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72918ad5bc5sm7987806b3a.69.2024.12.17.22.21.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 22:21:20 -0800 (PST)
+        Tue, 17 Dec 2024 22:21:26 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
@@ -89,9 +89,9 @@ Cc: x86@kernel.org,
 	a.hindborg@kernel.org,
 	aliceryhl@google.com,
 	tmgross@umich.edu
-Subject: [PATCH v2 3/5] arm64/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with Rust
-Date: Wed, 18 Dec 2024 15:20:07 +0900
-Message-ID: <20241218062009.2402650-4-fujita.tomonori@gmail.com>
+Subject: [PATCH v2 4/5] loongarch/bug: Add ARCH_WARN_ASM macro for BUG/WARN asm code sharing with Rust
+Date: Wed, 18 Dec 2024 15:20:08 +0900
+Message-ID: <20241218062009.2402650-5-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241218062009.2402650-1-fujita.tomonori@gmail.com>
 References: <20241218062009.2402650-1-fujita.tomonori@gmail.com>
@@ -110,62 +110,63 @@ No functional changes.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- arch/arm64/include/asm/asm-bug.h | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ arch/loongarch/include/asm/bug.h | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
-index 6e73809f6492..822e9d51d3e9 100644
---- a/arch/arm64/include/asm/asm-bug.h
-+++ b/arch/arm64/include/asm/asm-bug.h
-@@ -21,16 +21,21 @@
- #endif
- 
- #ifdef CONFIG_GENERIC_BUG
--
--#define __BUG_ENTRY(flags) 				\
-+#define __BUG_ENTRY_START				\
- 		.pushsection __bug_table,"aw";		\
- 		.align 2;				\
- 	14470:	.long 14471f - .;			\
--_BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
--		.short flags; 				\
-+
-+#define __BUG_ENTRY_END					\
- 		.align 2;				\
- 		.popsection;				\
- 	14471:
-+
-+#define __BUG_ENTRY(flags)				\
-+		__BUG_ENTRY_START			\
-+_BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
-+		.short flags;				\
-+		__BUG_ENTRY_END
- #else
+diff --git a/arch/loongarch/include/asm/bug.h b/arch/loongarch/include/asm/bug.h
+index 08388876ade4..5cac2d3efd75 100644
+--- a/arch/loongarch/include/asm/bug.h
++++ b/arch/loongarch/include/asm/bug.h
+@@ -21,14 +21,21 @@
+ #ifndef CONFIG_GENERIC_BUG
  #define __BUG_ENTRY(flags)
+ #else
+-#define __BUG_ENTRY(flags) 					\
++
++#define __BUG_ENTRY_START					\
+ 		.pushsection __bug_table, "aw";			\
+ 		.align 2;					\
+ 	10000:	.long 10001f - .;				\
+-		_BUGVERBOSE_LOCATION(__FILE__, __LINE__)	\
+-		.short flags; 					\
++
++#define __BUG_ENTRY_END						\
+ 		.popsection;					\
+ 	10001:
++
++#define __BUG_ENTRY(flags)					\
++		__BUG_ENTRY_START			\
++		_BUGVERBOSE_LOCATION(__FILE__, __LINE__)	\
++		.short flags;					\
++		__BUG_ENTRY_END
  #endif
-@@ -41,4 +46,22 @@ _BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
  
- #define ASM_BUG()	ASM_BUG_FLAGS(0)
+ #define ASM_BUG_FLAGS(flags)					\
+@@ -55,6 +62,24 @@ do {								\
+ 	unreachable();						\
+ } while (0)
  
 +#ifdef CONFIG_DEBUG_BUGVERBOSE
-+#define __BUG_LOCATION_STRING(file, line)		\
-+		".long " file "- .;"			\
++#define __BUG_LOCATION_STRING(file, line)			\
++		".long " file "- .;"				\
 +		".short " line ";"
 +#else
 +#define __BUG_LOCATION_STRING(file, line)
 +#endif
 +
-+#define __BUG_ENTRY_STRING(file, line, flags)		\
-+		__stringify(__BUG_ENTRY_START)		\
-+		__BUG_LOCATION_STRING(file, line)	\
-+		".short " flags ";"			\
++#define __BUG_ENTRY_STRING(file, line, flags)			\
++		__stringify(__BUG_ENTRY_START)			\
++		__BUG_LOCATION_STRING(file, line)		\
++		".short " flags ";"				\
 +		__stringify(__BUG_ENTRY_END)
 +
-+#define ARCH_WARN_ASM(file, line, flags, size)		\
-+	__BUG_ENTRY_STRING(file, line, flags)		\
-+	__stringify(brk BUG_BRK_IMM)
++#define ARCH_WARN_ASM(file, line, flags, size)			\
++	__BUG_ENTRY_STRING(file, line, flags)			\
++	__stringify(break BRK_BUG) ";"
 +
- #endif /* __ASM_ASM_BUG_H */
+ #define HAVE_ARCH_BUG
+ 
+ #include <asm-generic/bug.h>
 -- 
 2.43.0
 
