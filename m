@@ -1,120 +1,100 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A743C0B;
-	Wed, 18 Dec 2024 06:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE08178368;
+	Wed, 18 Dec 2024 09:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734503565; cv=none; b=M7xykXBStqquvndy6DA+4Kq3kLcStllltqU5Uj9jc+adt0Aa2aT6NV0SzSMuOE88wGqwD9xSU9L3s+TFn4LFTAQ195Mhu47lBzKswIU86deEQ5UK3N7gnAWZWZTNHMKrKayrfjnA8zoI4sYw+xHCf37hSUuyK+fhPOj37U8Uad4=
+	t=1734515131; cv=none; b=oZEu5H94KMYjFDC5n+2CKpg3eptue79BVkNmThyifrvaVt4Kgm3+AS+mU1rQrSUjTRvNuyzT1ApyScUn08uq1GFQhfryjyY05QqXm1tXY5NGDU0w4MAvOxym6gf8Tor6ocXAYpQ1cm2szo7fSLF8ENrmDho9F++XDwAYRkF+xjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734503565; c=relaxed/simple;
-	bh=s1EQ3BekPXvQtzGRll+1ycDxd+2WcsyPLM5a3ZArwQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=owAraaFcZF9Q1Wsdwm0xXsFo2jk4dPP9jvfUgiHAXE8BUsfh8CJKojI3IzHRt2mTSVoDFFr8uZazOJpi+KTFBJOfZGmvRUgd4RM+P5nzVDbynICLYjlLq+3o0FJ6iWz5ERVBr3t/MExli4Xr5WoOYiRaSaEDB2KMbUqgKErPYdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=es1pEF5U; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734515131; c=relaxed/simple;
+	bh=ngz/rGVS6rP5QQEuI9115IDXzsx0KfhUPltQdUs0Yvg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EIMzLUDX4IU7gFi9b7PTgG8X/YfHYWpSMnVe7qKz5Ru4UJDETUc44/cn2YRrUdI7u5QBj9rKwwdXU44G/S/An4p6QSmImI4OVCPwL244qsajtmizMkcBRkiWjR3W2xoX7PyTnqgAVzovmkZi+uqTmt65/U1Dy7JgY5ILlu/gCq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AILJlMTf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="es1pEF5U"
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-85c4557fce0so1347464241.3;
-        Tue, 17 Dec 2024 22:32:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734503563; x=1735108363; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s1EQ3BekPXvQtzGRll+1ycDxd+2WcsyPLM5a3ZArwQU=;
-        b=es1pEF5Ur3mNuet1m1JPMiYkdKB1Dl5q0CyrBq9M78So8BM7sffCZIe+vwQAegEf6b
-         /gHRXPvcSpV03OAyrJeL9LP62nvLwsoUoZ0TWhM+p+5ZSY2eGMQ+iaznMLCfdMcRHG4m
-         zI+znV29Buq+/luLDv0S28nG+Xenh2Pz1tD+p4eg7bvnI9og+/NqpLdaUj9kw6yL4rGg
-         YfJaxef0CMDVekEisf0cLD/PCpMGRUViMdXB4CJFWpFyz+xZqxW79iLPXv51Nrm4s5Kg
-         5oSKREGKuz+aZHlXzphMPvcAjb/nmI1/G7VjULdKR7BZHvw3D7jxumcsXVit3R2QSoc/
-         aGnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734503563; x=1735108363;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s1EQ3BekPXvQtzGRll+1ycDxd+2WcsyPLM5a3ZArwQU=;
-        b=E/uSxtbvnD4q2d/jnggMKGSPfwiOKJD9AV1l0JGX2SdRdU9KgA0ro55XgeW0o7VLM7
-         yImzc69vzSglEgdJnUKrsAqeK8bxEmnAYB6cp7pbaWRWbUApyBTcSvlv2VhJNCAvqegu
-         e4Ct1LtYACxLf4CTZAA27H9d1X2lIAV6mzeM+R5LbAherxuKu0lJY8CWxHTribMqUktS
-         3GthA4+o+keAUGM0PZb+wzPkZtMEl1sA4TjqAlcT40h6YUXkcNDwUWb7VPtSatgN7bMC
-         c9HfjuAXn9xP0JbOCXoSU1YdGdILbg5BBy5JSUKRnM+0+eQFF5veblrJh8+Omt85KfiK
-         kf1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWG5zuPvUcj65oLWdn+5DFfQ76fNal+0Yb0r67PTJfNiUsV7rsqsgFTY4+XQewo9m0sktlfd/hSgBLlRNTbkn0=@vger.kernel.org, AJvYcCXyTSoLLnePAfmebOMJ32gYK/OWDWSLDOgMUtRjU/y3bFjVjq1h9XlR9m4r4jmRcb9/28GQFnfzsxqlvHU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6PnUSwM8e88UWApItDdUqXi2+EFUfWIFC6bqRHOUxtv0EknoM
-	2etY0U2Z7LQh4sEMBn62XFfvFZg9v6mwzJmu38641F+lVRJ5QjmMl/ztWbPl9EljUFfOAPXobSh
-	DQBIBBw8ZwC+SAuJTXYsMnb1D9Vo=
-X-Gm-Gg: ASbGncs1MHC5kOikHz5LHpzlZnebxgWMQULFaL8MBa8PT9uAUgI9z93x40I+BjFljng
-	TNg3S4aRHWaQDxxiHzE/fOy+98xtBhHctzgUUVguh8wUPeTblH8EvVrCfnhjnCEneB4e8
-X-Google-Smtp-Source: AGHT+IHmt1jR+pXZCwzYqU7BgTha7+a3M+duTzZrVkjBiSyBecKkjI3jsIZE09e/etRr+I2VKjHBnCTiEcqdLF1lzm4=
-X-Received: by 2002:a05:6102:41ac:b0:4b1:ed1:56ac with SMTP id
- ada2fe7eead31-4b2ae773f21mr1530397137.12.1734503562904; Tue, 17 Dec 2024
- 22:32:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AILJlMTf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07E4C4CECE;
+	Wed, 18 Dec 2024 09:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734515131;
+	bh=ngz/rGVS6rP5QQEuI9115IDXzsx0KfhUPltQdUs0Yvg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AILJlMTfyZHMUY2A7Ny8R1htseOE6yO2I3utY51dbhGgrntpiTTONPyV1BjIlG89R
+	 w5q5uYeNniD6/+bXapP6h7/YjscKjcdwaX1q8vgVE0IeFyIlVngXBBsqh3qTOXRnJJ
+	 3gm/SY0qtfGsAfXRTX7xB5SWawga/tQP0LKGPDHRG+FJSyeQOuhjzKjaxWsVN67d+p
+	 AVv/t7GU3dSxTMyQwEQIre//LW7xqiJ2KSzG0OodxtSfMNQ4mahobflPW0WG4D2ojm
+	 8D11F7RypTVON3KsUdhts01DmP1+enFmQ04DJBKQfCnUSEe8hepW/HWf9clVIR37k8
+	 1zjls4kmjly5Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alistair Francis" <alistair23@gmail.com>
+Cc: "Alistair Francis" <alistair@alistair23.me>,
+  <linux-kernel@vger.kernel.org>,  <benno.lossin@proton.me>,
+  <boqun.feng@gmail.com>,  <me@kloenk.dev>,  <alex.gaynor@gmail.com>,
+  <gary@garyguo.net>,  <aliceryhl@google.com>,  <alistair.francis@wdc.com>,
+  <bjorn3_gh@protonmail.com>,  <tmgross@umich.edu>,
+  <rust-for-linux@vger.kernel.org>,  <ojeda@kernel.org>
+Subject: Re: [PATCH v4 00/11] rust: bindings: Auto-generate inline static
+ functions
+In-Reply-To: <CAKmqyKN7dP=UFjP0c88wq_FMgaFzPU+5GRDz=X6H-fkc1v1Hpg@mail.gmail.com>
+	(Alistair Francis's message of "Wed, 18 Dec 2024 16:32:17 +1000")
+References: <yZdXTg82eCLGHsaNBfAwwYZTGa63yzxI2YXoaTndUyJzyVN60hPrWoeQoXdrrh2hnRIeugFXvrb3nbq2bpD6Ag==@protonmail.internalid>
+	<20241114005631.818440-1-alistair@alistair23.me>
+ <871pynfv5f.fsf@kernel.org>
+	<mgdEr5XBxS-KNBtmRIKsQX4z2uZyhJMYQdRJHIOTpxH7v7Vmt88bfy2EYd8-omqRNgT7lbDMIbEtpwlVJH12Ww==@protonmail.internalid>
+	<CAKmqyKN7dP=UFjP0c88wq_FMgaFzPU+5GRDz=X6H-fkc1v1Hpg@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 18 Dec 2024 10:45:20 +0100
+Message-ID: <87jzbxmij3.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <yZdXTg82eCLGHsaNBfAwwYZTGa63yzxI2YXoaTndUyJzyVN60hPrWoeQoXdrrh2hnRIeugFXvrb3nbq2bpD6Ag==@protonmail.internalid>
- <20241114005631.818440-1-alistair@alistair23.me> <871pynfv5f.fsf@kernel.org>
-In-Reply-To: <871pynfv5f.fsf@kernel.org>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 18 Dec 2024 16:32:17 +1000
-Message-ID: <CAKmqyKN7dP=UFjP0c88wq_FMgaFzPU+5GRDz=X6H-fkc1v1Hpg@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] rust: bindings: Auto-generate inline static functions
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alistair Francis <alistair@alistair23.me>, linux-kernel@vger.kernel.org, 
-	benno.lossin@proton.me, boqun.feng@gmail.com, me@kloenk.dev, 
-	alex.gaynor@gmail.com, gary@garyguo.net, aliceryhl@google.com, 
-	alistair.francis@wdc.com, bjorn3_gh@protonmail.com, tmgross@umich.edu, 
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 4, 2024 at 11:14=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
->
-> Hi Alistair,
->
-> "Alistair Francis" <alistair@alistair23.me> writes:
-> >
-> > This series adds support for bindgen generating wrappers for inline sta=
-tics and
-> > then converts the existing helper functions to this new method. This do=
-esn't
-> > work for C macros, so we can't reamove all of the helper functions, but=
- we
-> > can remove most.
->
-> Are you aware of the helper LTO patches by Gary [1]? Can you tell if
+"Alistair Francis" <alistair23@gmail.com> writes:
 
-I was not, but that's exciting to see
+> On Wed, Dec 4, 2024 at 11:14=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>>
+>> Hi Alistair,
+>>
+>> "Alistair Francis" <alistair@alistair23.me> writes:
+>> >
+>> > This series adds support for bindgen generating wrappers for inline st=
+atics and
+>> > then converts the existing helper functions to this new method. This d=
+oesn't
+>> > work for C macros, so we can't reamove all of the helper functions, bu=
+t we
+>> > can remove most.
+>>
+>> Are you aware of the helper LTO patches by Gary [1]? Can you tell if
+>
+> I was not, but that's exciting to see
+>
+>> this series will compose with the LTO patches?
+>
+> I think it will still work, although it might take some extra effort.
+>
+> I assume my series isn't going to be accepted though, so I'm not going
+> to try and get the LTO series to work on top of it. It's a lot of work
+> to rebase this series as every new binding causes a conflict and it
+> seems to have stalled
 
-> this series will compose with the LTO patches?
+I would assume that it _will_ be merged in some form. Why not? It's just
+a matter of getting it reviewed and making sure that it is going to work
+with the LTO inlining.
 
-I think it will still work, although it might take some extra effort.
+The less boiler plate code we have to write by hand, the better!
 
-I assume my series isn't going to be accepted though, so I'm not going
-to try and get the LTO series to work on top of it. It's a lot of work
-to rebase this series as every new binding causes a conflict and it
-seems to have stalled
 
-Alistair
+Best regards,
+Andreas Hindborg
 
->
-> Also see this Zulip thread for discussion on the LTO patches [2].
->
->
-> Best regards,
-> Andreas Hindborg
->
->
->
-> [1] https://github.com/nbdd0121/linux/tree/thin-lto
-> [2] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/t=
-opic/LTO.20Rust.20modules.20with.20C.20helpers
->
+
+
