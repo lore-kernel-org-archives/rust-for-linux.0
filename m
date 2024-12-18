@@ -1,169 +1,371 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FA7204F66;
-	Wed, 18 Dec 2024 23:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036751A23A4
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Dec 2024 23:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734565058; cv=none; b=ZWa72RSFlEdiEhe140nQl4v2e1LyOk72wSIA4q6JFaqJZ21udtWmUK20Ad4XV6znfjcvqeZ4sLKYL/uSSdAmTfiip/23hhBEohnj1H66PgAYqegQFosSfYjO+Beumh//oki5wjpxGthew4qzFlMc2jJ3vHa68Xq1H/dLsZN3JS8=
+	t=1734565613; cv=none; b=lIWXEQ6kcEx1vRykiqq0JrN77tSH7TbtP0ySWm2u/oj0lQGKSE/1IyChiiHN+C9mCmJjWLApBXrlCf/tV0329iyjxByTWGBa01otcQcW0CHkVH0B/0reg8xR6wKVSFbMJzz35BqC6EC1YfxsWlxJiFXIVIXZuZw73CgzIDM698A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734565058; c=relaxed/simple;
-	bh=eZUgIXh4Dafp5SjQXe3JmOhBWmOQQGNy2uNWoRlXbQc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rU/wkFqQtKl75dIr+9FhGMeRqfhYayfBEgozfNFHl59qVxvdO0A748aCjiar9eXjya9y3iZJTIhDoixzwmgZ9csZ//ZTTyzqctneQ6kgJfLxlMX9Tbzlqr9g75e4Y8kfvNOOipxKBErjQn04r9TwUgJyeKGSfe+hHmtpchk4rho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ILJ/EcO2; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734565613; c=relaxed/simple;
+	bh=hHRydfUkl3vQlQdd77DMOcJmJEVI5aSlq9psSrcIL18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b7A4nEoMM8HkjrROk4t7spE6HOXBdAXBLGogTI9kwa6oT47Y2QV+Xkr0ysEBGkppZWDuRw7dA9jL0w33lM2E+Yycva5IAnA0R3yjpFSV6SQEDppIcqH/f6XeZxZ+VoJ6TxdyUlT5QANEASKBPNSCEBua1CwgdYpcJO1QgtpQTOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jh4OJuji; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ILJ/EcO2"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-216426b0865so2170875ad.0;
-        Wed, 18 Dec 2024 15:37:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jh4OJuji"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-385e0e224cbso118118f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Dec 2024 15:46:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734565056; x=1735169856; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h2p+Bn+O63LERCuE6dGd6gVg3sXhL98osLDUQM697Sg=;
-        b=ILJ/EcO2Y5BLl/RoAUabqnW76Ct7JSvRn2V3/vehQG4PjmkgQTWdf6DdJF6XxzfmR9
-         qT7RPXeNgzWQkYiLpJ9pYruUWaY0geFTeM7lSgCNzM/r8HAnrJcdVUHQ7cvFFch6mBZa
-         xezxNvDVrrfrQhhht1rRtkxrky40Vb1dmoc5g6Bzl0zOru20sl/oJnHFPyMEbGXbEg+K
-         gwarLydx7iQcjKtzgVqK8TVPF71D5eOSXRi8SwGPIkoJ+s4ZCRPi3ukdW0Ogtc2a0j1x
-         NaXUoiqDNGVkWs2hUPCQEd3pUTValJTfdVqxmksXiSzlbXJEf7deBGAIa4OuoRY7Vs7+
-         SsMA==
+        d=linaro.org; s=google; t=1734565608; x=1735170408; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0EtgKondHMyCR2GKtuPU0Jr6vHmmyanEzhmvLMFwiJk=;
+        b=Jh4OJujiMogI1WTI8zUWKghRb4UNXStjHB7pt/2Rpq0kRwaFVJPeFJNlgTYT4ukcyA
+         iDIMz2tzNZjr5Cf4mKghn6NgFEDC4sxrRyOpWULOSq6K148t+qkb7Ygkyle78ebtrMdh
+         CgQJvRgPxX5bmGcXXVbxCGR9Pkp817tWHSbOxNjKxm7+DFGGc5ZLfHj1Xu7NPNtyDOtk
+         6QI7Y/BFvmdGQgKcN1fVe7YKj6qWDtlA6mL6bssQeIXpQwPj+AWdnAFHcIhatSuDcP31
+         w14PQUL0ZjOsyIgvUKUfZLM2YLd+klk6TeiO3YA10ZDAul+2tsNB1Xxoj/TsC/4/y4mu
+         eIZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734565056; x=1735169856;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1734565608; x=1735170408;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h2p+Bn+O63LERCuE6dGd6gVg3sXhL98osLDUQM697Sg=;
-        b=fdAuEvP1arumZpBLatz42WK+HTadRAE9nIIoZ2gx34pUTwZV11Ndg+Fib9ieDq+0G0
-         1gUySxSDaEwNiBy5BPJZW2AybXSpPFqaN9pkoxKKr74Dot5WfozlGDzptiM21SkGY8ho
-         +S3bfHcN2x7mE4l6PtOHdpKM3KGa4N8SevNXHW3S0IlyJ11SYFpd99jo6Dm7RjQ3hJfR
-         jziy8sxT5PmBrXaC2mTZXb4DwdQQ4RtT+HCpfsmA1q2z5C+wwFKqz0ItWthUl1ssWZo+
-         blxwwCGT03IDElSnWUlgf3JfPrZ41WgNVoqMWG7BoDxqMHyTWx3hoF3PrJnaA9H1N+3A
-         5iQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVGHVLolDKSD5NdC/OpM9sRmxiVXom6Zrsju9N9b9aWtA2ckm9DKK0Tvx6ckJAwzx/W23RI+gARevKu@vger.kernel.org, AJvYcCVjB50JSG8sMbrb9/IEGHOczSIsoOG4iZwuEQrwg97mnt3Ig9l64wT+GvHKT3UkP5vqVaFkWZsJLobheCiA@vger.kernel.org, AJvYcCVsF12TcgniougzEi4j78W6NhPf9hlpl7q29+6+VDfvSThrH/sMSTI8fdzFPCupeerTy3JV6sZDPBXbafEbxBU=@vger.kernel.org, AJvYcCXDDwqF0XJBKHxqzMi8TI3AzO9yKPr/fgzVR/LCv0ECgwFPqBS1TPBI9R3qZ2AoNXXBlkm5fgLxvtng4yer@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpGY5P92PqDCxiOeWTeyMHMMTmSwvLnXU5PYpzhgZK+oeec66J
-	zBHtKorh/rRXuC/ncY7rNfZ0tI9eeEJPCjEQbabuxq8fT+MdWRaA
-X-Gm-Gg: ASbGncvr0mLow9apz2RJDUx6efyMEsfIFLERdNfhdZkvf46nBUCCfErUYxge70NZJFn
-	vggZJ+QQMPQc2AzP9xcPxJFqKV+4xvqpOTQs2NDKSYRJ/IpRp+tgEfr0ysw73hlfCje0jv4JVOm
-	tW6QAOpcr7H6zFfreXyJynvrK10S3czeUjcjRonO1iPJm/B9BbjmTVbZdO1E9pm9Q9Y9pEEKbba
-	dyPErxyfb+pmsvljk9OT0Wge4xb8PRzoDNUqymc00E2sMzhcG50d9Lb
-X-Google-Smtp-Source: AGHT+IHSZdbhBBo2sF8tqN4LT+Oi0B4GGcc3Vh9M1Y2KXAp+XnvVO/Rtbaui7owIt/uIhqw2619amg==
-X-Received: by 2002:a17:902:ea11:b0:216:2f7f:ff69 with SMTP id d9443c01a7336-219d966ea2bmr21730945ad.5.1734565056516;
-        Wed, 18 Dec 2024 15:37:36 -0800 (PST)
-Received: from [127.0.1.1] ([2001:569:fcea:600:2e06:283e:5daa:4d0f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9f6967sm802335ad.214.2024.12.18.15.37.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2024 15:37:35 -0800 (PST)
-From: Fabien Parent <parent.f@gmail.com>
-Date: Wed, 18 Dec 2024 15:36:39 -0800
-Subject: [PATCH 9/9] arm64: dts: qcom: apq8039-t2: add node for ncv6336
- regulator
+        bh=0EtgKondHMyCR2GKtuPU0Jr6vHmmyanEzhmvLMFwiJk=;
+        b=CqdHE4NsUjUyRyPduoE9rVM0O1JSN8cdTSBHqLHkiapebAXfDt3nXyucUVL7bCxQtY
+         B/kYZK3SH0RMSME+q+k0anWpDF7Ns8FwjOFMHCqVk+M40jrw26+z90ZtTyJnLtZVu84T
+         UmVmT8u9x4d4BAxgq5fY1Vo/MQWNdh4PNW6YOKKNXi9Zm2ydfwwS9kJQGe9612jTqq5z
+         Qxzkh06Wr8dhJ03qf3uWFvk6UeWFyLZ1fm27ymmfNvteXB5zVPjCXVJ6Jj98VtrHKeyG
+         Bk+3vZBGdpzOtAU/VA1n57u/faKJRRMQkEweXO50HLlyJJ/jpZaMPy8M9zCqkgCXgaP5
+         HcJw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjkJwo9lEdcMoi5joi6SKDAMOjf3jrbY5ysVBiUSiG7suvsSJhLFyUXBuA8DQdoXQyz9i7GQwv3S5+bJlimQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyym3tpvngdrIte1RF1oz8O5X5PjnaW49Fy7eJC5fHKSLKuVaMa
+	vBLiaMOIgqASvHobCHNHtd+NRXA3HtnOMOxz7+VK6sSkBFE9PqeQ1ZTiTj3HSbqWzhcAUTZA/2B
+	4EMzInLqGUEhHlpdpWEDQ3IbULV6qMEBD9PTNlA==
+X-Gm-Gg: ASbGncugWp5KF1YFJfHd9Crrs2HmVi8PQTg62Ypp8l0CBXk41aRxnlSWFGyv2CbTSh/
+	IUrWfTAz2YwMRm5JBZXzb3u5ecdHd9EzoUit+Gzwmyrj6q41oCC7381+lT30LntWMgoTwRA==
+X-Google-Smtp-Source: AGHT+IFdSRWS6hABEc0ngQXZkSTeaXUeFQin7xzEsoJY+YvCrNqTdEjMrPR7JYZTNaSfEHdQKpp4JYpxLPweGurGvW0=
+X-Received: by 2002:a05:6000:1448:b0:386:41bd:53a3 with SMTP id
+ ffacd0b85a97d-38a19b48ed1mr1069707f8f.50.1734565608190; Wed, 18 Dec 2024
+ 15:46:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241218-ncv6336-v1-9-b8d973747f7a@gmail.com>
-References: <20241218-ncv6336-v1-0-b8d973747f7a@gmail.com>
-In-Reply-To: <20241218-ncv6336-v1-0-b8d973747f7a@gmail.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Fabien Parent <parent.f@gmail.com>
-Cc: devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, vinod.koul@linaro.org, 
- Fabien Parent <fabien.parent@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1251; i=parent.f@gmail.com;
- h=from:subject:message-id; bh=HWjtZtg1pmveHn6OiavIms18l8HI9Sa8dLce2gBDllY=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQmlKc2d4Q
- kw5cktRQnl5WmlBR2RqWEtwQTJvQ0gvSmYydG1KWGZDWGx2SGo2CkY1VnJSNWNRbG56NFV0NGJw
- TU5PWTRrQ013UUFBUW9BSFJZaEJONk0wZElMeXpzd3JmRnNxWWliSU1RUy9heWsKQlFKblkxeXF
- BQW9KRUlpYklNUVMvYXlrdHQwUC9SWG1lTHU1L29wcHNxWHR1blJXUFVQeVpFZlBYVnlmbDRNaw
- paQnRFRzBDcU1RZTdqMk5qVVAxS25hWHFtQTgvVS9mMzRKSGNwSjBKTVhxV2ZxY3Z6dmxNRXh0c
- jZIK3BKM045CnFuUmt5KzBpUFNiL0lNUUZQVktWMVUwSHN6VWl3MVVtbTNNWlVTenBWQjBPSm9U
- OC9MODlEdHNzUVFCenZxaWsKanJLc2ZSV1MwNzlpL1NJdm9uc1JqOFZFY2lpY3FrbW5maERLYWo
- 2a1d0MFE2aTcvY0daQ2QvWVZndWFyYlNKOQpFcm8zbndrVEI0SVkrSWpGWWtQbkFhUGJUaVJpV1
- lSYlQ4TjhIaDRjdEFKa2hSM1pzOFNkZ05jRUtwWEFjN1ZlCmFjelNXSC80VXNCby9mQ0U5d0szV
- mgvclZSTDlxdndBbWRCY2ZYMWVNZ2tMZWYrQWt6ZXNiWFpVUVR1L21aanoKZThNTk1IS0JYYytl
- d3pzYnlDd2UrWVJEcE8reEt0SVRpcFFvRFpPS1pQbEptaURJZ2RSRkMzeHJDaHROdy9mdwphNnB
- ReUFBS0RLWVl1QktrMjk3M1JmOFRQM0xPS1FJZ0NLRU1haXRQV2NzWWFKdjgrSkRhVU5aOWEzSj
- A3VDVnCjc2eXRvOS9qYW02dVNreWlqckpSYW11YUVRRjYwUTNvUzlQSTd5NnVWREFEdXEwZFZTe
- GZkb2ZBM0NCN1pyOTMKSDY3REVZWHErNG9CY2kwdlVmUTV5Mm5WVG10bDZuN080UHRJRTltNFk1
- RHRXT2lOTXhCS05jdFVPSjlvRG1mNQo1bTRXUHJVWkEyQjI5TUZpVDU0dEhKb05yR1ZKUHBBVWh
- HZWNHcVBPQ0tFeXJvL2FWZm41UHhQS3ZZdXBPN3pkCmoySWIzSjMvZU9BbHRnPT0KPWNkTDkKLS
- 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
-X-Developer-Key: i=parent.f@gmail.com; a=openpgp;
- fpr=07BB034F9E8E3AF0DF4CF7607AE864A1E16FA383
-
+References: <20241212163357.35934-1-dakr@kernel.org>
+In-Reply-To: <20241212163357.35934-1-dakr@kernel.org>
 From: Fabien Parent <fabien.parent@linaro.org>
+Date: Wed, 18 Dec 2024 15:46:37 -0800
+Message-ID: <CAPFo5VKDsqR48OAjUSCKNZM2_28Upi0qH9f0gP5_472JBBBLPg@mail.gmail.com>
+Subject: Re: [PATCH v6 00/16] Device / Driver PCI / Platform Rust abstractions
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com, 
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
+	j@jannau.net, chrisi.schrefl@gmail.com, paulmck@kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-CPR is using the power rail provided by the ncv6336 buck regulator
-on the apq8039 t2 board. This commit adds the required regulator.
+On Thu, Dec 12, 2024 at 8:34=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> This patch series implements the necessary Rust abstractions to implement
+> device drivers in Rust.
+>
+> This includes some basic generalizations for driver registration, handlin=
+g of ID
+> tables, MMIO operations and device resource handling.
+>
+> Those generalizations are used to implement device driver support for two
+> busses, the PCI and platform bus (with OF IDs) in order to provide some e=
+vidence
+> that the generalizations work as intended.
+>
+> The patch series also includes two patches adding two driver samples, one=
+ PCI
+> driver and one platform driver.
+>
+> The PCI bits are motivated by the Nova driver project [1], but are used b=
+y at
+> least one more OOT driver (rnvme [2]).
+>
+> The platform bits, besides adding some more evidence to the base abstract=
+ions,
+> are required by a few more OOT drivers aiming at going upstream, i.e. rvk=
+ms [3],
+> cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
+>
+> The patches of this series can also be [7], [8] and [9].
+>
+> Changes in v6:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> - Module:
+>   - remove patch to pass the module name in `Module::init`
+>   - add a patch adding the `ModuleMetadata` trait to retreive the module =
+name
+>
+> - Driver:
+>   - generate module structure within `module_driver!`, such that we get a=
+ unique
+>     module type for which `ModuleMetadata` can be implemented to retreive=
+ the
+>     module name
+>   - let `Adapter::of_id_table` return `Option<of::IdTable<Self::IdInfo>>`
+>
+> - Platform:
+>   - change type of `platform::Driver::OF_ID_TABLE` to `Option<of::IdTable=
+>`
+>
+> - RCU:
+>   - add RCU abstraction to MAINTAINERS file
+>
+> - MISC:
+>   - pick up a couple of RBs
+>
+> Changes in v5:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> - Opaque:
+>   - add `Opaque::pin_init`
+>
+> - Revocable:
+>   - use const generic instead of bool in `revoke_internal`
+>   - don't open code things with `Opaque::try_ffi_init`, use
+>     `Opaque::pin_init` instead
+>
+> - Driver:
+>   - fix `DriverOps` -> `RegistrationOps` in commit message
+>   - fix signature of `register` and `unregister` to take an
+>     `Opaque<T::RegType>` instead of a mutable reference
+>   - implement generic `driver::Adapter`
+>
+> - ID table:
+>   - fix `module_device_table!` macro, according to commit 054a9cd395a7
+>    (modpost: rename alias symbol for MODULE_DEVICE_TABLE())
+>
+> - PCI:
+>   - remove `pci::DeviceId` argument from probe()
+>   - provide `vendor_id` and `device_id` accessor functions
+>   - use `addr_of_mut!` for the device in probe()
+>
+> - OF:
+>   - move OF `IdTable` type alias from platform.rs to of.rs
+>
+> - Platform:
+>   - use `addr_of_mut!` for the device in probe()
+>   - move generic OF code to `driver::Adapter`
+>
+> - MISC:
+>   - rebase onto latest rust-next (-rc2)
+>
+> Changes in v4:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> - Revocable
+>   - convert `Revocable::data` to `Opaque`
+>   - introduce `revoke_nosync`, which does not wait for an RCU grace perio=
+d
+>   - fix minor typo
+>
+> - Device ID
+>   - fix ID table export name to always be unique
+>   - remove `#![allow(stable_features)]`
+>   - move `#![allow(const_refs_to_cell)]` to the "stable in 1.83" list
+>
+> - I/O
+>   - split `Io<SIZE>` in `IoRaw<SIZE>` and `Io<SIZE>`
+>   - add rust helper for ioremap() and iounmap() (needed by doctests)
+>
+> - Devres
+>   - optimze `drop` by using `revoke_nosync` (we're guaranteed there are n=
+o more
+>     concurrent users, hence no need to wait for a full grace period)
+>
+> - OF
+>   - rename "Open Firmware" -> "Device Tree / Open Firmware" (Rob)
+>   - remove unused C header reference
+>   - add TODO comment to loop in `DeviceId::new`
+>   - remove `DeviceId::compatible`; was only used in sample code
+>   - add missing `#[repr(transparent)]`
+>   - use #[cfg(CONFIG_OF)] for the relevant functions
+>
+> - PCI
+>   - let Rust helper for pci_resource_len() return resource_size_t
+>
+> - PCI Sample
+>   - remove unnecessary `from_le`
+>
+> - Platform
+>   - fix example compatible string
+>   - add example for `platform::Driver`
+>   - rename `ID_TABLE` to `OF_ID_TABLE`
+>   - don't allow public use of `of_match_table`; convert to `of_id_info` t=
+o
+>     retrieve the `of::DeviceId` to gather the corresponding `IdInfo`
+>   - remove wrong example reference in the documentation of `platform::Dri=
+ver`
+>   - remove `as_dev`, as we already implement `AsRef` for `platform::Devic=
+e`
+>
+> - Platform Sample
+>   - fix compatible string; add corresponding entry to drivers/of/unittest=
+-data/tests-platform.dtsi
+>   - remove usage of `of_match_table`
+>
+> - MISC
+>   - fix a few spelling mistakes
+>   - rebase onto rust-next (v6.13-rc1)
+>
+> Changes in v3:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> - add commits for `Opaque::try_ffi_init` and `InPlaceModule`
+> - rename `DriverOps` to `RegistrationOps`
+> - rework device ID abstractions to get rid of almost all macro magic (tha=
+nks to
+>   Gary Guo for working this out!)
+>   - this is possible due to recently stabilized language features
+> - add modpost alias generation for device ID tables
+>   - unfortunately, this is the part that still requires some macro magic =
+in the
+>     device ID abstractions
+> - PCI
+>   - represent the driver private data with the driver specific `Driver` i=
+nstance
+>     and bind it's lifetime to the time of the driver being bound to a dev=
+ice
+>     - this allows us to handle class / subsystem registrations in a clean=
+er way
+>   - get rid of `Driver::remove`
+>     - Rust drivers should bind cleanup code to the `Drop` implementation =
+of the
+>       corresponding structure instead and put it into their driver struct=
+ure for
+>       automatic cleanup
+>   - add a sample PCI driver
+> - add abstractions for `struct of_device_id`
+> - add abstractions for the platform bus, including a sample driver
+> - update the MAINTAINERS file accordingly
+>   - currently this turns out a bit messy, but it should become better onc=
+e the
+>     build system supports a treewide distribution of the kernel crate
+>   - I didn't add myself as maintainer, but (if requested) I'm willing to =
+do so
+>     and help with maintenance
+>
+> Changes in v2:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> - statically initialize driver structures (Greg)
+> - move base device ID abstractions to a separate source file (Greg)
+> - remove `DeviceRemoval` trait in favor of using a `Devres` callback to
+>   unregister drivers
+> - remove `device::Data`, we don't need this abstraction anymore now that =
+we
+>   `Devres` to revoke resources and registrations
+> - pass the module name to `Module::init` and `InPlaceModule::init` in a s=
+eparate
+>   patch
+> - rework of `Io` including compile time boundary checks (Miguel, Wedson)
+> - adjust PCI abstractions accordingly and implement a `module_pci_driver!=
+` macro
+> - rework `pci::Bar` to support a const SIZE
+> - increase the total amount of Documentation, rephrase some safety commen=
+ts and
+>   commit messages for less ambiguity
+> - fix compilation issues with some documentation examples
+>
+> [1] https://gitlab.freedesktop.org/drm/nova/-/tree/nova-next
+> [2] https://github.com/metaspace/linux/tree/rnvme
+> [3] https://lore.kernel.org/all/20240930233257.1189730-1-lyude@redhat.com=
+/
+> [4] https://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git/log=
+/?h=3Drust/cpufreq-dt
+> [5] https://github.com/AsahiLinux/linux
+> [6] https://github.com/Fabo/linux/tree/fparent/rust-i2c
+> [7] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
+> [8] https://github.com/Rust-for-Linux/linux/tree/staging/rust-pci
+> [9] https://github.com/Rust-for-Linux/linux/tree/staging/dev
+>
+> Danilo Krummrich (14):
+>   rust: module: add trait `ModuleMetadata`
+>   rust: implement generic driver registration
+>   rust: implement `IdArray`, `IdTable` and `RawDeviceId`
+>   rust: types: add `Opaque::pin_init`
+>   rust: add `io::{Io, IoRaw}` base types
+>   rust: add devres abstraction
+>   rust: pci: add basic PCI device / driver abstractions
+>   rust: pci: implement I/O mappable `pci::Bar`
+>   samples: rust: add Rust PCI sample driver
+>   rust: of: add `of::DeviceId` abstraction
+>   rust: driver: implement `Adapter`
+>   rust: platform: add basic platform device / driver abstractions
+>   samples: rust: add Rust platform sample driver
+>   MAINTAINERS: add Danilo to DRIVER CORE
+>
+> Wedson Almeida Filho (2):
+>   rust: add rcu abstraction
+>   rust: add `Revocable` type
+>
+>  MAINTAINERS                                  |  10 +
+>  drivers/of/unittest-data/tests-platform.dtsi |   5 +
+>  rust/bindings/bindings_helper.h              |   3 +
+>  rust/helpers/device.c                        |  10 +
+>  rust/helpers/helpers.c                       |   5 +
+>  rust/helpers/io.c                            | 101 +++++
+>  rust/helpers/pci.c                           |  18 +
+>  rust/helpers/platform.c                      |  13 +
+>  rust/helpers/rcu.c                           |  13 +
+>  rust/kernel/device_id.rs                     | 165 +++++++
+>  rust/kernel/devres.rs                        | 179 ++++++++
+>  rust/kernel/driver.rs                        | 174 ++++++++
+>  rust/kernel/io.rs                            | 260 +++++++++++
+>  rust/kernel/lib.rs                           |  20 +
+>  rust/kernel/of.rs                            |  60 +++
+>  rust/kernel/pci.rs                           | 438 +++++++++++++++++++
+>  rust/kernel/platform.rs                      | 198 +++++++++
+>  rust/kernel/revocable.rs                     | 223 ++++++++++
+>  rust/kernel/sync.rs                          |   1 +
+>  rust/kernel/sync/rcu.rs                      |  47 ++
+>  rust/kernel/types.rs                         |  11 +
+>  rust/macros/module.rs                        |   4 +
+>  samples/rust/Kconfig                         |  21 +
+>  samples/rust/Makefile                        |   2 +
+>  samples/rust/rust_driver_pci.rs              | 110 +++++
+>  samples/rust/rust_driver_platform.rs         |  49 +++
+>  26 files changed, 2140 insertions(+)
+>  create mode 100644 rust/helpers/device.c
+>  create mode 100644 rust/helpers/io.c
+>  create mode 100644 rust/helpers/pci.c
+>  create mode 100644 rust/helpers/platform.c
+>  create mode 100644 rust/helpers/rcu.c
+>  create mode 100644 rust/kernel/device_id.rs
+>  create mode 100644 rust/kernel/devres.rs
+>  create mode 100644 rust/kernel/driver.rs
+>  create mode 100644 rust/kernel/io.rs
+>  create mode 100644 rust/kernel/of.rs
+>  create mode 100644 rust/kernel/pci.rs
+>  create mode 100644 rust/kernel/platform.rs
+>  create mode 100644 rust/kernel/revocable.rs
+>  create mode 100644 rust/kernel/sync/rcu.rs
+>  create mode 100644 samples/rust/rust_driver_pci.rs
+>  create mode 100644 samples/rust/rust_driver_platform.rs
+>
+>
+> base-commit: fac04efc5c793dccbd07e2d59af9f90b7fc0dca4
+> --
+> 2.47.1
+>
 
-Signed-off-by: Fabien Parent <fabien.parent@linaro.org>
----
- arch/arm64/boot/dts/qcom/apq8039-t2.dts | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+Tested on arm64 as dependency for my own series:
+https://lkml.org/lkml/2024/12/18/1358
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8039-t2.dts b/arch/arm64/boot/dts/qcom/apq8039-t2.dts
-index 4f82bb668616f942d65f59a6f418cf38f404df32..2da5b7d01521520a6814b76c02329be3bdedb4fd 100644
---- a/arch/arm64/boot/dts/qcom/apq8039-t2.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8039-t2.dts
-@@ -111,6 +111,23 @@ typec_ep: endpoint {
- 	};
- };
- 
-+&blsp_i2c4 {
-+	status = "okay";
-+
-+	regulator@1c {
-+		compatible = "onnn,ncv6336";
-+		reg = <0x1c>;
-+		pinctrl-0 = <&ncv6336_vsel>;
-+		pinctrl-names = "default";
-+
-+		buck {
-+			regulator-name = "ncv6336,buck";
-+			regulator-min-microvolt = <600000>;
-+			regulator-max-microvolt = <1393750>;
-+		};
-+	};
-+};
-+
- &blsp_i2c5 {
- 	status = "okay";
- };
-@@ -371,6 +388,12 @@ typec_irq: typec-irq-state {
- 		pins = "gpio107";
- 		bias-pull-up;
- 	};
-+
-+	ncv6336_vsel: ncv6336-state  {
-+		function = "gpio";
-+		pins = "gpio111";
-+		output-low;
-+	};
- };
- 
- &usb {
-
--- 
-2.45.2
-
+Tested-by: Fabien Parent <fabien.parent@linaro.org>
