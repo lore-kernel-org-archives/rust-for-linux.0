@@ -1,59 +1,61 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB60AB673;
-	Wed, 18 Dec 2024 00:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6130CB673;
+	Wed, 18 Dec 2024 00:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734481436; cv=none; b=ugGlVG9jRX+QrxhHvYRFOxCXTOKdFsAzAzLgGLBQ8/XvEZTWRUBMguIGAm8cmcqROqJeG3kBtXIjzeeMC5EgFzh1NRDf3Ad9lEQ/CXGfQCkjN9KTLU3BcNACZ09jJa5mlsSh7EoDg8B4MAZkIQ7hHZ1TAyXljfD6i6LXg7JAQjU=
+	t=1734481442; cv=none; b=YSFKsSytEuVp6C2bMR/SmuC3xG/8fz8irwiuh2/zcO8oYK9yUSr2OVWKgYsMULaZZS+5IqV1HHTNvyAicpAgae4VkpPv/n1h14W9VkMWFCLVto1eSDMtMPPB1+hZmMa5TMS0LYjQ7P92U4EQN8hqX9tlVoiFdP2/bsVwSnbSQ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734481436; c=relaxed/simple;
-	bh=ntAmQ7iTPfBLxPSk9eLlj/qS8hnr+T6cDQFbGAVC7a4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eyaxcMQ41G2O4tP7ZkhTTdLcwel3oovM59/mG3f29zPlrMr177ZkUr2OrqpIbLcoo59CCspRP8ft6DOYQvjG9hnAx2vI62Hmxp9diEpXpgl1sH+FYeVF/wDP0kZcgERq/ROicrUVnkKiu2z8Ea5+PAGRdL5n3Yu9AjWddpQTSEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bwhk80ga; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1734481442; c=relaxed/simple;
+	bh=n/zoxZgxg9IlhQOEr+3TkyNuoTsR//D9kWpwtLwXyYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OLJEcaDlyFQAw3loZu26TyYQ6WglcFFE7/T89gEgkMAZbgyrZopoMpIZtoct1lMNRsVmWdf8x/tAMT1MVQoR9NO3PfNfduB0x5FzmRSLaR7Ez1+0TIqCPW+nzF36YHPDjFDxmturTlOjZs3001Hh49oEuTrXu5d8zxMRHxvGtqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K6fflNfT; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bwhk80ga"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so5329528a91.1;
-        Tue, 17 Dec 2024 16:23:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K6fflNfT"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7fc93152edcso185667a12.0;
+        Tue, 17 Dec 2024 16:24:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734481434; x=1735086234; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MO0h7JQ6b1C6fPfifjfPDKFjZ9kp9FWjeeL0qWt/igo=;
-        b=Bwhk80gagQbU58mFwVg9TybtS6rzHj/dUxgRJGh3Yg1K36vYDl0diLrhaq9QtxW+w+
-         abEfz3nVwbs9lCd3/rvGPrygyi66frhDbwIm1fK8HejLHiNo1AwFGUZdN/Sev5Iq7Gut
-         S4j00jf2vRKjQLNPnx/83FDfDp2wGLcGdj9MrCIJfSiICGN5t35V4huOmp9hj3zOEbck
-         Wvdl6g/L5sg1DnvIKF4imYGvhN7ogpGlcQPmqmYRq4fbkoBiLUnTvYnIzJ+lICvX4Hz5
-         cC/JcMJ7XzmBxCUGnkwh/nevjGjNp7HtTUK1oPtlEsMsiknlXyuj1yy9nSCtzACThBTc
-         pyIw==
+        d=gmail.com; s=20230601; t=1734481440; x=1735086240; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TpUyO4+1q/hT06ZgSTeMvM8lqeVLtEHow9cN7Pnoxl8=;
+        b=K6fflNfT6LaYt/gLqHbC01x5j8LZDCY3M7HrNYDswIkrwMwvm3H/zI9Fir/u9ds/HD
+         6uS0OfH3cLaemtO9rT5olCNuGz4dxdT/YSmCui/nB94HiShlOGRd3bJjXAu9cLYtpga0
+         6rlw2beDRGZFBFhdqqCwHTxCCNtXtjSG0yKyKlz5rImt3Yi4oPkyhIO40hpgXhtecBnj
+         6KV2yFhKYWxCBSJGySuErhOutRnlWZIOK4pevi/cgHVmsWRZ1ta7gcnlUBL4bBY0EXNq
+         27e4YzpuYLgVwE6gVkaxW6ckOmiUeLIEnZUTFfGCkH3L7YKwEw05UpPNuus+XP44Gu9s
+         66zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734481434; x=1735086234;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MO0h7JQ6b1C6fPfifjfPDKFjZ9kp9FWjeeL0qWt/igo=;
-        b=lRXTvcb6ADw3REzDPpDhAT/N4Op/e43A4N+dpLUOcJtNeSW5TYuQGyD5R/+Eh9zgke
-         4V0d65IZ4QddlWLJa/qHJCJTTe1dPHP997krVkAkxpAo3Qzvb+ib/ZJKE+G1iKQ4sH87
-         Dopwr/Z22DsgRm05Yi8RMhEqSlztHmjeqq5Z62j+2JYlbs/+bHu6SJaEN0RtBopDCFvX
-         Sgya+5549Edyo2EN/0bTNgMy7DoXbpIVRTQzaf4FE+5phnkgE4da9P6gi6yb09sN2DF2
-         pWpwCF9DtXKXyeyUtR8WBOmRlyagP7xV/r+O9KlwHfitq9tZQyky93tBHyoEyQR3y7pl
-         rUaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtCfa5ENPmWTjszV90awT4PqWEzKsOxeHFjd3TUfMHfSYcc5e0Ohtx606FppZgiY2/ZHJXas3xrl3ESLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwljzlnV2lh0HUkFmRycGDBsqftrQRaThEzwdBTf07ap6Zz1Hf
-	rcPecWW554bGDVVUql5IMf3ysdNW/FrHMPBqhyKlQqiCgGqxFTWM
-X-Gm-Gg: ASbGncsbvAxcDxfOuGDCcG4jfUH6E9kfNxfxSxUHqRpHoSVTctDocxrtf5GJhPZYo59
-	7d6u7mphbba7M6giMp/d1CGYXMn2Cyb+bu5hEpGhFK6qxS8SipcvL5rQz5+7cf506lJ7oGTkiwt
-	FGftoPo57FBkfWOxcDgGH0EL15YWsXFoetACQwHEeF0XECq5YujByN3hw5tNCHQO+o4+6NEFmG9
-	kkd9AThLcj8e8Z6BgpaiUdGetdbadhI/ppv2lxLiIgx79uCsPzlIR8vi7I0gd8xWA==
-X-Google-Smtp-Source: AGHT+IF2URjI4m3NrtOE3ipZnYm7Pd2Mx5Kk5Ut1vYR2COkOLn5FC1SR1q8fBmOnWuXDvKVY7F2oIA==
-X-Received: by 2002:a17:90b:53cb:b0:2ee:c918:cd42 with SMTP id 98e67ed59e1d1-2f2e9303920mr1137299a91.22.1734481434192;
-        Tue, 17 Dec 2024 16:23:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734481440; x=1735086240;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TpUyO4+1q/hT06ZgSTeMvM8lqeVLtEHow9cN7Pnoxl8=;
+        b=YJMQ3aUNJaGqTNMULErFsHEDcfnvd9tJxzKvxPKEdxPKj940FTLp0hP5MOl7qN7hRl
+         hiyerJiL63RoB9eyH1/0fAW7jVmhtHRJf1ZehI0/7SPJ7MFZoHA8vkcffgl7ZhxtlLNl
+         BOWGhuRiP8PuGsUwFzS4O4N9hqxFw3Jv8Vl6NiTnMjmoIpqWbOj9uEmpJvdmSejRShwQ
+         /a3N0XlAFdixJOuwp1sA3mgzpQUy68Aa6AJ32czHkg9l1ZnApt1LQM/bmNpa9JjG7FZN
+         n87vVDHvXdy9JzB6KGbO6YusuftKYXDy5ZnM/JnWc+2kUPBu6ShnCnEFEeqWatwrSxEG
+         DO5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVwfaMXiCB5+hnY4XtGSe+7o1sY5h5vzDGoh8H7x05Ok98i2r0x79b9MFlkU+SnOPsyKFrhxMNmwjIyZ7A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymciLACU2C23/rxoZBlBjGZVSCHoXa3k27p22wKP4l6cIKjaJI
+	7jqpHIf2x1SmvmibS0DsErj47pQYVEJzc3DK+LsFJzhwhzNDHXeY
+X-Gm-Gg: ASbGncsMe18i2CFZuAv8kEAKHo6BKgJ3YMk9Vd2U3hJCqEUL21LucG0eN3nS/dv5Lws
+	lm+94heZ/El6AS/QiomL+elglkvoNkIidfUcikPUiLHFlTmq2TNHsWbU/ZxiKsSi7NrrI1+s1h+
+	7x5PjqJiK2/gsRNJXLvOgXfKz3t0Mf6H/YnU+By3wofUBF5nmdXk6I6aa/To09VSEh45rbrp5Xk
+	9Wcbt9rlKeOP6L57DGPP6art5muHCs+F2tawEg5aHPINdBbvXyDmcvpp6DHqbJHOQ==
+X-Google-Smtp-Source: AGHT+IGjf12oUQb9dha30LknrNYXMY5WTdCBsL72WTp7904gBFM9ph1dhUC8RbVgJS0bY6fviz8caQ==
+X-Received: by 2002:a17:90b:1c84:b0:2ee:d9d4:64a8 with SMTP id 98e67ed59e1d1-2f2d8654b36mr8217883a91.0.1734481440551;
+        Tue, 17 Dec 2024 16:24:00 -0800 (PST)
 Received: from lordgoatius.hsd1.or.comcast.net ([2601:1c1:8502:a6c0::5fc])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ed6417d7sm97932a91.23.2024.12.17.16.23.53
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ed6417d7sm97932a91.23.2024.12.17.16.23.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Dec 2024 16:23:53 -0800 (PST)
+        Tue, 17 Dec 2024 16:24:00 -0800 (PST)
 From: Jimmy Ostler <jtostler1@gmail.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -73,10 +75,12 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jimmy Ostler <jtostler1@gmail.com>
-Subject: [PATCH v3 0/3] rust: add kunit doctest with doc fixes
-Date: Tue, 17 Dec 2024 16:23:09 -0800
-Message-ID: <cover.1734477232.git.jtostler1@gmail.com>
+Subject: [PATCH v3 1/3] rust: error: Change `LayoutError` to internal
+Date: Tue, 17 Dec 2024 16:23:10 -0800
+Message-ID: <966cc6950c3e8705462f330d2bd002d305ebbc93.1734477232.git.jtostler1@gmail.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1734477232.git.jtostler1@gmail.com>
+References: <cover.1734477232.git.jtostler1@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,45 +89,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds a doctest for the `ArrayLayout` type, as well as
-implements `From<LayoutError> for Error` for the internal `LayoutError`.
-This change in the first patch is required for the added rustdoc kunit
-test in the third patch to compile.
+Add an implementation of `From<LayoutError> for Error` for the
+`kernel::alloc::layout::LayoutError`.
+Remove the implementation on `core::alloc::LayoutError`, because we
+don't use it anywhere.
 
-This series also adds a change to the `stack_try_pin_init` example
-documentation, so it correctly imports the `AllocError` kernel type.
-
-Link: https://lore.kernel.org/lkml/20241203051843.291729-1-jtostler1@gmail.com/ [v1]
-Link: https://lore.kernel.org/lkml/20241205105627.992587-1-jtostler1@gmail.com/ [v2]
 Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
 ---
-v2 -> v3:
-- Remove `From` implementation on `core::alloc::LayoutError`
-- Move changes to "rust/kernel/alloc/layout.rs" to separate patch
-- Move changes to "rust/kernel/error.rs" to separate patch
-- Change documentation in "rust/kernel/init.rs"
-- Link [v2]: https://lore.kernel.org/lkml/20241205105627.992587-1-jtostler1@gmail.com/
+ rust/kernel/error.rs | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-v1 -> v2 changes:
-- Add third assert where length is smaller but still overflows
-- Remove rustdoc markdown codeblock languge signifier
-- Change tests to return results using `?` instead of panic
-- Remove `#[derive(Debug)]` for `LayoutError`
-- Add `From<LayoutError> for Error` implementation
-- Link [v1]: https://lore.kernel.org/lkml/20241203051843.291729-1-jtostler1@gmail.com/
-
-Jimmy Ostler (3):
-  rust: error: Change `LayoutError` to internal
-  rust: error: Update 'stack_try_pin_init' example
-  rust: alloc: Add doctest for `ArrayLayout`
-
- rust/kernel/alloc/layout.rs | 19 +++++++++++++++++++
- rust/kernel/error.rs        |  7 ++++---
- rust/kernel/init.rs         | 22 ++++++++++++++++++----
- 3 files changed, 41 insertions(+), 7 deletions(-)
-
-
-base-commit: 9a02cbc5139e668f8b74e75a611d3a04b5241228
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 914e8dec1abd..f6ecf09cb65f 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -4,9 +4,10 @@
+ //!
+ //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
+ 
+-use crate::{alloc::AllocError, str::CStr};
+-
+-use core::alloc::LayoutError;
++use crate::{
++    alloc::{layout::LayoutError, AllocError},
++    str::CStr,
++};
+ 
+ use core::fmt;
+ use core::num::NonZeroI32;
 -- 
 2.47.1
 
