@@ -1,36 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C51199FC5;
-	Wed, 18 Dec 2024 12:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F93A150980;
+	Wed, 18 Dec 2024 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734525811; cv=none; b=cqKrs14KD5ATQKJlm5WfFEnJHmenlIc437CLnFk6sLfnCDYUHr5D+PifdRxiHseUOZ8LMyA9yaP+MiixEN7xUkhcDtZxhvOgdDQR+sU72zmjVaxpaIPguJk3us1zUuW3iQBslJQFGvi1gZkfZRggrJ/wEUSaMTXnIgooIfvsm5w=
+	t=1734526086; cv=none; b=gA/bRxjITRjo8VszJ8Ijaqr8BisCKCCScbmBqt6SMguathePU766xXQPHoUDHwxDk54YL9PV0aeM+HCpJ6utyWsjrnyYywkhnSqlYN6xWQ/Nd7FVEC4GWhLnTOZokZP5Ryy4pePPyNmUX8rktXQAWujVNH2Cgy9exr4cWKQQR6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734525811; c=relaxed/simple;
-	bh=V0LCVTYzN+FudjJVuJDKPEga0zsP2H3u9YX5b0THAZA=;
+	s=arc-20240116; t=1734526086; c=relaxed/simple;
+	bh=SAltdk09dCPk6IMTYNBEkKXlQMSRUHyGOVmQrT01eL0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bTmZAkl/U3+K/Ic+UYNO1fCR2WKALWOZGswcXTOrhib2S8InBMvUiHGC8SQjdJqn2SXdPZyS3eiW7yExNFlPwb5/AQsScCDXA5rY2/n97k1ChIqoN5Fy8T4svzH6uaCzxoegy8H9Y9ZuSXqHC+WnxZ37rDGjLVEq5Hx7l7bmC+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8mhtFUs; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=J7pCP5M610qLKK1+6jPIsD3A1r/87+KvmvWnM6GboGHkB1nfs0g0oAOcqqR+/dOSnBYxDoTTaVk/RFMHhwsbGj3LtIjLjFx1xa2doFklKJ6xDEycUcOm80jyGvKk4WsjuqYGkEKENmGkzesRt15OYeZJrT40w8J/wcFfVZhDj0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aj8HzoDe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8mhtFUs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A4C4CECE;
-	Wed, 18 Dec 2024 12:43:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aj8HzoDe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D53C4CECE;
+	Wed, 18 Dec 2024 12:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734525810;
-	bh=V0LCVTYzN+FudjJVuJDKPEga0zsP2H3u9YX5b0THAZA=;
+	s=k20201202; t=1734526086;
+	bh=SAltdk09dCPk6IMTYNBEkKXlQMSRUHyGOVmQrT01eL0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G8mhtFUskUEh5QVJ41MVQ3X33KrqxAmnxD+r9ACy0vnJks7EuhgXoxBDHExT615wO
-	 ZQv6S7tJEeT7Ap8ssl+j9Hh94lX5fObDHOenLUlOlWHUg3qbbfmmkfPbll37xG4jG6
-	 OBuHDPrnuD6fjFc43QvydT2O1R1QOeMrM/mFysvIsNggx9DaoqA7AkDTKYNCYnd7Nc
-	 zO2SKqrJGTsW9WVJ7FXEgjMsXYTdDNqbY8hPd+IVtmIwPKh5RvHCln7l8CwVnoxJo0
-	 K3gObkoLaVuaQhZKX0aokgZFeofuTPzDoqTqXiMdAVHxooD25suRgrmeol8qQ9HWSv
-	 /CZW34Qs/XnUg==
-Date: Wed, 18 Dec 2024 13:43:23 +0100
+	b=aj8HzoDe5pIXZ/enBhdG6zlJU9SKpcMw4dWon/+lEW7NdaKE8XPrGwLs8NS00TFOb
+	 cqAZnahpia96HItfQVpT7sVhwJhZ52s4UiLCsIHKw446OeH89Knw8kgio54aNtosaL
+	 yKlh2SqrmHHl8SnlLUF2XBumQppNibHJeEl2CELUMqzA7YxHB748bSze6+pbaddggm
+	 Xy5fJVwYKbaQS6MDIUbvyyMEBEp/PHhzvSkHkFXTkwZwh+cvz8HMBi53Ld7/zmlYvm
+	 vVXOJwAvngStKGwTWKyxP3cB/LGnTZg5ojBRH+3ODq7gn5rj5CHPq5l3xs5TFQG6vd
+	 lHsk85YORiIiA==
+Date: Wed, 18 Dec 2024 13:48:00 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jimmy Ostler <jtostler1@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+To: Jimmy Ostler <jtostler1@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
@@ -42,42 +41,75 @@ Cc: Jimmy Ostler <jtostler1@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Daniel Sedlak <daniel@sedlak.dev>,
 	Alex Mantel <alexmantel93@mailbox.org>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: error: Change `LayoutError` to internal
-Message-ID: <Z2LDa6cHRYdp__53@pollux>
+Subject: Re: [PATCH v3 2/3] rust: error: Update 'stack_try_pin_init' example
+Message-ID: <Z2LEgDM53bc0bHP6@pollux>
 References: <cover.1734477232.git.jtostler1@gmail.com>
- <966cc6950c3e8705462f330d2bd002d305ebbc93.1734477232.git.jtostler1@gmail.com>
- <CANiq72=2tbRJ6Chq02iGwpNToe4zHR-RtXq+Qv_bFzyvdyXHsA@mail.gmail.com>
+ <1f19375654fa5ef4d9bc086177f05b112470ca6d.1734477232.git.jtostler1@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=2tbRJ6Chq02iGwpNToe4zHR-RtXq+Qv_bFzyvdyXHsA@mail.gmail.com>
+In-Reply-To: <1f19375654fa5ef4d9bc086177f05b112470ca6d.1734477232.git.jtostler1@gmail.com>
 
-On Wed, Dec 18, 2024 at 01:57:29AM +0100, Miguel Ojeda wrote:
-> On Wed, Dec 18, 2024 at 1:24 AM Jimmy Ostler <jtostler1@gmail.com> wrote:
-> >
-> > Add an implementation of `From<LayoutError> for Error` for the
-> > `kernel::alloc::layout::LayoutError`.
-> > Remove the implementation on `core::alloc::LayoutError`, because we
-> > don't use it anywhere.
+On Tue, Dec 17, 2024 at 04:23:11PM -0800, Jimmy Ostler wrote:
+> Change documentation imports to use `kernel::alloc::AllocError`,
+> because `KBox::new()` now returns that, instead of the 'core'
+> `AllocError`.
 > 
-> No need to send a new version for this, but it may make sense to
-> reword to clarify that this switches the import, and therefore the
-> `impl` switches from one to the other. The way it is written, it
-> sounds like an actual `impl` item was textually added and another one
-> removed.
+> Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
 
-Agree with Miguel, the commit message is slightly misleading.
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
-With that fixed,
-
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-
+> ---
+>  rust/kernel/init.rs | 22 ++++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
 > 
-> Cheers,
-> Miguel
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index 347049df556b..3d099908dbd5 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -290,9 +290,16 @@ macro_rules! stack_pin_init {
+>  ///
+>  /// ```rust,ignore
+>  /// # #![expect(clippy::disallowed_names)]
+> -/// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};
+> +/// # use kernel::{init,
+> +/// #   pin_init,
+> +/// #   stack_try_pin_init,
+> +/// #   init::*,
+> +/// #   sync::Mutex,
+> +/// #   new_mutex,
+> +/// #   alloc::AllocError
+> +/// # };
+>  /// # use macros::pin_data;
+> -/// # use core::{alloc::AllocError, pin::Pin};
+> +/// # use core::pin::Pin;
+>  /// #[pin_data]
+>  /// struct Foo {
+>  ///     #[pin]
+> @@ -316,9 +323,16 @@ macro_rules! stack_pin_init {
+>  ///
+>  /// ```rust,ignore
+>  /// # #![expect(clippy::disallowed_names)]
+> -/// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};
+> +/// # use kernel::{init,
+> +/// #   pin_init,
+> +/// #   stack_try_pin_init,
+> +/// #   init::*,
+> +/// #   sync::Mutex,
+> +/// #   new_mutex,
+> +/// #   alloc::AllocError
+> +/// # };
+>  /// # use macros::pin_data;
+> -/// # use core::{alloc::AllocError, pin::Pin};
+> +/// # use core::pin::Pin;
+>  /// #[pin_data]
+>  /// struct Foo {
+>  ///     #[pin]
+> -- 
+> 2.47.1
+> 
