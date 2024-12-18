@@ -1,156 +1,123 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEA42F3B;
-	Wed, 18 Dec 2024 02:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D543597B;
+	Wed, 18 Dec 2024 02:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734488217; cv=none; b=bBSLfsCz8Uaf78HHCWS4MEbCu4CE+rka9VHjBKZCtRe+AHu1rJxX9g7FnwdgBOC4m6bDZTCRoqykkPb351E2imxSVWndUgciGMXBS2Wbde7iRuVKF0H1Om3VkjvopBel9Bc3GchTMZ2WzFQMMrAZbivEojAgBORyBr7iEr3psNs=
+	t=1734488726; cv=none; b=qsXf3KirBflxeSGxP0L0D1QQGavZZvrUCJOIYfzjLf7qx9Nc//1r6QHyypb+bEWp0z6GO1ChXQgwL65CIWsoxGSVsS3XPUipoDyDLEot4E9bfNXdE+rV1nh7+eYchyAyDUIWNZR+tGAPlEL78Jc+4aKDR6BygHsP4Ga28yfmWkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734488217; c=relaxed/simple;
-	bh=bGHJ+T10BJskD8jQuXADbqU5mVSEfgy4GShYhi6G/oo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lpi4wuq8AK+RXhAlmd0tvfCR26DbN7SrlB4XtlM2+bHHDsp7wUkYa8byeZZcL9teyqn60ryPmL1xN6D7/WBV2UqgHAWjTpCqPa1tQW+Y5glopn4R457EZuX2NRZERglseAtK4glMD7YYup1JyZNjYsQ9JJd0ekUI/ojNaF3wipE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joshtriplett.org; spf=pass smtp.mailfrom=joshtriplett.org; dkim=pass (2048-bit key) header.d=joshtriplett.org header.i=@joshtriplett.org header.b=cJhMB+HE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=C6MEsEsl; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joshtriplett.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=joshtriplett.org
+	s=arc-20240116; t=1734488726; c=relaxed/simple;
+	bh=71Dq6rzIOZ3NXz140Sm2skWGi7f/eobv91vUjfZ2K78=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=kPmppzh0nDOC546E9ojTuBsNsA7Ao7iQmDNcftvd5MVcIihX6G2GsfdoQXRYd7F5SbnsGGjaVdKQIK8gwVSAhmywjk96nSSWXz71+7seDe7j3ODO2zUCuZO0LGuZZO2jWyP5znO78YkexUWljoYmsxXpvbozjZhlSEKHjjX1BQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E3VDwfe7; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=joshtriplett.org header.i=@joshtriplett.org header.b="cJhMB+HE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="C6MEsEsl"
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id DF95E2540091;
-	Tue, 17 Dec 2024 21:16:53 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Tue, 17 Dec 2024 21:16:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	joshtriplett.org; h=cc:cc:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm1; t=1734488213; x=1734574613; bh=523o3y8NJ8P5ZgdcNrSyC
-	Fa3NkSc5nUpqrtZIkvhdEk=; b=cJhMB+HE0jW9BDoC6u3cFMelGMYsGDQCDe7Zg
-	9LX86+uSyL2/rviXFRYp69+dWPLVE3Crs9EbwNUVtISfPRBoUuqPv1iYKuC18CrU
-	zJP1T9VZwv6k6K9LoCSREjcHMLtbkpzy4FiAsxzABv+yFUTZIsuDXi0f4GgnMfqB
-	h6iq3LezWuwAwvdJqnVgHJ17+I1rpbE5OgxRL79wmTJjCxUP3EX2HD0n477KE/44
-	Ep10AwNmJN4wi/zNAC+0RoQFcRa8Tm8fYJV+6+XB0KvsufWl46OnoflsH5FUZHOY
-	g75kqzUjGbNIglolg07phlC2CXApVcuR02otY+iXNhxbMouiA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734488213; x=
-	1734574613; bh=523o3y8NJ8P5ZgdcNrSyCFa3NkSc5nUpqrtZIkvhdEk=; b=C
-	6MEsEslu372ISteFuk4982zQ1X5WC/qSDJHYVK1jW4+An4MdiAehQD/7PcHtl/v/
-	Hbyfd350+k280p2xyOF2sSLmotfWDww0bhzvQyeCt34o0LY4CQABQGSdRexh4WJG
-	yJ07aCZuKS8B9hefRE3UNw+MVbAiANdxfTAaSndcJkO9ms8Fa3EJQHDrYTeF/Ikz
-	H7XngQy71TysElucC/6saOh0KDgYMduwNOWBANYGCOZ1IQoGAZfWJAqmrupe8etV
-	JgFrUJ4UN8mDQUkSpXmSZnJC8BQxNELbGaZD9MBvZS3ziYMWoB5pai03XTb0uSoD
-	pQWcpbas/dwG/bOmfIZjQ==
-X-ME-Sender: <xms:lDBiZ-JO1cFz464_ZqcGR3DGYlU83-DTiWmXfAnGaN4JPDDmEAbcIw>
-    <xme:lDBiZ2K-_yiENMTO3e0SvWGUDJ63j373B9Mx72eMFom_E1cTHG5QAeDRV-ZhU_M_x
-    a-1NeHPGyleZz5-IXc>
-X-ME-Received: <xmr:lDBiZ-tzqK-U0E1iPpxFiL1gae-0F4IvfsDCw4xOdkZRFv7QDB0bHpzxMg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleeigdeggecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeen
-    ucfhrhhomheplfhoshhhucfvrhhiphhlvghtthcuoehjohhshhesjhhoshhhthhrihhplh
-    gvthhtrdhorhhgqeenucggtffrrghtthgvrhhnpeefvdeifffhhffhhfekieehveekteet
-    ffeugeejhfdutdelhefhgefffefghfeljeenucffohhmrghinheprhhushhtqdhfohhrqd
-    hlihhnuhigrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomhepjhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrghdpnhgspghrtghpth
-    htohepudelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhguhgvlhdrohhj
-    vggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhmpdhrtghpthhtoheprgigsghovg
-    eskhgvrhhnvghlrdgukhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgu
-    rghtihhonhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    rghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnrd
-    hfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
-    nhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
-X-ME-Proxy: <xmx:lDBiZzbpZQ6Htu7pSYTfD1cvKTkmDRb9j40sglhrWoV0YjQMEeBOwQ>
-    <xmx:lDBiZ1aU9r7mlsdiPkBed6duNGvAu7zgrhVzy-MWpGDn1qM3sH_UrQ>
-    <xmx:lDBiZ_AIcawljzjORiD0mk8l761epmTC6m0ybQipNT9EnayBWmrlCg>
-    <xmx:lDBiZ7b_BcpzmK7LmeAWXiNMq14U8BI2KtBObwQsJCeO2csQvSMBew>
-    <xmx:lTBiZxNP4QyIfsjBLZMUiCh95T7j1Qs5oBqtjXj6-D3MPa8LiDlIqNgH>
-Feedback-ID: i83e94755:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Dec 2024 21:16:50 -0500 (EST)
-Date: Tue, 17 Dec 2024 18:16:48 -0800
-From: Josh Triplett <josh@joshtriplett.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Greg KH <gregkh@linuxfoundation.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Trevor Gross <tmgross@umich.edu>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] rust: extend `module!` macro with integer
- parameter support
-Message-ID: <Z2IwkAxgMt2XqI9U@localhost>
-References: <2024121344-excusably-resurrect-d01a@gregkh>
- <87h674c5vq.fsf@kernel.org>
- <UW-ATumT4L-13ZXX-lO1inQGeZK7VgQWNAHE3688ulGj-rvzxWkUdrmnAUlufI1W5-9d6vzH3TXZ4VOmYh9wxA==@protonmail.internalid>
- <2024121646-shelve-series-5319@gregkh>
- <877c7zbx2u.fsf@kernel.org>
- <8e1b5c5e-52ae-4332-a49c-990add7611f6@kernel.dk>
- <2024121630-steed-grating-6352@gregkh>
- <64a40555-e3f8-4671-8ece-3c3b677ccdfb@kernel.dk>
- <CANiq72=01Oaszr08hV2ABLbd0RJt9oO=j=aWAizbbCUg+T+aNQ@mail.gmail.com>
- <CANiq72n+XM9qgMGq_94OOawOU0NC+7b=mF1dpSSBq2_AtVJung@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E3VDwfe7"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ee51c5f000so4196251a91.0;
+        Tue, 17 Dec 2024 18:25:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734488724; x=1735093524; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=U7zVVV9lr0cdzHhef6MywPZq2FxB2TN+LVKaje4ZqYE=;
+        b=E3VDwfe77Xbo1x3TUCXlnKK2hoPx3TbpOGr4eOg+Jn7z2M3M6r/TmTc9XF1/t/hRs1
+         Ygwc7atgqbV34XnN4wQnEP17K5o4yrmfyQUi/R3WqtrcNEUJ9CXKkGlALSFSHXyZWWqj
+         A9Cni3JfttNRzaj+PSWRNYkdKin0/uHy/wmAz5LxVa53cgi6zGtT/49Xap8zSV30hEN/
+         LHC/OjZ4D5rZbGbM13pMkwdKTg8DjhKDUcrxpdFFvC64F38vCmP0YpJgTwVdhSEH+O/d
+         /tfEvgmA+4wmsa16IfeUjVTNdNc9p1ryLRGPHTRMKKGzZ/sQ5c3zBs+D8F44aYM/GC/p
+         nEHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734488724; x=1735093524;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=U7zVVV9lr0cdzHhef6MywPZq2FxB2TN+LVKaje4ZqYE=;
+        b=DDuzgDeMgwditdM1rTtwmJiJRdukwHsToOc8ClqWyTnIfQjTBa/sqwcTPkXyYOuX9w
+         Qf9dCPjpPX171cxZhx/ku4y8ToI+EUgQpbaOAkGuHYYxqLpTSyuoc8HbnVFPgMgAm0e7
+         yQ4AdT7v2X2oYSI6LvUVlNT2Hny2Z0OiPU0W8Jauz37Yx3ghPpeurJhvN8mO6TAk6J0K
+         cLSm3e8jf0eYVvi+AJ+xtW9Iw29acBznwJXH7XhCnij8YNXIJGXJ+J0jO2Kjouu8JJxq
+         J5oplBVGF9tnmB4Wz6TBONza3nUTVXMhgWfTWb3S8ULmRtkcmrCYZ8iDWDfk/clpk/qx
+         ZugA==
+X-Forwarded-Encrypted: i=1; AJvYcCVKFfKmm7sjSNCDQPncZQN4s6rtJkk1IQxUZ3F8KA5s5ynMbLBA00PMgfXxrPQtxnqqgSlZ7mqgZljxtbDTNro=@vger.kernel.org, AJvYcCWAaK7SaNgXaetdd8S3Fd4bh4zrj7B121lWtXAekbyhNynp4RQiEzQXgjiIGV41fq7UkUoMyOs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1pElM0vzuvZdm9lzAQ7yRas0VZVS+xgvZoQx8CA7OPJoQPKzO
+	4sQGCGi056bEcnNHTsOrFjYw07hFZqnsjo66naRkcIu5lT8zGV6f
+X-Gm-Gg: ASbGncvnsTi1SiU3ukb/Aka4gR50a+5ktxbAdXatITb2JEC6B0ptsT03cMAHUqs335I
+	PolY4uFe+kqqEk+zbv3mQ+a/QlSC5KI5Fmr6tvpeUffdHkKb8FZibRaGWMDvqJU3MFm7hzicvkf
+	MT0ZMzutYtHzsHcUIrqxKsOAA7OEqZ+6Oh/+vfJNX4zLuQ/UrUtasIa0mdwcANHiFG5M12O5maE
+	xqX1cNBGy/7QKbh/qy1vwffn5WL5fUtD+jPEwHg6/WrEKC+83Rg1RroB/5AOPmaWJnQcHNmkFTy
+	2RLTWVGIYyO+4Hul0g==
+X-Google-Smtp-Source: AGHT+IEsPj6pDo840pSz/bOVARaDmCG/nbaH1I9K4ta3O21g2Z/LZ3uEm22JHFqk6NyJj9uz0Mmofg==
+X-Received: by 2002:a17:90b:5246:b0:2ee:b2fe:eeee with SMTP id 98e67ed59e1d1-2f2e91dd06emr1883790a91.15.1734488724343;
+        Tue, 17 Dec 2024 18:25:24 -0800 (PST)
+Received: from localhost (p7659208-ipoefx.ipoe.ocn.ne.jp. [221.188.16.207])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f2ee26b131sm232316a91.44.2024.12.17.18.25.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Dec 2024 18:25:23 -0800 (PST)
+Date: Wed, 18 Dec 2024 11:24:42 +0900 (JST)
+Message-Id: <20241218.112442.597481561044471700.fujita.tomonori@gmail.com>
+To: kuba@kernel.org
+Cc: pabeni@redhat.com, fujita.tomonori@gmail.com, davem@davemloft.net,
+ edumazet@google.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net v2] rust: net::phy fix module autoloading
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20241217085124.761566e6@kernel.org>
+References: <b701482d-760a-437b-b3fb-915dc3fc2296@redhat.com>
+	<20241217074400.13c21e22@kernel.org>
+	<20241217085124.761566e6@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72n+XM9qgMGq_94OOawOU0NC+7b=mF1dpSSBq2_AtVJung@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 16, 2024 at 04:48:21PM +0100, Miguel Ojeda wrote:
-> On Mon, Dec 16, 2024 at 4:39 PM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > Agreed. I would suggest to consider marking it as a Rust reference
-> > driver, since it is a prime candidate for it:
-> >
-> >     https://rust-for-linux.com/rust-reference-drivers
-> >
-> > That way, it is clearer that the duplication is meant to build the
-> > abstractions and temporary in the long-term.
-> >
-> > Then we can also easily track which ones are meant to be those, and
-> > Greg can get justifiably angry at you/us if the duplication isn't
-> > resolved when the right time comes... :)
-> 
-> By the way, I half-jokingly suggested this elsewhere, but we could
-> trivially allow module parameters only for particular modules, i.e.
-> only allow to use the `params` key here if the name matches `rnull`
-> (or if they set a special flag or whatever).
-> 
-> Yes, it is a hack, but it would give people pause when trying to use
-> the feature, i.e. to think twice. And, to me, it makes sense to
-> encode/acknowledge this kind of thing explicitly anyway.
-> 
-> So if that would unblock this and reduce the chance of repeating
-> mistakes of the past, then we can easily do that too.
+On Tue, 17 Dec 2024 08:51:24 -0800
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-This seems like a great idea. An allowlist of drivers that are allowed
-to use module parameters would encourage *new* drivers to not use them,
-and that allowlist can have a comment atop it saying "Only add your
-driver to this list if it needs to maintain an interface compatible with
-an existing driver in order to avoid breaking userspace. Otherwise, use
-configfs, sysfs, debugfs, or something else other than module
-parameters."
+> On Tue, 17 Dec 2024 07:44:00 -0800 Jakub Kicinski wrote:
+>> On Tue, 17 Dec 2024 16:11:29 +0100 Paolo Abeni wrote:
+>> > > I'll look into it. Just in case you already investigated the same thing
+>> > > I would - have you tried the rust build script from NIPA or just to
+>> > > build manually?     
+>> > 
+>> > I tried both (I changed the build dir in the script to fit my setup). I
+>> > could not see the failure in any case - on top of RHEL 9.  
+>> 
+>> I think I figured it out, you must have old clang. On Fedora 41
+>> CFI_CLANG defaults to y and prevents RUST from getting enabled.
+> 
+> Still hitting a problem in module signing. 
+> Rust folks does this ring a bell?
+> 
+> make[4]: *** Deleting file 'certs/signing_key.pem'
+>   GENKEY  certs/signing_key.pem
+> ....+.........+++++
+> -----
+> 80728E46C07F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
+> make[4]: *** [../certs/Makefile:53: certs/signing_key.pem] Error 1
+> make[4]: *** Waiting for unfinished jobs....
 
-I wonder if we can implement such an allowlist for C modules, too. :)
+Generating a key (openssl command) failed?
+
+> allmodconfig without Rust builds fine with both GCC and clang.
+> 
+> build flags: LLVM=1
+> config: https://paste.centos.org/view/0555e9dd
+> OS: Fedora 41
+
+CONFIG_MODULE_SIG_HASH is same on rust build and non rust build?
+
+Looks like it's the only kernel config option that might change the
+command behavior.
+
+I can't reproduce the error with the config on Ubuntu 24.04.
