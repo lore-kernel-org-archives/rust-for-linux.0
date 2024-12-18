@@ -1,136 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEC5175D2D
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Dec 2024 10:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1458615EFA0;
+	Wed, 18 Dec 2024 10:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734516274; cv=none; b=AklA22Czr6aqKyEwidkgq9GEKcCAeD8iNjqpzQ65DaPj6X4qXsLfNnMCYXLRiL7I7yO9hyotyBLewgHwVN6P7UAqTKMBlyMJDdvcOUWuYgoqb+FL47nJGGqKwkdnyO6qvOpeJXeixVduFaMANEqykGdcwv20k0VjnhxxWUH45xg=
+	t=1734516894; cv=none; b=AqLinsGcuGBOn+yCI1kFb/8YzAlhIF69LXcX4NSAZmJvsYL6Nk+3AoXMIYmfJ7Ij7pdoxivbP14DBUJ4W/G6XMocsMhcE+mrYScQK2448eRAnl0befTfrhVFjCHzf13GMO7V18nR9lH3ij7aXdIe1AOxIW4GdY+uJ348Azrw3SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734516274; c=relaxed/simple;
-	bh=+KPtdWR+FR20FLPaoO7XjCq8MQFrTv7CWnzwyI0iUN0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ips2pPEwoI1TKfbHHQJ3Q5dtpdgRguKekuHJm2Pr/bm9EQ864cT+jha6YkjJspFlwlKt9p+3ghF+bdvrtLqhVll2O97y4wTDP3mLNqDd0sxlIOG/5UturbaDaKoo1CNeSGgL4bvDExra5Gmrt6CLlsx3TgC1XFhAj0P2Bi6SKkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=caqbkxl7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1734516894; c=relaxed/simple;
+	bh=88IHiNuEUcucQLDA2SgjdoWkHjCoEvfbUkEobHv1np8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eY4+4DiI2hoCChHtX+SqBLkfO4ZhmNFZfiGWc/Kpf2SnVxkuhFmznF77sVhj6J0CeMUsxGHIHRPKb3D0zix70+pq+iSfkH9irAgopQJiIQTEncpGadAd0jYuEJcrRHyAq/vmw8i776UKo/wzG2jgI/9+6Z/ZbqHQPxeloMLGkZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pD1z7ZbY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="caqbkxl7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734516272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qbUOxbfbfXNN/bRoyuA/9J1uwdYH9gGx7AeSDBbU2v0=;
-	b=caqbkxl705GJWJbDKMcW/mhEBE5kWM6vbxXNVE+bcmWCyMXhH3REtjVX4nPc3dPM6exbNR
-	Cz6zathUD+MWRBp6NiKP/PGGjrD2IzLfC07lPzD1GzkvB73rBQM4RsGKMV1iZ9aGDxlBgT
-	RLsy39NVPDtw2q7rd591SFTRDcuA7Ss=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-OWcDDIUHPuul24oUNdNmnQ-1; Wed, 18 Dec 2024 05:04:31 -0500
-X-MC-Unique: OWcDDIUHPuul24oUNdNmnQ-1
-X-Mimecast-MFC-AGG-ID: OWcDDIUHPuul24oUNdNmnQ
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7b6e1b037d5so451996885a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Dec 2024 02:04:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734516270; x=1735121070;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbUOxbfbfXNN/bRoyuA/9J1uwdYH9gGx7AeSDBbU2v0=;
-        b=q4txHQzU2b+3I1YGvZY4Ogsx2bx1lZniIVDkfBc+vqciq7rg3uwOkGtzR3+fcMF8pE
-         dS+TxOqAbnVdCcDPBCQWZIlbtzdCn01XTAxOIvnVjK5bP42SXReeCxbYBA4vF6aewimg
-         B01CmSUTG7en1rZ5np0Iyu1dof1Km9XbSVtQOa2baga326nLbOFCJmVtkT+S0wCpARbT
-         +i2WUJ/xR5sDaUFKB8IiPYfqbSSD061IZDeGLPFCKFAOeDmwM5+MC2fpoAk86Uk+fOjX
-         zBoH/moRfwI3ZcIVZIHKWUAi6U2gUi3XUPQ3FUuEAPNI41Z9E6zgtmWUk3A+2CB7Tkwv
-         +vxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHQskWI5cFO75+5ikI0D2dMNXiFIfGgWnKU10JF8y0Vgju6VdtbKpg6BAhVhazLn1m5ndhTc1NKASQzdXI5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzswyAQAl20pFinQzG1UlXJDuL64QZfpuCJgvjaF3SNAaljFAlD
-	1dpRP46IA3rOOhP+2LFyJrqskvDe0H+vK4PUKRTi19tFPB19mWFH22PmR6QDjOtgd2C5fp4Q88Q
-	xgiX2zXiQlGJzIU+s7fTUAy+gDZkeKmGm45qmizzUiqjCteqPxVhigtjLJgwYe9+C
-X-Gm-Gg: ASbGncvHTwbjuiXSsPv8PORMkVpV1XJofBmNhYPZMgPrb1evSk/c3WxHHYfZ6TCUBCh
-	5uetK0u0a2qF424kf5i/LCCXcLseXTYDoJysemRqCY/7h7CrTG8H6w1u7EpOxLFZx9DdjUAetLr
-	D6myVaBr/i8Aqu5q/EMbu4J6Xrj+fQuB6WMvqi3QZK58R92svUPU3Il0Cxtl0RPZLnkaYow95zh
-	2ebnxiB1gTUIjI65YoFcm3iP+upp5Vl4zNQGsI7BikOBpd9J9AziuUGiyNFSLhSpx3FZ/7IX8rJ
-	uLqVMYhb6w==
-X-Received: by 2002:a05:620a:bc8:b0:7b6:d393:c1fe with SMTP id af79cd13be357-7b863720767mr279318985a.26.1734516270485;
-        Wed, 18 Dec 2024 02:04:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH2Y3XczKvbUlWK+RkxQ1HFLkeu2KgSghw/Vynpo4+IZZccOxdvv281g/heRIPOHkLh+xLFbg==
-X-Received: by 2002:a05:620a:bc8:b0:7b6:d393:c1fe with SMTP id af79cd13be357-7b863720767mr279316785a.26.1734516270131;
-        Wed, 18 Dec 2024 02:04:30 -0800 (PST)
-Received: from [192.168.88.24] (146-241-69-227.dyn.eolo.it. [146.241.69.227])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b7048cad55sm405565285a.107.2024.12.18.02.04.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Dec 2024 02:04:29 -0800 (PST)
-Message-ID: <da411dfa-3dac-4205-85f5-b99bc35f3333@redhat.com>
-Date: Wed, 18 Dec 2024 11:04:25 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pD1z7ZbY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F286C4CED4;
+	Wed, 18 Dec 2024 10:14:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734516893;
+	bh=88IHiNuEUcucQLDA2SgjdoWkHjCoEvfbUkEobHv1np8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=pD1z7ZbYOXfvP3LlS3BapH3QlpHAKsPyPezx91DRelAtuZBnZ0gQOIuRr2DSdJQq5
+	 wY2r4jV4c9za1GbXw9inGfXa1Am/tkKEFuQeX0tSvcmu7EYCTriu7SsM34XvqZN3Ud
+	 9608LPT5nC4iD3Q4om++zXq6n2+hu2dEbIxIQs0pKuslMH++/w66lS+94Yb8VaL09D
+	 7fzp8qXA2vONYxP7A38wD9Ct/UfInetvI2eT7EUyVqpNHtmXZUvYZhbi1GnIWsr4FY
+	 FmYvNMRhY+bTxlCoM6wxYrtWvXrbHIIkgLeV0ZeUYRhJFuQpScTuocGCuq3y+yBG9u
+	 r4ZIFX8+Mg/Vw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+Cc: "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
+ <nathan@kernel.org>,  "Nicolas Schier" <nicolas@fjasle.eu>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun
+ Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
+ <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  "Daniel Gomez" <da.gomez@samsung.com>,  "Fiona Behrens" <me@kloenk.dev>
+Subject: Re: [PATCH v7] rust: use host dylib naming convention
+In-Reply-To: <20241216-b4-dylib-host-macos-v7-1-cfc507681447@gmail.com> (Tamir
+	Duberstein's message of "Mon, 16 Dec 2024 10:54:22 -0500")
+References: <ciScx8-kPC1bGN5Rh_zxAiRHyy-LU5MQJ4PSWVPQRofAW54rOMcLwR6afHhTJ6dpBO6Z9wdEhrzFC2ColiyrwA==@protonmail.internalid>
+	<20241216-b4-dylib-host-macos-v7-1-cfc507681447@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 18 Dec 2024 11:14:40 +0100
+Message-ID: <87wmfxl2lr.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] rust: net::phy fix module autoloading
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, davem@davemloft.net,
- edumazet@google.com, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, aliceryhl@google.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, netdev@vger.kernel.org
-References: <20241212130015.238863-1-fujita.tomonori@gmail.com>
- <778db676-9719-4139-a9e3-8b64ffa87fd2@redhat.com>
- <20241217065439.25e383fe@kernel.org>
- <b701482d-760a-437b-b3fb-915dc3fc2296@redhat.com>
- <20241217074400.13c21e22@kernel.org> <20241217085124.761566e6@kernel.org>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20241217085124.761566e6@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: iFFSgBfCDAaxv2gxjxY-ZrAbRB7zWFZjclk6aB522Ds_1734516270
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 12/17/24 17:51, Jakub Kicinski wrote:
-> On Tue, 17 Dec 2024 07:44:00 -0800 Jakub Kicinski wrote:
->> On Tue, 17 Dec 2024 16:11:29 +0100 Paolo Abeni wrote:
->>>> I'll look into it. Just in case you already investigated the same thing
->>>> I would - have you tried the rust build script from NIPA or just to
->>>> build manually?     
->>>
->>> I tried both (I changed the build dir in the script to fit my setup). I
->>> could not see the failure in any case - on top of RHEL 9.  
->>
->> I think I figured it out, you must have old clang. On Fedora 41
->> CFI_CLANG defaults to y and prevents RUST from getting enabled.
-> 
-> Still hitting a problem in module signing. 
-> Rust folks does this ring a bell?
-> 
-> make[4]: *** Deleting file 'certs/signing_key.pem'
->   GENKEY  certs/signing_key.pem
-> ....+.........+++++
-> -----
-> 80728E46C07F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
-> make[4]: *** [../certs/Makefile:53: certs/signing_key.pem] Error 1
-> make[4]: *** Waiting for unfinished jobs....
-> 
-> allmodconfig without Rust builds fine with both GCC and clang.
+"Tamir Duberstein" <tamird@gmail.com> writes:
 
-FTR, I got a similar error (even without RUST) when I had
+> Because the `macros` crate exposes procedural macros, it must be
+> compiled as a dynamic library (so it can be loaded by the compiler at
+> compile-time).
+>
+> Before this change the resulting artifact was always named
+> `libmacros.so`, which works on hosts where this matches the naming
+> convention for dynamic libraries. However the proper name on macOS would
+> be `libmacros.dylib`.
+>
+> This turns out to matter even when the dependency is passed with a path
+> (`--extern macros=path/to/libmacros.so` rather than `--extern macros`)
+> because rustc uses the file name to infer the type of the library (see
+> link). This is because there's no way to specify both the path to and
+> the type of the external library via CLI flags. The compiler could
+> speculatively parse the file to determine its type, but it does not do
+> so today.
+>
+> This means that libraries that match neither rustc's naming convention
+> for static libraries nor the platform's naming convention for dynamic
+> libraries are *rejected*.
+>
+> The only solution I've found is to follow the host platform's naming
+> convention. This patch does that by querying the compiler to determine
+> the appropriate name for the artifact. This allows the kernel to build
+> with CONFIG_RUST=y on macOS.
+>
+> Link: https://github.com/rust-lang/rust/blob/d829780/compiler/rustc_metadata/src/locator.rs#L728-L752
+> Tested-by: Daniel Gomez <da.gomez@samsung.com>
+> Co-developed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-CONFIG_MODULE_SIG_HASH="sha1"
+I don't have a mac to test on, but this does not break anything for me
+when building with rust enabled on linux.
 
-I moved to
 
-CONFIG_MODULE_SIG_HASH="sha256"
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-since a while, and that fixed the issue for me (also
-CONFIG_MODULE_SIG_SHA256=y is needed).
 
-/P
+Best regards,
+Andreas Hindborg
+
 
