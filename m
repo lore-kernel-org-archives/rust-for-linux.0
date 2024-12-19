@@ -1,98 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E2419F117;
-	Thu, 19 Dec 2024 17:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B2D1AAA1C;
+	Thu, 19 Dec 2024 18:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734627983; cv=none; b=R9KslVDv0QpIXnEL3Vz3JH3iHPSupYCu610FMN3xcT6FCLR010LpLMTf/m03HMewp13gNj0rDiVdCfHBOlX5Ia7l8ez7foKAuR4UBtYCiE1YVO1TUpg3oVsgEGW5mmTpFUiF98FsV1X7bOaexlNLUaCD+3kLKJ8SmFes4EPHWGE=
+	t=1734634726; cv=none; b=GKt1Hn2cKo9iGfIX2WFaTTtmK9AqWQIrg1ojyz6NSQ+8Bf+KsoC/GUOCB/1akLA7yuLiBiVp8xRKOgtGTnwK2ALEkRy0cOivZIPcTncvY2Ng9m4C+Ud7TR3JoD7IqJYI5t1NnOPFyQxsIGCx3yso/pSFfinPkIK9yV0mSR8wwDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734627983; c=relaxed/simple;
-	bh=GT+27vqY17YH/pjwzvOKAHmA0mrVjnDblNyfUajrdXc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tL8/FG0rywyH+JvJDzydwKC/88YPgKFsQmNIqexzsnAeidJEDnKWSfFSDpoMm37Dh00NWsDSbLHjYOfGUohdMN+7bWe7pqsLA8vzLn2xCr8u9FS/q5Y/64M2NGy1tqy0kqWP9qjo1f8TRcSFJwP/fqXgaZ3+QavYMGljG/k+JaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVz0Esoh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734634726; c=relaxed/simple;
+	bh=kgJEoNPKfY1gTSYmJDJvsuhIqNGn/d05TWIeklx6scs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ju7TZXlsdqJmzNPp/zp3uX6hos9+E616MptwBGnh5TghJumyYDMy3Q+g9epWJwyElFPPXcwJwojLV7iOfc0UnRm3Jk41KhMRj7CVF29emKxnkHhY3qPNJSNLcbhe4rvm61oEGOw4QGfj7prsIF/CvDyQzE6T0e2eYEHMnGWO0LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTPZ8waf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVz0Esoh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FD0C4CED6;
-	Thu, 19 Dec 2024 17:06:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTPZ8waf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5091C4CECE;
+	Thu, 19 Dec 2024 18:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734627982;
-	bh=GT+27vqY17YH/pjwzvOKAHmA0mrVjnDblNyfUajrdXc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVz0EsohsS4BjqEAgEIanGvx8N/fl1rnKmfaQzKDtZweDXB4RJer/1hoJb8VOObF4
-	 z6hN6MBwuwITjIoaNiwfUEOxqC69s7ebJhqvKeklu49plKOKx5pGSABXTcWp7UZtcp
-	 ry6fOhW4AdMnOWzNVO6JjWxzC7C/TsWg0yJz/GvmAY+aiN38XTAR4dIA1B+X/ISjAt
-	 ou/OQNO6r641ZLCRwZcBepHizaM0xkBqlZnv0/yaFpYAy0Nsx2fH1h3w+tnjLAcXry
-	 GJmZAmI1rDG0Pc/RKD5YeWimMptQCXJhuUuaC/EKxPmlkQ3s8TPX0x1NzEB5gN3JwA
-	 08qXAs2ShT/Qg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	tmgross@umich.edu,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	fujita.tomonori@gmail.com,
-	lina@asahilina.net,
-	pstanner@redhat.com,
-	ajanulgu@redhat.com,
-	lyude@redhat.com,
-	robh@kernel.org,
-	daniel.almeida@collabora.com,
-	saravanak@google.com,
-	dirk.behme@de.bosch.com,
-	j@jannau.net,
-	fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com,
-	paulmck@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	rcu@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v7 16/16] MAINTAINERS: add Danilo to DRIVER CORE
-Date: Thu, 19 Dec 2024 18:04:18 +0100
-Message-ID: <20241219170425.12036-17-dakr@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241219170425.12036-1-dakr@kernel.org>
-References: <20241219170425.12036-1-dakr@kernel.org>
+	s=k20201202; t=1734634725;
+	bh=kgJEoNPKfY1gTSYmJDJvsuhIqNGn/d05TWIeklx6scs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RTPZ8waf3usUV8erb6rM13AUR/I5uI/8Z9K9LFaoAOtl3SfgORaY99kRsqybnocNX
+	 7/npNYE3w98duVvbl3Sc2VIZI5b22Pxfw9qC5Rq/SzXboEWEuHCKDKSg/4xcNzfCp3
+	 RDwG6FzNyYOYeiefWVWcxFI3YIAgugSiHs+97JEocXMYurbV3AUTjllqdKr4n+CzDG
+	 m6EUJJmEHxbwWIAc2dgXqUpYDPs4CeBYoAC5vgV2cuXP88DgNfEbJLpSb/8oFEQXp/
+	 PDdvLinn89e3F9s1VzvyFtUQP4rqEJNa0hhKAbZfTn3LLHB8VUKtLFxIq5u+0ASB0x
+	 qqo0mp1aI7X9w==
+Date: Thu, 19 Dec 2024 18:58:38 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Fabien Parent <parent.f@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	vinod.koul@linaro.org, Fabien Parent <fabien.parent@linaro.org>
+Subject: Re: [PATCH 5/9] rust: regulator: add Regulator Driver abstraction
+Message-ID: <058f6ecc-5d45-4fb7-8432-8e4cf00df7f7@sirena.org.uk>
+References: <20241218-ncv6336-v1-0-b8d973747f7a@gmail.com>
+ <20241218-ncv6336-v1-5-b8d973747f7a@gmail.com>
+ <Z2P00_DCL5H6Zwor@pollux.localdomain>
+ <CAL6vTrgmL9GUbS5RpTgAKSHy=tN6EO+BusEPvmxxhstiwmRJ8g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="N5rqcDO3XQsU41Gv"
+Content-Disposition: inline
+In-Reply-To: <CAL6vTrgmL9GUbS5RpTgAKSHy=tN6EO+BusEPvmxxhstiwmRJ8g@mail.gmail.com>
+X-Cookie: You have taken yourself too seriously.
 
-Let's keep an eye on the Rust abstractions; add myself as reviewer to
-DRIVER CORE.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+--N5rqcDO3XQsU41Gv
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ed4b293b1baa..15c8df5b3590 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7021,6 +7021,7 @@ F:	include/linux/component.h
- DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS
- M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
- R:	"Rafael J. Wysocki" <rafael@kernel.org>
-+R:	Danilo Krummrich <dakr@kernel.org>
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
- F:	Documentation/core-api/kobject.rst
--- 
-2.47.1
+On Thu, Dec 19, 2024 at 08:00:20AM -0800, Fabien Parent wrote:
+> On Thu, Dec 19, 2024 at 2:26=E2=80=AFAM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+> >
+> > On Wed, Dec 18, 2024 at 03:36:35PM -0800, Fabien Parent wrote:
+> > > From: Fabien Parent <fabien.parent@linaro.org>
+> > >
+> > > This commit adds a Rust abstraction to write Regulator drivers. Only
+> > > the features used by the NCV6336 driver were added to this abstractio=
+n.
 
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
+
+--N5rqcDO3XQsU41Gv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdkbN0ACgkQJNaLcl1U
+h9BtxQf/dZjq36ZrjwE3CLSfGOOQpW6/KGMOBxSUNinTq+jttzy3En3Ixci0SFL9
+MB/Dv4YwgRS5R/90BkseZcTe14IjNpqPlAIrwTdIIE7youKBx6sWRGYfJButnW4z
+V1ZLcEUfRq+4dgzQqDdm746KBobzhoXgxoD/EB+UqbKrTfYJHuL7/6huyaaNdz1U
+VD+JogEfO5ya5Xze/6gFOuarlCEQ6OeXX1RcdWRYoKS1nUTPe+EUvlWXF0MWLIpI
+ZrLlPNNzzkNxmI8/vhxlWPMtHfJPv8/PrbImVtQpnRyPAmdKJCSbpb9o1QET3B8E
+6w3FCfBzxZtEsU2TuMnuXdUgBRqgVQ==
+=ol9A
+-----END PGP SIGNATURE-----
+
+--N5rqcDO3XQsU41Gv--
