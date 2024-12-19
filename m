@@ -1,76 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287C2594;
-	Thu, 19 Dec 2024 11:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A101223330;
+	Thu, 19 Dec 2024 11:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734607370; cv=none; b=U4930zqTfVGxt4ITPSlSM34xBpgO9JiEtKmiu5o9IGhjWZ/3JX4u9bPKuMhq8WiuLAbtNd0feDRtloSYBaGOpXANuvioHgjjjkAl5Wg65nha5flo1YlSQKvKgMe8I3Lb+RQewJ8/iBeZKuNIz4KksM43awuNNhCav9sSQlT9mqg=
+	t=1734609208; cv=none; b=iXrBucITUBCsE2n5tbT59F/qFquEoluhOd4yqQVfgPm9iptiZ5OzsAcwQvjAu2Csk2pidURsXze9GjzZxNPn45tEjKN1l1h3xzjUjsszFCBUOGRI9Aouja4D2XhTJcdgyI4Es89RFqSyOjyPzYlBFvZsMKJ5uXKt6iCTEmATCXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734607370; c=relaxed/simple;
-	bh=3+5Q0Qysj8llseSuscoFbDFwGe965ckZvQ14Tok/Yhw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mX3nFjrNl6CAppdM9e37NuPK2uwxYHk8PwyGSps8LuXdlnC1v0bz9DAjUIbpbcOk8QDs8MIUkfZfpCbMpqB3VRQZjwZLbOaw7JqLZmjx3hKKOMwOoVEmqzswuKebUXYIEjThtl5elZZuUn9lY5xAMiD6JCD5RAhKdai00ov+MDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaHgo13G; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaHgo13G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C211C4CECE;
-	Thu, 19 Dec 2024 11:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734607369;
-	bh=3+5Q0Qysj8llseSuscoFbDFwGe965ckZvQ14Tok/Yhw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UaHgo13GPe1WZOWuIBiDVt64R7iwCKzf/jLrQQyPg6s2oRaPQVRcWKSml4JVsHGUL
-	 btZpLf/yUAQ9+3YTAsk6cGdkfqSyuQgWILM5NB3fbt06hOgaPDEpHJGfLriP/Ck3bF
-	 g4nTcaWGgVrBbTHz/25j4IUEsLF4SM0oBQ9nafQh8gBJn1IJxOkp1TjJbhw0KYWKlH
-	 dKwIvVpKfZ/6VRAXey0ldl8eLAX3ZGYQnq3XYmR41CnXbqPCaWh5DVBnzfC6UVfVqB
-	 VlFJZAmL79wTX/eQLIpC2LQpBHGfmIi8Mv1lESv4s6jo26KC/zaKFRHkJKNRWHMkwQ
-	 VlGe7VnmJvdig==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: rust-for-linux@vger.kernel.org,  Daniel Almeida
- <daniel.almeida@collabora.com>,  Miguel Ojeda <ojeda@kernel.org>,  Alex
- Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary
- Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
- <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
- Krummrich <dakr@kernel.org>,  Valentin Obst <kernel@valentinobst.de>,
-  open list <linux-kernel@vger.kernel.org>,  Christoph Hellwig
- <hch@lst.de>,  Marek Szyprowski <m.szyprowski@samsung.com>,  Robin Murphy
- <robin.murphy@arm.com>,  airlied@redhat.com,  "open list:DMA MAPPING
- HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v7 2/2] rust: add dma coherent allocator abstraction.
-In-Reply-To: <7c8e84e7-a212-445f-bc4e-ef65dae7fb29@gmail.com> (Abdiel
-	Janulgue's message of "Fri, 13 Dec 2024 10:53:29 +0200")
-References: <20241210221603.3174929-1-abdiel.janulgue@gmail.com>
-	<20241210221603.3174929-3-abdiel.janulgue@gmail.com>
-	<7c8e84e7-a212-445f-bc4e-ef65dae7fb29@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 19 Dec 2024 12:22:35 +0100
-Message-ID: <87ikrflxxg.fsf@kernel.org>
+	s=arc-20240116; t=1734609208; c=relaxed/simple;
+	bh=7SYHZIs/WrMiFnJV+UNkilY+ZLz4Hxrf5N56/tTsSDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s1mMaFYGchudiRdpSATSPBLucSshHkp8+k/jy5+rldeNyLU8/INF+CI0aCyKIyreEFsrunngBdSe2e1pFDcOnbli0R2XOJU3RsSw9Yi960YVMAdhyHUjhkb/atYPtn0R/pBZwjywQ0iSaHNf9N/tiCZRWaryb0TBxXyxgCKHCLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C3EC1477;
+	Thu, 19 Dec 2024 03:53:53 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A4C173F720;
+	Thu, 19 Dec 2024 03:53:19 -0800 (PST)
+Date: Thu, 19 Dec 2024 11:53:13 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Keith Packard <keithp@keithp.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
+	linux-pm@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
+	Linux-Arch <linux-arch@vger.kernel.org>,
+	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
+Message-ID: <Z2QJKZBsgvPMgRo_@J2N7QTR9R3>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-32-ardb+git@google.com>
+ <c4868f63-b688-4489-a112-05bf04280bde@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4868f63-b688-4489-a112-05bf04280bde@app.fastmail.com>
 
-Abdiel Janulgue <abdiel.janulgue@gmail.com> writes:
+Hi Arnd,
 
-> Gentle ping. Does this approach make sense? :)
+On Wed, Sep 25, 2024 at 03:58:38PM +0000, Arnd Bergmann wrote:
+> On Wed, Sep 25, 2024, at 15:01, Ard Biesheuvel wrote:
+> > From: Ard Biesheuvel <ardb@kernel.org>
+> >
+> > Bump the minimum GCC version to 8.1 to gain unconditional support for
+> > referring to the per-task stack cookie using a symbol rather than
+> > relying on the fixed offset of 40 bytes from %GS, which requires
+> > elaborate hacks to support.
+> >
+> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > ---
+> >  Documentation/admin-guide/README.rst | 2 +-
+> >  Documentation/process/changes.rst    | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> As we discussed during plumbers, I think this is reasonable,
+> both the gcc-8.1 version and the timing after the 6.12-LTS
+> kernel.
+> 
+> We obviously need to go through all the other version checks
+> to see what else can be cleaned up. I would suggest we also
+> raise the binutils version to 2.30+, which is what RHEL8
+> shipped alongside gcc-8. I have not found other distros that
+> use older binutils in combination with gcc-8 or higher,
+> Debian 10 uses binutils-2.31.
+> I don't think we want to combine the additional cleanup with
+> your series, but if we can agree on the version, we can do that
+> in parallel.
 
-If you include the `Allocator` trait and the `Pool` it would make my
-life a lot easier when rebasing nvme. For now I'm just going to use out
-of tree patches that include the dma pool.
+Were you planning to send patches to that effect, or did you want
+someone else to do that? I think we were largely agreed on making those
+changes, but it wasn't clear to me who was actually going to send
+patches, and I couldn't spot a subsequent thread on LKML.
 
-If you do not have a user for dma pool, maybe just include the
-`Allocator` trait and indicate that it is there to support other dma
-allocators in the future?
-
-
-Best regards,
-Andreas Hindborg
-
-
+Mark.
