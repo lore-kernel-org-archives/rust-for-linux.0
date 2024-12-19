@@ -1,341 +1,354 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5471F1C5CC2;
-	Thu, 19 Dec 2024 20:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66791853
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Dec 2024 21:07:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734641970; cv=none; b=ek44GnP0YBojO4B2Wog7GGcxzGUmvRDqhaUacpT1mRfyfRKWMOz/VUd9gcKWqDfokt302na4W/wyINxJd9haMpYHMSXMcDDYnSRx2cd+5j06C3JhhaRh9RUSjaAsC1NlFuwyxbdJxriungkMvKpkhSrL0o3OI0fe91r8g5tKXZY=
+	t=1734642475; cv=none; b=CutLCBGM5o+2bsmw4g9q1/DxZwx8lKAWPVgsvknaIvEc4MUGQjh1hh2nZfnxjNOBoW2QWEqRAVW7aCYzBBFBXu1fEBZ0VdgjI/VDc4BP3el8Puu1NvU0e2s6j+UCUwfcgIeLSK+1G+BmIJ3eAc+bxrIXZXxYMHbuMDGNGT0tyvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734641970; c=relaxed/simple;
-	bh=QuD4JNTgu6e39ZsqeIHqU8OqpHyfwMrov7KIj0iYBZs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MlCTBEnPc6rezhzoyr5wlNpWttUOIrjX6MIIoTTY2TbJOGz3/okwVk/dYcjD0uL47TEt/1duZwu1bh249dJkFa/xCAOexY30zBfttDcO0H1+pNstMtkCmthr89CmWC9p0WlNMkqYJ/eaQOdeZjNe2EXTe2GFiFufNZo2hIlHzQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LR/zUBVB; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734642475; c=relaxed/simple;
+	bh=FqWzTIGkyWP8VHIn+p3vfHgrJ2ZAKoWZrosnliAcLUk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RGphUlsUjyruWDuBWA01tm4edhvbW8XtJ9cu01UV2hpucJFI97qXmNxyNkAYe615HlSvC7YsrkipJLuPdRtHu31JxxpB947Jp03XgUNufmwKelLd9A8jElT0/b8DuOIQ3Hcxs6WVMxJZ30ysiuYMOZagmedlqcXgno3iKFs7mOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2GA+PdbU; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LR/zUBVB"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-72764c995e5so783330b3a.2;
-        Thu, 19 Dec 2024 12:59:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2GA+PdbU"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-72739b83336so1732401b3a.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Dec 2024 13:07:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734641967; x=1735246767; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IMTO1Amf/MwIKXjUDiFtxqLEDE98nAKJGcdfM/qH0rk=;
-        b=LR/zUBVBOQ/sXTCTgzM/H8c6oYt5awl01Dk0aWPM+DzJRnb7fJBwAuYpCYvfcDUlUH
-         6uWSu9rp6QXkUT/02PI+279QGW8shWKalSt2/iIUwOEXhOJA6lrMhMWZnP63y4A99Rcf
-         IrcwhafNa/HCMp+zBfTz7yN8TzR3ABrBp2yTzPkzv07EG21keuTv38ysnAXB8YWFIIYo
-         RhEbLKUPvtuVOp+o0QZi8XvwFgsNMBhygEZ0yaNE3HpvMqHFuLD6BVfaq18RYsR0hSkr
-         0RGPtk8Nwb8JLVNUmnpJYPw1VvZTO4q7aBnR+VWC/gm5zbQkPTNw8TcsnxsDBszaNm8L
-         bSOA==
+        d=google.com; s=20230601; t=1734642471; x=1735247271; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GbAq7eEKgVbeFshRXlQ85xGd2gB6jTTlmwHUZgVi5kM=;
+        b=2GA+PdbUneqRNHqKD6Pnq0iwwgoKjFOMDyvQ5rVygixKay5lP01ASPW/X4V9V+2nxr
+         iDwZ4pKEotWtlOHzHtnRdJuWXVES4S4NsrLC5FJhCagA4wfUlW0D8OtF0bEXC27G2Wy3
+         PScPLcoPC2Aa+sg9o59fDvMhxKEmZa+09DZSxoKdoYnpYVRzibCNAQjyCj5YOZoURi9q
+         lNdiffVBRK+QzyZ6cf0GeBM6pIBxCEEXlhRpljk1XlASEAAhKDTABA9XHwpZUEqc9x2g
+         wyGB1P5G4XUzyYerECAYl+hU1xeoGiI/QHthA7CkG+ASwni4i8mUT+FD0z96R5gPp/xk
+         fLBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734641967; x=1735246767;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IMTO1Amf/MwIKXjUDiFtxqLEDE98nAKJGcdfM/qH0rk=;
-        b=Wqfz+jJSRKP0yY3fbCEz9tqB2TV1+5o2jebdnYySyJD0Y0yvL8Qzbte1pUTSZoj5OO
-         hX3PDiIJsuBIfR6M5iv4CHPNKfiqMaP2ySlIy2ELq0pULe+UuU2rkGBZK/Zc1V7DKc+I
-         Oc09yLdYzw3ieLecj6Xe4KlmsHgpr1xE09r9UKjBPabtn4eoO4kZj4hzqZHzve7r/RKy
-         Ks5J6bundf50m1pu2yw0nShgteRgyPeqLa4lzYnNdWNT8B5W5jagr4AaTApBhmaA0wIQ
-         sBb2APjTSYxU9flw06XFLpZQkAW3QwkhxSid8+PRss/ub9LYDdlkiVKm1VnRO42EJF9G
-         l4Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9EwgD0gPAZqdtkAy/yLnAIYuEZU8y92ZrqFqEC2c5Nu9axfM+IlDgPIWImVyA3qiDrFo9dAm5JcSzPSk=@vger.kernel.org, AJvYcCXQWhzKKOl/1lohcBswir3EYk4v66uxt3GQN6fd+Cz2uzeUku91UJAfIMPO2+lR9YVpMjt1ucWstrf8DEG4/Sc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylUybp88Taj5+8cj5fiS2Z10QMYHf0/FMSRsRDqkNTGjJa4U0d
-	frAJ4MBHf6TBeWubS/B1BI4gRaNIBIO767HQSpe1ypzl4FSeWmaj
-X-Gm-Gg: ASbGnctp7kR8VRHmkccO5Jf0ALrLtGNO0jVdV8TuH6y7rFJ8Rk52u2mmwwpFfsIby6n
-	QzjRbL5D5KdJK8SZZpoKui5jwhuAgPR21rxCn2W/hGC+yNautJDlhQ5w4kmAgY5ENm/RMTjD+ym
-	P8TGjdRXKLlE8CXbRYqD2/kEF2w/E365CSo0sfjYOGFYBFQSS1gFzZ7izFHAzj9pXQIRKMdYyMd
-	yb6tVH6LRh33hZ/Zntg5qxbMaOX8T1QNFNR8Fi+qIiPDN/ynqPUkq28IQRYHdW9BQ==
-X-Google-Smtp-Source: AGHT+IH4dxenXt8SYXCiwcVOwZi8ohpz4CWPKvIxeDCV7WmSXrIhG5+d5dibvoE6RcB2JOKxvsMMng==
-X-Received: by 2002:a05:6a00:428e:b0:72a:8461:d179 with SMTP id d2e1a72fcca58-72abdd20f79mr247143b3a.1.1734641967422;
-        Thu, 19 Dec 2024 12:59:27 -0800 (PST)
-Received: from mitchelllevy. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad90c331sm1751090b3a.196.2024.12.19.12.59.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 12:59:26 -0800 (PST)
-From: Mitchell Levy <levymitchell0@gmail.com>
-Date: Thu, 19 Dec 2024 12:58:56 -0800
-Subject: [PATCH v2 2/2] rust: lockdep: Use Pin for all LockClassKey usages
+        d=1e100.net; s=20230601; t=1734642471; x=1735247271;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GbAq7eEKgVbeFshRXlQ85xGd2gB6jTTlmwHUZgVi5kM=;
+        b=I5AA2EJvOBqZtb5AOsZk1ZBz1XNKoT+96v1mExzEutUJu/eyuDoXxKoiEdqVohTh21
+         XFdT+IKdj0Oo5/MHQA2j16qs70iXiIOop5KD1ItF2BCtffTLyRDpc2CESxM04xOe4w0d
+         6u+b+waOyrPsHYg87uRMc6Q7uKudqD0PzqellfwK8PHvdXinweEv4HJki9dMTG+TfyMw
+         J39Yl584jnv5L+xwKxoxbAE7aaPEnI4tD67zhGThCqaL+62n/U15FHbMoMxCCCRTS2sX
+         nJqnvNojjBNPlVIIJPJ45xBSJ1FCjzcZ8iEj1/hMDvWudqVurg8FWqlEO4odznCaWhy5
+         UvoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVv3bD71nQ/e+C5DgCakQ93MXd2oTHUKW8Om2XkJJvQbdWAm3N8L3gxG3j30nnJ/ajLNURaew/6jzz18b3lAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8Ok+kcXKfKe1jIf2oFCzGblnrwIpaLd7/vTlEmPMy7DyK5zwP
+	FMe4ISzqan8acILZ0S2kg+puu9edV9+DprOm2WO5TTDFi7uYN/3JG0W9hALAb/1/Joz7lXCa82h
+	ntH/sysZECJhSaxfNzHR7oqdQXQ==
+X-Google-Smtp-Source: AGHT+IGNlj96u5yACTdWOruDB2pQNG0ucvVfuW5d6S4/le6qPQRMsQKW4pfVbAr6BFqKz+18ZRAw90EZS8mN9RFKnxE=
+X-Received: from pfar2.prod.google.com ([2002:a05:6a00:a902:b0:726:d6e6:a38])
+ (user=samitolvanen job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:1596:b0:1db:e0d7:675c with SMTP id adf61e73a8af0-1e5e045a0b9mr857903637.13.1734642471304;
+ Thu, 19 Dec 2024 13:07:51 -0800 (PST)
+Date: Thu, 19 Dec 2024 21:07:37 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241219-rust-lockdep-v2-2-f65308fbc5ca@gmail.com>
-References: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
-In-Reply-To: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Mitchell Levy <levymitchell0@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734641963; l=9242;
- i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=QuD4JNTgu6e39ZsqeIHqU8OqpHyfwMrov7KIj0iYBZs=;
- b=bQwa8o0urFcACDWUqtpQC/2m0mmz6+qyHsP+9D9xJ/TBE+0JmT1E4O04YG8jfizL1qt9ieBn7
- 1EhlQ88sMO/CZqJTnhEOuPVWAJQdwqy6NvEMPwd69pRFYH98SEmf4mt
-X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
- pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+Mime-Version: 1.0
+X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11447; i=samitolvanen@google.com;
+ h=from:subject; bh=FqWzTIGkyWP8VHIn+p3vfHgrJ2ZAKoWZrosnliAcLUk=;
+ b=owGbwMvMwCEWxa662nLh8irG02pJDOkp3RKrRPg+dgtu7M3JCUl8sFlpU93JSsX8j/mpDzo5P
+ Zd0q9Z3lLIwiHEwyIopsrR8Xb1193en1FefiyRg5rAygQxh4OIUgIlE/WZkeM8WeTn4513f/QHr
+ T3TVbvknKskbJ9riynYlKHKz9vtrJowMh0wDnkUxaba6zYm16tZf+rber8k4c3aPdv/UK656rD6 sAA==
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241219210736.2990838-20-samitolvanen@google.com>
+Subject: [PATCH v7 00/18] Implement DWARF modversions
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, Asahi Linux <asahi@lists.linux.dev>, 
+	Sedat Dilek <sedat.dilek@gmail.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Reintroduce dynamically-allocated LockClassKeys such that they are
-automatically (de)registered. Require that all usages of LockClassKeys
-ensure that they are Pin'd.
+Hi,
 
-Closes: https://github.com/Rust-for-Linux/linux/issues/1102
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Here's v7 of the DWARF modversions series. The main motivation is
+modversions support for Rust, which is important for distributions
+like Android that are about to ship Rust kernel modules. Per Luis'
+request [1], v2 dropped the Rust specific bits from the series and
+instead added the feature as an option for the entire kernel to
+make it easier to evaluate the benefits of this approach, and to
+get better test coverage. Matt is addressing Rust modversion_info
+compatibility issues in a separate patch set [2] that depends on
+this series, and actually allows modversions to be enabled with
+Rust.
+
+Short background: Unlike C, Rust source code doesn't have sufficient
+information about the final ABI, as the compiler has considerable
+freedom in adjusting structure layout, for example, which makes
+using a source code parser like genksyms a non-starter. Based on
+earlier feedback, this series uses DWARF debugging information for
+computing versions. DWARF is an established and a relatively stable
+format, which includes all the necessary ABI details, and adding a
+CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+reasonable trade-off as most distributions already enable it.
+
+The first 15 patches add gendwarfksyms, a tool for computing symbol
+versions from DWARF. When passed a list of exported symbols and
+object files, the tool generates an expanded type string for each
+symbol and computes symbol versions. gendwarfksyms is written in C,
+uses libdw to process DWARF, and zlib for CRC32. Patch 16 ensures
+that debugging information is present where we need it, patch 17
+adds gendwarfksyms as an alternative to genksyms, and the last patch
+adds documentation.
+
+v7 is based on 6.13-rc3, and for your convenience, the series is
+also available here:
+
+https://github.com/samitolvanen/linux/commits/gendwarfksyms-v7
+
+If you also want to test the series with actual Rust modules, this
+branch adds Matt's latest modversion_info series:
+
+https://github.com/samitolvanen/linux/commits/rustmodversions-v7
+
+Sami
+
+
+[1] https://lore.kernel.org/lkml/ZnIZEtkkQWEIGf9n@bombadil.infradead.org/
+[2] https://lore.kernel.org/linux-modules/20241123-extended-modversions-v10-0-0fa754ffdee3@google.com/
+
 ---
- rust/helpers/helpers.c          |  1 +
- rust/helpers/sync.c             | 13 ++++++++++
- rust/kernel/sync.rs             | 57 ++++++++++++++++++++++++++++++++++++++---
- rust/kernel/sync/condvar.rs     |  5 ++--
- rust/kernel/sync/lock.rs        |  9 +++----
- rust/kernel/sync/lock/global.rs |  5 ++--
- rust/kernel/sync/poll.rs        |  2 +-
- rust/kernel/workqueue.rs        |  3 ++-
- 8 files changed, 79 insertions(+), 16 deletions(-)
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index dcf827a61b52..572af343212c 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -25,6 +25,7 @@
- #include "signal.c"
- #include "slab.c"
- #include "spinlock.c"
-+#include "sync.c"
- #include "task.c"
- #include "uaccess.c"
- #include "vmalloc.c"
-diff --git a/rust/helpers/sync.c b/rust/helpers/sync.c
-new file mode 100644
-index 000000000000..ff7e68b48810
---- /dev/null
-+++ b/rust/helpers/sync.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/lockdep.h>
-+
-+void rust_helper_lockdep_register_key(struct lock_class_key *k)
-+{
-+	lockdep_register_key(k);
-+}
-+
-+void rust_helper_lockdep_unregister_key(struct lock_class_key *k)
-+{
-+	lockdep_unregister_key(k);
-+}
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index ae16bfd98de2..13bfdc647c5b 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -5,6 +5,8 @@
- //! This module contains the kernel APIs related to synchronisation that have been ported or
- //! wrapped for usage by Rust code in the kernel.
- 
-+use crate::pin_init;
-+use crate::prelude::*;
- use crate::types::Opaque;
- 
- mod arc;
-@@ -22,15 +24,64 @@
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
- #[repr(transparent)]
--pub struct LockClassKey(Opaque<bindings::lock_class_key>);
-+#[pin_data(PinnedDrop)]
-+pub struct LockClassKey {
-+    #[pin]
-+    inner: Opaque<bindings::lock_class_key>,
-+}
- 
- // SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
- // provides its own synchronization.
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
-+    /// Initializes a dynamically allocated lock class key. In the common case of using a
-+    /// statically allocated lock class key, the static_lock_class! macro should be used instead.
-+    ///
-+    /// # Example
-+    /// ```
-+    /// # use kernel::{c_str, stack_pin_init};
-+    /// # use kernel::alloc::KBox;
-+    /// # use kernel::types::ForeignOwnable;
-+    /// # use kernel::sync::{LockClassKey, SpinLock};
-+    ///
-+    /// let key = KBox::pin_init(LockClassKey::new_dynamic(), GFP_KERNEL)?;
-+    /// let key_ptr = key.into_foreign();
-+    ///
-+    /// // SAFETY: `key_ptr` is returned by the above `into_foreign()`, whose `from_foreign()` has
-+    /// // not yet been called.
-+    /// stack_pin_init!(let num: SpinLock<u32> = SpinLock::new(
-+    ///     0,
-+    ///     c_str!("my_spinlock"),
-+    ///     unsafe { <Pin<KBox<LockClassKey>> as ForeignOwnable>::borrow(key_ptr) }
-+    /// ));
-+    ///
-+    /// drop(num);
-+    ///
-+    /// // SAFETY: We dropped `num`, the only use of the key, so the result of the previous
-+    /// // `borrow` has also been dropped. Thus, it's safe to use from_foreign.
-+    /// unsafe { drop(<Pin<KBox<LockClassKey>> as ForeignOwnable>::from_foreign(key_ptr)) };
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn new_dynamic() -> impl PinInit<Self> {
-+        pin_init!(Self {
-+            // SAFETY: lockdep_register_key expects an uninitialized block of memory
-+            inner <- Opaque::ffi_init(|slot| unsafe { bindings::lockdep_register_key(slot) })
-+        })
-+    }
-+
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
--        self.0.get()
-+        self.inner.get()
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for LockClassKey {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: self.as_ptr was registered with lockdep and self is pinned, so the address
-+        // hasn't changed. Thus, it's safe to pass to unregister.
-+        unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
-     }
- }
- 
-@@ -43,7 +94,7 @@ macro_rules! static_lock_class {
-         // lock_class_key
-         static CLASS: $crate::sync::LockClassKey =
-             unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
--        &CLASS
-+        $crate::prelude::Pin::static_ref(&CLASS)
-     }};
- }
- 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 7df565038d7d..29289ccf55cc 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -15,8 +15,7 @@
-     time::Jiffies,
-     types::Opaque,
- };
--use core::marker::PhantomPinned;
--use core::ptr;
-+use core::{marker::PhantomPinned, pin::Pin, ptr};
- use macros::pin_data;
- 
- /// Creates a [`CondVar`] initialiser with the given name and a newly-created lock class.
-@@ -101,7 +100,7 @@ unsafe impl Sync for CondVar {}
- 
- impl CondVar {
-     /// Constructs a new condvar initialiser.
--    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-         pin_init!(Self {
-             _pin: PhantomPinned,
-             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 41dcddac69e2..119e5f569bdb 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -7,12 +7,9 @@
- 
- use super::LockClassKey;
- use crate::{
--    init::PinInit,
--    pin_init,
--    str::CStr,
--    types::{NotThreadSafe, Opaque, ScopeGuard},
-+    init::PinInit, pin_init, str::CStr, types::NotThreadSafe, types::Opaque, types::ScopeGuard,
- };
--use core::{cell::UnsafeCell, marker::PhantomPinned};
-+use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
- use macros::pin_data;
- 
- pub mod mutex;
-@@ -121,7 +118,7 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
- 
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-         pin_init!(Self {
-             data: UnsafeCell::new(t),
-             _pin: PhantomPinned,
-diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
-index 480ee724e3cc..d65f94b5caf2 100644
---- a/rust/kernel/sync/lock/global.rs
-+++ b/rust/kernel/sync/lock/global.rs
-@@ -13,6 +13,7 @@
- use core::{
-     cell::UnsafeCell,
-     marker::{PhantomData, PhantomPinned},
-+    pin::Pin,
- };
- 
- /// Trait implemented for marker types for global locks.
-@@ -26,7 +27,7 @@ pub trait GlobalLockBackend {
-     /// The backend used for this global lock.
-     type Backend: Backend + 'static;
-     /// The class for this global lock.
--    fn get_lock_class() -> &'static LockClassKey;
-+    fn get_lock_class() -> Pin<&'static LockClassKey>;
- }
- 
- /// Type used for global locks.
-@@ -270,7 +271,7 @@ impl $crate::sync::lock::GlobalLockBackend for $name {
-             type Item = $valuety;
-             type Backend = $crate::global_lock_inner!(backend $kind);
- 
--            fn get_lock_class() -> &'static $crate::sync::LockClassKey {
-+            fn get_lock_class() -> Pin<&'static $crate::sync::LockClassKey> {
-                 $crate::static_lock_class!()
-             }
-         }
-diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
-index d5f17153b424..c4934f82d68b 100644
---- a/rust/kernel/sync/poll.rs
-+++ b/rust/kernel/sync/poll.rs
-@@ -89,7 +89,7 @@ pub struct PollCondVar {
- 
- impl PollCondVar {
-     /// Constructs a new condvar initialiser.
--    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-         pin_init!(Self {
-             inner <- CondVar::new(name, key),
-         })
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 1dcd53478edd..f8f2f971f985 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -369,7 +369,8 @@ unsafe impl<T: ?Sized, const ID: u64> Sync for Work<T, ID> {}
- impl<T: ?Sized, const ID: u64> Work<T, ID> {
-     /// Creates a new instance of [`Work`].
-     #[inline]
--    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self>
-+    #[allow(clippy::new_ret_no_self)]
-+    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self>
-     where
-         T: WorkItem<ID>,
-     {
+v7:
+- Added a Kconfig description to actually allow build testing each
+  patch. (Patch 1)
 
+- Added a MAINTAINERS entry for gendwarfksyms. (Patch 1)
+
+- Cleaned up includes and fixed a build issue with asprintf not
+  always being present without _GNU_SOURCE. (Patches 1, 11, and 13)
+
+- Adjusted hash table sizes for lower overhead as we're not right
+  now concerned with processing vmlinux.o, and thus need to deal
+  with a smaller number of symbols. (Patches 1, 4, 9, 11, and 13)
+
+- Added error handling for gelf_getsymshndx failures. (Patch 2)
+
+- Renamed the is_declaration function to is_kabi_definition for
+  clarity and reversed the logic per Petr's suggestion. (Patch 9)
+
+- Dropped the redundant default Kconfig tag. (Patch 17)
+
+- Fixed a documentation typo. (Patch 18)
+
+v6: https://lore.kernel.org/lkml/20241121204220.2378181-20-samitolvanen@google.com/
+- Dropped pointer expansion limits as this affects version
+  stability when exported symbols are removed. (Patch 9)
+
+- Changed local type definitions (in .c files) that are opaque
+  to external users to be treated as declarations even if a
+  definition is available. (Patch 9)
+
+- Switched to zlib's CRC32 implementation per Masahiro's
+  suggestion. (Patch 12)
+
+- Renamed struct_declonly kABI rule to simply declonly, as it
+  applies also to unions and enums, added a new rule for
+  overriding enumerator values, and refactored the examples.
+  (Patch 13)
+
+- Added --stable support for renamed structure members and
+  also added examples. (Patch 14)
+
+- Rebased on linux-kbuild/for-next for Masahiro's symtypes
+  build rule clean-ups. (Patch 17)
+
+- Updated the documentation reflect --stable changes. (Patch 18)
+
+v5: https://lore.kernel.org/lkml/20241030170106.1501763-21-samitolvanen@google.com/
+- Rebased on v6.12-rc5.
+
+- Fixed an issue with limiting structure expansion, and applied
+  Petr's clean-up. (Patch 10)
+
+- Dropped an unnecessary return statement in error path. (Patch
+  12)
+
+- Addressed several other smaller issues Petr brought up. (Patches
+  13, 14, and 15)
+
+- Added a KBUILD_GENDWARFKSYMS_STABLE flag to enable --stable for
+  the entire kernel build. (Patch 18)
+
+- Updated documentation to include KBUILD flags. (Patch 19)
+
+- Picked up Reviewed-by tags from v4.
+
+v4: https://lore.kernel.org/lkml/20241008183823.36676-21-samitolvanen@google.com/
+- Rebased on v6.12-rc2, which now includes all the prerequisites.
+
+- Dropped unnecessary name_only parameter for symbols.c::for_each
+  and cleaned up error handling. (Patch 3)
+
+- Fixed anonymous scope handling to ensure unnamed DIEs don't get
+  names. (Patch 4)
+
+- Added non-variant children to variant_type output, and included
+  DW_AT_discr_value attributes for variants. (Patch 9)
+
+- Added another symbol pointer test case. (Patch 16)
+
+- Picked up (Acked|Reviewed)-by tags from v3.
+
+v3: https://lore.kernel.org/lkml/20240923181846.549877-22-samitolvanen@google.com/
+- Updated SPX license headers.
+
+- Squashed the first two patches in v2 and tried to reduce churn as
+  much as reasonable.
+
+- Dropped patch 18 from v2 ("x86/asm-prototypes: Include
+  <asm/ptrace.h>") as it's addressed by a separate patch.
+
+- Changed the error handling code to immediately terminate instead
+  of propagating the errors back to main, which cleaned up the code
+  quite a bit.
+
+- Switched to the list and hashtable implementations in scripts and
+  dropped the remaining tools/include dependencies. Added a couple
+  missing list macros. (patch 1)
+
+- Moved the genksyms CRC32 implementation to scripts/include and
+  dropped the duplicate code. (patches 2 and 14)
+
+- Switched from ad-hoc command line parsing to getopt_long (patch 3).
+
+- Added structure member and function parameter names to the DIE
+  output to match genksyms behavior, and tweaked the symtypes format
+  to be more parser-friendly in general based on Petr's suggestions.
+
+- Replaced the declaration-only struct annotations with more generic
+  kABI stability rules that allow source code annotations to be used
+  where #ifndef __GENKSYMS__ was previously used.  Added support for
+  rules that can be used to exclude enumerators from versioning.
+  (patch 16)
+
+- Per Miroslav's suggestion, added an option to hide structure
+  members from versioning when they're added to existing alignment
+  holes, for example. (patch 16)
+
+- Per Greg's request, added documentation and example macros for the
+  --stable features, and a couple of test cases. (patches 15, 16, and
+  20)
+
+- Fixed making symtypes files, which need to depend on .o files with
+  gendwarfksyms. (patch 19)
+
+- Addressed several other smaller issues that Petr and Masahiro
+  kindly pointed out during the v2 review.
+
+v2: https://lore.kernel.org/lkml/20240815173903.4172139-21-samitolvanen@google.com/
+- Per Luis' request, dropped Rust-specific patches and added
+  gendwarfksyms as an alternative to genksyms for the entire
+  kernel.
+
+- Added support for missing DWARF features needed to handle
+  also non-Rust code.
+
+- Changed symbol address matching to use the symbol table
+  information instead of relying on addresses in DWARF.
+
+- Added __gendwarfksyms_ptr patches to ensure the compiler emits
+  the necessary type information in DWARF even for symbols that
+  are defined in other TUs.
+
+- Refactored debugging output and moved the more verbose output
+  behind --dump* flags.
+
+- Added a --symtypes flag for generating a genksyms-style
+  symtypes output based on Petr's feedback, and refactored
+  symbol version calculations to be based on symtypes instead
+  of raw --dump-dies output.
+
+- Based on feedback from Greg and Petr, added --stable flag and
+  support for reserved data structure fields and declaration-onl
+  structures. Also added examples for using these features.
+
+- Added a GENDWARFKSYMS option and hooked up kbuild support
+  for both C and assembly code. Note that with gendwarfksyms,
+  we have to actually build a temporary .o file for calculating
+  assembly modversions.
+
+v1: https://lore.kernel.org/lkml/20240617175818.58219-17-samitolvanen@google.com/
+
+---
+
+Sami Tolvanen (18):
+  tools: Add gendwarfksyms
+  gendwarfksyms: Add address matching
+  gendwarfksyms: Expand base_type
+  gendwarfksyms: Add a cache for processed DIEs
+  gendwarfksyms: Expand type modifiers and typedefs
+  gendwarfksyms: Expand subroutine_type
+  gendwarfksyms: Expand array_type
+  gendwarfksyms: Expand structure types
+  gendwarfksyms: Limit structure expansion
+  gendwarfksyms: Add die_map debugging
+  gendwarfksyms: Add symtypes output
+  gendwarfksyms: Add symbol versioning
+  gendwarfksyms: Add support for kABI rules
+  gendwarfksyms: Add support for reserved and ignored fields
+  gendwarfksyms: Add support for symbol type pointers
+  export: Add __gendwarfksyms_ptr_ references to exported symbols
+  kbuild: Add gendwarfksyms as an alternative to genksyms
+  Documentation/kbuild: Add DWARF module versioning
+
+ Documentation/kbuild/gendwarfksyms.rst     |  308 ++++++
+ Documentation/kbuild/index.rst             |    1 +
+ MAINTAINERS                                |    7 +
+ include/linux/export.h                     |   15 +
+ kernel/module/Kconfig                      |   30 +
+ scripts/Makefile                           |    3 +-
+ scripts/Makefile.build                     |   35 +-
+ scripts/gendwarfksyms/.gitignore           |    2 +
+ scripts/gendwarfksyms/Makefile             |   12 +
+ scripts/gendwarfksyms/cache.c              |   51 +
+ scripts/gendwarfksyms/die.c                |  166 +++
+ scripts/gendwarfksyms/dwarf.c              | 1159 ++++++++++++++++++++
+ scripts/gendwarfksyms/examples/kabi.h      |  157 +++
+ scripts/gendwarfksyms/examples/kabi_ex.c   |   30 +
+ scripts/gendwarfksyms/examples/kabi_ex.h   |  263 +++++
+ scripts/gendwarfksyms/examples/symbolptr.c |   33 +
+ scripts/gendwarfksyms/gendwarfksyms.c      |  185 ++++
+ scripts/gendwarfksyms/gendwarfksyms.h      |  296 +++++
+ scripts/gendwarfksyms/kabi.c               |  336 ++++++
+ scripts/gendwarfksyms/symbols.c            |  341 ++++++
+ scripts/gendwarfksyms/types.c              |  481 ++++++++
+ 21 files changed, 3904 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/kbuild/gendwarfksyms.rst
+ create mode 100644 scripts/gendwarfksyms/.gitignore
+ create mode 100644 scripts/gendwarfksyms/Makefile
+ create mode 100644 scripts/gendwarfksyms/cache.c
+ create mode 100644 scripts/gendwarfksyms/die.c
+ create mode 100644 scripts/gendwarfksyms/dwarf.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi.h
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex.c
+ create mode 100644 scripts/gendwarfksyms/examples/kabi_ex.h
+ create mode 100644 scripts/gendwarfksyms/examples/symbolptr.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.h
+ create mode 100644 scripts/gendwarfksyms/kabi.c
+ create mode 100644 scripts/gendwarfksyms/symbols.c
+ create mode 100644 scripts/gendwarfksyms/types.c
+
+
+base-commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
 -- 
-2.34.1
+2.47.1.613.gc27f4b7a9f-goog
 
