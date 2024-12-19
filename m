@@ -1,197 +1,339 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF635226870;
-	Thu, 19 Dec 2024 16:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F94172BDC;
+	Thu, 19 Dec 2024 17:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734624825; cv=none; b=ShLviAI2MfbkxQtZLgIiAFJ7dBTuyNe5+rtpTkPrdT0ouTqLDP3rvjIr0rOAfo8QsdPRdkA42NMU21wVhJNHcUaA/zF9YtEGwUtSM9MNkXwOmGVCEyeemrrbSXtHQCUMKHKzxJJOWGZA53PtiOlvUAyX7sUscuzeSobceCa5fHw=
+	t=1734627875; cv=none; b=aJLiC3u22yIzJHgEjnJQ30Ufk/Dr/zCGC10Mk+BFjo9T9A6fXV+Gu71o75IWA94GI1gb35dNo9cfi/4kC6zxZX/fNF4lAwm1R11mXo+fnCmXfYLHLik5KnB8/ZBhfsebEfH6gy5jeTrVtyjhH1v6pxRYAM4Q/xHBz0GVz8XRzzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734624825; c=relaxed/simple;
-	bh=3ZslwSsDt0ZrevpyxJOwc9u5jivjryjPqkkjqbFu1x8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fwf+URgcfuBu+wg/hGJM9PyBN5E26jPvihz6LFtCprmrdfVA/9FvP8pI4OvZQFlucD8LbWSrxJ9reYK2xq3wfEuTwMqlzsXOgBxXuMnrhoiQgehfWZJu65EK6OQIMzuwH7phSQ8hwaPeIs3wzCZs1gwmgPu2F6ca9xAZaZ+vRxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRZ3a/Ct; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734627875; c=relaxed/simple;
+	bh=guOYsclsk8g504hsQHSsjcs4pedo5hg6Yu81og132YY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OAGMrGl5jvl2yOMccWY1Y8Vigrmao1/+o7J1uQ3USoc5ORXX1a0VpLn+1xTiaipt6+gxSgtaPoQkXIHnr4IycVY700lW6WFRjgt8B//mvbFoMBoce1PjmGLSMniWOJkap1VNj6Do++6Dx+dDHH8mi09DZaAnbEKddX+mUY4q0Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cv1a3kNg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRZ3a/Ct"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-aa66e4d1d5aso149989066b.2;
-        Thu, 19 Dec 2024 08:13:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734624822; x=1735229622; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3N+saF3O8ciaGMcz5UMikE+GnYspkuI5iWB6DK4vON0=;
-        b=gRZ3a/CtvPoVGjNSQBWAhBEcx2sr9/V1QICBiuawU4D9yo45NxxEusgsmRit5+huEZ
-         nRgmzjURNgEWHIEQ44l53X/r8NM5QClT6hZb57iUYvyW3k51Tcpt8gN+e07FhifJRA+v
-         uPVzGdn2m/LRGcLSi+prlt83hOsBnfIAOaG9jrPcrM237B9m5/t363dnECTVkjVEQRPL
-         4zvfjuuuDYxEjjvJsAXSpsgfWAFvisjgtiE136GgVc1HSVQmfAU2CtEzScUv45fG6w0s
-         IYo2P0E5doDB4obpuH7HGWinKiL9G9pRPvU1I21DRYADG6s65VhqXzzslRU1W4zD5YZG
-         tGSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734624822; x=1735229622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3N+saF3O8ciaGMcz5UMikE+GnYspkuI5iWB6DK4vON0=;
-        b=vRzu1SiKgtp9ztUW4WQgUpFj1+ONnYxfKfBpeF2w2cT+RO5QoqDzvJ7i8U2YzcZh5V
-         TD/WoHA3OeLaZucBaTOFAMf9vJBohfp7uq8UeLxnqak7aYmAi2LXANEKHjGeeQ9RDVZc
-         qBZY+6U0xZ4AuSATKt33yHYTD4n1R8+3GoVqSNNQGcix/ETPbVYAG1MaRSjOQkMM9Bqb
-         D7x5BUkPsZsRPoiXJ8CyrvPOP2EvMSLc50P88GADLQzJcQizuxgYtojV0DvbYdxd/xQS
-         YyEYDg08pu/rNs0gyZc8eq+IgzBwGzd4e7CxX/cb/eFV1HJT3yeV95SayfYDcGIgGJVN
-         8Htw==
-X-Forwarded-Encrypted: i=1; AJvYcCU7RimTUme1EdiGV0gMWLkJdu4+Yieesww/z79JlphW8fwvPlg3WcR+TAMu3uQq0uHNyR6ZiDZpAj7AsHZK@vger.kernel.org, AJvYcCUBuAbCqw2wy9KcPTh4ZKLVDfw7A8+ECEKrb99s58/OgCulrBM3K/HNKpDWUJDQXzR0D8QZ1igW7NQQaU0/7w==@vger.kernel.org, AJvYcCXbsmSXwXOrM7ENkWIe2RrSepWnhXav2MHvAifH9JbqqjknQ+Fy9DLKTogS5ypB/vNPbjg3pti9GVguNif61Xc=@vger.kernel.org, AJvYcCXgfwdXL2KJWtnnSEPi+Uz36PtpueL11aMzwBgG6g/usF2x6l874nvf+b/Nx/RPXv+mV3ilzlqgaGhE@vger.kernel.org, AJvYcCXj1rkJnljwNvKJyzEQGvGJP30GKIPQT9m+dfMrtYYxOk5TxXEL16JVGcO3ayy3Gno/Rvap4QlCjGrq@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeZCMG050TwBDMTfBAtUnmh1eOhp80lB3jQVMBag8n7jRdYOyf
-	wnsWU4vw8iZkPCumtojom9F6JtrKiekcAQeZnvI2aAHb8+ZC7OtAqL12VHB2SrDz2/tudPeuwzc
-	EZf8eqCHgSp8JYxruNkPbT4bazOE=
-X-Gm-Gg: ASbGnct98byZstMyUQmk3xOAo+W25IL5gIlPGqV3RJ0k39QigcpqtpgbxOInE9MYGEV
-	7ui+ce/p6h5nBh63mAg9tGRoTxqWNIAPjx8RvRFRNfo2CLr7VHtYz9Eikwp/0l/BOb5k0fQ==
-X-Google-Smtp-Source: AGHT+IFMZheT4vIS61kxIEYkmlO7h7QA29FiOWtC6wSuYpKEtK5DwRwpulJDIUJetxuXjbdb9BCz6RurcxYEa1nfi5Q=
-X-Received: by 2002:a17:907:d1d:b0:aa6:74a9:ce6e with SMTP id
- a640c23a62f3a-aac07901ef7mr418032566b.16.1734624821904; Thu, 19 Dec 2024
- 08:13:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cv1a3kNg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77282C4CECE;
+	Thu, 19 Dec 2024 17:04:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734627874;
+	bh=guOYsclsk8g504hsQHSsjcs4pedo5hg6Yu81og132YY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cv1a3kNgQ4YXT0qn30tC2moSBcR1ZKHnsZfCo70/aXA8j66nu6J7ESBiQYgDKO68M
+	 DKw694Ti3nFInxiPMNjsKf2FBzEDd7GbKFxku8YbBgNtT0i6zMbh8BN4Fu/v+4paCp
+	 W5kgXAC/5QYjJzt2+Lhw1m+v8YX1YZ7uS182YfL2S7XJLAUBtLZZTAQFue3Ck3whU+
+	 4joOyuiS2x3scd3iJNquGLqwBxeNTzwLnMuM4IsuAhMLJyUHuFpx8ND3GxNP9MobaG
+	 FEpds8t9Oip4qiDipdEAX1uiA7wS/2bBxiP34Dswd6Pa4ZvQfavG0iAYKa+q3ZM1yU
+	 /9M0mgnhxJNrA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	bhelgaas@google.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	tmgross@umich.edu,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	airlied@gmail.com,
+	fujita.tomonori@gmail.com,
+	lina@asahilina.net,
+	pstanner@redhat.com,
+	ajanulgu@redhat.com,
+	lyude@redhat.com,
+	robh@kernel.org,
+	daniel.almeida@collabora.com,
+	saravanak@google.com,
+	dirk.behme@de.bosch.com,
+	j@jannau.net,
+	fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com,
+	paulmck@kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	rcu@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v7 00/16] Device / Driver PCI / Platform Rust abstractions
+Date: Thu, 19 Dec 2024 18:04:02 +0100
+Message-ID: <20241219170425.12036-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241218-ncv6336-v1-0-b8d973747f7a@gmail.com> <20241218-ncv6336-v1-7-b8d973747f7a@gmail.com>
- <kb2ejk6c4uvazuumuezsd24qhjwh3k5bw76k2shywdugjqlf6e@lrghxcxxmnrm>
-In-Reply-To: <kb2ejk6c4uvazuumuezsd24qhjwh3k5bw76k2shywdugjqlf6e@lrghxcxxmnrm>
-From: Fabien Parent <parent.f@gmail.com>
-Date: Thu, 19 Dec 2024 08:13:30 -0800
-Message-ID: <CAL6vTrjD308v-Rzu1Sb7GCuLAb94Qt7BuZgrOgrnDCXm820P3Q@mail.gmail.com>
-Subject: Re: [PATCH 7/9] dt-bindings: regulator: add binding for ncv6336 regulator
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Mark Brown <broonie@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	vinod.koul@linaro.org, Fabien Parent <fabien.parent@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 19, 2024 at 1:28=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On Wed, Dec 18, 2024 at 03:36:37PM -0800, Fabien Parent wrote:
-> > From: Fabien Parent <fabien.parent@linaro.org>
-> >
-> > Add binding documentation for the Onsemi NCV6336 regulator.
-> >
-> > Signed-off-by: Fabien Parent <fabien.parent@linaro.org>
-> > ---
-> >  .../bindings/regulator/onnn,ncv6336.yaml           | 54 ++++++++++++++=
-++++++++
-> >  1 file changed, 54 insertions(+)
-> >
->
-> subject: regulator first, then dt-bindings.
->
-> Please use subject prefixes matching the subsystem. You can get them for
-> example with 'git log --oneline -- DIRECTORY_OR_FILE' on the directory
-> your patch is touching. For bindings, the preferred subjects are
-> explained here:
-> https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-pat=
-ches.html#i-for-patch-submitters
->
->
-> > diff --git a/Documentation/devicetree/bindings/regulator/onnn,ncv6336.y=
-aml b/Documentation/devicetree/bindings/regulator/onnn,ncv6336.yaml
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..c69d126cab33668febe18e7=
-7bb34bd4bef52c993
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/regulator/onnn,ncv6336.yaml
-> > @@ -0,0 +1,54 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/regulator/onnn,ncv6336.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Onsemi NCV6336 Buck converter
-> > +
-> > +maintainers:
-> > +  - Fabien Parent <fabien.parent@linaro.org>
-> > +
-> > +description: |
->
-> Do not need '|' unless you need to preserve formatting.
->
-> > +  The NCV6336 is an I2C programmable BUCK (step-down) converter.
-> > +  It is designed for mobile power applications.
-> > +
-> > +properties:
-> > +  $nodename:
-> > +    pattern: "regulator@[0-9a-f]{2}"
->
-> Drop nodename, not really needed in device schema.
->
-> > +
-> > +  compatible:
-> > +    const: onnn,ncv6336
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  buck:
-> > +    description: buck regulator description
->
-> Why do you need "buck" node? Just merge the properties into this device
-> node.
+This patch series implements the necessary Rust abstractions to implement
+device drivers in Rust.
 
-I decided to move the properties into a "buck" node to make the
-upstream process of the driver
-a little bit simpler. The driver is written in Rust, and if I want to
-move the properties to the device
-node I will need to provide a Rust abstraction for "struct
-device_node". I decided to avoid this
-to keep the patch series simpler by having one less abstraction to review.
-If you think that's a problem, let me know and I will implement it the
-way you are suggesting for v2.
+This includes some basic generalizations for driver registration, handling of ID
+tables, MMIO operations and device resource handling.
 
->
-> > +    type: object
-> > +    $ref: regulator.yaml#
-> > +    unevaluatedProperties: false
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - buck
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        regulator@1c {
-> > +            compatible =3D "onnn,ncv6336";
-> > +            reg =3D <0x1c>;
-> > +
-> > +            buck {
-> > +                regulator-name =3D "ncv6336,buck";
-> > +            };
-> > +       };
->
-> Messed indentation.
->
-> Best regards,
-> Krzysztof
->
+Those generalizations are used to implement device driver support for two
+busses, the PCI and platform bus (with OF IDs) in order to provide some evidence
+that the generalizations work as intended.
+
+The patch series also includes two patches adding two driver samples, one PCI
+driver and one platform driver.
+
+The PCI bits are motivated by the Nova driver project [1], but are used by at
+least one more OOT driver (rnvme [2]).
+
+The platform bits, besides adding some more evidence to the base abstractions,
+are required by a few more OOT drivers aiming at going upstream, i.e. rvkms [3],
+cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
+
+The patches of this series can also be [7], [8] and [9].
+
+Changes in v7:
+==============
+- Revocable:
+  - replace `compare_exchange` with `swap`
+
+- Driver:
+  - fix warning when CONFIG_OF=n
+
+- I/O:
+  - remove unnecessary return statement in rust_helper_iounmap()
+  - fix cast in doctest for `bindings::ioremap`
+
+- Devres:
+  - fix cast in doctest for `bindings::ioremap`
+
+- PCI:
+  - remove `Deref` of `pci::DeviceId`
+  - rename `DeviceId` constructors
+    - `new`       -> `from_id`
+    - `with_class -> `from_class`
+
+- MISC:
+  - use `kernel::ffi::c_*` instead of `core::ffi::c_*`
+  - rebase onto latest rust-next (0c5928deada15a8d075516e6e0d9ee19011bb000)
+
+Changes in v6:
+==============
+- Module:
+  - remove patch to pass the module name in `Module::init`
+  - add a patch adding the `ModuleMetadata` trait to retreive the module name
+
+- Driver:
+  - generate module structure within `module_driver!`, such that we get a unique
+    module type for which `ModuleMetadata` can be implemented to retreive the
+    module name
+  - let `Adapter::of_id_table` return `Option<of::IdTable<Self::IdInfo>>`
+
+- Platform:
+  - change type of `platform::Driver::OF_ID_TABLE` to `Option<of::IdTable>`
+
+- RCU:
+  - add RCU abstraction to MAINTAINERS file
+
+- MISC:
+  - pick up a couple of RBs
+
+Changes in v5:
+==============
+- Opaque:
+  - add `Opaque::pin_init`
+
+- Revocable:
+  - use const generic instead of bool in `revoke_internal`
+  - don't open code things with `Opaque::try_ffi_init`, use
+    `Opaque::pin_init` instead
+
+- Driver:
+  - fix `DriverOps` -> `RegistrationOps` in commit message
+  - fix signature of `register` and `unregister` to take an
+    `Opaque<T::RegType>` instead of a mutable reference
+  - implement generic `driver::Adapter`
+
+- ID table:
+  - fix `module_device_table!` macro, according to commit 054a9cd395a7
+   (modpost: rename alias symbol for MODULE_DEVICE_TABLE())
+
+- PCI:
+  - remove `pci::DeviceId` argument from probe()
+  - provide `vendor_id` and `device_id` accessor functions
+  - use `addr_of_mut!` for the device in probe()
+
+- OF:
+  - move OF `IdTable` type alias from platform.rs to of.rs
+
+- Platform:
+  - use `addr_of_mut!` for the device in probe()
+  - move generic OF code to `driver::Adapter`
+
+- MISC:
+  - rebase onto latest rust-next (-rc2)
+
+Changes in v4:
+==============
+- Revocable
+  - convert `Revocable::data` to `Opaque`
+  - introduce `revoke_nosync`, which does not wait for an RCU grace period
+  - fix minor typo
+
+- Device ID
+  - fix ID table export name to always be unique
+  - remove `#![allow(stable_features)]`
+  - move `#![allow(const_refs_to_cell)]` to the "stable in 1.83" list
+
+- I/O
+  - split `Io<SIZE>` in `IoRaw<SIZE>` and `Io<SIZE>`
+  - add rust helper for ioremap() and iounmap() (needed by doctests)
+
+- Devres
+  - optimze `drop` by using `revoke_nosync` (we're guaranteed there are no more
+    concurrent users, hence no need to wait for a full grace period)
+
+- OF
+  - rename "Open Firmware" -> "Device Tree / Open Firmware" (Rob)
+  - remove unused C header reference
+  - add TODO comment to loop in `DeviceId::new`
+  - remove `DeviceId::compatible`; was only used in sample code
+  - add missing `#[repr(transparent)]`
+  - use #[cfg(CONFIG_OF)] for the relevant functions
+
+- PCI
+  - let Rust helper for pci_resource_len() return resource_size_t
+
+- PCI Sample
+  - remove unnecessary `from_le`
+
+- Platform
+  - fix example compatible string
+  - add example for `platform::Driver`
+  - rename `ID_TABLE` to `OF_ID_TABLE`
+  - don't allow public use of `of_match_table`; convert to `of_id_info` to
+    retrieve the `of::DeviceId` to gather the corresponding `IdInfo`
+  - remove wrong example reference in the documentation of `platform::Driver`
+  - remove `as_dev`, as we already implement `AsRef` for `platform::Device`
+
+- Platform Sample
+  - fix compatible string; add corresponding entry to drivers/of/unittest-data/tests-platform.dtsi
+  - remove usage of `of_match_table`
+
+- MISC
+  - fix a few spelling mistakes
+  - rebase onto rust-next (v6.13-rc1)
+
+Changes in v3:
+==============
+- add commits for `Opaque::try_ffi_init` and `InPlaceModule`
+- rename `DriverOps` to `RegistrationOps`
+- rework device ID abstractions to get rid of almost all macro magic (thanks to
+  Gary Guo for working this out!)
+  - this is possible due to recently stabilized language features
+- add modpost alias generation for device ID tables
+  - unfortunately, this is the part that still requires some macro magic in the
+    device ID abstractions
+- PCI
+  - represent the driver private data with the driver specific `Driver` instance
+    and bind it's lifetime to the time of the driver being bound to a device
+    - this allows us to handle class / subsystem registrations in a cleaner way
+  - get rid of `Driver::remove`
+    - Rust drivers should bind cleanup code to the `Drop` implementation of the
+      corresponding structure instead and put it into their driver structure for
+      automatic cleanup
+  - add a sample PCI driver
+- add abstractions for `struct of_device_id`
+- add abstractions for the platform bus, including a sample driver
+- update the MAINTAINERS file accordingly
+  - currently this turns out a bit messy, but it should become better once the
+    build system supports a treewide distribution of the kernel crate
+  - I didn't add myself as maintainer, but (if requested) I'm willing to do so
+    and help with maintenance
+
+Changes in v2:
+==============
+- statically initialize driver structures (Greg)
+- move base device ID abstractions to a separate source file (Greg)
+- remove `DeviceRemoval` trait in favor of using a `Devres` callback to
+  unregister drivers
+- remove `device::Data`, we don't need this abstraction anymore now that we
+  `Devres` to revoke resources and registrations
+- pass the module name to `Module::init` and `InPlaceModule::init` in a separate
+  patch
+- rework of `Io` including compile time boundary checks (Miguel, Wedson)
+- adjust PCI abstractions accordingly and implement a `module_pci_driver!` macro
+- rework `pci::Bar` to support a const SIZE
+- increase the total amount of Documentation, rephrase some safety comments and
+  commit messages for less ambiguity
+- fix compilation issues with some documentation examples
+
+Danilo Krummrich (14):
+  rust: module: add trait `ModuleMetadata`
+  rust: implement generic driver registration
+  rust: implement `IdArray`, `IdTable` and `RawDeviceId`
+  rust: types: add `Opaque::pin_init`
+  rust: add `io::{Io, IoRaw}` base types
+  rust: add devres abstraction
+  rust: pci: add basic PCI device / driver abstractions
+  rust: pci: implement I/O mappable `pci::Bar`
+  samples: rust: add Rust PCI sample driver
+  rust: of: add `of::DeviceId` abstraction
+  rust: driver: implement `Adapter`
+  rust: platform: add basic platform device / driver abstractions
+  samples: rust: add Rust platform sample driver
+  MAINTAINERS: add Danilo to DRIVER CORE
+
+Wedson Almeida Filho (2):
+  rust: add rcu abstraction
+  rust: add `Revocable` type
+
+ MAINTAINERS                                  |  10 +
+ drivers/of/unittest-data/tests-platform.dtsi |   5 +
+ rust/bindings/bindings_helper.h              |   3 +
+ rust/helpers/device.c                        |  10 +
+ rust/helpers/helpers.c                       |   5 +
+ rust/helpers/io.c                            | 101 +++++
+ rust/helpers/pci.c                           |  18 +
+ rust/helpers/platform.c                      |  13 +
+ rust/helpers/rcu.c                           |  13 +
+ rust/kernel/device_id.rs                     | 165 +++++++
+ rust/kernel/devres.rs                        | 178 ++++++++
+ rust/kernel/driver.rs                        | 173 ++++++++
+ rust/kernel/io.rs                            | 260 +++++++++++
+ rust/kernel/lib.rs                           |  20 +
+ rust/kernel/of.rs                            |  60 +++
+ rust/kernel/pci.rs                           | 432 +++++++++++++++++++
+ rust/kernel/platform.rs                      | 198 +++++++++
+ rust/kernel/revocable.rs                     | 219 ++++++++++
+ rust/kernel/sync.rs                          |   1 +
+ rust/kernel/sync/rcu.rs                      |  47 ++
+ rust/kernel/types.rs                         |  11 +
+ rust/macros/module.rs                        |   4 +
+ samples/rust/Kconfig                         |  21 +
+ samples/rust/Makefile                        |   2 +
+ samples/rust/rust_driver_pci.rs              | 110 +++++
+ samples/rust/rust_driver_platform.rs         |  49 +++
+ 26 files changed, 2128 insertions(+)
+ create mode 100644 rust/helpers/device.c
+ create mode 100644 rust/helpers/io.c
+ create mode 100644 rust/helpers/pci.c
+ create mode 100644 rust/helpers/platform.c
+ create mode 100644 rust/helpers/rcu.c
+ create mode 100644 rust/kernel/device_id.rs
+ create mode 100644 rust/kernel/devres.rs
+ create mode 100644 rust/kernel/driver.rs
+ create mode 100644 rust/kernel/io.rs
+ create mode 100644 rust/kernel/of.rs
+ create mode 100644 rust/kernel/pci.rs
+ create mode 100644 rust/kernel/platform.rs
+ create mode 100644 rust/kernel/revocable.rs
+ create mode 100644 rust/kernel/sync/rcu.rs
+ create mode 100644 samples/rust/rust_driver_pci.rs
+ create mode 100644 samples/rust/rust_driver_platform.rs
+
+
+base-commit: 0c5928deada15a8d075516e6e0d9ee19011bb000
+-- 
+2.47.1
+
