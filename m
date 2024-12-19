@@ -1,53 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69706222566;
-	Thu, 19 Dec 2024 10:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287C2594;
+	Thu, 19 Dec 2024 11:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734605601; cv=none; b=OI2zqnIsgVpmDq7FK891+pKb/99XXE20w5AjESium8PkEgWhnCEZ8D26zqOU4h3yP9+5NA9tLVlp+OKwtPIbi1T6R7aT2XyB4HXJ0aN9ORSIBkDRqJnvaB4iRBMjQIKPShg5qLJT3KBPGRS6fo7Sm1T3xhjP80xIKr6hEkFChV0=
+	t=1734607370; cv=none; b=U4930zqTfVGxt4ITPSlSM34xBpgO9JiEtKmiu5o9IGhjWZ/3JX4u9bPKuMhq8WiuLAbtNd0feDRtloSYBaGOpXANuvioHgjjjkAl5Wg65nha5flo1YlSQKvKgMe8I3Lb+RQewJ8/iBeZKuNIz4KksM43awuNNhCav9sSQlT9mqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734605601; c=relaxed/simple;
-	bh=RpuYyr3iEI9pJoKS8TGxrFFOZ8RRcoKwdnKtdEJS7oo=;
+	s=arc-20240116; t=1734607370; c=relaxed/simple;
+	bh=3+5Q0Qysj8llseSuscoFbDFwGe965ckZvQ14Tok/Yhw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nX/h9FDetJmZyTl4RdZd0DPNfIHlJUIW2/p2ntYMbjZ6Yiql7eEb8aBEdCdGP8wTeU32yWC+nJQtalPGDeUWyyCrs08g5n6KVrLWM4p9ipx96VZg2sux7+vhDaMDQ/POoLvdp+5juKt6Ebe+l/FqRlWwMPaKGF5daaDSqCEX2lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+lmQdU2; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=mX3nFjrNl6CAppdM9e37NuPK2uwxYHk8PwyGSps8LuXdlnC1v0bz9DAjUIbpbcOk8QDs8MIUkfZfpCbMpqB3VRQZjwZLbOaw7JqLZmjx3hKKOMwOoVEmqzswuKebUXYIEjThtl5elZZuUn9lY5xAMiD6JCD5RAhKdai00ov+MDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaHgo13G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+lmQdU2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209F1C4CED0;
-	Thu, 19 Dec 2024 10:53:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaHgo13G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C211C4CECE;
+	Thu, 19 Dec 2024 11:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734605601;
-	bh=RpuYyr3iEI9pJoKS8TGxrFFOZ8RRcoKwdnKtdEJS7oo=;
+	s=k20201202; t=1734607369;
+	bh=3+5Q0Qysj8llseSuscoFbDFwGe965ckZvQ14Tok/Yhw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f+lmQdU26+HCxPMf/l7I9BtP0ocP4GNnvWw5cF0TS9JeqY1fMK3mVW2D40SZTJMxl
-	 AVODtVJRkw0Slzi/7tmqMdmYortm+Us48c62APa8KinkZtv/tJ7Gi7FRCUvTovigPp
-	 2PA1pFaLCg4FenTAHiTVtaGRMwB9TOOhyzwfFoYE435hwimFA7oJjqAjHmrtc5SCPe
-	 29xPVCxBXVge9n3W3Jnq4BFDTUa1ms7rJGADEeO8NkLTFp/oisgkl0tMpCOIi+f3Mc
-	 cs6Vqmy8j+1fvBC74CTbmGJTd6Qo8JcCCTYpXeQ0H1KS5zOPi+czn9gWb09jkT2MYG
-	 17MF4MwySy55w==
+	b=UaHgo13GPe1WZOWuIBiDVt64R7iwCKzf/jLrQQyPg6s2oRaPQVRcWKSml4JVsHGUL
+	 btZpLf/yUAQ9+3YTAsk6cGdkfqSyuQgWILM5NB3fbt06hOgaPDEpHJGfLriP/Ck3bF
+	 g4nTcaWGgVrBbTHz/25j4IUEsLF4SM0oBQ9nafQh8gBJn1IJxOkp1TjJbhw0KYWKlH
+	 dKwIvVpKfZ/6VRAXey0ldl8eLAX3ZGYQnq3XYmR41CnXbqPCaWh5DVBnzfC6UVfVqB
+	 VlFJZAmL79wTX/eQLIpC2LQpBHGfmIi8Mv1lESv4s6jo26KC/zaKFRHkJKNRWHMkwQ
+	 VlGe7VnmJvdig==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org,  rafael@kernel.org,  bhelgaas@google.com,
-  ojeda@kernel.org,  alex.gaynor@gmail.com,  boqun.feng@gmail.com,
-  gary@garyguo.net,  bjorn3_gh@protonmail.com,  benno.lossin@proton.me,
-  tmgross@umich.edu,  a.hindborg@samsung.com,  aliceryhl@google.com,
-  airlied@gmail.com,  fujita.tomonori@gmail.com,  lina@asahilina.net,
-  pstanner@redhat.com,  ajanulgu@redhat.com,  lyude@redhat.com,
-  robh@kernel.org,  daniel.almeida@collabora.com,  saravanak@google.com,
-  dirk.behme@de.bosch.com,  j@jannau.net,  fabien.parent@linaro.org,
-  chrisi.schrefl@gmail.com,  paulmck@kernel.org,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-pci@vger.kernel.org,  devicetree@vger.kernel.org,
-  rcu@vger.kernel.org
-Subject: Re: [PATCH v6 13/16] rust: driver: implement `Adapter`
-In-Reply-To: <20241212163357.35934-14-dakr@kernel.org> (Danilo Krummrich's
-	message of "Thu, 12 Dec 2024 17:33:44 +0100")
-References: <20241212163357.35934-1-dakr@kernel.org>
-	<20241212163357.35934-14-dakr@kernel.org>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,  Daniel Almeida
+ <daniel.almeida@collabora.com>,  Miguel Ojeda <ojeda@kernel.org>,  Alex
+ Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary
+ Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
+ Krummrich <dakr@kernel.org>,  Valentin Obst <kernel@valentinobst.de>,
+  open list <linux-kernel@vger.kernel.org>,  Christoph Hellwig
+ <hch@lst.de>,  Marek Szyprowski <m.szyprowski@samsung.com>,  Robin Murphy
+ <robin.murphy@arm.com>,  airlied@redhat.com,  "open list:DMA MAPPING
+ HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v7 2/2] rust: add dma coherent allocator abstraction.
+In-Reply-To: <7c8e84e7-a212-445f-bc4e-ef65dae7fb29@gmail.com> (Abdiel
+	Janulgue's message of "Fri, 13 Dec 2024 10:53:29 +0200")
+References: <20241210221603.3174929-1-abdiel.janulgue@gmail.com>
+	<20241210221603.3174929-3-abdiel.janulgue@gmail.com>
+	<7c8e84e7-a212-445f-bc4e-ef65dae7fb29@gmail.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 19 Dec 2024 11:53:06 +0100
-Message-ID: <87r064kkq5.fsf@kernel.org>
+Date: Thu, 19 Dec 2024 12:22:35 +0100
+Message-ID: <87ikrflxxg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,46 +57,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
+Abdiel Janulgue <abdiel.janulgue@gmail.com> writes:
 
-Hi Danilo,
+> Gentle ping. Does this approach make sense? :)
 
-Danilo Krummrich <dakr@kernel.org> writes:
+If you include the `Allocator` trait and the `Pool` it would make my
+life a lot easier when rebasing nvme. For now I'm just going to use out
+of tree patches that include the dma pool.
 
-> In order to not duplicate code in bus specific implementations (e.g.
-> platform), implement a generic `driver::Adapter` to represent the
-> connection of matched drivers and devices.
->
-> Bus specific `Adapter` implementations can simply implement this trait
-> to inherit generic functionality, such as matching OF or ACPI device IDs
-> and ID table entries.
->
-> Suggested-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-
-I get some warnings when applying this patch:
-
->   RUSTC L rust/kernel.o
-> warning: unused import: `device_id`
->   --> /home/aeh/src/linux-rust/rnvme-v6.13-rc3/rust/kernel/driver.rs:10:13
->    |
-> 10 |     device, device_id, init::PinInit, of, str::CStr, try_pin_init, types::Opaque, ThisModule,
->    |             ^^^^^^^^^
->    |
->    = note: `#[warn(unused_imports)]` on by default
-> 
-> warning: missing documentation for an associated function
->    --> /home/aeh/src/linux-rust/rnvme-v6.13-rc3/rust/kernel/driver.rs:158:5
->     |
-> 158 |     fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
->     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->     |
->     = note: requested on the command line with `-W missing-docs`
-> 
-> warning: 2 warnings emitted
-
-
-Looks like the latter one is from patch 13.
+If you do not have a user for dma pool, maybe just include the
+`Allocator` trait and indicate that it is there to support other dma
+allocators in the future?
 
 
 Best regards,
