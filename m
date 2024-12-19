@@ -1,153 +1,264 @@
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A67A22145D;
-	Thu, 19 Dec 2024 12:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703E4801;
+	Thu, 19 Dec 2024 13:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734609799; cv=none; b=RQpmB1JnruusagIg4nawAAqFfkydYaTJqWcdAwJ5YXQ57xYvW3KcFEoSH9M79G0V7dWH9UKuU4Ucr4wXDsuC10+5oMERnlqOf72OEPC32xI+DtEufJ2jIZqlKNXdJvVbi0A6caBU5CHLwCX6rIpmJT7at9ZkH2uuWGNoiudLWIA=
+	t=1734613405; cv=none; b=FGOQaAcqe4ddQMXe9ZmKtV/3CM8XagXTFHwxHc9neyphLHVPObnY4vB4QbQbaZj8a7eIe/n/olV1ggC95h+Mi9K1zXAGzU4r77cyggwU80413+rC9pehTyYc2ViZ+7kqNyhgpb7Z1jdPuky3QCZzu8jNhiHCHKKVzvMdJ3X0xTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734609799; c=relaxed/simple;
-	bh=Qg3sRh/NrBVXvAQf4LtjFbJFl+QuBJMpT2uDuNKPfUs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gGE5l3jyEP6HZwsTlMvI7cGA6lI8h+YzDiKr9jk72vENFZQj4tehu6crx2tojGzLvJbZZgGB2oe1EciY51xXJV8bEah3yKKJtxgMA5qo3sHduSjvRuzNO/u01ECdE0xD6LZ6fbmT8BwBWmcDE+wYnQPlQcksvgjewnR2AnDBWxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=hXPuViTW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ai01Jq9/; arc=none smtp.client-ip=103.168.172.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1734613405; c=relaxed/simple;
+	bh=5+x3QZVCzTq1Hf1gpxeuJv6OeqlteL217qDNjwEWRlo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tkgQ9fVHTGnwR0CExm+0qjGgkZ4rH1L23NemYC6CZaIrQ7ycuNGr2uyAKa4B797aelhTBi3fZUnzuM+DgeyT8FixaPDH9s+TMT7qJF9Lvdovvd95/fhLVREN3loRp2Pe3shWHlgRIvmtib69esjgJOwdZi0A6/7je8ap1ZOFjRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=giABaITE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hXPuViTW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ai01Jq9/"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailflow.phl.internal (Postfix) with ESMTP id 716412004CE;
-	Thu, 19 Dec 2024 07:03:15 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Thu, 19 Dec 2024 07:03:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1734609795;
-	 x=1734616995; bh=HsWGYit1QfbykpeRihgbuA09LwqwIdTOxzn2rND9d44=; b=
-	hXPuViTWoL+d8uTD8HWKH6l9JI3Qeg2+RU0afqJ+27Me3anlO7iAkrJodDU6SDBN
-	Q072WguaY7168vuinaZpdAtQ10DTGk5RYTaX/LadyRHQOzWPD3JbXXKn0mlciYNp
-	/X0ieAaHbhoMwp3jLFOIUY9qD8vUGL6DA6lT6SSUUoc7L2j+JHlZHXtf+NE7YFbT
-	eOs3kJAp5E5/dY87oP0aB928LrOITs5+5CDiuYcjTHYJJciZmW9Z0XBEYdV4CiNk
-	Wx0h3kLrKDDoQBv9F7H04Cd/klAwrIBGOvI957eyJztC01JCmdqrxlQ1BlkaCsQa
-	jWQXaNegO8DxO9+esrj5GA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734609795; x=
-	1734616995; bh=HsWGYit1QfbykpeRihgbuA09LwqwIdTOxzn2rND9d44=; b=A
-	i01Jq9/TVKRojX7wRVqPg0h5WKcLpoStUlzFB/1DKY70YpqmGkR7fHOcpORUn0um
-	O3veblgy+PhgwTHKsaLsX62avtsXgZfoU3nI7C6pm24TvWQrJZfq+Rh9JerC4NLS
-	ciJ2sAoN9cCbyrQeR85kewBkWKH6IQre7lcblf9ImmbyUTndDKyoIi7iBFB4FLD3
-	0KT6+xxFdEY0omS5lwTLd8ccH+7S9mGeb77Qi1x6f+uVivOh3MspIan1aTLYH7mp
-	jKgm3f81NG86TuM3m3J6GqmunKFMUSCLyYI+YxETM8+cFfzgpaomgMZfCdOwfBTG
-	wCLqOyPW6qgnvCJJQUe3A==
-X-ME-Sender: <xms:ggtkZ9XFnFb5Shp28v0VE5L4v36r3JhISx0lVUCjHpWxkY9h9zUZvA>
-    <xme:ggtkZ9m1zxghtWwVIpwNk_zL1gyrBICU15_y-0Zl2SKXv0fhrUuFhEsigWuxSN5vN
-    yjOkbkuwRFOCJ_P5pY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddttddgfeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepgedu
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrg
-    hrmhdrtghomhdprhgtphhtthhopehmrghthhhivghurdguvghsnhhohigvrhhssegvfhhf
-    ihgtihhoshdrtghomhdprhgtphhtthhopehusghiiihjrghksehgmhgrihhlrdgtohhmpd
-    hrtghpthhtoheprghruggsodhgihhtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehi
-    rhhoghgvrhhssehgohhoghhlvgdrtghomhdprhgtphhtthhopehjuhhsthhinhhsthhith
-    htsehgohhoghhlvgdrtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggr
-    ugdrohhrghdprhgtphhtthhopegrughrihgrnhdrhhhunhhtvghrsehinhhtvghlrdgtoh
-    hmpdhrtghpthhtohepkhgvihhthhhpsehkvghithhhphdrtghomh
-X-ME-Proxy: <xmx:ggtkZ5a7PffbNu-Ay1FQMOqZTJrFGnnXD5tGmRrSyWO2ytuqef_FkQ>
-    <xmx:ggtkZwUP_QJ3AoR1Af7G1uuLVO1kijbfSFTGznwbJEEi8KUxCINq9Q>
-    <xmx:ggtkZ3mnHQzr0RzOZWTVBet3C-Iqpqn-7c60fklTEsnKTuixPrkLGA>
-    <xmx:ggtkZ9egiZ9brX4PP9vRZHihWLda5MfhHjVBPTo81Ntc2DfeKXzPOA>
-    <xmx:gwtkZ1q8kWVe1DguqO4AMWKc4WtDvHUh-cbDE_TCaSipIJZV6Dnl5eox>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1C9372220072; Thu, 19 Dec 2024 07:03:14 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="giABaITE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B42C4CECE;
+	Thu, 19 Dec 2024 13:03:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734613405;
+	bh=5+x3QZVCzTq1Hf1gpxeuJv6OeqlteL217qDNjwEWRlo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=giABaITEctE/wbnCg/2MLICDl1W+b+PAc1GAZkOjAmMAJuCMa81xyg99GcWrf3p3b
+	 euH2NWPqYluq8TxZlN2C8M/Jn2DoK8Wv3LENzgIFj29Dq3TvpjLzU7XHlBUXxasGkK
+	 9IKFSrEZOawhPRZ/gsh7htS0dkMHKZ6/csDgbQ8s5aTY+Uuxjrq448w5ZuHvBxleA5
+	 VOXCfP7tKmb41Guc35Fw187V49JZymlT+kWxAYqoVrOEQOUot5zozYSbTuN+EQZEi3
+	 H8dPIXmgJL+REFqc+uO2o0w7XJZ75r3VsU2xmsen8i0XovdiHLasPCqS1GkK5I+E8l
+	 k6YgbeI8ImwRg==
+Date: Thu, 19 Dec 2024 07:03:23 -0600
+From: Rob Herring <robh@kernel.org>
+To: Fabien Parent <parent.f@gmail.com>
+Cc: Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	vinod.koul@linaro.org, Fabien Parent <fabien.parent@linaro.org>,
+	Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH 1/9] rust: i2c: add basic I2C client abstraction
+Message-ID: <20241219130323.GA4049504-robh@kernel.org>
+References: <20241218-ncv6336-v1-0-b8d973747f7a@gmail.com>
+ <20241218-ncv6336-v1-1-b8d973747f7a@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 19 Dec 2024 13:02:46 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Mark Rutland" <mark.rutland@arm.com>
-Cc: "Ard Biesheuvel" <ardb+git@google.com>, linux-kernel@vger.kernel.org,
- "Ard Biesheuvel" <ardb@kernel.org>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Uros Bizjak" <ubizjak@gmail.com>, "Dennis Zhou" <dennis@kernel.org>,
- "Tejun Heo" <tj@kernel.org>, "Christoph Lameter" <cl@linux.com>,
- "Mathieu Desnoyers" <mathieu.desnoyers@efficios.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>,
- "Juergen Gross" <jgross@suse.com>,
- "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Masahiro Yamada" <masahiroy@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Keith Packard" <keithp@keithp.com>,
- "Justin Stitt" <justinstitt@google.com>,
- "Josh Poimboeuf" <jpoimboe@kernel.org>,
- "Arnaldo Carvalho de Melo" <acme@kernel.org>,
- "Namhyung Kim" <namhyung@kernel.org>, "Jiri Olsa" <jolsa@kernel.org>,
- "Ian Rogers" <irogers@google.com>,
- "Adrian Hunter" <adrian.hunter@intel.com>,
- "Kan Liang" <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org,
- linux-pm@vger.kernel.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-sparse@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Message-Id: <0afeae21-a663-43c9-91ff-f0357f5ac06b@app.fastmail.com>
-In-Reply-To: <Z2QJKZBsgvPMgRo_@J2N7QTR9R3>
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-32-ardb+git@google.com>
- <c4868f63-b688-4489-a112-05bf04280bde@app.fastmail.com>
- <Z2QJKZBsgvPMgRo_@J2N7QTR9R3>
-Subject: Re: [RFC PATCH 02/28] Documentation: Bump minimum GCC version to 8.1
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241218-ncv6336-v1-1-b8d973747f7a@gmail.com>
 
-On Thu, Dec 19, 2024, at 12:53, Mark Rutland wrote:
-> On Wed, Sep 25, 2024 at 03:58:38PM +0000, Arnd Bergmann wrote:
->> On Wed, Sep 25, 2024, at 15:01, Ard Biesheuvel wrote:
->> > From: Ard Biesheuvel <ardb@kernel.org>
->> 
->> We obviously need to go through all the other version checks
->> to see what else can be cleaned up. I would suggest we also
->> raise the binutils version to 2.30+, which is what RHEL8
->> shipped alongside gcc-8. I have not found other distros that
->> use older binutils in combination with gcc-8 or higher,
->> Debian 10 uses binutils-2.31.
->> I don't think we want to combine the additional cleanup with
->> your series, but if we can agree on the version, we can do that
->> in parallel.
->
-> Were you planning to send patches to that effect, or did you want
-> someone else to do that? I think we were largely agreed on making those
-> changes, but it wasn't clear to me who was actually going to send
-> patches, and I couldn't spot a subsequent thread on LKML.
+On Wed, Dec 18, 2024 at 03:36:31PM -0800, Fabien Parent wrote:
+> From: Fiona Behrens <me@kloenk.dev>
+> 
+> Implement an abstraction to write I2C device drivers. The abstraction
+> is pretty basic and provides just the infrastructure to probe
+> a device from I2C/OF device_id and abstract `i2c_client`.
+> The client will be used by the Regmap abstraction to perform
+> I/O on the I2C bus.
+> 
+> Signed-off-by: Fiona Behrens <me@kloenk.dev>
+> Co-developed-by: Fabien Parent <fabien.parent@linaro.org>
+> Signed-off-by: Fabien Parent <fabien.parent@linaro.org>
+> ---
+>  MAINTAINERS                     |   1 +
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/helpers.c          |   1 +
+>  rust/helpers/i2c.c              |  13 ++
+>  rust/kernel/i2c.rs              | 288 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   2 +
+>  6 files changed, 306 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6b9e10551392c185b9314c9f94edeaf6e85af58f..961fe4ed39605bf489d1d9e473f47bccb692ff14 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -10796,6 +10796,7 @@ F:	include/linux/i2c-smbus.h
+>  F:	include/linux/i2c.h
+>  F:	include/uapi/linux/i2c-*.h
+>  F:	include/uapi/linux/i2c.h
+> +F:	rust/kernel/i2c.rs
+>  
+>  I2C SUBSYSTEM HOST DRIVERS
+>  M:	Andi Shyti <andi.shyti@kernel.org>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index e9fdceb568b8f94e602ee498323e5768a40a6cba..a882efb90bfc27960ef1fd5f2dc8cc40533a1c27 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -16,6 +16,7 @@
+>  #include <linux/file.h>
+>  #include <linux/firmware.h>
+>  #include <linux/fs.h>
+> +#include <linux/i2c.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/jump_label.h>
+>  #include <linux/mdio.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 0640b7e115be1553549312dcfdf842bcae3bde1b..630e903f516ee14a51f46ff0bcc68e8f9a64021a 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -15,6 +15,7 @@
+>  #include "device.c"
+>  #include "err.c"
+>  #include "fs.c"
+> +#include "i2c.c"
+>  #include "io.c"
+>  #include "jump_label.c"
+>  #include "kunit.c"
+> diff --git a/rust/helpers/i2c.c b/rust/helpers/i2c.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..8ffdc454e7597cc61909da5b3597057aeb5f7299
+> --- /dev/null
+> +++ b/rust/helpers/i2c.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/i2c.h>
+> +
+> +void *rust_helper_i2c_get_clientdata(const struct i2c_client *client)
+> +{
+> +	return i2c_get_clientdata(client);
+> +}
+> +
+> +void rust_helper_i2c_set_clientdata(struct i2c_client *client, void *data)
+> +{
+> +	i2c_set_clientdata(client, data);
+> +}
+> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..efa03335e5b59e72738380e94213976b2464c25b
+> --- /dev/null
+> +++ b/rust/kernel/i2c.rs
+> @@ -0,0 +1,288 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for the I2C bus.
+> +//!
+> +//! C header: [`include/linux/i2c.h`](srctree/include/linux/i2c.h)
+> +
+> +use crate::{
+> +    bindings, container_of,
+> +    device::Device,
+> +    device_id::{self, RawDeviceId},
+> +    driver,
+> +    error::{to_result, Result},
+> +    of,
+> +    prelude::*,
+> +    str::CStr,
+> +    types::{ARef, ForeignOwnable, Opaque},
+> +    ThisModule,
+> +};
+> +
+> +/// Abstraction for `bindings::i2c_device_id`.
+> +#[repr(transparent)]
+> +#[derive(Clone, Copy)]
+> +pub struct DeviceId(bindings::i2c_device_id);
+> +
+> +impl DeviceId {
+> +    /// Create a new device id from an I2C name.
+> +    pub const fn new(name: &CStr) -> Self {
+> +        let src = name.as_bytes_with_nul();
+> +        // TODO: Replace with `bindings::i2c_device_id::default()` once stabilized for `const`.
+> +        // SAFETY: FFI type is valid to be zero-initialized.
+> +        let mut i2c: bindings::i2c_device_id = unsafe { core::mem::zeroed() };
+> +
+> +        let mut i = 0;
+> +        while i < src.len() {
+> +            i2c.name[i] = src[i] as _;
+> +            i += 1;
+> +        }
 
-I hadn't planned on doing that, but I could help (after my
-vacation). As Ard already posted the the patch for gcc, I
-was expecting that this one would get merged along with the
-other patches in the series.
+You can simplify this now that char maps to u8 (in rust next).
 
-Ard, what is the status of your series, is this likely to
-make it into 6.14, or should we have a separate patch to
-just raise the minimum gcc and binutils version independent
-of your work?
+> +
+> +        Self(i2c)
+> +    }
+> +}
+> +
+> +// SAFETY:
+> +// * `DeviceId` is a `#[repr(transparent)` wrapper of `i2c_device_id` and does not add
+> +//   additional invariants, so it's safe to transmute to `RawType`.
+> +// * `DRIVER_DATA_OFFSET` is the offset to the `data` field.
+> +unsafe impl RawDeviceId for DeviceId {
+> +    type RawType = bindings::i2c_device_id;
+> +
+> +    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::i2c_device_id, driver_data);
+> +
+> +    fn index(&self) -> usize {
+> +        self.0.driver_data as _
+> +    }
+> +}
+> +
+> +/// I2C [`DeviceId`] table.
+> +pub type IdTable<T> = &'static dyn device_id::IdTable<DeviceId, T>;
+> +
+> +/// An adapter for the registration of I2C drivers.
+> +#[doc(hidden)]
+> +pub struct Adapter<T: Driver + 'static>(T);
+> +
+> +impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+> +    type RegType = bindings::i2c_driver;
+> +
+> +    fn register(
+> +        i2cdrv: &Opaque<Self::RegType>,
+> +        name: &'static CStr,
+> +        module: &'static ThisModule,
+> +    ) -> Result {
+> +        // SAFETY: It's safe to set the fields of `struct i2c_driver` on initialization.
+> +        unsafe {
+> +            (*i2cdrv.get()).driver.name = name.as_char_ptr();
+> +            (*i2cdrv.get()).probe = Some(Self::probe_callback);
+> +            (*i2cdrv.get()).remove = Some(Self::remove_callback);
+> +            if let Some(t) = T::I2C_ID_TABLE {
+> +                (*i2cdrv.get()).id_table = t.as_ptr();
+> +            }
+> +            if let Some(t) = T::OF_ID_TABLE {
+> +                (*i2cdrv.get()).driver.of_match_table = t.as_ptr();
+> +            }
+> +        }
+> +
+> +        // SAFETY: `i2cdrv` is guaranteed to be a valid `RegType`.
+> +        to_result(unsafe { bindings::i2c_register_driver(module.0, i2cdrv.get()) })
+> +    }
+> +
+> +    fn unregister(i2cdrv: &Opaque<Self::RegType>) {
+> +        // SAFETY: `i2cdrv` is guaranteed to be a valid `RegType`.
+> +        unsafe { bindings::i2c_del_driver(i2cdrv.get()) };
+> +    }
+> +}
+> +
+> +impl<T: Driver> Adapter<T> {
+> +    /// Get the [`Self::IdInfo`] that matched during probe.
+> +    fn id_info(client: &mut Client) -> Option<&'static T::IdInfo> {
+> +        let id = <Self as driver::Adapter>::id_info(client.as_ref());
+> +        if id.is_some() {
+> +            return id;
+> +        }
+> +
+> +        // SAFETY: `client` and `client.as_raw()` are guaranteed to be valid.
+> +        let id = unsafe { bindings::i2c_client_get_device_id(client.as_raw()) };
+> +        if !id.is_null() {
+> +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct i2c_device_id` and
+> +            // does not add additional invariants, so it's safe to transmute.
+> +            let id = unsafe { &*id.cast::<DeviceId>() };
+> +            return Some(T::I2C_ID_TABLE?.info(id.index()));
+> +        }
 
-      Arnd
+You aren't handling the DT based matching.
+
+Rob
