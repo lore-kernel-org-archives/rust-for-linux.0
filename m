@@ -1,348 +1,155 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CED8111A8;
-	Thu, 19 Dec 2024 20:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9018B19FA92;
+	Thu, 19 Dec 2024 20:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734641948; cv=none; b=AFAGQCpXtps3gFd4k4OdxHibKoirD+pqm+oE502bE+GSXq38Buoj0sESHXwoDk/MkWBLi0wuGmQP0VYHbTLUwfFt10k7f3ZY+w9kD+hOhA4fANul7EI43zFQNms4kKUGqHXZnDPkK1eAFpmhxH4/uROQ6ldy4pf1tMwPuElMeeY=
+	t=1734641967; cv=none; b=J9WGtrVrmjObePgMQMmyK6KAQnvCHKQeqm6W460/NEx4a8xER8RgDOdjaJJoBzL1hZ6qUudPVp9QxEruyprpQNtipGmc7M+kQohcQfAd60Zq5AN3hnZL6XeIdTCQnLgs1yxmnHYY5+WHJmpkXOj78ahaw/t8npkkaEoTThM0QMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734641948; c=relaxed/simple;
-	bh=YjrRdHYKGhnsITy8zjSRFVmkcRgglVZLshnUOYFEx5A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NjHKv0C9JknIzrqSWpnleemVJwNQJB83H5fttrPwsoAGCZTqybpweQpG/TNi8RUfRxlKYd0WD+ump35WsgCLrmCTjunG/l9DoPcAUsKC2sSELzlEAbCiHqaY8mGPWaf47If0oqkvX2tWwa0ClPmCHsmrxznF/+/IjBys0d13L4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KbfgnlfM; arc=none smtp.client-ip=209.85.160.41
+	s=arc-20240116; t=1734641967; c=relaxed/simple;
+	bh=WZvqg+TueHor/UjhA5RR+jtq6I/LXSlgCrqEo4+fv98=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JVUPbLoYT8CbRxjx3FPKFW9UE2RZapBPYJDk5cjTqYh8GitR9LSGx3j+UgwdYx1Fwd0tIoJNlF9c116SyzttuYwxJg3UfPkQcRfm3Biaa/dHZ3aKmMG1UsfgkucRyf/aVqSWQ1p37XVVEDfF838hL9UeTD/nKkbIbRhJcszcxmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O+CwBa5j; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KbfgnlfM"
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2a3939a758dso414683fac.1;
-        Thu, 19 Dec 2024 12:59:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O+CwBa5j"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7f4325168c8so572789a12.1;
+        Thu, 19 Dec 2024 12:59:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734641945; x=1735246745; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O0Nl740SdQFb/mWMyJAWlhHl8LibqLONteLoXkNY5GM=;
-        b=KbfgnlfM4/VmScoPStDete10S1xU7Dc5laWykcT4ZrOSC1KIDCd/N0bNW3+fhOD4Tz
-         pW7fd429gQ0dX/ExXiwjCBdpj3ziL08q2t0lcLziZ3s5Um7ERijYMdNKgqMv4MuvLXy8
-         mH32ALGCfgAFC/VsuvYom91710D+dHUAchN9xeyWH1NbxTPhAVQlM2H5aT1glWc+Xms9
-         zeLaL28i0+geUdq7UxwIu/+/GidcPvkXMka0upAS3DZd4nuMXOQGeoxbEKB5/Nean/Wg
-         Mu11ZppoSiYnE/7qL4lR2RwOus3aC8YAeG07Etvxd+1U2x2hyMzPSfnzNIT9SJuXhchp
-         6rKg==
+        d=gmail.com; s=20230601; t=1734641965; x=1735246765; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=itIeJiLDxG+gf/edhn9TtR8VMo0YdxJKNH0/VPITOuU=;
+        b=O+CwBa5jT5iG1hKvcJtFukpXCsw9gSUpAHxyuHyiirkv+RE6XHroAMbs2l0vfBEjk5
+         02F9Te3+BwENKvhOHKbfTasghU/zcmC9Jjodp1BCXUJxnZXtkFPxPFuBv8uR+3+o37iG
+         LkvNrP79ROW0N5nN5NWX2e/3Cf4vRAkXDRd5Si4+XfnGlg2VJfD+dvS4UKWcELn/U81J
+         fBY7eybbmsRetZ9QEr/9EgYzsh2DXeFyd1mcqzibpKiuKZh4Lcn6I9q9GJFGwX/y7cSB
+         l9DZPWqBz9nLabhE+Bk0qy9gG30eM1NhvUAUA7j9eiPhR8EzVuMKYeZEtiETbv29+d8Z
+         DBfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734641945; x=1735246745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O0Nl740SdQFb/mWMyJAWlhHl8LibqLONteLoXkNY5GM=;
-        b=fb28Ci3BUgf9s2wKOX/ygaxt+XSKQdA5S46c6OUI3ny0C08KJVznA0mC/zDcVZu9FV
-         yuGfBKTztljffhgdEAGH/vie2wWpm6pukadClDBXlB3qXe5EYAAdDLEVnCQEKIm1tbMI
-         C4hrvqsPv4SUOH/I65kTOGNTbPC8IqWXWwGwpEgdirhduMTjrAIoljtV/1bkXoRdN7lt
-         +TABJKqVrUS8YTQEEN5PbGktgDkPHaSGsrvHXofxdnmU99AZRsb1YbQJ7dcUPgnygdxF
-         +WVTrNp/nHCykoLL38aPjFz5wqrVEfoXdCotIhKTh31Ux5AuZOGu570rgpIS6zICphfs
-         bqTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZEVG7km3WlJA/hZrbtrtMKB8ux8AEbUjFC/P0hpK2UollE59eAA7h+DOj57/EgLS/tZ0Mn9hhIYMnKAoI@vger.kernel.org, AJvYcCWzr9UAJZbAtRUFJuY/ldfptxh4kzxdy8j4ZXyp2G+loFtWN2Jf7FCqoVaBKWmjsnv5oOCeC0sTee3Tge3fixE=@vger.kernel.org, AJvYcCXbzEHh/ZAKaDifMrvDHyyg931j5EvbIrSJFcydvYOwhImOK9J0Nc7MNYz4okfWq4LnWTlbGgBLlBY+KXU6@vger.kernel.org, AJvYcCXndDC3y+Ewra9AK79vu01jQcY+dCxJZVPZ6ndhuEgdrfSIqF/dMfntPyrVSzeNJbeeShRm6Or+qVNE+BEpFfRd9pnmBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxphzD2qHWUUiZKpN9/e2a2LuiksufUHlajKZ5Fe+QIzwVHS0Hc
-	QJWHHwrk7CV6QVUs4Kg0CRjgl37PcJz4OF8pZQMnpR6gYo1f51U0GMfG2lq9Aeuf3B9dS1Etoh6
-	E/QVOwLyT+OxhXqnPMX8tzarX5pE=
-X-Gm-Gg: ASbGnct8jHLPRhiRr45Jl4B5S2831EQd0iW5DoPv7lgtrab11M7goNuag5B7Z8G46so
-	BAN82bCCJSg8o3wxNUJ9h9ks8MdqXJ6k/ybf8I220jcZwbyKEUD80kJdQ8AKFmXUpRqOARxna
-X-Google-Smtp-Source: AGHT+IEdI1sWWiMU6wk9mllBIksD8l/nflFc189L8ied//My3XEJy3sGY1wxVSphbpfOtMMZmryL9Im7zTonKElJvjM=
-X-Received: by 2002:a05:6870:e07:b0:296:aef8:fe9a with SMTP id
- 586e51a60fabf-2a7fafffae5mr246361fac.7.1734641945474; Thu, 19 Dec 2024
- 12:59:05 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734641965; x=1735246765;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=itIeJiLDxG+gf/edhn9TtR8VMo0YdxJKNH0/VPITOuU=;
+        b=fYpJZE/X6nSOJFTmRa1/hd5tCSnUa4Ebl/0rkTQzr6GZNBVjFaAJ0tH643seHuuNuR
+         31ziUDqpL+WYu5XdX5n+1Be32gijuVHbMPP3Ej6cSykHlzYslHRU1TMVGbJ1KjE67Cu5
+         LIGG1jg7OPsRxF6lXNQrw6MAAZzPF4lmsz/9XuF8b6cB02Dw30nr4L2O0KXcb8pDdH2Q
+         7cCVXHYmXxscQ5coad+tSnkYpLd7dQw8kUsKAGD0JyoqReg49jrLRM6Gn8Eq4nlVjFXx
+         iqrTi5uyUHy7WD6qvZ9UjFV1dIV6+EquKQGwC2lwxR0QtaJt3o8yTCVzic8yJaU946rz
+         pZzg==
+X-Forwarded-Encrypted: i=1; AJvYcCULfiTFzLmresmARD+lnL6/MxPfSGCjZ/uI80NUIaPRQfAgiQWHUe+AC1zPQRzGNj7jyM0gvq1M@vger.kernel.org, AJvYcCUTXkadofNEVIdY7okax8omgVLAH5i1zVMd0Evb0n9FTxXRQn1p++sheSNlB7FT5BN/29oGGpmpEII2pSc=@vger.kernel.org, AJvYcCVA2drducftNa8dDoze0MUXXVge16klJq6tAs1CqMPZr27JkqMAEoPJ88fFLaoDoC+y8CJEGYF8fncSQJgnV9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1zfiOjn7T5Tfn5DYvP1+pFfmzXBzg657qPzQ6akuZ9gEOqqQU
+	Qo+Q2r7z+kcB3aPnMZsEMlQY1X4RCvgIGowuNyCm9YljphhW9BXS
+X-Gm-Gg: ASbGncvAxzCjFom7yB5mf5FCAUWbvC4uzCrO7ZtCWL2Sj81vFl6YXAGTtVSt4yn6leO
+	6HQrozwocLmGDw7qdEVmRE/rKBfytL4A41azXxbuXEBSkxwgaPNLTAaPN2S1pY+ttcmNqqZg3Al
+	CUT5Ykm1+n0n7o/AXQK/MUZpZavE8GUxfOrYSGo/wiAn8zKmuMZjkai7OTLoGx+m/zkP7SCSsHd
+	egYFZbqUTegOvmdNKdzJXstrnXD7iwMmNP4lAF4SWwtIR5PdXYrS8gmVJoGMJtKvQ==
+X-Google-Smtp-Source: AGHT+IGoh8BXDGsBfbh/U5qR1CbAPSwtkKfGguzV1OfM/P/NXOzHODZBBBS2KzINPuDoVeJhxqPTog==
+X-Received: by 2002:a05:6a21:6f87:b0:1e0:c8c5:9b1c with SMTP id adf61e73a8af0-1e5e0450114mr908697637.9.1734641964665;
+        Thu, 19 Dec 2024 12:59:24 -0800 (PST)
+Received: from mitchelllevy. ([174.127.224.194])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad90c331sm1751090b3a.196.2024.12.19.12.59.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2024 12:59:24 -0800 (PST)
+From: Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH v2 0/2] rust: lockdep: Fix soundness issue affecting
+ LockClassKeys
+Date: Thu, 19 Dec 2024 12:58:54 -0800
+Message-Id: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241219200821.8328-1-maccraft123mc@gmail.com>
- <20241219200821.8328-2-maccraft123mc@gmail.com> <a2310cf8-5e00-4233-8c56-f04d3f692b13@linaro.org>
-In-Reply-To: <a2310cf8-5e00-4233-8c56-f04d3f692b13@linaro.org>
-From: Maya Matuszczyk <maccraft123mc@gmail.com>
-Date: Thu, 19 Dec 2024 21:58:29 +0100
-Message-ID: <CAO_MupK8GYwNep9k-C28=Ly8wgn1T6LLiYnFcbKg0spRNXbkYw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] platform: arm64: Add driver for EC found in most
- X1E laptops
-To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
-Cc: Hans de Goede <hdegoede@redhat.com>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA6JZGcC/3WMQQ6CMBAAv0J6tqZdaARP/sNwKNsFGoGSFhsN4
+ e8WTibG40wys7JA3lJg12xlnqIN1k0J4JQx7PXUEbcmMQMBhaiE4v4ZFj44fBiauckpFwoklo1
+ mKZk9tfZ17O514t6Gxfn3cY9yt39GUXLJDWCFILUuG7h1o7bDGd24f/dIClH8RIJTpRUW6gKyx
+ a+o3rbtA/JEwNfdAAAA
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734641963; l=2765;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=WZvqg+TueHor/UjhA5RR+jtq6I/LXSlgCrqEo4+fv98=;
+ b=A/fjUcDpI6qaKoobjgy82wbk67WA4XKsK7ZDp0iqyw5apjw2+mQK0qwSR0ydHEULrqxEhQgpF
+ HNG/Fn9n3OZDZUw/2ywMx6Q+dJ0b/y6znzqq/2DqGYb3WEKvaIa1tIo
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
 
-czw., 19 gru 2024 o 21:43 Bryan O'Donoghue
-<bryan.odonoghue@linaro.org> napisa=C5=82(a):
->
-> On 19/12/2024 20:08, Maya Matuszczyk wrote:
-> > Currently it features only reporting that the AP is going to suspend,
-> > which results in keyboard backlight turning off and the power LED
-> > slowly blinking on the Lenovo Yoga Slim 7x.
-> >
-> > Honor Magicbook Art 14 and Lenovo Yoga Slim 7x are known to have
-> > firmware with extensions which would need appropriate handling.
-> > For reverse engineering the firmware on them I have written a Rust
-> > utility:
-> >
-> > https://github.com/Maccraft123/it8987-qcom-tool.git
-> >
-> > Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> > ---
-> >   MAINTAINERS                              |   6 +
-> >   drivers/platform/arm64/Kconfig           |   8 ++
-> >   drivers/platform/arm64/Makefile          |   1 +
-> >   drivers/platform/arm64/qcom-x1e-it8987.c | 158 ++++++++++++++++++++++=
-+
-> >   4 files changed, 173 insertions(+)
-> >   create mode 100644 drivers/platform/arm64/qcom-x1e-it8987.c
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index b878ddc99f94..08d170e2e1e3 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -12890,6 +12890,12 @@ S:   Maintained
-> >   W:  http://legousb.sourceforge.net/
-> >   F:  drivers/usb/misc/legousbtower.c
-> >
-> > +QCOM IT8987 EC DRIVER
-> > +M:   Maya Matuszczyk <maccraft123mc@gmail.com>
-> > +S:   Maintained
-> > +F:   Documentation/devicetree/bindings/platform/qcom,x1e-it8987-ec.yam=
-l
-> > +F:   drivers/platform/arm64/qcom-x1e-it8987.c
-> > +
-> >   LETSKETCH HID TABLET DRIVER
-> >   M:  Hans de Goede <hdegoede@redhat.com>
-> >   L:  linux-input@vger.kernel.org
-> > diff --git a/drivers/platform/arm64/Kconfig b/drivers/platform/arm64/Kc=
-onfig
-> > index f88395ea3376..ebb7b4f70ca0 100644
-> > --- a/drivers/platform/arm64/Kconfig
-> > +++ b/drivers/platform/arm64/Kconfig
-> > @@ -49,4 +49,12 @@ config EC_LENOVO_YOGA_C630
-> >
-> >         Say M or Y here to include this support.
-> >
-> > +config EC_QCOM_X1E_IT8987
-> > +     tristate "Embedded Controller driver for most X1E80100 laptops"
-> > +     depends on ARCH_QCOM || COMPILE_TEST
-> > +     depends on I2C
-> > +     help
-> > +       This driver currently supports reporting device suspend to the =
-EC so it
-> > +       can take appropriate actions.
-> > +
-> >   endif # ARM64_PLATFORM_DEVICES
-> > diff --git a/drivers/platform/arm64/Makefile b/drivers/platform/arm64/M=
-akefile
-> > index b2ae9114fdd8..b9aa195bc1e6 100644
-> > --- a/drivers/platform/arm64/Makefile
-> > +++ b/drivers/platform/arm64/Makefile
-> > @@ -7,3 +7,4 @@
-> >
-> >   obj-$(CONFIG_EC_ACER_ASPIRE1)       +=3D acer-aspire1-ec.o
-> >   obj-$(CONFIG_EC_LENOVO_YOGA_C630) +=3D lenovo-yoga-c630.o
-> > +obj-$(CONFIG_EC_QCOM_X1E_IT8987) +=3D qcom-x1e-it8987.o
-> > diff --git a/drivers/platform/arm64/qcom-x1e-it8987.c b/drivers/platfor=
-m/arm64/qcom-x1e-it8987.c
-> > new file mode 100644
-> > index 000000000000..d27067d6326a
-> > --- /dev/null
-> > +++ b/drivers/platform/arm64/qcom-x1e-it8987.c
-> > @@ -0,0 +1,158 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Copyright (c) 2024 Maya Matuszczyk <maccraft123mc@gmail.com>
-> > + */
-> > +#include <linux/i2c.h>
-> > +#include <linux/module.h>
-> > +#include <linux/input.h>
-> > +#include <linux/input/sparse-keymap.h>
->
-> Your includes should be alphabetised.
->
-> > +
-> > +#define EC_IRQ_REASON_REG 0x05
-> > +#define EC_SUSPEND_RESUME_REG 0x23
-> > +#define EC_IRQ_ENABLE_REG 0x35
-> > +
-> > +#define EC_NOTIFY_SUSPEND_ENTER 0x01
-> > +#define EC_NOTIFY_SUSPEND_EXIT 0x00
-> > +#define EC_NOTIFY_SCREEN_OFF 0x03
-> > +#define EC_NOTIFY_SCREEN_ON 0x04
-> > +
-> > +#define EC_IRQ_MICMUTE_BUTTON 0x04
-> > +#define EC_IRQ_FAN1_STATUS_CHANGE 0x30
-> > +#define EC_IRQ_FAN2_STATUS_CHANGE 0x31
-> > +#define EC_IRQ_FAN1_SPEED_CHANGE 0x32
-> > +#define EC_IRQ_FAN2_SPEED_CHANGE 0x33
-> > +#define EC_IRQ_COMPLETED_LUT_UPDATE 0x34
-> > +#define EC_IRQ_COMPLETED_FAN_PROFILE_SWITCH 0x35
-> > +#define EC_IRQ_THERMISTOR_1_TEMP_THRESHOLD_CROSS 0x36
-> > +#define EC_IRQ_THERMISTOR_2_TEMP_THRESHOLD_CROSS 0x37
-> > +#define EC_IRQ_THERMISTOR_3_TEMP_THRESHOLD_CROSS 0x38
-> > +#define EC_IRQ_THERMISTOR_4_TEMP_THRESHOLD_CROSS 0x39
-> > +#define EC_IRQ_THERMISTOR_5_TEMP_THRESHOLD_CROSS 0x3a
-> > +#define EC_IRQ_THERMISTOR_6_TEMP_THRESHOLD_CROSS 0x3b
-> > +#define EC_IRQ_THERMISTOR_7_TEMP_THRESHOLD_CROSS 0x3c
-> > +#define EC_IRQ_RECOVERED_FROM_RESET 0x3d
-> > +
-> > +struct qcom_x1e_it8987_ec {
-> > +     struct i2c_client *client;
-> > +     struct input_dev *idev;
-> > +     struct mutex lock;
-> > +};
-> > +
-> > +static irqreturn_t qcom_x1e_it8987_ec_irq(int irq, void *data)
-> > +{
-> > +     struct qcom_x1e_it8987_ec *ec =3D data;
-> > +     struct device *dev =3D &ec->client->dev;
-> > +     int val;
-> > +
-> > +     guard(mutex)(&ec->lock);
->
-> What's the thing that can execute at the same time as this procedure -
-> there doesn't appear to be any concurrent candidate in this patch.
-The user could suspend the laptop and the EC could fire an IRQ at the same
-time... I'll need to add mutex locking to suspend/resume functions
+This series is aimed at fixing a soundness issue with how dynamically
+allocated LockClassKeys are handled. Currently, LockClassKeys can be
+used without being Pin'd, which can break lockdep since it relies on
+address stability. Similarly, these keys are not automatically
+(de)registered with lockdep.
 
+At the suggestion of Alice Ryhl, this series includes a patch for
+-stable kernels that disables dynamically allocated keys. This prevents
+backported patches from using the unsound implementation.
 
-> > +
-> > +     val =3D i2c_smbus_read_byte_data(ec->client, EC_IRQ_REASON_REG);
-> > +     if (val < 0) {
-> > +             dev_err(dev, "Failed to get EC IRQ reason: %d\n", val);
-> > +             return IRQ_HANDLED;
-> > +     }
-> > +
-> > +     dev_info(dev, "Unhandled EC IRQ reason: %d\n", val);
->
-> Should an unhandled IRQ be an info or an err ?
-I don't know, it's "unimplemented but doesn't really matter"
+Currently, this series requires that all dynamically allocated
+LockClassKeys have a lifetime of 'static (i.e., they must be leaked
+after allocation). This is because Lock does not currently keep a
+reference to the LockClassKey, instead passing it to C via FFI. This
+causes a problem because the rust compiler would allow creating a
+'static Lock with a 'a LockClassKey (with 'a < 'static) while C would
+expect the LockClassKey to live as long as the lock. This problem
+represents an avenue for future work.
 
->
-> > +
-> > +     return IRQ_HANDLED;
-> > +}
-> > +
-> > +static int qcom_x1e_it8987_ec_probe(struct i2c_client *client)
-> > +{
-> > +     struct device *dev =3D &client->dev;
-> > +     struct qcom_x1e_it8987_ec *ec;
-> > +     int ret;
-> > +
-> > +     ec =3D devm_kzalloc(dev, sizeof(*ec), GFP_KERNEL);
-> > +     if (!ec)
-> > +             return -ENOMEM;
-> > +
-> > +     mutex_init(&ec->lock);
-> > +     ec->client =3D client;
-> > +
-> > +     ret =3D devm_request_threaded_irq(dev, client->irq,
-> > +                                     NULL, qcom_x1e_it8987_ec_irq,
-> > +                                     IRQF_ONESHOT, "qcom_x1e_it8987_ec=
-", ec);
-> > +     if (ret < 0)
-> > +             return dev_err_probe(dev, ret, "Unable to request irq\n")=
-;
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(client, EC_IRQ_ENABLE_REG, 0x01=
-);
-> > +     if (ret < 0)
-> > +             return dev_err_probe(dev, ret, "Failed to enable interrup=
-ts\n");
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static void qcom_x1e_it8987_ec_remove(struct i2c_client *client)
-> > +{
-> > +     struct device *dev =3D &client->dev;
-> > +     int ret;
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(client, EC_IRQ_ENABLE_REG, 0x00=
-);
-> > +     if (ret < 0)
-> > +             dev_err(dev, "Failed to disable interrupts: %d\n", ret);
-> > +}
-> > +
-> > +static int qcom_x1e_it8987_ec_suspend(struct device *dev)
-> > +{
-> > +     struct i2c_client *client =3D to_i2c_client(dev);
-> > +     int ret;
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(client, EC_SUSPEND_RESUME_REG, =
-EC_NOTIFY_SCREEN_OFF);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(client, EC_SUSPEND_RESUME_REG, =
-EC_NOTIFY_SUSPEND_ENTER);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int qcom_x1e_it8987_ec_resume(struct device *dev)
-> > +{
-> > +     struct i2c_client *client =3D to_i2c_client(dev);
-> > +     int ret;
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(client, EC_SUSPEND_RESUME_REG, =
-EC_NOTIFY_SUSPEND_EXIT);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(client, EC_SUSPEND_RESUME_REG, =
-EC_NOTIFY_SCREEN_ON);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static const struct of_device_id qcom_x1e_it8987_ec_of_match[] =3D {
-> > +     { .compatible =3D "lenovo,yoga-slim7x-ec" },
-> > +     { .compatible =3D "qcom,x1e-it9897-ec" },
-> > +     {}
-> > +};
-> > +MODULE_DEVICE_TABLE(of, qcom_x1e_it8987_ec_of_match);
-> > +
-> > +static const struct i2c_device_id qcom_x1e_it8987_ec_i2c_id_table[] =
-=3D {
-> > +     { "qcom-x1e-it8987-ec", },
-> > +     {}
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, qcom_x1e_it8987_ec_i2c_id_table);
-> > +
-> > +static DEFINE_SIMPLE_DEV_PM_OPS(qcom_x1e_it8987_ec_pm_ops,
-> > +             qcom_x1e_it8987_ec_suspend,
-> > +             qcom_x1e_it8987_ec_resume);
-> > +
-> > +static struct i2c_driver qcom_x1e_it8987_ec_i2c_driver =3D {
-> > +     .driver =3D {
-> > +             .name =3D "yoga-slim7x-ec",
-> > +             .of_match_table =3D qcom_x1e_it8987_ec_of_match,
-> > +             .pm =3D &qcom_x1e_it8987_ec_pm_ops
-> > +     },
-> > +     .probe =3D qcom_x1e_it8987_ec_probe,
-> > +     .remove =3D qcom_x1e_it8987_ec_remove,
-> > +     .id_table =3D qcom_x1e_it8987_ec_i2c_id_table,
-> > +};
-> > +module_i2c_driver(qcom_x1e_it8987_ec_i2c_driver);
-> > +
-> > +MODULE_DESCRIPTION("Lenovo Yoga Slim 7x Embedded Controller");
-> > +MODULE_LICENSE("GPL");
->
-> Otherwise looks pretty good to me, nice hacking :)
->
-> ---
-> bod
->
+---
+Changes from RFC:
+- Split into two commits so that dynamically allocated LockClassKeys are
+removed from stable kernels. (Thanks Alice Ryhl)
+- Extract calls to C lockdep functions into helpers so things build
+properly when LOCKDEP=n. (Thanks Benno Lossin)
+- Remove extraneous `get_ref()` calls. (Thanks Benno Lossin)
+- Provide better documentation for `new_dynamic()`. (Thanks Benno
+Lossin)
+- Ran rustfmt to fix formatting and some extraneous changes. (Thanks
+Alice Ryhl and Benno Lossin)
+- Link to RFC: https://lore.kernel.org/r/20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com
+
+---
+Changes in v2:
+- Dropped formatting change that's already fixed upstream (Thanks Dirk
+  Behme).
+- Moved safety comment to the right point in the patch series (Thanks
+  Dirk Behme and Boqun Feng).
+- Added an example of dynamic LockClassKey usage (Thanks Boqun Feng).
+- Link to v1: https://lore.kernel.org/r/20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com
+
+---
+Mitchell Levy (2):
+      rust: lockdep: Remove support for dynamically allocated LockClassKeys
+      rust: lockdep: Use Pin for all LockClassKey usages
+
+ rust/helpers/helpers.c          |  1 +
+ rust/helpers/sync.c             | 13 +++++++++
+ rust/kernel/sync.rs             | 63 ++++++++++++++++++++++++++++++++++-------
+ rust/kernel/sync/condvar.rs     |  5 ++--
+ rust/kernel/sync/lock.rs        |  9 ++----
+ rust/kernel/sync/lock/global.rs |  5 ++--
+ rust/kernel/sync/poll.rs        |  2 +-
+ rust/kernel/workqueue.rs        |  3 +-
+ 8 files changed, 78 insertions(+), 23 deletions(-)
+---
+base-commit: 0c5928deada15a8d075516e6e0d9ee19011bb000
+change-id: 20240905-rust-lockdep-d3e30521c8ba
+
+Best regards,
+-- 
+Mitchell Levy <levymitchell0@gmail.com>
+
