@@ -1,110 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gentwo.org (gentwo.org [62.72.0.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACAF1C4A1C;
-	Fri, 20 Dec 2024 16:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7982E21CA06;
+	Fri, 20 Dec 2024 18:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734713076; cv=none; b=COgC2IhxjNwrbY+lvuO4vtSq+GD8+2txsM214WHW/kZV9R/7GekpjLtiR2/JkQsvZk15U52CtwXM+AfJZzmDf38i8pbbwf9mGXs33B2J+9yfDtwRBJhJHjj0cEwu276Ud4LyroeFivAi4dVbURPnMT5Q2xdZPVJXAZQjE9TkcMk=
+	t=1734719352; cv=none; b=NGMxp8tx5Or7Xq7ebL73C2JaoFnue72up0f3ndl7bOkH2NEfwXK34dU4iiC+Tg03La9gFFnWq/9zIE5NKluOgbPqxot9S6Af7dNT42SLMcHYDdI4fyFvWbl9G7WFa2Ze10USWtJHsZVJg9WoM4U1ZbofrhImPZ5KIpP2TXjrZG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734713076; c=relaxed/simple;
-	bh=/W6KyWLZlMH11g0ZeGK+Lh6aIPfQrX8kBjIMECm+d5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IPTwFg94V6YDvhy7ZlOeect4AH5Rzi4ybZPuJrqlpQj8eRGFULI9VhRJLi0oAs7uXD3bT/+g09BOUuxCg+NBFe2G90Nw34jZWias1IrN8bE73Ys7x3carwNnesE50u3fe8ogsoaTIZeG8dQhEOJnbRor4JRH6kmRWthq79Wwv+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+mX9gp0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734719352; c=relaxed/simple;
+	bh=ZfBNVpuqUHRg/2o9ie1II+m3jSRmmrhBDzV+TTJwtQA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=gaQQjJt3tmRnW43hJQzcJ+h4sSXtoS/HxHm6S7PTVoQgko3MDFRMaLtJzK4wH6bgUkX/n1eyn0G+xI+lffnEVanBwJz6fowTMTExLAPPBg2wHdRhnX+QA8s6KIrv31aVB6j6mK55+DtFQvzeIi3tEq0io4eiIA1g5ftGBptyfbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=kTFg+5+j; arc=none smtp.client-ip=62.72.0.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+mX9gp0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1311CC4CECD;
-	Fri, 20 Dec 2024 16:44:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734713075;
-	bh=/W6KyWLZlMH11g0ZeGK+Lh6aIPfQrX8kBjIMECm+d5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u+mX9gp0NI1sL3o4th4djHYK5dBf/0xQlg/OKaDCpAkkl8mPc+JPsPsMk7iEHvjvf
-	 KRqSuRlfZUGpDQDYTy3cCL4ZIoh4RY/0jVHHmd0qT7gYwenPiEJvcJaWOCOyMke5A7
-	 cJyC18i4ooGBrDaXfc/xGbwcGxM2IvRCtnXHCiEE=
-Date: Fri, 20 Dec 2024 17:44:31 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, saravanak@google.com,
-	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
-	chrisi.schrefl@gmail.com, paulmck@kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v7 00/16] Device / Driver PCI / Platform Rust abstractions
-Message-ID: <2024122031-outfit-mop-86d0@gregkh>
-References: <20241219170425.12036-1-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="kTFg+5+j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1734717414;
+	bh=ZfBNVpuqUHRg/2o9ie1II+m3jSRmmrhBDzV+TTJwtQA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=kTFg+5+jojiLnNj9qfRUdIC8ZkN8sDT61aiJit78jNHQ6e8xfbvrj2Xbp+SlvytJ/
+	 1QBg2ZmTy0ZT6taZTSFn43awDHK+pB8y9jN/Y8g5T5UnZKmdVDs8EXVOEBrJmz5c/4
+	 0VdjlOQQ8cWEoNsnlswCxCoTpV6sJeMOqKvYfHdY=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id 9756040737; Fri, 20 Dec 2024 09:56:54 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 964CC401E6;
+	Fri, 20 Dec 2024 09:56:54 -0800 (PST)
+Date: Fri, 20 Dec 2024 09:56:54 -0800 (PST)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: Mitchell Levy <levymitchell0@gmail.com>
+cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Benno Lossin <benno.lossin@proton.me>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Andrew Morton <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>, 
+    Tejun Heo <tj@kernel.org>, linux-kernel@vger.kernel.org, 
+    rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH RFC 3/3] rust: percpu: add a rust per-CPU variable test
+In-Reply-To: <20241219-rust-percpu-v1-3-209117e822b1@gmail.com>
+Message-ID: <5374de79-0ee6-e817-0f87-c800a6fbb733@gentwo.org>
+References: <20241219-rust-percpu-v1-0-209117e822b1@gmail.com> <20241219-rust-percpu-v1-3-209117e822b1@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241219170425.12036-1-dakr@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Dec 19, 2024 at 06:04:02PM +0100, Danilo Krummrich wrote:
-> This patch series implements the necessary Rust abstractions to implement
-> device drivers in Rust.
-> 
-> This includes some basic generalizations for driver registration, handling of ID
-> tables, MMIO operations and device resource handling.
-> 
-> Those generalizations are used to implement device driver support for two
-> busses, the PCI and platform bus (with OF IDs) in order to provide some evidence
-> that the generalizations work as intended.
-> 
-> The patch series also includes two patches adding two driver samples, one PCI
-> driver and one platform driver.
-> 
-> The PCI bits are motivated by the Nova driver project [1], but are used by at
-> least one more OOT driver (rnvme [2]).
-> 
-> The platform bits, besides adding some more evidence to the base abstractions,
-> are required by a few more OOT drivers aiming at going upstream, i.e. rvkms [3],
-> cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
-> 
-> The patches of this series can also be [7], [8] and [9].
-> 
-> Changes in v7:
-> ==============
-> - Revocable:
->   - replace `compare_exchange` with `swap`
-> 
-> - Driver:
->   - fix warning when CONFIG_OF=n
-> 
-> - I/O:
->   - remove unnecessary return statement in rust_helper_iounmap()
->   - fix cast in doctest for `bindings::ioremap`
-> 
-> - Devres:
->   - fix cast in doctest for `bindings::ioremap`
-> 
-> - PCI:
->   - remove `Deref` of `pci::DeviceId`
->   - rename `DeviceId` constructors
->     - `new`       -> `from_id`
->     - `with_class -> `from_class`
-> 
-> - MISC:
->   - use `kernel::ffi::c_*` instead of `core::ffi::c_*`
->   - rebase onto latest rust-next (0c5928deada15a8d075516e6e0d9ee19011bb000)
+On Thu, 19 Dec 2024, Mitchell Levy wrote:
 
-Thanks for this last round of changes, looks great to me!  I've added
-them all to my driver-core-testing branch, and if 0-day doesn't
-complain, will move it to driver-core-next for merging into 6.14-rc1.
+> +        let mut native: i64 = 0;
+> +        let mut pcpu: PerCpuRef<i64> = unsafe { unsafe_get_per_cpu_ref!(PERCPU, CpuGuard::new()) };
 
-Thanks for persisting with this, looks great.  Now the real work starts :)
+A bit complex.
 
-thanks,
+> +        native += -1;
+> +        *pcpu += -1;
+> +        assert!(native == *pcpu && native == -1);
+> +
+> +        native += 1;
+> +        *pcpu += 1;
+> +        assert!(native == *pcpu && native == 0);
+> +
 
-greg k-h
+That's pretty straightforward..... But is there no symbolic access to the
+per cpu namespace? How would you access the kernel per cpu variables
+defined in C?
+
+How do you go about using per cpu atomics like
+
+this_cpu_inc(nr_dentry_unused);
+
