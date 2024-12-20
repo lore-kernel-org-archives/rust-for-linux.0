@@ -1,138 +1,148 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9911A7AE3;
-	Fri, 20 Dec 2024 06:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CF119FA9D;
+	Fri, 20 Dec 2024 07:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734675957; cv=none; b=L3q7AuDmNTM15dfeoZuodzS64tLd6fMOx8YXdsa4WEBHS942v5KcXoK9itNRUTehxqLh66kyJj7PFCygt8cJsABPFs1c0b3AFq7+zUsLyZ2CFk9Z872QPC7EtOwVvy/R59bWaplsS2I88vsy4qaKMfEjoIUMQ9MZtWk50do+sqM=
+	t=1734679492; cv=none; b=Cxr9n/32PiAcCiKOXbUSOMMm6R7SmKPx1z4ciVUu2U8hVDxCPzNu8k6aenDAr66C7ba5dgpsa4/QNJ+zyQHOX+KRrkszap/9S8WH+Trws5GA+IKekMb0JO3HY9JNhL/rwQlJSyn4JvVV6mhnZzSuqpwy/y00nooEvMfUWoEVqbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734675957; c=relaxed/simple;
-	bh=45r5CkfXaRfA8k6UPfZo/AYWxfTBHCuIBcIPhexJu6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBO5zXqwJsMIkqJUkOOPQJEX1n3bpBWRgfealwy0P5et5XVNJKKs3Xg9di2w1F48eDFABLOXRYfEAP1aQcLkmxwNdgggWUdVdN3xCmxxr7DapZI77w/HpBCITYMv9ktureLjWoiNvwo7lDDg61VUhcuHevvaZMVK6eXGnIOstBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W3SCSb5T; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1734679492; c=relaxed/simple;
+	bh=wI74LX221mPtoUsM7Ghs9jBZJLJE4lCDTW38aEi1dyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A8lxNRDRxmyS/5+x1BspoSV/NMZIUihEW7GVHnlO7HvIjZ38fGMclgkTMWCMmPh8weh9UtxyEbnhHIhibSRWtZrF9IVhS5HKczjzlif3QgoP1DzlyU+wPI0v02XQAffMWTMeIIfOZcwSQWHqdU7YTJFyONz02taucifu0nVrV3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMjKp2Sg; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W3SCSb5T"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2eeb4d643a5so1469485a91.3;
-        Thu, 19 Dec 2024 22:25:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMjKp2Sg"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d3bdccba49so2671927a12.1;
+        Thu, 19 Dec 2024 23:24:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734675955; x=1735280755; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OyT4mYXo1YQCFF9gA4c96TOQBnOi8nuKXB5eYWwMmIc=;
-        b=W3SCSb5TnHgKd/P7Vzi82XXui/2rpyxSy/RT+82Fp4pxFhu86otldI/kinn90vFOr+
-         Gv9IG9YWaPaYQDuMQDITrU9Zs7dcKPvvK/LTs3WcnmTdbNjWnAsMrLESYIfKgiXvQYOG
-         VQC9HTT5SUifm6V5gNeNYaQ7RpmT3NuvpOJqxkPorKc9p9mcAhEW3ysUC8daCtwnInSQ
-         V7mSsDgZeC/Tj4wdVfoCseCO0AyGWdyiIn/yq09PLqNypFLA0MGTDR3qcCe4qhfQbafd
-         +GfnQmtSNuVckb5SAhtfXLAUFyOoCAmugnd/Stsfp7NGXtSqAu4dq7Ve4mXPLxAMq0ic
-         Zwzw==
+        d=gmail.com; s=20230601; t=1734679487; x=1735284287; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ORTg5dVLT+DfsB7NLY9HYeMdx6LrBrYY3N/RITbt1kI=;
+        b=GMjKp2SguJSv41vHdYhi9sV10s6NwRhyjXsdmdoaOPjLVyBxOjE+ZDZFwLnbY52Yrx
+         TsrUENyBcsFoFWEO5mqvv/agQMGs2RtdbwKyHLQ8t6erYWEn0Qxc1sRU4nMui/lv/IPz
+         qm/QsGTxuxjg1QZaI9x8R5Ocex4bxGXuRcuHHxa9LkrMnc5hTc5Mu+ydwPfcBhRzYuBZ
+         8hiEmRyq7MwMwtJ6X+5Gu5ApuD4q4iNcnIiFf0U2WYnxSVu4lCx8slCYeRNGsJuq5tUx
+         DNPANakINLjKYh1wFN96ZG1xQZeyJ9/Jy91muH2CQVsxs87XQF44ji+5lNPuCxGvTyzN
+         KdUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734675955; x=1735280755;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OyT4mYXo1YQCFF9gA4c96TOQBnOi8nuKXB5eYWwMmIc=;
-        b=lykWncfwTKZ4bKWGY+h0HV4N4oHl3zhbUIXNJSk2hMd/ewYUbOTsilPUVxJ6/UHHdR
-         Ouh0wRBmEl6Y0GHFAblKfEwWKVgi/vu8GTyTOQZqng6ldiQuA1aaB7ubvemxVPgCdNyo
-         szYCHpm+VHUOZRAcF+7DJfzDOxgfAvTAkbhqKUyldsEhdn1iXI/2FxlpTUrIQhhAW+OL
-         +qxGrBzdIOc5dxJLZH6MU7mMzoLhuEpJOky3p95rG29lQjR8z0p6vS40easpJj+pNnmG
-         1fRwLnX1DORrmDFJ8OrdIzTp4fJoXyevAtkX4145onHzaBINN2/s2zZhElC9WBpz6IkR
-         rh/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWvtlz/6By61kNE2GKAQo78Bqpecx5mXQl1d+3EPyQsOIVawJZBwxVht1SQxU7suQYEc0HSYhfp6T5Ficw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhMQD+Nqz/tYyvjSncqb6idjJo4P8DmJJXfgJvOf/G0NSEQRq+
-	x8NQEe5YHFtXMohekZ1P8c/Fajfh9X4/uxIzBVHmUjX6ryEhz4HV
-X-Gm-Gg: ASbGncvEYIu1UnXxaIeUs7d/rZ1N5zkQZ+6a1vefvyHGYHW6gtWhWMW7BRD+rMSw2Nd
-	8potXmkKyBBWTeO5jZDKkHGrZbIvs/ebZJU9fQM7AM96kmCqGL6lkk8xur3PIOYjiHTm0zmijLo
-	t87/OU5XtlMISCsJzHQHczHwaq1FaVUi2ZgJCbtvH1AldISw8NNdz0k88cCUunbXayCAUVbA04u
-	BHPmIJf92fk2BnQHpMPCah+KiYWtaweIXexPx7kGYDGvffU+2Z3qzsVF76vTspa6dQ=
-X-Google-Smtp-Source: AGHT+IGkFL/ahSvpPa+HcOrq1SI9TntkFeUytxDlgy8T9FLcyGQS561knvKv2eD0hGEXHKeZaY5CQQ==
-X-Received: by 2002:a17:90a:c88b:b0:2f2:a9f0:40b0 with SMTP id 98e67ed59e1d1-2f452eb3dd9mr2487101a91.23.1734675955144;
-        Thu, 19 Dec 2024 22:25:55 -0800 (PST)
-Received: from lordgoatius.hsd1.or.comcast.net ([2601:1c1:8502:a6c0::b10a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca007f3sm22001755ad.228.2024.12.19.22.25.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 22:25:54 -0800 (PST)
-From: Jimmy Ostler <jtostler1@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Wedson Almeida Filho <walmeida@microsoft.com>,
-	Filipe Xavier <felipe_life@live.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	Daniel Sedlak <daniel@sedlak.dev>,
-	Alex Mantel <alexmantel93@mailbox.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jimmy Ostler <jtostler1@gmail.com>
-Subject: [PATCH v4 3/3] rust: alloc: Add doctest for `ArrayLayout`
-Date: Thu, 19 Dec 2024 22:25:33 -0800
-Message-ID: <f1564da5bcaa6be87aee312767a1d1694a03d1b7.1734674670.git.jtostler1@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1734674670.git.jtostler1@gmail.com>
-References: <cover.1734674670.git.jtostler1@gmail.com>
+        d=1e100.net; s=20230601; t=1734679487; x=1735284287;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ORTg5dVLT+DfsB7NLY9HYeMdx6LrBrYY3N/RITbt1kI=;
+        b=JBrbIVNFFnMHUJ9icD6KJyAHOMxtvRblrgOK6es9BL0V8jwRzL+xW4S+nel1f8+QHG
+         sTuVB+pIY35yeifpuYj8p/W1L+v7c1/I9LlS03Nm+nYQaKGgT2A3Bh8jzSJCa0N7ZteM
+         y5wMRDW4gMsgXw1SbLCrzbkfrnAIiDp0KBfxHpqD0GG2c31dVpidrv1x/rAI/WXWooDa
+         VO4xeuHEPckwdS+RBmPWA9Rd3FD/3rowuTeftDw5cw914UbDAGzrgxNyuH/g8Cqf4Oob
+         ZMjvJVoXHJCDzpLshgbjJjuKaE7+9slSq8QhRiaAnT+Wz9I2ES7ZCeaefkziqKbv1R9V
+         EZzg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmfoB0mPLt2RblAvzoL8ky2VKlWX3nGjo/ikq4GY99HGS+xRLWQ3P4PSVXu6FteV0TH9LUPB0ZmC1C@vger.kernel.org, AJvYcCV4AuoM+3Cfib6Qc17dxYvL2W0/lTYOLwEoyhoQ6MnpY4CKYB24Pq8A6Cju/OjmSOfXpAqH@vger.kernel.org, AJvYcCVtRjx+xRIOoD9yoXIa0XceHScMsrfF3QzgJ7sdSoBVxG0vTSAIeDl1GM4weuY4amUOH+JOfvkCKZtmGOlO@vger.kernel.org, AJvYcCW/XjIDw+8USZ8Y0CCeeMMXwODJaNKdvKgynSOuzM54+4znj5IrlYzFUl4cl7IPilgWtwtq6VH1FMuG@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzyqf0CrsK+tSBDMzog5honTa0JEVfao2ajewVDTnoLHkj/ei90
+	hZ9isi0SK3QXkl2Dho09VPaTTwwwVcOfIhyUupK4xbXXpiR35SWy
+X-Gm-Gg: ASbGncvlIowlQecT32NEJOhCu1yTz/ZAAHPJbSmFGwrBxXfWX7RzfExrXESUr2GDOrq
+	USV5r7/3Gs4J45Re7UOmQ+VfYL5dPgAu/0ZzA70x0YA5flJ6ywShkUqxDbPnEEysMtAaSXnzPmG
+	JtWJbB2T1ozDMpELUBrcF1fNydGYwD3uAFsXz2GDPOOXniWWc0wjFE5QwBDjHR3AgyRC5cNnhYE
+	JCvWqvpcWD4QNOTr3Iw683F88yLq/aaPghCeiiJhAwTXhacT0gKdpDapS61kI/DBImkKjZ/tLNb
+	uo/g38EpCUMitA5jfsPTPpmVUCPmJ0ksG21cubNNRltRPXW6YBGIMvROXH1ijYinbSY5I+TUAHJ
+	4Sq2LGlWaJJed
+X-Google-Smtp-Source: AGHT+IGbbKKdBnxcE917q6Ei+pU8l+/ETyCtOsYjSEOWzPRg71Rrv86cR/bfi3NhUj0QgDs/d+CLAw==
+X-Received: by 2002:a05:6402:5241:b0:5d0:e826:f0dc with SMTP id 4fb4d7f45d1cf-5d81dd9cc74mr1175724a12.12.1734679487017;
+        Thu, 19 Dec 2024 23:24:47 -0800 (PST)
+Received: from ?IPV6:2003:df:bf0d:b400:75b4:5445:d424:a5f6? (p200300dfbf0db40075b45445d424a5f6.dip0.t-ipconnect.de. [2003:df:bf0d:b400:75b4:5445:d424:a5f6])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80701c822sm1426756a12.77.2024.12.19.23.24.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2024 23:24:46 -0800 (PST)
+Message-ID: <a6346fd1-3161-4130-8121-5d0e98fd5141@gmail.com>
+Date: Fri, 20 Dec 2024 08:24:45 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 00/16] Device / Driver PCI / Platform Rust abstractions
+To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
+ rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+ a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+ fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+ ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+ daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com,
+ j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com,
+ paulmck@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, devicetree@vger.kernel.org, rcu@vger.kernel.org
+References: <20241219170425.12036-1-dakr@kernel.org>
+Content-Language: de-AT-frami, en-US
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <20241219170425.12036-1-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a rustdoc example and Kunit test to the `ArrayLayout` struct's
-`ArrayLayout::new()` function.
+On 19.12.24 18:04, Danilo Krummrich wrote:
+> This patch series implements the necessary Rust abstractions to implement
+> device drivers in Rust.
+> 
+> This includes some basic generalizations for driver registration, handling of ID
+> tables, MMIO operations and device resource handling.
+> 
+> Those generalizations are used to implement device driver support for two
+> busses, the PCI and platform bus (with OF IDs) in order to provide some evidence
+> that the generalizations work as intended.
+> 
+> The patch series also includes two patches adding two driver samples, one PCI
+> driver and one platform driver.
+> 
+> The PCI bits are motivated by the Nova driver project [1], but are used by at
+> least one more OOT driver (rnvme [2]).
+> 
+> The platform bits, besides adding some more evidence to the base abstractions,
+> are required by a few more OOT drivers aiming at going upstream, i.e. rvkms [3],
+> cpufreq-dt [4], asahi [5] and the i2c work from Fabien [6].
+> 
+> The patches of this series can also be [7], [8] and [9].
+> 
+> Changes in v7:
+> ==============
+> - Revocable:
+>   - replace `compare_exchange` with `swap`
+> 
+> - Driver:
+>   - fix warning when CONFIG_OF=n
+> 
+> - I/O:
+>   - remove unnecessary return statement in rust_helper_iounmap()
+>   - fix cast in doctest for `bindings::ioremap`
+> 
+> - Devres:
+>   - fix cast in doctest for `bindings::ioremap`
+> 
+> - PCI:
+>   - remove `Deref` of `pci::DeviceId`
+>   - rename `DeviceId` constructors
+>     - `new`       -> `from_id`
+>     - `with_class -> `from_class`
+> 
+> - MISC:
+>   - use `kernel::ffi::c_*` instead of `core::ffi::c_*`
+>   - rebase onto latest rust-next (0c5928deada15a8d075516e6e0d9ee19011bb000)
 
-This patch depends on the first patch in this series in order for the
-kunit test to compile.
 
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/1131
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
----
- rust/kernel/alloc/layout.rs | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Not sure if resending is required, but after a quick retest the
+Tested-by from v6 still stands:
 
-diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
-index 4b3cd7fdc816..0e053dcc7941 100644
---- a/rust/kernel/alloc/layout.rs
-+++ b/rust/kernel/alloc/layout.rs
-@@ -43,6 +43,25 @@ pub const fn empty() -> Self {
-     /// # Errors
-     ///
-     /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::alloc::layout::{ArrayLayout, LayoutError};
-+    /// let layout = ArrayLayout::<i32>::new(15)?;
-+    /// assert_eq!(layout.len(), 15);
-+    ///
-+    /// // Errors because `len * size_of::<T>()` overflows
-+    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize);
-+    /// assert!(layout.is_err());
-+    ///
-+    /// // Errors because `len * size_of::<i32>() > isize::MAX`,
-+    /// // even though `len < isize::MAX`
-+    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize / 2);
-+    /// assert!(layout.is_err());
-+    ///
-+    /// # Ok::<(), Error>(())
-+    /// ```
-     pub const fn new(len: usize) -> Result<Self, LayoutError> {
-         match len.checked_mul(core::mem::size_of::<T>()) {
-             Some(size) if size <= ISIZE_MAX => {
--- 
-2.47.1
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+
+Thanks
+
+Dirk
+
 
