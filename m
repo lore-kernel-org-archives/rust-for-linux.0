@@ -1,61 +1,61 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4463B1A0BED;
-	Fri, 20 Dec 2024 06:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9911A7AE3;
+	Fri, 20 Dec 2024 06:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734675955; cv=none; b=hAT5uv0woh0S2rHHUb+m8Re6BMJwRlYHRN4/9YSA1/ghhrBHXzu3Ln0kwqaO7A45biugedEh302Acb9fEeSMREksIqWTq3oZ6Y7oQwFUfXegNfCEYRUwrWe1O9TdjhW6sqRkost8IgABfMyuf5ltcamQ0sXN4bYlqtNJQ8Fr16M=
+	t=1734675957; cv=none; b=L3q7AuDmNTM15dfeoZuodzS64tLd6fMOx8YXdsa4WEBHS942v5KcXoK9itNRUTehxqLh66kyJj7PFCygt8cJsABPFs1c0b3AFq7+zUsLyZ2CFk9Z872QPC7EtOwVvy/R59bWaplsS2I88vsy4qaKMfEjoIUMQ9MZtWk50do+sqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734675955; c=relaxed/simple;
-	bh=NRfX1HJo/E3SylB6SdeYq/1KilQUuAAVBNBp1f10Xnk=;
+	s=arc-20240116; t=1734675957; c=relaxed/simple;
+	bh=45r5CkfXaRfA8k6UPfZo/AYWxfTBHCuIBcIPhexJu6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWJmTE5uI1s+Sk0qugNN6h9GNXBLV21jFLBWfnr1yjFAXk54IT7VgIwyS2MB3LBWT4gJrYdegUdM3kPz96r/AFIUKmEfqsmGZJwhgPmuMhZzL/AqCcbjYWR3dlFoueRNYLUuSl2y2H92+9cPXm8YeuYe5RRvWig1yBNrjlmHOOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ezTFaGDX; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=IBO5zXqwJsMIkqJUkOOPQJEX1n3bpBWRgfealwy0P5et5XVNJKKs3Xg9di2w1F48eDFABLOXRYfEAP1aQcLkmxwNdgggWUdVdN3xCmxxr7DapZI77w/HpBCITYMv9ktureLjWoiNvwo7lDDg61VUhcuHevvaZMVK6eXGnIOstBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W3SCSb5T; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ezTFaGDX"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21669fd5c7cso14807185ad.3;
-        Thu, 19 Dec 2024 22:25:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W3SCSb5T"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2eeb4d643a5so1469485a91.3;
+        Thu, 19 Dec 2024 22:25:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734675953; x=1735280753; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734675955; x=1735280755; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hXNqMl/E8m/Z0sNggtfd3XtS0BOEJiLoNQQLccgib2E=;
-        b=ezTFaGDXbeIzwt+u+8dEzeO1IvcObjKB41wi6UItZsEVGGAzdkU0APJFUh6V6kEE4j
-         UPc8q9531e3H7pJjlBfpvR43PmNNOjpj9Xn8VEgLsppsTE7wnrRfXPle+F7xPTtHCB2s
-         scl/rm+/iJgQPjhwc48RVSJtKv2gumafZe4cqvd6fEN5gVWWuEky5kxd7glbhYqgH1Jy
-         o1T6kU2f8/LVbiQf8kGUve4ap4poDSR4g9ogyryoBML0f/B0i40QznPzyiP7K2Z1Suo5
-         FUl8l9X9ofU5BPutsuG9DYIYwL82Jl+1QtSeKQQLmZP2+A7uM5/qcB9WJFrUED/TkLSp
-         tLsg==
+        bh=OyT4mYXo1YQCFF9gA4c96TOQBnOi8nuKXB5eYWwMmIc=;
+        b=W3SCSb5TnHgKd/P7Vzi82XXui/2rpyxSy/RT+82Fp4pxFhu86otldI/kinn90vFOr+
+         Gv9IG9YWaPaYQDuMQDITrU9Zs7dcKPvvK/LTs3WcnmTdbNjWnAsMrLESYIfKgiXvQYOG
+         VQC9HTT5SUifm6V5gNeNYaQ7RpmT3NuvpOJqxkPorKc9p9mcAhEW3ysUC8daCtwnInSQ
+         V7mSsDgZeC/Tj4wdVfoCseCO0AyGWdyiIn/yq09PLqNypFLA0MGTDR3qcCe4qhfQbafd
+         +GfnQmtSNuVckb5SAhtfXLAUFyOoCAmugnd/Stsfp7NGXtSqAu4dq7Ve4mXPLxAMq0ic
+         Zwzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734675953; x=1735280753;
+        d=1e100.net; s=20230601; t=1734675955; x=1735280755;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hXNqMl/E8m/Z0sNggtfd3XtS0BOEJiLoNQQLccgib2E=;
-        b=MoQAIREp/m4B43x83RIATrCt4caWiPgGGbeTs6tOAMWrY1S6Id03ST5frCncdlZ2tk
-         jXQ6d/3ZDrB5DSrJqjfth5QS0F1MrLn8cn1iIe5/cOsOcOlFZL5fFXeCVkqEXPniFUTQ
-         g9K3HqaJmDfdB8NUQCY9pkSBKPbr6LrillUq8R/HlDT31MT4CH4aYoX3Tca0zATSduTU
-         iYs0cUAmNdD8l1Kw21Pqz4nUAklExKk1qATyXRBQ01QkrPL3RhepcfOuEvlor6mrtNa0
-         j3zSVc/nkfjR2gcTCwXGEqFZyAPXbhZbed9ev8m0WX5J0hgCjyTXLqXIZWo+hmG7Xhpe
-         TxFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWwWldABXKHqIHMqFY64o6raxC8yW+5GFesFzy8w4hc1uf9jpDrLYqof3S2Zl9S2T/InML/x4Cj0EmmEg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxINzjsjb2pfHqCDWlTO1aNcRXRtvKBhjfAbUTN6pJkfooatHZ4
-	rtMKUkO127GpAX+cQDMX712FHUJV8s/qsQ9u7VJSwaKq0QXVxs0k
-X-Gm-Gg: ASbGncudRESZiPRnbTXJ1K2ZUFyw7crmxlbOgPzMYXjlxIcRiQmVEp1e4mtAvmyLutz
-	1OmAX1qMm5OD5TYI723mJl2y/BR7jC9y5dxs8lbtSEAaEtz4OGKBM+RKRT5FSGxnaSUAASmP64L
-	NBQDJzDW2Jeb8Di1S7Jw+0Qoc6KKfnTz4Z2M5V//nU/VYFXyBIRhw47Cp67RKqdrx8Jmn4gc5Qe
-	QLLmiMkDzCzYoBbfvJNCdSpxfRiFjeYLmmy7t25Sul8c1cXFe2zv5XnsHlTsL0mxg4=
-X-Google-Smtp-Source: AGHT+IGf3rSak54xec9cFBbFmWV8Y83jtfACYfhQ5UFK+mzED4zkbFeV3t1fBRJj2ZGE7387DRAuCg==
-X-Received: by 2002:a17:902:e890:b0:215:b468:1a33 with SMTP id d9443c01a7336-219e6e8c921mr23110415ad.4.1734675953462;
-        Thu, 19 Dec 2024 22:25:53 -0800 (PST)
+        bh=OyT4mYXo1YQCFF9gA4c96TOQBnOi8nuKXB5eYWwMmIc=;
+        b=lykWncfwTKZ4bKWGY+h0HV4N4oHl3zhbUIXNJSk2hMd/ewYUbOTsilPUVxJ6/UHHdR
+         Ouh0wRBmEl6Y0GHFAblKfEwWKVgi/vu8GTyTOQZqng6ldiQuA1aaB7ubvemxVPgCdNyo
+         szYCHpm+VHUOZRAcF+7DJfzDOxgfAvTAkbhqKUyldsEhdn1iXI/2FxlpTUrIQhhAW+OL
+         +qxGrBzdIOc5dxJLZH6MU7mMzoLhuEpJOky3p95rG29lQjR8z0p6vS40easpJj+pNnmG
+         1fRwLnX1DORrmDFJ8OrdIzTp4fJoXyevAtkX4145onHzaBINN2/s2zZhElC9WBpz6IkR
+         rh/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWvtlz/6By61kNE2GKAQo78Bqpecx5mXQl1d+3EPyQsOIVawJZBwxVht1SQxU7suQYEc0HSYhfp6T5Ficw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhMQD+Nqz/tYyvjSncqb6idjJo4P8DmJJXfgJvOf/G0NSEQRq+
+	x8NQEe5YHFtXMohekZ1P8c/Fajfh9X4/uxIzBVHmUjX6ryEhz4HV
+X-Gm-Gg: ASbGncvEYIu1UnXxaIeUs7d/rZ1N5zkQZ+6a1vefvyHGYHW6gtWhWMW7BRD+rMSw2Nd
+	8potXmkKyBBWTeO5jZDKkHGrZbIvs/ebZJU9fQM7AM96kmCqGL6lkk8xur3PIOYjiHTm0zmijLo
+	t87/OU5XtlMISCsJzHQHczHwaq1FaVUi2ZgJCbtvH1AldISw8NNdz0k88cCUunbXayCAUVbA04u
+	BHPmIJf92fk2BnQHpMPCah+KiYWtaweIXexPx7kGYDGvffU+2Z3qzsVF76vTspa6dQ=
+X-Google-Smtp-Source: AGHT+IGkFL/ahSvpPa+HcOrq1SI9TntkFeUytxDlgy8T9FLcyGQS561knvKv2eD0hGEXHKeZaY5CQQ==
+X-Received: by 2002:a17:90a:c88b:b0:2f2:a9f0:40b0 with SMTP id 98e67ed59e1d1-2f452eb3dd9mr2487101a91.23.1734675955144;
+        Thu, 19 Dec 2024 22:25:55 -0800 (PST)
 Received: from lordgoatius.hsd1.or.comcast.net ([2601:1c1:8502:a6c0::b10a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca007f3sm22001755ad.228.2024.12.19.22.25.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca007f3sm22001755ad.228.2024.12.19.22.25.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 22:25:53 -0800 (PST)
+        Thu, 19 Dec 2024 22:25:54 -0800 (PST)
 From: Jimmy Ostler <jtostler1@gmail.com>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -75,9 +75,9 @@ To: Danilo Krummrich <dakr@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jimmy Ostler <jtostler1@gmail.com>
-Subject: [PATCH v4 2/3] rust: error: Update 'stack_try_pin_init' example
-Date: Thu, 19 Dec 2024 22:25:32 -0800
-Message-ID: <ec8badbe94c5e78f22315325a7f2ae96129d6a65.1734674670.git.jtostler1@gmail.com>
+Subject: [PATCH v4 3/3] rust: alloc: Add doctest for `ArrayLayout`
+Date: Thu, 19 Dec 2024 22:25:33 -0800
+Message-ID: <f1564da5bcaa6be87aee312767a1d1694a03d1b7.1734674670.git.jtostler1@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1734674670.git.jtostler1@gmail.com>
 References: <cover.1734674670.git.jtostler1@gmail.com>
@@ -89,58 +89,50 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Change documentation imports to use `kernel::alloc::AllocError`,
-because `KBox::new()` now returns that, instead of the 'core'
-`AllocError`.
+Add a rustdoc example and Kunit test to the `ArrayLayout` struct's
+`ArrayLayout::new()` function.
 
+This patch depends on the first patch in this series in order for the
+kunit test to compile.
+
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1131
 Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Jimmy Ostler <jtostler1@gmail.com>
 ---
- rust/kernel/init.rs | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ rust/kernel/alloc/layout.rs | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 347049df556b..3d099908dbd5 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -290,9 +290,16 @@ macro_rules! stack_pin_init {
- ///
- /// ```rust,ignore
- /// # #![expect(clippy::disallowed_names)]
--/// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};
-+/// # use kernel::{init,
-+/// #   pin_init,
-+/// #   stack_try_pin_init,
-+/// #   init::*,
-+/// #   sync::Mutex,
-+/// #   new_mutex,
-+/// #   alloc::AllocError
-+/// # };
- /// # use macros::pin_data;
--/// # use core::{alloc::AllocError, pin::Pin};
-+/// # use core::pin::Pin;
- /// #[pin_data]
- /// struct Foo {
- ///     #[pin]
-@@ -316,9 +323,16 @@ macro_rules! stack_pin_init {
- ///
- /// ```rust,ignore
- /// # #![expect(clippy::disallowed_names)]
--/// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};
-+/// # use kernel::{init,
-+/// #   pin_init,
-+/// #   stack_try_pin_init,
-+/// #   init::*,
-+/// #   sync::Mutex,
-+/// #   new_mutex,
-+/// #   alloc::AllocError
-+/// # };
- /// # use macros::pin_data;
--/// # use core::{alloc::AllocError, pin::Pin};
-+/// # use core::pin::Pin;
- /// #[pin_data]
- /// struct Foo {
- ///     #[pin]
+diff --git a/rust/kernel/alloc/layout.rs b/rust/kernel/alloc/layout.rs
+index 4b3cd7fdc816..0e053dcc7941 100644
+--- a/rust/kernel/alloc/layout.rs
++++ b/rust/kernel/alloc/layout.rs
+@@ -43,6 +43,25 @@ pub const fn empty() -> Self {
+     /// # Errors
+     ///
+     /// When `len * size_of::<T>()` overflows or when `len * size_of::<T>() > isize::MAX`.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::alloc::layout::{ArrayLayout, LayoutError};
++    /// let layout = ArrayLayout::<i32>::new(15)?;
++    /// assert_eq!(layout.len(), 15);
++    ///
++    /// // Errors because `len * size_of::<T>()` overflows
++    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize);
++    /// assert!(layout.is_err());
++    ///
++    /// // Errors because `len * size_of::<i32>() > isize::MAX`,
++    /// // even though `len < isize::MAX`
++    /// let layout = ArrayLayout::<i32>::new(isize::MAX as usize / 2);
++    /// assert!(layout.is_err());
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
+     pub const fn new(len: usize) -> Result<Self, LayoutError> {
+         match len.checked_mul(core::mem::size_of::<T>()) {
+             Some(size) if size <= ISIZE_MAX => {
 -- 
 2.47.1
 
