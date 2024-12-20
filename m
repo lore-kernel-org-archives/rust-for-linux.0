@@ -1,162 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFA086349;
-	Fri, 20 Dec 2024 13:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E9D215F41
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Dec 2024 14:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734700589; cv=none; b=DD9uIJsvQVtpF3bpAvfjlHsRuNvCgJveLNvtNOGYjH/2vDw4tLS18C33yRz49z664oCyjg+Yu3iBLvKGR67wfkk7Wxd4gfv+1URNS/V62sJVGeA90kX4tYA4N+Dk3qJW0Y48jirtV0OY034OZHKKqoODGfpB6sjZqnt9BnbBTOI=
+	t=1734704556; cv=none; b=Q3ZXZJO52PDA/hzOEPkbFA5gh8F1Ovql4jTrjja9CtmfxYgk4LxGDdfSPMRbTY8rCQO1VBaHDgbUfkDAklihQPPx4KmH/NJAKrAUFHR61GPLwurubnhVbHU/E1nhp9mfOwWag1dufJ0ybHKLfEcHCJwiO/GDMT8vt4azQvqZ14U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734700589; c=relaxed/simple;
-	bh=fcbMFdWZ9oZ+6cASJ3ukH0vsKnGZwM2cLwN4nCdwGB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qf1yy9szqyupVMUAfWsf3LTaAk2feBIRZdmtgY5Y0rbElUGnZVuogQRciYZwuo0ZUorVUxUaMvOD+3JJ5NdyevR8Le3DnTHkg123BJ+mycY6I9HUtCrVbiUZCQo4VPahiStBHhG2v/3lO4gibi57eaP9qQef6893jHydl72UrxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJA8JWcW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734704556; c=relaxed/simple;
+	bh=7RswRtRrTlNx5IE2ZzGOy5P9Qqg6ss56dP92rV3APyw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nXbuO5YcTSsz1erCPbounbfddF0EX8RjUcHNOY8j/u1iLObjpGDaMM0aDz4s7mkpZ7cpCDjAUn4zdGC9kv8Z4pspBZqZBwvvMpOVSHmij0a0Rpto/F8VPfwhY+qGp4kvXNrexfRovUv6roeW81VIsiNBFcHp3z9DPJaX7Iz1L30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=fzgegj6I; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJA8JWcW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21130C4CECD;
-	Fri, 20 Dec 2024 13:16:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734700589;
-	bh=fcbMFdWZ9oZ+6cASJ3ukH0vsKnGZwM2cLwN4nCdwGB0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VJA8JWcW6wj/aeYHmdpmoU1S4cbHBPdj8dAQO9dWuZm8JVl4XxeMF8qzfC9Vsrwil
-	 vygkmIBFN5FCILk4U4vx/luokf/YaYks3puux9yXw5NNmdiRYoF35opgsFbaD61Zex
-	 gGQwv7GmVS+/R77b8xvjJrCyWeUD4fvt58zWJYzSyglEHpZClCx2SFsW0Zd5k3j36v
-	 lLR+mMemkmpN0kZytjiNBBQZy+P24BEOBjIc54PI4wc7XqoEru9EGJT43Svm855SEX
-	 VSqQLZHzAGRN9S/Y/Qo62seOYhx4vHfVSVgG8qBe5ikXVaXzFxj+4VPsWWwzEkNW8V
-	 036lDY6x4svjA==
-Date: Fri, 20 Dec 2024 13:16:21 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Fabien Parent <parent.f@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	vinod.koul@linaro.org, Fabien Parent <fabien.parent@linaro.org>
-Subject: Re: [PATCH 2/9] rust: add abstraction for regmap
-Message-ID: <8b85fbfa-ffb5-48d0-ba7b-0e26001ab3ae@sirena.org.uk>
-References: <20241218-ncv6336-v1-0-b8d973747f7a@gmail.com>
- <20241218-ncv6336-v1-2-b8d973747f7a@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="fzgegj6I"
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3a77bd62fdeso13504025ab.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Dec 2024 06:22:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1734704554; x=1735309354; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7mnQbwYdX7A7JeiPdTaAYP2wIDAM1JErLj2ggs9cY+Y=;
+        b=fzgegj6Iz6B5ErLN0DIW+vjLA/GQPVUxycQY/o937dGyRPEwJZnujhuLifN1ewNYr2
+         kQ7i3KX83e5FxjKOkJglctiyBUF8IIAlves4A/0hrYlZEfcnUMnU0uWglvgvlcStY3qW
+         PoOYQ2wAxF3uOrPT6nqb7DwWcmN8HSEDjH1oEfhPsSSnHimsRA9a1mFKWd37EYglggRT
+         JWTU5wg8MoEwg8ib4KjQDlX/slmQtLh5KNjhKeeBHy8aXDH+6/30k9UjIv1+9ynPquVw
+         An1yLwO+4T134LcBXAumOOYTxRudh9zZsTC/8Nh+Tjwrdbd6ez/LP80dXybpr9/GP17/
+         qJjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734704554; x=1735309354;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7mnQbwYdX7A7JeiPdTaAYP2wIDAM1JErLj2ggs9cY+Y=;
+        b=EH4bAy+HdawS/QWORnBjflFr8UEHS26aKU9G+SMF4CgeDeEBFC/Ga2Uz8HPD6rxAVl
+         Ir5F/tdiQu5U9arUhDiCdowItQapxrMJjYPpzoGWXC9hUReUaC9psF4MwawxKRn+folv
+         0mTxfK5i/QbfPZ9pGGoZfDiGN9cmDOjQqmnIgQKWJrVdz9DT41AGbPzRcEJwYJ2zUjOJ
+         drVqg1JVk0dowjf607DCabH4eo9hr31L075wqJ2YXhbUvye7zE2u/iw4x1eknW5MJmbj
+         Mw+b1S4CgwMJeOsRYj8ZYKDb94R2Uh5dh0pbuatbNX3YkeYUOxRLN73FvLjAki5oFOr8
+         2D5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUmKczrBoCL3XwrGzjx6Tfbq6RDnMBUTMXyeKbk/sGoKFzPN5DpNEfMwDuOMkiCD6seT3Ne9i6jm8cYNINdwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpZ3r01YCPxLrZWK2Frx2FZnR3Iuii4Pr22NuuNwpS0GXV0iDG
+	V69sjJ5Eiy19Wfk3IGXxpFFn7HckhXFLcb7ifxdqRzUo2ZOzT76Vh+w6MF07YHA=
+X-Gm-Gg: ASbGnctgUXxbXkwuV6S2foxg41JiyGivwqFP9q71yr/Pp0A5pfINdpmvPWeXbBXaOdm
+	aIhLs9Dcw9Cyb74n5TFRH+XCThXTNcgMpAXgz3czmKf7duBDgHEllxWlro/pDwGCGw6d8QWV5vA
+	KbAclejsjccnviTyeBd8reVEzlFEFA9q18Ki89Z0AhyvaDwXiXxQ77CLERBnt1Ok+1q/ifEoKMf
+	xicfS7Cmia5TWYUOgnxCOgv8zh2+3nbA8WA6etjFdB/zws=
+X-Google-Smtp-Source: AGHT+IFPxMJPlAfSJUbAKKYUQwyjJ4jRL5yVjPl41sdnKAlYG1Kd6O1j0Ernd94CpqGnqH/NowvFyg==
+X-Received: by 2002:a05:6e02:16c8:b0:3a7:d84c:f2b0 with SMTP id e9e14a558f8ab-3c2d277f25cmr36374295ab.8.1734704554467;
+        Fri, 20 Dec 2024 06:22:34 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e68bf66f74sm803185173.49.2024.12.20.06.22.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 06:22:33 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241220-merge-flag-fix-v1-1-41b7778dac06@kernel.org>
+References: <20241220-merge-flag-fix-v1-1-41b7778dac06@kernel.org>
+Subject: Re: [PATCH] rust: block: fix use of BLK_MQ_F_SHOULD_MERGE
+Message-Id: <173470455315.1029314.14508539794048190580.b4-ty@kernel.dk>
+Date: Fri, 20 Dec 2024 07:22:33 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lAMR5aRUK7y3jhHD"
-Content-Disposition: inline
-In-Reply-To: <20241218-ncv6336-v1-2-b8d973747f7a@gmail.com>
-X-Cookie: Body by Nautilus, Brain by Mattel.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3-dev-86319
 
 
---lAMR5aRUK7y3jhHD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, 20 Dec 2024 10:37:57 +0100, Andreas Hindborg wrote:
+> BLK_MQ_F_SHOULD_MERGE has was removed [1] and is now in effect by default.
+> So remove the flag from tag sets of Rust block device drivers.
+> 
+> 
 
-On Wed, Dec 18, 2024 at 03:36:32PM -0800, Fabien Parent wrote:
+Applied, thanks!
 
-> The abstraction is bringing only a small subset of all the features
-> provided by regmap by only supporting the most vital field from
-> `struct regmap_config`.
+[1/1] rust: block: fix use of BLK_MQ_F_SHOULD_MERGE
+      commit: 67489f4bfb02cb86751f168bb57af250f21cd1ad
 
-I'm not so sure about that...
+Best regards,
+-- 
+Jens Axboe
 
-> +int rust_helper_regmap_field_write(struct regmap_field *field, unsigned int val)
-> +{
-> +	return regmap_field_write(field, val);
-> +}
 
-...this is wrapping the field API.  That's not very widely used at all,
-and all the usages are in leaf drivers rather than frameworks.  Given
-this and that the code is basically simple syntactic sugar rather than
-any substantial logic I would suggest not wrapping this for Rust but
-instead writing native Rust abstractions that do the same thing.  That
-seems likely to be less work and give something that is more pleasant to
-use in the Rust environment.
 
-Indeed, it looks like the actual core regmap APIs aren't wrapped at all,
-only the field ones?
-
-> +//! ```ignore
-> +//! regmap::define_regmap_field_descs!(FIELD_DESCS, {
-> +//!     (pid, 0x3, READ, { value => raw([7:0], ro) }),
-> +//!     (limconf, 0x16, RW, {
-> +//!         rearm     => bit(0, rw),
-> +//!         rststatus => bit(1, rw),
-> +//!         tpwth     => enum([5:4], rw, {
-> +//!             Temp83C  = 0x0,
-> +//!             Temp94C  = 0x1,
-> +//!             Temp105C  = 0x2,
-> +//!             Temp116C  = 0x3,
-> +//!         }),
-> +//!     })
-> +//! });
-
-You might want to include some explanation as to what this does because
-it's quite unclear.
-
-> +//! fn probe(client: &mut i2c::Client) -> Result {
-> +//!     let config = regmap::Config::<AccessOps>::new(8, 8)
-> +//!         .with_max_register(0x16)
-> +//!         .with_cache_type(regmap::CacheType::RbTree);
-
-New code should use maple tree unless it's got a good reason.
-
-> +    /// Use RbTree caching
-> +    RbTree = bindings::regcache_type_REGCACHE_RBTREE,
-> +    /// Use Flat caching
-> +    Flat = bindings::regcache_type_REGCACHE_FLAT,
-> +    /// Use Maple caching
-> +    Maple = bindings::regcache_type_REGCACHE_MAPLE,
-
-Maple Tree.
-
-> +impl Regmap {
-> +    #[cfg(CONFIG_REGMAP_I2C = "y")]
-
-Built in only?
-
-> +/// `raw` should be used when bits cannot be represented by any other field types. It provides
-> +/// raw access to the register bits.
-> +///
-> +/// # Syntax
-> +///
-> +/// `raw(bits_range, access)`
-
-Given how many register fields are just a number I'm not sure calling
-them "raw" fields really conveys the right message, it sounds like this
-is bypassing things that should be there rather than a perfectly normal
-thing to do.
-
---lAMR5aRUK7y3jhHD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdlbiQACgkQJNaLcl1U
-h9BZYQf/YWG6Ra0eYK7OmmDmcOPVNpFJekn/pwMDeRk0IqTqww4wjrKoT6K728BZ
-RLor6g+fPM18bqUNbgqoJa2vDsTzv5PKrp3YPQ0cYfGKPABXm25fwvBup7nx+VML
-cmi9Lm/h5ojqMPvFMDQf+ElF80JqWLC4mLPgMCd/ZST87Pg+qaMk+IPolTe8f1f7
-qOiQJ35oxDMqKD4JBUeQfXTFKh3Qx7VeMXS4b7PZaec1ZbaAjnsA9Nue8T4boRnp
-jivFsszBtu5KflBtVX04N8BzMw0KvA6dVE2Lx3ijsBXkwihIHldXjKg/RayRkScJ
-k5RA2Br+WX+KDnU+xk5sR+ExExzQGg==
-=k8x4
------END PGP SIGNATURE-----
-
---lAMR5aRUK7y3jhHD--
