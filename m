@@ -1,110 +1,71 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71AA1096F;
-	Sat, 21 Dec 2024 00:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABD61F2C28;
+	Sat, 21 Dec 2024 10:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734739264; cv=none; b=p1HIWqLv+bD+0lliuCXfUQ/GN8xQ5p7TZf70xBgMgHNOpgoD50cL6A31wqBIEcD8iNrhCkmkwtYTBG0jBP0ppp3NSqnj1Ro3K0q3icYoN3sGsOIET77vdzf16N7LLb/PwLzB3Pg9R+lL+7mbI7Th7kCL6/YeE3t9N+gTUKSe+VQ=
+	t=1734775290; cv=none; b=ndRtUN9/euD79UXQ211BTrz1os59DGjkapLAbQ4q1XyLaXdwEC8vqdfEJZ/WyZ33zQA1hh1h4Qe/6tQEYsknv6x0pehElNKaBCaj1zlveFbFzmgstLPq3sIIsxcnF4Po0dOauDI9SrwyHIfN/1nuEQCEwKmMxnRKCq5PpEFpRGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734739264; c=relaxed/simple;
-	bh=eX8b234DE8wi5j8JlFiQH5ya7r1DiZZ9S4kBANKQgIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=q3NSxdSGkrrGxlkqaQVWvTj1UpcKFTpdVNfZHFNqNkzpUDPlQh7V/PemEWdSgH8J0qamMO4oSW/+xW+weAX1hAUNKrS1CPd/k/nRjGieZaGFAAcGMmRiwqBSYg3XpacK+NYiWZlCluHZSj8+S8NijhwXAYXDjZwbmiQYq/okoto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7nAFPsV; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734775290; c=relaxed/simple;
+	bh=klfr5iDrlwgyFse2esVRRcM5EeFYLG3zxkM25WwC5pE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ha0j+y7PWn/i3vZc2VbtKKSaZJGOb1L7YBkTgQfFbEokyBYxoJYZFSyLx+UCpj4JC7a8MEato7o61eGHVKhNJkL3JMFQM83SkG27BifmHCYvObB9pbdMtITShjBravnDu1kNetXttnqXuqmQQl0+HqP6bCCaCBtyH3blAb1fQsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LGeN96xK; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7nAFPsV"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-467918c35easo33327981cf.2;
-        Fri, 20 Dec 2024 16:01:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734739261; x=1735344061; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZZRsZijb28iJaPSe0DkMrJb4n9CKWQUlvhBL/d90ths=;
-        b=b7nAFPsVSeB5jGgt5x+h8uZ8ib71vF271PWSafKJ6CFQnxiHvZ0Xghd6PkFeitXhkP
-         T0oW5ofqI8DloEaxU7Ew0tzaJ4Uix42qcV8skyI6eOg3WlwTtFHn3E8e5ytAzHuQonoV
-         B5ZFliOnohUG4RCL9KbYRvhq5d+WnGvJNqDV0xYwXJ3gvO5xQxy7O05i9clu/J39BiKj
-         NKSVtr+uIngdWOCbNvTLxVg5fruxTCX2o05U09I25s1W2Si+RIobzhUCrJzHaAp4Ez+s
-         99Yil+fFyEiZBuXBQVD0kcpmfsWm+eAx1l23TzD552sKSNf35I7n2lfLepjUu8KBBQql
-         bQxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734739261; x=1735344061;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZZRsZijb28iJaPSe0DkMrJb4n9CKWQUlvhBL/d90ths=;
-        b=Fg9BmCr9Z3w2wA+wAU0YH8Ys5TZa+vSiYPeg0i0ointEqwFqPWzSQoSgbCki7wf5QP
-         k/cIA7ypMVx2gZkGh/HEU1o4Vqzmk6ubucznKXbRqEcEgp2GVLDEmYfCH7bDkWdgvAyp
-         dWFDN4XX7HBhXSInDJC3/2X4MuVD3UsdsFYsmwHup3h9dPkFe/wxpNtBE2HulFZOWl2c
-         nWz4GSyGBlqJ+xs+9Cqvqia7kTnuOtfaF1Zl6ZyU6FGHn6NjCOzs+9IU08okKYz3N/nj
-         NsUiy2i7mOCNpsnRvxeHFvFqJtTlqudmsgXLyFt49ARDMHprSnIDx9U0LjgUdHYJRGp9
-         m7lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVofkvZ0nII0tfFkVGak/hygm07+8tlgxGpbCV477TOkiEyQF9YysV+nh7w4RofER0LPfYtf7l1ZsIDq2FY4Ew=@vger.kernel.org, AJvYcCXdWBGlVZZYpjUCq2AWkRIH01uMxv9LHIKJhSLt3iT6X7PbDh3NiYO11lBSCziU59YahDX3dv32CqVtbZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGcYOurB2j7njDJLJdmY1H3hA0b4dZvWO/r7oXBGE22XriEV7y
-	J+j7kraNhaXPAtHuohuPCkjTNhNoAI8Avk3CZqEzM6gavpG0O+pu
-X-Gm-Gg: ASbGncsZ0nEFbDM57X7lnp17GQ3WX6w7p69YNi1m0GOzKuYMeoEmaiWNiBgey/FFbvx
-	1Eq+eMCOBX5vPI4pnwYkmJdG9v+BlpyH3nQnJSU7w8bzsBga2AVYSEoBjwe/OqnoYTFCjNIUwuD
-	IZ5piIW5dvt9tAgoYyAzoBLi49cw2dmexhbtju7AkzucaywqrEz/yXfAUHjQvxDK1NXRrdLSjJ/
-	1lF2qb+udXD1G7EpMdYeWXeQjXucLG3s2+SJXvyGgIQ8IAqO6IUYr4mV6+4MziksTDfDpFaBeNI
-	bkBrFFEm5bV/dzNY/mjENPs7NEqdexfWXpuN4lRUz+f7zrY=
-X-Google-Smtp-Source: AGHT+IEJU/gU/Rh2aXVGkz64AW0aSW3R4f7zLJ5URPK7VJHu0NMuTXuzQDrCDwhcvovsGW0J6t6Uww==
-X-Received: by 2002:ac8:5f82:0:b0:463:eef:bab4 with SMTP id d75a77b69052e-46a4a8f4b2cmr88286021cf.26.1734739261541;
-        Fri, 20 Dec 2024 16:01:01 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3eb17625sm21623351cf.57.2024.12.20.16.01.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 16:01:01 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 95E491200043;
-	Fri, 20 Dec 2024 19:01:00 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 20 Dec 2024 19:01:00 -0500
-X-ME-Sender: <xms:PAVmZ03XgIenDL8w-K1apBUAg2ZPADM__J2AaaUJJ-rh3ZQu5T6xFw>
-    <xme:PAVmZ_H1PPxqbmvPXo8CJr9IBHJG_TrWAA9aPu0438CmQSJ3Cc67Zdsboe-f7vA0r
-    sK5Tv_VCBqOMihSGw>
-X-ME-Received: <xmr:PAVmZ86Vd9pTxwQOHdqrtX4i-b7Dc_jx4xTfePFO6xMJhrZ41cwzFOAmpqk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddtfedgudeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkgggtugesthdtredttddtvdenucfh
-    rhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtoh
-    hmqeenucggtffrrghtthgvrhhnpeeltdefueegfefhuedtheefvdelhfeftedvhfdtveel
-    ueegtdejjedvieettedugfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgv
-    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehhe
-    ehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-    pdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepph
-    gvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgv
-    ughhrghtrdgtohhmpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehlohhnghhmrghnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhig
-    qdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvug
-    grsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:PAVmZ91ITXipo_T-kTdZgsczoYkLm9hJcI3mHMfh5agGJFdI6wFLqw>
-    <xmx:PAVmZ3FYXrY5mg2VluSKtgzutgI9Ub68FFKRb5l9vPLP3q4b-CqgNg>
-    <xmx:PAVmZ2_Ks3D22ODi_T8B-NiSJUd2h--f0P32JrALCWyJSwTmG7lN5Q>
-    <xmx:PAVmZ8l8XtceU0sZS3Zjm_I7M5lEUjrddkC7svkpf5GHagzMpvYLBA>
-    <xmx:PAVmZ3GEVPdj4wN6eDuyNrgSoARgzKL7n2sIAlKTX6pHQ3Nb3bubXtv1>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Dec 2024 19:00:59 -0500 (EST)
-Date: Fri, 20 Dec 2024 16:00:59 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com
-Cc: Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, Lyude Paul <lyude@redhat.com>
-Subject: [GIT PULL] LOCKDEP and Rust locking changes for v6.14
-Message-ID: <Z2YFO5zr9vm5kdjb@tardis.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LGeN96xK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734775289; x=1766311289;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=klfr5iDrlwgyFse2esVRRcM5EeFYLG3zxkM25WwC5pE=;
+  b=LGeN96xK6hTfiVawBn53gXqcaLsrOID85TGlrnq8XCTY5U5fBSZw50EJ
+   7ylf7q06oQ1rtwPQDVZA1LB1gH+WF6huxhRm20Q7XtuJJmqkLM7prjEPB
+   2ed94REImtWyE2C657MbQg8W28Begf39VNejshfLPtlSjG9QmtLk3Ckvc
+   +K/hCuLLx2vMBaMBU5ArPd+o5pCPlOtZTe2WtkTiMVHtf98R0tlfjZ0cS
+   n+oxkOQb+yRQhAA1QC8gM1sTvyZOJQL8X3+jSKwqbPqNPd0LOiDEEvtP9
+   ZXAX9cjsplFzZi02qGNiilVuzLWSWf5Q/lKjpV5nYKclsqONslW8w99Gj
+   A==;
+X-CSE-ConnectionGUID: H1mNKHWUSxeCu5wadQhPzw==
+X-CSE-MsgGUID: OAhig7NEQzmC3+3oiQPfww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="35460286"
+X-IronPort-AV: E=Sophos;i="6.12,253,1728975600"; 
+   d="scan'208";a="35460286"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2024 02:01:29 -0800
+X-CSE-ConnectionGUID: OOvwgj4wRa+1P3ewiSL91g==
+X-CSE-MsgGUID: o425voEzQGKH0fcxkd42AQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,253,1728975600"; 
+   d="scan'208";a="129562415"
+Received: from lkp-server01.sh.intel.com (HELO a46f226878e0) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 21 Dec 2024 02:01:22 -0800
+Received: from kbuild by a46f226878e0 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tOwIR-000281-08;
+	Sat, 21 Dec 2024 10:01:19 +0000
+Date: Sat, 21 Dec 2024 18:01:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com
+Subject: Re: [PATCH v7 6/7] rust: Add read_poll_timeout functions
+Message-ID: <202412211700.9lWP3KmT-lkp@intel.com>
+References: <20241220061853.2782878-7-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -113,81 +74,142 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20241220061853.2782878-7-fujita.tomonori@gmail.com>
 
-Hi Peter & Ingo,
+Hi FUJITA,
 
-Please pull the changes of lockdep and Rust locking for v6.14 into tip.
+kernel test robot noticed the following build warnings:
 
-The following changes since commit 63a48181fbcddefe5fb4c6618938bb64c543945b:
+[auto build test WARNING on 0c5928deada15a8d075516e6e0d9ee19011bb000]
 
-  smp/scf: Evaluate local cond_func() before IPI side-effects (2024-12-05 14:25:28 +0100)
+url:    https://github.com/intel-lab-lkp/linux/commits/FUJITA-Tomonori/rust-time-Add-PartialEq-Eq-PartialOrd-Ord-trait-to-Ktime/20241220-142722
+base:   0c5928deada15a8d075516e6e0d9ee19011bb000
+patch link:    https://lore.kernel.org/r/20241220061853.2782878-7-fujita.tomonori%40gmail.com
+patch subject: [PATCH v7 6/7] rust: Add read_poll_timeout functions
+config: microblaze-randconfig-r131-20241221 (https://download.01.org/0day-ci/archive/20241221/202412211700.9lWP3KmT-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 14.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20241221/202412211700.9lWP3KmT-lkp@intel.com/reproduce)
 
-are available in the Git repository at:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412211700.9lWP3KmT-lkp@intel.com/
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/lockdep-for-tip.20241220
+sparse warnings: (new ones prefixed by >>)
+   kernel/sched/core.c:1080:38: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct task_struct *curr @@     got struct task_struct [noderef] __rcu *curr @@
+   kernel/sched/core.c:1080:38: sparse:     expected struct task_struct *curr
+   kernel/sched/core.c:1080:38: sparse:     got struct task_struct [noderef] __rcu *curr
+   kernel/sched/core.c:2179:39: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected struct task_struct *donor @@     got struct task_struct [noderef] __rcu *donor @@
+   kernel/sched/core.c:2179:39: sparse:     expected struct task_struct *donor
+   kernel/sched/core.c:2179:39: sparse:     got struct task_struct [noderef] __rcu *donor
+   kernel/sched/core.c:2190:65: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct task_struct *tsk @@     got struct task_struct [noderef] __rcu *curr @@
+   kernel/sched/core.c:2190:65: sparse:     expected struct task_struct *tsk
+   kernel/sched/core.c:2190:65: sparse:     got struct task_struct [noderef] __rcu *curr
+   kernel/sched/core.c:5641:15: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct *donor @@     got struct task_struct [noderef] __rcu *donor @@
+   kernel/sched/core.c:5641:15: sparse:     expected struct task_struct *donor
+   kernel/sched/core.c:5641:15: sparse:     got struct task_struct [noderef] __rcu *donor
+   kernel/sched/core.c:6653:14: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct *prev @@     got struct task_struct [noderef] __rcu *curr @@
+   kernel/sched/core.c:6653:14: sparse:     expected struct task_struct *prev
+   kernel/sched/core.c:6653:14: sparse:     got struct task_struct [noderef] __rcu *curr
+   kernel/sched/core.c:7199:17: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/core.c:7199:17: sparse:    struct task_struct *
+   kernel/sched/core.c:7199:17: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/core.c:8901:16: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected struct task_struct * @@     got struct task_struct [noderef] __rcu *curr @@
+   kernel/sched/core.c:8901:16: sparse:     expected struct task_struct *
+   kernel/sched/core.c:8901:16: sparse:     got struct task_struct [noderef] __rcu *curr
+   kernel/sched/core.c:10116:25: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct task_struct *p @@     got struct task_struct [noderef] __rcu *curr @@
+   kernel/sched/core.c:10116:25: sparse:     expected struct task_struct *p
+   kernel/sched/core.c:10116:25: sparse:     got struct task_struct [noderef] __rcu *curr
+   kernel/sched/core.c: note: in included file:
+   kernel/sched/sched.h:1490:17: sparse: sparse: self-comparison always evaluates to true
+   kernel/sched/core.c:591:6: sparse: sparse: context imbalance in 'raw_spin_rq_lock_nested' - wrong count at exit
+   kernel/sched/sched.h:1490:17: sparse: sparse: self-comparison always evaluates to true
+   kernel/sched/core.c:624:23: sparse: sparse: context imbalance in 'raw_spin_rq_trylock' - wrong count at exit
+   kernel/sched/core.c:640:6: sparse: sparse: context imbalance in 'raw_spin_rq_unlock' - unexpected unlock
+   kernel/sched/core.c:677:21: sparse: sparse: self-comparison always evaluates to true
+   kernel/sched/core.c:678:36: sparse: sparse: context imbalance in '__task_rq_lock' - wrong count at exit
+   kernel/sched/core.c:718:21: sparse: sparse: self-comparison always evaluates to true
+   kernel/sched/core.c:719:36: sparse: sparse: context imbalance in 'task_rq_lock' - wrong count at exit
+   kernel/sched/sched.h:2258:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2258:25: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2258:25: sparse:    struct task_struct *
+   kernel/sched/sched.h:2258:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2258:25: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2258:25: sparse:    struct task_struct *
+   kernel/sched/sched.h:2258:25: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2258:25: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2258:25: sparse:    struct task_struct *
+   kernel/sched/sched.h:2269:26: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2269:26: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2269:26: sparse:    struct task_struct *
+   kernel/sched/sched.h:2481:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2481:9: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2481:9: sparse:    struct task_struct *
+   kernel/sched/sched.h:2481:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2481:9: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2481:9: sparse:    struct task_struct *
+   kernel/sched/sched.h:2269:26: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2269:26: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2269:26: sparse:    struct task_struct *
+   kernel/sched/sched.h:2458:9: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   kernel/sched/sched.h:2458:9: sparse:    struct task_struct [noderef] __rcu *
+   kernel/sched/sched.h:2458:9: sparse:    struct task_struct *
+>> kernel/sched/core.c:8722:31: sparse: sparse: marked inline, but without a definition
 
-for you to fetch changes up to fbd7a5a0359bc770e898d918d84977ea61163aad:
+vim +8722 kernel/sched/core.c
 
-  rust: sync: Add lock::Backend::assert_is_held() (2024-12-19 14:04:42 -0800)
+  8721	
+> 8722	void __might_resched_precision(const char *file, int len, int line, unsigned int offsets)
+  8723	{
+  8724		/* Ratelimiting timestamp: */
+  8725		static unsigned long prev_jiffy;
+  8726	
+  8727		unsigned long preempt_disable_ip;
+  8728	
+  8729		/* WARN_ON_ONCE() by default, no rate limit required: */
+  8730		rcu_sleep_check();
+  8731	
+  8732		if ((resched_offsets_ok(offsets) && !irqs_disabled() &&
+  8733		     !is_idle_task(current) && !current->non_block_count) ||
+  8734		    system_state == SYSTEM_BOOTING || system_state > SYSTEM_RUNNING ||
+  8735		    oops_in_progress)
+  8736			return;
+  8737	
+  8738		if (time_before(jiffies, prev_jiffy + HZ) && prev_jiffy)
+  8739			return;
+  8740		prev_jiffy = jiffies;
+  8741	
+  8742		/* Save this before calling printk(), since that will clobber it: */
+  8743		preempt_disable_ip = get_preempt_disable_ip(current);
+  8744	
+  8745		pr_err("BUG: sleeping function called from invalid context at %.*s:%d\n",
+  8746		       len, file, line);
+  8747		pr_err("in_atomic(): %d, irqs_disabled(): %d, non_block: %d, pid: %d, name: %s\n",
+  8748		       in_atomic(), irqs_disabled(), current->non_block_count,
+  8749		       current->pid, current->comm);
+  8750		pr_err("preempt_count: %x, expected: %x\n", preempt_count(),
+  8751		       offsets & MIGHT_RESCHED_PREEMPT_MASK);
+  8752	
+  8753		if (IS_ENABLED(CONFIG_PREEMPT_RCU)) {
+  8754			pr_err("RCU nest depth: %d, expected: %u\n",
+  8755			       rcu_preempt_depth(), offsets >> MIGHT_RESCHED_RCU_SHIFT);
+  8756		}
+  8757	
+  8758		if (task_stack_end_corrupted(current))
+  8759			pr_emerg("Thread overran stack, or stack corrupted\n");
+  8760	
+  8761		debug_show_held_locks(current);
+  8762		if (irqs_disabled())
+  8763			print_irqtrace_events(current);
+  8764	
+  8765		print_preempt_disable_ip(offsets & MIGHT_RESCHED_PREEMPT_MASK,
+  8766					 preempt_disable_ip);
+  8767	
+  8768		dump_stack();
+  8769		add_taint(TAINT_WARN, LOCKDEP_STILL_OK);
+  8770	}
+  8771	
 
-
-I combined lockdep and Rust locking changes into one pull-request,
-because it's easy in that way for me, but should you want two different
-pull requests, please let me know.
-
-I keep all the Acked-bys in the MAINTAINERS changes, but feel free to
-drop them because it's going via tip. Again, thanks for the trust and
-thank Miguel for the support!
-
-Regards,
-Boqun
-
-----------------------------------------------------------------
-Lockdep changes for v6.14:
-
-- Use swap() macro in the ww_mutex test.
-- Minor fixes and documentation for lockdep configs on internal data structure sizes.
-- Some "-Wunused-function" warning fixes for Clang.
-
-Rust locking changes for v6.14:
-
-- Add Rust locking files into LOCKING PRIMITIVES maintainer entry.
-- Add `Lock<(), ..>::from_raw()` function to support abstraction on low level locking.
-- Expose `Guard::new()` for public usage and add type alias for spinlock and mutex guards.
-- Add lockdep checking when creating a new lock `Guard`.
-
-----------------------------------------------------------------
-Andy Shevchenko (2):
-      lockdep: Mark chain_hlock_class_idx() with __maybe_unused
-      lockdep: Move lockdep_assert_locked() under #ifdef CONFIG_PROVE_LOCKING
-
-Boqun Feng (1):
-      locking: MAINTAINERS: Start watching Rust locking primitives
-
-Carlos Llamas (3):
-      lockdep: Fix upper limit for LOCKDEP_*_BITS configs
-      lockdep: Clarify size for LOCKDEP_*_BITS configs
-      lockdep: Document MAX_LOCKDEP_CHAIN_HLOCKS calculation
-
-Lyude Paul (5):
-      rust: sync: Add Lock::from_raw() for Lock<(), B>
-      rust: sync: Make Guard::new() public
-      rust: sync: Add MutexGuard type alias
-      rust: sync: Add SpinLockGuard type alias
-      rust: sync: Add lock::Backend::assert_is_held()
-
-Thorsten Blum (1):
-      locking/ww_mutex/test: Use swap() macro
-
- MAINTAINERS                        |  7 ++++++-
- kernel/locking/lockdep.c           |  4 +++-
- kernel/locking/lockdep_internals.h |  3 ++-
- kernel/locking/test-ww_mutex.c     |  9 +++------
- lib/Kconfig.debug                  | 18 +++++++++---------
- rust/helpers/mutex.c               |  5 +++++
- rust/helpers/spinlock.c            |  5 +++++
- rust/kernel/sync.rs                |  4 ++--
- rust/kernel/sync/lock.rs           | 35 ++++++++++++++++++++++++++++++++++-
- rust/kernel/sync/lock/mutex.rs     | 13 +++++++++++++
- rust/kernel/sync/lock/spinlock.rs  | 13 +++++++++++++
- 11 files changed, 95 insertions(+), 21 deletions(-)
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
