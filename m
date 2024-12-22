@@ -1,139 +1,124 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D892814AD2D
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Dec 2024 06:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D148837;
+	Sun, 22 Dec 2024 09:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734850591; cv=none; b=sgfz7mt4AXoV8+xjgvsG7ir86x/8+oX5+97uPqjfO9eWB9vQ/VjOCIBtvwLTmjRSESShKOjLC6DnoZJGPd8qun9XhSWezehzc2LJzBp5H0v/yGq/KCR6F9vril7Vr92j6MLjgKg+qLSRAdMFcUUWm2ua8ra+/UlDPUBIAJw/euw=
+	t=1734860925; cv=none; b=u1266t2GZLkCAMoaMe3/G4LM/9aBj2o05S/QoBGqlXUVzAxiKIJd6Ok1sTIYRWotDn8zZQst3V1VdRwCTSA6IVHvzdE0RIUafS8Ul9CvMRfhtGZBr6qu/uDPA+eyiah3cbem7/M8hH7hG4JbC4570BIwGR8JNxYPgeqTM3+BnMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734850591; c=relaxed/simple;
-	bh=vU7pF1l6heBUnP6qKrqqskOqc+3QuAvIdb8UyQowxYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZZH6zK8JDEURLHiZ1cHgXn3+UOp9U5/MhwF3upG3lcU0fN11P/Mbs/tFKXZveXC9BZLm8QWlX8Lyl7YUXn/qCKPS3OOo1+rwT38Dt0CY6X4WJ1ifdrpNJ6m7JY/0LtmX3kilg58xWx1t+h35mhofwGStTnGAS1FFJ2O0s3KFkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RHEMtPla; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1734860925; c=relaxed/simple;
+	bh=ovJlSa9P8nxvJ3Tc/Qf7d9KljKGRwe/KE4X8gz7B1Fs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r0YqBj1WAjoNHL9RUWcnZxCAhaQ4jSDAgGzV4SnygDqtiwI+7DFlQwkEVMtP79JGd+UhkzzRMLJP/psrMOWi7s36M5csq8bUL4VVZWF4zWp7U+dNSM43d4g7iWLXkXFSN6esL5Ec/sTBEdCdiuiK931RAjMaf1DlHZ6loMVrJ8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkdSxWGG; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RHEMtPla"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5401bd6ccadso3482629e87.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 21 Dec 2024 22:56:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkdSxWGG"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2163dc5155fso28982805ad.0;
+        Sun, 22 Dec 2024 01:48:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734850588; x=1735455388; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uICukBIZbE2d2nD3/HaAIupMmSJIRpwO49vB6bNfkI0=;
-        b=RHEMtPlaFtcxRFx5VOncw7cn1vluzvLxyoSm4SbVCe3sm4XnX8sYL/vZ5ITDaBDpQY
-         6en80IXo09ee9SwwykS5ahJocEkP31mf2hNIUMgrL+X3mXXEU3x9Y8sC2qg47vWK7xM3
-         wSgFbUV1l//yNttzgvELM1skty7mqGiuHGTGBhY+JdyfTsaV/fMTyQesKTHRvzu5EW1J
-         gEdxWSiLn7SPufLjFrYCOae4IFR6pbmWbja5MQGNhWF0r5+eOgfCPMg/pm5MKDuhXj7q
-         OCyWZ/rS1c6XpcKRIkGFrelSLtZhJEBz1ewKeUNaVTtp7Ldhdk+1b7xNUa80db3hPy1H
-         EcoA==
+        d=gmail.com; s=20230601; t=1734860923; x=1735465723; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0IXtkPbgHQMzObcmQmD//MckOrWhn3BPuMn50lOW0RY=;
+        b=IkdSxWGGFlvkxkXiSCH+JztjP5oqsMlu2qBH986cqyR4GMcQpaJJZ2iD2OluOJvuVx
+         IcJdzbOOOUV1HGxGeTPi12FDcNH0XZitN86Mn0K5ESh0FwM1jr41LrF7jiP+iNh9e1WG
+         phmJ6xWsdbwYVe8JZS55WOy56sLhk2wIDK6WnwdCjDGTYh121wlmsdpWzMHi4cTg4qoS
+         nFMmW7POfqyhJ3084/AV1nchdcj8bTo3AL452WLdxkHBx3ZA1T4llxA9aMVjqNEJivpp
+         wH6LAX81cACY3IcORlbffChil4kUoXz8W6uMO1sLKTLq0O/5XS/y/fa/ZygVC16wPlNg
+         cm3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734850588; x=1735455388;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uICukBIZbE2d2nD3/HaAIupMmSJIRpwO49vB6bNfkI0=;
-        b=uS/SwoKAFF4PrL1yYhi1FHELR5XFyRGe7e5LVsrS02JSXj4MJZS7O8Z3FTfjorCUes
-         2PKh9qX6XLORHzcpGMGTw4hdZxurHrnidEHa1Y7AJKjleRmHP4oN8A68WiQBFWXQqPG1
-         Y5RztpwM7HlSQB5btFlf3FgIEqGfLI3UcEhhXPrj/EsrdundvMVOEaEJa721OnaKBa7d
-         UJLzb+06OtDtPw6ADo5m0XswqQaBBHH46k7Gtdrrx2zGt8gGIkvN0faykb3utwzEccXr
-         Pkrith4aVuStXDu5/+WFfd5sAUbU+xL88aK6E3/SxxbntlOIhqZUOLqLYxdltjDKC4Vk
-         C9og==
-X-Forwarded-Encrypted: i=1; AJvYcCWee+Xs4CZzERyw9hal439bjER9D/cZAFw7aP3/SxovgLyncjzbj6Jbs1xe5K+Nh3IJPtsTdIGTjMDxwS+zDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzA5tiUslasF9djlCWh9sqF54qpZupHCpufiklm+PDd1H5lePT
-	PSZ5LJYDANREhA0a+s7RYQKqwNZ3QXGERcD7gDuqjyTkNUS5rYNc5FGou/0lBOM=
-X-Gm-Gg: ASbGnctM3RTaPiymquM4otxqztxLtPvvtB2GQNJ0M0oRpKsJElOS0QUaxq3eGtBIJxD
-	weWKqycHlBSYU2R/BYVnNwSXM2rsUpbHEspSULYGFwJlbbde2xAq1yFklJTZbg36e9+D797A7sl
-	PTMNtlnMDGcqvqk0P3W6syBFENSzY1nf8GeBcb7CnKQCYVOZq68WfFuwDyfevJ2/6GnAti1DP7e
-	APGwIXoNLb0pxVvuxfOcAxIMIXtFc59Xr8a2mD0FRqZynNCCH+FOAF1DYh24JjCeWaH05tRPqd9
-	MaNuv3Tj8PWGDsHijb/0jmQ/wLlCXaFuDlmv
-X-Google-Smtp-Source: AGHT+IEWNp3WftkqK91RI0XeT7YHrgoXgpBtCCxp6/N91pmngJ2NyrecBHWdsDPZ6bj6Ped6tSTy6A==
-X-Received: by 2002:a05:6512:a93:b0:53f:6c6a:f99f with SMTP id 2adb3069b0e04-542295224f2mr2827014e87.8.1734850587745;
-        Sat, 21 Dec 2024 22:56:27 -0800 (PST)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542236001d6sm911744e87.85.2024.12.21.22.56.26
+        d=1e100.net; s=20230601; t=1734860923; x=1735465723;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0IXtkPbgHQMzObcmQmD//MckOrWhn3BPuMn50lOW0RY=;
+        b=BjYxvQnbOI2xinZkF6A4BowbKQT4dT/G8jToGhwdNpwgLVD98hu5fBU9xV+jTIA1Lh
+         /T7hbB2DbZoWYizp4/ft0HjNxLjiQabOKq+HxQcuCPFHXmgSP+F9XwuCgh3HOHFRZ9hu
+         ddJNxn7NQaW4eB6sVHHs+HJkUqyFDoYDfhHlkaqsagU7ewxGnehKPFNx32O5CPAV7cf3
+         gNfdQCPctaotDzuzZaOaYFp/BzlM2j0ErV7DbhL/mBu8QOxX2RD7NzyYa/vJMERgJlgR
+         vwbSmbepj06yrJ8CSgHButzLxzUPvviPM2NfpL1IaoxCPOCg3jYvbQ4S8YVf9woidabW
+         Tn2w==
+X-Gm-Message-State: AOJu0YxGNLe8CSx6t1wkwRaPOjpliZ4ddpS4RBIPkJcW4+WD6/neL8FH
+	q8rdNetwd1mHzKc2Z+7QYFjyWAz5YWEXqv/Z6WfAAhWp+UC/ASUtXdMBW6Bf33s=
+X-Gm-Gg: ASbGncuf8Yk2qnBycamPN+Mzdh3blR55CgIW48LbsuClLKzAiGvWh6Zc6/yXqTvH5/6
+	a6gkhuQz0JytBwXOYG5dzzJ7ZQUHXM0EVHLIc+SjW1nzh/jrC9MhiVdAnTd2X4e1AaXIKwDk/Gr
+	CqjpklknooBCAqLUHyegiQQ5nkJTNv1gY9Nl3WfFLpJiuO/OOWnl6FydIl0Lc6i6og7RA2lYb3i
+	DRbZUvHQmg7oxizZmdjQJKrm/NRV79G0yblcgrwdUd+1woAa9BJPEqEa85n3Xbhy1s27MemV6o8
+	chNJvGmeLrw=
+X-Google-Smtp-Source: AGHT+IEnH5FPdXwhS4QD89E4Cm99AxuJFoK+XBviT9T8cjLkKwJ718huPKvLpaWg1FeExfC7I/bPmQ==
+X-Received: by 2002:a17:902:ce92:b0:215:5ea2:6544 with SMTP id d9443c01a7336-219e6e8c365mr107384625ad.7.1734860923261;
+        Sun, 22 Dec 2024 01:48:43 -0800 (PST)
+Received: from BiscuitBobby.am.students.amrita.edu ([117.193.77.254])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842b1ce01b8sm4630474a12.20.2024.12.22.01.48.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Dec 2024 22:56:26 -0800 (PST)
-Date: Sun, 22 Dec 2024 08:56:24 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: "Aiqun(Maria) Yu" <quic_aiquny@quicinc.com>
-Cc: Maya Matuszczyk <maccraft123mc@gmail.com>, 
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Hans de Goede <hdegoede@redhat.com>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] platform: arm64: Add driver for EC found in most
- X1E laptops
-Message-ID: <guwda22qwvvof6k64dsajaccrq5yfipg4dejycqfa3f6dz3abx@uc7evxnxcjue>
-References: <20241219200821.8328-1-maccraft123mc@gmail.com>
- <20241219200821.8328-2-maccraft123mc@gmail.com>
- <a2310cf8-5e00-4233-8c56-f04d3f692b13@linaro.org>
- <CAO_MupK8GYwNep9k-C28=Ly8wgn1T6LLiYnFcbKg0spRNXbkYw@mail.gmail.com>
- <9d0324de-e42a-43b8-bdcc-0d0885434b25@quicinc.com>
+        Sun, 22 Dec 2024 01:48:42 -0800 (PST)
+From: Siddharth Menon <simeddon@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	apw@canonical.com,
+	joe@perches.com
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	shuah@kernel.org,
+	Siddharth Menon <simeddon@gmail.com>
+Subject: [PATCH v2 RESEND] scripts/checkpatch.pl: check for non-permalinks to Zulip
+Date: Sun, 22 Dec 2024 15:16:58 +0530
+Message-Id: <20241222094658.31263-1-simeddon@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9d0324de-e42a-43b8-bdcc-0d0885434b25@quicinc.com>
 
-On Fri, Dec 20, 2024 at 07:50:45PM +0800, Aiqun(Maria) Yu wrote:
-> On 12/20/2024 4:58 AM, Maya Matuszczyk wrote:
-> > czw., 19 gru 2024 o 21:43 Bryan O'Donoghue
-> > <bryan.odonoghue@linaro.org> napisał(a):
-> >>
-> >> On 19/12/2024 20:08, Maya Matuszczyk wrote:
-> >>> Currently it features only reporting that the AP is going to suspend,
-> >>> which results in keyboard backlight turning off and the power LED
-> >>> slowly blinking on the Lenovo Yoga Slim 7x.
-> >>>
-> >>> Honor Magicbook Art 14 and Lenovo Yoga Slim 7x are known to have
-> >>> firmware with extensions which would need appropriate handling.
-> >>> For reverse engineering the firmware on them I have written a Rust
-> >>> utility:
-> >>>
-> >>> https://github.com/Maccraft123/it8987-qcom-tool.git
-> >>>
-> >>> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> >>> ---
-> >>>   MAINTAINERS                              |   6 +
-> >>>   drivers/platform/arm64/Kconfig           |   8 ++
-> >>>   drivers/platform/arm64/Makefile          |   1 +
-> >>>   drivers/platform/arm64/qcom-x1e-it8987.c | 158 +++++++++++++++++++++++
-> >>>   4 files changed, 173 insertions(+)
-> >>>   create mode 100644 drivers/platform/arm64/qcom-x1e-it8987.c
-> >>>
-> >>> diff --git a/MAINTAINERS b/MAINTAINERS
-> >>> index b878ddc99f94..08d170e2e1e3 100644
-> >>> --- a/MAINTAINERS
-> >>> +++ b/MAINTAINERS
-> >>> @@ -12890,6 +12890,12 @@ S:   Maintained
-> >>>   W:  http://legousb.sourceforge.net/
-> >>>   F:  drivers/usb/misc/legousbtower.c
-> >>>
-> >>> +QCOM IT8987 EC DRIVER
-> >>> +M:   Maya Matuszczyk <maccraft123mc@gmail.com>
-> >>> +S:   Maintained
-> >>> +F:   Documentation/devicetree/bindings/platform/qcom,x1e-it8987-ec.yaml
-> 
-> Actually, the IT8987 is from ITE Tech. As far as I know, there are other
-> platforms besides x1e that use this. So if this driver can be also
-> applied for all ITE it8987, it might be better to say 'ITE IT8987'
-> instead of 'QCOM IT8987'. This also applies to the file name and function.
+Zulip links to https://rust-for-linux.zulipchat.com can break in
+case of renaming the topic or channel if they are not message
+links (which are permanent links).
 
-ECS Liva QC710 also uses IT8987 as EC, though DSDT doesn't seem to
-contain anything useful wrt. the EC.
+If a non-permanent Zulip link is referenced then emit a warning
+and direct the user to the Zulip documentation.
 
+Permanent links are of the format:
+https://.../#narrow/stream/x/topic/x/near/<numerical_id>
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1104
+Signed-off-by: Siddharth Menon <simeddon@gmail.com>
+---
+ scripts/checkpatch.pl | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 9eed3683ad76..9b15484b5a95 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -735,6 +735,10 @@ our $obsolete_archives = qr{(?xi:
+ 	\Qspinics.net\E
+ )};
+ 
++our $zulip_forums = qr{(?xi:
++	\Qrust-for-linux.zulipchat.com\E
++)};
++
+ our @typeListMisordered = (
+ 	qr{char\s+(?:un)?signed},
+ 	qr{int\s+(?:(?:un)?signed\s+)?short\s},
+@@ -3410,6 +3414,12 @@ sub process {
+ 			     "Use lore.kernel.org archive links when possible - see https://lore.kernel.org/lists.html\n" . $herecurr);
+ 		}
+ 
++# Check for permanent Zulip URL
++		if ($rawline =~ m{http.*\b$zulip_forums(?!(?:/#narrow/stream/.+/topic/.+/(?:near|with)/\d+)?($|\s+.*))}) {
++			WARN("PREFER_PERMANENT_URL",
++			     "Use permanent Zulip links when possible - see https://zulip.com/help/link-to-a-message-or-conversation\n" . $herecurr);
++		}
++
+ # Check for added, moved or deleted files
+ 		if (!$reported_maintainer_file && !$in_commit_log &&
+ 		    ($line =~ /^(?:new|deleted) file mode\s*\d+\s*$/ ||
 -- 
-With best wishes
-Dmitry
+2.39.5
+
