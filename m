@@ -1,55 +1,55 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDA61C245C
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Dec 2024 20:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE2C1CEAAC
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Dec 2024 20:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734984820; cv=none; b=RsmZdd+xGim2XERIaBvZDkcIqPYHoGXOk/lcZhhdMN373AGe7J3WHRqUHYh6GX3s1/+vAI1aIAvB6WLEEP36Lzz7uMEKSCpYnEsfADXazXrIkSxqKbsrxOuFuv6TR7ZpLwBZOWmiSj8dcXr43QYuD3b5NLyfS2h7c9PmhCSjcJM=
+	t=1734984821; cv=none; b=gxzA/nlNHmXzLYJ0Sre/oI4hzIQcPdrX7HIHSVwDe7Z5F6YvACPUE+e+Ok7fy/7tDlEROOPj+qo1CV1wwZHVOZTa/4HFnk1w1XuxrE71/MPlvIGvxtl2VaKALYUoM8yretKh1sAhMG35bnJWK9o5cN3mK+0izwrbpxSUWQLL+9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734984820; c=relaxed/simple;
-	bh=+pGdWw9dCP4TIIYqcXyKB+6q5rytt9oeO6oqK97XBeg=;
+	s=arc-20240116; t=1734984821; c=relaxed/simple;
+	bh=RjukP2CQnO/TZxDoNcJm3Ea2UnLYWI4ZmTxJOgCi4mU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l3lOBMP5EjjCpm/MVkLeKaCnI0o4JC+RHF6n28vL1KPYgn3GeK+pyUNYacfKuYno2Jrf7ySssbA3Usx9qu60F+GnRXZ6erZHr0HhLnPE/bUiCFCY74ARepiji7N6z+r9i6Ix8Nkw5vjegWf4fq/bRXLSa9rwbl9MNSkkDbISkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DfHKNlVm; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=auuKAT32rpr1JHYUrU3qF6nsvEBZrHF+zXxeKBAJZstLAwEz9ijlprLboQ02v4UYw/5pbFt206DXUmsAOY5dtNdVrMyPrH/cINXawULCpcqNrGkEtqlztix3RnUD49LeMV0iRmBYIfZ0GZepf0akflcIiezZbATWAnl4A/kEwfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yNvOE5BN; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DfHKNlVm"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-216717543b7so62543285ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Dec 2024 12:13:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yNvOE5BN"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-216266cc0acso42345935ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Dec 2024 12:13:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734984818; x=1735589618; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1734984819; x=1735589619; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wm8B/9CMerVHPJIle0PHCkEtY10ODvfRfmKMnultoak=;
-        b=DfHKNlVmjCDxyMV9276ORrCNSCAHlAhUPzWO5vzXMoU7TEoCBej2xjTWYsAEQX7Noy
-         jr+sLsZ3dKkOgLNr7lfGXX0+wKXM2VPc4npDlOwK1tKStnjBX3FTGF+tR3cFEEzivEgc
-         i4g5os+XH1ms5p0jvkkMyeAd47aE4z/70AJwKy/yNOzFk2Izv5rZdnZYK16K8KnnBm1e
-         BDyX7EDhKFpC0k6TlyKHsp+pWthgSiatnVbha40nZLE1HF3Ko9vaYjU4lAxWe7Wxsmfi
-         4IaMR8OSRG/G/DYacR0lYmMO7HNiJ/sK4q6egwa4KLAkFqMsK0CpmOLa7HQNTwd47qc0
-         YWdw==
+        bh=On1WZKdx98ADO/7Heas/21kozOIUfUi4pVgpzWkLyb8=;
+        b=yNvOE5BNlgl+0eWi8IOLu/cDSg5wv2aJq8UzeFNfZmMCggWNYMRHokcjjMMj7c8tjU
+         dUz+iFisZ7jXqc/kreVhQuzzRd/qujiVKpMHboi6eJANtTVY+IwWfq/niwJX4QWwjzIi
+         0/EF+CfLt9DorJWDZxXhHZFoZa/M8HyEaVd3H8V5FeOqnnYKzZ15mFT/0qw9OM0sKEqg
+         /nd4Pk8updTlEceyyCdzBVNKd4lipdZy4Y0cxe2edjvX1x5ywjJHgJdW4oTjPpQwtMKS
+         AmJhv9QFYcYMB8/B90XjWZIs70k6rkmSKopMfLBMSYpFP1DStOuY5LDOgYxH4xP1pyLK
+         OwIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734984818; x=1735589618;
+        d=1e100.net; s=20230601; t=1734984819; x=1735589619;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wm8B/9CMerVHPJIle0PHCkEtY10ODvfRfmKMnultoak=;
-        b=h/BILXH7cv6slVFAVFtUl5TWU7l8BtBmqCOy3JjcVT74pjq+qNd7hhl8lUuKJRCNe7
-         iXbVZFzNu5uijSrtHk3KUqo1UlXw3J0GK4sg9i7BQIsT4+hHiHbwH7oQkk7V2sYw0QlF
-         UZ8EZ0Z4iZop4V3H2X93ClXlBt/0qjfPK57R9iiTKOBo9OVs35LqTIRuainALYhN2Uxc
-         EvRetkwxFsje1nRAubILxLaiQl14ZPmTU+7+pV0RT846yHhHuqb/HKxtheKzAeFo8rQM
-         TVkw/mH1xgbfIora569AvG31NTaOz5KuTD0qEgHz1OJ0xFW+PFTvzf3mY6yfReUVWH2E
-         cQbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUA5FffK8219kBRgaQ6gfnALI9sR1caAf1IXtHV+rNkdlWtHSoWXunuzXSpOCVnKqA9EArm2/T/q5LLgaCy+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnwU99oI+vFH3TmdweJha3EAkZ1zy/0RHpfh6bAK/0DfxxP0qD
-	pNIU6TEKAIN8zfGPr5BLCD6fGy6zHyb1UgOWuqSA/96Zr+NUGpdFzuzH5XrwK7yOaot/BXadoNG
-	CMf4xvg==
-X-Google-Smtp-Source: AGHT+IF/CSACGuQIODdBatw3qoH5oZKqR5KjGsMU23n8bvd3AqVBxh4DpdMuET/yVzNegGW+DtQIzSp6IxGh
-X-Received: from plot20.prod.google.com ([2002:a17:902:8c94:b0:216:7952:a32a])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e746:b0:216:6769:9ee7
- with SMTP id d9443c01a7336-219e6f13c5dmr185546905ad.41.1734984817690; Mon, 23
- Dec 2024 12:13:37 -0800 (PST)
-Date: Mon, 23 Dec 2024 20:13:31 +0000
+        bh=On1WZKdx98ADO/7Heas/21kozOIUfUi4pVgpzWkLyb8=;
+        b=gtwE5HpYcGVePFISgSplL/JdtuH53XpvA1+ieOzFcCUs2QR5tBybUFD2jlhLFlHaCQ
+         68/eW1PWw+uZvL//5iu4LDtsD56Rz9IAJ/71dzoiPa/4u1HtVJN7Bb/T5LDjRB4RCJs0
+         lwa6dRVpaZnxbax8nj8I1R3aKpZqyMnmRi+0XbPoKFMFLPoxmCPUXk/YHP22lXd0fk8e
+         8RtYs95/Zuw2IhBM1GPp61RHuNdYUwE8SWA8SORqsotivvhaNYHPlYrbMP6xBb47RCEL
+         jWfi1UBzYwVEQwTHHgBI+ASyDhAxMedzpSJcQ9wlVU8bXDCurXQwQPjcVeuD2Wsm8azj
+         uyyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVR5Dp49lzlHn7DQZK5NhgFiEps45gFVGlyZWVyTotlZF2ctKator1aIc52aNCjth1Jeth1ho+u3XVkYOjPwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yztmwh1VDyxNRctXrHmSeLJ5N+ER6I5ZXr1HX3TbKNAcudt/H/c
+	NGOQngrFf+AUbVBfSy+W1hOZw+8eZHUNo/0yrrugTo5t5d/x3wHDHTcO7qe0447YnTRo8j9xpzz
+	H15fyMg==
+X-Google-Smtp-Source: AGHT+IGE9QNRZS/47usgacyywk7VqHL13GPydkc9VQX1I2h7hJC6BSGbzv80ZSOChZmA73HolHBhU5N9WmQP
+X-Received: from pfbay17.prod.google.com ([2002:a05:6a00:3011:b0:725:1ef3:c075])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3382:b0:1e1:9e9f:ae4
+ with SMTP id adf61e73a8af0-1e5e1e87c5bmr17167226637.13.1734984819276; Mon, 23
+ Dec 2024 12:13:39 -0800 (PST)
+Date: Mon, 23 Dec 2024 20:13:32 +0000
 In-Reply-To: <20241223-extended-modversions-v11-0-221d184ee9a7@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241223-extended-modversions-v11-0-221d184ee9a7@google.com>
 X-Mailer: b4 0.15-dev
-Message-ID: <20241223-extended-modversions-v11-2-221d184ee9a7@google.com>
-Subject: [PATCH v11 2/5] modpost: Produce extended MODVERSIONS information
+Message-ID: <20241223-extended-modversions-v11-3-221d184ee9a7@google.com>
+Subject: [PATCH v11 3/5] modules: Allow extended modversions without basic MODVERSIONS
 From: Matthew Maurer <mmaurer@google.com>
 To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
 	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
@@ -79,168 +79,121 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Generate both the existing modversions format and the new extended one
-when running modpost. Presence of this metadata in the final .ko is
-guarded by CONFIG_EXTENDED_MODVERSIONS.
+If you know that your kernel modules will only ever be loaded by a newer
+kernel, you can disable BASIC_MODVERSIONS to save space. This also
+allows easy creation of test modules to seee how tooling will respond to
+modules that only have the new format.
 
-We no longer generate an error on long symbols in modpost if
-CONFIG_EXTENDED_MODVERSIONS is set, as they can now be appropriately
-encoded in the extended section. These symbols will be skipped in the
-previous encoding. An error will still be generated if
-CONFIG_EXTENDED_MODVERSIONS is not set.
-
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- kernel/module/Kconfig    | 10 ++++++++
+ kernel/module/Kconfig    | 15 +++++++++++++++
  scripts/Makefile.modpost |  1 +
- scripts/mod/modpost.c    | 65 +++++++++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 72 insertions(+), 4 deletions(-)
+ scripts/mod/modpost.c    | 19 +++++++++++--------
+ 3 files changed, 27 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
-index d443fc504ffca0d1001f880ec496ab1f21fe979e..9568b629a03ce8289d3f3597eefc66fc96445720 100644
+index 9568b629a03ce8289d3f3597eefc66fc96445720..5f701391ab12c7d1b3ca496c9b3443c5a76a8745 100644
 --- a/kernel/module/Kconfig
 +++ b/kernel/module/Kconfig
-@@ -207,6 +207,16 @@ config ASM_MODVERSIONS
- 	  assembly. This can be enabled only when the target architecture
- 	  supports it.
+@@ -217,6 +217,21 @@ config EXTENDED_MODVERSIONS
+ 	  The most likely reason you would enable this is to enable Rust
+ 	  support. If unsure, say N.
  
-+config EXTENDED_MODVERSIONS
-+	bool "Extended Module Versioning Support"
++config BASIC_MODVERSIONS
++	bool "Basic Module Versioning Support"
 +	depends on MODVERSIONS
++	default MODVERSIONS
 +	help
-+	  This enables extended MODVERSIONs support, allowing long symbol
-+	  names to be versioned.
++	  This enables basic MODVERSIONS support, allowing older tools or
++	  kernels to potentially load modules.
 +
-+	  The most likely reason you would enable this is to enable Rust
-+	  support. If unsure, say N.
++	  Disabling this may cause older `modprobe` or `kmod` to be unable
++	  to read MODVERSIONS information from built modules. With this
++	  disabled, older kernels may treat this module as unversioned.
++
++	  This is enabled by default when MODVERSIONS are enabled.
++	  If unsure, say Y.
 +
  config MODULE_SRCVERSION_ALL
  	bool "Source checksum for all modules"
  	help
 diff --git a/scripts/Makefile.modpost b/scripts/Makefile.modpost
-index ab0e94ea62496e11dbaa3ffc289ce546862795ca..40426fc6350985780c0092beb49c6cc29b9eff62 100644
+index 40426fc6350985780c0092beb49c6cc29b9eff62..d7d45067d08b94a82451d66a64eae29b6826e139 100644
 --- a/scripts/Makefile.modpost
 +++ b/scripts/Makefile.modpost
 @@ -43,6 +43,7 @@ MODPOST = $(objtree)/scripts/mod/modpost
  modpost-args =										\
  	$(if $(CONFIG_MODULES),-M)							\
  	$(if $(CONFIG_MODVERSIONS),-m)							\
-+	$(if $(CONFIG_EXTENDED_MODVERSIONS),-x)						\
++	$(if $(CONFIG_BASIC_MODVERSIONS),-b)						\
+ 	$(if $(CONFIG_EXTENDED_MODVERSIONS),-x)						\
  	$(if $(CONFIG_MODULE_SRCVERSION_ALL),-a)					\
  	$(if $(CONFIG_SECTION_MISMATCH_WARN_ONLY),,-E)					\
- 	$(if $(KBUILD_MODPOST_WARN),-w)							\
 diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index fb787a5715f5e8b37713162979ca45355770dc73..c58f08681fc1e37929333ba3a3e0989c4db5a79d 100644
+index c58f08681fc1e37929333ba3a3e0989c4db5a79d..d13d10bf534a4c15fa76fffb2a1dc9832bd0e95a 100644
 --- a/scripts/mod/modpost.c
 +++ b/scripts/mod/modpost.c
 @@ -33,6 +33,8 @@ static bool module_enabled;
  static bool modversions;
  /* Is CONFIG_MODULE_SRCVERSION_ALL set? */
  static bool all_versions;
-+/* Is CONFIG_EXTENDED_MODVERSIONS set? */
-+static bool extended_modversions;
++/* Is CONFIG_BASIC_MODVERSIONS set? */
++static bool basic_modversions;
+ /* Is CONFIG_EXTENDED_MODVERSIONS set? */
+ static bool extended_modversions;
  /* If we are modposting external module set to 1 */
- static bool external_module;
- /* Only warn about unresolved symbols */
-@@ -1804,6 +1806,52 @@ static void add_exported_symbols(struct buffer *buf, struct module *mod)
- 	}
- }
- 
-+/**
-+ * Record CRCs for unresolved symbols, supporting long names
-+ */
-+static void add_extended_versions(struct buffer *b, struct module *mod)
-+{
-+	struct symbol *s;
-+
-+	if (!extended_modversions)
-+		return;
-+
-+	buf_printf(b, "\n");
-+	buf_printf(b, "static const s32 ____version_ext_crcs[]\n");
-+	buf_printf(b, "__used __section(\"__version_ext_crcs\") = {\n");
-+	list_for_each_entry(s, &mod->unresolved_symbols, list) {
-+		if (!s->module)
-+			continue;
-+		if (!s->crc_valid) {
-+			/*
-+			 * We already warned on this when producing the legacy
-+			 * modversions table.
-+			 */
-+			continue;
-+		}
-+		buf_printf(b, "\t%#8x,\n", s->crc);
-+	}
-+	buf_printf(b, "};\n");
-+
-+	buf_printf(b, "static const char ____version_ext_names[]\n");
-+	buf_printf(b, "__used __section(\"__version_ext_names\") =\n");
-+	list_for_each_entry(s, &mod->unresolved_symbols, list) {
-+		if (!s->module)
-+			continue;
-+		if (!s->crc_valid) {
-+			/*
-+			 * We already warned on this when producing the legacy
-+			 * modversions table.
-+			 * We need to skip its name too, as the indexes in
-+			 * both tables need to align.
-+			 */
-+			continue;
-+		}
-+		buf_printf(b, "\t\"%s\\0\"\n", s->name);
-+	}
-+	buf_printf(b, ";\n");
-+}
-+
- /**
-  * Record CRCs for unresolved symbols
-  **/
-@@ -1827,9 +1875,14 @@ static void add_versions(struct buffer *b, struct module *mod)
+@@ -1823,10 +1825,8 @@ static void add_extended_versions(struct buffer *b, struct module *mod)
+ 		if (!s->module)
+ 			continue;
+ 		if (!s->crc_valid) {
+-			/*
+-			 * We already warned on this when producing the legacy
+-			 * modversions table.
+-			 */
++			warn("\"%s\" [%s.ko] has no CRC!\n",
++				s->name, mod->name);
  			continue;
  		}
- 		if (strlen(s->name) >= MODULE_NAME_LEN) {
--			error("too long symbol \"%s\" [%s.ko]\n",
--			      s->name, mod->name);
--			break;
-+			if (extended_modversions)
-+				/* this symbol will only be in the extended info */
-+				continue;
-+			else {
-+				error("too long symbol \"%s\" [%s.ko]\n",
-+				      s->name, mod->name);
-+				break;
-+			}
- 		}
- 		buf_printf(b, "\t{ %#8x, \"%s\" },\n",
- 			   s->crc, s->name);
-@@ -1960,6 +2013,7 @@ static void write_mod_c_file(struct module *mod)
- 	add_header(&buf, mod);
- 	add_exported_symbols(&buf, mod);
- 	add_versions(&buf, mod);
-+	add_extended_versions(&buf, mod);
- 	add_depends(&buf, mod);
+ 		buf_printf(b, "\t%#8x,\n", s->crc);
+@@ -1840,8 +1840,8 @@ static void add_extended_versions(struct buffer *b, struct module *mod)
+ 			continue;
+ 		if (!s->crc_valid) {
+ 			/*
+-			 * We already warned on this when producing the legacy
+-			 * modversions table.
++			 * We already warned on this when producing the crc
++			 * table.
+ 			 * We need to skip its name too, as the indexes in
+ 			 * both tables need to align.
+ 			 */
+@@ -1859,7 +1859,7 @@ static void add_versions(struct buffer *b, struct module *mod)
+ {
+ 	struct symbol *s;
  
- 	buf_printf(&buf, "\n");
-@@ -2125,7 +2179,7 @@ int main(int argc, char **argv)
+-	if (!modversions)
++	if (!basic_modversions)
+ 		return;
+ 
+ 	buf_printf(b, "\n");
+@@ -2179,7 +2179,7 @@ int main(int argc, char **argv)
  	LIST_HEAD(dump_lists);
  	struct dump_list *dl, *dl2;
  
--	while ((opt = getopt(argc, argv, "ei:MmnT:to:au:WwENd:")) != -1) {
-+	while ((opt = getopt(argc, argv, "ei:MmnT:to:au:WwENd:x")) != -1) {
+-	while ((opt = getopt(argc, argv, "ei:MmnT:to:au:WwENd:x")) != -1) {
++	while ((opt = getopt(argc, argv, "ei:MmnT:to:au:WwENd:xb")) != -1) {
  		switch (opt) {
  		case 'e':
  			external_module = true;
-@@ -2174,6 +2228,9 @@ int main(int argc, char **argv)
+@@ -2228,6 +2228,9 @@ int main(int argc, char **argv)
  		case 'd':
  			missing_namespace_deps = optarg;
  			break;
-+		case 'x':
-+			extended_modversions = true;
++		case 'b':
++			basic_modversions = true;
 +			break;
- 		default:
- 			exit(1);
- 		}
+ 		case 'x':
+ 			extended_modversions = true;
+ 			break;
 
 -- 
 2.47.1.613.gc27f4b7a9f-goog
