@@ -1,155 +1,183 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5751DEAD0
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Dec 2024 13:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E73319ABA3
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Dec 2024 16:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735564712; cv=none; b=ebMiSy+KxcZWmXTtEGfs3MP+qD8YNd2K1w5yw+Slqb8P6wiSj0x6252oWYLpgQZeicZi73O7/ZgVpp2t0IaIj/Rh2QfO/F1312pqaQmaMaC7u+ovWIzIzWDV09yMnAvc06NbvI6xEzSSJ/rq4Krfr6WEdVK8Py9bCiWOc1OmeV8=
+	t=1735575836; cv=none; b=Ojh16F4ck3XSc0REazvw4lPCsOnip5R+7VIlsHnK3QJBaNcMz2LcT2FgK11f3xhMgeBwk+SrOdYU7EBj+An3w9J16v7byHiibbbwDNZG0vIJTfWXvGLCLcDoNBum46VOd6mRnQLY44o4gmRfpRehiA0v/iXHtF7KCHE9GCj9Wvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735564712; c=relaxed/simple;
-	bh=mLlWGpGeue68Qm80pGot7+TfqNYcOP74naMbrEr3lDU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qkEQ25qF9fK7VToDPEMwL5pLSzWtjd+Wwm/W3fSq5Mh4K/tNEEP+q3iJxc1SQgsmvwYtUwZX0wnNdISWmxCub9HoIW1WiDgfOcRGOQ7/lFEbZ5hd0Fr13Y/NS+ywjNdNezDTFCPrK+Fncot4QpE/4oAB/zn2JIBdPLVY2KlanKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=YDt1DfDr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LaojXvpr; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
+	s=arc-20240116; t=1735575836; c=relaxed/simple;
+	bh=rbDaczH5dpREIoVQEct3GxBCn1eIrIUzpUMxumUdRIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzxWJ7aqlCeuLDuekdPZIVSGT92Sc1p8a2VO6y0a92ux8HGHkM5mkJAYYSC1yCpi9LxHicszEJ6ICNZK2J9T8I4J4k8M73ZIyYoW3vvtwayOuvrojIsE5m++NLC0verOC6TCtcIgluvX2pli43XLoCl+vi1UqTEORwqpqdeT9WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ludjNJ6G; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="YDt1DfDr";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LaojXvpr"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 6C5E41380782;
-	Mon, 30 Dec 2024 08:18:29 -0500 (EST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ludjNJ6G"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7b6f8524f23so1019584785a.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Dec 2024 08:23:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735575834; x=1736180634; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MAxY7Vi94CMhBeJccum4UKJeyjsrRgZGF7GZ0UbQzn4=;
+        b=ludjNJ6GjjH7SFYd64/BqvRtYHDJACXLD59HHZNfib5jIvUwe4uhGuHS1cyzaVko2N
+         TkL/SVIgXoIcJZWrZ3KxZE60pFVjU35RMkVCpeEzs9pIKb/QH8NLZoHsCkJieboggCP6
+         D3eTgg5v1gMN26MIhc0m3AFEa2DwvRaoTMM4UOm2qeaU1wZnJbu+K7kdcUKY+LJkgFVd
+         DsvANcT2FJZziN37gbm8mCwXNVvkwZldWuQC2XBFTmhefeb89NpfLN+MkGE84DB0p5UU
+         gWQKeXo9kb7hehK3ILKrDp+5NjFRCVmz2SEVyBXmugwxvc+TPaNXu2/83NQkdg6HAqgp
+         Ymcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735575834; x=1736180634;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MAxY7Vi94CMhBeJccum4UKJeyjsrRgZGF7GZ0UbQzn4=;
+        b=fv+sQV39z2HRwbg+tW7IO92LX+p2cJfymxtF5RgXDkt+RXnvMj3HtAbd0JP9aifFJj
+         AN096liyIj/y12r2euUYqJDucHcTKmv0WE7t6QyqJZgXU9IVzrVoD8ZdCsniskdwuJzk
+         zSnUYkpi7nZDs4+yZWLMWU2iSWyIrufgsdi6N7fM05HhGUrZGrlq6tpYIQws+VDfe8R8
+         NRjB9wrS0jOHSOLhIiRDlnrNxE6yznh21AXwYvL+xT8ErEQraMWFmMjc6hPw90RtU+FV
+         GhiHFy7JxNamCJtRwRzR7qZI/5PUQBoX0VB2ajNFcZlpWHx5orXSastSeuvkwpQMoXdw
+         PVDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWL7noRXE3h+VfD2A/1MhbPLjPZB7WC7axmqQm77D1tLLPgp6t53D+hNxhbarZg0PX7StaH6F4MEnXA1KQKsg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyRTgW15KSBanTuyVATKQnes8Q2lMqNcHTipEd3YfR8zFOUfv6
+	9f51/F9n8FfS/SLYf5bvfypg2Rj9ZWUOc/dHGzjTsqPsmNwL1B85
+X-Gm-Gg: ASbGncvACvszWx3sJOoUck7fiFXs5ZTNaVdwiTzf2z8OGf2XWCV81DQ9mygKG6APrkZ
+	uMrTw6qbe8AtsXWiL+u7QjBaGZPOOeenR64WBesHM8e/vmBtlmVZ5r/+6mLdA3oWaU0BBTR5g0f
+	P62ja2wtMiKjUm6L0iIfV/b+n8EmEG/SIbqDVvKDS4j9Ikn9BQthUVR9+7PX075uEuFc3ZqU/rM
+	kTzH/rekhSjDPnRv3GxJ1lPXZ6XxdY3Kk4V5MavXuR6cTWYsyIFEzPvv+Gg1RkzPT0i1gANY8Zk
+	BUWe1JPouBbmINdZB6XmpqyBcQ1uCWvVDj7cePGJrkliHDI=
+X-Google-Smtp-Source: AGHT+IE/pMNpCukH21YMRybN3Z6tHwMR+8fTmViwioA1hw7YZXJzE+Sr7H8/jPHqRd7RsT/z0M7s7w==
+X-Received: by 2002:a05:620a:468a:b0:7b1:52a9:ae15 with SMTP id af79cd13be357-7b9ba716abfmr5849040685a.9.1735575832475;
+        Mon, 30 Dec 2024 08:23:52 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac4cbb6dsm930898485a.102.2024.12.30.08.23.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Dec 2024 08:23:52 -0800 (PST)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 60BEE120007E;
+	Mon, 30 Dec 2024 11:23:51 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 30 Dec 2024 08:18:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1735564709;
-	 x=1735651109; bh=0wHT9HOW0L3moRtBIHXw+tW9PY8Z2GOiPhxZsVO3Aak=; b=
-	YDt1DfDrM+SWb+CHAjLxNL+DhJ/jCeb1ZmwPECl0Klb2P1zjV5117yi/vk6U78h9
-	AwVm6hhFqT5C2ImsawLloLcUjWB++msPALiNdUvxDxZw9F4VvpvAUznyZKiV2MT9
-	FqvMsrgxHehXW2x/+SCZ8eQKjgCY1W16o3jOo9lIWNZ9+64Mz/1hkF6J9tpT1Za6
-	r8wGD7U/qBoDhMi43ParWXaXeIh6Gs9HgZrm9CA3ovH4qsIFLxwHOaOHjEH04WX/
-	4GlGwnwIXFP+wfaRINtkkGfNeCTP/4GYM5y+FWy5vfUpp5flY49De/q8ZVaUqlhp
-	7ZIotnPtPPQ++kWZ/8aO3Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1735564709; x=
-	1735651109; bh=0wHT9HOW0L3moRtBIHXw+tW9PY8Z2GOiPhxZsVO3Aak=; b=L
-	aojXvprOsCsSB8kDk7250bz6SQT7RptAanDSR9iEs2hoEX6kSIt4nS/1zjcdPCJQ
-	Pi5I8oWTrlet2h9wDQIcQfmM8Ow1/6tA9kAT8Bq4NfAPsjkWP4ANZE+HhAzUV19d
-	1CFP1bXxyUIQMKoOZI0jHgXPHxXvxJUWOUc80ZVXoihuVI7o7I5y7F/OvpbXTZLK
-	jnwxj5qFI7CcpVUW+W2iS1W9Nr20F8clzoM1nRivMNONaqmc7PcUB+ZLByfZu+qN
-	f7dk4kERG5palXxw2ToQHuy/7EZ1RYbBShhx3vGeOni5DC0R0L3dbC85nX90UPgf
-	xbn9e0qM3WxosLtQYlkYQ==
-X-ME-Sender: <xms:pZ1yZzX9DOfLoH6Qx3-wSdxEXEcz2Id2DNxL0xZKMOwfoFqiwDJZ5Q>
-    <xme:pZ1yZ7mJ17amtsjo7NvArTXQbQcxSuxL6q9GH1_YhEKioJVPo-q0K6rrbvuYU6t8u
-    eq5P4z5A_w_sIxZUw>
-X-ME-Received: <xmr:pZ1yZ_Yxbtumriyly5rWf9e9zqXquTJJB5SqvrJJRrRjl-JLD5gEfupSN6YyjwOs9J8U5SGwOGZt2S-MimwpuLEWNxrBNNXCw7xZ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddviedgheduucetufdoteggodetrfdotf
+  by phl-compute-04.internal (MEProxy); Mon, 30 Dec 2024 11:23:51 -0500
+X-ME-Sender: <xms:F8lyZ_Wa6guxVK-cAaRCXIjxW-y-LIkRl02Ng24KpWPJavRQ0fJh1A>
+    <xme:F8lyZ3k07nFMzCpCtNHKdsT3cWi95G4bUyCgfWF9qQ6NBCEZx3F_DPZBu5W_v2_WE
+    5KxZ92cDCco1ByWdA>
+X-ME-Received: <xmr:F8lyZ7Zlfcqd9ZycyaUS8Bnnfh90ClrSpAR5sJ2i0y5e6oEi-E0yehu02Qc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddviedgkeelucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdej
-    necuhfhrohhmpeetlhhitggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenuc
-    ggtffrrghtthgvrhhnpedtleefieduffffteffheduleekteeuheeugfdtjeefudejueeg
-    gefffeefvdetleenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhrvggruggvrhdrrh
-    gvrggunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
-    rghlihgtvgesrhihhhhlrdhiohdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmth
-    hpohhuthdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgt
-    phhtthhopehfvghlihhpvggrghhgghgvrhesghhmrghilhdrtghomhdprhgtphhtthhope
-    hojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhr
-    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpd
-    hrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghp
-    thhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprg
-    drhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhih
-    hhhlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:pZ1yZ-W1eRbujjbZ7Dgl1LoS_N_vDasrCJnzwQJL-JOxrKiZ0MHvDA>
-    <xmx:pZ1yZ9n0nWxY3Pg_qWf9XwNncgfK0IzJOCce3FgMja5X0Kh2iV4mTg>
-    <xmx:pZ1yZ7fSLpCuu8ZCCbnhKDNekgShnkXXDcATLuobV3QW0TpKDmERwA>
-    <xmx:pZ1yZ3GzkdpmyCUDIReyC57vIXNrGXujOAuP2hnzMCkSjc79_ndJvQ>
-    <xmx:pZ1yZw9yRfh3QcjOYn8PV80ciqh5SJQsU6UMeBRo2AhVsuVPlgS-4wO5>
-Feedback-ID: i56684263:Fastmail
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeduudfhvddttedvheeigeehgfejvdejhfefiedt
+    heeijedtueffgeeuvdeiteeiffenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhrvg
+    gruggvrhdrrhgvrggunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqie
+    elvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdr
+    tghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmh
+    htphhouhhtpdhrtghpthhtoheprghlihgtvgesrhihhhhlrdhiohdprhgtphhtthhopehf
+    vghlihhpvggrghhgghgvrhesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhl
+    rdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoh
+    epsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggv
+    nhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusg
+    horhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohho
+    ghhlvgdrtghomh
+X-ME-Proxy: <xmx:F8lyZ6U-cb3Sdl8E433CCGkHAfffovbSnLzOxatYrofplONBUm0dlA>
+    <xmx:F8lyZ5mu33k9l_djbuXEfII5PXnQKvDxOUbUPSfgpjaXCi2pZmv3yQ>
+    <xmx:F8lyZ3dpDf-4lSKpyvID1grZW3lIZ8NmtODAraHUfil5vBQtbiLH3A>
+    <xmx:F8lyZzFjyINzY1jO1KNh4lFaXITuhgTVhc54WhjyE9dwwV6toI7GhQ>
+    <xmx:F8lyZ7kOTR3qWDlmxFk4-S-TClqMiNXMtqdtqK1lsSgqMcpOl5H_v6xF>
+Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Dec 2024 08:18:27 -0500 (EST)
-Message-ID: <7fee31c8-6319-44d5-b01c-7f5022054e10@ryhl.io>
-Date: Mon, 30 Dec 2024 14:21:39 +0100
+ 30 Dec 2024 11:23:50 -0500 (EST)
+Date: Mon, 30 Dec 2024 08:23:19 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <alice@ryhl.io>
+Cc: Filipe Xavier <felipeaggger@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Filipe Xavier <felipe_life@live.com>
+Subject: Re: [PATCH] rust: generalize userSliceReader to support any Vec
+Message-ID: <Z3LI981PbEwMts1-@boqun-archlinux>
+References: <20241222-gen-userslice-readall-alloc-v1-1-c57b7d4972f0@gmail.com>
+ <Z2hKTPIBaJ2K9HJn@boqun-archlinux>
+ <7fee31c8-6319-44d5-b01c-7f5022054e10@ryhl.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: generalize userSliceReader to support any Vec
-To: Boqun Feng <boqun.feng@gmail.com>, Filipe Xavier <felipeaggger@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- Filipe Xavier <felipe_life@live.com>
-References: <20241222-gen-userslice-readall-alloc-v1-1-c57b7d4972f0@gmail.com>
- <Z2hKTPIBaJ2K9HJn@boqun-archlinux>
-Content-Language: en-US, da
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <Z2hKTPIBaJ2K9HJn@boqun-archlinux>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7fee31c8-6319-44d5-b01c-7f5022054e10@ryhl.io>
 
-On 12/22/24 6:20 PM, Boqun Feng wrote:
-> On Sun, Dec 22, 2024 at 01:37:02PM -0300, Filipe Xavier wrote:
->> The UserSliceReader::read_all function is currently restricted to use
->> only Vec with the kmalloc allocator.
->> However, there is no reason for this limitation.
->> This patch generalizes the function to accept any Vec regardless of the
->> allocator used.
->>
+On Mon, Dec 30, 2024 at 02:21:39PM +0100, Alice Ryhl wrote:
+> On 12/22/24 6:20 PM, Boqun Feng wrote:
+> > On Sun, Dec 22, 2024 at 01:37:02PM -0300, Filipe Xavier wrote:
+> > > The UserSliceReader::read_all function is currently restricted to use
+> > > only Vec with the kmalloc allocator.
+> > > However, there is no reason for this limitation.
+> > > This patch generalizes the function to accept any Vec regardless of the
+> > > allocator used.
+> > > 
+> > 
+> > Interesting idea, however...
+> > 
+> > > Link: https://github.com/Rust-for-Linux/linux/issues/1136
+> > > Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+> > > ---
+> > >   rust/kernel/uaccess.rs | 6 +++---
+> > >   1 file changed, 3 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> > > index cc044924867b89f6116c7f9ec216d8cea2b3f8d7..719b0a48ff5550acc19f2e607c0a09f818145def 100644
+> > > --- a/rust/kernel/uaccess.rs
+> > > +++ b/rust/kernel/uaccess.rs
+> > > @@ -5,7 +5,7 @@
+> > >   //! C header: [`include/linux/uaccess.h`](srctree/include/linux/uaccess.h)
+> > >   use crate::{
+> > > -    alloc::Flags,
+> > > +    alloc::{Allocator, Flags},
+> > >       bindings,
+> > >       error::Result,
+> > >       ffi::c_void,
+> > > @@ -127,7 +127,7 @@ pub fn new(ptr: UserPtr, length: usize) -> Self {
+> > >       /// Reads the entirety of the user slice, appending it to the end of the provided buffer.
+> > >       ///
+> > >       /// Fails with [`EFAULT`] if the read happens on a bad address.
+> > > -    pub fn read_all(self, buf: &mut KVec<u8>, flags: Flags) -> Result {
+> > > +    pub fn read_all<A: Allocator>(self, buf: &mut Vec<u8, A>, flags: Flags) -> Result {
+> > >           self.reader().read_all(buf, flags)
+> > >       }
+> > > @@ -281,7 +281,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
+> > >       /// Reads the entirety of the user slice, appending it to the end of the provided buffer.
+> > >       ///
+> > >       /// Fails with [`EFAULT`] if the read happens on a bad address.
+> > > -    pub fn read_all(mut self, buf: &mut KVec<u8>, flags: Flags) -> Result {
+> > > +    pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, flags: Flags) -> Result {
+> > 
+> > ... what if the copy hit a page fault because the target memory (e.g. a
+> > VVec) is not mapped? Would copy_from_user() handle this? Or would it
+> > return a different error code than `EFAULT`?
+> How could the memory not be mapped? A vector lets us obtain a &[u8] to the
+> memory, which isn't valid if it's not mapped.
 > 
-> Interesting idea, however...
-> 
->> Link: https://github.com/Rust-for-Linux/linux/issues/1136
->> Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
->> ---
->>   rust/kernel/uaccess.rs | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
->> index cc044924867b89f6116c7f9ec216d8cea2b3f8d7..719b0a48ff5550acc19f2e607c0a09f818145def 100644
->> --- a/rust/kernel/uaccess.rs
->> +++ b/rust/kernel/uaccess.rs
->> @@ -5,7 +5,7 @@
->>   //! C header: [`include/linux/uaccess.h`](srctree/include/linux/uaccess.h)
->>   
->>   use crate::{
->> -    alloc::Flags,
->> +    alloc::{Allocator, Flags},
->>       bindings,
->>       error::Result,
->>       ffi::c_void,
->> @@ -127,7 +127,7 @@ pub fn new(ptr: UserPtr, length: usize) -> Self {
->>       /// Reads the entirety of the user slice, appending it to the end of the provided buffer.
->>       ///
->>       /// Fails with [`EFAULT`] if the read happens on a bad address.
->> -    pub fn read_all(self, buf: &mut KVec<u8>, flags: Flags) -> Result {
->> +    pub fn read_all<A: Allocator>(self, buf: &mut Vec<u8, A>, flags: Flags) -> Result {
->>           self.reader().read_all(buf, flags)
->>       }
->>   
->> @@ -281,7 +281,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
->>       /// Reads the entirety of the user slice, appending it to the end of the provided buffer.
->>       ///
->>       /// Fails with [`EFAULT`] if the read happens on a bad address.
->> -    pub fn read_all(mut self, buf: &mut KVec<u8>, flags: Flags) -> Result {
->> +    pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, flags: Flags) -> Result {
-> 
-> ... what if the copy hit a page fault because the target memory (e.g. a
-> VVec) is not mapped? Would copy_from_user() handle this? Or would it
-> return a different error code than `EFAULT`?
-How could the memory not be mapped? A vector lets us obtain a &[u8] to 
-the memory, which isn't valid if it's not mapped.
 
-Alice
+I mistakenly thought that vmalloc()'d memory can be swapped out, which
+is not the case. So you're right the memory must be mapped.
+
+But the usage question still exists: do you have an usage case for
+reading userspace memory into a `VVec`?
+
+Regards,
+Boqun
+
+> Alice
