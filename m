@@ -1,453 +1,244 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E844042AAF;
-	Mon, 30 Dec 2024 18:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4001041C6A
+	for <rust-for-linux@vger.kernel.org>; Mon, 30 Dec 2024 22:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735584269; cv=none; b=qWIuUYLNb4jEYTxf8lR34MX4bMqpdUsSLu2z52tqxVCh9lexvXQo4iSdps5DW9SuSAApAH6fVOH/sQqxi41Y7rMtCdzxNdWnT0xmOUkjqnIKLzN8EshE5Ifl73DpFT6zM21Hi23dgauoTC9rCPR+8RkdFOsWmtQQ3lRx5tZMne8=
+	t=1735597833; cv=none; b=cFSAJHwmYufPSlsiGFDvmYkaDoF30H3rgCyDgcxOHFzWKwrsP6v3bUTm6NdWGCqARVeSEdAUY/SSCVqnLLMoFIYApRrm6UDT9MuRODz++KKKumxwUNNH1JDCBNZQblJqQzBib7TqKIjFZhjqdf696Kv4j/nVMqSbhsP5z6WIRFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735584269; c=relaxed/simple;
-	bh=hVKDeOnTGaj27THS3GMhJy4QhPsbvl6FMA27rhPZdeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WMzMKvO+L081Ad03CAtQMYQLEN5v1avBumcElfIGFB/+k/Am4pVP9J0QdVwIqhbDyB0rj7tOIhrdlb6yUeg/tx9kTD4Wa7QErbkr5VxwJ+hnzF07qbDWqkhntdQG943/wSI/48dHn34/7QOLPNKC+6w3X67RSWo6aHPJDjkU1qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eVYxl3OJ; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1735597833; c=relaxed/simple;
+	bh=EhFpDi4GPVh+7uPdcDhGF6uVOHSbudooGmnywagyyRg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hroyUv1r+7Ucf8nFN4JrNBfxBtjFJVZfgQFiduptwS48Y6KT32aaGFpVebieUDO4hh2mB26G41jwNen73V9NHH6E/7LPlWLR1MylS28hJahz+fZMzk55aMoMql+SoB8eJmrUq/1y+seS8fSLtolTXh6/OhPm5q8jgx/KFobL6Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VclSJdqQ; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVYxl3OJ"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6d8f916b40bso126423926d6.3;
-        Mon, 30 Dec 2024 10:44:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VclSJdqQ"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ef775ec883so12703031a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 30 Dec 2024 14:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735584266; x=1736189066; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uu+87PAPhLKyHWYj89Ks2smAvC2kAf/8czCWJnZdWGc=;
-        b=eVYxl3OJGbm2rzG3hMj0rSAHxh5zze7EPf9uCdcOgOqY4SmvTkcLKWxQRBt4LbARW7
-         V+ui0Vk2qMybGrYNNogZvhFc+VamEY5nOSBNw5rGah+TQIG68CiA/VVB+NU9fIWLSBs3
-         9ELRuK+FJDHUid1ppCiGL0Q81iP5cFZbeqa79rg9UPlcFPOzRRcEyHcSHCcRtNYsZ+9R
-         PuqgoFJqTEYNB5b7I8o6pibeDrmEinEd9wq9lmpYvPRXtHQNPcx7B4Qb4bB+9HLTXJ0P
-         uvvkIHovxg5UcqxVkZVKpEYUkzMIfoX7urhmEWpOKLcK9zC20ywlaeqPwr4IzyBZhU1T
-         O43A==
+        d=google.com; s=20230601; t=1735597830; x=1736202630; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LpZLpYsewVrq7qvikYfEFoR4djmdSEdihd9PD28jgOE=;
+        b=VclSJdqQJUEuPCJSLAy/jV80WpzjQhvIbE62gWy4xOO89BdgEQPqGWCwCZe6Pbmp1G
+         VEZUyTEQr8vcAQ8H/A9PuHrPPaPPyglsXoirfApfkfidwCJq5OX50RE4+eu5oAZ5SXsx
+         xY1KdaSwt/Ek/CjKO1HxVwc9Eo77OVVfDjN+8Ha2pl0h/Jr3PL8md16Xru7Ijp6A28HD
+         uNm+n0Mgkd1YmJGB3JCOtd8OS4NKICNoD6YsEszsrrprxBEDIEdIeMJvxSSfwf9Kbzkd
+         Q+nUOvLhahSMhzZxLyP2tt4Ox5CUtH4cCgX5QU70ZVvwYpbt4SaWulzlkBpTU1hExWQe
+         Sozw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735584266; x=1736189066;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Uu+87PAPhLKyHWYj89Ks2smAvC2kAf/8czCWJnZdWGc=;
-        b=Du9gpKERAorJHYypk65ZKac08IPCoDWdcv3ONPvhJjYYsWoim62mmncexaawTe1VzP
-         jMU4NRmpTtKfr8ISV96TLn03bRqkX0JbkdTNJS0tU67Zw/ZKk6xBYedA88CWubfScSht
-         lu2F6/Csvn4GEv4Ery4xkujWqLDUin/VWqBX/mHprQZKFFUhRUTQIpcotI7oqjt8oHP0
-         CxKI5a7+DPW8r/3AfIeR0V/ilGyLuQJDDGDyClnCaZ9KP8k8QXITSmsutOM6GZbOdHV7
-         f58tqHiFOPVEkhkEPejxUviCmfhokL5q7ZkMqeSszhHlccYU+5maujsiK4rJgGWugE86
-         dv4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWeTnDMCZDLaisP4/9vJ3nu0txxEMGa9WygQSqHnna1H7IkHo6q2z5gFNzgelGxHJoOpglZl6I=@vger.kernel.org, AJvYcCXgHjMIi+LagtgJSyJqTEJcBGFioLSnbNadz7B8Gt3x3GtjjWLpW1l0qGAi8ySeRB2mvT5Wi1RYsA8lualW2ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgqjfXULYy6EAuhOC1nhVzvFxthfDMJaZum+IgP8GwNkUGFOoC
-	1WyPlY4QUgrQyKmU6M6seL8nIrq75+qc23qP6tM9ADT1jM2SWHqC
-X-Gm-Gg: ASbGncvLMQA7dUDY7PahsRzPppbcBeiU4lhQPjWJ6nhTIt1tqubsmiSSrk7LVpSnOfN
-	vZnlzotbSazv63Uh7sWpVbOZHWjHnSYKeii8fbeSOH5DdnaYKBWuqXwaTaSqyhxH5Nv2JhnWgVm
-	6hXeg+yXgAWTZteBtE6PTvUfjJXoCmCgS6u0m4sQmaTrWfVO8QPppZGOU3p8fEkKHEZoT5Y/S1w
-	Ah7BLgmcvhrKeGcrJN/KcxU8An/njSIG7H4WLwSRiwS56XuNJwrVM2NSAggaeSErp3EZX9IHAAK
-	I86CPxbIuxyDX++oNl5dp1LGz08lV121gS3Ej2EbpdRA7YI=
-X-Google-Smtp-Source: AGHT+IGnf7AbXa9M2OSB/ScRSH1wb1b8nm77upNy9FIaW7DJJWSmfa53y+UzZH27D/Af2FyTI1aDXg==
-X-Received: by 2002:a05:6214:4002:b0:6dd:cbe:a1b6 with SMTP id 6a1803df08f44-6dd233a224bmr674780796d6.47.1735584265559;
-        Mon, 30 Dec 2024 10:44:25 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dd180ea757sm104726546d6.22.2024.12.30.10.44.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Dec 2024 10:44:25 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 717C01200075;
-	Mon, 30 Dec 2024 13:44:24 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 30 Dec 2024 13:44:24 -0500
-X-ME-Sender: <xms:COpyZzZNZNvmamnFEBoGV1a-c0S3E8jEv4FHOPzEBE91Xh2B-d8-Fg>
-    <xme:COpyZyaA0dADUf7dfu_uofo0Fux5xNfY2SW7DGCoXEFSlelYDlwWIGUpC7_mbTac4
-    NtM0BOmdTtwHB1w6Q>
-X-ME-Received: <xmr:COpyZ18MvjAViYavWvWYtoiMvQ9jMpcy2M9SFQyFIhmPGjlzbB17KR0_zlQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddruddviedguddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephffhlefgueeuheetuddtveeffedtieehieeh
-    geeihfdtffdvgfeigfetheffjeehnecuffhomhgrihhnpehruhhsthdqfhhorhdqlhhinh
-    hugidrtghomhdpfhhilhgvrdgrshenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
-    mhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlh
-    hithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehg
-    mhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepfedtpdhmoh
-    guvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehg
-    mhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthht
-    ohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhmghhroh
-    hsshesuhhmihgthhdrvgguuhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:COpyZ5oKgI4_Ct3CjK7bevkcpCqvNzQZgfdgkJlczg5gY-v_OCkBQA>
-    <xmx:COpyZ-qjRkSqcVaEfIMugj428JrwZQvEcgFv3pH2Qtg2lEgaL_XYyQ>
-    <xmx:COpyZ_Si9hFQZ6KOCzaToX0lQT9ucpnm44kyaM7q8FsAGAxUmtJnNg>
-    <xmx:COpyZ2or-H_s5t5Hn9s7eQ8Z-yxkjxQTGGTrtF501rdvkMBLcj6k6w>
-    <xmx:COpyZ_6EFG6LJgqZp486_cNaziQLFnrHNVdDEpdq46GZhs7ZtGLbYZmS>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Dec 2024 13:44:23 -0500 (EST)
-Date: Mon, 30 Dec 2024 10:43:52 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com
-Subject: Re: [PATCH v7 6/7] rust: Add read_poll_timeout functions
-Message-ID: <Z3Lp6Ce0YJa5yEYZ@boqun-archlinux>
-References: <20241220061853.2782878-1-fujita.tomonori@gmail.com>
- <20241220061853.2782878-7-fujita.tomonori@gmail.com>
+        d=1e100.net; s=20230601; t=1735597830; x=1736202630;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LpZLpYsewVrq7qvikYfEFoR4djmdSEdihd9PD28jgOE=;
+        b=W3p+ilEH0wDhTbSP1ZG1TLsboMo7lr6PdeYmkKmmcX0xiWRLG7Kdxbz+pim4pTa0v2
+         ZgccvR27KhWB1R4HxbnBVhb85dw+DikgwuRGwRATtRfSwAA6UV+lZaRTF/0G/elhi73K
+         sthEwZZRHYX/yV9vL+BR+md9Z5PS/8vrO+4wCiK3fjRWNuw3RHXWBmytF5eYioIkkUjq
+         FRPivC57AS+A1vqwLfcqtrd2hXfAMm0x00Sob5HosZdvWruR08dgPkwQ2EWZFACxuxw0
+         ftjjs+cXcHs2F3r+zJ7fiTOdXDRFTp/R4KpwPO9P8Fxa/KFBBw8uN6HAYythxwipypEr
+         3i9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVB2kQllhVR7riMUj64yujlPeem9p5eLV64l5V3VdPAMpgtwGtEynxv5WQsqkTPKARlDHb1yGOZr93zhiXFAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWnmHJgSeK61rjXICS3lPLQN0OfQnG7lQia5zP7VCFL3gfZSq3
+	D+RcyJgtfNjMy2ZD4XV48uia/6GSbXtDx04abM/BkCSwpj8cNsxAwxMXkHQg/QAZJ/fwUCl47uK
+	XW+3Epw==
+X-Google-Smtp-Source: AGHT+IHfbXM1OeeGJHCgMia9kCgnrEFkSjuXsnl774WBOr/JxTpicRDq2X7G14H1+Yx2MeO8TFtv2WEYa9C/
+X-Received: from pfnf23.prod.google.com ([2002:aa7:82d7:0:b0:72a:f9c7:a2ed])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:66ca:b0:725:f1b1:cb9f
+ with SMTP id d2e1a72fcca58-72abe0603c0mr52312794b3a.20.1735597830473; Mon, 30
+ Dec 2024 14:30:30 -0800 (PST)
+Date: Mon, 30 Dec 2024 22:30:27 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241220061853.2782878-7-fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAAMfc2cC/43Q0WrDIBQG4FcJXs+gR1NNGaPvMXZh4jEJa+Kma
+ WgpffeZrNCMtrDLI56P//xnEjF0GMk2O5OAUxc7P6SBw0tG6tYMDdLOpgcCDCRnABSPIw4WLe2
+ 9nTDMC5EaVUlpXeWc4yStfgV03XFx3z/S7ILv6dgGNCuMFyB4CUUudCFBMMpp35tDwLBrvG/2m
+ Ne+v2oBvw8p3PhLkh5jNEu2bfa6aACaF3LDRA4gJGg5ayaatgv+tPvEMOA+96F5m8EH6ykIZ0p
+ scihLpoWmwGg0fTf6/WQGHFaRFqIyEWka0o9tNqRS6DUGI/PBbRdHH05Lr5NaMl8bFI8bnBRlV
+ IhS6VSlEEqsO5jFSa+UVNZjRSelFKa26DZQo75TypvCn2Ypk1LVTDLhWCErd6dw9h+Gs+QwZ1Q hnbOI9zdxfnPgucOTA8At1xKxNOqPc7lcfgDgPwF9xwIAAA==
+X-Change-Id: 20241022-extended-modversions-a7b44dfbfff1
+X-Mailer: b4 0.15-dev
+Message-ID: <20241230-extended-modversions-v12-0-296a6a0f5151@google.com>
+Subject: [PATCH v12 0/5] Extended MODVERSIONS Support
+From: Matthew Maurer <mmaurer@google.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Dec 20, 2024 at 03:18:52PM +0900, FUJITA Tomonori wrote:
-> Add read_poll_timeout functions which poll periodically until a
-> condition is met or a timeout is reached.
-> 
-> C's read_poll_timeout (include/linux/iopoll.h) is a complicated macro
-> and a simple wrapper for Rust doesn't work. So this implements the
-> same functionality in Rust.
-> 
-> The C version uses usleep_range() while the Rust version uses
-> fsleep(), which uses the best sleep method so it works with spans that
-> usleep_range() doesn't work nicely with.
-> 
-> Unlike the C version, __might_sleep() is used instead of might_sleep()
-> to show proper debug info; the file name and line
-> number. might_resched() could be added to match what the C version
-> does but this function works without it.
-> 
-> The sleep_before_read argument isn't supported since there is no user
-> for now. It's rarely used in the C version.
-> 
-> core::panic::Location::file() doesn't provide a null-terminated string
-> so add __might_sleep_precision() helper function, which takes a
-> pointer to a string with its length.
-> 
-> read_poll_timeout() can only be used in a nonatomic context. This
-> requirement is not checked by these abstractions, but it is intended
-> that klint [1] or a similar tool will be used to check it in the
-> future.
-> 
-> Link: https://rust-for-linux.com/klint [1]
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  include/linux/kernel.h |  2 +
->  kernel/sched/core.c    | 27 +++++++++++---
->  rust/helpers/helpers.c |  1 +
->  rust/helpers/kernel.c  | 13 +++++++
->  rust/kernel/cpu.rs     | 13 +++++++
->  rust/kernel/error.rs   |  1 +
->  rust/kernel/io.rs      |  5 +++
->  rust/kernel/io/poll.rs | 84 ++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs     |  2 +
->  9 files changed, 143 insertions(+), 5 deletions(-)
->  create mode 100644 rust/helpers/kernel.c
->  create mode 100644 rust/kernel/cpu.rs
->  create mode 100644 rust/kernel/io.rs
->  create mode 100644 rust/kernel/io/poll.rs
-> 
-> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-> index be2e8c0a187e..086ee1dc447e 100644
-> --- a/include/linux/kernel.h
-> +++ b/include/linux/kernel.h
-> @@ -87,6 +87,7 @@ extern int dynamic_might_resched(void);
->  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
->  extern void __might_resched(const char *file, int line, unsigned int offsets);
->  extern void __might_sleep(const char *file, int line);
-> +extern void __might_sleep_precision(const char *file, int len, int line);
->  extern void __cant_sleep(const char *file, int line, int preempt_offset);
->  extern void __cant_migrate(const char *file, int line);
->  
-> @@ -145,6 +146,7 @@ extern void __cant_migrate(const char *file, int line);
->    static inline void __might_resched(const char *file, int line,
->  				     unsigned int offsets) { }
->  static inline void __might_sleep(const char *file, int line) { }
-> +static inline void __might_sleep_precision(const char *file, int len, int line) { }
->  # define might_sleep() do { might_resched(); } while (0)
->  # define cant_sleep() do { } while (0)
->  # define cant_migrate()		do { } while (0)
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 3e5a6bf587f9..6ed70c801172 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -8670,7 +8670,10 @@ void __init sched_init(void)
->  
->  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
->  
-> -void __might_sleep(const char *file, int line)
-> +extern inline void __might_resched_precision(const char *file, int len,
-> +					     int line, unsigned int offsets);
+This patch series is intended for use alongside the Implement DWARF
+modversions series [1] to enable RUST and MODVERSIONS at the same
+time.
 
-Instead of declaring this as an "extern inline" I think you can just
-make it a static inline and move the function body up here. It should
-resolve the sparse warning.
+Elsewhere, we've seen a desire for long symbol name support for LTO
+symbol names [2], and the previous series came up [3] as a possible
+solution rather than hashing, which some have objected [4] to.
 
-Regards,
-Boqun
+This series adds a MODVERSIONS format which uses a section per column.
+This avoids userspace tools breaking if we need to make a similar change
+to the format in the future - we would do so by adding a new section,
+rather than editing the struct definition. In the new format, the name
+section is formatted as a concatenated sequence of NUL-terminated
+strings, which allows for arbitrary length names.
 
-> +
-> +void __might_sleep_precision(const char *file, int len, int line)
->  {
->  	unsigned int state = get_current_state();
->  	/*
-> @@ -8684,7 +8687,14 @@ void __might_sleep(const char *file, int line)
->  			(void *)current->task_state_change,
->  			(void *)current->task_state_change);
->  
-> -	__might_resched(file, line, 0);
-> +	__might_resched_precision(file, len, line, 0);
-> +}
-> +
-> +void __might_sleep(const char *file, int line)
-> +{
-> +	long len = strlen(file);
-> +
-> +	__might_sleep_precision(file, len, line);
->  }
->  EXPORT_SYMBOL(__might_sleep);
->  
-> @@ -8709,7 +8719,7 @@ static inline bool resched_offsets_ok(unsigned int offsets)
->  	return nested == offsets;
->  }
->  
-> -void __might_resched(const char *file, int line, unsigned int offsets)
-> +void __might_resched_precision(const char *file, int len, int line, unsigned int offsets)
->  {
->  	/* Ratelimiting timestamp: */
->  	static unsigned long prev_jiffy;
-> @@ -8732,8 +8742,8 @@ void __might_resched(const char *file, int line, unsigned int offsets)
->  	/* Save this before calling printk(), since that will clobber it: */
->  	preempt_disable_ip = get_preempt_disable_ip(current);
->  
-> -	pr_err("BUG: sleeping function called from invalid context at %s:%d\n",
-> -	       file, line);
-> +	pr_err("BUG: sleeping function called from invalid context at %.*s:%d\n",
-> +	       len, file, line);
->  	pr_err("in_atomic(): %d, irqs_disabled(): %d, non_block: %d, pid: %d, name: %s\n",
->  	       in_atomic(), irqs_disabled(), current->non_block_count,
->  	       current->pid, current->comm);
-> @@ -8758,6 +8768,13 @@ void __might_resched(const char *file, int line, unsigned int offsets)
->  	dump_stack();
->  	add_taint(TAINT_WARN, LOCKDEP_STILL_OK);
->  }
-> +
-> +void __might_resched(const char *file, int line, unsigned int offsets)
-> +{
-> +	long len = strlen(file);
-> +
-> +	__might_resched_precision(file, len, line, offsets);
-> +}
->  EXPORT_SYMBOL(__might_resched);
->  
->  void __cant_sleep(const char *file, int line, int preempt_offset)
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index d16aeda7a558..7ab71a6d4603 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -13,6 +13,7 @@
->  #include "build_bug.c"
->  #include "cred.c"
->  #include "err.c"
-> +#include "kernel.c"
->  #include "fs.c"
->  #include "jump_label.c"
->  #include "kunit.c"
-> diff --git a/rust/helpers/kernel.c b/rust/helpers/kernel.c
-> new file mode 100644
-> index 000000000000..9dff28f4618e
-> --- /dev/null
-> +++ b/rust/helpers/kernel.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/kernel.h>
-> +
-> +void rust_helper_cpu_relax(void)
-> +{
-> +	cpu_relax();
-> +}
-> +
-> +void rust_helper___might_sleep_precision(const char *file, int len, int line)
-> +{
-> +	__might_sleep_precision(file, len, line);
-> +}
-> diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-> new file mode 100644
-> index 000000000000..eeeff4be84fa
-> --- /dev/null
-> +++ b/rust/kernel/cpu.rs
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Processor related primitives.
-> +//!
-> +//! C header: [`include/linux/processor.h`](srctree/include/linux/processor.h).
-> +
-> +/// Lower CPU power consumption or yield to a hyperthreaded twin processor.
-> +///
-> +/// It also happens to serve as a compiler barrier.
-> +pub fn cpu_relax() {
-> +    // SAFETY: FFI call.
-> +    unsafe { bindings::cpu_relax() }
-> +}
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 914e8dec1abd..b5016083a115 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -63,6 +63,7 @@ macro_rules! declare_err {
->      declare_err!(EPIPE, "Broken pipe.");
->      declare_err!(EDOM, "Math argument out of domain of func.");
->      declare_err!(ERANGE, "Math result not representable.");
-> +    declare_err!(ETIMEDOUT, "Connection timed out.");
->      declare_err!(ERESTARTSYS, "Restart the system call.");
->      declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
->      declare_err!(ERESTARTNOHAND, "Restart if no handler.");
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> new file mode 100644
-> index 000000000000..033f3c4e4adf
-> --- /dev/null
-> +++ b/rust/kernel/io.rs
-> @@ -0,0 +1,5 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Input and Output.
-> +
-> +pub mod poll;
-> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-> new file mode 100644
-> index 000000000000..da8e975d8e50
-> --- /dev/null
-> +++ b/rust/kernel/io/poll.rs
-> @@ -0,0 +1,84 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! IO polling.
-> +//!
-> +//! C header: [`include/linux/iopoll.h`](srctree/include/linux/iopoll.h).
-> +
-> +use crate::{
-> +    cpu::cpu_relax,
-> +    error::{code::*, Result},
-> +    time::{delay::fsleep, Delta, Instant},
-> +};
-> +
-> +use core::panic::Location;
-> +
-> +/// Polls periodically until a condition is met or a timeout is reached.
-> +///
-> +/// Public but hidden since it should only be used from public macros.
-> +///
-> +/// ```rust
-> +/// use kernel::io::poll::read_poll_timeout;
-> +/// use kernel::time::Delta;
-> +/// use kernel::sync::{SpinLock, new_spinlock};
-> +///
-> +/// let lock = KBox::pin_init(new_spinlock!(()), kernel::alloc::flags::GFP_KERNEL)?;
-> +/// let g = lock.lock();
-> +/// read_poll_timeout(|| Ok(()), |()| true, Delta::from_micros(42), Delta::from_micros(42));
-> +/// drop(g);
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +#[track_caller]
-> +pub fn read_poll_timeout<Op, Cond, T: Copy>(
-> +    mut op: Op,
-> +    cond: Cond,
-> +    sleep_delta: Delta,
-> +    timeout_delta: Delta,
-> +) -> Result<T>
-> +where
-> +    Op: FnMut() -> Result<T>,
-> +    Cond: Fn(T) -> bool,
-> +{
-> +    let start = Instant::now();
-> +    let sleep = !sleep_delta.is_zero();
-> +    let timeout = !timeout_delta.is_zero();
-> +
-> +    might_sleep(Location::caller());
-> +
-> +    let val = loop {
-> +        let val = op()?;
-> +        if cond(val) {
-> +            // Unlike the C version, we immediately return.
-> +            // We know a condition is met so we don't need to check again.
-> +            return Ok(val);
-> +        }
-> +        if timeout && start.elapsed() > timeout_delta {
-> +            // Should we return Err(ETIMEDOUT) here instead of call op() again
-> +            // without a sleep between? But we follow the C version. op() could
-> +            // take some time so might be worth checking again.
-> +            break op()?;
-> +        }
-> +        if sleep {
-> +            fsleep(sleep_delta);
-> +        }
-> +        // fsleep() could be busy-wait loop so we always call cpu_relax().
-> +        cpu_relax();
-> +    };
-> +
-> +    if cond(val) {
-> +        Ok(val)
-> +    } else {
-> +        Err(ETIMEDOUT)
-> +    }
-> +}
-> +
-> +fn might_sleep(loc: &Location<'_>) {
-> +    // SAFETY: FFI call.
-> +    unsafe {
-> +        crate::bindings::__might_sleep_precision(
-> +            loc.file().as_ptr().cast(),
-> +            loc.file().len() as i32,
-> +            loc.line() as i32,
-> +        )
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e1065a7551a3..2e9722f980bd 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -33,6 +33,7 @@
->  #[cfg(CONFIG_BLOCK)]
->  pub mod block;
->  mod build_assert;
-> +pub mod cpu;
->  pub mod cred;
->  pub mod device;
->  pub mod error;
-> @@ -40,6 +41,7 @@
->  pub mod firmware;
->  pub mod fs;
->  pub mod init;
-> +pub mod io;
->  pub mod ioctl;
->  pub mod jump_label;
->  #[cfg(CONFIG_KUNIT)]
-> -- 
-> 2.43.0
-> 
-> 
+Emitting the extended format is guarded by CONFIG_EXTENDED_MODVERSIONS,
+but the kernel always knows how to validate both the original and
+extended formats.
+
+Emitting the existing format is now guarded by CONFIG_BASIC_MODVERSIONS,
+but it is enabled by default when MODVERSIONS is enabled and must be
+explicitly disabled by the user.
+
+Disabling CONFIG_BASIC_MODVERSIONS may cause some userspace tools to be
+unable to retrieve CRCs until they are patched to understand the new
+location. Even with CONFIG_BASIC_MODVERSIONS enabled, those tools will
+be unable to read the CRCs for long symbols until they are updated to
+read the new format. This is not expected to interfere with normal
+operation, as the primary use for CRCs embedded in the module is
+load-time verification by the kernel. Recording and monitoring of CRCs
+is typically done through Module.symvers.
+
+Selecting RUST and MODVERSIONS is now possible if GENDWARFKSYMS is
+selected, and will implicitly select EXTENDED_MODVERSIONS.
+
+This series depends upon DWARF-based versions [1] and Masahiro's u32
+fixup patch [5].
+
+[1] https://lore.kernel.org/lkml/20241219210736.2990838-20-samitolvanen@google.com/	
+[2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org/
+[3] https://lore.kernel.org/lkml/ZoxbEEsK40ASi1cY@bombadil.infradead.org/
+[4] https://lore.kernel.org/lkml/0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com/
+[5] https://lore.kernel.org/linux-kbuild/20241228154603.2234284-1-masahiroy@kernel.org
+
+Changes in v12:
+- Rebased on top of Masahiro's cleanup patch
+- Switched modpost to Masahiro's new types, including using u32 instead
+  of s32
+- Eliminated comment noise per Masahiro's suggestion
+- Fixed typo in patch 3 commit message
+- Set default of BASIC_MODVERSIONS to y instead of MODVERSIONS, per
+  Masahiro's suggestion
+
+v11: https://lore.kernel.org/r/20241223-extended-modversions-v11-0-221d184ee9a7@google.com
+- Fixed documentation about where strings are stored per Petr's
+  suggestion.
+- Rebased on to the latest version of Sami's series on linux-next
+
+v10: https://lore.kernel.org/r/20241123-extended-modversions-v10-0-0fa754ffdee3@google.com
+- Fixed accidental selects / default confusion in previous patch
+- Re-ran tests (check for section presence in Y/Y, Y/N, N/Y, N/N, check
+  all module kinds load)
+
+v9: https://lore.kernel.org/r/20241123-extended-modversions-v9-0-bc0403f054bf@google.com
+- Rebased onto the latest version of Sami's series, on top of linux-next
+- Added BASIC_MODVERSIONS to allow using *only* EXTENDED_MODVERSIONS
+- Documented where symbol data is stored and format limitations
+
+v8: https://lore.kernel.org/r/20241030-extended-modversions-v8-0-93acdef62ce8@google.com
+- Rebased onto latest version of Sami's series, on top of v6.12-rc5
+- Pass --stable when KBUILD_GENDWARFKSYMS_STABLE is set.
+- Flipped MODVERSIONS/GENDWARFKSYMS order in deps for CONFIG_RUST
+- Picked up trailers
+
+v7: https://lore.kernel.org/r/20241023-extended-modversions-v7-0-339787b43373@google.com
+- Fix modpost to detect EXTENDED_MODVERSIONS based on a flag
+- Drop patches to fix export_report.pl
+- Switch from conditional compilation in .mod.c to conditional emission
+  in modpost
+- Factored extended modversion emission into its own function
+- Allow RUST + MODVERSIONS if GENDWARFKSYMS is enabled by selecting
+  EXTENDED_MODVERSIONS
+
+v6: https://lore.kernel.org/lkml/20241015231925.3854230-1-mmaurer@google.com/
+- Splits verification refactor Luis requested out to a separate change
+- Clarifies commits around export_report.pl repairs
+- Add CONFIG_EXTENDED_MODVERSIONS to control whether extended
+  information is included in the module, per Luis's request.
+
+v5: https://lore.kernel.org/all/20240925233854.90072-1-mmaurer@google.com/
+- Addresses Sami's comments from v3 that I missed in v4 (missing early
+  return, extra parens)
+
+v4: https://lore.kernel.org/asahi/20240924212024.540574-1-mmaurer@google.com/
+- Fix incorrect dot munging in PPC
+
+v3: https://lore.kernel.org/lkml/87le0w2hop.fsf@mail.lhotse/T/
+- Split up the module verification refactor into smaller patches, per
+  Greg K-H's suggestion.
+
+v2: https://lore.kernel.org/all/20231118025748.2778044-1-mmaurer@google.com/
+- Add loading/verification refactor before modifying, per Luis's request
+
+v1: https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mmaurer@google.com/
+
+--
+2.47.0.rc1.288.g06298d1525-goog
+
+---
+Matthew Maurer (4):
+      modules: Support extended MODVERSIONS info
+      modpost: Produce extended MODVERSIONS information
+      modules: Allow extended modversions without basic MODVERSIONS
+      Documentation/kbuild: Document storage of symbol information
+
+Sami Tolvanen (1):
+      rust: Use gendwarfksyms + extended modversions for CONFIG_MODVERSIONS
+
+ Documentation/kbuild/modules.rst | 20 +++++++++
+ arch/powerpc/kernel/module_64.c  | 24 ++++++++++-
+ init/Kconfig                     |  3 +-
+ kernel/module/Kconfig            | 25 +++++++++++
+ kernel/module/internal.h         | 11 +++++
+ kernel/module/main.c             | 92 ++++++++++++++++++++++++++++++++++++----
+ kernel/module/version.c          | 45 ++++++++++++++++++++
+ rust/Makefile                    | 34 ++++++++++++++-
+ scripts/Makefile.modpost         |  2 +
+ scripts/mod/modpost.c            | 69 +++++++++++++++++++++++++++---
+ 10 files changed, 307 insertions(+), 18 deletions(-)
+---
+base-commit: b2c5bc987160cbc8478b982991f34f53189af909
+change-id: 20241022-extended-modversions-a7b44dfbfff1
+prerequisite-message-id: <20241228154603.2234284-1-masahiroy@kernel.org>
+prerequisite-patch-id: d5b0940f47a19d475020f6fd2e916703b803a137
+prerequisite-patch-id: a8ac50c440ac3247c60227d2ea2c10f3d3e433c1
+prerequisite-message-id: <20241219210736.2990838-20-samitolvanen@google.com>
+prerequisite-patch-id: 8a6a82b2f1858ee1483f41a1aa72c8cb030559ac
+prerequisite-patch-id: 5b22bc2e7f592e464d5d1dd4341efa2fb2afb9d0
+prerequisite-patch-id: 220585cf1a8d66ec722cf1d6ec474af6dc3b6a02
+prerequisite-patch-id: 8ae7cb66d809f902968f81354706edeb99a3d3fa
+prerequisite-patch-id: 4d6a826429c519b581d01215e1d9c7373fdfd8c6
+prerequisite-patch-id: 0dcd84187b222adf52696dbcab303d683d087dd2
+prerequisite-patch-id: 0abe8634eb844a85e8dc51c1cd3970cf96cc494a
+prerequisite-patch-id: 5fabb630792f9304f200b5996314f3c2ae4c83ae
+prerequisite-patch-id: 2772364d4b2132c9ede451f320162fc40c6f3d09
+prerequisite-patch-id: a5cf20d27871bf63be64ac79cc81e5eb9d117b89
+prerequisite-patch-id: 930230702709fe769b171a8ae94955e5d1de13ea
+prerequisite-patch-id: b43c0bc886a312e3b14be04a8fdad25badf4d834
+prerequisite-patch-id: 839b0c4859bdc8447d67bfe4b09f762140e747e7
+prerequisite-patch-id: 3c55d1e58a1d7aebfc3ea85ef5497a7262022040
+prerequisite-patch-id: 5a190c60e140cdf33caf4f4da03186a2bd75a531
+prerequisite-patch-id: 57d2fe708769154a6494fb1fece56911dea00687
+prerequisite-patch-id: 7e046331b05c61a87e1adc923b763b68a580cd03
+prerequisite-patch-id: 91c6131ab67a6f0fd8cf8bc95fa45144a868f095
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
