@@ -1,134 +1,290 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C873C2E0;
-	Tue, 31 Dec 2024 01:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BC5190664;
+	Thu,  2 Jan 2025 09:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735608785; cv=none; b=YTihTzTB1UjcsOTNwqW+YFe3mMHREOCaQKru47IcFpbwo30SvquS0tIZJ76IlqEoTZo7NpkKrzR/80pBe2dnEci/Q0yak7pjLvx3FHKICUGpwU/uI/bJWRaNOOFZjaaPksuF0zLeQRU2eHIrQ8lq25/FpWgBX9QJvwMLEE5IHBQ=
+	t=1735810487; cv=none; b=fl4k8JtfFJPaFgFEhgvXNKgIXguC7DH2RMc++Ny2ZUcjJZSQDoT4AUpVEAVlygcEO/HWwjNwkYcnvu0oW5bInzcUXdNKEmFoXsCJC1jGfORIaEsoa+gUr3a9FQCe5RKE4jQ7FTIXMAyoWelUVurtaOY8qP+k2Fkk91DctsadzL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735608785; c=relaxed/simple;
-	bh=kmI05++x2YCZ4ALontX+UYfW6swMzCW5Ui6lQRwtsI0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ialHHf26yN/I9k10rLg0gvpeTc6CtvxuRGrNvY3SyBsu4rt33oSI4dMv3Y6+gq8hHn/Gf8Y0uhkGZ/Fl1dZpiQymam76ylgPt3ltYCq/QhNtvkydk4b32K6/1ItNL3ZxC5rCK/lZyDJQiS1ULik2R133Zfu1Uqjsb0wmFW2PYRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mHgqBNVX; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1735810487; c=relaxed/simple;
+	bh=OUDBQJThGstWw2l0mZV4B+XMNXyMUYV3+qOoyISK7Vk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rEX2Z861XNVnZUCERAIiiWxnIsdXb/YvWQghcRxKZO1DRja9PohKuhR1tL+HUk/QIKxMMAdLb5ef8A+OEYHImfq59PSl3C+0HjOueWhr/Q72NallN0xxKwvaQbGfsmlelvrbPCJKNsWrw38lyDt4bfuuW56O066xL0nywYkprc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Crig4Kem; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mHgqBNVX"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2efe25558ddso9903671a91.2;
-        Mon, 30 Dec 2024 17:33:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735608783; x=1736213583; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bURA9RbgsoFW95cALdVT1EYSpePj2bP0DC/3/CQRk0c=;
-        b=mHgqBNVXzIt2whWtQGi2l42t1AaqL9HxPEiGO8uwaLru5/JYRubyCZslG1KRY7GQgh
-         qO3iJRN0lh0N/m6v/yW6Ywj1M3TRIas/Ie5fGUjrJ+h0N+WlvN1YpaeuCipCq71ZBeyl
-         9GCA9Zemwl/yVqJF4GTnYQvA+mq6eqBlSGj/4gEDH5tQ9yoyscrqmtCwHBCSFoeZ89c6
-         hfnWZCB0BWU/XMaEPLHW1Et1x21ASYSt8fD4AHt7wHVyWcC+NWrogpPsG5fAjBgqYrQ3
-         kEbY7evaaFn5jrr4DYpcMDRuJyG3HSIVvM9B0GzZJ6sqVQLAPuys2oet9PBm/gbA5ILA
-         zIFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735608783; x=1736213583;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bURA9RbgsoFW95cALdVT1EYSpePj2bP0DC/3/CQRk0c=;
-        b=b8pGNqWios1s1Hf/s3Xmr7Bvdt6Jy0bsXMfxpS4G9xrMi5vvtq3W0P3u1x6kFh8+QA
-         FjMmgCQV0JK50U3uHwNMOkM2VVCWKmdgkwxHsifhJLmZa9EsrKbuVof0OlfbGD32rfO8
-         r4Rwh7fjowoiSnm5WnJpWw1g/JuBfdaBP0hvn+UQ/shSyxu6Hj+V8Khb3tBw9PWiQ/8i
-         iWDPge4IS5KQ8GtCj0pISiBw7CUmGyhyd3ja4jles/IJlP5I91pgM3yQEiDDFWToKcwD
-         ynLPNjOesyOMpKo5fCePVUKcGckYCzdoSFEH2TLHIpR6xxntBNwGu+jbD8xb7+cPg+DZ
-         yA5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWCNIa/t0qUDdPsOBe+h8xvTsC/mliJQbBenAGu/JfKnZpVVq+wbpSy+uquleH3GfzM044/jwIm@vger.kernel.org, AJvYcCWo7KUlNplYjLd8gQMHGNy0ligvBrhIFR/5DWIUvgdrDvR9ow5uJg0SsJRWZelmtmA6XmzeAxAxE0Ixr/o=@vger.kernel.org, AJvYcCX7j6gQjncGfXhPSGVQ4iyNwrpWRamAP8g3W0xN+epUwf37A5bkqnbHx+jJXDWiFR73RW/8zSTEQqACEHJNIaU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJ03gYqy66OAMIyxeHUqDwxXA9aoddKE15nvYi+o/AJ9NTSDzN
-	b6q9Y7SC62GYyY5+TbqqiDIeVKun+AEPDvBiPOFQiD/Y1VgkxGNF
-X-Gm-Gg: ASbGncvaaVz4lCzuYgbQ30KX3pMJkylfeImbo8r7d/pXrlv8JrFB9Ip+6NxpK4BtqmS
-	F7dRXGQbkd+KqnAu4lJmxyi31s/BRW0BjrutVO1eqEiV5eNh02xoQb/S16QJ+0nwWnvchqimVtU
-	5L0OVmdA2t4W1yh23wq81fM38XkwRg8fQTbpBui5Q8JYVIiL0nr9/Ee6IkA1Fx7UzPrRuYps1uO
-	/Mn7ZP6X8wozyPP8ZJQarT80/t8+pQe4mH8PZB2XOURCtwaQ7q9kzs3i9TPfVPK9pUj7gCRBpfZ
-	YfVkcZycolBFhiWtZPjENGI2N9tq2RAqfc0a1g==
-X-Google-Smtp-Source: AGHT+IFA8pK8bnKKJqCKfx7Qf7lo9xziETU74gLd8HePthS4Q1LgeThkLI31ZYIHLJzDKKSrlAevkA==
-X-Received: by 2002:a17:90b:2e4b:b0:2ee:7824:be93 with SMTP id 98e67ed59e1d1-2f452f02694mr48346325a91.34.1735608783548;
-        Mon, 30 Dec 2024 17:33:03 -0800 (PST)
-Received: from localhost (p3882177-ipxg22501hodogaya.kanagawa.ocn.ne.jp. [180.15.148.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96ebabsm184935985ad.84.2024.12.30.17.32.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Dec 2024 17:33:03 -0800 (PST)
-Date: Tue, 31 Dec 2024 10:32:54 +0900 (JST)
-Message-Id: <20241231.103254.684624162379372838.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com
-Subject: Re: [PATCH v7 6/7] rust: Add read_poll_timeout functions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z3Lp6Ce0YJa5yEYZ@boqun-archlinux>
-References: <20241220061853.2782878-1-fujita.tomonori@gmail.com>
-	<20241220061853.2782878-7-fujita.tomonori@gmail.com>
-	<Z3Lp6Ce0YJa5yEYZ@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Crig4Kem"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397E0C4CED0;
+	Thu,  2 Jan 2025 09:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735810486;
+	bh=OUDBQJThGstWw2l0mZV4B+XMNXyMUYV3+qOoyISK7Vk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Crig4KemQXRV1w8TLVFsk2QTdTY7lAMSw5NQyFQMUb1IPCHUk5OGqeb9fGV7q3f6x
+	 zLtp6IeSL4GHC+M0BmJXM2ysEc1e6VAZ9FffcQDTEGFG7fF4GOug7abN/WQoE57RHz
+	 yTJA9hQ4CWQo0961A4ntC16Kx9aDy3JEqrDQSJiByr3l1zeN2RfdMJ3Heg4sZcU7p7
+	 JCFmHSI2p5sPaxfSQN88gTxeDLWpHjY4gTqd57+Bd39sTgRtnpKyk2FisLQRxgEV6K
+	 LKB04rrSZmXWmNgKEbI9EtvRPNiGZNR859TQh2tU90JFfwN7nkIB3jXbY/TdwdUmIy
+	 MPIjdcKmEoPVw==
+Date: Thu, 2 Jan 2025 10:34:37 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, saravanak@google.com,
+	dirk.behme@de.bosch.com, j@jannau.net, fabien.parent@linaro.org,
+	chrisi.schrefl@gmail.com, paulmck@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	rcu@vger.kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>
+Subject: Re: [PATCH v7 02/16] rust: implement generic driver registration
+Message-ID: <Z3ZdreeFVp_1KktC@cassiopeiae>
+References: <20241219170425.12036-1-dakr@kernel.org>
+ <20241219170425.12036-3-dakr@kernel.org>
+ <20241224195821.3b43302b.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241224195821.3b43302b.gary@garyguo.net>
 
-On Mon, 30 Dec 2024 10:43:52 -0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
+Hi Gary,
 
->> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
->> index 3e5a6bf587f9..6ed70c801172 100644
->> --- a/kernel/sched/core.c
->> +++ b/kernel/sched/core.c
->> @@ -8670,7 +8670,10 @@ void __init sched_init(void)
->>  
->>  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
->>  
->> -void __might_sleep(const char *file, int line)
->> +extern inline void __might_resched_precision(const char *file, int len,
->> +					     int line, unsigned int offsets);
+On Tue, Dec 24, 2024 at 07:58:21PM +0000, Gary Guo wrote:
+> On Thu, 19 Dec 2024 18:04:04 +0100
+> Danilo Krummrich <dakr@kernel.org> wrote:
 > 
-> Instead of declaring this as an "extern inline" I think you can just
-> make it a static inline and move the function body up here. It should
-> resolve the sparse warning.
+> > Implement the generic `Registration` type and the `RegistrationOps`
+> > trait.
+> > 
+> > The `Registration` structure is the common type that represents a driver
+> > registration and is typically bound to the lifetime of a module. However,
+> > it doesn't implement actual calls to the kernel's driver core to register
+> > drivers itself.
+> > 
+> > Instead the `RegistrationOps` trait is provided to subsystems, which have
+> > to implement `RegistrationOps::register` and
+> > `RegistrationOps::unregister`. Subsystems have to provide an
+> > implementation for both of those methods where the subsystem specific
+> > variants to register / unregister a driver have to implemented.
+> > 
+> > For instance, the PCI subsystem would call __pci_register_driver() from
+> > `RegistrationOps::register` and pci_unregister_driver() from
+> > `DrvierOps::unregister`.
+> > 
+> > Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> Hi Danilo,
+> 
+> I think there're soundness issues with this API, please see comments
+> inlined below.
 
-I made __might_resched_precision() static and simply fixed declaration
-in the following way.
+Just in case you did not note, this series has been applied to the driver-core
+tree already.
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 6ed70c801172..d9ac66dc66d3 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8670,8 +8670,8 @@ void __init sched_init(void)
- 
- #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
- 
--extern inline void __might_resched_precision(const char *file, int len,
--					     int line, unsigned int offsets);
-+static void __might_resched_precision(const char *file, int len,
-+				      int line, unsigned int offsets);
- 
- void __might_sleep_precision(const char *file, int len, int line)
- {
-@@ -8719,7 +8719,8 @@ static inline bool resched_offsets_ok(unsigned int offsets)
- 	return nested == offsets;
- }
- 
--void __might_resched_precision(const char *file, int len, int line, unsigned int offsets)
-+static void __might_resched_precision(const char *file, int len, int line,
-+				      unsigned int offsets)
- {
- 	/* Ratelimiting timestamp: */
- 	static unsigned long prev_jiffy;
+> 
+> Best,
+> Gary
+> 
+> > ---
+> >  MAINTAINERS           |   1 +
+> >  rust/kernel/driver.rs | 117 ++++++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs    |   1 +
+> >  3 files changed, 119 insertions(+)
+> >  create mode 100644 rust/kernel/driver.rs
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index baf0eeb9a355..2ad58ed40079 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -7033,6 +7033,7 @@ F:	include/linux/kobj*
+> >  F:	include/linux/property.h
+> >  F:	lib/kobj*
+> >  F:	rust/kernel/device.rs
+> > +F:	rust/kernel/driver.rs
+> >  
+> >  DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+> >  M:	Nishanth Menon <nm@ti.com>
+> > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+> > new file mode 100644
+> > index 000000000000..c1957ee7bb7e
+> > --- /dev/null
+> > +++ b/rust/kernel/driver.rs
+> > @@ -0,0 +1,117 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
+> > +//!
+> > +//! Each bus / subsystem is expected to implement [`RegistrationOps`], which allows drivers to
+> > +//! register using the [`Registration`] class.
+> > +
+> > +use crate::error::{Error, Result};
+> > +use crate::{init::PinInit, str::CStr, try_pin_init, types::Opaque, ThisModule};
+> > +use core::pin::Pin;
+> > +use macros::{pin_data, pinned_drop};
+> > +
+> > +/// The [`RegistrationOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform,
+> > +/// Amba, etc.) to provide the corresponding subsystem specific implementation to register /
+> > +/// unregister a driver of the particular type (`RegType`).
+> > +///
+> > +/// For instance, the PCI subsystem would set `RegType` to `bindings::pci_driver` and call
+> > +/// `bindings::__pci_register_driver` from `RegistrationOps::register` and
+> > +/// `bindings::pci_unregister_driver` from `RegistrationOps::unregister`.
+> > +pub trait RegistrationOps {
+> > +    /// The type that holds information about the registration. This is typically a struct defined
+> > +    /// by the C portion of the kernel.
+> > +    type RegType: Default;
+> > +
+> > +    /// Registers a driver.
+> > +    ///
+> > +    /// On success, `reg` must remain pinned and valid until the matching call to
+> > +    /// [`RegistrationOps::unregister`].
+> 
+> This looks like an obligation for the caller, so this function should
+> be unsafe?
+> 
+> > +    fn register(
+> > +        reg: &Opaque<Self::RegType>,
+> > +        name: &'static CStr,
+> > +        module: &'static ThisModule,
+> > +    ) -> Result;
+> > +
+> > +    /// Unregisters a driver previously registered with [`RegistrationOps::register`].
+> 
+> Similarly this is an obligation for the caller.
+
+I think you're right. I didn't want this to be unsafe, and when I got rid of the
+raw pointer, and hence removed the unsafe, I did miss the fact you point out
+here. It's a bit unfortunate, especially, since `register` and `unregister` are
+only ever called from this file.
+
+I'll send a patch to fix it up, unless you want to send one yourself.
+
+> 
+> > +    fn unregister(reg: &Opaque<Self::RegType>);
+> > +}
+> > +
+> > +/// A [`Registration`] is a generic type that represents the registration of some driver type (e.g.
+> > +/// `bindings::pci_driver`). Therefore a [`Registration`] must be initialized with a type that
+> > +/// implements the [`RegistrationOps`] trait, such that the generic `T::register` and
+> > +/// `T::unregister` calls result in the subsystem specific registration calls.
+> > +///
+> > +///Once the `Registration` structure is dropped, the driver is unregistered.
+> > +#[pin_data(PinnedDrop)]
+> > +pub struct Registration<T: RegistrationOps> {
+> > +    #[pin]
+> > +    reg: Opaque<T::RegType>,
+> > +}
+> > +
+> > +// SAFETY: `Registration` has no fields or methods accessible via `&Registration`, so it is safe to
+> > +// share references to it with multiple threads as nothing can be done.
+> > +unsafe impl<T: RegistrationOps> Sync for Registration<T> {}
+> > +
+> > +// SAFETY: Both registration and unregistration are implemented in C and safe to be performed from
+> > +// any thread, so `Registration` is `Send`.
+> > +unsafe impl<T: RegistrationOps> Send for Registration<T> {}
+> > +
+> > +impl<T: RegistrationOps> Registration<T> {
+> > +    /// Creates a new instance of the registration object.
+> > +    pub fn new(name: &'static CStr, module: &'static ThisModule) -> impl PinInit<Self, Error> {
+> > +        try_pin_init!(Self {
+> > +            reg <- Opaque::try_ffi_init(|ptr: *mut T::RegType| {
+> > +                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
+> > +                unsafe { ptr.write(T::RegType::default()) };
+> 
+> Any reason that this is initialised with a default, and not be up to
+> `T::register` to initialise?
+
+`T::RegType` is always an FFI type, so this can be in the common code.
+
+> 
+> > +
+> > +                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write, and it has
+> > +                // just been initialised above, so it's also valid for read.
+> 
+> Opaque can hold uninitialised value so as long as `ptr` is not dangling
+> this is fine. There's no need to actually initialise.
+
+I think the "initialized" part is from before it was an `Opaque`.
+
+> 
+> > +                let drv = unsafe { &*(ptr as *const Opaque<T::RegType>) };
+> > +
+> > +                T::register(drv, name, module)
+> > +            }),
+> > +        })
+> > +    }
+> > +}
+> > +
+> > +#[pinned_drop]
+> > +impl<T: RegistrationOps> PinnedDrop for Registration<T> {
+> > +    fn drop(self: Pin<&mut Self>) {
+> > +        T::unregister(&self.reg);
+> > +    }
+> > +}
+> > +
+> > +/// Declares a kernel module that exposes a single driver.
+> > +///
+> > +/// It is meant to be used as a helper by other subsystems so they can more easily expose their own
+> > +/// macros.
+> > +#[macro_export]
+> 
+> I think this is supposed to be used by other macros only? If so, please
+> add `#[doc(hidden)]`.
+
+Why? It's a public kernel API to be used by bus abstractions. I don't think
+documentation should be for drivers only.
+
+> 
+> > +macro_rules! module_driver {
+> > +    (<$gen_type:ident>, $driver_ops:ty, { type: $type:ty, $($f:tt)* }) => {
+> > +        type Ops<$gen_type> = $driver_ops;
+> > +
+> > +        #[$crate::prelude::pin_data]
+> > +        struct DriverModule {
+> > +            #[pin]
+> > +            _driver: $crate::driver::Registration<Ops<$type>>,
+> > +        }
+> > +
+> > +        impl $crate::InPlaceModule for DriverModule {
+> > +            fn init(
+> > +                module: &'static $crate::ThisModule
+> > +            ) -> impl $crate::init::PinInit<Self, $crate::error::Error> {
+> > +                $crate::try_pin_init!(Self {
+> > +                    _driver <- $crate::driver::Registration::new(
+> > +                        <Self as $crate::ModuleMetadata>::NAME,
+> > +                        module,
+> > +                    ),
+> > +                })
+> > +            }
+> > +        }
+> > +
+> > +        $crate::prelude::module! {
+> > +            type: DriverModule,
+> > +            $($f)*
+> > +        }
+> > +    }
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 61b82b78b915..7818407f9aac 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -35,6 +35,7 @@
+> >  mod build_assert;
+> >  pub mod cred;
+> >  pub mod device;
+> > +pub mod driver;
+> >  pub mod error;
+> >  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+> >  pub mod firmware;
+> 
