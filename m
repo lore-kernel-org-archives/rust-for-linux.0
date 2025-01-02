@@ -1,57 +1,57 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3999D1A8F71
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jan 2025 21:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815731B3953
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jan 2025 21:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735852398; cv=none; b=OjQg9xu6YEx148MXS/2at3wRZbFz1jO5VVrCwKa4NdKlX461KP8RMpUVox3CgoktUS2dhXxUP1V0+eS3PRoEfpotF7LN6N8pqVq7zfLYhF2qCmaq0Hi0pRRszMSYSdwLoNWhKXdzX/i5FGsok5PQ+BJ/p/g6k1xYeq62z65HCMM=
+	t=1735852849; cv=none; b=Ygf97rCu8eC3fofLAntRiEU+M/zE9bRmraM3BntYCxw/79VmV/EGi5OmwX/GtpIBk2r2sFFFvgZoSbmCQNd3r5ArICbApsCB2H1TSLwuOgP0QwcFghcJDY69EcB6UGFauzMQ855ek60QmO1gwAIjY5MKsCDyKJRWn4KbnK+5FVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735852398; c=relaxed/simple;
-	bh=ZCPjk1VSEOoj9qcGvr9INHgp3+iPxgC7iRxlFjdwm1g=;
+	s=arc-20240116; t=1735852849; c=relaxed/simple;
+	bh=vTo1ZqsPUMCCaQufaEwYjzzgT7pASANYmiKJQF8QkVM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ioT2AOzJVsLyYlGWzzYaAL3TOqdkqoGlVuj9/QotkHgn2FLhzrMlRXuyuMDU9swJKwC1r7Yrp9/QZcJ/Cl2B4lYxbdhVFitYTgXCEJFEPtJh4AwqzkNU6sfsQ4R5RYTjVPBZ/Shalw8FdkfOVzUg3yAE9bXYYKSr7WW6Bgj4JYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z8xzJtP/; arc=none smtp.client-ip=209.85.208.50
+	 To:Cc:Content-Type; b=qPucDldPw1PVoNms02lPbbSXdMZS9AUFOktClRlkCZCnlpgkFCpd+f6UsP+fgZutnRGvw6SljxoGmmZaw8SnhOJ8DNu/ohLZrPc/gv2+r6TLbMzd1qWx+SzkaavmwqZa2eJTdWmA0hHvgcgiqnxgg2I5wXc/x4/ItWQag6e8aQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wzqCA1Jf; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z8xzJtP/"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d3cfdc7e4fso2244a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jan 2025 13:13:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wzqCA1Jf"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d3e638e1b4so381a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jan 2025 13:20:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735852395; x=1736457195; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1735852846; x=1736457646; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vvUkrZDHA2r06RrENG6eOLFTdRhJU/aQsdXibpnme2U=;
-        b=z8xzJtP/CSrxsPg8sKrDrNleaJZFUB6HwJ1tPniAn5Q+gvUQdRc1bzBrWLeCeKgPnO
-         9R4Z+og7IAOWPHUBwv0PYWdAJvWIcXlXBna7Y+0GgBIhIkLJ1bQFVmT2U6BVRgL4EBUw
-         i8Gb6OBhgeY9VXxo4NuhIdi+SXY/T1g7nH1RQo4jdUQTOBAzUHsywVM+EGho7fg8wuso
-         JPe4mcDE9OK2oCqA59ndVX1F32+C4pOETi2jU8jkrvK5MrA4y69SEkNKEiLzmVaPGTe+
-         9K181gOy6+e8LQkrTNQ4HvuIaK5s1MbYmm/zQIgPqHJjOmVh+k5bmlMK7Gcay4HzJWMl
-         OMdA==
+        bh=A9vFdZ7IDOzdE65bXGsMPSe6IPVaerxNKtrCtifyzwQ=;
+        b=wzqCA1JfFUy3DHAmtzOcruJUdCbI50aFmZaDBV1Kq9ASXmx0Ev/oL7Qz96otNkIzQh
+         sUVpWt1mwpacGEjdVBnU/MU/lkILA5/Rhy2IK8oHwiGrfbZ1D/qYODxRWxGADoINXtnH
+         GilBlNTbZdjq/wxTQQhvkIUyNjqkollmOJ2dTC+ZXmRtqdDFxEXSNIhFTsffKIkPqqtS
+         KcD7EvkonLnVOAjNSNTKEgQfNAze55qCXl5zPPEzy5Ay0FvmsRLpeaTYpnt7KeKG6geo
+         uZ7f9csmWII/7Oxxl2a8rfBBmQ2E23wyS+KlYTLivINwulUci9+11HOfqvJZ7h8FnmL1
+         3bew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735852395; x=1736457195;
+        d=1e100.net; s=20230601; t=1735852846; x=1736457646;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vvUkrZDHA2r06RrENG6eOLFTdRhJU/aQsdXibpnme2U=;
-        b=PwrNRZa6LuF1FlO2OeCdY835gh4PkoYexnYqYwpmy9kVjPz/nPIaT/EsRRuiYeAfFF
-         qk/CxHThDjZmrMMt45Hy7ID4W5lek1n2NFKj2RPbjsK+1/sAC6ioLBsZvoRL/vvmO54d
-         EJ/CN79QCyJALkUOl9KLfEBi0grEb7fgUBUXENoCwlVn4lyqY4Ze65DOHEYDqNQTNTRD
-         Co2fLPQm087GSTPO5sI4xpQHC1qCSiRHMDk0DWynBcBOjfFNkencIRYPlVYf98GHgM68
-         G3+e2Jk+XR6z8BE37Enng8ykZ0GMS4jv9TqRIa3j6IgvA4mFagxEcttwOMK+zOHqXo2U
-         UkQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlE2UtFaur0IiZatcfikvBJ2TC3JN0KGgZinV5FeWOqwUmQrCtEUugXBdQGw1F1R/aeTIIfnT/sS9YQRrH5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV0i2nLukbEHspJmDcvY20eU79i4V6iaQjb4hizb+sBC0fg/F4
-	zAb8IPtroeI0lSuyY75xRf43inCaCkAoFhX+X7ITzcvqnJXpU0q1iMQIVMOQrvRx163W0kmUuPa
-	Lke/r0O2wdUZAdohlnTwbFZHbl5/MBTAq/zJd
-X-Gm-Gg: ASbGnctzvYb1i845rfU87Uao4sW9OKXYgU/j8mA1W0/mi0UeoHd+DorsKHAs25yF3QU
-	3p9xF1bxQ9C1VjdiyFVQjIPF1SxIU0vW+coXOdsoaCAUiEI7OzFWYok5YKprZpAD7Ug==
-X-Google-Smtp-Source: AGHT+IEtlAdtAQF0lMpNHSAEsc7gKMjqxf9IMXqHQKnDEMEIOF1Cil022qn1qEqxWg1zVwXIF3GwRL8uUgt3sTNN0l0=
+        bh=A9vFdZ7IDOzdE65bXGsMPSe6IPVaerxNKtrCtifyzwQ=;
+        b=oNP0NjCfLCH2CG5Sfm32iYmevs7R1s7nXhhbKg6KCfjdb945mtQc5d8VLNKJ26aDmE
+         54ctXpyL6fWhMeuEdesZhLcoT1FVBcBPBA9yQxwiJamWzdn4vy4H0vdODGq2RXzVTH6W
+         2RrUAyXaeIXSmyVwLcwEvu4GlYZ3ewn6fjbYyaBJKysK9qgRP2fdCwlni3C+qSuDTMMe
+         g8CZIdR4Mx7CEQXx0PlGwcm89YwSG9WsQJk1Sq11KnpItNx07Ufgt4hPD0ro5AH4MSHH
+         BRS5c1DCz0/SJpbYhulQeMUBN86LWpjnFlvZ3dC1I8KDw8pu+F4DiEfm3+xQbpTmKdiR
+         JeWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3LDdUt+clvR2MpqdlaPreiTTewG7QLBaYO6fMkogs3jw2z34guEs2CsN4kwgYGjoJnmOgyqsZYbi2ACm++Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxysQX1mwQHz+35kE9lt+aWWFDd/gva3OJRDTJ7gydsFoFV/ROn
+	md5MbBPqyJyblOOehtA/GM38zTmnI6FPyUZIkUeMrwJxh1BJQlLq7gCFVUnAzZknElDnDmZw1G6
+	Gi4k7zS3X7JzlxQsVdOWfPMSKuT9rTJMFgmJ8
+X-Gm-Gg: ASbGncv9hRuRu8CbQkhlzM53vgWf8qX8mNK9miN8JX3U1SCL/xYjg4HG6DlW4L0YnhI
+	qYzSzE47tNr3CbtJ4yCqaaMqzhMIlMtad8MDYx4ewUL1EohRMlXmYDFaSkK3yscZSBA==
+X-Google-Smtp-Source: AGHT+IH9SygaaxBqUPclTbHe3MzYjU7Sn3gBDwj+5VIodQhhpoIxsAYg0gsp2U2WhePi8dcPSYF5grOygMRJ+YBwyjY=
 X-Received: by 2002:a05:6402:538b:b0:5d0:d7ca:7bf4 with SMTP id
- 4fb4d7f45d1cf-5d9156e2c80mr22824a12.0.1735852395426; Thu, 02 Jan 2025
- 13:13:15 -0800 (PST)
+ 4fb4d7f45d1cf-5d9156e2c80mr23976a12.0.1735852845570; Thu, 02 Jan 2025
+ 13:20:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,13 +59,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241219210736.2990838-20-samitolvanen@google.com>
- <20241219210736.2990838-21-samitolvanen@google.com> <CAK7LNATRGzGjLLcv+aD3KdgkZXzwMsCSud116rzEThNXRQC0rw@mail.gmail.com>
-In-Reply-To: <CAK7LNATRGzGjLLcv+aD3KdgkZXzwMsCSud116rzEThNXRQC0rw@mail.gmail.com>
+ <20241219210736.2990838-22-samitolvanen@google.com> <CAK7LNAR=kBi_LN7UkO_qzUQh8fMd1BMf=ZZMQMPph5smZRzSSQ@mail.gmail.com>
+In-Reply-To: <CAK7LNAR=kBi_LN7UkO_qzUQh8fMd1BMf=ZZMQMPph5smZRzSSQ@mail.gmail.com>
 From: Sami Tolvanen <samitolvanen@google.com>
-Date: Thu, 2 Jan 2025 21:12:38 +0000
-X-Gm-Features: AbW1kva22k7lR6mC6lLzzh3eFbyjqTfNlFADg35Eb_8EP8gJ3kl6j3JlF1zhr0c
-Message-ID: <CABCJKufXd+JZBm6WPZG8e+41DSTVC3-t33CbuOC-L4poTRQfpg@mail.gmail.com>
-Subject: Re: [PATCH v7 01/18] tools: Add gendwarfksyms
+Date: Thu, 2 Jan 2025 21:20:08 +0000
+X-Gm-Features: AbW1kvaNjKx0eH_u3SVWBJidzerXL7V3SCKDxDD6r1mwb7-uASHbuJoLBzWifzg
+Message-ID: <CABCJKud7qojuvkcGtOKsXjd_g5A7aS0AT611GVMGtsw5SHyJ5A@mail.gmail.com>
+Subject: Re: [PATCH v7 02/18] gendwarfksyms: Add address matching
 To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
@@ -78,32 +78,30 @@ Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Masahiro,
+Hi,
 
-On Fri, Dec 27, 2024 at 6:02=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
+On Sat, Dec 28, 2024 at 4:29=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
 rg> wrote:
 >
 > On Fri, Dec 20, 2024 at 6:07=E2=80=AFAM Sami Tolvanen <samitolvanen@googl=
 e.com> wrote:
->
-> > +int main(int argc, char **argv)
-> > +{
-> > +       unsigned int n;
-> > +       int opt;
+> >
+> > diff --git a/scripts/gendwarfksyms/symbols.c b/scripts/gendwarfksyms/sy=
+mbols.c
+> > index 7adf2ed9b89b..98febb524dd5 100644
+> > --- a/scripts/gendwarfksyms/symbols.c
+> > +++ b/scripts/gendwarfksyms/symbols.c
+> > @@ -6,8 +6,39 @@
+> >  #include "gendwarfksyms.h"
+> >
+> >  #define SYMBOL_HASH_BITS 12
 > > +
-> > +       struct option opts[] =3D { { "debug", 0, NULL, 'd' },
+> > +/* struct symbol_addr -> struct symbol */
+> > +static HASHTABLE_DEFINE(symbol_addrs, 1 << SYMBOL_HASH_BITS);
+> > +/* name -> struct symbol */
 >
-> You can add "static const" to opts[] here.
->
-> I like the array initializer formatted like follows:
->
-> static const struct option opts[] =3D {
->         { "debug", 0, NULL, 'd' },
->         { "dump-dies", 0, &dump_dies, 1 },
->         { "help", 0, NULL, 'h' },
->         { 0, 0, NULL, 0 }
-> };
+> I think this comment addition should belong to 01/18 instead of 02/18.
 
-Sure, I'll change this.
+Yeah, agreed. I'll send out v8 with these comments addressed.
 
 Sami
