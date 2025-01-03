@@ -1,132 +1,253 @@
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149721F9ED5;
-	Fri,  3 Jan 2025 11:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66781BD9E5;
+	Fri,  3 Jan 2025 15:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735903343; cv=none; b=LMWgzWeMN4+gMrwFu77VDsQucUw6rFAOY/4BiD/rfL/MkP2hVW8KSoWfTCUpZoZJAS6GgYhNfNI25ywOqKZXi7usxFc0xoeoR5G/yHP+fQDHVKDZ+hSpUUDXPdxhNmbPuuc5S3Ds8TYukAXX8EgMcAJ6CreXpnV69k76cp9O56I=
+	t=1735918783; cv=none; b=qTuQPg11gdJtJlGFC54xTGIu5LSbZExzZvFJz1MMZc1nc1LvciATLj2PnD7LH+NoHfcF+mISWYVMxFNbBAlwKg3g0V+oMLz61ZwPIkIw9UdLYO8z9KfphKTd6EPTbR05WoKW2EhoUMb+brnd40vgGyp/uIORgen8iB2N09DTwMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735903343; c=relaxed/simple;
-	bh=Htc8kaHqsahCUvMnZxGcNdpXp9Xx1AAR9B2ePBslPEQ=;
+	s=arc-20240116; t=1735918783; c=relaxed/simple;
+	bh=YPFsoC7Y1YJLUCneN5mcz0GFtJQ7uUeTiDyY0k4Ao4c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P21W/6gRJr7AexXogZSsg4my+6fBw4rW1sbTn7DptO5Wockrn3x1xjzWaSE1Tn8vOjIdqzHqpZoXrgK31oTWHb5x9tRYe7wAcQzXGFZCPKDsde7eAQnj8CBKQyLY2NoiLpWlRLaVgICUo596ejHEEgErQ+9Xa1bmyNpJlbsCcZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nf+Sqpnh; arc=none smtp.client-ip=209.85.217.52
+	 To:Cc:Content-Type; b=tnOf9SefS2Mc4nAaDbP+BeksOaqbQVIqkkODBK+h0cEGSx0JF4MIjmtWUUoDgfgzQ3UbMuY9ynVBmzAMEEgShbk1KLCHdgpkCuMEMDN4Y8L5EWDV8rYoshv4xtlPtvqJO2yCLECFJ8UFJSCYt9v6xp7kDTp46ZsidIfQkFLHyXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OEh1ggNw; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nf+Sqpnh"
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4afe2a1849bso7041261137.3;
-        Fri, 03 Jan 2025 03:22:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OEh1ggNw"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ee8ecb721dso2642802a91.3;
+        Fri, 03 Jan 2025 07:39:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735903340; x=1736508140; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1735918781; x=1736523581; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Htc8kaHqsahCUvMnZxGcNdpXp9Xx1AAR9B2ePBslPEQ=;
-        b=Nf+SqpnhODt82CwFPpAjTAYZVPysLfJjfPMmb11FjF71pgEWteoRtArdEzXRxURdGM
-         jqBI2nuolb/Cygj9bLt3UwJyQ9alq0ajoBuS0qq0q30nWENMp0YjNAk5dEuLaWG4ZCHi
-         UPLa2RG8xJgWAKxyMKn9yTU+j/dvQLk0rPaZAEmKoZlotB/Lm8lgkQId2C719y2w30Bq
-         n9nigThklEZMTSj64W3YB/+++ZGxUoMN/juhdLgmio/aBO//NFmPbSLTyr8rwG7ksfWg
-         fDkVa4FRDsCX89dK9TsZe8kvo0f9FRF2Dn3hzgaHVJOQXNdD+p/uKmPWm3eKHyCFDnKu
-         pC7w==
+        bh=xydfCyLys7KHCZBcmjDtmoczEh/h2QkHFtFSEukYlYA=;
+        b=OEh1ggNwgHwWn6t5Ni/5tgKui+9QOqp0vGLBWsJHMxOWvmuu+a/I50ZWWvTzQQWt26
+         aVUTMDCKw7CP3pbJMgoHt2l3Cn0PjfQvAVINtkCOezlNHjv6Y20gLpo/d5e3wi19Wf+z
+         xDZ4YINVboFlKQuB3D+om6W8iq8ruYNL9i74dqjP69NEHvhcKauESiLlvfkNYXsRaz7b
+         WpO4R0zQiZCba/iwruA3gXwSXi/sfOMgbTxcy+4sODyIOsp7Sn3p4kcEjfzTBP/vE872
+         MgoU2cBheDSja1ALnrDPCTcExemvAwFXli9RnwD7s491m98VVIgFLFDseifFiZQWCfa3
+         E32w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735903340; x=1736508140;
+        d=1e100.net; s=20230601; t=1735918781; x=1736523581;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Htc8kaHqsahCUvMnZxGcNdpXp9Xx1AAR9B2ePBslPEQ=;
-        b=AeCZZBPVcVB19odLh4mjryrQbQYCxnoEb7JEhnk/Cp0qLFAEaoPL8ohF+uUVc0fQeI
-         EPsS/twAYtssg9INzlsxWUU7nX1TI1geCyLoUgCP+vPQVTVdJqOmwqqZapsiTyw4xAdB
-         GKfIMIMPY8RC/q7X61663m3Fl6xwcy6tzVjWiDYOYAiY+yljGD57xcaKXHjGkpiZOzib
-         sqR8MYejaUVG/tMw8Vqqz0lKi5vGHn7vYwSyof9fHUERhnMpr02yrCpxgQ4LUJjKOEi5
-         QMB43PKgkDzLh6I6iPPEV5/HhZzAvoZwo5VUCErm3Uh5cOTTr1xwNnBjmUttY+sZIA9x
-         jtsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrpc8aeCZuzy+YAhjlwHUHWe/y9uQTmebS7HPFTXV58nvdz3M8G6Fj3aiTQ38KIpYHyJ2+tJnQgiwnx8c=@vger.kernel.org, AJvYcCXDwpWwelNkEPlT7JcytrMzffGxL1RLKc/IzzRzMlo8zp2sw/2QUJX9UsIgkZH5i8RSUy9PnTGrs6IOryCn8Fs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXbmli1AAf138C7lGE/sH2YwUn1sl5ODwtp6JuDnDnTNFq+iBA
-	cRlO4GBZ33uEMxT7D6Edco+ae74pHMgBHs+t7u/x5qaid6wvf/6xSmbHtPiAOOlKLe2KcjhSm/w
-	vpP6Fwai02Ar4yF17cy0BRj5pnGE=
-X-Gm-Gg: ASbGnctSHVs23D3Ks7cOZMQAu4r5wwlp7EkAheumdsOn+iSDOHSuIOXd1F1/kYVfwLk
-	lvyV8IbsK8rucEQQamFXioyYKQgKHHFiOYGhQX68x6NAQfO90llqLHt3KYMNubi7YeFeI
-X-Google-Smtp-Source: AGHT+IG3q06LSjroXo6xYdmlM3d0zEmeobn9gTU0s95xIyC0QJgZKJf5zi6fL3/+RRdhpJOrpKqxmBPnzmZsyepOy78=
-X-Received: by 2002:a05:6102:26c8:b0:4b1:16f8:efcb with SMTP id
- ada2fe7eead31-4b2cc44cb38mr40873791137.17.1735903339891; Fri, 03 Jan 2025
- 03:22:19 -0800 (PST)
+        bh=xydfCyLys7KHCZBcmjDtmoczEh/h2QkHFtFSEukYlYA=;
+        b=gM4vFttgFI0fVSmAfbefZfLztHeNLT5nPYKJwsKG+Sn/HG9hcMiNeGUNNURjbHd/24
+         EA6kr75XHxk6kbqd/6kVJ0Hf7onkRtLMe0zOk6Gt+wuESAAcS48lApS0xjizu46O5rwu
+         KXkxONNcuWTcJoaFsrzJyeulf83JYLa49YSYuk2ipn23V0b0FjMHJpYNO0ZfXs1XiPDC
+         FnKMi770CC26yvbEOYczWwcI+F8aWStu/NfjdESISuy4VzB4dCyEpFwTh/uETlRz+Ry0
+         W2TxyARAhVgNqRZ+gNN/389EJpHOgFGpbIyeNEvdRIFHxcI2zx4mm0dfMTWgSmGuaVM/
+         90Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbO8g877vRxN6uS5EDDCDn1NRKzr1AFzDvRgp3IfgotJU9aYy0rIPU6m2cVmn0iqQC5ZYv2LvCNrzXImY=@vger.kernel.org, AJvYcCW6Y1fEGIAYDexCvSw8UhKTrnOIUDuyVnagGeBsdkR8YDy9zH7tNfvNzGvBlAHV9rUxHt7JD3g9G8fCuGlJbX5m@vger.kernel.org, AJvYcCXBX5CEfqGm4FPc8GYXKhnX3myU/4hFC2l0pGUqcCfLyEEXZgr4OAHUXQLU4111L/+N4kKMtbw1Kb7phZDzmGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUxACQPZuBai0mB9+mrbv4+XAsml55Scd+ebr2yVcZhsjoQyQH
+	69i8DBaF2TrpwPU7Ru9yfhnOF/RyiqAmXUwWwoNBEMGOecYaP0aNLTohMngL1dlZVc+vnzHHKpL
+	ACwUwOwWJrn2cm1bvaT1cQhzXJ3k=
+X-Gm-Gg: ASbGncu9I59BYw5lxJZSnVbB/36akxc339IMRCT24wvl2EhEergJygfv+YRkI5xfAYg
+	N+BkCc8rJ8cm4y9UgZBeEJVJCgjewh4DAzhf55Q==
+X-Google-Smtp-Source: AGHT+IG17zKiwFu2MvPaZQx2w3CPEH3CzNN+6IfJKeNeaOU3YRTgO9nQFaNzz+lLjmMDVxm6lfxpOfSTOwCvr3PWptg=
+X-Received: by 2002:a17:90a:c88c:b0:2ee:948b:72d3 with SMTP id
+ 98e67ed59e1d1-2f452dee1f6mr28157538a91.1.1735918780954; Fri, 03 Jan 2025
+ 07:39:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <yZdXTg82eCLGHsaNBfAwwYZTGa63yzxI2YXoaTndUyJzyVN60hPrWoeQoXdrrh2hnRIeugFXvrb3nbq2bpD6Ag==@protonmail.internalid>
- <20241114005631.818440-1-alistair@alistair23.me> <871pynfv5f.fsf@kernel.org>
- <mgdEr5XBxS-KNBtmRIKsQX4z2uZyhJMYQdRJHIOTpxH7v7Vmt88bfy2EYd8-omqRNgT7lbDMIbEtpwlVJH12Ww==@protonmail.internalid>
- <CAKmqyKN7dP=UFjP0c88wq_FMgaFzPU+5GRDz=X6H-fkc1v1Hpg@mail.gmail.com>
- <87jzbxmij3.fsf@kernel.org> <CAKmqyKOoM5+8ypFSG-mt+ixkhBGVdxjkCrHjP+=Zs5s-GeB_pQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKOoM5+8ypFSG-mt+ixkhBGVdxjkCrHjP+=Zs5s-GeB_pQ@mail.gmail.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 3 Jan 2025 21:21:53 +1000
-Message-ID: <CAKmqyKNteaaXWCt2WR_YOzFvWRFhkfZvnv+4vjkyo3qESL8SYQ@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] rust: bindings: Auto-generate inline static functions
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alistair Francis <alistair@alistair23.me>, linux-kernel@vger.kernel.org, 
-	benno.lossin@proton.me, boqun.feng@gmail.com, me@kloenk.dev, 
-	alex.gaynor@gmail.com, gary@garyguo.net, aliceryhl@google.com, 
-	alistair.francis@wdc.com, bjorn3_gh@protonmail.com, tmgross@umich.edu, 
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org
+References: <20241213081035.2069066-1-davidgow@google.com> <20241213081035.2069066-2-davidgow@google.com>
+In-Reply-To: <20241213081035.2069066-2-davidgow@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 3 Jan 2025 16:39:28 +0100
+Message-ID: <CANiq72mjf51e=dNzx-P1=m7Ns=7yAV5Ky6GumtRDBeoo46mLyQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/3] rust: kunit: add KUnit case and suite macros
+To: David Gow <davidgow@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 20, 2024 at 12:55=E2=80=AFPM Alistair Francis <alistair23@gmail=
-.com> wrote:
+On Fri, Dec 13, 2024 at 9:10=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
 >
-> On Wed, Dec 18, 2024 at 7:45=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
-> >
-> > "Alistair Francis" <alistair23@gmail.com> writes:
-> >
-> > > On Wed, Dec 4, 2024 at 11:14=E2=80=AFPM Andreas Hindborg <a.hindborg@=
-kernel.org> wrote:
-> > >>
-> > >>
-> > >> Hi Alistair,
-> > >>
-> > >> "Alistair Francis" <alistair@alistair23.me> writes:
-> > >> >
-> > >> > This series adds support for bindgen generating wrappers for inlin=
-e statics and
-> > >> > then converts the existing helper functions to this new method. Th=
-is doesn't
-> > >> > work for C macros, so we can't reamove all of the helper functions=
-, but we
-> > >> > can remove most.
-> > >>
-> > >> Are you aware of the helper LTO patches by Gary [1]? Can you tell if
-> > >
-> > > I was not, but that's exciting to see
-> > >
-> > >> this series will compose with the LTO patches?
-> > >
-> > > I think it will still work, although it might take some extra effort.
-> > >
-> > > I assume my series isn't going to be accepted though, so I'm not goin=
-g
-> > > to try and get the LTO series to work on top of it. It's a lot of wor=
-k
-> > > to rebase this series as every new binding causes a conflict and it
-> > > seems to have stalled
-> >
-> > I would assume that it _will_ be merged in some form. Why not? It's jus=
-t
-> > a matter of getting it reviewed and making sure that it is going to wor=
-k
-> > with the LTO inlining.
+> +/// The test case should have the signature
+> +/// `unsafe extern "C" fn test_case(test: *mut crate::bindings::kunit)`.
 
-I have my patches building with the LTO inlining work. The kernel
-still boots and it seems like the inlining is working
+I guess this is here so that people can copy-paste it (i.e. users)?
+However, given it is private (i.e. users are not expected to manually
+use this function) and that it is already in the signature
+(`run_case`), I wonder if we need to mention it this paragraph.
 
-You can see it here if you are interested in testing:
-https://github.com/alistair23/linux/commit/e6b847324b4f5e904e007c0e288c88d2=
-483928a8
+Moreover, does it need to be `unsafe fn`? Safe ones coerce into unsafe
+ones (i.e. not in the parameter, but in the one that the user defines)
 
-Alistair
+> +/// Use `kunit_case_null` to generate such a delimeter.
+
+Typo: delimiter
+
+> +/// function retuns such a delimiter.
+
+Typo: returns
+
+> +/// Registers a KUnit test suite.
+> +///
+> +/// # Safety
+> +///
+> +/// `test_cases` must be a NULL terminated array of test cases.
+
+I guess "test cases" here also means "valid ones", i.e. without
+invalid pointers and so on inside, right? Perhaps it is good to at
+least mention "valid" clearly. Otherwise, one can read it as "any
+possible instance of `kunit_case`", which would be unsound, no?
+
+We could go finer-grained, and explain exactly what needs to be valid,
+which would be good.
+
+A third alternative would be to mention that these test cases must be
+created using the two functions above (`kunit_case*()`), and make the
+`kunit_case()` one require a suitable `run_case` function pointer
+(i.e. making it `unsafe`). That way the requirements are a bit more
+localized, even if it means making that one `unsafe fn`.
+
+> +/// unsafe extern "C" fn test_fn(_test: *mut crate::bindings::kunit) {
+
+Does this function need to be `unsafe`? (please see above for the
+comment on the docs of `kunit_case`). If so, then we would need a `#
+Safety` section if the example was built (see below).
+
+> +/// static mut KUNIT_TEST_CASE: crate::bindings::kunit_case =3D crate::k=
+unit_case(name, test_fn);
+
+Shouldn't this `name` be a `CStr` for this example? (The example is
+ignored, but it would be ideal to keep it up to date).
+
+> +/// static mut KUNIT_TEST_CASES: &mut[crate::bindings::kunit_case] =3D u=
+nsafe {
+> +///     &mut[KUNIT_TEST_CASE, KUNIT_NULL_CASE]
+> +/// };
+
+These should have a space after `&mut`. However, why do we need the
+mutable reference here anyway? (please see discussion below and in the
+next patch)
+
+In addition, doesn't this end up with duplicated statics? i.e. one in
+the array, and an independent one. So we can instead put them directly
+into the array, which would avoid `unsafe` in the initializer too.
+(This applies to the generation in the next patch, too).
+
+Finally, should we make this documentation `#[doc(hidden)]` (but
+keeping the docs)? i.e. it is not expected to be used by users
+directly anyway (and currently the example wouldn't work, since e.g.
+`kunit_case` is private).
+
+Speaking of the example, we could fix it and make it non-`ignore`
+(assuming we made `kunit_case*` public which we will probably
+eventually need, in which case they should also be `#[doc(hidden)]`),
+e.g.:
+
+    /// ```
+    /// extern "C" fn test_fn(_test: *mut kernel::bindings::kunit) {
+    ///     let actual =3D 1 + 1;
+    ///     let expected =3D 2;
+    ///     assert_eq!(actual, expected);
+    /// }
+    ///
+    /// static mut KUNIT_TEST_CASES: [kernel::bindings::kunit_case; 2] =3D =
+[
+    ///     kernel::kunit::kunit_case(kernel::c_str!("name"), test_fn),
+    ///     kernel::kunit::kunit_case_null(),
+    /// ];
+    /// kernel::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
+    /// ```
+
+(If so, we should then use explicit names, since otherwise the KUnit
+output in the log is confusing.)
+
+> +            static KUNIT_TEST_SUITE_NAME: [i8; 256] =3D {
+
+This should probably be `::kernel::ffi::c_char` instead (and then the
+cast below needs a change too).
+
+And I think we can make this a `const` instead, since we just use it
+to initialize the array in the `static mut`, no?
+
+> +                let name_u8 =3D core::stringify!($name).as_bytes();
+
+Since it is a macro, I would use absolute paths, e.g. `::core::...`.
+
+> +            static mut KUNIT_TEST_SUITE: $crate::bindings::kunit_suite =
+=3D
+> +                $crate::bindings::kunit_suite {
+> +                    name: KUNIT_TEST_SUITE_NAME,
+> +                    // SAFETY: User is expected to pass a correct `test_=
+cases`, hence this macro
+
+Nit: usually we say "by the safety preconditions" or similar, instead
+of "User is expected to pass...".
+
+> +                    // named 'unsafe'.
+
+`unsafe`. (Also, not an English speaker, but should this be "is named" inst=
+ead?)
+
+> +                    test_cases: unsafe { $test_cases.as_mut_ptr() },
+
+This warns due to `static_mut_refs` starting Rust 1.83:
+
+    error: creating a mutable reference to mutable static is discouraged
+    --> rust/kernel/kunit.rs:261:42
+        |
+    261 |                     test_cases: unsafe { $test_cases.as_mut_ptr()=
+ },
+        |                                          ^^^^^^^^^^^ mutable
+reference to mutable static
+
+    https://doc.rust-lang.org/nightly/edition-guide/rust-2024/static-mut-re=
+ferences.html
+
+It can still be `allow`ed; however, doesn't the call to `as_mut_ptr()`
+create an intermediate mutable reference that we should avoid anyway?
+
+Instead, can we have an array static directly, rather than a mutable
+reference static to an array, and use `addr_of_mut!` here? Then we
+also avoid adding the `const_mut_refs` feature (even if it is stable
+now).
+
+That is, we would have (with all the feedback in place) something like:
+
+    static mut TEST_CASES: [kernel::bindings::kunit_case; 3] =3D [
+        kernel::kunit::kunit_case(kernel::c_str!("foo"),
+kunit_rust_wrapper_foo),
+        kernel::kunit::kunit_case(kernel::c_str!("bar"),
+kunit_rust_wrapper_bar),
+        kernel::kunit::kunit_case_null(),
+    ];
+
+And then:
+
+    test_cases: unsafe {
+        ::core::ptr::addr_of_mut!($test_cases).cast::<::kernel::bindings::k=
+unit_case>()
+    },
+
+So no mutable references in sight.
+
+>  #![feature(unsize)]
+> +#![feature(const_mut_refs)]
+
+The list should be kept sorted.
+
+However, we can avoid enabling the feature I think, if we avoid the
+`&mut`s (please see above).
+
+Cheers,
+Miguel
