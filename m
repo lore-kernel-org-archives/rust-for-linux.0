@@ -1,55 +1,55 @@
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3391C1F05
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jan 2025 20:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FFC1BEF89
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jan 2025 20:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735937147; cv=none; b=H/Phrr11X+13HTervaPfketur69EOYktPicy/8H7AMqyORaZCjtLbbWmoctd+U6LExxe4lHpYC5l9UhxGuXDBm17ZCZTB9X2h6O7H+S6vsxdL4z6RyiDmOi9EYmK/bM0QbGx+Kj65t5X1K40/DqTrtR7jWrZnR88x7V8H/a744I=
+	t=1735937151; cv=none; b=cCJtTcO18Meil4bSgxFIf7SqQa0xc0f0M7C0WRMHH0S6F4Z4Sa2tagrPeqbWeUZPvfbrPsUkyASJ+vYtOs5gGBwAJU74C3dk51riMFnExntO67PwHGUzQCj2aPAkZOTU746/bkFSJKq74x/D23z26p3CAWkMbI2IJ4RCPZX3Ers=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735937147; c=relaxed/simple;
-	bh=buSElSaAFhyQbPke8FFMFfz7pZ/egR8VAABZIjgNK0o=;
+	s=arc-20240116; t=1735937151; c=relaxed/simple;
+	bh=V88Ux5YpLtipLnwT7oAorrJvHrfCrHoGnWDZa7njhBA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j73K7aDpx/zwS2vdFGB+vFytbfx7oTtxLeUvvvvX06MeS9TszpjqTDXFCI7XDDPIYtqoE3MrzsqS/guOFCaCsoxbhvuQYoN7atfGmPpBI6glh/rvmV05vuhxRQIr5I7wohWvCLp7D2np18oT08jTKPUj9sR54FinmLJFvFIYTNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nyZEWh8m; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=GBy7z4M8aP0UMPj55uWzshKlFPcYhZYMInsCjWSw9k3cHPqYzJSA8kjCNX+bXcaVsamD8Lq3hqepOYocl2x5jJJl62T/QITdUF32nYNQXZQ6ArUBDr1va5b8ZuDKKj+6wgurmXMNgy0tPCUCcLDPOmlihcMt8fAl2tPJdY1mFHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CuLldDum; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nyZEWh8m"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2eeeb5b7022so17897725a91.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 03 Jan 2025 12:45:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CuLldDum"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ef35de8901so17012430a91.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 Jan 2025 12:45:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735937143; x=1736541943; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1735937146; x=1736541946; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KlBM+UoVMiu/aVYEb5JmNGVezBYswW2Sh9t+S0cH6qM=;
-        b=nyZEWh8maDTNUAM9sKDk8JWI9EgXPkgU6B88jN2g3lRKQRejvlqsNxCeVbT4pBrC8q
-         hB/ICNiF02GjUQSomEsos2+QQPDNntviuLqxhhPJ/LWPJ/zrGgJ/kjA/HaZdhYh/sbro
-         9Lnv+OXSopz9EwG+EKigixmPo7W9K/OKhf5KtOYiTNEiMxW0qlL1h4yyVhmRzKcPQEeo
-         1FHlnZPsdm8cAc/PNO4uASZVb6mP8fhIlEYyJVuAbkNHPUkwoD94IlGmnX9WV9ipr4Mh
-         FqYxm4IqRvRqHUoazRaw/sQ9qVhZgkzlv+uvfZU+cCXFB82puGqkHCHwnuQBcxwW9SV7
-         Lssw==
+        bh=12wMWYmdUy+3imKc/VOk9UykTDeV6/VQokbuwTAWfVw=;
+        b=CuLldDumKynO2wrmBWnrVjZG8g2FFtyeVJav+OgJldr8b6fGv0W1TcXwdoT6Iu+63j
+         bE+2S5wBLlSQ1XWAaZ7efPTav1R2/CoP0FKluFm79GkBPYDvBCelqCAWW5Qb0tkJo0BM
+         j8nGUJhlDYPYLqPz0yHpXSNvX62pcjBjAFXRSbQhv6+c0w9mcyhrSViWFrXqzLRxeIBx
+         Df4oAA3oyauFpERj7vJNLMY7sZ0etfoNhH65X3EIftV+bBs4rxDayQ8DXsRPObI9sNCq
+         WrxPFDFbtE2RSH0Xv/gYGXSP2xjlWQFBQ31CTjUBuunTHHKfVI3ZY/VkdOkV8Ael3qpQ
+         iJBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735937143; x=1736541943;
+        d=1e100.net; s=20230601; t=1735937146; x=1736541946;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KlBM+UoVMiu/aVYEb5JmNGVezBYswW2Sh9t+S0cH6qM=;
-        b=Ky0vcb9VgJZI9NJBrKfk0OHyYueUKJFvnYQZbk28iJnWrqgRMUht58Bs51tbv9IC5A
-         9UeRHZbsI34Vd/pslNcI0ciuvu0HxZ9PS13cIuBUjVtD9cgSuV/Fp0lJ1RSPSP40sMYU
-         iqz16OLSfqRVZvPFm0caPuFE1GSE/uMgaMg82fqMtcd1rGTrT+aZLYq1ZuYyr/2EGe66
-         AKn0rnGCQ2nMIgxClDotRAV9Yl8sM7HdxtmMp03zbin5YDbrAv+aoOIK5RZ8obOQ3uAY
-         GDr3s+MWT8qfJVfZMeuSQvgl527ddc+5LaQP0Bc9r0dNbKCiwnTn6Cp8+wsvV537smnM
-         hcAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCUKOGR6VpgqBEEUo8Kw9boXHXHhIuWmAZbrq9fDpmriWteyv3DnmOwTPjI3KfenrxBqpWiVQBfahTE4OYWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8gnsOjedYqM2YOFtvzY2xtHOvpKkUMx5VERFRmAmobmC6c2cC
-	Xul7/9n63tPhOQQ0bXMK5SK7jojYlPSsbPWwoW64FwhoskWz2UngHL4/EQ6QnTBMeO9s2Q2hwoD
-	/C071AyxXkKtPDhzH23bh1cz8Ng==
-X-Google-Smtp-Source: AGHT+IGv8FcDBoYRvaCaignMW+n1RAuTU7G/pRnVHQkH6oQKzGk10afRv20SmeF7u1xXaWeCJxjoZFupivpzDGYbDgg=
-X-Received: from pfbby8.prod.google.com ([2002:a05:6a00:4008:b0:725:e39e:1058])
+        bh=12wMWYmdUy+3imKc/VOk9UykTDeV6/VQokbuwTAWfVw=;
+        b=C7gEG3PrU+2v+ZFL62/GsJih5CenC2bJbkU5vboG+02Dmnth7E3RngoJd7ffBQb/hv
+         kbkYXqptmgOO5eoD9s7Z3PWTJgr2NyVLFv2HDHu2UQTlyQvhzpzr2BEZpZLpvVGrIYlk
+         Gg/nToz3rgmrWlfvIHwt8z7JBuDUrHShp9X8+vBfucNp3umrjWc+yfrhJwzMsgoflP07
+         sQwxgsDslHWGDaNBwFP0lT1oVfI3gwNPH+Rpxoi0AjBfD0396JRWXUSpfUL6+uJdJ4BA
+         UPYs5d5Up/OL9+9yS46vthVeFc/3O4m+v+hFNIRjJZkLqDOw/iQCjKfuNKqQ9o0Ewoyb
+         i6aA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNs6aSIOxN3wVMiqESCq3B5s63mQFt0yUKQu+Z2gj6jAri6xQknJKChcBM+c0I9/JvKAs/MhFsSutXYldX2A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF/TiIS9JBmLJOvVgP8MlbXsZXFXVMDgz0h31FNV7eNSjKhTKl
+	7R3ydUrTs9INHiznubiquw5STnknvQxLOAKHhmwz9AvOkBLvdIeJFtU07I7HGFY74NbWwjukt9r
+	5Fpk017p2DgPsu4ALV5meiHfmUA==
+X-Google-Smtp-Source: AGHT+IHdfVcKVoPiPlpiDb0DCfsPBeLtuqfqmnxj7xMZGx9Qm1K0+hUlDTztZt4v1TmPArak9C3LMWmStqR6NYxUgyQ=
+X-Received: from pfbbw26.prod.google.com ([2002:a05:6a00:409a:b0:725:d8bc:33e1])
  (user=samitolvanen job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6da4:b0:1e0:d4f4:5b2f with SMTP id adf61e73a8af0-1e5e07ffb0dmr86243630637.32.1735937142988;
- Fri, 03 Jan 2025 12:45:42 -0800 (PST)
-Date: Fri,  3 Jan 2025 20:45:27 +0000
+ 2002:a05:6a00:808f:b0:727:64c8:2c44 with SMTP id d2e1a72fcca58-72abdeaab15mr73526380b3a.19.1735937146085;
+ Fri, 03 Jan 2025 12:45:46 -0800 (PST)
+Date: Fri,  3 Jan 2025 20:45:29 +0000
 In-Reply-To: <20250103204521.1885406-20-samitolvanen@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,14 +59,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250103204521.1885406-20-samitolvanen@google.com>
 X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5425; i=samitolvanen@google.com;
- h=from:subject; bh=buSElSaAFhyQbPke8FFMFfz7pZ/egR8VAABZIjgNK0o=;
- b=owGbwMvMwCEWxa662nLh8irG02pJDOkVPil8nn9PBZ0rjTx1O9HBga1z5zED9WbDKO7DEimzN
- XdKxyzrKGVhEONgkBVTZGn5unrr7u9Oqa8+F0nAzGFlAhnCwMUpABMp3sDI0C7D4NUjYcPA+vnl
- eh/vnOzGbc7eMiyHWX/X5F7Ye8xuCiPD0YBP98LVnTqFdn3kfqb08VN+XIfOclZtDukJj+eKCjg xAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2300; i=samitolvanen@google.com;
+ h=from:subject; bh=V88Ux5YpLtipLnwT7oAorrJvHrfCrHoGnWDZa7njhBA=;
+ b=owGbwMvMwCEWxa662nLh8irG02pJDOkVPqnvp/H9tv5kvenc6S9TLjAISJ2d27a1NzJd4Onzq
+ 8Lz2vjmd5SyMIhxMMiKKbK0fF29dfd3p9RXn4skYOawMoEMYeDiFICJFEky/E+av5zp04GW1VO1
+ Lr5uDEvwMutYwf3cXyFQIue+UEeCzQaGf6aFfMlHfp+6cNRffErq62D21rLEq10/AzTLS5umOqm /ZAIA
 X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20250103204521.1885406-25-samitolvanen@google.com>
-Subject: [PATCH v8 05/18] gendwarfksyms: Expand type modifiers and typedefs
+Message-ID: <20250103204521.1885406-27-samitolvanen@google.com>
+Subject: [PATCH v8 07/18] gendwarfksyms: Expand array_type
 From: Sami Tolvanen <samitolvanen@google.com>
 To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -79,182 +79,85 @@ Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
 	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add support for expanding DWARF type modifiers, such as pointers,
-const values etc., and typedefs. These types all have DW_AT_type
-attribute pointing to the underlying type, and thus produce similar
-output.
+Add support for expanding DW_TAG_array_type, and the subrange type
+indicating array size.
 
-Also add linebreaks and indentation to debugging output to make it
-more readable.
+Example source code:
+
+  const char *s[34];
+
+Output with --dump-dies:
+
+  variable array_type[34] {
+    pointer_type {
+      const_type {
+        base_type char byte_size(1) encoding(6)
+      }
+    } byte_size(8)
+  }
 
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
 ---
- scripts/gendwarfksyms/die.c           | 12 +++++
- scripts/gendwarfksyms/dwarf.c         | 67 +++++++++++++++++++++++++++
- scripts/gendwarfksyms/gendwarfksyms.h |  5 ++
- 3 files changed, 84 insertions(+)
+ scripts/gendwarfksyms/dwarf.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/scripts/gendwarfksyms/die.c b/scripts/gendwarfksyms/die.c
-index b7d900c6a9c8..0d70e02d02b5 100644
---- a/scripts/gendwarfksyms/die.c
-+++ b/scripts/gendwarfksyms/die.c
-@@ -130,6 +130,18 @@ void die_map_add_string(struct die *cd, const char *str)
- 	df->type = FRAGMENT_STRING;
- }
- 
-+void die_map_add_linebreak(struct die *cd, int linebreak)
-+{
-+	struct die_fragment *df;
-+
-+	if (!cd)
-+		return;
-+
-+	df = append_item(cd);
-+	df->data.linebreak = linebreak;
-+	df->type = FRAGMENT_LINEBREAK;
-+}
-+
- void die_map_add_die(struct die *cd, struct die *child)
- {
- 	struct die_fragment *df;
 diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
-index f40e23a547da..3e08a32b7b16 100644
+index 7d8a4eb6c387..46ce17b2459b 100644
 --- a/scripts/gendwarfksyms/dwarf.c
 +++ b/scripts/gendwarfksyms/dwarf.c
-@@ -7,6 +7,17 @@
- #include <stdarg.h>
- #include "gendwarfksyms.h"
+@@ -220,6 +220,7 @@ DEFINE_PROCESS_UDATA_ATTRIBUTE(encoding)
+ 	}
  
-+static bool do_linebreak;
-+static int indentation_level;
-+
-+/* Line breaks and indentation for pretty-printing */
-+static void process_linebreak(struct die *cache, int n)
+ DEFINE_MATCH(formal_parameter)
++DEFINE_MATCH(subrange)
+ 
+ bool match_all(Dwarf_Die *die)
+ {
+@@ -342,6 +343,33 @@ DEFINE_PROCESS_TYPE(shared)
+ DEFINE_PROCESS_TYPE(volatile)
+ DEFINE_PROCESS_TYPE(typedef)
+ 
++static void process_subrange_type(struct state *state, struct die *cache,
++				  Dwarf_Die *die)
 +{
-+	indentation_level += n;
-+	do_linebreak = true;
-+	die_map_add_linebreak(cache, n);
++	Dwarf_Word count = 0;
++
++	if (get_udata_attr(die, DW_AT_count, &count))
++		process_fmt(cache, "[%" PRIu64 "]", count);
++	else if (get_udata_attr(die, DW_AT_upper_bound, &count))
++		process_fmt(cache, "[%" PRIu64 "]", count + 1);
++	else
++		process(cache, "[]");
 +}
 +
- #define DEFINE_GET_ATTR(attr, type)                                    \
- 	static bool get_##attr##_attr(Dwarf_Die *die, unsigned int id, \
- 				      type *value)                     \
-@@ -76,6 +87,12 @@ static void process(struct die *cache, const char *s)
- {
- 	s = s ?: "<null>";
- 
-+	if (dump_dies && do_linebreak) {
-+		fputs("\n", stderr);
-+		for (int i = 0; i < indentation_level; i++)
-+			fputs("  ", stderr);
-+		do_linebreak = false;
-+	}
- 	if (dump_dies)
- 		fputs(s, stderr);
- 
-@@ -239,6 +256,40 @@ static void process_type_attr(struct state *state, struct die *cache,
- 	process(cache, "base_type void");
- }
- 
-+/* Container types with DW_AT_type */
-+static void __process_type(struct state *state, struct die *cache,
-+			   Dwarf_Die *die, const char *type)
++static void process_array_type(struct state *state, struct die *cache,
++			       Dwarf_Die *die)
 +{
-+	process(cache, type);
-+	process_fqn(cache, die);
++	process(cache, "array_type");
++	/* Array size */
++	check(process_die_container(state, cache, die, process_type,
++				    match_subrange_type));
 +	process(cache, " {");
 +	process_linebreak(cache, 1);
 +	process_type_attr(state, cache, die);
 +	process_linebreak(cache, -1);
 +	process(cache, "}");
-+	process_byte_size_attr(cache, die);
-+	process_alignment_attr(cache, die);
 +}
 +
-+#define DEFINE_PROCESS_TYPE(type)                                            \
-+	static void process_##type##_type(struct state *state,               \
-+					  struct die *cache, Dwarf_Die *die) \
-+	{                                                                    \
-+		__process_type(state, cache, die, #type "_type");            \
-+	}
-+
-+DEFINE_PROCESS_TYPE(atomic)
-+DEFINE_PROCESS_TYPE(const)
-+DEFINE_PROCESS_TYPE(immutable)
-+DEFINE_PROCESS_TYPE(packed)
-+DEFINE_PROCESS_TYPE(pointer)
-+DEFINE_PROCESS_TYPE(reference)
-+DEFINE_PROCESS_TYPE(restrict)
-+DEFINE_PROCESS_TYPE(rvalue_reference)
-+DEFINE_PROCESS_TYPE(shared)
-+DEFINE_PROCESS_TYPE(volatile)
-+DEFINE_PROCESS_TYPE(typedef)
-+
- static void process_base_type(struct state *state, struct die *cache,
- 			      Dwarf_Die *die)
+ static void __process_subroutine_type(struct state *state, struct die *cache,
+ 				      Dwarf_Die *die, const char *type)
  {
-@@ -260,6 +311,9 @@ static void process_cached(struct state *state, struct die *cache,
- 		case FRAGMENT_STRING:
- 			process(NULL, df->data.str);
- 			break;
-+		case FRAGMENT_LINEBREAK:
-+			process_linebreak(NULL, df->data.linebreak);
-+			break;
- 		case FRAGMENT_DIE:
- 			if (!dwarf_die_addr_die(dwarf_cu_getdwarf(die->cu),
- 						(void *)df->data.addr, &child))
-@@ -295,7 +349,20 @@ static int process_type(struct state *state, struct die *parent, Dwarf_Die *die)
- 	}
- 
- 	switch (tag) {
-+	/* Type modifiers */
-+	PROCESS_TYPE(atomic)
-+	PROCESS_TYPE(const)
-+	PROCESS_TYPE(immutable)
-+	PROCESS_TYPE(packed)
-+	PROCESS_TYPE(pointer)
-+	PROCESS_TYPE(reference)
-+	PROCESS_TYPE(restrict)
-+	PROCESS_TYPE(rvalue_reference)
-+	PROCESS_TYPE(shared)
-+	PROCESS_TYPE(volatile)
-+	/* Other types */
+@@ -437,7 +465,9 @@ static int process_type(struct state *state, struct die *parent, Dwarf_Die *die)
+ 	PROCESS_TYPE(volatile)
+ 	/* Subtypes */
+ 	PROCESS_TYPE(formal_parameter)
++	PROCESS_TYPE(subrange)
+ 	/* Other types */
++	PROCESS_TYPE(array)
  	PROCESS_TYPE(base)
-+	PROCESS_TYPE(typedef)
- 	default:
- 		debug("unimplemented type: %x", tag);
- 		break;
-diff --git a/scripts/gendwarfksyms/gendwarfksyms.h b/scripts/gendwarfksyms/gendwarfksyms.h
-index 601f877bc8ca..832d05b4fc1c 100644
---- a/scripts/gendwarfksyms/gendwarfksyms.h
-+++ b/scripts/gendwarfksyms/gendwarfksyms.h
-@@ -59,6 +59,9 @@ extern int dump_dies;
- /* Error == negative values */
- #define checkp(expr) __check(expr, __res < 0)
- 
-+/* Consistent aliases (DW_TAG_<type>_type) for DWARF tags */
-+#define DW_TAG_typedef_type DW_TAG_typedef
-+
- /*
-  * symbols.c
-  */
-@@ -100,6 +103,7 @@ enum die_state {
- enum die_fragment_type {
- 	FRAGMENT_EMPTY,
- 	FRAGMENT_STRING,
-+	FRAGMENT_LINEBREAK,
- 	FRAGMENT_DIE
- };
- 
-@@ -107,6 +111,7 @@ struct die_fragment {
- 	enum die_fragment_type type;
- 	union {
- 		char *str;
-+		int linebreak;
- 		uintptr_t addr;
- 	} data;
- 	struct list_head list;
+ 	PROCESS_TYPE(subroutine)
+ 	PROCESS_TYPE(typedef)
 -- 
 2.47.1.613.gc27f4b7a9f-goog
 
