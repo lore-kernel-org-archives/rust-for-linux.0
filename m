@@ -1,172 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE9818C03E;
-	Fri,  3 Jan 2025 16:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D18B1FBEA4
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jan 2025 17:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735923523; cv=none; b=o3X94NC3E8NgijsyQ7RALDTdniFGv/vwB+YuFLqFjsMKtwiN/3cFEhMFX3FAO+qCC6AZMaSjdGYHjf7JGcg5es/UH/bFM8VUHUCGC6uSyY9owacvTRuMGxZFU5MMT0Ypxnezph/96ysDVvDPFco5QjgESTwL/hboq8SibRTQXiI=
+	t=1735925827; cv=none; b=UyWAioU5mKwbcptcdQMuMYD9PZiAXb27O4G/ERGikk/zwm6qsUGUw6nMPzg8zmUTqcfMiJpjMagMB2MKR1Zqnk18argpwcDlCOyU2TvIbNFLluO9ctGmcsdZAxgJCXGIbwa1JCRAXhhZak3HZ+HEvmGcG/RkOomM1K4VjgvkqXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735923523; c=relaxed/simple;
-	bh=uWhgcGD8I+m/EYJNtsbmkGpJ/+dsZ8zp33Ku3Dbnpys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NLS0VdiVMO3rRtGNBFdDMmD+ObvipnLy6MtTZ57oqZ0GjNSRXPF9kEnNlbR/8emztXXDevdalE3y9GajZmuCGmDV4mK/CWNAbApL0dPxrZBPywlAAzMn4/xGXATghUEG81hFBGl6nhaWEIZg+AdCi19gE68kLjfgWF/dpAJ2ND0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zo/H2sTR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1735925827; c=relaxed/simple;
+	bh=XUMV+IjWjR/mKf9NiCzOf1drW24QFbqJW9dlnkh30k0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J4PjZtppXHLdSGaPE2j1Dg8topAEeZV7uo0Yp5u7zKjLId5bW26lR3klugqv6i5PnANfRO+huc1bFs8+xEqLhGlcSFZkhLII+Ei9ryNw88jmI2SNEsQYAgtxgAZ9o1WTnwNVM83YJ82f+jGacjKYI+EMNJwguIlSNmbwIn+c3TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fY+dRqo0; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zo/H2sTR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443C6C4CECE;
-	Fri,  3 Jan 2025 16:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735923523;
-	bh=uWhgcGD8I+m/EYJNtsbmkGpJ/+dsZ8zp33Ku3Dbnpys=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zo/H2sTRoXXoCUr8Yc7dWbJLHtDU1FNIIZEr7RSrk9PTxOvYCL9tkA8T8q/YNerwf
-	 aJN31qxivXTPwAOqhGuhbMBfOvZQ3A4u4Y6LJ6F6pMojf2h7fTDnlqokYLJApGvHOn
-	 wl7aQ5hEqkX3eBdc6xXneSCDrm8RhW0gqi/Zw5tI6IYeE1ena9RpmXr7I6/fppZ5Rs
-	 sqmsZVLPutYVm5AUOoIzVua2x+5RwXf27wcpE6rN1FXd0qDjLkZWFWrxf4LhBJTI8W
-	 Y+lvqRRf9qGE0k1Oh9OFNhy49EBH8DRpLFmX3p1ZMIcnx1CU8No/76lHvnh3EiylzC
-	 iPTczZmmeGGyw==
-Date: Fri, 3 Jan 2025 17:58:37 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: devres: remove action in `Devres::drop`
-Message-ID: <Z3gXPT1HFBYpAiGz@cassiopeiae>
-References: <20250103164436.96449-1-dakr@kernel.org>
- <20250103164436.96449-2-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fY+dRqo0"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ee9f66cb12so17674553a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 Jan 2025 09:37:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1735925825; x=1736530625; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=U4VY60Cjwm6tFflvWLW60lsCJrk0mhJyf0v7/Cd8Kfg=;
+        b=fY+dRqo0vLCsstcWtK/bFtCe7FISr5n59XZD63MAMsqVN1DZ7mmHHPLaX8RW6E0Q3R
+         dQWxPNOVx/42Pe0LnZMyt3Vi7eOfqMn6KnpMuoIySc5yl8ZQ/jOz3tgFnavgrZU7ewCW
+         xDo92gIioCvWk9SlGy1FmCkhzcd1t6B6gjedEIbCMwrnBD/VxxSQ/3L5Yrag/OLpP03M
+         FiDjdRBVYwoY5gmkJhhplDanT2NtGqdyjdstGa2DnaEJtlKT0tiFjEkPZHZoF49hzydi
+         08/K/LwUc19NGpO0j7EDi2U1xYKBAjX3AipSUsg5uBz2MdmO/I0k6FPSO/DS3hg0xvZM
+         U61Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735925825; x=1736530625;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U4VY60Cjwm6tFflvWLW60lsCJrk0mhJyf0v7/Cd8Kfg=;
+        b=F4+u6Sejp1q5blyYdFW3THVbGXOoNc2YdUY9f13YaDKwDukXQeVj5bmjm1NTMDmDKo
+         WhbQyHgSsLbquimtobg7oFuKypQGJalLz03X1qm5RtHbsqJ1FVKamiVd2vZC3+qaufwv
+         f8bzdXAcu9OkY5p/zC+6NIO0fyDwXeYPTvdGxxLKh/g6gfoiDRqjvSE0mBKOhUkrvOLH
+         IXBQTQ2xctKz6PuQA0DIYuYOFIphW71nkxb39ikYUui/PqWKGFOia4OHNvsL/APX+D9w
+         JKW2HDYIVNPRFP7SUhsZWxbIvnyj9CRLE8k/IQU7u0L9Bf6/3QAfJxjHyN4i8uMMC1jb
+         4QkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXl+5uPekRzIeboErAFc69QYEoVVUATJRt1HjwrOv6CcG9A3+bEkLHMsI4fSHviV2+ECm+p8EjRFSab9jUnAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUvwNLF4Lxi6BPtdqcINXhksYPTFWg0CD8kweTjsDOkXu0SE9N
+	AvAk+6Jo0NU3wkleDrCaeMtDZ6ctuvJA6in6NJgIAIbqfnQHxKydrZTBkPzfAI+NjYv8UWPBVt0
+	D7Tcdbw==
+X-Google-Smtp-Source: AGHT+IE5XOXP4u3YrND5atQkifC8UR4hESmT1MwaKDDcIFcvmI5+502564uEtsesNkW/cFlPCKUocxo+NW50
+X-Received: from pjur4.prod.google.com ([2002:a17:90a:d404:b0:2ea:448a:8cd1])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2c83:b0:2ee:693e:ed7a
+ with SMTP id 98e67ed59e1d1-2f452eed943mr76372036a91.35.1735925824912; Fri, 03
+ Jan 2025 09:37:04 -0800 (PST)
+Date: Fri, 03 Jan 2025 17:37:00 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250103164436.96449-2-dakr@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADwgeGcC/43Q0WqDMBQG4FcRrxfJOYmalDH6HmMXUU+qrJots
+ dJS+u6LrlBHW9jlCTkf//nPaSDfUUg3yTn1NHWhc0McQLwkad2aYUesa+JDihwlcERGx5GGhhr
+ Wu2YiPy8EZspKysZW1lpI4+qXJ9sdF/f9I87Wu56NrSezwiBHARrzTKhcouAMWN+bgye/3Tm32
+ 1NWu/6qefo+xHDjL5n2FIJZsm2S10VDVJDLgosMUUhUctZMMG3n3Wn7SX6gfeb87m0GH6zHIMB
+ LUWSoNVdCMeQsmL4b3X4yAw2rSAtRmUAsDvHHJhliKewag6fzwW0XRudPS69TuWS+NigeNziVj
+ DMhdKlilUKUYt3BLE5qpcSyHisqKlqYuiFbYE3qTtE3BZ5m0VGpai65sDyXlb1TgP+HAR4dbk2 ZS2sbovubAG4OPncgOojQgJJE2pT3Dq6cp+UAzo4uTGG4zSGHP87lcvkBCzwpvA8DAAA=
+X-Change-Id: 20241022-extended-modversions-a7b44dfbfff1
+X-Mailer: b4 0.15-dev
+Message-ID: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com>
+Subject: [PATCH v13 0/5] Extended MODVERSIONS Support
+From: Matthew Maurer <mmaurer@google.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jan 03, 2025 at 05:44:31PM +0100, Danilo Krummrich wrote:
-> So far `DevresInner` is kept alive, even if `Devres` is dropped until
-> the devres callback is executed to avoid a WARN() when the action has
-> been released already.
-> 
-> With the introduction of devm_remove_action_nowarn() we can remove the
-> action in `Devres::drop`, handle the case where the action has been
-> released already and hence also free `DevresInner`.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/devres.rs | 56 +++++++++++++++++++++++++++++++++----------
->  1 file changed, 44 insertions(+), 12 deletions(-)
-> 
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index 9c9dd39584eb..7d3daac92109 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -10,15 +10,19 @@
->      bindings,
->      device::Device,
->      error::{Error, Result},
-> +    ffi::c_void,
->      prelude::*,
->      revocable::Revocable,
->      sync::Arc,
-> +    types::ARef,
->  };
->  
->  use core::ops::Deref;
->  
->  #[pin_data]
->  struct DevresInner<T> {
-> +    dev: ARef<Device>,
-> +    callback: unsafe extern "C" fn(*mut c_void),
->      #[pin]
->      data: Revocable<T>,
->  }
-> @@ -98,6 +102,8 @@ impl<T> DevresInner<T> {
->      fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
->          let inner = Arc::pin_init(
->              pin_init!( DevresInner {
-> +                dev: dev.into(),
-> +                callback: Self::devres_callback,
->                  data <- Revocable::new(data),
->              }),
->              flags,
-> @@ -109,9 +115,8 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
->  
->          // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
->          // detached.
-> -        let ret = unsafe {
-> -            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
-> -        };
-> +        let ret =
-> +            unsafe { bindings::devm_add_action(dev.as_raw(), Some(inner.callback), data as _) };
->  
->          if ret != 0 {
->              // SAFETY: We just created another reference to `inner` in order to pass it to
-> @@ -124,6 +129,41 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
->          Ok(inner)
->      }
->  
-> +    fn as_ptr(&self) -> *const Self {
-> +        self as _
-> +    }
-> +
-> +    fn remove_action(&self) {
-> +        // SAFETY:
-> +        // - `self.inner.dev` is a valid `Device`,
-> +        // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
-> +        //   previously,
-> +        // - `self` is always valid, even if the action has been released already.
-> +        let ret = unsafe {
-> +            bindings::devm_remove_action_nowarn(
-> +                self.dev.as_raw(),
-> +                Some(self.callback),
-> +                self.as_ptr() as _,
-> +            )
-> +        };
-> +
-> +        if ret != 0 {
-> +            // The devres action has been released already - nothing to do.
-> +            return;
-> +        }
-> +
-> +        // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
-> +        // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership of
-> +        // this reference.
-> +        let _ = unsafe { Arc::from_raw(self.as_ptr()) };
-> +
-> +        // Revoke the data, such that it gets dropped and the actual resource is freed.
-> +        //
-> +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> +        // anymore, hence it is safe not to wait for the grace period to finish.
-> +        unsafe { self.data.revoke_nosync() };
+This patch series is intended for use alongside the Implement DWARF
+modversions series [1] to enable RUST and MODVERSIONS at the same
+time.
 
-With this patch, this shouldn't be needed any longer -- forgot to remove it.
+Elsewhere, we've seen a desire for long symbol name support for LTO
+symbol names [2], and the previous series came up [3] as a possible
+solution rather than hashing, which some have objected [4] to.
 
-> +    }
-> +
->      #[allow(clippy::missing_safety_doc)]
->      unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
->          let ptr = ptr as *mut DevresInner<T>;
-> @@ -165,14 +205,6 @@ fn deref(&self) -> &Self::Target {
->  
->  impl<T> Drop for Devres<T> {
->      fn drop(&mut self) {
-> -        // Revoke the data, such that it gets dropped already and the actual resource is freed.
-> -        //
-> -        // `DevresInner` has to stay alive until the devres callback has been called. This is
-> -        // necessary since we don't know when `Devres` is dropped and calling
-> -        // `devm_remove_action()` instead could race with `devres_release_all()`.
-> -        //
-> -        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> -        // anymore, hence it is safe not to wait for the grace period to finish.
-> -        unsafe { self.revoke_nosync() };
-> +        self.0.remove_action();
->      }
->  }
-> -- 
-> 2.47.1
-> 
+This series adds a MODVERSIONS format which uses a section per column.
+This avoids userspace tools breaking if we need to make a similar change
+to the format in the future - we would do so by adding a new section,
+rather than editing the struct definition. In the new format, the name
+section is formatted as a concatenated sequence of NUL-terminated
+strings, which allows for arbitrary length names.
+
+Emitting the extended format is guarded by CONFIG_EXTENDED_MODVERSIONS,
+but the kernel always knows how to validate both the original and
+extended formats.
+
+Emitting the existing format is now guarded by CONFIG_BASIC_MODVERSIONS,
+but it is enabled by default when MODVERSIONS is enabled and must be
+explicitly disabled by the user.
+
+Disabling CONFIG_BASIC_MODVERSIONS may cause some userspace tools to be
+unable to retrieve CRCs until they are patched to understand the new
+location. Even with CONFIG_BASIC_MODVERSIONS enabled, those tools will
+be unable to read the CRCs for long symbols until they are updated to
+read the new format. This is not expected to interfere with normal
+operation, as the primary use for CRCs embedded in the module is
+load-time verification by the kernel. Recording and monitoring of CRCs
+is typically done through Module.symvers.
+
+Selecting RUST and MODVERSIONS is now possible if GENDWARFKSYMS is
+selected, and will implicitly select EXTENDED_MODVERSIONS.
+
+This series depends upon DWARF-based versions [1] and Masahiro's u32
+fixup patch [5].
+
+[1] https://lore.kernel.org/lkml/20241219210736.2990838-20-samitolvanen@google.com/	
+[2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org/
+[3] https://lore.kernel.org/lkml/ZoxbEEsK40ASi1cY@bombadil.infradead.org/
+[4] https://lore.kernel.org/lkml/0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com/
+[5] https://lore.kernel.org/linux-kbuild/20241228154603.2234284-1-masahiroy@kernel.org
+
+Changes in v13:
+- Fixed up missed s32 usage (Thanks Sami).
+
+v12: https://lore.kernel.org/r/20241230-extended-modversions-v12-0-296a6a0f5151@google.com
+- Rebased on top of Masahiro's cleanup patch
+- Switched modpost to Masahiro's new types, including using u32 instead
+  of s32
+- Eliminated comment noise per Masahiro's suggestion
+- Fixed typo in patch 3 commit message
+- Set default of BASIC_MODVERSIONS to y instead of MODVERSIONS, per
+  Masahiro's suggestion
+
+v11: https://lore.kernel.org/r/20241223-extended-modversions-v11-0-221d184ee9a7@google.com
+- Fixed documentation about where strings are stored per Petr's
+  suggestion.
+- Rebased on to the latest version of Sami's series on linux-next
+
+v10: https://lore.kernel.org/r/20241123-extended-modversions-v10-0-0fa754ffdee3@google.com
+- Fixed accidental selects / default confusion in previous patch
+- Re-ran tests (check for section presence in Y/Y, Y/N, N/Y, N/N, check
+  all module kinds load)
+
+v9: https://lore.kernel.org/r/20241123-extended-modversions-v9-0-bc0403f054bf@google.com
+- Rebased onto the latest version of Sami's series, on top of linux-next
+- Added BASIC_MODVERSIONS to allow using *only* EXTENDED_MODVERSIONS
+- Documented where symbol data is stored and format limitations
+
+v8: https://lore.kernel.org/r/20241030-extended-modversions-v8-0-93acdef62ce8@google.com
+- Rebased onto latest version of Sami's series, on top of v6.12-rc5
+- Pass --stable when KBUILD_GENDWARFKSYMS_STABLE is set.
+- Flipped MODVERSIONS/GENDWARFKSYMS order in deps for CONFIG_RUST
+- Picked up trailers
+
+v7: https://lore.kernel.org/r/20241023-extended-modversions-v7-0-339787b43373@google.com
+- Fix modpost to detect EXTENDED_MODVERSIONS based on a flag
+- Drop patches to fix export_report.pl
+- Switch from conditional compilation in .mod.c to conditional emission
+  in modpost
+- Factored extended modversion emission into its own function
+- Allow RUST + MODVERSIONS if GENDWARFKSYMS is enabled by selecting
+  EXTENDED_MODVERSIONS
+
+v6: https://lore.kernel.org/lkml/20241015231925.3854230-1-mmaurer@google.com/
+- Splits verification refactor Luis requested out to a separate change
+- Clarifies commits around export_report.pl repairs
+- Add CONFIG_EXTENDED_MODVERSIONS to control whether extended
+  information is included in the module, per Luis's request.
+
+v5: https://lore.kernel.org/all/20240925233854.90072-1-mmaurer@google.com/
+- Addresses Sami's comments from v3 that I missed in v4 (missing early
+  return, extra parens)
+
+v4: https://lore.kernel.org/asahi/20240924212024.540574-1-mmaurer@google.com/
+- Fix incorrect dot munging in PPC
+
+v3: https://lore.kernel.org/lkml/87le0w2hop.fsf@mail.lhotse/T/
+- Split up the module verification refactor into smaller patches, per
+  Greg K-H's suggestion.
+
+v2: https://lore.kernel.org/all/20231118025748.2778044-1-mmaurer@google.com/
+- Add loading/verification refactor before modifying, per Luis's request
+
+v1: https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mmaurer@google.com/
+
+--
+2.47.0.rc1.288.g06298d1525-goog
+
+---
+Matthew Maurer (4):
+      modules: Support extended MODVERSIONS info
+      modpost: Produce extended MODVERSIONS information
+      modules: Allow extended modversions without basic MODVERSIONS
+      Documentation/kbuild: Document storage of symbol information
+
+Sami Tolvanen (1):
+      rust: Use gendwarfksyms + extended modversions for CONFIG_MODVERSIONS
+
+ Documentation/kbuild/modules.rst | 20 +++++++++
+ arch/powerpc/kernel/module_64.c  | 24 ++++++++++-
+ init/Kconfig                     |  3 +-
+ kernel/module/Kconfig            | 25 +++++++++++
+ kernel/module/internal.h         | 11 +++++
+ kernel/module/main.c             | 92 ++++++++++++++++++++++++++++++++++++----
+ kernel/module/version.c          | 45 ++++++++++++++++++++
+ rust/Makefile                    | 34 ++++++++++++++-
+ scripts/Makefile.modpost         |  2 +
+ scripts/mod/modpost.c            | 69 +++++++++++++++++++++++++++---
+ 10 files changed, 307 insertions(+), 18 deletions(-)
+---
+base-commit: b2c5bc987160cbc8478b982991f34f53189af909
+change-id: 20241022-extended-modversions-a7b44dfbfff1
+prerequisite-message-id: <20241228154603.2234284-1-masahiroy@kernel.org>
+prerequisite-patch-id: d5b0940f47a19d475020f6fd2e916703b803a137
+prerequisite-patch-id: a8ac50c440ac3247c60227d2ea2c10f3d3e433c1
+prerequisite-message-id: <20241219210736.2990838-20-samitolvanen@google.com>
+prerequisite-patch-id: 8a6a82b2f1858ee1483f41a1aa72c8cb030559ac
+prerequisite-patch-id: 5b22bc2e7f592e464d5d1dd4341efa2fb2afb9d0
+prerequisite-patch-id: 220585cf1a8d66ec722cf1d6ec474af6dc3b6a02
+prerequisite-patch-id: 8ae7cb66d809f902968f81354706edeb99a3d3fa
+prerequisite-patch-id: 4d6a826429c519b581d01215e1d9c7373fdfd8c6
+prerequisite-patch-id: 0dcd84187b222adf52696dbcab303d683d087dd2
+prerequisite-patch-id: 0abe8634eb844a85e8dc51c1cd3970cf96cc494a
+prerequisite-patch-id: 5fabb630792f9304f200b5996314f3c2ae4c83ae
+prerequisite-patch-id: 2772364d4b2132c9ede451f320162fc40c6f3d09
+prerequisite-patch-id: a5cf20d27871bf63be64ac79cc81e5eb9d117b89
+prerequisite-patch-id: 930230702709fe769b171a8ae94955e5d1de13ea
+prerequisite-patch-id: b43c0bc886a312e3b14be04a8fdad25badf4d834
+prerequisite-patch-id: 839b0c4859bdc8447d67bfe4b09f762140e747e7
+prerequisite-patch-id: 3c55d1e58a1d7aebfc3ea85ef5497a7262022040
+prerequisite-patch-id: 5a190c60e140cdf33caf4f4da03186a2bd75a531
+prerequisite-patch-id: 57d2fe708769154a6494fb1fece56911dea00687
+prerequisite-patch-id: 7e046331b05c61a87e1adc923b763b68a580cd03
+prerequisite-patch-id: 91c6131ab67a6f0fd8cf8bc95fa45144a868f095
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
