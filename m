@@ -1,132 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8681D5CCD;
-	Sat,  4 Jan 2025 22:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1BF4C6D
+	for <rust-for-linux@vger.kernel.org>; Sun,  5 Jan 2025 08:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736030746; cv=none; b=j2rVT3xakHP2nazwU3TVokcA2Dn5ZF5pQfv8ieZm40SJFWowKpFS34orIIrKLrnrunU4kphPWM38OyQABJjdV5mswkhHTGNQ2H4gs3eDt3+7ch5Weg/BeWemHXNgCSCk5Y9L4vNmxT0kB7N5NVXm+nU1F6rS7BuMe5ZhuCqDP1o=
+	t=1736066539; cv=none; b=rLqXN9fDkF5CQCnhplxrWr5t5P6McmcQEsnUQjCLjlHMVAg2QPaoG7XWj2QMKdN+C74czr+ZXtjmg+SSkLtUiQ34Ox6PvyS5jAvgcWLsEkvwou6CZTkH1LNJ0z/Fo8LXtG2u3OCxirzGaSA8/YhlxzmhwK88z3vV0E2dA2jBRD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736030746; c=relaxed/simple;
-	bh=qcikyWA15fK9jdBCh80Yq9BvRwwiqyehSTsW3NvssKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g9Pk2KIOEv9XVEE5mOcvhLif0vrK9b6coTXC49QONB6uK+c6fDRrupb7KkMCMqTJWxiAQfDDdwDRwoqxYgigQwqIJJZ3uc063+v7wSOIy1KFBms8B4IRkpOm4H++J2Gm0SZRAgVpM88UxmMIZilbg8vIqwC8qaFBqyUKfV7CozE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/WI3oWD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736066539; c=relaxed/simple;
+	bh=7L9ByarG82VQIQZiqcsiZ5vKOMJLdlSkWqoCUexnngQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CW42WpozRR9XIdoq6ASI+9Vk+awMRYFws9M+sHtJe8jUQ2qzC7fN24dgjb7oXbcNd0EWZKqieJRSl/cW0icmvCB3A0rkdtagRjOOWiuiuK+6kpbuqYFpzq+lYTPtAXZ4E9vA1eDxiQipWn9bdHPjoXY8Ecg8lFnKDeoxEvkUiGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NsDyFWEL; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/WI3oWD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D5EC4CED1;
-	Sat,  4 Jan 2025 22:45:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736030745;
-	bh=qcikyWA15fK9jdBCh80Yq9BvRwwiqyehSTsW3NvssKs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L/WI3oWDvpZWLEyBQbkoPBDqcHATTTQ86J0pcl3eVqlKXhL/hL6KMSkFBOn2YK7PF
-	 muZW+Y1GYRcERr64WCHmQw8lhvsY15hqmv7XkltCGItWViZ37FIINN8tcmxAPPrfzK
-	 GVl+y8XQGBaSz5uPQsUgWXoNKm75JsM3nM7srphHXu1Mt6u3GeLiKyZQo2RrB57cmp
-	 HY8vKx6gN4M9Lc1owUnEFMX8jxh1diK49R06AbEvrW7nvP0uAJMncXkIFC8qEp33q4
-	 Gecdqw+GfP2me5KZmosG2WxqtdjeD7st6KFm+4DBJ9LXXciYB4mQuPPr9FEz6UIQ/I
-	 lDSzHVqvRnyrA==
-Date: Sat, 4 Jan 2025 14:45:43 -0800
-From: Dennis Zhou <dennis@kernel.org>
-To: Mitchell Levy <levymitchell0@gmail.com>,
-	Hudson Ayres <hudayers@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC 0/3] rust: Add Per-CPU Variable API
-Message-ID: <Z3m6Fx0-I59NfmUX@snowbird>
-References: <20241219-rust-percpu-v1-0-209117e822b1@gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NsDyFWEL"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5189105c5f5so7067579e0c.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 05 Jan 2025 00:42:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736066537; x=1736671337; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2slI3HZOfX662CqU+CyvEyDvwQcyKSthqjp9QTlo934=;
+        b=NsDyFWELysV/cPIrOaJYHEbaur63KwOQCrh6JQuo2DjdYNu9AWHYJulJ4Dczcz/wB6
+         kv5Q/k5rp8+cCiOU6Rpijlnq20gLm92a6v5ty5FXGuPKW4EHaJTw0cX//QCCGcWZ5MXP
+         6CIWT0tQjLpx3OqhCEIwgL1eVa+F1TOC6KWsCsmJX/1qLLQYZdGgbSobb1xVcnzWBXCR
+         rINODSaNX3xNx/rdhe2891KfhfnC+QfwHDVP+L9QgwJYBgjBD3HXEFxR7vqGFOEDNsxn
+         31Rq3wP/iut4E65E2LGBGPs9tKRvnI6235G0IJ5J+Qbj8PM460WckfevNyWzUjvUreTK
+         ur4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736066537; x=1736671337;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2slI3HZOfX662CqU+CyvEyDvwQcyKSthqjp9QTlo934=;
+        b=cD1jTJUrQwF2KI8SVX1AOBfisqOpmNZnztpYXFQq9Oj5bx1VJmDVCpg0j8Q29Sh4AR
+         3DRz0H1RSQnmXyLDE0J2a22XAf31o7/8r51edJLk5ExFWiMxe/NsqubdbxnjNuNgOKWZ
+         cMxd4l1pYTe6nm7J782ynLgmA9emyMuDsxvv1fSWOh8FfMaGIWkbhRklNOtlCnDNkHfN
+         rjLQtwX+P0KhyHdSPX41AyJ2of4GeaEVRdSATnQliqkQOu5n7KDsRU3PEgmwr+2MTq1c
+         OrnThmAsYckdgVD9JOCRMoAPLQ8Z0K/cj9l47KsufI/508Mijy1WsnYRWdoeZ3hF+nl+
+         s5wg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSsGltLpqWlQwRASrAdstneRsMyj50BltCI7EM46NUcRbuKyNNjswbTEg/00ZONqXOuDpH5bGDNp5ATl9nOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMIuSBu8E2Sl+b2hUyVXRgetAGVzCmMwhAikFUs8T6ZZN69mNp
+	v8UB8a6CRrUJ3O2wZJkyZAxwjFOzZAr6gnUe6fJZAOsUCAHfx+2gvkr/nu2gXezMQ6ARQqcmQOh
+	cqPAGuDnvjIKm9V5FrCdhJzFfb4+Zaic6NFezcw==
+X-Gm-Gg: ASbGncsS5ZrVRWy4PsRbzcvCUpBeewpDOWsQnBMqhDXU4ujtd1tR7BYhZX5QBz5D2tU
+	9wntNcY2iCi+CrviV4PbgYQAHPlchqvjUdp+JLpk=
+X-Google-Smtp-Source: AGHT+IESZBYT1KgJtkzvY6N5m3b7nV5aJaVfVbLNS6I6Vq/LSvI4synW71xSLKVBpAoNRau1qyzEQpTF5JucTdwNPKU=
+X-Received: by 2002:a05:6122:8c15:b0:518:9582:dba2 with SMTP id
+ 71dfb90a1353d-51b75d67f88mr37948743e0c.10.1736066537136; Sun, 05 Jan 2025
+ 00:42:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241219-rust-percpu-v1-0-209117e822b1@gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sun, 5 Jan 2025 14:12:05 +0530
+Message-ID: <CA+G9fYvM96LS63Wa1+5Md9w0V0JZgBW+f50kzx9RjRCYj3aDkA@mail.gmail.com>
+Subject: rust/kernel/lib.rs:17:12 : warning: the feature `new_uninit` has been
+ stable since 1.82.0 and no longer requires an attribute to enable
+To: open list <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc: Sasha Levin <sashal@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+The following kselftest rust builds failed on sashal/linus-next.git
+due to following build warnings / errors.
 
-On Thu, Dec 19, 2024 at 01:08:25PM -0800, Mitchell Levy wrote:
-> This series adds an API for declaring an using per-CPU variables from
-> Rust, and it also adds support for Rust access to C per-CPU variables
-> (subject to some soundness requirements). It also adds a small test
-> module, lib/percpu_test_rust.rs, in the vein of lib/percpu_test.c.
-> 
-> ---
-> I am sending this patch as an RFC to gather feedback on the API as well
-> as get some input on correctness. In particular, the unsafe getter macro
-> is somewhat cumbersome, though its safety requirements for pure-Rust
-> code aren't too difficult to verify (interoperation with C code is
-> certainly much more tricky).
-> 
+Good: 829d8581c398a96deea1d6bc78578950347dcbec
+Bad:   b2d472701a703596889c3fd067fd8929aeffc4be
 
-I've been thinking a little bit about this over the holidays and fwiw am
-not really the right person to evaluate the rust side of this. I did
-briefly discuss this with Hudson (cced) who is more familiar with rust.
+Build error:
+--------------
+warning: the feature `new_uninit` has been stable since 1.82.0 and no
+longer requires an attribute to enable
+  --> /rust/kernel/lib.rs:17:12
+   |
+17 | #![feature(new_uninit)]
+   |            ^^^^^^^^^^
+   |
+   = note: `#[warn(stable_features)]` on by default
 
-In addition to Christoph's comments:
- 1. This implementation seems targeted at static allocations and the
-    safety of this api relies on the end user doing the right thing.
+error[E0658]: use of unstable library feature 'box_uninit_write'
+  --> /rust/kernel/alloc/box_ext.rs:41:12
+   |
+41 |         Ok(Box::write(b, x))
+   |            ^^^^^^^^^^
+   |
+   = note: see issue #129397
+<https://github.com/rust-lang/rust/issues/129397> for more information
+   = help: add `#![feature(box_uninit_write)]` to the crate attributes to enable
+   = note: this compiler was built on 2024-11-26; consider upgrading
+it if it is out of date
 
-    There are many percpu variables created dynamically via
-    alloc_percpu() and the lifetime of those variables are tied to a
-    larger object. So access to those variables is safe via the
-    understanding the larger object exists. I feel like there is room
-    here for rust to do this checking somehow? Maybe in rust-only percpu
-    variables, but something better nonetheless.
+error: aborting due to 1 previous error; 1 warning emitted
 
- 2. As Christoph mentioned, the percpu api relies heavily on macros for
-    architecture specific optimizations. Your implementation seems
-    asm-generic correct, but we should find a way to export the
-    architecture specific percpu macros.
+For more information about this error, try `rustc --explain E0658`.
+make[3]: *** [/rust/Makefile:425: rust/kernel.o] Error 1
 
-    `this_cpu_off` is a percpu variable that helps x86 `arch_raw_cpu_ptr()`.
+Links:
+-------
+ - https://qa-reports.linaro.org/lkft/sashal-linus-next/build/v6.11-rc4-6237-gb2d472701a70/testrun/26563483/suite/build/test/rustgcc-lkftconfig-kselftest/log
+ - https://qa-reports.linaro.org/lkft/sashal-linus-next/build/v6.11-rc4-6237-gb2d472701a70/testrun/26563483/suite/build/test/rustgcc-lkftconfig-kselftest/history/
+ - https://qa-reports.linaro.org/lkft/sashal-linus-next/build/v6.11-rc4-6237-gb2d472701a70/testrun/26563483/suite/build/test/rustgcc-lkftconfig-kselftest/details/
 
- 3. Maybe a good use case to start off with would be percpu_refcount and
-    how rust can use it or how it can make something like that safer?
+metadata:
+----
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/sashal/linus-next.git
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2rByIOiC9ssqI7NjEPY7IcRs8SN/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2rByIOiC9ssqI7NjEPY7IcRs8SN/
+  toolchain: rustgcc
+  compiler: 'name': 'gcc', 'version': '14', 'version_full': 'gcc
+(Debian 14.2.0-8) 14.2.0'
+  config: rustgcc-lkftconfig-kselftest
+  arch: arm64
 
-Some of Hudson's direct comments about the Rust implementation:
- 1. DerefMut for PerCpuRef is ultimately constructing a reference from a
-    raw integer without preserving the provenance of the original
-    pointer in any way (since this integer is being constructed from raw
-    register reads). I believe this violates Rust's pointer provenance
-    rules for unsafe code.
 
- 2. The safety requirements of unsafe_get_per_cpu_ref seem like they
-    would often not be possible to verify at the callsite of the macro
-    without global knowledge -- especially for percpu variables defined
-    in C code. Is this a misunderstanding? Can you show an example of
-    where it would be straightforward to build a higher-level safe API
-    on top of this unsafe one?
-
-> It was suggested that I base my implementation on Rust's thread-local
-> storage API. However, this API requires that for a thread-local T, any
-> particular usage must be via a &T. Thus, many times it is required that
-> thread-local variables be in the form RefCell<T> or Cell<T>. This has
-> some pretty severe disadvantages in the context of per-CPU variables.
-> Namely, RefCell<T> may panic if .borrow_mut is called multiple times at
-> different points in the call stack. This is similar to the problem
-> inherent in my current implementation (that is, unsafe_get_per_cpu_ref
-> must be used carefully so as to not create aliasing mut references), but
-> this implementation flags this potential problem via an unsafe block and
-> the resulting PerCpuRef can be easily passed along and used fairly
-> easily. Cell<T> on the other hand requires a copy any time the
-> underlying value is used, which is entirely avoided here.
-> 
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> 
-
-I think this is a cool topic and has helped inspire me to learn a bit
-more rust. Hopefully I can be more helpful in the future.
- 
-Thanks,
-Dennis
+ --
+Linaro LKFT
+https://lkft.linaro.org
