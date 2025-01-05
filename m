@@ -1,94 +1,128 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5CC14C5A1
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Jan 2025 13:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6993D1E485;
+	Sun,  5 Jan 2025 13:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736082113; cv=none; b=ZyVdxGvghw+mwD+RTiT7Q5uqGlG/Vri13kRBEg7Fj7W0/G4VjJ+F+YC3vbqdkuVTvZtp0Mjn8AqZjLwIBwaQkMYGuUu1bjwI9HnRxOB+sGz9Ntdr2w4CmJBpVTROY7+Lu4poAHpZ+G/cyvIeZCmSkVDM/WDFT0VGx1/zLm1H0fg=
+	t=1736084049; cv=none; b=OMlIzeoJCJjbOzCyjo62GH2xvhl2P0sLrJ0SFwuspTYG+esmh6Mi8KKSUaKUk/Qg57365wRNEkaBbPNruhJWbJhxwmesn1/nUurihilMBYHiikj70z2bVin4+/lr5J/E+3eoqvYVXEK534/XYgLSpJRmcR8THnuz1RWeVU2YiJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736082113; c=relaxed/simple;
-	bh=cAZ/UVOmy3h5Edo8pBDzVhgjHgmybs8Cw4CcL0q7Kpg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GowSTqa/5PgnzMggQXZYVmaJsOcKzt2akSTPbTNo16DSrH5hoPRFJz8sOdf5n4rxwDZFCW8eY0FbEdS9UVFW29v5EEQ429N0A+W4I1gTtKI/Ci1vSlhhCxTXe6fqKgMwjf5vPzg29oWFxlnJrOmhg3IuNt/2rp8e6R+lJdlxDXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=njpq4wpu; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1736084049; c=relaxed/simple;
+	bh=sHYU5YGMQPzJkuw7LdRWjvh8Qb/SisWxK140pFcK4/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m6O+MIPfzYTU6p41/i4ryoWt0ukSORqKJ0TdIe6+SQFwXzx41BI8YBVM5ZaP0MKVhPB4dtaGtALkevz5d2iA3Dl48EBqmLamKB6oEImzb1tRMiy3mze2xvbv0dpug2JM0Rv47FJxaRhUnhc+Su4YZJ5u+dwEVI7HExNB9GBCw/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dA10PAHm; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="njpq4wpu"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 62E5E240105
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Jan 2025 14:01:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1736082108; bh=cAZ/UVOmy3h5Edo8pBDzVhgjHgmybs8Cw4CcL0q7Kpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=njpq4wpuau3Dgo0udc9Ae790xkCnYaqVQ3gbaNZHnVUNZww/dHOouTAftXB+7ijMK
-	 nxxWMl3BInJ0eRdtvhXGBTfBUPd1if03QmBbMKBlJjnWF/g9oxK9ged2vwpGXm6OyQ
-	 WKeVRL3IlCuR3Euuos2KUDVMgVFS8qf6fGjvBmb7ZbPncMQ5TTDvFGPyquy7aacvFS
-	 itzwjVKy3LBQmZCcF5C8pMXPX1GGMHBklbHhahwmd/Mhyv/h88ViHY+YJgfz3eoejt
-	 tseI2DVtZh8hUCwKbrm/583Dla9wRQrLP771Nit3nSR/fxTT+OHybv8cUq0xq39S66
-	 oitoV4ZGsPzJA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YQyBJ47Wjz6tvl;
-	Sun,  5 Jan 2025 14:01:44 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Mitchell Levy <levymitchell0@gmail.com>,  Miguel Ojeda
- <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
-  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
- <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Andrew Morton
- <akpm@linux-foundation.org>,  Dennis Zhou <dennis@kernel.org>,  Tejun Heo
- <tj@kernel.org>,  linux-kernel@vger.kernel.org,
-  rust-for-linux@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH RFC 3/3] rust: percpu: add a rust per-CPU variable test
-In-Reply-To: <5374de79-0ee6-e817-0f87-c800a6fbb733@gentwo.org> (Christoph
-	Lameter's message of "Fri, 20 Dec 2024 09:56:54 -0800 (PST)")
-References: <20241219-rust-percpu-v1-0-209117e822b1@gmail.com>
-	<20241219-rust-percpu-v1-3-209117e822b1@gmail.com>
-	<5374de79-0ee6-e817-0f87-c800a6fbb733@gentwo.org>
-Date: Sun, 05 Jan 2025 13:01:43 +0000
-Message-ID: <m28qrpbeiw.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dA10PAHm"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ee9b1a2116so2760961a91.3;
+        Sun, 05 Jan 2025 05:34:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736084048; x=1736688848; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2RvtPVpQUDZYQyy4W0YLNqt9ec0D50dW+OTyYllUecw=;
+        b=dA10PAHm3FnEjnchlwKHTIjfnGNJ5FNghlDJSDhvz2ugjrt+wfZ682nGuBYVOGx8+L
+         dN9qjtJVNDdULxzPWNnp3h6nwumjigfsXcr14AuJS8BSrbhHtJS5X90KW0bFXAmZLCix
+         WcuLWvKvmD71HeIoZ80swLTcg2PboQelYPADAuzbcgEiTO6dqQf084srwgNJaO/P++zt
+         0GZWH11JqZAHhVfT55jOq+nxvTjob/rIykeisQhoXPXH2c5KpZoLgHRkBH/CqTqgNXIv
+         dMmK9V9yW1X+qbgtU2BGwqK28YlzGwn/784f9bjCQetZ+FK2JusZF9PLEd8C6DlnKAzP
+         1JhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736084048; x=1736688848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2RvtPVpQUDZYQyy4W0YLNqt9ec0D50dW+OTyYllUecw=;
+        b=X/Ilzics45vwmYwaMwAUdLwv+EccU/mMYf76/zTskZ1OCDXAsXZTuZ71C072aJO9sC
+         1yhUvh6zhLBmZSmSnqCI9W/ciiLp5+mLoe6tDHYQHRQ+wLoZMVhR6A3eCPJN7SZg3bxe
+         IEUV2atWp9F9MbKc0EcqPnhPE5A5KoaoHk1OdFIOCK3w2aMegc5gkcAO6vWrGEz58cuq
+         qZUNqxjgQ7G1nfifa491eUruBQA80xkHpbDjRyi62qyh+rrT/Ox2fhUiugjk5S5mCneu
+         h67AeVQYvHLno6mgRbOmHCMl19SVhhvgSVB/UNnH5DEsZnp1NfRoVfcbOb8q6a9gqNwC
+         HNAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVlMdK8sIPAMnZJ0k/igC6NlxT9iLL2li8khL+Hcj/Gs1pJqVmubv85DGsV6NmOsV42utSikUcKpIBnwBh8XP4=@vger.kernel.org, AJvYcCWDBCScObznEH57V/Zsu2KA0h8i9Tl9U7UGH5D7u6FvO9JhU4Ko/zdQ4vuPQJa3nSC/GMC1dTl7SXX1XK8GyNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMDrAa1APvkLKw9bEDvV/VEmgd2lq7aLIkOh856h/2TFyxe7wf
+	lHZ02Qsb9UQGouk2y5RdE6QpL8TF/S8U4MOemh3GhIRJ6qt5rNOfjN22RLnI0Vt4EiOeIffR4t2
+	MNtJBsmJnqJu/rsC7C7FCMYvIlQRfRorf
+X-Gm-Gg: ASbGncuvuAePE15Onl4brVHRQM5mzACuIVFumec8FOFwB/SO1asKr1vCwr3WNXtCSZP
+	qPtcJxYv93rwsghVrH7gQkOnWABBa2LaWRaft/g==
+X-Google-Smtp-Source: AGHT+IGhAQT371nKxmaH8vlp3RgkBvFgyLagooOKijX0LuPewuplUERiQHzADDs25UttZ06GLEYh3U8t95HmWnQ4Esc=
+X-Received: by 2002:a17:90b:3bcb:b0:2ee:6db1:21dc with SMTP id
+ 98e67ed59e1d1-2f452de8c1bmr31993001a91.1.1736084047613; Sun, 05 Jan 2025
+ 05:34:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CA+G9fYvM96LS63Wa1+5Md9w0V0JZgBW+f50kzx9RjRCYj3aDkA@mail.gmail.com>
+In-Reply-To: <CA+G9fYvM96LS63Wa1+5Md9w0V0JZgBW+f50kzx9RjRCYj3aDkA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 5 Jan 2025 14:33:55 +0100
+Message-ID: <CANiq72mMo9fyw-NbLUQi_5jD68W78Q5ZMn-ubstWCa6hue7qHA@mail.gmail.com>
+Subject: Re: rust/kernel/lib.rs:17:12 : warning: the feature `new_uninit` has
+ been stable since 1.82.0 and no longer requires an attribute to enable
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: open list <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	Sasha Levin <sashal@kernel.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Christoph Lameter (Ampere)" <cl@gentwo.org> writes:
+On Sun, Jan 5, 2025 at 9:42=E2=80=AFAM Naresh Kamboju <naresh.kamboju@linar=
+o.org> wrote:
+>
+> The following kselftest rust builds failed on sashal/linus-next.git
+> due to following build warnings / errors.
+>
+> Good: 829d8581c398a96deea1d6bc78578950347dcbec
+> Bad:   b2d472701a703596889c3fd067fd8929aeffc4be
 
-> On Thu, 19 Dec 2024, Mitchell Levy wrote:
->
->> +        let mut native: i64 = 0;
->> +        let mut pcpu: PerCpuRef<i64> = unsafe { unsafe_get_per_cpu_ref!(PERCPU, CpuGuard::new()) };
->
-> A bit complex.
+These seem unrelated, old but rebased/recommitted recently (without SoB).
 
-I agree with this, maybe a helper function would suffise? Something in
-terms of,
-  unsafe fn get_per_cpu<T>(var: &PerCpuVariable<T>) -> PerCpuRef<T> {
-	  unsafe_get_per_cpu_ref!(var, CpuGuard::new())
-  }
+> warning: the feature `new_uninit` has been stable since 1.82.0 and no
+> longer requires an attribute to enable
+>   --> /rust/kernel/lib.rs:17:12
+>    |
+> 17 | #![feature(new_uninit)]
+>    |            ^^^^^^^^^^
+>    |
+>    =3D note: `#[warn(stable_features)]` on by default
 
->
->> +        native += -1;
->> +        *pcpu += -1;
->> +        assert!(native == *pcpu && native == -1);
->> +
->> +        native += 1;
->> +        *pcpu += 1;
->> +        assert!(native == *pcpu && native == 0);
->> +
->
-> That's pretty straightforward..... But is there no symbolic access to the
-> per cpu namespace? How would you access the kernel per cpu variables
-> defined in C?
->
-> How do you go about using per cpu atomics like
->
-> this_cpu_inc(nr_dentry_unused);
+This should not happen since commit 8e95e53ca379 ("rust: allow
+`stable_features` lint"), which is in v6.11-rc7.
+
+> error[E0658]: use of unstable library feature 'box_uninit_write'
+>   --> /rust/kernel/alloc/box_ext.rs:41:12
+>    |
+> 41 |         Ok(Box::write(b, x))
+>    |            ^^^^^^^^^^
+>    |
+>    =3D note: see issue #129397
+> <https://github.com/rust-lang/rust/issues/129397> for more information
+>    =3D help: add `#![feature(box_uninit_write)]` to the crate attributes =
+to enable
+>    =3D note: this compiler was built on 2024-11-26; consider upgrading
+> it if it is out of date
+
+This should not happen since commit 0903b9e2a46c ("rust: alloc: eschew
+`Box<MaybeUninit<T>>::write`"), which is also in v6.11-rc7. (The file
+is gone nowadays too, since v6.13-rc1).
+
+>  toolchain: rustgcc
+>   compiler: 'name': 'gcc', 'version': '14', 'version_full': 'gcc
+> (Debian 14.2.0-8) 14.2.0'
+
+By the way, it would be nice to mention here the Rust compiler too, if used=
+.
+
+Thanks for the report! I think there is nothing to be done here given
+the details above.
+
+Cheers,
+Miguel
