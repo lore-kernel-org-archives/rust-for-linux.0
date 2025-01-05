@@ -1,66 +1,68 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020117.outbound.protection.outlook.com [52.101.195.117])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022093.outbound.protection.outlook.com [52.101.96.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605501547C5;
-	Sun,  5 Jan 2025 19:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED40F1C3021;
+	Sun,  5 Jan 2025 19:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.93
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736103844; cv=fail; b=rLP58oBrLHPEpaNwVDqIbdxvOTMjVM7Mmh+8yMyFEBvsU3yKLEPnE270xm0jn9UlBDcJQZkR2XQKs3Hrq3pt7hl6m5zDkJTEwOkH8qBCFxY9vOkkDQN9N8Th7OZc4s1H3yHDyDaVlNg7Z9kfd3/qSC6U1NuloHXc74EUgnFPvKM=
+	t=1736104054; cv=fail; b=ePHcLXs5IYQ/jZQVq5HU7hmwqNYcxFA/ZPiMfDTzN7laNzV9k9FBcSbj8iSIlTRWzwGtQoHcBlCclfcg6Cuxo+t0QvTF2O0RV7nefpXIZh1s9f2SPiKYPI2QdZw7Fl1coV308Za47sDNhRPaLlDvD302XkrcvKLZc9nTZwy2mE8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736103844; c=relaxed/simple;
-	bh=PRi/hFpn8lUpJKu4uAZLSeKiq/0+dhxHzPvo10i2Wvk=;
+	s=arc-20240116; t=1736104054; c=relaxed/simple;
+	bh=vpwNskXRTyiEY8F5ipKYWlKcjeuvmDVO4tyxMPCvU0Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e8HX9tbSiMn5oyZXWQAMJkyZd76fapX8xXAglP1yZlBeAwzKODSEmAKg1b+0so70aWKPv50j29Qn60TEb/J66siBksb2xJ3HEDtF54LmLCrhjqk4Bs6pE68MBVvfyFcHJ2NWrubniEbc/w5xZCriHUz0eAXdA9TcTM9Z67nGRX8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=i3hJT1kn; arc=fail smtp.client-ip=52.101.195.117
+	 Content-Type:MIME-Version; b=LWM4019+ImHRKoVU8UHYgj0gBkqQ4gu+wrTt93Ls6Mp+bU1O9p5HfhnyqOBLdWTHBpi3vSRR0GTI+5wK+9PvLl9lcrGaqPQO/eAHc9AVrc/2wdeAQLoN4ES4qZafdN6QC7JESY78dpFGl7skJyABPvzwmjdD8vvB7O7FG2phPj8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=kee/rKqw; arc=fail smtp.client-ip=52.101.96.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="i3hJT1kn"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="kee/rKqw"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NX9LYx5Q1vPHG5mHDAgbfrH2TU/GmmSHhpa9jKDe97z6a+bXSbJAWsGOlJfaazWL8qO/xhBovJLRQ8lIfS4z7fj6ezCgmFVkV0EYKf6mRBwmTwL8V0PnEv5LeQ1OiAtR4i0mxO/Zac3LvbzIkcVCh5U37D6ONKiIrTUkEGd40pLE0JiKelUSXqCqxgtIXl5xrP6+gjNr7QT8r1PoxGpYIGf+TLiGExVA/Lvgts403rW3i2oIKle8TXU2+4gRklX3hfOm5CypHcA06/M6CUnQC7WsL55kr4wvos2YTfZofLNxTebWz9Q1YqifYnC8b2bxJBRS6cN3bmqcbtZFXeKISQ==
+ b=Z06kTZ9bsIj/CtOpA9nvruMVXvrQO2s0IudLIo0lzqQhOCgneNG+GF97yNCNXpC7o5pgTYfeoXloVV6df55G62g31vHMRdjWiCZ2f+HudGzXepEKjI5z5NiDYyH1ZmPtswVymoA97A8ZIO86M3zqCUSQSyXBL+EN96Kq/loCk9L8NzQsneRBsPmPqAwhlOM4TUTGSMm1k4LmLy0c+Fje2gC4ceGhc0cTa5X9uUMK3bekjkBzxqcLB/pjpxPE1879z2MRJbvFmvxLPkfuHYjHViyP8nZs2B54+49K0i2lZx7ec+Z+W6O4nqgIIaDpCfblTytELN1MB1MX/0ICjeZeyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KQ6CFe00jzxOU9EY8US5HBCtUGPazYQYNnQKwOVxedE=;
- b=K3k3DvA2VT8rA1HRsTeXCyUJBLpXtvZcTmxZywBAyYgJy+qpsVBpYcCc2zvUn38d98QrvBotzfaBrWBJJ9llz6jYo2KGdp7fb+uL7Lq85/vAgzPpsl5u5/nAzX/PN01C9PxfC9LtqKyDvvuR+/RyAgXmDHUeWr1+6WxpVm9bMDDMRqwl9DeQjZcKZcVuzo6Q2j1BiGrAKDG60tcd22aRBGht8j0YJBAyAAApQEYRLpR0pTAav+WwAzUrjnjmLwk+/vtg0y05MUA9uS3tGO6ZcVjNOtLniKeGRE9rVq8n3SXnplm52EH4jawrnpPbp47nX2yzQzcnVtmAjNdWGCFkxw==
+ bh=a6uhuZycnT5/D50xIkhLwPdqS1DFLTgLHmsagwu5Cvg=;
+ b=pmCqmStXhzeOxgUQ1MmPXk/QqYtz5ssdZx4tE26e4EbdHat356hcjZbmezlSFMzzIHYVhPyQECA7ALRi0haUGLn9K2leepQwRN1D0vGCfgo9BHLMEcPkv9GeE1+ti9liJVf3SijVIL5KaV71PlKnzpObQ3KRo3DmJAjsqzlJZKSpj6OTVmXeC92+1VsPAg0FaJiZPGgAKA3PDXNETsRJUgKLvTEAL3gOnVdvlr0UfYfR0uu3yM4R2FgXPCzughzOEWqX/HxF8cUwiPHhjWsFDb6HP9pNCUSeARG9v375CLLe2D2Voskc25zPkDJ9hbBJATbJ/tP6uFLLYQnjUYR0Rg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KQ6CFe00jzxOU9EY8US5HBCtUGPazYQYNnQKwOVxedE=;
- b=i3hJT1knWhKRL1Zv9yVVilJkR0nZyMNdl8jG2P2vmywHniyFV7IKmGt62H/Ap9nv7l6WQfCDSL/p+fgROP3GcmD2ITcJc9Cr1FPhMWb492RDAXS12lWOVlaJ3mKXt+YPKG6c0vAYCnyLUs5WPWeOSQTWaaG409+rC+6++6MJdIE=
+ bh=a6uhuZycnT5/D50xIkhLwPdqS1DFLTgLHmsagwu5Cvg=;
+ b=kee/rKqwjc+eRAjbLEOKzYOi7bi/AK9zgLi1Vi1xfB0lT/DURLwZFDr9LxwAqzzCQTA5kcMBAsnBvgNbihf2SSmEAzoTqv1kKpM1Jic8Y0zT7UiPJUF04BPefV1EJe77VxpiXCcNj+e9cf+MleWMCZtlagZGkbHZpy4bTdZ2XJ8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB7384.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:323::10) with
+ by LO7P265MB7696.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:422::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Sun, 5 Jan
- 2025 19:03:55 +0000
+ 2025 19:07:30 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.8314.015; Sun, 5 Jan 2025
- 19:03:55 +0000
-Date: Sun, 5 Jan 2025 19:03:39 +0000
+ 19:07:30 +0000
+Date: Sun, 5 Jan 2025 19:07:26 +0000
 From: Gary Guo <gary@garyguo.net>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
  alex.gaynor@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
  benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: devres: remove action in `Devres::drop`
-Message-ID: <20250105190339.21bc1558.gary@garyguo.net>
-In-Reply-To: <Z3gXPT1HFBYpAiGz@cassiopeiae>
-References: <20250103164436.96449-1-dakr@kernel.org>
-	<20250103164436.96449-2-dakr@kernel.org>
-	<Z3gXPT1HFBYpAiGz@cassiopeiae>
+ tmgross@umich.edu, bhelgaas@google.com, fujita.tomonori@gmail.com,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: driver: address soundness issue in
+ `RegistrationOps`
+Message-ID: <20250105190726.30a9131f.gary@garyguo.net>
+In-Reply-To: <20250103164655.96590-4-dakr@kernel.org>
+References: <20250103164655.96590-1-dakr@kernel.org>
+	<20250103164655.96590-4-dakr@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: JNXP275CA0023.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:19::35)
- To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+X-ClientProxiedBy: BE1P281CA0349.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:7d::25) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,219 +70,104 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB7384:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87409d62-656e-4e8d-f833-08dd2dbbb38a
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO7P265MB7696:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c86da21-4f16-4a3e-5240-08dd2dbc33ac
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|7053199007;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?z+jAlHCiOyH0lukPYHpxlglWQ/3olsFgCzCPnZLy1E1XYrgB89tJ+z4mFbxv?=
- =?us-ascii?Q?Icco4FBzbWBkNX3MslmyY9G15whsQLZOb/9QG09QKQB3fGVOcWX1X3syZ/Od?=
- =?us-ascii?Q?barY+w19G/bVubH2VMBJC7SMwFNebmhd78vtA/XeoMkcgC7pVj7ntrz0cvZ9?=
- =?us-ascii?Q?hoC3oRVcLUFl7iipWpgtxjr1K7/Mc3j+r2jIMX+mSVtldi3gP4iH4yEs2pJC?=
- =?us-ascii?Q?ekE8b6ydBHmdAXsUrf+nsH0c8myGGpvadm97gKC2GeGeJbFmt6zotIyx8km1?=
- =?us-ascii?Q?cge2n4NOHDxCfQOvDjviVC/Iz/XqA7U6GG8RNCB67ehzFCnzA11oAoZbIBZ7?=
- =?us-ascii?Q?cf1forBB28ZqFlUJNxY+N2nppy1K5G62vaHy12xjBoQdEnDBiF+/7XA7Rsot?=
- =?us-ascii?Q?4xyVaHA06GWBgVthIEN+Ckp6/LDD4RwOKP6n59jLDbp02SDHRxmTzhn2+IyJ?=
- =?us-ascii?Q?nrzkO09vEoeOrvb7h1+M2gDD6IZ5pjNHpTXaOqC0k7eYW0t/DYdSk69Lz0Bp?=
- =?us-ascii?Q?oYjX2KbV78IuefoW9rCIdnu0q9W9Gc9Nr0ENLBFxIa0qs6Tt4N0c7UETCda+?=
- =?us-ascii?Q?9UebWnEmayqQBqRQR1v4bN/mJyq3X0ugC6BTjw9Gifi8Qtcj1E84/vkJ/o6Z?=
- =?us-ascii?Q?tQCoP0/3BMXs8pSqZ/jilr412mEXZ7bVYKx1+YIgCafSBhMTB3oyVb2Nhxt0?=
- =?us-ascii?Q?KcNLwNlpNSOisfkU55xllnDkh/o4qcwY7q1yoUqVsbIjSQ8g3tHPuot5UN0W?=
- =?us-ascii?Q?8gT/hWnvJz+GUSNJAn+s426l3DxxAHCXN5C5DJBD0IDvdTOvPe2sad7U8Vhu?=
- =?us-ascii?Q?eDuWQyu3M2/dxgH8g3mm+SGG30zY4LSmN538mbzVuKGeiY4gokX9umUMxUlC?=
- =?us-ascii?Q?kG1VR6v5hpk8461bOtD1lT+k0PO2e2Dc5WPX5HZYREm/PbvXSZnlVWXTVJ78?=
- =?us-ascii?Q?zdA3QL1ETs/TsyHuRc/ILF3t4RQfIT6FUSXu7CBsCA4t0zDB7jhlg8k64Sht?=
- =?us-ascii?Q?EXxkFpdIB0QG9AJHCp7Jgwstp7jZlIih6qat1iJP/kW12rRN+u2O2xOD0toQ?=
- =?us-ascii?Q?c6G2L/eOOh9RcY7LBwo71F0l17QL3REddnEMVX+NvysnUddtOE797VfggAqT?=
- =?us-ascii?Q?6CU3syi4wwvfCs9MBcHtJx2VHIUunhlfXm0wyW44CWaVW4GrVzPN7/0W5Nuq?=
- =?us-ascii?Q?eJLDsAn1H3d7o8E1X0zAgOCpPA0app8G3tOgTY7srrZyIAbFIM1SahaUXVq2?=
- =?us-ascii?Q?HgdCae29EDCGRBMgmWhRp4SdVYUA8GA2E1zIga37jMkNJ/uhnx8VgBOlUskj?=
- =?us-ascii?Q?Kq8mgdGL+jmXeU4roveL8L51DrG0/OKPl4n8Zt/0yENCDpciF8WtsibGYGQf?=
- =?us-ascii?Q?mJsisgwgQwrshHJk21UX5OfVaf+d?=
+	=?us-ascii?Q?MiaZKp8Gxb7RLdKpB9diHTrJtfS/XTWTZXeFU5fj70iarhg9hKopZcIcZW7y?=
+ =?us-ascii?Q?qGBPcNM5wH0hxFpMBg3e6rRzGFpE65cFY1P4jhRKa/C49zCbtMbVwoG5N5X3?=
+ =?us-ascii?Q?FPFDCIAHkhDDBKFtBJITKpym0lV7ODsGdV07wjD8cAkvN4yP086L6bWPEIYC?=
+ =?us-ascii?Q?8zwk9quE5PG4cACMB1is2uGTEAtSsqMB1JvFAAdHEI+A+GTKF2ymbh9R7EsK?=
+ =?us-ascii?Q?W3KGlrzFNp15oe5HTFv0f9ssxGPT9S2KW1FfUkGTiEmZ1ZutwYlHIeLqo6QY?=
+ =?us-ascii?Q?VpSkoNzpxPPsgeUWS/s5+IlE/CqlFOscbhEiE5A24U2k6zAyBQd6bv++w7Ly?=
+ =?us-ascii?Q?tAJmTc8Mws1AfrqomOztsH7/da1gi+6hYblxOqcZOVe6+qv77BHIk+LllEq7?=
+ =?us-ascii?Q?GTtZa2o9RHS0F8vwdcq3G4XAjIXLlqNt5G6MS+Csh+n4cw1FDsIk53TeBx/Q?=
+ =?us-ascii?Q?vjxMCPX3vSwY39pXpb6CQvu1EnsUEQaMAejXj6BgLXA46jyjvhfEnYKKNuHi?=
+ =?us-ascii?Q?VFNrPwMhaNuRMeeFhAblQck8G3bPRY5V/KfOGZdZVRR13YInsKpWWkRgGi7D?=
+ =?us-ascii?Q?/ktppvI5LDEiLAze7XVmF1/PBHhjkciHugiPISrJwEQa5UlpVI5EnQukuxRw?=
+ =?us-ascii?Q?CN91xWrDpjHP+MrUQregJniaoCl3KTjezWFh1/ky/p/9XQnUWB7vUI0IJEh/?=
+ =?us-ascii?Q?R3KCr9uuXHI3SWM6Ri4bjZ9Uylql2QSRT9d5lQFTFBn/dcENJMUOtcE6y3qB?=
+ =?us-ascii?Q?PitF4tDoYhVQQXSMaFqEvyV73S31a+hfJqO+Uy1/b+cQYcGM6MQXXt8r4YFE?=
+ =?us-ascii?Q?g4xPQKQ6ygGB3LEJ9/m3fEfa5Nj1dIOGeEhp9WrEJNiXNnlB0UYZJdPrO3dD?=
+ =?us-ascii?Q?VzdGGNSQLqveVIidvkIOOR9mJqGc/k5odRgEjwPAG5Rf/Kd9svJhshFpwji7?=
+ =?us-ascii?Q?jGCB5lGcxxGDyLTy6bAYahUaGkufb52g77iM6W8qciBA23ag1xPPehKrMyr+?=
+ =?us-ascii?Q?bsikJ3gwUc1wMlhC8npFTq16/DeFd4uM4H+XdGg5AIRmktWYUmhGjZvWwgY/?=
+ =?us-ascii?Q?zWcPHfeEcEol+sZpB9WhI6RxHT1kWu6sRvS4fOrFic6bDucca31OEfj1fHdx?=
+ =?us-ascii?Q?X6DDnoZefbOQqrs/ylGyYfRN03zWgAWf1/cYmA6+pShswLMtVpuAlfD92Hpj?=
+ =?us-ascii?Q?vgdywSEX8Qxo3c7dAjNNIM602XF81/SeSWiBtPCDtBazpSrMSIrxu7qj7OKS?=
+ =?us-ascii?Q?SjBSXptwJd/3mZeo3si5JZqJTSNglfsohZIvVz0yW3S5HQ9vjrEUMKDTYE5g?=
+ =?us-ascii?Q?eSqzEIAlfOFP3SFkPMYgXzIk+XuVEJKjut3wdXdoUJCJf375LHnYphTyPjW4?=
+ =?us-ascii?Q?BelNAulRpSRvP9XooFLQWzNG1iPA?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8a72KfsVZkOGX+FICVEm34rsRVB1emUcR3uom1zDzvhOWZ5iqrnU2bZ1W2GE?=
- =?us-ascii?Q?4G8JDuQUFRwVaYziCobcKAoGgxyoOBSwCnAlUrN75Y1e0tZry4seoaCcIz6y?=
- =?us-ascii?Q?1U3h7sPkPNie4ML4kygfRjRwrXXWGLRUQXOZbaRGKfZfr7EywEhfOE7PyUcL?=
- =?us-ascii?Q?x1K5GY+lJ5jojt7zhje5M7buZHb0byJyhYOCa2L3WDJnJs/b+7YqNbNPCKli?=
- =?us-ascii?Q?GGtY4ysP3kjl5GG8FjftyxsWdnWFbFNuOH54noj56SsyAAaL1ajeqT098nrz?=
- =?us-ascii?Q?ITydVtWzGD5QpdJ+3ZTzAOIp1BKnjZXqdXKiKyk9T6H0dOE7j9f8N66/WBzH?=
- =?us-ascii?Q?RhT37LZIQQfWTctAob0yl1s2t/55abuCzSYCM05VpEYh5Mimqezo+j9bInOg?=
- =?us-ascii?Q?IrMLW1SFksW8ezMJezi1KzZw0mk4WVUOi0++0zeg7xKzLM72Sbf4Q60lCdwu?=
- =?us-ascii?Q?c0CYXZCZ610KTrmI28TnQqWNBoz/Bn/G04YxzYOyM39qtBNXyXTBQysxKXiY?=
- =?us-ascii?Q?ted4xu2CsD/AhfetG4fJdaX1Pe5XB8IKqN1jmiL5N0YE8IyWOZgNN8kihs4E?=
- =?us-ascii?Q?nf6jq+8Tk2rZ5iQQCjuaH+3xQT5FuTNauOuhKdQaOZE1qMVd12FYspLALh/v?=
- =?us-ascii?Q?jIDXM1GLuV2YSm5cHO8hDWI2JQHbiH7ZNa+uodU5YHTDvMMYlPP954dvm8K2?=
- =?us-ascii?Q?TRfNZweflxYBR/yMuDhtl5B/++YmL8hd9ncnUnQpE5xCJflbfE7v8wJFpeIC?=
- =?us-ascii?Q?0Bnlq2Q4Tg8LY4RLZbuS24h+xcufW7RJvYIwrpARgLOze3n8Gmew01DxMZif?=
- =?us-ascii?Q?ER72/BSRsYDGc47yGcgk+mMVezh/u10PevmSqvvQhdsw5nQIB7Na3qwPwolo?=
- =?us-ascii?Q?kBNz901S5kfDgQEnnOXpaLbE8Y8qai+MhZlYLafT3/epCGAhh+mT8dX90yYx?=
- =?us-ascii?Q?M6oq2FarTrcQ4qp+lpryB00Yt52vjlXOa3v4dSVXJem17EP7K+F48Znwth25?=
- =?us-ascii?Q?X16XPOnnLjKYiigzep8WbjtO3PY63Sn4xj53VYnCdL9m28DkaM/0fpBjAd+I?=
- =?us-ascii?Q?Xb5QPKjPweffZMYUnNIruPRA5WOmymkPdbdzg5QljHLdCuzDBLBQOSABRy3U?=
- =?us-ascii?Q?yzvNuP21bnXvjZxZsCRLaBuwWlzZr03xvG3RgjfanY60v1+goLO+lE4xIh9P?=
- =?us-ascii?Q?Y1n1pxuN/uBSumDEOvWQV+Nw504dAZ0RiDrcXLx18JwhGG33gYPsmHOYgba1?=
- =?us-ascii?Q?kfszzmjx3jmjaK5mT7UzNPBSpzi2uctQ7iG1wkIQhXDnn2xVqowlqlCFlead?=
- =?us-ascii?Q?Ux3mXNzJc/XpQuoW8S7/4KcTxuM0wnKL9kBS+b3DlLeIjgWt19uq8bGFj7nz?=
- =?us-ascii?Q?GK+gTTmBmjdyavrq5rqvIUPCFlQQVk8FUO5rSD0r/WHmE8EUbrb7pll30Cv2?=
- =?us-ascii?Q?o7lskvUJTa3bcpyL8gP/8Wl1M6VxhQ7RiZNRSBbAOjHwfBIIRbHHslPp+FTD?=
- =?us-ascii?Q?/4ugaAt54aV4Kfz6PHsGe0ApTZgeINofqO245djKihv1moFEk22SyZTWIIEF?=
- =?us-ascii?Q?HK7RJg0HsCxLldpjaMS8LZr9JQKQRNjyT4OyNWOLHIUAVkqcCL3CVbbsOkau?=
- =?us-ascii?Q?tQ=3D=3D?=
+	=?us-ascii?Q?UF5K6qrPnAa9WIV0CmVsh6xZeOSmyUnOvZVrNFjaAA7TIlO3R1DJLcI9Tk4f?=
+ =?us-ascii?Q?/iT4yAeilsM9qrsFQIx1V0KWrluq2k3zb/YMjxLzwXYYT+S8ibMnYQFK/uSR?=
+ =?us-ascii?Q?wWzdTwxt+p/M83poi1URcQ+4NIXColeIGBF9G26tMjLvh1jQchnlHL1KNPd7?=
+ =?us-ascii?Q?TlMnomdbDJHUEC2uSxwj8SB6pQ9rxa1GUe0vSp0nyJtF8G0JsTv6N77aUICY?=
+ =?us-ascii?Q?lFlSypHBlLFHvTnxe0RXpNkqdIJXVt7yXa8BcRuO7Dm/uL/CFt06qphP/rSf?=
+ =?us-ascii?Q?NY9Gl1z2ABXWReY6lhnAEGtRoycP2h0CVmL3aQw8+nPunOIYTUJLHJHjEZBd?=
+ =?us-ascii?Q?QenYIPDV9wL424du2z980ZN2A4oZa71lnG3y+xMPQSPbid7YK9/vQPQ/XKSf?=
+ =?us-ascii?Q?vQHz5c33aHrnGsGUxuoKPcel8LA6y+NMBDlNw1IY/f4dhug8Kmv5WNr/9k00?=
+ =?us-ascii?Q?yMLQ73WcyV6r4LKAy594b9neebGedNzwU7bcxNeJeOzQgLdqIAbjWGeP/qno?=
+ =?us-ascii?Q?rQV2ODGFcFhREhYXoqkCYJnGJhjNDWq2umWkVIT92mhrZqVe08EN8ZU0wU30?=
+ =?us-ascii?Q?o9mSNFCTY8U5qwoscYfJdwlmUeEgGFq2qE3GhPUoUYyWHFRFInIv01WkBPOl?=
+ =?us-ascii?Q?1ymwhyT0dX0qXKMP1n8B+CJoZfkcXGj8omDf2+bB/IzM3LUx9KlYMJFpN55Q?=
+ =?us-ascii?Q?9DmFenTgDeFJJLPTBOaA67XPShSHOzHtbPudHC/a8fB2k40dEPFMkkE+ph3s?=
+ =?us-ascii?Q?24QzsEHl90HNvTejxWf84mm5O2VU93BdAMsVTKEr1WZlGMLYvKxfE/WfRr7X?=
+ =?us-ascii?Q?fdaLYaGXkRQ3fdS0ZpIr6WiqfW/iSMY+ACvJNZV3Gf4z++kV33WDk1Foq0hH?=
+ =?us-ascii?Q?h1kCe2R5kdyMxlfQNTMASYGMKM7TIONA6w3ZAudgqlJUcIbnWs/ADiJeDXn9?=
+ =?us-ascii?Q?1tv54czeeYZ37mlzMNLeDdOnERw9F6G1qhGxjp0jgTgpFnFLvKVDUv5mHN62?=
+ =?us-ascii?Q?OtqeVPj/JH+yXnhy48Gmv2OXkd6xHq06PlU7w4Ic3OEHjcUjvZWd/km9RsJX?=
+ =?us-ascii?Q?dm+fpi29oXg+4aqhjD17hM5aC2HUTxKhcUQp+xjQZrF92y6aH1LR+noz2uua?=
+ =?us-ascii?Q?5FMZGsQqmO2LPbz0Zz7n6Dyeot86zLCXue9rlMZe1EgCfGeVuvAdOdlJdykQ?=
+ =?us-ascii?Q?DIvGNNQVxUm3mCZEyekd2mO6nEjn0PngGdpQ5TxKHSZVo41E80FaJpfvf+Ok?=
+ =?us-ascii?Q?J9JsohO2YWDJEh5zYqdX9n/6kBlV6DRRxsw9roAzoOKWTo41LKHnyaBRXn4x?=
+ =?us-ascii?Q?5nx2BixMwH7gpTDgUntxD7EUSfdIAlOyqg7nm0fkjshGJABq1by2TRYUAAHX?=
+ =?us-ascii?Q?WPIAGHcD8TXeYo8FUgZDtMVGxdd+31n/PS3EWSVV26gDhheIGuc7DVjRrfiB?=
+ =?us-ascii?Q?YjX3ulyz8ElehPcYtPFtJB/xAP7pQ1DNy+g2A1/d8+kO6Rf4+z9cYz094DGs?=
+ =?us-ascii?Q?9HNkj+Gt8kl0qX8QbwpgpTfjDCYAvFV3+Kbo5xiihTyEJiFOLd5gz792Srny?=
+ =?us-ascii?Q?4nKqAkU7ESZIvcsouDjeJKsfW8Hu554fCnvHrTrNriGUEjZ2C8yQOVfr1mxE?=
+ =?us-ascii?Q?Yg=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87409d62-656e-4e8d-f833-08dd2dbbb38a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c86da21-4f16-4a3e-5240-08dd2dbc33ac
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2025 19:03:55.3611
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2025 19:07:30.1463
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +p5C7Yvs84IL2Q6d9xLgq+DmR1invYGfJ57Q6fD4ZOACp2AoEm3KZ5C3EQhU7S5gvwJqP/BUCQmYV2BxaNIbKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7384
+X-MS-Exchange-CrossTenant-UserPrincipalName: U7vypS4T13VL5eDEP2xJb+A6pVWy1pWr60kowpKJC6+UyXSAK/rMiJCzdw2lPc4ckriB6nmhOu4U9JCB9/JKDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB7696
 
-On Fri, 3 Jan 2025 17:58:37 +0100
+On Fri,  3 Jan 2025 17:46:03 +0100
 Danilo Krummrich <dakr@kernel.org> wrote:
 
-> On Fri, Jan 03, 2025 at 05:44:31PM +0100, Danilo Krummrich wrote:
-> > So far `DevresInner` is kept alive, even if `Devres` is dropped until
-> > the devres callback is executed to avoid a WARN() when the action has
-> > been released already.
-> > 
-> > With the introduction of devm_remove_action_nowarn() we can remove the
-> > action in `Devres::drop`, handle the case where the action has been
-> > released already and hence also free `DevresInner`.
-> > 
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-
-Hi Danilo,
-
-Thanks for sending this.
-
-Feel free to add
-
-	Reviewed-by: Gary Guo <gary@garyguo.net>
-
-for both patches with the `revoke_nosync` removed as you mentioned.
-
-Best,
-Gary
-
-> > ---
-> >  rust/kernel/devres.rs | 56 +++++++++++++++++++++++++++++++++----------
-> >  1 file changed, 44 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> > index 9c9dd39584eb..7d3daac92109 100644
-> > --- a/rust/kernel/devres.rs
-> > +++ b/rust/kernel/devres.rs
-> > @@ -10,15 +10,19 @@
-> >      bindings,
-> >      device::Device,
-> >      error::{Error, Result},
-> > +    ffi::c_void,
-> >      prelude::*,
-> >      revocable::Revocable,
-> >      sync::Arc,
-> > +    types::ARef,
-> >  };
-> >  
-> >  use core::ops::Deref;
-> >  
-> >  #[pin_data]
-> >  struct DevresInner<T> {
-> > +    dev: ARef<Device>,
-> > +    callback: unsafe extern "C" fn(*mut c_void),
-> >      #[pin]
-> >      data: Revocable<T>,
-> >  }
-> > @@ -98,6 +102,8 @@ impl<T> DevresInner<T> {
-> >      fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> >          let inner = Arc::pin_init(
-> >              pin_init!( DevresInner {
-> > +                dev: dev.into(),
-> > +                callback: Self::devres_callback,
-> >                  data <- Revocable::new(data),
-> >              }),
-> >              flags,
-> > @@ -109,9 +115,8 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> >  
-> >          // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
-> >          // detached.
-> > -        let ret = unsafe {
-> > -            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
-> > -        };
-> > +        let ret =
-> > +            unsafe { bindings::devm_add_action(dev.as_raw(), Some(inner.callback), data as _) };
-> >  
-> >          if ret != 0 {
-> >              // SAFETY: We just created another reference to `inner` in order to pass it to
-> > @@ -124,6 +129,41 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> >          Ok(inner)
-> >      }
-> >  
-> > +    fn as_ptr(&self) -> *const Self {
-> > +        self as _
-> > +    }
-> > +
-> > +    fn remove_action(&self) {
-> > +        // SAFETY:
-> > +        // - `self.inner.dev` is a valid `Device`,
-> > +        // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
-> > +        //   previously,
-> > +        // - `self` is always valid, even if the action has been released already.
-> > +        let ret = unsafe {
-> > +            bindings::devm_remove_action_nowarn(
-> > +                self.dev.as_raw(),
-> > +                Some(self.callback),
-> > +                self.as_ptr() as _,
-> > +            )
-> > +        };
-> > +
-> > +        if ret != 0 {
-> > +            // The devres action has been released already - nothing to do.
-> > +            return;
-> > +        }
-> > +
-> > +        // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
-> > +        // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership of
-> > +        // this reference.
-> > +        let _ = unsafe { Arc::from_raw(self.as_ptr()) };
-> > +
-> > +        // Revoke the data, such that it gets dropped and the actual resource is freed.
-> > +        //
-> > +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> > +        // anymore, hence it is safe not to wait for the grace period to finish.
-> > +        unsafe { self.data.revoke_nosync() };  
+> The `RegistrationOps` trait holds some obligations to the caller and
+> implementers. While being documented, the trait and the corresponding
+> functions haven't been marked as unsafe.
 > 
-> With this patch, this shouldn't be needed any longer -- forgot to remove it.
-> 
-> > +    }
-> > +
-> >      #[allow(clippy::missing_safety_doc)]
-> >      unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
-> >          let ptr = ptr as *mut DevresInner<T>;
-> > @@ -165,14 +205,6 @@ fn deref(&self) -> &Self::Target {
-> >  
-> >  impl<T> Drop for Devres<T> {
-> >      fn drop(&mut self) {
-> > -        // Revoke the data, such that it gets dropped already and the actual resource is freed.
-> > -        //
-> > -        // `DevresInner` has to stay alive until the devres callback has been called. This is
-> > -        // necessary since we don't know when `Devres` is dropped and calling
-> > -        // `devm_remove_action()` instead could race with `devres_release_all()`.
-> > -        //
-> > -        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> > -        // anymore, hence it is safe not to wait for the grace period to finish.
-> > -        unsafe { self.revoke_nosync() };
-> > +        self.0.remove_action();
-> >      }
-> >  }
-> > -- 
-> > 2.47.1
-> >   
+> Hence, markt the trait and functions unsafe and add the corresponding
+> safety comments.
 
+nit: markt -> mark
+
+> 
+> This patch does not include any fuctional changes.
+> 
+> Reported-by: Gary Guo <gary@garyguo.net>
+> Closes: https://lore.kernel.org/rust-for-linux/20241224195821.3b43302b.gary@garyguo.net/
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+> ---
+>  rust/kernel/driver.rs   | 25 ++++++++++++++++++++-----
+>  rust/kernel/pci.rs      |  8 +++++---
+>  rust/kernel/platform.rs |  8 +++++---
+>  3 files changed, 30 insertions(+), 11 deletions(-)
