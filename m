@@ -1,159 +1,101 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2EC159596
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 13:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085641DC9BC
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 13:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736170485; cv=none; b=ObgK+0ObUbY7RDOa3Tf+1Y6geaGNVnjUNDKwafp8RGo/zEubxIwPZyDHZ1qCB4rZ/g4osK4IPY3K9tBsp/1du4rMk2S+NtLTxTkd74/1y9V3YVUqF6ATkhtpAPrmKjmGhGccv2NwJIlSszo9YlvCpDeQz7avjHYLAviayKuzH9Y=
+	t=1736170730; cv=none; b=b0vbm/EUApxDLGqhZDkpD489YLlBzfTYl1WbRR3PavQaybS7bTnYmdiq/QAetKWt+n/RgIVpK5Rof2G1kFCmP3RJI3pf+Nyg6iz/FBBNWhD45UGJ2pRYThKDL5RrSDybgmGaTQS9ErKSAotyX3PLhQShSJ5hvoTnkbPe0Rk7zMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736170485; c=relaxed/simple;
-	bh=B3HsdfgBzxMgIHgwCClZeKWkoo4ORNRSUDqz8b2l50g=;
+	s=arc-20240116; t=1736170730; c=relaxed/simple;
+	bh=E6J/0ZJPK+sD1A9/R50Sozew6nFS4EbGxSlOM8Z/x/o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mt1wnwUI4GkNE6Une0dG03BctD07Ve09WZaCAjhVWjfmBdEGy91P031E6fNo2oGuboS16mMMoyXzet4NuyLH3XHS/dVcgsWDwQNsJ5pqS78qQOA26YWPR0CSwFWM4pd3/s2Q3hIIzpUOflIL5Mz+ELr7JXDmIOEjn4Obl/1IQNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L7L9pQPk; arc=none smtp.client-ip=209.85.214.169
+	 To:Cc:Content-Type; b=VAUGwIAP+KIOpB46q5o/sJSb1lTqiZcnZBbvLlF7N0EgWWyu4rkqFRrY77ZFYBLV/VuypI2bBQix3DNv6GtpGypCml50sWLe1/jJhcw68YRk8cvrGPAoOn0CvmVZgYvPK+FBfX6/0Z+sFPTPsEI6FJ0x2F2WW4Hg/Aw9C/hDYZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lSdrBWTj; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L7L9pQPk"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2161eb95317so211982815ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 05:34:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lSdrBWTj"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2f44353649aso16830911a91.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 05:38:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736170483; x=1736775283; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736170728; x=1736775528; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pvzFjIAhq07nlXvWeUNAaQLDjYY2fBhvjBQSOXVPCEo=;
-        b=L7L9pQPk5zXURHEuQ3u+IpnxX4Eeoz5DpbZ3s19DWYfLupwebtrswq9G+Kc/Fc2zZv
-         K/mCkjuA4+oSA5XQr6DsgsfU8qaLB4LGNzi7pBPxWiSMjYCKOqTboXouVAVuyIidqk1C
-         1MJ/7K3Qck3t8eky2uy47Tu+oNByqOyEAuNYozAavZrINkEsdd+WNkO+gTT2T2SjGV0G
-         R21K/bEhHBesxi3SHRwcKO8zkM5fVVjJXZiHaGHK9zisBgLYlg3rQS7PLjfe3suUnc/w
-         2QclugrGZj8qMtBteUm2XXLunMJ6isEEeqRYE4hluiSFgqufSETPVeWJmRVDdd87edDZ
-         E21Q==
+        bh=E6J/0ZJPK+sD1A9/R50Sozew6nFS4EbGxSlOM8Z/x/o=;
+        b=lSdrBWTjAqXiitQHQcRPb4EPZviF9cwStOsfGc79iXAudODCyVh9HqBJWZxdgIRMK0
+         n82ZyM1C3zAd+AwllbZywv9eZwrTBs9+ioRVcBusxId2UcZR8fQnXTzHZoll6oeQG/MN
+         qDe8t4S1hb/9JxoNOLtjdUn/W6vA+P2Xxuw86PmgWBWBeK2X/sTsOm/oB4tnUEnm+bqa
+         9IbIqNyXl1gAP5jfUiekqr+LlKPbv/n8O/FotKCpQX5qhunrxPw8FM9GQ0G4uTiYuqdP
+         HYKRcoGKzS94edAZ4oZQirOL3C5fP0m6VORQfLX7oTSjTWsBgTyryiZNcykM5hLNzhMs
+         S66A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736170483; x=1736775283;
+        d=1e100.net; s=20230601; t=1736170728; x=1736775528;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pvzFjIAhq07nlXvWeUNAaQLDjYY2fBhvjBQSOXVPCEo=;
-        b=Ks5ZFiKqOkQimBliv3p0cvl9lr9vd7Pz7Y4Pcb+TZlflYGXc6vdodrS7PyBkV3gvW5
-         ZfETGNRV2G8eSasi+6HBP8Wc4gcZ7Kay95ktIjlqie36fjWu1FcHzSMMN+rwfpjPd2dU
-         aEQd4kT7dHYOLujlxZ4shegQsSxKZZk+REf/I6wValUWn4+euh2UgmYKCEohIYT+BW6n
-         a6G9Hhqx2g57bUsJNcgR2+X4R9R0F/jVx//edUtf4/sWhDTx7r7uOWsxYVhEv7wHOV/+
-         r49P+Eikds30f/D2GqfH9k0IrzCLnSE11WkGUxRmeRooi+4Z3rMXgTNTKmvyCf5TNh3s
-         bePA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyZSL232OipLirOehRRAbePf1huqGndAc+nnYlGIPBP4WDaoB9KsbJRCmakoNuDo+4dvaNFYqV8Haam3iBfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiPJjnraC21aEk95W/jGpHlWu9kZsdgLLFhkB17277CRQTlxbO
-	8tm7yrESQYSGw5MJ0nUX6/ayQb74s7mxEdTKkNIO/WLD9Pz0Tiyj+mTkXPKb9MFk3eHV7saW0J5
-	fMhA+5bS+t9j186Ele0HLt1VYtMErSF4H0kMA
-X-Gm-Gg: ASbGncuSnLqRVXiS59vTZFkdFQ6uPaFZ4PpB9iCIjYcqwf+Oe+SlaZdgT8ymLa4CirJ
-	0aahvBdg3S+GGVDhw3Vce59PlzeUjoIdy5QeR4sqbWkKQZzLcSZuR0GYermS+DcRbG0DI
-X-Google-Smtp-Source: AGHT+IHhJ6tAyikxL4AwPDCUCxCSXNVu0C37AoqU/4d+X8gNkOQoCsrHvFDUgoJNWWIrmVpWEPHQug1CGAsDFFgpZ3Y=
-X-Received: by 2002:a17:90b:5188:b0:2f5:747:cbd with SMTP id
- 98e67ed59e1d1-2f507470dd8mr20739970a91.18.1736170483229; Mon, 06 Jan 2025
- 05:34:43 -0800 (PST)
+        bh=E6J/0ZJPK+sD1A9/R50Sozew6nFS4EbGxSlOM8Z/x/o=;
+        b=C/lHr7FfPhSQI1nuCaIPvevE+yNtnJ2Hf1LH43aOt0wAA8Oahw9oGzO5ZFx8Y0GJTN
+         qEpFgWOy1vf6rca6cAFnomb4HIxVvwZkpBZwOi0Z4I5+lSfYxYO9YMU+4QiV27TZqTqh
+         SBFBjwo3m6MLi/2af5tMhXWvDa53krR8Vjy9vc4B+5H2LCW+ekFWcxUUXGD4G7/mYPkC
+         PbsvH8+hpU29MCKy16f9jTDxI07msmtGTEJLADYRZTGN0hl/nD0iUqaauMgXFXJ+erzc
+         1ayTJACF5DVJYPQ0AR2QgjlxFjqj03GMdxSxCi0eQPHH/gJXpFBUpBY11KKb/NpRr88v
+         4PKw==
+X-Gm-Message-State: AOJu0YyYBSTTsI789gOvaFW5pvlSFlZmF3Ignnv3bbmhBId8dkC2xGPs
+	qZztEQm59sstkPFK2J9RQh3LJZ7FfrwRerraGx3breKvJvPpf3Htf4OAo67uIEF68019gWAv4kA
+	hgqSiop9UQE/KFWbXfj4mOTx2Fln1PKTBl2VYawUCSOhVtnOCnQ==
+X-Gm-Gg: ASbGncsCT6n9C1aG8ex64OXzzp9kmlyn+bLsiBXOewJD6H4ndg8vh+bGneay2gHw4Jz
+	4kIZRkBICfKkxJAUE0Ta1BfyYVRBYrE6+ufprkV0aXg+AVHNsuRhWj9t1Q9qHWfKcjUey
+X-Google-Smtp-Source: AGHT+IGSVZEU9Byyic5zovZ7jQPA2TV0MAnGkPmM5ktmle4SikdAbhS/+Cog5H5NFl/4nhINyLfomO8oK++Y41Y1bbE=
+X-Received: by 2002:a17:90a:d88d:b0:2ea:5e0c:2847 with SMTP id
+ 98e67ed59e1d1-2f452e4e81emr74803435a91.22.1736170728162; Mon, 06 Jan 2025
+ 05:38:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241222-gen-userslice-readall-alloc-v1-1-c57b7d4972f0@gmail.com>
- <Z2hKTPIBaJ2K9HJn@boqun-archlinux> <7fee31c8-6319-44d5-b01c-7f5022054e10@ryhl.io>
- <Z3LI981PbEwMts1-@boqun-archlinux>
-In-Reply-To: <Z3LI981PbEwMts1-@boqun-archlinux>
+References: <CAH5fLggS+3K8WHV7mrgTJQhGZMNni5gj9=huQtezc4GK8bk4HA@mail.gmail.com>
+ <20241203205050.679106-1-dingxiangfei2009@gmail.com> <20241203205050.679106-2-dingxiangfei2009@gmail.com>
+In-Reply-To: <20241203205050.679106-2-dingxiangfei2009@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 6 Jan 2025 14:34:13 +0100
-Message-ID: <CAH5fLggzi4-ccTTpbwjC9RaJo-GFne27L8_f68sKsR-c3knY1g@mail.gmail.com>
-Subject: Re: [PATCH] rust: generalize userSliceReader to support any Vec
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <alice@ryhl.io>, Filipe Xavier <felipeaggger@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Filipe Xavier <felipe_life@live.com>
+Date: Mon, 6 Jan 2025 14:38:33 +0100
+Message-ID: <CAH5fLgjw7mbv54aVOt7chLpqwvLrK2eAZzL1gOyMWC6KH0vSGw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: use derive(CoercePointee) on rustc >= 1.83.0
+To: Xiangfei Ding <dingxiangfei2009@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	dingxiangfei2009@protonmail.ch
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 30, 2024 at 5:23=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Tue, Dec 3, 2024 at 9:51=E2=80=AFPM Xiangfei Ding <dingxiangfei2009@gmai=
+l.com> wrote:
 >
-> On Mon, Dec 30, 2024 at 02:21:39PM +0100, Alice Ryhl wrote:
-> > On 12/22/24 6:20 PM, Boqun Feng wrote:
-> > > On Sun, Dec 22, 2024 at 01:37:02PM -0300, Filipe Xavier wrote:
-> > > > The UserSliceReader::read_all function is currently restricted to u=
-se
-> > > > only Vec with the kmalloc allocator.
-> > > > However, there is no reason for this limitation.
-> > > > This patch generalizes the function to accept any Vec regardless of=
- the
-> > > > allocator used.
-> > > >
-> > >
-> > > Interesting idea, however...
-> > >
-> > > > Link: https://github.com/Rust-for-Linux/linux/issues/1136
-> > > > Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
-> > > > ---
-> > > >   rust/kernel/uaccess.rs | 6 +++---
-> > > >   1 file changed, 3 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > > > index cc044924867b89f6116c7f9ec216d8cea2b3f8d7..719b0a48ff5550acc19=
-f2e607c0a09f818145def 100644
-> > > > --- a/rust/kernel/uaccess.rs
-> > > > +++ b/rust/kernel/uaccess.rs
-> > > > @@ -5,7 +5,7 @@
-> > > >   //! C header: [`include/linux/uaccess.h`](srctree/include/linux/u=
-access.h)
-> > > >   use crate::{
-> > > > -    alloc::Flags,
-> > > > +    alloc::{Allocator, Flags},
-> > > >       bindings,
-> > > >       error::Result,
-> > > >       ffi::c_void,
-> > > > @@ -127,7 +127,7 @@ pub fn new(ptr: UserPtr, length: usize) -> Self=
- {
-> > > >       /// Reads the entirety of the user slice, appending it to the=
- end of the provided buffer.
-> > > >       ///
-> > > >       /// Fails with [`EFAULT`] if the read happens on a bad addres=
-s.
-> > > > -    pub fn read_all(self, buf: &mut KVec<u8>, flags: Flags) -> Res=
-ult {
-> > > > +    pub fn read_all<A: Allocator>(self, buf: &mut Vec<u8, A>, flag=
-s: Flags) -> Result {
-> > > >           self.reader().read_all(buf, flags)
-> > > >       }
-> > > > @@ -281,7 +281,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<=
-T> {
-> > > >       /// Reads the entirety of the user slice, appending it to the=
- end of the provided buffer.
-> > > >       ///
-> > > >       /// Fails with [`EFAULT`] if the read happens on a bad addres=
-s.
-> > > > -    pub fn read_all(mut self, buf: &mut KVec<u8>, flags: Flags) ->=
- Result {
-> > > > +    pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, =
-flags: Flags) -> Result {
-> > >
-> > > ... what if the copy hit a page fault because the target memory (e.g.=
- a
-> > > VVec) is not mapped? Would copy_from_user() handle this? Or would it
-> > > return a different error code than `EFAULT`?
-> > How could the memory not be mapped? A vector lets us obtain a &[u8] to =
-the
-> > memory, which isn't valid if it's not mapped.
-> >
+> The kernel crate relies on both *coerce_unsized* and *dispatch_from_dyn*
+> unstable features.
+> Alice Ryhl has proposed [1] the introduction of the unstable macro
+> `SmartPointer` to reduce such dependence, along with a RFC patch [2].
+> Since Rust 1.81.0 this macro, later renamed to `CoercePointee` at
+> Rust 1.83.0, has been fully implemented with the naming discussion
+> resolved.
 >
-> I mistakenly thought that vmalloc()'d memory can be swapped out, which
-> is not the case. So you're right the memory must be mapped.
+> This feature is now on track to stabilization in the language.
+> In order to do so, we shall start using this macro in the kernel crate
+> to prove the functionality and utility of the macro as the justification
+> of its stabilization.
 >
-> But the usage question still exists: do you have an usage case for
-> reading userspace memory into a `VVec`?
+> This patch makes this switch in such a way that the crate remains
+> backward compatible with older Rust compiler versions,
+> via the flag *RUST_COERCE_POINTEE*.
+>
+> A minimal demostration code is added to the
+> *samples/rust/rust_print_main.rs* module.
+>
+> Link: https://rust-lang.github.io/rfcs/3621-derive-smart-pointer.html [1]
+> Link: https://lore.kernel.org/all/20240823-derive-smart-pointer-v1-1-5376=
+9cd37239@google.com/ [2]
+> Signed-off-by: Xiangfei Ding <dingxiangfei2009@gmail.com>\
 
-I believe there's a use-case for a KVVec in Binder to avoid maximum
-sizes for a certain array.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
