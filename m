@@ -1,201 +1,159 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448E71A76C7
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 11:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2EC159596
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 13:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736164079; cv=none; b=aIMxzd0VFuRClTXapJFL3mfMFVkRbJKsAeN2JBhzJkKZ2Sz6rlZAlZ4bVBEEYnRXbsqwS6KqImatldEAlz2ovYlXPDQ1p4nOPQ8QqS4usQmYLXH2Bkd8zel1Ol/IfmajS7C4Fe8BNXS8JEhtT3jonm0RqpaqaNE5CZFor/2oKpU=
+	t=1736170485; cv=none; b=ObgK+0ObUbY7RDOa3Tf+1Y6geaGNVnjUNDKwafp8RGo/zEubxIwPZyDHZ1qCB4rZ/g4osK4IPY3K9tBsp/1du4rMk2S+NtLTxTkd74/1y9V3YVUqF6ATkhtpAPrmKjmGhGccv2NwJIlSszo9YlvCpDeQz7avjHYLAviayKuzH9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736164079; c=relaxed/simple;
-	bh=h7Qz3YbgMTKfA109AaINz26MBZxVoKCf+WFT5fQl3oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EvyFzky0vlWFK7qPNbNDszpTATYvy6NuYgp28BNoHtuXgCKCGScVEChnkq5YKsi6IZdImUbMQCSP+uuqxedIvVOyNrNrEqrlUIzi8EgOWUTPNpIgOw526ozRgESQALNjROfsAMIK/ScQpye8k/GWDCJWlSiQjKKYYB5YlwdqJJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=RJyTrdAL; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1736170485; c=relaxed/simple;
+	bh=B3HsdfgBzxMgIHgwCClZeKWkoo4ORNRSUDqz8b2l50g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mt1wnwUI4GkNE6Une0dG03BctD07Ve09WZaCAjhVWjfmBdEGy91P031E6fNo2oGuboS16mMMoyXzet4NuyLH3XHS/dVcgsWDwQNsJ5pqS78qQOA26YWPR0CSwFWM4pd3/s2Q3hIIzpUOflIL5Mz+ELr7JXDmIOEjn4Obl/1IQNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L7L9pQPk; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="RJyTrdAL"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-385d7b4da2bso12088939f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 03:47:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L7L9pQPk"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2161eb95317so211982815ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 05:34:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1736164075; x=1736768875; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7/MbpS464td/3jT1JH+ipdkzYuHnQoMBAlkST2476XQ=;
-        b=RJyTrdALvujLNzaxDWdKghhlmOOxakdR+tCsE/UiHKTvHREYZ51yiEBHdfGPdfA/vB
-         E6/H9uRgTfDkVLJzHJrKfvtCOYU/ZXiGikQH8VfZ90n4NxoSDGHRJCEud6JsILZge/Jf
-         cxGgJdWRMUj+HofKf9FzX0bVzrqqptIKU6auY=
+        d=google.com; s=20230601; t=1736170483; x=1736775283; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pvzFjIAhq07nlXvWeUNAaQLDjYY2fBhvjBQSOXVPCEo=;
+        b=L7L9pQPk5zXURHEuQ3u+IpnxX4Eeoz5DpbZ3s19DWYfLupwebtrswq9G+Kc/Fc2zZv
+         K/mCkjuA4+oSA5XQr6DsgsfU8qaLB4LGNzi7pBPxWiSMjYCKOqTboXouVAVuyIidqk1C
+         1MJ/7K3Qck3t8eky2uy47Tu+oNByqOyEAuNYozAavZrINkEsdd+WNkO+gTT2T2SjGV0G
+         R21K/bEhHBesxi3SHRwcKO8zkM5fVVjJXZiHaGHK9zisBgLYlg3rQS7PLjfe3suUnc/w
+         2QclugrGZj8qMtBteUm2XXLunMJ6isEEeqRYE4hluiSFgqufSETPVeWJmRVDdd87edDZ
+         E21Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736164075; x=1736768875;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7/MbpS464td/3jT1JH+ipdkzYuHnQoMBAlkST2476XQ=;
-        b=FyKYHN03PZgB9d+bCC6hhXZ09f5YdViCwhsth+gy2eqr2Oknj+LjN1f4iua7SbZf/Y
-         pNPWwEefXGHdNZa6df082cL1nGNQKQBy3IK8juWv+3WTtrFcAYWBObUb2qWqzXayVvfn
-         /KUm3u8PoKkP4fjtTNsQJiiULavLVxrzbm+IvFPB+MvbS6sE7bVkglGkVPGYbgaoehrA
-         HqBl0B/I16a0xLW1+0MFsoIwJBAHWysvk/hlT3W6HVNOjgOIE9euv+Zf7RlekZMYbzzx
-         1nv4XmVEiS6FvoIJiUbtKXnKTVBb5sKQ4uxYsxRTSgO+dNnmawHCDBOAd/htKdVcZEJw
-         1g6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXtvg+yOq9B7IxGH/2nunuwExGFj/INsUV84IkYkRrT0avViBxVspnJdifrOouToOyyN3U4eKCm6SB/X2HI0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2jZfyri2Xkel9ImWY9KVMlV//ic8R2DmYbQoIyzDszlnI2SLj
-	u3i9BRaoNb16HXSLC+82AzDE82IRky9COJzWboi8mUCdgMaLSss835o1nnCeiSc=
-X-Gm-Gg: ASbGnctzPgN2AdSCvw1mVaVfUGB7Rz5D6emtF/0jPN9Te2JRzh+cCT8N79LCwPIkTyP
-	40BRwPO64ova+bXnhdVCtHJcSk96Py8C0aDz/d76BIy0HCsp54yZga9FbbNNH8z6tnydChMQnoo
-	yPV9Wgzxi8XIl6egaVwoizVEUWqQFF/YNqVreq2ayG6gkA5RVZPxRD8vYVjLp6HCY2lsPNJ4Jp8
-	/LRwCpbvc2nL49Sn7W9URrJ+QzUcodjjYac9W0/S2wS7HaHyKowXv2mlXhYQDHh6UXW
-X-Google-Smtp-Source: AGHT+IGOflgPU+NVSsAVFlcwWzVQdI7yMInNV0UbkiMxLuhQNqRh80eH22sAZIbrzgYuWOiU6zSQxQ==
-X-Received: by 2002:a5d:64eb:0:b0:385:fb8d:865b with SMTP id ffacd0b85a97d-38a223ff5bbmr52251029f8f.48.1736164075444;
-        Mon, 06 Jan 2025 03:47:55 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c847d7fsm47603495f8f.60.2025.01.06.03.47.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 03:47:54 -0800 (PST)
-Date: Mon, 6 Jan 2025 12:47:52 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] devres: add devm_remove_action_nowarn()
-Message-ID: <Z3vC6MzIG7zN8zBT@phenom.ffwll.local>
-Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
-	gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20250103164436.96449-1-dakr@kernel.org>
+        d=1e100.net; s=20230601; t=1736170483; x=1736775283;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pvzFjIAhq07nlXvWeUNAaQLDjYY2fBhvjBQSOXVPCEo=;
+        b=Ks5ZFiKqOkQimBliv3p0cvl9lr9vd7Pz7Y4Pcb+TZlflYGXc6vdodrS7PyBkV3gvW5
+         ZfETGNRV2G8eSasi+6HBP8Wc4gcZ7Kay95ktIjlqie36fjWu1FcHzSMMN+rwfpjPd2dU
+         aEQd4kT7dHYOLujlxZ4shegQsSxKZZk+REf/I6wValUWn4+euh2UgmYKCEohIYT+BW6n
+         a6G9Hhqx2g57bUsJNcgR2+X4R9R0F/jVx//edUtf4/sWhDTx7r7uOWsxYVhEv7wHOV/+
+         r49P+Eikds30f/D2GqfH9k0IrzCLnSE11WkGUxRmeRooi+4Z3rMXgTNTKmvyCf5TNh3s
+         bePA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyZSL232OipLirOehRRAbePf1huqGndAc+nnYlGIPBP4WDaoB9KsbJRCmakoNuDo+4dvaNFYqV8Haam3iBfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiPJjnraC21aEk95W/jGpHlWu9kZsdgLLFhkB17277CRQTlxbO
+	8tm7yrESQYSGw5MJ0nUX6/ayQb74s7mxEdTKkNIO/WLD9Pz0Tiyj+mTkXPKb9MFk3eHV7saW0J5
+	fMhA+5bS+t9j186Ele0HLt1VYtMErSF4H0kMA
+X-Gm-Gg: ASbGncuSnLqRVXiS59vTZFkdFQ6uPaFZ4PpB9iCIjYcqwf+Oe+SlaZdgT8ymLa4CirJ
+	0aahvBdg3S+GGVDhw3Vce59PlzeUjoIdy5QeR4sqbWkKQZzLcSZuR0GYermS+DcRbG0DI
+X-Google-Smtp-Source: AGHT+IHhJ6tAyikxL4AwPDCUCxCSXNVu0C37AoqU/4d+X8gNkOQoCsrHvFDUgoJNWWIrmVpWEPHQug1CGAsDFFgpZ3Y=
+X-Received: by 2002:a17:90b:5188:b0:2f5:747:cbd with SMTP id
+ 98e67ed59e1d1-2f507470dd8mr20739970a91.18.1736170483229; Mon, 06 Jan 2025
+ 05:34:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250103164436.96449-1-dakr@kernel.org>
-X-Operating-System: Linux phenom 6.12.3-amd64 
+References: <20241222-gen-userslice-readall-alloc-v1-1-c57b7d4972f0@gmail.com>
+ <Z2hKTPIBaJ2K9HJn@boqun-archlinux> <7fee31c8-6319-44d5-b01c-7f5022054e10@ryhl.io>
+ <Z3LI981PbEwMts1-@boqun-archlinux>
+In-Reply-To: <Z3LI981PbEwMts1-@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 6 Jan 2025 14:34:13 +0100
+Message-ID: <CAH5fLggzi4-ccTTpbwjC9RaJo-GFne27L8_f68sKsR-c3knY1g@mail.gmail.com>
+Subject: Re: [PATCH] rust: generalize userSliceReader to support any Vec
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Alice Ryhl <alice@ryhl.io>, Filipe Xavier <felipeaggger@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Filipe Xavier <felipe_life@live.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 03, 2025 at 05:44:30PM +0100, Danilo Krummrich wrote:
-> devm_remove_action() warns if the action to remove does not exist
-> (anymore).
-> 
-> The Rust devres abstraction, however, has a use-case to call
-> devm_remove_action() at a point where it can't be guaranteed that the
-> corresponding action hasn't been released yet.
-> 
-> In particular, an instance of `Devres<T>` may be dropped after the
-> action has been released. So far, `Devres<T>` worked around this by
-> keeping the inner type alive.
-> 
-> Hence, add devm_remove_action_nowarn(), which returns an error code if
-> the action has been removed already.
-> 
-> A subsequent patch uses devm_remove_action_nowarn() to remove the action
-> when `Devres<T>` is dropped.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  drivers/base/devres.c  | 17 ++++++++++++-----
->  include/linux/device.h | 18 +++++++++++++++++-
->  2 files changed, 29 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-> index 2152eec0c135..d59b8078fc33 100644
-> --- a/drivers/base/devres.c
-> +++ b/drivers/base/devres.c
-> @@ -750,25 +750,32 @@ int __devm_add_action(struct device *dev, void (*action)(void *), void *data, co
->  EXPORT_SYMBOL_GPL(__devm_add_action);
->  
->  /**
-> - * devm_remove_action() - removes previously added custom action
-> + * devm_remove_action_nowarn() - removes previously added custom action
->   * @dev: Device that owns the action
->   * @action: Function implementing the action
->   * @data: Pointer to data passed to @action implementation
->   *
->   * Removes instance of @action previously added by devm_add_action().
->   * Both action and data should match one of the existing entries.
-> + *
-> + * In contrast to devm_remove_action(), this function does not WARN() if no
-> + * entry could have been found.
+On Mon, Dec 30, 2024 at 5:23=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Mon, Dec 30, 2024 at 02:21:39PM +0100, Alice Ryhl wrote:
+> > On 12/22/24 6:20 PM, Boqun Feng wrote:
+> > > On Sun, Dec 22, 2024 at 01:37:02PM -0300, Filipe Xavier wrote:
+> > > > The UserSliceReader::read_all function is currently restricted to u=
+se
+> > > > only Vec with the kmalloc allocator.
+> > > > However, there is no reason for this limitation.
+> > > > This patch generalizes the function to accept any Vec regardless of=
+ the
+> > > > allocator used.
+> > > >
+> > >
+> > > Interesting idea, however...
+> > >
+> > > > Link: https://github.com/Rust-for-Linux/linux/issues/1136
+> > > > Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+> > > > ---
+> > > >   rust/kernel/uaccess.rs | 6 +++---
+> > > >   1 file changed, 3 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> > > > index cc044924867b89f6116c7f9ec216d8cea2b3f8d7..719b0a48ff5550acc19=
+f2e607c0a09f818145def 100644
+> > > > --- a/rust/kernel/uaccess.rs
+> > > > +++ b/rust/kernel/uaccess.rs
+> > > > @@ -5,7 +5,7 @@
+> > > >   //! C header: [`include/linux/uaccess.h`](srctree/include/linux/u=
+access.h)
+> > > >   use crate::{
+> > > > -    alloc::Flags,
+> > > > +    alloc::{Allocator, Flags},
+> > > >       bindings,
+> > > >       error::Result,
+> > > >       ffi::c_void,
+> > > > @@ -127,7 +127,7 @@ pub fn new(ptr: UserPtr, length: usize) -> Self=
+ {
+> > > >       /// Reads the entirety of the user slice, appending it to the=
+ end of the provided buffer.
+> > > >       ///
+> > > >       /// Fails with [`EFAULT`] if the read happens on a bad addres=
+s.
+> > > > -    pub fn read_all(self, buf: &mut KVec<u8>, flags: Flags) -> Res=
+ult {
+> > > > +    pub fn read_all<A: Allocator>(self, buf: &mut Vec<u8, A>, flag=
+s: Flags) -> Result {
+> > > >           self.reader().read_all(buf, flags)
+> > > >       }
+> > > > @@ -281,7 +281,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<=
+T> {
+> > > >       /// Reads the entirety of the user slice, appending it to the=
+ end of the provided buffer.
+> > > >       ///
+> > > >       /// Fails with [`EFAULT`] if the read happens on a bad addres=
+s.
+> > > > -    pub fn read_all(mut self, buf: &mut KVec<u8>, flags: Flags) ->=
+ Result {
+> > > > +    pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, =
+flags: Flags) -> Result {
+> > >
+> > > ... what if the copy hit a page fault because the target memory (e.g.=
+ a
+> > > VVec) is not mapped? Would copy_from_user() handle this? Or would it
+> > > return a different error code than `EFAULT`?
+> > How could the memory not be mapped? A vector lets us obtain a &[u8] to =
+the
+> > memory, which isn't valid if it's not mapped.
+> >
+>
+> I mistakenly thought that vmalloc()'d memory can be swapped out, which
+> is not the case. So you're right the memory must be mapped.
+>
+> But the usage question still exists: do you have an usage case for
+> reading userspace memory into a `VVec`?
 
-I'd put a caution here that most likely, using this is a bad idea. Maybe
-something like:
+I believe there's a use-case for a KVVec in Binder to avoid maximum
+sizes for a certain array.
 
-"This should only be used if the action is contained in an object with
-independent lifetime management, like the Devres rust abstraction.
-Anywhere is the warning most likely indicates a driver bug."
-
-At least I really can't come up with a reasonable design in a C driver
-that would ever need this.
-
-Cheers, Sima
-
-> + *
-> + * Returns: 0 on success, -ENOENT if no entry could have been found.
->   */
-> -void devm_remove_action(struct device *dev, void (*action)(void *), void *data)
-> +int devm_remove_action_nowarn(struct device *dev,
-> +			      void (*action)(void *),
-> +			      void *data)
->  {
->  	struct action_devres devres = {
->  		.data = data,
->  		.action = action,
->  	};
->  
-> -	WARN_ON(devres_destroy(dev, devm_action_release, devm_action_match,
-> -			       &devres));
-> +	return devres_destroy(dev, devm_action_release, devm_action_match,
-> +			      &devres);
->  }
-> -EXPORT_SYMBOL_GPL(devm_remove_action);
-> +EXPORT_SYMBOL_GPL(devm_remove_action_nowarn);
->  
->  /**
->   * devm_release_action() - release previously added custom action
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 667cb6db9019..6879d5e8ac3d 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -399,7 +399,23 @@ void __iomem *devm_of_iomap(struct device *dev,
->  #endif
->  
->  /* allows to add/remove a custom action to devres stack */
-> -void devm_remove_action(struct device *dev, void (*action)(void *), void *data);
-> +int devm_remove_action_nowarn(struct device *dev, void (*action)(void *), void *data);
-> +
-> +/**
-> + * devm_remove_action() - removes previously added custom action
-> + * @dev: Device that owns the action
-> + * @action: Function implementing the action
-> + * @data: Pointer to data passed to @action implementation
-> + *
-> + * Removes instance of @action previously added by devm_add_action().
-> + * Both action and data should match one of the existing entries.
-> + */
-> +static inline
-> +void devm_remove_action(struct device *dev, void (*action)(void *), void *data)
-> +{
-> +	WARN_ON(devm_remove_action_nowarn(dev, action, data));
-> +}
-> +
->  void devm_release_action(struct device *dev, void (*action)(void *), void *data);
->  
->  int __devm_add_action(struct device *dev, void (*action)(void *), void *data, const char *name);
-> 
-> base-commit: 06e843bbbf2107463249ea6f6b1a736f5647e24a
-> -- 
-> 2.47.1
-> 
-
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Alice
