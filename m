@@ -1,94 +1,130 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B570B1D5175
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 08:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A2414B959
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 09:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736150436; cv=none; b=OWXrdZm+rcthbWuZozVx+haq5abBnwTvakb7SjhAr85Vr0YhcEI74Wvm/Lunzhplc8z7HwGz+YZ5KO808VV+z6+GTotFzR4lw+BvUf3Db4K7u0UEVboG4YhTsSUpbBzuhyExFG147xII3xFmvSL6PgrmTebUm3L9KOhvDJ0d1Us=
+	t=1736154177; cv=none; b=IUCGEtZTLBTsCP+rPxjV95WD2Gn1XA/MGHP2CSKQdG02b5rFl8E5qf8laM8UC5jWKGRCgQs6++99fY09niu4157i6Sz7iMU/926adqAXNjnkB6xCn1FwSe9Yz2GSx5eKgK7rMMXM7MhJtQkOFTBOMKPRFiC/OJG7ba/M+oBG26c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736150436; c=relaxed/simple;
-	bh=gAeGZSMYLcfFd5eqUoBDFOPuKLVGcg+e5EHxtXnZZu8=;
+	s=arc-20240116; t=1736154177; c=relaxed/simple;
+	bh=ln+xipIWtR756VpfjRBcdsXgI7ozwANiQoTrmUHi5dk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mr/0xYGA7gqlyD79A0zOIOXZzKYFNk6/6I76cEm9jKo/W943TSE2R7jLwwfkJPTGvrZHkLjB3zZKOCXwBZjJsiFVosWYas06dK4YRJG6sWJHkt/kPaBaokpiVZ+mCsVZlTr3AKNh94XIv5FJ3t7KEceb9rJkqD+hkew4FSmS60E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kOdvWxdy; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=k1o6Dh3iZJ/vc3BcmO9xBvNu0ivMY2mwYrZoEncHDJ1vAdepwIWosdbf941YsapzJwWrZisZ7LOSeTSEAjtksE24v/2Lh8SEO50Yh3/Kt7Nj8Swac3zQRAfW+8/z99EYc0LbzAjtbg9UIavP0wU3I7xBv1NLnwtTDXI+noPQP+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JUABx3/O; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kOdvWxdy"
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-85c4cd95885so2192225241.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 00:00:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JUABx3/O"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso13578463f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 01:02:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736150433; x=1736755233; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gAeGZSMYLcfFd5eqUoBDFOPuKLVGcg+e5EHxtXnZZu8=;
-        b=kOdvWxdy1Z6Um6zLeFxoNh/LjC6mjoOMHzR/VsaJFDSVn+mV7yV7V8t7emP1y5duVJ
-         871ns+v3Fm/8RnDAJeWJwZP5jg7mCSJGTId1MWQJtDIT4cSqRLNoNBlWlJ/GijuejYqE
-         OaW3335Tf7L/kDHXJCuoEBMd3eynC2RwQbYLRPQ0umLPMlzklbE9gHsyv2TLVZi2mqid
-         bjWX/CZCYL2QOm1+6C4uqHU1PkjyU/+kIk7TabxheythgE7VAp3YHcP2MTQ+VDoUoYj+
-         DccltpbCqZf6i4eFavvNlD1AZQRMCcTwL1vXzSMp+HpuvuNj9dH+IjM+NVn8IZ1koqOh
-         Oa8Q==
+        d=google.com; s=20230601; t=1736154173; x=1736758973; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sNwuZVs/WFX1AlyLcnmThK24HPexmJnIk9uzVui8y2c=;
+        b=JUABx3/OLj5bIbvfEAtjUKg4eHv/5dP7VDQfbNyqvXtXnV0CNj1Mwk2l9Dcpld5nZS
+         PK3RAgvlx+FSGll0HnrqSL28pvmazYMTJRWNBtlFtcg1FLTA81gJgQVK7hOjkfzAK9Lx
+         jREkXgSEAVfAEQmIMDOrPE24YenMAvV6UFkpeVZny0bYM23o1pU93ubo/vOYx6Q5xlml
+         ktK34dTU4bIR7BrWkiXPW3XQ9SXCyg9TTZmUs9yR1w6ai1sp4RQ3Wl2nbLQEU6QCFsVe
+         HnbAiLKQnTuX0Fsl44LIMeRwS5QBpqNgQ013m79Nt2M0D/nEjkrFeR/unCIozig2GZQs
+         4bpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736150433; x=1736755233;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gAeGZSMYLcfFd5eqUoBDFOPuKLVGcg+e5EHxtXnZZu8=;
-        b=ZcocKiy3fmca0sh785aFkVN0q5NablnCXP4qODt+mYo6iIpk5CRhoeNrBRmad5fA4I
-         CTNhl7Iv5kvhomU9pjKfQ0dDd+bPS7jvGD2fqmd+9mMNNcEwTYXU8FQtpsG9I1pY0HNV
-         RWO9RNb4zdip32TP98ZIIyzuZQtmXup9dbzd6WZKzsUIzdla/rf6XNTttU3pVKX92fam
-         T73E+71g2C08M1Hn2kK1gYbiht84zGnz+qC3BNn8d3WDbMdL5QfeHdwEy+6xsBSzCaU9
-         a0CWlketN4msdG0kQAOmO0bv6tJUP4pmku4u8of4UXDBcVQTqsPVCvfQ1yrd8rjh5f/8
-         HHug==
-X-Forwarded-Encrypted: i=1; AJvYcCWdRN7U//001UoXwk+rtZIoChZx4jN7fGLFZW2J657fW600iRbSoN3dht9AmSs4nlUH5zJV3hYA/wkFHSuZaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOWvLe3eZbwhOKJKIHnJL2DHNBaJzhFiCsfA93ubxSOMDVOeXS
-	TT3g0PtAAxg+cScIveIJyWeL6HNz0iC/64KOgpdKV0nwfIZc9UhECwf4oUXxDou93JBgpZsFIU6
-	T+3TKk7BNDvdYSwIg3HcwDWZUgE1PcPN+N8mSuA==
-X-Gm-Gg: ASbGnct2A4qj5L33/U79ru+jzkcq2kp37xwAyEiH3hsz253cNftuTa1r3rkQVb+ZB0g
-	vxWRJbVdjvvHPfYRF13soE/MRnbx0Am9BnBR2cy3kSfwkXzMSB6cVV07fiY08Oj3QC9wLoGs=
-X-Google-Smtp-Source: AGHT+IF5t6laefY9FyQIJEGUL/QYXkcea0huSM4/6LBPfIz34f6n9nzyrb6muxxEy23kpCDaKLmwJ/A/+aq0k6O/iLM=
-X-Received: by 2002:a05:6102:548a:b0:4b1:1a9d:ecbc with SMTP id
- ada2fe7eead31-4b2cc45723emr46810675137.20.1736150433281; Mon, 06 Jan 2025
- 00:00:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736154173; x=1736758973;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sNwuZVs/WFX1AlyLcnmThK24HPexmJnIk9uzVui8y2c=;
+        b=dPKzxmrj9pyBF9Yu/9tgXlhPzuDRP9kPu81vivTQNMb91kbFcMA7t3xnHG+LT/rp5N
+         NnN5cDRYtrOgx+pESERlw0IpPlsSL60LwPdnJDNyzDbfi2bshaJ0itFaIDRVr+0mVabW
+         pINA9yScRWS3wJC43ZURSEN33WiqPD8u4JPzWeMqpRa/3wmw5XqpJt1RUyHZ4xPERWXI
+         OTWSW9lmU87xUUo2gVKXeksrAUtoLSrQAygQlhZvdZ8xFqR8j3u47skFN2bmmW99JEmc
+         ozjMbyUOAy8oEV2oadrgSEw6F9nVRhzzrzqeBOrQstezEob7kZCxj6OCJ7bV6Sj7u+GJ
+         c9uw==
+X-Forwarded-Encrypted: i=1; AJvYcCVugydL7JcVl4psTIRPFlbfTtmhM5/e0LOZrvWwK6h1Vbhu0AkOJSR4l1pPnOL9yMPdl/CxXwCeQUVrNqjiDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc5eTm9AYzsKRgcPp9kP23VyCzipUz1kXpvMdZqtQMCZAV5rX6
+	TheBXxfZ3x+tj3h5VLleXrHmHcO5HXCfVB0TLJNtTP14qg7R+SVpPXGJJ2WYvZcunTWXWHfb/+q
+	U+Plw8/Ia8tUQ7UqqRU8h8ic7rosB309+sYJq
+X-Gm-Gg: ASbGnctVJDNcCsol6jclI6jaW7le93dttfLnEUJdLzAtN2SgxNLktYiZrRTMwJqLBXU
+	2SlNfx8VKh+ps7kR2N8iba0JkQOfr/7RVNiaB/gl4jMMLgj2KF24xx49M8tOs0RQEQ5Eq
+X-Google-Smtp-Source: AGHT+IGY5t3j7JLgOnK7GQ+pcy6E1PtQP3lWc94uYa/uhct4TgLrGv6fdtYVOO02HRihn6+eHc7Z3uPLO6tQyR2RxAc=
+X-Received: by 2002:a05:6000:4028:b0:385:ded5:86ee with SMTP id
+ ffacd0b85a97d-38a224069b1mr48733909f8f.57.1736154173480; Mon, 06 Jan 2025
+ 01:02:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+G9fYvM96LS63Wa1+5Md9w0V0JZgBW+f50kzx9RjRCYj3aDkA@mail.gmail.com>
- <Z3qVp1m8zKiMrtnd@lappy>
-In-Reply-To: <Z3qVp1m8zKiMrtnd@lappy>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 6 Jan 2025 13:30:20 +0530
-Message-ID: <CA+G9fYs=_-GD74k8pGCnA0uA0b1w3Ahxr+r7Bx75gYF2h13qow@mail.gmail.com>
-Subject: Re: rust/kernel/lib.rs:17:12 : warning: the feature `new_uninit` has
- been stable since 1.82.0 and no longer requires an attribute to enable
-To: Sasha Levin <sashal@kernel.org>
-Cc: open list <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>
+References: <20250105194054.545201-1-gary@garyguo.net> <20250105194054.545201-2-gary@garyguo.net>
+In-Reply-To: <20250105194054.545201-2-gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 6 Jan 2025 10:02:41 +0100
+Message-ID: <CAH5fLgjjWW5Jrt+k76wJUhmLKTKUW5zThwUoxXuwBmk2-gyMxQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] kbuild: rust: add `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>, Tejun Heo <tj@kernel.org>, 
+	Yoann Congal <yoann.congal@smile.fr>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Jens Axboe <axboe@kernel.dk>, Chen Ridong <chenridong@huawei.com>, Jann Horn <jannh@google.com>, 
+	Mark Rutland <mark.rutland@arm.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 5 Jan 2025 at 19:52, Sasha Levin <sashal@kernel.org> wrote:
+On Sun, Jan 5, 2025 at 9:02=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> I'm sorry, this is my bad: I haven't realized anyone else will be
-> looking at these results...
+> This config detects if Rust and Clang have matching LLVM major version.
+> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
+> matching, otherwise it may generate errors, or worse, miscompile silently
+> due to change of IR semantics.
 >
-> Naresh, I'm cheating and using this tree to bisect the issue you've
-> originally reported in
-> https://lore.kernel.org/all/CA+G9fYvcBvbabg+m7brKfpGCGZUcK+KHHTFX7hFvW6GmN2XF0g@mail.gmail.com/
-> .
-
-Thanks for providing the details of the issue that you are bisecting.
-
-> It seems we can't get traction to get it fixes, so I'm trying to make
-> forward progress.
+> It's usually suggested to use the exact same LLVM version, but this can
+> be difficult to guarantee. Rust's suggestion [1] is also major-version on=
+ly,
+> so I think this check is sufficient for the kernel.
 >
-> Please ignore linus-next for the next day or two :)
+> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+>  init/Kconfig | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/init/Kconfig b/init/Kconfig
+> index a20e6efd3f0f..cbe4b2922ce2 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
+>         int
+>         default $(rustc-llvm-version)
+>
+> +config RUSTC_LLVM_MAJOR_VERSION
+> +       int
+> +       default $(shell,expr $(rustc-llvm-version) / 10000)
+> +
+> +config RUSTC_CLANG_LLVM_COMPATIBLE
+> +       bool
+> +       default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION =3D $(shell,=
+expr $(cc-version) / 10000)
+> +       help
+> +         This indicates whether Rust and Clang use LLVM of the same majo=
+r
+> +         version.
+> +
+> +         Operations involving handling LLVM IR or bitcode (e.g. cross-la=
+nguage
+> +         LTO) requires the same LLVM major version to work properly. For=
+ best
+> +         compatible it is recommended that the exact same LLVM is used.
 
-Alright !
+typo: compatibility
 
-- Naresh
+Alice
