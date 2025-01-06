@@ -1,130 +1,93 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A2414B959
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 09:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1C418A6B2
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jan 2025 11:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736154177; cv=none; b=IUCGEtZTLBTsCP+rPxjV95WD2Gn1XA/MGHP2CSKQdG02b5rFl8E5qf8laM8UC5jWKGRCgQs6++99fY09niu4157i6Sz7iMU/926adqAXNjnkB6xCn1FwSe9Yz2GSx5eKgK7rMMXM7MhJtQkOFTBOMKPRFiC/OJG7ba/M+oBG26c=
+	t=1736162997; cv=none; b=ELHidjS9p3hyiZpNhsLFLzmsNQwI77rf6FIEr8IVtnHLliHKuCoYsM9RUjEz4qxd5OiFy3lVZrWUMH9CKYZSB77zf5ALdpIhQZE8/Qxh08RbeI04sKLB3mPdwx59pN6PYY84z21WVoMnj09tD2ykObMnLXkPEYuV40LGXphR5E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736154177; c=relaxed/simple;
-	bh=ln+xipIWtR756VpfjRBcdsXgI7ozwANiQoTrmUHi5dk=;
+	s=arc-20240116; t=1736162997; c=relaxed/simple;
+	bh=/ix8w6evDkpmvVwP9VPDJapgMSv7jkFt0DcdOyafdaw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k1o6Dh3iZJ/vc3BcmO9xBvNu0ivMY2mwYrZoEncHDJ1vAdepwIWosdbf941YsapzJwWrZisZ7LOSeTSEAjtksE24v/2Lh8SEO50Yh3/Kt7Nj8Swac3zQRAfW+8/z99EYc0LbzAjtbg9UIavP0wU3I7xBv1NLnwtTDXI+noPQP+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JUABx3/O; arc=none smtp.client-ip=209.85.221.41
+	 To:Cc:Content-Type; b=AKR5u7zEoyuIJrt/L/8ILWoBy2xmj9INom83Q7zQRAJsZSCWOKNPcQpOxYg5pHdRB3cd2LWgDRdkDTjI5bhNSl9xllDE+kyw2vQUy41rKozdPxT0mO2477X6qgyWUNMWuJRksyBgf+mnxvMmZ54aS74gQYJn9rScsiYl8Rpz4Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h3C/tCDI; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JUABx3/O"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso13578463f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 01:02:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h3C/tCDI"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385df53e559so11223352f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jan 2025 03:29:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736154173; x=1736758973; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736162994; x=1736767794; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sNwuZVs/WFX1AlyLcnmThK24HPexmJnIk9uzVui8y2c=;
-        b=JUABx3/OLj5bIbvfEAtjUKg4eHv/5dP7VDQfbNyqvXtXnV0CNj1Mwk2l9Dcpld5nZS
-         PK3RAgvlx+FSGll0HnrqSL28pvmazYMTJRWNBtlFtcg1FLTA81gJgQVK7hOjkfzAK9Lx
-         jREkXgSEAVfAEQmIMDOrPE24YenMAvV6UFkpeVZny0bYM23o1pU93ubo/vOYx6Q5xlml
-         ktK34dTU4bIR7BrWkiXPW3XQ9SXCyg9TTZmUs9yR1w6ai1sp4RQ3Wl2nbLQEU6QCFsVe
-         HnbAiLKQnTuX0Fsl44LIMeRwS5QBpqNgQ013m79Nt2M0D/nEjkrFeR/unCIozig2GZQs
-         4bpA==
+        bh=/ix8w6evDkpmvVwP9VPDJapgMSv7jkFt0DcdOyafdaw=;
+        b=h3C/tCDI/SCoMTPlynDGVXDfbOndu7abcQtC9rh5/bsu+1soVDqds+6oAFTKBkeVxN
+         Fd0SH1tXv0Ihqs7nMojYfazDAShSLDgWuklTlwGTgbISmQVmDoW0UbG1w0E9QAKeiXbp
+         Z1559itQXxYELB/TLna5Bcio9klUOE935IAB8Am2UzX1rmrxFuHs4dhWckcMoAPC8sF1
+         0KoLdGWkyBv6vlNKO7srjnDZnYzHGsSFwqo6Tc0BRlppEzoDOQriSCDq58Boo6c+N32H
+         b5JvUcS0FxRiAeRBHr2VBGgNzmgLag3JOSSKb+lXRWWzOiNqMlQ2kaX4jTk+kCDyfrEA
+         OXZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736154173; x=1736758973;
+        d=1e100.net; s=20230601; t=1736162994; x=1736767794;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sNwuZVs/WFX1AlyLcnmThK24HPexmJnIk9uzVui8y2c=;
-        b=dPKzxmrj9pyBF9Yu/9tgXlhPzuDRP9kPu81vivTQNMb91kbFcMA7t3xnHG+LT/rp5N
-         NnN5cDRYtrOgx+pESERlw0IpPlsSL60LwPdnJDNyzDbfi2bshaJ0itFaIDRVr+0mVabW
-         pINA9yScRWS3wJC43ZURSEN33WiqPD8u4JPzWeMqpRa/3wmw5XqpJt1RUyHZ4xPERWXI
-         OTWSW9lmU87xUUo2gVKXeksrAUtoLSrQAygQlhZvdZ8xFqR8j3u47skFN2bmmW99JEmc
-         ozjMbyUOAy8oEV2oadrgSEw6F9nVRhzzrzqeBOrQstezEob7kZCxj6OCJ7bV6Sj7u+GJ
-         c9uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVugydL7JcVl4psTIRPFlbfTtmhM5/e0LOZrvWwK6h1Vbhu0AkOJSR4l1pPnOL9yMPdl/CxXwCeQUVrNqjiDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywc5eTm9AYzsKRgcPp9kP23VyCzipUz1kXpvMdZqtQMCZAV5rX6
-	TheBXxfZ3x+tj3h5VLleXrHmHcO5HXCfVB0TLJNtTP14qg7R+SVpPXGJJ2WYvZcunTWXWHfb/+q
-	U+Plw8/Ia8tUQ7UqqRU8h8ic7rosB309+sYJq
-X-Gm-Gg: ASbGnctVJDNcCsol6jclI6jaW7le93dttfLnEUJdLzAtN2SgxNLktYiZrRTMwJqLBXU
-	2SlNfx8VKh+ps7kR2N8iba0JkQOfr/7RVNiaB/gl4jMMLgj2KF24xx49M8tOs0RQEQ5Eq
-X-Google-Smtp-Source: AGHT+IGY5t3j7JLgOnK7GQ+pcy6E1PtQP3lWc94uYa/uhct4TgLrGv6fdtYVOO02HRihn6+eHc7Z3uPLO6tQyR2RxAc=
-X-Received: by 2002:a05:6000:4028:b0:385:ded5:86ee with SMTP id
- ffacd0b85a97d-38a224069b1mr48733909f8f.57.1736154173480; Mon, 06 Jan 2025
- 01:02:53 -0800 (PST)
+        bh=/ix8w6evDkpmvVwP9VPDJapgMSv7jkFt0DcdOyafdaw=;
+        b=vdq8BAChu4zd1Kp0vPH+g/+XbcGPFzgW+tKozEnTozq+t5mNgPvqUaG+xAVVwQiox7
+         dpSCD56D88+FRS96I1fykXdaBINoJsqkjEd+4bRuzozhXg/H4TTS009cq4F789uFqnLN
+         Eib9Wg2/M3W2/RnUmZW7l4uwQeK4s6WHC07Cb/+tLQTbqIlTYKR/EPDLjv+CddV3AueA
+         LRc27yqldq+AgxeWDAjrFxrcM6So73Hhm3cxJfYUvKi+qxM7zI8ChSc7GRSd5sxZ+x2K
+         QQs/C/bCNlq06KuuhpynghQw3jOCYeY3ytSyFYJNxjnTzbVnSm3+918AIfVB6L0ZIiAQ
+         aL1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXgeNJX2Phemw8u71oEExOOn6KDCGFt/hHKQEm2sIM9Z5kvpVEvABV4segzgtvicH+SdXvMiMjSxyG1VLXzAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy+nK18qo1DwTeNRKyvJOlyUs5k4dFcBGrXR/kSx9hhbsbDuUq
+	WFDuW6wh/kTwY7I+od702g2JQ4rB9L/z1XjK7KaeUvuNtrsz2j445PFEkhtXEvt+dCg82oCENkw
+	eTtXN8k12hs6rwMzKd8Iws+TzRNKrxw+7hNSf
+X-Gm-Gg: ASbGncttUnKaGHXAlTPAqm44zxby7bxaLc6yPO1B2h6Qmz6lsNBrFXlj2GUf9KQbRew
+	DmDwO3IBr+uW5MQKJ/xi4IpprPQDj/PevUqAUh1i5vOr429dBSFSrWOsPd96FVAOYg+XW
+X-Google-Smtp-Source: AGHT+IGTT0LIINTWIdyF9Q6iSt+9zlbm9FIaGUlaGzWUY/mlvpmOx1CHT0JCs3L/lCr045YwrYpusY5N8t+aTanjbI0=
+X-Received: by 2002:a5d:6d0a:0:b0:385:dffb:4d56 with SMTP id
+ ffacd0b85a97d-38a22408d23mr56344251f8f.53.1736162994156; Mon, 06 Jan 2025
+ 03:29:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250105194054.545201-1-gary@garyguo.net> <20250105194054.545201-2-gary@garyguo.net>
-In-Reply-To: <20250105194054.545201-2-gary@garyguo.net>
+References: <20241209212544.1977065-1-ojeda@kernel.org>
+In-Reply-To: <20241209212544.1977065-1-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 6 Jan 2025 10:02:41 +0100
-Message-ID: <CAH5fLgjjWW5Jrt+k76wJUhmLKTKUW5zThwUoxXuwBmk2-gyMxQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] kbuild: rust: add `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Mon, 6 Jan 2025 12:29:42 +0100
+Message-ID: <CAH5fLghR16z+2MVToPo8e+Cw2E1dBPSaNHN0jf8R8DuXEH__Wg@mail.gmail.com>
+Subject: Re: [PATCH] rust: document `bindgen` 0.71.0 regression
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>, Tejun Heo <tj@kernel.org>, 
-	Yoann Congal <yoann.congal@smile.fr>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Jens Axboe <axboe@kernel.dk>, Chen Ridong <chenridong@huawei.com>, Jann Horn <jannh@google.com>, 
-	Mark Rutland <mark.rutland@arm.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 5, 2025 at 9:02=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Mon, Dec 9, 2024 at 10:25=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> This config detects if Rust and Clang have matching LLVM major version.
-> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
-> matching, otherwise it may generate errors, or worse, miscompile silently
-> due to change of IR semantics.
+> `bindgen` 0.71.0 regressed [1] on the "`--version` requires header"
+> issue which appared in 0.69.0 first [2] and was fixed in 0.69.1. It has
+> been fixed again in 0.71.1 [3].
 >
-> It's usually suggested to use the exact same LLVM version, but this can
-> be difficult to guarantee. Rust's suggestion [1] is also major-version on=
-ly,
-> so I think this check is sufficient for the kernel.
+> Thus document it so that, when we upgrade the minimum past 0.69.0 in the
+> future, we do not forget that we cannot remove the workaround until we
+> arrive at 0.71.1 at least.
 >
-> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  init/Kconfig | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index a20e6efd3f0f..cbe4b2922ce2 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
->         int
->         default $(rustc-llvm-version)
->
-> +config RUSTC_LLVM_MAJOR_VERSION
-> +       int
-> +       default $(shell,expr $(rustc-llvm-version) / 10000)
-> +
-> +config RUSTC_CLANG_LLVM_COMPATIBLE
-> +       bool
-> +       default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION =3D $(shell,=
-expr $(cc-version) / 10000)
-> +       help
-> +         This indicates whether Rust and Clang use LLVM of the same majo=
-r
-> +         version.
-> +
-> +         Operations involving handling LLVM IR or bitcode (e.g. cross-la=
-nguage
-> +         LTO) requires the same LLVM major version to work properly. For=
- best
-> +         compatible it is recommended that the exact same LLVM is used.
+> Link: https://github.com/rust-lang/rust-bindgen/issues/3039 [1]
+> Link: https://github.com/rust-lang/rust-bindgen/issues/2677 [2]
+> Link: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md#v0=
+711-2024-12-09 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-typo: compatibility
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
