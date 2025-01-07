@@ -1,110 +1,71 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2053.outbound.protection.outlook.com [40.107.249.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18F61E0E16;
-	Tue,  7 Jan 2025 03:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736221982; cv=none; b=nc0zdqo6UK72xhodHLLhALx9O5JFsCuHNEAxxr6PKhRAC0828cFj/1g8eprATDtlBRNJd2Lec1WHPSFlQvO9oSSVcezta5QhfwKMg7FoRVZDvQj7cjw9v4R6TV92ky0Gw4dvJL9fxLvt6iLIgDzvLzfXJHzhKPvLw4xpIysI6tg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736221982; c=relaxed/simple;
-	bh=h/vdAz68f5WBEK+WdATCg2LIYtqAKRgGlxS03XAJoYw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7YTbivcapPZ+wXB2k2Zb0ryeew/i6z72jdppAgaf4EtvchJA6NI87LW7pufE2Idw6tsPT3T8MT2gwd4SUoEbTlS7MUVVVTpWBrHbRj2Ze23Nd3azMAeDseyif8Db/PgxKO6eHr7L9zomh6h7hpnsA7EWOteUfS26rMDVQuHl+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=AbjOH1yi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tOa6TzcJ; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5338C6A009
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jan 2025 06:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736230915; cv=fail; b=IN2AxY+zQeEfWdiPKaNJVZZbE9IuCPB5zTkX05tfIkhLqU9UrIWpFQrbwBz8dtTNT98xcbvBfbwKE2FRrlDqlPSmU0In1TkkQbQh1WEJqqiM+5VWrfeFiwRhp2wn9+zHKsu+i0VN3TacbR8u0KfcRUm3RYpwAp7h5z0LssbWpQM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736230915; c=relaxed/simple;
+	bh=QepbX6lpHmNFhPhhpgAtdLVfAtu8r3tBO/s+WUWbGQE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XXpxs0vmDVlLJ8Ryte/YVs9i3cYC01QJiy4bPiup40Gts0oGkXUbv2oLQ8QVCaHakqMQZaH4chG5TM4kFDTaetL0BQUJ9hCbAufs1Us0zCiCDbrHIgD/yFJxD2WOkHubmFAz7FJNxetW8b2am23utHci2016gUe3B+A46YwDoK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Rc7mKGxO; arc=fail smtp.client-ip=40.107.249.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="AbjOH1yi";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tOa6TzcJ"
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 894BC114015D;
-	Mon,  6 Jan 2025 22:52:57 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 06 Jan 2025 22:52:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1736221977; x=
-	1736308377; bh=AZJ1va9BbDkIfSjPw6PRUjwodT7OYt+ydpDIg7Yws0o=; b=A
-	bjOH1yib4RcOWpz/8YHSqn6A4PFeYeS+OFcm/S/DuDeHf8P7h3OMnR8e6EuhkjnO
-	WMxtQ6a6+0blSZJx2U++iWjCM6Sqv13Z/MXzxvvWqd7rlUedMNYM2AezYZyuS4Xf
-	wXhBZ5BA6TblPEd040Nq5brtsdJ7UpGGZU9HFWEc0ezD9jzfEnviwUNqNl/9H0zJ
-	zuYRMETVGhehxhQYkjku4dQ3wDS6d1xZm0NWV439iR8UA67ydtKm2jakiUItKg9D
-	CWtU14woB8Q4xLNm9FhJf9dKwwNx++qPEPYCE6llGjSpPN2SrvfRWYo+96CIkF4y
-	zGNLPQMNLpSjsqO7+zEwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1736221977; x=1736308377; bh=A
-	ZJ1va9BbDkIfSjPw6PRUjwodT7OYt+ydpDIg7Yws0o=; b=tOa6TzcJLsrPL8Gbe
-	NfphB65zDVwL4CxjKdsN9/jjVKj2/lFMOs0Micrr6ULlGL+NY54vWIhuay8vS/S0
-	5p7igg5StEblE6GtV75FLSTpmOnE9VmhG62Oz4Jpl0VksLDmC70Nonv5K85vY3kN
-	DodfMT7wjTBj7SztyzdBMH+mEjneICZ2xRE8C+F9kKkh/98c+TcT3Dlm01oK4zzT
-	62hSDbPRg2N520iRLFf9myXyNEf3kDzN2CnY10T1h2lNqcCtnhQd20ErUUbET0WW
-	rSBXVIWhbIL3Z2sJP+ELe1095Bi3rK3Ih29/fKrqCsbYKVyuMNX/t7bO/gq3gRuU
-	R/Kew==
-X-ME-Sender: <xms:GaV8Z20OpPjLD79NxcDl8X1IOUuRNrkydJx9W1XscRkAMJy9xDXeMg>
-    <xme:GaV8Z5EuQl2QwlOUof2ACSKHNSbpZqB04ObnGjJKTPPRLNH6aIJOVKLDzjqcUHA-s
-    b0oHRzRce-_J7hyzKs>
-X-ME-Received: <xmr:GaV8Z-5xEM65Ab-77HPZSAVTAzrcLV-2baXfKWlnB_6bjCdQKevTlLvoDiJCu9KRgkFQZmRHzW4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeguddgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttden
-    ucfhrhhomheptehlihhsthgrihhrucfhrhgrnhgtihhsuceorghlihhsthgrihhrsegrlh
-    hishhtrghirhdvfedrmhgvqeenucggtffrrghtthgvrhhnpeeitdefkeetledvleevveeu
-    ueejffeugfeuvdetkeevjeejueetudeftefhgfehheenucevlhhushhtvghrufhiiigvpe
-    dunecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhishhtrghirhesrghlihhsthgrihhr
-    vdefrdhmvgdpnhgspghrtghpthhtohepvdefpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprhhushht
-    qdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
-    hukhgrshesfihunhhnvghrrdguvgdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
-    nhgvthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorh
-    hgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopegs
-    ohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtgihlsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhg
-X-ME-Proxy: <xmx:GaV8Z33CpzOT2IOOQKCA_OezcazBZ_SGO_OIMDH9mPUEZJ-YEQParg>
-    <xmx:GaV8Z5HhqaT9gB1y5hXsLNu5GgGJq6wU5mtkNg4fANGEXs7YHQMdcQ>
-    <xmx:GaV8Zw_tj-0sksn8nbFw3qlWZIk-kFaNd_4dvjs8C_pO27dCxJOelw>
-    <xmx:GaV8Z-n6tHOFU-l_HltvfXuxigRQJSwnJJEvueh_TAeZOUx-aYYzVg>
-    <xmx:GaV8Zwm7_rRE4nk9tkD_FMBJkAk1Yt1gcdyjYcAUzkan57MV2BnAcvOe>
-Feedback-ID: ifd214418:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 Jan 2025 22:52:50 -0500 (EST)
-From: Alistair Francis <alistair@alistair23.me>
-To: bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org,
-	lukas@wunner.de,
-	gary@garyguo.net,
-	akpm@linux-foundation.org,
-	tmgross@umich.edu,
-	boqun.feng@gmail.com,
-	ojeda@kernel.org,
-	linux-cxl@vger.kernel.org,
-	bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org,
-	me@kloenk.dev,
-	linux-kernel@vger.kernel.org,
-	aliceryhl@google.com,
-	alistair.francis@wdc.com,
-	linux-pci@vger.kernel.org,
-	benno.lossin@proton.me,
-	alex.gaynor@gmail.com,
-	Jonathan.Cameron@huawei.com
-Cc: alistair23@gmail.com,
-	wilfred.mallawa@wdc.com,
-	Alistair Francis <alistair@alistair23.me>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH v5 11/11] rust: helpers: Remove uaccess helpers
-Date: Tue,  7 Jan 2025 13:50:58 +1000
-Message-ID: <20250107035058.818539-12-alistair@alistair23.me>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250107035058.818539-1-alistair@alistair23.me>
-References: <20250107035058.818539-1-alistair@alistair23.me>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Rc7mKGxO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ua8j8sXgQHAb/93KMjxl6BTBjXf66Y2FBk+8CHMxOLcjy8Pv0jMhZ5FW2Q7gp+ZV4W0H0goY0EefeEEVmKzZv96vVIbWEgAiPDW8eUoRM5Yssw4ISujld20J2+l/tzAQsu/FMjw9jiE36sr+ExB0DKy+cfQfpIuEPWp6N/kGlPIwR6OxK8WqoiiavdJj6OWF0/vwEr9wVtxKHiqAXeel9kZcajUylqutfS5Yw84Nlu5g+2yMyw8FZowdGsWAtIM2uHrBMSRa89cpxitQywOv6z7w/+yxYtvD7ZnM1UhTUPpVmGa00+RDLnYL8eY6iDV70rYNBwC6cCBZKje7qdxKBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2/8PU8VXmoK8rPntnXN8391QOZET20tlzpf6iQU4XUk=;
+ b=y7zWB1UNNg+6k2xKEEL2BlFlhGU4wUzzEMwmTbw9zNo9lagSJzlgltekegmhKj/DegXxF0BY+o4EceL0JtwwhY/MMdeXG5TUmrqaFJPiJxRZccurLA7YxvJi0YAav3FX9K9PEL8soRnhbK+VFZ9nWqpCEABFh7Vf+GClXVISJrnXf0Pj+2li0+nMyiinWVpK1rNzA/b3esGhdDS4Rdb8Qef+MCCcPR6s6Mi+ru55zCEFNySUcejRYJ0iwNcgP8i4/Hegy6YWuNmSGnjmJXOGIk1dCt9pKfeL/YRWC94EM1VwysJCuIw4Oid+LYuikyaZtUa7/ap+5aDX8e6sWtqB1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2/8PU8VXmoK8rPntnXN8391QOZET20tlzpf6iQU4XUk=;
+ b=Rc7mKGxOTuSWtQht7SAACSqkyriVDfAAFuQ7LeSR9FHCRIZjkDFRXHiUENUC1CGxu3xWldOCb+X2bhv8tziLq6Ts5Q80P7p7qCaGUPyp/nq6AoOiGAqUjEczRJbsaWLhcCG2Q74v4tfjEVvDidBhx7ksXMK+PRZU3btuA48+Hx1QET4AVueX2HHg7oFDGkf5ayZDXcHkl9PzYjg31G3VKCx5iuzMbH1Om05MeA5/pMSQEcOUWhrC5wryF5hYWHBcSH9Kjhxu/7He/iFpIiKYlPPK8W8mxHG3kllwYsa8WANs9OAvsBcrrOLtFmuznftxmwJfwZrcMNbHYzb9pC2l6Q==
+Received: from DU2PR04CA0228.eurprd04.prod.outlook.com (2603:10a6:10:2b1::23)
+ by DUZPR10MB8150.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:4d8::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.9; Tue, 7 Jan
+ 2025 06:21:45 +0000
+Received: from DU2PEPF00028D0B.eurprd03.prod.outlook.com
+ (2603:10a6:10:2b1:cafe::5b) by DU2PR04CA0228.outlook.office365.com
+ (2603:10a6:10:2b1::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8314.18 via Frontend Transport; Tue,
+ 7 Jan 2025 06:21:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DU2PEPF00028D0B.mail.protection.outlook.com (10.167.242.171) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8335.7 via Frontend Transport; Tue, 7 Jan 2025 06:21:45 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.13; Tue, 7 Jan
+ 2025 07:21:42 +0100
+Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
+ FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.43; Tue, 7 Jan 2025 07:21:42 +0100
+From: Dirk Behme <dirk.behme@de.bosch.com>
+To: <rust-for-linux@vger.kernel.org>
+CC: <dirk.behme@de.bosch.com>, <ojeda@kernel.org>
+Subject: [PATCH] docs: rust: Add error handling sections
+Date: Tue, 7 Jan 2025 07:21:33 +0100
+Message-ID: <20250107062134.2981602-1-dirk.behme@de.bosch.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -112,97 +73,103 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PEPF00028D0B:EE_|DUZPR10MB8150:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fc0dfa8-6b96-4229-3377-08dd2ee38f2e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Q+twTBoEGEzMGbq4usDe2obOCIZKCm8jp/a6sOO+DSBKeXyt2uPV6tuhqLQX?=
+ =?us-ascii?Q?DipBpqGmmbDjga6GkvAgx5IjHt/7Pbkw9TBb0Izjx+hKaxDRbRGWWhh4eB6k?=
+ =?us-ascii?Q?Ts3pVuRWpjMtOV0ck/QPidI26sPhIOIlnVwns0/eeG9WH9lEaUZlSnlbZ4td?=
+ =?us-ascii?Q?O7jXG/dZ3eJdWlcGjm9bxv+6jKvEfppvjKXioXCoh2lFRvmYU9/ni7+BpjQa?=
+ =?us-ascii?Q?pK8+/5kZcvsWmzr4eSV0M6T30OJNQR4oanRTJ9gp7idDuxzIejQhKFdy1j2T?=
+ =?us-ascii?Q?MzciZHBvVTIDs0NyEVJOWcHmk5QT5dnYm0lsd9XQNl8sx9Sg5aVVecimSSLb?=
+ =?us-ascii?Q?dcNdtAhX+hdA+hAoEFCwVKdyA4bTo1mm+R2C0enJyCrrMUBa9TIkZn7jD8IN?=
+ =?us-ascii?Q?m686mDo1eZXpJt/xIyeL+C+O6qjUIgsZdF1Vk/H98CPLszUGTMGCnsJGbkmg?=
+ =?us-ascii?Q?Ux8uyy9rES1T6wiNqflI7/0oV1tkHh/wAdStETRmQolVDrItduf0ouByvWhz?=
+ =?us-ascii?Q?KALNYj97BMSzeEkylWOuqrpBbo1pClIYfddKpgIm+eyNx0X9BV9IgonCePOb?=
+ =?us-ascii?Q?ll5K7JwZFoWLI1XRVXgX7oTRktIaDKNo2+2JdmTCcdEEPKWom0trV7//NMj0?=
+ =?us-ascii?Q?Gbn8MpquaqMsBW+LM/ovew5NKsMcsavtAF7Ajnm1xfdcdiL76n9Iy10bxe0S?=
+ =?us-ascii?Q?iAbhUwjqz8E5J55uA6DZE83mXV4M/5LzWhF2l7RrpK8Wg/CZeoxGJ4EuRPjx?=
+ =?us-ascii?Q?ZhGwGtpT0ZMgy1GUeyY6moiRmuGZV9u1ARgieRkfJB4uEi1V1i5jjoeUHYKb?=
+ =?us-ascii?Q?2UcWt4EwXssG0uGpIKWFcrxBTmAkVuiMmmYF0x1ww3mMpR8pV31J27fVea45?=
+ =?us-ascii?Q?9BjEIoHj+IC+5mWk1JKBd2nPLr1baIqn02H4Vlx3pYkFUAVGX0kwJUmXm+fK?=
+ =?us-ascii?Q?PaqDWCVNmHzSBYWQ4yRpOYvUvI6ie3heAhmPj+3QbexvfmLOfZuHxhgzMCDy?=
+ =?us-ascii?Q?U30By535jU58Y0J5yysHm6Xu200gZ9PNGQoqj1THQzJ/sYtcyrymy8nU0r1d?=
+ =?us-ascii?Q?pJqO2eijk46ipNu+VyrG/VY8AaT+LvDuc0h7IuSvvVEO4HcAVNBwPJc2W4K8?=
+ =?us-ascii?Q?YKKynacGv9x2z8SJcnBeoFzLmhwk9WdWA36hx1aqU61lT6BTc5z5t6sknPmf?=
+ =?us-ascii?Q?Wn25MNZB6OW5p/cGrMuZw7RAvAoT5DqDJhQ0WYvb7NEMOtq4xcsdqueF617y?=
+ =?us-ascii?Q?3gVpOF94PF/vcjX3r5i4QuzzeWT7pVs1SGj4+V6URWoD77Hymz4FGS2C5mCB?=
+ =?us-ascii?Q?v9bAz1QGaWPGdkZDkDKp2gVrusgpt0/GiTJ8i2wRg6JTAGU+9II7Y1rwbvRg?=
+ =?us-ascii?Q?EPboFgfU2sYbulcBVBwiR1VetSEgxxBbPTE0whuAmqOK+hLC1ncFREzQRSkQ?=
+ =?us-ascii?Q?U9N3bNIyr6w=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2025 06:21:45.0164
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fc0dfa8-6b96-4229-3377-08dd2ee38f2e
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D0B.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR10MB8150
 
-Now that we support wrap-static-fns we no longer need the custom helper.
+Add error handling sections to the documentation and use it
+to link to the existing code documentation. This will allow
+to extend that documentation, use intra-doc links and test
+the examples.
 
-Signed-off-by: Alistair Francis <alistair@alistair23.me>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://lore.kernel.org/rust-for-linux/CANiq72keOdXy0LFKk9SzYWwSjiD710v=hQO4xi+5E4xNALa6cA@mail.gmail.com/
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 ---
- rust/bindgen_static_functions |  3 +++
- rust/helpers/helpers.c        |  6 ++----
- rust/helpers/uaccess.c        | 15 ---------------
- rust/kernel/uaccess.rs        |  5 +++--
- 4 files changed, 8 insertions(+), 21 deletions(-)
- delete mode 100644 rust/helpers/uaccess.c
+ Documentation/rust/coding-guidelines.rst | 8 ++++++++
+ Documentation/rust/testing.rst           | 8 ++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/rust/bindgen_static_functions b/rust/bindgen_static_functions
-index 8bc291a7a799..ec48ad2e8c78 100644
---- a/rust/bindgen_static_functions
-+++ b/rust/bindgen_static_functions
-@@ -27,3 +27,6 @@
+diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
+index a2e326b42410f..27f2a7bb5a4a2 100644
+--- a/Documentation/rust/coding-guidelines.rst
++++ b/Documentation/rust/coding-guidelines.rst
+@@ -373,3 +373,11 @@ triggered due to non-local changes (such as ``dead_code``).
+ For more information about diagnostics in Rust, please see:
  
- --allowlist-function get_task_struct
- --allowlist-function put_task_struct
+ 	https://doc.rust-lang.org/stable/reference/attributes/diagnostics.html
 +
-+--allowlist-function copy_from_user
-+--allowlist-function copy_to_user
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 2731ddf736dd..eae067fe2528 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -1,8 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * Non-trivial C macros cannot be used in Rust. Similarly, inlined C functions
-- * cannot be called either. This file explicitly creates functions ("helpers")
-- * that wrap those so that they can be called from Rust.
-+ * Non-trivial C macros cannot be used in Rust. This file explicitly creates
-+ * functions ("helpers") that wrap those so that they can be called from Rust.
-  *
-  * Sorted alphabetically.
-  */
-@@ -21,7 +20,6 @@
- #include "slab.c"
- #include "spinlock.c"
- #include "task.c"
--#include "uaccess.c"
- #include "vmalloc.c"
- #include "wait.c"
- #include "workqueue.c"
-diff --git a/rust/helpers/uaccess.c b/rust/helpers/uaccess.c
-deleted file mode 100644
-index f49076f813cd..000000000000
---- a/rust/helpers/uaccess.c
-+++ /dev/null
-@@ -1,15 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--#include <linux/uaccess.h>
--
--unsigned long rust_helper_copy_from_user(void *to, const void __user *from,
--					 unsigned long n)
--{
--	return copy_from_user(to, from, n);
--}
--
--unsigned long rust_helper_copy_to_user(void __user *to, const void *from,
--				       unsigned long n)
--{
--	return copy_to_user(to, from, n);
--}
-diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index cc044924867b..d8f75de93073 100644
---- a/rust/kernel/uaccess.rs
-+++ b/rust/kernel/uaccess.rs
-@@ -226,7 +226,8 @@ pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
-         }
-         // SAFETY: `out_ptr` points into a mutable slice of length `len`, so we may write
-         // that many bytes to it.
--        let res = unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len) };
-+        let res =
-+            unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len as u64) };
-         if res != 0 {
-             return Err(EFAULT);
-         }
-@@ -330,7 +331,7 @@ pub fn write_slice(&mut self, data: &[u8]) -> Result {
-         }
-         // SAFETY: `data_ptr` points into an immutable slice of length `len`, so we may read
-         // that many bytes from it.
--        let res = unsafe { bindings::copy_to_user(self.ptr as *mut c_void, data_ptr, len) };
-+        let res = unsafe { bindings::copy_to_user(self.ptr as *mut c_void, data_ptr, len as u64) };
-         if res != 0 {
-             return Err(EFAULT);
-         }
++Error handling
++--------------
++
++For some background and guidelines about Rust for Linux specific error handling,
++please see:
++
++	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
+diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
+index 568b71b415a45..4e2bc3b971e99 100644
+--- a/Documentation/rust/testing.rst
++++ b/Documentation/rust/testing.rst
+@@ -123,6 +123,14 @@ A current limitation is that KUnit does not support assertions in other tasks.
+ Thus, we presently simply print an error to the kernel log if an assertion
+ actually failed. Additionally, doctests are not run for nonpublic functions.
+ 
++As these example tests might be used as examples for "real code" they should
++be written like "real code". For example, instead of using ``unwrap()``/``expect()``
++use the ``?``-operator. See:
++
++	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
++
++for some background.
++
+ The ``#[test]`` tests
+ ---------------------
+ 
 -- 
-2.47.1
+2.46.2
 
