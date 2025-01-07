@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E7B18CC15;
-	Tue,  7 Jan 2025 09:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC8F1547D2;
+	Tue,  7 Jan 2025 10:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736243387; cv=none; b=U8vsZ7hNuK7pHJXHRVE06x2SP6S4FhQ2s7DG9hg7VhrtACsSeG4VsDXHLDYFlQa6OzIhUTR2VmyGZcXgoaFLP4xsYlu/dAmCReXOIGMAmmfwAdkCLM7xV1U1/VuFI3zRJp00DQwNBIH25vuGFqU4P9qBgy54h7kY5nnx0FQgla0=
+	t=1736244300; cv=none; b=U+kKB6jB+xKAvJ5NSc2xIjDmZFSKrRSEms4ItfasU+d0lSRKuINvZJQbgra0xQdWKssdHb6LUcwq3rvKtfOKNFvKkew/g0aRAZroLTblzx35yVzt7KrEb9X15sdcW37CxJL/PUuMTOvmbZAMFAhxqyZbf9fLtoaqmH/57f+2PUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736243387; c=relaxed/simple;
-	bh=xmDQaYTT1TN6r/OwVipytDPZIaOnb6D4e3M87IKM+f0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L2YwT7JO3NLyy1GTCPXrU9dUacOv04CtfSeZPJctpg4SwZ52MM/4WVnw4q8iC6bdEfmLuA2Dm1I4677EEVz22OCebJT5NEgvYDH7hY8JSB33wCr9pzRvmQ/5/ysYdzJRdkNAhYydRpE6galD8DKlFWnchwMKRdajN1NBTKbUm2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A22hz/Zo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736244300; c=relaxed/simple;
+	bh=nKpS8kA19i8oiCGofhEwpxJUD9Z7a2SLYBoSmVQUzyw=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J8Vn2HC+tFue6WuHKL/fT9hL+GTJJcaxluUmaRRj00GYLXZSGlZXVGIkK0p+4V580os6WVpRcGENyOeY/7JyHAoSlji/0bPZaN06a6oDMsCtdJyC/1dmcK2EXJqk//1GwEjLBksOg7fqMQAagaj+s2/3Ib8hCDReNbPsmReUxxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=alybgoLV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A22hz/Zo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA7BC4CED6;
-	Tue,  7 Jan 2025 09:49:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="alybgoLV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA25C4CEE0;
+	Tue,  7 Jan 2025 10:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736243386;
-	bh=xmDQaYTT1TN6r/OwVipytDPZIaOnb6D4e3M87IKM+f0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A22hz/ZoAo+riYb5Ddll8j+RcI19yVpERIfi7niftxPYgl6Oj07PwsMnZHi5u1tBA
-	 rU8i1K0mJj8x98YmOK0u5Ffk6gzLHhd7RjN3g3S1+G7GoDmuxhHBVZNyST2lVNMxBf
-	 z0znZQRqbtubnz6ogtYncj4YdJwlsB9REY70Ec5dD0vynfAoMTzBG10Qdmimd+bYXO
-	 P7C0hkl7LqjhSA4nVQ/jqcepMYBtn8T613nPS3Ia2LrgXqcuTcWnbH//Vj/8OVPUr2
-	 zOgiwgtx8o1Pxl/z3rxYjA+mMne8I7Mdv/qiukaa31J43o6xxzYvMEHsuFUUZeCwig
-	 G8ayr7c9zPKEA==
-Date: Tue, 7 Jan 2025 10:49:40 +0100
+	s=k20201202; t=1736244299;
+	bh=nKpS8kA19i8oiCGofhEwpxJUD9Z7a2SLYBoSmVQUzyw=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=alybgoLVcGoIr+BE/KgoXWH6JGqr2xzvg2CXpjiBHTlSFnitLG5z53f4ETLunYjKq
+	 Q/GfgPU5kq+k2cmZkKvGCUrg47KRgSwnvP2eoRW4BB4qnUI+Bcpe8NmJbLbeVf1p+U
+	 BgDQAuy8BYti8ZG1V5VFO7j+O+N5O1ObI8/VQAvyTeaxkAifNSpICOGBatpn2mkbPX
+	 7HwzJ8ZL1vR8bWEJKg7Tn9XFNyggCJ3jwZJnEqwfhaUixjfDHFk/h331Ey0frwPMvr
+	 m6ttHZwYVdazlhgoEBao9sH9xAOq8PLTDVR+LRGq9S5tBU6bM5AbLBpOJvLYltIOyS
+	 CY3sKHalchLVw==
+Date: Tue, 7 Jan 2025 11:04:53 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: devres: remove action in `Devres::drop`
-Message-ID: <Z3z4tHzwatjbvz1h@pollux>
+To: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] devres: add devm_remove_action_nowarn()
+Message-ID: <Z3z8Ra2PUQjL91kn@pollux>
 References: <20250103164436.96449-1-dakr@kernel.org>
- <20250103164436.96449-2-dakr@kernel.org>
- <Z3wKFTkmjdaGHKIn@tardis.local>
+ <Z3vC6MzIG7zN8zBT@phenom.ffwll.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,142 +45,135 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z3wKFTkmjdaGHKIn@tardis.local>
+In-Reply-To: <Z3vC6MzIG7zN8zBT@phenom.ffwll.local>
 
-On Mon, Jan 06, 2025 at 08:51:33AM -0800, Boqun Feng wrote:
-> On Fri, Jan 03, 2025 at 05:44:31PM +0100, Danilo Krummrich wrote:
-> > So far `DevresInner` is kept alive, even if `Devres` is dropped until
-> > the devres callback is executed to avoid a WARN() when the action has
-> > been released already.
+On Mon, Jan 06, 2025 at 12:47:52PM +0100, Simona Vetter wrote:
+> On Fri, Jan 03, 2025 at 05:44:30PM +0100, Danilo Krummrich wrote:
+> > devm_remove_action() warns if the action to remove does not exist
+> > (anymore).
 > > 
-> > With the introduction of devm_remove_action_nowarn() we can remove the
-> > action in `Devres::drop`, handle the case where the action has been
-> > released already and hence also free `DevresInner`.
+> > The Rust devres abstraction, however, has a use-case to call
+> > devm_remove_action() at a point where it can't be guaranteed that the
+> > corresponding action hasn't been released yet.
+> > 
+> > In particular, an instance of `Devres<T>` may be dropped after the
+> > action has been released. So far, `Devres<T>` worked around this by
+> > keeping the inner type alive.
+> > 
+> > Hence, add devm_remove_action_nowarn(), which returns an error code if
+> > the action has been removed already.
+> > 
+> > A subsequent patch uses devm_remove_action_nowarn() to remove the action
+> > when `Devres<T>` is dropped.
 > > 
 > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > > ---
-> >  rust/kernel/devres.rs | 56 +++++++++++++++++++++++++++++++++----------
-> >  1 file changed, 44 insertions(+), 12 deletions(-)
+> >  drivers/base/devres.c  | 17 ++++++++++++-----
+> >  include/linux/device.h | 18 +++++++++++++++++-
+> >  2 files changed, 29 insertions(+), 6 deletions(-)
 > > 
-> > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> > index 9c9dd39584eb..7d3daac92109 100644
-> > --- a/rust/kernel/devres.rs
-> > +++ b/rust/kernel/devres.rs
-> > @@ -10,15 +10,19 @@
-> >      bindings,
-> >      device::Device,
-> >      error::{Error, Result},
-> > +    ffi::c_void,
-> >      prelude::*,
-> >      revocable::Revocable,
-> >      sync::Arc,
-> > +    types::ARef,
-> >  };
+> > diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+> > index 2152eec0c135..d59b8078fc33 100644
+> > --- a/drivers/base/devres.c
+> > +++ b/drivers/base/devres.c
+> > @@ -750,25 +750,32 @@ int __devm_add_action(struct device *dev, void (*action)(void *), void *data, co
+> >  EXPORT_SYMBOL_GPL(__devm_add_action);
 > >  
-> >  use core::ops::Deref;
-> >  
-> >  #[pin_data]
-> >  struct DevresInner<T> {
-> > +    dev: ARef<Device>,
-> > +    callback: unsafe extern "C" fn(*mut c_void),
-> >      #[pin]
-> >      data: Revocable<T>,
-> >  }
-> > @@ -98,6 +102,8 @@ impl<T> DevresInner<T> {
-> >      fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> >          let inner = Arc::pin_init(
-> >              pin_init!( DevresInner {
-> > +                dev: dev.into(),
-> > +                callback: Self::devres_callback,
-> >                  data <- Revocable::new(data),
-> >              }),
-> >              flags,
-> > @@ -109,9 +115,8 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> >  
-> >          // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
-> >          // detached.
-> > -        let ret = unsafe {
-> > -            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
-> > -        };
-> > +        let ret =
-> > +            unsafe { bindings::devm_add_action(dev.as_raw(), Some(inner.callback), data as _) };
-> >  
-> >          if ret != 0 {
-> >              // SAFETY: We just created another reference to `inner` in order to pass it to
-> > @@ -124,6 +129,41 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> >          Ok(inner)
-> >      }
-> >  
-> > +    fn as_ptr(&self) -> *const Self {
-> > +        self as _
-> > +    }
-> > +
-> > +    fn remove_action(&self) {
-> > +        // SAFETY:
-> > +        // - `self.inner.dev` is a valid `Device`,
-> > +        // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
-> > +        //   previously,
-> > +        // - `self` is always valid, even if the action has been released already.
-> > +        let ret = unsafe {
-> > +            bindings::devm_remove_action_nowarn(
-> > +                self.dev.as_raw(),
-> > +                Some(self.callback),
-> > +                self.as_ptr() as _,
-> > +            )
-> > +        };
-> > +
-> > +        if ret != 0 {
-> > +            // The devres action has been released already - nothing to do.
-> > +            return;
-> > +        }
-> > +
-> > +        // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
-> > +        // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership of
-> > +        // this reference.
-> > +        let _ = unsafe { Arc::from_raw(self.as_ptr()) };
+> >  /**
+> > - * devm_remove_action() - removes previously added custom action
+> > + * devm_remove_action_nowarn() - removes previously added custom action
+> >   * @dev: Device that owns the action
+> >   * @action: Function implementing the action
+> >   * @data: Pointer to data passed to @action implementation
+> >   *
+> >   * Removes instance of @action previously added by devm_add_action().
+> >   * Both action and data should match one of the existing entries.
+> > + *
+> > + * In contrast to devm_remove_action(), this function does not WARN() if no
+> > + * entry could have been found.
 > 
-> There is a pointer provenance issue here I think. `self` is a immutable
-> reference to `DevresInner<..>`, so the pointer derived from it doesn't
-> have the provenance for writing nor does it have the provenance for the
-> `refcount` field in `ArcInner`. Therefore it cannot be used to
-> reconstruct an `Arc`.
+> I'd put a caution here that most likely, using this is a bad idea. Maybe
+> something like:
 > 
-> We probably want to make `remove_action()` take an
-> `&Arc<DevresInner<T>>`. Or am I missing something subtle?
+> "This should only be used if the action is contained in an object with
+> independent lifetime management, like the Devres rust abstraction.
+> Anywhere is the warning most likely indicates a driver bug."
 
-Indeed, good catch!
+Yes, I thought of something similar too, but wasn't quite sure if it's needed.
+At least for me, if something has the postfix "nowarn", it already makes me
+wonder if I should really use it.
+
+I'll add a paragraph.
 
 > 
-> Regards,
-> Boqun
+> At least I really can't come up with a reasonable design in a C driver
+> that would ever need this.
+
+I tried, but couldn't either. The only thing I could think of was a revocable
+thing in C.
+
 > 
-> > +
-> > +        // Revoke the data, such that it gets dropped and the actual resource is freed.
-> > +        //
-> > +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> > +        // anymore, hence it is safe not to wait for the grace period to finish.
-> > +        unsafe { self.data.revoke_nosync() };
-> > +    }
-> > +
-> >      #[allow(clippy::missing_safety_doc)]
-> >      unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
-> >          let ptr = ptr as *mut DevresInner<T>;
-> > @@ -165,14 +205,6 @@ fn deref(&self) -> &Self::Target {
+> Cheers, Sima
+> 
+> > + *
+> > + * Returns: 0 on success, -ENOENT if no entry could have been found.
+> >   */
+> > -void devm_remove_action(struct device *dev, void (*action)(void *), void *data)
+> > +int devm_remove_action_nowarn(struct device *dev,
+> > +			      void (*action)(void *),
+> > +			      void *data)
+> >  {
+> >  	struct action_devres devres = {
+> >  		.data = data,
+> >  		.action = action,
+> >  	};
 > >  
-> >  impl<T> Drop for Devres<T> {
-> >      fn drop(&mut self) {
-> > -        // Revoke the data, such that it gets dropped already and the actual resource is freed.
-> > -        //
-> > -        // `DevresInner` has to stay alive until the devres callback has been called. This is
-> > -        // necessary since we don't know when `Devres` is dropped and calling
-> > -        // `devm_remove_action()` instead could race with `devres_release_all()`.
-> > -        //
-> > -        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
-> > -        // anymore, hence it is safe not to wait for the grace period to finish.
-> > -        unsafe { self.revoke_nosync() };
-> > +        self.0.remove_action();
-> >      }
+> > -	WARN_ON(devres_destroy(dev, devm_action_release, devm_action_match,
+> > -			       &devres));
+> > +	return devres_destroy(dev, devm_action_release, devm_action_match,
+> > +			      &devres);
 > >  }
+> > -EXPORT_SYMBOL_GPL(devm_remove_action);
+> > +EXPORT_SYMBOL_GPL(devm_remove_action_nowarn);
+> >  
+> >  /**
+> >   * devm_release_action() - release previously added custom action
+> > diff --git a/include/linux/device.h b/include/linux/device.h
+> > index 667cb6db9019..6879d5e8ac3d 100644
+> > --- a/include/linux/device.h
+> > +++ b/include/linux/device.h
+> > @@ -399,7 +399,23 @@ void __iomem *devm_of_iomap(struct device *dev,
+> >  #endif
+> >  
+> >  /* allows to add/remove a custom action to devres stack */
+> > -void devm_remove_action(struct device *dev, void (*action)(void *), void *data);
+> > +int devm_remove_action_nowarn(struct device *dev, void (*action)(void *), void *data);
+> > +
+> > +/**
+> > + * devm_remove_action() - removes previously added custom action
+> > + * @dev: Device that owns the action
+> > + * @action: Function implementing the action
+> > + * @data: Pointer to data passed to @action implementation
+> > + *
+> > + * Removes instance of @action previously added by devm_add_action().
+> > + * Both action and data should match one of the existing entries.
+> > + */
+> > +static inline
+> > +void devm_remove_action(struct device *dev, void (*action)(void *), void *data)
+> > +{
+> > +	WARN_ON(devm_remove_action_nowarn(dev, action, data));
+> > +}
+> > +
+> >  void devm_release_action(struct device *dev, void (*action)(void *), void *data);
+> >  
+> >  int __devm_add_action(struct device *dev, void (*action)(void *), void *data, const char *name);
+> > 
+> > base-commit: 06e843bbbf2107463249ea6f6b1a736f5647e24a
 > > -- 
 > > 2.47.1
 > > 
+> 
+> -- 
+> Simona Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
