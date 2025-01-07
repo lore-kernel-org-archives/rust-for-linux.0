@@ -1,209 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FD81E9B37;
-	Tue,  7 Jan 2025 11:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0911E5738;
+	Tue,  7 Jan 2025 11:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736250480; cv=none; b=VgCjlQVm/6XXPfeOAZdXRj9RDcfgPREBXPB95zoTpz5Y2nrwnQrNAElaC6ygV8Tf/MCeGiLmE9JPBBjAH+HKCErmB8Zj8KJxA0eWIyt39VMCTZFh+cfpW+W26wRtN+gzrqWkndarpiE23ytzXj5c1RiROA7iEzvLlQDLI3S78l8=
+	t=1736250503; cv=none; b=Bwp2qYSNIO7aF0fI6D/XK/cxZhDheLYsrIq8WmRWoJH3aZAuV5napoFnIkPZV+pPhbeOkm/m9s1ZQZXSMv2rv95I14yC9kBPGES6ZWG2OUuOA1Iekp+rwSf3sQwZhnkir3ulFjrgWa5U0zNohZW9yQiRNdOGKzF/TCZxnlEJO0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736250480; c=relaxed/simple;
-	bh=RpSc9H/LCGh/zgpse1dyvnbyIgHtTlgxPk2Ve4ypA4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1LqvYb0gNdIHWRySrs2wNue+2cqHI492ocVsLZU8y6mXdRlkCLssq67fau/UoWD4yAp3kJO+u9Z3dxzICkyvMfEUdj1qnBrYZDKPheLRIkRnm13UA/+SmEf2pyCZLq98AG5++/fg874IiULbjFU5p/v3lQgSGdLhzNtSm1BAio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FciL8czS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736250503; c=relaxed/simple;
+	bh=Eip+DrhNbLbq1UfPZongISxQ1F7rV6nxezYq+mp8lEQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qCH4I51nSuBMk/vCgZufp5vUPkl/oHiwfO8IylnTdW1dB0qv9urYVtFnBl/RXdRPnP5lDYGuJRN7/RywlSqJkKM5KHonjokZpFifIjgMayFDAy0ZFGYuZU5gORs/xOsZ7gBCHjdgruoCQxeQFGf4lgci+UDnYVcf0hDhIkALS70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGi+DUWs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FciL8czS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3214C4CED6;
-	Tue,  7 Jan 2025 11:47:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGi+DUWs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA05DC4CEDD;
+	Tue,  7 Jan 2025 11:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736250479;
-	bh=RpSc9H/LCGh/zgpse1dyvnbyIgHtTlgxPk2Ve4ypA4A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FciL8czSVRkf/jdWSAG70NTUvasbva8g8YHAmUz2KOo8hmdi6kzEWqnypuN+az4Ef
-	 u0v8rdqPupTX64khI7xM6wOZOuq+7MAfRI3jH7LWLSR9nZKVt4ETgYcwJfAcaho5sd
-	 1uWasUaLFowvXMTCKsPfWnNcxPaZffmGP8ugySsmjPF4bJsPBI+Kut0F24ozOFE47q
-	 //TZmXANIvypnh6+gA1ywmZQik4YF12OOf1pkovyp3UgKBy2nxMizdbBOgvNhdhiq6
-	 WmFczNpYL2FBVrhKhRnZaHwRJHVF6HABwLXywBz5PSZqSheZbTIRDNvFPCIN8KFcV2
-	 /HIb2RluTZ5Fw==
-Date: Tue, 7 Jan 2025 12:47:51 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Viresh Kumar <vireshk@kernel.org>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V6 00/15] Rust bindings for cpufreq and OPP core + sample
- driver
-Message-ID: <Z30UZwgN2nGtiTsK@pollux>
-References: <cover.1736248242.git.viresh.kumar@linaro.org>
+	s=k20201202; t=1736250502;
+	bh=Eip+DrhNbLbq1UfPZongISxQ1F7rV6nxezYq+mp8lEQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=YGi+DUWsLoOIAdLwb9yEOFwDPXtVhePTCzpFSR+5a067JNxZw0UJKn/u0kT7hWGkZ
+	 6+EbNDR4KIL8JQwDJN9KzFluLEdPgbD9Ip5OMW+iDJBm/YD6sfwWM1OXdpuM9+sZrw
+	 IJ01BrB54vOhuuijW7hZyIs6gjxE6TJ/qOYM1jx8iBio/Wnq9QM5H6FvlfGUcoSrvO
+	 dOV4Wfh0TdgGhQKt4UTDKFjxfEBFu94I148JJB1d9ZjXbR+T2HnhwyAPn2NmT8FK+8
+	 wGMGfHdsd0soFN829jx54uXolCypTOYWGtomsZw++eg1fM6+umhDr3Al3nJdMXVDil
+	 vIQzQ7UScKnSQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alistair Francis" <alistair@alistair23.me>
+Cc: <bhelgaas@google.com>,  <rust-for-linux@vger.kernel.org>,
+  <lukas@wunner.de>,  <gary@garyguo.net>,  <akpm@linux-foundation.org>,
+  <tmgross@umich.edu>,  <boqun.feng@gmail.com>,  <ojeda@kernel.org>,
+  <linux-cxl@vger.kernel.org>,  <bjorn3_gh@protonmail.com>,
+  <me@kloenk.dev>,  <linux-kernel@vger.kernel.org>,
+  <aliceryhl@google.com>,  <alistair.francis@wdc.com>,
+  <linux-pci@vger.kernel.org>,  <benno.lossin@proton.me>,
+  <alex.gaynor@gmail.com>,  <Jonathan.Cameron@huawei.com>,
+  <alistair23@gmail.com>,  <wilfred.mallawa@wdc.com>
+Subject: Re: [PATCH v5 00/11] rust: bindings: Auto-generate inline static
+ functions
+In-Reply-To: <20250107035058.818539-1-alistair@alistair23.me> (Alistair
+	Francis's message of "Tue, 07 Jan 2025 13:50:47 +1000")
+References: <PsAMnW6hScU1fLV8ucb6wOkHECGXCrwXeSEfeVs3Hc-zbwrML674jGT8H_XNvWiF6EdymYJZSusanBrtAsZjAg==@protonmail.internalid>
+	<20250107035058.818539-1-alistair@alistair23.me>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 07 Jan 2025 12:47:10 +0100
+Message-ID: <878qrm6e2p.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1736248242.git.viresh.kumar@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Viresh,
+"Alistair Francis" <alistair@alistair23.me> writes:
 
-On Tue, Jan 07, 2025 at 04:51:33PM +0530, Viresh Kumar wrote:
-> Miguel / Danilo,
-> 
-> I would like to get some of this (if not all) merged now into the rust/dev
+> The kernel includes a large number of static inline functions that are
+> defined in header files. One example is the crypto_shash_descsize()
+> function which is defined in hash.h as
+>
+> ```
+> static inline unsigned int crypto_shash_descsize(struct crypto_shash *tfm)
+> {
+>         return tfm->descsize;
+> }
+> ```
+>
+> bindgen is currently unable to generate bindings to these functions as
+> they are not publically exposed (they are static after all).
+>
+> The Rust code currently uses rust_helper_* functions, such as
+> rust_helper_alloc_pages() for example to call the static inline
+> functions. But this is a hassle as someone needs to write a C helper
+> function.
+>
+> Instead we can use the bindgen wrap-static-fns feature. The feature
+> is marked as experimental, but has recently been promoted to
+> non-experimental (depending on your version of bindgen).
+>
+> By supporting wrap-static-fns we automatically generate a C file called
+> extern.c that exposes the static inline functions, for example like this
+>
+> ```
+> unsigned int crypto_shash_descsize__extern(struct crypto_shash *tfm) { re=
+turn crypto_shash_descsize(tfm); }
+> ```
+>
+> The nice part is that this is auto-generated.
+>
+> We then also get a bindings_generate_static.rs file with the Rust
+> binding, like this
+>
+> ```
+> extern "C" {
+>     #[link_name =3D "crypto_shash_descsize__extern"]
+>     pub fn crypto_shash_descsize(tfm: *mut crypto_shash) -> core::ffi::c_=
+uint;
+> }
+> ```
+>
+> So now we can use the static inline functions just like normal
+> functions.
+>
+> There are a bunch of static inline functions that don't work though, beca=
+use
+> the C compiler fails to build extern.c:
+>  * functions with inline asm generate "operand probably does not match co=
+nstraints"
+>    errors (rip_rel_ptr() for example)
+>  * functions with bit masks (u32_encode_bits() and friends) result in
+>    "call to =E2=80=98__bad_mask=E2=80=99 declared with attribute error: b=
+ad bitfield mask"
+>    errors
+>
+> As well as that any static inline function that calls a function that has=
+ been
+> kconfig-ed out will fail to link as the function being called isn't built
+> (mdio45_ethtool_gset_npage for example)
+>
+> Due to these failures we use a allow-list system (where functions must
+> be manually enabled).
+>
+> This series adds support for bindgen generating wrappers for inline stati=
+cs and
+> then converts the existing helper functions to this new method. This does=
+n't
+> work for C macros, so we can't reamove all of the helper functions, but we
+> can remove most.
+>
+> v5:
+>  - Rebase on latest rust-next on top of v6.13-rc6
+>  - Allow support for LTO inlining (not in this series, see
+>    https://github.com/alistair23/linux/commit/e6b847324b4f5e904e007c0e288=
+c88d2483928a8)
 
-You mean rust-dev or staging/dev?
+Thanks! Since Gary just sent v2 of the LTO patch [1], could you rebase
+on that and list it as a dependency? If you are using b4 there is a nice
+feature for that [2].
 
-> branch, since this stuff has been around for some time and many other
-> dependencies are already merged new (like OF, platform, device/driver). Please
-> suggest how can we move forward to get that done.
 
-Now that the device / driver, PCI and platform code has been merged, rust-device
-and rust-pci are obsolete. The only thing that's left that I keep merging into
-staging/dev is the DRM abstractions from the drm-misc tree. So, maybe we may
-just want to drop staging/dev?
+Best regards,
+Andreas Hindborg
 
-- Danilo
 
-> 
-> -------------------------8<-------------------------
-> 
-> This patch series introduces initial Rust bindings for two subsystems: cpufreq
-> and Operating Performance Points (OPP). The bindings cover most of the
-> interfaces exposed by these subsystems.
-> 
-> Included in this series is a sample `cpufreq` driver, `rcpufreq-dt`, which is a
-> duplicate of the existing `cpufreq-dt` driver. The `cpufreq-dt` driver is a
-> generic, platform-agnostic, device-tree-based driver used on many ARM platforms.
-> 
-> Currently, the implementation has been tested using QEMU, verifying that
-> frequency transitions, various configurations, and driver binding/unbinding
-> functions as expected. However, performance measurements have not been
-> conducted.
-> 
-> For those interested in trying these patches, along with a few dependencies,
-> they can be found at:
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
-> 
-> The series includes all the patches to make it work:
-> - few new APIs to cpufreq/OPP frameworks.
-> - Avoiding using BIT() macro in cpufreq core (we need to make Rust work with
->   it).
-> - Renaming of the cpufreq-dt platform device (this too needs to be fixed in
->   Rust).
-> - Basic Rust bindings for clk and cpumask layers.
-> 
-> The work is based on `staging/dev` from the Rust tree, which is derived
-> from v6.13-rc3.
-> 
-> V5->V6:
-> - Rebase over latest rust/dev branch, which changed few interfaces that the
->   patches were using.
-> - Included all other patches, which weren't included until now to focus only on
->   core APIs.
-> - Other minor cleanups, additions.
-> 
-> V4->V5:
-> - Rename Registration::register() as new().
-> - Provide a new API: Registration::new_foreign_owned() and use it for
->   rcpufreq_dt driver.
-> - Update MAINTAINERS file.
-> 
-> V3->V4:
-> - Fix bugs with freeing of OPP structure. Dropped the Drop routine and fixed
->   reference counting.
-> - Registration object of the cpufreq core is modified a bit to remove the
->   registered field, and few other cleanups.
-> - Use Devres for instead of platform data.
-> - Improve SAFETY comments.
-> 
-> V2->V3:
-> - Rebased on latest rust-device changes, which removed `Data` and so few changes
->   were required to make it work.
-> - use srctree links (Alice Ryhl).
-> - Various changes the OPP creation APIs, new APIs: from_raw_opp() and
->   from_raw_opp_owned() (Alice Ryhl).
-> - Inline as_raw() helpers (Alice Ryhl).
-> - Add new interface (`OPP::Token`) for dynamically created OPPs.
-> - Add Reviewed-by tag from Manos.
-> - Modified/simplified cpufreq registration structure / method a bit.
-> 
-> V1->V2:
-> - Create and use separate bindings for OF, clk, cpumask, etc (not included in
->   this patchset but pushed to the above branch). This helped removing direct
->   calls from the driver.
-> - Fix wrong usage of Pinning + Vec.
-> - Use Token for OPP Config.
-> - Use Opaque, transparent and Aref for few structures.
-> - Broken down into smaller patches to make it easy for reviewers.
-> - Based over staging/rust-device.
-> 
-> Thanks.
-> 
-> Viresh Kumar (15):
->   PM / OPP: Expose refcounting helpers for the Rust implementation
->   cpufreq: Add cpufreq_table_len()
->   cpufreq: Rust implementation doesn't parse BIT() macro
->   rust: device: Add few helpers
->   rust: Add bindings for cpumask
->   rust: Add bare minimal bindings for clk framework
->   rust: Add initial bindings for OPP framework
->   rust: Extend OPP bindings for the OPP table
->   rust: Extend OPP bindings for the configuration options
->   rust: Add initial bindings for cpufreq framework
->   rust: Extend cpufreq bindings for policy and driver ops
->   rust: Extend cpufreq bindings for driver registration
->   rust: Extend OPP bindings with CPU frequency table
->   cpufreq: Add Rust based cpufreq-dt driver
->   DO-NOT_MERGE: cpufreq: Rename cpufreq-dt platdev
-> 
->  MAINTAINERS                          |    2 +
->  drivers/cpufreq/Kconfig              |   12 +
->  drivers/cpufreq/Makefile             |    1 +
->  drivers/cpufreq/cpufreq-dt-platdev.c |    2 +-
->  drivers/cpufreq/rcpufreq_dt.rs       |  232 ++++++
->  drivers/opp/core.c                   |   17 +-
->  drivers/opp/opp.h                    |    1 -
->  include/linux/cpufreq.h              |   27 +-
->  include/linux/pm_opp.h               |    6 +
->  rust/bindings/bindings_helper.h      |    5 +
->  rust/helpers/cpufreq.c               |   16 +
->  rust/helpers/cpumask.c               |   35 +
->  rust/helpers/helpers.c               |    2 +
->  rust/kernel/clk.rs                   |   48 ++
->  rust/kernel/cpufreq.rs               | 1079 ++++++++++++++++++++++++++
->  rust/kernel/cpumask.rs               |   85 ++
->  rust/kernel/device.rs                |   21 +
->  rust/kernel/lib.rs                   |    6 +
->  rust/kernel/opp.rs                   |  886 +++++++++++++++++++++
->  19 files changed, 2468 insertions(+), 15 deletions(-)
->  create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
->  create mode 100644 rust/helpers/cpufreq.c
->  create mode 100644 rust/helpers/cpumask.c
->  create mode 100644 rust/kernel/clk.rs
->  create mode 100644 rust/kernel/cpufreq.rs
->  create mode 100644 rust/kernel/cpumask.rs
->  create mode 100644 rust/kernel/opp.rs
-> 
-> -- 
-> 2.31.1.272.g89b43f80a514
-> 
+[1] https://lore.kernel.org/all/20250105194054.545201-1-gary@garyguo.net/
+[2] https://b4.docs.kernel.org/en/latest/contributor/prep.html#working-with=
+-series-dependencies
+
