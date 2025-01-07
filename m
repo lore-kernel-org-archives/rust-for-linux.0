@@ -1,159 +1,93 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B801E2615
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jan 2025 10:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9CC1E3DE7;
+	Tue,  7 Jan 2025 10:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736244697; cv=none; b=uPqOMWqdzrKHDlV0ea2YIG0tzYg17cLIwyiN8H8SCavMqQ4nHfP55HJoGaUk8zQf/TQZJAjQaIVU0TOkDRcAwuVUcpJmZcuZLu3R31YkOoBZaonWTeg10g52L0vOdt1SEp4WcQVIcyMVT4t899aYrl3kWJMUDfoT9EVPn1cnKd0=
+	t=1736244954; cv=none; b=o0vPv9es3MptQwdIg6Qv5IGOGxlm4QJrZ7Jt/Tek0oqPWl6kNPenDcOlNlzuMa9fPAWgT6hMkrJ3CZ7LLv9Mz7yTXaxMiNN9ZAX3HF3e2bNSPHcZEP6fI3kFrJBF7+GxuLRKOdBEWA2dai5T2aMis8Xj+rSp8VDddUxAM7VePGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736244697; c=relaxed/simple;
-	bh=o3IfCcJs8R6rNBKJN/1m7j1H9Uzw9S63JvNX4Op2hE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A6jQloT6SCib43jga0Z6bwbuXqIjjYvEa8V0zmk/UfxXfYdoWakXglcVbEr1yuLgTkWbE7Z97jxIp/hPhU/dmFH1sHG+d/F/VsEI2JHIr+Ngls2huvuXZIL91p6L/J2QrO2bSOL90Bwd5zk4bBfZNl9w+pzabJFyjQhFMaG6MCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HveJ+TdA; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736244954; c=relaxed/simple;
+	bh=kt8kTVh53GL0EVtDdL/LiO9PfUAI+F1mQTgxGJrcRZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XKN8XAOUpDa45LDLBlnWXIdutIlvYsq+5ZbbdkhHCiHaV9abVdTepER1TJG1hkKuzIbme7Qa/Df41vn1lRfguypIrn6YBcADi+xAK0N7cGYebmd0GBuBMPMFLeiL5n2/gRevbRfbZsaOHxtIlpjwZTTYTHcN3JXVd59A9ffww/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXtzj4Nd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HveJ+TdA"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3862a921123so10331550f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jan 2025 02:11:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736244693; x=1736849493; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tToGeoZK6CqWKTsOxe2fwO1OtfKXuCyA66/ItVRVwZk=;
-        b=HveJ+TdARvqpyZTD8d3NcC7/hkT6hPJPhfsb1akKzeOOFJ3bIKWX/L5WpytlazEwb4
-         Lod9OAuDOtduaofwISkxuvIfy4+sKhSKTRcJ9vomgtE/JbOpooc4LBA9HyEmX/pnWyRZ
-         5+xC56MOXhMx6ZmheR1PQond2SNtZSfJnbLT4AmrslpVwWzsBy4gKSaXDbk0S+LdnW/6
-         MCHR7tSIFreEEFsBVmSJyT/0qZPRCqVQfecAyPvN6/GmZP5XbGrRy71chQBTE9HcVTm8
-         KoVTKBZSsRsgMn0xbPDqfjI5xCTdZPX2Ad4BEjeus8MZb/cthWYnEHh9IzhE7O4EjAP9
-         fh6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736244693; x=1736849493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tToGeoZK6CqWKTsOxe2fwO1OtfKXuCyA66/ItVRVwZk=;
-        b=xDhfigt+h2PvpGLXjq4G7l9XaOmL1mkYR2YNho7rl+ENzIo9a/06IFF4D8BdbwwljS
-         oyAT3fZ+31exmbHxIDldyZK5cu/fcrAlQDLxaukPg5q/iw/WYZgdxUglp6NXj+kgEG6S
-         pYSY4madbh9XuzZvW+dv7WYi+K2FBq1dBJ4EgQKibYrG2lWCNTuAEbhlWoXLMFuovfDm
-         i1xWPMTn28k6rsoTSuLy3Kr27DZ6fL+e9wKrHlgc38f7o322V58gp6lgIPbrvuLOZzaz
-         XhMXuGbhxoxTtLdBDpB41HdLUZ7Q8u3tLZZT9CIudfrrLAmA2SorfcCwbqTUZ8pbaNEX
-         wXyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWsdlwN/CZOA8hR3uSuVxc36R5UKc50MPdOEvnTCgGdKhbjdx3cBBEL2m4FHDONnb4EAWm7Kbh5i1BT+9kHGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpDSwCf+K4ETGa7DmjD3nJ45GbDoeqJnanKdh8zJ5hkrfn2wrI
-	8RfH/O5/TK6ZlULaHAc2JMK2TkWbGy/Az2xQcoUH1fEP6pr6Tzp1ZsDqBqMX82pzAblpqyr7XFf
-	FfKZxE0j6+jRRYg6ivU9JrmBMloeqZeSrGTGS
-X-Gm-Gg: ASbGncv7KlouOSfLpyVUtf/YQ8hEYML9PDkCajNrQwf4ZoJBh1WDEdLIwGeHggBpBug
-	mc3WFIGFj2kaCx2ZgFwne9p92qRM1bmQKmGmS+bjMzpAppbWdp0OhCMw9Ltpf1xSLFTd1
-X-Google-Smtp-Source: AGHT+IFb6kAhNCeDYhA+1zOewtDsfVA0bM7fKteqNdW4Fgvl9nCwChlBL5BUShV+lE/eA8OCPQMrBQg8TwGo0r64YQU=
-X-Received: by 2002:a5d:59ab:0:b0:385:fd31:ca31 with SMTP id
- ffacd0b85a97d-38a223fd39fmr60227828f8f.53.1736244692669; Tue, 07 Jan 2025
- 02:11:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXtzj4Nd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A6BC4CED6;
+	Tue,  7 Jan 2025 10:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736244953;
+	bh=kt8kTVh53GL0EVtDdL/LiO9PfUAI+F1mQTgxGJrcRZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SXtzj4Ndk+cWfddOoP/YcgyIpl+ubCyz/KfvHjtcLGg8TxKAEjBsNxN55P3zzWynN
+	 qXzXKjY850YAKqheOsWGWvxFFc9Kqqy8xGpQuQKIfSWO7LICn6hNqhBOduJ3vm5TEf
+	 KQTT92D/nV1jfzXbXlM53ooW4wuHk8zAIb+xr3xq8MxGFQU/YkVyUXwGT8vrsrud6P
+	 g65IhS+VV4W/K0hEmDdVawY+crs7VpsOAkRwWapqSqwOZcDkWlcu5Qplj8PjlqiNRw
+	 abBxYg5veKnoXHHoqksMSahNA5QAzLszY18Fuo53qffe3hIBvIUp72J4CjKpMc3Awz
+	 SfGZ5IdV+s0zA==
+Date: Tue, 7 Jan 2025 11:15:47 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] rust: alloc: make `ReallocFunc::call` inline
+Message-ID: <Z3z-0xLgUvPcVTO8@pollux>
+References: <20250105194054.545201-1-gary@garyguo.net>
+ <20250105194054.545201-4-gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103164436.96449-1-dakr@kernel.org> <Z3vC6MzIG7zN8zBT@phenom.ffwll.local>
- <Z3z8Ra2PUQjL91kn@pollux>
-In-Reply-To: <Z3z8Ra2PUQjL91kn@pollux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 7 Jan 2025 11:11:20 +0100
-Message-ID: <CAH5fLgjvP1=aaw9hC8M6L=0uWO+-z+RkC8aW+pn6Z7SkSn03+Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] devres: add devm_remove_action_nowarn()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
-	tmgross@umich.edu, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250105194054.545201-4-gary@garyguo.net>
 
-On Tue, Jan 7, 2025 at 11:05=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Mon, Jan 06, 2025 at 12:47:52PM +0100, Simona Vetter wrote:
-> > On Fri, Jan 03, 2025 at 05:44:30PM +0100, Danilo Krummrich wrote:
-> > > devm_remove_action() warns if the action to remove does not exist
-> > > (anymore).
-> > >
-> > > The Rust devres abstraction, however, has a use-case to call
-> > > devm_remove_action() at a point where it can't be guaranteed that the
-> > > corresponding action hasn't been released yet.
-> > >
-> > > In particular, an instance of `Devres<T>` may be dropped after the
-> > > action has been released. So far, `Devres<T>` worked around this by
-> > > keeping the inner type alive.
-> > >
-> > > Hence, add devm_remove_action_nowarn(), which returns an error code i=
-f
-> > > the action has been removed already.
-> > >
-> > > A subsequent patch uses devm_remove_action_nowarn() to remove the act=
-ion
-> > > when `Devres<T>` is dropped.
-> > >
-> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > ---
-> > >  drivers/base/devres.c  | 17 ++++++++++++-----
-> > >  include/linux/device.h | 18 +++++++++++++++++-
-> > >  2 files changed, 29 insertions(+), 6 deletions(-)
-> > >
-> > > diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-> > > index 2152eec0c135..d59b8078fc33 100644
-> > > --- a/drivers/base/devres.c
-> > > +++ b/drivers/base/devres.c
-> > > @@ -750,25 +750,32 @@ int __devm_add_action(struct device *dev, void =
-(*action)(void *), void *data, co
-> > >  EXPORT_SYMBOL_GPL(__devm_add_action);
-> > >
-> > >  /**
-> > > - * devm_remove_action() - removes previously added custom action
-> > > + * devm_remove_action_nowarn() - removes previously added custom act=
-ion
-> > >   * @dev: Device that owns the action
-> > >   * @action: Function implementing the action
-> > >   * @data: Pointer to data passed to @action implementation
-> > >   *
-> > >   * Removes instance of @action previously added by devm_add_action()=
-.
-> > >   * Both action and data should match one of the existing entries.
-> > > + *
-> > > + * In contrast to devm_remove_action(), this function does not WARN(=
-) if no
-> > > + * entry could have been found.
-> >
-> > I'd put a caution here that most likely, using this is a bad idea. Mayb=
-e
-> > something like:
-> >
-> > "This should only be used if the action is contained in an object with
-> > independent lifetime management, like the Devres rust abstraction.
-> > Anywhere is the warning most likely indicates a driver bug."
->
-> Yes, I thought of something similar too, but wasn't quite sure if it's ne=
-eded.
-> At least for me, if something has the postfix "nowarn", it already makes =
-me
-> wonder if I should really use it.
->
-> I'll add a paragraph.
->
-> >
-> > At least I really can't come up with a reasonable design in a C driver
-> > that would ever need this.
->
-> I tried, but couldn't either. The only thing I could think of was a revoc=
-able
-> thing in C.
+On Sun, Jan 05, 2025 at 07:40:06PM +0000, Gary Guo wrote:
+> This function can be called with different function pointers when
+> different allocator (e.g. Kmalloc, Vmalloc, KVmalloc), however since
+> this function is not polymorphic, only one instance is generated,
+> and function pointers are used. Given that this function is called
+> for any Rust-side allocation/deallocation, performance matters a lot,
+> so making this function inlineable.
+> 
+> This is discovered when doing helper inlining work, since it's discovered
+> that even with helpers inlined, rust_helper_ symbols are still present
+> in final vmlinux binary, and it turns out this function is inhibiting
+> the inlining, and introducing indirect function calls.
+> 
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Potentially if there are two cleanup paths that could run in parallel,
-they could use this to avoid needing to synchronize which one removes
-it?
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-Alice
+> ---
+>  rust/kernel/alloc/allocator.rs | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> index 439985e29fbc..aa2dfa9dca4c 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -80,6 +80,7 @@ impl ReallocFunc {
+>      /// This method has the same guarantees as `Allocator::realloc`. Additionally
+>      /// - it accepts any pointer to a valid memory allocation allocated by this function.
+>      /// - memory allocated by this function remains valid until it is passed to this function.
+> +    #[inline]
+>      unsafe fn call(
+>          &self,
+>          ptr: Option<NonNull<u8>>,
+> -- 
+> 2.47.0
+> 
