@@ -1,163 +1,233 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822B818A6AC;
-	Mon,  6 Jan 2025 17:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC6A86355;
+	Tue,  7 Jan 2025 03:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736185364; cv=none; b=ZG++GbZJx7G2E/g1pA8kMVBo57r+oyzOz8lie9MRQ3+pKUYMraDCL1rfZlDS8CWTdJZwAOWUwFybNOu3EG0ZexXfhitd7LFldyUPgPPiyCq2YR44OXhR6XrpAiZCYU2xn+W0Gs6Pe6Uy3Be74xavS5WerwV2rarcTmR9cI18OSQ=
+	t=1736221878; cv=none; b=taX20neHG2IJG6oIHX4tvE1G65o0ws2P/MqMi4xMXUvXB5mFw/Ag2DH0TF+jIHIlK9BLr0C33BRtE6b4c9wtElU1aB26d9CG60EZSoUkPvpfnsK61ZMMmVBzmXb+JTY7ETozi2xhy91UpBC6tbPOXiTKGE9k0+hSVVPz7Yp18+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736185364; c=relaxed/simple;
-	bh=euNe+uI/PgOIa7aGEaXUnViMhKcy7CDB1HKJkQabzVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uqxt1Glnlqf85Xp7vSd+l+2vreTsAaPmfDOM/gJoeukXcYIN00tHL/VMMag1uH+9WOLqA+hiEi8amv4jaeQtgju8l5J9LZLquOUukz5WuqO77AMItZ+uoEktHbGg7nzrra+OJKsDGM+FztWmWfutpq1fEHvxHsPHvgg7yLF6jIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mkn/qLhg; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736221878; c=relaxed/simple;
+	bh=a7eWzuS4iRVIloChj1QBeF0bIMWYs5e9Ne/q9iDPdaM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=af1T8N0/UlDwpl+4fipWnroeREmEkc2jPdZPNaQuyyemEL+i+DW1kOpwX981AGtgU7mUlpscStiUSOzjiFgf1dd26sVAjHLLnuXL4/xR8EvScROwtY2l2sQU6ARwSzxbJi91zxLtifyrX4rBqPG0AGzCuad/YQQA39ceJAPSEdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me; spf=pass smtp.mailfrom=alistair23.me; dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b=VQcdDkmD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=p5zi/eu/; arc=none smtp.client-ip=202.12.124.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alistair23.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alistair23.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mkn/qLhg"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7b702c3c021so1284953785a.3;
-        Mon, 06 Jan 2025 09:42:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736185361; x=1736790161; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uQuQO9Rm3yTV+CxAoCi/zzgut6k6eBAAVPLnTwUskl4=;
-        b=Mkn/qLhga9y2ngWFjxHJZuLvvI/jft/mu2cOObo20KKnSzQhk7yoiujKicVTy/BH/w
-         gCgGZONMtqcWJvFWZA09252wt44j/tWnS2eStuPSJQWR51IStApsuvQa6i9VKE1/UIZV
-         maMkpnZl291m0Hu65iYCJhFdgVpBfT9t77ZgAHTbgT5mmZdvIc4f9j6Bc2lOqq5Gt2Fm
-         ex2EG0Mu7vXwUPiVS+0AYXSGJ17jshkOebxjXiC/FCEldnjoIOlrpbyP7InO+/CZVzuQ
-         LDcx1btdWvwcVPq3SqeZBA9NJn6s8qQn4C5KHrzEZ9CVV1103FO/ocK0vGlUtEBNt221
-         Xlqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736185361; x=1736790161;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uQuQO9Rm3yTV+CxAoCi/zzgut6k6eBAAVPLnTwUskl4=;
-        b=LAS7JNhZYRx0rbEt4x0n7e3CmmCC4DBs6ZAZwRuXr5ZuRk+LC5ZPiTYFMU8l0kwExt
-         wCt60KDt/1u7ijoxGEgq909KLaXJQi3CeZJFLp98rgBLPNkJkk/4tC5q2uId2/tYwfef
-         vSD2/2mrFGLnW3hfB6HwGHRuAwcNRtTtivIVxxqCsvfTG0D+wB4ZGEXm3zLZqeHPL4gb
-         Lf0G/0mXawVr76WqnRiiTcwhQV0s/7H06L0TOnAADATP2LibxgIsluc14ih02otouJIz
-         TtTSnpHZp9osxdjr8rxt2VhFhOSjzHmUh8ItPR4pD0s/R9okni7mLs/fNBmITs7ytCjO
-         72ag==
-X-Forwarded-Encrypted: i=1; AJvYcCVS1YahzKI569jZru/foI5X7WPocLZseq5hH3CESmA1djPLjYJK+EhlLun5Bx3A1Z+BGlCST6NqgUSsLypq2Kk=@vger.kernel.org, AJvYcCXfz0moPJrkiiQBvGMdzz0eOyMs+MyXL/VHDxc4CiQbSFMHPWiRLdtjBGBmuSiGj8mGrsE/jGuCrNP2tjw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJBw8+ZlOLnsMRyd2kIZW4qdeYO+s3f302HalJjPtaFbN1ONRh
-	e541r0ArKoD77TQWrENAgKtlLPtsYAFfTHxFBYzLpviq5v4Ety6k
-X-Gm-Gg: ASbGncvU4lhVaPbHG0FSbCTUNIKOiTb+7TggZwC65h8tJ6j3hwYIg6QjDSlkR1qtj7E
-	5RzuvqJ3wqTzdlrhTMArMLVTiAcCxmaYueMgsKytghAFWbQXX9+ancm8jgLqwiYIDcom66HPjfm
-	/fTcLRAA1uquYMtoFj6O7FhCloSDDA0yS54wGDWlj2W3Rl+8Hz155ja8cB9qFzeLnx/Ynu/Ik/r
-	L6L8iQdmmezXbn6icK3fai+NPc+/B547qVzxbynujeMwkVQmZyE2RSujWW/fYkBeVQM3GWMAM+U
-	RLSyxPc0j04IlFAufYaZtgwnAGMQLG5HO8qbCBFUyxajKfw=
-X-Google-Smtp-Source: AGHT+IEHv9MpzBGIYb2QQv8o4gZu+xwb/nICclZ5JDGhNewocsxJm40gIGUHKlkceb1Ekth/oBjqmQ==
-X-Received: by 2002:a05:620a:618e:b0:7b7:342:a0a5 with SMTP id af79cd13be357-7b9ba821e36mr10703968485a.55.1736185361368;
-        Mon, 06 Jan 2025 09:42:41 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac2e89a4sm1522946485a.50.2025.01.06.09.42.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2025 09:42:40 -0800 (PST)
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 35B8F1200043;
-	Mon,  6 Jan 2025 12:42:40 -0500 (EST)
+	dkim=pass (2048-bit key) header.d=alistair23.me header.i=@alistair23.me header.b="VQcdDkmD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="p5zi/eu/"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5E6B925400CC;
+	Mon,  6 Jan 2025 22:51:13 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Mon, 06 Jan 2025 12:42:40 -0500
-X-ME-Sender: <xms:EBZ8Z-v6AwC8fQKDhN1HuuB72X7Kop6SL_YD66aVN3NpMltcfojvsQ>
-    <xme:EBZ8ZzcUu_dMqeD-FYwkNa_y1UcXMFc6-Ytb6VnN2cvtOBwLnrettKYydVuw9GAzl
-    fPaqNEgrosLmdYPEw>
-X-ME-Received: <xmr:EBZ8Z5xd5drcbXkjx01Auco-8QaqvoCiuke6lONrrZ9CmUE6UJqGztmR_Uk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegtddguddtvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpd
-    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgig
-    rdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhse
-    hprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhes
-    phhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghp
-    thhtohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopehnrghthhgrnh
-    eskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:EBZ8Z5Nvdh76sXizqpj0pD9txl_1jHBA6dw0zw3gd3YDY1B_yjoRlQ>
-    <xmx:EBZ8Z-9Xc_KzmcY2xUyWoDBOT-M5KWrnqR4xEn3-nngePNqxRcYzVg>
-    <xmx:EBZ8ZxXHV68iJkZZRMLFR88YO3HDBqRNg6kLdIPIK9psSuI2nwTMZA>
-    <xmx:EBZ8Z3czNrWw4GdkWs1x9x0oPWttSO0N6yUq8B2DZK4Ebe-AYSosZg>
-    <xmx:EBZ8Z4egtYbmKqlyR-ohWGPHhSieSb8rio3Pt1oF0ACjD33YzNrBvt4u>
-Feedback-ID: iad51458e:Fastmail
+  by phl-compute-09.internal (MEProxy); Mon, 06 Jan 2025 22:51:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alistair23.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:message-id:mime-version
+	:reply-to:subject:subject:to:to; s=fm2; t=1736221873; x=
+	1736308273; bh=s5LdnuzravPpMyZJ3rXVmIMgg5hQJL9QGfm6/zJbeI4=; b=V
+	QcdDkmDOznEdw8W/ivj587CqnuFnxa8/dexkYEdwKzrlNpTqXd2vNzrJFE9YHbTi
+	lIjUxp0QbKEi+F11hn4KZpEwNBQSyvG/BcqrnaexAEEp1616qQLngyh64umtK/mr
+	ugRmOJklFOebMPJ58j2BV9yQl5McZ7MOikFW7BFQrPO9jOOcVGxqgYR1omCcowQU
+	QnUaRBdT5l4PTOO2XJ2YBa1osJrHJysLKy/BuDeBp8sVyDFzC8X8LPITGeJwr6ZC
+	P/qA7X/5se4eeAl9qagRG2Jgy0NC4Y/TFlNYRIroWyCdnadzm9SSksBOgr0N0ASI
+	PFhohp4OUTeXyWX7kf3zw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1736221873; x=1736308273; bh=s5LdnuzravPpMyZJ3rXVmIMgg5hQ
+	JL9QGfm6/zJbeI4=; b=p5zi/eu/2UchQM/Wzl2ZdgNM0obZFU9MINZF1Um3jQA3
+	cWDXY1Y3s7cXtOBlK06AO458Yg5bSKPPZ99FdeKpBGJmy/g6n1b7QJ56wtfAT7XZ
+	AITXw+MRcb7uKY3juPZSIRQYeNmM7uV/9XmsZuMWMOIZr+vI0Smw6X0/i/0avDTC
+	TPtOnTwTu8tCgu5dMZ5wMq3mxaCrpkeKu14Q1SrOjQR8pG1FZcc+QR4R5dvn2dEi
+	O9bzNFzsm4XGQ9HMCyQZhXGDZaQuYI1EWICmzmGUQQeV72c+5kZjHyHboxMGxvgL
+	5OXsCqLHTIlems2D/BuqB7PmPWB0yhTRCYiU8hfOTw==
+X-ME-Sender: <xms:r6R8Z9GqWmoxk9FzkzUpFNiBttdQNqCH3IwLwBE18zSfa6t6b8NwZg>
+    <xme:r6R8ZyWdtLwMYx5suScKCNEmKNIz6777xF0DHe8pk0ECidqukU9TafEWe3RmuNVqL
+    tmr4xFejYA81HCg6S0>
+X-ME-Received: <xmr:r6R8Z_J-kokoY7XzjjkwVvegz958lEvIcLpSRnKMJXSBIixEiSRe_G07QDZDD8MXdRc53zhkxSo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudeguddgieeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevuf
+    ffkffogggtgfesthekredtredtjeenucfhrhhomheptehlihhsthgrihhrucfhrhgrnhgt
+    ihhsuceorghlihhsthgrihhrsegrlhhishhtrghirhdvfedrmhgvqeenucggtffrrghtth
+    gvrhhnpefggfdufedvfeelkeeitdfgteeivdeuvdeivedtkedtuedvvdeffefgieeilefg
+    keenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghlihhsthgrihhrsegrlhhishhtrghirhdv
+    fedrmhgvpdhnsggprhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehruhhsthdq
+    fhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehluh
+    hkrghsseifuhhnnhgvrhdruggvpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhn
+    vghtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
+    dprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepsgho
+    qhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtgiglhesvhhgvghrrdhkvghrnhgv
+    lhdrohhrgh
+X-ME-Proxy: <xmx:r6R8ZzHlaFk-bWuwqZp1qbmcd0L-AedpuenrQ1tfLg9xY7ZcMK7zBQ>
+    <xmx:r6R8ZzVgA1NUOh-EkPoECxyMB3swEOr9MZmc27ZFYMJMtMgNPZoGbg>
+    <xmx:r6R8Z-Mwooi_smVLOUJx_knx5s4_yLNZprTpV9Dkx2fdSMKOssLs2A>
+    <xmx:r6R8Zy1U3ELkeZh70EzNfhULhZOgP6Fr7xP7zSTpbEr_7IgQ_AF3-Q>
+    <xmx:saR8Z5GBeka_e7N9GGmSDBUfEXUp-_fe5vfJVIj7gz4FaBYTcFnz63X5>
+Feedback-ID: ifd214418:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 Jan 2025 12:42:39 -0500 (EST)
-Date: Mon, 6 Jan 2025 09:42:38 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] rust: alloc: make `ReallocFunc::call` inline
-Message-ID: <Z3wWDgSe5D-Pc1Cf@tardis.local>
-References: <20250105194054.545201-1-gary@garyguo.net>
- <20250105194054.545201-4-gary@garyguo.net>
+ 6 Jan 2025 22:51:03 -0500 (EST)
+From: Alistair Francis <alistair@alistair23.me>
+To: bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org,
+	lukas@wunner.de,
+	gary@garyguo.net,
+	akpm@linux-foundation.org,
+	tmgross@umich.edu,
+	boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	linux-cxl@vger.kernel.org,
+	bjorn3_gh@protonmail.com,
+	a.hindborg@kernel.org,
+	me@kloenk.dev,
+	linux-kernel@vger.kernel.org,
+	aliceryhl@google.com,
+	alistair.francis@wdc.com,
+	linux-pci@vger.kernel.org,
+	benno.lossin@proton.me,
+	alex.gaynor@gmail.com,
+	Jonathan.Cameron@huawei.com
+Cc: alistair23@gmail.com,
+	wilfred.mallawa@wdc.com,
+	Alistair Francis <alistair@alistair23.me>
+Subject: [PATCH v5 00/11] rust: bindings: Auto-generate inline static functions
+Date: Tue,  7 Jan 2025 13:50:47 +1000
+Message-ID: <20250107035058.818539-1-alistair@alistair23.me>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250105194054.545201-4-gary@garyguo.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jan 05, 2025 at 07:40:06PM +0000, Gary Guo wrote:
-> This function can be called with different function pointers when
-> different allocator (e.g. Kmalloc, Vmalloc, KVmalloc), however since
-> this function is not polymorphic, only one instance is generated,
-> and function pointers are used. Given that this function is called
-> for any Rust-side allocation/deallocation, performance matters a lot,
-> so making this function inlineable.
-> 
-> This is discovered when doing helper inlining work, since it's discovered
-> that even with helpers inlined, rust_helper_ symbols are still present
-> in final vmlinux binary, and it turns out this function is inhibiting
-> the inlining, and introducing indirect function calls.
-> 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+The kernel includes a large number of static inline functions that are
+defined in header files. One example is the crypto_shash_descsize()
+function which is defined in hash.h as
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+```
+static inline unsigned int crypto_shash_descsize(struct crypto_shash *tfm)
+{
+        return tfm->descsize;
+}
+```
 
-This should go in even without the first 2 patches, right?
+bindgen is currently unable to generate bindings to these functions as
+they are not publically exposed (they are static after all).
 
-Regards,
-Boqun
+The Rust code currently uses rust_helper_* functions, such as
+rust_helper_alloc_pages() for example to call the static inline
+functions. But this is a hassle as someone needs to write a C helper
+function.
 
-> ---
->  rust/kernel/alloc/allocator.rs | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index 439985e29fbc..aa2dfa9dca4c 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -80,6 +80,7 @@ impl ReallocFunc {
->      /// This method has the same guarantees as `Allocator::realloc`. Additionally
->      /// - it accepts any pointer to a valid memory allocation allocated by this function.
->      /// - memory allocated by this function remains valid until it is passed to this function.
-> +    #[inline]
->      unsafe fn call(
->          &self,
->          ptr: Option<NonNull<u8>>,
-> -- 
-> 2.47.0
-> 
+Instead we can use the bindgen wrap-static-fns feature. The feature
+is marked as experimental, but has recently been promoted to
+non-experimental (depending on your version of bindgen).
+
+By supporting wrap-static-fns we automatically generate a C file called
+extern.c that exposes the static inline functions, for example like this
+
+```
+unsigned int crypto_shash_descsize__extern(struct crypto_shash *tfm) { return crypto_shash_descsize(tfm); }
+```
+
+The nice part is that this is auto-generated.
+
+We then also get a bindings_generate_static.rs file with the Rust
+binding, like this
+
+```
+extern "C" {
+    #[link_name = "crypto_shash_descsize__extern"]
+    pub fn crypto_shash_descsize(tfm: *mut crypto_shash) -> core::ffi::c_uint;
+}
+```
+
+So now we can use the static inline functions just like normal
+functions.
+
+There are a bunch of static inline functions that don't work though, because
+the C compiler fails to build extern.c:
+ * functions with inline asm generate "operand probably does not match constraints"
+   errors (rip_rel_ptr() for example)
+ * functions with bit masks (u32_encode_bits() and friends) result in
+   "call to ‘__bad_mask’ declared with attribute error: bad bitfield mask"
+   errors
+
+As well as that any static inline function that calls a function that has been
+kconfig-ed out will fail to link as the function being called isn't built
+(mdio45_ethtool_gset_npage for example)
+
+Due to these failures we use a allow-list system (where functions must
+be manually enabled).
+
+This series adds support for bindgen generating wrappers for inline statics and
+then converts the existing helper functions to this new method. This doesn't
+work for C macros, so we can't reamove all of the helper functions, but we
+can remove most.
+
+v5:
+ - Rebase on latest rust-next on top of v6.13-rc6
+ - Allow support for LTO inlining (not in this series, see
+   https://github.com/alistair23/linux/commit/e6b847324b4f5e904e007c0e288c88d2483928a8)
+v4:
+ - Fix out of tree builds
+v3:
+ - Change SoB email address to match from address
+ - Fixup kunit test build failure
+ - Update Rust binding documentation
+v2:
+ - Fixup build failures report by test bots
+ - Rebase on rust-next (ae7851c29747fa376)
+
+Alistair Francis (11):
+  rust: bindings: Support some inline static functions
+  rust: helpers: Remove blk helper
+  rust: helpers: Remove err helper
+  rust: helpers: Remove kunit helper
+  rust: helpers: Remove some page helpers
+  rust: helpers: Remove rbtree helper
+  rust: helpers: Remove some refcount helpers
+  rust: helpers: Remove signal helper
+  rust: helpers: Remove some spinlock helpers
+  rust: helpers: Remove some task helpers
+  rust: helpers: Remove uaccess helpers
+
+ Documentation/rust/general-information.rst | 10 +++---
+ rust/.gitignore                            |  2 ++
+ rust/Makefile                              | 37 ++++++++++++++++++++--
+ rust/bindgen_static_functions              | 32 +++++++++++++++++++
+ rust/bindings/lib.rs                       |  4 +++
+ rust/exports.c                             |  1 +
+ rust/helpers/blk.c                         | 14 --------
+ rust/helpers/err.c                         | 18 -----------
+ rust/helpers/helpers.c                     | 11 ++-----
+ rust/helpers/kunit.c                       |  8 -----
+ rust/helpers/page.c                        |  5 ---
+ rust/helpers/rbtree.c                      |  9 ------
+ rust/helpers/refcount.c                    | 10 ------
+ rust/helpers/signal.c                      |  8 -----
+ rust/helpers/spinlock.c                    | 15 ---------
+ rust/helpers/task.c                        | 10 ------
+ rust/helpers/uaccess.c                     | 15 ---------
+ rust/kernel/uaccess.rs                     |  5 +--
+ 18 files changed, 84 insertions(+), 130 deletions(-)
+ create mode 100644 rust/bindgen_static_functions
+ delete mode 100644 rust/helpers/blk.c
+ delete mode 100644 rust/helpers/err.c
+ delete mode 100644 rust/helpers/kunit.c
+ delete mode 100644 rust/helpers/rbtree.c
+ delete mode 100644 rust/helpers/signal.c
+ delete mode 100644 rust/helpers/uaccess.c
+
+-- 
+2.47.1
+
