@@ -1,137 +1,122 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09B81F2368
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jan 2025 11:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66581E9B0A;
+	Tue,  7 Jan 2025 11:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736248988; cv=none; b=jUUDUlOudpZTLckzp24fuhDJRUgnV8tLaNi7rh10S7EXDzc3do6PKu4/sHNwuAT+REVR43eoYdn7FyNykIcmK0hLFALBQRgp9y6fFmp8YHTL+85IVAEH3b/TjIsPOR6p7v7dCwadmD6lFK0vnLfkJ5X6Fw4lTZVK8wOMi8fQcvk=
+	t=1736249530; cv=none; b=ReI72ERie1gwLFyowa0XfVVWLwGtmJv8BuNDdBmyaXrmcGK1ymbb/dCwSDWJ5o0E4Ft01xng8+9y0hVQ0gbYBsvIcTxgsqXq2Eu/sKQ7cTTzSNc/EGrXA68rZwdckDoY3mq7nMOAfswx6k00ReH5W6r8JTwbvYryKeIOmziMgtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736248988; c=relaxed/simple;
-	bh=tFTJTbLEdeHvFXuVjX+TFVFRiMUYqNKqGsL8FVajwVU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kPT3I2bEDTyEDlbtoVn40UWQiJ7jYwo1w8aWAO4y8UiQecw+Q6RN/f0GCzZ0ktnba8YCwfum7BapiM9XPr8vMR/rkhRnF+TiT9i/euK0qlxUVCk7ce7EjZJXfwE0uqhOONbcD4yCJ9/82uEBzWNMA3qVONC1Okwaf32iojV4azg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f3mE8vAy; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1736249530; c=relaxed/simple;
+	bh=phn3hwLXnNphs7vvlhjVmpFho6Dc/2pwkrPxE1EmRDQ=;
+	h=From:To:Cc:Subject:In-Reply-To:Message-ID:References:Date:
+	 MIME-Version:Content-Type; b=SvGbozqq0Ly93+lTLYmoUHzydwpTf6g2G6oU6OizuIRE6kMwUN3F5A7gM6UaYQaC74EA2kxzx3KWkUnLt7czwLU1x2l1/aUIPV0NEQdEhIlvERKNjyf7p/EixzCwJKQSsfASp+fYOGFsyJWtkLioHbEPx/yLXwXi1bJlsllaTpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=owHFS/n6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f3mE8vAy"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2164b1f05caso219557465ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jan 2025 03:23:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736248984; x=1736853784; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H48pFuB51FzsnvAB5ojR6La/szgVG1aOsMJ1JHDym5o=;
-        b=f3mE8vAy+HZKjkJslPqmhOO7vcdGEfVzCTuQtpItjxphs+YvieIlkenKkqL7eNay1j
-         CQmSiia6QgFaln0iXi8YjPTMEk5ToOKuv55zsH7P82+qu2d/EcS0InH8AHzDEvNhjIvA
-         5K0MT978SDGOxPZzLzfRN2fjiQV5LBxE6UMDlHhl85ov6EcGsfwbR1RdFIOOnBJKY/60
-         l+/sim7XZvo43qdUVQU25UH4GrUMYmXsNsCqyJVwEA872y/QqbNuJxhwANDCUE1yvurH
-         Zh9jc7CNK8qtiDFjmC2nC+UfJt1UhV2GIj1NtjHDSElkSGEzi6rVaNnXCnv6OpLd11uy
-         oOqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736248984; x=1736853784;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H48pFuB51FzsnvAB5ojR6La/szgVG1aOsMJ1JHDym5o=;
-        b=gNrXwFSfbFec5KgjxMuEWg9tWemJ/8KZnuudxnVt86l8DxqVzZJJwnpMxvTVQW0Q5H
-         uRL2OmGy0gP0o1vcPdFdpfZfvykrcWUE+4/2sHomRl82XvxXMEhsQjILRveX6PrvlSBI
-         DdIcZ7hFRziZym7VFABEulMtZZt9Ldgxo3xpKC1dnh4ySGPV5JIDPYaRpvUtzwCSLb93
-         OlSmEiikkAOuery9Y1RdpF92j9ZabxMYfFhgyfJXf53w7J3fgHb2HFEMEuCHGL1+FuBh
-         H46ggkKgHt/ayoPck10dumZEgW1TFGAkBRLFibd5K7BZK5NKt6Mqrx0pkg0g4zXZf4Ep
-         hvBg==
-X-Forwarded-Encrypted: i=1; AJvYcCXplezgIS/kv16NLNlyDuWCs+BYTMCU9DvlN8pfUBvM2vvJRVzK7pHoX57Lblw/ORr4ht8aQzkegxXfKCjjSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/tuJUEC215JxrSS+xkHUwxPmGhf7IYtH3NSyVDfM366LUQ3Rk
-	pGEZENPNeVCYWFZiGveiNR5PRBAyD/HKQIIplhSbjkXgLRe0QgNypVZcquAPsX4=
-X-Gm-Gg: ASbGncvm7mgfS6Yjv3UIiQ24gUtUCJ1RHv9jkKMja8Rd8/v51PlICYh7hoJGenhRHNQ
-	knNCIiWIOsjmoBr3vrjaLJgrADTo8HXGAn2kZyhVRSfQFMSLpAXPPrd1vTSU9ukIqk/vSZbK+9U
-	SA74LK8l6NgkQY+K2Nl4OnO8XdPZAqQaiOxD0nsLkYernK269ZX9C78HAnOiDHV3xzC2onb8Cvf
-	MCcUGXupnrFaqzXMxcOYFO0VLhSYEo8dxYaxdnHWeiPrWL36tt3L72B56s=
-X-Google-Smtp-Source: AGHT+IE0VLVku8xsDJpwDp2mHFnWuLopMmkq2+92QaKH8cWC1XmAZlfGo1VglqLtglys6t3AAvvRhA==
-X-Received: by 2002:a17:902:cf07:b0:216:5561:70d7 with SMTP id d9443c01a7336-219e6f2702fmr1031684115ad.52.1736248984121;
-        Tue, 07 Jan 2025 03:23:04 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96eb83sm309145025ad.97.2025.01.07.03.23.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 03:23:03 -0800 (PST)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V6 15/15] DO-NOT_MERGE: cpufreq: Rename cpufreq-dt platdev
-Date: Tue,  7 Jan 2025 16:51:48 +0530
-Message-Id: <742d39ea8aa48790c2efbb79507e9d6255c82771.1736248242.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1736248242.git.viresh.kumar@linaro.org>
-References: <cover.1736248242.git.viresh.kumar@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="owHFS/n6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2136AC4CED6;
+	Tue,  7 Jan 2025 11:32:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736249529;
+	bh=phn3hwLXnNphs7vvlhjVmpFho6Dc/2pwkrPxE1EmRDQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=owHFS/n6PeQp48GHDuuV3BdrmJnB1h9pACV5ka2DTlgaTWJs8lHDzmIfKi1EoCegp
+	 +owCgOp4ucRTyv5YOylTU3pLPHMVBniJj2YxdlUIlLD9t+9pG5c6GN3quyGpvrRGng
+	 YjfQilR51YZ1gs0UDephTo17w7HCw1mHdpK4fj8Nn20WH+1n6GDZSOfkbk02o9xz7I
+	 DGNUewwA143ZBFarKwXmepGK7SoeAWmsNybztCzp0YSMmCrfELaAUA7cbucpnbdGVq
+	 qZi0Sx1SmIuz5es2Rh+dbR0gk+otWSrAA4+7ZZa+D+2aFug7wcurVwDnJ15VUmOT/s
+	 Jx//h8pvNWOVg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  =?us-ascii?Q?=3D=3Futf-8=3FQ=3FBj=3DC3=3DB6rn=3F=3D?= Roy
+ Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
+ <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Nathan Chancellor" <nathan@kernel.org>,
+  "Nick Desaulniers" <ndesaulniers@google.com>,  "Bill Wendling"
+ <morbo@google.com>,  "Justin Stitt" <justinstitt@google.com>,  "Masahiro
+ Yamada" <masahiroy@kernel.org>,  "Nicolas Schier" <nicolas@fjasle.eu>,
+  "Andrew Morton" <akpm@linux-foundation.org>,  "Dirk Behme"
+ <dirk.behme@de.bosch.com>,  "Tamir Duberstein" <tamird@gmail.com>,
+  "Christian Brauner" <brauner@kernel.org>,  "Martin Rodriguez Reboredo"
+ <yakoyoku@gmail.com>,  "Paul Moore" <paul@paul-moore.com>,  "Wedson
+ Almeida Filho" <wedsonaf@gmail.com>,  "Steven Rostedt (Google)"
+ <rostedt@goodmis.org>,  "Matt Gilbride" <mattgilbride@google.com>,
+  "Danilo Krummrich" <dakr@kernel.org>,  "Eder Zulian"
+ <ezulian@redhat.com>,  "Filipe Xavier" <felipe_life@live.com>,
+  <rust-for-linux@vger.kernel.org>,  <llvm@lists.linux.dev>,  "Kees Cook"
+ <kees@kernel.org>,  "Daniel Xu" <dxu@dxuuu.xyz>,
+  <linux-kbuild@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/3] kbuild: rust: provide an option to inline C
+ helpers into Rust
+In-Reply-To: <20250105194054.545201-3-gary@garyguo.net> (Gary Guo's message of
+	"Sun, 05 Jan 2025 19:40:05 +0000")
+Message-ID: <87msg26fxt.fsf@kernel.org>
+References: <20250105194054.545201-1-gary@garyguo.net>
+	<iBq_cLfbfAlkVpp_rSu0KOou6nPf2GahTQAxQVWuACzz5zggxHp-_AEzLnEl-ZnFZHLEVCudIZJNic7xI5G2mg==@protonmail.internalid>
+	<20250105194054.545201-3-gary@garyguo.net>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 07 Jan 2025 12:31:32 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The module! implementation in the Rust code expects a module name
-without a '-' symbol, else it fails to compile with following errors:
+"Gary Guo" <gary@garyguo.net> writes:
 
-error: expected one of `:`, `;`, or `=`, found `-`
-   --> drivers/cpufreq/rcpufreq_dt.rs:247:1
-    |
-247 | / module_platform_driver! {
-248 | |     type: CPUFreqDTDriver,
-249 | |     name: "cpufreq-dt",
-250 | |     author: "Viresh Kumar <viresh.kumar@linaro.org>",
-251 | |     description: "Generic CPUFreq DT driver",
-252 | |     license: "GPL v2",
-253 | | }
-    | |_^ expected one of `:`, `;`, or `=`
-    |
-    = note: this error originates in the macro `$crate::prelude::module` which comes from the expansion of the macro `module_platform_driver` (in Nightly builds, run with -Z macro-backtrace for more info)
+> A new Kconfig option, `RUST_INLINE_HELPERS` is added to allow C helpers
+> (which was created to allow Rust to call into inline/macro C functions
+> without having to re-implement the logic in Rust) to be inlined into
+> Rust crates without performing a global LTO.
+>
+> If the option is enabled, the following is performed:
+> * For helpers, instead of compiling them to object file to be linked
+>   into vmlinux, we compile them to LLVM IR.
+> * The LLVM IR is patched to add `linkonce_odr` linkage. This linkage
+>   means that the function is inlineable (effect of `_odr`), and the
+>   symbols generated will have weak linkage if emitted into object file
+>   (important since as later described, we might have multiple copies of
+>   the same symbol) and it will may be discarded if it is not invoked or
+>   all invocations are inlined.
+> * The LLVM IR is compiled to bitcode (This is step is not necessary, but
+>   is a performance optimisation to prevent LLVM from always have to
+>   reparse the same IR).
+> * When a Rust crate is compiled, instead of generating object file, we
+>   ask LLVM bitcode to be generated.
+> * llvm-link is invoked to combine the helper bitcode with the crate
+>   bitcode. This step is similar to LTO, but this is much faster since it
+>   only needs to inline the helpers.
+> * clang is invoked to turn the combined bitcode into object file.
+>
+> Some caveats with the option:
+> * clang and Rust doesn't have the exact target string. Manual inspection
+>   shows that they should be compatible, but since they are not exactly
+>   the same LLVM seems to prefer not inlining them. This is bypassed with
+>   `--ignore-tti-inline-compatible`.
+> * LLVM doesn't want to inline functions combined with
+>   `-fno-delete-null-pointer-checks` with code compiled without. So we
+>   remove this command when compiling helpers. I think this should be
+>   okay since this is one of the hardening features and we shouldn't have
+>   null pointer dereferences in these helpers.
+>
+> The checks can also be bypassed with force inlining (`__always_inline`)
+> but the behaviour is the same with extra options.
+>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-This must be fixed properly in the Rust code instead. Not to be merged.
 
-Not-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/cpufreq/cpufreq-dt-platdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index 2a3e8bd317c9..e69ff11eccbc 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -230,7 +230,7 @@ static int __init cpufreq_dt_platdev_init(void)
- 	return -ENODEV;
- 
- create_pdev:
--	return PTR_ERR_OR_ZERO(platform_device_register_data(NULL, "cpufreq-dt",
-+	return PTR_ERR_OR_ZERO(platform_device_register_data(NULL, "cpufreq_dt",
- 			       -1, data,
- 			       sizeof(struct cpufreq_dt_platform_data)));
- }
--- 
-2.31.1.272.g89b43f80a514
+Tested with downstream rnull tree, works as expected.
+
+Best regards,
+Andreas Hindborg
+
 
