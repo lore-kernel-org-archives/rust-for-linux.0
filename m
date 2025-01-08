@@ -1,179 +1,149 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5DD1F9439
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 12:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A081F2C44
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 13:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736341009; cv=none; b=jjB4F+uN0HIsndTc1CjyJXFuoEh/EI3YinbF8RHRCgPZHICq3My0hw/bwGv7lu+Kawf7RR6X4Cldum2o19/KqINwdCfFeXZn4iPQucuAa4GMlt4IEaUR5iNytXvV9FlEy3uQviJhrYlKyTCMoXSwfdhVvut5tDXbo0rwkKlAJRc=
+	t=1736342273; cv=none; b=s7dvRFdEparISe56fhLvgsKSduVa68Q2+sY5CeaGKmAlHqx2uRkqVodi1GyRh+Vr2qioAZYhLe4Xc6hfD51egkSmf0JcyGNhGj6/gOeta4xbLeqbDmcsdkCIwBftoj5RHw8pyGnAq4+T19cT3m+RtUu7XLDm1j5dnUSImYv3VeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736341009; c=relaxed/simple;
-	bh=Mt+Y+eAlI83vkVz0/uHM1GOoU0OcM2i3QBoRY9pzfhg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jyCo6V1sx8jm/upTkkzVQYXnwki9kqGxjYvi3AgMPnCchu+32EAG84SKOiZlEn3C21WTIK/eDRO/HAguFV+bUT8sWxiTsY4ZD1/8iaSXxvhsC7jC30I/DPI8HCrocLLaqOLx4roB5ViHv4BSPvKqLmGIPRNyH0Yr1Q36cn+uJlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Klf7ut55; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1736342273; c=relaxed/simple;
+	bh=02BI73ODJ3NSY6D4g3ax8aVdb0LQ8ylGtH5GsT0GjAc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OQnN9lQPMsUfp1dh1mjPHSB772upMFLzQVVUE6/KUvjTDi7flU98g1sbyuU2mkXE4W8OC2bWY5Fv5cHQgTZ+gvd57/8+kwPQzcGlry0D280OcUefxJWyXKxDeYe/zuT9Nd5MpBF6UMorMpGWjxHRd/wFogwddrMLv6EhFMcEhyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eHU8RraK; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Klf7ut55"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4361b0ec57aso165974985e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 04:56:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eHU8RraK"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43635796b48so5534515e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 05:17:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1736341006; x=1736945806; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kWo+GlKIigtpa34bkHtmr0MamXMbRLQ/pZ7GQzj+wuI=;
-        b=Klf7ut556MvNBqWRbjyDDKgo/0LoHg7yMyND07WCgI/0qKMQdTs4eLPBcclAoQcmDM
-         MarSHAYVu85iu7xi3340VhNwFiZ3btLWwgAAhu9/+vrYZjix5emaBGawxxDBR/vMBmCf
-         h1YomZSk4m20ZcJxDiS8Z8vQJpNJIpoixuTw4=
+        d=google.com; s=20230601; t=1736342269; x=1736947069; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=02BI73ODJ3NSY6D4g3ax8aVdb0LQ8ylGtH5GsT0GjAc=;
+        b=eHU8RraKbYheEvs/iNouYxQbLUUI/MmntjdoRC+44X0sDjynUzjfvATr63gL8J/A41
+         yg30EdAkvKzCL0nucts+MHuHYpC8FneTQRaM0bCc8V+OlS7ivdXmRnC0D9uWu0aiOWj0
+         Y37kGJ35BLNzXmlD7BYOSfGMWnQw9sPxM0B+TdvF1G3qr2LROBnsDfMnfaLGHQvXvmMm
+         Vaf5egGOsf4Re25wDhESfu5mu2LHFeHzYl5sb5GzPY50iL/p1Xxj1EeWxQjdg5YO7TZQ
+         xgTpY+G5XTcdCvkFU8GUEeE+nKmfdNWWgXQ7SyROESPWmXal4hQjtze7G3OrpSg0ch63
+         4OLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736341006; x=1736945806;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kWo+GlKIigtpa34bkHtmr0MamXMbRLQ/pZ7GQzj+wuI=;
-        b=TwrzRnFxFYt8dW1g3OCcvKzTS62oSIlEomZ98LQ6Z0vnyPAk5wuxw7uw1l+INotRs1
-         Cj/+GN6GGF/Euhw7zMeuR7XKHhQRa5rF+PD8wkGCbfFwaMtv066ToeR/AC3isEBOu4tX
-         5bmJRFyMjJev9uJEPPMsoTEVfRbkfSkxeEpZcKvAHCzDNMjR3anDMyoPtvTloddSu68K
-         poP0QE5bn/EkaBRIw32uRZXC8E8V40hcbmNnE93A4E3R+MwUYy+TMe310H9yHkY7uXqw
-         +lff2vg+FbOM4JC9igRDMkgW35gmKm5IBSqB2IbQrZhNnilZZXtoRafJ66T7Ouc+cJjp
-         /twQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUGTTw3GVo475HxazZyLBKYZPCwHo5FUkqB6HhAfTjwPeDYMKERz+uK+26im3OHZ/HTy7Y/aB5y+hxTFbn7w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF6tZlHjJlwBIVE2ExsQRCIgwFj5PjD7HK1RFJT48oO++v0Otc
-	v9ETYkDYL3RbIQtrIa5EoklHKGLCB7GpDoawDhyDojxVw+HkLM6Eo8j4CkkVZQk=
-X-Gm-Gg: ASbGncsxzgbCyzKzFrKoZBN6ZWyVkTKixr1hXd0VgClYJ+AnbWebGN/YAU+etsSQ+UW
-	6r3QkVQ+Qkd8/ZP1sLZ9IrUd5ut7DzQf3JcUiVxbGnFHqw9s5BOe7fYQkqV/C34pVh3CS+PIiXA
-	XA7V4WO2nNHXfq8p7YG6ZlyF5RW44Do6X7XBM3u+IzcTHVCLji/5ZQ/VmRPsUECJIww38TVCOMr
-	T4617BeBIC32f4t8GRRVbmTig/4IAtn/TrBOJCORcEAvEADXEy77h1MgkMUap4qufB+
-X-Google-Smtp-Source: AGHT+IFYUt0wdrIln88qUKqM/5Tl4MtyUA5lucQ+sLPiHIweT2zj1vcz3JMVtOBCX9RnY7ZqRFTTQg==
-X-Received: by 2002:a05:6000:1a8c:b0:382:4ab4:b428 with SMTP id ffacd0b85a97d-38a872d071cmr2236620f8f.8.1736341005164;
-        Wed, 08 Jan 2025 04:56:45 -0800 (PST)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e150sm52759253f8f.66.2025.01.08.04.56.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 04:56:44 -0800 (PST)
-Date: Wed, 8 Jan 2025 13:56:42 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] devres: add devm_remove_action_nowarn()
-Message-ID: <Z352Ctq6MN8LEDNl@phenom.ffwll.local>
-Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20250103164436.96449-1-dakr@kernel.org>
- <Z3vC6MzIG7zN8zBT@phenom.ffwll.local>
- <Z3z8Ra2PUQjL91kn@pollux>
- <CAH5fLgjvP1=aaw9hC8M6L=0uWO+-z+RkC8aW+pn6Z7SkSn03+Q@mail.gmail.com>
- <Z30AmzdLNaKVAIqV@pollux>
+        d=1e100.net; s=20230601; t=1736342269; x=1736947069;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=02BI73ODJ3NSY6D4g3ax8aVdb0LQ8ylGtH5GsT0GjAc=;
+        b=I5ZcRe6XH4p1FbiBgLZG6BuL4HQoaE47128gniyiW06WQx5YG6sVlbLjWHaUemK8ch
+         XBvEqqn2X060Ag9x+XvN2xzSD26blS2hzRdGFdRKM63M/rUkVyZpCrX0WZEfPjRVcRzE
+         HQFA6nMgweHnWcLdSU+YDsnRBx6pEVu1sjuEW2rM+Z5l6DuiEzTf5/Lij1sB7g5ydA5/
+         5VTwhCvqXc+feUBJ5Dm2dQl68Oivp4E+Uq4F//cgJCOnIvf0lRPU0djxnt/y1QzOWqBg
+         DuGE2gmYLmzRG8VAGuq5BKm2YR8zboE2URpN7S9/QYeVkvHL1JNpFlDDimVIf0XQMg0P
+         G+7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUqDDFFltxovE6/6pblJFUisHOtRCUtrKTrfxS/WWcqRnv/aNxpREaJ9/1Iv5V8N+xvYgHahlAHAk/UyGQ3lg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt08KfMTP0mSLwFK/Lm0HQH/JGR7y4jMwxKyeUz8Q4l/5uony8
+	cJl+j7ga2uujFUU44+oNOlv/V3FoipORP6ll3qEoO5NgGKMjTEhnNd18MLNV+b8OK8v6/W1yUT9
+	TzRj4OHiuAJIEwJEQbGZhMRkRTlvE1+XVhZut
+X-Gm-Gg: ASbGncvOOCBikTeYnhuYcs99oXUksjPrtbL6ZuQywsYD8KZbB+f2bG3NNxuOTU95uCC
+	MkqXptybNHr5mfn2YHSDjJeqCyBmVW9Wl0x6QBIsDEMZ3C2PFruIc9pkIl6DK6vq2DhxX
+X-Google-Smtp-Source: AGHT+IFOtUqt8ZE1fvdPDJY3VXEQ/wCwJWbaycCPngk/uZecNoXYrtfZZhmZgi6SJsNtdyDZHfVUSZnXtn2GLhpP0A8=
+X-Received: by 2002:a05:600c:4709:b0:431:15f1:421d with SMTP id
+ 5b1f17b1804b1-436dc2a2a45mr56793555e9.16.1736342268097; Wed, 08 Jan 2025
+ 05:17:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z30AmzdLNaKVAIqV@pollux>
-X-Operating-System: Linux phenom 6.12.3-amd64 
+References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
+ <20241213-module-params-v3-v3-4-485a015ac2cf@kernel.org> <pw5PzA4YGsu7j6ET_-OYE2oq9l7ixtTTGhHtxMxmMP5ggHxLrjzMkNMvcMVjGPhu7FpBb2duDD3bRbtMJZZHIw==@protonmail.internalid>
+ <CANiq72kb2ocNuE6n32vr4xCkZhZN0uPuCN3SFA1+Q5L+Ma4ByQ@mail.gmail.com>
+ <87y10jd8o0.fsf@kernel.org> <Tq7yfG7Ag6jqd_ns9qvfEn2KFLl_oJxBm6YwKDey8kbCE9-rDnkN84aW29C4_w1T6FkhDhzPsLeH0XYKe2WSSQ==@protonmail.internalid>
+ <CANiq72nBpVy911cVhNFM6teQ0EaE-xs0SB2Qx95O4=nKBdRDuQ@mail.gmail.com> <87tta9bhjz.fsf@kernel.org>
+In-Reply-To: <87tta9bhjz.fsf@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 8 Jan 2025 14:17:36 +0100
+X-Gm-Features: AbW1kvae-a57deeGCUnHscxFVkgRcLriyMrex3mZp3VYxQYmXdcRztZgPi4Fu5M
+Message-ID: <CAH5fLgjzf_C5KBd_UC4S=FS=SvR+GSO_t7NAkfRoYPAd9vZ2+g@mail.gmail.com>
+Subject: Re: [PATCH v3 4/4] rust: add parameter support to the `module!` macro
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Trevor Gross <tmgross@umich.edu>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 07, 2025 at 11:23:23AM +0100, Danilo Krummrich wrote:
-> On Tue, Jan 07, 2025 at 11:11:20AM +0100, Alice Ryhl wrote:
-> > On Tue, Jan 7, 2025 at 11:05 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> > >
-> > > On Mon, Jan 06, 2025 at 12:47:52PM +0100, Simona Vetter wrote:
-> > > > On Fri, Jan 03, 2025 at 05:44:30PM +0100, Danilo Krummrich wrote:
-> > > > > devm_remove_action() warns if the action to remove does not exist
-> > > > > (anymore).
-> > > > >
-> > > > > The Rust devres abstraction, however, has a use-case to call
-> > > > > devm_remove_action() at a point where it can't be guaranteed that the
-> > > > > corresponding action hasn't been released yet.
-> > > > >
-> > > > > In particular, an instance of `Devres<T>` may be dropped after the
-> > > > > action has been released. So far, `Devres<T>` worked around this by
-> > > > > keeping the inner type alive.
-> > > > >
-> > > > > Hence, add devm_remove_action_nowarn(), which returns an error code if
-> > > > > the action has been removed already.
-> > > > >
-> > > > > A subsequent patch uses devm_remove_action_nowarn() to remove the action
-> > > > > when `Devres<T>` is dropped.
-> > > > >
-> > > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > > > ---
-> > > > >  drivers/base/devres.c  | 17 ++++++++++++-----
-> > > > >  include/linux/device.h | 18 +++++++++++++++++-
-> > > > >  2 files changed, 29 insertions(+), 6 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-> > > > > index 2152eec0c135..d59b8078fc33 100644
-> > > > > --- a/drivers/base/devres.c
-> > > > > +++ b/drivers/base/devres.c
-> > > > > @@ -750,25 +750,32 @@ int __devm_add_action(struct device *dev, void (*action)(void *), void *data, co
-> > > > >  EXPORT_SYMBOL_GPL(__devm_add_action);
-> > > > >
-> > > > >  /**
-> > > > > - * devm_remove_action() - removes previously added custom action
-> > > > > + * devm_remove_action_nowarn() - removes previously added custom action
-> > > > >   * @dev: Device that owns the action
-> > > > >   * @action: Function implementing the action
-> > > > >   * @data: Pointer to data passed to @action implementation
-> > > > >   *
-> > > > >   * Removes instance of @action previously added by devm_add_action().
-> > > > >   * Both action and data should match one of the existing entries.
-> > > > > + *
-> > > > > + * In contrast to devm_remove_action(), this function does not WARN() if no
-> > > > > + * entry could have been found.
-> > > >
-> > > > I'd put a caution here that most likely, using this is a bad idea. Maybe
-> > > > something like:
-> > > >
-> > > > "This should only be used if the action is contained in an object with
-> > > > independent lifetime management, like the Devres rust abstraction.
-> > > > Anywhere is the warning most likely indicates a driver bug."
-> > >
-> > > Yes, I thought of something similar too, but wasn't quite sure if it's needed.
-> > > At least for me, if something has the postfix "nowarn", it already makes me
-> > > wonder if I should really use it.
-> > >
-> > > I'll add a paragraph.
-> > >
-> > > >
-> > > > At least I really can't come up with a reasonable design in a C driver
-> > > > that would ever need this.
-> > >
-> > > I tried, but couldn't either. The only thing I could think of was a revocable
-> > > thing in C.
-> > 
-> > Potentially if there are two cleanup paths that could run in parallel,
-> > they could use this to avoid needing to synchronize which one removes
-> > it?
-> 
-> Yeah, I also though if I can make up such a case. But I think the real issue is
-> that even if we can find one, it's probably an abuse of devres.
-> 
-> Devres is there to indicate that the driver was unbound from the device, which
-> causes remove() for the driver to cleanup. So, rather than removing the action
-> from some async path, we can just wait for remove() to clean up. The only
-> exception can hence be probe().
+On Wed, Jan 8, 2025 at 1:45=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
+>
+> "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+>
+> > On Fri, Dec 13, 2024 at 2:17=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
+> >>
+> >> scheduled for removal. Interior mutability via `SyncUnsafeCell` provid=
+es
+> >> the same functionality and it is my understanding that this feature is
+> >> on track to be stabilized.
+> >
+> > I am not sure about the last bit, but even if it is on track, we do
+> > not want to start using new language features or APIs that could
+> > potentially change.
+> >
+> > And even if it is a feature that we are sure will not change, we
+> > should still let upstream Rust know before using it, since we are
+> > actively discussing with them the remaining unstable items that the
+> > kernel needs and they are putting the kernel in their roadmap.
+> >
+> > So I suggest we mention it next week in the Rust/Rust for Linux meeting=
+.
+>
+> I don't think we ever discussed this?
+>
+> I was going to put this in the commit trailer for v4:
+>
+> ---
+> Version 3 of this patch enabled the unstable feature `sync_unsafe_cell` [=
+1] to
+> avoid `static mut` variables as suggested by Trevor Tross and Benno Lossi=
+n [2].
+>
+> As we are moving closer to a new edition, it is now clear that `static mu=
+t` is
+> not being deprecated in the 2024 edition as first anticipated [3].
+>
+> Still, `SyncUnsafeCell` allows us to use safe code when referring to the
+> parameter value:
+>
+> ```
+> {param_name}.as_mut_ptr().cast()
+> ```
+>
+> rather than unsafe code:
+>
+> ```
+> unsafe { addr_of_mut!(__{name}_{param_name}_value) }.cast()
+> ```
+>
+> Thus, this version (4) keeps the feature enabled.
+>
+> [1] https://github.com/rust-lang/rust/issues/95439
+> [2] https://lore.kernel.org/all/CALNs47sqt=3D=3Do+hM5M1b0vTayKH177naybg_K=
+urcirXszYAa22A@mail.gmail.com/
+> [3] https://github.com/rust-lang/rust/issues/53639#issuecomment-243402311=
+5
+> ---
+>
+> What do you think?
 
-Yeah writing a correct ->remove implementation in C is already really
-hard, even when you're using devres. If you think you can write one that
-runs concurrently with other stuff in a way you need this _nowarn variant,
-you're just too dangerous to write driver code in C imo.
--Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+It's pretty easy to avoid needing this feature, so I don't think we
+should enable it.
+
+Alice
