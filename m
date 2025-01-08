@@ -1,88 +1,91 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123641F03C3
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 09:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E5119CC34
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 09:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736327489; cv=none; b=DRd7CJcWyQLEDsX6tQe1dysULdy28sAZNpw/2RsPAmAQ1E4OIVXoKCNb7M5vRUJ+AqLcK0LzxK0m9Hv6cmC3DnnXhwT28HEYQuVb9zSikqFX59lF+TRw9QZ962q67NJsdwqbC1a9j6c52XfkqG0m1nwynrEyURPOxy44xXPTf8A=
+	t=1736328461; cv=none; b=nVUXEe2dTTr8DRZ0c7kubMUjMWSF8lxGZnvklEkiiuG5XmYQTOF5pCGz51MSnvk8O1xEisKPeBPYvdovadW30vBUEXDiCwVEYabvPctsWRZPAthPwjaZGWlb1Vi55glB/L3ZnUo5mbEsw81oM5p4X5fJHR8W7no8g1sF1AXn8Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736327489; c=relaxed/simple;
-	bh=PRXvJPDLmIV+SkzsVccWpjDkCQMDJtS/ouRJL97YwE0=;
+	s=arc-20240116; t=1736328461; c=relaxed/simple;
+	bh=jVus9tORm8KvuSjonr0l2HkAMicjd4Eb1rJcv3Wo/Zg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XJ76pb9eO26oy+SRNqjkYXA35cfxbIBDFlgJTZC0GR58poCrNuvTPn+BXLGZ1hkuXFuR3Q9cuCPLg8n4Qe0M8dIjpay8x1swVUu19ON6wCBKcKHkJytWyfdefvk9OO9OPp4LKU2rNfOzd1YRBsJnmcUkEgOHhlaNX+Z1ki0eptw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VYuJTzFv; arc=none smtp.client-ip=209.85.214.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=qjKQUdc60CF29yGAMFL1B2vLABr5u1fAfR3eX1rd8Ho0RZndy+dJ+koKNpACrntB6F66ckhkx46ltmYLM9p4pYtJYTkGqn8/nSs/4SLFQOgOOGvsox852uX2/z+kBhpvvt4QSu9sUEdTEhIKa2DPAxXfw4hlAg50qrNtc9E2f+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=duR1Rk2w; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VYuJTzFv"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21680814d42so206826925ad.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 01:11:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="duR1Rk2w"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2163b0c09afso242686685ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 01:27:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736327487; x=1736932287; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1736328459; x=1736933259; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ih+RxuSmmPqp1GyCbwJ2zhAAFkHO2nXzakJsmmbgiHs=;
-        b=VYuJTzFvkAImL8o+KcXulmF3dM5k+cOxT+Co5zyBbCSXkqwQPH9eXzaIWi7CUlI6cQ
-         lmUJ47KHthHMYTX03EAKRd/5hO6M6D2821AqVPu2REyQaqxnofa8WvPSiAY10jp5ZfaA
-         QO3MGAA3IILoimPjPtstKogl4TVLFRtTe8YH2X5+TzXXwI+eA//REhbo146Zvy2cfN3l
-         bEKtq8qK+88iIJkYnE/uHOcLkeeGMqEOmlqCdyEblUwcGpNI19nqYmYqMTYCdQNVmptR
-         0ga4kNExtpCf1Ua0dd/cTKYf9KaV/iRgTyAMGo/+2DN+wp3WLYVseQEUa7KAvB1O2ePV
-         pQqw==
+        bh=AHm0RBzE9nusKxqQPIPJdzyLuqQMGI1MwErDSccgEsw=;
+        b=duR1Rk2wo/FB0Z85EPrtFMFfXD6fLyQvKY5KBfeVAeLL8Z6IcIJ3xmOTTO0zSODL2u
+         ar1JYvCSvcf4Ut2Id9KYC0JeuVqW+scZu6SBbUXvO9FxrESeq6htZlNd+yrERT7eDax+
+         2HlIeePwL2HThjDMTBzuwWuIHZ3lvjth4uQb+3hr5/mKK+3VuAGW5wepKhY8DTOIAzHK
+         dDcaIqbXHTCZUm6Y5jlemr6rze1IVJmKLJg/pJHI4nKKJ+1vnzm03ynT4d7Bh+94GcZE
+         XOFJx4L8meOohzOpC9sqMvyzm8qYuWJ0fxbOILw3gXsr/by3pzBSYhshecAGxyom6OtC
+         Wm4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736327487; x=1736932287;
+        d=1e100.net; s=20230601; t=1736328459; x=1736933259;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ih+RxuSmmPqp1GyCbwJ2zhAAFkHO2nXzakJsmmbgiHs=;
-        b=PtPGOuPz/vygpWVVu/jEIbegxEb61qDAP3fo8r2n++tXY9cTaMXWGn+DtKq99tOfXu
-         WezurR4L0DRMVvIBnc2IrwLRreLz0HEYsA0IZ0QuCYeu7QyAF2DuJYPOb/Mm4dUGJdSE
-         ocx8URGuDkBk5AgmmaTah+EhifM4kGaglCgHNhxR4/aRGlcoEtK+Dak9JAeVuil972fB
-         0y/if4Y3rwRW25kP5JmwSyMbTDIetJEaKfiikyRtHECUfZYys5KFN1txChFjZecozrFr
-         II9fQmgGpx3CzOFLMJP0aIi6KqUnQC7niQFREk6W7uUiwkQ6jS+9ye9df+4beY9etqkT
-         7rVg==
-X-Forwarded-Encrypted: i=1; AJvYcCUeQJZoiX+GqcDOzqxJP+5OizHs5MWZsNOL0PXDcxfF9bvciZmNsTBBMvnRvjXejmyKRMIMsvYGDemEDHNdmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKcqjHq1yhZaGQibjoVqZBszFYsQdK2WWxhgl1H8h/vnMVoyVA
-	Yx9fOISjmDXsMYKNY6DCeqQ5fmeLe7eOsEY4W/qs5QozH0LlOF++27QydJmlK1Q=
-X-Gm-Gg: ASbGncuQ5jQHyVy6tOBFbD4byP2EOByjIcGT9ZG1+Gv35qC4riv1KklRNBh02rlZ0oH
-	Xpet1cTq5ubRHomnZM886aMlZu0vWez7477JZUYFPY2jHdtpGInhqQQKhRIczcq2dKR+nzN4HaY
-	JzMA9wKkdh2LhEu5yWDZh2SSmFReATejoxVX/9S6huiguHUcxtbVEmJB13MPnbNFLGLYjlWk1MA
-	16vHQ7jYhjc7INjfN/MFZuYlG87gsbm16nNxOuArXXeIFBZqfpz1u8c7dY=
-X-Google-Smtp-Source: AGHT+IFyNbZVZ+zegqkrmebADogddz3aKSlII6j+c+eN38z4QYi8g14gCzJV69Rzr79D9N0EVYoUoA==
-X-Received: by 2002:a17:902:c951:b0:215:bc30:c952 with SMTP id d9443c01a7336-21a83f4298fmr30968735ad.6.1736327487368;
-        Wed, 08 Jan 2025 01:11:27 -0800 (PST)
+        bh=AHm0RBzE9nusKxqQPIPJdzyLuqQMGI1MwErDSccgEsw=;
+        b=qgDqWv7nfOzbOw+kkX8+MttaAhTCDHCU+pUlhx4Ap/HX0YTJ07w43OZ5UQ/bagiG3a
+         SINf+b3phbZATqpAIdU8rsaE6LjJrZ32hzLHC0Xb4TvMAcqkzv7K1hPYR4Xj2TJJgZ54
+         2uaC08ixnurGl+OqlAqre1Y+LAZABvv2NPXYY8rBGWMNVrhcvdQ53ibdSZ8KpcsZVkjc
+         K2UQVc8M0PWT0c89w/ta02vcrX7x3FjuFhxzxFzWkx1aK1ePrBVOqujpL3BJs5r94xcs
+         YmFJlSHANCD+3vqSlR62cqIRLy9DPm2XAPpHdZnCJ/uuXHHRGm/GxZNacN6n9PH0+GMG
+         vpVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfid9uwOdEdBTq4syN6lBsZF6yabT0a92E6qpNynTS9HAGEP9XLoSBCfZZ1Bvf+4VeEXr5lSsvZkiwZHaiLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHBciyR/UiauqmkPzaMrupumAFd0ksyyI1FTauAtbJ9M2cxlFb
+	p5xhb81M8GuI6mXcJ+ZubX6M2zvl6zyqjB+fbnlCOee7ZLudtBkxVOr0L2Qg9ps=
+X-Gm-Gg: ASbGncvPBMZHqEWAGXuSZdGtGqn5CaxgqayMnfafMgM1Roo4zlAR/QLqvGp6DmDfWFU
+	qeGq1MYQiW9LJ6xlVnzIIttu6472iqM+nqQ6N1iELVsBugYPwPz4cy8MBMjqUBSRnfAKr2oIOn+
+	zeDbSosRAM/6fo2A68XtvSWkPDEPqo0hSl9Kr7slx/y8UN6THO8hXxAR3s1mjJuffox9Rbboums
+	dy+kALnp1xX9t/0l81rx/kucaUPenC0B0BRu2DS7u+AFxPoujP2kd/qwKM=
+X-Google-Smtp-Source: AGHT+IFl11h7DflWwx9bWWFuvL2hSbCFHV7kkV1X4l1W+rvTucd+iYu6wUGpzuX+/UKI3PkQh9IjgA==
+X-Received: by 2002:a17:902:ce8c:b0:215:711d:d59 with SMTP id d9443c01a7336-21a83f33783mr28520045ad.2.1736328459158;
+        Wed, 08 Jan 2025 01:27:39 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9cdf02sm323287095ad.151.2025.01.08.01.11.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca01965sm324039425ad.240.2025.01.08.01.27.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 01:11:26 -0800 (PST)
-Date: Wed, 8 Jan 2025 14:41:24 +0530
+        Wed, 08 Jan 2025 01:27:38 -0800 (PST)
+Date: Wed, 8 Jan 2025 14:57:36 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Greg KH <greg@kroah.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-pm@vger.kernel.org,
+	Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
 	rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Erik Schilling <erik.schilling@linaro.org>,
 	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V6 01/15] PM / OPP: Expose refcounting helpers for the
- Rust implementation
-Message-ID: <20250108091124.3cqgjk4k45uuvppk@vireshk-i7>
+Subject: Re: [PATCH V6 03/15] cpufreq: Rust implementation doesn't parse
+ BIT() macro
+Message-ID: <20250108092736.ehimseqpbwraro5g@vireshk-i7>
 References: <cover.1736248242.git.viresh.kumar@linaro.org>
- <fa014791cad083ad77125cebad11a6d5ec9592df.1736248242.git.viresh.kumar@linaro.org>
- <2025010759-errant-lather-a64a@gregkh>
+ <9719ba8b3a921bd9f2cb7ebf902c54c708b5409d.1736248242.git.viresh.kumar@linaro.org>
+ <2025010752-vagrantly-juiciness-cd81@gregkh>
+ <37DAF91C-2A1B-4848-A66F-3B50285AFEBA@collabora.com>
+ <20250108065347.k67aqosuefcjdiqi@vireshk-i7>
+ <CAH5fLghLxZU5e+7DOXPKordBL_TMXW-_4Bc2E8fkdt_5LSykAQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -91,33 +94,150 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025010759-errant-lather-a64a@gregkh>
+In-Reply-To: <CAH5fLghLxZU5e+7DOXPKordBL_TMXW-_4Bc2E8fkdt_5LSykAQ@mail.gmail.com>
 
-On 07-01-25, 12:58, Greg KH wrote:
-> On Tue, Jan 07, 2025 at 04:51:34PM +0530, Viresh Kumar wrote:
-> > The Rust implementation needs these APIs for its working. Expose them.
-> 
-> Why is the rust code unique here?  Why does C code not need these
-> exported?
-> 
-> And that first sentance isn't really good grammer :)
-> 
-> Also, you created a new function here and didn't document it anywhere,
-> nor do you mention it here in the changelog text, making this a
-> non-starter right off :(
+On 08-01-25, 10:01, Alice Ryhl wrote:
+> Change the #define to an enum instead. See commit 3634783be125
+> ("binder: use enum for binder ioctls") for an example of this
+> strategy.
 
-How about this ?
+Thanks Alice. Works with this now:
 
-    PM / OPP: Add reference counting helpers for Rust implementation
+Subject: [PATCH] cpufreq: Use enum for cpufreq flags that use BIT()
 
-    To ensure that resources such as OPP tables or OPP nodes are not freed
-    while in use by the Rust implementation, it is necessary to increment
-    their reference count from Rust code.
+The BIT() macro is too complex for Rust's bindgen to interpret as
+integer constants. This can cause issues when generating bindings for
+use in Rust. By replacing the `#define` macros with an `enum`, we ensure
+that bindgen can properly evaluate these values, enabling their seamless
+use in Rust code.
 
-    This commit introduces a new helper function,
-    `dev_pm_opp_get_opp_table_ref()`, to increment the reference count of an
-    OPP table and declares the existing helper `dev_pm_opp_get()` in
-    `pm_opp.h`.
+No intentional functional impact.
 
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ include/linux/cpufreq.h | 96 ++++++++++++++++++++++-------------------
+ 1 file changed, 51 insertions(+), 45 deletions(-)
+
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index 6b882ff4dc24..6f4283007b8c 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -292,11 +292,12 @@ static inline void cpufreq_stats_record_transition(struct cpufreq_policy *policy
+  *                      CPUFREQ DRIVER INTERFACE                     *
+  *********************************************************************/
+ 
+-#define CPUFREQ_RELATION_L 0  /* lowest frequency at or above target */
+-#define CPUFREQ_RELATION_H 1  /* highest frequency below or at target */
+-#define CPUFREQ_RELATION_C 2  /* closest frequency to target */
+-/* relation flags */
+-#define CPUFREQ_RELATION_E BIT(2) /* Get if possible an efficient frequency */
++enum {
++	CPUFREQ_RELATION_L = 0, /* lowest frequency at or above target */
++	CPUFREQ_RELATION_H = BIT(0), /* highest frequency below or at target */
++	CPUFREQ_RELATION_C = BIT(1), /* closest frequency to target */
++	CPUFREQ_RELATION_E = BIT(2), /* Get if possible an efficient frequency */
++};
+ 
+ #define CPUFREQ_RELATION_LE (CPUFREQ_RELATION_L | CPUFREQ_RELATION_E)
+ #define CPUFREQ_RELATION_HE (CPUFREQ_RELATION_H | CPUFREQ_RELATION_E)
+@@ -418,52 +419,57 @@ struct cpufreq_driver {
+ 
+ /* flags */
+ 
+-/*
+- * Set by drivers that need to update internal upper and lower boundaries along
+- * with the target frequency and so the core and governors should also invoke
+- * the diver if the target frequency does not change, but the policy min or max
+- * may have changed.
+- */
+-#define CPUFREQ_NEED_UPDATE_LIMITS		BIT(0)
++enum {
++	/*
++	 * Set by drivers that need to update internal upper and lower
++	 * boundaries along with the target frequency and so the core and
++	 * governors should also invoke the diver if the target frequency does
++	 * not change, but the policy min or max may have changed.
++	 */
++	CPUFREQ_NEED_UPDATE_LIMITS		= BIT(0),
+ 
+-/* loops_per_jiffy or other kernel "constants" aren't affected by frequency transitions */
+-#define CPUFREQ_CONST_LOOPS			BIT(1)
++	/*
++	 * loops_per_jiffy or other kernel "constants" aren't affected by
++	 * frequency transitions.
++	 */
++	CPUFREQ_CONST_LOOPS			= BIT(1),
+ 
+-/*
+- * Set by drivers that want the core to automatically register the cpufreq
+- * driver as a thermal cooling device.
+- */
+-#define CPUFREQ_IS_COOLING_DEV			BIT(2)
++	/*
++	 * Set by drivers that want the core to automatically register the
++	 * cpufreq driver as a thermal cooling device.
++	 */
++	CPUFREQ_IS_COOLING_DEV			= BIT(2),
+ 
+-/*
+- * This should be set by platforms having multiple clock-domains, i.e.
+- * supporting multiple policies. With this sysfs directories of governor would
+- * be created in cpu/cpu<num>/cpufreq/ directory and so they can use the same
+- * governor with different tunables for different clusters.
+- */
+-#define CPUFREQ_HAVE_GOVERNOR_PER_POLICY	BIT(3)
++	/*
++	 * This should be set by platforms having multiple clock-domains, i.e.
++	 * supporting multiple policies. With this sysfs directories of governor
++	 * would be created in cpu/cpu<num>/cpufreq/ directory and so they can
++	 * use the same governor with different tunables for different clusters.
++	 */
++	CPUFREQ_HAVE_GOVERNOR_PER_POLICY	= BIT(3),
+ 
+-/*
+- * Driver will do POSTCHANGE notifications from outside of their ->target()
+- * routine and so must set cpufreq_driver->flags with this flag, so that core
+- * can handle them specially.
+- */
+-#define CPUFREQ_ASYNC_NOTIFICATION		BIT(4)
++	/*
++	 * Driver will do POSTCHANGE notifications from outside of their
++	 * ->target() routine and so must set cpufreq_driver->flags with this
++	 *  flag, so that core can handle them specially.
++	 */
++	CPUFREQ_ASYNC_NOTIFICATION		= BIT(4),
+ 
+-/*
+- * Set by drivers which want cpufreq core to check if CPU is running at a
+- * frequency present in freq-table exposed by the driver. For these drivers if
+- * CPU is found running at an out of table freq, we will try to set it to a freq
+- * from the table. And if that fails, we will stop further boot process by
+- * issuing a BUG_ON().
+- */
+-#define CPUFREQ_NEED_INITIAL_FREQ_CHECK	BIT(5)
++	/*
++	 * Set by drivers which want cpufreq core to check if CPU is running at
++	 * a frequency present in freq-table exposed by the driver. For these
++	 * drivers if CPU is found running at an out of table freq, we will try
++	 * to set it to a freq from the table. And if that fails, we will stop
++	 * further boot process by issuing a BUG_ON().
++	 */
++	CPUFREQ_NEED_INITIAL_FREQ_CHECK		= BIT(5),
+ 
+-/*
+- * Set by drivers to disallow use of governors with "dynamic_switching" flag
+- * set.
+- */
+-#define CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING	BIT(6)
++	/*
++	 * Set by drivers to disallow use of governors with "dynamic_switching"
++	 * flag set.
++	 */
++	CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING	= BIT(6),
++};
+ 
+ int cpufreq_register_driver(struct cpufreq_driver *driver_data);
+ void cpufreq_unregister_driver(struct cpufreq_driver *driver_data);
 -- 
 viresh
