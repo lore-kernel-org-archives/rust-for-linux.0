@@ -1,57 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B77619F133;
-	Wed,  8 Jan 2025 15:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675BF2EAE5
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 16:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736349702; cv=none; b=fV/l6wYfUqJNU1TriqFBpvnPiqPAg04zGgjXqLrovvZ7w2LjYtnhZwxqNH1ULAYPQGXdeLimSUGdF1A8CvJjYcsD2k6iZkJso2ipKGrvaANXI95OSHT7DIzsNF6kIiLZj2vYTWSKIPIrvS10UX1z+5raj4nYhvqSLnmuEFmUGns=
+	t=1736353088; cv=none; b=WNG7G9rUUAuPNCn1jnMOqZB4agiLLLf0cHtx7zpfIKe8I5DgVi0B9w7iJPZ2HpAvcc/lIItGBSlG7rV24O7sF8KVp8mw7FgrBpiQKdbZ2+41ozsLaoKooff49YwAqOeltKMw+r2ijF3qqWWHntgLJOMq4+bG+MgRRLEkU8Kfkzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736349702; c=relaxed/simple;
-	bh=Xl0LSoacZLsHbo71xmR9kSIXl0emO248cdGl+8gdm/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vAIRRtWwzNPy3Wn3dW5/tw8WECcjYCKua8nJ4Z1VowvDx21d6mxRwjJAJXqUD4857FPOlyEZiMAzri9ZKTft8Euy9MTzlnnq7pNM0FgNof7k7OC+CQnpB/Iosvvq5OU5Ac3AjFbbLXzycRdCK1KCF7S0we5QjL5OBPxyVwGRTq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cqh7vWO1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736353088; c=relaxed/simple;
+	bh=yOBTlREGRBXDTsdlin8J4+t1EBnrYEjknmCFwqhiMZY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pA19dMJwMEAB1Z7F8/BJz0bkAg4SkbQVGoW7TFEMmh+6TwbdhqUwOETQc1fO9uDW48tcGGa3OrC6Nh+sau7R7CrIWT/95WON49WQzJNXhO8FX+Bgm+IJvve11xF8yQxAtmAhV4OT+G/KBY7vyGE1NUkvNzL8PowEpTlSPRbcE2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=Ga1KgKed; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cqh7vWO1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A940AC4CED3;
-	Wed,  8 Jan 2025 15:21:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736349700;
-	bh=Xl0LSoacZLsHbo71xmR9kSIXl0emO248cdGl+8gdm/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cqh7vWO1XCT2ahQQK02X3kmpwDUiRdBfKDkL6W45+A4vmmppOxvKv5P4uquHGQR7F
-	 h6GnEBAgQ21zflEx/lqLzqwmseGcwxr/B9VuH/piuAjh6WjIHTubGHyxf7PCG1fHaJ
-	 8i3TGFNyN6I3NfvExmB9avzsbFmvMMZnH6jky6z0SqdseZ15LJGx6HRd2F49TS4Ma0
-	 KEyPzx0V1gqPlxchSGjsnLRPBTBtl25zntsZA/gxxs21RLP0kqnZnJbWTC4qjGEBqq
-	 vtFBjqmYIWHT5DqGELGgcmfMZDR0RfWz9t6QmkGgNOTeClGDM20Nwt4rugms6TKoMb
-	 P1fSY29TiJFVA==
-Date: Wed, 8 Jan 2025 16:21:33 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-Message-ID: <Z36X_ZnCmBQBMoZ6@pollux>
-References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
- <20250108122825.136021-3-abdiel.janulgue@gmail.com>
- <20250108135951.GA18074@lst.de>
- <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
- <20250108151858.GB24499@lst.de>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="Ga1KgKed"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id A127A240028
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 17:18:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1736353084; bh=yOBTlREGRBXDTsdlin8J4+t1EBnrYEjknmCFwqhiMZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=Ga1KgKedY8HcP2agEg1eZ9ve25yMVhRLpBTlr/tDunnLBKaYlrct502FQ71NrRWCB
+	 HrLBoJlxuRyrZ2LK1rA8z5kzS4ssjrVoyLTuRqaXhXzKkxuN14U9fZSTFCFbWFpSN6
+	 N3izrUNjbQ8rT+HRcaZXnLvGJ9I9i+ohbSZq4+MESvdE3CkKhtMURJrpXdIOpw4hlt
+	 18iB+r3/NXbUs7S0sTyxewZSpajHq7WbygK2aLo0ypEIY9xgABgQpgw5bJ+TWvEQEi
+	 p+1hIB+GqmCvdzjFPa1xyTapPPSv1kAfeQzSHu45BYOhji6kVvqFDPVz51vBVl9RaE
+	 fpggCx4h6XMlQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YStPP4121z9rxR;
+	Wed,  8 Jan 2025 17:18:01 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Mitchell Levy <levymitchell0@gmail.com>
+Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>,  Miguel Ojeda
+ <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>,
+  Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Dennis Zhou <dennis@kernel.org>,  Tejun Heo
+ <tj@kernel.org>,  linux-kernel@vger.kernel.org,
+  rust-for-linux@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH RFC 3/3] rust: percpu: add a rust per-CPU variable test
+In-Reply-To: <677dbbb1.050a0220.39ba68.8825@mx.google.com> (Mitchell Levy's
+	message of "Tue, 7 Jan 2025 15:41:28 -0800")
+References: <20241219-rust-percpu-v1-0-209117e822b1@gmail.com>
+	<20241219-rust-percpu-v1-3-209117e822b1@gmail.com>
+	<5374de79-0ee6-e817-0f87-c800a6fbb733@gentwo.org>
+	<m28qrpbeiw.fsf@posteo.net> <677dbbb1.050a0220.39ba68.8825@mx.google.com>
+Date: Wed, 08 Jan 2025 16:18:00 +0000
+Message-ID: <m2septp9dz.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,21 +60,56 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250108151858.GB24499@lst.de>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 08, 2025 at 04:18:58PM +0100, Christoph Hellwig wrote:
-> On Wed, Jan 08, 2025 at 04:16:18PM +0100, Miguel Ojeda wrote:
-> > On Wed, Jan 8, 2025 at 3:00 PM Christoph Hellwig <hch@lst.de> wrote:
-> > >
-> > > No rust code in kernel/dma, please.
-> > 
-> > What do you suggest?
-> 
-> Keep the wrappers in your code instead of making life painful for
-> others.
-> 
+Mitchell Levy <levymitchell0@gmail.com> writes:
 
-What does "your code" mean? Duplicated in every driver? Otherwise
-rust/kernel/dma.rs seems reasonable, no?
+> On Sun, Jan 05, 2025 at 01:01:43PM +0000, Charalampos Mitrodimas wrote:
+>> "Christoph Lameter (Ampere)" <cl@gentwo.org> writes:
+>>
+>> > On Thu, 19 Dec 2024, Mitchell Levy wrote:
+>> >
+>> >> +        let mut native: i64 =3D 0;
+>> >> +        let mut pcpu: PerCpuRef<i64> =3D unsafe { unsafe_get_per_cpu=
+_ref!(PERCPU, CpuGuard::new()) };
+>> >
+>> > A bit complex.
+>>
+>> I agree with this, maybe a helper function would suffise? Something in
+>> terms of,
+>>   unsafe fn get_per_cpu<T>(var: &PerCpuVariable<T>) -> PerCpuRef<T> {
+>> 	  unsafe_get_per_cpu_ref!(var, CpuGuard::new())
+>>   }
+>
+> I'm certainly open to adding such a helper. Is the main concern here the
+> unwieldy name? Generally, I prefer to keep modifications to global state
+> (disabling preemption via CpuGuard::new()) as explicit as possible, but
+> if there's consensus to the contrary, I'm happy to roll it into the
+> macro/a helper function.
+
+Yes, in my opinion, the macro name is indeed complex. You're right about
+keeping modifications as explicit as possible. A helper wouldn=E2=80=99t be
+necessary if the macro name were simpler.
+
+Is adding "unsafe_" to a macro that is unsafe a standard practice? Maybe
+we can remove it from the macro name. Documentation is enough IMO.
+
+>
+>> >
+>> >> +        native +=3D -1;
+>> >> +        *pcpu +=3D -1;
+>> >> +        assert!(native =3D=3D *pcpu && native =3D=3D -1);
+>> >> +
+>> >> +        native +=3D 1;
+>> >> +        *pcpu +=3D 1;
+>> >> +        assert!(native =3D=3D *pcpu && native =3D=3D 0);
+>> >> +
+>> >
+>> > That's pretty straightforward..... But is there no symbolic access to =
+the
+>> > per cpu namespace? How would you access the kernel per cpu variables
+>> > defined in C?
+>> >
+>> > How do you go about using per cpu atomics like
+>> >
+>> > this_cpu_inc(nr_dentry_unused);
