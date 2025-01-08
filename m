@@ -1,64 +1,66 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741B910E4
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 05:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56231A83F8
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 06:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736314629; cv=none; b=GUgas/+nL4P3m6+Eww3wQriacDNgls54GuU8fBq+c/TFMQF7z7TjIdlbxi8OkIN7vPG350u/NXcb7zia5NotHiBBeFXcRva6ylJ/y8BFgf9ZT4EMr62ijkn4edFl289f2KllMKbfkDwE3FMIMCBf700Rqu9pAifIrachtbcRo/E=
+	t=1736319232; cv=none; b=jr2nCoZEZTchD604FOySYh36NOCCXonzevZkg7kzozcWtUWm0eZksOxkoiqWnBF02BZB2wUjSjttOY4T3zVp4Tod2vL7LYlbUgAbb4e/7M1yY9wy4yGRtKEbbsScs9PA6UKau+YwdfvvwQXoUlulQ/ueIteP/0i3CW4FPMO16ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736314629; c=relaxed/simple;
-	bh=2DDiY1StCn7sBSV4PmE1ZowtJKbcWaTTkafeFFEi2uI=;
+	s=arc-20240116; t=1736319232; c=relaxed/simple;
+	bh=qqHug9/s36cd12z+EVh/TDfQACCzQnrs66JnP902TIY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QU/5eoCBlKrLcjYcp8p7IT/2KqhU1K4TjL6Fx9Sd4oo7zuezUPgitIXaXdR8bKr15uQEflSd06qlUQlZ6na2ld0kXFxcHNIU1kofMAdRz0+bD+9z/0t/UZ/KKN3CJuqqwe41vlWfg2TedCXPwmjOh2ZfhLl7Pho4ngSF3TOkDXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U+RzUYFX; arc=none smtp.client-ip=209.85.214.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=BQlPC+D+7swWJCCGbQqsQ/bVA0pyllp9uioFd3pKU3I3qFSkJ3dw/ffNMyO5LGR1FR1uYF8GBShfzN2nRAqyTY0+egolIVaE4sWXRMLtd3i3nAlI/p4681Apytc1LewTCqtXXW21jD2Nf/BuJqTrJCI/p2oaIlLu6D8tBun8bM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t8ietw9S; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U+RzUYFX"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-216426b0865so236134175ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jan 2025 21:37:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t8ietw9S"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2163bd70069so50432635ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jan 2025 22:53:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736314628; x=1736919428; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HYqYEywpcCZEjiw8UdXrncHGm7UENx7g7WFNYi18QkM=;
-        b=U+RzUYFXS83m/NohDztsgmG1x+jINzbhuA6KxBYakf3jPcSGQmRzQ9+gGEUrE0OEt1
-         kQqxACxeOXcoYbzPMW7oWa0+7EbQ1tQSEU2hHaHhfvLWK1BShy8JZrg+C36l7OPKEZCX
-         3yN1si3YoVt6MFqAUxwmOjuxIjvEO85RjxsY31UINgHMRM9W9OBUI0ivXEK9kPXPZHR5
-         J6saOCzHsQ8dLMpcgJU/1QLh6JUJ7SgSRNP5vlw6B/tGOFrWDZCjyhWWuVy1+gt5CUni
-         a8iYTsfIUGfxQLqRN4fdu95gqprUDDXZqVd5dGQ6MD8qKa1h5tnCAtq03lB4TcTS+0js
-         kwbg==
+        d=linaro.org; s=google; t=1736319230; x=1736924030; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TR+by4BWVJ8o0ZvzthYMJxPWMPi0A3Wu6cOaNAiYqWA=;
+        b=t8ietw9S0th3Bq8lrLPNLA6c3h58Zpnp3srjDEtLVU82a7pk9AK5wDfCnbDBoHuZkb
+         ed39Iz9ZSV7fowcEKXnOPf0Ft+WR5+Q+vNvVOqTHej3Zij3Kgmgv4VEZLeJpSZWM2GzD
+         m8yGU6OR3qlhyVO4lVVDPbWfP/18iPRNZcRgVykaxRMTtPf7uQSl3FekMil6kDvTfNz5
+         l08y7LZBNSFPoMMALuedtRP+6BI+6m4xhqmVL3WdnmBPMxL6q1u70/ieE3VCp49DrzSC
+         b+dJbBVFmG4KvmFa8eXtJo4lGVMV4PnWnx/O4EFxhBDYoqNPcTl2a0bsZeXVFI3RwlgE
+         XZ0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736314628; x=1736919428;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HYqYEywpcCZEjiw8UdXrncHGm7UENx7g7WFNYi18QkM=;
-        b=Gagi/nkL6w9LjNrjUBMB0W0sEwfr0nxS9WtQZVO14iQkeca2T5Decc2Dl4rM7lhU/U
-         Qvd7Hjhwapzkoa8g8XE3w8uKiTaWZMO9EbEoMZDRPw9kDuaWsZiJd8zzXBi0YWZ55KrV
-         WjCNCCN/Ti8EFPjJgy3jvibwSgEyzgch01qFfzeibz+rB8B484FeP8CLELwW+czutWoH
-         n2boLxQph05SrKUEDDEtc+helal1xl8qk9ULfGmj/GCwm4Fddi9v9lsqpEwARcoFX4mh
-         HnMYz0ayGan6b+M3PQVEgc1b7QbuzmjXFiI+fzL41jIYyezmQJCMnOnWniphH0mdWiOK
-         rH/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXqo75J9MGAou+8Wz1Tu8HX6Btj2zBX/4ckC8oJVChxBCf/KtqVHDhExRLVaj8FFgzUuGewrO4u6Gaea4btWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzznQxfADUKCvXyMrXhz4GIjlixlncAdnaxkgjWgtlAbKQbvr2
-	FKcDBuFibvS7WcBsDNOWVN2YcNllJtcb3ms94qoePOLjVZlKRYq09tUrlO+G8QQ=
-X-Gm-Gg: ASbGncvcT2MiqAvzKHu/v/L9NDv3KsWlmxYtpJ7BL0aNGBqHEE9fwm3EqkaEPpaM+/L
-	D0nu3ykJ+7WCsf14wFUZH2PuuAVToldRmnj6c6rSSq/dvL+PxbCd1wCQ8n+y2IrwVTGbxuX8zuA
-	O7yvDPeq+mBtKzWgA85dz7Ovp6qDY1XCAhVDSw2PYeEP1BVGGf1GYxsvMDygekjGFpSLxMWoq38
-	Smfw7STtlv5MUG3o166NkGGsn4h5j6DTIfOadfRAcwJEWxWGfNzIMrdxQA=
-X-Google-Smtp-Source: AGHT+IE4bFgUgzu2OixSWQWLbDsH8vKVi8CSJhd+pDmS3q/oKMKr51QQ7F+1+EHktqqlPcrrZSTC5Q==
-X-Received: by 2002:a05:6a20:a10c:b0:1db:ec0f:5cf4 with SMTP id adf61e73a8af0-1e88d0d9c40mr3385398637.39.1736314627822;
-        Tue, 07 Jan 2025 21:37:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736319230; x=1736924030;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TR+by4BWVJ8o0ZvzthYMJxPWMPi0A3Wu6cOaNAiYqWA=;
+        b=cldUdu4dtOsrIAWjTq2uQudp4jFBZH22iyGz0IIMhFvp6GV/k5mPHHAL6HigTmEGZW
+         CTxcS6Pqs0yGnO9LOnmdx/pcsPcd5k5JYLutv87l5D0/IA4zaM50s4Y1gD2XxA0+j8Mc
+         zIIqtXmLrQVP4YwwCYz42/JtUXA8hVXstWRWeFnuMNBCB7Ntbz/AyoZzMBQjVvBu6Doj
+         5Q+tNdAAN/URXkqoysKjm0jKQlvEbeeqeDhdojapzOYKQEFOszGk5jZXF3kbiJAI4EJf
+         5MxAE+Ypx8EOBmoY4yo0+RbwvtC3k0mVUAE+SqpdGM9X4hDDJr6dsXfqlhGPgFG0bFJy
+         c/dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtIhRpEkAkoOi8cQ6FNQrFs8qZ86yJ6VWDeJ/oiPdOc5eyc7q9FRafEe2mFwHV74B1327ciHVHDXYq5RLpgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyqJVt128EumaUm0jBUm99oyWmWpLTdXcSoLHMszoIBDWgxMSo
+	UEayHsEfOmxzIVBHnYq0LIcD85jF5wm7gS7oP4jb03w+1uhfffOfEg904Q73Q1Y=
+X-Gm-Gg: ASbGnctY2XP7ZaGY2RIiYPVM5u5Zpw7rrKAnMNacJAi0NSpLSd9iQR+sDLyNa2BleSC
+	x3/qPSAlkmIXMIOBCJpWn3w030Yplq6gZLqLwfyXM3iG6B7RRw4E75GGPYt4ajt3shlxuW47jp9
+	wtFz3EM+ShzDcGJ3K+NMzBTy66BUzR9uwoR4U2fv7KFejEyFkmmNNiP4Y/XpIatVg5D4Mon8OSG
+	TM+Y3Ibc9CxibBmId6VL5CMj20QA14rpv8RfOts+zV0yr9ui3AOL3RmlRY=
+X-Google-Smtp-Source: AGHT+IFWpYewyVhbM9Lfm2gTjJvjaH0MyBz4zZWbWgpn0kP9jZoyHHdS5UoxV703zrzryWEOMSWbMA==
+X-Received: by 2002:a05:6a00:4190:b0:72a:83ec:b16e with SMTP id d2e1a72fcca58-72d22031471mr2386253b3a.21.1736319230195;
+        Tue, 07 Jan 2025 22:53:50 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8dbb70sm34409124b3a.98.2025.01.07.21.37.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72ad3393d5fsm30478573b3a.154.2025.01.07.22.53.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 21:37:07 -0800 (PST)
-Date: Wed, 8 Jan 2025 11:07:05 +0530
+        Tue, 07 Jan 2025 22:53:49 -0800 (PST)
+Date: Wed, 8 Jan 2025 12:23:47 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -78,35 +80,39 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH V6 03/15] cpufreq: Rust implementation doesn't parse
  BIT() macro
-Message-ID: <20250108053705.cuog2jqj4x2oa5im@vireshk-i7>
+Message-ID: <20250108065347.k67aqosuefcjdiqi@vireshk-i7>
 References: <cover.1736248242.git.viresh.kumar@linaro.org>
  <9719ba8b3a921bd9f2cb7ebf902c54c708b5409d.1736248242.git.viresh.kumar@linaro.org>
  <2025010752-vagrantly-juiciness-cd81@gregkh>
+ <37DAF91C-2A1B-4848-A66F-3B50285AFEBA@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2025010752-vagrantly-juiciness-cd81@gregkh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <37DAF91C-2A1B-4848-A66F-3B50285AFEBA@collabora.com>
 
-On 07-01-25, 13:00, Greg KH wrote:
-> On Tue, Jan 07, 2025 at 04:51:36PM +0530, Viresh Kumar wrote:
-> > Rust isn't able to parse the macro for now, avoid using it.
+On 07-01-25, 10:29, Daniel Almeida wrote:
+> Viresh, FYI, there’s already a patch for this floating around [0].
 > 
-> No, please fix it.  You don't want to have to fend off the checkpatch.pl
-> cleanups that this would cause of people putting the BIT() macro back.
+> I can send a new version today. From Alice’s last comments, it only
+> needs a minor fix anyways.
 
-Yeah, I mentioned this in the cover-letter that we need to make Rust work with
-it. I should have marked it as DO-NOT-MERGE patch.
+Thanks for the pointer Daniel. I was expecting that I would be able to use the
+definition from bindings generated with bindgen somehow.
 
-I wanted to get an idea from others on how to fix it, which Danilo shared now.
-Will try that.
+The C header contains:
 
-> Make BIT() work properly for Rust code as well, it has to be done
-> eventually, right?
+#define BIT(nr)			(1 << (nr))
+#define CPUFREQ_NEED_UPDATE_LIMITS		BIT(0)
+
+Bindgen doesn't get me a definition to CPUFREQ_NEED_UPDATE_LIMITS now. Is there
+a way to make that work with nested macros ? I wanted to avoid defining them
+again in the Rust side.
 
 -- 
 viresh
