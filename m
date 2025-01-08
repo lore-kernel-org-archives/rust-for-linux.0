@@ -1,127 +1,249 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EEA1FCCE2;
-	Wed,  8 Jan 2025 13:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C06B1FC7EE
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 13:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736343826; cv=none; b=QXzyzlYrKZ5W9yqlYsHAFyRPNPZkQGr6mc9mqHPhyj61PKgpA1HvHNusEN5QGau224izzpJbXKEeLuznucRMi6w+UcpUiWTcnoW0MBUAbh/amNdLSyv/IuwhpzxR3PytXdH5UuewpmSWP/6dlMRV6c64Z6LjfFXtgdgjMYufJRI=
+	t=1736344412; cv=none; b=dLYA+8fFLX3bdu93R6JvrMDhlJw4GbUFu9A509Thdrk9FrrkCmqNs7ASg2B6zzH8oyPvfoZXLh8Fu6wT53t0MhSGgZEjQ5wnUwYa+W6VtaacQYA1f1cGnXvRrqo2UUlx1WHN5KcCDmYbPSiEL2XUjQfIuPh6yDFqplG5cMqiAb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736343826; c=relaxed/simple;
-	bh=iqhdiQgTSiDzizYdUIJBjiuqtzBDTizyoM7+/pcjwRw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PGoYcKm6Qlv5Is9ujGkJyaeXaVjW1QzMG4YDaajDqdw7mZ6vfdCNyAFenz/eqcLwG0jHYd+V4ZhmVhT4PrvbxqVvzOwpJSO4mz1oBNwe6Wv0qwgtXyH63G5dNc96ZXfCb6f+tcd939w3LZla1YTG+T+PWtQ/R1qvca5vjJ0u4p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eMFyzzZd; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736344412; c=relaxed/simple;
+	bh=ofXNWqNWX7xHDs+vmQzPrMk0moh+mg0GJoXarej5bcQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q5SoiADeJNtNg2JntSuMWoUiGVjga8rArxa25y4dlK8/7mbfx31dfpuOcoPhMWlVUhv4K+qioPxJNZsuZ7ZqzWbaMUcKmhycJJpct6WGBbB3BTBgPHK59Ok6kl/dCdgau37N5KhaKNUwjFOEbOxEAX4q0UzETamjaDtZed6hlDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=YaYLgdNO; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eMFyzzZd"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ef05d0ef18so3605531a91.0;
-        Wed, 08 Jan 2025 05:43:44 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="YaYLgdNO"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43626213fffso5536665e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 05:53:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736343824; x=1736948624; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iqhdiQgTSiDzizYdUIJBjiuqtzBDTizyoM7+/pcjwRw=;
-        b=eMFyzzZd0bTavj65cTDXdbmwVXh4EVHIMXbOwROp4pG5wPYib6iJ9TTZ6uNEejGiR6
-         DYK3zvLgecJfCjqG+HuMolsVANbTyJ3wkmPo6AodPmojFUOJpEbndyEpTz1f5wii2mpd
-         ijalbmawTPflPPTvH7aaWN0n/gYXQ/51pvRxTdhXMl3EJlnTbP14/aBw1DraG+mEUkKj
-         kzEAl2VlN8QT0W7s++8EiceIGHUtpKK+LuzvZZbg6AUeOkucf+o0g9Vlgah/E5zMK5mF
-         Fpi5++qxh1wIxadojatfl0g7a7fHa1+2Yxpdtr4/xihJeHkRPTbQIzkoT5GdbTLpl6dE
-         wQfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736343824; x=1736948624;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=ffwll.ch; s=google; t=1736344407; x=1736949207; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iqhdiQgTSiDzizYdUIJBjiuqtzBDTizyoM7+/pcjwRw=;
-        b=gpyapDBvBf9fn9wiW7De26A4uIJo+CpFnZW/5x9ogYP+GILI8bVhKkSYVfxbMxML91
-         zGmamZCCuhm2jJXiEk+IDMIOZL07vbktqr1nkAsJziidVX/NRumijEFdgXEzT9v19B7A
-         qFtI50LX3pBXVKQTop1/INifbpiQwdwp8yQXJGU8osUaZXHv7FbemRkEmUp/a5A18Z31
-         EyuZkhUXulmrW3TxxI4R328hmV+yzg37IU0LHFtUPgIyjWEY/kJ315k8smiWMfAL0xzo
-         ewC7GcccwMkMeC0o0/FXQZ5r4q5qUakTKGSwRPYivb0O6n1he6VpCGdM2rXjSHkdBKCV
-         h3Tg==
-X-Forwarded-Encrypted: i=1; AJvYcCWl1AMCjUJQbq0S9aDDTva93XtPxOH8lZoNWxE5zg0pnou9gAKanei0wl7KLmWuSPKcUBCtbJPdnHTPl0A=@vger.kernel.org, AJvYcCX+qLRPorUgtv8jtN/VZH49kt8/6BhJUNRkFOYmIlR0MUP1LedKoQlodSlwOpx8xSq6eQ/+yaur/el9HIPmVOY=@vger.kernel.org, AJvYcCXfOc1Bcq55zZJMiEthhNQSsW/SJqrsCUGMmMg4kD0nFj1XqeIDtMEpeKXuv0Mwuh+qwhmydINzYeKSoUPd@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPpe/3ApsEDgKNgsWLyTCY58gDYjhguYAVZyuN8Mo7HMxHK6yV
-	tEa2yB51iAlrzZ8bKyf1WetdidLMGEV2hrVsHHcbM+whMNtD3eMadJIm7lZI4+qW97DInM7ZvHo
-	kk8F36k3abT1CW8wqvXYODMD1bLsqi9H2
-X-Gm-Gg: ASbGncsK8SpOiktvFbQIznHswdR4DZrF0FN3IfWAzUAOLxIKTFJp4Up2xNUTO+SZFDx
-	akwrW1N1RzC06WadGLn3nmEfG657q2lDr48twgQ==
-X-Google-Smtp-Source: AGHT+IHlBOMStfp+zDCgjsiRIILWoAXtC9KGObHDr7q5oWUtQY4LVtLO7Xcp/DYCLB+wGMJ+B/Fy4C9MoVcT7FB2Cm4=
-X-Received: by 2002:a17:90a:da83:b0:2ef:93:154e with SMTP id
- 98e67ed59e1d1-2f5490ac7d8mr1627816a91.5.1736343824274; Wed, 08 Jan 2025
- 05:43:44 -0800 (PST)
+        bh=zw/I589OID/h/faVFUYy9BE802l0bliUsnODfwl56Tw=;
+        b=YaYLgdNOA4kDQdH1BgJDl8Upqf+cQzIQdlPabvVls/vImPdsKZ4Myvzkfj/PDtHWYE
+         fHfw6OBiAqNq8WLn/D+9bhDC18MFiil0jACbO3IHR8ylncrOAPobosFFr5a7jrQONt+k
+         zkw0uczZ6CIHiJKOkIdkMmCF4Ims+/pEtJCRg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736344407; x=1736949207;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zw/I589OID/h/faVFUYy9BE802l0bliUsnODfwl56Tw=;
+        b=I9fw8xODMSBigyFTmtl3M+0/iJ+wg2dbT4OiBksVXBc2vdnEjfRPcnH6Ba73SnSNtb
+         46kMG9jqtsUynxefo8Aq7QeRTDFd04hssy/fsAgsFcyw5DD7b5P7YXkHvzmPsMLu9L8m
+         Jr+SwE6lLd0XfaoV5L6JSMKk06o6Ts2xMf1OZya8b0oSB4PwWE0NftshpqyTLdK7+Qkv
+         D/ZLzmYfMpMB/jrRJp6gHWv95aK1vCIhGtvqylH5x/sTGvNqaKzuuZL+faFKQLnwAay0
+         NzJ2sOiMf1AtwhFVxwGfTthRuG+U5+5msTeFMF11344C1aUpe3shfzIPG/csDEBx68AM
+         aJbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKETcsJwnISkpttWIFbi0UJjeqd7p8/xxcpZ/HYCa3ilHMbllR/i9bGeQjrAzyMVGy2gSzWUB229O4b6oIyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEY8iaau61iDdKDPV7zl/CAmXz/i4nA142WZM+uJvi5lM5yZS8
+	krP6e31Tdj5gSZD1WFi3ZROiPJzuPdAxEn++fm0sNsE+estAm7oninuCG6i971w=
+X-Gm-Gg: ASbGncu/o7Bic5R+L2xvFu/QKZnVUl1sxpmYivnlz07MezR31TqFHx0PbBTEmD2nCW8
+	VJL5KruLyYqWveGD2HRjHBYSda3xrPCVYwSKpRT8k5uw8VQmTaN0+G8BlHtb6UkBg+1nEz7P1zj
+	B9yAT/+kwwHjvhPwWOrrfTL7UCPFXXEzG1DCIHeJQTDmaHRDtwHBcbFECYUoyvD54DTqdip9RKz
+	viCNyzdr4cO5TR/nKm4KQ0nnP+Ctiv3sdPHKdsj6/YTaz/u7syyi3WB8ne/NSDz1Dqb
+X-Google-Smtp-Source: AGHT+IGcFX2OqSMOiBQ10fzRud6kCjjcp+4yR6XK5g8oVIXi+3eD0ETorB5ho7YJSs4YplJ/dcJybg==
+X-Received: by 2002:a05:600c:3b22:b0:434:fa73:a906 with SMTP id 5b1f17b1804b1-436e1dd3e3bmr24777185e9.4.1736344407309;
+        Wed, 08 Jan 2025 05:53:27 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2e9a5bbsm21321575e9.44.2025.01.08.05.53.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 05:53:25 -0800 (PST)
+Date: Wed, 8 Jan 2025 14:53:23 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: devres: remove action in `Devres::drop`
+Message-ID: <Z36DU2Rf1O6cJbzG@phenom.ffwll.local>
+Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20250103164436.96449-1-dakr@kernel.org>
+ <20250103164436.96449-2-dakr@kernel.org>
+ <Z3wKFTkmjdaGHKIn@tardis.local>
+ <Z3z4tHzwatjbvz1h@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org>
- <20241213-module-params-v3-v3-4-485a015ac2cf@kernel.org> <pw5PzA4YGsu7j6ET_-OYE2oq9l7ixtTTGhHtxMxmMP5ggHxLrjzMkNMvcMVjGPhu7FpBb2duDD3bRbtMJZZHIw==@protonmail.internalid>
- <CANiq72kb2ocNuE6n32vr4xCkZhZN0uPuCN3SFA1+Q5L+Ma4ByQ@mail.gmail.com>
- <87y10jd8o0.fsf@kernel.org> <Tq7yfG7Ag6jqd_ns9qvfEn2KFLl_oJxBm6YwKDey8kbCE9-rDnkN84aW29C4_w1T6FkhDhzPsLeH0XYKe2WSSQ==@protonmail.internalid>
- <CANiq72nBpVy911cVhNFM6teQ0EaE-xs0SB2Qx95O4=nKBdRDuQ@mail.gmail.com> <87tta9bhjz.fsf@kernel.org>
-In-Reply-To: <87tta9bhjz.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 8 Jan 2025 14:43:31 +0100
-X-Gm-Features: AbW1kvaPC6xTSjdhXQfFhTZC6_gBs4iWcQIJO0wFFN_39Jfsyp3C1gs7awRtaa4
-Message-ID: <CANiq72=XW1RtXuP4JRVEZzwBKtXOOkJCp3WBW-oEFWHQOf_kpg@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] rust: add parameter support to the `module!` macro
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Trevor Gross <tmgross@umich.edu>, 
-	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z3z4tHzwatjbvz1h@pollux>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-On Wed, Jan 8, 2025 at 1:45=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> I don't think we ever discussed this?
+On Tue, Jan 07, 2025 at 10:49:40AM +0100, Danilo Krummrich wrote:
+> On Mon, Jan 06, 2025 at 08:51:33AM -0800, Boqun Feng wrote:
+> > On Fri, Jan 03, 2025 at 05:44:31PM +0100, Danilo Krummrich wrote:
+> > > So far `DevresInner` is kept alive, even if `Devres` is dropped until
+> > > the devres callback is executed to avoid a WARN() when the action has
+> > > been released already.
+> > > 
+> > > With the introduction of devm_remove_action_nowarn() we can remove the
+> > > action in `Devres::drop`, handle the case where the action has been
+> > > released already and hence also free `DevresInner`.
+> > > 
+> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > ---
+> > >  rust/kernel/devres.rs | 56 +++++++++++++++++++++++++++++++++----------
+> > >  1 file changed, 44 insertions(+), 12 deletions(-)
+> > > 
+> > > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> > > index 9c9dd39584eb..7d3daac92109 100644
+> > > --- a/rust/kernel/devres.rs
+> > > +++ b/rust/kernel/devres.rs
+> > > @@ -10,15 +10,19 @@
+> > >      bindings,
+> > >      device::Device,
+> > >      error::{Error, Result},
+> > > +    ffi::c_void,
+> > >      prelude::*,
+> > >      revocable::Revocable,
+> > >      sync::Arc,
+> > > +    types::ARef,
+> > >  };
+> > >  
+> > >  use core::ops::Deref;
+> > >  
+> > >  #[pin_data]
+> > >  struct DevresInner<T> {
+> > > +    dev: ARef<Device>,
+> > > +    callback: unsafe extern "C" fn(*mut c_void),
+> > >      #[pin]
+> > >      data: Revocable<T>,
+> > >  }
+> > > @@ -98,6 +102,8 @@ impl<T> DevresInner<T> {
+> > >      fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > >          let inner = Arc::pin_init(
+> > >              pin_init!( DevresInner {
+> > > +                dev: dev.into(),
+> > > +                callback: Self::devres_callback,
+> > >                  data <- Revocable::new(data),
+> > >              }),
+> > >              flags,
+> > > @@ -109,9 +115,8 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > >  
+> > >          // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
+> > >          // detached.
+> > > -        let ret = unsafe {
+> > > -            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
+> > > -        };
+> > > +        let ret =
+> > > +            unsafe { bindings::devm_add_action(dev.as_raw(), Some(inner.callback), data as _) };
+> > >  
+> > >          if ret != 0 {
+> > >              // SAFETY: We just created another reference to `inner` in order to pass it to
+> > > @@ -124,6 +129,41 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > >          Ok(inner)
+> > >      }
+> > >  
+> > > +    fn as_ptr(&self) -> *const Self {
+> > > +        self as _
+> > > +    }
+> > > +
+> > > +    fn remove_action(&self) {
+> > > +        // SAFETY:
+> > > +        // - `self.inner.dev` is a valid `Device`,
+> > > +        // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
+> > > +        //   previously,
+> > > +        // - `self` is always valid, even if the action has been released already.
+> > > +        let ret = unsafe {
+> > > +            bindings::devm_remove_action_nowarn(
+> > > +                self.dev.as_raw(),
+> > > +                Some(self.callback),
+> > > +                self.as_ptr() as _,
+> > > +            )
+> > > +        };
+> > > +
+> > > +        if ret != 0 {
+> > > +            // The devres action has been released already - nothing to do.
+> > > +            return;
+> > > +        }
+> > > +
+> > > +        // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
+> > > +        // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership of
+> > > +        // this reference.
+> > > +        let _ = unsafe { Arc::from_raw(self.as_ptr()) };
+> > 
+> > There is a pointer provenance issue here I think. `self` is a immutable
+> > reference to `DevresInner<..>`, so the pointer derived from it doesn't
+> > have the provenance for writing nor does it have the provenance for the
+> > `refcount` field in `ArcInner`. Therefore it cannot be used to
+> > reconstruct an `Arc`.
+> > 
+> > We probably want to make `remove_action()` take an
+> > `&Arc<DevresInner<T>>`. Or am I missing something subtle?
+> 
+> Indeed, good catch!
 
-I don't think so -- we discussed other things related to 2025H1 the
-last meeting. Perhaps you/we can bring it up in the next one?
+Just for my own learning I've tried to understand why there's an issue
+here, but no in DevresInner.devres_callback. In both cases we take the
+exact same bag of bits and convert it into an Arc, relying on the C side
+guaranteeing to us that we exclusively own whatever object that bag of
+bits points to when converted into a real reference.
 
-> Version 3 of this patch enabled the unstable feature `sync_unsafe_cell` [=
-1] to
-> avoid `static mut` variables as suggested by Trevor Tross and Benno Lossi=
-n [2].
->
-> As we are moving closer to a new edition, it is now clear that `static mu=
-t` is
-> not being deprecated in the 2024 edition as first anticipated [3].
->
-> Still, `SyncUnsafeCell` allows us to use safe code when referring to the
-> parameter value:
+I don't think we rely on the provance of self here at all, because we just
+pass that bag of bits to devm_remove_action_nowarn as a magic lookup key,
+and in the ret == 0 case the C side guarantee is that we own the resulting
+object if we convert it into one using Arc::from_raw.
 
-> What do you think?
+I think you could replace self.as_ptr in this function with a random bit
+value, and aside from being functionally nonsense and resulting in a
+randomized leak on the C side I dont think it would be unsafe/unsound.
 
-The justification seems fairly weak... Unless we are fairly confident
-the API will be stable (even if not stabilized right now), I am not
-sure why we would want to do this right now.
+What am I missing?
 
-Can we provide our own `SyncUnsafeCell` instead in the meantime, if
-you want to keep the advantages?
+Cheers, Sima
 
-> Returning an error and `pr_warn!` is doable. As far as I can tell, we do
-> not have `WARN_ON_ONCE` yet?
+> 
+> > 
+> > Regards,
+> > Boqun
+> > 
+> > > +
+> > > +        // Revoke the data, such that it gets dropped and the actual resource is freed.
+> > > +        //
+> > > +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
+> > > +        // anymore, hence it is safe not to wait for the grace period to finish.
+> > > +        unsafe { self.data.revoke_nosync() };
+> > > +    }
+> > > +
+> > >      #[allow(clippy::missing_safety_doc)]
+> > >      unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
+> > >          let ptr = ptr as *mut DevresInner<T>;
+> > > @@ -165,14 +205,6 @@ fn deref(&self) -> &Self::Target {
+> > >  
+> > >  impl<T> Drop for Devres<T> {
+> > >      fn drop(&mut self) {
+> > > -        // Revoke the data, such that it gets dropped already and the actual resource is freed.
+> > > -        //
+> > > -        // `DevresInner` has to stay alive until the devres callback has been called. This is
+> > > -        // necessary since we don't know when `Devres` is dropped and calling
+> > > -        // `devm_remove_action()` instead could race with `devres_release_all()`.
+> > > -        //
+> > > -        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
+> > > -        // anymore, hence it is safe not to wait for the grace period to finish.
+> > > -        unsafe { self.revoke_nosync() };
+> > > +        self.0.remove_action();
+> > >      }
+> > >  }
+> > > -- 
+> > > 2.47.1
+> > > 
 
-Please see https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v=
-4-0-410b8ca9643e@tuta.io/
-in case it helps.
-
-> It turns out we can!
-
-That is what I expected :)
-
-Thanks!
-
-Cheers,
-Miguel
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
