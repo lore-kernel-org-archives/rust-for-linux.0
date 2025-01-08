@@ -1,410 +1,272 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4BE1FA151;
-	Wed,  8 Jan 2025 12:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BF238F82
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 12:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736339318; cv=none; b=NBB/ulB63JBhmpPRCAsvgFT3Zu6wRRpeozP1R3roZ2aIoBpLSSmbATFTi19QnFmujoyZe3gxKKjERZQgCIvtnlPb9WYjMZ4eaRXU0u0gkftjqgg+vv2KhK4iVl7JdAv5PPHYE60b5Ig3Bvz39XkF/3X+CbGfACXG4y07OZ0tAUY=
+	t=1736339563; cv=none; b=PXV3f00CMD7yQkBEnSGTYtFMFJGQ8Fdm+T4mth6b7EUfgpMqbYsyz9omyCRywEP3xRpQn7GCojAmgc6fnrHWrid6+CtYR7vXYAiymVXd+HjPpv+RlKO/91X9Q4xtEqVDS2SPqM7gRDLsO4kLyMGK5D7ZE0fAgA14GP6lR1aCcq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736339318; c=relaxed/simple;
-	bh=2BwwfipFvu8t7D+gTPEBw9gzaEqFY9AHFMcZn2BEQHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nB4G0DKxSJxNFUrWAJ+wNDLLLJdHO2Vjyi26Swge7Cj6ggXI6oVjqBtYCaGRqjUdOCkLH4XVUB70nWkcTQeozFSSxfbeSD2YmGjzl9fZvuth3DbJKL7wYQu8/iJvpLn2au6w+DAGr2aRovk/MYs3TR7JwQFfKx6I84D5kE4g88U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ngzW3XN+; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736339563; c=relaxed/simple;
+	bh=swwGyveLyp0amIySgvtp+qQyuVHE7vnmoDcPy67/Qj4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iDp1BPLFBvPvUVDJwqBFmZhmHpMEkI5FdS1gIckOBuTnmCWboixNndAYzz5lVB4ftvH6opHgtljjFwdg6uX+9W4SQiuCyFHlzORcpCtq0GvpZsfVaq2SB/9Iy8TUIwER+LMjKXZHRztb5+tLATPxZow0HQ//1kNLSKHIDcJmZWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2P/hTlOx; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ngzW3XN+"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30229d5b229so173204351fa.0;
-        Wed, 08 Jan 2025 04:28:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2P/hTlOx"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4362bae4d7dso119618865e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 04:32:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736339315; x=1736944115; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1736339560; x=1736944360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6xZZ3yNkLB+sNAA/LBpLvEhrY9sh0ePsbmghyTjHX2E=;
-        b=ngzW3XN+dIJWuFMxr38sXUdJd/TDlIyjTKn2vNtrT6NWMKbIN+kYJBOUC+L6BiZo9V
-         s6ZTxCKkHYxAXm3vcl19lsXFQp3PLo3yuk/tToRNRQTV7ZlR219bVpaamG/53z6vPyMi
-         A3c0K1pgrjJTHUT547wsyMN8UgzYPr5j2rtuNeTPDgTp/ejvHugHrcG9dpHDMb0yA1Sl
-         fzBgICdisix107mg2rCaonc16e/D5lc4UyJZrqaHcOzIAA2P40Opa07qCiWwaHwjfVMi
-         GDDNx/3FNwBe/2hAOmzJ7C6f8qs1da/L+JVs5HFqLHGAzW34uZZpo5R1RP8DYnGd+OXO
-         jqCg==
+        bh=Y3Vodk3cvVQRC0E4rbLU9E6VKqAaSnQ+/DTuNiDJXiA=;
+        b=2P/hTlOxh84FRmVsmcUKgl/TCzD089sDM0K2bKDkGAuF7rlpA5eRGg540uGt/P0jt/
+         XW6HIikmWjUB5iqPQ72FRnhbDHx1dpZQGwMH0Tdbl/hmc5DV/PnMtKK8Mytf+mIMs1MV
+         3WUDvgKV8Exz8egKkgAw4WnrWtbBxqSkT0XLxBv+UWxDXsvFp7Z86iGfxCnFISo4Oawr
+         s/VPQaF+ll9gDEyIJ9rJwlHfXxOlASe+bkSX2CDBphRU5ICgyCjbFPIDuwgT/6IVxvLA
+         uI8qmT45o7as13cSNPxQpova3XCTtguzNyuyEij9Rv5qa/ZD4pB0WH1MrQSnmryFjyu1
+         cNMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736339315; x=1736944115;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1736339560; x=1736944360;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6xZZ3yNkLB+sNAA/LBpLvEhrY9sh0ePsbmghyTjHX2E=;
-        b=SKN/jYTNbivcop6WtyMZOa+Vk4OVLXTXcPBtgNwGoCH4SRvX1rkcamuqrW4M57Bh3P
-         I38PFbNQyXVZs2JhAa/uyLFCh2y+UykKekRLJryR6hVJF5/f/cujFXN80UKLyeEj3vQQ
-         5OpRdV51i/FZOvp42icuOcllALkQzhdQ3DFPhsh53GvPV9D1sXdRKZYXFoXjd2wdapao
-         u1EumOFJ9O771g0CzFSbc3IZlYpy1ymf/hi/fcxVSNxLiT+YVG5JPoKiz++QnTIA+7l1
-         FRDUoRApUS18tXQuA24tB3kFh+0RKJ8TpcWlpgqicy/PThS+7GCZaqiKHoCoPyB46F5M
-         Jy0A==
-X-Forwarded-Encrypted: i=1; AJvYcCVXTCnC2vfYoSM00FApRDDlBP6oKp///uYHVYf800olQVYFKTbZqjoF8aNk+fhpTuiweUJpWxPrQLVQMCs=@vger.kernel.org, AJvYcCXG6q7MWmpKz36r1ZRMGfjIvbkIYyEBwGaKcqDGnHwmE0qED5FXrZe6z6IAVgOOOIhzkB8KPgu3ntOD/6i9csk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3eGGLUSfxwdL3jxr9QkgeOJBWOCEitZLoNCXzc8p2jtS926Z8
-	j6pbu8zWFVUaJcuu4IZgi1Ok8Y9Oeux5Pc7EjKq7n6/lyMe+RH5R
-X-Gm-Gg: ASbGncsC2AU67Z7quY2AUWyFXKMLN7sbEfvCjiN088Bdda18P3Ldcezx5p6VnQXghkS
-	wID3mlUF1/CoUsbyIr2x7hRt6funfTefMf8MbY6LvWZkKvA2iSI3pu1LhvjuGylosi4z3E6z+ZF
-	td2Ell2STAyo/c1TdOf8L+b8SyBwVUH80tzQRkNo1/9SH5ExUq7mj3jtvwra0LpuUAZKWJnqPTs
-	+1U8uDXeulHaSrj3KJ8bXRy5ht6SONzSnxNq2HBxawnsEpLMGEr/B+pNNfKOj78dBrJzhctpp0c
-	IChkm14DvXkOQdVv6mD916SZMoA=
-X-Google-Smtp-Source: AGHT+IEfCYar0sKyJ4/FULPbik3D/ZHdWRTbjRbx++csRT4HaEL8g6F6cajrlilVNEdDKyX6oU9U2g==
-X-Received: by 2002:a2e:a716:0:b0:300:4362:40 with SMTP id 38308e7fff4ca-305f463cf58mr5169171fa.36.1736339314252;
-        Wed, 08 Jan 2025 04:28:34 -0800 (PST)
-Received: from abj-NUC9VXQNX.. (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3045b082db8sm61183911fa.99.2025.01.08.04.28.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 04:28:33 -0800 (PST)
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	robin.murphy@arm.com,
-	rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org (open list),
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	airlied@redhat.com,
-	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-Date: Wed,  8 Jan 2025 14:27:24 +0200
-Message-ID: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
-References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
+        bh=Y3Vodk3cvVQRC0E4rbLU9E6VKqAaSnQ+/DTuNiDJXiA=;
+        b=U7jjM7bgCvGwwWQstTEKj/caK629xMRsTRVgr5LF6nGlvWokFbWpVK+1sY8NT3H3c0
+         najJfQLby11xxnTjF/CQifGSNHlF+TqMj+U4xsdD4qTDjTmm4KCz6htnYba07W2hpFIg
+         GRiN+zHE9mSf7Qnxrl7dIkkHsMlfoeDASW5fHwY7P5czTr+Q7BLi/OKffCI4P5pCDYoA
+         0W6S9XAbTirGbMlUwdiNSaVX9ND2idELufLwm/e0f5y4HBWy4Jkcug2vumpQ5SrtwyL/
+         AMP48eFRbpsPFn1NLnS4GbXz7FuCrGg6aPbB+JM1IKBoA3Ser6u+FKNQIQbjV3O7UDCH
+         K0iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpGBRzU5230KwhVPvBzFhvWfkWLfbw3pNKLupfa34S+Y6/N0TVgFwh+MCVg4bl5FiQ1ZFzSCJjez+Gxio75A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YytiziRWFlLf73d74IjpbLIf9FViGh5UXefNzSJoCXSn9e0TM+O
+	ukcm4sIXC+YGcqa8llXDrOBqpllvt9gyKBjb16qCbdnBZIbnkSILPjE/lKXBFnKQQjO2C7RKzZp
+	o96fHNRXP715w52DXdXsWVMduqzbbTkCtqWHB
+X-Gm-Gg: ASbGnctQuB02gsNfW5Zw97muY9wFtBObuvAlaBEwXYgPHIoVihUC6zursoxfPXl3qMC
+	AbTYhXR3u48DJog3rKbvB766IIp9vo4bauH5WURUom8jnPfENfqicOp431vmt6+YFArON
+X-Google-Smtp-Source: AGHT+IEskuo3fK2LuhaAm13Ug2sSSFQnbDigYwYbO9yrK57j8PvPXDs4R1cjfZdHdzcXJgq1wwS+JhW9G4C5zCKry+s=
+X-Received: by 2002:a05:6000:1f8d:b0:385:f6c7:90c6 with SMTP id
+ ffacd0b85a97d-38a8730687emr2336604f8f.20.1736339560020; Wed, 08 Jan 2025
+ 04:32:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241211-vma-v11-0-466640428fc3@google.com> <mSBxLtHQ2_lBeEYTQNS-AoAdOXj-UH7mEb48SlHQZJMlUBwpqzIP4UB9nZv439lfseuIL27p3QnFOMFjV2wk-g==@protonmail.internalid>
+ <20241211-vma-v11-8-466640428fc3@google.com> <87frmnadmk.fsf@kernel.org>
+In-Reply-To: <87frmnadmk.fsf@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 8 Jan 2025 13:32:28 +0100
+X-Gm-Features: AbW1kvYRGjjTmfVAVHygmi3avDuaVXAHexXRmtBBxOnWAWxHdiZq78_fUYF0gdI
+Message-ID: <CAH5fLgiBsW-sZ8LW4aqK1Eux71qdB3ERr6RdE3gX2uka+GRrew@mail.gmail.com>
+Subject: Re: [PATCH v11 8/8] task: rust: rework how current is accessed
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a simple dma coherent allocator rust abstraction. Based on
-Andreas Hindborg's dma abstractions from the rnvme driver, which
-was also based on earlier work by Wedson Almeida Filho.
+On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> "Alice Ryhl" <aliceryhl@google.com> writes:
+> > +impl CurrentTask {
+> > +    /// Access the address space of the current task.
+> > +    ///
+> > +    /// This function does not touch the refcount of the mm.
+> > +    #[inline]
+> > +    pub fn mm(&self) -> Option<&MmWithUser> {
+> > +        // SAFETY: The `mm` field of `current` is not modified from ot=
+her threads, so reading it is
+> > +        // not a data race.
+> > +        let mm =3D unsafe { (*self.as_ptr()).mm };
+> > +
+> > +        if mm.is_null() {
+> > +            return None;
+> > +        }
+> > +
+> > +        // SAFETY: If `current->mm` is non-null, then it references a =
+valid mm with a non-zero
+> > +        // value of `mm_users`. Furthermore, the returned `&MmWithUser=
+` borrows from this
+> > +        // `CurrentTask`, so it cannot escape the scope in which the c=
+urrent pointer was obtained.
+> > +        //
+> > +        // This is safe even if `kthread_use_mm()`/`kthread_unuse_mm()=
+` are used. There are two
+> > +        // relevant cases:
+> > +        // * If the `&CurrentTask` was created before `kthread_use_mm(=
+)`, then it cannot be
+> > +        //   accessed during the `kthread_use_mm()`/`kthread_unuse_mm(=
+)` scope due to the
+> > +        //   `NotThreadSafe` field of `CurrentTask`.
+> > +        // * If the `&CurrentTask` was created within a `kthread_use_m=
+m()`/`kthread_unuse_mm()`
+> > +        //   scope, then the `&CurrentTask` cannot escape that scope, =
+so the returned `&MmWithUser`
+> > +        //   also cannot escape that scope.
+> > +        // In either case, it's not possible to read `current->mm` and=
+ keep using it after the
+> > +        // scope is ended with `kthread_unuse_mm()`.
+>
+> I guess we don't actually need the last section until we see
+> `ktread_use_mm` / `kthread_unuse_mm` abstractions in tree?
 
-Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
----
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/dma.rs              | 271 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   1 +
- 3 files changed, 273 insertions(+)
- create mode 100644 rust/kernel/dma.rs
+I mean, there could be such a scope in C code that called into Rust?
+And I don't think there's anything wrong with future-proofing this
+abstraction towards adding it in the future.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 5c4dfe22f41a..49bf713b9bb6 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -11,6 +11,7 @@
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
- #include <linux/cred.h>
-+#include <linux/dma-mapping.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
- #include <linux/file.h>
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-new file mode 100644
-index 000000000000..c0661bcc9f72
---- /dev/null
-+++ b/rust/kernel/dma.rs
-@@ -0,0 +1,271 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Direct memory access (DMA).
-+//!
-+//! C header: [`include/linux/dma-mapping.h`](srctree/include/linux/dma-mapping.h)
-+
-+use crate::{
-+    bindings, build_assert,
-+    device::Device,
-+    error::code::*,
-+    error::Result,
-+    transmute::{AsBytes, FromBytes},
-+    types::ARef,
-+};
-+
-+/// Possible attributes associated with a DMA mapping.
-+///
-+/// They can be combined with the operators `|`, `&`, and `!`.
-+///
-+/// Values can be used from the [`attrs`] module.
-+#[derive(Clone, Copy, PartialEq)]
-+pub struct Attrs(pub u32);
-+
-+impl Attrs {
-+    /// Get the raw representation of this attribute.
-+    pub(crate) fn as_raw(self) -> usize {
-+        self.0.try_into().unwrap()
-+    }
-+
-+    /// Check whether `flags` is contained in `self`.
-+    pub fn contains(self, flags: Attrs) -> bool {
-+        (self & flags) == flags
-+    }
-+}
-+
-+impl core::ops::BitOr for Attrs {
-+    type Output = Self;
-+    fn bitor(self, rhs: Self) -> Self::Output {
-+        Self(self.0 | rhs.0)
-+    }
-+}
-+
-+impl core::ops::BitAnd for Attrs {
-+    type Output = Self;
-+    fn bitand(self, rhs: Self) -> Self::Output {
-+        Self(self.0 & rhs.0)
-+    }
-+}
-+
-+impl core::ops::Not for Attrs {
-+    type Output = Self;
-+    fn not(self) -> Self::Output {
-+        Self(!self.0)
-+    }
-+}
-+
-+/// DMA mapping attrributes.
-+pub mod attrs {
-+    use super::Attrs;
-+
-+    /// Specifies that reads and writes to the mapping may be weakly ordered, that is that reads
-+    /// and writes may pass each other.
-+    pub const DMA_ATTR_WEAK_ORDERING: Attrs = Attrs(bindings::DMA_ATTR_WEAK_ORDERING);
-+
-+    /// Specifies that writes to the mapping may be buffered to improve performance.
-+    pub const DMA_ATTR_WRITE_COMBINE: Attrs = Attrs(bindings::DMA_ATTR_WRITE_COMBINE);
-+
-+    /// Lets the platform to avoid creating a kernel virtual mapping for the allocated buffer.
-+    pub const DMA_ATTR_NO_KERNEL_MAPPING: Attrs = Attrs(bindings::DMA_ATTR_NO_KERNEL_MAPPING);
-+
-+    /// Allows platform code to skip synchronization of the CPU cache for the given buffer assuming
-+    /// that it has been already transferred to 'device' domain.
-+    pub const DMA_ATTR_SKIP_CPU_SYNC: Attrs = Attrs(bindings::DMA_ATTR_SKIP_CPU_SYNC);
-+
-+    /// Forces contiguous allocation of the buffer in physical memory.
-+    pub const DMA_ATTR_FORCE_CONTIGUOUS: Attrs = Attrs(bindings::DMA_ATTR_FORCE_CONTIGUOUS);
-+
-+    /// This is a hint to the DMA-mapping subsystem that it's probably not worth the time to try
-+    /// to allocate memory to in a way that gives better TLB efficiency.
-+    pub const DMA_ATTR_ALLOC_SINGLE_PAGES: Attrs = Attrs(bindings::DMA_ATTR_ALLOC_SINGLE_PAGES);
-+
-+    /// This tells the DMA-mapping subsystem to suppress allocation failure reports (similarly to
-+    /// __GFP_NOWARN).
-+    pub const DMA_ATTR_NO_WARN: Attrs = Attrs(bindings::DMA_ATTR_NO_WARN);
-+
-+    /// Used to indicate that the buffer is fully accessible at an elevated privilege level (and
-+    /// ideally inaccessible or at least read-only at lesser-privileged levels).
-+    pub const DMA_ATTR_PRIVILEGED: Attrs = Attrs(bindings::DMA_ATTR_PRIVILEGED);
-+}
-+
-+/// An abstraction of the `dma_alloc_coherent` API.
-+///
-+/// This is an abstraction around the `dma_alloc_coherent` API which is used to allocate and map
-+/// large consistent DMA regions.
-+///
-+/// A [`CoherentAllocation`] instance contains a pointer to the allocated region (in the
-+/// processor's virtual address space) and the device address which can be given to the device
-+/// as the DMA address base of the region. The region is released once [`CoherentAllocation`]
-+/// is dropped.
-+///
-+/// # Invariants
-+///
-+/// For the lifetime of an instance of [`CoherentAllocation`], the cpu address is a valid pointer
-+/// to an allocated region of consistent memory and we hold a reference to the device.
-+pub struct CoherentAllocation<T: AsBytes + FromBytes> {
-+    dev: ARef<Device>,
-+    dma_handle: bindings::dma_addr_t,
-+    count: usize,
-+    cpu_addr: *mut T,
-+    dma_attrs: Attrs,
-+}
-+
-+impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
-+    /// Allocates a region of `size_of::<T> * count` of consistent memory.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::device::Device;
-+    /// use kernel::dma::{attrs::*, CoherentAllocation};
-+    ///
-+    /// # fn test(dev: &Device) -> Result {
-+    /// let c: CoherentAllocation<u64> = CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL,
-+    ///                                                                  DMA_ATTR_NO_WARN)?;
-+    /// # Ok::<(), Error>(()) }
-+    /// ```
-+    pub fn alloc_attrs(
-+        dev: &Device,
-+        count: usize,
-+        gfp_flags: kernel::alloc::Flags,
-+        dma_attrs: Attrs,
-+    ) -> Result<CoherentAllocation<T>> {
-+        build_assert!(
-+            core::mem::size_of::<T>() > 0,
-+            "It doesn't make sense for the allocated type to be a ZST"
-+        );
-+
-+        let size = count
-+            .checked_mul(core::mem::size_of::<T>())
-+            .ok_or(EOVERFLOW)?;
-+        let mut dma_handle = 0;
-+        // SAFETY: device pointer is guaranteed as valid by invariant on `Device`.
-+        // We ensure that we catch the failure on this function and throw an ENOMEM
-+        let ret = unsafe {
-+            bindings::dma_alloc_attrs(
-+                dev.as_raw(),
-+                size,
-+                &mut dma_handle,
-+                gfp_flags.as_raw(),
-+                dma_attrs.as_raw(),
-+            )
-+        };
-+        if ret.is_null() {
-+            return Err(ENOMEM);
-+        }
-+        // INVARIANT: We just successfully allocated a coherent region which is accessible for
-+        // `count` elements, hence the cpu address is valid. We also hold a refcounted reference
-+        // to the device.
-+        Ok(Self {
-+            dev: dev.into(),
-+            dma_handle,
-+            count,
-+            cpu_addr: ret as *mut T,
-+            dma_attrs,
-+        })
-+    }
-+
-+    /// Performs the same functionality as `alloc_attrs`, except the `dma_attrs` is 0 by default.
-+    pub fn alloc_coherent(
-+        dev: &Device,
-+        count: usize,
-+        gfp_flags: kernel::alloc::Flags,
-+    ) -> Result<CoherentAllocation<T>> {
-+        CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
-+    }
-+
-+    /// Returns the base address, dma handle, attributes and the size of the allocated region.
-+    /// The caller takes ownership of the returned resources, i.e., will have the responsibility
-+    /// in calling `bindings::dma_free_attrs`.
-+    pub fn into_parts(self) -> (*mut T, bindings::dma_addr_t, usize, usize) {
-+        let size = self.count * core::mem::size_of::<T>();
-+        let ret = (
-+            self.cpu_addr,
-+            self.dma_handle,
-+            self.dma_attrs.as_raw(),
-+            size,
-+        );
-+        // Drop the device's reference count associated with this object. This is needed as no
-+        // destructor will be called on this object once this function returns.
-+        // SAFETY: the device pointer is still valid as of this point due to the type invariants
-+        // on `CoherentAllocation`.
-+        unsafe { bindings::put_device(self.dev.as_raw()) }
-+        core::mem::forget(self);
-+        ret
-+    }
-+
-+    /// Returns the base address to the allocated region in the CPU's virtual address space.
-+    pub fn start_ptr(&self) -> *const T {
-+        self.cpu_addr
-+    }
-+
-+    /// Returns the base address to the allocated region in the CPU's virtual address space as
-+    /// a mutable pointer.
-+    pub fn start_ptr_mut(&mut self) -> *mut T {
-+        self.cpu_addr
-+    }
-+
-+    /// Returns a DMA handle which may given to the device as the DMA address base of
-+    /// the region.
-+    pub fn dma_handle(&self) -> bindings::dma_addr_t {
-+        self.dma_handle
-+    }
-+
-+    /// Reads data from the region starting from `offset` as a slice.
-+    /// `offset` and `count` are in units of `T`, not the number of bytes.
-+    ///
-+    /// Due to the safety requirements of slice, the data returned should be regarded by the
-+    /// caller as a snapshot of the region when this function is called, as the region could
-+    /// be modified by the device at anytime. For ringbuffer type of r/w access or use-cases
-+    /// where the pointer to the live data is needed, `start_ptr()` or `start_ptr_mut()`
-+    /// could be used instead.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that no hardware operations that involve the buffer are currently
-+    /// taking place while the returned slice is live.
-+    pub unsafe fn read(&self, offset: usize, count: usize) -> Result<&[T]> {
-+        if offset + count >= self.count {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation`,
-+        // we've just checked that the range and index is within bounds. The immutability of the
-+        // of data is also guaranteed by the safety requirements of the function.
-+        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.wrapping_add(offset), count) })
-+    }
-+
-+    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
-+    /// number of bytes.
-+    pub fn write(&self, src: &[T], offset: usize) -> Result {
-+        if offset + src.len() >= self.count {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY: The pointer is valid due to type invariant on `CoherentAllocation`
-+        // and we've just checked that the range and index is within bounds.
-+        unsafe {
-+            core::ptr::copy_nonoverlapping(
-+                src.as_ptr(),
-+                self.cpu_addr.wrapping_add(offset),
-+                src.len(),
-+            )
-+        };
-+        Ok(())
-+    }
-+}
-+
-+impl<T: AsBytes + FromBytes> Drop for CoherentAllocation<T> {
-+    fn drop(&mut self) {
-+        let size = self.count * core::mem::size_of::<T>();
-+        // SAFETY: the device, cpu address, and the dma handle is valid due to the
-+        // type invariants on `CoherentAllocation`.
-+        unsafe {
-+            bindings::dma_free_attrs(
-+                self.dev.as_raw(),
-+                size,
-+                self.cpu_addr as _,
-+                self.dma_handle,
-+                self.dma_attrs.as_raw(),
-+            )
-+        }
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index e1065a7551a3..6e90ebf5a130 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -35,6 +35,7 @@
- mod build_assert;
- pub mod cred;
- pub mod device;
-+pub mod dma;
- pub mod error;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
--- 
-2.43.0
+> > +        Some(unsafe { MmWithUser::from_raw(mm) })
+> > +    }
+> > +
+> > +    /// Access the pid namespace of the current task.
+>
+> Is it an address space or a memory map(ping)? Can we use consistent vocab=
+ulary?
 
+Neither. It's a pid namespace which has nothing to do with address
+spaces or memory mappings. This part of this patch is moving an
+existing abstraction to work with the reworked way to access current.
+
+> > +    ///
+> > +    /// This function does not touch the refcount of the namespace or =
+use RCU protection.
+> > +    #[doc(alias =3D "task_active_pid_ns")]
+>
+> What is with the alias?
+
+This is the Rust equivalent to the C function called
+task_active_pid_ns. The alias makes it easier to find it.
+
+> > +    #[inline]
+> > +    pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+> > +        // SAFETY: It is safe to call `task_active_pid_ns` without RCU=
+ protection when calling it
+> > +        // on the current task.
+> > +        let active_ns =3D unsafe { bindings::task_active_pid_ns(self.a=
+s_ptr()) };
+> > +
+> > +        if active_ns.is_null() {
+> > +            return None;
+> > +        }
+> > +
+> > +        // The lifetime of `PidNamespace` is bound to `Task` and `stru=
+ct pid`.
+> > +        //
+> > +        // The `PidNamespace` of a `Task` doesn't ever change once the=
+ `Task` is alive. A
+> > +        // `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE_NEW=
+PID)` will not have an effect
+> > +        // on the calling `Task`'s pid namespace. It will only effect =
+the pid namespace of children
+> > +        // created by the calling `Task`. This invariant guarantees th=
+at after having acquired a
+> > +        // reference to a `Task`'s pid namespace it will remain unchan=
+ged.
+> > +        //
+> > +        // When a task has exited and been reaped `release_task()` wil=
+l be called. This will set
+> > +        // the `PidNamespace` of the task to `NULL`. So retrieving the=
+ `PidNamespace` of a task
+> > +        // that is dead will return `NULL`. Note, that neither holding=
+ the RCU lock nor holding a
+> > +        // referencing count to the `Task` will prevent `release_task(=
+)` being called.
+> > +        //
+> > +        // In order to retrieve the `PidNamespace` of a `Task` the `ta=
+sk_active_pid_ns()` function
+> > +        // can be used. There are two cases to consider:
+> > +        //
+> > +        // (1) retrieving the `PidNamespace` of the `current` task
+> > +        // (2) retrieving the `PidNamespace` of a non-`current` task
+> > +        //
+> > +        // From system call context retrieving the `PidNamespace` for =
+case (1) is always safe and
+> > +        // requires neither RCU locking nor a reference count to be he=
+ld. Retrieving the
+> > +        // `PidNamespace` after `release_task()` for current will retu=
+rn `NULL` but no codepath
+> > +        // like that is exposed to Rust.
+> > +        //
+> > +        // Retrieving the `PidNamespace` from system call context for =
+(2) requires RCU protection.
+> > +        // Accessing `PidNamespace` outside of RCU protection requires=
+ a reference count that
+> > +        // must've been acquired while holding the RCU lock. Note that=
+ accessing a non-`current`
+> > +        // task means `NULL` can be returned as the non-`current` task=
+ could have already passed
+> > +        // through `release_task()`.
+> > +        //
+> > +        // To retrieve (1) the `&CurrentTask` type should be used whic=
+h ensures that the returned
+> > +        // `PidNamespace` cannot outlive the current task context. The=
+ `CurrentTask::active_pid_ns`
+> > +        // function allows Rust to handle the common case of accessing=
+ `current`'s `PidNamespace`
+> > +        // without RCU protection and without having to acquire a refe=
+rence count.
+> > +        //
+> > +        // For (2) the `task_get_pid_ns()` method must be used. This w=
+ill always acquire a
+> > +        // reference on `PidNamespace` and will return an `Option` to =
+force the caller to
+> > +        // explicitly handle the case where `PidNamespace` is `None`, =
+something that tends to be
+> > +        // forgotten when doing the equivalent operation in `C`. Missi=
+ng RCU primitives make it
+> > +        // difficult to perform operations that are otherwise safe wit=
+hout holding a reference
+> > +        // count as long as RCU protection is guaranteed. But it is no=
+t important currently. But we
+> > +        // do want it in the future.
+> > +        //
+> > +        // Note for (2) the required RCU protection around calling `ta=
+sk_active_pid_ns()`
+> > +        // synchronizes against putting the last reference of the asso=
+ciated `struct pid` of
+> > +        // `task->thread_pid`. The `struct pid` stored in that field i=
+s used to retrieve the
+> > +        // `PidNamespace` of the caller. When `release_task()` is call=
+ed `task->thread_pid` will be
+> > +        // `NULL`ed and `put_pid()` on said `struct pid` will be delay=
+ed in `free_pid()` via
+> > +        // `call_rcu()` allowing everyone with an RCU protected access=
+ to the `struct pid` acquired
+> > +        // from `task->thread_pid` to finish.
+>
+> While this comment is a nice piece of documentation, I think we should
+> move it elsewhere, or restrict it to paragraphs pertaining to (1), since
+> that is the only case we consider here?
+
+Where would you move it?
+
+> > +        //
+> > +        // SAFETY: If `current`'s pid ns is non-null, then it referenc=
+es a valid pid ns.
+> > +        // Furthermore, the returned `&PidNamespace` borrows from this=
+ `CurrentTask`, so it cannot
+> > +        // escape the scope in which the current pointer was obtained.
+> > +        Some(unsafe { PidNamespace::from_ptr(active_ns) })
+> > +    }
+>
+> Can we move the impl block and the struct definition next to each other?
+
+I could move the definition of CurrentTask down, but I'm not really
+convinced that it's an improvement.
+
+Alice
