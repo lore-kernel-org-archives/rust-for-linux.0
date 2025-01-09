@@ -1,64 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70092B677;
-	Thu,  9 Jan 2025 20:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906D1FBC94;
+	Thu,  9 Jan 2025 22:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736454781; cv=none; b=Wwbph59NPQK05hPRGafgz5CGURhCsgZuo/Pnz/wgBfe1iM7QhgSe//93wLrUsKVRu2DNK+PX0pXFjZAKoNKxqVUeTmICMa2t6EmZO6CjKsCv82C4WnoqFD/7FLHrAhO8XwqNtn/cIMeYQTNVaYQYxy2ULkAi7/5WXUy62TuRKxA=
+	t=1736462368; cv=none; b=rk+OjrexwCv1SS2oHMK3WcIi3sOBv1rovK1OgyUizZEEp32Qwa/bXZ4GSfIVrK7iT0jbVQhpnVzAXIEl1+iSea3ugWYY5o+Ko1P/4WDmEL8jkBcuqQ3WCEmkY80eU+poduw1K6OWE7IPSTHZfsHPgDUPgkgPhfcxmX2xElwUSQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736454781; c=relaxed/simple;
-	bh=ux8AdvBQRWc8x5GVq76mOl2ItrF9N8b+fdfFajokARk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YOdUvY+g7tvS22n0GkdJUvFOL6wNR3d5chqAZOX2kV8uOlgI8TcUl3rJ6zPeMPEejPCucZCfVBSKDhjBnslB8Fx2PZFMK46mj4LxvF0qz/mQXZ8H5o4IshRy+LPUWqwwearjZ0msdmAzRvE7/FG3q+rR+x6ibx/Nr2buAEGFCW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOYiY66I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736462368; c=relaxed/simple;
+	bh=KgR7gFLRskON8FZvx4SMG0MjcWbEh8wMoMZ0Le3K/WE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C2Zh60rfSu/Ov/sgT/NgiL//vyFLCMl4K2pNHf2TOb5o49i2Z2KCZAOwJ42Atv7C7/bENoMjNAZ7+yhcpupEAhk5NCYPO4bZXU85TFfnCJkqaooIDCLU5EsuHHgFohvU8U2crrAchW6bLhgKNGpzOucsYI+iHZtm6eh2erCU+3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kK1MoFE9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOYiY66I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FCAC4CED2;
-	Thu,  9 Jan 2025 20:32:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kK1MoFE9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57648C4CED2;
+	Thu,  9 Jan 2025 22:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736454780;
-	bh=ux8AdvBQRWc8x5GVq76mOl2ItrF9N8b+fdfFajokARk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cOYiY66IWYKR7zk/Oa3TAcGrU/3Ks0vqdMSJ91RIpXSDdJzFWo7qv4dHM+J6uzzje
-	 o+4+ivSfoXTq3f9WFL/DHwcZmqjQt0qIO3KJCkyYLn1JIlJc6/uL72sswLMh3FSe5B
-	 TZ/kOlfPR+wfOieBaO8QnPXe9SSOan+hSphOIquRXIDj08tPcnXLP31RV9WgX6dw/y
-	 vQ8wme07AGQ1dVwZ5aYevxBPhmZa0Yhxu684F6oBr2WPEpaysHEDgS/2kd/9+55fTb
-	 Hb/pA6FH5AyiabMpUPYjZtZfL4OLD+TUOwT1wOYeAytekV0icvVv7vdOF1ufQlVXXm
-	 bYrZxnWGT+CNw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Matthew Wilcox" <willy@infradead.org>,  "Vlastimil Babka"
- <vbabka@suse.cz>,  "John Hubbard" <jhubbard@nvidia.com>,  "Liam R.
- Howlett" <Liam.Howlett@oracle.com>,  "Andrew Morton"
- <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
-  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
- <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
- Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v11 2/8] mm: rust: add vm_area_struct methods that
- require read access
-In-Reply-To: <8b803030-0ca3-4591-b2f3-bb9bcc2aca21@lucifer.local> (Lorenzo
-	Stoakes's message of "Thu, 09 Jan 2025 11:29:43 +0000")
-References: <20241211-vma-v11-0-466640428fc3@google.com>
-	<RiN4oxf3FtqzOa42iVF50yHiC7LgOLlBneneq5PqKrMSQTHph5qY1Vfm3lCY4BUyz_SqqRNWoibFUVuSfEPR3Q==@protonmail.internalid>
-	<20241211-vma-v11-2-466640428fc3@google.com> <874j33ddxt.fsf@kernel.org>
-	<51PsGz5tctBZlyC7TWAGRwZbM13r71BM1gtm1Y8F4j2w3FtKSXtkVrsvwILAqvSBPrFJzahyUVDum-JXO3yZUw==@protonmail.internalid>
-	<CAH5fLgiS_=MiMcnyC2z8kXQW0Kpn36h6EaHs9g7Zaw85mLn2jA@mail.gmail.com>
-	<87frlsbekc.fsf@kernel.org>
-	<vH_JjBon9WfW7x7OzrUfhGFluWCiBwsPZDkHbFt77nth4SFWJ-4W2vXXBYmE8WEaEJsibxx2N4iXS8Vx6RbAQA==@protonmail.internalid>
-	<18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local>
-	<87msg09uzu.fsf@kernel.org>
-	<qG6w11OwPsgdMa-EKR7V-NiBoOsQocuJDWurazcGSwtN601gK8RP1_un0Gx5MF0pPoKPnEL4ssYKiJUUIkF_Hw==@protonmail.internalid>
-	<8b803030-0ca3-4591-b2f3-bb9bcc2aca21@lucifer.local>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 09 Jan 2025 16:32:13 +0100
-Message-ID: <871pxcgg02.fsf@kernel.org>
+	s=k20201202; t=1736462366;
+	bh=KgR7gFLRskON8FZvx4SMG0MjcWbEh8wMoMZ0Le3K/WE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kK1MoFE9Rjp59/2st91oLgcqM6Pmf6oq2afDWy1Av1IGXXGsjv8Yds9WY0nlUcYVw
+	 4K8xHzkY1CvPv3gJRjRBASVEBM/ot5DK8/hBSTxqXBJ45aPzkcZ6IhGnpUbB7qz0m9
+	 v7Vj/5m/ioimHo9zkIBpKy4Xh10kPoL8AHku9kU/GCF+ylfwZnrPXU225bnB+4A5Nf
+	 2cys/S/VmkuzkyT+6OsMlptXhj5U9VXfMbdDFMrqjz99iKnd0sp8r50IWpwuXhffSt
+	 S7o6magInnqTqgq2ghx2/f+LHoeJr8PP0g4ePN61JWXV3whCI3+YWzSgh3drGT1O24
+	 i3JpsZebQWjPA==
+Date: Thu, 9 Jan 2025 19:39:23 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Neal Gompa <neal@gompa.dev>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Matthew Maurer <mmaurer@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Matthias Maennich <maennich@google.com>, bpf <bpf@vger.kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Eric Curtin <ecurtin@redhat.com>,
+	Martin Reboredo <yakoyoku@gmail.com>,
+	Alessandro Decina <alessandro.d@gmail.com>,
+	Michal Rostecki <vadorovsky@protonmail.com>,
+	Dave Tucker <dave@dtucker.co.uk>
+Subject: Re: [PATCH] rust: Disallow BTF generation with Rust + LTO
+Message-ID: <Z4BQG3rmYNDS5W0Z@x1>
+References: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
+ <CANiq72=XD3AfZp=jKNkKLs8PYCBuk2Jm6tbQB2QtbqkieAtm8Q@mail.gmail.com>
+ <CAEg-Je8YdqYFMiUK7enjusTjMhRMWTbL837x7-qQbi4LkcRcLw@mail.gmail.com>
+ <CAH5fLghtCure3EjN-hRx9PT=10_E+0MNbjFACT_v+P1StWELPQ@mail.gmail.com>
+ <CAJ-ks9nYSssBsiJCQRkKoXwmAizeH1A91RzGvX6iTJAFJD2YrA@mail.gmail.com>
+ <Z3_vhR_QMaK0Klly@x1>
+ <CAJ-ks9k23fKauY6JFt37OEewKPLhwdQaOFz19BKekqUoRhJCkA@mail.gmail.com>
+ <Z3_5eGD_F1_ZxfqE@x1>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -66,238 +68,198 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z3_5eGD_F1_ZxfqE@x1>
 
-"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
+On Thu, Jan 09, 2025 at 01:29:47PM -0300, Arnaldo Carvalho de Melo wrote:
+> On Thu, Jan 09, 2025 at 10:49:49AM -0500, Tamir Duberstein wrote:
+> > On Thu, Jan 9, 2025 at 10:47 AM Arnaldo Carvalho de Melo <acme@kernel.org> wrote:
+> > > I was thinking about it after reading this thread yesterday, i.e. we
+> > > could encode constructs from Rust that can be represented in BTF and
+> > > skip the ones that can't, pruning types that depend on non BTF
+> > > representable types, etc.
+>  
+> > Yep, this is what bpf-linker does, along with some other things[0]. I
+> > highly recommend reading the code I linked to avoid re-discovering
+> > these things.
+> 
+> Sure, thanks for pointing it out and suggest I read it while
+> experimenting with having the same concept in pahole, I'll try a quick
+> hack and then look at it to see how close I got to what you guys came up
+> with :-)
 
-> On Thu, Jan 09, 2025 at 10:50:13AM +0100, Andreas Hindborg wrote:
->> "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
->>
->> > On Thu, Jan 09, 2025 at 09:02:11AM +0100, Andreas Hindborg wrote:
->> >> "Alice Ryhl" <aliceryhl@google.com> writes:
->> >>
->> >> > On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindbor=
-g@kernel.org> wrote:
->> >> >>
->> >> >>
->> >> >> > +
->> >> >> > +    /// Zap pages in the given page range.
->> >> >> > +    ///
->> >> >> > +    /// This clears page table mappings for the range at the le=
-af level, leaving all other page
->> >> >> > +    /// tables intact,
->> >> >>
->> >> >> I don't fully understand this docstring. Is it correct that the fu=
-nction
->> >> >> will unmap the address range given by `start` and `size`, _and_ fr=
-ee the
->> >> >> pages used to hold the mappings at the leaf level of the page tabl=
-e?
->> >> >
->> >> > If the vma owns a refcount on those pages, then the refcounts are d=
-ropped.
->> >>
->> >> Maybe drop the "at the leaf level leaving all other page tables intac=
-t".
->> >> It confuses me, since when would this not be the case?
->> >
->> > I don't understand your objection. The whole nature of a zap is to tra=
-verse
->> > leaf level page table mappings, clearing the entries, leaving the other
->> > page table entries intact.
->>
->> As someone not deeply familiar with this function and it's use, I became
->> uncertain of my understanding when I read this sentence. As I asked
->> above: When would you not clear mappings at the leaf level and leave all
->> other mappings alone?
->
-> Because these are page tables and page tables can span multiple PTE
-> tables. Correctly removing at the time of clearing would be expensive and
-> require very careful handling.
+So I didn't manage to work on this today, just this quick hack:
 
-What is the distinction between clearing a PTE and removing it?
+⬢ [acme@toolbox pahole]$ git diff
+diff --git a/btf_encoder.c b/btf_encoder.c
+index 78efd705333e2e52..5610e0902f2cd347 100644
+--- a/btf_encoder.c
++++ b/btf_encoder.c
+@@ -1559,7 +1559,7 @@ static int btf_encoder__encode_tag(struct btf_encoder *encoder, struct tag *tag,
+        default:
+                fprintf(stderr, "Unsupported DW_TAG_%s(0x%x): type: 0x%x\n",
+                        dwarf_tag_name(tag->tag), tag->tag, ref_type_id);
+-               return -1;
++               return 0;
+        }
+ }
+ 
+⬢ [acme@toolbox pahole]$
 
-I asked above if the leaf page holding the PTEs would be dropped if all
-the PTEs it holds are cleared. Alice "If the vma owns a refcount on those p=
-ages,
-then the refcounts are dropped.". But from your message I am guessing
-maybe not?
+Which essentially encodes any DWARF tag that the BTF encoder doesn't
+know about into 'void'.
 
->
->>
->> Imagine you have a collection structure backed by a tree and the
->> `remove_item` function has the sentence "remove item at the leaf level
->> but leave all other items in the collection alone". That would be over
->> specifying. It is enough information in the user facing documentation
->> that the item is removed. You don't need to state that a remove
->> operation on an item does not remove other items. Does this example
->> transfer to this function, or am I missing something?
->
-> No, because we're dealing with page tables and you are explicitly request=
-ing a
-> page table operation. Knowing what is touched is meaningful.
+Super quick hack, I still have to look at the implications, but some
+results:
 
-When would a page table operation to remove (clear?) the PTEs
-corresponding to an address range touch PTEs corresponding to addresses
-outside of the range?
+⬢ [acme@toolbox pahole]$ cp ../build/rust-kernel/vmlinux vmlinux.rust
+⬢ [acme@toolbox pahole]$ pahole --btf_encode vmlinux.rust 
+die__process_class: tag not supported 0x33 (variant_part) at <4c9c589>!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x4cb784b> not handled in a rust CU!
+tag__recode_dwarf_type: couldn't find name for function 0x4cd72bf, abstract_origin=0, specification=0x4cb784b
+⬢ [acme@toolbox pahole]$ 
+⬢ [acme@toolbox pahole]$ pahole -F btf vmlinux.rust | less
+⬢ [acme@toolbox pahole]$ 
+⬢ [acme@toolbox pahole]$ 
+⬢ [acme@toolbox pahole]$ pahole -F btf vmlinux.rust | less
+⬢ [acme@toolbox pahole]$ 
+⬢ [acme@toolbox pahole]$ bpftool btf dump file vmlinux.rust | less
+⬢ [acme@toolbox pahole]$ bpftool btf dump file vmlinux.rust | head
+[1] INT 'DW_ATE_signed_32' size=4 bits_offset=0 nr_bits=32 encoding=SIGNED
+[2] INT 'DW_ATE_signed_64' size=8 bits_offset=0 nr_bits=64 encoding=SIGNED
+[3] INT 'DW_ATE_unsigned_1' size=1 bits_offset=0 nr_bits=8 encoding=(none)
+[4] INT 'DW_ATE_unsigned_8' size=1 bits_offset=0 nr_bits=8 encoding=(none)
+[5] INT 'DW_ATE_unsigned_64' size=8 bits_offset=0 nr_bits=64 encoding=(none)
+[6] INT 'DW_ATE_unsigned_32' size=4 bits_offset=0 nr_bits=32 encoding=(none)
+[7] STRUCT 'tracepoint' size=80 vlen=9
+	'name' type_id=8 bits_offset=0
+	'key' type_id=12 bits_offset=64
+	'static_call_key' type_id=23 bits_offset=192
+⬢ [acme@toolbox pahole]$ bpftool btf dump file vmlinux.rust | tail
+	type_id=12300 offset=226816 size=24 (VAR 'cfd_data')
+	type_id=12301 offset=226880 size=8 (VAR 'call_single_queue')
+	type_id=12302 offset=226944 size=32 (VAR 'csd_data')
+	type_id=51838 offset=227008 size=832 (VAR 'softnet_data')
+	type_id=54492 offset=227840 size=24 (VAR 'rt_uncached_list')
+	type_id=55984 offset=227904 size=24 (VAR 'rt6_uncached_list')
+	type_id=8094 offset=229376 size=64 (VAR 'vmw_steal_time')
+	type_id=8810 offset=229440 size=64 (VAR 'apf_reason')
+	type_id=8811 offset=229504 size=64 (VAR 'steal_time')
+	type_id=8813 offset=229568 size=8 (VAR 'kvm_apic_eoi')
+⬢ [acme@toolbox pahole]$ readelf -wi vmlinux.rust | grep DW_AT_producer | head
+    <d>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <1be5a>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <1ec5b>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <3bfd5>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <3d11c>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <4fcf0>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <503d5>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <5c067>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <5c42e>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+    <5efd9>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (Fedora 18.1.6-3.fc40)
+⬢ [acme@toolbox pahole]$ readelf -wi vmlinux.rust | grep DW_AT_lang | grep -i rust
+    <4c91de1>   DW_AT_language    : 28	(Rust)
+    <4ce66ea>   DW_AT_language    : 28	(Rust)
+    <4cf2cfa>   DW_AT_language    : 28	(Rust)
+    <4cf71a8>   DW_AT_language    : 28	(Rust)
+    <4d2797d>   DW_AT_language    : 28	(Rust)
+    <4d50f34>   DW_AT_language    : 28	(Rust)
+⬢ [acme@toolbox pahole]$
 
->
->>
->> > That is, precisely what is written here. In fact I think this
->> > characterisation is derived from discussions had with us in mm, and it=
- is
->> > one with which I am happy.
->> >
->> > Why is it problematic to accurately describe what this does?
->>
->> Again, it might be that I don't properly understand what the function
->> actually does, but if it is just removing the entries described by the
->> range - write that. Don't add irrelevant details or specify what the
->> function does not do. It slows down the user when reading documentation.
->
-> It is highly pertinent as mentioned above.
->
-> I mean we can expand the comment to explicitly add some detail around this
-> since obviously this is confusing (hey - a lot of mm is confusing - this =
-is
-> an ongonig problem and why I have gone to lengths to try to improve
-> documentation and wrote a book about it :)
+  Compilation Unit @ offset 0x4c91dd1:
+   Length:        0x54905 (32-bit)
+   Version:       4
+   Abbrev Offset: 0x244258
+   Pointer Size:  8
+ <0><4c91ddc>: Abbrev Number: 1 (DW_TAG_compile_unit)
+    <4c91ddd>   DW_AT_producer    : (indirect string, offset: 0x282d41): clang LLVM (rustc version 1.80.0 (051478957 2024-07-21) (Fedora 1.80.0-1.fc40))
+    <4c91de1>   DW_AT_language    : 28  (Rust)
+    <4c91de3>   DW_AT_name        : (indirect string, offset: 0x282d91): /usr/lib/rustlib/src/rust/library/core/src/lib.rs/@/core.3f32dfd9e3bca37e-cgu.0
+    <4c91de7>   DW_AT_stmt_list   : 0xa1d85f
+    <4c91deb>   DW_AT_comp_dir    : (indirect string, offset: 0x2ebc6): /home/acme/git/build/rust-kernel
+    <4c91def>   DW_AT_low_pc      : 0
+    <4c91df7>   DW_AT_ranges      : 0x1e5f0
+ <1><4c91dfb>: Abbrev Number: 2 (DW_TAG_variable)
+    <4c91dfc>   DW_AT_name        : (indirect string, offset: 0x555b60): <usize as core::fmt::Debug>::{vtable}
+    <4c91e00>   DW_AT_type        : <0x4c91e0e>
+    <4c91e04>   DW_AT_location    : 9 byte block: 3 78 34 50 82 ff ff ff ff     (DW_OP_addr: ffffffff82503478)
+ <1><4c91e0e>: Abbrev Number: 3 (DW_TAG_structure_type)
+    <4c91e0f>   DW_AT_containing_type: <0x4c91e5a>
+    <4c91e13>   DW_AT_name        : (indirect string, offset: 0x2b3380): <usize as core::fmt::Debug>::{vtable_type}
+    <4c91e17>   DW_AT_byte_size   : 32
+    <4c91e18>   DW_AT_alignment   : 8
+ <2><4c91e19>: Abbrev Number: 4 (DW_TAG_member)
+    <4c91e1a>   DW_AT_name        : (indirect string, offset: 0x313232): drop_in_place
+    <4c91e1e>   DW_AT_type        : <0x4c91e46>
+    <4c91e22>   DW_AT_alignment   : 8
+    <4c91e23>   DW_AT_data_member_location: 0
+ <2><4c91e24>: Abbrev Number: 4 (DW_TAG_member)
+    <4c91e25>   DW_AT_name        : (indirect string, offset: 0x570b7e): size
+    <4c91e29>   DW_AT_type        : <0x4c91e5a>
 
-That would be nice :)
+⬢ [acme@toolbox pahole]$ pahole -F btf -C "<usize as core::fmt::Debug>::{vtable_type}" vmlinux.rust 
+struct <usize as core::fmt::Debug>::{vtable_type} {
+	__SANITIZED_FAKE_INT__ *   drop_in_place;        /*     0     8 */
+	usize                      size;                 /*     8     8 */
+	usize                      align;                /*    16     8 */
+	__SANITIZED_FAKE_INT__ *   __method3;            /*    24     8 */
 
->
->>
->> >
->> > For a series at v11 where there is broad agreement with maintainers wi=
-thin
->> > the subsystem which it wraps, perhaps the priority should be to try to=
- have
->> > the series merged unless there is significant technical objection from=
- the
->> > rust side?
->> >
->> >>
->> >> How about this:
->> >>
->> >> This clears the virtual memory map for the range given by `start` and
->> >> `size`, dropping refcounts to memory held by the mappings in this ran=
-ge. That
->> >> is, anonymous memory is completely freed, file-backed memory has its
->> >> reference count on page cache folio's dropped, any dirty data will st=
-ill
->> >> be written back to disk as usual.
->> >
->> > Sorry I object to this, 'clears the virtual memory map' is really
->> > vague. What is already there is better.
->>
->> Would you like the proposed paragraph if we replaced "virtual memory
->> map" with "page table mappings", or do you object to the entirety of the
->> new suggestion?
->
-> I object to the suggestion in general. The description is fine as it is.
+	/* size: 32, cachelines: 1, members: 4 */
+	/* last cacheline: 32 bytes */
+};
 
-Ok. I'm raising a flag because I had more questions after reading the
-docstring than before.
+⬢ [acme@toolbox pahole]$
 
->
->>
->> >
->> >>
->> >> >
->> >> >> > and freeing any memory referenced by the VMA in this range. That=
- is,
->> >> >> > +    /// anonymous memory is completely freed, file-backed memor=
-y has its reference count on page
->> >> >> > +    /// cache folio's dropped, any dirty data will still be wri=
-tten back to disk as usual.
->> >> >> > +    #[inline]
->> >> >> > +    pub fn zap_page_range_single(&self, address: usize, size: u=
-size) {
->> >>
->> >>
->> >> Best regards,
->> >> Andreas Hindborg
->> >>
->> >>
->> >
->> > Let's please get this series merged. I think Alice has demonstrated
->> > remarkable patience already, and modulo significant technical pushback=
- on
->> > the rust side (on which I defer entirely to the expertise of rust peop=
-le),
->> > I want to see this go in.
->>
->> I am sensing that you don't feel my comments are relevant at the current
->> stage of this series (v11). Alice asked for reviews of the series. These=
- are my
->> comments. Feel free do whatever you want with them.
->
-> I think you're getting the wrong end of the stick - you are making commen=
-ts
-> on something relevant to mm, as an mm maintainer I'm giving you my point =
-of
-> view.
+⬢ [acme@toolbox pahole]$ pahole -F btf -C '<core::fmt::Error as core::fmt::Debug>::{vtable_type}' vmlinux.rust 
+struct <core::fmt::Error as core::fmt::Debug>::{vtable_type} {
+	__SANITIZED_FAKE_INT__ *   drop_in_place;        /*     0     8 */
+	usize                      size;                 /*     8     8 */
+	usize                      align;                /*    16     8 */
+	__SANITIZED_FAKE_INT__ *   __method3;            /*    24     8 */
 
-I appreciate that.
+	/* size: 32, cachelines: 1, members: 4 */
+	/* last cacheline: 32 bytes */
+};
 
->
-> Your comments elsewhere seem highly useful, and review is always
-> appreciated, if you read what I said above - I defer entirely to the rust
-> community on things of which you are expert - so there is clearly no
-> disrespect intended.
+⬢ [acme@toolbox pahole]$
 
-I did not read any disrespect in your message. I understand if you think
-I am late at the party at v11. Normally I would not pick up review of a
-series that late.
+⬢ [acme@toolbox pahole]$ pahole --show_decl_info -F dwarf -C Alignment vmlinux.rust 
+die__process_class: tag not supported 0x33 (variant_part) at <4c9c589>!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x4cb784b> not handled in a rust CU!
+tag__recode_dwarf_type: couldn't find name for function 0x4cd72bf, abstract_origin=0, specification=0x4cb784b
+/* Used at: /usr/lib/rustlib/src/rust/library/core/src/lib.rs/@/core.3f32dfd9e3bca37e-cgu.0 */
+/* <4c9c50c> (null):32530 */
+enum Alignment {
+	Left    = 0,
+	Right   = 1,
+	Center  = 2,
+	Unknown = 3,
+} __attribute__((__packed__));
 
->
-> I'd also ask you to respect that I have gone to great lengths to review
-> this series from mm side, motivated by a strong desire to help the rust
-> commnuity.
+⬢ [acme@toolbox pahole]$ pahole --show_decl_info -F btf -C Alignment vmlinux.rust 
+/* Used at: vmlinux.rust */
+/* <0> (null):0 */
+enum Alignment {
+	Left    = 0,
+	Right   = 1,
+	Center  = 2,
+	Unknown = 3,
+} __attribute__((__packed__));
 
-I absolutely appreciate that!
+⬢ [acme@toolbox pahole]$
 
->
-> So where I am coming from is nothing negative, quite the opposite, I simp=
-ly
-> feel _on this issue_ it is not worth holding up the series for.
->
-> This is no way intended to do down, disrespect or seem ungrateful for your
-> review or efforts. Apologies if it seemed that way, was not the intent.
->
-> And to reiterate what I said above - I want to see this series merge :) so
-> there is no ill will anywhere.
+I'll fixup those two:
 
-We can always merge this as is and then discuss the finer points of
-documentation later - I am fine with that. But obviously I cannot put my
-review tag on it, when I don't understand the semantics of the functions
-from reading the documentation strings. Perhaps we have someone who is
-more well versed in mm that can.
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x4cb784b> not handled in a rust CU!
+tag__recode_dwarf_type: couldn't find name for function 0x4cd72bf, abstract_origin=0, specification=0x4cb784
 
->
->>
->>
->> Best regards,
->> Andreas Hindborg
->>
->
-> Perhaps the correct approach here, as alluded above, is for Alice to add =
-an
-> extra commentary pointing out the role of page tables here?
+I.e. support functions inside enumerations.
 
-That would be nice. Perhaps a bit of module level documentation is also
-a good addition.
+And sure this will be refused by the kernel, lots of stuff that have
+invalid names, probably need to turn those into void as well as a
+continuation of this hack, then prune, maybe that is it, we'll see.
 
->
-> To complicate matters further (of course) there are recent series which
-> actually _do_ unused clean up page tables, though not (I believe... I have
-> to check...) on zap. But of course we in mm JUST LOVE to complicate
-> everything... ;)
+Going AFK now.
 
-We should make sure to document that :)
-
-
-Best regards,
-Andreas Hindborg
-
-
+- Arnaldo
