@@ -1,107 +1,127 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81696204C1A
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jan 2025 23:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8432713E02D
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jan 2025 03:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736379313; cv=none; b=UStLFk68LfKoGTXM0NnQpPMkM2shYofLXYTFXxBXtaP+Z1rW9oacYqCsfdoKWA/xUe9VJXZqX3++5CY478GekGNuI5QX108EYd5+oxCEgcrUQ2nK55Vrz0xFOkYeWYX4cm6EkRnbo1WQ2u5qCQ/OS1frxP+cIs4jDRmEKhakjgY=
+	t=1736394636; cv=none; b=ZHZyKWOCeM8Yx9V8Yp1FljlRGLloUsfDI+lszhJ1jc8L2EnlXEGMZf5Ef5Hvc95xMpbdQkH0STvzj7zNa9CCfrCFAGnLRdZDhJOEfQZNf4XKnxuZJo+z5OwwnOa1oY6sD24cLfDZdXMViUaPeCxe2snKnPBfH9Jg+Ijb/JtEOCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736379313; c=relaxed/simple;
-	bh=CKHJ/lFWSVkPjxOxjDZC4znki4qzFYKMBX705l8ha58=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QcTa3tbnF4oGerjin6mfIfQ3n4EQspAblkZpRQWuyZWcoGfeET8KiB3xw+wfddBl4ltI5MHar8rug10ZkhVHyHsc3goYqL56JHF33SkbhKjxFZeiWa5Ur0oWoWknzW3sGMWC6J6IfKpb2OUg9+kOW6o2+8nJP8/xp7gOwMsNO9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uXr2PJi9; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+	s=arc-20240116; t=1736394636; c=relaxed/simple;
+	bh=ez5+UAxbA53MuMo50mcpaq5hIivDZMNRwQWvFinRh9M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tzdv5XKxJPNDR3TahP2D2SgAX87MLu5HQvcg1on4Qj0yiPG+ks5cN3aBFSJQ6xD0caClUQHUksP0k3nM/mOSvdBFwIwIiGchnAhD4SG2YdnQnchomdlqkKeDDoiq0JRFwToxR7mydlNmDF+ZaxKHCEAEBLhx3Ju++YX/F43fbC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NkhmzSDu; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uXr2PJi9"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2166a1a5cc4so3851195ad.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 15:35:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NkhmzSDu"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-21680814d42so5494265ad.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jan 2025 19:50:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736379311; x=1736984111; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Gqhj0ixB52my3tDkcBBqhKKSd2GIEkc506F7tWVukqI=;
-        b=uXr2PJi94Vx+kbBKDouasb35+zLkUbssWFRs8A88uhkOMUnAdwQMzet5PC1ZEIPspY
-         KQSMahpMiYOdnd+Mj5ayz7dTiBdy7UdpHG0WXDov5isVSth7BbH3yTKWzeV6bfv63+Se
-         9YjNedV8M+AAmWftifdfpeUT+rEgcNvLATyd4mY/CHBbPMroXEUy/VAest+XrlvnYwmk
-         EgGIHcDjsQep7fJ5HfVsYP0qcPbh3aPbOjpnTKa+nvaW1iR+aR2+P5d0jo36nK5mRnPs
-         VElbir1z4uJKqv5/HuIwLVT2CCOZ/n2lSnUXvJ8kOk/cAORopYFhFgiiyNw19hw1Q+Dr
-         9/eg==
+        d=linaro.org; s=google; t=1736394634; x=1736999434; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lpgdpXTdEHzIeEtbhcBqaQ8chJjfy4KYtlOr7JwHaew=;
+        b=NkhmzSDuUv4brB0EaW9Upg1QaaN1iNFIGpFIyFzzwjFsRoY09OALe9ahuqeWB3hBwL
+         g8TKiaZyzo15Vp8T1GWL9F7YgOe7O3v6bDh6VDU4UBPFYpM6h3D/c18xkhcWlmQ4HkvM
+         w3MGlQnq0clYAk/Q6aiNeOC++8mk5pSWRP9ygBMZREGdWb4gJhyhLtHFboZDEM5fV6ss
+         krbTLqazWzRbVgA3aVTVUNaZ+6xia59dX73ArjoH90vBDvfHHrUZ5+11OaYPUcu2c2Gb
+         +Bwh3DespKIQwMLkcpV3CE/i1A9I9MEUroRYXtwO4TqCgWO5lR6ifev8dETK6HQNEBAA
+         BTTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736379311; x=1736984111;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gqhj0ixB52my3tDkcBBqhKKSd2GIEkc506F7tWVukqI=;
-        b=rSXrzptsyVYOQZdPEbHCmjSGXvNH4iK//9bEh1YHkRTPKzSef3oOQeI3GqTO8TOsp9
-         iVcP/2e6q2sy4XvaoOQDrohvWPkSuZUUnYWTKlfbIqNZZMI6xPCRR5cVG9PfSP1Ahc40
-         RSmXkS5YfUrIgBzyLLFjvsZodTxTtFbNQ+OB+j2Z9V81aqRi9fzDV9KUL1oRiN7axOxH
-         7c2a3If3ZqbWQfnC7v+Kd4MOOr5LjEMQiBc36UfcUu1o6/0HThSFVrCyucUwiOZwl2C5
-         XwdDQbCMaeFKsWXKrjwdKgry1ZXyE2C9+9oJN7zgXBHgKgdGUsChWUt/ZzPIptjRwYtz
-         5ElQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuvBN8BWVZ7rgPRDShVuFpj9AVUDEZFqIVuXxSHScdrUpZCFrpa2LVf8LgJOB+N11Kel4t//MiNuBMwCB8dg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2ef1CpF2Ea88R4y8YPQsM+PMqaorntKARPNYyXicUa12EYovY
-	p96/JzG4wLyZjLtV2BOALI4169dzXwWoIJwPlpzBU1P2piBRXoPWiuUhF0dNOMNFRZwlVUwbNkv
-	0mUiLwA==
-X-Google-Smtp-Source: AGHT+IFwFvB4At01kqg469ZGNHEiX4L1SakP2bBAUMb4Btldo6RIZqC/Foer4mABJAQfNFh68NUwLdonnCW+
-X-Received: from pgkk1.prod.google.com ([2002:a63:2401:0:b0:801:9268:c344])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4303:b0:1e1:f281:8d07
- with SMTP id adf61e73a8af0-1e88cfa6ac2mr7148028637.10.1736379310886; Wed, 08
- Jan 2025 15:35:10 -0800 (PST)
-Date: Wed, 08 Jan 2025 23:35:08 +0000
+        d=1e100.net; s=20230601; t=1736394634; x=1736999434;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lpgdpXTdEHzIeEtbhcBqaQ8chJjfy4KYtlOr7JwHaew=;
+        b=sqExqP4/7NuwWqys9DsoEN4OndcddkOIw5znbvH3QjHK+8Bxp2SzhhD1JL/EqVzg/H
+         n1ovFk2LJ0oQdYxOSZxnSdOdkS0RvZuyIpav6zslYfMcUowdkuA7IjttvqohdicWVSPY
+         o8wfgGsVVk0QsQAQGz7jgokXm62/jl5kRZZeb/yydfEuLbXW7wXn8RJugsr/+3Lo9rDq
+         YRfLnUgn4fZaK8WnpbCzyMm1SGTTCLI6bbdiYjRYlTmd1tQ7OQDv/D9xSrP+IFKL96my
+         GZ1oL/B2ljWL8f/nwOYPIlGex2r7rkRrHgj/vGxBw+5woQjTxtdteb9Y5oELahfkMkFb
+         0dIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXkziZzUMiuijhGDj45Alx8zQOts56x/QD97q7nTawnkrKWfu4dYW0oVJZeua0yCDILG4t+ZJMGuyC3xQ8ZVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVHeqU1r4eeR//gl26ZvJ0xMJAemsCSW0rbqwxvSyROummRA7X
+	ncdcLFgGNBt25Tv28xsnP4FvViCoy5+1Yr0FrjpgBLqSKNN+I7k6bsihFG2CFfM=
+X-Gm-Gg: ASbGnctJFe3L1AFE6JQZEr3PARMlclHPFyTpsBAtP4BDtdRYOtt6ebkO/m5WMSYbHwt
+	KNPXQgtTZ+aQDDzS9n8G/PRUKkbfkVz7lMUFR3VtgTtcNUcbj3n94eJLYhkizItnFEi2YeaRZ6s
+	Cenxb4v7jfUWrZbEp0RK4dA7afanP4CwVocs2pAvkpBmOzAQXH9KWQr8CtJSbWbkZuonVl5BewN
+	vepnejrL8tBoaLnIXiiZP6IqvcNfNGbG1FP/b2z81M+Komm63SqMwKqFiI=
+X-Google-Smtp-Source: AGHT+IFsHNdvQ1YeOjX/2zKq7r/5QBL2omM/xruCsyRaGOKjnVTYaIW2nrcHidJ2mDZ5vPOZXPqpUw==
+X-Received: by 2002:a05:6a00:1255:b0:71e:6c3f:2fb6 with SMTP id d2e1a72fcca58-72d21f4b05emr8649752b3a.8.1736394632952;
+        Wed, 08 Jan 2025 19:50:32 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a317a07d050sm265068a12.15.2025.01.08.19.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 19:50:32 -0800 (PST)
+Date: Thu, 9 Jan 2025 09:20:29 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <vireshk@kernel.org>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V6 00/15] Rust bindings for cpufreq and OPP core + sample
+ driver
+Message-ID: <20250109035029.3kr6ynlsfzslrong@vireshk-i7>
+References: <cover.1736248242.git.viresh.kumar@linaro.org>
+ <Z30UZwgN2nGtiTsK@pollux>
+ <20250108052008.izm5ffzgrc45ms4x@vireshk-i7>
+ <CANiq72krWF5a8cDJfwj4FxW7aJ2N5FD6zinFALsNAni3tmkcHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAKsLf2cC/x3MQQqAIBBA0avIrBtQKYiuEi3UxhooDbUIorsnL
- d/i/wcyJaYMg3gg0cWZY6hQjQC3mrAQ8lwNWupOKtljOnNBWzxuJSIHF/fDFJSz7nqvvG3JQm2 PRJ7v/ztO7/sBAuh2smcAAAA=
-X-Change-Id: 20250108-rust-btf-lto-incompat-0d258f1fb4eb
-X-Mailer: b4 0.15-dev
-Message-ID: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
-Subject: [PATCH] rust: Disallow BTF generation with Rust + LTO
-From: Matthew Maurer <mmaurer@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Matthias Maennich <maennich@google.com>, Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72krWF5a8cDJfwj4FxW7aJ2N5FD6zinFALsNAni3tmkcHg@mail.gmail.com>
 
-The kernel cannot currently self-parse BTF containing Rust debug
-information. pahole uses the language of the CU to determine whether to
-filter out debug information when generating the BTF. When LTO is
-enabled, Rust code can cross CU boundaries, resulting in Rust debug
-information in CUs labeled as C. This results in a system which cannot
-parse its own BTF.
+On 08-01-25, 16:03, Miguel Ojeda wrote:
+> On Wed, Jan 8, 2025 at 6:20 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> >
+> > On 07-01-25, 12:47, Danilo Krummrich wrote:
+> > > On Tue, Jan 07, 2025 at 04:51:33PM +0530, Viresh Kumar wrote:
+> > > > I would like to get some of this (if not all) merged now into the rust/dev
+> > >
+> > > You mean rust-dev or staging/dev?
+> >
+> > Right.
+> 
+> I think something was missing there :) i.e. which one?
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+/facepalm
 
-diff --git a/init/Kconfig b/init/Kconfig
-index c1f9eb3d5f2e892e977ba1425599502dc830f552..eb1076be6242cf349c12ef0f447696cb3a9976fa 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1962,7 +1962,7 @@ config RUST
- 	depends on !MODVERSIONS
- 	depends on !GCC_PLUGIN_RANDSTRUCT
- 	depends on !RANDSTRUCT
--	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-+	depends on !DEBUG_INFO_BTF || (PAHOLE_HAS_LANG_EXCLUDE && !LTO)
- 	depends on !CFI_CLANG || HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
- 	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
- 	depends on !CALL_PADDING || RUSTC_VERSION >= 108100
+https://github.com/Rust-for-Linux/linux staging/dev
 
----
-base-commit: 4b90165c7d1173e0f65538d25aa718ec7ecdd5d6
-change-id: 20250108-rust-btf-lto-incompat-0d258f1fb4eb
+> In any case, for upstreaming eventually, then this should ideally go
+> through the relevant maintainers. So I guess that means yourself in a
+> few cases here.
 
-Best regards,
+Ahh, I thought they are all getting merged via the Rust tree. Sure I can take
+them in once I manage to get Acks from you guys.
+
+Thanks.
+
 -- 
-Matthew Maurer <mmaurer@google.com>
-
+viresh
