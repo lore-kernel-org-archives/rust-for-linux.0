@@ -1,96 +1,180 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48784A1A;
-	Thu,  9 Jan 2025 08:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA4D215791;
+	Thu,  9 Jan 2025 09:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736412594; cv=none; b=DJJ5dUczUMdouQHJNNJaHzQLkY6CQuym9+wwfx58gj2gXhQZ0s1TWwsV+GoiFqQdGuH4y6oLzf34Adj71agMX0TqyPp2DyIfCRJs5A5HYl0UG3zDlNWy7AQlam/nwAVI9Cip91C4yFDWvmUfSDI9Vvi5p3ZAe0rxF3ZdDvKVsGw=
+	t=1736416230; cv=none; b=FMFa3eQnM6gFzIoSMBiQkIzqKwSQehfg3Fdu0VPrV16l8/+cGIhan0JsQ1l6yp3Al0CWz71BFOZws4vj4D99lvFK/8fiO6gYV7rd/olneR8MOpf0zHOGSNAiupKbKVUS9lASdnbD1AHtaxNsCXVyox+jmDPVQHmDdceYTm4lkhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736412594; c=relaxed/simple;
-	bh=kpgEk9RJksdsOkbGrDIsNPyEu+PqwsNxI7GM0COYBEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e6Cmf9aiWa0dxEfy+yND0AyGn709EafjUefNtg5FqOMdRHN7XQ/6XR3GBqxKA+21ceTpB5AagUll/SCcgw9sw1tPS8MHRzlQDhkAoKlPZIBpgnfTGUiZCh4oggPPzDcBRf1qX1nen9EgVEttUYS2i6LZ+/vq4yvWDkUVJPl8ELg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QN0ELF74; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736416230; c=relaxed/simple;
+	bh=OTmSpk8FgQtdGzsBLCapjkB10EVINFX+b6VXc1DcaII=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ijb1BcbP8LAtPwiecIvGwfqrH8sFIHaBpM1z9AZx9jYN6iTQ9zAKxEHwO1txjPfNPw9oEKsF4Kr/kTKzYLWK7823FfejdJhtqWCUd7fU298RkL1tE44BepMe1NuYvaM7oFNCiRt61UElHQX3iRI1A4ITe5GSaxlHETAgndCH8J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCFYhm2H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QN0ELF74"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1B7C4CEDF;
-	Thu,  9 Jan 2025 08:49:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCFYhm2H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EF6C4CEE3;
+	Thu,  9 Jan 2025 09:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736412594;
-	bh=kpgEk9RJksdsOkbGrDIsNPyEu+PqwsNxI7GM0COYBEM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QN0ELF74Ex84hj7yOuS5fOFYzoWufpT7nDot/pqBqbFprOYp+S+0Rtks9fY86Og27
-	 W8o0nAquhu272tholwyK+ssj9BFcYDw0Cl6+eGpG7KCCXdtt6Gly/+wJn+EU7A1tkR
-	 kIG9KySmPxaAO2Ru9WAfo/V71JjQyX4/LvVw1JzC0g5EpukWBC/q3N0yYkaUFfCzYg
-	 zAFUweqzZkGiccJDCm/8VQAp5221TqLbC0ah4GYDXnQSdrM3fXstML27hTh4V6WEec
-	 fucTL3sFoub10CE+2zOS03RAnbcbdPaDlYRWNNHCUqtaOhQ1is9XrblU90PLfwGAfE
-	 fQ8lfGsKkAloA==
-Date: Thu, 9 Jan 2025 09:49:47 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-Message-ID: <Z3-NqwAG_96yq8VD@pollux>
-References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
- <20250108122825.136021-3-abdiel.janulgue@gmail.com>
- <20250108135951.GA18074@lst.de>
- <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
- <20250108151858.GB24499@lst.de>
- <Z36X_ZnCmBQBMoZ6@pollux>
- <20250109080812.GA20431@lst.de>
+	s=k20201202; t=1736416228;
+	bh=OTmSpk8FgQtdGzsBLCapjkB10EVINFX+b6VXc1DcaII=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KCFYhm2HAlgySDT+VDj7M7/hEOT7/f8m6lRANiIi0yf6cvrbkvUllkmlDD/6NPhWd
+	 Srq4DwwmLepLl5xDfb3d7XEZkB+HvnPTD+pGCvs5n4ai6LZFQebDyf+Inv5cmmX8eO
+	 08BI2G9umgJDu54D87WXproEllZuBmS/2yGaE2EyWhmUrKmudf7+9lnWqJ31cKM3Qi
+	 ilAunlKUd72eq4/T0rdDmz8VXruZOWiW4Hlhij0SlDGN04n3Po55Ax2itg5n8dhcIz
+	 OEoONJ63RL/ygTgorac3pq0tQEI1y1MFC9Ye7NTvSQdt1pnfxZ8TqWa9OC4G1+KSOl
+	 lWF01p11kqGHA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Matthew Wilcox" <willy@infradead.org>,  "Vlastimil Babka"
+ <vbabka@suse.cz>,  "John Hubbard" <jhubbard@nvidia.com>,  "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>,  "Andrew Morton"
+ <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
+  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
+ <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
+ Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
+  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v11 2/8] mm: rust: add vm_area_struct methods that
+ require read access
+In-Reply-To: <18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local> (Lorenzo
+	Stoakes's message of "Thu, 09 Jan 2025 08:19:53 +0000")
+References: <20241211-vma-v11-0-466640428fc3@google.com>
+	<RiN4oxf3FtqzOa42iVF50yHiC7LgOLlBneneq5PqKrMSQTHph5qY1Vfm3lCY4BUyz_SqqRNWoibFUVuSfEPR3Q==@protonmail.internalid>
+	<20241211-vma-v11-2-466640428fc3@google.com> <874j33ddxt.fsf@kernel.org>
+	<51PsGz5tctBZlyC7TWAGRwZbM13r71BM1gtm1Y8F4j2w3FtKSXtkVrsvwILAqvSBPrFJzahyUVDum-JXO3yZUw==@protonmail.internalid>
+	<CAH5fLgiS_=MiMcnyC2z8kXQW0Kpn36h6EaHs9g7Zaw85mLn2jA@mail.gmail.com>
+	<87frlsbekc.fsf@kernel.org>
+	<vH_JjBon9WfW7x7OzrUfhGFluWCiBwsPZDkHbFt77nth4SFWJ-4W2vXXBYmE8WEaEJsibxx2N4iXS8Vx6RbAQA==@protonmail.internalid>
+	<18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Thu, 09 Jan 2025 10:50:13 +0100
+Message-ID: <87msg09uzu.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109080812.GA20431@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 09, 2025 at 09:08:12AM +0100, Christoph Hellwig wrote:
-> On Wed, Jan 08, 2025 at 04:21:33PM +0100, Danilo Krummrich wrote:
-> > What does "your code" mean? Duplicated in every driver?
-> 
-> Yes, interfaces to the DMA API should stay in readable C code and not
-> in weird bindings so that it reminds greppable and maintainable.
-> 
+"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
 
-Rust drivers shouldn't use C APIs directly, but rather use an abstraction of the
-corresponding C API.
+> On Thu, Jan 09, 2025 at 09:02:11AM +0100, Andreas Hindborg wrote:
+>> "Alice Ryhl" <aliceryhl@google.com> writes:
+>>
+>> > On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindborg@k=
+ernel.org> wrote:
+>> >>
+>> >>
+>> >> > +
+>> >> > +    /// Zap pages in the given page range.
+>> >> > +    ///
+>> >> > +    /// This clears page table mappings for the range at the leaf =
+level, leaving all other page
+>> >> > +    /// tables intact,
+>> >>
+>> >> I don't fully understand this docstring. Is it correct that the funct=
+ion
+>> >> will unmap the address range given by `start` and `size`, _and_ free =
+the
+>> >> pages used to hold the mappings at the leaf level of the page table?
+>> >
+>> > If the vma owns a refcount on those pages, then the refcounts are drop=
+ped.
+>>
+>> Maybe drop the "at the leaf level leaving all other page tables intact".
+>> It confuses me, since when would this not be the case?
+>
+> I don't understand your objection. The whole nature of a zap is to traver=
+se
+> leaf level page table mappings, clearing the entries, leaving the other
+> page table entries intact.
 
-One reason for that is that some requirements C APIs naturally have, can be
-abstracted in a way, that the Rust compiler already ensures certain things and
-hence drivers have less potential to produce errors.
+As someone not deeply familiar with this function and it's use, I became
+uncertain of my understanding when I read this sentence. As I asked
+above: When would you not clear mappings at the leaf level and leave all
+other mappings alone?
 
-(I understand this is very abstract and we can go into details and examples, if
-you like.)
+Imagine you have a collection structure backed by a tree and the
+`remove_item` function has the sentence "remove item at the leaf level
+but leave all other items in the collection alone". That would be over
+specifying. It is enough information in the user facing documentation
+that the item is removed. You don't need to state that a remove
+operation on an item does not remove other items. Does this example
+transfer to this function, or am I missing something?
 
-So, in the end, Rust drivers would just end up with each of them including a
-copy of those abstractions, rather than using the C APIs from all over the place
-within the driver.
+> That is, precisely what is written here. In fact I think this
+> characterisation is derived from discussions had with us in mm, and it is
+> one with which I am happy.
+>
+> Why is it problematic to accurately describe what this does?
 
-This wouldn't help with what you ask for, it would just duplicate the "problem".
+Again, it might be that I don't properly understand what the function
+actually does, but if it is just removing the entries described by the
+range - write that. Don't add irrelevant details or specify what the
+function does not do. It slows down the user when reading documentation.
 
-If you don't feel comfortable maintaining the Rust abstraction (or just don't
-want to), that's fine. I don't think anyone expects you to do that, we can take
-care of that instead.
+>
+> For a series at v11 where there is broad agreement with maintainers within
+> the subsystem which it wraps, perhaps the priority should be to try to ha=
+ve
+> the series merged unless there is significant technical objection from the
+> rust side?
+>
+>>
+>> How about this:
+>>
+>> This clears the virtual memory map for the range given by `start` and
+>> `size`, dropping refcounts to memory held by the mappings in this range.=
+ That
+>> is, anonymous memory is completely freed, file-backed memory has its
+>> reference count on page cache folio's dropped, any dirty data will still
+>> be written back to disk as usual.
+>
+> Sorry I object to this, 'clears the virtual memory map' is really
+> vague. What is already there is better.
 
-From your perspective, I think you can just think of the Rust abstraction as a
-single driver calling into the DMA API.
+Would you like the proposed paragraph if we replaced "virtual memory
+map" with "page table mappings", or do you object to the entirety of the
+new suggestion?
+
+>
+>>
+>> >
+>> >> > and freeing any memory referenced by the VMA in this range. That is,
+>> >> > +    /// anonymous memory is completely freed, file-backed memory h=
+as its reference count on page
+>> >> > +    /// cache folio's dropped, any dirty data will still be writte=
+n back to disk as usual.
+>> >> > +    #[inline]
+>> >> > +    pub fn zap_page_range_single(&self, address: usize, size: usiz=
+e) {
+>>
+>>
+>> Best regards,
+>> Andreas Hindborg
+>>
+>>
+>
+> Let's please get this series merged. I think Alice has demonstrated
+> remarkable patience already, and modulo significant technical pushback on
+> the rust side (on which I defer entirely to the expertise of rust people),
+> I want to see this go in.
+
+I am sensing that you don't feel my comments are relevant at the current
+stage of this series (v11). Alice asked for reviews of the series. These ar=
+e my
+comments. Feel free do whatever you want with them.
+
+
+Best regards,
+Andreas Hindborg
+
