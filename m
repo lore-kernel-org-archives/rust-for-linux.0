@@ -1,176 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F752163BF;
-	Thu,  9 Jan 2025 10:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26272163AA;
+	Thu,  9 Jan 2025 11:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736420190; cv=none; b=THee81Rve+AXjdfHJDobNewoUBwNOsjBwrovFB4zHTc4+XQ+HdqLFw99Mr8XaNp5+uHWaSvEmkDNaoEKTXUmIZXO6bZcwKnntk5a8fxCd2aX+TQ4UKQDLK9MhQbrQCReZBmFq9ODffSSzhPwNHm4yA4Mv/3qOYUd3Pi/cjp2Pwo=
+	t=1736421272; cv=none; b=dN+KvBhmJMqBOOIucBQchuPQdiZN9+B6fsSopHZInaONfmlBeST7jTJDXcSN3Ugj8JSNzZkAr87UIUT514PaugmBr+F0sMIbe+/Rzod7o/hM3ODkSvae5V33oxcUhSKqLdPfbyRFbaNVAITD/FLmOeYLpd8F7iGck12Vz5FqfAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736420190; c=relaxed/simple;
-	bh=JMpquY1Z5yddrqRBnX3gfB4wtJxvZASc7yhREHDwwq4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LRxWkt16Ax76U4WuDDjS1iDVfpxc/WHjP8UwQIurU9MBOsve8O5+hFeAnjUnZ5q5Pto/uG31MeouMqPmwhbizhjxisHrrEmkV1XIaBnpOnXucLdzuH5xVb5r8RqYBYJEA2EO20tZm5U0W2hZRBOuEiCOquOzKQmCw5187iXqKKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twUGIBpo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736421272; c=relaxed/simple;
+	bh=OWWcFlbpG+OMXb7VXzYJPRO+OVmfyWw2GlvoPFeUbws=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g5X68BhyYpgA3BWvzBwxf72rAZvPR1ovHovjWyXrgxoHUmhJZukboYU0fx5V+Vm2Nz70AwesJesWTwhxn6D92T3kTtqab5OrafjLm7uRktpcHB+TLPTnlqjiDwRi/F/udlbTchg7Enx1CdymOTQxF4e6NIQXPVOrXbY2U20p0PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TuyxjdUR; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twUGIBpo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA996C4CED2;
-	Thu,  9 Jan 2025 10:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736420188;
-	bh=JMpquY1Z5yddrqRBnX3gfB4wtJxvZASc7yhREHDwwq4=;
-	h=From:Subject:Date:To:Cc:From;
-	b=twUGIBpou7WwFDi3mCHyqMNTScn7z56yoL/nEp/ztfNSQA1rSWml6wQE5wFmTt3X8
-	 z3urvlCzTho0+g4+W7PJbjoq2z/Kp5IVADvXpbab3VFCjowCfa61Nyj9rfWd4zz3Fv
-	 j58ST+7GG0J4x+eJnnzSKyjVgpm2ua+/VA7+N1S0HzET2Qw6lav8C5mIMrko11dIgj
-	 oAJ76RM8Ws5UuX4ScQuog6WMgbS1rIqQ2tz3dq8Uf59Fn1p60k8gLyp51MbcGsjM/2
-	 zf2cGvknnKm2cRLxnfi6KE0U9h08/c6mhn7AoE07fJLgplWtNTtNTPOf7LSo6t71gy
-	 pFPUVQ1W6Bh8g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v4 0/4] rust: extend `module!` macro with integer parameter
- support
-Date: Thu, 09 Jan 2025 11:54:55 +0100
-Message-Id: <20250109-module-params-v3-v4-0-c208bcfbe11f@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TuyxjdUR"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-300392cc4caso6316611fa.3;
+        Thu, 09 Jan 2025 03:14:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736421269; x=1737026069; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CDSrvt1tvrLZL3pv39ao1tOanTPvH3WNKnuKQXw/zNM=;
+        b=TuyxjdURjOqfcCLZQfKhZ1XNom5WzCTqp0IucA5s8Sp1a2B4I/LC873kiHyU+wmiWK
+         iEP/nkRWDDAU+QmTf+20z5tPA/3RYz48tqCHlW91TQlEnvvD4HU79er/AAoSWLDvXD0N
+         2aOtGBPkhh0ll/9BsmgqRdCFEOqHSs8ZY0n+coafhkQChK4CBSz7wwOUyIEsm3MkC8T+
+         +Z7RzXz3ykE73JILFjDkVRiwjOm5O/dXHArum9y7HFA7yJX57GqVYXs03/TP2EGlf8Uo
+         qln29kHZg0R9eLvt36Y+75X2imAMPXsQN5b9Jki93/yPcZ/y97wHTfrE3Y0FAuKhZVdE
+         QT6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736421269; x=1737026069;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CDSrvt1tvrLZL3pv39ao1tOanTPvH3WNKnuKQXw/zNM=;
+        b=NREWiyAhXqjUe2Bvvin59xvSLCTovht9cIKpsIN4alMds+IW3D3ZTWDzsvII2eNyut
+         vDkj24vL+3wZC2sqcv286zNizWsSyDgi2hMePJFSPN2jTMFnGfQLkVPQ88DE16HvsLWV
+         NBA9OUa+dwbqiGUFHgcKEuw1g6wh9tqUW4fHqyLL9UzkpSCL0Vahh49VueBBvjK7PRLQ
+         nYhrha3A7HgSvTSRsPosyTeo3cNFt44hTDMFwoCQ/iU5jwVCEWDTWZNr9X7diO++pu60
+         xrH+ypehzl239J7Lbxv5Fvg+z07WbWfPPWNDnOclp6oGhwL9tBYATGxJ+o22IULgCW14
+         C87g==
+X-Forwarded-Encrypted: i=1; AJvYcCX2/X/2H3U29QRDCxmjag33HcSKwakO1qklBQwGF2bLOGWWGJpOruGXUkY1pAPGG63fUr3VzpgF6PsVgFH8QWw=@vger.kernel.org, AJvYcCX2KMp+YN+/TfzoXzwz/8M8FybVl/41AUdO9xyJ0M1gAnwhC5P+CGPAC6JUfQXA/58ZRZ86+m14xr6ujr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxmch7Td4ZsVERknz89k5ckxkGGbQypHWmbRDbWMRJVOuzDzAW
+	EWAjLqRhWVoMXTq3x1NlcxyCfiwbRnwkcogx/d8DFxgYFyqHWbMi
+X-Gm-Gg: ASbGncuz8ENddKC4bMmtijG07XYIMHgHwNUzW7x5ZgmEv8V8kZyZ+gTAmbajYgLR5YM
+	tBjMIWNA7M66RpiZPiQzqhkZwAjKPeNjQilcV465/JUJ3bAUBEMrH20tSw/uxhX/zVmEUuh0t9X
+	lkt9UZsCt2EQelrU07c1oM2zDCO7zZNBQAmODxPlDNh/ID+RPFpRHySGDEFUvJ9yfgEsOv1QBk8
+	D6X3vDD2PnHPY+jLenirbRFZEVLOzzdOGn3/WO3SMw04l1qy/z8hIt94lhJbDDJbALJYnFxFGdM
+	bEmD4+C4Si8Dbea4HSYvdbeXfPE=
+X-Google-Smtp-Source: AGHT+IGOTFBWUf0qMr+9PwwTq2Kyqqb8CpMObKdP6HCrxE2MChgbnsJPBPgxn4nmfxGO5Li8ZWHrqQ==
+X-Received: by 2002:a05:6512:2399:b0:542:19ef:9877 with SMTP id 2adb3069b0e04-542845232d2mr1720792e87.17.1736421268391;
+        Thu, 09 Jan 2025 03:14:28 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428be49e2esm165503e87.29.2025.01.09.03.14.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jan 2025 03:14:26 -0800 (PST)
+Message-ID: <ba95a574-2dba-4299-9ec4-bb776a228d98@gmail.com>
+Date: Thu, 9 Jan 2025 13:14:25 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAP+qf2cC/2WOy27CMBBFfyXyuoPiV0iz6n9UCE2cCVjgOB0Hq
- xXi32uCEAuk2dyR7rnnKhKxpyS66iqYsk8+TiWYj0q4I04HAj+ULFStjFRSQojD5UwwI2NIkDU
- gbcm6dmh7i6LUZqbR/67I713JR5+WyH/rQtb37xOm32HlajCtxVpadMqNXyfiic6byAexuz3wT
- D+XIro8Nl6eXbWCZb2FmfdxcrQP6DgmaIxuqRlt/6l0l81ds8dE4GIIfumq3GyKDTtVNm7/6u8
- P8RQBAAA=
-X-Change-ID: 20241211-module-params-v3-ae7e5c8d8b5a
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
- Luis Chamberlain <mcgrof@kernel.org>
-Cc: Trevor Gross <tmgross@umich.edu>, 
- Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
- Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
- Greg KH <gregkh@linuxfoundation.org>, linux-modules@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4721; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=JMpquY1Z5yddrqRBnX3gfB4wtJxvZASc7yhREHDwwq4=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBnf6sa5GwXDS73CFuL4S0EWOZoUUrjukFQFdIra
- Fe2WUtN30iJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ3+rGgAKCRDhuBo+eShj
- d3o6EACgvYY2Ce0xR/cVFAvSzIUrY31mOw1Ami3M6yr1BEKVv4jQP8XaezP5qOn30ebO5kTthUA
- x2vKvNaBrMR0veFyiabBsFYKYzqu7NwgTI+HMKEE8U56pT/6jqT5Sn8JnNVeNkJNoi41LYW/oHM
- BXXcB1hMwCbwmbHWJZqIstGfVXKrXgzGUe/t6yYMGwOkSRUzgXTeydCExNXUxPnBuesEOMOlSbM
- JsErvV+mYPIcHjPSCsYnkbpZN2cnsXRoX8lpfK//RPKK2V2j7WURXgGgvOKTMaKaEcK2PNJJFGT
- r0r8guBeHepRIKf0aTBeGHLkQBFAgcS6pyrSV/6lvMkRSIKyYR7RtsvMi+jGqbGe833PlUJBQDV
- 8waf0KoF93SOT/h8t2FPcj2VCfPTwOqzmU18QG+t/iC4N1c3EmcZrVchiRqBy0iYM/Vn5IS4cPn
- Aiv1nORWexOl8s3V5VLyCvZM3JWmZ6UmK/2psAGC1SwYAJP0TkVFPZ3vLrO28Tdpz13zsdAHt60
- JUW4EQOM6Z333SUBOMjpRucbcTaXxxzybBcibgJ8hXqQfzVXjpf+21BFel/uhDrOjiZ+bGu+a3D
- uKQLHHHh6rBtgXQb0rHwZC6xV9oQLWw0C2bbUNgX1YhiJjBcEa/nCBnpMeEZnulWkdsgacNlsUf
- phM+EFRMvBOrLvw==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+ Daniel Sedlak <daniel@sedlak.dev>
+Cc: aliceryhl@google.com, robin.murphy@arm.com,
+ rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
+ <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+ <588af6c5-02cf-437a-a909-c22744a6df1c@sedlak.dev>
+ <EFC67281-5CE1-44BC-92A5-7B0E4A7FB6AD@collabora.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <EFC67281-5CE1-44BC-92A5-7B0E4A7FB6AD@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-This series extends the `module!` macro with support module parameters. It
-also adds some string to integer parsing functions and updates `BStr` with
-a method to strip a string prefix.
 
-This series stated out as code by Adam Bratschi-Kaye lifted from the original
-`rust` branch [1].
+On 08/01/2025 21:09, Daniel Almeida wrote:
+> I was trying to test this again, but it apparently doesn’t compile for the reasons
+> Daniel Sedlak pointed out above.
+> 
 
-After a bit of discussion on v3 about whether or not module parameters
-is a good idea, it seems that module parameters in Rust has a place
-in the kernel for now. This series is a dependency for `rnull`, the Rust
-null block driver [2].
+Okay, now I noticed the problem.
 
-Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f [1]
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/log/?h=rnull [2]
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v4:
-- Add module maintainers to Cc list (sorry)
-- Add a few missing [`doc_links`]
-- Add panic section to `expect_string_field`
-- Fix a typo in safety requirement of `module_params::free`
-- Change `assert!` to `pr_warn_once!` in `module_params::set_param`
-- Remove `module_params::get_param` and install null pointer instead
-- Remove use of the unstable feature `sync_unsafe_cell`
-- Link to v3: https://lore.kernel.org/r/20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org
+bindgen generates this rust signature for dma_alloc_attrs():
 
-Changes in v3:
-- use `SyncUnsafeCell` rather than `static mut` and simplify parameter access
-- remove `Display` bound from `ModuleParam`
-- automatically generate documentation for `PARAM_OPS_.*`
-- remove `as *const _ as *mut_` phrasing
-- inline parameter name in struct instantiation in  `emit_params`
-- move `RacyKernelParam` out of macro template
-- use C string literals rather than byte string literals with explicit null
-- template out `__{name}_{param_name}` in `emit_param`
-- indent template in `emit_params`
-- use let-else expression in `emit_params` to get rid of an indentation level
-- document `expect_string_field`
-- move invication of `impl_int_module_param` to be closer to macro def
-- move attributes after docs in `make_param_ops`
-- rename `impl_module_param` to impl_int_module_param`
-- use `ty` instead of `ident` in `impl_parse_int`
-- use `BStr` instead of `&str` for string manipulation
-- move string parsing functions to seperate patch and add examples, fix bugs
-- degrade comment about future support from doc comment to regular comment
-- remove std lib path from `Sized` marker
-- update documentation for `trait ModuleParam`
-- Link to v2: https://lore.kernel.org/all/20240819133345.3438739-1-nmi@metaspace.dk/
+extern "C" {
+     pub fn dma_alloc_attrs(
+         dev: *mut device,
+         size: usize,
+         dma_handle: *mut dma_addr_t,
+         flag: gfp_t,
+         attrs: ffi::c_ulong,
+     ) -> *mut ffi::c_void;
+}
 
-Changes in v2:
-- Remove support for params without values (`NOARG_ALLOWED`).
-- Improve documentation for `try_from_param_arg`.
-- Use prelude import.
-- Refactor `try_from_param_arg` to return `Result`.
-- Refactor `ParseInt::from_str` to return `Result`.
-- Move C callable functions out of `ModuleParam` trait.
-- Rename literal string field parser to `expect_string_field`.
-- Move parameter parsing from generation to parsing stage.
-- Use absolute type paths in macro code.
-- Inline `kparam`and `read_func` values.
-- Resolve TODO regarding alignment attributes.
-- Remove unnecessary unsafe blocks in macro code.
-- Improve error message for unrecognized parameter types.
-- Do not use `self` receiver when reading parameter value.
-- Add parameter documentation to `module!` macro.
-- Use empty `enum` for parameter type.
-- Use `addr_of_mut` to get address of parameter value variable.
-- Enabled building of docs for for `module_param` module.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20240705111455.142790-1-nmi@metaspace.dk/
+We are interested in the last argument 'attrs'. For some reason it seems 
+ffi::c_ulong is defined as usize at least on top of `rust-next` commit 
+0c5928deada15a8d075516e6e0d9ee19011bb000.
 
----
-Andreas Hindborg (4):
-      rust: str: implement `PartialEq` for `BStr`
-      rust: str: implement `strip_prefix` for `BStr`
-      rust: str: add radix prefixed integer parsing functions
-      rust: add parameter support to the `module!` macro
+In previous versions ffi::c_ulong used to be u64. I also noticed that 
+core::ffi::c_ulong is u64 while crate::ffi::c_ulong is usize. In the 
+previous versions they're both u64.
 
- rust/kernel/lib.rs           |   1 +
- rust/kernel/module_param.rs  | 225 +++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/str.rs           | 140 +++++++++++++++++++++++++++
- rust/macros/helpers.rs       |  14 +++
- rust/macros/lib.rs           |  31 ++++++
- rust/macros/module.rs        | 188 ++++++++++++++++++++++++++++++++----
- samples/rust/rust_minimal.rs |  10 ++
- 7 files changed, 591 insertions(+), 18 deletions(-)
----
-base-commit: e32a80927434907f973f38a88cd19d7e51991d24
-change-id: 20241211-module-params-v3-ae7e5c8d8b5a
-prerequisite-change-id: 20241107-pr_once_macros-6438e6f5b923:v4
-prerequisite-patch-id: 57743fff5d9c649ff7c1aed7e374d08ae67dda91
-prerequisite-patch-id: fe607e3e1f666e7250bf099e581d53c83fea5f7d
-prerequisite-patch-id: eb030eccf23466b0e22e7c699f252c40bd5f21bf
+So my mistake here as is I tried to match the signature manually by 
+using usize as suggested by the compiler. Maybe we should stick to 
+ffi::c_ulong return type for Attrs::as_raw() to be in sync the 
+bindgen-generated interface?
 
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
+Regards,
+Abdiel
 
