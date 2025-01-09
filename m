@@ -1,180 +1,269 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA4D215791;
-	Thu,  9 Jan 2025 09:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5937217667
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jan 2025 09:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736416230; cv=none; b=FMFa3eQnM6gFzIoSMBiQkIzqKwSQehfg3Fdu0VPrV16l8/+cGIhan0JsQ1l6yp3Al0CWz71BFOZws4vj4D99lvFK/8fiO6gYV7rd/olneR8MOpf0zHOGSNAiupKbKVUS9lASdnbD1AHtaxNsCXVyox+jmDPVQHmDdceYTm4lkhU=
+	t=1736416245; cv=none; b=mG6K4eTi9X/I6j0tV2WPPqzY9QAz/6dcMSH83F0hvWLDmerm9V9YX65iScE2u7kuU72OsZZB737y1a3Ia7ZGvDPRKeciN1tURV+1cu+KJZekQ8ab5vm6Sm7HkD1hf2QPst9yT6ohj5+ze2y4x4DUkxNaISbqWu2xXW6OKA5YJiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736416230; c=relaxed/simple;
-	bh=OTmSpk8FgQtdGzsBLCapjkB10EVINFX+b6VXc1DcaII=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ijb1BcbP8LAtPwiecIvGwfqrH8sFIHaBpM1z9AZx9jYN6iTQ9zAKxEHwO1txjPfNPw9oEKsF4Kr/kTKzYLWK7823FfejdJhtqWCUd7fU298RkL1tE44BepMe1NuYvaM7oFNCiRt61UElHQX3iRI1A4ITe5GSaxlHETAgndCH8J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCFYhm2H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736416245; c=relaxed/simple;
+	bh=t630YFYw7ih3O+vXH/ApcsyYFOIjkR1OnM7GTx12KNA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XC4O5BMSbn+vJ0iXeIheqMqmLiu0wW84W/0k+SMK7bZLNoC+Rf9xWYxQrfOy84mb19erZLm3On/vaZl4LnfLC5l8ZzyK5SMYlNbNqordesTbpGR+BdSDodGgYC9ynk1kpgtb2Hni7YcOR/ZY/HulquWHytKRJYUjAEvaV7uoPdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=gleBEQ4c; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCFYhm2H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EF6C4CEE3;
-	Thu,  9 Jan 2025 09:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736416228;
-	bh=OTmSpk8FgQtdGzsBLCapjkB10EVINFX+b6VXc1DcaII=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KCFYhm2HAlgySDT+VDj7M7/hEOT7/f8m6lRANiIi0yf6cvrbkvUllkmlDD/6NPhWd
-	 Srq4DwwmLepLl5xDfb3d7XEZkB+HvnPTD+pGCvs5n4ai6LZFQebDyf+Inv5cmmX8eO
-	 08BI2G9umgJDu54D87WXproEllZuBmS/2yGaE2EyWhmUrKmudf7+9lnWqJ31cKM3Qi
-	 ilAunlKUd72eq4/T0rdDmz8VXruZOWiW4Hlhij0SlDGN04n3Po55Ax2itg5n8dhcIz
-	 OEoONJ63RL/ygTgorac3pq0tQEI1y1MFC9Ye7NTvSQdt1pnfxZ8TqWa9OC4G1+KSOl
-	 lWF01p11kqGHA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Matthew Wilcox" <willy@infradead.org>,  "Vlastimil Babka"
- <vbabka@suse.cz>,  "John Hubbard" <jhubbard@nvidia.com>,  "Liam R.
- Howlett" <Liam.Howlett@oracle.com>,  "Andrew Morton"
- <akpm@linux-foundation.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Arnd Bergmann" <arnd@arndb.de>,
-  "Christian Brauner" <brauner@kernel.org>,  "Jann Horn"
- <jannh@google.com>,  "Suren Baghdasaryan" <surenb@google.com>,  "Alex
- Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Trevor Gross" <tmgross@umich.edu>,  <linux-kernel@vger.kernel.org>,
-  <linux-mm@kvack.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v11 2/8] mm: rust: add vm_area_struct methods that
- require read access
-In-Reply-To: <18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local> (Lorenzo
-	Stoakes's message of "Thu, 09 Jan 2025 08:19:53 +0000")
-References: <20241211-vma-v11-0-466640428fc3@google.com>
-	<RiN4oxf3FtqzOa42iVF50yHiC7LgOLlBneneq5PqKrMSQTHph5qY1Vfm3lCY4BUyz_SqqRNWoibFUVuSfEPR3Q==@protonmail.internalid>
-	<20241211-vma-v11-2-466640428fc3@google.com> <874j33ddxt.fsf@kernel.org>
-	<51PsGz5tctBZlyC7TWAGRwZbM13r71BM1gtm1Y8F4j2w3FtKSXtkVrsvwILAqvSBPrFJzahyUVDum-JXO3yZUw==@protonmail.internalid>
-	<CAH5fLgiS_=MiMcnyC2z8kXQW0Kpn36h6EaHs9g7Zaw85mLn2jA@mail.gmail.com>
-	<87frlsbekc.fsf@kernel.org>
-	<vH_JjBon9WfW7x7OzrUfhGFluWCiBwsPZDkHbFt77nth4SFWJ-4W2vXXBYmE8WEaEJsibxx2N4iXS8Vx6RbAQA==@protonmail.internalid>
-	<18bc911a-ede5-410b-9955-5382bcef975c@lucifer.local>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 09 Jan 2025 10:50:13 +0100
-Message-ID: <87msg09uzu.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="gleBEQ4c"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385e06af753so332878f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Jan 2025 01:50:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1736416241; x=1737021041; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=M0FmZrALMc+V2GBg/dbwamb8Cl1rUxCuUNqLXjiYNVw=;
+        b=gleBEQ4cMVz2tX0OyAl7f8E4GBXZ0/WT+GtDWHJbXSR84aXJ4jXb/CiBtu/Sx6DMqZ
+         MbrjBCivjSIWZC/8FTiGfiNSsSNsADpeGc92hhVSA1s5Vqjcp2tmjCf0m5LKad9bNFzY
+         zKisUDL7UY3LzF80x12wtQVvbPG4YfD+YQgSI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736416241; x=1737021041;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M0FmZrALMc+V2GBg/dbwamb8Cl1rUxCuUNqLXjiYNVw=;
+        b=ovQLh0MZq8T5jaY36RGRPBpEUpbsCuRVH3sXUn51TBbSjQUGeaUgf20WiK4FXyhQhZ
+         M8lNKOgPh0r0UPPkAYrMyBWXGBJMnry5GidkAQ3bRM4GNC6xF9Bc3rFkpcwJSOibMKKR
+         1X4t1XfmEIjL/xwFKlPZ+gWkhnFhRaGfswzaueBfhXEhUpgJS6B+KU9a69gHIRnHgWQj
+         YxJwjBQBCpwdt4mYbmMseB/ZJZ/vyJQdrbr0rbKgDqp4IcDfiaW/6DG8On/5yJ+Pbk5f
+         S34l/devvw+SPHyb9XzfesukK3JY16XEVlDFwVUUz+6sPZ+24bI9eLtWaXQWEuqLePpk
+         TQJg==
+X-Forwarded-Encrypted: i=1; AJvYcCX/J8NVuHqZZt7Kv9dkHnw2m6TZ/wx7/H37XEi12Vqvo/4rwTap0DdD3DaZJRKxIuqa+hWW6jkoXxWxQhOllQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHq8dqwK164hKWHAdsYKkfmUPiznLk7hTc6R7ZKQtqRf1LhG5O
+	7Q84qbUw/md5/PcpN1uYBUr7yh+e6Dx2SatStjMdI6q1rylFIyu99gGJnfRKqdU=
+X-Gm-Gg: ASbGncvwg5pqRBY2GO8hLJdJuA48N2RUB/2UHuAVcL8K1xRLpoKK71B/mocPDKMbhzU
+	dFeukxgv7tisbdR4dkwZh1lnmLuD40OSukcCIHzDICoOYtGG6VIqEJj8I/UQ4opIQdMr0LuttHN
+	hD0RO+8SVZzOvho52IqvPKxadFYrIwRHiLqhejfn03HdTXmeAFY6KvMoZ76eigVQhEX3JLZea/w
+	gVyRXu/1cryYfLXmLK42wZgaC2y6xwSal2sdMtOx15prU9nEUgExm58ubpIuh22dKSN
+X-Google-Smtp-Source: AGHT+IFC5Mzp5fEYBWsDyeg37JgP6HOrlN5fQZuQOXaem3AvJ1HtBZgz0REFCIswNMzFxjSFt461ig==
+X-Received: by 2002:a5d:6d06:0:b0:385:e30a:394b with SMTP id ffacd0b85a97d-38a87303f25mr5043068f8f.16.1736416240874;
+        Thu, 09 Jan 2025 01:50:40 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38f176sm1351638f8f.63.2025.01.09.01.50.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jan 2025 01:50:40 -0800 (PST)
+Date: Thu, 9 Jan 2025 10:50:38 +0100
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: devres: remove action in `Devres::drop`
+Message-ID: <Z3-b7hry7PdB31Br@phenom.ffwll.local>
+Mail-Followup-To: Danilo Krummrich <dakr@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20250103164436.96449-1-dakr@kernel.org>
+ <20250103164436.96449-2-dakr@kernel.org>
+ <Z3wKFTkmjdaGHKIn@tardis.local>
+ <Z3z4tHzwatjbvz1h@pollux>
+ <Z36DU2Rf1O6cJbzG@phenom.ffwll.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z36DU2Rf1O6cJbzG@phenom.ffwll.local>
+X-Operating-System: Linux phenom 6.12.3-amd64 
 
-"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com> writes:
+On Wed, Jan 08, 2025 at 02:53:23PM +0100, Simona Vetter wrote:
+> On Tue, Jan 07, 2025 at 10:49:40AM +0100, Danilo Krummrich wrote:
+> > On Mon, Jan 06, 2025 at 08:51:33AM -0800, Boqun Feng wrote:
+> > > On Fri, Jan 03, 2025 at 05:44:31PM +0100, Danilo Krummrich wrote:
+> > > > So far `DevresInner` is kept alive, even if `Devres` is dropped until
+> > > > the devres callback is executed to avoid a WARN() when the action has
+> > > > been released already.
+> > > > 
+> > > > With the introduction of devm_remove_action_nowarn() we can remove the
+> > > > action in `Devres::drop`, handle the case where the action has been
+> > > > released already and hence also free `DevresInner`.
+> > > > 
+> > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > > ---
+> > > >  rust/kernel/devres.rs | 56 +++++++++++++++++++++++++++++++++----------
+> > > >  1 file changed, 44 insertions(+), 12 deletions(-)
+> > > > 
+> > > > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> > > > index 9c9dd39584eb..7d3daac92109 100644
+> > > > --- a/rust/kernel/devres.rs
+> > > > +++ b/rust/kernel/devres.rs
+> > > > @@ -10,15 +10,19 @@
+> > > >      bindings,
+> > > >      device::Device,
+> > > >      error::{Error, Result},
+> > > > +    ffi::c_void,
+> > > >      prelude::*,
+> > > >      revocable::Revocable,
+> > > >      sync::Arc,
+> > > > +    types::ARef,
+> > > >  };
+> > > >  
+> > > >  use core::ops::Deref;
+> > > >  
+> > > >  #[pin_data]
+> > > >  struct DevresInner<T> {
+> > > > +    dev: ARef<Device>,
+> > > > +    callback: unsafe extern "C" fn(*mut c_void),
+> > > >      #[pin]
+> > > >      data: Revocable<T>,
+> > > >  }
+> > > > @@ -98,6 +102,8 @@ impl<T> DevresInner<T> {
+> > > >      fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > > >          let inner = Arc::pin_init(
+> > > >              pin_init!( DevresInner {
+> > > > +                dev: dev.into(),
+> > > > +                callback: Self::devres_callback,
+> > > >                  data <- Revocable::new(data),
+> > > >              }),
+> > > >              flags,
+> > > > @@ -109,9 +115,8 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > > >  
+> > > >          // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
+> > > >          // detached.
+> > > > -        let ret = unsafe {
+> > > > -            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
+> > > > -        };
+> > > > +        let ret =
+> > > > +            unsafe { bindings::devm_add_action(dev.as_raw(), Some(inner.callback), data as _) };
+> > > >  
+> > > >          if ret != 0 {
+> > > >              // SAFETY: We just created another reference to `inner` in order to pass it to
+> > > > @@ -124,6 +129,41 @@ fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+> > > >          Ok(inner)
+> > > >      }
+> > > >  
+> > > > +    fn as_ptr(&self) -> *const Self {
+> > > > +        self as _
+> > > > +    }
+> > > > +
+> > > > +    fn remove_action(&self) {
+> > > > +        // SAFETY:
+> > > > +        // - `self.inner.dev` is a valid `Device`,
+> > > > +        // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
+> > > > +        //   previously,
+> > > > +        // - `self` is always valid, even if the action has been released already.
+> > > > +        let ret = unsafe {
+> > > > +            bindings::devm_remove_action_nowarn(
+> > > > +                self.dev.as_raw(),
+> > > > +                Some(self.callback),
+> > > > +                self.as_ptr() as _,
+> > > > +            )
+> > > > +        };
+> > > > +
+> > > > +        if ret != 0 {
+> > > > +            // The devres action has been released already - nothing to do.
+> > > > +            return;
+> > > > +        }
+> > > > +
+> > > > +        // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
+> > > > +        // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership of
+> > > > +        // this reference.
+> > > > +        let _ = unsafe { Arc::from_raw(self.as_ptr()) };
+> > > 
+> > > There is a pointer provenance issue here I think. `self` is a immutable
+> > > reference to `DevresInner<..>`, so the pointer derived from it doesn't
+> > > have the provenance for writing nor does it have the provenance for the
+> > > `refcount` field in `ArcInner`. Therefore it cannot be used to
+> > > reconstruct an `Arc`.
+> > > 
+> > > We probably want to make `remove_action()` take an
+> > > `&Arc<DevresInner<T>>`. Or am I missing something subtle?
+> > 
+> > Indeed, good catch!
+> 
+> Just for my own learning I've tried to understand why there's an issue
+> here, but no in DevresInner.devres_callback. In both cases we take the
+> exact same bag of bits and convert it into an Arc, relying on the C side
+> guaranteeing to us that we exclusively own whatever object that bag of
+> bits points to when converted into a real reference.
+> 
+> I don't think we rely on the provance of self here at all, because we just
+> pass that bag of bits to devm_remove_action_nowarn as a magic lookup key,
+> and in the ret == 0 case the C side guarantee is that we own the resulting
+> object if we convert it into one using Arc::from_raw.
+> 
+> I think you could replace self.as_ptr in this function with a random bit
+> value, and aside from being functionally nonsense and resulting in a
+> randomized leak on the C side I dont think it would be unsafe/unsound.
+> 
+> What am I missing?
 
-> On Thu, Jan 09, 2025 at 09:02:11AM +0100, Andreas Hindborg wrote:
->> "Alice Ryhl" <aliceryhl@google.com> writes:
->>
->> > On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindborg@k=
-ernel.org> wrote:
->> >>
->> >>
->> >> > +
->> >> > +    /// Zap pages in the given page range.
->> >> > +    ///
->> >> > +    /// This clears page table mappings for the range at the leaf =
-level, leaving all other page
->> >> > +    /// tables intact,
->> >>
->> >> I don't fully understand this docstring. Is it correct that the funct=
-ion
->> >> will unmap the address range given by `start` and `size`, _and_ free =
-the
->> >> pages used to hold the mappings at the leaf level of the page table?
->> >
->> > If the vma owns a refcount on those pages, then the refcounts are drop=
-ped.
->>
->> Maybe drop the "at the leaf level leaving all other page tables intact".
->> It confuses me, since when would this not be the case?
->
-> I don't understand your objection. The whole nature of a zap is to traver=
-se
-> leaf level page table mappings, clearing the entries, leaving the other
-> page table entries intact.
+Trying to sharpen my argument a bit after chatting with Danilo on irc:
 
-As someone not deeply familiar with this function and it's use, I became
-uncertain of my understanding when I read this sentence. As I asked
-above: When would you not clear mappings at the leaf level and leave all
-other mappings alone?
+My take is that Arc::from_raw must discard provenance of the argument, and
+instead entirely relies on Arc::into_raw having been call beforehand with
+a return value that bitwise matches what we stuff into from_raw. So it
+should inherit the provenance of the reference we passed to Arc::into_raw.
 
-Imagine you have a collection structure backed by a tree and the
-`remove_item` function has the sentence "remove item at the leaf level
-but leave all other items in the collection alone". That would be over
-specifying. It is enough information in the user facing documentation
-that the item is removed. You don't need to state that a remove
-operation on an item does not remove other items. Does this example
-transfer to this function, or am I missing something?
+If that's not the case then from_raw is busted, and it only happens to
+work for ffi callbacks because the compiler cannot see behind the ffi
+curtain.
+-Sima
 
-> That is, precisely what is written here. In fact I think this
-> characterisation is derived from discussions had with us in mm, and it is
-> one with which I am happy.
->
-> Why is it problematic to accurately describe what this does?
+> 
+> Cheers, Sima
+> 
+> > 
+> > > 
+> > > Regards,
+> > > Boqun
+> > > 
+> > > > +
+> > > > +        // Revoke the data, such that it gets dropped and the actual resource is freed.
+> > > > +        //
+> > > > +        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
+> > > > +        // anymore, hence it is safe not to wait for the grace period to finish.
+> > > > +        unsafe { self.data.revoke_nosync() };
+> > > > +    }
+> > > > +
+> > > >      #[allow(clippy::missing_safety_doc)]
+> > > >      unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
+> > > >          let ptr = ptr as *mut DevresInner<T>;
+> > > > @@ -165,14 +205,6 @@ fn deref(&self) -> &Self::Target {
+> > > >  
+> > > >  impl<T> Drop for Devres<T> {
+> > > >      fn drop(&mut self) {
+> > > > -        // Revoke the data, such that it gets dropped already and the actual resource is freed.
+> > > > -        //
+> > > > -        // `DevresInner` has to stay alive until the devres callback has been called. This is
+> > > > -        // necessary since we don't know when `Devres` is dropped and calling
+> > > > -        // `devm_remove_action()` instead could race with `devres_release_all()`.
+> > > > -        //
+> > > > -        // SAFETY: When `drop` runs, it's guaranteed that nobody is accessing the revocable data
+> > > > -        // anymore, hence it is safe not to wait for the grace period to finish.
+> > > > -        unsafe { self.revoke_nosync() };
+> > > > +        self.0.remove_action();
+> > > >      }
+> > > >  }
+> > > > -- 
+> > > > 2.47.1
+> > > > 
+> 
+> -- 
+> Simona Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
 
-Again, it might be that I don't properly understand what the function
-actually does, but if it is just removing the entries described by the
-range - write that. Don't add irrelevant details or specify what the
-function does not do. It slows down the user when reading documentation.
-
->
-> For a series at v11 where there is broad agreement with maintainers within
-> the subsystem which it wraps, perhaps the priority should be to try to ha=
-ve
-> the series merged unless there is significant technical objection from the
-> rust side?
->
->>
->> How about this:
->>
->> This clears the virtual memory map for the range given by `start` and
->> `size`, dropping refcounts to memory held by the mappings in this range.=
- That
->> is, anonymous memory is completely freed, file-backed memory has its
->> reference count on page cache folio's dropped, any dirty data will still
->> be written back to disk as usual.
->
-> Sorry I object to this, 'clears the virtual memory map' is really
-> vague. What is already there is better.
-
-Would you like the proposed paragraph if we replaced "virtual memory
-map" with "page table mappings", or do you object to the entirety of the
-new suggestion?
-
->
->>
->> >
->> >> > and freeing any memory referenced by the VMA in this range. That is,
->> >> > +    /// anonymous memory is completely freed, file-backed memory h=
-as its reference count on page
->> >> > +    /// cache folio's dropped, any dirty data will still be writte=
-n back to disk as usual.
->> >> > +    #[inline]
->> >> > +    pub fn zap_page_range_single(&self, address: usize, size: usiz=
-e) {
->>
->>
->> Best regards,
->> Andreas Hindborg
->>
->>
->
-> Let's please get this series merged. I think Alice has demonstrated
-> remarkable patience already, and modulo significant technical pushback on
-> the rust side (on which I defer entirely to the expertise of rust people),
-> I want to see this go in.
-
-I am sensing that you don't feel my comments are relevant at the current
-stage of this series (v11). Alice asked for reviews of the series. These ar=
-e my
-comments. Feel free do whatever you want with them.
-
-
-Best regards,
-Andreas Hindborg
-
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
