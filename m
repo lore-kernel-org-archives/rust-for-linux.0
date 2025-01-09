@@ -1,100 +1,115 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DCA19D087;
-	Thu,  9 Jan 2025 13:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A685C216392;
+	Thu,  9 Jan 2025 13:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736428669; cv=none; b=VFBiUvqTwLDfw7qfpMprYvgAaGva1BZCAhTV2szBs7VX4UUyVBDoQDNRNMS5F5mwbg47PwdPW8O9iFsFxIIlbJEtdx+GP1POaa1OSzOAfnuywtSrqPY3rtPAOzs3kQe/JFCng0B7wYNrYgN9/su9daCc46IV6y3YqVwj8OACU5I=
+	t=1736428815; cv=none; b=duLIfOCUnrMUp31qOnoD1aCwLKO9IU+l8+GDFLrM8hKuPpoRD5gQTxhGVLpizaHOehVIDnn2s771mTmUfINx29QwPPjGm2sNXI+xI7intKqN91EIhSkqE8MFTd39CzZKsZsz4zzTfXSb+qcEq4iJjbV8EfRG3iJUrv50fSwQ7T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736428669; c=relaxed/simple;
-	bh=6hxu54rMoJydvP7eOpJ5bDn4UMBGR5k/muQ6/dpJmeo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o9nCzLF0CbxG6of4K+f6vROauJzIv/f8W+HV6g0s5xuIOCSOp/6ahS9fPhQ5+QvGMODxsjn29HrZiTLPmJmQ3HZG/29BrdxORziKz39AjaaUyoLexLPzRfWw8c9XZr5CZ95HmKAEJ7r9suA2GR6+9OrwkmaS7cgs65XWgDhfpaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mz6dG0II; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736428815; c=relaxed/simple;
+	bh=WiaDX3447fp5qxWtRY0TlYWTnbiHbBuIKDZfmfg7J4Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XRT+8pPAFzbgP7flfBPTfEW1Z0A2V/Lty9Q2AOEd60BDrYTnHhSzJaXPUWWAs69GIwJNBizNrzNU18uqguR9R75ali6s+Lj5SN3W2103dZ+xReCllJiPWB62jqt3ODScFKQze2YHkarN3x8tl0phbE2FUY3UzyQKsYBYoaqVuAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfpUsJo6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mz6dG0II"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ef05d0ef18so184046a91.0;
-        Thu, 09 Jan 2025 05:17:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736428668; x=1737033468; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6hxu54rMoJydvP7eOpJ5bDn4UMBGR5k/muQ6/dpJmeo=;
-        b=mz6dG0IIzztP6mIdu1PFmjWI/P5XIU1bVQ3Stz/C9nfg54EI6EncQItTg8Citfp+r+
-         ipQ8wJ9cgKS23OqGpzwFEYEf6QM0j3H46qy9v77z55M3dZr0G/ep/nqhhzIsjLjnWy/0
-         xP5tlKMlt6V/xZCWrzqA692dPGUbXKInbw0QsXv6qDAWRviSFLDFFbrH0nzFvIrA7pdU
-         LyKXfqD5kom5TNvdujWWjEYwaSmvamJFXihrTLEaRRsR0yEUoM25tkbjfufVh06Ey8T7
-         MXLJYz9Eonpa4E3oGiphaNGoXCtq1Yk1KOxgOFrJNLYt3ycup6lGKPSqBe8DOtaWxdBX
-         CoDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736428668; x=1737033468;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6hxu54rMoJydvP7eOpJ5bDn4UMBGR5k/muQ6/dpJmeo=;
-        b=veuTF1l1I7dV89c69z429piAeoWAyiaoU9NLqMRFMCURX0NnA2Yi6dNatqrDO8uQX3
-         31P0BstBUTVZ3HhwfYBA3IfiyBBRnuQLKnw6VX35KXCOKUX4j6s77EaQeXUpRGDEVpZu
-         4XUNvw0jkFr1gia/F/SZe/Rx422btNqRwcCXdkphO6VwuDMc/dA+labRkuTFllAFscQ1
-         hPyd/Lt+ZsTw0k0qpkRzDVfcqgpQHMemOGcPqYpLl/Fz6bIwTq3+uyp6CylFq1DVwpWS
-         Ku5lfB6FTOLf/ScnNDCs8e6vzmwtJLe000lPd1hwYhLjWiWNRN97BmpBBqkp1uzninx4
-         DNEw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5vBsGsC587x4M7tsN+R2Ht0TozFIlUWyFLLlnfXfuz4b94nDr1MJOcNfNX9HqKBwUiUXVNySXnQI2s2S1@vger.kernel.org, AJvYcCUtB6Jbg7LQphPJfrOHiGy3YyzcA+OOPy1xSaUl/Znd/gACQrJK7daJGuGBePFCF99lFWoQR7ljU/uxNtrcjX0=@vger.kernel.org, AJvYcCWuV9pffG5Jb+PKPRvQoxGA41SGLkfODsykTP5GIwV1Noe1Hz+0S13NhrYnITFFoQxgNOg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJgpohOiOdVQ6FZwwLtu74iRbGOdj/jBd+s/+G1Wooqg7ORHJV
-	wOHJ9JOsSC197uUuiFBlAkfGuiqTrCiXdATzpH9FMIdWsJKtSd3toVY2BGLZ5LJP7EAaYpLP/42
-	dY1VgEBdP55yttk0cV4r3Oi59gqM=
-X-Gm-Gg: ASbGncsiDbOtkxpysnNCeZC27kttfQy24k+Gz0BAB+CA7N0P4t0uH/eGAOHweAYcusj
-	+icOjlnkF6ly08gleBjYqook4UM/nYSQz4QVA9A==
-X-Google-Smtp-Source: AGHT+IHrnVRq5yqGfKs9BZ0KjoNCjkq6JCz9xVb+FTaytJ2+rI30Z37eMeRKFzbOqyqpVQOyXCRoQCUL52ZcSIOqEjo=
-X-Received: by 2002:a17:90b:2c8c:b0:2ee:b665:12c2 with SMTP id
- 98e67ed59e1d1-2f548f04e89mr3708553a91.2.1736428667702; Thu, 09 Jan 2025
- 05:17:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfpUsJo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2E0C4CED2;
+	Thu,  9 Jan 2025 13:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736428814;
+	bh=WiaDX3447fp5qxWtRY0TlYWTnbiHbBuIKDZfmfg7J4Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MfpUsJo6HmqRX1+ZIR86H5bQQq0AeOFpitoZYJ7/FLlLbnhSDqkfxFOzl0mhXWYR0
+	 nTQgsWtO3dl8VhzeqYaIwrtopJ0JMQk1RpZqQbxZ8je7juTu7fLdKPOFnPvb+Te1aK
+	 clPxP0S/Pz7COSOInbyjqTxuARkio4eVHZmXHlqjCJSkyIPacNe8v61HSkqmRCqksn
+	 okMXMvd2/XSZNO+EcKoQWuTzkDMN2FDX2arG17g/gEzHmgYMHMmWM9H53HtQ34YXoL
+	 ig7vyxU9jVMgdYxKgkhYNSQt3I/eG8udG3SJIiqOgcc754jEDRchTcO7bmv/W8KzMy
+	 qR6jDjTy5VVHA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Guangbo Cui" <2407018371@qq.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Anna-Maria Behnsen"
+ <anna-maria@linutronix.de>,  "Frederic Weisbecker" <frederic@kernel.org>,
+  "Thomas Gleixner" <tglx@linutronix.de>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
+  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Lyude Paul" <lyude@redhat.com>,  "Dirk Behme" <dirk.behme@gmail.com>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 05/14] rust: hrtimer: allow timer restart from timer
+ handler
+In-Reply-To: <tencent_74DA73ADC948EF2F933592E880CC09D35B09@qq.com> (Guangbo
+	Cui's message of "Thu, 19 Dec 2024 22:50:01 +0800")
+References: <20241217-hrtimer-v3-v6-12-rc2-v5-0-b34c20ac2cb7@kernel.org>
+	<20241217-hrtimer-v3-v6-12-rc2-v5-5-b34c20ac2cb7@kernel.org>
+	<H7fH3H6SrsqtETrWgmThmdGUchRyUZh6hQzk4lVMjEOiY_VfUAHbzIGuWZda0aPObsMSxSfyDxhAC9QSTmiPBw==@protonmail.internalid>
+	<tencent_74DA73ADC948EF2F933592E880CC09D35B09@qq.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Thu, 09 Jan 2025 14:20:03 +0100
+Message-ID: <87bjwg9la4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
-In-Reply-To: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 9 Jan 2025 14:17:35 +0100
-X-Gm-Features: AbW1kvYf-xHDbBtPkhRDbaeDnsJgur8tHOEjdrqZomYxSX_i0nUbbuyb5_tMTtc
-Message-ID: <CANiq72=XD3AfZp=jKNkKLs8PYCBuk2Jm6tbQB2QtbqkieAtm8Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: Disallow BTF generation with Rust + LTO
-To: Matthew Maurer <mmaurer@google.com>, Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthias Maennich <maennich@google.com>, 
-	bpf <bpf@vger.kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Eric Curtin <ecurtin@redhat.com>, Martin Reboredo <yakoyoku@gmail.com>, Neal Gompa <neal@gompa.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Jan 9, 2025 at 12:35=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
+"Guangbo Cui" <2407018371@qq.com> writes:
+
+> On Tue, Dec 17, 2024 at 04:17:36PM +0100, Andreas Hindborg wrote:
+>> This patch allows timer handlers to report that they want a timer to be
+>> restarted after the timer handler has finished executing.
+>>
+>> Also update the `hrtimer` documentation to showcase the new feature.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/kernel/time/hrtimer.rs     | 37 ++++++++++++++++++++++++++++++++++++-
+>>  rust/kernel/time/hrtimer/arc.rs |  4 +---
+>>  2 files changed, 37 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+>> index 178e33c1f656d2f834e45b004486f6e5fe1813dd..38a8251ea6ba4d84dadad009ed540c150bea4775 100644
+>> --- a/rust/kernel/time/hrtimer.rs
+>> +++ b/rust/kernel/time/hrtimer.rs
+>> @@ -167,7 +167,7 @@ pub trait TimerCallback {
+>>      type CallbackTargetParameter<'a>;
+>>
+>>      /// Called by the timer logic when the timer fires.
+>> -    fn run(this: Self::CallbackTargetParameter<'_>)
+>> +    fn run(this: Self::CallbackTargetParameter<'_>) -> TimerRestart
+>>      where
+>>          Self: Sized;
+>>  }
+>> @@ -262,6 +262,41 @@ unsafe fn start(self_ptr: *const Self, expires: Ktime) {
+>>      }
+>>  }
+>>
+>> +/// Restart policy for timers.
+>> +pub enum TimerRestart {
+>> +    /// Timer should not be restarted.
+>> +    NoRestart,
+>> +    /// Timer should be restarted.
+>> +    Restart,
+>> +}
 >
-> The kernel cannot currently self-parse BTF containing Rust debug
-> information. pahole uses the language of the CU to determine whether to
-> filter out debug information when generating the BTF. When LTO is
-> enabled, Rust code can cross CU boundaries, resulting in Rust debug
-> information in CUs labeled as C. This results in a system which cannot
-> parse its own BTF.
+> If we restart the timer, we may also want to `forward` the timer. I tried
+> this series, and wrote some samples, found that it's inconvenient to write
+> a loop timer.
+>
+> This is not a problem, just my feedback on the user experience.
 
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Thanks! Lyude Paul has some patches that adds methods that operate
+within timer context, including forwarding. I think they will send them
+after this lands.
 
-as well as BPF/BTF, plus others that may be using or were involved
-with the right-hand side of the condition.
 
-Thanks!
+Best regards,
+Andreas Hindborg
 
-Cheers,
-Miguel
+
+
