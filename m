@@ -1,92 +1,74 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAD1205516;
-	Fri, 10 Jan 2025 10:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42A220E030;
+	Fri, 10 Jan 2025 13:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736506088; cv=none; b=f31N9SuoB0u0STPslFMsK+fifA96+KyQTTYlHYbLSHjGMP0qOMkntgZ1FuPweo0K+T61b13hkBoOPwv7Q4N9OT+TNQ4fq8f0j6DANkdY60gcR/bc0DRugfmvXl19g6XAUoTdNSJgnybgTWt7mditlc41/CVIqIV1NbFsY0bHKOk=
+	t=1736515996; cv=none; b=nrywVx3SLDOkgnpMSiektnOYavjQ/RkyrkOoIhvdBIWDQqGi1hFthltHx6QbeZrgJrzd3vcvkVlIWKyl+a3wio2O71+BifNEsLl1/Wa9vMxjEOs7Vfe5OkLoF+xceVcMHDn2YCRbmBDrGDzOMZXehIjMMD/bKZCGUUyhhCszMns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736506088; c=relaxed/simple;
-	bh=lFsbb417oUics3zVCdYv/wYNs/27UThiR2O6185IXmk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DCLI2sR/o+084+JLAt0CSgawBuJm/7SqKHs5MtFyy1MXelh90W/2ocx8Q23591A8VmWKQ1NT78rurJWQnnrwm34PzcZclXB3QS9b0SdpOh+4TEqCQi+fp9tWkKWxvAIinfaoPq0sdR5NqxclyV309M/U0hdYqXlXvUjpVDsan1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lv7L4w33; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736515996; c=relaxed/simple;
+	bh=nQEOacSZS3HRlL/jjO6nY71eeAaLs8aEo20XtpX46ps=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WeKP72dsieI5h8ooudJ+2x/5Le3skODtad93Zn9ykTDZBrH4xO9hpJVzb0jGvZvD5xChkhDnvb+2NQrQDwOKlq3hVwny+qNApkVhYF+5pe7lAmlht8wbMkPgJW971h9poA4wNCIoYE2cpLueACLzMaPgLRzfwhHiJY5+Uh9Imzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwziI8k4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lv7L4w33"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2166db59927so3263425ad.0;
-        Fri, 10 Jan 2025 02:48:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736506087; x=1737110887; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zx2ZsFmqjuaHpA0ezy+PudV4xa2ISEK5U5ZpNdaLwCI=;
-        b=Lv7L4w33hvEfDrF3aWEZZXTs1aJuS4a8pLe+tm2+SUtgYVwbiWj2Np77jgWg/muChP
-         VyURDqoj5+4UYhkg39f/eyq+MO+p4zaYxO84GulyEcMMDywoueurpADalg9ZTXtHuogu
-         lC1wW3GFe3plRYMtOUGfseFFwcpkgENYIzA1XZz3hKUFA5I4/27qp9ep+EOPa47q9S14
-         8qOFa4xY6LDHqg+mUD3ERjg/1qR0ncVjMLUEIEifMAfcT/d4M3UauYYhWU7oNlgI56HZ
-         aXSERTd7oLtbT9g2/Asp/3n184Dhe3xLh7xPqdEBVjwpc1wrLhd2hRHCHXBoePaXUA+f
-         gE6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736506087; x=1737110887;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zx2ZsFmqjuaHpA0ezy+PudV4xa2ISEK5U5ZpNdaLwCI=;
-        b=LvS/UwC89XIIDTG3kpzXfTTNd+wtG+elJMoQZhu2ExpLQt+djQsqCUVwkylmLWUdBp
-         u0brHaoxM8KPtED7K2S9j0ip7+zUZjbtkljo4Ssz5daVWY2lp750ee6HOPM/toq/u7ro
-         UzoRM8c+F/ypEe2mNJKesFHzvnxLr+ITSVzeksUDANOL9fkaRygp/9hDy43uW9KCve0r
-         i6YGdbZ2+uoMGtR9U+z4bDB7aishcGy7CkhYvt85vNIueQl2ZiZPgbr3k74/CB6Lx1uK
-         WVmxX7MoQewBAuO4zefizkGnlGnK+S/XZydW2ey6VVciODfd2OR0CntVbVT391lKFlNn
-         6ZWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxSLYhRsnHMRCSEh4LEm8ZwwojRO6R5261MFcJANn0uBBftcqLl9XeNF97R58m88yhGAOZPGeesODyzyw=@vger.kernel.org, AJvYcCVOuVj1fZu0smTW0L4rIW2pLRCs80y8mSJIdIdRMgweTnfC5H1UqIDTXISJJyp8Qb98/hYIJqXY7g4KI2Gb@vger.kernel.org, AJvYcCXfTM1KqCpn86hp1xU1AeRSkF1ozuBx3RkFD6l6rroqtv58s2oGNx0pusi/rwe++R+5q875ir8xji0lxAIW8Yk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYqzgOq7wCiyemi+s6kUqTbM+BiEyCTx8g4hspFcx3Ftp+nHMH
-	Z7kA6WnU8xePVhS+8iOyo3fFW8rDrKI5ZgL9/swlA+wN+oSaHsixh0BqW4JVnhyr2PTlG7bhqaK
-	8R44rbOLgII+PNTbR5FbAw9lZW5I=
-X-Gm-Gg: ASbGnctbv3OuR4ZOImtUA8QoQG7/KxNTrh7NkR7W1tVlQr+q19RpJfFhMxCHG0RQKCN
-	7zL+juQ3e6n9Ouyw+rxPUGCQd8UG+wrEzqbETYQ==
-X-Google-Smtp-Source: AGHT+IGyf59oV/p6cf82Eqcgec3+B7VHzkc2+S771jI7beU0/V8LGFATlaU1f8mNdYIncIjTD5U9TITdOOKWL+pwr3A=
-X-Received: by 2002:a17:903:32ce:b0:216:30f9:93c5 with SMTP id
- d9443c01a7336-21a83f4c434mr58642955ad.6.1736506086757; Fri, 10 Jan 2025
- 02:48:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwziI8k4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C3FC4CEE2;
+	Fri, 10 Jan 2025 13:33:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736515995;
+	bh=nQEOacSZS3HRlL/jjO6nY71eeAaLs8aEo20XtpX46ps=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=GwziI8k4IAJHJiXOZX4Ly2oKDY1wIeYf8GPyXcSSk4wNux+MZPfKn0y3amG4yThDq
+	 /ztyGBZLOoMORvneBWuGno88MWwKWNo7JQ+321FX1QCGEYmzrQVZm+bFI5jmPwK7//
+	 GP1qM5CjVgJ6YELKAzTFIrfkWog8LjOe6aJJwOxICmZnPOjddKR2xzzvV4nqJG0XqT
+	 rrAstBDUPNd2esofeKrmACGmst5y5yU3CZmzWy74IKgdtJDRBs4fgnAAngLpqcBx3C
+	 RwuFYuAkN2sd9NqDnKfGYPoFhQxv7NxYzWUDUgZJK+FXpBaEKoM6WiXa0haNNsJEK7
+	 H2fvDfznE/Y2Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,  Wedson Almeida Filho
+ <wedsonaf@gmail.com>,  Alex Gaynor <alex.gaynor@gmail.com>,  Nathan
+ Chancellor <nathan@kernel.org>,  Nicolas Schier <nicolas@fjasle.eu>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
+ <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@samsung.com>,
+  Alice Ryhl <aliceryhl@google.com>,  linux-kbuild@vger.kernel.org,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  patches@lists.linux.dev
+Subject: Re: [PATCH 3/3] kbuild: rust: support `W=e` for Rust
+In-Reply-To: <20240519211235.589325-3-ojeda@kernel.org> (Miguel Ojeda's
+	message of "Sun, 19 May 2024 23:12:35 +0200")
+References: <20240519211235.589325-1-ojeda@kernel.org>
+	<20240519211235.589325-3-ojeda@kernel.org>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Fri, 10 Jan 2025 14:28:27 +0100
+Message-ID: <87ed1ag5ms.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241216-b4-dylib-host-macos-v7-1-cfc507681447@gmail.com>
-In-Reply-To: <20241216-b4-dylib-host-macos-v7-1-cfc507681447@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 10 Jan 2025 11:47:54 +0100
-X-Gm-Features: AbW1kvYFtM9gpvVIEJO__6thh4bP2NWe8_9mFJDHvx9YXvcc5OZRwWyYQtXA5ik
-Message-ID: <CANiq72kk_HX-vcCrj0rvaajPv2v-7w8hmQb8Rw4Lo04gB5eUDQ@mail.gmail.com>
-Subject: Re: [PATCH v7] rust: use host dylib naming convention
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Daniel Gomez <da.gomez@samsung.com>, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Dec 16, 2024 at 4:54=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+Miguel Ojeda <ojeda@kernel.org> writes:
+
+> With `W=e`, kernel C targets error out on warnings.
 >
-> the appropriate name for the artifact. This allows the kernel to build
-> with CONFIG_RUST=3Dy on macOS.
+> Add support for the same feature for Rust code, but take the opportunity
+> to apply it for every Rust target (i.e. not just kernel code), so that
+> it behaves like having set `CONFIG_WERROR`.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks everyone!
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-    [ Added `MAKEFLAGS=3D`s to avoid jobserver warnings. Removed space.
-      Reworded title. - Miguel ]
 
-Cheers,
-Miguel
+Best regards,
+Andreas Hindborg
+
+
