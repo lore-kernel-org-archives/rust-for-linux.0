@@ -1,350 +1,114 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458821FBC94
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jan 2025 22:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307101F6698;
+	Fri, 10 Jan 2025 08:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736462526; cv=none; b=JGTcZkjBON/GG4naqT3ORJb+mYSzIAeFWib1NFyjstDnvUzXoK9J9NbhEfWjbSCbiyRJmuld5juMDjULr9//coz0endur6hLDC5N77BRs3RRM/muMQAG59teMNioxlWeZgfmaEZiQ9bYP7Id+WCpIJL8aZqCGR12d+V1uwLvsVg=
+	t=1736496426; cv=none; b=FudqewOo81NlO+8tHnQUZFIt33pmb6mBW3WPZEgg3QvhsX7npV6IhBp0vsPjMLKDKuGzw8UXGK7zrc4DZmNBs4qvelfQI/mBY89Iv6EYrCkj4RpmUWiYorlHkrVQhcqtog+aJ/YE2oIlyccqf61QB9q9NOW9oX+/5soGib8rpxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736462526; c=relaxed/simple;
-	bh=Y9NkrLGmylM8UnKtAi46e5yWvaF7xye7V0AEdJoQZW0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZDyXUGvR2cv0ACUNa5zpGRIA1PH5mEBh87T1yhW/gyio1VvoOq4g3hfeeasZprzc181mZsH8zFAEwBI91UMCMIENgaVOrokEhn4r18QJQzzQtOAtc0m8CELW1V2GkNYxXBC2NQNf/50wn3CfLNtyZuVH0nQgvZxERZ/e9aOXalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qg+ti6jN; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736496426; c=relaxed/simple;
+	bh=S/07Lq4g6SQZA+O0TPG38HJaRNp1ftTFTV/q5XdL3AU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S2yVtTKbVuKMuRjmDspPhWLqxTf4t7/qqzONpVnop9FHlGBW72wB4gzpzYokWs/5Rb1wjL34XveFLEfWCNYdSVLVNdjYYKB55r0BfRgmoXY6Xl0jpyyALi+eYBrCTjJYNGckNst/PP5q3cWGKBjde8e9PcJc17TERkvsePoBv3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jRPCLjsu; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qg+ti6jN"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5d3cfdc7e4fso3212a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 09 Jan 2025 14:42:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jRPCLjsu"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53e3a227b82so1556503e87.0;
+        Fri, 10 Jan 2025 00:07:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736462522; x=1737067322; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=weql44/TCZcCo59od+M8ApuTZhXWeNY1dhogmGHwFNE=;
-        b=Qg+ti6jNpBzW1J0HRfg1bG0bUVrtbDPkJ1wDjVbovC23WStsjoJ30QEDSmMWzDLtxl
-         YAnuawHT1dxQWF5qWi7F0og369e92exIPxpeVsCjg4ircnso1e4k0MmvAqPInT55JXGK
-         D7MaqgFDFWiuGJv9KFgchebCjLAz54bZrtWlIfqArAY+2fnWa3VcSyLk9SM4EgiaC5eM
-         3PUmtwlNgSK24qytjYK+jSQn20wbtUhs5O58IPsqzvOClDIEaxuGjEDbNLoG1jivoHGL
-         1/14PcS37gcWtZWI4rf/+kRq0OujFq9soPaUMXhSkpkq9XbWMeBMYW+ol91ZxiHUAdr2
-         njSw==
+        d=gmail.com; s=20230601; t=1736496423; x=1737101223; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iaIJAYfUAcAAsckScHCT7VmL8XK0S1e3k+LlB+CZhYo=;
+        b=jRPCLjsumEajTc1Mi7ZVBu5jR1VEpOGPdgUaofwtdbbsoHwh2sb53egOaq6RQILxlE
+         2HrAmU3x1peHqTdBST19WoV45B5Q49Vt9D+ROdLWyOzcDLeBQUhRjMHlpWGTMIkAbfO6
+         L2UI6MSX+SP2vYZHPDdfLgYcQOfvZriAvI5zZ1ZszZcEqMbg4MZy+YxYxKkqA1On/b6W
+         Vz4neNFS0/ZTQ1i5xaYTs8D+XgMpyeEjZLw9yVwF1mRIrwOy1Jd2cpu/5bR1Lcf0HkA6
+         5Hf0CxXMFaZzJTsk89I1ZbQj7nnzmGpNfH8XQSsmFnNRT5nGXxJoLmYIK9nUv4M+2Tzz
+         iE4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736462522; x=1737067322;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=weql44/TCZcCo59od+M8ApuTZhXWeNY1dhogmGHwFNE=;
-        b=t+JYqh8EXhLchTFj0KIfk5F1nH56y4dJYV/V9m/2FssGBxIB5C98UT3Wdtg1svR9PE
-         nYRkCNyV+hh5iyy1kD2o6/+kTmb1TYlSnDEhB8NSlhdUbI4RGAv09j7brW2WoNIRbJvd
-         UDSuOtdJDNhz8YNauH6alVqyG7o8TSNtxvLuJXZAruoWAg5Of7EzzisIOM3iwUKMVQOS
-         W6FjBPX5K5WnXIFiLUEoHic8KKfL6WjgAhczRppOPn2cLzQvHsuzQakuUI1Y3hsi3DgR
-         BMs3oDEpW+ld2oeXfFBmINTs+bCG2/xHs7g0tU1t0L0SEE1KaAWKTz1S/5bmCh1f0cRA
-         SDCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVN/QHGVdOAUpSgFLnHdg/Y+oYdYAy866DM57/4noYa1f/PkNJwYu2KZmiNXWJJfdpo9d7InTPmTlLJI240YQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1l09FfmZfFDi0HdOpF0PWZJZB+osQK1IomPvLZv/lU8FjwZTB
-	5u4enq+yuLTHHzg6dQylmbfKOumn3LHaHNDC6TFAzluA1EavimRse1eO0K9pDUblgwnaKI7s+zq
-	HRR+2MdPz/tfp4FZzVC1e6cY8s55Ph52wSlYX
-X-Gm-Gg: ASbGncsgJ9L8qjZn9mZ1SfKHrz8ugNOQ1xylfC6h7w8IY10IhXrAXeAy2cRn+p93lc2
-	BXVhn77x00SmrjDCc83SSmhaHj/SgRo9CvEKlYfMTolMap6IGlb8AlDfYuax5XhKetbJU
-X-Google-Smtp-Source: AGHT+IEtDhm9+fJt/cE12QK4cG5kPbrLwb3PwE2xwl0do7/zTqTEt4WlDVecRQlmr2gsn6+k2nE7xEVso7IvoZ+UH5s=
-X-Received: by 2002:a05:6402:519:b0:5d4:428e:e99f with SMTP id
- 4fb4d7f45d1cf-5d9a0cc9cdamr6871a12.3.1736462521450; Thu, 09 Jan 2025 14:42:01
- -0800 (PST)
+        d=1e100.net; s=20230601; t=1736496423; x=1737101223;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iaIJAYfUAcAAsckScHCT7VmL8XK0S1e3k+LlB+CZhYo=;
+        b=WMaMH5CULjoIVmjcGdSdFulv3V2UsgKuqftKhymhcwJnUm2fCKxr1QoNst6qmuRhRj
+         4JxFlRei70LHttL/xTdLODk+yH0kYP3nKQzY0A6zhs5HT8NwMcFAv1uX7SBy0W8IhkYc
+         nd6rFdlnYO93FEnITDHP59X2y8ht5xnUY5e2rKm6A7AvuCIbdM0tya4HZMZff9QZeUQD
+         FGUQX8gCX4D5nrxPFfXhkWNm4t5++DgLdmrQbZlivs8x6o77hI2lfDs0Jsj3R9fXuJkR
+         4DaxUr0BBEwj6ylbWiQoJgIB4HDexwCvJrd37cGR3vDtxdDYuBtY2ESmwt1KX6Z3O+98
+         u64w==
+X-Forwarded-Encrypted: i=1; AJvYcCUEzMBXHzsyB+qNsbysdJ1F/iaLngRDU4/cmZCZ3/FfHZsIrhu+kjMr8/IyCIYUDNL5zGjq89JFBl02NAE=@vger.kernel.org, AJvYcCX1Wa07Djmyv4PLFC6mnjHgqwJEWF/us6WKuOOGT/gtVf9wzwyN2By3B1ebIhQUDy3IfgXGykM6hxTkVPqSBps=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXMuYGckPEa37EgHAeQM+LVkFrKcXeyi0fdb/SY5OdNRg6olDl
+	7oTQdcxVaphjzk9nrK7v20rHdKG+XmxJ0ytvq2vIgz/Gj7oUc3r/
+X-Gm-Gg: ASbGncsF9cOHnQF0gPK2oXnonCrEFjt53dSoYqM1at4EjuBpBrvTlFU1Bm8oYN+Jh1V
+	2ve6Gvric6S+ds7ISVTQbJMTj2+jGHmeHUno33in3HU26OiEuOAPCx+41q34W2odR11M9CuVVOw
+	xXbVKApZ03pdtDvSERTKuyHYzrgTDvJ3GA2j53NcbzH+WXm9QmR0LfuRPdp5dCUPPeDX9Kv7B6W
+	EmqfCuGQY2HEPfNbi8rS+bmQmj57g9IaVG+SXrzmebXjHMrP8uOvQg+tJSZF8IYGHtk2pViJW6p
+	x5R+CXk+AVCKV54M4L5hvru64kU=
+X-Google-Smtp-Source: AGHT+IEHAAuHb4Kr/mBw8+GAXqS+vcvNrL6NpogYByuTz2AGjklhx3461a1KQRiGvphtei5iThMVHw==
+X-Received: by 2002:a05:6512:401b:b0:540:20eb:80c5 with SMTP id 2adb3069b0e04-542848166b8mr3084264e87.37.1736496423094;
+        Fri, 10 Jan 2025 00:07:03 -0800 (PST)
+Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428be54869sm458053e87.108.2025.01.10.00.07.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 00:07:01 -0800 (PST)
+Message-ID: <81e9f9aa-d6ff-4377-b278-21898d61b170@gmail.com>
+Date: Fri, 10 Jan 2025 10:07:00 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com>
- <CANiq72=XD3AfZp=jKNkKLs8PYCBuk2Jm6tbQB2QtbqkieAtm8Q@mail.gmail.com>
- <CAEg-Je8YdqYFMiUK7enjusTjMhRMWTbL837x7-qQbi4LkcRcLw@mail.gmail.com>
- <CAH5fLghtCure3EjN-hRx9PT=10_E+0MNbjFACT_v+P1StWELPQ@mail.gmail.com>
- <CAJ-ks9nYSssBsiJCQRkKoXwmAizeH1A91RzGvX6iTJAFJD2YrA@mail.gmail.com>
- <Z3_vhR_QMaK0Klly@x1> <CAJ-ks9k23fKauY6JFt37OEewKPLhwdQaOFz19BKekqUoRhJCkA@mail.gmail.com>
- <Z3_5eGD_F1_ZxfqE@x1> <Z4BQG3rmYNDS5W0Z@x1>
-In-Reply-To: <Z4BQG3rmYNDS5W0Z@x1>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Thu, 9 Jan 2025 14:41:50 -0800
-X-Gm-Features: AbW1kvbfN1aH3c8C-m-WU9JZYQbIPEAFaYG9GHZDJixLlWZWd_4W7Ov9UeTaZwA
-Message-ID: <CAGSQo039Kgxk4FfDn_wfD=Ha=UR2xxhSM0MrjzXNR9YeiuCTZg@mail.gmail.com>
-Subject: Re: [PATCH] rust: Disallow BTF generation with Rust + LTO
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Neal Gompa <neal@gompa.dev>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthias Maennich <maennich@google.com>, 
-	bpf <bpf@vger.kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Eric Curtin <ecurtin@redhat.com>, Martin Reboredo <yakoyoku@gmail.com>, 
-	Alessandro Decina <alessandro.d@gmail.com>, Michal Rostecki <vadorovsky@protonmail.com>, 
-	Dave Tucker <dave@dtucker.co.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ Daniel Sedlak <daniel@sedlak.dev>, aliceryhl@google.com,
+ robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
+ <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+ <588af6c5-02cf-437a-a909-c22744a6df1c@sedlak.dev>
+ <EFC67281-5CE1-44BC-92A5-7B0E4A7FB6AD@collabora.com>
+ <ba95a574-2dba-4299-9ec4-bb776a228d98@gmail.com>
+ <CANiq72kiUgLacBf9i3Dt+OPLZEyksc3s==HRp5R3EB74VuZu9A@mail.gmail.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <CANiq72kiUgLacBf9i3Dt+OPLZEyksc3s==HRp5R3EB74VuZu9A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 9, 2025 at 2:39=E2=80=AFPM Arnaldo Carvalho de Melo <acme@kerne=
-l.org> wrote:
->
-> On Thu, Jan 09, 2025 at 01:29:47PM -0300, Arnaldo Carvalho de Melo wrote:
-> > On Thu, Jan 09, 2025 at 10:49:49AM -0500, Tamir Duberstein wrote:
-> > > On Thu, Jan 9, 2025 at 10:47=E2=80=AFAM Arnaldo Carvalho de Melo <acm=
-e@kernel.org> wrote:
-> > > > I was thinking about it after reading this thread yesterday, i.e. w=
-e
-> > > > could encode constructs from Rust that can be represented in BTF an=
-d
-> > > > skip the ones that can't, pruning types that depend on non BTF
-> > > > representable types, etc.
-> >
-> > > Yep, this is what bpf-linker does, along with some other things[0]. I
-> > > highly recommend reading the code I linked to avoid re-discovering
-> > > these things.
-> >
-> > Sure, thanks for pointing it out and suggest I read it while
-> > experimenting with having the same concept in pahole, I'll try a quick
-> > hack and then look at it to see how close I got to what you guys came u=
-p
-> > with :-)
->
-> So I didn't manage to work on this today, just this quick hack:
->
-> =E2=AC=A2 [acme@toolbox pahole]$ git diff
-> diff --git a/btf_encoder.c b/btf_encoder.c
-> index 78efd705333e2e52..5610e0902f2cd347 100644
-> --- a/btf_encoder.c
-> +++ b/btf_encoder.c
-> @@ -1559,7 +1559,7 @@ static int btf_encoder__encode_tag(struct btf_encod=
-er *encoder, struct tag *tag,
->         default:
->                 fprintf(stderr, "Unsupported DW_TAG_%s(0x%x): type: 0x%x\=
-n",
->                         dwarf_tag_name(tag->tag), tag->tag, ref_type_id);
-> -               return -1;
-> +               return 0;
->         }
->  }
->
-> =E2=AC=A2 [acme@toolbox pahole]$
->
-> Which essentially encodes any DWARF tag that the BTF encoder doesn't
-> know about into 'void'.
->
-> Super quick hack, I still have to look at the implications, but some
-> results:
->
-> =E2=AC=A2 [acme@toolbox pahole]$ cp ../build/rust-kernel/vmlinux vmlinux.=
-rust
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole --btf_encode vmlinux.rust
-> die__process_class: tag not supported 0x33 (variant_part) at <4c9c589>!
-> die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x4cb784b> not h=
-andled in a rust CU!
-> tag__recode_dwarf_type: couldn't find name for function 0x4cd72bf, abstra=
-ct_origin=3D0, specification=3D0x4cb784b
-> =E2=AC=A2 [acme@toolbox pahole]$
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole -F btf vmlinux.rust | less
-> =E2=AC=A2 [acme@toolbox pahole]$
-> =E2=AC=A2 [acme@toolbox pahole]$
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole -F btf vmlinux.rust | less
-> =E2=AC=A2 [acme@toolbox pahole]$
-> =E2=AC=A2 [acme@toolbox pahole]$ bpftool btf dump file vmlinux.rust | les=
-s
-> =E2=AC=A2 [acme@toolbox pahole]$ bpftool btf dump file vmlinux.rust | hea=
-d
-> [1] INT 'DW_ATE_signed_32' size=3D4 bits_offset=3D0 nr_bits=3D32 encoding=
-=3DSIGNED
-> [2] INT 'DW_ATE_signed_64' size=3D8 bits_offset=3D0 nr_bits=3D64 encoding=
-=3DSIGNED
-> [3] INT 'DW_ATE_unsigned_1' size=3D1 bits_offset=3D0 nr_bits=3D8 encoding=
-=3D(none)
-> [4] INT 'DW_ATE_unsigned_8' size=3D1 bits_offset=3D0 nr_bits=3D8 encoding=
-=3D(none)
-> [5] INT 'DW_ATE_unsigned_64' size=3D8 bits_offset=3D0 nr_bits=3D64 encodi=
-ng=3D(none)
-> [6] INT 'DW_ATE_unsigned_32' size=3D4 bits_offset=3D0 nr_bits=3D32 encodi=
-ng=3D(none)
-> [7] STRUCT 'tracepoint' size=3D80 vlen=3D9
->         'name' type_id=3D8 bits_offset=3D0
->         'key' type_id=3D12 bits_offset=3D64
->         'static_call_key' type_id=3D23 bits_offset=3D192
-> =E2=AC=A2 [acme@toolbox pahole]$ bpftool btf dump file vmlinux.rust | tai=
-l
->         type_id=3D12300 offset=3D226816 size=3D24 (VAR 'cfd_data')
->         type_id=3D12301 offset=3D226880 size=3D8 (VAR 'call_single_queue'=
-)
->         type_id=3D12302 offset=3D226944 size=3D32 (VAR 'csd_data')
->         type_id=3D51838 offset=3D227008 size=3D832 (VAR 'softnet_data')
->         type_id=3D54492 offset=3D227840 size=3D24 (VAR 'rt_uncached_list'=
-)
->         type_id=3D55984 offset=3D227904 size=3D24 (VAR 'rt6_uncached_list=
-')
->         type_id=3D8094 offset=3D229376 size=3D64 (VAR 'vmw_steal_time')
->         type_id=3D8810 offset=3D229440 size=3D64 (VAR 'apf_reason')
->         type_id=3D8811 offset=3D229504 size=3D64 (VAR 'steal_time')
->         type_id=3D8813 offset=3D229568 size=3D8 (VAR 'kvm_apic_eoi')
-> =E2=AC=A2 [acme@toolbox pahole]$ readelf -wi vmlinux.rust | grep DW_AT_pr=
-oducer | head
->     <d>   DW_AT_producer    : (indexed string: 0): clang version 18.1.6 (=
-Fedora 18.1.6-3.fc40)
->     <1be5a>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <1ec5b>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <3bfd5>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <3d11c>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <4fcf0>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <503d5>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <5c067>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <5c42e>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
->     <5efd9>   DW_AT_producer    : (indexed string: 0): clang version 18.1=
-.6 (Fedora 18.1.6-3.fc40)
-> =E2=AC=A2 [acme@toolbox pahole]$ readelf -wi vmlinux.rust | grep DW_AT_la=
-ng | grep -i rust
->     <4c91de1>   DW_AT_language    : 28  (Rust)
->     <4ce66ea>   DW_AT_language    : 28  (Rust)
->     <4cf2cfa>   DW_AT_language    : 28  (Rust)
->     <4cf71a8>   DW_AT_language    : 28  (Rust)
->     <4d2797d>   DW_AT_language    : 28  (Rust)
->     <4d50f34>   DW_AT_language    : 28  (Rust)
-> =E2=AC=A2 [acme@toolbox pahole]$
->
->   Compilation Unit @ offset 0x4c91dd1:
->    Length:        0x54905 (32-bit)
->    Version:       4
->    Abbrev Offset: 0x244258
->    Pointer Size:  8
->  <0><4c91ddc>: Abbrev Number: 1 (DW_TAG_compile_unit)
->     <4c91ddd>   DW_AT_producer    : (indirect string, offset: 0x282d41): =
-clang LLVM (rustc version 1.80.0 (051478957 2024-07-21) (Fedora 1.80.0-1.fc=
-40))
->     <4c91de1>   DW_AT_language    : 28  (Rust)
->     <4c91de3>   DW_AT_name        : (indirect string, offset: 0x282d91): =
-/usr/lib/rustlib/src/rust/library/core/src/lib.rs/@/core.3f32dfd9e3bca37e-c=
-gu.0
->     <4c91de7>   DW_AT_stmt_list   : 0xa1d85f
->     <4c91deb>   DW_AT_comp_dir    : (indirect string, offset: 0x2ebc6): /=
-home/acme/git/build/rust-kernel
->     <4c91def>   DW_AT_low_pc      : 0
->     <4c91df7>   DW_AT_ranges      : 0x1e5f0
->  <1><4c91dfb>: Abbrev Number: 2 (DW_TAG_variable)
->     <4c91dfc>   DW_AT_name        : (indirect string, offset: 0x555b60): =
-<usize as core::fmt::Debug>::{vtable}
->     <4c91e00>   DW_AT_type        : <0x4c91e0e>
->     <4c91e04>   DW_AT_location    : 9 byte block: 3 78 34 50 82 ff ff ff =
-ff     (DW_OP_addr: ffffffff82503478)
->  <1><4c91e0e>: Abbrev Number: 3 (DW_TAG_structure_type)
->     <4c91e0f>   DW_AT_containing_type: <0x4c91e5a>
->     <4c91e13>   DW_AT_name        : (indirect string, offset: 0x2b3380): =
-<usize as core::fmt::Debug>::{vtable_type}
->     <4c91e17>   DW_AT_byte_size   : 32
->     <4c91e18>   DW_AT_alignment   : 8
->  <2><4c91e19>: Abbrev Number: 4 (DW_TAG_member)
->     <4c91e1a>   DW_AT_name        : (indirect string, offset: 0x313232): =
-drop_in_place
->     <4c91e1e>   DW_AT_type        : <0x4c91e46>
->     <4c91e22>   DW_AT_alignment   : 8
->     <4c91e23>   DW_AT_data_member_location: 0
->  <2><4c91e24>: Abbrev Number: 4 (DW_TAG_member)
->     <4c91e25>   DW_AT_name        : (indirect string, offset: 0x570b7e): =
-size
->     <4c91e29>   DW_AT_type        : <0x4c91e5a>
->
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole -F btf -C "<usize as core::fmt::D=
-ebug>::{vtable_type}" vmlinux.rust
-> struct <usize as core::fmt::Debug>::{vtable_type} {
->         __SANITIZED_FAKE_INT__ *   drop_in_place;        /*     0     8 *=
-/
->         usize                      size;                 /*     8     8 *=
-/
->         usize                      align;                /*    16     8 *=
-/
->         __SANITIZED_FAKE_INT__ *   __method3;            /*    24     8 *=
-/
->
->         /* size: 32, cachelines: 1, members: 4 */
->         /* last cacheline: 32 bytes */
-> };
->
-> =E2=AC=A2 [acme@toolbox pahole]$
->
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole -F btf -C '<core::fmt::Error as c=
-ore::fmt::Debug>::{vtable_type}' vmlinux.rust
-> struct <core::fmt::Error as core::fmt::Debug>::{vtable_type} {
->         __SANITIZED_FAKE_INT__ *   drop_in_place;        /*     0     8 *=
-/
->         usize                      size;                 /*     8     8 *=
-/
->         usize                      align;                /*    16     8 *=
-/
->         __SANITIZED_FAKE_INT__ *   __method3;            /*    24     8 *=
-/
->
->         /* size: 32, cachelines: 1, members: 4 */
->         /* last cacheline: 32 bytes */
-> };
->
-> =E2=AC=A2 [acme@toolbox pahole]$
->
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole --show_decl_info -F dwarf -C Alig=
-nment vmlinux.rust
-> die__process_class: tag not supported 0x33 (variant_part) at <4c9c589>!
-> die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x4cb784b> not h=
-andled in a rust CU!
-> tag__recode_dwarf_type: couldn't find name for function 0x4cd72bf, abstra=
-ct_origin=3D0, specification=3D0x4cb784b
-> /* Used at: /usr/lib/rustlib/src/rust/library/core/src/lib.rs/@/core.3f32=
-dfd9e3bca37e-cgu.0 */
-> /* <4c9c50c> (null):32530 */
-> enum Alignment {
->         Left    =3D 0,
->         Right   =3D 1,
->         Center  =3D 2,
->         Unknown =3D 3,
-> } __attribute__((__packed__));
->
-> =E2=AC=A2 [acme@toolbox pahole]$ pahole --show_decl_info -F btf -C Alignm=
-ent vmlinux.rust
-> /* Used at: vmlinux.rust */
-> /* <0> (null):0 */
-> enum Alignment {
->         Left    =3D 0,
->         Right   =3D 1,
->         Center  =3D 2,
->         Unknown =3D 3,
-> } __attribute__((__packed__));
->
-> =E2=AC=A2 [acme@toolbox pahole]$
->
-> I'll fixup those two:
->
-> die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x4cb784b> not h=
-andled in a rust CU!
-> tag__recode_dwarf_type: couldn't find name for function 0x4cd72bf, abstra=
-ct_origin=3D0, specification=3D0x4cb784
->
-> I.e. support functions inside enumerations.
->
-> And sure this will be refused by the kernel, lots of stuff that have
-> invalid names, probably need to turn those into void as well as a
-> continuation of this hack, then prune, maybe that is it, we'll see.
->
-> Going AFK now.
->
-> - Arnaldo
 
-Doing a little more digging, I've also found that the latest version
-of `pahole` doesn't seem to conflict with LTO in my test builds - it
-seems to successfully filter out the Rust types. Version 1.25 was
-causing the errors that got reported to me and I was able to
-reproduce.
+On 09/01/2025 13:32, Miguel Ojeda wrote:
+> 
+> Note that in mainline, `ffi` (the crate) still redirects to
+> `core::ffi`, since we split the change in 2 kernel cycles to make it
+> easier to migrate. But in `rust-next`, `ffi` (the crate) already uses
+> the new mapping.
+> 
+> The idea is that you can already use `ffi` (the crate) -- so please use that.
+> 
+> I hope that helps!
+> 
+> Cheers,
+> Miguel
+
+Thanks, sticking to ffi::c_ulong does indeed fix this.
+
+Regards,
+Abdiel
+
