@@ -1,98 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2631B4F14;
-	Fri, 10 Jan 2025 10:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059A420B1E9;
+	Fri, 10 Jan 2025 10:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736505714; cv=none; b=CSExED41E2jsvNGfIHSrfmUa8rT1TL++HVPQe72CrVGR/3au8v2ZyA0Fr1EDMMfzuM96K/6vaias9AsxK6SCwGg4QlgI4YkPYT0yJnQhMOEUxUFlrf3ukUKWk2lA50px+fyUwb4kjRYbLtI990O7alCmIRRbjGABSoQGov5GMcQ=
+	t=1736505886; cv=none; b=Lt0ucMWuBs87ttRN5a45NcRdpOa8HG0NFUTn81+Ku0k7EYIhSMps2YQC4LB8BNeu80PIv3IvbEke4cqIPR2Fx4AWC4zddDAr+LwJtA+CUcHyuexxLncF9J7+xBSjy5EJ3weyPuTrSUpfwjlo/q7bM3SOvdFUYSodxR/1HE07SXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736505714; c=relaxed/simple;
-	bh=yCnSxExYWaMh5dh1OGwzEHD4iNSkU1H4c7a1ji3tCdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ponwSbEo51D6lI9QxRNl5cIYSUFpmIhxe221hhFgmVXSHk9KmzLrgoZzB6p2BXi/HiDezMtd+4O9qfQMfE0cRaRhXRGoZuys4Du0sRop7ZUElm030kqS6rHZsY91gpS4/TyzMJ3hn75XK+Od8FPV1i46kz6HTDLpu4qrc7Kydqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2JaJu1k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736505886; c=relaxed/simple;
+	bh=apaSsDlajYXrbZl5767R8Vt/ZIAnyGYrQWSYGxJzByc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RdzcR7QWv3CTbz13f9s3326LTJduYi//DWCYwmSePLZO80MDqOnHVFClrRf/e8yMz0P9IQQC8b393MNCeaLj7sryKpWi9Xfg96+N2Ey0R+oKB0JH109LKMjFS2D/iksL+SOSAUQtoyQzaSygXdnX4l/uhH9+3KXbzfo2fk/hfks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RyMOzQAH; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2JaJu1k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A85C4CED6;
-	Fri, 10 Jan 2025 10:41:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736505714;
-	bh=yCnSxExYWaMh5dh1OGwzEHD4iNSkU1H4c7a1ji3tCdw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q2JaJu1k6Ar8+L7uTLVGSokgYufZVi8n4XlnSd0lR0naCZrly69wo2jtOazBgc2oj
-	 pBGQUS8WsacmraJucdoWP5mUivkiuEQd/rzDcqKhs6LArvFhu+eO/aVlwKCPbk3YcI
-	 OT+p8LyT+W77Lul4CCB+IsAoMsLO4oSlqLtSmAPTNlumvi+lAT6lPL/Wp7w50GalPK
-	 6lvB0QkHbEMVFnKKRo97ePUTsiUePaNvdKo32uj6JqmFIxZkYiJ4VzIzJMQsZX3GMf
-	 wIuF72PUHHpUy6CyTm+dXvwnbw0/RBF8q6ksWIhF1lefPTrKR1WmwmUPDldD+CEA/T
-	 dQ1ZwMT524vpg==
-Date: Fri, 10 Jan 2025 11:41:47 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-Message-ID: <Z4D5a5NYrAbNxUL6@pollux>
-References: <20250108122825.136021-1-abdiel.janulgue@gmail.com>
- <20250108122825.136021-3-abdiel.janulgue@gmail.com>
- <20250108135951.GA18074@lst.de>
- <CANiq72=R2N+QiCiHZQu-6YJ9aYpn_bik3BW3U=nAW3jL7unzLw@mail.gmail.com>
- <20250108151858.GB24499@lst.de>
- <Z36X_ZnCmBQBMoZ6@pollux>
- <20250109080812.GA20431@lst.de>
- <Z3-NqwAG_96yq8VD@pollux>
- <20250110083955.GA5395@lst.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RyMOzQAH"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ee534d6800so389816a91.2;
+        Fri, 10 Jan 2025 02:44:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736505884; x=1737110684; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=apaSsDlajYXrbZl5767R8Vt/ZIAnyGYrQWSYGxJzByc=;
+        b=RyMOzQAHbctNlP4Yb+J00X1oCZ8JdU7Xh7t2c5hmaRVRi4mw54FjzcY+Z8llQlhzv2
+         YIT+Xd8tMre2hqBaRSQiRRtnL8BBhjaVN2T0UOirNIFFzqCcSC6Xtc2JkN1MreJQgX62
+         8ZWPrMZCssOFwuhsR5gUtvYQNtLB6plcKYokvHdNZFpCNyBlcdPbAR/sJNkxzXNK1rig
+         125EDnfkFwcoKYzBW2QWXjrowvq7IB+Jc6MbL0p0O6wkz116qtRfhnSPC4yKNaIMObVT
+         XpN1c8OKLGCnTk6rk2G29vp1DbcWUQsaKC4KxGK+qysh3DvQp2Kb41MyV6ElpCPf2DpH
+         xtHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736505884; x=1737110684;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=apaSsDlajYXrbZl5767R8Vt/ZIAnyGYrQWSYGxJzByc=;
+        b=M2am5ndW+HjhsjEOgGcm0iWfsZT07X4e0Xsjv/7FxXZRgtoXzzVsfZRD4Zyyi1dHmO
+         0MqFcDlEAvggWBcFCYqI7BILfoC9IDFOTxIVi6D8w2cHz1ZQBjWrldB/cGCW5A4gkBBk
+         JcyjggKzupeNKpc4xDc8RInYsMxHwnbOB6SNHGQTt4G8hYAIPrVDk9hnQcLCX/ZqZ65T
+         NvRlHc0D1B6GtqkrUNCrTo94b2QhA95F5SE5EvaJTGpKVV+H+TsvME2KFv5cXkouMfMJ
+         c0OzgIaZAvW+ZGcml00Qulj2oCfpMMYIj/br/rgdt11xz7l/tsfyZO//oANi0sI0xJ03
+         n9dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWx6FFETqU95yGBJFyVv7K8nw64c6Eihmj/orOGFMPr9g9xsVw2RFrCJHPIbVyDx+6pTHcLTcCql0YwdAYaoEg=@vger.kernel.org, AJvYcCXXhdDlTKupysgfyuwTLeV54Z9uQmDeUugpYou013+A4pUAkJTUbCHJOq9eXghk01dI+c1ak9TG/cEJJKo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0njcjOO3vxWVoUnBPvccJEBiCwN/fB4OG78g4Dc3ANDadga8W
+	0s6Q2bZlyEBnJMraCvToUsQodL1bFn4CeLD3AzQlXFXMEO9Bl8qeB6jfFvEveg08l4n2UPhoU1k
+	V/yRm1UwR4eVckZIJxmD9z9rgFrI=
+X-Gm-Gg: ASbGncugEDLWHCseHGxhNxopfgYPArTajh8FUzoZyFDbxutzmFN4z5P4qZlLqr9kH/i
+	I5fRZjBuvalWE9pp/JQ8wuUqlkAOeidWGLTVfFw==
+X-Google-Smtp-Source: AGHT+IHxuK/S4kHUOpCjd2bexoRn9sYk0/qvrZR7fXgjrU8ti29XU/dEB3faBBBUPXK5M7wDyzy7xK7OeE1MubNg9aU=
+X-Received: by 2002:a17:90b:2545:b0:2f2:a9bd:afe9 with SMTP id
+ 98e67ed59e1d1-2f548f055ffmr5779092a91.2.1736505884313; Fri, 10 Jan 2025
+ 02:44:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250110083955.GA5395@lst.de>
+References: <20241209212544.1977065-1-ojeda@kernel.org>
+In-Reply-To: <20241209212544.1977065-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 10 Jan 2025 11:44:31 +0100
+X-Gm-Features: AbW1kvaHYeTBaUvMv9ak9NAyteWj06n1FXMZjLMaTEuz0GUjFQTH7pDQg7U0T80
+Message-ID: <CANiq72nvHB0W_MexaJcwa6h6_n4iSVbJJBjH-M6MwOCJQFfC=Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: document `bindgen` 0.71.0 regression
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 10, 2025 at 09:39:55AM +0100, Christoph Hellwig wrote:
-> On Thu, Jan 09, 2025 at 09:49:47AM +0100, Danilo Krummrich wrote:
-> > On Thu, Jan 09, 2025 at 09:08:12AM +0100, Christoph Hellwig wrote:
-> > > On Wed, Jan 08, 2025 at 04:21:33PM +0100, Danilo Krummrich wrote:
-> > > > What does "your code" mean? Duplicated in every driver?
-> > > 
-> > > Yes, interfaces to the DMA API should stay in readable C code and not
-> > > in weird bindings so that it reminds greppable and maintainable.
-> > > 
-> > 
-> > Rust drivers shouldn't use C APIs directly, but rather use an abstraction of the
-> > corresponding C API.
-> 
-> Don't force me to deal with your shiny language of the day.
+On Mon, Dec 9, 2024 at 10:25=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> `bindgen` 0.71.0 regressed [1] on the "`--version` requires header"
+> issue which appared in 0.69.0 first [2] and was fixed in 0.69.1. It has
+> been fixed again in 0.71.1 [3].
+>
+> Thus document it so that, when we upgrade the minimum past 0.69.0 in the
+> future, we do not forget that we cannot remove the workaround until we
+> arrive at 0.71.1 at least.
+>
+> Link: https://github.com/rust-lang/rust-bindgen/issues/3039 [1]
+> Link: https://github.com/rust-lang/rust-bindgen/issues/2677 [2]
+> Link: https://github.com/rust-lang/rust-bindgen/blob/main/CHANGELOG.md#v0=
+711-2024-12-09 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Again, no one asks you to deal with or maintain this piece of Rust code.
+Applied to `rust-next` -- thanks everyone!
 
-> Maintaining
-> multi-language projects is a pain I have no interest in dealing with.
-> If you want to use something that's not C, be that assembly or rust you
-> write to C interfaces and deal with the impedence mismatch yourself as
-> far as I'm concerned.
-> 
-
-This is exactly what we're doing and proposing here, isn't it?
-
-We wrote a single piece of Rust code that abstracts the C API for all Rust
-drivers, which we offer to maintain ourselves.
-
-What else are you asking for?
+Cheers,
+Miguel
