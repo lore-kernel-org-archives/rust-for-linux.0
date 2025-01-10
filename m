@@ -1,126 +1,182 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B6E78C91
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jan 2025 13:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E673420C00C;
+	Fri, 10 Jan 2025 14:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736516104; cv=none; b=ezKlfOGp11XeFk512nr8K7ilpxHteD8MRrwF5PCgbjmheqmci2rH/q2PzrGDtUQ3kV1aKlTAxZeycmTZCBmydVP7+r8dXEbzcg0UUw/5G+FgJsgeuifft0CnrjivZqLr9bChsBgeOtoBf4OkH+AJFyGcm/S+9K7vYIm4z2CH9lY=
+	t=1736517752; cv=none; b=o+JZCidbB1e3rWlpI4C5AJwQ+mfGuc0GzHG/+yVCQPCycw7g4ybISp9qer9OBx7MQAw8R0iZ4d5m6VrWjGE9VGy+7cjCw1sG4ZOVtTIpV4nXqgYXC9u9rUCscaz+XgFS1EGTJBJjv0zBfAGq4uX9RZtqpzztN8pxBG5HB1Kmfew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736516104; c=relaxed/simple;
-	bh=GDR9TqULwA7tbLJ0npLWLef5DOmH1KGPhzI6maT5mes=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZCZvbdW9wdMPXPVN84rpVvSFzOO4RqFrUTGvpUQvaqSz7VW/uNQb8S9LDpY/pN8dK6/nuNrXxYAIvTsiBn0ph/HYmoBlUVRQtjPUHjJSEeITSmCk2gq23CqG1TD5AyMzk8ovgnC44byOWm8NAvB9tNrTB/YstOIVe2zT/74o/WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fd9GX4WL; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736517752; c=relaxed/simple;
+	bh=Cxst0aa6ReMgh66Nd/eWKjoASmGfmLGj8yDlxl+xQTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AIp05kpxcQk55ynqASN5wX2Td8zTYOaPwSkdyCkro4yJpvYHqw84Bw6VMdnV8yOK/guFRWwO/VgBYgnKMQcpT5uCOtUxE5CrlEXIheiewmlfL2AtlhOEHzDIqWQslGaItpbAsKx8/Blr7unkvtvwG2L1X03Jy7PiXJ5Q7n4fhic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mk+/wfiX; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fd9GX4WL"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361f664af5so24103055e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jan 2025 05:35:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mk+/wfiX"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7b6e5c74cb7so144496185a.2;
+        Fri, 10 Jan 2025 06:02:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736516101; x=1737120901; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1736517750; x=1737122550; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=groF09OQmy2qoF9yby9+EWDsjHj5SaTCekdQxNqyZiA=;
-        b=fd9GX4WLKaCx8GQ/Gr8fJcWeSYUotAbKSypBjj3aQ5GKArjzr5gJTzpkOVhqehj36n
-         FMW9DJk8nGUcIWBu9GC7Cn05fxMJ6OtfJrmw63pGxYQEM9XriJymuqSr987cvnARTo++
-         xG3wCvEfJkWkmZHFhEogoNOuBJILmewowWcaZReFlx0Vdt+7Bc+sIR7CSH6iVSM2yIsU
-         E9WQtuHdThYUcDRKmS9eINeFizVjoecuT7ToQZpMws8IpcNVThg3ZL3gXnCrBpZZfh5o
-         NcjxzqBkK0XQHiz8sNFyzJ/XqwL38OLpnZIPBbR/rCzGSbUxMysKx6dx8/VK86ALVRAA
-         43Cg==
+        bh=s5JHAi+bkLaJ3IR5TG8T45pfb/4tOZVpznIqDyIgJGQ=;
+        b=Mk+/wfiXo6ui67rj/ukeDgaePGJRpj0z4oLcmL+fVIBn568CCDTyNRPg7JrmSPcauJ
+         s9c5VZkq6y3YrRB7lIJr38uthl0PghYaV+Ekflvnad0OIJowCtb6mo+QrMdy6AZ4SnfN
+         Xp1i0v4Dt1KBoXNPo9vp6U134ggYLhTATWBXJsp4IOsLzwQxhIT/3JALjiqFy6O50+VR
+         GBS4sr3eNgp2Krj3ODq3oRM+rGYpguvUyUYalJ86N5w5yNLgFZHHcCyIckEVGw0NyfIq
+         F1yjjZoz7GNL2e4hcHbO4AoJ8NxZ9vJEDihwvLym2Fl4supx2UrnuwL8SX4d4gQDcMAG
+         4R4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736516101; x=1737120901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1736517750; x=1737122550;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=groF09OQmy2qoF9yby9+EWDsjHj5SaTCekdQxNqyZiA=;
-        b=b0nFD8GQDJyxojloPr+VdAiM/gEPegh+Rr8wGxvat5q3bOnJoyrab+sBfJ9sDZ6UAs
-         ol85FYIelrlC1hxXccdrNtu6r6kL0eBemdTRQfAs9qlC6DoiV7zfw3Tl8MUQU9QXFpit
-         44fpC1GKmQI1iXBCX66Png2BKSqNG1e+s/b7x1EhC5JOSG340RL0sbT0SQcvQY5xZhVL
-         T7h45/kDDDXZOEdS/9PQvXERq8nVFzZRqjsyXiTsXp7Yu7jh1oZcBPn3TJplvIhjlm5p
-         WpATNnD2ia9g+I+7R22Z7xf+4/1RtsDtWx4M077fplGMZCPDVNNwyPUOBUV/AwiQVRnk
-         qXWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWnlExzS2uWToG8X99mTpqcli/Uh8B4dk/Tpl2KodsWN7jS99CZB7ib87EMyPOzpVrUoR1nzFdgYZf+X7Abxw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YznQFTaXf6b11YbsMTy0IDGEOQcxLG4Ey+iNrsHGlxSxwqeWtHA
-	wosIwWxR0sMki9WJUvkqZTvAuXVrNs2/8b0D+tU/iQBjpz31CgovyRAQ7LWWsvO33QjwV8Kg4It
-	32HAXQ6gop+bu9MAWPn07rMUPY6C5P1j93ZGo
-X-Gm-Gg: ASbGncuAIoooUmjUB6rYVSXOEnqzE/foynzH2DrvdvmxI0zjXNA110jTzKrTEnOs6FF
-	3AYJNQ6R4LFnr1Y38O4goeJ9knDpNkQgUwKZM0PQxC1fp8GbivciIeIgRNsYmxn5Z
-X-Google-Smtp-Source: AGHT+IFB52D/ZL+wt7G2Cs59yUudbla2PXy69byShnaypRyRMEHd9Q1CwiZLkUWwL1fDM2YzhaSOMDplgsVQDqTJ+Zg=
-X-Received: by 2002:a05:600c:4446:b0:434:f335:849 with SMTP id
- 5b1f17b1804b1-436e271cce0mr99607745e9.29.1736516100577; Fri, 10 Jan 2025
- 05:35:00 -0800 (PST)
+        bh=s5JHAi+bkLaJ3IR5TG8T45pfb/4tOZVpznIqDyIgJGQ=;
+        b=WuetF7uJm6evVvKmzUebchCeuEeAA11GiMYFu/pp8HE+Xg48KjcxKUnJZm0Hu06lwn
+         G6VvdOlR7AV5gMooAbtoxCxCtdlvxhyHHNyff8838a7exH3ScXgJmcDamFNN3Spst21n
+         gQ8d+SaYRDQKBqS8oA1hPmnxXFPASXFCMHgfMi2cV41wZLJVGqViiloYEwMM3spJWtGU
+         UxctOv0ccVW7bx8wt645kF/JdjRTYzGRorbmZVFJZpEjgtSIBXVSW4HjxNs/XT6uKejk
+         MwDf46IXNN3CbpeRQ1FYozpMqoh4HO6OUMaVc2RUS+jpnJgz2PD1Jcf4lg6vn8JYYk11
+         9V0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUH/+SjTzX8B1YZiLGXuNgD3iJKElxVRL/iK+1E9umsNk3TiPM50X66jzEZqFM0iCehvj3kv8P8Yzm0URMD6Cc=@vger.kernel.org, AJvYcCUTpN0Qz+RpK/NJ/YnuXWKfCAgtGZAhoSr0Pnd1cOXuagdeUxHHgcUOH8rCSK4v+gQKnj4tCJCc@vger.kernel.org, AJvYcCVvHHHeyiWid/B5DfR3bRf886EqMz+pYWCvOGRlVZRu5jIdIvGCCE2KEv9isdj1Z2QeFSUEy9JfrvdgUA==@vger.kernel.org, AJvYcCWj404eqfuZGZ/AExU8caW0aqRho+UHPyhGRNp82Ejz0N3oneF7cX1cSC4+cpUu77FHHzBaEgpa5odb6GPx@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5tpyIxLFzBLhNAdpFcnxJONe78tXx/sDk0bjbJ8x0uOY5dC/7
+	KKXujbCI13YYBT4Kq7xgDq6tl46SO34iuFm+UPiqEReL8/NRCQTe
+X-Gm-Gg: ASbGnct2l3kEb3xwiEzqgcEJk23qT2qS0+8suweeeyh0Zr3kL52YhaaQCBLPnJMyKdV
+	Htmn9/VImt/I9L9/blawu5HI17r8xGw1vD5tw1ZcurbQXfb519TCaJ7u/MO0Rb8cXF+ea2g3oxr
+	5+AiOhjToOPDvoUYUHZvx666+MvOVYS/N9QNLQBhP4bjD9p1JztIwXqzDs5/+Yp0A3nOsTp5KWj
+	l+XIuIFrlcumhJAK7nQASja3aXGgov/Yv142NikgbFPHru2nXHpMZ9tNA5qT7sjdI8TUzCitiL5
+	528r+emu2QQ9VNxdoyznMuVtVu/LUR53N/bP/UZJD9I/AAg=
+X-Google-Smtp-Source: AGHT+IHtIs/faPVHAGcCbc7Ihzq9UGpfgPp9GARTDz++pFx/lKHO5GMuFyobtVxZ/+1lwvXo9VCfAg==
+X-Received: by 2002:a05:620a:4614:b0:7b6:dfcf:3352 with SMTP id af79cd13be357-7bcd97b1c89mr1480177085a.38.1736517749557;
+        Fri, 10 Jan 2025 06:02:29 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce3515fbasm173147885a.102.2025.01.10.06.02.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 06:02:29 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 858D71200070;
+	Fri, 10 Jan 2025 09:02:28 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 10 Jan 2025 09:02:28 -0500
+X-ME-Sender: <xms:dCiBZyCGtyoKpZpbF_uN92uOeDPpp0pvRSQdY0YgQr2uhI1h1ewyKA>
+    <xme:dCiBZ8j3GsAdogGh7NCCdgfIOIMcU_8NNMqmngm3Rflb1EyUWoAlNBQ_rY3haaERN
+    hOde-9VZUA-VwABQw>
+X-ME-Received: <xmr:dCiBZ1mI2dmAtL2YhlBd-s_z_UvBXTonJ8pTv1z4zFPjhsYZCqpI_cLdHCY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudegkedgheelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
+    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eplhgvvhihmhhithgthhgvlhhltdesghhmrghilhdrtghomhdprhgtphhtthhopehojhgv
+    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmh
+    grihhlrdgtohhmpdhrtghpthhtohepfigvughsohhnrghfsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnh
+    efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhho
+    shhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
+    hglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:dCiBZwxwDleOoHiUK--cnv-a1H-mcgiinlho6pnyHRMsABJ41PNrjQ>
+    <xmx:dCiBZ3RBJPmOibEzHAcyKO6_hmCIetOGXi7UWkrY3uWP-7VNTmRWhg>
+    <xmx:dCiBZ7ayFBcIsN73gIGLnSvzVy6ZxdJtMbD5GKBncsHkHXH1OHRXsA>
+    <xmx:dCiBZwQtxXIqL834oWlawgtnJhD5cMZof1NVuhGVL8aoGtIDCU5VTQ>
+    <xmx:dCiBZ5CPxgQGIUImQKx1pWkSMB1hwgTg7FsxuvOURWK_T6fkAxq0vrKn>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Jan 2025 09:02:27 -0500 (EST)
+Date: Fri, 10 Jan 2025 06:01:24 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Mitchell Levy <levymitchell0@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: lockdep: Remove support for dynamically
+ allocated LockClassKeys
+Message-ID: <Z4EoNF8XLrGdTh4N@boqun-archlinux>
+References: <20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com>
+ <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-vma-v11-0-466640428fc3@google.com> <20241211-vma-v11-6-466640428fc3@google.com>
-In-Reply-To: <20241211-vma-v11-6-466640428fc3@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 10 Jan 2025 14:34:48 +0100
-X-Gm-Features: AbW1kvaSiSAuotZrGPmJJS0_zS2yev1GBb2ZPCFYhZexLVD7AONRUOsarSEJWmw
-Message-ID: <CAH5fLgjBmErL48-+Qfbz+4SPn49tUdS-5CYLzyPBAN6oWNvt-w@mail.gmail.com>
-Subject: Re: [PATCH v11 6/8] mm: rust: add VmAreaNew for f_ops->mmap()
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Frederick Mayle <fmayle@google.com>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, John Hubbard <jhubbard@nvidia.com>, 
-	"Liam R. Howlett" <liam.howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241219-rust-lockdep-v2-1-f65308fbc5ca@gmail.com>
 
-On Wed, Dec 11, 2024 at 11:37=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> This type will be used when setting up a new vma in an f_ops->mmap()
-> hook. Using a separate type from VmAreaRef allows us to have a separate
-> set of operations that you are only able to use during the mmap() hook.
-> For example, the VM_MIXEDMAP flag must not be changed after the initial
-> setup that happens during the f_ops->mmap() hook.
->
-> To avoid setting invalid flag values, the methods for clearing
-> VM_MAYWRITE and similar involve a check of VM_WRITE, and return an error
-> if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
-> the return value results in a compilation error because the `Result`
-> type is marked #[must_use].
->
-> For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
-> we add a VM_PFNMAP method, we will need some way to prevent you from
-> setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
->
-> Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Thu, Dec 19, 2024 at 12:58:55PM -0800, Mitchell Levy wrote:
+> Currently, dynamically allocated LockCLassKeys can be used from the Rust
+> side without having them registered. This is a soundness issue, so
+> remove them.
+> 
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> ---
+>  rust/kernel/sync.rs | 16 ++++------------
+>  1 file changed, 4 insertions(+), 12 deletions(-)
+> 
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 1eab7ebf25fd..ae16bfd98de2 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -29,28 +29,20 @@
+>  unsafe impl Sync for LockClassKey {}
+>  
+>  impl LockClassKey {
+> -    /// Creates a new lock class key.
+> -    pub const fn new() -> Self {
+> -        Self(Opaque::uninit())
+> -    }
+> -
+>      pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+>          self.0.get()
+>      }
+>  }
+>  
+> -impl Default for LockClassKey {
+> -    fn default() -> Self {
+> -        Self::new()
+> -    }
+> -}
+> -
+>  /// Defines a new static lock class and returns a pointer to it.
+>  #[doc(hidden)]
+>  #[macro_export]
+>  macro_rules! static_lock_class {
+>      () => {{
+> -        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
+> +        // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
+> +        // lock_class_key
+> +        static CLASS: $crate::sync::LockClassKey =
 
-[...]
+About the clippy warning reported by 0day, I think you could resolve
+that by moving the above safety comment here.
 
-> +impl VmAreaNew {
-> +    /// Access a virtual memory area given a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `vma` is undergoing initial vma setup f=
-or the duration of 'a.
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -> =
-&'a Self {
-> +        // SAFETY: The caller ensures that the invariants are satisfied =
-for the duration of 'a.
-> +        unsafe { &*vma.cast() }
-> +    }
+Regards,
+Boqun
 
-It was suggested at https://r.android.com/3389887 that this should
-take a mutable raw pointer for better intent. That's fine with me
-(Rust doesn't care). Lorenzo, what do you think?
-
-Alice
+> +            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+>          &CLASS
+>      }};
+>  }
+> 
+> -- 
+> 2.34.1
+> 
