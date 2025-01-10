@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEFF215195;
-	Fri, 10 Jan 2025 20:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D24216605;
+	Fri, 10 Jan 2025 20:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736540243; cv=none; b=LtHp7rG/HFobqJ23T0xO6G3MUkmJQKrmAwIApgR6W1DY9pjfMQ72J7WFealr4FtbAYVu3Isgk5BG9ygH1zZ/NC63chZtRoPg6eemrkpqNJlRFObQzp0Gxyxc3CETg0O9DrYtJPyoyGYG1u1/3DH7SV/YlX4r+6XPAmeKuuXdTsw=
+	t=1736540249; cv=none; b=sldBwPoeGn9GvKLacR7EwXQkGNBXPGwkYKCYk3xcbHbsVaIxnPIhvkz6WSRjNNMCfexiYPUY+hWKfizVqo3qg3VNaMmQa5AXyMV4YZuk0l2DWQ0n5Ok/zmSSa4evi2Mo8u0ifr616IaGSP9leyoaBFnpB8QlTkpPu9yucEGxlsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736540243; c=relaxed/simple;
-	bh=sDYU+nUyIdb+VKBxdBiq95UuW2yrY3C0WdXaHg/sCFY=;
+	s=arc-20240116; t=1736540249; c=relaxed/simple;
+	bh=WI1QQEthNUXkpNxEYU0KTttYKrKnItbb/aigqwxV3+k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a+abWYDwEYl3f4LuE+nSAHz9x/QS1zBjuNAXfLe6M5JXuDyOINtlar5W0rG8RuSqfaHhQlH+8c/oA/YEUfYZ8Co3fDZiq2nHKQNQc00kMpOG+LhPTO7x5MKXxiPQenyQzMwMm3qb7HTodjAJffB1Z+/dJCPi7nsQFH0PogrT504=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhE8DQuB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=bEbMvsYkRW9ZG6UeagqxJGmGezasYP8qvV+rVQgt9V1SkIHukx8x1DDznTn1cXBNa0TyT69Q7tDogPRYBHLCek6RZO8KW7+WLTO7m4r8MeT2K+NTBKKkZBXTl6vNY6fUTiK1Nbn7PZ9xFcD8szEe8YOHsJNPH88p9FAAvFk2wGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDbkVTfQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhE8DQuB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED2C4CEDD;
-	Fri, 10 Jan 2025 20:17:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDbkVTfQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26698C4CEDD;
+	Fri, 10 Jan 2025 20:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736540243;
-	bh=sDYU+nUyIdb+VKBxdBiq95UuW2yrY3C0WdXaHg/sCFY=;
+	s=k20201202; t=1736540248;
+	bh=WI1QQEthNUXkpNxEYU0KTttYKrKnItbb/aigqwxV3+k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=FhE8DQuBLTtcNQjXaiqiiZo7JaEaYbgz9du35lr+/wLfIf8DkkTWDCBGc1QT6TyZT
-	 tnz7Fe64lhkHN0xzTd0RVuOq6xsdjOwWKTuFv7fWpQq9lmdbX6Y0OdVxTm/vPBlwOe
-	 vC2FJxVmquF2UYbuHw2hnkmZCCdtw5M79k9Ssm4KsgG2Xtn34Lw2HW+D6c8GbscalQ
-	 s8F1LZR3KMiyFR6kl6+KXPSwIIQt85nXTPb0DS6qjiUi0kwRKuqxDyPifn2Nd2H2xc
-	 +p1/PDuOaQfaI/YqxM848vVsaFi3l1VjGST/B1cFEk/+GJSNefX8ct/KC36GVMyFsM
-	 XvE6di/yo5gow==
+	b=WDbkVTfQaIW43iyh6+06COvUtK4M0I4yfWhIVsF/7oKSyG2np3/Hn07ze9ajUGuGO
+	 YsGdjLa27GAq/eYcErUS9eYPHIrLTOWN6S+jiXJr6WDhmyDKFZMtt2MAFV3bWwqC+V
+	 G7KicqV0NMWMWvkmAbJzbnWcsQ1dJ+suWlV+60fgbKq+qAkpRVuMkzjdTwWqPGuZ3B
+	 2dbDTRIBUX24hpaq6fL2IqGB8UxpmgNoe6yy2wpqM/bvF8RgW90mtTaGbzBv5QXoPN
+	 YutaP4cUexvjhqsILLDz0P6mIo8+W2R4nVRTOGCU6GqINj5I4TT2jykheww8d//jdP
+	 2ebhoutJ0Hg6w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 10 Jan 2025 21:15:30 +0100
-Subject: [PATCH v6 07/14] rust: hrtimer: add
- `hrtimer::ScopedHrTimerPointer`
+Date: Fri, 10 Jan 2025 21:15:25 +0100
+Subject: [PATCH v6 02/14] rust: hrtimer: introduce hrtimer support
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250110-hrtimer-v3-v6-12-rc2-v6-7-f71d50f16482@kernel.org>
+Message-Id: <20250110-hrtimer-v3-v6-12-rc2-v6-2-f71d50f16482@kernel.org>
 References: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org>
 In-Reply-To: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, 
@@ -55,78 +54,351 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2093; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=sDYU+nUyIdb+VKBxdBiq95UuW2yrY3C0WdXaHg/sCFY=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBngX/lLHotfFxCxaeXyuMCPCBwvrv0+Z18x8VDh
- itk8VuZLbGJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ4F/5QAKCRDhuBo+eShj
- d8ZgEACE+rzW+PC6YjBEj3iFjB7Jx+5XVpAEsipwVgNJN6BNWS00BFvH2gxgpvq+03WkO/2tMSc
- kQJ5FIUo4KcPIg6jHz/LA+trGlvWe+4birklpSd8XjZg2Bz404Q9bS8MWfkUOHSQjT7S1G7nysw
- QHl0/JXQFlbNZj12Ts0y+7wb+oIYlw8laFmDoI/fHnVkAqSOvhTyNCXfSoIpDb1VBZ0kf/nHHuJ
- A8iV7QzvEt5TfaekK2PYmjgvCdnMCbdHH9gUsFHrmS4AllTsdtJCYjSQjsPbivSCYPDRd4HwEIS
- dLYAmi1mkXt8V/YtIfHm1OVy2Ya5jACxs+KZl+d880ResFCOiE67iOUFYuO6hY9Um/ovpOMly5J
- xAtAxcwHfD6LkbO6EGcaVOSprFPnU4Si4mpIaAXnbNvgxR3YnLRIMpLuvI13bIA+6IifVbzZtpX
- 4lNxURyvHMaJwKV+cABPXzVa7dXie+TdWzX68Rgrf+NjXE6Z3W3FeY4yp5JuLRvLGxDVtm+U314
- ac+ptqBjwjS07pKRXoK6IzdUZf27ndNMKLM4z1AQaDbYXaatTmWV7tQO1LT6+EIjx760/7iIFQA
- fU6W4PxjS3VU38DZA2+TFZc+kY0pwmsWp4xdkAdFQuv5R8XOxGD1V8lYQs/DIj5NF6D3vehDxRa
- p5MXr6rajRepS3w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12380;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=WI1QQEthNUXkpNxEYU0KTttYKrKnItbb/aigqwxV3+k=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBngX/g0DmBALe8IDpO6WL1vfrNUfQPuezd4hvhc
+ dd+CCRrdcKJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ4F/4AAKCRDhuBo+eShj
+ d+ThD/9A9vn9DTN8tEFe0W2SzHH8Vek4QOcwGLJpcLGeSWpTurw0K5fFTSQWHVHeAaGWTNAjR0E
+ +IPXYyX3IR/2nFRA2ElWS/SB07MNZrOoAExoPwnwwYSdrHPEvlRd8jO3DDm+gExHZYEoRMNNNAE
+ gykbXwj0dyJp6Xp1pvQ0QF0NyavddB2KhI1sdTf4yf7ioPZFmfxgAo5rt7htHxB4YfgWchBPtaH
+ DsxAVB/R5UD51GuJy7Vr4hE+TwsuXYHN6cP03MZxYU+f/qyMRk2Y6fc+ZiSpWmZpvL7N7qr8tjX
+ gseVcEYi0bC8rZW7pKak2+fEcU0M4B7PSLOg5cozUUQOkyO+e8IDtOJMthOOylPa8JfAbrTzrUd
+ O0/MxF3W8UsRTYRqaCmIj7SloISH0bewxKTJqiYiMumhXoxB6ACpA58IwFWaaR8TxZ16ynvNwUz
+ uzwYA498vLzx0KxvIYUAEQvRjAO8YEIdp8Fs3TFIL47Q5Op0bmEjOt3LokHyo2IjsD3v7Tg6a2e
+ TFCdsZu16SFrVFiBbtl4Up8zR2AqydOYlJXvR6digf9Z1F2ZKcs1r0urzkPOUk1wlA6PdrFrgIp
+ s0+5pR+jyqf5awM/OKVSt69M/MRslQd1JH1WRRVJTURZFlgniU/4CbWroyrtAZkxCUjIV/ukIxv
+ Z1yJpQZrTXeDnPA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add the trait `ScopedHrTimerPointer` to allow safe use of stack allocated
-timers. Safety is achieved by pinning the stack in place while timers are
-running.
+This patch adds support for intrusive use of the hrtimer system. For now,
+only one timer can be embedded in a Rust struct.
 
-Implement the trait for all types that implement `UnsafeHrTimerPointer`.
+The hrtimer Rust API is based on the intrusive style pattern introduced by
+the Rust workqueue API.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/time/hrtimer.rs | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ rust/kernel/time.rs         |   2 +
+ rust/kernel/time/hrtimer.rs | 296 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 298 insertions(+)
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index aab998b02f19b774d5b04ae2c89b669f13c4b0c7..3cf81b5bb4c7071e095948f3220232a15116ed5b 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -173,6 +173,39 @@ pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
-     unsafe fn start(self, expires: Ktime) -> Self::TimerHandle;
- }
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index f59e0fea79d3acfddd922f601f569353609aeec1..51c3532eee0184495ed5b7d717860c9980ff2a43 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -10,6 +10,8 @@
  
-+/// A trait for stack allocated timers.
+ use core::convert::Into;
+ 
++pub mod hrtimer;
++
+ /// The number of nanoseconds per millisecond.
+ pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
+ 
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..31c461ddd2c377101ed6c1c7e009f7dccf458ebc
+--- /dev/null
++++ b/rust/kernel/time/hrtimer.rs
+@@ -0,0 +1,296 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Intrusive high resolution timers.
++//!
++//! Allows running timer callbacks without doing allocations at the time of
++//! starting the timer. For now, only one timer per type is allowed.
++//!
++//! # Vocabulary
++//!
++//! A timer is initialized in the **stopped** state. A stopped timer can be
++//! **started** with an **expiry** time. After the timer is started, it is
++//! **running**. When the timer **expires**, the timer handler is executed.
++//! After the handler has executed, the timer may be **restarted** or
++//! **stopped**. A running timer can be **cancelled** before it's handler is
++//! executed. A timer that is cancelled enters the **stopped** state.
++//!
++//! States:
++//!
++//! * Stopped
++//! * Running
++//!
++//! Operations:
++//!
++//! * Start
++//! * Cancel
++//! * Stop
++//! * Restart
++//!
++//! Events:
++//!
++//! * Expire
++
++use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
++use core::marker::PhantomData;
++
++/// A timer backed by a C `struct hrtimer`.
 +///
-+/// # Safety
++/// # Invariants
 +///
-+/// Implementers must ensure that `start_scoped` does not return until the
-+/// timer is dead and the timer handler is not running.
-+pub unsafe trait ScopedHrTimerPointer {
-+    /// Start the timer to run after `expires` time units and immediately
-+    /// after call `f`. When `f` returns, the timer is cancelled.
-+    fn start_scoped<T, F>(self, expires: Ktime, f: F) -> T
-+    where
-+        F: FnOnce() -> T;
++/// * `self.timer` is initialized by `bindings::hrtimer_setup`.
++#[pin_data]
++#[repr(C)]
++pub struct HrTimer<U> {
++    #[pin]
++    timer: Opaque<bindings::hrtimer>,
++    _t: PhantomData<U>,
 +}
 +
-+// SAFETY: By the safety requirement of [`UnsafeHrTimerPointer`], dropping the
-+// handle returned by [`UnsafeHrTimerPointer::start`] ensures that the timer is
-+// killed.
-+unsafe impl<U> ScopedHrTimerPointer for U
-+where
-+    U: UnsafeHrTimerPointer,
-+{
-+    fn start_scoped<T, F>(self, expires: Ktime, f: F) -> T
++// SAFETY: A `HrTimer` can be moved to other threads and used/dropped from there.
++unsafe impl<U> Send for HrTimer<U> {}
++
++// SAFETY: Timer operations are locked on C side, so it is safe to operate on a
++// timer from multiple threads
++unsafe impl<U> Sync for HrTimer<U> {}
++
++impl<T> HrTimer<T> {
++    /// Return an initializer for a new timer instance.
++    pub fn new() -> impl PinInit<Self>
 +    where
-+        F: FnOnce() -> T,
++        T: HrTimerCallback,
 +    {
-+        // SAFETY: We drop the timer handle below before returning.
-+        let handle = unsafe { UnsafeHrTimerPointer::start(self, expires) };
-+        let t = f();
-+        drop(handle);
-+        t
++        pin_init!(Self {
++            // INVARIANTS: We initialize `timer` with `hrtimer_setup` below.
++            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtimer| {
++                // SAFETY: By design of `pin_init!`, `place` is a pointer live
++                // allocation. hrtimer_setup will initialize `place` and does
++                // not require `place` to be initialized prior to the call.
++                unsafe {
++                    bindings::hrtimer_setup(
++                        place,
++                        Some(T::CallbackTarget::run),
++                        bindings::CLOCK_MONOTONIC as i32,
++                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
++                    );
++                }
++            }),
++            _t: PhantomData,
++        })
++    }
++
++    /// Get a pointer to the contained `bindings::hrtimer`.
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must point to a live allocation of at least the size of `Self`.
++    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
++        // SAFETY: The field projection to `timer` does not go out of bounds,
++        // because the caller of this function promises that `ptr` points to an
++        // allocation of at least the size of `Self`.
++        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer)) }
++    }
++
++    /// Cancel an initialized and potentially running timer.
++    ///
++    /// If the timer handler is running, this will block until the handler is
++    /// finished.
++    ///
++    /// # Safety
++    ///
++    /// `self_ptr` must point to a valid `Self`.
++    #[allow(dead_code)]
++    pub(crate) unsafe fn raw_cancel(self_ptr: *const Self) -> bool {
++        // SAFETY: timer_ptr points to an allocation of at least `HrTimer` size.
++        let c_timer_ptr = unsafe { HrTimer::raw_get(self_ptr) };
++
++        // If handler is running, this will wait for handler to finish before
++        // returning.
++        // SAFETY: `c_timer_ptr` is initialized and valid. Synchronization is
++        // handled on C side.
++        unsafe { bindings::hrtimer_cancel(c_timer_ptr) != 0 }
 +    }
 +}
 +
- /// Implemented by [`HrTimerPointer`] implementers to give the C timer callback a
- /// function to call.
- // This is split from `HrTimerPointer` to make it easier to specify trait bounds.
++/// Implemented by pointer types that point to structs that embed a [`HrTimer`].
++///
++/// Typical implementers would be [`Box<T>`], [`Arc<T>`], [`ARef<T>`] where `T`
++/// has a field of type [`HrTimer`].
++///
++/// Target must be [`Sync`] because timer callbacks happen in another thread of
++/// execution (hard or soft interrupt context).
++///
++/// Starting a timer returns a [`HrTimerHandle`] that can be used to manipulate
++/// the timer. Note that it is OK to call the start function repeatedly, and
++/// that more than one [`HrTimerHandle`] associated with a [`HrTimerPointer`] may
++/// exist. A timer can be manipulated through any of the handles, and a handle
++/// may represent a cancelled timer.
++///
++/// [`Box<T>`]: Box
++/// [`Arc<T>`]: crate::sync::Arc
++/// [`ARef<T>`]: crate::types::ARef
++pub trait HrTimerPointer: Sync + Sized {
++    /// A handle representing a running timer.
++    ///
++    /// If the timer is running or if the timer callback is executing when the
++    /// handle is dropped, the drop method of [`HrTimerHandle`] should not return
++    /// until the timer is stopped and the callback has completed.
++    ///
++    /// Note: It must be safe to leak the handle.
++    type TimerHandle: HrTimerHandle;
++
++    /// Start the timer with expiry after `expires` time units. If the timer was
++    /// already running, it is restarted with the new expiry time.
++    fn start(self, expires: Ktime) -> Self::TimerHandle;
++}
++
++/// Implemented by [`HrTimerPointer`] implementers to give the C timer callback a
++/// function to call.
++// This is split from `HrTimerPointer` to make it easier to specify trait bounds.
++pub trait RawHrTimerCallback {
++    /// Callback to be called from C when timer fires.
++    ///
++    /// # Safety
++    ///
++    /// Only to be called by C code in `hrtimer` subsystem. `ptr` must point to
++    /// the `bindings::hrtimer` structure that was used to start the timer.
++    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart;
++}
++
++/// Implemented by structs that can the target of a timer callback.
++pub trait HrTimerCallback {
++    /// The type that was used for starting the timer.
++    type CallbackTarget<'a>: RawHrTimerCallback;
++
++    /// This type is passed to the timer callback function. It may be a borrow
++    /// of [`Self::CallbackTarget`], or it may be `Self::CallbackTarget` if the
++    /// implementation can guarantee exclusive access to the target during timer
++    /// handler execution.
++    type CallbackTargetParameter<'a>;
++
++    /// Called by the timer logic when the timer fires.
++    fn run(this: Self::CallbackTargetParameter<'_>)
++    where
++        Self: Sized;
++}
++
++/// A handle representing a potentially running timer.
++///
++/// More than one handle representing the same timer might exist.
++///
++/// # Safety
++///
++/// When dropped, the timer represented by this handle must be cancelled, if it
++/// is running. If the timer handler is running when the handle is dropped, the
++/// drop method must wait for the handler to finish before returning.
++pub unsafe trait HrTimerHandle {
++    /// Cancel the timer, if it is running. If the timer handler is running, block
++    /// till the handler has finished.
++    fn cancel(&mut self) -> bool;
++}
++
++/// Implemented by structs that contain timer nodes.
++///
++/// Clients of the timer API would usually safely implement this trait by using
++/// the [`crate::impl_has_hr_timer`] macro.
++///
++/// # Safety
++///
++/// Implementers of this trait must ensure that the implementer has a [`HrTimer`]
++/// field at the offset specified by `OFFSET` and that all trait methods are
++/// implemented according to their documentation.
++///
++/// [`impl_has_timer`]: crate::impl_has_timer
++pub unsafe trait HasHrTimer<U> {
++    /// Offset of the [`HrTimer`] field within `Self`
++    const OFFSET: usize;
++
++    /// Return a pointer to the [`HrTimer`] within `Self`.
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must point to a valid struct of type `Self`.
++    unsafe fn raw_get_timer(ptr: *const Self) -> *const HrTimer<U> {
++        // SAFETY: By the safety requirement of this trait, the trait
++        // implementor will have a `HrTimer` field at the specified offset.
++        unsafe { ptr.cast::<u8>().add(Self::OFFSET).cast::<HrTimer<U>>() }
++    }
++
++    /// Return a pointer to the struct that is embedding the [`HrTimer`] pointed
++    /// to by `ptr`.
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must point to a [`HrTimer<U>`] field in a struct of type `Self`.
++    unsafe fn timer_container_of(ptr: *mut HrTimer<U>) -> *mut Self
++    where
++        Self: Sized,
++    {
++        // SAFETY: By the safety requirement of this function and the `HasHrTimer`
++        // trait, the following expression will yield a pointer to the `Self`
++        // containing the timer addressed by `ptr`.
++        unsafe { ptr.cast::<u8>().sub(Self::OFFSET).cast::<Self>() }
++    }
++
++    /// Get pointer to embedded `bindings::hrtimer` struct.
++    ///
++    /// # Safety
++    ///
++    /// `self_ptr` must point to a valid `Self`.
++    unsafe fn c_timer_ptr(self_ptr: *const Self) -> *const bindings::hrtimer {
++        // SAFETY: `self_ptr` is a valid pointer to a `Self`.
++        let timer_ptr = unsafe { Self::raw_get_timer(self_ptr) };
++
++        // SAFETY: timer_ptr points to an allocation of at least `HrTimer` size.
++        unsafe { HrTimer::raw_get(timer_ptr) }
++    }
++
++    /// Start the timer contained in the `Self` pointed to by `self_ptr`. If
++    /// it is already running it is removed and inserted.
++    ///
++    /// # Safety
++    ///
++    /// `self_ptr` must point to a valid `Self`.
++    unsafe fn start(self_ptr: *const Self, expires: Ktime) {
++        // SAFETY: By function safety requirement, `self_ptr`is a valid `Self`.
++        unsafe {
++            bindings::hrtimer_start_range_ns(
++                Self::c_timer_ptr(self_ptr).cast_mut(),
++                expires.to_ns(),
++                0,
++                bindings::hrtimer_mode_HRTIMER_MODE_REL,
++            );
++        }
++    }
++}
++
++/// Use to implement the [`HasHrTimer<T>`] trait.
++///
++/// See [`module`] documentation for an example.
++///
++/// [`module`]: crate::time::hrtimer
++#[macro_export]
++macro_rules! impl_has_hr_timer {
++    (
++        impl$({$($generics:tt)*})?
++            HasHrTimer<$timer_type:ty>
++            for $self:ty
++        { self.$field:ident }
++        $($rest:tt)*
++    ) => {
++        // SAFETY: This implementation of `raw_get_timer` only compiles if the
++        // field has the right type.
++        unsafe impl$(<$($generics)*>)? $crate::time::hrtimer::HasHrTimer<$timer_type> for $self {
++            const OFFSET: usize = ::core::mem::offset_of!(Self, $field) as usize;
++
++            #[inline]
++            unsafe fn raw_get_timer(ptr: *const Self) ->
++                *const $crate::time::hrtimer::HrTimer<$timer_type>
++            {
++                // SAFETY: The caller promises that the pointer is not dangling.
++                unsafe {
++                    ::core::ptr::addr_of!((*ptr).$field)
++                }
++            }
++        }
++    }
++}
 
 -- 
 2.47.0
