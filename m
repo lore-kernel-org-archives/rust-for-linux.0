@@ -1,81 +1,124 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072761FECCE
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jan 2025 16:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED6F212B1C;
+	Fri, 10 Jan 2025 17:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736527290; cv=none; b=rXokYfb3ux5s1dfSnkoOkHkmwkTnrysLZk4241Q5fmVwfEqJkUfROuQJYs2W8SrqagoIcoro3KrDQe6eEjAX5uefoNCgiEmTm3maEa7DX1d5iOuYhY7B/HcQY/pozi8BfXW2KXqucL+bsalNww79EaQRmr8fl48jMNdAWAL0RrM=
+	t=1736530649; cv=none; b=TYWP1/6PN8QuqFgVoKFBkvMI7dcn3qapUQaXjiS5SKp+5fCRPyFJTbDN7g7c5JP1FuIo3Ke5wfJuZhqmHXaitLYp8OEIZe/oRxeetHyctyr7t23W1VhXcGjze+hGB5WWyTiAJeHDs0eUIdusw4UzGzHw4u5/tT8FOBfvNpDaMEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736527290; c=relaxed/simple;
-	bh=cExron3nM5QwGWQtaP3AMzIvgqJzcTsePpFqLoZ0MJY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I13Y5ZSIiN3hs+hrKKB2h+bqYKsgZQwNTpwfv2qPDcWRgDgtHiTYieLV8T8ixabmDe74YHtxzSK4onVpzwyS+nTG8E/gcPXFRCByulIRewXDJJI29dYehf8l4B7YFRS3ZfhIHnDIn+DAHT5uG3XV8hltzoIJsDC59SG5nvU0WyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=A1TQbOtx; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1736530649; c=relaxed/simple;
+	bh=IRPwSRHuH81YJdNFzl1Pg7yOjJzF2yJEzlfjaQpesVU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YXOB0eMORB0/JGToMlDyPy7jS2OiKP2VJ6rGXjidcoVqNKMp5RUxZwrAo/whH1L4ps26lfRQmhao4svy/77DKI8OxqtScvwwqmyEGDz7u15GcfQXZ01BHm6WTbGT8UAHZretBZHj41N2Dble9i82zHxdJ1bAhG2SMVvzvEOgKmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4W/cGED; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="A1TQbOtx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1736527286; x=1736786486;
-	bh=cExron3nM5QwGWQtaP3AMzIvgqJzcTsePpFqLoZ0MJY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=A1TQbOtxQGN7v8dFSqZRLvx84W2uDz03K23wp8rjUtElTTMvqGIIqClizzcer2yKL
-	 WH8+77QsRWRaZ+LDDa8loUkGWruS1F5uDQLko4681U2jCo/zv+9hnqZngLZ02/rmCA
-	 7JyG+wovFovU8ymZdriRLsPcdUowvFuOeEoXKA3BEquMCxsdd3SuKKfhfnv2weVdY4
-	 qX6CWBJCAfMEyMMizcwRgSW+nZ3AnJ6HeDNJQ6i47ic7bD1sKKbEPVOviJGKxelhiD
-	 bNBPo2thRaTVXcW7MpWBF39NKmDRaVx2uSIGsZfFYeFqmwS7ShrTUb10lAYT1oO/KM
-	 mNTCW8ergvQUA==
-Date: Fri, 10 Jan 2025 16:41:20 +0000
-To: Dave Tucker <dave@dtucker.co.uk>
-From: vadorovsky@protonmail.com
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Tamir Duberstein <tamird@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Neal Gompa <neal@gompa.dev>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Matthias Maennich <maennich@google.com>, bpf <bpf@vger.kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Eric Curtin <ecurtin@redhat.com>, Martin Reboredo <yakoyoku@gmail.com>, Alessandro Decina <alessandro.d@gmail.com>
-Subject: Re: [PATCH] rust: Disallow BTF generation with Rust + LTO
-Message-ID: <OEhWEyNG4cqhFinY3nHBef8R8vM_Xwc9zmYfae9IrXJJXFDtH1YbEskmd2N5aFVaI8YNOYWfaiEZjFsRC80XUPfgcPYr0jR1hrBjnKHFY9Q=@protonmail.com>
-In-Reply-To: <49AF84D3-3D47-4B35-B1A7-497045FD241F@dtucker.co.uk>
-References: <20250108-rust-btf-lto-incompat-v1-1-60243ff6d820@google.com> <CANiq72=XD3AfZp=jKNkKLs8PYCBuk2Jm6tbQB2QtbqkieAtm8Q@mail.gmail.com> <CAEg-Je8YdqYFMiUK7enjusTjMhRMWTbL837x7-qQbi4LkcRcLw@mail.gmail.com> <CAH5fLghtCure3EjN-hRx9PT=10_E+0MNbjFACT_v+P1StWELPQ@mail.gmail.com> <CAJ-ks9nYSssBsiJCQRkKoXwmAizeH1A91RzGvX6iTJAFJD2YrA@mail.gmail.com> <Z3_vhR_QMaK0Klly@x1> <CAJ-ks9k23fKauY6JFt37OEewKPLhwdQaOFz19BKekqUoRhJCkA@mail.gmail.com> <Z3_5eGD_F1_ZxfqE@x1> <Z4BQG3rmYNDS5W0Z@x1> <49AF84D3-3D47-4B35-B1A7-497045FD241F@dtucker.co.uk>
-Feedback-ID: 114064189:user:proton
-X-Pm-Message-ID: 1c7f40e235306cf401e2a4ba7cc248f9e6a22cb5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4W/cGED"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1142EC4CEEB;
+	Fri, 10 Jan 2025 17:37:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736530649;
+	bh=IRPwSRHuH81YJdNFzl1Pg7yOjJzF2yJEzlfjaQpesVU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=l4W/cGEDZ8qNdGBkeWPFTDlr9S6krniSBjsnOCrZPGztuLVU/Aa1S3GOv5KcNs8Bn
+	 QCcFTXrcSaZ4erJ51Lvn18fz7s32nElxlggKsgSzh0BUD3Ulb8pxzdudhMgcuHg99c
+	 ymnVm7U5ofXviTQO9CRf+3JqDETbqyQxJYY26J+bi/OcyxNNbKicWbxccDnSB3rI5p
+	 GMbKOcOGleeAM3gO4amKHJu66ojJZ88IdFnP6LG102BJaVuCzckzrvEtp6ZEpR8B2c
+	 e5hlPuvpV0ovHe5MfY35t4rcZhq6hOWgFvSdieBgmLjK1lx5NwY3W2nEycfXT7yY/Q
+	 /22RAgaqG5KzA==
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54025432becso2194760e87.1;
+        Fri, 10 Jan 2025 09:37:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUT91SXvZmP+Cb+IPNh76Lw9hKT6fELYW00XErAYz4g7iDD0VvMkYA1LzPyHdWGWIewv+9j4S12aQUFthwo@vger.kernel.org, AJvYcCW695x+YV3fNFWN0+f4dFR5YGzfkZrx5rAq4aGmYvAOqgKKhL4BHKvfliW0/ahmQp+1Le4Av+EECtBoGGA=@vger.kernel.org, AJvYcCXH4B+e7dYDZBwpnRAHoEsvWfr+f2heYqVWHMI1AxwSSkV/7Us13FY7/QETVQ3O+GwQ1ZLng9noZmZE2Z0xHEg=@vger.kernel.org, AJvYcCXszOU2jRZAK0eIL8N7dif8oc7u0HhBhDwFtzaOJQJOYiLqSSJqeJp5U/DaE64SskgGHGufcayZHsUsIgUE4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVPSSEzQEQ3EXQx5jXbnCcwPmaQdrAQJRIOLs5KGknOr6zujQ1
+	8joN40Qbiwbw1n2PZBJ6/ZBU6nmdIrgfmM301x9LEC0j6uhkWwx4m+gbLuEMmtxo//w8ua9Wrrc
+	XPt3GkT0gV3Vstr2Au0YXT+1dMmU=
+X-Google-Smtp-Source: AGHT+IEDuwtPJTKi5T6rab8LMrZJbFdXj2hrj2sIJdU825SeM4490F0nx/OYIkDpXtKefTMH4AV0P+dPqO6Oj9m2YkM=
+X-Received: by 2002:a05:6512:3c82:b0:542:622f:124 with SMTP id
+ 2adb3069b0e04-5428444d202mr4033935e87.0.1736530647497; Fri, 10 Jan 2025
+ 09:37:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250103204521.1885406-20-samitolvanen@google.com>
+In-Reply-To: <20250103204521.1885406-20-samitolvanen@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 11 Jan 2025 02:36:51 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAT6QcJokDPS2gcuFJwTRRpTeUrr4Px9Pex=JaG0E3AGzg@mail.gmail.com>
+X-Gm-Features: AbW1kvbi-2LAf1o1DzIktor0yXiu1NnaMx78ysuyBZ-qV1TNRUfpTR_JzEcve54
+Message-ID: <CAK7LNAT6QcJokDPS2gcuFJwTRRpTeUrr4Px9Pex=JaG0E3AGzg@mail.gmail.com>
+Subject: Re: [PATCH v8 00/18] Implement DWARF modversions
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@samsung.com>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Miroslav Benes <mbenes@suse.cz>, 
+	Asahi Linux <asahi@lists.linux.dev>, Sedat Dilek <sedat.dilek@gmail.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Friday, January 10th, 2025 at 5:22 PM, Dave Tucker <dave@dtucker.co.uk> =
-wrote:
+On Sat, Jan 4, 2025 at 5:45=E2=80=AFAM Sami Tolvanen <samitolvanen@google.c=
+om> wrote:
+>
+> Hi,
+>
+> Here's v8 of the DWARF modversions series. The main motivation is
+> modversions support for Rust, which is important for distributions
+> like Android that are about to ship Rust kernel modules. Per Luis'
+> request [1], v2 dropped the Rust specific bits from the series and
+> instead added the feature as an option for the entire kernel to
+> make it easier to evaluate the benefits of this approach, and to
+> get better test coverage. Matt is addressing Rust modversion_info
+> compatibility issues in a separate patch set [2] that depends on
+> this series, and actually allows modversions to be enabled with
+> Rust.
+>
+> Short background: Unlike C, Rust source code doesn't have sufficient
+> information about the final ABI, as the compiler has considerable
+> freedom in adjusting structure layout, for example, which makes
+> using a source code parser like genksyms a non-starter. Based on
+> earlier feedback, this series uses DWARF debugging information for
+> computing versions. DWARF is an established and a relatively stable
+> format, which includes all the necessary ABI details, and adding a
+> CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+> reasonable trade-off as most distributions already enable it.
+>
+> The first 15 patches add gendwarfksyms, a tool for computing symbol
+> versions from DWARF. When passed a list of exported symbols and
+> object files, the tool generates an expanded type string for each
+> symbol and computes symbol versions. gendwarfksyms is written in C,
+> uses libdw to process DWARF, and zlib for CRC32. Patch 16 ensures
+> that debugging information is present where we need it, patch 17
+> adds gendwarfksyms as an alternative to genksyms, and the last patch
+> adds documentation.
+>
+> v8 is based on 6.13-rc5, and for your convenience, the series is
+> also available here:
+>
+> https://github.com/samitolvanen/linux/commits/gendwarfksyms-v8
+>
+> If you also want to test the series with actual Rust modules, this
+> branch adds v13 of Matt's modversion_info series:
+>
+> https://github.com/samitolvanen/linux/commits/rustmodversions-v8
+>
+> Sami
+>
+>
+> [1] https://lore.kernel.org/lkml/ZnIZEtkkQWEIGf9n@bombadil.infradead.org/
+> [2] https://lore.kernel.org/lkml/20250103-extended-modversions-v13-0-35d8=
+7c65ee04@google.com/
+>
 
-> > On 9 Jan 2025, at 22:39, Arnaldo Carvalho de Melo acme@kernel.org wrote=
-:
-> > And sure this will be refused by the kernel, lots of stuff that have
-> > invalid names, probably need to turn those into void as well as a
-> > continuation of this hack, then prune, maybe that is it, we'll see.
->=20
->=20
-> Rather than voiding the names you can do something like this [0] to
-> coerce them into a format that the kernel is happy with. We initally
-> voided names but the resulting BTF was unusable since you couldn=E2=80=
-=99t
-> lookup types by name.
+Applied to linux-kbuild.
+Thanks.
 
-Regarding the names, I would recommend to do exactly what we're doing in bp=
-f-linker[0], which is converting each character not supported by C to `_[he=
-x_representation]_`. This way, we make sure that two different types can't =
-produce the same names in BTF.
 
-An another important fixup we do is ignoring data-carrying enums[1], I thin=
-k pahole could that do for now as well. That said, I think a long-term solu=
-tion would be teaching the kernel to accept them.
-
-Cheers,
-Michal
-
-[0] https://github.com/aya-rs/bpf-linker/blob/v0.9.13/src/llvm/di.rs#L34-L6=
-0
-[1] https://github.com/aya-rs/bpf-linker/blob/v0.9.13/src/llvm/di.rs#L129-L=
-132
+--=20
+Best Regards
+Masahiro Yamada
