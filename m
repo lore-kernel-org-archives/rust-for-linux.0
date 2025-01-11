@@ -1,118 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4322248A5;
-	Fri, 10 Jan 2025 20:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A161C3D96A;
+	Sat, 11 Jan 2025 02:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736540293; cv=none; b=hdyVLnehPzGu2dFWTkNpR1wDlK7JLmEsVeMqFcI5fL6xNrnTgi6NyfysNMJCnpyE2ojcrXo4nfE0NhxGTdoPig1ssXUV7rqEofknkxMUz97iLoy4yzs+cDCoamqrn5iTsFbkOBN+dS2DJYAaSJu7ysgW39JcPVPvFVUiqwGPlSk=
+	t=1736562373; cv=none; b=RxT3RigIQ3qC8FNqdK4MtkvUfqIsfJ+l1tRtIGoeFji27UUX71fxSh/STjcrNRw+RHrtpYM5bKjSnxCh4onlGfuQpDQu9+He8yQunMgT382nOA0MytEfk4Y96mwb2t+jIhW9nlqnYyETK2Dly9Fwz/GnJ8kAin/dt6dosbW73Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736540293; c=relaxed/simple;
-	bh=/ybNIO+z0YMt7NQe0O7P3cxsv0vraqHKkL76VnTITTw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=a8B4W6siHlEKOe3fdK2ODxKRMKNG0B/4/709lEq4ujE+AUqyrVbr0ovq9JxX8XWzZkHUvP3SEjnJCrFJBSRJd+WQ8In75bbls/fgPRYccAqSypJmsZ2z15owXBYhxR4MPbM7nJVeJx3pRElLGcb8+xrah9b60y0ElGTOcnephLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSohGVOO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736562373; c=relaxed/simple;
+	bh=Idfamzh46DJ+twDpww56R9aCJmI4wUd9lTayVqOmz9c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XIBwTeajNw+wjLMwTACsEX3eXDJc8/n69wY2a7Hbu+//9E/fNWw1LqvGIQ/5ObIYNU44HeKJknivQ75vZAs8tlyCtDNAQc2bddvHe3HJl061CQmHp1UkVlhPocQIUiHRd2/Z1EYVmks0cZUrdsGVxEhAMMoPJOBwWABMVo8jZ7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohR/j8x4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSohGVOO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9204EC4CED6;
-	Fri, 10 Jan 2025 20:18:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohR/j8x4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223D2C4AF09;
+	Sat, 11 Jan 2025 02:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736540292;
-	bh=/ybNIO+z0YMt7NQe0O7P3cxsv0vraqHKkL76VnTITTw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BSohGVOO1IlFdBgoSdYbGJVGszHzfgQ4TwmIBGcHmaTnawezclRTuATOErXyRvBKs
-	 k2/U1ys/o9Ko9i1VfiJVVQQ7WFQZ/zJyNZ+uSdpoBYQLdTWw5EGFJ6lVqQsvmPJl4Y
-	 5B0CV2ykwFzF33Ls9MBMt5h0opoVJhB2v2FnVEr4AACvTAWgDG8gGEJzKfSNe/HfHN
-	 2mcNFwY0WOcJJdkoYWvZwjKIUx5a/DIfRnOZhE3phfedx4BGSF/JyEceh/PvlRLy3n
-	 7J5dKuAwVEoPaNsKu2tqOiZS3eGz1/FfCXqIS86QRrL03ICy8htD3jj47T8eKVF/1D
-	 /TLRMcCDTW/uw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 10 Jan 2025 21:15:24 +0100
-Subject: [PATCH v6 01/14] rust: time: Add Ktime::from_ns()
+	s=k20201202; t=1736562373;
+	bh=Idfamzh46DJ+twDpww56R9aCJmI4wUd9lTayVqOmz9c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ohR/j8x4mduyecIm9IHmeoUkPWOY+eL9haML+1wT95TX7hFydUAGVoeVQu0NjFekQ
+	 7100PZd0U0jMw+S9PnOCq51wYRBB5kuqlMx93Ojz3c5CvqCMuf8YcFbWDFhsPdG5Ln
+	 xiMZ1grF3yIfJsreZkNdd747u+md/mGMbJUCSfodSNx/XSaydM+XC9LBAV2Qd/5h5S
+	 TD5RoESsX13yR7dXyDgsM0ND+4siMR8z3j0bxDSaa6RzDvKxSt8mgb/QvrVHjrHbfE
+	 wWh/KZ66qT4ksJbyx+zzmu9BcsdWe6yO2BrGmVtohVUea0qgLaeRSE94P55UFxDre3
+	 45sU9DIbXc+qg==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-304e4562516so24798271fa.1;
+        Fri, 10 Jan 2025 18:26:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU4aeOs+TUtWX8+c42O4J/TL+lRQuXU9R1YnRxUQFaEwAyhRUXkvJmKCwMCD81uBPr3A6fJ3y/Kn3Tvdjb8Mw==@vger.kernel.org, AJvYcCUaWrNukA0cUsJcHJLVjky/CHDsEAmWVyAEX9QpErTUezlKADBi0XpnAh2MUiYu8A6rKrsTZxd2vzJIPk4h@vger.kernel.org, AJvYcCVaOFnuBfOZl5Zuycm37HY3Jk+/dNv+26dRRSMvqkMJa9XGd10M+NyQ1pVSZ/r7YECVNXkTjGAW0OTa3hmd@vger.kernel.org, AJvYcCXLYC7IkkU6b0Lkyk+EQZjr1TneteG2eGiqx36SmxtjNQtldIal0DquKvBK6K7Oi6DZWQlre2eCn9RVK/xV2fU=@vger.kernel.org, AJvYcCXgk260ZhHnFLU2Zz6go8YLwoB1ppKhLprJ8tpuaMuBlMo8ALvB1i5YqEcKjWOsaefj1/zeuB4qd34=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9tv+XarKWdAnjRUrLcWzRB3cA273shDq2Zla8vavmjseoctjM
+	87jCUsfui1sGWbZR9VukPdTQzJ4ikcD+e6ysv5S8B4GIArPGHi7pCugYBP1tR/zkGkuVjFHrys+
+	wuxo7bJd9QPnpH7eGiP+a9fJGxsg=
+X-Google-Smtp-Source: AGHT+IFSeUdKlBePUTptLfNo7AV+Ke5p3rh1RAhmgs6127AKDeZ16XwTtR3YDLtLxc44SZaiu8s77F1oCGDkn1B2CUY=
+X-Received: by 2002:a2e:bc23:0:b0:302:1fce:393d with SMTP id
+ 38308e7fff4ca-305fcf85a3fmr26095711fa.2.1736562371733; Fri, 10 Jan 2025
+ 18:26:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250110-hrtimer-v3-v6-12-rc2-v6-1-f71d50f16482@kernel.org>
-References: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org>
-In-Reply-To: <20250110-hrtimer-v3-v6-12-rc2-v6-0-f71d50f16482@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Danilo Krummrich <dakr@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, 
- Guangbo Cui <2407018371@qq.com>, Dirk Behme <dirk.behme@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1377; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=zvxjVReWexH5OF8VhuSFOtSXv8mRCanz1tBYjzejoHo=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBngX/g4zdQ52qSi4nEXeCOuczc7KAu72uF3omkJ
- xmJ7goW0KGJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCZ4F/4AAKCRDhuBo+eShj
- dyoXEACvJ/3bmgDymZarAfdrNrlCA1Zoz9YbojSS2MYrJ9wTxn77y0dVeGTwZWv0VY13bO4K8gL
- 3ZELSmmvhoQDyAIUVD1XkZAhHJDROh6OEMeGs924SWBN8u2Tgha58ZO2wxKTCKXboyeszSiE6ho
- 2u94Lh3buUGK2WfdSQ4AXQVvxOs5CNDhcl2xptUnPl/NNi8+7iN8r5JQa3+DCRp9sBxk+s0tzPc
- F5jE25IexTDA6WFbhJ+s9bnz/CpkvMr+R4dvHNP93D9reIhYbQlMLcBgroOHIRJtwgQbX8QUSRz
- d2V38CYGgeR8iZ3R0rjlKD6xr5/kYosnHD4K4HW35p8elW2eZ/i/a9gCUegga0SbFlyRxlf+lmF
- XXjhf4Vx4wNUvgWMNekhwNKOQFJFkNyII9UKSGuYSpPwtSeZ6M6IWQqG1lqvKfYGLuHUGm8ZpKO
- EzUp3SiBvJ2vBqI6XllCvQDDDhAHb3XXMcf0Q4hE+5OIhi6BFDC34hiBMKvCwbrN8ITJVVtA/VD
- 1aM1QIf7gNSPrhBuY05b+MxVP/c/6E1qSKbDjcxn7vn5QLCojfPNvkESPHoTnYoAtYDbCP40Kml
- ktsYeEdyALRuBKxkdyjpcps3tvM0WpYUjsUMe333RxfkV23OCssAICWmk+f6i3dOkCdd0fedNsi
- 8vnqfnaBNAeElZQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com> <20250103-extended-modversions-v13-5-35d87c65ee04@google.com>
+In-Reply-To: <20250103-extended-modversions-v13-5-35d87c65ee04@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 11 Jan 2025 11:25:35 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATGw-m_dcdjTBHsFwCZh7mTt8q8yNZQ7VFP=hMU8NvUvg@mail.gmail.com>
+X-Gm-Features: AbW1kvb7GALEjFsi9ilnzzIkVesgxqvRHO2ZeNtTEBScvuq46-k7JP8S_G4h1io
+Message-ID: <CAK7LNATGw-m_dcdjTBHsFwCZh7mTt8q8yNZQ7VFP=hMU8NvUvg@mail.gmail.com>
+Subject: Re: [PATCH v13 5/5] rust: Use gendwarfksyms + extended modversions
+ for CONFIG_MODVERSIONS
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Jonathan Corbet <corbet@lwn.net>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Lyude Paul <lyude@redhat.com>
+On Sat, Jan 4, 2025 at 2:37=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
+wrote:
+>
+> From: Sami Tolvanen <samitolvanen@google.com>
+>
+> Previously, two things stopped Rust from using MODVERSIONS:
+> 1. Rust symbols are occasionally too long to be represented in the
+>    original versions table
+> 2. Rust types cannot be properly hashed by the existing genksyms
+>    approach because:
+>         * Looking up type definitions in Rust is more complex than C
+>         * Type layout is potentially dependent on the compiler in Rust,
+>           not just the source type declaration.
+>
+> CONFIG_EXTENDED_MODVERSIONS addresses the first point, and
+> CONFIG_GENDWARFKSYMS the second. If Rust wants to use MODVERSIONS, allow
+> it to do so by selecting both features.
+>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> Co-developed-by: Matthew Maurer <mmaurer@google.com>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+>  init/Kconfig  |  3 ++-
+>  rust/Makefile | 34 ++++++++++++++++++++++++++++++++--
+>  2 files changed, 34 insertions(+), 3 deletions(-)
+>
+> diff --git a/init/Kconfig b/init/Kconfig
+> index c1f9eb3d5f2e892e977ba1425599502dc830f552..b60acfd9431e0ac2bf401ecb6=
+523b5104ad31150 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1959,7 +1959,8 @@ config RUST
+>         bool "Rust support"
+>         depends on HAVE_RUST
+>         depends on RUST_IS_AVAILABLE
+> -       depends on !MODVERSIONS
+> +       select EXTENDED_MODVERSIONS if MODVERSIONS
+> +       depends on !MODVERSIONS || GENDWARFKSYMS
+>         depends on !GCC_PLUGIN_RANDSTRUCT
+>         depends on !RANDSTRUCT
+>         depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+> diff --git a/rust/Makefile b/rust/Makefile
+> index a40a3936126d603836e0ec9b42a1285916b60e45..80f970ad81f7989afe5ff2b5f=
+633f50feb7f6006 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -329,10 +329,11 @@ $(obj)/bindings/bindings_helpers_generated.rs: priv=
+ate bindgen_target_extra =3D ;
+>  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c =
+FORCE
+>         $(call if_changed_dep,bindgen)
+>
+> +rust_exports =3D $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && =
+$$3!~/__cfi/ { printf $(2),$(3) }'
+> +
+>  quiet_cmd_exports =3D EXPORTS $@
+>        cmd_exports =3D \
+> -       $(NM) -p --defined-only $< \
+> -               | awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ {printf "EXPORT_SY=
+MBOL_RUST_GPL(%s);\n",$$3}' > $@
+> +       $(call rust_exports,$<,"EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3) > $@
 
-A simple function to turn the provided value in nanoseconds into a Ktime
-value. We allow any type which implements Into<bindings::ktime_t>, which
-resolves to Into<i64>.
+I noticed a nit:
 
-This is useful for some of the older DRM APIs that never got moved to Ktime
+Both of the two callsites of rust_exports pass
+'$$3' to the last parameter instead of hardcoding it.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/time.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Is it a flexibility for future extensions?
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 379c0f5772e575c9ceacb9c85255b13501db8f30..f59e0fea79d3acfddd922f601f569353609aeec1 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -8,6 +8,8 @@
- //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
- //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
- 
-+use core::convert::Into;
-+
- /// The number of nanoseconds per millisecond.
- pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
- 
-@@ -63,6 +65,12 @@ pub fn to_ns(self) -> i64 {
-     pub fn to_ms(self) -> i64 {
-         self.divns_constant::<NSEC_PER_MSEC>()
-     }
-+
-+    /// Creates a new Ktime from the given duration in nanoseconds
-+    #[inline]
-+    pub fn from_ns(ns: impl Into<bindings::ktime_t>) -> Self {
-+        Self { inner: ns.into() }
-+    }
- }
- 
- /// Returns the number of milliseconds between two ktimes.
-
--- 
-2.47.0
+I cannot think of any other use except for printing
+the third column, i.e. symbol name.
 
 
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
