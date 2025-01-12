@@ -1,143 +1,252 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB0BD528;
-	Sun, 12 Jan 2025 00:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CD6224D7
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jan 2025 13:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736642552; cv=none; b=XSY7ogqyRB3HKkW4o4sat8jM2kZrgUaWQXuAa2O+dDiPQuNLngnKYy7EUW58RdWG2d9iFwiJ99z1bMmxZ6YepaxOTjzBCKtM+3eh/pMPQNmae8ao/ioXdHAuaiywjeILNqIwFpEP1SZZTq/kskFq0o1tRjiIEPKaaLBdJ7D/SF8=
+	t=1736687433; cv=none; b=KVwtfhBCqUiLV5cek6euQzwIAjgvI7M6ec85/Er8sKaUys+4OoMsJHH2mldzqdTYGqdIsl5ldoE3yutRfDHS/Qvs4qMmtMGQadqp6z/n9ttzmAH07/bKWuY+MLb8O3y1vek3Tt0MNQd/7h8KE5hxZkR/yoLvAwzB6il1SbTe/j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736642552; c=relaxed/simple;
-	bh=Z1BKUv222L4W5EpLjlS5rXbNNqX1dnJIFJb1SINHK6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tr9MUsPtJTFTmUooa8vrIsEDFZN4LwJwXijA+ZulU6UoSaHx1VB1w0jjTTuJ2BXdIXudVdZwI+7zY35rBdCxjhYxguL4vWtChymxHRQuzVHMHVy1trLt9JO0QBHl23R+3yYM1W7hkSNpfk2RHhEtXTYeZkpKJDM/53ros0a3qsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BlmvgUUH; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1736687433; c=relaxed/simple;
+	bh=td6O3pknPirOh+eHjPMhEfdBkXaDiuLnATFU/I8BzUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JQ5AYm+PEO5qK9Xdu+u2MinEKaM99o25R4JAYt4/idSdUVGIe8kZIfUgw9n+IhZbbXoNB6QIvxBFb/H8z5tDqbNJoDog6iQVoJMg8dRLklfLc68Zz+/cOsxwQEKN4AWaNIkCcOQJZPVXPg10imdmA7XATUhxQL35qaIxOHLjdoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A/gkNBcC; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BlmvgUUH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736642551; x=1768178551;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Z1BKUv222L4W5EpLjlS5rXbNNqX1dnJIFJb1SINHK6c=;
-  b=BlmvgUUH3umgj6j8u3SA9w2xC5dhEkEChZpT7nxcq8X5XXzX63bVER9y
-   cz/VYmLuTR+79cSvE5Wy+k+ZGO75ybvNUnOIgduRz+OmHJxlznLcQpHff
-   ZlPEUo4xAvnCgFx2y8k8v+AYwRgaAc+jpFwJaJIPJX39zmXJvnhC19EU1
-   9QxKd+xthKtkkh5KSpW5WFbCxQnOwC63aMe20PoDpMqJtJ+XcmmN826o/
-   Mn1iiWGE6O6q7TgPGWB1fuQtGgNtcwdMKGN5XzJVjfaAeIXOWrxfM5YKI
-   jkOzDGdtU5On4mfFv/FFwS/u7C5eWCMURxIeYF3lfBUieRySaCLNBTUNJ
-   w==;
-X-CSE-ConnectionGUID: l03Gs1wlS/Wfqyqxwc5Neg==
-X-CSE-MsgGUID: c7tJgyffTSKz+aJRPgsBtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="59387755"
-X-IronPort-AV: E=Sophos;i="6.12,308,1728975600"; 
-   d="scan'208";a="59387755"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 16:42:30 -0800
-X-CSE-ConnectionGUID: 0P+b6rxfT0W1z3/oMwlZdw==
-X-CSE-MsgGUID: OufXYvbTTXeHj7WKqoVPBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,308,1728975600"; 
-   d="scan'208";a="104131216"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 11 Jan 2025 16:42:24 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tWm3a-000LN4-1o;
-	Sun, 12 Jan 2025 00:42:22 +0000
-Date: Sun, 12 Jan 2025 08:41:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	daniel.almeida@collabora.com, aliceryhl@google.com,
-	robin.murphy@arm.com, rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	iommu@lists.linux.dev, Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-Message-ID: <202501120855.PXuydC6T-lkp@intel.com>
-References: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A/gkNBcC"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ef6ee55225so732315a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jan 2025 05:10:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736687431; x=1737292231; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YdgOA5Kx9LaG87CTVvpGmWf+J80Ehiu/Y0BhxN5JX7Q=;
+        b=A/gkNBcCEB7HeNRCCuubxnYb7LnlY/WmDrh3ukDnFKC3/nkjg8c7yWKv969vluqT0b
+         XPoZgg3WvRTPn16h6pyD46RgU9nXDa2DJlbk530e91XfM38JuJuyhHm0Jo4/hldVbSuj
+         iFfq0lhsjOudX6Dag4rAwbsbEiY/tNx9bV4wytOUDPJdYz1kHToUJaQxLVPRRCGLRCsu
+         6j50awpldShiptZVLdkqB8298AJHz3L1EAY9GNr8f0mFHhX90miNDIpvo+ULBsErXBT3
+         6pS6Xfc9aq691fBU7iewsTpAjHTsLypbLw3Q9RtrcfcTOE+YnlvjwdK3vrs5HTw1qdzt
+         9X8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736687431; x=1737292231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YdgOA5Kx9LaG87CTVvpGmWf+J80Ehiu/Y0BhxN5JX7Q=;
+        b=JPdqjyerfebON2ipxmlz/O/qk2Z6bIRV6Mc2Obf1inpkL7wZunzN5hfJECaXUL5doW
+         LdjFZxLskrOlc9c1PDEwGaw4/+KkU0HcGohXNePjkuNGHa0RDu2sR8AQxVWdnGJeBE0T
+         x5VoSNjxvNmH0gl4TiHQFqGSQ5ieve2NzpW20cCxq3PX+j0DvW0GktmRHTmeOmb0pdX+
+         Y4pThLEuTRvxE/MmBafz0twX+UVMsHcxO/WN+f8qacYmjIim9mkvrdS1DIBxhum+2qFN
+         70jjvVR5Tt7gYyiQmXw76wo/L+7kMi9RmF9oH/urWD5SrDHT1jy1Pyb9e1T6d8yXXQyh
+         8WcQ==
+X-Gm-Message-State: AOJu0YyFrCwBr4LDjoO6PKRcWPGVqF0L/icNpv3M7mzxO+q42KZUtBuw
+	sbhAQjMoLeccp2uW40tz/y17xIe0I1BcvQ4S2Zq3USZs8gZDgGDYhGRv0/Sq3A989SWQaeSPnyt
+	eRAOmXNWEn2mIvccPonAqS7IeOak=
+X-Gm-Gg: ASbGncsUNi8HA4ZUw619g7hp0R5eBpticJ3CKrE/gn/AtYLNsf7EpgqO4At03ZEBV1k
+	iKmMrqQdPd1yEhZ4RCcWKVqCxUGPnhm28pCXxFw==
+X-Google-Smtp-Source: AGHT+IG/d/vWaIL4eMz0KhCvleuz4ENtv5nc04HLYmiK6/uAmWj/2hLtq+aG8AlEVHAhczFx+DG83oeIFZAdBQmVL84=
+X-Received: by 2002:a17:902:e80d:b0:216:25f5:9afc with SMTP id
+ d9443c01a7336-21a83f5e6a8mr90152375ad.9.1736687430836; Sun, 12 Jan 2025
+ 05:10:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
+References: <20250107062134.2981602-1-dirk.behme@de.bosch.com> <20250107062134.2981602-2-dirk.behme@de.bosch.com>
+In-Reply-To: <20250107062134.2981602-2-dirk.behme@de.bosch.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 12 Jan 2025 14:10:18 +0100
+X-Gm-Features: AbW1kvapMb_SnXBJbxFUk3ugr-WKpETiVR75ultpPC61XNIaKurBhkbiTN7ziyE
+Message-ID: <CANiq72nKLZ7MdMGzQw8jJZ0_f8L-sV1n7_Ax2Up5AwYfg7BOZg@mail.gmail.com>
+Subject: Re: [PATCH] rust: error: Extend the Result documentation
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Abdiel,
+On Tue, Jan 7, 2025 at 7:21=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
+>
+> Extend the Result documentation by some guidelines and examples how
+> to handle Result error cases gracefully. And how to not handle them.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72keOdXy0LFKk9SzYWwSjiD=
+710v=3DhQO4xi+5E4xNALa6cA@mail.gmail.com/
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-kernel test robot noticed the following build errors:
+Meta-comment: was "In-Reply-To" used because this was meant to be a
+series, or because the patches were related? (some clients like Lore
+may make them harder to see like this)
 
-[auto build test ERROR on v6.13-rc6]
-[also build test ERROR on linus/master]
-[cannot apply to next-20250110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> +/// the error and success handling can be implemented in all detail as r=
+equired.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Abdiel-Janulgue/rust-error-Add-EOVERFLOW/20250108-202929
-base:   v6.13-rc6
-patch link:    https://lore.kernel.org/r/20250108122825.136021-3-abdiel.janulgue%40gmail.com
-patch subject: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
-config: um-randconfig-001-20250112 (https://download.01.org/0day-ci/archive/20250112/202501120855.PXuydC6T-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project f5cd181ffbb7cb61d582fe130d46580d5969d47a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250112/202501120855.PXuydC6T-lkp@intel.com/reproduce)
+Newline between paragraphs? (Though I am not sure if the intention was
+a paragraph here though).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501120855.PXuydC6T-lkp@intel.com/
+> +/// For example (inspired by [samples/rust/rust_minimal.rs](https://git.=
+kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/samples/rust/ru=
+st_minimal.rs)):
 
-All errors (new ones prefixed by >>):
+I think this goes well over the 100 limit -- in general, using a
+(long) URL may mean having to avoid the inline link syntax. It also
+helps readability for those reading the docs in plain text.
 
->> error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
-   --> rust/kernel/dma.rs:145:23
-   |
-   145   |               bindings::dma_alloc_attrs(
-   |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
-   |
-   ::: rust/bindings/bindings_generated.rs:39433:5
-   |
-   39433 | /     pub fn dma_alloc_pages(
-   39434 | |         dev: *mut device,
-   39435 | |         size: usize,
-   39436 | |         dma_handle: *mut dma_addr_t,
-   39437 | |         dir: dma_data_direction,
-   39438 | |         gfp: gfp_t,
-   39439 | |     ) -> *mut page;
-   | |__________________- similarly named function `dma_alloc_pages` defined here
---
->> error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
-   --> rust/kernel/dma.rs:262:23
-   |
-   262   |               bindings::dma_free_attrs(
-   |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
-   |
-   ::: rust/bindings/bindings_generated.rs:39442:5
-   |
-   39442 | /     pub fn dma_free_pages(
-   39443 | |         dev: *mut device,
-   39444 | |         size: usize,
-   39445 | |         page: *mut page,
-   39446 | |         dma_handle: dma_addr_t,
-   39447 | |         dir: dma_data_direction,
-   39448 | |     );
-   | |_____- similarly named function `dma_free_pages` defined here
+> +/// fn example () -> Result {
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+While `rustfmt` doesn't do it by default (yet, hopefully), please try
+to keep the examples formatted as it would, e.g. extra and missing
+spaces and newlines in this example -- `rustfmt` would format it like:
+
+    fn example() -> Result {
+        let mut numbers =3D KVec::new();
+        match numbers.push(72, GFP_KERNEL) {
+            Err(e) =3D> {
+                pr_err!("Error pushing 72: {:?}", e);
+                return Err(e.into());
+            }
+            Ok(()) =3D> (), // Do nothing, continue
+        }
+        match numbers.push(108, GFP_KERNEL) {
+            Err(e) =3D> {
+                pr_err!("Error pushing 108: {:?}", e);
+                return Err(e.into());
+            }
+            Ok(()) =3D> (), // Do nothing, continue
+        }
+        match numbers.push(200, GFP_KERNEL) {
+            Err(e) =3D> {
+                pr_err!("Error pushing 200: {:?}", e);
+                return Err(e.into());
+            }
+            Ok(()) =3D> (), // Do nothing, continue
+        }
+        Ok(())
+    }
+
+With a few other changes: a couple newlines to make it easier to read,
+moved `e` inside the formatting string, add a period to the comment,
+moved the comments to the top (it is what we usually do, rather than
+put them at the end of a line), I got:
+
+    fn example() -> Result {
+        let mut numbers =3D KVec::new();
+
+        match numbers.push(72, GFP_KERNEL) {
+            Err(e) =3D> {
+                pr_err!("Error pushing 72: {e:?}");
+                return Err(e.into());
+            }
+            // Do nothing, continue.
+            Ok(()) =3D> (),
+        }
+
+        match numbers.push(108, GFP_KERNEL) {
+            Err(e) =3D> {
+                pr_err!("Error pushing 108: {e:?}");
+                return Err(e.into());
+            }
+            // Do nothing, continue.
+            Ok(()) =3D> (),
+        }
+
+        match numbers.push(200, GFP_KERNEL) {
+            Err(e) =3D> {
+                pr_err!("Error pushing 200: {e:?}");
+                return Err(e.into());
+            }
+            // Do nothing, continue.
+            Ok(()) =3D> (),
+        }
+
+        Ok(())
+    }
+
+Also, you may want to mention `if let` or even provide an example too
+-- Clippy would complain about it. So an extra intermediate
+example/state would be:
+
+    fn example() -> Result {
+        let mut numbers =3D KVec::new();
+
+        if let Err(e) =3D numbers.push(72, GFP_KERNEL) {
+            pr_err!("Error pushing 72: {e:?}");
+            return Err(e.into());
+        }
+
+        if let Err(e) =3D numbers.push(108, GFP_KERNEL) {
+            pr_err!("Error pushing 108: {e:?}");
+            return Err(e.into());
+        }
+
+        if let Err(e) =3D numbers.push(200, GFP_KERNEL) {
+            pr_err!("Error pushing 200: {e:?}");
+            return Err(e.into());
+        }
+
+        Ok(())
+    }
+
+Another possibility, to reduce the length, would be to have a single
+example showcasing all the possibilities (`match`, `if let`,
+`expect()`, `?`...). But I don't mind the "effect" you currently have
+of seeing how the full example gets simplified, to drive the point
+home, even if normally we wouldn't be so verbose for other
+examples/docs.
+
+Also may be worth mentioning `let ... else`, though to make sense it
+probably requires a different example.
+
+You may also want to call `example()` in a hidden line, so that it
+gets tested at runtime too.
+
+> +/// Instead of the verbose [`match`](https://doc.rust-lang.org/reference=
+/expressions/match-expr.html)
+> +/// the [`?`](https://doc.rust-lang.org/reference/expressions/operator-e=
+xpr.html#the-question-mark-operator)-operator
+> +/// or [`unwrap()`](https://doc.rust-lang.org/std/result/enum.Result.htm=
+l#method.unwrap)/
+> +/// [`expect()`](https://doc.rust-lang.org/std/result/enum.Result.html#m=
+ethod.expect)
+> +/// can be used to handle the [`Result`] "automatically". However, in th=
+e kernel
+
+I think the word "automatically" may be confusing -- perhaps we can
+just remove it?
+
+By the way, it may make sense to link to the relevant chapter of the
+online book or similar somewhere in the explanation (on top of the
+Rust reference).
+
+> +///     Ok(())
+> +/// }
+> +/// ```
+
+Please add newlines between text and examples' triple backquotes to be
+consistent with our other docs.
+
+> +/// Instead [`unwrap_or()`](https://doc.rust-lang.org/std/result/enum.Re=
+sult.html#method.unwrap_or),
+> +/// [`unwrap_or_else()`](https://doc.rust-lang.org/std/result/enum.Resul=
+t.html#method.unwrap_or_else) or
+> +/// [`unwrap_or_default()`](https://doc.rust-lang.org/std/result/enum.Re=
+sult.html#method.unwrap_or_default)
+> +/// can be used. But in consequence, using the [`?`](https://doc.rust-la=
+ng.org/reference/expressions/operator-expr.html#the-question-mark-operator)=
+-operator
+
+Those have different use cases, right? i.e. probably require a
+different example. They could perhaps go with the `let ... else` one
+after this discussion, or, if you want to keep this patch shorter,
+perhaps simply mention them at the end as other alternatives depending
+on the case.
+
+Thanks for the patch!
+
+Cheers,
+Miguel
