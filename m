@@ -1,180 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C4C1B4124;
-	Sun, 12 Jan 2025 14:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1AB1B86DC;
+	Sun, 12 Jan 2025 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736690808; cv=none; b=t+VX8n8RPzeI9G1I6GgeFV2R0ZXvUZVsI3ATrb9zmeqdq5rbiHiUyVOdy8gnFIfEWvgvHT03ofkQwEz/MyObbQdWWsQrtxNTtDy90+ca66eO1AsPsQdog/UlcVqijLtlpQrpVs6b1VAnXJgvYO0kKS/0jZSLqExr8Tf8YcDE4Yk=
+	t=1736692811; cv=none; b=bnkugBxC6LNoLIlqKqT81WGFlKLy2z4iqu9KsHNzV5shSMwnTU/dYGoh4mkkeAfW3UtKOlrKdmqb2fuvIRyzi3LoXx/DSkZwkNDpMpjvWblRgZcUanClmm9k5EMfC2rUDuM8gBJCFxKM0sRSAsYQ9LAJFD9cSFx9CjI/iY/DMDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736690808; c=relaxed/simple;
-	bh=zgkLOWNN45BGAyMFRgr0B18fI+bMiB+p2fc3bLGAHpw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=E0nx6JV1ps9tTApZdOVKdxC+IA1Zs3DjaIwqIdHMiorWH3X2AQZm6KN/PZw6/Kl/T3UuMbRvf6wZb6Yb9nwM+8vzjZeP32wpxYt53qPGO11D/trCMp9bBL6o1P89H4yjrp8tXBYu6x4pxssmwY5EEakreklmeC3aSddxN12ZclU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUFuS92U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736692811; c=relaxed/simple;
+	bh=c/aW+36Ftt9sDgQezinuh9vh1Mz1Do0ug6ZEwJvIveQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=maoBhZcxKfqqQNFHxP2OFHX/gcfzZPJ7JwLekp2R1rtK8QIsV2gF2PDApY5BU0iyh0aF/0/EFQ0JVMb54+VKSeqXfz7kgHcVs3+O1umplgy74vYMhGKS4Yid9qSwCqiq1ji3lCCWQXgVZqjblDoeyq9C0Yh7Vi2raVItMtWRX/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msG6UESS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUFuS92U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B38BC4CEDF;
-	Sun, 12 Jan 2025 14:06:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736690807;
-	bh=zgkLOWNN45BGAyMFRgr0B18fI+bMiB+p2fc3bLGAHpw=;
-	h=Date:From:To:Cc:Subject:From;
-	b=CUFuS92UMBnetsnmHncW2ivHaKED771EgVPOzhGWxj2yMK8y0c0jAcU6RjeyrXpT4
-	 1FEK1SaN+VWJDrt+A6ZLfZZrQ4yPKGuTkQx0XaFsDBKKUhNqgOaATwqnsM442LBwIZ
-	 ro9cAMlRovaJNzxyR583hUD0KyjHMTLkpOC4J/24=
-Date: Sun, 12 Jan 2025 15:06:44 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: rust-for-linux@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Char/Misc/IIO driver changes for 6.13-rc7
-Message-ID: <Z4PMdA-E4_Ifi8sK@kroah.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msG6UESS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A395BC4CEDF;
+	Sun, 12 Jan 2025 14:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736692811;
+	bh=c/aW+36Ftt9sDgQezinuh9vh1Mz1Do0ug6ZEwJvIveQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=msG6UESSdmhoZMfcTTWrdzxjfzWfCZZYLOQeRi2AWDpz1pUd6NigKgWFcEO26+YUg
+	 XEyhg3xy6KTxz03F6HuRD9AjZ5a3OmJTB2RycuErdfoOqR4eLG32BnehvdxJVddy9U
+	 FgVLfI84i5H0uepDXuf5oWncphui7sMuJucmO3hCuavqP8V5HadB7hk9/Fb9SQX7Tf
+	 e4SlRCNUyI1AuFuM59KhZlGujW1IDBSWZZMyCrLzFAyAzam9Xp9YWHOFE2nPDtXshG
+	 7j6yKYJrkj8Ja6S7Unn42yyrYTTpevNn/G8TedSzeCHLvZStQh5h551wNxURsSAr2+
+	 nEwHXHmNYw0SA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] objtool/rust: add one more `noreturn` Rust function
+Date: Sun, 12 Jan 2025 15:39:51 +0100
+Message-ID: <20250112143951.751139-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-The following changes since commit 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8:
+Starting with Rust 1.85.0 (currently in beta, to be released 2025-02-20),
+under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
+one may trigger a new `objtool` warning:
 
-  Linux 6.13-rc3 (2024-12-15 15:58:23 -0800)
+    rust/kernel.o: warning: objtool: _R...securityNtB2_11SecurityCtx8as_bytes()
+    falls through to next function _R...core3ops4drop4Drop4drop()
 
-are available in the Git repository at:
+due to a call to the `noreturn` symbol:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git tags/char-misc-6.13-rc7
+    core::panicking::assert_failed::<usize, usize>
 
-for you to fetch changes up to c7a5378a0f707686de3ddb489f1653c523bb7dcc:
+Thus add it to the list so that `objtool` knows it is actually `noreturn`.
+Do so matching with `strstr` since it is a generic.
 
-  misc: microchip: pci1xxxx: Resolve return code mismatch during GPIO set config (2025-01-08 15:47:39 +0100)
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
 
-----------------------------------------------------------------
-Char/Misc/IIO driver fixes for 6.13-rc7
+Cc: <stable@vger.kernel.org> # Needed in 6.12.y only (Rust is pinned in older LTSs).
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ tools/objtool/check.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Here are a bunch of small IIO and interconnect and other driver fixes
-for 6.13-rc7 to resolve reported issues.  Included in here are:
-  - loads of iio driver fixes as a result of an audit of places where
-    uninitialized data would leak to userspace.
-  - other smaller, and normal, iio driver fixes.
-  - mhi driver fix
-  - interconnect driver fixes
-  - pci1xxxx driver fix
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 76060da755b5..e7ec29dfdff2 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -218,6 +218,7 @@ static bool is_rust_noreturn(const struct symbol *func)
+ 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
+ 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
+ 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
++	       strstr(func->name, "_4core9panicking13assert_failed")					||
+ 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
+ 	       (strstr(func->name, "_4core5slice5index24slice_") &&
+ 		str_ends_with(func->name, "_fail"));
 
-All of these have been in linux-next for a while with no reported
-issues.
+base-commit: 9d89551994a430b50c4fffcb1e617a057fa76e20
+-- 
+2.48.0
 
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-----------------------------------------------------------------
-Bartosz Golaszewski (1):
-      interconnect: icc-clk: check return values of devm_kasprintf()
-
-Carlos Song (1):
-      iio: gyro: fxas21002c: Fix missing data update in trigger handler
-
-Charles Han (1):
-      iio: adc: ti-ads1298: Add NULL check in ads1298_init
-
-Christophe JAILLET (1):
-      iio: adc: ad9467: Fix the "don't allow reading vref if not available" case
-
-David Lechner (1):
-      iio: adc: ad7173: fix using shared static info struct
-
-Fabio Estevam (1):
-      iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
-
-Georgi Djakov (1):
-      interconnect: qcom: icc-rpm: Set the count member before accessing the flex array
-
-Greg Kroah-Hartman (3):
-      Merge tag 'iio-fixes-for-6.13a' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-linus
-      Merge tag 'mhi-fixes-for-v6.13' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/mani/mhi into char-misc-linus
-      Merge tag 'icc-6.13-rc6' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/djakov/icc into char-misc-next
-
-Javier Carrasco (10):
-      iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
-      iio: adc: ti-ads8688: fix information leak in triggered buffer
-      iio: light: bh1745: fix information leak in triggered buffer
-      iio: light: vcnl4035: fix information leak in triggered buffer
-      iio: imu: kmx61: fix information leak in triggered buffer
-      iio: adc: rockchip_saradc: fix information leak in triggered buffer
-      iio: pressure: zpa2326: fix information leak in triggered buffer
-      iio: adc: ti-ads1119: fix information leak in triggered buffer
-      iio: temperature: tmp006: fix information leak in triggered buffer
-      iio: adc: ti-ads1119: fix sample size in scan struct for triggered buffer
-
-Jean-Baptiste Maneyrol (2):
-      iio: imu: inv_icm42600: fix spi burst write not supported
-      iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
-
-Joe Hattori (2):
-      iio: adc: at91: call input_free_device() on allocated iio_dev
-      iio: inkern: call iio_device_put() only on mapped devices
-
-Johan Hovold (1):
-      bus: mhi: host: pci_generic: fix MHI BAR mapping
-
-Matti Vaittinen (1):
-      iio: test: Fix GTS test config
-
-Olivier Moysan (1):
-      iio: adc: stm32-dfsdm: handle label as an optional property
-
-Pei Xiao (1):
-      iio: test : check null return of kunit_kmalloc in iio_rescale_test_scale
-
-Rengarajan S (2):
-      misc: microchip: pci1xxxx: Resolve kernel panic during GPIO IRQ handling
-      misc: microchip: pci1xxxx: Resolve return code mismatch during GPIO set config
-
-Sean Nyekjaer (1):
-      dt-bindings: iio: st-sensors: Re-add IIS2MDC magnetometer
-
-Trevor Gamblin (1):
-      iio: adc: ad4695: fix buffered read, single sample timings
-
-Uwe Kleine-König (1):
-      iio: adc: ad7124: Disable all channels at probe time
-
-Zicheng Qu (2):
-      staging: iio: ad9834: Correct phase range check
-      staging: iio: ad9832: Correct phase range check
-
- .../devicetree/bindings/iio/st,st-sensors.yaml     |  1 +
- drivers/bus/mhi/host/pci_generic.c                 |  2 +-
- drivers/iio/adc/ad4695.c                           | 98 +++++++++++++++-------
- drivers/iio/adc/ad7124.c                           |  3 +
- drivers/iio/adc/ad7173.c                           | 10 ++-
- drivers/iio/adc/ad9467.c                           | 15 +++-
- drivers/iio/adc/at91_adc.c                         |  2 +-
- drivers/iio/adc/rockchip_saradc.c                  |  2 +
- drivers/iio/adc/stm32-dfsdm-adc.c                  | 13 +--
- drivers/iio/adc/ti-ads1119.c                       |  4 +-
- drivers/iio/adc/ti-ads124s08.c                     |  4 +-
- drivers/iio/adc/ti-ads1298.c                       |  2 +
- drivers/iio/adc/ti-ads8688.c                       |  2 +-
- drivers/iio/dummy/iio_simple_dummy_buffer.c        |  2 +-
- drivers/iio/gyro/fxas21002c_core.c                 | 11 ++-
- drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  1 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   | 22 ++++-
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c    |  3 +-
- drivers/iio/imu/kmx61.c                            |  2 +-
- drivers/iio/inkern.c                               |  2 +-
- drivers/iio/light/bh1745.c                         |  2 +
- drivers/iio/light/vcnl4035.c                       |  2 +-
- drivers/iio/pressure/zpa2326.c                     |  2 +
- drivers/iio/temperature/tmp006.c                   |  2 +
- drivers/iio/test/Kconfig                           |  2 +-
- drivers/iio/test/iio-test-rescale.c                |  4 +
- drivers/interconnect/icc-clk.c                     | 10 +++
- drivers/interconnect/qcom/icc-rpm.c                |  2 +-
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c    |  4 +-
- drivers/staging/iio/frequency/ad9832.c             |  2 +-
- drivers/staging/iio/frequency/ad9834.c             |  2 +-
- 31 files changed, 173 insertions(+), 62 deletions(-)
