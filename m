@@ -1,101 +1,180 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841081DFCB
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jan 2025 13:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C4C1B4124;
+	Sun, 12 Jan 2025 14:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736689567; cv=none; b=UWDKn5VRNtHz+L2d/cAe9v/hZyQDlKR6JWsecCYYyvMz5V8Ed5jDaE1Ew7dAxpdAzIKSaToNDK+868mwcr5J9zkes0ERdSbMLkzz42sltN7irY9kVl6yQkljjtWVnU+VKGcUplt2XVS3dl8Ayco/G+eSqizV6CLkc/0G6tsUD1w=
+	t=1736690808; cv=none; b=t+VX8n8RPzeI9G1I6GgeFV2R0ZXvUZVsI3ATrb9zmeqdq5rbiHiUyVOdy8gnFIfEWvgvHT03ofkQwEz/MyObbQdWWsQrtxNTtDy90+ca66eO1AsPsQdog/UlcVqijLtlpQrpVs6b1VAnXJgvYO0kKS/0jZSLqExr8Tf8YcDE4Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736689567; c=relaxed/simple;
-	bh=R3BzTibY5PGUSuTCXfNftudxOrpI7scmnB1foW1a7BU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gJTy+vQ2l5aMSxP3Y+VbvNmUy1zDm9o7DKP0seB1dhuZhvoEldkaYmppauxnPbx0hYFWcmr157Fe+DSAEgD01ccPjTKrI074gBApuERU1gBlevEudmJjJyEj+bs4OGgl80krxzEgaSe4Qo90EKAgOJgR7srPPUw+lqS2gbL/CKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZiE20opq; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1736690808; c=relaxed/simple;
+	bh=zgkLOWNN45BGAyMFRgr0B18fI+bMiB+p2fc3bLGAHpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=E0nx6JV1ps9tTApZdOVKdxC+IA1Zs3DjaIwqIdHMiorWH3X2AQZm6KN/PZw6/Kl/T3UuMbRvf6wZb6Yb9nwM+8vzjZeP32wpxYt53qPGO11D/trCMp9bBL6o1P89H4yjrp8tXBYu6x4pxssmwY5EEakreklmeC3aSddxN12ZclU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUFuS92U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZiE20opq"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ef05d0ef18so751773a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jan 2025 05:46:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736689564; x=1737294364; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XSb16qaaauTohtEn3Pv7TfzOgncX9nl81yLRvtpnJzM=;
-        b=ZiE20opqr9jegbWYg9/F1/lC0FusyBY5jkP9uQ7BFJg/lHsak0Rl2+g86SBDZ9BfNp
-         XD/oi7n4icpkM57LCIaY0X9k84+sXOUSp1+QHFMRaQzfEsJuIzcwLCdBpobilY2qM8TV
-         XvX7nz4gCYpvp2GHC9YmaUR3yK62JTew38s0hT67irezHcFDWNTAuyGd1IPDyIOWXDMr
-         7utkrcD5UM5ro+zoCyAvxYWKAHs2UwEq+HYXkPSx7iJoXPFTcEYYJQubAS/galntMomd
-         sgKJNdxOgf7v+p7q0iqMleZCzJ2X/cNal6HGIl90/KZbML42xvXo9sJDsbkyEJClwRnn
-         orcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736689564; x=1737294364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XSb16qaaauTohtEn3Pv7TfzOgncX9nl81yLRvtpnJzM=;
-        b=ZCNspt/Q1uwYSZutBFVP2vKcKGUu9s67oT+7INdbkxXTetlDtgQXZMTT8pCqaTj9s5
-         ugVv3OBXOKxBYFbpeFl4YRZeAOMTKZiWVFOmJZBe1uAmzTWNk1h1KIP67Z7V50yCWiQ7
-         9/e1tSUfo+55rxb6WYPk4OcSogyvH4PXR/MgAXan5DdtRaSMtQ6DwGJdMGl1AN8TUcWP
-         Y3KSBG0FhRHHTfknknfbZhyON2VfYrOjITr90eiH0So7KgegHPZiLWNAoVmSMrqFxukY
-         Nep10aFMnYZybfr5mYBpPmi8A802tuDjElPCWM/DFzeufru1zREL/ipjcy+wL/K0UVUM
-         nk4w==
-X-Gm-Message-State: AOJu0YxDjKQWCbpdqJvTD1TigEWUBy/K4jCBZVB74UFJPKWNBFW1C5Ma
-	OtZ5x4YTnRq0SWI2gNdQZ+rKka8Q9b+qanUtkQdZN3R8dICyE3H2LHQc+XOvFx2ZAJEl8yURuu1
-	0UppE6n8T+xMeCUJobqoC0zYuxU16x8FJbtw=
-X-Gm-Gg: ASbGnctPt0d0N4zPvwEKg5IwquU7zdQnVawYgrv7kE+ZgAyVe2VP5t9O5r+M50aY5Ee
-	/h2xHzTQPpuy5+PnaV7GdEusa2WLbPBC0yeSbJg==
-X-Google-Smtp-Source: AGHT+IEna/vdEMp44ipJMc0YleYa7/ion7n7Y6Fz5gUYZb5kGBgA6szXibyUFtH0tu2GU7ooT7z440XgCv68RjjOXTw=
-X-Received: by 2002:a17:90b:2c8c:b0:2ee:b665:12c2 with SMTP id
- 98e67ed59e1d1-2f548f04e89mr9615290a91.2.1736689563248; Sun, 12 Jan 2025
- 05:46:03 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUFuS92U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B38BC4CEDF;
+	Sun, 12 Jan 2025 14:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736690807;
+	bh=zgkLOWNN45BGAyMFRgr0B18fI+bMiB+p2fc3bLGAHpw=;
+	h=Date:From:To:Cc:Subject:From;
+	b=CUFuS92UMBnetsnmHncW2ivHaKED771EgVPOzhGWxj2yMK8y0c0jAcU6RjeyrXpT4
+	 1FEK1SaN+VWJDrt+A6ZLfZZrQ4yPKGuTkQx0XaFsDBKKUhNqgOaATwqnsM442LBwIZ
+	 ro9cAMlRovaJNzxyR583hUD0KyjHMTLkpOC4J/24=
+Date: Sun, 12 Jan 2025 15:06:44 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: rust-for-linux@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Char/Misc/IIO driver changes for 6.13-rc7
+Message-ID: <Z4PMdA-E4_Ifi8sK@kroah.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250107062134.2981602-1-dirk.behme@de.bosch.com>
-In-Reply-To: <20250107062134.2981602-1-dirk.behme@de.bosch.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 12 Jan 2025 14:45:50 +0100
-X-Gm-Features: AbW1kvbxEuGp_myBBHs4laMHnT3V_tmUfVQHvfLoDcfgiVSgTAH6aQzM-2ow7Xo
-Message-ID: <CANiq72n5Ooz0Navk7iDGdwca3sk6fJR-W-HtFV2gead2n9s96A@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: Add error handling sections
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 7, 2025 at 7:21=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
- wrote:
->
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72keOdXy0LFKk9SzYWwSjiD=
-710v=3DhQO4xi+5E4xNALa6cA@mail.gmail.com/
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+The following changes since commit 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8:
 
-Nit (no need to send a new version for this!): I think these should be
-sorted the other way around (the docs mention this for Reported-by
-only, but I think it makes sense to be consistent, so that is what I
-typically do).
+  Linux 6.13-rc3 (2024-12-15 15:58:23 -0800)
 
-> +As these example tests might be used as examples for "real code" they sh=
-ould
-> +be written like "real code". For example, instead of using ``unwrap()``/=
-``expect()``
+are available in the Git repository at:
 
-Somehow the wording here seems off (to me)... perhaps it is the
-duplication of "real code"?
+  git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git tags/char-misc-6.13-rc7
 
-What about something like...
+for you to fetch changes up to c7a5378a0f707686de3ddb489f1653c523bb7dcc:
 
-    Since these tests are examples, i.e. they are part of the
-documentation, they should generally be written like "real code".
-Thus, for example, ...
+  misc: microchip: pci1xxxx: Resolve return code mismatch during GPIO set config (2025-01-08 15:47:39 +0100)
 
-Thanks for the patch!
+----------------------------------------------------------------
+Char/Misc/IIO driver fixes for 6.13-rc7
 
-Cheers,
-Miguel
+Here are a bunch of small IIO and interconnect and other driver fixes
+for 6.13-rc7 to resolve reported issues.  Included in here are:
+  - loads of iio driver fixes as a result of an audit of places where
+    uninitialized data would leak to userspace.
+  - other smaller, and normal, iio driver fixes.
+  - mhi driver fix
+  - interconnect driver fixes
+  - pci1xxxx driver fix
+
+All of these have been in linux-next for a while with no reported
+issues.
+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+----------------------------------------------------------------
+Bartosz Golaszewski (1):
+      interconnect: icc-clk: check return values of devm_kasprintf()
+
+Carlos Song (1):
+      iio: gyro: fxas21002c: Fix missing data update in trigger handler
+
+Charles Han (1):
+      iio: adc: ti-ads1298: Add NULL check in ads1298_init
+
+Christophe JAILLET (1):
+      iio: adc: ad9467: Fix the "don't allow reading vref if not available" case
+
+David Lechner (1):
+      iio: adc: ad7173: fix using shared static info struct
+
+Fabio Estevam (1):
+      iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
+
+Georgi Djakov (1):
+      interconnect: qcom: icc-rpm: Set the count member before accessing the flex array
+
+Greg Kroah-Hartman (3):
+      Merge tag 'iio-fixes-for-6.13a' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-linus
+      Merge tag 'mhi-fixes-for-v6.13' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/mani/mhi into char-misc-linus
+      Merge tag 'icc-6.13-rc6' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/djakov/icc into char-misc-next
+
+Javier Carrasco (10):
+      iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
+      iio: adc: ti-ads8688: fix information leak in triggered buffer
+      iio: light: bh1745: fix information leak in triggered buffer
+      iio: light: vcnl4035: fix information leak in triggered buffer
+      iio: imu: kmx61: fix information leak in triggered buffer
+      iio: adc: rockchip_saradc: fix information leak in triggered buffer
+      iio: pressure: zpa2326: fix information leak in triggered buffer
+      iio: adc: ti-ads1119: fix information leak in triggered buffer
+      iio: temperature: tmp006: fix information leak in triggered buffer
+      iio: adc: ti-ads1119: fix sample size in scan struct for triggered buffer
+
+Jean-Baptiste Maneyrol (2):
+      iio: imu: inv_icm42600: fix spi burst write not supported
+      iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
+
+Joe Hattori (2):
+      iio: adc: at91: call input_free_device() on allocated iio_dev
+      iio: inkern: call iio_device_put() only on mapped devices
+
+Johan Hovold (1):
+      bus: mhi: host: pci_generic: fix MHI BAR mapping
+
+Matti Vaittinen (1):
+      iio: test: Fix GTS test config
+
+Olivier Moysan (1):
+      iio: adc: stm32-dfsdm: handle label as an optional property
+
+Pei Xiao (1):
+      iio: test : check null return of kunit_kmalloc in iio_rescale_test_scale
+
+Rengarajan S (2):
+      misc: microchip: pci1xxxx: Resolve kernel panic during GPIO IRQ handling
+      misc: microchip: pci1xxxx: Resolve return code mismatch during GPIO set config
+
+Sean Nyekjaer (1):
+      dt-bindings: iio: st-sensors: Re-add IIS2MDC magnetometer
+
+Trevor Gamblin (1):
+      iio: adc: ad4695: fix buffered read, single sample timings
+
+Uwe Kleine-König (1):
+      iio: adc: ad7124: Disable all channels at probe time
+
+Zicheng Qu (2):
+      staging: iio: ad9834: Correct phase range check
+      staging: iio: ad9832: Correct phase range check
+
+ .../devicetree/bindings/iio/st,st-sensors.yaml     |  1 +
+ drivers/bus/mhi/host/pci_generic.c                 |  2 +-
+ drivers/iio/adc/ad4695.c                           | 98 +++++++++++++++-------
+ drivers/iio/adc/ad7124.c                           |  3 +
+ drivers/iio/adc/ad7173.c                           | 10 ++-
+ drivers/iio/adc/ad9467.c                           | 15 +++-
+ drivers/iio/adc/at91_adc.c                         |  2 +-
+ drivers/iio/adc/rockchip_saradc.c                  |  2 +
+ drivers/iio/adc/stm32-dfsdm-adc.c                  | 13 +--
+ drivers/iio/adc/ti-ads1119.c                       |  4 +-
+ drivers/iio/adc/ti-ads124s08.c                     |  4 +-
+ drivers/iio/adc/ti-ads1298.c                       |  2 +
+ drivers/iio/adc/ti-ads8688.c                       |  2 +-
+ drivers/iio/dummy/iio_simple_dummy_buffer.c        |  2 +-
+ drivers/iio/gyro/fxas21002c_core.c                 | 11 ++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  1 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   | 22 ++++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c    |  3 +-
+ drivers/iio/imu/kmx61.c                            |  2 +-
+ drivers/iio/inkern.c                               |  2 +-
+ drivers/iio/light/bh1745.c                         |  2 +
+ drivers/iio/light/vcnl4035.c                       |  2 +-
+ drivers/iio/pressure/zpa2326.c                     |  2 +
+ drivers/iio/temperature/tmp006.c                   |  2 +
+ drivers/iio/test/Kconfig                           |  2 +-
+ drivers/iio/test/iio-test-rescale.c                |  4 +
+ drivers/interconnect/icc-clk.c                     | 10 +++
+ drivers/interconnect/qcom/icc-rpm.c                |  2 +-
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c    |  4 +-
+ drivers/staging/iio/frequency/ad9832.c             |  2 +-
+ drivers/staging/iio/frequency/ad9834.c             |  2 +-
+ 31 files changed, 173 insertions(+), 62 deletions(-)
