@@ -1,150 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A161C3D96A;
-	Sat, 11 Jan 2025 02:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB0BD528;
+	Sun, 12 Jan 2025 00:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736562373; cv=none; b=RxT3RigIQ3qC8FNqdK4MtkvUfqIsfJ+l1tRtIGoeFji27UUX71fxSh/STjcrNRw+RHrtpYM5bKjSnxCh4onlGfuQpDQu9+He8yQunMgT382nOA0MytEfk4Y96mwb2t+jIhW9nlqnYyETK2Dly9Fwz/GnJ8kAin/dt6dosbW73Qg=
+	t=1736642552; cv=none; b=XSY7ogqyRB3HKkW4o4sat8jM2kZrgUaWQXuAa2O+dDiPQuNLngnKYy7EUW58RdWG2d9iFwiJ99z1bMmxZ6YepaxOTjzBCKtM+3eh/pMPQNmae8ao/ioXdHAuaiywjeILNqIwFpEP1SZZTq/kskFq0o1tRjiIEPKaaLBdJ7D/SF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736562373; c=relaxed/simple;
-	bh=Idfamzh46DJ+twDpww56R9aCJmI4wUd9lTayVqOmz9c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XIBwTeajNw+wjLMwTACsEX3eXDJc8/n69wY2a7Hbu+//9E/fNWw1LqvGIQ/5ObIYNU44HeKJknivQ75vZAs8tlyCtDNAQc2bddvHe3HJl061CQmHp1UkVlhPocQIUiHRd2/Z1EYVmks0cZUrdsGVxEhAMMoPJOBwWABMVo8jZ7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohR/j8x4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736642552; c=relaxed/simple;
+	bh=Z1BKUv222L4W5EpLjlS5rXbNNqX1dnJIFJb1SINHK6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tr9MUsPtJTFTmUooa8vrIsEDFZN4LwJwXijA+ZulU6UoSaHx1VB1w0jjTTuJ2BXdIXudVdZwI+7zY35rBdCxjhYxguL4vWtChymxHRQuzVHMHVy1trLt9JO0QBHl23R+3yYM1W7hkSNpfk2RHhEtXTYeZkpKJDM/53ros0a3qsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BlmvgUUH; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohR/j8x4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223D2C4AF09;
-	Sat, 11 Jan 2025 02:26:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736562373;
-	bh=Idfamzh46DJ+twDpww56R9aCJmI4wUd9lTayVqOmz9c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ohR/j8x4mduyecIm9IHmeoUkPWOY+eL9haML+1wT95TX7hFydUAGVoeVQu0NjFekQ
-	 7100PZd0U0jMw+S9PnOCq51wYRBB5kuqlMx93Ojz3c5CvqCMuf8YcFbWDFhsPdG5Ln
-	 xiMZ1grF3yIfJsreZkNdd747u+md/mGMbJUCSfodSNx/XSaydM+XC9LBAV2Qd/5h5S
-	 TD5RoESsX13yR7dXyDgsM0ND+4siMR8z3j0bxDSaa6RzDvKxSt8mgb/QvrVHjrHbfE
-	 wWh/KZ66qT4ksJbyx+zzmu9BcsdWe6yO2BrGmVtohVUea0qgLaeRSE94P55UFxDre3
-	 45sU9DIbXc+qg==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-304e4562516so24798271fa.1;
-        Fri, 10 Jan 2025 18:26:13 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU4aeOs+TUtWX8+c42O4J/TL+lRQuXU9R1YnRxUQFaEwAyhRUXkvJmKCwMCD81uBPr3A6fJ3y/Kn3Tvdjb8Mw==@vger.kernel.org, AJvYcCUaWrNukA0cUsJcHJLVjky/CHDsEAmWVyAEX9QpErTUezlKADBi0XpnAh2MUiYu8A6rKrsTZxd2vzJIPk4h@vger.kernel.org, AJvYcCVaOFnuBfOZl5Zuycm37HY3Jk+/dNv+26dRRSMvqkMJa9XGd10M+NyQ1pVSZ/r7YECVNXkTjGAW0OTa3hmd@vger.kernel.org, AJvYcCXLYC7IkkU6b0Lkyk+EQZjr1TneteG2eGiqx36SmxtjNQtldIal0DquKvBK6K7Oi6DZWQlre2eCn9RVK/xV2fU=@vger.kernel.org, AJvYcCXgk260ZhHnFLU2Zz6go8YLwoB1ppKhLprJ8tpuaMuBlMo8ALvB1i5YqEcKjWOsaefj1/zeuB4qd34=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9tv+XarKWdAnjRUrLcWzRB3cA273shDq2Zla8vavmjseoctjM
-	87jCUsfui1sGWbZR9VukPdTQzJ4ikcD+e6ysv5S8B4GIArPGHi7pCugYBP1tR/zkGkuVjFHrys+
-	wuxo7bJd9QPnpH7eGiP+a9fJGxsg=
-X-Google-Smtp-Source: AGHT+IFSeUdKlBePUTptLfNo7AV+Ke5p3rh1RAhmgs6127AKDeZ16XwTtR3YDLtLxc44SZaiu8s77F1oCGDkn1B2CUY=
-X-Received: by 2002:a2e:bc23:0:b0:302:1fce:393d with SMTP id
- 38308e7fff4ca-305fcf85a3fmr26095711fa.2.1736562371733; Fri, 10 Jan 2025
- 18:26:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BlmvgUUH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736642551; x=1768178551;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Z1BKUv222L4W5EpLjlS5rXbNNqX1dnJIFJb1SINHK6c=;
+  b=BlmvgUUH3umgj6j8u3SA9w2xC5dhEkEChZpT7nxcq8X5XXzX63bVER9y
+   cz/VYmLuTR+79cSvE5Wy+k+ZGO75ybvNUnOIgduRz+OmHJxlznLcQpHff
+   ZlPEUo4xAvnCgFx2y8k8v+AYwRgaAc+jpFwJaJIPJX39zmXJvnhC19EU1
+   9QxKd+xthKtkkh5KSpW5WFbCxQnOwC63aMe20PoDpMqJtJ+XcmmN826o/
+   Mn1iiWGE6O6q7TgPGWB1fuQtGgNtcwdMKGN5XzJVjfaAeIXOWrxfM5YKI
+   jkOzDGdtU5On4mfFv/FFwS/u7C5eWCMURxIeYF3lfBUieRySaCLNBTUNJ
+   w==;
+X-CSE-ConnectionGUID: l03Gs1wlS/Wfqyqxwc5Neg==
+X-CSE-MsgGUID: c7tJgyffTSKz+aJRPgsBtg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="59387755"
+X-IronPort-AV: E=Sophos;i="6.12,308,1728975600"; 
+   d="scan'208";a="59387755"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 16:42:30 -0800
+X-CSE-ConnectionGUID: 0P+b6rxfT0W1z3/oMwlZdw==
+X-CSE-MsgGUID: OufXYvbTTXeHj7WKqoVPBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,308,1728975600"; 
+   d="scan'208";a="104131216"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 11 Jan 2025 16:42:24 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tWm3a-000LN4-1o;
+	Sun, 12 Jan 2025 00:42:22 +0000
+Date: Sun, 12 Jan 2025 08:41:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	daniel.almeida@collabora.com, aliceryhl@google.com,
+	robin.murphy@arm.com, rust-for-linux@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	iommu@lists.linux.dev, Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: Re: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+Message-ID: <202501120855.PXuydC6T-lkp@intel.com>
+References: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com> <20250103-extended-modversions-v13-5-35d87c65ee04@google.com>
-In-Reply-To: <20250103-extended-modversions-v13-5-35d87c65ee04@google.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 11 Jan 2025 11:25:35 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATGw-m_dcdjTBHsFwCZh7mTt8q8yNZQ7VFP=hMU8NvUvg@mail.gmail.com>
-X-Gm-Features: AbW1kvb7GALEjFsi9ilnzzIkVesgxqvRHO2ZeNtTEBScvuq46-k7JP8S_G4h1io
-Message-ID: <CAK7LNATGw-m_dcdjTBHsFwCZh7mTt8q8yNZQ7VFP=hMU8NvUvg@mail.gmail.com>
-Subject: Re: [PATCH v13 5/5] rust: Use gendwarfksyms + extended modversions
- for CONFIG_MODVERSIONS
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Jonathan Corbet <corbet@lwn.net>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250108122825.136021-3-abdiel.janulgue@gmail.com>
 
-On Sat, Jan 4, 2025 at 2:37=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
-wrote:
->
-> From: Sami Tolvanen <samitolvanen@google.com>
->
-> Previously, two things stopped Rust from using MODVERSIONS:
-> 1. Rust symbols are occasionally too long to be represented in the
->    original versions table
-> 2. Rust types cannot be properly hashed by the existing genksyms
->    approach because:
->         * Looking up type definitions in Rust is more complex than C
->         * Type layout is potentially dependent on the compiler in Rust,
->           not just the source type declaration.
->
-> CONFIG_EXTENDED_MODVERSIONS addresses the first point, and
-> CONFIG_GENDWARFKSYMS the second. If Rust wants to use MODVERSIONS, allow
-> it to do so by selecting both features.
->
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> Co-developed-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  init/Kconfig  |  3 ++-
->  rust/Makefile | 34 ++++++++++++++++++++++++++++++++--
->  2 files changed, 34 insertions(+), 3 deletions(-)
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index c1f9eb3d5f2e892e977ba1425599502dc830f552..b60acfd9431e0ac2bf401ecb6=
-523b5104ad31150 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -1959,7 +1959,8 @@ config RUST
->         bool "Rust support"
->         depends on HAVE_RUST
->         depends on RUST_IS_AVAILABLE
-> -       depends on !MODVERSIONS
-> +       select EXTENDED_MODVERSIONS if MODVERSIONS
-> +       depends on !MODVERSIONS || GENDWARFKSYMS
->         depends on !GCC_PLUGIN_RANDSTRUCT
->         depends on !RANDSTRUCT
->         depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-> diff --git a/rust/Makefile b/rust/Makefile
-> index a40a3936126d603836e0ec9b42a1285916b60e45..80f970ad81f7989afe5ff2b5f=
-633f50feb7f6006 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -329,10 +329,11 @@ $(obj)/bindings/bindings_helpers_generated.rs: priv=
-ate bindgen_target_extra =3D ;
->  $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c =
-FORCE
->         $(call if_changed_dep,bindgen)
->
-> +rust_exports =3D $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && =
-$$3!~/__cfi/ { printf $(2),$(3) }'
-> +
->  quiet_cmd_exports =3D EXPORTS $@
->        cmd_exports =3D \
-> -       $(NM) -p --defined-only $< \
-> -               | awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ {printf "EXPORT_SY=
-MBOL_RUST_GPL(%s);\n",$$3}' > $@
-> +       $(call rust_exports,$<,"EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3) > $@
+Hi Abdiel,
 
-I noticed a nit:
+kernel test robot noticed the following build errors:
 
-Both of the two callsites of rust_exports pass
-'$$3' to the last parameter instead of hardcoding it.
+[auto build test ERROR on v6.13-rc6]
+[also build test ERROR on linus/master]
+[cannot apply to next-20250110]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Is it a flexibility for future extensions?
+url:    https://github.com/intel-lab-lkp/linux/commits/Abdiel-Janulgue/rust-error-Add-EOVERFLOW/20250108-202929
+base:   v6.13-rc6
+patch link:    https://lore.kernel.org/r/20250108122825.136021-3-abdiel.janulgue%40gmail.com
+patch subject: [PATCH v8 2/2] rust: add dma coherent allocator abstraction.
+config: um-randconfig-001-20250112 (https://download.01.org/0day-ci/archive/20250112/202501120855.PXuydC6T-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project f5cd181ffbb7cb61d582fe130d46580d5969d47a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250112/202501120855.PXuydC6T-lkp@intel.com/reproduce)
 
-I cannot think of any other use except for printing
-the third column, i.e. symbol name.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501120855.PXuydC6T-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
 
+>> error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
+   --> rust/kernel/dma.rs:145:23
+   |
+   145   |               bindings::dma_alloc_attrs(
+   |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
+   |
+   ::: rust/bindings/bindings_generated.rs:39433:5
+   |
+   39433 | /     pub fn dma_alloc_pages(
+   39434 | |         dev: *mut device,
+   39435 | |         size: usize,
+   39436 | |         dma_handle: *mut dma_addr_t,
+   39437 | |         dir: dma_data_direction,
+   39438 | |         gfp: gfp_t,
+   39439 | |     ) -> *mut page;
+   | |__________________- similarly named function `dma_alloc_pages` defined here
+--
+>> error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
+   --> rust/kernel/dma.rs:262:23
+   |
+   262   |               bindings::dma_free_attrs(
+   |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
+   |
+   ::: rust/bindings/bindings_generated.rs:39442:5
+   |
+   39442 | /     pub fn dma_free_pages(
+   39443 | |         dev: *mut device,
+   39444 | |         size: usize,
+   39445 | |         page: *mut page,
+   39446 | |         dma_handle: dma_addr_t,
+   39447 | |         dir: dma_data_direction,
+   39448 | |     );
+   | |_____- similarly named function `dma_free_pages` defined here
 
-
-
---=20
-Best Regards
-Masahiro Yamada
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
