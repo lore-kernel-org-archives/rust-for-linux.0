@@ -1,61 +1,61 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF1B23A56F
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17F423A59E
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736767429; cv=none; b=itxYqysxcCntTbe/AYBUgjjKohmQ7nP3Xyx71aT0pbhwKd9yI7IpTpwh1Kk5ZbxF8ecyJCIK4/WXMjQ4rkSUAsI1r+qYW2FVAMF332l0+nYyFutcdbpWBVrF0vthYr7jMnXGXnpF51y+i26PN+rPFJ3KPuor4dp3EpBBD4XGw/w=
+	t=1736767433; cv=none; b=CBmF2ZQSFx1GxtaxqpKyCI7kNZZftXyUaXCyJ8lsRgiodabd/tzd1Q7g8U9sjtARVwPqivZpAXNX4WSmA9SjZgeVQOeVyU0fGlr5MCm28iFjl1iOmUCoafPl3MBBGHjFuAr3pNzXVH6OYTEaM+7Gm2tfHHFY/CYYTvjqKWF1nDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736767429; c=relaxed/simple;
-	bh=qFjzLah+7k0bGLsf807G16R7Nl932aHbCVEztV18Qug=;
+	s=arc-20240116; t=1736767433; c=relaxed/simple;
+	bh=zpYDXqsOf66H5oUlZfzc8U4T3Ym6DA5SpJV3ddgDOqM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kmnWg1DA4FptWzKzmwDILDsJEBwAD/87hmITG6lDrN/aMp7jJ3XE7hHKSwHUGlQpeh9WJh4kMS2vcUIGFFNfC97XIDOM6UMhsg9MqHyrfFjY2zGZH6Wn/09YRs5Tu4eRk0TIuTqGumtvDfxuu3BObJmk192t73UV7GDeq6wnTWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=whRU9Cfj; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=WMYjev1zbuQ5QHshyPV+Vw8tcoZtwOwez9ux0dvPa6/TplsJrldeQj2OBml5RnJYGpYRRaoyDLq2QSQkqqmvx/xnDSFMqxuIeS9VqoWZxyCD0/m9oEBWEV/LKFjuyVQM73M/Epn0T5lBY5jKrSzEaa68SQKEP00fgt5z7GRKBbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bfRBwU6z; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="whRU9Cfj"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-218c8aca5f1so87912275ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:23:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bfRBwU6z"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-21670dce0a7so86474595ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:23:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736767427; x=1737372227; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1736767431; x=1737372231; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Erl89OKGaS5TERvIe2o6tMzhWrw69h3Z1JOwTaxOJAQ=;
-        b=whRU9CfjTnHWSyizQVtwhP59wdi9PnmXTxU0lGYVZ2iGN3hA10ZihH+eLtxU9PG1XH
-         IH5HRO/Fi4Txp9Kv061J8jDSGnWBFnTnupIRUaxNaOIrUe3hDVa3pHCoKSoWlpOD+BYK
-         5taBS0fy3OpCTJ1BuhRd2GhQQDuX6X23Yaqa3XetPkLqrFIhCq3VVb0KCh6MrRJN65wx
-         Q9J+IQY4lMrR8fD+lF/i2k7G8oeoiNhe3DxFfDQQwmWZoIgKGcdjEzrudnUfKB6qq2pN
-         NbPg32wBec267vXW7RKS2id8FCkzgr9rSML4d55Fzs3T+dGCieQ5wN+OsuCtisjzkxrY
-         1/tQ==
+        bh=6pq5lDpyHLAZUwHZL3qfvRqj8bZ5lnU8jFdny8YX3GE=;
+        b=bfRBwU6z8Kn6jFtS42kbw6bXFOLddaA5LWH0bKWeb5vLVwycl94DItaHPlemQ18CKh
+         zrBAKVKpPyNEhvl3wpiHZnbDZN9TOd6cYLwIfcHbyGJVA0NPrr9DPV2YsD3nt+DhS6Cn
+         a3AxVjNvRyneCani2PgMDtFZU44XzJrL+llO7qBYV0kvSwwrkhenDQrKzfrQJaHkGwnW
+         TQoPqGL5PBWxFumNaKMkujGhMMtkWZ9J69+p20VvMqMaicmcFKgosfJcxBmBoWKMjhnC
+         95xhRvAMxwHeFa0qReX/zJi6LRRhFrJ7n53TArofUsBfJWuWhsW9AoRFgbw/WgxS/T+t
+         4wIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736767427; x=1737372227;
+        d=1e100.net; s=20230601; t=1736767431; x=1737372231;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Erl89OKGaS5TERvIe2o6tMzhWrw69h3Z1JOwTaxOJAQ=;
-        b=bbeuStQkbZcyF8W+X9SXY/gcZb0RvT2fmxOuv6cmYibgwEa6qxHXaNwMAcoxrPliVV
-         IHbXeOC3xEtD0WQQPSusRzQry0q2sGr7XBjBZYWyPVvFyS9mGhXgaikWdGGhD4374oWb
-         YbvHkZ5Fp0MFdvdexFeIwGAkBtht2E3/iXPK8cRzBnvcjBvhH5vV1NWBIzAlxVZiBAJo
-         8ghFvJbhITJKgFPlqRHyYk2ELJ333M8GHEcJ+DwedGpQrQ3TFegxps7RX8dbwy+0vKUV
-         pv1W90vKOjppjVz+5Dts76wOCSRmXkEgZMLyB5OGracyCVSp0kBBrpNlFycJVUQMEHwc
-         Pf4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVxl6+HTBeQ2mb/14oyiKyN2VrFUIQc7rjIvrgGNefncasrvrBHM5ABAuxCi69Kna7BAftnLttKbqCsn3odxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8yH3G1YDoI6YFMlPJLBiMAMqy2OasRTgmzbscJFqER+q84sO8
-	7aCwZ+2fHEdT5FAoa5zrrVf4itb6zyWvUbqQvSeIkSBgShBsG9NU9XvDSCESFFw=
-X-Gm-Gg: ASbGncsNbH3RGwmobBqdk5h0ih9KfO3c0dqPuQOX+YUAZhEoR1fezM6vvoQ2MfJIcSt
-	CQM4E4JK6Rq/1Wn3jNhCmRYxIMx042q5iHLM6Z6KLzd8rP+bT5tNNmksa3sSen8H45dlPpiaO2W
-	cDCCS7Dr6K5W06vPNXYkW5VGsDYmvgQaeLYwiGtq9XuAl/v3Jk9HORmr5mg4OdanPTnf0YY1heI
-	ldTQIvA4OmUOvAjQReVcn308zrxHIfn4frv4W7PHkVXQPWaBHljswn7lMk=
-X-Google-Smtp-Source: AGHT+IFwnNOadRELhgUS4RHnfHmljCOFqvDn5NHiGTae6Lam/bomtLxFMSA+qHltYXwddKyNK29zYg==
-X-Received: by 2002:a17:902:d2d0:b0:216:45b9:439b with SMTP id d9443c01a7336-21a8400a357mr316419915ad.50.1736767427451;
-        Mon, 13 Jan 2025 03:23:47 -0800 (PST)
+        bh=6pq5lDpyHLAZUwHZL3qfvRqj8bZ5lnU8jFdny8YX3GE=;
+        b=S4uU0JKCA2oQ2hcLIZKSn5TTn0lRcRocIbdlh+8I10Adpnm0AAy/k7trH4tEumhFcy
+         H/Kf8AgnJY7X0uD8v8iB5h0BRm3dS2hDb3WaYPbHk6mAXQ5EQg+cuf0cYrIbqWaUUQ4b
+         1Nceh8LQh/En3KWAJgBwajFgPB1QpWSKH9RyBFitzOXwyvXJyA7oOLDJGHLVdwbtVRzv
+         ofIaG1vbPY3xPhsa/wpTiLHNyawUA648wq/IKBoLTR2odZ1uDCQYpsHc31ykSuRXA3Jm
+         XLl/vzlvWdjH8qxrLGFsB+B1PkMtNgK2XntnF1lne6hJAKEL+9zji8FfQe9irvW745iY
+         8bRA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7PTTbKc6pHdysYrsw3cWI5viXyyAiS1qvceRmph1lHxoB68cczyafeuVb/TvPSL2g0Oug72PXWHn6jg1dvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeDAC7B/WXOEF74Uzx+oF6n+cfMlkXdbC1C/BP4RtRCZXlfA+b
+	5w2vNlGAObygk9AkUK15ZqQY2fKdXJ3hxNLXySlLJpseJMgA5q2MnRo++T7Xr14=
+X-Gm-Gg: ASbGnctbC3mL41p8DEr42EbEZc/+6rZTXdqDzoNSqEWEjSoIrmXOP+pUK52K1sg6l9Q
+	ZawWhvxguJbgJFIuy1m9Fkc2be2q0BU67zTxMy6bzPM5uaYuWGTQ3SUdJGzdAXHPFRovBHQtIhF
+	sjiOV03Lp5U160XHoieHcYHovFKTvzda0256gi6wXhuxK1RaYTmqg/ogn6M51e1/QcUZVLLCQ8B
+	wM+yshbp/3zFzZwQ4U69ZI9/4237ySQrJYRmoYPcKg5O64vv3/ZoBlDPos=
+X-Google-Smtp-Source: AGHT+IEOjxJGVr7HBQVa0jzU1CKfFnjVBIzuSJp/j9DkYQxsSgo0CuPg7K6fdft0Ynvn0NGP+sGtsQ==
+X-Received: by 2002:a05:6a00:10d2:b0:725:9d70:6ace with SMTP id d2e1a72fcca58-72d21f5c141mr27897173b3a.6.1736767431251;
+        Mon, 13 Jan 2025 03:23:51 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f10dddfsm52432345ad.23.2025.01.13.03.23.46
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d40681b3dsm5683664b3a.153.2025.01.13.03.23.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 03:23:47 -0800 (PST)
+        Mon, 13 Jan 2025 03:23:50 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -66,17 +66,15 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>
+	Trevor Gross <tmgross@umich.edu>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V7 04/16] rust: device: Add property_present()
-Date: Mon, 13 Jan 2025 16:52:59 +0530
-Message-Id: <f43fe3f7b3151a89c261ad728b0f3bb2fc24caef.1736766672.git.viresh.kumar@linaro.org>
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH V7 05/16] rust: Add cpumask helpers
+Date: Mon, 13 Jan 2025 16:53:00 +0530
+Message-Id: <5260b6f0308b67ca5cff002e95108504f04cf923.1736766672.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1736766672.git.viresh.kumar@linaro.org>
 References: <cover.1736766672.git.viresh.kumar@linaro.org>
@@ -88,54 +86,82 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This implements Device::property_present(), which calls C APIs
-device_property_present() helper.
-
-The new helper will be used by Rust based cpufreq drivers.
+In order to prepare for adding Rust abstractions for cpumask, this patch
+adds cpumask helpers.
 
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- rust/bindings/bindings_helper.h | 1 +
- rust/kernel/device.rs           | 7 +++++++
- 2 files changed, 8 insertions(+)
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/cpumask.c          | 35 +++++++++++++++++++++++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 3 files changed, 37 insertions(+)
+ create mode 100644 rust/helpers/cpumask.c
 
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index d63e7f6d10ea..fda1e0d8f376 100644
+index fda1e0d8f376..59b4bc49d039 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
-@@ -27,6 +27,7 @@
- #include <linux/pid_namespace.h>
- #include <linux/platform_device.h>
- #include <linux/poll.h>
-+#include <linux/property.h>
- #include <linux/refcount.h>
- #include <linux/sched.h>
- #include <linux/security.h>
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index d5e6a19ff6b7..e8c4cda5aacc 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -6,6 +6,7 @@
- 
- use crate::{
-     bindings,
-+    str::CString,
-     types::{ARef, Opaque},
- };
- use core::{fmt, ptr};
-@@ -180,6 +181,12 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
-             )
-         };
-     }
+@@ -11,6 +11,7 @@
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
+ #include <linux/cpu.h>
++#include <linux/cpumask.h>
+ #include <linux/cred.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+diff --git a/rust/helpers/cpumask.c b/rust/helpers/cpumask.c
+new file mode 100644
+index 000000000000..0b371826a13c
+--- /dev/null
++++ b/rust/helpers/cpumask.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+    /// Checks if property is present or not.
-+    pub fn property_present(&self, name: &CString) -> bool {
-+        // SAFETY: By the invariant of `CString`, `name` is null-terminated.
-+        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_ptr() as *const _) }
-+    }
- }
- 
- // SAFETY: Instances of `Device` are always reference-counted.
++#include <linux/cpumask.h>
++
++void rust_helper_cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
++{
++	cpumask_set_cpu(cpu, dstp);
++}
++
++void rust_helper_cpumask_clear_cpu(int cpu, struct cpumask *dstp)
++{
++	cpumask_clear_cpu(cpu, dstp);
++}
++
++void rust_helper_cpumask_setall(struct cpumask *dstp)
++{
++	cpumask_setall(dstp);
++}
++
++void rust_helper_cpumask_copy(struct cpumask *dstp, const struct cpumask *srcp)
++{
++	cpumask_copy(dstp, srcp);
++}
++
++bool rust_helper_zalloc_cpumask_var(cpumask_var_t *mask, gfp_t flags)
++{
++	return zalloc_cpumask_var(mask, flags);
++}
++
++#ifndef CONFIG_CPUMASK_OFFSTACK
++void rust_helper_free_cpumask_var(cpumask_var_t mask)
++{
++	free_cpumask_var(mask);
++}
++#endif
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 0640b7e115be..de2341cfd917 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -11,6 +11,7 @@
+ #include "bug.c"
+ #include "build_assert.c"
+ #include "build_bug.c"
++#include "cpumask.c"
+ #include "cred.c"
+ #include "device.c"
+ #include "err.c"
 -- 
 2.31.1.272.g89b43f80a514
 
