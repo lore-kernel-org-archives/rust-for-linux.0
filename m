@@ -1,225 +1,209 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0EC182CD;
-	Mon, 13 Jan 2025 13:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736774153; cv=none; b=cm06HKGwoHNAgPIJU7KcbDRP/3X/snClDh/fzo0po3dheBXGdFvNdEJwYYbWGfdrjcTnsEBG2Qrn60dVBQcO/ADiwmBwJdRsvjT8vf5KgMCyf/ezLtXcauw6JJnCwc0Zunq7laUPpFXC4/ng4xx/ArI9X2v9Ce33WYV0RoPHEQ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736774153; c=relaxed/simple;
-	bh=FR8nnHJQopVpCmN0ndbmN43l3Yw06MJvhY8jsbS9DiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mxSJ45LWHxR1Y51dSbTIiYWsMC9ODH7JE9pB+3v0Qo0aWvgG4kb8k8OEZ4euub07TTQI5KVoCjj6Y4NRL+K5VdBviSXRTtRIzoO9ChQFbgfGPjO9WERz/DCYsxzEJlBAC9BZYFA51tI3E7TzhK/kdQzaZqa4P2YkLnJVnRrkA4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SfwicVbw; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F0625757;
+	Mon, 13 Jan 2025 13:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736774189; cv=pass; b=RuGKE/ZD916diINwxSYLfBP6kt41NgENsc7UvjbtPTv1lgYXMr76qxYSsjOt5OulWDXKcUj48OavDfeinkXN0rBkxYSvUcfeVmYh1SfwX+Gco9hlxZ1cAYgiIPRkcQzkZa9WZ6+JwAebNHouWEwSID8LtiqW9gC6MEQEjqxNekc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736774189; c=relaxed/simple;
+	bh=a29455R9QFPGGVOVJIPzZsUQnhjtCPGM15+pIA6MZJQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Ok9Mi5xGnu084vxn7Kl03wyoQfZ71nBJg/T7pXQwFv5mDq4s0Vsx0WLNcyU3BU5tKoNOTx6yDJxzo9E6NMNZ+tCOK7Mg5vDFm9IyAIwB5SarY9txMi01ih6axUPmK2pn4gAxrfnSCYNqY0g0/LKwEVotWwyIsNqeRWCTXIodtWM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=kzHcGARf; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SfwicVbw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EA5C4CED6;
-	Mon, 13 Jan 2025 13:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736774152;
-	bh=FR8nnHJQopVpCmN0ndbmN43l3Yw06MJvhY8jsbS9DiQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SfwicVbwLFuEKs8APm40twHiby6uFhxZ+LG+lL0nu3dPvNv6E6UMC5AEbe+lX698s
-	 Uyi43+Z2CEZ4jf0qxdrjfVrImQy4DxBa0osNqkNLP1hxAk/nmo0k1uSGUg2i2V9yy/
-	 VY/7C3cVYWQWfMVTU32Emhdd7ILaGlOlcZvl/fBkjWxa8Wyz3Rc4Mv8eEReIPzsI8n
-	 mYJl0m92TSpzV9zb78fCWAjT4DRa2ZRRYaWO1e3zT6MPLyId6cupjO4Pydd05u/QPW
-	 nd88jtwtHvToOLXzYu3ACh25/SY8pS0YcwntfZyu9LFdRNXfZ3iU6RcpOZEqFhE4Bh
-	 Xxp4Me57DeFoA==
-Message-ID: <2225f6e2-bf49-4467-b44c-264729f54662@kernel.org>
-Date: Mon, 13 Jan 2025 14:15:48 +0100
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="kzHcGARf"
+ARC-Seal: i=1; a=rsa-sha256; t=1736774155; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dfMhg50fBuuijU0qieDZqs32xBVwOPSBDQt9nDtoLTs3QVZ/+6/9/iC47IVhK+Os0M6gI8k4SZasG2HWFR6Q6IKh2c1GuAjr+wPQzo6HMyXwbi2d/IlPk2QQ940S4as3DEiXbJ7hQD8l6wxjrQ1o4As7GZ8hQytgYQ8dCd74z3U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1736774155; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=bDcv/7gn0KIQQK+t5PzxUVNwz3mh5FX4s7Tlln3eVHU=; 
+	b=SflCo1AMlHpw1IsLiAdaAnTo/LCAaMmk7WWaYX717CF6Vr0AlJUK8wQ2hDiZTuJlIwSYuUc5kMrpZQILjqNAkxIs1eBMKeyTOZcJCB7+SyKUUeWOtA6abvKhDrhxR6AIbF+8c+IONANyHfub3anoA7eQN3GC4rsJegbcMXhtBLU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1736774155;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=bDcv/7gn0KIQQK+t5PzxUVNwz3mh5FX4s7Tlln3eVHU=;
+	b=kzHcGARfHee46J+20J0MC04BBcYjInKXb4/gvP43vbfb3XJ4ASkXYKesOOhJRBCO
+	sJrjwH0pDxN4DY1bX41O++t1Y0Whetz4Bz4QMlE3SOpMonXC+/WmWAIETQrDWZfr2eY
+	yaCKF8bOKBXFZt39k2YM+P/6mhKnSGHlsMhY42Ls=
+Received: by mx.zohomail.com with SMTPS id 1736774152429192.98179319347696;
+	Mon, 13 Jan 2025 05:15:52 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] rust: change `ForeignOwnable` pointer to mut
-Content-Language: en-US
-To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241120-borrow-mut-v6-0-80dbadd00951@gmail.com>
- <20241120-borrow-mut-v6-4-80dbadd00951@gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-In-Reply-To: <20241120-borrow-mut-v6-4-80dbadd00951@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.3\))
+Subject: Re: [PATCH v2 4/5] rust: add I/O port abstractions with resource
+ management
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250113121620.21598-5-me@kloenk.dev>
+Date: Mon, 13 Jan 2025 10:15:35 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>,
+ Lee Jones <lee@kernel.org>,
+ Jean Delvare <jdelvare@suse.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>,
+ Peter Koch <pkoch@lenovo.com>,
+ rust-for-linux@vger.kernel.org,
+ linux-leds@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9C204B39-B714-452D-8F90-8FE426470244@collabora.com>
+References: <20250113121620.21598-1-me@kloenk.dev>
+ <20250113121620.21598-5-me@kloenk.dev>
+To: Fiona Behrens <me@kloenk.dev>
+X-Mailer: Apple Mail (2.3826.300.87.4.3)
+X-ZohoMailClient: External
 
-On 20.11.2024 12:46, Tamir Duberstein wrote:
-> It is slightly more convenient to operate on mut pointers, and this also
-> properly conveys the desired ownership semantics of the trait.
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Hi Fiona,
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-
+> On 13 Jan 2025, at 09:16, Fiona Behrens <me@kloenk.dev> wrote:
+>=20
+> This patch introduces abstractions for working with I/O port =
+resources,
+> including the `Resource` and `Region` types. These abstractions =
+facilitate
+> interaction with `ioport_resource`, enabling safe management of =
+resource
+> reservations and memory accesses.
+>=20
+> Additionally, helper functions such as `outb`, `outw`, and `outl` have =
+been
+> provided to write values to these resources, with matching read =
+functions
+> such as `inb`, `inw`, and `inl` for accessing the port memory.
+>=20
+> Signed-off-by: Fiona Behrens <me@kloenk.dev>
 > ---
->  rust/kernel/alloc/kbox.rs | 16 ++++++++--------
->  rust/kernel/miscdevice.rs |  2 +-
->  rust/kernel/sync/arc.rs   | 10 +++++-----
->  rust/kernel/types.rs      | 14 +++++++-------
->  4 files changed, 21 insertions(+), 21 deletions(-)
-> 
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index 3f0b04609bd487e3f50247f9f1abd5394b749c7e..e00c14053efbfb08d053e0f0b11247fa25d9d516 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -355,17 +355,17 @@ impl<T: 'static, A> ForeignOwnable for Box<T, A>
->  {
->      type Borrowed<'a> = &'a T;
->  
-> -    fn into_foreign(self) -> *const crate::ffi::c_void {
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
->          Box::into_raw(self).cast()
->      }
->  
-> -    unsafe fn from_foreign(ptr: *const crate::ffi::c_void) -> Self {
-> +    unsafe fn from_foreign(ptr: *mut crate::ffi::c_void) -> Self {
->          // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        unsafe { Box::from_raw(ptr.cast_mut().cast()) }
-> +        unsafe { Box::from_raw(ptr.cast()) }
->      }
->  
-> -    unsafe fn borrow<'a>(ptr: *const crate::ffi::c_void) -> &'a T {
-> +    unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> &'a T {
->          // SAFETY: The safety requirements of this method ensure that the object remains alive and
->          // immutable for the duration of 'a.
->          unsafe { &*ptr.cast() }
-> @@ -378,18 +378,18 @@ impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
->  {
->      type Borrowed<'a> = Pin<&'a T>;
->  
-> -    fn into_foreign(self) -> *const crate::ffi::c_void {
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
->          // SAFETY: We are still treating the box as pinned.
->          Box::into_raw(unsafe { Pin::into_inner_unchecked(self) }).cast()
->      }
->  
-> -    unsafe fn from_foreign(ptr: *const crate::ffi::c_void) -> Self {
-> +    unsafe fn from_foreign(ptr: *mut crate::ffi::c_void) -> Self {
->          // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        unsafe { Pin::new_unchecked(Box::from_raw(ptr.cast_mut().cast())) }
-> +        unsafe { Pin::new_unchecked(Box::from_raw(ptr.cast())) }
->      }
->  
-> -    unsafe fn borrow<'a>(ptr: *const crate::ffi::c_void) -> Pin<&'a T> {
-> +    unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> Pin<&'a T> {
->          // SAFETY: The safety requirements for this function ensure that the object is still alive,
->          // so it is safe to dereference the raw pointer.
->          // The safety requirements of `from_foreign` also ensure that the object remains alive for
-> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> index 7e2a79b3ae263659b7e0781c05cb130d10c8accb..e58807ad28dc644fa384e9c1fb41fd6e53abea7a 100644
-> --- a/rust/kernel/miscdevice.rs
-> +++ b/rust/kernel/miscdevice.rs
-> @@ -193,7 +193,7 @@ impl<T: MiscDevice> VtableHelper<T> {
->      };
->  
->      // SAFETY: The open call of a file owns the private data.
-> -    unsafe { (*file).private_data = ptr.into_foreign().cast_mut() };
-> +    unsafe { (*file).private_data = ptr.into_foreign() };
->  
->      0
->  }
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index a11f267ce5d40b987f1f3c459271e5317ea0bae8..01d85da799d77127fc99a9b270b8a7b1ef435b6f 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -333,24 +333,24 @@ pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
->  impl<T: 'static> ForeignOwnable for Arc<T> {
->      type Borrowed<'a> = ArcBorrow<'a, T>;
->  
-> -    fn into_foreign(self) -> *const crate::ffi::c_void {
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
->          ManuallyDrop::new(self).ptr.as_ptr().cast()
->      }
->  
-> -    unsafe fn borrow<'a>(ptr: *const crate::ffi::c_void) -> ArcBorrow<'a, T> {
-> +    unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> ArcBorrow<'a, T> {
->          // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        let inner = unsafe { NonNull::new_unchecked(ptr.cast_mut().cast::<ArcInner<T>>()) };
-> +        let inner = unsafe { NonNull::new_unchecked(ptr.cast::<ArcInner<T>>()) };
->  
->          // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
->          // for the lifetime of the returned value.
->          unsafe { ArcBorrow::new(inner) }
->      }
->  
-> -    unsafe fn from_foreign(ptr: *const crate::ffi::c_void) -> Self {
-> +    unsafe fn from_foreign(ptr: *mut crate::ffi::c_void) -> Self {
->          // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
->          // call to `Self::into_foreign`.
-> -        let inner = unsafe { NonNull::new_unchecked(ptr.cast_mut().cast::<ArcInner<T>>()) };
-> +        let inner = unsafe { NonNull::new_unchecked(ptr.cast::<ArcInner<T>>()) };
->  
->          // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->          // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 318d2140470a90568100f86fd8c6d8084031f556..f9b398ee31fd5303f0224995f51d314a0c4ecbf2 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -29,7 +29,7 @@ pub trait ForeignOwnable: Sized {
->      /// For example, it might be invalid, dangling or pointing to uninitialized memory. Using it in
->      /// any way except for [`ForeignOwnable::from_foreign`], [`ForeignOwnable::borrow`],
->      /// [`ForeignOwnable::try_from_foreign`] can result in undefined behavior.
-> -    fn into_foreign(self) -> *const crate::ffi::c_void;
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void;
->  
->      /// Borrows a foreign-owned object.
->      ///
-> @@ -37,7 +37,7 @@ pub trait ForeignOwnable: Sized {
->      ///
->      /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
->      /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> -    unsafe fn borrow<'a>(ptr: *const crate::ffi::c_void) -> Self::Borrowed<'a>;
-> +    unsafe fn borrow<'a>(ptr: *mut crate::ffi::c_void) -> Self::Borrowed<'a>;
->  
->      /// Converts a foreign-owned object back to a Rust-owned one.
->      ///
-> @@ -47,7 +47,7 @@ pub trait ForeignOwnable: Sized {
->      /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
->      /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] for
->      /// this object must have been dropped.
-> -    unsafe fn from_foreign(ptr: *const crate::ffi::c_void) -> Self;
-> +    unsafe fn from_foreign(ptr: *mut crate::ffi::c_void) -> Self;
->  
->      /// Tries to convert a foreign-owned object back to a Rust-owned one.
->      ///
-> @@ -58,7 +58,7 @@ pub trait ForeignOwnable: Sized {
->      ///
->      /// `ptr` must either be null or satisfy the safety requirements for
->      /// [`ForeignOwnable::from_foreign`].
-> -    unsafe fn try_from_foreign(ptr: *const crate::ffi::c_void) -> Option<Self> {
-> +    unsafe fn try_from_foreign(ptr: *mut crate::ffi::c_void) -> Option<Self> {
->          if ptr.is_null() {
->              None
->          } else {
-> @@ -72,13 +72,13 @@ unsafe fn try_from_foreign(ptr: *const crate::ffi::c_void) -> Option<Self> {
->  impl ForeignOwnable for () {
->      type Borrowed<'a> = ();
->  
-> -    fn into_foreign(self) -> *const crate::ffi::c_void {
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
->          core::ptr::NonNull::dangling().as_ptr()
->      }
->  
-> -    unsafe fn borrow<'a>(_: *const crate::ffi::c_void) -> Self::Borrowed<'a> {}
-> +    unsafe fn borrow<'a>(_: *mut crate::ffi::c_void) -> Self::Borrowed<'a> {}
->  
-> -    unsafe fn from_foreign(_: *const crate::ffi::c_void) -> Self {}
-> +    unsafe fn from_foreign(_: *mut crate::ffi::c_void) -> Self {}
->  }
->  
->  /// Runs a cleanup function/closure when dropped.
-> 
+> rust/helpers/helpers.c |   1 +
+> rust/helpers/ioport.c  |  42 ++++++++++
+> rust/kernel/ioport.rs  | 169 +++++++++++++++++++++++++++++++++++++++++
+> rust/kernel/lib.rs     |   2 +
+> 4 files changed, 214 insertions(+)
+> create mode 100644 rust/helpers/ioport.c
+> create mode 100644 rust/kernel/ioport.rs
+>=20
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index dcf827a61b52..b40aee82fa0f 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -14,6 +14,7 @@
+> #include "cred.c"
+> #include "err.c"
+> #include "fs.c"
+> +#include "ioport.c"
+> #include "jump_label.c"
+> #include "kunit.c"
+> #include "mutex.c"
+> diff --git a/rust/helpers/ioport.c b/rust/helpers/ioport.c
+> new file mode 100644
+> index 000000000000..d9c9e2093b98
+> --- /dev/null
+> +++ b/rust/helpers/ioport.c
+> @@ -0,0 +1,42 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/ioport.h>
+> +#include <linux/io.h>
+> +
+> +struct resource *rust_helper_request_region(resource_size_t start,
+> +    resource_size_t n, const char *name)
+> +{
+> + return request_region(start, n, name);
+> +}
+> +
+> +struct resource *rust_helper_request_muxed_region(resource_size_t =
+start,
+> +  resource_size_t n,
+> +  const char *name)
+> +{
+> + return request_muxed_region(start, n, name);
+> +}
+> +
+> +void rust_helper_release_region(resource_size_t start, =
+resource_size_t n)
+> +{
+> + release_region(start, n);
+> +}
+> +
+> +#define define_rust_helper_out(name, type)                      \
+> + void rust_helper_##name(type value, unsigned long addr) \
+> + {                                                       \
+> + (name)(value, addr);                            \
+> + }
+> +
+> +define_rust_helper_out(outb, u8);
+> +define_rust_helper_out(outw, u16);
+> +define_rust_helper_out(outl, u32);
+> +
+> +#define define_rust_helper_in(name, type)           \
+> + type rust_helper_##name(unsigned long addr) \
+> + {                                           \
+> + return (name)(addr);                \
+> + }
+> +
+> +define_rust_helper_in(inb, u8);
+> +define_rust_helper_in(inw, u16);
+> +define_rust_helper_in(inl, u32);
+> diff --git a/rust/kernel/ioport.rs b/rust/kernel/ioport.rs
+> new file mode 100644
+> index 000000000000..9bc342cb4663
+> --- /dev/null
+> +++ b/rust/kernel/ioport.rs
+> @@ -0,0 +1,169 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions of routines for detecting, reserving and
+> +//! allocating system resources.
+> +//!
+> +//! C header: =
+[`include/linux/ioport.h`](srctree/include/linux/ioport.h)
+> +
+> +use core::ops::Deref;
+> +use core::ptr;
+> +
+> +use crate::prelude::*;
+> +use crate::types::Opaque;
+> +
+> +/// Resource Size type.
+> +/// This is a type alias to `u64`
+> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
+> +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
+> +pub type ResourceSize =3D u64;
+> +
+> +/// Resource Size type.
+> +/// This is a type alias to `u32`
+> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
+> +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
+> +pub type ResourceSize =3D u32;
+> +
+> +/// Resource node.
+> +#[repr(transparent)]
+> +pub struct Resource(Opaque<bindings::resource>);
 
+This is a conflict with [0]
+
+[0]: =
+https://lore.kernel.org/rust-for-linux/20250109133057.243751-1-daniel.alme=
+ida@collabora.com/
+
+=E2=80=94 Daniel=
