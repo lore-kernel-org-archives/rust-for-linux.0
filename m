@@ -1,208 +1,215 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169CF22AE55
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C1620458E
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736764018; cv=none; b=tAhXVQf2JcSAUfXN9c5MXDVF9jyAk02Ks+HEL2AM0os68y48dWg7S7tjv0Sta44d6IXqtAqM7KgaaZnxb3F72XXORJ/b9WjtjBjNNUfOddtf2xVtmrz5JNm+iitxAde8kQJHsA8dC5ssDGkfgjHfpwnzpBcTTEekyfL933WrGOE=
+	t=1736764220; cv=none; b=s8y/IDPmlS8czD5IkX0sFjV21xCPqvIJcyI85M76Txf7bDkFHv+k/qw6e80QK6Nri96uP83H1XaCNBUHGFxM1Ji3+R9ETCD01R5hQewdZxykBB6cww0XtDzx9gu9WZgUuUwPiogV8WMSAOpJwZf7ELeOslO1l8rw0LfHvzqVejI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736764018; c=relaxed/simple;
-	bh=vQw3YmcT45+jEPsb/gLwWjTwPpa/XpATmo+XkLefb38=;
+	s=arc-20240116; t=1736764220; c=relaxed/simple;
+	bh=T++9RCk7h6Aejc1grLPm48vQosvQYj3ZgQ3DZJ4peLY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Blx4s7P7tLrC6O5MAlM7ChdfQAxAwl0iQK4DXI5PrN7UEq/Ivtbb4LelIc26vl/nbe3ZWNOlZ7IbOi/3/Ny09J2idFryXUkpPdlnXQTVb8ZQRekURpuuhsuVqrYmfL/DxLLXnLyiHh+UQKr5ccbJKGAeZiCkPy/eqMVyqht1xls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zh6CvXCn; arc=none smtp.client-ip=209.85.128.54
+	 To:Cc:Content-Type; b=tbS19VlQZb5/21zLgdBOC+iQjEWZlN1XUiY1FLeu0PLfl9wEStuwT/bhASZxNO2om8HB5WBarP9dSXbFq27Q5Ml3yFRUw5Lty1hMSkQwHQ1OXrbig7X6oClQNnnQ1dMNF8LqVU1ybGPGcMZItNvIsl+5UWlQrPJ2d32yOD1p5so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=00fLjRYt; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zh6CvXCn"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4363ae65100so42227125e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:26:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="00fLjRYt"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-436249df846so28056005e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:30:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736764014; x=1737368814; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736764217; x=1737369017; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WotA+xYJuM3ux57wZ522GGvB6ieWOsCacjrw//zGRFg=;
-        b=Zh6CvXCn7dvludNtoZuQILJxoVTik+iMHJkC42IOjxwCxWKSAdwk2TBO97n8aZ6v2V
-         cSvFjIErLdAJ0mhXlxLrDP5TI0jmN25zx/mcW6z45VNM0ROW1upCq+O9AYJe8xK09a9q
-         BUmHp5gcsJDmYr4kGHMaPBGOW7WnJyFWaXA909YwYsoWZFZrRccaD/nTr7OC5JsXtBoa
-         66xSzdxkAHSm0vQQr6TB7gleJS+wAcisca4qh5RloXKT/XXvcqZwQwpLbZYPWK8PlBpq
-         q8YsRS7yNizso2tBWYlvvKbLM9G2XDSvaXmtIkMF2j8OQPB54alcMW02G6jZ/EqVj2nZ
-         q4Eg==
+        bh=Q6BcFT4T+We0MNxDCiiTwafBoXlHK/RucDnwCAebGy8=;
+        b=00fLjRYt2ciCgfeaeziFuhmBR7jdkD3yrL61KPtvsll2qCtKfd0uuvnd8qX6TscAaZ
+         zOjxOdzqfOg8NtiF0pk2Sc+2n3VgrZ1NDvI2GvshOXIF6rFdJwddwLYaE064qKaw6e9j
+         pgHbiZAhLrBcf2AAYkQGu3rIyA0IcTCCV7bhWfgSyH6oa8wGCxxuQ56egDloa7k6Uu70
+         KQGCQKOXkcq8xRDLqUh8/V0fRGP0IBFmVGgsRe6tYEQayGMUSuXfIkQLTsVtZAEWWcQg
+         ILQtyIo4pn0LqaAo/jKkGglPWMZK+WXVjd66qC6XSvtMI0DBBaINWAuIdRTUc3vTRhex
+         2DVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736764014; x=1737368814;
+        d=1e100.net; s=20230601; t=1736764217; x=1737369017;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WotA+xYJuM3ux57wZ522GGvB6ieWOsCacjrw//zGRFg=;
-        b=BVdQdjo8pUdM5CgIEULHHd+zJlAxAc8dJK6amBxCfk4JE6CAIpxLvvpg0eoZpAPJjv
-         J09ArmL30roaDT/vczzG11+wNzw0WwdeUvLvbfo2i8H5OXzP5wKdSBX/dAel5MkdasU8
-         2KM9iFBv/8nQTF/8TzziJWPjCzGrnOKzNLaHvbgRvzTUvIzOYx4pCOJRpZPuv1fSQt2A
-         9L08k4o8dxFNdm+h0Y9RZXAUQhiIfpUM0CyETFtrpC6kF9dkCA/6zh7x+zgNI44oRSwZ
-         V8jeTyEcJJNuqmtCiATGVpzAlPS/FFwm7c8jPVmuy2pE5h9YKUVyMago4XSwLaIm/+37
-         ev2w==
-X-Forwarded-Encrypted: i=1; AJvYcCU6Va3cM+oIRn2oVJSWJbgtiTh1ECjjh/Dhl7sd3UXbkge1780eOozAojNz/XyKC2/Z68psPS64sooH4PiUag==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0Kn/P2hIqsm4D7X8ceg7qCDgzfOizsjxOKJFURSd+9nTDWuxj
-	rixw7tzRvISYaUemLHubESWGRwz+o/St4S2gHm/75WuEEArQsbaQvCfe9Fmc+ql3v2/Joc3TMJv
-	IbwYfO97wTyteWiZUgvmfXADu4RrSDDO9x6rs
-X-Gm-Gg: ASbGncsaum2cMwIR0IaoH98cp1F4HeygFVKfMuodbOF1UkHuEQu+88L+Tnr68TbuD2P
-	lIrmaFk8kSiMQ2k2kopFw60T22bYYzGLQgXLHpsOd6plJuTjvwVkWqJZsnPwcVuVWqAHk
-X-Google-Smtp-Source: AGHT+IEdGBC/y1Bvaqxe390XP8IZkL7ccHVLd8tb6uNVNh+W/IRSR2mP1N4tBZgiPoa1YN8GklcEUFkm0PwDHhINESE=
-X-Received: by 2002:a05:600c:a0a:b0:434:a04d:1670 with SMTP id
- 5b1f17b1804b1-436e25548e3mr76471545e9.0.1736764013996; Mon, 13 Jan 2025
- 02:26:53 -0800 (PST)
+        bh=Q6BcFT4T+We0MNxDCiiTwafBoXlHK/RucDnwCAebGy8=;
+        b=E95ofFLVfb8mG21LPKvPR2S97+7fQfunKUSL1OTHzXfrBJbClkfybz742HpAGFgYri
+         CT5uOOYTi7wiZjCTBL3UCIAJYe7X2u6sDozp9IjqVZDviLxrkR2Jqn7dIN06vLNT/fm3
+         w7yU5gfA3/vbeJYOnC/uX3MaUFkQJb9co2HdyiD9YmkP6AwMpm6icR2IoZtEMmbdKOql
+         KLwezaF5npsc6C2/vHpePjsX2VhMEn3AhiBS3P5c/fgvosn+QpsZj13Ws8ct0PCF6dao
+         fpwU7ZZl/wx/dADf0cALvDD31VELEhjt5LUMywP6+E6FjzPzkiPwaDGi3szLA5eH5uMM
+         waDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVF9pYofyuuD+dLfqIqT9bgXw3icYPx3GW+PPNOKnMjE3lKl3FtIYUdBPa0OYE8CBH6ZT1WR+2iO0ZvXblcbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycoSP4m3A98bEv02DUIIIdZCHSNcXwFKpz+SDwFqFcaRbUXQ6q
+	7gqSLMnN+/XBSMObBF7SaSJCVs+EXEENGO1KNvLopuBXUQ0JvAdN3dMPLMeEMgDGmeoV1fOX7Qz
+	K04Psu1CeX/ZbS5IOL9G33wxObkYX6vwGWFzx
+X-Gm-Gg: ASbGncuHlaFreXO+WspmKf73kgv4oltaonMJ3MBQ2HhZt8yXh5dF7xRtSvyuqJO6Ss4
+	b4Wydh7awLq4xPs+T2gdS0AXctteelIuSLChhQIh0t2vRn21Qewf+GLgMVXPOZ9IFeoQD
+X-Google-Smtp-Source: AGHT+IFWb2oyTOjJX/o3HSNnXeHPflZbUYxMxvifF7/xMk5dQsb+1KcZXFEGg1ps+RkKlLpxr9haE/A/djl1U0bHtYo=
+X-Received: by 2002:a05:600c:354e:b0:431:5aea:95f with SMTP id
+ 5b1f17b1804b1-436e26a175cmr218244085e9.16.1736764217229; Mon, 13 Jan 2025
+ 02:30:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-vma-v11-0-466640428fc3@google.com> <mSBxLtHQ2_lBeEYTQNS-AoAdOXj-UH7mEb48SlHQZJMlUBwpqzIP4UB9nZv439lfseuIL27p3QnFOMFjV2wk-g==@protonmail.internalid>
- <20241211-vma-v11-8-466640428fc3@google.com> <87frmnadmk.fsf@kernel.org>
- <5qXA_x0NK0TzOkDwdQ8RYbk3SboUQiD0qflQhsoPRyhFxpD7fZHC7uVjI7RQBvvHPVEO1zlMRBq3F8BBImHrYQ==@protonmail.internalid>
- <CAH5fLgiBsW-sZ8LW4aqK1Eux71qdB3ERr6RdE3gX2uka+GRrew@mail.gmail.com> <87y0zk9y4h.fsf@kernel.org>
-In-Reply-To: <87y0zk9y4h.fsf@kernel.org>
+References: <20241211-vma-v11-0-466640428fc3@google.com> <20241211-vma-v11-8-466640428fc3@google.com>
+ <Z2C6eAMnniTnxTX3@tardis.local>
+In-Reply-To: <Z2C6eAMnniTnxTX3@tardis.local>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 13 Jan 2025 11:26:42 +0100
-X-Gm-Features: AbW1kvaPU7jte_DTbz1hQMDwki-WCfamsRDNzYatM7mfSJxRtXANZ6h8Hqjf9II
-Message-ID: <CAH5fLgh6J41JkaD23_Br6nLkznAfzaivVY=xRpr1jzpUZNZgKA@mail.gmail.com>
+Date: Mon, 13 Jan 2025 11:30:05 +0100
+X-Gm-Features: AbW1kvZmBQ72-6O2pqLwyAyR2WjjcEyxesG4j5T1ajEwgzoqW67phRCjjvS6z7U
+Message-ID: <CAH5fLgg=+Y=v=X50VdaCWwRRRUpKzGvBB-ND+4LHx9CNeThVDg@mail.gmail.com>
 Subject: Re: [PATCH v11 8/8] task: rust: rework how current is accessed
-To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
 	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 9, 2025 at 9:42=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
+On Tue, Dec 17, 2024 at 12:40=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> =
+wrote:
 >
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->
-> > On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
-> >>
-> >> "Alice Ryhl" <aliceryhl@google.com> writes:
-> >> > +    #[inline]
-> >> > +    pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
-> >> > +        // SAFETY: It is safe to call `task_active_pid_ns` without =
-RCU protection when calling it
-> >> > +        // on the current task.
-> >> > +        let active_ns =3D unsafe { bindings::task_active_pid_ns(sel=
-f.as_ptr()) };
-> >> > +
-> >> > +        if active_ns.is_null() {
-> >> > +            return None;
-> >> > +        }
-> >> > +
-> >> > +        // The lifetime of `PidNamespace` is bound to `Task` and `s=
-truct pid`.
-> >> > +        //
-> >> > +        // The `PidNamespace` of a `Task` doesn't ever change once =
-the `Task` is alive. A
-> >> > +        // `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE_=
-NEWPID)` will not have an effect
-> >> > +        // on the calling `Task`'s pid namespace. It will only effe=
-ct the pid namespace of children
-> >> > +        // created by the calling `Task`. This invariant guarantees=
- that after having acquired a
-> >> > +        // reference to a `Task`'s pid namespace it will remain unc=
-hanged.
-> >> > +        //
-> >> > +        // When a task has exited and been reaped `release_task()` =
-will be called. This will set
-> >> > +        // the `PidNamespace` of the task to `NULL`. So retrieving =
-the `PidNamespace` of a task
-> >> > +        // that is dead will return `NULL`. Note, that neither hold=
-ing the RCU lock nor holding a
-> >> > +        // referencing count to the `Task` will prevent `release_ta=
-sk()` being called.
-> >> > +        //
-> >> > +        // In order to retrieve the `PidNamespace` of a `Task` the =
-`task_active_pid_ns()` function
-> >> > +        // can be used. There are two cases to consider:
-> >> > +        //
-> >> > +        // (1) retrieving the `PidNamespace` of the `current` task
-> >> > +        // (2) retrieving the `PidNamespace` of a non-`current` tas=
-k
-> >> > +        //
-> >> > +        // From system call context retrieving the `PidNamespace` f=
-or case (1) is always safe and
-> >> > +        // requires neither RCU locking nor a reference count to be=
- held. Retrieving the
-> >> > +        // `PidNamespace` after `release_task()` for current will r=
-eturn `NULL` but no codepath
-> >> > +        // like that is exposed to Rust.
-> >> > +        //
-> >> > +        // Retrieving the `PidNamespace` from system call context f=
-or (2) requires RCU protection.
-> >> > +        // Accessing `PidNamespace` outside of RCU protection requi=
-res a reference count that
-> >> > +        // must've been acquired while holding the RCU lock. Note t=
-hat accessing a non-`current`
-> >> > +        // task means `NULL` can be returned as the non-`current` t=
-ask could have already passed
-> >> > +        // through `release_task()`.
-> >> > +        //
-> >> > +        // To retrieve (1) the `&CurrentTask` type should be used w=
-hich ensures that the returned
-> >> > +        // `PidNamespace` cannot outlive the current task context. =
-The `CurrentTask::active_pid_ns`
-> >> > +        // function allows Rust to handle the common case of access=
-ing `current`'s `PidNamespace`
-> >> > +        // without RCU protection and without having to acquire a r=
-eference count.
-> >> > +        //
-> >> > +        // For (2) the `task_get_pid_ns()` method must be used. Thi=
-s will always acquire a
-> >> > +        // reference on `PidNamespace` and will return an `Option` =
-to force the caller to
-> >> > +        // explicitly handle the case where `PidNamespace` is `None=
-`, something that tends to be
-> >> > +        // forgotten when doing the equivalent operation in `C`. Mi=
-ssing RCU primitives make it
-> >> > +        // difficult to perform operations that are otherwise safe =
-without holding a reference
-> >> > +        // count as long as RCU protection is guaranteed. But it is=
- not important currently. But we
-> >> > +        // do want it in the future.
-> >> > +        //
-> >> > +        // Note for (2) the required RCU protection around calling =
-`task_active_pid_ns()`
-> >> > +        // synchronizes against putting the last reference of the a=
-ssociated `struct pid` of
-> >> > +        // `task->thread_pid`. The `struct pid` stored in that fiel=
-d is used to retrieve the
-> >> > +        // `PidNamespace` of the caller. When `release_task()` is c=
-alled `task->thread_pid` will be
-> >> > +        // `NULL`ed and `put_pid()` on said `struct pid` will be de=
-layed in `free_pid()` via
-> >> > +        // `call_rcu()` allowing everyone with an RCU protected acc=
-ess to the `struct pid` acquired
-> >> > +        // from `task->thread_pid` to finish.
-> >>
-> >> While this comment is a nice piece of documentation, I think we should
-> >> move it elsewhere, or restrict it to paragraphs pertaining to (1), sin=
-ce
-> >> that is the only case we consider here?
+> On Wed, Dec 11, 2024 at 10:37:12AM +0000, Alice Ryhl wrote:
+> > Introduce a new type called `CurrentTask` that lets you perform various
+> > operations that are only safe on the `current` task. Use the new type t=
+o
+> > provide a way to access the current mm without incrementing its
+> > refcount.
 > >
-> > Where would you move it?
+> > With this change, you can write stuff such as
+> >
+> >       let vma =3D current!().mm().lock_vma_under_rcu(addr);
+> >
+> > without incrementing any refcounts.
+> >
+> > This replaces the existing abstractions for accessing the current pid
+> > namespace. With the old approach, every field access to current involve=
+s
+> > both a macro and a unsafe helper function. The new approach simplifies
+> > that to a single safe function on the `CurrentTask` type. This makes it
+> > less heavy-weight to add additional current accessors in the future.
+> >
+> > That said, creating a `CurrentTask` type like the one in this patch
+> > requires that we are careful to ensure that it cannot escape the curren=
+t
+> > task or otherwise access things after they are freed. To do this, I
+> > declared that it cannot escape the current "task context" where I
+> > defined a "task context" as essentially the region in which `current`
+> > remains unchanged. So e.g., release_task() or begin_new_exec() would
+> > leave the task context.
+> >
+> > If a userspace thread returns to userspace and later makes another
+> > syscall, then I consider the two syscalls to be different task contexts=
+.
+> > This allows values stored in that task to be modified between syscalls,
+> > even if they're guaranteed to be immutable during a syscall.
+> >
+> > Ensuring correctness of `CurrentTask` is slightly tricky if we also wan=
+t
+> > the ability to have a safe `kthread_use_mm()` implementation in Rust. T=
+o
+> > support that safely, there are two patterns we need to ensure are safe:
+> >
+> >       // Case 1: current!() called inside the scope.
+> >       let mm;
+> >       kthread_use_mm(some_mm, || {
+> >           mm =3D current!().mm();
+> >       });
+> >       drop(some_mm);
+> >       mm.do_something(); // UAF
+> >
+> > and:
+> >
+> >       // Case 2: current!() called before the scope.
+> >       let mm;
+> >       let task =3D current!();
+> >       kthread_use_mm(some_mm, || {
+> >           mm =3D task.mm();
+> >       });
+> >       drop(some_mm);
+> >       mm.do_something(); // UAF
+> >
+> > The existing `current!()` abstraction already natively prevents the
+> > first case: The `&CurrentTask` would be tied to the inner scope, so the
+> > borrow-checker ensures that no reference derived from it can escape the
+> > scope.
+> >
+> > Fixing the second case is a bit more tricky. The solution is to
+> > essentially pretend that the contents of the scope execute on an
+> > different thread, which means that only thread-safe types can cross the
+> > boundary. Since `CurrentTask` is marked `NotThreadSafe`, attempts to
+> > move it to another thread will fail, and this includes our fake pretend
+> > thread boundary.
+> >
+> > This has the disadvantage that other types that aren't thread-safe for
+> > reasons unrelated to `current` also cannot be moved across the
+> > `kthread_use_mm()` boundary. I consider this an acceptable tradeoff.
+> >
+> > Cc: Christian Brauner <brauner@kernel.org>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/mm.rs   |  22 ----
+> >  rust/kernel/task.rs | 284 ++++++++++++++++++++++++++++++--------------=
+--------
+> >  2 files changed, 167 insertions(+), 139 deletions(-)
+> >
+> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> > index 50f4861ae4b9..f7d1079391ef 100644
+> > --- a/rust/kernel/mm.rs
+> > +++ b/rust/kernel/mm.rs
+> > @@ -142,28 +142,6 @@ fn deref(&self) -> &MmWithUser {
+> >
+> >  // These methods are safe to call even if `mm_users` is zero.
+> >  impl Mm {
+> > -    /// Call `mmgrab` on `current.mm`.
+> > -    #[inline]
+> > -    pub fn mmgrab_current() -> Option<ARef<Mm>> {
+> > -        // SAFETY: It's safe to get the `mm` field from current.
+> > -        let mm =3D unsafe {
+> > -            let current =3D bindings::get_current();
+> > -            (*current).mm
+> > -        };
+> > -
+> > -        if mm.is_null() {
+> > -            return None;
+> > -        }
+> > -
+> > -        // SAFETY: The value of `current->mm` is guaranteed to be null=
+ or a valid `mm_struct`. We
+> > -        // just checked that it's not null. Furthermore, the returned =
+`&Mm` is valid only for the
+> > -        // duration of this function, and `current->mm` will stay vali=
+d for that long.
+> > -        let mm =3D unsafe { Mm::from_raw(mm) };
+> > -
+> > -        // This increments the refcount using `mmgrab`.
+> > -        Some(ARef::from(mm))
+> > -    }
+> > -
 >
-> The info about (2) should probably be with the implementation for that
-> case, when it lands. Perhaps we can move it hen?
+> This is removed because of no user? If so, maybe don't introduce this at
+> all in the earlier patch of this series? The rest looks good to me.
 
-The function already exists. It's called Task::get_pid_ns(). I think
-the comment makes sense here: get_pid_ns() is the normal case where
-you don't skip synchronization, and active_pid_ns() is the special
-case where you can skip RCU due to reasons. This comment explains that
-normally you cannot skip RCU, but in this special case you can.
+I guess I can drop the temporary introduction of this. It's here due
+to the history of this series where originally it only had
+mmgrab_current, and Binder would use that. But with this patch, you
+can use CurrentTask::mm() + ARef::from() to do the same thing. For
+Binder, the difference doesn't matter, but the latter is more powerful
+as you can access the current task's mm_struct without incrementing
+refcounts.
 
 Alice
