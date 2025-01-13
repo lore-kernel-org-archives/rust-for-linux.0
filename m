@@ -1,63 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD49C20DF4;
-	Sun, 12 Jan 2025 22:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60875231CA3
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 07:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736721369; cv=none; b=ghj8PeuulojYCvPiK2kj1qOvigDR/iHG538y26fBCn/DC4hGKJYidxKJ7LFzQBo2LnX6NWp4YNOEwrFS3NUO2CoFExxvTshbUyE0C+tPcn7eq3Fc1H/QIbR/XwS8Ew1BshE+gvcOX4TPVTxtH2HKcNk0h+qrt5quE7FiRUG6Ifg=
+	t=1736753445; cv=none; b=u80waCGze67m5M7z8D66I0ffylII+M2mlKKIH2vJHWyQsjoC10KGXHHKv1wHL4HQ4q2AeXsYo5dqvAqVEmX/XmWH1H7LJk3NBqfFaqxxUdZyq96MNnGIbqGuRWHhM3fY6sx/Ogl3Ju+b5NAPb27N1E9mxwle4KJUYhD9tacf3f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736721369; c=relaxed/simple;
-	bh=laEGYIClynH0Q4U3edKVMZS81+LXONHcgTC/ebqKQQk=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=kpndGU9g7te4YWGUW+Z4ssxE6JGgrSf5FqPGikz3ahYV1WkIGNvxOvqxQ7mcKisRGnmsMeqp5/Z0jpG24eZ0YKuMBy2enc11m8/Pt8PH/IXNBm41EyLutsAJKyh6512HiXadrgu6mnTv52EmMsDjUJkysBUfKSh/BbAcLupVOkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=remejV80; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736753445; c=relaxed/simple;
+	bh=XCzrP3WQSLZQqESesBk9CKFvGYZYd/fUYezUehJaPts=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lBfWJYzHbr4EiqR+cXXLqfTDLXcfQgMsKhmiohgCUAiSBffsqo/hfMbyZdMDtvtncwcazsrSBQ1O1OdIu9HL00B8v6Mf6N9qpD0ewtSnLtJZrtTtY9X60DDb2+yfLitfvu6kTaduXb48uBfsaWsFfxL2aYBl/76A2Ovo4165a+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gnP9Ss1U; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="remejV80"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFA1C4CEDF;
-	Sun, 12 Jan 2025 22:36:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736721369;
-	bh=laEGYIClynH0Q4U3edKVMZS81+LXONHcgTC/ebqKQQk=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=remejV80oaf1jL2KV9OFysrn5zd6zLL6EhMpScbQ9kRFajq4v59QTJH9XJzPrTcrj
-	 7ZYTR+wgmVL2/idoyw4vBCJNrdm1jYzYzsXlQ9P1KgxyfqB+iQw/S2axaybUNUl8n/
-	 0fjptHj6X4/gQvtCK3Yzoj5lD/8TfhWX20TDdsk98xktA8IY28wA+DyWuzSDWixNQu
-	 NNZrhdzHzUWWSkFBGsvp4vHK1pk17apGwXb64BijL8zYgf+gb3wGoudk9eEa4piKVF
-	 wcf+d0TK4IvHqvIEPCIkseUc3+UpyRH0f0G+anKj6LqGTxnOHIV0SZAGORlS0Vmpj1
-	 B67BuEYg5lIxw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33F94380AA5C;
-	Sun, 12 Jan 2025 22:36:33 +0000 (UTC)
-Subject: Re: [GIT PULL] Char/Misc/IIO driver changes for 6.13-rc7
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <Z4PMdA-E4_Ifi8sK@kroah.com>
-References: <Z4PMdA-E4_Ifi8sK@kroah.com>
-X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
-X-PR-Tracked-Message-Id: <Z4PMdA-E4_Ifi8sK@kroah.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git tags/char-misc-6.13-rc7
-X-PR-Tracked-Commit-Id: c7a5378a0f707686de3ddb489f1653c523bb7dcc
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 0cbe10470b4473ab5e290f1d39033fdb6d6c69c9
-Message-Id: <173672139177.2663698.4166162816261755433.pr-tracker-bot@kernel.org>
-Date: Sun, 12 Jan 2025 22:36:31 +0000
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gnP9Ss1U"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2161eb94cceso46486475ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jan 2025 23:30:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1736753444; x=1737358244; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YqwN0q6pF8+vOtEosRTVgbClVpFGaMH4Eyenu50vCEc=;
+        b=gnP9Ss1UMOLyaJyN1gyFJScqUSr32AU/4E6EKY5KfCTIqsehqXKW2bo0d8JtNALKD2
+         OW44hNl201ykZo6R+4ZWHLsKoLzv3MJL3uePffD3O0YMERJ3Sa007FOOInE59VF6+ePI
+         phPUHKdMooFtISZwjQCtbS5N+0NLJ//L8V/QeO49zLnXfMhXuercoVG9tAMh7uy3MZ+y
+         jEhEDL1vf0z1EPErU5ZF4qCn5/UgF3JcxBRRt2tzzn0F+lvtYTn8CHQxsCHIvpYhCmVT
+         qWVHPonOzjSQU5pDh5rBZCFTMUbT191NLNavmQ97hbkVnGqfR/Adt6ajj34hoMu6kUQf
+         OvPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736753444; x=1737358244;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YqwN0q6pF8+vOtEosRTVgbClVpFGaMH4Eyenu50vCEc=;
+        b=SStfEXc46rWihDaNCknktHdMriRpY6kxx/Iq8lAYoIuNPdCByl9pzpHXT9q3lv2aQE
+         BmbjpRH69YBQnodaVkbexDfmppBCCpytNAFQHsUjSQyOmzRi/ppOcEF4bC51O2VxMGof
+         CoY/kEg4UBtv76A1ULDJNT9PjF9zEeAzzHJklQO/PURnezTRbQsDCSjqQI0wigsX103B
+         jgrAse0dDSDvOQ84fQoX/+/GEABo7ALgxnRJ1ld/b/9npGay8uqwAn6D1hG9OyfeBN5D
+         mRk0iexJJ3N+hBx2H8ZiZz157FxRQP/8+9JXhgadLrilAC5kK+7eBIKrzY3I1zujMffC
+         gq1g==
+X-Forwarded-Encrypted: i=1; AJvYcCViGb9U7LGmor1kHSZQRMIX8NAFtizxYO8SGSQLI+MjLpTFSXrMqRFKT1GRiRwmAug5OGEbr9iEhfTPrOrz2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM3D1urm9h5AfoJ5chdHplPU46dqJ0NyQIS1hiUtrf9jqdJRhj
+	J9Hh6hgLlk4BHjlE5uuBep3KwDcj2Zz/bzzwGM/ATA0i0NWjIWmweJfCUvsZFKU=
+X-Gm-Gg: ASbGncutLrXiEQ2J3ZHq38lmNVqxr2qyTiHAKpk6VqFhcPVssvUjrxBUZ0jVD4Ccrm/
+	M93gR9ETN/cQCjO49EKgYxvbHVWUTi9ZX7j+WlC0K1AveczjCiNowqyzgQEhmUDGFWx0qDgn/ab
+	QriDMqscTUhospAJ9wZwoq2IpDuk1YkVPki6D3FQEVtLNL+YO0324zDR+SFRHQdrP1EZFqa4ifW
+	lY5JD9JvgbHin+ReQPk8khpi4PHjVfRad3rcsgsd3uodefJR6n6ZlnrBKY=
+X-Google-Smtp-Source: AGHT+IHRq6WBI3SjqdDjWZRB9bE03FS1elLLqTh8jLxGZm+rvrfMnZIAUuBKXdlGzkScUN/jm8i2Yw==
+X-Received: by 2002:a05:6a00:35c3:b0:728:e52b:1cc9 with SMTP id d2e1a72fcca58-72d2204914amr28862790b3a.18.1736753443692;
+        Sun, 12 Jan 2025 23:30:43 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4067e591sm5296294b3a.126.2025.01.12.23.30.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jan 2025 23:30:43 -0800 (PST)
+Date: Mon, 13 Jan 2025 13:00:40 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, rust-for-linux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V6 02/15] cpufreq: Add cpufreq_table_len()
+Message-ID: <20250113073040.rvtc27zcgpvcycrr@vireshk-i7>
+References: <cover.1736248242.git.viresh.kumar@linaro.org>
+ <867ba9728179ba21ff8f8aca97d416b72ccd63d9.1736248242.git.viresh.kumar@linaro.org>
+ <2025010727-banner-monday-1941@gregkh>
+ <20250108111253.tg6ixurijf2dvptx@vireshk-i7>
+ <2025010855-cargo-quickness-a08f@gregkh>
+ <20250109044117.s5s4dlmssamwicew@vireshk-i7>
+ <2025010944-detective-borough-b158@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025010944-detective-borough-b158@gregkh>
 
-The pull request you sent on Sun, 12 Jan 2025 15:06:44 +0100:
+On 09-01-25, 08:35, Greg KH wrote:
+> Then why not make the C code use this function as well, to keep all
+> cpufreq drivers from having to manually walk the list and that way both
+> C and Rust drivers all do the same thing?  That makes more sense to me,
+> there's no reason you can't change C code today first to make things
+> more unified, in fact, that's usually a better idea overall anyway.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git tags/char-misc-6.13-rc7
+I investigated a bit on this..
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/0cbe10470b4473ab5e290f1d39033fdb6d6c69c9
+- The cpufreq core normally gets (from cpufreq governor's for example)
+  a frequency value to be matched against in the freq-table, and the
+  loop which run over the freq-table is already optimized enough (it
+  checks for CPUFREQ_TABLE_END) for this. Using length in this loop
+  won't improve it anymore.
 
-Thank you!
+- The cpufreq core then calls cpufreq driver's callbacks and passes an
+  index to the freq-table, which the drivers don't need to verify
+  against table length, since the index came from the core itself.
+
+- The same happens on the Rust side, where the cpufreq core calls the
+  target_index() callback of the driver. While writing the Rust code,
+  I thought maybe I should validate that the index is within limits
+  (before I do pointer manipulation in Rust code). And so required
+  this extra function (which C code never uses).
+
+- Now I can either keep doing this verification in the Rust code (and
+  so keep the new API, only used by Rust code). Or I can just remove
+  the verification and trust that the index passed by the
+  cpufreq-drivers is correct (since they have received them from the
+  cpufreq C code).
+
+What should I do ?
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+viresh
