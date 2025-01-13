@@ -1,198 +1,122 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D2B25760;
-	Mon, 13 Jan 2025 13:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E07C229800
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 14:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736774940; cv=none; b=Gv55SxTnzSd2W5bwymIdzi7o7xABT7o6d31pn5aVzfulQKeY4BUDMccZj5qX1mMqNC4KodbEiXmMhnmul9oCaDwliVPBQyHiUXfAUcaR+pkEBzbYoUbkwmPCcnEIgJPgn5nu9Lj6uxMGAku7aiG08PxKyLzxwSKqhZPGbj8EFyk=
+	t=1736779341; cv=none; b=B8KQCqZ3Olg/gxmWT08rwzkyExHHHZnVexcUDSMN4Mtk3GiWgveEQ5aUJ7OWWuGn+grUjK362gSzvo98M3DTlqB2UQvLU3THQX0oG5bV9A4fcP7qehI8Fd3XkjG7c2wDlrLlxG24PbCKfdOxbdq3twsy75QmQu2WiTLVUNIzEm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736774940; c=relaxed/simple;
-	bh=xf9WqrDKk9XENZYR8Hmb72Zb7PWZLe+L7uzYUb/bcDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ocVVbP+3zYyDdTwwiwJMTo29rIf8kV67B9nYDWfSFFRPMNbFqTuBCQwFixwqPDFo6CojBy2eE6QEtCQVfsAfUT3FUUEXCFFPYiKHJnvwWPZWoREQy/SuUx7jvrIcMFXCbmE2CCg11oN/L7sWChukzuPqo03tQsNVhQz9ng+4f2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=Bu3qa6+n; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1736779341; c=relaxed/simple;
+	bh=xrLc2DcLeFljriH1MgHYeEhffmjfyA6lMcESSTyoFoU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ms9itpHOKrTV4dDxbUE2TtxEYCdC6fQfLp8ROgXzTuxuKEPJl9Rpwk4JMFqFKeDcrtLJ4uyUvz5PK6DyIcAA6+5nfnKQ+UnGrXnVTNl+xH0nC8eWEmSfpnshfV8yXGrVS4hKvbPxB7UU1G7ScvipS60FVfWyEZbxtGV8E2Uipx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PO+V3Iqd; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="Bu3qa6+n"
-From: Fiona Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1736774933; bh=ToDAPe7C16PVVuwTXSWdRMuIKvhUofTeEU9jtzBijcQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bu3qa6+n2wqedKaykwb9kQRQkU7yTsDnd4TTQiYcPHt+SAZrU6Y8W1Q6DryWY76GN
-	 eMPBecC/5YbcSF45pHw1Eze7JsLpL9PoUrtsZ5yH5QATHAkgPhEgi+9av8btifjPVK
-	 EaLpHQlK73h54ZI2ileaCx5ICB99Qv9VuxWDnX3o=
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
- Jean Delvare <jdelvare@suse.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Mark Pearson <mpearson-lenovo@squebb.ca>,
- Peter Koch <pkoch@lenovo.com>, rust-for-linux@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] rust: add I/O port abstractions with resource
- management
-Date: Mon, 13 Jan 2025 14:28:10 +0100
-Message-ID: <A0B919A0-5B44-4298-8696-026BCB96ED56@kloenk.dev>
-In-Reply-To: <9C204B39-B714-452D-8F90-8FE426470244@collabora.com>
-References: <20250113121620.21598-1-me@kloenk.dev>
- <20250113121620.21598-5-me@kloenk.dev>
- <9C204B39-B714-452D-8F90-8FE426470244@collabora.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PO+V3Iqd"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3863c36a731so3154287f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 06:42:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736779338; x=1737384138; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QDhkTdqRF0SvfO+r0GLaj80jxydwQS3YUDdrQAkqoSw=;
+        b=PO+V3Iqd9ZJa7kVkni3V7+ev5SjFglIC0itWtD9vOzBRa+i2qCSTkckA0DBqv+P+Cn
+         2qQ6oaowPz7avdKQ7thWh7G/7q8tVW0gQhhQgbYVUInKqYDTSdrMVVGb5FVYzhUnI3M1
+         5NpNiq2belO/0xmQc8YLBgrvazhkN48WVa1r0qPlRtkUo9KiXxsNnZzhoYyrp1dLZ5JZ
+         hxc7IK2nb7oIfSWrCaPaESEiLL3L3b2vZY8z3KT86D/05ZumaIwt9t5AayI4Xz1MyHp4
+         /0njC29get3CIwP+0Qq2n1y1e9UHk8q2zpsSFxBAOuOidKvd5Itld7PJZzK2QMPk4hau
+         /hFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736779338; x=1737384138;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QDhkTdqRF0SvfO+r0GLaj80jxydwQS3YUDdrQAkqoSw=;
+        b=TZNeKebodpqVuTuYTh3Q2pD+VIWwEfZzlOr/VE4cOlnSoqc78cAOC3njHqAEtcqyQX
+         0j4K8Smlg7SX3dcpX6If3FDel9KuMkm17KjdHsLwrvW34qWGJvyGoH0vIwhP72Y7JQ2p
+         k3o6kfS5u3MiQ3l8DK2pivRyZBvRZen4GADhBEJ+C1Qz7jQGsxB3+uIxcY6RRDsjKeUo
+         DS82IlaC/cxKXtw+F3wT+h4mBJS46La+P8Ge0kkgWmuuzktGWb1m6SDTSIXaf06TT8P7
+         SYZMR3lDn+Frxh5mQUlMPdBnifmFDsSkBURcyM0Vm/FteqtBAqy/m+wd3vtxxXXGNFO1
+         Ba4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXmS/5xn/3eI+e/20eCf221wsTC8FqKTJnB8mYDKtvPDFj4HAdVbstrc1250tOKRTQape59voYVqQNIxh+okw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1q4Hi63KBO5QY9822xwsaSSbX5WU8lEl9XGt3f7nDj/RRoOWu
+	3eLrsK3MwEC6wHHfN09TXeSwl94WeGRuECgxv/OUlEd9M/cJwgAbEtfF5L1HVnDzCHjEyIh8/Uc
+	xZMQtYcniM89flKfGn1K4O0mPNqiFvh/iGcpQ9d4fkTkOrezr8A==
+X-Gm-Gg: ASbGncsiflzig2/Rn9Jq2T9SJGMtglpptUkNxs0QuUHDH+zDXFCvTEY/U2i4qIJWq6Y
+	22DOiA1CGqSd7bh0IndrioyOfzbaSdRNpjxCCZSDt/pZbVaVJdwWHNWWFsEyLmHqJ3gp8
+X-Google-Smtp-Source: AGHT+IGrgpOIXKCwGEvuOJIQtdud9hu4JONOcO6zKaw8mCowC3sZByCqNpk1SvRGv1Bb9S6uqQclDW00tLt0PFGTpqg=
+X-Received: by 2002:a5d:6d01:0:b0:385:faaa:9d1d with SMTP id
+ ffacd0b85a97d-38a8731508amr16868700f8f.35.1736779337833; Mon, 13 Jan 2025
+ 06:42:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+In-Reply-To: <20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 13 Jan 2025 15:42:06 +0100
+X-Gm-Features: AbW1kvZ6rN_EDNvmyBSmC2vCz9SyrJQndEGp4B78kVIw0aBhS0XDys5hvEljhRg
+Message-ID: <CAH5fLggjAu+YPBxJh0_K933McnnSC=pEBhVV9YxMbUGzukE3ng@mail.gmail.com>
+Subject: Re: [PATCH] rust: irq: add support for request_irq()
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-On 13 Jan 2025, at 14:15, Daniel Almeida wrote:
-
-> Hi Fiona,
+On Thu, Oct 24, 2024 at 4:20=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
->> On 13 Jan 2025, at 09:16, Fiona Behrens <me@kloenk.dev> wrote:
->>
->> This patch introduces abstractions for working with I/O port resources=
-,
->> including the `Resource` and `Region` types. These abstractions facili=
-tate
->> interaction with `ioport_resource`, enabling safe management of resour=
-ce
->> reservations and memory accesses.
->>
->> Additionally, helper functions such as `outb`, `outw`, and `outl` have=
- been
->> provided to write values to these resources, with matching read functi=
-ons
->> such as `inb`, `inw`, and `inl` for accessing the port memory.
->>
->> Signed-off-by: Fiona Behrens <me@kloenk.dev>
->> ---
->> rust/helpers/helpers.c |   1 +
->> rust/helpers/ioport.c  |  42 ++++++++++
->> rust/kernel/ioport.rs  | 169 +++++++++++++++++++++++++++++++++++++++++=
+> +impl<T: Handler> Registration<T> {
+> +    /// Registers the IRQ handler with the system for the given IRQ numb=
+er. The
+> +    /// handler must be able to be called as soon as this function retur=
+ns.
+> +    pub fn register(
+> +        irq: u32,
+> +        flags: Flags,
+> +        name: &'static CStr,
+> +        handler: T,
+> +    ) -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {
+> +            irq,
+> +            handler: Opaque::new(handler)
+> +        })
+> +        .pin_chain(move |slot| {
+> +            // SAFETY:
+> +            // - `handler` points to a valid function defined below.
+> +            // - only valid flags can be constructed using the `flags` m=
+odule.
+> +            // - `devname` is a nul-terminated string with a 'static lif=
+etime.
+> +            // - `ptr` is a cookie used to identify the handler. The sam=
+e cookie is
+> +            // passed back when the system calls the handler.
+> +            to_result(unsafe {
+> +                bindings::request_irq(
+> +                    irq,
+> +                    Some(handle_irq_callback::<T>),
+> +                    flags.0,
+> +                    name.as_char_ptr(),
+> +                    &*slot as *const _ as *mut core::ffi::c_void,
+> +                )
+> +            })?;
+> +
+> +            Ok(())
+> +        })
 
->> rust/kernel/lib.rs     |   2 +
->> 4 files changed, 214 insertions(+)
->> create mode 100644 rust/helpers/ioport.c
->> create mode 100644 rust/kernel/ioport.rs
->>
->> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
->> index dcf827a61b52..b40aee82fa0f 100644
->> --- a/rust/helpers/helpers.c
->> +++ b/rust/helpers/helpers.c
->> @@ -14,6 +14,7 @@
->> #include "cred.c"
->> #include "err.c"
->> #include "fs.c"
->> +#include "ioport.c"
->> #include "jump_label.c"
->> #include "kunit.c"
->> #include "mutex.c"
->> diff --git a/rust/helpers/ioport.c b/rust/helpers/ioport.c
->> new file mode 100644
->> index 000000000000..d9c9e2093b98
->> --- /dev/null
->> +++ b/rust/helpers/ioport.c
->> @@ -0,0 +1,42 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +#include <linux/ioport.h>
->> +#include <linux/io.h>
->> +
->> +struct resource *rust_helper_request_region(resource_size_t start,
->> +    resource_size_t n, const char *name)
->> +{
->> + return request_region(start, n, name);
->> +}
->> +
->> +struct resource *rust_helper_request_muxed_region(resource_size_t sta=
-rt,
->> +  resource_size_t n,
->> +  const char *name)
->> +{
->> + return request_muxed_region(start, n, name);
->> +}
->> +
->> +void rust_helper_release_region(resource_size_t start, resource_size_=
-t n)
->> +{
->> + release_region(start, n);
->> +}
->> +
->> +#define define_rust_helper_out(name, type)                      \
->> + void rust_helper_##name(type value, unsigned long addr) \
->> + {                                                       \
->> + (name)(value, addr);                            \
->> + }
->> +
->> +define_rust_helper_out(outb, u8);
->> +define_rust_helper_out(outw, u16);
->> +define_rust_helper_out(outl, u32);
->> +
->> +#define define_rust_helper_in(name, type)           \
->> + type rust_helper_##name(unsigned long addr) \
->> + {                                           \
->> + return (name)(addr);                \
->> + }
->> +
->> +define_rust_helper_in(inb, u8);
->> +define_rust_helper_in(inw, u16);
->> +define_rust_helper_in(inl, u32);
->> diff --git a/rust/kernel/ioport.rs b/rust/kernel/ioport.rs
->> new file mode 100644
->> index 000000000000..9bc342cb4663
->> --- /dev/null
->> +++ b/rust/kernel/ioport.rs
->> @@ -0,0 +1,169 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Abstractions of routines for detecting, reserving and
->> +//! allocating system resources.
->> +//!
->> +//! C header: [`include/linux/ioport.h`](srctree/include/linux/ioport=
-=2Eh)
->> +
->> +use core::ops::Deref;
->> +use core::ptr;
->> +
->> +use crate::prelude::*;
->> +use crate::types::Opaque;
->> +
->> +/// Resource Size type.
->> +/// This is a type alias to `u64`
->> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
->> +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
->> +pub type ResourceSize =3D u64;
->> +
->> +/// Resource Size type.
->> +/// This is a type alias to `u32`
->> +/// depending on the config option `CONFIG_PHYS_ADDR_T_64BIT`.
->> +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
->> +pub type ResourceSize =3D u32;
->> +
->> +/// Resource node.
->> +#[repr(transparent)]
->> +pub struct Resource(Opaque<bindings::resource>);
->
-> This is a conflict with [0]
+I think this does not run the destructor of `handler` when
+`request_irq` returns an error.
 
-Ah missed that, only saw the IO abstraction in the same series but it did=
- not work for my use case, and then somehow missed this, will rework to u=
-se that as base in the next version
-
-Thanks
-Fiona
-
->
-> [0]: https://lore.kernel.org/rust-for-linux/20250109133057.243751-1-dan=
-iel.almeida@collabora.com/
->
-> =E2=80=94 Daniel
+Alice
