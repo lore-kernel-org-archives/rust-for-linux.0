@@ -1,61 +1,61 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CF823874A
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF1B23A56F
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736767426; cv=none; b=cud/6rMy9socEge+JnkU5byN8EwIAFKKXIuPXH3aFBB7YoX6OBLiBloEaXQ8Fz1kTv8Q5XUrTn3xMcb0hmLCqrzYRF8EA2M0//lm4T/fJUrNkXY9k9oSxPslsh0Vqj4C9hov9KM00ja+lY0W02rzg2GELwND7mR1vsjiwGzowYg=
+	t=1736767429; cv=none; b=itxYqysxcCntTbe/AYBUgjjKohmQ7nP3Xyx71aT0pbhwKd9yI7IpTpwh1Kk5ZbxF8ecyJCIK4/WXMjQ4rkSUAsI1r+qYW2FVAMF332l0+nYyFutcdbpWBVrF0vthYr7jMnXGXnpF51y+i26PN+rPFJ3KPuor4dp3EpBBD4XGw/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736767426; c=relaxed/simple;
-	bh=Log7cXXjzMiJkcv5gL5n5WiPvymmPQBug9ZqKR86Yek=;
+	s=arc-20240116; t=1736767429; c=relaxed/simple;
+	bh=qFjzLah+7k0bGLsf807G16R7Nl932aHbCVEztV18Qug=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MExGiOOHEkZq8qKd+2onu5fdgAoQrl6N9l3DgBkow919EsKChuwQyOC5vyAXu8dO+CvJRFMwkwkIn3CC+CsnUSZFkoKvFM4mX++vx5oZ6PyLtBW8X/A4qkW5uNIbnNWlywVEQxYUEUKpjZs0KHQTYNTblpeUNJvGfnKmWk0PmX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mNDWtdYm; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=kmnWg1DA4FptWzKzmwDILDsJEBwAD/87hmITG6lDrN/aMp7jJ3XE7hHKSwHUGlQpeh9WJh4kMS2vcUIGFFNfC97XIDOM6UMhsg9MqHyrfFjY2zGZH6Wn/09YRs5Tu4eRk0TIuTqGumtvDfxuu3BObJmk192t73UV7GDeq6wnTWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=whRU9Cfj; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mNDWtdYm"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2162c0f6a39so90526535ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:23:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="whRU9Cfj"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-218c8aca5f1so87912275ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:23:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736767424; x=1737372224; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1736767427; x=1737372227; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tdn4m6dKlofswR8ctFShfrfS5TKeZlPBTra3kXQON/0=;
-        b=mNDWtdYmQwesy81qm8USSreo7D38hLW3H26UTPJDW0KT9V4Xc2yow55rOKD8HrGwKK
-         EA89HIE4gczQjdiWGS5a9AsRpkfk6j0xbI+aYf6jqAsuLfNEcazhlfzwSdE06+WJ96jh
-         UOJdd7UGyVAKCY8h/cHkx6nyFlQOmDH8zV0nCkoL3eMUNVbCWGrO5IOKLEjtMKh2Hqge
-         1EbsTpNptfIbgBBoWfBocZ78KE/fNrq1JuygiMlnDwefnvKOv8k0/iPgsNQB9Y9TGum8
-         mIzHEIpT4Dt1F/PCVFV9nQfeMusgo3KKdQR9AU/kLpQkL4oS0WkRL7dkq+EfaXYNKCBV
-         faBA==
+        bh=Erl89OKGaS5TERvIe2o6tMzhWrw69h3Z1JOwTaxOJAQ=;
+        b=whRU9CfjTnHWSyizQVtwhP59wdi9PnmXTxU0lGYVZ2iGN3hA10ZihH+eLtxU9PG1XH
+         IH5HRO/Fi4Txp9Kv061J8jDSGnWBFnTnupIRUaxNaOIrUe3hDVa3pHCoKSoWlpOD+BYK
+         5taBS0fy3OpCTJ1BuhRd2GhQQDuX6X23Yaqa3XetPkLqrFIhCq3VVb0KCh6MrRJN65wx
+         Q9J+IQY4lMrR8fD+lF/i2k7G8oeoiNhe3DxFfDQQwmWZoIgKGcdjEzrudnUfKB6qq2pN
+         NbPg32wBec267vXW7RKS2id8FCkzgr9rSML4d55Fzs3T+dGCieQ5wN+OsuCtisjzkxrY
+         1/tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736767424; x=1737372224;
+        d=1e100.net; s=20230601; t=1736767427; x=1737372227;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tdn4m6dKlofswR8ctFShfrfS5TKeZlPBTra3kXQON/0=;
-        b=occnHntD+d/VxWPWfn/nX/3bLOWV0FFNMoqCAaAHtmms1fyvmz/oAMDufVn73fusem
-         QqZZ2BxS9hwycmmNdX5adZmwvqbPsIQCxAlJaivrengWxjRz4yD9nbaQVX8E+tQ8oYjS
-         tS/1fQk2lGzErpsu76js0UpuH9SwAkuDPggifz+zSL1kUTojSAF+mIRrKCkp1LmEJt0F
-         hZiBM5LTlLANt+pcnQJxaWHwnrakDaql+CFzcwCge68nQfbq4Lgw7JFMo63Ohevx/kHu
-         H2iZ1i51flP2cK6dWzXZWR510mMNay9yzzwq4HKrR/15KrTfLKJhxVkLnJ9OaFkkJnfD
-         EUmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWflLHaUCs+cUgU8ut5UOauTlERv2uaav5zT/FtDSxjRAMT0yGIfVMz7qneYkuSRho+7Yc4G+gbAavflunE6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWsdD79BxijlvbIRZAo0ko22qwk6EzT3nCQkS+hfjSd3ywm1sb
-	D8dsXu6Isw7idPYEWEb3Wxvak20Biv63aH12Ouz207eNLpIL9fTiLb+WgpQWhGY=
-X-Gm-Gg: ASbGncvfAOWz1cZOCRy8rrBIAOf0BARXdi7qHcomywzwUyxddVijQl7lHh6oSqv4om3
-	V/8ye92kEPFJPGPVIurifKQLKqYFnhbZA+GfAionsKoDYcFYEZ2Bo9TkcdRmsQZf890+/BDSGFi
-	hRGGpqptyiqLzxFe45S4LeDAgXGikhOwEYLWdd5V+dcImfFJy2gDWblOqGAWZZoadBOKa7yCdBO
-	kNJuYyICwOTICKHM3tq09VNYDF7CZAkOcTJxf8F353VHaqGXattkzU1mAU=
-X-Google-Smtp-Source: AGHT+IF0Y5yG1c5M9n48ix5v1C+TyVEgXKMj6yF6bVdvpXIdxxQSPZGVPl+AyedZLky2FVhj80qa6A==
-X-Received: by 2002:a05:6a00:3bc9:b0:727:39a4:30cc with SMTP id d2e1a72fcca58-72d30301d86mr19474714b3a.1.1736767424079;
-        Mon, 13 Jan 2025 03:23:44 -0800 (PST)
+        bh=Erl89OKGaS5TERvIe2o6tMzhWrw69h3Z1JOwTaxOJAQ=;
+        b=bbeuStQkbZcyF8W+X9SXY/gcZb0RvT2fmxOuv6cmYibgwEa6qxHXaNwMAcoxrPliVV
+         IHbXeOC3xEtD0WQQPSusRzQry0q2sGr7XBjBZYWyPVvFyS9mGhXgaikWdGGhD4374oWb
+         YbvHkZ5Fp0MFdvdexFeIwGAkBtht2E3/iXPK8cRzBnvcjBvhH5vV1NWBIzAlxVZiBAJo
+         8ghFvJbhITJKgFPlqRHyYk2ELJ333M8GHEcJ+DwedGpQrQ3TFegxps7RX8dbwy+0vKUV
+         pv1W90vKOjppjVz+5Dts76wOCSRmXkEgZMLyB5OGracyCVSp0kBBrpNlFycJVUQMEHwc
+         Pf4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVxl6+HTBeQ2mb/14oyiKyN2VrFUIQc7rjIvrgGNefncasrvrBHM5ABAuxCi69Kna7BAftnLttKbqCsn3odxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8yH3G1YDoI6YFMlPJLBiMAMqy2OasRTgmzbscJFqER+q84sO8
+	7aCwZ+2fHEdT5FAoa5zrrVf4itb6zyWvUbqQvSeIkSBgShBsG9NU9XvDSCESFFw=
+X-Gm-Gg: ASbGncsNbH3RGwmobBqdk5h0ih9KfO3c0dqPuQOX+YUAZhEoR1fezM6vvoQ2MfJIcSt
+	CQM4E4JK6Rq/1Wn3jNhCmRYxIMx042q5iHLM6Z6KLzd8rP+bT5tNNmksa3sSen8H45dlPpiaO2W
+	cDCCS7Dr6K5W06vPNXYkW5VGsDYmvgQaeLYwiGtq9XuAl/v3Jk9HORmr5mg4OdanPTnf0YY1heI
+	ldTQIvA4OmUOvAjQReVcn308zrxHIfn4frv4W7PHkVXQPWaBHljswn7lMk=
+X-Google-Smtp-Source: AGHT+IFwnNOadRELhgUS4RHnfHmljCOFqvDn5NHiGTae6Lam/bomtLxFMSA+qHltYXwddKyNK29zYg==
+X-Received: by 2002:a17:902:d2d0:b0:216:45b9:439b with SMTP id d9443c01a7336-21a8400a357mr316419915ad.50.1736767427451;
+        Mon, 13 Jan 2025 03:23:47 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4067e591sm5677575b3a.126.2025.01.13.03.23.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f10dddfsm52432345ad.23.2025.01.13.03.23.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 03:23:43 -0800 (PST)
+        Mon, 13 Jan 2025 03:23:47 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -66,15 +66,17 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH V7 03/16] rust: cpu: Add from_cpu()
-Date: Mon, 13 Jan 2025 16:52:58 +0530
-Message-Id: <854f7b8c9cbcc7f38fe5ed548290f41224478b40.1736766672.git.viresh.kumar@linaro.org>
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V7 04/16] rust: device: Add property_present()
+Date: Mon, 13 Jan 2025 16:52:59 +0530
+Message-Id: <f43fe3f7b3151a89c261ad728b0f3bb2fc24caef.1736766672.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1736766672.git.viresh.kumar@linaro.org>
 References: <cover.1736766672.git.viresh.kumar@linaro.org>
@@ -86,76 +88,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This implements cpu::from_cpu(), which returns a reference to
-Device for a CPU. The C struct is created at initialization time for
-CPUs and is never freed and so ARef isn't returned from this function.
+This implements Device::property_present(), which calls C APIs
+device_property_present() helper.
 
 The new helper will be used by Rust based cpufreq drivers.
 
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/cpu.rs              | 26 ++++++++++++++++++++++++++
- rust/kernel/lib.rs              |  1 +
- 3 files changed, 28 insertions(+)
- create mode 100644 rust/kernel/cpu.rs
+ rust/bindings/bindings_helper.h | 1 +
+ rust/kernel/device.rs           | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index e9fdceb568b8..d63e7f6d10ea 100644
+index d63e7f6d10ea..fda1e0d8f376 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
-@@ -10,6 +10,7 @@
- #include <linux/blk-mq.h>
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
-+#include <linux/cpu.h>
- #include <linux/cred.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
-diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-new file mode 100644
-index 000000000000..422e874627d2
---- /dev/null
-+++ b/rust/kernel/cpu.rs
-@@ -0,0 +1,26 @@
-+// SPDX-License-Identifier: GPL-2.0
+@@ -27,6 +27,7 @@
+ #include <linux/pid_namespace.h>
+ #include <linux/platform_device.h>
+ #include <linux/poll.h>
++#include <linux/property.h>
+ #include <linux/refcount.h>
+ #include <linux/sched.h>
+ #include <linux/security.h>
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index d5e6a19ff6b7..e8c4cda5aacc 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -6,6 +6,7 @@
+ 
+ use crate::{
+     bindings,
++    str::CString,
+     types::{ARef, Opaque},
+ };
+ use core::{fmt, ptr};
+@@ -180,6 +181,12 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
+             )
+         };
+     }
 +
-+//! Generic CPU definitions.
-+//!
-+//! C header: [`include/linux/cpu.h`](srctree/include/linux/cpu.h)
-+
-+use crate::{
-+    bindings,
-+    device::Device,
-+    error::Result,
-+    prelude::ENODEV,
-+};
-+
-+/// Creates a new instance of CPU's device.
-+pub fn from_cpu(cpu: u32) -> Result<&'static Device> {
-+    // SAFETY: The pointer returned by `get_cpu_device()`, if not `NULL`, is a valid pointer to
-+    // a `struct device` and is never freed by the C code.
-+    let ptr = unsafe { bindings::get_cpu_device(cpu) };
-+    if ptr.is_null() {
-+        return Err(ENODEV);
++    /// Checks if property is present or not.
++    pub fn property_present(&self, name: &CString) -> bool {
++        // SAFETY: By the invariant of `CString`, `name` is null-terminated.
++        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_ptr() as *const _) }
 +    }
-+
-+    // SAFETY: The pointer returned by `get_cpu_device()`, if not `NULL`, is a valid pointer to
-+    // a `struct device` and is never freed by the C code.
-+    Ok(unsafe { Device::as_ref(ptr) })
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 2d5c3d7d2e21..e9106b29c359 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -39,6 +39,7 @@
- pub mod block;
- #[doc(hidden)]
- pub mod build_assert;
-+pub mod cpu;
- pub mod cred;
- pub mod device;
- pub mod device_id;
+ }
+ 
+ // SAFETY: Instances of `Device` are always reference-counted.
 -- 
 2.31.1.272.g89b43f80a514
 
