@@ -1,215 +1,222 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C1620458E
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7071322AE47
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736764220; cv=none; b=s8y/IDPmlS8czD5IkX0sFjV21xCPqvIJcyI85M76Txf7bDkFHv+k/qw6e80QK6Nri96uP83H1XaCNBUHGFxM1Ji3+R9ETCD01R5hQewdZxykBB6cww0XtDzx9gu9WZgUuUwPiogV8WMSAOpJwZf7ELeOslO1l8rw0LfHvzqVejI=
+	t=1736767416; cv=none; b=IHw59etJ8Mq/mTXlT84ZyZg4YEgVrH8Qlv/WXpJEfJLWjHhKIPfM5BbaeM3wn4414VUTqL7LF8vyWT1jqVQ2XCxIdk9K54MnMvcYVsqLllsaTfIZ00P70yrPYFKa7bWGjRVf7ZFa5BLJmusW9ORMImmhGQtAg/qc84GTVWP1E70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736764220; c=relaxed/simple;
-	bh=T++9RCk7h6Aejc1grLPm48vQosvQYj3ZgQ3DZJ4peLY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tbS19VlQZb5/21zLgdBOC+iQjEWZlN1XUiY1FLeu0PLfl9wEStuwT/bhASZxNO2om8HB5WBarP9dSXbFq27Q5Ml3yFRUw5Lty1hMSkQwHQ1OXrbig7X6oClQNnnQ1dMNF8LqVU1ybGPGcMZItNvIsl+5UWlQrPJ2d32yOD1p5so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=00fLjRYt; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1736767416; c=relaxed/simple;
+	bh=/kE5kPbNWY6PC79ZSfDAuKNMLuhIH4+h8fz5NhoXvxc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EvL5iR3g/dvmT/61oclcAylhybp/aL2ZdOsMQMhKyyHQDwjLyM57dE1lUI9f7Xx6/7VQ6g1VKcHgdPotkrU2Mif4B9TBCdRbmnUvlJO9e3L8P5tRa6t7SiSnGEsYcs0O5N5HxkI1V2EvHDBILdbjyVculGox8ggFWFr/Mx8Va1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fvkxb5n7; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="00fLjRYt"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-436249df846so28056005e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:30:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fvkxb5n7"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-21a7ed0155cso68961325ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:23:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736764217; x=1737369017; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q6BcFT4T+We0MNxDCiiTwafBoXlHK/RucDnwCAebGy8=;
-        b=00fLjRYt2ciCgfeaeziFuhmBR7jdkD3yrL61KPtvsll2qCtKfd0uuvnd8qX6TscAaZ
-         zOjxOdzqfOg8NtiF0pk2Sc+2n3VgrZ1NDvI2GvshOXIF6rFdJwddwLYaE064qKaw6e9j
-         pgHbiZAhLrBcf2AAYkQGu3rIyA0IcTCCV7bhWfgSyH6oa8wGCxxuQ56egDloa7k6Uu70
-         KQGCQKOXkcq8xRDLqUh8/V0fRGP0IBFmVGgsRe6tYEQayGMUSuXfIkQLTsVtZAEWWcQg
-         ILQtyIo4pn0LqaAo/jKkGglPWMZK+WXVjd66qC6XSvtMI0DBBaINWAuIdRTUc3vTRhex
-         2DVw==
+        d=linaro.org; s=google; t=1736767414; x=1737372214; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1AG9HcOcVokzr0nsf4h2oFRkN4qLeAqJSfWTUWUhso0=;
+        b=Fvkxb5n7D+WYxFnhYn6NzWO1Ee9M2YHGWbcSxYnw6IoZDpuaf/Js9WIfcTmNshjShh
+         JaDKjIst6HasJPhMFueLgYSjJHVoOvzsRNlQCJt6X4oZ4iwHBku8xsGNvtBODyyqRIio
+         hmSks888+fHv4byD94YccuNX01k1AuzCcpxFw//z7U+fd9l1F6SsgpKwtm6T8wDrGlxT
+         wDGzcr6O5TEZCvrKnSCU7R56sdmduCm0LPKs+7ZnCYHyR+gS3ntvIqUb5DbaPVkmW2ll
+         dOs/ljvUYAUYkWm82PZ2ftRUs94oAL8d8lEytPI/Y64hkWuA/7cic10Tmaek2sPkusCa
+         r88g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736764217; x=1737369017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q6BcFT4T+We0MNxDCiiTwafBoXlHK/RucDnwCAebGy8=;
-        b=E95ofFLVfb8mG21LPKvPR2S97+7fQfunKUSL1OTHzXfrBJbClkfybz742HpAGFgYri
-         CT5uOOYTi7wiZjCTBL3UCIAJYe7X2u6sDozp9IjqVZDviLxrkR2Jqn7dIN06vLNT/fm3
-         w7yU5gfA3/vbeJYOnC/uX3MaUFkQJb9co2HdyiD9YmkP6AwMpm6icR2IoZtEMmbdKOql
-         KLwezaF5npsc6C2/vHpePjsX2VhMEn3AhiBS3P5c/fgvosn+QpsZj13Ws8ct0PCF6dao
-         fpwU7ZZl/wx/dADf0cALvDD31VELEhjt5LUMywP6+E6FjzPzkiPwaDGi3szLA5eH5uMM
-         waDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVF9pYofyuuD+dLfqIqT9bgXw3icYPx3GW+PPNOKnMjE3lKl3FtIYUdBPa0OYE8CBH6ZT1WR+2iO0ZvXblcbw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YycoSP4m3A98bEv02DUIIIdZCHSNcXwFKpz+SDwFqFcaRbUXQ6q
-	7gqSLMnN+/XBSMObBF7SaSJCVs+EXEENGO1KNvLopuBXUQ0JvAdN3dMPLMeEMgDGmeoV1fOX7Qz
-	K04Psu1CeX/ZbS5IOL9G33wxObkYX6vwGWFzx
-X-Gm-Gg: ASbGncuHlaFreXO+WspmKf73kgv4oltaonMJ3MBQ2HhZt8yXh5dF7xRtSvyuqJO6Ss4
-	b4Wydh7awLq4xPs+T2gdS0AXctteelIuSLChhQIh0t2vRn21Qewf+GLgMVXPOZ9IFeoQD
-X-Google-Smtp-Source: AGHT+IFWb2oyTOjJX/o3HSNnXeHPflZbUYxMxvifF7/xMk5dQsb+1KcZXFEGg1ps+RkKlLpxr9haE/A/djl1U0bHtYo=
-X-Received: by 2002:a05:600c:354e:b0:431:5aea:95f with SMTP id
- 5b1f17b1804b1-436e26a175cmr218244085e9.16.1736764217229; Mon, 13 Jan 2025
- 02:30:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736767414; x=1737372214;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1AG9HcOcVokzr0nsf4h2oFRkN4qLeAqJSfWTUWUhso0=;
+        b=WYi1F/1lQ+6cUn42n3BTKbei+jooAHtUxYPBck812J4L8zXxpuxiMJMYFb4fYnm2Is
+         UrtKg2YaaBR8mDzE6QWhtiPjSTdKm2VHRZeKxnaj6jSdIJrd2rg9JeP8UbcmgzHrPu0f
+         BQf74h9kQTbD5aaqAHrp2Su64J6hJQ/BivSpxulPHTpUecqz2vzo07NZNlt2+auGYolW
+         PXt0J2KASSbVkwktOdUlN5abHabwd5fxV7i16vzni9JE7opd/TAR1RK96RoiK2/MkBUz
+         Mbc+RukE99pUtPWI2JfM8y7pBhfihQNbvYuTfaiPjWpu7o35xazR487v6qpMnqGfYVsn
+         BXLg==
+X-Forwarded-Encrypted: i=1; AJvYcCXn66/WqLuz89Ic5dG35l4dLNrb+yoD7vAtoVxn3LCotXkUJMlPbAr/SWvtvu+SVAFPb1fqAtfRfTJdhFdBOg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ3bpG7udz/KMlDKHMitvl5oqMXnAiU0sGIQGZx9THXepH8Wir
+	/26tkGcStcc+YB9fZ+IfbWs/NO323T3b22EMOA8Isl3N8yRiCfSHaNr03ZHWy6c=
+X-Gm-Gg: ASbGncsCsNFiEfK+9RboG+RKq+g+WFb7JIeKccTI/V2QE+KI1/T6jysVUf4rtzbR1+o
+	2agCYTiJWIymlfFKA4N0wD3Q6Mm2AXCdQg3/zD0lQ2NqN15q+bu0dac1SfEqi1UsepndY2fUG8c
+	+v82hO+rrgtwOhv6p8iboug8ZXeXL4XWvb6Jk24tHZ5doNOZDml/+atuB5R8tyOGkVCGoymeJxd
+	rI6N3GCB7dIPDwY5kPZl455YwbaIWWZbJ6XXpqaDgyKv6pI/i1vHJ8DJb0=
+X-Google-Smtp-Source: AGHT+IFS1Ade/lCNohwz6lSNtMyhnEumsGf01NDYDdmrzy557Wsdy9qW7K+/MJGgXUNuuTCOSpFqlw==
+X-Received: by 2002:a05:6a20:840a:b0:1e3:e77d:1431 with SMTP id adf61e73a8af0-1e88d10ccbbmr33340957637.23.1736767413260;
+        Mon, 13 Jan 2025 03:23:33 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a31844ba087sm5682685a12.22.2025.01.13.03.23.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 03:23:32 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH V7 00/16] Rust bindings for cpufreq and OPP core + sample driver
+Date: Mon, 13 Jan 2025 16:52:55 +0530
+Message-Id: <cover.1736766672.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-vma-v11-0-466640428fc3@google.com> <20241211-vma-v11-8-466640428fc3@google.com>
- <Z2C6eAMnniTnxTX3@tardis.local>
-In-Reply-To: <Z2C6eAMnniTnxTX3@tardis.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 13 Jan 2025 11:30:05 +0100
-X-Gm-Features: AbW1kvZmBQ72-6O2pqLwyAyR2WjjcEyxesG4j5T1ajEwgzoqW67phRCjjvS6z7U
-Message-ID: <CAH5fLgg=+Y=v=X50VdaCWwRRRUpKzGvBB-ND+4LHx9CNeThVDg@mail.gmail.com>
-Subject: Re: [PATCH v11 8/8] task: rust: rework how current is accessed
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>, Jann Horn <jannh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 17, 2024 at 12:40=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> =
-wrote:
->
-> On Wed, Dec 11, 2024 at 10:37:12AM +0000, Alice Ryhl wrote:
-> > Introduce a new type called `CurrentTask` that lets you perform various
-> > operations that are only safe on the `current` task. Use the new type t=
-o
-> > provide a way to access the current mm without incrementing its
-> > refcount.
-> >
-> > With this change, you can write stuff such as
-> >
-> >       let vma =3D current!().mm().lock_vma_under_rcu(addr);
-> >
-> > without incrementing any refcounts.
-> >
-> > This replaces the existing abstractions for accessing the current pid
-> > namespace. With the old approach, every field access to current involve=
-s
-> > both a macro and a unsafe helper function. The new approach simplifies
-> > that to a single safe function on the `CurrentTask` type. This makes it
-> > less heavy-weight to add additional current accessors in the future.
-> >
-> > That said, creating a `CurrentTask` type like the one in this patch
-> > requires that we are careful to ensure that it cannot escape the curren=
-t
-> > task or otherwise access things after they are freed. To do this, I
-> > declared that it cannot escape the current "task context" where I
-> > defined a "task context" as essentially the region in which `current`
-> > remains unchanged. So e.g., release_task() or begin_new_exec() would
-> > leave the task context.
-> >
-> > If a userspace thread returns to userspace and later makes another
-> > syscall, then I consider the two syscalls to be different task contexts=
-.
-> > This allows values stored in that task to be modified between syscalls,
-> > even if they're guaranteed to be immutable during a syscall.
-> >
-> > Ensuring correctness of `CurrentTask` is slightly tricky if we also wan=
-t
-> > the ability to have a safe `kthread_use_mm()` implementation in Rust. T=
-o
-> > support that safely, there are two patterns we need to ensure are safe:
-> >
-> >       // Case 1: current!() called inside the scope.
-> >       let mm;
-> >       kthread_use_mm(some_mm, || {
-> >           mm =3D current!().mm();
-> >       });
-> >       drop(some_mm);
-> >       mm.do_something(); // UAF
-> >
-> > and:
-> >
-> >       // Case 2: current!() called before the scope.
-> >       let mm;
-> >       let task =3D current!();
-> >       kthread_use_mm(some_mm, || {
-> >           mm =3D task.mm();
-> >       });
-> >       drop(some_mm);
-> >       mm.do_something(); // UAF
-> >
-> > The existing `current!()` abstraction already natively prevents the
-> > first case: The `&CurrentTask` would be tied to the inner scope, so the
-> > borrow-checker ensures that no reference derived from it can escape the
-> > scope.
-> >
-> > Fixing the second case is a bit more tricky. The solution is to
-> > essentially pretend that the contents of the scope execute on an
-> > different thread, which means that only thread-safe types can cross the
-> > boundary. Since `CurrentTask` is marked `NotThreadSafe`, attempts to
-> > move it to another thread will fail, and this includes our fake pretend
-> > thread boundary.
-> >
-> > This has the disadvantage that other types that aren't thread-safe for
-> > reasons unrelated to `current` also cannot be moved across the
-> > `kthread_use_mm()` boundary. I consider this an acceptable tradeoff.
-> >
-> > Cc: Christian Brauner <brauner@kernel.org>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/mm.rs   |  22 ----
-> >  rust/kernel/task.rs | 284 ++++++++++++++++++++++++++++++--------------=
---------
-> >  2 files changed, 167 insertions(+), 139 deletions(-)
-> >
-> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-> > index 50f4861ae4b9..f7d1079391ef 100644
-> > --- a/rust/kernel/mm.rs
-> > +++ b/rust/kernel/mm.rs
-> > @@ -142,28 +142,6 @@ fn deref(&self) -> &MmWithUser {
-> >
-> >  // These methods are safe to call even if `mm_users` is zero.
-> >  impl Mm {
-> > -    /// Call `mmgrab` on `current.mm`.
-> > -    #[inline]
-> > -    pub fn mmgrab_current() -> Option<ARef<Mm>> {
-> > -        // SAFETY: It's safe to get the `mm` field from current.
-> > -        let mm =3D unsafe {
-> > -            let current =3D bindings::get_current();
-> > -            (*current).mm
-> > -        };
-> > -
-> > -        if mm.is_null() {
-> > -            return None;
-> > -        }
-> > -
-> > -        // SAFETY: The value of `current->mm` is guaranteed to be null=
- or a valid `mm_struct`. We
-> > -        // just checked that it's not null. Furthermore, the returned =
-`&Mm` is valid only for the
-> > -        // duration of this function, and `current->mm` will stay vali=
-d for that long.
-> > -        let mm =3D unsafe { Mm::from_raw(mm) };
-> > -
-> > -        // This increments the refcount using `mmgrab`.
-> > -        Some(ARef::from(mm))
-> > -    }
-> > -
->
-> This is removed because of no user? If so, maybe don't introduce this at
-> all in the earlier patch of this series? The rest looks good to me.
+Hello,
 
-I guess I can drop the temporary introduction of this. It's here due
-to the history of this series where originally it only had
-mmgrab_current, and Binder would use that. But with this patch, you
-can use CurrentTask::mm() + ARef::from() to do the same thing. For
-Binder, the difference doesn't matter, but the latter is more powerful
-as you can access the current task's mm_struct without incrementing
-refcounts.
+This patch series introduces initial Rust bindings for two subsystems: cpufreq
+and Operating Performance Points (OPP). The bindings cover most of the
+interfaces exposed by these subsystems.
 
-Alice
+Included in this series is a sample `cpufreq` driver, `rcpufreq-dt`, which is a
+duplicate of the existing `cpufreq-dt` driver. The `cpufreq-dt` driver is a
+generic, platform-agnostic, device-tree-based driver used on many ARM platforms.
+
+Currently, the implementation has been tested using QEMU, verifying that
+frequency transitions, various configurations, and driver binding/unbinding
+functions as expected. However, performance measurements have not been
+conducted.
+
+For those interested in trying these patches, along with a few dependencies,
+they can be found at:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
+
+This version is rebased on linux-next's master branch (needed changes from
+rust-next and driver-core-next branches).
+
+FIXME: I haven't found a solution yet for the last patch 16/16, if someone can
+please help ?
+
+V6->V7:
+- from_cpu() is moved to cpu.rs and doesn't return ARef anymore, but just a
+  reference.
+- Dropped cpufreq_table_len() and related validation in cpufreq core.
+- Solved the issue with BIT() macro differently, using an enum now.
+- Few patches are broken into smaller / independent patches.
+- Improved Commit logs and SAFETY comments at few places.
+- Removed print message from cpufreq driver.
+- Rebased over linux-next/master.
+- Few other minor changes.
+
+V5->V6:
+- Rebase over latest rust/dev branch, which changed few interfaces that the
+  patches were using.
+- Included all other patches, which weren't included until now to focus only on
+  core APIs.
+- Other minor cleanups, additions.
+
+V4->V5:
+- Rename Registration::register() as new().
+- Provide a new API: Registration::new_foreign_owned() and use it for
+  rcpufreq_dt driver.
+- Update MAINTAINERS file.
+
+V3->V4:
+- Fix bugs with freeing of OPP structure. Dropped the Drop routine and fixed
+  reference counting.
+- Registration object of the cpufreq core is modified a bit to remove the
+  registered field, and few other cleanups.
+- Use Devres for instead of platform data.
+- Improve SAFETY comments.
+
+V2->V3:
+- Rebased on latest rust-device changes, which removed `Data` and so few changes
+  were required to make it work.
+- use srctree links (Alice Ryhl).
+- Various changes the OPP creation APIs, new APIs: from_raw_opp() and
+  from_raw_opp_owned() (Alice Ryhl).
+- Inline as_raw() helpers (Alice Ryhl).
+- Add new interface (`OPP::Token`) for dynamically created OPPs.
+- Add Reviewed-by tag from Manos.
+- Modified/simplified cpufreq registration structure / method a bit.
+
+V1->V2:
+- Create and use separate bindings for OF, clk, cpumask, etc (not included in
+  this patchset but pushed to the above branch). This helped removing direct
+  calls from the driver.
+- Fix wrong usage of Pinning + Vec.
+- Use Token for OPP Config.
+- Use Opaque, transparent and Aref for few structures.
+- Broken down into smaller patches to make it easy for reviewers.
+- Based over staging/rust-device.
+
+Thanks.
+
+Viresh Kumar (16):
+  cpufreq: Use enum for cpufreq flags that use BIT()
+  PM / OPP: Add reference counting helpers for Rust implementation
+  rust: cpu: Add from_cpu()
+  rust: device: Add property_present()
+  rust: Add cpumask helpers
+  rust: Add bindings for cpumask
+  rust: Add bare minimal bindings for clk framework
+  rust: Add initial bindings for OPP framework
+  rust: Extend OPP bindings for the OPP table
+  rust: Extend OPP bindings for the configuration options
+  rust: Add initial bindings for cpufreq framework
+  rust: Extend cpufreq bindings for policy and driver ops
+  rust: Extend cpufreq bindings for driver registration
+  rust: Extend OPP bindings with CPU frequency table
+  cpufreq: Add Rust based cpufreq-dt driver
+  DO-NOT_MERGE: cpufreq: Rename cpufreq-dt platdev
+
+ MAINTAINERS                          |    2 +
+ drivers/cpufreq/Kconfig              |   12 +
+ drivers/cpufreq/Makefile             |    1 +
+ drivers/cpufreq/cpufreq-dt-platdev.c |    2 +-
+ drivers/cpufreq/rcpufreq_dt.rs       |  230 ++++++
+ drivers/opp/core.c                   |   17 +-
+ drivers/opp/opp.h                    |    1 -
+ include/linux/cpufreq.h              |   96 +--
+ include/linux/pm_opp.h               |    6 +
+ rust/bindings/bindings_helper.h      |    6 +
+ rust/helpers/cpufreq.c               |   10 +
+ rust/helpers/cpumask.c               |   35 +
+ rust/helpers/helpers.c               |    2 +
+ rust/kernel/clk.rs                   |   48 ++
+ rust/kernel/cpu.rs                   |   26 +
+ rust/kernel/cpufreq.rs               | 1056 ++++++++++++++++++++++++++
+ rust/kernel/cpumask.rs               |   85 +++
+ rust/kernel/device.rs                |    7 +
+ rust/kernel/lib.rs                   |    7 +
+ rust/kernel/opp.rs                   |  890 ++++++++++++++++++++++
+ 20 files changed, 2487 insertions(+), 52 deletions(-)
+ create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+ create mode 100644 rust/helpers/cpufreq.c
+ create mode 100644 rust/helpers/cpumask.c
+ create mode 100644 rust/kernel/clk.rs
+ create mode 100644 rust/kernel/cpu.rs
+ create mode 100644 rust/kernel/cpufreq.rs
+ create mode 100644 rust/kernel/cpumask.rs
+ create mode 100644 rust/kernel/opp.rs
+
+-- 
+2.31.1.272.g89b43f80a514
+
