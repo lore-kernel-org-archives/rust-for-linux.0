@@ -1,103 +1,106 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA64123A0E6
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 14:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F071FBBE9;
+	Mon, 13 Jan 2025 14:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736779367; cv=none; b=GRJOGlREKXmkVhn2q1be+vW74QXsKa0NCURRH5WUkIoEwlmN5E5lqJmD7S2k2dJFs1zUPNDjlC3CiwbubRLmv301/5RYLjxNFDUJAeL1L7iQzTLlQRURRIJd5oxEElOHQ2QVPPpv9RqmR0L/M74fVtgw4bj5JsdY9UCG2Hmzf2A=
+	t=1736779430; cv=none; b=gBqYFrrdHTjkfIozZxijMR0WCTq0+FqsADLxyO/iZ/pVKNnyBqEQCBQjx0LdJc6TxKD8v5yf028bq2IZ4JuGsncPdekSedYTM48tR+5JUMc5Ij2AU6CuNoxdscvXEz58mMPzMBo91tD2NaFOP0gAvKjSDgpTfuixj31QJpET1t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736779367; c=relaxed/simple;
-	bh=HYY1Dith/Ir3/cP1sPA7wowRtfUcAiaQwxIyA6BOfaY=;
+	s=arc-20240116; t=1736779430; c=relaxed/simple;
+	bh=J4SGg8YulABtmgOUhiMi2r5BWfpmPQBjGsI8cxVJISI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XIrgu2O8Od/vhvQmZyUgmg1RhrDRPaKcdyVRyYa9okI1cK8r2j3Mv68xMX/jgrj7qJ++UjKzX4x0DX3soiRvCkLywg/qfcWkGkZ/+R1Et5QABKI5vx4X1nLtbKBsLxVhfkvIeGJUahryi4xhtoIolV0TMxJ412DAkOgy8/RWKkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XDXJtg+e; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=fm0YVpi1a6e6WhasKZw34YqhoZNbdWmBwy4DwxiURIBxTOyCiqzPWy/Y0JAcd5a7+V+lPx6QBWV3Nw1LfW1twI2tyhG70LIanouPQsMJBFudbYOoV3Zr5IknIKAbvB41DoU938p7PpfhOq5mjuXK6e/9Y/L1TgznG/2Wg04SZ/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cHzL+BYV; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XDXJtg+e"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2f615e14d0fso452234a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 06:42:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cHzL+BYV"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2f2f5e91393so961912a91.0;
+        Mon, 13 Jan 2025 06:43:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736779365; x=1737384165; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736779428; x=1737384228; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qltxDRXvNwCnwJ9II/l8QXuyLftY0v1I7ynNRI80Jn8=;
-        b=XDXJtg+eQE29MVfTTZwR+9GxIIrQas1fqA02FtlrjZGDizD+XpHloRGGgN90qEBDN7
-         tQ/kDXW5MBHxq0HEXqwERELsSW7TcArTFytd6Cdm0qMdLnvtVRndDxTPvGdncdgIL55x
-         NOKUyOswin1kMsex9qYpq+y8wQDF3nkMdDE9Np3otaceKQOQpQP/+87OP4UMWZnL3ddJ
-         folBZv4s0YAUN4YMjQwVt1T9/SCYrLpSZp0VGq9fnXnXc95J+DCFuxlBSHBfqiIhq2Re
-         Q7Pz+hTKvEmNOZrPxBdJutnjI+0IkvRtik+o9CTUQyP9gXGmu4WaT+vH1vTdlAI7bbBX
-         C/5w==
+        bh=VBXfZFfLpQ7jUjgeH0vdKYFFvRQfM6G8E4Wkh6ozWPA=;
+        b=cHzL+BYVS1+tgLq655tdgN+xp1/f/RVQclyN8kKdzBTkYsGcEDjegzT530L/FGNo4S
+         sNMnz/Zt68VgR/E/biATQVAeNxkzI3c71uIdWoQQ+TPDWRQKebXsClwPLLECR3udNTEl
+         8NCQQbhZ9ihBhykVycejTWchubSskCwd/LJWEGU0c8Y8hW1kvlNP0OnkAh+Jxuhdzatb
+         NvV38yFB4+VDvK7AmEgx0wxncqdrU8ao+OqYOWGqH1t1Zx2MMSOtNSHy6VZ97aX906mQ
+         qWXhI//Y+zpBU+VjDsP82Kltnkl0HwrC6EhNorIfAbt5cgK4TSDbD/hyoBD7lWZqAWtZ
+         B/pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736779365; x=1737384165;
+        d=1e100.net; s=20230601; t=1736779428; x=1737384228;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qltxDRXvNwCnwJ9II/l8QXuyLftY0v1I7ynNRI80Jn8=;
-        b=rfZD3YwFI5utmA/1Y0tpKPc/7CKyE8ZYDANzjKckfRhI5h5Og14oRb/uhteuZKL6Be
-         izFTsP/un8g8EUjvN7qQq2CYOP5zIKw7quBWtSXEvr+LsHBnJLllg3yKwq+TvRExoJBW
-         VugPvKygcZLf2jLi8vpJPE5CCKklpH2NR8b8dHdDLe2mp/JRE31AyjAW5CQ/Eqbf2//o
-         YIsVKKrC8qn0lUsli55vR/ZsB34o2rMEmsgSEYPHQKmoaX2JY59xE0zbeMzYEPkvVjND
-         2qIKYaGQFwYdSGLBjLW+HWdRfT347drgpcqJ7ftSmzkIWwKk7GrTiVy1+xD39GkzJ/T1
-         AM0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVl4FI3IDCuf+m+ZxF44Wde5d+PMT+6wExxkkecVC50LtwCEAZFgkLq51lxPTcpeesJOq/7QdabI4LbvubhkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPfrLF66qc1Vfk+CCJy7Tqt+VkQ48AuJGKRkl/E5LjN/wMhM42
-	xmSnUGw5UcjBw9tQ/fa2DcWPweQ4phNyftbfN9emASsCTKlK0f3IR2vqXm+wtgHGTlFacid7K5N
-	VGqFSSPgIbUzEIgVhkQ7sdsQpD2Eqs0dk
-X-Gm-Gg: ASbGnctCeHoodz7Ldwa3p3v4eTHkLwKyqk7amY/ZX4Fd3qUr4b9RYTnEhyODuDH/yzT
-	+8QZ8nqWwQoraUy1bsgkAicxhJcD/dPPRiGBM7g==
-X-Google-Smtp-Source: AGHT+IHE10Z3TaDzZATM5GnPW6RHEeoe3m6UisYKF/8YUNyZAS2IlV7OrMQTvhaW9TnzLu7KjP6B03iQfTlta3bM0cU=
-X-Received: by 2002:a17:90b:2b8f:b0:2ef:c419:6930 with SMTP id
- 98e67ed59e1d1-2f5490dcd55mr11557988a91.6.1736779364897; Mon, 13 Jan 2025
- 06:42:44 -0800 (PST)
+        bh=VBXfZFfLpQ7jUjgeH0vdKYFFvRQfM6G8E4Wkh6ozWPA=;
+        b=mssDVRGWk2dIdQemLH5L5GTpBFLp/iF6JK4E+0yms5rcZY9kA1MxOPHclGJASjTpwL
+         /xGqNd4mP7hY2osXGoinUq8++Uv74xAIqaghMkVMZCVv+YA7DcfIGM4r1546tDIRjjYs
+         9fuh79dhjOUAtY+olPvDhBTfISiW3t35EChe9DMq9hhOWATJh09PFl8ubW1iSLXYDr6F
+         oTWsEp5ZWAWkVobJ4KuAwQ9JgApq/+785P01osJsE6Ippbluymy75UGujOJZ/Rw2sppp
+         XVXlX3hedTAOY8xyrelA7As34IHrHJfPVrgpyCOkCy8I2+//luO95l9hgGNGTe8+5bf/
+         UJfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMNJqkvBJ3jEXzbHGWBKpjJC4t9N18zAGkKiAFJ9+eazZEf4aPtJS2JRWX/hT64yT56v5jP8EP8m1DNmZqPis=@vger.kernel.org, AJvYcCVZgqLY4iwtza82oroczJdP+pBXlFga8imPKqfuhUZDaSE/+Q2lJ7N7ueb6Q3WGFP+uT3jQvi29xPntk7E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz02RK8E8G/vCtj2/tiDFM3e4kXJv2hlw+0au7KkxHfxolJXxiF
+	MYXAgKCYvYvolDC4UUc6isnnzkd6QfJ24u/o/878fYkB+V4+KRJnZVigknwB52iunlgRal3twrD
+	BcqqMIA5bWvnw3GgSEQ3/q+b96Js=
+X-Gm-Gg: ASbGncsX38jW/Ec0EIOd25Z1dIswypF1Id348itfk8TEuPJAW01Vv2nMro5TPVNwXfx
+	/2dtIGV15mwLkT/sGi7EuqsGb8KbYVlVX08EJ8g==
+X-Google-Smtp-Source: AGHT+IEp6SQmDuI3S+SSgBHaSjydbB9kNBepxvM7xj8GQ6Lsrxiy7dr8/+ZYPpOmArjldVBOpXt5g+dI5zVsiyET8iw=
+X-Received: by 2002:a17:90b:2808:b0:2ea:bb3a:8f09 with SMTP id
+ 98e67ed59e1d1-2f548db69e5mr10801527a91.0.1736779427762; Mon, 13 Jan 2025
+ 06:43:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241123095033.41240-1-daniel@sedlak.dev>
-In-Reply-To: <20241123095033.41240-1-daniel@sedlak.dev>
+References: <cover.1734674670.git.jtostler1@gmail.com>
+In-Reply-To: <cover.1734674670.git.jtostler1@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 13 Jan 2025 15:42:32 +0100
-X-Gm-Features: AbW1kvZRz3gEroyggj7hBaQT6pmSQMCMlpH4i9ZAnI6wHYnGRJalEQn0PGcNziA
-Message-ID: <CANiq72ke2cym-VhN52vCm_Ujm+Z1=SnE=SL2y3JouKhjYGKt1A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Replace unwraps in doctests with graceful handling
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Mon, 13 Jan 2025 15:43:35 +0100
+X-Gm-Features: AbW1kvbhi4hm0fmJoT7Dhze_-XvzXg0RTbQz3PKVNmlfvEu71c97vQeXYiOIL_M
+Message-ID: <CANiq72njXsC+Wiyuv=zXz2NNpVRy6OHjU52Nd51rrJ44FgvSyQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] rust: add kunit doctest with doc fixes
+To: Jimmy Ostler <jtostler1@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	Tamir Duberstein <tamird@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Wedson Almeida Filho <walmeida@microsoft.com>, Filipe Xavier <felipe_life@live.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Daniel Sedlak <daniel@sedlak.dev>, 
+	Alex Mantel <alexmantel93@mailbox.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 23, 2024 at 10:50=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> =
+On Fri, Dec 20, 2024 at 7:25=E2=80=AFAM Jimmy Ostler <jtostler1@gmail.com> =
 wrote:
 >
-> In the following patches, I touch on error handling in the documentation
-> tests/examples. There are multiple occurrences of unwraps which can be
-> replaced by a question mark operator which should simplify the code.
-> Also, people typically tend to copy & paste code from the examples
-> (citation needed). If we leave the unwraps there, I think we can convey
-> the wrong impression, that it is OK to use unwraps unless the programmer
-> has a really good reason to use them.
+> This patch series adds a doctest for the `ArrayLayout` type, as well as
+> implements `From<LayoutError> for Error` for the internal `LayoutError`.
+> This change in the first patch is required for the added rustdoc kunit
+> test in the third patch to compile.
+>
+> This series also adds a change to the `stack_try_pin_init` example
+> documentation, so it correctly imports the `AllocError` kernel type.
 
 Applied to `rust-next` -- thanks everyone!
 
-    [ Slightly reworded commit. - Miguel ]
+    [ Reworded commit. - Miguel ]
 
-    [ Fixed typo in SoB. Slightly reworded commit. - Miguel ]
+    [ Fixed formatting of imports (still unordered). Slightly reworded
+      commit. - Miguel ]
 
-    [ Reworded commit slightly. - Miguel ]
+    [ Added periods to example comments. Reworded title. - Miguel ]
 
-Daniel: in the third patch, there was a broken Signed-off tag (with a
-"proper" SoB in the same line) -- I fixed it as mentioned above, but
-if you didn't intend to sign off the patch, please let me know,
-thanks!
+Jimmy: I tried to improve the wording a bit more on the first patch
+following our discussions, to try to be clearer/explicit, but please
+let me know if I made a mistake or you disagree. Thanks!
 
 Cheers,
 Miguel
