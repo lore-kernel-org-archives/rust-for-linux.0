@@ -1,61 +1,61 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FBA23ED4D
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590EC2451E5
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 11:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736767442; cv=none; b=Twbgat+jX5Sf4dfsXQel4fHp740/b2IPIlYti7xv3XEHKB4tfLROHzgDn8MVEWoHbnuxe1Vyr77uUlrDHKNdtBnbj3v+jKHYCTVf4GGDlwjTwMGl6cqfBnwb/rN5dhEHam8GYo+2xTiHVhgAnMLu+mfed4ur6aFzvTHCvU2PyhU=
+	t=1736767446; cv=none; b=BpSQB+JJvrM9HMg9DlwWlaCX5lgs+aFM85agPxUmnNOVU3BHEAqCPYI2lfksIBXdU9yAsNBPaRj5AVqJtinpMSaxZskDASeKByPn6I+PvBayf4ZL2gPLceWDzUmRXqb2+Wi5gIprCJEu0QBCJjpiJuoTMb2pjuP53kIfm5bH10U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736767442; c=relaxed/simple;
-	bh=XP0PNO8G/853ZISR4NFJL60BlTm8G/dA7ahDgJPTbK0=;
+	s=arc-20240116; t=1736767446; c=relaxed/simple;
+	bh=/uvDKCjlgOnsUH8C0V/hZTcfvjq6TTMwI45slAFmITI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SescKbGK7b0N4gQNeegZKJPuhn1T6NNfn8xgHV5y2KPVQKIl+tuYGBFw3Aiy7M8K8Rnct0/nOcioJS2NLWi9XksiheYA81ab6HqbMH0tkPBA18wtuXW6ZLz8JL0E6khIBJJJbaXHhI4l9+aacBJ1Y1X6gdmcXJ2HhRKLrkkhYjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pvJ/aNJN; arc=none smtp.client-ip=209.85.216.53
+	 MIME-Version; b=EGLbGSiB5eTxCszBX/R/HIq/jfrOd43EfvDKqCDo9h5jRez7I+oP3EWP5SC/uFiOhRZjchlDtU8KmF5DU4eVhMsGHVYNrvRhuNpXLWNMBQKzvDk62qaA2cqanth7O0b1VkH3Hd2xWc+kk0/QLfZfWpfsnNEw4Y44NQupRYLa33E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QF1z3oAj; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pvJ/aNJN"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ef89dbd8eeso5226039a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:24:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QF1z3oAj"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ef6c56032eso5201408a91.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 03:24:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736767440; x=1737372240; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1736767444; x=1737372244; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=217qCdop/bVuj9XoV8EFEQ4K3BvCuSwvnN0rQfYprBA=;
-        b=pvJ/aNJNM6hWazWxuQNk18EMYgd+DQl6rWe8maE2K6y694RoJQJS3Fw2E48J+Vh/8r
-         7FfGwN/ihgaV1QDaWWfp+kMOUB29dLZX0DnhwbE79I/jZUIWGyErGh5FXeoGApDnPdZK
-         O8cWXyg838GYNaC2dHu0U0Z5FfOBlS/tWOHnmZJ2ldP+p+/+++J+rreaFfg6ttqEG/OD
-         WTvlVw9BlK0UbpDXoY8vj7qWhMZwwzHLiU2c566Q+NBo2oVBwYH8+6r7E7HpjOMl6ezJ
-         PfcL+tbmtlleGL3K//Qd/jhBIgzUfAKjLGz/3ILSD15hihymIWt57dWFCPmww6Br0S5U
-         Vo4Q==
+        bh=8DT/35uJ0SGSGPotN/aFFV/d+f5sRADYEA7sMqJpaVQ=;
+        b=QF1z3oAj0XoyqVhwpcx088JnPrtdqTQs/WMZLO/Ivn61R0/XhcxhBH5l8RnXMl6+Xj
+         f6wn684JaHY/WDmL0mpyM/jFyaSP3qZt+f7GhHrfdX6gC5/EhDRGBqRMIN9XS44086DA
+         0LjgD7e4OzB1b71uk90dwyDKYilmJjGHebmOcPZPkhz+sUJZB860uhxN9pSn++oWWsnH
+         Ys65Ur+usMzq5Pl6QZDrEMX0jsreQfnBaVVtG5NijLNfb/okqvu8jaFwZddqSS9gXAG0
+         483UF4Yq3KdDuBJgOfGj5WkU07kWqYsw475ISKqk7m3N5IyYGR6B54btGs8a6bpJRoX+
+         aHSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736767440; x=1737372240;
+        d=1e100.net; s=20230601; t=1736767444; x=1737372244;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=217qCdop/bVuj9XoV8EFEQ4K3BvCuSwvnN0rQfYprBA=;
-        b=QcrCiD2CGf+NNSj3hUZ2lZUwllfRSH+9rpGqY6Qzca2kYXyam6imiDW6tyK6t936uh
-         Dm83gSbxZpgIqCSP4j7Np5NoChU5/qYQHN5BnTkzPcN07N0vcXlCb4wupsRweQr3/DFI
-         pmup518K1nXRZXKut6r9gB/gTgnr+Lx54iQVKB7uucTFgGqrYwQPmkyv0mgRYNTtGXct
-         EPeLB6qzc/sfp4CL53kHj2exnVe/rdRcTUagoXLrNvsfjZOMkoyLvvy9QiBvu5FL1Rbs
-         nVUeHG0gcVj36U7uyTVtdM8zepsSLhvTnZMd1pm/jnjO/jVxzp72KlcmaMRnYdGhkfCf
-         DLIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqNwXh7w+iVd0+UJsjqr8skj0iEZ9vPhSNWJMT7r4Y6Xw/LCsZL5UXFmorm/colfZNSPhYVyUPzJAz11wxYA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYlZSV/ba5helP129Ff3ZrK4QkY6hsnEwKqNGx36yEbqv661VZ
-	acVNP77VmAICLaBa4Kq14U3PYWV8mPz34mEZw7+kmPQVy83crJZjUP5D+vinBVg=
-X-Gm-Gg: ASbGncsBPU6mP96YjI2WIgubHBZ7QHswdnd7hGrnSKnE/6dI9GtgWCi2WlByUkkFnNM
-	OpgE5Lb7eOFVanfMdFYn0Pe8GWDc463ifZL8euL2AZBEWO+4fVgF+OqNELCKNESoYR9Vmqeb8EL
-	3hDG61oujMM4GRYIDhtgOvtDrDAypZkH8o19QsIOu1+0vEHDGN9jbn9fuTf1hvHXgsKZhn9jB0e
-	XntxvPODqEUjbKGbn11nTew8Rgs6fhPrYySKJMnRf9a1+BL+xAcZU6vhX0=
-X-Google-Smtp-Source: AGHT+IHWlPorx8XJmvX79gE5sNkxZSUXnp+Pd6+S6Fek2hXtY7a65fTM8Lo2nmZmWQWd7i9agrQzmg==
-X-Received: by 2002:a17:90b:51c2:b0:2ee:ab29:1a63 with SMTP id 98e67ed59e1d1-2f548ea6331mr27577987a91.3.1736767439700;
-        Mon, 13 Jan 2025 03:23:59 -0800 (PST)
+        bh=8DT/35uJ0SGSGPotN/aFFV/d+f5sRADYEA7sMqJpaVQ=;
+        b=qG5UlnfVdA/7RGdW9zmUS9MqWBqcz/4/ZbMjSrEZIpGPTMYzZwWF+/lQdKq52zrgoI
+         w+H1t2mSQOYrn9a09lwxOfyhG3l0QJRusLiPVp7Hh0f53K+fCeP0YfH7WxIVYyZj6nx4
+         sMx2f10k+c604KhVKquy1n2umMpbDkFT2Q3DTOnQLiPkBd6F/0Rj26lJx87B+Hv7kKJj
+         LGCdi56fON08lXtFBWvBNwS51J49Afxrgqo2e4fxSfO0HsnM30tUOTG+RanaF+lDxRcN
+         ruLdSGt8b9WqfBmLbtDgZPTrEY5PFqu6bYp4JN8cLOfxO7jdtnPb/a7HryQhT7SWrkbf
+         70FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVF18AsBz1V4sr1qd+vcZ54C6rYCJcjM3zEfGZC92NuWoFVltYEkGNojZnvz/D3CM0OA9muLteUbMMDvXS1uA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YytbJBYnzLKC69KkbOBWP9scXst5nVPWvMnO1O2q2lIMGMEtoKR
+	Yfno3jnYgIQ/nwxpqOQoQG3fioU6n5iO7qxhLCKRGghp0Z4Crscca50h1kCy6uw=
+X-Gm-Gg: ASbGncvBSuZrfM4FRxJUSRIhk/Jc2qfeuV54mNqiGD9Z/SbYx59SrTgrnj7D7SqknUy
+	cDwZJpVz175BCHBMduYRckBwiuiNrecrrqvIAC2gtNRBE3FiKbThEo9dOQ4iCx0BtR/2i2d21K5
+	rvdZJOAXrc0FKS63iJe2hndd3Axu122+IxCj/VwBc6lJMlJvx+TOSiPPR4zWY17iNLFcKj+tR7e
+	mG/ORYq43oAa0gTzgzAka3+dGfB0G4g9XohEdNesMvCy5qGvDBzaXvXgN8=
+X-Google-Smtp-Source: AGHT+IGzJcomzKu3um0t7HxdPCLFlwOxE0siZO+gePGZ/L+Xri4khqzqUGXcTjLI5lYyDPnM+gaq7w==
+X-Received: by 2002:a17:90b:50c4:b0:2ee:d7d3:3019 with SMTP id 98e67ed59e1d1-2f548ebf4fbmr35219371a91.12.1736767443736;
+        Mon, 13 Jan 2025 03:24:03 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f53e1da400sm2352192a91.0.2025.01.13.03.23.58
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f219f0dsm51767265ad.139.2025.01.13.03.24.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 03:23:59 -0800 (PST)
+        Mon, 13 Jan 2025 03:24:03 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -66,15 +66,19 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
+	Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH V7 07/16] rust: Add bare minimal bindings for clk framework
-Date: Mon, 13 Jan 2025 16:53:02 +0530
-Message-Id: <8dd38c6dce256340a5a623503023736f8e9278d8.1736766672.git.viresh.kumar@linaro.org>
+Subject: [PATCH V7 08/16] rust: Add initial bindings for OPP framework
+Date: Mon, 13 Jan 2025 16:53:03 +0530
+Message-Id: <5f3c7ac94e22c8bda51910360b399439c37babe2.1736766672.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1736766672.git.viresh.kumar@linaro.org>
 References: <cover.1736766672.git.viresh.kumar@linaro.org>
@@ -86,98 +90,252 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This adds very basic bindings for the clk framework, implements only
-clk_get() and clk_put(). These are the bare minimum bindings required
-for many users and are simple enough to add in the first attempt.
+This commit adds initial Rust bindings for the Operating performance
+points (OPP) core. This adds bindings for struct dev_pm_opp and
+struct dev_pm_opp_data to begin with.
 
-These will be used by Rust based cpufreq / OPP core to begin with.
-
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/clk.rs              | 48 +++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |  1 +
- 3 files changed, 50 insertions(+)
- create mode 100644 rust/kernel/clk.rs
+ MAINTAINERS                     |   1 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/opp.rs              | 189 ++++++++++++++++++++++++++++++++
+ 4 files changed, 193 insertions(+)
+ create mode 100644 rust/kernel/opp.rs
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8ee1c013cd6e..3f9ebca78732 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17707,6 +17707,7 @@ F:	Documentation/devicetree/bindings/opp/
+ F:	Documentation/power/opp.rst
+ F:	drivers/opp/
+ F:	include/linux/pm_opp.h
++F:	rust/kernel/opp.rs
+ 
+ OPL4 DRIVER
+ M:	Clemens Ladisch <clemens@ladisch.de>
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 59b4bc49d039..4eadcf645df0 100644
+index 4eadcf645df0..7f851d5907af 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
-@@ -10,6 +10,7 @@
- #include <linux/blk-mq.h>
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
-+#include <linux/clk.h>
- #include <linux/cpu.h>
- #include <linux/cpumask.h>
- #include <linux/cred.h>
-diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+@@ -28,6 +28,7 @@
+ #include <linux/phy.h>
+ #include <linux/pid_namespace.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_opp.h>
+ #include <linux/poll.h>
+ #include <linux/property.h>
+ #include <linux/refcount.h>
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 5d43dc5ec9eb..d1c0f136952e 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -62,6 +62,8 @@
+ #[cfg(CONFIG_NET)]
+ pub mod net;
+ pub mod of;
++#[cfg(CONFIG_PM_OPP)]
++pub mod opp;
+ pub mod page;
+ #[cfg(CONFIG_PCI)]
+ pub mod pci;
+diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
 new file mode 100644
-index 000000000000..123cdb43b115
+index 000000000000..becb33880c92
 --- /dev/null
-+++ b/rust/kernel/clk.rs
-@@ -0,0 +1,48 @@
++++ b/rust/kernel/opp.rs
+@@ -0,0 +1,189 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Clock abstractions.
++//! Operating performance points.
 +//!
-+//! C header: [`include/linux/clk.h`](srctree/include/linux/clk.h)
++//! This module provides bindings for interacting with the OPP subsystem.
++//!
++//! C header: [`include/linux/pm_opp.h`](srctree/include/linux/pm_opp.h)
 +
 +use crate::{
 +    bindings,
 +    device::Device,
-+    error::{from_err_ptr, Result},
-+    prelude::*,
++    error::{code::*, to_result, Result},
++    types::{ARef, AlwaysRefCounted, Opaque},
 +};
 +
 +use core::ptr;
 +
-+/// A simple implementation of `struct clk` from the C code.
-+#[repr(transparent)]
-+pub struct Clk(*mut bindings::clk);
++/// Dynamically created Operating performance point (OPP).
++pub struct Token {
++    dev: ARef<Device>,
++    freq: usize,
++}
 +
-+impl Clk {
-+    /// Creates `Clk` instance for a device and a connection id.
-+    pub fn new(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-+        let con_id = if let Some(name) = name {
-+            name.as_ptr() as *const _
-+        } else {
-+            ptr::null()
-+        };
-+
-+        // SAFETY: It is safe to call `clk_get()`, on a device pointer earlier received from the C
-+        // code.
-+        Ok(Self(from_err_ptr(unsafe {
-+            bindings::clk_get(dev.as_raw(), con_id)
-+        })?))
-+    }
-+
-+    /// Obtain the raw `struct clk *`.
-+    pub fn as_raw(&self) -> *mut bindings::clk {
-+        self.0
++impl Token {
++    /// Adds an OPP dynamically.
++    pub fn new(dev: &ARef<Device>, mut data: Data) -> Result<Self> {
++        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
++        // requirements.
++        to_result(unsafe { bindings::dev_pm_opp_add_dynamic(dev.as_raw(), &mut data.0) })?;
++        Ok(Self {
++            dev: dev.clone(),
++            freq: data.freq(),
++        })
 +    }
 +}
 +
-+impl Drop for Clk {
++impl Drop for Token {
 +    fn drop(&mut self) {
-+        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
-+        // relinquish it now.
-+        unsafe { bindings::clk_put(self.0) };
++        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
++        // requirements.
++        unsafe { bindings::dev_pm_opp_remove(self.dev.as_raw(), self.freq) };
 +    }
 +}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 2f72e1d8a6b7..5d43dc5ec9eb 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -39,6 +39,7 @@
- pub mod block;
- #[doc(hidden)]
- pub mod build_assert;
-+pub mod clk;
- pub mod cpu;
- pub mod cpumask;
- pub mod cred;
++
++/// Equivalent to `struct dev_pm_opp_data` in the C Code.
++#[repr(transparent)]
++pub struct Data(bindings::dev_pm_opp_data);
++
++impl Data {
++    /// Creates new instance of [`Data`].
++    pub fn new(freq: usize, u_volt: usize, level: u32, turbo: bool) -> Self {
++        Self(bindings::dev_pm_opp_data {
++            turbo,
++            freq,
++            u_volt,
++            level,
++        })
++    }
++
++    /// Adds an OPP dynamically. The OPP is freed once the [`Token`] gets freed.
++    pub fn add_opp(self, dev: &ARef<Device>) -> Result<Token> {
++        Token::new(dev, self)
++    }
++
++    fn freq(&self) -> usize {
++        self.0.freq
++    }
++}
++
++/// Operating performance point (OPP).
++///
++/// Wraps the kernel's `struct dev_pm_opp`.
++///
++/// The pointer to `struct dev_pm_opp` is non-null and valid for the lifetime of the `OPP`
++/// instance.
++///
++/// # Invariants
++///
++/// Instances of this type are reference-counted. The reference count is incremented by the
++/// `dev_pm_opp_get()` function and decremented by `dev_pm_opp_put`. The Rust type `ARef<OPP>`
++/// represents a pointer that owns a reference count on the OPP.
++///
++/// A reference to the `OPP`, `&OPP` isn't refcounted by the Rust code.
++
++#[repr(transparent)]
++pub struct OPP(Opaque<bindings::dev_pm_opp>);
++
++// SAFETY: It's OK to send the ownership of `OPP` across thread boundaries.
++unsafe impl Send for OPP {}
++
++// SAFETY: It's OK to access `OPP` through shared references from other threads because we're
++// either accessing properties that don't change or that are properly synchronised by C code.
++unsafe impl Sync for OPP {}
++
++// SAFETY: The type invariants guarantee that [`OPP`] is always refcounted.
++unsafe impl AlwaysRefCounted for OPP {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
++        unsafe { bindings::dev_pm_opp_get(self.0.get()) };
++    }
++
++    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
++        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
++        unsafe { bindings::dev_pm_opp_put(obj.cast().as_ptr()) }
++    }
++}
++
++impl OPP {
++    /// Creates an owned reference to a [`OPP`] from a valid pointer.
++    ///
++    /// The refcount is incremented by the C code and will be decremented by `dec_ref()` when the
++    /// ARef object is dropped.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `ptr` is valid and the OPP's refcount is incremented. The
++    /// caller must also ensure that it doesn't explicitly drop the refcount of the OPP, as the
++    /// returned ARef object takes over the refcount increment on the underlying object and the
++    /// same will be dropped along with it.
++    pub unsafe fn from_raw_opp_owned(ptr: *mut bindings::dev_pm_opp) -> Result<ARef<Self>> {
++        let ptr = ptr::NonNull::new(ptr).ok_or(ENODEV)?;
++
++        // SAFETY: The safety requirements guarantee the validity of the pointer.
++        Ok(unsafe { ARef::from_raw(ptr.cast()) })
++    }
++
++    /// Creates a reference to a [`OPP`] from a valid pointer.
++    ///
++    /// The refcount is not updated by the Rust API unless the returned reference is converted to
++    /// an ARef object.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `ptr` is valid and remains valid for the duration of 'a.
++    pub unsafe fn from_raw_opp<'a>(ptr: *mut bindings::dev_pm_opp) -> Result<&'a Self> {
++        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
++        // duration of 'a. The cast is okay because `OPP` is `repr(transparent)`.
++        Ok(unsafe { &*ptr.cast() })
++    }
++
++    #[inline]
++    fn as_raw(&self) -> *mut bindings::dev_pm_opp {
++        self.0.get()
++    }
++
++    /// Returns the frequency of an OPP.
++    pub fn freq(&self, index: Option<u32>) -> usize {
++        let index = index.unwrap_or(0);
++
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it.
++        unsafe { bindings::dev_pm_opp_get_freq_indexed(self.as_raw(), index) }
++    }
++
++    /// Returns the voltage of an OPP.
++    pub fn voltage(&self) -> usize {
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it.
++        unsafe { bindings::dev_pm_opp_get_voltage(self.as_raw()) }
++    }
++
++    /// Returns the level of an OPP.
++    pub fn level(&self) -> u32 {
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it.
++        unsafe { bindings::dev_pm_opp_get_level(self.as_raw()) }
++    }
++
++    /// Returns the power of an OPP.
++    pub fn power(&self) -> usize {
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it.
++        unsafe { bindings::dev_pm_opp_get_power(self.as_raw()) }
++    }
++
++    /// Returns the required pstate of an OPP.
++    pub fn required_pstate(&self, index: u32) -> u32 {
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it.
++        unsafe { bindings::dev_pm_opp_get_required_pstate(self.as_raw(), index) }
++    }
++
++    /// Returns true if the OPP is turbo.
++    pub fn is_turbo(&self) -> bool {
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it.
++        unsafe { bindings::dev_pm_opp_is_turbo(self.as_raw()) }
++    }
++}
 -- 
 2.31.1.272.g89b43f80a514
 
