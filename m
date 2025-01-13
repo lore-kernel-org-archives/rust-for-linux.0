@@ -1,71 +1,71 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5203C1FDA78
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BC11FDA85
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736762560; cv=none; b=FigbwsKWy1FPdcmdXYB8bB/w2KryI4ouZASV2vJPMIqRXlxT15DIVEkp9bfmfURDR7OiAZj9Rv0JDboTlv4y6ddxys9IB69cv79ItWbGKQFBhYdpm0GZ6W0I4CmwR5iQ5jW+efA4gJTifK18M+HuTbcd2YSosqWvlTvmMGLcRBE=
+	t=1736762692; cv=none; b=LtCp3wAB9YCmxh4qlaS1aJSsDtXPamcQTBXwxgIWowoD/uULImRqFEnhEoCIOQ0+52YAo43fblj1FZt8hu33/Fh45BEah4aOowOLGN94UJ5rp25gP2+xl2/nZKcnlPHkOWwGc4GZDEKILg8qYXTqmxS6GGAcNr9u+KxSMauKx7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736762560; c=relaxed/simple;
-	bh=TQSlXvhxvgp4lldhF2LN9kyKR3zMMzQlAYhZ/rX9H2g=;
+	s=arc-20240116; t=1736762692; c=relaxed/simple;
+	bh=sJI3UnXX5kgsySWkcy2qtVSHTvlFHUi0TkzIFtHOWSg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CArSxadZSt0NksH9jEuOVkN9vIg01sk/P1wxl8Ymz78nYuHTXG1G+3ohnhVW1fG1TteJ8g887a00yS8DlpkjW7Je3nBcdx8v84hhnwuD2Zs9OXUvloZnbMyTJ+XLp0TKchAgidrPjp+BtlwYB4FAddtOuQLrGeteL17qTwzoCpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SFC6CJH/; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=A5kWWi10HMOCSfeZi1J0I0llNn7vuku0fJpulyhcvf245tJ9TVAXl0pqKFW8501sBQMHxlZnbintIZ83HXjxFZjTFLPCmsOTCVC8eWGxEQsBoF/VQNHtF1jjUKWpmBHepKA57sM11rXAMkv1QYcT6mH5ZDVA3avi4H++U6pWJ+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jD0QfkGI; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SFC6CJH/"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385ef8b64b3so3526419f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:02:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jD0QfkGI"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso4113444f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:04:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736762557; x=1737367357; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736762689; x=1737367489; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ruMIfgt8XeymWn0Xb8GRY3LQRisyMq2NBZDcNhsouqk=;
-        b=SFC6CJH/GKDR0Yc/g6F3wVDY5yai88H86U1BbzGg9GOX8Y1FYSA0GLMbgSUSfV1WvU
-         wn7QI8XkxqoVGN2OMNraE5aHhwiFQ9BynFbx2SCVwpuPG2/vPodNM4JgKvt8TXeyQXiq
-         iZxaukyWodKMajivZ/jP1tRrbRsAUX7hz/unzX2YwYK/v9He13/k+XROIrpYy6/waCyT
-         i2IIlA27i8fpDNXIZo3xM+CwCVRho8c3D0qpj8LqUr5ZWmRQWEgfR0dhl56INLzVqPDQ
-         g4aJk49DqFQcJhuDv+qJzV46e5mdaryW9g9y79mQuacsinWBJOmpXfVNlTKyJmU6SgHL
-         a4kA==
+        bh=cTnHrkrCK9aVruiggOEjuJFURydlBondtCGki6zspaI=;
+        b=jD0QfkGIg27HinDSRgn0+oBLPb00V/ta1PZmas3beAZ+jRRYqcWxlvc5Vjb9Q9hk81
+         6Tb34JhCuKuCYrJpoWWeSLLtkWSrLhbd0fUJuPhTBY4DcbGYxtwCQyCEZqkqR3nU/b7F
+         ZcqiwQCHpBWYMWjYqBoYke1ZKjPZSMklaceE5zL1wcWg+cgaChb4Cwrt1Rph3yJiKdHX
+         SamPxlotb9DYNBdD5dZEPhRXGAYEXm9Y6nxhYF1B4Qduzx1qEz4yXgQdmpRDMT3vVD+g
+         wkRJY4K17RoRmdqNf1y77bl/I3d3+jEPsOLmJwVdduqj973qvtv8djGvGosJRYBrcdVS
+         jidg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736762557; x=1737367357;
+        d=1e100.net; s=20230601; t=1736762689; x=1737367489;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ruMIfgt8XeymWn0Xb8GRY3LQRisyMq2NBZDcNhsouqk=;
-        b=Zh6nZ47SZeLzd8QV7z1J0+QUB0tdMpe67wNqpy/9jWfQXQRksDtIlM29f4YB6h1Ik+
-         yad2dkpaedC0xOGFLqJW+C3EMjDSz8UW5zBzGIwCeZ8gu/56sopg0MrlbhyRUx2DNqed
-         beW8kdKevKu0XvRMUcfsK2ogWINo3AQGatrroVrVzBYV/+Nnm6VuOLSY6whlyaVgzEm+
-         PVitFRy+NyNDVVbBulAklOIR1QPiU1HjFo1twRhvZ+aNWVFn8DfWN4iBcbKjMEqOomvF
-         Fq1SYMSq7DaDZQRkkx4PgR2vPz3KNa1CpIjHWqNPkrBFiWSA2l5MfHHQEw29pX07Jxhu
-         aQvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNmFSJb5eRAaceapH42i1trMWD50UbWgG78/CovLXQqw4yOR+8u8Ol1JUjWBZ2LDsExhLmX+0me+T39MlBfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf9fhEnxHJEdzB22AfVz/2J5Mj9RUagLD9DjAIYz7HNx0YrckT
-	9BDaDuPV9MaT++riX6VnQZcuutlMrdEg43+ZCPntttxGHyQLWeHhWnv5KKLlIFERzNlYI6SSqnj
-	7d5qofeSCeMJgLroem5sZOortxQyjpite7tOR
-X-Gm-Gg: ASbGncs2elMeaE3eAokjBakfngWJ0qif4ZICPg+3qqqEh/QjtGTeEKiBXYSYbsOani/
-	L+9sTurtKtXb0isKvAhFb+9EIp6azyOwYsiRrIKMZeShB1EJo2u/UoYXgQTuk8QyDd10W
-X-Google-Smtp-Source: AGHT+IGXYroCUwfW3rZ8JLd7wkjW88qfzhWvUhyaT8A7PZu/lBodxoUUkNKOlZdINTG+N767o/YqLm0vh6sHher8abs=
-X-Received: by 2002:a5d:5f44:0:b0:386:3e3c:efd with SMTP id
- ffacd0b85a97d-38a8730fa79mr20090451f8f.44.1736762556541; Mon, 13 Jan 2025
- 02:02:36 -0800 (PST)
+        bh=cTnHrkrCK9aVruiggOEjuJFURydlBondtCGki6zspaI=;
+        b=sbcGYXuvoYAzSdbjzdvLnuniR1XbwrDtzgT9+wJJpIUgX98TzMjmSoFCrJRut1xa3D
+         tJRUeDQyPve368DS/ZaZ/1jtZME7V2QNWzBGTcoJc/U5QCUBcUW6dVYaKZy7o8H6Eztm
+         4WCl9JLFmOUdkTQ2dltCYD4/bp/6yAbVpdxbdpQL7YxY9nc9P8ppL1r4ePn3fnS/uNlm
+         Y8aFBsGq4OmrEUJxauhpQ5H2oioTOk27IojF2/9odPwd9kuKik531N5OgpAOUQmCZE8P
+         /HoxL4r2tCN3+HOiFXkwZONiJ670keTwIE2tij0leG4Z0By7qSZjB2i4Dy2nEKLGLFP3
+         9q2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXphJyplLpZCO+i0OGukmw3LARM1aTB+ln+My/mZmLCEMIw9Z9HAvotqWNCvFblsS7AYTJuRuSCekpHCyXL1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwtWMoH3pDNiTWm6fllBjM9LdUJLpCkfJS2DfyEQiG58V0tlon
+	7rMTN/3obBDoCQIlEyC69QIwqlyO8DjypBXaMQfqYL8wgmK/4eMTXyU1EGEHYcqoIWKWICNdsp6
+	yiYlg1kOP2hcXH7SoIgiAmBar+1NS3z/a/kqd
+X-Gm-Gg: ASbGncsDV5kTevTbHCbxs+0xSSlrJR6ulWpwEWKLNgAaUx2QgCSJiANoVbM2IGd6CPp
+	G9EhlCogWK3x7+1AGqE4EVpFDv34rj8czQ1zEnFVUP5lJu9RRJWybu4uTWvFhTZtgU8pr
+X-Google-Smtp-Source: AGHT+IEb2/iBvWA25oOoS/cFn89nZ6lRBPbi7b/Zh2yp5GE/04Ymcj9QFQdZ3E/rVz9ACHhaVdJLRZA7ErZyMXViZ4k=
+X-Received: by 2002:a5d:64c9:0:b0:385:e88a:7037 with SMTP id
+ ffacd0b85a97d-38a872fc182mr16642759f8f.6.1736762688566; Mon, 13 Jan 2025
+ 02:04:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-vma-v11-0-466640428fc3@google.com> <k0kNBzmNg_c8GHIFyjlyJfEpyRNoAIZZVM1n3zK2kVT1pScUOUpkePSltcN-CfRI2UpS0OIvEG7FBvkHhXYrAQ==@protonmail.internalid>
- <20241211-vma-v11-3-466640428fc3@google.com> <87o71bbys7.fsf@kernel.org>
-In-Reply-To: <87o71bbys7.fsf@kernel.org>
+References: <20241211-vma-v11-0-466640428fc3@google.com> <zLgtayXoZAk9UcN1xyPVa-vRd7F8sqv12X8fKo4pIXbs0xFLULWuH5tBEbOiIuktvkf7o4PNsNvDli037vcxnQ==@protonmail.internalid>
+ <20241211-vma-v11-4-466640428fc3@google.com> <87jzbzbxrk.fsf@kernel.org>
+In-Reply-To: <87jzbzbxrk.fsf@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 13 Jan 2025 11:02:24 +0100
-X-Gm-Features: AbW1kvaU2mBVYi4r7g9TptFFdAf5JOsLMXkmiZb6_JeC32FLrxX_VQ5DF8tNs1s
-Message-ID: <CAH5fLgjHhzRZnatgornai84iOVi2S07tosoKUVTGqWQ9-ggENQ@mail.gmail.com>
-Subject: Re: [PATCH v11 3/8] mm: rust: add vm_insert_page
+Date: Mon, 13 Jan 2025 11:04:36 +0100
+X-Gm-Features: AbW1kvbm9xIsdtcFoxgdgDqzPKAGTDok7KbPejqS7tX7dbZZUZ1FP9FO-qibG3A
+Message-ID: <CAH5fLghYSL7TWUKa+Nj5_wyBBJpfo=0AStHSbC=aDD9Hj6VEfQ@mail.gmail.com>
+Subject: Re: [PATCH v11 4/8] mm: rust: add lock_vma_under_rcu
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -80,150 +80,87 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+On Mon, Dec 16, 2024 at 3:50=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
 .org> wrote:
 >
 > "Alice Ryhl" <aliceryhl@google.com> writes:
 >
-> > The vm_insert_page method is only usable on vmas with the VM_MIXEDMAP
-> > flag, so we introduce a new type to keep track of such vmas.
+> > Currently, the binder driver always uses the mmap lock to make changes
+> > to its vma. Because the mmap lock is global to the process, this can
+> > involve significant contention. However, the kernel has a feature calle=
+d
+> > per-vma locks, which can significantly reduce contention. For example,
+> > you can take a vma lock in parallel with an mmap write lock. This is
+> > important because contention on the mmap lock has been a long-term
+> > recurring challenge for the Binder driver.
 > >
-> > The approach used in this patch assumes that we will not need to encode
-> > many flag combinations in the type. I don't think we need to encode mor=
-e
-> > than VM_MIXEDMAP and VM_PFNMAP as things are now. However, if that
-> > becomes necessary, using generic parameters in a single type would scal=
-e
-> > better as the number of flags increases.
+> > This patch introduces support for using `lock_vma_under_rcu` from Rust.
+> > The Rust Binder driver will be able to use this to reduce contention on
+> > the mmap lock.
 > >
 > > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
+> > Reviewed-by: Jann Horn <jannh@google.com>
 > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > > ---
-> >  rust/kernel/mm/virt.rs | 71 ++++++++++++++++++++++++++++++++++++++++++=
-+++++++-
-> >  1 file changed, 70 insertions(+), 1 deletion(-)
+> >  rust/helpers/mm.c |  5 +++++
+> >  rust/kernel/mm.rs | 56 +++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  2 files changed, 61 insertions(+)
 > >
-> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> > index 68c763169cf0..3a23854e14f4 100644
-> > --- a/rust/kernel/mm/virt.rs
-> > +++ b/rust/kernel/mm/virt.rs
-> > @@ -4,7 +4,15 @@
-> >
-> >  //! Virtual memory.
-> >
-> > -use crate::{bindings, mm::MmWithUser, types::Opaque};
-> > +use crate::{
-> > +    bindings,
-> > +    error::{to_result, Result},
-> > +    mm::MmWithUser,
-> > +    page::Page,
-> > +    types::Opaque,
-> > +};
+> > diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+> > index 7b72eb065a3e..81b510c96fd2 100644
+> > --- a/rust/helpers/mm.c
+> > +++ b/rust/helpers/mm.c
+> > @@ -43,3 +43,8 @@ struct vm_area_struct *rust_helper_vma_lookup(struct =
+mm_struct *mm,
+> >  {
+> >       return vma_lookup(mm, addr);
+> >  }
 > > +
-> > +use core::ops::Deref;
+> > +void rust_helper_vma_end_read(struct vm_area_struct *vma)
+> > +{
+> > +     vma_end_read(vma);
+> > +}
+> > diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> > index ace8e7d57afe..425b73a9dfe6 100644
+> > --- a/rust/kernel/mm.rs
+> > +++ b/rust/kernel/mm.rs
+> > @@ -13,6 +13,7 @@
+> >  use core::{ops::Deref, ptr::NonNull};
 > >
-> >  /// A wrapper for the kernel's `struct vm_area_struct` with read acces=
-s.
+> >  pub mod virt;
+> > +use virt::VmAreaRef;
+> >
+> >  /// A wrapper for the kernel's `struct mm_struct`.
 > >  ///
-> > @@ -100,6 +108,67 @@ pub fn zap_page_range_single(&self, address: usize=
-, size: usize) {
-> >              )
-> >          };
+> > @@ -170,6 +171,32 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::m=
+m_struct) -> &'a MmWithUser {
+> >          unsafe { &*ptr.cast() }
 > >      }
-> > +
-> > +    /// Check whether the `VM_MIXEDMAP` flag is set.
+> >
+> > +    /// Attempt to access a vma using the vma read lock.
+> > +    ///
+> > +    /// This is an optimistic trylock operation, so it may fail if the=
+re is contention. In that
+> > +    /// case, you should fall back to taking the mmap read lock.
+> > +    ///
+> > +    /// When per-vma locks are disabled, this always returns `None`.
+> > +    #[inline]
+> > +    pub fn lock_vma_under_rcu(&self, vma_addr: usize) -> Option<VmaRea=
+dGuard<'_>> {
+> > +        #[cfg(CONFIG_PER_VMA_LOCK)]
+> > +        {
+> > +            // SAFETY: Calling `bindings::lock_vma_under_rcu` is alway=
+s okay given an mm where
+> > +            // `mm_users` is non-zero.
+> > +            let vma =3D unsafe { bindings::lock_vma_under_rcu(self.as_=
+raw(), vma_addr as _) };
 >
-> Perhaps "Check whether the `VM_MIXEDMAP` flag is set. If so, return
-> `Some`, otherwise `None` ?
+> Is `as _` the right approach here?
 
-How about
-
-If the `VM_MIXEDMAP` flag is set, returns a `VmAreaMixedMap` to this
-VMA, otherwise returns `None`.
-
-This follows the example of slice::as_ascii
-
-> > +    ///
-> > +    /// This can be used to access methods that require `VM_MIXEDMAP` =
-to be set.
-> > +    #[inline]
-> > +    pub fn as_mixedmap_vma(&self) -> Option<&VmAreaMixedMap> {
-> > +        if self.flags() & flags::MIXEDMAP !=3D 0 {
-> > +            // SAFETY: We just checked that `VM_MIXEDMAP` is set. All =
-other requirements are
-> > +            // satisfied by the type invariants of `VmAreaRef`.
-> > +            Some(unsafe { VmAreaMixedMap::from_raw(self.as_ptr()) })
-> > +        } else {
-> > +            None
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// A wrapper for the kernel's `struct vm_area_struct` with read acces=
-s and `VM_MIXEDMAP` set.
-> > +///
-> > +/// It represents an area of virtual memory.
->
-> Could we have a link to `VmAreaRef` and explain that this is a
-> `VmAreaRef` with an additional requirement?
-
-Ok.
-
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The caller must hold the mmap read lock or the vma read lock. The =
-`VM_MIXEDMAP` flag must be
-> > +/// set.
-> > +#[repr(transparent)]
-> > +pub struct VmAreaMixedMap {
-> > +    vma: VmAreaRef,
-> > +}
-> > +
-> > +// Make all `VmAreaRef` methods available on `VmAreaMixedMap`.
-> > +impl Deref for VmAreaMixedMap {
-> > +    type Target =3D VmAreaRef;
-> > +
-> > +    #[inline]
-> > +    fn deref(&self) -> &VmAreaRef {
-> > +        &self.vma
-> > +    }
-> > +}
-> > +
-> > +impl VmAreaMixedMap {
-> > +    /// Access a virtual memory area given a raw pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that `vma` is valid for the duration of 'a=
-, and that the mmap read lock
-> > +    /// (or stronger) is held for at least the duration of 'a. The `VM=
-_MIXEDMAP` flag must be set.
-> > +    #[inline]
-> > +    pub unsafe fn from_raw<'a>(vma: *const bindings::vm_area_struct) -=
-> &'a Self {
-> > +        // SAFETY: The caller ensures that the invariants are satisfie=
-d for the duration of 'a.
-> > +        unsafe { &*vma.cast() }
-> > +    }
-> > +
-> > +    /// Maps a single page at the given address within the virtual mem=
-ory area.
-> > +    ///
-> > +    /// This operation does not take ownership of the page.
-> > +    #[inline]
-> > +    pub fn vm_insert_page(&self, address: usize, page: &Page) -> Resul=
-t {
-> > +        // SAFETY: The caller has read access and has verified that `V=
-M_MIXEDMAP` is set. The page
-> > +        // is order 0. The address is checked on the C side so it can =
-take any value.
->
-> Maybe something like this: "By the type invariant of `Self` caller has re=
-ad
-> access and has verified that `VM_MIXEDMAP` is set. By invariant on
-> `Page` the page has order 0."
-
-Ok.
+We can drop it once the FFI integer types are fixed. It's late in the
+cycle, so this patch probably won't make it for 6.14. This means I can
+remove the casts entirely before this is merged. Otherwise we can
+remove them in a follow-up.
 
 Alice
