@@ -1,73 +1,73 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A7187554
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169CF22AE55
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 10:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736763527; cv=none; b=jFEUjBU01fRe1NwAxI9ysXs4nCdFlTazqkTMLr8uKc3bCG/KujuzZHkBpy6W+VcpgxPUI6S7reVsWRGwbH1R/wXQH4IIgm1KG8uQQErYiG7laFrESpoeKCkrgNnq9962zB8VdavCqXf/iUDb1oqeCXEVBwrNIx7HL65/JfpC4vo=
+	t=1736764018; cv=none; b=tAhXVQf2JcSAUfXN9c5MXDVF9jyAk02Ks+HEL2AM0os68y48dWg7S7tjv0Sta44d6IXqtAqM7KgaaZnxb3F72XXORJ/b9WjtjBjNNUfOddtf2xVtmrz5JNm+iitxAde8kQJHsA8dC5ssDGkfgjHfpwnzpBcTTEekyfL933WrGOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736763527; c=relaxed/simple;
-	bh=RQqCH4c8ligDPjmeabH4Wu6WVaTunNrklb0ytnJpOhw=;
+	s=arc-20240116; t=1736764018; c=relaxed/simple;
+	bh=vQw3YmcT45+jEPsb/gLwWjTwPpa/XpATmo+XkLefb38=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U1rd/nnn5lNQohyEPG1LRiyQ9VG0pXid84ZgtFW9WIvXHeD3owNthfiU0hYdG3mrcWzrCYVv+bAT4KUx5Q69QTHmCAXXbUKYvgQbkA11sWvjYOsdGjMTupaZ6T/PYY3+yBDexo9FBn299zoz8a42sEVU6w0nbzp5XqAdsH64n+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b9hoIVw7; arc=none smtp.client-ip=209.85.221.50
+	 To:Cc:Content-Type; b=Blx4s7P7tLrC6O5MAlM7ChdfQAxAwl0iQK4DXI5PrN7UEq/Ivtbb4LelIc26vl/nbe3ZWNOlZ7IbOi/3/Ny09J2idFryXUkpPdlnXQTVb8ZQRekURpuuhsuVqrYmfL/DxLLXnLyiHh+UQKr5ccbJKGAeZiCkPy/eqMVyqht1xls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zh6CvXCn; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b9hoIVw7"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385df53e559so3277813f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:18:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zh6CvXCn"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4363ae65100so42227125e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 02:26:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736763524; x=1737368324; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736764014; x=1737368814; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G8GDo/MCdKx6Z/Ef/GGop6qPQS31mjUdMoKIJbkfs3M=;
-        b=b9hoIVw7qRqW0AOyx8j9IQsBDFqYamyYCjFWy+0j31c9i7LDM+z2i56AYlc8ZSbz74
-         Ns+AHOkhlqaKVKIgulc266cplzAovqYNY2dzZ9O1ZRVEJr6n3Zsz9EBthu3PHM7Q1TUl
-         UjdW3XGNOS2PApD8kPL7qjt5LDiIHeEedGrhwqikCQVmrANPKQPOXhZ6ya+CEMMPX/Uo
-         NF2DyWJxW1Vrx8AOlpzcw08k1lTRTMXZu5kJhHHAjn4KNtr2s9oy/xFCbbbL+NDbX02S
-         BIySwu1aKOO6b4YhNPXADz2KDrwjAQUSAZ4sO/2BbpJuAkyiB2cxlRF1juPPjjj0Fdog
-         t7lg==
+        bh=WotA+xYJuM3ux57wZ522GGvB6ieWOsCacjrw//zGRFg=;
+        b=Zh6CvXCn7dvludNtoZuQILJxoVTik+iMHJkC42IOjxwCxWKSAdwk2TBO97n8aZ6v2V
+         cSvFjIErLdAJ0mhXlxLrDP5TI0jmN25zx/mcW6z45VNM0ROW1upCq+O9AYJe8xK09a9q
+         BUmHp5gcsJDmYr4kGHMaPBGOW7WnJyFWaXA909YwYsoWZFZrRccaD/nTr7OC5JsXtBoa
+         66xSzdxkAHSm0vQQr6TB7gleJS+wAcisca4qh5RloXKT/XXvcqZwQwpLbZYPWK8PlBpq
+         q8YsRS7yNizso2tBWYlvvKbLM9G2XDSvaXmtIkMF2j8OQPB54alcMW02G6jZ/EqVj2nZ
+         q4Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736763524; x=1737368324;
+        d=1e100.net; s=20230601; t=1736764014; x=1737368814;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G8GDo/MCdKx6Z/Ef/GGop6qPQS31mjUdMoKIJbkfs3M=;
-        b=Z8IqYrvV9D/bPxn28kF1xD8ZDYbWbMuVcT7e133dIowc5YwiINT2/y+cayPYLQhfb/
-         2/YymzE0d9MkP1fPsiE+H9EyrNiuivKpdXQ4+pgBrtboplVMLlor6l2so8Sn2fIwGBEz
-         MAcKAKMpvh4LhopPqMjHamFGEaK91kQv1xBaEC2XAnymw1RF9/7u+Nt++MFpj6v+HoRu
-         Iorv23tcyiVKtHGQXrJqUY1xGayxKRDdr6hKn3cr6ReiRqg2LoUrsIEX6Hwlx2zHZZvB
-         FBhuWSGMNEy++dMmaVboXoHj/YKZAyJ4+TsL9qRUhzOfWP33h4PysRJ5xmOy+HSW3pBf
-         isqw==
-X-Forwarded-Encrypted: i=1; AJvYcCXweKh23WIq5VD1qMA1bApX83KXy+8DPwAzNtC3Zy1qAzrRd4FgBEWZHGssGGTTk6+XL+S1+GZUd4o+8qISZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAcFX3k2znmcMgTE/jeh3wJgKS5+1MdjUHg77MKdB617x+gILN
-	SAFVYESDz6Re4+yk1J7OtCH76iIHNuDWsi21532LqBj1Jvgg5tUxjrd6eVpPU9QhWu92cSLOYAl
-	we38CcRvboJXk7jRptMwQqAXMIZu51dpHgwa7
-X-Gm-Gg: ASbGncsL/dMDFt7W2D2OyiSSzdt4N9lDlj+kVh3oRIXwf4YGqjG+OiHCh4/4WHNX0Hp
-	vaVrK3idM2AM4EK4sMsEXE6BqLGxdEu8dkt6Ljak4/6sthqKIMnLcg4/mjeAehABcOUpO
-X-Google-Smtp-Source: AGHT+IGpz/SHkxbp+N3cQw0S7DSAij+3lPOEYN2Yu2IpzNCgXQ1VyNHvutxAlnjy9IbHqOouApIerBv3HdqSu06NEN8=
-X-Received: by 2002:a05:6000:2a3:b0:385:efc7:932d with SMTP id
- ffacd0b85a97d-38a8730faafmr17951935f8f.46.1736763524405; Mon, 13 Jan 2025
- 02:18:44 -0800 (PST)
+        bh=WotA+xYJuM3ux57wZ522GGvB6ieWOsCacjrw//zGRFg=;
+        b=BVdQdjo8pUdM5CgIEULHHd+zJlAxAc8dJK6amBxCfk4JE6CAIpxLvvpg0eoZpAPJjv
+         J09ArmL30roaDT/vczzG11+wNzw0WwdeUvLvbfo2i8H5OXzP5wKdSBX/dAel5MkdasU8
+         2KM9iFBv/8nQTF/8TzziJWPjCzGrnOKzNLaHvbgRvzTUvIzOYx4pCOJRpZPuv1fSQt2A
+         9L08k4o8dxFNdm+h0Y9RZXAUQhiIfpUM0CyETFtrpC6kF9dkCA/6zh7x+zgNI44oRSwZ
+         V8jeTyEcJJNuqmtCiATGVpzAlPS/FFwm7c8jPVmuy2pE5h9YKUVyMago4XSwLaIm/+37
+         ev2w==
+X-Forwarded-Encrypted: i=1; AJvYcCU6Va3cM+oIRn2oVJSWJbgtiTh1ECjjh/Dhl7sd3UXbkge1780eOozAojNz/XyKC2/Z68psPS64sooH4PiUag==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0Kn/P2hIqsm4D7X8ceg7qCDgzfOizsjxOKJFURSd+9nTDWuxj
+	rixw7tzRvISYaUemLHubESWGRwz+o/St4S2gHm/75WuEEArQsbaQvCfe9Fmc+ql3v2/Joc3TMJv
+	IbwYfO97wTyteWiZUgvmfXADu4RrSDDO9x6rs
+X-Gm-Gg: ASbGncsaum2cMwIR0IaoH98cp1F4HeygFVKfMuodbOF1UkHuEQu+88L+Tnr68TbuD2P
+	lIrmaFk8kSiMQ2k2kopFw60T22bYYzGLQgXLHpsOd6plJuTjvwVkWqJZsnPwcVuVWqAHk
+X-Google-Smtp-Source: AGHT+IEdGBC/y1Bvaqxe390XP8IZkL7ccHVLd8tb6uNVNh+W/IRSR2mP1N4tBZgiPoa1YN8GklcEUFkm0PwDHhINESE=
+X-Received: by 2002:a05:600c:a0a:b0:434:a04d:1670 with SMTP id
+ 5b1f17b1804b1-436e25548e3mr76471545e9.0.1736764013996; Mon, 13 Jan 2025
+ 02:26:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211-vma-v11-0-466640428fc3@google.com> <f8bp5f3T5_3_0LpabBpwjSarzhZTp1CbAvcTBI6lHlaKpPAAFiofsNI2iJxK9kuXwnqvTkky9uvpS0rqRpa_RA==@protonmail.internalid>
- <20241211-vma-v11-6-466640428fc3@google.com> <87zfku8xm3.fsf@kernel.org>
- <pA6wMXsuufZYDAp8gFd3zk-NMh14PhUmFfNrteolm9tyjR2W8fCmaMzUhE3oG2Z_pWN_mju46C_fyDygXvRUmg==@protonmail.internalid>
- <CAH5fLggSiiQ1xTcEKbAiux=r+3C_HqY7AMtZOC6fwQCR51crCA@mail.gmail.com> <874j28bdkq.fsf@kernel.org>
-In-Reply-To: <874j28bdkq.fsf@kernel.org>
+References: <20241211-vma-v11-0-466640428fc3@google.com> <mSBxLtHQ2_lBeEYTQNS-AoAdOXj-UH7mEb48SlHQZJMlUBwpqzIP4UB9nZv439lfseuIL27p3QnFOMFjV2wk-g==@protonmail.internalid>
+ <20241211-vma-v11-8-466640428fc3@google.com> <87frmnadmk.fsf@kernel.org>
+ <5qXA_x0NK0TzOkDwdQ8RYbk3SboUQiD0qflQhsoPRyhFxpD7fZHC7uVjI7RQBvvHPVEO1zlMRBq3F8BBImHrYQ==@protonmail.internalid>
+ <CAH5fLgiBsW-sZ8LW4aqK1Eux71qdB3ERr6RdE3gX2uka+GRrew@mail.gmail.com> <87y0zk9y4h.fsf@kernel.org>
+In-Reply-To: <87y0zk9y4h.fsf@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 13 Jan 2025 11:18:32 +0100
-X-Gm-Features: AbW1kvY4UPbhcl0V_aUw-htWIkjKdS5fOAkjYdW1l2Er6j35yFohAleL9I4lA3I
-Message-ID: <CAH5fLggDvFa7jhZSdUQ90oqUWAnvv4RjynNGr8=57RB_p9_JrA@mail.gmail.com>
-Subject: Re: [PATCH v11 6/8] mm: rust: add VmAreaNew for f_ops->mmap()
+Date: Mon, 13 Jan 2025 11:26:42 +0100
+X-Gm-Features: AbW1kvaPU7jte_DTbz1hQMDwki-WCfamsRDNzYatM7mfSJxRtXANZ6h8Hqjf9II
+Message-ID: <CAH5fLgh6J41JkaD23_Br6nLkznAfzaivVY=xRpr1jzpUZNZgKA@mail.gmail.com>
+Subject: Re: [PATCH v11 8/8] task: rust: rework how current is accessed
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -82,70 +82,127 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 9, 2025 at 9:23=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
+On Thu, Jan 9, 2025 at 9:42=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
 org> wrote:
 >
 > "Alice Ryhl" <aliceryhl@google.com> writes:
 >
-> > On Tue, Dec 17, 2024 at 10:31=E2=80=AFAM Andreas Hindborg <a.hindborg@k=
-ernel.org> wrote:
+> > On Mon, Dec 16, 2024 at 3:51=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
 > >>
 > >> "Alice Ryhl" <aliceryhl@google.com> writes:
-> >>
-> >> > This type will be used when setting up a new vma in an f_ops->mmap()
-> >> > hook. Using a separate type from VmAreaRef allows us to have a separ=
-ate
-> >> > set of operations that you are only able to use during the mmap() ho=
-ok.
-> >> > For example, the VM_MIXEDMAP flag must not be changed after the init=
-ial
-> >> > setup that happens during the f_ops->mmap() hook.
-> >> >
-> >> > To avoid setting invalid flag values, the methods for clearing
-> >> > VM_MAYWRITE and similar involve a check of VM_WRITE, and return an e=
-rror
-> >> > if VM_WRITE is set. Trying to use `try_clear_maywrite` without check=
-ing
-> >> > the return value results in a compilation error because the `Result`
-> >> > type is marked #[must_use].
-> >> >
-> >> > For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. Wh=
-en
-> >> > we add a VM_PFNMAP method, we will need some way to prevent you from
-> >> > setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
-> >> >
-> >> > Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com> (for mm bits)
-> >> > Reviewed-by: Jann Horn <jannh@google.com>
-> >> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >> > ---
-> >> >  rust/kernel/mm/virt.rs | 181 ++++++++++++++++++++++++++++++++++++++=
-++++++++++-
-> >> >  1 file changed, 180 insertions(+), 1 deletion(-)
-> >> >
-> >> > diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> >> > index 3a23854e14f4..6d9ba56d4f95 100644
-> >> > --- a/rust/kernel/mm/virt.rs
-> >> > +++ b/rust/kernel/mm/virt.rs
-> >>
-> >> [cut]
-> >>
-> >> > +    /// Returns whether `VM_READ` is set.
-> >> > +    ///
-> >> > +    /// This flag indicates whether userspace is mapping this vma a=
-s readable.
 > >> > +    #[inline]
-> >> > +    pub fn get_read(&self) -> bool {
-> >> > +        (self.flags() & flags::READ) !=3D 0
-> >> > +    }
+> >> > +    pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+> >> > +        // SAFETY: It is safe to call `task_active_pid_ns` without =
+RCU protection when calling it
+> >> > +        // on the current task.
+> >> > +        let active_ns =3D unsafe { bindings::task_active_pid_ns(sel=
+f.as_ptr()) };
+> >> > +
+> >> > +        if active_ns.is_null() {
+> >> > +            return None;
+> >> > +        }
+> >> > +
+> >> > +        // The lifetime of `PidNamespace` is bound to `Task` and `s=
+truct pid`.
+> >> > +        //
+> >> > +        // The `PidNamespace` of a `Task` doesn't ever change once =
+the `Task` is alive. A
+> >> > +        // `unshare(CLONE_NEWPID)` or `setns(fd_pidns/pidfd, CLONE_=
+NEWPID)` will not have an effect
+> >> > +        // on the calling `Task`'s pid namespace. It will only effe=
+ct the pid namespace of children
+> >> > +        // created by the calling `Task`. This invariant guarantees=
+ that after having acquired a
+> >> > +        // reference to a `Task`'s pid namespace it will remain unc=
+hanged.
+> >> > +        //
+> >> > +        // When a task has exited and been reaped `release_task()` =
+will be called. This will set
+> >> > +        // the `PidNamespace` of the task to `NULL`. So retrieving =
+the `PidNamespace` of a task
+> >> > +        // that is dead will return `NULL`. Note, that neither hold=
+ing the RCU lock nor holding a
+> >> > +        // referencing count to the `Task` will prevent `release_ta=
+sk()` being called.
+> >> > +        //
+> >> > +        // In order to retrieve the `PidNamespace` of a `Task` the =
+`task_active_pid_ns()` function
+> >> > +        // can be used. There are two cases to consider:
+> >> > +        //
+> >> > +        // (1) retrieving the `PidNamespace` of the `current` task
+> >> > +        // (2) retrieving the `PidNamespace` of a non-`current` tas=
+k
+> >> > +        //
+> >> > +        // From system call context retrieving the `PidNamespace` f=
+or case (1) is always safe and
+> >> > +        // requires neither RCU locking nor a reference count to be=
+ held. Retrieving the
+> >> > +        // `PidNamespace` after `release_task()` for current will r=
+eturn `NULL` but no codepath
+> >> > +        // like that is exposed to Rust.
+> >> > +        //
+> >> > +        // Retrieving the `PidNamespace` from system call context f=
+or (2) requires RCU protection.
+> >> > +        // Accessing `PidNamespace` outside of RCU protection requi=
+res a reference count that
+> >> > +        // must've been acquired while holding the RCU lock. Note t=
+hat accessing a non-`current`
+> >> > +        // task means `NULL` can be returned as the non-`current` t=
+ask could have already passed
+> >> > +        // through `release_task()`.
+> >> > +        //
+> >> > +        // To retrieve (1) the `&CurrentTask` type should be used w=
+hich ensures that the returned
+> >> > +        // `PidNamespace` cannot outlive the current task context. =
+The `CurrentTask::active_pid_ns`
+> >> > +        // function allows Rust to handle the common case of access=
+ing `current`'s `PidNamespace`
+> >> > +        // without RCU protection and without having to acquire a r=
+eference count.
+> >> > +        //
+> >> > +        // For (2) the `task_get_pid_ns()` method must be used. Thi=
+s will always acquire a
+> >> > +        // reference on `PidNamespace` and will return an `Option` =
+to force the caller to
+> >> > +        // explicitly handle the case where `PidNamespace` is `None=
+`, something that tends to be
+> >> > +        // forgotten when doing the equivalent operation in `C`. Mi=
+ssing RCU primitives make it
+> >> > +        // difficult to perform operations that are otherwise safe =
+without holding a reference
+> >> > +        // count as long as RCU protection is guaranteed. But it is=
+ not important currently. But we
+> >> > +        // do want it in the future.
+> >> > +        //
+> >> > +        // Note for (2) the required RCU protection around calling =
+`task_active_pid_ns()`
+> >> > +        // synchronizes against putting the last reference of the a=
+ssociated `struct pid` of
+> >> > +        // `task->thread_pid`. The `struct pid` stored in that fiel=
+d is used to retrieve the
+> >> > +        // `PidNamespace` of the caller. When `release_task()` is c=
+alled `task->thread_pid` will be
+> >> > +        // `NULL`ed and `put_pid()` on said `struct pid` will be de=
+layed in `free_pid()` via
+> >> > +        // `call_rcu()` allowing everyone with an RCU protected acc=
+ess to the `struct pid` acquired
+> >> > +        // from `task->thread_pid` to finish.
 > >>
-> >> As an afterthought, should we name these getters according to RFC344 [=
-1]
-> >> (remove get_ prefix)?
+> >> While this comment is a nice piece of documentation, I think we should
+> >> move it elsewhere, or restrict it to paragraphs pertaining to (1), sin=
+ce
+> >> that is the only case we consider here?
 > >
-> > Well, perhaps is_readable?
+> > Where would you move it?
 >
-> Why not just `readable() -> bool`? That would match the guidelines.
+> The info about (2) should probably be with the implementation for that
+> case, when it lands. Perhaps we can move it hen?
 
-I guess that could work.
+The function already exists. It's called Task::get_pid_ns(). I think
+the comment makes sense here: get_pid_ns() is the normal case where
+you don't skip synchronization, and active_pid_ns() is the special
+case where you can skip RCU due to reasons. This comment explains that
+normally you cannot skip RCU, but in this special case you can.
 
 Alice
