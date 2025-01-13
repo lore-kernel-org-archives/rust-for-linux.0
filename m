@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616401F9F46
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 23:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201661F866F
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 23:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736812443; cv=none; b=rYbloY60OQ1dyMr40MseSZw5xiRCNFfVHeb5zhTjaOfDkDyEVvQ3k9E0OLoH+/YJIIa7SgxD3jbET922ul4BQ+6PVrDNQaw0JPctl9HoHoLeyhmG/SkiemJ8HLUGQeXn76opo49HM3SOEmwyglvIPBIGbbPk+ahd5IcTf1BeZz4=
+	t=1736812653; cv=none; b=c/H05hQ71GBjulZ3ydGRAbBZDl4Kl6Zm0kiLGKNqvO9k+U0X5bxrJ7v91u8eVEGtyt6/n7RyHU/TOUldflZdmVKD89+1J+SEjzNNh7DnAwZvLXYpV31Ym4JqfhfQdeyOTl4/HGDaYfY6SL+jVaP52h+WYfwkKtyXvF3A0gUu4lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736812443; c=relaxed/simple;
-	bh=NDoqmny50wC3+JVigpCgFy4GNOVKvPPRvkWOOPcvqyI=;
+	s=arc-20240116; t=1736812653; c=relaxed/simple;
+	bh=wCoey/JIYvcxhhMJsvoF1U2exmXYi6PBJ+qJ2XLXvfc=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YTHxKFG4NlUSh6Y2JEkHQ4kDg/sHaDR5eK72LPe6fBsZ3LES20tRTZcUFdby7kGHTeZApd4XL9RwRmpn/l7v7qz2LLY5kswXioKKcpJYCpj4twIucmSmXreEi5ovissk2NnMTshPuwCdH1ye+8JKdcBNpGRQoUrf+FnrNdZaQHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AT1I+cyN; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=ejdAdSEbcTkt1QxfiLBrKUy0ZTV0yRriOEEImQ2DlMTyxUDuz+GZZ3iynkuLZEQ8oORiLxqi3FB0dgiWQjI7VOglM4V5K8Tujci4+boGs4CoG1MywVtb3/6GxH3JV0likGUQGJUr4JeDcTNLSi/MDIY0mrb/p8ohTB9UynN1rIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MCsJE5VZ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AT1I+cyN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MCsJE5VZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736812440;
+	s=mimecast20190719; t=1736812650;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0s3jvkXL3J1NYR9kjtfeU5w1tA5GXHd/ur4B+uyHTYg=;
-	b=AT1I+cyNURQH9KQEqulY00mqczF1l96TZlimks03brdbwpJTxOixZUAl2nEGdrCXHpqTPx
-	tV8CPYNm0GAJBxNE/4Z00LzUvGQ0igSvajzj0Uow35pcTvnU+h1p62QFW4GV5GQ8QiZ+Id
-	qIG6/hMwwJnMXOJOifd8rovjh9xjPes=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mmzlmAYQDbaYnHCEKRQa5ooCUue11mQHDsUORSpx37Q=;
+	b=MCsJE5VZvo2G8+m7BkTxYbqMvkJXoGyN9x02SDBP/0QkZz+QHZqSUXjtZpJ+570QGT3lYG
+	aQUSem8JVqPCZ1T/RoXXW0RtWiaZf9RXOJfEGWNP7jUJTH2B2eovI6BqHwcOm99QYSgcNP
+	3H8WT7DXjZuG4pkKx3C+82khckO7erc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-0nlWTN16O9W2Ie-AC2gRSw-1; Mon, 13 Jan 2025 18:53:59 -0500
-X-MC-Unique: 0nlWTN16O9W2Ie-AC2gRSw-1
-X-Mimecast-MFC-AGG-ID: 0nlWTN16O9W2Ie-AC2gRSw
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7b6ebe1ab63so1229261285a.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 15:53:59 -0800 (PST)
+ us-mta-190-muUbMNbLOvCcQJlGSIMMmw-1; Mon, 13 Jan 2025 18:57:28 -0500
+X-MC-Unique: muUbMNbLOvCcQJlGSIMMmw-1
+X-Mimecast-MFC-AGG-ID: muUbMNbLOvCcQJlGSIMMmw
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b6e9fb0436so1396322885a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jan 2025 15:57:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736812439; x=1737417239;
+        d=1e100.net; s=20230601; t=1736812648; x=1737417448;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0s3jvkXL3J1NYR9kjtfeU5w1tA5GXHd/ur4B+uyHTYg=;
-        b=a3Mkka0dm2K1W4RkuoKatNkLusnEfjZa1o1Gd7myeMVT/lxJOLkC7Drq4ezA6kTRlP
-         6pl3KorqXEYeHJNvwWP6FKixR1tNv/jOJzjQkzFFxbwDfEufCQsxSj43mhVj6g2PexkX
-         jzHoqz0DB9ghqT2lY78pjOq5IrfweaiptDJDVEZRJ3Aibm6vdTnynXwD1RkF2wGiQ7IV
-         c4ILpGdi0y/eeUWGBtJp9mzeZEhD0DqZTjBdzO/3n/W2s67aKdRoiZYwnatjvKPJQbaQ
-         lR9T8l96IUf7ETeskb/wP2C9FIiGSNx2RrHAImzUQdPhndTM/K/BPjduEXIND1LlPmvq
-         kKig==
-X-Forwarded-Encrypted: i=1; AJvYcCXFZZsZD8tzXh8Kaq/fw3Ybc7GXqV+360XBUcoJHQjUScCpuaSzgnbpicriCiuWhTmzDhD3eAXdBb4vGZlYVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhxDiKShchCIAmPXBHZ4d1vcPQTOn5cR/SfUsC8cTza9fr5/zr
-	s+lPcGIHwk/NnqeqwbOqiSrZWaRetpruuos7Pw/XzK/zCEBdfN7Vusk+ri7rUL5S6nE2uBfpzjo
-	QrXP+lAPJC5RTouHnl6p07qG3KpNf3e5+RZvtDqE28Ym647YufHUA9Rox6jbL78u2
-X-Gm-Gg: ASbGncv/e2949c54aXJ4u/S8youKkCKUSXb3RMSga4bUfJ+MPE8UkaCy0fOjeVD7Opa
-	GLwIt/nxWJqZeLf38sHcffKAaiScIxhU8C113DrmR0l3pVxhm6EZ4aLn4MKxw/zF7APIxnsPHxK
-	/uPGVuwtDdsAKeaO1YoEMZinc8QxgEYN5VdR7ISWAJ+LC2NzckrjbF+XPY1IMXwkWEXFnxs7wgz
-	xNmVqCtmv1akpLPNSmk0C7Gn4y91V4kLzi/qks/EDASDZMI/sHdk9dpf1dZb6CEvmOlYqcifXyJ
-	TKyp7oVePO52chAkfp9V9JSj/qU=
-X-Received: by 2002:a05:620a:2a0f:b0:7b6:ecaa:9633 with SMTP id af79cd13be357-7bcd9729fa7mr3956240785a.7.1736812438801;
-        Mon, 13 Jan 2025 15:53:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEuImAQ1XXv+MOMxpXODigGFZu1zdTlFQGLjqTfFLjR9qyEnf0/r7wvnNPds9SPzHkVbvex3g==
-X-Received: by 2002:a05:620a:2a0f:b0:7b6:ecaa:9633 with SMTP id af79cd13be357-7bcd9729fa7mr3956236685a.7.1736812438462;
-        Mon, 13 Jan 2025 15:53:58 -0800 (PST)
+        bh=mmzlmAYQDbaYnHCEKRQa5ooCUue11mQHDsUORSpx37Q=;
+        b=R4qjeSQWpYx+IvYModLiuweHOIyPLPbVDNa6r+wi/XJQOBa4DLC9edpgjCcw51vpaR
+         zpPSLJl8qI6kFSecNYTmnkWWSB0/A+gGmks5q+LDmkEhj9XJV0FjlpyJ+G93w/volA3E
+         jop67F10haxe23OAZxjhA0Z95j1OI9Nffda6Iy5qbALv5FmjPGrChkixUA9fTOQ+4Gkl
+         6Ei+FApY8da8G6tEnXzMIbJzpNI8TQJVRsyuJ9oXEKN8LREkoZRCTSY3wxgSgROgWxIY
+         mdt7hZacTBup0uPWG0lTiYwY2Hp7kP7cLSZw1SMRBCQ88obG5qdKxs1Vz1S4YWb1WpOF
+         ufJw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5/R133f6JUgA0flXGQnOKTL/I54tPfxhn5mpItBEFyeZo4HpqwsaHkNd03TNdR607h7dVYcSuFXmFoNPyRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxj283UO0CjHfsJmuUh4KsvCqI3UhO31LKxWD2h1f9EJh7IZ22G
+	wQc2gl8gnaj83D3Kb4jXUKubu5hRbM5QD2uN73wgWsFzKCCafZuWp2nvibbl4/VWO8eZgJ4bYhe
+	MzCL0upX/RYWjYryqfCJJu095siivEArpl7FjXWBSTUzfm+N0C+H4wsnBpyz3/eog
+X-Gm-Gg: ASbGncscLBthwyVRm2DTo0N9mSGQFvtttCd5Z1M9weowgMt26k9v3HkSjeUc/KCperD
+	x/bYnwg0yX1mh35WY6KoULujefLr5GxEvPs9G9lidD2RC5g3B3A5NLBOk4/qn5voQyvXNVj3BKy
+	m7KzZF89H2UZY5dGm7KdPgLy4XN1pUflfZN99ofgKcDs1TqtzozqOOIMhQRCC/kBvKgqExW/6w3
+	g/PteXbo8QT/z+BdvOBG5MQoriMFl6Rei5LLAgaifFGjRd1d0xLi5ANMpasmDvEgLTGeafh47Be
+	Un8pZOmzXC3Q6Oz/TY9t8u3Bneo=
+X-Received: by 2002:a05:620a:5d8e:b0:7bd:bafc:32a8 with SMTP id af79cd13be357-7bdbafc35d3mr985340385a.24.1736812648433;
+        Mon, 13 Jan 2025 15:57:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGZ4yzz8tQiGfGPcss6eaK0wqSBP1yjUalrX6t53Tf7hH3xN8W77zMYEknciX6xn8Jr4LX3TA==
+X-Received: by 2002:a05:620a:5d8e:b0:7bd:bafc:32a8 with SMTP id af79cd13be357-7bdbafc35d3mr985338485a.24.1736812648096;
+        Mon, 13 Jan 2025 15:57:28 -0800 (PST)
 Received: from ?IPv6:2600:4040:5c4c:a000:e00f:8b38:a80e:5592? ([2600:4040:5c4c:a000:e00f:8b38:a80e:5592])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dfade73406sm46804506d6.78.2025.01.13.15.53.57
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce323967fsm548286785a.19.2025.01.13.15.57.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 15:53:57 -0800 (PST)
-Message-ID: <803ffda9ffcae034237bf2cdb2a04a7f8693a674.camel@redhat.com>
-Subject: Re: [WIP RFC v2 22/35] rust: drm/kms: Add
- DriverPlane::atomic_update()
+        Mon, 13 Jan 2025 15:57:27 -0800 (PST)
+Message-ID: <697716119af55f806b24678343abb320261802c0.camel@redhat.com>
+Subject: Re: [WIP RFC v2 26/35] WIP: rust: drm/kms: Add
+ RawPlaneState::atomic_helper_check()
 From: Lyude Paul <lyude@redhat.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Asahi
@@ -79,11 +79,11 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Asahi
  <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
  Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,  open list
  <linux-kernel@vger.kernel.org>
-Date: Mon, 13 Jan 2025 18:53:56 -0500
-In-Reply-To: <E4022636-D8A6-4B03-8EF0-E9E3177E760A@collabora.com>
+Date: Mon, 13 Jan 2025 18:57:25 -0500
+In-Reply-To: <7148C7F5-6412-44CB-B92A-4ABAE4A4D5C3@collabora.com>
 References: <20240930233257.1189730-1-lyude@redhat.com>
-	 <20240930233257.1189730-23-lyude@redhat.com>
-	 <E4022636-D8A6-4B03-8EF0-E9E3177E760A@collabora.com>
+	 <20240930233257.1189730-27-lyude@redhat.com>
+	 <7148C7F5-6412-44CB-B92A-4ABAE4A4D5C3@collabora.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40)
 Precedence: bulk
@@ -93,119 +93,116 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FguECDWbUADN3HFrEmuN6jjrzAMAQYwPZpJN9iu2LrE_1736812439
+X-Mimecast-MFC-PROC-ID: Tv5bwpKY0oaHDsOKvkQ2y-1Eixb-a_7lIs6W0vKLupk_1736812648
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2024-11-28 at 10:51 -0300, Daniel Almeida wrote:
+On Thu, 2024-11-28 at 11:04 -0300, Daniel Almeida wrote:
+> Hi Lyude,
 >=20
 > > On 30 Sep 2024, at 20:10, Lyude Paul <lyude@redhat.com> wrote:
 > >=20
-> > A mandatory trait method used for implementing DRM's atomic plane updat=
-e
-> > callback.
+> > Add a binding for drm_atomic_helper_check_plane_state(). Since we want =
+to
+> > make sure that the user is passing in the new state for a Crtc instead =
+of
+> > an old state, we explicitly ask for a reference to a BorrowedCrtcState.
+> >=20
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> >=20
+> > ---
+> >=20
+> > TODO:
+> > * Add support for scaling options
+>=20
+> Can / should this be a separate commit? This would allow this one to go i=
+n earlier.
+
+It could be but I don't have any implementation of this yet, which is why i=
+t's
+mentioned as a todo.
+
+>=20
 > >=20
 > > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > > ---
-> > rust/kernel/drm/kms/plane.rs | 39 +++++++++++++++++++++++++++++++++++-
-> > 1 file changed, 38 insertions(+), 1 deletion(-)
+> > rust/kernel/drm/kms/plane.rs | 25 +++++++++++++++++++++++++
+> > 1 file changed, 25 insertions(+)
 > >=20
 > > diff --git a/rust/kernel/drm/kms/plane.rs b/rust/kernel/drm/kms/plane.r=
 s
-> > index d6e11a65cc101..506ed5ced1270 100644
+> > index 4d16d53179fca..cd5167e6441f1 100644
 > > --- a/rust/kernel/drm/kms/plane.rs
 > > +++ b/rust/kernel/drm/kms/plane.rs
-> > @@ -75,7 +75,7 @@ pub trait DriverPlane: Send + Sync + Sized {
-> >             begin_fb_access: None, // TODO: someday?
-> >             end_fb_access: None, // TODO: someday?
-> >             atomic_check: None,
-> > -            atomic_update: None,
-> > +            atomic_update: if Self::HAS_ATOMIC_UPDATE { Some(atomic_up=
-date_callback::<Self>) } else { None },
-> >             atomic_enable: None, // TODO
-> >             atomic_disable: None, // TODO
-> >             atomic_async_check: None, // TODO
-> > @@ -103,6 +103,21 @@ pub trait DriverPlane: Send + Sync + Sized {
-> >     ///
-> >     /// Drivers may use this to instantiate their [`DriverPlane`] objec=
-t.
-> >     fn new(device: &Device<Self::Driver>, args: Self::Args) -> impl Pin=
-Init<Self, Error>;
+> > @@ -496,6 +496,31 @@ fn crtc<'a, 'b: 'a>(&'a self) -> Option<&'b Opaque=
+Crtc<<Self::Plane as ModeObjec
+> >         // SAFETY: This cast is guaranteed safe by `OpaqueCrtc`s invari=
+ants.
+> >         NonNull::new(self.as_raw().crtc).map(|c| unsafe { OpaqueCrtc::f=
+rom_raw(c.as_ptr()) })
+> >     }
 > > +
-> > +    /// The optional [`drm_plane_helper_funcs.atomic_update`] hook for=
- this plane.
-> > +    ///
-> > +    /// Drivers may use this to customize the atomic update phase of t=
-heir [`Plane`] objects. If not
-> > +    /// specified, this function is a no-op.
-> > +    ///
-> > +    /// [`drm_plane_helper_funcs.atomic_update`]: srctree/include/drm/=
-drm_modeset_helper_vtables.h
-> > +    fn atomic_update(
-> > +        plane: &Plane<Self>,
-> > +        new_state: BorrowedPlaneState<'_, PlaneState<Self::State>>,
-> > +        old_state: &PlaneState<Self::State>,
-> > +        state: &AtomicStateMutator<Self::Driver>
-> > +    ) {
-> > +        build_error::build_error("This should not be reachable")
+> > +    /// Run the atomic check helper for this plane and the given CRTC =
+state
+> > +    fn atomic_helper_check<S>(
+> > +        &mut self,
+> > +        crtc_state: &BorrowedCrtcState<'_, S>,
+> > +        can_position: bool,
+> > +        can_update_disabled: bool
+> > +    ) -> Result
+>=20
+> Some docs on the arguments would be nice IMHO. Things like `can_position`=
+ and `can_update_disabled`
+> seem a bit opaque.
+>=20
+
+I'm curious if you have any idea whether we can link back to kernel docs in
+rust? We have pretty extensive documentation written up on almost all of th=
+is
+already, I just have no idea how to incorporate it on the rust side.
+
+> > +    where
+> > +        S: FromRawCrtcState,
+> > +        S::Crtc: AsRawCrtc<Driver =3D <Self::Plane as ModeObject>::Dri=
+ver>
+> > +    {
+> > +        // SAFETY: We're passing the mutable reference from `self.as_r=
+aw_mut()` directly to DRM,
+> > +        // which is safe.
+> > +        to_result(unsafe {
+> > +            bindings::drm_atomic_helper_check_plane_state(
+> > +                self.as_raw_mut(),
+> > +                crtc_state.as_raw(),
+> > +                bindings::DRM_PLANE_NO_SCALING as _, // TODO: add para=
+meters for scaling
+> > +                bindings::DRM_PLANE_NO_SCALING as _,
+>=20
+> No scaling means that you can only select the display=E2=80=99s highest r=
+esolution?
+
+No, I believe (correct me if I'm wrong here chat) that this is about plane
+scaling rather than resolution. A lot of display hardware has the ability t=
+o
+do hardware-scaling of individual display planes, so that the input
+framebuffer for a plane can be larger than the actual display plane that's =
+on-
+screen.
+
+>=20
+> > +                can_position,
+> > +                can_update_disabled
+> > +            )
+> > +        })
 > > +    }
->=20
-> One more comment. If this is mandatory, why not omit this default here to=
- get the compiler to enforce
-> the implementation of this fn by drivers?=20
-
-This was just a mistake on my part. tl;dr atomic_update is not used by some
-super basic drivers but currently the DRM core breaks without it specified.=
- I
-suggested that maybe we consider it to be optional (and made it optional he=
-re
-in my branch at one point), but the case I just mentioned while not unheard=
- of
-is unusual enough that upstream decided it wasn't worth it. So I need to do
-what you said and drop the default implementation here.
-
->=20
 > > }
+> > impl<T: AsRawPlaneState + ?Sized> RawPlaneState for T {}
 > >=20
-> > /// The generated C vtable for a [`DriverPlane`].
-> > @@ -757,3 +772,25 @@ fn deref_mut(&mut self) -> &mut Self::Target {
-> >     // - The cast to `drm_plane_state` is safe via `PlaneState`s type i=
-nvariants.
-> >     unsafe { bindings::__drm_atomic_helper_plane_reset(plane, Box::into=
-_raw(new).cast()) };
-> > }
-> > +
-> > +unsafe extern "C" fn atomic_update_callback<T: DriverPlane>(
-> > +    plane: *mut bindings::drm_plane,
-> > +    state: *mut bindings::drm_atomic_state,
-> > +) {
-> > +    // SAFETY:
-> > +    // * We're guaranteed `plane` is of type `Plane<T>` via type invar=
-iants.
-> > +    // * We're guaranteed by DRM that `plane` is pointing to a valid i=
-nitialized state.
-> > +    let plane =3D unsafe { Plane::from_raw(plane) };
-> > +
-> > +    // SAFETY: DRM guarantees `state` points to a valid `drm_atomic_st=
-ate`
-> > +    let state =3D unsafe { AtomicStateMutator::new(NonNull::new_unchec=
-ked(state)) };
-> > +
-> > +    // SAFETY: Since we are in the atomic update callback, we're guara=
-nteed by DRM that both the old
-> > +    // and new atomic state are present within `state`
-> > +    let (old_state, new_state) =3D unsafe {(
-> > +        state.get_old_plane_state(plane).unwrap_unchecked(),
-> > +        state.get_new_plane_state(plane).unwrap_unchecked(),
-> > +    )};
-> > +
-> > +    T::atomic_update(plane, new_state, old_state, &state);
-> > +}
 > > --=20
 > > 2.46.1
 > >=20
-> >=20
+>=20
+> Barring the comment above about the docs, this looks good.
 >=20
 > =E2=80=94 Daniel
 >=20
